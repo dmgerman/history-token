@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * linux/kernel/suspend.c&n; *&n; * This file is to realize architecture-independent&n; * machine suspend feature using pretty near only high-level routines&n; *&n; * Copyright (C) 1998-2001 Gabor Kuti &lt;seasons@fornax.hu&gt;&n; * Copyright (C) 1998,2001,2002 Pavel Machek &lt;pavel@suse.cz&gt;&n; *&n; * I&squot;d like to thank the following people for their work:&n; * &n; * Pavel Machek &lt;pavel@ucw.cz&gt;:&n; * Modifications, defectiveness pointing, being with me at the very beginning,&n; * suspend to swap space, stop all tasks. Port to 2.4.18-ac and 2.5.17.&n; *&n; * Steve Doddi &lt;dirk@loth.demon.co.uk&gt;: &n; * Support the possibility of hardware state restoring.&n; *&n; * Raph &lt;grey.havens@earthling.net&gt;:&n; * Support for preserving states of network devices and virtual console&n; * (including X and svgatextmode)&n; *&n; * Kurt Garloff &lt;garloff@suse.de&gt;:&n; * Straightened the critical function in order to prevent compilers from&n; * playing tricks with local variables.&n; *&n; * Andreas Mohr &lt;a.mohr@mailto.de&gt;&n; *&n; * Alex Badea &lt;vampire@go.ro&gt;:&n; * Fixed runaway init&n; *&n; * More state savers are welcome. Especially for the scsi layer...&n; *&n; * For TODOs,FIXMEs also look in Documentation/swsusp.txt&n; */
+multiline_comment|/*&n; * kernel/power/pmdisk.c - Suspend-to-disk implmentation&n; *&n; * This STD implementation is initially derived from swsusp (suspend-to-swap).&n; * The original copyright on that was: &n; *&n; * Copyright (C) 1998-2001 Gabor Kuti &lt;seasons@fornax.hu&gt;&n; * Copyright (C) 1998,2001,2002 Pavel Machek &lt;pavel@suse.cz&gt;&n; *&n; * The additional parts are: &n; * &n; * Copyright (C) 2003 Patrick Mochel&n; * Copyright (C) 2003 Open Source Development Lab&n; * &n; * This file is released under the GPLv2. &n; *&n; * For more information, please see the text files in Documentation/power/&n; *&n; */
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/bio.h&gt;
 macro_line|#include &lt;linux/suspend.h&gt;
@@ -11,7 +11,7 @@ macro_line|#include &lt;asm/mmu_context.h&gt;
 macro_line|#include &quot;power.h&quot;
 r_extern
 r_int
-id|swsusp_arch_suspend
+id|pmdisk_arch_suspend
 c_func
 (paren
 r_int
@@ -52,6 +52,7 @@ r_static
 r_int
 id|nr_copy_pages_check
 suffix:semicolon
+multiline_comment|/* For resume= kernel option */
 DECL|variable|resume_file
 r_static
 r_char
@@ -59,8 +60,9 @@ id|resume_file
 (braket
 l_int|256
 )braket
+op_assign
+id|CONFIG_PM_DISK_PARTITION
 suffix:semicolon
-multiline_comment|/* For resume= kernel option */
 DECL|variable|resume_device
 r_static
 id|dev_t
@@ -70,7 +72,7 @@ multiline_comment|/* Local variables that should not be affected by save */
 DECL|variable|__nosavedata
 r_int
 r_int
-id|nr_copy_pages
+id|pmdisk_pages
 id|__nosavedata
 op_assign
 l_int|0
@@ -79,7 +81,7 @@ multiline_comment|/* Suspend pagedir is allocated before final copy, therefore i
 DECL|variable|__nosavedata
 id|suspend_pagedir_t
 op_star
-id|pagedir_nosave
+id|pm_pagedir_nosave
 id|__nosavedata
 op_assign
 l_int|NULL
@@ -261,18 +263,18 @@ id|PAGE_SIZE
 suffix:semicolon
 id|sh-&gt;suspend_pagedir
 op_assign
-id|pagedir_nosave
+id|pm_pagedir_nosave
 suffix:semicolon
 id|BUG_ON
 (paren
 id|pagedir_save
 op_ne
-id|pagedir_nosave
+id|pm_pagedir_nosave
 )paren
 suffix:semicolon
 id|sh-&gt;num_pbes
 op_assign
-id|nr_copy_pages
+id|pmdisk_pages
 suffix:semicolon
 multiline_comment|/* TODO: needed? mounted fs&squot; last mounted date comparison&n;&t; * [so they haven&squot;t been mounted since last suspend.&n;&t; * Maybe it isn&squot;t.] [we&squot;d need to do this for _all_ fs-es]&n;&t; */
 r_return
@@ -812,7 +814,7 @@ op_assign
 id|SUSPEND_PD_PAGES
 c_func
 (paren
-id|nr_copy_pages
+id|pmdisk_pages
 )paren
 suffix:semicolon
 r_union
@@ -848,7 +850,7 @@ c_func
 (paren
 l_string|&quot;Writing data to swap (%d pages): &quot;
 comma
-id|nr_copy_pages
+id|pmdisk_pages
 )paren
 suffix:semicolon
 r_for
@@ -860,7 +862,7 @@ l_int|0
 suffix:semicolon
 id|i
 OL
-id|nr_copy_pages
+id|pmdisk_pages
 suffix:semicolon
 id|i
 op_increment
@@ -928,7 +930,7 @@ suffix:semicolon
 id|address
 op_assign
 (paren
-id|pagedir_nosave
+id|pm_pagedir_nosave
 op_plus
 id|i
 )paren
@@ -954,7 +956,7 @@ id|page
 )paren
 suffix:semicolon
 (paren
-id|pagedir_nosave
+id|pm_pagedir_nosave
 op_plus
 id|i
 )paren
@@ -1005,7 +1007,7 @@ op_star
 r_char
 op_star
 )paren
-id|pagedir_nosave
+id|pm_pagedir_nosave
 )paren
 op_plus
 id|i
@@ -1024,7 +1026,7 @@ op_ne
 r_char
 op_star
 )paren
-id|pagedir_nosave
+id|pm_pagedir_nosave
 )paren
 op_plus
 id|i
@@ -1833,9 +1835,9 @@ r_return
 id|pagedir
 suffix:semicolon
 )brace
-DECL|function|swsusp_suspend
+DECL|function|pmdisk_suspend
 r_int
-id|swsusp_suspend
+id|pmdisk_suspend
 c_func
 (paren
 r_void
@@ -1861,7 +1863,7 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|pagedir_nosave
+id|pm_pagedir_nosave
 op_assign
 l_int|NULL
 suffix:semicolon
@@ -1871,7 +1873,7 @@ c_func
 l_string|&quot;/critical section: Counting pages to copy&quot;
 )paren
 suffix:semicolon
-id|nr_copy_pages
+id|pmdisk_pages
 op_assign
 id|count_and_copy_data_pages
 c_func
@@ -1881,7 +1883,7 @@ l_int|NULL
 suffix:semicolon
 id|nr_needed_pages
 op_assign
-id|nr_copy_pages
+id|pmdisk_pages
 op_plus
 id|PAGES_FOR_IO
 suffix:semicolon
@@ -1890,7 +1892,7 @@ c_func
 (paren
 l_string|&quot; (pages needed: %d+%d=%d free: %d)&bslash;n&quot;
 comma
-id|nr_copy_pages
+id|pmdisk_pages
 comma
 id|PAGES_FOR_IO
 comma
@@ -1978,19 +1980,19 @@ l_string|&quot;Alloc pagedir&bslash;n&quot;
 suffix:semicolon
 id|pagedir_save
 op_assign
-id|pagedir_nosave
+id|pm_pagedir_nosave
 op_assign
 id|create_suspend_pagedir
 c_func
 (paren
-id|nr_copy_pages
+id|pmdisk_pages
 )paren
 suffix:semicolon
 r_if
 c_cond
 (paren
 op_logical_neg
-id|pagedir_nosave
+id|pm_pagedir_nosave
 )paren
 (brace
 multiline_comment|/* Shouldn&squot;t happen */
@@ -2015,7 +2017,7 @@ suffix:semicolon
 )brace
 id|nr_copy_pages_check
 op_assign
-id|nr_copy_pages
+id|pmdisk_pages
 suffix:semicolon
 id|pagedir_order_check
 op_assign
@@ -2030,12 +2032,12 @@ multiline_comment|/* During allocating of suspend pagedir, new cold pages may ap
 r_if
 c_cond
 (paren
-id|nr_copy_pages
+id|pmdisk_pages
 op_ne
 id|count_and_copy_data_pages
 c_func
 (paren
-id|pagedir_nosave
+id|pm_pagedir_nosave
 )paren
 )paren
 multiline_comment|/* copy */
@@ -2050,7 +2052,7 @@ c_func
 (paren
 l_string|&quot;critical section/: done (%d pages copied)&bslash;n&quot;
 comma
-id|nr_copy_pages
+id|pmdisk_pages
 )paren
 suffix:semicolon
 r_return
@@ -2097,9 +2099,9 @@ id|error
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Magic happens here&n; */
-DECL|function|swsusp_resume
+DECL|function|pmdisk_resume
 r_int
-id|swsusp_resume
+id|pmdisk_resume
 c_func
 (paren
 r_void
@@ -2109,7 +2111,7 @@ id|BUG_ON
 (paren
 id|nr_copy_pages_check
 op_ne
-id|nr_copy_pages
+id|pmdisk_pages
 )paren
 suffix:semicolon
 id|BUG_ON
@@ -2129,7 +2131,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/* swsusp_arch_suspend() is implemented in arch/?/power/swsusp.S,&n;   and basically does:&n;&n;&t;if (!resume) {&n;&t;&t;save_processor_state();&n;&t;&t;SAVE_REGISTERS&n;&t;&t;return swsusp_suspend();&n;&t;}&n;&t;GO_TO_SWAPPER_PAGE_TABLES&n;&t;COPY_PAGES_BACK&n;&t;RESTORE_REGISTERS&n;&t;restore_processor_state();&n;&t;return swsusp_resume();&n;&n; */
+multiline_comment|/* pmdisk_arch_suspend() is implemented in arch/?/power/pmdisk.S,&n;   and basically does:&n;&n;&t;if (!resume) {&n;&t;&t;save_processor_state();&n;&t;&t;SAVE_REGISTERS&n;&t;&t;return pmdisk_suspend();&n;&t;}&n;&t;GO_TO_SWAPPER_PAGE_TABLES&n;&t;COPY_PAGES_BACK&n;&t;RESTORE_REGISTERS&n;&t;restore_processor_state();&n;&t;return pmdisk_resume();&n;&n; */
 multiline_comment|/* More restore stuff */
 multiline_comment|/* FIXME: Why not memcpy(to, from, 1&lt;&lt;pagedir_order*PAGE_SIZE)? */
 DECL|function|copy_pagedir
@@ -2206,7 +2208,7 @@ suffix:semicolon
 )brace
 )brace
 DECL|macro|does_collide
-mdefine_line|#define does_collide(addr) does_collide_order(pagedir_nosave, addr, 0)
+mdefine_line|#define does_collide(addr) does_collide_order(pm_pagedir_nosave, addr, 0)
 multiline_comment|/*&n; * Returns true if given address/order collides with any orig_address &n; */
 DECL|function|does_collide_order
 r_static
@@ -2251,7 +2253,7 @@ l_int|0
 suffix:semicolon
 id|i
 OL
-id|nr_copy_pages
+id|pmdisk_pages
 suffix:semicolon
 id|i
 op_increment
@@ -2311,7 +2313,7 @@ l_int|0
 suffix:semicolon
 id|i
 OL
-id|nr_copy_pages
+id|pmdisk_pages
 suffix:semicolon
 id|i
 op_increment
@@ -2355,7 +2357,7 @@ id|addr
 )paren
 suffix:semicolon
 (paren
-id|pagedir_nosave
+id|pm_pagedir_nosave
 op_plus
 id|i
 )paren
@@ -2387,7 +2389,7 @@ comma
 op_star
 id|old_pagedir
 op_assign
-id|pagedir_nosave
+id|pm_pagedir_nosave
 suffix:semicolon
 r_void
 op_star
@@ -2524,7 +2526,7 @@ r_return
 op_minus
 id|ENOMEM
 suffix:semicolon
-id|pagedir_nosave
+id|pm_pagedir_nosave
 op_assign
 id|new_pagedir
 op_assign
@@ -3233,7 +3235,7 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;swsusp: Partition is normal swap space&bslash;n&quot;
+l_string|&quot;pmdisk: Partition is normal swap space&bslash;n&quot;
 )paren
 suffix:semicolon
 id|error
@@ -3251,7 +3253,7 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;swsusp: Invalid partition type.&bslash;n&quot;
+l_string|&quot;pmdisk: Invalid partition type.&bslash;n&quot;
 )paren
 suffix:semicolon
 id|error
@@ -3348,7 +3350,7 @@ id|pagedir_save
 op_assign
 id|cur-&gt;sh.suspend_pagedir
 suffix:semicolon
-id|nr_copy_pages
+id|pmdisk_pages
 op_assign
 id|cur-&gt;sh.num_pbes
 suffix:semicolon
@@ -3357,7 +3359,7 @@ op_assign
 id|SUSPEND_PD_PAGES
 c_func
 (paren
-id|nr_copy_pages
+id|pmdisk_pages
 )paren
 suffix:semicolon
 id|pagedir_order
@@ -3368,7 +3370,7 @@ c_func
 id|nr_pgdir_pages
 )paren
 suffix:semicolon
-id|pagedir_nosave
+id|pm_pagedir_nosave
 op_assign
 (paren
 id|suspend_pagedir_t
@@ -3386,7 +3388,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|pagedir_nosave
+id|pm_pagedir_nosave
 )paren
 (brace
 id|error
@@ -3442,7 +3444,7 @@ op_star
 r_char
 op_star
 )paren
-id|pagedir_nosave
+id|pm_pagedir_nosave
 )paren
 op_plus
 id|i
@@ -3518,7 +3520,7 @@ c_func
 (paren
 l_string|&quot;Reading image data (%d pages): &quot;
 comma
-id|nr_copy_pages
+id|pmdisk_pages
 )paren
 suffix:semicolon
 r_for
@@ -3530,7 +3532,7 @@ l_int|0
 suffix:semicolon
 id|i
 OL
-id|nr_copy_pages
+id|pmdisk_pages
 suffix:semicolon
 id|i
 op_increment
@@ -3540,7 +3542,7 @@ id|swp_entry_t
 id|swap_address
 op_assign
 (paren
-id|pagedir_nosave
+id|pm_pagedir_nosave
 op_plus
 id|i
 )paren
@@ -3581,7 +3583,7 @@ op_star
 )paren
 (paren
 (paren
-id|pagedir_nosave
+id|pm_pagedir_nosave
 op_plus
 id|i
 )paren
@@ -3629,7 +3631,7 @@ c_func
 r_int
 r_int
 )paren
-id|pagedir_nosave
+id|pm_pagedir_nosave
 comma
 id|pagedir_order
 )paren
@@ -3638,10 +3640,10 @@ r_goto
 id|Done
 suffix:semicolon
 )brace
-multiline_comment|/**&n; *&t;swsusp_save - Snapshot memory&n; */
-DECL|function|swsusp_save
+multiline_comment|/**&n; *&t;pmdisk_save - Snapshot memory&n; */
+DECL|function|pmdisk_save
 r_int
-id|swsusp_save
+id|pmdisk_save
 c_func
 (paren
 r_void
@@ -3654,7 +3656,7 @@ macro_line|#if defined (CONFIG_HIGHMEM) || defined (COFNIG_DISCONTIGMEM)
 id|printk
 c_func
 (paren
-l_string|&quot;swsusp is not supported with high- or discontig-mem.&bslash;n&quot;
+l_string|&quot;pmdisk is not supported with high- or discontig-mem.&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -3684,7 +3686,7 @@ c_func
 suffix:semicolon
 id|error
 op_assign
-id|swsusp_arch_suspend
+id|pmdisk_arch_suspend
 c_func
 (paren
 l_int|0
@@ -3699,10 +3701,10 @@ r_return
 id|error
 suffix:semicolon
 )brace
-multiline_comment|/**&n; *&t;swsusp_write - Write saved memory image to swap.&n; *&n; *&t;swsusp_arch_suspend(0) returns after system is resumed.&n; *&n; *&t;swsusp_arch_suspend() copies all &quot;used&quot; memory to &quot;free&quot; memory,&n; *&t;then unsuspends all device drivers, and writes memory to disk&n; *&t;using normal kernel mechanism.&n; */
-DECL|function|swsusp_write
+multiline_comment|/**&n; *&t;pmdisk_write - Write saved memory image to swap.&n; *&n; *&t;pmdisk_arch_suspend(0) returns after system is resumed.&n; *&n; *&t;pmdisk_arch_suspend() copies all &quot;used&quot; memory to &quot;free&quot; memory,&n; *&t;then unsuspends all device drivers, and writes memory to disk&n; *&t;using normal kernel mechanism.&n; */
+DECL|function|pmdisk_write
 r_int
-id|swsusp_write
+id|pmdisk_write
 c_func
 (paren
 r_void
@@ -3715,11 +3717,11 @@ c_func
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/**&n; *&t;swsusp_read - Read saved image from swap.&n; */
-DECL|function|swsusp_read
+multiline_comment|/**&n; *&t;pmdisk_read - Read saved image from swap.&n; */
+DECL|function|pmdisk_read
 r_int
 id|__init
-id|swsusp_read
+id|pmdisk_read
 c_func
 (paren
 r_void
@@ -3759,7 +3761,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;swsusp: Resume From Partition: %s, Device: %s&bslash;n&quot;
+l_string|&quot;pmdisk: Resume From Partition: %s, Device: %s&bslash;n&quot;
 comma
 id|resume_file
 comma
@@ -3861,11 +3863,11 @@ r_return
 id|error
 suffix:semicolon
 )brace
-multiline_comment|/**&n; *&t;swsusp_restore - Replace running kernel with saved image.&n; */
-DECL|function|swsusp_restore
+multiline_comment|/**&n; *&t;pmdisk_restore - Replace running kernel with saved image.&n; */
+DECL|function|pmdisk_restore
 r_int
 id|__init
-id|swsusp_restore
+id|pmdisk_restore
 c_func
 (paren
 r_void
@@ -3881,7 +3883,7 @@ c_func
 suffix:semicolon
 id|error
 op_assign
-id|swsusp_arch_suspend
+id|pmdisk_arch_suspend
 c_func
 (paren
 l_int|1
@@ -3896,10 +3898,10 @@ r_return
 id|error
 suffix:semicolon
 )brace
-multiline_comment|/**&n; *&t;swsusp_free - Free memory allocated to hold snapshot.&n; */
-DECL|function|swsusp_free
+multiline_comment|/**&n; *&t;pmdisk_free - Free memory allocated to hold snapshot.&n; */
+DECL|function|pmdisk_free
 r_int
-id|swsusp_free
+id|pmdisk_free
 c_func
 (paren
 r_void
@@ -3925,46 +3927,11 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-DECL|function|software_suspend
-r_int
-id|software_suspend
-c_func
-(paren
-r_void
-)paren
-(brace
-r_struct
-id|pm_ops
-id|swsusp_ops
-op_assign
-(brace
-dot
-id|pm_disk_mode
-op_assign
-id|PM_DISK_SHUTDOWN
-comma
-)brace
-suffix:semicolon
-id|pm_set_ops
-c_func
-(paren
-op_amp
-id|swsusp_ops
-)paren
-suffix:semicolon
-r_return
-id|pm_suspend
-c_func
-(paren
-id|PM_SUSPEND_DISK
-)paren
-suffix:semicolon
-)brace
-DECL|function|resume_setup
+DECL|function|pmdisk_setup
 r_static
 r_int
 id|__init
-id|resume_setup
+id|pmdisk_setup
 c_func
 (paren
 r_char
@@ -3981,6 +3948,27 @@ c_func
 id|str
 )paren
 )paren
+(brace
+r_if
+c_cond
+(paren
+op_logical_neg
+id|strcmp
+c_func
+(paren
+id|str
+comma
+l_string|&quot;off&quot;
+)paren
+)paren
+id|resume_file
+(braket
+l_int|0
+)braket
+op_assign
+l_char|&squot;&bslash;0&squot;
+suffix:semicolon
+r_else
 id|strncpy
 c_func
 (paren
@@ -3991,22 +3979,8 @@ comma
 l_int|255
 )paren
 suffix:semicolon
-r_return
-l_int|1
-suffix:semicolon
 )brace
-DECL|function|noresume_setup
-r_static
-r_int
-id|__init
-id|noresume_setup
-c_func
-(paren
-r_char
-op_star
-id|str
-)paren
-(brace
+r_else
 id|resume_file
 (braket
 l_int|0
@@ -4021,17 +3995,9 @@ suffix:semicolon
 id|__setup
 c_func
 (paren
-l_string|&quot;noresume&quot;
+l_string|&quot;pmdisk=&quot;
 comma
-id|noresume_setup
-)paren
-suffix:semicolon
-id|__setup
-c_func
-(paren
-l_string|&quot;resume=&quot;
-comma
-id|resume_setup
+id|pmdisk_setup
 )paren
 suffix:semicolon
 eof

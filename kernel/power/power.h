@@ -3,7 +3,7 @@ macro_line|#if defined(CONFIG_VT) &amp;&amp; defined(CONFIG_VT_CONSOLE)
 DECL|macro|SUSPEND_CONSOLE
 mdefine_line|#define SUSPEND_CONSOLE&t;(MAX_NR_CONSOLES-1)
 macro_line|#endif
-macro_line|#ifdef CONFIG_SOFTWARE_SUSPEND
+macro_line|#ifdef CONFIG_PM_DISK
 r_extern
 r_int
 id|pm_suspend_disk

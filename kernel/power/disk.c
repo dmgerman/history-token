@@ -19,7 +19,7 @@ id|pm_ops
 suffix:semicolon
 r_extern
 r_int
-id|swsusp_save
+id|pmdisk_save
 c_func
 (paren
 r_void
@@ -27,7 +27,7 @@ r_void
 suffix:semicolon
 r_extern
 r_int
-id|swsusp_write
+id|pmdisk_write
 c_func
 (paren
 r_void
@@ -35,7 +35,7 @@ r_void
 suffix:semicolon
 r_extern
 r_int
-id|swsusp_read
+id|pmdisk_read
 c_func
 (paren
 r_void
@@ -43,7 +43,7 @@ r_void
 suffix:semicolon
 r_extern
 r_int
-id|swsusp_restore
+id|pmdisk_restore
 c_func
 (paren
 r_void
@@ -51,7 +51,7 @@ r_void
 suffix:semicolon
 r_extern
 r_int
-id|swsusp_free
+id|pmdisk_free
 c_func
 (paren
 r_void
@@ -406,7 +406,7 @@ r_return
 id|error
 suffix:semicolon
 )brace
-multiline_comment|/**&n; *&t;pm_suspend_disk - The granpappy of power management.&n; *&n; *&t;If we&squot;re going through the firmware, then get it over with quickly.&n; *&n; *&t;If not, then call swsusp to do it&squot;s thing, then figure out how&n; *&t;to power down the system.&n; */
+multiline_comment|/**&n; *&t;pm_suspend_disk - The granpappy of power management.&n; *&n; *&t;If we&squot;re going through the firmware, then get it over with quickly.&n; *&n; *&t;If not, then call pmdis to do it&squot;s thing, then figure out how&n; *&t;to power down the system.&n; */
 DECL|function|pm_suspend_disk
 r_int
 id|pm_suspend_disk
@@ -471,7 +471,7 @@ c_cond
 (paren
 id|error
 op_assign
-id|swsusp_save
+id|pmdisk_save
 c_func
 (paren
 )paren
@@ -505,7 +505,7 @@ c_func
 suffix:semicolon
 id|error
 op_assign
-id|swsusp_write
+id|pmdisk_write
 c_func
 (paren
 )paren
@@ -540,7 +540,7 @@ c_func
 l_string|&quot;PM: Image restored successfully.&bslash;n&quot;
 )paren
 suffix:semicolon
-id|swsusp_free
+id|pmdisk_free
 c_func
 (paren
 )paren
@@ -556,7 +556,7 @@ r_return
 id|error
 suffix:semicolon
 )brace
-multiline_comment|/**&n; *&t;pm_resume - Resume from a saved image.&n; *&n; *&t;Called as a late_initcall (so all devices are discovered and&n; *&t;initialized), we call swsusp to see if we have a saved image or not.&n; *&t;If so, we quiesce devices, the restore the saved image. We will&n; *&t;return above (in pm_suspend_disk() ) if everything goes well.&n; *&t;Otherwise, we fail gracefully and return to the normally&n; *&t;scheduled program.&n; *&n; */
+multiline_comment|/**&n; *&t;pm_resume - Resume from a saved image.&n; *&n; *&t;Called as a late_initcall (so all devices are discovered and&n; *&t;initialized), we call pmdisk to see if we have a saved image or not.&n; *&t;If so, we quiesce devices, the restore the saved image. We will&n; *&t;return above (in pm_suspend_disk() ) if everything goes well.&n; *&t;Otherwise, we fail gracefully and return to the normally&n; *&t;scheduled program.&n; *&n; */
 DECL|function|pm_resume
 r_static
 r_int
@@ -572,7 +572,7 @@ suffix:semicolon
 id|pr_debug
 c_func
 (paren
-l_string|&quot;PM: Reading swsusp image.&bslash;n&quot;
+l_string|&quot;PM: Reading pmdisk image.&bslash;n&quot;
 )paren
 suffix:semicolon
 r_if
@@ -581,7 +581,7 @@ c_cond
 (paren
 id|error
 op_assign
-id|swsusp_read
+id|pmdisk_read
 c_func
 (paren
 )paren
@@ -640,7 +640,7 @@ c_func
 l_string|&quot;PM: Restoring saved image.&bslash;n&quot;
 )paren
 suffix:semicolon
-id|swsusp_restore
+id|pmdisk_restore
 c_func
 (paren
 )paren
@@ -658,7 +658,7 @@ c_func
 suffix:semicolon
 id|Free
 suffix:colon
-id|swsusp_free
+id|pmdisk_free
 c_func
 (paren
 )paren
