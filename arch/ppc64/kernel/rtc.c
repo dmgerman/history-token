@@ -40,6 +40,7 @@ op_star
 id|file
 comma
 r_char
+id|__user
 op_star
 id|buf
 comma
@@ -164,6 +165,7 @@ op_star
 id|file
 comma
 r_char
+id|__user
 op_star
 id|buf
 comma
@@ -300,6 +302,7 @@ comma
 (paren
 r_struct
 id|rtc_time
+id|__user
 op_star
 )paren
 id|arg
@@ -486,6 +489,7 @@ comma
 (paren
 r_int
 r_int
+id|__user
 op_star
 )paren
 id|arg
@@ -544,6 +548,7 @@ c_func
 (paren
 (paren
 r_void
+id|__user
 op_star
 )paren
 id|arg
