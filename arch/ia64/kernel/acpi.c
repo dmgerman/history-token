@@ -2256,10 +2256,6 @@ l_string|&quot;Can&squot;t find FADT&bslash;n&quot;
 )paren
 suffix:semicolon
 macro_line|#ifdef CONFIG_SMP
-id|smp_boot_data.cpu_count
-op_assign
-id|available_cpus
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -2275,12 +2271,38 @@ id|KERN_INFO
 l_string|&quot;ACPI: Found 0 CPUS; assuming 1&bslash;n&quot;
 )paren
 suffix:semicolon
+id|printk
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;CPU 0 (0x%04x)&quot;
+comma
+id|hard_smp_processor_id
+c_func
+(paren
+)paren
+)paren
+suffix:semicolon
+id|smp_boot_data.cpu_phys_id
+(braket
+id|available_cpus
+)braket
+op_assign
+id|hard_smp_processor_id
+c_func
+(paren
+)paren
+suffix:semicolon
 id|available_cpus
 op_assign
 l_int|1
 suffix:semicolon
 multiline_comment|/* We&squot;ve got at least one of these, no? */
 )brace
+id|smp_boot_data.cpu_count
+op_assign
+id|available_cpus
+suffix:semicolon
 id|smp_build_cpu_map
 c_func
 (paren

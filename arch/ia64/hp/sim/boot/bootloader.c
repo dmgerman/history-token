@@ -71,16 +71,13 @@ r_int
 id|arglen
 )paren
 suffix:semicolon
-multiline_comment|/*&n; * Set a break point on this function so that symbols are available to set breakpoints in&n; * the kernel being debugged.&n; */
-r_static
+r_extern
 r_void
-DECL|function|debug_break
 id|debug_break
 (paren
 r_void
 )paren
-(brace
-)brace
+suffix:semicolon
 r_static
 r_void
 DECL|function|cons_write

@@ -369,13 +369,8 @@ id|reserve_sba_gart
 op_assign
 l_int|1
 suffix:semicolon
-macro_line|#if LINUX_VERSION_CODE &gt;= KERNEL_VERSION(2,5,0)
 DECL|macro|sba_sg_address
 mdefine_line|#define sba_sg_address(sg)&t;(page_address((sg)-&gt;page) + (sg)-&gt;offset)
-macro_line|#else
-DECL|macro|sba_sg_address
-mdefine_line|#define sba_sg_address(sg)&t;((sg)-&gt;address ? (sg)-&gt;address : &bslash;&n;                                  page_address((sg)-&gt;page) + (sg)-&gt;offset)
-macro_line|#endif
 macro_line|#ifdef FULL_VALID_PDIR
 DECL|variable|prefetch_spill_page
 r_static

@@ -1670,6 +1670,7 @@ id|dma_mask
 r_return
 l_int|0
 suffix:semicolon
+op_star
 id|dev-&gt;dma_mask
 op_assign
 id|dma_mask

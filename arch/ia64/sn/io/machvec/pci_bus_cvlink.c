@@ -2561,7 +2561,7 @@ op_amp
 id|lines
 )paren
 suffix:semicolon
-id|irqpdaindr-&gt;current
+id|irqpdaindr-&gt;curr
 op_assign
 id|device_dev
 suffix:semicolon
