@@ -1441,6 +1441,11 @@ op_assign
 (brace
 )brace
 suffix:semicolon
+r_struct
+id|symbol
+op_star
+id|s
+suffix:semicolon
 id|Elf_Sym
 op_star
 id|sym
@@ -1535,6 +1540,31 @@ op_amp
 id|info
 )paren
 suffix:semicolon
+multiline_comment|/* Our trick to get versioning for struct_module - it&squot;s&n;&t; * never passed as an argument to an exported function, so&n;&t; * the automatic versioning doesn&squot;t pick it up, but it&squot;s really&n;&t; * important anyhow */
+r_if
+c_cond
+(paren
+id|modversions
+)paren
+(brace
+id|s
+op_assign
+id|alloc_symbol
+c_func
+(paren
+l_string|&quot;struct_module&quot;
+)paren
+suffix:semicolon
+multiline_comment|/* add to list */
+id|s-&gt;next
+op_assign
+id|mod-&gt;unres
+suffix:semicolon
+id|mod-&gt;unres
+op_assign
+id|s
+suffix:semicolon
+)brace
 )brace
 DECL|macro|SZ
 mdefine_line|#define SZ 500
@@ -2399,6 +2429,11 @@ id|buf
 op_assign
 (brace
 )brace
+suffix:semicolon
+r_struct
+id|symbol
+op_star
+id|s
 suffix:semicolon
 r_char
 id|fname
