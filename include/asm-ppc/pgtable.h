@@ -1048,6 +1048,17 @@ id|pte
 suffix:semicolon
 macro_line|#endif
 )brace
+r_extern
+r_void
+id|flush_hash_one_pte
+c_func
+(paren
+id|pte_t
+op_star
+id|ptep
+)paren
+suffix:semicolon
+multiline_comment|/*&n; * 2.6 calles this without flushing the TLB entry, this is wrong&n; * for our hash-based implementation, we fix that up here&n; */
 DECL|function|ptep_test_and_clear_young
 r_static
 r_inline
@@ -1060,7 +1071,12 @@ op_star
 id|ptep
 )paren
 (brace
-r_return
+r_int
+r_int
+id|old
+suffix:semicolon
+id|old
+op_assign
 (paren
 id|pte_update
 c_func
@@ -1074,6 +1090,24 @@ l_int|0
 op_amp
 id|_PAGE_ACCESSED
 )paren
+suffix:semicolon
+macro_line|#if _PAGE_HASHPTE != 0
+r_if
+c_cond
+(paren
+id|old
+op_amp
+id|_PAGE_HASHPTE
+)paren
+id|flush_hash_one_pte
+c_func
+(paren
+id|ptep
+)paren
+suffix:semicolon
+macro_line|#endif
+r_return
+id|old
 op_ne
 l_int|0
 suffix:semicolon
