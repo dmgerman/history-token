@@ -810,7 +810,7 @@ id|p-&gt;family
 suffix:semicolon
 id|x-&gt;props.saddr
 op_assign
-id|x-&gt;sel.saddr
+id|p-&gt;saddr
 suffix:semicolon
 )brace
 DECL|function|xfrm_state_construct
@@ -1369,6 +1369,10 @@ r_sizeof
 id|p-&gt;stats
 )paren
 )paren
+suffix:semicolon
+id|p-&gt;saddr
+op_assign
+id|x-&gt;props.saddr
 suffix:semicolon
 id|p-&gt;mode
 op_assign
