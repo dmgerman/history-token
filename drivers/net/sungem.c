@@ -13081,12 +13081,6 @@ id|dev-&gt;poll
 op_assign
 id|gem_poll
 suffix:semicolon
-macro_line|#ifdef CONFIG_NET_POLL_CONTROLLER
-id|dev-&gt;poll_controller
-op_assign
-id|gem_netpoll
-suffix:semicolon
-macro_line|#endif
 id|dev-&gt;weight
 op_assign
 l_int|64
@@ -13118,6 +13112,12 @@ id|dev-&gt;dma
 op_assign
 l_int|0
 suffix:semicolon
+macro_line|#ifdef CONFIG_NET_POLL_CONTROLLER
+id|dev-&gt;poll_controller
+op_assign
+id|gem_poll_controller
+suffix:semicolon
+macro_line|#endif
 r_if
 c_cond
 (paren
