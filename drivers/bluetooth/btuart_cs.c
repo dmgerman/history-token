@@ -330,11 +330,10 @@ op_logical_neg
 id|info
 )paren
 (brace
-id|printk
+id|BT_ERR
 c_func
 (paren
-id|KERN_WARNING
-l_string|&quot;btuart_cs: Call of write_wakeup for unknown device.&bslash;n&quot;
+l_string|&quot;Unknown device&quot;
 )paren
 suffix:semicolon
 r_return
@@ -552,11 +551,10 @@ op_logical_neg
 id|info
 )paren
 (brace
-id|printk
+id|BT_ERR
 c_func
 (paren
-id|KERN_WARNING
-l_string|&quot;btuart_cs: Call of receive for unknown device.&bslash;n&quot;
+l_string|&quot;Unknown device&quot;
 )paren
 suffix:semicolon
 r_return
@@ -605,11 +603,10 @@ id|GFP_ATOMIC
 )paren
 )paren
 (brace
-id|printk
+id|BT_ERR
 c_func
 (paren
-id|KERN_WARNING
-l_string|&quot;btuart_cs: Can&squot;t allocate mem for new packet.&bslash;n&quot;
+l_string|&quot;Can&squot;t allocate mem for new packet&quot;
 )paren
 suffix:semicolon
 r_return
@@ -690,11 +687,10 @@ suffix:semicolon
 r_default
 suffix:colon
 multiline_comment|/* Unknown packet */
-id|printk
+id|BT_ERR
 c_func
 (paren
-id|KERN_WARNING
-l_string|&quot;btuart_cs: Unknown HCI packet with type 0x%02x received.&bslash;n&quot;
+l_string|&quot;Unknown HCI packet with type 0x%02x received&quot;
 comma
 id|info-&gt;rx_skb-&gt;pkt_type
 )paren
@@ -952,11 +948,10 @@ op_logical_neg
 id|info
 )paren
 (brace
-id|printk
+id|BT_ERR
 c_func
 (paren
-id|KERN_WARNING
-l_string|&quot;btuart_cs: Call of irq %d for unknown device.&bslash;n&quot;
+l_string|&quot;Call of irq %d for unknown device&quot;
 comma
 id|irq
 )paren
@@ -1016,11 +1011,10 @@ id|iir
 r_case
 id|UART_IIR_RLSI
 suffix:colon
-id|printk
+id|BT_ERR
 c_func
 (paren
-id|KERN_NOTICE
-l_string|&quot;btuart_cs: RLSI&bslash;n&quot;
+l_string|&quot;RLSI&quot;
 )paren
 suffix:semicolon
 r_break
@@ -1060,11 +1054,10 @@ r_break
 suffix:semicolon
 r_default
 suffix:colon
-id|printk
+id|BT_ERR
 c_func
 (paren
-id|KERN_NOTICE
-l_string|&quot;btuart_cs: Unhandled IIR=%#x&bslash;n&quot;
+l_string|&quot;Unhandled IIR=%#x&quot;
 comma
 id|iir
 )paren
@@ -1150,11 +1143,10 @@ op_logical_neg
 id|info
 )paren
 (brace
-id|printk
+id|BT_ERR
 c_func
 (paren
-id|KERN_WARNING
-l_string|&quot;btuart_cs: Call of change speed for unknown device.&bslash;n&quot;
+l_string|&quot;Unknown device&quot;
 )paren
 suffix:semicolon
 r_return
@@ -1452,11 +1444,10 @@ op_logical_neg
 id|hdev
 )paren
 (brace
-id|printk
+id|BT_ERR
 c_func
 (paren
-id|KERN_WARNING
-l_string|&quot;btuart_cs: Frame for unknown HCI device (hdev=NULL).&quot;
+l_string|&quot;Frame for unknown HCI device (hdev=NULL)&quot;
 )paren
 suffix:semicolon
 r_return
@@ -1751,11 +1742,10 @@ op_logical_neg
 id|hdev
 )paren
 (brace
-id|printk
+id|BT_ERR
 c_func
 (paren
-id|KERN_WARNING
-l_string|&quot;btuart_cs: Can&squot;t allocate HCI device.&bslash;n&quot;
+l_string|&quot;Can&squot;t allocate HCI device&quot;
 )paren
 suffix:semicolon
 r_return
@@ -1815,11 +1805,10 @@ OL
 l_int|0
 )paren
 (brace
-id|printk
+id|BT_ERR
 c_func
 (paren
-id|KERN_WARNING
-l_string|&quot;btuart_cs: Can&squot;t register HCI device.&bslash;n&quot;
+l_string|&quot;Can&squot;t register HCI device&quot;
 )paren
 suffix:semicolon
 id|hci_free_dev
@@ -1925,11 +1914,10 @@ id|hdev
 OL
 l_int|0
 )paren
-id|printk
+id|BT_ERR
 c_func
 (paren
-id|KERN_WARNING
-l_string|&quot;btuart_cs: Can&squot;t unregister HCI device %s.&bslash;n&quot;
+l_string|&quot;Can&squot;t unregister HCI device %s&quot;
 comma
 id|hdev-&gt;name
 )paren
@@ -2944,11 +2932,10 @@ op_ne
 id|CS_SUCCESS
 )paren
 (brace
-id|printk
+id|BT_ERR
 c_func
 (paren
-id|KERN_NOTICE
-l_string|&quot;btuart_cs: No usable port range found. Giving up.&bslash;n&quot;
+l_string|&quot;No usable port range found&quot;
 )paren
 suffix:semicolon
 id|cs_error
