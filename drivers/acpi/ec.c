@@ -205,14 +205,6 @@ id|acpi_device
 op_star
 id|first_ec
 suffix:semicolon
-multiline_comment|/*&n; * We use kernel thread to handle ec&squot;s gpe query, so the query may defer.&n; * The query need a context, which can be freed when we replace ec_ecdt&n; * with EC device. So defered query may have a wrong context.&n; * We use an indication to avoid it&n; */
-DECL|variable|ec_device_init
-r_static
-r_int
-id|ec_device_init
-op_assign
-l_int|0
-suffix:semicolon
 multiline_comment|/* --------------------------------------------------------------------------&n;                             Transaction Management&n;   -------------------------------------------------------------------------- */
 r_static
 r_int
@@ -1426,20 +1418,6 @@ comma
 id|ACPI_ISR
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|ec_device_init
-)paren
-id|acpi_ec_gpe_query
-c_func
-(paren
-id|ec
-)paren
-suffix:semicolon
-multiline_comment|/* directly query when device didn&squot;t init */
-r_else
 id|status
 op_assign
 id|acpi_os_queue_for_execution
@@ -2229,20 +2207,6 @@ op_eq
 id|uid
 )paren
 (brace
-id|acpi_disable_gpe
-c_func
-(paren
-l_int|NULL
-comma
-id|ec_ecdt-&gt;gpe_bit
-comma
-id|ACPI_NOT_ISR
-)paren
-suffix:semicolon
-id|ec_device_init
-op_assign
-l_int|1
-suffix:semicolon
 id|acpi_remove_address_space_handler
 c_func
 (paren
