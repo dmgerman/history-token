@@ -257,7 +257,8 @@ id|sctp_chunk_t
 op_star
 id|err_chunk
 suffix:semicolon
-id|sctp_packet_t
+r_struct
+id|sctp_packet
 op_star
 id|packet
 suffix:semicolon
@@ -748,7 +749,8 @@ id|sctp_chunk_t
 op_star
 id|err_chunk
 suffix:semicolon
-id|sctp_packet_t
+r_struct
+id|sctp_packet
 op_star
 id|packet
 suffix:semicolon
@@ -2468,7 +2470,8 @@ id|commands
 r_int
 id|len
 suffix:semicolon
-id|sctp_packet_t
+r_struct
+id|sctp_packet
 op_star
 id|pkt
 suffix:semicolon
@@ -2498,7 +2501,7 @@ id|sctp_addr_param_t
 )paren
 )braket
 suffix:semicolon
-multiline_comment|/* Build the error on the stack.   We are way to malloc&n;&t; * malloc crazy throughout the code today.&n;&t; */
+multiline_comment|/* Build the error on the stack.   We are way to malloc crazy&n;&t; * throughout the code today.&n;&t; */
 id|errhdr
 op_assign
 (paren
@@ -3063,7 +3066,8 @@ id|sctp_chunk_t
 op_star
 id|err_chunk
 suffix:semicolon
-id|sctp_packet_t
+r_struct
+id|sctp_packet
 op_star
 id|packet
 suffix:semicolon
@@ -6461,7 +6465,7 @@ id|asoc-&gt;frag_point
 )paren
 )paren
 (brace
-multiline_comment|/* If this is the next TSN, consider reneging to make&n;&t;&t; * room.   Note: Playing nice with a confused sender.  A&n;&t;&t; * malicious sender can still eat up all our buffer&n;&t;&t; * space and in the future we may want to detect and&n;&t;&t; * do more drastic reneging. &n;&t;&t; */
+multiline_comment|/* If this is the next TSN, consider reneging to make&n;&t;&t; * room.   Note: Playing nice with a confused sender.  A&n;&t;&t; * malicious sender can still eat up all our buffer&n;&t;&t; * space and in the future we may want to detect and&n;&t;&t; * do more drastic reneging.&n;&t;&t; */
 r_if
 c_cond
 (paren
@@ -7497,7 +7501,8 @@ op_star
 id|commands
 )paren
 (brace
-id|sctp_packet_t
+r_struct
+id|sctp_packet
 op_star
 id|packet
 op_assign
@@ -8110,7 +8115,8 @@ op_star
 id|commands
 )paren
 (brace
-id|sctp_packet_t
+r_struct
+id|sctp_packet
 op_star
 id|packet
 op_assign
@@ -11171,7 +11177,8 @@ suffix:semicolon
 )brace
 multiline_comment|/* Create an ABORT packet to be sent as a response, with the specified&n; * error causes.&n; */
 DECL|function|sctp_abort_pkt_new
-id|sctp_packet_t
+r_struct
+id|sctp_packet
 op_star
 id|sctp_abort_pkt_new
 c_func
@@ -11199,7 +11206,8 @@ r_int
 id|paylen
 )paren
 (brace
-id|sctp_packet_t
+r_struct
+id|sctp_packet
 op_star
 id|packet
 suffix:semicolon
@@ -11286,7 +11294,8 @@ suffix:semicolon
 )brace
 multiline_comment|/* Allocate a packet for responding in the OOTB conditions.  */
 DECL|function|sctp_ootb_pkt_new
-id|sctp_packet_t
+r_struct
+id|sctp_packet
 op_star
 id|sctp_ootb_pkt_new
 c_func
@@ -11302,7 +11311,8 @@ op_star
 id|chunk
 )paren
 (brace
-id|sctp_packet_t
+r_struct
+id|sctp_packet
 op_star
 id|packet
 suffix:semicolon
@@ -11423,7 +11433,8 @@ op_assign
 id|t_new
 c_func
 (paren
-id|sctp_packet_t
+r_struct
+id|sctp_packet
 comma
 id|GFP_ATOMIC
 )paren
@@ -11512,7 +11523,8 @@ r_void
 id|sctp_ootb_pkt_free
 c_func
 (paren
-id|sctp_packet_t
+r_struct
+id|sctp_packet
 op_star
 id|packet
 )paren
@@ -11560,7 +11572,8 @@ op_star
 id|err_chunk
 )paren
 (brace
-id|sctp_packet_t
+r_struct
+id|sctp_packet
 op_star
 id|packet
 suffix:semicolon

@@ -710,6 +710,9 @@ r_return
 suffix:semicolon
 )brace
 macro_line|#endif
+multiline_comment|/* Size of Supported Address Parameter for &squot;x&squot; address types. */
+DECL|macro|SCTP_SAT_LEN
+mdefine_line|#define SCTP_SAT_LEN(x) (sizeof(struct sctp_paramhdr) + (x) * sizeof(__u16))
 macro_line|#if defined(CONFIG_IPV6) || defined(CONFIG_IPV6_MODULE)
 r_extern
 r_int
@@ -754,24 +757,9 @@ id|addr
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* Size of Supported Address Parameter for &squot;x&squot; address types. */
-DECL|macro|SCTP_SAT_LEN
-mdefine_line|#define SCTP_SAT_LEN(x) (sizeof(struct sctp_paramhdr) + (x) * sizeof(__u16))
-multiline_comment|/* Note: These V6 macros are obsolescent.  */
-multiline_comment|/* Use this macro to enclose code fragments which are V6-dependent. */
-DECL|macro|SCTP_V6
-mdefine_line|#define SCTP_V6(m...)&t;m
-DECL|macro|SCTP_V6_SUPPORT
-mdefine_line|#define SCTP_V6_SUPPORT 1
 macro_line|#else /* #ifdef defined(CONFIG_IPV6) || defined(CONFIG_IPV6_MODULE) */
 DECL|macro|sctp_ipv6_addr_type
 mdefine_line|#define sctp_ipv6_addr_type(a) 0
-DECL|macro|SCTP_SAT_LEN
-mdefine_line|#define SCTP_SAT_LEN (sizeof(sctp_paramhdr_t) + 1 * sizeof(__u16))
-DECL|macro|SCTP_V6
-mdefine_line|#define SCTP_V6(m...) /* Do nothing. */
-DECL|macro|SCTP_V6_SUPPORT
-macro_line|#undef SCTP_V6_SUPPORT
 DECL|function|sctp_v6_init
 r_static
 r_inline
