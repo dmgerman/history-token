@@ -49,7 +49,7 @@ DECL|macro|RFALSE
 mdefine_line|#define RFALSE( cond, format, args... ) do {;} while( 0 )
 macro_line|#endif
 DECL|macro|CONSTF
-mdefine_line|#define CONSTF __attribute__( ( const ) )
+mdefine_line|#define CONSTF __attribute_const__
 multiline_comment|/*&n; * Disk Data Structures&n; */
 multiline_comment|/***************************************************************************/
 multiline_comment|/*                             SUPER BLOCK                                 */

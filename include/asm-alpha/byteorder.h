@@ -8,13 +8,7 @@ DECL|function|__arch__swab32
 r_static
 id|__inline
 id|__u32
-id|__attribute__
-c_func
-(paren
-(paren
-id|__const
-)paren
-)paren
+id|__attribute_const__
 id|__arch__swab32
 c_func
 (paren
