@@ -94,12 +94,14 @@ suffix:semicolon
 )brace
 suffix:semicolon
 DECL|variable|external_amp
+r_static
 r_int
 id|external_amp
 op_assign
 l_int|1
 suffix:semicolon
 DECL|variable|gpio_pin
+r_static
 r_int
 id|gpio_pin
 op_assign
