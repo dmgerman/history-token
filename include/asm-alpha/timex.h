@@ -2,8 +2,9 @@ multiline_comment|/*&n; * linux/include/asm-alpha/timex.h&n; *&n; * ALPHA archit
 macro_line|#ifndef _ASMALPHA_TIMEX_H
 DECL|macro|_ASMALPHA_TIMEX_H
 mdefine_line|#define _ASMALPHA_TIMEX_H
+multiline_comment|/* With only one or two oddballs, we use the RTC as the ticker, selecting&n;   the 32.768kHz reference clock, which nicely divides down to our HZ.  */
 DECL|macro|CLOCK_TICK_RATE
-mdefine_line|#define CLOCK_TICK_RATE&t;1193180 /* Underlying HZ */
+mdefine_line|#define CLOCK_TICK_RATE&t;32768
 multiline_comment|/*&n; * Standard way to access the cycle counter.&n; * Currently only used on SMP for scheduling.&n; *&n; * Only the low 32 bits are available as a continuously counting entity. &n; * But this only means we&squot;ll force a reschedule every 8 seconds or so,&n; * which isn&squot;t an evil thing.&n; */
 DECL|typedef|cycles_t
 r_typedef
