@@ -3,7 +3,7 @@ macro_line|#ifndef __ASM_ARM_MACH_TIME_H
 DECL|macro|__ASM_ARM_MACH_TIME_H
 mdefine_line|#define __ASM_ARM_MACH_TIME_H
 macro_line|#include &lt;linux/sysdev.h&gt;
-multiline_comment|/*&n; * This is our kernel timer structure.&n; */
+multiline_comment|/*&n; * This is our kernel timer structure.&n; *&n; * - init&n; *   Initialise the kernels jiffy timer source, claim interrupt&n; *   using setup_irq.  This is called early on during initialisation&n; *   while interrupts are still disabled on the local CPU.&n; * - suspend&n; *   Suspend the kernel jiffy timer source, if necessary.  This&n; *   is called with interrupts disabled, after all normal devices&n; *   have been suspended.  If no action is required, set this to&n; *   NULL.&n; * - resume&n; *   Resume the kernel jiffy timer source, if necessary.  This&n; *   is called with interrupts disabled before any normal devices&n; *   are resumed.  If no action is required, set this to NULL.&n; * - offset&n; *   Return the timer offset in microseconds since the last timer&n; *   interrupt.  Note: this must take account of any unprocessed&n; *   timer interrupt which may be pending.&n; */
 DECL|struct|sys_timer
 r_struct
 id|sys_timer
@@ -63,16 +63,6 @@ op_star
 id|system_timer
 suffix:semicolon
 r_extern
-r_int
-(paren
-op_star
-id|set_rtc
-)paren
-(paren
-r_void
-)paren
-suffix:semicolon
-r_extern
 r_void
 id|timer_tick
 c_func
@@ -80,6 +70,17 @@ c_func
 r_struct
 id|pt_regs
 op_star
+)paren
+suffix:semicolon
+multiline_comment|/*&n; * Kernel time keeping support.&n; */
+r_extern
+r_int
+(paren
+op_star
+id|set_rtc
+)paren
+(paren
+r_void
 )paren
 suffix:semicolon
 r_extern
