@@ -514,6 +514,7 @@ id|tport
 comma
 r_struct
 id|serial_struct
+id|__user
 op_star
 id|new_arg
 )paren
@@ -689,7 +690,6 @@ r_void
 )paren
 suffix:semicolon
 r_static
-r_inline
 r_void
 id|ti_buf_free
 c_func
@@ -701,7 +701,6 @@ id|cb
 )paren
 suffix:semicolon
 r_static
-r_inline
 r_void
 id|ti_buf_clear
 c_func
@@ -713,7 +712,6 @@ id|cb
 )paren
 suffix:semicolon
 r_static
-r_inline
 r_int
 id|ti_buf_data_avail
 c_func
@@ -725,7 +723,6 @@ id|cb
 )paren
 suffix:semicolon
 r_static
-r_inline
 r_int
 id|ti_buf_space_avail
 c_func
@@ -4036,6 +4033,7 @@ comma
 (paren
 r_struct
 id|serial_struct
+id|__user
 op_star
 )paren
 id|arg
@@ -6878,6 +6876,7 @@ id|tport
 comma
 r_struct
 id|serial_struct
+id|__user
 op_star
 id|new_arg
 )paren
@@ -8304,7 +8303,6 @@ suffix:semicolon
 multiline_comment|/*&n; * ti_buf_free&n; *&n; * Free the buffer and all associated memory.&n; */
 DECL|function|ti_buf_free
 r_static
-r_inline
 r_void
 id|ti_buf_free
 c_func
@@ -8331,7 +8329,6 @@ suffix:semicolon
 multiline_comment|/*&n; * ti_buf_clear&n; *&n; * Clear out all data in the circular buffer.&n; */
 DECL|function|ti_buf_clear
 r_static
-r_inline
 r_void
 id|ti_buf_clear
 c_func
@@ -8352,7 +8349,6 @@ suffix:semicolon
 multiline_comment|/*&n; * ti_buf_data_avail&n; *&n; * Return the number of bytes of data available in the circular&n; * buffer.&n; */
 DECL|function|ti_buf_data_avail
 r_static
-r_inline
 r_int
 id|ti_buf_data_avail
 c_func
@@ -8378,7 +8374,6 @@ suffix:semicolon
 multiline_comment|/*&n; * ti_buf_space_avail&n; *&n; * Return the number of bytes of space available in the circular&n; * buffer.&n; */
 DECL|function|ti_buf_space_avail
 r_static
-r_inline
 r_int
 id|ti_buf_space_avail
 c_func
