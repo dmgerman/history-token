@@ -62,13 +62,15 @@ id|fib_info_cnt
 suffix:semicolon
 DECL|macro|DEVINDEX_HASHBITS
 mdefine_line|#define DEVINDEX_HASHBITS 8
+DECL|macro|DEVINDEX_HASHSIZE
+mdefine_line|#define DEVINDEX_HASHSIZE (1U &lt;&lt; DEVINDEX_HASHBITS)
 DECL|variable|fib_info_devhash
 r_static
 r_struct
 id|hlist_head
 id|fib_info_devhash
 (braket
-id|DEVINDEX_HASHBITS
+id|DEVINDEX_HASHSIZE
 )braket
 suffix:semicolon
 macro_line|#ifdef CONFIG_IP_ROUTE_MULTIPATH
@@ -752,15 +754,9 @@ r_int
 r_int
 id|mask
 op_assign
-(paren
-(paren
-l_int|1U
-op_lshift
-id|DEVINDEX_HASHBITS
-)paren
+id|DEVINDEX_HASHSIZE
 op_minus
 l_int|1
-)paren
 suffix:semicolon
 r_return
 (paren
