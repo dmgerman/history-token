@@ -193,6 +193,11 @@ l_string|&quot;a&quot;
 (paren
 id|addr
 )paren
+comma
+l_string|&quot;m&quot;
+(paren
+id|dummy
+)paren
 suffix:colon
 l_string|&quot;cc&quot;
 comma

@@ -1,6 +1,7 @@
 macro_line|#ifndef __PPC64_MMU_CONTEXT_H
 DECL|macro|__PPC64_MMU_CONTEXT_H
 mdefine_line|#define __PPC64_MMU_CONTEXT_H
+macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;&t;
 macro_line|#include &lt;linux/kernel.h&gt;&t;
 macro_line|#include &lt;linux/mm.h&gt;&t;
@@ -438,6 +439,22 @@ op_star
 id|mm
 )paren
 suffix:semicolon
+r_extern
+r_void
+id|flush_slb
+c_func
+(paren
+r_struct
+id|task_struct
+op_star
+id|tsk
+comma
+r_struct
+id|mm_struct
+op_star
+id|mm
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * switch_mm is the entry point called from the architecture independent&n; * code in kernel/sched.c&n; */
 DECL|function|switch_mm
 r_static
@@ -478,6 +495,32 @@ suffix:colon
 )paren
 suffix:semicolon
 macro_line|#endif /* CONFIG_ALTIVEC */
+multiline_comment|/* No need to flush userspace segments if the mm doesnt change */
+r_if
+c_cond
+(paren
+id|prev
+op_eq
+id|next
+)paren
+r_return
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|cur_cpu_spec-&gt;cpu_features
+op_amp
+id|CPU_FTR_SLB
+)paren
+id|flush_slb
+c_func
+(paren
+id|tsk
+comma
+id|next
+)paren
+suffix:semicolon
+r_else
 id|flush_stab
 c_func
 (paren
