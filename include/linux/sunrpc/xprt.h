@@ -259,6 +259,11 @@ DECL|member|sndsize
 id|sndsize
 suffix:semicolon
 multiline_comment|/* socket send buffer size */
+DECL|member|max_payload
+r_int
+id|max_payload
+suffix:semicolon
+multiline_comment|/* largest RPC payload size,&n;&t;&t;&t;&t;&t;&t;   in bytes */
 DECL|member|sending
 r_struct
 id|rpc_wait_queue

@@ -546,6 +546,15 @@ r_int
 r_int
 )paren
 suffix:semicolon
+r_int
+id|rpc_max_payload
+c_func
+(paren
+r_struct
+id|rpc_clnt
+op_star
+)paren
+suffix:semicolon
 r_static
 id|__inline__
 DECL|function|rpc_call
