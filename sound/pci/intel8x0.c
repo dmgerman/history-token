@@ -8173,6 +8173,29 @@ comma
 dot
 id|device
 op_assign
+l_int|0x012c
+comma
+dot
+id|name
+op_assign
+l_string|&quot;Dell Precision 650&quot;
+comma
+multiline_comment|/* AD1981A */
+dot
+id|type
+op_assign
+id|AC97_TUNE_HP_ONLY
+)brace
+comma
+(brace
+dot
+id|vendor
+op_assign
+l_int|0x1028
+comma
+dot
+id|device
+op_assign
 l_int|0x012d
 comma
 dot
