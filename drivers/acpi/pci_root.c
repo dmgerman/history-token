@@ -230,6 +230,13 @@ r_return
 id|n
 suffix:semicolon
 )brace
+DECL|variable|acpi_pci_register_driver
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|acpi_pci_register_driver
+)paren
+suffix:semicolon
 DECL|function|acpi_pci_unregister_driver
 r_void
 id|acpi_pci_unregister_driver
@@ -330,6 +337,13 @@ id|root-&gt;handle
 suffix:semicolon
 )brace
 )brace
+DECL|variable|acpi_pci_unregister_driver
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|acpi_pci_unregister_driver
+)paren
+suffix:semicolon
 r_static
 id|acpi_status
 DECL|function|get_root_bridge_busnr_callback
