@@ -288,15 +288,27 @@ c_func
 id|flags
 )paren
 suffix:semicolon
+r_return
+suffix:semicolon
+)brace
 id|local_irq_restore
 c_func
 (paren
 id|flags
 )paren
 suffix:semicolon
+id|kmem_cache_free
+c_func
+(paren
+id|skbuff_head_cache
+comma
+id|skb
+)paren
+suffix:semicolon
 )brace
 multiline_comment|/* &t;Allocate a new skbuff. We do this ourselves so we can fill in a few&n; *&t;&squot;private&squot; fields and also do memory statistics to find all the&n; *&t;[BEEP] leaks.&n; *&n; */
 multiline_comment|/**&n; *&t;alloc_skb&t;-&t;allocate a network buffer&n; *&t;@size: size to allocate&n; *&t;@gfp_mask: allocation mask&n; *&n; *&t;Allocate a new &amp;sk_buff. The returned buffer has no headroom and a&n; *&t;tail room of size bytes. The object has a reference count of one.&n; *&t;The return is the buffer. On a failure the return is %NULL.&n; *&n; *&t;Buffers may only be allocated from interrupts using a @gfp_mask of&n; *&t;%GFP_ATOMIC.&n; */
+DECL|function|alloc_skb
 r_struct
 id|sk_buff
 op_star
@@ -553,6 +565,7 @@ id|out
 suffix:semicolon
 )brace
 multiline_comment|/*&n; *&t;Slab constructor for a skb head.&n; */
+DECL|function|skb_headerinit
 r_static
 r_inline
 r_void
@@ -666,6 +679,7 @@ l_int|0
 suffix:semicolon
 macro_line|#endif
 )brace
+DECL|function|skb_drop_fraglist
 r_static
 r_void
 id|skb_drop_fraglist
@@ -727,6 +741,7 @@ id|list
 )paren
 suffix:semicolon
 )brace
+DECL|function|skb_clone_fraglist
 r_static
 r_void
 id|skb_clone_fraglist
@@ -769,6 +784,7 @@ id|list
 )paren
 suffix:semicolon
 )brace
+DECL|function|skb_release_data
 r_static
 r_void
 id|skb_release_data
@@ -881,6 +897,7 @@ suffix:semicolon
 )brace
 )brace
 multiline_comment|/*&n; *&t;Free an skbuff by memory without cleaning the state.&n; */
+DECL|function|kfree_skbmem
 r_void
 id|kfree_skbmem
 c_func
@@ -905,6 +922,7 @@ id|skb
 suffix:semicolon
 )brace
 multiline_comment|/**&n; *&t;__kfree_skb - private function&n; *&t;@skb: buffer&n; *&n; *&t;Free an sk_buff. Release anything attached to the buffer.&n; *&t;Clean the state. This is an internal helper function. Users should&n; *&t;always call kfree_skb&n; */
+DECL|function|__kfree_skb
 r_void
 id|__kfree_skb
 c_func
@@ -1011,6 +1029,7 @@ id|skb
 suffix:semicolon
 )brace
 multiline_comment|/**&n; *&t;skb_clone&t;-&t;duplicate an sk_buff&n; *&t;@skb: buffer to clone&n; *&t;@gfp_mask: allocation priority&n; *&n; *&t;Duplicate an &amp;sk_buff. The new one is not owned by a socket. Both&n; *&t;copies share the same packet data but not structure. The new&n; *&t;buffer has a reference count of 1. If the allocation fails the&n; *&t;function returns %NULL otherwise the new buffer is returned.&n; *&n; *&t;If this function is called from an interrupt gfp_mask() must be&n; *&t;%GFP_ATOMIC.&n; */
+DECL|function|skb_clone
 r_struct
 id|sk_buff
 op_star
@@ -1304,6 +1323,7 @@ r_return
 id|n
 suffix:semicolon
 )brace
+DECL|function|copy_skb_header
 r_static
 r_void
 id|copy_skb_header
@@ -1492,6 +1512,7 @@ suffix:semicolon
 macro_line|#endif
 )brace
 multiline_comment|/**&n; *&t;skb_copy&t;-&t;create private copy of an sk_buff&n; *&t;@skb: buffer to copy&n; *&t;@gfp_mask: allocation priority&n; *&n; *&t;Make a copy of both an &amp;sk_buff and its data. This is used when the&n; *&t;caller wishes to modify the data and needs a private copy of the&n; *&t;data to alter. Returns %NULL on failure or the pointer to the buffer&n; *&t;on success. The returned buffer has a reference count of 1.&n; *&n; *&t;As by-product this function converts non-linear &amp;sk_buff to linear&n; *&t;one, so that &amp;sk_buff becomes completely private and caller is allowed&n; *&t;to modify all the data of returned buffer. This means that this&n; *&t;function is not recommended for use in circumstances when only&n; *&t;header is going to be modified. Use pskb_copy() instead.&n; */
+DECL|function|skb_copy
 r_struct
 id|sk_buff
 op_star
@@ -1604,6 +1625,7 @@ id|n
 suffix:semicolon
 )brace
 multiline_comment|/* Keep head the same: replace data */
+DECL|function|skb_linearize
 r_int
 id|skb_linearize
 c_func
@@ -1838,6 +1860,7 @@ l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/**&n; *&t;pskb_copy&t;-&t;create copy of an sk_buff with private head.&n; *&t;@skb: buffer to copy&n; *&t;@gfp_mask: allocation priority&n; *&n; *&t;Make a copy of both an &amp;sk_buff and part of its data, located&n; *&t;in header. Fragmented data remain shared. This is used when&n; *&t;the caller wishes to modify only header of &amp;sk_buff and needs&n; *&t;private copy of the header to alter. Returns %NULL on failure&n; *&t;or the pointer to the buffer on success.&n; *&t;The returned buffer has a reference count of 1.&n; */
+DECL|function|pskb_copy
 r_struct
 id|sk_buff
 op_star
@@ -2066,6 +2089,7 @@ id|n
 suffix:semicolon
 )brace
 multiline_comment|/**&n; *&t;pskb_expand_head - reallocate header of &amp;sk_buff&n; *&t;@skb: buffer to reallocate&n; *&t;@nhead: room to add at head&n; *&t;@ntail: room to add at tail&n; *&t;@gfp_mask: allocation priority&n; *&n; *&t;Expands (or creates identical copy, if &amp;nhead and &amp;ntail are zero)&n; *&t;header of skb. &amp;sk_buff itself is not changed. &amp;sk_buff MUST have&n; *&t;reference count of 1. Returns zero in the case of success or error,&n; *&t;if expansion failed. In the last case, &amp;sk_buff is not changed.&n; *&n; *&t;All the pointers pointing into skb header may change and must be&n; *&t;reloaded after call to this function.&n; */
+DECL|function|pskb_expand_head
 r_int
 id|pskb_expand_head
 c_func
@@ -2316,6 +2340,7 @@ id|ENOMEM
 suffix:semicolon
 )brace
 multiline_comment|/* Make private copy of skb with writable head and some headroom */
+DECL|function|skb_realloc_headroom
 r_struct
 id|sk_buff
 op_star
@@ -2416,6 +2441,7 @@ id|skb2
 suffix:semicolon
 )brace
 multiline_comment|/**&n; *&t;skb_copy_expand&t;-&t;copy and expand sk_buff&n; *&t;@skb: buffer to copy&n; *&t;@newheadroom: new free bytes at head&n; *&t;@newtailroom: new free bytes at tail&n; *&t;@gfp_mask: allocation priority&n; *&n; *&t;Make a copy of both an &amp;sk_buff and its data and while doing so&n; *&t;allocate additional space.&n; *&n; *&t;This is used when the caller wishes to modify the data and needs a&n; *&t;private copy of the data to alter as well as more space for new fields.&n; *&t;Returns %NULL on failure or the pointer to the buffer&n; *&t;on success. The returned buffer has a reference count of 1.&n; *&n; *&t;You must pass %GFP_ATOMIC as the allocation priority if this function&n; *&t;is called from an interrupt.&n; */
+DECL|function|skb_copy_expand
 r_struct
 id|sk_buff
 op_star
@@ -2516,6 +2542,7 @@ id|n
 suffix:semicolon
 )brace
 multiline_comment|/* Trims skb to length len. It can change skb pointers, if &quot;realloc&quot; is 1.&n; * If realloc==0 and trimming is impossible without change of data,&n; * it is BUG().&n; */
+DECL|function|___pskb_trim
 r_int
 id|___pskb_trim
 c_func
@@ -2791,6 +2818,7 @@ suffix:semicolon
 )brace
 multiline_comment|/**&n; *&t;__pskb_pull_tail - advance tail of skb header&n; *&t;@skb: buffer to reallocate&n; *&t;@delta: number of bytes to advance tail&n; *&n; *&t;The function makes a sense only on a fragmented &amp;sk_buff,&n; *&t;it expands header moving its tail forward and copying necessary&n; *&t;data from fragmented part.&n; *&n; *&t;&amp;sk_buff MUST have reference count of 1.&n; *&n; *&t;Returns %NULL (and &amp;sk_buff does not change) if pull failed&n; *&t;or value of new tail of skb in the case of success.&n; *&n; *&t;All the pointers pointing into skb header may change and must be&n; *&t;reloaded after call to this function.&n; */
 multiline_comment|/* Moves tail of skb head forward, copying data from fragmented part,&n; * when it is necessary.&n; * 1. It may fail due to malloc failure.&n; * 2. It may change skb pointers.&n; *&n; * It is pretty complicated. Luckily, it is called only in exceptional cases.&n; */
+DECL|function|__pskb_pull_tail
 r_int
 r_char
 op_star
@@ -3360,6 +3388,7 @@ id|skb-&gt;tail
 suffix:semicolon
 )brace
 multiline_comment|/* Copy some data bits from skb to kernel buffer. */
+DECL|function|skb_copy_bits
 r_int
 id|skb_copy_bits
 c_func
@@ -3774,6 +3803,7 @@ id|EFAULT
 suffix:semicolon
 )brace
 multiline_comment|/* Checksum skb data. */
+DECL|function|skb_checksum
 r_int
 r_int
 id|skb_checksum
@@ -4201,6 +4231,7 @@ id|csum
 suffix:semicolon
 )brace
 multiline_comment|/* Both of above in one bottle. */
+DECL|function|skb_copy_and_csum_bits
 r_int
 r_int
 id|skb_copy_and_csum_bits
@@ -4649,6 +4680,7 @@ r_return
 id|csum
 suffix:semicolon
 )brace
+DECL|function|skb_copy_and_csum_dev
 r_void
 id|skb_copy_and_csum_dev
 c_func
