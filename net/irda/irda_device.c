@@ -1188,7 +1188,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * Function irda_device_setup (dev)&n; *&n; *    This function should be used by low level device drivers in a similar way&n; *    as ether_setup() is used by normal network device drivers&n; */
 DECL|function|irda_device_setup
-r_int
+r_void
 id|irda_device_setup
 c_func
 (paren
@@ -1198,19 +1198,6 @@ op_star
 id|dev
 )paren
 (brace
-id|ASSERT
-c_func
-(paren
-id|dev
-op_ne
-l_int|NULL
-comma
-r_return
-op_minus
-l_int|1
-suffix:semicolon
-)paren
-suffix:semicolon
 id|dev-&gt;hard_header_len
 op_assign
 l_int|0
@@ -1249,9 +1236,6 @@ suffix:semicolon
 id|dev-&gt;flags
 op_assign
 id|IFF_NOARP
-suffix:semicolon
-r_return
-l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Function irda_device_txqueue_empty (dev)&n; *&n; *    Check if there is still some frames in the transmit queue for this&n; *    device. Maybe we should use: q-&gt;q.qlen == 0.&n; *&n; */

@@ -704,7 +704,7 @@ id|__u32
 id|speed
 )paren
 suffix:semicolon
-r_int
+r_void
 id|irda_device_setup
 c_func
 (paren
