@@ -414,6 +414,8 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|backup
+op_logical_and
 id|mcelog.entry
 (braket
 id|i
