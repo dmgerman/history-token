@@ -4,6 +4,7 @@ macro_line|#include &quot;linux/unistd.h&quot;
 macro_line|#include &quot;linux/version.h&quot;
 macro_line|#include &quot;linux/sys.h&quot;
 macro_line|#include &quot;linux/swap.h&quot;
+macro_line|#include &quot;linux/sysctl.h&quot;
 macro_line|#include &quot;asm/signal.h&quot;
 macro_line|#include &quot;sysdep/syscalls.h&quot;
 macro_line|#include &quot;kern_util.h&quot;
