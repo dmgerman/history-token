@@ -14281,10 +14281,21 @@ op_amp
 id|mddev-&gt;recovery
 )paren
 )paren
+(brace
 multiline_comment|/* resync/recovery still happening */
+id|clear_bit
+c_func
+(paren
+id|MD_RECOVERY_NEEDED
+comma
+op_amp
+id|mddev-&gt;recovery
+)paren
+suffix:semicolon
 r_goto
 id|unlock
 suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
@@ -14347,6 +14358,16 @@ id|mddev-&gt;recovery
 op_assign
 l_int|0
 suffix:semicolon
+multiline_comment|/* flag recovery needed just to double check */
+id|set_bit
+c_func
+(paren
+id|MD_RECOVERY_NEEDED
+comma
+op_amp
+id|mddev-&gt;recovery
+)paren
+suffix:semicolon
 id|wake_up
 c_func
 (paren
@@ -14364,7 +14385,7 @@ c_cond
 id|mddev-&gt;recovery
 )paren
 (brace
-multiline_comment|/* that&squot;s odd.. */
+multiline_comment|/* probably just the RECOVERY_NEEDED flag */
 id|mddev-&gt;recovery
 op_assign
 l_int|0
