@@ -1737,7 +1737,7 @@ comma
 id|req
 comma
 id|good_bytes
-op_lshift
+op_rshift
 l_int|9
 )paren
 )paren
