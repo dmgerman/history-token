@@ -1109,6 +1109,51 @@ op_star
 id|buf
 )paren
 suffix:semicolon
+multiline_comment|/*-------------------------------------------------------------------------*/
+multiline_comment|/* utility to simplify managing config descriptors */
+multiline_comment|/* write vector of descriptors into buffer */
+r_int
+id|usb_descriptor_fillbuf
+c_func
+(paren
+r_void
+op_star
+comma
+r_int
+comma
+r_const
+r_struct
+id|usb_descriptor_header
+op_star
+op_star
+)paren
+suffix:semicolon
+multiline_comment|/* build config descriptor from single descriptor vector */
+r_int
+id|usb_gadget_config_buf
+c_func
+(paren
+r_const
+r_struct
+id|usb_config_descriptor
+op_star
+id|config
+comma
+r_void
+op_star
+id|buf
+comma
+r_int
+id|buflen
+comma
+r_const
+r_struct
+id|usb_descriptor_header
+op_star
+op_star
+id|desc
+)paren
+suffix:semicolon
 macro_line|#endif  /* __KERNEL__ */
 macro_line|#endif&t;/* __LINUX_USB_GADGET_H */
 eof
