@@ -83,6 +83,63 @@ suffix:colon
 l_int|1
 suffix:semicolon
 multiline_comment|/* Precompensation enabled */
+DECL|member|initial_dv
+r_int
+r_int
+id|initial_dv
+suffix:colon
+l_int|1
+suffix:semicolon
+multiline_comment|/* DV done to this target yet  */
+DECL|member|flags
+r_int
+r_int
+id|flags
+suffix:semicolon
+multiline_comment|/* flags field for drivers to use */
+multiline_comment|/* Device Properties fields */
+DECL|member|support_sync
+r_int
+r_int
+id|support_sync
+suffix:colon
+l_int|1
+suffix:semicolon
+multiline_comment|/* synchronous support */
+DECL|member|support_wide
+r_int
+r_int
+id|support_wide
+suffix:colon
+l_int|1
+suffix:semicolon
+multiline_comment|/* wide support */
+DECL|member|support_dt
+r_int
+r_int
+id|support_dt
+suffix:colon
+l_int|1
+suffix:semicolon
+multiline_comment|/* allows DT phases */
+DECL|member|support_dt_only
+r_int
+r_int
+id|support_dt_only
+suffix:semicolon
+multiline_comment|/* disallows ST phases */
+DECL|member|support_ius
+r_int
+r_int
+id|support_ius
+suffix:semicolon
+multiline_comment|/* support Information Units */
+DECL|member|support_qas
+r_int
+r_int
+id|support_qas
+suffix:semicolon
+multiline_comment|/* supports quick arbitration and selection */
 multiline_comment|/* Private Fields */
 DECL|member|dv_pending
 r_int
@@ -100,27 +157,76 @@ suffix:semicolon
 multiline_comment|/* semaphore to serialise dv */
 )brace
 suffix:semicolon
+DECL|enum|spi_signal_type
+r_enum
+id|spi_signal_type
+(brace
+DECL|enumerator|SPI_SIGNAL_UNKNOWN
+id|SPI_SIGNAL_UNKNOWN
+op_assign
+l_int|1
+comma
+DECL|enumerator|SPI_SIGNAL_SE
+id|SPI_SIGNAL_SE
+comma
+DECL|enumerator|SPI_SIGNAL_LVD
+id|SPI_SIGNAL_LVD
+comma
+DECL|enumerator|SPI_SIGNAL_HVD
+id|SPI_SIGNAL_HVD
+comma
+)brace
+suffix:semicolon
+DECL|struct|spi_host_attrs
+r_struct
+id|spi_host_attrs
+(brace
+DECL|member|signalling
+r_enum
+id|spi_signal_type
+id|signalling
+suffix:semicolon
+)brace
+suffix:semicolon
 multiline_comment|/* accessor functions */
 DECL|macro|spi_period
-mdefine_line|#define spi_period(x)&t;(((struct spi_transport_attrs *)&amp;(x)-&gt;transport_data)-&gt;period)
+mdefine_line|#define spi_period(x)&t;(((struct spi_transport_attrs *)&amp;(x)-&gt;starget_data)-&gt;period)
 DECL|macro|spi_offset
-mdefine_line|#define spi_offset(x)&t;(((struct spi_transport_attrs *)&amp;(x)-&gt;transport_data)-&gt;offset)
+mdefine_line|#define spi_offset(x)&t;(((struct spi_transport_attrs *)&amp;(x)-&gt;starget_data)-&gt;offset)
 DECL|macro|spi_width
-mdefine_line|#define spi_width(x)&t;(((struct spi_transport_attrs *)&amp;(x)-&gt;transport_data)-&gt;width)
+mdefine_line|#define spi_width(x)&t;(((struct spi_transport_attrs *)&amp;(x)-&gt;starget_data)-&gt;width)
 DECL|macro|spi_iu
-mdefine_line|#define spi_iu(x)&t;(((struct spi_transport_attrs *)&amp;(x)-&gt;transport_data)-&gt;iu)
+mdefine_line|#define spi_iu(x)&t;(((struct spi_transport_attrs *)&amp;(x)-&gt;starget_data)-&gt;iu)
 DECL|macro|spi_dt
-mdefine_line|#define spi_dt(x)&t;(((struct spi_transport_attrs *)&amp;(x)-&gt;transport_data)-&gt;dt)
+mdefine_line|#define spi_dt(x)&t;(((struct spi_transport_attrs *)&amp;(x)-&gt;starget_data)-&gt;dt)
 DECL|macro|spi_qas
-mdefine_line|#define spi_qas(x)&t;(((struct spi_transport_attrs *)&amp;(x)-&gt;transport_data)-&gt;qas)
+mdefine_line|#define spi_qas(x)&t;(((struct spi_transport_attrs *)&amp;(x)-&gt;starget_data)-&gt;qas)
 DECL|macro|spi_wr_flow
-mdefine_line|#define spi_wr_flow(x)&t;(((struct spi_transport_attrs *)&amp;(x)-&gt;transport_data)-&gt;wr_flow)
+mdefine_line|#define spi_wr_flow(x)&t;(((struct spi_transport_attrs *)&amp;(x)-&gt;starget_data)-&gt;wr_flow)
 DECL|macro|spi_rd_strm
-mdefine_line|#define spi_rd_strm(x)&t;(((struct spi_transport_attrs *)&amp;(x)-&gt;transport_data)-&gt;rd_strm)
+mdefine_line|#define spi_rd_strm(x)&t;(((struct spi_transport_attrs *)&amp;(x)-&gt;starget_data)-&gt;rd_strm)
 DECL|macro|spi_rti
-mdefine_line|#define spi_rti(x)&t;(((struct spi_transport_attrs *)&amp;(x)-&gt;transport_data)-&gt;rti)
+mdefine_line|#define spi_rti(x)&t;(((struct spi_transport_attrs *)&amp;(x)-&gt;starget_data)-&gt;rti)
 DECL|macro|spi_pcomp_en
-mdefine_line|#define spi_pcomp_en(x)&t;(((struct spi_transport_attrs *)&amp;(x)-&gt;transport_data)-&gt;pcomp_en)
+mdefine_line|#define spi_pcomp_en(x)&t;(((struct spi_transport_attrs *)&amp;(x)-&gt;starget_data)-&gt;pcomp_en)
+DECL|macro|spi_initial_dv
+mdefine_line|#define spi_initial_dv(x)&t;(((struct spi_transport_attrs *)&amp;(x)-&gt;starget_data)-&gt;initial_dv)
+DECL|macro|spi_support_sync
+mdefine_line|#define spi_support_sync(x)&t;(((struct spi_transport_attrs *)&amp;(x)-&gt;starget_data)-&gt;support_sync)
+DECL|macro|spi_support_wide
+mdefine_line|#define spi_support_wide(x)&t;(((struct spi_transport_attrs *)&amp;(x)-&gt;starget_data)-&gt;support_wide)
+DECL|macro|spi_support_dt
+mdefine_line|#define spi_support_dt(x)&t;(((struct spi_transport_attrs *)&amp;(x)-&gt;starget_data)-&gt;support_dt)
+DECL|macro|spi_support_dt_only
+mdefine_line|#define spi_support_dt_only(x)&t;(((struct spi_transport_attrs *)&amp;(x)-&gt;starget_data)-&gt;support_dt_only)
+DECL|macro|spi_support_ius
+mdefine_line|#define spi_support_ius(x)&t;(((struct spi_transport_attrs *)&amp;(x)-&gt;starget_data)-&gt;support_ius)
+DECL|macro|spi_support_qas
+mdefine_line|#define spi_support_qas(x)&t;(((struct spi_transport_attrs *)&amp;(x)-&gt;starget_data)-&gt;support_qas)
+DECL|macro|spi_flags
+mdefine_line|#define spi_flags(x)&t;(((struct spi_transport_attrs *)&amp;(x)-&gt;starget_data)-&gt;flags)
+DECL|macro|spi_signalling
+mdefine_line|#define spi_signalling(h)&t;(((struct spi_host_attrs *)&amp;(h)-&gt;shost_data)-&gt;signalling)
 multiline_comment|/* The functions by which the transport class and the driver communicate */
 DECL|struct|spi_function_template
 r_struct
@@ -134,7 +240,7 @@ id|get_period
 )paren
 (paren
 r_struct
-id|scsi_device
+id|scsi_target
 op_star
 )paren
 suffix:semicolon
@@ -146,7 +252,7 @@ id|set_period
 )paren
 (paren
 r_struct
-id|scsi_device
+id|scsi_target
 op_star
 comma
 r_int
@@ -160,7 +266,7 @@ id|get_offset
 )paren
 (paren
 r_struct
-id|scsi_device
+id|scsi_target
 op_star
 )paren
 suffix:semicolon
@@ -172,7 +278,7 @@ id|set_offset
 )paren
 (paren
 r_struct
-id|scsi_device
+id|scsi_target
 op_star
 comma
 r_int
@@ -186,7 +292,7 @@ id|get_width
 )paren
 (paren
 r_struct
-id|scsi_device
+id|scsi_target
 op_star
 )paren
 suffix:semicolon
@@ -198,7 +304,7 @@ id|set_width
 )paren
 (paren
 r_struct
-id|scsi_device
+id|scsi_target
 op_star
 comma
 r_int
@@ -212,7 +318,7 @@ id|get_iu
 )paren
 (paren
 r_struct
-id|scsi_device
+id|scsi_target
 op_star
 )paren
 suffix:semicolon
@@ -224,7 +330,7 @@ id|set_iu
 )paren
 (paren
 r_struct
-id|scsi_device
+id|scsi_target
 op_star
 comma
 r_int
@@ -238,7 +344,7 @@ id|get_dt
 )paren
 (paren
 r_struct
-id|scsi_device
+id|scsi_target
 op_star
 )paren
 suffix:semicolon
@@ -250,7 +356,7 @@ id|set_dt
 )paren
 (paren
 r_struct
-id|scsi_device
+id|scsi_target
 op_star
 comma
 r_int
@@ -264,7 +370,7 @@ id|get_qas
 )paren
 (paren
 r_struct
-id|scsi_device
+id|scsi_target
 op_star
 )paren
 suffix:semicolon
@@ -276,7 +382,7 @@ id|set_qas
 )paren
 (paren
 r_struct
-id|scsi_device
+id|scsi_target
 op_star
 comma
 r_int
@@ -290,7 +396,7 @@ id|get_wr_flow
 )paren
 (paren
 r_struct
-id|scsi_device
+id|scsi_target
 op_star
 )paren
 suffix:semicolon
@@ -302,7 +408,7 @@ id|set_wr_flow
 )paren
 (paren
 r_struct
-id|scsi_device
+id|scsi_target
 op_star
 comma
 r_int
@@ -316,7 +422,7 @@ id|get_rd_strm
 )paren
 (paren
 r_struct
-id|scsi_device
+id|scsi_target
 op_star
 )paren
 suffix:semicolon
@@ -328,7 +434,7 @@ id|set_rd_strm
 )paren
 (paren
 r_struct
-id|scsi_device
+id|scsi_target
 op_star
 comma
 r_int
@@ -342,7 +448,7 @@ id|get_rti
 )paren
 (paren
 r_struct
-id|scsi_device
+id|scsi_target
 op_star
 )paren
 suffix:semicolon
@@ -354,7 +460,7 @@ id|set_rti
 )paren
 (paren
 r_struct
-id|scsi_device
+id|scsi_target
 op_star
 comma
 r_int
@@ -368,7 +474,7 @@ id|get_pcomp_en
 )paren
 (paren
 r_struct
-id|scsi_device
+id|scsi_target
 op_star
 )paren
 suffix:semicolon
@@ -380,10 +486,37 @@ id|set_pcomp_en
 )paren
 (paren
 r_struct
-id|scsi_device
+id|scsi_target
 op_star
 comma
 r_int
+)paren
+suffix:semicolon
+DECL|member|get_signalling
+r_void
+(paren
+op_star
+id|get_signalling
+)paren
+(paren
+r_struct
+id|Scsi_Host
+op_star
+)paren
+suffix:semicolon
+DECL|member|set_signalling
+r_void
+(paren
+op_star
+id|set_signalling
+)paren
+(paren
+r_struct
+id|Scsi_Host
+op_star
+comma
+r_enum
+id|spi_signal_type
 )paren
 suffix:semicolon
 multiline_comment|/* The driver sets these to tell the transport class it&n;&t; * wants the attributes displayed in sysfs.  If the show_ flag&n;&t; * is not set, the attribute will be private to the transport&n;&t; * class */
