@@ -10380,6 +10380,14 @@ DECL|macro|CMTPGETCONNLIST
 mdefine_line|#define CMTPGETCONNLIST&t;_IOR(&squot;C&squot;, 210, int)
 DECL|macro|CMTPGETCONNINFO
 mdefine_line|#define CMTPGETCONNINFO&t;_IOR(&squot;C&squot;, 211, int)
+DECL|macro|HIDPCONNADD
+mdefine_line|#define HIDPCONNADD&t;_IOW(&squot;H&squot;, 200, int)
+DECL|macro|HIDPCONNDEL
+mdefine_line|#define HIDPCONNDEL&t;_IOW(&squot;H&squot;, 201, int)
+DECL|macro|HIDPGETCONNLIST
+mdefine_line|#define HIDPGETCONNLIST&t;_IOR(&squot;H&squot;, 210, int)
+DECL|macro|HIDPGETCONNINFO
+mdefine_line|#define HIDPGETCONNINFO&t;_IOR(&squot;H&squot;, 211, int)
 DECL|struct|floppy_struct32
 r_struct
 id|floppy_struct32

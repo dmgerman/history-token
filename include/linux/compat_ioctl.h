@@ -3064,6 +3064,26 @@ c_func
 (paren
 id|CMTPGETCONNINFO
 )paren
+id|COMPATIBLE_IOCTL
+c_func
+(paren
+id|HIDPCONNADD
+)paren
+id|COMPATIBLE_IOCTL
+c_func
+(paren
+id|HIDPCONNDEL
+)paren
+id|COMPATIBLE_IOCTL
+c_func
+(paren
+id|HIDPGETCONNLIST
+)paren
+id|COMPATIBLE_IOCTL
+c_func
+(paren
+id|HIDPGETCONNINFO
+)paren
 multiline_comment|/* CAPI */
 id|COMPATIBLE_IOCTL
 c_func
