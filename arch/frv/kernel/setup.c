@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *  linux/arch/frvnommu/kernel/setup.c&n; *&n; *  Copyleft  ()) 2000       James D. Schettine {james@telos-systems.com}&n; *  Copyright (C) 1999-2003  Greg Ungerer (gerg@snapgear.com)&n; *  Copyright (C) 1998,1999  D. Jeff Dionne &lt;jeff@lineo.ca&gt;&n; *  Copyright (C) 1998       Kenneth Albanowski &lt;kjahds@kjahds.com&gt;&n; *  Copyright (C) 1995       Hamish Macdonald&n; *  Copyright (C) 2000       Lineo Inc. (www.lineo.com)&n; *  Copyright (C) 2001 &t;     Lineo, Inc. &lt;www.lineo.com&gt;&n; *  Copyright (C) 2003 &t;     David Howells &lt;dhowells@redhat.com&gt;, Red Hat, Inc.&n; */
+multiline_comment|/*&n; *  linux/arch/frvnommu/kernel/setup.c&n; *&n; *  Copyleft  ()) 2000       James D. Schettine {james@telos-systems.com}&n; *  Copyright (C) 1999-2003  Greg Ungerer (gerg@snapgear.com)&n; *  Copyright (C) 1998,1999  D. Jeff Dionne &lt;jeff@lineo.ca&gt;&n; *  Copyright (C) 1998       Kenneth Albanowski &lt;kjahds@kjahds.com&gt;&n; *  Copyright (C) 1995       Hamish Macdonald&n; *  Copyright (C) 2000       Lineo Inc. (www.lineo.com)&n; *  Copyright (C) 2001 &t;     Lineo, Inc. &lt;www.lineo.com&gt;&n; *  Copyright (C) 2003,2004  David Howells &lt;dhowells@redhat.com&gt;, Red Hat, Inc.&n; */
 multiline_comment|/*&n; * This file handles the architecture-dependent parts of system setup&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/version.h&gt;
@@ -2503,7 +2503,7 @@ l_string|&quot;fr551&quot;
 suffix:semicolon
 id|pdm_suspend_mode
 op_assign
-id|HSR0_PDM_PLL_STOP
+id|HSR0_PDM_PLL_RUN
 suffix:semicolon
 r_switch
 c_cond

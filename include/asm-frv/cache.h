@@ -2,9 +2,10 @@ multiline_comment|/* cache.h: FRV cache definitions&n; *&n; * Copyright (C) 2004
 macro_line|#ifndef __ASM_CACHE_H
 DECL|macro|__ASM_CACHE_H
 mdefine_line|#define __ASM_CACHE_H
+macro_line|#include &lt;linux/config.h&gt;
 multiline_comment|/* bytes per L1 cache line */
 DECL|macro|L1_CACHE_SHIFT
-mdefine_line|#define L1_CACHE_SHIFT&t;&t;5
+mdefine_line|#define L1_CACHE_SHIFT&t;&t;(CONFIG_FRV_L1_CACHE_SHIFT)
 DECL|macro|L1_CACHE_BYTES
 mdefine_line|#define L1_CACHE_BYTES&t;&t;(1 &lt;&lt; L1_CACHE_SHIFT)
 DECL|macro|__cacheline_aligned

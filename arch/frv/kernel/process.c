@@ -233,6 +233,10 @@ op_star
 id|__unused
 )paren
 (brace
+r_int
+r_int
+id|reset_addr
+suffix:semicolon
 macro_line|#ifdef CONFIG_GDBSTUB
 id|gdbstub_exit
 c_func
@@ -241,6 +245,29 @@ l_int|0
 )paren
 suffix:semicolon
 macro_line|#endif
+r_if
+c_cond
+(paren
+id|PSR_IMPLE
+c_func
+(paren
+id|__get_PSR
+c_func
+(paren
+)paren
+)paren
+op_eq
+id|PSR_IMPLE_FR551
+)paren
+id|reset_addr
+op_assign
+l_int|0xfefff500
+suffix:semicolon
+r_else
+id|reset_addr
+op_assign
+l_int|0xfeff0500
+suffix:semicolon
 multiline_comment|/* Software reset. */
 id|asm
 r_volatile
@@ -255,7 +282,7 @@ suffix:colon
 suffix:colon
 l_string|&quot;r&quot;
 (paren
-l_int|0xfeff0500
+id|reset_addr
 )paren
 comma
 l_string|&quot;r&quot;
