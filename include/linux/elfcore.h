@@ -366,6 +366,11 @@ id|task_struct
 op_star
 id|t
 comma
+r_struct
+id|pt_regs
+op_star
+id|regs
+comma
 id|elf_fpregset_t
 op_star
 id|fpu
@@ -386,7 +391,7 @@ r_return
 id|dump_fpu
 c_func
 (paren
-l_int|NULL
+id|regs
 comma
 id|fpu
 )paren
