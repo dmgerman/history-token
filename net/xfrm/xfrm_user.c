@@ -3714,13 +3714,13 @@ id|MSG_DONTWAIT
 )paren
 suffix:semicolon
 )brace
-)brace
 id|xfrm_pol_put
 c_func
 (paren
 id|xp
 )paren
 suffix:semicolon
+)brace
 r_return
 id|err
 suffix:semicolon

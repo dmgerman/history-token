@@ -33,6 +33,9 @@ macro_line|#include &lt;net/inet_common.h&gt;
 macro_line|#include &lt;net/transp_v6.h&gt;
 macro_line|#include &lt;net/ip6_route.h&gt;
 macro_line|#include &lt;net/addrconf.h&gt;
+macro_line|#if CONFIG_IPV6_TUNNEL
+macro_line|#include &lt;net/ip6_tunnel.h&gt;
+macro_line|#endif
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#if 0 /*def MODULE*/
@@ -3150,6 +3153,23 @@ id|err
 r_goto
 id|ndisc_fail
 suffix:semicolon
+macro_line|#ifdef CONFIG_IPV6_TUNNEL
+id|err
+op_assign
+id|ip6_tunnel_init
+c_func
+(paren
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|err
+)paren
+r_goto
+id|ip6_tunnel_fail
+suffix:semicolon
+macro_line|#endif
 id|err
 op_assign
 id|igmp6_init
@@ -3359,6 +3379,15 @@ suffix:semicolon
 macro_line|#endif
 id|igmp_fail
 suffix:colon
+macro_line|#ifdef CONFIG_IPV6_TUNNEL
+id|ip6_tunnel_cleanup
+c_func
+(paren
+)paren
+suffix:semicolon
+id|ip6_tunnel_fail
+suffix:colon
+macro_line|#endif
 id|ndisc_cleanup
 c_func
 (paren
@@ -3484,6 +3513,13 @@ c_func
 (paren
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_IPV6_TUNNEL
+id|ip6_tunnel_cleanup
+c_func
+(paren
+)paren
+suffix:semicolon
+macro_line|#endif
 id|ndisc_cleanup
 c_func
 (paren

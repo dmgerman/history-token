@@ -226,9 +226,8 @@ id|pt_regs
 op_star
 )paren
 suffix:semicolon
-multiline_comment|/*&n; * TODO: if kernel-only threads do not have a dummy pt_regs structure at the&n; * top of the stack, this would cause kernel stack corruption.  Either check&n; * first that we&squot;re not dealing with a kernel thread or change the kernel&n; * stacks to allocate a dummy pt_regs structure.&n; */
 DECL|macro|alpha_task_regs
-mdefine_line|#define alpha_task_regs(task)&t;((struct pt_regs *) &bslash;&n;&t;&t;&t;((long) task-&gt;thread_info + PAGE_SIZE) - 1)
+mdefine_line|#define alpha_task_regs(task) &bslash;&n;  ((struct pt_regs *) ((long) (task)-&gt;thread_info + 2*PAGE_SIZE) - 1)
 DECL|macro|force_successful_syscall_return
 mdefine_line|#define force_successful_syscall_return() (alpha_task_regs(current)-&gt;r0 = 0)
 macro_line|#endif

@@ -7,7 +7,7 @@ multiline_comment|/* The memory requirements for deflate are (in bytes):&n;     
 multiline_comment|/* Maximum value for memLevel in deflateInit2 */
 macro_line|#ifndef MAX_MEM_LEVEL
 DECL|macro|MAX_MEM_LEVEL
-macro_line|#  define MAX_MEM_LEVEL 9
+macro_line|#  define MAX_MEM_LEVEL 8
 macro_line|#endif
 multiline_comment|/* Maximum value for windowBits in deflateInit2 and inflateInit2.&n; * WARNING: reducing MAX_WBITS makes minigzip unable to extract .gz files&n; * created by gzip. (Files created by minigzip can still be extracted by&n; * gzip.)&n; */
 macro_line|#ifndef MAX_WBITS

@@ -3,11 +3,6 @@ macro_line|#ifndef _ZLIB_H
 DECL|macro|_ZLIB_H
 mdefine_line|#define _ZLIB_H
 macro_line|#include &lt;linux/zconf.h&gt;
-macro_line|#ifdef __cplusplus
-r_extern
-l_string|&quot;C&quot;
-(brace
-macro_line|#endif
 DECL|macro|ZLIB_VERSION
 mdefine_line|#define ZLIB_VERSION &quot;1.1.3&quot;
 multiline_comment|/* &n;     The &squot;zlib&squot; compression library provides in-memory compression and&n;  decompression functions, including integrity checks of the uncompressed&n;  data.  This version of the library supports only one compression method&n;  (deflation) but other algorithms will be added later and will have the same&n;  stream interface.&n;&n;     Compression can be done in a single step if the buffers are large&n;  enough (for example if an input file is mmap&squot;ed), or can be done by&n;  repeated calls of the compression function.  In the latter case, the&n;  application must provide more input and/or consume the output&n;  (providing more output space) before each call.&n;&n;     The library also supports reading and writing files in gzip (.gz) format&n;  with an interface similar to that of stdio.&n;&n;     The library does not install any signal handler. The decoder checks&n;  the consistency of the compressed data, so the library should never&n;  crash even in case of corrupted input.&n;*/
@@ -95,7 +90,7 @@ id|z_stream
 op_star
 id|z_streamp
 suffix:semicolon
-multiline_comment|/*&n;   The application must update next_in and avail_in when avail_in has&n;   dropped to zero. It must update next_out and avail_out when avail_out&n;   has dropped to zero. The application must initialize zalloc, zfree and&n;   opaque before calling the init function. All other fields are set by the&n;   compression library and must not be updated by the application.&n;&n;   The opaque value provided by the application will be passed as the first&n;   parameter for calls of zalloc and zfree. This can be useful for custom&n;   memory management. The compression library attaches no meaning to the&n;   opaque value.&n;&n;   zalloc must return Z_NULL if there is not enough memory for the object.&n;   If zlib is used in a multi-threaded application, zalloc and zfree must be&n;   thread safe.&n;&n;   On 16-bit systems, the functions zalloc and zfree must be able to allocate&n;   exactly 65536 bytes, but will not be required to allocate more than this&n;   if the symbol MAXSEG_64K is defined (see zconf.h). WARNING: On MSDOS,&n;   pointers returned by zalloc for objects of exactly 65536 bytes *must*&n;   have their offset normalized to zero. The default allocation function&n;   provided by this library ensures this (see zutil.c). To reduce memory&n;   requirements and avoid any allocation of 64K objects, at the expense of&n;   compression ratio, compile the library with -DMAX_WBITS=14 (see zconf.h).&n;&n;   The fields total_in and total_out can be used for statistics or&n;   progress reports. After compression, total_in holds the total size of&n;   the uncompressed data and may be saved for use in the decompressor&n;   (particularly if the decompressor wants to decompress everything in&n;   a single step).&n;*/
+multiline_comment|/*&n;   The application must update next_in and avail_in when avail_in has&n;   dropped to zero. It must update next_out and avail_out when avail_out&n;   has dropped to zero. The application must initialize zalloc, zfree and&n;   opaque before calling the init function. All other fields are set by the&n;   compression library and must not be updated by the application.&n;&n;   The opaque value provided by the application will be passed as the first&n;   parameter for calls of zalloc and zfree. This can be useful for custom&n;   memory management. The compression library attaches no meaning to the&n;   opaque value.&n;&n;   zalloc must return NULL if there is not enough memory for the object.&n;   If zlib is used in a multi-threaded application, zalloc and zfree must be&n;   thread safe.&n;&n;   On 16-bit systems, the functions zalloc and zfree must be able to allocate&n;   exactly 65536 bytes, but will not be required to allocate more than this&n;   if the symbol MAXSEG_64K is defined (see zconf.h). WARNING: On MSDOS,&n;   pointers returned by zalloc for objects of exactly 65536 bytes *must*&n;   have their offset normalized to zero. The default allocation function&n;   provided by this library ensures this (see zutil.c). To reduce memory&n;   requirements and avoid any allocation of 64K objects, at the expense of&n;   compression ratio, compile the library with -DMAX_WBITS=14 (see zconf.h).&n;&n;   The fields total_in and total_out can be used for statistics or&n;   progress reports. After compression, total_in holds the total size of&n;   the uncompressed data and may be saved for use in the decompressor&n;   (particularly if the decompressor wants to decompress everything in&n;   a single step).&n;*/
 multiline_comment|/* constants */
 DECL|macro|Z_NO_FLUSH
 mdefine_line|#define Z_NO_FLUSH      0
@@ -155,8 +150,6 @@ multiline_comment|/* Possible values of the data_type field */
 DECL|macro|Z_DEFLATED
 mdefine_line|#define Z_DEFLATED   8
 multiline_comment|/* The deflate compression method (the only one supported in this version) */
-DECL|macro|Z_NULL
-mdefine_line|#define Z_NULL  0  /* for initializing zalloc, zfree, opaque */
 multiline_comment|/* basic functions */
 r_extern
 r_const
@@ -176,7 +169,7 @@ r_void
 )paren
 suffix:semicolon
 multiline_comment|/*&n;   Returns the number of bytes that needs to be allocated for a per-&n;   stream workspace.  A pointer to this number of bytes should be&n;   returned in stream-&gt;workspace before calling zlib_deflateInit().&n;*/
-multiline_comment|/* &n;extern int deflateInit (z_streamp strm, int level);&n;&n;     Initializes the internal stream state for compression. The fields&n;   zalloc, zfree and opaque must be initialized before by the caller.&n;   If zalloc and zfree are set to Z_NULL, deflateInit updates them to&n;   use default allocation functions.&n;&n;     The compression level must be Z_DEFAULT_COMPRESSION, or between 0 and 9:&n;   1 gives best speed, 9 gives best compression, 0 gives no compression at&n;   all (the input data is simply copied a block at a time).&n;   Z_DEFAULT_COMPRESSION requests a default compromise between speed and&n;   compression (currently equivalent to level 6).&n;&n;     deflateInit returns Z_OK if success, Z_MEM_ERROR if there was not&n;   enough memory, Z_STREAM_ERROR if level is not a valid compression level,&n;   Z_VERSION_ERROR if the zlib library version (zlib_version) is incompatible&n;   with the version assumed by the caller (ZLIB_VERSION).&n;   msg is set to null if there is no error message.  deflateInit does not&n;   perform any compression: this will be done by deflate().&n;*/
+multiline_comment|/* &n;extern int deflateInit (z_streamp strm, int level);&n;&n;     Initializes the internal stream state for compression. The fields&n;   zalloc, zfree and opaque must be initialized before by the caller.&n;   If zalloc and zfree are set to NULL, deflateInit updates them to&n;   use default allocation functions.&n;&n;     The compression level must be Z_DEFAULT_COMPRESSION, or between 0 and 9:&n;   1 gives best speed, 9 gives best compression, 0 gives no compression at&n;   all (the input data is simply copied a block at a time).&n;   Z_DEFAULT_COMPRESSION requests a default compromise between speed and&n;   compression (currently equivalent to level 6).&n;&n;     deflateInit returns Z_OK if success, Z_MEM_ERROR if there was not&n;   enough memory, Z_STREAM_ERROR if level is not a valid compression level,&n;   Z_VERSION_ERROR if the zlib library version (zlib_version) is incompatible&n;   with the version assumed by the caller (ZLIB_VERSION).&n;   msg is set to null if there is no error message.  deflateInit does not&n;   perform any compression: this will be done by deflate().&n;*/
 r_extern
 r_int
 id|zlib_deflate
@@ -206,7 +199,7 @@ r_void
 )paren
 suffix:semicolon
 multiline_comment|/*&n;   Returns the number of bytes that needs to be allocated for a per-&n;   stream workspace.  A pointer to this number of bytes should be&n;   returned in stream-&gt;workspace before calling zlib_inflateInit().&n;*/
-multiline_comment|/* &n;extern int zlib_inflateInit (z_streamp strm);&n;&n;     Initializes the internal stream state for decompression. The fields&n;   next_in, avail_in, and workspace must be initialized before by&n;   the caller. If next_in is not Z_NULL and avail_in is large enough (the exact&n;   value depends on the compression method), inflateInit determines the&n;   compression method from the zlib header and allocates all data structures&n;   accordingly; otherwise the allocation will be deferred to the first call of&n;   inflate.  If zalloc and zfree are set to Z_NULL, inflateInit updates them to&n;   use default allocation functions.&n;&n;     inflateInit returns Z_OK if success, Z_MEM_ERROR if there was not enough&n;   memory, Z_VERSION_ERROR if the zlib library version is incompatible with the&n;   version assumed by the caller.  msg is set to null if there is no error&n;   message. inflateInit does not perform any decompression apart from reading&n;   the zlib header if present: this will be done by inflate().  (So next_in and&n;   avail_in may be modified, but next_out and avail_out are unchanged.)&n;*/
+multiline_comment|/* &n;extern int zlib_inflateInit (z_streamp strm);&n;&n;     Initializes the internal stream state for decompression. The fields&n;   next_in, avail_in, and workspace must be initialized before by&n;   the caller. If next_in is not NULL and avail_in is large enough (the exact&n;   value depends on the compression method), inflateInit determines the&n;   compression method from the zlib header and allocates all data structures&n;   accordingly; otherwise the allocation will be deferred to the first call of&n;   inflate.  If zalloc and zfree are set to NULL, inflateInit updates them to&n;   use default allocation functions.&n;&n;     inflateInit returns Z_OK if success, Z_MEM_ERROR if there was not enough&n;   memory, Z_VERSION_ERROR if the zlib library version is incompatible with the&n;   version assumed by the caller.  msg is set to null if there is no error&n;   message. inflateInit does not perform any decompression apart from reading&n;   the zlib header if present: this will be done by inflate().  (So next_in and&n;   avail_in may be modified, but next_out and avail_out are unchanged.)&n;*/
 r_extern
 r_int
 id|zlib_inflate
@@ -465,8 +458,5 @@ id|zlib_get_crc_table
 r_void
 )paren
 suffix:semicolon
-macro_line|#ifdef __cplusplus
-)brace
-macro_line|#endif
 macro_line|#endif /* _ZLIB_H */
 eof

@@ -14,7 +14,7 @@ DECL|macro|bits
 mdefine_line|#define bits word.what.Bits
 multiline_comment|/* Table for deflate from PKZIP&squot;s appnote.txt. */
 DECL|variable|border
-id|local
+r_static
 r_const
 id|uInt
 id|border
@@ -85,7 +85,7 @@ c_cond
 (paren
 id|c
 op_ne
-id|Z_NULL
+l_int|NULL
 )paren
 op_star
 id|c
@@ -130,7 +130,7 @@ c_cond
 (paren
 id|s-&gt;checkfn
 op_ne
-id|Z_NULL
+l_int|NULL
 )paren
 id|z-&gt;adler
 op_assign
@@ -143,12 +143,7 @@ id|s-&gt;checkfn
 (paren
 l_int|0L
 comma
-(paren
-r_const
-id|Byte
-op_star
-)paren
-id|Z_NULL
+l_int|NULL
 comma
 l_int|0
 )paren
@@ -226,7 +221,7 @@ id|s
 comma
 id|z
 comma
-id|Z_NULL
+l_int|NULL
 )paren
 suffix:semicolon
 r_return
@@ -408,7 +403,7 @@ c_cond
 (paren
 id|s-&gt;sub.decode.codes
 op_eq
-id|Z_NULL
+l_int|NULL
 )paren
 (brace
 id|r
@@ -1106,7 +1101,7 @@ suffix:semicolon
 )brace
 id|s-&gt;sub.trees.tb
 op_assign
-id|Z_NULL
+l_int|NULL
 suffix:semicolon
 (brace
 id|uInt
@@ -1232,7 +1227,7 @@ id|z
 )paren
 )paren
 op_eq
-id|Z_NULL
+l_int|NULL
 )paren
 (brace
 id|r
@@ -1376,7 +1371,7 @@ id|s
 comma
 id|z
 comma
-id|Z_NULL
+l_int|NULL
 )paren
 suffix:semicolon
 r_return
@@ -1420,7 +1415,7 @@ op_plus
 id|n
 suffix:semicolon
 )brace
-multiline_comment|/* Returns true if inflate is currently at the end of a block generated&n; * by Z_SYNC_FLUSH or Z_FULL_FLUSH. &n; * IN assertion: s != Z_NULL&n; */
+multiline_comment|/* Returns true if inflate is currently at the end of a block generated&n; * by Z_SYNC_FLUSH or Z_FULL_FLUSH. &n; * IN assertion: s != NULL&n; */
 DECL|function|zlib_inflate_blocks_sync_point
 r_int
 id|zlib_inflate_blocks_sync_point

@@ -44,7 +44,7 @@ id|flush
 )paren
 suffix:semicolon
 multiline_comment|/* Compression function. Returns the block state after the call. */
-id|local
+r_static
 r_void
 id|fill_window
 (paren
@@ -53,7 +53,7 @@ op_star
 id|s
 )paren
 suffix:semicolon
-id|local
+r_static
 id|block_state
 id|deflate_stored
 (paren
@@ -65,7 +65,7 @@ r_int
 id|flush
 )paren
 suffix:semicolon
-id|local
+r_static
 id|block_state
 id|deflate_fast
 (paren
@@ -77,7 +77,7 @@ r_int
 id|flush
 )paren
 suffix:semicolon
-id|local
+r_static
 id|block_state
 id|deflate_slow
 (paren
@@ -89,7 +89,7 @@ r_int
 id|flush
 )paren
 suffix:semicolon
-id|local
+r_static
 r_void
 id|lm_init
 (paren
@@ -98,7 +98,7 @@ op_star
 id|s
 )paren
 suffix:semicolon
-id|local
+r_static
 r_void
 id|putShortMSB
 (paren
@@ -110,7 +110,7 @@ id|uInt
 id|b
 )paren
 suffix:semicolon
-id|local
+r_static
 r_void
 id|flush_pending
 (paren
@@ -118,7 +118,7 @@ id|z_streamp
 id|strm
 )paren
 suffix:semicolon
-id|local
+r_static
 r_int
 id|read_buf
 (paren
@@ -133,7 +133,7 @@ r_int
 id|size
 )paren
 suffix:semicolon
-id|local
+r_static
 id|uInt
 id|longest_match
 (paren
@@ -146,7 +146,7 @@ id|cur_match
 )paren
 suffix:semicolon
 macro_line|#ifdef DEBUG_ZLIB
-id|local
+r_static
 r_void
 id|check_match
 (paren
@@ -211,7 +211,7 @@ DECL|typedef|config
 id|config
 suffix:semicolon
 DECL|variable|configuration_table
-id|local
+r_static
 r_const
 id|config
 id|configuration_table
@@ -476,7 +476,7 @@ c_cond
 (paren
 id|version
 op_eq
-id|Z_NULL
+l_int|NULL
 op_logical_or
 id|version
 (braket
@@ -505,14 +505,14 @@ c_cond
 (paren
 id|strm
 op_eq
-id|Z_NULL
+l_int|NULL
 )paren
 r_return
 id|Z_STREAM_ERROR
 suffix:semicolon
 id|strm-&gt;msg
 op_assign
-id|Z_NULL
+l_int|NULL
 suffix:semicolon
 r_if
 c_cond
@@ -812,15 +812,15 @@ c_cond
 (paren
 id|strm
 op_eq
-id|Z_NULL
+l_int|NULL
 op_logical_or
 id|strm-&gt;state
 op_eq
-id|Z_NULL
+l_int|NULL
 op_logical_or
 id|dictionary
 op_eq
-id|Z_NULL
+l_int|NULL
 )paren
 r_return
 id|Z_STREAM_ERROR
@@ -1002,11 +1002,11 @@ c_cond
 (paren
 id|strm
 op_eq
-id|Z_NULL
+l_int|NULL
 op_logical_or
 id|strm-&gt;state
 op_eq
-id|Z_NULL
+l_int|NULL
 )paren
 r_return
 id|Z_STREAM_ERROR
@@ -1019,7 +1019,7 @@ l_int|0
 suffix:semicolon
 id|strm-&gt;msg
 op_assign
-id|Z_NULL
+l_int|NULL
 suffix:semicolon
 id|strm-&gt;data_type
 op_assign
@@ -1121,11 +1121,11 @@ c_cond
 (paren
 id|strm
 op_eq
-id|Z_NULL
+l_int|NULL
 op_logical_or
 id|strm-&gt;state
 op_eq
-id|Z_NULL
+l_int|NULL
 )paren
 r_return
 id|Z_STREAM_ERROR
@@ -1264,7 +1264,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* =========================================================================&n; * Put a short in the pending buffer. The 16-bit value is put in MSB order.&n; * IN assertion: the stream state is correct and there is enough room in&n; * pending_buf.&n; */
 DECL|function|putShortMSB
-id|local
+r_static
 r_void
 id|putShortMSB
 c_func
@@ -1310,7 +1310,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* =========================================================================&n; * Flush as much pending output as possible. All deflate() output goes&n; * through this function so some applications may wish to modify it&n; * to avoid allocating a large strm-&gt;next_out buffer and copying into it.&n; * (See also read_buf()).&n; */
 DECL|function|flush_pending
-id|local
+r_static
 r_void
 id|flush_pending
 c_func
@@ -1359,7 +1359,7 @@ c_cond
 (paren
 id|strm-&gt;next_out
 op_ne
-id|Z_NULL
+l_int|NULL
 )paren
 (brace
 id|memcpy
@@ -1433,11 +1433,11 @@ c_cond
 (paren
 id|strm
 op_eq
-id|Z_NULL
+l_int|NULL
 op_logical_or
 id|strm-&gt;state
 op_eq
-id|Z_NULL
+l_int|NULL
 op_logical_or
 id|flush
 OG
@@ -1466,7 +1466,7 @@ c_cond
 (paren
 id|strm-&gt;next_in
 op_eq
-id|Z_NULL
+l_int|NULL
 op_logical_and
 id|strm-&gt;avail_in
 op_ne
@@ -2022,11 +2022,11 @@ c_cond
 (paren
 id|strm
 op_eq
-id|Z_NULL
+l_int|NULL
 op_logical_or
 id|strm-&gt;state
 op_eq
-id|Z_NULL
+l_int|NULL
 )paren
 r_return
 id|Z_STREAM_ERROR
@@ -2065,7 +2065,7 @@ suffix:semicolon
 )brace
 id|strm-&gt;state
 op_assign
-id|Z_NULL
+l_int|NULL
 suffix:semicolon
 r_return
 id|status
@@ -2116,15 +2116,15 @@ c_cond
 (paren
 id|source
 op_eq
-id|Z_NULL
+l_int|NULL
 op_logical_or
 id|dest
 op_eq
-id|Z_NULL
+l_int|NULL
 op_logical_or
 id|source-&gt;state
 op_eq
-id|Z_NULL
+l_int|NULL
 )paren
 (brace
 r_return
@@ -2334,7 +2334,7 @@ macro_line|#endif
 )brace
 multiline_comment|/* ===========================================================================&n; * Read a new buffer from the current input stream, update the adler32&n; * and total number of bytes read.  All deflate() input goes through&n; * this function so some applications may wish to modify it to avoid&n; * allocating a large strm-&gt;next_in buffer and copying from it.&n; * (See also flush_pending()).&n; */
 DECL|function|read_buf
-id|local
+r_static
 r_int
 id|read_buf
 c_func
@@ -2437,7 +2437,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* ===========================================================================&n; * Initialize the &quot;longest match&quot; routines for a new zlib stream&n; */
 DECL|function|lm_init
-id|local
+r_static
 r_void
 id|lm_init
 c_func
@@ -2531,7 +2531,7 @@ suffix:semicolon
 multiline_comment|/* ===========================================================================&n; * Set match_start to the longest match starting at the given string and&n; * return its length. Matches shorter or equal to prev_length are discarded,&n; * in which case the result is equal to prev_length and match_start is&n; * garbage.&n; * IN assertions: cur_match is the head of the hash chain for the current&n; *   string (strstart) and its distance is &lt;= MAX_DIST, and prev_length &gt;= 1&n; * OUT assertion: the match length is not greater than s-&gt;lookahead.&n; */
 multiline_comment|/* For 80x86 and 680x0, an optimized version will be provided in match.asm or&n; * match.S. The code will be functionally equivalent.&n; */
 DECL|function|longest_match
-id|local
+r_static
 id|uInt
 id|longest_match
 c_func
@@ -3266,7 +3266,7 @@ suffix:semicolon
 macro_line|#ifdef DEBUG_ZLIB
 multiline_comment|/* ===========================================================================&n; * Check that the match at match_start is indeed a match.&n; */
 DECL|function|check_match
-id|local
+r_static
 r_void
 id|check_match
 c_func
@@ -3421,17 +3421,15 @@ macro_line|#  define check_match(s, start, match, length)
 macro_line|#endif
 multiline_comment|/* ===========================================================================&n; * Fill the window when the lookahead becomes insufficient.&n; * Updates strstart and lookahead.&n; *&n; * IN assertion: lookahead &lt; MIN_LOOKAHEAD&n; * OUT assertions: strstart &lt;= window_size-MIN_LOOKAHEAD&n; *    At least one byte has been read, or avail_in == 0; reads are&n; *    performed for at least two bytes (required for the zip translate_eol&n; *    option -- not supported here).&n; */
 DECL|function|fill_window
-id|local
+r_static
 r_void
 id|fill_window
 c_func
 (paren
-id|s
-)paren
 id|deflate_state
 op_star
 id|s
-suffix:semicolon
+)paren
 (brace
 r_register
 r_int
@@ -3773,13 +3771,13 @@ suffix:semicolon
 )brace
 multiline_comment|/* ===========================================================================&n; * Flush the current block, with given end-of-file flag.&n; * IN assertion: strstart is set to the end of the current match.&n; */
 DECL|macro|FLUSH_BLOCK_ONLY
-mdefine_line|#define FLUSH_BLOCK_ONLY(s, eof) { &bslash;&n;   zlib_tr_flush_block(s, (s-&gt;block_start &gt;= 0L ? &bslash;&n;                   (char *)&amp;s-&gt;window[(unsigned)s-&gt;block_start] : &bslash;&n;                   (char *)Z_NULL), &bslash;&n;&t;&t;(ulg)((long)s-&gt;strstart - s-&gt;block_start), &bslash;&n;&t;&t;(eof)); &bslash;&n;   s-&gt;block_start = s-&gt;strstart; &bslash;&n;   flush_pending(s-&gt;strm); &bslash;&n;   Tracev((stderr,&quot;[FLUSH]&quot;)); &bslash;&n;}
+mdefine_line|#define FLUSH_BLOCK_ONLY(s, eof) { &bslash;&n;   zlib_tr_flush_block(s, (s-&gt;block_start &gt;= 0L ? &bslash;&n;                   (char *)&amp;s-&gt;window[(unsigned)s-&gt;block_start] : &bslash;&n;                   NULL), &bslash;&n;&t;&t;(ulg)((long)s-&gt;strstart - s-&gt;block_start), &bslash;&n;&t;&t;(eof)); &bslash;&n;   s-&gt;block_start = s-&gt;strstart; &bslash;&n;   flush_pending(s-&gt;strm); &bslash;&n;   Tracev((stderr,&quot;[FLUSH]&quot;)); &bslash;&n;}
 multiline_comment|/* Same but force premature exit if necessary. */
 DECL|macro|FLUSH_BLOCK
 mdefine_line|#define FLUSH_BLOCK(s, eof) { &bslash;&n;   FLUSH_BLOCK_ONLY(s, eof); &bslash;&n;   if (s-&gt;strm-&gt;avail_out == 0) return (eof) ? finish_started : need_more; &bslash;&n;}
 multiline_comment|/* ===========================================================================&n; * Copy without compression as much as possible from the input stream, return&n; * the current block state.&n; * This function does not insert new strings in the dictionary since&n; * uncompressible data is probably not useful. This function is used&n; * only for the level=0 compression option.&n; * NOTE: this function should be optimized to avoid extra copying from&n; * window to pending_buf.&n; */
 DECL|function|deflate_stored
-id|local
+r_static
 id|block_state
 id|deflate_stored
 c_func
@@ -4008,7 +4006,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* ===========================================================================&n; * Compress as much as possible from the input stream, return the current&n; * block state.&n; * This function does not perform lazy evaluation of matches and inserts&n; * new strings in the dictionary only for unmatched strings or for short&n; * matches. It is used only for the fast compression options.&n; */
 DECL|function|deflate_fast
-id|local
+r_static
 id|block_state
 id|deflate_fast
 c_func
@@ -4350,7 +4348,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* ===========================================================================&n; * Same as above, but achieves better compression. We use a lazy&n; * evaluation for matches: a match is finally adopted only if there is&n; * no better match at the next window position.&n; */
 DECL|function|deflate_slow
-id|local
+r_static
 id|block_state
 id|deflate_slow
 c_func
@@ -4820,7 +4818,9 @@ DECL|function|zlib_deflate_workspacesize
 r_extern
 r_int
 id|zlib_deflate_workspacesize
+c_func
 (paren
+r_void
 )paren
 (brace
 r_return
