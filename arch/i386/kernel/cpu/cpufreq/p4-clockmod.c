@@ -699,25 +699,12 @@ multiline_comment|/* Pentium M */
 id|printk
 c_func
 (paren
-id|KERN_DEBUG
+id|KERN_WARNING
 id|PFX
-l_string|&quot;Warning: Pentium M detected. The speedstep_centrino module&bslash;n&quot;
-)paren
-suffix:semicolon
-id|printk
-c_func
-(paren
-id|KERN_DEBUG
-id|PFX
-l_string|&quot;offers voltage scaling in addition of frequency scaling. You&bslash;n&quot;
-)paren
-suffix:semicolon
-id|printk
-c_func
-(paren
-id|KERN_DEBUG
-id|PFX
-l_string|&quot;should use that instead of p4-clockmod, if possible.&bslash;n&quot;
+l_string|&quot;Warning: Pentium M detected. &quot;
+l_string|&quot;The speedstep_centrino module offers voltage scaling&quot;
+l_string|&quot; in addition of frequency scaling. You should use &quot;
+l_string|&quot;that instead of p4-clockmod, if possible.&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -739,7 +726,7 @@ l_int|0xF
 id|printk
 c_func
 (paren
-id|KERN_DEBUG
+id|KERN_WARNING
 id|PFX
 l_string|&quot;Unknown p4-clockmod-capable CPU. Please send an e-mail to &lt;linux@brodo.de&gt;&bslash;n&quot;
 )paren
@@ -762,25 +749,13 @@ id|SPEEDSTEP_PROCESSOR_P4M
 id|printk
 c_func
 (paren
-id|KERN_DEBUG
+id|KERN_WARNING
 id|PFX
-l_string|&quot;Warning: Pentium 4-M detected. The speedstep-ich or acpi cpufreq &bslash;n&quot;
-)paren
-suffix:semicolon
-id|printk
-c_func
-(paren
-id|KERN_DEBUG
-id|PFX
-l_string|&quot;modules offers voltage scaling in addition of frequency scaling. You&bslash;n&quot;
-)paren
-suffix:semicolon
-id|printk
-c_func
-(paren
-id|KERN_DEBUG
-id|PFX
-l_string|&quot;should use either one instead of p4-clockmod, if possible.&bslash;n&quot;
+l_string|&quot;Warning: Pentium 4-M detected. &quot;
+l_string|&quot;The speedstep-ich or acpi cpufreq modules offers &quot;
+l_string|&quot;voltage scaling in addition of frequency scaling. &quot;
+l_string|&quot;You should use either one instead of p4-clockmod, &quot;
+l_string|&quot;if possible.&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
