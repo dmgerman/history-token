@@ -546,7 +546,7 @@ c_func
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * usb_ifnum_to_ifpos - convert the interface _number_ (as in interface.bInterfaceNumber)&n; * to the interface _position_ (as in dev-&gt;actconfig-&gt;interface + position)&n; * @dev: the device to use&n; * @ifnum: the interface number (bInterfaceNumber); not interface position&n; *&n; * Note that the number is the same as the position for all interfaces _except_&n; * devices with interfaces not sequentially numbered (e.g., 0, 2, 3, etc).&n; */
+multiline_comment|/**&n; * usb_ifnum_to_ifpos - convert the interface number to the interface position&n; * @dev: the device to use&n; * @ifnum: the interface number (bInterfaceNumber); not interface position&n; *&n; * This is used to convert the interface _number_ (as in&n; * interface.bInterfaceNumber) to the interface _position_ (as in&n; * dev-&gt;actconfig-&gt;interface + position).  Note that the number is the same as&n; * the position for all interfaces _except_ devices with interfaces not&n; * sequentially numbered (e.g., 0, 2, 3, etc).&n; */
 DECL|function|usb_ifnum_to_ifpos
 r_int
 id|usb_ifnum_to_ifpos
@@ -1607,7 +1607,7 @@ op_minus
 l_int|1
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * usb_find_interface_driver_for_ifnum - convert ifnum to ifpos via&n; * usb_ifnum_to_ifpos and call usb_find_interface_driver().&n; * @dev: the device to use&n; * @ifnum: the interface number (bInterfaceNumber); not interface position!&n; *&n; * Note usb_find_interface_driver&squot;s ifnum parameter is actually interface position.&n; */
+multiline_comment|/**&n; * usb_find_interface_driver_for_ifnum - finds a usb interface driver for the specified ifnum&n; * @dev: the device to use&n; * @ifnum: the interface number (bInterfaceNumber); not interface position!&n; *&n; * This converts a ifnum to ifpos via a call to usb_ifnum_to_ifpos and then&n; * calls usb_find_interface_driver() with the found ifpos.  Note&n; * usb_find_interface_driver&squot;s ifnum parameter is actually interface position.&n; */
 DECL|function|usb_find_interface_driver_for_ifnum
 r_int
 id|usb_find_interface_driver_for_ifnum
