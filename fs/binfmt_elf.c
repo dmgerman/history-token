@@ -3018,6 +3018,8 @@ c_func
 (paren
 id|bprm
 comma
+id|STACK_TOP
+comma
 id|executable_stack
 )paren
 suffix:semicolon

@@ -1329,6 +1329,10 @@ op_star
 id|bprm
 comma
 r_int
+r_int
+id|stack_top
+comma
+r_int
 id|executable_stack
 )paren
 (brace
@@ -1562,7 +1566,7 @@ op_assign
 id|PAGE_ALIGN
 c_func
 (paren
-id|STACK_TOP
+id|stack_top
 op_minus
 id|stack_base
 )paren
@@ -1607,7 +1611,7 @@ suffix:semicolon
 macro_line|#else
 id|stack_base
 op_assign
-id|STACK_TOP
+id|stack_top
 op_minus
 id|MAX_ARG_PAGES
 op_star
@@ -1623,7 +1627,7 @@ id|bprm-&gt;p
 suffix:semicolon
 id|arg_size
 op_assign
-id|STACK_TOP
+id|stack_top
 op_minus
 (paren
 id|PAGE_MASK
@@ -1740,7 +1744,7 @@ suffix:semicolon
 macro_line|#else
 id|mpnt-&gt;vm_end
 op_assign
-id|STACK_TOP
+id|stack_top
 suffix:semicolon
 id|mpnt-&gt;vm_start
 op_assign
