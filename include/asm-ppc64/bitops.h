@@ -1156,6 +1156,9 @@ op_plus
 l_int|1
 suffix:semicolon
 )brace
+multiline_comment|/*&n; * fls: find last (most-significant) bit set.&n; * Note fls(0) = 0, fls(1) = 1, fls(0x80000000) = 32.&n; */
+DECL|macro|fls
+mdefine_line|#define fls(x) generic_fls(x)
 multiline_comment|/*&n; * hweightN: returns the hamming weight (i.e. the number&n; * of bits set) of a N-bit word&n; */
 DECL|macro|hweight32
 mdefine_line|#define hweight32(x) generic_hweight32(x)

@@ -2,6 +2,7 @@ macro_line|#ifndef _PPC64_RTAS_H
 DECL|macro|_PPC64_RTAS_H
 mdefine_line|#define _PPC64_RTAS_H
 macro_line|#include &lt;linux/spinlock.h&gt;
+macro_line|#include &lt;asm/page.h&gt;
 multiline_comment|/*&n; * Definitions for talking to the RTAS on CHRP machines.&n; *&n; * Copyright (C) 2001 Peter Bergner&n; * Copyright (C) 2001 PPC 64 Team, IBM Corp&n; *&n; * This program is free software; you can redistribute it and/or&n; * modify it under the terms of the GNU General Public License&n; * as published by the Free Software Foundation; either version&n; * 2 of the License, or (at your option) any later version.&n; */
 DECL|macro|RTAS_UNKNOWN_SERVICE
 mdefine_line|#define RTAS_UNKNOWN_SERVICE (-1)
@@ -284,6 +285,73 @@ suffix:semicolon
 multiline_comment|/* allocated by klimit bump */
 )brace
 suffix:semicolon
+DECL|struct|flash_block
+r_struct
+id|flash_block
+(brace
+DECL|member|data
+r_char
+op_star
+id|data
+suffix:semicolon
+DECL|member|length
+r_int
+r_int
+id|length
+suffix:semicolon
+)brace
+suffix:semicolon
+multiline_comment|/* This struct is very similar but not identical to&n; * that needed by the rtas flash update.&n; * All we need to do for rtas is rewrite num_blocks&n; * into a version/length and translate the pointers&n; * to absolute.&n; */
+DECL|macro|FLASH_BLOCKS_PER_NODE
+mdefine_line|#define FLASH_BLOCKS_PER_NODE ((PAGE_SIZE - 16) / sizeof(struct flash_block))
+DECL|struct|flash_block_list
+r_struct
+id|flash_block_list
+(brace
+DECL|member|num_blocks
+r_int
+r_int
+id|num_blocks
+suffix:semicolon
+DECL|member|next
+r_struct
+id|flash_block_list
+op_star
+id|next
+suffix:semicolon
+DECL|member|blocks
+r_struct
+id|flash_block
+id|blocks
+(braket
+id|FLASH_BLOCKS_PER_NODE
+)braket
+suffix:semicolon
+)brace
+suffix:semicolon
+DECL|struct|flash_block_list_header
+r_struct
+id|flash_block_list_header
+(brace
+multiline_comment|/* just the header of flash_block_list */
+DECL|member|num_blocks
+r_int
+r_int
+id|num_blocks
+suffix:semicolon
+DECL|member|next
+r_struct
+id|flash_block_list
+op_star
+id|next
+suffix:semicolon
+)brace
+suffix:semicolon
+r_extern
+r_struct
+id|flash_block_list_header
+id|rtas_firmware_flash_list
+suffix:semicolon
 r_extern
 r_struct
 id|rtas_t
@@ -388,6 +456,12 @@ c_func
 (paren
 r_void
 )paren
+suffix:semicolon
+r_extern
+r_struct
+id|proc_dir_entry
+op_star
+id|rtas_proc_dir
 suffix:semicolon
 macro_line|#endif /* _PPC64_RTAS_H */
 eof

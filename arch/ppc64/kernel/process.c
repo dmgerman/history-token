@@ -25,20 +25,6 @@ macro_line|#include &lt;asm/prom.h&gt;
 macro_line|#include &lt;asm/ppcdebug.h&gt;
 macro_line|#include &lt;asm/machdep.h&gt;
 macro_line|#include &lt;asm/iSeries/HvCallHpt.h&gt;
-r_int
-id|dump_fpu
-c_func
-(paren
-r_struct
-id|pt_regs
-op_star
-id|regs
-comma
-id|elf_fpregset_t
-op_star
-id|fpregs
-)paren
-suffix:semicolon
 DECL|variable|last_task_used_math
 r_struct
 id|task_struct
