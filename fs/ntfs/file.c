@@ -71,12 +71,6 @@ id|generic_file_read
 comma
 multiline_comment|/* Read from file. */
 dot
-id|write
-op_assign
-id|generic_file_write
-comma
-multiline_comment|/* Write to a file. */
-dot
 id|mmap
 op_assign
 id|generic_file_mmap
