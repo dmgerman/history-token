@@ -211,6 +211,12 @@ op_div
 l_int|8
 )paren
 op_minus
+(paren
+id|q-&gt;nr_requests
+op_div
+l_int|16
+)paren
+op_minus
 l_int|1
 suffix:semicolon
 r_if
