@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * arch/ppc/syslib/cpc700.h&n; * &n; * Header file for IBM CPC700 Host Bridge, et. al.&n; *&n; * Author: Mark A. Greer&n; *         mgreer@mvista.com&n; *&n; * 2000-2002 (c) MontaVista, Software, Inc.  This file is licensed under&n; * the terms of the GNU General Public License version 2.1.  This program&n; * is licensed &quot;as is&quot; without any warranty of any kind, whether express&n; * or implied.&n; */
+multiline_comment|/*&n; * arch/ppc/syslib/cpc700.h&n; * &n; * Header file for IBM CPC700 Host Bridge, et. al.&n; *&n; * Author: Mark A. Greer&n; *         mgreer@mvista.com&n; *&n; * 2000-2002 (c) MontaVista, Software, Inc.  This file is licensed under&n; * the terms of the GNU General Public License version 2.  This program&n; * is licensed &quot;as is&quot; without any warranty of any kind, whether express&n; * or implied.&n; */
 multiline_comment|/*&n; * This file contains the defines and macros for the IBM CPC700 host bridge,&n; * memory controller, PIC, UARTs, IIC, and Timers.&n; */
 macro_line|#ifndef&t;_ASMPPC_CPC700_H
 DECL|macro|_ASMPPC_CPC700_H

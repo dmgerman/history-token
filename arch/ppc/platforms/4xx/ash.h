@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * arch/ppc/platforms/4xx/ash.h&n; *&n; * Macros, definitions, and data structures specific to the IBM PowerPC&n; * Ash eval board.&n; *&n; * Author: Armin Kuster &lt;akuster@mvista.com&gt;&n; *&n; * 2000-2002 (c) MontaVista, Software, Inc.  This file is licensed under&n; * the terms of the GNU General Public License version 2.1.  This program&n; * is licensed &quot;as is&quot; without any warranty of any kind, whether express&n; * or implied.&n; */
+multiline_comment|/*&n; * arch/ppc/platforms/4xx/ash.h&n; *&n; * Macros, definitions, and data structures specific to the IBM PowerPC&n; * Ash eval board.&n; *&n; * Author: Armin Kuster &lt;akuster@mvista.com&gt;&n; *&n; * 2000-2002 (c) MontaVista, Software, Inc.  This file is licensed under&n; * the terms of the GNU General Public License version 2.  This program&n; * is licensed &quot;as is&quot; without any warranty of any kind, whether express&n; * or implied.&n; */
 macro_line|#ifdef __KERNEL__
 macro_line|#ifndef __ASM_ASH_H__
 DECL|macro|__ASM_ASH_H__

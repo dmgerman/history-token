@@ -399,6 +399,18 @@ c_func
 )paren
 suffix:semicolon
 )brace
+DECL|variable|pm_power_off
+r_void
+(paren
+op_star
+id|pm_power_off
+)paren
+(paren
+r_void
+)paren
+op_assign
+id|machine_power_off
+suffix:semicolon
 macro_line|#ifdef CONFIG_TAU
 r_extern
 id|u32
