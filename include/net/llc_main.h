@@ -60,7 +60,7 @@ suffix:semicolon
 r_struct
 (brace
 DECL|member|lock
-id|spinlock_t
+id|rwlock_t
 id|lock
 suffix:semicolon
 DECL|member|list

@@ -106,7 +106,7 @@ id|sap-&gt;rcv_func
 op_assign
 id|func
 suffix:semicolon
-id|sap-&gt;parent_station
+id|sap-&gt;station
 op_assign
 id|llc_station_get
 c_func
