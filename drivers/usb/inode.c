@@ -892,6 +892,7 @@ r_return
 id|inode
 suffix:semicolon
 )brace
+multiline_comment|/* SMP-safe */
 DECL|function|usbfs_mknod
 r_static
 r_int
@@ -1175,8 +1176,18 @@ id|inode
 op_assign
 id|dentry-&gt;d_inode
 suffix:semicolon
+id|lock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
 id|inode-&gt;i_nlink
 op_decrement
+suffix:semicolon
+id|unlock_kernel
+c_func
+(paren
+)paren
 suffix:semicolon
 id|dput
 c_func
