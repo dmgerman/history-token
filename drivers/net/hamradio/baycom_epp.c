@@ -5782,7 +5782,7 @@ multiline_comment|/* -----------------------------------------------------------
 multiline_comment|/*&n; * Check for a network adaptor of this type, and return &squot;0&squot; if one exists.&n; * If dev-&gt;base_addr == 0, probe all likely locations.&n; * If dev-&gt;base_addr == 1, always return failure.&n; * If dev-&gt;base_addr == 2, allocate space for the device and return success&n; * (detachable devices only).&n; */
 DECL|function|baycom_probe
 r_static
-r_int
+r_void
 id|baycom_probe
 c_func
 (paren
@@ -5887,27 +5887,6 @@ r_struct
 id|baycom_state
 op_star
 id|bc
-suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|dev
-)paren
-r_return
-op_minus
-id|ENXIO
-suffix:semicolon
-id|baycom_paranoia_check
-c_func
-(paren
-id|dev
-comma
-l_string|&quot;baycom_probe&quot;
-comma
-op_minus
-id|ENXIO
-)paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * not a real probe! only initialize data structures&n;&t; */
 id|bc
@@ -6025,9 +6004,6 @@ suffix:semicolon
 multiline_comment|/* New style flags */
 id|dev-&gt;flags
 op_assign
-l_int|0
-suffix:semicolon
-r_return
 l_int|0
 suffix:semicolon
 )brace
@@ -6158,9 +6134,11 @@ op_assign
 l_int|9600
 suffix:semicolon
 multiline_comment|/*&n;&t; * initialize part of the device struct&n;&t; */
-id|dev-&gt;init
-op_assign
 id|baycom_probe
+c_func
+(paren
+id|dev
+)paren
 suffix:semicolon
 )brace
 DECL|function|init_baycomepp

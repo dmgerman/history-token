@@ -1943,14 +1943,9 @@ c_func
 suffix:semicolon
 id|dev
 op_assign
-id|alloc_etherdev
+id|alloc_ei_netdev
 c_func
 (paren
-r_sizeof
-(paren
-r_struct
-id|etherh_priv
-)paren
 )paren
 suffix:semicolon
 r_if
@@ -1969,7 +1964,6 @@ r_goto
 id|out
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t; * alloc_etherdev allocs and zeros dev-&gt;priv&n;&t; */
 id|eh
 op_assign
 id|dev-&gt;priv
@@ -2204,25 +2198,6 @@ r_goto
 id|free
 suffix:semicolon
 )brace
-r_if
-c_cond
-(paren
-id|ethdev_init
-c_func
-(paren
-id|dev
-)paren
-)paren
-(brace
-id|ret
-op_assign
-op_minus
-id|ENODEV
-suffix:semicolon
-r_goto
-id|release
-suffix:semicolon
-)brace
 multiline_comment|/*&n;&t; * If we&squot;re in the NIC slot, make sure the IRQ is enabled&n;&t; */
 r_if
 c_cond
@@ -2239,7 +2214,6 @@ comma
 id|ETHERH_CP_IE
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * Unfortunately, ethdev_init eventually calls&n;&t; * ether_setup, which re-writes dev-&gt;flags.&n;&t; */
 r_switch
 c_cond
 (paren

@@ -9691,7 +9691,13 @@ id|NETREG_UNINITIALIZED
 id|kfree
 c_func
 (paren
+(paren
+r_char
+op_star
+)paren
 id|dev
+op_minus
+id|dev-&gt;padded
 )paren
 suffix:semicolon
 r_return

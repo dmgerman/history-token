@@ -414,12 +414,6 @@ op_star
 id|dev-&gt;mem_start
 )paren
 suffix:semicolon
-id|kfree
-c_func
-(paren
-id|dev-&gt;priv
-)paren
-suffix:semicolon
 )brace
 DECL|function|ac3200_probe
 r_struct
@@ -438,10 +432,9 @@ id|net_device
 op_star
 id|dev
 op_assign
-id|alloc_etherdev
+id|alloc_ei_netdev
 c_func
 (paren
-l_int|0
 )paren
 suffix:semicolon
 r_int
@@ -477,11 +470,6 @@ c_func
 id|dev
 )paren
 suffix:semicolon
-id|dev-&gt;priv
-op_assign
-l_int|NULL
-suffix:semicolon
-multiline_comment|/* until all 8390-based use alloc_etherdev() */
 id|err
 op_assign
 id|do_ac3200_probe
@@ -789,31 +777,6 @@ id|out
 suffix:semicolon
 )brace
 macro_line|#endif
-multiline_comment|/* Allocate dev-&gt;priv and fill in 8390 specific dev fields. */
-r_if
-c_cond
-(paren
-id|ethdev_init
-c_func
-(paren
-id|dev
-)paren
-)paren
-(brace
-id|printk
-(paren
-l_string|&quot;, unable to allocate memory for dev-&gt;priv.&bslash;n&quot;
-)paren
-suffix:semicolon
-id|retval
-op_assign
-op_minus
-id|ENOMEM
-suffix:semicolon
-r_goto
-id|out
-suffix:semicolon
-)brace
 multiline_comment|/* Assign and allocate the interrupt now. */
 r_if
 c_cond
@@ -1087,7 +1050,7 @@ op_minus
 id|EINVAL
 suffix:semicolon
 r_goto
-id|out2
+id|out1
 suffix:semicolon
 )brace
 id|dev-&gt;mem_start
@@ -1141,7 +1104,7 @@ op_minus
 id|EINVAL
 suffix:semicolon
 r_goto
-id|out2
+id|out1
 suffix:semicolon
 )brace
 id|ei_status.reg0
@@ -1260,7 +1223,7 @@ suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
-id|out2
+id|out1
 suffix:colon
 id|free_irq
 c_func
@@ -1269,18 +1232,6 @@ id|dev-&gt;irq
 comma
 id|dev
 )paren
-suffix:semicolon
-id|out1
-suffix:colon
-id|kfree
-c_func
-(paren
-id|dev-&gt;priv
-)paren
-suffix:semicolon
-id|dev-&gt;priv
-op_assign
-l_int|NULL
 suffix:semicolon
 id|out
 suffix:colon
@@ -1828,10 +1779,9 @@ r_break
 suffix:semicolon
 id|dev
 op_assign
-id|alloc_etherdev
+id|alloc_ei_netdev
 c_func
 (paren
-l_int|0
 )paren
 suffix:semicolon
 r_if
@@ -1841,10 +1791,6 @@ op_logical_neg
 id|dev
 )paren
 r_break
-suffix:semicolon
-id|dev-&gt;priv
-op_assign
-l_int|NULL
 suffix:semicolon
 id|dev-&gt;irq
 op_assign

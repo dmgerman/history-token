@@ -278,17 +278,6 @@ id|dev
 )paren
 suffix:semicolon
 r_static
-r_int
-id|tms380tr_init_card
-c_func
-(paren
-r_struct
-id|net_device
-op_star
-id|dev
-)paren
-suffix:semicolon
-r_static
 r_void
 id|tms380tr_init_ipb
 c_func
@@ -773,43 +762,6 @@ l_int|0
 suffix:semicolon
 )brace
 macro_line|#endif
-multiline_comment|/* Dummy function */
-DECL|function|tms380tr_init_card
-r_static
-r_int
-id|tms380tr_init_card
-c_func
-(paren
-r_struct
-id|net_device
-op_star
-id|dev
-)paren
-(brace
-r_if
-c_cond
-(paren
-id|tms380tr_debug
-OG
-l_int|3
-)paren
-(brace
-id|printk
-c_func
-(paren
-id|KERN_DEBUG
-l_string|&quot;%s: tms380tr_init_card&bslash;n&quot;
-comma
-id|dev-&gt;name
-)paren
-suffix:semicolon
-)brace
-r_return
-(paren
-l_int|0
-)paren
-suffix:semicolon
-)brace
 multiline_comment|/*&n; * Open/initialize the board. This is called sometime after&n; * booting when the &squot;ifconfig&squot; program is run.&n; *&n; * This routine should set everything up anew at each open, even&n; * registers that &quot;should&quot; only need to be set once at boot, so that&n; * there is non-reboot way to recover if something goes wrong.&n; */
 DECL|function|tms380tr_open
 r_int
@@ -9502,10 +9454,6 @@ suffix:semicolon
 )brace
 )brace
 multiline_comment|/* These can be overridden by the card driver if needed */
-id|dev-&gt;init
-op_assign
-id|tms380tr_init_card
-suffix:semicolon
 id|dev-&gt;open
 op_assign
 id|tms380tr_open
