@@ -186,6 +186,18 @@ op_assign
 l_int|1
 suffix:semicolon
 )brace
+multiline_comment|/* Some devices choke when they receive a PREVENT-ALLOW MEDIUM&n;&t; * REMOVAL command, so suppress those commands. */
+r_if
+c_cond
+(paren
+id|us-&gt;flags
+op_amp
+id|US_FL_NOT_LOCKABLE
+)paren
+id|sdev-&gt;lockable
+op_assign
+l_int|0
+suffix:semicolon
 multiline_comment|/* this is to satisfy the compiler, tho I don&squot;t think the &n;&t; * return code is ever checked anywhere. */
 r_return
 l_int|0

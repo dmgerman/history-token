@@ -428,7 +428,7 @@ comma
 l_int|0
 )paren
 comma
-multiline_comment|/* Reported by Adriaan Penning &lt;a.penning@luon.net&gt;&n; * Note that these cameras report &quot;Medium not present&quot; after&n; * ALLOW_MEDIUM_REMOVAL, so they also need to be marked&n; * NOT_LOCKABLE in the SCSI blacklist (and the vendor is MATSHITA). */
+multiline_comment|/* Reported by Adriaan Penning &lt;a.penning@luon.net&gt; */
 id|UNUSUAL_DEV
 c_func
 (paren
@@ -451,6 +451,8 @@ comma
 l_int|NULL
 comma
 id|US_FL_FIX_CAPACITY
+op_or
+id|US_FL_NOT_LOCKABLE
 )paren
 comma
 multiline_comment|/* Most of the following entries were developed with the help of&n; * Shuttle/SCM directly.&n; */
@@ -973,7 +975,6 @@ comma
 id|US_FL_IGNORE_RESIDUE
 )paren
 comma
-multiline_comment|/* This entry is needed because the device reports Sub=ff */
 id|UNUSUAL_DEV
 c_func
 (paren
@@ -996,6 +997,8 @@ comma
 l_int|NULL
 comma
 id|US_FL_SINGLE_LUN
+op_or
+id|US_FL_NOT_LOCKABLE
 )paren
 comma
 multiline_comment|/* This entry is needed because the device reports Sub=ff */
