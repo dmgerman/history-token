@@ -21,6 +21,7 @@ macro_line|#include &lt;asm/sn/intr.h&gt;
 macro_line|#include &lt;asm/sn/ioerror_handling.h&gt;
 macro_line|#include &lt;asm/sn/ioerror.h&gt;
 macro_line|#include &lt;asm/sn/sn2/shubio.h&gt;
+macro_line|#include &lt;asm/sn/sn2/shub_mmr.h&gt;
 macro_line|#include &lt;asm/sn/bte.h&gt;
 r_extern
 r_void
@@ -548,9 +549,6 @@ suffix:semicolon
 id|hubreg_t
 id|idsr
 suffix:semicolon
-id|ii_ilcsr_u_t
-id|ilcsr
-suffix:semicolon
 multiline_comment|/* two levels of casting avoids compiler warning.!! */
 id|hub_v
 op_assign
@@ -724,26 +722,21 @@ op_assign
 l_string|&quot;Unknown&quot;
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t; * Note: we may never be able to print this, if the II talking&n;&t; * to Xbow which hosts the console is dead. &n;&t; */
-id|ilcsr.ii_ilcsr_regval
-op_assign
-id|REMOTE_HUB_L
-c_func
-(paren
-id|hinfo-&gt;h_nasid
-comma
-id|IIO_ILCSR
-)paren
-suffix:semicolon
+multiline_comment|/*&n;&t; * Only print the II_ECRAZY message if there is an attached xbow.&n;&t; */
 r_if
 c_cond
 (paren
-id|ilcsr.ii_ilcsr_fld_s.i_llp_en
-op_eq
-l_int|1
+id|NODEPDA
+c_func
+(paren
+id|hinfo-&gt;h_cnodeid
+)paren
+op_member_access_from_pointer
+id|xbow_vhdl
+op_ne
+l_int|0
 )paren
 (brace
-multiline_comment|/* Link is enabled */
 id|printk
 c_func
 (paren
