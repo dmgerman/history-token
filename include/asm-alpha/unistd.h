@@ -1028,8 +1028,8 @@ id|restorer
 )paren
 suffix:semicolon
 macro_line|#endif /* __KERNEL_SYSCALLS__ */
-multiline_comment|/*&n; * &quot;Conditional&quot; syscalls&n; *&n; * What we want is __attribute__((weak,alias(&quot;sys_ni_syscall&quot;))),&n; * but it doesn&squot;t work on all toolchains, so we just do it by hand.&n; *&n; * Note that we do *not* provide a parameter list to avoid &n; * conflicting with one of the syscall declarations in some&n; * of the relevant header files (including this one).&n; */
+multiline_comment|/* &quot;Conditional&quot; syscalls.  What we want is&n;&n;&t;__attribute__((weak,alias(&quot;sys_ni_syscall&quot;)))&n;&n;   but that raises the problem of what type to give the symbol.  If we use&n;   a prototype, it&squot;ll conflict with the definition given in this file and&n;   others.  If we use __typeof, we discover that not all symbols actually&n;   have declarations.  If we use no prototype, then we get warnings from&n;   -Wstrict-prototypes.  Ho hum.  */
 DECL|macro|cond_syscall
-mdefine_line|#define cond_syscall(x) asmlinkage long x() __attribute__((weak,alias(&quot;sys_ni_syscall&quot;)));
+mdefine_line|#define cond_syscall(x)  asm(&quot;.weak&bslash;t&quot; #x &quot;&bslash;n&quot; #x &quot; = sys_ni_syscall&quot;);
 macro_line|#endif /* _ALPHA_UNISTD_H */
 eof
