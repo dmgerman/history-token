@@ -563,14 +563,6 @@ DECL|member|osd2
 id|osd2
 suffix:semicolon
 multiline_comment|/* OS dependent 2 */
-DECL|member|i_extra_isize
-id|__u16
-id|i_extra_isize
-suffix:semicolon
-DECL|member|i_pad1
-id|__u16
-id|i_pad1
-suffix:semicolon
 )brace
 suffix:semicolon
 DECL|macro|i_size_high
@@ -1792,22 +1784,6 @@ r_int
 comma
 r_int
 op_star
-)paren
-suffix:semicolon
-r_extern
-r_int
-id|ext3_get_inode_loc
-c_func
-(paren
-r_struct
-id|inode
-op_star
-comma
-r_struct
-id|ext3_iloc
-op_star
-comma
-r_int
 )paren
 suffix:semicolon
 r_extern
