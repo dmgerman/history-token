@@ -123,6 +123,10 @@ DECL|member|sector
 id|sector_t
 id|sector
 suffix:semicolon
+DECL|member|sectors
+r_int
+id|sectors
+suffix:semicolon
 DECL|member|state
 r_int
 r_int
