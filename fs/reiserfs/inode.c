@@ -63,9 +63,10 @@ r_struct
 id|reiserfs_transaction_handle
 id|th
 suffix:semicolon
-id|lock_kernel
+id|reiserfs_write_lock
 c_func
 (paren
+id|inode-&gt;i_sb
 )paren
 suffix:semicolon
 multiline_comment|/* The = 0 happens when we abort creating a new inode for some reason like lack of space.. */
@@ -178,9 +179,10 @@ id|inode-&gt;i_blocks
 op_assign
 l_int|0
 suffix:semicolon
-id|unlock_kernel
+id|reiserfs_write_unlock
 c_func
 (paren
+id|inode-&gt;i_sb
 )paren
 suffix:semicolon
 )brace
@@ -1601,9 +1603,10 @@ r_return
 op_minus
 id|EFBIG
 suffix:semicolon
-id|lock_kernel
+id|reiserfs_write_lock
 c_func
 (paren
+id|inode-&gt;i_sb
 )paren
 suffix:semicolon
 multiline_comment|/* do not read the direct item */
@@ -1618,9 +1621,10 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-id|unlock_kernel
+id|reiserfs_write_unlock
 c_func
 (paren
+id|inode-&gt;i_sb
 )paren
 suffix:semicolon
 r_return
@@ -2070,9 +2074,10 @@ op_plus
 l_int|1
 suffix:semicolon
 multiline_comment|/* bad.... */
-id|lock_kernel
+id|reiserfs_write_lock
 c_func
 (paren
+id|inode-&gt;i_sb
 )paren
 suffix:semicolon
 id|th.t_trans_id
@@ -2094,9 +2099,10 @@ OL
 l_int|0
 )paren
 (brace
-id|unlock_kernel
+id|reiserfs_write_unlock
 c_func
 (paren
+id|inode-&gt;i_sb
 )paren
 suffix:semicolon
 r_return
@@ -2116,9 +2122,10 @@ id|block
 )paren
 )paren
 (brace
-id|unlock_kernel
+id|reiserfs_write_unlock
 c_func
 (paren
+id|inode-&gt;i_sb
 )paren
 suffix:semicolon
 r_return
@@ -2157,9 +2164,10 @@ op_or
 id|GET_BLOCK_READ_DIRECT
 )paren
 suffix:semicolon
-id|unlock_kernel
+id|reiserfs_write_unlock
 c_func
 (paren
+id|inode-&gt;i_sb
 )paren
 suffix:semicolon
 r_return
@@ -2645,9 +2653,10 @@ comma
 id|jbegin_count
 )paren
 suffix:semicolon
-id|unlock_kernel
+id|reiserfs_write_unlock
 c_func
 (paren
+id|inode-&gt;i_sb
 )paren
 suffix:semicolon
 multiline_comment|/* the item was found, so new blocks were not added to the file&n;&t;** there is no need to make sure the inode is updated with this &n;&t;** transaction&n;&t;*/
@@ -3416,13 +3425,6 @@ id|retval
 op_assign
 l_int|0
 suffix:semicolon
-id|reiserfs_check_path
-c_func
-(paren
-op_amp
-id|path
-)paren
-suffix:semicolon
 id|failure
 suffix:colon
 r_if
@@ -3458,9 +3460,10 @@ c_func
 id|windex
 )paren
 suffix:semicolon
-id|unlock_kernel
+id|reiserfs_write_unlock
 c_func
 (paren
+id|inode-&gt;i_sb
 )paren
 suffix:semicolon
 id|reiserfs_check_path
@@ -5826,9 +5829,10 @@ id|PF_MEMALLOC
 )paren
 )paren
 (brace
-id|lock_kernel
+id|reiserfs_write_lock
 c_func
 (paren
+id|inode-&gt;i_sb
 )paren
 suffix:semicolon
 id|journal_begin
@@ -5861,9 +5865,10 @@ comma
 id|jbegin_count
 )paren
 suffix:semicolon
-id|unlock_kernel
+id|reiserfs_write_unlock
 c_func
 (paren
+id|inode-&gt;i_sb
 )paren
 suffix:semicolon
 )brace
@@ -7452,8 +7457,10 @@ id|bh
 op_assign
 l_int|NULL
 suffix:semicolon
-id|lock_kernel
+id|reiserfs_write_lock
+c_func
 (paren
+id|p_s_inode-&gt;i_sb
 )paren
 suffix:semicolon
 r_if
@@ -7702,8 +7709,10 @@ id|page
 )paren
 suffix:semicolon
 )brace
-id|unlock_kernel
+id|reiserfs_write_unlock
+c_func
 (paren
+id|p_s_inode-&gt;i_sb
 )paren
 suffix:semicolon
 )brace
@@ -7806,9 +7815,10 @@ id|bh_result-&gt;b_page
 suffix:semicolon
 id|start_over
 suffix:colon
-id|lock_kernel
+id|reiserfs_write_lock
 c_func
 (paren
+id|inode-&gt;i_sb
 )paren
 suffix:semicolon
 id|journal_begin
@@ -8224,9 +8234,10 @@ comma
 id|jbegin_count
 )paren
 suffix:semicolon
-id|unlock_kernel
+id|reiserfs_write_unlock
 c_func
 (paren
+id|inode-&gt;i_sb
 )paren
 suffix:semicolon
 multiline_comment|/* this is where we fill in holes in the file. */
@@ -9021,9 +9032,10 @@ r_struct
 id|reiserfs_transaction_handle
 id|th
 suffix:semicolon
-id|lock_kernel
+id|reiserfs_write_lock
 c_func
 (paren
+id|inode-&gt;i_sb
 )paren
 suffix:semicolon
 id|journal_begin
@@ -9067,9 +9079,10 @@ comma
 l_int|1
 )paren
 suffix:semicolon
-id|unlock_kernel
+id|reiserfs_write_unlock
 c_func
 (paren
+id|inode-&gt;i_sb
 )paren
 suffix:semicolon
 )brace
@@ -9100,9 +9113,10 @@ id|O_SYNC
 )paren
 )paren
 (brace
-id|lock_kernel
+id|reiserfs_write_lock
 c_func
 (paren
+id|inode-&gt;i_sb
 )paren
 suffix:semicolon
 id|reiserfs_commit_for_inode
@@ -9111,9 +9125,10 @@ c_func
 id|inode
 )paren
 suffix:semicolon
-id|unlock_kernel
+id|reiserfs_write_unlock
 c_func
 (paren
+id|inode-&gt;i_sb
 )paren
 suffix:semicolon
 )brace

@@ -11,6 +11,7 @@ macro_line|#include &lt;linux/tqueue.h&gt;
 macro_line|#include &lt;asm/unaligned.h&gt;
 macro_line|#include &lt;linux/bitops.h&gt;
 macro_line|#include &lt;linux/proc_fs.h&gt;
+macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;linux/buffer_head.h&gt;
 macro_line|#include &lt;linux/reiserfs_fs_i.h&gt;
 macro_line|#include &lt;linux/reiserfs_fs_sb.h&gt;
@@ -6443,5 +6444,11 @@ suffix:semicolon
 multiline_comment|/* ioctl&squot;s command */
 DECL|macro|REISERFS_IOC_UNPACK
 mdefine_line|#define REISERFS_IOC_UNPACK&t;&t;_IOW(0xCD,1,long)
+multiline_comment|/* Locking primitives */
+multiline_comment|/* Right now we are still falling back to (un)lock_kernel, but eventually that&n;   would evolve into real per-fs locks */
+DECL|macro|reiserfs_write_lock
+mdefine_line|#define reiserfs_write_lock( sb ) lock_kernel()
+DECL|macro|reiserfs_write_unlock
+mdefine_line|#define reiserfs_write_unlock( sb ) unlock_kernel()
 macro_line|#endif /* _LINUX_REISER_FS_H */
 eof

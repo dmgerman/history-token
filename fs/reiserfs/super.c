@@ -218,9 +218,10 @@ id|dirty
 op_assign
 l_int|0
 suffix:semicolon
-id|lock_kernel
+id|reiserfs_write_lock
 c_func
 (paren
+id|s
 )paren
 suffix:semicolon
 r_if
@@ -249,9 +250,10 @@ id|s-&gt;s_dirt
 op_assign
 id|dirty
 suffix:semicolon
-id|unlock_kernel
+id|reiserfs_write_unlock
 c_func
 (paren
+id|s
 )paren
 suffix:semicolon
 )brace
@@ -275,9 +277,10 @@ r_struct
 id|reiserfs_transaction_handle
 id|th
 suffix:semicolon
-id|lock_kernel
+id|reiserfs_write_lock
 c_func
 (paren
+id|s
 )paren
 suffix:semicolon
 r_if
@@ -353,9 +356,10 @@ id|s-&gt;s_dirt
 op_assign
 id|dirty
 suffix:semicolon
-id|unlock_kernel
+id|reiserfs_write_unlock
 c_func
 (paren
+id|s
 )paren
 suffix:semicolon
 )brace
@@ -2009,9 +2013,10 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
-id|lock_kernel
+id|reiserfs_write_lock
 c_func
 (paren
+id|inode-&gt;i_sb
 )paren
 suffix:semicolon
 multiline_comment|/* this is really only used for atime updates, so they don&squot;t have&n;    ** to be included in O_SYNC or fsync&n;    */
@@ -2045,9 +2050,10 @@ comma
 l_int|1
 )paren
 suffix:semicolon
-id|unlock_kernel
+id|reiserfs_write_unlock
 c_func
 (paren
+id|inode-&gt;i_sb
 )paren
 suffix:semicolon
 )brace
