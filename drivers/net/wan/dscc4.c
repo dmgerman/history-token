@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * drivers/net/wan/dscc4/dscc4.c: a DSCC4 HDLC driver for Linux&n; *&n; * This software may be used and distributed according to the terms of the &n; * GNU General Public License. &n; *&n; * The author may be reached as romieu@cogenit.fr.&n; * Specific bug reports/asian food will be welcome.&n; *&n; * Special thanks to the nice people at CS-Telecom for the hardware and the&n; * access to the test/measure tools.&n; *&n; *&n; *                             Theory of Operation&n; *&n; * I. Board Compatibility&n; *&n; * This device driver is designed for the Siemens PEB20534 4 ports serial&n; * controller as found on Etinc PCISYNC cards. The documentation for the &n; * chipset is available at http://www.infineon.com:&n; * - Data Sheet &quot;DSCC4, DMA Supported Serial Communication Controller with&n; * 4 Channels, PEB 20534 Version 2.1, PEF 20534 Version 2.1&quot;;&n; * - Application Hint &quot;Management of DSCC4 on-chip FIFO resources&quot;.&n; * - Errata sheet DS5 (courtesy of Michael Skerritt).&n; * Jens David has built an adapter based on the same chipset. Take a look&n; * at http://www.afthd.tu-darmstadt.de/~dg1kjd/pciscc4 for a specific&n; * driver.&n; * Sample code (2 revisions) is available at Infineon.&n; *&n; * II. Board-specific settings&n; *&n; * Pcisync can transmit some clock signal to the outside world on the&n; * *first two* ports provided you put a quartz and a line driver on it and&n; * remove the jumpers. The operation is described on Etinc web site. If you&n; * go DCE on these ports, don&squot;t forget to use an adequate cable.&n; *&n; * Sharing of the PCI interrupt line for this board is possible.&n; *&n; * III. Driver operation&n; *&n; * The rx/tx operations are based on a linked list of descriptors. The driver&n; * doesn&squot;t use HOLD mode any more. HOLD mode is definitely buggy and the more &n; * I tried to fix it, the more it started to look like (convoluted) software &n; * mutation of LxDA method. Errata sheet DS5 suggests to use LxDA: consider&n; * this a rfc2119 MUST.&n; *&n; * Tx direction&n; * When the tx ring is full, the xmit routine issues a call to netdev_stop.&n; * The device is supposed to be enabled again during an ALLS irq (we could&n; * use HI but as it&squot;s easy to loose events, it&squot;s fscked).&n; *&n; * Rx direction&n; * The received frames aren&squot;t supposed to span over multiple receiving areas.&n; * I may implement it some day but it isn&squot;t the highest ranked item.&n; *&n; * IV. Notes&n; * The current error (XDU, RFO) recovery code is untested.&n; * So far, RDO takes his RX channel down and the right sequence to enable it&n; * again is still a mistery. If RDO happens, plan a reboot. More details&n; * in the code (NB: as this happens, TX still works).&n; * Don&squot;t mess the cables during operation, especially on DTE ports. I don&squot;t&n; * suggest it for DCE either but at least one can get some messages instead&n; * of a complete instant freeze.&n; * Tests are done on Rev. 20 of the silicium. The RDO handling changes with&n; * the documentation/chipset releases.&n; *&n; * TODO:&n; * - test X25.&n; * - use polling at high irq/s,&n; * - performance analysis,&n; * - endianness.&n; *&n; * 2001/12/10&t;Daniela Squassoni  &lt;daniela@cyclades.com&gt;&n; * - Contribution to support the new generic HDLC layer.&n; *&n; * 2002/01&t;Ueimor&n; * - old style interface removal&n; * - dscc4_release_ring fix (related to DMA mapping)&n; * - hard_start_xmit fix (hint: TxSizeMax)&n; * - misc crapectomy.&n; */
+multiline_comment|/*&n; * drivers/net/wan/dscc4/dscc4.c: a DSCC4 HDLC driver for Linux&n; *&n; * This software may be used and distributed according to the terms of the&n; * GNU General Public License.&n; *&n; * The author may be reached as romieu@cogenit.fr.&n; * Specific bug reports/asian food will be welcome.&n; *&n; * Special thanks to the nice people at CS-Telecom for the hardware and the&n; * access to the test/measure tools.&n; *&n; *&n; *                             Theory of Operation&n; *&n; * I. Board Compatibility&n; *&n; * This device driver is designed for the Siemens PEB20534 4 ports serial&n; * controller as found on Etinc PCISYNC cards. The documentation for the&n; * chipset is available at http://www.infineon.com:&n; * - Data Sheet &quot;DSCC4, DMA Supported Serial Communication Controller with&n; * 4 Channels, PEB 20534 Version 2.1, PEF 20534 Version 2.1&quot;;&n; * - Application Hint &quot;Management of DSCC4 on-chip FIFO resources&quot;.&n; * - Errata sheet DS5 (courtesy of Michael Skerritt).&n; * Jens David has built an adapter based on the same chipset. Take a look&n; * at http://www.afthd.tu-darmstadt.de/~dg1kjd/pciscc4 for a specific&n; * driver.&n; * Sample code (2 revisions) is available at Infineon.&n; *&n; * II. Board-specific settings&n; *&n; * Pcisync can transmit some clock signal to the outside world on the&n; * *first two* ports provided you put a quartz and a line driver on it and&n; * remove the jumpers. The operation is described on Etinc web site. If you&n; * go DCE on these ports, don&squot;t forget to use an adequate cable.&n; *&n; * Sharing of the PCI interrupt line for this board is possible.&n; *&n; * III. Driver operation&n; *&n; * The rx/tx operations are based on a linked list of descriptors. The driver&n; * doesn&squot;t use HOLD mode any more. HOLD mode is definitely buggy and the more&n; * I tried to fix it, the more it started to look like (convoluted) software&n; * mutation of LxDA method. Errata sheet DS5 suggests to use LxDA: consider&n; * this a rfc2119 MUST.&n; *&n; * Tx direction&n; * When the tx ring is full, the xmit routine issues a call to netdev_stop.&n; * The device is supposed to be enabled again during an ALLS irq (we could&n; * use HI but as it&squot;s easy to loose events, it&squot;s fscked).&n; *&n; * Rx direction&n; * The received frames aren&squot;t supposed to span over multiple receiving areas.&n; * I may implement it some day but it isn&squot;t the highest ranked item.&n; *&n; * IV. Notes&n; * The current error (XDU, RFO) recovery code is untested.&n; * So far, RDO takes his RX channel down and the right sequence to enable it&n; * again is still a mistery. If RDO happens, plan a reboot. More details&n; * in the code (NB: as this happens, TX still works).&n; * Don&squot;t mess the cables during operation, especially on DTE ports. I don&squot;t&n; * suggest it for DCE either but at least one can get some messages instead&n; * of a complete instant freeze.&n; * Tests are done on Rev. 20 of the silicium. The RDO handling changes with&n; * the documentation/chipset releases.&n; *&n; * TODO:&n; * - test X25.&n; * - use polling at high irq/s,&n; * - performance analysis,&n; * - endianness.&n; *&n; * 2001/12/10&t;Daniela Squassoni  &lt;daniela@cyclades.com&gt;&n; * - Contribution to support the new generic HDLC layer.&n; *&n; * 2002/01&t;Ueimor&n; * - old style interface removal&n; * - dscc4_release_ring fix (related to DMA mapping)&n; * - hard_start_xmit fix (hint: TxSizeMax)&n; * - misc crapectomy.&n; */
 macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
@@ -173,9 +173,9 @@ mdefine_line|#define DUMMY_SKB_SIZE&t;&t;64
 DECL|macro|TX_LOW
 mdefine_line|#define TX_LOW&t;&t;&t;8
 DECL|macro|TX_RING_SIZE
-mdefine_line|#define TX_RING_SIZE    32
+mdefine_line|#define TX_RING_SIZE&t;&t;32
 DECL|macro|RX_RING_SIZE
-mdefine_line|#define RX_RING_SIZE    32
+mdefine_line|#define RX_RING_SIZE&t;&t;32
 DECL|macro|TX_TOTAL_SIZE
 mdefine_line|#define TX_TOTAL_SIZE&t;&t;TX_RING_SIZE*sizeof(struct TxFD)
 DECL|macro|RX_TOTAL_SIZE
@@ -183,21 +183,21 @@ mdefine_line|#define RX_TOTAL_SIZE&t;&t;RX_RING_SIZE*sizeof(struct RxFD)
 DECL|macro|IRQ_RING_SIZE
 mdefine_line|#define IRQ_RING_SIZE&t;&t;64&t;&t;/* Keep it a multiple of 32 */
 DECL|macro|TX_TIMEOUT
-mdefine_line|#define TX_TIMEOUT      (HZ/10)
+mdefine_line|#define TX_TIMEOUT&t;&t;(HZ/10)
 DECL|macro|DSCC4_HZ_MAX
-mdefine_line|#define DSCC4_HZ_MAX&t;33000000
+mdefine_line|#define DSCC4_HZ_MAX&t;&t;33000000
 DECL|macro|BRR_DIVIDER_MAX
 mdefine_line|#define BRR_DIVIDER_MAX&t;&t;64*0x00004000&t;/* Cf errata DS5 p.10 */
 DECL|macro|dev_per_card
-mdefine_line|#define dev_per_card&t;4
+mdefine_line|#define dev_per_card&t;&t;4
 DECL|macro|SCC_REGISTERS_MAX
 mdefine_line|#define SCC_REGISTERS_MAX&t;23&t;&t;/* Cf errata DS5 p.4 */
 DECL|macro|SOURCE_ID
 mdefine_line|#define SOURCE_ID(flags)&t;(((flags) &gt;&gt; 28) &amp; 0x03)
 DECL|macro|TO_SIZE
-mdefine_line|#define TO_SIZE(state) (((state) &gt;&gt; 16) &amp; 0x1fff)
+mdefine_line|#define TO_SIZE(state)&t;&t;(((state) &gt;&gt; 16) &amp; 0x1fff)
 DECL|macro|TO_STATE
-mdefine_line|#define TO_STATE(len) cpu_to_le32(((len) &amp; TxSizeMax) &lt;&lt; 16)
+mdefine_line|#define TO_STATE(len)&t;&t;cpu_to_le32(((len) &amp; TxSizeMax) &lt;&lt; 16)
 DECL|macro|RX_MAX
 mdefine_line|#define RX_MAX(len)&t;&t;((((len) &gt;&gt; 5) + 1) &lt;&lt; 5)
 DECL|macro|SCC_REG_START
@@ -475,9 +475,9 @@ mdefine_line|#define EncodingMask&t;0x00700000
 DECL|macro|CrcMask
 mdefine_line|#define CrcMask&t;&t;0x00000003
 DECL|macro|IntRxScc0
-mdefine_line|#define IntRxScc0       0x10000000
+mdefine_line|#define IntRxScc0&t;0x10000000
 DECL|macro|IntTxScc0
-mdefine_line|#define IntTxScc0       0x01000000
+mdefine_line|#define IntTxScc0&t;0x01000000
 DECL|macro|TxPollCmd
 mdefine_line|#define TxPollCmd&t;0x00000400
 DECL|macro|RxActivate
@@ -937,7 +937,7 @@ r_int
 id|offset
 )paren
 (brace
-multiline_comment|/*&n;&t; * Thread-UNsafe. &n;&t; * As of 2002/02/16, there are no thread racing for access.&n;&t; */
+multiline_comment|/*&n;&t; * Thread-UNsafe.&n;&t; * As of 2002/02/16, there are no thread racing for access.&n;&t; */
 id|dpriv-&gt;scc_regs
 (braket
 id|offset
@@ -2952,7 +2952,7 @@ op_plus
 id|IQCFG
 )paren
 suffix:semicolon
-multiline_comment|/* &n;&t; * SCC 0-3 private rx/tx irq structures &n;&t; * IQRX/TXi needs to be set soon. Learned it the hard way...&n;&t; */
+multiline_comment|/*&n;&t; * SCC 0-3 private rx/tx irq structures&n;&t; * IQRX/TXi needs to be set soon. Learned it the hard way...&n;&t; */
 r_for
 c_loop
 (paren
@@ -3311,7 +3311,7 @@ id|ENODEV
 suffix:semicolon
 )brace
 suffix:semicolon
-multiline_comment|/* &n; * Let&squot;s hope the default values are decent enough to protect my&n; * feet from the user&squot;s gun - Ueimor&n; */
+multiline_comment|/*&n; * Let&squot;s hope the default values are decent enough to protect my&n; * feet from the user&squot;s gun - Ueimor&n; */
 DECL|function|dscc4_init_registers
 r_static
 r_void
@@ -3359,7 +3359,7 @@ comma
 id|RLCR
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * No address recognition/crc-CCITT/cts enabled &n;&t; * Shared flags transmission disabled - cf errata DS5 p.11 &n;&t; * Carrier detect disabled - cf errata p.14&n;&t; */
+multiline_comment|/*&n;&t; * No address recognition/crc-CCITT/cts enabled&n;&t; * Shared flags transmission disabled - cf errata DS5 p.11&n;&t; * Carrier detect disabled - cf errata p.14&n;&t; */
 id|scc_writel
 c_func
 (paren
@@ -4112,7 +4112,7 @@ l_int|0
 r_goto
 id|err_free_ring
 suffix:semicolon
-multiline_comment|/* &n;&t; * I would expect XPR near CE completion (before ? after ?).&n;&t; * At worst, this code won&squot;t see a late XPR and people&n;&t; * will have to re-issue an ifconfig (this is harmless). &n;&t; * WARNING, a really missing XPR usually means a hardware &n;&t; * reset is needed. Suggestions anyone ?&n;&t; */
+multiline_comment|/*&n;&t; * I would expect XPR near CE completion (before ? after ?).&n;&t; * At worst, this code won&squot;t see a late XPR and people&n;&t; * will have to re-issue an ifconfig (this is harmless).&n;&t; * WARNING, a really missing XPR usually means a hardware&n;&t; * reset is needed. Suggestions anyone ?&n;&t; */
 r_if
 c_cond
 (paren
@@ -4805,7 +4805,7 @@ suffix:semicolon
 )brace
 r_else
 (brace
-multiline_comment|/* &n;&t;&t; * External clock - DTE &n;&t;&t; * &quot;state&quot; already reflects Clock mode 0a. &n;&t;&t; * Nothing more to be done &n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * External clock - DTE&n;&t;&t; * &quot;state&quot; already reflects Clock mode 0a.&n;&t;&t; * Nothing more to be done&n;&t;&t; */
 id|brr
 op_assign
 l_int|0
@@ -6225,7 +6225,7 @@ comma
 l_string|&quot;Alls&quot;
 )paren
 suffix:semicolon
-multiline_comment|/* &n;&t;&t;&t; * DataComplete can&squot;t be trusted for Tx completion.&n;&t;&t;&t; * Cf errata DS5 p.8&n;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t; * DataComplete can&squot;t be trusted for Tx completion.&n;&t;&t;&t; * Cf errata DS5 p.8&n;&t;&t;&t; */
 id|cur
 op_assign
 id|dpriv-&gt;tx_dirty
@@ -6317,7 +6317,7 @@ id|cur
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t;&t;&t; * If the driver ends sending crap on the wire, it&n;&t;&t;&t; * will be way easier to diagnose than the (not so) &n;&t;&t;&t; * random freeze induced by null sized tx frames.&n;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t; * If the driver ends sending crap on the wire, it&n;&t;&t;&t; * will be way easier to diagnose than the (not so)&n;&t;&t;&t; * random freeze induced by null sized tx frames.&n;&t;&t;&t; */
 id|tx_fd-&gt;data
 op_assign
 id|tx_fd-&gt;next
@@ -6357,7 +6357,7 @@ r_goto
 r_try
 suffix:semicolon
 )brace
-multiline_comment|/* &n;&t;&t; * Transmit Data Underrun&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * Transmit Data Underrun&n;&t;&t; */
 r_if
 c_cond
 (paren
@@ -6974,7 +6974,7 @@ id|dpriv-&gt;rx_fd
 op_plus
 id|cur
 suffix:semicolon
-multiline_comment|/*&n;&t;&t;&t; * Presume we&squot;re not facing a DMAC receiver reset. &n;&t;&t;&t; * As We use the rx size-filtering feature of the &n;&t;&t;&t; * DSCC4, the beginning of a new frame is waiting in &n;&t;&t;&t; * the rx fifo. I bet a Receive Data Overflow will &n;&t;&t;&t; * happen most of time but let&squot;s try and avoid it.&n;&t;&t;&t; * Btw (as for RDO) if one experiences ERR whereas&n;&t;&t;&t; * the system looks rather idle, there may be a &n;&t;&t;&t; * problem with latency. In this case, increasing&n;&t;&t;&t; * RX_RING_SIZE may help.&n;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t; * Presume we&squot;re not facing a DMAC receiver reset.&n;&t;&t;&t; * As We use the rx size-filtering feature of the&n;&t;&t;&t; * DSCC4, the beginning of a new frame is waiting in&n;&t;&t;&t; * the rx fifo. I bet a Receive Data Overflow will&n;&t;&t;&t; * happen most of time but let&squot;s try and avoid it.&n;&t;&t;&t; * Btw (as for RDO) if one experiences ERR whereas&n;&t;&t;&t; * the system looks rather idle, there may be a&n;&t;&t;&t; * problem with latency. In this case, increasing&n;&t;&t;&t; * RX_RING_SIZE may help.&n;&t;&t;&t; */
 singleline_comment|//while (dpriv-&gt;rx_needs_refill) {
 r_while
 c_loop
@@ -7317,7 +7317,7 @@ id|dpriv-&gt;flags
 op_or_assign
 id|RdoSet
 suffix:semicolon
-multiline_comment|/* &n;&t;&t;&t; * Let&squot;s try and save something in the received data.&n;&t;&t;&t; * rx_current must be incremented at least once to&n;&t;&t;&t; * avoid HOLD in the BRDA-to-be-pointed desc.&n;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t; * Let&squot;s try and save something in the received data.&n;&t;&t;&t; * rx_current must be incremented at least once to&n;&t;&t;&t; * avoid HOLD in the BRDA-to-be-pointed desc.&n;&t;&t;&t; */
 r_do
 (brace
 id|cur
