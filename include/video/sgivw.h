@@ -1,15 +1,15 @@
-multiline_comment|/*&n; *  linux/drivers/video/sgivwfb.h -- SGI DBE frame buffer device header&n; *&n; *      Copyright (C) 1999 Silicon Graphics, Inc.&n; *      Jeffrey Newquist, newquist@engr.sgi.som&n; *&n; *  This file is subject to the terms and conditions of the GNU General Public&n; *  License. See the file COPYING in the main directory of this archive for&n; *  more details.&n; */
+multiline_comment|/*&n; *  linux/drivers/video/sgivw.h -- SGI DBE frame buffer device header&n; *&n; *      Copyright (C) 1999 Silicon Graphics, Inc.&n; *      Jeffrey Newquist, newquist@engr.sgi.som&n; *&n; *  This file is subject to the terms and conditions of the GNU General Public&n; *  License. See the file COPYING in the main directory of this archive for&n; *  more details.&n; */
 macro_line|#ifndef __SGIVWFB_H__
 DECL|macro|__SGIVWFB_H__
 mdefine_line|#define __SGIVWFB_H__
 DECL|macro|DBE_GETREG
-mdefine_line|#define DBE_GETREG(reg, dest)       ((dest) = DBE_REG_BASE-&gt;##reg)
+mdefine_line|#define DBE_GETREG(reg, dest)&t;&t;((dest) = DBE_REG_BASE-&gt;reg)
 DECL|macro|DBE_SETREG
-mdefine_line|#define DBE_SETREG(reg, src)        DBE_REG_BASE-&gt;##reg = (src)
+mdefine_line|#define DBE_SETREG(reg, src)&t;&t;DBE_REG_BASE-&gt;reg = (src)
 DECL|macro|DBE_IGETREG
-mdefine_line|#define DBE_IGETREG(reg, idx, dest) ((dest) = DBE_REG_BASE-&gt;##reg##[idx])
+mdefine_line|#define DBE_IGETREG(reg, idx, dest)&t;((dest) = DBE_REG_BASE-&gt;reg[idx])
 DECL|macro|DBE_ISETREG
-mdefine_line|#define DBE_ISETREG(reg, idx, src)  (DBE_REG_BASE-&gt;##reg##[idx] = (src))
+mdefine_line|#define DBE_ISETREG(reg, idx, src)&t;(DBE_REG_BASE-&gt;reg[idx] = (src))
 DECL|macro|MASK
 mdefine_line|#define MASK(msb, lsb)          ( (((u32)1&lt;&lt;((msb)-(lsb)+1))-1) &lt;&lt; (lsb) )
 DECL|macro|GET
@@ -25,8 +25,9 @@ DECL|macro|DBE_REG_PHYS
 mdefine_line|#define DBE_REG_PHYS&t;0xd0000000
 DECL|macro|DBE_REG_SIZE
 mdefine_line|#define DBE_REG_SIZE        0x01000000
-r_typedef
+DECL|struct|asregs
 r_struct
+id|asregs
 (brace
 DECL|member|ctrlstat
 r_volatile
@@ -484,9 +485,7 @@ id|u32
 id|vc_8
 suffix:semicolon
 multiline_comment|/* 0x08000c video capture crtl 3 */
-DECL|typedef|asregs
 )brace
-id|asregs
 suffix:semicolon
 multiline_comment|/* Bit mask information */
 DECL|macro|DBE_CTRLSTAT_CHIPID_MSB
@@ -521,6 +520,30 @@ DECL|macro|DBE_VT_XY_VT_FREEZE_MSB
 mdefine_line|#define DBE_VT_XY_VT_FREEZE_MSB     31
 DECL|macro|DBE_VT_XY_VT_FREEZE_LSB
 mdefine_line|#define DBE_VT_XY_VT_FREEZE_LSB     31
+DECL|macro|DBE_FP_VDRV_FP_VDRV_ON_MSB
+mdefine_line|#define DBE_FP_VDRV_FP_VDRV_ON_MSB&t;23
+DECL|macro|DBE_FP_VDRV_FP_VDRV_ON_LSB
+mdefine_line|#define DBE_FP_VDRV_FP_VDRV_ON_LSB&t;12
+DECL|macro|DBE_FP_VDRV_FP_VDRV_OFF_MSB
+mdefine_line|#define DBE_FP_VDRV_FP_VDRV_OFF_MSB&t;11
+DECL|macro|DBE_FP_VDRV_FP_VDRV_OFF_LSB
+mdefine_line|#define DBE_FP_VDRV_FP_VDRV_OFF_LSB&t;0
+DECL|macro|DBE_FP_HDRV_FP_HDRV_ON_MSB
+mdefine_line|#define DBE_FP_HDRV_FP_HDRV_ON_MSB&t;23
+DECL|macro|DBE_FP_HDRV_FP_HDRV_ON_LSB
+mdefine_line|#define DBE_FP_HDRV_FP_HDRV_ON_LSB&t;12
+DECL|macro|DBE_FP_HDRV_FP_HDRV_OFF_MSB
+mdefine_line|#define DBE_FP_HDRV_FP_HDRV_OFF_MSB&t;11
+DECL|macro|DBE_FP_HDRV_FP_HDRV_OFF_LSB
+mdefine_line|#define DBE_FP_HDRV_FP_HDRV_OFF_LSB&t;0
+DECL|macro|DBE_FP_DE_FP_DE_ON_MSB
+mdefine_line|#define DBE_FP_DE_FP_DE_ON_MSB&t;&t;23
+DECL|macro|DBE_FP_DE_FP_DE_ON_LSB
+mdefine_line|#define DBE_FP_DE_FP_DE_ON_LSB&t;&t;12
+DECL|macro|DBE_FP_DE_FP_DE_OFF_MSB
+mdefine_line|#define DBE_FP_DE_FP_DE_OFF_MSB&t;&t;11
+DECL|macro|DBE_FP_DE_FP_DE_OFF_LSB
+mdefine_line|#define DBE_FP_DE_FP_DE_OFF_LSB&t;&t;0
 DECL|macro|DBE_VT_VSYNC_VT_VSYNC_ON_MSB
 mdefine_line|#define DBE_VT_VSYNC_VT_VSYNC_ON_MSB        23
 DECL|macro|DBE_VT_VSYNC_VT_VSYNC_ON_LSB
@@ -553,6 +576,14 @@ DECL|macro|DBE_VT_HBLANK_VT_HBLANK_OFF_MSB
 mdefine_line|#define DBE_VT_HBLANK_VT_HBLANK_OFF_MSB       11
 DECL|macro|DBE_VT_HBLANK_VT_HBLANK_OFF_LSB
 mdefine_line|#define DBE_VT_HBLANK_VT_HBLANK_OFF_LSB       0
+DECL|macro|DBE_VT_FLAGS_VDRV_INVERT_MSB
+mdefine_line|#define DBE_VT_FLAGS_VDRV_INVERT_MSB&t;&t;0
+DECL|macro|DBE_VT_FLAGS_VDRV_INVERT_LSB
+mdefine_line|#define DBE_VT_FLAGS_VDRV_INVERT_LSB&t;&t;0
+DECL|macro|DBE_VT_FLAGS_HDRV_INVERT_MSB
+mdefine_line|#define DBE_VT_FLAGS_HDRV_INVERT_MSB&t;&t;2
+DECL|macro|DBE_VT_FLAGS_HDRV_INVERT_LSB
+mdefine_line|#define DBE_VT_FLAGS_HDRV_INVERT_LSB&t;&t;2
 DECL|macro|DBE_VT_VCMAP_VT_VCMAP_ON_MSB
 mdefine_line|#define DBE_VT_VCMAP_VT_VCMAP_ON_MSB        23
 DECL|macro|DBE_VT_VCMAP_VT_VCMAP_ON_LSB
@@ -708,6 +739,8 @@ DECL|macro|DBE_BMODE_BOTH
 mdefine_line|#define DBE_BMODE_BOTH      3
 DECL|macro|DBE_CRS_MAGIC
 mdefine_line|#define DBE_CRS_MAGIC       54
+DECL|macro|DBE_CLOCK_REF_KHZ
+mdefine_line|#define DBE_CLOCK_REF_KHZ&t;27000
 multiline_comment|/* Config Register (DBE Only) Definitions */
 DECL|macro|DBE_CONFIG_VDAC_ENABLE
 mdefine_line|#define DBE_CONFIG_VDAC_ENABLE       0x00000001
@@ -809,7 +842,6 @@ id|dbe_timing_t
 suffix:semicolon
 multiline_comment|/*&n; * Crime Video Timing Data Structure&n; */
 DECL|struct|dbe_timing_info
-r_typedef
 r_struct
 id|dbe_timing_info
 (brace
@@ -905,9 +937,7 @@ r_int
 id|pll_p
 suffix:semicolon
 multiline_comment|/* PLL N parameter&t;&t;*/
-DECL|typedef|dbe_timing_info_t
 )brace
-id|dbe_timing_info_t
 suffix:semicolon
 multiline_comment|/* Defines for dbe_vof_info_t flags */
 DECL|macro|DBE_VOF_UNKNOWNMON
