@@ -2748,6 +2748,11 @@ id|lo_flags
 op_or_assign
 id|LO_FLAGS_READ_ONLY
 suffix:semicolon
+id|error
+op_assign
+op_minus
+id|EINVAL
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -2824,11 +2829,6 @@ op_assign
 id|mapping-&gt;a_ops
 suffix:semicolon
 multiline_comment|/*&n;&t;&t; * If we can&squot;t read - sorry. If we only can&squot;t write - well,&n;&t;&t; * it&squot;s going to be read-only.&n;&t;&t; */
-id|error
-op_assign
-op_minus
-id|EINVAL
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -2858,10 +2858,6 @@ suffix:semicolon
 id|lo_flags
 op_or_assign
 id|LO_FLAGS_DO_BMAP
-suffix:semicolon
-id|error
-op_assign
-l_int|0
 suffix:semicolon
 )brace
 r_else
