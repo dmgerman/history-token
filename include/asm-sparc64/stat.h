@@ -5,9 +5,9 @@ mdefine_line|#define _SPARC64_STAT_H
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/compat.h&gt;
 macro_line|#include &lt;linux/time.h&gt;
-DECL|struct|stat32
+DECL|struct|compat_stat
 r_struct
-id|stat32
+id|compat_stat
 (brace
 DECL|member|st_dev
 id|__kernel_dev_t32
