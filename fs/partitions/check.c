@@ -21,7 +21,7 @@ macro_line|#include &quot;sun.h&quot;
 macro_line|#include &quot;ibm.h&quot;
 macro_line|#include &quot;ultrix.h&quot;
 macro_line|#include &quot;efi.h&quot;
-macro_line|#if CONFIG_BLK_DEV_MD
+macro_line|#ifdef CONFIG_BLK_DEV_MD
 r_extern
 r_void
 id|md_autodetect_dev
@@ -1540,7 +1540,7 @@ comma
 id|size
 )paren
 suffix:semicolon
-macro_line|#if CONFIG_BLK_DEV_MD
+macro_line|#ifdef CONFIG_BLK_DEV_MD
 r_if
 c_cond
 (paren
@@ -1753,7 +1753,7 @@ comma
 id|size
 )paren
 suffix:semicolon
-macro_line|#if CONFIG_BLK_DEV_MD
+macro_line|#ifdef CONFIG_BLK_DEV_MD
 r_if
 c_cond
 (paren

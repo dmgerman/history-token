@@ -1420,7 +1420,7 @@ comma
 id|flags
 )paren
 suffix:semicolon
-macro_line|#if CONFIG_ARCH_SA1100
+macro_line|#ifdef CONFIG_ARCH_SA1100
 multiline_comment|/*&n;&t; * First, set up the 3.6864MHz clock on GPIO 27 for the SA-1111:&n;&t; * (SA-1110 Developer&squot;s Manual, section 9.1.2.1)&n;&t; */
 id|GAFR
 op_or_assign

@@ -145,7 +145,7 @@ id|irq
 )paren
 (brace
 multiline_comment|/*&n; * &squot;what should we do if we get a hw irq event on an illegal vector&squot;.&n; * each architecture has to answer this themselves, it doesn&squot;t deserve&n; * a generic callback i think.&n; */
-macro_line|#if CONFIG_X86
+macro_line|#ifdef CONFIG_X86
 id|printk
 c_func
 (paren
@@ -526,7 +526,7 @@ comma
 l_char|&squot;&bslash;n&squot;
 )paren
 suffix:semicolon
-macro_line|#if CONFIG_X86_LOCAL_APIC
+macro_line|#ifdef CONFIG_X86_LOCAL_APIC
 id|seq_printf
 c_func
 (paren
@@ -2596,7 +2596,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-macro_line|#if CONFIG_SMP
+macro_line|#ifdef CONFIG_SMP
 DECL|variable|smp_affinity_entry
 r_static
 r_struct
@@ -3021,7 +3021,7 @@ comma
 id|root_irq_dir
 )paren
 suffix:semicolon
-macro_line|#if CONFIG_SMP
+macro_line|#ifdef CONFIG_SMP
 (brace
 r_struct
 id|proc_dir_entry

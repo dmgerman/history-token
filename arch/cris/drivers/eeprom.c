@@ -321,7 +321,7 @@ id|eeprom.busy
 op_assign
 l_int|0
 suffix:semicolon
-macro_line|#if CONFIG_ETRAX_I2C_EEPROM_PROBE
+macro_line|#ifdef CONFIG_ETRAX_I2C_EEPROM_PROBE
 DECL|macro|EETEXT
 mdefine_line|#define EETEXT &quot;Found&quot;
 macro_line|#else
@@ -381,7 +381,7 @@ id|eeprom.adapt_state
 op_assign
 l_int|0
 suffix:semicolon
-macro_line|#if CONFIG_ETRAX_I2C_EEPROM_PROBE
+macro_line|#ifdef CONFIG_ETRAX_I2C_EEPROM_PROBE
 id|i2c_start
 c_func
 (paren

@@ -117,7 +117,7 @@ id|irq
 )paren
 (brace
 multiline_comment|/*&n; * &squot;what should we do if we get a hw irq event on an illegal vector&squot;.&n; * each architecture has to answer this themselves, it doesn&squot;t deserve&n; * a generic callback i think.&n; */
-macro_line|#if CONFIG_X86
+macro_line|#ifdef CONFIG_X86
 id|printk
 c_func
 (paren
@@ -456,7 +456,7 @@ l_string|&quot;&bslash;n&quot;
 )paren
 suffix:semicolon
 macro_line|#ifdef notdef
-macro_line|#if CONFIG_SMP
+macro_line|#ifdef CONFIG_SMP
 id|p
 op_add_assign
 id|sprintf
@@ -710,7 +710,7 @@ id|flags
 )paren
 suffix:semicolon
 )brace
-macro_line|#if CONFIG_SMP
+macro_line|#ifdef CONFIG_SMP
 DECL|function|synchronize_irq
 r_inline
 r_void
@@ -2147,7 +2147,7 @@ op_amp
 id|new_value
 )paren
 suffix:semicolon
-macro_line|#if CONFIG_SMP
+macro_line|#ifdef CONFIG_SMP
 multiline_comment|/*&n;&t; * Do not allow disabling IRQs completely - it&squot;s a too easy&n;&t; * way to make the system unusable accidentally :-) At least&n;&t; * one online CPU still has to be targeted.&n;&t; */
 r_if
 c_cond

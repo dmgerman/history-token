@@ -108,7 +108,7 @@ mdefine_line|#define hardirq_endlock()       do { } while (0)
 macro_line|#ifndef CONFIG_SMP
 DECL|macro|irq_enter
 mdefine_line|#define irq_enter()             (preempt_count() += HARDIRQ_OFFSET)
-macro_line|#if CONFIG_PREEMPT
+macro_line|#ifdef CONFIG_PREEMPT
 DECL|macro|in_atomic
 macro_line|# define in_atomic()&t;(preempt_count() != kernel_locked())
 DECL|macro|IRQ_EXIT_OFFSET
@@ -133,7 +133,7 @@ mdefine_line|#define local_irq_count(cpu)&t;(__brlock_array[cpu][BR_GLOBALIRQ_LO
 DECL|macro|irq_exit
 mdefine_line|#define irq_exit()&t;&t;br_read_unlock(BR_GLOBALIRQ_LOCK)
 macro_line|#endif
-macro_line|#if CONFIG_PREEMPT
+macro_line|#ifdef CONFIG_PREEMPT
 DECL|macro|in_atomic
 macro_line|# define in_atomic()&t;(preempt_count() != kernel_locked())
 macro_line|#else

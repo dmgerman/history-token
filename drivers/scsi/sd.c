@@ -2764,7 +2764,7 @@ suffix:semicolon
 id|sector_t
 id|error_sector
 suffix:semicolon
-macro_line|#if CONFIG_SCSI_LOGGING
+macro_line|#ifdef CONFIG_SCSI_LOGGING
 id|SCSI_LOG_HLCOMPLETE
 c_func
 (paren

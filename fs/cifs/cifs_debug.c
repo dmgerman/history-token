@@ -228,7 +228,7 @@ id|line
 suffix:semicolon
 )brace
 )brace
-macro_line|#if CONFIG_PROC_FS
+macro_line|#ifdef CONFIG_PROC_FS
 r_int
 DECL|function|cifs_debug_data_read
 id|cifs_debug_data_read

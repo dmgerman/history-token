@@ -3690,7 +3690,7 @@ suffix:semicolon
 )brace
 macro_line|#endif
 multiline_comment|/* Probe for Sedlbauer speed pci */
-macro_line|#if CONFIG_PCI
+macro_line|#ifdef CONFIG_PCI
 id|dev_sedl
 op_assign
 id|pci_find_device

@@ -3884,7 +3884,7 @@ id|GFP_ATOMIC
 r_goto
 id|out_kfree
 suffix:semicolon
-macro_line|#if CONFIG_SMP
+macro_line|#ifdef CONFIG_SMP
 multiline_comment|/* Old protocols did not depened on BHs different of NET_BH and&n;&t;   TIMER_BH - they need to be fixed for the new assumptions.&n;&t; */
 id|print_symbol
 c_func

@@ -1263,7 +1263,7 @@ suffix:semicolon
 )brace
 )brace
 multiline_comment|/* Notify the peer(s), assuming we have (an) association(s).&n;&t; * FIXME: for UDP, we have a 1-1-many mapping amongst sk, ep and asoc,&n;&t; *        so we don&squot;t have to do much work on locating associations.&n;&t; *&n;&t; * However, when the separation of ep and asoc kicks in, especially&n;&t; * for TCP style connection, it becomes n-1-n mapping.  We will need&n;&t; * to do more fine work.  Until then, hold my peace.&n;&t; *&t;&t;&t;&t;&t;&t;&t;--xguo&n;&t; *&n;&t; * Really, I don&squot;t think that will be a problem.  The bind()&n;&t; * call on a socket will either know the endpoint&n;&t; * (e.g. TCP-style listen()ing socket, or UDP-style socket),&n;&t; * or exactly one association.  The former case is EXACTLY&n;&t; * what we have now.  In the former case we know the&n;&t; * association already.&t;&t;&t;&t;&t;--piggy&n;&t; *&n;&t; * This code will be working on either a UDP style or a TCP style&n;&t; * socket, or say either an endpoint or an association. The socket&n;&t; * type verification code need to be added later before calling the&n;&t; * ADDIP code.&n;&t; * &t;&t;&t;&t;&t;&t;&t;--daisy&n;&t; */
-macro_line|#if CONFIG_IP_SCTP_ADDIP
+macro_line|#ifdef CONFIG_IP_SCTP_ADDIP
 multiline_comment|/* Add these addresses to all associations on this endpoint.  */
 r_if
 c_cond
@@ -1641,7 +1641,7 @@ suffix:semicolon
 )brace
 )brace
 multiline_comment|/*&n;&t; * This code will be working on either a UDP style or a TCP style&n;&t; * socket, * or say either an endpoint or an association. The socket&n;&t; * type verification code need to be added later before calling the&n;&t; * ADDIP code.&n;&t; * &t;&t;&t;&t;&t;&t;&t;--daisy&n;&t; */
-macro_line|#if CONFIG_IP_SCTP_ADDIP
+macro_line|#ifdef CONFIG_IP_SCTP_ADDIP
 multiline_comment|/* Remove these addresses from all associations on this endpoint.  */
 r_if
 c_cond

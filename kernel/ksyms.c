@@ -2379,7 +2379,7 @@ c_func
 id|__wake_up
 )paren
 suffix:semicolon
-macro_line|#if CONFIG_SMP
+macro_line|#ifdef CONFIG_SMP
 DECL|variable|__wake_up_sync
 id|EXPORT_SYMBOL_GPL
 c_func
@@ -2482,7 +2482,7 @@ c_func
 id|idle_cpu
 )paren
 suffix:semicolon
-macro_line|#if CONFIG_SMP
+macro_line|#ifdef CONFIG_SMP
 DECL|variable|set_cpus_allowed
 id|EXPORT_SYMBOL_GPL
 c_func
@@ -2491,7 +2491,7 @@ id|set_cpus_allowed
 )paren
 suffix:semicolon
 macro_line|#endif
-macro_line|#if CONFIG_SMP || CONFIG_PREEMPT
+macro_line|#if defined(CONFIG_SMP) || defined(CONFIG_PREEMPT)
 DECL|variable|kernel_flag
 id|EXPORT_SYMBOL
 c_func

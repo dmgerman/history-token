@@ -406,7 +406,7 @@ r_return
 id|sdev-&gt;online
 suffix:semicolon
 )brace
-macro_line|#if CONFIG_SCSI_LOGGING
+macro_line|#ifdef CONFIG_SCSI_LOGGING
 multiline_comment|/**&n; * scsi_eh_prt_fail_stats - Log info on failures.&n; * @shost:&t;scsi host being recovered.&n; * @work_q:&t;Queue of scsi cmds to process.&n; **/
 DECL|function|scsi_eh_prt_fail_stats
 r_static
