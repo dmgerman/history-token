@@ -15,9 +15,6 @@ macro_line|#include &lt;linux/selection.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/nvram.h&gt;
-macro_line|#ifdef CONFIG_FB_COMPAT_XPMAC
-macro_line|#include &lt;asm/vc_ioctl.h&gt;
-macro_line|#endif
 macro_line|#include &lt;linux/adb.h&gt;
 macro_line|#include &lt;linux/cuda.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
@@ -1715,19 +1712,6 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-macro_line|#ifdef CONFIG_FB_COMPAT_XPMAC
-r_extern
-r_struct
-id|vc_mode
-id|display_info
-suffix:semicolon
-r_extern
-r_struct
-id|fb_info
-op_star
-id|console_fb_info
-suffix:semicolon
-macro_line|#endif /* CONFIG_FB_COMPAT_XPMAC */
 DECL|function|valkyrie_vram_reqd
 r_static
 r_int
@@ -2393,89 +2377,6 @@ comma
 id|init-&gt;mode
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_FB_COMPAT_XPMAC
-multiline_comment|/* And let the world know the truth. */
-r_if
-c_cond
-(paren
-op_logical_neg
-id|console_fb_info
-op_logical_or
-id|console_fb_info
-op_eq
-op_amp
-id|p-&gt;info
-)paren
-(brace
-id|display_info.height
-op_assign
-id|p-&gt;var.yres
-suffix:semicolon
-id|display_info.width
-op_assign
-id|p-&gt;var.xres
-suffix:semicolon
-id|display_info.depth
-op_assign
-(paren
-id|cmode
-op_eq
-id|CMODE_16
-)paren
-ques
-c_cond
-l_int|16
-suffix:colon
-l_int|8
-suffix:semicolon
-id|display_info.pitch
-op_assign
-id|p-&gt;fix.line_length
-suffix:semicolon
-id|display_info.mode
-op_assign
-id|vmode
-suffix:semicolon
-id|strncpy
-c_func
-(paren
-id|display_info.name
-comma
-l_string|&quot;valkyrie&quot;
-comma
-r_sizeof
-(paren
-id|display_info.name
-)paren
-)paren
-suffix:semicolon
-id|display_info.fb_address
-op_assign
-id|p-&gt;frame_buffer_phys
-op_plus
-l_int|0x1000
-suffix:semicolon
-id|display_info.cmap_adr_address
-op_assign
-id|p-&gt;cmap_regs_phys
-suffix:semicolon
-id|display_info.cmap_data_address
-op_assign
-id|p-&gt;cmap_regs_phys
-op_plus
-l_int|8
-suffix:semicolon
-id|display_info.disp_reg_address
-op_assign
-id|p-&gt;valkyrie_regs_phys
-suffix:semicolon
-id|console_fb_info
-op_assign
-op_amp
-id|p-&gt;info
-suffix:semicolon
-)brace
-macro_line|#endif /* CONFIG_FB_COMPAT_XPMAC */
 )brace
 DECL|function|valkyriefb_init
 r_int

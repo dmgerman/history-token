@@ -1199,7 +1199,7 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|function|tx3912fb_setup
-r_int
+r_void
 id|__init
 id|tx3912fb_setup
 c_func

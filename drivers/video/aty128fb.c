@@ -34,9 +34,6 @@ macro_line|#endif
 macro_line|#ifdef CONFIG_PMAC_BACKLIGHT
 macro_line|#include &lt;asm/backlight.h&gt;
 macro_line|#endif
-macro_line|#ifdef CONFIG_FB_COMPAT_XPMAC
-macro_line|#include &lt;asm/vc_ioctl.h&gt;
-macro_line|#endif
 macro_line|#ifdef CONFIG_BOOTX_TEXT
 macro_line|#include &lt;asm/btext.h&gt;
 macro_line|#endif /* CONFIG_BOOTX_TEXT */
@@ -48,7 +45,7 @@ macro_line|#include &lt;video/fbcon-cfb32.h&gt;
 macro_line|#ifdef CONFIG_MTRR
 macro_line|#include &lt;asm/mtrr.h&gt;
 macro_line|#endif
-macro_line|#include &quot;aty128.h&quot;
+macro_line|#include &lt;video/aty128.h&gt;
 multiline_comment|/* Debug flag */
 DECL|macro|DEBUG
 macro_line|#undef DEBUG
@@ -5444,136 +5441,6 @@ comma
 id|info
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_FB_COMPAT_XPMAC
-r_if
-c_cond
-(paren
-op_logical_neg
-id|console_fb_info
-op_logical_or
-id|console_fb_info
-op_eq
-op_amp
-id|info-&gt;fb_info
-)paren
-(brace
-r_struct
-id|fb_var_screeninfo
-id|var
-suffix:semicolon
-r_int
-id|cmode
-comma
-id|vmode
-suffix:semicolon
-id|display_info.height
-op_assign
-(paren
-(paren
-id|par-&gt;crtc.v_total
-op_rshift
-l_int|16
-)paren
-op_amp
-l_int|0x7ff
-)paren
-op_plus
-l_int|1
-suffix:semicolon
-id|display_info.width
-op_assign
-(paren
-(paren
-(paren
-id|par-&gt;crtc.h_total
-op_rshift
-l_int|16
-)paren
-op_amp
-l_int|0xff
-)paren
-op_plus
-l_int|1
-)paren
-op_lshift
-l_int|3
-suffix:semicolon
-id|display_info.depth
-op_assign
-id|par-&gt;crtc.bpp
-suffix:semicolon
-id|display_info.pitch
-op_assign
-(paren
-id|par-&gt;crtc.vxres
-op_star
-id|par-&gt;crtc.bpp
-)paren
-op_rshift
-l_int|3
-suffix:semicolon
-id|aty128_encode_var
-c_func
-(paren
-op_amp
-id|var
-comma
-id|par
-comma
-id|info
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|mac_var_to_vmode
-c_func
-(paren
-op_amp
-id|var
-comma
-op_amp
-id|vmode
-comma
-op_amp
-id|cmode
-)paren
-)paren
-id|display_info.mode
-op_assign
-l_int|0
-suffix:semicolon
-r_else
-id|display_info.mode
-op_assign
-id|vmode
-suffix:semicolon
-id|strcpy
-c_func
-(paren
-id|display_info.name
-comma
-id|aty128fb_name
-)paren
-suffix:semicolon
-id|display_info.fb_address
-op_assign
-id|info-&gt;frame_buffer_phys
-suffix:semicolon
-id|display_info.cmap_adr_address
-op_assign
-l_int|0
-suffix:semicolon
-id|display_info.cmap_data_address
-op_assign
-l_int|0
-suffix:semicolon
-id|display_info.disp_reg_address
-op_assign
-id|info-&gt;regbase_phys
-suffix:semicolon
-)brace
-macro_line|#endif /* CONFIG_FB_COMPAT_XPMAC */
 macro_line|#if defined(CONFIG_BOOTX_TEXT)
 id|btext_update_display
 c_func
@@ -7940,6 +7807,11 @@ suffix:semicolon
 id|size
 op_assign
 (paren
+id|fb_display
+(braket
+id|con
+)braket
+dot
 id|var.bits_per_pixel
 op_le
 l_int|8
@@ -7953,7 +7825,6 @@ suffix:semicolon
 id|fb_alloc_cmap
 c_func
 (paren
-op_amp
 id|info-&gt;fb_info.cmap
 comma
 id|size
@@ -8592,19 +8463,6 @@ l_string|&quot;aty128fb: Rage128 MTRR set to ON&bslash;n&quot;
 suffix:semicolon
 )brace
 macro_line|#endif /* CONFIG_MTRR */
-macro_line|#ifdef CONFIG_FB_COMPAT_XPMAC
-r_if
-c_cond
-(paren
-op_logical_neg
-id|console_fb_info
-)paren
-id|console_fb_info
-op_assign
-op_amp
-id|info-&gt;fb_info
-suffix:semicolon
-macro_line|#endif
 r_return
 l_int|0
 suffix:semicolon

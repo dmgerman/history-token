@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * linux/drivers/video/sstfb.h -- voodoo graphics frame buffer&n; *&n; *     Copyright (c) 2000,2001 Ghozlane Toumi &lt;gtoumi@messel.emse.fr&gt;&n; *&n; *     Created 28 Aug 2001 by Ghozlane Toumi&n; *&n; * $Id: sstfb.h,v 1.1.4.1 2001/08/29 01:30:38 ghoz Exp $&n; */
+multiline_comment|/*&n; * linux/drivers/video/sstfb.h -- voodoo graphics frame buffer&n; *&n; *     Copyright (c) 2000,2001 Ghozlane Toumi &lt;gtoumi@messel.emse.fr&gt;&n; *&n; *     Created 28 Aug 2001 by Ghozlane Toumi&n; *&n; * $Id: sstfb.h,v 1.8 2002/05/10 19:35:11 ghoz Exp $&n; */
 macro_line|#ifndef _SSTFB_H_
 DECL|macro|_SSTFB_H_
 mdefine_line|#define _SSTFB_H_
@@ -71,11 +71,13 @@ mdefine_line|#define iprintk(X...)&t;printk(KERN_INFO &quot;sstfb: &quot; X)
 DECL|macro|wprintk
 mdefine_line|#define wprintk(X...)&t;printk(KERN_WARNING &quot;sstfb: &quot; X)
 DECL|macro|BIT
-mdefine_line|#define BIT(x)&t;&t;(1ul &lt;&lt; (x))
+mdefine_line|#define BIT(x)&t;&t;(1ul&lt;&lt;(x))
 DECL|macro|PS2KHZ
 mdefine_line|#define PS2KHZ(a)&t;(1000000000UL/(a))&t;/* picoseconds to KHz */
 DECL|macro|KHZ2PS
 mdefine_line|#define KHZ2PS(a)&t;(1000000000UL/(a))
+DECL|macro|POW2
+mdefine_line|#define POW2(x)&t;&t;(1ul&lt;&lt;(x))
 macro_line|#ifndef ABS
 DECL|macro|ABS
 macro_line|# define ABS(x)&t;&t;(((x)&lt;0)?-(x):(x))
@@ -242,12 +244,24 @@ DECL|macro|DAC_READ_CMD
 macro_line|#  define DAC_READ_CMD&t;&t;  BIT(11)&t;/* set read dacreg mode */
 DECL|macro|FBIINIT5
 mdefine_line|#define FBIINIT5&t;&t;0x0244&t;&t;/* v2 specific */
+DECL|macro|FBIINIT5_MASK
+macro_line|#  define FBIINIT5_MASK&t;&t;  0xfa40ffff    /* mask video bits*/
+DECL|macro|HDOUBLESCAN
+macro_line|#  define HDOUBLESCAN&t;&t;  BIT(20)
+DECL|macro|VDOUBLESCAN
+macro_line|#  define VDOUBLESCAN&t;&t;  BIT(21)
+DECL|macro|HSYNC_HIGH
+macro_line|#  define HSYNC_HIGH &t;&t;  BIT(23)
+DECL|macro|VSYNC_HIGH
+macro_line|#  define VSYNC_HIGH &t;&t;  BIT(24)
+DECL|macro|INTERLACE
+macro_line|#  define INTERLACE&t;&t;  BIT(26)
 DECL|macro|FBIINIT6
 mdefine_line|#define FBIINIT6&t;&t;0x0248&t;&t;/* v2 specific */
-DECL|macro|FBIINIT7
-mdefine_line|#define FBIINIT7&t;&t;0x024c&t;&t;/* v2 specific */
 DECL|macro|TILES_IN_X_LSB_SHIFT
 macro_line|#  define TILES_IN_X_LSB_SHIFT&t;  30&t;&t;/* v2 */
+DECL|macro|FBIINIT7
+mdefine_line|#define FBIINIT7&t;&t;0x024c&t;&t;/* v2 specific */
 multiline_comment|/* Dac Registers */
 DECL|macro|DACREG_WMA
 mdefine_line|#define DACREG_WMA&t;&t;0x0&t;/* pixel write mode address */
@@ -351,33 +365,49 @@ DECL|macro|FBIINIT6_DEFAULT
 mdefine_line|#define FBIINIT6_DEFAULT&t;(0x0)
 multiline_comment|/*&n; *&n; * Misc Const&n; *&n; */
 multiline_comment|/* used to know witch clock to set */
-DECL|macro|VID_CLOCK
-mdefine_line|#define VID_CLOCK&t;0
-DECL|macro|GFX_CLOCK
-mdefine_line|#define GFX_CLOCK&t;1
+r_enum
+(brace
+DECL|enumerator|VID_CLOCK
+id|VID_CLOCK
+op_assign
+l_int|0
+comma
+DECL|enumerator|GFX_CLOCK
+id|GFX_CLOCK
+op_assign
+l_int|1
+comma
+)brace
+suffix:semicolon
 multiline_comment|/* freq max */
 DECL|macro|DAC_FREF
 mdefine_line|#define DAC_FREF&t;14318&t;/* DAC reference freq (Khz) */
 DECL|macro|VCO_MAX
 mdefine_line|#define VCO_MAX&t;&t;260000
-multiline_comment|/*&n; *&n; *  Declarations&n; *&n; */
+multiline_comment|/*&n; *  driver structs&n; */
 DECL|struct|pll_timing
 r_struct
 id|pll_timing
 (brace
 DECL|member|m
-id|u8
+r_int
+r_int
 id|m
 suffix:semicolon
 DECL|member|n
-id|u8
+r_int
+r_int
 id|n
 suffix:semicolon
 DECL|member|p
-id|u8
+r_int
+r_int
 id|p
 suffix:semicolon
 )brace
+suffix:semicolon
+r_struct
+id|sstfb_info
 suffix:semicolon
 DECL|struct|dac_switch
 r_struct
@@ -395,7 +425,10 @@ op_star
 id|detect
 )paren
 (paren
-r_void
+r_struct
+id|sstfb_info
+op_star
+id|sst_info
 )paren
 suffix:semicolon
 DECL|member|set_pll
@@ -405,6 +438,11 @@ op_star
 id|set_pll
 )paren
 (paren
+r_struct
+id|sstfb_info
+op_star
+id|sst_info
+comma
 r_const
 r_struct
 id|pll_timing
@@ -423,6 +461,11 @@ op_star
 id|set_vidmod
 )paren
 (paren
+r_struct
+id|sstfb_info
+op_star
+id|sst_info
+comma
 r_const
 r_int
 id|bpp
@@ -509,13 +552,36 @@ r_int
 r_int
 id|freq
 suffix:semicolon
-multiline_comment|/* freq in picoseconds */
+multiline_comment|/* freq in kHz */
+DECL|member|pll
+r_struct
+id|pll_timing
+id|pll
+suffix:semicolon
 DECL|member|tiles_in_X
 r_int
 r_int
 id|tiles_in_X
 suffix:semicolon
 multiline_comment|/* num of tiles in X res */
+DECL|member|vmode
+r_int
+r_int
+id|vmode
+suffix:semicolon
+multiline_comment|/* doublescan/interlaced */
+DECL|member|sync
+r_int
+r_int
+id|sync
+suffix:semicolon
+multiline_comment|/* H/V sync polarity */
+DECL|member|valid
+r_int
+r_int
+id|valid
+suffix:semicolon
+multiline_comment|/* par is correct (fool proof) */
 )brace
 suffix:semicolon
 DECL|struct|sstfb_info
@@ -582,33 +648,80 @@ multiline_comment|/* registers memory info */
 DECL|member|dac_sw
 r_struct
 id|dac_switch
-op_star
 id|dac_sw
 suffix:semicolon
 multiline_comment|/* dac specific functions */
-DECL|member|spec
-r_struct
-id|sst_spec
-op_star
-id|spec
-suffix:semicolon
-DECL|member|is_voodoo2
+DECL|member|type
 r_int
-id|is_voodoo2
+id|type
 suffix:semicolon
 DECL|member|revision
 id|u8
 id|revision
 suffix:semicolon
 multiline_comment|/* status */
-DECL|member|configured
-r_int
-id|configured
-suffix:semicolon
-multiline_comment|/*&t;int&t;indexed_mode;&n;&t;int&t;vgapass;&n;&t;int&t;clipping; */
+multiline_comment|/*XXX&t;int&t;configured;&n;&t;int&t;indexed_mode;&n;&t;int&t;vgapass;&n;&t;int&t;clipping; */
 DECL|member|gfx_clock
 r_int
 id|gfx_clock
+suffix:semicolon
+DECL|member|currcon
+r_int
+id|currcon
+suffix:semicolon
+DECL|member|disp
+r_struct
+id|display
+id|disp
+suffix:semicolon
+multiline_comment|/* current display */
+DECL|member|red
+DECL|member|green
+DECL|member|blue
+DECL|member|transp
+DECL|member|palette
+r_struct
+(brace
+id|u_int
+id|red
+comma
+id|green
+comma
+id|blue
+comma
+id|transp
+suffix:semicolon
+)brace
+id|palette
+(braket
+l_int|16
+)braket
+suffix:semicolon
+r_union
+(brace
+macro_line|#ifdef FBCON_HAS_CFB16
+DECL|member|cfb16
+id|u16
+id|cfb16
+(braket
+l_int|16
+)braket
+suffix:semicolon
+macro_line|#endif
+macro_line|#ifdef EN_24_32_BPP
+macro_line|#if defined (FBCON_HAS_CFB24) || defined(FBCON_HAS_CFB32)
+DECL|member|cfb32
+id|u32
+id|cfb32
+(braket
+l_int|16
+)braket
+suffix:semicolon
+macro_line|#endif
+macro_line|#endif
+DECL|member|fbcon_cmap
+)brace
+id|fbcon_cmap
 suffix:semicolon
 )brace
 suffix:semicolon

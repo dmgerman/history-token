@@ -4,21 +4,21 @@ macro_line|#include &lt;linux/fb.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;video/fbcon.h&gt;
-macro_line|#include &quot;mach64.h&quot;
+macro_line|#include &lt;video/mach64.h&gt;
 macro_line|#include &quot;atyfb.h&quot;
 multiline_comment|/* Definitions for the ICS 2595 == ATI 18818_1 Clockchip */
 DECL|macro|REF_FREQ_2595
-mdefine_line|#define REF_FREQ_2595       1432  /*  14.33 MHz  (exact   14.31818) */
+mdefine_line|#define REF_FREQ_2595       1432&t;/*  14.33 MHz  (exact   14.31818) */
 DECL|macro|REF_DIV_2595
-mdefine_line|#define REF_DIV_2595          46  /* really 43 on ICS 2595 !!!  */
+mdefine_line|#define REF_DIV_2595          46&t;/* really 43 on ICS 2595 !!!  */
 multiline_comment|/* ohne Prescaler */
 DECL|macro|MAX_FREQ_2595
-mdefine_line|#define MAX_FREQ_2595      15938  /* 159.38 MHz  (really 170.486) */
+mdefine_line|#define MAX_FREQ_2595      15938&t;/* 159.38 MHz  (really 170.486) */
 DECL|macro|MIN_FREQ_2595
-mdefine_line|#define MIN_FREQ_2595       8000  /*  80.00 MHz  (        85.565) */
+mdefine_line|#define MIN_FREQ_2595       8000&t;/*  80.00 MHz  (        85.565) */
 multiline_comment|/* mit Prescaler 2, 4, 8 */
 DECL|macro|ABS_MIN_FREQ_2595
-mdefine_line|#define ABS_MIN_FREQ_2595   1000  /*  10.00 MHz  (really  10.697) */
+mdefine_line|#define ABS_MIN_FREQ_2595   1000&t;/*  10.00 MHz  (really  10.697) */
 DECL|macro|N_ADJ_2595
 mdefine_line|#define N_ADJ_2595           257
 DECL|macro|STOP_BITS_2595
@@ -44,9 +44,9 @@ c_func
 (paren
 r_const
 r_struct
-id|fb_info_aty
+id|atyfb_par
 op_star
-id|info
+id|par
 )paren
 (brace
 (paren
@@ -57,7 +57,7 @@ c_func
 (paren
 id|DAC_REGS
 comma
-id|info
+id|par
 )paren
 suffix:semicolon
 (paren
@@ -70,7 +70,7 @@ id|DAC_REGS
 op_plus
 l_int|2
 comma
-id|info
+id|par
 )paren
 suffix:semicolon
 (paren
@@ -83,7 +83,7 @@ id|DAC_REGS
 op_plus
 l_int|2
 comma
-id|info
+id|par
 )paren
 suffix:semicolon
 (paren
@@ -96,7 +96,7 @@ id|DAC_REGS
 op_plus
 l_int|2
 comma
-id|info
+id|par
 )paren
 suffix:semicolon
 (paren
@@ -109,7 +109,7 @@ id|DAC_REGS
 op_plus
 l_int|2
 comma
-id|info
+id|par
 )paren
 suffix:semicolon
 )brace
@@ -121,9 +121,9 @@ c_func
 (paren
 r_const
 r_struct
-id|fb_info_aty
+id|atyfb_par
 op_star
-id|info
+id|par
 )paren
 (brace
 id|u8
@@ -142,7 +142,7 @@ c_func
 (paren
 id|CLOCK_CNTL
 comma
-id|info
+id|par
 )paren
 suffix:semicolon
 id|aty_st_8
@@ -150,13 +150,13 @@ c_func
 (paren
 id|CLOCK_CNTL
 op_plus
-id|info-&gt;clk_wr_offset
+id|par-&gt;clk_wr_offset
 comma
 id|tmp
 op_or
 id|CLOCK_STROBE
 comma
-id|info
+id|par
 )paren
 suffix:semicolon
 r_return
@@ -177,9 +177,9 @@ id|val
 comma
 r_const
 r_struct
-id|fb_info_aty
+id|atyfb_par
 op_star
-id|info
+id|par
 )paren
 (brace
 id|aty_st_8
@@ -189,7 +189,7 @@ id|DAC_CNTL
 comma
 l_int|1
 comma
-id|info
+id|par
 )paren
 suffix:semicolon
 multiline_comment|/* right addr byte */
@@ -202,7 +202,7 @@ id|offset
 op_amp
 l_int|0xff
 comma
-id|info
+id|par
 )paren
 suffix:semicolon
 multiline_comment|/* left addr byte */
@@ -219,7 +219,7 @@ l_int|8
 op_amp
 l_int|0xff
 comma
-id|info
+id|par
 )paren
 suffix:semicolon
 id|aty_st_8
@@ -229,7 +229,7 @@ id|DAC_MASK
 comma
 id|val
 comma
-id|info
+id|par
 )paren
 suffix:semicolon
 id|aty_st_8
@@ -239,7 +239,7 @@ id|DAC_CNTL
 comma
 l_int|0
 comma
-id|info
+id|par
 )paren
 suffix:semicolon
 )brace
@@ -251,7 +251,7 @@ c_func
 (paren
 r_const
 r_struct
-id|fb_info_aty
+id|fb_info
 op_star
 id|info
 comma
@@ -268,6 +268,18 @@ id|u32
 id|accel
 )paren
 (brace
+r_struct
+id|atyfb_par
+op_star
+id|par
+op_assign
+(paren
+r_struct
+id|atyfb_par
+op_star
+)paren
+id|info-&gt;par
+suffix:semicolon
 r_static
 r_struct
 (brace
@@ -380,7 +392,7 @@ l_int|0x90
 comma
 l_int|0x00
 comma
-id|info
+id|par
 )paren
 suffix:semicolon
 multiline_comment|/* VRAM Mask Low */
@@ -396,7 +408,7 @@ id|i
 dot
 id|pixel_dly
 comma
-id|info
+id|par
 )paren
 suffix:semicolon
 multiline_comment|/* Horizontal Sync Control */
@@ -407,7 +419,7 @@ l_int|0x05
 comma
 l_int|0x00
 comma
-id|info
+id|par
 )paren
 suffix:semicolon
 multiline_comment|/* Power Management */
@@ -418,7 +430,7 @@ l_int|0x02
 comma
 l_int|0x01
 comma
-id|info
+id|par
 )paren
 suffix:semicolon
 multiline_comment|/* Misc Clock Control */
@@ -434,7 +446,7 @@ id|i
 dot
 id|misc2_cntl
 comma
-id|info
+id|par
 )paren
 suffix:semicolon
 multiline_comment|/* Misc Control 2 */
@@ -450,7 +462,7 @@ id|i
 dot
 id|pixel_rep
 comma
-id|info
+id|par
 )paren
 suffix:semicolon
 multiline_comment|/* Pixel Format */
@@ -471,7 +483,7 @@ id|i
 dot
 id|pixel_cntl_v1
 comma
-id|info
+id|par
 )paren
 suffix:semicolon
 multiline_comment|/* Misc Control 2 / 16 BPP Control / 32 BPP Control */
@@ -487,7 +499,7 @@ c_func
 (paren
 r_const
 r_struct
-id|fb_info_aty
+id|fb_info
 op_star
 id|info
 comma
@@ -503,7 +515,7 @@ op_star
 id|pll
 )paren
 (brace
-multiline_comment|/*&n;     *  FIXME: use real calculations instead of using fixed values from the old&n;     *&t;       driver&n;     */
+multiline_comment|/*&n;&t; *  FIXME: use real calculations instead of using fixed values from the old&n;&t; *         driver&n;&t; */
 r_static
 r_struct
 (brace
@@ -707,7 +719,7 @@ c_func
 (paren
 r_const
 r_struct
-id|fb_info_aty
+id|fb_info
 op_star
 id|info
 comma
@@ -718,6 +730,18 @@ op_star
 id|pll
 )paren
 (brace
+r_struct
+id|atyfb_par
+op_star
+id|par
+op_assign
+(paren
+r_struct
+id|atyfb_par
+op_star
+)paren
+id|info-&gt;par
+suffix:semicolon
 id|u8
 id|df
 comma
@@ -744,7 +768,7 @@ suffix:semicolon
 r_return
 (paren
 (paren
-id|info-&gt;ref_clk_per
+id|par-&gt;ref_clk_per
 op_star
 id|ref_div_count
 )paren
@@ -771,7 +795,7 @@ c_func
 (paren
 r_const
 r_struct
-id|fb_info_aty
+id|fb_info
 op_star
 id|info
 comma
@@ -782,6 +806,18 @@ op_star
 id|pll
 )paren
 (brace
+r_struct
+id|atyfb_par
+op_star
+id|par
+op_assign
+(paren
+r_struct
+id|atyfb_par
+op_star
+)paren
+id|info-&gt;par
+suffix:semicolon
 id|aty_st_514
 c_func
 (paren
@@ -789,7 +825,7 @@ l_int|0x06
 comma
 l_int|0x02
 comma
-id|info
+id|par
 )paren
 suffix:semicolon
 multiline_comment|/* DAC Operation */
@@ -800,7 +836,7 @@ l_int|0x10
 comma
 l_int|0x01
 comma
-id|info
+id|par
 )paren
 suffix:semicolon
 multiline_comment|/* PLL Control 1 */
@@ -811,7 +847,7 @@ l_int|0x70
 comma
 l_int|0x01
 comma
-id|info
+id|par
 )paren
 suffix:semicolon
 multiline_comment|/* Misc Control 1 */
@@ -822,7 +858,7 @@ l_int|0x8f
 comma
 l_int|0x1f
 comma
-id|info
+id|par
 )paren
 suffix:semicolon
 multiline_comment|/* PLL Ref. Divider Input */
@@ -833,7 +869,7 @@ l_int|0x03
 comma
 l_int|0x00
 comma
-id|info
+id|par
 )paren
 suffix:semicolon
 multiline_comment|/* Sync Control */
@@ -844,7 +880,7 @@ l_int|0x05
 comma
 l_int|0x00
 comma
-id|info
+id|par
 )paren
 suffix:semicolon
 multiline_comment|/* Power Management */
@@ -855,7 +891,7 @@ l_int|0x20
 comma
 id|pll-&gt;ibm514.m
 comma
-id|info
+id|par
 )paren
 suffix:semicolon
 multiline_comment|/* F0 / M0 */
@@ -866,7 +902,7 @@ l_int|0x21
 comma
 id|pll-&gt;ibm514.n
 comma
-id|info
+id|par
 )paren
 suffix:semicolon
 multiline_comment|/* F1 / N0 */
@@ -914,7 +950,7 @@ c_func
 (paren
 r_const
 r_struct
-id|fb_info_aty
+id|fb_info
 op_star
 id|info
 comma
@@ -931,6 +967,18 @@ id|u32
 id|accel
 )paren
 (brace
+r_struct
+id|atyfb_par
+op_star
+id|par
+op_assign
+(paren
+r_struct
+id|atyfb_par
+op_star
+)paren
+id|info-&gt;par
+suffix:semicolon
 id|u32
 id|gModeReg
 comma
@@ -1046,7 +1094,7 @@ c_func
 (paren
 id|DAC_CNTL
 comma
-id|info
+id|par
 )paren
 suffix:semicolon
 id|aty_st_8
@@ -1063,7 +1111,7 @@ id|DAC_EXT_SEL_RS2
 op_or
 id|DAC_EXT_SEL_RS3
 comma
-id|info
+id|par
 )paren
 suffix:semicolon
 id|aty_st_8
@@ -1075,7 +1123,7 @@ l_int|2
 comma
 l_int|0x1D
 comma
-id|info
+id|par
 )paren
 suffix:semicolon
 id|aty_st_8
@@ -1087,7 +1135,7 @@ l_int|3
 comma
 id|gModeReg
 comma
-id|info
+id|par
 )paren
 suffix:semicolon
 id|aty_st_8
@@ -1097,7 +1145,7 @@ id|DAC_REGS
 comma
 l_int|0x02
 comma
-id|info
+id|par
 )paren
 suffix:semicolon
 id|temp
@@ -1107,7 +1155,7 @@ c_func
 (paren
 id|DAC_CNTL
 comma
-id|info
+id|par
 )paren
 suffix:semicolon
 id|aty_st_8
@@ -1121,13 +1169,13 @@ id|DAC_EXT_SEL_RS2
 op_or
 id|DAC_EXT_SEL_RS3
 comma
-id|info
+id|par
 )paren
 suffix:semicolon
 r_if
 c_cond
 (paren
-id|info-&gt;total_vram
+id|info-&gt;fix.smem_len
 OL
 id|MEM_SIZE_1M
 )paren
@@ -1139,7 +1187,7 @@ r_else
 r_if
 c_cond
 (paren
-id|info-&gt;total_vram
+id|info-&gt;fix.smem_len
 op_eq
 id|MEM_SIZE_1M
 )paren
@@ -1152,7 +1200,7 @@ id|mask
 op_assign
 l_int|0x0C
 suffix:semicolon
-multiline_comment|/* The following assumes that the BIOS has correctly set R7 of the&n;     * Device Setup Register A at boot time.&n;     */
+multiline_comment|/* The following assumes that the BIOS has correctly set R7 of the&n;&t; * Device Setup Register A at boot time.&n;&t; */
 DECL|macro|A860_DELAY_L
 mdefine_line|#define A860_DELAY_L&t;0x80
 id|temp
@@ -1162,7 +1210,7 @@ c_func
 (paren
 id|DAC_REGS
 comma
-id|info
+id|par
 )paren
 suffix:semicolon
 id|aty_st_8
@@ -1182,7 +1230,7 @@ op_amp
 id|A860_DELAY_L
 )paren
 comma
-id|info
+id|par
 )paren
 suffix:semicolon
 id|temp
@@ -1192,7 +1240,7 @@ c_func
 (paren
 id|DAC_CNTL
 comma
-id|info
+id|par
 )paren
 suffix:semicolon
 id|aty_st_8
@@ -1211,7 +1259,7 @@ id|DAC_EXT_SEL_RS3
 )paren
 )paren
 comma
-id|info
+id|par
 )paren
 suffix:semicolon
 id|aty_st_le32
@@ -1221,7 +1269,7 @@ id|BUS_CNTL
 comma
 l_int|0x890e20f1
 comma
-id|info
+id|par
 )paren
 suffix:semicolon
 id|aty_st_le32
@@ -1231,7 +1279,7 @@ id|DAC_CNTL
 comma
 l_int|0x47052100
 comma
-id|info
+id|par
 )paren
 suffix:semicolon
 r_return
@@ -1260,7 +1308,7 @@ c_func
 (paren
 r_const
 r_struct
-id|fb_info_aty
+id|fb_info
 op_star
 id|info
 comma
@@ -1277,6 +1325,18 @@ id|u32
 id|accel
 )paren
 (brace
+r_struct
+id|atyfb_par
+op_star
+id|par
+op_assign
+(paren
+r_struct
+id|atyfb_par
+op_star
+)paren
+id|info-&gt;par
+suffix:semicolon
 id|u32
 id|dotClock
 suffix:semicolon
@@ -1379,7 +1439,7 @@ suffix:semicolon
 id|aty_dac_waste4
 c_func
 (paren
-id|info
+id|par
 )paren
 suffix:semicolon
 id|aty_st_8
@@ -1391,7 +1451,7 @@ l_int|2
 comma
 id|DACMask
 comma
-id|info
+id|par
 )paren
 suffix:semicolon
 id|aty_st_le32
@@ -1401,7 +1461,7 @@ id|BUS_CNTL
 comma
 l_int|0x890e20f1
 comma
-id|info
+id|par
 )paren
 suffix:semicolon
 id|aty_st_le32
@@ -1411,7 +1471,7 @@ id|DAC_CNTL
 comma
 l_int|0x00072000
 comma
-id|info
+id|par
 )paren
 suffix:semicolon
 r_return
@@ -1440,7 +1500,7 @@ c_func
 (paren
 r_const
 r_struct
-id|fb_info_aty
+id|fb_info
 op_star
 id|info
 comma
@@ -1650,7 +1710,7 @@ c_func
 (paren
 r_const
 r_struct
-id|fb_info_aty
+id|fb_info
 op_star
 id|info
 comma
@@ -1662,7 +1722,9 @@ id|pll
 )paren
 (brace
 r_return
+(paren
 id|pll-&gt;ics2595.period_in_ps
+)paren
 suffix:semicolon
 multiline_comment|/* default for now */
 )brace
@@ -1677,9 +1739,9 @@ id|data
 comma
 r_const
 r_struct
-id|fb_info_aty
+id|atyfb_par
 op_star
-id|info
+id|par
 )paren
 (brace
 id|u8
@@ -1696,7 +1758,7 @@ c_func
 (paren
 id|CLOCK_CNTL
 comma
-id|info
+id|par
 )paren
 suffix:semicolon
 id|aty_st_8
@@ -1704,7 +1766,7 @@ c_func
 (paren
 id|CLOCK_CNTL
 op_plus
-id|info-&gt;clk_wr_offset
+id|par-&gt;clk_wr_offset
 comma
 (paren
 id|tmp
@@ -1719,7 +1781,7 @@ op_lshift
 l_int|2
 )paren
 comma
-id|info
+id|par
 )paren
 suffix:semicolon
 id|tmp
@@ -1729,7 +1791,7 @@ c_func
 (paren
 id|CLOCK_CNTL
 comma
-id|info
+id|par
 )paren
 suffix:semicolon
 id|aty_st_8
@@ -1737,7 +1799,7 @@ c_func
 (paren
 id|CLOCK_CNTL
 op_plus
-id|info-&gt;clk_wr_offset
+id|par-&gt;clk_wr_offset
 comma
 (paren
 id|tmp
@@ -1752,13 +1814,13 @@ op_lshift
 l_int|3
 )paren
 comma
-id|info
+id|par
 )paren
 suffix:semicolon
 id|aty_StrobeClock
 c_func
 (paren
-id|info
+id|par
 )paren
 suffix:semicolon
 id|tmp
@@ -1768,7 +1830,7 @@ c_func
 (paren
 id|CLOCK_CNTL
 comma
-id|info
+id|par
 )paren
 suffix:semicolon
 id|aty_st_8
@@ -1776,7 +1838,7 @@ c_func
 (paren
 id|CLOCK_CNTL
 op_plus
-id|info-&gt;clk_wr_offset
+id|par-&gt;clk_wr_offset
 comma
 (paren
 id|tmp
@@ -1791,13 +1853,13 @@ op_lshift
 l_int|3
 )paren
 comma
-id|info
+id|par
 )paren
 suffix:semicolon
 id|aty_StrobeClock
 c_func
 (paren
-id|info
+id|par
 )paren
 suffix:semicolon
 r_return
@@ -1811,7 +1873,7 @@ c_func
 (paren
 r_const
 r_struct
-id|fb_info_aty
+id|fb_info
 op_star
 id|info
 comma
@@ -1822,6 +1884,18 @@ op_star
 id|pll
 )paren
 (brace
+r_struct
+id|atyfb_par
+op_star
+id|par
+op_assign
+(paren
+r_struct
+id|atyfb_par
+op_star
+)paren
+id|info-&gt;par
+suffix:semicolon
 id|u32
 id|program_bits
 suffix:semicolon
@@ -1844,7 +1918,7 @@ c_func
 (paren
 id|CLOCK_CNTL
 comma
-id|info
+id|par
 )paren
 suffix:semicolon
 id|aty_st_8
@@ -1852,11 +1926,11 @@ c_func
 (paren
 id|CLOCK_CNTL
 op_plus
-id|info-&gt;clk_wr_offset
+id|par-&gt;clk_wr_offset
 comma
 l_int|0
 comma
-id|info
+id|par
 )paren
 suffix:semicolon
 id|old_crtc_ext_disp
@@ -1868,7 +1942,7 @@ id|CRTC_GEN_CNTL
 op_plus
 l_int|3
 comma
-id|info
+id|par
 )paren
 suffix:semicolon
 id|aty_st_8
@@ -1886,7 +1960,7 @@ op_rshift
 l_int|24
 )paren
 comma
-id|info
+id|par
 )paren
 suffix:semicolon
 id|mdelay
@@ -1910,18 +1984,18 @@ c_func
 (paren
 id|CLOCK_CNTL
 op_plus
-id|info-&gt;clk_wr_offset
+id|par-&gt;clk_wr_offset
 comma
 l_int|0
 comma
-id|info
+id|par
 )paren
 suffix:semicolon
 multiline_comment|/* Strobe = 0 */
 id|aty_StrobeClock
 c_func
 (paren
-id|info
+id|par
 )paren
 suffix:semicolon
 id|aty_st_8
@@ -1929,18 +2003,18 @@ c_func
 (paren
 id|CLOCK_CNTL
 op_plus
-id|info-&gt;clk_wr_offset
+id|par-&gt;clk_wr_offset
 comma
 l_int|1
 comma
-id|info
+id|par
 )paren
 suffix:semicolon
 multiline_comment|/* Strobe = 0 */
 id|aty_StrobeClock
 c_func
 (paren
-id|info
+id|par
 )paren
 suffix:semicolon
 id|aty_ICS2595_put1bit
@@ -1948,7 +2022,7 @@ c_func
 (paren
 l_int|1
 comma
-id|info
+id|par
 )paren
 suffix:semicolon
 multiline_comment|/* Send start bits */
@@ -1957,7 +2031,7 @@ c_func
 (paren
 l_int|0
 comma
-id|info
+id|par
 )paren
 suffix:semicolon
 multiline_comment|/* Start bit */
@@ -1966,7 +2040,7 @@ c_func
 (paren
 l_int|0
 comma
-id|info
+id|par
 )paren
 suffix:semicolon
 multiline_comment|/* Read / ~Write */
@@ -1993,7 +2067,7 @@ id|locationAddr
 op_amp
 l_int|1
 comma
-id|info
+id|par
 )paren
 suffix:semicolon
 id|locationAddr
@@ -2029,7 +2103,7 @@ id|program_bits
 op_amp
 l_int|1
 comma
-id|info
+id|par
 )paren
 suffix:semicolon
 id|program_bits
@@ -2052,7 +2126,7 @@ c_func
 (paren
 id|DAC_REGS
 comma
-id|info
+id|par
 )paren
 suffix:semicolon
 multiline_comment|/* Clear DAC Counter */
@@ -2065,7 +2139,7 @@ l_int|3
 comma
 id|old_crtc_ext_disp
 comma
-id|info
+id|par
 )paren
 suffix:semicolon
 id|aty_st_8
@@ -2073,13 +2147,13 @@ c_func
 (paren
 id|CLOCK_CNTL
 op_plus
-id|info-&gt;clk_wr_offset
+id|par-&gt;clk_wr_offset
 comma
 id|old_clock_cntl
 op_or
 id|CLOCK_STROBE
 comma
-id|info
+id|par
 )paren
 suffix:semicolon
 id|mdelay
@@ -2094,7 +2168,7 @@ c_func
 (paren
 id|CLOCK_CNTL
 op_plus
-id|info-&gt;clk_wr_offset
+id|par-&gt;clk_wr_offset
 comma
 (paren
 (paren
@@ -2106,7 +2180,7 @@ op_or
 id|CLOCK_STROBE
 )paren
 comma
-id|info
+id|par
 )paren
 suffix:semicolon
 r_return
@@ -2142,7 +2216,7 @@ c_func
 (paren
 r_const
 r_struct
-id|fb_info_aty
+id|fb_info
 op_star
 id|info
 comma
@@ -2438,7 +2512,7 @@ c_func
 (paren
 r_const
 r_struct
-id|fb_info_aty
+id|fb_info
 op_star
 id|info
 comma
@@ -2450,7 +2524,9 @@ id|pll
 )paren
 (brace
 r_return
+(paren
 id|pll-&gt;ics2595.period_in_ps
+)paren
 suffix:semicolon
 multiline_comment|/* default for now */
 )brace
@@ -2462,7 +2538,7 @@ c_func
 (paren
 r_const
 r_struct
-id|fb_info_aty
+id|fb_info
 op_star
 id|info
 comma
@@ -2473,6 +2549,18 @@ op_star
 id|pll
 )paren
 (brace
+r_struct
+id|atyfb_par
+op_star
+id|par
+op_assign
+(paren
+r_struct
+id|atyfb_par
+op_star
+)paren
+id|info-&gt;par
+suffix:semicolon
 id|u32
 id|program_bits
 suffix:semicolon
@@ -2491,7 +2579,7 @@ id|CRTC_GEN_CNTL
 op_plus
 l_int|3
 comma
-id|info
+id|par
 )paren
 suffix:semicolon
 id|aty_st_8
@@ -2509,7 +2597,7 @@ op_rshift
 l_int|24
 )paren
 comma
-id|info
+id|par
 )paren
 suffix:semicolon
 id|program_bits
@@ -2524,7 +2612,7 @@ multiline_comment|/* Program clock */
 id|aty_dac_waste4
 c_func
 (paren
-id|info
+id|par
 )paren
 suffix:semicolon
 (paren
@@ -2537,7 +2625,7 @@ id|DAC_REGS
 op_plus
 l_int|2
 comma
-id|info
+id|par
 )paren
 suffix:semicolon
 id|aty_st_8
@@ -2555,7 +2643,7 @@ l_int|1
 op_plus
 l_int|0x20
 comma
-id|info
+id|par
 )paren
 suffix:semicolon
 id|aty_st_8
@@ -2567,7 +2655,7 @@ l_int|2
 comma
 l_int|0
 comma
-id|info
+id|par
 )paren
 suffix:semicolon
 id|aty_st_8
@@ -2585,7 +2673,7 @@ l_int|0xFF00
 op_rshift
 l_int|8
 comma
-id|info
+id|par
 )paren
 suffix:semicolon
 id|aty_st_8
@@ -2601,7 +2689,7 @@ op_amp
 l_int|0xFF
 )paren
 comma
-id|info
+id|par
 )paren
 suffix:semicolon
 (paren
@@ -2612,7 +2700,7 @@ c_func
 (paren
 id|DAC_REGS
 comma
-id|info
+id|par
 )paren
 suffix:semicolon
 multiline_comment|/* Clear DAC Counter */
@@ -2625,7 +2713,7 @@ l_int|3
 comma
 id|old_crtc_ext_disp
 comma
-id|info
+id|par
 )paren
 suffix:semicolon
 r_return
@@ -2661,7 +2749,7 @@ c_func
 (paren
 r_const
 r_struct
-id|fb_info_aty
+id|fb_info
 op_star
 id|info
 comma
@@ -2986,7 +3074,7 @@ c_func
 (paren
 r_const
 r_struct
-id|fb_info_aty
+id|fb_info
 op_star
 id|info
 comma
@@ -2998,7 +3086,9 @@ id|pll
 )paren
 (brace
 r_return
+(paren
 id|pll-&gt;ics2595.period_in_ps
+)paren
 suffix:semicolon
 multiline_comment|/* default for now */
 )brace
@@ -3010,7 +3100,7 @@ c_func
 (paren
 r_const
 r_struct
-id|fb_info_aty
+id|fb_info
 op_star
 id|info
 comma
@@ -3021,6 +3111,18 @@ op_star
 id|pll
 )paren
 (brace
+r_struct
+id|atyfb_par
+op_star
+id|par
+op_assign
+(paren
+r_struct
+id|atyfb_par
+op_star
+)paren
+id|info-&gt;par
+suffix:semicolon
 id|u32
 id|program_bits
 suffix:semicolon
@@ -3042,7 +3144,7 @@ id|CRTC_GEN_CNTL
 op_plus
 l_int|3
 comma
-id|info
+id|par
 )paren
 suffix:semicolon
 id|aty_st_8
@@ -3060,7 +3162,7 @@ op_rshift
 l_int|24
 )paren
 comma
-id|info
+id|par
 )paren
 suffix:semicolon
 id|program_bits
@@ -3079,7 +3181,7 @@ c_func
 (paren
 id|DAC_CNTL
 comma
-id|info
+id|par
 )paren
 suffix:semicolon
 id|aty_st_8
@@ -3093,7 +3195,7 @@ id|DAC_EXT_SEL_RS2
 op_or
 id|DAC_EXT_SEL_RS3
 comma
-id|info
+id|par
 )paren
 suffix:semicolon
 id|aty_st_8
@@ -3103,7 +3205,7 @@ id|DAC_REGS
 comma
 id|locationAddr
 comma
-id|info
+id|par
 )paren
 suffix:semicolon
 id|aty_st_8
@@ -3121,7 +3223,7 @@ l_int|0xff00
 op_rshift
 l_int|8
 comma
-id|info
+id|par
 )paren
 suffix:semicolon
 id|aty_st_8
@@ -3137,7 +3239,7 @@ op_amp
 l_int|0xff
 )paren
 comma
-id|info
+id|par
 )paren
 suffix:semicolon
 id|tmp
@@ -3147,7 +3249,7 @@ c_func
 (paren
 id|DAC_CNTL
 comma
-id|info
+id|par
 )paren
 suffix:semicolon
 id|aty_st_8
@@ -3164,7 +3266,7 @@ id|DAC_EXT_SEL_RS2
 op_or
 id|DAC_EXT_SEL_RS3
 comma
-id|info
+id|par
 )paren
 suffix:semicolon
 (paren
@@ -3175,7 +3277,7 @@ c_func
 (paren
 id|DAC_REGS
 comma
-id|info
+id|par
 )paren
 suffix:semicolon
 multiline_comment|/* Clear DAC Counter */
@@ -3188,7 +3290,7 @@ l_int|3
 comma
 id|old_crtc_ext_disp
 comma
-id|info
+id|par
 )paren
 suffix:semicolon
 r_return
@@ -3224,7 +3326,7 @@ c_func
 (paren
 r_const
 r_struct
-id|fb_info_aty
+id|fb_info
 op_star
 id|info
 comma
@@ -3479,9 +3581,7 @@ id|tempA
 op_le
 l_int|32
 )paren
-(brace
 suffix:semicolon
-)brace
 id|program_bits
 op_assign
 id|divider
@@ -3516,7 +3616,7 @@ c_func
 (paren
 r_const
 r_struct
-id|fb_info_aty
+id|fb_info
 op_star
 id|info
 comma
@@ -3528,7 +3628,9 @@ id|pll
 )paren
 (brace
 r_return
+(paren
 id|pll-&gt;ics2595.period_in_ps
+)paren
 suffix:semicolon
 multiline_comment|/* default for now */
 )brace
@@ -3540,7 +3642,7 @@ c_func
 (paren
 r_const
 r_struct
-id|fb_info_aty
+id|fb_info
 op_star
 id|info
 comma
@@ -3551,6 +3653,18 @@ op_star
 id|pll
 )paren
 (brace
+r_struct
+id|atyfb_par
+op_star
+id|par
+op_assign
+(paren
+r_struct
+id|atyfb_par
+op_star
+)paren
+id|info-&gt;par
+suffix:semicolon
 id|u32
 id|program_bits
 suffix:semicolon
@@ -3576,7 +3690,7 @@ id|CRTC_GEN_CNTL
 op_plus
 l_int|3
 comma
-id|info
+id|par
 )paren
 suffix:semicolon
 id|aty_st_8
@@ -3594,7 +3708,7 @@ op_rshift
 l_int|24
 )paren
 comma
-id|info
+id|par
 )paren
 suffix:semicolon
 id|program_bits
@@ -3609,7 +3723,7 @@ multiline_comment|/* Program clock */
 id|aty_dac_waste4
 c_func
 (paren
-id|info
+id|par
 )paren
 suffix:semicolon
 id|tmpB
@@ -3621,7 +3735,7 @@ id|DAC_REGS
 op_plus
 l_int|2
 comma
-id|info
+id|par
 )paren
 op_or
 l_int|1
@@ -3629,7 +3743,7 @@ suffix:semicolon
 id|aty_dac_waste4
 c_func
 (paren
-id|info
+id|par
 )paren
 suffix:semicolon
 id|aty_st_8
@@ -3641,7 +3755,7 @@ l_int|2
 comma
 id|tmpB
 comma
-id|info
+id|par
 )paren
 suffix:semicolon
 id|tmpA
@@ -3667,7 +3781,7 @@ id|DAC_REGS
 comma
 id|tmpB
 comma
-id|info
+id|par
 )paren
 suffix:semicolon
 id|aty_st_8
@@ -3679,7 +3793,7 @@ l_int|2
 comma
 id|tmpA
 comma
-id|info
+id|par
 )paren
 suffix:semicolon
 id|udelay
@@ -3716,7 +3830,7 @@ id|DAC_REGS
 comma
 id|tmpB
 comma
-id|info
+id|par
 )paren
 suffix:semicolon
 id|aty_st_8
@@ -3728,7 +3842,7 @@ l_int|2
 comma
 id|tmpA
 comma
-id|info
+id|par
 )paren
 suffix:semicolon
 id|tmpB
@@ -3751,7 +3865,7 @@ id|DAC_REGS
 comma
 id|tmpB
 comma
-id|info
+id|par
 )paren
 suffix:semicolon
 id|aty_st_8
@@ -3763,7 +3877,7 @@ l_int|2
 comma
 id|tmpA
 comma
-id|info
+id|par
 )paren
 suffix:semicolon
 id|tmpB
@@ -3783,7 +3897,7 @@ id|DAC_REGS
 comma
 id|tmpB
 comma
-id|info
+id|par
 )paren
 suffix:semicolon
 id|aty_st_8
@@ -3795,7 +3909,7 @@ l_int|2
 comma
 id|tmpA
 comma
-id|info
+id|par
 )paren
 suffix:semicolon
 id|udelay
@@ -3829,7 +3943,7 @@ id|DAC_REGS
 comma
 id|tmpB
 comma
-id|info
+id|par
 )paren
 suffix:semicolon
 id|aty_st_8
@@ -3841,7 +3955,7 @@ l_int|2
 comma
 id|tmpA
 comma
-id|info
+id|par
 )paren
 suffix:semicolon
 (paren
@@ -3852,7 +3966,7 @@ c_func
 (paren
 id|DAC_REGS
 comma
-id|info
+id|par
 )paren
 suffix:semicolon
 multiline_comment|/* Clear DAC Counter */
@@ -3865,7 +3979,7 @@ l_int|3
 comma
 id|old_crtc_ext_disp
 comma
-id|info
+id|par
 )paren
 suffix:semicolon
 r_return
@@ -3901,7 +4015,7 @@ c_func
 (paren
 r_const
 r_struct
-id|fb_info_aty
+id|fb_info
 op_star
 id|info
 comma
@@ -3918,6 +4032,18 @@ id|u32
 id|accel
 )paren
 (brace
+r_struct
+id|atyfb_par
+op_star
+id|par
+op_assign
+(paren
+r_struct
+id|atyfb_par
+op_star
+)paren
+id|info-&gt;par
+suffix:semicolon
 id|aty_st_le32
 c_func
 (paren
@@ -3925,7 +4051,7 @@ id|BUS_CNTL
 comma
 l_int|0x890e20f1
 comma
-id|info
+id|par
 )paren
 suffix:semicolon
 id|aty_st_le32
@@ -3935,7 +4061,7 @@ id|DAC_CNTL
 comma
 l_int|0x47052100
 comma
-id|info
+id|par
 )paren
 suffix:semicolon
 multiline_comment|/* new in 2.2.3p1 from Geert. ???????? */
@@ -3946,7 +4072,7 @@ id|BUS_CNTL
 comma
 l_int|0x590e10ff
 comma
-id|info
+id|par
 )paren
 suffix:semicolon
 id|aty_st_le32
@@ -3956,7 +4082,7 @@ id|DAC_CNTL
 comma
 l_int|0x47012100
 comma
-id|info
+id|par
 )paren
 suffix:semicolon
 r_return

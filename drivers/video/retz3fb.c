@@ -6219,17 +6219,6 @@ op_star
 id|info
 )paren
 (brace
-r_struct
-id|retz3_fb_info
-op_star
-id|zinfo
-op_assign
-id|retz3info
-c_func
-(paren
-id|info
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -7186,17 +7175,6 @@ op_star
 id|info
 )paren
 (brace
-r_struct
-id|retz3_fb_info
-op_star
-id|zinfo
-op_assign
-id|retz3info
-c_func
-(paren
-id|info
-)paren
-suffix:semicolon
 multiline_comment|/* Do we have to save the colormap? */
 r_if
 c_cond

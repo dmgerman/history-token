@@ -1,23 +1,28 @@
 macro_line|#ifndef _SISFB_MAIN
 DECL|macro|_SISFB_MAIN
 mdefine_line|#define _SISFB_MAIN
+multiline_comment|/* Comments and changes marked with &quot;TW&quot; by Thomas Winischhofer &lt;tw@webit.com&gt; */
 multiline_comment|/* ------------------- Constant Definitions ------------------------- */
 DECL|macro|LINUXBIOS
-macro_line|#undef LINUXBIOS&t;&t;/* turn on when use LINUXBIOS */
+macro_line|#undef LINUXBIOS   /* turn on when use LINUXBIOS */
 DECL|macro|AGPOFF
-mdefine_line|#define AGPOFF&t;&t;&t;/* default is turn off AGP */
+mdefine_line|#define AGPOFF     /* default is turn off AGP */
 DECL|macro|VER_MAJOR
 mdefine_line|#define VER_MAJOR                 1
 DECL|macro|VER_MINOR
-mdefine_line|#define VER_MINOR                 3
+mdefine_line|#define VER_MINOR                 4
 DECL|macro|VER_LEVEL
-mdefine_line|#define VER_LEVEL                 9
-DECL|macro|DEFAULT_MODE
-mdefine_line|#define DEFAULT_MODE              0
-DECL|macro|DEFAULT_LCDMODE
-mdefine_line|#define DEFAULT_LCDMODE           9
-DECL|macro|DEFAULT_TVMODE
-mdefine_line|#define DEFAULT_TVMODE            9
+mdefine_line|#define VER_LEVEL                 1
+multiline_comment|/* TW: To be included in pci_ids.h */
+macro_line|#ifndef PCI_DEVICE_ID_SI_650_VGA
+DECL|macro|PCI_DEVICE_ID_SI_650_VGA
+mdefine_line|#define PCI_DEVICE_ID_SI_650_VGA  0x6325
+macro_line|#endif
+macro_line|#ifndef PCI_DEVICE_ID_SI_650
+DECL|macro|PCI_DEVICE_ID_SI_650
+mdefine_line|#define PCI_DEVICE_ID_SI_650      0x0650
+macro_line|#endif
+multiline_comment|/* TW end */
 DECL|macro|MAX_ROM_SCAN
 mdefine_line|#define MAX_ROM_SCAN              0x10000
 DECL|macro|TURBO_QUEUE_CAP
@@ -31,19 +36,20 @@ mdefine_line|#define VM_CMD_QUEUE_CAP          0x20
 multiline_comment|/* For 300 series */
 macro_line|#ifdef CONFIG_FB_SIS_300
 DECL|macro|TURBO_QUEUE_AREA_SIZE
-mdefine_line|#define TURBO_QUEUE_AREA_SIZE     0x80000&t;/* 512K */
-DECL|macro|HW_CURSOR_AREA_SIZE
-mdefine_line|#define HW_CURSOR_AREA_SIZE       0x1000&t;/* 4K */
+mdefine_line|#define TURBO_QUEUE_AREA_SIZE     0x80000 /* 512K */
 macro_line|#endif
 multiline_comment|/* For 315 series */
 macro_line|#ifdef CONFIG_FB_SIS_315
 DECL|macro|COMMAND_QUEUE_AREA_SIZE
-mdefine_line|#define COMMAND_QUEUE_AREA_SIZE   0x80000&t;/* 512K */
-DECL|macro|HW_CURSOR_AREA_SIZE
-mdefine_line|#define HW_CURSOR_AREA_SIZE       0x4000&t;/* 16K */
+mdefine_line|#define COMMAND_QUEUE_AREA_SIZE   0x80000 /* 512K */
 DECL|macro|COMMAND_QUEUE_THRESHOLD
 mdefine_line|#define COMMAND_QUEUE_THRESHOLD   0x1F
 macro_line|#endif
+multiline_comment|/* TW */
+DECL|macro|HW_CURSOR_AREA_SIZE_315
+mdefine_line|#define HW_CURSOR_AREA_SIZE_315   0x4000  /* 16K */
+DECL|macro|HW_CURSOR_AREA_SIZE_300
+mdefine_line|#define HW_CURSOR_AREA_SIZE_300   0x1000  /* 4K */
 DECL|macro|OH_ALLOC_SIZE
 mdefine_line|#define OH_ALLOC_SIZE             4000
 DECL|macro|SENTINEL
@@ -81,7 +87,7 @@ mdefine_line|#define VB_PART4_ADR              (0x14-0x30)
 DECL|macro|VB_PART4_DATA
 mdefine_line|#define VB_PART4_DATA             (0x15-0x30)
 DECL|macro|IND_SIS_PASSWORD
-mdefine_line|#define IND_SIS_PASSWORD          0x05&t;/* SRs */
+mdefine_line|#define IND_SIS_PASSWORD          0x05  /* SRs */
 DECL|macro|IND_SIS_COLOR_MODE
 mdefine_line|#define IND_SIS_COLOR_MODE        0x06
 DECL|macro|IND_SIS_RAMDAC_CONTROL
@@ -111,7 +117,7 @@ mdefine_line|#define IND_SIS_CMDQUEUE_SET      0x26
 DECL|macro|IND_SIS_CMDQUEUE_THRESHOLD
 mdefine_line|#define IND_SIS_CMDQUEUE_THRESHOLD  0x27
 DECL|macro|IND_SIS_SCRATCH_REG_CR30
-mdefine_line|#define IND_SIS_SCRATCH_REG_CR30  0x30&t;/* CRs */
+mdefine_line|#define IND_SIS_SCRATCH_REG_CR30  0x30  /* CRs */
 DECL|macro|IND_SIS_SCRATCH_REG_CR31
 mdefine_line|#define IND_SIS_SCRATCH_REG_CR31  0x31
 DECL|macro|IND_SIS_SCRATCH_REG_CR32
@@ -125,37 +131,33 @@ mdefine_line|#define IND_SIS_SCRATCH_REG_CR37  0x37
 DECL|macro|IND_SIS_AGP_IO_PAD
 mdefine_line|#define IND_SIS_AGP_IO_PAD        0x48
 DECL|macro|IND_BRI_DRAM_STATUS
-mdefine_line|#define IND_BRI_DRAM_STATUS       0x63
+mdefine_line|#define IND_BRI_DRAM_STATUS       0x63 /* PCI config memory size offset */
 DECL|macro|MMIO_QUEUE_PHYBASE
 mdefine_line|#define MMIO_QUEUE_PHYBASE        0x85C0
 DECL|macro|MMIO_QUEUE_WRITEPORT
 mdefine_line|#define MMIO_QUEUE_WRITEPORT      0x85C4
 DECL|macro|MMIO_QUEUE_READPORT
 mdefine_line|#define MMIO_QUEUE_READPORT       0x85C8
-singleline_comment|// Eden Chen
-macro_line|#ifdef CONFIG_FB_SIS_300
-DECL|macro|IND_SIS_CRT2_WRITE_ENABLE
-mdefine_line|#define IND_SIS_CRT2_WRITE_ENABLE 0x24
-macro_line|#endif
-macro_line|#ifdef CONFIG_FB_SIS_315
-DECL|macro|IND_SIS_CRT2_WRITE_ENABLE
-mdefine_line|#define IND_SIS_CRT2_WRITE_ENABLE 0x2F
-macro_line|#endif
-singleline_comment|// ~Eden Chen
+multiline_comment|/* Eden Chen; TW */
+DECL|macro|IND_SIS_CRT2_WRITE_ENABLE_300
+mdefine_line|#define IND_SIS_CRT2_WRITE_ENABLE_300 0x24
+DECL|macro|IND_SIS_CRT2_WRITE_ENABLE_315
+mdefine_line|#define IND_SIS_CRT2_WRITE_ENABLE_315 0x2F
+multiline_comment|/* ~Eden Chen; TW */
 DECL|macro|SIS_PASSWORD
-mdefine_line|#define SIS_PASSWORD              0x86&t;/* SR05 */
+mdefine_line|#define SIS_PASSWORD              0x86  /* SR05 */
 DECL|macro|SIS_INTERLACED_MODE
-mdefine_line|#define SIS_INTERLACED_MODE       0x20&t;/* SR06 */
+mdefine_line|#define SIS_INTERLACED_MODE       0x20  /* SR06 */
 DECL|macro|SIS_8BPP_COLOR_MODE
-mdefine_line|#define SIS_8BPP_COLOR_MODE       0x0
+mdefine_line|#define SIS_8BPP_COLOR_MODE       0x0 
 DECL|macro|SIS_15BPP_COLOR_MODE
-mdefine_line|#define SIS_15BPP_COLOR_MODE      0x1
+mdefine_line|#define SIS_15BPP_COLOR_MODE      0x1 
 DECL|macro|SIS_16BPP_COLOR_MODE
-mdefine_line|#define SIS_16BPP_COLOR_MODE      0x2
+mdefine_line|#define SIS_16BPP_COLOR_MODE      0x2 
 DECL|macro|SIS_32BPP_COLOR_MODE
-mdefine_line|#define SIS_32BPP_COLOR_MODE      0x4
+mdefine_line|#define SIS_32BPP_COLOR_MODE      0x4 
 DECL|macro|SIS_DRAM_SIZE_MASK
-mdefine_line|#define SIS_DRAM_SIZE_MASK        0x3F&t;/* SR14 */
+mdefine_line|#define SIS_DRAM_SIZE_MASK        0x3F  /* SR14 */
 DECL|macro|SIS_DRAM_SIZE_1MB
 mdefine_line|#define SIS_DRAM_SIZE_1MB         0x00
 DECL|macro|SIS_DRAM_SIZE_2MB
@@ -179,7 +181,7 @@ mdefine_line|#define SIS_DATA_BUS_64           0x01
 DECL|macro|SIS_DATA_BUS_128
 mdefine_line|#define SIS_DATA_BUS_128          0x02
 DECL|macro|SIS315_DRAM_SIZE_MASK
-mdefine_line|#define SIS315_DRAM_SIZE_MASK     0xF0&t;/* 315 SR14 */
+mdefine_line|#define SIS315_DRAM_SIZE_MASK     0xF0  /* 315 SR14 */
 DECL|macro|SIS315_DRAM_SIZE_2MB
 mdefine_line|#define SIS315_DRAM_SIZE_2MB      0x01
 DECL|macro|SIS315_DRAM_SIZE_4MB
@@ -203,13 +205,15 @@ mdefine_line|#define SIS315_DATA_BUS_128       0x01
 DECL|macro|SIS315_DUAL_CHANNEL_MASK
 mdefine_line|#define SIS315_DUAL_CHANNEL_MASK  0x0C
 DECL|macro|SIS315_SINGLE_CHANNEL_1_RANK
-mdefine_line|#define SIS315_SINGLE_CHANNEL_1_RANK  0x0
+mdefine_line|#define SIS315_SINGLE_CHANNEL_1_RANK  &t;0x0
 DECL|macro|SIS315_SINGLE_CHANNEL_2_RANK
-mdefine_line|#define SIS315_SINGLE_CHANNEL_2_RANK  0x1
+mdefine_line|#define SIS315_SINGLE_CHANNEL_2_RANK  &t;0x1
+DECL|macro|SIS315_ASYM_DDR
+mdefine_line|#define SIS315_ASYM_DDR&t;&t;  &t;0x02
 DECL|macro|SIS315_DUAL_CHANNEL_1_RANK
-mdefine_line|#define SIS315_DUAL_CHANNEL_1_RANK    0x3
+mdefine_line|#define SIS315_DUAL_CHANNEL_1_RANK    &t;0x3
 DECL|macro|SIS550_DRAM_SIZE_MASK
-mdefine_line|#define SIS550_DRAM_SIZE_MASK     0x3F&t;/* 550 SR14 */
+mdefine_line|#define SIS550_DRAM_SIZE_MASK     0x3F  /* 550/650/740 SR14 */
 DECL|macro|SIS550_DRAM_SIZE_4MB
 mdefine_line|#define SIS550_DRAM_SIZE_4MB      0x00
 DECL|macro|SIS550_DRAM_SIZE_8MB
@@ -231,13 +235,13 @@ mdefine_line|#define SIS550_DRAM_SIZE_256MB    0x3F
 DECL|macro|SIS_SCRATCH_REG_1A_MASK
 mdefine_line|#define SIS_SCRATCH_REG_1A_MASK   0x10
 DECL|macro|SIS_ENABLE_2D
-mdefine_line|#define SIS_ENABLE_2D             0x40&t;/* SR1E */
+mdefine_line|#define SIS_ENABLE_2D             0x40  /* SR1E */
 DECL|macro|SIS_MEM_MAP_IO_ENABLE
-mdefine_line|#define SIS_MEM_MAP_IO_ENABLE     0x01&t;/* SR20 */
+mdefine_line|#define SIS_MEM_MAP_IO_ENABLE     0x01  /* SR20 */
 DECL|macro|SIS_PCI_ADDR_ENABLE
 mdefine_line|#define SIS_PCI_ADDR_ENABLE       0x80
 DECL|macro|SIS_AGP_CMDQUEUE_ENABLE
-mdefine_line|#define SIS_AGP_CMDQUEUE_ENABLE   0x80&t;/* 315 SR26 */
+mdefine_line|#define SIS_AGP_CMDQUEUE_ENABLE   0x80  /* 315/650/740 SR26 */
 DECL|macro|SIS_VRAM_CMDQUEUE_ENABLE
 mdefine_line|#define SIS_VRAM_CMDQUEUE_ENABLE  0x40
 DECL|macro|SIS_MMIO_CMD_ENABLE
@@ -252,8 +256,10 @@ DECL|macro|SIS_CMD_QUEUE_SIZE_4M
 mdefine_line|#define SIS_CMD_QUEUE_SIZE_4M     0x0C
 DECL|macro|SIS_CMD_QUEUE_RESET
 mdefine_line|#define SIS_CMD_QUEUE_RESET       0x01
+DECL|macro|SIS_CMD_AUTO_CORR
+mdefine_line|#define SIS_CMD_AUTO_CORR&t;  0x02
 DECL|macro|SIS_SIMULTANEOUS_VIEW_ENABLE
-mdefine_line|#define SIS_SIMULTANEOUS_VIEW_ENABLE  0x01&t;/* CR30 */
+mdefine_line|#define SIS_SIMULTANEOUS_VIEW_ENABLE  0x01  /* CR30 */
 DECL|macro|SIS_MODE_SELECT_CRT2
 mdefine_line|#define SIS_MODE_SELECT_CRT2      0x02
 DECL|macro|SIS_VB_OUTPUT_COMPOSITE
@@ -269,11 +275,11 @@ mdefine_line|#define SIS_VB_OUTPUT_CRT2        0x40
 DECL|macro|SIS_VB_OUTPUT_HIVISION
 mdefine_line|#define SIS_VB_OUTPUT_HIVISION    0x80
 DECL|macro|SIS_VB_OUTPUT_DISABLE
-mdefine_line|#define SIS_VB_OUTPUT_DISABLE     0x20&t;/* CR31 */
+mdefine_line|#define SIS_VB_OUTPUT_DISABLE     0x20  /* CR31 */
 DECL|macro|SIS_DRIVER_MODE
 mdefine_line|#define SIS_DRIVER_MODE           0x40
 DECL|macro|SIS_VB_COMPOSITE
-mdefine_line|#define SIS_VB_COMPOSITE          0x01&t;/* CR32 */
+mdefine_line|#define SIS_VB_COMPOSITE          0x01  /* CR32 */
 DECL|macro|SIS_VB_SVIDEO
 mdefine_line|#define SIS_VB_SVIDEO             0x02
 DECL|macro|SIS_VB_SCART
@@ -289,33 +295,27 @@ mdefine_line|#define SIS_VB_HIVISION           0x40
 DECL|macro|SIS_VB_DVI
 mdefine_line|#define SIS_VB_DVI                0x80
 DECL|macro|SIS_VB_TV
-mdefine_line|#define SIS_VB_TV                 (SIS_VB_COMPOSITE | SIS_VB_SVIDEO | SIS_VB_SCART | SIS_VB_HIVISION)
-DECL|macro|SIS_LCD_PANEL_800X600
-mdefine_line|#define SIS_LCD_PANEL_800X600     0x1&t;/* CR36 */
-DECL|macro|SIS_LCD_PANEL_1024X768
-mdefine_line|#define SIS_LCD_PANEL_1024X768    0x2
-DECL|macro|SIS_LCD_PANEL_1280X1024
-mdefine_line|#define SIS_LCD_PANEL_1280X1024   0x3
-DECL|macro|SIS_LCD_PANEL_1280X960
-mdefine_line|#define SIS_LCD_PANEL_1280X960    0x4
-DECL|macro|SIS_LCD_PANEL_640X480
-mdefine_line|#define SIS_LCD_PANEL_640X480     0x5
+mdefine_line|#define SIS_VB_TV                 (SIS_VB_COMPOSITE | SIS_VB_SVIDEO | &bslash;&n;                                   SIS_VB_SCART | SIS_VB_HIVISION)
 DECL|macro|SIS_EXTERNAL_CHIP_MASK
-mdefine_line|#define SIS_EXTERNAL_CHIP_MASK    0x0E&t;/* CR37 */
+mdefine_line|#define SIS_EXTERNAL_CHIP_MASK    &t;   0x0E  /* CR37 */
 DECL|macro|SIS_EXTERNAL_CHIP_SIS301
-mdefine_line|#define SIS_EXTERNAL_CHIP_SIS301        0x01
+mdefine_line|#define SIS_EXTERNAL_CHIP_SIS301           0x01  /* in CR37 &lt;&lt; 1 ! */
 DECL|macro|SIS_EXTERNAL_CHIP_LVDS
-mdefine_line|#define SIS_EXTERNAL_CHIP_LVDS          0x02
+mdefine_line|#define SIS_EXTERNAL_CHIP_LVDS             0x02  /* in CR37 &lt;&lt; 1 ! */
 DECL|macro|SIS_EXTERNAL_CHIP_TRUMPION
-mdefine_line|#define SIS_EXTERNAL_CHIP_TRUMPION      0x03
+mdefine_line|#define SIS_EXTERNAL_CHIP_TRUMPION         0x03  /* in CR37 &lt;&lt; 1 ! */
 DECL|macro|SIS_EXTERNAL_CHIP_LVDS_CHRONTEL
-mdefine_line|#define SIS_EXTERNAL_CHIP_LVDS_CHRONTEL 0x04
+mdefine_line|#define SIS_EXTERNAL_CHIP_LVDS_CHRONTEL    0x04  /* in CR37 &lt;&lt; 1 ! */
 DECL|macro|SIS_EXTERNAL_CHIP_CHRONTEL
-mdefine_line|#define SIS_EXTERNAL_CHIP_CHRONTEL      0x05
+mdefine_line|#define SIS_EXTERNAL_CHIP_CHRONTEL         0x05  /* in CR37 &lt;&lt; 1 ! */
+DECL|macro|SIS310_EXTERNAL_CHIP_LVDS
+mdefine_line|#define SIS310_EXTERNAL_CHIP_LVDS          0x02  /* in CR37 &lt;&lt; 1 ! */
+DECL|macro|SIS310_EXTERNAL_CHIP_LVDS_CHRONTEL
+mdefine_line|#define SIS310_EXTERNAL_CHIP_LVDS_CHRONTEL 0x03  /* in CR37 &lt;&lt; 1 ! */
 DECL|macro|SIS_AGP_2X
-mdefine_line|#define SIS_AGP_2X                0x20&t;/* CR48 */
+mdefine_line|#define SIS_AGP_2X                0x20  /* CR48 */
 DECL|macro|BRI_DRAM_SIZE_MASK
-mdefine_line|#define BRI_DRAM_SIZE_MASK        0x70&t;/* PCI bridge */
+mdefine_line|#define BRI_DRAM_SIZE_MASK        0x70  /* PCI bridge config data */
 DECL|macro|BRI_DRAM_SIZE_2MB
 mdefine_line|#define BRI_DRAM_SIZE_2MB         0x00
 DECL|macro|BRI_DRAM_SIZE_4MB
@@ -330,7 +330,7 @@ DECL|macro|BRI_DRAM_SIZE_64MB
 mdefine_line|#define BRI_DRAM_SIZE_64MB        0x05
 singleline_comment|// Eden Chen
 DECL|macro|HW_DEVICE_EXTENSION
-mdefine_line|#define HW_DEVICE_EXTENSION&t;    SIS_HW_DEVICE_INFO
+mdefine_line|#define HW_DEVICE_EXTENSION&t;  SIS_HW_DEVICE_INFO
 DECL|macro|PHW_DEVICE_EXTENSION
 mdefine_line|#define PHW_DEVICE_EXTENSION      PSIS_HW_DEVICE_INFO
 DECL|macro|SR_BUFFER_SIZE
@@ -382,22 +382,40 @@ id|fb_var_screeninfo
 id|default_var
 op_assign
 (brace
+id|xres
+suffix:colon
 l_int|0
 comma
+id|yres
+suffix:colon
 l_int|0
 comma
+id|xres_virtual
+suffix:colon
 l_int|0
 comma
+id|yres_virtual
+suffix:colon
 l_int|0
 comma
+id|xoffset
+suffix:colon
 l_int|0
 comma
+id|yoffset
+suffix:colon
 l_int|0
 comma
+id|bits_per_pixel
+suffix:colon
 l_int|0
 comma
+id|grayscale
+suffix:colon
 l_int|0
 comma
+id|red
+suffix:colon
 (brace
 l_int|0
 comma
@@ -406,6 +424,8 @@ comma
 l_int|0
 )brace
 comma
+id|green
+suffix:colon
 (brace
 l_int|0
 comma
@@ -414,6 +434,8 @@ comma
 l_int|0
 )brace
 comma
+id|blue
+suffix:colon
 (brace
 l_int|0
 comma
@@ -422,6 +444,8 @@ comma
 l_int|0
 )brace
 comma
+id|transp
+suffix:colon
 (brace
 l_int|0
 comma
@@ -430,36 +454,66 @@ comma
 l_int|0
 )brace
 comma
+id|nonstd
+suffix:colon
 l_int|0
 comma
+id|activate
+suffix:colon
 id|FB_ACTIVATE_NOW
 comma
+id|height
+suffix:colon
 op_minus
 l_int|1
 comma
+id|width
+suffix:colon
 op_minus
 l_int|1
 comma
+id|accel_flags
+suffix:colon
 l_int|0
 comma
+id|pixclock
+suffix:colon
 l_int|0
 comma
+id|left_margin
+suffix:colon
 l_int|0
 comma
+id|right_margin
+suffix:colon
 l_int|0
 comma
+id|upper_margin
+suffix:colon
 l_int|0
 comma
+id|lower_margin
+suffix:colon
 l_int|0
 comma
+id|hsync_len
+suffix:colon
 l_int|0
 comma
+id|vsync_len
+suffix:colon
 l_int|0
 comma
+id|sync
+suffix:colon
 l_int|0
 comma
+id|vmode
+suffix:colon
 id|FB_VMODE_NONINTERLACED
 comma
+id|reserved
+suffix:colon
 (brace
 l_int|0
 comma
@@ -547,6 +601,14 @@ id|sisfb_crt1off
 op_assign
 l_int|0
 suffix:semicolon
+DECL|variable|sisfb_forcecrt1
+r_static
+r_int
+id|sisfb_forcecrt1
+op_assign
+op_minus
+l_int|1
+suffix:semicolon
 DECL|variable|sisfb_inverse
 r_static
 r_int
@@ -561,7 +623,13 @@ id|sisvga_enabled
 op_assign
 l_int|0
 suffix:semicolon
-multiline_comment|/*karl*/
+DECL|variable|currcon
+r_static
+r_int
+id|currcon
+op_assign
+l_int|0
+suffix:semicolon
 DECL|variable|sisfb_tvmode
 r_static
 r_int
@@ -573,6 +641,20 @@ DECL|variable|sisfb_mem
 r_static
 r_int
 id|sisfb_mem
+op_assign
+l_int|0
+suffix:semicolon
+DECL|variable|sisfb_pdc
+r_static
+r_int
+id|sisfb_pdc
+op_assign
+l_int|0
+suffix:semicolon
+DECL|variable|enable_dstn
+r_static
+r_int
+id|enable_dstn
 op_assign
 l_int|0
 suffix:semicolon
@@ -598,33 +680,49 @@ id|sisvga_engine
 op_assign
 id|UNKNOWN_VGA
 suffix:semicolon
-multiline_comment|/* mode-related variables */
-DECL|variable|sisfb_mode_idx
+multiline_comment|/* TW: These are to adapted according to VGA_ENGINE type */
+DECL|variable|sisfb_hwcursor_size
+r_static
 r_int
-id|sisfb_mode_idx
+id|sisfb_hwcursor_size
+op_assign
+l_int|0
+suffix:semicolon
+DECL|variable|sisfb_CRT2_write_enable
+r_static
+r_int
+id|sisfb_CRT2_write_enable
+op_assign
+l_int|0
+suffix:semicolon
+DECL|variable|sisfb_crt2type
+r_int
+id|sisfb_crt2type
 op_assign
 op_minus
 l_int|1
 suffix:semicolon
-DECL|variable|sisfb_mode_no
-id|u8
-id|sisfb_mode_no
+multiline_comment|/* TW: CRT2 type (for overriding autodetection) */
+DECL|variable|sisfb_queuemode
+r_int
+id|sisfb_queuemode
 op_assign
-l_int|0
+op_minus
+l_int|1
 suffix:semicolon
-DECL|variable|sisfb_rate_idx
-id|u8
-id|sisfb_rate_idx
-op_assign
-l_int|0
-suffix:semicolon
+multiline_comment|/* TW: Use MMIO queue mode by default (310 series only) */
 multiline_comment|/* data for sis components*/
 DECL|variable|ivideo
 r_struct
 id|video_info
 id|ivideo
 suffix:semicolon
-singleline_comment|// Eden Chen
+multiline_comment|/* TW: For ioctl SISFB_GET_INFO */
+DECL|variable|sisfbinfo
+id|sisfb_info
+id|sisfbinfo
+suffix:semicolon
+multiline_comment|/* TW: Hardware extension; contains data on hardware */
 DECL|variable|sishw_ext
 id|HW_DEVICE_EXTENSION
 id|sishw_ext
@@ -673,9 +771,10 @@ l_int|0
 comma
 l_int|0
 )brace
+comma
+l_int|0
 )brace
 suffix:semicolon
-singleline_comment|// ~Eden Chen
 multiline_comment|/* card parameters */
 DECL|variable|sisfb_mmio_size
 r_static
@@ -759,7 +858,7 @@ id|PCI_VENDOR_ID_SI
 comma
 id|PCI_DEVICE_ID_SI_630_VGA
 comma
-l_string|&quot;SIS 630&quot;
+l_string|&quot;SIS 630/730&quot;
 )brace
 comma
 (brace
@@ -783,7 +882,7 @@ id|PCI_VENDOR_ID_SI
 comma
 id|PCI_DEVICE_ID_SI_315PRO
 comma
-l_string|&quot;SIS 315Pro&quot;
+l_string|&quot;SIS 315PRO&quot;
 )brace
 comma
 (brace
@@ -792,6 +891,14 @@ comma
 id|PCI_DEVICE_ID_SI_550_VGA
 comma
 l_string|&quot;SIS 550&quot;
+)brace
+comma
+(brace
+id|PCI_VENDOR_ID_SI
+comma
+id|PCI_DEVICE_ID_SI_650_VGA
+comma
+l_string|&quot;SIS 650/M650/740 VGA&quot;
 )brace
 comma
 (brace
@@ -805,8 +912,6 @@ l_int|NULL
 suffix:semicolon
 multiline_comment|/* mode table */
 DECL|struct|_sisbios_mode
-r_static
-r_const
 r_struct
 id|_sisbios_mode
 (brace
@@ -852,6 +957,83 @@ id|sisbios_mode
 )braket
 op_assign
 (brace
+DECL|macro|MODE_INDEX_NONE
+mdefine_line|#define MODE_INDEX_NONE           0  /* TW: index for mode=none */
+(brace
+l_string|&quot;none&quot;
+comma
+l_int|0xFF
+comma
+l_int|0
+comma
+l_int|0
+comma
+l_int|0
+comma
+l_int|0
+comma
+l_int|0
+comma
+l_int|0
+)brace
+comma
+multiline_comment|/* TW: for mode &quot;none&quot; */
+(brace
+l_string|&quot;320x240x16&quot;
+comma
+l_int|0x56
+comma
+l_int|320
+comma
+l_int|240
+comma
+l_int|16
+comma
+l_int|1
+comma
+l_int|40
+comma
+l_int|15
+)brace
+comma
+(brace
+l_string|&quot;320x480x8&quot;
+comma
+l_int|0x5A
+comma
+l_int|320
+comma
+l_int|480
+comma
+l_int|8
+comma
+l_int|1
+comma
+l_int|40
+comma
+l_int|30
+)brace
+comma
+multiline_comment|/* TW: FSTN */
+(brace
+l_string|&quot;320x480x16&quot;
+comma
+l_int|0x5B
+comma
+l_int|320
+comma
+l_int|480
+comma
+l_int|16
+comma
+l_int|1
+comma
+l_int|40
+comma
+l_int|30
+)brace
+comma
+multiline_comment|/* TW: FSTN */
 (brace
 l_string|&quot;640x480x8&quot;
 comma
@@ -888,6 +1070,25 @@ comma
 l_int|30
 )brace
 comma
+(brace
+l_string|&quot;640x480x24&quot;
+comma
+l_int|0x62
+comma
+l_int|640
+comma
+l_int|480
+comma
+l_int|32
+comma
+l_int|1
+comma
+l_int|80
+comma
+l_int|30
+)brace
+comma
+multiline_comment|/* TW: That&squot;s for people who mix up color- and fb depth */
 (brace
 l_string|&quot;640x480x32&quot;
 comma
@@ -934,6 +1135,24 @@ comma
 l_int|480
 comma
 l_int|16
+comma
+l_int|1
+comma
+l_int|90
+comma
+l_int|30
+)brace
+comma
+(brace
+l_string|&quot;720x480x24&quot;
+comma
+l_int|0x35
+comma
+l_int|720
+comma
+l_int|480
+comma
+l_int|32
 comma
 l_int|1
 comma
@@ -997,6 +1216,24 @@ l_int|36
 )brace
 comma
 (brace
+l_string|&quot;720x576x24&quot;
+comma
+l_int|0x36
+comma
+l_int|720
+comma
+l_int|576
+comma
+l_int|32
+comma
+l_int|1
+comma
+l_int|90
+comma
+l_int|36
+)brace
+comma
+(brace
 l_string|&quot;720x576x32&quot;
 comma
 l_int|0x36
@@ -1014,6 +1251,85 @@ comma
 l_int|36
 )brace
 comma
+(brace
+l_string|&quot;800x480x8&quot;
+comma
+l_int|0x70
+comma
+l_int|800
+comma
+l_int|480
+comma
+l_int|8
+comma
+l_int|1
+comma
+l_int|100
+comma
+l_int|30
+)brace
+comma
+multiline_comment|/* TW: 310/325 series only */
+(brace
+l_string|&quot;800x480x16&quot;
+comma
+l_int|0x7a
+comma
+l_int|800
+comma
+l_int|480
+comma
+l_int|16
+comma
+l_int|1
+comma
+l_int|100
+comma
+l_int|30
+)brace
+comma
+(brace
+l_string|&quot;800x480x24&quot;
+comma
+l_int|0x76
+comma
+l_int|800
+comma
+l_int|480
+comma
+l_int|32
+comma
+l_int|1
+comma
+l_int|100
+comma
+l_int|30
+)brace
+comma
+(brace
+l_string|&quot;800x480x32&quot;
+comma
+l_int|0x76
+comma
+l_int|800
+comma
+l_int|480
+comma
+l_int|32
+comma
+l_int|1
+comma
+l_int|100
+comma
+l_int|30
+)brace
+comma
+DECL|macro|DEFAULT_MODE
+mdefine_line|#define DEFAULT_MODE              20 /* TW: index for 800x600x8 */
+DECL|macro|DEFAULT_LCDMODE
+mdefine_line|#define DEFAULT_LCDMODE           20 /* TW: index for 800x600x8 */
+DECL|macro|DEFAULT_TVMODE
+mdefine_line|#define DEFAULT_TVMODE            20 /* TW: index for 800x600x8 */
 (brace
 l_string|&quot;800x600x8&quot;
 comma
@@ -1051,6 +1367,24 @@ l_int|37
 )brace
 comma
 (brace
+l_string|&quot;800x600x24&quot;
+comma
+l_int|0x63
+comma
+l_int|800
+comma
+l_int|600
+comma
+l_int|32
+comma
+l_int|2
+comma
+l_int|100
+comma
+l_int|37
+)brace
+comma
+(brace
 l_string|&quot;800x600x32&quot;
 comma
 l_int|0x63
@@ -1064,6 +1398,152 @@ comma
 l_int|2
 comma
 l_int|100
+comma
+l_int|37
+)brace
+comma
+(brace
+l_string|&quot;1024x576x8&quot;
+comma
+l_int|0x71
+comma
+l_int|1024
+comma
+l_int|576
+comma
+l_int|8
+comma
+l_int|1
+comma
+l_int|128
+comma
+l_int|36
+)brace
+comma
+multiline_comment|/* TW: 310/325 series only */
+(brace
+l_string|&quot;1024x576x16&quot;
+comma
+l_int|0x74
+comma
+l_int|1024
+comma
+l_int|576
+comma
+l_int|16
+comma
+l_int|1
+comma
+l_int|128
+comma
+l_int|36
+)brace
+comma
+(brace
+l_string|&quot;1024x576x24&quot;
+comma
+l_int|0x77
+comma
+l_int|1024
+comma
+l_int|576
+comma
+l_int|32
+comma
+l_int|1
+comma
+l_int|128
+comma
+l_int|36
+)brace
+comma
+(brace
+l_string|&quot;1024x576x32&quot;
+comma
+l_int|0x77
+comma
+l_int|1024
+comma
+l_int|576
+comma
+l_int|32
+comma
+l_int|1
+comma
+l_int|128
+comma
+l_int|36
+)brace
+comma
+(brace
+l_string|&quot;1024x600x8&quot;
+comma
+l_int|0x20
+comma
+l_int|1024
+comma
+l_int|600
+comma
+l_int|8
+comma
+l_int|1
+comma
+l_int|128
+comma
+l_int|37
+)brace
+comma
+multiline_comment|/* TW: 300 series only */
+(brace
+l_string|&quot;1024x600x16&quot;
+comma
+l_int|0x21
+comma
+l_int|1024
+comma
+l_int|600
+comma
+l_int|16
+comma
+l_int|1
+comma
+l_int|128
+comma
+l_int|37
+)brace
+comma
+(brace
+l_string|&quot;1024x600x24&quot;
+comma
+l_int|0x22
+comma
+l_int|1024
+comma
+l_int|600
+comma
+l_int|32
+comma
+l_int|1
+comma
+l_int|128
+comma
+l_int|37
+)brace
+comma
+(brace
+l_string|&quot;1024x600x32&quot;
+comma
+l_int|0x22
+comma
+l_int|1024
+comma
+l_int|600
+comma
+l_int|32
+comma
+l_int|1
+comma
+l_int|128
 comma
 l_int|37
 )brace
@@ -1105,6 +1585,24 @@ l_int|48
 )brace
 comma
 (brace
+l_string|&quot;1024x768x24&quot;
+comma
+l_int|0x64
+comma
+l_int|1024
+comma
+l_int|768
+comma
+l_int|32
+comma
+l_int|2
+comma
+l_int|128
+comma
+l_int|48
+)brace
+comma
+(brace
 l_string|&quot;1024x768x32&quot;
 comma
 l_int|0x64
@@ -1120,6 +1618,300 @@ comma
 l_int|128
 comma
 l_int|48
+)brace
+comma
+(brace
+l_string|&quot;1152x768x8&quot;
+comma
+l_int|0x23
+comma
+l_int|1152
+comma
+l_int|768
+comma
+l_int|8
+comma
+l_int|1
+comma
+l_int|144
+comma
+l_int|48
+)brace
+comma
+multiline_comment|/* TW: 300 series only */
+(brace
+l_string|&quot;1152x768x16&quot;
+comma
+l_int|0x24
+comma
+l_int|1152
+comma
+l_int|768
+comma
+l_int|16
+comma
+l_int|1
+comma
+l_int|144
+comma
+l_int|48
+)brace
+comma
+(brace
+l_string|&quot;1152x768x24&quot;
+comma
+l_int|0x25
+comma
+l_int|1152
+comma
+l_int|768
+comma
+l_int|32
+comma
+l_int|1
+comma
+l_int|144
+comma
+l_int|48
+)brace
+comma
+(brace
+l_string|&quot;1152x768x32&quot;
+comma
+l_int|0x25
+comma
+l_int|1152
+comma
+l_int|768
+comma
+l_int|32
+comma
+l_int|1
+comma
+l_int|144
+comma
+l_int|48
+)brace
+comma
+(brace
+l_string|&quot;1280x720x8&quot;
+comma
+l_int|0x79
+comma
+l_int|1280
+comma
+l_int|720
+comma
+l_int|8
+comma
+l_int|1
+comma
+l_int|160
+comma
+l_int|45
+)brace
+comma
+multiline_comment|/* TW: 310/325 series only */
+(brace
+l_string|&quot;1280x720x16&quot;
+comma
+l_int|0x75
+comma
+l_int|1280
+comma
+l_int|720
+comma
+l_int|16
+comma
+l_int|1
+comma
+l_int|160
+comma
+l_int|45
+)brace
+comma
+(brace
+l_string|&quot;1280x720x24&quot;
+comma
+l_int|0x78
+comma
+l_int|1280
+comma
+l_int|720
+comma
+l_int|32
+comma
+l_int|1
+comma
+l_int|160
+comma
+l_int|45
+)brace
+comma
+(brace
+l_string|&quot;1280x720x32&quot;
+comma
+l_int|0x78
+comma
+l_int|1280
+comma
+l_int|720
+comma
+l_int|32
+comma
+l_int|1
+comma
+l_int|160
+comma
+l_int|45
+)brace
+comma
+(brace
+l_string|&quot;1280x768x8&quot;
+comma
+l_int|0x23
+comma
+l_int|1280
+comma
+l_int|768
+comma
+l_int|8
+comma
+l_int|1
+comma
+l_int|160
+comma
+l_int|48
+)brace
+comma
+multiline_comment|/* TW: 3107325 series only */
+(brace
+l_string|&quot;1280x768x16&quot;
+comma
+l_int|0x24
+comma
+l_int|1280
+comma
+l_int|768
+comma
+l_int|16
+comma
+l_int|1
+comma
+l_int|160
+comma
+l_int|48
+)brace
+comma
+(brace
+l_string|&quot;1280x768x24&quot;
+comma
+l_int|0x25
+comma
+l_int|1280
+comma
+l_int|768
+comma
+l_int|32
+comma
+l_int|1
+comma
+l_int|160
+comma
+l_int|48
+)brace
+comma
+(brace
+l_string|&quot;1280x768x32&quot;
+comma
+l_int|0x25
+comma
+l_int|1280
+comma
+l_int|768
+comma
+l_int|32
+comma
+l_int|1
+comma
+l_int|160
+comma
+l_int|48
+)brace
+comma
+DECL|macro|MODEINDEX_1280x960
+mdefine_line|#define MODEINDEX_1280x960 48
+(brace
+l_string|&quot;1280x960x8&quot;
+comma
+l_int|0x7C
+comma
+l_int|1280
+comma
+l_int|960
+comma
+l_int|8
+comma
+l_int|1
+comma
+l_int|160
+comma
+l_int|60
+)brace
+comma
+multiline_comment|/* TW: Modenumbers being patched */
+(brace
+l_string|&quot;1280x960x16&quot;
+comma
+l_int|0x7D
+comma
+l_int|1280
+comma
+l_int|960
+comma
+l_int|16
+comma
+l_int|1
+comma
+l_int|160
+comma
+l_int|60
+)brace
+comma
+(brace
+l_string|&quot;1280x960x24&quot;
+comma
+l_int|0x7E
+comma
+l_int|1280
+comma
+l_int|960
+comma
+l_int|32
+comma
+l_int|1
+comma
+l_int|160
+comma
+l_int|60
+)brace
+comma
+(brace
+l_string|&quot;1280x960x32&quot;
+comma
+l_int|0x7E
+comma
+l_int|1280
+comma
+l_int|960
+comma
+l_int|32
+comma
+l_int|1
+comma
+l_int|160
+comma
+l_int|60
 )brace
 comma
 (brace
@@ -1159,6 +1951,24 @@ l_int|64
 )brace
 comma
 (brace
+l_string|&quot;1280x1024x24&quot;
+comma
+l_int|0x65
+comma
+l_int|1280
+comma
+l_int|1024
+comma
+l_int|32
+comma
+l_int|2
+comma
+l_int|160
+comma
+l_int|64
+)brace
+comma
+(brace
 l_string|&quot;1280x1024x32&quot;
 comma
 l_int|0x65
@@ -1174,6 +1984,79 @@ comma
 l_int|160
 comma
 l_int|64
+)brace
+comma
+(brace
+l_string|&quot;1400x1050x8&quot;
+comma
+l_int|0x26
+comma
+l_int|1400
+comma
+l_int|1050
+comma
+l_int|8
+comma
+l_int|1
+comma
+l_int|175
+comma
+l_int|65
+)brace
+comma
+multiline_comment|/* TW: 310/325 series only */
+(brace
+l_string|&quot;1400x1050x16&quot;
+comma
+l_int|0x27
+comma
+l_int|1400
+comma
+l_int|1050
+comma
+l_int|16
+comma
+l_int|1
+comma
+l_int|175
+comma
+l_int|65
+)brace
+comma
+(brace
+l_string|&quot;1400x1050x24&quot;
+comma
+l_int|0x28
+comma
+l_int|1400
+comma
+l_int|1050
+comma
+l_int|32
+comma
+l_int|1
+comma
+l_int|175
+comma
+l_int|65
+)brace
+comma
+(brace
+l_string|&quot;1400x1050x32&quot;
+comma
+l_int|0x28
+comma
+l_int|1400
+comma
+l_int|1050
+comma
+l_int|32
+comma
+l_int|1
+comma
+l_int|175
+comma
+l_int|65
 )brace
 comma
 (brace
@@ -1204,6 +2087,24 @@ comma
 l_int|1200
 comma
 l_int|16
+comma
+l_int|1
+comma
+l_int|200
+comma
+l_int|75
+)brace
+comma
+(brace
+l_string|&quot;1600x1200x24&quot;
+comma
+l_int|0x66
+comma
+l_int|1600
+comma
+l_int|1200
+comma
+l_int|32
 comma
 l_int|1
 comma
@@ -1267,6 +2168,24 @@ l_int|75
 )brace
 comma
 (brace
+l_string|&quot;1920x1440x24&quot;
+comma
+l_int|0x6B
+comma
+l_int|1920
+comma
+l_int|1440
+comma
+l_int|32
+comma
+l_int|1
+comma
+l_int|240
+comma
+l_int|75
+)brace
+comma
+(brace
 l_string|&quot;1920x1440x32&quot;
 comma
 l_int|0x6B
@@ -1285,6 +2204,79 @@ l_int|75
 )brace
 comma
 (brace
+l_string|&quot;2048x1536x8&quot;
+comma
+l_int|0x6c
+comma
+l_int|2048
+comma
+l_int|1536
+comma
+l_int|8
+comma
+l_int|1
+comma
+l_int|256
+comma
+l_int|96
+)brace
+comma
+multiline_comment|/* TW: 310/325 series only */
+(brace
+l_string|&quot;2048x1536x16&quot;
+comma
+l_int|0x6d
+comma
+l_int|2048
+comma
+l_int|1536
+comma
+l_int|16
+comma
+l_int|1
+comma
+l_int|256
+comma
+l_int|96
+)brace
+comma
+(brace
+l_string|&quot;2048x1536x24&quot;
+comma
+l_int|0x6e
+comma
+l_int|2048
+comma
+l_int|1536
+comma
+l_int|32
+comma
+l_int|1
+comma
+l_int|256
+comma
+l_int|96
+)brace
+comma
+(brace
+l_string|&quot;2048x1536x32&quot;
+comma
+l_int|0x6e
+comma
+l_int|2048
+comma
+l_int|1536
+comma
+l_int|32
+comma
+l_int|1
+comma
+l_int|256
+comma
+l_int|96
+)brace
+comma
+(brace
 l_string|&quot;&bslash;0&quot;
 comma
 l_int|0x00
@@ -1300,6 +2292,256 @@ comma
 l_int|0
 comma
 l_int|0
+)brace
+)brace
+suffix:semicolon
+multiline_comment|/* mode-related variables */
+DECL|variable|sisfb_mode_idx
+r_int
+id|sisfb_mode_idx
+op_assign
+id|MODE_INDEX_NONE
+suffix:semicolon
+DECL|variable|sisfb_mode_no
+id|u8
+id|sisfb_mode_no
+op_assign
+l_int|0
+suffix:semicolon
+DECL|variable|sisfb_rate_idx
+id|u8
+id|sisfb_rate_idx
+op_assign
+l_int|0
+suffix:semicolon
+multiline_comment|/* TW: CR36 evaluation */
+DECL|variable|sis300paneltype
+id|USHORT
+id|sis300paneltype
+(braket
+)braket
+op_assign
+(brace
+id|LCD_UNKNOWN
+comma
+id|LCD_800x600
+comma
+id|LCD_1024x768
+comma
+id|LCD_1280x1024
+comma
+id|LCD_1280x960
+comma
+id|LCD_640x480
+comma
+id|LCD_1024x600
+comma
+id|LCD_1152x768
+comma
+id|LCD_320x480
+comma
+id|LCD_1024x768
+comma
+id|LCD_1024x768
+comma
+id|LCD_1024x768
+comma
+id|LCD_1024x768
+comma
+id|LCD_1024x768
+comma
+id|LCD_1024x768
+comma
+id|LCD_1024x768
+)brace
+suffix:semicolon
+DECL|variable|sis310paneltype
+id|USHORT
+id|sis310paneltype
+(braket
+)braket
+op_assign
+(brace
+id|LCD_UNKNOWN
+comma
+id|LCD_800x600
+comma
+id|LCD_1024x768
+comma
+id|LCD_1280x1024
+comma
+id|LCD_640x480
+comma
+id|LCD_1024x600
+comma
+id|LCD_1152x864
+comma
+id|LCD_1280x960
+comma
+id|LCD_1152x768
+comma
+id|LCD_1400x1050
+comma
+id|LCD_1280x768
+comma
+id|LCD_1600x1200
+comma
+id|LCD_320x480
+comma
+id|LCD_1024x768
+comma
+id|LCD_1024x768
+comma
+id|LCD_1024x768
+)brace
+suffix:semicolon
+DECL|struct|_sis_crt2type
+r_static
+r_const
+r_struct
+id|_sis_crt2type
+(brace
+DECL|member|name
+r_char
+id|name
+(braket
+l_int|6
+)braket
+suffix:semicolon
+DECL|member|type_no
+r_int
+id|type_no
+suffix:semicolon
+DECL|variable|sis_crt2type
+)brace
+id|sis_crt2type
+(braket
+)braket
+op_assign
+(brace
+(brace
+l_string|&quot;NONE&quot;
+comma
+l_int|0
+)brace
+comma
+(brace
+l_string|&quot;LCD&quot;
+comma
+id|DISPTYPE_LCD
+)brace
+comma
+(brace
+l_string|&quot;TV&quot;
+comma
+id|DISPTYPE_TV
+)brace
+comma
+(brace
+l_string|&quot;VGA&quot;
+comma
+id|DISPTYPE_CRT2
+)brace
+comma
+(brace
+l_string|&quot;none&quot;
+comma
+l_int|0
+)brace
+comma
+multiline_comment|/* TW: make it fool-proof */
+(brace
+l_string|&quot;lcd&quot;
+comma
+id|DISPTYPE_LCD
+)brace
+comma
+(brace
+l_string|&quot;tv&quot;
+comma
+id|DISPTYPE_TV
+)brace
+comma
+(brace
+l_string|&quot;vga&quot;
+comma
+id|DISPTYPE_CRT2
+)brace
+comma
+(brace
+l_string|&quot;&bslash;0&quot;
+comma
+op_minus
+l_int|1
+)brace
+)brace
+suffix:semicolon
+multiline_comment|/* Queue mode selection for 310 series */
+DECL|struct|_sis_queuemode
+r_static
+r_const
+r_struct
+id|_sis_queuemode
+(brace
+DECL|member|name
+r_char
+id|name
+(braket
+l_int|6
+)braket
+suffix:semicolon
+DECL|member|type_no
+r_int
+id|type_no
+suffix:semicolon
+DECL|variable|sis_queuemode
+)brace
+id|sis_queuemode
+(braket
+)braket
+op_assign
+(brace
+(brace
+l_string|&quot;AGP&quot;
+comma
+id|AGP_CMD_QUEUE
+)brace
+comma
+(brace
+l_string|&quot;VRAM&quot;
+comma
+id|VM_CMD_QUEUE
+)brace
+comma
+(brace
+l_string|&quot;MMIO&quot;
+comma
+id|MMIO_CMD
+)brace
+comma
+(brace
+l_string|&quot;agp&quot;
+comma
+id|AGP_CMD_QUEUE
+)brace
+comma
+(brace
+l_string|&quot;vram&quot;
+comma
+id|VM_CMD_QUEUE
+)brace
+comma
+(brace
+l_string|&quot;mmio&quot;
+comma
+id|MMIO_CMD
+)brace
+comma
+(brace
+l_string|&quot;&bslash;0&quot;
+comma
+op_minus
+l_int|1
 )brace
 )brace
 suffix:semicolon
@@ -1428,7 +2670,37 @@ l_int|720
 comma
 l_int|576
 comma
-l_int|50
+l_int|58
+)brace
+comma
+(brace
+l_int|1
+comma
+l_int|800
+comma
+l_int|480
+comma
+l_int|60
+)brace
+comma
+(brace
+l_int|2
+comma
+l_int|800
+comma
+l_int|480
+comma
+l_int|75
+)brace
+comma
+(brace
+l_int|3
+comma
+l_int|800
+comma
+l_int|480
+comma
+l_int|85
 )brace
 comma
 (brace
@@ -1584,6 +2856,96 @@ comma
 (brace
 l_int|1
 comma
+l_int|1024
+comma
+l_int|576
+comma
+l_int|60
+)brace
+comma
+(brace
+l_int|2
+comma
+l_int|1024
+comma
+l_int|576
+comma
+l_int|65
+)brace
+comma
+(brace
+l_int|3
+comma
+l_int|1024
+comma
+l_int|576
+comma
+l_int|75
+)brace
+comma
+(brace
+l_int|1
+comma
+l_int|1024
+comma
+l_int|600
+comma
+l_int|60
+)brace
+comma
+(brace
+l_int|1
+comma
+l_int|1152
+comma
+l_int|768
+comma
+l_int|60
+)brace
+comma
+(brace
+l_int|1
+comma
+l_int|1280
+comma
+l_int|720
+comma
+l_int|60
+)brace
+comma
+(brace
+l_int|2
+comma
+l_int|1280
+comma
+l_int|720
+comma
+l_int|75
+)brace
+comma
+(brace
+l_int|3
+comma
+l_int|1280
+comma
+l_int|720
+comma
+l_int|85
+)brace
+comma
+(brace
+l_int|1
+comma
+l_int|1280
+comma
+l_int|768
+comma
+l_int|60
+)brace
+comma
+(brace
+l_int|1
+comma
 l_int|1280
 comma
 l_int|1024
@@ -1619,6 +2981,26 @@ comma
 l_int|1024
 comma
 l_int|85
+)brace
+comma
+(brace
+l_int|1
+comma
+l_int|1280
+comma
+l_int|960
+comma
+l_int|60
+)brace
+comma
+(brace
+l_int|1
+comma
+l_int|1400
+comma
+l_int|1050
+comma
+l_int|60
 )brace
 comma
 (brace
@@ -1672,6 +3054,27 @@ l_int|85
 )brace
 comma
 (brace
+l_int|6
+comma
+l_int|1600
+comma
+l_int|1200
+comma
+l_int|100
+)brace
+comma
+(brace
+l_int|7
+comma
+l_int|1600
+comma
+l_int|1200
+comma
+l_int|120
+)brace
+comma
+multiline_comment|/* TW: Clock values for 1920x1440 guessed (except for the first one) */
+(brace
 l_int|1
 comma
 l_int|1920
@@ -1679,6 +3082,107 @@ comma
 l_int|1440
 comma
 l_int|60
+)brace
+comma
+(brace
+l_int|2
+comma
+l_int|1920
+comma
+l_int|1440
+comma
+l_int|70
+)brace
+comma
+(brace
+l_int|3
+comma
+l_int|1920
+comma
+l_int|1440
+comma
+l_int|75
+)brace
+comma
+(brace
+l_int|4
+comma
+l_int|1920
+comma
+l_int|1440
+comma
+l_int|85
+)brace
+comma
+(brace
+l_int|5
+comma
+l_int|1920
+comma
+l_int|1440
+comma
+l_int|100
+)brace
+comma
+(brace
+l_int|6
+comma
+l_int|1920
+comma
+l_int|1440
+comma
+l_int|120
+)brace
+comma
+multiline_comment|/* TW: Clock values for 2048x1536 guessed */
+(brace
+l_int|1
+comma
+l_int|2048
+comma
+l_int|1536
+comma
+l_int|60
+)brace
+comma
+(brace
+l_int|2
+comma
+l_int|2048
+comma
+l_int|1536
+comma
+l_int|70
+)brace
+comma
+(brace
+l_int|3
+comma
+l_int|2048
+comma
+l_int|1536
+comma
+l_int|75
+)brace
+comma
+(brace
+l_int|4
+comma
+l_int|2048
+comma
+l_int|1536
+comma
+l_int|85
+)brace
+comma
+(brace
+l_int|5
+comma
+l_int|2048
+comma
+l_int|1536
+comma
+l_int|100
 )brace
 comma
 (brace
@@ -3403,6 +4907,7 @@ multiline_comment|/* ---------------------- Routine Prototype ------------------
 multiline_comment|/* Interface used by the world */
 r_int
 id|sisfb_setup
+c_func
 (paren
 r_char
 op_star
@@ -3412,6 +4917,7 @@ suffix:semicolon
 r_static
 r_int
 id|sisfb_get_fix
+c_func
 (paren
 r_struct
 id|fb_fix_screeninfo
@@ -3430,6 +4936,7 @@ suffix:semicolon
 r_static
 r_int
 id|sisfb_get_var
+c_func
 (paren
 r_struct
 id|fb_var_screeninfo
@@ -3448,6 +4955,7 @@ suffix:semicolon
 r_static
 r_int
 id|sisfb_set_var
+c_func
 (paren
 r_struct
 id|fb_var_screeninfo
@@ -3466,6 +4974,7 @@ suffix:semicolon
 r_static
 r_int
 id|sisfb_get_cmap
+c_func
 (paren
 r_struct
 id|fb_cmap
@@ -3486,32 +4995,30 @@ id|info
 suffix:semicolon
 r_static
 r_int
-id|sisfb_setcolreg
+id|sisfb_set_cmap
+c_func
 (paren
-r_int
-id|regno
+r_struct
+id|fb_cmap
+op_star
+id|cmap
 comma
 r_int
-id|red
+id|kspc
 comma
 r_int
-id|green
-comma
-r_int
-id|blue
-comma
-r_int
-id|transp
+id|con
 comma
 r_struct
 id|fb_info
 op_star
-id|fb_info
+id|info
 )paren
 suffix:semicolon
 r_static
 r_int
 id|sisfb_ioctl
+c_func
 (paren
 r_struct
 id|inode
@@ -3543,6 +5050,7 @@ suffix:semicolon
 multiline_comment|/* Interface to the low level console driver */
 r_int
 id|sisfb_init
+c_func
 (paren
 r_void
 )paren
@@ -3550,6 +5058,7 @@ suffix:semicolon
 r_static
 r_int
 id|sisfb_update_var
+c_func
 (paren
 r_int
 id|con
@@ -3563,6 +5072,7 @@ suffix:semicolon
 r_static
 r_int
 id|sisfb_switch
+c_func
 (paren
 r_int
 id|con
@@ -3574,7 +5084,7 @@ id|info
 )paren
 suffix:semicolon
 r_static
-r_int
+r_void
 id|sisfb_blank
 c_func
 (paren
@@ -3590,6 +5100,7 @@ suffix:semicolon
 multiline_comment|/* hardware access routines */
 r_void
 id|sisfb_set_reg1
+c_func
 (paren
 id|u16
 id|port
@@ -3603,6 +5114,7 @@ id|data
 suffix:semicolon
 r_void
 id|sisfb_set_reg3
+c_func
 (paren
 id|u16
 id|port
@@ -3613,6 +5125,7 @@ id|data
 suffix:semicolon
 r_void
 id|sisfb_set_reg4
+c_func
 (paren
 id|u16
 id|port
@@ -3624,6 +5137,7 @@ id|data
 suffix:semicolon
 id|u8
 id|sisfb_get_reg1
+c_func
 (paren
 id|u16
 id|port
@@ -3634,6 +5148,7 @@ id|index
 suffix:semicolon
 id|u8
 id|sisfb_get_reg2
+c_func
 (paren
 id|u16
 id|port
@@ -3641,19 +5156,17 @@ id|port
 suffix:semicolon
 id|u32
 id|sisfb_get_reg3
+c_func
 (paren
 id|u16
 id|port
 )paren
 suffix:semicolon
-singleline_comment|// Eden Chen
-singleline_comment|//void sisfb_clear_DAC(u16 port);
-singleline_comment|//void sisfb_clear_buffer(PHW_DEVICE_EXTENSION psishw_ext);
-singleline_comment|// ~Eden Chen
 multiline_comment|/* Internal routines */
 r_static
 r_void
 id|sisfb_search_mode
+c_func
 (paren
 r_const
 r_char
@@ -3664,6 +5177,7 @@ suffix:semicolon
 r_static
 r_void
 id|sisfb_validate_mode
+c_func
 (paren
 r_void
 )paren
@@ -3671,6 +5185,7 @@ suffix:semicolon
 r_static
 id|u8
 id|sisfb_search_refresh_rate
+c_func
 (paren
 r_int
 r_int
@@ -3680,6 +5195,7 @@ suffix:semicolon
 r_static
 r_int
 id|sis_getcolreg
+c_func
 (paren
 r_int
 id|regno
@@ -3708,7 +5224,34 @@ id|fb_info
 suffix:semicolon
 r_static
 r_int
+id|sisfb_setcolreg
+c_func
+(paren
+r_int
+id|regno
+comma
+r_int
+id|red
+comma
+r_int
+id|green
+comma
+r_int
+id|blue
+comma
+r_int
+id|transp
+comma
+r_struct
+id|fb_info
+op_star
+id|fb_info
+)paren
+suffix:semicolon
+r_static
+r_int
 id|sisfb_do_set_var
+c_func
 (paren
 r_struct
 id|fb_var_screeninfo
@@ -3727,6 +5270,7 @@ suffix:semicolon
 r_static
 r_void
 id|sisfb_set_disp
+c_func
 (paren
 r_int
 id|con
@@ -3737,19 +5281,34 @@ op_star
 id|var
 )paren
 suffix:semicolon
+r_static
+r_void
+id|sisfb_do_install_cmap
+c_func
+(paren
+r_int
+id|con
+comma
+r_struct
+id|fb_info
+op_star
+id|info
+)paren
+suffix:semicolon
 multiline_comment|/* Chip-dependent Routines */
 macro_line|#ifdef CONFIG_FB_SIS_300
 r_static
 r_int
 id|sisfb_get_dram_size_300
+c_func
 (paren
 r_void
 )paren
 suffix:semicolon
-singleline_comment|//extern BOOLEAN SiSInit300(PHW_DEVICE_EXTENSION HwDeviceExtension);
 r_static
 r_void
 id|sisfb_detect_VB_connect_300
+c_func
 (paren
 r_void
 )paren
@@ -3757,6 +5316,7 @@ suffix:semicolon
 r_static
 r_void
 id|sisfb_get_VB_type_300
+c_func
 (paren
 r_void
 )paren
@@ -3764,24 +5324,25 @@ suffix:semicolon
 r_static
 r_int
 id|sisfb_has_VB_300
+c_func
 (paren
 r_void
 )paren
 suffix:semicolon
-singleline_comment|//extern BOOLEAN SiSSetMode(PHW_DEVICE_EXTENSION HwDeviceExtension,USHORT ModeNo);
 macro_line|#endif
 macro_line|#ifdef CONFIG_FB_SIS_315
 r_static
 r_int
 id|sisfb_get_dram_size_315
+c_func
 (paren
 r_void
 )paren
 suffix:semicolon
-singleline_comment|//extern BOOLEAN SiSInit310(PHW_DEVICE_EXTENSION HwDeviceExtension);
 r_static
 r_void
 id|sisfb_detect_VB_connect_315
+c_func
 (paren
 r_void
 )paren
@@ -3789,17 +5350,43 @@ suffix:semicolon
 r_static
 r_void
 id|sisfb_get_VB_type_315
+c_func
 (paren
 r_void
 )paren
 suffix:semicolon
-singleline_comment|//extern BOOLEAN SiSSetMode310(PHW_DEVICE_EXTENSION HwDeviceExtension, USHORT ModeNo);
+r_static
+r_int
+id|sisfb_has_VB_315
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
 macro_line|#endif
-multiline_comment|/* SetMode routines */
-singleline_comment|// Eden Chen
+multiline_comment|/* Routines from init.c/init301.c */
+r_extern
+r_void
+id|SiSRegInit
+c_func
+(paren
+id|USHORT
+id|BaseAddr
+)paren
+suffix:semicolon
+r_extern
+id|BOOLEAN
+id|SiSInit
+c_func
+(paren
+id|PSIS_HW_DEVICE_INFO
+id|HwDeviceExtension
+)paren
+suffix:semicolon
 r_extern
 id|BOOLEAN
 id|SiSSetMode
+c_func
 (paren
 id|PSIS_HW_DEVICE_INFO
 id|HwDeviceExtension
@@ -3809,17 +5396,79 @@ id|ModeNo
 )paren
 suffix:semicolon
 r_extern
-id|BOOLEAN
-id|SiSInit
+r_void
+id|SetEnableDstn
+c_func
 (paren
-id|PSIS_HW_DEVICE_INFO
-id|HwDeviceExtension
+r_void
 )paren
 suffix:semicolon
-singleline_comment|// ~Eden Chen
+multiline_comment|/* TW: Chrontel TV functions */
+r_extern
+id|USHORT
+id|SiS_IF_DEF_CH70xx
+suffix:semicolon
+r_extern
+id|USHORT
+id|SiS_GetCH700x
+c_func
+(paren
+id|USHORT
+id|tempbx
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|SiS_SetCH700x
+c_func
+(paren
+id|USHORT
+id|tempbx
+)paren
+suffix:semicolon
+r_extern
+id|USHORT
+id|SiS_GetCH701x
+c_func
+(paren
+id|USHORT
+id|tempbx
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|SiS_SetCH701x
+c_func
+(paren
+id|USHORT
+id|tempbx
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|SiS_SetCH70xxANDOR
+c_func
+(paren
+id|USHORT
+id|tempax
+comma
+id|USHORT
+id|tempbh
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|SiS_DDC2Delay
+c_func
+(paren
+id|USHORT
+id|delaytime
+)paren
+suffix:semicolon
 r_static
 r_void
 id|sisfb_pre_setmode
+c_func
 (paren
 r_void
 )paren
@@ -3827,6 +5476,7 @@ suffix:semicolon
 r_static
 r_void
 id|sisfb_post_setmode
+c_func
 (paren
 r_void
 )paren
@@ -3834,6 +5484,7 @@ suffix:semicolon
 r_static
 r_void
 id|sisfb_crtc_to_var
+c_func
 (paren
 r_struct
 id|fb_var_screeninfo
@@ -3842,9 +5493,22 @@ id|var
 )paren
 suffix:semicolon
 multiline_comment|/* Export functions  */
+macro_line|#if LINUX_VERSION_CODE &lt;= KERNEL_VERSION(2,5,23)
 r_static
 r_void
 id|sis_get_glyph
+c_func
+(paren
+id|SIS_GLYINFO
+op_star
+id|gly
+)paren
+suffix:semicolon
+macro_line|#else
+r_static
+r_void
+id|sis_get_glyph
+c_func
 (paren
 r_struct
 id|fb_info
@@ -3856,8 +5520,10 @@ op_star
 id|gly
 )paren
 suffix:semicolon
+macro_line|#endif
 r_void
 id|sis_dispinfo
+c_func
 (paren
 r_struct
 id|ap_data
@@ -3867,6 +5533,7 @@ id|rec
 suffix:semicolon
 r_void
 id|sis_malloc
+c_func
 (paren
 r_struct
 id|sis_memreq
@@ -3876,6 +5543,7 @@ id|req
 suffix:semicolon
 r_void
 id|sis_free
+c_func
 (paren
 r_int
 r_int
@@ -3886,6 +5554,7 @@ multiline_comment|/* heap routines */
 r_static
 r_int
 id|sisfb_heap_init
+c_func
 (paren
 r_void
 )paren
@@ -3894,6 +5563,7 @@ r_static
 id|SIS_OH
 op_star
 id|sisfb_poh_new_node
+c_func
 (paren
 r_void
 )paren
@@ -3902,6 +5572,7 @@ r_static
 id|SIS_OH
 op_star
 id|sisfb_poh_allocate
+c_func
 (paren
 r_int
 r_int
@@ -3911,6 +5582,7 @@ suffix:semicolon
 r_static
 r_void
 id|sisfb_delete_node
+c_func
 (paren
 id|SIS_OH
 op_star
@@ -3920,6 +5592,7 @@ suffix:semicolon
 r_static
 r_void
 id|sisfb_insert_node
+c_func
 (paren
 id|SIS_OH
 op_star
@@ -3934,6 +5607,7 @@ r_static
 id|SIS_OH
 op_star
 id|sisfb_poh_free
+c_func
 (paren
 r_int
 r_int
@@ -3943,6 +5617,7 @@ suffix:semicolon
 r_static
 r_void
 id|sisfb_free_node
+c_func
 (paren
 id|SIS_OH
 op_star
@@ -3952,6 +5627,7 @@ suffix:semicolon
 multiline_comment|/* routines to access PCI configuration space */
 id|BOOLEAN
 id|sisfb_query_VGA_config_space
+c_func
 (paren
 id|PSIS_HW_DEVICE_INFO
 id|psishw_ext
@@ -3972,6 +5648,7 @@ id|value
 suffix:semicolon
 id|BOOLEAN
 id|sisfb_query_north_bridge_space
+c_func
 (paren
 id|PSIS_HW_DEVICE_INFO
 id|psishw_ext

@@ -15,10 +15,6 @@ macro_line|#include &lt;linux/selection.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
-macro_line|#ifdef CONFIG_FB_COMPAT_XPMAC
-macro_line|#include &lt;asm/vc_ioctl.h&gt;
-macro_line|#include &lt;asm/pci-bridge.h&gt;
-macro_line|#endif
 macro_line|#ifdef CONFIG_PMAC_BACKLIGHT
 macro_line|#include &lt;asm/backlight.h&gt;
 macro_line|#endif
@@ -1707,16 +1703,6 @@ op_assign
 op_star
 id|var
 suffix:semicolon
-macro_line|#ifdef CONFIG_FB_COMPAT_XPMAC
-id|display_info.depth
-op_assign
-id|bpp
-suffix:semicolon
-id|display_info.pitch
-op_assign
-id|fix-&gt;line_length
-suffix:semicolon
-macro_line|#endif
 r_if
 c_cond
 (paren
@@ -2913,86 +2899,6 @@ c_func
 id|p
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_FB_COMPAT_XPMAC
-r_if
-c_cond
-(paren
-op_logical_neg
-id|console_fb_info
-)paren
-(brace
-r_int
-r_int
-id|iobase
-suffix:semicolon
-id|display_info.height
-op_assign
-id|p-&gt;var.yres
-suffix:semicolon
-id|display_info.width
-op_assign
-id|p-&gt;var.xres
-suffix:semicolon
-id|display_info.depth
-op_assign
-l_int|8
-suffix:semicolon
-id|display_info.pitch
-op_assign
-id|p-&gt;fix.line_length
-suffix:semicolon
-id|display_info.mode
-op_assign
-id|VMODE_800_600_60
-suffix:semicolon
-id|strncpy
-c_func
-(paren
-id|display_info.name
-comma
-l_string|&quot;chips65550&quot;
-comma
-r_sizeof
-(paren
-id|display_info.name
-)paren
-)paren
-suffix:semicolon
-id|display_info.fb_address
-op_assign
-id|p-&gt;frame_buffer_phys
-suffix:semicolon
-id|iobase
-op_assign
-id|pci_bus_io_base_phys
-c_func
-(paren
-id|p-&gt;pdev-&gt;bus-&gt;number
-)paren
-suffix:semicolon
-id|display_info.cmap_adr_address
-op_assign
-id|iobase
-op_plus
-l_int|0x3c8
-suffix:semicolon
-id|display_info.cmap_data_address
-op_assign
-id|iobase
-op_plus
-l_int|0x3c9
-suffix:semicolon
-id|display_info.disp_reg_address
-op_assign
-id|p-&gt;blitter_regs_phys
-suffix:semicolon
-id|console_fb_info
-op_assign
-op_amp
-id|p-&gt;info
-suffix:semicolon
-)brace
-macro_line|#endif /* CONFIG_FB_COMPAT_XPMAC */
 macro_line|#ifdef CONFIG_PMAC_PBOOK
 r_if
 c_cond
