@@ -385,15 +385,5 @@ mdefine_line|#define RAM_DATABASE       &bslash;&n;(RAM_RXBASE + (RXCOUNT * 8))&
 DECL|macro|RAM_BUFSIZE
 mdefine_line|#define RAM_BUFSIZE        1580&t;/* max. frame size - should never be&n;&t;&t;&t;&t;   reached                           */
 macro_line|#endif&t;&t;&t;&t;/* _SK_MCA_DRIVER_ */
-r_extern
-r_int
-id|skmca_probe
-c_func
-(paren
-r_struct
-id|net_device
-op_star
-)paren
-suffix:semicolon
 macro_line|#endif&t;/* _SK_MCA_INCLUDE_ */
 eof
