@@ -3,6 +3,7 @@ DECL|macro|_I386_BITOPS_H
 mdefine_line|#define _I386_BITOPS_H
 multiline_comment|/*&n; * Copyright 1992, Linus Torvalds.&n; */
 macro_line|#include &lt;linux/config.h&gt;
+macro_line|#include &lt;linux/compiler.h&gt;
 multiline_comment|/*&n; * These have to be done with inline assembly: that way the bit-setting&n; * is guaranteed to be atomic. All bit operations return 0 if the bit&n; * was cleared before the operation and != 0 if it was not.&n; *&n; * bit 0 is the LSB of addr; bit 32 is the LSB of (addr+1).&n; */
 macro_line|#ifdef CONFIG_SMP
 DECL|macro|LOCK_PREFIX
