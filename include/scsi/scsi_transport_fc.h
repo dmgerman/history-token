@@ -62,9 +62,9 @@ suffix:semicolon
 )brace
 suffix:semicolon
 DECL|macro|fc_host_link_down_tmo
-mdefine_line|#define fc_host_link_down_tmo(x) &bslash;&n;&t;(((struct fc_host_attrs *)&amp;(x)-&gt;shost_data)-&gt;link_down_tmo)
+mdefine_line|#define fc_host_link_down_tmo(x) &bslash;&n;&t;(((struct fc_host_attrs *)(x)-&gt;shost_data)-&gt;link_down_tmo)
 DECL|macro|fc_host_link_down_timer
-mdefine_line|#define fc_host_link_down_timer(x) &bslash;&n;&t;(((struct fc_host_attrs *)&amp;(x)-&gt;shost_data)-&gt;link_down_timer)
+mdefine_line|#define fc_host_link_down_timer(x) &bslash;&n;&t;(((struct fc_host_attrs *)(x)-&gt;shost_data)-&gt;link_down_timer)
 multiline_comment|/* The functions by which the transport class and the driver communicate */
 DECL|struct|fc_function_template
 r_struct

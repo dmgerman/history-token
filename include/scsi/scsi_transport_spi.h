@@ -226,7 +226,7 @@ mdefine_line|#define spi_support_qas(x)&t;(((struct spi_transport_attrs *)&amp;(
 DECL|macro|spi_flags
 mdefine_line|#define spi_flags(x)&t;(((struct spi_transport_attrs *)&amp;(x)-&gt;starget_data)-&gt;flags)
 DECL|macro|spi_signalling
-mdefine_line|#define spi_signalling(h)&t;(((struct spi_host_attrs *)&amp;(h)-&gt;shost_data)-&gt;signalling)
+mdefine_line|#define spi_signalling(h)&t;(((struct spi_host_attrs *)(h)-&gt;shost_data)-&gt;signalling)
 multiline_comment|/* The functions by which the transport class and the driver communicate */
 DECL|struct|spi_function_template
 r_struct
