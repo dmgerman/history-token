@@ -905,7 +905,7 @@ id|objp
 )paren
 suffix:semicolon
 macro_line|#endif /* !CONFIG_MMU */
-macro_line|#ifdef CONFIG_CPU_SH4
+macro_line|#if defined(CONFIG_CPU_SH4) || defined(CONFIG_SH7705_CACHE_32KB)
 DECL|macro|__HAVE_ARCH_PTEP_GET_AND_CLEAR
 mdefine_line|#define __HAVE_ARCH_PTEP_GET_AND_CLEAR
 r_extern

@@ -24,5 +24,13 @@ DECL|macro|CCR_CACHE_ENABLE
 mdefine_line|#define CCR_CACHE_ENABLE&t;CCR_CACHE_CE
 DECL|macro|CCR_CACHE_INVALIDATE
 mdefine_line|#define CCR_CACHE_INVALIDATE&t;CCR_CACHE_CF
+macro_line|#if defined(CONFIG_CPU_SUBTYPE_SH7705)
+DECL|macro|CCR3
+mdefine_line|#define CCR3&t;0xa40000b4
+DECL|macro|CCR_CACHE_16KB
+mdefine_line|#define CCR_CACHE_16KB  0x00010000
+DECL|macro|CCR_CACHE_32KB
+mdefine_line|#define CCR_CACHE_32KB&t;0x00020000
+macro_line|#endif
 macro_line|#endif /* __ASM_CPU_SH3_CACHE_H */
 eof
