@@ -10061,11 +10061,6 @@ op_assign
 id|uhci_urb_dequeue
 comma
 dot
-id|free_config
-op_assign
-l_int|NULL
-comma
-dot
 id|get_frame_number
 op_assign
 id|uhci_hcd_get_frame_number
