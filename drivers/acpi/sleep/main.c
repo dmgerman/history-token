@@ -366,7 +366,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-id|KERN_CRIT
+id|KERN_DEBUG
 l_string|&quot;Back to C!&bslash;n&quot;
 )paren
 suffix:semicolon

@@ -78,13 +78,6 @@ id|error
 op_assign
 l_int|0
 suffix:semicolon
-id|printk
-c_func
-(paren
-id|KERN_EMERG
-l_string|&quot;Suspending devices&bslash;n&quot;
-)paren
-suffix:semicolon
 id|down_write
 c_func
 (paren
@@ -295,13 +288,6 @@ op_amp
 id|devices_subsys.rwsem
 )paren
 suffix:semicolon
-id|printk
-c_func
-(paren
-id|KERN_EMERG
-l_string|&quot;Devices Resumed&bslash;n&quot;
-)paren
-suffix:semicolon
 )brace
 multiline_comment|/**&n; * device_shutdown - call -&gt;remove() on each device to shutdown. &n; */
 DECL|function|device_shutdown
@@ -316,13 +302,6 @@ r_struct
 id|device
 op_star
 id|dev
-suffix:semicolon
-id|printk
-c_func
-(paren
-id|KERN_EMERG
-l_string|&quot;Shutting down devices&bslash;n&quot;
-)paren
 suffix:semicolon
 id|down_write
 c_func

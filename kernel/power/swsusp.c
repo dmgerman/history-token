@@ -1923,12 +1923,6 @@ r_return
 l_int|NULL
 suffix:semicolon
 )brace
-id|printk
-c_func
-(paren
-l_string|&quot;.&quot;
-)paren
-suffix:semicolon
 id|SetPageNosave
 c_func
 (paren
@@ -3011,15 +3005,6 @@ comma
 id|MARK_SWAP_RESUME
 )paren
 suffix:semicolon
-id|PRINTK
-c_func
-(paren
-id|KERN_WARNING
-l_string|&quot;%sLeaving do_magic_suspend_2...&bslash;n&quot;
-comma
-id|name_suspend
-)paren
-suffix:semicolon
 )brace
 DECL|function|do_software_suspend
 r_static
@@ -3099,12 +3084,6 @@ l_int|0
 )paren
 suffix:semicolon
 )brace
-id|PRINTK
-c_func
-(paren
-l_string|&quot;Restarting processes...&bslash;n&quot;
-)paren
-suffix:semicolon
 id|thaw_processes
 c_func
 (paren
@@ -3122,6 +3101,7 @@ l_int|1000
 )paren
 suffix:semicolon
 id|restore_console
+c_func
 (paren
 )paren
 suffix:semicolon
