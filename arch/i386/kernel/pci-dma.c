@@ -615,6 +615,13 @@ op_assign
 (paren
 id|size
 op_plus
+(paren
+id|device_addr
+op_amp
+op_complement
+id|PAGE_MASK
+)paren
+op_plus
 id|PAGE_SIZE
 op_minus
 l_int|1
