@@ -10,6 +10,8 @@ macro_line|#include &lt;linux/ide.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/sibyte/sb1250_int.h&gt;
+DECL|macro|__IDE_SWARM_C
+mdefine_line|#define __IDE_SWARM_C
 macro_line|#include &lt;asm/sibyte/swarm_ide.h&gt;
 DECL|function|swarm_ide_probe
 r_void
@@ -198,15 +200,101 @@ c_func
 l_int|0x3f7
 )paren
 suffix:semicolon
-singleline_comment|//&t;hwif-&gt;hw-&gt;ack_intr                     = swarm_ide_ack_intr;
+singleline_comment|//&t;hwif-&gt;hw-&gt;ack_intr                    = swarm_ide_ack_intr;
 id|hwif-&gt;hw.irq
 op_assign
 id|SWARM_IDE_INT
 suffix:semicolon
-id|hwif-&gt;ideproc
+macro_line|#if 0
+id|hwif-&gt;iops
 op_assign
-id|swarm_ideproc
+id|swarm_iops
 suffix:semicolon
+macro_line|#else
+id|hwif-&gt;OUTB
+op_assign
+id|hwif-&gt;OUTBP
+op_assign
+id|swarm_outb
+suffix:semicolon
+id|hwif-&gt;OUTW
+op_assign
+id|hwif-&gt;OUTWP
+op_assign
+id|swarm_outw
+suffix:semicolon
+id|hwif-&gt;OUTL
+op_assign
+id|hwif-&gt;OUTLP
+op_assign
+id|swarm_outl
+suffix:semicolon
+id|hwif-&gt;OUTSW
+op_assign
+id|hwif-&gt;OUTSWP
+op_assign
+id|swarm_outsw
+suffix:semicolon
+id|hwif-&gt;OUTSL
+op_assign
+id|hwif-&gt;OUTSLP
+op_assign
+id|swarm_outsl
+suffix:semicolon
+id|hwif-&gt;INB
+op_assign
+id|hwif-&gt;INBP
+op_assign
+id|swarm_inb
+suffix:semicolon
+id|hwif-&gt;INW
+op_assign
+id|hwif-&gt;INWP
+op_assign
+id|swarm_inw
+suffix:semicolon
+id|hwif-&gt;INL
+op_assign
+id|hwif-&gt;INLP
+op_assign
+id|swarm_inl
+suffix:semicolon
+id|hwif-&gt;INSW
+op_assign
+id|hwif-&gt;INSWP
+op_assign
+id|swarm_insw
+suffix:semicolon
+id|hwif-&gt;INSL
+op_assign
+id|hwif-&gt;INSLP
+op_assign
+id|swarm_insl
+suffix:semicolon
+macro_line|#endif
+macro_line|#if 0
+id|hwif-&gt;pioops
+op_assign
+id|swarm_pio_ops
+suffix:semicolon
+macro_line|#else
+id|hwif-&gt;ata_input_data
+op_assign
+id|swarm_ata_input_data
+suffix:semicolon
+id|hwif-&gt;ata_output_data
+op_assign
+id|swarm_ata_output_data
+suffix:semicolon
+id|hwif-&gt;atapi_input_bytes
+op_assign
+id|swarm_atapi_input_bytes
+suffix:semicolon
+id|hwif-&gt;atapi_output_bytes
+op_assign
+id|swarm_atapi_output_bytes
+suffix:semicolon
+macro_line|#endif
 id|memcpy
 c_func
 (paren
@@ -232,5 +320,13 @@ comma
 id|i
 )paren
 suffix:semicolon
+macro_line|#ifndef HWIF_PROBE_CLASSIC_METHOD
+id|probe_hwif_init
+c_func
+(paren
+id|hwif-&gt;index
+)paren
+suffix:semicolon
+macro_line|#endif /* HWIF_PROBE_CLASSIC_METHOD */
 )brace
 eof
