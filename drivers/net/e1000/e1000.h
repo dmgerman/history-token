@@ -294,6 +294,11 @@ r_struct
 id|work_struct
 id|tx_timeout_task
 suffix:semicolon
+DECL|member|watchdog_task
+r_struct
+id|work_struct
+id|watchdog_task
+suffix:semicolon
 DECL|member|fc_autoneg
 r_uint8
 id|fc_autoneg
