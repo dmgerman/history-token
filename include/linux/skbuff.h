@@ -3778,6 +3778,26 @@ l_int|0
 suffix:semicolon
 macro_line|#endif
 )brace
+DECL|function|nf_reset_debug
+r_static
+r_inline
+r_void
+id|nf_reset_debug
+c_func
+(paren
+r_struct
+id|sk_buff
+op_star
+id|skb
+)paren
+(brace
+macro_line|#ifdef CONFIG_NETFILTER_DEBUG
+id|skb-&gt;nf_debug
+op_assign
+l_int|0
+suffix:semicolon
+macro_line|#endif
+)brace
 macro_line|#ifdef CONFIG_BRIDGE_NETFILTER
 DECL|function|nf_bridge_put
 r_static

@@ -434,7 +434,7 @@ id|old_dst
 suffix:semicolon
 )brace
 DECL|macro|IP_VS_XMIT
-mdefine_line|#define IP_VS_XMIT(skb, rt)&t;&t;&t;&t;&bslash;&n;do {&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;nf_reset(skb);&t;&t;&t;&t;&t;&bslash;&n;&t;(skb)-&gt;nfcache |= NFC_IPVS_PROPERTY;&t;&t;&bslash;&n;&t;NF_HOOK(PF_INET, NF_IP_LOCAL_OUT, (skb), NULL,&t;&bslash;&n;&t;&t;(rt)-&gt;u.dst.dev, dst_output);&t;&t;&bslash;&n;} while (0)
+mdefine_line|#define IP_VS_XMIT(skb, rt)&t;&t;&t;&t;&bslash;&n;do {&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;nf_reset_debug(skb);&t;&t;&t;&t;&bslash;&n;&t;(skb)-&gt;nfcache |= NFC_IPVS_PROPERTY;&t;&t;&bslash;&n;&t;(skb)-&gt;ip_summed = CHECKSUM_NONE;&t;&t;&bslash;&n;&t;NF_HOOK(PF_INET, NF_IP_LOCAL_OUT, (skb), NULL,&t;&bslash;&n;&t;&t;(rt)-&gt;u.dst.dev, dst_output);&t;&t;&bslash;&n;} while (0)
 multiline_comment|/*&n; *      NULL transmitter (do nothing except return NF_ACCEPT)&n; */
 r_int
 DECL|function|ip_vs_null_xmit
@@ -1590,10 +1590,6 @@ c_func
 (paren
 id|iph
 )paren
-suffix:semicolon
-id|skb-&gt;ip_summed
-op_assign
-id|CHECKSUM_NONE
 suffix:semicolon
 multiline_comment|/* Another hack: avoid icmp_send in ip_fragment */
 id|skb-&gt;local_df
