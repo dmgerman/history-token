@@ -4931,7 +4931,7 @@ r_return
 l_int|4
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * This enables the unused memory to be freed on older Acorn machines.&n; */
+multiline_comment|/*&n; * This enables the unused memory to be freed on older Acorn machines.&n; * We are freeing memory on behalf of the architecture initialisation&n; * code here.&n; */
 r_static
 r_inline
 r_void
@@ -4998,11 +4998,10 @@ c_func
 id|page
 )paren
 suffix:semicolon
-id|atomic_set
+id|set_page_count
 c_func
 (paren
-op_amp
-id|page-&gt;count
+id|page
 comma
 l_int|1
 )paren
