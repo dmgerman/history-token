@@ -8,16 +8,11 @@ macro_line|#include &quot;sysrq.h&quot;
 macro_line|#include &quot;user_util.h&quot;
 multiline_comment|/*&n;  * If the address is either in the .text section of the&n;  * kernel, or in the vmalloc&squot;ed module regions, it *may* &n;  * be the address of a calling routine&n;  */
 macro_line|#ifdef CONFIG_MODULES
+multiline_comment|/* FIXME: Accessed without a lock --RR */
 r_extern
 r_struct
-id|module
-op_star
-id|module_list
-suffix:semicolon
-r_extern
-r_struct
-id|module
-id|kernel_module
+id|list_head
+id|modules
 suffix:semicolon
 DECL|function|kernel_text_address
 r_static
