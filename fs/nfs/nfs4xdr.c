@@ -6144,9 +6144,11 @@ suffix:semicolon
 id|dprintk
 c_func
 (paren
-l_string|&quot;read_attrs: rdev=0x%x&bslash;n&quot;
+l_string|&quot;read_attrs: rdev=%u:%u&bslash;n&quot;
 comma
-id|nfp-&gt;rdev
+id|major
+comma
+id|minor
 )paren
 suffix:semicolon
 )brace

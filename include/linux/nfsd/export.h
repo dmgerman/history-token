@@ -114,7 +114,7 @@ DECL|member|ek_fsid
 id|u32
 id|ek_fsid
 (braket
-l_int|2
+l_int|3
 )braket
 suffix:semicolon
 DECL|member|ek_export

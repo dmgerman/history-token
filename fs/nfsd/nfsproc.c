@@ -615,6 +615,14 @@ id|dev_t
 id|rdev
 op_assign
 l_int|0
+comma
+id|wanted
+op_assign
+id|old_decode_dev
+c_func
+(paren
+id|attr-&gt;ia_size
+)paren
 suffix:semicolon
 id|dprintk
 c_func
@@ -866,7 +874,7 @@ r_case
 id|S_IFBLK
 suffix:colon
 multiline_comment|/* reserve rdev for later checking */
-id|attr-&gt;ia_size
+id|rdev
 op_assign
 id|inode-&gt;i_rdev
 suffix:semicolon
@@ -969,20 +977,6 @@ id|is_borc
 op_assign
 l_int|0
 suffix:semicolon
-id|u32
-id|size
-op_assign
-id|attr-&gt;ia_size
-suffix:semicolon
-multiline_comment|/* may need to change when we widen dev_t */
-id|rdev
-op_assign
-id|old_decode_dev
-c_func
-(paren
-id|size
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1026,12 +1020,20 @@ r_else
 r_if
 c_cond
 (paren
-id|size
-op_ne
+op_logical_neg
 id|rdev
+op_logical_and
+id|attr-&gt;ia_size
+op_ne
+id|old_encode_dev
+c_func
+(paren
+id|wanted
+)paren
 )paren
 (brace
 multiline_comment|/* dev got truncated because of 16bit Linux dev_t */
+multiline_comment|/* may need to change when we widen dev_t */
 id|nfserr
 op_assign
 id|nfserr_inval
@@ -1046,6 +1048,16 @@ multiline_comment|/* Okay, char or block special */
 id|is_borc
 op_assign
 l_int|1
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|rdev
+)paren
+id|rdev
+op_assign
+id|wanted
 suffix:semicolon
 )brace
 multiline_comment|/* we&squot;ve used the SIZE information, so discard it */
@@ -1064,22 +1076,12 @@ c_cond
 (paren
 id|inode
 op_logical_and
-(paren
 id|type
 op_ne
 (paren
 id|inode-&gt;i_mode
 op_amp
 id|S_IFMT
-)paren
-op_logical_or
-(paren
-id|is_borc
-op_logical_and
-id|inode-&gt;i_rdev
-op_ne
-id|rdev
-)paren
 )paren
 )paren
 r_goto

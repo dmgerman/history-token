@@ -1238,7 +1238,11 @@ id|ATTR_SIZE
 suffix:semicolon
 id|sattr-&gt;ia_size
 op_assign
+id|old_encode_dev
+c_func
+(paren
 id|rdev
+)paren
 suffix:semicolon
 multiline_comment|/* get out your barf bag */
 )brace
