@@ -4886,7 +4886,7 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Kernel_lock protects against swap device deletion. Don&squot;t grab an extra&n; * reference on the swaphandle, it doesn&squot;t matter if it becomes unused.&n; */
+multiline_comment|/*&n; * Kernel_lock protects against swap device deletion. Grab an extra&n; * reference on the swaphandle so that it dos not become unused.&n; */
 DECL|function|valid_swaphandles
 r_int
 id|valid_swaphandles
@@ -4952,6 +4952,12 @@ id|page_cluster
 op_lshift
 id|page_cluster
 suffix:semicolon
+id|swap_device_lock
+c_func
+(paren
+id|swapdev
+)paren
+suffix:semicolon
 r_do
 (brace
 multiline_comment|/* Don&squot;t read-ahead past the end of the swap area */
@@ -4988,6 +4994,12 @@ id|SWAP_MAP_BAD
 )paren
 r_break
 suffix:semicolon
+id|swapdev-&gt;swap_map
+(braket
+id|toff
+)braket
+op_increment
+suffix:semicolon
 id|toff
 op_increment
 suffix:semicolon
@@ -5000,6 +5012,12 @@ c_loop
 (paren
 op_decrement
 id|i
+)paren
+suffix:semicolon
+id|swap_device_unlock
+c_func
+(paren
+id|swapdev
 )paren
 suffix:semicolon
 r_return

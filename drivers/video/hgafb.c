@@ -120,6 +120,7 @@ DECL|macro|HGA_GFX_PAGE_EN
 mdefine_line|#define HGA_GFX_PAGE_EN&t;&t;0x02
 multiline_comment|/* Global locks */
 DECL|variable|hga_reg_lock
+r_static
 id|spinlock_t
 id|hga_reg_lock
 op_assign

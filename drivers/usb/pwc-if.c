@@ -1,5 +1,6 @@
 multiline_comment|/* Linux driver for Philips webcam &n;   USB and Video4Linux interface part.&n;   (C) 1999-2001 Nemosoft Unv.&n;&n;   This program is free software; you can redistribute it and/or modify&n;   it under the terms of the GNU General Public License as published by&n;   the Free Software Foundation; either version 2 of the License, or&n;   (at your option) any later version.&n;&n;   This program is distributed in the hope that it will be useful,&n;   but WITHOUT ANY WARRANTY; without even the implied warranty of&n;   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n;   GNU General Public License for more details.&n;&n;   You should have received a copy of the GNU General Public License&n;   along with this program; if not, write to the Free Software&n;   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n;&n;*/
 multiline_comment|/*  &n;   This code forms the interface between the USB layers and the Philips&n;   specific stuff. Some adanved stuff of the driver falls under an&n;   NDA, signed between me and Philips B.V., Eindhoven, the Netherlands, and&n;   is thus not distributed in source form. The binary pwcx.o module &n;   contains the code that falls under the NDA.&n;   &n;   In case you&squot;re wondering: &squot;pwc&squot; stands for &quot;Philips WebCam&quot;, but &n;   I really didn&squot;t want to type &squot;philips_web_cam&squot; every time (I&squot;m lazy as&n;   any Linux kernel hacker, but I don&squot;t like uncomprehensible abbreviations&n;   without explanation).&n;   &n;   Oh yes, convention: to disctinguish between all the various pointers to&n;   device-structures, I use these names for the pointer variables:&n;   udev: struct usb_device *&n;   vdev: struct video_device *&n;   pdev: struct pwc_devive *&n;*/
+multiline_comment|/* Contributors:&n;   - Alvarado: adding whitebalance code&n;   - Alistar Moire: QuickCam 3000 Pro testing&n;*/
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
@@ -128,6 +129,16 @@ l_int|0x0001
 )brace
 comma
 (brace
+id|USB_DEVICE
+c_func
+(paren
+l_int|0x046D
+comma
+l_int|0x0b80
+)paren
+)brace
+comma
+(brace
 )brace
 )brace
 suffix:semicolon
@@ -225,7 +236,7 @@ id|default_palette
 op_assign
 id|VIDEO_PALETTE_YUV420P
 suffix:semicolon
-multiline_comment|/* This is normal for webcams */
+multiline_comment|/* This format is understood by most tools */
 DECL|variable|default_fbufs
 r_static
 r_int
@@ -249,6 +260,8 @@ op_assign
 id|TRACE_MODULE
 op_or
 id|TRACE_FLOW
+op_or
+id|TRACE_PWCX
 suffix:semicolon
 DECL|variable|power_save
 r_static
@@ -614,116 +627,6 @@ r_return
 id|ret
 suffix:semicolon
 )brace
-DECL|function|uvirt_to_bus
-r_static
-r_inline
-r_int
-r_int
-id|uvirt_to_bus
-c_func
-(paren
-r_int
-r_int
-id|adr
-)paren
-(brace
-r_int
-r_int
-id|kva
-comma
-id|ret
-suffix:semicolon
-id|kva
-op_assign
-id|uvirt_to_kva
-c_func
-(paren
-id|pgd_offset
-c_func
-(paren
-id|current-&gt;mm
-comma
-id|adr
-)paren
-comma
-id|adr
-)paren
-suffix:semicolon
-id|ret
-op_assign
-id|virt_to_bus
-c_func
-(paren
-(paren
-r_void
-op_star
-)paren
-id|kva
-)paren
-suffix:semicolon
-r_return
-id|ret
-suffix:semicolon
-)brace
-DECL|function|kvirt_to_bus
-r_static
-r_inline
-r_int
-r_int
-id|kvirt_to_bus
-c_func
-(paren
-r_int
-r_int
-id|adr
-)paren
-(brace
-r_int
-r_int
-id|va
-comma
-id|kva
-comma
-id|ret
-suffix:semicolon
-id|va
-op_assign
-id|VMALLOC_VMADDR
-c_func
-(paren
-id|adr
-)paren
-suffix:semicolon
-id|kva
-op_assign
-id|uvirt_to_kva
-c_func
-(paren
-id|pgd_offset_k
-c_func
-(paren
-id|va
-)paren
-comma
-id|va
-)paren
-suffix:semicolon
-id|ret
-op_assign
-id|virt_to_bus
-c_func
-(paren
-(paren
-r_void
-op_star
-)paren
-id|kva
-)paren
-suffix:semicolon
-r_return
-id|ret
-suffix:semicolon
-)brace
 multiline_comment|/* Here we want the physical address of the memory.&n; * This is used when initializing the contents of the&n; * area and marking the pages as reserved.&n; */
 DECL|function|kvirt_to_pa
 r_static
@@ -822,7 +725,7 @@ l_int|1
 suffix:semicolon
 id|mem
 op_assign
-id|vmalloc
+id|vmalloc_32
 c_func
 (paren
 id|size
@@ -831,12 +734,9 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-op_logical_neg
 id|mem
 )paren
-r_return
-l_int|NULL
-suffix:semicolon
+(brace
 id|memset
 c_func
 (paren
@@ -875,7 +775,7 @@ suffix:semicolon
 id|mem_map_reserve
 c_func
 (paren
-id|MAP_NR
+id|virt_to_page
 c_func
 (paren
 id|__va
@@ -890,22 +790,11 @@ id|adr
 op_add_assign
 id|PAGE_SIZE
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|size
-OG
-id|PAGE_SIZE
-)paren
 id|size
 op_sub_assign
 id|PAGE_SIZE
 suffix:semicolon
-r_else
-id|size
-op_assign
-l_int|0
-suffix:semicolon
+)brace
 )brace
 r_return
 id|mem
@@ -932,14 +821,7 @@ id|adr
 comma
 id|page
 suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|mem
-)paren
-r_return
-suffix:semicolon
+multiline_comment|/* Round it off to PAGE_SIZE */
 id|size
 op_add_assign
 (paren
@@ -957,6 +839,12 @@ op_minus
 l_int|1
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|mem
+)paren
+(brace
 id|adr
 op_assign
 (paren
@@ -984,7 +872,7 @@ suffix:semicolon
 id|mem_map_unreserve
 c_func
 (paren
-id|MAP_NR
+id|virt_to_page
 c_func
 (paren
 id|__va
@@ -999,21 +887,9 @@ id|adr
 op_add_assign
 id|PAGE_SIZE
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|size
-OG
-id|PAGE_SIZE
-)paren
 id|size
 op_sub_assign
 id|PAGE_SIZE
-suffix:semicolon
-r_else
-id|size
-op_assign
-l_int|0
 suffix:semicolon
 )brace
 id|vfree
@@ -1022,6 +898,7 @@ c_func
 id|mem
 )paren
 suffix:semicolon
+)brace
 )brace
 DECL|function|pwc_allocate_buffers
 r_static
@@ -1144,6 +1021,16 @@ op_minus
 id|ENOMEM
 suffix:semicolon
 )brace
+id|Trace
+c_func
+(paren
+id|TRACE_MEMORY
+comma
+l_string|&quot;Allocated iso buffer at %p.&bslash;n&quot;
+comma
+id|kbuf
+)paren
+suffix:semicolon
 id|pdev-&gt;sbuf
 (braket
 id|i
@@ -1209,6 +1096,16 @@ op_minus
 id|ENOMEM
 suffix:semicolon
 )brace
+id|Trace
+c_func
+(paren
+id|TRACE_MEMORY
+comma
+l_string|&quot;Allocated frame buffer structure at %p.&bslash;n&quot;
+comma
+id|kbuf
+)paren
+suffix:semicolon
 id|pdev-&gt;fbuf
 op_assign
 id|kbuf
@@ -1289,6 +1186,18 @@ op_minus
 id|ENOMEM
 suffix:semicolon
 )brace
+id|Trace
+c_func
+(paren
+id|TRACE_MEMORY
+comma
+l_string|&quot;Allocated frame buffer %d at %p.&bslash;n&quot;
+comma
+id|i
+comma
+id|kbuf
+)paren
+suffix:semicolon
 id|pdev-&gt;fbuf
 (braket
 id|i
@@ -1303,7 +1212,7 @@ c_func
 (paren
 id|kbuf
 comma
-l_int|0
+l_int|128
 comma
 id|PWC_FRAME_SIZE
 )paren
@@ -1352,6 +1261,16 @@ op_minus
 id|ENOMEM
 suffix:semicolon
 )brace
+id|Trace
+c_func
+(paren
+id|TRACE_MEMORY
+comma
+l_string|&quot;Allocated decompress table %p.&bslash;n&quot;
+comma
+id|kbuf
+)paren
+suffix:semicolon
 )brace
 id|pdev-&gt;decompress_data
 op_assign
@@ -1365,9 +1284,7 @@ c_func
 (paren
 id|default_mbufs
 op_star
-id|pdev-&gt;view_max.size
-op_star
-l_int|4
+id|pdev-&gt;len_per_image
 )paren
 suffix:semicolon
 r_if
@@ -1389,6 +1306,16 @@ op_minus
 id|ENOMEM
 suffix:semicolon
 )brace
+id|Trace
+c_func
+(paren
+id|TRACE_MEMORY
+comma
+l_string|&quot;Allocated image buffer at %p.&bslash;n&quot;
+comma
+id|kbuf
+)paren
+suffix:semicolon
 id|pdev-&gt;image_data
 op_assign
 id|kbuf
@@ -1414,13 +1341,9 @@ id|i
 op_assign
 id|kbuf
 op_plus
-(paren
 id|i
 op_star
-id|pdev-&gt;view_max.size
-op_star
-l_int|4
-)paren
+id|pdev-&gt;len_per_image
 suffix:semicolon
 r_for
 c_loop
@@ -1506,14 +1429,6 @@ suffix:semicolon
 )brace
 macro_line|#endif&t;
 multiline_comment|/* Release Iso-pipe buffers */
-id|Trace
-c_func
-(paren
-id|TRACE_MEMORY
-comma
-l_string|&quot;Freeing ISO buffers.&bslash;n&quot;
-)paren
-suffix:semicolon
 r_for
 c_loop
 (paren
@@ -1541,6 +1456,21 @@ op_ne
 l_int|NULL
 )paren
 (brace
+id|Trace
+c_func
+(paren
+id|TRACE_MEMORY
+comma
+l_string|&quot;Freeing ISO buffer at %p.&bslash;n&quot;
+comma
+id|pdev-&gt;sbuf
+(braket
+id|i
+)braket
+dot
+id|data
+)paren
+suffix:semicolon
 id|kfree
 c_func
 (paren
@@ -1563,14 +1493,6 @@ l_int|NULL
 suffix:semicolon
 )brace
 multiline_comment|/* The same for frame buffers */
-id|Trace
-c_func
-(paren
-id|TRACE_MEMORY
-comma
-l_string|&quot;Freeing frame buffers.&bslash;n&quot;
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1607,6 +1529,23 @@ op_ne
 l_int|NULL
 )paren
 (brace
+id|Trace
+c_func
+(paren
+id|TRACE_MEMORY
+comma
+l_string|&quot;Freeing frame buffer %d at %p.&bslash;n&quot;
+comma
+id|i
+comma
+id|pdev-&gt;fbuf
+(braket
+id|i
+)braket
+dot
+id|data
+)paren
+suffix:semicolon
 id|vfree
 c_func
 (paren
@@ -1641,14 +1580,6 @@ l_int|NULL
 suffix:semicolon
 )brace
 multiline_comment|/* Intermediate decompression buffer &amp; tables */
-id|Trace
-c_func
-(paren
-id|TRACE_MEMORY
-comma
-l_string|&quot;Freeing decompression buffer&bslash;n&quot;
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1657,6 +1588,16 @@ op_ne
 l_int|NULL
 )paren
 (brace
+id|Trace
+c_func
+(paren
+id|TRACE_MEMORY
+comma
+l_string|&quot;Freeing decompression buffer at %p.&bslash;n&quot;
+comma
+id|pdev-&gt;decompress_data
+)paren
+suffix:semicolon
 id|kfree
 c_func
 (paren
@@ -1673,14 +1614,6 @@ op_assign
 l_int|NULL
 suffix:semicolon
 multiline_comment|/* Release image buffers */
-id|Trace
-c_func
-(paren
-id|TRACE_MEMORY
-comma
-l_string|&quot;Freeing image buffers&bslash;n&quot;
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1688,6 +1621,17 @@ id|pdev-&gt;image_data
 op_ne
 l_int|NULL
 )paren
+(brace
+id|Trace
+c_func
+(paren
+id|TRACE_MEMORY
+comma
+l_string|&quot;Freeing image buffer at %p.&bslash;n&quot;
+comma
+id|pdev-&gt;image_data
+)paren
+suffix:semicolon
 id|rvfree
 c_func
 (paren
@@ -1695,11 +1639,10 @@ id|pdev-&gt;image_data
 comma
 id|default_mbufs
 op_star
-id|pdev-&gt;view_max.size
-op_star
-l_int|4
+id|pdev-&gt;len_per_image
 )paren
 suffix:semicolon
+)brace
 id|pdev-&gt;image_data
 op_assign
 l_int|NULL
@@ -1730,7 +1673,9 @@ id|pdev
 (brace
 r_int
 id|ret
-comma
+suffix:semicolon
+r_int
+r_int
 id|flags
 suffix:semicolon
 id|ret
@@ -1898,7 +1843,9 @@ id|pdev
 (brace
 r_int
 id|i
-comma
+suffix:semicolon
+r_int
+r_int
 id|flags
 suffix:semicolon
 id|spin_lock_irqsave
@@ -2031,7 +1978,9 @@ r_int
 id|ret
 op_assign
 l_int|0
-comma
+suffix:semicolon
+r_int
+r_int
 id|flags
 suffix:semicolon
 id|spin_lock_irqsave
@@ -2267,6 +2216,16 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+id|Trace
+c_func
+(paren
+id|TRACE_READ
+comma
+l_string|&quot;Palette %d not supported.&bslash;n&quot;
+comma
+id|pal
+)paren
+suffix:semicolon
 r_return
 op_minus
 l_int|1
@@ -2394,14 +2353,81 @@ op_ne
 l_int|0
 )paren
 (brace
+r_char
+op_star
+id|errmsg
+suffix:semicolon
+id|errmsg
+op_assign
+l_string|&quot;Unknown&quot;
+suffix:semicolon
+r_switch
+c_cond
+(paren
+id|urb-&gt;status
+)paren
+(brace
+r_case
+op_minus
+id|ENOSR
+suffix:colon
+id|errmsg
+op_assign
+l_string|&quot;Buffer error (overrun)&quot;
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+op_minus
+id|EPIPE
+suffix:colon
+id|errmsg
+op_assign
+l_string|&quot;Babble/stalled (bad cable?)&quot;
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+op_minus
+id|EPROTO
+suffix:colon
+id|errmsg
+op_assign
+l_string|&quot;Bit-stuff error (bad cable?)&quot;
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+op_minus
+id|EILSEQ
+suffix:colon
+id|errmsg
+op_assign
+l_string|&quot;CRC/Timeout&quot;
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+op_minus
+id|ETIMEDOUT
+suffix:colon
+id|errmsg
+op_assign
+l_string|&quot;NAK (device does not respond)&quot;
+suffix:semicolon
+r_break
+suffix:semicolon
+)brace
 id|Trace
 c_func
 (paren
 id|TRACE_FLOW
 comma
-l_string|&quot;pwc_isoc_handler() called with status %d.&bslash;n&quot;
+l_string|&quot;pwc_isoc_handler() called with status %d [%s].&bslash;n&quot;
 comma
 id|urb-&gt;status
+comma
+id|errmsg
 )paren
 suffix:semicolon
 r_return
@@ -2742,9 +2768,11 @@ id|pdev-&gt;vframes_dumped
 OL
 l_int|20
 )paren
-id|Info
+id|Trace
 c_func
 (paren
+id|TRACE_FLOW
+comma
 l_string|&quot;Dumping frame %d.&bslash;n&quot;
 comma
 id|pdev-&gt;vframe_count
@@ -2757,9 +2785,11 @@ id|pdev-&gt;vframes_dumped
 op_eq
 l_int|20
 )paren
-id|Info
+id|Trace
 c_func
 (paren
+id|TRACE_FLOW
+comma
 l_string|&quot;Dumping frame %d (last message).&bslash;n&quot;
 comma
 id|pdev-&gt;vframe_count
@@ -4469,7 +4499,7 @@ c_cond
 id|pdev-&gt;unplugged
 )paren
 (brace
-id|Debug
+id|Info
 c_func
 (paren
 l_string|&quot;pwc_video_read: Device got unplugged (1).&bslash;n&quot;
@@ -4775,7 +4805,7 @@ c_cond
 id|pdev-&gt;unplugged
 )paren
 (brace
-id|Debug
+id|Info
 c_func
 (paren
 l_string|&quot;pwc_video_poll: Device got unplugged.&bslash;n&quot;
@@ -5590,15 +5620,13 @@ id|vm.size
 op_assign
 id|default_mbufs
 op_star
-id|pdev-&gt;view_max.size
-op_star
-l_int|4
+id|pdev-&gt;len_per_image
 suffix:semicolon
 id|vm.frames
 op_assign
 id|default_mbufs
 suffix:semicolon
-multiline_comment|/* double buffering should be enough */
+multiline_comment|/* double buffering should be enough for most applications */
 r_for
 c_loop
 (paren
@@ -5620,9 +5648,7 @@ id|i
 op_assign
 id|i
 op_star
-id|pdev-&gt;view_max.size
-op_star
-l_int|4
+id|pdev-&gt;len_per_image
 suffix:semicolon
 r_if
 c_cond
@@ -6268,7 +6294,7 @@ suffix:semicolon
 id|Trace
 c_func
 (paren
-id|TRACE_READ
+id|TRACE_MEMORY
 comma
 l_string|&quot;mmap(0x%p, 0x%p, %lu) called.&bslash;n&quot;
 comma
@@ -6641,6 +6667,45 @@ suffix:semicolon
 )brace
 )brace
 r_else
+r_if
+c_cond
+(paren
+id|vendor_id
+op_eq
+l_int|0x046d
+)paren
+(brace
+r_switch
+c_cond
+(paren
+id|product_id
+)paren
+(brace
+r_case
+l_int|0x08b0
+suffix:colon
+id|Info
+c_func
+(paren
+l_string|&quot;Logitech QuickCam 3000 Pro detected.&bslash;n&quot;
+)paren
+suffix:semicolon
+id|type_id
+op_assign
+l_int|730
+suffix:semicolon
+r_break
+suffix:semicolon
+r_default
+suffix:colon
+r_return
+l_int|NULL
+suffix:semicolon
+r_break
+suffix:semicolon
+)brace
+)brace
+r_else
 r_return
 l_int|NULL
 suffix:semicolon
@@ -6967,6 +7032,11 @@ id|pwc_device
 op_star
 id|pdev
 suffix:semicolon
+id|lock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
 id|free_mem_leak
 c_func
 (paren
@@ -7152,6 +7222,11 @@ suffix:semicolon
 id|pdev-&gt;udev
 op_assign
 l_int|NULL
+suffix:semicolon
+id|unlock_kernel
+c_func
+(paren
+)paren
 suffix:semicolon
 id|kfree
 c_func
@@ -7592,18 +7667,6 @@ id|Err
 c_func
 (paren
 l_string|&quot;Palette not recognized: try palette=yuv420 or yuv420p.&bslash;n&quot;
-)paren
-suffix:semicolon
-id|Info
-c_func
-(paren
-l_string|&quot;Download the driver from http://www.smcc.demon.nl/webcam/ for in kernel&bslash;n&quot;
-)paren
-suffix:semicolon
-id|Info
-c_func
-(paren
-l_string|&quot;format conversion support.&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return

@@ -8,6 +8,7 @@ macro_line|#include &lt;linux/usb.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;linux/videodev.h&gt;
 macro_line|#include &lt;linux/wait.h&gt;
+macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;asm/semaphore.h&gt;
 macro_line|#include &lt;asm/errno.h&gt;
 multiline_comment|/* Defines and structures for the Philips webcam */
@@ -16,9 +17,10 @@ DECL|macro|PWC_MAGIC
 mdefine_line|#define PWC_MAGIC 0x89DC10ABUL
 DECL|macro|PWC_MAGIC
 macro_line|#undef PWC_MAGIC
-multiline_comment|/* Debugging info on/off */
+multiline_comment|/* Turn some debugging options on/off */
 DECL|macro|PWC_DEBUG
 mdefine_line|#define PWC_DEBUG 0
+multiline_comment|/* Trace certain actions in the driver */
 DECL|macro|TRACE_MODULE
 mdefine_line|#define TRACE_MODULE&t;0x0001
 DECL|macro|TRACE_PROBE
@@ -54,9 +56,9 @@ multiline_comment|/* Version block */
 DECL|macro|PWC_MAJOR
 mdefine_line|#define PWC_MAJOR&t;8
 DECL|macro|PWC_MINOR
-mdefine_line|#define PWC_MINOR&t;1
+mdefine_line|#define PWC_MINOR&t;2
 DECL|macro|PWC_VERSION
-mdefine_line|#define PWC_VERSION &t;&quot;8.1&quot;
+mdefine_line|#define PWC_VERSION &t;&quot;8.2&quot;
 DECL|macro|PWC_NAME
 mdefine_line|#define PWC_NAME &t;&quot;pwc&quot;
 multiline_comment|/* Turn certain features on/off */
@@ -425,6 +427,11 @@ r_int
 id|fill_image
 suffix:semicolon
 multiline_comment|/* ...which are rotated. */
+DECL|member|len_per_image
+r_int
+id|len_per_image
+suffix:semicolon
+multiline_comment|/* length per image */
 DECL|member|image_read_pos
 r_int
 id|image_read_pos

@@ -5137,7 +5137,7 @@ id|MCLK_DIV
 suffix:semicolon
 )brace
 macro_line|#endif
-macro_line|#ifdef __i386__
+macro_line|#if defined(__i386__) || defined(__x86_64__)
 multiline_comment|/*&n;&t; * x86 is simple, we just do regular outb&squot;s instead of&n;&t; * cyber2000_outb.&n;&t; */
 id|outb
 c_func

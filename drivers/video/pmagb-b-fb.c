@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *      linux/drivers/video/pmagb-b-fb.c&n; *&n; *&t;PMAGB-B TurboChannel framebuffer card support ... derived from:&n; *&t;&quot;HP300 Topcat framebuffer support (derived from macfb of all things)&n; *&t;Phil Blundell &lt;philb@gnu.org&gt; 1998&quot;, the original code can be&n; *      found in the file hpfb.c in the same directory.&n; *&n; *      DECstation related code Copyright (C) 1999, 2000, 2001 by&n; *      Michael Engel &lt;engel@unix-ag.org&gt;,&n; *      Karsten Merker &lt;merker@linuxtag.org&gt; and &n; *&t;Harald Koerfgen &lt;harald@unix-ag.org&gt;.&n; *      This file is subject to the terms and conditions of the GNU General&n; *      Public License.  See the file COPYING in the main directory of this&n; *      archive for more details.&n; *&n; */
+multiline_comment|/*&n; *      linux/drivers/video/pmagb-b-fb.c&n; *&n; *&t;PMAGB-B TurboChannel framebuffer card support ... derived from:&n; *&t;&quot;HP300 Topcat framebuffer support (derived from macfb of all things)&n; *&t;Phil Blundell &lt;philb@gnu.org&gt; 1998&quot;, the original code can be&n; *      found in the file hpfb.c in the same directory.&n; *&n; *      DECstation related code Copyright (C) 1999, 2000, 2001 by&n; *      Michael Engel &lt;engel@unix-ag.org&gt;,&n; *      Karsten Merker &lt;merker@linuxtag.org&gt; and &n; *&t;Harald Koerfgen.&n; *      This file is subject to the terms and conditions of the GNU General&n; *      Public License.  See the file COPYING in the main directory of this&n; *      archive for more details.&n; *&n; */
 multiline_comment|/*&n; *      We currently only support the PMAGB-B in high resolution mode&n; *      as I know of no way to detect low resolution mode set via jumper.&n; *      KM, 2001/01/07&n; */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -8,7 +8,7 @@ macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/timer.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/tty.h&gt;
-macro_line|#include &lt;linux/malloc.h&gt;
+macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/fb.h&gt;
@@ -1617,4 +1617,10 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
+)paren
+suffix:semicolon
 eof

@@ -79,7 +79,7 @@ mdefine_line|#define WriteDOC_(d, adr, reg)  writeb(d, ((unsigned long)adr) + (r
 DECL|macro|DOC_IOREMAP_LEN
 mdefine_line|#define DOC_IOREMAP_LEN 0x2000
 macro_line|#endif
-macro_line|#if defined(__i386__)
+macro_line|#if defined(__i386__) || defined(__x86_64__)
 DECL|macro|USE_MEMCPY
 mdefine_line|#define USE_MEMCPY
 macro_line|#endif

@@ -423,11 +423,12 @@ id|procid
 )paren
 (brace
 r_int
+id|flags
+suffix:semicolon
+r_int
 id|retval
 comma
 id|msnlen
-comma
-id|flags
 suffix:semicolon
 r_int
 id|fwd_len
@@ -3728,7 +3729,8 @@ id|cs1
 suffix:semicolon
 r_int
 id|i
-comma
+suffix:semicolon
+r_int
 id|flags
 suffix:semicolon
 id|cs
@@ -4062,7 +4064,8 @@ id|cs1
 suffix:semicolon
 r_int
 id|flags
-comma
+suffix:semicolon
+r_int
 id|retval
 suffix:semicolon
 id|retval

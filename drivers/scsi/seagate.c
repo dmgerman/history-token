@@ -42,6 +42,10 @@ macro_line|#undef LINKED&t;&t;&t;/* Linked commands are currently broken! */
 macro_line|#if defined(OVERRIDE) &amp;&amp; !defined(CONTROLLER)
 macro_line|#error Please use -DCONTROLLER=SEAGATE or -DCONTROLLER=FD to override controller type
 macro_line|#endif
+macro_line|#ifndef __i386__
+DECL|macro|SEAGATE_USE_ASM
+macro_line|#undef SEAGATE_USE_ASM
+macro_line|#endif
 multiline_comment|/*&n;&t;Thanks to Brian Antoine for the example code in his Messy-Loss ST-01&n;&t;&t;driver, and Mitsugu Suzuki for information on the ST-01&n;&t;&t;SCSI host.&n;*/
 multiline_comment|/*&n;&t;CONTROL defines&n;*/
 DECL|macro|CMD_RST

@@ -2716,6 +2716,12 @@ comma
 id|mts_sup_unknown
 )brace
 comma
+(brace
+l_string|&quot;Scanmaker V6UPL&quot;
+comma
+id|mts_sup_alpha
+)brace
+comma
 )brace
 suffix:semicolon
 multiline_comment|/* The entries of microtek_table must correspond, line-by-line to&n;   the entries of mts_supported_products[]. */
@@ -2805,6 +2811,16 @@ c_func
 l_int|0x5da
 comma
 l_int|0x80ac
+)paren
+)brace
+comma
+(brace
+id|USB_DEVICE
+c_func
+(paren
+l_int|0x5da
+comma
+l_int|0x00b6
 )paren
 )brace
 comma
@@ -3668,6 +3684,12 @@ id|MODULE_DESCRIPTION
 c_func
 (paren
 id|DRIVER_DESC
+)paren
+suffix:semicolon
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
 eof

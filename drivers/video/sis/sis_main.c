@@ -3513,7 +3513,7 @@ id|display_switch
 op_star
 id|sw
 suffix:semicolon
-id|u32
+r_int
 id|flags
 suffix:semicolon
 r_if
@@ -8149,7 +8149,7 @@ id|off
 op_rshift
 id|PAGE_SHIFT
 suffix:semicolon
-macro_line|#if defined(__i386__)
+macro_line|#if defined(__i386__) || defined(__x86_64__)
 r_if
 c_cond
 (paren

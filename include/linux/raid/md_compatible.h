@@ -10,7 +10,7 @@ macro_line|#include &lt;linux/blkpg.h&gt;
 multiline_comment|/* 000 */
 DECL|macro|md__get_free_pages
 mdefine_line|#define md__get_free_pages(x,y) __get_free_pages(x,y)
-macro_line|#ifdef __i386__
+macro_line|#if defined(__i386__) || defined(__x86_64__)
 multiline_comment|/* 001 */
 DECL|function|md_cpu_has_mmx
 r_static
@@ -33,6 +33,9 @@ id|boot_cpu_data.x86_capability
 )paren
 suffix:semicolon
 )brace
+macro_line|#else
+DECL|macro|md_cpu_has_mmx
+mdefine_line|#define md_cpu_has_mmx(x)&t;(0)
 macro_line|#endif
 multiline_comment|/* 002 */
 DECL|macro|md_clear_page

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * USB Keyspan PDA Converter driver&n; *&n; * Copyright (c) 1999 - 2001 Greg Kroah-Hartman&t;&lt;greg@kroah.com&gt;&n; * Copyright (c) 1999, 2000 Brian Warner&t;&lt;warner@lothar.com&gt;&n; * Copyright (c) 2000 Al Borchers&t;&t;&lt;borchers@steinerpoint.com&gt;&n; *&n; *&t;This program is free software; you can redistribute it and/or modify&n; *&t;it under the terms of the GNU General Public License as published by&n; *&t;the Free Software Foundation; either version 2 of the License, or&n; *&t;(at your option) any later version.&n; *&n; * See Documentation/usb/usb-serial.txt for more information on using this driver&n; * &n; * (05/31/2001) gkh&n; *&t;switched from using spinlock to a semaphore, which fixes lots of problems.&n; *&n; * (04/08/2001) gb&n; *&t;Identify version on module load.&n; * &n; * (11/01/2000) Adam J. Richter&n; *&t;usb_device_id table support&n; * &n; * (10/05/2000) gkh&n; *&t;Fixed bug with urb-&gt;dev not being set properly, now that the usb&n; *&t;core needs it.&n; * &n; * (08/28/2000) gkh&n; *&t;Added locks for SMP safeness.&n; *&t;Fixed MOD_INC and MOD_DEC logic and the ability to open a port more &n; *&t;than once.&n; * &n; * (07/20/2000) borchers&n; *&t;- keyspan_pda_write no longer sleeps if it is called on interrupt time;&n; *&t;  PPP and the line discipline with stty echo on can call write on&n; *&t;  interrupt time and this would cause an oops if write slept&n; *&t;- if keyspan_pda_write is in an interrupt, it will not call&n; *&t;  usb_control_msg (which sleeps) to query the room in the device&n; *&t;  buffer, it simply uses the current room value it has&n; *&t;- if the urb is busy or if it is throttled keyspan_pda_write just&n; *&t;  returns 0, rather than sleeping to wait for this to change; the&n; *&t;  write_chan code in n_tty.c will sleep if needed before calling&n; *&t;  keyspan_pda_write again&n; *&t;- if the device needs to be unthrottled, write now queues up the&n; *&t;  call to usb_control_msg (which sleeps) to unthrottle the device&n; *&t;- the wakeups from keyspan_pda_write_bulk_callback are queued rather&n; *&t;  than done directly from the callback to avoid the race in write_chan&n; *&t;- keyspan_pda_chars_in_buffer also indicates its buffer is full if the&n; *&t;  urb status is -EINPROGRESS, meaning it cannot write at the moment&n; *      &n; * (07/19/2000) gkh&n; *&t;Added module_init and module_exit functions to handle the fact that this&n; *&t;driver is a loadable module now.&n; *&n; * (03/26/2000) gkh&n; *&t;Split driver up into device specific pieces.&n; * &n; */
+multiline_comment|/*&n; * USB Keyspan PDA / Xircom / Entregra Converter driver&n; *&n; * Copyright (c) 1999 - 2001 Greg Kroah-Hartman&t;&lt;greg@kroah.com&gt;&n; * Copyright (c) 1999, 2000 Brian Warner&t;&lt;warner@lothar.com&gt;&n; * Copyright (c) 2000 Al Borchers&t;&t;&lt;borchers@steinerpoint.com&gt;&n; *&n; *&t;This program is free software; you can redistribute it and/or modify&n; *&t;it under the terms of the GNU General Public License as published by&n; *&t;the Free Software Foundation; either version 2 of the License, or&n; *&t;(at your option) any later version.&n; *&n; * See Documentation/usb/usb-serial.txt for more information on using this driver&n; * &n; * (09/07/2001) gkh&n; *&t;cleaned up the Xircom support.  Added ids for Entregra device which is&n; *&t;the same as the Xircom device.  Enabled the code to be compiled for&n; *&t;either Xircom or Keyspan devices.&n; *&n; * (08/11/2001) Cristian M. Craciunescu&n; *&t;support for Xircom PGSDB9&n; *&n; * (05/31/2001) gkh&n; *&t;switched from using spinlock to a semaphore, which fixes lots of problems.&n; *&n; * (04/08/2001) gb&n; *&t;Identify version on module load.&n; * &n; * (11/01/2000) Adam J. Richter&n; *&t;usb_device_id table support&n; * &n; * (10/05/2000) gkh&n; *&t;Fixed bug with urb-&gt;dev not being set properly, now that the usb&n; *&t;core needs it.&n; * &n; * (08/28/2000) gkh&n; *&t;Added locks for SMP safeness.&n; *&t;Fixed MOD_INC and MOD_DEC logic and the ability to open a port more &n; *&t;than once.&n; * &n; * (07/20/2000) borchers&n; *&t;- keyspan_pda_write no longer sleeps if it is called on interrupt time;&n; *&t;  PPP and the line discipline with stty echo on can call write on&n; *&t;  interrupt time and this would cause an oops if write slept&n; *&t;- if keyspan_pda_write is in an interrupt, it will not call&n; *&t;  usb_control_msg (which sleeps) to query the room in the device&n; *&t;  buffer, it simply uses the current room value it has&n; *&t;- if the urb is busy or if it is throttled keyspan_pda_write just&n; *&t;  returns 0, rather than sleeping to wait for this to change; the&n; *&t;  write_chan code in n_tty.c will sleep if needed before calling&n; *&t;  keyspan_pda_write again&n; *&t;- if the device needs to be unthrottled, write now queues up the&n; *&t;  call to usb_control_msg (which sleeps) to unthrottle the device&n; *&t;- the wakeups from keyspan_pda_write_bulk_callback are queued rather&n; *&t;  than done directly from the callback to avoid the race in write_chan&n; *&t;- keyspan_pda_chars_in_buffer also indicates its buffer is full if the&n; *&t;  urb status is -EINPROGRESS, meaning it cannot write at the moment&n; *      &n; * (07/19/2000) gkh&n; *&t;Added module_init and module_exit functions to handle the fact that this&n; *&t;driver is a loadable module now.&n; *&n; * (03/26/2000) gkh&n; *&t;Split driver up into device specific pieces.&n; * &n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
@@ -51,11 +51,31 @@ l_int|16
 suffix:semicolon
 )brace
 suffix:semicolon
+multiline_comment|/* make a simple define to handle if we are compiling keyspan_pda or xircom support */
+macro_line|#if defined(CONFIG_USB_SERIAL_KEYSPAN_PDA) || defined(CONFIG_USB_SERIAL_KEYSPAN_PDA_MODULE)
+DECL|macro|KEYSPAN
+mdefine_line|#define KEYSPAN
+macro_line|#else
+DECL|macro|KEYSPAN
+macro_line|#undef KEYSPAN
+macro_line|#endif
+macro_line|#if defined(CONFIG_USB_SERIAL_XIRCOM) || defined(CONFIG_USB_SERIAL_XIRCOM_MODULE)
+DECL|macro|XIRCOM
+mdefine_line|#define XIRCOM
+macro_line|#else
+DECL|macro|XIRCOM
+macro_line|#undef XIRCOM
+macro_line|#endif
+macro_line|#ifdef KEYSPAN
 macro_line|#include &quot;keyspan_pda_fw.h&quot;
+macro_line|#endif
+macro_line|#ifdef XIRCOM
+macro_line|#include &quot;xircom_pgs_fw.h&quot;
+macro_line|#endif
 macro_line|#include &quot;usb-serial.h&quot;
 multiline_comment|/*&n; * Version Information&n; */
 DECL|macro|DRIVER_VERSION
-mdefine_line|#define DRIVER_VERSION &quot;v1.0.0&quot;
+mdefine_line|#define DRIVER_VERSION &quot;v1.1&quot;
 DECL|macro|DRIVER_AUTHOR
 mdefine_line|#define DRIVER_AUTHOR &quot;Brian Warner &lt;warner@lothar.com&gt;&quot;
 DECL|macro|DRIVER_DESC
@@ -90,6 +110,15 @@ DECL|macro|KEYSPAN_PDA_FAKE_ID
 mdefine_line|#define KEYSPAN_PDA_FAKE_ID&t;&t;0x0103
 DECL|macro|KEYSPAN_PDA_ID
 mdefine_line|#define KEYSPAN_PDA_ID&t;&t;&t;0x0104 /* no clue */
+multiline_comment|/* For Xircom PGSDB9 and older Entregra version of the same device */
+DECL|macro|XIRCOM_VENDOR_ID
+mdefine_line|#define XIRCOM_VENDOR_ID&t;&t;0x085a
+DECL|macro|XIRCOM_FAKE_ID
+mdefine_line|#define XIRCOM_FAKE_ID&t;&t;&t;0x8027
+DECL|macro|ENTREGRA_VENDOR_ID
+mdefine_line|#define ENTREGRA_VENDOR_ID&t;&t;0x1645
+DECL|macro|ENTREGRA_FAKE_ID
+mdefine_line|#define ENTREGRA_FAKE_ID&t;&t;0x8093
 DECL|variable|id_table_combined
 r_static
 id|__devinitdata
@@ -100,6 +129,7 @@ id|id_table_combined
 )braket
 op_assign
 (brace
+macro_line|#ifdef KEYSPAN
 (brace
 id|USB_DEVICE
 c_func
@@ -110,6 +140,29 @@ id|KEYSPAN_PDA_FAKE_ID
 )paren
 )brace
 comma
+macro_line|#endif
+macro_line|#ifdef XIRCOM
+(brace
+id|USB_DEVICE
+c_func
+(paren
+id|XIRCOM_VENDOR_ID
+comma
+id|XIRCOM_FAKE_ID
+)paren
+)brace
+comma
+(brace
+id|USB_DEVICE
+c_func
+(paren
+id|ENTREGRA_VENDOR_ID
+comma
+id|ENTREGRA_FAKE_ID
+)paren
+)brace
+comma
+macro_line|#endif
 (brace
 id|USB_DEVICE
 c_func
@@ -157,6 +210,7 @@ comma
 multiline_comment|/* Terminating entry */
 )brace
 suffix:semicolon
+macro_line|#ifdef KEYSPAN
 DECL|variable|id_table_fake
 r_static
 id|__devinitdata
@@ -182,6 +236,57 @@ comma
 multiline_comment|/* Terminating entry */
 )brace
 suffix:semicolon
+macro_line|#endif
+macro_line|#ifdef XIRCOM
+DECL|variable|id_table_fake_xircom
+r_static
+id|__devinitdata
+r_struct
+id|usb_device_id
+id|id_table_fake_xircom
+(braket
+)braket
+op_assign
+(brace
+(brace
+id|USB_DEVICE
+c_func
+(paren
+id|XIRCOM_VENDOR_ID
+comma
+id|XIRCOM_FAKE_ID
+)paren
+)brace
+comma
+(brace
+)brace
+)brace
+suffix:semicolon
+DECL|variable|id_table_fake_entregra
+r_static
+id|__devinitdata
+r_struct
+id|usb_device_id
+id|id_table_fake_entregra
+(braket
+)braket
+op_assign
+(brace
+(brace
+id|USB_DEVICE
+c_func
+(paren
+id|ENTREGRA_VENDOR_ID
+comma
+id|ENTREGRA_FAKE_ID
+)paren
+)brace
+comma
+(brace
+)brace
+)brace
+suffix:semicolon
+macro_line|#endif
 DECL|function|keyspan_pda_wakeup_write
 r_static
 r_void
@@ -2649,6 +2754,8 @@ r_struct
 id|ezusb_hex_record
 op_star
 id|record
+op_assign
+l_int|NULL
 suffix:semicolon
 multiline_comment|/* download the firmware here ... */
 id|response
@@ -2661,6 +2768,14 @@ comma
 l_int|1
 )paren
 suffix:semicolon
+macro_line|#ifdef KEYSPAN
+r_if
+c_cond
+(paren
+id|serial-&gt;dev-&gt;descriptor.idVendor
+op_eq
+id|KEYSPAN_VENDOR_ID
+)paren
 id|record
 op_assign
 op_amp
@@ -2669,6 +2784,52 @@ id|keyspan_pda_firmware
 l_int|0
 )braket
 suffix:semicolon
+macro_line|#endif
+macro_line|#ifdef XIRCOM
+r_if
+c_cond
+(paren
+(paren
+id|serial-&gt;dev-&gt;descriptor.idVendor
+op_eq
+id|XIRCOM_VENDOR_ID
+)paren
+op_logical_or
+(paren
+id|serial-&gt;dev-&gt;descriptor.idVendor
+op_eq
+id|ENTREGRA_VENDOR_ID
+)paren
+)paren
+id|record
+op_assign
+op_amp
+id|xircom_pgs_firmware
+(braket
+l_int|0
+)braket
+suffix:semicolon
+macro_line|#endif
+r_if
+c_cond
+(paren
+id|record
+op_eq
+l_int|NULL
+)paren
+(brace
+id|err
+c_func
+(paren
+id|__FUNCTION__
+l_string|&quot;: unknown vendor, aborting.&quot;
+)paren
+suffix:semicolon
+r_return
+op_minus
+id|ENODEV
+suffix:semicolon
+)brace
 r_while
 c_loop
 (paren
@@ -2929,7 +3090,9 @@ r_private
 )paren
 suffix:semicolon
 )brace
+macro_line|#ifdef KEYSPAN
 DECL|variable|keyspan_pda_fake_device
+r_static
 r_struct
 id|usb_serial_device_type
 id|keyspan_pda_fake_device
@@ -2977,7 +3140,109 @@ id|keyspan_pda_fake_startup
 comma
 )brace
 suffix:semicolon
+macro_line|#endif
+macro_line|#ifdef XIRCOM
+DECL|variable|xircom_pgs_fake_device
+r_static
+r_struct
+id|usb_serial_device_type
+id|xircom_pgs_fake_device
+op_assign
+(brace
+id|name
+suffix:colon
+l_string|&quot;Xircom PGS - (prerenumeration)&quot;
+comma
+id|id_table
+suffix:colon
+id|id_table_fake_xircom
+comma
+id|needs_interrupt_in
+suffix:colon
+id|DONT_CARE
+comma
+id|needs_bulk_in
+suffix:colon
+id|DONT_CARE
+comma
+id|needs_bulk_out
+suffix:colon
+id|DONT_CARE
+comma
+id|num_interrupt_in
+suffix:colon
+id|NUM_DONT_CARE
+comma
+id|num_bulk_in
+suffix:colon
+id|NUM_DONT_CARE
+comma
+id|num_bulk_out
+suffix:colon
+id|NUM_DONT_CARE
+comma
+id|num_ports
+suffix:colon
+l_int|1
+comma
+id|startup
+suffix:colon
+id|keyspan_pda_fake_startup
+comma
+)brace
+suffix:semicolon
+DECL|variable|entregra_pgs_fake_device
+r_static
+r_struct
+id|usb_serial_device_type
+id|entregra_pgs_fake_device
+op_assign
+(brace
+id|name
+suffix:colon
+l_string|&quot;Entregra PGS - (prerenumeration)&quot;
+comma
+id|id_table
+suffix:colon
+id|id_table_fake_entregra
+comma
+id|needs_interrupt_in
+suffix:colon
+id|DONT_CARE
+comma
+id|needs_bulk_in
+suffix:colon
+id|DONT_CARE
+comma
+id|needs_bulk_out
+suffix:colon
+id|DONT_CARE
+comma
+id|num_interrupt_in
+suffix:colon
+id|NUM_DONT_CARE
+comma
+id|num_bulk_in
+suffix:colon
+id|NUM_DONT_CARE
+comma
+id|num_bulk_out
+suffix:colon
+id|NUM_DONT_CARE
+comma
+id|num_ports
+suffix:colon
+l_int|1
+comma
+id|startup
+suffix:colon
+id|keyspan_pda_fake_startup
+comma
+)brace
+suffix:semicolon
+macro_line|#endif
 DECL|variable|keyspan_pda_device
+r_static
 r_struct
 id|usb_serial_device_type
 id|keyspan_pda_device
@@ -3089,21 +3354,37 @@ r_void
 id|usb_serial_register
 (paren
 op_amp
+id|keyspan_pda_device
+)paren
+suffix:semicolon
+macro_line|#ifdef KEYSPAN
+id|usb_serial_register
+(paren
+op_amp
 id|keyspan_pda_fake_device
+)paren
+suffix:semicolon
+macro_line|#endif
+macro_line|#ifdef XIRCOM
+id|usb_serial_register
+(paren
+op_amp
+id|xircom_pgs_fake_device
 )paren
 suffix:semicolon
 id|usb_serial_register
 (paren
 op_amp
-id|keyspan_pda_device
+id|entregra_pgs_fake_device
 )paren
 suffix:semicolon
+macro_line|#endif
 id|info
 c_func
 (paren
-id|DRIVER_VERSION
-l_string|&quot;:&quot;
 id|DRIVER_DESC
+l_string|&quot; &quot;
+id|DRIVER_VERSION
 )paren
 suffix:semicolon
 r_return
@@ -3122,15 +3403,31 @@ r_void
 id|usb_serial_deregister
 (paren
 op_amp
+id|keyspan_pda_device
+)paren
+suffix:semicolon
+macro_line|#ifdef KEYSPAN
+id|usb_serial_deregister
+(paren
+op_amp
 id|keyspan_pda_fake_device
+)paren
+suffix:semicolon
+macro_line|#endif
+macro_line|#ifdef XIRCOM
+id|usb_serial_deregister
+(paren
+op_amp
+id|entregra_pgs_fake_device
 )paren
 suffix:semicolon
 id|usb_serial_deregister
 (paren
 op_amp
-id|keyspan_pda_device
+id|xircom_pgs_fake_device
 )paren
 suffix:semicolon
+macro_line|#endif
 )brace
 DECL|variable|keyspan_pda_init
 id|module_init
@@ -3158,6 +3455,12 @@ id|MODULE_DESCRIPTION
 c_func
 (paren
 id|DRIVER_DESC
+)paren
+suffix:semicolon
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
 id|MODULE_PARM

@@ -6,7 +6,7 @@ macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#if defined(__alpha__)
 macro_line|# include &lt;asm/hwrpb.h&gt;
-macro_line|#elif defined(__i386__)
+macro_line|#elif defined(__i386__) || defined(__x86_64__)
 macro_line|# include &lt;linux/timex.h&gt;
 macro_line|#endif
 macro_line|#include &lt;linux/ftape.h&gt;
@@ -15,7 +15,7 @@ macro_line|#include &quot;../lowlevel/ftape-calibr.h&quot;
 macro_line|#include &quot;../lowlevel/fdc-io.h&quot;
 DECL|macro|DEBUG
 macro_line|#undef DEBUG
-macro_line|#if !defined(__alpha__) &amp;&amp; !defined(__i386__)
+macro_line|#if !defined(__alpha__) &amp;&amp; !defined(__i386__) &amp;&amp; !defined(__x86_64__)
 macro_line|# error Ftape is not implemented for this architecture!
 macro_line|#endif
 macro_line|#if defined(__alpha__)
@@ -57,7 +57,7 @@ suffix:semicolon
 r_return
 id|r
 suffix:semicolon
-macro_line|#elif defined(__i386__)
+macro_line|#elif defined(__i386__) || defined(__x86_64__)
 r_int
 r_int
 id|flags
@@ -154,7 +154,7 @@ c_func
 (paren
 )paren
 suffix:semicolon
-macro_line|#elif defined(__i386__)
+macro_line|#elif defined(__i386__) || defined(__x86_64__)
 r_int
 r_int
 id|count
@@ -257,7 +257,7 @@ id|t1
 op_minus
 id|t0
 suffix:semicolon
-macro_line|#elif defined(__i386__)
+macro_line|#elif defined(__i386__) || defined(__x86_64__)
 multiline_comment|/*&n;&t; * This is tricky: to work for both short and full ftape_timestamps&n;&t; * we&squot;ll have to discriminate between these.&n;&t; * If it _looks_ like short stamps with wrapping around we&squot;ll&n;&t; * asume it are. This will generate a small error if it really&n;&t; * was a (very large) delta from full ftape_timestamps.&n;&t; */
 r_return
 (paren
@@ -305,7 +305,7 @@ id|count
 op_div
 l_int|1000000UL
 suffix:semicolon
-macro_line|#elif defined(__i386__)
+macro_line|#elif defined(__i386__) || defined(__x86_64__)
 r_return
 (paren
 l_int|10000
@@ -469,7 +469,7 @@ c_func
 r_void
 )paren
 (brace
-macro_line|#if defined(__i386__)
+macro_line|#if defined(__i386__) || defined(__x86_64__)
 r_int
 r_int
 id|t
@@ -648,7 +648,7 @@ r_int
 r_int
 id|time
 suffix:semicolon
-macro_line|#if defined(__i386__)
+macro_line|#if defined(__i386__) || defined(__x86_64__)
 r_int
 r_int
 id|old_tc
@@ -898,7 +898,7 @@ l_int|1000
 r_break
 suffix:semicolon
 )brace
-macro_line|#elif defined(__i386__)
+macro_line|#elif defined(__i386__) || defined(__x86_64__)
 multiline_comment|/*&n;&t;&t; * increase the count until the resulting time nears 2/HZ,&n;&t;&t; * then the tc will drop sharply because we lose LATCH counts.&n;&t;&t; */
 r_if
 c_cond

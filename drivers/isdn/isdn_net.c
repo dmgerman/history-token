@@ -1957,7 +1957,7 @@ suffix:semicolon
 r_int
 id|i
 suffix:semicolon
-r_int
+id|ulong
 id|flags
 suffix:semicolon
 id|isdn_ctrl
@@ -11327,7 +11327,7 @@ OG
 l_int|0
 )paren
 (brace
-r_int
+id|ulong
 id|flags
 suffix:semicolon
 multiline_comment|/* If binding is exclusive, try to grab the channel */
@@ -12557,7 +12557,7 @@ id|isdn_net_phone
 op_star
 id|m
 suffix:semicolon
-r_int
+id|ulong
 id|flags
 suffix:semicolon
 r_if
@@ -12700,7 +12700,7 @@ id|isdn_net_phone
 op_star
 id|m
 suffix:semicolon
-r_int
+id|ulong
 id|flags
 suffix:semicolon
 r_int
@@ -12888,7 +12888,7 @@ op_star
 id|q
 )paren
 (brace
-r_int
+id|ulong
 id|flags
 suffix:semicolon
 id|save_flags
@@ -13266,7 +13266,7 @@ c_func
 r_void
 )paren
 (brace
-r_int
+id|ulong
 id|flags
 suffix:semicolon
 r_int

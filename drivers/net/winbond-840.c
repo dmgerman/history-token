@@ -4253,7 +4253,7 @@ op_or_assign
 l_int|0xE000
 suffix:semicolon
 )brace
-macro_line|#elif defined(__powerpc__) || defined(__i386__) || defined(__alpha) || defined(__ia64__)
+macro_line|#elif defined(__powerpc__) || defined(__i386__) || defined(__alpha__) || defined(__ia64__) || defined(__x86_64__)
 id|i
 op_or_assign
 l_int|0xE000

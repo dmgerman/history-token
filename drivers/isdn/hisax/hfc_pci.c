@@ -1428,7 +1428,8 @@ id|bcs-&gt;cs
 suffix:semicolon
 r_int
 id|flags
-comma
+suffix:semicolon
+r_int
 id|total
 comma
 id|maxlen
@@ -3368,7 +3369,8 @@ id|bcs-&gt;cs
 suffix:semicolon
 r_int
 id|flags
-comma
+suffix:semicolon
+r_int
 id|maxlen
 comma
 id|fcnt
@@ -7332,7 +7334,8 @@ id|bcs-&gt;cs
 suffix:semicolon
 r_int
 id|flags
-comma
+suffix:semicolon
+r_int
 id|fifo2
 suffix:semicolon
 r_if

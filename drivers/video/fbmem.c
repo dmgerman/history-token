@@ -2932,7 +2932,7 @@ id|_PAGE_GUARDED
 suffix:semicolon
 macro_line|#elif defined(__alpha__)
 multiline_comment|/* Caching is off in the I/O space quadrant by design.  */
-macro_line|#elif defined(__i386__)
+macro_line|#elif defined(__i386__) || defined(__x86_64__)
 r_if
 c_cond
 (paren

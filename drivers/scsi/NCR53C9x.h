@@ -120,7 +120,7 @@ mdefine_line|#define EREGS_PAD(n)    unchar n[PAD_SIZE];
 macro_line|#endif
 macro_line|#endif
 multiline_comment|/* The ESP SCSI controllers have their register sets in three&n; * &quot;classes&quot;:&n; *&n; * 1) Registers which are both read and write.&n; * 2) Registers which are read only.&n; * 3) Registers which are write only.&n; *&n; * Yet, they all live within the same IO space.&n; */
-macro_line|#ifndef __i386__
+macro_line|#if !defined(__i386__) &amp;&amp; !defined(__x86_64__)
 macro_line|#ifndef MULTIPLE_PAD_SIZES
 macro_line|#ifdef CONFIG_CPU_HAS_WB
 macro_line|#include &lt;asm/wbflush.h&gt;
@@ -403,7 +403,7 @@ mdefine_line|#define esp_fgrnd   io_addr + (15&lt;&lt;(esp-&gt;shift)) /* rw  Da
 )brace
 suffix:semicolon
 macro_line|#endif
-macro_line|#else /* !defined __i386__ */
+macro_line|#else /* !defined(__i386__) &amp;&amp; !defined(__x86_64__) */
 DECL|macro|esp_write
 mdefine_line|#define esp_write(__reg, __val) outb((__val), (__reg))
 DECL|macro|esp_read
@@ -464,7 +464,7 @@ DECL|macro|esp_fgrnd
 mdefine_line|#define esp_fgrnd   io_addr + 15 /* rw  Data base for fifo             0x3c  */
 )brace
 suffix:semicolon
-macro_line|#endif /* !defined(__i386__) */
+macro_line|#endif /* !defined(__i386__) &amp;&amp; !defined(__x86_64__) */
 multiline_comment|/* Various revisions of the ESP board. */
 DECL|enum|esp_rev
 r_enum

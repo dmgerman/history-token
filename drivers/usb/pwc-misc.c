@@ -374,5 +374,16 @@ id|pdev-&gt;view_max.x
 op_star
 id|pdev-&gt;view_max.y
 suffix:semicolon
+multiline_comment|/* length of image, in YUV format */
+id|pdev-&gt;len_per_image
+op_assign
+(paren
+id|pdev-&gt;view_max.size
+op_star
+l_int|3
+)paren
+op_div
+l_int|2
+suffix:semicolon
 )brace
 eof

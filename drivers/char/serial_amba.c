@@ -7616,7 +7616,7 @@ id|c
 suffix:semicolon
 )brace
 macro_line|#endif
-multiline_comment|/*&n; *&t;Print a string to the serial port trying not to disturb&n; *&t;any possible real use of the port...&n; *&n; *&t;The console_lock must be held when we get here.&n; */
+multiline_comment|/*&n; *&t;Print a string to the serial port trying not to disturb&n; *&t;any possible real use of the port...&n; *&n; *&t;The console must be locked when we get here.&n; */
 DECL|function|ambauart_console_write
 r_static
 r_void

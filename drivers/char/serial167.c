@@ -11801,7 +11801,7 @@ suffix:semicolon
 multiline_comment|/*callout_driver.minor_start*/
 )brace
 macro_line|#endif
-multiline_comment|/*&n; * The following is probably out of date for 2.1.x serial console stuff.&n; *&n; * The console is registered early on from arch/m68k/kernel/setup.c, and&n; * it therefore relies on the chip being setup correctly by 166-Bug.  This&n; * seems reasonable, as the serial port has been used to invoke the system&n; * boot.  It also means that this function must not rely on any data&n; * initialisation performed by serial167_init() etc.&n; *&n; * Of course, once the console has been registered, we had better ensure&n; * that serial167_init() doesn&squot;t leave the chip non-functional.&n; *&n; * The console_lock must be held when we get here.&n; */
+multiline_comment|/*&n; * The following is probably out of date for 2.1.x serial console stuff.&n; *&n; * The console is registered early on from arch/m68k/kernel/setup.c, and&n; * it therefore relies on the chip being setup correctly by 166-Bug.  This&n; * seems reasonable, as the serial port has been used to invoke the system&n; * boot.  It also means that this function must not rely on any data&n; * initialisation performed by serial167_init() etc.&n; *&n; * Of course, once the console has been registered, we had better ensure&n; * that serial167_init() doesn&squot;t leave the chip non-functional.&n; *&n; * The console must be locked when we get here.&n; */
 DECL|function|serial167_console_write
 r_void
 id|serial167_console_write

@@ -1748,6 +1748,10 @@ id|filp-&gt;f_dentry
 op_assign
 id|dentry
 suffix:semicolon
+id|filp-&gt;f_vfsmnt
+op_assign
+id|fhp-&gt;fh_export-&gt;ex_mnt
+suffix:semicolon
 r_if
 c_cond
 (paren

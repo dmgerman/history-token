@@ -584,6 +584,8 @@ macro_line|#include &lt;linux/udf_fs_i.h&gt;
 macro_line|#include &lt;linux/ncp_fs_i.h&gt;
 macro_line|#include &lt;linux/proc_fs_i.h&gt;
 macro_line|#include &lt;linux/usbdev_fs_i.h&gt;
+macro_line|#include &lt;linux/jffs2_fs_i.h&gt;
+macro_line|#include &lt;linux/cramfs_fs_sb.h&gt;
 multiline_comment|/*&n; * Attribute flags.  These should be or-ed together to figure out what&n; * has been changed!&n; */
 DECL|macro|ATTR_MODE
 mdefine_line|#define ATTR_MODE&t;1
@@ -1246,6 +1248,11 @@ DECL|member|usbdev_i
 r_struct
 id|usbdev_inode_info
 id|usbdev_i
+suffix:semicolon
+DECL|member|jffs2_i
+r_struct
+id|jffs2_inode_info
+id|jffs2_i
 suffix:semicolon
 DECL|member|generic_ip
 r_void
@@ -1977,6 +1984,7 @@ macro_line|#include &lt;linux/udf_fs_sb.h&gt;
 macro_line|#include &lt;linux/ncp_fs_sb.h&gt;
 macro_line|#include &lt;linux/usbdev_fs_sb.h&gt;
 macro_line|#include &lt;linux/cramfs_fs_sb.h&gt;
+macro_line|#include &lt;linux/jffs2_fs_sb.h&gt;
 r_extern
 r_struct
 id|list_head
@@ -2223,6 +2231,11 @@ DECL|member|usbdevfs_sb
 r_struct
 id|usbdev_sb_info
 id|usbdevfs_sb
+suffix:semicolon
+DECL|member|jffs2_sb
+r_struct
+id|jffs2_sb_info
+id|jffs2_sb
 suffix:semicolon
 DECL|member|cramfs_sb
 r_struct

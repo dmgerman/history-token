@@ -368,6 +368,22 @@ c_func
 r_void
 )paren
 suffix:semicolon
+r_extern
+r_void
+id|tx3912_console_init
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|tx3912_rs_init
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
 macro_line|#ifndef MIN
 DECL|macro|MIN
 mdefine_line|#define MIN(a,b)&t;((a) &lt; (b) ? (a) : (b))
@@ -9209,6 +9225,13 @@ c_func
 )paren
 suffix:semicolon
 macro_line|#endif
+macro_line|#ifdef CONFIG_AU1000_SERIAL_CONSOLE
+id|au1000_serial_console_init
+c_func
+(paren
+)paren
+suffix:semicolon
+macro_line|#endif
 macro_line|#ifdef CONFIG_SERIAL_CONSOLE
 macro_line|#if (defined(CONFIG_8xx) || defined(CONFIG_8260))
 id|console_8xx_init
@@ -9306,8 +9329,22 @@ c_func
 )paren
 suffix:semicolon
 macro_line|#endif
+macro_line|#ifdef CONFIG_ARC_CONSOLE
+id|arc_console_init
+c_func
+(paren
+)paren
+suffix:semicolon
+macro_line|#endif
 macro_line|#ifdef CONFIG_SERIAL_AMBA_CONSOLE
 id|ambauart_console_init
+c_func
+(paren
+)paren
+suffix:semicolon
+macro_line|#endif
+macro_line|#ifdef CONFIG_SERIAL_TX3912_CONSOLE
+id|tx3912_console_init
 c_func
 (paren
 )paren
@@ -9587,6 +9624,13 @@ suffix:semicolon
 macro_line|#endif
 macro_line|#if defined(CONFIG_MVME162_SCC) || defined(CONFIG_BVME6000_SCC) || defined(CONFIG_MVME147_SCC)
 id|vme_scc_init
+c_func
+(paren
+)paren
+suffix:semicolon
+macro_line|#endif
+macro_line|#ifdef CONFIG_SERIAL_TX3912
+id|tx3912_rs_init
 c_func
 (paren
 )paren

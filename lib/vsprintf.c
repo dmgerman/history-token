@@ -1444,6 +1444,27 @@ suffix:semicolon
 op_increment
 id|fmt
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|qualifier
+op_eq
+l_char|&squot;l&squot;
+op_logical_and
+op_star
+id|fmt
+op_eq
+l_char|&squot;l&squot;
+)paren
+(brace
+id|qualifier
+op_assign
+l_char|&squot;L&squot;
+suffix:semicolon
+op_increment
+id|fmt
+suffix:semicolon
+)brace
 )brace
 multiline_comment|/* default base */
 id|base

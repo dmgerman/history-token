@@ -1023,32 +1023,34 @@ DECL|macro|XMMS_RESTORE
 mdefine_line|#define XMMS_RESTORE&t;&t;&t;&t;&bslash;&n;&t;__asm__ __volatile__ ( &t;&t;&t;&bslash;&n;&t;&t;&quot;sfence&t;&t;&t;;&bslash;n&bslash;t&quot;&t;&bslash;&n;&t;&t;&quot;movups (%1),%%xmm0&t;;&bslash;n&bslash;t&quot;&t;&bslash;&n;&t;&t;&quot;movups 0x10(%1),%%xmm1&t;;&bslash;n&bslash;t&quot;&t;&bslash;&n;&t;&t;&quot;movups 0x20(%1),%%xmm2&t;;&bslash;n&bslash;t&quot;&t;&bslash;&n;&t;&t;&quot;movups 0x30(%1),%%xmm3&t;;&bslash;n&bslash;t&quot;&t;&bslash;&n;&t;&t;&quot;movl &t;%0,%%cr0&t;;&bslash;n&bslash;t&quot;&t;&bslash;&n;&t;&t;:&t;&t;&t;&t;&bslash;&n;&t;&t;: &quot;r&quot; (cr0), &quot;r&quot; (xmm_save)&t;&bslash;&n;&t;&t;: &quot;memory&quot;)
 DECL|macro|OFFS
 mdefine_line|#define OFFS(x)&t;&t;&quot;16*(&quot;#x&quot;)&quot;
+DECL|macro|PF_OFFS
+mdefine_line|#define PF_OFFS(x)&t;&quot;256+16*(&quot;#x&quot;)&quot;
 DECL|macro|PF0
-mdefine_line|#define&t;PF0(x)&t;&t;&quot;&t;prefetcht0  &quot;OFFS(x)&quot;(%1)   ;&bslash;n&quot;
+mdefine_line|#define&t;PF0(x)&t;&t;&quot;&t;prefetchnta &quot;PF_OFFS(x)&quot;(%1)&t;&t;;&bslash;n&quot;
 DECL|macro|LD
-mdefine_line|#define LD(x,y)&t;&t;&quot;       movaps   &quot;OFFS(x)&quot;(%1), %%xmm&quot;#y&quot;   ;&bslash;n&quot;
+mdefine_line|#define LD(x,y)&t;&t;&quot;       movaps   &quot;OFFS(x)&quot;(%1), %%xmm&quot;#y&quot;&t;;&bslash;n&quot;
 DECL|macro|ST
-mdefine_line|#define ST(x,y)&t;&t;&quot;       movaps %%xmm&quot;#y&quot;,   &quot;OFFS(x)&quot;(%1)   ;&bslash;n&quot;
+mdefine_line|#define ST(x,y)&t;&t;&quot;       movaps %%xmm&quot;#y&quot;,   &quot;OFFS(x)&quot;(%1)&t;;&bslash;n&quot;
 DECL|macro|PF1
-mdefine_line|#define PF1(x)&t;&t;&quot;&t;prefetchnta &quot;OFFS(x)&quot;(%2)   ;&bslash;n&quot;
+mdefine_line|#define PF1(x)&t;&t;&quot;&t;prefetchnta &quot;PF_OFFS(x)&quot;(%2)&t;&t;;&bslash;n&quot;
 DECL|macro|PF2
-mdefine_line|#define PF2(x)&t;&t;&quot;&t;prefetchnta &quot;OFFS(x)&quot;(%3)   ;&bslash;n&quot;
+mdefine_line|#define PF2(x)&t;&t;&quot;&t;prefetchnta &quot;PF_OFFS(x)&quot;(%3)&t;&t;;&bslash;n&quot;
 DECL|macro|PF3
-mdefine_line|#define PF3(x)&t;&t;&quot;&t;prefetchnta &quot;OFFS(x)&quot;(%4)   ;&bslash;n&quot;
+mdefine_line|#define PF3(x)&t;&t;&quot;&t;prefetchnta &quot;PF_OFFS(x)&quot;(%4)&t;&t;;&bslash;n&quot;
 DECL|macro|PF4
-mdefine_line|#define PF4(x)&t;&t;&quot;&t;prefetchnta &quot;OFFS(x)&quot;(%5)   ;&bslash;n&quot;
+mdefine_line|#define PF4(x)&t;&t;&quot;&t;prefetchnta &quot;PF_OFFS(x)&quot;(%5)&t;&t;;&bslash;n&quot;
 DECL|macro|PF5
-mdefine_line|#define PF5(x)&t;&t;&quot;&t;prefetchnta &quot;OFFS(x)&quot;(%6)   ;&bslash;n&quot;
+mdefine_line|#define PF5(x)&t;&t;&quot;&t;prefetchnta &quot;PF_OFFS(x)&quot;(%6)&t;&t;;&bslash;n&quot;
 DECL|macro|XO1
-mdefine_line|#define XO1(x,y)&t;&quot;       xorps   &quot;OFFS(x)&quot;(%2), %%xmm&quot;#y&quot;   ;&bslash;n&quot;
+mdefine_line|#define XO1(x,y)&t;&quot;       xorps   &quot;OFFS(x)&quot;(%2), %%xmm&quot;#y&quot;&t;;&bslash;n&quot;
 DECL|macro|XO2
-mdefine_line|#define XO2(x,y)&t;&quot;       xorps   &quot;OFFS(x)&quot;(%3), %%xmm&quot;#y&quot;   ;&bslash;n&quot;
+mdefine_line|#define XO2(x,y)&t;&quot;       xorps   &quot;OFFS(x)&quot;(%3), %%xmm&quot;#y&quot;&t;;&bslash;n&quot;
 DECL|macro|XO3
-mdefine_line|#define XO3(x,y)&t;&quot;       xorps   &quot;OFFS(x)&quot;(%4), %%xmm&quot;#y&quot;   ;&bslash;n&quot;
+mdefine_line|#define XO3(x,y)&t;&quot;       xorps   &quot;OFFS(x)&quot;(%4), %%xmm&quot;#y&quot;&t;;&bslash;n&quot;
 DECL|macro|XO4
-mdefine_line|#define XO4(x,y)&t;&quot;       xorps   &quot;OFFS(x)&quot;(%5), %%xmm&quot;#y&quot;   ;&bslash;n&quot;
+mdefine_line|#define XO4(x,y)&t;&quot;       xorps   &quot;OFFS(x)&quot;(%5), %%xmm&quot;#y&quot;&t;;&bslash;n&quot;
 DECL|macro|XO5
-mdefine_line|#define XO5(x,y)&t;&quot;       xorps   &quot;OFFS(x)&quot;(%6), %%xmm&quot;#y&quot;   ;&bslash;n&quot;
+mdefine_line|#define XO5(x,y)&t;&quot;       xorps   &quot;OFFS(x)&quot;(%6), %%xmm&quot;#y&quot;&t;;&bslash;n&quot;
 r_static
 r_void
 DECL|function|xor_sse_2

@@ -2476,8 +2476,6 @@ op_or
 id|RADEON_SOFT_RESET_E2
 op_or
 id|RADEON_SOFT_RESET_RB
-op_or
-id|RADEON_SOFT_RESET_HDP
 )paren
 )paren
 suffix:semicolon
@@ -2510,8 +2508,6 @@ op_or
 id|RADEON_SOFT_RESET_E2
 op_or
 id|RADEON_SOFT_RESET_RB
-op_or
-id|RADEON_SOFT_RESET_HDP
 )paren
 )paren
 )paren

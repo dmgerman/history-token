@@ -6,10 +6,8 @@ DECL|macro|MD_RESERVED
 mdefine_line|#define MD_RESERVED       0UL
 DECL|macro|LINEAR
 mdefine_line|#define LINEAR            1UL
-DECL|macro|STRIPED
-mdefine_line|#define STRIPED           2UL
 DECL|macro|RAID0
-mdefine_line|#define RAID0             STRIPED
+mdefine_line|#define RAID0             2UL
 DECL|macro|RAID1
 mdefine_line|#define RAID1             3UL
 DECL|macro|RAID5
@@ -18,8 +16,10 @@ DECL|macro|TRANSLUCENT
 mdefine_line|#define TRANSLUCENT       5UL
 DECL|macro|HSM
 mdefine_line|#define HSM               6UL
+DECL|macro|MULTIPATH
+mdefine_line|#define MULTIPATH         7UL
 DECL|macro|MAX_PERSONALITY
-mdefine_line|#define MAX_PERSONALITY   7UL
+mdefine_line|#define MAX_PERSONALITY   8UL
 DECL|function|pers_to_level
 r_static
 r_inline
@@ -36,6 +36,13 @@ c_cond
 id|pers
 )paren
 (brace
+r_case
+id|MULTIPATH
+suffix:colon
+r_return
+op_minus
+l_int|4
+suffix:semicolon
 r_case
 id|HSM
 suffix:colon
@@ -76,10 +83,9 @@ r_return
 l_int|5
 suffix:semicolon
 )brace
-id|panic
+id|BUG
 c_func
 (paren
-l_string|&quot;pers_to_level()&quot;
 )paren
 suffix:semicolon
 r_return
@@ -581,6 +587,11 @@ r_int
 r_int
 id|sb_offset
 suffix:semicolon
+DECL|member|alias_device
+r_int
+id|alias_device
+suffix:semicolon
+multiline_comment|/* device alias to the same disk */
 DECL|member|faulty
 r_int
 id|faulty
@@ -931,6 +942,17 @@ id|mddev
 comma
 r_int
 id|nr
+)paren
+suffix:semicolon
+r_extern
+id|mdp_disk_t
+op_star
+id|get_spare
+c_func
+(paren
+id|mddev_t
+op_star
+id|mddev
 )paren
 suffix:semicolon
 multiline_comment|/*&n; * iterates through some rdev ringlist. It&squot;s safe to remove the&n; * current &squot;rdev&squot;. Dont touch &squot;tmp&squot; though.&n; */

@@ -21,7 +21,7 @@ macro_line|#include &lt;linux/config.h&gt;
 macro_line|#ifdef CONFIG_SMP
 macro_line|#include &lt;linux/cache.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
-macro_line|#if defined(__i386__) || defined(__ia64__)
+macro_line|#if defined(__i386__) || defined(__ia64__) || defined(__x86_64__)
 DECL|macro|__BRLOCK_USE_ATOMICS
 mdefine_line|#define __BRLOCK_USE_ATOMICS
 macro_line|#else

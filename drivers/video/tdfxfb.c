@@ -1683,7 +1683,6 @@ l_int|0
 suffix:semicolon
 DECL|variable|__initdata
 r_static
-r_const
 r_char
 op_star
 id|mode_option

@@ -8,7 +8,7 @@ macro_line|#include &quot;scsiglue.h&quot;
 macro_line|#include &quot;isd200.h&quot;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
-macro_line|#include &lt;linux/malloc.h&gt;
+macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/hdreg.h&gt;
 macro_line|#include &lt;linux/ide.h&gt;
 multiline_comment|/*&n; * Inquiry defines. Used to interpret data returned from target as result&n; * of inquiry command.&n; *&n; * DeviceType field&n; */

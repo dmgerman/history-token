@@ -2,6 +2,7 @@ multiline_comment|/*&n; * include/asm-alpha/processor.h&n; *&n; * Copyright (C) 
 macro_line|#ifndef __ASM_ALPHA_PROCESSOR_H
 DECL|macro|__ASM_ALPHA_PROCESSOR_H
 mdefine_line|#define __ASM_ALPHA_PROCESSOR_H
+macro_line|#include &lt;linux/personality.h&gt;&t;/* for ADDR_LIMIT_32BIT */
 multiline_comment|/*&n; * Returns current instruction pointer (&quot;program counter&quot;).&n; */
 DECL|macro|current_text_addr
 mdefine_line|#define current_text_addr() &bslash;&n;  ({ void *__pc; __asm__ (&quot;br %0,.+4&quot; : &quot;=r&quot;(__pc)); __pc; })

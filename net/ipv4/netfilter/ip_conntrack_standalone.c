@@ -1070,6 +1070,11 @@ r_int
 id|init
 )paren
 (brace
+r_struct
+id|proc_dir_entry
+op_star
+id|proc
+suffix:semicolon
 r_int
 id|ret
 op_assign
@@ -1101,6 +1106,8 @@ l_int|0
 r_goto
 id|cleanup_nothing
 suffix:semicolon
+id|proc
+op_assign
 id|proc_net_create
 c_func
 (paren
@@ -1110,6 +1117,19 @@ l_int|0
 comma
 id|list_conntracks
 )paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|proc
+)paren
+r_goto
+id|cleanup_init
+suffix:semicolon
+id|proc-&gt;owner
+op_assign
+id|THIS_MODULE
 suffix:semicolon
 id|ret
 op_assign
@@ -1135,7 +1155,7 @@ l_string|&quot;ip_conntrack: can&squot;t register in hook.&bslash;n&quot;
 )paren
 suffix:semicolon
 r_goto
-id|cleanup_init
+id|cleanup_proc
 suffix:semicolon
 )brace
 id|ret
@@ -1258,7 +1278,7 @@ op_amp
 id|ip_conntrack_in_ops
 )paren
 suffix:semicolon
-id|cleanup_init
+id|cleanup_proc
 suffix:colon
 id|proc_net_remove
 c_func
@@ -1266,6 +1286,8 @@ c_func
 l_string|&quot;ip_conntrack&quot;
 )paren
 suffix:semicolon
+id|cleanup_init
+suffix:colon
 id|ip_conntrack_cleanup
 c_func
 (paren

@@ -747,6 +747,9 @@ DECL|macro|nfserr_badtype
 mdefine_line|#define&t;nfserr_badtype&t;&t;__constant_htonl(NFSERR_BADTYPE)
 DECL|macro|nfserr_jukebox
 mdefine_line|#define&t;nfserr_jukebox&t;&t;__constant_htonl(NFSERR_JUKEBOX)
+multiline_comment|/* error code for internal use - if a request fails due to&n; * kmalloc failure, it gets dropped.  Client should resend eventually&n; */
+DECL|macro|nfserr_dropit
+mdefine_line|#define&t;nfserr_dropit&t;&t;__constant_htonl(30000)
 multiline_comment|/* Check for dir entries &squot;.&squot; and &squot;..&squot; */
 DECL|macro|isdotent
 mdefine_line|#define isdotent(n, l)&t;(l &lt; 3 &amp;&amp; n[0] == &squot;.&squot; &amp;&amp; (l == 1 || n[1] == &squot;.&squot;))

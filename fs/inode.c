@@ -10,6 +10,7 @@ macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/cache.h&gt;
 macro_line|#include &lt;linux/swap.h&gt;
 macro_line|#include &lt;linux/swapctl.h&gt;
+macro_line|#include &lt;linux/prefetch.h&gt;
 multiline_comment|/*&n; * New inode.c implementation.&n; *&n; * This implementation has the basic premise of trying&n; * to be extremely low-overhead and SMP-safe, yet be&n; * simple enough to be &quot;obviously correct&quot;.&n; *&n; * Famous last words.&n; */
 multiline_comment|/* inode dynamic allocation 1999, Andrea Arcangeli &lt;andrea@suse.de&gt; */
 multiline_comment|/* #define INODE_PARANOIA 1 */
@@ -260,7 +261,7 @@ suffix:semicolon
 )brace
 )brace
 multiline_comment|/*&n; * Put the inode on the super block&squot;s dirty list.&n; *&n; * CAREFUL! We mark it dirty unconditionally, but&n; * move it onto the dirty list only if it is hashed.&n; * If it was not hashed, it will never be added to&n; * the dirty list even if it is later hashed, as it&n; * will have been marked dirty already.&n; *&n; * In short, make sure you hash any inodes _before_&n; * you start marking them dirty..&n; */
-multiline_comment|/**&n; *&t;__mark_inode_dirty -&t;internal function&n; *&t;@inode: inode to mark&n; *&n; *&t;Mark an inode as dirty. Callers should use mark_inode_dirty.&n; */
+multiline_comment|/**&n; *&t;__mark_inode_dirty -&t;internal function&n; *&t;@inode: inode to mark&n; *&t;@flags: what kind of dirty (i.e. I_DIRTY_SYNC)&n; *&t;Mark an inode as dirty. Callers should use mark_inode_dirty or&n; *  &t;mark_inode_dirty_sync.&n; */
 DECL|function|__mark_inode_dirty
 r_void
 id|__mark_inode_dirty
@@ -1544,14 +1545,6 @@ id|sb-&gt;s_list.next
 )paren
 )paren
 (brace
-r_if
-c_cond
-(paren
-op_logical_neg
-id|sb-&gt;s_dev
-)paren
-r_continue
-suffix:semicolon
 id|spin_unlock
 c_func
 (paren
@@ -1650,6 +1643,7 @@ r_else
 id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;write_inode_now: no super block&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -2867,6 +2861,13 @@ r_struct
 id|inode
 op_star
 id|inode
+suffix:semicolon
+id|spin_lock_prefetch
+c_func
+(paren
+op_amp
+id|inode_lock
+)paren
 suffix:semicolon
 id|inode
 op_assign

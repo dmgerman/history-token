@@ -65,16 +65,6 @@ r_void
 )paren
 suffix:semicolon
 macro_line|#endif
-macro_line|#if defined(CONFIG_ADB)
-r_extern
-r_void
-id|adbdev_init
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-macro_line|#endif
 DECL|function|do_write_mem
 r_static
 id|ssize_t
@@ -485,7 +475,7 @@ c_func
 id|_prot
 )paren
 suffix:semicolon
-macro_line|#if defined(__i386__)
+macro_line|#if defined(__i386__) || defined(__x86_64__)
 multiline_comment|/* On PPro and successors, PCD alone doesn&squot;t always mean &n;&t;    uncached because of interactions with the MTRRs. PCD | PWT&n;&t;    means definitely uncached. */
 r_if
 c_cond
@@ -2688,13 +2678,6 @@ suffix:semicolon
 macro_line|#endif
 macro_line|#if defined(CONFIG_S390_TAPE) &amp;&amp; defined(CONFIG_S390_TAPE_CHAR)
 id|tapechar_init
-c_func
-(paren
-)paren
-suffix:semicolon
-macro_line|#endif
-macro_line|#if defined(CONFIG_ADB)
-id|adbdev_init
 c_func
 (paren
 )paren

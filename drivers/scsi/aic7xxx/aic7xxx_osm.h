@@ -1204,7 +1204,7 @@ suffix:semicolon
 )brace
 )brace
 multiline_comment|/***************************** Low Level I/O **********************************/
-macro_line|#if defined(__powerpc__) || defined(__i386__) || defined(__ia64__)
+macro_line|#if defined(__powerpc__) || defined(__i386__) || defined(__ia64__) || defined(__x86_64__)
 DECL|macro|MMAPIO
 mdefine_line|#define MMAPIO
 macro_line|#endif

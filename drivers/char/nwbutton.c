@@ -85,7 +85,7 @@ op_assign
 id|NUM_PRESSES_REBOOT
 suffix:semicolon
 multiline_comment|/* Number of presses to reboot */
-multiline_comment|/*&n; * This function is called by other drivers to register a callback function&n; * to be called when a particular number of button presses occurs.&n; * The callback list is a static array of 32 entries (I somehow doubt many&n; * people are ever going to want to register more than 32 different actions&n; * to be performed by the kernel on different numbers of button presses ;).&n; * However, if an attempt to register a 33rd entry (perhaps a stuck loop&n; * somewhere registering the same entry over and over?) it will fail to&n; * do so and return -ENOMEM. If an attempt is made to register a null pointer,&n; * it will fail to do so and return -EINVAL.&n; * Because callbacks can be unregistered at random the list can become&n; * fragmented, so we need to search through the list until we find the first&n; * free entry.&n; */
+multiline_comment|/*&n; * This function is called by other drivers to register a callback function&n; * to be called when a particular number of button presses occurs.&n; * The callback list is a static array of 32 entries (I somehow doubt many&n; * people are ever going to want to register more than 32 different actions&n; * to be performed by the kernel on different numbers of button presses ;).&n; * However, if an attempt to register a 33rd entry (perhaps a stuck loop&n; * somewhere registering the same entry over and over?) it will fail to&n; * do so and return -ENOMEM. If an attempt is made to register a null pointer,&n; * it will fail to do so and return -EINVAL.&n; * Because callbacks can be unregistered at random the list can become&n; * fragmented, so we need to search through the list until we find the first&n; * free entry.&n; *&n; * FIXME: Has anyone spotted any locking functions int his code recently ??&n; */
 DECL|function|button_add_callback
 r_int
 id|button_add_callback
@@ -657,6 +657,18 @@ id|button_misc_device
 )paren
 suffix:semicolon
 )brace
+id|MODULE_AUTHOR
+c_func
+(paren
+l_string|&quot;Alex Holden&quot;
+)paren
+suffix:semicolon
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
+)paren
+suffix:semicolon
 id|EXPORT_NO_SYMBOLS
 suffix:semicolon
 DECL|variable|nwbutton_init

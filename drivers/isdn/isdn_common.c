@@ -1088,7 +1088,8 @@ id|onoff
 (brace
 r_int
 id|flags
-comma
+suffix:semicolon
+r_int
 id|old_tflags
 suffix:semicolon
 id|save_flags

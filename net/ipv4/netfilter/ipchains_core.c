@@ -8,6 +8,7 @@ macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
+macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/socket.h&gt;
 macro_line|#include &lt;linux/sockios.h&gt;
 macro_line|#include &lt;linux/in.h&gt;
@@ -6944,6 +6945,11 @@ r_int
 id|init
 )paren
 (brace
+r_struct
+id|proc_dir_entry
+op_star
+id|proc
+suffix:semicolon
 r_int
 id|ret
 op_assign
@@ -6952,15 +6958,6 @@ suffix:semicolon
 r_int
 r_int
 id|flags
-suffix:semicolon
-id|FWC_WRITE_LOCK_IRQ
-c_func
-(paren
-op_amp
-id|ip_fw_lock
-comma
-id|flags
-)paren
 suffix:semicolon
 r_if
 c_cond
@@ -7022,6 +7019,8 @@ l_int|0
 r_goto
 id|cleanup_netlink
 suffix:semicolon
+id|proc
+op_assign
 id|proc_net_create
 c_func
 (paren
@@ -7036,6 +7035,17 @@ comma
 id|ip_chain_procinfo
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|proc
+)paren
+id|proc-&gt;owner
+op_assign
+id|THIS_MODULE
+suffix:semicolon
+id|proc
+op_assign
 id|proc_net_create
 c_func
 (paren
@@ -7049,6 +7059,15 @@ id|S_IWUSR
 comma
 id|ip_chain_name_procinfo
 )paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|proc
+)paren
+id|proc-&gt;owner
+op_assign
+id|THIS_MODULE
 suffix:semicolon
 id|IP_FW_INPUT_CHAIN
 op_assign
@@ -7086,7 +7105,21 @@ comma
 id|FW_ACCEPT
 )paren
 suffix:semicolon
-id|FWC_WRITE_UNLOCK_IRQ
+r_return
+id|ret
+suffix:semicolon
+id|cleanup
+suffix:colon
+id|unregister_firewall
+c_func
+(paren
+id|PF_INET
+comma
+op_amp
+id|ipfw_ops
+)paren
+suffix:semicolon
+id|FWC_WRITE_LOCK_IRQ
 c_func
 (paren
 op_amp
@@ -7095,11 +7128,6 @@ comma
 id|flags
 )paren
 suffix:semicolon
-r_return
-id|ret
-suffix:semicolon
-id|cleanup
-suffix:colon
 r_while
 c_loop
 (paren
@@ -7130,6 +7158,15 @@ op_assign
 id|next
 suffix:semicolon
 )brace
+id|FWC_WRITE_UNLOCK_IRQ
+c_func
+(paren
+op_amp
+id|ip_fw_lock
+comma
+id|flags
+)paren
+suffix:semicolon
 id|proc_net_remove
 c_func
 (paren
@@ -7140,15 +7177,6 @@ id|proc_net_remove
 c_func
 (paren
 id|IP_FW_PROC_CHAIN_NAMES
-)paren
-suffix:semicolon
-id|unregister_firewall
-c_func
-(paren
-id|PF_INET
-comma
-op_amp
-id|ipfw_ops
 )paren
 suffix:semicolon
 id|cleanup_netlink
@@ -7163,15 +7191,6 @@ suffix:semicolon
 id|cleanup_nothing
 suffix:colon
 macro_line|#endif
-id|FWC_WRITE_UNLOCK_IRQ
-c_func
-(paren
-op_amp
-id|ip_fw_lock
-comma
-id|flags
-)paren
-suffix:semicolon
 r_return
 id|ret
 suffix:semicolon

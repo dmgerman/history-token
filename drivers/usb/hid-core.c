@@ -5916,13 +5916,6 @@ c_func
 r_void
 )paren
 (brace
-id|usb_register
-c_func
-(paren
-op_amp
-id|hid_driver
-)paren
-suffix:semicolon
 macro_line|#ifdef CONFIG_USB_HIDDEV
 id|hiddev_init
 c_func
@@ -5930,6 +5923,13 @@ c_func
 )paren
 suffix:semicolon
 macro_line|#endif
+id|usb_register
+c_func
+(paren
+op_amp
+id|hid_driver
+)paren
+suffix:semicolon
 id|info
 c_func
 (paren

@@ -6,7 +6,7 @@ macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/tty.h&gt;
-macro_line|#include &lt;linux/malloc.h&gt;
+macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
@@ -1045,7 +1045,6 @@ id|DEFMODE_NTSC
 suffix:semicolon
 DECL|variable|__initdata
 r_static
-r_const
 r_char
 op_star
 id|mode_option
@@ -4988,6 +4987,12 @@ suffix:semicolon
 )brace
 macro_line|#endif
 macro_line|#ifdef MODULE
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
+)paren
+suffix:semicolon
 DECL|variable|pvr2fb_init
 id|module_init
 c_func

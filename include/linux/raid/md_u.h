@@ -35,6 +35,8 @@ DECL|macro|HOT_ADD_DISK
 mdefine_line|#define HOT_ADD_DISK&t;&t;_IO (MD_MAJOR, 0x28)
 DECL|macro|SET_DISK_FAULTY
 mdefine_line|#define SET_DISK_FAULTY&t;&t;_IO (MD_MAJOR, 0x29)
+DECL|macro|HOT_GENERATE_ERROR
+mdefine_line|#define HOT_GENERATE_ERROR&t;_IO (MD_MAJOR, 0x2a)
 multiline_comment|/* usage */
 DECL|macro|RUN_ARRAY
 mdefine_line|#define RUN_ARRAY&t;&t;_IOW (MD_MAJOR, 0x30, mdu_param_t)

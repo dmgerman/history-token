@@ -549,8 +549,10 @@ op_star
 )paren
 suffix:semicolon
 macro_line|#endif
+macro_line|#ifdef __i386__
 DECL|macro|ASM_CRC
 mdefine_line|#define ASM_CRC 1
+macro_line|#endif
 DECL|variable|version
 r_static
 r_const
@@ -1628,7 +1630,12 @@ suffix:colon
 (paren
 id|u32
 )paren
+(paren
+(paren
+r_int
+)paren
 id|dev-&gt;priv
+)paren
 )paren
 op_amp
 l_int|0x00ffffff
@@ -6651,7 +6658,8 @@ suffix:semicolon
 )brace
 )brace
 macro_line|#else&t;/* MODULE */
-r_void
+r_static
+r_int
 id|__init
 DECL|function|sbni_setup
 id|sbni_setup
@@ -6737,6 +6745,7 @@ l_char|&squot;)&squot;
 )paren
 (brace
 r_return
+l_int|1
 suffix:semicolon
 )brace
 r_if
@@ -6795,6 +6804,9 @@ c_func
 id|KERN_ERR
 l_string|&quot;Error in sbni kernel parameter!&bslash;n&quot;
 )paren
+suffix:semicolon
+r_return
+l_int|0
 suffix:semicolon
 )brace
 id|__setup

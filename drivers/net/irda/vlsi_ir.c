@@ -2845,6 +2845,7 @@ op_assign
 l_int|0
 suffix:semicolon
 r_int
+r_int
 id|flags
 suffix:semicolon
 id|iobase

@@ -119,7 +119,7 @@ l_int|100
 suffix:semicolon
 macro_line|#endif
 multiline_comment|/*&n;  Set the bus performance register.&n;&t;Typical: Set 16 longword cache alignment, no burst limit.&n;&t;Cache alignment bits 15:14&t;     Burst length 13:8&n;&t;&t;0000&t;No alignment  0x00000000 unlimited&t;&t;0800 8 longwords&n;&t;&t;4000&t;8  longwords&t;&t;0100 1 longword&t;&t;1000 16 longwords&n;&t;&t;8000&t;16 longwords&t;&t;0200 2 longwords&t;2000 32 longwords&n;&t;&t;C000&t;32  longwords&t;&t;0400 4 longwords&n;&t;Warning: many older 486 systems are broken and require setting 0x00A04800&n;&t;   8 longword cache alignment, 8 longword burst.&n;&t;ToDo: Non-Intel setting could be better.&n;*/
-macro_line|#if defined(__alpha__)
+macro_line|#if defined(__alpha__) || defined(__ia64__) || defined(__x86_64__)
 DECL|variable|csr0
 r_static
 r_int

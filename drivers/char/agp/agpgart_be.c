@@ -122,7 +122,7 @@ c_func
 r_void
 )paren
 (brace
-macro_line|#if defined(__i386__)
+macro_line|#if defined(__i386__) || defined(__x86_64__)
 id|asm
 r_volatile
 (paren
@@ -1355,7 +1355,7 @@ l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/* End - Routines for handling swapping of agp_memory into the GATT */
-multiline_comment|/* &n; * Driver routines - start&n; * Currently this module supports the following chipsets:&n; * i810, 440lx, 440bx, 440gx, i840, i850, via vp3, via mvp3, via kx133, &n; * via kt133, amd irongate, ALi M1541, and generic support for the SiS &n; * chipsets.&n; */
+multiline_comment|/* &n; * Driver routines - start&n; * Currently this module supports the following chipsets:&n; * i810, i815, 440lx, 440bx, 440gx, i840, i850, via vp3, via mvp3,&n; * via kx133, via kt133, amd irongate, amd 761, ALi M1541, and generic&n; * support for the SiS chipsets.&n; */
 multiline_comment|/* Generic Agp routines - Start */
 DECL|function|agp_generic_agp_enable
 r_static
@@ -12349,6 +12349,20 @@ id|amd_irongate_setup
 )brace
 comma
 (brace
+id|PCI_DEVICE_ID_AMD_761_0
+comma
+id|PCI_VENDOR_ID_AMD
+comma
+id|AMD_761
+comma
+l_string|&quot;AMD&quot;
+comma
+l_string|&quot;761&quot;
+comma
+id|amd_irongate_setup
+)brace
+comma
+(brace
 l_int|0
 comma
 id|PCI_VENDOR_ID_AMD
@@ -12406,7 +12420,6 @@ comma
 id|intel_generic_setup
 )brace
 comma
-multiline_comment|/* could we add support for PCI_DEVICE_ID_INTEL_815_1 too ? */
 (brace
 id|PCI_DEVICE_ID_INTEL_815_0
 comma

@@ -342,6 +342,10 @@ id|p-&gt;pgrp
 op_eq
 id|last_pid
 op_logical_or
+id|p-&gt;tgid
+op_eq
+id|last_pid
+op_logical_or
 id|p-&gt;session
 op_eq
 id|last_pid

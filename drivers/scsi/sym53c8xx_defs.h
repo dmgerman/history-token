@@ -332,7 +332,7 @@ macro_line|#ifdef&t;SCSI_NCR_BIG_ENDIAN
 macro_line|#error&t;&quot;The NCR in BIG ENDIAN addressing mode is not (yet) supported&quot;
 macro_line|#endif
 multiline_comment|/*&n; *  IA32 architecture does not reorder STORES and prevents&n; *  LOADS from passing STORES. It is called `program order&squot; &n; *  by Intel and allows device drivers to deal with memory &n; *  ordering by only ensuring that the code is not reordered  &n; *  by the compiler when ordering is required.&n; *  Other architectures implement a weaker ordering that &n; *  requires memory barriers (and also IO barriers when they &n; *  make sense) to be used.&n; *  We want to be paranoid for ppc and ia64. :)&n; */
-macro_line|#if&t;defined&t;__i386__
+macro_line|#if&t;defined(__i386__) || defined(__x86_64__)
 DECL|macro|MEMORY_BARRIER
 mdefine_line|#define MEMORY_BARRIER()&t;do { ; } while(0)
 macro_line|#elif&t;defined&t;__powerpc__

@@ -1342,6 +1342,12 @@ c_cond
 (paren
 op_logical_neg
 id|inode
+op_logical_or
+id|IS_ERR
+c_func
+(paren
+id|inode
+)paren
 )paren
 (brace
 r_return

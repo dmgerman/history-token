@@ -9242,6 +9242,7 @@ r_int
 id|plong
 suffix:semicolon
 r_int
+r_int
 id|flags
 suffix:semicolon
 id|cmd

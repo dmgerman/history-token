@@ -744,7 +744,8 @@ id|dioctl
 suffix:semicolon
 r_int
 id|i
-comma
+suffix:semicolon
+r_int
 id|flags
 suffix:semicolon
 id|divert_rule

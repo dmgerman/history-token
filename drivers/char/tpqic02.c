@@ -2445,7 +2445,7 @@ comma
 id|QCMD_RD_STAT
 )paren
 suffix:semicolon
-macro_line|#ifdef __i386__
+macro_line|#if defined(__i386__) || defined (__x86_64__)
 id|byte_swap_w
 c_func
 (paren
@@ -2465,6 +2465,7 @@ id|stp-&gt;urc
 )paren
 suffix:semicolon
 macro_line|#else
+macro_line|#warning Undefined architecture
 multiline_comment|/* should probably swap status bytes #definition */
 macro_line|#endif
 r_return

@@ -7182,7 +7182,24 @@ r_struct
 id|irda_device_info
 )paren
 suffix:semicolon
-multiline_comment|/* Copy the list itself */
+multiline_comment|/* Copy the list itself - watch for overflow */
+r_if
+c_cond
+(paren
+id|list.len
+OG
+l_int|2048
+)paren
+(brace
+id|err
+op_assign
+op_minus
+id|EINVAL
+suffix:semicolon
+r_goto
+id|bed
+suffix:semicolon
+)brace
 id|total
 op_assign
 id|offset
@@ -7247,6 +7264,8 @@ op_assign
 op_minus
 id|EFAULT
 suffix:semicolon
+id|bed
+suffix:colon
 multiline_comment|/* Free up our buffer */
 id|kfree
 c_func

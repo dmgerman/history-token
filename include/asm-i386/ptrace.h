@@ -35,6 +35,8 @@ DECL|macro|UESP
 mdefine_line|#define UESP 15
 DECL|macro|SS
 mdefine_line|#define SS   16
+DECL|macro|FRAME_SIZE
+mdefine_line|#define FRAME_SIZE 17
 multiline_comment|/* this struct defines the way the registers are stored on the &n;   stack during a system call. */
 DECL|struct|pt_regs
 r_struct

@@ -145,7 +145,6 @@ id|u_char
 id|val
 )paren
 (brace
-r_register
 r_int
 id|flags
 suffix:semicolon
@@ -201,11 +200,9 @@ id|u_char
 id|regnum
 )paren
 (brace
-r_register
 r_int
 id|flags
 suffix:semicolon
-r_register
 id|u_char
 id|ret
 suffix:semicolon
@@ -5742,7 +5739,8 @@ id|bcs-&gt;cs
 suffix:semicolon
 r_int
 id|flags
-comma
+suffix:semicolon
+r_int
 id|fifo2
 suffix:semicolon
 r_if

@@ -36,6 +36,13 @@ macro_line|#else
 DECL|macro|DPRINTK
 mdefine_line|#define DPRINTK(format,args...)
 macro_line|#endif
+macro_line|#ifndef __i386__
+macro_line|#ifdef CONFIG_ATM_ZATM_EXACT_TS
+macro_line|#warning Precise timestamping only available on i386 platform
+DECL|macro|CONFIG_ATM_ZATM_EXACT_TS
+macro_line|#undef CONFIG_ATM_ZATM_EXACT_TS
+macro_line|#endif
+macro_line|#endif
 macro_line|#ifndef CONFIG_ATM_ZATM_DEBUG
 DECL|macro|NULLCHECK
 mdefine_line|#define NULLCHECK(x)

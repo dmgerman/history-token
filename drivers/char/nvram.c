@@ -13,7 +13,7 @@ multiline_comment|/* select machine configuration */
 macro_line|#if defined(CONFIG_ATARI)
 DECL|macro|MACH
 mdefine_line|#define MACH ATARI
-macro_line|#elif defined(__i386__) || defined(__arm__) /* and others?? */
+macro_line|#elif defined(__i386__) || defined(__x86_64__) || defined(__arm__) /* and others?? */
 DECL|macro|MACH
 mdefine_line|#define MACH PC
 macro_line|#else

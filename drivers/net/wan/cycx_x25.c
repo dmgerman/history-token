@@ -5823,10 +5823,8 @@ id|card
 op_assign
 id|chan-&gt;card
 suffix:semicolon
-id|u32
+r_int
 id|flags
-op_assign
-l_int|0
 suffix:semicolon
 r_char
 op_star

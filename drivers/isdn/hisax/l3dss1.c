@@ -53,7 +53,8 @@ id|retval
 suffix:semicolon
 r_int
 id|flags
-comma
+suffix:semicolon
+r_int
 id|i
 suffix:semicolon
 id|i

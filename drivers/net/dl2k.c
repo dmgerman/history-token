@@ -2377,6 +2377,7 @@ r_int
 id|tx_shift
 suffix:semicolon
 r_int
+r_int
 id|flags
 suffix:semicolon
 id|ioaddr

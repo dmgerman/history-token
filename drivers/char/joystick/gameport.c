@@ -110,7 +110,7 @@ op_star
 id|gameport
 )paren
 (brace
-macro_line|#ifdef __i386__
+macro_line|#if defined(__i386__) || defined(__x86_64__)
 DECL|macro|GET_TIME
 mdefine_line|#define GET_TIME(x)     do { outb(0, 0x43); x = inb(0x40); x |= inb(0x40) &lt;&lt; 8; } while (0)
 DECL|macro|DELTA

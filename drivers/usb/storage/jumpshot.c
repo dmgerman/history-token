@@ -7,7 +7,7 @@ macro_line|#include &quot;debug.h&quot;
 macro_line|#include &quot;jumpshot.h&quot;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
-macro_line|#include &lt;linux/malloc.h&gt;
+macro_line|#include &lt;linux/slab.h&gt;
 r_extern
 r_int
 id|usb_stor_control_msg

@@ -21,12 +21,6 @@ macro_line|#include &lt;linux/nfsd/syscall.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;linux/smp.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
-r_extern
-r_int
-id|sys_call_table
-(braket
-)braket
-suffix:semicolon
 r_static
 r_int
 id|nfsctl_svc

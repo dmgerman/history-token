@@ -27,7 +27,7 @@ macro_line|#include &quot;tonga.h&quot;
 macro_line|#include &quot;midway.h&quot;
 macro_line|#include &quot;suni.h&quot;
 macro_line|#include &quot;eni.h&quot;
-macro_line|#ifndef __i386__
+macro_line|#if !defined(__i386__) &amp;&amp; !defined(__x86_64__)
 macro_line|#ifndef ioremap_nocache
 DECL|macro|ioremap_nocache
 mdefine_line|#define ioremap_nocache(X,Y) ioremap(X,Y)

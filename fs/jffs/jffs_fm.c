@@ -2299,7 +2299,7 @@ id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;jffs_flash_erasable_size given offset off the end of device (%x &gt; %lx)&bslash;n&quot;
+l_string|&quot;jffs_flash_erasable_size given offset off the end of device (%x &gt; %x)&bslash;n&quot;
 comma
 id|offset
 comma
@@ -2326,7 +2326,7 @@ id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;jffs_flash_erasable_size() given length which runs off the end of device (ofs %x + len %x = %x, &gt; %lx)&bslash;n&quot;
+l_string|&quot;jffs_flash_erasable_size() given length which runs off the end of device (ofs %x + len %x = %x, &gt; %x)&bslash;n&quot;
 comma
 id|offset
 comma

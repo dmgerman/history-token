@@ -1142,13 +1142,6 @@ id|offset
 r_break
 suffix:semicolon
 )brace
-multiline_comment|/* Mark the page referenced, kswapd will find it later. */
-id|SetPageReferenced
-c_func
-(paren
-id|page
-)paren
-suffix:semicolon
 id|not_found
 suffix:colon
 r_return
@@ -3471,11 +3464,11 @@ macro_line|#endif
 r_return
 suffix:semicolon
 )brace
-DECL|function|check_used_once
-r_static
-r_inline
+multiline_comment|/*&n; * Mark a page as having seen activity.&n; *&n; * If it was already so marked, move it&n; * to the active queue and drop the referenced&n; * bit. Otherwise, just mark it for future&n; * action..&n; */
+DECL|function|mark_page_accessed
 r_void
-id|check_used_once
+id|mark_page_accessed
+c_func
 (paren
 r_struct
 id|page
@@ -3492,24 +3485,19 @@ c_func
 (paren
 id|page
 )paren
+op_logical_and
+id|PageReferenced
+c_func
+(paren
+id|page
+)paren
 )paren
 (brace
-r_if
-c_cond
-(paren
-id|page-&gt;age
-)paren
 id|activate_page
 c_func
 (paren
 id|page
 )paren
-suffix:semicolon
-r_else
-(brace
-id|page-&gt;age
-op_assign
-id|PAGE_AGE_START
 suffix:semicolon
 id|ClearPageReferenced
 c_func
@@ -3517,8 +3505,16 @@ c_func
 id|page
 )paren
 suffix:semicolon
+r_return
+suffix:semicolon
 )brace
-)brace
+multiline_comment|/* Mark the page referenced, AFTER checking for previous usage.. */
+id|SetPageReferenced
+c_func
+(paren
+id|page
+)paren
+suffix:semicolon
 )brace
 multiline_comment|/*&n; * This is a generic file read routine, and uses the&n; * inode-&gt;i_op-&gt;readpage() function for the actual low-level&n; * stuff.&n; *&n; * This is really ugly. But the goto&squot;s actually try to clarify some&n; * of the logic when it comes to error handling etc.&n; */
 DECL|function|do_generic_file_read
@@ -3924,7 +3920,8 @@ op_and_assign
 op_complement
 id|PAGE_CACHE_MASK
 suffix:semicolon
-id|check_used_once
+id|mark_page_accessed
+c_func
 (paren
 id|page
 )paren
@@ -9031,6 +9028,12 @@ c_func
 id|cached_page
 )paren
 suffix:semicolon
+id|mark_page_accessed
+c_func
+(paren
+id|page
+)paren
+suffix:semicolon
 r_return
 id|page
 suffix:semicolon
@@ -10078,12 +10081,6 @@ id|page
 suffix:semicolon
 multiline_comment|/* Mark it unlocked again and drop the page.. */
 id|UnlockPage
-c_func
-(paren
-id|page
-)paren
-suffix:semicolon
-id|check_used_once
 c_func
 (paren
 id|page

@@ -84,6 +84,12 @@ c_func
 l_string|&quot;KL5USB101 USB Ethernet driver&quot;
 )paren
 suffix:semicolon
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
+)paren
+suffix:semicolon
 r_static
 r_void
 op_star

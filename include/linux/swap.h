@@ -741,6 +741,20 @@ r_extern
 id|spinlock_t
 id|pagemap_lru_lock
 suffix:semicolon
+r_extern
+r_void
+id|FASTCALL
+c_func
+(paren
+id|mark_page_accessed
+c_func
+(paren
+r_struct
+id|page
+op_star
+)paren
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * Page aging defines.&n; * Since we do exponential decay of the page age, we&n; * can chose a fairly large maximum.&n; */
 DECL|macro|PAGE_AGE_START
 mdefine_line|#define PAGE_AGE_START 2
@@ -754,7 +768,7 @@ mdefine_line|#define DEBUG_ADD_PAGE &bslash;&n;&t;if (PageActive(page) || PageIn
 DECL|macro|ZERO_PAGE_BUG
 mdefine_line|#define ZERO_PAGE_BUG &bslash;&n;&t;if (page_count(page) == 0) BUG();
 DECL|macro|add_page_to_active_list
-mdefine_line|#define add_page_to_active_list(page) { &bslash;&n;&t;DEBUG_ADD_PAGE &bslash;&n;&t;ZERO_PAGE_BUG &bslash;&n;&t;SetPageActive(page); &bslash;&n;&t;list_add(&amp;(page)-&gt;lru, &amp;active_list); &bslash;&n;&t;nr_active_pages++; &bslash;&n;}
+mdefine_line|#define add_page_to_active_list(page) { &bslash;&n;&t;DEBUG_ADD_PAGE &bslash;&n;&t;ZERO_PAGE_BUG &bslash;&n;&t;page-&gt;age = 0; &bslash;&n;&t;ClearPageReferenced(page); &bslash;&n;&t;SetPageActive(page); &bslash;&n;&t;list_add(&amp;(page)-&gt;lru, &amp;active_list); &bslash;&n;&t;nr_active_pages++; &bslash;&n;}
 DECL|macro|add_page_to_inactive_dirty_list
 mdefine_line|#define add_page_to_inactive_dirty_list(page) { &bslash;&n;&t;DEBUG_ADD_PAGE &bslash;&n;&t;ZERO_PAGE_BUG &bslash;&n;&t;SetPageInactiveDirty(page); &bslash;&n;&t;list_add(&amp;(page)-&gt;lru, &amp;inactive_dirty_list); &bslash;&n;&t;nr_inactive_dirty_pages++; &bslash;&n;&t;page-&gt;zone-&gt;inactive_dirty_pages++; &bslash;&n;}
 DECL|macro|add_page_to_inactive_clean_list

@@ -2031,7 +2031,7 @@ mdefine_line|#define CONSOLE_LP 0
 multiline_comment|/* If the printer is out of paper, we can either lose the messages or&n; * stall until the printer is happy again.  Define CONSOLE_LP_STRICT&n; * non-zero to get the latter behaviour. */
 DECL|macro|CONSOLE_LP_STRICT
 mdefine_line|#define CONSOLE_LP_STRICT 1
-multiline_comment|/* The console_lock must be held when we get here. */
+multiline_comment|/* The console must be locked when we get here. */
 DECL|function|lp_console_write
 r_static
 r_void

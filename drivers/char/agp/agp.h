@@ -562,6 +562,10 @@ macro_line|#ifndef PCI_DEVICE_ID_AMD_IRONGATE_0
 DECL|macro|PCI_DEVICE_ID_AMD_IRONGATE_0
 mdefine_line|#define PCI_DEVICE_ID_AMD_IRONGATE_0    0x7006
 macro_line|#endif
+macro_line|#ifndef PCI_DEVICE_ID_AMD_761_0
+DECL|macro|PCI_DEVICE_ID_AMD_761_0
+mdefine_line|#define PCI_DEVICE_ID_AMD_761_0         0x700e
+macro_line|#endif
 macro_line|#ifndef PCI_VENDOR_ID_AL
 DECL|macro|PCI_VENDOR_ID_AL
 mdefine_line|#define PCI_VENDOR_ID_AL&t;&t;0x10b9

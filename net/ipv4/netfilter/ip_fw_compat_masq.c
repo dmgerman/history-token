@@ -9,6 +9,7 @@ macro_line|#include &lt;linux/netdevice.h&gt;
 macro_line|#include &lt;linux/inetdevice.h&gt;
 macro_line|#include &lt;linux/proc_fs.h&gt;
 macro_line|#include &lt;linux/version.h&gt;
+macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;net/route.h&gt;
 DECL|macro|ASSERT_READ_LOCK
 mdefine_line|#define ASSERT_READ_LOCK(x) MUST_BE_READ_LOCKED(&amp;ip_conntrack_lock)
@@ -1273,6 +1274,11 @@ r_void
 r_int
 id|ret
 suffix:semicolon
+r_struct
+id|proc_dir_entry
+op_star
+id|proc
+suffix:semicolon
 id|ret
 op_assign
 id|ip_conntrack_init
@@ -1302,6 +1308,9 @@ id|ret
 op_eq
 l_int|0
 )paren
+(brace
+id|proc
+op_assign
 id|proc_net_create
 c_func
 (paren
@@ -1312,6 +1321,34 @@ comma
 id|masq_procinfo
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|proc
+)paren
+id|proc-&gt;owner
+op_assign
+id|THIS_MODULE
+suffix:semicolon
+r_else
+(brace
+id|ip_nat_cleanup
+c_func
+(paren
+)paren
+suffix:semicolon
+id|ip_conntrack_cleanup
+c_func
+(paren
+)paren
+suffix:semicolon
+id|ret
+op_assign
+op_minus
+id|ENOMEM
+suffix:semicolon
+)brace
+)brace
 r_else
 id|ip_conntrack_cleanup
 c_func

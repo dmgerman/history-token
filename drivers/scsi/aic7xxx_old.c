@@ -71,7 +71,7 @@ macro_line|#ifndef FALSE
 DECL|macro|FALSE
 macro_line|#  define FALSE 0
 macro_line|#endif
-macro_line|#if defined(__powerpc__) || defined(__i386__)
+macro_line|#if defined(__powerpc__) || defined(__i386__) || defined(__x86_64__)
 DECL|macro|MMAPIO
 macro_line|#  define MMAPIO
 macro_line|#endif

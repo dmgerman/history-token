@@ -3588,7 +3588,7 @@ op_assign
 l_int|0xe00
 suffix:semicolon
 multiline_comment|/* rx 128 burst length */
-macro_line|#elif defined(__alpha__)
+macro_line|#elif defined(__alpha__) || defined(__x86_64__)
 singleline_comment|// 89/9/1 modify, 
 singleline_comment|//   np-&gt;bcrvalue=0x38;           /* little-endian, 256 burst length */
 id|np-&gt;bcrvalue

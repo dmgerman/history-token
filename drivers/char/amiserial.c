@@ -8970,7 +8970,7 @@ c_func
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; *&t;Print a string to the serial port trying not to disturb&n; *&t;any possible real use of the port...&n; *&n; *&t;The console_lock must be held when we get here.&n; */
+multiline_comment|/*&n; *&t;Print a string to the serial port trying not to disturb&n; *&t;any possible real use of the port...&n; *&n; *&t;The console must be locked when we get here.&n; */
 DECL|function|serial_console_write
 r_static
 r_void

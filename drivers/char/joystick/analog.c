@@ -10,6 +10,7 @@ macro_line|#include &lt;linux/bitops.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/input.h&gt;
 macro_line|#include &lt;linux/gameport.h&gt;
+macro_line|#include &lt;asm/timex.h&gt;
 id|MODULE_AUTHOR
 c_func
 (paren
@@ -416,30 +417,29 @@ suffix:semicolon
 suffix:semicolon
 multiline_comment|/*&n; * Time macros.&n; */
 macro_line|#ifdef __i386__
-macro_line|#ifdef CONFIG_X86_TSC
+DECL|macro|TSC_PRESENT
+mdefine_line|#define TSC_PRESENT&t;(test_bit(X86_FEATURE_TSC, &amp;boot_cpu_data.x86_capability))
 DECL|macro|GET_TIME
-mdefine_line|#define GET_TIME(x)&t;__asm__ __volatile__ ( &quot;rdtsc&quot; : &quot;=a&quot; (x) : : &quot;dx&quot; )
+mdefine_line|#define GET_TIME(x)&t;do { if (TSC_PRESENT) rdtscl(x); else outb(0, 0x43); x = inb(0x40); x |= inb(0x40) &lt;&lt; 8; } while (0)
+DECL|macro|DELTA
+mdefine_line|#define DELTA(x,y)&t;(TSC_PRESENT?((y)-(x)):((x)-(y)+((x)&lt;(y)?1193180L/HZ:0)))
+DECL|macro|TIME_NAME
+mdefine_line|#define TIME_NAME&t;(TSC_PRESENT?&quot;TSC&quot;:&quot;PIT&quot;)
+macro_line|#elif __x86_64__
+DECL|macro|GET_TIME
+mdefine_line|#define GET_TIME(x)&t;rdtscl(x)
 DECL|macro|DELTA
 mdefine_line|#define DELTA(x,y)&t;((y)-(x))
 DECL|macro|TIME_NAME
-mdefine_line|#define TIME_NAME &quot;TSC&quot;
-macro_line|#else
-DECL|macro|GET_TIME
-mdefine_line|#define GET_TIME(x)&t;do { outb(0, 0x43); x = inb(0x40); x |= inb(0x40) &lt;&lt; 8; } while (0)
-DECL|macro|DELTA
-mdefine_line|#define DELTA(x,y)&t;((x)-(y)+((x)&lt;(y)?1193180L/HZ:0))
-DECL|macro|TIME_NAME
-mdefine_line|#define TIME_NAME &quot;PIT&quot;
-macro_line|#endif
+mdefine_line|#define TIME_NAME&t;&quot;TSC&quot;
 macro_line|#elif __alpha__
 DECL|macro|GET_TIME
-mdefine_line|#define GET_TIME(x)&t;__asm__ __volatile__ ( &quot;rpcc %0&quot; : &quot;=r&quot; (x) )
+mdefine_line|#define GET_TIME(x)&t;get_cycles(x)
 DECL|macro|DELTA
 mdefine_line|#define DELTA(x,y)&t;((y)-(x))
 DECL|macro|TIME_NAME
-mdefine_line|#define TIME_NAME &quot;PCC&quot;
-macro_line|#endif
-macro_line|#ifndef GET_TIME
+mdefine_line|#define TIME_NAME&t;&quot;PCC&quot;
+macro_line|#else
 DECL|macro|FAKE_TIME
 mdefine_line|#define FAKE_TIME
 DECL|variable|analog_faketime
@@ -455,7 +455,8 @@ mdefine_line|#define GET_TIME(x)     do { x = analog_faketime++; } while(0)
 DECL|macro|DELTA
 mdefine_line|#define DELTA(x,y)&t;((y)-(x))
 DECL|macro|TIME_NAME
-mdefine_line|#define TIME_NAME &quot;Unreliable&quot;
+mdefine_line|#define TIME_NAME&t;&quot;Unreliable&quot;
+macro_line|#warning Precise timer not defined for this architecture.
 macro_line|#endif
 multiline_comment|/*&n; * analog_decode() decodes analog joystick data and reports input events.&n; */
 DECL|function|analog_decode
@@ -2695,9 +2696,9 @@ r_else
 id|printk
 c_func
 (paren
-l_string|&quot; [&quot;
+l_string|&quot; [%s timer, %d %sHz clock, %d ns res]&bslash;n&quot;
+comma
 id|TIME_NAME
-l_string|&quot; timer, %d %sHz clock, %d ns res]&bslash;n&quot;
 comma
 id|port-&gt;speed
 OG

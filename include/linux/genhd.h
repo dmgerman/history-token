@@ -264,13 +264,15 @@ DECL|member|s_flag
 id|ushort
 id|s_flag
 suffix:semicolon
-multiline_comment|/* permision flags */
+multiline_comment|/* permission flags */
 DECL|member|s_start
-id|daddr_t
+r_int
+r_int
 id|s_start
 suffix:semicolon
 multiline_comment|/* start sector no of partition */
 DECL|member|s_size
+r_int
 r_int
 id|s_size
 suffix:semicolon
@@ -339,7 +341,8 @@ id|SOLARIS_X86_NUMSLICE
 suffix:semicolon
 multiline_comment|/* slice headers */
 DECL|member|timestamp
-id|time_t
+r_int
+r_int
 id|timestamp
 (braket
 id|SOLARIS_X86_NUMSLICE

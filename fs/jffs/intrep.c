@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * JFFS -- Journaling Flash File System, Linux implementation.&n; *&n; * Copyright (C) 1999, 2000  Axis Communications, Inc.&n; *&n; * Created by Finn Hakansson &lt;finn@axis.com&gt;.&n; *&n; * This is free software; you can redistribute it and/or modify it&n; * under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * - Based on Id: intrep.c,v 1.71 2000/10/27 16:51:29 dwmw2 Exp&n; * - With the ctype() changes from v1.77.&n; *&n; * Ported to Linux 2.3.x and MTD:&n; * Copyright (C) 2000  Alexander Larsson (alex@cendio.se), Cendio Systems AB&n; *&n; */
+multiline_comment|/*&n; * JFFS -- Journaling Flash File System, Linux implementation.&n; *&n; * Copyright (C) 1999, 2000  Axis Communications, Inc.&n; *&n; * Created by Finn Hakansson &lt;finn@axis.com&gt;.&n; *&n; * This is free software; you can redistribute it and/or modify it&n; * under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * $Id: intrep.c,v 1.71.2.4 2001/01/08 23:27:02 dwmw2 Exp $&n; *&n; * Ported to Linux 2.3.x and MTD:&n; * Copyright (C) 2000  Alexander Larsson (alex@cendio.se), Cendio Systems AB&n; *&n; */
 multiline_comment|/* This file contains the code for the internal structure of the&n;   Journaling Flash File System, JFFS.  */
 multiline_comment|/*&n; * Todo list:&n; *&n; * memcpy_to_flash() and memcpy_from_flash() functions.&n; *&n; * Implementation of hard links.&n; *&n; * Organize the source code in a better way. Against the VFS we could&n; * have jffs_ext.c, and against the block device jffs_int.c.&n; * A better file-internal organization too.&n; *&n; * A better checksum algorithm.&n; *&n; * Consider endianness stuff. ntohl() etc.&n; *&n; * Are we handling the atime, mtime, ctime members of the inode right?&n; *&n; * Remove some duplicated code. Take a look at jffs_write_node() and&n; * jffs_rewrite_data() for instance.&n; *&n; * Implement more meaning of the nlink member in various data structures.&n; * nlink could be used in conjunction with hard links for instance.&n; *&n; * Better memory management. Allocate data structures in larger chunks&n; * if possible.&n; *&n; * If too much meta data is stored, a garbage collect should be issued.&n; * We have experienced problems with too much meta data with for instance&n; * log files.&n; *&n; * Improve the calls to jffs_ioctl(). We would like to retrieve more&n; * information to be able to debug (or to supervise) JFFS during run-time.&n; *&n; */
 DECL|macro|__NO_VERSION__
@@ -2610,8 +2610,12 @@ c_func
 id|printk
 c_func
 (paren
-l_string|&quot;Reducing start to 0x%x from 0x%x&bslash;n&quot;
+l_string|&quot;Reducing start to 0x%lx from 0x%lx&bslash;n&quot;
 comma
+(paren
+r_int
+r_int
+)paren
 id|pos
 op_amp
 op_complement
@@ -2621,6 +2625,10 @@ op_minus
 l_int|1
 )paren
 comma
+(paren
+r_int
+r_int
+)paren
 id|start
 )paren
 )paren
@@ -2643,10 +2651,18 @@ c_func
 id|printk
 c_func
 (paren
-l_string|&quot;Dirty space: 0x%x for 0x%x bytes&bslash;n&quot;
+l_string|&quot;Dirty space: 0x%lx for 0x%lx bytes&bslash;n&quot;
 comma
+(paren
+r_int
+r_int
+)paren
 id|start
 comma
+(paren
+r_int
+r_int
+)paren
 (paren
 id|pos
 op_minus
@@ -4113,10 +4129,6 @@ id|f-&gt;ctime
 op_assign
 id|raw_inode-&gt;ctime
 suffix:semicolon
-id|f-&gt;deleted
-op_assign
-id|raw_inode-&gt;deleted
-suffix:semicolon
 )brace
 r_else
 r_if
@@ -4135,7 +4147,7 @@ l_int|0
 )paren
 )paren
 (brace
-multiline_comment|/* Insert at the end of the list.  I.e. this node is the&n;&t;&t;   oldest one so far.  */
+multiline_comment|/* Insert at the end of the list.  I.e. this node is the&n;&t;&t;   newest one so far.  */
 id|node-&gt;version_prev
 op_assign
 id|f-&gt;version_tail
@@ -4188,10 +4200,6 @@ id|f-&gt;ctime
 op_assign
 id|raw_inode-&gt;ctime
 suffix:semicolon
-id|f-&gt;deleted
-op_assign
-id|raw_inode-&gt;deleted
-suffix:semicolon
 )brace
 r_else
 r_if
@@ -4229,17 +4237,6 @@ id|f-&gt;name
 id|update_name
 op_assign
 l_int|1
-suffix:semicolon
-)brace
-r_if
-c_cond
-(paren
-id|raw_inode-&gt;deleted
-)paren
-(brace
-id|f-&gt;deleted
-op_assign
-id|raw_inode-&gt;deleted
 suffix:semicolon
 )brace
 )brace
@@ -4322,6 +4319,16 @@ suffix:semicolon
 )brace
 )brace
 )brace
+multiline_comment|/* Deletion is irreversible. If any &squot;deleted&squot; node is ever&n;&t;   written, the file is deleted */
+r_if
+c_cond
+(paren
+id|raw_inode-&gt;deleted
+)paren
+id|f-&gt;deleted
+op_assign
+id|raw_inode-&gt;deleted
+suffix:semicolon
 multiline_comment|/* Perhaps update the name.  */
 r_if
 c_cond
@@ -4463,22 +4470,7 @@ id|f
 )paren
 suffix:semicolon
 )brace
-r_if
-c_cond
-(paren
-id|f-&gt;deleted
-)paren
-(brace
-multiline_comment|/* Mark all versions of the node as obsolete.  */
-id|jffs_possibly_delete_file
-c_func
-(paren
-id|f
-)paren
-suffix:semicolon
-)brace
-r_else
-(brace
+multiline_comment|/* Once upon a time, we would call jffs_possibly_delete_file()&n;&t;&t;   here. That causes an oops if someone&squot;s still got the file&n;&t;&t;   open, so now we only do it in jffs_delete_inode()&n;&t;&t;   -- dwmw2&n;&t;&t;*/
 r_if
 c_cond
 (paren
@@ -4502,7 +4494,6 @@ c_func
 id|f
 )paren
 suffix:semicolon
-)brace
 id|jffs_garbage_collect_trigger
 c_func
 (paren
@@ -5409,6 +5400,9 @@ id|f-&gt;sibling_next
 r_if
 c_cond
 (paren
+op_logical_neg
+id|f-&gt;deleted
+op_logical_and
 id|f-&gt;name
 op_logical_and
 op_logical_neg
@@ -6438,6 +6432,15 @@ op_add_assign
 id|total_name_size
 suffix:semicolon
 )brace
+r_if
+c_cond
+(paren
+id|raw_inode-&gt;deleted
+)paren
+id|f-&gt;deleted
+op_assign
+l_int|1
+suffix:semicolon
 multiline_comment|/* Step 3: Append the actual data, if any.  */
 r_if
 c_cond
@@ -11362,7 +11365,7 @@ c_func
 id|printk
 c_func
 (paren
-l_string|&quot;Reducing size of new node from %d to %ld to avoid &quot;
+l_string|&quot;Reducing size of new node from %d to %d to avoid &quot;
 l_string|&quot;catching our tail&bslash;n&quot;
 comma
 id|size

@@ -3381,6 +3381,10 @@ op_assign
 op_amp
 id|srp-&gt;header
 suffix:semicolon
+id|request_queue_t
+op_star
+id|q
+suffix:semicolon
 id|srp-&gt;data.cmd_opcode
 op_assign
 id|cmnd
@@ -3577,6 +3581,11 @@ id|srp-&gt;my_cmdp
 op_assign
 id|SRpnt
 suffix:semicolon
+id|q
+op_assign
+op_amp
+id|SRpnt-&gt;sr_device-&gt;request_queue
+suffix:semicolon
 id|SRpnt-&gt;sr_request.rq_dev
 op_assign
 id|sdp-&gt;i_rdev
@@ -3752,8 +3761,7 @@ multiline_comment|/* dxfer_len overwrites SRpnt-&gt;sr_bufflen, hence need for b
 id|generic_unplug_device
 c_func
 (paren
-op_amp
-id|SRpnt-&gt;sr_device-&gt;request_queue
+id|q
 )paren
 suffix:semicolon
 r_return

@@ -31,7 +31,7 @@ macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
-macro_line|#include &lt;linux/malloc.h&gt;
+macro_line|#include &lt;linux/slab.h&gt;
 multiline_comment|/* Some informational data */
 id|MODULE_AUTHOR
 c_func
@@ -43,6 +43,12 @@ id|MODULE_DESCRIPTION
 c_func
 (paren
 l_string|&quot;USB Mass Storage driver for Linux&quot;
+)paren
+suffix:semicolon
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
 multiline_comment|/*&n; * Per device data&n; */

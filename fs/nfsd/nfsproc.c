@@ -2446,6 +2446,13 @@ id|ESTALE
 )brace
 comma
 (brace
+id|nfserr_dropit
+comma
+op_minus
+id|ENOMEM
+)brace
+comma
+(brace
 op_minus
 l_int|1
 comma

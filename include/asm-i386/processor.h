@@ -194,6 +194,8 @@ DECL|macro|cpu_has_xmm
 mdefine_line|#define cpu_has_xmm&t;(test_bit(X86_FEATURE_XMM,  boot_cpu_data.x86_capability))
 DECL|macro|cpu_has_fpu
 mdefine_line|#define cpu_has_fpu&t;(test_bit(X86_FEATURE_FPU,  boot_cpu_data.x86_capability))
+DECL|macro|cpu_has_apic
+mdefine_line|#define cpu_has_apic&t;(test_bit(X86_FEATURE_APIC, boot_cpu_data.x86_capability))
 r_extern
 r_char
 id|ignore_irq13

@@ -1042,7 +1042,7 @@ id|buffer
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Macros for stunningly fast map-based character access.&n; * __buf is a register which holds the current word of the input.&n; * Thus, there is one memory access per sizeof(unsigned long) characters.&n; */
-macro_line|#if defined(__alpha__) || defined(__i386__) || defined(__ia64__) || defined(__MIPSEL__)&t;&bslash;&n;    || defined(__arm__)
+macro_line|#if defined(__alpha__) || defined(__i386__) || defined(__ia64__)  || defined(__x86_64__) || defined(__MIPSEL__)&t;&bslash;&n;    || defined(__arm__)
 DECL|macro|LE_MACHINE
 mdefine_line|#define LE_MACHINE
 macro_line|#endif

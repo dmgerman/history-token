@@ -96,7 +96,7 @@ mdefine_line|#define DBG_REG(x)&t;/* DBG_REG */
 DECL|macro|DBG_LOOP
 mdefine_line|#define DBG_LOOP(x)&t;/* DBG_LOOP */
 macro_line|#endif /* MATROXFB_DEBUG */
-macro_line|#ifndef __i386__
+macro_line|#if !defined(__i386__) &amp;&amp; !defined(__x86_64__)
 macro_line|#ifndef ioremap_nocache
 DECL|macro|ioremap_nocache
 mdefine_line|#define ioremap_nocache(X,Y) ioremap(X,Y)
@@ -114,7 +114,7 @@ multiline_comment|/* recheck __ppc__, maybe that __ppc__ needs MEMCPYTOIO_WRITEL
 multiline_comment|/* I benchmarked PII/350MHz with G200... MEMCPY, MEMCPYTOIO and WRITEL are on same speed ( &lt;2% diff) */
 multiline_comment|/* so that means that G200 speed (or AGP speed?) is our limit... I do not have benchmark to test, how */
 multiline_comment|/* much of PCI bandwidth is used during transfers... */
-macro_line|#if defined(__i386__)
+macro_line|#if defined(__i386__) || defined(__x86_64__)
 DECL|macro|MEMCPYTOIO_MEMCPY
 mdefine_line|#define MEMCPYTOIO_MEMCPY
 macro_line|#else

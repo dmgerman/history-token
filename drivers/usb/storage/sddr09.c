@@ -3813,7 +3813,7 @@ id|US_DEBUGP
 c_func
 (paren
 l_string|&quot;Error: Requested LBA %04X exceeds maximum &quot;
-l_string|&quot;block %04X&bslash;n&quot;
+l_string|&quot;block %04lX&bslash;n&quot;
 comma
 id|lba
 comma

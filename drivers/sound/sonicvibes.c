@@ -20,53 +20,8 @@ macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;linux/wrapper.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/hardirq.h&gt;
-macro_line|#include &quot;dm.h&quot;
-macro_line|#if defined(CONFIG_INPUT_ANALOG) || defined(CONFIG_INPUT_ANALOG_MODULE)
 macro_line|#include &lt;linux/gameport.h&gt;
-macro_line|#else
-DECL|struct|gameport
-r_struct
-id|gameport
-(brace
-DECL|member|io
-r_int
-id|io
-suffix:semicolon
-DECL|member|size
-r_int
-id|size
-suffix:semicolon
-)brace
-suffix:semicolon
-DECL|function|gameport_register_port
-r_extern
-r_inline
-r_void
-id|gameport_register_port
-c_func
-(paren
-r_struct
-id|gameport
-op_star
-id|gameport
-)paren
-(brace
-)brace
-DECL|function|gameport_unregister_port
-r_extern
-r_inline
-r_void
-id|gameport_unregister_port
-c_func
-(paren
-r_struct
-id|gameport
-op_star
-id|gameport
-)paren
-(brace
-)brace
-macro_line|#endif
+macro_line|#include &quot;dm.h&quot;
 multiline_comment|/* --------------------------------------------------------------------- */
 DECL|macro|OSS_DOCUMENTED_MIXER_SEMANTICS
 macro_line|#undef OSS_DOCUMENTED_MIXER_SEMANTICS

@@ -7796,10 +7796,14 @@ id|ret
 suffix:semicolon
 )brace
 macro_line|#ifdef CONFIG_PROC_FS
-r_if
-c_cond
-(paren
-op_logical_neg
+(brace
+r_struct
+id|proc_dir_entry
+op_star
+id|proc
+suffix:semicolon
+id|proc
+op_assign
 id|proc_net_create
 c_func
 (paren
@@ -7809,6 +7813,12 @@ l_int|0
 comma
 id|ipt_get_tables
 )paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|proc
 )paren
 (brace
 id|nf_unregister_sockopt
@@ -7821,6 +7831,11 @@ suffix:semicolon
 r_return
 op_minus
 id|ENOMEM
+suffix:semicolon
+)brace
+id|proc-&gt;owner
+op_assign
+id|THIS_MODULE
 suffix:semicolon
 )brace
 macro_line|#endif

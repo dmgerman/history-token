@@ -764,7 +764,7 @@ c_cond
 (paren
 id|addr
 OL
-l_int|17
+id|FRAME_SIZE
 op_star
 r_sizeof
 (paren
@@ -934,7 +934,7 @@ c_cond
 (paren
 id|addr
 OL
-l_int|17
+id|FRAME_SIZE
 op_star
 r_sizeof
 (paren
@@ -1503,7 +1503,7 @@ op_star
 )paren
 id|data
 comma
-l_int|17
+id|FRAME_SIZE
 op_star
 r_sizeof
 (paren
@@ -1529,7 +1529,7 @@ l_int|0
 suffix:semicolon
 id|i
 OL
-l_int|17
+id|FRAME_SIZE
 op_star
 r_sizeof
 (paren
@@ -1602,7 +1602,7 @@ op_star
 )paren
 id|data
 comma
-l_int|17
+id|FRAME_SIZE
 op_star
 r_sizeof
 (paren
@@ -1628,7 +1628,7 @@ l_int|0
 suffix:semicolon
 id|i
 OL
-l_int|17
+id|FRAME_SIZE
 op_star
 r_sizeof
 (paren

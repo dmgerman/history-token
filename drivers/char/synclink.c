@@ -27148,7 +27148,8 @@ id|d-&gt;priv
 suffix:semicolon
 r_int
 id|err
-comma
+suffix:semicolon
+r_int
 id|flags
 suffix:semicolon
 r_if

@@ -1605,6 +1605,22 @@ op_assign
 id|jiffies
 suffix:semicolon
 )brace
+macro_line|#elif defined (__x86_64__)
+id|__u32
+id|high
+suffix:semicolon
+id|rdtsc
+c_func
+(paren
+id|time
+comma
+id|high
+)paren
+suffix:semicolon
+id|num
+op_xor_assign
+id|high
+suffix:semicolon
 macro_line|#else
 id|time
 op_assign

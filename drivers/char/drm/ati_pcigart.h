@@ -543,7 +543,7 @@ id|ret
 op_assign
 l_int|1
 suffix:semicolon
-macro_line|#if __i386__
+macro_line|#if defined(__i386__) || defined(__x86_64__)
 id|asm
 r_volatile
 (paren

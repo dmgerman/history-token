@@ -75,6 +75,9 @@ comma
 DECL|enumerator|AMD_IRONGATE
 id|AMD_IRONGATE
 comma
+DECL|enumerator|AMD_761
+id|AMD_761
+comma
 DECL|enumerator|ALI_M1541
 id|ALI_M1541
 comma

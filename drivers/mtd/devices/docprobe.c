@@ -54,7 +54,7 @@ id|doc_locations
 )braket
 op_assign
 (brace
-macro_line|#if defined (__alpha__) || defined(__i386__)
+macro_line|#if defined (__alpha__) || defined(__i386__) || defined(__x86_64__)
 macro_line|#ifdef CONFIG_MTD_DOCPROBE_HIGH
 l_int|0xfffc8000
 comma
