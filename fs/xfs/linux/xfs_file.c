@@ -944,9 +944,23 @@ id|UIO_SYSSPACE
 suffix:semicolon
 id|curr_offset
 op_assign
+id|filp-&gt;f_pos
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|filp-&gt;f_pos
+op_ne
+l_int|0x7fffffff
+)paren
 id|uio.uio_offset
 op_assign
 id|filp-&gt;f_pos
+suffix:semicolon
+r_else
+id|uio.uio_offset
+op_assign
+l_int|0xffffffff
 suffix:semicolon
 r_while
 c_loop
@@ -1054,6 +1068,8 @@ comma
 id|loff_t
 )paren
 id|curr_offset
+op_amp
+l_int|0x7fffffff
 comma
 (paren
 id|ino_t
@@ -1078,8 +1094,7 @@ op_assign
 id|loff_t
 )paren
 id|dbp-&gt;d_off
-op_amp
-l_int|0x7fffffff
+multiline_comment|/* &amp; 0x7fffffff */
 suffix:semicolon
 id|dbp
 op_assign
