@@ -195,7 +195,7 @@ id|oprofile_sysclass
 )paren
 id|error
 op_assign
-id|sys_device_register
+id|sysdev_register
 c_func
 (paren
 op_amp
@@ -216,7 +216,7 @@ c_func
 r_void
 )paren
 (brace
-id|sys_device_unregister
+id|sysdev_unregister
 c_func
 (paren
 op_amp

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * sys.c - pseudo-bus for system &squot;devices&squot; (cpus, PICs, timers, etc)&n; *&n; * Copyright (c) 2002-3 Patrick Mochel&n; *               2002-3 Open Source Development Lab&n; *&n; * This file is released under the GPLv2&n; * &n; * This exports a &squot;system&squot; bus type. &n; * By default, a &squot;sys&squot; bus gets added to the root of the system. There will&n; * always be core system devices. Devices can use sys_device_register() to&n; * add themselves as children of the system bus.&n; */
+multiline_comment|/*&n; * sys.c - pseudo-bus for system &squot;devices&squot; (cpus, PICs, timers, etc)&n; *&n; * Copyright (c) 2002-3 Patrick Mochel&n; *               2002-3 Open Source Development Lab&n; *&n; * This file is released under the GPLv2&n; * &n; * This exports a &squot;system&squot; bus type. &n; * By default, a &squot;sys&squot; bus gets added to the root of the system. There will&n; * always be core system devices. Devices can use sysdev_register() to&n; * add themselves as children of the system bus.&n; */
 DECL|macro|DEBUG
 macro_line|#undef DEBUG
 macro_line|#include &lt;linux/sysdev.h&gt;
@@ -568,10 +568,10 @@ c_func
 id|sysdev_driver_unregister
 )paren
 suffix:semicolon
-multiline_comment|/**&n; *&t;sys_device_register - add a system device to the tree&n; *&t;@sysdev:&t;device in question&n; *&n; */
-DECL|function|sys_device_register
+multiline_comment|/**&n; *&t;sysdev_register - add a system device to the tree&n; *&t;@sysdev:&t;device in question&n; *&n; */
+DECL|function|sysdev_register
 r_int
-id|sys_device_register
+id|sysdev_register
 c_func
 (paren
 r_struct
@@ -737,9 +737,9 @@ r_return
 id|error
 suffix:semicolon
 )brace
-DECL|function|sys_device_unregister
+DECL|function|sysdev_unregister
 r_void
-id|sys_device_unregister
+id|sysdev_unregister
 c_func
 (paren
 r_struct
@@ -1316,18 +1316,18 @@ id|system_subsys
 )paren
 suffix:semicolon
 )brace
-DECL|variable|sys_device_register
+DECL|variable|sysdev_register
 id|EXPORT_SYMBOL
 c_func
 (paren
-id|sys_device_register
+id|sysdev_register
 )paren
 suffix:semicolon
-DECL|variable|sys_device_unregister
+DECL|variable|sysdev_unregister
 id|EXPORT_SYMBOL
 c_func
 (paren
-id|sys_device_unregister
+id|sysdev_unregister
 )paren
 suffix:semicolon
 eof
