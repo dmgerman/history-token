@@ -4119,8 +4119,9 @@ comma
 r_int
 id|cmd
 comma
-r_int
-r_int
+r_void
+id|__user
+op_star
 id|arg
 )paren
 (brace
@@ -4160,10 +4161,6 @@ c_func
 op_amp
 id|vr
 comma
-(paren
-r_void
-op_star
-)paren
 id|arg
 comma
 r_sizeof
@@ -4243,10 +4240,6 @@ c_cond
 id|copy_to_user
 c_func
 (paren
-(paren
-r_void
-op_star
-)paren
 id|arg
 comma
 op_amp
@@ -4289,10 +4282,6 @@ c_func
 op_amp
 id|sr
 comma
-(paren
-r_void
-op_star
-)paren
 id|arg
 comma
 r_sizeof
@@ -4353,10 +4342,6 @@ c_cond
 id|copy_to_user
 c_func
 (paren
-(paren
-r_void
-op_star
-)paren
 id|arg
 comma
 op_amp
