@@ -5301,8 +5301,6 @@ op_logical_and
 id|addr
 op_ne
 l_int|NULL
-op_logical_and
-id|msg.msg_namelen
 )paren
 (brace
 id|err2
@@ -6324,8 +6322,6 @@ c_cond
 id|uaddr
 op_ne
 l_int|NULL
-op_logical_and
-id|msg_sys.msg_namelen
 )paren
 (brace
 id|err
