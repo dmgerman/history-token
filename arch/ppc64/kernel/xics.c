@@ -13,7 +13,7 @@ macro_line|#include &lt;asm/smp.h&gt;
 macro_line|#include &lt;asm/naca.h&gt;
 macro_line|#include &lt;asm/rtas.h&gt;
 macro_line|#include &quot;i8259.h&quot;
-macro_line|#include &quot;xics.h&quot;
+macro_line|#include &lt;asm/xics.h&gt;
 macro_line|#include &lt;asm/ppcdebug.h&gt;
 macro_line|#include &lt;asm/machdep.h&gt;
 r_void
@@ -2011,48 +2011,6 @@ l_string|&quot;XICS Done&quot;
 )paren
 suffix:semicolon
 )brace
-DECL|function|xics_isa_init
-r_void
-id|xics_isa_init
-c_func
-(paren
-r_void
-)paren
-(brace
-r_return
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|request_irq
-c_func
-(paren
-id|xics_irq_8259_cascade
-op_plus
-id|XICS_IRQ_OFFSET
-comma
-id|no_action
-comma
-l_int|0
-comma
-l_string|&quot;8259 cascade&quot;
-comma
-l_int|0
-)paren
-)paren
-id|printk
-c_func
-(paren
-id|KERN_ERR
-l_string|&quot;xics_init_IRQ: couldn&squot;t get 8259 cascade&bslash;n&quot;
-)paren
-suffix:semicolon
-id|i8259_init
-c_func
-(paren
-)paren
-suffix:semicolon
-)brace
 DECL|function|xics_set_affinity
 r_void
 id|xics_set_affinity
@@ -2093,7 +2051,8 @@ id|xics_status
 l_int|2
 )braket
 suffix:semicolon
-id|u32
+r_int
+r_int
 id|newmask
 suffix:semicolon
 id|virq
@@ -2173,7 +2132,8 @@ c_cond
 (paren
 id|cpumask
 op_eq
-l_int|0xffffffff
+op_minus
+l_int|1UL
 )paren
 (brace
 id|newmask
@@ -2204,7 +2164,13 @@ c_func
 op_amp
 id|cpumask
 comma
-l_int|32
+l_int|8
+op_star
+r_sizeof
+(paren
+r_int
+r_int
+)paren
 )paren
 suffix:semicolon
 )brace
