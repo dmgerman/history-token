@@ -3715,7 +3715,8 @@ id|sonypi_device.lock
 suffix:semicolon
 id|sonypi_device.bluetooth_power
 op_assign
-l_int|0
+op_minus
+l_int|1
 suffix:semicolon
 r_if
 c_cond
