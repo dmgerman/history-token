@@ -4880,6 +4880,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+macro_line|#ifdef CONFIG_PM
 multiline_comment|/*&n; * change the power state&n; */
 DECL|function|snd_ctl_set_power_state
 r_static
@@ -4968,6 +4969,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+macro_line|#endif
 DECL|function|snd_ctl_ioctl
 r_static
 r_int
@@ -5302,6 +5304,8 @@ c_func
 id|card
 )paren
 suffix:semicolon
+id|err
+op_assign
 id|snd_ctl_set_power_state
 c_func
 (paren
