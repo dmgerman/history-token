@@ -380,17 +380,18 @@ comma
 id|ax8817x_id_table
 )paren
 suffix:semicolon
+multiline_comment|/* The space before the &quot;, ## arg&quot; is deliberate: gcc-2.9x needs it */
 macro_line|#ifdef DEBUG
 DECL|macro|devdbg
-mdefine_line|#define devdbg(ax_info, fmt, arg...) &bslash;&n;&t;printk(KERN_DEBUG &quot;%s: &quot; fmt &quot;&bslash;n&quot; , (ax_info)-&gt;net-&gt;name, ## arg)
+mdefine_line|#define devdbg(ax_info, fmt, arg...) &bslash;&n;&t;printk(KERN_DEBUG &quot;%s: &quot; fmt &quot;&bslash;n&quot; , (ax_info)-&gt;net-&gt;name , ## arg)
 macro_line|#else
 DECL|macro|devdbg
 mdefine_line|#define devdbg(ax_info, fmt, arg...) do {} while(0)
 macro_line|#endif
 DECL|macro|deverr
-mdefine_line|#define deverr(ax_info, fmt, arg...) &bslash;&n;&t;printk(KERN_ERR &quot;%s: &quot; fmt &quot;&bslash;n&quot;, (ax_info)-&gt;net-&gt;name, ## arg)
+mdefine_line|#define deverr(ax_info, fmt, arg...) &bslash;&n;&t;printk(KERN_ERR &quot;%s: &quot; fmt &quot;&bslash;n&quot;, (ax_info)-&gt;net-&gt;name , ## arg)
 DECL|macro|devinfo
-mdefine_line|#define devinfo(ax_info, fmt, arg...) &bslash;&n;&t;do { if ((ax_info)-&gt;msg_level &gt;= 1) &bslash;&n;&t;&t;printk(KERN_INFO &quot;%s: &quot; fmt &quot;&bslash;n&quot;, (ax_info)-&gt;net-&gt;name, ## arg); &bslash;&n;&t;} while (0)
+mdefine_line|#define devinfo(ax_info, fmt, arg...) &bslash;&n;&t;do { if ((ax_info)-&gt;msg_level &gt;= 1) &bslash;&n;&t;&t;printk(KERN_INFO &quot;%s: &quot; fmt &quot;&bslash;n&quot;, &bslash;&n;&t;&t;&t;(ax_info)-&gt;net-&gt;name , ## arg); &bslash;&n;&t;} while (0)
 r_static
 r_void
 id|ax_run_ctl_queue

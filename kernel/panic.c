@@ -8,6 +8,7 @@ macro_line|#include &lt;linux/notifier.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/sysrq.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
+macro_line|#include &lt;linux/nmi.h&gt;
 id|asmlinkage
 r_void
 id|sys_sync
@@ -225,6 +226,9 @@ OG
 l_int|0
 )paren
 (brace
+r_int
+id|i
+suffix:semicolon
 multiline_comment|/*&n;&t; &t; * Delay timeout seconds before rebooting the machine. &n;&t;&t; * We can&squot;t use the &quot;normal&quot; timers since we just panicked..&n;&t; &t; */
 id|printk
 c_func
@@ -235,14 +239,33 @@ comma
 id|panic_timeout
 )paren
 suffix:semicolon
+r_for
+c_loop
+(paren
+id|i
+op_assign
+l_int|0
+suffix:semicolon
+id|i
+OL
+id|panic_timeout
+suffix:semicolon
+id|i
+op_increment
+)paren
+(brace
+id|touch_nmi_watchdog
+c_func
+(paren
+)paren
+suffix:semicolon
 id|mdelay
 c_func
 (paren
-id|panic_timeout
-op_star
 l_int|1000
 )paren
 suffix:semicolon
+)brace
 multiline_comment|/*&n;&t;&t; *&t;Should we run the reboot notifier. For the moment Im&n;&t;&t; *&t;choosing not too. It might crash, be corrupt or do&n;&t;&t; *&t;more harm than good for other reasons.&n;&t;&t; */
 id|machine_restart
 c_func

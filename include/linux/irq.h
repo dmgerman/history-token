@@ -136,8 +136,10 @@ id|hw_interrupt_type
 id|hw_irq_controller
 suffix:semicolon
 multiline_comment|/*&n; * This is the &quot;IRQ descriptor&quot;, which contains various information&n; * about the irq, including what kind of hardware handling it has,&n; * whether it is disabled etc etc.&n; *&n; * Pad this out to 32 bytes for cache and indexing reasons.&n; */
+DECL|struct|irq_desc
 r_typedef
 r_struct
+id|irq_desc
 (brace
 DECL|member|status
 r_int

@@ -2,6 +2,7 @@ multiline_comment|/*&n; * Copyright (C) 2001, 2002 Sistina Software (UK) Limited
 macro_line|#include &quot;dm.h&quot;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
+macro_line|#include &lt;linux/moduleparam.h&gt;
 macro_line|#include &lt;linux/blkpg.h&gt;
 macro_line|#include &lt;linux/bio.h&gt;
 macro_line|#include &lt;linux/mempool.h&gt;
@@ -3533,12 +3534,14 @@ c_func
 id|dm_exit
 )paren
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|major
 comma
-l_string|&quot;i&quot;
+id|uint
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC

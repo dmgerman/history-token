@@ -1948,6 +1948,13 @@ op_amp
 id|MS_RDONLY
 )paren
 )paren
+(brace
+multiline_comment|/*&n;&t;&t;&t; * -&gt;remount_fs needs lock_kernel().&n;&t;&t;&t; *&n;&t;&t;&t; * What lock protects sb-&gt;s_flags??&n;&t;&t;&t; */
+id|lock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
 id|do_remount_sb
 c_func
 (paren
@@ -1960,6 +1967,12 @@ comma
 l_int|1
 )paren
 suffix:semicolon
+id|unlock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
+)brace
 id|drop_super
 c_func
 (paren

@@ -3374,8 +3374,12 @@ r_if
 c_cond
 (paren
 id|t-&gt;state
-op_eq
+op_amp
+(paren
 id|TASK_ZOMBIE
+op_or
+id|TASK_DEAD
+)paren
 )paren
 r_continue
 suffix:semicolon

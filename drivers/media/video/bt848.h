@@ -303,6 +303,10 @@ DECL|macro|BT848_COLOR_FMT_YCrCb411
 mdefine_line|#define BT848_COLOR_FMT_YCrCb411    0x99
 DECL|macro|BT848_COLOR_FMT_RAW
 mdefine_line|#define BT848_COLOR_FMT_RAW         0xee
+DECL|macro|BT848_VTOTAL_LO
+mdefine_line|#define BT848_VTOTAL_LO             0xB0
+DECL|macro|BT848_VTOTAL_HI
+mdefine_line|#define BT848_VTOTAL_HI             0xB4
 DECL|macro|BT848_COLOR_CTL
 mdefine_line|#define BT848_COLOR_CTL                0x0D8
 DECL|macro|BT848_COLOR_CTL_EXT_FRMRATE
@@ -480,42 +484,42 @@ mdefine_line|#define BT848_RISC_RESYNC      (1&lt;&lt;15)
 multiline_comment|/* WRITE and SKIP */
 multiline_comment|/* disable which bytes of each DWORD */
 DECL|macro|BT848_RISC_BYTE0
-mdefine_line|#define BT848_RISC_BYTE0       (1&lt;&lt;12)
+mdefine_line|#define BT848_RISC_BYTE0       (1U&lt;&lt;12)
 DECL|macro|BT848_RISC_BYTE1
-mdefine_line|#define BT848_RISC_BYTE1       (1&lt;&lt;13)
+mdefine_line|#define BT848_RISC_BYTE1       (1U&lt;&lt;13)
 DECL|macro|BT848_RISC_BYTE2
-mdefine_line|#define BT848_RISC_BYTE2       (1&lt;&lt;14)
+mdefine_line|#define BT848_RISC_BYTE2       (1U&lt;&lt;14)
 DECL|macro|BT848_RISC_BYTE3
-mdefine_line|#define BT848_RISC_BYTE3       (1&lt;&lt;15)
+mdefine_line|#define BT848_RISC_BYTE3       (1U&lt;&lt;15)
 DECL|macro|BT848_RISC_BYTE_ALL
-mdefine_line|#define BT848_RISC_BYTE_ALL    (0x0f&lt;&lt;12)
+mdefine_line|#define BT848_RISC_BYTE_ALL    (0x0fU&lt;&lt;12)
 DECL|macro|BT848_RISC_BYTE_NONE
 mdefine_line|#define BT848_RISC_BYTE_NONE   0
 multiline_comment|/* cause RISCI */
 DECL|macro|BT848_RISC_IRQ
-mdefine_line|#define BT848_RISC_IRQ         (1&lt;&lt;24)
+mdefine_line|#define BT848_RISC_IRQ         (1U&lt;&lt;24)
 multiline_comment|/* RISC command is last one in this line */
 DECL|macro|BT848_RISC_EOL
-mdefine_line|#define BT848_RISC_EOL         (1&lt;&lt;26)
+mdefine_line|#define BT848_RISC_EOL         (1U&lt;&lt;26)
 multiline_comment|/* RISC command is first one in this line */
 DECL|macro|BT848_RISC_SOL
-mdefine_line|#define BT848_RISC_SOL         (1&lt;&lt;27)
+mdefine_line|#define BT848_RISC_SOL         (1U&lt;&lt;27)
 DECL|macro|BT848_RISC_WRITE
-mdefine_line|#define BT848_RISC_WRITE       (0x01&lt;&lt;28)
+mdefine_line|#define BT848_RISC_WRITE       (0x01U&lt;&lt;28)
 DECL|macro|BT848_RISC_SKIP
-mdefine_line|#define BT848_RISC_SKIP        (0x02&lt;&lt;28)
+mdefine_line|#define BT848_RISC_SKIP        (0x02U&lt;&lt;28)
 DECL|macro|BT848_RISC_WRITEC
-mdefine_line|#define BT848_RISC_WRITEC      (0x05&lt;&lt;28)
+mdefine_line|#define BT848_RISC_WRITEC      (0x05U&lt;&lt;28)
 DECL|macro|BT848_RISC_JUMP
-mdefine_line|#define BT848_RISC_JUMP        (0x07&lt;&lt;28)
+mdefine_line|#define BT848_RISC_JUMP        (0x07U&lt;&lt;28)
 DECL|macro|BT848_RISC_SYNC
-mdefine_line|#define BT848_RISC_SYNC        (0x08&lt;&lt;28)
+mdefine_line|#define BT848_RISC_SYNC        (0x08U&lt;&lt;28)
 DECL|macro|BT848_RISC_WRITE123
-mdefine_line|#define BT848_RISC_WRITE123    (0x09&lt;&lt;28)
+mdefine_line|#define BT848_RISC_WRITE123    (0x09U&lt;&lt;28)
 DECL|macro|BT848_RISC_SKIP123
-mdefine_line|#define BT848_RISC_SKIP123     (0x0a&lt;&lt;28)
+mdefine_line|#define BT848_RISC_SKIP123     (0x0aU&lt;&lt;28)
 DECL|macro|BT848_RISC_WRITE1S23
-mdefine_line|#define BT848_RISC_WRITE1S23   (0x0b&lt;&lt;28)
+mdefine_line|#define BT848_RISC_WRITE1S23   (0x0bU&lt;&lt;28)
 multiline_comment|/* Bt848A and higher only !! */
 DECL|macro|BT848_TGLB
 mdefine_line|#define BT848_TGLB             0x080

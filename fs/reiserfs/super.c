@@ -1208,15 +1208,12 @@ suffix:semicolon
 multiline_comment|/* body of &quot;save&quot; link */
 id|link
 op_assign
-id|cpu_to_le32
-(paren
 id|INODE_PKEY
 (paren
 id|inode
 )paren
 op_member_access_from_pointer
 id|k_dir_id
-)paren
 suffix:semicolon
 multiline_comment|/* put &quot;save&quot; link inot tree */
 id|retval
