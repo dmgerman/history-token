@@ -777,6 +777,10 @@ r_int
 r_int
 id|sector
 suffix:semicolon
+id|__u16
+op_star
+id|ptr16
+suffix:semicolon
 r_while
 c_loop
 (paren
@@ -849,6 +853,14 @@ suffix:semicolon
 )brace
 )brace
 multiline_comment|/*  Display old ftape&squot;s end-of-file marks&n;&t;&t; */
+id|ptr16
+op_assign
+(paren
+id|__u16
+op_star
+)paren
+id|ptr
+suffix:semicolon
 r_while
 c_loop
 (paren
@@ -858,13 +870,7 @@ op_assign
 id|get_unaligned
 c_func
 (paren
-(paren
-(paren
-id|__u16
-op_star
-)paren
-id|ptr
-)paren
+id|ptr16
 op_increment
 )paren
 )paren
@@ -884,13 +890,7 @@ comma
 id|get_unaligned
 c_func
 (paren
-(paren
-(paren
-id|__u16
-op_star
-)paren
-id|ptr
-)paren
+id|ptr16
 op_increment
 )paren
 )paren

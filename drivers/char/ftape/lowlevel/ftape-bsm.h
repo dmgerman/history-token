@@ -33,13 +33,6 @@ suffix:semicolon
 DECL|typedef|SectorCount
 )brace
 id|SectorCount
-id|__attribute__
-c_func
-(paren
-(paren
-id|packed
-)paren
-)paren
 suffix:semicolon
 multiline_comment|/*&n; *      ftape-bsm.c defined global vars.&n; */
 multiline_comment|/*&n; *      ftape-bsm.c defined global functions.&n; */

@@ -1755,7 +1755,7 @@ l_string|&quot;=b&quot;
 id|map
 )paren
 comma
-l_string|&quot;+m&quot;
+l_string|&quot;=m&quot;
 (paren
 id|opt
 )paren
@@ -1784,6 +1784,13 @@ l_string|&quot;S&quot;
 op_amp
 id|pci_indirect
 )paren
+comma
+l_string|&quot;m&quot;
+(paren
+id|opt
+)paren
+suffix:colon
+l_string|&quot;memory&quot;
 )paren
 suffix:semicolon
 id|DBG
