@@ -25,7 +25,27 @@ op_star
 id|pscontext
 suffix:semicolon
 multiline_comment|/* For path-selector use */
+DECL|member|hwhcontext
+r_void
+op_star
+id|hwhcontext
+suffix:semicolon
+multiline_comment|/* For hw-handler use */
 )brace
+suffix:semicolon
+multiline_comment|/* Callback for hwh_pg_init_fn to use when complete */
+r_void
+id|dm_pg_init_complete
+c_func
+(paren
+r_struct
+id|path
+op_star
+id|path
+comma
+r_int
+id|err_flags
+)paren
 suffix:semicolon
 macro_line|#endif
 eof
