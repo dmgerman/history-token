@@ -80,9 +80,9 @@ suffix:semicolon
 )brace
 suffix:semicolon
 DECL|macro|hpet_readl
-mdefine_line|#define hpet_readl(a)           readl(fix_to_virt(FIX_HPET_BASE) + a)
+mdefine_line|#define hpet_readl(a)           readl((void *)fix_to_virt(FIX_HPET_BASE) + a)
 DECL|macro|hpet_writel
-mdefine_line|#define hpet_writel(d,a)        writel(d, fix_to_virt(FIX_HPET_BASE) + a)
+mdefine_line|#define hpet_writel(d,a)        writel(d, (void *)fix_to_virt(FIX_HPET_BASE) + a)
 multiline_comment|/* vsyscall space (readonly) */
 r_extern
 r_struct

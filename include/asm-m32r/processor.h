@@ -1,14 +1,11 @@
 macro_line|#ifndef _ASM_M32R_PROCESSOR_H
 DECL|macro|_ASM_M32R_PROCESSOR_H
 mdefine_line|#define _ASM_M32R_PROCESSOR_H
-multiline_comment|/* $Id$ */
-multiline_comment|/*&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 2001  by Hiroyuki Kondo, Hirokazu Takata, and Hitoshi Yamamoto&n; */
-multiline_comment|/*&n; * include/asm-m32r/processor.h&n; *&n; * Copyright (C) 1994 Linus Torvalds&n; */
+multiline_comment|/*&n; * include/asm-m32r/processor.h&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1994  Linus Torvalds&n; * Copyright (C) 2001  Hiroyuki Kondo, Hirokazu Takata, and Hitoshi Yamamoto&n; * Copyright (C) 2004  Hirokazu Takata &lt;takata at linux-m32r.org&gt;&n; */
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;asm/cache.h&gt;
 macro_line|#include &lt;asm/ptrace.h&gt;  /* pt_regs */
-macro_line|#include &lt;asm/cachectl.h&gt;
 multiline_comment|/*&n; * Default implementation of macro that returns current&n; * instruction pointer (&quot;program counter&quot;).&n; */
 DECL|macro|current_text_addr
 mdefine_line|#define current_text_addr() ({ __label__ _l; _l: &amp;&amp;_l; })
@@ -62,7 +59,7 @@ DECL|macro|current_cpu_data
 mdefine_line|#define current_cpu_data cpu_data[smp_processor_id()]
 macro_line|#else
 DECL|macro|cpu_data
-mdefine_line|#define cpu_data &amp;boot_cpu_data
+mdefine_line|#define cpu_data (&amp;boot_cpu_data)
 DECL|macro|current_cpu_data
 mdefine_line|#define current_cpu_data boot_cpu_data
 macro_line|#endif
@@ -265,31 +262,7 @@ DECL|macro|KSTK_ESP
 mdefine_line|#define KSTK_ESP(tsk)  ((tsk)-&gt;thread.sp)
 DECL|macro|THREAD_SIZE
 mdefine_line|#define THREAD_SIZE (2*PAGE_SIZE)
-multiline_comment|/* REP NOP (PAUSE) is a good thing to insert into busy-wait loops. */
-DECL|function|rep_nop
-r_static
-id|__inline__
-r_void
-id|rep_nop
-c_func
-(paren
-r_void
-)paren
-(brace
-id|__asm__
-id|__volatile__
-c_func
-(paren
-l_string|&quot;nop &bslash;n&bslash;t&quot;
-l_string|&quot;nop &bslash;n&bslash;t&quot;
-suffix:colon
-suffix:colon
-suffix:colon
-l_string|&quot;memory&quot;
-)paren
-suffix:semicolon
-)brace
 DECL|macro|cpu_relax
-mdefine_line|#define cpu_relax()     rep_nop()
+mdefine_line|#define cpu_relax()&t;barrier()
 macro_line|#endif /* _ASM_M32R_PROCESSOR_H */
 eof

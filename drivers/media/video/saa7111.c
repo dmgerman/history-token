@@ -1189,7 +1189,7 @@ comma
 (paren
 id|decoder-&gt;reg
 (braket
-l_int|0x0e
+l_int|0x08
 )braket
 op_amp
 l_int|0x3f

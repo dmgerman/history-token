@@ -4,11 +4,13 @@ macro_line|#include &lt;linux/linkage.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
+macro_line|#include &lt;linux/percpu.h&gt;
 macro_line|#include &lt;asm/processor.h&gt;
 macro_line|#include &lt;asm/proto.h&gt;
 macro_line|#include &lt;asm/smp.h&gt;
 macro_line|#include &lt;asm/bootsetup.h&gt;
 macro_line|#include &lt;asm/setup.h&gt;
+macro_line|#include &lt;asm/desc.h&gt;
 multiline_comment|/* Don&squot;t add a printk in there. printk relies on the PDA which is not initialized &n;   yet. */
 DECL|function|clear_bss
 r_static
@@ -322,6 +324,42 @@ id|real_mode_data
 r_char
 op_star
 id|s
+suffix:semicolon
+r_int
+id|i
+suffix:semicolon
+r_for
+c_loop
+(paren
+id|i
+op_assign
+l_int|0
+suffix:semicolon
+id|i
+OL
+l_int|256
+suffix:semicolon
+id|i
+op_increment
+)paren
+id|set_intr_gate
+c_func
+(paren
+id|i
+comma
+id|early_idt_handler
+)paren
+suffix:semicolon
+id|asm
+r_volatile
+(paren
+l_string|&quot;lidt %0&quot;
+op_scope_resolution
+l_string|&quot;m&quot;
+(paren
+id|idt_descr
+)paren
+)paren
 suffix:semicolon
 id|clear_bss
 c_func

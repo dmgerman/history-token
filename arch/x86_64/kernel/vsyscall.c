@@ -183,6 +183,10 @@ op_add_assign
 id|readl
 c_func
 (paren
+(paren
+r_void
+op_star
+)paren
 id|fix_to_virt
 c_func
 (paren

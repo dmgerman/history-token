@@ -5,6 +5,7 @@ macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;asm/atomic.h&gt;
 macro_line|#include &lt;linux/bio.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
+macro_line|#include &lt;linux/moduleparam.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/devfs_fs_kernel.h&gt;
 macro_line|#include &lt;linux/pagemap.h&gt;
@@ -1758,11 +1759,14 @@ id|ramdisk_blocksize
 suffix:semicolon
 macro_line|#endif
 multiline_comment|/* options - modular */
-id|MODULE_PARM
+id|module_param
+c_func
 (paren
 id|rd_size
 comma
-l_string|&quot;1i&quot;
+r_int
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -1773,11 +1777,14 @@ comma
 l_string|&quot;Size of each RAM disk in kbytes.&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
+c_func
 (paren
 id|rd_blocksize
 comma
-l_string|&quot;i&quot;
+r_int
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -1786,6 +1793,13 @@ c_func
 id|rd_blocksize
 comma
 l_string|&quot;Blocksize of each RAM disk in bytes.&quot;
+)paren
+suffix:semicolon
+DECL|variable|RAMDISK_MAJOR
+id|MODULE_ALIAS_BLOCKDEV_MAJOR
+c_func
+(paren
+id|RAMDISK_MAJOR
 )paren
 suffix:semicolon
 id|MODULE_LICENSE

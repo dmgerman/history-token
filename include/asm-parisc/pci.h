@@ -83,6 +83,36 @@ id|iommu
 suffix:semicolon
 multiline_comment|/* IOMMU this device is under */
 multiline_comment|/* REVISIT - spinlock to protect resources? */
+DECL|macro|HBA_NAME_SIZE
+mdefine_line|#define HBA_NAME_SIZE 16
+DECL|member|io_name
+r_char
+id|io_name
+(braket
+id|HBA_NAME_SIZE
+)braket
+suffix:semicolon
+DECL|member|lmmio_name
+r_char
+id|lmmio_name
+(braket
+id|HBA_NAME_SIZE
+)braket
+suffix:semicolon
+DECL|member|elmmio_name
+r_char
+id|elmmio_name
+(braket
+id|HBA_NAME_SIZE
+)braket
+suffix:semicolon
+DECL|member|gmmio_name
+r_char
+id|gmmio_name
+(braket
+id|HBA_NAME_SIZE
+)braket
+suffix:semicolon
 )brace
 suffix:semicolon
 DECL|macro|HBA_DATA
@@ -98,11 +128,56 @@ DECL|macro|PCI_PORT_HBA
 mdefine_line|#define PCI_PORT_HBA(a)&t;&t;((a) &gt;&gt; HBA_PORT_SPACE_BITS)
 DECL|macro|PCI_PORT_ADDR
 mdefine_line|#define PCI_PORT_ADDR(a)&t;((a) &amp; (HBA_PORT_SPACE_SIZE - 1))
-multiline_comment|/*&n;** Convert between PCI (IO_VIEW) addresses and processor (PA_VIEW) addresses.&n;** Note that we currently support only LMMIO.&n;*/
+macro_line|#if CONFIG_PARISC64
+DECL|macro|PCI_F_EXTEND
+mdefine_line|#define PCI_F_EXTEND&t;&t;0xffffffff00000000UL
+DECL|macro|PCI_IS_LMMIO
+mdefine_line|#define PCI_IS_LMMIO(hba,a)&t;pci_is_lmmio(hba,a)
+multiline_comment|/* We need to know if an address is LMMMIO or GMMIO.&n; * LMMIO requires mangling and GMMIO we must use as-is.&n; */
+DECL|function|pci_is_lmmio
+r_static
+id|__inline__
+r_int
+id|pci_is_lmmio
+c_func
+(paren
+r_struct
+id|pci_hba_data
+op_star
+id|hba
+comma
+r_int
+r_int
+id|a
+)paren
+(brace
+r_return
+(paren
+(paren
+id|a
+)paren
+op_amp
+id|PCI_F_EXTEND
+)paren
+op_eq
+id|PCI_F_EXTEND
+suffix:semicolon
+)brace
+multiline_comment|/*&n;** Convert between PCI (IO_VIEW) addresses and processor (PA_VIEW) addresses.&n;** See pcibios.c for more conversions used by Generic PCI code.&n;*/
 DECL|macro|PCI_BUS_ADDR
-mdefine_line|#define PCI_BUS_ADDR(hba,a)&t;((a) - hba-&gt;lmmio_space_offset)
+mdefine_line|#define PCI_BUS_ADDR(hba,a)&t;(PCI_IS_LMMIO(hba,a)&t;&bslash;&n;&t;&t;?  ((a) - hba-&gt;lmmio_space_offset)&t;/* mangle LMMIO */ &bslash;&n;&t;&t;: (a))&t;&t;&t;&t;&t;/* GMMIO */
 DECL|macro|PCI_HOST_ADDR
 mdefine_line|#define PCI_HOST_ADDR(hba,a)&t;((a) + hba-&gt;lmmio_space_offset)
+macro_line|#else&t;/* !CONFIG_PARISC64 */
+DECL|macro|PCI_BUS_ADDR
+mdefine_line|#define PCI_BUS_ADDR(hba,a)&t;(a)
+DECL|macro|PCI_HOST_ADDR
+mdefine_line|#define PCI_HOST_ADDR(hba,a)&t;(a)
+DECL|macro|PCI_F_EXTEND
+mdefine_line|#define PCI_F_EXTEND&t;&t;0UL
+DECL|macro|PCI_IS_LMMIO
+mdefine_line|#define PCI_IS_LMMIO(hba,a)&t;(1)&t;/* 32-bit doesn&squot;t support GMMIO */
+macro_line|#endif /* !CONFIG_PARISC64 */
 multiline_comment|/*&n;** KLUGE: linux/pci.h include asm/pci.h BEFORE declaring struct pci_bus&n;** (This eliminates some of the warnings).&n;*/
 r_struct
 id|pci_bus

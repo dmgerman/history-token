@@ -70,6 +70,8 @@ DECL|macro|X86_FEATURE_SYSCALL
 mdefine_line|#define X86_FEATURE_SYSCALL&t;(1*32+11) /* SYSCALL/SYSRET */
 DECL|macro|X86_FEATURE_MMXEXT
 mdefine_line|#define X86_FEATURE_MMXEXT&t;(1*32+22) /* AMD MMX extensions */
+DECL|macro|X86_FEATURE_FXSR_OPT
+mdefine_line|#define X86_FEATURE_FXSR_OPT&t;(1*32+25) /* FXSR optimizations */
 DECL|macro|X86_FEATURE_LM
 mdefine_line|#define X86_FEATURE_LM&t;&t;(1*32+29) /* Long Mode (x86-64) */
 DECL|macro|X86_FEATURE_3DNOWEXT
@@ -113,8 +115,10 @@ mdefine_line|#define X86_FEATURE_CX16&t;(4*32+13) /* CMPXCHG16B */
 DECL|macro|X86_FEATURE_XTPR
 mdefine_line|#define X86_FEATURE_XTPR&t;(4*32+14) /* Send Task Priority Messages */
 multiline_comment|/* More extended AMD flags: CPUID level 0x80000001, ecx, word 5 */
+DECL|macro|X86_FEATURE_LAHF_LM
+mdefine_line|#define X86_FEATURE_LAHF_LM&t;(5*32+ 0) /* LAHF/SAHF in long mode */
 DECL|macro|X86_FEATURE_HTVALID
-mdefine_line|#define X86_FEATURE_HTVALID&t;(5*32+ 0) /* HyperThreading valid, otherwise CMP */
+mdefine_line|#define X86_FEATURE_HTVALID&t;(5*32+ 1) /* HyperThreading valid, otherwise CMP */
 DECL|macro|cpu_has
 mdefine_line|#define cpu_has(c, bit)                test_bit(bit, (c)-&gt;x86_capability)
 DECL|macro|boot_cpu_has

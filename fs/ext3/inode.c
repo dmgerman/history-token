@@ -3250,16 +3250,10 @@ id|buffer_head
 op_star
 id|bh
 suffix:semicolon
-r_int
-id|prev_blocks
-suffix:semicolon
-id|prev_blocks
-op_assign
-id|inode-&gt;i_blocks
-suffix:semicolon
 id|bh
 op_assign
 id|ext3_getblk
+c_func
 (paren
 id|handle
 comma
@@ -3294,6 +3288,7 @@ r_return
 id|bh
 suffix:semicolon
 id|ll_rw_block
+c_func
 (paren
 id|READ
 comma
@@ -3304,6 +3299,7 @@ id|bh
 )paren
 suffix:semicolon
 id|wait_on_buffer
+c_func
 (paren
 id|bh
 )paren
@@ -3320,7 +3316,8 @@ id|bh
 r_return
 id|bh
 suffix:semicolon
-id|brelse
+id|put_bh
+c_func
 (paren
 id|bh
 )paren

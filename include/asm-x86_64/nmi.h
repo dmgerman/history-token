@@ -106,5 +106,30 @@ id|pt_regs
 op_star
 )paren
 suffix:semicolon
+r_extern
+r_void
+id|die_nmi
+c_func
+(paren
+r_char
+op_star
+id|str
+comma
+r_struct
+id|pt_regs
+op_star
+id|regs
+)paren
+suffix:semicolon
+DECL|macro|get_nmi_reason
+mdefine_line|#define get_nmi_reason() inb(0x61)
+r_extern
+r_int
+id|panic_on_timeout
+suffix:semicolon
+r_extern
+r_int
+id|unknown_nmi_panic
+suffix:semicolon
 macro_line|#endif /* ASM_NMI_H */
 eof

@@ -8,11 +8,8 @@ macro_line|#include &lt;linux/ptrace.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/timer.h&gt;
-macro_line|#include &lt;linux/tty.h&gt;
-macro_line|#include &lt;linux/serial.h&gt;
 macro_line|#include &lt;linux/serial_core.h&gt;
 macro_line|#include &lt;linux/major.h&gt;
-macro_line|#include &lt;linux/8250.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;pcmcia/version.h&gt;
@@ -22,6 +19,7 @@ macro_line|#include &lt;pcmcia/cistpl.h&gt;
 macro_line|#include &lt;pcmcia/ciscode.h&gt;
 macro_line|#include &lt;pcmcia/ds.h&gt;
 macro_line|#include &lt;pcmcia/cisreg.h&gt;
+macro_line|#include &quot;8250.h&quot;
 macro_line|#ifdef PCMCIA_DEBUG
 DECL|variable|pc_debug
 r_static
@@ -381,7 +379,7 @@ suffix:semicolon
 id|i
 op_increment
 )paren
-id|unregister_serial
+id|serial8250_unregister_port
 c_func
 (paren
 id|info-&gt;line
@@ -979,15 +977,15 @@ op_star
 id|info
 comma
 id|ioaddr_t
-id|port
+id|iobase
 comma
 r_int
 id|irq
 )paren
 (brace
 r_struct
-id|serial_struct
-id|serial
+id|uart_port
+id|port
 suffix:semicolon
 r_int
 id|line
@@ -996,46 +994,53 @@ id|memset
 c_func
 (paren
 op_amp
-id|serial
+id|port
 comma
 l_int|0
 comma
 r_sizeof
 (paren
-id|serial
+r_struct
+id|uart_port
 )paren
 )paren
 suffix:semicolon
-id|serial.port
+id|port.iobase
 op_assign
-id|port
+id|iobase
 suffix:semicolon
-id|serial.irq
+id|port.irq
 op_assign
 id|irq
 suffix:semicolon
-id|serial.flags
+id|port.flags
 op_assign
+id|UPF_BOOT_AUTOCONF
+op_or
 id|UPF_SKIP_TEST
 op_or
 id|UPF_SHARE_IRQ
+suffix:semicolon
+id|port.uartclk
+op_assign
+l_int|1843200
 suffix:semicolon
 r_if
 c_cond
 (paren
 id|buggy_uart
 )paren
-id|serial.flags
+id|port.flags
 op_or_assign
 id|UPF_BUGGY_UART
 suffix:semicolon
 id|line
 op_assign
-id|register_serial
+id|serial8250_register_port
 c_func
 (paren
 op_amp
-id|serial
+id|port
 )paren
 suffix:semicolon
 r_if
@@ -1050,15 +1055,15 @@ id|printk
 c_func
 (paren
 id|KERN_NOTICE
-l_string|&quot;serial_cs: register_serial() at 0x%04lx,&quot;
-l_string|&quot; irq %d failed&bslash;n&quot;
+l_string|&quot;serial_cs: serial8250_register_port() at &quot;
+l_string|&quot;0x%04lx, irq %d failed&bslash;n&quot;
 comma
 (paren
 id|u_long
 )paren
-id|serial.port
+id|iobase
 comma
-id|serial.irq
+id|irq
 )paren
 suffix:semicolon
 r_return

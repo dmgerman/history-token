@@ -10099,10 +10099,10 @@ r_return
 id|timeout
 ques
 c_cond
-op_minus
-l_int|1
-suffix:colon
 l_int|0
+suffix:colon
+op_minus
+id|EIO
 suffix:semicolon
 )brace
 DECL|function|atyfb_pci_suspend
