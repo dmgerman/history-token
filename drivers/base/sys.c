@@ -1,6 +1,6 @@
 multiline_comment|/*&n; * sys.c - pseudo-bus for system &squot;devices&squot; (cpus, PICs, timers, etc)&n; *&n; * Copyright (c) 2002-3 Patrick Mochel&n; *               2002-3 Open Source Development Lab&n; *&n; * This file is released under the GPLv2&n; * &n; * This exports a &squot;system&squot; bus type. &n; * By default, a &squot;sys&squot; bus gets added to the root of the system. There will&n; * always be core system devices. Devices can use sys_device_register() to&n; * add themselves as children of the system bus.&n; */
 DECL|macro|DEBUG
-mdefine_line|#define DEBUG
+macro_line|#undef DEBUG
 macro_line|#include &lt;linux/sysdev.h&gt;
 macro_line|#include &lt;linux/err.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
@@ -183,6 +183,61 @@ id|sysfs_ops
 comma
 )brace
 suffix:semicolon
+DECL|function|sysdev_create_file
+r_int
+id|sysdev_create_file
+c_func
+(paren
+r_struct
+id|sys_device
+op_star
+id|s
+comma
+r_struct
+id|sysdev_attribute
+op_star
+id|a
+)paren
+(brace
+r_return
+id|sysfs_create_file
+c_func
+(paren
+op_amp
+id|s-&gt;kobj
+comma
+op_amp
+id|a-&gt;attr
+)paren
+suffix:semicolon
+)brace
+DECL|function|sysdev_remove_file
+r_void
+id|sysdev_remove_file
+c_func
+(paren
+r_struct
+id|sys_device
+op_star
+id|s
+comma
+r_struct
+id|sysdev_attribute
+op_star
+id|a
+)paren
+(brace
+id|sysfs_remove_file
+c_func
+(paren
+op_amp
+id|s-&gt;kobj
+comma
+op_amp
+id|a-&gt;attr
+)paren
+suffix:semicolon
+)brace
 multiline_comment|/* &n; * declare system_subsys &n; */
 id|decl_subsys
 c_func

@@ -1,6 +1,6 @@
 multiline_comment|/*&n; * power.c - power management functions for the device tree.&n; * &n; * Copyright (c) 2002-3 Patrick Mochel&n; *&t;&t; 2002-3 Open Source Development Lab&n; * &n; * This file is released under the GPLv2&n; * &n; *  Kai Germaschewski contributed to the list walking routines.&n; *&n; */
 DECL|macro|DEBUG
-mdefine_line|#define DEBUG
+macro_line|#undef DEBUG
 macro_line|#include &lt;linux/device.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;asm/semaphore.h&gt;
@@ -69,9 +69,9 @@ id|level
 )paren
 (brace
 r_struct
-id|list_head
+id|device
 op_star
-id|node
+id|dev
 suffix:semicolon
 r_int
 id|error
@@ -92,26 +92,17 @@ op_amp
 id|devices_subsys.rwsem
 )paren
 suffix:semicolon
-id|list_for_each
+id|list_for_each_entry_reverse
 c_func
 (paren
-id|node
+id|dev
 comma
 op_amp
 id|devices_subsys.kset.list
+comma
+id|kobj.entry
 )paren
 (brace
-r_struct
-id|device
-op_star
-id|dev
-op_assign
-id|to_dev
-c_func
-(paren
-id|node
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -216,9 +207,9 @@ id|level
 )paren
 (brace
 r_struct
-id|list_head
+id|device
 op_star
-id|node
+id|dev
 suffix:semicolon
 r_switch
 c_cond
@@ -258,26 +249,17 @@ op_amp
 id|devices_subsys.rwsem
 )paren
 suffix:semicolon
-id|list_for_each_prev
+id|list_for_each_entry
 c_func
 (paren
-id|node
+id|dev
 comma
 op_amp
 id|devices_subsys.kset.list
+comma
+id|kobj.entry
 )paren
 (brace
-r_struct
-id|device
-op_star
-id|dev
-op_assign
-id|to_dev
-c_func
-(paren
-id|node
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -331,9 +313,9 @@ r_void
 )paren
 (brace
 r_struct
-id|list_head
+id|device
 op_star
-id|entry
+id|dev
 suffix:semicolon
 id|printk
 c_func
@@ -349,26 +331,17 @@ op_amp
 id|devices_subsys.rwsem
 )paren
 suffix:semicolon
-id|list_for_each
+id|list_for_each_entry_reverse
 c_func
 (paren
-id|entry
+id|dev
 comma
 op_amp
 id|devices_subsys.kset.list
+comma
+id|kobj.entry
 )paren
 (brace
-r_struct
-id|device
-op_star
-id|dev
-op_assign
-id|to_dev
-c_func
-(paren
-id|entry
-)paren
-suffix:semicolon
 id|pr_debug
 c_func
 (paren

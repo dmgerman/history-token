@@ -3,7 +3,7 @@ macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/ioport.h&gt;
 macro_line|#include &lt;linux/ptrace.h&gt;
-macro_line|#include &lt;linux/device.h&gt;
+macro_line|#include &lt;linux/sysdev.h&gt;
 macro_line|#include &lt;asm/hardware.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;asm/mach/irq.h&gt;
@@ -668,9 +668,8 @@ l_int|0x9005ffff
 comma
 )brace
 suffix:semicolon
-DECL|struct|sa1100irq_state
+r_static
 r_struct
-id|sa1100irq_state
 (brace
 DECL|member|saved
 r_int
@@ -692,7 +691,9 @@ r_int
 r_int
 id|iccr
 suffix:semicolon
+DECL|variable|sa1100irq_state
 )brace
+id|sa1100irq_state
 suffix:semicolon
 DECL|function|sa1100irq_suspend
 r_static
@@ -716,57 +717,9 @@ r_struct
 id|sa1100irq_state
 op_star
 id|st
-suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|dev-&gt;saved_state
-op_logical_and
-id|level
-op_eq
-id|SUSPEND_NOTIFY
-)paren
-id|dev-&gt;saved_state
 op_assign
-id|kmalloc
-c_func
-(paren
-r_sizeof
-(paren
-r_struct
+op_amp
 id|sa1100irq_state
-)paren
-comma
-id|GFP_KERNEL
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|dev-&gt;saved_state
-)paren
-r_return
-op_minus
-id|ENOMEM
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|level
-op_eq
-id|SUSPEND_POWER_DOWN
-)paren
-(brace
-id|st
-op_assign
-(paren
-r_struct
-id|sa1100irq_state
-op_star
-)paren
-id|dev-&gt;saved_state
 suffix:semicolon
 id|st-&gt;saved
 op_assign
@@ -784,7 +737,7 @@ id|st-&gt;iccr
 op_assign
 id|ICCR
 suffix:semicolon
-multiline_comment|/*&n;&t;&t; * Disable all GPIO-based interrupts.&n;&t;&t; */
+multiline_comment|/*&n;&t; * Disable all GPIO-based interrupts.&n;&t; */
 id|ICMR
 op_and_assign
 op_complement
@@ -814,7 +767,7 @@ op_or
 id|IC_GPIO0
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t;&t; * Set the appropriate edges for wakeup.&n;&t;&t; */
+multiline_comment|/*&n;&t; * Set the appropriate edges for wakeup.&n;&t; */
 id|GRER
 op_assign
 id|PWER
@@ -827,12 +780,11 @@ id|PWER
 op_amp
 id|GPIO_IRQ_falling_edge
 suffix:semicolon
-multiline_comment|/*&n;&t;&t; * Clear any pending GPIO interrupts.&n;&t;&t; */
+multiline_comment|/*&n;&t; * Clear any pending GPIO interrupts.&n;&t; */
 id|GEDR
 op_assign
 id|GEDR
 suffix:semicolon
-)brace
 r_return
 l_int|0
 suffix:semicolon
@@ -844,39 +796,18 @@ id|sa1100irq_resume
 c_func
 (paren
 r_struct
-id|device
+id|sys_device
 op_star
 id|dev
-comma
-id|u32
-id|level
 )paren
 (brace
 r_struct
 id|sa1100irq_state
 op_star
 id|st
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|level
-op_eq
-id|RESUME_POWER_ON
-)paren
-(brace
-id|st
 op_assign
-(paren
-r_struct
+op_amp
 id|sa1100irq_state
-op_star
-)paren
-id|dev-&gt;saved_state
-suffix:semicolon
-id|dev-&gt;saved_state
-op_assign
-l_int|NULL
 suffix:semicolon
 r_if
 c_cond
@@ -909,34 +840,22 @@ op_assign
 id|st-&gt;icmr
 suffix:semicolon
 )brace
-id|kfree
-c_func
-(paren
-id|st
-)paren
-suffix:semicolon
-)brace
 r_return
 l_int|0
 suffix:semicolon
 )brace
-DECL|variable|sa1100irq_driver
+DECL|variable|sa1100irq_sysclass
 r_static
 r_struct
-id|device_driver
-id|sa1100irq_driver
+id|sysdev_class
+id|sa1100irq_sysclass
 op_assign
 (brace
-dot
-id|name
-op_assign
+id|set_kset_name
+c_func
+(paren
 l_string|&quot;sa11x0-irq&quot;
-comma
-dot
-id|bus
-op_assign
-op_amp
-id|system_bus_type
+)paren
 comma
 dot
 id|suspend
@@ -958,31 +877,15 @@ id|sa1100irq_device
 op_assign
 (brace
 dot
-id|name
-op_assign
-l_string|&quot;irq&quot;
-comma
-dot
 id|id
 op_assign
 l_int|0
 comma
 dot
-id|dev
-op_assign
-(brace
-dot
-id|name
-op_assign
-l_string|&quot;Intel SA11x0 [Interrupt Controller]&quot;
-comma
-dot
-id|driver
+id|cls
 op_assign
 op_amp
-id|sa1100irq_driver
-comma
-)brace
+id|sa1100irq_sysclass
 comma
 )brace
 suffix:semicolon
@@ -996,11 +899,11 @@ c_func
 r_void
 )paren
 (brace
-id|driver_register
+id|sysdev_class_register
 c_func
 (paren
 op_amp
-id|sa1100irq_driver
+id|sa1100irq_sysclass
 )paren
 suffix:semicolon
 r_return
