@@ -967,8 +967,10 @@ macro_line|#endif /* __ASSEMBLY__ */
 multiline_comment|/* Macros for setting and retrieving special purpose registers */
 DECL|macro|mfmsr
 mdefine_line|#define mfmsr()&t;&t;({unsigned long rval; &bslash;&n;&t;&t;&t;asm volatile(&quot;mfmsr %0&quot; : &quot;=r&quot; (rval)); rval;})
+DECL|macro|__mtmsrd
+mdefine_line|#define __mtmsrd(v, l)&t;asm volatile(&quot;mtmsrd %0,&quot; __stringify(l) &bslash;&n;&t;&t;&t;&t;     : : &quot;r&quot; (v))
 DECL|macro|mtmsrd
-mdefine_line|#define mtmsrd(v)&t;asm volatile(&quot;mtmsrd %0&quot; : : &quot;r&quot; (v))
+mdefine_line|#define mtmsrd(v)&t;__mtmsrd((v), 0)
 DECL|macro|mfspr
 mdefine_line|#define mfspr(rn)&t;({unsigned long rval; &bslash;&n;&t;&t;&t;asm volatile(&quot;mfspr %0,&quot; __stringify(rn) &bslash;&n;&t;&t;&t;&t;     : &quot;=r&quot; (rval)); rval;})
 DECL|macro|mtspr

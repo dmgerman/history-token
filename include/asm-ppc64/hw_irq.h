@@ -81,7 +81,7 @@ macro_line|#else
 DECL|macro|__save_flags
 mdefine_line|#define __save_flags(flags)&t;((flags) = mfmsr())
 DECL|macro|__restore_flags
-mdefine_line|#define __restore_flags(flags)&t;mtmsrd(flags)
+mdefine_line|#define __restore_flags(flags)&t;__mtmsrd((flags), 1)
 DECL|function|__cli
 r_static
 r_inline
@@ -103,13 +103,15 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|mtmsrd
+id|__mtmsrd
 c_func
 (paren
 id|msr
 op_amp
 op_complement
 id|MSR_EE
+comma
+l_int|1
 )paren
 suffix:semicolon
 id|__asm__
@@ -156,12 +158,14 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|mtmsrd
+id|__mtmsrd
 c_func
 (paren
 id|msr
 op_or
 id|MSR_EE
+comma
+l_int|1
 )paren
 suffix:semicolon
 )brace
@@ -194,13 +198,15 @@ id|flags
 op_assign
 id|msr
 suffix:semicolon
-id|mtmsrd
+id|__mtmsrd
 c_func
 (paren
 id|msr
 op_amp
 op_complement
 id|MSR_EE
+comma
+l_int|1
 )paren
 suffix:semicolon
 id|__asm__
