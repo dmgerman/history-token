@@ -305,7 +305,8 @@ id|uvd
 op_star
 id|uvd
 comma
-id|usbvideo_frame_t
+r_struct
+id|usbvideo_frame
 op_star
 id|frame
 )paren
@@ -4306,7 +4307,8 @@ c_func
 r_void
 )paren
 (brace
-id|usbvideo_cb_t
+r_struct
+id|usbvideo_cb
 id|cbTbl
 suffix:semicolon
 id|memset
