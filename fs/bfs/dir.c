@@ -1092,6 +1092,11 @@ r_return
 op_minus
 id|EINVAL
 suffix:semicolon
+id|lock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
 id|old_bh
 op_assign
 id|bfs_find_entry
@@ -1242,6 +1247,11 @@ l_int|0
 suffix:semicolon
 id|end_rename
 suffix:colon
+id|unlock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
 id|brelse
 c_func
 (paren

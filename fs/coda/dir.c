@@ -2407,6 +2407,11 @@ suffix:semicolon
 r_int
 id|error
 suffix:semicolon
+id|lock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
 id|coda_vfs_stat.rename
 op_increment
 suffix:semicolon
@@ -2559,6 +2564,11 @@ comma
 l_string|&quot;result %d&bslash;n&quot;
 comma
 id|error
+)paren
+suffix:semicolon
+id|unlock_kernel
+c_func
+(paren
 )paren
 suffix:semicolon
 r_return

@@ -6306,6 +6306,11 @@ id|new_inode
 op_assign
 id|new_dentry-&gt;d_inode
 suffix:semicolon
+id|lock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
 id|res
 op_assign
 id|vfat_find
@@ -6667,6 +6672,11 @@ c_func
 id|sb
 comma
 id|new_bh
+)paren
+suffix:semicolon
+id|unlock_kernel
+c_func
+(paren
 )paren
 suffix:semicolon
 r_return

@@ -1193,6 +1193,11 @@ op_assign
 op_minus
 id|ENOENT
 suffix:semicolon
+id|lock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
 id|old_de
 op_assign
 id|ufs_find_entry
@@ -1452,6 +1457,11 @@ id|old_dir
 )paren
 suffix:semicolon
 )brace
+id|unlock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
@@ -1477,6 +1487,11 @@ id|old_bh
 suffix:semicolon
 id|out
 suffix:colon
+id|unlock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
 r_return
 id|err
 suffix:semicolon

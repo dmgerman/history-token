@@ -1575,6 +1575,11 @@ id|new_dentry-&gt;d_name.name
 )paren
 )paren
 suffix:semicolon
+id|lock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
 id|c
 op_assign
 (paren
@@ -1599,6 +1604,11 @@ c_func
 id|KERN_ERR
 l_string|&quot;jffs_rename(): The old_dir inode &quot;
 l_string|&quot;didn&squot;t have a reference to a jffs_file struct&bslash;n&quot;
+)paren
+suffix:semicolon
+id|unlock_kernel
+c_func
+(paren
 )paren
 suffix:semicolon
 r_return
@@ -2104,6 +2114,11 @@ c_func
 (paren
 op_amp
 id|c-&gt;fmc-&gt;biglock
+)paren
+suffix:semicolon
+id|unlock_kernel
+c_func
+(paren
 )paren
 suffix:semicolon
 r_return

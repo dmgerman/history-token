@@ -3272,6 +3272,11 @@ op_amp
 id|old_len
 )paren
 suffix:semicolon
+id|lock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
 id|hpfs_lock_3inodes
 c_func
 (paren
@@ -3893,6 +3898,11 @@ comma
 id|new_dir
 comma
 id|i
+)paren
+suffix:semicolon
+id|unlock_kernel
+c_func
+(paren
 )paren
 suffix:semicolon
 r_return

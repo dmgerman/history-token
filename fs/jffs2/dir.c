@@ -4734,6 +4734,11 @@ id|ret
 suffix:semicolon
 multiline_comment|/* XXX: We probably ought to alloc enough space for&n;&t;   both nodes at the same time. Writing the new link, &n;&t;   then getting -ENOSPC, is quite bad :)&n;&t;*/
 multiline_comment|/* Make a hard link */
+id|lock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
 id|ret
 op_assign
 id|jffs2_do_link
@@ -4753,9 +4758,16 @@ c_cond
 (paren
 id|ret
 )paren
+(brace
+id|unlock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
 r_return
 id|ret
 suffix:semicolon
+)brace
 multiline_comment|/* Unlink the original */
 id|ret
 op_assign
@@ -4854,6 +4866,11 @@ id|old_dentry-&gt;d_inode-&gt;i_count
 suffix:semicolon
 )brace
 )brace
+id|unlock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
 r_return
 id|ret
 suffix:semicolon

@@ -3039,6 +3039,11 @@ id|new_msdos_name
 id|MSDOS_NAME
 )braket
 suffix:semicolon
+id|lock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
 id|error
 op_assign
 id|msdos_format_name
@@ -3209,6 +3214,11 @@ id|old_bh
 suffix:semicolon
 id|rename_done
 suffix:colon
+id|unlock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
 r_return
 id|error
 suffix:semicolon

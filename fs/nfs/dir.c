@@ -4099,6 +4099,11 @@ op_minus
 id|EBUSY
 suffix:semicolon
 multiline_comment|/*&n;&t; * To prevent any new references to the target during the rename,&n;&t; * we unhash the dentry and free the inode in advance.&n;&t; */
+id|lock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -4398,6 +4403,11 @@ id|dput
 c_func
 (paren
 id|dentry
+)paren
+suffix:semicolon
+id|unlock_kernel
+c_func
+(paren
 )paren
 suffix:semicolon
 r_return
