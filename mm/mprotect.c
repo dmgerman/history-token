@@ -779,8 +779,8 @@ comma
 id|newflags
 )paren
 )paren
-r_return
-l_int|0
+r_goto
+id|success
 suffix:semicolon
 )brace
 r_else
@@ -867,6 +867,8 @@ op_amp
 id|mm-&gt;page_table_lock
 )paren
 suffix:semicolon
+id|success
+suffix:colon
 id|change_protection
 c_func
 (paren
