@@ -17,5 +17,21 @@ DECL|macro|SBC82xx_MACADDR_NVRAM_FCC3
 mdefine_line|#define SBC82xx_MACADDR_NVRAM_FCC3&t;0x220000db&t;/* JP7B */
 DECL|macro|BOOTROM_RESTART_ADDR
 mdefine_line|#define BOOTROM_RESTART_ADDR      ((uint)0x40000104)
+DECL|macro|SBC82xx_PC_IRQA
+mdefine_line|#define SBC82xx_PC_IRQA (NR_SIU_INTS+0)
+DECL|macro|SBC82xx_PC_IRQB
+mdefine_line|#define SBC82xx_PC_IRQB (NR_SIU_INTS+1)
+DECL|macro|SBC82xx_MPC185_IRQ
+mdefine_line|#define SBC82xx_MPC185_IRQ (NR_SIU_INTS+2)
+DECL|macro|SBC82xx_ATM_IRQ
+mdefine_line|#define SBC82xx_ATM_IRQ (NR_SIU_INTS+3)
+DECL|macro|SBC82xx_PIRQA
+mdefine_line|#define SBC82xx_PIRQA (NR_SIU_INTS+4)
+DECL|macro|SBC82xx_PIRQB
+mdefine_line|#define SBC82xx_PIRQB (NR_SIU_INTS+5)
+DECL|macro|SBC82xx_PIRQC
+mdefine_line|#define SBC82xx_PIRQC (NR_SIU_INTS+6)
+DECL|macro|SBC82xx_PIRQD
+mdefine_line|#define SBC82xx_PIRQD (NR_SIU_INTS+7)
 macro_line|#endif /* __PPC_SBC82xx_H__ */
 eof
