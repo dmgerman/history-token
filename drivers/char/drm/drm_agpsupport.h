@@ -233,15 +233,6 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|dev-&gt;agp-&gt;cant_use_aperture
-)paren
-r_return
-op_minus
-id|EINVAL
-suffix:semicolon
-r_if
-c_cond
-(paren
 (paren
 id|retcode
 op_assign

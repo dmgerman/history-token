@@ -792,9 +792,20 @@ op_amp
 id|val
 )paren
 suffix:semicolon
+multiline_comment|/*&n;&t; * Apply fixup only if C1 Halt Disconnect is enabled&n;&t; * (bit28) because it is not supported on some boards.&n;&t; */
 r_if
 c_cond
 (paren
+(paren
+id|val
+op_amp
+(paren
+l_int|1
+op_lshift
+l_int|28
+)paren
+)paren
+op_logical_and
 id|val
 op_ne
 id|fixed_val

@@ -9472,13 +9472,11 @@ c_func
 op_amp
 id|dev-&gt;mii
 comma
+id|if_mii
+c_func
 (paren
-r_struct
-id|mii_ioctl_data
-op_star
+id|rq
 )paren
-op_amp
-id|rq-&gt;ifr_data
 comma
 id|cmd
 comma

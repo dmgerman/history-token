@@ -1648,7 +1648,7 @@ id|ltfirmware
 op_star
 )paren
 op_amp
-id|ifr.ifr_data
+id|ifr.ifr_ifru
 suffix:semicolon
 r_struct
 id|cops_local

@@ -1,6 +1,7 @@
 multiline_comment|/*&n; * linux/net/sunrpc/svcauth.c&n; *&n; * The generic interface for RPC authentication on the server side.&n; * &n; * Copyright (C) 1995, 1996 Olaf Kirch &lt;okir@monad.swb.de&gt;&n; *&n; * CHANGES&n; * 19-Apr-2000 Chris Evans      - Security fix&n; */
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
+macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/sunrpc/types.h&gt;
 macro_line|#include &lt;linux/sunrpc/xdr.h&gt;
 macro_line|#include &lt;linux/sunrpc/svcsock.h&gt;
@@ -19,6 +20,13 @@ r_extern
 r_struct
 id|auth_ops
 id|svcauth_unix
+suffix:semicolon
+DECL|variable|authtab_lock
+r_static
+id|spinlock_t
+id|authtab_lock
+op_assign
+id|SPIN_LOCK_UNLOCKED
 suffix:semicolon
 DECL|variable|authtab
 r_static
@@ -99,6 +107,13 @@ comma
 id|flavor
 )paren
 suffix:semicolon
+id|spin_lock
+c_func
+(paren
+op_amp
+id|authtab_lock
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -115,8 +130,22 @@ id|authtab
 id|flavor
 )braket
 )paren
+op_logical_or
+op_logical_neg
+id|try_module_get
+c_func
+(paren
+id|aops-&gt;owner
+)paren
 )paren
 (brace
+id|spin_unlock
+c_func
+(paren
+op_amp
+id|authtab_lock
+)paren
+suffix:semicolon
 op_star
 id|authp
 op_assign
@@ -126,6 +155,13 @@ r_return
 id|SVC_DENIED
 suffix:semicolon
 )brace
+id|spin_unlock
+c_func
+(paren
+op_amp
+id|authtab_lock
+)paren
+suffix:semicolon
 id|rqstp-&gt;rq_authop
 op_assign
 id|aops
@@ -175,6 +211,7 @@ c_cond
 (paren
 id|aops
 )paren
+(brace
 id|rv
 op_assign
 id|aops
@@ -185,7 +222,13 @@ c_func
 id|rqstp
 )paren
 suffix:semicolon
-multiline_comment|/* FIXME should I count and release authops */
+id|module_put
+c_func
+(paren
+id|aops-&gt;owner
+)paren
+suffix:semicolon
+)brace
 r_return
 id|rv
 suffix:semicolon
@@ -204,22 +247,34 @@ op_star
 id|aops
 )paren
 (brace
+r_int
+id|rv
+op_assign
+op_minus
+id|EINVAL
+suffix:semicolon
+id|spin_lock
+c_func
+(paren
+op_amp
+id|authtab_lock
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
 id|flavor
-op_ge
+OL
 id|RPC_AUTH_MAXFLAVOR
-op_logical_or
+op_logical_and
 id|authtab
 (braket
 id|flavor
 )braket
+op_eq
+l_int|NULL
 )paren
-r_return
-op_minus
-id|EINVAL
-suffix:semicolon
+(brace
 id|authtab
 (braket
 id|flavor
@@ -227,8 +282,20 @@ id|flavor
 op_assign
 id|aops
 suffix:semicolon
-r_return
+id|rv
+op_assign
 l_int|0
+suffix:semicolon
+)brace
+id|spin_unlock
+c_func
+(paren
+op_amp
+id|authtab_lock
+)paren
+suffix:semicolon
+r_return
+id|rv
 suffix:semicolon
 )brace
 r_void
@@ -240,6 +307,13 @@ id|rpc_authflavor_t
 id|flavor
 )paren
 (brace
+id|spin_lock
+c_func
+(paren
+op_amp
+id|authtab_lock
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -254,7 +328,21 @@ id|flavor
 op_assign
 l_int|NULL
 suffix:semicolon
+id|spin_unlock
+c_func
+(paren
+op_amp
+id|authtab_lock
+)paren
+suffix:semicolon
 )brace
+DECL|variable|svc_auth_unregister
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|svc_auth_unregister
+)paren
+suffix:semicolon
 multiline_comment|/**************************************************&n; * cache for domain name to auth_domain&n; * Entries are only added by flavours which will normally&n; * have a structure that &squot;inherits&squot; from auth_domain.&n; * e.g. when an IP -&gt; domainname is given to  auth_unix,&n; * and the domain name doesn&squot;t exist, it will create a&n; * auth_unix_domain and add it to this hash table.&n; * If it finds the name does exist, but isn&squot;t AUTH_UNIX,&n; * it will complain.&n; */
 multiline_comment|/*&n; * Auth auth_domain cache is somewhat different to other caches,&n; * largely because the entries are possibly of different types:&n; * each auth flavour has it&squot;s own type.&n; * One consequence of this that DefineCacheLookup cannot&n; * allocate a new structure as it cannot know the size.&n; * Notice that the &quot;INIT&quot; code fragment is quite different&n; * from other caches.  When auth_domain_lookup might be&n; * creating a new domain, the new domain is passed in&n; * complete and it is used as-is rather than being copied into&n; * another structure.&n; */
 DECL|macro|DN_HASHBITS

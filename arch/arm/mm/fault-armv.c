@@ -1,4 +1,5 @@
 multiline_comment|/*&n; *  linux/arch/arm/mm/fault-armv.c&n; *&n; *  Copyright (C) 1995  Linus Torvalds&n; *  Modifications for ARM processor (c) 1995-2002 Russell King&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; */
+macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
@@ -248,6 +249,7 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|function|__flush_dcache_page
+r_static
 r_void
 id|__flush_dcache_page
 c_func
@@ -405,6 +407,64 @@ id|mapping
 )paren
 suffix:semicolon
 )brace
+DECL|function|flush_dcache_page
+r_void
+id|flush_dcache_page
+c_func
+(paren
+r_struct
+id|page
+op_star
+id|page
+)paren
+(brace
+r_struct
+id|address_space
+op_star
+id|mapping
+op_assign
+id|page_mapping
+c_func
+(paren
+id|page
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|mapping
+op_logical_and
+op_logical_neg
+id|mapping_mapped
+c_func
+(paren
+id|mapping
+)paren
+)paren
+id|set_bit
+c_func
+(paren
+id|PG_dcache_dirty
+comma
+op_amp
+id|page-&gt;flags
+)paren
+suffix:semicolon
+r_else
+id|__flush_dcache_page
+c_func
+(paren
+id|page
+)paren
+suffix:semicolon
+)brace
+DECL|variable|flush_dcache_page
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|flush_dcache_page
+)paren
+suffix:semicolon
 r_static
 r_void
 DECL|function|make_coherent

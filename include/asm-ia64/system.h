@@ -277,7 +277,7 @@ mdefine_line|#define __switch_to(prev,next,last) do {&t;&t;&t;&t;&t;&t;&t; &bsla
 macro_line|#ifdef CONFIG_SMP
 multiline_comment|/*&n; * In the SMP case, we save the fph state when context-switching away from a thread that&n; * modified fph.  This way, when the thread gets scheduled on another CPU, the CPU can&n; * pick up the state from task-&gt;thread.fph, avoiding the complication of having to fetch&n; * the latest fph state from another CPU.  In other words: eager save, lazy restore.&n; */
 DECL|macro|switch_to
-macro_line|# define switch_to(prev,next,last) do {&t;&t;&t;&t;&t;&t;&bslash;&n;&t;if (ia64_psr(ia64_task_regs(prev))-&gt;mfh) {&t;&t;&t;&t;&bslash;&n;&t;&t;ia64_psr(ia64_task_regs(prev))-&gt;mfh = 0;&t;&t;&t;&bslash;&n;&t;&t;(prev)-&gt;thread.flags |= IA64_THREAD_FPH_VALID;&t;&t;&t;&bslash;&n;&t;&t;__ia64_save_fpu((prev)-&gt;thread.fph);&t;&t;&t;&t;&bslash;&n;&t;}&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;__switch_to(prev, next, last);&t;&t;&t;&t;&t;&t;&bslash;&n;} while (0)
+macro_line|# define switch_to(prev,next,last) do {&t;&t;&t;&t;&t;&t;&bslash;&n;&t;if (ia64_psr(ia64_task_regs(prev))-&gt;mfh &amp;&amp; ia64_is_local_fpu_owner(prev)) {&t;&t;&t;&t;&bslash;&n;&t;&t;ia64_psr(ia64_task_regs(prev))-&gt;mfh = 0;&t;&t;&t;&bslash;&n;&t;&t;(prev)-&gt;thread.flags |= IA64_THREAD_FPH_VALID;&t;&t;&t;&bslash;&n;&t;&t;__ia64_save_fpu((prev)-&gt;thread.fph);&t;&t;&t;&t;&bslash;&n;&t;}&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;__switch_to(prev, next, last);&t;&t;&t;&t;&t;&t;&bslash;&n;} while (0)
 macro_line|#else
 DECL|macro|switch_to
 macro_line|# define switch_to(prev,next,last)&t;__switch_to(prev, next, last)

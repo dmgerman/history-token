@@ -1582,6 +1582,7 @@ id|printk
 c_func
 (paren
 l_string|&quot; at %016lx RIP: &bslash;n&quot;
+id|KERN_ALERT
 comma
 id|address
 )paren
@@ -1590,6 +1591,12 @@ id|printk_address
 c_func
 (paren
 id|regs-&gt;rip
+)paren
+suffix:semicolon
+id|printk
+c_func
+(paren
+l_string|&quot;&bslash;n&quot;
 )paren
 suffix:semicolon
 id|dump_pagetable

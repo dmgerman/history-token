@@ -36,7 +36,7 @@ id|iosapic_lock
 op_assign
 id|SPIN_LOCK_UNLOCKED
 suffix:semicolon
-DECL|variable|pending_irq_cpumask
+r_extern
 id|cpumask_t
 id|__cacheline_aligned
 id|pending_irq_cpumask

@@ -316,7 +316,7 @@ id|__asm__
 id|__volatile__
 c_func
 (paren
-l_string|&quot;2:&t;lwarx&t;%0,0,%1&bslash;n&bslash;&t;# write_trylock&bslash;n&bslash;&n;&t;cmpwi&t;0,%0,0&bslash;n&bslash;&n;&t;bne-&t;1f&bslash;n&quot;
+l_string|&quot;2:&t;lwarx&t;%0,0,%1&t;&t;# write_trylock&bslash;n&bslash;&n;&t;cmpwi&t;0,%0,0&bslash;n&bslash;&n;&t;bne-&t;1f&bslash;n&quot;
 id|PPC405_ERR77
 c_func
 (paren

@@ -1138,12 +1138,11 @@ id|pmd_k
 r_goto
 id|bad_area
 suffix:semicolon
-id|set_pmd
+id|copy_pmd
 c_func
 (paren
 id|pmd
 comma
-op_star
 id|pmd_k
 )paren
 suffix:semicolon

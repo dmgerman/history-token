@@ -3490,12 +3490,14 @@ c_func
 id|compat_pid_t
 comma
 id|compat_uint_t
+id|__user
 op_star
 comma
 r_int
 comma
 r_struct
 id|compat_rusage
+id|__user
 op_star
 )paren
 suffix:semicolon

@@ -6526,6 +6526,7 @@ id|frequency
 comma
 (paren
 r_int
+id|__user
 op_star
 )paren
 id|ifr-&gt;ifr_data
@@ -6567,6 +6568,7 @@ id|frequency
 comma
 (paren
 r_int
+id|__user
 op_star
 )paren
 id|ifr-&gt;ifr_data

@@ -4,13 +4,6 @@ macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;asm/cacheflush.h&gt;
 macro_line|#include &lt;asm/proc-fns.h&gt;
 macro_line|#include &lt;asm/tlbflush.h&gt;
-DECL|variable|__flush_dcache_page
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|__flush_dcache_page
-)paren
-suffix:semicolon
 macro_line|#ifndef MULTI_CPU
 DECL|variable|cpu_dcache_clean_area
 id|EXPORT_SYMBOL
@@ -62,13 +55,6 @@ id|EXPORT_SYMBOL_NOVERS
 c_func
 (paren
 id|__cpuc_coherent_kern_range
-)paren
-suffix:semicolon
-DECL|variable|__cpuc_flush_dcache_page
-id|EXPORT_SYMBOL_NOVERS
-c_func
-(paren
-id|__cpuc_flush_dcache_page
 )paren
 suffix:semicolon
 macro_line|#else

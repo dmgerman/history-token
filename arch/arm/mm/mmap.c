@@ -100,7 +100,7 @@ op_amp
 (paren
 l_int|1
 op_lshift
-l_int|9
+l_int|11
 )paren
 suffix:semicolon
 r_if

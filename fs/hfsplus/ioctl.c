@@ -106,6 +106,7 @@ id|flags
 comma
 (paren
 r_int
+id|__user
 op_star
 )paren
 id|arg
@@ -158,6 +159,7 @@ id|flags
 comma
 (paren
 r_int
+id|__user
 op_star
 )paren
 id|arg

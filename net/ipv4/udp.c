@@ -1039,7 +1039,7 @@ op_logical_neg
 id|ip_mc_sf_allow
 c_func
 (paren
-id|sk
+id|s
 comma
 id|loc_addr
 comma

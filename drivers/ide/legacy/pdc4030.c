@@ -3051,32 +3051,6 @@ OG
 l_int|127
 )paren
 suffix:semicolon
-macro_line|#ifdef DEBUG
-id|printk
-c_func
-(paren
-id|KERN_DEBUG
-l_string|&quot;%s: %sing: LBAsect=%lu, sectors=%lu&bslash;n&quot;
-comma
-id|drive-&gt;name
-comma
-id|rq_data_dir
-c_func
-(paren
-id|rq
-)paren
-ques
-c_cond
-l_string|&quot;writ&quot;
-suffix:colon
-l_string|&quot;read&quot;
-comma
-id|block
-comma
-id|rq-&gt;nr_sectors
-)paren
-suffix:semicolon
-macro_line|#endif
 macro_line|#ifndef CONFIG_IDE_TASKFILE_IO
 r_if
 c_cond

@@ -996,15 +996,19 @@ id|newmss
 suffix:semicolon
 id|retmodified
 suffix:colon
-multiline_comment|/* If we had a hardware checksum before, it&squot;s now invalid */
+multiline_comment|/* We never hw checksum SYN packets.  */
+id|BUG_ON
+c_func
+(paren
 (paren
 op_star
 id|pskb
 )paren
 op_member_access_from_pointer
 id|ip_summed
-op_assign
-id|CHECKSUM_NONE
+op_eq
+id|CHECKSUM_HW
+)paren
 suffix:semicolon
 (paren
 op_star

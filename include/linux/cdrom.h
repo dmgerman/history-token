@@ -373,6 +373,7 @@ suffix:semicolon
 multiline_comment|/* number of 2352-byte-frames to read at once */
 DECL|member|buf
 id|__u8
+id|__user
 op_star
 id|buf
 suffix:semicolon

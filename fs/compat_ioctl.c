@@ -727,19 +727,22 @@ op_amp
 id|up-&gt;base
 )paren
 )paren
-(brace
 r_return
 op_minus
 id|EFAULT
 suffix:semicolon
-)brace
+multiline_comment|/* This is actually a physical address stored&n;&t; * as a void pointer.&n;&t; */
 id|kp-&gt;base
 op_assign
-id|compat_ptr
-c_func
 (paren
-id|tmp
+r_void
+op_star
 )paren
+(paren
+r_int
+r_int
+)paren
+id|tmp
 suffix:semicolon
 id|__get_user
 c_func
@@ -16404,6 +16407,7 @@ comma
 (paren
 r_int
 r_int
+id|__user
 op_star
 )paren
 id|compat_ptr
@@ -16922,10 +16926,10 @@ id|arg
 suffix:semicolon
 r_struct
 id|ncp_privatedata_ioctl
+id|__user
 op_star
 id|p
 op_assign
-id|__user
 id|compat_alloc_user_space
 c_func
 (paren
@@ -17060,7 +17064,10 @@ id|arg
 r_struct
 id|ncp_privatedata_ioctl_32
 id|n32
-comma
+suffix:semicolon
+r_struct
+id|ncp_privatedata_ioctl_32
+id|__user
 op_star
 id|p32
 op_assign
@@ -17072,6 +17079,7 @@ id|arg
 suffix:semicolon
 r_struct
 id|ncp_privatedata_ioctl
+id|__user
 op_star
 id|p
 op_assign

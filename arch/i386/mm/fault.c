@@ -1321,6 +1321,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_ALERT
 l_string|&quot; printing eip:&bslash;n&quot;
 )paren
 suffix:semicolon

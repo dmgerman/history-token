@@ -1728,17 +1728,6 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|cmp_clid
-c_func
-(paren
-op_amp
-id|conf-&gt;cl_clientid
-comma
-op_amp
-id|unconf-&gt;cl_clientid
-)paren
-op_logical_and
-op_logical_neg
 id|cmp_verf
 c_func
 (paren
@@ -1750,7 +1739,7 @@ id|unconf-&gt;cl_confirm
 )paren
 )paren
 (brace
-multiline_comment|/*&t;&n;&t;&t; * CASE3:&n;&t;&t; * confirmed found (name, principal match)&n;&t;&t; * confirmed verifier does not match input clverifier&n;&t;&t; *&n;&t;&t; * unconfirmed found (name match)&n;&t;&t; * confirmed-&gt;cl_clientid != unconfirmed-&gt;cl_clientid and&n;&t;&t; * confirmed-&gt;cl_confirm != unconfirmed-&gt;cl_confirm&n;&t;&t; *&n;&t;&t; * remove unconfirmed.&n;&t;&t; *&n;&t;&t; * create an unconfirmed nfs4_client &n;&t;&t; * with same cl_name as existing confirmed nfs4_client, &n;&t;&t; * but with new callback info, new cl_clientid,&n;&t;&t; * new cl_verifier and a new cl_confirm&n;&t;&t; */
+multiline_comment|/*&t;&n;&t;&t; * CASE3:&n;&t;&t; * confirmed found (name, principal match)&n;&t;&t; * confirmed verifier does not match input clverifier&n;&t;&t; *&n;&t;&t; * unconfirmed found (name match)&n;&t;&t; * confirmed-&gt;cl_confirm != unconfirmed-&gt;cl_confirm&n;&t;&t; *&n;&t;&t; * remove unconfirmed.&n;&t;&t; *&n;&t;&t; * create an unconfirmed nfs4_client &n;&t;&t; * with same cl_name as existing confirmed nfs4_client, &n;&t;&t; * but with new callback info, new cl_clientid,&n;&t;&t; * new cl_verifier and a new cl_confirm&n;&t;&t; */
 id|expire_client
 c_func
 (paren
@@ -9565,7 +9554,6 @@ suffix:semicolon
 id|i
 op_increment
 )paren
-(brace
 id|list_for_each_entry
 c_func
 (paren
@@ -9579,7 +9567,6 @@ id|i
 comma
 id|so_strhash
 )paren
-(brace
 r_if
 c_cond
 (paren
@@ -9594,23 +9581,12 @@ id|clid
 )paren
 )paren
 (brace
-r_break
-suffix:semicolon
-)brace
-)brace
-)brace
-r_if
-c_cond
-(paren
-id|local
-)paren
-(brace
 r_struct
 id|nfs4_stateid
 op_star
 id|stp
 suffix:semicolon
-multiline_comment|/* check for any locks held by any stateid associated with the&n;&t;&t; * (lock) stateowner */
+multiline_comment|/* check for any locks held by any stateid&n;&t;&t;&t;&t; * associated with the (lock) stateowner */
 id|status
 op_assign
 id|nfserr_locks_held
@@ -9659,6 +9635,9 @@ c_func
 (paren
 id|local
 )paren
+suffix:semicolon
+r_goto
+id|out
 suffix:semicolon
 )brace
 id|out

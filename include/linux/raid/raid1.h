@@ -23,6 +23,22 @@ id|head_position
 suffix:semicolon
 )brace
 suffix:semicolon
+multiline_comment|/*&n; * memory pools need a pointer to the mddev, so they can force an unplug&n; * when memory is tight, and a count of the number of drives that the&n; * pool was allocated for, so they know how much to allocate and free.&n; * mddev-&gt;raid_disks cannot be used, as it can change while a pool is active&n; * These two datums are stored in a kmalloced struct.&n; */
+DECL|struct|pool_info
+r_struct
+id|pool_info
+(brace
+DECL|member|mddev
+id|mddev_t
+op_star
+id|mddev
+suffix:semicolon
+DECL|member|raid_disks
+r_int
+id|raid_disks
+suffix:semicolon
+)brace
+suffix:semicolon
 DECL|typedef|r1bio_t
 r_typedef
 r_struct
@@ -87,6 +103,12 @@ suffix:semicolon
 DECL|member|wait_resume
 id|wait_queue_head_t
 id|wait_resume
+suffix:semicolon
+DECL|member|poolinfo
+r_struct
+id|pool_info
+op_star
+id|poolinfo
 suffix:semicolon
 DECL|member|r1bio_pool
 id|mempool_t

@@ -31,14 +31,6 @@ macro_line|#include &lt;asm/pgalloc.h&gt;
 macro_line|#include &lt;asm/tlbflush.h&gt;
 macro_line|#include &lt;asm/delay.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
-r_extern
-id|cpumask_t
-id|__cacheline_aligned
-id|pending_irq_cpumask
-(braket
-id|NR_IRQS
-)braket
-suffix:semicolon
 multiline_comment|/*&n; * Linux has a controller-independent x86 interrupt architecture.&n; * every controller has a &squot;controller-template&squot;, that is used&n; * by the main code to do the right thing. Each driver-visible&n; * interrupt source is transparently wired to the appropriate&n; * controller. Thus drivers need not be aware of the&n; * interrupt-controller.&n; *&n; * Various interrupt controllers we handle: 8259 PIC, SMP IO-APIC,&n; * PIIX4&squot;s internal 8259 PIC and SGI&squot;s Visual Workstation Cobalt (IO-)APIC.&n; * (IO-APICs assumed to be messaging to Pentium local-APICs)&n; *&n; * the code is designed to be easily extended with new/different&n; * interrupt controllers, without having to do assembly magic.&n; */
 multiline_comment|/*&n; * Controller mappings for all interrupt sources:&n; */
 DECL|variable|__cacheline_aligned
@@ -78,6 +70,15 @@ op_assign
 id|SPIN_LOCK_UNLOCKED
 )brace
 )brace
+suffix:semicolon
+multiline_comment|/*&n; * This is updated when the user sets irq affinity via /proc&n; */
+DECL|variable|pending_irq_cpumask
+id|cpumask_t
+id|__cacheline_aligned
+id|pending_irq_cpumask
+(braket
+id|NR_IRQS
+)braket
 suffix:semicolon
 macro_line|#ifdef CONFIG_IA64_GENERIC
 DECL|function|__ia64_irq_desc

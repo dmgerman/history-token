@@ -7367,7 +7367,7 @@ id|ewrk3_ioctl
 op_star
 )paren
 op_amp
-id|rq-&gt;ifr_data
+id|rq-&gt;ifr_ifru
 suffix:semicolon
 id|u_long
 id|iobase

@@ -121,7 +121,7 @@ c_func
 (paren
 id|parent-&gt;d_inode
 comma
-id|S_IXOTH
+id|MAY_EXEC
 comma
 l_int|NULL
 )paren

@@ -400,6 +400,7 @@ id|file
 comma
 r_const
 r_char
+id|__user
 op_star
 id|buf
 comma
@@ -667,6 +668,7 @@ c_func
 (paren
 (paren
 r_char
+id|__user
 op_star
 )paren
 id|arg
@@ -719,6 +721,7 @@ id|old
 comma
 (paren
 r_int
+id|__user
 op_star
 )paren
 id|arg
@@ -757,6 +760,7 @@ r_new
 comma
 (paren
 r_int
+id|__user
 op_star
 )paren
 id|arg
@@ -782,6 +786,7 @@ id|inode
 comma
 (paren
 r_int
+id|__user
 op_star
 )paren
 id|arg
@@ -799,6 +804,7 @@ c_func
 (paren
 (paren
 r_char
+id|__user
 op_star
 )paren
 id|arg

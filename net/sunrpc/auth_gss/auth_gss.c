@@ -2304,7 +2304,7 @@ suffix:semicolon
 id|dprintk
 c_func
 (paren
-l_string|&quot;RPC:      gss_pipe_downcall returning length %u&bslash;n&quot;
+l_string|&quot;RPC:      gss_pipe_downcall returning length %Zu&bslash;n&quot;
 comma
 id|mlen
 )paren

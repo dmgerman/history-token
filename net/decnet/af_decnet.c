@@ -8511,6 +8511,8 @@ op_or
 id|MSG_NOSIGNAL
 op_or
 id|MSG_MORE
+op_or
+id|MSG_CMSG_COMPAT
 )paren
 )paren
 r_return

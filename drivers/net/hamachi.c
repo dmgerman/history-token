@@ -8613,13 +8613,11 @@ id|mii_ioctl_data
 op_star
 id|data
 op_assign
+id|if_mii
+c_func
 (paren
-r_struct
-id|mii_ioctl_data
-op_star
+id|rq
 )paren
-op_amp
-id|rq-&gt;ifr_data
 suffix:semicolon
 r_int
 id|rc
@@ -8678,7 +8676,7 @@ id|u32
 op_star
 )paren
 op_amp
-id|rq-&gt;ifr_data
+id|rq-&gt;ifr_ifru
 suffix:semicolon
 multiline_comment|/* Should add this check here or an ordinary user can do nasty&n;&t;&t; * things. -KDU&n;&t;&t; *&n;&t;&t; * TODO: Shut down the Rx and Tx engines while doing this.&n;&t;&t; */
 r_if

@@ -7217,7 +7217,11 @@ c_cond
 id|flags
 op_amp
 op_complement
+(paren
 id|MSG_DONTWAIT
+op_or
+id|MSG_CMSG_COMPAT
+)paren
 )paren
 r_goto
 id|out

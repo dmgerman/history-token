@@ -568,6 +568,11 @@ id|u32
 op_star
 id|offset
 suffix:semicolon
+DECL|member|offset1
+id|u32
+op_star
+id|offset1
+suffix:semicolon
 DECL|member|rqstp
 r_struct
 id|svc_rqst

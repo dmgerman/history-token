@@ -623,6 +623,9 @@ suffix:colon
 r_case
 id|RADEON_EMIT_PP_TEX_SIZE_2
 suffix:colon
+r_case
+id|R200_EMIT_RB3D_BLENDCOLOR
+suffix:colon
 multiline_comment|/* These packets don&squot;t contain memory offsets */
 r_break
 suffix:semicolon
@@ -2873,6 +2876,14 @@ comma
 l_int|2
 comma
 l_string|&quot;RADEON_PP_TEX_SIZE_1&quot;
+)brace
+comma
+(brace
+id|R200_RB3D_BLENDCOLOR
+comma
+l_int|3
+comma
+l_string|&quot;R200_RB3D_BLENDCOLOR&quot;
 )brace
 comma
 )brace

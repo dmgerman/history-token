@@ -925,14 +925,10 @@ id|cmd
 (brace
 r_struct
 id|ipddp_route
+id|__user
 op_star
 id|rt
 op_assign
-(paren
-r_struct
-id|ipddp_route
-op_star
-)paren
 id|ifr-&gt;ifr_data
 suffix:semicolon
 r_struct

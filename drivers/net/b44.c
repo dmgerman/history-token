@@ -7486,11 +7486,14 @@ id|cmd
 (brace
 r_struct
 id|mii_ioctl_data
-id|__user
 op_star
 id|data
 op_assign
-id|ifr-&gt;ifr_data
+id|if_mii
+c_func
+(paren
+id|ifr
+)paren
 suffix:semicolon
 r_struct
 id|b44

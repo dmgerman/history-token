@@ -1574,7 +1574,7 @@ id|req-&gt;ki_retry
 op_assign
 l_int|NULL
 suffix:semicolon
-id|req-&gt;ki_user_obj
+id|req-&gt;ki_obj.user
 op_assign
 l_int|NULL
 suffix:semicolon
@@ -1763,7 +1763,7 @@ id|req-&gt;ki_filp
 op_assign
 l_int|NULL
 suffix:semicolon
-id|req-&gt;ki_user_obj
+id|req-&gt;ki_obj.user
 op_assign
 l_int|NULL
 suffix:semicolon
@@ -2518,7 +2518,7 @@ suffix:semicolon
 id|wake_up_process
 c_func
 (paren
-id|iocb-&gt;ki_user_obj
+id|iocb-&gt;ki_obj.tsk
 )paren
 suffix:semicolon
 r_return
@@ -2697,7 +2697,7 @@ multiline_comment|/* sync iocbs put the task here for us */
 id|wake_up_process
 c_func
 (paren
-id|iocb-&gt;ki_user_obj
+id|iocb-&gt;ki_obj.tsk
 )paren
 suffix:semicolon
 r_return
@@ -2767,7 +2767,7 @@ id|u64
 r_int
 r_int
 )paren
-id|iocb-&gt;ki_user_obj
+id|iocb-&gt;ki_obj.user
 suffix:semicolon
 id|event-&gt;data
 op_assign
@@ -2792,7 +2792,7 @@ id|tail
 comma
 id|iocb
 comma
-id|iocb-&gt;ki_user_obj
+id|iocb-&gt;ki_obj.user
 comma
 id|iocb-&gt;ki_user_data
 comma
@@ -4278,7 +4278,7 @@ r_goto
 id|out_put_req
 suffix:semicolon
 )brace
-id|req-&gt;ki_user_obj
+id|req-&gt;ki_obj.user
 op_assign
 id|user_iocb
 suffix:semicolon
@@ -4871,7 +4871,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|kiocb-&gt;ki_user_obj
+id|kiocb-&gt;ki_obj.user
 op_eq
 id|iocb
 op_logical_and
@@ -5082,7 +5082,7 @@ id|u64
 r_int
 r_int
 )paren
-id|kiocb-&gt;ki_user_obj
+id|kiocb-&gt;ki_obj.user
 suffix:semicolon
 id|tmp.data
 op_assign

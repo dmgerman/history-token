@@ -1735,10 +1735,6 @@ id|resp-&gt;buffer
 op_assign
 id|argp-&gt;buffer
 suffix:semicolon
-id|resp-&gt;offset
-op_assign
-l_int|NULL
-suffix:semicolon
 id|resp-&gt;rqstp
 op_assign
 id|rqstp

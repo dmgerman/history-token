@@ -192,10 +192,9 @@ id|SH_PIO_WRITE_STATUS_0_PENDING_WRITE_COUNT_MASK
 op_ne
 id|SH_PIO_WRITE_STATUS_0_PENDING_WRITE_COUNT_MASK
 )paren
-id|udelay
+id|cpu_relax
 c_func
 (paren
-l_int|1
 )paren
 suffix:semicolon
 )brace

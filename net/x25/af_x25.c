@@ -3788,6 +3788,8 @@ op_or
 id|MSG_OOB
 op_or
 id|MSG_EOR
+op_or
+id|MSG_CMSG_COMPAT
 )paren
 )paren
 r_goto

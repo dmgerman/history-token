@@ -317,6 +317,14 @@ comma
 id|buffer-&gt;page
 )paren
 suffix:semicolon
+id|BUG_ON
+c_func
+(paren
+id|count
+OG
+id|PAGE_SIZE
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren

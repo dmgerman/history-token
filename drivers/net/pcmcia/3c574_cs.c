@@ -5982,7 +5982,7 @@ id|u16
 op_star
 )paren
 op_amp
-id|rq-&gt;ifr_data
+id|rq-&gt;ifr_ifru
 suffix:semicolon
 r_int
 id|phy

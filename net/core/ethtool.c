@@ -3142,11 +3142,6 @@ id|__user
 op_star
 id|useraddr
 op_assign
-(paren
-r_void
-id|__user
-op_star
-)paren
 id|ifr-&gt;ifr_data
 suffix:semicolon
 id|u32

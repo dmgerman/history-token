@@ -660,7 +660,7 @@ c_func
 id|nodeid
 )paren
 suffix:semicolon
-id|printk
+id|Dprintk
 c_func
 (paren
 id|KERN_INFO
