@@ -1672,7 +1672,7 @@ id|AGPSTAT3_4X
 suffix:semicolon
 id|printk
 (paren
-l_string|&quot;%s requested AGPx8 but device not capable.&bslash;n&quot;
+l_string|&quot;%s requested AGPx8 but graphic card not capable.&bslash;n&quot;
 comma
 id|current-&gt;comm
 )paren
@@ -1748,6 +1748,42 @@ id|cmd
 comma
 op_star
 id|tmp
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+(paren
+op_star
+id|cmd
+op_amp
+id|AGPSTAT3_4X
+)paren
+)paren
+id|printk
+(paren
+id|KERN_INFO
+id|PFX
+l_string|&quot;Bridge couldn&squot;t do AGP x4.&bslash;n&quot;
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+(paren
+op_star
+id|tmp
+op_amp
+id|AGPSTAT3_4X
+)paren
+)paren
+id|printk
+(paren
+id|KERN_INFO
+id|PFX
+l_string|&quot;Graphic card couldn&squot;t do AGP x4.&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
