@@ -976,6 +976,31 @@ id|end
 suffix:semicolon
 )brace
 suffix:semicolon
+DECL|struct|pci_dynids
+r_struct
+id|pci_dynids
+(brace
+DECL|member|lock
+id|spinlock_t
+id|lock
+suffix:semicolon
+multiline_comment|/* protects list, index */
+DECL|member|list
+r_struct
+id|list_head
+id|list
+suffix:semicolon
+multiline_comment|/* for IDs added at runtime */
+DECL|member|use_driver_data
+r_int
+r_int
+id|use_driver_data
+suffix:colon
+l_int|1
+suffix:semicolon
+multiline_comment|/* pci_driver-&gt;driver_data is used */
+)brace
+suffix:semicolon
 DECL|struct|pci_driver
 r_struct
 id|pci_driver
@@ -1104,6 +1129,11 @@ DECL|member|driver
 r_struct
 id|device_driver
 id|driver
+suffix:semicolon
+DECL|member|dynids
+r_struct
+id|pci_dynids
+id|dynids
 suffix:semicolon
 )brace
 suffix:semicolon
@@ -2632,6 +2662,27 @@ op_star
 id|dev
 )paren
 suffix:semicolon
+r_static
+r_inline
+r_void
+DECL|function|pci_dynids_set_use_driver_data
+id|pci_dynids_set_use_driver_data
+c_func
+(paren
+r_struct
+id|pci_driver
+op_star
+id|pdrv
+comma
+r_int
+id|val
+)paren
+(brace
+id|pdrv-&gt;dynids.use_driver_data
+op_assign
+id|val
+suffix:semicolon
+)brace
 macro_line|#endif /* CONFIG_PCI */
 multiline_comment|/* Include architecture-dependent settings and functions */
 macro_line|#include &lt;asm/pci.h&gt;
@@ -2997,6 +3048,23 @@ id|dev
 r_return
 l_int|NULL
 suffix:semicolon
+)brace
+DECL|function|pci_dynids_set_use_driver_data
+r_static
+r_inline
+r_void
+id|pci_dynids_set_use_driver_data
+c_func
+(paren
+r_struct
+id|pci_driver
+op_star
+id|pdrv
+comma
+r_int
+id|val
+)paren
+(brace
 )brace
 multiline_comment|/* Power management related routines */
 DECL|function|pci_save_state
