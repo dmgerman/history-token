@@ -5477,6 +5477,18 @@ id|cb-&gt;time_to_send
 )paren
 suffix:semicolon
 multiline_comment|/* Always queue at tail to keep packets in order */
+r_if
+c_cond
+(paren
+id|likely
+c_func
+(paren
+id|q-&gt;delayed.qlen
+OL
+id|q-&gt;limit
+)paren
+)paren
+(brace
 id|__skb_queue_tail
 c_func
 (paren
@@ -5498,6 +5510,19 @@ op_increment
 suffix:semicolon
 r_return
 l_int|0
+suffix:semicolon
+)brace
+id|sch-&gt;stats.drops
+op_increment
+suffix:semicolon
+id|kfree_skb
+c_func
+(paren
+id|skb
+)paren
+suffix:semicolon
+r_return
+id|NET_XMIT_DROP
 suffix:semicolon
 )brace
 multiline_comment|/* Requeue packets but don&squot;t change time stamp */
