@@ -287,7 +287,7 @@ id|bits
 )paren
 suffix:semicolon
 r_int
-id|bitmap_snprintf
+id|bitmap_scnprintf
 c_func
 (paren
 r_char

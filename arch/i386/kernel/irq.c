@@ -2970,7 +2970,7 @@ id|data
 r_int
 id|len
 op_assign
-id|cpumask_snprintf
+id|cpumask_scnprintf
 c_func
 (paren
 id|page
@@ -3186,7 +3186,7 @@ id|data
 r_int
 id|len
 op_assign
-id|cpumask_snprintf
+id|cpumask_scnprintf
 c_func
 (paren
 id|page

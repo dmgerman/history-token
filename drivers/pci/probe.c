@@ -166,7 +166,7 @@ id|ret
 suffix:semicolon
 id|ret
 op_assign
-id|cpumask_snprintf
+id|cpumask_scnprintf
 c_func
 (paren
 id|buf

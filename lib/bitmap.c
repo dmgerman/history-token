@@ -917,10 +917,10 @@ DECL|macro|roundup_power2
 mdefine_line|#define roundup_power2(val,modulus)&t;(((val) + (modulus) - 1) &amp; ~((modulus) - 1))
 DECL|macro|unhex
 mdefine_line|#define unhex(c)&t;&t;&t;(isdigit(c) ? (c - &squot;0&squot;) : (toupper(c) - &squot;A&squot; + 10))
-multiline_comment|/**&n; * bitmap_snprintf - convert bitmap to an ASCII hex string.&n; * @buf: byte buffer into which string is placed&n; * @buflen: reserved size of @buf, in bytes&n; * @maskp: pointer to bitmap to convert&n; * @nmaskbits: size of bitmap, in bits&n; *&n; * Exactly @nmaskbits bits are displayed.  Hex digits are grouped into&n; * comma-separated sets of eight digits per set.&n; */
-DECL|function|bitmap_snprintf
+multiline_comment|/**&n; * bitmap_scnprintf - convert bitmap to an ASCII hex string.&n; * @buf: byte buffer into which string is placed&n; * @buflen: reserved size of @buf, in bytes&n; * @maskp: pointer to bitmap to convert&n; * @nmaskbits: size of bitmap, in bits&n; *&n; * Exactly @nmaskbits bits are displayed.  Hex digits are grouped into&n; * comma-separated sets of eight digits per set.&n; */
+DECL|function|bitmap_scnprintf
 r_int
-id|bitmap_snprintf
+id|bitmap_scnprintf
 c_func
 (paren
 r_char
@@ -1093,11 +1093,11 @@ r_return
 id|len
 suffix:semicolon
 )brace
-DECL|variable|bitmap_snprintf
+DECL|variable|bitmap_scnprintf
 id|EXPORT_SYMBOL
 c_func
 (paren
-id|bitmap_snprintf
+id|bitmap_scnprintf
 )paren
 suffix:semicolon
 multiline_comment|/**&n; * bitmap_parse - convert an ASCII hex string into a bitmap.&n; * @buf: pointer to buffer in user space containing string.&n; * @buflen: buffer size in bytes.  If string is smaller than this&n; *    then it must be terminated with a &bslash;0.&n; * @maskp: pointer to bitmap array that will contain result.&n; * @nmaskbits: size of bitmap, in bits.&n; *&n; * Commas group hex digits into chunks.  Each chunk defines exactly 32&n; * bits of the resultant bitmask.  No chunk may specify a value larger&n; * than 32 bits (-EOVERFLOW), and if a chunk specifies a smaller value&n; * then leading 0-bits are prepended.  -EINVAL is returned for illegal&n; * characters and for grouping errors such as &quot;1,,5&quot;, &quot;,44&quot;, &quot;,&quot; and &quot;&quot;.&n; * Leading and trailing whitespace accepted, but not embedded whitespace.&n; */
