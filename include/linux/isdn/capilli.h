@@ -2,6 +2,7 @@ multiline_comment|/* $Id: capilli.h,v 1.4.8.1 2001/09/23 22:24:33 kai Exp $&n; *
 macro_line|#ifndef __CAPILLI_H__
 DECL|macro|__CAPILLI_H__
 mdefine_line|#define __CAPILLI_H__
+macro_line|#include &lt;linux/list.h&gt;
 DECL|struct|capiloaddatapart
 r_typedef
 r_struct
@@ -81,13 +82,12 @@ DECL|struct|capi_ctr
 r_struct
 id|capi_ctr
 (brace
-DECL|member|next
+DECL|member|driver_list
 r_struct
-id|capi_ctr
-op_star
-id|next
+id|list_head
+id|driver_list
 suffix:semicolon
-multiline_comment|/* next ctr of same driver */
+multiline_comment|/* contrs by driver */
 DECL|member|driver
 r_struct
 id|capi_driver
@@ -559,18 +559,16 @@ id|data
 )paren
 suffix:semicolon
 multiline_comment|/* intitialized by kcapi */
-DECL|member|controller
+DECL|member|contr_head
 r_struct
-id|capi_ctr
-op_star
-id|controller
+id|list_head
+id|contr_head
 suffix:semicolon
 multiline_comment|/* list of controllers */
-DECL|member|next
+DECL|member|driver_list
 r_struct
-id|capi_driver
-op_star
-id|next
+id|list_head
+id|driver_list
 suffix:semicolon
 DECL|member|ncontroller
 r_int

@@ -2,6 +2,7 @@ multiline_comment|/*&n; * $Id: kernelcapi.h,v 1.8.6.2 2001/02/07 11:31:31 kai Ex
 macro_line|#ifndef __KERNELCAPI_H__
 DECL|macro|__KERNELCAPI_H__
 mdefine_line|#define __KERNELCAPI_H__
+macro_line|#include &lt;linux/list.h&gt;
 DECL|macro|CAPI_MAXAPPL
 mdefine_line|#define CAPI_MAXAPPL&t;128&t;/* maximum number of applications  */
 DECL|macro|CAPI_MAXCONTR
@@ -319,11 +320,10 @@ id|data
 )paren
 suffix:semicolon
 multiline_comment|/* internal */
-DECL|member|next
+DECL|member|user_list
 r_struct
-id|capi_interface_user
-op_star
-id|next
+id|list_head
+id|user_list
 suffix:semicolon
 )brace
 suffix:semicolon
