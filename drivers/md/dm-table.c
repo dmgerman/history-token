@@ -2416,8 +2416,8 @@ id|tgt-&gt;error
 op_assign
 l_string|&quot;unknown target type&quot;
 suffix:semicolon
-r_goto
-id|bad
+r_return
+id|r
 suffix:semicolon
 )brace
 id|tgt-&gt;table
