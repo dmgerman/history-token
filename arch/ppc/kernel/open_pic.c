@@ -34,6 +34,7 @@ id|OpenPIC
 op_assign
 l_int|NULL
 suffix:semicolon
+multiline_comment|/*&n; * We define OpenPIC_InitSenses table thusly:&n; * bit 0x1: sense, 0 for edge and 1 for level.&n; * bit 0x2: polarity, 0 for negative, 1 for positive.&n; */
 DECL|variable|__initdata
 id|u_int
 id|OpenPIC_NumInitSenses
@@ -1478,47 +1479,13 @@ c_func
 l_int|0xf
 )paren
 suffix:semicolon
-multiline_comment|/* SIOint (8259 cascade) is special */
-r_if
-c_cond
-(paren
-id|offset
-)paren
-(brace
-id|openpic_initirq
-c_func
-(paren
-l_int|0
-comma
-l_int|8
-comma
-id|offset
-comma
-l_int|1
-comma
-l_int|1
-)paren
-suffix:semicolon
-id|openpic_mapirq
-c_func
-(paren
-l_int|0
-comma
-l_int|1
-op_lshift
-l_int|0
-comma
-l_int|0
-)paren
-suffix:semicolon
-)brace
-multiline_comment|/* Init all external sources */
+multiline_comment|/* Init all external sources, including possibly the cascade. */
 r_for
 c_loop
 (paren
 id|i
 op_assign
-l_int|1
+l_int|0
 suffix:semicolon
 id|i
 OL
@@ -1567,6 +1534,7 @@ l_int|9
 suffix:colon
 l_int|8
 suffix:semicolon
+multiline_comment|/*&n;&t;&t; * We find the vale from either the InitSenses table&n;&t;&t; * or assume a negative polarity level interrupt.&n;&t;&t; */
 id|sense
 op_assign
 (paren
@@ -1586,7 +1554,13 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+(paren
 id|sense
+op_amp
+id|IRQ_SENSE_MASK
+)paren
+op_eq
+l_int|1
 )paren
 id|irq_desc
 (braket
@@ -1611,10 +1585,17 @@ id|i
 op_plus
 id|offset
 comma
-op_logical_neg
+(paren
 id|sense
+op_amp
+id|IRQ_POLARITY_MASK
+)paren
 comma
+(paren
 id|sense
+op_amp
+id|IRQ_SENSE_MASK
+)paren
 )paren
 suffix:semicolon
 multiline_comment|/* Processor 0 */
