@@ -20,13 +20,8 @@ macro_line|#else
 macro_line|#include&t;&quot;h/fplustm.h&quot;
 macro_line|#endif
 macro_line|#ifndef&t;HW_PTR
-macro_line|#ifdef  MEM_MAPPED_IO
 DECL|macro|HW_PTR
-mdefine_line|#define HW_PTR  u_long
-macro_line|#else
-DECL|macro|HW_PTR
-mdefine_line|#define HW_PTR  u_short
-macro_line|#endif
+mdefine_line|#define HW_PTR  void __iomem *
 macro_line|#endif
 macro_line|#ifdef MULT_OEM
 DECL|macro|OI_STAT_LAST

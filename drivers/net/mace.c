@@ -50,6 +50,7 @@ DECL|member|mace
 r_volatile
 r_struct
 id|mace
+id|__iomem
 op_star
 id|mace
 suffix:semicolon
@@ -57,6 +58,7 @@ DECL|member|tx_dma
 r_volatile
 r_struct
 id|dbdma_regs
+id|__iomem
 op_star
 id|tx_dma
 suffix:semicolon
@@ -68,6 +70,7 @@ DECL|member|rx_dma
 r_volatile
 r_struct
 id|dbdma_regs
+id|__iomem
 op_star
 id|rx_dma
 suffix:semicolon
@@ -362,6 +365,7 @@ c_func
 r_volatile
 r_struct
 id|dbdma_regs
+id|__iomem
 op_star
 id|dma
 )paren
@@ -740,12 +744,6 @@ l_int|0
 suffix:semicolon
 id|mp-&gt;mace
 op_assign
-(paren
-r_volatile
-r_struct
-id|mace
-op_star
-)paren
 id|ioremap
 c_func
 (paren
@@ -879,12 +877,6 @@ id|ENRCV
 suffix:semicolon
 id|mp-&gt;tx_dma
 op_assign
-(paren
-r_volatile
-r_struct
-id|dbdma_regs
-op_star
-)paren
 id|ioremap
 c_func
 (paren
@@ -935,12 +927,6 @@ l_int|1
 suffix:semicolon
 id|mp-&gt;rx_dma
 op_assign
-(paren
-r_volatile
-r_struct
-id|dbdma_regs
-op_star
-)paren
 id|ioremap
 c_func
 (paren
@@ -1403,10 +1389,6 @@ suffix:colon
 id|iounmap
 c_func
 (paren
-(paren
-r_void
-op_star
-)paren
 id|mp-&gt;rx_dma
 )paren
 suffix:semicolon
@@ -1415,10 +1397,6 @@ suffix:colon
 id|iounmap
 c_func
 (paren
-(paren
-r_void
-op_star
-)paren
 id|mp-&gt;tx_dma
 )paren
 suffix:semicolon
@@ -1427,10 +1405,6 @@ suffix:colon
 id|iounmap
 c_func
 (paren
-(paren
-r_void
-op_star
-)paren
 id|mp-&gt;mace
 )paren
 suffix:semicolon
@@ -1536,30 +1510,18 @@ suffix:semicolon
 id|iounmap
 c_func
 (paren
-(paren
-r_void
-op_star
-)paren
 id|mp-&gt;rx_dma
 )paren
 suffix:semicolon
 id|iounmap
 c_func
 (paren
-(paren
-r_void
-op_star
-)paren
 id|mp-&gt;tx_dma
 )paren
 suffix:semicolon
 id|iounmap
 c_func
 (paren
-(paren
-r_void
-op_star
-)paren
 id|mp-&gt;mace
 )paren
 suffix:semicolon
@@ -1588,6 +1550,7 @@ c_func
 r_volatile
 r_struct
 id|dbdma_regs
+id|__iomem
 op_star
 id|dma
 )paren
@@ -1675,6 +1638,7 @@ suffix:semicolon
 r_volatile
 r_struct
 id|mace
+id|__iomem
 op_star
 id|mb
 op_assign
@@ -1986,6 +1950,7 @@ suffix:semicolon
 r_volatile
 r_struct
 id|mace
+id|__iomem
 op_star
 id|mb
 op_assign
@@ -2128,6 +2093,7 @@ suffix:semicolon
 r_volatile
 r_struct
 id|mace
+id|__iomem
 op_star
 id|mb
 op_assign
@@ -2301,6 +2267,7 @@ suffix:semicolon
 r_volatile
 r_struct
 id|mace
+id|__iomem
 op_star
 id|mb
 op_assign
@@ -2309,6 +2276,7 @@ suffix:semicolon
 r_volatile
 r_struct
 id|dbdma_regs
+id|__iomem
 op_star
 id|rd
 op_assign
@@ -2317,6 +2285,7 @@ suffix:semicolon
 r_volatile
 r_struct
 id|dbdma_regs
+id|__iomem
 op_star
 id|td
 op_assign
@@ -2721,6 +2690,7 @@ suffix:semicolon
 r_volatile
 r_struct
 id|mace
+id|__iomem
 op_star
 id|mb
 op_assign
@@ -2729,6 +2699,7 @@ suffix:semicolon
 r_volatile
 r_struct
 id|dbdma_regs
+id|__iomem
 op_star
 id|rd
 op_assign
@@ -2737,6 +2708,7 @@ suffix:semicolon
 r_volatile
 r_struct
 id|dbdma_regs
+id|__iomem
 op_star
 id|td
 op_assign
@@ -2912,6 +2884,7 @@ suffix:semicolon
 r_volatile
 r_struct
 id|dbdma_regs
+id|__iomem
 op_star
 id|td
 op_assign
@@ -3262,6 +3235,7 @@ suffix:semicolon
 r_volatile
 r_struct
 id|mace
+id|__iomem
 op_star
 id|mb
 op_assign
@@ -3595,6 +3569,7 @@ id|intr
 r_volatile
 r_struct
 id|mace
+id|__iomem
 op_star
 id|mb
 op_assign
@@ -3749,6 +3724,7 @@ suffix:semicolon
 r_volatile
 r_struct
 id|mace
+id|__iomem
 op_star
 id|mb
 op_assign
@@ -3757,6 +3733,7 @@ suffix:semicolon
 r_volatile
 r_struct
 id|dbdma_regs
+id|__iomem
 op_star
 id|td
 op_assign
@@ -4481,6 +4458,7 @@ suffix:semicolon
 r_volatile
 r_struct
 id|mace
+id|__iomem
 op_star
 id|mb
 op_assign
@@ -4489,6 +4467,7 @@ suffix:semicolon
 r_volatile
 r_struct
 id|dbdma_regs
+id|__iomem
 op_star
 id|td
 op_assign
@@ -4497,6 +4476,7 @@ suffix:semicolon
 r_volatile
 r_struct
 id|dbdma_regs
+id|__iomem
 op_star
 id|rd
 op_assign
@@ -4889,6 +4869,7 @@ suffix:semicolon
 r_volatile
 r_struct
 id|dbdma_regs
+id|__iomem
 op_star
 id|rd
 op_assign
