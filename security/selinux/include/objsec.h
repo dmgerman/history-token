@@ -52,6 +52,11 @@ id|avc_entry_ref
 id|avcr
 suffix:semicolon
 multiline_comment|/* reference to process permissions */
+DECL|member|ptrace_sid
+id|u32
+id|ptrace_sid
+suffix:semicolon
+multiline_comment|/* SID of ptrace parent */
 )brace
 suffix:semicolon
 DECL|struct|inode_security_struct
