@@ -6660,11 +6660,7 @@ id|apm
 comma
 l_int|NULL
 comma
-id|CLONE_FS
-op_or
-id|CLONE_FILES
-op_or
-id|CLONE_SIGHAND
+id|CLONE_KERNEL
 op_or
 id|SIGCHLD
 )paren
