@@ -1233,18 +1233,22 @@ suffix:semicolon
 )brace
 r_else
 (brace
-id|reserve_bootmem_node
-c_func
-(paren
+id|nid
+op_assign
 id|NODE_DATA
 c_func
 (paren
-id|KVADDR_TO_NID
+id|kvaddr_to_nid
 c_func
 (paren
 id|initrd_start
 )paren
 )paren
+suffix:semicolon
+id|reserve_bootmem_node
+c_func
+(paren
+id|nid
 comma
 id|virt_to_phys
 c_func
@@ -1642,6 +1646,10 @@ c_func
 l_string|&quot;Memory: %luk/%luk available (%luk kernel code, %luk reserved, &quot;
 l_string|&quot;%luk data, %luk init)&bslash;n&quot;
 comma
+(paren
+r_int
+r_int
+)paren
 id|nr_free_pages
 c_func
 (paren
