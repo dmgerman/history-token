@@ -244,7 +244,7 @@ mdefine_line|#define netif_start_if(dev)
 DECL|macro|netif_stop_if
 mdefine_line|#define netif_stop_if(dev)
 DECL|macro|PCI_SLOT_NAME
-mdefine_line|#define PCI_SLOT_NAME(pci_dev)&t;(pci_dev)-&gt;slot_name
+mdefine_line|#define PCI_SLOT_NAME(pci_dev)&t;pci_name(pci_dev)
 macro_line|#endif /* LINUX_VERSION_CODE &gt; 0x20300 */
 macro_line|#ifdef HAVE_NETDEV_POLL
 DECL|macro|init_poll

@@ -520,7 +520,11 @@ c_func
 (paren
 l_string|&quot;%s: enabling expansion ROM&bslash;n&quot;
 comma
-id|dev-&gt;slot_name
+id|pci_name
+c_func
+(paren
+id|dev
+)paren
 )paren
 suffix:semicolon
 )brace
@@ -1398,7 +1402,11 @@ id|mtd_pci_map
 suffix:semicolon
 id|map-&gt;map.name
 op_assign
-id|dev-&gt;slot_name
+id|pci_name
+c_func
+(paren
+id|dev
+)paren
 suffix:semicolon
 id|map-&gt;dev
 op_assign

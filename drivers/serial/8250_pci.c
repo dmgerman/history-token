@@ -229,7 +229,11 @@ l_string|&quot;manufacturer and name of serial board or&bslash;n&quot;
 id|KERN_WARNING
 l_string|&quot;modem board to rmk+serial@arm.linux.org.uk.&bslash;n&quot;
 comma
-id|dev-&gt;slot_name
+id|pci_name
+c_func
+(paren
+id|dev
+)paren
 comma
 id|str
 comma

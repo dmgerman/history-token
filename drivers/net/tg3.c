@@ -25627,7 +25627,11 @@ id|strcpy
 (paren
 id|info.bus_info
 comma
-id|pci_dev-&gt;slot_name
+id|pci_name
+c_func
+(paren
+id|pci_dev
+)paren
 )paren
 suffix:semicolon
 id|info.eedump_len
@@ -30031,7 +30035,11 @@ id|KERN_ERR
 id|PFX
 l_string|&quot;(%s) transition to D0 failed&bslash;n&quot;
 comma
-id|tp-&gt;pdev-&gt;slot_name
+id|pci_name
+c_func
+(paren
+id|tp-&gt;pdev
+)paren
 )paren
 suffix:semicolon
 r_return
@@ -30397,7 +30405,11 @@ id|KERN_ERR
 id|PFX
 l_string|&quot;(%s) phy probe failed, err %d&bslash;n&quot;
 comma
-id|tp-&gt;pdev-&gt;slot_name
+id|pci_name
+c_func
+(paren
+id|tp-&gt;pdev
+)paren
 comma
 id|err
 )paren

@@ -1066,7 +1066,11 @@ comma
 id|dev
 ques
 c_cond
-id|dev-&gt;slot_name
+id|pci_name
+c_func
+(paren
+id|dev
+)paren
 suffix:colon
 l_string|&quot;?&quot;
 )paren

@@ -285,7 +285,7 @@ id|bus_info
 l_int|32
 )braket
 suffix:semicolon
-multiline_comment|/* &quot;PCI:&quot; + pci_dev-&gt;slot_name */
+multiline_comment|/* &quot;PCI:&quot; + pci_name(pci_dev) */
 DECL|member|version
 id|__u32
 id|version

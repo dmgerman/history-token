@@ -1372,7 +1372,11 @@ c_func
 (paren
 l_string|&quot;PCI: IDE base address fixup for %s&bslash;n&quot;
 comma
-id|d-&gt;slot_name
+id|pci_name
+c_func
+(paren
+id|d
+)paren
 )paren
 suffix:semicolon
 r_for
@@ -1696,7 +1700,11 @@ id|KERN_ERR
 l_string|&quot;PCI: Device %s not available because&quot;
 l_string|&quot; of resource collisions&bslash;n&quot;
 comma
-id|dev-&gt;slot_name
+id|pci_name
+c_func
+(paren
+id|dev
+)paren
 )paren
 suffix:semicolon
 r_return
@@ -1740,7 +1748,11 @@ c_func
 (paren
 l_string|&quot;PCI: enabling device %s (%04x -&gt; %04x)&bslash;n&quot;
 comma
-id|dev-&gt;slot_name
+id|pci_name
+c_func
+(paren
+id|dev
+)paren
 comma
 id|old_cmd
 comma
@@ -2018,7 +2030,11 @@ c_func
 (paren
 l_string|&quot;PCI: Setting latency timer of device %s to %d&bslash;n&quot;
 comma
-id|dev-&gt;slot_name
+id|pci_name
+c_func
+(paren
+id|dev
+)paren
 comma
 id|lat
 )paren

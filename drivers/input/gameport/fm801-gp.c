@@ -492,7 +492,11 @@ l_string|&quot;gameport: %s at pci%s speed %d kHz&bslash;n&quot;
 comma
 id|pci-&gt;dev.name
 comma
-id|pci-&gt;slot_name
+id|pci_name
+c_func
+(paren
+id|pci
+)paren
 comma
 id|gp-&gt;gameport.speed
 )paren

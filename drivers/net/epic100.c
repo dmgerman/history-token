@@ -1910,7 +1910,11 @@ id|KERN_DEBUG
 id|DRV_NAME
 l_string|&quot;(%s): EEPROM contents&bslash;n&quot;
 comma
-id|pdev-&gt;slot_name
+id|pci_name
+c_func
+(paren
+id|pdev
+)paren
 )paren
 suffix:semicolon
 r_for
@@ -2042,7 +2046,11 @@ id|DRV_NAME
 l_string|&quot;(%s): MII transceiver #%d control &quot;
 l_string|&quot;%4.4x status %4.4x.&bslash;n&quot;
 comma
-id|pdev-&gt;slot_name
+id|pci_name
+c_func
+(paren
+id|pdev
+)paren
 comma
 id|phy
 comma
@@ -2100,7 +2108,11 @@ id|DRV_NAME
 l_string|&quot;(%s): Autonegotiation advertising %4.4x link &quot;
 l_string|&quot;partner %4.4x.&bslash;n&quot;
 comma
-id|pdev-&gt;slot_name
+id|pci_name
+c_func
+(paren
+id|pdev
+)paren
 comma
 id|ep-&gt;mii.advertising
 comma
@@ -2135,7 +2147,11 @@ id|KERN_WARNING
 id|DRV_NAME
 l_string|&quot;(%s): ***WARNING***: No MII transceiver found!&bslash;n&quot;
 comma
-id|pdev-&gt;slot_name
+id|pci_name
+c_func
+(paren
+id|pdev
+)paren
 )paren
 suffix:semicolon
 multiline_comment|/* Use the known PHY address of the EPII. */
@@ -2212,7 +2228,11 @@ id|KERN_INFO
 id|DRV_NAME
 l_string|&quot;(%s):  Forced full duplex operation requested.&bslash;n&quot;
 comma
-id|pdev-&gt;slot_name
+id|pci_name
+c_func
+(paren
+id|pdev
+)paren
 )paren
 suffix:semicolon
 )brace
@@ -7018,7 +7038,11 @@ id|strcpy
 (paren
 id|info.bus_info
 comma
-id|np-&gt;pci_dev-&gt;slot_name
+id|pci_name
+c_func
+(paren
+id|np-&gt;pci_dev
+)paren
 )paren
 suffix:semicolon
 r_if

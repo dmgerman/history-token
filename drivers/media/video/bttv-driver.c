@@ -10955,7 +10955,11 @@ id|cap-&gt;bus_info
 comma
 l_string|&quot;PCI:%s&quot;
 comma
-id|btv-&gt;dev-&gt;slot_name
+id|pci_name
+c_func
+(paren
+id|btv-&gt;dev
+)paren
 )paren
 suffix:semicolon
 id|cap-&gt;version
@@ -16222,7 +16226,11 @@ id|btv-&gt;id
 comma
 id|btv-&gt;revision
 comma
-id|dev-&gt;slot_name
+id|pci_name
+c_func
+(paren
+id|dev
+)paren
 )paren
 suffix:semicolon
 id|printk

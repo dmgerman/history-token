@@ -5991,7 +5991,11 @@ c_func
 (paren
 id|info.bus_info
 comma
-id|np-&gt;pdev-&gt;slot_name
+id|pci_name
+c_func
+(paren
+id|np-&gt;pdev
+)paren
 )paren
 suffix:semicolon
 id|memset

@@ -3569,7 +3569,11 @@ c_func
 id|KERN_INFO
 l_string|&quot;yenta %s: Preassigned resource %d busy, reconfiguring...&bslash;n&quot;
 comma
-id|socket-&gt;dev-&gt;slot_name
+id|pci_name
+c_func
+(paren
+id|socket-&gt;dev
+)paren
 comma
 id|nr
 )paren
@@ -3781,7 +3785,11 @@ c_func
 id|KERN_INFO
 l_string|&quot;yenta %s: no resource of type %x available, trying to continue...&bslash;n&quot;
 comma
-id|socket-&gt;dev-&gt;slot_name
+id|pci_name
+c_func
+(paren
+id|socket-&gt;dev
+)paren
 comma
 id|type
 )paren

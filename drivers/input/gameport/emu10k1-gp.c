@@ -242,7 +242,11 @@ id|emu-&gt;phys
 comma
 l_string|&quot;pci%s/gameport0&quot;
 comma
-id|pdev-&gt;slot_name
+id|pci_name
+c_func
+(paren
+id|pdev
+)paren
 )paren
 suffix:semicolon
 id|emu-&gt;size
@@ -300,7 +304,11 @@ l_string|&quot;gameport: %s at pci%s speed %d kHz&bslash;n&quot;
 comma
 id|pdev-&gt;dev.name
 comma
-id|pdev-&gt;slot_name
+id|pci_name
+c_func
+(paren
+id|pdev
+)paren
 comma
 id|emu-&gt;gameport.speed
 )paren

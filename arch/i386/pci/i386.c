@@ -210,7 +210,11 @@ l_string|&quot;PCI: Cannot allocate resource region %d of bridge %s&bslash;n&quo
 comma
 id|idx
 comma
-id|dev-&gt;slot_name
+id|pci_name
+c_func
+(paren
+id|dev
+)paren
 )paren
 suffix:semicolon
 )brace
@@ -414,7 +418,11 @@ l_string|&quot;PCI: Cannot allocate resource region %d of device %s&bslash;n&quo
 comma
 id|idx
 comma
-id|dev-&gt;slot_name
+id|pci_name
+c_func
+(paren
+id|dev
+)paren
 )paren
 suffix:semicolon
 multiline_comment|/* We&squot;ll assign a new address later */
@@ -461,7 +469,11 @@ c_func
 (paren
 l_string|&quot;PCI: Switching off ROM of %s&bslash;n&quot;
 comma
-id|dev-&gt;slot_name
+id|pci_name
+c_func
+(paren
+id|dev
+)paren
 )paren
 suffix:semicolon
 id|r-&gt;flags
@@ -810,7 +822,11 @@ c_func
 id|KERN_ERR
 l_string|&quot;PCI: Device %s not available because of resource collisions&bslash;n&quot;
 comma
-id|dev-&gt;slot_name
+id|pci_name
+c_func
+(paren
+id|dev
+)paren
 )paren
 suffix:semicolon
 r_return
@@ -868,7 +884,11 @@ c_func
 (paren
 l_string|&quot;PCI: Enabling device %s (%04x -&gt; %04x)&bslash;n&quot;
 comma
-id|dev-&gt;slot_name
+id|pci_name
+c_func
+(paren
+id|dev
+)paren
 comma
 id|old_cmd
 comma
@@ -964,7 +984,11 @@ c_func
 id|KERN_DEBUG
 l_string|&quot;PCI: Setting latency timer of device %s to %d&bslash;n&quot;
 comma
-id|dev-&gt;slot_name
+id|pci_name
+c_func
+(paren
+id|dev
+)paren
 comma
 id|lat
 )paren

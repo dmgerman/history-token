@@ -7580,7 +7580,11 @@ id|strcpy
 (paren
 id|info.bus_info
 comma
-id|de-&gt;pdev-&gt;slot_name
+id|pci_name
+c_func
+(paren
+id|de-&gt;pdev
+)paren
 )paren
 suffix:semicolon
 id|info.eedump_len
@@ -9928,7 +9932,11 @@ l_string|&quot;invalid irq (%d) for pci dev %s&bslash;n&quot;
 comma
 id|pdev-&gt;irq
 comma
-id|pdev-&gt;slot_name
+id|pci_name
+c_func
+(paren
+id|pdev
+)paren
 )paren
 suffix:semicolon
 r_goto
@@ -9965,7 +9973,11 @@ id|KERN_ERR
 id|PFX
 l_string|&quot;no MMIO resource for pci dev %s&bslash;n&quot;
 comma
-id|pdev-&gt;slot_name
+id|pci_name
+c_func
+(paren
+id|pdev
+)paren
 )paren
 suffix:semicolon
 r_goto
@@ -10006,7 +10018,11 @@ comma
 l_int|1
 )paren
 comma
-id|pdev-&gt;slot_name
+id|pci_name
+c_func
+(paren
+id|pdev
+)paren
 )paren
 suffix:semicolon
 r_goto
@@ -10053,7 +10069,11 @@ l_int|1
 comma
 id|pciaddr
 comma
-id|pdev-&gt;slot_name
+id|pci_name
+c_func
+(paren
+id|pdev
+)paren
 )paren
 suffix:semicolon
 r_goto
@@ -10100,7 +10120,11 @@ id|KERN_ERR
 id|PFX
 l_string|&quot;Cannot reset MAC, pci dev %s&bslash;n&quot;
 comma
-id|pdev-&gt;slot_name
+id|pci_name
+c_func
+(paren
+id|pdev
+)paren
 )paren
 suffix:semicolon
 r_goto

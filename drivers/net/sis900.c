@@ -7986,7 +7986,11 @@ id|strcpy
 (paren
 id|info.bus_info
 comma
-id|sis_priv-&gt;pci_dev-&gt;slot_name
+id|pci_name
+c_func
+(paren
+id|sis_priv-&gt;pci_dev
+)paren
 )paren
 suffix:semicolon
 r_if

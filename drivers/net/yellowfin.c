@@ -7191,7 +7191,11 @@ c_func
 (paren
 id|info.bus_info
 comma
-id|np-&gt;pci_dev-&gt;slot_name
+id|pci_name
+c_func
+(paren
+id|np-&gt;pci_dev
+)paren
 )paren
 suffix:semicolon
 r_if

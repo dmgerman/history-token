@@ -5497,13 +5497,15 @@ id|r.bus_info
 comma
 l_string|&quot;PCI:%s&quot;
 comma
+id|pci_name
+c_func
+(paren
 id|ACCESS_FBINFO
 c_func
 (paren
 id|pcidev
 )paren
-op_member_access_from_pointer
-id|slot_name
+)paren
 )paren
 suffix:semicolon
 id|r.version

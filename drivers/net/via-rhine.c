@@ -2122,7 +2122,11 @@ id|printk
 id|KERN_ERR
 l_string|&quot;ioremap failed for device %s, region 0x%X @ 0x%lX&bslash;n&quot;
 comma
-id|pdev-&gt;slot_name
+id|pci_name
+c_func
+(paren
+id|pdev
+)paren
 comma
 id|io_size
 comma
@@ -7680,7 +7684,11 @@ id|strcpy
 (paren
 id|info.bus_info
 comma
-id|np-&gt;pdev-&gt;slot_name
+id|pci_name
+c_func
+(paren
+id|np-&gt;pdev
+)paren
 )paren
 suffix:semicolon
 r_if

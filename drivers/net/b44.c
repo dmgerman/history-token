@@ -6329,7 +6329,11 @@ id|strcpy
 (paren
 id|info.bus_info
 comma
-id|pci_dev-&gt;slot_name
+id|pci_name
+c_func
+(paren
+id|pci_dev
+)paren
 )paren
 suffix:semicolon
 id|info.eedump_len

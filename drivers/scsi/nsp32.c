@@ -7821,7 +7821,11 @@ id|pdev-&gt;irq
 comma
 id|data-&gt;MmioAddress
 comma
-id|pdev-&gt;slot_name
+id|pci_name
+c_func
+(paren
+id|pdev
+)paren
 comma
 id|nsp32_model
 (braket

@@ -10588,7 +10588,11 @@ c_func
 (paren
 id|info.bus_info
 comma
-id|gp-&gt;pdev-&gt;slot_name
+id|pci_name
+c_func
+(paren
+id|gp-&gt;pdev
+)paren
 comma
 id|ETHTOOL_BUSINFO_LEN
 )paren

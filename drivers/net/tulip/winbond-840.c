@@ -1506,7 +1506,11 @@ c_func
 id|KERN_WARNING
 l_string|&quot;Winbond-840: Device %s disabled due to DMA limitations.&bslash;n&quot;
 comma
-id|pdev-&gt;slot_name
+id|pci_name
+c_func
+(paren
+id|pdev
+)paren
 )paren
 suffix:semicolon
 r_return
@@ -6963,7 +6967,11 @@ c_func
 (paren
 id|info.bus_info
 comma
-id|np-&gt;pci_dev-&gt;slot_name
+id|pci_name
+c_func
+(paren
+id|np-&gt;pci_dev
+)paren
 )paren
 suffix:semicolon
 r_if

@@ -3204,7 +3204,11 @@ op_amp
 id|VIA_UDMA
 )braket
 comma
-id|dev-&gt;slot_name
+id|pci_name
+c_func
+(paren
+id|dev
+)paren
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * Setup /proc/ide/via entry.&n;&t; */

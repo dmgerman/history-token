@@ -1684,7 +1684,11 @@ c_func
 (paren
 l_string|&quot;   claimed %s %d [%lx,%lx]/%x&bslash;n&quot;
 comma
-id|dev-&gt;slot_name
+id|pci_name
+c_func
+(paren
+id|dev
+)paren
 comma
 id|i
 comma

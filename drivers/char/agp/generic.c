@@ -1986,7 +1986,11 @@ l_int|3
 suffix:colon
 l_int|2
 comma
-id|device-&gt;slot_name
+id|pci_name
+c_func
+(paren
+id|device
+)paren
 comma
 id|mode
 )paren

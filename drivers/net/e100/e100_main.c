@@ -14031,7 +14031,11 @@ c_func
 (paren
 id|info.bus_info
 comma
-id|bdp-&gt;pdev-&gt;slot_name
+id|pci_name
+c_func
+(paren
+id|bdp-&gt;pdev
+)paren
 comma
 r_sizeof
 (paren

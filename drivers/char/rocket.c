@@ -10199,7 +10199,11 @@ id|i
 comma
 id|dev-&gt;device
 comma
-id|dev-&gt;slot_name
+id|pci_name
+c_func
+(paren
+id|dev
+)paren
 comma
 id|rcktpt_io_addr
 (braket

@@ -680,6 +680,9 @@ c_func
 (paren
 l_string|&quot;pcibios_align_resource(%s, (%p) [%lx,%lx]/%x, 0x%lx, 0x%lx)&bslash;n&quot;
 comma
+id|pci_name
+c_func
+(paren
 (paren
 (paren
 r_struct
@@ -688,8 +691,7 @@ op_star
 )paren
 id|data
 )paren
-op_member_access_from_pointer
-id|slot_name
+)paren
 comma
 id|res-&gt;parent
 comma
@@ -881,7 +883,11 @@ c_func
 (paren
 l_string|&quot;PCIBIOS: Enabling device %s cmd 0x%04x&bslash;n&quot;
 comma
-id|dev-&gt;slot_name
+id|pci_name
+c_func
+(paren
+id|dev
+)paren
 comma
 id|cmd
 )paren

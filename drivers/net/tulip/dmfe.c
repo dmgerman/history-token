@@ -1699,7 +1699,11 @@ id|ent-&gt;driver_data
 op_rshift
 l_int|16
 comma
-id|pdev-&gt;slot_name
+id|pci_name
+c_func
+(paren
+id|pdev
+)paren
 )paren
 suffix:semicolon
 r_for
@@ -4052,7 +4056,11 @@ c_func
 (paren
 id|info.bus_info
 comma
-id|db-&gt;pdev-&gt;slot_name
+id|pci_name
+c_func
+(paren
+id|db-&gt;pdev
+)paren
 )paren
 suffix:semicolon
 r_else

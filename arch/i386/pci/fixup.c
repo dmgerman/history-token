@@ -34,7 +34,11 @@ c_func
 id|KERN_WARNING
 l_string|&quot;PCI: Searching for i450NX host bridges on %s&bslash;n&quot;
 comma
-id|d-&gt;slot_name
+id|pci_name
+c_func
+(paren
+id|d
+)paren
 )paren
 suffix:semicolon
 id|reg
@@ -185,7 +189,11 @@ c_func
 id|KERN_INFO
 l_string|&quot;PCI: i440KX/GX host bridge %s: secondary bus %02x&bslash;n&quot;
 comma
-id|d-&gt;slot_name
+id|pci_name
+c_func
+(paren
+id|d
+)paren
 comma
 id|busno
 )paren
@@ -230,7 +238,11 @@ c_func
 id|KERN_WARNING
 l_string|&quot;PCI: Fixing base address flags for device %s&bslash;n&quot;
 comma
-id|d-&gt;slot_name
+id|pci_name
+c_func
+(paren
+id|d
+)paren
 )paren
 suffix:semicolon
 r_for
@@ -288,7 +300,11 @@ c_func
 id|KERN_WARNING
 l_string|&quot;PCI: fixing NCR 53C810 class code for %s&bslash;n&quot;
 comma
-id|d-&gt;slot_name
+id|pci_name
+c_func
+(paren
+id|d
+)paren
 )paren
 suffix:semicolon
 id|d
@@ -338,7 +354,11 @@ c_func
 (paren
 l_string|&quot;PCI: IDE base address fixup for %s&bslash;n&quot;
 comma
-id|d-&gt;slot_name
+id|pci_name
+c_func
+(paren
+id|d
+)paren
 )paren
 suffix:semicolon
 r_for
@@ -413,7 +433,11 @@ c_func
 (paren
 l_string|&quot;PCI: IDE base address trash cleared for %s&bslash;n&quot;
 comma
-id|d-&gt;slot_name
+id|pci_name
+c_func
+(paren
+id|d
+)paren
 )paren
 suffix:semicolon
 r_for

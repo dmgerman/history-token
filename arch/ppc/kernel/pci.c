@@ -477,7 +477,11 @@ c_func
 id|KERN_ERR
 l_string|&quot;No hose for PCI dev %s!&bslash;n&quot;
 comma
-id|dev-&gt;slot_name
+id|pci_name
+c_func
+(paren
+id|dev
+)paren
 )paren
 suffix:semicolon
 r_return
@@ -531,7 +535,11 @@ c_func
 (paren
 l_string|&quot;PCI:%s Resource %d [%08lx-%08lx] is unassigned&bslash;n&quot;
 comma
-id|dev-&gt;slot_name
+id|pci_name
+c_func
+(paren
+id|dev
+)paren
 comma
 id|i
 comma
@@ -618,7 +626,11 @@ id|i
 comma
 id|res-&gt;flags
 comma
-id|dev-&gt;slot_name
+id|pci_name
+c_func
+(paren
+id|dev
+)paren
 comma
 id|res-&gt;start
 op_minus
@@ -978,7 +990,11 @@ id|KERN_ERR
 l_string|&quot;PCI: I/O Region %s/%d too large&quot;
 l_string|&quot; (%ld bytes)&bslash;n&quot;
 comma
-id|dev-&gt;slot_name
+id|pci_name
+c_func
+(paren
+id|dev
+)paren
 comma
 id|dev-&gt;resource
 op_minus
@@ -2413,7 +2429,11 @@ c_func
 id|KERN_ERR
 l_string|&quot;PCI: ugh, bridge %s res %d has flags=%lx&bslash;n&quot;
 comma
-id|dev-&gt;slot_name
+id|pci_name
+c_func
+(paren
+id|dev
+)paren
 comma
 id|i
 comma
@@ -2467,7 +2487,11 @@ c_func
 (paren
 l_string|&quot;PCI:%s: Resource %d: %08lx-%08lx (f=%lx)&bslash;n&quot;
 comma
-id|dev-&gt;slot_name
+id|pci_name
+c_func
+(paren
+id|dev
+)paren
 comma
 id|idx
 comma
@@ -2514,7 +2538,11 @@ l_string|&quot; of device %s&bslash;n&quot;
 comma
 id|idx
 comma
-id|dev-&gt;slot_name
+id|pci_name
+c_func
+(paren
+id|dev
+)paren
 )paren
 suffix:semicolon
 r_if
@@ -2733,7 +2761,11 @@ c_func
 (paren
 l_string|&quot;PCI: Switching off ROM of %s&bslash;n&quot;
 comma
-id|dev-&gt;slot_name
+id|pci_name
+c_func
+(paren
+id|dev
+)paren
 )paren
 suffix:semicolon
 id|r-&gt;flags
@@ -3031,7 +3063,11 @@ c_func
 id|KERN_ERR
 l_string|&quot;PCI: Device %s not available because of resource collisions&bslash;n&quot;
 comma
-id|dev-&gt;slot_name
+id|pci_name
+c_func
+(paren
+id|dev
+)paren
 )paren
 suffix:semicolon
 r_return
@@ -3089,7 +3125,11 @@ c_func
 (paren
 l_string|&quot;PCI: Enabling device %s (%04x -&gt; %04x)&bslash;n&quot;
 comma
-id|dev-&gt;slot_name
+id|pci_name
+c_func
+(paren
+id|dev
+)paren
 comma
 id|old_cmd
 comma
@@ -6719,7 +6759,11 @@ c_func
 id|KERN_ERR
 l_string|&quot;PCI: Device %s not available because of resource collisions&bslash;n&quot;
 comma
-id|dev-&gt;slot_name
+id|pci_name
+c_func
+(paren
+id|dev
+)paren
 )paren
 suffix:semicolon
 r_return
@@ -6763,7 +6807,11 @@ c_func
 (paren
 l_string|&quot;PCI: Enabling device %s (%04x -&gt; %04x)&bslash;n&quot;
 comma
-id|dev-&gt;slot_name
+id|pci_name
+c_func
+(paren
+id|dev
+)paren
 comma
 id|old_cmd
 comma

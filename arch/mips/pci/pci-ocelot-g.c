@@ -1347,7 +1347,11 @@ id|KERN_ERR
 l_string|&quot;PCI: Device %s not available because of &quot;
 l_string|&quot;resource collisions&bslash;n&quot;
 comma
-id|dev-&gt;slot_name
+id|pci_name
+c_func
+(paren
+id|dev
+)paren
 )paren
 suffix:semicolon
 r_return
@@ -1591,7 +1595,11 @@ id|KERN_ERR
 l_string|&quot;PCI: I/O Region %s/%d too large&quot;
 l_string|&quot; (%ld bytes)&bslash;n&quot;
 comma
-id|dev-&gt;slot_name
+id|pci_name
+c_func
+(paren
+id|dev
+)paren
 comma
 id|dev-&gt;resource
 op_minus

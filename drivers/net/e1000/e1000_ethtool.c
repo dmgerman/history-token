@@ -849,7 +849,11 @@ c_func
 (paren
 id|drvinfo-&gt;bus_info
 comma
-id|adapter-&gt;pdev-&gt;slot_name
+id|pci_name
+c_func
+(paren
+id|adapter-&gt;pdev
+)paren
 comma
 l_int|32
 )paren

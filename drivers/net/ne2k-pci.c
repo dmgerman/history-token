@@ -1379,7 +1379,11 @@ id|printk
 id|KERN_ERR
 l_string|&quot;ne2kpci(%s): unable to get memory for dev-&gt;priv.&bslash;n&quot;
 comma
-id|pdev-&gt;slot_name
+id|pci_name
+c_func
+(paren
+id|pdev
+)paren
 )paren
 suffix:semicolon
 r_goto
@@ -2879,7 +2883,11 @@ c_func
 (paren
 id|info.bus_info
 comma
-id|pci_dev-&gt;slot_name
+id|pci_name
+c_func
+(paren
+id|pci_dev
+)paren
 )paren
 suffix:semicolon
 r_if

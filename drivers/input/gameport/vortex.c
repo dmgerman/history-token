@@ -392,7 +392,11 @@ id|vortex-&gt;phys
 comma
 l_string|&quot;pci%s/gameport0&quot;
 comma
-id|dev-&gt;slot_name
+id|pci_name
+c_func
+(paren
+id|dev
+)paren
 )paren
 suffix:semicolon
 id|pci_set_drvdata
@@ -526,7 +530,11 @@ l_string|&quot;gameport: %s at pci%s speed %d kHz&bslash;n&quot;
 comma
 id|dev-&gt;dev.name
 comma
-id|dev-&gt;slot_name
+id|pci_name
+c_func
+(paren
+id|dev
+)paren
 comma
 id|vortex-&gt;gameport.speed
 )paren
