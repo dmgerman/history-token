@@ -43,16 +43,6 @@ macro_line|#else
 DECL|macro|DBG_PRINTK
 mdefine_line|#define DBG_PRINTK(format, a...)
 macro_line|#endif      
-macro_line|#if defined(LINUX_2_1)
-DECL|macro|dev_put
-mdefine_line|#define dev_put(a)
-DECL|macro|__sock_put
-mdefine_line|#define __sock_put(a)
-DECL|macro|sock_hold
-mdefine_line|#define sock_hold(a)
-DECL|macro|DECLARE_WAITQUEUE
-mdefine_line|#define DECLARE_WAITQUEUE(a,b) &bslash;&n;&t;&t;struct wait_queue a = { b, NULL }
-macro_line|#endif
 multiline_comment|/* SECURE SOCKET IMPLEMENTATION &n; * &n; *   TRANSMIT:&n; *&n; *      When the user sends a packet via send() system call&n; *      the wanpipe_sendmsg() function is executed.  &n; *      &n; *      Each packet is enqueud into sk-&gt;write_queue transmit&n; *      queue. When the packet is enqueued, a delayed transmit&n; *      timer is triggerd which acts as a Bottom Half hander. &n; *&n; *      wanpipe_delay_transmit() function (BH), dequeues packets&n; *      from the sk-&gt;write_queue transmit queue and sends it &n; *      to the deriver via dev-&gt;hard_start_xmit(skb, dev) function.  &n; *      Note, this function is actual a function pointer of if_send()&n; *      routine in the wanpipe driver.&n; *&n; *      X25API GUARANTEED DELIVERY:&n; *&n; *         In order to provide 100% guaranteed packet delivery, &n; *         an atomic &squot;packet_sent&squot; counter is implemented.  Counter &n; *         is incremented for each packet enqueued &n; *         into sk-&gt;write_queue.  Counter is decremented each&n; *         time wanpipe_delayed_transmit() function successfuly &n; *         passes the packet to the driver. Before each send(), a poll&n; *         routine checks the sock resources The maximum value of&n; *         packet sent counter is 1, thus if one packet is queued, the&n; *         application will block until that packet is passed to the&n; *         driver.&n; *&n; *   RECEIVE:&n; *&n; *      Wanpipe device drivers call the socket bottom half&n; *      function, wanpipe_rcv() to queue the incoming packets&n; *      into an AF_WANPIPE socket queue.  Based on wanpipe_rcv()&n; *      return code, the driver knows whether the packet was&n; *      sucessfully queued.  If the socket queue is full, &n; *      protocol flow control is used by the driver, if any, &n; *      to slow down the traffic until the sock queue is free.&n; *&n; *      Every time a packet arrives into a socket queue the &n; *      socket wakes up processes which are waiting to receive&n; *      data.&n; *&n; *      If the socket queue is full, the driver sets a block&n; *      bit which signals the socket to kick the wanpipe driver&n; *      bottom half hander when the socket queue is partialy&n; *      empty. wanpipe_recvmsg() function performs this action.&n; * &n; *      In case of x25api, packets will never be dropped, since&n; *      flow control is available. &n; *      &n; *      In case of streaming protocols like CHDLC, packets will &n; *      be dropped but the statistics will be generated. &n; */
 multiline_comment|/* The code below is used to test memory leaks. It prints out&n; * a message every time kmalloc and kfree system calls get executed.&n; * If the calls match there is no leak :)&n; */
 multiline_comment|/***********FOR DEBUGGING PURPOSES*********************************************&n;#define KMEM_SAFETYZONE 8&n;&n;static void * dbg_kmalloc(unsigned int size, int prio, int line) {&n;&t;void * v = kmalloc(size,prio);&n;&t;printk(KERN_INFO &quot;line %d  kmalloc(%d,%d) = %p&bslash;n&quot;,line,size,prio,v);&n;&t;return v;&n;}&n;static void dbg_kfree(void * v, int line) {&n;&t;printk(KERN_INFO &quot;line %d  kfree(%p)&bslash;n&quot;,line,v);&n;&t;kfree(v);&n;}&n;&n;#define kmalloc(x,y) dbg_kmalloc(x,y,__LINE__)&n;#define kfree(x) dbg_kfree(x,__LINE__)&n;******************************************************************************/
@@ -1540,14 +1530,6 @@ op_minus
 id|EMSGSIZE
 suffix:semicolon
 )brace
-macro_line|#ifndef LINUX_2_4
-id|dev_lock_list
-c_func
-(paren
-)paren
-suffix:semicolon
-macro_line|#endif
-macro_line|#if LINUX_VERSION_CODE &gt;= KERNEL_VERSION(2,4,3)
 id|skb
 op_assign
 id|sock_alloc_send_skb
@@ -1569,31 +1551,6 @@ op_amp
 id|err
 )paren
 suffix:semicolon
-macro_line|#else
-id|skb
-op_assign
-id|sock_alloc_send_skb
-c_func
-(paren
-id|sk
-comma
-id|len
-op_plus
-id|dev-&gt;hard_header_len
-op_plus
-l_int|15
-comma
-l_int|0
-comma
-id|msg-&gt;msg_flags
-op_amp
-id|MSG_DONTWAIT
-comma
-op_amp
-id|err
-)paren
-suffix:semicolon
-macro_line|#endif
 r_if
 c_cond
 (paren
@@ -1739,13 +1696,6 @@ id|IFF_UP
 r_goto
 id|out_free
 suffix:semicolon
-macro_line|#ifndef LINUX_2_4
-id|dev_unlock_list
-c_func
-(paren
-)paren
-suffix:semicolon
-macro_line|#endif
 r_if
 c_cond
 (paren
@@ -1842,13 +1792,6 @@ id|skb
 suffix:semicolon
 id|out_unlock
 suffix:colon
-macro_line|#ifndef LINUX_2_4
-id|dev_unlock_list
-c_func
-(paren
-)paren
-suffix:semicolon
-macro_line|#endif
 r_return
 id|err
 suffix:semicolon
@@ -2588,7 +2531,6 @@ id|sk
 op_assign
 l_int|NULL
 suffix:semicolon
-macro_line|#ifdef LINUX_2_4
 r_if
 c_cond
 (paren
@@ -2632,14 +2574,6 @@ c_func
 id|sk
 )paren
 suffix:semicolon
-macro_line|#else
-id|sk_free
-c_func
-(paren
-id|sk
-)paren
-suffix:semicolon
-macro_line|#endif
 id|atomic_dec
 c_func
 (paren
@@ -2927,7 +2861,6 @@ id|chan-&gt;rw_bind
 suffix:semicolon
 )brace
 multiline_comment|/*============================================================&n; * wanpipe_release&n; *&n; *&t;Close a PACKET socket. This is fairly simple. We &n; *      immediately go to &squot;closed&squot; state and remove our &n; *      protocol entry in the device list.&n; *===========================================================*/
-macro_line|#ifdef LINUX_2_4
 DECL|function|wanpipe_release
 r_static
 r_int
@@ -2939,31 +2872,7 @@ id|socket
 op_star
 id|sock
 )paren
-macro_line|#else
-r_static
-r_int
-id|wanpipe_release
-c_func
-(paren
-r_struct
-id|socket
-op_star
-id|sock
-comma
-r_struct
-id|socket
-op_star
-id|peersock
-)paren
-macro_line|#endif
 (brace
-macro_line|#ifndef LINUX_2_4
-r_struct
-id|sk_buff
-op_star
-id|skb
-suffix:semicolon
-macro_line|#endif
 id|wanpipe_opt
 op_star
 id|wp
@@ -3188,7 +3097,6 @@ op_assign
 l_int|1
 suffix:semicolon
 multiline_comment|/* Purge queues */
-macro_line|#ifdef LINUX_2_4
 id|skb_queue_purge
 c_func
 (paren
@@ -3210,80 +3118,6 @@ op_amp
 id|sk-&gt;error_queue
 )paren
 suffix:semicolon
-macro_line|#else&t;
-r_while
-c_loop
-(paren
-(paren
-id|skb
-op_assign
-id|skb_dequeue
-c_func
-(paren
-op_amp
-id|sk-&gt;receive_queue
-)paren
-)paren
-op_ne
-l_int|NULL
-)paren
-(brace
-id|kfree_skb
-c_func
-(paren
-id|skb
-)paren
-suffix:semicolon
-)brace
-r_while
-c_loop
-(paren
-(paren
-id|skb
-op_assign
-id|skb_dequeue
-c_func
-(paren
-op_amp
-id|sk-&gt;error_queue
-)paren
-)paren
-op_ne
-l_int|NULL
-)paren
-(brace
-id|kfree_skb
-c_func
-(paren
-id|skb
-)paren
-suffix:semicolon
-)brace
-r_while
-c_loop
-(paren
-(paren
-id|skb
-op_assign
-id|skb_dequeue
-c_func
-(paren
-op_amp
-id|sk-&gt;write_queue
-)paren
-)paren
-op_ne
-l_int|NULL
-)paren
-(brace
-id|kfree_skb
-c_func
-(paren
-id|skb
-)paren
-suffix:semicolon
-)brace
-macro_line|#endif&t;
 r_if
 c_cond
 (paren
@@ -3373,7 +3207,6 @@ id|sk
 op_assign
 l_int|NULL
 suffix:semicolon
-macro_line|#ifdef LINUX_2_4
 r_if
 c_cond
 (paren
@@ -3417,14 +3250,6 @@ c_func
 id|sk
 )paren
 suffix:semicolon
-macro_line|#else&t;
-id|sk_free
-c_func
-(paren
-id|sk
-)paren
-suffix:semicolon
-macro_line|#endif
 id|atomic_dec
 c_func
 (paren
@@ -3713,13 +3538,6 @@ op_star
 )paren
 id|data
 suffix:semicolon
-macro_line|#ifndef LINUX_2_4
-r_struct
-id|sk_buff
-op_star
-id|skb
-suffix:semicolon
-macro_line|#endif
 r_struct
 id|sock
 op_star
@@ -3898,7 +3716,6 @@ op_assign
 l_int|NULL
 suffix:semicolon
 multiline_comment|/* Purge queues */
-macro_line|#ifdef LINUX_2_4
 id|skb_queue_purge
 c_func
 (paren
@@ -3920,80 +3737,6 @@ op_amp
 id|sk-&gt;error_queue
 )paren
 suffix:semicolon
-macro_line|#else&t;
-r_while
-c_loop
-(paren
-(paren
-id|skb
-op_assign
-id|skb_dequeue
-c_func
-(paren
-op_amp
-id|sk-&gt;receive_queue
-)paren
-)paren
-op_ne
-l_int|NULL
-)paren
-(brace
-id|kfree_skb
-c_func
-(paren
-id|skb
-)paren
-suffix:semicolon
-)brace
-r_while
-c_loop
-(paren
-(paren
-id|skb
-op_assign
-id|skb_dequeue
-c_func
-(paren
-op_amp
-id|sk-&gt;write_queue
-)paren
-)paren
-op_ne
-l_int|NULL
-)paren
-(brace
-id|kfree_skb
-c_func
-(paren
-id|skb
-)paren
-suffix:semicolon
-)brace
-r_while
-c_loop
-(paren
-(paren
-id|skb
-op_assign
-id|skb_dequeue
-c_func
-(paren
-op_amp
-id|sk-&gt;error_queue
-)paren
-)paren
-op_ne
-l_int|NULL
-)paren
-(brace
-id|kfree_skb
-c_func
-(paren
-id|skb
-)paren
-suffix:semicolon
-)brace
-macro_line|#endif
 r_if
 c_cond
 (paren
@@ -4083,7 +3826,6 @@ op_assign
 l_int|NULL
 suffix:semicolon
 )brace
-macro_line|#ifdef LINUX_2_4
 r_if
 c_cond
 (paren
@@ -4127,14 +3869,6 @@ c_func
 id|sk
 )paren
 suffix:semicolon
-macro_line|#else
-id|sk_free
-c_func
-(paren
-id|sk
-)paren
-suffix:semicolon
-macro_line|#endif
 id|atomic_dec
 c_func
 (paren
@@ -4266,7 +4000,6 @@ op_assign
 l_int|NULL
 suffix:semicolon
 )brace
-macro_line|#ifdef LINUX_2_4
 r_if
 c_cond
 (paren
@@ -4310,14 +4043,6 @@ c_func
 id|sk
 )paren
 suffix:semicolon
-macro_line|#else
-id|sk_free
-c_func
-(paren
-id|sk
-)paren
-suffix:semicolon
-macro_line|#endif
 id|atomic_dec
 c_func
 (paren
@@ -4382,7 +4107,6 @@ op_assign
 l_int|NULL
 suffix:semicolon
 )brace
-macro_line|#ifdef LINUX_2_4
 r_if
 c_cond
 (paren
@@ -4426,14 +4150,6 @@ c_func
 id|sk
 )paren
 suffix:semicolon
-macro_line|#else
-id|sk_free
-c_func
-(paren
-id|sk
-)paren
-suffix:semicolon
-macro_line|#endif
 id|atomic_dec
 c_func
 (paren
@@ -4981,7 +4697,6 @@ l_int|14
 op_assign
 l_int|0
 suffix:semicolon
-macro_line|#ifdef LINUX_2_4
 id|dev
 op_assign
 id|dev_get_by_name
@@ -4990,16 +4705,6 @@ c_func
 id|name
 )paren
 suffix:semicolon
-macro_line|#else
-id|dev
-op_assign
-id|dev_get
-c_func
-(paren
-id|name
-)paren
-suffix:semicolon
-macro_line|#endif
 r_if
 c_cond
 (paren
@@ -5656,12 +5361,6 @@ id|err
 r_goto
 id|out_free
 suffix:semicolon
-macro_line|#ifdef LINUX_2_1
-id|sk-&gt;stamp
-op_assign
-id|skb-&gt;stamp
-suffix:semicolon
-macro_line|#else
 id|sock_recv_timestamp
 c_func
 (paren
@@ -5672,7 +5371,6 @@ comma
 id|skb
 )paren
 suffix:semicolon
-macro_line|#endif
 r_if
 c_cond
 (paren
@@ -7863,7 +7561,6 @@ suffix:semicolon
 )brace
 r_else
 (brace
-macro_line|#ifdef LINUX_2_4
 id|set_bit
 c_func
 (paren
@@ -7873,12 +7570,6 @@ op_amp
 id|sk-&gt;socket-&gt;flags
 )paren
 suffix:semicolon
-macro_line|#else
-id|sk-&gt;socket-&gt;flags
-op_or_assign
-id|SO_NOSPACE
-suffix:semicolon
-macro_line|#endif
 )brace
 r_return
 id|mask
@@ -9384,7 +9075,6 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-macro_line|#ifdef LINUX_2_4
 DECL|variable|wanpipe_ops
 r_struct
 id|proto_ops
@@ -9467,49 +9157,6 @@ op_assign
 id|wanpipe_recvmsg
 )brace
 suffix:semicolon
-macro_line|#else
-DECL|variable|wanpipe_ops
-r_struct
-id|proto_ops
-id|wanpipe_ops
-op_assign
-(brace
-id|PF_WANPIPE
-comma
-id|sock_no_dup
-comma
-id|wanpipe_release
-comma
-id|wanpipe_bind
-comma
-id|wanpipe_connect
-comma
-id|sock_no_socketpair
-comma
-id|wanpipe_accept
-comma
-id|wanpipe_getname
-comma
-id|wanpipe_poll
-comma
-id|wanpipe_ioctl
-comma
-id|wanpipe_listen
-comma
-id|sock_no_shutdown
-comma
-id|sock_no_setsockopt
-comma
-id|sock_no_getsockopt
-comma
-id|sock_no_fcntl
-comma
-id|wanpipe_sendmsg
-comma
-id|wanpipe_recvmsg
-)brace
-suffix:semicolon
-macro_line|#endif
 DECL|variable|wanpipe_family_ops
 r_static
 r_struct
