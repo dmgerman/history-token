@@ -4400,7 +4400,7 @@ macro_line|#endif
 macro_line|#endif
 multiline_comment|/*&n; * Interrupt handler&n; */
 DECL|function|orinoco_interrupt
-r_void
+id|irqreturn_t
 id|orinoco_interrupt
 c_func
 (paren
@@ -4489,6 +4489,7 @@ l_int|0
 (brace
 multiline_comment|/* If hw is unavailable */
 r_return
+id|IRQ_NONE
 suffix:semicolon
 )brace
 id|evstat
@@ -4740,6 +4741,9 @@ comma
 op_amp
 id|flags
 )paren
+suffix:semicolon
+r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 DECL|function|__orinoco_ev_tick

@@ -844,7 +844,7 @@ suffix:semicolon
 multiline_comment|/* mac address (read) */
 multiline_comment|/* ---------------------- INTERRUPT HANDLING ---------------------- */
 r_static
-r_void
+id|irqreturn_t
 id|wavelan_interrupt
 c_func
 (paren
