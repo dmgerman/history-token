@@ -528,11 +528,11 @@ op_amp
 id|inode-&gt;i_data.tree_lock
 )paren
 suffix:semicolon
-id|init_MUTEX
+id|spin_lock_init
 c_func
 (paren
 op_amp
-id|inode-&gt;i_data.i_shared_sem
+id|inode-&gt;i_data.i_mmap_lock
 )paren
 suffix:semicolon
 id|atomic_set

@@ -1163,11 +1163,11 @@ id|inode-&gt;i_writecount
 )paren
 suffix:semicolon
 multiline_comment|/* insert tmp into the share list, just after mpnt */
-id|down
+id|spin_lock
 c_func
 (paren
 op_amp
-id|file-&gt;f_mapping-&gt;i_shared_sem
+id|file-&gt;f_mapping-&gt;i_mmap_lock
 )paren
 suffix:semicolon
 id|list_add
@@ -1180,11 +1180,11 @@ op_amp
 id|mpnt-&gt;shared
 )paren
 suffix:semicolon
-id|up
+id|spin_unlock
 c_func
 (paren
 op_amp
-id|file-&gt;f_mapping-&gt;i_shared_sem
+id|file-&gt;f_mapping-&gt;i_mmap_lock
 )paren
 suffix:semicolon
 )brace

@@ -1316,11 +1316,11 @@ id|inode-&gt;i_size
 op_assign
 id|offset
 suffix:semicolon
-id|down
+id|spin_lock
 c_func
 (paren
 op_amp
-id|mapping-&gt;i_shared_sem
+id|mapping-&gt;i_mmap_lock
 )paren
 suffix:semicolon
 r_if
@@ -1363,11 +1363,11 @@ comma
 id|pgoff
 )paren
 suffix:semicolon
-id|up
+id|spin_unlock
 c_func
 (paren
 op_amp
-id|mapping-&gt;i_shared_sem
+id|mapping-&gt;i_mmap_lock
 )paren
 suffix:semicolon
 id|truncate_hugepages

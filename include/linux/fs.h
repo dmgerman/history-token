@@ -795,10 +795,9 @@ id|list_head
 id|i_mmap_shared
 suffix:semicolon
 multiline_comment|/* list of shared mappings */
-DECL|member|i_shared_sem
-r_struct
-id|semaphore
-id|i_shared_sem
+DECL|member|i_mmap_lock
+id|spinlock_t
+id|i_mmap_lock
 suffix:semicolon
 multiline_comment|/* protect both above lists */
 DECL|member|truncate_count

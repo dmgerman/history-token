@@ -1081,7 +1081,7 @@ r_return
 id|referenced
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * page_referenced_file - referenced check for object-based rmap&n; * @page: the page we&squot;re checking references on.&n; *&n; * For an object-based mapped page, find all the places it is mapped and&n; * check/clear the referenced flag.  This is done by following the page-&gt;mapping&n; * pointer, then walking the chain of vmas it holds.  It returns the number&n; * of references it found.&n; *&n; * This function is only called from page_referenced for object-based pages.&n; *&n; * The semaphore address_space-&gt;i_shared_sem is tried.  If it can&squot;t be gotten,&n; * assume a reference count of 0, so try_to_unmap will then have a go.&n; */
+multiline_comment|/**&n; * page_referenced_file - referenced check for object-based rmap&n; * @page: the page we&squot;re checking references on.&n; *&n; * For an object-based mapped page, find all the places it is mapped and&n; * check/clear the referenced flag.  This is done by following the page-&gt;mapping&n; * pointer, then walking the chain of vmas it holds.  It returns the number&n; * of references it found.&n; *&n; * This function is only called from page_referenced for object-based pages.&n; *&n; * The semaphore address_space-&gt;i_mmap_lock is tried.  If it can&squot;t be gotten,&n; * assume a reference count of 0, so try_to_unmap will then have a go.&n; */
 DECL|function|page_referenced_file
 r_static
 r_inline
@@ -1141,11 +1141,12 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|down_trylock
+op_logical_neg
+id|spin_trylock
 c_func
 (paren
 op_amp
-id|mapping-&gt;i_shared_sem
+id|mapping-&gt;i_mmap_lock
 )paren
 )paren
 r_return
@@ -1356,11 +1357,11 @@ id|failed
 suffix:semicolon
 id|out
 suffix:colon
-id|up
+id|spin_unlock
 c_func
 (paren
 op_amp
-id|mapping-&gt;i_shared_sem
+id|mapping-&gt;i_mmap_lock
 )paren
 suffix:semicolon
 r_return
@@ -2682,7 +2683,7 @@ r_return
 id|ret
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * try_to_unmap_file - unmap file page using the object-based rmap method&n; * @page: the page to unmap&n; *&n; * Find all the mappings of a page using the mapping pointer and the vma chains&n; * contained in the address_space struct it points to.&n; *&n; * This function is only called from try_to_unmap for object-based pages.&n; *&n; * The semaphore address_space-&gt;i_shared_sem is tried.  If it can&squot;t be gotten,&n; * return a temporary error.&n; */
+multiline_comment|/**&n; * try_to_unmap_file - unmap file page using the object-based rmap method&n; * @page: the page to unmap&n; *&n; * Find all the mappings of a page using the mapping pointer and the vma chains&n; * contained in the address_space struct it points to.&n; *&n; * This function is only called from try_to_unmap for object-based pages.&n; *&n; * The semaphore address_space-&gt;i_mmap_lock is tried.  If it can&squot;t be gotten,&n; * return a temporary error.&n; */
 DECL|function|try_to_unmap_file
 r_static
 r_inline
@@ -2753,11 +2754,12 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|down_trylock
+op_logical_neg
+id|spin_trylock
 c_func
 (paren
 op_amp
-id|mapping-&gt;i_shared_sem
+id|mapping-&gt;i_mmap_lock
 )paren
 )paren
 r_return
@@ -3193,11 +3195,11 @@ id|page
 suffix:semicolon
 id|out
 suffix:colon
-id|up
+id|spin_unlock
 c_func
 (paren
 op_amp
-id|mapping-&gt;i_shared_sem
+id|mapping-&gt;i_mmap_lock
 )paren
 suffix:semicolon
 r_return

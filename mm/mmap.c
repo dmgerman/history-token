@@ -120,7 +120,7 @@ c_func
 id|vm_committed_space
 )paren
 suffix:semicolon
-multiline_comment|/*&n; * Requires inode-&gt;i_mapping-&gt;i_shared_sem&n; */
+multiline_comment|/*&n; * Requires inode-&gt;i_mapping-&gt;i_mmap_lock&n; */
 r_static
 r_inline
 r_void
@@ -201,11 +201,11 @@ id|mapping
 op_assign
 id|file-&gt;f_mapping
 suffix:semicolon
-id|down
+id|spin_lock
 c_func
 (paren
 op_amp
-id|mapping-&gt;i_shared_sem
+id|mapping-&gt;i_mmap_lock
 )paren
 suffix:semicolon
 id|__remove_shared_vm_struct
@@ -216,11 +216,11 @@ comma
 id|file-&gt;f_dentry-&gt;d_inode
 )paren
 suffix:semicolon
-id|up
+id|spin_unlock
 c_func
 (paren
 op_amp
-id|mapping-&gt;i_shared_sem
+id|mapping-&gt;i_mmap_lock
 )paren
 suffix:semicolon
 )brace
@@ -1216,11 +1216,11 @@ c_cond
 (paren
 id|mapping
 )paren
-id|down
+id|spin_lock
 c_func
 (paren
 op_amp
-id|mapping-&gt;i_shared_sem
+id|mapping-&gt;i_mmap_lock
 )paren
 suffix:semicolon
 id|spin_lock
@@ -1256,11 +1256,11 @@ c_cond
 (paren
 id|mapping
 )paren
-id|up
+id|spin_unlock
 c_func
 (paren
 op_amp
-id|mapping-&gt;i_shared_sem
+id|mapping-&gt;i_mmap_lock
 )paren
 suffix:semicolon
 id|mark_mm_hugetlb
@@ -1281,7 +1281,7 @@ id|mm
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Insert vm structure into process list sorted by address and into the inode&squot;s&n; * i_mmap ring. The caller should hold mm-&gt;page_table_lock and&n; * -&gt;f_mappping-&gt;i_shared_sem if vm_file is non-NULL.&n; */
+multiline_comment|/*&n; * Insert vm structure into process list sorted by address and into the inode&squot;s&n; * i_mmap ring. The caller should hold mm-&gt;page_table_lock and&n; * -&gt;f_mappping-&gt;i_mmap_lock if vm_file is non-NULL.&n; */
 r_static
 r_void
 DECL|function|__insert_vm_struct
@@ -1657,10 +1657,9 @@ id|file-&gt;f_dentry-&gt;d_inode
 suffix:colon
 l_int|NULL
 suffix:semicolon
-r_struct
-id|semaphore
+id|spinlock_t
 op_star
-id|i_shared_sem
+id|i_mmap_lock
 suffix:semicolon
 multiline_comment|/*&n;&t; * We later require that vma-&gt;vm_flags == vm_flags, so this tests&n;&t; * vma-&gt;vm_flags &amp; VM_SPECIAL, too.&n;&t; */
 r_if
@@ -1673,13 +1672,13 @@ id|VM_SPECIAL
 r_return
 l_int|NULL
 suffix:semicolon
-id|i_shared_sem
+id|i_mmap_lock
 op_assign
 id|file
 ques
 c_cond
 op_amp
-id|file-&gt;f_mapping-&gt;i_shared_sem
+id|file-&gt;f_mapping-&gt;i_mmap_lock
 suffix:colon
 l_int|NULL
 suffix:semicolon
@@ -1754,10 +1753,10 @@ id|file
 )paren
 )paren
 (brace
-id|down
+id|spin_lock
 c_func
 (paren
-id|i_shared_sem
+id|i_mmap_lock
 )paren
 suffix:semicolon
 id|need_up
@@ -1843,10 +1842,10 @@ c_cond
 (paren
 id|need_up
 )paren
-id|up
+id|spin_unlock
 c_func
 (paren
-id|i_shared_sem
+id|i_mmap_lock
 )paren
 suffix:semicolon
 r_if
@@ -1886,10 +1885,10 @@ c_cond
 (paren
 id|need_up
 )paren
-id|up
+id|spin_unlock
 c_func
 (paren
-id|i_shared_sem
+id|i_mmap_lock
 )paren
 suffix:semicolon
 r_return
@@ -1949,10 +1948,10 @@ c_cond
 (paren
 id|file
 )paren
-id|down
+id|spin_lock
 c_func
 (paren
-id|i_shared_sem
+id|i_mmap_lock
 )paren
 suffix:semicolon
 id|spin_lock
@@ -1986,10 +1985,10 @@ c_cond
 (paren
 id|file
 )paren
-id|up
+id|spin_unlock
 c_func
 (paren
-id|i_shared_sem
+id|i_mmap_lock
 )paren
 suffix:semicolon
 r_return
@@ -5168,11 +5167,11 @@ c_cond
 (paren
 id|mapping
 )paren
-id|down
+id|spin_lock
 c_func
 (paren
 op_amp
-id|mapping-&gt;i_shared_sem
+id|mapping-&gt;i_mmap_lock
 )paren
 suffix:semicolon
 id|spin_lock
@@ -5232,11 +5231,11 @@ c_cond
 (paren
 id|mapping
 )paren
-id|up
+id|spin_unlock
 c_func
 (paren
 op_amp
-id|mapping-&gt;i_shared_sem
+id|mapping-&gt;i_mmap_lock
 )paren
 suffix:semicolon
 r_return
@@ -6232,7 +6231,7 @@ id|next
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/* Insert vm structure into process list sorted by address&n; * and into the inode&squot;s i_mmap ring.  If vm_file is non-NULL&n; * then i_shared_sem is taken here.&n; */
+multiline_comment|/* Insert vm structure into process list sorted by address&n; * and into the inode&squot;s i_mmap ring.  If vm_file is non-NULL&n; * then i_mmap_lock is taken here.&n; */
 DECL|function|insert_vm_struct
 r_void
 id|insert_vm_struct

@@ -1016,6 +1016,11 @@ id|pgoff_t
 id|last_index
 suffix:semicolon
 multiline_comment|/* Highest page-&gt;index to unmap */
+DECL|member|atomic
+r_int
+id|atomic
+suffix:semicolon
+multiline_comment|/* May not schedule() */
 )brace
 suffix:semicolon
 r_void
