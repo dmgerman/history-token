@@ -1541,6 +1541,18 @@ op_amp
 id|AGPSTAT2_4X
 )paren
 (brace
+id|printk
+(paren
+id|KERN_INFO
+id|PFX
+l_string|&quot;%s passes broken AGP3 flags (%x). Fixed.&bslash;n&quot;
+comma
+id|current-&gt;comm
+comma
+op_star
+id|mode
+)paren
+suffix:semicolon
 op_star
 id|mode
 op_and_assign
@@ -1557,6 +1569,18 @@ suffix:semicolon
 r_else
 (brace
 multiline_comment|/*&n;&t;&t; * The caller doesn&squot;t know what they are doing. We are in 3.0 mode,&n;&t;&t; * but have been passed an AGP 2.x mode.&n;&t;&t; * Convert AGP 1x,2x,4x -&gt; AGP 3.0 4x.&n;&t;&t; */
+id|printk
+(paren
+id|KERN_INFO
+id|PFX
+l_string|&quot;%s passes broken AGP2 flags (%x) in AGP3 mode. Fixed.&bslash;n&quot;
+comma
+id|current-&gt;comm
+comma
+op_star
+id|mode
+)paren
+suffix:semicolon
 op_star
 id|mode
 op_and_assign
