@@ -1200,6 +1200,9 @@ suffix:semicolon
 suffix:semicolon
 DECL|macro|to_pci_driver
 mdefine_line|#define&t;to_pci_driver(drv) container_of(drv,struct pci_driver, driver)
+multiline_comment|/**&n; * PCI_DEVICE - macro used to describe a specific pci device&n; * @vend: the 16 bit PCI Vendor ID&n; * @dev: the 16 bit PCI Device ID&n; *&n; * This macro is used to create a struct pci_device_id that matches a&n; * specific device.  The subvendor and subdevice fields will be set to&n; * PCI_ANY_ID.&n; */
+DECL|macro|PCI_DEVICE
+mdefine_line|#define PCI_DEVICE(vend,dev) &bslash;&n;&t;.vendor = (vend), .device = (dev), &bslash;&n;&t;.subvendor = PCI_ANY_ID, .subdevice = PCI_ANY_ID
 multiline_comment|/* these external functions are only available when PCI support is enabled */
 macro_line|#ifdef CONFIG_PCI
 r_extern
