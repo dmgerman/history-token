@@ -78,7 +78,7 @@ id|irq
 suffix:semicolon
 multiline_comment|/* Disable all GBUS irqs.  */
 r_extern
-r_int
+r_void
 id|gbus_int_disable_irqs
 (paren
 r_void

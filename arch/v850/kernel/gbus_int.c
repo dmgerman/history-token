@@ -183,7 +183,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* Disable all GBUS irqs.  */
 DECL|function|gbus_int_disable_irqs
-r_int
+r_void
 id|gbus_int_disable_irqs
 (paren
 )paren
