@@ -2027,6 +2027,7 @@ op_increment
 r_if
 c_cond
 (paren
+op_logical_neg
 id|pnp_check_port
 c_func
 (paren
@@ -2059,6 +2060,7 @@ op_increment
 r_if
 c_cond
 (paren
+op_logical_neg
 id|pnp_check_mem
 c_func
 (paren
@@ -2091,6 +2093,7 @@ op_increment
 r_if
 c_cond
 (paren
+op_logical_neg
 id|pnp_check_irq
 c_func
 (paren
@@ -2123,6 +2126,7 @@ op_increment
 r_if
 c_cond
 (paren
+op_logical_neg
 id|pnp_check_dma
 c_func
 (paren
@@ -2143,12 +2147,6 @@ c_func
 (paren
 op_amp
 id|pnp_res_mutex
-)paren
-suffix:semicolon
-id|pnp_auto_config_dev
-c_func
-(paren
-id|dev
 )paren
 suffix:semicolon
 id|kfree
