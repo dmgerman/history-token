@@ -5,6 +5,7 @@ macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/writeback.h&gt;
+macro_line|#include &lt;linux/backing-dev.h&gt;
 multiline_comment|/**&n; *&t;__mark_inode_dirty -&t;internal function&n; *&t;@inode: inode to mark&n; *&t;@flags: what kind of dirty (i.e. I_DIRTY_SYNC)&n; *&t;Mark an inode as dirty. Callers should use mark_inode_dirty or&n; *  &t;mark_inode_dirty_sync.&n; *&n; * Put the inode on the super block&squot;s dirty list.&n; *&n; * CAREFUL! We mark it dirty unconditionally, but move it onto the&n; * dirty list only if it is hashed or if it refers to a blockdev.&n; * If it was not hashed, it will never be added to the dirty list&n; * even if it is later hashed, as it will have been marked dirty already.&n; *&n; * In short, make sure you hash any inodes _before_ you start marking&n; * them dirty.&n; *&n; * This function *must* be atomic for the I_DIRTY_PAGES case -&n; * set_page_dirty() is called under spinlock in several places.&n; */
 DECL|function|__mark_inode_dirty
 r_void
@@ -1833,6 +1834,86 @@ id|inode
 suffix:semicolon
 r_return
 id|err
+suffix:semicolon
+)brace
+multiline_comment|/**&n; * writeback_acquire: attempt to get exclusive writeback access to a device&n; * @bdi: the device&squot;s backing_dev_info structure&n; *&n; * It is a waste of resources to have more than one pdflush thread blocked on&n; * a single request queue.  Exclusion at the request_queue level is obtained&n; * via a flag in the request_queue&squot;s backing_dev_info.state.&n; *&n; * Non-request_queue-backed address_spaces will share default_backing_dev_info,&n; * unless they implement their own.  Which is somewhat inefficient, as this&n; * may prevent concurrent writeback against multiple devices.&n; */
+DECL|function|writeback_acquire
+r_int
+id|writeback_acquire
+c_func
+(paren
+r_struct
+id|backing_dev_info
+op_star
+id|bdi
+)paren
+(brace
+r_return
+op_logical_neg
+id|test_and_set_bit
+c_func
+(paren
+id|BDI_pdflush
+comma
+op_amp
+id|bdi-&gt;state
+)paren
+suffix:semicolon
+)brace
+multiline_comment|/**&n; * writeback_in_progress: determine whether there is writeback in progress&n; *                        against a backing device.&n; * @bdi: the device&squot;s backing_dev_info structure.&n; */
+DECL|function|writeback_in_progress
+r_int
+id|writeback_in_progress
+c_func
+(paren
+r_struct
+id|backing_dev_info
+op_star
+id|bdi
+)paren
+(brace
+r_return
+id|test_bit
+c_func
+(paren
+id|BDI_pdflush
+comma
+op_amp
+id|bdi-&gt;state
+)paren
+suffix:semicolon
+)brace
+multiline_comment|/**&n; * writeback_release: relinquish exclusive writeback access against a device.&n; * @bdi: the device&squot;s backing_dev_info structure&n; */
+DECL|function|writeback_release
+r_void
+id|writeback_release
+c_func
+(paren
+r_struct
+id|backing_dev_info
+op_star
+id|bdi
+)paren
+(brace
+id|BUG_ON
+c_func
+(paren
+op_logical_neg
+id|writeback_in_progress
+c_func
+(paren
+id|bdi
+)paren
+)paren
+suffix:semicolon
+id|clear_bit
+c_func
+(paren
+id|BDI_pdflush
+comma
+op_amp
+id|bdi-&gt;state
+)paren
 suffix:semicolon
 )brace
 eof

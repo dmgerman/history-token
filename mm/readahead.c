@@ -3,11 +3,15 @@ macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/blkdev.h&gt;
-DECL|variable|default_ra_pages
-r_int
-r_int
-id|default_ra_pages
+macro_line|#include &lt;linux/backing-dev.h&gt;
+DECL|variable|default_backing_dev_info
+r_struct
+id|backing_dev_info
+id|default_backing_dev_info
 op_assign
+(brace
+id|ra_pages
+suffix:colon
 (paren
 id|VM_MAX_READAHEAD
 op_star
@@ -15,6 +19,12 @@ l_int|1024
 )paren
 op_div
 id|PAGE_CACHE_SIZE
+comma
+id|state
+suffix:colon
+l_int|0
+comma
+)brace
 suffix:semicolon
 multiline_comment|/*&n; * Return max readahead size for this inode in number-of-pages.&n; */
 DECL|function|get_max_readahead

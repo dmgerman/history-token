@@ -632,6 +632,9 @@ r_int
 suffix:semicolon
 )brace
 suffix:semicolon
+r_struct
+id|backing_dev_info
+suffix:semicolon
 DECL|struct|address_space
 r_struct
 id|address_space
@@ -717,13 +720,13 @@ r_int
 id|gfp_mask
 suffix:semicolon
 multiline_comment|/* how to allocate the pages */
-DECL|member|ra_pages
-r_int
-r_int
+DECL|member|backing_dev_info
+r_struct
+id|backing_dev_info
 op_star
-id|ra_pages
+id|backing_dev_info
 suffix:semicolon
-multiline_comment|/* device readahead */
+multiline_comment|/* device readahead, etc */
 DECL|member|private_lock
 id|spinlock_t
 id|private_lock

@@ -6,6 +6,7 @@ macro_line|#include &lt;linux/blk.h&gt;&t;&t;&t;/* for set_device_ro() */
 macro_line|#include &lt;linux/blkpg.h&gt;
 macro_line|#include &lt;linux/genhd.h&gt;
 macro_line|#include &lt;linux/module.h&gt;               /* for EXPORT_SYMBOL */
+macro_line|#include &lt;linux/backing-dev.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 multiline_comment|/*&n; * What is the data describing a partition?&n; *&n; * 1. a device number (kdev_t)&n; * 2. a starting sector and number of sectors (hd_struct)&n; *    given in the part[] array of the gendisk structure for the drive.&n; *&n; * The number of sectors is replicated in the sizes[] array of&n; * the gendisk structure for the major, which again is copied to&n; * the blk_size[][] array.&n; * (However, hd_struct has the number of 512-byte sectors,&n; *  g-&gt;sizes[] and blk_size[][] have the number of 1024-byte blocks.)&n; * Note that several drives may have the same major.&n; */
 multiline_comment|/*&n; * Add a partition.&n; *&n; * returns: EINVAL: bad parameters&n; *          ENXIO: cannot find drive&n; *          EBUSY: proposed partition overlaps an existing one&n; *                 or has the same number as an existing one&n; *          0: all OK.&n; */
@@ -817,10 +818,10 @@ suffix:semicolon
 r_int
 id|holder
 suffix:semicolon
-r_int
-r_int
+r_struct
+id|backing_dev_info
 op_star
-id|ra_pages
+id|bdi
 suffix:semicolon
 id|intval
 op_assign
@@ -952,9 +953,9 @@ op_minus
 id|EACCES
 suffix:semicolon
 )brace
-id|ra_pages
+id|bdi
 op_assign
-id|blk_get_ra_pages
+id|blk_get_backing_dev_info
 c_func
 (paren
 id|bdev
@@ -963,7 +964,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|ra_pages
+id|bdi
 op_eq
 l_int|NULL
 )paren
@@ -971,8 +972,7 @@ r_return
 op_minus
 id|ENOTTY
 suffix:semicolon
-op_star
-id|ra_pages
+id|bdi-&gt;ra_pages
 op_assign
 (paren
 id|arg
@@ -1001,9 +1001,9 @@ r_return
 op_minus
 id|EINVAL
 suffix:semicolon
-id|ra_pages
+id|bdi
 op_assign
-id|blk_get_ra_pages
+id|blk_get_backing_dev_info
 c_func
 (paren
 id|bdev
@@ -1012,7 +1012,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|ra_pages
+id|bdi
 op_eq
 l_int|NULL
 )paren
@@ -1025,8 +1025,7 @@ id|put_user
 c_func
 (paren
 (paren
-op_star
-id|ra_pages
+id|bdi-&gt;ra_pages
 op_star
 id|PAGE_CACHE_SIZE
 )paren

@@ -7,6 +7,7 @@ macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/quotaops.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/writeback.h&gt;
+macro_line|#include &lt;linux/backing-dev.h&gt;
 multiline_comment|/*&n; * New inode.c implementation.&n; *&n; * This implementation has the basic premise of trying&n; * to be extremely low-overhead and SMP-safe, yet be&n; * simple enough to be &quot;obviously correct&quot;.&n; *&n; * Famous last words.&n; */
 multiline_comment|/* inode dynamic allocation 1999, Andrea Arcangeli &lt;andrea@suse.de&gt; */
 multiline_comment|/* #define INODE_PARANOIA 1 */
@@ -148,6 +149,15 @@ c_cond
 id|inode
 )paren
 (brace
+r_struct
+id|address_space
+op_star
+r_const
+id|mapping
+op_assign
+op_amp
+id|inode-&gt;i_data
+suffix:semicolon
 id|inode-&gt;i_sb
 op_assign
 id|sb
@@ -238,45 +248,40 @@ id|inode-&gt;i_cdev
 op_assign
 l_int|NULL
 suffix:semicolon
-id|inode-&gt;i_data.a_ops
+id|mapping-&gt;a_ops
 op_assign
 op_amp
 id|empty_aops
 suffix:semicolon
-id|inode-&gt;i_data.host
+id|mapping-&gt;host
 op_assign
 id|inode
 suffix:semicolon
-id|inode-&gt;i_data.gfp_mask
+id|mapping-&gt;gfp_mask
 op_assign
 id|GFP_HIGHUSER
 suffix:semicolon
-id|inode-&gt;i_data.dirtied_when
+id|mapping-&gt;dirtied_when
 op_assign
 l_int|0
 suffix:semicolon
-id|inode-&gt;i_mapping
-op_assign
-op_amp
-id|inode-&gt;i_data
-suffix:semicolon
-id|inode-&gt;i_data.ra_pages
-op_assign
-op_amp
-id|default_ra_pages
-suffix:semicolon
-id|inode-&gt;i_data.assoc_mapping
+id|mapping-&gt;assoc_mapping
 op_assign
 l_int|NULL
+suffix:semicolon
+id|mapping-&gt;backing_dev_info
+op_assign
+op_amp
+id|default_backing_dev_info
 suffix:semicolon
 r_if
 c_cond
 (paren
 id|sb-&gt;s_bdev
 )paren
-id|inode-&gt;i_data.ra_pages
+id|inode-&gt;i_data.backing_dev_info
 op_assign
-id|sb-&gt;s_bdev-&gt;bd_inode-&gt;i_mapping-&gt;ra_pages
+id|sb-&gt;s_bdev-&gt;bd_inode-&gt;i_mapping-&gt;backing_dev_info
 suffix:semicolon
 id|memset
 c_func
@@ -291,6 +296,10 @@ r_sizeof
 id|inode-&gt;u
 )paren
 )paren
+suffix:semicolon
+id|inode-&gt;i_mapping
+op_assign
+id|mapping
 suffix:semicolon
 )brace
 r_return

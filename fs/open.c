@@ -10,6 +10,7 @@ macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/tty.h&gt;
 macro_line|#include &lt;linux/iobuf.h&gt;
+macro_line|#include &lt;linux/backing-dev.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 DECL|macro|special_file
 mdefine_line|#define special_file(m) (S_ISCHR(m)||S_ISBLK(m)||S_ISFIFO(m)||S_ISSOCK(m))
@@ -2764,8 +2765,7 @@ suffix:semicolon
 )brace
 id|f-&gt;f_ra.ra_pages
 op_assign
-op_star
-id|inode-&gt;i_mapping-&gt;ra_pages
+id|inode-&gt;i_mapping-&gt;backing_dev_info-&gt;ra_pages
 suffix:semicolon
 id|f-&gt;f_dentry
 op_assign

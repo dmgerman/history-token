@@ -424,6 +424,12 @@ l_int|5
 op_star
 id|HZ
 suffix:semicolon
+DECL|variable|wb_timer
+r_static
+r_struct
+id|timer_list
+id|wb_timer
+suffix:semicolon
 multiline_comment|/*&n; * Periodic writeback of &quot;old&quot; data.&n; *&n; * Define &quot;old&quot;: the first time one of an inode&squot;s pages is dirtied, we mark the&n; * dirtying-time in the inode&squot;s address_space.  So this periodic writeback code&n; * just walks the superblock inode list, writing back any inodes which are&n; * older than a specific point in time.&n; *&n; * We also limit the number of pages which are written out, to avoid writing&n; * huge amounts of data against a single file, which would cause memory&n; * allocators to block for too long.&n; */
 DECL|function|wb_kupdate
 r_static
@@ -550,25 +556,6 @@ op_amp
 id|tq_disk
 )paren
 suffix:semicolon
-)brace
-multiline_comment|/*&n; * The writeback timer, for kupdate-style functionality&n; */
-DECL|variable|wb_timer
-r_static
-r_struct
-id|timer_list
-id|wb_timer
-suffix:semicolon
-DECL|function|wb_timer_fn
-r_static
-r_void
-id|wb_timer_fn
-c_func
-(paren
-r_int
-r_int
-id|unused
-)paren
-(brace
 id|mod_timer
 c_func
 (paren
@@ -580,6 +567,18 @@ op_plus
 id|wb_writeback_jifs
 )paren
 suffix:semicolon
+)brace
+DECL|function|wb_timer_fn
+r_static
+r_void
+id|wb_timer_fn
+c_func
+(paren
+r_int
+r_int
+id|unused
+)paren
+(brace
 id|pdflush_operation
 c_func
 (paren
