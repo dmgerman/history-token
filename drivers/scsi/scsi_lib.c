@@ -4119,14 +4119,14 @@ id|data-&gt;device_specific
 op_assign
 id|buffer
 (braket
-l_int|3
+l_int|2
 )braket
 suffix:semicolon
 id|data-&gt;block_descriptor_length
 op_assign
 id|buffer
 (braket
-l_int|4
+l_int|3
 )braket
 suffix:semicolon
 )brace
