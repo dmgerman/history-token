@@ -1,5 +1,6 @@
 multiline_comment|/* linux/arch/arm/mach-s3c2410/pm.h&n; *&n; * Copyright (c) 2004 Simtec Electronics&n; *&t;Written by Ben Dooks, &lt;ben@simtec.co.uk&gt;&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n;*/
 multiline_comment|/* s3c2410_pm_init&n; *&n; * called from board at initialisation time to setup the power&n; * management&n;*/
+macro_line|#ifdef CONFIG_PM
 r_extern
 id|__init
 r_int
@@ -9,6 +10,22 @@ c_func
 r_void
 )paren
 suffix:semicolon
+macro_line|#else
+DECL|function|s3c2410_pm_init
+r_static
+r_inline
+r_int
+id|s3c2410_pm_init
+c_func
+(paren
+r_void
+)paren
+(brace
+r_return
+l_int|0
+suffix:semicolon
+)brace
+macro_line|#endif
 multiline_comment|/* configuration for the IRQ mask over sleep */
 r_extern
 r_int
