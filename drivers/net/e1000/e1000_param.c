@@ -590,6 +590,7 @@ op_assign
 (brace
 dot
 id|r
+op_assign
 (brace
 dot
 id|min

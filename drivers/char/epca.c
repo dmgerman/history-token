@@ -2113,21 +2113,12 @@ l_int|1
 op_lshift
 id|event
 suffix:semicolon
-id|MOD_INC_USE_COUNT
-suffix:semicolon
-r_if
-c_cond
-(paren
 id|schedule_work
 c_func
 (paren
 op_amp
 id|ch-&gt;tqueue
 )paren
-op_eq
-l_int|0
-)paren
-id|MOD_DEC_USE_COUNT
 suffix:semicolon
 )brace
 multiline_comment|/* End pc_sched_event */
@@ -2443,8 +2434,6 @@ op_amp
 id|ch-&gt;close_wait
 )paren
 suffix:semicolon
-id|MOD_DEC_USE_COUNT
-suffix:semicolon
 id|restore_flags
 c_func
 (paren
@@ -2672,13 +2661,6 @@ c_func
 (paren
 id|ch
 )paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|ch-&gt;count
-)paren
-id|MOD_DEC_USE_COUNT
 suffix:semicolon
 id|ch-&gt;tty
 op_assign
@@ -4446,8 +4428,6 @@ op_minus
 id|ENODEV
 suffix:semicolon
 )brace
-id|MOD_INC_USE_COUNT
-suffix:semicolon
 id|ch
 op_assign
 op_amp
@@ -5258,6 +5238,10 @@ suffix:semicolon
 id|pc_driver.magic
 op_assign
 id|TTY_DRIVER_MAGIC
+suffix:semicolon
+id|pc_driver.owner
+op_assign
+id|THIS_MODULE
 suffix:semicolon
 id|pc_driver.name
 op_assign
