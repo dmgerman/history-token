@@ -977,11 +977,13 @@ suffix:semicolon
 )brace
 DECL|function|check_linger
 r_static
-id|__u32
+r_int
+r_int
 id|check_linger
 c_func
 (paren
-id|__u16
+r_int
+r_int
 id|ttl
 )paren
 (brace
@@ -1032,8 +1034,10 @@ op_star
 id|fl
 comma
 r_int
+r_int
 id|linger
 comma
+r_int
 r_int
 id|expires
 )paren
