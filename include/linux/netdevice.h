@@ -5,6 +5,7 @@ mdefine_line|#define _LINUX_NETDEVICE_H
 macro_line|#include &lt;linux/if.h&gt;
 macro_line|#include &lt;linux/if_ether.h&gt;
 macro_line|#include &lt;linux/if_packet.h&gt;
+macro_line|#include &lt;linux/kobject.h&gt;
 macro_line|#include &lt;asm/atomic.h&gt;
 macro_line|#include &lt;asm/cache.h&gt;
 macro_line|#include &lt;asm/byteorder.h&gt;
@@ -1270,6 +1271,12 @@ op_star
 id|divert
 suffix:semicolon
 macro_line|#endif /* CONFIG_NET_DIVERT */
+multiline_comment|/* generic object representation */
+DECL|member|kobj
+r_struct
+id|kobject
+id|kobj
+suffix:semicolon
 )brace
 suffix:semicolon
 DECL|struct|packet_type
