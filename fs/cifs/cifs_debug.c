@@ -359,7 +359,7 @@ c_func
 (paren
 id|buf
 comma
-l_string|&quot;&bslash;n%d) Name: %s  Domain: %s Mounts: %d ServerOS: %s  &bslash;n&bslash;tServerNOS: %s&bslash;tCapabilities: 0x%x&quot;
+l_string|&quot;&bslash;n%d) Name: %s  Domain: %s Mounts: %d ServerOS: %s  &bslash;n&bslash;tServerNOS: %s&bslash;tCapabilities: 0x%x&bslash;n&bslash;tSMB session status: %d&bslash;tTCP session status: %d&quot;
 comma
 id|i
 comma
@@ -379,6 +379,10 @@ comma
 id|ses-&gt;serverNOS
 comma
 id|ses-&gt;capabilities
+comma
+id|ses-&gt;status
+comma
+id|ses-&gt;server-&gt;tcpStatus
 )paren
 suffix:semicolon
 id|buf
@@ -487,7 +491,7 @@ c_func
 (paren
 id|buf
 comma
-l_string|&quot;&bslash;n%d) %s Uses: %d on FS: %s with characteristics: 0x%x Attributes: 0x%x&bslash;n&bslash;tPathComponentMax: %d&quot;
+l_string|&quot;&bslash;n%d) %s Uses: %d on FS: %s with characteristics: 0x%x Attributes: 0x%x&bslash;n&bslash;tPathComponentMax: %d Status: %d&quot;
 comma
 id|i
 comma
@@ -507,6 +511,8 @@ comma
 id|tcon-&gt;fsAttrInfo.Attributes
 comma
 id|tcon-&gt;fsAttrInfo.MaxPathNameComponentLength
+comma
+id|tcon-&gt;tidStatus
 )paren
 suffix:semicolon
 id|buf
