@@ -633,7 +633,7 @@ id|atomic_t
 id|active
 suffix:semicolon
 DECL|member|spare
-id|mdp_disk_t
+id|mdk_rdev_t
 op_star
 id|spare
 suffix:semicolon
@@ -756,10 +756,6 @@ id|hot_add_disk
 id|mddev_t
 op_star
 id|mddev
-comma
-id|mdp_disk_t
-op_star
-id|descriptor
 comma
 id|mdk_rdev_t
 op_star
@@ -908,7 +904,7 @@ id|nr
 )paren
 suffix:semicolon
 r_extern
-id|mdp_disk_t
+id|mdk_rdev_t
 op_star
 id|get_spare
 c_func
