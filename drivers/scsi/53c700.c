@@ -9036,12 +9036,10 @@ c_func
 id|SCp-&gt;device-&gt;host-&gt;host_lock
 )paren
 suffix:semicolon
-id|schedule_timeout
+id|msleep_interruptible
 c_func
 (paren
-id|HZ
-op_div
-l_int|10
+l_int|100
 )paren
 suffix:semicolon
 id|spin_lock_irq

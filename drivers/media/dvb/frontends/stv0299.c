@@ -6203,6 +6203,10 @@ comma
 (paren
 id|u32
 )paren
+(paren
+r_int
+r_int
+)paren
 id|arg
 comma
 id|state-&gt;tuner_type
@@ -6409,8 +6413,9 @@ id|buf
 op_assign
 id|rpt
 comma
+dot
 id|len
-suffix:colon
+op_assign
 l_int|2
 )brace
 comma
@@ -6460,8 +6465,9 @@ id|buf
 op_assign
 id|rpt
 comma
+dot
 id|len
-suffix:colon
+op_assign
 l_int|2
 )brace
 comma
@@ -6511,8 +6517,9 @@ id|buf
 op_assign
 id|rpt
 comma
+dot
 id|len
-suffix:colon
+op_assign
 l_int|2
 )brace
 comma

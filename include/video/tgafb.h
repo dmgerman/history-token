@@ -241,16 +241,19 @@ suffix:semicolon
 multiline_comment|/* Device dependent information.  */
 DECL|member|tga_mem_base
 r_void
+id|__iomem
 op_star
 id|tga_mem_base
 suffix:semicolon
 DECL|member|tga_fb_base
 r_void
+id|__iomem
 op_star
 id|tga_fb_base
 suffix:semicolon
 DECL|member|tga_regs_base
 r_void
+id|__iomem
 op_star
 id|tga_regs_base
 suffix:semicolon

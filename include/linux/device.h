@@ -1368,18 +1368,6 @@ r_struct
 id|dev_pm_info
 id|power
 suffix:semicolon
-DECL|member|power_state
-id|u32
-id|power_state
-suffix:semicolon
-multiline_comment|/* Current operating state. In&n;&t;&t;&t;&t;&t;   ACPI-speak, this is D0-D3, D0&n;&t;&t;&t;&t;&t;   being fully functional, and D3&n;&t;&t;&t;&t;&t;   being off. */
-DECL|member|saved_state
-r_int
-r_char
-op_star
-id|saved_state
-suffix:semicolon
-multiline_comment|/* saved device state */
 DECL|member|detach_state
 id|u32
 id|detach_state

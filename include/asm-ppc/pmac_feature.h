@@ -326,6 +326,7 @@ suffix:semicolon
 DECL|member|base
 r_volatile
 id|u32
+id|__iomem
 op_star
 id|base
 suffix:semicolon
@@ -379,7 +380,7 @@ suffix:semicolon
 DECL|macro|MACIO_FCR32
 mdefine_line|#define MACIO_FCR32(macio, r)&t;((macio)-&gt;base + ((r) &gt;&gt; 2))
 DECL|macro|MACIO_FCR8
-mdefine_line|#define MACIO_FCR8(macio, r)&t;(((volatile u8*)((macio)-&gt;base)) + (r))
+mdefine_line|#define MACIO_FCR8(macio, r)&t;(((volatile u8 __iomem *)((macio)-&gt;base)) + (r))
 DECL|macro|MACIO_IN32
 mdefine_line|#define MACIO_IN32(r)&t;&t;(in_le32(MACIO_FCR32(macio,r)))
 DECL|macro|MACIO_OUT32

@@ -294,12 +294,12 @@ op_assign
 id|mempages
 op_div
 (paren
+l_int|8
+op_star
 id|THREAD_SIZE
 op_div
 id|PAGE_SIZE
 )paren
-op_div
-l_int|8
 suffix:semicolon
 multiline_comment|/*&n;&t; * we need to allow at least 20 threads to boot a system&n;&t; */
 r_if

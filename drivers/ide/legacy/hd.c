@@ -368,6 +368,7 @@ suffix:semicolon
 )brace
 macro_line|#endif
 DECL|function|hd_setup
+r_static
 r_void
 id|__init
 id|hd_setup
@@ -913,6 +914,7 @@ suffix:semicolon
 macro_line|#endif
 )brace
 DECL|function|check_status
+r_static
 r_void
 id|check_status
 c_func
@@ -1640,6 +1642,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * Ok, don&squot;t know what to do with the unexpected interrupts: on some machines&n; * doing a reset and a retry seems to result in an eternal loop. Right now I&n; * ignore it, and just set the timeout.&n; *&n; * On laptops (and &quot;green&quot; PCs), an unexpected interrupt occurs whenever the&n; * drive enters &quot;idle&quot;, &quot;standby&quot;, or &quot;sleep&quot; mode, so if the status looks&n; * &quot;good&quot;, we just ignore the interrupt completely.&n; */
 DECL|function|unexpected_hd_interrupt
+r_static
 r_void
 id|unexpected_hd_interrupt
 c_func
@@ -2384,6 +2387,7 @@ id|HD_IRQ
 suffix:semicolon
 )brace
 DECL|function|do_special_op
+r_static
 r_int
 id|do_special_op
 c_func

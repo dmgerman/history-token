@@ -17,6 +17,17 @@ r_struct
 id|i2o_dma
 id|i2o_systab
 suffix:semicolon
+r_static
+r_int
+id|i2o_hrt_get
+c_func
+(paren
+r_struct
+id|i2o_controller
+op_star
+id|c
+)paren
+suffix:semicolon
 multiline_comment|/* Module internal functions from other sources */
 r_extern
 r_struct
@@ -130,6 +141,7 @@ id|m
 (brace
 r_struct
 id|i2o_message
+id|__iomem
 op_star
 id|msg
 op_assign
@@ -218,6 +230,7 @@ id|c
 comma
 r_struct
 id|i2o_message
+id|__iomem
 op_star
 op_star
 id|msg
@@ -904,6 +917,7 @@ id|c
 (brace
 r_struct
 id|i2o_message
+id|__iomem
 op_star
 id|msg
 suffix:semicolon
@@ -1068,6 +1082,7 @@ id|c
 (brace
 r_struct
 id|i2o_message
+id|__iomem
 op_star
 id|msg
 suffix:semicolon
@@ -1311,6 +1326,7 @@ id|c
 (brace
 r_struct
 id|i2o_message
+id|__iomem
 op_star
 id|msg
 suffix:semicolon
@@ -1459,6 +1475,7 @@ id|c-&gt;status.virt
 suffix:semicolon
 r_struct
 id|i2o_message
+id|__iomem
 op_star
 id|msg
 suffix:semicolon
@@ -1904,6 +1921,7 @@ suffix:semicolon
 suffix:semicolon
 multiline_comment|/**&n; *&t;i2o_iop_init_outbound_queue - setup the outbound message queue&n; *&t;@c: I2O controller&n; *&n; *&t;Clear and (re)initialize IOP&squot;s outbound queue and post the message&n; *&t;frames to the IOP.&n; *&n; *&t;Returns 0 on success or a negative errno code on failure.&n; */
 DECL|function|i2o_iop_init_outbound_queue
+r_static
 r_int
 id|i2o_iop_init_outbound_queue
 c_func
@@ -1925,6 +1943,7 @@ id|m
 suffix:semicolon
 r_struct
 id|i2o_message
+id|__iomem
 op_star
 id|msg
 suffix:semicolon
@@ -2240,6 +2259,7 @@ id|c
 (brace
 r_struct
 id|i2o_message
+id|__iomem
 op_star
 id|msg
 suffix:semicolon
@@ -2600,6 +2620,7 @@ id|c
 (brace
 r_struct
 id|i2o_message
+id|__iomem
 op_star
 id|msg
 suffix:semicolon
@@ -3659,6 +3680,7 @@ id|c
 (brace
 r_struct
 id|i2o_message
+id|__iomem
 op_star
 id|msg
 suffix:semicolon
@@ -3937,6 +3959,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; *&t;i2o_hrt_get - Get the Hardware Resource Table from the I2O controller&n; *&t;@c: I2O controller from which the HRT should be fetched&n; *&n; *&t;The HRT contains information about possible hidden devices but is&n; *&t;mostly useless to us.&n; *&n; *&t;Returns 0 on success or negativer error code on failure.&n; */
 DECL|function|i2o_hrt_get
+r_static
 r_int
 id|i2o_hrt_get
 c_func
@@ -3992,6 +4015,7 @@ op_increment
 (brace
 r_struct
 id|i2o_message
+id|__iomem
 op_star
 id|msg
 suffix:semicolon
@@ -4270,9 +4294,12 @@ op_amp
 id|c-&gt;devices
 )paren
 suffix:semicolon
+id|spin_lock_init
+c_func
+(paren
+op_amp
 id|c-&gt;lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 id|init_MUTEX
 c_func
@@ -4297,9 +4324,12 @@ id|c-&gt;unit
 )paren
 suffix:semicolon
 macro_line|#if BITS_PER_LONG == 64
+id|spin_lock_init
+c_func
+(paren
+op_amp
 id|c-&gt;context_list_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 id|atomic_set
 c_func
@@ -4567,6 +4597,7 @@ id|dev-&gt;iop
 suffix:semicolon
 r_struct
 id|i2o_message
+id|__iomem
 op_star
 id|msg
 suffix:semicolon
@@ -4926,13 +4957,6 @@ id|EXPORT_SYMBOL
 c_func
 (paren
 id|i2o_status_get
-)paren
-suffix:semicolon
-DECL|variable|i2o_hrt_get
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|i2o_hrt_get
 )paren
 suffix:semicolon
 DECL|variable|i2o_controllers

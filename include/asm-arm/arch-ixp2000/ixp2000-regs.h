@@ -138,7 +138,7 @@ DECL|macro|IXP2000_FIQ_ERR_ENABLE_CLR
 mdefine_line|#define IXP2000_FIQ_ERR_ENABLE_CLR&t;IXP2000_INTCTL_REG(0x30)
 DECL|macro|IXP2000_IRQ_ERR_ENABLE_CLR
 mdefine_line|#define IXP2000_IRQ_ERR_ENABLE_CLR&t;IXP2000_INTCTL_REG(0x34)
-multiline_comment|/*&n; * Mask of valid IRQs in the 32-bit IRQ register. We use&n; * this to mark certain IRQs as being in-valid.&n; */
+multiline_comment|/*&n; * Mask of valid IRQs in the 32-bit IRQ register. We use&n; * this to mark certain IRQs as being invalid.&n; */
 DECL|macro|IXP2000_VALID_IRQ_MASK
 mdefine_line|#define&t;IXP2000_VALID_IRQ_MASK&t;0x0f0fffff
 multiline_comment|/*&n; * PCI config register access from core&n; */
@@ -322,7 +322,7 @@ DECL|macro|SLOWPORT_CCR_DIV_28
 mdefine_line|#define&t;SLOWPORT_CCR_DIV_28&t;&t;0x0e
 DECL|macro|SLOWPORT_CCR_DIV_30
 mdefine_line|#define&t;SLOWPORT_CCR_DIV_30&t;&t;0x0f
-multiline_comment|/*&n; * PCR values.  PCR configure the mode of the interfac3&n; */
+multiline_comment|/*&n; * PCR values.  PCR configure the mode of the interface.&n; */
 DECL|macro|SLOWPORT_MODE_FLASH
 mdefine_line|#define&t;SLOWPORT_MODE_FLASH&t;&t;0x00
 DECL|macro|SLOWPORT_MODE_LUCENT
@@ -333,7 +333,7 @@ DECL|macro|SLOWPORT_MODE_INTEL_UP
 mdefine_line|#define&t;SLOWPORT_MODE_INTEL_UP&t;&t;0x03
 DECL|macro|SLOWPORT_MODE_MOTOROLA_UP
 mdefine_line|#define&t;SLOWPORT_MODE_MOTOROLA_UP&t;0x04
-multiline_comment|/*&n; * ADC values.  Defines data and address bus widths&n; */
+multiline_comment|/*&n; * ADC values.  Defines data and address bus widths.&n; */
 DECL|macro|SLOWPORT_ADDR_WIDTH_8
 mdefine_line|#define&t;SLOWPORT_ADDR_WIDTH_8&t;&t;0x00
 DECL|macro|SLOWPORT_ADDR_WIDTH_16
@@ -350,7 +350,7 @@ DECL|macro|SLOWPORT_DATA_WIDTH_24
 mdefine_line|#define&t;SLOWPORT_DATA_WIDTH_24&t;&t;0x20
 DECL|macro|SLOWPORT_DATA_WIDTH_32
 mdefine_line|#define&t;SLOWPORT_DATA_WIDTH_32&t;&t;0x30
-multiline_comment|/*&n; * Masks and shifts for various fields in the WTC and RTC registers&n; */
+multiline_comment|/*&n; * Masks and shifts for various fields in the WTC and RTC registers.&n; */
 DECL|macro|SLOWPORT_WRTC_MASK_HD
 mdefine_line|#define&t;SLOWPORT_WRTC_MASK_HD&t;&t;0x0003
 DECL|macro|SLOWPORT_WRTC_MASK_SU
@@ -363,7 +363,7 @@ DECL|macro|SLOWPORT_WRTC_SHIFT_SU
 mdefine_line|#define&t;SLOWPORT_WRTC_SHIFT_SU&t;&t;0x02
 DECL|macro|SLOWPORT_WRTC_SHFIT_PW
 mdefine_line|#define&t;SLOWPORT_WRTC_SHFIT_PW&t;&t;0x06
-multiline_comment|/*&n; * GPIO registers &amp; GPIO interface&n; */
+multiline_comment|/*&n; * GPIO registers &amp; GPIO interface.&n; */
 DECL|macro|IXP2000_GPIO_REG
 mdefine_line|#define IXP2000_GPIO_REG(x)&t;&t;((volatile unsigned long*)(IXP2000_GPIO_VIRT_BASE+(x)))
 DECL|macro|IXP2000_GPIO_PLR

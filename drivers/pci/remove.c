@@ -31,6 +31,12 @@ c_func
 id|dev
 )paren
 suffix:semicolon
+id|pci_cleanup_rom
+c_func
+(paren
+id|dev
+)paren
+suffix:semicolon
 r_for
 c_loop
 (paren
@@ -81,6 +87,12 @@ id|dev
 )paren
 (brace
 id|pci_proc_detach_device
+c_func
+(paren
+id|dev
+)paren
+suffix:semicolon
+id|pci_remove_sysfs_dev_files
 c_func
 (paren
 id|dev

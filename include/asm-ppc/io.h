@@ -1770,32 +1770,6 @@ r_return
 id|retval
 suffix:semicolon
 )brace
-multiline_comment|/* Make some pcmcia drivers happy */
-DECL|function|isa_check_signature
-r_static
-r_inline
-r_int
-id|isa_check_signature
-c_func
-(paren
-r_int
-r_int
-id|io_addr
-comma
-r_const
-r_int
-r_char
-op_star
-id|signature
-comma
-r_int
-id|length
-)paren
-(brace
-r_return
-l_int|0
-suffix:semicolon
-)brace
 multiline_comment|/*&n; * Here comes the ppc implementation of the IOMAP &n; * interfaces.&n; */
 DECL|function|ioread8
 r_static

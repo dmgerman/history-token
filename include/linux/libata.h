@@ -4,6 +4,7 @@ DECL|macro|__LINUX_LIBATA_H__
 mdefine_line|#define __LINUX_LIBATA_H__
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
+macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;linux/ata.h&gt;
 macro_line|#include &lt;linux/workqueue.h&gt;
@@ -49,6 +50,27 @@ macro_line|#endif
 multiline_comment|/* defines only for the constants which don&squot;t work well as enums */
 DECL|macro|ATA_TAG_POISON
 mdefine_line|#define ATA_TAG_POISON&t;&t;0xfafbfcfdU
+multiline_comment|/* move to PCI layer? */
+DECL|function|pci_dev_to_dev
+r_static
+r_inline
+r_struct
+id|device
+op_star
+id|pci_dev_to_dev
+c_func
+(paren
+r_struct
+id|pci_dev
+op_star
+id|pdev
+)paren
+(brace
+r_return
+op_amp
+id|pdev-&gt;dev
+suffix:semicolon
+)brace
 r_enum
 (brace
 multiline_comment|/* various global constants */
@@ -579,11 +601,11 @@ r_struct
 id|list_head
 id|node
 suffix:semicolon
-DECL|member|pdev
+DECL|member|dev
 r_struct
-id|pci_dev
+id|device
 op_star
-id|pdev
+id|dev
 suffix:semicolon
 DECL|member|port_ops
 r_struct
@@ -670,11 +692,11 @@ DECL|member|lock
 id|spinlock_t
 id|lock
 suffix:semicolon
-DECL|member|pdev
+DECL|member|dev
 r_struct
-id|pci_dev
+id|device
 op_star
-id|pdev
+id|dev
 suffix:semicolon
 DECL|member|irq
 r_int
@@ -776,9 +798,9 @@ r_int
 r_int
 id|n_elem
 suffix:semicolon
-DECL|member|pci_dma_dir
+DECL|member|dma_dir
 r_int
-id|pci_dma_dir
+id|dma_dir
 suffix:semicolon
 DECL|member|nsect
 r_int
@@ -1487,34 +1509,6 @@ id|port_ops
 suffix:semicolon
 )brace
 suffix:semicolon
-DECL|struct|pci_bits
-r_struct
-id|pci_bits
-(brace
-DECL|member|reg
-r_int
-r_int
-id|reg
-suffix:semicolon
-multiline_comment|/* PCI config register to read */
-DECL|member|width
-r_int
-r_int
-id|width
-suffix:semicolon
-multiline_comment|/* 1 (8 bit), 2 (16 bit), 4 (32 bit) */
-DECL|member|mask
-r_int
-r_int
-id|mask
-suffix:semicolon
-DECL|member|val
-r_int
-r_int
-id|val
-suffix:semicolon
-)brace
-suffix:semicolon
 r_extern
 r_void
 id|ata_port_probe
@@ -1579,6 +1573,7 @@ op_star
 id|ioaddr
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_PCI
 r_extern
 r_int
 id|ata_pci_init_one
@@ -1609,6 +1604,7 @@ op_star
 id|pdev
 )paren
 suffix:semicolon
+macro_line|#endif /* CONFIG_PCI */
 r_extern
 r_int
 id|ata_device_add
@@ -1869,44 +1865,6 @@ id|regs
 )paren
 suffix:semicolon
 r_extern
-r_struct
-id|ata_probe_ent
-op_star
-id|ata_pci_init_native_mode
-c_func
-(paren
-r_struct
-id|pci_dev
-op_star
-id|pdev
-comma
-r_struct
-id|ata_port_info
-op_star
-op_star
-id|port
-)paren
-suffix:semicolon
-r_extern
-r_struct
-id|ata_probe_ent
-op_star
-id|ata_pci_init_legacy_mode
-c_func
-(paren
-r_struct
-id|pci_dev
-op_star
-id|pdev
-comma
-r_struct
-id|ata_port_info
-op_star
-op_star
-id|port
-)paren
-suffix:semicolon
-r_extern
 r_void
 id|ata_qc_prep
 c_func
@@ -2034,22 +1992,6 @@ id|ap
 )paren
 suffix:semicolon
 r_extern
-r_int
-id|pci_test_config_bits
-c_func
-(paren
-r_struct
-id|pci_dev
-op_star
-id|pdev
-comma
-r_struct
-id|pci_bits
-op_star
-id|bits
-)paren
-suffix:semicolon
-r_extern
 r_void
 id|ata_qc_complete
 c_func
@@ -2135,6 +2077,90 @@ op_star
 id|sdev
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_PCI
+DECL|struct|pci_bits
+r_struct
+id|pci_bits
+(brace
+DECL|member|reg
+r_int
+r_int
+id|reg
+suffix:semicolon
+multiline_comment|/* PCI config register to read */
+DECL|member|width
+r_int
+r_int
+id|width
+suffix:semicolon
+multiline_comment|/* 1 (8 bit), 2 (16 bit), 4 (32 bit) */
+DECL|member|mask
+r_int
+r_int
+id|mask
+suffix:semicolon
+DECL|member|val
+r_int
+r_int
+id|val
+suffix:semicolon
+)brace
+suffix:semicolon
+r_extern
+r_struct
+id|ata_probe_ent
+op_star
+id|ata_pci_init_native_mode
+c_func
+(paren
+r_struct
+id|pci_dev
+op_star
+id|pdev
+comma
+r_struct
+id|ata_port_info
+op_star
+op_star
+id|port
+)paren
+suffix:semicolon
+r_extern
+r_struct
+id|ata_probe_ent
+op_star
+id|ata_pci_init_legacy_mode
+c_func
+(paren
+r_struct
+id|pci_dev
+op_star
+id|pdev
+comma
+r_struct
+id|ata_port_info
+op_star
+op_star
+id|port
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|pci_test_config_bits
+c_func
+(paren
+r_struct
+id|pci_dev
+op_star
+id|pdev
+comma
+r_struct
+id|pci_bits
+op_star
+id|bits
+)paren
+suffix:semicolon
+macro_line|#endif /* CONFIG_PCI */
 DECL|function|ata_tag_valid
 r_static
 r_inline

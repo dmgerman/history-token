@@ -3,6 +3,7 @@ macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/mii.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
+macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &quot;tulip.h&quot;
 multiline_comment|/* The maximum data clock rate is 2.5 Mhz.  The minimum timing is usually&n;   met by back-to-back PCI I/O cycles, but we insert a delay to avoid&n;   &quot;overclocking&quot; issues or future 66Mhz PCI. */
 DECL|macro|mdio_delay

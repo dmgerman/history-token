@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * Simple MTD partitioning layer&n; *&n; * (C) 2000 Nicolas Pitre &lt;nico@cam.org&gt;&n; *&n; * This code is GPL&n; *&n; * $Id: mtdpart.c,v 1.50 2004/08/10 16:18:34 dwmw2 Exp $&n; *&n; * &t;02-21-2002&t;Thomas Gleixner &lt;gleixner@autronix.de&gt;&n; *&t;&t;&t;added support for read_oob, write_oob&n; */
+multiline_comment|/*&n; * Simple MTD partitioning layer&n; *&n; * (C) 2000 Nicolas Pitre &lt;nico@cam.org&gt;&n; *&n; * This code is GPL&n; *&n; * $Id: mtdpart.c,v 1.51 2004/11/16 18:28:59 dwmw2 Exp $&n; *&n; * &t;02-21-2002&t;Thomas Gleixner &lt;gleixner@autronix.de&gt;&n; *&t;&t;&t;added support for read_oob, write_oob&n; */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -2721,6 +2721,7 @@ id|part_parsers
 )paren
 suffix:semicolon
 DECL|function|get_partition_parser
+r_static
 r_struct
 id|mtd_part_parser
 op_star

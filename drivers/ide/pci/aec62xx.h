@@ -23,6 +23,7 @@ suffix:semicolon
 )brace
 suffix:semicolon
 DECL|variable|aec6xxx_33_base
+r_static
 r_struct
 id|chipset_bus_clock_list_entry
 id|aec6xxx_33_base
@@ -160,6 +161,7 @@ l_int|0x00
 )brace
 suffix:semicolon
 DECL|variable|aec6xxx_34_base
+r_static
 r_struct
 id|chipset_bus_clock_list_entry
 id|aec6xxx_34_base

@@ -2419,6 +2419,10 @@ c_cond
 id|elf_ppnt-&gt;p_filesz
 OG
 id|PATH_MAX
+op_logical_or
+id|elf_ppnt-&gt;p_filesz
+op_eq
+l_int|0
 )paren
 r_goto
 id|out_free_file
@@ -2485,14 +2489,25 @@ id|out_free_interp
 suffix:semicolon
 )brace
 multiline_comment|/* make sure path is NULL terminated */
+id|retval
+op_assign
+op_minus
+id|EINVAL
+suffix:semicolon
+r_if
+c_cond
+(paren
 id|elf_interpreter
 (braket
 id|elf_ppnt-&gt;p_filesz
 op_minus
 l_int|1
 )braket
-op_assign
+op_ne
 l_char|&squot;&bslash;0&squot;
+)paren
+r_goto
+id|out_free_interp
 suffix:semicolon
 multiline_comment|/* If the program interpreter is one of these two,&n;&t;&t;&t; * then assume an iBCS2 image. Otherwise assume&n;&t;&t;&t; * a native linux image.&n;&t;&t;&t; */
 r_if

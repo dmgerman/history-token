@@ -136,6 +136,8 @@ r_int
 id|x
 comma
 id|y
+comma
+id|h
 suffix:semicolon
 macro_line|#ifdef __sparc__
 r_if
@@ -260,7 +262,11 @@ op_assign
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t;&t; * In doublescan mode, the cursor location also needs to be&n;&t;&t; * doubled.&n;&t;&t; */
+id|h
+op_assign
+id|cursor-&gt;image.height
+suffix:semicolon
+multiline_comment|/*&n;&t;&t; * In doublescan mode, the cursor location&n;&t;&t; * and heigh also needs to be doubled.&n;&t;&t; */
 r_if
 c_cond
 (paren
@@ -268,10 +274,16 @@ id|par-&gt;crtc.gen_cntl
 op_amp
 id|CRTC_DBL_SCAN_EN
 )paren
+(brace
 id|y
 op_lshift_assign
 l_int|1
 suffix:semicolon
+id|h
+op_lshift_assign
+l_int|1
+suffix:semicolon
+)brace
 id|wait_for_fifo
 c_func
 (paren
@@ -312,7 +324,7 @@ id|u32
 (paren
 l_int|64
 op_minus
-id|cursor-&gt;image.height
+id|h
 op_plus
 id|yoff
 )paren

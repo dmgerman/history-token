@@ -7,6 +7,7 @@ macro_line|#include &lt;linux/stddef.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/initrd.h&gt;
+macro_line|#include &lt;linux/root_dev.h&gt;
 macro_line|#include &lt;linux/seq_file.h&gt;
 macro_line|#include &lt;linux/irq.h&gt;
 macro_line|#include &lt;asm/mmu.h&gt;
@@ -680,12 +681,6 @@ id|KERNELBASE
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* Call back for board-specific settings. */
-id|m82xx_board_init
-c_func
-(paren
-)paren
-suffix:semicolon
 id|ppc_md.setup_arch
 op_assign
 id|m8260_setup_arch
@@ -733,6 +728,12 @@ suffix:semicolon
 id|ppc_md.setup_io_mappings
 op_assign
 id|m8260_map_io
+suffix:semicolon
+multiline_comment|/* Call back for board-specific settings and overrides. */
+id|m82xx_board_init
+c_func
+(paren
+)paren
 suffix:semicolon
 )brace
 eof

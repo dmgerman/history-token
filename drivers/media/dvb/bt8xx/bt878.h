@@ -173,8 +173,9 @@ r_int
 id|bt878_adr
 suffix:semicolon
 DECL|member|bt878_mem
-r_int
-r_char
+r_volatile
+r_void
+id|__iomem
 op_star
 id|bt878_mem
 suffix:semicolon
@@ -285,6 +286,7 @@ c_func
 (paren
 r_volatile
 r_int
+id|__iomem
 op_star
 id|addr
 comma
@@ -327,12 +329,12 @@ l_string|&quot;memory&quot;
 suffix:semicolon
 )brace
 DECL|macro|bmtwrite
-mdefine_line|#define bmtwrite(dat,adr)  io_st_le32((unsigned *)(adr),(dat))
+mdefine_line|#define bmtwrite(dat,adr)  io_st_le32((adr),(dat))
 DECL|macro|bmtread
-mdefine_line|#define bmtread(adr)       ld_le32((unsigned *)(adr))
+mdefine_line|#define bmtread(adr)       ld_le32((adr))
 macro_line|#else
 DECL|macro|bmtwrite
-mdefine_line|#define bmtwrite(dat,adr)  writel((dat), (char *) (adr))
+mdefine_line|#define bmtwrite(dat,adr)  writel((dat), (adr))
 DECL|macro|bmtread
 mdefine_line|#define bmtread(adr)       readl(adr)
 macro_line|#endif

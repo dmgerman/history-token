@@ -582,7 +582,7 @@ suffix:semicolon
 )brace
 id|printf_info
 (paren
-l_string|&quot;%s:%d: %s %sSCSI %d.%d MB/s %s (%d.%d ns, offset %d)&bslash;n&quot;
+l_string|&quot;%s:%d: %s %sSCSI %d.%d MB/s %s%s%s (%d.%d ns, offset %d)&bslash;n&quot;
 comma
 id|sym_name
 c_func
@@ -619,6 +619,28 @@ c_cond
 l_string|&quot;DT&quot;
 suffix:colon
 l_string|&quot;ST&quot;
+comma
+(paren
+id|__tcurr.options
+op_amp
+id|PPR_OPT_IU
+)paren
+ques
+c_cond
+l_string|&quot; IU&quot;
+suffix:colon
+l_string|&quot;&quot;
+comma
+(paren
+id|__tcurr.options
+op_amp
+id|PPR_OPT_QAS
+)paren
+ques
+c_cond
+l_string|&quot; QAS&quot;
+suffix:colon
+l_string|&quot;&quot;
 comma
 id|period
 op_div

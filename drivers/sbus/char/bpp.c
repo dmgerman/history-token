@@ -196,6 +196,7 @@ id|BPP_NO
 suffix:semicolon
 macro_line|#if defined(__i386__)
 DECL|variable|base_addrs
+r_static
 r_const
 r_int
 r_int
@@ -650,8 +651,10 @@ mdefine_line|#define P_ERR_IRP       0x0002      /* RW1  1= rising edge */
 DECL|macro|P_ERR_IRQ_EN
 mdefine_line|#define P_ERR_IRQ_EN    0x0001      /* RW   */
 DECL|variable|base_addrs
-r_int
-r_int
+r_static
+r_void
+id|__iomem
+op_star
 id|base_addrs
 (braket
 id|BPP_NO
@@ -677,8 +680,9 @@ r_int
 id|minor
 )paren
 (brace
-r_int
-r_int
+r_void
+id|__iomem
+op_star
 id|base
 op_assign
 id|base_addrs
@@ -795,8 +799,9 @@ r_int
 id|minor
 )paren
 (brace
-r_int
-r_int
+r_void
+id|__iomem
+op_star
 id|base
 op_assign
 id|base_addrs
@@ -4011,8 +4016,9 @@ macro_line|#endif
 macro_line|#if defined(__sparc__)
 DECL|function|map_bpp
 r_static
-r_int
-r_int
+r_void
+id|__iomem
+op_star
 id|map_bpp
 c_func
 (paren
@@ -4145,8 +4151,9 @@ r_int
 id|idx
 )paren
 (brace
-r_int
-r_int
+r_void
+id|__iomem
+op_star
 id|rp
 op_assign
 id|base_addrs
@@ -4251,9 +4258,8 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+op_logical_neg
 id|rp
-op_eq
-l_int|0
 )paren
 r_return
 suffix:semicolon
@@ -4468,7 +4474,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;bpp%d: %s at 0x%lx&bslash;n&quot;
+l_string|&quot;bpp%d: %s at %p&bslash;n&quot;
 comma
 id|idx
 comma

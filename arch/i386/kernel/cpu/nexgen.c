@@ -66,6 +66,7 @@ multiline_comment|/* A few had 1 MB... */
 DECL|function|nexgen_identify
 r_static
 r_void
+id|__init
 id|nexgen_identify
 c_func
 (paren

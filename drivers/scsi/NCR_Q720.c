@@ -84,7 +84,9 @@ op_star
 id|dev
 suffix:semicolon
 DECL|member|mem_base
-id|__u32
+r_void
+id|__iomem
+op_star
 id|mem_base
 suffix:semicolon
 DECL|member|phys_mem_base
@@ -268,7 +270,9 @@ comma
 id|__u32
 id|paddr
 comma
-id|__u32
+r_void
+id|__iomem
+op_star
 id|vaddr
 )paren
 (brace
@@ -627,7 +631,9 @@ id|base_addr
 comma
 id|mem_size
 suffix:semicolon
-id|__u32
+r_void
+id|__iomem
+op_star
 id|mem_base
 suffix:semicolon
 id|p
@@ -1026,10 +1032,6 @@ c_cond
 id|IS_ERR
 c_func
 (paren
-(paren
-r_void
-op_star
-)paren
 id|mem_base
 )paren
 )paren
@@ -1244,7 +1246,9 @@ id|i
 op_increment
 )paren
 (brace
-id|__u32
+r_void
+id|__iomem
+op_star
 id|reg_scsr1
 op_assign
 id|mem_base
@@ -1297,7 +1301,9 @@ id|i
 op_increment
 )paren
 (brace
-id|__u32
+r_void
+id|__iomem
+op_star
 id|siop_v_base
 op_assign
 id|mem_base

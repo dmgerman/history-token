@@ -2403,6 +2403,9 @@ id|type
 r_case
 id|SOCK_STREAM
 suffix:colon
+r_case
+id|SOCK_SEQPACKET
+suffix:colon
 r_return
 id|SECCLASS_UNIX_STREAM_SOCKET
 suffix:semicolon
@@ -2413,6 +2416,8 @@ r_return
 id|SECCLASS_UNIX_DGRAM_SOCKET
 suffix:semicolon
 )brace
+r_break
+suffix:semicolon
 r_case
 id|PF_INET
 suffix:colon
@@ -2444,6 +2449,8 @@ r_return
 id|SECCLASS_RAWIP_SOCKET
 suffix:semicolon
 )brace
+r_break
+suffix:semicolon
 r_case
 id|PF_NETLINK
 suffix:colon

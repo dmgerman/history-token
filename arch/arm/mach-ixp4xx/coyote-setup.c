@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * arch/arm/mach-ixp4xx/coyote-setup.c&n; *&n; * ADI Engineering Coyote board-setup &n; *&n; * Copyright (C) 2003-2004 MontaVista Software, Inc.&n; *&n; * Author: Deepak Saxena &lt;dsaxena@plexity.net&gt;&n; */
+multiline_comment|/*&n; * arch/arm/mach-ixp4xx/coyote-setup.c&n; *&n; * Board setup for ADI Engineering and IXDGP425 boards&n; *&n; * Copyright (C) 2003-2004 MontaVista Software, Inc.&n; *&n; * Author: Deepak Saxena &lt;dsaxena@plexity.net&gt;&n; */
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/device.h&gt;
 macro_line|#include &lt;linux/serial.h&gt;
@@ -19,7 +19,7 @@ macro_line|#else
 DECL|macro|REG_OFFSET
 mdefine_line|#define&t;REG_OFFSET&t;0
 macro_line|#endif
-multiline_comment|/*&n; * Only one serial port is connected on the Coyote.&n; */
+multiline_comment|/*&n; * Only one serial port is connected on the Coyote &amp; IXDPG425&n; */
 DECL|variable|coyote_serial_port
 r_static
 r_struct
@@ -97,6 +97,36 @@ c_func
 r_void
 )paren
 (brace
+r_if
+c_cond
+(paren
+id|machine_is_ixdpg425
+c_func
+(paren
+)paren
+)paren
+(brace
+id|coyote_serial_port.membase
+op_assign
+(paren
+r_char
+op_star
+)paren
+(paren
+id|IXP4XX_UART1_BASE_VIRT
+op_plus
+id|REG_OFFSET
+)paren
+suffix:semicolon
+id|coyote_serial_port.mapbase
+op_assign
+id|IXP4XX_UART1_BASE_PHYS
+suffix:semicolon
+id|coyote_serial_port.irq
+op_assign
+id|IRQ_IXP4XX_UART1
+suffix:semicolon
+)brace
 id|early_serial_setup
 c_func
 (paren
@@ -222,6 +252,17 @@ c_func
 r_void
 )paren
 (brace
+op_star
+id|IXP4XX_EXP_CS0
+op_or_assign
+id|IXP4XX_FLASH_WRITABLE
+suffix:semicolon
+op_star
+id|IXP4XX_EXP_CS1
+op_assign
+op_star
+id|IXP4XX_EXP_CS0
+suffix:semicolon
 id|platform_add_devices
 c_func
 (paren
@@ -236,12 +277,13 @@ id|coyote_devices
 )paren
 suffix:semicolon
 )brace
+macro_line|#ifdef CONFIG_ARCH_ADI_COYOTE
 id|MACHINE_START
 c_func
 (paren
 id|ADI_COYOTE
 comma
-l_string|&quot;ADI Engineering IXP4XX Coyote Development Platform&quot;
+l_string|&quot;ADI Engineering Coyote&quot;
 )paren
 id|MAINTAINER
 c_func
@@ -284,4 +326,56 @@ c_func
 id|coyote_init
 )paren
 id|MACHINE_END
+macro_line|#endif
+multiline_comment|/*&n; * IXDPG425 is identical to Coyote except for which serial port&n; * is connected.&n; */
+macro_line|#ifdef CONFIG_MACH_IXDPG425
+id|MACHINE_START
+c_func
+(paren
+id|IXDPG425
+comma
+l_string|&quot;Intel IXDPG425&quot;
+)paren
+id|MAINTAINER
+c_func
+(paren
+l_string|&quot;MontaVista Software, Inc.&quot;
+)paren
+id|BOOT_MEM
+c_func
+(paren
+id|PHYS_OFFSET
+comma
+id|IXP4XX_PERIPHERAL_BASE_PHYS
+comma
+id|IXP4XX_PERIPHERAL_BASE_VIRT
+)paren
+id|MAPIO
+c_func
+(paren
+id|coyote_map_io
+)paren
+id|INITIRQ
+c_func
+(paren
+id|ixp4xx_init_irq
+)paren
+dot
+id|timer
+op_assign
+op_amp
+id|ixp4xx_timer
+comma
+id|BOOT_PARAMS
+c_func
+(paren
+l_int|0x0100
+)paren
+id|INIT_MACHINE
+c_func
+(paren
+id|coyote_init
+)paren
+id|MACHINE_END
+macro_line|#endif
 eof

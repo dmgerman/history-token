@@ -757,12 +757,16 @@ c_func
 l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|debug
 comma
-l_string|&quot;i&quot;
+r_bool
+comma
+id|S_IRUGO
+op_or
+id|S_IWUSR
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -773,12 +777,14 @@ comma
 l_string|&quot;Debugging mode enabled or not&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|bridge
 comma
-l_string|&quot;s&quot;
+id|charp
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -789,12 +795,14 @@ comma
 l_string|&quot;Hotswap bus bridge device, &lt;bus&gt;:&lt;slot&gt; (bus and slot are in hexadecimal)&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|first_slot
 comma
-l_string|&quot;b&quot;
+id|byte
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -805,12 +813,14 @@ comma
 l_string|&quot;Hotswap bus first slot number&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|last_slot
 comma
-l_string|&quot;b&quot;
+id|byte
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -821,12 +831,14 @@ comma
 l_string|&quot;Hotswap bus last slot number&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|port
 comma
-l_string|&quot;h&quot;
+id|ushort
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -837,12 +849,14 @@ comma
 l_string|&quot;#ENUM signal I/O port&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|enum_bit
 comma
-l_string|&quot;i&quot;
+id|uint
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC

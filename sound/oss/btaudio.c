@@ -140,6 +140,7 @@ suffix:semicolon
 DECL|member|mmio
 r_int
 r_int
+id|__iomem
 op_star
 id|mmio
 suffix:semicolon

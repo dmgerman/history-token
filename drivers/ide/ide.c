@@ -653,6 +653,28 @@ id|ide_system_bus_speed
 r_void
 )paren
 (brace
+r_static
+r_struct
+id|pci_device_id
+id|pci_default
+(braket
+)braket
+op_assign
+(brace
+(brace
+id|PCI_DEVICE
+c_func
+(paren
+id|PCI_ANY_ID
+comma
+id|PCI_ANY_ID
+)paren
+)brace
+comma
+(brace
+)brace
+)brace
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -676,17 +698,11 @@ r_else
 r_if
 c_cond
 (paren
-id|pci_find_device
+id|pci_dev_present
 c_func
 (paren
-id|PCI_ANY_ID
-comma
-id|PCI_ANY_ID
-comma
-l_int|NULL
+id|pci_default
 )paren
-op_ne
-l_int|NULL
 )paren
 (brace
 multiline_comment|/* safe default value for PCI */
@@ -7381,7 +7397,7 @@ l_string|&quot;ide=nodma&quot;
 id|printk
 c_func
 (paren
-l_string|&quot;IDE: Prevented DMA&bslash;n&quot;
+l_string|&quot; : Prevented DMA&bslash;n&quot;
 )paren
 suffix:semicolon
 id|noautodma
@@ -10032,12 +10048,14 @@ id|options
 op_assign
 l_int|NULL
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|options
 comma
-l_string|&quot;s&quot;
+id|charp
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|MODULE_LICENSE

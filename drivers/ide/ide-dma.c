@@ -223,12 +223,6 @@ l_string|&quot;ALL&quot;
 )brace
 comma
 (brace
-l_string|&quot;RICOH CD-R/RW MP7083A&quot;
-comma
-l_string|&quot;ALL&quot;
-)brace
-comma
-(brace
 l_string|&quot;WPI CDD-820&quot;
 comma
 l_string|&quot;ALL&quot;

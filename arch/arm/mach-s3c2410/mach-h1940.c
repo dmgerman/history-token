@@ -1,4 +1,4 @@
-multiline_comment|/* linux/arch/arm/mach-s3c2410/mach-h1940.c&n; *&n; * Copyright (c) 2003,2004 Simtec Electronics&n; *   Ben Dooks &lt;ben@simtec.co.uk&gt;&n; *&n; * http://www.handhelds.org/projects/h1940.html&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; *&n; * Modifications:&n; *     16-May-2003 BJD  Created initial version&n; *     16-Aug-2003 BJD  Fixed header files and copyright, added URL&n; *     05-Sep-2003 BJD  Moved to v2.6 kernel&n; *     06-Jan-2003 BJD  Updates for &lt;arch/map.h&gt;&n; *     18-Jan-2003 BJD  Added serial port configuration&n; *     17-Feb-2003 BJD  Copied to mach-ipaq.c&n; *     21-Aug-2004 BJD  Added struct s3c2410_board&n; *     04-Sep-2004 BJD  Changed uart init, renamed ipaq_ -&gt; h1940_&n; *     18-Oct-2004 BJD  Updated new board structure name&n;*/
+multiline_comment|/* linux/arch/arm/mach-s3c2410/mach-h1940.c&n; *&n; * Copyright (c) 2003,2004 Simtec Electronics&n; *   Ben Dooks &lt;ben@simtec.co.uk&gt;&n; *&n; * http://www.handhelds.org/projects/h1940.html&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; *&n; * Modifications:&n; *     16-May-2003 BJD  Created initial version&n; *     16-Aug-2003 BJD  Fixed header files and copyright, added URL&n; *     05-Sep-2003 BJD  Moved to v2.6 kernel&n; *     06-Jan-2003 BJD  Updates for &lt;arch/map.h&gt;&n; *     18-Jan-2003 BJD  Added serial port configuration&n; *     17-Feb-2003 BJD  Copied to mach-ipaq.c&n; *     21-Aug-2004 BJD  Added struct s3c2410_board&n; *     04-Sep-2004 BJD  Changed uart init, renamed ipaq_ -&gt; h1940_&n; *     18-Oct-2004 BJD  Updated new board structure name&n; *     04-Nov-2004 BJD  Change for new serial clock&n;*/
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
@@ -15,6 +15,7 @@ macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;asm/mach-types.h&gt;
 singleline_comment|//#include &lt;asm/debug-ll.h&gt;
 macro_line|#include &lt;asm/arch/regs-serial.h&gt;
+macro_line|#include &lt;linux/serial_core.h&gt;
 macro_line|#include &quot;s3c2410.h&quot;
 macro_line|#include &quot;clock.h&quot;
 macro_line|#include &quot;devs.h&quot;
@@ -63,12 +64,6 @@ op_assign
 l_int|0
 comma
 dot
-id|clock
-op_assign
-op_amp
-id|s3c24xx_pclk
-comma
-dot
 id|ucon
 op_assign
 l_int|0x3c5
@@ -99,12 +94,6 @@ dot
 id|flags
 op_assign
 l_int|0
-comma
-dot
-id|clock
-op_assign
-op_amp
-id|s3c24xx_pclk
 comma
 dot
 id|ucon
@@ -140,10 +129,9 @@ op_assign
 l_int|0
 comma
 dot
-id|clock
+id|uart_flags
 op_assign
-op_amp
-id|s3c24xx_pclk
+id|UPF_CONS_FLOW
 comma
 dot
 id|ucon

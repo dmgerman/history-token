@@ -966,7 +966,7 @@ op_star
 id|format
 )paren
 )paren
-id|WRITE_WORD
+id|PUT_WORD
 c_func
 (paren
 op_amp
@@ -975,7 +975,7 @@ comma
 id|appl-&gt;Id
 )paren
 suffix:semicolon
-id|WRITE_WORD
+id|PUT_WORD
 c_func
 (paren
 op_amp
@@ -1003,7 +1003,7 @@ op_assign
 id|appl-&gt;Number
 op_increment
 suffix:semicolon
-id|WRITE_WORD
+id|PUT_WORD
 c_func
 (paren
 op_amp
@@ -1012,17 +1012,11 @@ comma
 id|Number
 )paren
 suffix:semicolon
-id|WRITE_DWORD
+id|PUT_DWORD
 c_func
 (paren
-(paren
-(paren
-id|byte
-op_star
-)paren
 op_amp
 id|msg.header.controller
-)paren
 comma
 id|Id
 )paren
@@ -1125,7 +1119,7 @@ comma
 id|dword
 )paren
 suffix:semicolon
-id|WRITE_WORD
+id|PUT_WORD
 c_func
 (paren
 id|write
@@ -1160,7 +1154,7 @@ comma
 id|dword
 )paren
 suffix:semicolon
-id|WRITE_DWORD
+id|PUT_DWORD
 c_func
 (paren
 id|write
@@ -1240,7 +1234,7 @@ c_func
 id|ap
 )paren
 suffix:semicolon
-id|WRITE_WORD
+id|PUT_WORD
 c_func
 (paren
 op_amp
@@ -1266,7 +1260,7 @@ id|_DATA_B3_I
 )paren
 id|dlength
 op_assign
-id|READ_WORD
+id|GET_WORD
 c_func
 (paren
 (paren
@@ -1342,7 +1336,7 @@ id|_DATA_B3_I
 id|dword
 id|data
 op_assign
-id|READ_DWORD
+id|GET_DWORD
 c_func
 (paren
 op_amp
@@ -1474,7 +1468,7 @@ c_func
 r_char
 op_star
 )paren
-id|READ_DWORD
+id|GET_DWORD
 c_func
 (paren
 op_amp
@@ -3810,7 +3804,7 @@ l_int|10
 suffix:semicolon
 )brace
 multiline_comment|/* profile information */
-id|WRITE_WORD
+id|PUT_WORD
 c_func
 (paren
 op_amp
@@ -4722,7 +4716,7 @@ op_assign
 op_amp
 id|application
 (braket
-id|READ_WORD
+id|GET_WORD
 c_func
 (paren
 op_amp
@@ -4750,7 +4744,7 @@ suffix:semicolon
 id|word
 id|clength
 op_assign
-id|READ_WORD
+id|GET_WORD
 c_func
 (paren
 op_amp
@@ -4760,7 +4754,7 @@ suffix:semicolon
 id|word
 id|command
 op_assign
-id|READ_WORD
+id|GET_WORD
 c_func
 (paren
 op_amp
@@ -4960,7 +4954,7 @@ multiline_comment|/* header is always 22      */
 r_if
 c_cond
 (paren
-id|READ_WORD
+id|GET_WORD
 c_func
 (paren
 op_amp
@@ -4969,7 +4963,7 @@ id|msg-&gt;info.data_b3_req.Data_Length
 OG
 id|this-&gt;MaxDataLength
 op_logical_or
-id|READ_WORD
+id|GET_WORD
 c_func
 (paren
 op_amp
@@ -5080,7 +5074,7 @@ id|msg
 id|clength
 )braket
 comma
-id|READ_WORD
+id|GET_WORD
 c_func
 (paren
 op_amp
@@ -5117,7 +5111,7 @@ l_int|0
 suffix:semicolon
 id|j
 OL
-id|READ_WORD
+id|GET_WORD
 c_func
 (paren
 op_amp
@@ -5148,7 +5142,7 @@ id|j
 comma
 (paren
 (paren
-id|READ_WORD
+id|GET_WORD
 c_func
 (paren
 op_amp
@@ -5163,7 +5157,7 @@ l_int|256
 ques
 c_cond
 (paren
-id|READ_WORD
+id|GET_WORD
 c_func
 (paren
 op_amp
@@ -5226,7 +5220,7 @@ id|command
 suffix:semicolon
 id|mapped_msg-&gt;header.number
 op_assign
-id|READ_WORD
+id|GET_WORD
 c_func
 (paren
 op_amp

@@ -216,11 +216,13 @@ op_assign
 l_int|0
 suffix:semicolon
 macro_line|#ifdef MODULE
-id|MODULE_PARM
+id|module_param
 (paren
 id|wd0_timeout
 comma
-l_string|&quot;i&quot;
+r_int
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -231,11 +233,13 @@ comma
 l_string|&quot;Default watchdog0 timeout in 1/10secs&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
 (paren
 id|wd1_timeout
 comma
-l_string|&quot;i&quot;
+r_int
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -246,11 +250,13 @@ comma
 l_string|&quot;Default watchdog1 timeout in 1/10secs&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
 (paren
 id|wd2_timeout
 comma
-l_string|&quot;i&quot;
+r_int
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC

@@ -1028,9 +1028,12 @@ id|cpqfcHBAdata-&gt;HBAnum
 op_assign
 id|NumberOfAdapters
 suffix:semicolon
+id|spin_lock_init
+c_func
+(paren
+op_amp
 id|cpqfcHBAdata-&gt;hba_spinlock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 singleline_comment|// request necessary resources and check for conflicts
 r_if

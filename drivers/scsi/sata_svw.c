@@ -17,7 +17,7 @@ macro_line|#endif /* CONFIG_PPC_OF */
 DECL|macro|DRV_NAME
 mdefine_line|#define DRV_NAME&t;&quot;sata_svw&quot;
 DECL|macro|DRV_VERSION
-mdefine_line|#define DRV_VERSION&t;&quot;1.04&quot;
+mdefine_line|#define DRV_VERSION&t;&quot;1.05&quot;
 multiline_comment|/* Taskfile registers offsets */
 DECL|macro|K2_SATA_TF_CMD_OFFSET
 mdefine_line|#define K2_SATA_TF_CMD_OFFSET&t;&t;0x00
@@ -806,7 +806,11 @@ op_assign
 id|pci_device_to_OF_node
 c_func
 (paren
-id|ap-&gt;host_set-&gt;pdev
+id|to_pci_dev
+c_func
+(paren
+id|ap-&gt;host_set-&gt;dev
+)paren
 )paren
 suffix:semicolon
 r_if
@@ -1396,9 +1400,13 @@ id|probe_ent
 )paren
 )paren
 suffix:semicolon
-id|probe_ent-&gt;pdev
+id|probe_ent-&gt;dev
 op_assign
+id|pci_dev_to_dev
+c_func
+(paren
 id|pdev
+)paren
 suffix:semicolon
 id|INIT_LIST_HEAD
 c_func
@@ -1810,6 +1818,13 @@ c_func
 id|pci
 comma
 id|k2_sata_pci_tbl
+)paren
+suffix:semicolon
+DECL|variable|DRV_VERSION
+id|MODULE_VERSION
+c_func
+(paren
+id|DRV_VERSION
 )paren
 suffix:semicolon
 DECL|variable|k2_sata_init

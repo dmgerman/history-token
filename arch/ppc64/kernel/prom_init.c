@@ -3236,8 +3236,10 @@ id|prom
 suffix:semicolon
 id|phandle
 id|prom_rtas
+comma
+id|rtas_node
 suffix:semicolon
-id|u64
+id|u32
 id|base
 comma
 id|entry
@@ -3356,7 +3358,7 @@ comma
 id|base
 )paren
 suffix:semicolon
-id|prom_rtas
+id|rtas_node
 op_assign
 id|call_prom
 c_func
@@ -3398,7 +3400,7 @@ c_func
 l_string|&quot;instantiate-rtas&quot;
 )paren
 comma
-id|prom_rtas
+id|rtas_node
 comma
 id|base
 )paren
@@ -3451,7 +3453,7 @@ suffix:semicolon
 id|prom_setprop
 c_func
 (paren
-id|_prom-&gt;chosen
+id|prom_rtas
 comma
 l_string|&quot;linux,rtas-base&quot;
 comma
@@ -3467,7 +3469,7 @@ suffix:semicolon
 id|prom_setprop
 c_func
 (paren
-id|_prom-&gt;chosen
+id|prom_rtas
 comma
 l_string|&quot;linux,rtas-entry&quot;
 comma
@@ -3477,22 +3479,6 @@ comma
 r_sizeof
 (paren
 id|entry
-)paren
-)paren
-suffix:semicolon
-id|prom_setprop
-c_func
-(paren
-id|_prom-&gt;chosen
-comma
-l_string|&quot;linux,rtas-size&quot;
-comma
-op_amp
-id|size
-comma
-r_sizeof
-(paren
-id|size
 )paren
 )paren
 suffix:semicolon
@@ -3584,8 +3570,6 @@ id|prom_scratch
 suffix:semicolon
 id|u64
 id|base
-comma
-id|vbase
 comma
 id|align
 suffix:semicolon
@@ -4011,18 +3995,6 @@ id|local_alloc_bottom
 op_assign
 id|base
 suffix:semicolon
-id|vbase
-op_assign
-(paren
-r_int
-r_int
-)paren
-id|abs_to_virt
-c_func
-(paren
-id|base
-)paren
-suffix:semicolon
 multiline_comment|/* Save away the TCE table attributes for later use. */
 id|prom_setprop
 c_func
@@ -4032,11 +4004,11 @@ comma
 l_string|&quot;linux,tce-base&quot;
 comma
 op_amp
-id|vbase
+id|base
 comma
 r_sizeof
 (paren
-id|vbase
+id|base
 )paren
 )paren
 suffix:semicolon
@@ -4054,18 +4026,6 @@ r_sizeof
 (paren
 id|minsize
 )paren
-)paren
-suffix:semicolon
-id|prom_setprop
-c_func
-(paren
-id|node
-comma
-l_string|&quot;linux,has-tce-table&quot;
-comma
-l_int|NULL
-comma
-l_int|0
 )paren
 suffix:semicolon
 multiline_comment|/* It seems OF doesn&squot;t null-terminate the path :-( */
@@ -4805,7 +4765,7 @@ id|node
 comma
 id|secondary_hold
 comma
-id|cpuid
+id|reg
 )paren
 suffix:semicolon
 r_for
@@ -4849,7 +4809,7 @@ c_cond
 op_star
 id|acknowledge
 op_eq
-id|cpuid
+id|reg
 )paren
 (brace
 id|prom_printf
@@ -8370,23 +8330,6 @@ c_func
 l_string|&quot;offset=0x%x&bslash;n&quot;
 comma
 id|offset
-)paren
-suffix:semicolon
-multiline_comment|/*&n;&t; * Reserve kernel in reserve map&n;&t; */
-id|reserve_mem
-c_func
-(paren
-l_int|0
-comma
-id|__pa
-c_func
-(paren
-id|RELOC
-c_func
-(paren
-id|klimit
-)paren
-)paren
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * Check for an initrd&n;&t; */

@@ -146,7 +146,7 @@ macro_line|#endif
 )brace
 suffix:semicolon
 DECL|macro|ZILOG_CHANNEL_FROM_PORT
-mdefine_line|#define ZILOG_CHANNEL_FROM_PORT(PORT)&t;((struct zilog_channel *)((PORT)-&gt;membase))
+mdefine_line|#define ZILOG_CHANNEL_FROM_PORT(PORT)&t;((struct zilog_channel __iomem *)((PORT)-&gt;membase))
 DECL|macro|UART_ZILOG
 mdefine_line|#define UART_ZILOG(PORT)&t;&t;((struct uart_sunzilog_port *)(PORT))
 DECL|macro|ZS_IS_KEYB
@@ -177,6 +177,7 @@ c_func
 (paren
 r_struct
 id|zilog_channel
+id|__iomem
 op_star
 id|channel
 comma
@@ -229,6 +230,7 @@ c_func
 (paren
 r_struct
 id|zilog_channel
+id|__iomem
 op_star
 id|channel
 comma
@@ -278,6 +280,7 @@ c_func
 (paren
 r_struct
 id|zilog_channel
+id|__iomem
 op_star
 id|channel
 )paren
@@ -395,6 +398,7 @@ c_func
 (paren
 r_struct
 id|zilog_channel
+id|__iomem
 op_star
 id|channel
 comma
@@ -752,6 +756,7 @@ id|up
 comma
 r_struct
 id|zilog_channel
+id|__iomem
 op_star
 id|channel
 )paren
@@ -1025,6 +1030,7 @@ id|up
 comma
 r_struct
 id|zilog_channel
+id|__iomem
 op_star
 id|channel
 comma
@@ -1497,6 +1503,7 @@ id|up
 comma
 r_struct
 id|zilog_channel
+id|__iomem
 op_star
 id|channel
 comma
@@ -1721,6 +1728,7 @@ id|up
 comma
 r_struct
 id|zilog_channel
+id|__iomem
 op_star
 id|channel
 )paren
@@ -2028,6 +2036,7 @@ id|up
 (brace
 r_struct
 id|zilog_channel
+id|__iomem
 op_star
 id|channel
 op_assign
@@ -2328,6 +2337,7 @@ id|port
 (brace
 r_struct
 id|zilog_channel
+id|__iomem
 op_star
 id|channel
 suffix:semicolon
@@ -2535,6 +2545,7 @@ id|port
 suffix:semicolon
 r_struct
 id|zilog_channel
+id|__iomem
 op_star
 id|channel
 op_assign
@@ -2683,6 +2694,7 @@ id|port
 suffix:semicolon
 r_struct
 id|zilog_channel
+id|__iomem
 op_star
 id|channel
 op_assign
@@ -2863,6 +2875,7 @@ id|port
 suffix:semicolon
 r_struct
 id|zilog_channel
+id|__iomem
 op_star
 id|channel
 suffix:semicolon
@@ -2930,6 +2943,7 @@ id|port
 suffix:semicolon
 r_struct
 id|zilog_channel
+id|__iomem
 op_star
 id|channel
 op_assign
@@ -3022,6 +3036,7 @@ id|port
 suffix:semicolon
 r_struct
 id|zilog_channel
+id|__iomem
 op_star
 id|channel
 op_assign
@@ -3143,6 +3158,7 @@ id|up
 (brace
 r_struct
 id|zilog_channel
+id|__iomem
 op_star
 id|channel
 suffix:semicolon
@@ -3292,6 +3308,7 @@ id|port
 suffix:semicolon
 r_struct
 id|zilog_channel
+id|__iomem
 op_star
 id|channel
 suffix:semicolon
@@ -3892,6 +3909,16 @@ id|port
 )paren
 )paren
 suffix:semicolon
+id|uart_update_timeout
+c_func
+(paren
+id|port
+comma
+id|termios-&gt;c_cflag
+comma
+id|baud
+)paren
+suffix:semicolon
 id|spin_unlock_irqrestore
 c_func
 (paren
@@ -4090,6 +4117,7 @@ DECL|variable|sunzilog_chip_regs
 r_static
 r_struct
 id|zilog_layout
+id|__iomem
 op_star
 op_star
 id|sunzilog_chip_regs
@@ -4203,11 +4231,6 @@ r_void
 (brace
 id|sunzilog_port_table
 op_assign
-(paren
-r_struct
-id|uart_sunzilog_port
-op_star
-)paren
 id|alloc_one_table
 c_func
 (paren
@@ -4222,12 +4245,6 @@ id|uart_sunzilog_port
 suffix:semicolon
 id|sunzilog_chip_regs
 op_assign
-(paren
-r_struct
-id|zilog_layout
-op_star
-op_star
-)paren
 id|alloc_one_table
 c_func
 (paren
@@ -4237,6 +4254,7 @@ r_sizeof
 (paren
 r_struct
 id|zilog_layout
+id|__iomem
 op_star
 )paren
 )paren
@@ -4272,6 +4290,7 @@ DECL|function|get_zs_sun4u
 r_static
 r_struct
 id|zilog_layout
+id|__iomem
 op_star
 id|__init
 id|get_zs_sun4u
@@ -4606,6 +4625,7 @@ r_return
 (paren
 r_struct
 id|zilog_layout
+id|__iomem
 op_star
 )paren
 id|mapped_addr
@@ -4617,6 +4637,7 @@ DECL|function|get_zs_sun4cmd
 r_static
 r_struct
 id|zilog_layout
+id|__iomem
 op_star
 id|__init
 id|get_zs_sun4cmd
@@ -4636,11 +4657,12 @@ id|irq_info
 l_int|2
 )braket
 suffix:semicolon
-r_int
-r_int
+r_void
+id|__iomem
+op_star
 id|mapped_addr
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 r_int
 id|zsnode
@@ -5126,6 +5148,7 @@ r_return
 (paren
 r_struct
 id|zilog_layout
+id|__iomem
 op_star
 )paren
 id|mapped_addr
@@ -5137,6 +5160,7 @@ DECL|function|get_zs
 r_static
 r_struct
 id|zilog_layout
+id|__iomem
 op_star
 id|__init
 id|get_zs
@@ -5246,11 +5270,6 @@ op_assign
 id|IORESOURCE_IO
 suffix:semicolon
 r_return
-(paren
-r_struct
-id|zilog_layout
-op_star
-)paren
 id|sbus_ioremap
 c_func
 (paren
@@ -5286,6 +5305,7 @@ c_func
 (paren
 r_struct
 id|zilog_channel
+id|__iomem
 op_star
 id|channel
 comma
@@ -6267,6 +6287,7 @@ id|up
 suffix:semicolon
 r_struct
 id|zilog_layout
+id|__iomem
 op_star
 id|rp
 suffix:semicolon
@@ -6388,7 +6409,8 @@ dot
 id|port.membase
 op_assign
 (paren
-r_char
+r_void
+id|__iomem
 op_star
 )paren
 op_amp
@@ -6408,7 +6430,8 @@ dot
 id|port.membase
 op_assign
 (paren
-r_char
+r_void
+id|__iomem
 op_star
 )paren
 op_amp
@@ -7053,6 +7076,7 @@ id|i
 suffix:semicolon
 r_struct
 id|zilog_channel
+id|__iomem
 op_star
 id|channel
 op_assign
@@ -7341,6 +7365,7 @@ macro_line|#endif
 r_static
 r_struct
 id|zilog_layout
+id|__iomem
 op_star
 id|__init
 id|get_zs
@@ -7568,6 +7593,11 @@ op_eq
 l_int|0
 )paren
 (brace
+id|sunzilog_console_init
+c_func
+(paren
+)paren
+suffix:semicolon
 r_for
 c_loop
 (paren
@@ -7749,11 +7779,6 @@ c_func
 )paren
 suffix:semicolon
 id|sunzilog_ports_init
-c_func
-(paren
-)paren
-suffix:semicolon
-id|sunzilog_console_init
 c_func
 (paren
 )paren

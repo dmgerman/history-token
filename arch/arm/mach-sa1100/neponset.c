@@ -550,6 +550,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+macro_line|#ifdef CONFIG_PM
 multiline_comment|/*&n; * LDM power management.&n; */
 DECL|function|neponset_suspend
 r_static
@@ -590,9 +591,9 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|dev-&gt;saved_state
+id|dev-&gt;power.saved_state
 )paren
-id|dev-&gt;saved_state
+id|dev-&gt;power.saved_state
 op_assign
 id|kmalloc
 c_func
@@ -610,7 +611,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|dev-&gt;saved_state
+id|dev-&gt;power.saved_state
 )paren
 r_return
 op_minus
@@ -622,7 +623,7 @@ r_int
 r_int
 op_star
 )paren
-id|dev-&gt;saved_state
+id|dev-&gt;power.saved_state
 op_assign
 id|NCR_0
 suffix:semicolon
@@ -661,7 +662,7 @@ id|RESUME_ENABLE
 r_if
 c_cond
 (paren
-id|dev-&gt;saved_state
+id|dev-&gt;power.saved_state
 )paren
 (brace
 id|NCR_0
@@ -672,15 +673,15 @@ r_int
 r_int
 op_star
 )paren
-id|dev-&gt;saved_state
+id|dev-&gt;power.saved_state
 suffix:semicolon
 id|kfree
 c_func
 (paren
-id|dev-&gt;saved_state
+id|dev-&gt;power.saved_state
 )paren
 suffix:semicolon
-id|dev-&gt;saved_state
+id|dev-&gt;power.saved_state
 op_assign
 l_int|NULL
 suffix:semicolon
@@ -690,6 +691,12 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+macro_line|#else
+DECL|macro|neponset_suspend
+mdefine_line|#define&t;neponset_suspend&t;NULL
+DECL|macro|neponset_resume
+mdefine_line|#define&t;neponset_resume&t;NULL
+macro_line|#endif
 DECL|variable|neponset_device_driver
 r_static
 r_struct

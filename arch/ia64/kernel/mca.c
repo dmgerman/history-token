@@ -2464,6 +2464,11 @@ suffix:semicolon
 r_break
 suffix:semicolon
 )brace
+id|cpu_relax
+c_func
+(paren
+)paren
+suffix:semicolon
 )brace
 r_while
 c_loop

@@ -3663,6 +3663,7 @@ l_int|0x0400
 suffix:semicolon
 multiline_comment|/* The signature is located 1K below the end of video RAM.  */
 r_char
+id|__iomem
 op_star
 id|temp
 op_assign

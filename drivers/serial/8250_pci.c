@@ -923,6 +923,7 @@ id|dev
 )paren
 (brace
 id|u8
+id|__iomem
 op_star
 id|p
 suffix:semicolon
@@ -1109,6 +1110,7 @@ id|dev
 )paren
 (brace
 id|u8
+id|__iomem
 op_star
 id|p
 suffix:semicolon
@@ -1208,6 +1210,7 @@ id|dev
 )paren
 (brace
 id|u8
+id|__iomem
 op_star
 id|p
 suffix:semicolon
@@ -8188,6 +8191,23 @@ comma
 l_int|0
 comma
 id|pbn_b0_bt_1_460800
+)brace
+comma
+multiline_comment|/*&n;&t; * Dell Remote Access Card 4 - Tim_T_Murphy@Dell.com&n;&t; */
+(brace
+id|PCI_VENDOR_ID_DELL
+comma
+id|PCI_DEVICE_ID_DELL_RAC4
+comma
+id|PCI_ANY_ID
+comma
+id|PCI_ANY_ID
+comma
+l_int|0
+comma
+l_int|0
+comma
+id|pbn_b1_1_1382400
 )brace
 comma
 multiline_comment|/*&n;&t; * Dell Remote Access Card III - Tim_T_Murphy@Dell.com&n;&t; */

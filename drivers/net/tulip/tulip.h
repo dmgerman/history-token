@@ -443,6 +443,11 @@ l_int|0x01
 comma
 )brace
 suffix:semicolon
+multiline_comment|/* bit mask for CSR5 TX/RX process state */
+DECL|macro|CSR5_TS
+mdefine_line|#define CSR5_TS&t;0x00700000
+DECL|macro|CSR5_RS
+mdefine_line|#define CSR5_RS&t;0x000e0000
 DECL|enum|tulip_mode_bits
 r_enum
 id|tulip_mode_bits
@@ -1871,6 +1876,13 @@ op_amp
 id|RxTx
 )paren
 (brace
+r_int
+id|i
+op_assign
+l_int|1300
+op_div
+l_int|10
+suffix:semicolon
 id|iowrite32
 c_func
 (paren
@@ -1889,18 +1901,50 @@ c_func
 (paren
 )paren
 suffix:semicolon
+multiline_comment|/* wait until in-flight frame completes.&n;&t;&t; * Max time @ 10BT: 1500*8b/10Mbps == 1200us (+ 100us margin)&n;&t;&t; * Typically expect this loop to end in &lt; 50 us on 100BT.&n;&t;&t; */
+r_while
+c_loop
 (paren
-r_void
-)paren
+op_decrement
+id|i
+op_logical_and
+(paren
 id|ioread32
 c_func
 (paren
 id|ioaddr
 op_plus
-id|CSR6
+id|CSR5
+)paren
+op_amp
+(paren
+id|CSR5_TS
+op_or
+id|CSR5_RS
+)paren
+)paren
+)paren
+id|udelay
+c_func
+(paren
+l_int|10
 )paren
 suffix:semicolon
-multiline_comment|/* mmio sync */
+r_if
+c_cond
+(paren
+op_logical_neg
+id|i
+)paren
+id|printk
+c_func
+(paren
+id|KERN_DEBUG
+l_string|&quot;%s: tulip_stop_rxtx() failed&bslash;n&quot;
+comma
+id|tp-&gt;pdev-&gt;slot_name
+)paren
+suffix:semicolon
 )brace
 )brace
 DECL|function|tulip_restart_rxtx

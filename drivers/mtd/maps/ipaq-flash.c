@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * Flash memory access on iPAQ Handhelds (either SA1100 or PXA250 based)&n; * &n; * (C) 2000 Nicolas Pitre &lt;nico@cam.org&gt;&n; * (C) 2002 Hewlett-Packard Company &lt;jamey.hicks@hp.com&gt;&n; * (C) 2003 Christian Pellegrin &lt;chri@ascensit.com&gt;, &lt;chri@infis.univ.ts.it&gt;: concatenation of multiple flashes&n; * &n; * $Id: ipaq-flash.c,v 1.2 2004/09/16 23:27:13 gleixner Exp $&n; */
+multiline_comment|/*&n; * Flash memory access on iPAQ Handhelds (either SA1100 or PXA250 based)&n; * &n; * (C) 2000 Nicolas Pitre &lt;nico@cam.org&gt;&n; * (C) 2002 Hewlett-Packard Company &lt;jamey.hicks@hp.com&gt;&n; * (C) 2003 Christian Pellegrin &lt;chri@ascensit.com&gt;, &lt;chri@infis.univ.ts.it&gt;: concatenation of multiple flashes&n; * &n; * $Id: ipaq-flash.c,v 1.3 2004/11/04 13:24:15 gleixner Exp $&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
@@ -735,11 +735,6 @@ id|i
 dot
 id|virt
 op_assign
-(paren
-r_void
-id|__iomem
-op_star
-)paren
 id|__ioremap
 c_func
 (paren
@@ -1819,11 +1814,6 @@ l_int|0
 dot
 id|virt
 op_assign
-(paren
-r_void
-id|__iomem
-op_star
-)paren
 id|__ioremap
 c_func
 (paren

@@ -1,21 +1,22 @@
 multiline_comment|/*&n; *  linux/drivers/char/amba.c&n; *&n; *  Driver for AMBA serial ports&n; *&n; *  Based on drivers/char/serial.c, by Linus Torvalds, Theodore Ts&squot;o.&n; *&n; *  Copyright 1999 ARM Limited&n; *  Copyright (C) 2000 Deep Blue Solutions Ltd.&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; *&n; *  $Id: amba.c,v 1.41 2002/07/28 10:03:27 rmk Exp $&n; *&n; * This is a generic driver for ARM AMBA-type serial ports.  They&n; * have a lot of 16550-like features, but are not register compatible.&n; * Note that although they do have CTS, DCD and DSR inputs, they do&n; * not have an RI input, nor do they have DTR or RTS outputs.  If&n; * required, these have to be supplied via some other means (eg, GPIO)&n; * and hooked into this driver.&n; */
 macro_line|#include &lt;linux/config.h&gt;
-macro_line|#include &lt;linux/module.h&gt;
-macro_line|#include &lt;linux/tty.h&gt;
-macro_line|#include &lt;linux/ioport.h&gt;
-macro_line|#include &lt;linux/init.h&gt;
-macro_line|#include &lt;linux/serial.h&gt;
-macro_line|#include &lt;linux/console.h&gt;
-macro_line|#include &lt;linux/sysrq.h&gt;
-macro_line|#include &lt;linux/device.h&gt;
-macro_line|#include &lt;asm/io.h&gt;
-macro_line|#include &lt;asm/irq.h&gt;
-macro_line|#include &lt;asm/hardware/amba.h&gt;
 macro_line|#if defined(CONFIG_SERIAL_AMBA_PL010_CONSOLE) &amp;&amp; defined(CONFIG_MAGIC_SYSRQ)
 DECL|macro|SUPPORT_SYSRQ
 mdefine_line|#define SUPPORT_SYSRQ
 macro_line|#endif
+macro_line|#include &lt;linux/module.h&gt;
+macro_line|#include &lt;linux/ioport.h&gt;
+macro_line|#include &lt;linux/init.h&gt;
+macro_line|#include &lt;linux/console.h&gt;
+macro_line|#include &lt;linux/sysrq.h&gt;
+macro_line|#include &lt;linux/device.h&gt;
+macro_line|#include &lt;linux/tty.h&gt;
+macro_line|#include &lt;linux/tty_flip.h&gt;
 macro_line|#include &lt;linux/serial_core.h&gt;
+macro_line|#include &lt;linux/serial.h&gt;
+macro_line|#include &lt;asm/io.h&gt;
+macro_line|#include &lt;asm/irq.h&gt;
+macro_line|#include &lt;asm/hardware/amba.h&gt;
 macro_line|#include &lt;asm/hardware/amba_serial.h&gt;
 DECL|macro|UART_NR
 mdefine_line|#define UART_NR&t;&t;2
@@ -301,6 +302,8 @@ id|status
 comma
 id|ch
 comma
+id|flag
+comma
 id|rsr
 comma
 id|max_count
@@ -336,36 +339,18 @@ op_ge
 id|TTY_FLIPBUF_SIZE
 )paren
 (brace
-id|tty-&gt;flip.work
-dot
-id|func
-c_func
-(paren
-(paren
-r_void
-op_star
-)paren
-id|tty
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
-id|tty-&gt;flip.count
-op_ge
-id|TTY_FLIPBUF_SIZE
+id|tty-&gt;low_latency
 )paren
-(brace
-id|printk
+id|tty_flip_buffer_push
 c_func
 (paren
-id|KERN_WARNING
-l_string|&quot;TTY_DONT_FLIP set&bslash;n&quot;
+id|tty
 )paren
 suffix:semicolon
-r_return
-suffix:semicolon
-)brace
+multiline_comment|/*&n;&t;&t;&t; * If this failed then we will throw away the&n;&t;&t;&t; * bytes but must do so to clear interrupts.&n;&t;&t;&t; */
 )brace
 id|ch
 op_assign
@@ -375,13 +360,7 @@ c_func
 id|port
 )paren
 suffix:semicolon
-op_star
-id|tty-&gt;flip.char_buf_ptr
-op_assign
-id|ch
-suffix:semicolon
-op_star
-id|tty-&gt;flip.flag_buf_ptr
+id|flag
 op_assign
 id|TTY_NORMAL
 suffix:semicolon
@@ -483,8 +462,7 @@ id|rsr
 op_amp
 id|UART01x_RSR_BE
 )paren
-op_star
-id|tty-&gt;flip.flag_buf_ptr
+id|flag
 op_assign
 id|TTY_BREAK
 suffix:semicolon
@@ -496,8 +474,7 @@ id|rsr
 op_amp
 id|UART01x_RSR_PE
 )paren
-op_star
-id|tty-&gt;flip.flag_buf_ptr
+id|flag
 op_assign
 id|TTY_PARITY
 suffix:semicolon
@@ -509,8 +486,7 @@ id|rsr
 op_amp
 id|UART01x_RSR_FE
 )paren
-op_star
-id|tty-&gt;flip.flag_buf_ptr
+id|flag
 op_assign
 id|TTY_FRAME
 suffix:semicolon
@@ -543,14 +519,15 @@ op_eq
 l_int|0
 )paren
 (brace
-id|tty-&gt;flip.flag_buf_ptr
-op_increment
-suffix:semicolon
-id|tty-&gt;flip.char_buf_ptr
-op_increment
-suffix:semicolon
-id|tty-&gt;flip.count
-op_increment
+id|tty_insert_flip_char
+c_func
+(paren
+id|tty
+comma
+id|ch
+comma
+id|flag
+)paren
 suffix:semicolon
 )brace
 r_if
@@ -568,20 +545,15 @@ id|TTY_FLIPBUF_SIZE
 )paren
 (brace
 multiline_comment|/*&n;&t;&t;&t; * Overrun is special, since it&squot;s reported&n;&t;&t;&t; * immediately, and doesn&squot;t affect the current&n;&t;&t;&t; * character&n;&t;&t;&t; */
-op_star
-id|tty-&gt;flip.char_buf_ptr
-op_increment
-op_assign
+id|tty_insert_flip_char
+c_func
+(paren
+id|tty
+comma
 l_int|0
-suffix:semicolon
-op_star
-id|tty-&gt;flip.flag_buf_ptr
-op_increment
-op_assign
+comma
 id|TTY_OVERRUN
-suffix:semicolon
-id|tty-&gt;flip.count
-op_increment
+)paren
 suffix:semicolon
 )brace
 id|ignore_char

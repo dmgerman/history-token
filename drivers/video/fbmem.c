@@ -3556,17 +3556,16 @@ op_assign
 op_minus
 id|EINVAL
 suffix:semicolon
-multiline_comment|/* Workaround for broken X servers */
 r_if
 c_cond
 (paren
 id|blank
 OG
-id|VESA_POWERDOWN
+id|FB_BLANK_POWERDOWN
 )paren
 id|blank
 op_assign
-id|VESA_POWERDOWN
+id|FB_BLANK_POWERDOWN
 suffix:semicolon
 r_if
 c_cond
@@ -4471,16 +4470,10 @@ multiline_comment|/* This is an IO map - tell maydump to skip this VMA */
 id|vma-&gt;vm_flags
 op_or_assign
 id|VM_IO
+op_or
+id|VM_RESERVED
 suffix:semicolon
 macro_line|#if defined(__sparc_v9__)
-id|vma-&gt;vm_flags
-op_or_assign
-(paren
-id|VM_SHM
-op_or
-id|VM_LOCKED
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren

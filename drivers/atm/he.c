@@ -274,8 +274,7 @@ r_static
 r_int
 id|disable64
 op_assign
-op_minus
-l_int|1
+l_int|0
 suffix:semicolon
 DECL|variable|nvpibits
 r_static
@@ -7658,10 +7657,6 @@ id|he_dev-&gt;membase
 id|iounmap
 c_func
 (paren
-(paren
-r_void
-op_star
-)paren
 id|he_dev-&gt;membase
 )paren
 suffix:semicolon
@@ -14224,12 +14219,14 @@ c_func
 l_string|&quot;ForeRunnerHE ATM Adapter driver&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|disable64
 comma
-l_string|&quot;h&quot;
+r_bool
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -14240,12 +14237,14 @@ comma
 l_string|&quot;disable 64-bit pci bus transfers&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|nvpibits
 comma
-l_string|&quot;i&quot;
+r_int
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -14256,12 +14255,14 @@ comma
 l_string|&quot;numbers of bits for vpi (default 0)&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|nvcibits
 comma
-l_string|&quot;i&quot;
+r_int
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -14272,12 +14273,14 @@ comma
 l_string|&quot;numbers of bits for vci (default 12)&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|rx_skb_reserve
 comma
-l_string|&quot;i&quot;
+r_int
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -14288,12 +14291,14 @@ comma
 l_string|&quot;padding for receive skb (default 16)&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|irq_coalesce
 comma
-l_string|&quot;i&quot;
+r_bool
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -14304,12 +14309,14 @@ comma
 l_string|&quot;use interrupt coalescing (default 1)&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|sdh
 comma
-l_string|&quot;i&quot;
+r_bool
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC

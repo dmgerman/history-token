@@ -12,13 +12,6 @@ macro_line|#include &quot;user_util.h&quot;
 macro_line|#include &quot;kern_util.h&quot;
 macro_line|#include &quot;syscall_user.h&quot;
 macro_line|#include &quot;tt.h&quot;
-multiline_comment|/* XXX Bogus */
-DECL|macro|ERESTARTSYS
-mdefine_line|#define ERESTARTSYS&t;512
-DECL|macro|ERESTARTNOINTR
-mdefine_line|#define ERESTARTNOINTR&t;513
-DECL|macro|ERESTARTNOHAND
-mdefine_line|#define ERESTARTNOHAND&t;514
 DECL|function|syscall_handler_tt
 r_void
 id|syscall_handler_tt
@@ -108,38 +101,6 @@ comma
 id|result
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-(paren
-id|result
-op_eq
-op_minus
-id|ERESTARTNOHAND
-)paren
-op_logical_or
-(paren
-id|result
-op_eq
-op_minus
-id|ERESTARTSYS
-)paren
-op_logical_or
-(paren
-id|result
-op_eq
-op_minus
-id|ERESTARTNOINTR
-)paren
-)paren
-(brace
-id|do_signal
-c_func
-(paren
-id|result
-)paren
-suffix:semicolon
-)brace
 id|syscall_trace
 c_func
 (paren
@@ -238,7 +199,7 @@ c_cond
 (paren
 id|syscall
 OL
-l_int|1
+l_int|0
 )paren
 (brace
 r_return

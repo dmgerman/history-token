@@ -1,21 +1,5 @@
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;asm/timer.h&gt;
-DECL|function|init_none
-r_static
-r_int
-id|__init
-id|init_none
-c_func
-(paren
-r_char
-op_star
-id|override
-)paren
-(brace
-r_return
-l_int|0
-suffix:semicolon
-)brace
 DECL|function|mark_offset_none
 r_static
 r_void
@@ -103,11 +87,6 @@ dot
 id|name
 op_assign
 l_string|&quot;none&quot;
-comma
-dot
-id|init
-op_assign
-id|init_none
 comma
 dot
 id|mark_offset

@@ -1214,12 +1214,14 @@ r_char
 op_star
 id|wd7000
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|wd7000
 comma
-l_string|&quot;s&quot;
+id|charp
+comma
+l_int|0
 )paren
 suffix:semicolon
 macro_line|#endif
@@ -5224,6 +5226,7 @@ id|pass
 )paren
 (brace
 r_void
+id|__iomem
 op_star
 id|biosaddr
 op_assign
@@ -5253,7 +5256,7 @@ suffix:semicolon
 r_int
 id|bios_match
 op_assign
-l_int|0
+l_int|1
 suffix:semicolon
 r_if
 c_cond
@@ -5262,13 +5265,9 @@ id|biosaddr
 )paren
 id|bios_match
 op_assign
-id|memcmp
+id|check_signature
 c_func
 (paren
-(paren
-r_char
-op_star
-)paren
 id|biosaddr
 comma
 id|signatures
@@ -5295,7 +5294,6 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-op_logical_neg
 id|bios_match
 )paren
 r_goto

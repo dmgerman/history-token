@@ -4458,7 +4458,8 @@ op_minus
 id|EBUSY
 suffix:semicolon
 )brace
-r_return
+id|err
+op_assign
 id|pcnet32_probe1
 c_func
 (paren
@@ -4468,6 +4469,24 @@ l_int|1
 comma
 id|pdev
 )paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|err
+OL
+l_int|0
+)paren
+(brace
+id|pci_disable_device
+c_func
+(paren
+id|pdev
+)paren
+suffix:semicolon
+)brace
+r_return
+id|err
 suffix:semicolon
 )brace
 multiline_comment|/* pcnet32_probe1&n; *  Called from both pcnet32_probe_vlbus and pcnet_probe_pci.&n; *  pdev will be NULL when called from pcnet32_probe_vlbus.&n; */
@@ -10949,6 +10968,12 @@ id|free_netdev
 c_func
 (paren
 id|dev
+)paren
+suffix:semicolon
+id|pci_disable_device
+c_func
+(paren
+id|pdev
 )paren
 suffix:semicolon
 id|pci_set_drvdata

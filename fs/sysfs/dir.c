@@ -128,12 +128,7 @@ op_logical_neg
 id|sd
 )paren
 r_return
-id|ERR_PTR
-c_func
-(paren
-op_minus
-id|ENOMEM
-)paren
+l_int|NULL
 suffix:semicolon
 id|memset
 c_func
@@ -231,7 +226,8 @@ op_logical_neg
 id|sd
 )paren
 r_return
-l_int|0
+op_minus
+id|ENOMEM
 suffix:semicolon
 id|sd-&gt;s_mode
 op_assign
@@ -487,6 +483,13 @@ r_if
 c_cond
 (paren
 id|error
+op_logical_and
+(paren
+id|error
+op_ne
+op_minus
+id|EEXIST
+)paren
 )paren
 id|d_drop
 c_func
@@ -1157,8 +1160,6 @@ r_struct
 id|sysfs_dirent
 op_star
 id|parent_sd
-op_assign
-id|dentry-&gt;d_fsdata
 suffix:semicolon
 r_struct
 id|sysfs_dirent
@@ -1190,6 +1191,10 @@ c_func
 op_amp
 id|dentry-&gt;d_inode-&gt;i_sem
 )paren
+suffix:semicolon
+id|parent_sd
+op_assign
+id|dentry-&gt;d_fsdata
 suffix:semicolon
 id|list_for_each_entry_safe
 c_func

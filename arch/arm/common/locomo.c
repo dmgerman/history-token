@@ -3084,16 +3084,6 @@ comma
 l_int|NULL
 )paren
 suffix:semicolon
-id|kfree
-c_func
-(paren
-id|dev-&gt;saved_state
-)paren
-suffix:semicolon
-id|dev-&gt;saved_state
-op_assign
-l_int|NULL
-suffix:semicolon
 )brace
 r_return
 l_int|0

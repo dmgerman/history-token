@@ -599,6 +599,47 @@ DECL|macro|VESA_HSYNC_SUSPEND
 mdefine_line|#define VESA_HSYNC_SUSPEND      2
 DECL|macro|VESA_POWERDOWN
 mdefine_line|#define VESA_POWERDOWN          3
+r_enum
+(brace
+multiline_comment|/* screen: unblanked, hsync: on,  vsync: on */
+DECL|enumerator|FB_BLANK_UNBLANK
+id|FB_BLANK_UNBLANK
+op_assign
+id|VESA_NO_BLANKING
+comma
+multiline_comment|/* screen: blanked,   hsync: on,  vsync: on */
+DECL|enumerator|FB_BLANK_NORMAL
+id|FB_BLANK_NORMAL
+op_assign
+id|VESA_NO_BLANKING
+op_plus
+l_int|1
+comma
+multiline_comment|/* screen: blanked,   hsync: on,  vsync: off */
+DECL|enumerator|FB_BLANK_VSYNC_SUSPEND
+id|FB_BLANK_VSYNC_SUSPEND
+op_assign
+id|VESA_VSYNC_SUSPEND
+op_plus
+l_int|1
+comma
+multiline_comment|/* screen: blanked,   hsync: off, vsync: on */
+DECL|enumerator|FB_BLANK_HSYNC_SUSPEND
+id|FB_BLANK_HSYNC_SUSPEND
+op_assign
+id|VESA_HSYNC_SUSPEND
+op_plus
+l_int|1
+comma
+multiline_comment|/* screen: blanked,   hsync: off, vsync: off */
+DECL|enumerator|FB_BLANK_POWERDOWN
+id|FB_BLANK_POWERDOWN
+op_assign
+id|VESA_POWERDOWN
+op_plus
+l_int|1
+)brace
+suffix:semicolon
 DECL|macro|FB_VBLANK_VBLANKING
 mdefine_line|#define FB_VBLANK_VBLANKING&t;0x001&t;/* currently in a vertical blank */
 DECL|macro|FB_VBLANK_HBLANKING

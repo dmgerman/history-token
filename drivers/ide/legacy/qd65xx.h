@@ -51,6 +51,7 @@ DECL|macro|QD_TESTVAL
 mdefine_line|#define QD_TESTVAL&t;&t;0x19&t;/* safe value */
 multiline_comment|/* Drive specific timing taken from DOS driver v3.7 */
 DECL|struct|qd65xx_timing_s
+r_static
 r_struct
 id|qd65xx_timing_s
 (brace

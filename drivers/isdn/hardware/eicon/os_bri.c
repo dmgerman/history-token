@@ -296,6 +296,7 @@ op_star
 id|hdev
 suffix:semicolon
 id|byte
+id|__iomem
 op_star
 id|p
 suffix:semicolon
@@ -1390,6 +1391,7 @@ op_assign
 l_int|0
 suffix:semicolon
 id|byte
+id|__iomem
 op_star
 id|confIO
 suffix:semicolon
@@ -1397,16 +1399,14 @@ id|word
 id|serHi
 comma
 id|serLo
-comma
+suffix:semicolon
+id|word
+id|__iomem
 op_star
 id|confMem
 suffix:semicolon
 id|confIO
 op_assign
-(paren
-id|byte
-op_star
-)paren
 id|DIVA_OS_MEM_ATTACH_CFG
 c_func
 (paren
@@ -1504,6 +1504,7 @@ id|confMem
 op_assign
 (paren
 id|word
+id|__iomem
 op_star
 )paren
 id|DIVA_OS_MEM_ATTACH_RAM
@@ -2248,6 +2249,7 @@ id|IoAdapter
 )paren
 (brace
 id|byte
+id|__iomem
 op_star
 id|addrHi
 comma
@@ -2261,6 +2263,7 @@ id|dword
 id|i
 suffix:semicolon
 id|byte
+id|__iomem
 op_star
 id|Port
 suffix:semicolon
@@ -2757,6 +2760,7 @@ id|length
 )paren
 (brace
 id|byte
+id|__iomem
 op_star
 id|addrHi
 comma
@@ -2767,6 +2771,7 @@ op_star
 id|ioaddr
 suffix:semicolon
 id|byte
+id|__iomem
 op_star
 id|Port
 suffix:semicolon
@@ -2903,6 +2908,7 @@ id|features
 )paren
 (brace
 id|byte
+id|__iomem
 op_star
 id|Port
 suffix:semicolon
@@ -2912,6 +2918,7 @@ comma
 id|test
 suffix:semicolon
 id|byte
+id|__iomem
 op_star
 id|addrHi
 comma

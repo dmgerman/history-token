@@ -295,13 +295,6 @@ suffix:semicolon
 r_break
 suffix:semicolon
 )brace
-multiline_comment|/* Dummy read to flush PCI write */
-id|readl
-c_func
-(paren
-id|addr
-)paren
-suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon

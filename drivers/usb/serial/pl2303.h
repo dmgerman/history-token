@@ -7,6 +7,8 @@ DECL|macro|PL2303_PRODUCT_ID_RSAQ2
 mdefine_line|#define PL2303_PRODUCT_ID_RSAQ2&t;&t;0x04bb
 DECL|macro|PL2303_PRODUCT_ID_PHAROS
 mdefine_line|#define PL2303_PRODUCT_ID_PHAROS&t;0xaaa0
+DECL|macro|PL2303_PRODUCT_ID_RSAQ3
+mdefine_line|#define PL2303_PRODUCT_ID_RSAQ3&t;&t;0xaaa2
 DECL|macro|ATEN_VENDOR_ID
 mdefine_line|#define ATEN_VENDOR_ID&t;&t;0x0557
 DECL|macro|ATEN_VENDOR_ID2
@@ -21,6 +23,8 @@ DECL|macro|ELCOM_VENDOR_ID
 mdefine_line|#define ELCOM_VENDOR_ID&t;&t;0x056e
 DECL|macro|ELCOM_PRODUCT_ID
 mdefine_line|#define ELCOM_PRODUCT_ID&t;0x5003
+DECL|macro|ELCOM_PRODUCT_ID_UCSGT
+mdefine_line|#define ELCOM_PRODUCT_ID_UCSGT&t;0x5004
 DECL|macro|ITEGNO_VENDOR_ID
 mdefine_line|#define ITEGNO_VENDOR_ID&t;0x0eba
 DECL|macro|ITEGNO_PRODUCT_ID

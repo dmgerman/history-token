@@ -10,8 +10,6 @@ macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;asm/ist.h&gt;
 macro_line|#include &quot;speedstep-lib.h&quot;
-DECL|macro|PFX
-mdefine_line|#define PFX &quot;speedstep-smi: &quot;
 multiline_comment|/* speedstep system management interface port/command.&n; *&n; * These parameters are got from IST-SMI BIOS call.&n; * If user gives it, these are used.&n; * &n; */
 DECL|variable|smi_port
 r_static
@@ -85,15 +83,8 @@ mdefine_line|#define GET_SPEEDSTEP_FREQS 4
 multiline_comment|/* how often shall the SMI call be tried if it failed, e.g. because&n; * of DMA activity going on? */
 DECL|macro|SMI_TRIES
 mdefine_line|#define SMI_TRIES 5
-multiline_comment|/* DEBUG&n; *   Define it if you want verbose debug output, e.g. for bug reporting&n; */
-singleline_comment|//#define SPEEDSTEP_DEBUG
-macro_line|#ifdef SPEEDSTEP_DEBUG
 DECL|macro|dprintk
-mdefine_line|#define dprintk(msg...) printk(msg)
-macro_line|#else
-DECL|macro|dprintk
-mdefine_line|#define dprintk(msg...) do { } while(0)
-macro_line|#endif
+mdefine_line|#define dprintk(msg...) cpufreq_debug_printk(CPUFREQ_DEBUG_DRIVER, &quot;speedstep-smi&quot;, msg)
 multiline_comment|/**&n; * speedstep_smi_ownership&n; */
 DECL|function|speedstep_smi_ownership
 r_static
@@ -145,6 +136,16 @@ c_func
 id|magic_data
 )paren
 suffix:semicolon
+id|dprintk
+c_func
+(paren
+l_string|&quot;trying to obtain ownership with command %x at port %x&bslash;n&quot;
+comma
+id|command
+comma
+id|smi_port
+)paren
+suffix:semicolon
 id|__asm__
 id|__volatile__
 c_func
@@ -187,6 +188,14 @@ id|magic
 )paren
 )paren
 suffix:semicolon
+id|dprintk
+c_func
+(paren
+l_string|&quot;result is %x&bslash;n&quot;
+comma
+id|result
+)paren
+suffix:semicolon
 r_return
 id|result
 suffix:semicolon
@@ -212,6 +221,8 @@ id|u32
 id|command
 comma
 id|result
+op_assign
+l_int|0
 comma
 id|edi
 comma
@@ -239,10 +250,20 @@ op_amp
 l_int|0xFFFF
 )paren
 )paren
+(brace
+id|dprintk
+c_func
+(paren
+l_string|&quot;bug #1422 -- can&squot;t read freqs from BIOS&bslash;n&quot;
+comma
+id|result
+)paren
+suffix:semicolon
 r_return
 op_minus
 id|ENODEV
 suffix:semicolon
+)brace
 id|command
 op_assign
 (paren
@@ -255,6 +276,16 @@ op_or
 id|smi_cmd
 op_amp
 l_int|0xff
+)paren
+suffix:semicolon
+id|dprintk
+c_func
+(paren
+l_string|&quot;trying to determine frequencies with command %x at port %x&bslash;n&quot;
+comma
+id|command
+comma
+id|smi_port
 )paren
 suffix:semicolon
 id|__asm__
@@ -313,6 +344,18 @@ l_string|&quot;S&quot;
 (paren
 l_int|0
 )paren
+)paren
+suffix:semicolon
+id|dprintk
+c_func
+(paren
+l_string|&quot;result %x, low_freq %u, high_freq %u&bslash;n&quot;
+comma
+id|result
+comma
+id|low_mhz
+comma
+id|high_mhz
 )paren
 suffix:semicolon
 multiline_comment|/* abort if results are obviously incorrect... */
@@ -386,6 +429,16 @@ op_amp
 l_int|0xff
 )paren
 suffix:semicolon
+id|dprintk
+c_func
+(paren
+l_string|&quot;trying to determine current setting with command %x at port %x&bslash;n&quot;
+comma
+id|command
+comma
+id|smi_port
+)paren
+suffix:semicolon
 id|__asm__
 id|__volatile__
 c_func
@@ -432,6 +485,16 @@ l_string|&quot;S&quot;
 (paren
 l_int|0
 )paren
+)paren
+suffix:semicolon
+id|dprintk
+c_func
+(paren
+l_string|&quot;state is %x, result is %x&bslash;n&quot;
+comma
+id|state
+comma
+id|result
 )paren
 suffix:semicolon
 r_return
@@ -509,6 +572,18 @@ op_amp
 l_int|0xff
 )paren
 suffix:semicolon
+id|dprintk
+c_func
+(paren
+l_string|&quot;trying to set frequency to state %u with command %x at port %x&bslash;n&quot;
+comma
+id|state
+comma
+id|command
+comma
+id|smi_port
+)paren
+suffix:semicolon
 r_do
 (brace
 r_if
@@ -520,8 +595,7 @@ id|retry
 id|dprintk
 c_func
 (paren
-id|KERN_INFO
-l_string|&quot;cpufreq: retry %u, previous result %u&bslash;n&quot;
+l_string|&quot;retry %u, previous result %u, waiting...&bslash;n&quot;
 comma
 id|retry
 comma
@@ -618,8 +692,7 @@ id|state
 id|dprintk
 c_func
 (paren
-id|KERN_INFO
-l_string|&quot;cpufreq: change to %u MHz succeeded after %u tries with result %u&bslash;n&quot;
+l_string|&quot;change to %u MHz succeeded after %u tries with result %u&bslash;n&quot;
 comma
 (paren
 id|speedstep_freqs
@@ -854,8 +927,7 @@ id|result
 id|dprintk
 c_func
 (paren
-id|KERN_INFO
-l_string|&quot;cpufreq: fails an aquiring ownership of a SMI interface.&bslash;n&quot;
+l_string|&quot;fails in aquiring ownership of a SMI interface.&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -896,8 +968,6 @@ multiline_comment|/* fall back to speedstep_lib.c dection mechanism: try both st
 id|dprintk
 c_func
 (paren
-id|KERN_INFO
-id|PFX
 l_string|&quot;could not detect low and high frequencies by SMI call.&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -937,8 +1007,6 @@ id|result
 id|dprintk
 c_func
 (paren
-id|KERN_INFO
-id|PFX
 l_string|&quot;could not detect two different speeds -- aborting.&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -950,8 +1018,6 @@ r_else
 id|dprintk
 c_func
 (paren
-id|KERN_INFO
-id|PFX
 l_string|&quot;workaround worked.&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -976,8 +1042,7 @@ suffix:semicolon
 id|dprintk
 c_func
 (paren
-id|KERN_INFO
-l_string|&quot;cpufreq: currently at %s speed setting - %i MHz&bslash;n&quot;
+l_string|&quot;currently at %s speed setting - %i MHz&bslash;n&quot;
 comma
 (paren
 id|speed
@@ -1126,8 +1191,7 @@ id|result
 id|dprintk
 c_func
 (paren
-id|KERN_INFO
-l_string|&quot;cpufreq: fails an aquiring ownership of a SMI interface.&bslash;n&quot;
+l_string|&quot;fails in re-aquiring ownership of a SMI interface.&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -1256,8 +1320,6 @@ id|speedstep_processor
 (brace
 id|dprintk
 (paren
-id|KERN_INFO
-id|PFX
 l_string|&quot;No supported Intel CPU detected.&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -1269,8 +1331,6 @@ suffix:semicolon
 id|dprintk
 c_func
 (paren
-id|KERN_DEBUG
-id|PFX
 l_string|&quot;signature:0x%.8lx, command:0x%.8lx, event:0x%.8lx, perf_level:0x%.8lx.&bslash;n&quot;
 comma
 id|ist_info.signature

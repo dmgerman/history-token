@@ -4,6 +4,7 @@ DECL|macro|_ASM_THREAD_INFO_H
 mdefine_line|#define _ASM_THREAD_INFO_H
 macro_line|#ifdef __KERNEL__
 macro_line|#include &lt;linux/config.h&gt;
+macro_line|#include &lt;linux/compiler.h&gt;
 macro_line|#include &lt;asm/page.h&gt;
 macro_line|#ifndef __ASSEMBLY__
 macro_line|#include &lt;asm/processor.h&gt;
@@ -141,37 +142,17 @@ id|ti
 suffix:semicolon
 )brace
 multiline_comment|/* how to get the current stack pointer from C */
-DECL|function|current_stack_pointer
-r_static
-r_inline
+r_register
 r_int
 r_int
 id|current_stack_pointer
+id|asm
 c_func
 (paren
-r_void
+l_string|&quot;esp&quot;
 )paren
-(brace
-r_int
-r_int
-id|ti
+id|__attribute_used__
 suffix:semicolon
-id|__asm__
-c_func
-(paren
-l_string|&quot;movl %%esp,%0; &quot;
-suffix:colon
-l_string|&quot;=r&quot;
-(paren
-id|ti
-)paren
-suffix:colon
-)paren
-suffix:semicolon
-r_return
-id|ti
-suffix:semicolon
-)brace
 multiline_comment|/* thread information allocation */
 macro_line|#ifdef CONFIG_DEBUG_STACK_USAGE
 DECL|macro|alloc_thread_info

@@ -2356,7 +2356,7 @@ id|CS4231_INIT
 id|snd_printk
 c_func
 (paren
-l_string|&quot;mce_down [0x%lx] - auto calibration time out (0)&bslash;n&quot;
+l_string|&quot;mce_down [%p] - auto calibration time out (0)&bslash;n&quot;
 comma
 id|CS4231P
 c_func
@@ -6338,7 +6338,7 @@ multiline_comment|/* this is valid value */
 id|snd_printdd
 c_func
 (paren
-l_string|&quot;cs4231: port = 0x%lx, id = 0x%x&bslash;n&quot;
+l_string|&quot;cs4231: port = %p, id = 0x%x&bslash;n&quot;
 comma
 id|chip-&gt;port
 comma

@@ -174,6 +174,7 @@ id|dev
 (brace
 r_struct
 id|i2o_message
+id|__iomem
 op_star
 id|msg
 suffix:semicolon
@@ -289,6 +290,7 @@ id|media_id
 (brace
 r_struct
 id|i2o_message
+id|__iomem
 op_star
 id|msg
 suffix:semicolon
@@ -415,6 +417,7 @@ id|media_id
 (brace
 r_struct
 id|i2o_message
+id|__iomem
 op_star
 id|msg
 suffix:semicolon
@@ -529,6 +532,7 @@ id|media_id
 (brace
 r_struct
 id|i2o_message
+id|__iomem
 op_star
 id|msg
 suffix:semicolon
@@ -656,6 +660,7 @@ id|i2o_dev-&gt;iop
 suffix:semicolon
 r_struct
 id|i2o_message
+id|__iomem
 op_star
 id|msg
 suffix:semicolon
@@ -2380,10 +2385,12 @@ id|dev-&gt;i2o_dev-&gt;lct_data.tid
 suffix:semicolon
 r_struct
 id|i2o_message
+id|__iomem
 op_star
 id|msg
 suffix:semicolon
 r_void
+id|__iomem
 op_star
 id|mptr
 suffix:semicolon

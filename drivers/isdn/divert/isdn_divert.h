@@ -265,6 +265,10 @@ multiline_comment|/**************/
 multiline_comment|/* Prototypes */
 multiline_comment|/**************/
 r_extern
+id|spinlock_t
+id|divert_lock
+suffix:semicolon
+r_extern
 id|ulong
 id|if_used
 suffix:semicolon

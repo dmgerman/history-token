@@ -597,24 +597,6 @@ r_int
 id|norm
 )paren
 suffix:semicolon
-multiline_comment|/* kernel cmd line parse helper */
-r_extern
-r_int
-id|bttv_parse
-c_func
-(paren
-r_char
-op_star
-id|str
-comma
-r_int
-id|max
-comma
-r_int
-op_star
-id|vals
-)paren
-suffix:semicolon
 multiline_comment|/* extra tweaks for some chipsets */
 r_extern
 r_void

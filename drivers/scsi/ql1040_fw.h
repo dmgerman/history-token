@@ -1,18 +1,8 @@
 multiline_comment|/**************************************************************************&n; *                  QLOGIC LINUX SOFTWARE&n; *&n; * Copyright (C) 2004 QLogic Corporation&n; * (www.qlogic.com)&n; *&n; * This program is free software; you can redistribute it and/or modify it&n; * under the terms of the GNU General Public License as published by the&n; * Free Software Foundation; either version 2, or (at your option) any&n; * later version.&n; *&n; * This program is distributed in the hope that it will be useful, but&n; * WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU&n; * General Public License for more details.&n; *&n; *************************************************************************/
 multiline_comment|/************************************************************************&n; *&t;&t;&t;&t;&t;&t;&t;&t;&t;*&n; * &t;        --- ISP1040 Initiator/Target Firmware ---               *&n; *&t;&t;&t;    32 LUN Support&t;&t;&t;&t;*&n; *&t;&t;&t;&t;&t;&t;&t;&t;&t;*&n; ************************************************************************&n; */
 multiline_comment|/*&n; *&t;Firmware Version 7.65.00 (14:17 Jul 20, 1999)&n; */
-DECL|variable|risc_code_version
-r_int
-r_int
-id|risc_code_version
-op_assign
-l_int|7
-op_star
-l_int|1024
-op_plus
-l_int|65
-suffix:semicolon
 DECL|variable|firmware_version
+r_static
 r_int
 r_char
 id|firmware_version
@@ -30,6 +20,7 @@ suffix:semicolon
 DECL|macro|FW_VERSION_STRING
 mdefine_line|#define FW_VERSION_STRING &quot;7.65.0&quot;
 DECL|variable|risc_code_addr01
+r_static
 r_int
 r_int
 id|risc_code_addr01
@@ -37,6 +28,7 @@ op_assign
 l_int|0x1000
 suffix:semicolon
 DECL|variable|risc_code01
+r_static
 r_int
 r_int
 id|risc_code01
@@ -32988,6 +32980,7 @@ l_int|0xdf21
 )brace
 suffix:semicolon
 DECL|variable|risc_code_length01
+r_static
 r_int
 r_int
 id|risc_code_length01

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * mtdram - a test mtd device&n; * $Id: mtdram.c,v 1.33 2004/08/09 13:19:44 dwmw2 Exp $&n; * Author: Alexander Larsson &lt;alex@cendio.se&gt;&n; *&n; * Copyright (c) 1999 Alexander Larsson &lt;alex@cendio.se&gt;&n; *&n; * This code is GPL&n; *&n; */
+multiline_comment|/*&n; * mtdram - a test mtd device&n; * $Id: mtdram.c,v 1.34 2004/11/16 18:29:01 dwmw2 Exp $&n; * Author: Alexander Larsson &lt;alex@cendio.se&gt;&n; *&n; * Copyright (c) 1999 Alexander Larsson &lt;alex@cendio.se&gt;&n; *&n; * This code is GPL&n; *&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
@@ -636,6 +636,7 @@ suffix:semicolon
 macro_line|#if CONFIG_MTDRAM_TOTAL_SIZE &gt; 0
 macro_line|#if CONFIG_MTDRAM_ABS_POS &gt; 0
 DECL|function|init_mtdram
+r_static
 r_int
 id|__init
 id|init_mtdram
@@ -787,6 +788,7 @@ suffix:semicolon
 )brace
 macro_line|#else /* CONFIG_MTDRAM_ABS_POS &gt; 0 */
 DECL|function|init_mtdram
+r_static
 r_int
 id|__init
 id|init_mtdram
@@ -932,6 +934,7 @@ suffix:semicolon
 macro_line|#endif /* !(CONFIG_MTDRAM_ABS_POS &gt; 0) */
 macro_line|#else /* CONFIG_MTDRAM_TOTAL_SIZE &gt; 0 */
 DECL|function|init_mtdram
+r_static
 r_int
 id|__init
 id|init_mtdram

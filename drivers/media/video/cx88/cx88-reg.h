@@ -1,4 +1,4 @@
-multiline_comment|/* &n;    $Id: cx88-reg.h,v 1.5 2004/09/15 16:15:24 kraxel Exp $&n;&n;    cx88x-hw.h - CX2388x register offsets&n;&n;    Copyright (C) 1996,97,98 Ralph Metzler (rjkm@thp.uni-koeln.de)&n;                  2001 Michael Eskin&n;                  2002 Yurij Sysoev &lt;yurij@naturesoft.net&gt;&n;                  2003 Gerd Knorr &lt;kraxel@bytesex.org&gt;&n;&n;    This program is free software; you can redistribute it and/or modify&n;    it under the terms of the GNU General Public License as published by&n;    the Free Software Foundation; either version 2 of the License, or&n;    (at your option) any later version.&n;&n;    This program is distributed in the hope that it will be useful,&n;    but WITHOUT ANY WARRANTY; without even the implied warranty of&n;    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n;    GNU General Public License for more details.&n;&n;    You should have received a copy of the GNU General Public License&n;    along with this program; if not, write to the Free Software&n;    Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n;*/
+multiline_comment|/*&n;    $Id: cx88-reg.h,v 1.6 2004/10/13 10:39:00 kraxel Exp $&n;&n;    cx88x-hw.h - CX2388x register offsets&n;&n;    Copyright (C) 1996,97,98 Ralph Metzler (rjkm@thp.uni-koeln.de)&n;                  2001 Michael Eskin&n;                  2002 Yurij Sysoev &lt;yurij@naturesoft.net&gt;&n;                  2003 Gerd Knorr &lt;kraxel@bytesex.org&gt;&n;&n;    This program is free software; you can redistribute it and/or modify&n;    it under the terms of the GNU General Public License as published by&n;    the Free Software Foundation; either version 2 of the License, or&n;    (at your option) any later version.&n;&n;    This program is distributed in the hope that it will be useful,&n;    but WITHOUT ANY WARRANTY; without even the implied warranty of&n;    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n;    GNU General Public License for more details.&n;&n;    You should have received a copy of the GNU General Public License&n;    along with this program; if not, write to the Free Software&n;    Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n;*/
 macro_line|#ifndef _CX88_REG_H_
 DECL|macro|_CX88_REG_H_
 mdefine_line|#define _CX88_REG_H_
@@ -1123,15 +1123,15 @@ mdefine_line|#define RISC_JMP_SRP         &t; 0x01
 multiline_comment|/* ---------------------------------------------------------------------- */
 multiline_comment|/* various constants                                                      */
 DECL|macro|SEL_BTSC
-mdefine_line|#define SEL_BTSC     0x01 
+mdefine_line|#define SEL_BTSC     0x01
 DECL|macro|SEL_EIAJ
-mdefine_line|#define SEL_EIAJ     0x02 
+mdefine_line|#define SEL_EIAJ     0x02
 DECL|macro|SEL_A2
-mdefine_line|#define SEL_A2       0x04 
+mdefine_line|#define SEL_A2       0x04
 DECL|macro|SEL_SAP
 mdefine_line|#define SEL_SAP      0x08
 DECL|macro|SEL_NICAM
-mdefine_line|#define SEL_NICAM    0x10 
+mdefine_line|#define SEL_NICAM    0x10
 DECL|macro|SEL_FMRADIO
 mdefine_line|#define SEL_FMRADIO  0x20
 singleline_comment|// AUD_CTL
@@ -1214,7 +1214,7 @@ mdefine_line|#define EN_DMTRX_MONO           (3 &lt;&lt; 7)
 DECL|macro|EN_DMTRX_BYPASS
 mdefine_line|#define EN_DMTRX_BYPASS         (1 &lt;&lt; 11)
 macro_line|#endif
-singleline_comment|// Video 
+singleline_comment|// Video
 DECL|macro|VID_CAPTURE_CONTROL
 mdefine_line|#define VID_CAPTURE_CONTROL&t;&t;0x310180
 DECL|macro|CX23880_CAP_CTL_CAPTURE_VBI_ODD
@@ -1234,13 +1234,13 @@ mdefine_line|#define VideoInputMux2&t;&t; 0x2
 DECL|macro|VideoInputMux3
 mdefine_line|#define VideoInputMux3&t;&t; 0x3
 DECL|macro|VideoInputTuner
-mdefine_line|#define VideoInputTuner&t;&t; 0x0 
+mdefine_line|#define VideoInputTuner&t;&t; 0x0
 DECL|macro|VideoInputComposite
-mdefine_line|#define VideoInputComposite&t; 0x1 
+mdefine_line|#define VideoInputComposite&t; 0x1
 DECL|macro|VideoInputSVideo
 mdefine_line|#define VideoInputSVideo&t; 0x2
 DECL|macro|VideoInputOther
-mdefine_line|#define VideoInputOther&t;&t; 0x3 
+mdefine_line|#define VideoInputOther&t;&t; 0x3
 DECL|macro|Xtal0
 mdefine_line|#define Xtal0&t;&t; 0x1
 DECL|macro|Xtal1
@@ -1258,17 +1258,17 @@ mdefine_line|#define VideoFormatNTSC443&t; 0x3
 DECL|macro|VideoFormatPAL
 mdefine_line|#define VideoFormatPAL&t;&t; 0x4
 DECL|macro|VideoFormatPALB
-mdefine_line|#define VideoFormatPALB&t;&t; 0x4 
+mdefine_line|#define VideoFormatPALB&t;&t; 0x4
 DECL|macro|VideoFormatPALD
-mdefine_line|#define VideoFormatPALD&t;&t; 0x4 
+mdefine_line|#define VideoFormatPALD&t;&t; 0x4
 DECL|macro|VideoFormatPALG
-mdefine_line|#define VideoFormatPALG&t;&t; 0x4 
+mdefine_line|#define VideoFormatPALG&t;&t; 0x4
 DECL|macro|VideoFormatPALH
-mdefine_line|#define VideoFormatPALH&t;&t; 0x4 
+mdefine_line|#define VideoFormatPALH&t;&t; 0x4
 DECL|macro|VideoFormatPALI
-mdefine_line|#define VideoFormatPALI&t;&t; 0x4 
+mdefine_line|#define VideoFormatPALI&t;&t; 0x4
 DECL|macro|VideoFormatPALBDGHI
-mdefine_line|#define VideoFormatPALBDGHI&t; 0x4 
+mdefine_line|#define VideoFormatPALBDGHI&t; 0x4
 DECL|macro|VideoFormatPALM
 mdefine_line|#define VideoFormatPALM&t;&t; 0x5
 DECL|macro|VideoFormatPALN
@@ -1290,17 +1290,17 @@ mdefine_line|#define VideoFormatNTSC44327MHz&t;&t; 0x13
 DECL|macro|VideoFormatPAL27MHz
 mdefine_line|#define VideoFormatPAL27MHz&t;&t; 0x14
 DECL|macro|VideoFormatPALB27MHz
-mdefine_line|#define VideoFormatPALB27MHz&t;&t; 0x14 
+mdefine_line|#define VideoFormatPALB27MHz&t;&t; 0x14
 DECL|macro|VideoFormatPALD27MHz
-mdefine_line|#define VideoFormatPALD27MHz&t;&t; 0x14 
+mdefine_line|#define VideoFormatPALD27MHz&t;&t; 0x14
 DECL|macro|VideoFormatPALG27MHz
-mdefine_line|#define VideoFormatPALG27MHz&t;&t; 0x14 
+mdefine_line|#define VideoFormatPALG27MHz&t;&t; 0x14
 DECL|macro|VideoFormatPALH27MHz
-mdefine_line|#define VideoFormatPALH27MHz&t;&t; 0x14 
+mdefine_line|#define VideoFormatPALH27MHz&t;&t; 0x14
 DECL|macro|VideoFormatPALI27MHz
-mdefine_line|#define VideoFormatPALI27MHz&t;&t; 0x14 
+mdefine_line|#define VideoFormatPALI27MHz&t;&t; 0x14
 DECL|macro|VideoFormatPALBDGHI27MHz
-mdefine_line|#define VideoFormatPALBDGHI27MHz&t; 0x14 
+mdefine_line|#define VideoFormatPALBDGHI27MHz&t; 0x14
 DECL|macro|VideoFormatPALM27MHz
 mdefine_line|#define VideoFormatPALM27MHz&t;&t; 0x15
 DECL|macro|VideoFormatPALN27MHz
@@ -1436,9 +1436,9 @@ mdefine_line|#define CHANNEL_HOST_DN&t;&t; 0xB
 DECL|macro|CHANNEL_HOST_UP
 mdefine_line|#define CHANNEL_HOST_UP&t;&t; 0xC
 DECL|macro|CHANNEL_FIRST
-mdefine_line|#define CHANNEL_FIRST&t;&t; 0x1 
+mdefine_line|#define CHANNEL_FIRST&t;&t; 0x1
 DECL|macro|CHANNEL_LAST
-mdefine_line|#define CHANNEL_LAST&t;&t; 0xC 
+mdefine_line|#define CHANNEL_LAST&t;&t; 0xC
 DECL|macro|GP_COUNT_CONTROL_NONE
 mdefine_line|#define GP_COUNT_CONTROL_NONE&t;&t; 0x0
 DECL|macro|GP_COUNT_CONTROL_INC

@@ -1210,7 +1210,7 @@ r_struct
 id|ti_i2c_image_header
 (brace
 DECL|member|Length
-id|__u16
+id|__le16
 id|Length
 suffix:semicolon
 DECL|member|CheckSum

@@ -343,6 +343,7 @@ multiline_comment|/* pci_dev structure */
 DECL|member|iobase
 r_int
 r_int
+id|__iomem
 op_star
 id|iobase
 suffix:semicolon

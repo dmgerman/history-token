@@ -372,12 +372,14 @@ c_func
 id|AIC7XXX_DRIVER_VERSION
 )paren
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|aic7xxx
 comma
-l_string|&quot;s&quot;
+id|charp
+comma
+l_int|0444
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -2278,7 +2280,6 @@ c_func
 (paren
 )paren
 suffix:semicolon
-macro_line|#ifdef MODULE
 multiline_comment|/*&n;&t; * If we&squot;ve been passed any parameters, process them now.&n;&t; */
 r_if
 c_cond
@@ -2311,7 +2312,6 @@ l_string|&quot;aic7xxx: Specifically, don&squot;t use any commas when passing ar
 l_string|&quot;aic7xxx: insmod or else it might trash certain memory areas.&bslash;n&quot;
 )paren
 suffix:semicolon
-macro_line|#endif
 r_template
 op_member_access_from_pointer
 id|proc_name

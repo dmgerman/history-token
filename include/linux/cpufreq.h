@@ -801,6 +801,7 @@ suffix:semicolon
 multiline_comment|/*********************************************************************&n; *                      CPUFREQ USERSPACE GOVERNOR                   *&n; *********************************************************************/
 macro_line|#ifdef CONFIG_CPU_FREQ_24_API
 r_int
+id|__deprecated
 id|cpufreq_setmax
 c_func
 (paren
@@ -810,6 +811,7 @@ id|cpu
 )paren
 suffix:semicolon
 r_int
+id|__deprecated
 id|cpufreq_set
 c_func
 (paren
@@ -1142,5 +1144,41 @@ r_int
 id|cpu
 )paren
 suffix:semicolon
+multiline_comment|/*********************************************************************&n; *                     UNIFIED DEBUG HELPERS                         *&n; *********************************************************************/
+DECL|macro|CPUFREQ_DEBUG_CORE
+mdefine_line|#define CPUFREQ_DEBUG_CORE&t;1
+DECL|macro|CPUFREQ_DEBUG_DRIVER
+mdefine_line|#define CPUFREQ_DEBUG_DRIVER&t;2
+DECL|macro|CPUFREQ_DEBUG_GOVERNOR
+mdefine_line|#define CPUFREQ_DEBUG_GOVERNOR&t;4
+macro_line|#ifdef CONFIG_CPU_FREQ_DEBUG
+r_extern
+r_void
+id|cpufreq_debug_printk
+c_func
+(paren
+r_int
+r_int
+id|type
+comma
+r_const
+r_char
+op_star
+id|prefix
+comma
+r_const
+r_char
+op_star
+id|fmt
+comma
+dot
+dot
+dot
+)paren
+suffix:semicolon
+macro_line|#else
+DECL|macro|cpufreq_debug_printk
+mdefine_line|#define cpufreq_debug_printk(msg...) do { } while(0)
+macro_line|#endif /* CONFIG_CPU_FREQ_DEBUG */
 macro_line|#endif /* _LINUX_CPUFREQ_H */
 eof

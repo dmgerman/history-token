@@ -528,7 +528,7 @@ mdefine_line|#define dio_resource_start(d) ((d)-&gt;resource.start)
 DECL|macro|dio_resource_end
 mdefine_line|#define dio_resource_end(d)   ((d)-&gt;resource.end)
 DECL|macro|dio_resource_len
-mdefine_line|#define dio_resource_len(d)   ((d)-&gt;resource.end-(z)-&gt;resource.start+1)
+mdefine_line|#define dio_resource_len(d)   ((d)-&gt;resource.end-(d)-&gt;resource.start+1)
 DECL|macro|dio_resource_flags
 mdefine_line|#define dio_resource_flags(d) ((d)-&gt;resource.flags)
 DECL|macro|dio_request_device

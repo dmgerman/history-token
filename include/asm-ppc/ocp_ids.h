@@ -51,6 +51,8 @@ DECL|macro|OCP_FUNC_RGMII
 mdefine_line|#define OCP_FUNC_RGMII&t;&t;0x00D3
 DECL|macro|OCP_FUNC_TAH
 mdefine_line|#define OCP_FUNC_TAH&t;&t;0x00D4
+DECL|macro|OCP_FUNC_SEC2
+mdefine_line|#define OCP_FUNC_SEC2&t;&t;0x00D5&t;/* Crypto/Security 2.0 */
 multiline_comment|/* Network 0x0200 - 0x02FF */
 DECL|macro|OCP_FUNC_EMAC
 mdefine_line|#define OCP_FUNC_EMAC&t;&t;0x0200

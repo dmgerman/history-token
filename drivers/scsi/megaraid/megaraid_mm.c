@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *&n; *&t;&t;&t;Linux MegaRAID device driver&n; *&n; * Copyright (c) 2003-2004  LSI Logic Corporation.&n; *&n; *&t;   This program is free software; you can redistribute it and/or&n; *&t;   modify it under the terms of the GNU General Public License&n; *&t;   as published by the Free Software Foundation; either version&n; *&t;   2 of the License, or (at your option) any later version.&n; *&n; * FILE&t;&t;: megaraid_mm.c&n; * Version&t;: v2.20.2.1 (Oct 06 2004)&n; *&n; * Common management module&n; */
+multiline_comment|/*&n; *&n; *&t;&t;&t;Linux MegaRAID device driver&n; *&n; * Copyright (c) 2003-2004  LSI Logic Corporation.&n; *&n; *&t;   This program is free software; you can redistribute it and/or&n; *&t;   modify it under the terms of the GNU General Public License&n; *&t;   as published by the Free Software Foundation; either version&n; *&t;   2 of the License, or (at your option) any later version.&n; *&n; * FILE&t;&t;: megaraid_mm.c&n; * Version&t;: v2.20.2.2 (Nov 04 2004)&n; *&n; * Common management module&n; */
 macro_line|#include &quot;megaraid_mm.h&quot;
 singleline_comment|// Entry points for char node driver
 r_static
@@ -601,6 +601,31 @@ r_return
 id|rval
 suffix:semicolon
 )brace
+multiline_comment|/*&n;&t; * Check if adapter can accept ioctl. We may have marked it offline&n;&t; * if any previous kioc had timedout on this controller.&n;&t; */
+r_if
+c_cond
+(paren
+op_logical_neg
+id|adp-&gt;quiescent
+)paren
+(brace
+id|con_log
+c_func
+(paren
+id|CL_ANN
+comma
+(paren
+id|KERN_WARNING
+l_string|&quot;megaraid cmm: controller cannot accept cmds due to &quot;
+l_string|&quot;earlier errors&bslash;n&quot;
+)paren
+)paren
+suffix:semicolon
+r_return
+op_minus
+id|EFAULT
+suffix:semicolon
+)brace
 multiline_comment|/*&n;&t; * The following call will block till a kioc is available&n;&t; */
 id|kioc
 op_assign
@@ -645,7 +670,7 @@ id|kioc-&gt;done
 op_assign
 id|ioctl_done
 suffix:semicolon
-multiline_comment|/*&n;&t; * Issue the IOCTL to the low level driver&n;&t; */
+multiline_comment|/*&n;&t; * Issue the IOCTL to the low level driver. After the IOCTL completes&n;&t; * release the kioc if and only if it was _not_ timedout. If it was&n;&t; * timedout, that means that resources are still with low level driver.&n;&t; */
 r_if
 c_cond
 (paren
@@ -662,6 +687,12 @@ id|kioc
 )paren
 )paren
 (brace
+r_if
+c_cond
+(paren
+op_logical_neg
+id|kioc-&gt;timedout
+)paren
 id|mraid_mm_dealloc_kioc
 c_func
 (paren
@@ -1949,6 +1980,10 @@ id|kioc-&gt;user_pthru
 op_assign
 l_int|NULL
 suffix:semicolon
+id|kioc-&gt;timedout
+op_assign
+l_int|0
+suffix:semicolon
 r_return
 id|kioc
 suffix:semicolon
@@ -2198,6 +2233,18 @@ id|tp
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/*&n;&t; * If the command had timedout, we mark the controller offline&n;&t; * before returning&n;&t; */
+r_if
+c_cond
+(paren
+id|kioc-&gt;timedout
+)paren
+(brace
+id|adp-&gt;quiescent
+op_assign
+l_int|0
+suffix:semicolon
+)brace
 r_return
 id|kioc-&gt;status
 suffix:semicolon
@@ -2214,6 +2261,16 @@ op_star
 id|kioc
 )paren
 (brace
+r_uint32
+id|adapno
+suffix:semicolon
+r_int
+id|iterator
+suffix:semicolon
+id|mraid_mmadp_t
+op_star
+id|adapter
+suffix:semicolon
 multiline_comment|/*&n;&t; * When the kioc returns from driver, make sure it still doesn&squot;t&n;&t; * have ENODATA in status. Otherwise, driver will hang on wait_event&n;&t; * forever&n;&t; */
 r_if
 c_cond
@@ -2241,6 +2298,81 @@ op_minus
 id|EINVAL
 suffix:semicolon
 )brace
+multiline_comment|/*&n;&t; * Check if this kioc was timedout before. If so, nobody is waiting&n;&t; * on this kioc. We don&squot;t have to wake up anybody. Instead, we just&n;&t; * have to free the kioc&n;&t; */
+r_if
+c_cond
+(paren
+id|kioc-&gt;timedout
+)paren
+(brace
+id|iterator
+op_assign
+l_int|0
+suffix:semicolon
+id|adapter
+op_assign
+l_int|NULL
+suffix:semicolon
+id|adapno
+op_assign
+id|kioc-&gt;adapno
+suffix:semicolon
+id|con_log
+c_func
+(paren
+id|CL_ANN
+comma
+(paren
+id|KERN_WARNING
+l_string|&quot;megaraid cmm: completed &quot;
+l_string|&quot;ioctl that was timedout before&bslash;n&quot;
+)paren
+)paren
+suffix:semicolon
+id|list_for_each_entry
+c_func
+(paren
+id|adapter
+comma
+op_amp
+id|adapters_list_g
+comma
+id|list
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|iterator
+op_increment
+op_eq
+id|adapno
+)paren
+r_break
+suffix:semicolon
+)brace
+id|kioc-&gt;timedout
+op_assign
+l_int|0
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|adapter
+)paren
+(brace
+id|mraid_mm_dealloc_kioc
+c_func
+(paren
+id|adapter
+comma
+id|kioc
+)paren
+suffix:semicolon
+)brace
+)brace
+r_else
+(brace
 id|wake_up
 c_func
 (paren
@@ -2248,6 +2380,7 @@ op_amp
 id|wait_q
 )paren
 suffix:semicolon
+)brace
 )brace
 multiline_comment|/*&n; * lld_timedout&t;: callback from the expired timer&n; *&n; * @ptr&t;&t;: ioctl packet that timed out&n; */
 r_static
@@ -2275,6 +2408,10 @@ id|kioc-&gt;status
 op_assign
 op_minus
 id|ETIME
+suffix:semicolon
+id|kioc-&gt;timedout
+op_assign
+l_int|1
 suffix:semicolon
 id|con_log
 c_func
@@ -2746,6 +2883,10 @@ suffix:semicolon
 id|adapter-&gt;max_kioc
 op_assign
 id|lld_adp-&gt;max_kioc
+suffix:semicolon
+id|adapter-&gt;quiescent
+op_assign
+l_int|1
 suffix:semicolon
 multiline_comment|/*&n;&t; * Allocate single blocks of memory for all required kiocs,&n;&t; * mailboxes and passthru structures.&n;&t; */
 id|adapter-&gt;kioc_list

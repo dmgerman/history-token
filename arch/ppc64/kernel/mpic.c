@@ -2091,11 +2091,6 @@ id|i
 suffix:semicolon
 id|mpic
 op_assign
-(paren
-r_struct
-id|mpic
-op_star
-)paren
 id|alloc_bootmem
 c_func
 (paren
