@@ -197,8 +197,23 @@ DECL|macro|user_mode
 mdefine_line|#define user_mode(regs) (!!((regs)-&gt;cs &amp; 3))
 DECL|macro|instruction_pointer
 mdefine_line|#define instruction_pointer(regs) ((regs)-&gt;rip)
+macro_line|#if defined(CONFIG_SMP) &amp;&amp; defined(CONFIG_FRAME_POINTER)
+r_extern
+r_int
+r_int
+id|profile_pc
+c_func
+(paren
+r_struct
+id|pt_regs
+op_star
+id|regs
+)paren
+suffix:semicolon
+macro_line|#else
 DECL|macro|profile_pc
 mdefine_line|#define profile_pc(regs) instruction_pointer(regs)
+macro_line|#endif
 r_void
 id|signal_fault
 c_func
