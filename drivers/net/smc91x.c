@@ -500,6 +500,17 @@ id|ioaddr
 op_assign
 id|dev-&gt;base_addr
 suffix:semicolon
+r_struct
+id|smc_local
+op_star
+id|lp
+op_assign
+id|netdev_priv
+c_func
+(paren
+id|dev
+)paren
+suffix:semicolon
 r_int
 r_int
 id|ctl
@@ -661,6 +672,31 @@ c_func
 (paren
 )paren
 suffix:semicolon
+multiline_comment|/* clear anything saved */
+r_if
+c_cond
+(paren
+id|lp-&gt;saved_skb
+op_ne
+l_int|NULL
+)paren
+(brace
+id|dev_kfree_skb
+(paren
+id|lp-&gt;saved_skb
+)paren
+suffix:semicolon
+id|lp-&gt;saved_skb
+op_assign
+l_int|NULL
+suffix:semicolon
+id|lp-&gt;stats.tx_errors
+op_increment
+suffix:semicolon
+id|lp-&gt;stats.tx_aborted_errors
+op_increment
+suffix:semicolon
+)brace
 )brace
 multiline_comment|/*&n; * Enable Interrupts, Receive, and Transmit&n; */
 DECL|function|smc_enable
@@ -4203,31 +4239,6 @@ op_amp
 id|lp-&gt;phy_configure
 )paren
 suffix:semicolon
-multiline_comment|/* clear anything saved */
-r_if
-c_cond
-(paren
-id|lp-&gt;saved_skb
-op_ne
-l_int|NULL
-)paren
-(brace
-id|dev_kfree_skb
-(paren
-id|lp-&gt;saved_skb
-)paren
-suffix:semicolon
-id|lp-&gt;saved_skb
-op_assign
-l_int|NULL
-suffix:semicolon
-id|lp-&gt;stats.tx_errors
-op_increment
-suffix:semicolon
-id|lp-&gt;stats.tx_aborted_errors
-op_increment
-suffix:semicolon
-)brace
 multiline_comment|/* We can accept TX packets again */
 id|dev-&gt;trans_start
 op_assign
@@ -4665,11 +4676,6 @@ op_minus
 id|EINVAL
 suffix:semicolon
 )brace
-multiline_comment|/* clear out all the junk that was put here before... */
-id|lp-&gt;saved_skb
-op_assign
-l_int|NULL
-suffix:semicolon
 multiline_comment|/* Setup the default Register Modes */
 id|lp-&gt;tcr_cur_mode
 op_assign
@@ -4832,6 +4838,23 @@ id|dev
 comma
 id|lp-&gt;mii.phy_id
 )paren
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+id|lp-&gt;saved_skb
+)paren
+(brace
+id|dev_kfree_skb
+c_func
+(paren
+id|lp-&gt;saved_skb
+)paren
+suffix:semicolon
+id|lp-&gt;saved_skb
+op_assign
+l_int|NULL
 suffix:semicolon
 )brace
 r_return
