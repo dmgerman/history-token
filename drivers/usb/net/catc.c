@@ -1348,7 +1348,7 @@ suffix:semicolon
 id|urb-&gt;transfer_flags
 op_and_assign
 op_complement
-id|USB_ASYNC_UNLINK
+id|URB_ASYNC_UNLINK
 suffix:semicolon
 id|urb-&gt;status
 op_assign
@@ -1667,7 +1667,7 @@ l_string|&quot;Transmit timed out.&quot;
 suffix:semicolon
 id|catc-&gt;tx_urb-&gt;transfer_flags
 op_or_assign
-id|USB_ASYNC_UNLINK
+id|URB_ASYNC_UNLINK
 suffix:semicolon
 id|usb_unlink_urb
 c_func
@@ -3363,7 +3363,7 @@ c_func
 (paren
 id|usbdev
 comma
-id|intf-&gt;altsetting-&gt;bInterfaceNumber
+id|intf-&gt;altsetting-&gt;desc.bInterfaceNumber
 comma
 l_int|1
 )paren
@@ -3701,7 +3701,7 @@ l_int|2
 )paren
 suffix:semicolon
 )brace
-id|FILL_CONTROL_URB
+id|usb_fill_control_urb
 c_func
 (paren
 id|catc-&gt;ctrl_urb
@@ -3727,7 +3727,7 @@ comma
 id|catc
 )paren
 suffix:semicolon
-id|FILL_BULK_URB
+id|usb_fill_bulk_urb
 c_func
 (paren
 id|catc-&gt;tx_urb
@@ -3751,7 +3751,7 @@ comma
 id|catc
 )paren
 suffix:semicolon
-id|FILL_BULK_URB
+id|usb_fill_bulk_urb
 c_func
 (paren
 id|catc-&gt;rx_urb
@@ -3775,7 +3775,7 @@ comma
 id|catc
 )paren
 suffix:semicolon
-id|FILL_INT_URB
+id|usb_fill_int_urb
 c_func
 (paren
 id|catc-&gt;irq_urb

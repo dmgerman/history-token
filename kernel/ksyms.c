@@ -2361,13 +2361,6 @@ c_func
 id|allocate_resource
 )paren
 suffix:semicolon
-DECL|variable|check_resource
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|check_resource
-)paren
-suffix:semicolon
 DECL|variable|__request_region
 id|EXPORT_SYMBOL
 c_func

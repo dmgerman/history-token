@@ -627,17 +627,6 @@ l_int|0
 r_return
 suffix:semicolon
 )brace
-r_if
-c_cond
-(paren
-op_logical_neg
-id|usb_pipeint
-c_func
-(paren
-id|urb-&gt;pipe
-)paren
-)paren
-(brace
 id|urb-&gt;dev
 op_assign
 id|ep-&gt;umidi-&gt;chip-&gt;dev
@@ -650,7 +639,6 @@ comma
 id|GFP_ATOMIC
 )paren
 suffix:semicolon
-)brace
 )brace
 multiline_comment|/*&n; * Converts the data read from a Midiman device to standard USB MIDI packets.&n; */
 DECL|function|snd_usbmidi_in_midiman_complete
@@ -2295,7 +2283,7 @@ op_star
 id|intf
 suffix:semicolon
 r_struct
-id|usb_interface_descriptor
+id|usb_host_interface
 op_star
 id|intfd
 suffix:semicolon
@@ -2337,7 +2325,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|intfd-&gt;bNumEndpoints
+id|intfd-&gt;desc.bNumEndpoints
 op_ne
 l_int|2
 op_logical_or
@@ -2347,7 +2335,7 @@ id|intfd-&gt;endpoint
 l_int|0
 )braket
 dot
-id|bmAttributes
+id|desc.bmAttributes
 op_amp
 id|USB_ENDPOINT_XFERTYPE_MASK
 )paren
@@ -2360,7 +2348,7 @@ id|intfd-&gt;endpoint
 l_int|1
 )braket
 dot
-id|bmAttributes
+id|desc.bmAttributes
 op_amp
 id|USB_ENDPOINT_XFERTYPE_MASK
 )paren
@@ -2381,7 +2369,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|intfd-&gt;bNumEndpoints
+id|intfd-&gt;desc.bNumEndpoints
 op_ne
 l_int|2
 op_logical_or
@@ -2391,7 +2379,7 @@ id|intfd-&gt;endpoint
 l_int|0
 )braket
 dot
-id|bmAttributes
+id|desc.bmAttributes
 op_amp
 id|USB_ENDPOINT_XFERTYPE_MASK
 )paren
@@ -2404,7 +2392,7 @@ id|intfd-&gt;endpoint
 l_int|1
 )braket
 dot
-id|bmAttributes
+id|desc.bmAttributes
 op_amp
 id|USB_ENDPOINT_XFERTYPE_MASK
 )paren
@@ -2419,9 +2407,9 @@ c_func
 (paren
 id|umidi-&gt;chip-&gt;dev
 comma
-id|intfd-&gt;bInterfaceNumber
+id|intfd-&gt;desc.bInterfaceNumber
 comma
-id|intfd-&gt;bAlternateSetting
+id|intfd-&gt;desc.bAlternateSetting
 )paren
 suffix:semicolon
 r_return
@@ -2430,6 +2418,8 @@ id|intfd-&gt;endpoint
 (braket
 l_int|1
 )braket
+dot
+id|desc
 suffix:semicolon
 )brace
 DECL|function|snd_usbmidi_get_midiman_int_epd
@@ -2463,7 +2453,7 @@ id|intf-&gt;altsetting
 l_int|0
 )braket
 dot
-id|bNumEndpoints
+id|desc.bNumEndpoints
 OL
 l_int|1
 )paren
@@ -2481,6 +2471,8 @@ id|endpoint
 (braket
 l_int|0
 )braket
+dot
+id|desc
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Creates an input endpoint.&n; */
@@ -2678,7 +2670,7 @@ c_cond
 (paren
 id|int_epd
 )paren
-id|FILL_INT_URB
+id|usb_fill_int_urb
 c_func
 (paren
 id|ep-&gt;urb
@@ -2699,7 +2691,7 @@ id|int_epd-&gt;bInterval
 )paren
 suffix:semicolon
 r_else
-id|FILL_BULK_URB
+id|usb_fill_bulk_urb
 c_func
 (paren
 id|ep-&gt;urb
@@ -2983,7 +2975,7 @@ op_minus
 id|ENOMEM
 suffix:semicolon
 )brace
-id|FILL_BULK_URB
+id|usb_fill_bulk_urb
 c_func
 (paren
 id|ep-&gt;urb
@@ -3613,7 +3605,7 @@ op_star
 id|intf
 suffix:semicolon
 r_struct
-id|usb_interface_descriptor
+id|usb_host_interface
 op_star
 id|intfd
 suffix:semicolon
@@ -3623,7 +3615,7 @@ op_star
 id|ms_header
 suffix:semicolon
 r_struct
-id|usb_endpoint_descriptor
+id|usb_host_endpoint
 op_star
 id|ep
 suffix:semicolon
@@ -3725,7 +3717,7 @@ l_int|0
 suffix:semicolon
 id|i
 OL
-id|intfd-&gt;bNumEndpoints
+id|intfd-&gt;desc.bNumEndpoints
 suffix:semicolon
 op_increment
 id|i
@@ -3743,7 +3735,7 @@ r_if
 c_cond
 (paren
 (paren
-id|ep-&gt;bmAttributes
+id|ep-&gt;desc.bmAttributes
 op_amp
 id|USB_ENDPOINT_XFERTYPE_MASK
 )paren
@@ -3802,7 +3794,7 @@ dot
 id|epnum
 op_ne
 (paren
-id|ep-&gt;bEndpointAddress
+id|ep-&gt;desc.bEndpointAddress
 op_amp
 id|USB_ENDPOINT_NUMBER_MASK
 )paren
@@ -3837,14 +3829,14 @@ id|epidx
 dot
 id|epnum
 op_assign
-id|ep-&gt;bEndpointAddress
+id|ep-&gt;desc.bEndpointAddress
 op_amp
 id|USB_ENDPOINT_NUMBER_MASK
 suffix:semicolon
 r_if
 c_cond
 (paren
-id|ep-&gt;bEndpointAddress
+id|ep-&gt;desc.bEndpointAddress
 op_amp
 id|USB_DIR_IN
 )paren
@@ -3891,7 +3883,7 @@ l_string|&quot;snd-usb-midi: detected %d %s jack(s) on endpoint %d&bslash;n&quot
 comma
 id|ms_ep-&gt;bNumEmbMIDIJack
 comma
-id|ep-&gt;bEndpointAddress
+id|ep-&gt;desc.bEndpointAddress
 op_amp
 id|USB_DIR_IN
 ques
@@ -3935,7 +3927,7 @@ op_star
 id|intf
 suffix:semicolon
 r_struct
-id|usb_interface_descriptor
+id|usb_host_interface
 op_star
 id|intfd
 suffix:semicolon
@@ -3978,7 +3970,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|intfd-&gt;bNumEndpoints
+id|intfd-&gt;desc.bNumEndpoints
 OL
 l_int|1
 )paren
@@ -3988,7 +3980,13 @@ id|ENOENT
 suffix:semicolon
 id|epd
 op_assign
+op_amp
 id|intfd-&gt;endpoint
+(braket
+l_int|0
+)braket
+dot
+id|desc
 suffix:semicolon
 id|endpoint-&gt;epnum
 op_assign
@@ -4023,7 +4021,7 @@ op_star
 id|intf
 suffix:semicolon
 r_struct
-id|usb_interface_descriptor
+id|usb_host_interface
 op_star
 id|intfd
 suffix:semicolon
@@ -4052,7 +4050,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|intfd-&gt;bNumEndpoints
+id|intfd-&gt;desc.bNumEndpoints
 OL
 l_int|1
 )paren
@@ -4194,7 +4192,7 @@ op_star
 id|intf
 suffix:semicolon
 r_struct
-id|usb_interface_descriptor
+id|usb_host_interface
 op_star
 id|intfd
 suffix:semicolon
@@ -4229,7 +4227,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|intfd-&gt;bNumEndpoints
+id|intfd-&gt;desc.bNumEndpoints
 OL
 (paren
 id|ports
@@ -4262,6 +4260,8 @@ id|intfd-&gt;endpoint
 (braket
 l_int|0
 )braket
+dot
+id|desc
 suffix:semicolon
 r_if
 c_cond
@@ -4302,6 +4302,8 @@ id|intfd-&gt;endpoint
 (braket
 l_int|2
 )braket
+dot
+id|desc
 suffix:semicolon
 r_if
 c_cond
@@ -4350,6 +4352,8 @@ id|intfd-&gt;endpoint
 (braket
 l_int|4
 )braket
+dot
+id|desc
 suffix:semicolon
 r_if
 c_cond
@@ -4391,7 +4395,7 @@ id|intfd-&gt;endpoint
 l_int|2
 )braket
 dot
-id|bEndpointAddress
+id|desc.bEndpointAddress
 op_amp
 id|USB_ENDPOINT_NUMBER_MASK
 suffix:semicolon
@@ -4443,7 +4447,7 @@ id|intfd-&gt;endpoint
 l_int|0
 )braket
 dot
-id|bEndpointAddress
+id|desc.bEndpointAddress
 op_amp
 id|USB_ENDPOINT_NUMBER_MASK
 suffix:semicolon
@@ -4508,7 +4512,7 @@ id|intfd-&gt;endpoint
 l_int|4
 )braket
 dot
-id|bEndpointAddress
+id|desc.bEndpointAddress
 op_amp
 id|USB_ENDPOINT_NUMBER_MASK
 suffix:semicolon

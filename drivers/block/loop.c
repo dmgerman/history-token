@@ -1761,7 +1761,6 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-op_logical_neg
 id|err
 op_logical_or
 id|bio_rw
@@ -2814,7 +2813,7 @@ id|LO_FLAGS_READ_ONLY
 suffix:semicolon
 id|lo_blocksize
 op_assign
-id|inode-&gt;i_blocksize
+id|inode-&gt;i_blksize
 suffix:semicolon
 id|lo_flags
 op_or_assign

@@ -20,6 +20,13 @@ id|TeleInt_revision
 op_assign
 l_string|&quot;$Revision: 1.14.6.2 $&quot;
 suffix:semicolon
+DECL|variable|teleint_lock
+r_static
+id|spinlock_t
+id|teleint_lock
+op_assign
+id|SPIN_LOCK_UNLOCKED
+suffix:semicolon
 DECL|macro|byteout
 mdefine_line|#define byteout(addr,val) outb(val,addr)
 DECL|macro|bytein
@@ -53,17 +60,16 @@ op_assign
 l_int|2000
 suffix:semicolon
 r_int
+r_int
 id|flags
 suffix:semicolon
-id|save_flags
+id|spin_lock_irqsave
 c_func
 (paren
+op_amp
+id|teleint_lock
+comma
 id|flags
-)paren
-suffix:semicolon
-id|cli
-c_func
-(paren
 )paren
 suffix:semicolon
 id|byteout
@@ -116,9 +122,12 @@ id|KERN_WARNING
 l_string|&quot;TeleInt Busy not inactive&bslash;n&quot;
 )paren
 suffix:semicolon
-id|restore_flags
+id|spin_unlock_irqrestore
 c_func
 (paren
+op_amp
+id|teleint_lock
+comma
 id|flags
 )paren
 suffix:semicolon
@@ -136,9 +145,12 @@ c_func
 id|adr
 )paren
 suffix:semicolon
-id|restore_flags
+id|spin_unlock_irqrestore
 c_func
 (paren
+op_amp
+id|teleint_lock
+comma
 id|flags
 )paren
 suffix:semicolon
@@ -301,17 +313,16 @@ op_assign
 l_int|2000
 suffix:semicolon
 r_int
+r_int
 id|flags
 suffix:semicolon
-id|save_flags
+id|spin_lock_irqsave
 c_func
 (paren
+op_amp
+id|teleint_lock
+comma
 id|flags
-)paren
-suffix:semicolon
-id|cli
-c_func
-(paren
 )paren
 suffix:semicolon
 id|byteout
@@ -364,9 +375,12 @@ id|KERN_WARNING
 l_string|&quot;TeleInt Busy not inactive&bslash;n&quot;
 )paren
 suffix:semicolon
-id|restore_flags
+id|spin_unlock_irqrestore
 c_func
 (paren
+op_amp
+id|teleint_lock
+comma
 id|flags
 )paren
 suffix:semicolon
@@ -381,9 +395,12 @@ comma
 id|data
 )paren
 suffix:semicolon
-id|restore_flags
+id|spin_unlock_irqrestore
 c_func
 (paren
+op_amp
+id|teleint_lock
+comma
 id|flags
 )paren
 suffix:semicolon
@@ -1113,9 +1130,6 @@ op_star
 id|cs
 )paren
 (brace
-r_int
-id|flags
-suffix:semicolon
 id|printk
 c_func
 (paren
@@ -1138,17 +1152,6 @@ id|cs-&gt;hw.hfc.cirm
 )paren
 suffix:semicolon
 multiline_comment|/* Reset On */
-id|save_flags
-c_func
-(paren
-id|flags
-)paren
-suffix:semicolon
-id|sti
-c_func
-(paren
-)paren
-suffix:semicolon
 id|set_current_state
 c_func
 (paren
@@ -1199,12 +1202,6 @@ id|HZ
 )paren
 op_div
 l_int|1000
-)paren
-suffix:semicolon
-id|restore_flags
-c_func
-(paren
-id|flags
 )paren
 suffix:semicolon
 )brace

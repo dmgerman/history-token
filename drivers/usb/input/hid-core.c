@@ -6606,7 +6606,7 @@ id|intf
 )paren
 (brace
 r_struct
-id|usb_interface_descriptor
+id|usb_host_interface
 op_star
 id|interface
 op_assign
@@ -6731,7 +6731,7 @@ op_logical_and
 (paren
 (paren
 op_logical_neg
-id|interface-&gt;bNumEndpoints
+id|interface-&gt;desc.bNumEndpoints
 )paren
 op_logical_or
 id|usb_get_extra_descriptor
@@ -6861,7 +6861,7 @@ c_func
 (paren
 id|dev
 comma
-id|interface-&gt;bInterfaceNumber
+id|interface-&gt;desc.bInterfaceNumber
 comma
 id|HID_DT_REPORT
 comma
@@ -7015,7 +7015,7 @@ l_int|0
 suffix:semicolon
 id|n
 OL
-id|interface-&gt;bNumEndpoints
+id|interface-&gt;desc.bNumEndpoints
 suffix:semicolon
 id|n
 op_increment
@@ -7025,15 +7025,19 @@ r_struct
 id|usb_endpoint_descriptor
 op_star
 id|endpoint
+suffix:semicolon
+r_int
+id|pipe
+suffix:semicolon
+id|endpoint
 op_assign
 op_amp
 id|interface-&gt;endpoint
 (braket
 id|n
 )braket
-suffix:semicolon
-r_int
-id|pipe
+dot
+id|desc
 suffix:semicolon
 r_if
 c_cond
@@ -7238,7 +7242,7 @@ id|dev
 suffix:semicolon
 id|hid-&gt;ifnum
 op_assign
-id|interface-&gt;bInterfaceNumber
+id|interface-&gt;desc.bInterfaceNumber
 suffix:semicolon
 id|hid-&gt;name
 (braket
@@ -7397,7 +7401,7 @@ id|intf-&gt;altsetting
 l_int|0
 )braket
 dot
-id|bInterfaceNumber
+id|desc.bInterfaceNumber
 )paren
 suffix:semicolon
 r_if

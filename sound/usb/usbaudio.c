@@ -286,7 +286,7 @@ multiline_comment|/*&n; * for using ASYNC unlink mode, define the following.&n; 
 multiline_comment|/* #define SND_USE_ASYNC_UNLINK */
 macro_line|#ifdef SND_USB_ASYNC_UNLINK
 DECL|macro|UNLINK_FLAGS
-mdefine_line|#define UNLINK_FLAGS&t;USB_ASYNC_UNLINK
+mdefine_line|#define UNLINK_FLAGS&t;URB_ASYNC_UNLINK
 macro_line|#else
 DECL|macro|UNLINK_FLAGS
 mdefine_line|#define UNLINK_FLAGS&t;0
@@ -3898,7 +3898,7 @@ id|subs-&gt;datapipe
 suffix:semicolon
 id|u-&gt;urb-&gt;transfer_flags
 op_assign
-id|USB_ISO_ASAP
+id|URB_ISO_ASAP
 op_or
 id|UNLINK_FLAGS
 suffix:semicolon
@@ -4013,7 +4013,7 @@ id|subs-&gt;syncpipe
 suffix:semicolon
 id|u-&gt;urb-&gt;transfer_flags
 op_assign
-id|USB_ISO_ASAP
+id|URB_ISO_ASAP
 op_or
 id|UNLINK_FLAGS
 suffix:semicolon
@@ -4179,14 +4179,14 @@ op_assign
 id|subs-&gt;dev
 suffix:semicolon
 r_struct
-id|usb_config_descriptor
+id|usb_host_config
 op_star
 id|config
 op_assign
 id|dev-&gt;actconfig
 suffix:semicolon
 r_struct
-id|usb_interface_descriptor
+id|usb_host_interface
 op_star
 id|alts
 suffix:semicolon
@@ -4281,7 +4281,7 @@ suffix:semicolon
 id|snd_assert
 c_func
 (paren
-id|alts-&gt;bAlternateSetting
+id|alts-&gt;desc.bAlternateSetting
 op_eq
 id|fmt-&gt;altsetting
 comma
@@ -4398,7 +4398,7 @@ id|alts-&gt;endpoint
 l_int|0
 )braket
 dot
-id|bEndpointAddress
+id|desc.bEndpointAddress
 op_amp
 id|USB_ENDPOINT_NUMBER_MASK
 suffix:semicolon
@@ -4441,7 +4441,7 @@ id|alts-&gt;endpoint
 l_int|0
 )braket
 dot
-id|wMaxPacketSize
+id|desc.wMaxPacketSize
 suffix:semicolon
 id|subs-&gt;maxframesize
 op_assign
@@ -4465,7 +4465,7 @@ id|alts-&gt;endpoint
 l_int|0
 )braket
 dot
-id|bmAttributes
+id|desc.bmAttributes
 op_amp
 id|EP_ATTR_MASK
 suffix:semicolon
@@ -4494,7 +4494,7 @@ multiline_comment|/* check endpoint */
 r_if
 c_cond
 (paren
-id|alts-&gt;bNumEndpoints
+id|alts-&gt;desc.bNumEndpoints
 OL
 l_int|2
 op_logical_or
@@ -4503,7 +4503,7 @@ id|alts-&gt;endpoint
 l_int|1
 )braket
 dot
-id|bmAttributes
+id|desc.bmAttributes
 op_ne
 l_int|0x01
 op_logical_or
@@ -4512,7 +4512,7 @@ id|alts-&gt;endpoint
 l_int|1
 )braket
 dot
-id|bSynchAddress
+id|desc.bSynchAddress
 op_ne
 l_int|0
 )paren
@@ -4542,7 +4542,7 @@ id|alts-&gt;endpoint
 l_int|1
 )braket
 dot
-id|bEndpointAddress
+id|desc.bEndpointAddress
 suffix:semicolon
 r_if
 c_cond
@@ -4558,7 +4558,7 @@ id|alts-&gt;endpoint
 l_int|0
 )braket
 dot
-id|bSynchAddress
+id|desc.bSynchAddress
 op_or
 id|USB_DIR_IN
 )paren
@@ -4576,7 +4576,7 @@ id|alts-&gt;endpoint
 l_int|0
 )braket
 dot
-id|bSynchAddress
+id|desc.bSynchAddress
 op_amp
 op_complement
 id|USB_DIR_IN
@@ -4639,7 +4639,7 @@ id|alts-&gt;endpoint
 l_int|1
 )braket
 dot
-id|bRefresh
+id|desc.bRefresh
 suffix:semicolon
 )brace
 id|ep
@@ -4649,7 +4649,7 @@ id|alts-&gt;endpoint
 l_int|0
 )braket
 dot
-id|bEndpointAddress
+id|desc.bEndpointAddress
 suffix:semicolon
 multiline_comment|/* if endpoint has pitch control, enable it */
 r_if
@@ -7846,7 +7846,7 @@ op_star
 id|dev
 suffix:semicolon
 r_struct
-id|usb_config_descriptor
+id|usb_host_config
 op_star
 id|config
 suffix:semicolon
@@ -7856,7 +7856,7 @@ op_star
 id|iface
 suffix:semicolon
 r_struct
-id|usb_interface_descriptor
+id|usb_host_interface
 op_star
 id|alts
 suffix:semicolon
@@ -7935,15 +7935,15 @@ multiline_comment|/* skip invalid one */
 r_if
 c_cond
 (paren
-id|alts-&gt;bInterfaceClass
+id|alts-&gt;desc.bInterfaceClass
 op_ne
 id|USB_CLASS_AUDIO
 op_logical_or
-id|alts-&gt;bInterfaceSubClass
+id|alts-&gt;desc.bInterfaceSubClass
 op_ne
 id|USB_SUBCLASS_AUDIO_STREAMING
 op_logical_or
-id|alts-&gt;bNumEndpoints
+id|alts-&gt;desc.bNumEndpoints
 OL
 l_int|1
 )paren
@@ -7959,7 +7959,7 @@ id|alts-&gt;endpoint
 l_int|0
 )braket
 dot
-id|bmAttributes
+id|desc.bmAttributes
 op_amp
 id|USB_ENDPOINT_XFERTYPE_MASK
 )paren
@@ -7977,7 +7977,7 @@ id|alts-&gt;endpoint
 l_int|0
 )braket
 dot
-id|bEndpointAddress
+id|desc.bEndpointAddress
 op_amp
 id|USB_DIR_IN
 )paren
@@ -7989,7 +7989,7 @@ id|SNDRV_PCM_STREAM_PLAYBACK
 suffix:semicolon
 id|altno
 op_assign
-id|alts-&gt;bAlternateSetting
+id|alts-&gt;desc.bAlternateSetting
 suffix:semicolon
 multiline_comment|/* get audio formats */
 id|fmt
@@ -8374,7 +8374,7 @@ id|alts-&gt;endpoint
 l_int|0
 )braket
 dot
-id|bEndpointAddress
+id|desc.bEndpointAddress
 suffix:semicolon
 id|fp-&gt;ep_attr
 op_assign
@@ -8383,7 +8383,7 @@ id|alts-&gt;endpoint
 l_int|0
 )braket
 dot
-id|bmAttributes
+id|desc.bmAttributes
 suffix:semicolon
 id|fp-&gt;channels
 op_assign
@@ -8745,7 +8745,7 @@ op_assign
 id|chip-&gt;dev
 suffix:semicolon
 r_struct
-id|usb_config_descriptor
+id|usb_host_config
 op_star
 id|config
 suffix:semicolon
@@ -8874,7 +8874,7 @@ c_cond
 (paren
 id|j
 op_ge
-id|config-&gt;bNumInterfaces
+id|config-&gt;desc.bNumInterfaces
 )paren
 (brace
 id|snd_printk
@@ -8935,7 +8935,7 @@ id|iface-&gt;altsetting
 l_int|0
 )braket
 dot
-id|bInterfaceClass
+id|desc.bInterfaceClass
 op_eq
 id|USB_CLASS_AUDIO
 op_logical_and
@@ -8944,7 +8944,7 @@ id|iface-&gt;altsetting
 l_int|0
 )braket
 dot
-id|bInterfaceSubClass
+id|desc.bInterfaceSubClass
 op_eq
 id|USB_SUBCLASS_MIDI_STREAMING
 )paren
@@ -9008,7 +9008,7 @@ id|iface-&gt;altsetting
 l_int|0
 )braket
 dot
-id|bInterfaceClass
+id|desc.bInterfaceClass
 op_ne
 id|USB_CLASS_AUDIO
 op_logical_or
@@ -9017,7 +9017,7 @@ id|iface-&gt;altsetting
 l_int|0
 )braket
 dot
-id|bInterfaceSubClass
+id|desc.bInterfaceSubClass
 op_ne
 id|USB_SUBCLASS_AUDIO_STREAMING
 )paren
@@ -9348,7 +9348,7 @@ id|ep_quirk
 )brace
 suffix:semicolon
 r_struct
-id|usb_config_descriptor
+id|usb_host_config
 op_star
 id|cfg
 op_assign
@@ -9365,7 +9365,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|cfg-&gt;bNumInterfaces
+id|cfg-&gt;desc.bNumInterfaces
 op_ne
 l_int|3
 )paren
@@ -10328,7 +10328,7 @@ id|usb_id
 )paren
 (brace
 r_struct
-id|usb_config_descriptor
+id|usb_host_config
 op_star
 id|config
 op_assign
@@ -10360,7 +10360,7 @@ suffix:semicolon
 r_int
 id|ifnum
 op_assign
-id|intf-&gt;altsetting-&gt;bInterfaceNumber
+id|intf-&gt;altsetting-&gt;desc.bInterfaceNumber
 suffix:semicolon
 r_if
 c_cond
@@ -10386,7 +10386,7 @@ c_func
 (paren
 id|dev
 comma
-id|config-&gt;bConfigurationValue
+id|config-&gt;desc.bConfigurationValue
 )paren
 OL
 l_int|0
@@ -10398,7 +10398,7 @@ c_func
 id|KERN_ERR
 l_string|&quot;cannot set configuration (value 0x%x)&bslash;n&quot;
 comma
-id|config-&gt;bConfigurationValue
+id|config-&gt;desc.bConfigurationValue
 )paren
 suffix:semicolon
 r_goto

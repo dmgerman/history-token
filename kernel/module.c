@@ -5273,11 +5273,6 @@ c_loop
 id|v
 op_assign
 id|module_list
-comma
-id|n
-op_assign
-op_star
-id|pos
 suffix:semicolon
 id|v
 suffix:semicolon

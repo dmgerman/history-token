@@ -478,7 +478,7 @@ op_assign
 l_int|0
 suffix:semicolon
 multiline_comment|/* Start reading from the device */
-id|FILL_BULK_URB
+id|usb_fill_bulk_urb
 c_func
 (paren
 id|port-&gt;read_urb
@@ -866,7 +866,7 @@ id|transfer_size
 suffix:semicolon
 )brace
 multiline_comment|/* build up our urb */
-id|FILL_BULK_URB
+id|usb_fill_bulk_urb
 (paren
 id|urb
 comma
@@ -1411,7 +1411,7 @@ id|urb-&gt;actual_length
 suffix:semicolon
 )brace
 multiline_comment|/* Continue trying to always read  */
-id|FILL_BULK_URB
+id|usb_fill_bulk_urb
 c_func
 (paren
 id|port-&gt;read_urb

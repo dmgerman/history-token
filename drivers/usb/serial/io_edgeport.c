@@ -4696,7 +4696,7 @@ l_int|2
 suffix:semicolon
 )brace
 multiline_comment|/* fill up the urb with all of our data and submit it */
-id|FILL_BULK_URB
+id|usb_fill_bulk_urb
 (paren
 id|urb
 comma
@@ -8746,7 +8746,7 @@ comma
 id|CmdUrbs
 )paren
 suffix:semicolon
-id|FILL_BULK_URB
+id|usb_fill_bulk_urb
 (paren
 id|urb
 comma

@@ -235,23 +235,6 @@ c_func
 id|skb
 )paren
 suffix:semicolon
-id|cmd.command
-op_assign
-id|ISDN_STAT_L1ERR
-suffix:semicolon
-id|cmd.parm.errcode
-op_assign
-id|ISDN_STAT_L1ERR_SEND
-suffix:semicolon
-id|card-&gt;interface
-dot
-id|statcallb
-c_func
-(paren
-op_amp
-id|cmd
-)paren
-suffix:semicolon
 )brace
 suffix:semicolon
 id|cmd.command
@@ -688,15 +671,6 @@ l_int|0
 )brace
 comma
 multiline_comment|/* Card connected to wallplug */
-(brace
-l_string|&quot;NO D-CHAN&quot;
-comma
-id|ISDN_STAT_NODCH
-comma
-l_int|0
-)brace
-comma
-multiline_comment|/* No D-channel available     */
 (brace
 l_string|&quot;E_L1: ACT FAIL&quot;
 comma
@@ -6324,6 +6298,30 @@ suffix:semicolon
 macro_line|#endif
 r_case
 id|ISDN_PROTO_L2_HDLC
+suffix:colon
+id|sprintf
+c_func
+(paren
+id|cbuf
+comma
+l_string|&quot;%02d;BTRA&bslash;n&quot;
+comma
+(paren
+r_int
+)paren
+(paren
+id|a
+op_amp
+l_int|255
+)paren
+op_plus
+l_int|1
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+id|ISDN_PROTO_L2_TRANS
 suffix:colon
 id|sprintf
 c_func

@@ -1996,7 +1996,7 @@ op_star
 id|scn
 suffix:semicolon
 r_struct
-id|usb_interface_descriptor
+id|usb_host_interface
 op_star
 id|interface
 suffix:semicolon
@@ -2194,7 +2194,7 @@ id|dev-&gt;config
 l_int|0
 )braket
 dot
-id|bNumInterfaces
+id|desc.bNumInterfaces
 op_ne
 l_int|1
 )paren
@@ -2216,7 +2216,13 @@ id|intf-&gt;altsetting
 suffix:semicolon
 id|endpoint
 op_assign
+op_amp
 id|interface-&gt;endpoint
+(braket
+l_int|0
+)braket
+dot
+id|desc
 suffix:semicolon
 multiline_comment|/*&n; * Start checking for two bulk endpoints OR two bulk endpoints *and* one&n; * interrupt endpoint. If we have an interrupt endpoint go ahead and&n; * setup the handler. FIXME: This is a future enhancement...&n; */
 id|dbg
@@ -2227,20 +2233,20 @@ comma
 (paren
 r_int
 )paren
-id|interface-&gt;bNumEndpoints
+id|interface-&gt;desc.bNumEndpoints
 )paren
 suffix:semicolon
 r_if
 c_cond
 (paren
 (paren
-id|interface-&gt;bNumEndpoints
+id|interface-&gt;desc.bNumEndpoints
 op_ne
 l_int|2
 )paren
 op_logical_and
 (paren
-id|interface-&gt;bNumEndpoints
+id|interface-&gt;desc.bNumEndpoints
 op_ne
 l_int|3
 )paren
@@ -2272,7 +2278,7 @@ c_loop
 (paren
 id|ep_cnt
 OL
-id|interface-&gt;bNumEndpoints
+id|interface-&gt;desc.bNumEndpoints
 )paren
 (brace
 r_if
@@ -2393,7 +2399,7 @@ multiline_comment|/*&n; * Perform a quick check to make sure that everything wor
 r_switch
 c_cond
 (paren
-id|interface-&gt;bNumEndpoints
+id|interface-&gt;desc.bNumEndpoints
 )paren
 (brace
 r_case
@@ -2669,7 +2675,7 @@ comma
 id|have_intr
 )paren
 suffix:semicolon
-id|FILL_INT_URB
+id|usb_fill_int_urb
 c_func
 (paren
 id|scn-&gt;scn_irq

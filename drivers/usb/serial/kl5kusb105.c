@@ -1320,7 +1320,7 @@ id|i
 )braket
 suffix:semicolon
 multiline_comment|/* READ_ON and urb submission */
-id|FILL_BULK_URB
+id|usb_fill_bulk_urb
 c_func
 (paren
 id|port-&gt;read_urb
@@ -1964,7 +1964,7 @@ l_int|8
 )paren
 suffix:semicolon
 multiline_comment|/* set up our urb */
-id|FILL_BULK_URB
+id|usb_fill_bulk_urb
 c_func
 (paren
 id|urb
@@ -2644,7 +2644,7 @@ id|bytes_sent
 suffix:semicolon
 )brace
 multiline_comment|/* Continue trying to always read  */
-id|FILL_BULK_URB
+id|usb_fill_bulk_urb
 c_func
 (paren
 id|port-&gt;read_urb

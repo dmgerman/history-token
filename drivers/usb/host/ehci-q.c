@@ -1771,7 +1771,7 @@ op_logical_and
 (paren
 id|urb-&gt;transfer_flags
 op_amp
-id|USB_ZERO_PACKET
+id|URB_ZERO_PACKET
 )paren
 op_logical_and
 op_logical_neg

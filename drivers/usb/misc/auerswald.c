@@ -1204,7 +1204,7 @@ l_int|0
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* cancel an urb which is submitted to the chain&n;   the result is 0 if the urb is cancelled, or -EINPROGRESS if&n;   USB_ASYNC_UNLINK is set and the function is successfully started.&n;*/
+multiline_comment|/* cancel an urb which is submitted to the chain&n;   the result is 0 if the urb is cancelled, or -EINPROGRESS if&n;   URB_ASYNC_UNLINK is set and the function is successfully started.&n;*/
 DECL|function|auerchain_unlink_urb
 r_static
 r_int
@@ -1534,7 +1534,7 @@ suffix:semicolon
 id|urbp-&gt;transfer_flags
 op_and_assign
 op_complement
-id|USB_ASYNC_UNLINK
+id|URB_ASYNC_UNLINK
 suffix:semicolon
 id|dbg
 (paren
@@ -2216,7 +2216,7 @@ id|cpu_to_le16
 id|size
 )paren
 suffix:semicolon
-id|FILL_CONTROL_URB
+id|usb_fill_control_urb
 (paren
 id|urb
 comma
@@ -3002,7 +3002,7 @@ l_int|1
 suffix:semicolon
 multiline_comment|/* Retry Flag */
 multiline_comment|/* bp-&gt;dr-&gt;index    = channel id;          remains */
-id|FILL_CONTROL_URB
+id|usb_fill_control_urb
 (paren
 id|bp-&gt;urbp
 comma
@@ -3241,7 +3241,7 @@ l_int|32
 )paren
 suffix:semicolon
 multiline_comment|/* &gt;= 8 bytes */
-id|FILL_CONTROL_URB
+id|usb_fill_control_urb
 (paren
 id|bp-&gt;urbp
 comma
@@ -3729,7 +3729,7 @@ id|cpu_to_le16
 id|bytecount
 )paren
 suffix:semicolon
-id|FILL_CONTROL_URB
+id|usb_fill_control_urb
 (paren
 id|bp-&gt;urbp
 comma
@@ -3999,7 +3999,7 @@ suffix:semicolon
 )brace
 )brace
 multiline_comment|/* setup urb */
-id|FILL_INT_URB
+id|usb_fill_int_urb
 (paren
 id|cp-&gt;inturbp
 comma
@@ -6675,7 +6675,7 @@ op_plus
 id|AUH_SIZE
 )paren
 suffix:semicolon
-id|FILL_CONTROL_URB
+id|usb_fill_control_urb
 (paren
 id|bp-&gt;urbp
 comma
@@ -7060,7 +7060,7 @@ multiline_comment|/* we use only the first -and only- interface */
 r_if
 c_cond
 (paren
-id|intf-&gt;altsetting-&gt;bInterfaceNumber
+id|intf-&gt;altsetting-&gt;desc.bInterfaceNumber
 op_ne
 l_int|0
 )paren
