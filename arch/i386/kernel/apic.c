@@ -1115,6 +1115,8 @@ r_void
 (brace
 r_int
 r_int
+id|oldvalue
+comma
 id|value
 comma
 id|ver
@@ -1442,23 +1444,12 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-id|value
+id|oldvalue
 op_assign
 id|apic_read
 c_func
 (paren
 id|APIC_ESR
-)paren
-suffix:semicolon
-id|apic_printk
-c_func
-(paren
-id|APIC_VERBOSE
-comma
-l_string|&quot;ESR value before enabling vector:&quot;
-l_string|&quot; %08lx&bslash;n&quot;
-comma
-id|value
 )paren
 suffix:semicolon
 id|value
@@ -1498,13 +1489,22 @@ c_func
 id|APIC_ESR
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|value
+op_ne
+id|oldvalue
+)paren
 id|apic_printk
 c_func
 (paren
 id|APIC_VERBOSE
 comma
-l_string|&quot;ESR value after enabling vector:&quot;
-l_string|&quot; %08lx&bslash;n&quot;
+l_string|&quot;ESR value before enabling &quot;
+l_string|&quot;vector: 0x%08lx  after: 0x%08lx&bslash;n&quot;
+comma
+id|oldvalue
 comma
 id|value
 )paren
