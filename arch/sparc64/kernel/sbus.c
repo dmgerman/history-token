@@ -15,7 +15,7 @@ macro_line|#include &lt;asm/dma.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;asm/starfire.h&gt;
 macro_line|#include &quot;iommu_common.h&quot;
-multiline_comment|/* These should be allocated on an SMP_CACHE_BYTES&n; * aligned boundry for optimal performance.&n; *&n; * On SYSIO, using an 8K page size we have 1GB of SBUS&n; * DMA space mapped.  We divide this space into equally&n; * sized clusters.  Currently we allow clusters up to a&n; * size of 1MB.  If anything begins to generate DMA&n; * mapping requests larger than this we will need to&n; * increase things a bit.&n; */
+multiline_comment|/* These should be allocated on an SMP_CACHE_BYTES&n; * aligned boundary for optimal performance.&n; *&n; * On SYSIO, using an 8K page size we have 1GB of SBUS&n; * DMA space mapped.  We divide this space into equally&n; * sized clusters.  Currently we allow clusters up to a&n; * size of 1MB.  If anything begins to generate DMA&n; * mapping requests larger than this we will need to&n; * increase things a bit.&n; */
 DECL|macro|NCLUSTERS
 mdefine_line|#define NCLUSTERS&t;8UL
 DECL|macro|ONE_GIG

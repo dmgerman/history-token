@@ -2780,7 +2780,7 @@ l_int|16
 op_star
 id|i
 suffix:semicolon
-multiline_comment|/* Allocate memory for indices.&n;&t; * Indices should be aligned on 32 byte boundries. &n;&t; */
+multiline_comment|/* Allocate memory for indices.&n;&t; * Indices should be aligned on 32 byte boundaries. &n;&t; */
 id|fi-&gt;q.host_ocq_cons_indx
 op_assign
 id|kmalloc

@@ -1907,7 +1907,7 @@ id|_SUN4C_PAGE_NOCACHE
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/* Addr is always aligned on a page boundry for us already. */
+multiline_comment|/* Addr is always aligned on a page boundary for us already. */
 DECL|function|sun4c_map_dma_area
 r_static
 r_void

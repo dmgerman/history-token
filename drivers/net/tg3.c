@@ -29472,7 +29472,7 @@ id|tp-&gt;tg3_flags
 op_or_assign
 id|TG3_FLAG_MBOX_WRITE_REORDER
 suffix:semicolon
-multiline_comment|/* Force memory write invalidate off.  If we leave it on,&n;&t; * then on 5700_BX chips we have to enable a workaround.&n;&t; * The workaround is to set the TG3PCI_DMA_RW_CTRL boundry&n;&t; * to match the cacheline size.  The Broadcom driver have this&n;&t; * workaround but turns MWI off all the times so never uses&n;&t; * it.  This seems to suggest that the workaround is insufficient.&n;&t; */
+multiline_comment|/* Force memory write invalidate off.  If we leave it on,&n;&t; * then on 5700_BX chips we have to enable a workaround.&n;&t; * The workaround is to set the TG3PCI_DMA_RW_CTRL boundary&n;&t; * to match the cacheline size.  The Broadcom driver have this&n;&t; * workaround but turns MWI off all the times so never uses&n;&t; * it.  This seems to suggest that the workaround is insufficient.&n;&t; */
 id|pci_read_config_word
 c_func
 (paren

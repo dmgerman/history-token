@@ -2490,7 +2490,7 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-multiline_comment|/* Allocate MAC receive data buffers.&n;         * MAC Rx buffer doesn&squot;t have to be on a 256 byte boundry.&n;         */
+multiline_comment|/* Allocate MAC receive data buffers.&n;         * MAC Rx buffer doesn&squot;t have to be on a 256 byte boundary.&n;         */
 id|tp-&gt;rx_buff_head
 (braket
 id|MAC_QUEUE
@@ -2594,7 +2594,7 @@ comma
 l_int|1L
 )paren
 suffix:semicolon
-multiline_comment|/* Allocate Non-MAC receive data buffers.&n;         * To guarantee a minimum of 256 contigous memory to&n;         * UM_Receive_Packet&squot;s lookahead pointer, before a page&n;         * change or ring end is encountered, place each rx buffer on&n;         * a 256 byte boundry.&n;         */
+multiline_comment|/* Allocate Non-MAC receive data buffers.&n;         * To guarantee a minimum of 256 contigous memory to&n;         * UM_Receive_Packet&squot;s lookahead pointer, before a page&n;         * change or ring end is encountered, place each rx buffer on&n;         * a 256 byte boundary.&n;         */
 id|smctr_malloc
 c_func
 (paren
@@ -6468,7 +6468,7 @@ id|tp-&gt;tx_buff_size
 id|BUG_QUEUE
 )braket
 suffix:semicolon
-multiline_comment|/* Allocate MAC receive data buffers.&n;         * MAC receive buffers don&squot;t have to be on a 256 byte boundry.&n;         */
+multiline_comment|/* Allocate MAC receive data buffers.&n;         * MAC receive buffers don&squot;t have to be on a 256 byte boundary.&n;         */
 id|mem_used
 op_add_assign
 id|RX_DATA_BUFFER_SIZE
@@ -6494,7 +6494,7 @@ id|mem_used
 op_add_assign
 l_int|1L
 suffix:semicolon
-multiline_comment|/* CALCULATE NUMBER OF NON-MAC RX BDB&squot;S&n;         * AND NON-MAC RX DATA BUFFERS&n;         *&n;         * Make sure the mem_used offset at this point is the&n;         * same as in allocate_shared memory or the following&n;         * boundry adjustment will be incorrect (i.e. not allocating&n;         * the non-mac receive buffers above cannot change the 256&n;         * byte offset).&n;         *&n;         * Since this cannot be guaranteed, adding the full 256 bytes&n;         * to the amount of shared memory used at this point will guaranteed&n;         * that the rx data buffers do not overflow shared memory.&n;         */
+multiline_comment|/* CALCULATE NUMBER OF NON-MAC RX BDB&squot;S&n;         * AND NON-MAC RX DATA BUFFERS&n;         *&n;         * Make sure the mem_used offset at this point is the&n;         * same as in allocate_shared memory or the following&n;         * boundary adjustment will be incorrect (i.e. not allocating&n;         * the non-mac receive buffers above cannot change the 256&n;         * byte offset).&n;         *&n;         * Since this cannot be guaranteed, adding the full 256 bytes&n;         * to the amount of shared memory used at this point will guaranteed&n;         * that the rx data buffers do not overflow shared memory.&n;         */
 id|mem_used
 op_add_assign
 l_int|0x100
@@ -18005,7 +18005,7 @@ id|err
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* Adapter RAM test. Incremental word ODD boundry data test. */
+multiline_comment|/* Adapter RAM test. Incremental word ODD boundary data test. */
 DECL|function|smctr_ram_memory_test
 r_static
 r_int
@@ -18101,7 +18101,7 @@ id|pword
 op_assign
 id|tp-&gt;ram_access
 suffix:semicolon
-multiline_comment|/* Incremental word ODD boundry test. */
+multiline_comment|/* Incremental word ODD boundary test. */
 r_for
 c_loop
 (paren
