@@ -59,10 +59,7 @@ id|t-&gt;tm_mon
 op_sub_assign
 l_int|1
 suffix:semicolon
-id|t-&gt;tm_wday
-op_sub_assign
-l_int|1
-suffix:semicolon
+multiline_comment|/* Make sure userland has a 0-based month */
 )brace
 multiline_comment|/* Set the current date and time in the real time clock. */
 DECL|function|set_rtc_time
