@@ -71,63 +71,6 @@ l_string|&quot;cc&quot;
 )paren
 suffix:semicolon
 )brace
-DECL|function|atomic_add
-r_static
-r_inline
-r_void
-id|atomic_add
-c_func
-(paren
-r_int
-id|i
-comma
-id|atomic_t
-op_star
-id|v
-)paren
-(brace
-r_int
-r_int
-id|tmp
-comma
-id|tmp2
-suffix:semicolon
-id|__asm__
-id|__volatile__
-c_func
-(paren
-l_string|&quot;@ atomic_add&bslash;n&quot;
-l_string|&quot;1:&t;ldrex&t;%0, [%2]&bslash;n&quot;
-l_string|&quot;&t;add&t;%0, %0, %3&bslash;n&quot;
-l_string|&quot;&t;strex&t;%1, %0, [%2]&bslash;n&quot;
-l_string|&quot;&t;teq&t;%1, #0&bslash;n&quot;
-l_string|&quot;&t;bne&t;1b&quot;
-suffix:colon
-l_string|&quot;=&amp;r&quot;
-(paren
-id|tmp
-)paren
-comma
-l_string|&quot;=&amp;r&quot;
-(paren
-id|tmp2
-)paren
-suffix:colon
-l_string|&quot;r&quot;
-(paren
-op_amp
-id|v-&gt;counter
-)paren
-comma
-l_string|&quot;Ir&quot;
-(paren
-id|i
-)paren
-suffix:colon
-l_string|&quot;cc&quot;
-)paren
-suffix:semicolon
-)brace
 DECL|function|atomic_add_return
 r_static
 r_inline
@@ -187,63 +130,6 @@ l_string|&quot;cc&quot;
 suffix:semicolon
 r_return
 id|result
-suffix:semicolon
-)brace
-DECL|function|atomic_sub
-r_static
-r_inline
-r_void
-id|atomic_sub
-c_func
-(paren
-r_int
-id|i
-comma
-id|atomic_t
-op_star
-id|v
-)paren
-(brace
-r_int
-r_int
-id|tmp
-comma
-id|tmp2
-suffix:semicolon
-id|__asm__
-id|__volatile__
-c_func
-(paren
-l_string|&quot;@ atomic_sub&bslash;n&quot;
-l_string|&quot;1:&t;ldrex&t;%0, [%2]&bslash;n&quot;
-l_string|&quot;&t;sub&t;%0, %0, %3&bslash;n&quot;
-l_string|&quot;&t;strex&t;%1, %0, [%2]&bslash;n&quot;
-l_string|&quot;&t;teq&t;%1, #0&bslash;n&quot;
-l_string|&quot;&t;bne&t;1b&quot;
-suffix:colon
-l_string|&quot;=&amp;r&quot;
-(paren
-id|tmp
-)paren
-comma
-l_string|&quot;=&amp;r&quot;
-(paren
-id|tmp2
-)paren
-suffix:colon
-l_string|&quot;r&quot;
-(paren
-op_amp
-id|v-&gt;counter
-)paren
-comma
-l_string|&quot;Ir&quot;
-(paren
-id|i
-)paren
-suffix:colon
-l_string|&quot;cc&quot;
-)paren
 suffix:semicolon
 )brace
 DECL|function|atomic_sub_return
@@ -372,42 +258,6 @@ macro_line|#error SMP not supported on pre-ARMv6 CPUs
 macro_line|#endif
 DECL|macro|atomic_set
 mdefine_line|#define atomic_set(v,i)&t;(((v)-&gt;counter) = (i))
-DECL|function|atomic_add
-r_static
-r_inline
-r_void
-id|atomic_add
-c_func
-(paren
-r_int
-id|i
-comma
-id|atomic_t
-op_star
-id|v
-)paren
-(brace
-r_int
-r_int
-id|flags
-suffix:semicolon
-id|local_irq_save
-c_func
-(paren
-id|flags
-)paren
-suffix:semicolon
-id|v-&gt;counter
-op_add_assign
-id|i
-suffix:semicolon
-id|local_irq_restore
-c_func
-(paren
-id|flags
-)paren
-suffix:semicolon
-)brace
 DECL|function|atomic_add_return
 r_static
 r_inline
@@ -454,42 +304,6 @@ id|flags
 suffix:semicolon
 r_return
 id|val
-suffix:semicolon
-)brace
-DECL|function|atomic_sub
-r_static
-r_inline
-r_void
-id|atomic_sub
-c_func
-(paren
-r_int
-id|i
-comma
-id|atomic_t
-op_star
-id|v
-)paren
-(brace
-r_int
-r_int
-id|flags
-suffix:semicolon
-id|local_irq_save
-c_func
-(paren
-id|flags
-)paren
-suffix:semicolon
-id|v-&gt;counter
-op_sub_assign
-id|i
-suffix:semicolon
-id|local_irq_restore
-c_func
-(paren
-id|flags
-)paren
 suffix:semicolon
 )brace
 DECL|function|atomic_sub_return
@@ -581,10 +395,14 @@ id|flags
 suffix:semicolon
 )brace
 macro_line|#endif /* __LINUX_ARM_ARCH__ */
+DECL|macro|atomic_add
+mdefine_line|#define atomic_add(i, v)&t;(void) atomic_add_return(i, v)
 DECL|macro|atomic_inc
-mdefine_line|#define atomic_inc(v)&t;&t;atomic_add(1, v)
+mdefine_line|#define atomic_inc(v)&t;&t;(void) atomic_add_return(1, v)
+DECL|macro|atomic_sub
+mdefine_line|#define atomic_sub(i, v)&t;(void) atomic_sub_return(i, v)
 DECL|macro|atomic_dec
-mdefine_line|#define atomic_dec(v)&t;&t;atomic_sub(1, v)
+mdefine_line|#define atomic_dec(v)&t;&t;(void) atomic_sub_return(1, v)
 DECL|macro|atomic_inc_and_test
 mdefine_line|#define atomic_inc_and_test(v)&t;(atomic_add_return(1, v) == 0)
 DECL|macro|atomic_dec_and_test
