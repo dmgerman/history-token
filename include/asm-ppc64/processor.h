@@ -670,6 +670,8 @@ DECL|macro|PV_SSTAR
 mdefine_line|#define&t;PV_SSTAR&t;0x0037
 DECL|macro|PV_POWER4p
 mdefine_line|#define&t;PV_POWER4p&t;0x0038
+DECL|macro|PV_POWER5
+mdefine_line|#define&t;PV_POWER5&t;0x003A
 DECL|macro|PV_630
 mdefine_line|#define&t;PV_630        &t;0x0040
 DECL|macro|PV_630p

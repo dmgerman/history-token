@@ -215,12 +215,12 @@ macro_line|#ifdef CONFIG_SMP
 DECL|macro|THIS_CPU
 mdefine_line|#define THIS_CPU&t;&t;Processor[cpu]
 DECL|macro|DECL_THIS_CPU
-mdefine_line|#define DECL_THIS_CPU&t;&t;int cpu = smp_processor_id()
+mdefine_line|#define DECL_THIS_CPU&t;&t;int cpu = hard_smp_processor_id()
 DECL|macro|CHECK_THIS_CPU
 mdefine_line|#define CHECK_THIS_CPU&t;&t;check_arg_cpu(cpu)
 macro_line|#else
 DECL|macro|THIS_CPU
-mdefine_line|#define THIS_CPU&t;&t;Processor[smp_processor_id()]
+mdefine_line|#define THIS_CPU&t;&t;Processor[hard_smp_processor_id()]
 DECL|macro|DECL_THIS_CPU
 mdefine_line|#define DECL_THIS_CPU
 DECL|macro|CHECK_THIS_CPU
@@ -1384,7 +1384,11 @@ l_int|0
 comma
 l_int|1
 op_lshift
+id|get_hard_smp_processor_id
+c_func
+(paren
 id|boot_cpuid
+)paren
 )paren
 suffix:semicolon
 )brace
@@ -1489,7 +1493,11 @@ id|i
 comma
 l_int|1
 op_lshift
+id|get_hard_smp_processor_id
+c_func
+(paren
 id|boot_cpuid
+)paren
 )paren
 suffix:semicolon
 )brace
@@ -1937,6 +1945,62 @@ id|vec
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/*&n; * Convert a cpu mask from logical to physical cpu numbers.&n; */
+DECL|function|physmask
+r_static
+r_inline
+id|u32
+id|physmask
+c_func
+(paren
+id|u32
+id|cpumask
+)paren
+(brace
+r_int
+id|i
+suffix:semicolon
+id|u32
+id|mask
+op_assign
+l_int|0
+suffix:semicolon
+r_for
+c_loop
+(paren
+id|i
+op_assign
+l_int|0
+suffix:semicolon
+id|i
+OL
+id|NR_CPUS
+suffix:semicolon
+op_increment
+id|i
+comma
+id|cpumask
+op_rshift_assign
+l_int|1
+)paren
+id|mask
+op_or_assign
+(paren
+id|cpumask
+op_amp
+l_int|1
+)paren
+op_lshift
+id|get_hard_smp_processor_id
+c_func
+(paren
+id|i
+)paren
+suffix:semicolon
+r_return
+id|mask
+suffix:semicolon
+)brace
 DECL|function|openpic_init_processor
 r_void
 id|openpic_init_processor
@@ -1952,12 +2016,16 @@ c_func
 op_amp
 id|OpenPIC-&gt;Global.Processor_Initialization
 comma
+id|physmask
+c_func
+(paren
 id|cpumask
 op_amp
 id|cpus_coerce
 c_func
 (paren
 id|cpu_online_map
+)paren
 )paren
 )paren
 suffix:semicolon
@@ -2060,12 +2128,16 @@ c_func
 id|ipi
 )paren
 comma
+id|physmask
+c_func
+(paren
 id|cpumask
 op_amp
 id|cpus_coerce
 c_func
 (paren
 id|cpu_online_map
+)paren
 )paren
 )paren
 suffix:semicolon
@@ -2204,7 +2276,7 @@ id|msk
 op_assign
 l_int|1
 op_lshift
-id|smp_processor_id
+id|hard_smp_processor_id
 c_func
 (paren
 )paren
@@ -2363,12 +2435,16 @@ id|timer
 dot
 id|Destination
 comma
+id|physmask
+c_func
+(paren
 id|cpumask
 op_amp
 id|cpus_coerce
 c_func
 (paren
 id|cpu_online_map
+)paren
 )paren
 )paren
 suffix:semicolon
@@ -2834,10 +2910,14 @@ id|irq_nr
 op_minus
 id|open_pic_irq_offset
 comma
+id|physmask
+c_func
+(paren
 id|cpus_coerce
 c_func
 (paren
 id|tmp
+)paren
 )paren
 )paren
 suffix:semicolon

@@ -62,11 +62,11 @@ id|u16
 id|xPacaIndex
 suffix:semicolon
 multiline_comment|/* Logical processor number&t;&t;0x18 */
-DECL|member|active
+DECL|member|xHwProcNum
 id|u16
-id|active
+id|xHwProcNum
 suffix:semicolon
-multiline_comment|/* Is this cpu active?&t;&t;&t;0x1a */
+multiline_comment|/* Physical processor number            0x1A */
 DECL|member|default_decr
 id|u32
 id|default_decr
