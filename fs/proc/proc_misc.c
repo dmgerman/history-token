@@ -492,9 +492,9 @@ r_int
 r_int
 id|idle
 op_assign
-id|init_task.times.tms_utime
+id|init_task.utime
 op_plus
-id|init_task.times.tms_stime
+id|init_task.stime
 suffix:semicolon
 id|len
 op_assign
