@@ -2404,7 +2404,6 @@ id|NETIF_F_SG
 suffix:semicolon
 )brace
 macro_line|#ifdef NETIF_F_TSO
-macro_line|#ifdef BROKEN_ON_NON_IA_ARCHS
 multiline_comment|/* Disbaled for now until root-cause is found for&n;&t; * hangs reported against non-IA archs.  TSO can be&n;&t; * enabled using ethtool -K eth&lt;x&gt; tso on */
 r_if
 c_cond
@@ -2427,7 +2426,6 @@ op_or_assign
 id|NETIF_F_TSO
 suffix:semicolon
 )brace
-macro_line|#endif
 macro_line|#endif
 r_if
 c_cond
