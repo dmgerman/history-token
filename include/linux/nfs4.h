@@ -1000,6 +1000,9 @@ comma
 DECL|enumerator|NFSPROC4_CLNT_LOOKUP_ROOT
 id|NFSPROC4_CLNT_LOOKUP_ROOT
 comma
+DECL|enumerator|NFSPROC4_CLNT_REMOVE
+id|NFSPROC4_CLNT_REMOVE
+comma
 )brace
 suffix:semicolon
 macro_line|#endif

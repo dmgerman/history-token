@@ -2211,16 +2211,11 @@ DECL|struct|nfs4_remove
 r_struct
 id|nfs4_remove
 (brace
-DECL|member|rm_namelen
-id|u32
-id|rm_namelen
-suffix:semicolon
-multiline_comment|/* request */
-DECL|member|rm_name
-r_const
-r_char
+DECL|member|name
+r_struct
+id|qstr
 op_star
-id|rm_name
+id|name
 suffix:semicolon
 multiline_comment|/* request */
 DECL|member|rm_cinfo
@@ -2230,6 +2225,26 @@ op_star
 id|rm_cinfo
 suffix:semicolon
 multiline_comment|/* response */
+)brace
+suffix:semicolon
+DECL|struct|nfs4_remove_arg
+r_struct
+id|nfs4_remove_arg
+(brace
+DECL|member|fh
+r_const
+r_struct
+id|nfs_fh
+op_star
+id|fh
+suffix:semicolon
+DECL|member|name
+r_const
+r_struct
+id|qstr
+op_star
+id|name
+suffix:semicolon
 )brace
 suffix:semicolon
 DECL|struct|nfs4_rename
