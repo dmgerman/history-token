@@ -84,6 +84,12 @@ DECL|macro|xfs_syncd_interval
 mdefine_line|#define xfs_syncd_interval&t;xfs_params.sync_interval.val
 DECL|macro|xfs_stats_clear
 mdefine_line|#define xfs_stats_clear&t;&t;xfs_params.stats_clear.val
+DECL|macro|xfs_inherit_sync
+mdefine_line|#define xfs_inherit_sync&t;xfs_params.inherit_sync.val
+DECL|macro|xfs_inherit_nodump
+mdefine_line|#define xfs_inherit_nodump&t;xfs_params.inherit_nodump.val
+DECL|macro|xfs_inherit_noatime
+mdefine_line|#define xfs_inherit_noatime&t;xfs_params.inherit_noatim.val
 DECL|macro|NBPP
 mdefine_line|#define NBPP&t;&t;PAGE_SIZE
 DECL|macro|DPPSHFT

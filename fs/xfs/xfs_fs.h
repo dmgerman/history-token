@@ -63,13 +63,21 @@ suffix:semicolon
 macro_line|#endif
 multiline_comment|/*&n; * Flags for the bs_xflags/fsx_xflags field&n; * There should be a one-to-one correspondence between these flags and the&n; * XFS_DIFLAG_s.&n; */
 DECL|macro|XFS_XFLAG_REALTIME
-mdefine_line|#define XFS_XFLAG_REALTIME&t;0x00000001
+mdefine_line|#define XFS_XFLAG_REALTIME&t;0x00000001&t;/* data in realtime volume */
 DECL|macro|XFS_XFLAG_PREALLOC
-mdefine_line|#define XFS_XFLAG_PREALLOC&t;0x00000002
+mdefine_line|#define XFS_XFLAG_PREALLOC&t;0x00000002&t;/* preallocated file extents */
+DECL|macro|XFS_XFLAG_IMMUTABLE
+mdefine_line|#define XFS_XFLAG_IMMUTABLE&t;0x00000008&t;/* file cannot be modified */
+DECL|macro|XFS_XFLAG_APPEND
+mdefine_line|#define XFS_XFLAG_APPEND&t;0x00000010&t;/* all writes append */
+DECL|macro|XFS_XFLAG_SYNC
+mdefine_line|#define XFS_XFLAG_SYNC&t;&t;0x00000020&t;/* all writes synchronous */
+DECL|macro|XFS_XFLAG_NOATIME
+mdefine_line|#define XFS_XFLAG_NOATIME&t;0x00000040&t;/* do not update access time */
+DECL|macro|XFS_XFLAG_NODUMP
+mdefine_line|#define XFS_XFLAG_NODUMP&t;0x00000080&t;/* do not include in backups */
 DECL|macro|XFS_XFLAG_HASATTR
 mdefine_line|#define XFS_XFLAG_HASATTR&t;0x80000000&t;/* no DIFLAG for this&t;*/
-DECL|macro|XFS_XFLAG_ALL
-mdefine_line|#define XFS_XFLAG_ALL&t;&t;&bslash;&n;&t;( XFS_XFLAG_REALTIME|XFS_XFLAG_PREALLOC|XFS_XFLAG_HASATTR )
 multiline_comment|/*&n; * Structure for XFS_IOC_GETBMAP.&n; * On input, fill in bmv_offset and bmv_length of the first structure&n; * to indicate the area of interest in the file, and bmv_entry with the&n; * number of array elements given.  The first structure is updated on&n; * return to give the offset and length for the next call.&n; */
 macro_line|#ifndef HAVE_GETBMAP
 DECL|struct|getbmap

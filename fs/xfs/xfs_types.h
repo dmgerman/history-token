@@ -163,10 +163,22 @@ macro_line|#else
 macro_line|#error BITS_PER_LONG must be 32 or 64
 macro_line|#endif
 macro_line|#endif&t;/* __KERNEL__ */
-multiline_comment|/*&n; * Some types are conditional based on the selected configuration.&n; * Set XFS_BIG_FILESYSTEMS=1 or 0 depending on the desired configuration.&n; * XFS_BIG_FILESYSTEMS needs daddr_t to be 64 bits&n; *&n; * On linux right now we are limited to 2^32 512 byte blocks in a&n; * filesystem, Once this limit is changed, setting this to 1&n; * will allow XFS to go larger. With BIG_FILESYSTEMS set to 0&n; * a 4K block filesystem could still theoretically be 16Gbytes&n; * long, so on an ia32 box the 32 bit page index will then be&n; * the limiting factor.&n; */
-macro_line|#ifndef XFS_BIG_FILESYSTEMS
-DECL|macro|XFS_BIG_FILESYSTEMS
-mdefine_line|#define XFS_BIG_FILESYSTEMS&t;0
+multiline_comment|/*&n; * Some types are conditional depending on the target system.&n; * XFS_BIG_BLKNOS needs block layer disk addresses to be 64 bits.&n; * XFS_BIG_INUMS needs the VFS inode number to be 64 bits, as well&n; * as requiring XFS_BIG_BLKNOS to be set.&n; */
+macro_line|#if defined(CONFIG_LBD) || (defined(HAVE_SECTOR_T) &amp;&amp; (BITS_PER_LONG == 64))
+DECL|macro|XFS_BIG_BLKNOS
+macro_line|# define XFS_BIG_BLKNOS&t;1
+macro_line|# if BITS_PER_LONG == 64
+DECL|macro|XFS_BIG_INUMS
+macro_line|#  define XFS_BIG_INUMS&t;1
+macro_line|# else
+DECL|macro|XFS_BIG_INUMS
+macro_line|#  define XFS_BIG_INUMS&t;0
+macro_line|# endif
+macro_line|#else
+DECL|macro|XFS_BIG_BLKNOS
+macro_line|# define XFS_BIG_BLKNOS&t;0
+DECL|macro|XFS_BIG_INUMS
+macro_line|# define XFS_BIG_INUMS&t;0
 macro_line|#endif
 DECL|typedef|xfs_agblock_t
 r_typedef
@@ -284,7 +296,7 @@ id|xfs_dfilblks_t
 suffix:semicolon
 multiline_comment|/* number of blocks in a file */
 multiline_comment|/*&n; * Memory based types are conditional.&n; */
-macro_line|#if XFS_BIG_FILESYSTEMS
+macro_line|#if XFS_BIG_BLKNOS
 DECL|typedef|xfs_fsblock_t
 r_typedef
 id|__uint64_t

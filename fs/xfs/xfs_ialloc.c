@@ -4732,7 +4732,7 @@ id|agino
 )paren
 )paren
 (brace
-macro_line|#ifdef DEBUG
+macro_line|#if 0
 r_if
 c_cond
 (paren

@@ -45,7 +45,6 @@ macro_line|#include &quot;xfs_log_recover.h&quot;
 macro_line|#include &quot;xfs_rw.h&quot;
 macro_line|#include &quot;xfs_bit.h&quot;
 macro_line|#include &quot;xfs_quota.h&quot;
-macro_line|#include &quot;xfs_log_recover.h&quot;
 macro_line|#include &quot;quota/xfs_qm.h&quot;
 id|MODULE_AUTHOR
 c_func
@@ -14509,6 +14508,24 @@ multiline_comment|/* XFS_DIFLAG_REALTIME */
 l_string|&quot;prealloc&quot;
 comma
 multiline_comment|/* XFS_DIFLAG_PREALLOC */
+l_string|&quot;newrtbm&quot;
+comma
+multiline_comment|/* XFS_DIFLAG_NEWRTBM */
+l_string|&quot;immutable&quot;
+comma
+multiline_comment|/* XFS_DIFLAG_IMMUTABLE */
+l_string|&quot;append&quot;
+comma
+multiline_comment|/* XFS_DIFLAG_APPEND */
+l_string|&quot;sync&quot;
+comma
+multiline_comment|/* XFS_DIFLAG_SYNC */
+l_string|&quot;noatime&quot;
+comma
+multiline_comment|/* XFS_DIFLAG_NOATIME */
+l_string|&quot;nodump&quot;
+comma
+multiline_comment|/* XFS_DIFLAG_NODUMP */
 l_int|NULL
 )brace
 suffix:semicolon
@@ -23610,7 +23627,7 @@ comma
 id|mp-&gt;m_resblks_avail
 )paren
 suffix:semicolon
-macro_line|#if XFS_BIG_FILESYSTEMS
+macro_line|#if XFS_BIG_INUMS
 id|kdb_printf
 c_func
 (paren

@@ -537,13 +537,6 @@ id|cfi-&gt;cfi_container
 op_assign
 id|host_file
 suffix:semicolon
-id|coda_load_creds
-c_func
-(paren
-op_amp
-id|cfi-&gt;cfi_cred
-)paren
-suffix:semicolon
 id|BUG_ON
 c_func
 (paren
@@ -700,8 +693,7 @@ id|coda_inode
 comma
 id|coda_flags
 comma
-op_amp
-id|cfi-&gt;cfi_cred
+id|coda_file-&gt;f_uid
 )paren
 suffix:semicolon
 r_if
@@ -881,8 +873,7 @@ id|coda_inode
 comma
 id|coda_flags
 comma
-op_amp
-id|cfi-&gt;cfi_cred
+id|coda_file-&gt;f_uid
 )paren
 suffix:semicolon
 id|host_inode
