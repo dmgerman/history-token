@@ -103,7 +103,11 @@ id|EBUSY
 suffix:semicolon
 )brace
 macro_line|#ifdef CONFIG_HARDDOG_NOWAYOUT&t; 
-id|MOD_INC_USE_COUNT
+id|__module_get
+c_func
+(paren
+id|THIS_MODULE
+)paren
 suffix:semicolon
 macro_line|#endif
 macro_line|#ifdef CONFIG_MCONSOLE
