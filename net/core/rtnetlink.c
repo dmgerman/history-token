@@ -17,6 +17,7 @@ macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/capability.h&gt;
 macro_line|#include &lt;linux/skbuff.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
+macro_line|#include &lt;linux/security.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/string.h&gt;
@@ -1806,19 +1807,10 @@ id|kind
 op_ne
 l_int|2
 op_logical_and
-op_logical_neg
-id|cap_raised
-c_func
-(paren
-id|NETLINK_CB
+id|security_netlink_recv
 c_func
 (paren
 id|skb
-)paren
-dot
-id|eff_cap
-comma
-id|CAP_NET_ADMIN
 )paren
 )paren
 (brace
