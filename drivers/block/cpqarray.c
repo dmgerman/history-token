@@ -7904,6 +7904,7 @@ l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/* Borrowed and adapted from sd.c */
+multiline_comment|/*&n; * FIXME: exclusion with -&gt;open()&n; */
 DECL|function|revalidate_logvol
 r_static
 r_int

@@ -3505,6 +3505,7 @@ suffix:semicolon
 )brace
 )brace
 multiline_comment|/* Borrowed and adapted from sd.c */
+multiline_comment|/*&n; * FIXME: we are missing the exclusion with -&gt;open() here - it can happen&n; * just as we are rereading partition tables.&n; */
 DECL|function|revalidate_logvol
 r_static
 r_int
@@ -6497,14 +6498,24 @@ id|logvol
 op_lshift
 id|gdev-&gt;minor_shift
 suffix:semicolon
-id|wipe_partitions
+id|kdev
+op_assign
+id|mk_kdev
 c_func
 (paren
 id|MAJOR_NR
 op_plus
 id|ctlr
 comma
-id|start
+id|logvol
+op_lshift
+id|gdev-&gt;minor_shift
+)paren
+suffix:semicolon
+id|wipe_partitions
+c_func
+(paren
+id|kdev
 )paren
 suffix:semicolon
 op_increment
@@ -6527,20 +6538,6 @@ op_plus
 l_int|1
 suffix:semicolon
 multiline_comment|/* setup partitions per disk */
-id|kdev
-op_assign
-id|mk_kdev
-c_func
-(paren
-id|MAJOR_NR
-op_plus
-id|ctlr
-comma
-id|logvol
-op_lshift
-id|gdev-&gt;minor_shift
-)paren
-suffix:semicolon
 id|grok_partitions
 c_func
 (paren
