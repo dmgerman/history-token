@@ -427,4 +427,5 @@ id|kbd_iobase
 )paren
 suffix:semicolon
 )brace
+macro_line|#endif /* _I8042_SPARCIO_H */
 eof
