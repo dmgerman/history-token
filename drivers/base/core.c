@@ -633,6 +633,7 @@ id|device_root
 suffix:semicolon
 )brace
 DECL|function|device_driver_init
+r_static
 r_int
 id|__init
 id|device_driver_init
@@ -718,6 +719,13 @@ r_return
 id|error
 suffix:semicolon
 )brace
+DECL|variable|device_driver_init
+id|subsys_initcall
+c_func
+(paren
+id|device_driver_init
+)paren
+suffix:semicolon
 DECL|variable|device_register
 id|EXPORT_SYMBOL
 c_func
@@ -744,13 +752,6 @@ id|EXPORT_SYMBOL
 c_func
 (paren
 id|put_iobus
-)paren
-suffix:semicolon
-DECL|variable|device_driver_init
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|device_driver_init
 )paren
 suffix:semicolon
 eof

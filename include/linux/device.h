@@ -479,14 +479,6 @@ op_star
 id|dev
 )paren
 suffix:semicolon
-r_extern
-r_int
-id|device_driver_init
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
 multiline_comment|/* device and bus locking helpers.&n; *&n; * FIXME: Is there anything else we need to do?&n; */
 DECL|function|lock_device
 r_static
