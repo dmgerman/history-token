@@ -6596,6 +6596,11 @@ c_func
 r_void
 )paren
 (brace
+id|pci_dma_bus_is_phys
+op_assign
+l_int|0
+suffix:semicolon
+multiline_comment|/* suppress bounce buffer in block/net layers */
 id|MAX_DMA_ADDRESS
 op_assign
 op_complement

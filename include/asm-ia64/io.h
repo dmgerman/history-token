@@ -1141,5 +1141,12 @@ mdefine_line|#define dma_cache_wback(_start,_size)           do { } while (0)
 DECL|macro|dma_cache_wback_inv
 mdefine_line|#define dma_cache_wback_inv(_start,_size)       do { } while (0)
 macro_line|# endif /* __KERNEL__ */
+multiline_comment|/* Argh, another magic macro... ;-( */
+r_extern
+r_int
+id|pci_dma_bus_is_phys
+suffix:semicolon
+DECL|macro|BIO_VMERGE_BOUNDARY
+mdefine_line|#define BIO_VMERGE_BOUNDARY&t;(pci_dma_bus_is_phys ? 0 : PAGE_SIZE)
 macro_line|#endif /* _ASM_IA64_IO_H */
 eof

@@ -107,6 +107,15 @@ op_assign
 l_int|0xaa
 suffix:semicolon
 multiline_comment|/* XXX remove this when legacy I/O is gone */
+macro_line|#ifdef CONFIG_PCI
+DECL|variable|pci_dma_bus_is_phys
+r_int
+id|pci_dma_bus_is_phys
+op_assign
+l_int|1
+suffix:semicolon
+multiline_comment|/* default to direct mapping, unless we detect hw I/O MMU */
+macro_line|#endif
 DECL|macro|COMMAND_LINE_SIZE
 mdefine_line|#define COMMAND_LINE_SIZE&t;512
 DECL|variable|saved_command_line
@@ -186,7 +195,7 @@ id|arg
 r_int
 r_int
 op_star
-id|max_pfn
+id|max_pfnp
 op_assign
 id|arg
 comma
@@ -214,10 +223,10 @@ c_cond
 id|pfn
 OG
 op_star
-id|max_pfn
+id|max_pfnp
 )paren
 op_star
-id|max_pfn
+id|max_pfnp
 op_assign
 id|pfn
 suffix:semicolon
@@ -896,10 +905,6 @@ macro_line|#&t;define KERNEL_END&t;(&amp;_end)
 r_int
 r_int
 id|bootmap_size
-suffix:semicolon
-r_int
-r_int
-id|max_pfn
 suffix:semicolon
 r_int
 id|n
