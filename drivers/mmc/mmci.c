@@ -21,10 +21,10 @@ DECL|macro|DRIVER_NAME
 mdefine_line|#define DRIVER_NAME &quot;mmci-pl18x&quot;
 macro_line|#ifdef CONFIG_MMC_DEBUG
 DECL|macro|DBG
-mdefine_line|#define DBG(x...)&t;pr_debug(x)
+mdefine_line|#define DBG(host,fmt,args...)&t;&bslash;&n;&t;pr_debug(&quot;%s: %s: &quot; fmt, host-&gt;mmc-&gt;host_name, __func__ , args)
 macro_line|#else
 DECL|macro|DBG
-mdefine_line|#define DBG(x...)&t;do { } while (0)
+mdefine_line|#define DBG(host,fmt,args...)&t;do { } while (0)
 macro_line|#endif
 DECL|variable|fmax
 r_static
@@ -138,9 +138,9 @@ suffix:semicolon
 id|DBG
 c_func
 (paren
-l_string|&quot;%s: data: blksz %04x blks %04x flags %08x&bslash;n&quot;
+id|host
 comma
-id|host-&gt;mmc-&gt;host_name
+l_string|&quot;blksz %04x blks %04x flags %08x&bslash;n&quot;
 comma
 l_int|1
 op_lshift
@@ -283,9 +283,9 @@ id|c
 id|DBG
 c_func
 (paren
-l_string|&quot;%s: cmd: op %02x arg %08x flags %08x&bslash;n&quot;
+id|host
 comma
-id|host-&gt;mmc-&gt;host_name
+l_string|&quot;op %02x arg %08x flags %08x&bslash;n&quot;
 comma
 id|cmd-&gt;opcode
 comma
@@ -757,9 +757,9 @@ suffix:semicolon
 id|DBG
 c_func
 (paren
-l_string|&quot;%s: irq1 %08x&bslash;n&quot;
+id|host
 comma
-id|host-&gt;mmc-&gt;host_name
+l_string|&quot;irq1 %08x&bslash;n&quot;
 comma
 id|status
 )paren
@@ -1064,9 +1064,9 @@ suffix:semicolon
 id|DBG
 c_func
 (paren
-l_string|&quot;%s: irq0 %08x&bslash;n&quot;
+id|host
 comma
-id|host-&gt;mmc-&gt;host_name
+l_string|&quot;irq0 %08x&bslash;n&quot;
 comma
 id|status
 )paren
@@ -1285,9 +1285,9 @@ suffix:semicolon
 id|DBG
 c_func
 (paren
-l_string|&quot;%s: set_ios: clock %uHz busmode %u powermode %u Vdd %u&bslash;n&quot;
+id|host
 comma
-id|mmc-&gt;host_name
+l_string|&quot;clock %uHz busmode %u powermode %u Vdd %u&bslash;n&quot;
 comma
 id|ios-&gt;clock
 comma
