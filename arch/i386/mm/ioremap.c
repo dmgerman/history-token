@@ -943,12 +943,6 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
-id|unmap_vm_area
-c_func
-(paren
-id|p
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren

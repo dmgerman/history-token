@@ -1151,6 +1151,12 @@ l_int|NULL
 suffix:semicolon
 id|found
 suffix:colon
+id|unmap_vm_area
+c_func
+(paren
+id|tmp
+)paren
+suffix:semicolon
 op_star
 id|p
 op_assign
@@ -1252,12 +1258,6 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
-id|unmap_vm_area
-c_func
-(paren
-id|area
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren

@@ -110,13 +110,6 @@ id|prevp
 op_assign
 id|map-&gt;next
 suffix:semicolon
-id|write_unlock
-c_func
-(paren
-op_amp
-id|vmlist_lock
-)paren
-suffix:semicolon
 r_goto
 id|found
 suffix:semicolon
@@ -145,6 +138,13 @@ id|unmap_vm_area
 c_func
 (paren
 id|map
+)paren
+suffix:semicolon
+id|write_unlock
+c_func
+(paren
+op_amp
+id|vmlist_lock
 )paren
 suffix:semicolon
 r_if
