@@ -6,7 +6,6 @@ macro_line|#include &lt;linux/time.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;asm/hw_irq.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
-macro_line|#include &quot;shub.h&quot;
 macro_line|#include &lt;asm/sn/leds.h&gt;
 macro_line|#include &lt;asm/sn/shub_mmr.h&gt;
 macro_line|#include &lt;asm/sn/clksupport.h&gt;
