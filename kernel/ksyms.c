@@ -2868,6 +2868,13 @@ c_func
 id|single_release
 )paren
 suffix:semicolon
+DECL|variable|seq_release_private
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|seq_release_private
+)paren
+suffix:semicolon
 multiline_comment|/* Program loader interfaces */
 macro_line|#ifdef CONFIG_MMU
 DECL|variable|setup_arg_pages
