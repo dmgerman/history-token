@@ -1868,14 +1868,9 @@ r_int
 id|max_failures
 suffix:semicolon
 multiline_comment|/* maximum allowed failure count */
-DECL|member|capacity
-id|u32
-id|capacity
-suffix:semicolon
-multiline_comment|/* total number of sectors */
-DECL|member|capacity48
+DECL|member|capacity64
 id|u64
-id|capacity48
+id|capacity64
 suffix:semicolon
 multiline_comment|/* total number of sectors */
 DECL|member|last_lun
