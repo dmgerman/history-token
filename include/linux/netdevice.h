@@ -1332,26 +1332,6 @@ id|net_bridge_port
 op_star
 id|br_port
 suffix:semicolon
-macro_line|#ifdef CONFIG_NET_FASTROUTE
-DECL|macro|NETDEV_FASTROUTE_HMASK
-mdefine_line|#define NETDEV_FASTROUTE_HMASK 0xF
-multiline_comment|/* Semi-private data. Keep it at the end of device struct. */
-DECL|member|fastpath_lock
-id|rwlock_t
-id|fastpath_lock
-suffix:semicolon
-DECL|member|fastpath
-r_struct
-id|dst_entry
-op_star
-id|fastpath
-(braket
-id|NETDEV_FASTROUTE_HMASK
-op_plus
-l_int|1
-)braket
-suffix:semicolon
-macro_line|#endif
 macro_line|#ifdef CONFIG_NET_DIVERT
 multiline_comment|/* this will get initialized at each interface type init routine */
 DECL|member|divert
@@ -3707,27 +3687,6 @@ r_int
 id|inward
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_NET_FASTROUTE
-r_extern
-r_int
-id|netdev_fastroute
-suffix:semicolon
-r_extern
-r_int
-id|netdev_fastroute_obstacles
-suffix:semicolon
-r_extern
-r_void
-id|dev_clear_fastroute
-c_func
-(paren
-r_struct
-id|net_device
-op_star
-id|dev
-)paren
-suffix:semicolon
-macro_line|#endif
 macro_line|#ifdef CONFIG_SYSCTL
 r_extern
 r_char
