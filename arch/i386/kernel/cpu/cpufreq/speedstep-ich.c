@@ -834,23 +834,9 @@ l_int|1000
 )paren
 suffix:semicolon
 multiline_comment|/* cpuinfo and default policy values */
-id|policy-&gt;policy
+id|policy-&gt;governor
 op_assign
-(paren
-id|speed
-op_eq
-id|speedstep_freqs
-(braket
-id|SPEEDSTEP_LOW
-)braket
-dot
-id|frequency
-)paren
-ques
-c_cond
-id|CPUFREQ_POLICY_POWERSAVE
-suffix:colon
-id|CPUFREQ_POLICY_PERFORMANCE
+id|CPUFREQ_DEFAULT_GOVERNOR
 suffix:semicolon
 id|policy-&gt;cpuinfo.transition_latency
 op_assign
@@ -884,7 +870,7 @@ op_assign
 dot
 id|name
 op_assign
-l_string|&quot;speedstep&quot;
+l_string|&quot;speedstep-ich&quot;
 comma
 dot
 id|verify
