@@ -73,13 +73,12 @@ r_struct
 id|linux_logo
 id|logo_superh_clut224
 suffix:semicolon
-DECL|function|find_logo
+DECL|function|fb_find_logo
 r_const
 r_struct
 id|linux_logo
 op_star
-id|__init
-id|find_logo
+id|fb_find_logo
 c_func
 (paren
 r_int
