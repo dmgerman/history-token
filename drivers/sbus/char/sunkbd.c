@@ -5658,9 +5658,11 @@ macro_line|#ifdef CONFIG_SPARC32_COMPAT
 r_if
 c_cond
 (paren
-id|current-&gt;thread.flags
-op_amp
-id|SPARC_FLAG_32BIT
+id|test_thread_flag
+c_func
+(paren
+id|TIF_32BIT
+)paren
 )paren
 (brace
 r_if

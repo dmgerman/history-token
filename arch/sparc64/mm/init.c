@@ -1,4 +1,4 @@
-multiline_comment|/*  $Id: init.c,v 1.208 2001/12/21 04:56:15 davem Exp $&n; *  arch/sparc64/mm/init.c&n; *&n; *  Copyright (C) 1996-1999 David S. Miller (davem@caip.rutgers.edu)&n; *  Copyright (C) 1997-1999 Jakub Jelinek (jj@sunsite.mff.cuni.cz)&n; */
+multiline_comment|/*  $Id: init.c,v 1.209 2002/02/09 19:49:31 davem Exp $&n; *  arch/sparc64/mm/init.c&n; *&n; *  Copyright (C) 1996-1999 David S. Miller (davem@caip.rutgers.edu)&n; *  Copyright (C) 1997-1999 Jakub Jelinek (jj@sunsite.mff.cuni.cz)&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
@@ -380,21 +380,6 @@ r_return
 id|freed
 suffix:semicolon
 )brace
-r_extern
-r_void
-id|__update_mmu_cache
-c_func
-(paren
-r_struct
-id|vm_area_struct
-op_star
-comma
-r_int
-r_int
-comma
-id|pte_t
-)paren
-suffix:semicolon
 macro_line|#ifdef CONFIG_DEBUG_DCFLUSH
 DECL|variable|dcpage_flushes
 id|atomic_t
@@ -644,6 +629,26 @@ l_string|&quot;g7&quot;
 )paren
 suffix:semicolon
 )brace
+r_extern
+r_void
+id|__update_mmu_cache
+c_func
+(paren
+r_int
+r_int
+id|mmu_context_hw
+comma
+r_int
+r_int
+id|address
+comma
+id|pte_t
+id|pte
+comma
+r_int
+id|code
+)paren
+suffix:semicolon
 DECL|function|update_mmu_cache
 r_void
 id|update_mmu_cache
@@ -747,14 +752,29 @@ id|cpu
 )paren
 suffix:semicolon
 )brace
+r_if
+c_cond
+(paren
+id|get_thread_fault_code
+c_func
+(paren
+)paren
+)paren
 id|__update_mmu_cache
 c_func
 (paren
-id|vma
+id|vma-&gt;vm_mm-&gt;context
+op_amp
+id|TAG_CONTEXT_BITS
 comma
 id|address
 comma
 id|pte
+comma
+id|get_thread_fault_code
+c_func
+(paren
+)paren
 )paren
 suffix:semicolon
 )brace
@@ -3440,7 +3460,15 @@ id|enter
 id|set_fs
 c_func
 (paren
-id|current-&gt;thread.current_ds
+(paren
+id|mm_segment_t
+)paren
+(brace
+id|get_thread_current_ds
+c_func
+(paren
+)paren
+)brace
 )paren
 suffix:semicolon
 r_if

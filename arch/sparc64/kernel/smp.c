@@ -896,11 +896,10 @@ l_string|&quot;memory&quot;
 )paren
 suffix:semicolon
 multiline_comment|/* Clear this or we will die instantly when we&n;&t; * schedule back to this idler...&n;&t; */
-id|current-&gt;thread.flags
-op_and_assign
-op_complement
+id|clear_thread_flag
+c_func
 (paren
-id|SPARC_FLAG_NEWCHILD
+id|TIF_NEWCHILD
 )paren
 suffix:semicolon
 multiline_comment|/* Attach to the address space of init_task. */
@@ -969,12 +968,12 @@ r_int
 id|sparc64_cpu_startup
 suffix:semicolon
 multiline_comment|/* The OBP cpu startup callback truncates the 3rd arg cookie to&n; * 32-bits (I think) so to be safe we have it read the pointer&n; * contained here so we work on &gt;4GB machines. -DaveM&n; */
-DECL|variable|cpu_new_task
+DECL|variable|cpu_new_thread
 r_static
 r_struct
-id|task_struct
+id|thread_info
 op_star
-id|cpu_new_task
+id|cpu_new_thread
 op_assign
 l_int|NULL
 suffix:semicolon
@@ -1108,7 +1107,7 @@ r_int
 )paren
 (paren
 op_amp
-id|cpu_new_task
+id|cpu_new_thread
 )paren
 suffix:semicolon
 r_struct
@@ -1193,9 +1192,9 @@ id|i
 )paren
 r_break
 suffix:semicolon
-id|cpu_new_task
+id|cpu_new_thread
 op_assign
-id|p
+id|p-&gt;thread_info
 suffix:semicolon
 id|prom_startcpu
 c_func
@@ -1329,7 +1328,7 @@ l_int|1
 suffix:semicolon
 )brace
 )brace
-id|cpu_new_task
+id|cpu_new_thread
 op_assign
 l_int|NULL
 suffix:semicolon

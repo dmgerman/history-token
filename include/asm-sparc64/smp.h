@@ -320,7 +320,7 @@ suffix:semicolon
 )brace
 )brace
 DECL|macro|smp_processor_id
-mdefine_line|#define smp_processor_id() (current-&gt;cpu)
+mdefine_line|#define smp_processor_id() (current_thread_info()-&gt;cpu)
 multiline_comment|/* This needn&squot;t do anything as we do not sleep the cpu&n; * inside of the idler task, so an interrupt is not needed&n; * to get a clean fast response.&n; *&n; * XXX Reverify this assumption... -DaveM&n; *&n; * Addendum: We do want it to do something for the signal&n; *           delivery case, we detect that by just seeing&n; *           if we are trying to send this to an idler or not.&n; */
 DECL|function|smp_send_reschedule
 r_static

@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: misc.c,v 1.35 2002/01/08 16:00:21 davem Exp $&n; * misc.c: Miscelaneous syscall emulation for Solaris&n; *&n; * Copyright (C) 1997,1998 Jakub Jelinek (jj@sunsite.mff.cuni.cz)&n; */
+multiline_comment|/* $Id: misc.c,v 1.36 2002/02/09 19:49:31 davem Exp $&n; * misc.c: Miscelaneous syscall emulation for Solaris&n; *&n; * Copyright (C) 1997,1998 Jakub Jelinek (jj@sunsite.mff.cuni.cz)&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt; 
 macro_line|#include &lt;linux/types.h&gt;
@@ -4203,6 +4203,10 @@ c_func
 r_void
 )paren
 suffix:semicolon
+r_extern
+id|u32
+id|entry64_personality_patch
+suffix:semicolon
 DECL|function|init_module
 r_int
 id|init_module
@@ -4259,6 +4263,42 @@ id|update_ttable
 c_func
 (paren
 id|solaris_sparc_syscall
+)paren
+suffix:semicolon
+id|entry64_personality_patch
+op_or_assign
+(paren
+m_offsetof
+(paren
+r_struct
+id|task_struct
+comma
+id|personality
+)paren
+op_plus
+(paren
+r_sizeof
+(paren
+r_int
+r_int
+)paren
+op_minus
+l_int|1
+)paren
+)paren
+suffix:semicolon
+id|__asm__
+id|__volatile__
+c_func
+(paren
+l_string|&quot;membar #StoreStore; flush %0&quot;
+suffix:colon
+suffix:colon
+l_string|&quot;r&quot;
+(paren
+op_amp
+id|entry64_personality_patch
+)paren
 )paren
 suffix:semicolon
 r_return

@@ -18,7 +18,7 @@ suffix:semicolon
 )brace
 suffix:semicolon
 DECL|macro|FPUSTATE
-mdefine_line|#define FPUSTATE (struct fpustate *)(((unsigned long)current) + AOFF_task_fpregs)
+mdefine_line|#define FPUSTATE (struct fpustate *)(current_thread_info()-&gt;fpregs)
 DECL|function|fprs_read
 r_extern
 id|__inline__

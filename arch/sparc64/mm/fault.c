@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: fault.c,v 1.58 2001/09/01 00:11:16 kanoj Exp $&n; * arch/sparc64/mm/fault.c: Page fault handlers for the 64-bit Sparc.&n; *&n; * Copyright (C) 1996 David S. Miller (davem@caip.rutgers.edu)&n; * Copyright (C) 1997, 1999 Jakub Jelinek (jj@ultra.linux.cz)&n; */
+multiline_comment|/* $Id: fault.c,v 1.59 2002/02/09 19:49:31 davem Exp $&n; * arch/sparc64/mm/fault.c: Page fault handlers for the 64-bit Sparc.&n; *&n; * Copyright (C) 1996 David S. Miller (davem@caip.rutgers.edu)&n; * Copyright (C) 1997, 1999 Jakub Jelinek (jj@ultra.linux.cz)&n; */
 macro_line|#include &lt;asm/head.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
@@ -1228,11 +1228,19 @@ id|SEGV_MAPERR
 suffix:semicolon
 id|fault_code
 op_assign
-id|current-&gt;thread.fault_code
+id|get_thread_fault_code
+c_func
+(paren
+)paren
 suffix:semicolon
 id|address
 op_assign
-id|current-&gt;thread.fault_address
+id|current_thread_info
+c_func
+(paren
+)paren
+op_member_access_from_pointer
+id|fault_address
 suffix:semicolon
 r_if
 c_cond
@@ -1272,13 +1280,11 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|test_thread_flag
+c_func
 (paren
-id|current-&gt;thread.flags
-op_amp
-id|SPARC_FLAG_32BIT
+id|TIF_32BIT
 )paren
-op_ne
-l_int|0
 )paren
 (brace
 id|regs-&gt;tpc
@@ -1478,9 +1484,11 @@ id|vma-&gt;vm_file
 op_ne
 l_int|NULL
 )paren
-id|current-&gt;thread.use_blkcommit
-op_assign
-l_int|1
+id|set_thread_flag
+c_func
+(paren
+id|TIF_BLKCOMMIT
+)paren
 suffix:semicolon
 )brace
 r_else
@@ -1707,15 +1715,24 @@ suffix:semicolon
 id|fault_done
 suffix:colon
 multiline_comment|/* These values are no longer needed, clear them. */
-id|current-&gt;thread.fault_code
-op_assign
+id|set_thread_fault_code
+c_func
+(paren
 l_int|0
+)paren
 suffix:semicolon
-id|current-&gt;thread.use_blkcommit
-op_assign
-l_int|0
+id|clear_thread_flag
+c_func
+(paren
+id|TIF_BLKCOMMIT
+)paren
 suffix:semicolon
-id|current-&gt;thread.fault_address
+id|current_thread_info
+c_func
+(paren
+)paren
+op_member_access_from_pointer
+id|fault_address
 op_assign
 l_int|0
 suffix:semicolon

@@ -393,7 +393,7 @@ DECL|macro|CONFIG_BINFMT_ELF_MODULE
 mdefine_line|#define CONFIG_BINFMT_ELF_MODULE CONFIG_BINFMT_ELF32_MODULE
 macro_line|#endif
 DECL|macro|ELF_FLAGS_INIT
-mdefine_line|#define ELF_FLAGS_INIT&t;current-&gt;thread.flags |= SPARC_FLAG_32BIT
+mdefine_line|#define ELF_FLAGS_INIT&t;set_thread_flag(TIF_32BIT)
 id|MODULE_DESCRIPTION
 c_func
 (paren

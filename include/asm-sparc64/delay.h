@@ -1,12 +1,18 @@
-multiline_comment|/* $Id: delay.h,v 1.12 2001/04/24 01:09:12 davem Exp $&n; * delay.h: Linux delay routines on the V9.&n; *&n; * Copyright (C) 1996 David S. Miller (davem@caip.rutgers.edu).&n; */
+multiline_comment|/* $Id: delay.h,v 1.13 2002/02/02 03:33:48 kanoj Exp $&n; * delay.h: Linux delay routines on the V9.&n; *&n; * Copyright (C) 1996 David S. Miller (davem@caip.rutgers.edu).&n; */
 macro_line|#ifndef __SPARC64_DELAY_H
 DECL|macro|__SPARC64_DELAY_H
 mdefine_line|#define __SPARC64_DELAY_H
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/param.h&gt;
+macro_line|#ifndef __ASSEMBLY__
 macro_line|#ifdef CONFIG_SMP
-macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;asm/smp.h&gt;
+macro_line|#else
+r_extern
+r_int
+r_int
+id|loops_per_jiffy
+suffix:semicolon
 macro_line|#endif 
 DECL|function|__delay
 r_extern
@@ -107,5 +113,6 @@ mdefine_line|#define __udelay_val loops_per_jiffy
 macro_line|#endif
 DECL|macro|udelay
 mdefine_line|#define udelay(usecs) __udelay((usecs),__udelay_val)
+macro_line|#endif /* !__ASSEMBLY__ */
 macro_line|#endif /* defined(__SPARC64_DELAY_H) */
 eof

@@ -1309,9 +1309,9 @@ id|thread_saved_pc
 c_func
 (paren
 r_struct
-id|thread_struct
+id|task_struct
 op_star
-id|t
+id|tsk
 )paren
 (brace
 r_return
@@ -1321,7 +1321,7 @@ r_int
 r_int
 op_star
 )paren
-id|t-&gt;esp
+id|tsk-&gt;thread-&gt;esp
 )paren
 (braket
 l_int|3

@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: page.h,v 1.38 2001/11/30 01:04:10 davem Exp $ */
+multiline_comment|/* $Id: page.h,v 1.39 2002/02/09 19:49:31 davem Exp $ */
 macro_line|#ifndef _SPARC64_PAGE_H
 DECL|macro|_SPARC64_PAGE_H
 mdefine_line|#define _SPARC64_PAGE_H
@@ -273,7 +273,7 @@ DECL|macro|__iopgprot
 mdefine_line|#define __iopgprot(x)&t;(x)
 macro_line|#endif /* (STRICT_MM_TYPECHECKS) */
 DECL|macro|TASK_UNMAPPED_BASE
-mdefine_line|#define TASK_UNMAPPED_BASE&t;((current-&gt;thread.flags &amp; SPARC_FLAG_32BIT) ? &bslash;&n;&t;&t;&t;&t; (0x0000000070000000UL) : (PAGE_OFFSET))
+mdefine_line|#define TASK_UNMAPPED_BASE&t;(test_thread_flag(TIF_32BIT) ? &bslash;&n;&t;&t;&t;&t; (0x0000000070000000UL) : (PAGE_OFFSET))
 macro_line|#endif /* !(__ASSEMBLY__) */
 multiline_comment|/* to align the pointer to the (next) page boundary */
 DECL|macro|PAGE_ALIGN

@@ -1,11 +1,10 @@
-multiline_comment|/* $Id: pci_psycho.c,v 1.32 2002/01/23 11:27:32 davem Exp $&n; * pci_psycho.c: PSYCHO/U2P specific PCI controller support.&n; *&n; * Copyright (C) 1997, 1998, 1999 David S. Miller (davem@caipfs.rutgers.edu)&n; * Copyright (C) 1998, 1999 Eddie C. Dost   (ecd@skynet.be)&n; * Copyright (C) 1999 Jakub Jelinek   (jakub@redhat.com)&n; */
+multiline_comment|/* $Id: pci_psycho.c,v 1.33 2002/02/01 00:58:33 davem Exp $&n; * pci_psycho.c: PSYCHO/U2P specific PCI controller support.&n; *&n; * Copyright (C) 1997, 1998, 1999 David S. Miller (davem@caipfs.rutgers.edu)&n; * Copyright (C) 1998, 1999 Eddie C. Dost   (ecd@skynet.be)&n; * Copyright (C) 1999 Jakub Jelinek   (jakub@redhat.com)&n; */
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;asm/pbm.h&gt;
-macro_line|#include &lt;asm/fhc.h&gt;
 macro_line|#include &lt;asm/iommu.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;asm/starfire.h&gt;
@@ -6235,17 +6234,6 @@ suffix:semicolon
 id|pbm-&gt;pci_first_slot
 op_assign
 l_int|2
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|central_bus
-op_ne
-l_int|NULL
-)paren
-id|pbm-&gt;pci_first_slot
-op_assign
-l_int|1
 suffix:semicolon
 id|pbm-&gt;io_space.start
 op_assign

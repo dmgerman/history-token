@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: a.out.h,v 1.7 2001/04/24 01:09:12 davem Exp $ */
+multiline_comment|/* $Id: a.out.h,v 1.8 2002/02/09 19:49:31 davem Exp $ */
 macro_line|#ifndef __SPARC64_A_OUT_H__
 DECL|macro|__SPARC64_A_OUT_H__
 mdefine_line|#define __SPARC64_A_OUT_H__
@@ -241,7 +241,7 @@ DECL|macro|N_RELOCATION_INFO_DECLARED
 mdefine_line|#define N_RELOCATION_INFO_DECLARED 1
 macro_line|#ifdef __KERNEL__
 DECL|macro|STACK_TOP
-mdefine_line|#define STACK_TOP (current-&gt;thread.flags &amp; SPARC_FLAG_32BIT ? 0xf0000000 : 0x80000000000L)
+mdefine_line|#define STACK_TOP (test_thread_flag(TIF_32BIT) ? 0xf0000000 : 0x80000000000L)
 macro_line|#endif
 macro_line|#endif /* !(__ASSEMBLY__) */
 macro_line|#endif /* !(__SPARC64_A_OUT_H__) */

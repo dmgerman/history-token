@@ -43,7 +43,7 @@ mdefine_line|#define _FP_CHOOSENAN(fs, wc, R, X, Y, OP)&t;&t;&t;&bslash;&n;  do 
 multiline_comment|/* Obtain the current rounding mode. */
 macro_line|#ifndef FP_ROUNDMODE
 DECL|macro|FP_ROUNDMODE
-mdefine_line|#define FP_ROUNDMODE&t;((current-&gt;thread.xfsr[0] &gt;&gt; 30) &amp; 0x3)
+mdefine_line|#define FP_ROUNDMODE&t;((current_thread_info()-&gt;xfsr[0] &gt;&gt; 30) &amp; 0x3)
 macro_line|#endif
 multiline_comment|/* Exception flags. */
 DECL|macro|FP_EX_INVALID
@@ -59,6 +59,6 @@ mdefine_line|#define FP_EX_INEXACT&t;&t;(1 &lt;&lt; 0)
 DECL|macro|FP_HANDLE_EXCEPTIONS
 mdefine_line|#define FP_HANDLE_EXCEPTIONS return _fex
 DECL|macro|FP_INHIBIT_RESULTS
-mdefine_line|#define FP_INHIBIT_RESULTS ((current-&gt;thread.xfsr[0] &gt;&gt; 23) &amp; _fex)
+mdefine_line|#define FP_INHIBIT_RESULTS ((current_thread_info()-&gt;xfsr[0] &gt;&gt; 23) &amp; _fex)
 macro_line|#endif
 eof

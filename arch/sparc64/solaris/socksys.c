@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: socksys.c,v 1.20 2002/01/08 16:00:21 davem Exp $&n; * socksys.c: /dev/inet/ stuff for Solaris emulation.&n; *&n; * Copyright (C) 1997 Jakub Jelinek (jj@sunsite.mff.cuni.cz)&n; * Copyright (C) 1997, 1998 Patrik Rak (prak3264@ss1000.ms.mff.cuni.cz)&n; * Copyright (C) 1995, 1996 Mike Jagdis (jaggy@purplet.demon.co.uk)&n; */
+multiline_comment|/* $Id: socksys.c,v 1.21 2002/02/08 03:57:14 davem Exp $&n; * socksys.c: /dev/inet/ stuff for Solaris emulation.&n; *&n; * Copyright (C) 1997 Jakub Jelinek (jj@sunsite.mff.cuni.cz)&n; * Copyright (C) 1997, 1998 Patrik Rak (prak3264@ss1000.ms.mff.cuni.cz)&n; * Copyright (C) 1995, 1996 Mike Jagdis (jaggy@purplet.demon.co.uk)&n; */
 multiline_comment|/*&n; *  Dave, _please_ give me specifications on this fscking mess so that I&n; * could at least get it into the state when it wouldn&squot;t screw the rest of&n; * the kernel over.  socksys.c and timod.c _stink_ and we are not talking&n; * H2S here, it&squot;s isopropilmercaptan in concentrations way over LD50. -- AV&n; */
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;

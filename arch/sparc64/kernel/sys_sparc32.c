@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: sys_sparc32.c,v 1.182 2001/10/18 09:06:36 davem Exp $&n; * sys_sparc32.c: Conversion between 32bit and 64bit native syscalls.&n; *&n; * Copyright (C) 1997,1998 Jakub Jelinek (jj@sunsite.mff.cuni.cz)&n; * Copyright (C) 1997 David S. Miller (davem@caip.rutgers.edu)&n; *&n; * These routines maintain argument size conversion between 32bit and 64bit&n; * environment.&n; */
+multiline_comment|/* $Id: sys_sparc32.c,v 1.184 2002/02/09 19:49:31 davem Exp $&n; * sys_sparc32.c: Conversion between 32bit and 64bit native syscalls.&n; *&n; * Copyright (C) 1997,1998 Jakub Jelinek (jj@sunsite.mff.cuni.cz)&n; * Copyright (C) 1997 David S. Miller (davem@caip.rutgers.edu)&n; *&n; * These routines maintain argument size conversion between 32bit and 64bit&n; * environment.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
@@ -8141,6 +8141,9 @@ op_star
 id|statbuf
 )paren
 (brace
+r_int
+id|err
+suffix:semicolon
 id|err
 op_assign
 id|put_user
@@ -15318,9 +15321,11 @@ OL
 l_int|0
 )paren
 (brace
-id|current-&gt;thread.flags
-op_or_assign
-id|SPARC_FLAG_NEWSIGNALS
+id|set_thread_flag
+c_func
+(paren
+id|TIF_NEWSIGNALS
+)paren
 suffix:semicolon
 id|sig
 op_assign
@@ -15555,9 +15560,11 @@ op_minus
 id|EINVAL
 suffix:semicolon
 multiline_comment|/* All tasks which use RT signals (effectively) use&n;&t; * new style signals.&n;&t; */
-id|current-&gt;thread.flags
-op_or_assign
-id|SPARC_FLAG_NEWSIGNALS
+id|set_thread_flag
+c_func
+(paren
+id|TIF_NEWSIGNALS
+)paren
 suffix:semicolon
 r_if
 c_cond
@@ -16870,14 +16877,24 @@ c_func
 l_int|0
 )paren
 suffix:semicolon
-id|current-&gt;thread.xfsr
+id|current_thread_info
+c_func
+(paren
+)paren
+op_member_access_from_pointer
+id|xfsr
 (braket
 l_int|0
 )braket
 op_assign
 l_int|0
 suffix:semicolon
-id|current-&gt;thread.fpsaved
+id|current_thread_info
+c_func
+(paren
+)paren
+op_member_access_from_pointer
+id|fpsaved
 (braket
 l_int|0
 )braket

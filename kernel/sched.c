@@ -4524,8 +4524,7 @@ comma
 id|thread_saved_pc
 c_func
 (paren
-op_amp
-id|p-&gt;thread
+id|p
 )paren
 )paren
 suffix:semicolon
@@ -4552,8 +4551,7 @@ comma
 id|thread_saved_pc
 c_func
 (paren
-op_amp
-id|p-&gt;thread
+id|p
 )paren
 )paren
 suffix:semicolon
