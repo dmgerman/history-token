@@ -14,6 +14,8 @@ DECL|macro|PALM_M505_ID
 mdefine_line|#define PALM_M505_ID&t;&t;&t;0x0002
 DECL|macro|PALM_M515_ID
 mdefine_line|#define PALM_M515_ID&t;&t;&t;0x0003
+DECL|macro|PALM_I705_ID
+mdefine_line|#define PALM_I705_ID&t;&t;&t;0x0020
 DECL|macro|PALM_M125_ID
 mdefine_line|#define PALM_M125_ID&t;&t;&t;0x0040
 DECL|macro|PALM_M130_ID
