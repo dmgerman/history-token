@@ -1,6 +1,5 @@
-multiline_comment|/*&n; * File...........: linux/drivers/s390/block/dasd_proc.c&n; * Author(s)......: Holger Smolinski &lt;Holger.Smolinski@de.ibm.com&gt;&n; *&t;&t;    Horst Hummel &lt;Horst.Hummel@de.ibm.com&gt;&n; *&t;&t;    Carsten Otte &lt;Cotte@de.ibm.com&gt;&n; *&t;&t;    Martin Schwidefsky &lt;schwidefsky@de.ibm.com&gt;&n; * Bugreports.to..: &lt;Linux390@de.ibm.com&gt;&n; * (C) IBM Corporation, IBM Deutschland Entwicklung GmbH, 1999-2002&n; *&n; * /proc interface for the dasd driver.&n; *&n; * $Revision: 1.18 $&n; *&n; * History of changes&n; * 05/04/02 split from dasd.c, code restructuring.&n; */
+multiline_comment|/*&n; * File...........: linux/drivers/s390/block/dasd_proc.c&n; * Author(s)......: Holger Smolinski &lt;Holger.Smolinski@de.ibm.com&gt;&n; *&t;&t;    Horst Hummel &lt;Horst.Hummel@de.ibm.com&gt;&n; *&t;&t;    Carsten Otte &lt;Cotte@de.ibm.com&gt;&n; *&t;&t;    Martin Schwidefsky &lt;schwidefsky@de.ibm.com&gt;&n; * Bugreports.to..: &lt;Linux390@de.ibm.com&gt;&n; * (C) IBM Corporation, IBM Deutschland Entwicklung GmbH, 1999-2002&n; *&n; * /proc interface for the dasd driver.&n; *&n; * $Revision: 1.21 $&n; */
 macro_line|#include &lt;linux/config.h&gt;
-macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;linux/ctype.h&gt;
 macro_line|#include &lt;linux/seq_file.h&gt;
 macro_line|#include &lt;linux/vmalloc.h&gt;
@@ -166,7 +165,8 @@ op_star
 id|v
 )paren
 (brace
-id|dasd_device_t
+r_struct
+id|dasd_device
 op_star
 id|device
 suffix:semicolon
@@ -859,6 +859,7 @@ r_int
 id|len
 suffix:semicolon
 macro_line|#ifdef CONFIG_DASD_PROFILE
+r_struct
 id|dasd_profile_info_t
 op_star
 id|prof
@@ -1385,6 +1386,7 @@ l_int|0
 comma
 r_sizeof
 (paren
+r_struct
 id|dasd_profile_info_t
 )paren
 )paren
@@ -1437,6 +1439,7 @@ l_int|0
 comma
 r_sizeof
 (paren
+r_struct
 id|dasd_profile_info_t
 )paren
 )paren

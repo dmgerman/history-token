@@ -1,6 +1,5 @@
-multiline_comment|/*&n; * File...........: linux/drivers/s390/block/dasd.c&n; * Author(s)......: Holger Smolinski &lt;Holger.Smolinski@de.ibm.com&gt;&n; *&t;&t;    Horst Hummel &lt;Horst.Hummel@de.ibm.com&gt;&n; *&t;&t;    Carsten Otte &lt;Cotte@de.ibm.com&gt;&n; *&t;&t;    Martin Schwidefsky &lt;schwidefsky@de.ibm.com&gt;&n; * Bugreports.to..: &lt;Linux390@de.ibm.com&gt;&n; * (C) IBM Corporation, IBM Deutschland Entwicklung GmbH, 1999-2001&n; *&n; * $Revision: 1.6 $&n; *&n; * History of changes&n; * 05/04/02 split from dasd.c, code restructuring.&n; */
+multiline_comment|/*&n; * File...........: linux/drivers/s390/block/dasd.c&n; * Author(s)......: Holger Smolinski &lt;Holger.Smolinski@de.ibm.com&gt;&n; *&t;&t;    Horst Hummel &lt;Horst.Hummel@de.ibm.com&gt;&n; *&t;&t;    Carsten Otte &lt;Cotte@de.ibm.com&gt;&n; *&t;&t;    Martin Schwidefsky &lt;schwidefsky@de.ibm.com&gt;&n; * Bugreports.to..: &lt;Linux390@de.ibm.com&gt;&n; * (C) IBM Corporation, IBM Deutschland Entwicklung GmbH, 1999-2001&n; *&n; * $Revision: 1.9 $&n; */
 macro_line|#include &lt;linux/config.h&gt;
-macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;linux/ctype.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;asm/debug.h&gt;
@@ -10,7 +9,8 @@ multiline_comment|/* This is ugly... */
 DECL|macro|PRINTK_HEADER
 mdefine_line|#define PRINTK_HEADER &quot;dasd_erp:&quot;
 macro_line|#include &quot;dasd_int.h&quot;
-id|dasd_ccw_req_t
+r_struct
+id|dasd_ccw_req
 op_star
 DECL|function|dasd_alloc_erp_request
 id|dasd_alloc_erp_request
@@ -26,7 +26,8 @@ comma
 r_int
 id|datasize
 comma
-id|dasd_device_t
+r_struct
+id|dasd_device
 op_star
 id|device
 )paren
@@ -35,7 +36,8 @@ r_int
 r_int
 id|flags
 suffix:semicolon
-id|dasd_ccw_req_t
+r_struct
+id|dasd_ccw_req
 op_star
 id|cqr
 suffix:semicolon
@@ -116,7 +118,8 @@ op_assign
 (paren
 r_sizeof
 (paren
-id|dasd_ccw_req_t
+r_struct
+id|dasd_ccw_req
 )paren
 op_plus
 l_int|7L
@@ -165,7 +168,8 @@ suffix:semicolon
 id|cqr
 op_assign
 (paren
-id|dasd_ccw_req_t
+r_struct
+id|dasd_ccw_req
 op_star
 )paren
 id|dasd_alloc_chunk
@@ -210,7 +214,8 @@ l_int|0
 comma
 r_sizeof
 (paren
-id|dasd_ccw_req_t
+r_struct
+id|dasd_ccw_req
 )paren
 )paren
 suffix:semicolon
@@ -226,7 +231,8 @@ op_plus
 (paren
 r_sizeof
 (paren
-id|dasd_ccw_req_t
+r_struct
+id|dasd_ccw_req
 )paren
 op_plus
 l_int|7L
@@ -355,11 +361,13 @@ DECL|function|dasd_free_erp_request
 id|dasd_free_erp_request
 c_func
 (paren
-id|dasd_ccw_req_t
+r_struct
+id|dasd_ccw_req
 op_star
 id|cqr
 comma
-id|dasd_device_t
+r_struct
+id|dasd_device
 op_star
 id|device
 )paren
@@ -439,23 +447,27 @@ id|device-&gt;ref_count
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * DESCRIPTION&n; *   sets up the default-ERP dasd_ccw_req_t, namely one, which performs a TIC&n; *   to the original channel program with a retry counter of 16&n; *&n; * PARAMETER&n; *   cqr&t;&t;failed CQR&n; *&n; * RETURN VALUES&n; *   erp&t;&t;CQR performing the ERP&n; */
-id|dasd_ccw_req_t
+multiline_comment|/*&n; * DESCRIPTION&n; *   sets up the default-ERP struct dasd_ccw_req, namely one, which performs&n; *   a TIC to the original channel program with a retry counter of 16&n; *&n; * PARAMETER&n; *   cqr&t;&t;failed CQR&n; *&n; * RETURN VALUES&n; *   erp&t;&t;CQR performing the ERP&n; */
+r_struct
+id|dasd_ccw_req
 op_star
 DECL|function|dasd_default_erp_action
 id|dasd_default_erp_action
 c_func
 (paren
-id|dasd_ccw_req_t
+r_struct
+id|dasd_ccw_req
 op_star
 id|cqr
 )paren
 (brace
-id|dasd_device_t
+r_struct
+id|dasd_device
 op_star
 id|device
 suffix:semicolon
-id|dasd_ccw_req_t
+r_struct
+id|dasd_ccw_req
 op_star
 id|erp
 suffix:semicolon
@@ -587,18 +599,21 @@ suffix:semicolon
 )brace
 multiline_comment|/* end dasd_default_erp_action */
 multiline_comment|/*&n; * DESCRIPTION&n; *   Frees all ERPs of the current ERP Chain and set the status&n; *   of the original CQR either to DASD_CQR_DONE if ERP was successful&n; *   or to DASD_CQR_FAILED if ERP was NOT successful.&n; *   NOTE: This function is only called if no discipline postaction&n; *&t;   is available&n; *&n; * PARAMETER&n; *   erp&t;&t;current erp_head&n; *&n; * RETURN VALUES&n; *   cqr&t;&t;pointer to the original CQR&n; */
-id|dasd_ccw_req_t
+r_struct
+id|dasd_ccw_req
 op_star
 DECL|function|dasd_default_erp_postaction
 id|dasd_default_erp_postaction
 c_func
 (paren
-id|dasd_ccw_req_t
+r_struct
+id|dasd_ccw_req
 op_star
 id|cqr
 )paren
 (brace
-id|dasd_device_t
+r_struct
+id|dasd_device
 op_star
 id|device
 suffix:semicolon
@@ -640,7 +655,8 @@ op_ne
 l_int|NULL
 )paren
 (brace
-id|dasd_ccw_req_t
+r_struct
+id|dasd_ccw_req
 op_star
 id|refers
 suffix:semicolon
@@ -707,7 +723,8 @@ DECL|function|hex_dump_memory
 id|hex_dump_memory
 c_func
 (paren
-id|dasd_device_t
+r_struct
+id|dasd_device
 op_star
 id|device
 comma
@@ -786,7 +803,8 @@ DECL|function|dasd_log_sense
 id|dasd_log_sense
 c_func
 (paren
-id|dasd_ccw_req_t
+r_struct
+id|dasd_ccw_req
 op_star
 id|cqr
 comma
@@ -796,7 +814,8 @@ op_star
 id|irb
 )paren
 (brace
-id|dasd_device_t
+r_struct
+id|dasd_device
 op_star
 id|device
 suffix:semicolon
@@ -830,7 +849,8 @@ DECL|function|dasd_log_ccw
 id|dasd_log_ccw
 c_func
 (paren
-id|dasd_ccw_req_t
+r_struct
+id|dasd_ccw_req
 op_star
 id|cqr
 comma
@@ -841,11 +861,13 @@ id|__u32
 id|cpa
 )paren
 (brace
-id|dasd_device_t
+r_struct
+id|dasd_device
 op_star
 id|device
 suffix:semicolon
-id|dasd_ccw_req_t
+r_struct
+id|dasd_ccw_req
 op_star
 id|lcqr
 suffix:semicolon
@@ -908,7 +930,8 @@ id|lcqr
 comma
 r_sizeof
 (paren
-id|dasd_ccw_req_t
+r_struct
+id|dasd_ccw_req
 )paren
 )paren
 suffix:semicolon

@@ -1,11 +1,10 @@
-multiline_comment|/* &n; * File...........: linux/drivers/s390/block/dasd_fba.h&n; * Author(s)......: Holger Smolinski &lt;Holger.Smolinski@de.ibm.com&gt;&n; * Bugreports.to..: &lt;Linux390@de.ibm.com&gt;&n; * (C) IBM Corporation, IBM Deutschland Entwicklung GmbH, 1999,2000&n; *&n; * $Revision: 1.4 $&n; *&n; * History of changes &n; * &n; */
+multiline_comment|/* &n; * File...........: linux/drivers/s390/block/dasd_fba.h&n; * Author(s)......: Holger Smolinski &lt;Holger.Smolinski@de.ibm.com&gt;&n; * Bugreports.to..: &lt;Linux390@de.ibm.com&gt;&n; * (C) IBM Corporation, IBM Deutschland Entwicklung GmbH, 1999,2000&n; *&n; * $Revision: 1.6 $&n; */
 macro_line|#ifndef DASD_FBA_H
 DECL|macro|DASD_FBA_H
 mdefine_line|#define DASD_FBA_H
-r_typedef
-DECL|struct|DE_fba_data_t
+DECL|struct|DE_fba_data
 r_struct
-id|DE_fba_data_t
+id|DE_fba_data
 (brace
 r_struct
 (brace
@@ -91,13 +90,10 @@ id|__attribute__
 id|packed
 )paren
 )paren
-DECL|typedef|DE_fba_data_t
-id|DE_fba_data_t
 suffix:semicolon
-r_typedef
-DECL|struct|LO_fba_data_t
+DECL|struct|LO_fba_data
 r_struct
-id|LO_fba_data_t
+id|LO_fba_data
 (brace
 r_struct
 (brace
@@ -144,13 +140,10 @@ id|__attribute__
 id|packed
 )paren
 )paren
-DECL|typedef|LO_fba_data_t
-id|LO_fba_data_t
 suffix:semicolon
-r_typedef
-DECL|struct|dasd_fba_characteristics_t
+DECL|struct|dasd_fba_characteristics
 r_struct
-id|dasd_fba_characteristics_t
+id|dasd_fba_characteristics
 (brace
 r_union
 (brace
@@ -336,8 +329,6 @@ id|__attribute__
 id|packed
 )paren
 )paren
-DECL|typedef|dasd_fba_characteristics_t
-id|dasd_fba_characteristics_t
 suffix:semicolon
 macro_line|#endif&t;&t;&t;&t;/* DASD_FBA_H */
 eof

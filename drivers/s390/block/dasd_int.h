@@ -1,4 +1,4 @@
-multiline_comment|/* &n; * File...........: linux/drivers/s390/block/dasd_int.h&n; * Author(s)......: Holger Smolinski &lt;Holger.Smolinski@de.ibm.com&gt;&n; *                  Horst Hummel &lt;Horst.Hummel@de.ibm.com&gt; &n; *&t;&t;    Martin Schwidefsky &lt;schwidefsky@de.ibm.com&gt;&n; * Bugreports.to..: &lt;Linux390@de.ibm.com&gt;&n; * (C) IBM Corporation, IBM Deutschland Entwicklung GmbH, 1999,2000&n; *&n; * $Revision: 1.38 $&n; *&n; * History of changes (starts July 2000)&n; * 02/01/01 added dynamic registration of ioctls&n; * 2002/01/04 Created 2.4-2.5 compatibility mode&n; * 05/04/02 code restructuring.&n; */
+multiline_comment|/* &n; * File...........: linux/drivers/s390/block/dasd_int.h&n; * Author(s)......: Holger Smolinski &lt;Holger.Smolinski@de.ibm.com&gt;&n; *                  Horst Hummel &lt;Horst.Hummel@de.ibm.com&gt; &n; *&t;&t;    Martin Schwidefsky &lt;schwidefsky@de.ibm.com&gt;&n; * Bugreports.to..: &lt;Linux390@de.ibm.com&gt;&n; * (C) IBM Corporation, IBM Deutschland Entwicklung GmbH, 1999,2000&n; *&n; * $Revision: 1.40 $&n; */
 macro_line|#ifndef DASD_INT_H
 DECL|macro|DASD_INT_H
 mdefine_line|#define DASD_INT_H
@@ -7,7 +7,7 @@ DECL|macro|DASD_PER_MAJOR
 mdefine_line|#define DASD_PER_MAJOR ( 1U&lt;&lt;(MINORBITS-DASD_PARTN_BITS))
 DECL|macro|DASD_PARTN_MASK
 mdefine_line|#define DASD_PARTN_MASK ((1 &lt;&lt; DASD_PARTN_BITS) - 1)
-multiline_comment|/*&n; * States a dasd device can have:&n; *   new: the dasd_device_t structure is allocated.&n; *   known: the discipline for the device is identified.&n; *   basic: the device can do basic i/o.&n; *   accept: the device is analysed (format is known).&n; *   ready: partition detection is done and the device is can do block io.&n; *   online: the device accepts requests from the block device queue.&n; *&n; * Things to do for startup state transitions:&n; *   new -&gt; known: find discipline for the device and create devfs entries.&n; *   known -&gt; basic: request irq line for the device.&n; *   basic -&gt; accept: do the initial analysis, e.g. format detection.&n; *   accept-&gt; ready: do block device setup and detect partitions.&n; *   ready -&gt; online: schedule the device tasklet.&n; * Things to do for shutdown state transitions:&n; *   online -&gt; ready: just set the new device state.&n; *   ready -&gt; accept: flush requests from the block device layer and&n; *                    clear partition information.&n; *   accept -&gt; basic: reset format information.&n; *   basic -&gt; known: terminate all requests and free irq.&n; *   known -&gt; new: remove devfs entries and forget discipline.&n; */
+multiline_comment|/*&n; * States a dasd device can have:&n; *   new: the dasd_device structure is allocated.&n; *   known: the discipline for the device is identified.&n; *   basic: the device can do basic i/o.&n; *   accept: the device is analysed (format is known).&n; *   ready: partition detection is done and the device is can do block io.&n; *   online: the device accepts requests from the block device queue.&n; *&n; * Things to do for startup state transitions:&n; *   new -&gt; known: find discipline for the device and create devfs entries.&n; *   known -&gt; basic: request irq line for the device.&n; *   basic -&gt; accept: do the initial analysis, e.g. format detection.&n; *   accept-&gt; ready: do block device setup and detect partitions.&n; *   ready -&gt; online: schedule the device tasklet.&n; * Things to do for shutdown state transitions:&n; *   online -&gt; ready: just set the new device state.&n; *   ready -&gt; accept: flush requests from the block device layer and&n; *                    clear partition information.&n; *   accept -&gt; basic: reset format information.&n; *   basic -&gt; known: terminate all requests and free irq.&n; *   known -&gt; new: remove devfs entries and forget discipline.&n; */
 DECL|macro|DASD_STATE_NEW
 mdefine_line|#define DASD_STATE_NEW&t;  0
 DECL|macro|DASD_STATE_KNOWN
@@ -35,7 +35,7 @@ macro_line|#include &lt;asm/dasd.h&gt;
 macro_line|#include &lt;asm/idals.h&gt;
 multiline_comment|/*&n; * SECTION: Type definitions&n; */
 r_struct
-id|dasd_device_t
+id|dasd_device
 suffix:semicolon
 DECL|typedef|dasd_ioctl_fn_t
 r_typedef
@@ -57,8 +57,9 @@ r_int
 id|args
 )paren
 suffix:semicolon
-r_typedef
+DECL|struct|dasd_ioctl
 r_struct
+id|dasd_ioctl
 (brace
 DECL|member|list
 r_struct
@@ -79,9 +80,7 @@ DECL|member|handler
 id|dasd_ioctl_fn_t
 id|handler
 suffix:semicolon
-DECL|typedef|dasd_ioctl_list_t
 )brace
-id|dasd_ioctl_list_t
 suffix:semicolon
 r_typedef
 r_enum
@@ -154,10 +153,9 @@ DECL|macro|DEV_MESSAGE
 mdefine_line|#define DEV_MESSAGE(d_loglevel,d_device,d_string,d_args...)&bslash;&n;do { &bslash;&n;&t;printk(d_loglevel PRINTK_HEADER &quot; %s,%s: &quot; &bslash;&n;&t;       d_string &quot;&bslash;n&quot;, d_device-&gt;gdp-&gt;disk_name, &bslash;&n;&t;       d_device-&gt;cdev-&gt;dev.bus_id, d_args); &bslash;&n;&t;DBF_DEV_EVENT(DBF_ALERT, d_device, d_string, d_args); &bslash;&n;} while(0)
 DECL|macro|MESSAGE
 mdefine_line|#define MESSAGE(d_loglevel,d_string,d_args...)&bslash;&n;do { &bslash;&n;&t;printk(d_loglevel PRINTK_HEADER &quot; &quot; d_string &quot;&bslash;n&quot;, d_args); &bslash;&n;&t;DBF_EVENT(DBF_ALERT, d_string, d_args); &bslash;&n;} while(0)
-DECL|struct|dasd_ccw_req_t
-r_typedef
+DECL|struct|dasd_ccw_req
 r_struct
-id|dasd_ccw_req_t
+id|dasd_ccw_req
 (brace
 DECL|member|magic
 r_int
@@ -174,7 +172,7 @@ multiline_comment|/* list_head for request queueing. */
 multiline_comment|/* Where to execute what... */
 DECL|member|device
 r_struct
-id|dasd_device_t
+id|dasd_device
 op_star
 id|device
 suffix:semicolon
@@ -223,7 +221,7 @@ suffix:semicolon
 multiline_comment|/* device status in case of an error */
 DECL|member|refers
 r_struct
-id|dasd_ccw_req_t
+id|dasd_ccw_req
 op_star
 id|refers
 suffix:semicolon
@@ -271,7 +269,7 @@ id|callback
 )paren
 (paren
 r_struct
-id|dasd_ccw_req_t
+id|dasd_ccw_req
 op_star
 comma
 r_void
@@ -284,11 +282,9 @@ r_void
 op_star
 id|callback_data
 suffix:semicolon
-DECL|typedef|dasd_ccw_req_t
 )brace
-id|dasd_ccw_req_t
 suffix:semicolon
-multiline_comment|/* &n; * dasd_ccw_req_t -&gt; status can be:&n; */
+multiline_comment|/* &n; * dasd_ccw_req -&gt; status can be:&n; */
 DECL|macro|DASD_CQR_FILLED
 mdefine_line|#define DASD_CQR_FILLED   0x00&t;/* request is ready to be processed */
 DECL|macro|DASD_CQR_QUEUED
@@ -306,23 +302,23 @@ mdefine_line|#define DASD_CQR_PENDING  0x06  /* request is waiting for interrupt
 multiline_comment|/* Signature for error recovery functions. */
 DECL|typedef|dasd_erp_fn_t
 r_typedef
-id|dasd_ccw_req_t
+r_struct
+id|dasd_ccw_req
 op_star
 (paren
 op_star
 id|dasd_erp_fn_t
 )paren
 (paren
-id|dasd_ccw_req_t
+r_struct
+id|dasd_ccw_req
 op_star
-id|cqr
 )paren
 suffix:semicolon
-multiline_comment|/*&n; * the dasd_discipline_t is&n; * sth like a table of virtual functions, if you think of dasd_eckd&n; * inheriting dasd...&n; * no, currently we are not planning to reimplement the driver in C++&n; */
-DECL|struct|dasd_discipline_t
-r_typedef
+multiline_comment|/*&n; * the struct dasd_discipline is&n; * sth like a table of virtual functions, if you think of dasd_eckd&n; * inheriting dasd...&n; * no, currently we are not planning to reimplement the driver in C++&n; */
+DECL|struct|dasd_discipline
 r_struct
-id|dasd_discipline_t
+id|dasd_discipline
 (brace
 DECL|member|owner
 r_struct
@@ -366,7 +362,7 @@ id|check_device
 )paren
 (paren
 r_struct
-id|dasd_device_t
+id|dasd_device
 op_star
 )paren
 suffix:semicolon
@@ -378,13 +374,14 @@ id|do_analysis
 )paren
 (paren
 r_struct
-id|dasd_device_t
+id|dasd_device
 op_star
 )paren
 suffix:semicolon
 multiline_comment|/*&n;         * Device operation functions. build_cp creates a ccw chain for&n;         * a block device request, start_io starts the request and&n;         * term_IO cancels it (e.g. in case of a timeout). format_device&n;         * returns a ccw chain to be used to format the device.&n;         */
 DECL|member|build_cp
-id|dasd_ccw_req_t
+r_struct
+id|dasd_ccw_req
 op_star
 (paren
 op_star
@@ -392,7 +389,7 @@ id|build_cp
 )paren
 (paren
 r_struct
-id|dasd_device_t
+id|dasd_device
 op_star
 comma
 r_struct
@@ -407,7 +404,8 @@ op_star
 id|start_IO
 )paren
 (paren
-id|dasd_ccw_req_t
+r_struct
+id|dasd_ccw_req
 op_star
 )paren
 suffix:semicolon
@@ -418,12 +416,14 @@ op_star
 id|term_IO
 )paren
 (paren
-id|dasd_ccw_req_t
+r_struct
+id|dasd_ccw_req
 op_star
 )paren
 suffix:semicolon
 DECL|member|format_device
-id|dasd_ccw_req_t
+r_struct
+id|dasd_ccw_req
 op_star
 (paren
 op_star
@@ -431,7 +431,7 @@ id|format_device
 )paren
 (paren
 r_struct
-id|dasd_device_t
+id|dasd_device
 op_star
 comma
 r_struct
@@ -448,7 +448,8 @@ op_star
 id|examine_error
 )paren
 (paren
-id|dasd_ccw_req_t
+r_struct
+id|dasd_ccw_req
 op_star
 comma
 r_struct
@@ -464,7 +465,8 @@ op_star
 id|erp_action
 )paren
 (paren
-id|dasd_ccw_req_t
+r_struct
+id|dasd_ccw_req
 op_star
 )paren
 suffix:semicolon
@@ -476,7 +478,8 @@ op_star
 id|erp_postaction
 )paren
 (paren
-id|dasd_ccw_req_t
+r_struct
+id|dasd_ccw_req
 op_star
 )paren
 suffix:semicolon
@@ -488,10 +491,11 @@ id|dump_sense
 )paren
 (paren
 r_struct
-id|dasd_device_t
+id|dasd_device
 op_star
 comma
-id|dasd_ccw_req_t
+r_struct
+id|dasd_ccw_req
 op_star
 comma
 r_struct
@@ -508,7 +512,7 @@ id|fill_geometry
 )paren
 (paren
 r_struct
-id|dasd_device_t
+id|dasd_device
 op_star
 comma
 r_struct
@@ -524,19 +528,19 @@ id|fill_info
 )paren
 (paren
 r_struct
-id|dasd_device_t
+id|dasd_device
 op_star
 comma
+r_struct
 id|dasd_information2_t
 op_star
 )paren
 suffix:semicolon
-DECL|typedef|dasd_discipline_t
 )brace
-id|dasd_discipline_t
 suffix:semicolon
 r_extern
-id|dasd_discipline_t
+r_struct
+id|dasd_discipline
 id|dasd_diag_discipline
 suffix:semicolon
 macro_line|#ifdef CONFIG_DASD_DIAG
@@ -546,10 +550,9 @@ macro_line|#else
 DECL|macro|dasd_diag_discipline_pointer
 mdefine_line|#define dasd_diag_discipline_pointer (0)
 macro_line|#endif
-DECL|struct|dasd_device_t
-r_typedef
+DECL|struct|dasd_device
 r_struct
-id|dasd_device_t
+id|dasd_device
 (brace
 multiline_comment|/* Block device stuff. */
 DECL|member|gdp
@@ -601,7 +604,8 @@ suffix:semicolon
 multiline_comment|/* diag allowed flag */
 multiline_comment|/* Device discipline stuff. */
 DECL|member|discipline
-id|dasd_discipline_t
+r_struct
+id|dasd_discipline
 op_star
 id|discipline
 suffix:semicolon
@@ -689,19 +693,19 @@ id|cdev
 suffix:semicolon
 macro_line|#ifdef CONFIG_DASD_PROFILE
 DECL|member|profile
+r_struct
 id|dasd_profile_info_t
 id|profile
 suffix:semicolon
 macro_line|#endif
-DECL|typedef|dasd_device_t
 )brace
-id|dasd_device_t
 suffix:semicolon
 r_void
 id|dasd_put_device_wake
 c_func
 (paren
-id|dasd_device_t
+r_struct
+id|dasd_device
 op_star
 )paren
 suffix:semicolon
@@ -713,7 +717,8 @@ DECL|function|dasd_get_device
 id|dasd_get_device
 c_func
 (paren
-id|dasd_device_t
+r_struct
+id|dasd_device
 op_star
 id|device
 )paren
@@ -733,7 +738,8 @@ DECL|function|dasd_put_device
 id|dasd_put_device
 c_func
 (paren
-id|dasd_device_t
+r_struct
+id|dasd_device
 op_star
 id|device
 )paren
@@ -758,10 +764,9 @@ id|device
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * The static memory in ccw_mem and erp_mem is managed by a sorted&n; * list of free memory chunks.&n; */
-DECL|struct|dasd_mchunk_t
-r_typedef
+DECL|struct|dasd_mchunk
 r_struct
-id|dasd_mchunk_t
+id|dasd_mchunk
 (brace
 DECL|member|list
 r_struct
@@ -773,7 +778,6 @@ r_int
 r_int
 id|size
 suffix:semicolon
-DECL|typedef|dasd_mchunk_t
 )brace
 id|__attribute__
 (paren
@@ -785,7 +789,6 @@ l_int|8
 )paren
 )paren
 )paren
-id|dasd_mchunk_t
 suffix:semicolon
 r_static
 r_inline
@@ -808,7 +811,8 @@ r_int
 id|size
 )paren
 (brace
-id|dasd_mchunk_t
+r_struct
+id|dasd_mchunk
 op_star
 id|chunk
 suffix:semicolon
@@ -821,7 +825,8 @@ suffix:semicolon
 id|chunk
 op_assign
 (paren
-id|dasd_mchunk_t
+r_struct
+id|dasd_mchunk
 op_star
 )paren
 id|mem
@@ -832,7 +837,8 @@ id|size
 op_minus
 r_sizeof
 (paren
-id|dasd_mchunk_t
+r_struct
+id|dasd_mchunk
 )paren
 suffix:semicolon
 id|list_add
@@ -863,17 +869,13 @@ r_int
 id|size
 )paren
 (brace
-id|dasd_mchunk_t
+r_struct
+id|dasd_mchunk
 op_star
 id|chunk
 comma
 op_star
 id|tmp
-suffix:semicolon
-r_struct
-id|list_head
-op_star
-id|l
 suffix:semicolon
 id|size
 op_assign
@@ -886,26 +888,16 @@ op_amp
 op_minus
 l_int|8L
 suffix:semicolon
-id|list_for_each
+id|list_for_each_entry
 c_func
 (paren
-id|l
+id|chunk
 comma
 id|chunk_list
-)paren
-(brace
-id|chunk
-op_assign
-id|list_entry
-c_func
-(paren
-id|l
-comma
-id|dasd_mchunk_t
 comma
 id|list
 )paren
-suffix:semicolon
+(brace
 r_if
 c_cond
 (paren
@@ -924,7 +916,8 @@ id|size
 op_plus
 r_sizeof
 (paren
-id|dasd_mchunk_t
+r_struct
+id|dasd_mchunk
 )paren
 )paren
 (brace
@@ -947,7 +940,8 @@ suffix:semicolon
 id|tmp
 op_assign
 (paren
-id|dasd_mchunk_t
+r_struct
+id|dasd_mchunk
 op_star
 )paren
 (paren
@@ -968,7 +962,8 @@ id|size
 op_plus
 r_sizeof
 (paren
-id|dasd_mchunk_t
+r_struct
+id|dasd_mchunk
 )paren
 suffix:semicolon
 id|chunk
@@ -1017,7 +1012,8 @@ op_star
 id|mem
 )paren
 (brace
-id|dasd_mchunk_t
+r_struct
+id|dasd_mchunk
 op_star
 id|chunk
 comma
@@ -1035,7 +1031,8 @@ suffix:semicolon
 id|chunk
 op_assign
 (paren
-id|dasd_mchunk_t
+r_struct
+id|dasd_mchunk
 op_star
 )paren
 (paren
@@ -1047,7 +1044,8 @@ id|mem
 op_minus
 r_sizeof
 (paren
-id|dasd_mchunk_t
+r_struct
+id|dasd_mchunk
 )paren
 )paren
 suffix:semicolon
@@ -1072,7 +1070,8 @@ c_func
 (paren
 id|p
 comma
-id|dasd_mchunk_t
+r_struct
+id|dasd_mchunk
 comma
 id|list
 )paren
@@ -1102,7 +1101,8 @@ c_func
 (paren
 id|left-&gt;next
 comma
-id|dasd_mchunk_t
+r_struct
+id|dasd_mchunk
 comma
 id|list
 )paren
@@ -1142,7 +1142,8 @@ id|tmp-&gt;size
 op_plus
 r_sizeof
 (paren
-id|dasd_mchunk_t
+r_struct
+id|dasd_mchunk
 )paren
 suffix:semicolon
 )brace
@@ -1163,7 +1164,8 @@ c_func
 (paren
 id|left
 comma
-id|dasd_mchunk_t
+r_struct
+id|dasd_mchunk
 comma
 id|list
 )paren
@@ -1196,7 +1198,8 @@ id|chunk-&gt;size
 op_plus
 r_sizeof
 (paren
-id|dasd_mchunk_t
+r_struct
+id|dasd_mchunk
 )paren
 suffix:semicolon
 r_return
@@ -1265,6 +1268,7 @@ op_star
 id|dasd_debug_area
 suffix:semicolon
 r_extern
+r_struct
 id|dasd_profile_info_t
 id|dasd_global_profile
 suffix:semicolon
@@ -1278,7 +1282,8 @@ r_struct
 id|block_device_operations
 id|dasd_device_operations
 suffix:semicolon
-id|dasd_ccw_req_t
+r_struct
+id|dasd_ccw_req
 op_star
 id|dasd_kmalloc_request
 c_func
@@ -1290,12 +1295,13 @@ r_int
 comma
 r_int
 comma
-id|dasd_device_t
+r_struct
+id|dasd_device
 op_star
 )paren
 suffix:semicolon
-multiline_comment|/* unused */
-id|dasd_ccw_req_t
+r_struct
+id|dasd_ccw_req
 op_star
 id|dasd_smalloc_request
 c_func
@@ -1307,7 +1313,8 @@ r_int
 comma
 r_int
 comma
-id|dasd_device_t
+r_struct
+id|dasd_device
 op_star
 )paren
 suffix:semicolon
@@ -1315,10 +1322,12 @@ r_void
 id|dasd_kfree_request
 c_func
 (paren
-id|dasd_ccw_req_t
+r_struct
+id|dasd_ccw_req
 op_star
 comma
-id|dasd_device_t
+r_struct
+id|dasd_device
 op_star
 )paren
 suffix:semicolon
@@ -1326,10 +1335,12 @@ r_void
 id|dasd_sfree_request
 c_func
 (paren
-id|dasd_ccw_req_t
+r_struct
+id|dasd_ccw_req
 op_star
 comma
-id|dasd_device_t
+r_struct
+id|dasd_device
 op_star
 )paren
 suffix:semicolon
@@ -1349,7 +1360,8 @@ r_void
 op_star
 id|cda
 comma
-id|dasd_device_t
+r_struct
+id|dasd_device
 op_star
 id|device
 )paren
@@ -1364,7 +1376,8 @@ id|cda
 )paren
 suffix:semicolon
 )brace
-id|dasd_device_t
+r_struct
+id|dasd_device
 op_star
 id|dasd_alloc_device
 c_func
@@ -1378,7 +1391,8 @@ r_void
 id|dasd_free_device
 c_func
 (paren
-id|dasd_device_t
+r_struct
+id|dasd_device
 op_star
 )paren
 suffix:semicolon
@@ -1386,7 +1400,8 @@ r_void
 id|dasd_enable_device
 c_func
 (paren
-id|dasd_device_t
+r_struct
+id|dasd_device
 op_star
 )paren
 suffix:semicolon
@@ -1394,7 +1409,8 @@ r_void
 id|dasd_set_target_state
 c_func
 (paren
-id|dasd_device_t
+r_struct
+id|dasd_device
 op_star
 comma
 r_int
@@ -1404,7 +1420,8 @@ r_void
 id|dasd_kick_device
 c_func
 (paren
-id|dasd_device_t
+r_struct
+id|dasd_device
 op_star
 )paren
 suffix:semicolon
@@ -1412,7 +1429,8 @@ r_void
 id|dasd_add_request_head
 c_func
 (paren
-id|dasd_ccw_req_t
+r_struct
+id|dasd_ccw_req
 op_star
 )paren
 suffix:semicolon
@@ -1420,16 +1438,17 @@ r_void
 id|dasd_add_request_tail
 c_func
 (paren
-id|dasd_ccw_req_t
+r_struct
+id|dasd_ccw_req
 op_star
 )paren
 suffix:semicolon
-multiline_comment|/* unused */
 r_int
 id|dasd_start_IO
 c_func
 (paren
-id|dasd_ccw_req_t
+r_struct
+id|dasd_ccw_req
 op_star
 )paren
 suffix:semicolon
@@ -1437,7 +1456,8 @@ r_int
 id|dasd_term_IO
 c_func
 (paren
-id|dasd_ccw_req_t
+r_struct
+id|dasd_ccw_req
 op_star
 )paren
 suffix:semicolon
@@ -1445,7 +1465,8 @@ r_void
 id|dasd_schedule_bh
 c_func
 (paren
-id|dasd_device_t
+r_struct
+id|dasd_device
 op_star
 )paren
 suffix:semicolon
@@ -1453,7 +1474,8 @@ r_int
 id|dasd_sleep_on
 c_func
 (paren
-id|dasd_ccw_req_t
+r_struct
+id|dasd_ccw_req
 op_star
 )paren
 suffix:semicolon
@@ -1461,7 +1483,8 @@ r_int
 id|dasd_sleep_on_immediatly
 c_func
 (paren
-id|dasd_ccw_req_t
+r_struct
+id|dasd_ccw_req
 op_star
 )paren
 suffix:semicolon
@@ -1469,7 +1492,8 @@ r_int
 id|dasd_sleep_on_interruptible
 c_func
 (paren
-id|dasd_ccw_req_t
+r_struct
+id|dasd_ccw_req
 op_star
 )paren
 suffix:semicolon
@@ -1477,7 +1501,8 @@ r_void
 id|dasd_set_timer
 c_func
 (paren
-id|dasd_device_t
+r_struct
+id|dasd_device
 op_star
 comma
 r_int
@@ -1487,7 +1512,8 @@ r_void
 id|dasd_clear_timer
 c_func
 (paren
-id|dasd_device_t
+r_struct
+id|dasd_device
 op_star
 )paren
 suffix:semicolon
@@ -1495,22 +1521,21 @@ r_int
 id|dasd_cancel_req
 c_func
 (paren
-id|dasd_ccw_req_t
+r_struct
+id|dasd_ccw_req
 op_star
 )paren
 suffix:semicolon
-multiline_comment|/* unused */
 r_int
 id|dasd_generic_probe
 (paren
 r_struct
 id|ccw_device
 op_star
-id|cdev
 comma
-id|dasd_discipline_t
+r_struct
+id|dasd_discipline
 op_star
-id|discipline
 )paren
 suffix:semicolon
 r_int
@@ -1529,11 +1554,10 @@ c_func
 r_struct
 id|ccw_device
 op_star
-id|cdev
 comma
-id|dasd_discipline_t
+r_struct
+id|dasd_discipline
 op_star
-id|discipline
 )paren
 suffix:semicolon
 r_int
@@ -1580,7 +1604,8 @@ c_func
 r_void
 )paren
 suffix:semicolon
-id|dasd_device_t
+r_struct
+id|dasd_device
 op_star
 id|dasd_create_device
 c_func
@@ -1594,7 +1619,8 @@ r_void
 id|dasd_delete_device
 c_func
 (paren
-id|dasd_device_t
+r_struct
+id|dasd_device
 op_star
 )paren
 suffix:semicolon
@@ -1602,11 +1628,13 @@ id|kdev_t
 id|dasd_get_kdev
 c_func
 (paren
-id|dasd_device_t
+r_struct
+id|dasd_device
 op_star
 )paren
 suffix:semicolon
-id|dasd_device_t
+r_struct
+id|dasd_device
 op_star
 id|dasd_device_from_devindex
 c_func
@@ -1674,7 +1702,8 @@ r_void
 id|dasd_setup_partitions
 c_func
 (paren
-id|dasd_device_t
+r_struct
+id|dasd_device
 op_star
 )paren
 suffix:semicolon
@@ -1682,7 +1711,8 @@ r_void
 id|dasd_destroy_partitions
 c_func
 (paren
-id|dasd_device_t
+r_struct
+id|dasd_device
 op_star
 )paren
 suffix:semicolon
@@ -1762,25 +1792,30 @@ r_void
 )paren
 suffix:semicolon
 multiline_comment|/* externals in dasd_erp.c */
-id|dasd_ccw_req_t
+r_struct
+id|dasd_ccw_req
 op_star
 id|dasd_default_erp_action
 c_func
 (paren
-id|dasd_ccw_req_t
+r_struct
+id|dasd_ccw_req
 op_star
 )paren
 suffix:semicolon
-id|dasd_ccw_req_t
+r_struct
+id|dasd_ccw_req
 op_star
 id|dasd_default_erp_postaction
 c_func
 (paren
-id|dasd_ccw_req_t
+r_struct
+id|dasd_ccw_req
 op_star
 )paren
 suffix:semicolon
-id|dasd_ccw_req_t
+r_struct
+id|dasd_ccw_req
 op_star
 id|dasd_alloc_erp_request
 c_func
@@ -1792,7 +1827,8 @@ r_int
 comma
 r_int
 comma
-id|dasd_device_t
+r_struct
+id|dasd_device
 op_star
 )paren
 suffix:semicolon
@@ -1800,10 +1836,12 @@ r_void
 id|dasd_free_erp_request
 c_func
 (paren
-id|dasd_ccw_req_t
+r_struct
+id|dasd_ccw_req
 op_star
 comma
-id|dasd_device_t
+r_struct
+id|dasd_device
 op_star
 )paren
 suffix:semicolon
@@ -1811,7 +1849,8 @@ r_void
 id|dasd_log_sense
 c_func
 (paren
-id|dasd_ccw_req_t
+r_struct
+id|dasd_ccw_req
 op_star
 comma
 r_struct
@@ -1823,7 +1862,8 @@ r_void
 id|dasd_log_ccw
 c_func
 (paren
-id|dasd_ccw_req_t
+r_struct
+id|dasd_ccw_req
 op_star
 comma
 r_int
@@ -1836,7 +1876,8 @@ id|dasd_era_t
 id|dasd_3370_erp_examine
 c_func
 (paren
-id|dasd_ccw_req_t
+r_struct
+id|dasd_ccw_req
 op_star
 comma
 r_struct
@@ -1849,7 +1890,8 @@ id|dasd_era_t
 id|dasd_3990_erp_examine
 c_func
 (paren
-id|dasd_ccw_req_t
+r_struct
+id|dasd_ccw_req
 op_star
 comma
 r_struct
@@ -1857,12 +1899,14 @@ id|irb
 op_star
 )paren
 suffix:semicolon
-id|dasd_ccw_req_t
+r_struct
+id|dasd_ccw_req
 op_star
 id|dasd_3990_erp_action
 c_func
 (paren
-id|dasd_ccw_req_t
+r_struct
+id|dasd_ccw_req
 op_star
 )paren
 suffix:semicolon
@@ -1871,7 +1915,8 @@ id|dasd_era_t
 id|dasd_9336_erp_examine
 c_func
 (paren
-id|dasd_ccw_req_t
+r_struct
+id|dasd_ccw_req
 op_star
 comma
 r_struct
@@ -1884,7 +1929,8 @@ id|dasd_era_t
 id|dasd_9343_erp_examine
 c_func
 (paren
-id|dasd_ccw_req_t
+r_struct
+id|dasd_ccw_req
 op_star
 comma
 r_struct
@@ -1892,12 +1938,14 @@ id|irb
 op_star
 )paren
 suffix:semicolon
-id|dasd_ccw_req_t
+r_struct
+id|dasd_ccw_req
 op_star
 id|dasd_9343_erp_action
 c_func
 (paren
-id|dasd_ccw_req_t
+r_struct
+id|dasd_ccw_req
 op_star
 )paren
 suffix:semicolon

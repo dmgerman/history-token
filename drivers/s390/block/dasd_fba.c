@@ -1,4 +1,4 @@
-multiline_comment|/* &n; * File...........: linux/drivers/s390/block/dasd_fba.c&n; * Author(s)......: Holger Smolinski &lt;Holger.Smolinski@de.ibm.com&gt;&n; * Bugreports.to..: &lt;Linux390@de.ibm.com&gt;&n; * (C) IBM Corporation, IBM Deutschland Entwicklung GmbH, 1999,2000&n; *&n; * $Revision: 1.27 $&n; *&n; * History of changes&n; *&t;    fixed partition handling and HDIO_GETGEO&n; * 2002/01/04 Created 2.4-2.5 compatibility mode&n; * 05/04/02 code restructuring.&n; */
+multiline_comment|/* &n; * File...........: linux/drivers/s390/block/dasd_fba.c&n; * Author(s)......: Holger Smolinski &lt;Holger.Smolinski@de.ibm.com&gt;&n; * Bugreports.to..: &lt;Linux390@de.ibm.com&gt;&n; * (C) IBM Corporation, IBM Deutschland Entwicklung GmbH, 1999,2000&n; *&n; * $Revision: 1.29 $&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/stddef.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -37,21 +37,20 @@ l_string|&quot;GPL&quot;
 suffix:semicolon
 DECL|variable|dasd_fba_discipline
 r_static
-id|dasd_discipline_t
+r_struct
+id|dasd_discipline
 id|dasd_fba_discipline
 suffix:semicolon
-DECL|struct|dasd_fba_private_t
-r_typedef
+DECL|struct|dasd_fba_private
 r_struct
-id|dasd_fba_private_t
+id|dasd_fba_private
 (brace
 DECL|member|rdc_data
-id|dasd_fba_characteristics_t
+r_struct
+id|dasd_fba_characteristics
 id|rdc_data
 suffix:semicolon
-DECL|typedef|dasd_fba_private_t
 )brace
-id|dasd_fba_private_t
 suffix:semicolon
 DECL|variable|dasd_fba_ids
 r_static
@@ -217,7 +216,8 @@ id|ccw1
 op_star
 id|ccw
 comma
-id|DE_fba_data_t
+r_struct
+id|DE_fba_data
 op_star
 id|data
 comma
@@ -266,7 +266,8 @@ l_int|0
 comma
 r_sizeof
 (paren
-id|DE_fba_data_t
+r_struct
+id|DE_fba_data
 )paren
 )paren
 suffix:semicolon
@@ -333,7 +334,8 @@ id|ccw1
 op_star
 id|ccw
 comma
-id|LO_fba_data_t
+r_struct
+id|LO_fba_data
 op_star
 id|data
 comma
@@ -379,7 +381,8 @@ l_int|0
 comma
 r_sizeof
 (paren
-id|LO_fba_data_t
+r_struct
+id|LO_fba_data
 )paren
 )paren
 suffix:semicolon
@@ -427,12 +430,13 @@ id|dasd_fba_check_characteristics
 c_func
 (paren
 r_struct
-id|dasd_device_t
+id|dasd_device
 op_star
 id|device
 )paren
 (brace
-id|dasd_fba_private_t
+r_struct
+id|dasd_fba_private
 op_star
 r_private
 suffix:semicolon
@@ -453,7 +457,8 @@ suffix:semicolon
 r_private
 op_assign
 (paren
-id|dasd_fba_private_t
+r_struct
+id|dasd_fba_private
 op_star
 )paren
 id|device
@@ -475,7 +480,8 @@ c_func
 (paren
 r_sizeof
 (paren
-id|dasd_fba_private_t
+r_struct
+id|dasd_fba_private
 )paren
 comma
 id|GFP_KERNEL
@@ -613,12 +619,13 @@ id|dasd_fba_do_analysis
 c_func
 (paren
 r_struct
-id|dasd_device_t
+id|dasd_device
 op_star
 id|device
 )paren
 (brace
-id|dasd_fba_private_t
+r_struct
+id|dasd_fba_private
 op_star
 r_private
 suffix:semicolon
@@ -630,7 +637,8 @@ suffix:semicolon
 r_private
 op_assign
 (paren
-id|dasd_fba_private_t
+r_struct
+id|dasd_fba_private
 op_star
 )paren
 id|device
@@ -721,7 +729,7 @@ id|dasd_fba_fill_geometry
 c_func
 (paren
 r_struct
-id|dasd_device_t
+id|dasd_device
 op_star
 id|device
 comma
@@ -776,7 +784,8 @@ DECL|function|dasd_fba_examine_error
 id|dasd_fba_examine_error
 c_func
 (paren
-id|dasd_ccw_req_t
+r_struct
+id|dasd_ccw_req
 op_star
 id|cqr
 comma
@@ -786,7 +795,8 @@ op_star
 id|irb
 )paren
 (brace
-id|dasd_device_t
+r_struct
+id|dasd_device
 op_star
 id|device
 suffix:semicolon
@@ -798,7 +808,8 @@ suffix:semicolon
 id|device
 op_assign
 (paren
-id|dasd_device_t
+r_struct
+id|dasd_device
 op_star
 )paren
 id|cqr-&gt;device
@@ -868,7 +879,8 @@ DECL|function|dasd_fba_erp_action
 id|dasd_fba_erp_action
 c_func
 (paren
-id|dasd_ccw_req_t
+r_struct
+id|dasd_ccw_req
 op_star
 id|cqr
 )paren
@@ -883,7 +895,8 @@ DECL|function|dasd_fba_erp_postaction
 id|dasd_fba_erp_postaction
 c_func
 (paren
-id|dasd_ccw_req_t
+r_struct
+id|dasd_ccw_req
 op_star
 id|cqr
 )paren
@@ -913,13 +926,15 @@ l_int|NULL
 suffix:semicolon
 )brace
 r_static
-id|dasd_ccw_req_t
+r_struct
+id|dasd_ccw_req
 op_star
 DECL|function|dasd_fba_build_cp
 id|dasd_fba_build_cp
 c_func
 (paren
-id|dasd_device_t
+r_struct
+id|dasd_device
 op_star
 id|device
 comma
@@ -929,7 +944,8 @@ op_star
 id|req
 )paren
 (brace
-id|dasd_fba_private_t
+r_struct
+id|dasd_fba_private
 op_star
 r_private
 suffix:semicolon
@@ -938,11 +954,13 @@ r_int
 op_star
 id|idaws
 suffix:semicolon
-id|LO_fba_data_t
+r_struct
+id|LO_fba_data
 op_star
 id|LO_data
 suffix:semicolon
-id|dasd_ccw_req_t
+r_struct
+id|dasd_ccw_req
 op_star
 id|cqr
 suffix:semicolon
@@ -997,7 +1015,8 @@ suffix:semicolon
 r_private
 op_assign
 (paren
-id|dasd_fba_private_t
+r_struct
+id|dasd_fba_private
 op_star
 )paren
 id|device
@@ -1180,12 +1199,14 @@ id|datasize
 op_assign
 r_sizeof
 (paren
-id|DE_fba_data_t
+r_struct
+id|DE_fba_data
 )paren
 op_plus
 r_sizeof
 (paren
-id|LO_fba_data_t
+r_struct
+id|LO_fba_data
 )paren
 op_plus
 id|cidaw
@@ -1223,7 +1244,8 @@ l_int|1
 op_star
 r_sizeof
 (paren
-id|LO_fba_data_t
+r_struct
+id|LO_fba_data
 )paren
 suffix:semicolon
 )brace
@@ -1293,14 +1315,16 @@ id|cqr-&gt;data
 op_plus
 r_sizeof
 (paren
-id|DE_fba_data_t
+r_struct
+id|DE_fba_data
 )paren
 )paren
 suffix:semicolon
 id|LO_data
 op_assign
 (paren
-id|LO_fba_data_t
+r_struct
+id|LO_fba_data
 op_star
 )paren
 (paren
@@ -1582,10 +1606,12 @@ DECL|function|dasd_fba_fill_info
 id|dasd_fba_fill_info
 c_func
 (paren
-id|dasd_device_t
+r_struct
+id|dasd_device
 op_star
 id|device
 comma
+r_struct
 id|dasd_information2_t
 op_star
 id|info
@@ -1607,7 +1633,8 @@ id|info-&gt;characteristics_size
 op_assign
 r_sizeof
 (paren
-id|dasd_fba_characteristics_t
+r_struct
+id|dasd_fba_characteristics
 )paren
 suffix:semicolon
 id|memcpy
@@ -1618,7 +1645,8 @@ comma
 op_amp
 (paren
 (paren
-id|dasd_fba_private_t
+r_struct
+id|dasd_fba_private
 op_star
 )paren
 id|device
@@ -1630,7 +1658,8 @@ id|rdc_data
 comma
 r_sizeof
 (paren
-id|dasd_fba_characteristics_t
+r_struct
+id|dasd_fba_characteristics
 )paren
 )paren
 suffix:semicolon
@@ -1649,11 +1678,12 @@ id|dasd_fba_dump_sense
 c_func
 (paren
 r_struct
-id|dasd_device_t
+id|dasd_device
 op_star
 id|device
 comma
-id|dasd_ccw_req_t
+r_struct
+id|dasd_ccw_req
 op_star
 id|req
 comma
@@ -1733,10 +1763,11 @@ id|page
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * max_blocks is dependent on the amount of storage that is available&n; * in the static io buffer for each device. Currently each device has&n; * 8192 bytes (=2 pages). For 64 bit one dasd_mchunkt_t structure has&n; * 24 bytes, the dasd_ccw_req_t has 136 bytes and each block can use&n; * up to 16 bytes (8 for the ccw and 8 for the idal pointer). In&n; * addition we have one define extent ccw + 16 bytes of data and a &n; * locate record ccw for each block (stupid devices!) + 16 bytes of data.&n; * That makes:&n; * (8192 - 24 - 136 - 8 - 16) / 40 = 200.2 blocks at maximum.&n; * We want to fit two into the available memory so that we can immediately&n; * start the next request if one finishes off. That makes 100.1 blocks&n; * for one request. Give a little safety and the result is 96.&n; */
+multiline_comment|/*&n; * max_blocks is dependent on the amount of storage that is available&n; * in the static io buffer for each device. Currently each device has&n; * 8192 bytes (=2 pages). For 64 bit one dasd_mchunkt_t structure has&n; * 24 bytes, the struct dasd_ccw_req has 136 bytes and each block can use&n; * up to 16 bytes (8 for the ccw and 8 for the idal pointer). In&n; * addition we have one define extent ccw + 16 bytes of data and a &n; * locate record ccw for each block (stupid devices!) + 16 bytes of data.&n; * That makes:&n; * (8192 - 24 - 136 - 8 - 16) / 40 = 200.2 blocks at maximum.&n; * We want to fit two into the available memory so that we can immediately&n; * start the next request if one finishes off. That makes 100.1 blocks&n; * for one request. Give a little safety and the result is 96.&n; */
 DECL|variable|dasd_fba_discipline
 r_static
-id|dasd_discipline_t
+r_struct
+id|dasd_discipline
 id|dasd_fba_discipline
 op_assign
 (brace

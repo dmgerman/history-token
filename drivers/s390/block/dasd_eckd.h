@@ -1,4 +1,4 @@
-multiline_comment|/* &n; * File...........: linux/drivers/s390/block/dasd_eckd.h&n; * Author(s)......: Holger Smolinski &lt;Holger.Smolinski@de.ibm.com&gt;&n; *                  Horst Hummel &lt;Horst.Hummel@de.ibm.com&gt; &n; * Bugreports.to..: &lt;Linux390@de.ibm.com&gt;&n; * (C) IBM Corporation, IBM Deutschland Entwicklung GmbH, 1999,2000&n; *&n; * $Revision: 1.6 $&n; *&n; * History of changes &n; * &n; */
+multiline_comment|/* &n; * File...........: linux/drivers/s390/block/dasd_eckd.h&n; * Author(s)......: Holger Smolinski &lt;Holger.Smolinski@de.ibm.com&gt;&n; *                  Horst Hummel &lt;Horst.Hummel@de.ibm.com&gt; &n; * Bugreports.to..: &lt;Linux390@de.ibm.com&gt;&n; * (C) IBM Corporation, IBM Deutschland Entwicklung GmbH, 1999,2000&n; *&n; * $Revision: 1.8 $&n; */
 macro_line|#ifndef DASD_ECKD_H
 DECL|macro|DASD_ECKD_H
 mdefine_line|#define DASD_ECKD_H
@@ -57,10 +57,9 @@ multiline_comment|/*&n; *Perform Subsystem Function / Sub-Orders&n; */
 DECL|macro|PSF_ORDER_PRSSD
 mdefine_line|#define PSF_ORDER_PRSSD&t;&t;&t; 0x18
 multiline_comment|/*******************************************************************************&n; * SECTION: Type Definitions&n; ******************************************************************************/
-DECL|struct|eckd_count_t
-r_typedef
+DECL|struct|eckd_count
 r_struct
-id|eckd_count_t
+id|eckd_count
 (brace
 DECL|member|cyl
 id|__u16
@@ -82,7 +81,6 @@ DECL|member|dl
 id|__u16
 id|dl
 suffix:semicolon
-DECL|typedef|eckd_count_t
 )brace
 id|__attribute__
 (paren
@@ -90,10 +88,8 @@ id|__attribute__
 id|packed
 )paren
 )paren
-id|eckd_count_t
 suffix:semicolon
 DECL|struct|ch_t
-r_typedef
 r_struct
 id|ch_t
 (brace
@@ -105,7 +101,6 @@ DECL|member|head
 id|__u16
 id|head
 suffix:semicolon
-DECL|typedef|ch_t
 )brace
 id|__attribute__
 (paren
@@ -113,10 +108,8 @@ id|__attribute__
 id|packed
 )paren
 )paren
-id|ch_t
 suffix:semicolon
 DECL|struct|chs_t
-r_typedef
 r_struct
 id|chs_t
 (brace
@@ -132,7 +125,6 @@ DECL|member|sector
 id|__u32
 id|sector
 suffix:semicolon
-DECL|typedef|chs_t
 )brace
 id|__attribute__
 (paren
@@ -140,10 +132,8 @@ id|__attribute__
 id|packed
 )paren
 )paren
-id|chs_t
 suffix:semicolon
 DECL|struct|chr_t
-r_typedef
 r_struct
 id|chr_t
 (brace
@@ -159,7 +149,6 @@ DECL|member|record
 id|__u8
 id|record
 suffix:semicolon
-DECL|typedef|chr_t
 )brace
 id|__attribute__
 (paren
@@ -167,10 +156,8 @@ id|__attribute__
 id|packed
 )paren
 )paren
-id|chr_t
 suffix:semicolon
 DECL|struct|geom_t
-r_typedef
 r_struct
 id|geom_t
 (brace
@@ -186,7 +173,6 @@ DECL|member|sector
 id|__u32
 id|sector
 suffix:semicolon
-DECL|typedef|geom_t
 )brace
 id|__attribute__
 (paren
@@ -194,12 +180,10 @@ id|__attribute__
 id|packed
 )paren
 )paren
-id|geom_t
 suffix:semicolon
-DECL|struct|eckd_home_t
-r_typedef
+DECL|struct|eckd_home
 r_struct
-id|eckd_home_t
+id|eckd_home
 (brace
 DECL|member|skip_control
 id|__u8
@@ -224,6 +208,7 @@ id|__u8
 id|flag
 suffix:semicolon
 DECL|member|track_addr
+r_struct
 id|ch_t
 id|track_addr
 suffix:semicolon
@@ -242,7 +227,6 @@ id|reserved2
 l_int|2
 )braket
 suffix:semicolon
-DECL|typedef|eckd_home_t
 )brace
 id|__attribute__
 (paren
@@ -250,12 +234,10 @@ id|__attribute__
 id|packed
 )paren
 )paren
-id|eckd_home_t
 suffix:semicolon
-DECL|struct|DE_eckd_data_t
-r_typedef
+DECL|struct|DE_eckd_data
 r_struct
-id|DE_eckd_data_t
+id|DE_eckd_data
 (brace
 r_struct
 (brace
@@ -380,10 +362,12 @@ id|ga_extended
 suffix:semicolon
 multiline_comment|/* Global Attributes Extended&t;*/
 DECL|member|beg_ext
+r_struct
 id|ch_t
 id|beg_ext
 suffix:semicolon
 DECL|member|end_ext
+r_struct
 id|ch_t
 id|end_ext
 suffix:semicolon
@@ -412,7 +396,6 @@ l_int|6
 )braket
 suffix:semicolon
 multiline_comment|/* Extended Parameter Reserved          */
-DECL|typedef|DE_eckd_data_t
 )brace
 id|__attribute__
 (paren
@@ -420,12 +403,10 @@ id|__attribute__
 id|packed
 )paren
 )paren
-id|DE_eckd_data_t
 suffix:semicolon
-DECL|struct|LO_eckd_data_t
-r_typedef
+DECL|struct|LO_eckd_data
 r_struct
-id|LO_eckd_data_t
+id|LO_eckd_data
 (brace
 r_struct
 (brace
@@ -495,10 +476,12 @@ id|__u8
 id|count
 suffix:semicolon
 DECL|member|seek_addr
+r_struct
 id|ch_t
 id|seek_addr
 suffix:semicolon
 DECL|member|search_arg
+r_struct
 id|chr_t
 id|search_arg
 suffix:semicolon
@@ -510,7 +493,6 @@ DECL|member|length
 id|__u16
 id|length
 suffix:semicolon
-DECL|typedef|LO_eckd_data_t
 )brace
 id|__attribute__
 (paren
@@ -518,12 +500,10 @@ id|__attribute__
 id|packed
 )paren
 )paren
-id|LO_eckd_data_t
 suffix:semicolon
-DECL|struct|dasd_eckd_characteristics_t
-r_typedef
+DECL|struct|dasd_eckd_characteristics
 r_struct
-id|dasd_eckd_characteristics_t
+id|dasd_eckd_characteristics
 (brace
 DECL|member|cu_type
 id|__u16
@@ -903,7 +883,6 @@ id|reserved3
 l_int|10
 )braket
 suffix:semicolon
-DECL|typedef|dasd_eckd_characteristics_t
 )brace
 id|__attribute__
 (paren
@@ -911,12 +890,10 @@ id|__attribute__
 id|packed
 )paren
 )paren
-id|dasd_eckd_characteristics_t
 suffix:semicolon
-DECL|struct|dasd_eckd_confdata_t
-r_typedef
+DECL|struct|dasd_eckd_confdata
 r_struct
-id|dasd_eckd_confdata_t
+id|dasd_eckd_confdata
 (brace
 r_struct
 (brace
@@ -1654,7 +1631,6 @@ id|packed
 )paren
 id|neq
 suffix:semicolon
-DECL|typedef|dasd_eckd_confdata_t
 )brace
 id|__attribute__
 (paren
@@ -1662,13 +1638,11 @@ id|__attribute__
 id|packed
 )paren
 )paren
-id|dasd_eckd_confdata_t
 suffix:semicolon
 multiline_comment|/*&n; * Perform Subsystem Function - Prepare for Read Subsystem Data&t; &n; */
-DECL|struct|dasd_psf_prssd_data_t
-r_typedef
+DECL|struct|dasd_psf_prssd_data
 r_struct
-id|dasd_psf_prssd_data_t
+id|dasd_psf_prssd_data
 (brace
 DECL|member|order
 r_int
@@ -1701,7 +1675,6 @@ id|varies
 l_int|9
 )braket
 suffix:semicolon
-DECL|typedef|dasd_psf_prssd_data_t
 )brace
 id|__attribute__
 (paren
@@ -1709,7 +1682,6 @@ id|__attribute__
 id|packed
 )paren
 )paren
-id|dasd_psf_prssd_data_t
 suffix:semicolon
 macro_line|#endif&t;&t;&t;&t;/* DASD_ECKD_H */
 eof
