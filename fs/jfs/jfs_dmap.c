@@ -2830,7 +2830,7 @@ id|avgfree
 )paren
 )paren
 r_goto
-id|found
+id|unlock
 suffix:semicolon
 multiline_comment|/* From the last preferred ag, find the next one with at least&n;&t; * average free space.&n;&t; */
 r_for
@@ -2888,9 +2888,16 @@ id|agpref
 op_ge
 id|avgfree
 )paren
-r_goto
-id|found
+(brace
+multiline_comment|/* Return this one */
+id|bmp-&gt;db_agpref
+op_assign
+id|agpref
 suffix:semicolon
+r_goto
+id|unlock
+suffix:semicolon
+)brace
 r_else
 r_if
 c_cond
@@ -2903,6 +2910,7 @@ OG
 id|hwm
 )paren
 (brace
+multiline_comment|/* Less than avg. freespace, but best so far */
 id|hwm
 op_assign
 id|bmp-&gt;db_agfree
@@ -2925,17 +2933,13 @@ op_ne
 op_minus
 l_int|1
 )paren
-id|agpref
+id|bmp-&gt;db_agpref
 op_assign
 id|next_best
 suffix:semicolon
-multiline_comment|/* else agpref should be back to its original value */
-id|found
+multiline_comment|/* else leave db_agpref unchanged */
+id|unlock
 suffix:colon
-id|bmp-&gt;db_agpref
-op_assign
-id|agpref
-suffix:semicolon
 id|BMAP_UNLOCK
 c_func
 (paren

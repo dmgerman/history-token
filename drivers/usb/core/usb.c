@@ -103,7 +103,13 @@ op_assign
 dot
 id|name
 op_assign
-l_string|&quot;generic usb driver&quot;
+l_string|&quot;generic&quot;
+comma
+dot
+id|bus
+op_assign
+op_amp
+id|usb_bus_type
 comma
 dot
 id|probe
@@ -1168,6 +1174,18 @@ r_struct
 id|usb_device_id
 op_star
 id|id
+suffix:semicolon
+multiline_comment|/* check for generic driver, which we don&squot;t match any device with */
+r_if
+c_cond
+(paren
+id|drv
+op_eq
+op_amp
+id|usb_generic_driver
+)paren
+r_return
+l_int|0
 suffix:semicolon
 id|intf
 op_assign
@@ -4390,6 +4408,13 @@ c_func
 (paren
 )paren
 suffix:semicolon
+id|driver_register
+c_func
+(paren
+op_amp
+id|usb_generic_driver
+)paren
+suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
@@ -4405,6 +4430,13 @@ c_func
 r_void
 )paren
 (brace
+id|remove_driver
+c_func
+(paren
+op_amp
+id|usb_generic_driver
+)paren
+suffix:semicolon
 id|usb_major_cleanup
 c_func
 (paren

@@ -549,11 +549,22 @@ id|filp
 suffix:semicolon
 id|fl-&gt;fl_pid
 op_assign
-id|current-&gt;pid
+id|current-&gt;tgid
 suffix:semicolon
 id|fl-&gt;fl_flags
 op_assign
+(paren
+id|cmd
+op_amp
+id|LOCK_NB
+)paren
+ques
+c_cond
 id|FL_FLOCK
+suffix:colon
+id|FL_FLOCK
+op_or
+id|FL_SLEEP
 suffix:semicolon
 id|fl-&gt;fl_type
 op_assign
@@ -762,7 +773,7 @@ id|current-&gt;files
 suffix:semicolon
 id|fl-&gt;fl_pid
 op_assign
-id|current-&gt;pid
+id|current-&gt;tgid
 suffix:semicolon
 id|fl-&gt;fl_file
 op_assign
@@ -931,7 +942,7 @@ id|current-&gt;files
 suffix:semicolon
 id|fl-&gt;fl_pid
 op_assign
-id|current-&gt;pid
+id|current-&gt;tgid
 suffix:semicolon
 id|fl-&gt;fl_file
 op_assign
@@ -1038,7 +1049,7 @@ id|current-&gt;files
 suffix:semicolon
 id|fl-&gt;fl_pid
 op_assign
-id|current-&gt;pid
+id|current-&gt;tgid
 suffix:semicolon
 id|fl-&gt;fl_file
 op_assign
@@ -2174,7 +2185,7 @@ id|current-&gt;files
 suffix:semicolon
 id|fl.fl_pid
 op_assign
-id|current-&gt;pid
+id|current-&gt;tgid
 suffix:semicolon
 id|fl.fl_file
 op_assign
@@ -4359,7 +4370,7 @@ c_func
 (paren
 id|filp
 comma
-id|current-&gt;pid
+id|current-&gt;tgid
 comma
 l_int|1
 )paren
@@ -5967,7 +5978,7 @@ id|owner
 suffix:semicolon
 id|lock.fl_pid
 op_assign
-id|current-&gt;pid
+id|current-&gt;tgid
 suffix:semicolon
 id|lock.fl_file
 op_assign

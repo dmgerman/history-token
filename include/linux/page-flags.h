@@ -98,7 +98,7 @@ id|ret
 )paren
 suffix:semicolon
 DECL|macro|mod_page_state
-mdefine_line|#define mod_page_state(member, delta)&t;&t;&t;&t;&t;&bslash;&n;&t;do {&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;preempt_disable();&t;&t;&t;&t;&t;&bslash;&n;&t;&t;page_states[smp_processor_id()].member += (delta);&t;&bslash;&n;&t;&t;preempt_enable();&t;&t;&t;&t;&t;&bslash;&n;&t;} while (0)
+mdefine_line|#define mod_page_state(member, delta)&t;&t;&t;&t;&t;&bslash;&n;&t;do {&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;int cpu = get_cpu();&t;&t;&t;&t;&t;&bslash;&n;&t;&t;page_states[cpu].member += (delta);&t;&t;&t;&bslash;&n;&t;&t;put_cpu();&t;&t;&t;&t;&t;&t;&bslash;&n;&t;} while (0)
 DECL|macro|inc_page_state
 mdefine_line|#define inc_page_state(member)&t;mod_page_state(member, 1UL)
 DECL|macro|dec_page_state

@@ -744,6 +744,9 @@ r_case
 id|PCI_DEVICE_ID_AL_M5219
 suffix:colon
 r_case
+id|PCI_DEVICE_ID_AL_M5229
+suffix:colon
+r_case
 id|PCI_DEVICE_ID_AMD_VIPER_7409
 suffix:colon
 r_case

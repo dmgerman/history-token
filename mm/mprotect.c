@@ -779,8 +779,8 @@ comma
 id|newflags
 )paren
 )paren
-r_return
-l_int|0
+r_goto
+id|success
 suffix:semicolon
 )brace
 r_else
@@ -808,6 +808,12 @@ r_goto
 id|fail
 suffix:semicolon
 )brace
+multiline_comment|/*&n;&t; * Unless it returns an error, this function always sets *pprev to&n;&t; * the first vma for which vma-&gt;vm_end &gt;= end.&n;&t; */
+op_star
+id|pprev
+op_assign
+id|vma
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -861,6 +867,8 @@ op_amp
 id|mm-&gt;page_table_lock
 )paren
 suffix:semicolon
+id|success
+suffix:colon
 id|change_protection
 c_func
 (paren

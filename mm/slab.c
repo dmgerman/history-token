@@ -4528,8 +4528,7 @@ id|slabp
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t; * CAREFUL: do not enable preemption yet, the per-CPU&n;&t; * entries rely on us being atomic.&n;&t; */
-id|_raw_spin_unlock
+id|spin_unlock
 c_func
 (paren
 op_amp
@@ -4579,6 +4578,18 @@ suffix:semicolon
 r_void
 op_star
 id|objp
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|flags
+op_amp
+id|__GFP_WAIT
+)paren
+id|might_sleep
+c_func
+(paren
+)paren
 suffix:semicolon
 id|kmem_cache_alloc_head
 c_func
@@ -4661,12 +4672,6 @@ id|local_irq_restore
 c_func
 (paren
 id|save_flags
-)paren
-suffix:semicolon
-multiline_comment|/* end of non-preemptible region */
-id|preempt_enable
-c_func
-(paren
 )paren
 suffix:semicolon
 r_if
@@ -5000,6 +5005,21 @@ op_amp
 id|slabp-&gt;list
 )paren
 suffix:semicolon
+multiline_comment|/*&t;&t;&t;list_add(&amp;slabp-&gt;list, &amp;cachep-&gt;slabs_free); &t;&t;*/
+r_if
+c_cond
+(paren
+id|unlikely
+c_func
+(paren
+id|list_empty
+c_func
+(paren
+op_amp
+id|cachep-&gt;slabs_partial
+)paren
+)paren
+)paren
 id|list_add
 c_func
 (paren
@@ -5007,7 +5027,16 @@ op_amp
 id|slabp-&gt;list
 comma
 op_amp
-id|cachep-&gt;slabs_free
+id|cachep-&gt;slabs_partial
+)paren
+suffix:semicolon
+r_else
+id|kmem_slab_destroy
+c_func
+(paren
+id|cachep
+comma
+id|slabp
 )paren
 suffix:semicolon
 )brace
@@ -6916,9 +6945,6 @@ c_cond
 id|slabp-&gt;inuse
 op_eq
 id|cachep-&gt;num
-op_logical_or
-op_logical_neg
-id|slabp-&gt;inuse
 )paren
 id|BUG
 c_func
