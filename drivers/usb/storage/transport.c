@@ -1595,9 +1595,10 @@ id|need_auto_sense
 op_assign
 l_int|0
 suffix:semicolon
-multiline_comment|/*&n;&t; * If we&squot;re running the CB transport, which is incapable&n;&t; * of determining status on it&squot;s own, we need to auto-sense almost&n;&t; * every time.&n;&t; */
+multiline_comment|/*&n;&t; * If we&squot;re running the CB transport, which is incapable&n;&t; * of determining status on its own, we need to auto-sense&n;&t; * unless the operation involved a data-in transfer.  Devices&n;&t; * can signal data-in errors by stalling the bulk-in pipe.&n;&t; */
 r_if
 c_cond
+(paren
 (paren
 id|us-&gt;protocol
 op_eq
@@ -1606,6 +1607,11 @@ op_logical_or
 id|us-&gt;protocol
 op_eq
 id|US_PR_DPCM_USB
+)paren
+op_logical_and
+id|srb-&gt;sc_data_direction
+op_ne
+id|SCSI_DATA_READ
 )paren
 (brace
 id|US_DEBUGP
@@ -1618,46 +1624,6 @@ id|need_auto_sense
 op_assign
 l_int|1
 suffix:semicolon
-multiline_comment|/* There are some exceptions to this.  Notably, if this is&n;&t;&t; * a UFI device and the command is REQUEST_SENSE or INQUIRY,&n;&t;&t; * then it is impossible to truly determine status.&n;&t;&t; */
-r_if
-c_cond
-(paren
-id|us-&gt;subclass
-op_eq
-id|US_SC_UFI
-op_logical_and
-(paren
-(paren
-id|srb-&gt;cmnd
-(braket
-l_int|0
-)braket
-op_eq
-id|REQUEST_SENSE
-)paren
-op_logical_or
-(paren
-id|srb-&gt;cmnd
-(braket
-l_int|0
-)braket
-op_eq
-id|INQUIRY
-)paren
-)paren
-)paren
-(brace
-id|US_DEBUGP
-c_func
-(paren
-l_string|&quot;** no auto-sense for a special command&bslash;n&quot;
-)paren
-suffix:semicolon
-id|need_auto_sense
-op_assign
-l_int|0
-suffix:semicolon
-)brace
 )brace
 multiline_comment|/*&n;&t; * If we have a failure, we&squot;re going to do a REQUEST_SENSE &n;&t; * automatically.  Note that we differentiate between a command&n;&t; * &quot;failure&quot; and an &quot;error&quot; in the transport mechanism.&n;&t; */
 r_if
