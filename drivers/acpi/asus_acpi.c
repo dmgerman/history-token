@@ -66,15 +66,11 @@ DECL|variable|asus_uid
 r_static
 id|uid_t
 id|asus_uid
-op_assign
-l_int|0
 suffix:semicolon
 DECL|variable|asus_gid
 r_static
 id|gid_t
 id|asus_gid
-op_assign
-l_int|0
 suffix:semicolon
 id|MODULE_PARM
 c_func
@@ -717,8 +713,6 @@ r_struct
 id|proc_dir_entry
 op_star
 id|asus_proc_dir
-op_assign
-l_int|NULL
 suffix:semicolon
 multiline_comment|/*&n; * This header is made available to allow proper configuration given model,&n; * revision number , ... this info cannot go in struct asus_hotk because it is&n; * available before the hotk&n; */
 DECL|variable|asus_info
@@ -727,8 +721,6 @@ r_struct
 id|acpi_table_header
 op_star
 id|asus_info
-op_assign
-l_int|NULL
 suffix:semicolon
 multiline_comment|/*&n; * The hotkey driver declaration&n; */
 r_static

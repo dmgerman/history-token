@@ -44,8 +44,6 @@ multiline_comment|/* stuff for debugger support */
 DECL|variable|acpi_in_debugger
 r_int
 id|acpi_in_debugger
-op_assign
-l_int|0
 suffix:semicolon
 r_extern
 r_char
@@ -59,23 +57,17 @@ DECL|variable|acpi_irq_irq
 r_static
 r_int
 id|acpi_irq_irq
-op_assign
-l_int|0
 suffix:semicolon
 DECL|variable|acpi_irq_handler
 r_static
 id|OSD_HANDLER
 id|acpi_irq_handler
-op_assign
-l_int|NULL
 suffix:semicolon
 DECL|variable|acpi_irq_context
 r_static
 r_void
 op_star
 id|acpi_irq_context
-op_assign
-l_int|NULL
 suffix:semicolon
 id|acpi_status
 DECL|function|acpi_os_initialize
@@ -770,10 +762,6 @@ id|AE_OK
 suffix:semicolon
 )brace
 macro_line|#endif
-id|acpi_irq_irq
-op_assign
-id|irq
-suffix:semicolon
 id|acpi_irq_handler
 op_assign
 id|handler
@@ -814,6 +802,10 @@ r_return
 id|AE_NOT_ACQUIRED
 suffix:semicolon
 )brace
+id|acpi_irq_irq
+op_assign
+id|irq
+suffix:semicolon
 r_return
 id|AE_OK
 suffix:semicolon
@@ -833,7 +825,7 @@ id|handler
 r_if
 c_cond
 (paren
-id|acpi_irq_handler
+id|irq
 )paren
 (brace
 macro_line|#ifdef CONFIG_IA64
@@ -857,6 +849,10 @@ suffix:semicolon
 id|acpi_irq_handler
 op_assign
 l_int|NULL
+suffix:semicolon
+id|acpi_irq_irq
+op_assign
+l_int|0
 suffix:semicolon
 )brace
 r_return
