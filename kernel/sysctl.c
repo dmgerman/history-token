@@ -2447,12 +2447,6 @@ op_assign
 op_amp
 id|proc_dointvec
 comma
-dot
-id|strategy
-op_assign
-op_amp
-id|sysctl_jiffies
-comma
 )brace
 comma
 (brace
