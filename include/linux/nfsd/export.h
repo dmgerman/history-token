@@ -133,12 +133,6 @@ op_plus
 l_int|1
 )braket
 suffix:semicolon
-DECL|member|ex_parent
-r_struct
-id|svc_export
-op_star
-id|ex_parent
-suffix:semicolon
 DECL|member|ex_client
 r_struct
 id|svc_client
