@@ -293,7 +293,7 @@ id|u8
 id|irq_num
 )paren
 (brace
-macro_line|#if !defined(CONFIG_X86_IO_APIC) &amp;&amp; !defined(CONFIG_X86_64)
+macro_line|#if defined(CONFIG_X86) &amp;&amp; !defined(CONFIG_X86_IO_APIC) &amp;&amp; !defined(CONFIG_X86_64)
 r_int
 id|rc
 suffix:semicolon
