@@ -34,6 +34,11 @@ r_int
 op_star
 id|map
 suffix:semicolon
+DECL|member|nr_free
+r_int
+r_int
+id|nr_free
+suffix:semicolon
 )brace
 suffix:semicolon
 r_struct
