@@ -234,6 +234,16 @@ id|PHAROS_PRODUCT_ID
 )brace
 comma
 (brace
+id|USB_DEVICE
+c_func
+(paren
+id|SIEMENS_VENDOR_ID
+comma
+id|SIEMENS_PRODUCT_ID_X65
+)paren
+)brace
+comma
+(brace
 )brace
 multiline_comment|/* Terminating entry */
 )brace

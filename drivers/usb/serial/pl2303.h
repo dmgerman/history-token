@@ -62,4 +62,8 @@ DECL|macro|PHAROS_VENDOR_ID
 mdefine_line|#define PHAROS_VENDOR_ID       0x067b
 DECL|macro|PHAROS_PRODUCT_ID
 mdefine_line|#define PHAROS_PRODUCT_ID      0xaaa0
+DECL|macro|SIEMENS_VENDOR_ID
+mdefine_line|#define SIEMENS_VENDOR_ID&t;0x11f5
+DECL|macro|SIEMENS_PRODUCT_ID_X65
+mdefine_line|#define SIEMENS_PRODUCT_ID_X65&t;0x0003
 eof
