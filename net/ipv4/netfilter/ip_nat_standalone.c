@@ -287,7 +287,7 @@ id|pskb
 comma
 id|ct
 comma
-id|hooknum
+id|maniptype
 comma
 id|CTINFO2DIR
 c_func
@@ -312,13 +312,6 @@ id|info
 op_assign
 op_amp
 id|ct-&gt;nat.info
-suffix:semicolon
-id|WRITE_LOCK
-c_func
-(paren
-op_amp
-id|ip_nat_lock
-)paren
 suffix:semicolon
 multiline_comment|/* Seen it before?  This can happen for loopback, retrans,&n;&t;&t;   or local packets.. */
 r_if
@@ -387,13 +380,6 @@ op_ne
 id|NF_ACCEPT
 )paren
 (brace
-id|WRITE_UNLOCK
-c_func
-(paren
-op_amp
-id|ip_nat_lock
-)paren
-suffix:semicolon
 r_return
 id|ret
 suffix:semicolon
@@ -415,13 +401,6 @@ suffix:colon
 l_string|&quot;DST&quot;
 comma
 id|ct
-)paren
-suffix:semicolon
-id|WRITE_UNLOCK
-c_func
-(paren
-op_amp
-id|ip_nat_lock
 )paren
 suffix:semicolon
 r_break
@@ -458,14 +437,12 @@ id|info
 )paren
 suffix:semicolon
 r_return
-id|do_bindings
+id|nat_packet
 c_func
 (paren
 id|ct
 comma
 id|ctinfo
-comma
-id|info
 comma
 id|hooknum
 comma

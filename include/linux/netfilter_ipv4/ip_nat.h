@@ -95,47 +95,9 @@ l_int|1
 suffix:semicolon
 )brace
 suffix:semicolon
-multiline_comment|/* Worst case: local-out manip + 1 post-routing, and reverse dirn. */
-DECL|macro|IP_NAT_MAX_MANIPS
-mdefine_line|#define IP_NAT_MAX_MANIPS (2*2)
-DECL|struct|ip_nat_info_manip
-r_struct
-id|ip_nat_info_manip
-(brace
-multiline_comment|/* The direction. */
-DECL|member|direction
-id|u_int8_t
-id|direction
-suffix:semicolon
-multiline_comment|/* Which hook the manipulation happens on. */
-DECL|member|hooknum
-id|u_int8_t
-id|hooknum
-suffix:semicolon
-multiline_comment|/* The manipulation type. */
-DECL|member|maniptype
-id|u_int8_t
-id|maniptype
-suffix:semicolon
-multiline_comment|/* Manipulations to occur at each conntrack in this dirn. */
-DECL|member|manip
-r_struct
-id|ip_conntrack_manip
-id|manip
-suffix:semicolon
-)brace
-suffix:semicolon
 macro_line|#ifdef __KERNEL__
 macro_line|#include &lt;linux/list.h&gt;
 macro_line|#include &lt;linux/netfilter_ipv4/lockhelp.h&gt;
-multiline_comment|/* Protects NAT hash tables, and NAT-private part of conntracks. */
-DECL|variable|ip_nat_lock
-id|DECLARE_RWLOCK_EXTERN
-c_func
-(paren
-id|ip_nat_lock
-)paren
-suffix:semicolon
 multiline_comment|/* The structure embedded in the conntrack structure. */
 DECL|struct|ip_nat_info
 r_struct
@@ -145,19 +107,6 @@ multiline_comment|/* Set to zero when conntrack created: bitmask of maniptypes *
 DECL|member|initialized
 id|u_int16_t
 id|initialized
-suffix:semicolon
-DECL|member|num_manips
-id|u_int16_t
-id|num_manips
-suffix:semicolon
-multiline_comment|/* Manipulations to be done on this conntrack. */
-DECL|member|manips
-r_struct
-id|ip_nat_info_manip
-id|manips
-(braket
-id|IP_NAT_MAX_MANIPS
-)braket
 suffix:semicolon
 DECL|member|bysource
 r_struct

@@ -98,6 +98,46 @@ op_lshift
 id|IPS_CONFIRMED_BIT
 )paren
 comma
+multiline_comment|/* Connection needs src nat in orig dir.  This bit never changed. */
+DECL|enumerator|IPS_SRC_NAT_BIT
+id|IPS_SRC_NAT_BIT
+op_assign
+l_int|4
+comma
+DECL|enumerator|IPS_SRC_NAT
+id|IPS_SRC_NAT
+op_assign
+(paren
+l_int|1
+op_lshift
+id|IPS_SRC_NAT_BIT
+)paren
+comma
+multiline_comment|/* Connection needs dst nat in orig dir.  This bit never changed. */
+DECL|enumerator|IPS_DST_NAT_BIT
+id|IPS_DST_NAT_BIT
+op_assign
+l_int|5
+comma
+DECL|enumerator|IPS_DST_NAT
+id|IPS_DST_NAT
+op_assign
+(paren
+l_int|1
+op_lshift
+id|IPS_DST_NAT_BIT
+)paren
+comma
+multiline_comment|/* Both together. */
+DECL|enumerator|IPS_NAT_MASK
+id|IPS_NAT_MASK
+op_assign
+(paren
+id|IPS_DST_NAT
+op_or
+id|IPS_SRC_NAT
+)paren
+comma
 )brace
 suffix:semicolon
 macro_line|#ifdef __KERNEL__
