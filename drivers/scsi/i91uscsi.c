@@ -7,13 +7,6 @@ DECL|macro|DEBUG_STATE
 mdefine_line|#define DEBUG_STATE     0
 DECL|macro|INT_DISC
 mdefine_line|#define INT_DISC&t;0
-macro_line|#ifndef CVT_LINUX_VERSION
-DECL|macro|CVT_LINUX_VERSION
-mdefine_line|#define&t;CVT_LINUX_VERSION(V,P,S)&t;(V * 65536 + P * 256 + S)
-macro_line|#endif
-macro_line|#ifndef LINUX_VERSION_CODE
-macro_line|#include &lt;linux/version.h&gt;
-macro_line|#endif
 macro_line|#include &lt;linux/jiffies.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/blk.h&gt;
@@ -731,7 +724,6 @@ id|jiffies
 op_plus
 id|amount
 suffix:semicolon
-macro_line|#if LINUX_VERSION_CODE &gt;= CVT_LINUX_VERSION(2,1,95)
 r_while
 c_loop
 (paren
@@ -744,16 +736,6 @@ id|the_time
 )paren
 )paren
 suffix:semicolon
-macro_line|#else
-r_while
-c_loop
-(paren
-id|jiffies
-OL
-id|the_time
-)paren
-suffix:semicolon
-macro_line|#endif
 )brace
 multiline_comment|/*-- forward reference --*/
 multiline_comment|/*******************************************************************&n;&t;Use memeory refresh time        ~ 15us * 2&n;********************************************************************/
@@ -2493,12 +2475,10 @@ id|pCurHcb-&gt;HCS_Semaph
 op_assign
 l_int|1
 suffix:semicolon
-macro_line|#if LINUX_VERSION_CODE &gt;= CVT_LINUX_VERSION(2,1,95)
 id|pCurHcb-&gt;HCS_SemaphLock
 op_assign
 id|SPIN_LOCK_UNLOCKED
 suffix:semicolon
-macro_line|#endif
 id|pCurHcb-&gt;HCS_JSStatus0
 op_assign
 l_int|0
@@ -2573,12 +2553,10 @@ id|pCurHcb-&gt;HCS_LastAvail
 op_assign
 id|pPrevScb
 suffix:semicolon
-macro_line|#if LINUX_VERSION_CODE &gt;= CVT_LINUX_VERSION(2,1,95)
 id|pCurHcb-&gt;HCS_AvailLock
 op_assign
 id|SPIN_LOCK_UNLOCKED
 suffix:semicolon
-macro_line|#endif
 id|pCurHcb-&gt;HCS_FirstPend
 op_assign
 l_int|NULL
@@ -3106,7 +3084,6 @@ suffix:semicolon
 id|ULONG
 id|flags
 suffix:semicolon
-macro_line|#if LINUX_VERSION_CODE &gt;= CVT_LINUX_VERSION(2,1,95)
 id|spin_lock_irqsave
 c_func
 (paren
@@ -3118,19 +3095,6 @@ comma
 id|flags
 )paren
 suffix:semicolon
-macro_line|#else
-id|save_flags
-c_func
-(paren
-id|flags
-)paren
-suffix:semicolon
-id|cli
-c_func
-(paren
-)paren
-suffix:semicolon
-macro_line|#endif
 r_if
 c_cond
 (paren
@@ -3180,7 +3144,6 @@ op_assign
 id|SCB_RENT
 suffix:semicolon
 )brace
-macro_line|#if LINUX_VERSION_CODE &gt;= CVT_LINUX_VERSION(2,1,95)
 id|spin_unlock_irqrestore
 c_func
 (paren
@@ -3192,14 +3155,6 @@ comma
 id|flags
 )paren
 suffix:semicolon
-macro_line|#else
-id|restore_flags
-c_func
-(paren
-id|flags
-)paren
-suffix:semicolon
-macro_line|#endif
 r_return
 (paren
 id|pTmpScb
@@ -3237,7 +3192,6 @@ id|scbp
 )paren
 suffix:semicolon
 macro_line|#endif
-macro_line|#if LINUX_VERSION_CODE &gt;= CVT_LINUX_VERSION(2,1,95)
 id|spin_lock_irqsave
 c_func
 (paren
@@ -3249,19 +3203,6 @@ comma
 id|flags
 )paren
 suffix:semicolon
-macro_line|#else
-id|save_flags
-c_func
-(paren
-id|flags
-)paren
-suffix:semicolon
-id|cli
-c_func
-(paren
-)paren
-suffix:semicolon
-macro_line|#endif
 id|scbp-&gt;SCB_Srb
 op_assign
 l_int|0
@@ -3302,7 +3243,6 @@ op_assign
 id|scbp
 suffix:semicolon
 )brace
-macro_line|#if LINUX_VERSION_CODE &gt;= CVT_LINUX_VERSION(2,1,95)
 id|spin_unlock_irqrestore
 c_func
 (paren
@@ -3314,14 +3254,6 @@ comma
 id|flags
 )paren
 suffix:semicolon
-macro_line|#else
-id|restore_flags
-c_func
-(paren
-id|flags
-)paren
-suffix:semicolon
-macro_line|#endif
 )brace
 multiline_comment|/***************************************************************************/
 DECL|function|tul_append_pend_scb
@@ -4333,7 +4265,6 @@ comma
 op_star
 id|pPrevScb
 suffix:semicolon
-macro_line|#if LINUX_VERSION_CODE &gt;= CVT_LINUX_VERSION(2,1,95)
 id|spin_lock_irqsave
 c_func
 (paren
@@ -4345,19 +4276,6 @@ comma
 id|flags
 )paren
 suffix:semicolon
-macro_line|#else
-id|save_flags
-c_func
-(paren
-id|flags
-)paren
-suffix:semicolon
-id|cli
-c_func
-(paren
-)paren
-suffix:semicolon
-macro_line|#endif
 r_if
 c_cond
 (paren
@@ -4385,7 +4303,6 @@ l_int|0x1F
 )paren
 suffix:semicolon
 multiline_comment|/* disable Jasmin SCSI Int        */
-macro_line|#if LINUX_VERSION_CODE &gt;= CVT_LINUX_VERSION(2,1,95)
 id|spin_unlock_irqrestore
 c_func
 (paren
@@ -4397,14 +4314,12 @@ comma
 id|flags
 )paren
 suffix:semicolon
-macro_line|#endif
 id|tulip_main
 c_func
 (paren
 id|pCurHcb
 )paren
 suffix:semicolon
-macro_line|#if LINUX_VERSION_CODE &gt;= CVT_LINUX_VERSION(2,1,95)
 id|spin_lock_irqsave
 c_func
 (paren
@@ -4416,7 +4331,6 @@ comma
 id|flags
 )paren
 suffix:semicolon
-macro_line|#endif
 id|pCurHcb-&gt;HCS_Semaph
 op_assign
 l_int|1
@@ -4431,7 +4345,6 @@ comma
 l_int|0x0F
 )paren
 suffix:semicolon
-macro_line|#if LINUX_VERSION_CODE &gt;= CVT_LINUX_VERSION(2,1,95)
 id|spin_unlock_irqrestore
 c_func
 (paren
@@ -4443,14 +4356,6 @@ comma
 id|flags
 )paren
 suffix:semicolon
-macro_line|#else
-id|restore_flags
-c_func
-(paren
-id|flags
-)paren
-suffix:semicolon
-macro_line|#endif
 r_return
 id|SCSI_ABORT_SNOOZE
 suffix:semicolon
@@ -4492,7 +4397,6 @@ op_eq
 id|pCurHcb-&gt;HCS_ActScb
 )paren
 (brace
-macro_line|#if LINUX_VERSION_CODE &gt;= CVT_LINUX_VERSION(2,1,95)
 id|spin_unlock_irqrestore
 c_func
 (paren
@@ -4504,14 +4408,6 @@ comma
 id|flags
 )paren
 suffix:semicolon
-macro_line|#else
-id|restore_flags
-c_func
-(paren
-id|flags
-)paren
-suffix:semicolon
-macro_line|#endif
 r_return
 id|SCSI_ABORT_BUSY
 suffix:semicolon
@@ -4592,7 +4488,6 @@ op_star
 id|pTmpScb
 )paren
 suffix:semicolon
-macro_line|#if LINUX_VERSION_CODE &gt;= CVT_LINUX_VERSION(2,1,95)
 id|spin_unlock_irqrestore
 c_func
 (paren
@@ -4604,14 +4499,6 @@ comma
 id|flags
 )paren
 suffix:semicolon
-macro_line|#else
-id|restore_flags
-c_func
-(paren
-id|flags
-)paren
-suffix:semicolon
-macro_line|#endif
 r_return
 id|SCSI_ABORT_SUCCESS
 suffix:semicolon
@@ -4661,7 +4548,6 @@ op_eq
 id|pCurHcb-&gt;HCS_ActScb
 )paren
 (brace
-macro_line|#if LINUX_VERSION_CODE &gt;= CVT_LINUX_VERSION(2,1,95)
 id|spin_unlock_irqrestore
 c_func
 (paren
@@ -4673,14 +4559,6 @@ comma
 id|flags
 )paren
 suffix:semicolon
-macro_line|#else
-id|restore_flags
-c_func
-(paren
-id|flags
-)paren
-suffix:semicolon
-macro_line|#endif
 r_return
 id|SCSI_ABORT_BUSY
 suffix:semicolon
@@ -4694,7 +4572,6 @@ op_eq
 l_int|0
 )paren
 (brace
-macro_line|#if LINUX_VERSION_CODE &gt;= CVT_LINUX_VERSION(2,1,95)
 id|spin_unlock_irqrestore
 c_func
 (paren
@@ -4706,14 +4583,6 @@ comma
 id|flags
 )paren
 suffix:semicolon
-macro_line|#else
-id|restore_flags
-c_func
-(paren
-id|flags
-)paren
-suffix:semicolon
-macro_line|#endif
 r_return
 id|SCSI_ABORT_BUSY
 suffix:semicolon
@@ -4805,7 +4674,6 @@ op_star
 id|pTmpScb
 )paren
 suffix:semicolon
-macro_line|#if LINUX_VERSION_CODE &gt;= CVT_LINUX_VERSION(2,1,95)
 id|spin_unlock_irqrestore
 c_func
 (paren
@@ -4817,14 +4685,6 @@ comma
 id|flags
 )paren
 suffix:semicolon
-macro_line|#else
-id|restore_flags
-c_func
-(paren
-id|flags
-)paren
-suffix:semicolon
-macro_line|#endif
 r_return
 id|SCSI_ABORT_SUCCESS
 suffix:semicolon
@@ -4839,7 +4699,6 @@ op_assign
 id|pTmpScb-&gt;SCB_NxtScb
 suffix:semicolon
 )brace
-macro_line|#if LINUX_VERSION_CODE &gt;= CVT_LINUX_VERSION(2,1,95)
 id|spin_unlock_irqrestore
 c_func
 (paren
@@ -4851,14 +4710,6 @@ comma
 id|flags
 )paren
 suffix:semicolon
-macro_line|#else
-id|restore_flags
-c_func
-(paren
-id|flags
-)paren
-suffix:semicolon
-macro_line|#endif
 r_return
 (paren
 id|SCSI_ABORT_NOT_RUNNING
@@ -4979,7 +4830,6 @@ id|SCB
 op_star
 id|pScb
 suffix:semicolon
-macro_line|#if LINUX_VERSION_CODE &gt;= CVT_LINUX_VERSION(2,1,95)
 id|spin_lock_irqsave
 c_func
 (paren
@@ -4991,19 +4841,6 @@ comma
 id|flags
 )paren
 suffix:semicolon
-macro_line|#else
-id|save_flags
-c_func
-(paren
-id|flags
-)paren
-suffix:semicolon
-id|cli
-c_func
-(paren
-)paren
-suffix:semicolon
-macro_line|#endif
 r_if
 c_cond
 (paren
@@ -5039,7 +4876,6 @@ l_int|0x1F
 )paren
 suffix:semicolon
 multiline_comment|/* disable Jasmin SCSI Int        */
-macro_line|#if LINUX_VERSION_CODE &gt;= CVT_LINUX_VERSION(2,1,95)
 id|spin_unlock_irqrestore
 c_func
 (paren
@@ -5051,14 +4887,12 @@ comma
 id|flags
 )paren
 suffix:semicolon
-macro_line|#endif
 id|tulip_main
 c_func
 (paren
 id|pCurHcb
 )paren
 suffix:semicolon
-macro_line|#if LINUX_VERSION_CODE &gt;= CVT_LINUX_VERSION(2,1,95)
 id|spin_lock_irqsave
 c_func
 (paren
@@ -5070,7 +4904,6 @@ comma
 id|flags
 )paren
 suffix:semicolon
-macro_line|#endif
 id|pCurHcb-&gt;HCS_Semaph
 op_assign
 l_int|1
@@ -5085,7 +4918,6 @@ comma
 l_int|0x0F
 )paren
 suffix:semicolon
-macro_line|#if LINUX_VERSION_CODE &gt;= CVT_LINUX_VERSION(2,1,95)
 id|spin_unlock_irqrestore
 c_func
 (paren
@@ -5097,14 +4929,6 @@ comma
 id|flags
 )paren
 suffix:semicolon
-macro_line|#else
-id|restore_flags
-c_func
-(paren
-id|flags
-)paren
-suffix:semicolon
-macro_line|#endif
 r_return
 id|SCSI_RESET_SNOOZE
 suffix:semicolon
@@ -5155,7 +4979,6 @@ c_func
 l_string|&quot;Unable to Reset - No SCB Found&bslash;n&quot;
 )paren
 suffix:semicolon
-macro_line|#if LINUX_VERSION_CODE &gt;= CVT_LINUX_VERSION(2,1,95)
 id|spin_unlock_irqrestore
 c_func
 (paren
@@ -5167,14 +4990,6 @@ comma
 id|flags
 )paren
 suffix:semicolon
-macro_line|#else
-id|restore_flags
-c_func
-(paren
-id|flags
-)paren
-suffix:semicolon
-macro_line|#endif
 r_return
 id|SCSI_RESET_NOT_RUNNING
 suffix:semicolon
@@ -5196,7 +5011,6 @@ op_eq
 l_int|NULL
 )paren
 (brace
-macro_line|#if LINUX_VERSION_CODE &gt;= CVT_LINUX_VERSION(2,1,95)
 id|spin_unlock_irqrestore
 c_func
 (paren
@@ -5208,14 +5022,6 @@ comma
 id|flags
 )paren
 suffix:semicolon
-macro_line|#else
-id|restore_flags
-c_func
-(paren
-id|flags
-)paren
-suffix:semicolon
-macro_line|#endif
 r_return
 id|SCSI_RESET_NOT_RUNNING
 suffix:semicolon
@@ -5290,7 +5096,6 @@ id|pCurHcb-&gt;HCS_Semaph
 op_assign
 l_int|0
 suffix:semicolon
-macro_line|#if LINUX_VERSION_CODE &gt;= CVT_LINUX_VERSION(2,1,95)
 id|spin_unlock_irqrestore
 c_func
 (paren
@@ -5302,14 +5107,12 @@ comma
 id|flags
 )paren
 suffix:semicolon
-macro_line|#endif
 id|tulip_main
 c_func
 (paren
 id|pCurHcb
 )paren
 suffix:semicolon
-macro_line|#if LINUX_VERSION_CODE &gt;= CVT_LINUX_VERSION(2,1,95)
 id|spin_lock_irqsave
 c_func
 (paren
@@ -5321,7 +5124,6 @@ comma
 id|flags
 )paren
 suffix:semicolon
-macro_line|#endif
 id|pCurHcb-&gt;HCS_Semaph
 op_assign
 l_int|1
@@ -5337,7 +5139,6 @@ l_int|0x0F
 )paren
 suffix:semicolon
 )brace
-macro_line|#if LINUX_VERSION_CODE &gt;= CVT_LINUX_VERSION(2,1,95)
 id|spin_unlock_irqrestore
 c_func
 (paren
@@ -5349,14 +5150,6 @@ comma
 id|flags
 )paren
 suffix:semicolon
-macro_line|#else
-id|restore_flags
-c_func
-(paren
-id|flags
-)paren
-suffix:semicolon
-macro_line|#endif
 r_return
 id|SCSI_RESET_PENDING
 suffix:semicolon
@@ -5374,7 +5167,6 @@ id|pCurHcb
 id|ULONG
 id|flags
 suffix:semicolon
-macro_line|#if LINUX_VERSION_CODE &gt;= CVT_LINUX_VERSION(2,1,95)
 id|spin_lock_irqsave
 c_func
 (paren
@@ -5386,19 +5178,6 @@ comma
 id|flags
 )paren
 suffix:semicolon
-macro_line|#else
-id|save_flags
-c_func
-(paren
-id|flags
-)paren
-suffix:semicolon
-id|cli
-c_func
-(paren
-)paren
-suffix:semicolon
-macro_line|#endif
 id|TUL_WR
 c_func
 (paren
@@ -5413,7 +5192,6 @@ id|pCurHcb-&gt;HCS_Semaph
 op_assign
 l_int|0
 suffix:semicolon
-macro_line|#if LINUX_VERSION_CODE &gt;= CVT_LINUX_VERSION(2,1,95)
 id|spin_unlock_irqrestore
 c_func
 (paren
@@ -5425,14 +5203,6 @@ comma
 id|flags
 )paren
 suffix:semicolon
-macro_line|#else
-id|restore_flags
-c_func
-(paren
-id|flags
-)paren
-suffix:semicolon
-macro_line|#endif
 id|tul_stop_bm
 c_func
 (paren
@@ -5448,7 +5218,6 @@ l_int|2
 )paren
 suffix:semicolon
 multiline_comment|/* 7/29/98 */
-macro_line|#if LINUX_VERSION_CODE &gt;= CVT_LINUX_VERSION(2,1,95)
 id|spin_lock_irqsave
 c_func
 (paren
@@ -5460,26 +5229,12 @@ comma
 id|flags
 )paren
 suffix:semicolon
-macro_line|#else
-id|save_flags
-c_func
-(paren
-id|flags
-)paren
-suffix:semicolon
-id|cli
-c_func
-(paren
-)paren
-suffix:semicolon
-macro_line|#endif
 id|tul_post_scsi_rst
 c_func
 (paren
 id|pCurHcb
 )paren
 suffix:semicolon
-macro_line|#if LINUX_VERSION_CODE &gt;= CVT_LINUX_VERSION(2,1,95)
 id|spin_unlock_irqrestore
 c_func
 (paren
@@ -5491,14 +5246,12 @@ comma
 id|flags
 )paren
 suffix:semicolon
-macro_line|#endif
 id|tulip_main
 c_func
 (paren
 id|pCurHcb
 )paren
 suffix:semicolon
-macro_line|#if LINUX_VERSION_CODE &gt;= CVT_LINUX_VERSION(2,1,95)
 id|spin_lock_irqsave
 c_func
 (paren
@@ -5510,7 +5263,6 @@ comma
 id|flags
 )paren
 suffix:semicolon
-macro_line|#endif
 id|pCurHcb-&gt;HCS_Semaph
 op_assign
 l_int|1
@@ -5525,7 +5277,6 @@ comma
 l_int|0x0F
 )paren
 suffix:semicolon
-macro_line|#if LINUX_VERSION_CODE &gt;= CVT_LINUX_VERSION(2,1,95)
 id|spin_unlock_irqrestore
 c_func
 (paren
@@ -5537,14 +5288,6 @@ comma
 id|flags
 )paren
 suffix:semicolon
-macro_line|#else
-id|restore_flags
-c_func
-(paren
-id|flags
-)paren
-suffix:semicolon
-macro_line|#endif
 r_return
 (paren
 id|SCSI_RESET_SUCCESS
@@ -5583,7 +5326,6 @@ id|pCurScb-&gt;SCB_SGMax
 op_assign
 id|pCurScb-&gt;SCB_SGLen
 suffix:semicolon
-macro_line|#if LINUX_VERSION_CODE &gt;= CVT_LINUX_VERSION(2,1,95)
 id|spin_lock_irqsave
 c_func
 (paren
@@ -5595,19 +5337,6 @@ comma
 id|flags
 )paren
 suffix:semicolon
-macro_line|#else
-id|save_flags
-c_func
-(paren
-id|flags
-)paren
-suffix:semicolon
-id|cli
-c_func
-(paren
-)paren
-suffix:semicolon
-macro_line|#endif
 id|tul_append_pend_scb
 c_func
 (paren
@@ -5641,7 +5370,6 @@ id|pCurHcb-&gt;HCS_Semaph
 op_assign
 l_int|0
 suffix:semicolon
-macro_line|#if LINUX_VERSION_CODE &gt;= CVT_LINUX_VERSION(2,1,95)
 id|spin_unlock_irqrestore
 c_func
 (paren
@@ -5653,14 +5381,12 @@ comma
 id|flags
 )paren
 suffix:semicolon
-macro_line|#endif
 id|tulip_main
 c_func
 (paren
 id|pCurHcb
 )paren
 suffix:semicolon
-macro_line|#if LINUX_VERSION_CODE &gt;= CVT_LINUX_VERSION(2,1,95)
 id|spin_lock_irqsave
 c_func
 (paren
@@ -5672,7 +5398,6 @@ comma
 id|flags
 )paren
 suffix:semicolon
-macro_line|#endif
 id|pCurHcb-&gt;HCS_Semaph
 op_assign
 l_int|1
@@ -5688,7 +5413,6 @@ l_int|0x0F
 )paren
 suffix:semicolon
 )brace
-macro_line|#if LINUX_VERSION_CODE &gt;= CVT_LINUX_VERSION(2,1,95)
 id|spin_unlock_irqrestore
 c_func
 (paren
@@ -5700,14 +5424,6 @@ comma
 id|flags
 )paren
 suffix:semicolon
-macro_line|#else
-id|restore_flags
-c_func
-(paren
-id|flags
-)paren
-suffix:semicolon
-macro_line|#endif
 r_return
 suffix:semicolon
 )brace
