@@ -2,11 +2,10 @@ multiline_comment|/*&n; * Device driver for the SYMBIOS/LSILOGIC 53C8XX and 53C1
 macro_line|#ifndef SYM_HIPD_H
 DECL|macro|SYM_HIPD_H
 mdefine_line|#define SYM_HIPD_H
-multiline_comment|/*&n; *  Generic driver options.&n; *&n; *  They may be defined in platform specific headers, if they &n; *  are useful.&n; *&n; *    SYM_OPT_HANDLE_DIR_UNKNOWN&n; *        When this option is set, the SCRIPTS used by the driver &n; *        are able to handle SCSI transfers with direction not &n; *        supplied by user.&n; *        (set for Linux-2.0.X)&n; *&n; *    SYM_OPT_HANDLE_DEVICE_QUEUEING&n; *        When this option is set, the driver will use a queue per &n; *        device and handle QUEUE FULL status requeuing internally.&n; *&n; *    SYM_OPT_SNIFF_INQUIRY&n; *        When this option is set, the driver sniff out successful &n; *        INQUIRY response and performs negotiations accordingly.&n; *        (set for Linux)&n; *&n; *    SYM_OPT_LIMIT_COMMAND_REORDERING&n; *        When this option is set, the driver tries to limit tagged &n; *        command reordering to some reasonnable value.&n; *        (set for Linux)&n; */
+multiline_comment|/*&n; *  Generic driver options.&n; *&n; *  They may be defined in platform specific headers, if they &n; *  are useful.&n; *&n; *    SYM_OPT_HANDLE_DIR_UNKNOWN&n; *        When this option is set, the SCRIPTS used by the driver &n; *        are able to handle SCSI transfers with direction not &n; *        supplied by user.&n; *        (set for Linux-2.0.X)&n; *&n; *    SYM_OPT_HANDLE_DEVICE_QUEUEING&n; *        When this option is set, the driver will use a queue per &n; *        device and handle QUEUE FULL status requeuing internally.&n; *&n; *    SYM_OPT_LIMIT_COMMAND_REORDERING&n; *        When this option is set, the driver tries to limit tagged &n; *        command reordering to some reasonnable value.&n; *        (set for Linux)&n; */
 macro_line|#if 0
 mdefine_line|#define SYM_OPT_HANDLE_DIR_UNKNOWN
 mdefine_line|#define SYM_OPT_HANDLE_DEVICE_QUEUEING
-mdefine_line|#define SYM_OPT_SNIFF_INQUIRY
 mdefine_line|#define SYM_OPT_LIMIT_COMMAND_REORDERING
 macro_line|#endif
 multiline_comment|/*&n; *  Active debugging tags and verbosity.&n; *  Both DEBUG_FLAGS and sym_verbose can be redefined &n; *  by the platform specific code to something else.&n; */
@@ -321,11 +320,6 @@ r_struct
 id|sym_trans
 id|goal
 suffix:semicolon
-DECL|member|user
-r_struct
-id|sym_trans
-id|user
-suffix:semicolon
 macro_line|#ifdef&t;SYM_OPT_ANNOUNCE_TRANSFER_RATE
 DECL|member|prev
 r_struct
@@ -472,38 +466,12 @@ DECL|member|usrtags
 id|u_short
 id|usrtags
 suffix:semicolon
-macro_line|#ifdef&t;SYM_OPT_SNIFF_INQUIRY
-multiline_comment|/*&n;&t; *  Some minimal information from INQUIRY response.&n;&t; */
-DECL|member|cmdq_map
-id|u32
-id|cmdq_map
-(braket
-(paren
-id|SYM_CONF_MAX_LUN
-op_plus
-l_int|31
-)paren
-op_div
-l_int|32
-)braket
+DECL|member|sdev
+r_struct
+id|scsi_device
+op_star
+id|sdev
 suffix:semicolon
-DECL|member|inq_version
-id|u_char
-id|inq_version
-suffix:semicolon
-DECL|member|inq_byte7
-id|u_char
-id|inq_byte7
-suffix:semicolon
-DECL|member|inq_byte56
-id|u_char
-id|inq_byte56
-suffix:semicolon
-DECL|member|inq_byte7_valid
-id|u_char
-id|inq_byte7_valid
-suffix:semicolon
-macro_line|#endif
 )brace
 suffix:semicolon
 multiline_comment|/*&n; *  Global LCB HEADER.&n; *&n; *  Due to lack of indirect addressing on earlier NCR chips,&n; *  this substructure is copied from the LCB to a global &n; *  address after selection.&n; *  For SYMBIOS chips that support LOAD/STORE this copy is &n; *  not needed and thus not performed.&n; */
@@ -2018,55 +1986,6 @@ id|np
 comma
 r_int
 id|target
-)paren
-suffix:semicolon
-macro_line|#endif
-multiline_comment|/*&n; *  Optionnaly, the driver may sniff inquiry data.&n; */
-macro_line|#ifdef&t;SYM_OPT_SNIFF_INQUIRY
-DECL|macro|INQ7_CMDQ
-mdefine_line|#define&t;INQ7_CMDQ&t;(0x02)
-DECL|macro|INQ7_SYNC
-mdefine_line|#define&t;INQ7_SYNC&t;(0x10)
-DECL|macro|INQ7_WIDE16
-mdefine_line|#define&t;INQ7_WIDE16&t;(0x20)
-DECL|macro|INQ56_CLOCKING
-mdefine_line|#define INQ56_CLOCKING&t;(3&lt;&lt;2)
-DECL|macro|INQ56_ST_ONLY
-mdefine_line|#define INQ56_ST_ONLY&t;(0&lt;&lt;2)
-DECL|macro|INQ56_DT_ONLY
-mdefine_line|#define INQ56_DT_ONLY&t;(1&lt;&lt;2)
-DECL|macro|INQ56_ST_DT
-mdefine_line|#define INQ56_ST_DT&t;(3&lt;&lt;2)
-r_void
-id|sym_update_trans_settings
-c_func
-(paren
-id|hcb_p
-id|np
-comma
-id|tcb_p
-id|tp
-)paren
-suffix:semicolon
-r_int
-id|__sym_sniff_inquiry
-c_func
-(paren
-id|hcb_p
-id|np
-comma
-id|u_char
-id|tn
-comma
-id|u_char
-id|ln
-comma
-id|u_char
-op_star
-id|inq_data
-comma
-r_int
-id|inq_len
 )paren
 suffix:semicolon
 macro_line|#endif
