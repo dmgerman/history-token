@@ -126,7 +126,6 @@ mdefine_line|#define PCIE_MODULE_NAME &quot;pciehp&quot;
 r_static
 r_int
 id|pcie_start_thread
-c_func
 (paren
 r_void
 )paren
@@ -619,7 +618,6 @@ suffix:semicolon
 id|result
 op_assign
 id|pci_hp_register
-c_func
 (paren
 id|new_slot-&gt;hotplug_slot
 )paren
@@ -705,7 +703,6 @@ DECL|function|cleanup_slots
 r_static
 r_int
 id|cleanup_slots
-c_func
 (paren
 r_struct
 id|controller
@@ -740,7 +737,6 @@ op_assign
 id|old_slot-&gt;next
 suffix:semicolon
 id|pci_hp_deregister
-c_func
 (paren
 id|old_slot-&gt;hotplug_slot
 )paren
@@ -1646,7 +1642,6 @@ id|ctrl-&gt;pci_bus
 )paren
 suffix:semicolon
 id|memcpy
-c_func
 (paren
 id|ctrl-&gt;pci_bus
 comma
@@ -1873,6 +1868,13 @@ id|ctrl-&gt;next_event
 op_assign
 l_int|0
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|pciehp_ctrl_list
+)paren
+(brace
 id|pciehp_ctrl_list
 op_assign
 id|ctrl
@@ -1881,6 +1883,19 @@ id|ctrl-&gt;next
 op_assign
 l_int|NULL
 suffix:semicolon
+)brace
+r_else
+(brace
+id|ctrl-&gt;next
+op_assign
+id|pciehp_ctrl_list
+suffix:semicolon
+id|pciehp_ctrl_list
+op_assign
+id|ctrl
+suffix:semicolon
+)brace
+multiline_comment|/* Wait for exclusive access to hardware */
 id|down
 c_func
 (paren
@@ -1927,12 +1942,14 @@ c_func
 id|t_slot
 )paren
 suffix:semicolon
+multiline_comment|/* Power off slot if not occupied*/
 r_if
 c_cond
 (paren
 id|rc
 )paren
 (brace
+multiline_comment|/* Done with exclusive hardware access */
 id|up
 c_func
 (paren
@@ -1947,12 +1964,12 @@ suffix:semicolon
 r_else
 multiline_comment|/* Wait for the command to complete */
 id|wait_for_ctrl_irq
-c_func
 (paren
 id|ctrl
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/* Done with exclusive hardware access */
 id|up
 c_func
 (paren
@@ -2007,7 +2024,6 @@ suffix:semicolon
 DECL|function|pcie_start_thread
 r_static
 r_int
-id|__init
 id|pcie_start_thread
 c_func
 (paren
@@ -2019,6 +2035,8 @@ id|loop
 suffix:semicolon
 r_int
 id|retval
+op_assign
+l_int|0
 suffix:semicolon
 id|dbg
 c_func
