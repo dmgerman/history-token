@@ -3751,6 +3751,11 @@ op_logical_neg
 id|ss_initialized
 )paren
 (brace
+id|avtab_cache_init
+c_func
+(paren
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
