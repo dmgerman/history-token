@@ -2,6 +2,8 @@ multiline_comment|/* orinoco.h&n; * &n; * Common definitions to all pieces of th
 macro_line|#ifndef _ORINOCO_H
 DECL|macro|_ORINOCO_H
 mdefine_line|#define _ORINOCO_H
+DECL|macro|DRIVER_VERSION
+mdefine_line|#define DRIVER_VERSION &quot;0.13e&quot;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;linux/netdevice.h&gt;

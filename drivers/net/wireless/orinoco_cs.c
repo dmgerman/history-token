@@ -1,4 +1,8 @@
 multiline_comment|/* orinoco_cs.c 0.13e&t;- (formerly known as dldwd_cs.c)&n; *&n; * A driver for &quot;Hermes&quot; chipset based PCMCIA wireless adaptors, such&n; * as the Lucent WavelanIEEE/Orinoco cards and their OEM (Cabletron/&n; * EnteraSys RoamAbout 802.11, ELSA Airlancer, Melco Buffalo and others).&n; * It should also be usable on various Prism II based cards such as the&n; * Linksys, D-Link and Farallon Skyline. It should also work on Symbol&n; * cards such as the 3Com AirConnect and Ericsson WLAN.&n; * &n; * Copyright notice &amp; release notes in file orinoco.c&n; */
+DECL|macro|DRIVER_NAME
+mdefine_line|#define DRIVER_NAME &quot;orinoco_cs&quot;
+DECL|macro|PFX
+mdefine_line|#define PFX DRIVER_NAME &quot;: &quot;
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#ifdef  __IN_PCMCIA_PACKAGE__
 macro_line|#include &lt;pcmcia/k_compat.h&gt;
@@ -110,7 +114,7 @@ r_static
 id|dev_info_t
 id|dev_info
 op_assign
-l_string|&quot;orinoco_cs&quot;
+id|DRIVER_NAME
 suffix:semicolon
 multiline_comment|/********************************************************************/
 multiline_comment|/* Data structures&t;&t;&t;&t;&t;&t;    */
@@ -632,7 +636,8 @@ c_func
 (paren
 l_int|0
 comma
-l_string|&quot;orinoco_cs: detach: link=%p link-&gt;dev=%p&bslash;n&quot;
+id|PFX
+l_string|&quot;detach: link=%p link-&gt;dev=%p&bslash;n&quot;
 comma
 id|link
 comma
@@ -650,7 +655,8 @@ c_func
 (paren
 l_int|0
 comma
-l_string|&quot;orinoco_cs: About to unregister net device %p&bslash;n&quot;
+id|PFX
+l_string|&quot;About to unregister net device %p&bslash;n&quot;
 comma
 id|dev
 )paren
@@ -1341,7 +1347,8 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;GetNextTuple().  No matching &quot;
+id|PFX
+l_string|&quot;GetNextTuple(): No matching &quot;
 l_string|&quot;CIS configuration, maybe you need the &quot;
 l_string|&quot;ignore_cis_vcc=1 parameter.&bslash;n&quot;
 )paren
@@ -1513,7 +1520,8 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;orinoco_cs: register_netdev() failed&bslash;n&quot;
+id|PFX
+l_string|&quot;register_netdev() failed&bslash;n&quot;
 )paren
 suffix:semicolon
 r_goto
@@ -2147,7 +2155,10 @@ id|version
 )braket
 id|__initdata
 op_assign
-l_string|&quot;orinoco_cs.c 0.13e (David Gibson &lt;hermes@gibson.dropbear.id.au&gt; and others)&quot;
+id|DRIVER_NAME
+l_string|&quot; &quot;
+id|DRIVER_VERSION
+l_string|&quot;(David Gibson &lt;hermes@gibson.dropbear.id.au&gt; and others)&quot;
 suffix:semicolon
 DECL|variable|orinoco_driver
 r_static
@@ -2168,7 +2179,7 @@ op_assign
 dot
 id|name
 op_assign
-l_string|&quot;orinoco_cs&quot;
+id|DRIVER_NAME
 comma
 )brace
 comma
@@ -2239,7 +2250,8 @@ c_func
 (paren
 l_int|0
 comma
-l_string|&quot;orinoco_cs: Removing leftover devices.&bslash;n&quot;
+id|PFX
+l_string|&quot;Removing leftover devices.&bslash;n&quot;
 )paren
 suffix:semicolon
 r_while
