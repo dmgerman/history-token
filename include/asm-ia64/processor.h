@@ -544,7 +544,7 @@ id|siginfo
 suffix:semicolon
 multiline_comment|/* current siginfo struct for ptrace() */
 DECL|member|last_fph_cpu
-id|__u64
+r_int
 id|last_fph_cpu
 suffix:semicolon
 multiline_comment|/* CPU that may hold the contents of f32-f127 */
