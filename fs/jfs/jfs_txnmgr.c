@@ -9686,7 +9686,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-macro_line|#if CONFIG_PROC_FS
+macro_line|#if defined(CONFIG_PROC_FS) &amp;&amp; defined(CONFIG_JFS_DEBUG)
 DECL|function|jfs_txanchor_read
 r_int
 id|jfs_txanchor_read

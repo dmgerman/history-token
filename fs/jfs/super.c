@@ -218,7 +218,7 @@ op_star
 id|dentry
 )paren
 suffix:semicolon
-macro_line|#if defined(CONFIG_JFS_DEBUG) &amp;&amp; defined(CONFIG_PROC_FS)
+macro_line|#ifdef PROC_FS_JFS /* see jfs_debug.h */
 r_extern
 r_void
 id|jfs_proc_init
@@ -1920,7 +1920,7 @@ id|jfsIOwait
 )paren
 suffix:semicolon
 multiline_comment|/* Wait until IO thread starts */
-macro_line|#if defined(CONFIG_JFS_DEBUG) &amp;&amp; defined(CONFIG_PROC_FS)
+macro_line|#ifdef PROC_FS_JFS
 id|jfs_proc_init
 c_func
 (paren
@@ -2083,7 +2083,7 @@ id|jfsIOwait
 )paren
 suffix:semicolon
 multiline_comment|/* Wait until Sync thread exits */
-macro_line|#if defined(CONFIG_JFS_DEBUG) &amp;&amp; defined(CONFIG_PROC_FS)
+macro_line|#ifdef PROC_FS_JFS
 id|jfs_proc_clean
 c_func
 (paren
