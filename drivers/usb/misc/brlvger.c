@@ -2301,7 +2301,7 @@ macro_line|#ifdef WRITE_DEBUG
 id|dbg3
 c_func
 (paren
-l_string|&quot;off: %d, rs: %d, count: %d, firstpart: %d&quot;
+l_string|&quot;off: %lld, rs: %d, count: %d, firstpart: %d&quot;
 comma
 id|off
 comma
@@ -2330,7 +2330,7 @@ macro_line|#ifdef WRITE_DEBUG
 id|dbg3
 c_func
 (paren
-l_string|&quot;off: %d&quot;
+l_string|&quot;off: %lld&quot;
 comma
 id|off
 )paren
@@ -2410,7 +2410,7 @@ macro_line|#ifdef WRITE_DEBUG
 id|dbg3
 c_func
 (paren
-l_string|&quot;off: %d, rs: %d, count: %d, firstpart: %d, &quot;
+l_string|&quot;off: %lld, rs: %d, count: %d, firstpart: %d, &quot;
 l_string|&quot;written: %d&quot;
 comma
 id|off
