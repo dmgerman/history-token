@@ -43,12 +43,6 @@ r_extern
 id|spinlock_t
 id|i8253_lock
 suffix:semicolon
-r_extern
-r_volatile
-r_int
-r_int
-id|jiffies
-suffix:semicolon
 DECL|variable|use_tsc
 r_static
 r_int
@@ -343,7 +337,10 @@ r_int
 r_int
 r_int
 )paren
-id|jiffies
+id|get_jiffies_64
+c_func
+(paren
+)paren
 op_star
 (paren
 l_int|1000000000
@@ -668,7 +665,7 @@ op_ge
 l_int|2
 )paren
 (brace
-id|jiffies
+id|jiffies_64
 op_add_assign
 id|lost
 op_minus
@@ -798,7 +795,7 @@ op_div
 id|HZ
 )paren
 )paren
-id|jiffies
+id|jiffies_64
 op_increment
 suffix:semicolon
 )brace
@@ -964,7 +961,7 @@ id|hpet_last
 op_div
 id|hpet_tick
 suffix:semicolon
-id|jiffies
+id|jiffies_64
 op_add_assign
 id|lost_ticks
 suffix:semicolon
