@@ -26,6 +26,7 @@ macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/scatterlist.h&gt;
 macro_line|#include &quot;../scsi/scsi.h&quot;
 macro_line|#include &quot;../scsi/hosts.h&quot;
+macro_line|#include &quot;csr1212.h&quot;
 macro_line|#include &quot;ieee1394.h&quot;
 macro_line|#include &quot;ieee1394_types.h&quot;
 macro_line|#include &quot;ieee1394_core.h&quot;
@@ -42,7 +43,7 @@ id|version
 )braket
 id|__devinitdata
 op_assign
-l_string|&quot;$Rev: 1096 $ Ben Collins &lt;bcollins@debian.org&gt;&quot;
+l_string|&quot;$Rev: 1118 $ Ben Collins &lt;bcollins@debian.org&gt;&quot;
 suffix:semicolon
 multiline_comment|/*&n; * Module load parameter definitions&n; */
 multiline_comment|/*&n; * Change max_speed on module load if you have a bad IEEE-1394&n; * controller that has trouble running 2KB packets at 400mb.&n; *&n; * NOTE: On certain OHCI parts I have seen short packets on async transmit&n; * (probably due to PCI latency/throughput issues with the part). You can&n; * bump down the speed if you are running into problems.&n; */
@@ -5350,6 +5351,16 @@ id|ud
 )paren
 (brace
 r_struct
+id|csr1212_keyval
+op_star
+id|kv
+suffix:semicolon
+r_struct
+id|csr1212_dentry
+op_star
+id|dentry
+suffix:semicolon
+r_struct
 id|scsi_id_instance_data
 op_star
 id|scsi_id
@@ -5403,51 +5414,42 @@ op_assign
 l_int|0x0
 suffix:semicolon
 multiline_comment|/* Handle different fields in the unit directory, based on keys */
-r_for
-c_loop
+id|csr1212_for_each_dir_entry
+c_func
 (paren
-id|i
-op_assign
-l_int|0
-suffix:semicolon
-id|i
-OL
-id|ud-&gt;length
-suffix:semicolon
-id|i
-op_increment
+id|ud-&gt;ne-&gt;csr
+comma
+id|kv
+comma
+id|ud-&gt;ud_kv
+comma
+id|dentry
 )paren
 (brace
 r_switch
 c_cond
 (paren
-id|CONFIG_ROM_KEY
-c_func
-(paren
-id|ud-&gt;quadlets
-(braket
-id|i
-)braket
-)paren
+id|kv-&gt;key.id
 )paren
 (brace
 r_case
-id|SBP2_CSR_OFFSET_KEY
+id|CSR1212_KV_ID_DEPENDENT_INFO
 suffix:colon
+r_if
+c_cond
+(paren
+id|kv-&gt;key.type
+op_eq
+id|CSR1212_KV_TYPE_CSR_OFFSET
+)paren
+(brace
 multiline_comment|/* Save off the management agent address */
 id|management_agent_addr
 op_assign
-id|CSR_REGISTER_BASE
+id|CSR1212_REGISTER_SPACE_BASE
 op_plus
 (paren
-id|CONFIG_ROM_VALUE
-c_func
-(paren
-id|ud-&gt;quadlets
-(braket
-id|i
-)braket
-)paren
+id|kv-&gt;value.csr_offset
 op_lshift
 l_int|2
 )paren
@@ -5464,99 +5466,10 @@ r_int
 id|management_agent_addr
 )paren
 suffix:semicolon
-r_break
-suffix:semicolon
-r_case
-id|SBP2_COMMAND_SET_SPEC_ID_KEY
-suffix:colon
-multiline_comment|/* Command spec organization */
-id|command_set_spec_id
-op_assign
-id|CONFIG_ROM_VALUE
-c_func
-(paren
-id|ud-&gt;quadlets
-(braket
-id|i
-)braket
-)paren
-suffix:semicolon
-id|SBP2_DEBUG
-c_func
-(paren
-l_string|&quot;sbp2_command_set_spec_id = %x&quot;
-comma
-(paren
-r_int
-r_int
-)paren
-id|command_set_spec_id
-)paren
-suffix:semicolon
-r_break
-suffix:semicolon
-r_case
-id|SBP2_COMMAND_SET_KEY
-suffix:colon
-multiline_comment|/* Command set used by sbp2 device */
-id|command_set
-op_assign
-id|CONFIG_ROM_VALUE
-c_func
-(paren
-id|ud-&gt;quadlets
-(braket
-id|i
-)braket
-)paren
-suffix:semicolon
-id|SBP2_DEBUG
-c_func
-(paren
-l_string|&quot;sbp2_command_set = %x&quot;
-comma
-(paren
-r_int
-r_int
-)paren
-id|command_set
-)paren
-suffix:semicolon
-r_break
-suffix:semicolon
-r_case
-id|SBP2_UNIT_CHARACTERISTICS_KEY
-suffix:colon
-multiline_comment|/*&n;&t;&t;&t; * Unit characterisitcs (orb related stuff&n;&t;&t;&t; * that I&squot;m not yet paying attention to)&n;&t;&t;&t; */
-id|unit_characteristics
-op_assign
-id|CONFIG_ROM_VALUE
-c_func
-(paren
-id|ud-&gt;quadlets
-(braket
-id|i
-)braket
-)paren
-suffix:semicolon
-id|SBP2_DEBUG
-c_func
-(paren
-l_string|&quot;sbp2_unit_characteristics = %x&quot;
-comma
-(paren
-r_int
-r_int
-)paren
-id|unit_characteristics
-)paren
-suffix:semicolon
-r_break
-suffix:semicolon
-r_case
-id|SBP2_DEVICE_TYPE_AND_LUN_KEY
-suffix:colon
-multiline_comment|/*&n;&t;&t;&t; * Device type and lun (used for&n;&t;&t;&t; * detemining type of sbp2 device)&n;&t;&t;&t; */
+)brace
+r_else
+(brace
+multiline_comment|/*&n;&t;&t;&t;&t; * Device type and lun (used for&n;&t;&t;&t;&t; * detemining type of sbp2 device)&n;&t;&t;&t;&t; */
 id|scsi_id
 op_assign
 id|kmalloc
@@ -5603,14 +5516,7 @@ id|scsi_id
 suffix:semicolon
 id|scsi_id-&gt;sbp2_device_type_and_lun
 op_assign
-id|CONFIG_ROM_VALUE
-c_func
-(paren
-id|ud-&gt;quadlets
-(braket
-id|i
-)braket
-)paren
+id|kv-&gt;value.immediate
 suffix:semicolon
 id|SBP2_DEBUG
 c_func
@@ -5634,6 +5540,73 @@ op_amp
 id|scsi_group-&gt;scsi_id_list
 )paren
 suffix:semicolon
+)brace
+r_break
+suffix:semicolon
+r_case
+id|SBP2_COMMAND_SET_SPEC_ID_KEY
+suffix:colon
+multiline_comment|/* Command spec organization */
+id|command_set_spec_id
+op_assign
+id|kv-&gt;value.immediate
+suffix:semicolon
+id|SBP2_DEBUG
+c_func
+(paren
+l_string|&quot;sbp2_command_set_spec_id = %x&quot;
+comma
+(paren
+r_int
+r_int
+)paren
+id|command_set_spec_id
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+id|SBP2_COMMAND_SET_KEY
+suffix:colon
+multiline_comment|/* Command set used by sbp2 device */
+id|command_set
+op_assign
+id|kv-&gt;value.immediate
+suffix:semicolon
+id|SBP2_DEBUG
+c_func
+(paren
+l_string|&quot;sbp2_command_set = %x&quot;
+comma
+(paren
+r_int
+r_int
+)paren
+id|command_set
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+id|SBP2_UNIT_CHARACTERISTICS_KEY
+suffix:colon
+multiline_comment|/*&n;&t;&t;&t; * Unit characterisitcs (orb related stuff&n;&t;&t;&t; * that I&squot;m not yet paying attention to)&n;&t;&t;&t; */
+id|unit_characteristics
+op_assign
+id|kv-&gt;value.immediate
+suffix:semicolon
+id|SBP2_DEBUG
+c_func
+(paren
+l_string|&quot;sbp2_unit_characteristics = %x&quot;
+comma
+(paren
+r_int
+r_int
+)paren
+id|unit_characteristics
+)paren
+suffix:semicolon
 r_break
 suffix:semicolon
 r_case
@@ -5642,14 +5615,7 @@ suffix:colon
 multiline_comment|/* Firmware revision */
 id|firmware_revision
 op_assign
-id|CONFIG_ROM_VALUE
-c_func
-(paren
-id|ud-&gt;quadlets
-(braket
-id|i
-)braket
-)paren
+id|kv-&gt;value.immediate
 suffix:semicolon
 r_if
 c_cond
@@ -6046,22 +6012,7 @@ comma
 id|u8
 )paren
 (paren
-(paren
-(paren
-id|be32_to_cpu
-c_func
-(paren
-id|hi-&gt;host-&gt;csr.rom
-(braket
-l_int|2
-)braket
-)paren
-op_rshift
-l_int|12
-)paren
-op_amp
-l_int|0xf
-)paren
+id|hi-&gt;host-&gt;csr.max_rec
 op_minus
 l_int|1
 )paren

@@ -6,10 +6,8 @@ macro_line|#include &quot;ieee1394.h&quot;
 multiline_comment|/* Register for incoming packets. This is 4096 bytes, which supports up to&n; * S3200 (per Table 16-3 of IEEE 1394b-2002). */
 DECL|macro|ETHER1394_REGION_ADDR_LEN
 mdefine_line|#define ETHER1394_REGION_ADDR_LEN&t;4096
-DECL|macro|ETHER1394_REGION_ADDR
-mdefine_line|#define ETHER1394_REGION_ADDR&t;&t;0xfffff0200000ULL
-DECL|macro|ETHER1394_REGION_ADDR_END
-mdefine_line|#define ETHER1394_REGION_ADDR_END&t;(ETHER1394_REGION_ADDR + ETHER1394_REGION_ADDR_LEN)
+DECL|macro|ETHER1394_INVALID_ADDR
+mdefine_line|#define ETHER1394_INVALID_ADDR&t;&t;~0ULL
 multiline_comment|/* GASP identifier numbers for IPv4 over IEEE 1394 */
 DECL|macro|ETHER1394_GASP_SPECIFIER_ID
 mdefine_line|#define ETHER1394_GASP_SPECIFIER_ID&t;0x00005E
@@ -21,44 +19,23 @@ DECL|macro|ETHER1394_GASP_VERSION
 mdefine_line|#define ETHER1394_GASP_VERSION&t;&t;1
 DECL|macro|ETHER1394_GASP_OVERHEAD
 mdefine_line|#define ETHER1394_GASP_OVERHEAD (2 * sizeof(quadlet_t))  /* GASP header overhead */
+DECL|macro|ETHER1394_GASP_BUFFERS
+mdefine_line|#define ETHER1394_GASP_BUFFERS 16
 multiline_comment|/* Node set == 64 */
 DECL|macro|NODE_SET
 mdefine_line|#define NODE_SET&t;&t;&t;(ALL_NODES + 1)
 DECL|enum|eth1394_bc_states
-DECL|enumerator|ETHER1394_BC_CLOSED
-DECL|enumerator|ETHER1394_BC_OPENED
+DECL|enumerator|ETHER1394_BC_ERROR
 r_enum
 id|eth1394_bc_states
 (brace
-id|ETHER1394_BC_CLOSED
+id|ETHER1394_BC_ERROR
 comma
-id|ETHER1394_BC_OPENED
+DECL|enumerator|ETHER1394_BC_RUNNING
+id|ETHER1394_BC_RUNNING
 comma
-DECL|enumerator|ETHER1394_BC_CHECK
-id|ETHER1394_BC_CHECK
-)brace
-suffix:semicolon
-DECL|struct|pdg_list
-r_struct
-id|pdg_list
-(brace
-DECL|member|list
-r_struct
-id|list_head
-id|list
-suffix:semicolon
-multiline_comment|/* partial datagram list per node */
-DECL|member|sz
-r_int
-r_int
-id|sz
-suffix:semicolon
-multiline_comment|/* partial datagram list size per node&t;*/
-DECL|member|lock
-id|spinlock_t
-id|lock
-suffix:semicolon
-multiline_comment|/* partial datagram lock&t;&t;*/
+DECL|enumerator|ETHER1394_BC_STOPPED
+id|ETHER1394_BC_STOPPED
 )brace
 suffix:semicolon
 multiline_comment|/* Private structure for our ethernet driver */
@@ -79,39 +56,21 @@ op_star
 id|host
 suffix:semicolon
 multiline_comment|/* The card for this dev&t; */
-DECL|member|maxpayload
+DECL|member|bc_maxpayload
 id|u16
-id|maxpayload
-(braket
-id|NODE_SET
-)braket
+id|bc_maxpayload
 suffix:semicolon
-multiline_comment|/* Max payload per node&t;&t; */
-DECL|member|sspd
-r_int
-r_char
-id|sspd
-(braket
-id|NODE_SET
-)braket
+multiline_comment|/* Max broadcast payload&t; */
+DECL|member|bc_sspd
+id|u8
+id|bc_sspd
 suffix:semicolon
-multiline_comment|/* Max speed per node&t;&t; */
-DECL|member|fifo
+multiline_comment|/* Max broadcast speed&t;&t; */
+DECL|member|local_fifo
 id|u64
-id|fifo
-(braket
-id|ALL_NODES
-)braket
+id|local_fifo
 suffix:semicolon
-multiline_comment|/* FIFO offset per node&t;&t; */
-DECL|member|eui
-id|u64
-id|eui
-(braket
-id|ALL_NODES
-)braket
-suffix:semicolon
-multiline_comment|/* EUI-64 per node&t;&t; */
+multiline_comment|/* Local FIFO Address&t;&t; */
 DECL|member|lock
 id|spinlock_t
 id|lock
@@ -135,41 +94,27 @@ op_star
 id|iso
 suffix:semicolon
 multiline_comment|/* Async stream recv handle&t; */
-DECL|member|pdg
+DECL|member|bc_dgl
+r_int
+id|bc_dgl
+suffix:semicolon
+multiline_comment|/* Outgoing broadcast datagram label */
+DECL|member|ip_node_list
 r_struct
-id|pdg_list
-id|pdg
+id|list_head
+id|ip_node_list
+suffix:semicolon
+multiline_comment|/* List of IP capable nodes&t; */
+DECL|member|ud_list
+r_struct
+id|unit_directory
+op_star
+id|ud_list
 (braket
 id|ALL_NODES
 )braket
 suffix:semicolon
-multiline_comment|/* partial RX datagram lists     */
-DECL|member|dgl
-r_int
-id|dgl
-(braket
-id|NODE_SET
-)braket
-suffix:semicolon
-multiline_comment|/* Outgoing datagram label per node */
-)brace
-suffix:semicolon
-DECL|struct|host_info
-r_struct
-id|host_info
-(brace
-DECL|member|host
-r_struct
-id|hpsb_host
-op_star
-id|host
-suffix:semicolon
-DECL|member|dev
-r_struct
-id|net_device
-op_star
-id|dev
-suffix:semicolon
+multiline_comment|/* Cached unit dir list */
 )brace
 suffix:semicolon
 multiline_comment|/* Define a fake hardware header format for the networking core.  Note that&n; * header size cannot exceed 16 bytes as that is the size of the header cache.&n; * Also, we do not need the source address in the header so we omit it and&n; * keep the header to under 16 bytes */
