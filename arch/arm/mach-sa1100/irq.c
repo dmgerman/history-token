@@ -83,6 +83,9 @@ id|regs
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/*&n; * To get the GPIO number from an IRQ number&n; */
+DECL|macro|GPIO_11_27_IRQ
+mdefine_line|#define GPIO_11_27_IRQ(i)&t;((i) - 21)
 DECL|macro|GPIO11_27_MASK
 mdefine_line|#define GPIO11_27_MASK(irq)&t;(1 &lt;&lt; GPIO_11_27_IRQ(irq))
 DECL|function|sa1100_gpio_type
@@ -103,15 +106,6 @@ id|type
 r_int
 r_int
 id|mask
-suffix:semicolon
-id|printk
-c_func
-(paren
-id|KERN_DEBUG
-l_string|&quot;IRQ%d: &quot;
-comma
-id|irq
-)paren
 suffix:semicolon
 r_if
 c_cond
@@ -143,12 +137,6 @@ op_amp
 id|__IRQT_RISEDGE
 )paren
 (brace
-id|printk
-c_func
-(paren
-l_string|&quot;rising &quot;
-)paren
-suffix:semicolon
 id|GPIO_IRQ_rising_edge
 op_or_assign
 id|mask
@@ -168,12 +156,6 @@ op_amp
 id|__IRQT_FALEDGE
 )paren
 (brace
-id|printk
-c_func
-(paren
-l_string|&quot;falling &quot;
-)paren
-suffix:semicolon
 id|GPIO_IRQ_falling_edge
 op_or_assign
 id|mask
@@ -184,12 +166,6 @@ id|GPIO_IRQ_falling_edge
 op_and_assign
 op_complement
 id|mask
-suffix:semicolon
-id|printk
-c_func
-(paren
-l_string|&quot;edges&bslash;n&quot;
-)paren
 suffix:semicolon
 id|GRER
 op_assign
