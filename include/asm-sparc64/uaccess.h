@@ -228,6 +228,19 @@ DECL|macro|copy_to_user
 mdefine_line|#define copy_to_user __copy_to_user
 DECL|macro|copy_in_user
 mdefine_line|#define copy_in_user __copy_in_user
+r_extern
+r_int
+r_int
+id|__bzero_noasi
+c_func
+(paren
+r_void
+op_star
+comma
+r_int
+r_int
+)paren
+suffix:semicolon
 DECL|function|__clear_user
 r_static
 r_inline
@@ -246,21 +259,6 @@ r_int
 id|size
 )paren
 (brace
-r_extern
-r_int
-r_int
-id|__bzero_noasi
-c_func
-(paren
-r_void
-op_star
-id|addr
-comma
-r_int
-r_int
-id|size
-)paren
-suffix:semicolon
 r_return
 id|__bzero_noasi
 c_func
