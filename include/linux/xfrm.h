@@ -93,7 +93,7 @@ suffix:semicolon
 )brace
 suffix:semicolon
 DECL|macro|XFRM_INF
-mdefine_line|#define XFRM_INF (~(u64)0)
+mdefine_line|#define XFRM_INF (~(__u64)0)
 DECL|struct|xfrm_lifetime_cfg
 r_struct
 id|xfrm_lifetime_cfg
