@@ -432,20 +432,6 @@ op_star
 id|nls_tab
 suffix:semicolon
 multiline_comment|/* 4: current codepage&t;&t;*/
-DECL|member|direct_inode
-r_struct
-id|inode
-op_star
-id|direct_inode
-suffix:semicolon
-multiline_comment|/* 4: inode for physical I/O&t;*/
-DECL|member|direct_mapping
-r_struct
-id|address_space
-op_star
-id|direct_mapping
-suffix:semicolon
-multiline_comment|/* 4: mapping for physical I/O */
 DECL|member|state
 id|uint
 id|state
