@@ -1803,8 +1803,8 @@ suffix:semicolon
 )brace
 DECL|function|pci_read_config_word
 r_static
-r_int
 r_inline
+r_int
 id|pci_read_config_word
 c_func
 (paren
@@ -1836,8 +1836,8 @@ suffix:semicolon
 )brace
 DECL|function|pci_read_config_dword
 r_static
-r_int
 r_inline
+r_int
 id|pci_read_config_dword
 c_func
 (paren
@@ -1869,8 +1869,8 @@ suffix:semicolon
 )brace
 DECL|function|pci_write_config_byte
 r_static
-r_int
 r_inline
+r_int
 id|pci_write_config_byte
 c_func
 (paren
@@ -1901,8 +1901,8 @@ suffix:semicolon
 )brace
 DECL|function|pci_write_config_word
 r_static
-r_int
 r_inline
+r_int
 id|pci_write_config_word
 c_func
 (paren
@@ -1933,8 +1933,8 @@ suffix:semicolon
 )brace
 DECL|function|pci_write_config_dword
 r_static
-r_int
 r_inline
+r_int
 id|pci_write_config_dword
 c_func
 (paren

@@ -1026,8 +1026,8 @@ suffix:semicolon
 multiline_comment|/*&n; * Update disk head position estimator based on IRQ completion info.&n; */
 DECL|function|update_head_pos
 r_static
-r_void
 r_inline
+r_void
 id|update_head_pos
 c_func
 (paren

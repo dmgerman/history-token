@@ -39,8 +39,8 @@ id|befs_btree_node
 suffix:semicolon
 multiline_comment|/* local constants */
 DECL|variable|befs_bt_inval
-r_const
 r_static
+r_const
 id|befs_off_t
 id|befs_bt_inval
 op_assign

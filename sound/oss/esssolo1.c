@@ -566,8 +566,8 @@ suffix:semicolon
 )brace
 DECL|function|reset_ctrl
 r_static
-r_int
 r_inline
+r_int
 id|reset_ctrl
 c_func
 (paren

@@ -3164,8 +3164,8 @@ DECL|macro|FLUSH_ALL
 mdefine_line|#define FLUSH_ALL&t;0xffffffff
 multiline_comment|/*&n; * We cannot call mmdrop() because we are in interrupt context, &n; * instead update mm-&gt;cpu_vm_mask.&n; *&n; * We need to reload %cr3 since the page tables may be going&n; * away from under us..&n; */
 r_static
-r_void
 r_inline
+r_void
 DECL|function|leave_mm
 id|leave_mm
 (paren

@@ -462,8 +462,8 @@ macro_line|#endif /* CONFIG_X86_MCE_P4THERMAL */
 multiline_comment|/* P4/Xeon Extended MCE MSR retrieval, return 0 if unsupported */
 DECL|function|intel_get_extended_msrs
 r_static
-r_int
 r_inline
+r_int
 id|intel_get_extended_msrs
 c_func
 (paren

@@ -191,8 +191,8 @@ suffix:semicolon
 )brace
 DECL|function|frob_set_mode
 r_static
-r_void
 id|__inline__
+r_void
 id|frob_set_mode
 (paren
 r_struct

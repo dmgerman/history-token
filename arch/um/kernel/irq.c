@@ -648,8 +648,8 @@ suffix:semicolon
 multiline_comment|/*&n; * Generic enable/disable code: this just calls&n; * down into the PIC-specific version for the actual&n; * hardware disable after having gotten the irq&n; * controller lock. &n; */
 multiline_comment|/**&n; *&t;disable_irq_nosync - disable an irq without waiting&n; *&t;@irq: Interrupt to disable&n; *&n; *&t;Disable the selected interrupt line. Disables of an interrupt&n; *&t;stack. Unlike disable_irq(), this function does not ensure existing&n; *&t;instances of the IRQ handler have completed before returning.&n; *&n; *&t;This function may be called from IRQ context.&n; */
 DECL|function|disable_irq_nosync
-r_void
 r_inline
+r_void
 id|disable_irq_nosync
 c_func
 (paren

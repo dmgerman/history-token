@@ -2390,8 +2390,8 @@ suffix:semicolon
 )brace
 DECL|function|new_hashed_relocation
 r_static
-r_void
 r_inline
+r_void
 id|new_hashed_relocation
 (paren
 id|reiserfs_blocknr_hint_t
@@ -2508,8 +2508,8 @@ suffix:semicolon
 )brace
 DECL|function|get_left_neighbor
 r_static
-r_void
 r_inline
+r_void
 id|get_left_neighbor
 c_func
 (paren
@@ -2667,8 +2667,8 @@ suffix:semicolon
 multiline_comment|/* should be, if formatted node, then try to put on first part of the device&n;   specified as number of percent with mount option device, else try to put&n;   on last of device.  This is not to say it is good code to do so,&n;   but the effect should be measured.  */
 DECL|function|set_border_in_hint
 r_static
-r_void
 r_inline
+r_void
 id|set_border_in_hint
 c_func
 (paren
@@ -2718,8 +2718,8 @@ suffix:semicolon
 )brace
 DECL|function|displace_large_file
 r_static
-r_void
 r_inline
+r_void
 id|displace_large_file
 c_func
 (paren
@@ -2805,8 +2805,8 @@ suffix:semicolon
 )brace
 DECL|function|hash_formatted_node
 r_static
-r_void
 r_inline
+r_void
 id|hash_formatted_node
 c_func
 (paren
@@ -2902,8 +2902,8 @@ suffix:semicolon
 )brace
 DECL|function|this_blocknr_allocation_would_make_it_a_large_file
 r_static
-r_int
 r_inline
+r_int
 id|this_blocknr_allocation_would_make_it_a_large_file
 c_func
 (paren
@@ -2927,8 +2927,8 @@ suffix:semicolon
 macro_line|#ifdef DISPLACE_NEW_PACKING_LOCALITIES
 DECL|function|displace_new_packing_locality
 r_static
-r_void
 r_inline
+r_void
 id|displace_new_packing_locality
 (paren
 id|reiserfs_blocknr_hint_t
@@ -2977,8 +2977,8 @@ suffix:semicolon
 macro_line|#endif
 DECL|function|old_hashed_relocation
 r_static
-r_int
 r_inline
+r_int
 id|old_hashed_relocation
 (paren
 id|reiserfs_blocknr_hint_t
@@ -3074,8 +3074,8 @@ suffix:semicolon
 )brace
 DECL|function|old_way
 r_static
-r_int
 r_inline
+r_int
 id|old_way
 (paren
 id|reiserfs_blocknr_hint_t
@@ -3140,8 +3140,8 @@ suffix:semicolon
 )brace
 DECL|function|hundredth_slices
 r_static
-r_void
 r_inline
+r_void
 id|hundredth_slices
 (paren
 id|reiserfs_blocknr_hint_t
@@ -3214,8 +3214,8 @@ suffix:semicolon
 )brace
 DECL|function|determine_search_start
 r_static
-r_void
 r_inline
+r_void
 id|determine_search_start
 c_func
 (paren

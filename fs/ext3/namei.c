@@ -3431,8 +3431,8 @@ suffix:semicolon
 multiline_comment|/*&n; * Returns 0 if not found, -1 on failure, and 1 on success&n; */
 DECL|function|search_dirblock
 r_static
-r_int
 r_inline
+r_int
 id|search_dirblock
 c_func
 (paren

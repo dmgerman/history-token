@@ -6904,8 +6904,8 @@ suffix:semicolon
 )brace
 multiline_comment|/**&n; * e100_tx_skb_free - free TX skbs resources&n; * @bdp: atapter&squot;s private data struct&n; * @tcb: associated tcb of the freed skb&n; *&n; * This routine frees resources of TX skbs.&n; */
 r_static
-r_void
 r_inline
+r_void
 DECL|function|e100_tx_skb_free
 id|e100_tx_skb_free
 c_func

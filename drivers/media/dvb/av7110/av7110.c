@@ -12714,8 +12714,8 @@ id|mode
 suffix:semicolon
 )brace
 r_static
-r_int
 r_inline
+r_int
 DECL|function|vidcom
 id|vidcom
 c_func
@@ -12770,8 +12770,8 @@ l_int|0xffff
 suffix:semicolon
 )brace
 r_static
-r_int
 r_inline
+r_int
 DECL|function|audcom
 id|audcom
 c_func

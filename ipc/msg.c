@@ -2574,8 +2574,8 @@ suffix:semicolon
 )brace
 DECL|function|pipelined_send
 r_static
-r_int
 r_inline
+r_int
 id|pipelined_send
 c_func
 (paren
@@ -3109,8 +3109,8 @@ suffix:semicolon
 )brace
 DECL|function|convert_mode
 r_static
-r_int
 r_inline
+r_int
 id|convert_mode
 c_func
 (paren

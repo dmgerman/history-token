@@ -4687,8 +4687,8 @@ mdefine_line|#define CHAR(id,a) (0x40 + (((id)&gt;&gt;a) &amp; 31))
 singleline_comment|//
 DECL|function|pnpid32_to_pnpid
 r_static
-r_void
 r_inline
+r_void
 id|pnpid32_to_pnpid
 c_func
 (paren
@@ -6715,8 +6715,8 @@ comma
 suffix:semicolon
 DECL|function|insert_device
 r_static
-r_int
 r_inline
+r_int
 id|insert_device
 c_func
 (paren
