@@ -615,6 +615,12 @@ id|EAGAIN
 )paren
 )paren
 (brace
+id|set_current_state
+c_func
+(paren
+id|TASK_INTERRUPTIBLE
+)paren
+suffix:semicolon
 id|schedule_timeout
 c_func
 (paren
@@ -1033,6 +1039,44 @@ op_star
 id|HZ
 suffix:semicolon
 multiline_comment|/* wait for 15 seconds or until woken up due to response arriving or &n;&t;   due to last connection to this server being unmounted */
+r_if
+c_cond
+(paren
+id|signal_pending
+c_func
+(paren
+id|current
+)paren
+)paren
+(brace
+multiline_comment|/* if signal pending do not hold up user for full smb timeout&n;&t;&t;but we still give response a change to complete */
+r_if
+c_cond
+(paren
+id|midQ-&gt;midState
+op_amp
+id|MID_REQUEST_SUBMITTED
+)paren
+(brace
+id|set_current_state
+c_func
+(paren
+id|TASK_UNINTERRUPTIBLE
+)paren
+suffix:semicolon
+id|timeout
+op_assign
+id|schedule_timeout
+c_func
+(paren
+id|HZ
+)paren
+suffix:semicolon
+)brace
+)brace
+r_else
+(brace
+multiline_comment|/* use normal timeout */
 id|timeout
 op_assign
 id|wait_event_interruptible_timeout
@@ -1063,6 +1107,7 @@ comma
 id|timeout
 )paren
 suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
@@ -1073,16 +1118,6 @@ id|current
 )paren
 )paren
 (brace
-id|cFYI
-c_func
-(paren
-l_int|1
-comma
-(paren
-l_string|&quot;CIFS: caught signal&quot;
-)paren
-)paren
-suffix:semicolon
 id|DeleteMidQEntry
 c_func
 (paren
@@ -1093,6 +1128,7 @@ r_return
 op_minus
 id|EINTR
 suffix:semicolon
+multiline_comment|/* BB are we supposed to return -ERESTARTSYS ? */
 )brace
 r_else
 (brace

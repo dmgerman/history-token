@@ -3972,6 +3972,16 @@ c_cond
 id|rc
 )paren
 (brace
+r_if
+c_cond
+(paren
+id|rc
+op_ne
+op_minus
+id|EINTR
+)paren
+(brace
+multiline_comment|/* EINTR is expected when user ctl-c to kill app */
 id|cERROR
 c_func
 (paren
@@ -3984,6 +3994,7 @@ id|rc
 )paren
 )paren
 suffix:semicolon
+)brace
 )brace
 r_if
 c_cond

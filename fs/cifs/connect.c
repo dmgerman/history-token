@@ -897,6 +897,12 @@ id|EAGAIN
 )paren
 )paren
 (brace
+id|set_current_state
+c_func
+(paren
+id|TASK_INTERRUPTIBLE
+)paren
+suffix:semicolon
 id|schedule_timeout
 c_func
 (paren
@@ -1183,6 +1189,12 @@ suffix:semicolon
 r_else
 (brace
 multiline_comment|/* give server a second to&n;&t;&t;&t;&t;&t;clean up before reconnect attempt */
+id|set_current_state
+c_func
+(paren
+id|TASK_INTERRUPTIBLE
+)paren
+suffix:semicolon
 id|schedule_timeout
 c_func
 (paren

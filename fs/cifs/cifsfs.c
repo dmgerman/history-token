@@ -2593,6 +2593,12 @@ op_amp
 id|GlobalMid_Lock
 )paren
 suffix:semicolon
+id|set_current_state
+c_func
+(paren
+id|TASK_INTERRUPTIBLE
+)paren
+suffix:semicolon
 id|schedule_timeout
 c_func
 (paren
