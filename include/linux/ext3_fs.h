@@ -1845,15 +1845,6 @@ op_star
 suffix:semicolon
 r_extern
 r_void
-id|ext3_put_inode
-(paren
-r_struct
-id|inode
-op_star
-)paren
-suffix:semicolon
-r_extern
-r_void
 id|ext3_delete_inode
 (paren
 r_struct
