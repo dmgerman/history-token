@@ -156,9 +156,11 @@ id|address_space_operations
 id|coda_symlink_aops
 op_assign
 (brace
+dot
 id|readpage
-suffix:colon
+op_assign
 id|coda_symlink_filler
+comma
 )brace
 suffix:semicolon
 eof

@@ -16,22 +16,10 @@ c_func
 r_void
 )paren
 suffix:semicolon
-r_void
-id|coda_upcall_stats
-c_func
-(paren
-r_int
-id|opcode
-comma
-r_int
-r_int
-id|jiffies
-)paren
-suffix:semicolon
 macro_line|#include &lt;linux/sysctl.h&gt;
 macro_line|#include &lt;linux/coda_fs_i.h&gt;
 macro_line|#include &lt;linux/coda.h&gt;
-multiline_comment|/* these four files are presented to show the result of the statistics:&n; *&n; *&t;/proc/fs/coda/vfs_stats&n; *&t;&t;      upcall_stats&n; *&t;&t;      cache_inv_stats&n; *&n; * these four files are presented to reset the statistics to 0:&n; *&n; *&t;/proc/sys/coda/vfs_stats&n; *&t;&t;       upcall_stats&n; *&t;&t;       cache_inv_stats&n; */
+multiline_comment|/* these four files are presented to show the result of the statistics:&n; *&n; *&t;/proc/fs/coda/vfs_stats&n; *&t;&t;      cache_inv_stats&n; *&n; * these four files are presented to reset the statistics to 0:&n; *&n; *&t;/proc/sys/coda/vfs_stats&n; *&t;&t;       cache_inv_stats&n; */
 multiline_comment|/* VFS operation statistics */
 DECL|struct|coda_vfs_stats
 r_struct
@@ -107,26 +95,6 @@ id|readlink
 suffix:semicolon
 )brace
 suffix:semicolon
-DECL|struct|coda_upcall_stats_entry
-r_struct
-id|coda_upcall_stats_entry
-(brace
-DECL|member|count
-r_int
-id|count
-suffix:semicolon
-DECL|member|time_sum
-r_int
-r_int
-id|time_sum
-suffix:semicolon
-DECL|member|time_squared_sum
-r_int
-r_int
-id|time_squared_sum
-suffix:semicolon
-)brace
-suffix:semicolon
 multiline_comment|/* cache invalidation statistics */
 DECL|struct|coda_cache_inv_stats
 r_struct
@@ -173,20 +141,9 @@ r_struct
 id|coda_cache_inv_stats
 id|coda_cache_inv_stat
 suffix:semicolon
-r_extern
-r_int
-id|coda_upcall_timestamping
-suffix:semicolon
 multiline_comment|/* reset statistics to 0 */
 r_void
 id|reset_coda_vfs_stats
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-r_void
-id|reset_coda_upcall_stats
 c_func
 (paren
 r_void
@@ -199,74 +156,9 @@ c_func
 r_void
 )paren
 suffix:semicolon
-multiline_comment|/* some utitlities to make it easier for you to do statistics for time */
-r_void
-id|do_time_stats
-c_func
-(paren
-r_struct
-id|coda_upcall_stats_entry
-op_star
-id|pentry
-comma
-r_int
-r_int
-id|jiffy
-)paren
-suffix:semicolon
-multiline_comment|/*&n;double get_time_average( const struct coda_upcall_stats_entry * pentry );&n;double get_time_std_deviation( const struct coda_upcall_stats_entry * pentry );&n;*/
-r_int
-r_int
-id|get_time_average
-c_func
-(paren
-r_const
-r_struct
-id|coda_upcall_stats_entry
-op_star
-id|pentry
-)paren
-suffix:semicolon
-r_int
-r_int
-id|get_time_std_deviation
-c_func
-(paren
-r_const
-r_struct
-id|coda_upcall_stats_entry
-op_star
-id|pentry
-)paren
-suffix:semicolon
 multiline_comment|/* like coda_dointvec, these functions are to be registered in the ctl_table&n; * data structure for /proc/sys/... files &n; */
 r_int
 id|do_reset_coda_vfs_stats
-c_func
-(paren
-id|ctl_table
-op_star
-id|table
-comma
-r_int
-id|write
-comma
-r_struct
-id|file
-op_star
-id|filp
-comma
-r_void
-op_star
-id|buffer
-comma
-r_int
-op_star
-id|lenp
-)paren
-suffix:semicolon
-r_int
-id|do_reset_coda_upcall_stats
 c_func
 (paren
 id|ctl_table
@@ -318,26 +210,6 @@ suffix:semicolon
 multiline_comment|/* these functions are called to form the content of /proc/fs/coda/... files */
 r_int
 id|coda_vfs_stats_get_info
-c_func
-(paren
-r_char
-op_star
-id|buffer
-comma
-r_char
-op_star
-op_star
-id|start
-comma
-id|off_t
-id|offset
-comma
-r_int
-id|length
-)paren
-suffix:semicolon
-r_int
-id|coda_upcall_stats_get_info
 c_func
 (paren
 r_char
