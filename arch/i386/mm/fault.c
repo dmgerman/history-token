@@ -1164,9 +1164,16 @@ id|tsk-&gt;thread.cr2
 op_assign
 id|address
 suffix:semicolon
+multiline_comment|/* Kernel addresses are always protection faults */
 id|tsk-&gt;thread.error_code
 op_assign
 id|error_code
+op_or
+(paren
+id|address
+op_ge
+id|TASK_SIZE
+)paren
 suffix:semicolon
 id|tsk-&gt;thread.trap_no
 op_assign
