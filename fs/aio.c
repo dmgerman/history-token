@@ -1241,14 +1241,6 @@ c_loop
 id|ctx-&gt;reqs_active
 )paren
 (brace
-id|printk
-c_func
-(paren
-l_string|&quot;ctx-&gt;reqs_active = %d&bslash;n&quot;
-comma
-id|ctx-&gt;reqs_active
-)paren
-suffix:semicolon
 id|schedule
 c_func
 (paren
