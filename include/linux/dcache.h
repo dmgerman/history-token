@@ -486,7 +486,7 @@ id|dentry-&gt;d_vfs_flags
 op_or_assign
 id|DCACHE_UNHASHED
 suffix:semicolon
-id|hlist_del_rcu
+id|hlist_del_rcu_init
 c_func
 (paren
 op_amp
