@@ -30,7 +30,7 @@ macro_line|#include &lt;asm/unaligned.h&gt;
 multiline_comment|/*-------------------------------------------------------------------------*/
 multiline_comment|/*&n; * EHCI hc_driver implementation ... experimental, incomplete.&n; * Based on the final 1.0 register interface specification.&n; *&n; * USB 2.0 shows up in upcoming www.pcmcia.org technology.&n; * First was PCMCIA, like ISA; then CardBus, which is PCI.&n; * Next comes &quot;CardBay&quot;, using USB 2.0 signals.&n; *&n; * Contains additional contributions by: Brad Hards, Rory Bolt, ...&n; *&n; * Special thanks to Intel and VIA for providing host controllers to&n; * test this driver on, and Cypress (including In-System Design) for&n; * providing early devices for those host controllers to talk to!&n; *&n; * HISTORY:&n; *&n; * 2002-08-06&t;Handling for bulk and interrupt transfers is mostly shared;&n; *&t;only scheduling is different, no arbitrary limitations.&n; * 2002-07-25&t;Sanity check PCI reads, mostly for better cardbus support,&n; * &t;clean up HC run state handshaking.&n; * 2002-05-24&t;Preliminary FS/LS interrupts, using scheduling shortcuts&n; * 2002-05-11&t;Clear TT errors for FS/LS ctrl/bulk.  Fill in some other&n; *&t;missing pieces:  enabling 64bit dma, handoff from BIOS/SMM.&n; * 2002-05-07&t;Some error path cleanups to report better errors; wmb();&n; *&t;use non-CVS version id; better iso bandwidth claim.&n; * 2002-04-19&t;Control/bulk/interrupt submit no longer uses giveback() on&n; *&t;errors in submit path.  Bugfixes to interrupt scheduling/processing.&n; * 2002-03-05&t;Initial high-speed ISO support; reduce ITD memory; shift&n; *&t;more checking to generic hcd framework (db).  Make it work with&n; *&t;Philips EHCI; reduce PCI traffic; shorten IRQ path (Rory Bolt).&n; * 2002-01-14&t;Minor cleanup; version synch.&n; * 2002-01-08&t;Fix roothub handoff of FS/LS to companion controllers.&n; * 2002-01-04&t;Control/Bulk queuing behaves.&n; *&n; * 2001-12-12&t;Initial patch version for Linux 2.5.1 kernel.&n; * 2001-June&t;Works with usb-storage and NEC EHCI on 2.4&n; */
 DECL|macro|DRIVER_VERSION
-mdefine_line|#define DRIVER_VERSION &quot;2002-Aug-06&quot;
+mdefine_line|#define DRIVER_VERSION &quot;2002-Aug-28&quot;
 DECL|macro|DRIVER_AUTHOR
 mdefine_line|#define DRIVER_AUTHOR &quot;David Brownell&quot;
 DECL|macro|DRIVER_DESC
@@ -50,6 +50,8 @@ DECL|macro|EHCI_TUNE_MULT_HS
 mdefine_line|#define&t;EHCI_TUNE_MULT_HS&t;1&t;/* 1-3 transactions/uframe; 4.10.3 */
 DECL|macro|EHCI_TUNE_MULT_TT
 mdefine_line|#define&t;EHCI_TUNE_MULT_TT&t;1
+DECL|macro|EHCI_WATCHDOG_JIFFIES
+mdefine_line|#define EHCI_WATCHDOG_JIFFIES&t;(HZ/10)&t;&t;/* arbitrary; ~100 msec */
 multiline_comment|/* Initial IRQ latency:  lower than default */
 DECL|variable|log2_irq_thresh
 r_static
@@ -459,6 +461,80 @@ r_int
 id|param
 )paren
 suffix:semicolon
+DECL|function|ehci_watchdog
+r_static
+r_void
+id|ehci_watchdog
+(paren
+r_int
+r_int
+id|param
+)paren
+(brace
+r_struct
+id|ehci_hcd
+op_star
+id|ehci
+op_assign
+(paren
+r_struct
+id|ehci_hcd
+op_star
+)paren
+id|param
+suffix:semicolon
+r_int
+r_int
+id|flags
+suffix:semicolon
+multiline_comment|/* guard against lost IAA, which wedges everything */
+id|spin_lock_irqsave
+(paren
+op_amp
+id|ehci-&gt;lock
+comma
+id|flags
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|ehci-&gt;reclaim
+)paren
+(brace
+id|err
+(paren
+l_string|&quot;%s watchdog, reclaim qh %p%s&quot;
+comma
+id|ehci-&gt;hcd.self.bus_name
+comma
+id|ehci-&gt;reclaim
+comma
+id|ehci-&gt;reclaim_ready
+ques
+c_cond
+l_string|&quot; ready&quot;
+suffix:colon
+l_string|&quot;&quot;
+)paren
+suffix:semicolon
+singleline_comment|//&t;&t;ehci-&gt;reclaim_ready = 1;
+id|tasklet_schedule
+(paren
+op_amp
+id|ehci-&gt;tasklet
+)paren
+suffix:semicolon
+)brace
+id|spin_unlock_irqrestore
+(paren
+op_amp
+id|ehci-&gt;lock
+comma
+id|flags
+)paren
+suffix:semicolon
+)brace
 multiline_comment|/* EHCI 0.96 (and later) section 5.1 says how to kick BIOS/SMM/...&n; * off the controller (maybe it can boot from highspeed USB disks).&n; */
 DECL|function|bios_handoff
 r_static
@@ -1025,6 +1101,24 @@ r_int
 )paren
 id|ehci
 suffix:semicolon
+id|init_timer
+(paren
+op_amp
+id|ehci-&gt;watchdog
+)paren
+suffix:semicolon
+id|ehci-&gt;watchdog.function
+op_assign
+id|ehci_watchdog
+suffix:semicolon
+id|ehci-&gt;watchdog.data
+op_assign
+(paren
+r_int
+r_int
+)paren
+id|ehci
+suffix:semicolon
 multiline_comment|/* wire up the root hub */
 id|hcd-&gt;self.root_hub
 op_assign
@@ -1103,7 +1197,7 @@ id|ehci-&gt;caps-&gt;hci_version
 suffix:semicolon
 id|info
 (paren
-l_string|&quot;USB %x.%x support enabled, EHCI rev %x.%2x&quot;
+l_string|&quot;USB %x.%x support enabled, EHCI rev %x.%02x&quot;
 comma
 (paren
 (paren
@@ -1235,9 +1329,40 @@ id|ehci_ready
 id|ehci
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|in_interrupt
+(paren
+)paren
+)paren
+multiline_comment|/* should not happen!! */
+id|err
+(paren
+l_string|&quot;stopped %s!&quot;
+comma
+id|RUN_CONTEXT
+)paren
+suffix:semicolon
+r_else
+id|del_timer_sync
+(paren
+op_amp
+id|ehci-&gt;watchdog
+)paren
+suffix:semicolon
 id|ehci_reset
 (paren
 id|ehci
+)paren
+suffix:semicolon
+multiline_comment|/* let companion controllers work when we aren&squot;t */
+id|writel
+(paren
+l_int|0
+comma
+op_amp
+id|ehci-&gt;regs-&gt;configured_flag
 )paren
 suffix:semicolon
 id|remove_debug_files
@@ -1665,19 +1790,39 @@ op_star
 )paren
 id|param
 suffix:semicolon
+r_int
+r_int
+id|flags
+suffix:semicolon
+id|spin_lock_irqsave
+(paren
+op_amp
+id|ehci-&gt;lock
+comma
+id|flags
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
 id|ehci-&gt;reclaim_ready
 )paren
+id|flags
+op_assign
 id|end_unlink_async
 (paren
 id|ehci
+comma
+id|flags
 )paren
 suffix:semicolon
+id|flags
+op_assign
 id|scan_async
 (paren
 id|ehci
+comma
+id|flags
 )paren
 suffix:semicolon
 r_if
@@ -1688,9 +1833,21 @@ op_ne
 op_minus
 l_int|1
 )paren
+id|flags
+op_assign
 id|scan_periodic
 (paren
 id|ehci
+comma
+id|flags
+)paren
+suffix:semicolon
+id|spin_unlock_irqrestore
+(paren
+op_amp
+id|ehci-&gt;lock
+comma
+id|flags
 )paren
 suffix:semicolon
 )brace
@@ -2155,11 +2312,36 @@ id|ehci-&gt;reclaim
 (brace
 id|dbg
 (paren
-l_string|&quot;dq: reclaim busy, %s&quot;
+l_string|&quot;dq %p: reclaim = %p, %s&quot;
+comma
+id|qh
+comma
+id|ehci-&gt;reclaim
 comma
 id|RUN_CONTEXT
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|qh
+op_eq
+id|ehci-&gt;reclaim
+)paren
+(brace
+multiline_comment|/* unlinking qh for another queued urb? */
+id|spin_unlock_irqrestore
+(paren
+op_amp
+id|ehci-&gt;lock
+comma
+id|flags
+)paren
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
@@ -2246,6 +2428,14 @@ suffix:semicolon
 r_case
 id|PIPE_INTERRUPT
 suffix:colon
+id|spin_lock_irqsave
+(paren
+op_amp
+id|ehci-&gt;lock
+comma
+id|flags
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -2255,6 +2445,8 @@ id|QH_STATE_LINKED
 )paren
 (brace
 multiline_comment|/* messy, can spin or block a microframe ... */
+id|flags
+op_assign
 id|intr_deschedule
 (paren
 id|ehci
@@ -2262,15 +2454,21 @@ comma
 id|qh
 comma
 l_int|1
+comma
+id|flags
 )paren
 suffix:semicolon
 multiline_comment|/* qh_state == IDLE */
 )brace
+id|flags
+op_assign
 id|qh_completions
 (paren
 id|ehci
 comma
 id|qh
+comma
+id|flags
 )paren
 suffix:semicolon
 multiline_comment|/* reschedule QH iff another request is queued */
@@ -2292,14 +2490,6 @@ id|ehci-&gt;hcd.state
 (brace
 r_int
 id|status
-suffix:semicolon
-id|spin_lock_irqsave
-(paren
-op_amp
-id|ehci-&gt;lock
-comma
-id|flags
-)paren
 suffix:semicolon
 id|status
 op_assign
@@ -2342,6 +2532,14 @@ r_return
 id|status
 suffix:semicolon
 )brace
+id|spin_unlock_irqrestore
+(paren
+op_amp
+id|ehci-&gt;lock
+comma
+id|flags
+)paren
+suffix:semicolon
 r_break
 suffix:semicolon
 r_case

@@ -138,6 +138,11 @@ op_star
 id|sitd_pool
 suffix:semicolon
 multiline_comment|/* sitd per split iso urb */
+DECL|member|watchdog
+r_struct
+id|timer_list
+id|watchdog
+suffix:semicolon
 )brace
 suffix:semicolon
 multiline_comment|/* unwrap an HCD pointer to get an EHCI_HCD pointer */
