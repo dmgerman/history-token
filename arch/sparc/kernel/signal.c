@@ -3197,6 +3197,18 @@ r_int
 op_amp
 id|sf-&gt;info
 suffix:semicolon
+id|regs-&gt;u_regs
+(braket
+id|UREG_I2
+)braket
+op_assign
+(paren
+r_int
+r_int
+)paren
+op_amp
+id|sf-&gt;info
+suffix:semicolon
 multiline_comment|/* 4. signal handler */
 id|regs-&gt;pc
 op_assign
@@ -3708,6 +3720,18 @@ r_int
 )paren
 op_amp
 id|sf-&gt;info
+suffix:semicolon
+id|regs-&gt;u_regs
+(braket
+id|UREG_I2
+)braket
+op_assign
+(paren
+r_int
+r_int
+)paren
+op_amp
+id|sf-&gt;regs
 suffix:semicolon
 id|regs-&gt;pc
 op_assign
