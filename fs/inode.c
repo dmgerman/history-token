@@ -208,6 +208,10 @@ id|inode-&gt;i_blocks
 op_assign
 l_int|0
 suffix:semicolon
+id|inode-&gt;i_bytes
+op_assign
+l_int|0
+suffix:semicolon
 id|inode-&gt;i_generation
 op_assign
 l_int|0

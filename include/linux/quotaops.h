@@ -320,11 +320,13 @@ suffix:semicolon
 )brace
 )brace
 r_else
-id|inode-&gt;i_blocks
-op_add_assign
+id|inode_add_bytes
+c_func
+(paren
+id|inode
+comma
 id|nr
-op_rshift
-l_int|9
+)paren
 suffix:semicolon
 id|unlock_kernel
 c_func
@@ -441,11 +443,13 @@ suffix:semicolon
 )brace
 )brace
 r_else
-id|inode-&gt;i_blocks
-op_add_assign
+id|inode_add_bytes
+c_func
+(paren
+id|inode
+comma
 id|nr
-op_rshift
-l_int|9
+)paren
 suffix:semicolon
 id|unlock_kernel
 c_func
@@ -611,11 +615,13 @@ id|nr
 )paren
 suffix:semicolon
 r_else
-id|inode-&gt;i_blocks
-op_sub_assign
+id|inode_sub_bytes
+c_func
+(paren
+id|inode
+comma
 id|nr
-op_rshift
-l_int|9
+)paren
 suffix:semicolon
 id|unlock_kernel
 c_func
@@ -819,11 +825,13 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|inode-&gt;i_blocks
-op_add_assign
+id|inode_add_bytes
+c_func
+(paren
+id|inode
+comma
 id|nr
-op_rshift
-l_int|9
+)paren
 suffix:semicolon
 id|unlock_kernel
 c_func
@@ -889,11 +897,13 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|inode-&gt;i_blocks
-op_add_assign
+id|inode_add_bytes
+c_func
+(paren
+id|inode
+comma
 id|nr
-op_rshift
-l_int|9
+)paren
 suffix:semicolon
 id|unlock_kernel
 c_func
@@ -959,11 +969,13 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|inode-&gt;i_blocks
-op_sub_assign
+id|inode_sub_bytes
+c_func
+(paren
+id|inode
+comma
 id|nr
-op_rshift
-l_int|9
+)paren
 suffix:semicolon
 id|unlock_kernel
 c_func
@@ -1010,10 +1022,10 @@ mdefine_line|#define DQUOT_PREALLOC_BLOCK(inode, nr)&t;DQUOT_PREALLOC_SPACE(inod
 DECL|macro|DQUOT_ALLOC_BLOCK_NODIRTY
 mdefine_line|#define DQUOT_ALLOC_BLOCK_NODIRTY(inode, nr) DQUOT_ALLOC_SPACE_NODIRTY(inode, ((qsize_t)(nr)) &lt;&lt; (inode)-&gt;i_sb-&gt;s_blocksize_bits)
 DECL|macro|DQUOT_ALLOC_BLOCK
-mdefine_line|#define DQUOT_ALLOC_BLOCK(inode, nr) DQUOT_ALLOC_SPACE(inode, fs_to_dq_blocks(nr, ((qsize_t)(nr)) &lt;&lt; (inode)-&gt;i_sb-&gt;s_blocksize_bits)
+mdefine_line|#define DQUOT_ALLOC_BLOCK(inode, nr) DQUOT_ALLOC_SPACE(inode, ((qsize_t)(nr)) &lt;&lt; (inode)-&gt;i_sb-&gt;s_blocksize_bits)
 DECL|macro|DQUOT_FREE_BLOCK_NODIRTY
 mdefine_line|#define DQUOT_FREE_BLOCK_NODIRTY(inode, nr) DQUOT_FREE_SPACE_NODIRTY(inode, ((qsize_t)(nr)) &lt;&lt; (inode)-&gt;i_sb-&gt;s_blocksize_bits)
 DECL|macro|DQUOT_FREE_BLOCK
-mdefine_line|#define DQUOT_FREE_BLOCK(inode, nr) DQUOT_FREE_SPACE(inode, fs_to_dq_blocks(nr, ((qsize_t)(nr)) &lt;&lt; (inode)-&gt;i_sb-&gt;s_blocksize_bits)
+mdefine_line|#define DQUOT_FREE_BLOCK(inode, nr) DQUOT_FREE_SPACE(inode, ((qsize_t)(nr)) &lt;&lt; (inode)-&gt;i_sb-&gt;s_blocksize_bits)
 macro_line|#endif /* _LINUX_QUOTAOPS_ */
 eof

@@ -4147,11 +4147,13 @@ id|number
 )paren
 suffix:semicolon
 )brace
-id|inode-&gt;i_blocks
-op_add_assign
+id|inode_add_bytes
+c_func
+(paren
+id|inode
+comma
 id|number
-op_rshift
-l_int|9
+)paren
 suffix:semicolon
 multiline_comment|/* NOBLOCK End */
 id|ret
@@ -4527,11 +4529,13 @@ id|dquot
 )paren
 suffix:semicolon
 )brace
-id|inode-&gt;i_blocks
-op_sub_assign
+id|inode_sub_bytes
+c_func
+(paren
+id|inode
+comma
 id|number
-op_rshift
-l_int|9
+)paren
 suffix:semicolon
 id|unlock_kernel
 c_func
@@ -4835,14 +4839,11 @@ suffix:semicolon
 multiline_comment|/* NOBLOCK START: From now on we shouldn&squot;t block */
 id|space
 op_assign
+id|inode_get_bytes
+c_func
 (paren
-(paren
-id|qsize_t
+id|inode
 )paren
-id|inode-&gt;i_blocks
-)paren
-op_lshift
-l_int|9
 suffix:semicolon
 multiline_comment|/* Build the transfer_from list and check the limits */
 r_for
@@ -5160,7 +5161,7 @@ suffix:colon
 id|dquot_drop
 comma
 multiline_comment|/* mandatory */
-id|alloc_block
+id|alloc_space
 suffix:colon
 id|dquot_alloc_space
 comma
@@ -5168,7 +5169,7 @@ id|alloc_inode
 suffix:colon
 id|dquot_alloc_inode
 comma
-id|free_block
+id|free_space
 suffix:colon
 id|dquot_free_space
 comma
