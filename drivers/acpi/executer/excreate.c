@@ -1157,7 +1157,7 @@ id|obj_desc-&gt;method.aml_length
 op_assign
 id|aml_length
 suffix:semicolon
-multiline_comment|/* disassemble the method flags */
+multiline_comment|/*&n;&t; * Disassemble the method flags.  Split off the Arg Count&n;&t; * for efficiency&n;&t; */
 id|method_flags
 op_assign
 (paren
@@ -1172,7 +1172,15 @@ id|integer.value
 suffix:semicolon
 id|obj_desc-&gt;method.method_flags
 op_assign
+(paren
+id|u8
+)paren
+(paren
 id|method_flags
+op_amp
+op_complement
+id|AML_METHOD_ARG_COUNT
+)paren
 suffix:semicolon
 id|obj_desc-&gt;method.param_count
 op_assign
@@ -1182,16 +1190,32 @@ id|u8
 (paren
 id|method_flags
 op_amp
-id|METHOD_FLAGS_ARG_COUNT
+id|AML_METHOD_ARG_COUNT
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * Get the concurrency count.  If required, a semaphore will be&n;&t; * created for this method when it is parsed.&n;&t; */
 r_if
 c_cond
 (paren
+id|acpi_gbl_all_methods_serialized
+)paren
+(brace
+id|obj_desc-&gt;method.concurrency
+op_assign
+l_int|1
+suffix:semicolon
+id|obj_desc-&gt;method.method_flags
+op_or_assign
+id|AML_METHOD_SERIALIZED
+suffix:semicolon
+)brace
+r_else
+r_if
+c_cond
+(paren
 id|method_flags
 op_amp
-id|METHOD_FLAGS_SERIALIZED
+id|AML_METHOD_SERIALIZED
 )paren
 (brace
 multiline_comment|/*&n;&t;&t; * ACPI 1.0: Concurrency = 1&n;&t;&t; * ACPI 2.0: Concurrency = (sync_level (in method declaration) + 1)&n;&t;&t; */
@@ -1205,7 +1229,7 @@ id|u8
 (paren
 id|method_flags
 op_amp
-id|METHOD_FLAGS_SYNCH_LEVEL
+id|AML_METHOD_SYNCH_LEVEL
 )paren
 op_rshift
 l_int|4
@@ -1219,7 +1243,7 @@ r_else
 (brace
 id|obj_desc-&gt;method.concurrency
 op_assign
-id|INFINITE_CONCURRENCY
+id|ACPI_INFINITE_CONCURRENCY
 suffix:semicolon
 )brace
 multiline_comment|/* Attach the new object to the method Node */

@@ -396,7 +396,7 @@ op_logical_neg
 id|parser_state
 )paren
 (brace
-r_return
+id|return_VOID
 suffix:semicolon
 )brace
 multiline_comment|/* Delete anything on the scope stack */

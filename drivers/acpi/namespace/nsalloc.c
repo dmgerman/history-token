@@ -614,7 +614,7 @@ id|ACPI_DEBUG_PRINT
 (paren
 id|ACPI_DB_NAMES
 comma
-l_string|&quot;%4.4s (%s) added to %4.4s (%s) %p at %p&bslash;n&quot;
+l_string|&quot;%4.4s (%s) [Node %p Owner %X] added to %4.4s (%s) [Node %p]&bslash;n&quot;
 comma
 id|acpi_ut_get_node_name
 (paren
@@ -625,6 +625,10 @@ id|acpi_ut_get_type_name
 (paren
 id|node-&gt;type
 )paren
+comma
+id|node
+comma
+id|owner_id
 comma
 id|acpi_ut_get_node_name
 (paren
@@ -637,8 +641,6 @@ id|parent_node-&gt;type
 )paren
 comma
 id|parent_node
-comma
-id|node
 )paren
 )paren
 suffix:semicolon

@@ -647,56 +647,6 @@ suffix:semicolon
 )brace
 DECL|macro|cmpxchg
 mdefine_line|#define cmpxchg(ptr,o,n)&bslash;&n;&t;((__typeof__(*(ptr)))__cmpxchg((ptr),(unsigned long)(o),&bslash;&n;&t;&t;&t;&t;&t;(unsigned long)(n),sizeof(*(ptr))))
-DECL|function|cmpxchg4_locked
-r_static
-r_inline
-id|__u32
-id|cmpxchg4_locked
-c_func
-(paren
-id|__u32
-op_star
-id|ptr
-comma
-id|__u32
-id|old
-comma
-id|__u32
-r_new
-)paren
-(brace
-id|asm
-r_volatile
-(paren
-l_string|&quot;lock ; cmpxchgl %k1,%2&quot;
-suffix:colon
-l_string|&quot;=r&quot;
-(paren
-r_new
-)paren
-suffix:colon
-l_string|&quot;0&quot;
-(paren
-id|old
-)paren
-comma
-l_string|&quot;m&quot;
-(paren
-op_star
-(paren
-id|__u32
-op_star
-)paren
-id|ptr
-)paren
-suffix:colon
-l_string|&quot;memory&quot;
-)paren
-suffix:semicolon
-r_return
-r_new
-suffix:semicolon
-)brace
 macro_line|#ifdef CONFIG_SMP
 DECL|macro|smp_mb
 mdefine_line|#define smp_mb()&t;mb()
