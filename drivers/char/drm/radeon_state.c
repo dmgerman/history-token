@@ -6409,6 +6409,9 @@ c_func
 l_string|&quot;radeon_cp_dispatch_texture: EAGAIN&bslash;n&quot;
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
 id|DRM_COPY_TO_USER
 c_func
 (paren
@@ -6421,6 +6424,13 @@ r_sizeof
 op_star
 id|image
 )paren
+)paren
+)paren
+r_return
+id|DRM_ERR
+c_func
+(paren
+id|EFAULT
 )paren
 suffix:semicolon
 r_return
