@@ -1159,6 +1159,13 @@ id|e
 op_assign
 id|e-&gt;left.expr
 )paren
+r_if
+c_cond
+(paren
+id|e-&gt;right.sym-&gt;visible
+op_ne
+id|no
+)paren
 id|sym-&gt;flags
 op_or_assign
 id|e-&gt;right.sym-&gt;flags

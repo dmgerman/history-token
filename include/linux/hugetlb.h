@@ -341,6 +341,24 @@ mdefine_line|#define HPAGE_SIZE&t;0
 macro_line|#endif
 macro_line|#endif /* !CONFIG_HUGETLB_PAGE */
 macro_line|#ifdef CONFIG_HUGETLBFS
+DECL|struct|hugetlbfs_config
+r_struct
+id|hugetlbfs_config
+(brace
+DECL|member|uid
+id|uid_t
+id|uid
+suffix:semicolon
+DECL|member|gid
+id|gid_t
+id|gid
+suffix:semicolon
+DECL|member|mode
+id|umode_t
+id|mode
+suffix:semicolon
+)brace
+suffix:semicolon
 r_extern
 r_struct
 id|file_operations

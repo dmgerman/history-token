@@ -154,7 +154,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* thread information allocation */
 DECL|macro|alloc_thread_info
-mdefine_line|#define alloc_thread_info() &bslash;&n;&t;((struct thread_info *) __get_free_pages(GFP_KERNEL,THREAD_ORDER))
+mdefine_line|#define alloc_thread_info(tsk) &bslash;&n;&t;((struct thread_info *) __get_free_pages(GFP_KERNEL,THREAD_ORDER))
 DECL|macro|free_thread_info
 mdefine_line|#define free_thread_info(ti) free_pages((unsigned long) (ti), THREAD_ORDER)
 DECL|macro|get_thread_info
