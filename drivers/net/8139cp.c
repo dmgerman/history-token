@@ -1,5 +1,5 @@
 multiline_comment|/* 8139cp.c: A Linux PCI Ethernet driver for the RealTek 8139C+ chips. */
-multiline_comment|/*&n;&t;Copyright 2001,2002 Jeff Garzik &lt;jgarzik@pobox.com&gt;&n;&n;&t;Copyright (C) 2001, 2002 David S. Miller (davem@redhat.com) [tg3.c]&n;&t;Copyright (C) 2000, 2001 David S. Miller (davem@redhat.com) [sungem.c]&n;&t;Copyright 2001 Manfred Spraul&t;&t;&t;&t;    [natsemi.c]&n;&t;Copyright 1999-2001 by Donald Becker.&t;&t;&t;    [natsemi.c]&n;       &t;Written 1997-2001 by Donald Becker.&t;&t;&t;    [8139too.c]&n;&t;Copyright 1998-2001 by Jes Sorensen, &lt;jes@trained-monkey.org&gt;. [acenic.c]&n;&n;&t;This software may be used and distributed according to the terms of&n;&t;the GNU General Public License (GPL), incorporated herein by reference.&n;&t;Drivers based on or derived from this code fall under the GPL and must&n;&t;retain the authorship, copyright and license notice.  This file is not&n;&t;a complete program and may only be used when the entire operating&n;&t;system is licensed under the GPL.&n;&n;&t;See the file COPYING in this distribution for more information.&n;&n;&t;Contributors:&n;&t;&n;&t;&t;Wake-on-LAN support - Felipe Damasio &lt;felipewd@terra.com.br&gt;&n;&t;&t;PCI suspend/resume  - Felipe Damasio &lt;felipewd@terra.com.br&gt;&n;&t;&t;LinkChg interrupt   - Felipe Damasio &lt;felipewd@terra.com.br&gt;&n;&t;&t;&t;&n;&t;TODO:&n;&t;* Test Tx checksumming thoroughly&n;&t;* Implement dev-&gt;tx_timeout&n;&t;* Implement __cp_get_stats&n;&n;&t;Low priority TODO:&n;&t;* Complete reset on PciErr&n;&t;* Consider Rx interrupt mitigation using TimerIntr&n;&t;* Investigate using skb-&gt;priority with h/w VLAN priority&n;&t;* Investigate using High Priority Tx Queue with skb-&gt;priority&n;&t;* Adjust Rx FIFO threshold and Max Rx DMA burst on Rx FIFO error&n;&t;* Adjust Tx FIFO threshold and Max Tx DMA burst on Tx FIFO error&n;&t;* Implement Tx software interrupt mitigation via&n;&t;  Tx descriptor bit&n;&t;* The real minimum of CP_MIN_MTU is 4 bytes.  However,&n;&t;  for this to be supported, one must(?) turn on packet padding.&n;&t;* Support external MII transceivers (patch available)&n;&n;&t;NOTES:&n;&t;* TX checksumming is considered experimental.  It is off by&n;&t;  default, use ethtool to turn it on.&n;&n; */
+multiline_comment|/*&n;&t;Copyright 2001,2002 Jeff Garzik &lt;jgarzik@pobox.com&gt;&n;&n;&t;Copyright (C) 2001, 2002 David S. Miller (davem@redhat.com) [tg3.c]&n;&t;Copyright (C) 2000, 2001 David S. Miller (davem@redhat.com) [sungem.c]&n;&t;Copyright 2001 Manfred Spraul&t;&t;&t;&t;    [natsemi.c]&n;&t;Copyright 1999-2001 by Donald Becker.&t;&t;&t;    [natsemi.c]&n;       &t;Written 1997-2001 by Donald Becker.&t;&t;&t;    [8139too.c]&n;&t;Copyright 1998-2001 by Jes Sorensen, &lt;jes@trained-monkey.org&gt;. [acenic.c]&n;&n;&t;This software may be used and distributed according to the terms of&n;&t;the GNU General Public License (GPL), incorporated herein by reference.&n;&t;Drivers based on or derived from this code fall under the GPL and must&n;&t;retain the authorship, copyright and license notice.  This file is not&n;&t;a complete program and may only be used when the entire operating&n;&t;system is licensed under the GPL.&n;&n;&t;See the file COPYING in this distribution for more information.&n;&n;&t;Contributors:&n;&t;&n;&t;&t;Wake-on-LAN support - Felipe Damasio &lt;felipewd@terra.com.br&gt;&n;&t;&t;PCI suspend/resume  - Felipe Damasio &lt;felipewd@terra.com.br&gt;&n;&t;&t;LinkChg interrupt   - Felipe Damasio &lt;felipewd@terra.com.br&gt;&n;&t;&t;&t;&n;&t;TODO:&n;&t;* Test Tx checksumming thoroughly&n;&t;* Implement dev-&gt;tx_timeout&n;&n;&t;Low priority TODO:&n;&t;* Complete reset on PciErr&n;&t;* Consider Rx interrupt mitigation using TimerIntr&n;&t;* Investigate using skb-&gt;priority with h/w VLAN priority&n;&t;* Investigate using High Priority Tx Queue with skb-&gt;priority&n;&t;* Adjust Rx FIFO threshold and Max Rx DMA burst on Rx FIFO error&n;&t;* Adjust Tx FIFO threshold and Max Tx DMA burst on Tx FIFO error&n;&t;* Implement Tx software interrupt mitigation via&n;&t;  Tx descriptor bit&n;&t;* The real minimum of CP_MIN_MTU is 4 bytes.  However,&n;&t;  for this to be supported, one must(?) turn on packet padding.&n;&t;* Support external MII transceivers (patch available)&n;&n;&t;NOTES:&n;&t;* TX checksumming is considered experimental.  It is off by&n;&t;  default, use ethtool to turn it on.&n;&n; */
 DECL|macro|DRV_NAME
 mdefine_line|#define DRV_NAME&t;&t;&quot;8139cp&quot;
 DECL|macro|DRV_VERSION
@@ -237,6 +237,12 @@ op_assign
 l_int|0x44
 comma
 multiline_comment|/* Rx configuration */
+DECL|enumerator|RxMissed
+id|RxMissed
+op_assign
+l_int|0x4C
+comma
+multiline_comment|/* 24 bits valid, write clears */
 DECL|enumerator|Cfg9346
 id|Cfg9346
 op_assign
@@ -2262,6 +2268,9 @@ suffix:semicolon
 id|cp-&gt;net_stats.rx_dropped
 op_increment
 suffix:semicolon
+id|cp-&gt;cp_stats.rx_frags
+op_increment
+suffix:semicolon
 r_goto
 id|rx_next
 suffix:semicolon
@@ -4283,7 +4292,25 @@ op_star
 id|cp
 )paren
 (brace
-multiline_comment|/* XXX implement */
+multiline_comment|/* only lower 24 bits valid; write any value to clear */
+id|cp-&gt;net_stats.rx_missed_errors
+op_add_assign
+(paren
+id|cpr32
+(paren
+id|RxMissed
+)paren
+op_amp
+l_int|0xffffff
+)paren
+suffix:semicolon
+id|cpw32
+(paren
+id|RxMissed
+comma
+l_int|0
+)paren
+suffix:semicolon
 )brace
 DECL|function|cp_get_stats
 r_static
