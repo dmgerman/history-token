@@ -1466,7 +1466,7 @@ comma
 multiline_comment|/* x */
 l_int|NULL
 comma
-multiline_comment|/* w */
+multiline_comment|/* y */
 l_int|NULL
 comma
 multiline_comment|/* z */
