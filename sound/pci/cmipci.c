@@ -7680,6 +7680,10 @@ comma
 l_int|0x10000
 )paren
 suffix:semicolon
+id|cm-&gt;dig_pcm_status
+op_assign
+id|cm-&gt;dig_status
+suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
