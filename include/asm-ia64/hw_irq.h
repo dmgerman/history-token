@@ -1,7 +1,7 @@
 macro_line|#ifndef _ASM_IA64_HW_IRQ_H
 DECL|macro|_ASM_IA64_HW_IRQ_H
 mdefine_line|#define _ASM_IA64_HW_IRQ_H
-multiline_comment|/*&n; * Copyright (C) 2001-2002 Hewlett-Packard Co&n; *&t;David Mosberger-Tang &lt;davidm@hpl.hp.com&gt;&n; */
+multiline_comment|/*&n; * Copyright (C) 2001-2003 Hewlett-Packard Co&n; *&t;David Mosberger-Tang &lt;davidm@hpl.hp.com&gt;&n; */
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
@@ -177,8 +177,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * Default implementations for the irq-descriptor API:&n; */
 r_extern
-r_struct
-id|irq_desc
+id|irq_desc_t
 id|_irq_desc
 (braket
 id|NR_IRQS
@@ -187,8 +186,7 @@ suffix:semicolon
 macro_line|#ifndef CONFIG_IA64_GENERIC
 r_static
 r_inline
-r_struct
-id|irq_desc
+id|irq_desc_t
 op_star
 DECL|function|__ia64_irq_desc
 id|__ia64_irq_desc
@@ -246,11 +244,10 @@ multiline_comment|/*&n; * Next follows the irq descriptor interface.  On IA-64, 
 multiline_comment|/* Return a pointer to the irq descriptor for IRQ.  */
 r_static
 r_inline
-r_struct
-id|irq_desc
+id|irq_desc_t
 op_star
-DECL|function|irq_desc
-id|irq_desc
+DECL|function|irq_descp
+id|irq_descp
 (paren
 r_int
 id|irq
