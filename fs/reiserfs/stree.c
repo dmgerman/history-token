@@ -2519,10 +2519,8 @@ id|p_s_sb
 suffix:semicolon
 id|expected_level
 op_assign
-id|SB_TREE_HEIGHT
-(paren
-id|p_s_sb
-)paren
+op_minus
+l_int|1
 suffix:semicolon
 r_while
 c_loop
@@ -2575,9 +2573,6 @@ id|get_generation
 id|p_s_sb
 )paren
 suffix:semicolon
-id|expected_level
-op_decrement
-suffix:semicolon
 macro_line|#ifdef SEARCH_BY_KEY_READA
 multiline_comment|/* schedule read of right neighbor */
 id|search_by_key_reada
@@ -2621,6 +2616,24 @@ r_return
 id|IO_ERROR
 suffix:semicolon
 )brace
+r_if
+c_cond
+(paren
+id|expected_level
+op_eq
+op_minus
+l_int|1
+)paren
+id|expected_level
+op_assign
+id|SB_TREE_HEIGHT
+(paren
+id|p_s_sb
+)paren
+suffix:semicolon
+id|expected_level
+op_decrement
+suffix:semicolon
 multiline_comment|/* It is possible that schedule occurred. We must check whether the key&n;&t;   to search is still in the tree rooted from the current buffer. If&n;&t;   not then repeat search from the root. */
 r_if
 c_cond
@@ -2638,6 +2651,14 @@ id|B_IS_IN_TREE
 (paren
 id|p_s_bh
 )paren
+op_logical_or
+id|B_LEVEL
+c_func
+(paren
+id|p_s_bh
+)paren
+op_ne
+id|expected_level
 op_logical_or
 op_logical_neg
 id|key_in_buffer
@@ -2687,7 +2708,7 @@ c_func
 id|p_s_search_path
 )paren
 suffix:semicolon
-multiline_comment|/* Get the root block number so that we can repeat the search&n;               starting from the root. */
+multiline_comment|/* Get the root block number so that we can repeat the search&n;&t;       starting from the root. */
 id|n_block_number
 op_assign
 id|SB_ROOT_BLOCK
@@ -2697,10 +2718,8 @@ id|p_s_sb
 suffix:semicolon
 id|expected_level
 op_assign
-id|SB_TREE_HEIGHT
-(paren
-id|p_s_sb
-)paren
+op_minus
+l_int|1
 suffix:semicolon
 id|right_neighbor_of_leaf_node
 op_assign
