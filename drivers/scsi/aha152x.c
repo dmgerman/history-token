@@ -3091,13 +3091,12 @@ op_logical_neg
 id|shpnt
 )paren
 (brace
+multiline_comment|/* no point using HOSTNO here! */
 id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;aha152x%d: catched software interrupt %d for unknown controller.&bslash;n&quot;
-comma
-id|HOSTNO
+l_string|&quot;aha152x: catched software interrupt %d for unknown controller.&bslash;n&quot;
 comma
 id|irqno
 )paren
@@ -3525,6 +3524,19 @@ comma
 id|shost-&gt;host_no
 )paren
 suffix:semicolon
+multiline_comment|/* need to have host registered before triggering any interrupt */
+id|aha152x_host
+(braket
+id|registered_count
+)braket
+op_assign
+id|shost
+suffix:semicolon
+id|mb
+c_func
+(paren
+)paren
+suffix:semicolon
 id|SETPORT
 c_func
 (paren
@@ -3605,7 +3617,7 @@ id|shost-&gt;irq
 )paren
 suffix:semicolon
 r_goto
-id|out_release_region
+id|out_unregister_host
 suffix:semicolon
 )brace
 id|printk
@@ -3663,20 +3675,22 @@ id|shost-&gt;host_no
 )paren
 suffix:semicolon
 r_goto
-id|out_release_region
+id|out_unregister_host
 suffix:semicolon
 )brace
+r_return
+id|shost
+suffix:semicolon
+multiline_comment|/* the pcmcia stub needs the return value; */
+id|out_unregister_host
+suffix:colon
 id|aha152x_host
 (braket
 id|registered_count
 )braket
 op_assign
-id|shost
+l_int|NULL
 suffix:semicolon
-r_return
-id|shost
-suffix:semicolon
-multiline_comment|/* the pcmcia stub needs the return value; */
 id|out_release_region
 suffix:colon
 id|release_region
