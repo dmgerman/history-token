@@ -722,6 +722,10 @@ id|gp-&gt;io
 op_assign
 id|io_port
 suffix:semicolon
+id|gp-&gt;port_data
+op_assign
+id|r
+suffix:semicolon
 r_if
 c_cond
 (paren
