@@ -1005,7 +1005,7 @@ mdefine_line|#define TIMER3_VALUE 7000
 multiline_comment|/* ======================================================================&n; *&n; */
 multiline_comment|/*&n; * Submit an URB with error reporting. This is a macro so&n; * the __FUNCTION__ returns the caller function name.&n; */
 DECL|macro|SUBMIT_URB
-mdefine_line|#define SUBMIT_URB(urb) &bslash;&n;({ &bslash;&n;&t;int status; &bslash;&n;&t;if ((status = usb_submit_urb(urb)) &lt; 0) { &bslash;&n;&t;&t;WARN(&quot;usb_submit_urb failed,status=%d&quot;, status); &bslash;&n;&t;} &bslash;&n;        status; &bslash;&n;})
+mdefine_line|#define SUBMIT_URB(urb, mem_flags) &bslash;&n;({ &bslash;&n;&t;int status; &bslash;&n;&t;if ((status = usb_submit_urb(urb, mem_flags)) &lt; 0) { &bslash;&n;&t;&t;WARN(&quot;usb_submit_urb failed,status=%d&quot;, status); &bslash;&n;&t;} &bslash;&n;        status; &bslash;&n;})
 multiline_comment|/*&n; * USB double buffering, return the URB index (0 or 1).&n; */
 DECL|function|get_buf_nr
 r_static

@@ -1983,6 +1983,8 @@ op_assign
 id|usb_submit_urb
 (paren
 id|end-&gt;purb
+comma
+id|GFP_KERNEL
 )paren
 suffix:semicolon
 r_if

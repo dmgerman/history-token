@@ -799,6 +799,8 @@ c_func
 (paren
 op_amp
 id|usblp-&gt;readurb
+comma
+id|GFP_KERNEL
 )paren
 OL
 l_int|0
@@ -1760,6 +1762,8 @@ c_func
 (paren
 op_amp
 id|usblp-&gt;writeurb
+comma
+id|GFP_KERNEL
 )paren
 )paren
 (brace
@@ -2035,6 +2039,8 @@ c_func
 (paren
 op_amp
 id|usblp-&gt;readurb
+comma
+id|GFP_KERNEL
 )paren
 suffix:semicolon
 id|count
@@ -2118,6 +2124,8 @@ c_func
 (paren
 op_amp
 id|usblp-&gt;readurb
+comma
+id|GFP_KERNEL
 )paren
 )paren
 (brace

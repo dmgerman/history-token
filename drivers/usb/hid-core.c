@@ -4403,6 +4403,8 @@ c_func
 (paren
 op_amp
 id|hid-&gt;urbout
+comma
+id|GFP_KERNEL
 )paren
 )paren
 (brace
@@ -4626,6 +4628,8 @@ c_func
 (paren
 op_amp
 id|hid-&gt;urb
+comma
+id|GFP_KERNEL
 )paren
 )paren
 r_return

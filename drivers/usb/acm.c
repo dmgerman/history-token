@@ -749,6 +749,8 @@ id|usb_submit_urb
 c_func
 (paren
 id|urb
+comma
+id|GFP_KERNEL
 )paren
 )paren
 id|dbg
@@ -984,6 +986,8 @@ c_func
 (paren
 op_amp
 id|acm-&gt;ctrlurb
+comma
+id|GFP_KERNEL
 )paren
 )paren
 id|dbg
@@ -1004,6 +1008,8 @@ c_func
 (paren
 op_amp
 id|acm-&gt;readurb
+comma
+id|GFP_KERNEL
 )paren
 )paren
 id|dbg
@@ -1263,6 +1269,8 @@ c_func
 (paren
 op_amp
 id|acm-&gt;writeurb
+comma
+id|GFP_KERNEL
 )paren
 )paren
 id|dbg

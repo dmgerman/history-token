@@ -3396,6 +3396,8 @@ id|i
 )braket
 dot
 id|urb
+comma
+id|GFP_KERNEL
 )paren
 suffix:semicolon
 r_if

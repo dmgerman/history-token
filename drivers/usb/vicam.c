@@ -1257,12 +1257,15 @@ suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;Submiting urb: %d&bslash;n&quot;
 comma
 id|usb_submit_urb
 c_func
 (paren
 id|vicam-&gt;readurb
+comma
+id|GFP_KERNEL
 )paren
 )paren
 suffix:semicolon
@@ -2935,6 +2938,8 @@ id|usb_submit_urb
 c_func
 (paren
 id|urb
+comma
+id|GFP_ATOMIC
 )paren
 )paren
 id|dbg
@@ -3518,12 +3523,15 @@ suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;Submiting urb: %d&bslash;n&quot;
 comma
 id|usb_submit_urb
 c_func
 (paren
 id|vicam-&gt;readurb
+comma
+id|GFP_KERNEL
 )paren
 )paren
 suffix:semicolon

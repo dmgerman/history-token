@@ -893,6 +893,8 @@ id|usb_submit_urb
 c_func
 (paren
 id|iforce-&gt;out
+comma
+id|GFP_ATOMIC
 )paren
 )paren
 (brace
@@ -1417,6 +1419,8 @@ id|usb_submit_urb
 c_func
 (paren
 id|iforce-&gt;ctrl
+comma
+id|GFP_ATOMIC
 )paren
 )paren
 (brace
@@ -1646,6 +1650,8 @@ id|usb_submit_urb
 c_func
 (paren
 id|iforce-&gt;irq
+comma
+id|GFP_KERNEL
 )paren
 )paren
 r_return

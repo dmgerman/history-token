@@ -812,6 +812,8 @@ id|usb_submit_urb
 c_func
 (paren
 id|catc-&gt;rx_urb
+comma
+id|GFP_KERNEL
 )paren
 )paren
 OL
@@ -920,6 +922,8 @@ id|usb_submit_urb
 c_func
 (paren
 id|catc-&gt;tx_urb
+comma
+id|GFP_KERNEL
 )paren
 )paren
 OL
@@ -1532,6 +1536,8 @@ id|usb_submit_urb
 c_func
 (paren
 id|catc-&gt;ctrl_urb
+comma
+id|GFP_KERNEL
 )paren
 )paren
 )paren
@@ -2615,6 +2621,8 @@ id|usb_submit_urb
 c_func
 (paren
 id|catc-&gt;irq_urb
+comma
+id|GFP_KERNEL
 )paren
 )paren
 OL
