@@ -861,9 +861,9 @@ id|usb_ov511
 DECL|member|vdev
 r_struct
 id|video_device
+op_star
 id|vdev
 suffix:semicolon
-multiline_comment|/* Device structure */
 DECL|member|dev
 r_struct
 id|usb_device
