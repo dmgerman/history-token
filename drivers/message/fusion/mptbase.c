@@ -4507,11 +4507,11 @@ op_increment
 r_if
 c_cond
 (paren
-id|pdev
-op_member_access_from_pointer
-id|PCI_BASEADDR_FLAGS
+id|pci_resource_flags
 c_func
 (paren
+id|pdev
+comma
 id|ii
 )paren
 op_amp
@@ -4521,17 +4521,17 @@ id|PCI_BASE_ADDRESS_SPACE_IO
 multiline_comment|/* Get I/O space! */
 id|port
 op_assign
-id|pdev
-op_member_access_from_pointer
-id|PCI_BASEADDR_START
+id|pci_resource_start
 c_func
 (paren
+id|pdev
+comma
 id|ii
 )paren
 suffix:semicolon
 id|psize
 op_assign
-id|PCI_BASEADDR_SIZE
+id|pci_resource_len
 c_func
 (paren
 id|pdev
@@ -4545,17 +4545,17 @@ r_else
 multiline_comment|/* Get memmap */
 id|mem_phys
 op_assign
-id|pdev
-op_member_access_from_pointer
-id|PCI_BASEADDR_START
+id|pci_resource_start
 c_func
 (paren
+id|pdev
+comma
 id|ii
 )paren
 suffix:semicolon
 id|msize
 op_assign
-id|PCI_BASEADDR_SIZE
+id|pci_resource_len
 c_func
 (paren
 id|pdev
@@ -5491,7 +5491,7 @@ id|ioc-&gt;active
 op_assign
 l_int|0
 suffix:semicolon
-id|mpt_sync_irq
+id|synchronize_irq
 c_func
 (paren
 id|pdev-&gt;irq
@@ -14411,7 +14411,7 @@ l_string|&quot;: %s.reply_alloc  @ %p[%p], sz=%d bytes&bslash;n&quot;
 comma
 id|ioc-&gt;name
 comma
-id|mem
+id|ioc-&gt;reply_alloc
 comma
 (paren
 r_void
@@ -14504,7 +14504,7 @@ l_string|&quot;: %s.req_alloc    @ %p[%p], sz=%d bytes&bslash;n&quot;
 comma
 id|ioc-&gt;name
 comma
-id|mem
+id|ioc-&gt;req_alloc
 comma
 (paren
 r_void
