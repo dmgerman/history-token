@@ -21,7 +21,8 @@ r_int
 id|adpt_detect
 c_func
 (paren
-id|Scsi_Host_Template
+r_struct
+id|scsi_host_template
 op_star
 id|sht
 )paren
@@ -31,7 +32,8 @@ r_int
 id|adpt_queue
 c_func
 (paren
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 id|cmd
 comma
@@ -41,7 +43,8 @@ op_star
 id|cmdcomplete
 )paren
 (paren
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 )paren
 )paren
@@ -51,7 +54,8 @@ r_int
 id|adpt_abort
 c_func
 (paren
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 id|cmd
 )paren
@@ -61,7 +65,8 @@ r_int
 id|adpt_reset
 c_func
 (paren
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 id|cmd
 )paren
@@ -82,7 +87,8 @@ r_int
 id|adpt_slave_configure
 c_func
 (paren
-id|Scsi_Device
+r_struct
+id|scsi_device
 op_star
 )paren
 suffix:semicolon
@@ -127,7 +133,8 @@ r_int
 id|adpt_bus_reset
 c_func
 (paren
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 id|cmd
 )paren
@@ -137,7 +144,8 @@ r_int
 id|adpt_device_reset
 c_func
 (paren
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 id|cmd
 )paren
@@ -402,7 +410,8 @@ op_star
 id|pI2o_dev
 suffix:semicolon
 DECL|member|pScsi_dev
-id|Scsi_Device
+r_struct
+id|scsi_device
 op_star
 id|pScsi_dev
 suffix:semicolon
@@ -952,7 +961,8 @@ id|adpt_hba
 op_star
 id|pHba
 comma
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 id|cmd
 comma
@@ -970,7 +980,8 @@ c_func
 id|ulong
 id|reply
 comma
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 id|cmd
 )paren
@@ -984,7 +995,8 @@ id|adpt_hba
 op_star
 id|pHba
 comma
-id|Scsi_Host_Template
+r_struct
+id|scsi_host_template
 op_star
 id|sht
 )paren
@@ -1098,7 +1110,8 @@ r_int
 id|adpt_install_hba
 c_func
 (paren
-id|Scsi_Host_Template
+r_struct
+id|scsi_host_template
 op_star
 id|sht
 comma

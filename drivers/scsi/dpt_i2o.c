@@ -42,8 +42,11 @@ macro_line|#include &lt;linux/ioport.h&gt;
 macro_line|#include &lt;asm/processor.h&gt;&t;/* for boot_cpu_data */
 macro_line|#include &lt;asm/pgtable.h&gt;
 macro_line|#include &lt;asm/io.h&gt;&t;&t;/* for virt_to_bus, etc. */
-macro_line|#include &quot;scsi.h&quot;
-macro_line|#include &quot;hosts.h&quot;
+macro_line|#include &lt;scsi/scsi.h&gt;
+macro_line|#include &lt;scsi/scsi_cmnd.h&gt;
+macro_line|#include &lt;scsi/scsi_device.h&gt;
+macro_line|#include &lt;scsi/scsi_host.h&gt;
+macro_line|#include &lt;scsi/scsi_tcq.h&gt;
 macro_line|#include &quot;dpt/dptsig.h&quot;
 macro_line|#include &quot;dpti.h&quot;
 multiline_comment|/*============================================================================&n; * Create a binary signature - this is read by dptsig&n; * Needed for our management apps&n; *============================================================================&n; */
@@ -380,7 +383,8 @@ r_int
 id|adpt_detect
 c_func
 (paren
-id|Scsi_Host_Template
+r_struct
+id|scsi_host_template
 op_star
 id|sht
 )paren
@@ -1319,7 +1323,8 @@ r_int
 id|adpt_slave_configure
 c_func
 (paren
-id|Scsi_Device
+r_struct
+id|scsi_device
 op_star
 id|device
 )paren
@@ -1390,7 +1395,8 @@ r_int
 id|adpt_queue
 c_func
 (paren
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 id|cmd
 comma
@@ -1400,7 +1406,8 @@ op_star
 id|done
 )paren
 (paren
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 )paren
 )paren
@@ -2439,7 +2446,8 @@ r_int
 id|adpt_abort
 c_func
 (paren
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 id|cmd
 )paren
@@ -2680,7 +2688,8 @@ r_int
 id|adpt_device_reset
 c_func
 (paren
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 id|cmd
 )paren
@@ -2908,7 +2917,8 @@ r_int
 id|adpt_bus_reset
 c_func
 (paren
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 id|cmd
 )paren
@@ -3069,7 +3079,8 @@ r_int
 id|adpt_reset
 c_func
 (paren
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 id|cmd
 )paren
@@ -3515,7 +3526,8 @@ r_int
 id|adpt_install_hba
 c_func
 (paren
-id|Scsi_Host_Template
+r_struct
+id|scsi_host_template
 op_star
 id|sht
 comma
@@ -8993,7 +9005,8 @@ op_star
 id|regs
 )paren
 (brace
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 id|cmd
 suffix:semicolon
@@ -9363,7 +9376,8 @@ l_int|0x40000000
 id|cmd
 op_assign
 (paren
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 )paren
 id|readl
@@ -9412,7 +9426,8 @@ singleline_comment|// SCSI message
 id|cmd
 op_assign
 (paren
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 )paren
 id|readl
@@ -9509,7 +9524,8 @@ id|adpt_hba
 op_star
 id|pHba
 comma
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 id|cmd
 comma
@@ -9591,7 +9607,7 @@ id|cmd-&gt;sc_data_direction
 )paren
 (brace
 r_case
-id|SCSI_DATA_READ
+id|DMA_FROM_DEVICE
 suffix:colon
 id|scsidir
 op_assign
@@ -9601,7 +9617,7 @@ singleline_comment|// DATA IN  (iop&lt;--dev)
 r_break
 suffix:semicolon
 r_case
-id|SCSI_DATA_WRITE
+id|DMA_TO_DEVICE
 suffix:colon
 id|direction
 op_assign
@@ -9616,12 +9632,12 @@ singleline_comment|// DATA OUT (iop--&gt;dev)
 r_break
 suffix:semicolon
 r_case
-id|SCSI_DATA_NONE
+id|DMA_NONE
 suffix:colon
 r_break
 suffix:semicolon
 r_case
-id|SCSI_DATA_UNKNOWN
+id|DMA_BIDIRECTIONAL
 suffix:colon
 id|scsidir
 op_assign
@@ -9825,11 +9841,7 @@ id|sg
 comma
 id|cmd-&gt;use_sg
 comma
-id|scsi_to_pci_dma_dir
-c_func
-(paren
 id|cmd-&gt;sc_data_direction
-)paren
 )paren
 suffix:semicolon
 id|len
@@ -9987,11 +9999,7 @@ id|cmd-&gt;request_buffer
 comma
 id|cmd-&gt;request_bufflen
 comma
-id|scsi_to_pci_dma_dir
-c_func
-(paren
 id|cmd-&gt;sc_data_direction
-)paren
 )paren
 suffix:semicolon
 )brace
@@ -10060,7 +10068,8 @@ id|adpt_hba
 op_star
 id|pHba
 comma
-id|Scsi_Host_Template
+r_struct
+id|scsi_host_template
 op_star
 id|sht
 )paren
@@ -10181,7 +10190,8 @@ c_func
 id|ulong
 id|reply
 comma
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 id|cmd
 )paren
@@ -11723,13 +11733,15 @@ op_star
 id|pHba
 )paren
 (brace
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 id|cmd
 op_assign
 l_int|NULL
 suffix:semicolon
-id|Scsi_Device
+r_struct
+id|scsi_device
 op_star
 id|d
 op_assign
@@ -15868,7 +15880,8 @@ multiline_comment|/* delay for one millisecond */
 macro_line|#endif
 DECL|variable|driver_template
 r_static
-id|Scsi_Host_Template
+r_struct
+id|scsi_host_template
 id|driver_template
 op_assign
 (brace
