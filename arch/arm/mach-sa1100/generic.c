@@ -183,6 +183,7 @@ id|cpufreq_get
 c_func
 (paren
 r_int
+r_int
 id|cpu
 )paren
 (brace
