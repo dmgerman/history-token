@@ -2045,6 +2045,19 @@ r_return
 op_minus
 l_int|1
 suffix:semicolon
+multiline_comment|/* Workaround for broken chips which seem to support MUX, but in reality don&squot;t. */
+multiline_comment|/* They all report version 12.10 */
+r_if
+c_cond
+(paren
+id|mux_version
+op_eq
+l_int|0xCA
+)paren
+r_return
+op_minus
+l_int|1
+suffix:semicolon
 id|printk
 c_func
 (paren
