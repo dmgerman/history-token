@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * linux/kernel/workqueue.c&n; *&n; * Generic mechanism for defining kernel helper threads for running&n; * arbitrary tasks in process context.&n; *&n; * Started by Ingo Molnar, Copyright (C) 2002&n; *&n; * Derived from the taskqueue/keventd code by:&n; *&n; *   David Woodhouse &lt;dwmw2@redhat.com&gt;&n; *   Andrew Morton &lt;andrewm@uow.edu.au&gt;&n; *   Kai Petzke &lt;wpp@marie.physik.tu-berlin.de&gt;&n; *   Theodore Ts&squot;o &lt;tytso@mit.edu&gt;&n; */
+multiline_comment|/*&n; * linux/kernel/workqueue.c&n; *&n; * Generic mechanism for defining kernel helper threads for running&n; * arbitrary tasks in process context.&n; *&n; * Started by Ingo Molnar, Copyright (C) 2002&n; *&n; * Derived from the taskqueue/keventd code by:&n; *&n; *   David Woodhouse &lt;dwmw2@infradead.org&gt;&n; *   Andrew Morton &lt;andrewm@uow.edu.au&gt;&n; *   Kai Petzke &lt;wpp@marie.physik.tu-berlin.de&gt;&n; *   Theodore Ts&squot;o &lt;tytso@mit.edu&gt;&n; */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
