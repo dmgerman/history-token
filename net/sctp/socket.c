@@ -8498,7 +8498,7 @@ r_return
 op_minus
 id|EFAULT
 suffix:semicolon
-multiline_comment|/*&n;&t; *  For UDP-style sockets, id specifies the association to query.&n;&t; */
+multiline_comment|/* For UDP-style sockets, id specifies the association to query.  */
 id|asoc
 op_assign
 id|sctp_id2assoc
@@ -8604,8 +8604,7 @@ id|sctp_transport
 op_star
 id|from
 suffix:semicolon
-r_struct
-id|sockaddr_storage
+r_void
 op_star
 id|to
 suffix:semicolon
@@ -8623,6 +8622,9 @@ c_func
 (paren
 id|sk
 )paren
+suffix:semicolon
+r_int
+id|addrlen
 suffix:semicolon
 r_if
 c_cond
@@ -8672,7 +8674,7 @@ r_return
 op_minus
 id|EINVAL
 suffix:semicolon
-multiline_comment|/*&n;&t; *  For UDP-style sockets, id specifies the association to query.&n;&t; */
+multiline_comment|/* For UDP-style sockets, id specifies the association to query.  */
 id|asoc
 op_assign
 id|sctp_id2assoc
@@ -8695,6 +8697,10 @@ id|EINVAL
 suffix:semicolon
 id|to
 op_assign
+(paren
+r_void
+op_star
+)paren
 id|getaddrs.addrs
 suffix:semicolon
 id|list_for_each
@@ -8749,6 +8755,16 @@ op_amp
 id|temp
 )paren
 suffix:semicolon
+id|addrlen
+op_assign
+id|sctp_get_af_specific
+c_func
+(paren
+id|sk-&gt;sk_family
+)paren
+op_member_access_from_pointer
+id|sockaddr_len
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -8760,10 +8776,7 @@ comma
 op_amp
 id|temp
 comma
-r_sizeof
-(paren
-id|temp
-)paren
+id|addrlen
 )paren
 )paren
 r_return
@@ -8771,7 +8784,8 @@ op_minus
 id|EFAULT
 suffix:semicolon
 id|to
-op_increment
+op_add_assign
+id|addrlen
 suffix:semicolon
 id|cnt
 op_increment
@@ -9036,8 +9050,7 @@ id|sctp_sockaddr_entry
 op_star
 id|from
 suffix:semicolon
-r_struct
-id|sockaddr_storage
+r_void
 op_star
 id|to
 suffix:semicolon
@@ -9055,6 +9068,9 @@ c_func
 (paren
 id|sk
 )paren
+suffix:semicolon
+r_int
+id|addrlen
 suffix:semicolon
 r_if
 c_cond
@@ -9155,6 +9171,10 @@ suffix:semicolon
 )brace
 id|to
 op_assign
+(paren
+r_void
+op_star
+)paren
 id|getaddrs.addrs
 suffix:semicolon
 id|list_for_each
@@ -9209,6 +9229,16 @@ op_amp
 id|temp
 )paren
 suffix:semicolon
+id|addrlen
+op_assign
+id|sctp_get_af_specific
+c_func
+(paren
+id|temp.sa.sa_family
+)paren
+op_member_access_from_pointer
+id|sockaddr_len
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -9220,10 +9250,7 @@ comma
 op_amp
 id|temp
 comma
-r_sizeof
-(paren
-id|temp
-)paren
+id|addrlen
 )paren
 )paren
 r_return
@@ -9231,7 +9258,8 @@ op_minus
 id|EFAULT
 suffix:semicolon
 id|to
-op_increment
+op_add_assign
+id|addrlen
 suffix:semicolon
 id|cnt
 op_increment
