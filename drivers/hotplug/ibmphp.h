@@ -1692,6 +1692,16 @@ suffix:semicolon
 multiline_comment|/* This function is called from HPC, so we need it to not be static */
 r_extern
 r_int
+id|ibmphp_do_disable_slot
+(paren
+r_struct
+id|slot
+op_star
+id|slot_cur
+)paren
+suffix:semicolon
+r_extern
+r_int
 id|ibmphp_update_slot_info
 (paren
 r_struct

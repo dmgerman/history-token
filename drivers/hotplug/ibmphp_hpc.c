@@ -3952,9 +3952,9 @@ id|FALSE
 suffix:semicolon
 id|rc
 op_assign
-id|ibmphp_disable_slot
+id|ibmphp_do_disable_slot
 (paren
-id|pslot-&gt;hotplug_slot
+id|pslot
 )paren
 suffix:semicolon
 )brace
