@@ -6093,12 +6093,12 @@ id|dir_per_block_bits
 )paren
 )paren
 (brace
-id|fat_fs_panic
+id|printk
 c_func
 (paren
-id|sb
-comma
-l_string|&quot;unable to read i-node block (i_pos %lld)&quot;
+id|KERN_ERR
+l_string|&quot;FAT: unable to read inode block &quot;
+l_string|&quot;for updating (i_pos %lld)&quot;
 comma
 id|i_pos
 )paren
@@ -6109,6 +6109,7 @@ c_func
 )paren
 suffix:semicolon
 r_return
+multiline_comment|/* -EIO */
 suffix:semicolon
 )brace
 id|spin_lock
