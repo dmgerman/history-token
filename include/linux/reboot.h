@@ -12,7 +12,7 @@ DECL|macro|LINUX_REBOOT_MAGIC2B
 mdefine_line|#define&t;LINUX_REBOOT_MAGIC2B&t;369367448
 DECL|macro|LINUX_REBOOT_MAGIC2C
 mdefine_line|#define&t;LINUX_REBOOT_MAGIC2C&t;537993216
-multiline_comment|/*&n; * Commands accepted by the _reboot() system call.&n; *&n; * RESTART     Restart system using default command and mode.&n; * HALT        Stop OS and give system control to ROM monitor, if any.&n; * CAD_ON      Ctrl-Alt-Del sequence causes RESTART command.&n; * CAD_OFF     Ctrl-Alt-Del sequence sends SIGINT to init task.&n; * POWER_OFF   Stop OS and remove all power from system, if possible.&n; * RESTART2    Restart system using given command string.&n; * SW_SUSPEND  Suspend system using Software Suspend if compiled in&n; */
+multiline_comment|/*&n; * Commands accepted by the _reboot() system call.&n; *&n; * RESTART     Restart system using default command and mode.&n; * HALT        Stop OS and give system control to ROM monitor, if any.&n; * CAD_ON      Ctrl-Alt-Del sequence causes RESTART command.&n; * CAD_OFF     Ctrl-Alt-Del sequence sends SIGINT to init task.&n; * POWER_OFF   Stop OS and remove all power from system, if possible.&n; * RESTART2    Restart system using given command string.&n; * SW_SUSPEND  Suspend system using software suspend if compiled in.&n; */
 DECL|macro|LINUX_REBOOT_CMD_RESTART
 mdefine_line|#define&t;LINUX_REBOOT_CMD_RESTART&t;0x01234567
 DECL|macro|LINUX_REBOOT_CMD_HALT
