@@ -151,12 +151,11 @@ id|ip_nat_info
 (brace
 multiline_comment|/* Set to zero when conntrack created: bitmask of maniptypes */
 DECL|member|initialized
-r_int
+id|u_int16_t
 id|initialized
 suffix:semicolon
 DECL|member|num_manips
-r_int
-r_int
+id|u_int16_t
 id|num_manips
 suffix:semicolon
 multiline_comment|/* Manipulations to be done on this conntrack. */
