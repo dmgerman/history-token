@@ -63,12 +63,12 @@ macro_line|#undef SUSPEND_CONSOLE
 macro_line|#endif
 DECL|macro|TIMEOUT
 mdefine_line|#define TIMEOUT&t;(6 * HZ)&t;&t;&t;/* Timeout for stopping processes */
+DECL|macro|__ADDRESS
+mdefine_line|#define __ADDRESS(x)  ((unsigned long) phys_to_virt(x))
 DECL|macro|ADDRESS
-mdefine_line|#define ADDRESS(x) ((unsigned long) phys_to_virt(((x) &lt;&lt; PAGE_SHIFT)))
-r_extern
-r_int
-id|C_A_D
-suffix:semicolon
+mdefine_line|#define ADDRESS(x) __ADDRESS((x) &lt;&lt; PAGE_SHIFT)
+DECL|macro|ADDRESS2
+mdefine_line|#define ADDRESS2(x) __ADDRESS(__pa(x))&t;&t;/* Needed for x86-64 where some pages are in memory twice */
 multiline_comment|/* References to section boundaries */
 r_extern
 r_char
@@ -273,13 +273,13 @@ l_string|&quot;Resume Machine: &quot;
 suffix:semicolon
 multiline_comment|/*&n; * Debug&n; */
 DECL|macro|DEBUG_DEFAULT
-macro_line|#undef&t;DEBUG_DEFAULT
+mdefine_line|#define&t;DEBUG_DEFAULT
 DECL|macro|DEBUG_PROCESS
 macro_line|#undef&t;DEBUG_PROCESS
 DECL|macro|DEBUG_SLOW
 macro_line|#undef&t;DEBUG_SLOW
 DECL|macro|TEST_SWSUSP
-mdefine_line|#define TEST_SWSUSP 1&t;&t;/* Set to 1 to reboot instead of halt machine after suspension */
+mdefine_line|#define TEST_SWSUSP 0&t;&t;/* Set to 1 to reboot instead of halt machine after suspension */
 macro_line|#ifdef DEBUG_DEFAULT
 DECL|macro|PRINTK
 macro_line|# define PRINTK(f, a...)       printk(f, ## a)
@@ -552,6 +552,15 @@ id|printk
 c_func
 (paren
 l_string|&quot;|&bslash;n&quot;
+)paren
+suffix:semicolon
+id|BUG_ON
+c_func
+(paren
+id|in_atomic
+c_func
+(paren
+)paren
 )paren
 suffix:semicolon
 r_return
@@ -894,11 +903,11 @@ op_logical_neg
 id|memcmp
 c_func
 (paren
-l_string|&quot;SUSP1R&quot;
+l_string|&quot;S1&quot;
 comma
 id|cur-&gt;swh.magic.magic
 comma
-l_int|6
+l_int|2
 )paren
 )paren
 id|memcpy
@@ -919,11 +928,11 @@ op_logical_neg
 id|memcmp
 c_func
 (paren
-l_string|&quot;SUSP2R&quot;
+l_string|&quot;S2&quot;
 comma
 id|cur-&gt;swh.magic.magic
 comma
-l_int|6
+l_int|2
 )paren
 )paren
 id|memcpy
@@ -971,7 +980,7 @@ c_func
 (paren
 id|cur-&gt;swh.magic.magic
 comma
-l_string|&quot;SUSP1R....&quot;
+l_string|&quot;S1SUSP....&quot;
 comma
 l_int|10
 )paren
@@ -998,7 +1007,7 @@ c_func
 (paren
 id|cur-&gt;swh.magic.magic
 comma
-l_string|&quot;SUSP2R....&quot;
+l_string|&quot;S2SUSP....&quot;
 comma
 l_int|10
 )paren
@@ -1017,7 +1026,7 @@ op_assign
 id|prev
 suffix:semicolon
 multiline_comment|/* prev is the first/last swap page of the resume area */
-multiline_comment|/* link.next lies *no more* in last 4 bytes of magic */
+multiline_comment|/* link.next lies *no more* in last 4/8 bytes of magic */
 )brace
 id|rw_swap_page_sync
 c_func
@@ -1972,6 +1981,7 @@ multiline_comment|/*&n;&t;&t;&t; * Just copy whole code segment. Hopefully it is
 r_if
 c_cond
 (paren
+(paren
 id|ADDRESS
 c_func
 (paren
@@ -1982,9 +1992,15 @@ op_ge
 r_int
 r_int
 )paren
+id|ADDRESS2
+c_func
+(paren
 op_amp
 id|__nosave_begin
+)paren
+)paren
 op_logical_and
+(paren
 id|ADDRESS
 c_func
 (paren
@@ -1995,14 +2011,19 @@ OL
 r_int
 r_int
 )paren
+id|ADDRESS2
+c_func
+(paren
 op_amp
 id|__nosave_end
+)paren
+)paren
 )paren
 (brace
 id|PRINTK
 c_func
 (paren
-l_string|&quot;[nosave %x]&quot;
+l_string|&quot;[nosave %lx]&quot;
 comma
 id|ADDRESS
 c_func
@@ -2042,8 +2063,16 @@ suffix:semicolon
 id|copy_page
 c_func
 (paren
+(paren
+r_void
+op_star
+)paren
 id|pagedir_p-&gt;address
 comma
+(paren
+r_void
+op_star
+)paren
 id|pagedir_p-&gt;orig_address
 )paren
 suffix:semicolon
@@ -2216,6 +2245,8 @@ id|__get_free_pages
 c_func
 (paren
 id|GFP_ATOMIC
+op_or
+id|__GFP_COLD
 comma
 id|pagedir_order
 )paren
@@ -2277,6 +2308,8 @@ id|get_zeroed_page
 c_func
 (paren
 id|GFP_ATOMIC
+op_or
+id|__GFP_COLD
 )paren
 suffix:semicolon
 r_if
@@ -2300,6 +2333,12 @@ r_return
 l_int|NULL
 suffix:semicolon
 )brace
+id|printk
+c_func
+(paren
+l_string|&quot;.&quot;
+)paren
+suffix:semicolon
 id|SetPageNosave
 c_func
 (paren
@@ -2484,18 +2523,10 @@ suffix:semicolon
 r_while
 c_loop
 (paren
-id|try_to_free_pages
+id|shrink_all_memory
 c_func
 (paren
-op_amp
-id|contig_page_data.node_zones
-(braket
-id|ZONE_HIGHMEM
-)braket
-comma
-id|GFP_KSWAPD
-comma
-l_int|0
+l_int|10000
 )paren
 )paren
 id|printk
@@ -2718,10 +2749,10 @@ multiline_comment|/* Hmm, is this the problem? */
 macro_line|#endif
 )brace
 )brace
-DECL|function|suspend_save_image
+DECL|function|suspend_prepare_image
 r_static
 r_int
-id|suspend_save_image
+id|suspend_prepare_image
 c_func
 (paren
 r_void
@@ -2936,9 +2967,12 @@ c_func
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * End of critical section. From now on, we can write to memory,&n;&t; * but we should not touch disk. This specially means we must _not_&n;&t; * touch swap space! Except we must write out our image of course.&n;&t; *&n;&t; * Following line enforces not writing to disk until we choose.&n;&t; */
-id|drivers_unsuspend
+id|printk
 c_func
 (paren
+l_string|&quot;critical section/: done (%d pages copied)&bslash;n&quot;
+comma
+id|nr_copy_pages
 )paren
 suffix:semicolon
 id|spin_unlock_irq
@@ -2948,12 +2982,22 @@ op_amp
 id|suspend_pagedir_lock
 )paren
 suffix:semicolon
-id|printk
+r_return
+l_int|0
+suffix:semicolon
+)brace
+DECL|function|suspend_save_image
+r_static
+r_void
+id|suspend_save_image
 c_func
 (paren
-l_string|&quot;critical section/: done (%d pages copied)&bslash;n&quot;
-comma
-id|nr_copy_pages
+r_void
+)paren
+(brace
+id|drivers_unsuspend
+c_func
+(paren
 )paren
 suffix:semicolon
 id|lock_swapdevices
@@ -2973,11 +3017,9 @@ c_func
 suffix:semicolon
 multiline_comment|/* This will unlock ignored swap devices since writing is finished */
 multiline_comment|/* It is important _NOT_ to umount filesystems at this point. We want&n;&t; * them synced (in case something goes wrong) but we DO not want to mark&n;&t; * filesystem clean: it is not. (And it does not matter, if we resume&n;&t; * correctly, we&squot;ll mark system clean, anyway.)&n;&t; */
-r_return
-l_int|0
-suffix:semicolon
 )brace
 DECL|function|suspend_power_down
+r_static
 r_void
 id|suspend_power_down
 c_func
@@ -2985,6 +3027,10 @@ c_func
 r_void
 )paren
 (brace
+r_extern
+r_int
+id|C_A_D
+suffix:semicolon
 id|C_A_D
 op_assign
 l_int|0
@@ -3167,17 +3213,17 @@ r_int
 id|pagedir_save
 )paren
 suffix:semicolon
-id|drivers_resume
-c_func
-(paren
-id|RESUME_ALL_PHASES
-)paren
-suffix:semicolon
 id|spin_unlock_irq
 c_func
 (paren
 op_amp
 id|suspend_pagedir_lock
+)paren
+suffix:semicolon
+id|drivers_resume
+c_func
+(paren
+id|RESUME_ALL_PHASES
 )paren
 suffix:semicolon
 id|PRINTK
@@ -3235,6 +3281,15 @@ c_func
 (paren
 )paren
 suffix:semicolon
+id|BUG_ON
+c_func
+(paren
+id|in_atomic
+c_func
+(paren
+)paren
+)paren
+suffix:semicolon
 id|spin_lock_irq
 c_func
 (paren
@@ -3260,17 +3315,25 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|suspend_save_image
+id|suspend_prepare_image
 c_func
 (paren
 )paren
 )paren
+(brace
+multiline_comment|/* suspend_save_image realeses suspend_pagedir_lock */
+id|suspend_save_image
+c_func
+(paren
+)paren
+suffix:semicolon
 id|suspend_power_down
 c_func
 (paren
 )paren
 suffix:semicolon
 multiline_comment|/* FIXME: if suspend_power_down is commented out, console is lost after few suspends ?! */
+)brace
 id|printk
 c_func
 (paren
@@ -3356,6 +3419,7 @@ id|name_suspend
 suffix:semicolon
 )brace
 DECL|function|do_software_suspend
+r_static
 r_void
 id|do_software_suspend
 c_func
@@ -4462,11 +4526,11 @@ op_logical_neg
 id|memcmp
 c_func
 (paren
-l_string|&quot;SUSP1R&quot;
+l_string|&quot;S1&quot;
 comma
 id|cur-&gt;swh.magic.magic
 comma
-l_int|6
+l_int|2
 )paren
 )paren
 id|memcpy
@@ -4487,11 +4551,11 @@ op_logical_neg
 id|memcmp
 c_func
 (paren
-l_string|&quot;SUSP2R&quot;
+l_string|&quot;S2&quot;
 comma
 id|cur-&gt;swh.magic.magic
 comma
-l_int|6
+l_int|2
 )paren
 )paren
 id|memcpy
