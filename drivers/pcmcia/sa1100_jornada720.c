@@ -1,8 +1,11 @@
 multiline_comment|/*&n; * drivers/pcmcia/sa1100_jornada720.c&n; *&n; * Jornada720 PCMCIA specific routines&n; *&n; */
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
+macro_line|#include &lt;linux/device.h&gt;
+macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;asm/hardware.h&gt;
+macro_line|#include &lt;asm/hardware/sa1111.h&gt;
 macro_line|#include &lt;asm/mach-types.h&gt;
 macro_line|#include &quot;sa1100_generic.h&quot;
 macro_line|#include &quot;sa1111_generic.h&quot;
@@ -225,6 +228,12 @@ suffix:semicolon
 )brace
 r_break
 suffix:semicolon
+r_default
+suffix:colon
+r_return
+op_minus
+l_int|1
+suffix:semicolon
 )brace
 r_if
 c_cond
@@ -291,7 +300,7 @@ id|pa_dwr_mask
 op_or
 id|pa_dwr_set
 suffix:semicolon
-id|locla_irq_restore
+id|local_irq_restore
 c_func
 (paren
 id|flags
@@ -384,7 +393,7 @@ suffix:semicolon
 )brace
 DECL|function|pcmcia_jornada720_exit
 r_void
-id|__exit
+id|__devexit
 id|pcmcia_jornada720_exit
 c_func
 (paren

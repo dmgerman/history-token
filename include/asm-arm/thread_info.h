@@ -125,6 +125,11 @@ id|cpu_context_save
 id|cpu_context
 suffix:semicolon
 multiline_comment|/* cpu context */
+DECL|member|restart_block
+r_struct
+id|restart_block
+id|restart_block
+suffix:semicolon
 DECL|member|fpstate
 r_union
 id|fp_state
@@ -133,7 +138,7 @@ suffix:semicolon
 )brace
 suffix:semicolon
 DECL|macro|INIT_THREAD_INFO
-mdefine_line|#define INIT_THREAD_INFO(tsk)&t;&t;&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&bslash;&n;&t;task:&t;&t;&amp;tsk,&t;&t;&t;&bslash;&n;&t;exec_domain:&t;&amp;default_exec_domain,&t;&bslash;&n;&t;flags:&t;&t;0,&t;&t;&t;&bslash;&n;&t;preempt_count:&t;0,&t;&t;&t;&bslash;&n;&t;addr_limit:&t;KERNEL_DS,&t;&t;&bslash;&n;&t;INIT_EXTRA_THREAD_INFO,&t;&t;&t;&bslash;&n;}
+mdefine_line|#define INIT_THREAD_INFO(tsk)&t;&t;&t;&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;.task&t;&t;= &amp;tsk,&t;&t;&t;&t;&bslash;&n;&t;.exec_domain&t;= &amp;default_exec_domain,&t;&t;&bslash;&n;&t;.flags&t;&t;= 0,&t;&t;&t;&t;&bslash;&n;&t;.preempt_count&t;= 1,&t;&t;&t;&t;&bslash;&n;&t;.addr_limit&t;= KERNEL_DS,&t;&t;&t;&bslash;&n;&t;.restart_block&t;= {&t;&t;&t;&t;&bslash;&n;&t;&t;.fn&t;= do_no_restart_syscall,&t;&bslash;&n;&t;},&t;&t;&t;&t;&t;&t;&bslash;&n;&t;INIT_EXTRA_THREAD_INFO,&t;&t;&t;&t;&bslash;&n;}
 DECL|macro|init_thread_info
 mdefine_line|#define init_thread_info&t;(init_thread_union.thread_info)
 DECL|macro|init_stack

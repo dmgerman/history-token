@@ -128,7 +128,7 @@ r_else
 r_if
 c_cond
 (paren
-id|dev_is_sa1111
+id|pcidev_is_sa1111
 c_func
 (paren
 id|pdev
