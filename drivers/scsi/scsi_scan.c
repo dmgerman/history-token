@@ -2039,13 +2039,6 @@ comma
 id|sdev-&gt;host-&gt;cmd_per_lun
 )paren
 suffix:semicolon
-id|init_waitqueue_head
-c_func
-(paren
-op_amp
-id|sdev-&gt;scpnt_wait
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren

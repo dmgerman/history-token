@@ -778,11 +778,6 @@ id|list_head
 id|same_target_siblings
 suffix:semicolon
 multiline_comment|/* just the devices sharing same target id */
-DECL|member|scpnt_wait
-id|wait_queue_head_t
-id|scpnt_wait
-suffix:semicolon
-multiline_comment|/* Used to wait if&n;&t;&t;&t;&t;&t;   device is busy */
 DECL|member|host
 r_struct
 id|Scsi_Host
@@ -1125,11 +1120,6 @@ multiline_comment|/* what device_blocked counts down from  */
 multiline_comment|/* default value if the device doesn&squot;t override */
 DECL|macro|SCSI_DEFAULT_DEVICE_BLOCKED
 mdefine_line|#define SCSI_DEFAULT_DEVICE_BLOCKED&t;3
-singleline_comment|// Flag to allow revalidate to succeed in sd_open
-DECL|member|allow_revalidate
-r_int
-id|allow_revalidate
-suffix:semicolon
 DECL|member|sdev_driverfs_dev
 r_struct
 id|device
