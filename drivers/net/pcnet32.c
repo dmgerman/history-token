@@ -4428,6 +4428,16 @@ l_int|2
 )paren
 suffix:semicolon
 )brace
+r_if
+c_cond
+(paren
+id|lp-&gt;rx_dma_addr
+(braket
+id|i
+)braket
+op_eq
+l_int|NULL
+)paren
 id|lp-&gt;rx_dma_addr
 (braket
 id|i
@@ -4679,7 +4689,7 @@ c_loop
 id|i
 op_increment
 OL
-l_int|100
+l_int|1000
 )paren
 r_if
 c_cond
@@ -5153,6 +5163,12 @@ id|entry
 )braket
 )paren
 suffix:semicolon
+id|wmb
+c_func
+(paren
+)paren
+suffix:semicolon
+multiline_comment|/* Make sure owner changes after all others are visible */
 id|lp-&gt;tx_ring
 (braket
 id|entry

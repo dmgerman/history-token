@@ -422,7 +422,7 @@ id|load_LDT
 c_func
 (paren
 op_amp
-id|current-&gt;mm-&gt;context
+id|current-&gt;active_mm-&gt;context
 )paren
 suffix:semicolon
 multiline_comment|/* This does lldt */

@@ -18,6 +18,7 @@ macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/initrd.h&gt;
 macro_line|#include &lt;linux/highmem.h&gt;
 macro_line|#include &lt;linux/bootmem.h&gt;
+macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;asm/processor.h&gt;
 macro_line|#include &lt;linux/console.h&gt;
 macro_line|#include &lt;linux/seq_file.h&gt;
@@ -50,6 +51,13 @@ DECL|variable|mmu_cr4_features
 r_int
 r_int
 id|mmu_cr4_features
+suffix:semicolon
+DECL|variable|mmu_cr4_features
+id|EXPORT_SYMBOL_GPL
+c_func
+(paren
+id|mmu_cr4_features
+)paren
 suffix:semicolon
 DECL|variable|__initdata
 r_int

@@ -1,4 +1,4 @@
-multiline_comment|/* JEDEC Flash Interface.&n; * This is an older type of interface for self programming flash. It is &n; * commonly use in older AMD chips and is obsolete compared with CFI.&n; * It is called JEDEC because the JEDEC association distributes the ID codes&n; * for the chips.&n; *&n; * See the AMD flash databook for information on how to operate the interface.&n; *&n; * This code does not support anything wider than 8 bit flash chips, I am&n; * not going to guess how to send commands to them, plus I expect they will&n; * all speak CFI..&n; *&n; * $Id: jedec.c,v 1.18 2003/05/28 12:51:48 dwmw2 Exp $&n; */
+multiline_comment|/* JEDEC Flash Interface.&n; * This is an older type of interface for self programming flash. It is &n; * commonly use in older AMD chips and is obsolete compared with CFI.&n; * It is called JEDEC because the JEDEC association distributes the ID codes&n; * for the chips.&n; *&n; * See the AMD flash databook for information on how to operate the interface.&n; *&n; * This code does not support anything wider than 8 bit flash chips, I am&n; * not going to guess how to send commands to them, plus I expect they will&n; * all speak CFI..&n; *&n; * $Id: jedec.c,v 1.19 2003/05/29 09:25:23 dwmw2 Exp $&n; */
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -854,7 +854,7 @@ id|count
 op_assign
 l_int|1
 suffix:semicolon
-id|strncpy
+id|strlcpy
 c_func
 (paren
 id|Part
@@ -868,18 +868,6 @@ id|Part
 op_minus
 l_int|10
 )paren
-suffix:semicolon
-id|Part
-(braket
-r_sizeof
-(paren
-id|Part
-)paren
-op_minus
-l_int|11
-)braket
-op_assign
-l_int|0
 suffix:semicolon
 id|strcat
 c_func
@@ -1262,8 +1250,7 @@ id|MTD
 )paren
 )paren
 suffix:semicolon
-singleline_comment|// strncpy(MTD-&gt;name,Part,sizeof(MTD-&gt;name));
-singleline_comment|// MTD-&gt;name[sizeof(MTD-&gt;name)-1] = 0;
+singleline_comment|// strlcpy(MTD-&gt;name,Part,sizeof(MTD-&gt;name));
 id|MTD-&gt;name
 op_assign
 id|map-&gt;name

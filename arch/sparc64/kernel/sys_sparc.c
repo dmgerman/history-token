@@ -2060,21 +2060,6 @@ r_return
 id|err
 suffix:semicolon
 )brace
-multiline_comment|/* only AP+ systems have sys_aplib */
-DECL|function|sys_aplib
-id|asmlinkage
-r_int
-id|sys_aplib
-c_func
-(paren
-r_void
-)paren
-(brace
-r_return
-op_minus
-id|ENOSYS
-suffix:semicolon
-)brace
 DECL|function|solaris_syscall
 id|asmlinkage
 r_int

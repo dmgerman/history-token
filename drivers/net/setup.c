@@ -28,22 +28,6 @@ c_func
 r_void
 )paren
 suffix:semicolon
-r_extern
-r_int
-id|sdla_setup
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-r_extern
-r_int
-id|sdla_c_setup
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
 multiline_comment|/*&n; *&t;Devices in this list must do new style probing. That is they must&n; *&t;allocate their own device objects and do their own bus scans.&n; */
 DECL|struct|net_probe
 r_struct
@@ -85,14 +69,6 @@ l_int|0
 )brace
 comma
 macro_line|#endif&t;
-macro_line|#if defined(CONFIG_SDLA)
-(brace
-id|sdla_c_setup
-comma
-l_int|0
-)brace
-comma
-macro_line|#endif
 macro_line|#if defined(CONFIG_SCC_ENET)
 (brace
 id|scc_enet_init
