@@ -830,7 +830,7 @@ id|BR_STATE_DISABLED
 op_logical_or
 op_logical_neg
 (paren
-id|br-&gt;dev.flags
+id|br-&gt;dev-&gt;flags
 op_amp
 id|IFF_UP
 )paren

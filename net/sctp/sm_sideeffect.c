@@ -1085,7 +1085,10 @@ l_int|0
 comma
 id|SCTP_CANT_STR_ASSOC
 comma
-l_int|0
+(paren
+id|__u16
+)paren
+id|error
 comma
 l_int|0
 comma

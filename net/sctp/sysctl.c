@@ -1,11 +1,6 @@
 multiline_comment|/* SCTP kernel reference Implementation &n; * Copyright (c) 2002 International Business Machines Corp.&n; * Copyright (c) 2002 Intel Corp.&n; * &n; * This file is part of the SCTP kernel reference Implementation&n; * &n; * Sysctl related interfaces for SCTP. &n; * &n; * The SCTP reference implementation is free software; &n; * you can redistribute it and/or modify it under the terms of &n; * the GNU General Public License as published by&n; * the Free Software Foundation; either version 2, or (at your option)&n; * any later version.&n; * &n; * The SCTP reference implementation is distributed in the hope that it &n; * will be useful, but WITHOUT ANY WARRANTY; without even the implied&n; *                 ************************&n; * warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.&n; * See the GNU General Public License for more details.&n; * &n; * You should have received a copy of the GNU General Public License&n; * along with GNU CC; see the file COPYING.  If not, write to&n; * the Free Software Foundation, 59 Temple Place - Suite 330,&n; * Boston, MA 02111-1307, USA.  &n; * &n; * Please send any bug reports or fixes you make to the&n; * email address(es):&n; *    lksctp developers &lt;lksctp-developers@lists.sourceforge.net&gt;&n; * &n; * Or submit a bug report through the following website:&n; *    http://www.sf.net/projects/lksctp&n; *&n; * Written or modified by: &n; *    Mingqin Liu           &lt;liuming@us.ibm.com&gt;&n; *    Jon Grimm             &lt;jgrimm@us.ibm.com&gt;&n; *    Ardelle Fan           &lt;ardelle.fan@intel.com&gt;&n; *&n; * Any bugs reported given to us we will try to fix... any fixes shared will&n; * be incorporated into the next SCTP release.&n; */
 macro_line|#include &lt;net/sctp/structs.h&gt;
 macro_line|#include &lt;linux/sysctl.h&gt;
-r_extern
-r_struct
-id|sctp_protocol
-id|sctp_proto
-suffix:semicolon
 DECL|variable|sctp_table
 r_static
 id|ctl_table
@@ -29,7 +24,7 @@ dot
 id|data
 op_assign
 op_amp
-id|sctp_proto.rto_initial
+id|sctp_rto_initial
 comma
 dot
 id|maxlen
@@ -72,7 +67,7 @@ dot
 id|data
 op_assign
 op_amp
-id|sctp_proto.rto_min
+id|sctp_rto_min
 comma
 dot
 id|maxlen
@@ -115,7 +110,7 @@ dot
 id|data
 op_assign
 op_amp
-id|sctp_proto.rto_max
+id|sctp_rto_max
 comma
 dot
 id|maxlen
@@ -158,7 +153,7 @@ dot
 id|data
 op_assign
 op_amp
-id|sctp_proto.valid_cookie_life
+id|sctp_valid_cookie_life
 comma
 dot
 id|maxlen
@@ -201,7 +196,7 @@ dot
 id|data
 op_assign
 op_amp
-id|sctp_proto.max_burst
+id|sctp_max_burst
 comma
 dot
 id|maxlen
@@ -238,7 +233,7 @@ dot
 id|data
 op_assign
 op_amp
-id|sctp_proto.max_retrans_association
+id|sctp_max_retrans_association
 comma
 dot
 id|maxlen
@@ -275,7 +270,7 @@ dot
 id|data
 op_assign
 op_amp
-id|sctp_proto.max_retrans_path
+id|sctp_max_retrans_path
 comma
 dot
 id|maxlen
@@ -312,7 +307,7 @@ dot
 id|data
 op_assign
 op_amp
-id|sctp_proto.max_retrans_init
+id|sctp_max_retrans_init
 comma
 dot
 id|maxlen
@@ -349,7 +344,7 @@ dot
 id|data
 op_assign
 op_amp
-id|sctp_proto.hb_interval
+id|sctp_hb_interval
 comma
 dot
 id|maxlen
@@ -392,7 +387,7 @@ dot
 id|data
 op_assign
 op_amp
-id|sctp_proto.cookie_preserve_enable
+id|sctp_cookie_preserve_enable
 comma
 dot
 id|maxlen
@@ -435,7 +430,7 @@ dot
 id|data
 op_assign
 op_amp
-id|sctp_proto.rto_alpha
+id|sctp_rto_alpha
 comma
 dot
 id|maxlen
@@ -472,7 +467,7 @@ dot
 id|data
 op_assign
 op_amp
-id|sctp_proto.rto_beta
+id|sctp_rto_beta
 comma
 dot
 id|maxlen

@@ -112,16 +112,6 @@ r_int
 id|gfp
 )paren
 (brace
-r_struct
-id|sctp_protocol
-op_star
-id|proto
-op_assign
-id|sctp_get_protocol
-c_func
-(paren
-)paren
-suffix:semicolon
 multiline_comment|/* Copy in the address.  */
 id|peer-&gt;ipaddr
 op_assign
@@ -166,7 +156,7 @@ l_int|0
 suffix:semicolon
 id|peer-&gt;rto
 op_assign
-id|proto-&gt;rto_initial
+id|sctp_rto_initial
 suffix:semicolon
 id|peer-&gt;rttvar
 op_assign
@@ -194,7 +184,7 @@ id|jiffies
 suffix:semicolon
 id|peer-&gt;active
 op_assign
-l_int|1
+id|SCTP_ACTIVE
 suffix:semicolon
 id|peer-&gt;hb_allowed
 op_assign
@@ -203,7 +193,7 @@ suffix:semicolon
 multiline_comment|/* Initialize the default path max_retrans.  */
 id|peer-&gt;max_retrans
 op_assign
-id|proto-&gt;max_retrans_path
+id|sctp_max_retrans_path
 suffix:semicolon
 id|peer-&gt;error_threshold
 op_assign
@@ -776,16 +766,6 @@ id|__u32
 id|rtt
 )paren
 (brace
-r_struct
-id|sctp_protocol
-op_star
-id|proto
-op_assign
-id|sctp_get_protocol
-c_func
-(paren
-)paren
-suffix:semicolon
 multiline_comment|/* Check for valid transport.  */
 id|SCTP_ASSERT
 c_func
@@ -825,7 +805,7 @@ op_minus
 (paren
 id|tp-&gt;rttvar
 op_rshift
-id|proto-&gt;rto_beta
+id|sctp_rto_beta
 )paren
 op_plus
 (paren
@@ -839,7 +819,7 @@ id|rtt
 )paren
 )paren
 op_rshift
-id|proto-&gt;rto_beta
+id|sctp_rto_beta
 )paren
 suffix:semicolon
 id|tp-&gt;srtt
@@ -849,13 +829,13 @@ op_minus
 (paren
 id|tp-&gt;srtt
 op_rshift
-id|proto-&gt;rto_alpha
+id|sctp_rto_alpha
 )paren
 op_plus
 (paren
 id|rtt
 op_rshift
-id|proto-&gt;rto_alpha
+id|sctp_rto_alpha
 )paren
 suffix:semicolon
 )brace

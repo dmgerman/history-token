@@ -701,6 +701,13 @@ c_func
 id|neigh_sysctl_register
 )paren
 suffix:semicolon
+DECL|variable|neigh_sysctl_unregister
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|neigh_sysctl_unregister
+)paren
+suffix:semicolon
 macro_line|#endif
 DECL|variable|pneigh_lookup
 id|EXPORT_SYMBOL
