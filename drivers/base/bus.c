@@ -716,11 +716,16 @@ r_struct
 id|list_head
 op_star
 id|entry
+comma
+op_star
+id|next
 suffix:semicolon
-id|list_for_each
+id|list_for_each_safe
 c_func
 (paren
 id|entry
+comma
+id|next
 comma
 op_amp
 id|drv-&gt;devices
