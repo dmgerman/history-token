@@ -2217,6 +2217,7 @@ id|opt_desc_t
 suffix:semicolon
 multiline_comment|/* possible values for &quot;-o block-allocator=&quot; and bits which are to be set in&n;   s_mount_opt of reiserfs specific part of in-core super block */
 DECL|variable|balloc
+r_static
 r_const
 id|arg_desc_t
 id|balloc
@@ -2257,6 +2258,7 @@ l_int|1
 )brace
 suffix:semicolon
 DECL|variable|tails
+r_static
 r_const
 id|arg_desc_t
 id|tails
