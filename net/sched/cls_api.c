@@ -2356,6 +2356,7 @@ id|exts
 )paren
 suffix:semicolon
 macro_line|#ifdef CONFIG_NET_CLS_ACT
+(brace
 r_int
 id|err
 suffix:semicolon
@@ -2472,6 +2473,7 @@ id|exts-&gt;action
 op_assign
 id|act
 suffix:semicolon
+)brace
 )brace
 macro_line|#elif defined CONFIG_NET_CLS_POLICE
 r_if
