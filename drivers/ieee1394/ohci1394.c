@@ -85,7 +85,7 @@ id|version
 )braket
 id|__devinitdata
 op_assign
-l_string|&quot;$Rev: 952 $ Ben Collins &lt;bcollins@debian.org&gt;&quot;
+l_string|&quot;$Rev: 986 $ Ben Collins &lt;bcollins@debian.org&gt;&quot;
 suffix:semicolon
 multiline_comment|/* Module Parameters */
 DECL|variable|phys_dma
@@ -3245,11 +3245,9 @@ id|d-&gt;free_prgs
 op_eq
 l_int|0
 )paren
-id|PRINT
+id|DBGMSG
 c_func
 (paren
-id|KERN_INFO
-comma
 id|ohci-&gt;id
 comma
 l_string|&quot;Transmit DMA FIFO ctx=%d is full... waiting&quot;

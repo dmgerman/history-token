@@ -1,5 +1,5 @@
-multiline_comment|/*&n; * eth1394.c -- Ethernet driver for Linux IEEE-1394 Subsystem&n; * &n; * Copyright (C) 2001 Ben Collins &lt;bcollins@debian.org&gt;&n; *               2000 Bonin Franck &lt;boninf@free.fr&gt;&n; *               2003 Steve Kinneberg &lt;kinnebergsteve@acmsystems.com&gt;&n; *&n; * Mainly based on work by Emanuel Pirker and Andreas E. Bombe&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software Foundation,&n; * Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.&n; */
-multiline_comment|/* This driver intends to support RFC 2734, which describes a method for&n; * transporting IPv4 datagrams over IEEE-1394 serial busses. This driver&n; * will ultimately support that method, but currently falls short in&n; * several areas.&n; *&n; * TODO:&n; * RFC 2734 related:&n; * - Add Config ROM entry&n; * - Add MCAP. Limited Multicast exists only to 224.0.0.1 and 224.0.0.2.&n; *&n; * Non-RFC 2734 related:&n; * - Fix bug related to fragmented broadcast datagrams&n; * - Move generic GASP reception to core 1394 code&n; * - Convert kmalloc/kfree for link fragments to use kmem_cache_* instead&n; * - Stability improvements&n; * - Performance enhancements&n; * - Change hardcoded 1394 bus address region to a dynamic memory space allocation&n; * - Consider garbage collecting old partial datagrams after X amount of time&n; */
+multiline_comment|/*&n; * eth1394.c -- Ethernet driver for Linux IEEE-1394 Subsystem&n; * &n; * Copyright (C) 2001-2003 Ben Collins &lt;bcollins@debian.org&gt;&n; *               2000 Bonin Franck &lt;boninf@free.fr&gt;&n; *               2003 Steve Kinneberg &lt;kinnebergsteve@acmsystems.com&gt;&n; *&n; * Mainly based on work by Emanuel Pirker and Andreas E. Bombe&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software Foundation,&n; * Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.&n; */
+multiline_comment|/* This driver intends to support RFC 2734, which describes a method for&n; * transporting IPv4 datagrams over IEEE-1394 serial busses. This driver&n; * will ultimately support that method, but currently falls short in&n; * several areas.&n; *&n; * TODO:&n; * RFC 2734 related:&n; * - Add Config ROM entry&n; * - Add MCAP. Limited Multicast exists only to 224.0.0.1 and 224.0.0.2.&n; *&n; * Non-RFC 2734 related:&n; * - Handle fragmented skb&squot;s coming from the networking layer.&n; * - Move generic GASP reception to core 1394 code&n; * - Convert kmalloc/kfree for link fragments to use kmem_cache_* instead&n; * - Stability improvements&n; * - Performance enhancements&n; * - Change hardcoded 1394 bus address region to a dynamic memory space allocation&n; * - Consider garbage collecting old partial datagrams after X amount of time&n; */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -47,7 +47,7 @@ id|version
 )braket
 id|__devinitdata
 op_assign
-l_string|&quot;$Rev: 971 $ Ben Collins &lt;bcollins@debian.org&gt;&quot;
+l_string|&quot;$Rev: 986 $ Ben Collins &lt;bcollins@debian.org&gt;&quot;
 suffix:semicolon
 DECL|struct|fragment_info
 r_struct
@@ -165,6 +165,12 @@ id|eth1394_sf_hdr
 )paren
 )brace
 suffix:semicolon
+multiline_comment|/* Change this to IEEE1394_SPEED_S100 to make testing easier */
+DECL|macro|ETH1394_SPEED_DEF
+mdefine_line|#define ETH1394_SPEED_DEF&t;IEEE1394_SPEED_MAX
+multiline_comment|/* For now, this needs to be 1500, so that XP works with us */
+DECL|macro|ETH1394_DATA_LEN
+mdefine_line|#define ETH1394_DATA_LEN&t;ETH_DATA_LEN
 DECL|variable|eth1394_speedto_maxpayload
 r_static
 r_const
@@ -438,6 +444,15 @@ op_ne
 l_int|NULL
 )paren
 (brace
+r_if
+c_cond
+(paren
+op_logical_neg
+id|in_interrupt
+c_func
+(paren
+)paren
+)paren
 id|hpsb_iso_shutdown
 c_func
 (paren
@@ -515,15 +530,6 @@ l_string|&quot;Error BROADCAST_CHANNEL register valid &quot;
 l_string|&quot;bit not set, can&squot;t send IP traffic&bslash;n&quot;
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|in_interrupt
-c_func
-(paren
-)paren
-)paren
 id|eth1394_iso_shutdown
 c_func
 (paren
@@ -548,6 +554,12 @@ l_int|0x3f
 )paren
 (brace
 multiline_comment|/* This really shouldn&squot;t be possible, but just in case&n;&t;&t;&t; * the IEEE 1394 spec changes regarding broadcast&n;&t;&t;&t; * channels in the future. */
+id|eth1394_iso_shutdown
+c_func
+(paren
+id|priv
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -559,12 +571,6 @@ c_func
 r_return
 op_minus
 id|EAGAIN
-suffix:semicolon
-id|eth1394_iso_shutdown
-c_func
-(paren
-id|priv
-)paren
 suffix:semicolon
 id|priv-&gt;broadcast_channel
 op_assign
@@ -663,15 +669,6 @@ comma
 l_string|&quot;Could not start data stream reception&bslash;n&quot;
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|in_interrupt
-c_func
-(paren
-)paren
-)paren
 id|eth1394_iso_shutdown
 c_func
 (paren
@@ -723,10 +720,17 @@ suffix:semicolon
 r_int
 id|ret
 suffix:semicolon
-multiline_comment|/* Set the spinlock before grabbing IRQ! */
-id|priv-&gt;lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+multiline_comment|/* Something bad happened, don&squot;t even try */
+r_if
+c_cond
+(paren
+id|priv-&gt;bc_state
+op_eq
+id|ETHER1394_BC_CLOSED
+)paren
+r_return
+op_minus
+id|EAGAIN
 suffix:semicolon
 id|spin_lock_irqsave
 c_func
@@ -926,11 +930,14 @@ op_logical_or
 (paren
 id|new_mtu
 OG
-id|MIN
+id|min
 c_func
 (paren
-id|ETH_DATA_LEN
+id|ETH1394_DATA_LEN
 comma
+(paren
+r_int
+)paren
 (paren
 id|priv-&gt;maxpayload
 (braket
@@ -1130,32 +1137,17 @@ suffix:semicolon
 id|u64
 id|guid
 op_assign
-(paren
-id|u64
-)paren
-(paren
+op_star
 (paren
 (paren
 id|u64
+op_star
 )paren
-id|be32_to_cpu
-c_func
+op_amp
 (paren
 id|host-&gt;csr.rom
 (braket
 l_int|3
-)braket
-)paren
-op_lshift
-l_int|32
-)paren
-op_or
-id|be32_to_cpu
-c_func
-(paren
-id|host-&gt;csr.rom
-(braket
-l_int|4
 )braket
 )paren
 )paren
@@ -1231,14 +1223,12 @@ id|priv-&gt;fifo
 )paren
 )paren
 suffix:semicolon
-macro_line|#if 1
-multiline_comment|/* Compile this out to make testing of fragmented broadcast datagrams&n; * easier. */
 id|priv-&gt;sspd
 (braket
 id|ALL_NODES
 )braket
 op_assign
-id|IEEE1394_SPEED_MAX
+id|ETH1394_SPEED_DEF
 suffix:semicolon
 id|priv-&gt;maxpayload
 (braket
@@ -1247,28 +1237,12 @@ id|ALL_NODES
 op_assign
 id|eth1394_speedto_maxpayload
 (braket
-id|IEEE1394_SPEED_MAX
-)braket
-suffix:semicolon
-macro_line|#else
 id|priv-&gt;sspd
 (braket
 id|ALL_NODES
 )braket
-op_assign
-id|IEEE1394_SPEED_100
-suffix:semicolon
-id|priv-&gt;maxpayload
-(braket
-id|ALL_NODES
-)braket
-op_assign
-id|eth1394_speedto_maxpayload
-(braket
-id|IEEE1394_SPEED_100
 )braket
 suffix:semicolon
-macro_line|#endif
 id|priv-&gt;bc_state
 op_assign
 id|ETHER1394_BC_CHECK
@@ -1308,11 +1282,15 @@ id|set_mtu
 (brace
 id|dev-&gt;mtu
 op_assign
-id|MIN
+id|min
 c_func
 (paren
-id|ETH_DATA_LEN
+id|ETH1394_DATA_LEN
 comma
+(paren
+r_int
+)paren
+(paren
 id|priv-&gt;maxpayload
 (braket
 id|phy_id
@@ -1326,6 +1304,7 @@ id|eth1394_hdr
 )paren
 op_plus
 id|ETHER1394_GASP_OVERHEAD
+)paren
 )paren
 )paren
 suffix:semicolon
@@ -1681,16 +1660,16 @@ op_star
 )paren
 id|dev-&gt;priv
 suffix:semicolon
-id|priv-&gt;host
-op_assign
-id|host
-suffix:semicolon
 id|spin_lock_init
 c_func
 (paren
 op_amp
 id|priv-&gt;lock
 )paren
+suffix:semicolon
+id|priv-&gt;host
+op_assign
+id|host
 suffix:semicolon
 r_for
 c_loop
@@ -1942,10 +1921,6 @@ id|eth1394_priv
 op_star
 )paren
 id|hi-&gt;dev-&gt;priv
-suffix:semicolon
-id|priv-&gt;bc_state
-op_assign
-id|ETHER1394_BC_CLOSED
 suffix:semicolon
 id|eth1394_iso_shutdown
 c_func
@@ -6044,48 +6019,30 @@ r_int
 id|flags
 suffix:semicolon
 multiline_comment|/* Statistics */
+id|spin_lock_irqsave
+c_func
+(paren
+op_amp
+id|priv-&gt;lock
+comma
+id|flags
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
 id|fail
 )paren
 (brace
-id|spin_lock_irqsave
-c_func
-(paren
-op_amp
-id|priv-&gt;lock
-comma
-id|flags
-)paren
-suffix:semicolon
 id|priv-&gt;stats.tx_dropped
 op_increment
 suffix:semicolon
 id|priv-&gt;stats.tx_errors
 op_increment
 suffix:semicolon
-id|spin_unlock_irqrestore
-c_func
-(paren
-op_amp
-id|priv-&gt;lock
-comma
-id|flags
-)paren
-suffix:semicolon
 )brace
 r_else
 (brace
-id|spin_lock_irqsave
-c_func
-(paren
-op_amp
-id|priv-&gt;lock
-comma
-id|flags
-)paren
-suffix:semicolon
 id|priv-&gt;stats.tx_bytes
 op_add_assign
 id|skb-&gt;len
@@ -6093,6 +6050,7 @@ suffix:semicolon
 id|priv-&gt;stats.tx_packets
 op_increment
 suffix:semicolon
+)brace
 id|spin_unlock_irqrestore
 c_func
 (paren
@@ -6102,7 +6060,6 @@ comma
 id|flags
 )paren
 suffix:semicolon
-)brace
 id|dev_kfree_skb_any
 c_func
 (paren
@@ -6400,18 +6357,14 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|priv-&gt;bc_state
-op_eq
-id|ETHER1394_BC_CHECK
-)paren
-(brace
-r_if
-c_cond
 (paren
+id|ret
+op_assign
 id|ether1394_init_bc
 c_func
 (paren
 id|dev
+)paren
 )paren
 )paren
 (brace
@@ -6426,7 +6379,6 @@ suffix:semicolon
 r_goto
 id|fail
 suffix:semicolon
-)brace
 )brace
 id|spin_unlock_irqrestore
 (paren
@@ -7057,7 +7009,7 @@ id|strcpy
 (paren
 id|info.version
 comma
-l_string|&quot;$Rev: 971 $&quot;
+l_string|&quot;$Rev: 986 $&quot;
 )paren
 suffix:semicolon
 multiline_comment|/* FIXME XXX provide sane businfo */
