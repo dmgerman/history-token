@@ -176,7 +176,11 @@ op_star
 id|pending_ipis
 op_assign
 op_amp
+id|this_cpu
+c_func
+(paren
 id|ipi_operation
+)paren
 suffix:semicolon
 r_int
 r_int
@@ -397,7 +401,13 @@ c_func
 id|op
 comma
 op_amp
+id|per_cpu
+c_func
+(paren
 id|ipi_operation
+comma
+id|dest_cpu
+)paren
 )paren
 suffix:semicolon
 id|platform_send_ipi

@@ -2,6 +2,7 @@ macro_line|#ifndef _ASM_IA64_BITOPS_H
 DECL|macro|_ASM_IA64_BITOPS_H
 mdefine_line|#define _ASM_IA64_BITOPS_H
 multiline_comment|/*&n; * Copyright (C) 1998-2002 Hewlett-Packard Co&n; *&t;David Mosberger-Tang &lt;davidm@hpl.hp.com&gt;&n; *&n; * 02/06/02 find_next_bit() and find_first_bit() added from Erich Focht&squot;s ia64 O(1)&n; *&t;    scheduler patch&n; */
+macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 multiline_comment|/**&n; * set_bit - Atomically set a bit in memory&n; * @nr: the bit to set&n; * @addr: the address to start counting from&n; *&n; * This function is atomic and may not be reordered.  See __set_bit()&n; * if you do not require the atomic guarantees.&n; * Note that @nr may be almost arbitrarily large; this function is not&n; * restricted to acting on a single-word quantity.&n; *&n; * The address must be (at least) &quot;long&quot; aligned.&n; * Note that there are driver (e.g., eepro100) which use these operations to operate on&n; * hw-defined data-structures, so we can&squot;t easily change these operations to force a&n; * bigger alignment.&n; *&n; * bit 0 is the LSB of addr; bit 32 is the LSB of (addr+1).&n; */
 r_static
@@ -267,7 +268,6 @@ id|nr
 op_rshift
 l_int|5
 )paren
-suffix:semicolon
 suffix:semicolon
 id|__u32
 id|m
