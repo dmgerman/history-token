@@ -484,7 +484,7 @@ l_int|0
 suffix:semicolon
 id|tmp
 OL
-id|intf-&gt;max_altsetting
+id|intf-&gt;num_altsetting
 suffix:semicolon
 id|tmp
 op_increment
