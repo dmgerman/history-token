@@ -1342,6 +1342,7 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|function|jfs_remount
+r_static
 r_int
 id|jfs_remount
 c_func
@@ -1717,6 +1718,10 @@ suffix:semicolon
 id|sb-&gt;s_fs_info
 op_assign
 id|sbi
+suffix:semicolon
+id|sbi-&gt;sb
+op_assign
+id|sb
 suffix:semicolon
 multiline_comment|/* initialize the mount flag and determine the default error handler */
 id|flag

@@ -508,13 +508,6 @@ id|___change_bit
 suffix:semicolon
 macro_line|#ifdef CONFIG_SMP
 multiline_comment|/* IRQ implementation. */
-DECL|variable|global_irq_holder
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|global_irq_holder
-)paren
-suffix:semicolon
 DECL|variable|synchronize_irq
 id|EXPORT_SYMBOL
 c_func

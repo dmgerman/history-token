@@ -12856,6 +12856,9 @@ id|chksum
 op_assign
 l_int|0
 suffix:semicolon
+r_int
+id|i
+suffix:semicolon
 multiline_comment|/* divide length by 4 to get # words */
 r_for
 c_loop
@@ -13188,7 +13191,7 @@ id|blkno
 )paren
 (brace
 r_int
-id|bblks
+id|hlen
 suffix:semicolon
 r_if
 c_cond
@@ -13288,7 +13291,7 @@ id|EIO
 suffix:semicolon
 )brace
 multiline_comment|/* LR body must have data or it wouldn&squot;t have been written */
-id|bblks
+id|hlen
 op_assign
 id|INT_GET
 c_func
@@ -13304,11 +13307,11 @@ c_cond
 id|unlikely
 c_func
 (paren
-id|bblks
+id|hlen
 op_le
 l_int|0
 op_logical_or
-id|bblks
+id|hlen
 OG
 id|INT_MAX
 )paren
@@ -14096,7 +14099,11 @@ id|hbp
 comma
 id|bufaddr
 comma
+id|BBTOB
+c_func
+(paren
 id|hblks
+)paren
 )paren
 suffix:semicolon
 r_if
@@ -14373,7 +14380,7 @@ id|dbp
 comma
 id|bufaddr
 comma
-id|XLOG_BIG_RECORD_BSIZE
+id|h_size
 )paren
 suffix:semicolon
 r_if
@@ -15530,7 +15537,7 @@ c_func
 (paren
 l_string|&quot;xlog_recover_check_summary(agi)&quot;
 comma
-id|log-&gt;l_mp
+id|mp
 comma
 id|agibp
 comma
@@ -15630,10 +15637,25 @@ suffix:semicolon
 macro_line|#ifdef XFS_LOUD_RECOVERY
 id|sbp
 op_assign
+op_amp
+id|mp-&gt;m_sb
+suffix:semicolon
+id|xfs_xlatesb
+c_func
+(paren
 id|XFS_BUF_TO_SBP
 c_func
 (paren
 id|sbbp
+)paren
+comma
+id|sbp
+comma
+l_int|1
+comma
+id|ARCH_CONVERT
+comma
+id|XFS_SB_ALL_BITS
 )paren
 suffix:semicolon
 id|cmn_err

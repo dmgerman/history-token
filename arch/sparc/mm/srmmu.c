@@ -3053,7 +3053,13 @@ c_func
 r_void
 )paren
 (brace
-r_return
+r_struct
+id|thread_info
+op_star
+id|ret
+suffix:semicolon
+id|ret
+op_assign
 (paren
 r_struct
 id|thread_info
@@ -3066,6 +3072,28 @@ id|GFP_KERNEL
 comma
 id|THREAD_INFO_ORDER
 )paren
+suffix:semicolon
+macro_line|#ifdef CONFIG_DEBUG_STACK_USAGE
+r_if
+c_cond
+(paren
+id|ret
+)paren
+id|memset
+c_func
+(paren
+id|ret
+comma
+l_int|0
+comma
+id|PAGE_SIZE
+op_lshift
+id|THREAD_INFO_ORDER
+)paren
+suffix:semicolon
+macro_line|#endif /* DEBUG_STACK_USAGE */
+r_return
+id|ret
 suffix:semicolon
 )brace
 DECL|function|srmmu_free_thread_info

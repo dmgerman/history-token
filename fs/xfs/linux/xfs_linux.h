@@ -50,6 +50,7 @@ macro_line|#include &lt;linux/vfs.h&gt;
 macro_line|#include &lt;linux/seq_file.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/proc_fs.h&gt;
+macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;asm/page.h&gt;
 macro_line|#include &lt;asm/div64.h&gt;
 macro_line|#include &lt;asm/param.h&gt;
@@ -124,6 +125,10 @@ DECL|macro|xfs_inherit_nodump
 mdefine_line|#define xfs_inherit_nodump&t;xfs_params.inherit_nodump.val
 DECL|macro|xfs_inherit_noatime
 mdefine_line|#define xfs_inherit_noatime&t;xfs_params.inherit_noatim.val
+DECL|macro|xfs_flush_interval
+mdefine_line|#define xfs_flush_interval&t;xfs_params.flush_interval.val
+DECL|macro|xfs_age_buffer
+mdefine_line|#define xfs_age_buffer&t;&t;xfs_params.age_buffer.val
 DECL|macro|current_cpu
 mdefine_line|#define current_cpu()&t;&t;smp_processor_id()
 DECL|macro|current_pid

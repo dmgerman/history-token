@@ -18,6 +18,10 @@ DECL|variable|cpqhp_debug
 r_int
 id|cpqhp_debug
 suffix:semicolon
+DECL|variable|cpqhp_legacy_mode
+r_int
+id|cpqhp_legacy_mode
+suffix:semicolon
 DECL|variable|cpqhp_ctrl_list
 r_struct
 id|controller
@@ -4838,6 +4842,25 @@ id|ctrl-&gt;interrupt
 op_assign
 id|pdev-&gt;irq
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|ctrl-&gt;interrupt
+OL
+l_int|0x10
+)paren
+(brace
+id|cpqhp_legacy_mode
+op_assign
+l_int|1
+suffix:semicolon
+id|dbg
+c_func
+(paren
+l_string|&quot;System seems to be configured for Full Table Mapped MPS mode&bslash;n&quot;
+)paren
+suffix:semicolon
+)brace
 id|ctrl-&gt;cfgspc_irq
 op_assign
 l_int|0

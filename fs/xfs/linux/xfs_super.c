@@ -752,7 +752,7 @@ id|ip
 )paren
 )paren
 suffix:semicolon
-id|filemap_fdatawrite
+id|filemap_flush
 c_func
 (paren
 id|inode-&gt;i_mapping
@@ -1504,7 +1504,7 @@ suffix:semicolon
 id|daemonize
 c_func
 (paren
-l_string|&quot;xfs_syncd&quot;
+l_string|&quot;xfssyncd&quot;
 )paren
 suffix:semicolon
 id|vfsp-&gt;vfs_sync_task

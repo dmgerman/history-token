@@ -313,6 +313,7 @@ suffix:semicolon
 multiline_comment|/*&n; * This function must run with irqs disabled!&n; */
 DECL|function|raise_softirq_irqoff
 r_inline
+id|fastcall
 r_void
 id|raise_softirq_irqoff
 c_func
@@ -353,6 +354,7 @@ id|raise_softirq_irqoff
 suffix:semicolon
 DECL|function|raise_softirq
 r_void
+id|fastcall
 id|raise_softirq
 c_func
 (paren
@@ -485,6 +487,7 @@ l_int|NULL
 suffix:semicolon
 DECL|function|__tasklet_schedule
 r_void
+id|fastcall
 id|__tasklet_schedule
 c_func
 (paren
@@ -546,6 +549,7 @@ id|__tasklet_schedule
 suffix:semicolon
 DECL|function|__tasklet_hi_schedule
 r_void
+id|fastcall
 id|__tasklet_hi_schedule
 c_func
 (paren

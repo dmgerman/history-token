@@ -56,6 +56,7 @@ suffix:semicolon
 DECL|macro|PACKB
 mdefine_line|#define PACKB(a, b)&t;&t;&t;(((a)&lt;&lt;4)|(b))
 DECL|variable|mbox_param
+r_static
 r_const
 id|u_char
 id|mbox_param

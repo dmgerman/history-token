@@ -15,6 +15,7 @@ macro_line|#include &lt;linux/notifier.h&gt;
 macro_line|#include &lt;linux/suspend.h&gt;
 macro_line|#include &lt;linux/blkdev.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
+macro_line|#include &lt;linux/smp.h&gt;
 macro_line|#include &lt;linux/timer.h&gt;
 macro_line|#include &lt;linux/rcupdate.h&gt;
 macro_line|#include &lt;linux/cpu.h&gt;
@@ -1882,6 +1883,7 @@ suffix:semicolon
 )brace
 DECL|function|wake_up_process
 r_int
+id|fastcall
 id|wake_up_process
 c_func
 (paren
@@ -1915,6 +1917,7 @@ id|wake_up_process
 suffix:semicolon
 DECL|function|wake_up_state
 r_int
+id|fastcall
 id|wake_up_state
 c_func
 (paren
@@ -1942,6 +1945,7 @@ suffix:semicolon
 multiline_comment|/*&n; * Perform scheduler related setup for a newly forked process p.&n; * p is forked by current.&n; */
 DECL|function|sched_fork
 r_void
+id|fastcall
 id|sched_fork
 c_func
 (paren
@@ -2058,6 +2062,7 @@ suffix:semicolon
 multiline_comment|/*&n; * wake_up_forked_process - wake up a freshly forked process.&n; *&n; * This function will do some initial scheduler statistics housekeeping&n; * that must be done for every newly created process.&n; */
 DECL|function|wake_up_forked_process
 r_void
+id|fastcall
 id|wake_up_forked_process
 c_func
 (paren
@@ -2216,6 +2221,7 @@ suffix:semicolon
 multiline_comment|/*&n; * Potentially available exiting-child timeslices are&n; * retrieved here - this way the parent does not get&n; * penalized for creating too many threads.&n; *&n; * (this cannot be used to &squot;generate&squot; timeslices&n; * artificially, because any timeslice recovered here&n; * was given away by the parent in the first place.)&n; */
 DECL|function|sched_exit
 r_void
+id|fastcall
 id|sched_exit
 c_func
 (paren
@@ -5825,6 +5831,7 @@ suffix:semicolon
 multiline_comment|/**&n; * __wake_up - wake up threads blocked on a waitqueue.&n; * @q: the waitqueue&n; * @mode: which threads&n; * @nr_exclusive: how many wake-one or wake-many threads to wake up&n; */
 DECL|function|__wake_up
 r_void
+id|fastcall
 id|__wake_up
 c_func
 (paren
@@ -5885,6 +5892,7 @@ suffix:semicolon
 multiline_comment|/*&n; * Same as __wake_up but called with the spinlock in wait_queue_head_t held.&n; */
 DECL|function|__wake_up_locked
 r_void
+id|fastcall
 id|__wake_up_locked
 c_func
 (paren
@@ -5913,6 +5921,7 @@ suffix:semicolon
 multiline_comment|/**&n; * __wake_up - sync- wake up threads blocked on a waitqueue.&n; * @q: the waitqueue&n; * @mode: which threads&n; * @nr_exclusive: how many wake-one or wake-many threads to wake up&n; *&n; * The sync wakeup differs that the waker knows that it will schedule&n; * away soon, so while the target thread will be woken up, it will not&n; * be migrated to another CPU - ie. the two threads are &squot;synchronized&squot;&n; * with each other. This can prevent needless bouncing between CPUs.&n; *&n; * On UP it can prevent extra preemption.&n; */
 DECL|function|__wake_up_sync
 r_void
+id|fastcall
 id|__wake_up_sync
 c_func
 (paren
@@ -6007,6 +6016,7 @@ suffix:semicolon
 multiline_comment|/* For internal use only */
 DECL|function|complete
 r_void
+id|fastcall
 id|complete
 c_func
 (paren
@@ -6066,6 +6076,7 @@ id|complete
 suffix:semicolon
 DECL|function|complete_all
 r_void
+id|fastcall
 id|complete_all
 c_func
 (paren
@@ -6121,6 +6132,7 @@ suffix:semicolon
 )brace
 DECL|function|wait_for_completion
 r_void
+id|fastcall
 id|wait_for_completion
 c_func
 (paren
@@ -6243,6 +6255,7 @@ DECL|macro|SLEEP_ON_TAIL
 mdefine_line|#define&t;SLEEP_ON_TAIL&t;&t;&t;&t;&t;&bslash;&n;&t;spin_lock_irq(&amp;q-&gt;lock);&t;&t;&t;&bslash;&n;&t;__remove_wait_queue(q, &amp;wait);&t;&t;&t;&bslash;&n;&t;spin_unlock_irqrestore(&amp;q-&gt;lock, flags);
 DECL|function|interruptible_sleep_on
 r_void
+id|fastcall
 id|interruptible_sleep_on
 c_func
 (paren
@@ -6273,6 +6286,7 @@ id|interruptible_sleep_on
 suffix:semicolon
 DECL|function|interruptible_sleep_on_timeout
 r_int
+id|fastcall
 id|interruptible_sleep_on_timeout
 c_func
 (paren
@@ -6312,6 +6326,7 @@ id|interruptible_sleep_on_timeout
 suffix:semicolon
 DECL|function|sleep_on
 r_void
+id|fastcall
 id|sleep_on
 c_func
 (paren
@@ -6342,6 +6357,7 @@ id|sleep_on
 suffix:semicolon
 DECL|function|sleep_on_timeout
 r_int
+id|fastcall
 id|sleep_on_timeout
 c_func
 (paren
@@ -7786,7 +7802,7 @@ id|mask
 comma
 id|p-&gt;cpus_allowed
 comma
-id|cpu_online_map
+id|cpu_possible_map
 )paren
 suffix:semicolon
 id|out_unlock

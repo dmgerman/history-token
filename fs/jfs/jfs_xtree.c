@@ -5622,6 +5622,7 @@ r_return
 id|rc
 suffix:semicolon
 )brace
+macro_line|#ifdef _NOTYET
 multiline_comment|/*&n; *      xtTailgate()&n; *&n; * function: split existing &squot;tail&squot; extent&n; *      (split offset &gt;= start offset of tail extent), and&n; *      relocate and extend the split tail half;&n; *&n; * note: existing extent may or may not have been committed.&n; * caller is responsible for pager buffer cache update, and&n; * working block allocation map update;&n; * update pmap: free old split tail extent, alloc new extent;&n; */
 DECL|function|xtTailgate
 r_int
@@ -6362,6 +6363,7 @@ r_return
 id|rc
 suffix:semicolon
 )brace
+macro_line|#endif /* _NOTYET */
 multiline_comment|/*&n; *      xtUpdate()&n; *&n; * function: update XAD;&n; *&n; *      update extent for allocated_but_not_recorded or&n; *      compressed extent;&n; *&n; * parameter:&n; *      nxad    - new XAD;&n; *                logical extent of the specified XAD must be completely&n; *                contained by an existing XAD;&n; */
 DECL|function|xtUpdate
 r_int

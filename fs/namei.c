@@ -1939,6 +1939,7 @@ suffix:semicolon
 multiline_comment|/*&n; * Name resolution.&n; *&n; * This is the basic name resolution function, turning a pathname&n; * into the final dentry.&n; *&n; * We expect &squot;base&squot; to be positive and a directory.&n; */
 DECL|function|link_path_walk
 r_int
+id|fastcall
 id|link_path_walk
 c_func
 (paren
@@ -2828,6 +2829,7 @@ suffix:semicolon
 )brace
 DECL|function|path_walk
 r_int
+id|fastcall
 id|path_walk
 c_func
 (paren
@@ -3267,6 +3269,7 @@ suffix:semicolon
 )brace
 DECL|function|path_lookup
 r_int
+id|fastcall
 id|path_lookup
 c_func
 (paren
@@ -3787,6 +3790,7 @@ suffix:semicolon
 multiline_comment|/*&n; *&t;namei()&n; *&n; * is used by most simple commands to get the inode of a specified name.&n; * Open, link etc use their own routines, but this is enough for things&n; * like &squot;chmod&squot; etc.&n; *&n; * namei exists in two versions: namei/lnamei. The only difference is&n; * that namei follows links, while lnamei does not.&n; * SMP-safe&n; */
 DECL|function|__user_walk
 r_int
+id|fastcall
 id|__user_walk
 c_func
 (paren

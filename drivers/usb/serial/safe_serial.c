@@ -61,6 +61,12 @@ id|MODULE_DESCRIPTION
 id|DRIVER_DESC
 )paren
 suffix:semicolon
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
+)paren
+suffix:semicolon
 macro_line|#if defined(CONFIG_USBD_SAFE_SERIAL_VENDOR) &amp;&amp; !defined(CONFIG_USBD_SAFE_SERIAL_PRODUCT)
 macro_line|#abort &quot;SAFE_SERIAL_VENDOR defined without SAFE_SERIAL_PRODUCT&quot;
 macro_line|#endif

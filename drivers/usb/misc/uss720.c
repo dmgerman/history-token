@@ -3051,12 +3051,6 @@ id|probe_abort_port
 suffix:semicolon
 )brace
 macro_line|#endif
-id|parport_proc_register
-c_func
-(paren
-id|pp
-)paren
-suffix:semicolon
 id|parport_announce_port
 c_func
 (paren
@@ -3076,7 +3070,7 @@ suffix:semicolon
 macro_line|#if 0
 id|probe_abort_port
 suffix:colon
-id|parport_unregister_port
+id|parport_put_port
 c_func
 (paren
 id|pp
@@ -3140,6 +3134,12 @@ id|priv
 op_assign
 id|pp-&gt;private_data
 suffix:semicolon
+id|parport_remove_port
+c_func
+(paren
+id|pp
+)paren
+suffix:semicolon
 macro_line|#if 0
 id|usb_release_irq
 c_func
@@ -3156,13 +3156,7 @@ id|priv-&gt;usbdev
 op_assign
 l_int|NULL
 suffix:semicolon
-id|parport_proc_unregister
-c_func
-(paren
-id|pp
-)paren
-suffix:semicolon
-id|parport_unregister_port
+id|parport_put_port
 c_func
 (paren
 id|pp

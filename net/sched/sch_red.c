@@ -25,10 +25,6 @@ macro_line|#include &lt;linux/skbuff.h&gt;
 macro_line|#include &lt;net/sock.h&gt;
 macro_line|#include &lt;net/pkt_sched.h&gt;
 macro_line|#include &lt;net/inet_ecn.h&gt;
-DECL|macro|RED_ECN_ECT
-mdefine_line|#define RED_ECN_ECT  0x02
-DECL|macro|RED_ECN_CE
-mdefine_line|#define RED_ECN_CE   0x01
 multiline_comment|/*&t;Random Early Detection (RED) algorithm.&n;&t;=======================================&n;&n;&t;Source: Sally Floyd and Van Jacobson, &quot;Random Early Detection Gateways&n;&t;for Congestion Avoidance&quot;, 1993, IEEE/ACM Transactions on Networking.&n;&n;&t;This file codes a &quot;divisionless&quot; version of RED algorithm&n;&t;as written down in Fig.17 of the paper.&n;&n;Short description.&n;------------------&n;&n;&t;When a new packet arrives we calculate the average queue length:&n;&n;&t;avg = (1-W)*avg + W*current_queue_len,&n;&n;&t;W is the filter time constant (chosen as 2^(-Wlog)), it controls&n;&t;the inertia of the algorithm. To allow larger bursts, W should be&n;&t;decreased.&n;&n;&t;if (avg &gt; th_max) -&gt; packet marked (dropped).&n;&t;if (avg &lt; th_min) -&gt; packet passes.&n;&t;if (th_min &lt; avg &lt; th_max) we calculate probability:&n;&n;&t;Pb = max_P * (avg - th_min)/(th_max-th_min)&n;&n;&t;and mark (drop) packet with this probability.&n;&t;Pb changes from 0 (at avg==th_min) to max_P (avg==th_max).&n;&t;max_P should be small (not 1), usually 0.01..0.02 is good value.&n;&n;&t;max_P is chosen as a number, so that max_P/(th_max-th_min)&n;&t;is a negative power of two in order arithmetics to contain&n;&t;only shifts.&n;&n;&n;&t;Parameters, settable by user:&n;&t;-----------------------------&n;&n;&t;limit&t;&t;- bytes (must be &gt; qth_max + burst)&n;&n;&t;Hard limit on queue length, should be chosen &gt;qth_max&n;&t;to allow packet bursts. This parameter does not&n;&t;affect the algorithms behaviour and can be chosen&n;&t;arbitrarily high (well, less than ram size)&n;&t;Really, this limit will never be reached&n;&t;if RED works correctly.&n;&n;&t;qth_min&t;&t;- bytes (should be &lt; qth_max/2)&n;&t;qth_max&t;&t;- bytes (should be at least 2*qth_min and less limit)&n;&t;Wlog&t;       &t;- bits (&lt;32) log(1/W).&n;&t;Plog&t;       &t;- bits (&lt;32)&n;&n;&t;Plog is related to max_P by formula:&n;&n;&t;max_P = (qth_max-qth_min)/2^Plog;&n;&n;&t;F.e. if qth_max=128K and qth_min=32K, then Plog=22&n;&t;corresponds to max_P=0.02&n;&n;&t;Scell_log&n;&t;Stab&n;&n;&t;Lookup table for log((1-W)^(t/t_ave).&n;&n;&n;NOTES:&n;&n;Upper bound on W.&n;-----------------&n;&n;&t;If you want to allow bursts of L packets of size S,&n;&t;you should choose W:&n;&n;&t;L + 1 - th_min/S &lt; (1-(1-W)^L)/W&n;&n;&t;th_min/S = 32         th_min/S = 4&n;&t;&t;&t;                       &n;&t;log(W)&t;L&n;&t;-1&t;33&n;&t;-2&t;35&n;&t;-3&t;39&n;&t;-4&t;46&n;&t;-5&t;57&n;&t;-6&t;75&n;&t;-7&t;101&n;&t;-8&t;135&n;&t;-9&t;190&n;&t;etc.&n; */
 DECL|struct|red_sched_data
 r_struct
@@ -150,20 +146,14 @@ c_func
 id|ETH_P_IP
 )paren
 suffix:colon
-(brace
-id|u8
-id|tos
-op_assign
-id|skb-&gt;nh.iph-&gt;tos
-suffix:semicolon
 r_if
 c_cond
 (paren
 op_logical_neg
+id|INET_ECN_is_capable
+c_func
 (paren
-id|tos
-op_amp
-id|RED_ECN_ECT
+id|skb-&gt;nh.iph-&gt;tos
 )paren
 )paren
 r_return
@@ -172,11 +162,10 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-op_logical_neg
+id|INET_ECN_is_not_ce
+c_func
 (paren
-id|tos
-op_amp
-id|RED_ECN_CE
+id|skb-&gt;nh.iph-&gt;tos
 )paren
 )paren
 id|IP_ECN_set_ce
@@ -188,7 +177,6 @@ suffix:semicolon
 r_return
 l_int|1
 suffix:semicolon
-)brace
 r_case
 id|__constant_htons
 c_func
@@ -196,50 +184,32 @@ c_func
 id|ETH_P_IPV6
 )paren
 suffix:colon
-(brace
-id|u32
-id|label
-op_assign
-op_star
-(paren
-id|u32
-op_star
-)paren
-id|skb-&gt;nh.raw
-suffix:semicolon
 r_if
 c_cond
 (paren
 op_logical_neg
-(paren
-id|label
-op_amp
-id|__constant_htonl
+id|INET_ECN_is_capable
 c_func
 (paren
-id|RED_ECN_ECT
-op_lshift
-l_int|20
+id|ip6_get_dsfield
+c_func
+(paren
+id|skb-&gt;nh.ipv6h
 )paren
 )paren
 )paren
 r_return
 l_int|0
 suffix:semicolon
-id|label
-op_or_assign
-id|__constant_htonl
+id|IP6_ECN_set_ce
 c_func
 (paren
-id|RED_ECN_CE
-op_lshift
-l_int|20
+id|skb-&gt;nh.ipv6h
 )paren
 suffix:semicolon
 r_return
 l_int|1
 suffix:semicolon
-)brace
 r_default
 suffix:colon
 r_return

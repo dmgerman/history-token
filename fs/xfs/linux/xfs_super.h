@@ -20,6 +20,22 @@ macro_line|#endif
 macro_line|#ifdef CONFIG_XFS_QUOTA
 DECL|macro|vfs_insertquota
 macro_line|# define vfs_insertquota(vfs)&t;vfs_insertops(vfsp, &amp;xfs_qmops)
+r_extern
+r_void
+id|xfs_qm_init
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|xfs_qm_exit
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
 DECL|macro|vfs_initquota
 macro_line|# define vfs_initquota()&t;xfs_qm_init()
 DECL|macro|vfs_exitquota
@@ -45,7 +61,7 @@ macro_line|# define set_posix_acl_flag(sb)&t;do { } while (0)
 macro_line|#endif
 macro_line|#ifdef CONFIG_XFS_SECURITY
 DECL|macro|XFS_SECURITY_STRING
-macro_line|# define XFS_SECURITY_STRING&t;&quot;security attrs, &quot;
+macro_line|# define XFS_SECURITY_STRING&t;&quot;security attributes, &quot;
 DECL|macro|ENOSECURITY
 macro_line|# define ENOSECURITY&t;&t;0
 macro_line|#else

@@ -8154,6 +8154,7 @@ r_return
 op_minus
 id|ENODEV
 suffix:semicolon
+r_return
 id|dev_mc_add
 c_func
 (paren
@@ -8165,9 +8166,6 @@ id|dev-&gt;addr_len
 comma
 l_int|1
 )paren
-suffix:semicolon
-r_return
-l_int|0
 suffix:semicolon
 r_case
 id|SIOCDELMULTI
@@ -8200,6 +8198,7 @@ r_return
 op_minus
 id|ENODEV
 suffix:semicolon
+r_return
 id|dev_mc_delete
 c_func
 (paren
@@ -8211,9 +8210,6 @@ id|dev-&gt;addr_len
 comma
 l_int|1
 )paren
-suffix:semicolon
-r_return
-l_int|0
 suffix:semicolon
 r_case
 id|SIOCGIFINDEX

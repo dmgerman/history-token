@@ -2033,7 +2033,6 @@ suffix:semicolon
 )brace
 multiline_comment|/* Given a scatterlist leader, choose an allocation method and fill&n;   in the blanks.  */
 r_static
-r_inline
 r_int
 DECL|function|sg_fill
 id|sg_fill

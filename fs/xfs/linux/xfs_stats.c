@@ -167,6 +167,12 @@ comma
 id|XFSSTAT_END_VNODE_OPS
 )brace
 comma
+(brace
+l_string|&quot;buf&quot;
+comma
+id|XFSSTAT_END_BUF
+)brace
+comma
 )brace
 suffix:semicolon
 multiline_comment|/* Loop over all stats groups */

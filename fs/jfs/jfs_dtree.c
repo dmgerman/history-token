@@ -194,29 +194,6 @@ id|btstack
 suffix:semicolon
 r_static
 r_int
-id|dtSearchNode
-c_func
-(paren
-r_struct
-id|inode
-op_star
-id|ip
-comma
-id|s64
-id|lmxaddr
-comma
-id|pxd_t
-op_star
-id|kpxd
-comma
-r_struct
-id|btstack
-op_star
-id|btstack
-)paren
-suffix:semicolon
-r_static
-r_int
 id|dtRelink
 c_func
 (paren
@@ -8469,6 +8446,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+macro_line|#ifdef _NOTYET
 multiline_comment|/*&n; * NAME:        dtRelocate()&n; *&n; * FUNCTION:    relocate dtpage (internal or leaf) of directory;&n; *              This function is mainly used by defragfs utility.&n; */
 DECL|function|dtRelocate
 r_int
@@ -9609,6 +9587,7 @@ r_goto
 id|loop
 suffix:semicolon
 )brace
+macro_line|#endif /* _NOTYET */
 multiline_comment|/*&n; *&t;dtRelink()&n; *&n; * function:&n; *&t;link around a freed page.&n; *&n; * parameter:&n; *&t;fp:&t;page to be freed&n; *&n; * return:&n; */
 DECL|function|dtRelink
 r_static
@@ -10611,6 +10590,7 @@ suffix:semicolon
 suffix:semicolon
 multiline_comment|/*&n; * function to determine next variable-sized jfs_dirent in buffer&n; */
 DECL|function|next_jfs_dirent
+r_static
 r_inline
 r_struct
 id|jfs_dirent

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * Copyright (c) 2000-2003 Silicon Graphics, Inc.  All Rights Reserved.&n; *&n; * This program is free software; you can redistribute it and/or modify it&n; * under the terms of version 2 of the GNU General Public License as&n; * published by the Free Software Foundation.&n; *&n; * This program is distributed in the hope that it would be useful, but&n; * WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.&n; *&n; * Further, this software is distributed without any warranty that it is&n; * free of the rightful claim of any third person regarding infringement&n; * or the like.  Any license provided herein, whether implied or&n; * otherwise, applies only to this software file.  Patent licenses, if&n; * any, provided herein do not apply to combinations of this program with&n; * other software, or any other product whatsoever.&n; *&n; * You should have received a copy of the GNU General Public License along&n; * with this program; if not, write the Free Software Foundation, Inc., 59&n; * Temple Place - Suite 330, Boston MA 02111-1307, USA.&n; *&n; * Contact information: Silicon Graphics, Inc., 1600 Amphitheatre Pkwy,&n; * Mountain View, CA  94043, or:&n; *&n; * http://www.sgi.com&n; *&n; * For further information regarding this notice, see:&n; *&n; * http://oss.sgi.com/projects/GenInfo/SGIGPLNoticeExplan/&n; */
+multiline_comment|/*&n; * Copyright (c) 2000-2004 Silicon Graphics, Inc.  All Rights Reserved.&n; *&n; * This program is free software; you can redistribute it and/or modify it&n; * under the terms of version 2 of the GNU General Public License as&n; * published by the Free Software Foundation.&n; *&n; * This program is distributed in the hope that it would be useful, but&n; * WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.&n; *&n; * Further, this software is distributed without any warranty that it is&n; * free of the rightful claim of any third person regarding infringement&n; * or the like.  Any license provided herein, whether implied or&n; * otherwise, applies only to this software file.  Patent licenses, if&n; * any, provided herein do not apply to combinations of this program with&n; * other software, or any other product whatsoever.&n; *&n; * You should have received a copy of the GNU General Public License along&n; * with this program; if not, write the Free Software Foundation, Inc., 59&n; * Temple Place - Suite 330, Boston MA 02111-1307, USA.&n; *&n; * Contact information: Silicon Graphics, Inc., 1600 Amphitheatre Pkwy,&n; * Mountain View, CA  94043, or:&n; *&n; * http://www.sgi.com&n; *&n; * For further information regarding this notice, see:&n; *&n; * http://oss.sgi.com/projects/GenInfo/SGIGPLNoticeExplan/&n; */
 multiline_comment|/*&n; * Written by Steve Lord, Jim Mostek, Russell Cattelan at SGI&n; */
 macro_line|#ifndef __XFS_BUF_H__
 DECL|macro|__XFS_BUF_H__
@@ -131,16 +131,6 @@ l_int|6
 )paren
 comma
 multiline_comment|/* buffer has dirty pages                  */
-DECL|enumerator|PBF_SYNC
-id|PBF_SYNC
-op_assign
-(paren
-l_int|1
-op_lshift
-l_int|8
-)paren
-comma
-multiline_comment|/* force updates to disk                   */
 DECL|enumerator|PBF_STALE
 id|PBF_STALE
 op_assign
@@ -203,6 +193,16 @@ l_int|15
 comma
 multiline_comment|/* do not block in current thread&t;   */
 multiline_comment|/* flags used only internally */
+DECL|enumerator|_PBF_PAGECACHE
+id|_PBF_PAGECACHE
+op_assign
+(paren
+l_int|1
+op_lshift
+l_int|16
+)paren
+comma
+multiline_comment|/* backed by pagecache&t;&t;   */
 DECL|enumerator|_PBF_ALL_PAGES_MAPPED
 id|_PBF_ALL_PAGES_MAPPED
 op_assign
@@ -828,7 +828,7 @@ id|page_buf_flags_t
 suffix:semicolon
 multiline_comment|/* PBF_LOCK, PBF_ASYNC,&t;&t;*/
 multiline_comment|/* PBF_READ, PBF_WRITE,&t;&t;*/
-multiline_comment|/* PBF_DELWRI, PBF_SYNC&t;&t;*/
+multiline_comment|/* PBF_DELWRI&t;&t;&t;*/
 r_extern
 r_int
 id|pagebuf_iorequest
@@ -1077,7 +1077,7 @@ mdefine_line|#define BUF_BUSY&t;&t;PBF_DONT_BLOCK
 DECL|macro|XFS_BUF_BFLAGS
 mdefine_line|#define XFS_BUF_BFLAGS(x)&t;((x)-&gt;pb_flags)
 DECL|macro|XFS_BUF_ZEROFLAGS
-mdefine_line|#define XFS_BUF_ZEROFLAGS(x)&t;&bslash;&n;&t;((x)-&gt;pb_flags &amp;= ~(PBF_READ|PBF_WRITE|PBF_ASYNC|PBF_SYNC|PBF_DELWRI))
+mdefine_line|#define XFS_BUF_ZEROFLAGS(x)&t;&bslash;&n;&t;((x)-&gt;pb_flags &amp;= ~(PBF_READ|PBF_WRITE|PBF_ASYNC|PBF_DELWRI))
 DECL|macro|XFS_BUF_STALE
 mdefine_line|#define XFS_BUF_STALE(x)&t;((x)-&gt;pb_flags |= XFS_B_STALE)
 DECL|macro|XFS_BUF_UNSTALE
@@ -1469,10 +1469,6 @@ r_int
 id|error
 op_assign
 l_int|0
-suffix:semicolon
-id|pb-&gt;pb_flags
-op_or_assign
-id|PBF_SYNC
 suffix:semicolon
 r_if
 c_cond

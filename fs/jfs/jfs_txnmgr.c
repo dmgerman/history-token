@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *   Copyright (C) International Business Machines Corp., 2000-2003&n; *   Portions Copyright (C) Christoph Hellwig, 2001-2002&n; *&n; *   This program is free software;  you can redistribute it and/or modify&n; *   it under the terms of the GNU General Public License as published by&n; *   the Free Software Foundation; either version 2 of the License, or &n; *   (at your option) any later version.&n; * &n; *   This program is distributed in the hope that it will be useful,&n; *   but WITHOUT ANY WARRANTY;  without even the implied warranty of&n; *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See&n; *   the GNU General Public License for more details.&n; *&n; *   You should have received a copy of the GNU General Public License&n; *   along with this program;  if not, write to the Free Software &n; *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA&n; */
+multiline_comment|/*&n; *   Copyright (C) International Business Machines Corp., 2000-2004&n; *   Portions Copyright (C) Christoph Hellwig, 2001-2002&n; *&n; *   This program is free software;  you can redistribute it and/or modify&n; *   it under the terms of the GNU General Public License as published by&n; *   the Free Software Foundation; either version 2 of the License, or &n; *   (at your option) any later version.&n; * &n; *   This program is distributed in the hope that it will be useful,&n; *   but WITHOUT ANY WARRANTY;  without even the implied warranty of&n; *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See&n; *   the GNU General Public License for more details.&n; *&n; *   You should have received a copy of the GNU General Public License&n; *   along with this program;  if not, write to the Free Software &n; *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA&n; */
 multiline_comment|/*&n; *      jfs_txnmgr.c: transaction manager&n; *&n; * notes:&n; * transaction starts with txBegin() and ends with txCommit()&n; * or txAbort().&n; *&n; * tlock is acquired at the time of update;&n; * (obviate scan at commit time for xtree and dtree)&n; * tlock and mp points to each other;&n; * (no hashlist for mp -&gt; tlock).&n; *&n; * special cases:&n; * tlock on in-memory inode:&n; * in-place tlock in the in-memory inode itself;&n; * converted to page lock by iWrite() at commit time.&n; *&n; * tlock during write()/mmap() under anonymous transaction (tid = 0):&n; * transferred (?) to transaction at commit time.&n; *&n; * use the page itself to update allocation maps&n; * (obviate intermediate replication of allocation/deallocation data)&n; * hold on to mp+lock thru update of maps&n; */
 macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;linux/vmalloc.h&gt;
@@ -367,6 +367,7 @@ id|completion
 id|jfsIOwait
 suffix:semicolon
 multiline_comment|/*&n; * forward references&n; */
+r_static
 r_int
 id|diLog
 c_func
@@ -397,6 +398,7 @@ op_star
 id|cd
 )paren
 suffix:semicolon
+r_static
 r_int
 id|dataLog
 c_func
@@ -422,6 +424,7 @@ op_star
 id|tlck
 )paren
 suffix:semicolon
+r_static
 r_void
 id|dtLog
 c_func
@@ -447,31 +450,7 @@ op_star
 id|tlck
 )paren
 suffix:semicolon
-r_void
-id|inlineLog
-c_func
-(paren
-r_struct
-id|jfs_log
-op_star
-id|log
-comma
-r_struct
-id|tblock
-op_star
-id|tblk
-comma
-r_struct
-id|lrd
-op_star
-id|lrd
-comma
-r_struct
-id|tlock
-op_star
-id|tlck
-)paren
-suffix:semicolon
+r_static
 r_void
 id|mapLog
 c_func
@@ -529,6 +508,7 @@ op_star
 id|tblk
 )paren
 suffix:semicolon
+r_static
 r_void
 id|txForce
 c_func
@@ -560,13 +540,6 @@ op_star
 id|cd
 )paren
 suffix:semicolon
-r_int
-id|txMoreLock
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
 r_static
 r_void
 id|txUpdateMap
@@ -589,6 +562,7 @@ op_star
 id|tblk
 )paren
 suffix:semicolon
+r_static
 r_void
 id|xtLog
 c_func
@@ -3717,25 +3691,21 @@ c_cond
 (paren
 id|tblk-&gt;xflag
 op_amp
-(paren
-id|COMMIT_CREATE
-op_or
 id|COMMIT_DELETE
-)paren
 )paren
 (brace
 id|atomic_inc
 c_func
 (paren
 op_amp
-id|tblk-&gt;ip-&gt;i_count
+id|tblk-&gt;u.ip-&gt;i_count
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t;&t; * Avoid a rare deadlock&n;&t;&t; *&n;&t;&t; * If the inode is locked, we may be blocked in&n;&t;&t; * jfs_commit_inode.  If so, we don&squot;t want the&n;&t;&t; * lazy_commit thread doing the last iput() on the inode&n;&t;&t; * since that may block on the locked inode.  Instead,&n;&t;&t; * commit the transaction synchronously, so the last iput&n;&t;&t; * will be done by the calling thread (or later)&n;&t;&t; */
 r_if
 c_cond
 (paren
-id|tblk-&gt;ip-&gt;i_state
+id|tblk-&gt;u.ip-&gt;i_state
 op_amp
 id|I_LOCK
 )paren
@@ -3759,7 +3729,7 @@ id|COMMIT_DELETE
 op_logical_or
 (paren
 (paren
-id|tblk-&gt;ip-&gt;i_nlink
+id|tblk-&gt;u.ip-&gt;i_nlink
 op_eq
 l_int|0
 )paren
@@ -3770,7 +3740,7 @@ c_func
 (paren
 id|COMMIT_Nolink
 comma
-id|tblk-&gt;ip
+id|tblk-&gt;u.ip
 )paren
 )paren
 )paren
@@ -4022,11 +3992,13 @@ op_assign
 id|cpu_to_le32
 c_func
 (paren
-id|new_encode_dev
+id|JFS_SBI
 c_func
 (paren
-id|ip-&gt;i_sb-&gt;s_bdev-&gt;bd_dev
+id|ip-&gt;i_sb
 )paren
+op_member_access_from_pointer
+id|aggregate
 )paren
 suffix:semicolon
 id|lrd-&gt;log.redopage.fileset
@@ -4189,6 +4161,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; *      diLog()&n; *&n; * function:    log inode tlock and format maplock to update bmap;&n; */
 DECL|function|diLog
+r_static
 r_int
 id|diLog
 c_func
@@ -4552,6 +4525,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; *      dataLog()&n; *&n; * function:    log data tlock&n; */
 DECL|function|dataLog
+r_static
 r_int
 id|dataLog
 c_func
@@ -4708,6 +4682,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; *      dtLog()&n; *&n; * function:    log dtree tlock and format maplock to update bmap;&n; */
 DECL|function|dtLog
+r_static
 r_void
 id|dtLog
 c_func
@@ -5048,6 +5023,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; *      xtLog()&n; *&n; * function:    log xtree tlock and format maplock to update bmap;&n; */
 DECL|function|xtLog
+r_static
 r_void
 id|xtLog
 c_func
@@ -7246,36 +7222,12 @@ op_amp
 id|COMMIT_CREATE
 )paren
 (brace
-id|ip
-op_assign
-id|tblk-&gt;ip
-suffix:semicolon
-id|ASSERT
-c_func
-(paren
-id|test_cflag
-c_func
-(paren
-id|COMMIT_New
-comma
-id|ip
-)paren
-)paren
-suffix:semicolon
-id|clear_cflag
-c_func
-(paren
-id|COMMIT_New
-comma
-id|ip
-)paren
-suffix:semicolon
 id|diUpdatePMap
 c_func
 (paren
 id|ipimap
 comma
-id|ip-&gt;i_ino
+id|tblk-&gt;ino
 comma
 id|FALSE
 comma
@@ -7293,13 +7245,7 @@ id|mlckALLOCPXD
 suffix:semicolon
 id|pxdlock.pxd
 op_assign
-id|JFS_IP
-c_func
-(paren
-id|ip
-)paren
-op_member_access_from_pointer
-id|ixpxd
+id|tblk-&gt;u.ixpxd
 suffix:semicolon
 id|pxdlock.index
 op_assign
@@ -7308,7 +7254,7 @@ suffix:semicolon
 id|txAllocPMap
 c_func
 (paren
-id|ip
+id|ipimap
 comma
 (paren
 r_struct
@@ -7319,12 +7265,6 @@ op_amp
 id|pxdlock
 comma
 id|tblk
-)paren
-suffix:semicolon
-id|iput
-c_func
-(paren
-id|ip
 )paren
 suffix:semicolon
 )brace
@@ -7339,7 +7279,7 @@ id|COMMIT_DELETE
 (brace
 id|ip
 op_assign
-id|tblk-&gt;ip
+id|tblk-&gt;u.ip
 suffix:semicolon
 id|diUpdatePMap
 c_func
@@ -8723,6 +8663,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; *      txLazyCommit(void)&n; *&n; *&t;All transactions except those changing ipimap (COMMIT_FORCE) are&n; *&t;processed by this routine.  This insures that the inode and block&n; *&t;allocation maps are updated in order.  For synchronous transactions,&n; *&t;let the user thread finish processing after txUpdateMap() is called.&n; */
 DECL|function|txLazyCommit
+r_static
 r_void
 id|txLazyCommit
 c_func

@@ -3339,46 +3339,10 @@ suffix:semicolon
 multiline_comment|/* length of returned extent */
 macro_line|#if defined(DEBUG) &amp;&amp; defined(__KERNEL__)
 multiline_comment|/*&n;&t; * Randomly don&squot;t execute the first algorithm.&n;&t; */
-r_static
-r_int
-id|seed
-suffix:semicolon
-multiline_comment|/* randomizing seed value */
 r_int
 id|dofirst
 suffix:semicolon
 multiline_comment|/* set to do first algorithm */
-id|timespec_t
-id|now
-suffix:semicolon
-multiline_comment|/* current time */
-r_if
-c_cond
-(paren
-op_logical_neg
-id|seed
-)paren
-(brace
-id|nanotime
-c_func
-(paren
-op_amp
-id|now
-)paren
-suffix:semicolon
-id|seed
-op_assign
-(paren
-r_int
-)paren
-id|now.tv_sec
-op_xor
-(paren
-r_int
-)paren
-id|now.tv_nsec
-suffix:semicolon
-)brace
 id|dofirst
 op_assign
 id|random
