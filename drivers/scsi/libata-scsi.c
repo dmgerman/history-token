@@ -4908,6 +4908,10 @@ id|ATAPI_DMADIR
 suffix:semicolon
 macro_line|#endif
 )brace
+id|qc-&gt;nbytes
+op_assign
+id|cmd-&gt;bufflen
+suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
