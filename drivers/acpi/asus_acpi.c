@@ -1,4 +1,8 @@
-multiline_comment|/*&n; *  asus_acpi.c - Asus Laptop ACPI Extras&n; *&n; *&n; *  Copyright (C) 2002, 2003 Julien Lerouge, Karol Kozimor&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; *&n; *&n; *  The development page for this driver is located at&n; *  http://sourceforge.net/projects/acpi4asus/&n; *&n; *  Credits:&n; *  Johann Wiesner - Small compile fixes&n; *  John Belmonte  - ACPI code for Toshiba laptop was a good starting point.&n; *&n; *  TODO&n; *  add Fn key status&n; *  Add mode selection on module loading (parameter) -&gt; still necessary ?&n; *  Complete display switching -- may require dirty hacks?&n; *&n; */
+multiline_comment|/*&n; *  asus_acpi.c - Asus Laptop ACPI Extras&n; *&n; *&n; *  Copyright (C) 2002, 2003 Julien Lerouge, Karol Kozimor&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; *&n; *&n; *  The development page for this driver is located at&n; *  http://sourceforge.net/projects/acpi4asus/&n; *&n; *  Credits:&n; *  Johann Wiesner - Small compile fixes&n; *  John Belmonte  - ACPI code for Toshiba laptop was a good starting point.&n; *&n; *  TODO:&n; *  add Fn key status&n; *  Add mode selection on module loading (parameter) -&gt; still necessary?&n; *  Complete display switching -- may require dirty hacks?&n; *  Complete support for Centrino laptops&n; *  Reading certain fields (e.g. &bslash;SG66 in A2500H) consistently fails, while &n; *    reading others (&bslash;BAOF, the same machine) succeeds. Why?&n; *&n; */
+macro_line|#include &lt;linux/config.h&gt;
+macro_line|#if defined (CONFIG_MODVERSIONS) &amp;&amp; !defined (MODVERSIONS) &amp;&amp; defined (MODULE)
+macro_line|#include &lt;linux/modversions.h&gt;
+macro_line|#endif
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
@@ -7,7 +11,7 @@ macro_line|#include &lt;linux/proc_fs.h&gt;
 macro_line|#include &lt;acpi/acpi_drivers.h&gt;
 macro_line|#include &lt;acpi/acpi_bus.h&gt;
 DECL|macro|ASUS_ACPI_VERSION
-mdefine_line|#define ASUS_ACPI_VERSION &quot;0.24a&quot;
+mdefine_line|#define ASUS_ACPI_VERSION &quot;0.25&quot;
 DECL|macro|PROC_ASUS
 mdefine_line|#define PROC_ASUS       &quot;asus&quot;&t;
 singleline_comment|//the directory
@@ -234,30 +238,16 @@ suffix:semicolon
 singleline_comment|//brighness level
 r_enum
 (brace
-DECL|enumerator|L2X
-id|L2X
+DECL|enumerator|A1X
+id|A1X
 op_assign
 l_int|0
 comma
-singleline_comment|//L200D -&gt; TODO check Q11 (Fn+F8)
-singleline_comment|//&t;   Calling this method simply hang the
-singleline_comment|//&t;   computer, ISMI method hangs the laptop.
-DECL|enumerator|L3X
-id|L3X
+singleline_comment|//A1340D, A1300F
+DECL|enumerator|A2X
+id|A2X
 comma
-singleline_comment|//L3C
-DECL|enumerator|L3D
-id|L3D
-comma
-singleline_comment|//L3400D
-DECL|enumerator|M2X
-id|M2X
-comma
-singleline_comment|//M2400E
-DECL|enumerator|S1X
-id|S1X
-comma
-singleline_comment|//S1300A -&gt; TODO special keys do not work ?
+singleline_comment|//A2500H
 DECL|enumerator|D1X
 id|D1X
 comma
@@ -266,19 +256,40 @@ DECL|enumerator|L1X
 id|L1X
 comma
 singleline_comment|//L1400B
-DECL|enumerator|A1X
-id|A1X
+DECL|enumerator|L2X
+id|L2X
 comma
-singleline_comment|//A1340D, A1300F
-DECL|enumerator|J1X
-id|J1X
+singleline_comment|//L200D -&gt; TODO check Q11 (Fn+F8)
+singleline_comment|//&t;   Calling this method simply hangs the
+singleline_comment|//&t;   computer, ISMI method hangs the laptop.
+DECL|enumerator|L3D
+id|L3D
 comma
-singleline_comment|//S200 (J1)
+singleline_comment|//L3400D
+DECL|enumerator|L3X
+id|L3X
+comma
+singleline_comment|//L3C
+DECL|enumerator|M2X
+id|M2X
+comma
+singleline_comment|//M2400E
+DECL|enumerator|M3N
+id|M3N
+comma
+singleline_comment|//M3700N, but also S1300N -&gt; TODO WLED
+DECL|enumerator|S1X
+id|S1X
+comma
+singleline_comment|//S1300A -&gt; TODO special keys do not work ?
+DECL|enumerator|S2X
+id|S2X
+comma
+singleline_comment|//S200 (J1 reported), Victor MP-XP7210
 singleline_comment|//TODO  A1370D does not seems to have a ATK device 
 singleline_comment|//&t;L8400 model doesn&squot;t have ATK
 DECL|enumerator|END_MODEL
 id|END_MODEL
-comma
 DECL|member|model
 )brace
 id|model
@@ -303,8 +314,10 @@ DECL|macro|L1X_PREFIX
 mdefine_line|#define L1X_PREFIX S1X_PREFIX
 DECL|macro|A1X_PREFIX
 mdefine_line|#define A1X_PREFIX &quot;&bslash;&bslash;_SB.PCI0.ISA.EC0.&quot;
-DECL|macro|J1X_PREFIX
-mdefine_line|#define J1X_PREFIX A1X_PREFIX
+DECL|macro|S2X_PREFIX
+mdefine_line|#define S2X_PREFIX A1X_PREFIX
+DECL|macro|M3N_PREFIX
+mdefine_line|#define M3N_PREFIX &quot;&bslash;&bslash;_SB.PCI0.SBRG.EC0.&quot;
 DECL|variable|model_conf
 r_static
 r_struct
@@ -317,82 +330,52 @@ op_assign
 (brace
 multiline_comment|/*&n;&t; * name|  mled |mled read|  wled |wled read| lcd sw |lcd read | &n;&t; * br up|br down | br set | br read | br status|set disp | get disp&n;&t; *&n;&t; * br set and read shall be in hotk device !&n;&t; * same for set disp&n;&t; *&n;&t; * TODO I have seen a SWBX and AIBX method on some models, like L1400B,&n;&t; * it seems to be a kind of switch, but what for ?&n;&t; *&n;&t; */
 (brace
-l_string|&quot;L2X&quot;
+l_string|&quot;A1X&quot;
 comma
 l_string|&quot;MLED&quot;
 comma
-l_string|&quot;&bslash;&bslash;SGP6&quot;
-comma
-l_string|&quot;WLED&quot;
-comma
-l_string|&quot;&bslash;&bslash;RCP3&quot;
-comma
-l_string|&quot;&bslash;&bslash;Q10&quot;
-comma
-l_string|&quot;&bslash;&bslash;SGP0&quot;
-comma
-l_string|&quot;&bslash;&bslash;Q0E&quot;
-comma
-l_string|&quot;&bslash;&bslash;Q0F&quot;
+l_string|&quot;&bslash;&bslash;MAIL&quot;
 comma
 l_int|NULL
 comma
 l_int|NULL
 comma
-l_int|NULL
-comma
-l_string|&quot;SDSP&quot;
-comma
-l_string|&quot;&bslash;&bslash;INFB&quot;
-)brace
-comma
-(brace
-l_string|&quot;L3X&quot;
-comma
-l_string|&quot;MLED&quot;
-comma
-l_int|NULL
-comma
-l_string|&quot;WLED&quot;
-comma
-l_int|NULL
-comma
-id|L3X_PREFIX
+id|A1X_PREFIX
 l_string|&quot;_Q10&quot;
 comma
-l_string|&quot;&bslash;&bslash;GL32&quot;
+l_string|&quot;&bslash;&bslash;BKLI&quot;
 comma
-id|L3X_PREFIX
-l_string|&quot;_Q0F&quot;
-comma
-id|L3X_PREFIX
+id|A1X_PREFIX
 l_string|&quot;_Q0E&quot;
 comma
-l_string|&quot;SPLV&quot;
-comma
-l_string|&quot;GPLV&quot;
-comma
-l_string|&quot;&bslash;&bslash;BLVL&quot;
-comma
-l_string|&quot;SDSP&quot;
-comma
-l_string|&quot;&bslash;&bslash;_SB.PCI0.PCI1.VGAC.NMAP&quot;
-)brace
-comma
-(brace
-l_string|&quot;L3D&quot;
-comma
-l_string|&quot;MLED&quot;
-comma
-l_string|&quot;&bslash;&bslash;MALD&quot;
-comma
-l_string|&quot;WLED&quot;
+id|A1X_PREFIX
+l_string|&quot;_Q0F&quot;
 comma
 l_int|NULL
 comma
+l_int|NULL
+comma
+l_int|NULL
+comma
+l_int|NULL
+comma
+l_int|NULL
+)brace
+comma
+(brace
+l_string|&quot;A2X&quot;
+comma
+l_string|&quot;MLED&quot;
+comma
+l_int|NULL
+comma
+l_string|&quot;WLED&quot;
+comma
+l_string|&quot;&bslash;&bslash;SG66&quot;
+comma
 l_string|&quot;&bslash;&bslash;Q10&quot;
 comma
-l_string|&quot;&bslash;&bslash;BKLG&quot;
+l_string|&quot;&bslash;&bslash;BAOF&quot;
 comma
 l_string|&quot;&bslash;&bslash;Q0E&quot;
 comma
@@ -402,74 +385,11 @@ l_string|&quot;SPLV&quot;
 comma
 l_string|&quot;GPLV&quot;
 comma
-l_string|&quot;&bslash;&bslash;BLVL&quot;
+l_string|&quot;&bslash;&bslash;CMOD&quot;
 comma
 l_string|&quot;SDSP&quot;
 comma
 l_string|&quot;&bslash;&bslash;INFB&quot;
-)brace
-comma
-(brace
-l_string|&quot;M2X&quot;
-comma
-l_string|&quot;MLED&quot;
-comma
-l_int|NULL
-comma
-l_string|&quot;WLED&quot;
-comma
-l_int|NULL
-comma
-l_string|&quot;&bslash;&bslash;Q10&quot;
-comma
-l_string|&quot;&bslash;&bslash;GP06&quot;
-comma
-l_string|&quot;&bslash;&bslash;Q0E&quot;
-comma
-l_string|&quot;&bslash;&bslash;Q0F&quot;
-comma
-l_string|&quot;SPLV&quot;
-comma
-l_string|&quot;GPLV&quot;
-comma
-l_int|NULL
-comma
-l_string|&quot;SDSP&quot;
-comma
-l_string|&quot;&bslash;&bslash;INFB&quot;
-)brace
-comma
-(brace
-l_string|&quot;S1X&quot;
-comma
-l_string|&quot;MLED&quot;
-comma
-l_string|&quot;&bslash;&bslash;EMLE&quot;
-comma
-l_string|&quot;WLED&quot;
-comma
-l_int|NULL
-comma
-id|S1X_PREFIX
-l_string|&quot;Q10&quot;
-comma
-l_string|&quot;&bslash;&bslash;PNOF&quot;
-comma
-id|S1X_PREFIX
-l_string|&quot;Q0F&quot;
-comma
-id|S1X_PREFIX
-l_string|&quot;Q0E&quot;
-comma
-l_string|&quot;SPLV&quot;
-comma
-l_string|&quot;GPLV&quot;
-comma
-l_string|&quot;&bslash;&bslash;BRIT&quot;
-comma
-l_int|NULL
-comma
-l_int|NULL
 )brace
 comma
 (brace
@@ -536,32 +456,188 @@ l_int|NULL
 )brace
 comma
 (brace
-l_string|&quot;A1X&quot;
+l_string|&quot;L2X&quot;
 comma
 l_string|&quot;MLED&quot;
 comma
-l_string|&quot;&bslash;&bslash;MAIL&quot;
+l_string|&quot;&bslash;&bslash;SGP6&quot;
+comma
+l_string|&quot;WLED&quot;
+comma
+l_string|&quot;&bslash;&bslash;RCP3&quot;
+comma
+l_string|&quot;&bslash;&bslash;Q10&quot;
+comma
+l_string|&quot;&bslash;&bslash;SGP0&quot;
+comma
+l_string|&quot;&bslash;&bslash;Q0E&quot;
+comma
+l_string|&quot;&bslash;&bslash;Q0F&quot;
 comma
 l_int|NULL
 comma
 l_int|NULL
 comma
-id|A1X_PREFIX
+l_int|NULL
+comma
+l_string|&quot;SDSP&quot;
+comma
+l_string|&quot;&bslash;&bslash;INFB&quot;
+)brace
+comma
+(brace
+l_string|&quot;L3D&quot;
+comma
+l_string|&quot;MLED&quot;
+comma
+l_string|&quot;&bslash;&bslash;MALD&quot;
+comma
+l_string|&quot;WLED&quot;
+comma
+l_int|NULL
+comma
+l_string|&quot;&bslash;&bslash;Q10&quot;
+comma
+l_string|&quot;&bslash;&bslash;BKLG&quot;
+comma
+l_string|&quot;&bslash;&bslash;Q0E&quot;
+comma
+l_string|&quot;&bslash;&bslash;Q0F&quot;
+comma
+l_string|&quot;SPLV&quot;
+comma
+l_string|&quot;GPLV&quot;
+comma
+l_string|&quot;&bslash;&bslash;BLVL&quot;
+comma
+l_string|&quot;SDSP&quot;
+comma
+l_string|&quot;&bslash;&bslash;INFB&quot;
+)brace
+comma
+(brace
+l_string|&quot;L3X&quot;
+comma
+l_string|&quot;MLED&quot;
+comma
+l_int|NULL
+comma
+l_string|&quot;WLED&quot;
+comma
+l_int|NULL
+comma
+id|L3X_PREFIX
 l_string|&quot;_Q10&quot;
 comma
-l_string|&quot;&bslash;&bslash;BKLI&quot;
+l_string|&quot;&bslash;&bslash;GL32&quot;
 comma
-id|A1X_PREFIX
-l_string|&quot;_Q0E&quot;
-comma
-id|A1X_PREFIX
+id|L3X_PREFIX
 l_string|&quot;_Q0F&quot;
 comma
-l_int|NULL
+id|L3X_PREFIX
+l_string|&quot;_Q0E&quot;
+comma
+l_string|&quot;SPLV&quot;
+comma
+l_string|&quot;GPLV&quot;
+comma
+l_string|&quot;&bslash;&bslash;BLVL&quot;
+comma
+l_string|&quot;SDSP&quot;
+comma
+l_string|&quot;&bslash;&bslash;_SB.PCI0.PCI1.VGAC.NMAP&quot;
+)brace
+comma
+(brace
+l_string|&quot;M2X&quot;
+comma
+l_string|&quot;MLED&quot;
 comma
 l_int|NULL
 comma
+l_string|&quot;WLED&quot;
+comma
 l_int|NULL
+comma
+l_string|&quot;&bslash;&bslash;Q10&quot;
+comma
+l_string|&quot;&bslash;&bslash;GP06&quot;
+comma
+l_string|&quot;&bslash;&bslash;Q0E&quot;
+comma
+l_string|&quot;&bslash;&bslash;Q0F&quot;
+comma
+l_string|&quot;SPLV&quot;
+comma
+l_string|&quot;GPLV&quot;
+comma
+l_int|NULL
+comma
+l_string|&quot;SDSP&quot;
+comma
+l_string|&quot;&bslash;&bslash;INFB&quot;
+)brace
+comma
+(brace
+l_string|&quot;M3N&quot;
+comma
+l_string|&quot;MLED&quot;
+comma
+l_int|NULL
+comma
+l_string|&quot;WLED&quot;
+comma
+l_string|&quot;&bslash;&bslash;PO33&quot;
+comma
+id|M3N_PREFIX
+l_string|&quot;_Q10&quot;
+comma
+l_string|&quot;&bslash;&bslash;BKLT&quot;
+comma
+id|M3N_PREFIX
+l_string|&quot;_Q0F&quot;
+comma
+id|M3N_PREFIX
+l_string|&quot;_Q0E&quot;
+comma
+l_string|&quot;SPLV&quot;
+comma
+l_string|&quot;GPLV&quot;
+comma
+l_string|&quot;&bslash;&bslash;LBTN&quot;
+comma
+l_string|&quot;SDSP&quot;
+comma
+l_string|&quot;&bslash;&bslash;ADVG&quot;
+)brace
+comma
+(brace
+l_string|&quot;S1X&quot;
+comma
+l_string|&quot;MLED&quot;
+comma
+l_string|&quot;&bslash;&bslash;EMLE&quot;
+comma
+l_string|&quot;WLED&quot;
+comma
+l_int|NULL
+comma
+id|S1X_PREFIX
+l_string|&quot;Q10&quot;
+comma
+l_string|&quot;&bslash;&bslash;PNOF&quot;
+comma
+id|S1X_PREFIX
+l_string|&quot;Q0F&quot;
+comma
+id|S1X_PREFIX
+l_string|&quot;Q0E&quot;
+comma
+l_string|&quot;SPLV&quot;
+comma
+l_string|&quot;GPLV&quot;
+comma
+l_string|&quot;&bslash;&bslash;BRIT&quot;
 comma
 l_int|NULL
 comma
@@ -569,7 +645,7 @@ l_int|NULL
 )brace
 comma
 (brace
-l_string|&quot;J1X&quot;
+l_string|&quot;S2X&quot;
 comma
 l_string|&quot;MLED&quot;
 comma
@@ -579,15 +655,15 @@ l_int|NULL
 comma
 l_int|NULL
 comma
-id|J1X_PREFIX
+id|S2X_PREFIX
 l_string|&quot;_Q10&quot;
 comma
 l_string|&quot;&bslash;&bslash;BKLI&quot;
 comma
-id|J1X_PREFIX
+id|S2X_PREFIX
 l_string|&quot;_Q0B&quot;
 comma
-id|J1X_PREFIX
+id|S2X_PREFIX
 l_string|&quot;_Q0A&quot;
 comma
 l_int|NULL
@@ -1917,7 +1993,7 @@ id|status
 op_assign
 l_int|0
 suffix:semicolon
-multiline_comment|/* ATKD laptop */
+multiline_comment|/* SPLV laptop */
 r_if
 c_cond
 (paren
@@ -1950,7 +2026,7 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
-multiline_comment|/* HOTK laptop if we are here, act as appropriate */
+multiline_comment|/* No SPLV method if we are here, act as appropriate */
 id|value
 op_sub_assign
 id|hotk-&gt;brightness
@@ -2040,7 +2116,7 @@ c_cond
 id|hotk-&gt;methods-&gt;brightness_get
 )paren
 (brace
-multiline_comment|/* ATKD laptop */
+multiline_comment|/* SPLV/GPLV laptop */
 r_if
 c_cond
 (paren
@@ -2096,7 +2172,7 @@ l_string|&quot;Asus ACPI: Error reading brightness&bslash;n&quot;
 suffix:semicolon
 )brace
 r_else
-multiline_comment|/* HOTK laptop */
+multiline_comment|/* No GPLV method */
 id|value
 op_assign
 id|hotk-&gt;brightness
@@ -2393,7 +2469,7 @@ id|value
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Preliminary support for display switching. As of now: 0x01 should activate &n; * the LCD output, 0x02 should do for CRT, and 0x04 for TV-Out. Any combination &n; * (bitwise) of these will suffice. I never actually tested 3 displays hooked up &n; * simultaneously, so be warned.&n; */
+multiline_comment|/*&n; * Experimental support for display switching. As of now: 0x01 should activate &n; * the LCD output, 0x02 should do for CRT, and 0x04 for TV-Out. Any combination &n; * (bitwise) of these will suffice. I never actually tested 3 displays hooked up &n; * simultaneously, so be warned.&n; */
 r_static
 r_int
 DECL|function|proc_write_disp
@@ -3018,7 +3094,7 @@ op_star
 id|data
 )paren
 (brace
-multiline_comment|/* TODO Find a better way to handle events count. Here, in data, we receive&n;&t; * the hotk, so we can make anything !!&n;&t; */
+multiline_comment|/* TODO Find a better way to handle events count. Here, in data, we receive&n;&t; * the hotk, so we can do anything!&n;&t; */
 r_struct
 id|asus_hotk
 op_star
@@ -3299,6 +3375,39 @@ c_func
 (paren
 id|model-&gt;string.pointer
 comma
+l_string|&quot;M3N&quot;
+comma
+l_int|3
+)paren
+op_eq
+l_int|0
+op_logical_or
+id|strncmp
+c_func
+(paren
+id|model-&gt;string.pointer
+comma
+l_string|&quot;S1N&quot;
+comma
+l_int|3
+)paren
+op_eq
+l_int|0
+)paren
+id|hotk-&gt;model
+op_assign
+id|M3N
+suffix:semicolon
+multiline_comment|/* S1300N is similar enough */
+r_else
+r_if
+c_cond
+(paren
+id|strncmp
+c_func
+(paren
+id|model-&gt;string.pointer
+comma
 l_string|&quot;L2&quot;
 comma
 l_int|2
@@ -3400,6 +3509,26 @@ c_func
 (paren
 id|model-&gt;string.pointer
 comma
+l_string|&quot;A2&quot;
+comma
+l_int|2
+)paren
+op_eq
+l_int|0
+)paren
+id|hotk-&gt;model
+op_assign
+id|A2X
+suffix:semicolon
+r_else
+r_if
+c_cond
+(paren
+id|strncmp
+c_func
+(paren
+id|model-&gt;string.pointer
+comma
 l_string|&quot;J1&quot;
 comma
 l_int|2
@@ -3409,7 +3538,7 @@ l_int|0
 )paren
 id|hotk-&gt;model
 op_assign
-id|J1X
+id|S2X
 suffix:semicolon
 r_if
 c_cond
@@ -3734,7 +3863,7 @@ l_string|&quot;  Notify Handler installed successfully&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* For HOTK laptops: init the hotk-&gt;brightness value */
+multiline_comment|/* For laptops without GPLV: init the hotk-&gt;brightness value */
 r_if
 c_cond
 (paren
@@ -3785,6 +3914,8 @@ id|KERN_NOTICE
 l_string|&quot;  Error changing brightness&bslash;n&quot;
 )paren
 suffix:semicolon
+r_else
+(brace
 id|status
 op_assign
 id|acpi_evaluate_object
@@ -3812,9 +3943,11 @@ id|printk
 c_func
 (paren
 id|KERN_NOTICE
-l_string|&quot;  Error changing brightness&bslash;n&quot;
+l_string|&quot;  Strange, error changing&quot;
+l_string|&quot; brightness&bslash;n&quot;
 )paren
 suffix:semicolon
+)brace
 )brace
 id|end
 suffix:colon
