@@ -326,15 +326,6 @@ id|sp-&gt;autoclose
 op_star
 id|HZ
 suffix:semicolon
-multiline_comment|/* Set up the default send/receive buffer space.  */
-id|sk-&gt;sk_rcvbuf
-op_assign
-id|sctp_rmem
-suffix:semicolon
-id|sk-&gt;sk_sndbuf
-op_assign
-id|sctp_wmem
-suffix:semicolon
 multiline_comment|/* Use SCTP specific send buffer space queues.  */
 id|sk-&gt;sk_write_space
 op_assign
