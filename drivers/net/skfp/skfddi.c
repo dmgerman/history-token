@@ -1098,30 +1098,6 @@ id|boot_msg
 )paren
 suffix:semicolon
 multiline_comment|/* Scan for Syskonnect FDDI PCI controllers */
-r_if
-c_cond
-(paren
-op_logical_neg
-id|pci_present
-c_func
-(paren
-)paren
-)paren
-(brace
-multiline_comment|/* is PCI BIOS even present? */
-id|printk
-c_func
-(paren
-l_string|&quot;no PCI BIOS present&bslash;n&quot;
-)paren
-suffix:semicolon
-r_return
-(paren
-op_minus
-id|ENODEV
-)paren
-suffix:semicolon
-)brace
 r_for
 c_loop
 (paren
