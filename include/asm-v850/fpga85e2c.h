@@ -4,9 +4,15 @@ DECL|macro|__V850_FPGA85E2C_H__
 mdefine_line|#define __V850_FPGA85E2C_H__
 macro_line|#include &lt;asm/clinkage.h&gt;
 DECL|macro|CPU_ARCH
-mdefine_line|#define CPU_ARCH&t;&t;&quot;v850e2&quot;
+mdefine_line|#define CPU_ARCH &t;&quot;v850e2&quot;
 DECL|macro|CPU_MODEL
-mdefine_line|#define CPU_MODEL&t;&t;&quot;FPGA NA85E2C/V850E2&quot;
+mdefine_line|#define CPU_MODEL&t;&quot;v850e2/fpga85e2c&quot;
+DECL|macro|CPU_MODEL_LONG
+mdefine_line|#define CPU_MODEL_LONG&t;&quot;NEC V850E2/NA85E2C&quot;
+DECL|macro|PLATFORM
+mdefine_line|#define PLATFORM&t;&quot;fpga85e2c&quot;
+DECL|macro|PLATFORM_LONG
+mdefine_line|#define PLATFORM_LONG&t;&quot;NA85E2C FPGA implementation&quot;
 multiline_comment|/* `external ram&squot;.  */
 DECL|macro|ERAM_ADDR
 mdefine_line|#define ERAM_ADDR&t;&t;0

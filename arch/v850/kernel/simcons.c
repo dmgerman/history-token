@@ -585,7 +585,7 @@ suffix:semicolon
 id|printk
 (paren
 id|KERN_INFO
-l_string|&quot;Console: GDB/v850e simulator stdio&bslash;n&quot;
+l_string|&quot;Console: GDB V850E simulator stdio&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace

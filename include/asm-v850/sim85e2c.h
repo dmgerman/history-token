@@ -3,9 +3,15 @@ macro_line|#ifndef __V850_SIM85E2C_H__
 DECL|macro|__V850_SIM85E2C_H__
 mdefine_line|#define __V850_SIM85E2C_H__
 DECL|macro|CPU_ARCH
-mdefine_line|#define CPU_ARCH&t;&t;&quot;v850e2&quot;
+mdefine_line|#define CPU_ARCH &t;&quot;v850e2&quot;
 DECL|macro|CPU_MODEL
-mdefine_line|#define CPU_MODEL&t;&t;&quot;sim85e2c simulator&quot;
+mdefine_line|#define CPU_MODEL&t;&quot;v850e2&quot;
+DECL|macro|CPU_MODEL_LONG
+mdefine_line|#define CPU_MODEL_LONG&t;&quot;NEC V850E2&quot;
+DECL|macro|PLATFORM
+mdefine_line|#define PLATFORM&t;&quot;sim85e2c&quot;
+DECL|macro|PLATFORM_LONG
+mdefine_line|#define PLATFORM_LONG&t;&quot;SIM85E2C V850E2 simulator&quot;
 multiline_comment|/* Various memory areas supported by the simulator.&n;   These should match the corresponding definitions in the linker script.  */
 multiline_comment|/* `instruction RAM&squot;; instruction fetches are much faster from IRAM than&n;   from DRAM.  */
 DECL|macro|IRAM_ADDR
