@@ -665,34 +665,6 @@ op_assign
 id|value
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Synchronize the IO-APIC and the CPU by doing&n; * a dummy read from the IO-APIC&n; */
-DECL|function|io_apic_sync
-r_static
-r_inline
-r_void
-id|io_apic_sync
-c_func
-(paren
-r_int
-r_int
-id|apic
-)paren
-(brace
-(paren
-r_void
-)paren
-op_star
-(paren
-id|IO_APIC_BASE
-c_func
-(paren
-id|apic
-)paren
-op_plus
-l_int|4
-)paren
-suffix:semicolon
-)brace
 multiline_comment|/* 1 if &quot;noapic&quot; boot option passed */
 r_extern
 r_int

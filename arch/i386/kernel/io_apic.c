@@ -379,15 +379,6 @@ r_int
 id|irq
 )paren
 (brace
-r_struct
-id|irq_pin_list
-op_star
-id|entry
-op_assign
-id|irq_2_pin
-op_plus
-id|irq
-suffix:semicolon
 id|__modify_IO_APIC_irq
 c_func
 (paren
@@ -396,13 +387,6 @@ comma
 l_int|0x00010000
 comma
 l_int|0
-)paren
-suffix:semicolon
-multiline_comment|/* Is it needed? Or do others need it too? */
-id|io_apic_sync
-c_func
-(paren
-id|entry-&gt;apic
 )paren
 suffix:semicolon
 )brace
