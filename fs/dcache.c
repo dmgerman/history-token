@@ -5168,7 +5168,7 @@ suffix:semicolon
 r_int
 id|i
 suffix:semicolon
-multiline_comment|/* &n;&t; * A constructor could be added for stable state like the lists,&n;&t; * but it is probably not worth it because of the cache nature&n;&t; * of the dcache. &n;&t; * If fragmentation is too bad then the SLAB_HWCACHE_ALIGN&n;&t; * flag could be removed here, to hint to the allocator that&n;&t; * it should not try to get multiple page regions.  &n;&t; */
+multiline_comment|/* &n;&t; * A constructor could be added for stable state like the lists,&n;&t; * but it is probably not worth it because of the cache nature&n;&t; * of the dcache. &n;&t; */
 id|dentry_cache
 op_assign
 id|kmem_cache_create
@@ -5184,8 +5184,6 @@ id|dentry
 comma
 l_int|0
 comma
-id|SLAB_HWCACHE_ALIGN
-op_or
 id|SLAB_RECLAIM_ACCOUNT
 comma
 l_int|NULL

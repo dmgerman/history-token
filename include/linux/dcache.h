@@ -204,7 +204,7 @@ id|hash
 suffix:semicolon
 )brace
 DECL|macro|DNAME_INLINE_LEN_MIN
-mdefine_line|#define DNAME_INLINE_LEN_MIN 16
+mdefine_line|#define DNAME_INLINE_LEN_MIN 24
 r_struct
 id|dcookie_struct
 suffix:semicolon
@@ -216,17 +216,17 @@ DECL|member|d_count
 id|atomic_t
 id|d_count
 suffix:semicolon
+DECL|member|d_lock
+id|spinlock_t
+id|d_lock
+suffix:semicolon
+multiline_comment|/* per dentry lock */
 DECL|member|d_vfs_flags
 r_int
 r_int
 id|d_vfs_flags
 suffix:semicolon
 multiline_comment|/* moved here to be on same cacheline */
-DECL|member|d_lock
-id|spinlock_t
-id|d_lock
-suffix:semicolon
-multiline_comment|/* per dentry lock */
 DECL|member|d_inode
 r_struct
 id|inode
@@ -351,9 +351,7 @@ id|DNAME_INLINE_LEN_MIN
 )braket
 suffix:semicolon
 multiline_comment|/* small names */
-DECL|variable|____cacheline_aligned
 )brace
-id|____cacheline_aligned
 suffix:semicolon
 DECL|macro|DNAME_INLINE_LEN
 mdefine_line|#define DNAME_INLINE_LEN&t;(sizeof(struct dentry)-offsetof(struct dentry,d_iname))
