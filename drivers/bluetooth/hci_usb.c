@@ -59,8 +59,9 @@ comma
 l_int|0x2033
 )paren
 comma
+dot
 id|driver_info
-suffix:colon
+op_assign
 id|HCI_IGNORE
 )brace
 comma
@@ -74,8 +75,9 @@ comma
 l_int|0x0001
 )paren
 comma
+dot
 id|driver_info
-suffix:colon
+op_assign
 id|HCI_DIGIANSWER
 )brace
 comma
