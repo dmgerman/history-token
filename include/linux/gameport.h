@@ -176,13 +176,13 @@ r_void
 op_star
 r_private
 suffix:semicolon
-DECL|member|name
+DECL|member|description
 r_char
 op_star
-id|name
+id|description
 suffix:semicolon
 DECL|member|connect
-r_void
+r_int
 (paren
 op_star
 id|connect
@@ -210,6 +210,11 @@ id|gameport
 op_star
 )paren
 suffix:semicolon
+DECL|member|driver
+r_struct
+id|device_driver
+id|driver
+suffix:semicolon
 DECL|member|node
 r_struct
 id|list_head
@@ -217,6 +222,8 @@ id|node
 suffix:semicolon
 )brace
 suffix:semicolon
+DECL|macro|to_gameport_driver
+mdefine_line|#define to_gameport_driver(d)&t;container_of(d, struct gameport_driver, driver)
 r_int
 id|gameport_open
 c_func

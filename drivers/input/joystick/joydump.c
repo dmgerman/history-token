@@ -6,16 +6,19 @@ macro_line|#include &lt;linux/gameport.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
+DECL|macro|DRIVER_DESC
+mdefine_line|#define DRIVER_DESC&t;&quot;Gameport data dumper module&quot;
 id|MODULE_AUTHOR
 c_func
 (paren
 l_string|&quot;Vojtech Pavlik &lt;vojtech@ucw.cz&gt;&quot;
 )paren
 suffix:semicolon
+DECL|variable|DRIVER_DESC
 id|MODULE_DESCRIPTION
 c_func
 (paren
-l_string|&quot;Gameport data dumper module&quot;
+id|DRIVER_DESC
 )paren
 suffix:semicolon
 id|MODULE_LICENSE
@@ -44,8 +47,7 @@ suffix:semicolon
 suffix:semicolon
 DECL|function|joydump_connect
 r_static
-r_void
-id|__devinit
+r_int
 id|joydump_connect
 c_func
 (paren
@@ -175,6 +177,8 @@ l_string|&quot;joydump: `-------------------- END -------------------&squot;&bsl
 )paren
 suffix:semicolon
 r_return
+op_minus
+id|ENODEV
 suffix:semicolon
 )brace
 id|gameport_cooked_read
@@ -528,11 +532,13 @@ id|KERN_INFO
 l_string|&quot;joydump: `-------------------- END -------------------&squot;&bslash;n&quot;
 )paren
 suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
 )brace
 DECL|function|joydump_disconnect
 r_static
 r_void
-id|__devexit
 id|joydump_disconnect
 c_func
 (paren
@@ -556,6 +562,22 @@ id|gameport_driver
 id|joydump_drv
 op_assign
 (brace
+dot
+id|driver
+op_assign
+(brace
+dot
+id|name
+op_assign
+l_string|&quot;joydump&quot;
+comma
+)brace
+comma
+dot
+id|description
+op_assign
+id|DRIVER_DESC
+comma
 dot
 id|connect
 op_assign

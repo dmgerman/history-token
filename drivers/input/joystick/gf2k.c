@@ -8,16 +8,19 @@ macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/input.h&gt;
 macro_line|#include &lt;linux/gameport.h&gt;
+DECL|macro|DRIVER_DESC
+mdefine_line|#define DRIVER_DESC&t;&quot;Genius Flight 2000 joystick driver&quot;
 id|MODULE_AUTHOR
 c_func
 (paren
 l_string|&quot;Vojtech Pavlik &lt;vojtech@ucw.cz&gt;&quot;
 )paren
 suffix:semicolon
+DECL|variable|DRIVER_DESC
 id|MODULE_DESCRIPTION
 c_func
 (paren
-l_string|&quot;Genius Flight 2000 joystick driver&quot;
+id|DRIVER_DESC
 )paren
 suffix:semicolon
 id|MODULE_LICENSE
@@ -1292,7 +1295,7 @@ suffix:semicolon
 multiline_comment|/*&n; * gf2k_connect() probes for Genius id joysticks.&n; */
 DECL|function|gf2k_connect
 r_static
-r_void
+r_int
 id|gf2k_connect
 c_func
 (paren
@@ -1321,6 +1324,8 @@ id|GF2K_LENGTH
 suffix:semicolon
 r_int
 id|i
+comma
+id|err
 suffix:semicolon
 r_if
 c_cond
@@ -1329,9 +1334,11 @@ op_logical_neg
 (paren
 id|gf2k
 op_assign
-id|kmalloc
+id|kcalloc
 c_func
 (paren
+l_int|1
+comma
 r_sizeof
 (paren
 r_struct
@@ -1343,20 +1350,8 @@ id|GFP_KERNEL
 )paren
 )paren
 r_return
-suffix:semicolon
-id|memset
-c_func
-(paren
-id|gf2k
-comma
-l_int|0
-comma
-r_sizeof
-(paren
-r_struct
-id|gf2k
-)paren
-)paren
+op_minus
+id|ENOMEM
 suffix:semicolon
 id|gameport
 op_member_access_from_pointer
@@ -1386,9 +1381,8 @@ id|gf2k-&gt;timer.function
 op_assign
 id|gf2k_timer
 suffix:semicolon
-r_if
-c_cond
-(paren
+id|err
+op_assign
 id|gameport_open
 c_func
 (paren
@@ -1398,6 +1392,11 @@ id|drv
 comma
 id|GAMEPORT_MODE_RAW
 )paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|err
 )paren
 r_goto
 id|fail1
@@ -1445,9 +1444,16 @@ id|data
 OL
 l_int|12
 )paren
+(brace
+id|err
+op_assign
+op_minus
+id|ENODEV
+suffix:semicolon
 r_goto
 id|fail2
 suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
@@ -1486,9 +1492,16 @@ l_int|5
 )paren
 )paren
 )paren
+(brace
+id|err
+op_assign
+op_minus
+id|ENODEV
+suffix:semicolon
 r_goto
 id|fail2
 suffix:semicolon
+)brace
 macro_line|#ifdef RESET_WORKS
 r_if
 c_cond
@@ -1565,9 +1578,16 @@ l_int|5
 )paren
 )paren
 )paren
+(brace
+id|err
+op_assign
+op_minus
+id|ENODEV
+suffix:semicolon
 r_goto
 id|fail2
 suffix:semicolon
+)brace
 macro_line|#else
 id|gf2k-&gt;id
 op_assign
@@ -1610,6 +1630,11 @@ id|gf2k_names
 id|gf2k-&gt;id
 )braket
 )paren
+suffix:semicolon
+id|err
+op_assign
+op_minus
+id|ENODEV
 suffix:semicolon
 r_goto
 id|fail2
@@ -1972,6 +1997,7 @@ id|gameport-&gt;phys
 )paren
 suffix:semicolon
 r_return
+l_int|0
 suffix:semicolon
 id|fail2
 suffix:colon
@@ -1988,6 +2014,9 @@ c_func
 (paren
 id|gf2k
 )paren
+suffix:semicolon
+r_return
+id|err
 suffix:semicolon
 )brace
 DECL|function|gf2k_disconnect
@@ -2038,6 +2067,22 @@ id|gameport_driver
 id|gf2k_drv
 op_assign
 (brace
+dot
+id|driver
+op_assign
+(brace
+dot
+id|name
+op_assign
+l_string|&quot;gf2k&quot;
+comma
+)brace
+comma
+dot
+id|description
+op_assign
+id|DRIVER_DESC
+comma
 dot
 id|connect
 op_assign

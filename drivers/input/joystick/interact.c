@@ -8,16 +8,19 @@ macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/gameport.h&gt;
 macro_line|#include &lt;linux/input.h&gt;
+DECL|macro|DRIVER_DESC
+mdefine_line|#define DRIVER_DESC&t;&quot;InterAct digital joystick driver&quot;
 id|MODULE_AUTHOR
 c_func
 (paren
 l_string|&quot;Vojtech Pavlik &lt;vojtech@ucw.cz&gt;&quot;
 )paren
 suffix:semicolon
+DECL|variable|DRIVER_DESC
 id|MODULE_DESCRIPTION
 c_func
 (paren
-l_string|&quot;InterAct digital joystick driver&quot;
+id|DRIVER_DESC
 )paren
 suffix:semicolon
 id|MODULE_LICENSE
@@ -1009,7 +1012,7 @@ suffix:semicolon
 multiline_comment|/*&n; * interact_connect() probes for InterAct joysticks.&n; */
 DECL|function|interact_connect
 r_static
-r_void
+r_int
 id|interact_connect
 c_func
 (paren
@@ -1040,6 +1043,9 @@ id|i
 comma
 id|t
 suffix:semicolon
+r_int
+id|err
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1047,9 +1053,11 @@ op_logical_neg
 (paren
 id|interact
 op_assign
-id|kmalloc
+id|kcalloc
 c_func
 (paren
+l_int|1
+comma
 r_sizeof
 (paren
 r_struct
@@ -1061,20 +1069,8 @@ id|GFP_KERNEL
 )paren
 )paren
 r_return
-suffix:semicolon
-id|memset
-c_func
-(paren
-id|interact
-comma
-l_int|0
-comma
-r_sizeof
-(paren
-r_struct
-id|interact
-)paren
-)paren
+op_minus
+id|ENOMEM
 suffix:semicolon
 id|gameport
 op_member_access_from_pointer
@@ -1104,9 +1100,8 @@ id|interact-&gt;timer.function
 op_assign
 id|interact_timer
 suffix:semicolon
-r_if
-c_cond
-(paren
+id|err
+op_assign
 id|gameport_open
 c_func
 (paren
@@ -1116,6 +1111,11 @@ id|drv
 comma
 id|GAMEPORT_MODE_RAW
 )paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|err
 )paren
 r_goto
 id|fail1
@@ -1164,6 +1164,11 @@ op_ne
 l_int|0x02
 )paren
 (brace
+id|err
+op_assign
+op_minus
+id|ENODEV
+suffix:semicolon
 r_goto
 id|fail2
 suffix:semicolon
@@ -1243,6 +1248,11 @@ id|data
 l_int|2
 )braket
 )paren
+suffix:semicolon
+id|err
+op_assign
+op_minus
+id|ENODEV
 suffix:semicolon
 r_goto
 id|fail2
@@ -1476,6 +1486,7 @@ id|gameport-&gt;phys
 )paren
 suffix:semicolon
 r_return
+l_int|0
 suffix:semicolon
 id|fail2
 suffix:colon
@@ -1492,6 +1503,9 @@ c_func
 (paren
 id|interact
 )paren
+suffix:semicolon
+r_return
+id|err
 suffix:semicolon
 )brace
 DECL|function|interact_disconnect
@@ -1542,6 +1556,22 @@ id|gameport_driver
 id|interact_drv
 op_assign
 (brace
+dot
+id|driver
+op_assign
+(brace
+dot
+id|name
+op_assign
+l_string|&quot;interact&quot;
+comma
+)brace
+comma
+dot
+id|description
+op_assign
+id|DRIVER_DESC
+comma
 dot
 id|connect
 op_assign

@@ -7,16 +7,19 @@ macro_line|#include &lt;linux/gameport.h&gt;
 macro_line|#include &lt;linux/input.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/proc_fs.h&gt;
+DECL|macro|DRIVER_DESC
+mdefine_line|#define DRIVER_DESC&t;&quot;Gravis Grip Multiport driver&quot;
 id|MODULE_AUTHOR
 c_func
 (paren
 l_string|&quot;Brian Bonnlander&quot;
 )paren
 suffix:semicolon
+DECL|variable|DRIVER_DESC
 id|MODULE_DESCRIPTION
 c_func
 (paren
-l_string|&quot;Gravis Grip Multiport driver&quot;
+id|DRIVER_DESC
 )paren
 suffix:semicolon
 id|MODULE_LICENSE
@@ -2113,7 +2116,7 @@ id|dig_mode
 id|dbg
 c_func
 (paren
-l_string|&quot;multiport_init(): digital mode achieved.&bslash;n&quot;
+l_string|&quot;multiport_init(): digital mode activated.&bslash;n&quot;
 )paren
 suffix:semicolon
 r_else
@@ -2121,7 +2124,7 @@ r_else
 id|dbg
 c_func
 (paren
-l_string|&quot;multiport_init(): unable to achieve digital mode.&bslash;n&quot;
+l_string|&quot;multiport_init(): unable to activate digital mode.&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -2647,46 +2650,27 @@ suffix:semicolon
 id|j
 op_increment
 )paren
-(brace
-id|set_bit
+id|input_set_abs_params
 c_func
 (paren
+op_amp
+id|grip-&gt;dev
+(braket
+id|slot
+)braket
+comma
 id|t
 comma
-id|grip-&gt;dev
-(braket
-id|slot
-)braket
-dot
-id|absbit
-)paren
-suffix:semicolon
-id|grip-&gt;dev
-(braket
-id|slot
-)braket
-dot
-id|absmin
-(braket
-id|t
-)braket
-op_assign
 op_minus
 l_int|1
-suffix:semicolon
-id|grip-&gt;dev
-(braket
-id|slot
-)braket
-dot
-id|absmax
-(braket
-id|t
-)braket
-op_assign
+comma
 l_int|1
+comma
+l_int|0
+comma
+l_int|0
+)paren
 suffix:semicolon
-)brace
 r_for
 c_loop
 (paren
@@ -2827,7 +2811,7 @@ suffix:semicolon
 )brace
 DECL|function|grip_connect
 r_static
-r_void
+r_int
 id|grip_connect
 c_func
 (paren
@@ -2847,6 +2831,9 @@ id|grip_mp
 op_star
 id|grip
 suffix:semicolon
+r_int
+id|err
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -2854,9 +2841,11 @@ op_logical_neg
 (paren
 id|grip
 op_assign
-id|kmalloc
+id|kcalloc
 c_func
 (paren
+l_int|1
+comma
 r_sizeof
 (paren
 r_struct
@@ -2868,20 +2857,8 @@ id|GFP_KERNEL
 )paren
 )paren
 r_return
-suffix:semicolon
-id|memset
-c_func
-(paren
-id|grip
-comma
-l_int|0
-comma
-r_sizeof
-(paren
-r_struct
-id|grip_mp
-)paren
-)paren
+op_minus
+id|ENOMEM
 suffix:semicolon
 id|gameport
 op_member_access_from_pointer
@@ -2911,9 +2888,8 @@ id|grip-&gt;timer.function
 op_assign
 id|grip_timer
 suffix:semicolon
-r_if
-c_cond
-(paren
+id|err
+op_assign
 id|gameport_open
 c_func
 (paren
@@ -2923,6 +2899,11 @@ id|drv
 comma
 id|GAMEPORT_MODE_RAW
 )paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|err
 )paren
 r_goto
 id|fail1
@@ -2937,9 +2918,16 @@ c_func
 id|grip
 )paren
 )paren
+(brace
+id|err
+op_assign
+op_minus
+id|ENODEV
+suffix:semicolon
 r_goto
 id|fail2
 suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
@@ -2955,7 +2943,6 @@ id|grip-&gt;mode
 l_int|1
 )braket
 op_logical_and
-multiline_comment|/* nothing plugged in */
 op_logical_neg
 id|grip-&gt;mode
 (braket
@@ -2968,10 +2955,19 @@ id|grip-&gt;mode
 l_int|3
 )braket
 )paren
+(brace
+multiline_comment|/* nothing plugged in */
+id|err
+op_assign
+op_minus
+id|ENODEV
+suffix:semicolon
 r_goto
 id|fail2
 suffix:semicolon
+)brace
 r_return
+l_int|0
 suffix:semicolon
 id|fail2
 suffix:colon
@@ -2988,6 +2984,9 @@ c_func
 (paren
 id|grip
 )paren
+suffix:semicolon
+r_return
+id|err
 suffix:semicolon
 )brace
 DECL|function|grip_disconnect
@@ -3065,6 +3064,22 @@ id|grip_drv
 op_assign
 (brace
 dot
+id|driver
+op_assign
+(brace
+dot
+id|name
+op_assign
+l_string|&quot;grip_mp&quot;
+comma
+)brace
+comma
+dot
+id|description
+op_assign
+id|DRIVER_DESC
+comma
+dot
 id|connect
 op_assign
 id|grip_connect
@@ -3079,6 +3094,7 @@ suffix:semicolon
 DECL|function|grip_init
 r_static
 r_int
+id|__init
 id|grip_init
 c_func
 (paren
@@ -3099,6 +3115,7 @@ suffix:semicolon
 DECL|function|grip_exit
 r_static
 r_void
+id|__exit
 id|grip_exit
 c_func
 (paren

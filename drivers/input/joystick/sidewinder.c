@@ -8,16 +8,19 @@ macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/input.h&gt;
 macro_line|#include &lt;linux/gameport.h&gt;
+DECL|macro|DRIVER_DESC
+mdefine_line|#define DRIVER_DESC&t;&quot;Microsoft SideWinder joystick family driver&quot;
 id|MODULE_AUTHOR
 c_func
 (paren
 l_string|&quot;Vojtech Pavlik &lt;vojtech@ucw.cz&gt;&quot;
 )paren
 suffix:semicolon
+DECL|variable|DRIVER_DESC
 id|MODULE_DESCRIPTION
 c_func
 (paren
-l_string|&quot;Microsoft SideWinder joystick family driver&quot;
+id|DRIVER_DESC
 )paren
 suffix:semicolon
 id|MODULE_LICENSE
@@ -3220,7 +3223,7 @@ suffix:semicolon
 multiline_comment|/*&n; * sw_connect() probes for SideWinder type joysticks.&n; */
 DECL|function|sw_connect
 r_static
-r_void
+r_int
 id|sw_connect
 c_func
 (paren
@@ -3248,6 +3251,9 @@ comma
 id|k
 comma
 id|l
+suffix:semicolon
+r_int
+id|err
 suffix:semicolon
 r_int
 r_char
@@ -3284,16 +3290,13 @@ l_int|0
 op_assign
 l_int|0
 suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-(paren
 id|sw
 op_assign
-id|kmalloc
+id|kcalloc
 c_func
 (paren
+l_int|1
+comma
 r_sizeof
 (paren
 r_struct
@@ -3301,23 +3304,6 @@ id|sw
 )paren
 comma
 id|GFP_KERNEL
-)paren
-)paren
-)paren
-r_return
-suffix:semicolon
-id|memset
-c_func
-(paren
-id|sw
-comma
-l_int|0
-comma
-r_sizeof
-(paren
-r_struct
-id|sw
-)paren
 )paren
 suffix:semicolon
 id|buf
@@ -3343,15 +3329,25 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+op_logical_neg
+id|sw
+op_logical_or
 op_logical_neg
 id|buf
 op_logical_or
 op_logical_neg
 id|idbuf
 )paren
+(brace
+id|err
+op_assign
+op_minus
+id|ENOMEM
+suffix:semicolon
 r_goto
 id|fail1
 suffix:semicolon
+)brace
 id|gameport
 op_member_access_from_pointer
 r_private
@@ -3380,9 +3376,8 @@ id|sw-&gt;timer.function
 op_assign
 id|sw_timer
 suffix:semicolon
-r_if
-c_cond
-(paren
+id|err
+op_assign
 id|gameport_open
 c_func
 (paren
@@ -3392,6 +3387,11 @@ id|drv
 comma
 id|GAMEPORT_MODE_RAW
 )paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|err
 )paren
 r_goto
 id|fail1
@@ -3495,10 +3495,17 @@ c_cond
 op_logical_neg
 id|i
 )paren
+(brace
+multiline_comment|/* No data -&gt; FAIL */
+id|err
+op_assign
+op_minus
+id|ENODEV
+suffix:semicolon
 r_goto
 id|fail2
 suffix:semicolon
-multiline_comment|/* No data -&gt; FAIL */
+)brace
 )brace
 id|j
 op_assign
@@ -3581,9 +3588,16 @@ c_cond
 op_logical_neg
 id|i
 )paren
+(brace
+id|err
+op_assign
+op_minus
+id|ENODEV
+suffix:semicolon
 r_goto
 id|fail2
 suffix:semicolon
+)brace
 id|udelay
 c_func
 (paren
@@ -3872,12 +3886,10 @@ c_loop
 (paren
 id|k
 op_logical_and
-(paren
 id|sw-&gt;type
 op_eq
 op_minus
 l_int|1
-)paren
 )paren
 suffix:semicolon
 r_if
@@ -3926,6 +3938,11 @@ id|buf
 comma
 id|m
 )paren
+suffix:semicolon
+id|err
+op_assign
+op_minus
+id|ENODEV
 suffix:semicolon
 r_goto
 id|fail2
@@ -4347,6 +4364,7 @@ id|k
 suffix:semicolon
 )brace
 r_return
+l_int|0
 suffix:semicolon
 id|fail2
 suffix:colon
@@ -4375,6 +4393,9 @@ c_func
 (paren
 id|idbuf
 )paren
+suffix:semicolon
+r_return
+id|err
 suffix:semicolon
 )brace
 DECL|function|sw_disconnect
@@ -4443,6 +4464,22 @@ id|gameport_driver
 id|sw_drv
 op_assign
 (brace
+dot
+id|driver
+op_assign
+(brace
+dot
+id|name
+op_assign
+l_string|&quot;sidewinder&quot;
+comma
+)brace
+comma
+dot
+id|description
+op_assign
+id|DRIVER_DESC
+comma
 dot
 id|connect
 op_assign
