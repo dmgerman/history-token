@@ -744,36 +744,6 @@ c_func
 id|irda_start_timer
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_IRTTY
-DECL|variable|irtty_set_dtr_rts
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|irtty_set_dtr_rts
-)paren
-suffix:semicolon
-DECL|variable|irtty_register_dongle
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|irtty_register_dongle
-)paren
-suffix:semicolon
-DECL|variable|irtty_unregister_dongle
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|irtty_unregister_dongle
-)paren
-suffix:semicolon
-DECL|variable|irtty_set_packet_mode
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|irtty_set_packet_mode
-)paren
-suffix:semicolon
-macro_line|#endif
 macro_line|#ifdef CONFIG_IRDA_DEBUG
 DECL|variable|irda_debug
 id|__u32
