@@ -382,11 +382,6 @@ DECL|member|tape_type
 r_int
 id|tape_type
 suffix:semicolon
-DECL|member|timeout
-r_int
-id|timeout
-suffix:semicolon
-multiline_comment|/* timeout for normal commands */
 DECL|member|long_timeout
 r_int
 id|long_timeout

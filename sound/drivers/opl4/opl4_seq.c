@@ -1,6 +1,7 @@
 multiline_comment|/*&n; * OPL4 sequencer functions&n; *&n; * Copyright (c) 2003 by Clemens Ladisch &lt;clemens@ladisch.de&gt;&n; * All rights reserved.&n; *&n; * Redistribution and use in source and binary forms, with or without&n; * modification, are permitted provided that the following conditions&n; * are met:&n; * 1. Redistributions of source code must retain the above copyright&n; *    notice, this list of conditions, and the following disclaimer,&n; *    without modification.&n; * 2. The name of the author may not be used to endorse or promote products&n; *    derived from this software without specific prior written permission.&n; *&n; * Alternatively, this software may be distributed and/or modified under the&n; * terms of the GNU General Public License as published by the Free Software&n; * Foundation; either version 2 of the License, or (at your option) any later&n; * version.&n; *&n; * THIS SOFTWARE IS PROVIDED BY THE AUTHOR AND CONTRIBUTORS ``AS IS&squot;&squot; AND&n; * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE&n; * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE&n; * ARE DISCLAIMED. IN NO EVENT SHALL THE AUTHOR OR CONTRIBUTORS BE LIABLE FOR&n; * ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL&n; * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS&n; * OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)&n; * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT&n; * LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY&n; * OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF&n; * SUCH DAMAGE.&n; */
 macro_line|#include &quot;opl4_local.h&quot;
 macro_line|#include &lt;linux/init.h&gt;
+macro_line|#include &lt;linux/moduleparam.h&gt;
 macro_line|#include &lt;sound/initval.h&gt;
 id|MODULE_AUTHOR
 c_func
@@ -32,12 +33,14 @@ id|volume_boost
 op_assign
 l_int|8
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|volume_boost
 comma
-l_string|&quot;i&quot;
+r_int
+comma
+l_int|0644
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC

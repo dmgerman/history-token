@@ -1,9 +1,8 @@
 multiline_comment|/*&n; * Driver for PowerMac AWACS&n; * Copyright (c) 2001 by Takashi Iwai &lt;tiwai@suse.de&gt;&n; *   based on dmasound.c.&n; *&n; *   This program is free software; you can redistribute it and/or modify&n; *   it under the terms of the GNU General Public License as published by&n; *   the Free Software Foundation; either version 2 of the License, or&n; *   (at your option) any later version.&n; *&n; *   This program is distributed in the hope that it will be useful,&n; *   but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *   GNU General Public License for more details.&n; *&n; *   You should have received a copy of the GNU General Public License&n; *   along with this program; if not, write to the Free Software&n; *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA&n; */
 macro_line|#include &lt;sound/driver.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
+macro_line|#include &lt;linux/moduleparam.h&gt;
 macro_line|#include &lt;sound/core.h&gt;
-DECL|macro|SNDRV_GET_ID
-mdefine_line|#define SNDRV_GET_ID
 macro_line|#include &lt;sound/initval.h&gt;
 macro_line|#include &quot;pmac.h&quot;
 macro_line|#include &quot;awacs.h&quot;
@@ -61,12 +60,14 @@ op_assign
 l_int|1
 suffix:semicolon
 macro_line|#endif
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|index
 comma
-l_string|&quot;i&quot;
+r_int
+comma
+l_int|0444
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -87,12 +88,14 @@ comma
 id|SNDRV_INDEX_DESC
 )paren
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|id
 comma
-l_string|&quot;s&quot;
+id|charp
+comma
+l_int|0444
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -113,14 +116,16 @@ comma
 id|SNDRV_ID_DESC
 )paren
 suffix:semicolon
-multiline_comment|/* MODULE_PARM(enable, &quot;i&quot;);&n;   MODULE_PARM_DESC(enable, &quot;Enable this soundchip.&quot;);&n;   MODULE_PARM_SYNTAX(enable, SNDRV_ENABLE_DESC); */
+multiline_comment|/* module_param(enable, bool, 0444);&n;   MODULE_PARM_DESC(enable, &quot;Enable this soundchip.&quot;);&n;   MODULE_PARM_SYNTAX(enable, SNDRV_ENABLE_DESC); */
 macro_line|#ifdef PMAC_SUPPORT_PCM_BEEP
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|enable_beep
 comma
-l_string|&quot;i&quot;
+r_bool
+comma
+l_int|0444
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -389,14 +394,17 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-(paren
-id|err
-op_assign
 id|snd_pmac_tumbler_init
 c_func
 (paren
 id|chip
 )paren
+OL
+l_int|0
+op_logical_or
+id|snd_pmac_tumbler_post_init
+c_func
+(paren
 )paren
 OL
 l_int|0
@@ -670,97 +678,4 @@ c_func
 (paren
 id|alsa_card_pmac_exit
 )paren
-macro_line|#ifndef MODULE
-multiline_comment|/* format is: snd-pmac=enable,index,id,enable_beep&n; */
-DECL|function|alsa_card_pmac_setup
-r_static
-r_int
-id|__init
-id|alsa_card_pmac_setup
-c_func
-(paren
-r_char
-op_star
-id|str
-)paren
-(brace
-r_int
-id|__attribute__
-(paren
-(paren
-id|__unused__
-)paren
-)paren
-id|enable
-op_assign
-l_int|1
-suffix:semicolon
-(paren
-r_void
-)paren
-(paren
-id|get_option
-c_func
-(paren
-op_amp
-id|str
-comma
-op_amp
-id|enable
-)paren
-op_eq
-l_int|2
-op_logical_and
-id|get_option
-c_func
-(paren
-op_amp
-id|str
-comma
-op_amp
-id|index
-)paren
-op_eq
-l_int|2
-op_logical_and
-id|get_id
-c_func
-(paren
-op_amp
-id|str
-comma
-op_amp
-id|id
-)paren
-op_eq
-l_int|2
-macro_line|#ifdef PMAC_SUPPORT_PCM_BEEP
-op_logical_and
-id|get_option
-c_func
-(paren
-op_amp
-id|str
-comma
-op_amp
-id|enable_beep
-)paren
-op_eq
-l_int|2
-macro_line|#endif
-)paren
-suffix:semicolon
-r_return
-l_int|1
-suffix:semicolon
-)brace
-id|__setup
-c_func
-(paren
-l_string|&quot;snd-pmac=&quot;
-comma
-id|alsa_card_pmac_setup
-)paren
-suffix:semicolon
-macro_line|#endif /* ifndef MODULE */
 eof

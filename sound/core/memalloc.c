@@ -7,6 +7,7 @@ macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/dma-mapping.h&gt;
+macro_line|#include &lt;linux/moduleparam.h&gt;
 macro_line|#include &lt;asm/semaphore.h&gt;
 macro_line|#include &lt;sound/memalloc.h&gt;
 macro_line|#ifdef CONFIG_SBUS
@@ -58,18 +59,21 @@ op_assign
 l_int|1
 )brace
 suffix:semicolon
-id|MODULE_PARM
+DECL|variable|boot_devs
+r_static
+r_int
+id|boot_devs
+suffix:semicolon
+id|module_param_array
 c_func
 (paren
 id|enable
 comma
-l_string|&quot;1-&quot;
-id|__MODULE_STRING
-c_func
-(paren
-id|SNDRV_CARDS
-)paren
-l_string|&quot;i&quot;
+r_bool
+comma
+id|boot_devs
+comma
+l_int|0444
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -169,124 +173,6 @@ DECL|macro|snd_assert
 mdefine_line|#define snd_assert(expr, args...) /**/
 macro_line|#endif
 multiline_comment|/*&n; *  Hacks&n; */
-DECL|function|snd_dma_alloc_coherent1
-r_static
-r_void
-op_star
-id|snd_dma_alloc_coherent1
-c_func
-(paren
-r_struct
-id|device
-op_star
-id|dev
-comma
-r_int
-id|size
-comma
-id|dma_addr_t
-op_star
-id|dma_handle
-comma
-r_int
-id|flags
-)paren
-(brace
-r_if
-c_cond
-(paren
-id|dev
-)paren
-r_return
-id|dma_alloc_coherent
-c_func
-(paren
-id|dev
-comma
-id|size
-comma
-id|dma_handle
-comma
-id|flags
-)paren
-suffix:semicolon
-r_else
-multiline_comment|/* FIXME: dma_alloc_coherent does&squot;t always accept dev=NULL */
-r_return
-id|pci_alloc_consistent
-c_func
-(paren
-l_int|NULL
-comma
-id|size
-comma
-id|dma_handle
-)paren
-suffix:semicolon
-)brace
-DECL|function|snd_dma_free_coherent1
-r_static
-r_void
-id|snd_dma_free_coherent1
-c_func
-(paren
-r_struct
-id|device
-op_star
-id|dev
-comma
-r_int
-id|size
-comma
-r_void
-op_star
-id|dma_addr
-comma
-id|dma_addr_t
-id|dma_handle
-)paren
-(brace
-r_if
-c_cond
-(paren
-id|dev
-)paren
-r_return
-id|dma_free_coherent
-c_func
-(paren
-id|dev
-comma
-id|size
-comma
-id|dma_addr
-comma
-id|dma_handle
-)paren
-suffix:semicolon
-r_else
-r_return
-id|pci_free_consistent
-c_func
-(paren
-l_int|NULL
-comma
-id|size
-comma
-id|dma_addr
-comma
-id|dma_handle
-)paren
-suffix:semicolon
-)brace
-DECL|macro|dma_alloc_coherent
-macro_line|#undef dma_alloc_coherent
-DECL|macro|dma_alloc_coherent
-mdefine_line|#define dma_alloc_coherent snd_dma_alloc_coherent1
-DECL|macro|dma_free_coherent
-macro_line|#undef dma_free_coherent
-DECL|macro|dma_free_coherent
-mdefine_line|#define dma_free_coherent snd_dma_free_coherent1
 macro_line|#if defined(__i386__) || defined(__ppc__) || defined(__x86_64__)
 multiline_comment|/*&n; * A hack to allocate large buffers via dma_alloc_coherent()&n; *&n; * since dma_alloc_coherent always tries GFP_DMA when the requested&n; * pci memory region is below 32bit, it happens quite often that even&n; * 2 order of pages cannot be allocated.&n; *&n; * so in the following, we allocate at first without dma_mask, so that&n; * allocation will be done without GFP_DMA.  if the area doesn&squot;t match&n; * with the requested region, then realloate with the original dma_mask&n; * again.&n; *&n; * Really, we want to move this type of thing into dma_alloc_coherent()&n; * so dma_mask doesn&squot;t have to be messed with.&n; */
 DECL|function|snd_dma_hack_alloc_coherent
@@ -318,6 +204,8 @@ id|ret
 suffix:semicolon
 id|u64
 id|dma_mask
+comma
+id|coherent_dma_mask
 suffix:semicolon
 r_if
 c_cond
@@ -347,8 +235,17 @@ op_assign
 op_star
 id|dev-&gt;dma_mask
 suffix:semicolon
+id|coherent_dma_mask
+op_assign
+id|dev-&gt;coherent_dma_mask
+suffix:semicolon
 op_star
 id|dev-&gt;dma_mask
+op_assign
+l_int|0xffffffff
+suffix:semicolon
+multiline_comment|/* do without masking */
+id|dev-&gt;coherent_dma_mask
 op_assign
 l_int|0xffffffff
 suffix:semicolon
@@ -371,6 +268,11 @@ op_star
 id|dev-&gt;dma_mask
 op_assign
 id|dma_mask
+suffix:semicolon
+multiline_comment|/* restore */
+id|dev-&gt;coherent_dma_mask
+op_assign
+id|coherent_dma_mask
 suffix:semicolon
 multiline_comment|/* restore */
 r_if
@@ -440,6 +342,17 @@ id|dma_mask
 op_ne
 l_int|0xffffffffUL
 )paren
+(brace
+multiline_comment|/* allocation with GFP_ATOMIC to avoid the long stall */
+id|flags
+op_and_assign
+op_complement
+id|GFP_KERNEL
+suffix:semicolon
+id|flags
+op_or_assign
+id|GFP_ATOMIC
+suffix:semicolon
 id|ret
 op_assign
 id|dma_alloc_coherent
@@ -454,6 +367,7 @@ comma
 id|flags
 )paren
 suffix:semicolon
+)brace
 )brace
 r_return
 id|ret
@@ -3407,82 +3321,14 @@ c_func
 (paren
 id|snd_mem_exit
 )paren
-macro_line|#ifndef MODULE
-multiline_comment|/* format is: snd-page-alloc=enable */
-DECL|function|snd_mem_setup
-r_static
-r_int
-id|__init
-id|snd_mem_setup
-c_func
-(paren
-r_char
-op_star
-id|str
-)paren
-(brace
-r_static
-r_int
-id|__initdata
-id|nr_dev
-op_assign
-l_int|0
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|nr_dev
-op_ge
-id|SNDRV_CARDS
-)paren
-r_return
-l_int|0
-suffix:semicolon
-(paren
-r_void
-)paren
-(paren
-id|get_option
-c_func
-(paren
-op_amp
-id|str
-comma
-op_amp
-id|enable
-(braket
-id|nr_dev
-)braket
-)paren
-op_eq
-l_int|2
-)paren
-suffix:semicolon
-id|nr_dev
-op_increment
-suffix:semicolon
-r_return
-l_int|1
-suffix:semicolon
-)brace
-id|__setup
-c_func
-(paren
-l_string|&quot;snd-page-alloc=&quot;
-comma
-id|snd_mem_setup
-)paren
-suffix:semicolon
-macro_line|#endif
 multiline_comment|/*&n; * exports&n; */
-DECL|variable|snd_dma_alloc_pages
 id|EXPORT_SYMBOL
 c_func
 (paren
 id|snd_dma_alloc_pages
 )paren
 suffix:semicolon
-DECL|variable|snd_dma_alloc_pages_fallback
+DECL|variable|EXPORT_SYMBOL
 id|EXPORT_SYMBOL
 c_func
 (paren

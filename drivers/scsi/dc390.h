@@ -12,7 +12,7 @@ macro_line|#endif
 DECL|macro|DC390_BANNER
 mdefine_line|#define DC390_BANNER &quot;Tekram DC390/AM53C974&quot;
 DECL|macro|DC390_VERSION
-mdefine_line|#define DC390_VERSION &quot;2.0f 2000-12-20&quot;
+mdefine_line|#define DC390_VERSION &quot;2.1b 2004-04-13&quot;
 multiline_comment|/* We don&squot;t have eh_abort_handler, eh_device_reset_handler, &n; * eh_bus_reset_handler, eh_host_reset_handler yet! &n; * So long: Use old exception handling :-( */
 DECL|macro|OLD_EH
 mdefine_line|#define OLD_EH
@@ -25,7 +25,7 @@ macro_line|# define NEW_EH use_new_eh_code: 1,
 DECL|macro|USE_NEW_EH
 macro_line|# define USE_NEW_EH
 macro_line|#endif
-r_extern
+r_static
 r_int
 id|DC390_detect
 c_func
@@ -35,7 +35,7 @@ op_star
 id|psht
 )paren
 suffix:semicolon
-r_extern
+r_static
 r_int
 id|DC390_queue_command
 c_func
@@ -55,7 +55,7 @@ op_star
 )paren
 )paren
 suffix:semicolon
-r_extern
+r_static
 r_int
 id|DC390_abort
 c_func
@@ -65,7 +65,7 @@ op_star
 id|cmd
 )paren
 suffix:semicolon
-r_extern
+r_static
 r_int
 id|DC390_reset
 c_func
@@ -75,7 +75,7 @@ op_star
 id|cmd
 )paren
 suffix:semicolon
-r_extern
+r_static
 r_int
 id|DC390_bios_param
 c_func

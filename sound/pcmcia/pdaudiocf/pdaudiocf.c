@@ -2,6 +2,7 @@ multiline_comment|/*&n; * Driver for Sound Core PDAudioCF soundcard&n; *&n; * Co
 macro_line|#include &lt;sound/driver.h&gt;
 macro_line|#include &lt;sound/core.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
+macro_line|#include &lt;linux/moduleparam.h&gt;
 macro_line|#include &lt;pcmcia/version.h&gt;
 macro_line|#include &lt;pcmcia/ciscode.h&gt;
 macro_line|#include &lt;pcmcia/cisreg.h&gt;
@@ -99,18 +100,21 @@ op_minus
 l_int|1
 )brace
 suffix:semicolon
-id|MODULE_PARM
+DECL|variable|boot_devs
+r_static
+r_int
+id|boot_devs
+suffix:semicolon
+id|module_param_array
 c_func
 (paren
 id|index
 comma
-l_string|&quot;1-&quot;
-id|__MODULE_STRING
-c_func
-(paren
-id|SNDRV_CARDS
-)paren
-l_string|&quot;i&quot;
+r_int
+comma
+id|boot_devs
+comma
+l_int|0444
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -131,18 +135,16 @@ comma
 id|SNDRV_INDEX_DESC
 )paren
 suffix:semicolon
-id|MODULE_PARM
+id|module_param_array
 c_func
 (paren
 id|id
 comma
-l_string|&quot;1-&quot;
-id|__MODULE_STRING
-c_func
-(paren
-id|SNDRV_CARDS
-)paren
-l_string|&quot;s&quot;
+id|charp
+comma
+id|boot_devs
+comma
+l_int|0444
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -163,18 +165,16 @@ comma
 id|SNDRV_ID_DESC
 )paren
 suffix:semicolon
-id|MODULE_PARM
+id|module_param_array
 c_func
 (paren
 id|enable
 comma
-l_string|&quot;1-&quot;
-id|__MODULE_STRING
-c_func
-(paren
-id|SNDRV_CARDS
-)paren
-l_string|&quot;i&quot;
+r_bool
+comma
+id|boot_devs
+comma
+l_int|0444
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -195,12 +195,14 @@ comma
 id|SNDRV_ENABLE_DESC
 )paren
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|irq_mask
 comma
-l_string|&quot;i&quot;
+r_int
+comma
+l_int|0444
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -213,12 +215,16 @@ id|CARD_NAME
 l_string|&quot; soundcard.&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM
+id|module_param_array
 c_func
 (paren
 id|irq_list
 comma
-l_string|&quot;1-4i&quot;
+r_int
+comma
+id|boot_devs
+comma
+l_int|0444
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -956,16 +962,18 @@ l_int|0
 r_return
 id|err
 suffix:semicolon
-macro_line|#ifdef CONFIG_PM
-id|card-&gt;power_state_private_data
-op_assign
+id|snd_card_set_pm_callback
+c_func
+(paren
+id|card
+comma
+id|snd_pdacf_suspend
+comma
+id|snd_pdacf_resume
+comma
 id|pdacf
+)paren
 suffix:semicolon
-id|card-&gt;set_power_state
-op_assign
-id|snd_pdacf_set_power_state
-suffix:semicolon
-macro_line|#endif
 r_if
 c_cond
 (paren
@@ -1531,7 +1539,9 @@ suffix:semicolon
 id|snd_pdacf_suspend
 c_func
 (paren
-id|chip
+id|chip-&gt;card
+comma
+l_int|0
 )paren
 suffix:semicolon
 )brace
@@ -1629,7 +1639,9 @@ suffix:semicolon
 id|snd_pdacf_resume
 c_func
 (paren
-id|chip
+id|chip-&gt;card
+comma
+l_int|0
 )paren
 suffix:semicolon
 )brace

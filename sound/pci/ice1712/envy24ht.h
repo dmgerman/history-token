@@ -327,5 +327,44 @@ DECL|macro|VT1724_MT_PDMA1_SIZE
 mdefine_line|#define VT1724_MT_PDMA1_SIZE&t;&t;0x74&t;/* word */
 DECL|macro|VT1724_MT_PDMA1_COUNT
 mdefine_line|#define VT1724_MT_PDMA1_COUNT&t;&t;0x76&t;/* word */
+r_int
+r_char
+id|snd_vt1724_read_i2c
+c_func
+(paren
+id|ice1712_t
+op_star
+id|ice
+comma
+r_int
+r_char
+id|dev
+comma
+r_int
+r_char
+id|addr
+)paren
+suffix:semicolon
+r_void
+id|snd_vt1724_write_i2c
+c_func
+(paren
+id|ice1712_t
+op_star
+id|ice
+comma
+r_int
+r_char
+id|dev
+comma
+r_int
+r_char
+id|addr
+comma
+r_int
+r_char
+id|data
+)paren
+suffix:semicolon
 macro_line|#endif /* __SOUND_VT1724_H */
 eof

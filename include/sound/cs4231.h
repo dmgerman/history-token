@@ -613,12 +613,6 @@ id|start
 )paren
 suffix:semicolon
 macro_line|#ifdef CONFIG_PM
-DECL|member|pm_dev
-r_struct
-id|pm_dev
-op_star
-id|pm_dev
-suffix:semicolon
 DECL|member|suspend
 r_void
 (paren

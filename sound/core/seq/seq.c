@@ -1,6 +1,7 @@
 multiline_comment|/*&n; *  ALSA sequencer main module&n; *  Copyright (c) 1998-1999 by Frank van de Pol &lt;fvdpol@coil.demon.nl&gt;&n; *&n; *&n; *   This program is free software; you can redistribute it and/or modify&n; *   it under the terms of the GNU General Public License as published by&n; *   the Free Software Foundation; either version 2 of the License, or&n; *   (at your option) any later version.&n; *&n; *   This program is distributed in the hope that it will be useful,&n; *   but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *   GNU General Public License for more details.&n; *&n; *   You should have received a copy of the GNU General Public License&n; *   along with this program; if not, write to the Free Software&n; *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA&n; *&n; */
 macro_line|#include &lt;sound/driver.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
+macro_line|#include &lt;linux/moduleparam.h&gt;
 macro_line|#include &lt;sound/core.h&gt;
 macro_line|#include &lt;sound/initval.h&gt;
 macro_line|#include &lt;sound/seq_kernel.h&gt;
@@ -12,6 +13,34 @@ macro_line|#include &quot;seq_timer.h&quot;
 macro_line|#include &quot;seq_system.h&quot;
 macro_line|#include &quot;seq_info.h&quot;
 macro_line|#include &lt;sound/seq_device.h&gt;
+macro_line|#if defined(CONFIG_SND_SEQ_DUMMY_MODULE)
+DECL|variable|seq_client_load
+r_int
+id|seq_client_load
+(braket
+l_int|64
+)braket
+op_assign
+(brace
+(braket
+l_int|0
+)braket
+op_assign
+id|SNDRV_SEQ_CLIENT_DUMMY
+comma
+(braket
+l_int|1
+dot
+dot
+dot
+l_int|63
+)braket
+op_assign
+op_minus
+l_int|1
+)brace
+suffix:semicolon
+macro_line|#else
 DECL|variable|seq_client_load
 r_int
 id|seq_client_load
@@ -32,6 +61,7 @@ op_minus
 l_int|1
 )brace
 suffix:semicolon
+macro_line|#endif
 DECL|variable|seq_default_timer_class
 r_int
 id|seq_default_timer_class
@@ -100,12 +130,21 @@ c_func
 l_string|&quot;sound&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM
+DECL|variable|boot_devs
+r_static
+r_int
+id|boot_devs
+suffix:semicolon
+id|module_param_array
 c_func
 (paren
 id|seq_client_load
 comma
-l_string|&quot;1-64i&quot;
+r_int
+comma
+id|boot_devs
+comma
+l_int|0444
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -116,12 +155,14 @@ comma
 l_string|&quot;The numbers of global (system) clients to load through kmod.&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|seq_default_timer_class
 comma
-l_string|&quot;i&quot;
+r_int
+comma
+l_int|0644
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -132,12 +173,14 @@ comma
 l_string|&quot;The default timer class.&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|seq_default_timer_sclass
 comma
-l_string|&quot;i&quot;
+r_int
+comma
+l_int|0644
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -148,12 +191,14 @@ comma
 l_string|&quot;The default timer slave class.&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|seq_default_timer_card
 comma
-l_string|&quot;i&quot;
+r_int
+comma
+l_int|0644
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -164,12 +209,14 @@ comma
 l_string|&quot;The default timer card number.&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|seq_default_timer_device
 comma
-l_string|&quot;i&quot;
+r_int
+comma
+l_int|0644
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -180,12 +227,14 @@ comma
 l_string|&quot;The default timer device number.&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|seq_default_timer_subdevice
 comma
-l_string|&quot;i&quot;
+r_int
+comma
+l_int|0644
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -196,12 +245,14 @@ comma
 l_string|&quot;The default timer subdevice number.&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|seq_default_timer_resolution
 comma
-l_string|&quot;i&quot;
+r_int
+comma
+l_int|0644
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
