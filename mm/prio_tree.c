@@ -1568,6 +1568,20 @@ id|r_index
 comma
 id|h_index
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|iter-&gt;cur
+op_eq
+l_int|NULL
+)paren
+r_return
+id|prio_tree_first
+c_func
+(paren
+id|iter
+)paren
+suffix:semicolon
 id|repeat
 suffix:colon
 r_while
@@ -2097,7 +2111,7 @@ id|vma
 multiline_comment|/*&n;&t;&t; * First call is with NULL vma&n;&t;&t; */
 id|ptr
 op_assign
-id|prio_tree_first
+id|prio_tree_next
 c_func
 (paren
 id|iter

@@ -118,6 +118,10 @@ id|iter-&gt;h_index
 op_assign
 id|h_index
 suffix:semicolon
+id|iter-&gt;cur
+op_assign
+l_int|NULL
+suffix:semicolon
 )brace
 DECL|macro|INIT_PRIO_TREE_ROOT
 mdefine_line|#define INIT_PRIO_TREE_ROOT(ptr)&t;&bslash;&n;do {&t;&t;&t;&t;&t;&bslash;&n;&t;(ptr)-&gt;prio_tree_node = NULL;&t;&bslash;&n;&t;(ptr)-&gt;index_bits = 1;&t;&t;&bslash;&n;} while (0)
