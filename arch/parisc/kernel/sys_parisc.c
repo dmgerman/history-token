@@ -14,6 +14,7 @@ id|sys_pipe
 c_func
 (paren
 r_int
+id|__user
 op_star
 id|fildes
 )paren
@@ -703,6 +704,7 @@ r_int
 id|shmid
 comma
 r_char
+id|__user
 op_star
 id|shmaddr
 comma
@@ -747,7 +749,7 @@ id|raddr
 suffix:semicolon
 )brace
 multiline_comment|/* Fucking broken ABI */
-macro_line|#ifdef CONFIG_PARISC64
+macro_line|#ifdef CONFIG_64BIT
 DECL|function|parisc_truncate64
 id|asmlinkage
 r_int
@@ -756,6 +758,7 @@ c_func
 (paren
 r_const
 r_char
+id|__user
 op_star
 id|path
 comma
@@ -830,6 +833,7 @@ c_func
 (paren
 r_const
 r_char
+id|__user
 op_star
 id|path
 comma
@@ -913,6 +917,7 @@ c_func
 (paren
 r_const
 r_char
+id|__user
 op_star
 id|path
 comma
@@ -990,6 +995,7 @@ r_int
 id|fd
 comma
 r_char
+id|__user
 op_star
 id|buf
 comma
@@ -1038,6 +1044,7 @@ id|fd
 comma
 r_const
 r_char
+id|__user
 op_star
 id|buf
 comma

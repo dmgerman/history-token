@@ -14766,6 +14766,7 @@ op_assign
 (braket
 id|pcx
 )braket
+op_assign
 (brace
 l_string|&quot;PA7000 (PCX)&quot;
 comma
@@ -14775,6 +14776,7 @@ comma
 (braket
 id|pcxs
 )braket
+op_assign
 (brace
 l_string|&quot;PA7000 (PCX-S)&quot;
 comma
@@ -14784,6 +14786,7 @@ comma
 (braket
 id|pcxt
 )braket
+op_assign
 (brace
 l_string|&quot;PA7100 (PCX-T)&quot;
 comma
@@ -14793,6 +14796,7 @@ comma
 (braket
 id|pcxt_
 )braket
+op_assign
 (brace
 l_string|&quot;PA7200 (PCX-T&squot;)&quot;
 comma
@@ -14802,6 +14806,7 @@ comma
 (braket
 id|pcxl
 )braket
+op_assign
 (brace
 l_string|&quot;PA7100LC (PCX-L)&quot;
 comma
@@ -14811,6 +14816,7 @@ comma
 (braket
 id|pcxl2
 )braket
+op_assign
 (brace
 l_string|&quot;PA7300LC (PCX-L2)&quot;
 comma
@@ -14820,6 +14826,7 @@ comma
 (braket
 id|pcxu
 )braket
+op_assign
 (brace
 l_string|&quot;PA8000 (PCX-U)&quot;
 comma
@@ -14829,6 +14836,7 @@ comma
 (braket
 id|pcxu_
 )braket
+op_assign
 (brace
 l_string|&quot;PA8200 (PCX-U+)&quot;
 comma
@@ -14838,6 +14846,7 @@ comma
 (braket
 id|pcxw
 )braket
+op_assign
 (brace
 l_string|&quot;PA8500 (PCX-W)&quot;
 comma
@@ -14847,6 +14856,7 @@ comma
 (braket
 id|pcxw_
 )braket
+op_assign
 (brace
 l_string|&quot;PA8600 (PCX-W+)&quot;
 comma
@@ -14856,6 +14866,7 @@ comma
 (braket
 id|pcxw2
 )braket
+op_assign
 (brace
 l_string|&quot;PA8700 (PCX-W2)&quot;
 comma
@@ -14865,6 +14876,7 @@ comma
 (braket
 id|mako
 )braket
+op_assign
 (brace
 l_string|&quot;PA8800 (Mako)&quot;
 comma

@@ -145,7 +145,7 @@ l_int|0xf0000000
 )paren
 (brace
 r_return
-l_int|0xf0f0f0f000000000
+l_int|0xf0f0f0f000000000UL
 op_or
 (paren
 id|u32
@@ -166,7 +166,7 @@ l_int|0xf0000000
 )paren
 (brace
 r_return
-l_int|0xffffffff00000000
+l_int|0xffffffff00000000UL
 op_or
 (paren
 id|u32
@@ -2877,6 +2877,7 @@ r_int
 id|pdc_do_reset
 c_func
 (paren
+r_void
 )paren
 (brace
 r_int

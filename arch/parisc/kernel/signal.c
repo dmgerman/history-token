@@ -66,6 +66,7 @@ id|sys_rt_sigsuspend
 c_func
 (paren
 id|sigset_t
+id|__user
 op_star
 id|unewset
 comma
@@ -125,6 +126,7 @@ id|newset32
 comma
 (paren
 id|compat_sigset_t
+id|__user
 op_star
 )paren
 id|unewset
@@ -293,6 +295,7 @@ c_func
 (paren
 r_struct
 id|sigcontext
+id|__user
 op_star
 id|sc
 comma
@@ -429,6 +432,7 @@ id|in_syscall
 (brace
 r_struct
 id|rt_sigframe
+id|__user
 op_star
 id|frame
 suffix:semicolon
@@ -467,6 +471,7 @@ id|compat_set
 suffix:semicolon
 r_struct
 id|compat_rt_sigframe
+id|__user
 op_star
 id|compat_frame
 suffix:semicolon
@@ -494,6 +499,7 @@ op_assign
 (paren
 r_struct
 id|rt_sigframe
+id|__user
 op_star
 )paren
 (paren
@@ -518,6 +524,7 @@ op_assign
 (paren
 r_struct
 id|compat_rt_sigframe
+id|__user
 op_star
 )paren
 id|frame
@@ -865,6 +872,7 @@ multiline_comment|/*&n; * Set up a signal frame.&n; */
 r_static
 r_inline
 r_void
+id|__user
 op_star
 DECL|function|get_sigframe
 id|get_sigframe
@@ -942,6 +950,7 @@ suffix:semicolon
 r_return
 (paren
 r_void
+id|__user
 op_star
 )paren
 id|sp
@@ -956,6 +965,7 @@ c_func
 (paren
 r_struct
 id|sigcontext
+id|__user
 op_star
 id|sc
 comma
@@ -1251,6 +1261,7 @@ id|in_syscall
 (brace
 r_struct
 id|rt_sigframe
+id|__user
 op_star
 id|frame
 suffix:semicolon
@@ -1281,6 +1292,7 @@ id|compat_val
 suffix:semicolon
 r_struct
 id|compat_rt_sigframe
+id|__user
 op_star
 id|compat_frame
 suffix:semicolon
@@ -1345,6 +1357,7 @@ op_assign
 (paren
 r_struct
 id|compat_rt_sigframe
+id|__user
 op_star
 )paren
 id|frame
@@ -1861,11 +1874,13 @@ id|Elf32_Fdesc
 id|fdesc
 suffix:semicolon
 id|Elf32_Fdesc
+id|__user
 op_star
 id|ufdesc
 op_assign
 (paren
 id|Elf32_Fdesc
+id|__user
 op_star
 )paren
 id|A
@@ -1921,11 +1936,13 @@ id|Elf64_Fdesc
 id|fdesc
 suffix:semicolon
 id|Elf64_Fdesc
+id|__user
 op_star
 id|ufdesc
 op_assign
 (paren
 id|Elf64_Fdesc
+id|__user
 op_star
 )paren
 id|A

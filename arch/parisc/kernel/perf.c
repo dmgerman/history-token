@@ -757,30 +757,30 @@ id|perf_bitmasks
 )braket
 op_assign
 (brace
-l_int|0x0000000000000000
+l_int|0x0000000000000000ul
 comma
 multiline_comment|/* first dbl word must be zero */
-l_int|0xfdffe00000000000
+l_int|0xfdffe00000000000ul
 comma
 multiline_comment|/* RDR0 bitmask */
-l_int|0x003f000000000000
+l_int|0x003f000000000000ul
 comma
 multiline_comment|/* RDR1 bitmask */
-l_int|0x00ffffffffffffff
+l_int|0x00fffffffffffffful
 comma
 multiline_comment|/* RDR20-RDR21 bitmask (152 bits) */
-l_int|0xffffffffffffffff
+l_int|0xfffffffffffffffful
 comma
-l_int|0xfffffffc00000000
+l_int|0xfffffffc00000000ul
 comma
-l_int|0xffffffffffffffff
+l_int|0xfffffffffffffffful
 comma
 multiline_comment|/* RDR22-RDR23 bitmask (233 bits) */
-l_int|0xffffffffffffffff
+l_int|0xfffffffffffffffful
 comma
-l_int|0xfffffffffffffffc
+l_int|0xfffffffffffffffcul
 comma
-l_int|0xff00000000000000
+l_int|0xff00000000000000ul
 )brace
 suffix:semicolon
 multiline_comment|/*&n; * Write control bitmasks for Pa-8700 processor given&n; * somethings have changed slightly.&n; */
@@ -792,30 +792,30 @@ id|perf_bitmasks_piranha
 )braket
 op_assign
 (brace
-l_int|0x0000000000000000
+l_int|0x0000000000000000ul
 comma
 multiline_comment|/* first dbl word must be zero */
-l_int|0xfdffe00000000000
+l_int|0xfdffe00000000000ul
 comma
 multiline_comment|/* RDR0 bitmask */
-l_int|0x003f000000000000
+l_int|0x003f000000000000ul
 comma
 multiline_comment|/* RDR1 bitmask */
-l_int|0x00ffffffffffffff
+l_int|0x00fffffffffffffful
 comma
 multiline_comment|/* RDR20-RDR21 bitmask (158 bits) */
-l_int|0xffffffffffffffff
+l_int|0xfffffffffffffffful
 comma
-l_int|0xfffffffc00000000
+l_int|0xfffffffc00000000ul
 comma
-l_int|0xffffffffffffffff
+l_int|0xfffffffffffffffful
 comma
 multiline_comment|/* RDR22-RDR23 bitmask (210 bits) */
-l_int|0xffffffffffffffff
+l_int|0xfffffffffffffffful
 comma
-l_int|0xffffffffffffffff
+l_int|0xfffffffffffffffful
 comma
-l_int|0xfffc000000000000
+l_int|0xfffc000000000000ul
 )brace
 suffix:semicolon
 DECL|variable|bitmask_array
@@ -879,6 +879,7 @@ op_star
 id|file
 comma
 r_char
+id|__user
 op_star
 id|buf
 comma
@@ -902,6 +903,7 @@ id|file
 comma
 r_const
 r_char
+id|__user
 op_star
 id|buf
 comma
@@ -1292,6 +1294,7 @@ op_star
 id|file
 comma
 r_char
+id|__user
 op_star
 id|buf
 comma
@@ -1321,6 +1324,7 @@ id|file
 comma
 r_const
 r_char
+id|__user
 op_star
 id|buf
 comma
@@ -2188,6 +2192,7 @@ c_func
 (paren
 (paren
 r_void
+id|__user
 op_star
 )paren
 id|arg
@@ -2706,7 +2711,7 @@ id|userbuf
 l_int|21
 )braket
 op_and_assign
-l_int|0xfffffffffffffc00
+l_int|0xfffffffffffffc00ul
 suffix:semicolon
 multiline_comment|/* 0 to last 10 bits */
 id|userbuf
@@ -3431,7 +3436,7 @@ op_plus
 id|RUNWAY_STATUS
 )paren
 op_amp
-l_int|0xffecffffffffffff
+l_int|0xffecfffffffffffful
 suffix:semicolon
 id|__raw_writeq
 c_func
@@ -3443,7 +3448,7 @@ op_star
 id|memaddr
 op_increment
 op_amp
-l_int|0x0013000000000000
+l_int|0x0013000000000000ul
 )paren
 comma
 id|proc_hpa
