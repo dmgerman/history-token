@@ -1537,8 +1537,8 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-id|KERN_INFO
-l_string|&quot;WARNING: MSI INIT FAILURE&bslash;n&quot;
+id|KERN_WARNING
+l_string|&quot;PCI: MSI cache init failed&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -1568,8 +1568,8 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-id|KERN_INFO
-l_string|&quot;WARNING: ALL VECTORS ARE BUSY&bslash;n&quot;
+id|KERN_WARNING
+l_string|&quot;PCI: No interrupt vectors available for MSI&bslash;n&quot;
 )paren
 suffix:semicolon
 id|status
@@ -1590,13 +1590,6 @@ l_int|0
 suffix:semicolon
 id|nr_released_vectors
 op_increment
-suffix:semicolon
-id|printk
-c_func
-(paren
-id|KERN_INFO
-l_string|&quot;MSI INIT SUCCESS&bslash;n&quot;
-)paren
 suffix:semicolon
 r_return
 id|status
@@ -3426,7 +3419,14 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;Can&squot;t enable MSI. Device already had MSI-X vectors assigned&bslash;n&quot;
+l_string|&quot;PCI: %s: Can&squot;t enable MSI.  &quot;
+l_string|&quot;Device already has MSI-X vectors assigned&bslash;n&quot;
+comma
+id|pci_name
+c_func
+(paren
+id|dev
+)paren
 )paren
 suffix:semicolon
 id|dev-&gt;irq
@@ -3616,21 +3616,14 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-id|KERN_DEBUG
-l_string|&quot;Driver[%d:%d:%d] unloaded wo doing free_irq on vector-&gt;%d&bslash;n&quot;
+id|KERN_WARNING
+l_string|&quot;PCI: %s: pci_disable_msi() called without &quot;
+l_string|&quot;free_irq() on MSI vector %d&bslash;n&quot;
 comma
-id|dev-&gt;bus-&gt;number
-comma
-id|PCI_SLOT
+id|pci_name
 c_func
 (paren
-id|dev-&gt;devfn
-)paren
-comma
-id|PCI_FUNC
-c_func
-(paren
-id|dev-&gt;devfn
+id|dev
 )paren
 comma
 id|dev-&gt;irq
@@ -4736,7 +4729,14 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;Can&squot;t enable MSI-X. Device already had MSI vector assigned&bslash;n&quot;
+l_string|&quot;PCI: %s: Can&squot;t enable MSI-X.  &quot;
+l_string|&quot;Device already has an MSI vector assigned&bslash;n&quot;
+comma
+id|pci_name
+c_func
+(paren
+id|dev
+)paren
 )paren
 suffix:semicolon
 id|dev-&gt;irq
@@ -5041,21 +5041,14 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-id|KERN_DEBUG
-l_string|&quot;Driver[%d:%d:%d] unloaded wo doing free_irq on all vectors&bslash;n&quot;
+id|KERN_WARNING
+l_string|&quot;PCI: %s: pci_disable_msix() called without &quot;
+l_string|&quot;free_irq() on all MSI-X vectors&bslash;n&quot;
 comma
-id|dev-&gt;bus-&gt;number
-comma
-id|PCI_SLOT
+id|pci_name
 c_func
 (paren
-id|dev-&gt;devfn
-)paren
-comma
-id|PCI_FUNC
-c_func
-(paren
-id|dev-&gt;devfn
+id|dev
 )paren
 )paren
 suffix:semicolon
@@ -5195,21 +5188,14 @@ id|state
 id|printk
 c_func
 (paren
-id|KERN_DEBUG
-l_string|&quot;Driver[%d:%d:%d] unloaded wo doing free_irq on vector-&gt;%d&bslash;n&quot;
+id|KERN_WARNING
+l_string|&quot;PCI: %s: msi_remove_pci_irq_vectors() &quot;
+l_string|&quot;called without free_irq() on MSI vector %d&bslash;n&quot;
 comma
-id|dev-&gt;bus-&gt;number
-comma
-id|PCI_SLOT
+id|pci_name
 c_func
 (paren
-id|dev-&gt;devfn
-)paren
-comma
-id|PCI_FUNC
-c_func
-(paren
-id|dev-&gt;devfn
+id|dev
 )paren
 comma
 id|dev-&gt;irq
@@ -5494,21 +5480,14 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-id|KERN_DEBUG
-l_string|&quot;Driver[%d:%d:%d] unloaded wo doing free_irq on all vectors&bslash;n&quot;
+id|KERN_WARNING
+l_string|&quot;PCI: %s: msi_remove_pci_irq_vectors() &quot;
+l_string|&quot;called without free_irq() on all MSI-X vectors&bslash;n&quot;
 comma
-id|dev-&gt;bus-&gt;number
-comma
-id|PCI_SLOT
+id|pci_name
 c_func
 (paren
-id|dev-&gt;devfn
-)paren
-comma
-id|PCI_FUNC
-c_func
-(paren
-id|dev-&gt;devfn
+id|dev
 )paren
 )paren
 suffix:semicolon
