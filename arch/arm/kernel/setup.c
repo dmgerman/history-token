@@ -17,6 +17,7 @@ macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/procinfo.h&gt;
 macro_line|#include &lt;asm/setup.h&gt;
 macro_line|#include &lt;asm/mach-types.h&gt;
+macro_line|#include &lt;asm/tlbflush.h&gt;
 macro_line|#include &lt;asm/mach/arch.h&gt;
 macro_line|#include &lt;asm/mach/irq.h&gt;
 macro_line|#ifndef MEM_SIZE
@@ -865,7 +866,7 @@ macro_line|#endif
 id|printk
 c_func
 (paren
-l_string|&quot;Processor: %s %s revision %d&bslash;n&quot;
+l_string|&quot;CPU: %s %s revision %d&bslash;n&quot;
 comma
 id|proc_info.manufacturer
 comma

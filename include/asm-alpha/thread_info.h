@@ -54,6 +54,11 @@ r_int
 id|cpu
 suffix:semicolon
 multiline_comment|/* current CPU */
+DECL|member|preempt_count
+r_int
+id|preempt_count
+suffix:semicolon
+multiline_comment|/* 0 =&gt; preemptable, &lt;0 =&gt; BUG */
 DECL|member|bpt_nsaved
 r_int
 id|bpt_nsaved
@@ -110,6 +115,8 @@ mdefine_line|#define get_thread_info(ti) get_task_struct((ti)-&gt;task)
 DECL|macro|put_thread_info
 mdefine_line|#define put_thread_info(ti) put_task_struct((ti)-&gt;task)
 macro_line|#endif /* __ASSEMBLY__ */
+DECL|macro|PREEMPT_ACTIVE
+mdefine_line|#define PREEMPT_ACTIVE&t;&t;0x4000000
 multiline_comment|/*&n; * Thread information flags:&n; * - these are process state flags and used from assembly&n; * - pending work-to-be-done flags come first to fit in and immediate operand.&n; *&n; * TIF_SYSCALL_TRACE is known to be 0 via blbs.&n; */
 DECL|macro|TIF_SYSCALL_TRACE
 mdefine_line|#define TIF_SYSCALL_TRACE&t;0&t;/* syscall trace active */

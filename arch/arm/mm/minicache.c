@@ -45,7 +45,7 @@ id|minicache_pgprot
 )paren
 )paren
 suffix:semicolon
-id|flush_kern_tlb_page
+id|flush_tlb_kernel_page
 c_func
 (paren
 id|minicache_address

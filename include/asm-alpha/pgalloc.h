@@ -36,12 +36,16 @@ op_star
 )paren
 (paren
 (paren
+(paren
 id|pte
 op_minus
 id|mem_map
 )paren
 op_lshift
 id|PAGE_SHIFT
+)paren
+op_plus
+id|PAGE_OFFSET
 )paren
 )paren
 suffix:semicolon

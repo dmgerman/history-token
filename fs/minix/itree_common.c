@@ -312,6 +312,12 @@ op_amp
 id|pointers_lock
 )paren
 suffix:semicolon
+id|brelse
+c_func
+(paren
+id|bh
+)paren
+suffix:semicolon
 op_star
 id|err
 op_assign

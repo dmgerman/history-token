@@ -2872,6 +2872,7 @@ multiline_comment|/**&n; *&t;read_eeprom: - Read Serial EEPROM&n; *&t;@ioaddr: b
 DECL|function|read_eeprom
 r_static
 id|u16
+id|__devinit
 id|read_eeprom
 c_func
 (paren
