@@ -1,4 +1,4 @@
-multiline_comment|/*&n;    i2c-savage4.c - Part of lm_sensors, Linux kernel modules for hardware&n;              monitoring&n;    Copyright (c) 1998, 1999  Frodo Looijaard &lt;frodol@dds.nl&gt;,&n;    Philip Edelbrock &lt;phil@netroedge.com&gt;,&n;    Ralph Metzler &lt;rjkm@thp.uni-koeln.de&gt;, and&n;    Mark D. Studebaker &lt;mdsxyz123@yahoo.com&gt;&n;    &n;    Based on code written by Ralph Metzler &lt;rjkm@thp.uni-koeln.de&gt; and&n;    Simon Vogl&n;&n;    This program is free software; you can redistribute it and/or modify&n;    it under the terms of the GNU General Public License as published by&n;    the Free Software Foundation; either version 2 of the License, or&n;    (at your option) any later version.&n;&n;    This program is distributed in the hope that it will be useful,&n;    but WITHOUT ANY WARRANTY; without even the implied warranty of&n;    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n;    GNU General Public License for more details.&n;&n;    You should have received a copy of the GNU General Public License&n;    along with this program; if not, write to the Free Software&n;    Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n;*/
+multiline_comment|/*&n;    i2c-savage4.c - Part of lm_sensors, Linux kernel modules for hardware&n;              monitoring&n;    Copyright (C) 1998-2003  The LM Sensors Team&n;    Alexander Wold &lt;awold@bigfoot.com&gt;&n;    Mark D. Studebaker &lt;mdsxyz123@yahoo.com&gt;&n;    &n;    Based on i2c-voodoo3.c.&n;&n;    This program is free software; you can redistribute it and/or modify&n;    it under the terms of the GNU General Public License as published by&n;    the Free Software Foundation; either version 2 of the License, or&n;    (at your option) any later version.&n;&n;    This program is distributed in the hope that it will be useful,&n;    but WITHOUT ANY WARRANTY; without even the implied warranty of&n;    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n;    GNU General Public License for more details.&n;&n;    You should have received a copy of the GNU General Public License&n;    along with this program; if not, write to the Free Software&n;    Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n;*/
 multiline_comment|/* This interfaces to the I2C bus of the Savage4 to gain access to&n;   the BT869 and possibly other I2C devices. The DDC bus is not&n;   yet supported because its register is not memory-mapped.&n;   However we leave the DDC code here, commented out, to make&n;   it easier to add later.&n;*/
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
@@ -592,9 +592,7 @@ suffix:semicolon
 id|MODULE_AUTHOR
 c_func
 (paren
-l_string|&quot;Frodo Looijaard &lt;frodol@dds.nl&gt;, &quot;
-l_string|&quot;Philip Edelbrock &lt;phil@netroedge.com&gt;, &quot;
-l_string|&quot;Ralph Metzler &lt;rjkm@thp.uni-koeln.de&gt;, &quot;
+l_string|&quot;Alexander Wold &lt;awold@bigfoot.com&gt; &quot;
 l_string|&quot;and Mark D. Studebaker &lt;mdsxyz123@yahoo.com&gt;&quot;
 )paren
 suffix:semicolon
