@@ -6497,6 +6497,15 @@ op_minus
 id|ENODEV
 suffix:semicolon
 )brace
+multiline_comment|/* increment the reference count of the urb, as we now also control it */
+id|urb
+op_assign
+id|usb_get_urb
+c_func
+(paren
+id|urb
+)paren
+suffix:semicolon
 id|uhci
 op_assign
 (paren
@@ -6569,6 +6578,12 @@ id|usb_dec_dev_use
 c_func
 (paren
 id|urb-&gt;dev
+)paren
+suffix:semicolon
+id|usb_put_urb
+c_func
+(paren
+id|urb
 )paren
 suffix:semicolon
 r_return
@@ -10161,6 +10176,12 @@ id|usb_dec_dev_use
 c_func
 (paren
 id|dev
+)paren
+suffix:semicolon
+id|usb_put_urb
+c_func
+(paren
+id|urb
 )paren
 suffix:semicolon
 )brace
