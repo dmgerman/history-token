@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * dvb-core.c: DVB core driver&n; *&n; * Copyright (C) 1999-2001 Ralph  Metzler&n; *                         Marcus Metzler&n; *                         Holger Waechtler &n; *                                    for convergence integrated media GmbH&n; *&n; * Copyright (C) 2004 Andrew de Quincey (tuning thread cleanup)&n; *&n; * This program is free software; you can redistribute it and/or&n; * modify it under the terms of the GNU General Public License&n; * as published by the Free Software Foundation; either version 2&n; * of the License, or (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.&n; * Or, point your browser to http://www.gnu.org/copyleft/gpl.html&n; */
+multiline_comment|/*&n; * dvb_frontend.c: DVB frontend tuning interface/thread&n; *&n; *&n; * Copyright (C) 1999-2001 Ralph  Metzler&n; *                         Marcus Metzler&n; *                         Holger Waechtler &n; *                                    for convergence integrated media GmbH&n; *&n; * Copyright (C) 2004 Andrew de Quincey (tuning thread cleanup)&n; *&n; * This program is free software; you can redistribute it and/or&n; * modify it under the terms of the GNU General Public License&n; * as published by the Free Software Foundation; either version 2&n; * of the License, or (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.&n; * Or, point your browser to http://www.gnu.org/copyleft/gpl.html&n; */
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
@@ -6,12 +6,138 @@ macro_line|#include &lt;linux/wait.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/poll.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
+macro_line|#include &lt;linux/moduleparam.h&gt;
 macro_line|#include &lt;linux/list.h&gt;
 macro_line|#include &lt;asm/processor.h&gt;
 macro_line|#include &lt;asm/semaphore.h&gt;
 macro_line|#include &quot;dvb_frontend.h&quot;
 macro_line|#include &quot;dvbdev.h&quot;
-macro_line|#include &quot;dvb_functions.h&quot;
+DECL|variable|dvb_frontend_debug
+r_static
+r_int
+id|dvb_frontend_debug
+suffix:semicolon
+DECL|variable|dvb_shutdown_timeout
+r_static
+r_int
+id|dvb_shutdown_timeout
+op_assign
+l_int|5
+suffix:semicolon
+DECL|variable|dvb_override_frequency_bending
+r_static
+r_int
+id|dvb_override_frequency_bending
+suffix:semicolon
+DECL|variable|dvb_force_auto_inversion
+r_static
+r_int
+id|dvb_force_auto_inversion
+suffix:semicolon
+DECL|variable|dvb_override_tune_delay
+r_static
+r_int
+id|dvb_override_tune_delay
+suffix:semicolon
+DECL|variable|do_frequency_bending
+r_static
+r_int
+id|do_frequency_bending
+suffix:semicolon
+id|module_param_named
+c_func
+(paren
+id|frontend_debug
+comma
+id|dvb_frontend_debug
+comma
+r_int
+comma
+l_int|0644
+)paren
+suffix:semicolon
+id|MODULE_PARM_DESC
+c_func
+(paren
+id|dvb_frontend_debug
+comma
+l_string|&quot;Turn on/off frontend core debugging (default:off).&quot;
+)paren
+suffix:semicolon
+id|module_param
+c_func
+(paren
+id|dvb_shutdown_timeout
+comma
+r_int
+comma
+l_int|0444
+)paren
+suffix:semicolon
+id|MODULE_PARM_DESC
+c_func
+(paren
+id|dvb_shutdown_timeout
+comma
+l_string|&quot;wait &lt;shutdown_timeout&gt; seconds after close() before suspending hardware&quot;
+)paren
+suffix:semicolon
+id|module_param
+c_func
+(paren
+id|dvb_override_frequency_bending
+comma
+r_int
+comma
+l_int|0444
+)paren
+suffix:semicolon
+id|MODULE_PARM_DESC
+c_func
+(paren
+id|dvb_override_frequency_bending
+comma
+l_string|&quot;0: normal (default), 1: never use frequency bending, 2: always use frequency bending&quot;
+)paren
+suffix:semicolon
+id|module_param
+c_func
+(paren
+id|dvb_force_auto_inversion
+comma
+r_int
+comma
+l_int|0444
+)paren
+suffix:semicolon
+id|MODULE_PARM_DESC
+c_func
+(paren
+id|dvb_force_auto_inversion
+comma
+l_string|&quot;0: normal (default), 1: INVERSION_AUTO forced always&quot;
+)paren
+suffix:semicolon
+id|module_param
+c_func
+(paren
+id|dvb_override_tune_delay
+comma
+r_int
+comma
+l_int|0444
+)paren
+suffix:semicolon
+id|MODULE_PARM_DESC
+c_func
+(paren
+id|dvb_override_tune_delay
+comma
+l_string|&quot;0: normal (default), &gt;0 =&gt; delay in milliseconds to wait for lock after a tune attempt&quot;
+)paren
+suffix:semicolon
+DECL|macro|dprintk
+mdefine_line|#define dprintk if (dvb_frontend_debug) printk
 DECL|macro|FESTATE_IDLE
 mdefine_line|#define FESTATE_IDLE 1
 DECL|macro|FESTATE_RETUNE
@@ -37,50 +163,6 @@ mdefine_line|#define FESTATE_SEARCHING_SLOW (FESTATE_TUNING_SLOW | FESTATE_ZIGZA
 DECL|macro|FESTATE_LOSTLOCK
 mdefine_line|#define FESTATE_LOSTLOCK (FESTATE_ZIGZAG_FAST | FESTATE_ZIGZAG_SLOW)
 multiline_comment|/*&n; * FESTATE_IDLE. No tuning parameters have been supplied and the loop is idling.&n; * FESTATE_RETUNE. Parameters have been supplied, but we have not yet performed the first tune.&n; * FESTATE_TUNING_FAST. Tuning parameters have been supplied and fast zigzag scan is in progress.&n; * FESTATE_TUNING_SLOW. Tuning parameters have been supplied. Fast zigzag failed, so we&squot;re trying again, but slower.&n; * FESTATE_TUNED. The frontend has successfully locked on.&n; * FESTATE_ZIGZAG_FAST. The lock has been lost, and a fast zigzag has been initiated to try and regain it.&n; * FESTATE_ZIGZAG_SLOW. The lock has been lost. Fast zigzag has been failed, so we&squot;re trying again, but slower.&n; * FESTATE_DISEQC. A DISEQC command has just been issued.&n; * FESTATE_WAITFORLOCK. When we&squot;re waiting for a lock.&n; * FESTATE_SEARCHING_FAST. When we&squot;re searching for a signal using a fast zigzag scan.&n; * FESTATE_SEARCHING_SLOW. When we&squot;re searching for a signal using a slow zigzag scan.&n; * FESTATE_LOSTLOCK. When the lock has been lost, and we&squot;re searching it again.&n; */
-DECL|variable|dvb_frontend_debug
-r_static
-r_int
-id|dvb_frontend_debug
-op_assign
-l_int|0
-suffix:semicolon
-DECL|variable|dvb_shutdown_timeout
-r_static
-r_int
-id|dvb_shutdown_timeout
-op_assign
-l_int|5
-suffix:semicolon
-DECL|variable|dvb_override_frequency_bending
-r_static
-r_int
-id|dvb_override_frequency_bending
-op_assign
-l_int|0
-suffix:semicolon
-DECL|variable|dvb_force_auto_inversion
-r_static
-r_int
-id|dvb_force_auto_inversion
-op_assign
-l_int|0
-suffix:semicolon
-DECL|variable|dvb_override_tune_delay
-r_static
-r_int
-id|dvb_override_tune_delay
-op_assign
-l_int|0
-suffix:semicolon
-DECL|variable|do_frequency_bending
-r_static
-r_int
-id|do_frequency_bending
-op_assign
-l_int|0
-suffix:semicolon
-DECL|macro|dprintk
-mdefine_line|#define dprintk if (dvb_frontend_debug) printk
 DECL|macro|MAX_EVENT
 mdefine_line|#define MAX_EVENT 8
 DECL|struct|dvb_fe_events
@@ -148,6 +230,12 @@ DECL|member|events
 r_struct
 id|dvb_fe_events
 id|events
+suffix:semicolon
+DECL|member|module
+r_struct
+id|module
+op_star
+id|module
 suffix:semicolon
 DECL|member|sem
 r_struct
@@ -479,7 +567,7 @@ suffix:semicolon
 r_int
 id|this_fe_adap_num
 op_assign
-id|this_fe-&gt;frontend.i2c-&gt;adapter-&gt;num
+id|this_fe-&gt;frontend.dvb_adapter-&gt;num
 suffix:semicolon
 r_int
 id|frequency
@@ -567,7 +655,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|fe-&gt;frontend.i2c-&gt;adapter-&gt;num
+id|fe-&gt;frontend.dvb_adapter-&gt;num
 op_ne
 id|this_fe_adap_num
 )paren
@@ -709,7 +797,7 @@ op_amp
 id|FE_HAS_LOCK
 )paren
 )paren
-id|dvb_delay
+id|msleep
 (paren
 id|fe-&gt;info-&gt;notifier_delay
 )paren
@@ -717,24 +805,6 @@ suffix:semicolon
 id|fe-&gt;status
 op_assign
 id|s
-suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-(paren
-id|s
-op_amp
-id|FE_HAS_LOCK
-)paren
-op_logical_and
-(paren
-id|fe-&gt;info-&gt;caps
-op_amp
-id|FE_CAN_MUTE_TS
-)paren
-)paren
-r_return
 suffix:semicolon
 multiline_comment|/**&n;&t; *   now tell the Demux about the TS status changes...&n;&t; */
 r_if
@@ -1087,11 +1157,9 @@ id|fe-&gt;frontend
 suffix:semicolon
 id|dprintk
 (paren
-l_string|&quot;DVB: initialising frontend %i:%i (%s)...&bslash;n&quot;
+l_string|&quot;DVB: initialising frontend %i (%s)...&bslash;n&quot;
 comma
-id|frontend-&gt;i2c-&gt;adapter-&gt;num
-comma
-id|frontend-&gt;i2c-&gt;id
+id|frontend-&gt;dvb_adapter-&gt;num
 comma
 id|fe-&gt;info-&gt;name
 )paren
@@ -1237,7 +1305,7 @@ id|original_frequency
 op_assign
 id|fe-&gt;parameters.frequency
 suffix:semicolon
-singleline_comment|// are we using autoinversion?
+multiline_comment|/* are we using autoinversion? */
 id|autoinversion
 op_assign
 (paren
@@ -1257,7 +1325,7 @@ id|INVERSION_AUTO
 )paren
 )paren
 suffix:semicolon
-singleline_comment|// setup parameters correctly
+multiline_comment|/* setup parameters correctly */
 r_while
 c_loop
 (paren
@@ -1265,14 +1333,14 @@ op_logical_neg
 id|ready
 )paren
 (brace
-singleline_comment|// calculate the lnb_drift
+multiline_comment|/* calculate the lnb_drift */
 id|fe-&gt;lnb_drift
 op_assign
 id|fe-&gt;auto_step
 op_star
 id|fe-&gt;step_size
 suffix:semicolon
-singleline_comment|// wrap the auto_step if we&squot;ve exceeded the maximum drift
+multiline_comment|/* wrap the auto_step if we&squot;ve exceeded the maximum drift */
 r_if
 c_cond
 (paren
@@ -1294,7 +1362,7 @@ op_assign
 l_int|0
 suffix:semicolon
 )brace
-singleline_comment|// perform inversion and +/- zigzag
+multiline_comment|/* perform inversion and +/- zigzag */
 r_switch
 c_cond
 (paren
@@ -1304,7 +1372,7 @@ id|fe-&gt;auto_sub_step
 r_case
 l_int|0
 suffix:colon
-singleline_comment|// try with the current inversion and current drift setting
+multiline_comment|/* try with the current inversion and current drift setting */
 id|ready
 op_assign
 l_int|1
@@ -1418,7 +1486,7 @@ op_assign
 op_minus
 l_int|1
 suffix:semicolon
-singleline_comment|// it&squot;ll be incremented to 0 in a moment
+multiline_comment|/* it&squot;ll be incremented to 0 in a moment */
 r_break
 suffix:semicolon
 )brace
@@ -1432,7 +1500,7 @@ id|fe-&gt;auto_sub_step
 op_increment
 suffix:semicolon
 )brace
-singleline_comment|// if this attempt would hit where we started, indicate a complete iteration has occurred
+multiline_comment|/* if this attempt would hit where we started, indicate a complete&n;&t; * iteration has occurred */
 r_if
 c_cond
 (paren
@@ -1455,7 +1523,7 @@ r_return
 l_int|1
 suffix:semicolon
 )brace
-singleline_comment|// perform frequency bending if necessary
+multiline_comment|/* perform frequency bending if necessary */
 r_if
 c_cond
 (paren
@@ -1475,11 +1543,11 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-singleline_comment|// instrumentation
 id|dprintk
 c_func
 (paren
-l_string|&quot;%s: drift:%i bending:%i inversion:%i auto_step:%i auto_sub_step:%i started_auto_step:%i&bslash;n&quot;
+l_string|&quot;%s: drift:%i bending:%i inversion:%i auto_step:%i &quot;
+l_string|&quot;auto_sub_step:%i started_auto_step:%i&bslash;n&quot;
 comma
 id|__FUNCTION__
 comma
@@ -1496,7 +1564,7 @@ comma
 id|fe-&gt;started_auto_step
 )paren
 suffix:semicolon
-singleline_comment|// set the frontend itself
+multiline_comment|/* set the frontend itself */
 id|fe-&gt;parameters.frequency
 op_add_assign
 id|fe-&gt;lnb_drift
@@ -1531,7 +1599,6 @@ id|fe-&gt;parameters.inversion
 op_assign
 id|original_inversion
 suffix:semicolon
-singleline_comment|// normal return
 id|fe-&gt;auto_sub_step
 op_increment
 suffix:semicolon
@@ -1708,16 +1775,28 @@ r_sizeof
 id|name
 )paren
 comma
-l_string|&quot;kdvb-fe-%i:%i&quot;
+l_string|&quot;kdvb-fe-%i&quot;
 comma
-id|fe-&gt;frontend.i2c-&gt;adapter-&gt;num
-comma
-id|fe-&gt;frontend.i2c-&gt;id
+id|fe-&gt;frontend.dvb_adapter-&gt;num
 )paren
 suffix:semicolon
-id|dvb_kernel_thread_setup
+id|lock_kernel
+(paren
+)paren
+suffix:semicolon
+id|daemonize
 (paren
 id|name
+)paren
+suffix:semicolon
+id|sigfillset
+(paren
+op_amp
+id|current-&gt;blocked
+)paren
+suffix:semicolon
+id|unlock_kernel
+(paren
 )paren
 suffix:semicolon
 id|dvb_call_frontend_notifiers
@@ -1797,7 +1876,7 @@ id|fe-&gt;sem
 )paren
 r_break
 suffix:semicolon
-singleline_comment|// if we&squot;ve got no parameters, just keep idling
+multiline_comment|/* if we&squot;ve got no parameters, just keep idling */
 r_if
 c_cond
 (paren
@@ -1819,7 +1898,22 @@ suffix:semicolon
 r_continue
 suffix:semicolon
 )brace
-singleline_comment|// get the frontend status
+multiline_comment|/* get the frontend status */
+r_if
+c_cond
+(paren
+id|fe-&gt;state
+op_amp
+id|FESTATE_RETUNE
+)paren
+(brace
+id|s
+op_assign
+l_int|0
+suffix:semicolon
+)brace
+r_else
+(brace
 id|dvb_frontend_internal_ioctl
 (paren
 op_amp
@@ -1838,6 +1932,7 @@ id|s
 op_ne
 id|fe-&gt;status
 )paren
+(brace
 id|dvb_frontend_add_event
 (paren
 id|fe
@@ -1845,7 +1940,9 @@ comma
 id|s
 )paren
 suffix:semicolon
-singleline_comment|// if we&squot;re not tuned, and we have a lock, move to the TUNED state
+)brace
+)brace
+multiline_comment|/* if we&squot;re not tuned, and we have a lock, move to the TUNED state */
 r_if
 c_cond
 (paren
@@ -1882,7 +1979,7 @@ id|fe-&gt;state
 op_assign
 id|FESTATE_TUNED
 suffix:semicolon
-singleline_comment|// if we&squot;re tuned, then we have determined the correct inversion
+multiline_comment|/* if we&squot;re tuned, then we have determined the correct inversion */
 r_if
 c_cond
 (paren
@@ -1910,7 +2007,7 @@ suffix:semicolon
 r_continue
 suffix:semicolon
 )brace
-singleline_comment|// if we are tuned already, check we&squot;re still locked
+multiline_comment|/* if we are tuned already, check we&squot;re still locked */
 r_if
 c_cond
 (paren
@@ -1935,7 +2032,7 @@ op_amp
 id|FE_HAS_LOCK
 )paren
 suffix:semicolon
-singleline_comment|// we&squot;re tuned, and the lock is still good...
+multiline_comment|/* we&squot;re tuned, and the lock is still good... */
 r_if
 c_cond
 (paren
@@ -1943,13 +2040,11 @@ id|s
 op_amp
 id|FE_HAS_LOCK
 )paren
-(brace
 r_continue
 suffix:semicolon
-)brace
 r_else
 (brace
-singleline_comment|// if we _WERE_ tuned, but now don&squot;t have a lock, need to zigzag
+multiline_comment|/* if we _WERE_ tuned, but now don&squot;t have a lock,&n;&t;&t;&t;&t; * need to zigzag */
 id|fe-&gt;state
 op_assign
 id|FESTATE_ZIGZAG_FAST
@@ -1962,11 +2057,9 @@ id|check_wrapped
 op_assign
 l_int|0
 suffix:semicolon
-singleline_comment|// fallthrough
 )brace
 )brace
-singleline_comment|// don&squot;t actually do anything if we&squot;re in the LOSTLOCK state, the frontend is set to
-singleline_comment|// FE_CAN_RECOVER, and the max_drift is 0
+multiline_comment|/* don&squot;t actually do anything if we&squot;re in the LOSTLOCK state,&n;&t;&t; * the frontend is set to FE_CAN_RECOVER, and the max_drift is 0 */
 r_if
 c_cond
 (paren
@@ -2008,9 +2101,7 @@ suffix:semicolon
 r_continue
 suffix:semicolon
 )brace
-singleline_comment|// don&squot;t do anything if we&squot;re in the DISEQC state, since this might be someone
-singleline_comment|// with a motorized dish controlled by DISEQC. If its actually a re-tune, there will
-singleline_comment|// be a SET_FRONTEND soon enough.
+multiline_comment|/* don&squot;t do anything if we&squot;re in the DISEQC state, since this&n;&t;&t; * might be someone with a motorized dish controlled by DISEQC.&n;&t;&t; * If its actually a re-tune, there will be a SET_FRONTEND soon enough.&t;*/
 r_if
 c_cond
 (paren
@@ -2038,9 +2129,7 @@ suffix:semicolon
 r_continue
 suffix:semicolon
 )brace
-singleline_comment|// if we&squot;re in the RETUNE state, set everything up for a brand new scan,
-singleline_comment|// keeping the current inversion setting, as the next tune is _very_ likely
-singleline_comment|// to require the same
+multiline_comment|/* if we&squot;re in the RETUNE state, set everything up for a brand&n;&t;&t; * new scan, keeping the current inversion setting, as the next&n;&t;&t; * tune is _very_ likely to require the same */
 r_if
 c_cond
 (paren
@@ -2070,7 +2159,7 @@ op_assign
 l_int|0
 suffix:semicolon
 )brace
-singleline_comment|// fast zigzag.
+multiline_comment|/* fast zigzag. */
 r_if
 c_cond
 (paren
@@ -2091,7 +2180,7 @@ id|delay
 op_assign
 id|fe-&gt;min_delay
 suffix:semicolon
-singleline_comment|// peform a tune
+multiline_comment|/* peform a tune */
 r_if
 c_cond
 (paren
@@ -2104,8 +2193,7 @@ id|check_wrapped
 )paren
 )paren
 (brace
-singleline_comment|// OK, if we&squot;ve run out of trials at the fast speed. Drop back to
-singleline_comment|// slow for the _next_ attempt
+multiline_comment|/* OK, if we&squot;ve run out of trials at the fast speed.&n;&t;&t;&t;&t; * Drop back to slow for the _next_ attempt */
 id|fe-&gt;state
 op_assign
 id|FESTATE_SEARCHING_SLOW
@@ -2121,9 +2209,7 @@ id|check_wrapped
 op_assign
 l_int|1
 suffix:semicolon
-singleline_comment|// if we&squot;ve just retuned, enter the ZIGZAG_FAST state. This ensures
-singleline_comment|// we cannot return from an FE_SET_FRONTEND ioctl before the first frontend
-singleline_comment|// tune occurs
+multiline_comment|/* if we&squot;ve just retuned, enter the ZIGZAG_FAST state.&n;&t;&t;&t; * This ensures we cannot return from an&n;&t;&t;&t; * FE_SET_FRONTEND ioctl before the first frontend tune&n;&t;&t;&t; * occurs */
 r_if
 c_cond
 (paren
@@ -2145,7 +2231,7 @@ id|fe-&gt;wait_queue
 suffix:semicolon
 )brace
 )brace
-singleline_comment|// slow zigzag
+multiline_comment|/* slow zigzag */
 r_if
 c_cond
 (paren
@@ -2170,8 +2256,7 @@ op_amp
 id|FE_HAS_LOCK
 )paren
 suffix:semicolon
-singleline_comment|// Note: don&squot;t bother checking for wrapping; we stay in this state 
-singleline_comment|// until we get a lock
+multiline_comment|/* Note: don&squot;t bother checking for wrapping; we stay in this&n;&t;&t;&t; * state until we get a lock */
 id|dvb_frontend_autotune
 c_func
 (paren
@@ -2196,12 +2281,6 @@ comma
 id|FE_SLEEP
 comma
 l_int|NULL
-)paren
-suffix:semicolon
-id|up
-(paren
-op_amp
-id|fe-&gt;sem
 )paren
 suffix:semicolon
 id|fe-&gt;thread_pid
@@ -2565,6 +2644,39 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+(paren
+id|file-&gt;f_flags
+op_amp
+id|O_ACCMODE
+)paren
+op_eq
+id|O_RDONLY
+op_logical_and
+(paren
+id|_IOC_DIR
+c_func
+(paren
+id|cmd
+)paren
+op_ne
+id|_IOC_READ
+op_logical_or
+id|cmd
+op_eq
+id|FE_GET_EVENT
+op_logical_or
+id|cmd
+op_eq
+id|FE_DISEQC_RECV_SLAVE_REPLY
+)paren
+)paren
+r_return
+op_minus
+id|EPERM
+suffix:semicolon
+r_if
+c_cond
+(paren
 id|down_interruptible
 (paren
 op_amp
@@ -2589,6 +2701,9 @@ id|FE_DISEQC_SEND_BURST
 suffix:colon
 r_case
 id|FE_SET_TONE
+suffix:colon
+r_case
+id|FE_SET_VOLTAGE
 suffix:colon
 r_if
 c_cond
@@ -2669,7 +2784,7 @@ id|dvb_frontend_parameters
 )paren
 )paren
 suffix:semicolon
-singleline_comment|// force auto frequency inversion if requested
+multiline_comment|/* force auto frequency inversion if requested */
 r_if
 c_cond
 (paren
@@ -2685,7 +2800,7 @@ op_assign
 id|INVERSION_AUTO
 suffix:semicolon
 )brace
-singleline_comment|// get frontend-specific tuning settings
+multiline_comment|/* get frontend-specific tuning settings */
 r_if
 c_cond
 (paren
@@ -2725,7 +2840,7 @@ suffix:semicolon
 )brace
 r_else
 (brace
-singleline_comment|// default values
+multiline_comment|/* default values */
 r_switch
 c_cond
 (paren
@@ -2741,7 +2856,6 @@ id|HZ
 op_div
 l_int|20
 suffix:semicolon
-singleline_comment|// default mindelay of 50ms
 id|fe-&gt;step_size
 op_assign
 id|fe-&gt;parameters.u.qpsk.symbol_rate
@@ -2765,16 +2879,15 @@ id|HZ
 op_div
 l_int|20
 suffix:semicolon
-singleline_comment|// default mindelay of 50ms
 id|fe-&gt;step_size
 op_assign
 l_int|0
 suffix:semicolon
+multiline_comment|/* no zigzag */
 id|fe-&gt;max_drift
 op_assign
 l_int|0
 suffix:semicolon
-singleline_comment|// don&squot;t want any zigzagging under DVB-C frontends
 r_break
 suffix:semicolon
 r_case
@@ -2786,7 +2899,6 @@ id|HZ
 op_div
 l_int|20
 suffix:semicolon
-singleline_comment|// default mindelay of 50ms
 id|fe-&gt;step_size
 op_assign
 id|fe-&gt;info-&gt;frequency_stepsize
@@ -2802,6 +2914,17 @@ l_int|2
 )paren
 op_plus
 l_int|1
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+id|FE_ATSC
+suffix:colon
+id|printk
+c_func
+(paren
+l_string|&quot;dvb-core: FE_ATSC not handled yet.&bslash;n&quot;
+)paren
 suffix:semicolon
 r_break
 suffix:semicolon
@@ -2826,6 +2949,12 @@ op_div
 l_int|1000
 suffix:semicolon
 )brace
+id|dvb_frontend_wakeup
+c_func
+(paren
+id|fe
+)paren
+suffix:semicolon
 id|dvb_frontend_add_event
 (paren
 id|fe
@@ -2901,7 +3030,7 @@ l_int|0
 r_return
 id|err
 suffix:semicolon
-singleline_comment|// Force the CAN_INVERSION_AUTO bit on. If the frontend doesn&squot;t do it, it is done for it.
+multiline_comment|/* Force the CAN_INVERSION_AUTO bit on. If the frontend doesn&squot;t&n;&t; * do it, it is done for it. */
 r_if
 c_cond
 (paren
@@ -2933,45 +3062,6 @@ suffix:semicolon
 id|tmp-&gt;caps
 op_or_assign
 id|FE_CAN_INVERSION_AUTO
-suffix:semicolon
-)brace
-singleline_comment|// if the frontend has just been set, wait until the first tune has finished.
-singleline_comment|// This ensures the app doesn&squot;t start reading data too quickly, perhaps from the
-singleline_comment|// previous lock, which is REALLY CONFUSING TO DEBUG!
-r_if
-c_cond
-(paren
-(paren
-id|cmd
-op_eq
-id|FE_SET_FRONTEND
-)paren
-op_logical_and
-(paren
-id|err
-op_eq
-l_int|0
-)paren
-)paren
-(brace
-id|dvb_frontend_wakeup
-c_func
-(paren
-id|fe
-)paren
-suffix:semicolon
-id|err
-op_assign
-id|wait_event_interruptible
-c_func
-(paren
-id|fe-&gt;wait_queue
-comma
-id|fe-&gt;state
-op_amp
-op_complement
-id|FESTATE_RETUNE
-)paren
 suffix:semicolon
 )brace
 r_return
@@ -3144,6 +3234,30 @@ op_assign
 l_int|0
 suffix:semicolon
 )brace
+r_if
+c_cond
+(paren
+op_logical_neg
+id|ret
+op_logical_and
+id|fe-&gt;module
+)paren
+(brace
+r_if
+c_cond
+(paren
+op_logical_neg
+id|try_module_get
+c_func
+(paren
+id|fe-&gt;module
+)paren
+)paren
+r_return
+op_minus
+id|EINVAL
+suffix:semicolon
+)brace
 r_return
 id|ret
 suffix:semicolon
@@ -3178,6 +3292,11 @@ id|fe
 op_assign
 id|dvbdev-&gt;priv
 suffix:semicolon
+r_int
+id|ret
+op_assign
+l_int|0
+suffix:semicolon
 id|dprintk
 (paren
 l_string|&quot;%s&bslash;n&quot;
@@ -3200,13 +3319,31 @@ id|fe-&gt;release_jiffies
 op_assign
 id|jiffies
 suffix:semicolon
-r_return
+id|ret
+op_assign
 id|dvb_generic_release
 (paren
 id|inode
 comma
 id|file
 )paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|ret
+op_logical_and
+id|fe-&gt;module
+)paren
+id|module_put
+c_func
+(paren
+id|fe-&gt;module
+)paren
+suffix:semicolon
+r_return
+id|ret
 suffix:semicolon
 )brace
 r_int
@@ -3377,7 +3514,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|fe-&gt;frontend.i2c-&gt;adapter
+id|fe-&gt;frontend.dvb_adapter
 op_eq
 id|adapter
 op_logical_and
@@ -3513,7 +3650,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|fe-&gt;frontend.i2c-&gt;adapter
+id|fe-&gt;frontend.dvb_adapter
 op_eq
 id|adapter
 op_logical_and
@@ -3739,7 +3876,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|fe-&gt;frontend.i2c-&gt;adapter
+id|fe-&gt;frontend.dvb_adapter
 op_eq
 id|adapter
 op_logical_and
@@ -3841,7 +3978,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|fe-&gt;frontend.i2c-&gt;adapter
+id|fe-&gt;frontend.dvb_adapter
 op_eq
 id|adapter
 op_logical_and
@@ -3975,9 +4112,9 @@ id|arg
 )paren
 comma
 r_struct
-id|dvb_i2c_bus
+id|dvb_adapter
 op_star
-id|i2c
+id|dvb_adapter
 comma
 r_void
 op_star
@@ -3987,6 +4124,11 @@ r_struct
 id|dvb_frontend_info
 op_star
 id|info
+comma
+r_struct
+id|module
+op_star
+id|module
 )paren
 (brace
 r_struct
@@ -4137,13 +4279,17 @@ id|fe-&gt;events.overflow
 op_assign
 l_int|0
 suffix:semicolon
+id|fe-&gt;module
+op_assign
+id|module
+suffix:semicolon
 id|fe-&gt;frontend.ioctl
 op_assign
 id|ioctl
 suffix:semicolon
-id|fe-&gt;frontend.i2c
+id|fe-&gt;frontend.dvb_adapter
 op_assign
-id|i2c
+id|dvb_adapter
 suffix:semicolon
 id|fe-&gt;frontend.data
 op_assign
@@ -4187,7 +4333,7 @@ c_cond
 (paren
 id|ioctl-&gt;adapter
 op_eq
-id|i2c-&gt;adapter
+id|dvb_adapter
 )paren
 (brace
 id|fe-&gt;frontend.before_ioctl
@@ -4236,7 +4382,7 @@ c_cond
 (paren
 id|notifier-&gt;adapter
 op_eq
-id|i2c-&gt;adapter
+id|dvb_adapter
 )paren
 (brace
 id|fe-&gt;frontend.notifier_callback
@@ -4262,18 +4408,16 @@ id|frontend_list
 suffix:semicolon
 id|printk
 (paren
-l_string|&quot;DVB: registering frontend %i:%i (%s)...&bslash;n&quot;
+l_string|&quot;DVB: registering frontend %i (%s)...&bslash;n&quot;
 comma
-id|fe-&gt;frontend.i2c-&gt;adapter-&gt;num
-comma
-id|fe-&gt;frontend.i2c-&gt;id
+id|fe-&gt;frontend.dvb_adapter-&gt;num
 comma
 id|fe-&gt;info-&gt;name
 )paren
 suffix:semicolon
 id|dvb_register_device
 (paren
-id|i2c-&gt;adapter
+id|dvb_adapter
 comma
 op_amp
 id|fe-&gt;dvbdev
@@ -4315,9 +4459,9 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-DECL|function|dvb_unregister_frontend
+DECL|function|dvb_unregister_frontend_new
 r_int
-id|dvb_unregister_frontend
+id|dvb_unregister_frontend_new
 (paren
 r_int
 (paren
@@ -4340,9 +4484,9 @@ id|arg
 )paren
 comma
 r_struct
-id|dvb_i2c_bus
+id|dvb_adapter
 op_star
-id|i2c
+id|dvb_adapter
 )paren
 (brace
 r_struct
@@ -4400,9 +4544,9 @@ id|fe-&gt;frontend.ioctl
 op_eq
 id|ioctl
 op_logical_and
-id|fe-&gt;frontend.i2c
+id|fe-&gt;frontend.dvb_adapter
 op_eq
-id|i2c
+id|dvb_adapter
 )paren
 (brace
 id|dvb_unregister_device
@@ -4447,84 +4591,4 @@ op_minus
 id|EINVAL
 suffix:semicolon
 )brace
-id|MODULE_PARM
-c_func
-(paren
-id|dvb_frontend_debug
-comma
-l_string|&quot;i&quot;
-)paren
-suffix:semicolon
-id|MODULE_PARM
-c_func
-(paren
-id|dvb_shutdown_timeout
-comma
-l_string|&quot;i&quot;
-)paren
-suffix:semicolon
-id|MODULE_PARM
-c_func
-(paren
-id|dvb_override_frequency_bending
-comma
-l_string|&quot;i&quot;
-)paren
-suffix:semicolon
-id|MODULE_PARM
-c_func
-(paren
-id|dvb_force_auto_inversion
-comma
-l_string|&quot;i&quot;
-)paren
-suffix:semicolon
-id|MODULE_PARM
-c_func
-(paren
-id|dvb_override_tune_delay
-comma
-l_string|&quot;i&quot;
-)paren
-suffix:semicolon
-id|MODULE_PARM_DESC
-c_func
-(paren
-id|dvb_frontend_debug
-comma
-l_string|&quot;enable verbose debug messages&quot;
-)paren
-suffix:semicolon
-id|MODULE_PARM_DESC
-c_func
-(paren
-id|dvb_shutdown_timeout
-comma
-l_string|&quot;wait &lt;shutdown_timeout&gt; seconds after close() before suspending hardware&quot;
-)paren
-suffix:semicolon
-id|MODULE_PARM_DESC
-c_func
-(paren
-id|dvb_override_frequency_bending
-comma
-l_string|&quot;0: normal (default), 1: never use frequency bending, 2: always use frequency bending&quot;
-)paren
-suffix:semicolon
-id|MODULE_PARM_DESC
-c_func
-(paren
-id|dvb_force_auto_inversion
-comma
-l_string|&quot;0: normal (default), 1: INVERSION_AUTO forced always&quot;
-)paren
-suffix:semicolon
-id|MODULE_PARM_DESC
-c_func
-(paren
-id|dvb_override_tune_delay
-comma
-l_string|&quot;0: normal (default), &gt;0 =&gt; delay in milliseconds to wait for lock after a tune attempt&quot;
-)paren
-suffix:semicolon
 eof

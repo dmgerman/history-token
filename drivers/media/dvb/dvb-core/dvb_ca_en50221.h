@@ -26,6 +26,7 @@ DECL|struct|dvb_ca_en50221
 r_struct
 id|dvb_ca_en50221
 (brace
+multiline_comment|/* NOTE: the read_*, write_* and poll_slot_status functions must use locks as&n;&t; * they may be called from several threads at once */
 multiline_comment|/* functions for accessing attribute memory on the CAM */
 DECL|member|read_attribute_mem
 r_int
