@@ -1,4 +1,3 @@
-multiline_comment|/*&n; *&t;cs4232.h&n; *&n; * Copyright: Christoph Hellwig &lt;chhellwig@gmx.net&gt;&n; *&n; */
 r_int
 id|probe_cs4232
 (paren
