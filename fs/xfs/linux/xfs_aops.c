@@ -2966,7 +2966,7 @@ id|page
 )paren
 (brace
 r_return
-id|block_read_full_page
+id|mpage_readpage
 c_func
 (paren
 id|page
