@@ -35,8 +35,6 @@ DECL|variable|__initdata
 r_struct
 id|agp_bridge_info
 id|amd_k8_agp_bridge_info
-(braket
-)braket
 id|__initdata
 op_assign
 (brace
