@@ -1187,11 +1187,9 @@ id|flow_flush_info
 id|info
 suffix:semicolon
 multiline_comment|/* Don&squot;t want cpus going down or up during this, also protects&n;&t; * against multiple callers. */
-id|down
+id|lock_cpu_hotplug
 c_func
 (paren
-op_amp
-id|cpucontrol
 )paren
 suffix:semicolon
 id|atomic_set
@@ -1254,11 +1252,9 @@ op_amp
 id|info.completion
 )paren
 suffix:semicolon
-id|up
+id|unlock_cpu_hotplug
 c_func
 (paren
-op_amp
-id|cpucontrol
 )paren
 suffix:semicolon
 )brace
