@@ -6364,7 +6364,7 @@ id|q-&gt;jitter
 suffix:semicolon
 id|qopt.limit
 op_assign
-id|sch-&gt;dev-&gt;tx_queue_len
+id|q-&gt;limit
 suffix:semicolon
 id|qopt.loss
 op_assign
