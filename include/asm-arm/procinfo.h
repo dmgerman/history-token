@@ -8,6 +8,9 @@ r_struct
 id|cpu_tlb_fns
 suffix:semicolon
 r_struct
+id|cpu_user_fns
+suffix:semicolon
+r_struct
 id|processor
 suffix:semicolon
 DECL|struct|proc_info_item
@@ -90,11 +93,17 @@ id|cpu_tlb_fns
 op_star
 id|tlb
 suffix:semicolon
+DECL|member|user
+r_struct
+id|cpu_user_fns
+op_star
+id|user
+suffix:semicolon
 )brace
 suffix:semicolon
 macro_line|#endif&t;/* __ASSEMBLY__ */
 DECL|macro|PROC_INFO_SZ
-mdefine_line|#define PROC_INFO_SZ&t;40
+mdefine_line|#define PROC_INFO_SZ&t;44
 DECL|macro|HWCAP_SWP
 mdefine_line|#define HWCAP_SWP&t; 1
 DECL|macro|HWCAP_HALF

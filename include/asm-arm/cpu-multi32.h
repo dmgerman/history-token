@@ -292,49 +292,6 @@ DECL|member|pgtable
 )brace
 id|pgtable
 suffix:semicolon
-r_struct
-(brace
-multiline_comment|/* other */
-DECL|member|clear_user_page
-r_void
-(paren
-op_star
-id|clear_user_page
-)paren
-(paren
-r_void
-op_star
-id|page
-comma
-r_int
-r_int
-id|u_addr
-)paren
-suffix:semicolon
-DECL|member|copy_user_page
-r_void
-(paren
-op_star
-id|copy_user_page
-)paren
-(paren
-r_void
-op_star
-id|to
-comma
-r_void
-op_star
-id|from
-comma
-r_int
-r_int
-id|u_addr
-)paren
-suffix:semicolon
-DECL|member|misc
-)brace
-id|misc
-suffix:semicolon
 )brace
 id|processor
 suffix:semicolon
@@ -390,10 +347,6 @@ DECL|macro|cpu_set_pmd
 mdefine_line|#define cpu_set_pmd(pmdp, pmd)&t;&t;&t;processor.pgtable.set_pmd(pmdp, pmd)
 DECL|macro|cpu_set_pte
 mdefine_line|#define cpu_set_pte(ptep, pte)&t;&t;&t;processor.pgtable.set_pte(ptep, pte)
-DECL|macro|cpu_copy_user_page
-mdefine_line|#define cpu_copy_user_page(to,from,uaddr)&t;processor.misc.copy_user_page(to,from,uaddr)
-DECL|macro|cpu_clear_user_page
-mdefine_line|#define cpu_clear_user_page(page,uaddr)&t;&t;processor.misc.clear_user_page(page,uaddr)
 DECL|macro|cpu_switch_mm
 mdefine_line|#define cpu_switch_mm(pgd,tsk)&t;&t;&t;cpu_set_pgd(__virt_to_phys((unsigned long)(pgd)))
 DECL|macro|cpu_get_pgd

@@ -116,5 +116,49 @@ macro_line|#endif
 macro_line|#ifndef CPU_ABORT_HANDLER
 macro_line|#error Unknown data abort handler type
 macro_line|#endif
+multiline_comment|/*&n; *&t;User Space Model&n; *&t;================&n; *&n; *&t;This section selects the correct set of functions for dealing with&n; *&t;page-based copying and clearing for user space for the particular&n; *&t;processor(s) we&squot;re building for.&n; *&n; *&t;We have the following to choose from:&n; *&t;  v3&t;&t;- ARMv3&n; *&t;  v4&t;&t;- ARMv4 without minicache&n; *&t;  v4_mc&t;&t;- ARMv4 with minicache&n; *&t;  v5te_mc&t;- ARMv5TE with minicache&n; */
+DECL|macro|_USER
+macro_line|#undef _USER
+DECL|macro|MULTI_USER
+macro_line|#undef MULTI_USER
+macro_line|#if defined(CONFIG_CPU_ARM610) || defined(CONFIG_CPU_ARM710)
+macro_line|# ifdef _USER
+DECL|macro|MULTI_USER
+macro_line|#  define MULTI_USER 1
+macro_line|# else
+DECL|macro|_USER
+macro_line|#  define _USER v3
+macro_line|# endif
+macro_line|#endif
+macro_line|#if defined(CONFIG_CPU_ARM720T) || defined(CONFIG_CPU_ARM920T) || &bslash;&n;    defined(CONFIG_CPU_ARM922T) || defined(CONFIG_CPU_ARM926T) || &bslash;&n;    defined(CONFIG_CPU_SA110)   || defined(CONFIG_CPU_ARM1020)
+macro_line|# ifdef _USER
+DECL|macro|MULTI_USER
+macro_line|#  define MULTI_USER 1
+macro_line|# else
+DECL|macro|_USER
+macro_line|#  define _USER v4
+macro_line|# endif
+macro_line|#endif
+macro_line|#if defined(CONFIG_CPU_SA1100)
+macro_line|# ifdef _USER
+DECL|macro|MULTI_USER
+macro_line|#  define MULTI_USER 1
+macro_line|# else
+DECL|macro|_USER
+macro_line|#  define _USER v4_mc
+macro_line|# endif
+macro_line|#endif
+macro_line|#if defined(CONFIG_CPU_XSCALE)
+macro_line|# ifdef _USER
+DECL|macro|MULTI_USER
+macro_line|#  define MULTI_USER 1
+macro_line|# else
+DECL|macro|_USER
+macro_line|#  define _USER v5te_mc
+macro_line|# endif
+macro_line|#endif
+macro_line|#ifndef _USER
+macro_line|#error Unknown user operations model
+macro_line|#endif
 macro_line|#endif
 eof
