@@ -7,6 +7,7 @@ macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;linux/list.h&gt;
 macro_line|#include &lt;linux/wait.h&gt;
+macro_line|#include &lt;linux/cache.h&gt;
 macro_line|#include &lt;asm/atomic.h&gt;
 multiline_comment|/*&n; * Free memory management - zoned buddy allocator.&n; */
 macro_line|#ifndef CONFIG_FORCE_MAX_ZONEORDER
@@ -39,6 +40,26 @@ suffix:semicolon
 r_struct
 id|pglist_data
 suffix:semicolon
+multiline_comment|/*&n; * zone-&gt;lock and zone-&gt;lru_lock are two of the hottest locks in the kernel.&n; * So add a wild amount of padding here to ensure that they fall into separate&n; * cachelines.  There are very few zone structures in the machine, so space&n; * consumption is not a concern here.&n; */
+macro_line|#if defined(CONFIG_SMP)
+DECL|struct|zone_padding
+r_struct
+id|zone_padding
+(brace
+DECL|member|x
+r_int
+id|x
+suffix:semicolon
+DECL|variable|____cacheline_maxaligned_in_smp
+)brace
+id|____cacheline_maxaligned_in_smp
+suffix:semicolon
+DECL|macro|ZONE_PADDING
+mdefine_line|#define ZONE_PADDING(name)&t;struct zone_padding name;
+macro_line|#else
+DECL|macro|ZONE_PADDING
+mdefine_line|#define ZONE_PADDING(name)
+macro_line|#endif
 multiline_comment|/*&n; * On machines where it is needed (eg PCs) we divide physical memory&n; * into multiple physical zones. On a PC we have 3 zones:&n; *&n; * ZONE_DMA&t;  &lt; 16 MB&t;ISA DMA capable memory&n; * ZONE_NORMAL&t;16-896 MB&t;direct mapped by the kernel&n; * ZONE_HIGHMEM&t; &gt; 896 MB&t;only page cache and user processes&n; */
 DECL|struct|zone
 r_struct
@@ -69,7 +90,11 @@ DECL|member|need_balance
 r_int
 id|need_balance
 suffix:semicolon
-DECL|member|lru_lock
+id|ZONE_PADDING
+c_func
+(paren
+id|_pad1_
+)paren
 id|spinlock_t
 id|lru_lock
 suffix:semicolon
@@ -97,8 +122,12 @@ r_int
 r_int
 id|nr_inactive
 suffix:semicolon
+id|ZONE_PADDING
+c_func
+(paren
+id|_pad2_
+)paren
 multiline_comment|/*&n;&t; * free areas of different sizes&n;&t; */
-DECL|member|free_area
 id|free_area_t
 id|free_area
 (braket
@@ -155,7 +184,9 @@ r_int
 r_int
 id|size
 suffix:semicolon
+DECL|variable|____cacheline_maxaligned_in_smp
 )brace
+id|____cacheline_maxaligned_in_smp
 suffix:semicolon
 DECL|macro|ZONE_DMA
 mdefine_line|#define ZONE_DMA&t;&t;0
