@@ -20,7 +20,7 @@ macro_line|#include &lt;linux/nodemask.h&gt;
 macro_line|#include &lt;linux/vmalloc.h&gt;
 macro_line|#include &lt;asm/tlbflush.h&gt;
 macro_line|#include &quot;internal.h&quot;
-multiline_comment|/* MCD - HACK: Find somewhere to initialize this EARLY, or make this initializer cleaner */
+multiline_comment|/*&n; * MCD - HACK: Find somewhere to initialize this EARLY, or make this&n; * initializer cleaner&n; */
 DECL|variable|node_online_map
 id|nodemask_t
 id|node_online_map
@@ -8385,6 +8385,25 @@ op_decrement
 r_struct
 id|zone
 op_star
+id|lower_zone
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|sysctl_lowmem_reserve_ratio
+(braket
+id|idx
+)braket
+OL
+l_int|1
+)paren
+id|sysctl_lowmem_reserve_ratio
+(braket
+id|idx
+)braket
+op_assign
+l_int|1
+suffix:semicolon
 id|lower_zone
 op_assign
 id|pgdat-&gt;node_zones
