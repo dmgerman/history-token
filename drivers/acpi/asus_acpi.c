@@ -8,7 +8,7 @@ macro_line|#include &lt;acpi/acpi_drivers.h&gt;
 macro_line|#include &lt;acpi/acpi_bus.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 DECL|macro|ASUS_ACPI_VERSION
-mdefine_line|#define ASUS_ACPI_VERSION &quot;0.28&quot;
+mdefine_line|#define ASUS_ACPI_VERSION &quot;0.29&quot;
 DECL|macro|PROC_ASUS
 mdefine_line|#define PROC_ASUS       &quot;asus&quot;&t;
 singleline_comment|//the directory
@@ -316,7 +316,8 @@ singleline_comment|//S200 (J1 reported), Victor MP-XP7210
 DECL|enumerator|xxN
 id|xxN
 comma
-singleline_comment|//M2400N, M3700N, M5200N, S1300N, S5200N (Centrino)
+singleline_comment|//M2400N, M3700N, M5200N, S1300N, S5200N, W1OOON
+singleline_comment|//(Centrino)
 DECL|enumerator|END_MODEL
 id|END_MODEL
 DECL|member|model
@@ -4675,6 +4676,18 @@ l_int|3
 )paren
 op_eq
 l_int|0
+op_logical_or
+id|strncmp
+c_func
+(paren
+id|model-&gt;string.pointer
+comma
+l_string|&quot;W1N&quot;
+comma
+l_int|3
+)paren
+op_eq
+l_int|0
 )paren
 id|hotk-&gt;model
 op_assign
@@ -4945,12 +4958,24 @@ l_int|3
 )paren
 op_eq
 l_int|0
+op_logical_or
+id|strncmp
+c_func
+(paren
+id|model-&gt;string.pointer
+comma
+l_string|&quot;M5N&quot;
+comma
+l_int|3
+)paren
+op_eq
+l_int|0
 )paren
 id|hotk-&gt;methods-&gt;mt_mled
 op_assign
 l_int|NULL
 suffix:semicolon
-multiline_comment|/* S5N has no MLED */
+multiline_comment|/* S5N and M5N have no MLED */
 r_else
 r_if
 c_cond
@@ -4966,12 +4991,24 @@ l_int|3
 )paren
 op_eq
 l_int|0
+op_logical_or
+id|strncmp
+c_func
+(paren
+id|model-&gt;string.pointer
+comma
+l_string|&quot;W1N&quot;
+comma
+l_int|3
+)paren
+op_eq
+l_int|0
 )paren
 id|hotk-&gt;methods-&gt;mt_wled
 op_assign
 l_string|&quot;WLED&quot;
 suffix:semicolon
-multiline_comment|/* M2N has a usable WLED */
+multiline_comment|/* M2N and W1N have a usable WLED */
 r_else
 r_if
 c_cond
