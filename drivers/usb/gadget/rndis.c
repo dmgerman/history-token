@@ -311,7 +311,7 @@ id|length
 op_assign
 l_int|4
 suffix:semicolon
-multiline_comment|/* Bogus question! &n;&t;&t; * Hardware must be ready to recieve high level protocols.&n;&t;&t; * BTW: &n;&t;&t; * reddite ergo quae sunt Caesaris Caesari&n;&t;&t; * et quae sunt Dei Deo!&n;&t;&t; */
+multiline_comment|/* Bogus question! &n;&t;&t; * Hardware must be ready to receive high level protocols.&n;&t;&t; * BTW: &n;&t;&t; * reddite ergo quae sunt Caesaris Caesari&n;&t;&t; * et quae sunt Dei Deo!&n;&t;&t; */
 op_star
 (paren
 (paren

@@ -530,7 +530,7 @@ id|sai_assoc_id
 suffix:semicolon
 )brace
 suffix:semicolon
-multiline_comment|/*&n; * 5.3.1.7 SCTP_PARTIAL_DELIVERY_EVENT&n; *&n; *   When a reciever is engaged in a partial delivery of a&n; *   message this notification will be used to inidicate&n; *   various events.&n; */
+multiline_comment|/*&n; * 5.3.1.7 SCTP_PARTIAL_DELIVERY_EVENT&n; *&n; *   When a receiver is engaged in a partial delivery of a&n; *   message this notification will be used to indicate&n; *   various events.&n; */
 DECL|struct|sctp_pdapi_event
 r_struct
 id|sctp_pdapi_event
