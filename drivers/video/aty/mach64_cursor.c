@@ -1231,6 +1231,10 @@ suffix:semicolon
 macro_line|#ifdef __sparc__
 id|addr
 op_assign
+(paren
+r_int
+r_int
+)paren
 id|info-&gt;screen_base
 op_minus
 l_int|0x800000

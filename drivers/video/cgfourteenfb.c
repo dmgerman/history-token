@@ -830,7 +830,7 @@ op_minus
 id|fb-&gt;y_margin
 )paren
 op_star
-id|p-&gt;line_length
+id|fb-&gt;info.fix.line_length
 op_plus
 (paren
 id|x_margin

@@ -219,6 +219,10 @@ c_cond
 id|tlb_type
 op_eq
 id|cheetah
+op_logical_or
+id|tlb_type
+op_eq
+id|cheetah_plus
 )paren
 (brace
 r_int

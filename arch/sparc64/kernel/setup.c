@@ -662,6 +662,10 @@ c_cond
 id|tlb_type
 op_eq
 id|cheetah
+op_logical_or
+id|tlb_type
+op_eq
+id|cheetah_plus
 )paren
 id|tte
 op_assign
@@ -2118,7 +2122,7 @@ r_int
 op_amp
 id|irqsz_patchme
 (braket
-l_int|1
+l_int|0
 )braket
 )paren
 suffix:semicolon
