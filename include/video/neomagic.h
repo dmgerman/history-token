@@ -1,4 +1,87 @@
-multiline_comment|/*&n; * linux/drivers/video/neofb.h -- NeoMagic Framebuffer Driver&n; *&n; * Copyright (c) 2001  Denis Oliver Kropp &lt;dok@convergence.de&gt;&n; *&n; * This file is subject to the terms and conditions of the GNU General&n; * Public License.  See the file COPYING in the main directory of this&n; * archive for more details.&n; */
+multiline_comment|/*&n; * linux/include/video/neo_reg.h -- NeoMagic Framebuffer Driver&n; *&n; * Copyright (c) 2001  Denis Oliver Kropp &lt;dok@convergence.de&gt;&n; *&n; * This file is subject to the terms and conditions of the GNU General&n; * Public License.  See the file COPYING in the main directory of this&n; * archive for more details.&n; */
+DECL|macro|NEO_BS0_BLT_BUSY
+mdefine_line|#define NEO_BS0_BLT_BUSY        0x00000001
+DECL|macro|NEO_BS0_FIFO_AVAIL
+mdefine_line|#define NEO_BS0_FIFO_AVAIL      0x00000002
+DECL|macro|NEO_BS0_FIFO_PEND
+mdefine_line|#define NEO_BS0_FIFO_PEND       0x00000004
+DECL|macro|NEO_BC0_DST_Y_DEC
+mdefine_line|#define NEO_BC0_DST_Y_DEC       0x00000001
+DECL|macro|NEO_BC0_X_DEC
+mdefine_line|#define NEO_BC0_X_DEC           0x00000002
+DECL|macro|NEO_BC0_SRC_TRANS
+mdefine_line|#define NEO_BC0_SRC_TRANS       0x00000004
+DECL|macro|NEO_BC0_SRC_IS_FG
+mdefine_line|#define NEO_BC0_SRC_IS_FG       0x00000008
+DECL|macro|NEO_BC0_SRC_Y_DEC
+mdefine_line|#define NEO_BC0_SRC_Y_DEC       0x00000010
+DECL|macro|NEO_BC0_FILL_PAT
+mdefine_line|#define NEO_BC0_FILL_PAT        0x00000020
+DECL|macro|NEO_BC0_SRC_MONO
+mdefine_line|#define NEO_BC0_SRC_MONO        0x00000040
+DECL|macro|NEO_BC0_SYS_TO_VID
+mdefine_line|#define NEO_BC0_SYS_TO_VID      0x00000080
+DECL|macro|NEO_BC1_DEPTH8
+mdefine_line|#define NEO_BC1_DEPTH8          0x00000100
+DECL|macro|NEO_BC1_DEPTH16
+mdefine_line|#define NEO_BC1_DEPTH16         0x00000200
+DECL|macro|NEO_BC1_X_320
+mdefine_line|#define NEO_BC1_X_320           0x00000400
+DECL|macro|NEO_BC1_X_640
+mdefine_line|#define NEO_BC1_X_640           0x00000800
+DECL|macro|NEO_BC1_X_800
+mdefine_line|#define NEO_BC1_X_800           0x00000c00
+DECL|macro|NEO_BC1_X_1024
+mdefine_line|#define NEO_BC1_X_1024          0x00001000
+DECL|macro|NEO_BC1_X_1152
+mdefine_line|#define NEO_BC1_X_1152          0x00001400
+DECL|macro|NEO_BC1_X_1280
+mdefine_line|#define NEO_BC1_X_1280          0x00001800
+DECL|macro|NEO_BC1_X_1600
+mdefine_line|#define NEO_BC1_X_1600          0x00001c00
+DECL|macro|NEO_BC1_DST_TRANS
+mdefine_line|#define NEO_BC1_DST_TRANS       0x00002000
+DECL|macro|NEO_BC1_MSTR_BLT
+mdefine_line|#define NEO_BC1_MSTR_BLT        0x00004000
+DECL|macro|NEO_BC1_FILTER_Z
+mdefine_line|#define NEO_BC1_FILTER_Z        0x00008000
+DECL|macro|NEO_BC2_WR_TR_DST
+mdefine_line|#define NEO_BC2_WR_TR_DST       0x00800000
+DECL|macro|NEO_BC3_SRC_XY_ADDR
+mdefine_line|#define NEO_BC3_SRC_XY_ADDR     0x01000000
+DECL|macro|NEO_BC3_DST_XY_ADDR
+mdefine_line|#define NEO_BC3_DST_XY_ADDR     0x02000000
+DECL|macro|NEO_BC3_CLIP_ON
+mdefine_line|#define NEO_BC3_CLIP_ON         0x04000000
+DECL|macro|NEO_BC3_FIFO_EN
+mdefine_line|#define NEO_BC3_FIFO_EN         0x08000000
+DECL|macro|NEO_BC3_BLT_ON_ADDR
+mdefine_line|#define NEO_BC3_BLT_ON_ADDR     0x10000000
+DECL|macro|NEO_BC3_SKIP_MAPPING
+mdefine_line|#define NEO_BC3_SKIP_MAPPING    0x80000000
+DECL|macro|NEO_MODE1_DEPTH8
+mdefine_line|#define NEO_MODE1_DEPTH8        0x0100
+DECL|macro|NEO_MODE1_DEPTH16
+mdefine_line|#define NEO_MODE1_DEPTH16       0x0200
+DECL|macro|NEO_MODE1_DEPTH24
+mdefine_line|#define NEO_MODE1_DEPTH24       0x0300
+DECL|macro|NEO_MODE1_X_320
+mdefine_line|#define NEO_MODE1_X_320         0x0400
+DECL|macro|NEO_MODE1_X_640
+mdefine_line|#define NEO_MODE1_X_640         0x0800
+DECL|macro|NEO_MODE1_X_800
+mdefine_line|#define NEO_MODE1_X_800         0x0c00
+DECL|macro|NEO_MODE1_X_1024
+mdefine_line|#define NEO_MODE1_X_1024        0x1000
+DECL|macro|NEO_MODE1_X_1152
+mdefine_line|#define NEO_MODE1_X_1152        0x1400
+DECL|macro|NEO_MODE1_X_1280
+mdefine_line|#define NEO_MODE1_X_1280        0x1800
+DECL|macro|NEO_MODE1_X_1600
+mdefine_line|#define NEO_MODE1_X_1600        0x1c00
+DECL|macro|NEO_MODE1_BLT_ON_ADDR
+mdefine_line|#define NEO_MODE1_BLT_ON_ADDR   0x2000
+macro_line|#ifdef __KERNEL__
 macro_line|#ifdef NEOFB_DEBUG
 DECL|macro|DBG
 macro_line|# define DBG(x)&t;&t;printk (KERN_DEBUG &quot;neofb: %s&bslash;n&quot;, (x));
@@ -188,10 +271,6 @@ DECL|struct|neofb_par
 r_struct
 id|neofb_par
 (brace
-DECL|member|depth
-r_int
-id|depth
-suffix:semicolon
 DECL|member|MiscOutReg
 r_int
 r_char
@@ -358,81 +437,16 @@ r_int
 r_char
 id|VerticalExt
 suffix:semicolon
-)brace
-suffix:semicolon
-DECL|struct|neofb_info
-r_struct
-id|neofb_info
-(brace
-DECL|member|fb
-r_struct
-id|fb_info
-id|fb
-suffix:semicolon
-DECL|member|dispsw
-r_struct
-id|display_switch
-op_star
-id|dispsw
-suffix:semicolon
-DECL|member|pcidev
-r_struct
-id|pci_dev
-op_star
-id|pcidev
-suffix:semicolon
-DECL|member|accel
-r_int
-id|accel
-suffix:semicolon
-DECL|member|name
-r_char
-op_star
-id|name
-suffix:semicolon
-r_struct
-(brace
-DECL|member|vbase
-id|u8
-op_star
-id|vbase
-suffix:semicolon
-DECL|member|pbase
-id|u32
-id|pbase
-suffix:semicolon
-DECL|member|len
-id|u32
-id|len
-suffix:semicolon
 macro_line|#ifdef CONFIG_MTRR
 DECL|member|mtrr
 r_int
 id|mtrr
 suffix:semicolon
 macro_line|#endif
-DECL|member|video
-)brace
-id|video
-suffix:semicolon
-r_struct
-(brace
-DECL|member|vbase
+DECL|member|mmio_vbase
 id|u8
 op_star
-id|vbase
-suffix:semicolon
-DECL|member|pbase
-id|u32
-id|pbase
-suffix:semicolon
-DECL|member|len
-id|u32
-id|len
-suffix:semicolon
-DECL|member|mmio
-)brace
-id|mmio
+id|mmio_vbase
 suffix:semicolon
 DECL|member|neo2200
 id|Neo2200
@@ -467,28 +481,6 @@ suffix:semicolon
 DECL|member|external_display
 r_int
 id|external_display
-suffix:semicolon
-r_struct
-(brace
-DECL|member|red
-DECL|member|green
-DECL|member|blue
-DECL|member|transp
-id|u16
-id|red
-comma
-id|green
-comma
-id|blue
-comma
-id|transp
-suffix:semicolon
-DECL|member|palette
-)brace
-id|palette
-(braket
-id|NR_PALETTE
-)braket
 suffix:semicolon
 )brace
 suffix:semicolon
@@ -808,86 +800,5 @@ l_int|0x3c2
 )paren
 suffix:semicolon
 )brace
-DECL|macro|NEO_BS0_BLT_BUSY
-mdefine_line|#define NEO_BS0_BLT_BUSY        0x00000001
-DECL|macro|NEO_BS0_FIFO_AVAIL
-mdefine_line|#define NEO_BS0_FIFO_AVAIL      0x00000002
-DECL|macro|NEO_BS0_FIFO_PEND
-mdefine_line|#define NEO_BS0_FIFO_PEND       0x00000004
-DECL|macro|NEO_BC0_DST_Y_DEC
-mdefine_line|#define NEO_BC0_DST_Y_DEC       0x00000001
-DECL|macro|NEO_BC0_X_DEC
-mdefine_line|#define NEO_BC0_X_DEC           0x00000002
-DECL|macro|NEO_BC0_SRC_TRANS
-mdefine_line|#define NEO_BC0_SRC_TRANS       0x00000004
-DECL|macro|NEO_BC0_SRC_IS_FG
-mdefine_line|#define NEO_BC0_SRC_IS_FG       0x00000008
-DECL|macro|NEO_BC0_SRC_Y_DEC
-mdefine_line|#define NEO_BC0_SRC_Y_DEC       0x00000010
-DECL|macro|NEO_BC0_FILL_PAT
-mdefine_line|#define NEO_BC0_FILL_PAT        0x00000020
-DECL|macro|NEO_BC0_SRC_MONO
-mdefine_line|#define NEO_BC0_SRC_MONO        0x00000040
-DECL|macro|NEO_BC0_SYS_TO_VID
-mdefine_line|#define NEO_BC0_SYS_TO_VID      0x00000080
-DECL|macro|NEO_BC1_DEPTH8
-mdefine_line|#define NEO_BC1_DEPTH8          0x00000100
-DECL|macro|NEO_BC1_DEPTH16
-mdefine_line|#define NEO_BC1_DEPTH16         0x00000200
-DECL|macro|NEO_BC1_X_320
-mdefine_line|#define NEO_BC1_X_320           0x00000400
-DECL|macro|NEO_BC1_X_640
-mdefine_line|#define NEO_BC1_X_640           0x00000800
-DECL|macro|NEO_BC1_X_800
-mdefine_line|#define NEO_BC1_X_800           0x00000c00
-DECL|macro|NEO_BC1_X_1024
-mdefine_line|#define NEO_BC1_X_1024          0x00001000
-DECL|macro|NEO_BC1_X_1152
-mdefine_line|#define NEO_BC1_X_1152          0x00001400
-DECL|macro|NEO_BC1_X_1280
-mdefine_line|#define NEO_BC1_X_1280          0x00001800
-DECL|macro|NEO_BC1_X_1600
-mdefine_line|#define NEO_BC1_X_1600          0x00001c00
-DECL|macro|NEO_BC1_DST_TRANS
-mdefine_line|#define NEO_BC1_DST_TRANS       0x00002000
-DECL|macro|NEO_BC1_MSTR_BLT
-mdefine_line|#define NEO_BC1_MSTR_BLT        0x00004000
-DECL|macro|NEO_BC1_FILTER_Z
-mdefine_line|#define NEO_BC1_FILTER_Z        0x00008000
-DECL|macro|NEO_BC2_WR_TR_DST
-mdefine_line|#define NEO_BC2_WR_TR_DST       0x00800000
-DECL|macro|NEO_BC3_SRC_XY_ADDR
-mdefine_line|#define NEO_BC3_SRC_XY_ADDR     0x01000000
-DECL|macro|NEO_BC3_DST_XY_ADDR
-mdefine_line|#define NEO_BC3_DST_XY_ADDR     0x02000000
-DECL|macro|NEO_BC3_CLIP_ON
-mdefine_line|#define NEO_BC3_CLIP_ON         0x04000000
-DECL|macro|NEO_BC3_FIFO_EN
-mdefine_line|#define NEO_BC3_FIFO_EN         0x08000000
-DECL|macro|NEO_BC3_BLT_ON_ADDR
-mdefine_line|#define NEO_BC3_BLT_ON_ADDR     0x10000000
-DECL|macro|NEO_BC3_SKIP_MAPPING
-mdefine_line|#define NEO_BC3_SKIP_MAPPING    0x80000000
-DECL|macro|NEO_MODE1_DEPTH8
-mdefine_line|#define NEO_MODE1_DEPTH8        0x0100
-DECL|macro|NEO_MODE1_DEPTH16
-mdefine_line|#define NEO_MODE1_DEPTH16       0x0200
-DECL|macro|NEO_MODE1_DEPTH24
-mdefine_line|#define NEO_MODE1_DEPTH24       0x0300
-DECL|macro|NEO_MODE1_X_320
-mdefine_line|#define NEO_MODE1_X_320         0x0400
-DECL|macro|NEO_MODE1_X_640
-mdefine_line|#define NEO_MODE1_X_640         0x0800
-DECL|macro|NEO_MODE1_X_800
-mdefine_line|#define NEO_MODE1_X_800         0x0c00
-DECL|macro|NEO_MODE1_X_1024
-mdefine_line|#define NEO_MODE1_X_1024        0x1000
-DECL|macro|NEO_MODE1_X_1152
-mdefine_line|#define NEO_MODE1_X_1152        0x1400
-DECL|macro|NEO_MODE1_X_1280
-mdefine_line|#define NEO_MODE1_X_1280        0x1800
-DECL|macro|NEO_MODE1_X_1600
-mdefine_line|#define NEO_MODE1_X_1600        0x1c00
-DECL|macro|NEO_MODE1_BLT_ON_ADDR
-mdefine_line|#define NEO_MODE1_BLT_ON_ADDR   0x2000
+macro_line|#endif
 eof
