@@ -372,7 +372,7 @@ id|iobase
 suffix:semicolon
 r_static
 r_int
-id|__init
+id|__devinit
 id|via_init_one
 (paren
 r_struct
@@ -666,7 +666,7 @@ suffix:semicolon
 DECL|function|via_init_one
 r_static
 r_int
-id|__init
+id|__devinit
 id|via_init_one
 (paren
 r_struct
@@ -1580,7 +1580,7 @@ suffix:semicolon
 multiline_comment|/*&n; * Function via_ircc_open (iobase, irq)&n; *&n; *    Open driver instance&n; *&n; */
 DECL|function|via_ircc_open
 r_static
-id|__init
+id|__devinit
 r_int
 id|via_ircc_open
 c_func

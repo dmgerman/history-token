@@ -1073,7 +1073,7 @@ multiline_comment|/*&n; * Get us a file in /proc/cciss that says something about
 DECL|function|cciss_procinit
 r_static
 r_void
-id|__init
+id|__devinit
 id|cciss_procinit
 c_func
 (paren
@@ -11725,7 +11725,7 @@ multiline_comment|/*&n; *  This is it.  Find all the controllers and register th
 DECL|function|cciss_init_one
 r_static
 r_int
-id|__init
+id|__devinit
 id|cciss_init_one
 c_func
 (paren

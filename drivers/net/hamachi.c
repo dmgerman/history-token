@@ -275,13 +275,13 @@ macro_line|#include &lt;asm/bitops.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/unaligned.h&gt;
 macro_line|#include &lt;asm/cache.h&gt;
-DECL|variable|__initdata
+DECL|variable|__devinitdata
 r_static
 r_char
 id|version
 (braket
 )braket
-id|__initdata
+id|__devinitdata
 op_assign
 id|KERN_INFO
 id|DRV_NAME
@@ -1443,7 +1443,7 @@ suffix:semicolon
 DECL|function|hamachi_init_one
 r_static
 r_int
-id|__init
+id|__devinit
 id|hamachi_init_one
 (paren
 r_struct
@@ -2657,7 +2657,7 @@ suffix:semicolon
 DECL|function|read_eeprom
 r_static
 r_int
-id|__init
+id|__devinit
 id|read_eeprom
 c_func
 (paren

@@ -11,13 +11,13 @@ macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &quot;tms380tr.h&quot;
 macro_line|#include &quot;abyss.h&quot;            /* Madge-specific constants */
-DECL|variable|__initdata
+DECL|variable|__devinitdata
 r_static
 r_char
 id|version
 (braket
 )braket
-id|__initdata
+id|__devinitdata
 op_assign
 l_string|&quot;abyss.c: v1.02 23/11/2000 by Adam Fritzler&bslash;n&quot;
 suffix:semicolon
@@ -385,7 +385,7 @@ suffix:semicolon
 DECL|function|abyss_attach
 r_static
 r_int
-id|__init
+id|__devinit
 id|abyss_attach
 c_func
 (paren
