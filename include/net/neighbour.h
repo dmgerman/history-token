@@ -1380,6 +1380,8 @@ id|dev
 )paren
 suffix:semicolon
 )brace
+DECL|macro|LOCALLY_ENQUEUED
+mdefine_line|#define LOCALLY_ENQUEUED -2
 macro_line|#endif
 macro_line|#endif
 eof

@@ -2940,7 +2940,7 @@ id|packet_type
 op_star
 id|ptype
 suffix:semicolon
-id|do_gettimeofday
+id|net_timestamp
 c_func
 (paren
 op_amp
@@ -4589,7 +4589,7 @@ c_cond
 op_logical_neg
 id|skb-&gt;stamp.tv_sec
 )paren
-id|do_gettimeofday
+id|net_timestamp
 c_func
 (paren
 op_amp
@@ -5236,7 +5236,7 @@ c_cond
 op_logical_neg
 id|skb-&gt;stamp.tv_sec
 )paren
-id|do_gettimeofday
+id|net_timestamp
 c_func
 (paren
 op_amp
