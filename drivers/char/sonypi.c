@@ -357,7 +357,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|ec_read
+id|sonypi_ec_read
 c_func
 (paren
 id|addr
@@ -373,7 +373,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|ec_read
+id|sonypi_ec_read
 c_func
 (paren
 id|addr
@@ -583,7 +583,7 @@ r_void
 r_if
 c_cond
 (paren
-id|ec_write
+id|sonypi_ec_write
 c_func
 (paren
 id|SONYPI_SHIB
@@ -607,7 +607,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|ec_write
+id|sonypi_ec_write
 c_func
 (paren
 id|SONYPI_SLOB
@@ -627,7 +627,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|ec_write
+id|sonypi_ec_write
 c_func
 (paren
 id|SONYPI_SIRQ
@@ -653,7 +653,6 @@ multiline_comment|/* Disables the device - this comes from the AML code in the A
 DECL|function|sonypi_type1_dis
 r_static
 r_void
-id|__devexit
 id|sonypi_type1_dis
 c_func
 (paren
@@ -718,7 +717,6 @@ suffix:semicolon
 DECL|function|sonypi_type2_dis
 r_static
 r_void
-id|__devexit
 id|sonypi_type2_dis
 c_func
 (paren
@@ -728,7 +726,7 @@ r_void
 r_if
 c_cond
 (paren
-id|ec_write
+id|sonypi_ec_write
 c_func
 (paren
 id|SONYPI_SHIB
@@ -746,7 +744,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|ec_write
+id|sonypi_ec_write
 c_func
 (paren
 id|SONYPI_SLOB
@@ -764,7 +762,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|ec_write
+id|sonypi_ec_write
 c_func
 (paren
 id|SONYPI_SIRQ
@@ -1240,8 +1238,6 @@ l_int|0x91
 comma
 l_int|0x1
 )paren
-op_ne
-l_int|0
 )paren
 (brace
 id|set_current_state
@@ -1305,8 +1301,6 @@ r_if
 c_cond
 (paren
 id|i
-op_ne
-l_int|0
 )paren
 r_break
 suffix:semicolon
@@ -1355,28 +1349,15 @@ id|state
 (brace
 id|state
 op_assign
-(paren
+op_logical_neg
+op_logical_neg
 id|state
-op_ne
-l_int|0
-)paren
 suffix:semicolon
 r_if
 c_cond
 (paren
 id|sonypi_device.bluetooth_power
-op_logical_and
-id|state
-)paren
-r_return
-suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|sonypi_device.bluetooth_power
-op_logical_and
-op_logical_neg
+op_eq
 id|state
 )paren
 r_return
@@ -1392,7 +1373,7 @@ suffix:semicolon
 id|sonypi_call1
 c_func
 (paren
-l_int|0x93
+l_int|0x82
 )paren
 suffix:semicolon
 id|sonypi_device.bluetooth_power
@@ -1448,24 +1429,6 @@ id|inb_p
 c_func
 (paren
 id|sonypi_device.ioport2
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|verbose
-OG
-l_int|1
-)paren
-id|printk
-c_func
-(paren
-id|KERN_INFO
-l_string|&quot;sonypi: event port1=0x%02x,port2=0x%02x&bslash;n&quot;
-comma
-id|v1
-comma
-id|v2
 )paren
 suffix:semicolon
 r_for
@@ -1617,12 +1580,31 @@ comma
 id|v2
 )paren
 suffix:semicolon
+multiline_comment|/* We need to return IRQ_HANDLED here because there *are*&n;&t; * events belonging to the sonypi device we don&squot;t know about, &n;&t; * but we still don&squot;t want those to pollute the logs... */
 r_return
-id|IRQ_NONE
+id|IRQ_HANDLED
 suffix:semicolon
 id|found
 suffix:colon
-macro_line|#if defined(CONFIG_INPUT) || defined(CONFIG_INPUT_MODULE)
+r_if
+c_cond
+(paren
+id|verbose
+OG
+l_int|1
+)paren
+id|printk
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;sonypi: event port1=0x%02x,port2=0x%02x&bslash;n&quot;
+comma
+id|v1
+comma
+id|v2
+)paren
+suffix:semicolon
+macro_line|#ifdef SONYPI_USE_INPUT
 r_if
 c_cond
 (paren
@@ -1732,7 +1714,7 @@ id|jog_dev
 )paren
 suffix:semicolon
 )brace
-macro_line|#endif /* CONFIG_INPUT || CONFIG_INPUT_MODULE */
+macro_line|#endif /* SONYPI_USE_INPUT */
 id|sonypi_pushq
 c_func
 (paren
@@ -2490,7 +2472,7 @@ suffix:colon
 r_if
 c_cond
 (paren
-id|ec_read
+id|sonypi_ec_read
 c_func
 (paren
 id|SONYPI_LCD_LIGHT
@@ -2572,7 +2554,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|ec_write
+id|sonypi_ec_write
 c_func
 (paren
 id|SONYPI_LCD_LIGHT
@@ -2801,7 +2783,7 @@ suffix:colon
 r_if
 c_cond
 (paren
-id|ec_read
+id|sonypi_ec_read
 c_func
 (paren
 id|SONYPI_BAT_FLAGS
@@ -3081,11 +3063,13 @@ c_func
 (paren
 )paren
 suffix:semicolon
-macro_line|#ifndef CONFIG_ACPI
 multiline_comment|/* disable ACPI mode */
 r_if
 c_cond
 (paren
+op_logical_neg
+id|SONYPI_ACPI_ACTIVE
+op_logical_and
 id|fnkeyinit
 )paren
 id|outb
@@ -3096,17 +3080,18 @@ comma
 l_int|0xb2
 )paren
 suffix:semicolon
-macro_line|#endif
 r_break
 suffix:semicolon
 r_case
 id|PM_RESUME
 suffix:colon
-macro_line|#ifndef CONFIG_ACPI
 multiline_comment|/* Enable ACPI mode to get Fn key events */
 r_if
 c_cond
 (paren
+op_logical_neg
+id|SONYPI_ACPI_ACTIVE
+op_logical_and
 id|fnkeyinit
 )paren
 id|outb
@@ -3117,7 +3102,6 @@ comma
 l_int|0xb2
 )paren
 suffix:semicolon
-macro_line|#endif
 r_if
 c_cond
 (paren
@@ -3455,30 +3439,6 @@ id|i
 op_increment
 )paren
 (brace
-r_if
-c_cond
-(paren
-op_logical_neg
-id|request_irq
-c_func
-(paren
-id|irq_list
-(braket
-id|i
-)braket
-dot
-id|irq
-comma
-id|sonypi_irq
-comma
-id|SA_SHIRQ
-comma
-l_string|&quot;sonypi&quot;
-comma
-id|sonypi_irq
-)paren
-)paren
-(brace
 id|sonypi_device.irq
 op_assign
 id|irq_list
@@ -3497,49 +3457,7 @@ id|i
 dot
 id|bits
 suffix:semicolon
-r_break
-suffix:semicolon
-)brace
-)brace
-r_if
-c_cond
-(paren
-op_logical_neg
-id|sonypi_device.irq
-)paren
-(brace
-id|printk
-c_func
-(paren
-id|KERN_ERR
-l_string|&quot;sonypi: request_irq failed&bslash;n&quot;
-)paren
-suffix:semicolon
-id|ret
-op_assign
-op_minus
-id|ENODEV
-suffix:semicolon
-r_goto
-id|out3
-suffix:semicolon
-)brace
-macro_line|#ifndef CONFIG_ACPI
-multiline_comment|/* Enable ACPI mode to get Fn key events */
-r_if
-c_cond
-(paren
-id|fnkeyinit
-)paren
-id|outb
-c_func
-(paren
-l_int|0xf0
-comma
-l_int|0xb2
-)paren
-suffix:semicolon
-macro_line|#endif
+multiline_comment|/* Enable sonypi IRQ settings */
 r_if
 c_cond
 (paren
@@ -3588,6 +3506,92 @@ id|sonypi_call1
 c_func
 (paren
 l_int|0x82
+)paren
+suffix:semicolon
+multiline_comment|/* Now try requesting the irq from the system */
+r_if
+c_cond
+(paren
+op_logical_neg
+id|request_irq
+c_func
+(paren
+id|sonypi_device.irq
+comma
+id|sonypi_irq
+comma
+id|SA_SHIRQ
+comma
+l_string|&quot;sonypi&quot;
+comma
+id|sonypi_irq
+)paren
+)paren
+r_break
+suffix:semicolon
+multiline_comment|/* If request_irq failed, disable sonypi IRQ settings */
+r_if
+c_cond
+(paren
+id|sonypi_device.model
+op_eq
+id|SONYPI_DEVICE_MODEL_TYPE2
+)paren
+id|sonypi_type2_dis
+c_func
+(paren
+)paren
+suffix:semicolon
+r_else
+id|sonypi_type1_dis
+c_func
+(paren
+)paren
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+op_logical_neg
+id|irq_list
+(braket
+id|i
+)braket
+dot
+id|irq
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;sonypi: request_irq failed&bslash;n&quot;
+)paren
+suffix:semicolon
+id|ret
+op_assign
+op_minus
+id|ENODEV
+suffix:semicolon
+r_goto
+id|out3
+suffix:semicolon
+)brace
+multiline_comment|/* Enable ACPI mode to get Fn key events */
+r_if
+c_cond
+(paren
+op_logical_neg
+id|SONYPI_ACPI_ACTIVE
+op_logical_and
+id|fnkeyinit
+)paren
+id|outb
+c_func
+(paren
+l_int|0xf0
+comma
+l_int|0xb2
 )paren
 suffix:semicolon
 id|printk
@@ -3683,7 +3687,7 @@ comma
 id|sonypi_misc_device.minor
 )paren
 suffix:semicolon
-macro_line|#if defined(CONFIG_INPUT) || defined(CONFIG_INPUT_MODULE)
+macro_line|#ifdef SONYPI_USE_INPUT
 r_if
 c_cond
 (paren
@@ -3784,7 +3788,7 @@ id|sonypi_device.jog_dev.name
 )paren
 suffix:semicolon
 )brace
-macro_line|#endif /* CONFIG_INPUT || CONFIG_INPUT_MODULE */
+macro_line|#endif /* SONYPI_USE_INPUT */
 macro_line|#ifdef CONFIG_PM
 id|sonypi_device.pm
 op_assign
@@ -3854,7 +3858,7 @@ l_int|0
 )paren
 suffix:semicolon
 multiline_comment|/* make sure we don&squot;t get any more events */
-macro_line|#if defined(CONFIG_INPUT) || defined(CONFIG_INPUT_MODULE)
+macro_line|#ifdef SONYPI_USE_INPUT
 r_if
 c_cond
 (paren
@@ -3875,7 +3879,7 @@ id|sonypi_device.jog_dev.name
 )paren
 suffix:semicolon
 )brace
-macro_line|#endif /* CONFIG_INPUT || CONFIG_INPUT_MODULE */
+macro_line|#endif /* SONYPI_USE_INPUT */
 r_if
 c_cond
 (paren
@@ -3904,11 +3908,13 @@ c_func
 (paren
 )paren
 suffix:semicolon
-macro_line|#ifndef CONFIG_ACPI
 multiline_comment|/* disable ACPI mode */
 r_if
 c_cond
 (paren
+op_logical_neg
+id|SONYPI_ACPI_ACTIVE
+op_logical_and
 id|fnkeyinit
 )paren
 id|outb
@@ -3919,7 +3925,6 @@ comma
 l_int|0xb2
 )paren
 suffix:semicolon
-macro_line|#endif
 id|free_irq
 c_func
 (paren
