@@ -3460,6 +3460,13 @@ op_amp
 id|p-&gt;switch_lock
 )paren
 suffix:semicolon
+id|spin_lock_init
+c_func
+(paren
+op_amp
+id|p-&gt;proc_lock
+)paren
+suffix:semicolon
 id|clear_tsk_thread_flag
 c_func
 (paren
