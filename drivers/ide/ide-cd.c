@@ -12088,16 +12088,10 @@ r_int
 id|nslots
 suffix:semicolon
 multiline_comment|/*&n;&t; * default to read-only always and fix latter at the bottom&n;&t; */
-id|set_device_ro
+id|set_disk_ro
 c_func
 (paren
-id|mk_kdev
-c_func
-(paren
-id|drive-&gt;disk-&gt;major
-comma
-id|drive-&gt;disk-&gt;first_minor
-)paren
+id|drive-&gt;disk
 comma
 l_int|1
 )paren
@@ -12809,16 +12803,10 @@ id|drive
 op_member_access_from_pointer
 id|dvd_ram
 )paren
-id|set_device_ro
+id|set_disk_ro
 c_func
 (paren
-id|mk_kdev
-c_func
-(paren
-id|drive-&gt;disk-&gt;major
-comma
-id|drive-&gt;disk-&gt;first_minor
-)paren
+id|drive-&gt;disk
 comma
 l_int|0
 )paren

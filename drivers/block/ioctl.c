@@ -1210,11 +1210,7 @@ suffix:semicolon
 id|set_device_ro
 c_func
 (paren
-id|to_kdev_t
-c_func
-(paren
-id|bdev-&gt;bd_dev
-)paren
+id|bdev
 comma
 id|n
 )paren

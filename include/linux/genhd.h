@@ -208,6 +208,10 @@ op_star
 id|hd_driverfs_dev
 suffix:semicolon
 multiline_comment|/* support driverfs hiearchy     */
+DECL|member|policy
+r_int
+id|policy
+suffix:semicolon
 )brace
 suffix:semicolon
 DECL|macro|GENHD_FL_REMOVABLE
@@ -323,6 +327,10 @@ r_struct
 id|timer_rand_state
 op_star
 id|random
+suffix:semicolon
+DECL|member|policy
+r_int
+id|policy
 suffix:semicolon
 DECL|member|sync_io
 r_int

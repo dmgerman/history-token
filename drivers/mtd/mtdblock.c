@@ -1255,8 +1255,9 @@ op_assign
 id|mtdblk
 suffix:semicolon
 id|set_device_ro
+c_func
 (paren
-id|inode-&gt;i_rdev
+id|inode-&gt;i_bdev
 comma
 op_logical_neg
 (paren

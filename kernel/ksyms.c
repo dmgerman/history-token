@@ -51,18 +51,6 @@ macro_line|#ifdef CONFIG_KMOD
 macro_line|#include &lt;linux/kmod.h&gt;
 macro_line|#endif
 r_extern
-r_void
-id|set_device_ro
-c_func
-(paren
-id|kdev_t
-id|dev
-comma
-r_int
-id|flag
-)paren
-suffix:semicolon
-r_extern
 r_struct
 id|timezone
 id|sys_tz
@@ -1849,20 +1837,6 @@ id|tty_std_termios
 )paren
 suffix:semicolon
 multiline_comment|/* block device driver support */
-DECL|variable|bdev_read_only
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|bdev_read_only
-)paren
-suffix:semicolon
-DECL|variable|set_device_ro
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|set_device_ro
-)paren
-suffix:semicolon
 DECL|variable|bmap
 id|EXPORT_SYMBOL
 c_func
