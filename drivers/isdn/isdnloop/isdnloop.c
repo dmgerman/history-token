@@ -3233,6 +3233,23 @@ id|nphone
 l_int|30
 )braket
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|card
+)paren
+(brace
+id|printk
+c_func
+(paren
+l_string|&quot;BUG!!!&bslash;n&quot;
+)paren
+suffix:semicolon
+r_return
+l_string|&quot;&quot;
+suffix:semicolon
+)brace
 r_switch
 c_cond
 (paren
@@ -3353,9 +3370,7 @@ r_break
 suffix:semicolon
 )brace
 r_return
-(paren
-l_string|&quot;&bslash;0&quot;
-)paren
+l_string|&quot;&quot;
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Parse an ICN-type command string sent to the &squot;card&squot;.&n; * Perform misc. actions depending on the command.&n; *&n; * Parameter:&n; *   card = pointer to card struct.&n; */
@@ -3941,6 +3956,8 @@ c_func
 id|card-&gt;rcard
 (braket
 id|ch
+op_minus
+l_int|1
 )braket
 comma
 id|cmd.parm.setup.phone
