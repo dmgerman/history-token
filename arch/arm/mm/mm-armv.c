@@ -1118,7 +1118,7 @@ l_int|0
 suffix:semicolon
 id|mem_types
 (braket
-id|MT_MINICACHE
+id|MT_MINICLEAN
 )braket
 dot
 id|prot_sect
