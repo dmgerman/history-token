@@ -12,6 +12,24 @@ macro_line|#include &lt;sound/core.h&gt;
 macro_line|#include &lt;sound/minors.h&gt;
 macro_line|#include &lt;sound/rawmidi.h&gt;
 macro_line|#include &quot;usbaudio.h&quot;
+id|MODULE_AUTHOR
+c_func
+(paren
+l_string|&quot;Clemens Ladisch &lt;tiwai@suse.de&gt;&quot;
+)paren
+suffix:semicolon
+id|MODULE_DESCRIPTION
+c_func
+(paren
+l_string|&quot;USB Audio/MIDI helper module&quot;
+)paren
+suffix:semicolon
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
+)paren
+suffix:semicolon
 DECL|struct|usb_ms_header_descriptor
 r_struct
 id|usb_ms_header_descriptor
@@ -6185,4 +6203,32 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+DECL|variable|snd_usb_create_midi_interface
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|snd_usb_create_midi_interface
+)paren
+suffix:semicolon
+DECL|variable|snd_usbmidi_input_stop
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|snd_usbmidi_input_stop
+)paren
+suffix:semicolon
+DECL|variable|snd_usbmidi_input_start
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|snd_usbmidi_input_start
+)paren
+suffix:semicolon
+DECL|variable|snd_usbmidi_disconnect
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|snd_usbmidi_disconnect
+)paren
+suffix:semicolon
 eof
