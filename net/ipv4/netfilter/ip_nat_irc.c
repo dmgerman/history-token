@@ -40,7 +40,7 @@ suffix:semicolon
 id|MODULE_DESCRIPTION
 c_func
 (paren
-l_string|&quot;IRC (DCC) network address translation module&quot;
+l_string|&quot;IRC (DCC) NAT helper&quot;
 )paren
 suffix:semicolon
 id|MODULE_LICENSE

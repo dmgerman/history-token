@@ -4,6 +4,24 @@ macro_line|#include &lt;linux/skbuff.h&gt;
 macro_line|#include &lt;linux/ipv6.h&gt;
 macro_line|#include &lt;linux/if_ether.h&gt;
 macro_line|#include &lt;linux/netfilter_ipv6/ip6_tables.h&gt;
+id|MODULE_DESCRIPTION
+c_func
+(paren
+l_string|&quot;IPv6 EUI64 address checking match&quot;
+)paren
+suffix:semicolon
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
+)paren
+suffix:semicolon
+id|MODULE_AUTHOR
+c_func
+(paren
+l_string|&quot;Andras Kis-Szabo &lt;kisza@sch.bme.hu&gt;&quot;
+)paren
+suffix:semicolon
 r_static
 r_int
 DECL|function|match
@@ -385,24 +403,6 @@ id|module_exit
 c_func
 (paren
 id|fini
-)paren
-suffix:semicolon
-id|MODULE_DESCRIPTION
-c_func
-(paren
-l_string|&quot;IPv6 EUI64 address checking match&quot;
-)paren
-suffix:semicolon
-id|MODULE_LICENSE
-c_func
-(paren
-l_string|&quot;GPL&quot;
-)paren
-suffix:semicolon
-id|MODULE_AUTHOR
-c_func
-(paren
-l_string|&quot;Andras Kis-Szabo &lt;kisza@sch.bme.hu&gt;&quot;
 )paren
 suffix:semicolon
 eof

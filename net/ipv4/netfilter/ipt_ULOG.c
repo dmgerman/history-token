@@ -31,7 +31,7 @@ suffix:semicolon
 id|MODULE_DESCRIPTION
 c_func
 (paren
-l_string|&quot;IP tables userspace logging module&quot;
+l_string|&quot;iptables userspace logging module&quot;
 )paren
 suffix:semicolon
 DECL|macro|ULOG_NL_EVENT

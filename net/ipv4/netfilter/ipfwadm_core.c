@@ -55,6 +55,12 @@ c_func
 l_string|&quot;Dual BSD/GPL&quot;
 )paren
 suffix:semicolon
+id|MODULE_DESCRIPTION
+c_func
+(paren
+l_string|&quot;ipfwadm backwards compatibility layer&quot;
+)paren
+suffix:semicolon
 multiline_comment|/*&n; *&t;Implement IP packet firewall&n; */
 macro_line|#ifdef DEBUG_IP_FIREWALL
 DECL|macro|dprintf1

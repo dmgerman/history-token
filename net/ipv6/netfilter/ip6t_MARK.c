@@ -5,6 +5,18 @@ macro_line|#include &lt;linux/ip.h&gt;
 macro_line|#include &lt;net/checksum.h&gt;
 macro_line|#include &lt;linux/netfilter_ipv6/ip6_tables.h&gt;
 macro_line|#include &lt;linux/netfilter_ipv6/ip6t_MARK.h&gt;
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
+)paren
+suffix:semicolon
+id|MODULE_AUTHOR
+c_func
+(paren
+l_string|&quot;Netfilter Core Team &lt;coreteam@netfilter.org&gt;&quot;
+)paren
+suffix:semicolon
 r_static
 r_int
 r_int
@@ -277,12 +289,6 @@ id|module_exit
 c_func
 (paren
 id|fini
-)paren
-suffix:semicolon
-id|MODULE_LICENSE
-c_func
-(paren
-l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
 eof

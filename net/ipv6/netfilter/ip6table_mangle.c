@@ -1,6 +1,24 @@
 multiline_comment|/*&n; * IPv6 packet mangling table, a port of the IPv4 mangle table to IPv6&n; *&n; * Copyright (C) 2000-2001 by Harald Welte &lt;laforge@gnumonks.org&gt;&n; */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/netfilter_ipv6/ip6_tables.h&gt;
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
+)paren
+suffix:semicolon
+id|MODULE_AUTHOR
+c_func
+(paren
+l_string|&quot;Netfilter Core Team &lt;coreteam@netfilter.org&gt;&quot;
+)paren
+suffix:semicolon
+id|MODULE_DESCRIPTION
+c_func
+(paren
+l_string|&quot;ip6tables mangle table&quot;
+)paren
+suffix:semicolon
 DECL|macro|MANGLE_VALID_HOOKS
 mdefine_line|#define MANGLE_VALID_HOOKS ((1 &lt;&lt; NF_IP6_PRE_ROUTING) | &bslash;&n;&t;&t;&t;    (1 &lt;&lt; NF_IP6_LOCAL_IN) | &bslash;&n;&t;&t;&t;    (1 &lt;&lt; NF_IP6_FORWARD) | &bslash;&n;&t;&t;&t;    (1 &lt;&lt; NF_IP6_LOCAL_OUT) | &bslash;&n;&t;&t;&t;    (1 &lt;&lt; NF_IP6_POST_ROUTING))
 macro_line|#if 0
@@ -1724,12 +1742,6 @@ id|module_exit
 c_func
 (paren
 id|fini
-)paren
-suffix:semicolon
-id|MODULE_LICENSE
-c_func
-(paren
-l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
 eof

@@ -9,6 +9,24 @@ macro_line|#include &lt;net/tcp.h&gt;
 macro_line|#include &lt;linux/netfilter_ipv4/lockhelp.h&gt;
 macro_line|#include &lt;linux/netfilter_ipv4/ip_conntrack_helper.h&gt;
 macro_line|#include &lt;linux/netfilter_ipv4/ip_conntrack_ftp.h&gt;
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
+)paren
+suffix:semicolon
+id|MODULE_AUTHOR
+c_func
+(paren
+l_string|&quot;Rusty Russell &lt;rusty@rustcorp.com.au&gt;&quot;
+)paren
+suffix:semicolon
+id|MODULE_DESCRIPTION
+c_func
+(paren
+l_string|&quot;ftp connection tracking helper&quot;
+)paren
+suffix:semicolon
 multiline_comment|/* This is slow, but it&squot;s simple. --RR */
 DECL|variable|ftp_buffer
 r_static
@@ -2426,12 +2444,6 @@ id|EXPORT_SYMBOL
 c_func
 (paren
 id|ip_ftp_lock
-)paren
-suffix:semicolon
-id|MODULE_LICENSE
-c_func
-(paren
-l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
 DECL|variable|init

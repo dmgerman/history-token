@@ -5,6 +5,24 @@ macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/netfilter_ipv4/ip_tables.h&gt;
 macro_line|#include &lt;linux/netfilter_ipv4/ipt_limit.h&gt;
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
+)paren
+suffix:semicolon
+id|MODULE_AUTHOR
+c_func
+(paren
+l_string|&quot;Herve Eychenne &lt;rv@wallfire.org&gt;&quot;
+)paren
+suffix:semicolon
+id|MODULE_DESCRIPTION
+c_func
+(paren
+l_string|&quot;iptables rate limit match&quot;
+)paren
+suffix:semicolon
 multiline_comment|/* The algorithm used is the Simple Token Bucket Filter (TBF)&n; * see net/sched/sch_tbf.c in the linux source tree&n; */
 DECL|variable|limit_lock
 r_static
@@ -417,12 +435,6 @@ id|module_exit
 c_func
 (paren
 id|fini
-)paren
-suffix:semicolon
-id|MODULE_LICENSE
-c_func
-(paren
-l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
 eof
