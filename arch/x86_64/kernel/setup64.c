@@ -885,6 +885,8 @@ op_or
 id|EF_DF
 op_or
 id|EF_IE
+op_or
+l_int|0x3000
 )paren
 suffix:semicolon
 id|wrmsrl
