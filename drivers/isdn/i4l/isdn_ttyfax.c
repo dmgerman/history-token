@@ -1815,8 +1815,6 @@ id|isdn_slot_free
 c_func
 (paren
 id|info-&gt;isdn_slot
-comma
-id|ISDN_USAGE_FAX
 )paren
 suffix:semicolon
 id|isdn_slot_set_m_idx
