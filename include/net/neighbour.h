@@ -452,10 +452,6 @@ l_int|0
 suffix:semicolon
 )brace
 suffix:semicolon
-DECL|macro|NEIGH_HASHMASK
-mdefine_line|#define NEIGH_HASHMASK&t;&t;0x1F
-DECL|macro|PNEIGH_HASHMASK
-mdefine_line|#define PNEIGH_HASHMASK&t;&t;0xF
 multiline_comment|/*&n; *&t;neighbour table manipulation&n; */
 DECL|struct|neigh_table
 r_struct
@@ -626,23 +622,15 @@ DECL|member|hash_buckets
 r_struct
 id|neighbour
 op_star
+op_star
 id|hash_buckets
-(braket
-id|NEIGH_HASHMASK
-op_plus
-l_int|1
-)braket
 suffix:semicolon
 DECL|member|phash_buckets
 r_struct
 id|pneigh_entry
 op_star
+op_star
 id|phash_buckets
-(braket
-id|PNEIGH_HASHMASK
-op_plus
-l_int|1
-)braket
 suffix:semicolon
 )brace
 suffix:semicolon
