@@ -22,7 +22,7 @@ r_int
 id|elf_greg_t
 suffix:semicolon
 DECL|macro|ELF_NGREG
-mdefine_line|#define ELF_NGREG (sizeof (struct pt_regs) / sizeof(elf_greg_t))
+mdefine_line|#define ELF_NGREG 36
 DECL|typedef|elf_gregset_t
 r_typedef
 id|elf_greg_t
@@ -31,6 +31,9 @@ id|elf_gregset_t
 id|ELF_NGREG
 )braket
 suffix:semicolon
+multiline_comment|/* Format of 64-bit elf_gregset_t is:&n; * &t;G0 --&gt; G7&n; * &t;O0 --&gt; O7&n; * &t;L0 --&gt; L7&n; * &t;I0 --&gt; I7&n; *&t;TSTATE&n; *&t;TPC&n; *&t;TNPC&n; *&t;Y&n; */
+DECL|macro|ELF_CORE_COPY_REGS
+mdefine_line|#define ELF_CORE_COPY_REGS(__elf_regs, __pt_regs)&t;&bslash;&n;do {&t;unsigned long *dest = &amp;(__elf_regs[0]);&t;&t;&bslash;&n;&t;struct pt_regs *src = (__pt_regs);&t;&t;&bslash;&n;&t;unsigned long *sp;&t;&t;&t;&t;&bslash;&n;&t;int i;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;for(i = 0; i &lt; 16; i++)&t;&t;&t;&t;&bslash;&n;&t;&t;dest[i] = src-&gt;u_regs[i];&t;&t;&bslash;&n;&t;/* Don&squot;t try this at home kids... */&t;&t;&bslash;&n;&t;set_fs(USER_DS);&t;&t;&t;&t;&bslash;&n;&t;sp = (unsigned long *)&t;&t;&t;&t;&bslash;&n;&t; ((src-&gt;u_regs[14] + STACK_BIAS)&t;&t;&bslash;&n;&t;  &amp; 0xfffffffffffffff8UL);&t;&t;&t;&bslash;&n;&t;for(i = 0; i &lt; 16; i++)&t;&t;&t;&t;&bslash;&n;&t;&t;__get_user(dest[i+16], &amp;sp[i]);&t;&t;&bslash;&n;&t;set_fs(KERNEL_DS);&t;&t;&t;&t;&bslash;&n;&t;dest[32] = src-&gt;tstate;&t;&t;&t;&t;&bslash;&n;&t;dest[33] = src-&gt;tpc;&t;&t;&t;&t;&bslash;&n;&t;dest[34] = src-&gt;tnpc;&t;&t;&t;&t;&bslash;&n;&t;dest[35] = src-&gt;y;&t;&t;&t;&t;&bslash;&n;} while (0);
 r_typedef
 r_struct
 (brace
