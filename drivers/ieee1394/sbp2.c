@@ -3065,18 +3065,33 @@ id|ENOMEM
 suffix:semicolon
 )brace
 multiline_comment|/* Schedule a timeout here. The reason is that we may be so close&n;&t; * to a bus reset, that the device is not available for logins.&n;&t; * This can happen when the bus reset is caused by the host&n;&t; * connected to the sbp2 device being removed. That host would&n;&t; * have a certain amount of time to relogin before the sbp2 device&n;&t; * allows someone else to login instead. One second makes sense. */
-id|set_current_state
+id|msleep_interruptible
 c_func
 (paren
-id|TASK_INTERRUPTIBLE
+l_int|1000
 )paren
 suffix:semicolon
-id|schedule_timeout
+r_if
+c_cond
+(paren
+id|signal_pending
 c_func
 (paren
-id|HZ
+id|current
+)paren
+)paren
+(brace
+id|sbp2_remove_device
+c_func
+(paren
+id|scsi_id
 )paren
 suffix:semicolon
+r_return
+op_minus
+id|EINTR
+suffix:semicolon
+)brace
 multiline_comment|/*&n;&t; * Login to the sbp-2 device&n;&t; */
 r_if
 c_cond
