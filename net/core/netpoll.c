@@ -2903,8 +2903,6 @@ l_string|&quot;%s: carrier detect appears flaky,&quot;
 l_string|&quot; waiting 10 seconds&bslash;n&quot;
 comma
 id|np-&gt;name
-comma
-id|np-&gt;dev_name
 )paren
 suffix:semicolon
 r_while
