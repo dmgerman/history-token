@@ -2,6 +2,7 @@ multiline_comment|/* &n; * Audio driver for the NeoMagic 256AV and 256ZX chipset
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
+macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/pm.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
@@ -1635,9 +1636,6 @@ l_int|1
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/* Ultra cheez-whiz.  But I&squot;m too lazy to grep headers. */
-DECL|macro|MIN
-mdefine_line|#define MIN(X,Y) ((X) &lt; (Y) ? (X) : (Y))
 multiline_comment|/* &n; * Read the last-recorded block from the ring buffer, copy it into the&n; * saved buffer pointer, and invoke DMAuf_inputintr() with the recording&n; * device. &n; */
 r_static
 r_void
@@ -1713,7 +1711,7 @@ id|card-&gt;curRecPos
 id|u32
 id|amt
 op_assign
-id|MIN
+id|min
 (paren
 id|ringsize
 op_minus
@@ -1780,7 +1778,7 @@ l_int|0
 id|u32
 id|amt
 op_assign
-id|MIN
+id|min
 (paren
 id|currptr
 op_minus
@@ -1832,9 +1830,7 @@ id|card-&gt;dev_for_record
 suffix:semicolon
 )brace
 )brace
-DECL|macro|MIN
-macro_line|#undef MIN
-multiline_comment|/* &n; * Initialize the hardware. &n; */
+multiline_comment|/*&n; * Initialize the hardware. &n; */
 r_static
 r_void
 DECL|function|nm256_initHw
