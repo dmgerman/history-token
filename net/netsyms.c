@@ -1401,6 +1401,13 @@ c_func
 id|__secpath_destroy
 )paren
 suffix:semicolon
+DECL|variable|secpath_dup
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|secpath_dup
+)paren
+suffix:semicolon
 DECL|variable|xfrm_get_acqseq
 id|EXPORT_SYMBOL
 c_func
