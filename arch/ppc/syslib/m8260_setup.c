@@ -124,6 +124,17 @@ c_func
 )paren
 suffix:semicolon
 macro_line|#endif
+macro_line|#ifdef CONFIG_BLK_DEV_INITRD
+r_if
+c_cond
+(paren
+id|initrd_start
+)paren
+id|ROOT_DEV
+op_assign
+id|Root_RAM0
+suffix:semicolon
+macro_line|#endif
 )brace
 multiline_comment|/* The decrementer counts at the system (internal) clock frequency&n; * divided by four.&n; */
 r_static
