@@ -36,6 +36,22 @@ DECL|macro|PSMOUSE_ACTIVATED
 mdefine_line|#define PSMOUSE_ACTIVATED&t;1
 DECL|macro|PSMOUSE_IGNORE
 mdefine_line|#define PSMOUSE_IGNORE&t;&t;2
+multiline_comment|/* psmouse protocol handler return codes */
+r_typedef
+r_enum
+(brace
+DECL|enumerator|PSMOUSE_BAD_DATA
+id|PSMOUSE_BAD_DATA
+comma
+DECL|enumerator|PSMOUSE_GOOD_DATA
+id|PSMOUSE_GOOD_DATA
+comma
+DECL|enumerator|PSMOUSE_FULL_PACKET
+id|PSMOUSE_FULL_PACKET
+DECL|typedef|psmouse_ret_t
+)brace
+id|psmouse_ret_t
+suffix:semicolon
 r_struct
 id|psmouse
 suffix:semicolon
@@ -153,6 +169,11 @@ r_int
 r_int
 id|last
 suffix:semicolon
+DECL|member|out_of_sync
+r_int
+r_int
+id|out_of_sync
+suffix:semicolon
 DECL|member|state
 r_int
 r_char
@@ -184,6 +205,24 @@ id|phys
 (braket
 l_int|32
 )braket
+suffix:semicolon
+DECL|member|protocol_handler
+id|psmouse_ret_t
+(paren
+op_star
+id|protocol_handler
+)paren
+(paren
+r_struct
+id|psmouse
+op_star
+id|psmouse
+comma
+r_struct
+id|pt_regs
+op_star
+id|regs
+)paren
 suffix:semicolon
 DECL|member|reconnect
 r_int
@@ -246,6 +285,20 @@ id|command
 )paren
 suffix:semicolon
 r_int
+id|psmouse_sliced_command
+c_func
+(paren
+r_struct
+id|psmouse
+op_star
+id|psmouse
+comma
+r_int
+r_char
+id|command
+)paren
+suffix:semicolon
+r_int
 id|psmouse_reset
 c_func
 (paren
@@ -263,11 +316,6 @@ r_extern
 r_int
 r_int
 id|psmouse_rate
-suffix:semicolon
-r_extern
-r_int
-r_int
-id|psmouse_resetafter
 suffix:semicolon
 macro_line|#endif /* _PSMOUSE_H */
 eof

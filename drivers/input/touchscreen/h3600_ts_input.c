@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * $Id: h3600_ts_input.c,v 1.4 2002/01/23 06:39:37 jsimmons Exp $&n; *&n; *  Copyright (c) 2001 &quot;Crazy&quot; James Simmons jsimmons@transvirtual.com &n; *&n; *  Sponsored by Transvirtual Technology. &n; * &n; *  Derived from the code in h3600_ts.[ch] by Charles Flynn  &n; */
+multiline_comment|/*&n; * $Id: h3600_ts_input.c,v 1.4 2002/01/23 06:39:37 jsimmons Exp $&n; *&n; *  Copyright (c) 2001 &quot;Crazy&quot; James Simmons jsimmons@transvirtual.com&n; *&n; *  Sponsored by Transvirtual Technology.&n; *&n; *  Derived from the code in h3600_ts.[ch] by Charles Flynn&n; */
 multiline_comment|/*&n; * Driver for the h3600 Touch Screen and other Atmel controlled devices.&n; */
 multiline_comment|/*&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA&n; *&n; * Should you need to contact me, the author, you can do so by&n; * e-mail - mail your message to &lt;jsimmons@transvirtual.com&gt;.&n; */
 macro_line|#include &lt;linux/errno.h&gt;
@@ -51,7 +51,7 @@ mdefine_line|#define MAX_ID                  14
 DECL|macro|H3600_MAX_LENGTH
 mdefine_line|#define H3600_MAX_LENGTH 16
 DECL|macro|H3600_KEY
-mdefine_line|#define H3600_KEY 0xf 
+mdefine_line|#define H3600_KEY 0xf
 DECL|macro|H3600_SCANCODE_RECORD
 mdefine_line|#define H3600_SCANCODE_RECORD&t;1&t; /* 1 -&gt; record button */
 DECL|macro|H3600_SCANCODE_CALENDAR
@@ -247,7 +247,7 @@ op_star
 )paren
 id|dev_id
 suffix:semicolon
-multiline_comment|/* &n;&t; * This interrupt is only called when we release the key. So we have &n;&t; * to fake a key press.&n;&t; */
+multiline_comment|/*&n;&t; * This interrupt is only called when we release the key. So we have&n;&t; * to fake a key press.&n;&t; */
 id|input_regs
 c_func
 (paren
@@ -501,7 +501,7 @@ l_int|0
 suffix:semicolon
 )brace
 macro_line|#endif
-multiline_comment|/*&n; * This function translates the native event packets to linux input event&n; * packets. Some packets coming from serial are not touchscreen related. In&n; * this case we send them off to be processed elsewhere. &n; */
+multiline_comment|/*&n; * This function translates the native event packets to linux input event&n; * packets. Some packets coming from serial are not touchscreen related. In&n; * this case we send them off to be processed elsewhere.&n; */
 DECL|function|h3600ts_process_packet
 r_static
 r_void
@@ -915,7 +915,7 @@ id|serio
 op_member_access_from_pointer
 r_private
 suffix:semicolon
-multiline_comment|/*&n;         * We have a new frame coming in. &n;         */
+multiline_comment|/*&n;         * We have a new frame coming in.&n;         */
 r_switch
 c_cond
 (paren
@@ -1278,23 +1278,6 @@ c_func
 id|EV_PWR
 )paren
 suffix:semicolon
-id|ts-&gt;dev.absbit
-(braket
-l_int|0
-)braket
-op_assign
-id|BIT
-c_func
-(paren
-id|ABS_X
-)paren
-op_or
-id|BIT
-c_func
-(paren
-id|ABS_Y
-)paren
-suffix:semicolon
 id|ts-&gt;dev.ledbit
 (braket
 l_int|0
@@ -1306,57 +1289,39 @@ c_func
 id|LED_SLEEP
 )paren
 suffix:semicolon
-id|ts-&gt;dev.absmin
-(braket
+id|input_set_abs_params
+c_func
+(paren
+op_amp
+id|ts-&gt;dev
+comma
 id|ABS_X
-)braket
-op_assign
+comma
 l_int|60
-suffix:semicolon
-id|ts-&gt;dev.absmin
-(braket
-id|ABS_Y
-)braket
-op_assign
-l_int|35
-suffix:semicolon
-id|ts-&gt;dev.absmax
-(braket
-id|ABS_X
-)braket
-op_assign
+comma
 l_int|985
+comma
+l_int|0
+comma
+l_int|0
+)paren
 suffix:semicolon
-id|ts-&gt;dev.absmax
-(braket
+id|input_set_abs_params
+c_func
+(paren
+op_amp
+id|ts-&gt;dev
+comma
 id|ABS_Y
-)braket
-op_assign
+comma
+l_int|35
+comma
 l_int|1024
-suffix:semicolon
-id|ts-&gt;dev.absfuzz
-(braket
-id|ABS_X
-)braket
-op_assign
+comma
 l_int|0
-suffix:semicolon
-id|ts-&gt;dev.absfuzz
-(braket
-id|ABS_Y
-)braket
-op_assign
+comma
 l_int|0
-suffix:semicolon
-id|ts-&gt;serio
-op_assign
-id|serio
-suffix:semicolon
-id|serio
-op_member_access_from_pointer
-r_private
-op_assign
-id|ts
+)paren
 suffix:semicolon
 id|set_bit
 c_func
@@ -1467,6 +1432,16 @@ c_func
 (paren
 id|KEY_SUSPEND
 )paren
+suffix:semicolon
+id|ts-&gt;serio
+op_assign
+id|serio
+suffix:semicolon
+id|serio
+op_member_access_from_pointer
+r_private
+op_assign
+id|ts
 suffix:semicolon
 id|sprintf
 c_func
