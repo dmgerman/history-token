@@ -3107,10 +3107,7 @@ op_minus
 l_int|1
 )braket
 op_logical_and
-id|strcmp
-c_func
-(paren
-id|RTA_DATA
+id|rtattr_strcmp
 c_func
 (paren
 id|rta
@@ -3119,7 +3116,6 @@ id|IFA_LABEL
 op_minus
 l_int|1
 )braket
-)paren
 comma
 id|ifa-&gt;ifa_label
 )paren

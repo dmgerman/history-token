@@ -392,10 +392,7 @@ op_minus
 l_int|1
 )braket
 op_logical_or
-id|strcmp
-c_func
-(paren
-id|RTA_DATA
+id|rtattr_strcmp
 c_func
 (paren
 id|rta
@@ -404,7 +401,6 @@ id|RTA_IIF
 op_minus
 l_int|1
 )braket
-)paren
 comma
 id|r-&gt;r_ifname
 )paren
