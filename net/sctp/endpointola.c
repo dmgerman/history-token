@@ -387,6 +387,13 @@ op_star
 id|asoc
 )paren
 (brace
+r_struct
+id|sock
+op_star
+id|sk
+op_assign
+id|ep-&gt;base.sk
+suffix:semicolon
 multiline_comment|/* Now just add it to our list of asocs */
 id|list_add_tail
 c_func
@@ -397,6 +404,31 @@ comma
 op_amp
 id|ep-&gt;asocs
 )paren
+suffix:semicolon
+multiline_comment|/* Increment the backlog value for a TCP-style listening socket. */
+r_if
+c_cond
+(paren
+(paren
+id|SCTP_SOCKET_TCP
+op_eq
+id|sctp_sk
+c_func
+(paren
+id|sk
+)paren
+op_member_access_from_pointer
+id|type
+)paren
+op_logical_and
+(paren
+id|SCTP_SS_LISTENING
+op_eq
+id|sk-&gt;state
+)paren
+)paren
+id|sk-&gt;ack_backlog
+op_increment
 suffix:semicolon
 )brace
 multiline_comment|/* Free the endpoint structure.  Delay cleanup until&n; * all users have released their reference count on this structure.&n; */
