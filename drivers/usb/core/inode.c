@@ -804,6 +804,10 @@ op_assign
 op_amp
 id|simple_dir_operations
 suffix:semicolon
+multiline_comment|/* directory inodes start off with i_nlink == 2 (for &quot;.&quot; entry) */
+id|inode-&gt;i_nlink
+op_increment
+suffix:semicolon
 r_break
 suffix:semicolon
 )brace
