@@ -409,7 +409,7 @@ id|dev
 )paren
 suffix:semicolon
 r_static
-r_void
+id|irqreturn_t
 id|fec_enet_interrupt
 c_func
 (paren
@@ -1093,7 +1093,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* The interrupt handler.&n; * This is called from the MPC core interrupt.&n; */
 r_static
-r_void
+id|irqreturn_t
 DECL|function|fec_enet_interrupt
 id|fec_enet_interrupt
 c_func
@@ -1125,6 +1125,11 @@ id|fecp
 suffix:semicolon
 id|uint
 id|int_events
+suffix:semicolon
+r_int
+id|handled
+op_assign
+l_int|0
 suffix:semicolon
 id|fecp
 op_assign
@@ -1189,12 +1194,18 @@ id|int_events
 op_amp
 id|FEC_ENET_RXF
 )paren
+(brace
+id|handled
+op_assign
+l_int|1
+suffix:semicolon
 id|fec_enet_rx
 c_func
 (paren
 id|dev
 )paren
 suffix:semicolon
+)brace
 multiline_comment|/* Transmit OK, or non-fatal error. Update the buffer&n;&t;&t;   descriptors. FEC handles all errors, we just discover&n;&t;&t;   them as part of the transmit process.&n;&t;&t;*/
 r_if
 c_cond
@@ -1203,12 +1214,18 @@ id|int_events
 op_amp
 id|FEC_ENET_TXF
 )paren
+(brace
+id|handled
+op_assign
+l_int|1
+suffix:semicolon
 id|fec_enet_tx
 c_func
 (paren
 id|dev
 )paren
 suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
@@ -1216,6 +1233,11 @@ id|int_events
 op_amp
 id|FEC_ENET_MII
 )paren
+(brace
+id|handled
+op_assign
+l_int|1
+suffix:semicolon
 id|fec_enet_mii
 c_func
 (paren
@@ -1223,6 +1245,14 @@ id|dev
 )paren
 suffix:semicolon
 )brace
+)brace
+r_return
+id|IRQ_RETVAL
+c_func
+(paren
+id|handled
+)paren
+suffix:semicolon
 )brace
 r_static
 r_void

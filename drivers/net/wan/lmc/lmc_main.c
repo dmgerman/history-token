@@ -250,7 +250,7 @@ id|dev
 )paren
 suffix:semicolon
 r_static
-r_void
+id|irqreturn_t
 id|lmc_interrupt
 c_func
 (paren
@@ -4653,7 +4653,7 @@ suffix:semicolon
 multiline_comment|/* Interrupt handling routine.  This will take an incoming packet, or clean&n; * up after a trasmit.&n; */
 DECL|function|lmc_interrupt
 r_static
-r_void
+id|irqreturn_t
 id|lmc_interrupt
 (paren
 r_int
@@ -4706,6 +4706,11 @@ r_int
 id|max_work
 op_assign
 id|LMC_RXDESCS
+suffix:semicolon
+r_int
+id|handled
+op_assign
+l_int|0
 suffix:semicolon
 id|lmc_trace
 c_func
@@ -4765,6 +4770,10 @@ op_amp
 id|sc-&gt;lmc_intrmask
 )paren
 (brace
+id|handled
+op_assign
+l_int|1
+suffix:semicolon
 multiline_comment|/*&n;         * Clear interrupt bits, we handle all case below&n;         */
 id|LMC_CSR_WRITE
 (paren
@@ -5275,6 +5284,13 @@ c_func
 id|dev
 comma
 l_string|&quot;lmc_interrupt out&quot;
+)paren
+suffix:semicolon
+r_return
+id|IRQ_RETVAL
+c_func
+(paren
+id|handled
 )paren
 suffix:semicolon
 )brace
