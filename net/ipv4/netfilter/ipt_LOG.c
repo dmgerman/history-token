@@ -432,7 +432,29 @@ l_int|22
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/* Max length: 36 &quot;URG ACK PSH RST SYN FIN &quot; */
+multiline_comment|/* Max length: 32 &quot;CWR ECE URG ACK PSH RST SYN FIN &quot; */
+r_if
+c_cond
+(paren
+id|tcph-&gt;cwr
+)paren
+id|printk
+c_func
+(paren
+l_string|&quot;CWR &quot;
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|tcph-&gt;ece
+)paren
+id|printk
+c_func
+(paren
+l_string|&quot;ECE &quot;
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1143,7 +1165,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* Proto    Max log string length */
 multiline_comment|/* IP:      40+46+6+11+127 = 230 */
-multiline_comment|/* TCP:     10+max(25,20+30+13+9+36+11+127) = 256 */
+multiline_comment|/* TCP:     10+max(25,20+30+13+9+32+11+127) = 252 */
 multiline_comment|/* UDP:     10+max(25,20) = 35 */
 multiline_comment|/* ICMP:    11+max(25, 18+25+max(19,14,24+3+n+10,3+n+10)) = 91+n */
 multiline_comment|/* ESP:     10+max(25)+15 = 50 */
@@ -1151,7 +1173,7 @@ multiline_comment|/* AH:      9+max(25)+15 = 49 */
 multiline_comment|/* unknown: 10 */
 multiline_comment|/* (ICMP allows recursion one level deep) */
 multiline_comment|/* maxlen =  IP + ICMP +  IP + max(TCP,UDP,ICMP,unknown) */
-multiline_comment|/* maxlen = 230+   91  + 230 + 256 = 807 */
+multiline_comment|/* maxlen = 230+   91  + 230 + 252 = 803 */
 )brace
 r_static
 r_int

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *&t;Low-Level PCI Support for PC&n; *&n; *&t;(c) 1999--2000 Martin Mares &lt;mj@suse.cz&gt;&n; */
+multiline_comment|/*&n; *&t;Low-Level PCI Support for PC&n; *&n; *&t;(c) 1999--2000 Martin Mares &lt;mj@ucw.cz&gt;&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -2398,7 +2398,7 @@ id|PCI_SIGNATURE
 id|printk
 (paren
 id|KERN_ERR
-l_string|&quot;PCI: BIOS BUG #%x[%08x] found, report to &lt;mj@suse.cz&gt;&bslash;n&quot;
+l_string|&quot;PCI: BIOS BUG #%x[%08x] found&bslash;n&quot;
 comma
 id|status
 comma
@@ -3627,7 +3627,7 @@ l_int|0
 id|printk
 c_func
 (paren
-l_string|&quot;PCI: unsupported BIOS32 revision %d at 0x%p, report to &lt;mj@suse.cz&gt;&bslash;n&quot;
+l_string|&quot;PCI: unsupported BIOS32 revision %d at 0x%p&bslash;n&quot;
 comma
 id|check-&gt;fields.revision
 comma

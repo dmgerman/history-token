@@ -18821,7 +18821,7 @@ c_func
 id|KERN_INFO
 l_string|&quot;Redundant entry in serial pci_table.  &quot;
 l_string|&quot;Please send the output of&bslash;n&quot;
-l_string|&quot;lspci -vv, this message (%d,%d,%d,%d)&bslash;n&quot;
+l_string|&quot;lspci -vv, this message (%04x,%04x,%04x,%04x)&bslash;n&quot;
 l_string|&quot;and the manufacturer and name of &quot;
 l_string|&quot;serial board or modem board&bslash;n&quot;
 l_string|&quot;to serial-pci-info@lists.sourceforge.net.&bslash;n&quot;

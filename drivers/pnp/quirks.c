@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *  This file contains quirk handling code for ISAPnP devices&n; *  Some devices do not report all their resources, and need to have extra&n; *  resources added. This is most easily accomplished at initialisation time&n; *  when building up the resource structure for the first time.&n; *&n; *  Copyright (c) 2000 Peter Denison &lt;peterd@pnd-pc.demon.co.uk&gt;&n; *&n; *  Heavily based on PCI quirks handling which is&n; *&n; *  Copyright (c) 1999 Martin Mares &lt;mj@suse.cz&gt;&n; */
+multiline_comment|/*&n; *  This file contains quirk handling code for ISAPnP devices&n; *  Some devices do not report all their resources, and need to have extra&n; *  resources added. This is most easily accomplished at initialisation time&n; *  when building up the resource structure for the first time.&n; *&n; *  Copyright (c) 2000 Peter Denison &lt;peterd@pnd-pc.demon.co.uk&gt;&n; *&n; *  Heavily based on PCI quirks handling which is&n; *&n; *  Copyright (c) 1999 Martin Mares &lt;mj@ucw.cz&gt;&n; */
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;

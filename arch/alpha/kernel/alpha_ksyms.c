@@ -1119,6 +1119,13 @@ c_func
 id|__global_restore_flags
 )paren
 suffix:semicolon
+DECL|variable|atomic_dec_and_lock
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|atomic_dec_and_lock
+)paren
+suffix:semicolon
 macro_line|#if DEBUG_SPINLOCK
 DECL|variable|spin_unlock
 id|EXPORT_SYMBOL

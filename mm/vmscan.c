@@ -2078,6 +2078,12 @@ c_func
 id|page
 )paren
 suffix:semicolon
+id|SetPageReferenced
+c_func
+(paren
+id|page
+)paren
+suffix:semicolon
 )brace
 id|spin_unlock
 c_func

@@ -456,6 +456,15 @@ id|info-&gt;sg
 l_int|0
 )braket
 dot
+id|page
+op_assign
+l_int|NULL
+suffix:semicolon
+id|info-&gt;sg
+(braket
+l_int|0
+)braket
+dot
 id|length
 op_assign
 id|SCp-&gt;this_residual

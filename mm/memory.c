@@ -3884,12 +3884,6 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|PageSwapCache
-c_func
-(paren
-id|old_page
-)paren
-op_logical_and
 op_logical_neg
 id|TryLockPage
 c_func

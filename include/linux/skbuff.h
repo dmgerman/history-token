@@ -26,8 +26,12 @@ DECL|macro|CHECKSUM_UNNECESSARY
 mdefine_line|#define CHECKSUM_UNNECESSARY 2
 DECL|macro|SKB_DATA_ALIGN
 mdefine_line|#define SKB_DATA_ALIGN(X)&t;(((X) + (SMP_CACHE_BYTES-1)) &amp; ~(SMP_CACHE_BYTES-1))
+DECL|macro|SKB_MAX_ORDER
+mdefine_line|#define SKB_MAX_ORDER(X,ORDER)&t;(((PAGE_SIZE&lt;&lt;(ORDER)) - (X) - sizeof(struct skb_shared_info))&amp;~(SMP_CACHE_BYTES-1))
 DECL|macro|SKB_MAX_HEAD
-mdefine_line|#define SKB_MAX_HEAD(X)&t;&t;((PAGE_SIZE - (X) - sizeof(struct skb_shared_info))&amp;~(SMP_CACHE_BYTES-1))
+mdefine_line|#define SKB_MAX_HEAD(X)&t;&t;(SKB_MAX_ORDER((X),0))
+DECL|macro|SKB_MAX_ALLOC
+mdefine_line|#define SKB_MAX_ALLOC&t;&t;(SKB_MAX_ORDER(0,2))
 multiline_comment|/* A. Checksumming of received packets by device.&n; *&n; *&t;NONE: device failed to checksum this packet.&n; *&t;&t;skb-&gt;csum is undefined.&n; *&n; *&t;UNNECESSARY: device parsed packet and wouldbe verified checksum.&n; *&t;&t;skb-&gt;csum is undefined.&n; *&t;      It is bad option, but, unfortunately, many of vendors do this.&n; *&t;      Apparently with secret goal to sell you new device, when you&n; *&t;      will add new protocol to your host. F.e. IPv6. 8)&n; *&n; *&t;HW: the most generic way. Device supplied checksum of _all_&n; *&t;    the packet as seen by netif_rx in skb-&gt;csum.&n; *&t;    NOTE: Even if device supports only some protocols, but&n; *&t;    is able to produce some skb-&gt;csum, it MUST use HW,&n; *&t;    not UNNECESSARY.&n; *&n; * B. Checksumming on output.&n; *&n; *&t;NONE: skb is checksummed by protocol or csum is not required.&n; *&n; *&t;HW: device is required to csum packet as seen by hard_start_xmit&n; *&t;from skb-&gt;h.raw to the end and to record the checksum&n; *&t;at skb-&gt;h.raw+skb-&gt;csum.&n; *&n; *&t;Device must show its capabilities in dev-&gt;features, set&n; *&t;at device setup time.&n; *&t;NETIF_F_HW_CSUM&t;- it is clever device, it is able to checksum&n; *&t;&t;&t;  everything.&n; *&t;NETIF_F_NO_CSUM - loopback or reliable single hop media.&n; *&t;NETIF_F_IP_CSUM - device is dumb. It is able to csum only&n; *&t;&t;&t;  TCP/UDP over IPv4. Sigh. Vendors like this&n; *&t;&t;&t;  way by an unknown reason. Though, see comment above&n; *&t;&t;&t;  about CHECKSUM_UNNECESSARY. 8)&n; *&n; *&t;Any questions? No questions, good. &t;&t;--ANK&n; */
 macro_line|#ifdef __i386__
 DECL|macro|NET_CALLER

@@ -647,7 +647,29 @@ l_int|22
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/* Max length: 36 &quot;URG ACK PSH RST SYN FIN &quot; */
+multiline_comment|/* Max length: 32 &quot;CWR ECE URG ACK PSH RST SYN FIN &quot; */
+r_if
+c_cond
+(paren
+id|tcph-&gt;cwr
+)paren
+id|printk
+c_func
+(paren
+l_string|&quot;CWR &quot;
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|tcph-&gt;ece
+)paren
+id|printk
+c_func
+(paren
+l_string|&quot;ECE &quot;
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren

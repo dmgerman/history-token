@@ -8625,6 +8625,10 @@ id|k
 op_plus
 id|offset
 suffix:semicolon
+id|sclp-&gt;page
+op_assign
+l_int|NULL
+suffix:semicolon
 id|sclp-&gt;length
 op_assign
 id|num
@@ -9098,6 +9102,10 @@ suffix:semicolon
 id|sclp-&gt;address
 op_assign
 id|p
+suffix:semicolon
+id|sclp-&gt;page
+op_assign
+l_int|NULL
 suffix:semicolon
 id|sclp-&gt;length
 op_assign
@@ -10098,6 +10106,10 @@ id|mem_src
 )paren
 suffix:semicolon
 id|sclp-&gt;address
+op_assign
+l_int|NULL
+suffix:semicolon
+id|sclp-&gt;page
 op_assign
 l_int|NULL
 suffix:semicolon

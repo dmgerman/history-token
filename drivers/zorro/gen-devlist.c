@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *&t;Generate devlist.h from the Zorro ID file.&n; *&n; *&t;(c) 2000 Geert Uytterhoeven &lt;geert@linux-m68k.org&gt;&n; *&n; *&t;Based on the PCI version:&n; *&n; *&t;(c) 1999--2000 Martin Mares &lt;mj@suse.cz&gt;&n; */
+multiline_comment|/*&n; *&t;Generate devlist.h from the Zorro ID file.&n; *&n; *&t;(c) 2000 Geert Uytterhoeven &lt;geert@linux-m68k.org&gt;&n; *&n; *&t;Based on the PCI version:&n; *&n; *&t;(c) 1999--2000 Martin Mares &lt;mj@ucw.cz&gt;&n; */
 macro_line|#include &lt;stdio.h&gt;
 macro_line|#include &lt;string.h&gt;
 DECL|macro|MAX_NAME_SIZE

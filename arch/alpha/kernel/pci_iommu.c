@@ -987,12 +987,17 @@ id|cpu_addr
 comma
 id|size
 comma
+id|pdev
+ques
+c_cond
 (paren
 id|pdev-&gt;dma_mask
 op_rshift
 l_int|32
 )paren
 op_ne
+l_int|0
+suffix:colon
 l_int|0
 )paren
 suffix:semicolon
@@ -1055,12 +1060,17 @@ id|offset
 comma
 id|size
 comma
+id|pdev
+ques
+c_cond
 (paren
 id|pdev-&gt;dma_mask
 op_rshift
 l_int|32
 )paren
 op_ne
+l_int|0
+suffix:colon
 l_int|0
 )paren
 suffix:semicolon
@@ -1228,7 +1238,7 @@ c_func
 (paren
 id|KERN_ERR
 l_string|&quot;Bogus pci_unmap_single: dma_addr %lx &quot;
-l_string|&quot; base %x size %x&bslash;n&quot;
+l_string|&quot; base %lx size %x&bslash;n&quot;
 comma
 id|dma_addr
 comma

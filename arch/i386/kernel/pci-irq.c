@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *&t;Low-Level PCI Support for PC -- Routing of Interrupts&n; *&n; *&t;(c) 1999--2000 Martin Mares &lt;mj@suse.cz&gt;&n; */
+multiline_comment|/*&n; *&t;Low-Level PCI Support for PC -- Routing of Interrupts&n; *&n; *&t;(c) 1999--2000 Martin Mares &lt;mj@ucw.cz&gt;&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;

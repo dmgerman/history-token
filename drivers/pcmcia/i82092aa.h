@@ -9,14 +9,14 @@ mdefine_line|#define enter(x)   printk(&quot;Enter: %s, %s line %i&bslash;n&quot
 DECL|macro|leave
 mdefine_line|#define leave(x)   printk(&quot;Leave: %s, %s line %i&bslash;n&quot;,x,__FILE__,__LINE__)
 DECL|macro|dprintk
-mdefine_line|#define dprintk printk
+mdefine_line|#define dprintk(fmt, args...) printk(fmt , ## args)
 macro_line|#else
 DECL|macro|enter
 mdefine_line|#define enter(x)   do {} while (0)
 DECL|macro|leave
 mdefine_line|#define leave(x)   do {} while (0)
 DECL|macro|dprintk
-mdefine_line|#define dprintk(...) do {} while (0)
+mdefine_line|#define dprintk(fmt, args...) do {} while (0)
 macro_line|#endif
 multiline_comment|/* prototypes */
 r_static

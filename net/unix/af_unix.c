@@ -5268,23 +5268,11 @@ c_cond
 (paren
 id|size
 OG
-(paren
-l_int|128
-op_star
-l_int|1024
-)paren
-op_div
-l_int|2
+id|SKB_MAX_ALLOC
 )paren
 id|size
 op_assign
-(paren
-l_int|128
-op_star
-l_int|1024
-)paren
-op_div
-l_int|2
+id|SKB_MAX_ALLOC
 suffix:semicolon
 multiline_comment|/*&n;&t;&t; *&t;Grab a buffer&n;&t;&t; */
 id|skb

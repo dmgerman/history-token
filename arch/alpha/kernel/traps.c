@@ -1391,7 +1391,11 @@ r_if
 c_cond
 (paren
 id|opDEC_testing
-op_logical_and
+)paren
+(brace
+r_if
+c_cond
+(paren
 id|regs.pc
 op_eq
 id|opDEC_test_pc
@@ -1401,11 +1405,18 @@ id|opDEC_fix
 op_assign
 l_int|4
 suffix:semicolon
+id|regs.pc
+op_add_assign
+l_int|4
+suffix:semicolon
 id|printk
 c_func
 (paren
 l_string|&quot;opDEC fixup enabled.&bslash;n&quot;
 )paren
+suffix:semicolon
+)brace
+r_return
 suffix:semicolon
 )brace
 id|regs.pc

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *&t;Low-Level PCI Support for the SH7751&n; *&n; *  Dustin McIntire (dustin@sensoria.com)&n; *&t;Derived from arch/i386/kernel/pci-*.c which bore the message:&n; *&t;(c) 1999--2000 Martin Mares &lt;mj@suse.cz&gt;&n; *&t;&n; *  May be copied or modified under the terms of the GNU General Public&n; *  License.  See linux/COPYING for more information.&n; *&n;*/
+multiline_comment|/*&n; *&t;Low-Level PCI Support for the SH7751&n; *&n; *  Dustin McIntire (dustin@sensoria.com)&n; *&t;Derived from arch/i386/kernel/pci-*.c which bore the message:&n; *&t;(c) 1999--2000 Martin Mares &lt;mj@ucw.cz&gt;&n; *&t;&n; *  May be copied or modified under the terms of the GNU General Public&n; *  License.  See linux/COPYING for more information.&n; *&n;*/
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;

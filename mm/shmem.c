@@ -3277,11 +3277,6 @@ r_char
 op_star
 id|kaddr
 suffix:semicolon
-r_int
-id|deactivate
-op_assign
-l_int|1
-suffix:semicolon
 multiline_comment|/*&n;&t;&t; * Try to find the page in the cache. If it isn&squot;t there,&n;&t;&t; * allocate a free page.&n;&t;&t; */
 id|offset
 op_assign
@@ -3319,10 +3314,6 @@ id|count
 id|bytes
 op_assign
 id|count
-suffix:semicolon
-id|deactivate
-op_assign
-l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/*&n;&t;&t; * Bring in the user page that we will copy from _first_.&n;&t;&t; * Otherwise there&squot;s a nasty deadlock on copying from the&n;&t;&t; * same page as we&squot;re writing to, without it being marked&n;&t;&t; * up-to-date.&n;&t;&t; */
@@ -3511,17 +3502,6 @@ id|unlock
 suffix:colon
 multiline_comment|/* Mark it unlocked again and drop the page.. */
 id|UnlockPage
-c_func
-(paren
-id|page
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|deactivate
-)paren
-id|deactivate_page
 c_func
 (paren
 id|page
