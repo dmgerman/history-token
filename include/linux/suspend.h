@@ -308,6 +308,7 @@ c_func
 (paren
 r_int
 r_int
+id|flag
 )paren
 (brace
 )brace
