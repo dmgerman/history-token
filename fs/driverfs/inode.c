@@ -9,7 +9,6 @@ macro_line|#include &lt;linux/namei.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/device.h&gt;
-macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 DECL|macro|DEBUG
 macro_line|#undef DEBUG
@@ -532,11 +531,6 @@ id|mode
 r_int
 id|res
 suffix:semicolon
-id|lock_kernel
-c_func
-(paren
-)paren
-suffix:semicolon
 id|dentry-&gt;d_op
 op_assign
 op_amp
@@ -567,11 +561,6 @@ id|res
 id|dir-&gt;i_nlink
 op_increment
 suffix:semicolon
-id|unlock_kernel
-c_func
-(paren
-)paren
-suffix:semicolon
 r_return
 id|res
 suffix:semicolon
@@ -599,11 +588,6 @@ id|mode
 r_int
 id|res
 suffix:semicolon
-id|lock_kernel
-c_func
-(paren
-)paren
-suffix:semicolon
 id|dentry-&gt;d_op
 op_assign
 op_amp
@@ -623,11 +607,6 @@ op_or
 id|S_IFREG
 comma
 l_int|0
-)paren
-suffix:semicolon
-id|unlock_kernel
-c_func
-(paren
 )paren
 suffix:semicolon
 r_return
@@ -876,18 +855,8 @@ id|inode
 op_assign
 id|dentry-&gt;d_inode
 suffix:semicolon
-id|lock_kernel
-c_func
-(paren
-)paren
-suffix:semicolon
 id|inode-&gt;i_nlink
 op_decrement
-suffix:semicolon
-id|unlock_kernel
-c_func
-(paren
-)paren
 suffix:semicolon
 id|dput
 c_func
@@ -1455,9 +1424,11 @@ op_assign
 op_minus
 id|EINVAL
 suffix:semicolon
-id|lock_kernel
+id|down
 c_func
 (paren
+op_amp
+id|file-&gt;f_dentry-&gt;d_inode-&gt;i_sem
 )paren
 suffix:semicolon
 r_switch
@@ -1519,9 +1490,11 @@ suffix:colon
 r_break
 suffix:semicolon
 )brace
-id|unlock_kernel
+id|up
 c_func
 (paren
+op_amp
+id|file-&gt;f_dentry-&gt;d_inode-&gt;i_sem
 )paren
 suffix:semicolon
 r_return
