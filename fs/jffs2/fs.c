@@ -318,7 +318,7 @@ c_func
 id|latest_node.isize
 )paren
 suffix:semicolon
-id|inode-&gt;i_atime
+id|inode-&gt;i_atime.tv_sec
 op_assign
 id|je32_to_cpu
 c_func
@@ -326,7 +326,7 @@ c_func
 id|latest_node.atime
 )paren
 suffix:semicolon
-id|inode-&gt;i_mtime
+id|inode-&gt;i_mtime.tv_sec
 op_assign
 id|je32_to_cpu
 c_func
@@ -334,7 +334,7 @@ c_func
 id|latest_node.mtime
 )paren
 suffix:semicolon
-id|inode-&gt;i_ctime
+id|inode-&gt;i_ctime.tv_sec
 op_assign
 id|je32_to_cpu
 c_func
