@@ -9,14 +9,9 @@ macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
-DECL|macro|usec_delay
-mdefine_line|#define usec_delay(x) udelay(x)
+multiline_comment|/* FIXME: eliminate me */
 DECL|macro|msec_delay
 mdefine_line|#define msec_delay(x)&t;do { if(in_interrupt()) { &bslash;&n;&t;                &t;mdelay(x); &bslash;&n;&t;&t;&t;} else { &bslash;&n;&t;&t;&t;&t;set_current_state(TASK_UNINTERRUPTIBLE); &bslash;&n;&t;&t;&t;&t;schedule_timeout((x * HZ)/1000); &bslash;&n;&t;&t;&t;} } while(0)
-DECL|macro|PCI_COMMAND_REGISTER
-mdefine_line|#define PCI_COMMAND_REGISTER   PCI_COMMAND
-DECL|macro|CMD_MEM_WRT_INVALIDATE
-mdefine_line|#define CMD_MEM_WRT_INVALIDATE PCI_COMMAND_INVALIDATE
 r_typedef
 r_enum
 (brace
@@ -66,7 +61,5 @@ DECL|macro|IXGB_WRITE_REG_ARRAY
 mdefine_line|#define IXGB_WRITE_REG_ARRAY(a, reg, offset, value) ( &bslash;&n;    writel((value), ((a)-&gt;hw_addr + IXGB_##reg + ((offset) &lt;&lt; 2))))
 DECL|macro|IXGB_READ_REG_ARRAY
 mdefine_line|#define IXGB_READ_REG_ARRAY(a, reg, offset) ( &bslash;&n;    readl((a)-&gt;hw_addr + IXGB_##reg + ((offset) &lt;&lt; 2)))
-DECL|macro|IXGB_MEMCPY
-mdefine_line|#define IXGB_MEMCPY memcpy
 macro_line|#endif&t;&t;&t;&t;/* IXGB_OSDEP_H */
 eof

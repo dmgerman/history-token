@@ -925,11 +925,6 @@ id|u16
 id|vendor_id
 suffix:semicolon
 multiline_comment|/* vendor id from PCI configuration space */
-DECL|member|revision_id
-id|u8
-id|revision_id
-suffix:semicolon
-multiline_comment|/* revision id from PCI configuration space */
 DECL|member|subsystem_vendor_id
 id|u16
 id|subsystem_vendor_id
@@ -940,11 +935,6 @@ id|u16
 id|subsystem_id
 suffix:semicolon
 multiline_comment|/* subsystem id from PCI configuration space */
-DECL|member|pci_cmd_word
-id|u16
-id|pci_cmd_word
-suffix:semicolon
-multiline_comment|/* PCI command register id from PCI configuration space */
 DECL|member|eeprom
 id|u16
 id|eeprom

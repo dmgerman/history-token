@@ -1962,7 +1962,7 @@ id|i
 op_increment
 )paren
 (brace
-id|usec_delay
+id|udelay
 c_func
 (paren
 l_int|10
@@ -2059,7 +2059,7 @@ id|i
 op_increment
 )paren
 (brace
-id|usec_delay
+id|udelay
 c_func
 (paren
 l_int|10
@@ -2250,7 +2250,7 @@ id|i
 op_increment
 )paren
 (brace
-id|usec_delay
+id|udelay
 c_func
 (paren
 l_int|10
@@ -2347,7 +2347,7 @@ id|i
 op_increment
 )paren
 (brace
-id|usec_delay
+id|udelay
 c_func
 (paren
 l_int|10
@@ -3616,7 +3616,7 @@ id|IXGB_CTRL0_LRST
 suffix:semicolon
 r_do
 (brace
-id|usec_delay
+id|udelay
 c_func
 (paren
 id|IXGB_DELAY_USECS_AFTER_LINK_RESET

@@ -100,7 +100,7 @@ op_star
 id|eecd_reg
 )paren
 suffix:semicolon
-id|usec_delay
+id|udelay
 c_func
 (paren
 l_int|50
@@ -147,7 +147,7 @@ op_star
 id|eecd_reg
 )paren
 suffix:semicolon
-id|usec_delay
+id|udelay
 c_func
 (paren
 l_int|50
@@ -240,7 +240,7 @@ comma
 id|eecd_reg
 )paren
 suffix:semicolon
-id|usec_delay
+id|udelay
 c_func
 (paren
 l_int|50
@@ -524,7 +524,7 @@ comma
 id|eecd_reg
 )paren
 suffix:semicolon
-id|usec_delay
+id|udelay
 c_func
 (paren
 l_int|50
@@ -545,7 +545,7 @@ comma
 id|eecd_reg
 )paren
 suffix:semicolon
-id|usec_delay
+id|udelay
 c_func
 (paren
 l_int|50
@@ -566,7 +566,7 @@ comma
 id|eecd_reg
 )paren
 suffix:semicolon
-id|usec_delay
+id|udelay
 c_func
 (paren
 l_int|50
@@ -588,7 +588,7 @@ comma
 id|eecd_reg
 )paren
 suffix:semicolon
-id|usec_delay
+id|udelay
 c_func
 (paren
 l_int|50
@@ -638,7 +638,7 @@ comma
 id|eecd_reg
 )paren
 suffix:semicolon
-id|usec_delay
+id|udelay
 c_func
 (paren
 l_int|50
@@ -660,7 +660,7 @@ comma
 id|eecd_reg
 )paren
 suffix:semicolon
-id|usec_delay
+id|udelay
 c_func
 (paren
 l_int|50
@@ -787,7 +787,7 @@ r_return
 id|TRUE
 )paren
 suffix:semicolon
-id|usec_delay
+id|udelay
 c_func
 (paren
 l_int|50
