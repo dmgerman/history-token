@@ -96,7 +96,7 @@ macro_line|#else
 DECL|macro|XFS_TRACE_STRING
 macro_line|# define XFS_TRACE_STRING
 macro_line|#endif
-macro_line|#ifdef XFSDEBUG
+macro_line|#ifdef DEBUG
 DECL|macro|XFS_DBG_STRING
 macro_line|# define XFS_DBG_STRING&t;&t;&quot;debug&quot;
 macro_line|#else

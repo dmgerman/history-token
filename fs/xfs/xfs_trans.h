@@ -537,8 +537,6 @@ DECL|macro|XFS_LID_DIRTY
 mdefine_line|#define XFS_LID_DIRTY&t;&t;0x1
 DECL|macro|XFS_LID_PINNED
 mdefine_line|#define XFS_LID_PINNED&t;&t;0x2
-DECL|macro|XFS_LID_SYNC_UNLOCK
-mdefine_line|#define XFS_LID_SYNC_UNLOCK&t;0x4
 DECL|macro|XFS_LID_BUF_STALE
 mdefine_line|#define XFS_LID_BUF_STALE&t;0x8
 multiline_comment|/*&n; * This structure is used to maintain a chunk list of log_item_desc&n; * structures. The free field is a bitmask indicating which descriptors&n; * in this chunk&squot;s array are free.  The unused field is the first value&n; * not used since this chunk was allocated.&n; */
@@ -1538,18 +1536,6 @@ op_star
 suffix:semicolon
 r_void
 id|xfs_trans_bhold
-c_func
-(paren
-id|xfs_trans_t
-op_star
-comma
-r_struct
-id|xfs_buf
-op_star
-)paren
-suffix:semicolon
-r_void
-id|xfs_trans_bhold_until_committed
 c_func
 (paren
 id|xfs_trans_t
