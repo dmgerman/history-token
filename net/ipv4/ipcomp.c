@@ -8,7 +8,6 @@ macro_line|#include &lt;net/inet_ecn.h&gt;
 macro_line|#include &lt;net/ip.h&gt;
 macro_line|#include &lt;net/xfrm.h&gt;
 macro_line|#include &lt;net/icmp.h&gt;
-macro_line|#include &lt;net/esp.h&gt;
 macro_line|#include &lt;net/ipcomp.h&gt;
 DECL|function|ipcomp_decompress
 r_static

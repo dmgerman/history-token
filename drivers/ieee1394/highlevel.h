@@ -114,7 +114,6 @@ op_star
 id|data
 comma
 r_int
-r_int
 id|length
 )paren
 suffix:semicolon
@@ -144,7 +143,6 @@ id|u8
 op_star
 id|data
 comma
-r_int
 r_int
 id|length
 )paren
@@ -200,7 +198,6 @@ id|u64
 id|addr
 comma
 r_int
-r_int
 id|length
 comma
 id|u16
@@ -232,7 +229,6 @@ comma
 id|u64
 id|addr
 comma
-r_int
 r_int
 id|length
 comma
@@ -486,7 +482,6 @@ op_star
 id|data
 comma
 r_int
-r_int
 id|length
 )paren
 suffix:semicolon
@@ -509,7 +504,6 @@ r_void
 op_star
 id|data
 comma
-r_int
 r_int
 id|length
 )paren

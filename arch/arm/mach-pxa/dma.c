@@ -2,6 +2,7 @@ multiline_comment|/*&n; *  linux/arch/arm/mach-pxa/dma.c&n; *&n; *  PXA DMA regi
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
+macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
@@ -347,7 +348,7 @@ suffix:semicolon
 )brace
 DECL|function|dma_irq_handler
 r_static
-r_void
+id|irqreturn_t
 id|dma_irq_handler
 c_func
 (paren
@@ -456,6 +457,9 @@ suffix:semicolon
 )brace
 )brace
 )brace
+r_return
+id|IRQ_HANDLED
+suffix:semicolon
 )brace
 DECL|function|pxa_dma_init
 r_static

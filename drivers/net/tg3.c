@@ -48,9 +48,9 @@ mdefine_line|#define DRV_MODULE_NAME&t;&t;&quot;tg3&quot;
 DECL|macro|PFX
 mdefine_line|#define PFX DRV_MODULE_NAME&t;&quot;: &quot;
 DECL|macro|DRV_MODULE_VERSION
-mdefine_line|#define DRV_MODULE_VERSION&t;&quot;1.8&quot;
+mdefine_line|#define DRV_MODULE_VERSION&t;&quot;1.9&quot;
 DECL|macro|DRV_MODULE_RELDATE
-mdefine_line|#define DRV_MODULE_RELDATE&t;&quot;August 1, 2003&quot;
+mdefine_line|#define DRV_MODULE_RELDATE&t;&quot;August 3, 2003&quot;
 DECL|macro|TG3_DEF_MAC_MODE
 mdefine_line|#define TG3_DEF_MAC_MODE&t;0
 DECL|macro|TG3_DEF_RX_MODE
@@ -9046,16 +9046,6 @@ id|handled
 suffix:semicolon
 )brace
 r_static
-r_void
-id|tg3_init_rings
-c_func
-(paren
-r_struct
-id|tg3
-op_star
-)paren
-suffix:semicolon
-r_static
 r_int
 id|tg3_init_hw
 c_func
@@ -9129,12 +9119,6 @@ op_complement
 id|TG3_FLG2_RESTART_TIMER
 suffix:semicolon
 id|tg3_halt
-c_func
-(paren
-id|tp
-)paren
-suffix:semicolon
-id|tg3_init_rings
 c_func
 (paren
 id|tp
@@ -11419,12 +11403,6 @@ comma
 id|new_mtu
 )paren
 suffix:semicolon
-id|tg3_init_rings
-c_func
-(paren
-id|tp
-)paren
-suffix:semicolon
 id|tg3_init_hw
 c_func
 (paren
@@ -11759,7 +11737,7 @@ id|skb
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/* Initialize tx/rx rings for packet processing.&n; *&n; * The chip has been shut down and the driver detached from&n; * the networking, so no interrupts or new tx packets will&n; * end up in the driver.  tp-&gt;{tx,}lock is not held and we are not&n; * in an interrupt context and thus may sleep.&n; */
+multiline_comment|/* Initialize tx/rx rings for packet processing.&n; *&n; * The chip has been shut down and the driver detached from&n; * the networking, so no interrupts or new tx packets will&n; * end up in the driver.  tp-&gt;{tx,}lock are held and thus&n; * we may not sleep.&n; */
 DECL|function|tg3_init_rings
 r_static
 r_void
@@ -19819,6 +19797,13 @@ id|val
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/* Descriptor ring init may make accesses to the&n;&t; * NIC SRAM area to setup the TX descriptors, so we&n;&t; * can only do this after the hardware has been&n;&t; * successfully reset.&n;&t; */
+id|tg3_init_rings
+c_func
+(paren
+id|tp
+)paren
+suffix:semicolon
 multiline_comment|/* Clear statistics/status block in chip, and status block in ram. */
 r_for
 c_loop
@@ -22579,12 +22564,6 @@ c_func
 (paren
 op_amp
 id|tp-&gt;tx_lock
-)paren
-suffix:semicolon
-id|tg3_init_rings
-c_func
-(paren
-id|tp
 )paren
 suffix:semicolon
 id|err
@@ -26732,12 +26711,6 @@ c_func
 id|tp
 )paren
 suffix:semicolon
-id|tg3_init_rings
-c_func
-(paren
-id|tp
-)paren
-suffix:semicolon
 id|tg3_init_hw
 c_func
 (paren
@@ -26936,12 +26909,6 @@ op_complement
 id|TG3_FLAG_PAUSE_TX
 suffix:semicolon
 id|tg3_halt
-c_func
-(paren
-id|tp
-)paren
-suffix:semicolon
-id|tg3_init_rings
 c_func
 (paren
 id|tp
@@ -33938,12 +33905,6 @@ op_amp
 id|tp-&gt;tx_lock
 )paren
 suffix:semicolon
-id|tg3_init_rings
-c_func
-(paren
-id|tp
-)paren
-suffix:semicolon
 id|tg3_init_hw
 c_func
 (paren
@@ -34063,12 +34024,6 @@ c_func
 (paren
 op_amp
 id|tp-&gt;tx_lock
-)paren
-suffix:semicolon
-id|tg3_init_rings
-c_func
-(paren
-id|tp
 )paren
 suffix:semicolon
 id|tg3_init_hw
