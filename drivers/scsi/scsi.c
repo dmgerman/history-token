@@ -54,6 +54,15 @@ r_int
 r_int
 id|scsi_logging_level
 suffix:semicolon
+macro_line|#if defined(CONFIG_SCSI_LOGGING)
+DECL|variable|scsi_logging_level
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|scsi_logging_level
+)paren
+suffix:semicolon
+macro_line|#endif
 DECL|variable|scsi_device_types
 r_const
 r_char
@@ -94,6 +103,13 @@ comma
 l_string|&quot;Enclosure        &quot;
 comma
 )brace
+suffix:semicolon
+DECL|variable|scsi_device_types
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|scsi_device_types
+)paren
 suffix:semicolon
 multiline_comment|/*&n; * Function:    scsi_allocate_request&n; *&n; * Purpose:     Allocate a request descriptor.&n; *&n; * Arguments:   device&t;&t;- device for which we want a request&n; *&t;&t;gfp_mask&t;- allocation flags passed to kmalloc&n; *&n; * Lock status: No locks assumed to be held.  This function is SMP-safe.&n; *&n; * Returns:     Pointer to request block.&n; */
 DECL|function|scsi_allocate_request
@@ -217,6 +233,13 @@ r_return
 id|sreq
 suffix:semicolon
 )brace
+DECL|variable|scsi_allocate_request
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|scsi_allocate_request
+)paren
+suffix:semicolon
 DECL|function|__scsi_release_request
 r_void
 id|__scsi_release_request
@@ -342,6 +365,13 @@ id|sreq
 )paren
 suffix:semicolon
 )brace
+DECL|variable|scsi_release_request
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|scsi_release_request
+)paren
+suffix:semicolon
 DECL|struct|scsi_host_cmd_pool
 r_struct
 id|scsi_host_cmd_pool
@@ -678,6 +708,13 @@ r_return
 id|cmd
 suffix:semicolon
 )brace
+DECL|variable|scsi_get_command
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|scsi_get_command
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * Function:&t;scsi_put_command()&n; *&n; * Purpose:&t;Free a scsi command block&n; *&n; * Arguments:&t;cmd&t;- command block to free&n; *&n; * Returns:&t;Nothing.&n; *&n; * Notes:&t;The command must not belong to any lists.&n; */
 DECL|function|scsi_put_command
 r_void
@@ -817,6 +854,13 @@ id|sdev-&gt;sdev_gendev
 )paren
 suffix:semicolon
 )brace
+DECL|variable|scsi_put_command
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|scsi_put_command
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * Function:&t;scsi_setup_command_freelist()&n; *&n; * Purpose:&t;Setup the command freelist for a scsi host.&n; *&n; * Arguments:&t;shost&t;- host to allocate the freelist for.&n; *&n; * Returns:&t;Nothing.&n; */
 DECL|function|scsi_setup_command_freelist
 r_int
@@ -2674,6 +2718,13 @@ id|flags
 )paren
 suffix:semicolon
 )brace
+DECL|variable|scsi_adjust_queue_depth
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|scsi_adjust_queue_depth
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * Function:&t;scsi_track_queue_full()&n; *&n; * Purpose:&t;This function will track successive QUEUE_FULL events on a&n; * &t;&t;specific SCSI device to determine if and when there is a&n; * &t;&t;need to adjust the queue depth on the device.&n; *&n; * Arguments:&t;sdev&t;- SCSI Device in question&n; * &t;&t;depth&t;- Current number of outstanding SCSI commands on&n; * &t;&t;&t;  this device, not counting the one returned as&n; * &t;&t;&t;  QUEUE_FULL.&n; *&n; * Returns:&t;0 - No change needed&n; * &t;&t;&gt;0 - Adjust queue depth to this new depth&n; * &t;&t;-1 - Drop back to untagged operation using host-&gt;cmd_per_lun&n; * &t;&t;&t;as the untagged command depth&n; *&n; * Lock Status:&t;None held on entry&n; *&n; * Notes:&t;Low level drivers may call this at any time and we will do&n; * &t;&t;&quot;The Right Thing.&quot;  We are interrupt context safe.&n; */
 DECL|function|scsi_track_queue_full
 r_int
@@ -2798,6 +2849,13 @@ r_return
 id|depth
 suffix:semicolon
 )brace
+DECL|variable|scsi_track_queue_full
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|scsi_track_queue_full
+)paren
+suffix:semicolon
 multiline_comment|/**&n; * scsi_device_get  -  get an addition reference to a scsi_device&n; * @sdev:&t;device to get a reference to&n; *&n; * Gets a reference to the scsi_device and increments the use count&n; * of the underlying LLDD module.  You must hold host_lock of the&n; * parent Scsi_Host or already have a reference when calling this.&n; */
 DECL|function|scsi_device_get
 r_int
@@ -3382,6 +3440,13 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+DECL|variable|scsi_device_cancel
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|scsi_device_cancel
+)paren
+suffix:semicolon
 macro_line|#ifdef CONFIG_HOTPLUG_CPU
 DECL|function|scsi_cpu_notify
 r_static

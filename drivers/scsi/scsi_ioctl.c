@@ -562,6 +562,13 @@ r_return
 id|ret
 suffix:semicolon
 )brace
+DECL|variable|scsi_set_medium_removal
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|scsi_set_medium_removal
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * This interface is deprecated - users should use the scsi generic (sg)&n; * interface instead, as this is a more flexible approach to performing&n; * generic SCSI commands on a device.&n; *&n; * The structure that we are passed should look like:&n; *&n; * struct sdata {&n; *  unsigned int inlen;      [i] Length of data to be written to device &n; *  unsigned int outlen;     [i] Length of data to be read from device &n; *  unsigned char cmd[x];    [i] SCSI command (6 &lt;= x &lt;= 12).&n; *                           [o] Data read from device starts here.&n; *                           [o] On error, sense buffer starts here.&n; *  unsigned char wdata[y];  [i] Data written to device starts here.&n; * };&n; * Notes:&n; *   -  The SCSI command length is determined by examining the 1st byte&n; *      of the given command. There is no way to override this.&n; *   -  Data transfers are limited to PAGE_SIZE (4K on i386, 8K on alpha).&n; *   -  The length (x + y) must be at least OMAX_SB_LEN bytes long to&n; *      accommodate the sense buffer when an error occurs.&n; *      The sense buffer is truncated to OMAX_SB_LEN (16) bytes so that&n; *      old code will not be surprised.&n; *   -  If a Unix error occurs (e.g. ENOMEM) then the user will receive&n; *      a negative return and the Unix error code in &squot;errno&squot;. &n; *      If the SCSI command succeeds then 0 is returned.&n; *      Positive numbers returned are the compacted SCSI error codes (4 &n; *      bytes in one int) where the lowest byte is the SCSI status.&n; *      See the drivers/scsi/scsi.h file for more information on this.&n; *&n; */
 DECL|macro|OMAX_SB_LEN
 mdefine_line|#define OMAX_SB_LEN 16&t;&t;/* Old sense buffer length */
@@ -1169,6 +1176,13 @@ r_return
 id|result
 suffix:semicolon
 )brace
+DECL|variable|scsi_ioctl_send_command
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|scsi_ioctl_send_command
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * The scsi_ioctl_get_pci() function places into arg the value&n; * pci_dev::slot_name (8 characters) for the PCI device (if any).&n; * Returns: 0 on success&n; *          -ENXIO if there isn&squot;t a PCI device pointer&n; *                 (could be because the SCSI driver hasn&squot;t been&n; *                  updated yet, or because it isn&squot;t a SCSI&n; *                  device)&n; *          any copy_to_user() error on failure there&n; */
 DECL|function|scsi_ioctl_get_pci
 r_static
@@ -1676,6 +1690,13 @@ op_minus
 id|EINVAL
 suffix:semicolon
 )brace
+DECL|variable|scsi_ioctl
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|scsi_ioctl
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * the scsi_nonblock_ioctl() function is designed for ioctls which may&n; * be executed even if the device is in recovery.&n; */
 DECL|function|scsi_nonblockable_ioctl
 r_int

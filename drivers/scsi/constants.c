@@ -1846,6 +1846,13 @@ l_string|&quot;&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
+DECL|variable|__scsi_print_command
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|__scsi_print_command
+)paren
+suffix:semicolon
 multiline_comment|/* This function (perhaps with the addition of peripheral device type)&n; * is more approriate than __scsi_print_command(). Perhaps that static&n; * can be dropped later if it replaces the __scsi_print_command version.&n; */
 DECL|function|scsi_print_cdb
 r_static
@@ -2069,6 +2076,13 @@ id|scsi_status
 suffix:semicolon
 macro_line|#endif
 )brace
+DECL|variable|scsi_print_status
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|scsi_print_status
+)paren
+suffix:semicolon
 macro_line|#ifdef CONFIG_SCSI_CONSTANTS
 DECL|struct|error_info
 r_struct
@@ -5448,6 +5462,13 @@ r_return
 l_int|NULL
 suffix:semicolon
 )brace
+DECL|variable|scsi_sense_key_string
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|scsi_sense_key_string
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * Get additional sense code string or NULL if not available.&n; * This string may contain a &quot;%x&quot; and should be printed with ascq as arg.&n; */
 r_const
 r_char
@@ -5580,6 +5601,13 @@ r_return
 l_int|NULL
 suffix:semicolon
 )brace
+DECL|variable|scsi_extd_sense_format
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|scsi_extd_sense_format
+)paren
+suffix:semicolon
 multiline_comment|/* Print extended sense information; no leadin, no linefeed */
 r_static
 r_void
@@ -6373,6 +6401,13 @@ id|cmd-&gt;request
 )paren
 suffix:semicolon
 )brace
+DECL|variable|scsi_print_sense
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|scsi_print_sense
+)paren
+suffix:semicolon
 DECL|function|scsi_print_req_sense
 r_void
 id|scsi_print_req_sense
@@ -6402,6 +6437,13 @@ id|sreq-&gt;sr_request
 )paren
 suffix:semicolon
 )brace
+DECL|variable|scsi_print_req_sense
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|scsi_print_req_sense
+)paren
+suffix:semicolon
 macro_line|#ifdef CONFIG_SCSI_CONSTANTS
 DECL|variable|one_byte_msgs
 r_static
@@ -6899,6 +6941,13 @@ r_return
 id|len
 suffix:semicolon
 )brace
+DECL|variable|scsi_print_msg
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|scsi_print_msg
+)paren
+suffix:semicolon
 macro_line|#else  /* ifndef CONFIG_SCSI_CONSTANTS */
 DECL|function|scsi_print_msg
 r_int
@@ -7072,6 +7121,13 @@ r_return
 id|len
 suffix:semicolon
 )brace
+DECL|variable|scsi_print_msg
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|scsi_print_msg
+)paren
+suffix:semicolon
 macro_line|#endif /* ! CONFIG_SCSI_CONSTANTS */
 DECL|function|scsi_print_command
 r_void
@@ -7115,6 +7171,13 @@ l_int|0
 )paren
 suffix:semicolon
 )brace
+DECL|variable|scsi_print_command
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|scsi_print_command
+)paren
+suffix:semicolon
 macro_line|#ifdef CONFIG_SCSI_CONSTANTS
 DECL|variable|hostbyte_table
 r_static

@@ -210,6 +210,13 @@ id|shost-&gt;shost_gendev
 )paren
 suffix:semicolon
 )brace
+DECL|variable|scsi_remove_host
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|scsi_remove_host
+)paren
+suffix:semicolon
 multiline_comment|/**&n; * scsi_add_host - add a scsi host&n; * @shost:&t;scsi host pointer to add&n; * @dev:&t;a struct device of type scsi class&n; *&n; * Return value: &n; * &t;0 on success / != 0 for error&n; **/
 DECL|function|scsi_add_host
 r_int
@@ -453,6 +460,13 @@ r_return
 id|error
 suffix:semicolon
 )brace
+DECL|variable|scsi_add_host
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|scsi_add_host
+)paren
+suffix:semicolon
 DECL|function|scsi_host_dev_release
 r_static
 r_void
@@ -979,6 +993,13 @@ r_return
 l_int|NULL
 suffix:semicolon
 )brace
+DECL|variable|scsi_host_alloc
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|scsi_host_alloc
+)paren
+suffix:semicolon
 DECL|function|scsi_register
 r_struct
 id|Scsi_Host
@@ -1050,6 +1071,13 @@ r_return
 id|shost
 suffix:semicolon
 )brace
+DECL|variable|scsi_register
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|scsi_register
+)paren
+suffix:semicolon
 DECL|function|scsi_unregister
 r_void
 id|scsi_unregister
@@ -1075,6 +1103,13 @@ id|shost
 )paren
 suffix:semicolon
 )brace
+DECL|variable|scsi_unregister
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|scsi_unregister
+)paren
+suffix:semicolon
 multiline_comment|/**&n; * scsi_host_lookup - get a reference to a Scsi_Host by host no&n; *&n; * @hostnum:&t;host number to locate&n; *&n; * Return value:&n; *&t;A pointer to located Scsi_Host or NULL.&n; **/
 DECL|function|scsi_host_lookup
 r_struct
@@ -1179,6 +1214,13 @@ r_return
 id|shost
 suffix:semicolon
 )brace
+DECL|variable|scsi_host_lookup
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|scsi_host_lookup
+)paren
+suffix:semicolon
 multiline_comment|/**&n; * scsi_host_get - inc a Scsi_Host ref count&n; * @shost:&t;Pointer to Scsi_Host to inc.&n; **/
 DECL|function|scsi_host_get
 r_struct
@@ -1220,6 +1262,13 @@ r_return
 id|shost
 suffix:semicolon
 )brace
+DECL|variable|scsi_host_get
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|scsi_host_get
+)paren
+suffix:semicolon
 multiline_comment|/**&n; * scsi_host_put - dec a Scsi_Host ref count&n; * @shost:&t;Pointer to Scsi_Host to dec.&n; **/
 DECL|function|scsi_host_put
 r_void
@@ -1240,6 +1289,13 @@ id|shost-&gt;shost_gendev
 )paren
 suffix:semicolon
 )brace
+DECL|variable|scsi_host_put
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|scsi_host_put
+)paren
+suffix:semicolon
 DECL|function|scsi_init_hosts
 r_int
 id|scsi_init_hosts

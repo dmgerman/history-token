@@ -3525,6 +3525,13 @@ r_return
 id|sdev
 suffix:semicolon
 )brace
+DECL|variable|__scsi_add_device
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|__scsi_add_device
+)paren
+suffix:semicolon
 DECL|function|scsi_rescan_device
 r_void
 id|scsi_rescan_device
@@ -4064,6 +4071,13 @@ l_int|0
 )paren
 suffix:semicolon
 )brace
+DECL|variable|scsi_scan_host
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|scsi_scan_host
+)paren
+suffix:semicolon
 DECL|function|scsi_forget_host
 r_void
 id|scsi_forget_host
@@ -4191,6 +4205,13 @@ r_return
 id|sdev
 suffix:semicolon
 )brace
+DECL|variable|scsi_get_host_dev
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|scsi_get_host_dev
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * Function:    scsi_free_host_dev()&n; *&n; * Purpose:     Free a scsi_device that points to the host adapter itself.&n; *&n; * Arguments:   SHpnt   - Host that needs a Scsi_Device&n; *&n; * Lock status: None assumed.&n; *&n; * Returns:     Nothing&n; *&n; * Notes:&n; */
 DECL|function|scsi_free_host_dev
 r_void
@@ -4245,4 +4266,11 @@ id|sdev-&gt;sdev_gendev
 )paren
 suffix:semicolon
 )brace
+DECL|variable|scsi_free_host_dev
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|scsi_free_host_dev
+)paren
+suffix:semicolon
 eof

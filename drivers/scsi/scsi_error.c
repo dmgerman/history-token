@@ -268,6 +268,13 @@ id|scmd-&gt;eh_timeout
 )paren
 suffix:semicolon
 )brace
+DECL|variable|scsi_add_timer
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|scsi_add_timer
+)paren
+suffix:semicolon
 multiline_comment|/**&n; * scsi_delete_timer - Delete/cancel timer for a given function.&n; * @scmd:&t;Cmd that we are canceling timer for&n; *&n; * Notes:&n; *     This should be turned into an inline function.&n; *&n; * Return value:&n; *     1 if we were able to detach the timer.  0 if we blew it, and the&n; *     timer function has already started to run.&n; **/
 DECL|function|scsi_delete_timer
 r_int
@@ -327,6 +334,13 @@ r_return
 id|rtn
 suffix:semicolon
 )brace
+DECL|variable|scsi_delete_timer
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|scsi_delete_timer
+)paren
+suffix:semicolon
 multiline_comment|/**&n; * scsi_times_out - Timeout function for normal scsi commands.&n; * @scmd:&t;Cmd that is timing out.&n; *&n; * Notes:&n; *     We do not need to lock this.  There is the potential for a race&n; *     only in that the normal completion handling might run, but if the&n; *     normal completion function determines that the timer has already&n; *     fired, then it mustn&squot;t do anything.&n; **/
 DECL|function|scsi_times_out
 r_void
@@ -501,6 +515,13 @@ r_return
 id|online
 suffix:semicolon
 )brace
+DECL|variable|scsi_block_when_processing_errors
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|scsi_block_when_processing_errors
+)paren
+suffix:semicolon
 macro_line|#ifdef CONFIG_SCSI_LOGGING
 multiline_comment|/**&n; * scsi_eh_prt_fail_stats - Log info on failures.&n; * @shost:&t;scsi host being recovered.&n; * @work_q:&t;Queue of scsi cmds to process.&n; **/
 DECL|function|scsi_eh_prt_fail_stats
@@ -4915,6 +4936,13 @@ suffix:semicolon
 )brace
 )brace
 )brace
+DECL|variable|scsi_report_bus_reset
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|scsi_report_bus_reset
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * Function:    scsi_report_device_reset()&n; *&n; * Purpose:     Utility function used by low-level drivers to report that&n; *&t;&t;they have observed a device reset on the device being handled.&n; *&n; * Arguments:   shost       - Host in question&n; *&t;&t;channel     - channel on which reset was observed&n; *&t;&t;target&t;    - target on which reset was observed&n; *&n; * Returns:     Nothing&n; *&n; * Lock status: Host lock must be held&n; *&n; * Notes:       This only needs to be called if the reset is one which&n; *&t;&t;originates from an unknown location.  Resets originated&n; *&t;&t;by the mid-level itself don&squot;t need to call this, but there&n; *&t;&t;should be no harm.&n; *&n; *&t;&t;The main purpose of this is to make sure that a CHECK_CONDITION&n; *&t;&t;is properly treated.&n; */
 DECL|function|scsi_report_device_reset
 r_void
@@ -4969,6 +4997,13 @@ suffix:semicolon
 )brace
 )brace
 )brace
+DECL|variable|scsi_report_device_reset
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|scsi_report_device_reset
+)paren
+suffix:semicolon
 r_static
 r_void
 DECL|function|scsi_reset_provider_done_command
@@ -5206,6 +5241,13 @@ r_return
 id|rtn
 suffix:semicolon
 )brace
+DECL|variable|scsi_reset_provider
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|scsi_reset_provider
+)paren
+suffix:semicolon
 multiline_comment|/**&n; * scsi_normalize_sense - normalize main elements from either fixed or&n; *&t;&t;&t;descriptor sense data format into a common format.&n; *&n; * @sense_buffer:&t;byte array containing sense data returned by device&n; * @sb_len:&t;&t;number of valid bytes in sense_buffer&n; * @sshdr:&t;&t;pointer to instance of structure that common&n; *&t;&t;&t;elements are written to.&n; *&n; * Notes:&n; *&t;The &quot;main elements&quot; from sense data are: response_code, sense_key,&n; *&t;asc, ascq and additional_length (only for descriptor format).&n; *&n; *&t;Typically this function can be called after a device has&n; *&t;responded to a SCSI command with the CHECK_CONDITION status.&n; *&n; * Return value:&n; *&t;1 if valid sense data information found, else 0;&n; **/
 DECL|function|scsi_normalize_sense
 r_int
