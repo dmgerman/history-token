@@ -11775,35 +11775,12 @@ id|EIO
 suffix:semicolon
 )brace
 macro_line|#ifdef CONFIG_DEVFS_FS
-r_if
-c_cond
-(paren
-op_logical_neg
 id|devfs_mk_dir
 c_func
 (paren
 l_string|&quot;ieee1394/dv&quot;
 )paren
-)paren
-(brace
-id|printk
-c_func
-(paren
-id|KERN_ERR
-l_string|&quot;dv1394: unable to create /dev/ieee1394/dv&bslash;n&quot;
-)paren
 suffix:semicolon
-id|ieee1394_unregister_chardev
-c_func
-(paren
-id|IEEE1394_MINOR_BLOCK_DV1394
-)paren
-suffix:semicolon
-r_return
-op_minus
-id|ENOMEM
-suffix:semicolon
-)brace
 macro_line|#endif
 macro_line|#ifdef CONFIG_PROC_FS
 id|ret

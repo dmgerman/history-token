@@ -775,6 +775,8 @@ multiline_comment|/* if disconnect beat us to the punch here, there&squot;s noth
 r_if
 c_cond
 (paren
+id|tty
+op_logical_and
 id|tty-&gt;driver_data
 )paren
 (brace
@@ -2236,6 +2238,10 @@ l_int|NULL
 )paren
 suffix:semicolon
 )brace
+id|port-&gt;tty
+op_assign
+l_int|NULL
+suffix:semicolon
 )brace
 )brace
 id|serial_shutdown

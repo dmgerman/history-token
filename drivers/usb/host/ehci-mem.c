@@ -119,6 +119,13 @@ id|qtd-&gt;qtd_dma
 op_assign
 id|dma
 suffix:semicolon
+id|qtd-&gt;hw_token
+op_assign
+id|cpu_to_le32
+(paren
+id|QTD_STS_HALT
+)paren
+suffix:semicolon
 id|qtd-&gt;hw_next
 op_assign
 id|EHCI_LIST_END

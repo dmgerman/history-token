@@ -556,6 +556,26 @@ id|data
 )paren
 suffix:semicolon
 )brace
+DECL|macro|I2C_DEVNAME
+mdefine_line|#define I2C_DEVNAME(str)   .dev = { .name = str }
+DECL|function|i2c_clientname
+r_static
+r_inline
+r_char
+op_star
+id|i2c_clientname
+c_func
+(paren
+r_struct
+id|i2c_client
+op_star
+id|c
+)paren
+(brace
+r_return
+id|c-&gt;dev.name
+suffix:semicolon
+)brace
 multiline_comment|/*&n; * The following structs are for those who like to implement new bus drivers:&n; * i2c_algorithm is the interface to a class of hardware solutions which can&n; * be addressed using the same bus algorithms - i.e. bit-banging or the PCF8584&n; * to name two of the most common.&n; */
 DECL|struct|i2c_algorithm
 r_struct
@@ -1151,8 +1171,7 @@ id|addr
 suffix:semicolon
 multiline_comment|/* slave address&t;&t;&t;*/
 DECL|member|flags
-r_int
-r_int
+id|__u16
 id|flags
 suffix:semicolon
 DECL|macro|I2C_M_TEN
@@ -1168,12 +1187,12 @@ mdefine_line|#define I2C_M_IGNORE_NAK&t;0x1000
 DECL|macro|I2C_M_NO_RD_ACK
 mdefine_line|#define I2C_M_NO_RD_ACK&t;&t;0x0800
 DECL|member|len
-r_int
+id|__u16
 id|len
 suffix:semicolon
 multiline_comment|/* msg length&t;&t;&t;&t;*/
 DECL|member|buf
-r_char
+id|__u8
 op_star
 id|buf
 suffix:semicolon

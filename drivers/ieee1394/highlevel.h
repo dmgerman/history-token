@@ -361,9 +361,9 @@ comma
 r_int
 id|nodeid
 comma
-id|quadlet_t
+r_void
 op_star
-id|buffer
+id|data
 comma
 id|u64
 id|addr
@@ -391,7 +391,7 @@ comma
 r_int
 id|destid
 comma
-id|quadlet_t
+r_void
 op_star
 id|data
 comma
@@ -479,7 +479,7 @@ id|hpsb_host
 op_star
 id|host
 comma
-id|quadlet_t
+r_void
 op_star
 id|data
 comma
@@ -503,7 +503,7 @@ comma
 r_int
 id|direction
 comma
-id|u8
+r_void
 op_star
 id|data
 comma

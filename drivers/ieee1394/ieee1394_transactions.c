@@ -535,7 +535,6 @@ op_assign
 id|find_next_zero_bit
 c_func
 (paren
-op_amp
 id|tp-&gt;pool
 comma
 l_int|64
@@ -562,7 +561,6 @@ c_func
 (paren
 id|packet-&gt;tlabel
 comma
-op_amp
 id|tp-&gt;pool
 )paren
 )paren
@@ -644,7 +642,6 @@ c_func
 (paren
 id|packet-&gt;tlabel
 comma
-op_amp
 id|tp-&gt;pool
 )paren
 )paren
