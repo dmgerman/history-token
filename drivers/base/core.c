@@ -57,11 +57,6 @@ id|device_lock
 op_assign
 id|SPIN_LOCK_UNLOCKED
 suffix:semicolon
-DECL|variable|device_subsys
-r_struct
-id|subsystem
-id|device_subsys
-suffix:semicolon
 DECL|macro|to_dev
 mdefine_line|#define to_dev(obj) container_of(obj,struct device,kobj)
 multiline_comment|/*&n; * sysfs bindings for devices.&n; */
@@ -503,23 +498,17 @@ op_assign
 op_amp
 id|device_subsys
 suffix:semicolon
-id|kobject_register
-c_func
-(paren
-op_amp
-id|dev-&gt;kobj
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
 (paren
 id|error
 op_assign
-id|device_make_dir
+id|kobject_register
 c_func
 (paren
-id|dev
+op_amp
+id|dev-&gt;kobj
 )paren
 )paren
 )paren
@@ -962,13 +951,6 @@ c_func
 id|dev
 )paren
 suffix:semicolon
-multiline_comment|/* remove the driverfs directory */
-id|device_remove_dir
-c_func
-(paren
-id|dev
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1100,6 +1082,20 @@ id|EXPORT_SYMBOL
 c_func
 (paren
 id|put_device
+)paren
+suffix:semicolon
+DECL|variable|device_create_file
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|device_create_file
+)paren
+suffix:semicolon
+DECL|variable|device_remove_file
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|device_remove_file
 )paren
 suffix:semicolon
 eof

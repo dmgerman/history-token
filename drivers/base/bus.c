@@ -1702,12 +1702,6 @@ c_func
 id|bus-&gt;present
 )paren
 suffix:semicolon
-id|bus_remove_dir
-c_func
-(paren
-id|bus
-)paren
-suffix:semicolon
 )brace
 DECL|function|bus_register
 r_int
@@ -1857,13 +1851,6 @@ comma
 id|bus-&gt;name
 )paren
 suffix:semicolon
-multiline_comment|/* give it some driverfs entities */
-id|bus_make_dir
-c_func
-(paren
-id|bus
-)paren
-suffix:semicolon
 id|put_bus
 c_func
 (paren
@@ -1909,6 +1896,27 @@ c_func
 l_string|&quot;bus %s: unregistering&bslash;n&quot;
 comma
 id|bus-&gt;name
+)paren
+suffix:semicolon
+id|subsystem_unregister
+c_func
+(paren
+op_amp
+id|bus-&gt;drvsubsys
+)paren
+suffix:semicolon
+id|subsystem_unregister
+c_func
+(paren
+op_amp
+id|bus-&gt;devsubsys
+)paren
+suffix:semicolon
+id|subsystem_unregister
+c_func
+(paren
+op_amp
+id|bus-&gt;subsys
 )paren
 suffix:semicolon
 id|put_bus

@@ -8,6 +8,7 @@ DECL|macro|to_intf
 mdefine_line|#define to_intf(node) container_of(node,struct device_interface,node)
 multiline_comment|/**&n; * intf_dev_link - symlink from interface&squot;s directory to device&squot;s directory&n; *&n; */
 DECL|function|intf_dev_link
+r_static
 r_int
 id|intf_dev_link
 c_func
@@ -51,6 +52,7 @@ id|linkname
 suffix:semicolon
 )brace
 DECL|function|intf_dev_unlink
+r_static
 r_void
 id|intf_dev_unlink
 c_func
@@ -121,12 +123,6 @@ comma
 id|intf-&gt;name
 comma
 id|cls-&gt;name
-)paren
-suffix:semicolon
-id|intf_make_dir
-c_func
-(paren
-id|intf
 )paren
 suffix:semicolon
 id|kobject_init
@@ -238,12 +234,6 @@ c_func
 (paren
 op_amp
 id|device_lock
-)paren
-suffix:semicolon
-id|intf_remove_dir
-c_func
-(paren
-id|intf
 )paren
 suffix:semicolon
 )brace
