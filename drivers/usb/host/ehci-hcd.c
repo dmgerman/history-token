@@ -1167,6 +1167,66 @@ OG
 id|temp
 )paren
 (brace
+id|ehci_dbg
+(paren
+id|ehci
+comma
+l_string|&quot;bogus port configuration: &quot;
+l_string|&quot;cc=%d x pcc=%d &lt; ports=%d&bslash;n&quot;
+comma
+id|HCS_N_CC
+c_func
+(paren
+id|ehci-&gt;hcs_params
+)paren
+comma
+id|HCS_N_PCC
+c_func
+(paren
+id|ehci-&gt;hcs_params
+)paren
+comma
+id|HCS_N_PORTS
+c_func
+(paren
+id|ehci-&gt;hcs_params
+)paren
+)paren
+suffix:semicolon
+macro_line|#ifdef&t;CONFIG_PCI
+r_if
+c_cond
+(paren
+id|hcd-&gt;self.controller-&gt;bus
+op_eq
+op_amp
+id|pci_bus_type
+)paren
+(brace
+r_struct
+id|pci_dev
+op_star
+id|pdev
+suffix:semicolon
+id|pdev
+op_assign
+id|to_pci_dev
+c_func
+(paren
+id|hcd-&gt;self.controller
+)paren
+suffix:semicolon
+r_switch
+c_cond
+(paren
+id|pdev-&gt;vendor
+)paren
+(brace
+r_case
+l_int|0x17a0
+suffix:colon
+multiline_comment|/* GENESYS */
+multiline_comment|/* GL880S: should be PORTS=2 */
 id|temp
 op_or_assign
 (paren
@@ -1180,6 +1240,17 @@ id|ehci-&gt;hcs_params
 op_assign
 id|temp
 suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+id|PCI_VENDOR_ID_NVIDIA
+suffix:colon
+multiline_comment|/* NF4: should be PCC=10 */
+r_break
+suffix:semicolon
+)brace
+)brace
+macro_line|#endif
 )brace
 multiline_comment|/* force HC to halt state */
 r_return
