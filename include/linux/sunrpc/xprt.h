@@ -133,6 +133,11 @@ r_int
 id|rq_received
 suffix:semicolon
 multiline_comment|/* receive completed */
+DECL|member|rq_seqno
+id|u32
+id|rq_seqno
+suffix:semicolon
+multiline_comment|/* gss seq no. used on req. */
 DECL|member|rq_list
 r_struct
 id|list_head

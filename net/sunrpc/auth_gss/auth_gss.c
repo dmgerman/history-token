@@ -3177,7 +3177,7 @@ op_amp
 id|ctx-&gt;gc_seq_lock
 )paren
 suffix:semicolon
-id|task-&gt;tk_gss_seqno
+id|req-&gt;rq_seqno
 op_assign
 id|ctx-&gt;gc_seq
 op_increment
@@ -3225,7 +3225,7 @@ c_func
 (paren
 id|u32
 )paren
-id|task-&gt;tk_gss_seqno
+id|req-&gt;rq_seqno
 )paren
 suffix:semicolon
 op_star
@@ -3603,7 +3603,7 @@ op_assign
 id|htonl
 c_func
 (paren
-id|task-&gt;tk_gss_seqno
+id|task-&gt;tk_rqstp-&gt;rq_seqno
 )paren
 suffix:semicolon
 id|iov.iov_base
@@ -3964,7 +3964,7 @@ op_assign
 id|htonl
 c_func
 (paren
-id|task-&gt;tk_gss_seqno
+id|req-&gt;rq_seqno
 )paren
 suffix:semicolon
 id|status
@@ -4383,7 +4383,7 @@ id|p
 op_increment
 )paren
 op_ne
-id|task-&gt;tk_gss_seqno
+id|req-&gt;rq_seqno
 )paren
 r_goto
 id|out
