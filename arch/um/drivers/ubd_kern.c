@@ -2388,7 +2388,7 @@ id|i
 op_increment
 )paren
 (brace
-id|add_gendisk
+id|add_disk
 c_func
 (paren
 op_amp
@@ -2506,7 +2506,7 @@ id|i
 op_increment
 )paren
 (brace
-id|add_gendisk
+id|add_disk
 c_func
 (paren
 op_amp
