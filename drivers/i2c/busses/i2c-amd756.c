@@ -1,6 +1,6 @@
 multiline_comment|/*&n;    amd756.c - Part of lm_sensors, Linux kernel modules for hardware&n;              monitoring&n;&n;    Copyright (c) 1999-2002 Merlin Hughes &lt;merlin@merlin.org&gt;&n;&n;    Shamelessly ripped from i2c-piix4.c:&n;&n;    Copyright (c) 1998, 1999  Frodo Looijaard &lt;frodol@dds.nl&gt; and&n;    Philip Edelbrock &lt;phil@netroedge.com&gt;&n;&n;    This program is free software; you can redistribute it and/or modify&n;    it under the terms of the GNU General Public License as published by&n;    the Free Software Foundation; either version 2 of the License, or&n;    (at your option) any later version.&n;&n;    This program is distributed in the hope that it will be useful,&n;    but WITHOUT ANY WARRANTY; without even the implied warranty of&n;    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n;    GNU General Public License for more details.&n;&n;    You should have received a copy of the GNU General Public License&n;    along with this program; if not, write to the Free Software&n;    Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n;*/
-multiline_comment|/*&n;    2002-04-08: Added nForce support. (Csaba Halasz)&n;    2002-10-03: Fixed nForce PnP I/O port. (Michael Steil)&n;    2002-12-28: Rewritten into something that resembles a Linux driver (hch)&n;*/
-multiline_comment|/*&n;   Supports AMD756, AMD766, AMD768 and nVidia nForce&n;   Note: we assume there can only be one device, with one SMBus interface.&n;*/
+multiline_comment|/*&n;    2002-04-08: Added nForce support. (Csaba Halasz)&n;    2002-10-03: Fixed nForce PnP I/O port. (Michael Steil)&n;    2002-12-28: Rewritten into something that resembles a Linux driver (hch)&n;    2003-11-29: Added back AMD8111 removed by the previous rewrite.&n;                (Philip Pokorny)&n;*/
+multiline_comment|/*&n;   Supports AMD756, AMD766, AMD768, AMD8111 and nVidia nForce&n;   Note: we assume there can only be one device, with one SMBus interface.&n;*/
 multiline_comment|/* #define DEBUG 1 */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
@@ -1144,6 +1144,7 @@ DECL|enumerator|AMD756
 DECL|enumerator|AMD766
 DECL|enumerator|AMD768
 DECL|enumerator|NFORCE
+DECL|enumerator|AMD8111
 r_enum
 id|chiptype
 (brace
@@ -1154,6 +1155,8 @@ comma
 id|AMD768
 comma
 id|NFORCE
+comma
+id|AMD8111
 )brace
 suffix:semicolon
 DECL|variable|amd756_ids
@@ -1214,6 +1217,22 @@ id|AMD768
 )brace
 comma
 (brace
+id|PCI_VENDOR_ID_AMD
+comma
+l_int|0x746B
+comma
+id|PCI_ANY_ID
+comma
+id|PCI_ANY_ID
+comma
+l_int|0
+comma
+l_int|0
+comma
+id|AMD8111
+)brace
+comma
+(brace
 id|PCI_VENDOR_ID_NVIDIA
 comma
 l_int|0x01B4
@@ -1262,7 +1281,8 @@ id|id-&gt;driver_data
 op_eq
 id|NFORCE
 )paren
-comma
+suffix:semicolon
+r_int
 id|error
 suffix:semicolon
 id|u8
@@ -1480,7 +1500,7 @@ id|amd756_adapter.name
 comma
 id|I2C_NAME_SIZE
 comma
-l_string|&quot;SMBus AMD75x adapter at %04x&quot;
+l_string|&quot;SMBus AMD756 adapter at %04x&quot;
 comma
 id|amd756_ioport
 )paren
@@ -1569,7 +1589,7 @@ op_assign
 dot
 id|name
 op_assign
-l_string|&quot;amd75x smbus&quot;
+l_string|&quot;amd756 smbus&quot;
 comma
 dot
 id|id_table
@@ -1638,7 +1658,7 @@ suffix:semicolon
 id|MODULE_DESCRIPTION
 c_func
 (paren
-l_string|&quot;AMD756/766/768/nVidia nForce SMBus driver&quot;
+l_string|&quot;AMD756/766/768/8111 and nVidia nForce SMBus driver&quot;
 )paren
 suffix:semicolon
 id|MODULE_LICENSE
