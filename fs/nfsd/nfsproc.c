@@ -775,6 +775,12 @@ id|nfserr
 op_assign
 id|nfserr_noent
 suffix:semicolon
+id|dput
+c_func
+(paren
+id|dchild
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren

@@ -7977,6 +7977,12 @@ comma
 id|cd-&gt;rd_rqstp
 )paren
 suffix:semicolon
+id|dput
+c_func
+(paren
+id|dentry
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
