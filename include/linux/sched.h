@@ -1942,6 +1942,20 @@ id|wait_queue_t
 op_star
 id|io_wait
 suffix:semicolon
+multiline_comment|/* i/o counters(bytes read/written, #syscalls */
+DECL|member|rchar
+DECL|member|wchar
+DECL|member|syscr
+DECL|member|syscw
+id|u64
+id|rchar
+comma
+id|wchar
+comma
+id|syscr
+comma
+id|syscw
+suffix:semicolon
 macro_line|#ifdef CONFIG_NUMA
 DECL|member|mempolicy
 r_struct

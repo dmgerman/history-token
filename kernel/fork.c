@@ -3390,16 +3390,24 @@ id|p-&gt;pending
 suffix:semicolon
 id|p-&gt;it_real_value
 op_assign
-id|p-&gt;it_virt_value
-op_assign
-id|p-&gt;it_prof_value
-op_assign
 l_int|0
 suffix:semicolon
 id|p-&gt;it_real_incr
 op_assign
+l_int|0
+suffix:semicolon
+id|p-&gt;it_virt_value
+op_assign
+l_int|0
+suffix:semicolon
 id|p-&gt;it_virt_incr
 op_assign
+l_int|0
+suffix:semicolon
+id|p-&gt;it_prof_value
+op_assign
+l_int|0
+suffix:semicolon
 id|p-&gt;it_prof_incr
 op_assign
 l_int|0
@@ -3421,10 +3429,32 @@ id|p
 suffix:semicolon
 id|p-&gt;utime
 op_assign
+l_int|0
+suffix:semicolon
 id|p-&gt;stime
 op_assign
 l_int|0
 suffix:semicolon
+id|p-&gt;rchar
+op_assign
+l_int|0
+suffix:semicolon
+multiline_comment|/* I/O counter: bytes read */
+id|p-&gt;wchar
+op_assign
+l_int|0
+suffix:semicolon
+multiline_comment|/* I/O counter: bytes written */
+id|p-&gt;syscr
+op_assign
+l_int|0
+suffix:semicolon
+multiline_comment|/* I/O counter: read syscalls */
+id|p-&gt;syscw
+op_assign
+l_int|0
+suffix:semicolon
+multiline_comment|/* I/O counter: write syscalls */
 id|p-&gt;lock_depth
 op_assign
 op_minus
