@@ -10180,9 +10180,9 @@ suffix:semicolon
 id|BTFIXUPSET_CALL
 c_func
 (paren
-id|mk_pte_phys
+id|pfn_pte
 comma
-id|srmmu_mk_pte_phys
+id|srmmu_pfn_pte
 comma
 id|BTFIXUPCALL_NORM
 )paren

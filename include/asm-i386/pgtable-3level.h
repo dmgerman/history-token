@@ -187,11 +187,11 @@ DECL|macro|pte_none
 mdefine_line|#define pte_none(x)&t;(!(x).pte_low &amp;&amp; !(x).pte_high)
 DECL|macro|pte_pfn
 mdefine_line|#define pte_pfn(x)&t;(((x).pte_low &gt;&gt; PAGE_SHIFT) | ((x).pte_high &lt;&lt; (32 - PAGE_SHIFT)))
-DECL|function|__mk_pte
+DECL|function|pfn_pte
 r_static
 r_inline
 id|pte_t
-id|__mk_pte
+id|pfn_pte
 c_func
 (paren
 r_int

@@ -1378,12 +1378,10 @@ id|ptep
 op_plus
 id|i
 comma
-id|mk_pte_phys
+id|pfn_pte
 c_func
 (paren
 id|i
-op_lshift
-id|PAGE_SHIFT
 comma
 id|PAGE_SHARED
 )paren

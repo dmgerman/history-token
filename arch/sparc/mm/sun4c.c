@@ -11404,9 +11404,9 @@ suffix:semicolon
 id|BTFIXUPSET_CALL
 c_func
 (paren
-id|mk_pte_phys
+id|pfn_pte
 comma
-id|sun4c_mk_pte_phys
+id|sun4c_pfn_pte
 comma
 id|BTFIXUPCALL_NORM
 )paren

@@ -1150,7 +1150,7 @@ comma
 id|pte_val
 c_func
 (paren
-id|mk_pte_phys
+id|pfn_pte
 c_func
 (paren
 id|__pa
@@ -1158,6 +1158,8 @@ c_func
 (paren
 id|my_cpu_data
 )paren
+op_rshift
+id|PAGE_SHIFT
 comma
 id|PAGE_KERNEL
 )paren
