@@ -424,7 +424,7 @@ l_int|5
 op_star
 id|HZ
 suffix:semicolon
-multiline_comment|/*&n; * Periodic writeback of &quot;old&quot; data.&n; *&n; * Define &quot;old&quot;: the first time one of an inode&squot;s pages is dirtied, we mark the&n; * dirtying-time in the inode&squot;s address_space.  So this periodic writeback code&n; * just walks the superblock inode list, writing back any inodes which are&n; * older than a specific point in time.&n; *&n; * Spot the bug: at jiffies wraparound, the attempt to set the inode&squot;s dirtying&n; * time won&squot;t work, because zero means not-dirty.  That&squot;s OK. The data will get&n; * written out later by the VM (at least).&n; *&n; * We also limit the number of pages which are written out, to avoid writing&n; * huge amounts of data against a single file, which would cause memory&n; * allocators to block for too long.&n; */
+multiline_comment|/*&n; * Periodic writeback of &quot;old&quot; data.&n; *&n; * Define &quot;old&quot;: the first time one of an inode&squot;s pages is dirtied, we mark the&n; * dirtying-time in the inode&squot;s address_space.  So this periodic writeback code&n; * just walks the superblock inode list, writing back any inodes which are&n; * older than a specific point in time.&n; *&n; * We also limit the number of pages which are written out, to avoid writing&n; * huge amounts of data against a single file, which would cause memory&n; * allocators to block for too long.&n; */
 DECL|function|wb_kupdate
 r_static
 r_void
@@ -809,10 +809,6 @@ c_func
 op_amp
 id|mapping-&gt;dirty_pages
 )paren
-suffix:semicolon
-id|mapping-&gt;dirtied_when
-op_assign
-l_int|0
 suffix:semicolon
 r_while
 c_loop
