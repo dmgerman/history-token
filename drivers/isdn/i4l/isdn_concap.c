@@ -327,7 +327,7 @@ id|lp
 op_member_access_from_pointer
 id|netdev
 op_member_access_from_pointer
-id|cprot
+id|ind_priv
 suffix:semicolon
 r_struct
 id|concap_proto
@@ -336,7 +336,7 @@ id|dops
 op_assign
 id|lp
 op_member_access_from_pointer
-id|dops
+id|inl_priv
 suffix:semicolon
 r_int
 r_int
@@ -408,7 +408,7 @@ id|lp
 op_member_access_from_pointer
 id|netdev
 op_member_access_from_pointer
-id|cprot
+id|ind_priv
 suffix:semicolon
 r_if
 c_cond
@@ -452,7 +452,7 @@ id|lp
 op_member_access_from_pointer
 id|netdev
 op_member_access_from_pointer
-id|cprot
+id|ind_priv
 suffix:semicolon
 r_struct
 id|concap_proto_ops
@@ -516,7 +516,7 @@ id|lp
 op_member_access_from_pointer
 id|netdev
 op_member_access_from_pointer
-id|cprot
+id|ind_priv
 suffix:semicolon
 r_struct
 id|concap_proto_ops
@@ -590,7 +590,7 @@ id|lp
 op_member_access_from_pointer
 id|netdev
 op_member_access_from_pointer
-id|cprot
+id|ind_priv
 suffix:semicolon
 r_int
 id|ret
@@ -657,7 +657,7 @@ id|lp
 op_member_access_from_pointer
 id|netdev
 op_member_access_from_pointer
-id|cprot
+id|ind_priv
 suffix:semicolon
 multiline_comment|/* try if there are generic sync_device receiver routines */
 r_if
@@ -732,7 +732,7 @@ id|ISDN_NET_ENCAP_X25IFACE
 suffix:colon
 id|lp
 op_member_access_from_pointer
-id|dops
+id|inl_priv
 op_assign
 op_amp
 id|isdn_concap_reliable_dl_dops
@@ -838,7 +838,7 @@ l_int|NULL
 suffix:semicolon
 id|lp
 op_member_access_from_pointer
-id|dops
+id|inl_priv
 op_assign
 l_int|NULL
 suffix:semicolon

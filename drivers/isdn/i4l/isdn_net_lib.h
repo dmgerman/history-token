@@ -591,15 +591,6 @@ id|atomic_t
 id|refcnt
 suffix:semicolon
 multiline_comment|/* references held by ISDN code     */
-macro_line|#ifdef CONFIG_ISDN_X25
-DECL|member|dops
-r_struct
-id|concap_device_ops
-op_star
-id|dops
-suffix:semicolon
-multiline_comment|/* callbacks used by encapsulator   */
-macro_line|#endif
 macro_line|#ifdef CONFIG_ISDN_PPP
 DECL|member|mp_cfg
 r_int
@@ -860,15 +851,12 @@ r_int
 id|debug
 suffix:semicolon
 macro_line|#endif
-macro_line|#ifdef CONFIG_ISDN_X25
-DECL|member|cprot
-r_struct
-id|concap_proto
+DECL|member|ind_priv
+r_void
 op_star
-id|cprot
+id|ind_priv
 suffix:semicolon
-multiline_comment|/* connection oriented encapsulation protocol */
-macro_line|#endif
+multiline_comment|/* interface types can put their&n;&t;&t;&t;&t;&t;  private data here                */
 )brace
 suffix:semicolon
 multiline_comment|/* ====================================================================== */
