@@ -1597,6 +1597,11 @@ id|avc_print_ipv6_addr
 c_func
 (paren
 r_struct
+id|audit_buffer
+op_star
+id|ab
+comma
+r_struct
 id|in6_addr
 op_star
 id|addr
@@ -1623,10 +1628,13 @@ c_func
 id|addr
 )paren
 )paren
-id|printk
+id|audit_log_format
 c_func
 (paren
-l_string|&quot; %s=%04x:%04x:%04x:%04x:%04x:%04x:%04x:%04x&quot;
+id|ab
+comma
+l_string|&quot; %s=%04x:%04x:%04x:%04x:%04x:&quot;
+l_string|&quot;%04x:%04x:%04x&quot;
 comma
 id|name1
 comma
@@ -1643,9 +1651,11 @@ c_cond
 (paren
 id|port
 )paren
-id|printk
+id|audit_log_format
 c_func
 (paren
+id|ab
+comma
 l_string|&quot; %s=%d&quot;
 comma
 id|name2
@@ -2521,6 +2531,8 @@ suffix:semicolon
 id|avc_print_ipv6_addr
 c_func
 (paren
+id|ab
+comma
 op_amp
 id|inet6-&gt;rcv_saddr
 comma
@@ -2534,6 +2546,8 @@ suffix:semicolon
 id|avc_print_ipv6_addr
 c_func
 (paren
+id|ab
+comma
 op_amp
 id|inet6-&gt;daddr
 comma
@@ -2694,6 +2708,8 @@ suffix:colon
 id|avc_print_ipv6_addr
 c_func
 (paren
+id|ab
+comma
 op_amp
 id|a-&gt;u.net.v6info.saddr
 comma
@@ -2707,6 +2723,8 @@ suffix:semicolon
 id|avc_print_ipv6_addr
 c_func
 (paren
+id|ab
+comma
 op_amp
 id|a-&gt;u.net.v6info.daddr
 comma
