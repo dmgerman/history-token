@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * Core definitions and data structures shareable across OS platforms.&n; *&n; * Copyright (c) 1994-2001 Justin T. Gibbs.&n; * Copyright (c) 2000-2001 Adaptec Inc.&n; * All rights reserved.&n; *&n; * Redistribution and use in source and binary forms, with or without&n; * modification, are permitted provided that the following conditions&n; * are met:&n; * 1. Redistributions of source code must retain the above copyright&n; *    notice, this list of conditions, and the following disclaimer,&n; *    without modification.&n; * 2. Redistributions in binary form must reproduce at minimum a disclaimer&n; *    substantially similar to the &quot;NO WARRANTY&quot; disclaimer below&n; *    (&quot;Disclaimer&quot;) and any redistribution must be conditioned upon&n; *    including a substantially similar Disclaimer requirement for further&n; *    binary redistribution.&n; * 3. Neither the names of the above-listed copyright holders nor the names&n; *    of any contributors may be used to endorse or promote products derived&n; *    from this software without specific prior written permission.&n; *&n; * Alternatively, this software may be distributed under the terms of the&n; * GNU General Public License (&quot;GPL&quot;) version 2 as published by the Free&n; * Software Foundation.&n; *&n; * NO WARRANTY&n; * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS&n; * &quot;AS IS&quot; AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT&n; * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTIBILITY AND FITNESS FOR&n; * A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT&n; * HOLDERS OR CONTRIBUTORS BE LIABLE FOR SPECIAL, EXEMPLARY, OR CONSEQUENTIAL&n; * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS&n; * OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)&n; * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,&n; * STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING&n; * IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE&n; * POSSIBILITY OF SUCH DAMAGES.&n; *&n; * $Id: //depot/aic7xxx/aic7xxx/aic7xxx.h#70 $&n; *&n; * $FreeBSD$&n; */
+multiline_comment|/*&n; * Core definitions and data structures shareable across OS platforms.&n; *&n; * Copyright (c) 1994-2001 Justin T. Gibbs.&n; * Copyright (c) 2000-2001 Adaptec Inc.&n; * All rights reserved.&n; *&n; * Redistribution and use in source and binary forms, with or without&n; * modification, are permitted provided that the following conditions&n; * are met:&n; * 1. Redistributions of source code must retain the above copyright&n; *    notice, this list of conditions, and the following disclaimer,&n; *    without modification.&n; * 2. Redistributions in binary form must reproduce at minimum a disclaimer&n; *    substantially similar to the &quot;NO WARRANTY&quot; disclaimer below&n; *    (&quot;Disclaimer&quot;) and any redistribution must be conditioned upon&n; *    including a substantially similar Disclaimer requirement for further&n; *    binary redistribution.&n; * 3. Neither the names of the above-listed copyright holders nor the names&n; *    of any contributors may be used to endorse or promote products derived&n; *    from this software without specific prior written permission.&n; *&n; * Alternatively, this software may be distributed under the terms of the&n; * GNU General Public License (&quot;GPL&quot;) version 2 as published by the Free&n; * Software Foundation.&n; *&n; * NO WARRANTY&n; * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS&n; * &quot;AS IS&quot; AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT&n; * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTIBILITY AND FITNESS FOR&n; * A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT&n; * HOLDERS OR CONTRIBUTORS BE LIABLE FOR SPECIAL, EXEMPLARY, OR CONSEQUENTIAL&n; * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS&n; * OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)&n; * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,&n; * STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING&n; * IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE&n; * POSSIBILITY OF SUCH DAMAGES.&n; *&n; * $Id: //depot/aic7xxx/aic7xxx/aic7xxx.h#74 $&n; *&n; * $FreeBSD$&n; */
 macro_line|#ifndef _AIC7XXX_H_
 DECL|macro|_AIC7XXX_H_
 mdefine_line|#define _AIC7XXX_H_
@@ -657,6 +657,11 @@ DECL|enumerator|AHC_DISABLE_PCI_PERR
 id|AHC_DISABLE_PCI_PERR
 op_assign
 l_int|0x10000000
+comma
+DECL|enumerator|AHC_HAS_TERM_LOGIC
+id|AHC_HAS_TERM_LOGIC
+op_assign
+l_int|0x20000000
 DECL|typedef|ahc_flag
 )brace
 id|ahc_flag
@@ -1274,7 +1279,7 @@ mdefine_line|#define AHC_WIDTH_UNKNOWN&t;0xFF
 DECL|macro|AHC_PERIOD_UNKNOWN
 mdefine_line|#define AHC_PERIOD_UNKNOWN&t;0xFF
 DECL|macro|AHC_OFFSET_UNKNOWN
-mdefine_line|#define AHC_OFFSET_UNKNOWN&t;0x0
+mdefine_line|#define AHC_OFFSET_UNKNOWN&t;0xFF
 DECL|macro|AHC_PPR_OPTS_UNKNOWN
 mdefine_line|#define AHC_PPR_OPTS_UNKNOWN&t;0xFF
 multiline_comment|/*&n; * Transfer Negotiation Information.&n; */
@@ -1679,55 +1684,49 @@ comma
 id|scb
 )paren
 suffix:semicolon
-DECL|struct|ahc_suspend_channel_state
+DECL|struct|ahc_aic7770_softc
 r_struct
-id|ahc_suspend_channel_state
+id|ahc_aic7770_softc
 (brace
-DECL|member|scsiseq
+multiline_comment|/*&n;&t; * Saved register state used for chip_init().&n;&t; */
+DECL|member|busspd
 r_uint8
-id|scsiseq
+id|busspd
 suffix:semicolon
-DECL|member|sxfrctl0
+DECL|member|bustime
 r_uint8
-id|sxfrctl0
-suffix:semicolon
-DECL|member|sxfrctl1
-r_uint8
-id|sxfrctl1
-suffix:semicolon
-DECL|member|simode0
-r_uint8
-id|simode0
-suffix:semicolon
-DECL|member|simode1
-r_uint8
-id|simode1
-suffix:semicolon
-DECL|member|seltimer
-r_uint8
-id|seltimer
-suffix:semicolon
-DECL|member|seqctl
-r_uint8
-id|seqctl
+id|bustime
 suffix:semicolon
 )brace
 suffix:semicolon
-DECL|struct|ahc_suspend_state
+DECL|struct|ahc_pci_softc
 r_struct
-id|ahc_suspend_state
+id|ahc_pci_softc
 (brace
-DECL|member|channel
-r_struct
-id|ahc_suspend_channel_state
-id|channel
-(braket
-l_int|2
-)braket
+multiline_comment|/*&n;&t; * Saved register state used for chip_init().&n;&t; */
+DECL|member|devconfig
+r_uint32
+id|devconfig
+suffix:semicolon
+DECL|member|targcrccnt
+r_uint16
+id|targcrccnt
+suffix:semicolon
+DECL|member|command
+r_uint8
+id|command
+suffix:semicolon
+DECL|member|csize_lattime
+r_uint8
+id|csize_lattime
 suffix:semicolon
 DECL|member|optionmode
 r_uint8
 id|optionmode
+suffix:semicolon
+DECL|member|crccontrol1
+r_uint8
+id|crccontrol1
 suffix:semicolon
 DECL|member|dscommand0
 r_uint8
@@ -1737,29 +1736,29 @@ DECL|member|dspcistatus
 r_uint8
 id|dspcistatus
 suffix:semicolon
-multiline_comment|/* hsmailbox */
-DECL|member|crccontrol1
-r_uint8
-id|crccontrol1
-suffix:semicolon
 DECL|member|scbbaddr
 r_uint8
 id|scbbaddr
 suffix:semicolon
-multiline_comment|/* Host and sequencer SCB counts */
 DECL|member|dff_thrsh
 r_uint8
 id|dff_thrsh
 suffix:semicolon
-DECL|member|scratch_ram
-r_uint8
-op_star
-id|scratch_ram
+)brace
 suffix:semicolon
-DECL|member|btt
-r_uint8
-op_star
-id|btt
+DECL|union|ahc_bus_softc
+r_union
+id|ahc_bus_softc
+(brace
+DECL|member|aic7770_softc
+r_struct
+id|ahc_aic7770_softc
+id|aic7770_softc
+suffix:semicolon
+DECL|member|pci_softc
+r_struct
+id|ahc_pci_softc
+id|pci_softc
 suffix:semicolon
 )brace
 suffix:semicolon
@@ -1769,6 +1768,45 @@ r_void
 (paren
 op_star
 id|ahc_bus_intr_t
+)paren
+(paren
+r_struct
+id|ahc_softc
+op_star
+)paren
+suffix:semicolon
+DECL|typedef|ahc_bus_chip_init_t
+r_typedef
+r_int
+(paren
+op_star
+id|ahc_bus_chip_init_t
+)paren
+(paren
+r_struct
+id|ahc_softc
+op_star
+)paren
+suffix:semicolon
+DECL|typedef|ahc_bus_suspend_t
+r_typedef
+r_int
+(paren
+op_star
+id|ahc_bus_suspend_t
+)paren
+(paren
+r_struct
+id|ahc_softc
+op_star
+)paren
+suffix:semicolon
+DECL|typedef|ahc_bus_resume_t
+r_typedef
+r_int
+(paren
+op_star
+id|ahc_bus_resume_t
 )paren
 (paren
 r_struct
@@ -1839,6 +1877,12 @@ id|untagged_queues
 id|AHC_NUM_TARGETS
 )braket
 suffix:semicolon
+multiline_comment|/*&n;&t; * Bus attachment specific data.&n;&t; */
+DECL|member|bus_softc
+r_union
+id|ahc_bus_softc
+id|bus_softc
+suffix:semicolon
 multiline_comment|/*&n;&t; * Platform specific data.&n;&t; */
 DECL|member|platform_data
 r_struct
@@ -1855,6 +1899,21 @@ multiline_comment|/*&n;&t; * Bus specific device information.&n;&t; */
 DECL|member|bus_intr
 id|ahc_bus_intr_t
 id|bus_intr
+suffix:semicolon
+multiline_comment|/*&n;&t; * Bus specific initialization required&n;&t; * after a chip reset.&n;&t; */
+DECL|member|bus_chip_init
+id|ahc_bus_chip_init_t
+id|bus_chip_init
+suffix:semicolon
+multiline_comment|/*&n;&t; * Bus specific suspend routine.&n;&t; */
+DECL|member|bus_suspend
+id|ahc_bus_suspend_t
+id|bus_suspend
+suffix:semicolon
+multiline_comment|/*&n;&t; * Bus specific resume routine.&n;&t; */
+DECL|member|bus_resume
+id|ahc_bus_resume_t
+id|bus_resume
 suffix:semicolon
 multiline_comment|/*&n;&t; * Target mode related state kept on a per enabled lun basis.&n;&t; * Targets that are not enabled will have null entries.&n;&t; * As an initiator, we keep one target entry for our initiator&n;&t; * ID to store our sync/wide transfer settings.&n;&t; */
 DECL|member|enabled_targets
@@ -2046,12 +2105,6 @@ DECL|member|dma_bug_buf
 id|bus_addr_t
 id|dma_bug_buf
 suffix:semicolon
-multiline_comment|/* Information saved through suspend/resume cycles */
-DECL|member|suspend_state
-r_struct
-id|ahc_suspend_state
-id|suspend_state
-suffix:semicolon
 multiline_comment|/* Number of enabled target mode device on this card */
 DECL|member|enabled_luns
 id|u_int
@@ -2067,9 +2120,10 @@ DECL|member|pci_cachesize
 id|u_int
 id|pci_cachesize
 suffix:semicolon
-DECL|member|stack_size
+multiline_comment|/* Maximum number of sequencer instructions supported. */
+DECL|member|instruction_ram_size
 id|u_int
-id|stack_size
+id|instruction_ram_size
 suffix:semicolon
 multiline_comment|/* Per-Unit descriptive information */
 DECL|member|description
@@ -2485,6 +2539,16 @@ id|buf
 )paren
 suffix:semicolon
 r_int
+id|ahc_chip_init
+c_func
+(paren
+r_struct
+id|ahc_softc
+op_star
+id|ahc
+)paren
+suffix:semicolon
+r_int
 id|ahc_init
 c_func
 (paren
@@ -2621,16 +2685,6 @@ id|arg
 )paren
 suffix:semicolon
 multiline_comment|/*************************** Interrupt Services *******************************/
-r_void
-id|ahc_pci_intr
-c_func
-(paren
-r_struct
-id|ahc_softc
-op_star
-id|ahc
-)paren
-suffix:semicolon
 r_void
 id|ahc_clear_intstat
 c_func
