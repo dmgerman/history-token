@@ -17,6 +17,8 @@ macro_line|#else
 DECL|macro|dprintk
 mdefine_line|#define dprintk(msg...) do { } while(0)
 macro_line|#endif
+DECL|macro|PFX
+mdefine_line|#define PFX &quot;longhaul: &quot;
 DECL|variable|numscales
 DECL|variable|numvscales
 r_static
@@ -1094,7 +1096,8 @@ suffix:semicolon
 id|dprintk
 (paren
 id|KERN_INFO
-l_string|&quot;longhaul: FSB:%d Mult(x10):%d&bslash;n&quot;
+id|PFX
+l_string|&quot;FSB:%d Mult(x10):%d&bslash;n&quot;
 comma
 id|fsb
 op_star
@@ -1400,7 +1403,8 @@ suffix:semicolon
 id|dprintk
 (paren
 id|KERN_INFO
-l_string|&quot;longhaul: Desired vid index=%d&bslash;n&quot;
+id|PFX
+l_string|&quot;Desired vid index=%d&bslash;n&quot;
 comma
 id|i
 )paren
@@ -1876,7 +1880,8 @@ suffix:semicolon
 id|dprintk
 (paren
 id|KERN_INFO
-l_string|&quot;longhaul: MinMult(x10)=%d MaxMult(x10)=%d&bslash;n&quot;
+id|PFX
+l_string|&quot;MinMult(x10)=%d MaxMult(x10)=%d&bslash;n&quot;
 comma
 id|minmult
 comma
@@ -1886,7 +1891,8 @@ suffix:semicolon
 id|dprintk
 (paren
 id|KERN_INFO
-l_string|&quot;longhaul: Lowestspeed=%d Highestspeed=%d&bslash;n&quot;
+id|PFX
+l_string|&quot;Lowestspeed=%d Highestspeed=%d&bslash;n&quot;
 comma
 id|lowest_speed
 comma
@@ -2157,7 +2163,9 @@ l_int|0
 (brace
 id|printk
 (paren
-l_string|&quot;longhaul: Bogus values Min:%d.%03d Max:%d.%03d. &quot;
+id|KERN_INFO
+id|PFX
+l_string|&quot;Bogus values Min:%d.%03d Max:%d.%03d. &quot;
 l_string|&quot;Voltage scaling disabled.&bslash;n&quot;
 comma
 id|minvid
@@ -2190,7 +2198,9 @@ id|maxvid
 (brace
 id|printk
 (paren
-l_string|&quot;longhaul: Claims to support voltage scaling but min &amp; max are &quot;
+id|KERN_INFO
+id|PFX
+l_string|&quot;Claims to support voltage scaling but min &amp; max are &quot;
 l_string|&quot;both %d.%03d. Voltage scaling disabled&bslash;n&quot;
 comma
 id|maxvid
@@ -2216,7 +2226,8 @@ l_int|0
 id|dprintk
 (paren
 id|KERN_INFO
-l_string|&quot;longhaul: VRM 8.5 : &quot;
+id|PFX
+l_string|&quot;VRM 8.5 : &quot;
 )paren
 suffix:semicolon
 id|memcpy
@@ -2253,7 +2264,8 @@ r_else
 id|dprintk
 (paren
 id|KERN_INFO
-l_string|&quot;longhaul: Mobile VRM : &quot;
+id|PFX
+l_string|&quot;Mobile VRM : &quot;
 )paren
 suffix:semicolon
 id|memcpy
@@ -2660,7 +2672,8 @@ suffix:semicolon
 id|printk
 (paren
 id|KERN_INFO
-l_string|&quot;longhaul: VIA CPU detected. Longhaul version %d supported&bslash;n&quot;
+id|PFX
+l_string|&quot;VIA CPU detected. Longhaul version %d supported&bslash;n&quot;
 comma
 id|longhaul
 )paren
@@ -2876,7 +2889,8 @@ suffix:colon
 id|printk
 (paren
 id|KERN_INFO
-l_string|&quot;longhaul: Unknown VIA CPU. Contact davej@suse.de&bslash;n&quot;
+id|PFX
+l_string|&quot;Unknown VIA CPU. Contact davej@suse.de&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
