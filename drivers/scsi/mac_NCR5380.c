@@ -1805,9 +1805,7 @@ r_int
 id|length
 )paren
 suffix:semicolon
-macro_line|#ifndef NCR5380_proc_info
 r_static
-macro_line|#endif
 DECL|function|NCR5380_proc_info
 r_int
 id|NCR5380_proc_info

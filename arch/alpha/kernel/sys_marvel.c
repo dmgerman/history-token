@@ -24,14 +24,6 @@ macro_line|#include &quot;machvec_impl.h&quot;
 macro_line|#if NR_IRQS &lt; MARVEL_NR_IRQS
 macro_line|# error NR_IRQS &lt; MARVEL_NR_IRQS !!!
 macro_line|#endif
-multiline_comment|/* ??? Should probably be generic.  */
-macro_line|#ifdef CONFIG_PCI_NAMES
-DECL|macro|pci_pretty_name
-mdefine_line|#define pci_pretty_name(x) ((x)-&gt;pretty_name)
-macro_line|#else
-DECL|macro|pci_pretty_name
-mdefine_line|#define pci_pretty_name(x) &quot;&quot;
-macro_line|#endif
 "&f;"
 multiline_comment|/*&n; * Interrupt handling.&n; */
 r_static

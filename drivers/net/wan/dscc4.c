@@ -43,6 +43,23 @@ r_static
 r_int
 id|quartz
 suffix:semicolon
+macro_line|#ifdef CONFIG_DSCC4_PCI_RST
+r_static
+id|DECLARE_MUTEX
+c_func
+(paren
+id|dscc4_sem
+)paren
+suffix:semicolon
+DECL|variable|dscc4_pci_config_store
+r_static
+id|u32
+id|dscc4_pci_config_store
+(braket
+l_int|16
+)braket
+suffix:semicolon
+macro_line|#endif
 DECL|macro|DRV_NAME
 mdefine_line|#define&t;DRV_NAME&t;&quot;dscc4&quot;
 DECL|macro|DSCC4_POLLING
@@ -200,7 +217,7 @@ mdefine_line|#define TO_STATE_TX(len)&t;cpu_to_le32(((len) &amp; TxSizeMax) &lt;
 DECL|macro|TO_STATE_RX
 mdefine_line|#define TO_STATE_RX(len)&t;cpu_to_le32((RX_MAX(len) % RxSizeMax) &lt;&lt; 16)
 DECL|macro|RX_MAX
-mdefine_line|#define RX_MAX(len)&t;&t;((((len) &gt;&gt; 5) + 1) &lt;&lt; 5)
+mdefine_line|#define RX_MAX(len)&t;&t;((((len) &gt;&gt; 5) + 1) &lt;&lt; 5)&t;/* Cf RLCR */
 DECL|macro|SCC_REG_START
 mdefine_line|#define SCC_REG_START(dpriv)&t;(SCC_START+(dpriv-&gt;dev_id)*SCC_OFFSET)
 DECL|struct|dscc4_pci_priv
@@ -469,6 +486,12 @@ DECL|macro|IMR
 mdefine_line|#define IMR     0x54
 DECL|macro|ISR
 mdefine_line|#define ISR     0x58
+DECL|macro|GPDIR
+mdefine_line|#define GPDIR&t;0x0400
+DECL|macro|GPDATA
+mdefine_line|#define GPDATA&t;0x0404
+DECL|macro|GPIM
+mdefine_line|#define GPIM&t;0x0408
 multiline_comment|/* Bit masks */
 DECL|macro|EncodingMask
 mdefine_line|#define EncodingMask&t;0x00700000
@@ -518,6 +541,8 @@ DECL|macro|SccBusy
 mdefine_line|#define SccBusy&t;&t;0x10000000
 DECL|macro|PowerUp
 mdefine_line|#define PowerUp&t;&t;0x80000000
+DECL|macro|Vis
+mdefine_line|#define Vis&t;&t;0x00001000
 DECL|macro|FrameOk
 mdefine_line|#define FrameOk&t;&t;(FrameVfr | FrameCrc)
 DECL|macro|FrameVfr
@@ -582,13 +607,25 @@ DECL|macro|Arf
 mdefine_line|#define Arf&t;&t;0x00000002
 DECL|macro|ArAck
 mdefine_line|#define ArAck&t;&t;0x00000001
-multiline_comment|/* Misc */
+multiline_comment|/* State flags */
+DECL|macro|Ready
+mdefine_line|#define Ready&t;&t;0x00000000
 DECL|macro|NeedIDR
 mdefine_line|#define NeedIDR&t;&t;0x00000001
 DECL|macro|NeedIDT
 mdefine_line|#define NeedIDT&t;&t;0x00000002
 DECL|macro|RdoSet
 mdefine_line|#define RdoSet&t;&t;0x00000004
+DECL|macro|FakeReset
+mdefine_line|#define FakeReset&t;0x00000008
+multiline_comment|/* Don&squot;t mask RDO. Ever. */
+macro_line|#ifdef DSCC4_POLLING
+DECL|macro|EventsMask
+mdefine_line|#define EventsMask&t;0xfffeef7f
+macro_line|#else
+DECL|macro|EventsMask
+mdefine_line|#define EventsMask&t;0xfffa8f7a
+macro_line|#endif
 multiline_comment|/* Functions prototypes */
 r_static
 r_inline
@@ -2030,7 +2067,6 @@ op_minus
 id|EAGAIN
 suffix:semicolon
 )brace
-multiline_comment|/* Requires protection against interrupt */
 DECL|function|dscc4_rx_reset
 r_static
 r_void
@@ -2048,6 +2084,19 @@ op_star
 id|dev
 )paren
 (brace
+r_int
+r_int
+id|flags
+suffix:semicolon
+id|spin_lock_irqsave
+c_func
+(paren
+op_amp
+id|dpriv-&gt;pci_priv-&gt;lock
+comma
+id|flags
+)paren
+suffix:semicolon
 multiline_comment|/* Cf errata DS5 p.6 */
 id|writel
 c_func
@@ -2063,19 +2112,12 @@ op_star
 l_int|4
 )paren
 suffix:semicolon
-id|scc_writel
+id|scc_patchl
 c_func
 (paren
-op_complement
 id|PowerUp
-op_amp
-id|scc_readl
-c_func
-(paren
-id|dpriv
 comma
-id|CCR0
-)paren
+l_int|0
 comma
 id|dpriv
 comma
@@ -2122,6 +2164,15 @@ op_plus
 id|GCMDR
 )paren
 suffix:semicolon
+id|spin_unlock_irqrestore
+c_func
+(paren
+op_amp
+id|dpriv-&gt;pci_priv-&gt;lock
+comma
+id|flags
+)paren
+suffix:semicolon
 )brace
 DECL|function|dscc4_tx_reset
 r_static
@@ -2146,19 +2197,12 @@ op_assign
 l_int|0
 suffix:semicolon
 multiline_comment|/* Cf errata DS5 p.7 */
-id|scc_writel
+id|scc_patchl
 c_func
 (paren
-op_complement
 id|PowerUp
-op_amp
-id|scc_readl
-c_func
-(paren
-id|dpriv
 comma
-id|CCR0
-)paren
+l_int|0
 comma
 id|dpriv
 comma
@@ -3444,10 +3488,11 @@ op_star
 id|dev
 )paren
 (brace
+multiline_comment|/* No interrupts, SCC core disabled. Let&squot;s relax */
 id|scc_writel
 c_func
 (paren
-l_int|0x80001000
+l_int|0x00000000
 comma
 id|dpriv
 comma
@@ -3474,11 +3519,11 @@ comma
 id|RLCR
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * No address recognition/crc-CCITT/cts enabled&n;&t; * Shared flags transmission disabled - cf errata DS5 p.11&n;&t; * Carrier detect disabled - cf errata p.14&n;&t; */
+multiline_comment|/*&n;&t; * No address recognition/crc-CCITT/cts enabled&n;&t; * Shared flags transmission disabled - cf errata DS5 p.11&n;&t; * Carrier detect disabled - cf errata p.14&n;&t; * FIXME: carrier detection/polarity may be handled more gracefully.&n;&t; */
 id|scc_writel
 c_func
 (paren
-l_int|0x021c8000
+l_int|0x02408000
 comma
 id|dpriv
 comma
@@ -3505,38 +3550,6 @@ id|CCR2
 suffix:semicolon
 singleline_comment|// crc forwarded
 singleline_comment|//scc_writel(0x00250008 &amp; ~RxActivate, dpriv, dev, CCR2);
-multiline_comment|/* Don&squot;t mask RDO. Ever. */
-macro_line|#ifdef DSCC4_POLLING
-id|scc_writel
-c_func
-(paren
-l_int|0xfffeef7f
-comma
-id|dpriv
-comma
-id|dev
-comma
-id|IMR
-)paren
-suffix:semicolon
-multiline_comment|/* Interrupt mask */
-macro_line|#else
-singleline_comment|//scc_writel(0xfffaef7f, dpriv, dev, IMR); /* Interrupt mask */
-singleline_comment|//scc_writel(0xfffaef7e, dpriv, dev, IMR); /* Interrupt mask */
-id|scc_writel
-c_func
-(paren
-l_int|0xfffa8f7a
-comma
-id|dpriv
-comma
-id|dev
-comma
-id|IMR
-)paren
-suffix:semicolon
-multiline_comment|/* Interrupt mask */
-macro_line|#endif
 )brace
 DECL|function|dscc4_found1
 r_static
@@ -3834,6 +3847,26 @@ id|dpriv-&gt;encoding
 op_assign
 id|ENCODING_NRZ
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|dscc4_init_ring
+c_func
+(paren
+id|d
+)paren
+)paren
+(brace
+id|unregister_hdlc_device
+c_func
+(paren
+id|hdlc
+)paren
+suffix:semicolon
+r_goto
+id|err_unregister
+suffix:semicolon
+)brace
 )brace
 r_if
 c_cond
@@ -3883,6 +3916,15 @@ id|i
 op_ge
 l_int|0
 )paren
+(brace
+id|dscc4_release_ring
+c_func
+(paren
+id|root
+op_plus
+id|i
+)paren
+suffix:semicolon
 id|unregister_hdlc_device
 c_func
 (paren
@@ -3895,6 +3937,7 @@ dot
 id|hdlc
 )paren
 suffix:semicolon
+)brace
 id|kfree
 c_func
 (paren
@@ -4047,6 +4090,176 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+macro_line|#ifdef CONFIG_DSCC4_PCI_RST
+multiline_comment|/*&n; * Some DSCC4-based cards wires the GPIO port and the PCI #RST pin together&n; * so as to provide a safe way to reset the asic while not the whole machine&n; * rebooting.&n; *&n; * This code doesn&squot;t need to be efficient. Keep It Simple&n; */
+DECL|function|dscc4_pci_reset
+r_static
+r_void
+id|dscc4_pci_reset
+c_func
+(paren
+r_struct
+id|pci_dev
+op_star
+id|pdev
+comma
+id|u32
+id|ioaddr
+)paren
+(brace
+r_int
+id|i
+suffix:semicolon
+id|down
+c_func
+(paren
+op_amp
+id|dscc4_sem
+)paren
+suffix:semicolon
+r_for
+c_loop
+(paren
+id|i
+op_assign
+l_int|0
+suffix:semicolon
+id|i
+OL
+l_int|16
+suffix:semicolon
+id|i
+op_increment
+)paren
+id|pci_read_config_dword
+c_func
+(paren
+id|pdev
+comma
+id|i
+op_lshift
+l_int|2
+comma
+id|dscc4_pci_config_store
+op_plus
+id|i
+)paren
+suffix:semicolon
+multiline_comment|/* Maximal LBI clock divider (who cares ?) and whole GPIO range. */
+id|writel
+c_func
+(paren
+l_int|0x001c0000
+comma
+id|ioaddr
+op_plus
+id|GMODE
+)paren
+suffix:semicolon
+multiline_comment|/* Configure GPIO port as output */
+id|writel
+c_func
+(paren
+l_int|0x0000ffff
+comma
+id|ioaddr
+op_plus
+id|GPDIR
+)paren
+suffix:semicolon
+multiline_comment|/* Disable interruption */
+id|writel
+c_func
+(paren
+l_int|0x0000ffff
+comma
+id|ioaddr
+op_plus
+id|GPIM
+)paren
+suffix:semicolon
+id|writel
+c_func
+(paren
+l_int|0x0000ffff
+comma
+id|ioaddr
+op_plus
+id|GPDATA
+)paren
+suffix:semicolon
+id|writel
+c_func
+(paren
+l_int|0x00000000
+comma
+id|ioaddr
+op_plus
+id|GPDATA
+)paren
+suffix:semicolon
+multiline_comment|/* Flush posted writes */
+id|readl
+c_func
+(paren
+id|ioaddr
+op_plus
+id|GSTAR
+)paren
+suffix:semicolon
+id|set_current_state
+c_func
+(paren
+id|TASK_UNINTERRUPTIBLE
+)paren
+suffix:semicolon
+id|schedule_timeout
+c_func
+(paren
+l_int|10
+)paren
+suffix:semicolon
+r_for
+c_loop
+(paren
+id|i
+op_assign
+l_int|0
+suffix:semicolon
+id|i
+OL
+l_int|16
+suffix:semicolon
+id|i
+op_increment
+)paren
+id|pci_write_config_dword
+c_func
+(paren
+id|pdev
+comma
+id|i
+op_lshift
+l_int|2
+comma
+id|dscc4_pci_config_store
+(braket
+id|i
+)braket
+)paren
+suffix:semicolon
+id|up
+c_func
+(paren
+op_amp
+id|dscc4_sem
+)paren
+suffix:semicolon
+)brace
+macro_line|#else
+DECL|macro|dscc4_pci_reset
+mdefine_line|#define dscc4_pci_reset(pdev,ioaddr)&t;do {} while (0)
+macro_line|#endif /* CONFIG_DSCC4_PCI_RST */
 DECL|function|dscc4_open
 r_static
 r_int
@@ -4127,28 +4340,95 @@ id|ppriv
 op_assign
 id|dpriv-&gt;pci_priv
 suffix:semicolon
+multiline_comment|/*&n;&t; * Due to various bugs, there is no way to reliably reset a&n;&t; * specific port (manufacturer&squot;s dependant special PCI #RST wiring&n;&t; * apart: it affects all ports). Thus the device goes in the best&n;&t; * silent mode possible at dscc4_close() time and simply claims to&n;&t; * be up if it&squot;s opened again. It still isn&squot;t possible to change&n;&t; * the HDLC configuration without rebooting but at least the ports&n;&t; * can be up/down ifconfig&squot;ed without killing the host.&n;&t; */
 r_if
 c_cond
 (paren
-(paren
-id|ret
-op_assign
-id|dscc4_init_ring
+id|dpriv-&gt;flags
+op_amp
+id|FakeReset
+)paren
+(brace
+id|dpriv-&gt;flags
+op_and_assign
+op_complement
+id|FakeReset
+suffix:semicolon
+id|scc_patchl
 c_func
 (paren
+l_int|0
+comma
+id|PowerUp
+comma
+id|dpriv
+comma
 id|dev
+comma
+id|CCR0
 )paren
-)paren
-)paren
-r_goto
-id|err_out
 suffix:semicolon
+id|scc_patchl
+c_func
+(paren
+l_int|0
+comma
+l_int|0x00050000
+comma
+id|dpriv
+comma
+id|dev
+comma
+id|CCR2
+)paren
+suffix:semicolon
+id|scc_writel
+c_func
+(paren
+id|EventsMask
+comma
+id|dpriv
+comma
+id|dev
+comma
+id|IMR
+)paren
+suffix:semicolon
+id|printk
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;%s: up again.&bslash;n&quot;
+comma
+id|dev-&gt;name
+)paren
+suffix:semicolon
+r_goto
+id|done
+suffix:semicolon
+)brace
 multiline_comment|/* IDT+IDR during XPR */
 id|dpriv-&gt;flags
 op_assign
 id|NeedIDR
 op_or
 id|NeedIDT
+suffix:semicolon
+id|scc_patchl
+c_func
+(paren
+l_int|0
+comma
+id|PowerUp
+op_or
+id|Vis
+comma
+id|dpriv
+comma
+id|dev
+comma
+id|CCR0
+)paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * The following is a bit paranoid...&n;&t; *&n;&t; * NB: the datasheet &quot;...CEC will stay active if the SCC is in&n;&t; * power-down mode or...&quot; and CCR2.RAC = 1 are two different&n;&t; * situations.&n;&t; */
 r_if
@@ -4180,7 +4460,7 @@ op_minus
 id|EAGAIN
 suffix:semicolon
 r_goto
-id|err_free_ring
+id|err_out
 suffix:semicolon
 )brace
 r_else
@@ -4191,6 +4471,18 @@ id|KERN_INFO
 l_string|&quot;%s: available. Good&bslash;n&quot;
 comma
 id|dev-&gt;name
+)paren
+suffix:semicolon
+id|scc_writel
+c_func
+(paren
+id|EventsMask
+comma
+id|dpriv
+comma
+id|dev
+comma
+id|IMR
 )paren
 suffix:semicolon
 multiline_comment|/* Posted write is flushed in the wait_ack loop */
@@ -4228,7 +4520,7 @@ OL
 l_int|0
 )paren
 r_goto
-id|err_free_ring
+id|err_disable_scc_events
 suffix:semicolon
 multiline_comment|/*&n;&t; * I would expect XPR near CE completion (before ? after ?).&n;&t; * At worst, this code won&squot;t see a late XPR and people&n;&t; * will have to re-issue an ifconfig (this is harmless).&n;&t; * WARNING, a really missing XPR usually means a hardware&n;&t; * reset is needed. Suggestions anyone ?&n;&t; */
 r_if
@@ -4259,7 +4551,7 @@ l_string|&quot;XPR&quot;
 )paren
 suffix:semicolon
 r_goto
-id|err_free_ring
+id|err_disable_scc_events
 suffix:semicolon
 )brace
 r_if
@@ -4279,6 +4571,8 @@ comma
 l_string|&quot;Open&quot;
 )paren
 suffix:semicolon
+id|done
+suffix:colon
 id|netif_start_queue
 c_func
 (paren
@@ -4329,8 +4623,38 @@ suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
+id|err_disable_scc_events
+suffix:colon
+id|scc_writel
+c_func
+(paren
+l_int|0xffffffff
+comma
+id|dpriv
+comma
+id|dev
+comma
+id|IMR
+)paren
+suffix:semicolon
 id|err_free_ring
 suffix:colon
+id|scc_patchl
+c_func
+(paren
+id|PowerUp
+op_or
+id|Vis
+comma
+l_int|0
+comma
+id|dpriv
+comma
+id|dev
+comma
+id|CCR0
+)paren
+suffix:semicolon
 id|dscc4_release_ring
 c_func
 (paren
@@ -4598,10 +4922,6 @@ c_func
 id|dev
 )paren
 suffix:semicolon
-r_int
-r_int
-id|flags
-suffix:semicolon
 id|del_timer_sync
 c_func
 (paren
@@ -4615,39 +4935,51 @@ c_func
 id|dev
 )paren
 suffix:semicolon
-id|spin_lock_irqsave
+id|scc_patchl
 c_func
 (paren
-op_amp
-id|dpriv-&gt;pci_priv-&gt;lock
+id|PowerUp
+op_or
+id|Vis
 comma
-id|flags
-)paren
-suffix:semicolon
-id|dscc4_rx_reset
-c_func
-(paren
+l_int|0
+comma
 id|dpriv
 comma
 id|dev
-)paren
-suffix:semicolon
-id|spin_unlock_irqrestore
-c_func
-(paren
-op_amp
-id|dpriv-&gt;pci_priv-&gt;lock
 comma
-id|flags
+id|CCR0
 )paren
 suffix:semicolon
-id|dscc4_tx_reset
+id|scc_patchl
 c_func
 (paren
+l_int|0x00050000
+comma
+l_int|0
+comma
 id|dpriv
 comma
 id|dev
+comma
+id|CCR2
 )paren
+suffix:semicolon
+id|scc_writel
+c_func
+(paren
+l_int|0xffffffff
+comma
+id|dpriv
+comma
+id|dev
+comma
+id|IMR
+)paren
+suffix:semicolon
+id|dpriv-&gt;flags
+op_or_assign
+id|FakeReset
 suffix:semicolon
 id|hdlc_close
 c_func
@@ -4660,8 +4992,6 @@ c_func
 (paren
 id|dpriv
 )paren
-suffix:semicolon
-id|MOD_DEC_USE_COUNT
 suffix:semicolon
 r_return
 l_int|0
@@ -4683,7 +5013,7 @@ id|ret
 op_assign
 l_int|0
 suffix:semicolon
-macro_line|#ifdef CONFIG_DSCC4_CLOCK_ON_TWO_PORTS_ONLY
+macro_line|#ifdef CONFIG_DSCC4_PCISYNC
 r_if
 c_cond
 (paren
@@ -4701,6 +5031,7 @@ r_return
 id|ret
 suffix:semicolon
 )brace
+multiline_comment|/*&n; * DS1 p.137: &quot;There are a total of 13 different clocking modes...&quot;&n; *                                  ^^&n; * Design choices:&n; * - by default, assume a clock is provided on pin RxClk/TxClk (clock mode 0a).&n; *   Clock mode 3b _should_ work but the testing seems to make this point&n; *   dubious (DIY testing requires setting CCR0 at 0x00000033).&n; *   This is supposed to provide least surprise &quot;DTE like&quot; behavior.&n; * - if line rate is specified, clocks are assumed to be locally generated.&n; *   A quartz must be available (on pin XTAL1). Modes 6b/7b are used. Choosing&n; *   between these it automagically done according on the required frequency&n; *   scaling. Of course some rounding may take place.&n; * - no high speed mode (40Mb/s). May be trivial to do but I don&squot;t have an&n; *   appropriate external clocking device for testing.&n; * - no time-slot/clock mode 5: shameless lazyness.&n; *&n; * The clock signals wiring can be (is ?) manufacturer dependant. Good luck.&n; *&n; * BIG FAT WARNING: if the device isn&squot;t provided enough clocking signal, it&n; * won&squot;t pass the init sequence. For example, straight back-to-back DTE without&n; * external clock will fail when dscc4_open() (&lt;- &squot;ifconfig hdlcx xxx&squot;) is&n; * called.&n; *&n; * Typos lurk in datasheet (missing divier in clock mode 7a figure 51 p.153&n; * DS0 for example)&n; *&n; * Clock mode related bits of CCR0:&n; *     +------------ TOE: output TxClk (0b/2b/3a/3b/6b/7a/7b only)&n; *     | +---------- SSEL: sub-mode select 0 -&gt; a, 1 -&gt; b&n; *     | | +-------- High Speed: say 0&n; *     | | | +-+-+-- Clock Mode: 0..7&n; *     | | | | | |&n; * -+-+-+-+-+-+-+-+&n; * x|x|5|4|3|2|1|0| lower bits&n; *&n; * Division factor of BRR: k = (N+1)x2^M (total divider = 16xk in mode 6b)&n; *            +-+-+-+------------------ M (0..15)&n; *            | | | |     +-+-+-+-+-+-- N (0..63)&n; *    0 0 0 0 | | | | 0 0 | | | | | |&n; * ...-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+&n; *    f|e|d|c|b|a|9|8|7|6|5|4|3|2|1|0| lower bits&n; *&n; */
 DECL|function|dscc4_set_clock
 r_static
 r_int
@@ -4906,7 +5237,7 @@ op_amp
 l_int|0x00000001
 )paren
 )paren
-multiline_comment|/* Clock mode 6b */
+multiline_comment|/* ?b mode mask =&gt; clock mode 6b */
 id|divider
 op_lshift_assign
 l_int|4
@@ -4921,7 +5252,7 @@ suffix:semicolon
 )brace
 r_else
 (brace
-multiline_comment|/*&n;&t;&t; * External clock - DTE&n;&t;&t; * &quot;state&quot; already reflects Clock mode 0a.&n;&t;&t; * Nothing more to be done&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * External clock - DTE&n;&t;&t; * &quot;state&quot; already reflects Clock mode 0a (CCR0 = 0xzzzzzz00).&n;&t;&t; * Nothing more to be done&n;&t;&t; */
 id|brr
 op_assign
 l_int|0
@@ -5090,6 +5421,29 @@ r_return
 op_minus
 id|EPERM
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|dpriv-&gt;flags
+op_amp
+id|FakeReset
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;%s: please reset the device&quot;
+l_string|&quot; before this command&bslash;n&quot;
+comma
+id|dev-&gt;name
+)paren
+suffix:semicolon
+r_return
+op_minus
+id|EPERM
+suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
@@ -5383,8 +5737,10 @@ r_else
 (brace
 multiline_comment|/* DTE */
 id|state
-op_assign
-l_int|0x80001000
+op_or_assign
+id|PowerUp
+op_or
+id|Vis
 suffix:semicolon
 id|printk
 c_func
@@ -5936,6 +6292,24 @@ r_goto
 id|out
 suffix:semicolon
 )brace
+r_if
+c_cond
+(paren
+id|debug
+OG
+l_int|3
+)paren
+id|printk
+c_func
+(paren
+id|KERN_DEBUG
+l_string|&quot;%s: GSTAR = 0x%08x&bslash;n&quot;
+comma
+id|DRV_NAME
+comma
+id|state
+)paren
+suffix:semicolon
 id|writel
 c_func
 (paren
@@ -6200,6 +6574,24 @@ op_logical_neg
 id|state
 )paren
 (brace
+r_if
+c_cond
+(paren
+id|debug
+OG
+l_int|4
+)paren
+id|printk
+c_func
+(paren
+id|KERN_DEBUG
+l_string|&quot;%s: Tx ISR = 0x%08x&bslash;n&quot;
+comma
+id|dev-&gt;name
+comma
+id|state
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -6636,8 +7028,28 @@ id|scc_addr
 comma
 id|ring
 suffix:semicolon
+r_int
+id|i
+suffix:semicolon
+multiline_comment|/*&n;&t;&t;&t; * - the busy condition happens (sometimes);&n;&t;&t;&t; * - it doesn&squot;t seem to make the handler unreliable.&n;&t;&t;&t; */
+r_for
+c_loop
+(paren
+id|i
+op_assign
+l_int|1
+suffix:semicolon
+id|i
+suffix:semicolon
+id|i
+op_lshift_assign
+l_int|1
+)paren
+(brace
 r_if
 c_cond
+(paren
+op_logical_neg
 (paren
 id|scc_readl_star
 c_func
@@ -6649,11 +7061,21 @@ id|dev
 op_amp
 id|SccBusy
 )paren
+)paren
+r_break
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+op_logical_neg
+id|i
+)paren
 id|printk
 c_func
 (paren
-id|KERN_ERR
-l_string|&quot;%s busy. Fatal&bslash;n&quot;
+id|KERN_INFO
+l_string|&quot;%s busy in irq&bslash;n&quot;
 comma
 id|dev-&gt;name
 )paren
@@ -6879,6 +7301,13 @@ op_amp
 id|Cd
 )paren
 (brace
+r_if
+c_cond
+(paren
+id|debug
+OG
+l_int|0
+)paren
 id|printk
 c_func
 (paren
@@ -7086,6 +7515,24 @@ r_struct
 id|RxFD
 op_star
 id|rx_fd
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|debug
+OG
+l_int|4
+)paren
+id|printk
+c_func
+(paren
+id|KERN_DEBUG
+l_string|&quot;%s: Rx ISR = 0x%08x&bslash;n&quot;
+comma
+id|dev-&gt;name
+comma
+id|state
+)paren
 suffix:semicolon
 id|state
 op_and_assign
@@ -8269,6 +8716,14 @@ id|root-&gt;hdlc
 op_member_access_from_pointer
 id|base_addr
 suffix:semicolon
+id|dscc4_pci_reset
+c_func
+(paren
+id|pdev
+comma
+id|ioaddr
+)paren
+suffix:semicolon
 id|free_irq
 c_func
 (paren
@@ -8317,6 +8772,12 @@ op_assign
 id|root
 op_plus
 id|i
+suffix:semicolon
+id|dscc4_release_ring
+c_func
+(paren
+id|dpriv
+)paren
 suffix:semicolon
 id|pci_free_consistent
 c_func

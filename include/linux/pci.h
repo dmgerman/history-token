@@ -744,11 +744,15 @@ l_int|1
 suffix:semicolon
 multiline_comment|/* Part of multi-function device */
 macro_line|#ifdef CONFIG_PCI_NAMES
+DECL|macro|PCI_NAME_SIZE
+mdefine_line|#define PCI_NAME_SIZE&t;50
+DECL|macro|PCI_NAME_HALF
+mdefine_line|#define PCI_NAME_HALF&t;__stringify(20)&t;/* less than half to handle slop */
 DECL|member|pretty_name
 r_char
 id|pretty_name
 (braket
-id|DEVICE_NAME_SIZE
+id|PCI_NAME_SIZE
 )braket
 suffix:semicolon
 multiline_comment|/* pretty name for users to see */
@@ -1200,6 +1204,12 @@ suffix:semicolon
 suffix:semicolon
 DECL|macro|to_pci_driver
 mdefine_line|#define&t;to_pci_driver(drv) container_of(drv,struct pci_driver, driver)
+multiline_comment|/**&n; * PCI_DEVICE - macro used to describe a specific pci device&n; * @vend: the 16 bit PCI Vendor ID&n; * @dev: the 16 bit PCI Device ID&n; *&n; * This macro is used to create a struct pci_device_id that matches a&n; * specific device.  The subvendor and subdevice fields will be set to&n; * PCI_ANY_ID.&n; */
+DECL|macro|PCI_DEVICE
+mdefine_line|#define PCI_DEVICE(vend,dev) &bslash;&n;&t;.vendor = (vend), .device = (dev), &bslash;&n;&t;.subvendor = PCI_ANY_ID, .subdevice = PCI_ANY_ID
+multiline_comment|/**&n; * PCI_DEVICE_CLASS - macro used to describe a specific pci device class&n; * @dev_class: the class, subclass, prog-if triple for this device&n; * @dev_class_mask: the class mask for this device&n; *&n; * This macro is used to create a struct pci_device_id that matches a&n; * specific PCI class.  The vendor, device, subvendor, and subdevice &n; * fields will be set to PCI_ANY_ID.&n; */
+DECL|macro|PCI_DEVICE_CLASS
+mdefine_line|#define PCI_DEVICE_CLASS(dev_class,dev_class_mask) &bslash;&n;&t;.class = (dev_class), .class_mask = (dev_class_mask), &bslash;&n;&t;.vendor = PCI_ANY_ID, .device = PCI_ANY_ID, &bslash;&n;&t;.subvendor = PCI_ANY_ID, .subdevice = PCI_ANY_ID
 multiline_comment|/* these external functions are only available when PCI support is enabled */
 macro_line|#ifdef CONFIG_PCI
 r_extern
@@ -3125,6 +3135,14 @@ r_return
 id|pdev-&gt;dev.bus_id
 suffix:semicolon
 )brace
+multiline_comment|/* Some archs want to see the pretty pci name, so use this macro */
+macro_line|#ifdef CONFIG_PCI_NAMES
+DECL|macro|pci_pretty_name
+mdefine_line|#define pci_pretty_name(dev) ((dev)-&gt;pretty_name)
+macro_line|#else
+DECL|macro|pci_pretty_name
+mdefine_line|#define pci_pretty_name(dev) &quot;&quot;
+macro_line|#endif
 multiline_comment|/*&n; *  The world is not perfect and supplies us with broken PCI devices.&n; *  For at least a part of these bugs we need a work-around, so both&n; *  generic (drivers/pci/quirks.c) and per-architecture code can define&n; *  fixup hooks to be called for particular buggy devices.&n; */
 DECL|struct|pci_fixup
 r_struct

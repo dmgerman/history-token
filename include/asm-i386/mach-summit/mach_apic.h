@@ -270,6 +270,16 @@ r_int
 id|cpu
 )paren
 (brace
+r_if
+c_cond
+(paren
+id|cpu
+op_ge
+id|NR_CPUS
+)paren
+r_return
+id|BAD_APICID
+suffix:semicolon
 r_return
 (paren
 r_int

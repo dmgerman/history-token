@@ -893,6 +893,12 @@ op_ne
 id|CRAMFS_MAGIC
 )paren
 (brace
+r_if
+c_cond
+(paren
+op_logical_neg
+id|silent
+)paren
 id|printk
 c_func
 (paren
