@@ -168,7 +168,7 @@ suffix:semicolon
 DECL|macro|__HIGH
 mdefine_line|#define __HIGH(l, r) if (*(l) &lt; (r)) *(l) = (r)
 DECL|macro|__LOW
-mdefine_line|#define __LOW(l, r) if (*(l) &lt; (r)) *(l) = (r)
+mdefine_line|#define __LOW(l, r) if (*(l) == 0 || *(l) &gt; (r)) *(l) = (r)
 multiline_comment|/*&n; * Combine two io_restrictions, always taking the lower value.&n; */
 DECL|function|combine_restrictions_low
 r_static
@@ -2416,8 +2416,9 @@ id|tgt-&gt;error
 op_assign
 l_string|&quot;unknown target type&quot;
 suffix:semicolon
-r_goto
-id|bad
+r_return
+op_minus
+id|EINVAL
 suffix:semicolon
 )brace
 id|tgt-&gt;table
@@ -2453,6 +2454,11 @@ id|tgt
 id|tgt-&gt;error
 op_assign
 l_string|&quot;Gap in table&quot;
+suffix:semicolon
+id|r
+op_assign
+op_minus
+id|EINVAL
 suffix:semicolon
 r_goto
 id|bad

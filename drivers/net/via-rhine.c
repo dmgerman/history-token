@@ -473,6 +473,9 @@ macro_line|#else
 DECL|macro|RHINE_IOTYPE
 mdefine_line|#define RHINE_IOTYPE (PCI_USES_IO  | PCI_USES_MASTER | PCI_ADDR0)
 macro_line|#endif
+multiline_comment|/* Beware of PCI posted writes */
+DECL|macro|IOSYNC
+mdefine_line|#define IOSYNC&t;do { readb(dev-&gt;base_addr + StationAddr); } while (0)
 multiline_comment|/* directly indexed by enum via_rhine_chips, above */
 DECL|variable|__devinitdata
 r_static
@@ -756,12 +759,16 @@ op_assign
 l_int|0x81
 comma
 DECL|enumerator|StickyHW
+DECL|enumerator|IntrStatus2
 DECL|enumerator|WOLcrClr
 DECL|enumerator|WOLcgClr
-DECL|enumerator|PwrcsrClr
 id|StickyHW
 op_assign
 l_int|0x83
+comma
+id|IntrStatus2
+op_assign
+l_int|0x84
 comma
 id|WOLcrClr
 op_assign
@@ -771,6 +778,7 @@ id|WOLcgClr
 op_assign
 l_int|0xA7
 comma
+DECL|enumerator|PwrcsrClr
 id|PwrcsrClr
 op_assign
 l_int|0xAC
@@ -919,6 +927,17 @@ comma
 id|IntrAbnormalSummary
 op_assign
 l_int|0xC260
+comma
+DECL|enumerator|IntrTxDescRace
+id|IntrTxDescRace
+op_assign
+l_int|0x080000
+comma
+multiline_comment|/* mapped from IntrStatus2 */
+DECL|enumerator|IntrTxErrSummary
+id|IntrTxErrSummary
+op_assign
+l_int|0x082210
 comma
 )brace
 suffix:semicolon
@@ -1462,6 +1481,68 @@ op_star
 id|dev
 )paren
 suffix:semicolon
+DECL|function|get_intr_status
+r_static
+r_inline
+id|u32
+id|get_intr_status
+c_func
+(paren
+r_struct
+id|net_device
+op_star
+id|dev
+)paren
+(brace
+r_int
+id|ioaddr
+op_assign
+id|dev-&gt;base_addr
+suffix:semicolon
+r_struct
+id|netdev_private
+op_star
+id|np
+op_assign
+id|dev-&gt;priv
+suffix:semicolon
+id|u32
+id|intr_status
+suffix:semicolon
+id|intr_status
+op_assign
+id|readw
+c_func
+(paren
+id|ioaddr
+op_plus
+id|IntrStatus
+)paren
+suffix:semicolon
+multiline_comment|/* On Rhine-II, Bit 3 indicates Tx descriptor write-back race. */
+r_if
+c_cond
+(paren
+id|np-&gt;chip_id
+op_eq
+id|VT6102
+)paren
+id|intr_status
+op_or_assign
+id|readb
+c_func
+(paren
+id|ioaddr
+op_plus
+id|IntrStatus2
+)paren
+op_lshift
+l_int|16
+suffix:semicolon
+r_return
+id|intr_status
+suffix:semicolon
+)brace
 DECL|function|wait_for_reset
 r_static
 r_void
@@ -1486,11 +1567,12 @@ id|ioaddr
 op_assign
 id|dev-&gt;base_addr
 suffix:semicolon
-id|udelay
-c_func
-(paren
-l_int|5
-)paren
+r_int
+id|boguscnt
+op_assign
+l_int|20
+suffix:semicolon
+id|IOSYNC
 suffix:semicolon
 r_if
 c_cond
@@ -1510,7 +1592,7 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;%s: Reset did not complete in 5 us. &quot;
+l_string|&quot;%s: Reset not complete yet. &quot;
 l_string|&quot;Trying harder.&bslash;n&quot;
 comma
 id|name
@@ -1536,10 +1618,29 @@ id|MiscCmd
 suffix:semicolon
 multiline_comment|/* VT86C100A may need long delay after reset (dlink) */
 multiline_comment|/* Seen on Rhine-II as well (rl) */
+r_while
+c_loop
+(paren
+(paren
+id|readw
+c_func
+(paren
+id|ioaddr
+op_plus
+id|ChipCmd
+)paren
+op_amp
+id|CmdReset
+)paren
+op_logical_and
+op_decrement
+id|boguscnt
+)paren
+suffix:semicolon
 id|udelay
 c_func
 (paren
-l_int|100
+l_int|5
 )paren
 suffix:semicolon
 )brace
@@ -1558,22 +1659,12 @@ l_string|&quot;%s: Reset %s.&bslash;n&quot;
 comma
 id|name
 comma
-(paren
-id|readw
-c_func
-(paren
-id|ioaddr
-op_plus
-id|ChipCmd
-)paren
-op_amp
-id|CmdReset
-)paren
+id|boguscnt
 ques
 c_cond
-l_string|&quot;failed&quot;
-suffix:colon
 l_string|&quot;succeeded&quot;
+suffix:colon
+l_string|&quot;failed&quot;
 )paren
 suffix:semicolon
 )brace
@@ -4993,6 +5084,9 @@ suffix:semicolon
 r_int
 id|entry
 suffix:semicolon
+id|u32
+id|intr_status
+suffix:semicolon
 multiline_comment|/* Caution: the write order is important here, set the field&n;&t;   with the &quot;ownership&quot; bits last. */
 multiline_comment|/* Calculate the next Tx descriptor entry. */
 id|entry
@@ -5237,7 +5331,27 @@ id|np-&gt;cur_tx
 op_increment
 suffix:semicolon
 multiline_comment|/* Non-x86 Todo: explicitly flush cache lines here. */
-multiline_comment|/* Wake the potentially-idle transmit channel. */
+multiline_comment|/*&n;&t; * Wake the potentially-idle transmit channel unless errors are&n;&t; * pending (the ISR must sort them out first).&n;&t; */
+id|intr_status
+op_assign
+id|get_intr_status
+c_func
+(paren
+id|dev
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+(paren
+id|intr_status
+op_amp
+id|IntrTxErrSummary
+)paren
+op_eq
+l_int|0
+)paren
+(brace
 id|writew
 c_func
 (paren
@@ -5249,6 +5363,9 @@ id|dev-&gt;base_addr
 op_plus
 id|ChipCmd
 )paren
+suffix:semicolon
+)brace
+id|IOSYNC
 suffix:semicolon
 r_if
 c_cond
@@ -5351,17 +5468,32 @@ c_loop
 (paren
 id|intr_status
 op_assign
-id|readw
+id|get_intr_status
 c_func
 (paren
-id|ioaddr
-op_plus
-id|IntrStatus
+id|dev
 )paren
 )paren
 )paren
 (brace
 multiline_comment|/* Acknowledge all of the current interrupt sources ASAP. */
+r_if
+c_cond
+(paren
+id|intr_status
+op_amp
+id|IntrTxDescRace
+)paren
+id|writeb
+c_func
+(paren
+l_int|0x08
+comma
+id|ioaddr
+op_plus
+id|IntrStatus2
+)paren
+suffix:semicolon
 id|writew
 c_func
 (paren
@@ -5374,6 +5506,8 @@ op_plus
 id|IntrStatus
 )paren
 suffix:semicolon
+id|IOSYNC
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -5385,7 +5519,7 @@ id|printk
 c_func
 (paren
 id|KERN_DEBUG
-l_string|&quot;%s: Interrupt, status %4.4x.&bslash;n&quot;
+l_string|&quot;%s: Interrupt, status %8.8x.&bslash;n&quot;
 comma
 id|dev-&gt;name
 comma
@@ -5423,21 +5557,78 @@ c_cond
 id|intr_status
 op_amp
 (paren
+id|IntrTxErrSummary
+op_or
 id|IntrTxDone
-op_or
-id|IntrTxError
-op_or
-id|IntrTxUnderrun
-op_or
-id|IntrTxAborted
 )paren
 )paren
+(brace
+r_if
+c_cond
+(paren
+id|intr_status
+op_amp
+id|IntrTxErrSummary
+)paren
+(brace
+r_int
+id|cnt
+op_assign
+l_int|20
+suffix:semicolon
+multiline_comment|/* Avoid scavenging before Tx engine turned off */
+r_while
+c_loop
+(paren
+(paren
+id|readw
+c_func
+(paren
+id|ioaddr
+op_plus
+id|ChipCmd
+)paren
+op_amp
+id|CmdTxOn
+)paren
+op_logical_and
+op_decrement
+id|cnt
+)paren
+id|udelay
+c_func
+(paren
+l_int|5
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|debug
+OG
+l_int|2
+op_logical_and
+op_logical_neg
+id|cnt
+)paren
+id|printk
+c_func
+(paren
+id|KERN_WARNING
+l_string|&quot;%s: via_rhine_interrupt() &quot;
+l_string|&quot;Tx engine still on.&bslash;n&quot;
+comma
+id|dev-&gt;name
+)paren
+suffix:semicolon
+)brace
 id|via_rhine_tx
 c_func
 (paren
 id|dev
 )paren
 suffix:semicolon
+)brace
 multiline_comment|/* Abnormal error summary/uncommon events handlers. */
 r_if
 c_cond
@@ -5456,6 +5647,8 @@ op_or
 id|IntrTxAborted
 op_or
 id|IntrTxUnderrun
+op_or
+id|IntrTxDescRace
 )paren
 )paren
 id|via_rhine_error
@@ -5480,7 +5673,7 @@ c_func
 (paren
 id|KERN_WARNING
 l_string|&quot;%s: Too much work at interrupt, &quot;
-l_string|&quot;status=0x%4.4x.&bslash;n&quot;
+l_string|&quot;status=%#8.8x.&bslash;n&quot;
 comma
 id|dev-&gt;name
 comma
@@ -5502,7 +5695,7 @@ id|printk
 c_func
 (paren
 id|KERN_DEBUG
-l_string|&quot;%s: exiting interrupt, status=%4.4x.&bslash;n&quot;
+l_string|&quot;%s: exiting interrupt, status=%8.8x.&bslash;n&quot;
 comma
 id|dev-&gt;name
 comma
@@ -6488,9 +6681,17 @@ multiline_comment|/* Pre-emptively restart Rx engine. */
 id|writew
 c_func
 (paren
-id|CmdRxDemand
+id|readw
+c_func
+(paren
+id|dev-&gt;base_addr
+op_plus
+id|ChipCmd
+)paren
 op_or
-id|np-&gt;chip_cmd
+id|CmdRxOn
+op_or
+id|CmdRxDemand
 comma
 id|dev-&gt;base_addr
 op_plus
@@ -6540,7 +6741,6 @@ suffix:semicolon
 )brace
 DECL|function|via_rhine_restart_tx
 r_static
-r_inline
 r_void
 id|via_rhine_restart_tx
 c_func
@@ -6559,13 +6759,42 @@ op_assign
 id|dev-&gt;priv
 suffix:semicolon
 r_int
+id|ioaddr
+op_assign
+id|dev-&gt;base_addr
+suffix:semicolon
+r_int
 id|entry
 op_assign
 id|np-&gt;dirty_tx
 op_mod
 id|TX_RING_SIZE
 suffix:semicolon
-multiline_comment|/* We know better than the chip where it should continue */
+id|u32
+id|intr_status
+suffix:semicolon
+multiline_comment|/*&n;&t; * If new errors occured, we need to sort them out before doing Tx.&n;&t; * In that case the ISR will be back here RSN anyway.&n;&t; */
+id|intr_status
+op_assign
+id|get_intr_status
+c_func
+(paren
+id|dev
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+(paren
+id|intr_status
+op_amp
+id|IntrTxErrSummary
+)paren
+op_eq
+l_int|0
+)paren
+(brace
+multiline_comment|/* We know better than the chip where it should continue. */
 id|writel
 c_func
 (paren
@@ -6579,7 +6808,7 @@ r_struct
 id|tx_desc
 )paren
 comma
-id|dev-&gt;base_addr
+id|ioaddr
 op_plus
 id|TxRingPtr
 )paren
@@ -6591,11 +6820,37 @@ id|CmdTxDemand
 op_or
 id|np-&gt;chip_cmd
 comma
-id|dev-&gt;base_addr
+id|ioaddr
 op_plus
 id|ChipCmd
 )paren
 suffix:semicolon
+id|IOSYNC
+suffix:semicolon
+)brace
+r_else
+(brace
+multiline_comment|/* This should never happen */
+r_if
+c_cond
+(paren
+id|debug
+OG
+l_int|1
+)paren
+id|printk
+c_func
+(paren
+id|KERN_WARNING
+l_string|&quot;%s: via_rhine_restart_tx() &quot;
+l_string|&quot;Another error occured %8.8x.&bslash;n&quot;
+comma
+id|dev-&gt;name
+comma
+id|intr_status
+)paren
+suffix:semicolon
+)brace
 )brace
 DECL|function|via_rhine_error
 r_static
@@ -6781,17 +7036,11 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;%s: Abort %4.4x, frame dropped.&bslash;n&quot;
+l_string|&quot;%s: Abort %8.8x, frame dropped.&bslash;n&quot;
 comma
 id|dev-&gt;name
 comma
 id|intr_status
-)paren
-suffix:semicolon
-id|via_rhine_restart_tx
-c_func
-(paren
-id|dev
 )paren
 suffix:semicolon
 )brace
@@ -6841,13 +7090,51 @@ comma
 id|np-&gt;tx_thresh
 )paren
 suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+id|intr_status
+op_amp
+id|IntrTxDescRace
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|debug
+OG
+l_int|2
+)paren
+id|printk
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;%s: Tx descriptor write-back race.&bslash;n&quot;
+comma
+id|dev-&gt;name
+)paren
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+id|intr_status
+op_amp
+(paren
+id|IntrTxAborted
+op_or
+id|IntrTxUnderrun
+op_or
+id|IntrTxDescRace
+)paren
+)paren
 id|via_rhine_restart_tx
 c_func
 (paren
 id|dev
 )paren
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -6866,6 +7153,8 @@ op_or
 id|IntrTxAborted
 op_or
 id|IntrNormalSummary
+op_or
+id|IntrTxDescRace
 )paren
 )paren
 (brace
@@ -6880,24 +7169,11 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;%s: Something Wicked happened! %4.4x.&bslash;n&quot;
+l_string|&quot;%s: Something Wicked happened! %8.8x.&bslash;n&quot;
 comma
 id|dev-&gt;name
 comma
 id|intr_status
-)paren
-suffix:semicolon
-multiline_comment|/* Recovery for other fault sources not known. */
-id|writew
-c_func
-(paren
-id|CmdTxDemand
-op_or
-id|np-&gt;chip_cmd
-comma
-id|dev-&gt;base_addr
-op_plus
-id|ChipCmd
 )paren
 suffix:semicolon
 )brace
