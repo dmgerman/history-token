@@ -44,9 +44,7 @@ id|xtime.tv_sec
 suffix:semicolon
 id|tvp-&gt;tv_nsec
 op_assign
-id|xtime.tv_usec
-op_star
-l_int|1000
+id|xtime.tv_nsec
 suffix:semicolon
 )brace
 macro_line|#endif /* __XFS_SUPPORT_TIME_H__ */
