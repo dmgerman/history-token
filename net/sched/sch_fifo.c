@@ -68,6 +68,8 @@ r_if
 c_cond
 (paren
 id|sch-&gt;stats.backlog
+op_plus
+id|skb-&gt;len
 op_le
 id|q-&gt;limit
 )paren
@@ -317,7 +319,7 @@ r_if
 c_cond
 (paren
 id|sch-&gt;q.qlen
-op_le
+OL
 id|q-&gt;limit
 )paren
 (brace

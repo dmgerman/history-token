@@ -258,7 +258,7 @@ c_func
 op_amp
 id|sch-&gt;q
 )paren
-op_le
+OL
 id|sch-&gt;dev-&gt;tx_queue_len
 )paren
 (brace
@@ -612,6 +612,8 @@ r_if
 c_cond
 (paren
 id|q-&gt;backlog
+op_plus
+id|skb-&gt;len
 op_le
 id|q-&gt;limit
 )paren
