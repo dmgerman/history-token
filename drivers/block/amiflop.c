@@ -1,23 +1,14 @@
 multiline_comment|/*&n; *  linux/amiga/amiflop.c&n; *&n; *  Copyright (C) 1993  Greg Harp&n; *  Portions of this driver are based on code contributed by Brad Pepers&n; *  &n; *  revised 28.5.95 by Joerg Dorchain&n; *  - now no bugs(?) any more for both HD &amp; DD&n; *  - added support for 40 Track 5.25&quot; drives, 80-track hopefully behaves&n; *    like 3.5&quot; dd (no way to test - are there any 5.25&quot; drives out there&n; *    that work on an A4000?)&n; *  - wrote formatting routine (maybe dirty, but works)&n; *&n; *  june/july 1995 added ms-dos support by Joerg Dorchain&n; *  (portions based on messydos.device and various contributors)&n; *  - currently only 9 and 18 sector disks&n; *&n; *  - fixed a bug with the internal trackbuffer when using multiple &n; *    disks the same time&n; *  - made formatting a bit safer&n; *  - added command line and machine based default for &quot;silent&quot; df0&n; *&n; *  december 1995 adapted for 1.2.13pl4 by Joerg Dorchain&n; *  - works but I think it&squot;s inefficient. (look in redo_fd_request)&n; *    But the changes were very efficient. (only three and a half lines)&n; *&n; *  january 1996 added special ioctl for tracking down read/write problems&n; *  - usage ioctl(d, RAW_TRACK, ptr); the raw track buffer (MFM-encoded data&n; *    is copied to area. (area should be large enough since no checking is&n; *    done - 30K is currently sufficient). return the actual size of the&n; *    trackbuffer&n; *  - replaced udelays() by a timer (CIAA timer B) for the waits &n; *    needed for the disk mechanic.&n; *&n; *  february 1996 fixed error recovery and multiple disk access&n; *  - both got broken the first time I tampered with the driver :-(&n; *  - still not safe, but better than before&n; *&n; *  revised Marts 3rd, 1996 by Jes Sorensen for use in the 1.3.28 kernel.&n; *  - Minor changes to accept the kdev_t.&n; *  - Replaced some more udelays with ms_delays. Udelay is just a loop,&n; *    and so the delay will be different depending on the given&n; *    processor :-(&n; *  - The driver could use a major cleanup because of the new&n; *    major/minor handling that came with kdev_t. It seems to work for&n; *    the time being, but I can&squot;t guarantee that it will stay like&n; *    that when we start using 16 (24?) bit minors.&n; *&n; * restructured jan 1997 by Joerg Dorchain&n; * - Fixed Bug accessing multiple disks&n; * - some code cleanup&n; * - added trackbuffer for each drive to speed things up&n; * - fixed some race conditions (who finds the next may send it to me ;-)&n; */
 macro_line|#include &lt;linux/module.h&gt;
-macro_line|#include &lt;linux/sched.h&gt;
-macro_line|#include &lt;linux/fs.h&gt;
-macro_line|#include &lt;linux/fcntl.h&gt;
-macro_line|#include &lt;linux/kernel.h&gt;
-macro_line|#include &lt;linux/timer.h&gt;
 macro_line|#include &lt;linux/fd.h&gt;
 macro_line|#include &lt;linux/hdreg.h&gt;
-macro_line|#include &lt;linux/errno.h&gt;
-macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
-macro_line|#include &lt;linux/string.h&gt;
-macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/amifdreg.h&gt;
 macro_line|#include &lt;linux/amifd.h&gt;
-macro_line|#include &lt;linux/ioport.h&gt;
 macro_line|#include &lt;linux/buffer_head.h&gt;
-macro_line|#include &lt;linux/interrupt.h&gt;
+macro_line|#include &lt;linux/blkdev.h&gt;
+macro_line|#include &lt;linux/elevator.h&gt;
 macro_line|#include &lt;asm/setup.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/amigahw.h&gt;
