@@ -235,10 +235,9 @@ id|ENOMEM
 suffix:semicolon
 id|dev
 op_assign
-id|alloc_etherdev
+id|alloc_ei_netdev
 c_func
 (paren
-l_int|0
 )paren
 suffix:semicolon
 r_if
@@ -249,10 +248,6 @@ id|dev
 )paren
 r_goto
 id|out_unmap
-suffix:semicolon
-id|dev-&gt;priv
-op_assign
-l_int|NULL
 suffix:semicolon
 id|ret
 op_assign
@@ -412,32 +407,6 @@ id|dev-&gt;irq
 op_assign
 id|OAKNET_INT
 suffix:semicolon
-multiline_comment|/* Allocate 8390-specific device-private area and fields. */
-id|ret
-op_assign
-op_minus
-id|ENOMEM
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|ethdev_init
-c_func
-(paren
-id|dev
-)paren
-)paren
-(brace
-id|printk
-c_func
-(paren
-l_string|&quot; unable to get memory for dev-&gt;priv.&bslash;n&quot;
-)paren
-suffix:semicolon
-r_goto
-id|out_region
-suffix:semicolon
-)brace
 multiline_comment|/*&n;&t; * Disable all chip interrupts for now and ACK all pending&n;&t; * interrupts.&n;&t; */
 id|ei_obp
 c_func
@@ -494,7 +463,7 @@ id|dev-&gt;irq
 )paren
 suffix:semicolon
 r_goto
-id|out_priv
+id|out_region
 suffix:semicolon
 )brace
 multiline_comment|/* Tell the world about what and where we&squot;ve found. */
@@ -654,14 +623,6 @@ c_func
 id|dev-&gt;irq
 comma
 id|dev
-)paren
-suffix:semicolon
-id|out_priv
-suffix:colon
-id|kfree
-c_func
-(paren
-id|dev-&gt;priv
 )paren
 suffix:semicolon
 id|out_region
@@ -2014,34 +1975,7 @@ id|oaknet_cleanup_module
 r_void
 )paren
 (brace
-r_if
-c_cond
-(paren
-id|oaknet_devs
-op_eq
-l_int|NULL
-)paren
-r_return
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|oaknet_devs-&gt;priv
-op_ne
-l_int|NULL
-)paren
-(brace
-r_int
-id|ioaddr
-op_assign
-id|oaknet_devs-&gt;base_addr
-suffix:semicolon
-r_void
-op_star
-id|priv
-op_assign
-id|oaknet_devs-&gt;priv
-suffix:semicolon
+multiline_comment|/* Convert to loop once driver supports multiple devices. */
 id|unregister_netdev
 c_func
 (paren
@@ -2056,16 +1990,10 @@ comma
 id|oaknet_devs
 )paren
 suffix:semicolon
-id|kfree
-c_func
-(paren
-id|priv
-)paren
-suffix:semicolon
 id|release_region
 c_func
 (paren
-id|ioaddr
+id|oaknet_devs-&gt;base_addr
 comma
 id|OAKNET_IO_SIZE
 )paren
@@ -2076,8 +2004,6 @@ c_func
 id|ioaddr
 )paren
 suffix:semicolon
-)brace
-multiline_comment|/* Convert to loop once driver supports multiple devices. */
 id|free_netdev
 c_func
 (paren

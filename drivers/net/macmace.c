@@ -918,8 +918,12 @@ id|dev
 )paren
 suffix:semicolon
 r_return
+id|ERR_PTR
+c_func
+(paren
 op_minus
 id|ENODEV
+)paren
 suffix:semicolon
 )brace
 id|memset
