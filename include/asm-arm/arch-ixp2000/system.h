@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * linux/include/asm-arm/arch-ixp2000/system.h&n; *&n; * Copyright (C) 2002 Intel Corp.&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; */
+multiline_comment|/*&n; * linux/include/asm-arm/arch-ixp2000/system.h&n; *&n; * Copyright (C) 2002 Intel Corp.&n; * Copyricht (C) 2003-2005 MontaVista Software, Inc.&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; */
 macro_line|#include &lt;asm/hardware.h&gt;
 macro_line|#include &lt;asm/mach-types.h&gt;
 DECL|function|arch_idle
@@ -33,15 +33,11 @@ c_func
 (paren
 )paren
 suffix:semicolon
+multiline_comment|/*&n;&t; * Reset flash banking register so that we are pointing at&n;&t; * RedBoot bank.&n;&t; */
 r_if
 c_cond
 (paren
 id|machine_is_ixdp2401
-c_func
-(paren
-)paren
-op_logical_or
-id|machine_is_ixdp2801
 c_func
 (paren
 )paren
@@ -64,6 +60,49 @@ op_star
 id|IXDP2X01_CPLD_RESET_REG
 op_assign
 l_int|0xffffffff
+suffix:semicolon
+)brace
+multiline_comment|/*&n;&t; * On IXDP2801 we need to write this magic sequence to the CPLD&n;&t; * to cause a complete reset of the CPU and all external devices&n;&t; * and moves the flash bank register back to 0.&n;&t; */
+r_if
+c_cond
+(paren
+id|machine_is_ixdp2801
+c_func
+(paren
+)paren
+)paren
+(brace
+r_int
+r_int
+id|reset_reg
+op_assign
+op_star
+id|IXDP2X01_CPLD_RESET_REG
+suffix:semicolon
+id|reset_reg
+op_assign
+l_int|0x55AA0000
+op_or
+(paren
+id|reset_reg
+op_amp
+l_int|0x0000FFFF
+)paren
+suffix:semicolon
+op_star
+id|IXDP2X01_CPLD_RESET_REG
+op_assign
+id|reset_reg
+suffix:semicolon
+id|mb
+c_func
+(paren
+)paren
+suffix:semicolon
+op_star
+id|IXDP2X01_CPLD_RESET_REG
+op_assign
+l_int|0x80000000
 suffix:semicolon
 )brace
 multiline_comment|/*&n;&t; * We do a reset all if we are PCI master. We could be a slave and we&n;&t; * don&squot;t want to do anything funky on the PCI bus.&n;&t; */
