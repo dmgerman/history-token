@@ -679,7 +679,7 @@ id|ifindices
 suffix:semicolon
 multiline_comment|/* br_input.c */
 r_extern
-r_void
+r_int
 id|br_handle_frame
 c_func
 (paren
