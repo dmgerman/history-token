@@ -652,6 +652,10 @@ comma
 id|nip
 )paren
 suffix:semicolon
+id|regs-&gt;msr
+op_or_assign
+id|MSR_RI
+suffix:semicolon
 id|regs-&gt;nip
 op_assign
 id|fixup
@@ -840,7 +844,7 @@ id|regs
 id|printk
 c_func
 (paren
-l_string|&quot;Bad trap at PC: %lx, SR: %lx, vector=%lx    %s&bslash;n&quot;
+l_string|&quot;Bad trap at PC: %lx, MSR: %lx, vector=%lx    %s&bslash;n&quot;
 comma
 id|regs-&gt;nip
 comma
@@ -956,6 +960,12 @@ id|regs
 )paren
 r_return
 id|retval
+suffix:semicolon
+id|CHECK_FULL_REGS
+c_func
+(paren
+id|regs
+)paren
 suffix:semicolon
 r_if
 c_cond
@@ -1375,6 +1385,45 @@ l_string|&quot;kernel stack overflow&quot;
 )paren
 suffix:semicolon
 )brace
+DECL|function|nonrecoverable_exception
+r_void
+id|nonrecoverable_exception
+c_func
+(paren
+r_struct
+id|pt_regs
+op_star
+id|regs
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;Non-recoverable exception at PC=%lx MSR=%lx&bslash;n&quot;
+comma
+id|regs-&gt;nip
+comma
+id|regs-&gt;msr
+)paren
+suffix:semicolon
+id|debugger
+c_func
+(paren
+id|regs
+)paren
+suffix:semicolon
+id|die
+c_func
+(paren
+l_string|&quot;nonrecoverable exception&quot;
+comma
+id|regs
+comma
+id|SIGKILL
+)paren
+suffix:semicolon
+)brace
 r_void
 DECL|function|trace_syscall
 id|trace_syscall
@@ -1459,6 +1508,12 @@ op_star
 suffix:semicolon
 r_int
 id|errcode
+suffix:semicolon
+id|CHECK_FULL_REGS
+c_func
+(paren
+id|regs
+)paren
 suffix:semicolon
 r_if
 c_cond
@@ -1649,10 +1704,20 @@ comma
 id|DBSR_IC
 )paren
 suffix:semicolon
-id|regs-&gt;dbcr0
-op_and_assign
+id|mtspr
+c_func
+(paren
+id|SPRN_DBCR0
+comma
+id|mfspr
+c_func
+(paren
+id|SPRN_DBCR0
+)paren
+op_amp
 op_complement
 id|DBCR0_IC
+)paren
 suffix:semicolon
 r_if
 c_cond
@@ -1698,7 +1763,7 @@ id|regs
 id|printk
 c_func
 (paren
-l_string|&quot;TAU trap at PC: %lx, SR: %lx, vector=%lx    %s&bslash;n&quot;
+l_string|&quot;TAU trap at PC: %lx, MSR: %lx, vector=%lx    %s&bslash;n&quot;
 comma
 id|regs-&gt;nip
 comma

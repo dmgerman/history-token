@@ -40,6 +40,14 @@ r_int
 id|preempt_count
 suffix:semicolon
 multiline_comment|/* not used at present */
+DECL|member|softirq_count
+r_int
+id|softirq_count
+suffix:semicolon
+DECL|member|hardirq_count
+r_int
+id|hardirq_count
+suffix:semicolon
 )brace
 suffix:semicolon
 multiline_comment|/*&n; * macros/functions for gaining access to the thread information structure&n; */
@@ -104,6 +112,12 @@ DECL|macro|TI_FLAGS
 mdefine_line|#define TI_FLAGS&t;8
 DECL|macro|TI_CPU
 mdefine_line|#define TI_CPU&t;&t;12
+DECL|macro|TI_PREEMPT
+mdefine_line|#define TI_PREEMPT&t;16
+DECL|macro|TI_SOFTIRQ
+mdefine_line|#define TI_SOFTIRQ&t;20
+DECL|macro|TI_HARDIRQ
+mdefine_line|#define TI_HARDIRQ&t;24
 DECL|macro|PREEMPT_ACTIVE
 mdefine_line|#define PREEMPT_ACTIVE&t;&t;0x4000000
 multiline_comment|/*&n; * thread information flag bit numbers&n; */

@@ -1000,7 +1000,7 @@ id|dsisr
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/* The PowerPC 400-class processors have neither the DAR nor the DSISR&n;&t; * SPRs. Hence, we overload them to hold the similar DEAR and ESR SPRs&n;&t; * for such processors.&n;&t; */
+multiline_comment|/* The PowerPC 400-class processors have neither the DAR nor the DSISR&n;&t; * SPRs. Hence, we overload them to hold the similar DEAR and ESR SPRs&n;&t; * for such processors.  For critical interrupts we use them to&n;&t; * hold SRR0 and SRR1.&n;&t; */
 id|DEFINE
 c_func
 (paren
@@ -1021,6 +1021,38 @@ id|DEFINE
 c_func
 (paren
 id|_ESR
+comma
+id|STACK_FRAME_OVERHEAD
+op_plus
+m_offsetof
+(paren
+r_struct
+id|pt_regs
+comma
+id|dsisr
+)paren
+)paren
+suffix:semicolon
+id|DEFINE
+c_func
+(paren
+id|_SRR0
+comma
+id|STACK_FRAME_OVERHEAD
+op_plus
+m_offsetof
+(paren
+r_struct
+id|pt_regs
+comma
+id|dar
+)paren
+)paren
+suffix:semicolon
+id|DEFINE
+c_func
+(paren
+id|_SRR1
 comma
 id|STACK_FRAME_OVERHEAD
 op_plus

@@ -845,8 +845,18 @@ op_logical_or
 id|index
 OG
 id|PT_FPSCR
+op_logical_or
+id|child-&gt;thread.regs
+op_eq
+l_int|NULL
 )paren
 r_break
+suffix:semicolon
+id|CHECK_FULL_REGS
+c_func
+(paren
+id|child-&gt;thread.regs
+)paren
 suffix:semicolon
 r_if
 c_cond
@@ -875,10 +885,6 @@ r_else
 r_if
 c_cond
 (paren
-id|child-&gt;thread.regs
-op_ne
-l_int|NULL
-op_logical_and
 id|child-&gt;thread.regs-&gt;msr
 op_amp
 id|MSR_FP
@@ -972,7 +978,6 @@ suffix:semicolon
 r_break
 suffix:semicolon
 multiline_comment|/* write the word at location addr in the USER area */
-multiline_comment|/* XXX this will need fixing for 64-bit */
 r_case
 id|PTRACE_POKEUSR
 suffix:colon
@@ -1009,8 +1014,18 @@ op_logical_or
 id|index
 OG
 id|PT_FPSCR
+op_logical_or
+id|child-&gt;thread.regs
+op_eq
+l_int|NULL
 )paren
 r_break
+suffix:semicolon
+id|CHECK_FULL_REGS
+c_func
+(paren
+id|child-&gt;thread.regs
+)paren
 suffix:semicolon
 r_if
 c_cond
@@ -1047,10 +1062,6 @@ r_else
 r_if
 c_cond
 (paren
-id|child-&gt;thread.regs
-op_ne
-l_int|NULL
-op_logical_and
 id|child-&gt;thread.regs-&gt;msr
 op_amp
 id|MSR_FP

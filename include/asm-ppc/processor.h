@@ -66,15 +66,15 @@ DECL|macro|MSR_LE
 mdefine_line|#define MSR_LE&t;&t;(1&lt;&lt;0) &t;&t;/* Little Endian */
 macro_line|#ifdef CONFIG_APUS_FAST_EXCEPT
 DECL|macro|MSR_
-mdefine_line|#define MSR_&t;&t;MSR_ME|MSR_IP|MSR_RI
+mdefine_line|#define MSR_&t;&t;(MSR_ME|MSR_IP|MSR_RI)
 macro_line|#else
 DECL|macro|MSR_
-mdefine_line|#define MSR_&t;&t;MSR_ME|MSR_RI
+mdefine_line|#define MSR_&t;&t;(MSR_ME|MSR_RI)
 macro_line|#endif
 DECL|macro|MSR_KERNEL
-mdefine_line|#define MSR_KERNEL      MSR_|MSR_IR|MSR_DR
+mdefine_line|#define MSR_KERNEL      (MSR_|MSR_IR|MSR_DR)
 DECL|macro|MSR_USER
-mdefine_line|#define MSR_USER&t;MSR_KERNEL|MSR_PR|MSR_EE
+mdefine_line|#define MSR_USER&t;(MSR_KERNEL|MSR_PR|MSR_EE)
 multiline_comment|/* Floating Point Status and Control Register (FPSCR) Fields */
 DECL|macro|FPSCR_FX
 mdefine_line|#define FPSCR_FX&t;0x80000000&t;/* FPU exception summary */
