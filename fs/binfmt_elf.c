@@ -4473,7 +4473,11 @@ id|p
 suffix:semicolon
 id|prstatus-&gt;pr_sid
 op_assign
-id|p-&gt;session
+id|process_session
+c_func
+(paren
+id|p
+)paren
 suffix:semicolon
 id|jiffies_to_timeval
 c_func
@@ -4645,7 +4649,11 @@ id|p
 suffix:semicolon
 id|psinfo-&gt;pr_sid
 op_assign
-id|p-&gt;session
+id|process_session
+c_func
+(paren
+id|p
+)paren
 suffix:semicolon
 id|i
 op_assign
