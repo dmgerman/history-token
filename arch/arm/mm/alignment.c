@@ -1,21 +1,13 @@
 multiline_comment|/*&n; *  linux/arch/arm/mm/alignment.c&n; *&n; *  Copyright (C) 1995  Linus Torvalds&n; *  Modifications for ARM processor (c) 1995-2001 Russell King&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/compiler.h&gt;
-macro_line|#include &lt;linux/signal.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
-macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/ptrace.h&gt;
-macro_line|#include &lt;linux/mman.h&gt;
-macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/proc_fs.h&gt;
-macro_line|#include &lt;linux/bitops.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
-macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
-macro_line|#include &lt;asm/pgalloc.h&gt;
-macro_line|#include &lt;asm/pgtable.h&gt;
 macro_line|#include &lt;asm/unaligned.h&gt;
 macro_line|#include &quot;fault.h&quot;
 multiline_comment|/*&n; * 32-bit misaligned trap handler (c) 1998 San Mehat (CCC) -July 1998&n; * /proc/sys/debug/alignment, modified and integrated into&n; * Linux 2.1 by Russell King&n; *&n; * Speed optimisations and better fault handling by Russell King.&n; *&n; * *** NOTE ***&n; * This code is not portable to processors with late data abort handling.&n; */
