@@ -24,23 +24,6 @@ DECL|macro|__mkdev
 mdefine_line|#define __mkdev(major,minor)&t;(((major) &lt;&lt; KDEV_MINOR_BITS) + (minor))
 DECL|macro|mk_kdev
 mdefine_line|#define mk_kdev(major, minor)&t;((kdev_t) { __mkdev(major,minor) } )
-multiline_comment|/*&n; * The &quot;values&quot; are just _cookies_, usable for &n; * internal equality comparisons and for things&n; * like NFS filehandle conversion.&n; */
-DECL|function|kdev_val
-r_static
-r_inline
-r_int
-r_int
-id|kdev_val
-c_func
-(paren
-id|kdev_t
-id|dev
-)paren
-(brace
-r_return
-id|dev.value
-suffix:semicolon
-)brace
 DECL|macro|NODEV
 mdefine_line|#define NODEV&t;&t;(mk_kdev(0,0))
 multiline_comment|/* Mask off the high bits for now.. */
