@@ -302,13 +302,6 @@ c_func
 id|smp_flush_tlb_page
 )paren
 suffix:semicolon
-DECL|variable|smp_flush_tlb_all
-id|EXPORT_SYMBOL_GPL
-c_func
-(paren
-id|smp_flush_tlb_all
-)paren
-suffix:semicolon
 macro_line|#endif
 multiline_comment|/* compiler generated symbol */
 r_extern

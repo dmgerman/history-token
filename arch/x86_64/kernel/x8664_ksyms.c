@@ -974,13 +974,6 @@ c_func
 id|flush_tlb_page
 )paren
 suffix:semicolon
-DECL|variable|flush_tlb_all
-id|EXPORT_SYMBOL_GPL
-c_func
-(paren
-id|flush_tlb_all
-)paren
-suffix:semicolon
 macro_line|#endif
 DECL|variable|cpu_khz
 id|EXPORT_SYMBOL

@@ -476,13 +476,6 @@ c_func
 suffix:semicolon
 multiline_comment|/* srlz.i implies srlz.d */
 )brace
-DECL|variable|local_flush_tlb_all
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|local_flush_tlb_all
-)paren
-suffix:semicolon
 r_void
 DECL|function|flush_tlb_range
 id|flush_tlb_range

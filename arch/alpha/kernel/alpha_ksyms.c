@@ -784,13 +784,6 @@ c_func
 id|synchronize_irq
 )paren
 suffix:semicolon
-DECL|variable|flush_tlb_all
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|flush_tlb_all
-)paren
-suffix:semicolon
 DECL|variable|flush_tlb_mm
 id|EXPORT_SYMBOL
 c_func

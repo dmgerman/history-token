@@ -666,13 +666,6 @@ l_int|1
 )paren
 suffix:semicolon
 )brace
-DECL|variable|smp_flush_tlb_all
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|smp_flush_tlb_all
-)paren
-suffix:semicolon
 r_void
 DECL|function|smp_flush_tlb_mm
 id|smp_flush_tlb_mm
