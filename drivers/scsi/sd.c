@@ -3505,6 +3505,8 @@ c_func
 (paren
 id|KERN_NOTICE
 l_string|&quot;SCSI device %s: cache data unavailable&bslash;n&quot;
+comma
+id|diskname
 )paren
 suffix:semicolon
 )brace
