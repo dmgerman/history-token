@@ -9402,7 +9402,7 @@ op_star
 id|tcon
 comma
 r_struct
-id|statfs
+id|kstatfs
 op_star
 id|FSData
 comma
@@ -9767,10 +9767,20 @@ c_func
 l_int|1
 comma
 (paren
-l_string|&quot;Blocks: %ld  Free: %ld Block size %ld&quot;
+l_string|&quot;Blocks: %lld  Free: %lld Block size %ld&quot;
 comma
+(paren
+r_int
+r_int
+r_int
+)paren
 id|FSData-&gt;f_blocks
 comma
+(paren
+r_int
+r_int
+r_int
+)paren
 id|FSData-&gt;f_bfree
 comma
 id|FSData-&gt;f_bsize
