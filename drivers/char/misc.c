@@ -12,7 +12,6 @@ macro_line|#include &lt;linux/devfs_fs_kernel.h&gt;
 macro_line|#include &lt;linux/stat.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/tty.h&gt;
-macro_line|#include &lt;linux/selection.h&gt;
 macro_line|#include &lt;linux/kmod.h&gt;
 macro_line|#include &quot;busmouse.h&quot;
 multiline_comment|/*&n; * Head entry for the doubly linked miscdevice list&n; */
