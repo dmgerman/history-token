@@ -1,15 +1,11 @@
 multiline_comment|/*&n; *  scsi_lib.c Copyright (C) 1999 Eric Youngdale&n; *&n; *  SCSI queueing library.&n; *      Initial versions: Eric Youngdale (eric@andante.org).&n; *                        Based upon conversations with large numbers&n; *                        of people at Linux Expo.&n; */
-macro_line|#include &lt;linux/string.h&gt;
-macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/bio.h&gt;
-macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/blk.h&gt;
-macro_line|#include &lt;asm/hardirq.h&gt;
-macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;linux/completion.h&gt;
+macro_line|#include &lt;linux/kernel.h&gt;
+macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &quot;scsi.h&quot;
 macro_line|#include &quot;hosts.h&quot;
-macro_line|#include &lt;scsi/scsi_ioctl.h&gt;
 multiline_comment|/*&n; * Function:    scsi_insert_special_cmd()&n; *&n; * Purpose:     Insert pre-formed command into request queue.&n; *&n; * Arguments:   SCpnt   - command that is ready to be queued.&n; *              at_head - boolean.  True if we should insert at head&n; *                        of queue, false if we should insert at tail.&n; *&n; * Lock status: Assumed that lock is not held upon entry.&n; *&n; * Returns:     Nothing&n; *&n; * Notes:       This function is called from character device and from&n; *              ioctl types of functions where the caller knows exactly&n; *              what SCSI command needs to be issued.   The idea is that&n; *              we merely inject the command into the queue (at the head&n; *              for now), and then call the queue request function to actually&n; *              process it.&n; */
 DECL|function|scsi_insert_special_cmd
 r_int
@@ -1560,8 +1556,6 @@ suffix:semicolon
 r_int
 id|count
 comma
-id|gfp_mask
-comma
 id|ret
 op_assign
 l_int|0
@@ -1605,33 +1599,6 @@ id|SCpnt-&gt;use_sg
 op_assign
 id|req-&gt;nr_phys_segments
 suffix:semicolon
-id|gfp_mask
-op_assign
-id|GFP_NOIO
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|likely
-c_func
-(paren
-id|in_atomic
-c_func
-(paren
-)paren
-)paren
-)paren
-(brace
-id|gfp_mask
-op_and_assign
-op_complement
-id|__GFP_WAIT
-suffix:semicolon
-id|gfp_mask
-op_or_assign
-id|__GFP_HIGH
-suffix:semicolon
-)brace
 multiline_comment|/*&n;&t; * if sg table allocation fails, requeue request later.&n;&t; */
 id|sgpnt
 op_assign
@@ -1640,7 +1607,7 @@ c_func
 (paren
 id|SCpnt
 comma
-id|gfp_mask
+id|GFP_ATOMIC
 )paren
 suffix:semicolon
 r_if

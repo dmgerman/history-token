@@ -31,7 +31,7 @@ id|host
 suffix:semicolon
 multiline_comment|/* Host template.  Note the name and proc_name are optional, all the&n; * remaining parameters shown below must be filled in.  The 53c700&n; * routine NCR_700_detect will fill in all of the missing routines */
 DECL|macro|NCR_D700_SCSI
-mdefine_line|#define NCR_D700_SCSI {&t;&t;&t;&t;&t;&t;&bslash;&n;&t;name:&t;&t;&t;&t;&quot;NCR Dual 700 MCA&quot;,&t;&bslash;&n;&t;proc_name:&t;&t;&t;&quot;NCR_D700&quot;,&t;&t;&bslash;&n;&t;detect: &t;&t;&t;D700_detect,&t;&t;&bslash;&n;&t;release:&t;&t;&t;D700_release,&t;&t;&bslash;&n;&t;this_id:&t;&t;&t;7,&t;&t;&t;&bslash;&n;}
+mdefine_line|#define NCR_D700_SCSI {&t;&t;&t;&t;&t;&t;&bslash;&n;&t;.name =&t;&t;&t;&t;&quot;NCR Dual 700 MCA&quot;,&t;&bslash;&n;&t;.proc_name =&t;&t;&t;&quot;NCR_D700&quot;,&t;&t;&bslash;&n;&t;.detect = &t;&t;&t;D700_detect,&t;&t;&bslash;&n;&t;.release =&t;&t;&t;D700_release,&t;&t;&bslash;&n;&t;.this_id =&t;&t;&t;7,&t;&t;&t;&bslash;&n;}
 multiline_comment|/* Defines for the Board registers */
 DECL|macro|BOARD_RESET
 mdefine_line|#define&t;BOARD_RESET&t;&t;0x80&t;/* board level reset */

@@ -1180,34 +1180,6 @@ suffix:semicolon
 macro_line|#endif /* CONFIG_PROC_FS */
 multiline_comment|/*&n; * Prototypes for functions in scsi_scan.c&n; */
 r_extern
-r_struct
-id|scsi_device
-op_star
-id|scsi_alloc_sdev
-c_func
-(paren
-r_struct
-id|Scsi_Host
-op_star
-comma
-id|uint
-comma
-id|uint
-comma
-id|uint
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|scsi_free_sdev
-c_func
-(paren
-r_struct
-id|scsi_device
-op_star
-)paren
-suffix:semicolon
-r_extern
 r_int
 id|scsi_add_single_device
 c_func
