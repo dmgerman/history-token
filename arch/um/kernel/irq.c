@@ -12,6 +12,7 @@ macro_line|#include &quot;linux/file.h&quot;
 macro_line|#include &quot;linux/proc_fs.h&quot;
 macro_line|#include &quot;linux/init.h&quot;
 macro_line|#include &quot;linux/seq_file.h&quot;
+macro_line|#include &quot;linux/profile.h&quot;
 macro_line|#include &quot;asm/irq.h&quot;
 macro_line|#include &quot;asm/hw_irq.h&quot;
 macro_line|#include &quot;asm/hardirq.h&quot;

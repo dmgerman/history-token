@@ -481,13 +481,12 @@ r_int
 id|error
 )paren
 (brace
-id|siginfo_t
-id|info
-suffix:semicolon
 r_struct
 id|k_sigaction
-op_star
-id|ka
+id|ka_copy
+suffix:semicolon
+id|siginfo_t
+id|info
 suffix:semicolon
 r_int
 id|err
@@ -513,6 +512,9 @@ c_func
 op_amp
 id|info
 comma
+op_amp
+id|ka_copy
+comma
 id|regs
 comma
 l_int|NULL
@@ -531,16 +533,6 @@ l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/* Whee!  Actually deliver the signal.  */
-id|ka
-op_assign
-op_amp
-id|current-&gt;sighand-&gt;action
-(braket
-id|sig
-op_minus
-l_int|1
-)braket
-suffix:semicolon
 id|err
 op_assign
 id|handle_signal
@@ -550,7 +542,8 @@ id|regs
 comma
 id|sig
 comma
-id|ka
+op_amp
+id|ka_copy
 comma
 op_amp
 id|info
