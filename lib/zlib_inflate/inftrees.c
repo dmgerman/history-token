@@ -1056,9 +1056,9 @@ id|MANY
 )paren
 multiline_comment|/* (note: doesn&squot;t matter for fixed) */
 r_return
-id|Z_MEM_ERROR
+id|Z_DATA_ERROR
 suffix:semicolon
-multiline_comment|/* not enough memory */
+multiline_comment|/* overflow of MANY */
 id|u
 (braket
 id|h
