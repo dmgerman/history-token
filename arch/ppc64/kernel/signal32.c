@@ -5123,6 +5123,8 @@ op_amp
 id|info
 comma
 id|regs
+comma
+l_int|NULL
 )paren
 suffix:semicolon
 r_if

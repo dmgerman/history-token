@@ -341,6 +341,8 @@ suffix:semicolon
 macro_line|#ifdef __KERNEL__
 macro_line|#include &lt;asm/sigcontext.h&gt;
 multiline_comment|/* here we could define asm-optimized sigaddset, sigdelset etc. operations. &n; * if we don&squot;t, generic ones are used from linux/signal.h&n; */
+DECL|macro|ptrace_signal_deliver
+mdefine_line|#define ptrace_signal_deliver(regs, cookie) do { } while (0)
 macro_line|#endif /* __KERNEL__ */
 macro_line|#endif
 eof

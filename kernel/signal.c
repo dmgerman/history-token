@@ -4905,6 +4905,10 @@ r_struct
 id|pt_regs
 op_star
 id|regs
+comma
+r_void
+op_star
+id|cookie
 )paren
 (brace
 id|sigset_t
@@ -5048,6 +5052,14 @@ op_ne
 id|SIGKILL
 )paren
 (brace
+id|ptrace_signal_deliver
+c_func
+(paren
+id|regs
+comma
+id|cookie
+)paren
+suffix:semicolon
 multiline_comment|/*&n;&t;&t;&t; * If there is a group stop in progress,&n;&t;&t;&t; * we must participate in the bookkeeping.&n;&t;&t;&t; */
 r_if
 c_cond
