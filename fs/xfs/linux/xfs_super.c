@@ -3411,6 +3411,12 @@ id|xfs_physmem
 op_assign
 id|si.totalram
 suffix:semicolon
+id|ktrace_init
+c_func
+(paren
+l_int|64
+)paren
+suffix:semicolon
 id|error
 op_assign
 id|init_inodecache
@@ -3548,6 +3554,11 @@ c_func
 )paren
 suffix:semicolon
 id|destroy_inodecache
+c_func
+(paren
+)paren
+suffix:semicolon
+id|ktrace_uninit
 c_func
 (paren
 )paren

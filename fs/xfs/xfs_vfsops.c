@@ -369,23 +369,6 @@ comma
 l_string|&quot;xfs_acl&quot;
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_XFS_VNODE_TRACING
-id|ktrace_init
-c_func
-(paren
-id|VNODE_TRACE_SIZE
-)paren
-suffix:semicolon
-macro_line|#else
-macro_line|#ifdef DEBUG
-id|ktrace_init
-c_func
-(paren
-l_int|64
-)paren
-suffix:semicolon
-macro_line|#endif
-macro_line|#endif
 multiline_comment|/*&n;&t; * Allocate global trace buffers.&n;&t; */
 macro_line|#ifdef XFS_ALLOC_TRACE
 id|xfs_alloc_trace_buf
@@ -631,13 +614,6 @@ c_func
 id|xfs_acl_zone
 )paren
 suffix:semicolon
-macro_line|#if  (defined(DEBUG) || defined(CONFIG_XFS_VNODE_TRACING))
-id|ktrace_uninit
-c_func
-(paren
-)paren
-suffix:semicolon
-macro_line|#endif
 )brace
 multiline_comment|/*&n; * xfs_start_flags&n; *&n; * This function fills in xfs_mount_t fields based on mount args.&n; * Note: the superblock has _not_ yet been read in.&n; */
 id|STATIC
