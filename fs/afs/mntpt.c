@@ -1010,14 +1010,10 @@ c_func
 id|newmnt
 )paren
 suffix:semicolon
-id|struct_cpy
-c_func
-(paren
-op_amp
 id|newnd
-comma
+op_assign
+op_star
 id|nd
-)paren
 suffix:semicolon
 id|newnd.dentry
 op_assign
