@@ -4745,6 +4745,7 @@ c_func
 id|bh
 )paren
 suffix:semicolon
+multiline_comment|/*&n;&t;&t; * We don&squot;t have to worry about the buffer being pulled off its&n;&t;&t; * journal_head in here, because __try_to_free_cp_buf runs&n;&t;&t; * under jbd_lock_bh_state()&n;&t;&t; */
 r_if
 c_cond
 (paren
