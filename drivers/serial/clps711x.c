@@ -8,6 +8,7 @@ macro_line|#include &lt;linux/serial.h&gt;
 macro_line|#include &lt;linux/console.h&gt;
 macro_line|#include &lt;linux/sysrq.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
+macro_line|#include &lt;linux/device.h&gt;
 macro_line|#include &lt;asm/hardware.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
@@ -2386,6 +2387,14 @@ id|MODULE_LICENSE
 c_func
 (paren
 l_string|&quot;GPL&quot;
+)paren
+suffix:semicolon
+id|MODULE_ALIAS_CHARDEV
+c_func
+(paren
+id|SERIAL_CLPS711X_MAJOR
+comma
+id|SERIAL_CLPS711X_MINOR
 )paren
 suffix:semicolon
 eof

@@ -3841,4 +3841,11 @@ c_func
 l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
+DECL|variable|SERIAL_SA1100_MAJOR
+id|MODULE_ALIAS_CHARDEV_MAJOR
+c_func
+(paren
+id|SERIAL_SA1100_MAJOR
+)paren
+suffix:semicolon
 eof

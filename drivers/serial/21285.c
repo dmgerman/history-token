@@ -7,6 +7,7 @@ macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/console.h&gt;
 macro_line|#include &lt;linux/serial_core.h&gt;
 macro_line|#include &lt;linux/serial.h&gt;
+macro_line|#include &lt;linux/device.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;asm/hardware/dec21285.h&gt;
@@ -2150,6 +2151,14 @@ id|MODULE_DESCRIPTION
 c_func
 (paren
 l_string|&quot;Intel Footbridge (21285) serial driver $Revision: 1.37 $&quot;
+)paren
+suffix:semicolon
+id|MODULE_ALIAS_CHARDEV
+c_func
+(paren
+id|SERIAL_21285_MAJOR
+comma
+id|SERIAL_21285_MINOR
 )paren
 suffix:semicolon
 eof
