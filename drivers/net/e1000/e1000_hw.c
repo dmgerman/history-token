@@ -196,17 +196,6 @@ id|hw
 suffix:semicolon
 r_static
 r_void
-id|e1000_standby_eeprom
-c_func
-(paren
-r_struct
-id|e1000_hw
-op_star
-id|hw
-)paren
-suffix:semicolon
-r_static
-r_void
 id|e1000_clock_eeprom
 c_func
 (paren
@@ -219,6 +208,17 @@ suffix:semicolon
 r_static
 r_void
 id|e1000_cleanup_eeprom
+c_func
+(paren
+r_struct
+id|e1000_hw
+op_star
+id|hw
+)paren
+suffix:semicolon
+r_static
+r_void
+id|e1000_standby_eeprom
 c_func
 (paren
 r_struct
@@ -334,6 +334,15 @@ id|E1000_DEV_ID_82540EM
 suffix:colon
 r_case
 id|E1000_DEV_ID_82540EM_LOM
+suffix:colon
+r_case
+id|E1000_DEV_ID_82540EP
+suffix:colon
+r_case
+id|E1000_DEV_ID_82540EP_LOM
+suffix:colon
+r_case
+id|E1000_DEV_ID_82540EP_LP
 suffix:colon
 id|hw-&gt;mac_type
 op_assign
@@ -2181,6 +2190,14 @@ id|phy_data
 op_or_assign
 id|M88E1000_EPSCR_TX_CLK_25
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|hw-&gt;phy_revision
+OL
+id|M88E1011_I_REV_4
+)paren
+(brace
 multiline_comment|/* Configure Master and Slave downshift values */
 id|phy_data
 op_and_assign
@@ -2225,6 +2242,7 @@ r_return
 op_minus
 id|E1000_ERR_PHY
 suffix:semicolon
+)brace
 )brace
 multiline_comment|/* SW Reset the PHY so all changes take effect */
 id|ret_val
@@ -3251,7 +3269,6 @@ comma
 id|ctrl
 )paren
 suffix:semicolon
-multiline_comment|/* Write the MII Control Register with the new PHY configuration. */
 r_if
 c_cond
 (paren
@@ -3326,6 +3343,7 @@ id|mii_ctrl_reg
 op_or_assign
 id|MII_CR_RESET
 suffix:semicolon
+multiline_comment|/* Write back the modified PHY MII control register. */
 r_if
 c_cond
 (paren
@@ -6687,6 +6705,16 @@ op_amp
 id|PHY_REVISION_MASK
 )paren
 suffix:semicolon
+id|hw-&gt;phy_revision
+op_assign
+(paren
+r_uint32
+)paren
+id|phy_id_low
+op_amp
+op_complement
+id|PHY_REVISION_MASK
+suffix:semicolon
 r_switch
 c_cond
 (paren
@@ -7303,7 +7331,7 @@ op_star
 id|eecd
 )paren
 (brace
-multiline_comment|/* Raise the clock input to the EEPROM (by setting the SK bit), and then&n;     * wait 50 microseconds.&n;     */
+multiline_comment|/* Raise the clock input to the EEPROM (by setting the SK bit), and then&n;     * wait &lt;delay&gt; microseconds.&n;     */
 op_star
 id|eecd
 op_assign
@@ -7557,7 +7585,7 @@ suffix:semicolon
 r_uint16
 id|data
 suffix:semicolon
-multiline_comment|/* In order to read a register from the EEPROM, we need to shift 16 bits &n;     * in from the EEPROM. Bits are &quot;shifted in&quot; by raising the clock input to&n;     * the EEPROM (setting the SK bit), and then reading the value of the &quot;DO&quot;&n;     * bit.  During this &quot;shifting in&quot; process the &quot;DI&quot; bit should always be &n;     * clear..&n;     */
+multiline_comment|/* In order to read a register from the EEPROM, we need to shift &squot;count&squot;&n;     * bits in from the EEPROM. Bits are &quot;shifted in&quot; by raising the clock&n;     * input to the EEPROM (setting the SK bit), and then reading the value of&n;     * the &quot;DO&quot; bit.  During this &quot;shifting in&quot; process the &quot;DI&quot; bit should&n;     * always be clear.&n;     */
 id|eecd
 op_assign
 id|E1000_READ_REG
@@ -10768,6 +10796,15 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
+id|E1000_DEV_ID_82540EP
+suffix:colon
+r_case
+id|E1000_DEV_ID_82540EP_LOM
+suffix:colon
+r_case
+id|E1000_DEV_ID_82540EP_LP
+suffix:colon
+r_case
 id|E1000_DEV_ID_82540EM
 suffix:colon
 r_case
@@ -10856,6 +10893,15 @@ suffix:colon
 multiline_comment|/* No cleanup necessary */
 r_break
 suffix:semicolon
+r_case
+id|E1000_DEV_ID_82540EP
+suffix:colon
+r_case
+id|E1000_DEV_ID_82540EP_LOM
+suffix:colon
+r_case
+id|E1000_DEV_ID_82540EP_LP
+suffix:colon
 r_case
 id|E1000_DEV_ID_82540EM
 suffix:colon
@@ -11022,6 +11068,15 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
+id|E1000_DEV_ID_82540EP
+suffix:colon
+r_case
+id|E1000_DEV_ID_82540EP_LOM
+suffix:colon
+r_case
+id|E1000_DEV_ID_82540EP_LP
+suffix:colon
+r_case
 id|E1000_DEV_ID_82540EM
 suffix:colon
 r_case
@@ -11179,6 +11234,15 @@ id|ctrl
 suffix:semicolon
 r_break
 suffix:semicolon
+r_case
+id|E1000_DEV_ID_82540EP
+suffix:colon
+r_case
+id|E1000_DEV_ID_82540EP_LOM
+suffix:colon
+r_case
+id|E1000_DEV_ID_82540EP_LP
+suffix:colon
 r_case
 id|E1000_DEV_ID_82540EM
 suffix:colon
