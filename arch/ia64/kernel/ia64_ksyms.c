@@ -345,35 +345,6 @@ c_func
 id|kernel_flag
 )paren
 suffix:semicolon
-multiline_comment|/* #include &lt;asm/system.h&gt; */
-DECL|variable|__global_sti
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|__global_sti
-)paren
-suffix:semicolon
-DECL|variable|__global_cli
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|__global_cli
-)paren
-suffix:semicolon
-DECL|variable|__global_save_flags
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|__global_save_flags
-)paren
-suffix:semicolon
-DECL|variable|__global_restore_flags
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|__global_restore_flags
-)paren
-suffix:semicolon
 macro_line|#else /* !CONFIG_SMP */
 DECL|variable|__flush_tlb_all
 id|EXPORT_SYMBOL

@@ -2,22 +2,9 @@ macro_line|#ifndef __ARCH_DESC_H
 DECL|macro|__ARCH_DESC_H
 mdefine_line|#define __ARCH_DESC_H
 macro_line|#include &lt;asm/ldt.h&gt;
-multiline_comment|/*&n; * The layout of the per-CPU GDT under Linux:&n; *&n; *   0 - null&n; *   1 - Thread-Local Storage (TLS) segment&n; *   2 - kernel code segment&n; *   3 - kernel data segment&n; *   4 - user code segment&t;&t;&lt;==== new cacheline&n; *   5 - user data segment&n; *   6 - TSS&n; *   7 - LDT&n; *   8 - APM BIOS support&t;&t;&lt;==== new cacheline&n; *   9 - APM BIOS support&n; *  10 - APM BIOS support&n; *  11 - APM BIOS support&n; *  12 - PNPBIOS support&t;&t;&lt;==== new cacheline&n; *  13 - PNPBIOS support&n; *  14 - PNPBIOS support&n; *  15 - PNPBIOS support&n; *  16 - PNPBIOS support&t;&t;&lt;==== new cacheline&n; *  17 - not used&n; *  18 - not used&n; *  19 - not used&n; */
-DECL|macro|TLS_ENTRY
-mdefine_line|#define TLS_ENTRY 1
-DECL|macro|TSS_ENTRY
-mdefine_line|#define TSS_ENTRY 6
-DECL|macro|LDT_ENTRY
-mdefine_line|#define LDT_ENTRY 7
-multiline_comment|/*&n; * The interrupt descriptor table has room for 256 idt&squot;s,&n; * the global descriptor table is dependent on the number&n; * of tasks we can have..&n; *&n; * We pad the GDT to cacheline boundary.&n; */
-DECL|macro|IDT_ENTRIES
-mdefine_line|#define IDT_ENTRIES 256
-DECL|macro|GDT_ENTRIES
-mdefine_line|#define GDT_ENTRIES 20
+macro_line|#include &lt;asm/segment.h&gt;
 macro_line|#ifndef __ASSEMBLY__
 macro_line|#include &lt;asm/mmu.h&gt;
-DECL|macro|GDT_SIZE
-mdefine_line|#define GDT_SIZE (GDT_ENTRIES*sizeof(struct desc_struct))
 r_extern
 r_struct
 id|desc_struct
@@ -69,9 +56,9 @@ id|NR_CPUS
 )braket
 suffix:semicolon
 DECL|macro|load_TR_desc
-mdefine_line|#define load_TR_desc() __asm__ __volatile__(&quot;ltr %%ax&quot;::&quot;a&quot; (TSS_ENTRY&lt;&lt;3))
+mdefine_line|#define load_TR_desc() __asm__ __volatile__(&quot;ltr %%ax&quot;::&quot;a&quot; (GDT_ENTRY_TSS*8))
 DECL|macro|load_LDT_desc
-mdefine_line|#define load_LDT_desc() __asm__ __volatile__(&quot;lldt %%ax&quot;::&quot;a&quot; (LDT_ENTRY&lt;&lt;3))
+mdefine_line|#define load_LDT_desc() __asm__ __volatile__(&quot;lldt %%ax&quot;::&quot;a&quot; (GDT_ENTRY_LDT*8))
 multiline_comment|/*&n; * This is the ldt that every process will get unless we need&n; * something other than this.&n; */
 r_extern
 r_struct
@@ -121,7 +108,7 @@ id|cpu_gdt_table
 id|cpu
 )braket
 (braket
-id|TSS_ENTRY
+id|GDT_ENTRY_TSS
 )braket
 comma
 (paren
@@ -164,7 +151,7 @@ id|cpu_gdt_table
 id|cpu
 )braket
 (braket
-id|LDT_ENTRY
+id|GDT_ENTRY_LDT
 )braket
 comma
 (paren
@@ -186,15 +173,20 @@ l_int|0x82
 )paren
 suffix:semicolon
 )brace
-DECL|macro|TLS_FLAGS_MASK
-mdefine_line|#define TLS_FLAGS_MASK&t;&t;&t;0x00000001
-DECL|macro|TLS_FLAG_WRITABLE
-mdefine_line|#define TLS_FLAG_WRITABLE&t;&t;0x00000001
-DECL|function|load_TLS_desc
+DECL|macro|LDT_entry_a
+mdefine_line|#define LDT_entry_a(info) &bslash;&n;&t;((((info)-&gt;base_addr &amp; 0x0000ffff) &lt;&lt; 16) | ((info)-&gt;limit &amp; 0x0ffff))
+DECL|macro|LDT_entry_b
+mdefine_line|#define LDT_entry_b(info) &bslash;&n;&t;(((info)-&gt;base_addr &amp; 0xff000000) | &bslash;&n;&t;(((info)-&gt;base_addr &amp; 0x00ff0000) &gt;&gt; 16) | &bslash;&n;&t;((info)-&gt;limit &amp; 0xf0000) | &bslash;&n;&t;(((info)-&gt;read_exec_only ^ 1) &lt;&lt; 9) | &bslash;&n;&t;((info)-&gt;contents &lt;&lt; 10) | &bslash;&n;&t;(((info)-&gt;seg_not_present ^ 1) &lt;&lt; 15) | &bslash;&n;&t;((info)-&gt;seg_32bit &lt;&lt; 22) | &bslash;&n;&t;((info)-&gt;limit_in_pages &lt;&lt; 23) | &bslash;&n;&t;((info)-&gt;useable &lt;&lt; 20) | &bslash;&n;&t;0x7000)
+DECL|macro|LDT_empty
+mdefine_line|#define LDT_empty(info) (&bslash;&n;&t;(info)-&gt;base_addr&t;== 0&t;&amp;&amp; &bslash;&n;&t;(info)-&gt;limit&t;&t;== 0&t;&amp;&amp; &bslash;&n;&t;(info)-&gt;contents&t;== 0&t;&amp;&amp; &bslash;&n;&t;(info)-&gt;read_exec_only&t;== 1&t;&amp;&amp; &bslash;&n;&t;(info)-&gt;seg_32bit&t;== 0&t;&amp;&amp; &bslash;&n;&t;(info)-&gt;limit_in_pages&t;== 0&t;&amp;&amp; &bslash;&n;&t;(info)-&gt;seg_not_present&t;== 1&t;&amp;&amp; &bslash;&n;&t;(info)-&gt;useable&t;&t;== 0&t;)
+macro_line|#if TLS_SIZE != 24
+macro_line|# error update this code.
+macro_line|#endif
+DECL|function|load_TLS
 r_static
 r_inline
 r_void
-id|load_TLS_desc
+id|load_TLS
 c_func
 (paren
 r_struct
@@ -207,16 +199,28 @@ r_int
 id|cpu
 )paren
 (brace
-id|cpu_gdt_table
-(braket
-id|cpu
-)braket
-(braket
-id|TLS_ENTRY
-)braket
-op_assign
-id|t-&gt;tls_desc
+DECL|macro|C
+mdefine_line|#define C(i) cpu_gdt_table[cpu][GDT_ENTRY_TLS_MIN + i] = t-&gt;tls_array[i]
+id|C
+c_func
+(paren
+l_int|0
+)paren
 suffix:semicolon
+id|C
+c_func
+(paren
+l_int|1
+)paren
+suffix:semicolon
+id|C
+c_func
+(paren
+l_int|2
+)paren
+suffix:semicolon
+DECL|macro|C
+macro_line|#undef C
 )brace
 DECL|function|clear_LDT
 r_static

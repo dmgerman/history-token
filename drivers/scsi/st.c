@@ -18567,6 +18567,9 @@ op_assign
 (paren
 r_int
 )paren
+(paren
+r_int
+)paren
 id|driverfs_dev-&gt;driver_data
 suffix:semicolon
 r_return
@@ -19266,6 +19269,9 @@ op_assign
 r_void
 op_star
 )paren
+(paren
+r_int
+)paren
 id|__mkdev
 c_func
 (paren
@@ -19428,6 +19434,9 @@ op_assign
 (paren
 r_void
 op_star
+)paren
+(paren
+r_int
 )paren
 id|__mkdev
 c_func

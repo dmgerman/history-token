@@ -570,7 +570,7 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * ntfs_read_block - fill a @page of an address space with data&n; * @page:&t;page cache page to fill with data&n; *&n; * Fill the page @page of the address space belonging to the @page-&gt;host inode.&n; * We read each buffer asynchronously and when all buffers are read in, our io&n; * completion handler ntfs_end_buffer_read_async(), if required, automatically&n; * applies the mst fixups to the page before finally marking it uptodate and&n; * unlocking it.&n; *&n; * Return 0 on success and -errno on error.&n; *&n; * Contains an adapted version of fs/buffer.c::block_read_full_page().&n; */
+multiline_comment|/**&n; * ntfs_read_block - fill a @page of an address space with data&n; * @page:&t;page cache page to fill with data&n; *&n; * Fill the page @page of the address space belonging to the @page-&gt;host inode.&n; * We read each buffer asynchronously and when all buffers are read in, our io&n; * completion handler ntfs_end_buffer_read_async(), if required, automatically&n; * applies the mst fixups to the page before finally marking it uptodate and&n; * unlocking it.&n; *&n; * We only enforce allocated_size limit because i_size is checked for in&n; * generic_file_read().&n; *&n; * Return 0 on success and -errno on error.&n; *&n; * Contains an adapted version of fs/buffer.c::block_read_full_page().&n; */
 DECL|function|ntfs_read_block
 r_static
 r_int
@@ -705,10 +705,18 @@ op_logical_neg
 id|bh
 )paren
 )paren
+(brace
+id|unlock_page
+c_func
+(paren
+id|page
+)paren
+suffix:semicolon
 r_return
 op_minus
 id|ENOMEM
 suffix:semicolon
+)brace
 id|iblock
 op_assign
 id|page-&gt;index
@@ -1366,10 +1374,7 @@ id|err
 op_assign
 l_int|0
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|unlikely
+id|BUG_ON
 c_func
 (paren
 op_logical_neg
@@ -1379,13 +1384,28 @@ c_func
 id|page
 )paren
 )paren
+suffix:semicolon
+multiline_comment|/*&n;&t; * This can potentially happen because we clear PageUptodate() during&n;&t; * ntfs_writepage() of MstProtected() attributes.&n;&t; */
+r_if
+c_cond
+(paren
+id|PageUptodate
+c_func
+(paren
+id|page
 )paren
-id|PAGE_BUG
+)paren
+(brace
+id|unlock_page
 c_func
 (paren
 id|page
 )paren
 suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+)brace
 id|ni
 op_assign
 id|NTFS_I

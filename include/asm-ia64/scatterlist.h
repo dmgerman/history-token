@@ -6,13 +6,6 @@ DECL|struct|scatterlist
 r_struct
 id|scatterlist
 (brace
-DECL|member|orig_address
-r_char
-op_star
-id|orig_address
-suffix:semicolon
-multiline_comment|/* for use by swiotlb */
-multiline_comment|/* These two are only valid if ADDRESS member of this struct is NULL.  */
 DECL|member|page
 r_struct
 id|page
@@ -30,6 +23,15 @@ r_int
 id|length
 suffix:semicolon
 multiline_comment|/* buffer length */
+DECL|member|dma_address
+id|dma_addr_t
+id|dma_address
+suffix:semicolon
+DECL|member|dma_length
+r_int
+r_int
+id|dma_length
+suffix:semicolon
 )brace
 suffix:semicolon
 DECL|macro|ISA_DMA_THRESHOLD

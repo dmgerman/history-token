@@ -147,8 +147,9 @@ id|vm_operations_struct
 id|ia32_shared_page_vm_ops
 op_assign
 (brace
+dot
 id|nopage
-suffix:colon
+op_assign
 id|ia32_install_shared_page
 )brace
 suffix:semicolon

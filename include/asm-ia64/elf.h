@@ -1,7 +1,7 @@
 macro_line|#ifndef _ASM_IA64_ELF_H
 DECL|macro|_ASM_IA64_ELF_H
 mdefine_line|#define _ASM_IA64_ELF_H
-multiline_comment|/*&n; * ELF archtecture specific definitions.&n; *&n; * Copyright (C) 1998, 1999, 2002 Hewlett-Packard Co&n; *&t;David Mosberger-Tang &lt;davidm@hpl.hp.com&gt;&n; */
+multiline_comment|/*&n; * ELF-specific definitions.&n; *&n; * Copyright (C) 1998, 1999, 2002 Hewlett-Packard Co&n; *&t;David Mosberger-Tang &lt;davidm@hpl.hp.com&gt;&n; */
 macro_line|#include &lt;asm/fpu.h&gt;
 macro_line|#include &lt;asm/page.h&gt;
 multiline_comment|/*&n; * This is used to ensure we don&squot;t load something for the wrong architecture.&n; */

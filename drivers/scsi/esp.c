@@ -1567,10 +1567,6 @@ id|esp
 )paren
 (brace
 r_int
-r_int
-id|flags
-suffix:semicolon
-r_int
 id|can_do_burst16
 comma
 id|can_do_burst32

@@ -5,10 +5,10 @@ macro_line|#include &lt;net/datalink.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/in.h&gt;
 multiline_comment|/*&n; *&t;Place an 802.3 header on a packet. The driver will do the mac&n; *&t;addresses, we just need to give it the buffer length.&n; */
-DECL|function|p8023_datalink_header
+DECL|function|p8023_request
 r_static
-r_void
-id|p8023_datalink_header
+r_int
+id|p8023_request
 c_func
 (paren
 r_struct
@@ -50,6 +50,13 @@ comma
 l_int|NULL
 comma
 id|skb-&gt;len
+)paren
+suffix:semicolon
+r_return
+id|dev_queue_xmit
+c_func
+(paren
+id|skb
 )paren
 suffix:semicolon
 )brace
@@ -96,21 +103,13 @@ op_ne
 l_int|NULL
 )paren
 (brace
-id|proto-&gt;type_len
-op_assign
-l_int|0
-suffix:semicolon
 id|proto-&gt;header_length
 op_assign
 l_int|0
 suffix:semicolon
-id|proto-&gt;datalink_header
+id|proto-&gt;request
 op_assign
-id|p8023_datalink_header
-suffix:semicolon
-id|proto-&gt;string_name
-op_assign
-l_string|&quot;802.3&quot;
+id|p8023_request
 suffix:semicolon
 )brace
 r_return

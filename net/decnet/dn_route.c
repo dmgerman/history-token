@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * DECnet       An implementation of the DECnet protocol suite for the LINUX&n; *              operating system.  DECnet is implemented using the  BSD Socket&n; *              interface as the means of communication with the user level.&n; *&n; *              DECnet Routing Functions (Endnode and Router)&n; *&n; * Authors:     Steve Whitehouse &lt;SteveW@ACM.org&gt;&n; *              Eduardo Marcelo Serrat &lt;emserrat@geocities.com&gt;&n; *&n; * Changes:&n; *              Steve Whitehouse : Fixes to allow &quot;intra-ethernet&quot; and&n; *                                 &quot;return-to-sender&quot; bits on outgoing&n; *                                 packets.&n; *&t;&t;Steve Whitehouse : Timeouts for cached routes.&n; *              Steve Whitehouse : Use dst cache for input routes too.&n; *              Steve Whitehouse : Fixed error values in dn_send_skb.&n; *              Steve Whitehouse : Rework routing functions to better fit&n; *                                 DECnet routing design&n; *              Alexey Kuznetsov : New SMP locking&n; *              Steve Whitehouse : More SMP locking changes &amp; dn_cache_dump()&n; *              Steve Whitehouse : Prerouting NF hook, now really is prerouting.&n; *&t;&t;&t;&t;   Fixed possible skb leak in rtnetlink funcs.&n; *              Steve Whitehouse : Dave Miller&squot;s dynamic hash table sizing and&n; *                                 Alexey Kuznetsov&squot;s finer grained locking&n; *                                 from ipv4/route.c.&n; *              Steve Whitehouse : Routing is now starting to look like a&n; *                                 sensible set of code now, mainly due to&n; *                                 my copying the IPv4 routing code. The&n; *                                 hooks here are modified and will continue&n; *                                 to evolve for a while.&n; *              Steve Whitehouse : Real SMP at last :-) Also new netfilter&n; *                                 stuff. Look out raw sockets your days&n; *                                 are numbered!&n; *              Steve Whitehouse : Added return-to-sender functions. Added&n; *                                 backlog congestion level return codes.&n; *                                 &n; */
+multiline_comment|/*&n; * DECnet       An implementation of the DECnet protocol suite for the LINUX&n; *              operating system.  DECnet is implemented using the  BSD Socket&n; *              interface as the means of communication with the user level.&n; *&n; *              DECnet Routing Functions (Endnode and Router)&n; *&n; * Authors:     Steve Whitehouse &lt;SteveW@ACM.org&gt;&n; *              Eduardo Marcelo Serrat &lt;emserrat@geocities.com&gt;&n; *&n; * Changes:&n; *              Steve Whitehouse : Fixes to allow &quot;intra-ethernet&quot; and&n; *                                 &quot;return-to-sender&quot; bits on outgoing&n; *                                 packets.&n; *&t;&t;Steve Whitehouse : Timeouts for cached routes.&n; *              Steve Whitehouse : Use dst cache for input routes too.&n; *              Steve Whitehouse : Fixed error values in dn_send_skb.&n; *              Steve Whitehouse : Rework routing functions to better fit&n; *                                 DECnet routing design&n; *              Alexey Kuznetsov : New SMP locking&n; *              Steve Whitehouse : More SMP locking changes &amp; dn_cache_dump()&n; *              Steve Whitehouse : Prerouting NF hook, now really is prerouting.&n; *&t;&t;&t;&t;   Fixed possible skb leak in rtnetlink funcs.&n; *              Steve Whitehouse : Dave Miller&squot;s dynamic hash table sizing and&n; *                                 Alexey Kuznetsov&squot;s finer grained locking&n; *                                 from ipv4/route.c.&n; *              Steve Whitehouse : Routing is now starting to look like a&n; *                                 sensible set of code now, mainly due to&n; *                                 my copying the IPv4 routing code. The&n; *                                 hooks here are modified and will continue&n; *                                 to evolve for a while.&n; *              Steve Whitehouse : Real SMP at last :-) Also new netfilter&n; *                                 stuff. Look out raw sockets your days&n; *                                 are numbered!&n; *              Steve Whitehouse : Added return-to-sender functions. Added&n; *                                 backlog congestion level return codes.&n; *&t;&t;Steve Whitehouse : Fixed bug where routes were set up with&n; *                                 no ref count on net devices.&n; *                                 &n; */
 multiline_comment|/******************************************************************************&n;    (c) 1995-1998 E.M. Serrat&t;&t;emserrat@geocities.com&n;    &n;    This program is free software; you can redistribute it and/or modify&n;    it under the terms of the GNU General Public License as published by&n;    the Free Software Foundation; either version 2 of the License, or&n;    any later version.&n;&n;    This program is distributed in the hope that it will be useful,&n;    but WITHOUT ANY WARRANTY; without even the implied warranty of&n;    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n;    GNU General Public License for more details.&n;*******************************************************************************/
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
@@ -3220,6 +3220,17 @@ id|neigh-&gt;dev
 suffix:colon
 l_int|NULL
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|rt-&gt;u.dst.dev
+)paren
+id|dev_hold
+c_func
+(paren
+id|rt-&gt;u.dst.dev
+)paren
+suffix:semicolon
 id|rt-&gt;u.dst.lastuse
 op_assign
 id|jiffies
@@ -3981,6 +3992,17 @@ c_cond
 id|neigh-&gt;dev
 suffix:colon
 l_int|NULL
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|rt-&gt;u.dst.dev
+)paren
+id|dev_hold
+c_func
+(paren
+id|rt-&gt;u.dst.dev
+)paren
 suffix:semicolon
 id|rt-&gt;u.dst.lastuse
 op_assign

@@ -655,7 +655,7 @@ id|cpu_gdt_table
 id|cpu
 )braket
 (braket
-id|TSS_ENTRY
+id|GDT_ENTRY_TSS
 )braket
 dot
 id|b

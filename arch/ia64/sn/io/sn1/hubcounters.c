@@ -49,8 +49,9 @@ id|file_operations
 id|hub_mon_fops
 op_assign
 (brace
+dot
 id|ioctl
-suffix:colon
+op_assign
 id|hubstats_ioctl
 comma
 )brace

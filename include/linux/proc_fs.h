@@ -212,8 +212,6 @@ id|rdev
 suffix:semicolon
 )brace
 suffix:semicolon
-DECL|macro|PROC_INODE_PROPER
-mdefine_line|#define PROC_INODE_PROPER(inode) ((inode)-&gt;i_ino &amp; ~0xffff)
 macro_line|#ifdef CONFIG_PROC_FS
 r_extern
 r_struct
@@ -281,16 +279,6 @@ r_struct
 id|dentry
 op_star
 id|dentry
-)paren
-suffix:semicolon
-r_void
-id|proc_pid_delete_inode
-c_func
-(paren
-r_struct
-id|inode
-op_star
-id|inode
 )paren
 suffix:semicolon
 r_int

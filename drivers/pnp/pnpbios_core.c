@@ -133,7 +133,7 @@ l_int|NULL
 suffix:semicolon
 multiline_comment|/* The PnP BIOS entries in the GDT */
 DECL|macro|PNP_GDT
-mdefine_line|#define PNP_GDT    (0x0060)
+mdefine_line|#define PNP_GDT    (GDT_ENTRY_PNPBIOS_BASE * 8)
 DECL|macro|PNP_CS32
 mdefine_line|#define PNP_CS32   (PNP_GDT+0x00)&t;/* segment for calling fn */
 DECL|macro|PNP_CS16

@@ -20,16 +20,6 @@ id|ebus_chain
 op_assign
 l_int|0
 suffix:semicolon
-macro_line|#ifdef CONFIG_SUN_AUXIO
-r_extern
-r_void
-id|auxio_probe
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-macro_line|#endif
 r_extern
 r_void
 id|rs_init
@@ -1779,12 +1769,5 @@ c_func
 (paren
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_SUN_AUXIO
-id|auxio_probe
-c_func
-(paren
-)paren
-suffix:semicolon
-macro_line|#endif
 )brace
 eof

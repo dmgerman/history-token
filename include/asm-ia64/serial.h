@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * include/asm-ia64/serial.h&n; * &n; * Derived from the i386 version.&n; */
+multiline_comment|/*&n; * include/asm-ia64/serial.h&n; *&n; * Derived from the i386 version.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 multiline_comment|/*&n; * This assumes you have a 1.8432 MHz clock for your UART.&n; *&n; * It&squot;d be nice if someone built a serial card with a 24.576 MHz&n; * clock, since the 16550A is capable of handling a top speed of 1.5&n; * megabits/second; but this requires the faster clock.&n; */
 DECL|macro|BASE_BAUD
@@ -52,13 +52,6 @@ macro_line|#else
 DECL|macro|HUB6_SERIAL_PORT_DFNS
 mdefine_line|#define HUB6_SERIAL_PORT_DFNS
 macro_line|#endif
-macro_line|#ifdef CONFIG_MCA
-DECL|macro|MCA_SERIAL_PORT_DFNS
-mdefine_line|#define MCA_SERIAL_PORT_DFNS&t;&t;&t;&bslash;&n;&t;{ 0, BASE_BAUD, 0x3220, 3, STD_COM_FLAGS },&t;&bslash;&n;&t;{ 0, BASE_BAUD, 0x3228, 3, STD_COM_FLAGS },&t;&bslash;&n;&t;{ 0, BASE_BAUD, 0x4220, 3, STD_COM_FLAGS },&t;&bslash;&n;&t;{ 0, BASE_BAUD, 0x4228, 3, STD_COM_FLAGS },&t;&bslash;&n;&t;{ 0, BASE_BAUD, 0x5220, 3, STD_COM_FLAGS },&t;&bslash;&n;&t;{ 0, BASE_BAUD, 0x5228, 3, STD_COM_FLAGS },
-macro_line|#else
-DECL|macro|MCA_SERIAL_PORT_DFNS
-mdefine_line|#define MCA_SERIAL_PORT_DFNS
-macro_line|#endif
 DECL|macro|SERIAL_PORT_DFNS
-mdefine_line|#define SERIAL_PORT_DFNS&t;&t;&bslash;&n;&t;STD_SERIAL_PORT_DEFNS&t;&t;&bslash;&n;&t;EXTRA_SERIAL_PORT_DEFNS&t;&t;&bslash;&n;&t;HUB6_SERIAL_PORT_DFNS&t;&t;&bslash;&n;&t;MCA_SERIAL_PORT_DFNS
+mdefine_line|#define SERIAL_PORT_DFNS&t;&t;&bslash;&n;&t;STD_SERIAL_PORT_DEFNS&t;&t;&bslash;&n;&t;EXTRA_SERIAL_PORT_DEFNS&t;&t;&bslash;&n;&t;HUB6_SERIAL_PORT_DFNS
 eof

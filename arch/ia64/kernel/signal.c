@@ -713,6 +713,9 @@ r_return
 op_minus
 id|EFAULT
 suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
 )brace
 r_else
 (brace

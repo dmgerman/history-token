@@ -336,7 +336,8 @@ r_char
 id|character
 )paren
 suffix:semicolon
-multiline_comment|/* Prom&squot;s internal printf routine, don&squot;t use in kernel/boot code. */
+multiline_comment|/* Prom&squot;s internal routines, don&squot;t use in kernel/boot code. */
+r_extern
 r_void
 id|prom_printf
 c_func
@@ -348,6 +349,21 @@ comma
 dot
 dot
 dot
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|prom_write
+c_func
+(paren
+r_const
+r_char
+op_star
+id|buf
+comma
+r_int
+r_int
+id|len
 )paren
 suffix:semicolon
 multiline_comment|/* Query for input device type */

@@ -31,13 +31,6 @@ DECL|macro|LLC_GLOBAL_DEFAULT_MAX_NBR_SAPS
 mdefine_line|#define LLC_GLOBAL_DEFAULT_MAX_NBR_SAPS&t;&t;4
 DECL|macro|LLC_GLOBAL_DEFAULT_MAX_NBR_CONNS
 mdefine_line|#define LLC_GLOBAL_DEFAULT_MAX_NBR_CONNS&t;64
-r_extern
-r_struct
-id|llc_prim_if_block
-id|llc_ind_prim
-comma
-id|llc_cfm_prim
-suffix:semicolon
 multiline_comment|/* LLC station component (SAP and connection resource manager) */
 multiline_comment|/* Station component; one per adapter */
 DECL|struct|llc_station

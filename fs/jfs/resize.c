@@ -802,8 +802,16 @@ c_func
 id|KERN_ERR
 l_string|&quot;jfs_extendfs: mapSize (0x%llx) &gt; t64 (0x%llx)&bslash;n&quot;
 comma
+(paren
+r_int
+r_int
+)paren
 id|mapSize
 comma
+(paren
+r_int
+r_int
+)paren
 id|t64
 )paren
 suffix:semicolon

@@ -3880,7 +3880,7 @@ op_increment
 (brace
 id|hd_gendisk
 (braket
-id|i
+id|drive
 )braket
 dot
 id|nr_real
