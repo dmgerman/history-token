@@ -183,44 +183,6 @@ r_struct
 id|list_head
 id|list
 suffix:semicolon
-multiline_comment|/* reference count */
-DECL|member|use
-id|atomic_t
-id|use
-suffix:semicolon
-multiline_comment|/* expectation list for this master */
-DECL|member|expected_list
-r_struct
-id|list_head
-id|expected_list
-suffix:semicolon
-multiline_comment|/* The conntrack of the master connection */
-DECL|member|expectant
-r_struct
-id|ip_conntrack
-op_star
-id|expectant
-suffix:semicolon
-multiline_comment|/* The conntrack of the sibling connection, set after&n;&t; * expectation arrived */
-DECL|member|sibling
-r_struct
-id|ip_conntrack
-op_star
-id|sibling
-suffix:semicolon
-multiline_comment|/* Tuple saved for conntrack */
-DECL|member|ct_tuple
-r_struct
-id|ip_conntrack_tuple
-id|ct_tuple
-suffix:semicolon
-multiline_comment|/* Timer function; deletes the expectation. */
-DECL|member|timeout
-r_struct
-id|timer_list
-id|timeout
-suffix:semicolon
-multiline_comment|/* Data filled out by the conntrack helpers follow: */
 multiline_comment|/* We expect this tuple, with the following mask */
 DECL|member|tuple
 DECL|member|mask
@@ -242,7 +204,25 @@ r_struct
 id|ip_conntrack
 op_star
 r_new
+comma
+r_struct
+id|ip_conntrack_expect
+op_star
+id|this
 )paren
+suffix:semicolon
+multiline_comment|/* The conntrack of the master connection */
+DECL|member|master
+r_struct
+id|ip_conntrack
+op_star
+id|master
+suffix:semicolon
+multiline_comment|/* Timer function; deletes the expectation. */
+DECL|member|timeout
+r_struct
+id|timer_list
+id|timeout
 suffix:semicolon
 macro_line|#ifdef CONFIG_IP_NF_NAT_NEEDED
 multiline_comment|/* This is the original per-proto part, used to map the&n;&t; * expected connection the way the recipient expects. */
@@ -258,11 +238,6 @@ id|ip_conntrack_dir
 id|dir
 suffix:semicolon
 macro_line|#endif
-DECL|member|proto
-r_union
-id|ip_conntrack_expect_proto
-id|proto
-suffix:semicolon
 )brace
 suffix:semicolon
 DECL|struct|ip_conntrack_counter
@@ -315,24 +290,18 @@ id|IP_CT_DIR_MAX
 )braket
 suffix:semicolon
 macro_line|#endif
-multiline_comment|/* If we&squot;re expecting another related connection, this will be&n;           in expected linked list */
-DECL|member|sibling_list
+multiline_comment|/* If we were expected by an expectation, this will be it */
+DECL|member|master
 r_struct
-id|list_head
-id|sibling_list
+id|ip_conntrack
+op_star
+id|master
 suffix:semicolon
 multiline_comment|/* Current number of expected connections */
 DECL|member|expecting
 r_int
 r_int
 id|expecting
-suffix:semicolon
-multiline_comment|/* If we were expected by an expectation, this will be it */
-DECL|member|master
-r_struct
-id|ip_conntrack_expect
-op_star
-id|master
 suffix:semicolon
 multiline_comment|/* Helper, if any. */
 DECL|member|helper
@@ -392,7 +361,7 @@ suffix:semicolon
 suffix:semicolon
 multiline_comment|/* get master conntrack via master expectation */
 DECL|macro|master_ct
-mdefine_line|#define master_ct(conntr) (conntr-&gt;master ? conntr-&gt;master-&gt;expectant : NULL)
+mdefine_line|#define master_ct(conntr) (conntr-&gt;master)
 multiline_comment|/* Alter reply tuple (maybe alter helper). */
 r_extern
 r_void
@@ -477,31 +446,6 @@ r_struct
 id|ip_conntrack
 op_star
 id|ct
-)paren
-suffix:semicolon
-multiline_comment|/* find unconfirmed expectation based on tuple */
-r_struct
-id|ip_conntrack_expect
-op_star
-id|ip_conntrack_expect_find_get
-c_func
-(paren
-r_const
-r_struct
-id|ip_conntrack_tuple
-op_star
-id|tuple
-)paren
-suffix:semicolon
-multiline_comment|/* decrement reference count on an expectation */
-r_void
-id|ip_conntrack_expect_put
-c_func
-(paren
-r_struct
-id|ip_conntrack_expect
-op_star
-id|exp
 )paren
 suffix:semicolon
 multiline_comment|/* call to create an explicit dependency on ip_conntrack. */

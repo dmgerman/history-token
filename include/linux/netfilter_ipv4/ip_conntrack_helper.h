@@ -6,9 +6,6 @@ macro_line|#include &lt;linux/netfilter_ipv4/ip_conntrack.h&gt;
 r_struct
 id|module
 suffix:semicolon
-multiline_comment|/* Reuse expectation when max_expected reached */
-DECL|macro|IP_CT_HELPER_F_REUSE_EXPECT
-mdefine_line|#define IP_CT_HELPER_F_REUSE_EXPECT&t;0x01
 DECL|struct|ip_conntrack_helper
 r_struct
 id|ip_conntrack_helper
@@ -26,12 +23,6 @@ op_star
 id|name
 suffix:semicolon
 multiline_comment|/* name of the module */
-DECL|member|flags
-r_int
-r_char
-id|flags
-suffix:semicolon
-multiline_comment|/* Flags (see above) */
 DECL|member|me
 r_struct
 id|module
@@ -133,6 +124,17 @@ c_func
 r_void
 )paren
 suffix:semicolon
+r_extern
+r_void
+id|ip_conntrack_expect_free
+c_func
+(paren
+r_struct
+id|ip_conntrack_expect
+op_star
+id|exp
+)paren
+suffix:semicolon
 multiline_comment|/* Add an expected connection: can have more than one per connection */
 r_extern
 r_int
@@ -143,11 +145,6 @@ r_struct
 id|ip_conntrack_expect
 op_star
 id|exp
-comma
-r_struct
-id|ip_conntrack
-op_star
-id|related_to
 )paren
 suffix:semicolon
 r_extern

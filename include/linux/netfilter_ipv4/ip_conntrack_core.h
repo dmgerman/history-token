@@ -222,12 +222,5 @@ c_func
 id|ip_conntrack_lock
 )paren
 suffix:semicolon
-DECL|variable|ip_conntrack_expect_tuple_lock
-id|DECLARE_RWLOCK_EXTERN
-c_func
-(paren
-id|ip_conntrack_expect_tuple_lock
-)paren
-suffix:semicolon
 macro_line|#endif /* _IP_CONNTRACK_CORE_H */
 eof

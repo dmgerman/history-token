@@ -115,6 +115,11 @@ r_struct
 id|ip_conntrack
 op_star
 id|ct
+comma
+r_struct
+id|ip_conntrack_expect
+op_star
+id|this
 )paren
 suffix:semicolon
 macro_line|#endif

@@ -19,11 +19,6 @@ op_star
 op_star
 id|pskb
 comma
-r_struct
-id|ip_conntrack
-op_star
-id|ct
-comma
 r_enum
 id|ip_conntrack_info
 id|ctinfo

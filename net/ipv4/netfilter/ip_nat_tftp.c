@@ -41,11 +41,6 @@ op_star
 op_star
 id|pskb
 comma
-r_struct
-id|ip_conntrack
-op_star
-id|ct
-comma
 r_enum
 id|ip_conntrack_info
 id|ctinfo
@@ -75,14 +70,12 @@ id|ip_conntrack_expect_related
 c_func
 (paren
 id|exp
-comma
-id|ct
 )paren
 op_ne
 l_int|0
 )paren
 (brace
-id|ip_conntrack_expect_put
+id|ip_conntrack_expect_free
 c_func
 (paren
 id|exp

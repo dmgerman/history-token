@@ -1892,6 +1892,11 @@ r_struct
 id|ip_conntrack
 op_star
 id|ct
+comma
+r_struct
+id|ip_conntrack_expect
+op_star
+id|this
 )paren
 (brace
 r_struct
@@ -1900,7 +1905,7 @@ op_star
 id|master
 op_assign
 op_amp
-id|ct-&gt;master-&gt;expectant-&gt;nat.info
+id|ct-&gt;master-&gt;nat.info
 suffix:semicolon
 multiline_comment|/* This must be a fresh one. */
 id|BUG_ON
@@ -1914,7 +1919,7 @@ c_func
 (paren
 id|master
 comma
-id|ct-&gt;master
+id|this
 comma
 id|ct
 )paren
