@@ -137,6 +137,7 @@ c_func
 (paren
 (paren
 id|drm_agp_info_t
+id|__user
 op_star
 )paren
 id|arg
@@ -421,6 +422,7 @@ id|mode
 comma
 (paren
 id|drm_agp_mode_t
+id|__user
 op_star
 )paren
 id|arg
@@ -517,6 +519,18 @@ suffix:semicolon
 id|u32
 id|type
 suffix:semicolon
+id|drm_agp_buffer_t
+id|__user
+op_star
+id|argp
+op_assign
+(paren
+r_void
+id|__user
+op_star
+)paren
+id|arg
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -539,11 +553,7 @@ c_func
 op_amp
 id|request
 comma
-(paren
-id|drm_agp_buffer_t
-op_star
-)paren
-id|arg
+id|argp
 comma
 r_sizeof
 (paren
@@ -714,11 +724,7 @@ c_cond
 id|copy_to_user
 c_func
 (paren
-(paren
-id|drm_agp_buffer_t
-op_star
-)paren
-id|arg
+id|argp
 comma
 op_amp
 id|request
@@ -902,6 +908,7 @@ id|request
 comma
 (paren
 id|drm_agp_binding_t
+id|__user
 op_star
 )paren
 id|arg
@@ -1055,6 +1062,7 @@ id|request
 comma
 (paren
 id|drm_agp_binding_t
+id|__user
 op_star
 )paren
 id|arg
@@ -1229,6 +1237,7 @@ id|request
 comma
 (paren
 id|drm_agp_buffer_t
+id|__user
 op_star
 )paren
 id|arg

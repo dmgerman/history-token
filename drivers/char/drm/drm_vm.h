@@ -154,7 +154,7 @@ id|page
 op_star
 id|page
 suffix:semicolon
-macro_line|#if __alpha__
+macro_line|#ifdef __alpha__
 multiline_comment|/*&n;                 * Adjust to a bus-relative address&n;                 */
 id|baddr
 op_sub_assign

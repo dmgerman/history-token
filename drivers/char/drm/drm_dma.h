@@ -760,6 +760,7 @@ id|ctl
 comma
 (paren
 id|drm_control_t
+id|__user
 op_star
 )paren
 id|arg
