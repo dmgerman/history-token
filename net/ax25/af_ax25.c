@@ -653,6 +653,7 @@ id|sk
 op_assign
 id|s-&gt;sk
 suffix:semicolon
+multiline_comment|/* XXX Sleeps with spinlock held, use refcounts instead. XXX */
 id|lock_sock
 c_func
 (paren
@@ -663,8 +664,6 @@ r_break
 suffix:semicolon
 )brace
 )brace
-id|out
-suffix:colon
 id|spin_unlock_bh
 c_func
 (paren
@@ -673,7 +672,7 @@ id|ax25_list_lock
 )paren
 suffix:semicolon
 r_return
-l_int|NULL
+id|sk
 suffix:semicolon
 )brace
 multiline_comment|/*&n; *&t;Find an AX.25 control block given both ends. It will only pick up&n; *&t;floating AX.25 control blocks or non Raw socket bound control blocks.&n; */
