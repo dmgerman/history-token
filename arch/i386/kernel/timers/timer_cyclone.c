@@ -13,15 +13,6 @@ r_extern
 id|spinlock_t
 id|i8253_lock
 suffix:semicolon
-r_extern
-r_int
-r_int
-id|calibrate_tsc
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
 multiline_comment|/* Number of usecs that the last interrupt was delayed */
 DECL|variable|delay_at_last_interrupt
 r_static
