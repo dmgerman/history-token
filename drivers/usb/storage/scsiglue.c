@@ -36,6 +36,19 @@ op_star
 id|sdev
 )paren
 (brace
+multiline_comment|/* Scatter-gather buffers (all but the last) must have a length&n;&t; * divisible by the bulk maxpacket size.  Otherwise a data packet&n;&t; * would end up being short, causing a premature end to the data&n;&t; * transfer.  Since high-speed bulk pipes have a maxpacket size&n;&t; * of 512, we&squot;ll use that as the scsi device queue&squot;s DMA alignment&n;&t; * mask.  Guaranteeing proper alignment of the first buffer will&n;&t; * have the desired effect because, except at the beginning and&n;&t; * the end, scatter-gather buffers follow page boundaries. */
+id|blk_queue_dma_alignment
+c_func
+(paren
+id|sdev-&gt;request_queue
+comma
+(paren
+l_int|512
+op_minus
+l_int|1
+)paren
+)paren
+suffix:semicolon
 multiline_comment|/* this is to satisify the compiler, tho I don&squot;t think the &n;&t; * return code is ever checked anywhere. */
 r_return
 l_int|0
