@@ -192,6 +192,7 @@ r_void
 op_star
 id|to
 comma
+r_const
 r_void
 op_star
 id|from
@@ -214,6 +215,7 @@ id|__user
 op_star
 id|to
 comma
+r_const
 r_void
 op_star
 id|from
@@ -273,6 +275,7 @@ id|__user
 op_star
 id|to
 comma
+r_const
 r_void
 op_star
 id|from
@@ -310,6 +313,7 @@ r_void
 op_star
 id|to
 comma
+r_const
 r_void
 id|__user
 op_star
@@ -369,6 +373,7 @@ r_void
 op_star
 id|to
 comma
+r_const
 r_void
 id|__user
 op_star
