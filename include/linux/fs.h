@@ -219,7 +219,7 @@ mdefine_line|#define BLKROGET   _IO(0x12,94)&t;/* get read-only status (0 = read
 DECL|macro|BLKRRPART
 mdefine_line|#define BLKRRPART  _IO(0x12,95)&t;/* re-read partition table */
 DECL|macro|BLKGETSIZE
-mdefine_line|#define BLKGETSIZE _IO(0x12,96)&t;/* return device size */
+mdefine_line|#define BLKGETSIZE _IO(0x12,96)&t;/* return device size /512 (long *arg) */
 DECL|macro|BLKFLSBUF
 mdefine_line|#define BLKFLSBUF  _IO(0x12,97)&t;/* flush buffer cache */
 DECL|macro|BLKRASET
@@ -247,6 +247,8 @@ DECL|macro|BLKBSZGET
 mdefine_line|#define BLKBSZGET  _IOR(0x12,112,sizeof(int))
 DECL|macro|BLKBSZSET
 mdefine_line|#define BLKBSZSET  _IOW(0x12,113,sizeof(int))
+DECL|macro|BLKGETSIZE64
+mdefine_line|#define BLKGETSIZE64 _IOR(0x12,114,sizeof(u64))&t;/* return device size in bytes (u64 *arg) */
 DECL|macro|BMAP_IOCTL
 mdefine_line|#define BMAP_IOCTL 1&t;&t;/* obsolete - kept for compatibility */
 DECL|macro|FIBMAP
@@ -6604,7 +6606,7 @@ op_star
 )paren
 suffix:semicolon
 r_extern
-r_void
+r_int
 id|inode_setattr
 c_func
 (paren

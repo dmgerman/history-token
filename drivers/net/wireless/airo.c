@@ -8373,7 +8373,7 @@ suffix:semicolon
 singleline_comment|// length for remaining part of rid
 id|len
 op_assign
-id|min
+id|min_t
 c_func
 (paren
 r_int
@@ -19799,7 +19799,7 @@ id|comp-&gt;data
 comma
 id|iobuf
 comma
-id|min
+id|min_t
 c_func
 (paren
 r_int
@@ -20049,7 +20049,7 @@ id|comp-&gt;data
 comma
 id|iobuf
 comma
-id|min
+id|min_t
 c_func
 (paren
 r_int

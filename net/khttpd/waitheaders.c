@@ -649,7 +649,7 @@ suffix:semicolon
 id|time_Unix2RFC
 c_func
 (paren
-id|min
+id|min_t
 c_func
 (paren
 r_int

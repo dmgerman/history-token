@@ -1224,7 +1224,7 @@ id|flags
 suffix:semicolon
 id|sizetocopy
 op_assign
-id|min
+id|min_t
 c_func
 (paren
 id|u32

@@ -2754,7 +2754,7 @@ id|PAGE_SIZE
 suffix:semicolon
 id|size
 op_assign
-id|min
+id|min_t
 c_func
 (paren
 r_int
@@ -8660,7 +8660,7 @@ suffix:semicolon
 )brace
 id|len
 op_assign
-id|min
+id|min_t
 c_func
 (paren
 r_int
@@ -9141,7 +9141,7 @@ id|tp-&gt;reordering
 suffix:semicolon
 id|len
 op_assign
-id|min
+id|min_t
 c_func
 (paren
 r_int

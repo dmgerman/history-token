@@ -4719,7 +4719,7 @@ OL
 (paren
 id|small_count
 op_assign
-id|min
+id|min_t
 c_func
 (paren
 r_int
@@ -4731,7 +4731,7 @@ op_minus
 id|new_rx_get
 )paren
 comma
-id|min
+id|min_t
 c_func
 (paren
 r_int
@@ -5193,7 +5193,7 @@ OL
 (paren
 id|small_count
 op_assign
-id|min
+id|min_t
 c_func
 (paren
 r_int
@@ -5205,7 +5205,7 @@ op_minus
 id|tx_put
 )paren
 comma
-id|min
+id|min_t
 c_func
 (paren
 r_int
@@ -5217,7 +5217,7 @@ op_minus
 id|info-&gt;xmit_tail
 )paren
 comma
-id|min
+id|min_t
 c_func
 (paren
 r_int

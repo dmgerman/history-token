@@ -2937,7 +2937,7 @@ id|done
 suffix:semicolon
 id|want
 op_assign
-id|min
+id|min_t
 c_func
 (paren
 r_int
@@ -3078,7 +3078,7 @@ id|done
 suffix:semicolon
 id|want
 op_assign
-id|min
+id|min_t
 c_func
 (paren
 r_int
@@ -3231,7 +3231,7 @@ id|avail
 (brace
 id|want
 op_assign
-id|min
+id|min_t
 c_func
 (paren
 r_int
@@ -4302,7 +4302,7 @@ c_func
 id|sk
 )paren
 OL
-id|min
+id|min_t
 c_func
 (paren
 r_int

@@ -4132,7 +4132,7 @@ ques
 c_cond
 id|len
 suffix:colon
-id|min
+id|min_t
 c_func
 (paren
 r_int

@@ -928,7 +928,7 @@ id|tp-&gt;ack.pingpong
 multiline_comment|/* Delayed ACK missed: inflate ATO. */
 id|tp-&gt;ack.ato
 op_assign
-id|min
+id|min_t
 c_func
 (paren
 id|u32
@@ -1427,7 +1427,7 @@ id|sk
 comma
 id|TCP_TIME_RETRANS
 comma
-id|min
+id|min_t
 c_func
 (paren
 id|u32
@@ -1453,7 +1453,7 @@ id|out_reset_timer
 suffix:colon
 id|tp-&gt;rto
 op_assign
-id|min
+id|min_t
 c_func
 (paren
 id|u32
@@ -1925,7 +1925,7 @@ op_decrement
 suffix:semicolon
 id|timeo
 op_assign
-id|min
+id|min_t
 c_func
 (paren
 r_int

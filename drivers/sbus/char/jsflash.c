@@ -1520,6 +1520,25 @@ op_star
 id|arg
 )paren
 suffix:semicolon
+r_case
+id|BLKGETSIZE64
+suffix:colon
+r_return
+id|put_user
+c_func
+(paren
+id|jsfd_bytesizes
+(braket
+id|dev
+)braket
+comma
+(paren
+id|u64
+op_star
+)paren
+id|arg
+)paren
+suffix:semicolon
 macro_line|#if 0
 r_case
 id|BLKROSET

@@ -900,7 +900,7 @@ r_do
 singleline_comment|// loop, never allocate or transfer more than 64k at once (min(128k, 255*info-&gt;ssize) is the real limit)
 id|len
 op_assign
-id|min
+id|min_t
 c_func
 (paren
 r_int
@@ -1453,7 +1453,7 @@ r_do
 singleline_comment|// loop, never allocate or transfer more than 64k at once (min(128k, 255*info-&gt;ssize) is the real limit)
 id|len
 op_assign
-id|min
+id|min_t
 c_func
 (paren
 r_int

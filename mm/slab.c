@@ -5,12 +5,21 @@ macro_line|#include&t;&lt;linux/interrupt.h&gt;
 macro_line|#include&t;&lt;linux/init.h&gt;
 macro_line|#include&t;&lt;asm/uaccess.h&gt;
 multiline_comment|/*&n; * DEBUG&t;- 1 for kmem_cache_create() to honour; SLAB_DEBUG_INITIAL,&n; *&t;&t;  SLAB_RED_ZONE &amp; SLAB_POISON.&n; *&t;&t;  0 for faster, smaller code (especially in the critical paths).&n; *&n; * STATS&t;- 1 to collect stats for /proc/slabinfo.&n; *&t;&t;  0 for faster, smaller code (especially in the critical paths).&n; *&n; * FORCED_DEBUG&t;- 1 enables SLAB_RED_ZONE and SLAB_POISON (if possible)&n; */
+macro_line|#ifdef CONFIG_DEBUG_SLAB
+DECL|macro|DEBUG
+mdefine_line|#define&t;DEBUG&t;&t;1
+DECL|macro|STATS
+mdefine_line|#define&t;STATS&t;&t;1
+DECL|macro|FORCED_DEBUG
+mdefine_line|#define&t;FORCED_DEBUG&t;1
+macro_line|#else
 DECL|macro|DEBUG
 mdefine_line|#define&t;DEBUG&t;&t;0
 DECL|macro|STATS
 mdefine_line|#define&t;STATS&t;&t;0
 DECL|macro|FORCED_DEBUG
 mdefine_line|#define&t;FORCED_DEBUG&t;0
+macro_line|#endif
 multiline_comment|/*&n; * Parameters for kmem_cache_reap&n; */
 DECL|macro|REAP_SCANLEN
 mdefine_line|#define REAP_SCANLEN&t;10
@@ -2384,6 +2393,78 @@ r_return
 id|cachep
 suffix:semicolon
 )brace
+macro_line|#if DEBUG
+multiline_comment|/*&n; * This check if the kmem_cache_t pointer is chained in the cache_cache&n; * list. -arca&n; */
+DECL|function|is_chained_kmem_cache
+r_static
+r_int
+id|is_chained_kmem_cache
+c_func
+(paren
+id|kmem_cache_t
+op_star
+id|cachep
+)paren
+(brace
+r_struct
+id|list_head
+op_star
+id|p
+suffix:semicolon
+r_int
+id|ret
+op_assign
+l_int|0
+suffix:semicolon
+multiline_comment|/* Find the cache in the chain of caches. */
+id|down
+c_func
+(paren
+op_amp
+id|cache_chain_sem
+)paren
+suffix:semicolon
+id|list_for_each
+c_func
+(paren
+id|p
+comma
+op_amp
+id|cache_chain
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|p
+op_eq
+op_amp
+id|cachep-&gt;next
+)paren
+(brace
+id|ret
+op_assign
+l_int|1
+suffix:semicolon
+r_break
+suffix:semicolon
+)brace
+)brace
+id|up
+c_func
+(paren
+op_amp
+id|cache_chain_sem
+)paren
+suffix:semicolon
+r_return
+id|ret
+suffix:semicolon
+)brace
+macro_line|#else
+DECL|macro|is_chained_kmem_cache
+mdefine_line|#define is_chained_kmem_cache(x) 1
+macro_line|#endif
 macro_line|#ifdef CONFIG_SMP
 multiline_comment|/*&n; * Waits for all CPUs to execute func().&n; */
 DECL|function|smp_call_function_all_cpus
@@ -2866,6 +2947,13 @@ op_logical_or
 id|in_interrupt
 c_func
 (paren
+)paren
+op_logical_or
+op_logical_neg
+id|is_chained_kmem_cache
+c_func
+(paren
+id|cachep
 )paren
 )paren
 id|BUG

@@ -451,7 +451,7 @@ id|ch-&gt;debug_size
 suffix:semicolon
 id|to_copy
 op_assign
-id|min
+id|min_t
 c_func
 (paren
 r_int
@@ -463,7 +463,7 @@ id|free
 suffix:colon
 id|ch-&gt;debug_size
 comma
-id|min
+id|min_t
 c_func
 (paren
 r_int
@@ -2872,7 +2872,7 @@ l_int|1
 suffix:semicolon
 )brace
 r_return
-id|min
+id|min_t
 c_func
 (paren
 r_int
@@ -3072,7 +3072,7 @@ l_int|1
 suffix:semicolon
 )brace
 r_return
-id|min
+id|min_t
 c_func
 (paren
 r_int

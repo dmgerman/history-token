@@ -1691,7 +1691,7 @@ id|MIN_LGTH_FR_DATA_CFG
 )paren
 ques
 c_cond
-id|min
+id|min_t
 c_func
 (paren
 r_int
@@ -1708,7 +1708,7 @@ id|FR_HEADER_LEN
 suffix:semicolon
 id|conf-&gt;bps
 op_assign
-id|min
+id|min_t
 c_func
 (paren
 r_int
@@ -1899,13 +1899,13 @@ multiline_comment|/* switch emulation mode */
 multiline_comment|/* For switch emulation we have to create a list of dlci(s)&n;&t;&t; * that will be sent to be global SET_DLCI_CONFIGURATION &n;&t;&t; * command in fr_configure() routine. &n;&t;&t; */
 id|card-&gt;u.f.dlci_num
 op_assign
-id|min
+id|min_t
 c_func
 (paren
 r_int
 r_int
 comma
-id|max
+id|max_t
 c_func
 (paren
 r_int
@@ -1987,7 +1987,7 @@ id|conf-&gt;u.fr.t391
 )paren
 id|u.cfg.t391
 op_assign
-id|min
+id|min_t
 c_func
 (paren
 r_int
@@ -2010,7 +2010,7 @@ id|conf-&gt;u.fr.t392
 )paren
 id|u.cfg.t392
 op_assign
-id|min
+id|min_t
 c_func
 (paren
 r_int
@@ -2033,7 +2033,7 @@ id|conf-&gt;u.fr.n391
 )paren
 id|u.cfg.n391
 op_assign
-id|min
+id|min_t
 c_func
 (paren
 r_int
@@ -2056,7 +2056,7 @@ id|conf-&gt;u.fr.n392
 )paren
 id|u.cfg.n392
 op_assign
-id|min
+id|min_t
 c_func
 (paren
 r_int
@@ -2079,7 +2079,7 @@ id|conf-&gt;u.fr.n393
 )paren
 id|u.cfg.n393
 op_assign
-id|min
+id|min_t
 c_func
 (paren
 r_int
@@ -3137,7 +3137,7 @@ id|conf-&gt;cir
 (brace
 id|chan-&gt;cir
 op_assign
-id|max
+id|max_t
 c_func
 (paren
 r_int
@@ -3145,7 +3145,7 @@ r_int
 comma
 l_int|1
 comma
-id|min
+id|min_t
 c_func
 (paren
 r_int
@@ -3174,7 +3174,7 @@ id|conf-&gt;be
 (brace
 id|chan-&gt;be
 op_assign
-id|max
+id|max_t
 c_func
 (paren
 r_int
@@ -3182,7 +3182,7 @@ r_int
 comma
 l_int|0
 comma
-id|min
+id|min_t
 c_func
 (paren
 r_int

@@ -3227,7 +3227,7 @@ id|inode-&gt;i_size
 (brace
 id|read_len
 op_assign
-id|min
+id|min_t
 c_func
 (paren
 r_int
@@ -6332,7 +6332,7 @@ suffix:semicolon
 )brace
 id|thiscount
 op_assign
-id|min
+id|min_t
 c_func
 (paren
 r_int
@@ -6575,7 +6575,7 @@ id|node-&gt;removed_size
 op_assign
 id|raw_inode.rsize
 op_assign
-id|min
+id|min_t
 c_func
 (paren
 r_int
@@ -6729,7 +6729,7 @@ id|pos
 suffix:semicolon
 id|thiscount
 op_assign
-id|min
+id|min_t
 c_func
 (paren
 r_int

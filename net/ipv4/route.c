@@ -1915,7 +1915,7 @@ l_int|0
 (brace
 id|equilibrium
 op_add_assign
-id|min
+id|min_t
 c_func
 (paren
 r_int
@@ -1948,7 +1948,7 @@ r_else
 multiline_comment|/* We are in dangerous area. Try to reduce cache really&n;&t;&t; * aggressively.&n;&t;&t; */
 id|goal
 op_assign
-id|max
+id|max_t
 c_func
 (paren
 r_int
@@ -5115,7 +5115,7 @@ l_int|0
 )paren
 id|rt-&gt;u.dst.advmss
 op_assign
-id|max
+id|max_t
 c_func
 (paren
 r_int

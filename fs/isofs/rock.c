@@ -1861,13 +1861,6 @@ l_int|2
 )paren
 )paren
 (brace
-id|printk
-c_func
-(paren
-id|KERN_DEBUG
-l_string|&quot;scanning for RockRidge behind XA attributes&bslash;n&quot;
-)paren
-suffix:semicolon
 id|result
 op_assign
 id|parse_rock_ridge_inode_internal

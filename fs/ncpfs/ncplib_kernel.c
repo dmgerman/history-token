@@ -622,7 +622,7 @@ suffix:semicolon
 op_star
 id|target
 op_assign
-id|min
+id|min_t
 c_func
 (paren
 r_int
@@ -775,8 +775,6 @@ op_assign
 id|min
 c_func
 (paren
-r_int
-comma
 id|result
 comma
 id|size

@@ -382,7 +382,7 @@ c_func
 l_int|0
 )paren
 suffix:semicolon
-multiline_comment|/* Here is the parameter block for the bdflush process. If you add or&n; * remove any of the parameters, make sure to update kernel/sysctl.c.&n; */
+multiline_comment|/* Here is the parameter block for the bdflush process. If you add or&n; * remove any of the parameters, make sure to update kernel/sysctl.c&n; * and the documentation at linux/Documentation/sysctl/vm.txt.&n; */
 DECL|macro|N_PARAM
 mdefine_line|#define N_PARAM 9
 multiline_comment|/* The dummy values in this structure are left in there for compatibility&n; * with old programs that play with the /proc entries.&n; */

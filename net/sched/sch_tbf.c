@@ -525,7 +525,7 @@ op_assign
 id|PSCHED_US2JIFFIE
 c_func
 (paren
-id|max
+id|max_t
 c_func
 (paren
 r_int

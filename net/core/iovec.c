@@ -215,7 +215,7 @@ id|iov-&gt;iov_len
 r_int
 id|copy
 op_assign
-id|min
+id|min_t
 c_func
 (paren
 r_int
@@ -310,7 +310,7 @@ id|iov-&gt;iov_len
 r_int
 id|copy
 op_assign
-id|min
+id|min_t
 c_func
 (paren
 r_int
@@ -396,7 +396,7 @@ id|iov-&gt;iov_len
 r_int
 id|copy
 op_assign
-id|min
+id|min_t
 c_func
 (paren
 r_int
@@ -519,7 +519,7 @@ suffix:semicolon
 r_int
 id|copy
 op_assign
-id|min
+id|min_t
 c_func
 (paren
 r_int
@@ -653,7 +653,7 @@ suffix:semicolon
 r_int
 id|copy
 op_assign
-id|min
+id|min_t
 c_func
 (paren
 r_int

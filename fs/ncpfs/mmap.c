@@ -197,7 +197,7 @@ id|bufsize
 suffix:semicolon
 id|to_read
 op_assign
-id|min
+id|min_t
 c_func
 (paren
 r_int

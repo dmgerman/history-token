@@ -625,6 +625,8 @@ id|ATTR_SIZE
 suffix:semicolon
 )brace
 )brace
+id|error
+op_assign
 id|inode_setattr
 c_func
 (paren
@@ -632,6 +634,14 @@ id|inode
 comma
 id|attr
 )paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|error
+)paren
+r_return
+id|error
 suffix:semicolon
 multiline_comment|/* We wouldn&squot;t want to mess with the sizes of the other fork */
 id|attr-&gt;ia_valid

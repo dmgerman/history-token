@@ -4226,7 +4226,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * Handle all mappings that got truncated by a &quot;truncate()&quot;&n; * system call.&n; *&n; * NOTE! We have to be ready to update the memory sharing&n; * between the file and the memory map for a potential last&n; * incomplete page.  Ugly, but necessary.&n; */
 DECL|function|vmtruncate
-r_void
+r_int
 id|vmtruncate
 c_func
 (paren
@@ -4450,6 +4450,7 @@ suffix:semicolon
 id|out
 suffix:colon
 r_return
+l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/* &n; * Primitive swap readahead code. We simply read an aligned block of&n; * (1 &lt;&lt; page_cluster) entries in the swap area. This method is chosen&n; * because it doesn&squot;t cost us any seek time.  We also make sure to queue&n; * the &squot;original&squot; request together with the readahead ones...  &n; */

@@ -193,7 +193,7 @@ suffix:semicolon
 multiline_comment|/* Verify number of cards and allocate adapter data space */
 id|ncards
 op_assign
-id|min
+id|min_t
 c_func
 (paren
 r_int
@@ -205,7 +205,7 @@ id|MAX_CARDS
 suffix:semicolon
 id|ncards
 op_assign
-id|max
+id|max_t
 c_func
 (paren
 r_int

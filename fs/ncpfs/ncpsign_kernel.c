@@ -939,7 +939,7 @@ id|ncp_request_header
 op_minus
 l_int|1
 comma
-id|min
+id|min_t
 c_func
 (paren
 r_int

@@ -5234,7 +5234,7 @@ c_func
 (paren
 id|skb
 comma
-id|min
+id|min_t
 c_func
 (paren
 r_int
@@ -5418,7 +5418,7 @@ c_func
 (paren
 id|skb
 comma
-id|min
+id|min_t
 c_func
 (paren
 r_int

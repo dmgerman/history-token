@@ -2418,7 +2418,7 @@ multiline_comment|/* with next packet */
 multiline_comment|/*&n;&t;  ** How many characters can we move &squot;upstream&squot; ?&n;&t;  **&n;&t;  ** Determine the minimum of the amount of data&n;&t;  ** available and the amount of space in which to&n;&t;  ** put it.&n;&t;  **&n;&t;  ** 1.&t;Get the packet length by masking &squot;len&squot;&n;&t;  **&t;for only the length bits.&n;&t;  ** 2.&t;Available space is [buffer size] - [space used]&n;&t;  **&n;&t;  ** Transfer count is the minimum of packet length&n;&t;  ** and available space.&n;&t;  */
 id|transCount
 op_assign
-id|min
+id|min_t
 c_func
 (paren
 r_int

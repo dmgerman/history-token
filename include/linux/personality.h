@@ -1,120 +1,12 @@
-macro_line|#ifndef _PERSONALITY_H
-DECL|macro|_PERSONALITY_H
-mdefine_line|#define _PERSONALITY_H
-macro_line|#include &lt;linux/linkage.h&gt;
-macro_line|#include &lt;linux/ptrace.h&gt;
-macro_line|#include &lt;asm/current.h&gt;
-multiline_comment|/* Flags for bug emulation. These occupy the top three bytes. */
-DECL|macro|STICKY_TIMEOUTS
-mdefine_line|#define STICKY_TIMEOUTS&t;&t;0x4000000
-DECL|macro|WHOLE_SECONDS
-mdefine_line|#define WHOLE_SECONDS&t;&t;0x2000000
-DECL|macro|ADDR_LIMIT_32BIT
-mdefine_line|#define ADDR_LIMIT_32BIT&t;0x0800000
-multiline_comment|/* Personality types. These go in the low byte. Avoid using the top bit,&n; * it will conflict with error returns.&n; */
-DECL|macro|PER_MASK
-mdefine_line|#define PER_MASK&t;&t;(0x00ff)
-DECL|macro|PER_LINUX
-mdefine_line|#define PER_LINUX&t;&t;(0x0000)
-DECL|macro|PER_LINUX_32BIT
-mdefine_line|#define PER_LINUX_32BIT&t;&t;(0x0000 | ADDR_LIMIT_32BIT)
-DECL|macro|PER_SVR4
-mdefine_line|#define PER_SVR4&t;&t;(0x0001 | STICKY_TIMEOUTS)
-DECL|macro|PER_SVR3
-mdefine_line|#define PER_SVR3&t;&t;(0x0002 | STICKY_TIMEOUTS)
-DECL|macro|PER_SCOSVR3
-mdefine_line|#define PER_SCOSVR3&t;&t;(0x0003 | STICKY_TIMEOUTS | WHOLE_SECONDS)
-DECL|macro|PER_WYSEV386
-mdefine_line|#define PER_WYSEV386&t;&t;(0x0004 | STICKY_TIMEOUTS)
-DECL|macro|PER_ISCR4
-mdefine_line|#define PER_ISCR4&t;&t;(0x0005 | STICKY_TIMEOUTS)
-DECL|macro|PER_BSD
-mdefine_line|#define PER_BSD&t;&t;&t;(0x0006)
-DECL|macro|PER_SUNOS
-mdefine_line|#define PER_SUNOS&t;&t;(PER_BSD | STICKY_TIMEOUTS)
-DECL|macro|PER_XENIX
-mdefine_line|#define PER_XENIX&t;&t;(0x0007 | STICKY_TIMEOUTS)
-DECL|macro|PER_LINUX32
-mdefine_line|#define PER_LINUX32&t;&t;(0x0008)
-DECL|macro|PER_IRIX32
-mdefine_line|#define PER_IRIX32              (0x0009 | STICKY_TIMEOUTS) /* IRIX5 32-bit     */
-DECL|macro|PER_IRIXN32
-mdefine_line|#define PER_IRIXN32             (0x000a | STICKY_TIMEOUTS) /* IRIX6 new 32-bit */
-DECL|macro|PER_IRIX64
-mdefine_line|#define PER_IRIX64              (0x000b | STICKY_TIMEOUTS) /* IRIX6 64-bit     */
-DECL|macro|PER_RISCOS
-mdefine_line|#define PER_RISCOS&t;&t;(0x000c)
-DECL|macro|PER_SOLARIS
-mdefine_line|#define PER_SOLARIS&t;&t;(0x000d | STICKY_TIMEOUTS)
-multiline_comment|/* Prototype for an lcall7 syscall handler. */
-DECL|typedef|lcall7_func
-r_typedef
-r_void
-(paren
-op_star
-id|lcall7_func
-)paren
-(paren
-r_int
-comma
+macro_line|#ifndef _LINUX_PERSONALITY_H
+DECL|macro|_LINUX_PERSONALITY_H
+mdefine_line|#define _LINUX_PERSONALITY_H
+multiline_comment|/*&n; * Handling of different ABIs (personalities).&n; */
+r_struct
+id|exec_domain
+suffix:semicolon
 r_struct
 id|pt_regs
-op_star
-)paren
-suffix:semicolon
-multiline_comment|/* Description of an execution domain - personality range supported,&n; * lcall7 syscall handler, start up / shut down functions etc.&n; * N.B. The name and lcall7 handler must be where they are since the&n; * offset of the handler is hard coded in kernel/sys_call.S.&n; */
-DECL|struct|exec_domain
-r_struct
-id|exec_domain
-(brace
-DECL|member|name
-r_const
-r_char
-op_star
-id|name
-suffix:semicolon
-DECL|member|handler
-id|lcall7_func
-id|handler
-suffix:semicolon
-DECL|member|pers_low
-DECL|member|pers_high
-r_int
-r_char
-id|pers_low
-comma
-id|pers_high
-suffix:semicolon
-DECL|member|signal_map
-r_int
-r_int
-op_star
-id|signal_map
-suffix:semicolon
-DECL|member|signal_invmap
-r_int
-r_int
-op_star
-id|signal_invmap
-suffix:semicolon
-DECL|member|module
-r_struct
-id|module
-op_star
-id|module
-suffix:semicolon
-DECL|member|next
-r_struct
-id|exec_domain
-op_star
-id|next
-suffix:semicolon
-)brace
-suffix:semicolon
-r_extern
-r_struct
-id|exec_domain
-id|default_exec_domain
 suffix:semicolon
 r_extern
 r_int
@@ -124,7 +16,6 @@ c_func
 r_struct
 id|exec_domain
 op_star
-id|it
 )paren
 suffix:semicolon
 r_extern
@@ -135,34 +26,335 @@ c_func
 r_struct
 id|exec_domain
 op_star
-id|it
 )paren
 suffix:semicolon
-DECL|macro|put_exec_domain
-mdefine_line|#define put_exec_domain(it) &bslash;&n;&t;if (it &amp;&amp; it-&gt;module) __MOD_DEC_USE_COUNT(it-&gt;module);
-DECL|macro|get_exec_domain
-mdefine_line|#define get_exec_domain(it) &bslash;&n;&t;if (it &amp;&amp; it-&gt;module) __MOD_INC_USE_COUNT(it-&gt;module);
 r_extern
-r_void
+r_int
 id|__set_personality
 c_func
 (paren
 r_int
 r_int
-id|personality
 )paren
 suffix:semicolon
-DECL|macro|set_personality
-mdefine_line|#define set_personality(pers) do {&t;&bslash;&n;&t;if (current-&gt;personality != pers) &bslash;&n;&t;&t;__set_personality(pers); &bslash;&n;} while (0)
-id|asmlinkage
+multiline_comment|/*&n; * Sysctl variables related to binary emulation.&n; */
+r_extern
 r_int
-id|sys_personality
-c_func
+r_int
+id|abi_defhandler_coff
+suffix:semicolon
+r_extern
+r_int
+r_int
+id|abi_defhandler_elf
+suffix:semicolon
+r_extern
+r_int
+r_int
+id|abi_defhandler_lcall7
+suffix:semicolon
+r_extern
+r_int
+r_int
+id|abi_defhandler_libcso
+suffix:semicolon
+r_extern
+r_int
+id|abi_fake_utsname
+suffix:semicolon
+multiline_comment|/*&n; * Flags for bug emulation.&n; *&n; * These occupy the top three bytes.&n; */
+r_enum
+(brace
+DECL|enumerator|MMAP_PAGE_ZERO
+id|MMAP_PAGE_ZERO
+op_assign
+l_int|0x0100000
+comma
+DECL|enumerator|ADDR_LIMIT_32BIT
+id|ADDR_LIMIT_32BIT
+op_assign
+l_int|0x0800000
+comma
+DECL|enumerator|SHORT_INODE
+id|SHORT_INODE
+op_assign
+l_int|0x1000000
+comma
+DECL|enumerator|WHOLE_SECONDS
+id|WHOLE_SECONDS
+op_assign
+l_int|0x2000000
+comma
+DECL|enumerator|STICKY_TIMEOUTS
+id|STICKY_TIMEOUTS
+op_assign
+l_int|0x4000000
+comma
+)brace
+suffix:semicolon
+multiline_comment|/*&n; * Personality types.&n; *&n; * These go in the low byte.  Avoid using the top bit, it will&n; * conflict with error returns.&n; */
+r_enum
+(brace
+DECL|enumerator|PER_LINUX
+id|PER_LINUX
+op_assign
+l_int|0x0000
+comma
+DECL|enumerator|PER_LINUX_32BIT
+id|PER_LINUX_32BIT
+op_assign
+l_int|0x0000
+op_or
+id|ADDR_LIMIT_32BIT
+comma
+DECL|enumerator|PER_SVR4
+id|PER_SVR4
+op_assign
+l_int|0x0001
+op_or
+id|STICKY_TIMEOUTS
+op_or
+id|MMAP_PAGE_ZERO
+comma
+DECL|enumerator|PER_SVR3
+id|PER_SVR3
+op_assign
+l_int|0x0002
+op_or
+id|STICKY_TIMEOUTS
+op_or
+id|SHORT_INODE
+comma
+DECL|enumerator|PER_SCOSVR3
+id|PER_SCOSVR3
+op_assign
+l_int|0x0003
+op_or
+id|STICKY_TIMEOUTS
+op_or
+id|WHOLE_SECONDS
+op_or
+id|SHORT_INODE
+comma
+DECL|enumerator|PER_OSR5
+id|PER_OSR5
+op_assign
+l_int|0x0003
+op_or
+id|STICKY_TIMEOUTS
+op_or
+id|WHOLE_SECONDS
+comma
+DECL|enumerator|PER_WYSEV386
+id|PER_WYSEV386
+op_assign
+l_int|0x0004
+op_or
+id|STICKY_TIMEOUTS
+op_or
+id|SHORT_INODE
+comma
+DECL|enumerator|PER_ISCR4
+id|PER_ISCR4
+op_assign
+l_int|0x0005
+op_or
+id|STICKY_TIMEOUTS
+comma
+DECL|enumerator|PER_BSD
+id|PER_BSD
+op_assign
+l_int|0x0006
+comma
+DECL|enumerator|PER_SUNOS
+id|PER_SUNOS
+op_assign
+l_int|0x0006
+op_or
+id|STICKY_TIMEOUTS
+comma
+DECL|enumerator|PER_XENIX
+id|PER_XENIX
+op_assign
+l_int|0x0007
+op_or
+id|STICKY_TIMEOUTS
+op_or
+id|SHORT_INODE
+comma
+DECL|enumerator|PER_LINUX32
+id|PER_LINUX32
+op_assign
+l_int|0x0008
+comma
+DECL|enumerator|PER_IRIX32
+id|PER_IRIX32
+op_assign
+l_int|0x0009
+op_or
+id|STICKY_TIMEOUTS
+comma
+multiline_comment|/* IRIX5 32-bit */
+DECL|enumerator|PER_IRIXN32
+id|PER_IRIXN32
+op_assign
+l_int|0x000a
+op_or
+id|STICKY_TIMEOUTS
+comma
+multiline_comment|/* IRIX6 new 32-bit */
+DECL|enumerator|PER_IRIX64
+id|PER_IRIX64
+op_assign
+l_int|0x000b
+op_or
+id|STICKY_TIMEOUTS
+comma
+multiline_comment|/* IRIX6 64-bit */
+DECL|enumerator|PER_RISCOS
+id|PER_RISCOS
+op_assign
+l_int|0x000c
+comma
+DECL|enumerator|PER_SOLARIS
+id|PER_SOLARIS
+op_assign
+l_int|0x000d
+op_or
+id|STICKY_TIMEOUTS
+comma
+DECL|enumerator|PER_UW7
+id|PER_UW7
+op_assign
+l_int|0x000e
+op_or
+id|STICKY_TIMEOUTS
+op_or
+id|MMAP_PAGE_ZERO
+comma
+DECL|enumerator|PER_MASK
+id|PER_MASK
+op_assign
+l_int|0x00ff
+comma
+)brace
+suffix:semicolon
+multiline_comment|/*&n; * Description of an execution domain.&n; * &n; * The first two members are refernced from assembly source&n; * and should stay where they are unless explicitly needed.&n; */
+DECL|typedef|handler_t
+r_typedef
+r_void
+(paren
+op_star
+id|handler_t
+)paren
 (paren
 r_int
-r_int
-id|personality
+comma
+r_struct
+id|pt_regs
+op_star
 )paren
 suffix:semicolon
-macro_line|#endif /* _PERSONALITY_H */
+DECL|struct|exec_domain
+r_struct
+id|exec_domain
+(brace
+DECL|member|name
+r_const
+r_char
+op_star
+id|name
+suffix:semicolon
+multiline_comment|/* name of the execdomain */
+DECL|member|handler
+id|handler_t
+id|handler
+suffix:semicolon
+multiline_comment|/* handler for syscalls */
+DECL|member|pers_low
+r_int
+r_char
+id|pers_low
+suffix:semicolon
+multiline_comment|/* lowest personality */
+DECL|member|pers_high
+r_int
+r_char
+id|pers_high
+suffix:semicolon
+multiline_comment|/* highest personality */
+DECL|member|signal_map
+r_int
+r_int
+op_star
+id|signal_map
+suffix:semicolon
+multiline_comment|/* signal mapping */
+DECL|member|signal_invmap
+r_int
+r_int
+op_star
+id|signal_invmap
+suffix:semicolon
+multiline_comment|/* reverse signal mapping */
+DECL|member|err_map
+r_struct
+id|map_segment
+op_star
+id|err_map
+suffix:semicolon
+multiline_comment|/* error mapping */
+DECL|member|socktype_map
+r_struct
+id|map_segment
+op_star
+id|socktype_map
+suffix:semicolon
+multiline_comment|/* socket type mapping */
+DECL|member|sockopt_map
+r_struct
+id|map_segment
+op_star
+id|sockopt_map
+suffix:semicolon
+multiline_comment|/* socket option mapping */
+DECL|member|af_map
+r_struct
+id|map_segment
+op_star
+id|af_map
+suffix:semicolon
+multiline_comment|/* address family mapping */
+DECL|member|module
+r_struct
+id|module
+op_star
+id|module
+suffix:semicolon
+multiline_comment|/* module context of the ed. */
+DECL|member|next
+r_struct
+id|exec_domain
+op_star
+id|next
+suffix:semicolon
+multiline_comment|/* linked list (internal) */
+)brace
+suffix:semicolon
+multiline_comment|/*&n; * Return the base personality without flags.&n; */
+DECL|macro|personality
+mdefine_line|#define personality(pers)&t;(pers &amp; PER_MASK)
+multiline_comment|/*&n; * Personality of the currently running process.&n; */
+DECL|macro|get_personality
+mdefine_line|#define get_personality&t;&t;(current-&gt;personality)
+multiline_comment|/*&n; * Change personality of the currently running process.&n; */
+DECL|macro|set_personality
+mdefine_line|#define set_personality(pers) &bslash;&n;&t;((current-&gt;personality == pers) ? 0 : __set_personality(pers))
+multiline_comment|/*&n; * Load an execution domain.&n; */
+DECL|macro|get_exec_domain
+mdefine_line|#define get_exec_domain(ep)&t;&t;&t;&t;&bslash;&n;do {&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;if (ep != NULL &amp;&amp; ep-&gt;module != NULL)&t;&t;&bslash;&n;&t;&t;__MOD_INC_USE_COUNT(ep-&gt;module);&t;&bslash;&n;} while (0)
+multiline_comment|/*&n; * Unload an execution domain.&n; */
+DECL|macro|put_exec_domain
+mdefine_line|#define put_exec_domain(ep)&t;&t;&t;&t;&bslash;&n;do {&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;if (ep != NULL &amp;&amp; ep-&gt;module != NULL)&t;&t;&bslash;&n;&t;&t;__MOD_DEC_USE_COUNT(ep-&gt;module);&t;&bslash;&n;} while (0)
+macro_line|#endif /* _LINUX_PERSONALITY_H */
 eof

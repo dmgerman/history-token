@@ -255,7 +255,7 @@ c_func
 id|gdt
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_IO_DEBUG
+macro_line|#ifdef CONFIG_DEBUG_IOVIRT
 DECL|variable|__io_virt_debug
 id|EXPORT_SYMBOL
 c_func

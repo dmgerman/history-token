@@ -1571,7 +1571,7 @@ id|uspi-&gt;s_nspfshift
 suffix:semicolon
 id|inode-&gt;u.ufs_i.i_lastfrag
 op_assign
-id|max
+id|max_t
 c_func
 (paren
 id|u32
@@ -1639,7 +1639,7 @@ id|uspi-&gt;s_nspfshift
 suffix:semicolon
 id|inode-&gt;u.ufs_i.i_lastfrag
 op_assign
-id|max
+id|max_t
 c_func
 (paren
 id|u32
@@ -1904,7 +1904,7 @@ id|uspi-&gt;s_nspfshift
 suffix:semicolon
 id|inode-&gt;u.ufs_i.i_lastfrag
 op_assign
-id|max
+id|max_t
 c_func
 (paren
 id|u32

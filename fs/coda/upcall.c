@@ -129,7 +129,7 @@ mdefine_line|#define INSIZE(tag) sizeof(struct coda_ ## tag ## _in)
 DECL|macro|OUTSIZE
 mdefine_line|#define OUTSIZE(tag) sizeof(struct coda_ ## tag ## _out)
 DECL|macro|SIZE
-mdefine_line|#define SIZE(tag)  max(unsigned int, INSIZE(tag), OUTSIZE(tag))
+mdefine_line|#define SIZE(tag)  max_t(unsigned int, INSIZE(tag), OUTSIZE(tag))
 multiline_comment|/* the upcalls */
 DECL|function|venus_rootfid
 r_int
@@ -513,7 +513,7 @@ id|lookup
 suffix:semicolon
 id|insize
 op_assign
-id|max
+id|max_t
 c_func
 (paren
 r_int
@@ -1133,7 +1133,7 @@ id|mkdir
 suffix:semicolon
 id|insize
 op_assign
-id|max
+id|max_t
 c_func
 (paren
 r_int
@@ -1316,7 +1316,7 @@ id|rename
 suffix:semicolon
 id|insize
 op_assign
-id|max
+id|max_t
 c_func
 (paren
 r_int
@@ -1580,7 +1580,7 @@ id|create
 suffix:semicolon
 id|insize
 op_assign
-id|max
+id|max_t
 c_func
 (paren
 r_int
@@ -1759,7 +1759,7 @@ id|rmdir
 suffix:semicolon
 id|insize
 op_assign
-id|max
+id|max_t
 c_func
 (paren
 r_int
@@ -1912,7 +1912,7 @@ id|remove
 suffix:semicolon
 id|insize
 op_assign
-id|max
+id|max_t
 c_func
 (paren
 r_int
@@ -2060,7 +2060,7 @@ id|result
 suffix:semicolon
 id|insize
 op_assign
-id|max
+id|max_t
 c_func
 (paren
 r_int
@@ -2259,7 +2259,7 @@ id|link
 suffix:semicolon
 id|insize
 op_assign
-id|max
+id|max_t
 c_func
 (paren
 r_int
@@ -2439,7 +2439,7 @@ id|symlink
 suffix:semicolon
 id|insize
 op_assign
-id|max
+id|max_t
 c_func
 (paren
 r_int
@@ -3153,7 +3153,7 @@ id|error
 suffix:semicolon
 id|insize
 op_assign
-id|max
+id|max_t
 c_func
 (paren
 r_int

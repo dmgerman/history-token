@@ -3077,7 +3077,7 @@ id|opt
 suffix:semicolon
 id|len
 op_assign
-id|min
+id|min_t
 c_func
 (paren
 r_int
@@ -3335,7 +3335,7 @@ id|addr
 suffix:semicolon
 id|len
 op_assign
-id|min
+id|min_t
 c_func
 (paren
 r_int
@@ -3679,7 +3679,7 @@ r_else
 (brace
 id|len
 op_assign
-id|min
+id|min_t
 c_func
 (paren
 r_int

@@ -1654,7 +1654,7 @@ id|used
 op_assign
 id|count
 op_assign
-id|min
+id|min_t
 c_func
 (paren
 r_int
@@ -1834,7 +1834,7 @@ id|used
 op_assign
 id|count
 op_assign
-id|min
+id|min_t
 c_func
 (paren
 r_int
@@ -2012,7 +2012,7 @@ id|used
 op_assign
 id|count
 op_assign
-id|min
+id|min_t
 c_func
 (paren
 r_int
@@ -2198,7 +2198,7 @@ id|used
 op_assign
 id|count
 op_assign
-id|min
+id|min_t
 c_func
 (paren
 r_int
@@ -2407,7 +2407,7 @@ id|used
 op_assign
 id|count
 op_assign
-id|min
+id|min_t
 c_func
 (paren
 r_int
@@ -3883,7 +3883,7 @@ id|used
 op_assign
 id|count
 op_assign
-id|min
+id|min_t
 c_func
 (paren
 r_int
@@ -4071,7 +4071,7 @@ id|used
 op_assign
 id|count
 op_assign
-id|min
+id|min_t
 c_func
 (paren
 r_int
@@ -4267,7 +4267,7 @@ id|used
 op_assign
 id|count
 op_assign
-id|min
+id|min_t
 c_func
 (paren
 r_int
@@ -4477,7 +4477,7 @@ id|used
 op_assign
 id|count
 op_assign
-id|min
+id|min_t
 c_func
 (paren
 r_int

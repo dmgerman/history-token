@@ -2128,6 +2128,8 @@ id|error
 r_goto
 id|out
 suffix:semicolon
+id|error
+op_assign
 id|vmtruncate
 c_func
 (paren
@@ -2135,6 +2137,14 @@ id|inode
 comma
 id|attr-&gt;ia_size
 )paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|error
+)paren
+r_goto
+id|out
 suffix:semicolon
 id|refresh
 op_assign

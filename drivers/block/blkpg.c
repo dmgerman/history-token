@@ -913,6 +913,7 @@ r_case
 id|BLKGETSIZE
 suffix:colon
 multiline_comment|/* Today get_gendisk() requires a linear scan;&n;&t;&t;&t;   add this when dev has pointer type. */
+multiline_comment|/* add BLKGETSIZE64 too */
 id|g
 op_assign
 id|get_gendisk

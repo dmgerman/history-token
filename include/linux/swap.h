@@ -769,7 +769,7 @@ multiline_comment|/*&n; * In mm/swap.c::recalculate_vm_stats(), we substract&n; 
 DECL|macro|INACTIVE_SHIFT
 mdefine_line|#define INACTIVE_SHIFT 6
 DECL|macro|inactive_target
-mdefine_line|#define inactive_target min(unsigned long, &bslash;&n;&t;&t;&t;    (memory_pressure &gt;&gt; INACTIVE_SHIFT), &bslash;&n;&t;&t;&t;    (num_physpages / 4))
+mdefine_line|#define inactive_target min_t(unsigned long, &bslash;&n;&t;&t;&t;    (memory_pressure &gt;&gt; INACTIVE_SHIFT), &bslash;&n;&t;&t;&t;    (num_physpages / 4))
 multiline_comment|/*&n; * Ugly ugly ugly HACK to make sure the inactive lists&n; * don&squot;t fill up with unfreeable ramdisk pages. We really&n; * want to fix the ramdisk driver to mark its pages as&n; * unfreeable instead of using dirty buffer magic, but the&n; * next code-change time is when 2.5 is forked...&n; */
 macro_line|#ifndef _LINUX_KDEV_T_H
 macro_line|#include &lt;linux/kdev_t.h&gt;

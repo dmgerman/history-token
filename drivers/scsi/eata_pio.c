@@ -662,7 +662,7 @@ suffix:semicolon
 )brace
 id|x
 op_assign
-id|min
+id|min_t
 c_func
 (paren
 r_int
@@ -853,7 +853,7 @@ suffix:semicolon
 )brace
 id|x
 op_assign
-id|min
+id|min_t
 c_func
 (paren
 r_int

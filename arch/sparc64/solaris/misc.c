@@ -4115,9 +4115,6 @@ op_assign
 (brace
 l_string|&quot;Solaris&quot;
 comma
-(paren
-id|lcall7_func
-)paren
 l_int|NULL
 comma
 l_int|1

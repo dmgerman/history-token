@@ -310,7 +310,7 @@ id|tp-&gt;ack.quick
 )paren
 id|tp-&gt;ack.quick
 op_assign
-id|min
+id|min_t
 c_func
 (paren
 r_int
@@ -420,7 +420,7 @@ id|sndmem
 )paren
 id|sk-&gt;sndbuf
 op_assign
-id|min
+id|min_t
 c_func
 (paren
 r_int
@@ -604,7 +604,7 @@ id|incr
 (brace
 id|tp-&gt;rcv_ssthresh
 op_assign
-id|min
+id|min_t
 c_func
 (paren
 id|u32
@@ -688,7 +688,7 @@ id|rcvmem
 )paren
 id|sk-&gt;rcvbuf
 op_assign
-id|min
+id|min_t
 c_func
 (paren
 r_int
@@ -795,7 +795,7 @@ id|tp-&gt;advmss
 )paren
 id|tp-&gt;window_clamp
 op_assign
-id|max
+id|max_t
 c_func
 (paren
 id|u32
@@ -834,7 +834,7 @@ id|maxwin
 )paren
 id|tp-&gt;window_clamp
 op_assign
-id|max
+id|max_t
 c_func
 (paren
 id|u32
@@ -850,7 +850,7 @@ id|tp-&gt;advmss
 suffix:semicolon
 id|tp-&gt;rcv_ssthresh
 op_assign
-id|min
+id|min_t
 c_func
 (paren
 id|u32
@@ -959,7 +959,7 @@ l_int|0
 )paren
 id|sk-&gt;rcvbuf
 op_assign
-id|min
+id|min_t
 c_func
 (paren
 r_int
@@ -1026,7 +1026,7 @@ id|tp-&gt;ack.rcv_mss
 suffix:semicolon
 id|app_win
 op_assign
-id|max
+id|max_t
 c_func
 (paren
 r_int
@@ -1047,7 +1047,7 @@ id|ofo_win
 )paren
 id|tp-&gt;window_clamp
 op_assign
-id|min
+id|min_t
 c_func
 (paren
 id|u32
@@ -1059,7 +1059,7 @@ id|app_win
 suffix:semicolon
 id|tp-&gt;rcv_ssthresh
 op_assign
-id|min
+id|min_t
 c_func
 (paren
 id|u32
@@ -1450,7 +1450,7 @@ id|tp-&gt;mdev_max
 op_assign
 id|tp-&gt;rttvar
 op_assign
-id|max
+id|max_t
 c_func
 (paren
 id|u32
@@ -1807,7 +1807,7 @@ id|RTAX_SSTHRESH
 )paren
 id|dst-&gt;ssthresh
 op_assign
-id|max
+id|max_t
 c_func
 (paren
 id|u32
@@ -2008,7 +2008,7 @@ op_assign
 id|tp-&gt;snd_ssthresh
 suffix:semicolon
 r_return
-id|min
+id|min_t
 c_func
 (paren
 id|u32
@@ -2181,7 +2181,7 @@ id|tp-&gt;mdev_max
 op_assign
 id|tp-&gt;rttvar
 op_assign
-id|max
+id|max_t
 c_func
 (paren
 id|u32
@@ -2289,7 +2289,7 @@ id|tp-&gt;reordering
 (brace
 id|tp-&gt;reordering
 op_assign
-id|min
+id|min_t
 c_func
 (paren
 r_int
@@ -2874,7 +2874,7 @@ id|TCPCB_SACKED_ACKED
 )paren
 id|reord
 op_assign
-id|min
+id|min_t
 c_func
 (paren
 r_int
@@ -2904,7 +2904,7 @@ id|TCPCB_SACKED_ACKED
 )paren
 id|reord
 op_assign
-id|min
+id|min_t
 c_func
 (paren
 r_int
@@ -3037,7 +3037,7 @@ id|prior_fackets
 )paren
 id|reord
 op_assign
-id|min
+id|min_t
 c_func
 (paren
 r_int
@@ -3115,7 +3115,7 @@ id|TCPCB_RETRANS
 )paren
 id|reord
 op_assign
-id|min
+id|min_t
 c_func
 (paren
 r_int
@@ -3682,7 +3682,7 @@ id|tp
 suffix:semicolon
 id|tp-&gt;reordering
 op_assign
-id|min
+id|min_t
 c_func
 (paren
 r_int
@@ -3973,7 +3973,7 @@ id|tp-&gt;reordering
 op_logical_and
 id|tp-&gt;sacked_out
 op_ge
-id|max
+id|max_t
 c_func
 (paren
 id|u32
@@ -4023,13 +4023,13 @@ id|addend
 id|u32
 id|holes
 op_assign
-id|min
+id|min_t
 c_func
 (paren
 r_int
 r_int
 comma
-id|max
+id|max_t
 c_func
 (paren
 r_int
@@ -4473,7 +4473,7 @@ id|tp
 (brace
 id|tp-&gt;snd_cwnd
 op_assign
-id|min
+id|min_t
 c_func
 (paren
 id|u32
@@ -4545,7 +4545,7 @@ id|decr
 suffix:semicolon
 id|tp-&gt;snd_cwnd
 op_assign
-id|min
+id|min_t
 c_func
 (paren
 id|u32
@@ -4685,7 +4685,7 @@ id|tp-&gt;prior_ssthresh
 (brace
 id|tp-&gt;snd_cwnd
 op_assign
-id|max
+id|max_t
 c_func
 (paren
 r_int
@@ -4724,7 +4724,7 @@ r_else
 (brace
 id|tp-&gt;snd_cwnd
 op_assign
-id|max
+id|max_t
 c_func
 (paren
 r_int
@@ -5183,7 +5183,7 @@ id|tp
 (brace
 id|tp-&gt;snd_cwnd
 op_assign
-id|min
+id|min_t
 c_func
 (paren
 id|u32
@@ -6717,7 +6717,7 @@ id|sk
 comma
 id|TCP_TIME_PROBE0
 comma
-id|min
+id|min_t
 c_func
 (paren
 id|u32
@@ -8750,7 +8750,7 @@ id|end_seq
 suffix:semicolon
 id|tp-&gt;eff_sacks
 op_assign
-id|min
+id|min_t
 c_func
 (paren
 r_int
@@ -9025,7 +9025,7 @@ op_decrement
 suffix:semicolon
 id|tp-&gt;eff_sacks
 op_assign
-id|min
+id|min_t
 c_func
 (paren
 r_int
@@ -9316,7 +9316,7 @@ op_increment
 suffix:semicolon
 id|tp-&gt;eff_sacks
 op_assign
-id|min
+id|min_t
 c_func
 (paren
 r_int
@@ -9489,7 +9489,7 @@ id|num_sacks
 suffix:semicolon
 id|tp-&gt;eff_sacks
 op_assign
-id|min
+id|min_t
 c_func
 (paren
 r_int
@@ -9902,7 +9902,7 @@ l_int|0
 suffix:semicolon
 id|tp-&gt;eff_sacks
 op_assign
-id|min
+id|min_t
 c_func
 (paren
 r_int
@@ -9968,7 +9968,7 @@ id|tp-&gt;urg_data
 r_int
 id|chunk
 op_assign
-id|min
+id|min_t
 c_func
 (paren
 r_int
@@ -11438,7 +11438,7 @@ l_int|0
 (brace
 id|size
 op_assign
-id|min
+id|min_t
 c_func
 (paren
 r_int
@@ -11871,7 +11871,7 @@ id|tcp_memory_pressure
 )paren
 id|tp-&gt;rcv_ssthresh
 op_assign
-id|min
+id|min_t
 c_func
 (paren
 id|u32
@@ -12070,7 +12070,7 @@ multiline_comment|/* Limited by application or receiver window. */
 id|u32
 id|win_used
 op_assign
-id|max
+id|max_t
 c_func
 (paren
 id|u32
@@ -12191,7 +12191,7 @@ id|sk_buff
 suffix:semicolon
 id|demanded
 op_assign
-id|max
+id|max_t
 c_func
 (paren
 r_int
@@ -12219,7 +12219,7 @@ id|sk-&gt;sndbuf
 )paren
 id|sk-&gt;sndbuf
 op_assign
-id|min
+id|min_t
 c_func
 (paren
 r_int
@@ -14184,7 +14184,7 @@ l_int|0
 suffix:semicolon
 id|tp-&gt;window_clamp
 op_assign
-id|min
+id|min_t
 c_func
 (paren
 id|u32

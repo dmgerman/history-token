@@ -9225,7 +9225,7 @@ suffix:colon
 multiline_comment|/* device descriptor */
 id|len
 op_assign
-id|min
+id|min_t
 c_func
 (paren
 r_int
@@ -9233,7 +9233,7 @@ r_int
 comma
 id|leni
 comma
-id|min
+id|min_t
 c_func
 (paren
 r_int
@@ -9270,7 +9270,7 @@ suffix:colon
 multiline_comment|/* configuration descriptor */
 id|len
 op_assign
-id|min
+id|min_t
 c_func
 (paren
 r_int
@@ -9278,7 +9278,7 @@ r_int
 comma
 id|leni
 comma
-id|min
+id|min_t
 c_func
 (paren
 r_int
@@ -9340,7 +9340,7 @@ l_int|0
 id|OK
 c_func
 (paren
-id|min
+id|min_t
 c_func
 (paren
 r_int
@@ -9375,7 +9375,7 @@ id|uhci-&gt;rh.numports
 suffix:semicolon
 id|len
 op_assign
-id|min
+id|min_t
 c_func
 (paren
 r_int
@@ -9383,7 +9383,7 @@ r_int
 comma
 id|leni
 comma
-id|min
+id|min_t
 c_func
 (paren
 r_int

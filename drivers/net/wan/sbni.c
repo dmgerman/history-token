@@ -2941,7 +2941,7 @@ suffix:semicolon
 r_int
 id|len
 op_assign
-id|min
+id|min_t
 c_func
 (paren
 r_int
@@ -3376,7 +3376,7 @@ id|nl-&gt;tx_frameno
 (brace
 id|nl-&gt;framelen
 op_assign
-id|min
+id|min_t
 c_func
 (paren
 r_int

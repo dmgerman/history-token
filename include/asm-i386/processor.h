@@ -1420,5 +1420,97 @@ l_string|&quot;rep;nop&quot;
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/* Prefetch instructions for Pentium III and AMD Athlon */
+macro_line|#ifdef &t;CONFIG_MPENTIUMIII
+DECL|macro|ARCH_HAS_PREFETCH
+mdefine_line|#define ARCH_HAS_PREFETCH
+DECL|function|prefetch
+r_extern
+r_inline
+r_void
+id|prefetch
+c_func
+(paren
+r_const
+r_void
+op_star
+id|x
+)paren
+(brace
+id|__asm__
+id|__volatile__
+(paren
+l_string|&quot;prefetchnta (%0)&quot;
+suffix:colon
+suffix:colon
+l_string|&quot;r&quot;
+(paren
+id|x
+)paren
+)paren
+suffix:semicolon
+)brace
+macro_line|#elif CONFIG_X86_USE_3DNOW
+DECL|macro|ARCH_HAS_PREFETCH
+mdefine_line|#define ARCH_HAS_PREFETCH
+DECL|macro|ARCH_HAS_PREFETCHW
+mdefine_line|#define ARCH_HAS_PREFETCHW
+DECL|macro|ARCH_HAS_SPINLOCK_PREFETCH
+mdefine_line|#define ARCH_HAS_SPINLOCK_PREFETCH
+DECL|function|prefetch
+r_extern
+r_inline
+r_void
+id|prefetch
+c_func
+(paren
+r_const
+r_void
+op_star
+id|x
+)paren
+(brace
+id|__asm__
+id|__volatile__
+(paren
+l_string|&quot;prefetch (%0)&quot;
+suffix:colon
+suffix:colon
+l_string|&quot;r&quot;
+(paren
+id|x
+)paren
+)paren
+suffix:semicolon
+)brace
+DECL|function|prefetchw
+r_extern
+r_inline
+r_void
+id|prefetchw
+c_func
+(paren
+r_const
+r_void
+op_star
+id|x
+)paren
+(brace
+id|__asm__
+id|__volatile__
+(paren
+l_string|&quot;prefetchw (%0)&quot;
+suffix:colon
+suffix:colon
+l_string|&quot;r&quot;
+(paren
+id|x
+)paren
+)paren
+suffix:semicolon
+)brace
+DECL|macro|spin_lock_prefetch
+mdefine_line|#define spin_lock_prefetch(x)&t;prefetchw(x)
+macro_line|#endif
 macro_line|#endif /* __ASM_I386_PROCESSOR_H */
 eof

@@ -4127,7 +4127,7 @@ suffix:semicolon
 multiline_comment|/*&n;     * Allocate some buffer space, limited to half the buffer size&n;     */
 id|length
 op_assign
-id|min
+id|min_t
 c_func
 (paren
 r_int
@@ -4547,7 +4547,7 @@ suffix:semicolon
 multiline_comment|/*&n;     * Allocate some buffer space, limited to half the on-board RAM size&n;     */
 id|length
 op_assign
-id|min
+id|min_t
 c_func
 (paren
 r_int
@@ -6286,7 +6286,7 @@ id|CMND_ASSERTATN
 suffix:semicolon
 id|period
 op_assign
-id|max
+id|max_t
 c_func
 (paren
 r_int
@@ -6304,7 +6304,7 @@ l_int|4
 suffix:semicolon
 id|length
 op_assign
-id|min
+id|min_t
 c_func
 (paren
 r_int

@@ -1042,6 +1042,7 @@ id|attr-&gt;ia_mode
 op_assign
 id|COH_KLUDGE_NOT_SYMLINK
 suffix:semicolon
+r_return
 id|inode_setattr
 c_func
 (paren
@@ -1049,9 +1050,6 @@ id|inode
 comma
 id|attr
 )paren
-suffix:semicolon
-r_return
-l_int|0
 suffix:semicolon
 )brace
 DECL|function|sysv_update_inode

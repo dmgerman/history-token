@@ -346,7 +346,7 @@ id|count
 (brace
 id|bytestocopy
 op_assign
-id|min
+id|min_t
 c_func
 (paren
 id|u32
@@ -816,7 +816,7 @@ id|count
 (brace
 id|bytestocopy
 op_assign
-id|min
+id|min_t
 c_func
 (paren
 id|u32

@@ -2056,7 +2056,7 @@ id|conf-&gt;u.x25.hi_pvc
 (brace
 id|card-&gt;u.x.hi_pvc
 op_assign
-id|min
+id|min_t
 c_func
 (paren
 r_int
@@ -2069,7 +2069,7 @@ id|MAX_LCN_NUM
 suffix:semicolon
 id|card-&gt;u.x.lo_pvc
 op_assign
-id|min
+id|min_t
 c_func
 (paren
 r_int
@@ -2089,7 +2089,7 @@ id|conf-&gt;u.x25.hi_svc
 (brace
 id|card-&gt;u.x.hi_svc
 op_assign
-id|min
+id|min_t
 c_func
 (paren
 r_int
@@ -2102,7 +2102,7 @@ id|MAX_LCN_NUM
 suffix:semicolon
 id|card-&gt;u.x.lo_svc
 op_assign
-id|min
+id|min_t
 c_func
 (paren
 r_int
@@ -2205,7 +2205,7 @@ id|conf-&gt;u.x25.hdlc_window
 )paren
 id|u.cfg.hdlcWindow
 op_assign
-id|min
+id|min_t
 c_func
 (paren
 r_int
@@ -2223,7 +2223,7 @@ id|conf-&gt;u.x25.pkt_window
 )paren
 id|u.cfg.pktWindow
 op_assign
-id|min
+id|min_t
 c_func
 (paren
 r_int
@@ -2241,7 +2241,7 @@ id|conf-&gt;u.x25.t1
 )paren
 id|u.cfg.t1
 op_assign
-id|min
+id|min_t
 c_func
 (paren
 r_int
@@ -2259,7 +2259,7 @@ id|conf-&gt;u.x25.t2
 )paren
 id|u.cfg.t2
 op_assign
-id|min
+id|min_t
 c_func
 (paren
 r_int
@@ -2277,7 +2277,7 @@ id|conf-&gt;u.x25.t4
 )paren
 id|u.cfg.t4
 op_assign
-id|min
+id|min_t
 c_func
 (paren
 r_int
@@ -2295,7 +2295,7 @@ id|conf-&gt;u.x25.n2
 )paren
 id|u.cfg.n2
 op_assign
-id|min
+id|min_t
 c_func
 (paren
 r_int
@@ -2313,7 +2313,7 @@ id|conf-&gt;u.x25.t10_t20
 )paren
 id|u.cfg.t10t20
 op_assign
-id|min
+id|min_t
 c_func
 (paren
 r_int
@@ -2331,7 +2331,7 @@ id|conf-&gt;u.x25.t11_t21
 )paren
 id|u.cfg.t11t21
 op_assign
-id|min
+id|min_t
 c_func
 (paren
 r_int
@@ -2349,7 +2349,7 @@ id|conf-&gt;u.x25.t12_t22
 )paren
 id|u.cfg.t12t22
 op_assign
-id|min
+id|min_t
 c_func
 (paren
 r_int
@@ -2367,7 +2367,7 @@ id|conf-&gt;u.x25.t13_t23
 )paren
 id|u.cfg.t13t23
 op_assign
-id|min
+id|min_t
 c_func
 (paren
 r_int
@@ -2385,7 +2385,7 @@ id|conf-&gt;u.x25.t16_t26
 )paren
 id|u.cfg.t16t26
 op_assign
-id|min
+id|min_t
 c_func
 (paren
 r_int
@@ -2403,7 +2403,7 @@ id|conf-&gt;u.x25.t28
 )paren
 id|u.cfg.t28
 op_assign
-id|min
+id|min_t
 c_func
 (paren
 r_int
@@ -2421,7 +2421,7 @@ id|conf-&gt;u.x25.r10_r20
 )paren
 id|u.cfg.r10r20
 op_assign
-id|min
+id|min_t
 c_func
 (paren
 r_int
@@ -2439,7 +2439,7 @@ id|conf-&gt;u.x25.r12_r22
 )paren
 id|u.cfg.r12r22
 op_assign
-id|min
+id|min_t
 c_func
 (paren
 r_int
@@ -2457,7 +2457,7 @@ id|conf-&gt;u.x25.r13_r23
 )paren
 id|u.cfg.r13r23
 op_assign
-id|min
+id|min_t
 c_func
 (paren
 r_int

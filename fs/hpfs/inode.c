@@ -1834,6 +1834,8 @@ id|attr
 r_return
 id|error
 suffix:semicolon
+id|error
+op_assign
 id|inode_setattr
 c_func
 (paren
@@ -1841,6 +1843,14 @@ id|inode
 comma
 id|attr
 )paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|error
+)paren
+r_return
+id|error
 suffix:semicolon
 id|hpfs_write_inode
 c_func

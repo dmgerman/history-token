@@ -5317,7 +5317,7 @@ suffix:semicolon
 multiline_comment|/*&n;&t;&t; *&t;If you pass two values to the sock_alloc_send_skb&n;&t;&t; *&t;it tries to grab the large buffer with GFP_NOFS&n;&t;&t; *&t;(which can fail easily), and if it fails grab the&n;&t;&t; *&t;fallback size buffer which is under a page and will&n;&t;&t; *&t;succeed. [Alan]&n;&t;&t; */
 id|size
 op_assign
-id|min
+id|min_t
 c_func
 (paren
 r_int
@@ -6300,7 +6300,7 @@ suffix:semicolon
 )brace
 id|chunk
 op_assign
-id|min
+id|min_t
 c_func
 (paren
 r_int

@@ -1716,7 +1716,7 @@ id|MIN_LGTH_CHDLC_DATA_CFG
 )paren
 ques
 c_cond
-id|min
+id|min_t
 c_func
 (paren
 r_int
@@ -1749,7 +1749,7 @@ id|MIN_LGTH_CHDLC_DATA_CFG
 )paren
 ques
 c_cond
-id|min
+id|min_t
 c_func
 (paren
 r_int
@@ -2853,7 +2853,7 @@ l_int|0
 )paren
 ques
 c_cond
-id|min
+id|min_t
 c_func
 (paren
 r_int
@@ -2879,7 +2879,7 @@ l_int|0
 )paren
 ques
 c_cond
-id|min
+id|min_t
 c_func
 (paren
 r_int
@@ -2905,7 +2905,7 @@ l_int|0
 )paren
 ques
 c_cond
-id|min
+id|min_t
 c_func
 (paren
 r_int
@@ -2933,7 +2933,7 @@ l_int|0
 )paren
 ques
 c_cond
-id|min
+id|min_t
 c_func
 (paren
 r_int

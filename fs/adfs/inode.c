@@ -1082,6 +1082,8 @@ id|ia_valid
 op_amp
 id|ATTR_SIZE
 )paren
+id|error
+op_assign
 id|vmtruncate
 c_func
 (paren
@@ -1089,6 +1091,14 @@ id|inode
 comma
 id|attr-&gt;ia_size
 )paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|error
+)paren
+r_goto
+id|out
 suffix:semicolon
 r_if
 c_cond

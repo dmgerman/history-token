@@ -2974,7 +2974,7 @@ id|devnumber
 comma
 id|userid
 comma
-id|min
+id|min_t
 c_func
 (paren
 r_int

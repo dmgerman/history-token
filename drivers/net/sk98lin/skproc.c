@@ -1395,7 +1395,7 @@ suffix:semicolon
 )brace
 r_return
 (paren
-id|min
+id|min_t
 c_func
 (paren
 r_int

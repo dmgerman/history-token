@@ -1215,7 +1215,7 @@ suffix:semicolon
 (brace
 id|count
 op_assign
-id|min
+id|min_t
 c_func
 (paren
 r_int
@@ -1476,7 +1476,7 @@ suffix:semicolon
 (brace
 id|count
 op_assign
-id|min
+id|min_t
 c_func
 (paren
 r_int

@@ -234,7 +234,7 @@ id|tp
 suffix:semicolon
 id|restart_cwnd
 op_assign
-id|min
+id|min_t
 c_func
 (paren
 id|u32
@@ -265,7 +265,7 @@ l_int|1
 suffix:semicolon
 id|tp-&gt;snd_cwnd
 op_assign
-id|max
+id|max_t
 c_func
 (paren
 id|u32
@@ -2121,7 +2121,7 @@ l_int|1
 )paren
 id|mss_now
 op_assign
-id|max
+id|max_t
 c_func
 (paren
 id|u32
@@ -2386,7 +2386,7 @@ suffix:semicolon
 r_int
 id|full_space
 op_assign
-id|min
+id|min_t
 c_func
 (paren
 r_int
@@ -2436,7 +2436,7 @@ id|tcp_memory_pressure
 )paren
 id|tp-&gt;rcv_ssthresh
 op_assign
-id|min
+id|min_t
 c_func
 (paren
 id|u32
@@ -3083,7 +3083,7 @@ op_amp
 id|sk-&gt;wmem_alloc
 )paren
 OG
-id|min
+id|min_t
 c_func
 (paren
 r_int
@@ -5178,7 +5178,7 @@ id|tp-&gt;srtt
 r_int
 id|rtt
 op_assign
-id|max
+id|max_t
 c_func
 (paren
 r_int
@@ -5205,7 +5205,7 @@ suffix:semicolon
 )brace
 id|ato
 op_assign
-id|min
+id|min_t
 c_func
 (paren
 r_int
@@ -5732,7 +5732,7 @@ id|mss
 (brace
 id|seg_size
 op_assign
-id|min
+id|min_t
 c_func
 (paren
 r_int
@@ -5947,7 +5947,7 @@ id|sk
 comma
 id|TCP_TIME_PROBE0
 comma
-id|min
+id|min_t
 c_func
 (paren
 id|u32
@@ -5980,7 +5980,7 @@ id|sk
 comma
 id|TCP_TIME_PROBE0
 comma
-id|min
+id|min_t
 c_func
 (paren
 r_int

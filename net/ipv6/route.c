@@ -3057,7 +3057,7 @@ id|dev
 suffix:semicolon
 id|rt-&gt;u.dst.advmss
 op_assign
-id|max
+id|max_t
 c_func
 (paren
 r_int
@@ -3653,7 +3653,7 @@ id|neigh-&gt;dev
 suffix:semicolon
 id|nrt-&gt;u.dst.advmss
 op_assign
-id|max
+id|max_t
 c_func
 (paren
 r_int
@@ -4703,7 +4703,7 @@ id|rt-&gt;rt6i_dev
 suffix:semicolon
 id|rt-&gt;u.dst.advmss
 op_assign
-id|max
+id|max_t
 c_func
 (paren
 r_int
@@ -5496,7 +5496,7 @@ id|arg-&gt;mtu
 suffix:semicolon
 id|rt-&gt;u.dst.advmss
 op_assign
-id|max
+id|max_t
 c_func
 (paren
 r_int

@@ -2923,7 +2923,7 @@ l_int|0
 suffix:semicolon
 id|newtp-&gt;window_clamp
 op_assign
-id|min
+id|min_t
 c_func
 (paren
 id|u32

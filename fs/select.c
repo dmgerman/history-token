@@ -2,6 +2,7 @@ multiline_comment|/*&n; * This file contains the procedures for the handling of 
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;linux/poll.h&gt;
+macro_line|#include &lt;linux/personality.h&gt; /* for STICKY_TIMEOUTS */
 macro_line|#include &lt;linux/file.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 DECL|macro|ROUND_UP

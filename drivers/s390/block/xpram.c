@@ -1730,23 +1730,9 @@ id|BLKGETSIZE
 suffix:colon
 multiline_comment|/* 0x1260 */
 multiline_comment|/* Return the device size, expressed in sectors */
-r_if
-c_cond
-(paren
-op_logical_neg
-id|arg
-)paren
 r_return
-op_minus
-id|EINVAL
-suffix:semicolon
-multiline_comment|/* NULL pointer: not valid */
-id|err
-op_assign
-l_int|0
-suffix:semicolon
-multiline_comment|/* verify_area_20(VERIFY_WRITE, (long *) arg, sizeof(long)); &n;&t;&t;&t; *  if (err) return err;&n;&t;&t;&t; */
 id|put_user
+c_func
 (paren
 l_int|1024
 op_star
@@ -1768,8 +1754,39 @@ op_star
 id|arg
 )paren
 suffix:semicolon
+r_case
+id|BLKGETSIZE64
+suffix:colon
 r_return
-l_int|0
+id|put_user
+c_func
+(paren
+(paren
+id|u64
+)paren
+(paren
+l_int|1024
+op_star
+id|xpram_sizes
+(braket
+id|MINOR
+c_func
+(paren
+id|inode-&gt;i_rdev
+)paren
+)braket
+op_div
+id|XPRAM_SOFTSECT
+)paren
+op_lshift
+l_int|9
+comma
+(paren
+id|u64
+op_star
+)paren
+id|arg
+)paren
 suffix:semicolon
 r_case
 id|BLKFLSBUF

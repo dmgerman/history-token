@@ -3097,7 +3097,7 @@ r_int
 r_int
 id|hint
 op_assign
-id|min
+id|min_t
 c_func
 (paren
 r_int
@@ -3110,7 +3110,7 @@ id|tp-&gt;mss_cache
 suffix:semicolon
 id|hint
 op_assign
-id|min
+id|min_t
 c_func
 (paren
 r_int
@@ -3125,13 +3125,13 @@ l_int|2
 suffix:semicolon
 id|tp-&gt;ack.rcv_mss
 op_assign
-id|max
+id|max_t
 c_func
 (paren
 r_int
 r_int
 comma
-id|min
+id|min_t
 c_func
 (paren
 r_int
@@ -3489,7 +3489,7 @@ id|tp
 )paren
 (brace
 r_return
-id|max
+id|max_t
 c_func
 (paren
 id|u32
@@ -3536,7 +3536,7 @@ id|tp-&gt;snd_ssthresh
 suffix:semicolon
 r_else
 r_return
-id|max
+id|max_t
 c_func
 (paren
 id|u32
@@ -3708,7 +3708,7 @@ id|tp
 suffix:semicolon
 id|tp-&gt;snd_cwnd
 op_assign
-id|min
+id|min_t
 c_func
 (paren
 id|u32
@@ -5353,7 +5353,7 @@ l_int|14
 suffix:semicolon
 id|space
 op_assign
-id|min
+id|min_t
 c_func
 (paren
 id|u32
@@ -5388,7 +5388,7 @@ op_star
 id|rcv_wnd
 )paren
 op_assign
-id|min
+id|min_t
 c_func
 (paren
 r_int
@@ -5452,7 +5452,7 @@ id|mss
 op_logical_and
 id|space
 op_minus
-id|max
+id|max_t
 c_func
 (paren
 r_int
@@ -5549,7 +5549,7 @@ op_star
 id|window_clamp
 )paren
 op_assign
-id|min
+id|min_t
 c_func
 (paren
 id|u32
@@ -6302,7 +6302,7 @@ id|SOCK_SNDBUF_LOCK
 (brace
 id|sk-&gt;sndbuf
 op_assign
-id|min
+id|min_t
 c_func
 (paren
 r_int
@@ -6316,7 +6316,7 @@ l_int|2
 suffix:semicolon
 id|sk-&gt;sndbuf
 op_assign
-id|max
+id|max_t
 c_func
 (paren
 r_int

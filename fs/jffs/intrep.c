@@ -6596,7 +6596,7 @@ id|node_offset
 suffix:semicolon
 id|r
 op_assign
-id|min
+id|min_t
 c_func
 (paren
 id|u32
@@ -6818,7 +6818,7 @@ id|node-&gt;fm
 multiline_comment|/* This node does not refer to real data.  */
 id|r
 op_assign
-id|min
+id|min_t
 c_func
 (paren
 id|u32
@@ -7790,7 +7790,7 @@ multiline_comment|/* No.  No need to split the node.  Just remove&n;&t;&t;&t;   
 r_int
 id|r
 op_assign
-id|min
+id|min_t
 c_func
 (paren
 id|u32
@@ -10608,7 +10608,7 @@ id|size
 id|__u32
 id|s
 op_assign
-id|min
+id|min_t
 c_func
 (paren
 r_int
@@ -12042,7 +12042,7 @@ id|fmc-&gt;mtd
 comma
 id|pos
 comma
-id|min
+id|min_t
 c_func
 (paren
 id|u32

@@ -749,7 +749,7 @@ id|frameUsed
 suffix:semicolon
 id|count
 op_assign
-id|min
+id|min_t
 c_func
 (paren
 r_int
@@ -868,7 +868,7 @@ id|frameUsed
 suffix:semicolon
 id|count
 op_assign
-id|min
+id|min_t
 c_func
 (paren
 r_int
@@ -971,7 +971,7 @@ id|frameUsed
 suffix:semicolon
 id|count
 op_assign
-id|min
+id|min_t
 c_func
 (paren
 r_int
@@ -1045,7 +1045,7 @@ id|frameUsed
 suffix:semicolon
 id|count
 op_assign
-id|min
+id|min_t
 c_func
 (paren
 r_int
@@ -1175,7 +1175,7 @@ id|frameUsed
 suffix:semicolon
 id|count
 op_assign
-id|min
+id|min_t
 c_func
 (paren
 r_int
@@ -1270,7 +1270,7 @@ id|frameUsed
 suffix:semicolon
 id|count
 op_assign
-id|min
+id|min_t
 c_func
 (paren
 r_int
@@ -1371,7 +1371,7 @@ id|frameUsed
 suffix:semicolon
 id|count
 op_assign
-id|min
+id|min_t
 c_func
 (paren
 r_int
@@ -1470,7 +1470,7 @@ id|frameUsed
 suffix:semicolon
 id|count
 op_assign
-id|min
+id|min_t
 c_func
 (paren
 r_int
@@ -1604,7 +1604,7 @@ id|frameUsed
 suffix:semicolon
 id|count
 op_assign
-id|min
+id|min_t
 c_func
 (paren
 r_int
@@ -1707,7 +1707,7 @@ id|frameUsed
 suffix:semicolon
 id|count
 op_assign
-id|min
+id|min_t
 c_func
 (paren
 r_int
@@ -1847,7 +1847,7 @@ id|frameUsed
 suffix:semicolon
 id|count
 op_assign
-id|min
+id|min_t
 c_func
 (paren
 r_int
@@ -1949,7 +1949,7 @@ id|frameUsed
 suffix:semicolon
 id|count
 op_assign
-id|min
+id|min_t
 c_func
 (paren
 r_int

@@ -1549,7 +1549,7 @@ op_complement
 l_int|0xff000000
 )paren
 op_or
-id|min
+id|min_t
 c_func
 (paren
 id|u32
@@ -1560,7 +1560,7 @@ op_amp
 l_int|0xff000000
 )paren
 comma
-id|min
+id|min_t
 c_func
 (paren
 id|u32
@@ -11554,7 +11554,7 @@ op_complement
 l_int|0xff000000
 )paren
 op_or
-id|min
+id|min_t
 c_func
 (paren
 id|u32
@@ -11565,7 +11565,7 @@ op_amp
 l_int|0xff000000
 )paren
 comma
-id|min
+id|min_t
 c_func
 (paren
 id|u32

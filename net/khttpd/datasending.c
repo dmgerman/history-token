@@ -239,7 +239,7 @@ id|CurrentRequest-&gt;sock-&gt;sk
 suffix:semicolon
 id|ReadSize
 op_assign
-id|min
+id|min_t
 c_func
 (paren
 r_int
@@ -255,7 +255,7 @@ id|CurrentRequest-&gt;BytesSent
 suffix:semicolon
 id|ReadSize
 op_assign
-id|min
+id|min_t
 c_func
 (paren
 r_int

@@ -4378,7 +4378,7 @@ r_else
 (brace
 id|moved
 op_assign
-id|min
+id|min_t
 c_func
 (paren
 r_int
@@ -4698,7 +4698,7 @@ id|buflen
 (brace
 id|dyn_len
 op_assign
-id|min
+id|min_t
 c_func
 (paren
 r_int

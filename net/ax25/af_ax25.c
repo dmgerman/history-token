@@ -2564,7 +2564,7 @@ id|val
 suffix:semicolon
 id|length
 op_assign
-id|min
+id|min_t
 c_func
 (paren
 r_int
@@ -2730,7 +2730,7 @@ id|IFNAMSIZ
 suffix:semicolon
 id|length
 op_assign
-id|min
+id|min_t
 c_func
 (paren
 r_int

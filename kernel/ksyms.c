@@ -1818,28 +1818,6 @@ c_func
 id|set_binfmt
 )paren
 suffix:semicolon
-multiline_comment|/* execution environment registration */
-DECL|variable|register_exec_domain
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|register_exec_domain
-)paren
-suffix:semicolon
-DECL|variable|unregister_exec_domain
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|unregister_exec_domain
-)paren
-suffix:semicolon
-DECL|variable|__set_personality
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|__set_personality
-)paren
-suffix:semicolon
 multiline_comment|/* sysctl table registration */
 DECL|variable|register_sysctl_table
 id|EXPORT_SYMBOL

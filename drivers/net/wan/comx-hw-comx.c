@@ -5267,7 +5267,7 @@ comma
 id|count
 op_assign
 (paren
-id|min
+id|min_t
 c_func
 (paren
 r_int
@@ -6231,14 +6231,14 @@ l_int|0
 (brace
 id|len
 op_assign
-id|min
+id|min_t
 c_func
 (paren
 r_int
 comma
 id|FILE_PAGESIZE
 comma
-id|min
+id|min_t
 c_func
 (paren
 r_int
@@ -6357,7 +6357,7 @@ l_int|1
 suffix:semicolon
 )brace
 r_return
-id|min
+id|min_t
 c_func
 (paren
 r_int

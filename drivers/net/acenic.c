@@ -10777,7 +10777,7 @@ l_int|0
 (brace
 id|tsize
 op_assign
-id|min
+id|min_t
 c_func
 (paren
 id|u32
@@ -10797,7 +10797,7 @@ op_plus
 l_int|1
 )paren
 comma
-id|min
+id|min_t
 c_func
 (paren
 id|u32
@@ -10948,7 +10948,7 @@ l_int|0
 (brace
 id|tsize
 op_assign
-id|min
+id|min_t
 c_func
 (paren
 id|u32
@@ -10968,7 +10968,7 @@ op_plus
 l_int|1
 )paren
 comma
-id|min
+id|min_t
 c_func
 (paren
 id|u32

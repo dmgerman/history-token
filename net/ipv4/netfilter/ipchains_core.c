@@ -1575,7 +1575,7 @@ macro_line|#if defined(CONFIG_NETLINK_DEV) || defined(CONFIG_NETLINK_DEV_MODULE)
 r_int
 id|len
 op_assign
-id|min
+id|min_t
 c_func
 (paren
 r_int

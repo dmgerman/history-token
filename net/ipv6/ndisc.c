@@ -3750,7 +3750,7 @@ suffix:semicolon
 )brace
 id|rd_len
 op_assign
-id|min
+id|min_t
 c_func
 (paren
 r_int

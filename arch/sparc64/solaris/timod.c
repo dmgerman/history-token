@@ -3931,7 +3931,7 @@ suffix:semicolon
 r_int
 id|l
 op_assign
-id|min
+id|min_t
 c_func
 (paren
 r_int

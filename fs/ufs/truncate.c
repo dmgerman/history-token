@@ -124,7 +124,7 @@ id|DIRECT_FRAGMENT
 suffix:semicolon
 id|frag4
 op_assign
-id|min
+id|min_t
 c_func
 (paren
 id|u32

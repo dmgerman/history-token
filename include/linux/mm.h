@@ -905,7 +905,7 @@ id|prot
 )paren
 suffix:semicolon
 r_extern
-r_void
+r_int
 id|vmtruncate
 c_func
 (paren

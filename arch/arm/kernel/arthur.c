@@ -230,9 +230,6 @@ op_assign
 l_string|&quot;Arthur&quot;
 comma
 multiline_comment|/* name */
-(paren
-id|lcall7_func
-)paren
 id|arthur_lcall7
 comma
 id|PER_RISCOS

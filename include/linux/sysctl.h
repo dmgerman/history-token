@@ -109,7 +109,13 @@ DECL|enumerator|CTL_BUS
 id|CTL_BUS
 op_assign
 l_int|8
+comma
 multiline_comment|/* Buses */
+DECL|enumerator|CTL_ABI
+id|CTL_ABI
+op_assign
+l_int|9
+multiline_comment|/* Binary emulation */
 )brace
 suffix:semicolon
 multiline_comment|/* CTL_BUS names: */
@@ -2142,6 +2148,47 @@ DECL|enumerator|DEV_MAC_HID_ADB_MOUSE_SENDS_KEYCODES
 id|DEV_MAC_HID_ADB_MOUSE_SENDS_KEYCODES
 op_assign
 l_int|6
+)brace
+suffix:semicolon
+multiline_comment|/* /proc/sys/abi */
+r_enum
+(brace
+DECL|enumerator|ABI_DEFHANDLER_COFF
+id|ABI_DEFHANDLER_COFF
+op_assign
+l_int|1
+comma
+multiline_comment|/* default handler for coff binaries */
+DECL|enumerator|ABI_DEFHANDLER_ELF
+id|ABI_DEFHANDLER_ELF
+op_assign
+l_int|2
+comma
+multiline_comment|/* default handler for ELF binaries */
+DECL|enumerator|ABI_DEFHANDLER_LCALL7
+id|ABI_DEFHANDLER_LCALL7
+op_assign
+l_int|3
+comma
+multiline_comment|/* default handler for procs using lcall7 */
+DECL|enumerator|ABI_DEFHANDLER_LIBCSO
+id|ABI_DEFHANDLER_LIBCSO
+op_assign
+l_int|4
+comma
+multiline_comment|/* default handler for an libc.so ELF interp */
+DECL|enumerator|ABI_TRACE
+id|ABI_TRACE
+op_assign
+l_int|5
+comma
+multiline_comment|/* tracing flags */
+DECL|enumerator|ABI_FAKE_UTSNAME
+id|ABI_FAKE_UTSNAME
+op_assign
+l_int|6
+comma
+multiline_comment|/* fake target utsname information */
 )brace
 suffix:semicolon
 macro_line|#ifdef __KERNEL__

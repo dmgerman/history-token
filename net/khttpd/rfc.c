@@ -1295,7 +1295,7 @@ id|sysctl_khttpd_docroot
 suffix:semicolon
 id|Head-&gt;FileNameLength
 op_assign
-id|min
+id|min_t
 c_func
 (paren
 r_int
@@ -1317,7 +1317,7 @@ id|Head-&gt;FileName
 comma
 id|Buffer
 comma
-id|min
+id|min_t
 c_func
 (paren
 r_int
@@ -1374,7 +1374,7 @@ id|Head-&gt;IMS
 comma
 id|Buffer
 comma
-id|min
+id|min_t
 c_func
 (paren
 r_int
@@ -1426,7 +1426,7 @@ id|Head-&gt;Agent
 comma
 id|Buffer
 comma
-id|min
+id|min_t
 c_func
 (paren
 r_int
@@ -1478,7 +1478,7 @@ id|Head-&gt;Host
 comma
 id|Buffer
 comma
-id|min
+id|min_t
 c_func
 (paren
 r_int

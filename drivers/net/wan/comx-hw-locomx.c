@@ -1313,7 +1313,7 @@ l_int|1
 suffix:semicolon
 )brace
 r_return
-id|min
+id|min_t
 c_func
 (paren
 r_int
@@ -1414,7 +1414,7 @@ id|buffer
 comma
 id|count
 op_assign
-id|min
+id|min_t
 c_func
 (paren
 r_int

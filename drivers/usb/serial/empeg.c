@@ -834,7 +834,7 @@ suffix:semicolon
 )brace
 id|transfer_size
 op_assign
-id|min
+id|min_t
 (paren
 r_int
 comma

@@ -4,6 +4,7 @@ mdefine_line|#define __ASM_SPINLOCK_H
 macro_line|#include &lt;asm/atomic.h&gt;
 macro_line|#include &lt;asm/rwlock.h&gt;
 macro_line|#include &lt;asm/page.h&gt;
+macro_line|#include &lt;linux/config.h&gt;
 r_extern
 r_int
 id|printk
@@ -33,8 +34,13 @@ l_int|2
 )paren
 suffix:semicolon
 multiline_comment|/* It seems that people are forgetting to&n; * initialize their spinlocks properly, tsk tsk.&n; * Remember to turn this off in 2.4. -ben&n; */
+macro_line|#if defined(CONFIG_DEBUG_SPINLOCK)
+DECL|macro|SPINLOCK_DEBUG
+mdefine_line|#define SPINLOCK_DEBUG&t;1
+macro_line|#else
 DECL|macro|SPINLOCK_DEBUG
 mdefine_line|#define SPINLOCK_DEBUG&t;0
+macro_line|#endif
 multiline_comment|/*&n; * Your basic SMP spinlocks, allowing only a single CPU anywhere&n; */
 r_typedef
 r_struct

@@ -746,6 +746,8 @@ id|ret
 op_eq
 l_int|0
 )paren
+id|ret
+op_assign
 id|inode_setattr
 (paren
 id|inode

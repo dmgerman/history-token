@@ -1299,7 +1299,7 @@ id|conf-&gt;mtu
 )paren
 ques
 c_cond
-id|min
+id|min_t
 c_func
 (paren
 r_int
@@ -2142,7 +2142,7 @@ id|ppp_priv_area
 suffix:semicolon
 id|dev-&gt;mtu
 op_assign
-id|min
+id|min_t
 c_func
 (paren
 r_int

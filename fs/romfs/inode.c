@@ -235,7 +235,7 @@ c_func
 (paren
 id|rsb
 comma
-id|min
+id|min_t
 c_func
 (paren
 r_int
@@ -514,7 +514,7 @@ id|ROMBMASK
 suffix:semicolon
 id|maxsize
 op_assign
-id|min
+id|min_t
 c_func
 (paren
 r_int
@@ -602,7 +602,7 @@ l_int|1
 suffix:semicolon
 id|maxsize
 op_assign
-id|min
+id|min_t
 c_func
 (paren
 r_int
@@ -749,7 +749,7 @@ id|ROMBMASK
 suffix:semicolon
 id|maxsize
 op_assign
-id|min
+id|min_t
 c_func
 (paren
 r_int
@@ -835,7 +835,7 @@ l_int|1
 suffix:semicolon
 id|maxsize
 op_assign
-id|min
+id|min_t
 c_func
 (paren
 r_int
@@ -1657,7 +1657,7 @@ id|offset
 suffix:semicolon
 id|readlen
 op_assign
-id|min
+id|min_t
 c_func
 (paren
 r_int

@@ -189,10 +189,9 @@ op_assign
 id|kmalloc
 c_func
 (paren
-id|min
+id|min_t
 c_func
 (paren
-r_int
 r_int
 comma
 id|count
@@ -241,7 +240,7 @@ id|count
 id|ssize_t
 id|need
 op_assign
-id|min
+id|min_t
 c_func
 (paren
 r_int
@@ -554,10 +553,9 @@ op_assign
 id|kmalloc
 c_func
 (paren
-id|min
+id|min_t
 c_func
 (paren
-r_int
 r_int
 comma
 id|count
@@ -606,7 +604,7 @@ id|count
 id|ssize_t
 id|n
 op_assign
-id|min
+id|min_t
 c_func
 (paren
 r_int

@@ -7947,7 +7947,7 @@ id|rh_data
 comma
 id|data
 comma
-id|min
+id|min_t
 c_func
 (paren
 r_int
@@ -7955,7 +7955,7 @@ r_int
 comma
 id|len
 comma
-id|min
+id|min_t
 c_func
 (paren
 r_int
@@ -8787,7 +8787,7 @@ suffix:colon
 multiline_comment|/* device descriptor */
 id|len
 op_assign
-id|min
+id|min_t
 c_func
 (paren
 r_int
@@ -8795,7 +8795,7 @@ r_int
 comma
 id|leni
 comma
-id|min
+id|min_t
 c_func
 (paren
 r_int
@@ -8828,7 +8828,7 @@ suffix:colon
 multiline_comment|/* configuration descriptor */
 id|len
 op_assign
-id|min
+id|min_t
 c_func
 (paren
 r_int
@@ -8836,7 +8836,7 @@ r_int
 comma
 id|leni
 comma
-id|min
+id|min_t
 c_func
 (paren
 r_int
@@ -8905,7 +8905,7 @@ suffix:semicolon
 id|OK
 c_func
 (paren
-id|min
+id|min_t
 c_func
 (paren
 r_int
@@ -9110,7 +9110,7 @@ suffix:semicolon
 )brace
 id|len
 op_assign
-id|min
+id|min_t
 c_func
 (paren
 r_int
@@ -9118,7 +9118,7 @@ r_int
 comma
 id|leni
 comma
-id|min
+id|min_t
 c_func
 (paren
 r_int
@@ -9186,7 +9186,7 @@ singleline_comment|// ohci_dump_roothub (ohci, 0);
 macro_line|#endif
 id|len
 op_assign
-id|min
+id|min_t
 c_func
 (paren
 r_int

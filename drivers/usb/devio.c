@@ -5936,7 +5936,7 @@ comma
 id|buf
 )paren
 suffix:semicolon
-multiline_comment|/* size = min(int, size, retval)? */
+multiline_comment|/* size = min_t(int, size, retval)? */
 )brace
 multiline_comment|/* cleanup and return */
 r_if
