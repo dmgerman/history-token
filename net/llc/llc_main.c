@@ -380,6 +380,23 @@ r_return
 id|sap
 suffix:semicolon
 )brace
+multiline_comment|/*&n; * FIXME: this will not be needed in next changesets, when this&n; * will move to llc_conn&n; */
+r_extern
+r_int
+id|llc_conn_rcv
+c_func
+(paren
+r_struct
+id|sock
+op_star
+id|sk
+comma
+r_struct
+id|sk_buff
+op_star
+id|skb
+)paren
+suffix:semicolon
 multiline_comment|/**&n; *&t;llc_backlog_rcv - Processes rx frames and expired timers.&n; *&t;@sk: LLC sock (p8022 connection)&n; *&t;@skb: queued rx frame or event&n; *&n; *&t;This function processes frames that has received and timers that has&n; *&t;expired during sending an I pdu (refer to data_req_handler).  frames&n; *&t;queue by llc_rcv function (llc_mac.c) and timers queue by timer&n; *&t;callback functions(llc_c_ac.c).&n; */
 DECL|function|llc_backlog_rcv
 r_static
@@ -1815,19 +1832,6 @@ suffix:semicolon
 DECL|variable|__initdata
 r_static
 r_char
-id|llc_banner
-(braket
-)braket
-id|__initdata
-op_assign
-id|KERN_INFO
-l_string|&quot;LLC 2.0 by Procom, 1997, Arnaldo C. Melo, 2001, 2002&bslash;n&quot;
-id|KERN_INFO
-l_string|&quot;NET 4.0 IEEE 802.2 extended support&bslash;n&quot;
-suffix:semicolon
-DECL|variable|__initdata
-r_static
-r_char
 id|llc_error_msg
 (braket
 )braket
@@ -1860,12 +1864,6 @@ r_struct
 id|llc_station_state_ev
 op_star
 id|ev
-suffix:semicolon
-id|printk
-c_func
-(paren
-id|llc_banner
-)paren
 suffix:semicolon
 id|INIT_LIST_HEAD
 c_func
