@@ -2,6 +2,7 @@ multiline_comment|/*&n; *   Generic i2c interface for ALSA&n; *&n; *   (c) 1998 
 macro_line|#include &lt;sound/driver.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
+macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;sound/core.h&gt;
 macro_line|#include &lt;sound/i2c.h&gt;
