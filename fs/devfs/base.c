@@ -6989,8 +6989,6 @@ id|warn_no_part
 op_assign
 id|tmp
 suffix:semicolon
-id|out
-suffix:colon
 id|devfs_put_ops
 (paren
 id|de

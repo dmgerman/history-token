@@ -5,10 +5,12 @@ macro_line|#include &lt;linux/device.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;asm/hardware.h&gt;
-macro_line|#include &lt;asm/arch/assabet.h&gt;
+macro_line|#include &lt;asm/mach-types.h&gt;
+macro_line|#include &lt;asm/arch/neponset.h&gt;
 macro_line|#include &lt;asm/hardware/sa1111.h&gt;
 macro_line|#include &quot;sa1100_generic.h&quot;
 macro_line|#include &quot;sa1111_generic.h&quot;
+multiline_comment|/*&n; * Neponset uses the Maxim MAX1600, with the following connections:&n; *&n; *   MAX1600      Neponset&n; *&n; *    A0VCC        SA-1111 GPIO A&lt;1&gt;&n; *    A1VCC        SA-1111 GPIO A&lt;0&gt;&n; *    A0VPP        CPLD NCR A0VPP&n; *    A1VPP        CPLD NCR A1VPP&n; *    B0VCC        SA-1111 GPIO A&lt;2&gt;&n; *    B1VCC        SA-1111 GPIO A&lt;3&gt;&n; *    B0VPP        ground (slot B is CF)&n; *    B1VPP        ground (slot B is CF)&n; *&n; *     VX          VCC (5V)&n; *     VY          VCC3_3 (3.3V)&n; *     12INA       12V&n; *     12INB       ground (slot B is CF)&n; *&n; * The MAX1600 CODE pin is tied to ground, placing the device in &n; * &quot;Standard Intel code&quot; mode. Refer to the Maxim data sheet for&n; * the corresponding truth table.&n; */
 DECL|function|neponset_pcmcia_init
 r_static
 r_int
@@ -21,34 +23,6 @@ op_star
 id|init
 )paren
 (brace
-multiline_comment|/* Set GPIO_A&lt;3:0&gt; to be outputs for PCMCIA/CF power controller: */
-id|PA_DDR
-op_and_assign
-op_complement
-(paren
-id|GPIO_GPIO0
-op_or
-id|GPIO_GPIO1
-op_or
-id|GPIO_GPIO2
-op_or
-id|GPIO_GPIO3
-)paren
-suffix:semicolon
-multiline_comment|/* MAX1600 to standby mode: */
-id|PA_DWR
-op_and_assign
-op_complement
-(paren
-id|GPIO_GPIO0
-op_or
-id|GPIO_GPIO1
-op_or
-id|GPIO_GPIO2
-op_or
-id|GPIO_GPIO3
-)paren
-suffix:semicolon
 id|NCR_0
 op_and_assign
 op_complement
@@ -57,6 +31,23 @@ id|NCR_A0VPP
 op_or
 id|NCR_A1VPP
 )paren
+suffix:semicolon
+multiline_comment|/*&n;&t; * Set GPIO_A&lt;3:0&gt; to be outputs for the MAX1600,&n;&t; * and switch to standby mode.&n;&t; */
+id|PA_DDR
+op_assign
+l_int|0
+suffix:semicolon
+id|PA_SDR
+op_assign
+l_int|0
+suffix:semicolon
+id|PA_DWR
+op_assign
+l_int|0
+suffix:semicolon
+id|PA_SSR
+op_assign
+l_int|0
 suffix:semicolon
 r_return
 id|sa1111_pcmcia_init
@@ -94,7 +85,6 @@ suffix:semicolon
 r_int
 id|ret
 suffix:semicolon
-multiline_comment|/* Neponset uses the Maxim MAX1600, with the following connections:&n;&n;&t; *   MAX1600      Neponset&n;&t; *&n;&t; *    A0VCC        SA-1111 GPIO A&lt;1&gt;&n;&t; *    A1VCC        SA-1111 GPIO A&lt;0&gt;&n;&t; *    A0VPP        CPLD NCR A0VPP&n;&t; *    A1VPP        CPLD NCR A1VPP&n;&t; *    B0VCC        SA-1111 GPIO A&lt;2&gt;&n;&t; *    B1VCC        SA-1111 GPIO A&lt;3&gt;&n;&t; *    B0VPP        ground (slot B is CF)&n;&t; *    B1VPP        ground (slot B is CF)&n;&t; *&n;&t; *     VX          VCC (5V)&n;&t; *     VY          VCC3_3 (3.3V)&n;&t; *     12INA       12V&n;&t; *     12INB       ground (slot B is CF)&n;&t; *&n;&t; * The MAX1600 CODE pin is tied to ground, placing the device in &n;&t; * &quot;Standard Intel code&quot; mode. Refer to the Maxim data sheet for&n;&t; * the corresponding truth table.&n;&t; */
 r_switch
 c_cond
 (paren
@@ -420,8 +410,6 @@ id|machine_is_assabet
 c_func
 (paren
 )paren
-op_logical_and
-id|sa1111
 )paren
 id|ret
 op_assign
@@ -438,7 +426,7 @@ suffix:semicolon
 )brace
 DECL|function|pcmcia_neponset_exit
 r_void
-id|__exit
+id|__devexit
 id|pcmcia_neponset_exit
 c_func
 (paren

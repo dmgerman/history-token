@@ -84,7 +84,7 @@ DECL|macro|ZILOG_CLOSING_WAIT_NONE
 mdefine_line|#define ZILOG_CLOSING_WAIT_NONE&t;65535
 multiline_comment|/*&n; * Definitions for ZILOG_struct (and serial_struct) flags field&n; */
 DECL|macro|ZILOG_HUP_NOTIFY
-mdefine_line|#define ZILOG_HUP_NOTIFY 0x0001 /* Notify getty on hangups and closes &n;&t;&t;&t;&t;   on the callout port */
+mdefine_line|#define ZILOG_HUP_NOTIFY 0x0001 /* Notify getty on hangups and closes&n;&t;&t;&t;&t;   on the callout port */
 DECL|macro|ZILOG_FOURPORT
 mdefine_line|#define ZILOG_FOURPORT  0x0002&t;/* Set OU1, OUT2 per AST Fourport settings */
 DECL|macro|ZILOG_SAK
@@ -130,7 +130,7 @@ DECL|macro|ZILOG_CHECK_CD
 mdefine_line|#define ZILOG_CHECK_CD&t;&t;0x02000000 /* i.e., CLOCAL */
 multiline_comment|/* Software state per channel */
 macro_line|#ifdef __KERNEL__
-multiline_comment|/*&n; * This is our internal structure for each serial port&squot;s state.&n; * &n; * Many fields are paralleled by the structure used by the serial_struct&n; * structure.&n; *&n; * For definitions of the flags field, see tty.h&n; */
+multiline_comment|/*&n; * This is our internal structure for each serial port&squot;s state.&n; *&n; * Many fields are paralleled by the structure used by the serial_struct&n; * structure.&n; *&n; * For definitions of the flags field, see tty.h&n; */
 DECL|struct|dec_zschannel
 r_struct
 id|dec_zschannel

@@ -1,0 +1,22 @@
+multiline_comment|/* Functions local to drivers/usb/core/ */
+r_extern
+r_void
+id|usb_create_driverfs_dev_files
+(paren
+r_struct
+id|usb_device
+op_star
+id|dev
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|usb_create_driverfs_intf_files
+(paren
+r_struct
+id|usb_interface
+op_star
+id|intf
+)paren
+suffix:semicolon
+eof

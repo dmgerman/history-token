@@ -1331,4 +1331,16 @@ c_func
 l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
+id|MODULE_AUTHOR
+c_func
+(paren
+l_string|&quot;Steven J. Hill &lt;sjhill@cotw.com&gt;&quot;
+)paren
+suffix:semicolon
+id|MODULE_DESCRIPTION
+c_func
+(paren
+l_string|&quot;Generic NAND ECC support&quot;
+)paren
+suffix:semicolon
 eof

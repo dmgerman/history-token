@@ -1387,6 +1387,8 @@ comma
 id|checksum_match
 comma
 id|low
+comma
+id|s
 )paren
 suffix:semicolon
 id|s-&gt;cis_mem.sys_start
@@ -1413,6 +1415,8 @@ comma
 id|low
 comma
 l_string|&quot;card services&quot;
+comma
+id|s
 )paren
 )paren
 (brace

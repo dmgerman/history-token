@@ -1273,25 +1273,14 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
-id|queue_task
+id|schedule_task
 c_func
 (paren
 op_amp
 id|port-&gt;tqueue
-comma
-op_amp
-id|tq_immediate
-)paren
-suffix:semicolon
-id|mark_bh
-c_func
-(paren
-id|IMMEDIATE_BH
 )paren
 suffix:semicolon
 singleline_comment|//&t;dbg(&quot;omninet_write_bulk_callback, tty %0x&bslash;n&quot;, tty);
-r_return
-suffix:semicolon
 )brace
 DECL|function|omninet_shutdown
 r_static

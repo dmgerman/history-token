@@ -5799,6 +5799,7 @@ r_case
 id|USBDEVFS_DISCONNECT
 suffix:colon
 multiline_comment|/* this function is voodoo. */
+multiline_comment|/* which function ... usb_device_remove()?&n;&t;&t; * FIXME either the module lock (BKL) should be involved&n;&t;&t; * here too, or the &squot;default&squot; case below is broken&n;&t;&t; */
 id|driver
 op_assign
 id|ifp-&gt;driver
@@ -5853,12 +5854,11 @@ suffix:semicolon
 multiline_comment|/* talk directly to the interface&squot;s driver */
 r_default
 suffix:colon
+multiline_comment|/* BKL used here to protect against changing the binding&n;&t;&t; * of this driver to this device, as well as unloading its&n;&t;&t; * driver module.&n;&t;&t; */
 id|lock_kernel
-c_func
 (paren
 )paren
 suffix:semicolon
-multiline_comment|/* against module unload */
 id|driver
 op_assign
 id|ifp-&gt;driver
@@ -5891,55 +5891,53 @@ r_else
 r_if
 c_cond
 (paren
-id|ifp-&gt;driver-&gt;owner
+id|driver-&gt;owner
+op_logical_and
+op_logical_neg
+id|try_inc_mod_count
+(paren
+id|driver-&gt;owner
+)paren
 )paren
 (brace
-id|__MOD_INC_USE_COUNT
-c_func
-(paren
-id|ifp-&gt;driver-&gt;owner
-)paren
-suffix:semicolon
 id|unlock_kernel
 c_func
 (paren
 )paren
 suffix:semicolon
+id|retval
+op_assign
+op_minus
+id|ENOSYS
+suffix:semicolon
+r_break
+suffix:semicolon
 )brace
-multiline_comment|/* ifno might usefully be passed ... */
+id|unlock_kernel
+(paren
+)paren
+suffix:semicolon
 id|retval
 op_assign
 id|driver-&gt;ioctl
 (paren
-id|ps-&gt;dev
+id|ifp
 comma
 id|ctrl.ioctl_code
 comma
 id|buf
 )paren
 suffix:semicolon
-multiline_comment|/* size = min_t(int, size, retval)? */
 r_if
 c_cond
 (paren
-id|ifp-&gt;driver-&gt;owner
+id|driver-&gt;owner
 )paren
-(brace
 id|__MOD_DEC_USE_COUNT
-c_func
 (paren
-id|ifp-&gt;driver-&gt;owner
+id|driver-&gt;owner
 )paren
 suffix:semicolon
-)brace
-r_else
-(brace
-id|unlock_kernel
-c_func
-(paren
-)paren
-suffix:semicolon
-)brace
 )brace
 r_if
 c_cond

@@ -286,10 +286,15 @@ id|pm
 suffix:semicolon
 macro_line|#endif
 macro_line|#ifdef CONFIG_CPU_FREQ
-DECL|member|clockchg
+DECL|member|freq_transition
 r_struct
 id|notifier_block
-id|clockchg
+id|freq_transition
+suffix:semicolon
+DECL|member|freq_policy
+r_struct
+id|notifier_block
+id|freq_policy
 suffix:semicolon
 macro_line|#endif
 )brace

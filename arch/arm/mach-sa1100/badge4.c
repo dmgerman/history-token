@@ -15,7 +15,6 @@ macro_line|#include &lt;asm/mach/map.h&gt;
 macro_line|#include &lt;asm/hardware/sa1111.h&gt;
 macro_line|#include &lt;asm/mach/serial_sa1100.h&gt;
 macro_line|#include &quot;generic.h&quot;
-macro_line|#include &quot;sa1111.h&quot;
 DECL|function|badge4_sa1111_init
 r_static
 r_int
@@ -37,8 +36,6 @@ r_return
 id|sa1111_init
 c_func
 (paren
-l_int|NULL
-comma
 id|BADGE4_SA1111_BASE
 comma
 id|BADGE4_IRQ_GPIO_SA1111

@@ -509,8 +509,13 @@ mdefine_line|#define SG_SET_DEBUG 0x227e    /* 0 -&gt; turn off debug */
 DECL|macro|SG_NEXT_CMD_LEN
 mdefine_line|#define SG_NEXT_CMD_LEN 0x2283  /* override SCSI command length with given&n;&t;&t;   number on the next write() on this file descriptor */
 multiline_comment|/* Defaults, commented if they differ from original sg driver */
+macro_line|#ifdef __KERNEL__
+DECL|macro|SG_DEFAULT_TIMEOUT_USER
+mdefine_line|#define SG_DEFAULT_TIMEOUT_USER&t;(60*USER_HZ) /* HZ == &squot;jiffies in 1 second&squot; */
+macro_line|#else
 DECL|macro|SG_DEFAULT_TIMEOUT
-mdefine_line|#define SG_DEFAULT_TIMEOUT (60*HZ) /* HZ == &squot;jiffies in 1 second&squot; */
+mdefine_line|#define SG_DEFAULT_TIMEOUT&t;(60*HZ)&t;     /* HZ == &squot;jiffies in 1 second&squot; */
+macro_line|#endif
 DECL|macro|SG_DEF_COMMAND_Q
 mdefine_line|#define SG_DEF_COMMAND_Q 0     /* command queuing is always on when&n;&t;&t;&t;&t;  the new interface is used */
 DECL|macro|SG_DEF_UNDERRUN_FLAG

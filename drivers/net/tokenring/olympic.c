@@ -120,7 +120,7 @@ suffix:semicolon
 id|MODULE_DESCRIPTION
 c_func
 (paren
-l_string|&quot;Olympic PCI/Cardbus Chipset Driver &bslash;n&quot;
+l_string|&quot;Olympic PCI/Cardbus Chipset Driver&quot;
 )paren
 suffix:semicolon
 multiline_comment|/* Ring Speed 0,4,16,100 &n; * 0 = Autosense         &n; * 4,16 = Selected speed only, no autosense&n; * This allows the card to be the first on the ring&n; * and become the active monitor.&n; * 100 = Nothing at present, 100mbps is autodetected&n; * if FDX is turned on. May be implemented in the future to &n; * fail if 100mpbs is not detected.&n; *&n; * WARNING: Some hubs will allow you to insert&n; * at the wrong speed&n; */

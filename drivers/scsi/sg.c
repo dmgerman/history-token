@@ -69,6 +69,11 @@ DECL|macro|SG_ALLOW_DIO_CODE
 mdefine_line|#define SG_ALLOW_DIO_CODE /* compile out by commenting this define */
 DECL|macro|SG_MAX_DEVS_MASK
 mdefine_line|#define SG_MAX_DEVS_MASK ((1U &lt;&lt; KDEV_MINOR_BITS) - 1)
+multiline_comment|/*&n; * Suppose you want to calculate the formula muldiv(x,m,d)=int(x * m / d)&n; * Then when using 32 bit integers x * m may overflow during the calculation.&n; * Replacing muldiv(x) by muldiv(x)=((x % d) * m) / d + int(x / d) * m&n; * calculates the same, but prevents the overflow when both m and d&n; * are &quot;small&quot; numbers (like HZ and USER_HZ).&n; * Of course an overflow is inavoidable if the result of muldiv doesn&squot;t fit&n; * in 32 bits.&n; */
+DECL|macro|MULDIV
+mdefine_line|#define MULDIV(X,MUL,DIV) ((((X % DIV) * MUL) / DIV) + ((X / DIV) * MUL))
+DECL|macro|SG_DEFAULT_TIMEOUT
+mdefine_line|#define SG_DEFAULT_TIMEOUT MULDIV(SG_DEFAULT_TIMEOUT_USER, HZ, USER_HZ)
 DECL|variable|sg_big_buff
 r_int
 id|sg_big_buff
@@ -363,7 +368,12 @@ DECL|member|timeout
 r_int
 id|timeout
 suffix:semicolon
-multiline_comment|/* defaults to SG_DEFAULT_TIMEOUT */
+multiline_comment|/* defaults to SG_DEFAULT_TIMEOUT      */
+DECL|member|timeout_user
+r_int
+id|timeout_user
+suffix:semicolon
+multiline_comment|/* defaults to SG_DEFAULT_TIMEOUT_USER */
 DECL|member|reserve
 id|Sg_scatter_hold
 id|reserve
@@ -4196,9 +4206,45 @@ r_return
 op_minus
 id|EIO
 suffix:semicolon
-id|sfp-&gt;timeout
+r_if
+c_cond
+(paren
+id|val
+op_ge
+id|MULDIV
+(paren
+id|INT_MAX
+comma
+id|USER_HZ
+comma
+id|HZ
+)paren
+)paren
+id|val
+op_assign
+id|MULDIV
+(paren
+id|INT_MAX
+comma
+id|USER_HZ
+comma
+id|HZ
+)paren
+suffix:semicolon
+id|sfp-&gt;timeout_user
 op_assign
 id|val
+suffix:semicolon
+id|sfp-&gt;timeout
+op_assign
+id|MULDIV
+(paren
+id|val
+comma
+id|HZ
+comma
+id|USER_HZ
+)paren
 suffix:semicolon
 r_return
 l_int|0
@@ -4207,10 +4253,10 @@ r_case
 id|SG_GET_TIMEOUT
 suffix:colon
 multiline_comment|/* N.B. User receives timeout as return value */
-r_return
-id|sfp-&gt;timeout
-suffix:semicolon
 multiline_comment|/* strange ..., for backward compatibility */
+r_return
+id|sfp-&gt;timeout_user
+suffix:semicolon
 r_case
 id|SG_SET_FORCE_LOW_DMA
 suffix:colon
@@ -13082,6 +13128,10 @@ suffix:semicolon
 id|sfp-&gt;timeout
 op_assign
 id|SG_DEFAULT_TIMEOUT
+suffix:semicolon
+id|sfp-&gt;timeout_user
+op_assign
+id|SG_DEFAULT_TIMEOUT_USER
 suffix:semicolon
 id|sfp-&gt;force_packid
 op_assign
