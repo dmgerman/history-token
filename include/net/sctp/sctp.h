@@ -920,13 +920,8 @@ id|head
 )paren
 (brace
 r_int
+r_int
 id|flags
-id|__attribute__
-(paren
-(paren
-id|unused
-)paren
-)paren
 suffix:semicolon
 id|sctp_spin_lock_irqsave
 c_func
