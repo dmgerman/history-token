@@ -89,7 +89,7 @@ DECL|typedef|elf_fpregset_t
 id|elf_fpregset_t
 suffix:semicolon
 DECL|macro|ELF_CORE_COPY_TASK_REGS
-mdefine_line|#define ELF_CORE_COPY_TASK_REGS(__tsk, __elf_regs)&t;&bslash;&n;&t;({ ELF_CORE_COPY_REGS((*(__elf_regs)), (__tsk)-&gt;thread_info-&gt;kregs); 1; })
+mdefine_line|#define ELF_CORE_COPY_TASK_REGS(__tsk, __elf_regs)&t;&bslash;&n;&t;({ ELF_CORE_COPY_REGS((*(__elf_regs)), (__tsk)-&gt;thread.kregs); 1; })
 multiline_comment|/*&n; * This is used to ensure we don&squot;t load something for the wrong architecture.&n; */
 DECL|macro|elf_check_arch
 mdefine_line|#define elf_check_arch(x) ((x)-&gt;e_machine == EM_SPARC)
