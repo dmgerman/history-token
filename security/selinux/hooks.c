@@ -5839,6 +5839,10 @@ r_case
 l_int|3
 suffix:colon
 multiline_comment|/* Read last kernel messages */
+r_case
+l_int|10
+suffix:colon
+multiline_comment|/* Return size of the log buffer */
 id|rc
 op_assign
 id|task_has_system
