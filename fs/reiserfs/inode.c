@@ -1944,7 +1944,7 @@ id|allocated_block_nr
 op_assign
 l_int|0
 suffix:semicolon
-singleline_comment|// b_blocknr_t is unsigned long
+singleline_comment|// b_blocknr_t is (unsigned) 32 bit int
 id|INITIALIZE_PATH
 c_func
 (paren

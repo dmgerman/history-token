@@ -2940,8 +2940,7 @@ comma
 id|n_h
 )paren
 suffix:semicolon
-r_int
-r_int
+id|b_blocknr_t
 op_star
 id|p_n_blocknr
 comma
@@ -3430,8 +3429,7 @@ id|p_s_sb
 op_assign
 id|p_s_tb-&gt;tb_sb
 suffix:semicolon
-r_int
-r_int
+id|b_blocknr_t
 id|n_left_neighbor_blocknr
 suffix:semicolon
 r_int
@@ -10924,8 +10922,7 @@ id|i
 )braket
 )paren
 (brace
-r_int
-r_int
+id|b_blocknr_t
 id|blocknr
 op_assign
 id|tb-&gt;FEB

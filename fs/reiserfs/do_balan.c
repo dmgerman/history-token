@@ -6514,8 +6514,7 @@ id|tb
 r_int
 id|i
 suffix:semicolon
-r_int
-r_int
+id|b_blocknr_t
 id|blocknr
 suffix:semicolon
 r_for
@@ -6575,7 +6574,7 @@ id|i
 )paren
 id|printk
 (paren
-l_string|&quot;free_thrown deals with dirty buffer %ld&bslash;n&quot;
+l_string|&quot;free_thrown deals with dirty buffer %d&bslash;n&quot;
 comma
 id|blocknr
 )paren
@@ -7019,8 +7018,7 @@ id|super_block
 op_star
 id|s
 comma
-r_int
-r_int
+id|b_blocknr_t
 id|block
 comma
 r_int

@@ -55,8 +55,7 @@ id|super_block
 op_star
 id|s
 comma
-r_int
-r_int
+id|b_blocknr_t
 id|block
 comma
 r_int
@@ -109,8 +108,7 @@ id|super_block
 op_star
 id|s
 comma
-r_int
-r_int
+id|b_blocknr_t
 id|block
 comma
 r_int
@@ -382,8 +380,7 @@ op_star
 id|next
 )paren
 (brace
-r_int
-r_int
+id|b_blocknr_t
 id|tmp
 suffix:semicolon
 r_if
@@ -1024,13 +1021,11 @@ id|reiserfs_transaction_handle
 op_star
 id|th
 comma
-r_int
-r_int
+id|b_blocknr_t
 op_star
 id|start
 comma
-r_int
-r_int
+id|b_blocknr_t
 id|finish
 comma
 r_int
@@ -1347,8 +1342,7 @@ id|reiserfs_transaction_handle
 op_star
 id|th
 comma
-r_int
-r_int
+id|b_blocknr_t
 id|block
 )paren
 (brace
@@ -1589,8 +1583,7 @@ id|reiserfs_transaction_handle
 op_star
 id|th
 comma
-r_int
-r_int
+id|b_blocknr_t
 id|block
 )paren
 (brace
@@ -1657,8 +1650,7 @@ id|reiserfs_transaction_handle
 op_star
 id|th
 comma
-r_int
-r_int
+id|b_blocknr_t
 id|block
 )paren
 (brace
@@ -2987,12 +2979,10 @@ op_star
 id|hint
 )paren
 (brace
-r_int
-r_int
+id|b_blocknr_t
 id|border
 suffix:semicolon
-r_int
-r_int
+id|u32
 id|hash_in
 suffix:semicolon
 r_if
@@ -3030,8 +3020,7 @@ op_assign
 id|hint-&gt;beg
 op_plus
 (paren
-r_int
-r_int
+id|u32
 )paren
 id|keyed_hash
 c_func
@@ -3084,8 +3073,7 @@ op_star
 id|hint
 )paren
 (brace
-r_int
-r_int
+id|b_blocknr_t
 id|border
 suffix:semicolon
 r_if
@@ -3158,8 +3146,7 @@ op_assign
 op_amp
 id|hint-&gt;key
 suffix:semicolon
-r_int
-r_int
+id|b_blocknr_t
 id|slice_start
 suffix:semicolon
 id|slice_start
@@ -4320,8 +4307,7 @@ id|sb
 multiline_comment|/* superblock of filesystem&n;&t;&t;&t;&t;&t;&t;       to estimate space */
 )paren
 (brace
-r_int
-r_int
+id|b_blocknr_t
 id|space
 suffix:semicolon
 id|spin_lock
