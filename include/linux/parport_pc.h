@@ -1049,22 +1049,6 @@ op_star
 id|s
 )paren
 suffix:semicolon
-r_extern
-r_void
-id|parport_pc_inc_use_count
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|parport_pc_dec_use_count
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
 multiline_comment|/* PCMCIA code will want to get us to look at a port.  Provide a mechanism. */
 r_extern
 r_struct
