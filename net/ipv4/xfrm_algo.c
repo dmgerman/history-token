@@ -1049,6 +1049,7 @@ c_func
 r_void
 )paren
 (brace
+macro_line|#ifdef CONFIG_CRYPTO
 r_int
 id|i
 comma
@@ -1063,7 +1064,6 @@ c_func
 )paren
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_CRYPTO
 r_for
 c_loop
 (paren
