@@ -442,7 +442,7 @@ l_int|0
 comma
 l_string|&quot;PCF8584&quot;
 comma
-l_int|0
+l_int|NULL
 )paren
 OL
 l_int|0
@@ -778,7 +778,7 @@ c_func
 (paren
 id|irq
 comma
-l_int|0
+l_int|NULL
 )paren
 suffix:semicolon
 )brace
@@ -836,7 +836,7 @@ c_func
 (paren
 id|irq
 comma
-l_int|0
+l_int|NULL
 )paren
 suffix:semicolon
 )brace
