@@ -84,6 +84,11 @@ DECL|member|slot
 r_int
 id|slot
 suffix:semicolon
+multiline_comment|/* index into id_table, set by the bus match routine */
+DECL|member|index
+r_int
+id|index
+suffix:semicolon
 multiline_comment|/* is there a driver installed? 0 - No, 1 - Yes */
 DECL|member|driver_loaded
 r_int
@@ -278,29 +283,6 @@ DECL|macro|to_mca_driver
 mdefine_line|#define to_mca_driver(mdriver) container_of(mdriver, struct mca_driver, driver)
 multiline_comment|/* Ongoing supported API functions */
 r_extern
-r_int
-id|mca_driver_register
-c_func
-(paren
-r_struct
-id|mca_driver
-op_star
-)paren
-suffix:semicolon
-r_extern
-r_int
-id|mca_register_device
-c_func
-(paren
-r_int
-id|bus
-comma
-r_struct
-id|mca_device
-op_star
-)paren
-suffix:semicolon
-r_extern
 r_struct
 id|mca_device
 op_star
@@ -463,10 +445,8 @@ r_struct
 id|bus_type
 id|mca_bus_type
 suffix:semicolon
-DECL|function|mca_register_driver
-r_static
-r_inline
-r_void
+r_extern
+r_int
 id|mca_register_driver
 c_func
 (paren
@@ -475,15 +455,33 @@ id|mca_driver
 op_star
 id|drv
 )paren
-(brace
-id|driver_register
+suffix:semicolon
+r_extern
+r_void
+id|mca_unregister_driver
 c_func
 (paren
-op_amp
-id|drv-&gt;driver
+r_struct
+id|mca_driver
+op_star
+id|drv
 )paren
 suffix:semicolon
-)brace
+multiline_comment|/* WARNING: only called by the boot time device setup */
+r_extern
+r_int
+id|mca_register_device
+c_func
+(paren
+r_int
+id|bus
+comma
+r_struct
+id|mca_device
+op_star
+id|mca_dev
+)paren
+suffix:semicolon
 multiline_comment|/* for now, include the legacy API */
 macro_line|#include &lt;linux/mca-legacy.h&gt;
 macro_line|#endif /* _LINUX_MCA_H */
