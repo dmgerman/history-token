@@ -1,4 +1,4 @@
-multiline_comment|/* linux/include/asm/hardware/s3c2410/regs-gpio.h&n; *&n; * Copyright (c) 2003,2004 Simtec Electronics &lt;linux@simtec.co.uk&gt;&n; *&t;&t;           http://www.simtec.co.uk/products/SWLINUX/&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; *&n; * S3C2410 GPIO register definitions&n; *&n; *  Changelog:&n; *    19-06-2003     BJD     Created file&n; *    23-06-2003     BJD     Updated GSTATUS registers&n; *    12-03-2004     BJD     Updated include protection&n; *    20-07-2004     BJD     Added GPIO pin numbers, added Port A definitions&n; *    04-10-2004     BJD     Fixed number of bugs, added EXT IRQ filter defs&n; *    17-10-2004     BJD     Added GSTATUS1 register definitions&n;*/
+multiline_comment|/* linux/include/asm/hardware/s3c2410/regs-gpio.h&n; *&n; * Copyright (c) 2003,2004 Simtec Electronics &lt;linux@simtec.co.uk&gt;&n; *&t;&t;           http://www.simtec.co.uk/products/SWLINUX/&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; *&n; * S3C2410 GPIO register definitions&n; *&n; *  Changelog:&n; *    19-06-2003     BJD     Created file&n; *    23-06-2003     BJD     Updated GSTATUS registers&n; *    12-03-2004     BJD     Updated include protection&n; *    20-07-2004     BJD     Added GPIO pin numbers, added Port A definitions&n; *    04-10-2004     BJD     Fixed number of bugs, added EXT IRQ filter defs&n; *    17-10-2004     BJD     Added GSTATUS1 register definitions&n; *    18-11-2004     BJD     Fixed definitions of GPE3, GPE4, GPE5 and GPE6&n; *    18-11-2004     BJD     Added S3C2440 AC97 controls&n;*/
 macro_line|#ifndef __ASM_ARCH_REGS_GPIO_H
 DECL|macro|__ASM_ARCH_REGS_GPIO_H
 mdefine_line|#define __ASM_ARCH_REGS_GPIO_H &quot;$Id: gpio.h,v 1.5 2003/05/19 12:51:08 ben Exp $&quot;
@@ -585,6 +585,8 @@ DECL|macro|S3C2410_GPE3_OUTP
 mdefine_line|#define S3C2410_GPE3_OUTP      (0x01 &lt;&lt; 6)
 DECL|macro|S3C2410_GPE3_I2SSDI
 mdefine_line|#define S3C2410_GPE3_I2SSDI    (0x02 &lt;&lt; 6)
+DECL|macro|S3C2410_GPE3_nSS0
+mdefine_line|#define S3C2410_GPE3_nSS0      (0x03 &lt;&lt; 6)
 DECL|macro|S3C2410_GPE3_MASK
 mdefine_line|#define S3C2410_GPE3_MASK      (0x03 &lt;&lt; 6)
 DECL|macro|S3C2410_GPE4
@@ -595,6 +597,8 @@ DECL|macro|S3C2410_GPE4_OUTP
 mdefine_line|#define S3C2410_GPE4_OUTP      (0x01 &lt;&lt; 8)
 DECL|macro|S3C2410_GPE4_I2SSDO
 mdefine_line|#define S3C2410_GPE4_I2SSDO    (0x02 &lt;&lt; 8)
+DECL|macro|S3C2410_GPE4_I2SSDI
+mdefine_line|#define S3C2410_GPE4_I2SSDI    (0x03 &lt;&lt; 8)
 DECL|macro|S3C2410_GPE4_MASK
 mdefine_line|#define S3C2410_GPE4_MASK      (0x03 &lt;&lt; 8)
 DECL|macro|S3C2410_GPE5
@@ -611,16 +615,16 @@ DECL|macro|S3C2410_GPE6_INP
 mdefine_line|#define S3C2410_GPE6_INP       (0x00 &lt;&lt; 12)
 DECL|macro|S3C2410_GPE6_OUTP
 mdefine_line|#define S3C2410_GPE6_OUTP      (0x01 &lt;&lt; 12)
-DECL|macro|S3C2410_GPE6_SDCLK
-mdefine_line|#define S3C2410_GPE6_SDCLK     (0x02 &lt;&lt; 12)
+DECL|macro|S3C2410_GPE6_SDCMD
+mdefine_line|#define S3C2410_GPE6_SDCMD     (0x02 &lt;&lt; 12)
 DECL|macro|S3C2410_GPE7
 mdefine_line|#define S3C2410_GPE7           S3C2410_GPIONO(S3C2410_GPIO_BANKE, 7)
 DECL|macro|S3C2410_GPE7_INP
 mdefine_line|#define S3C2410_GPE7_INP       (0x00 &lt;&lt; 14)
 DECL|macro|S3C2410_GPE7_OUTP
 mdefine_line|#define S3C2410_GPE7_OUTP      (0x01 &lt;&lt; 14)
-DECL|macro|S3C2410_GPE7_SDCMD
-mdefine_line|#define S3C2410_GPE7_SDCMD     (0x02 &lt;&lt; 14)
+DECL|macro|S3C2410_GPE7_SDDAT0
+mdefine_line|#define S3C2410_GPE7_SDDAT0    (0x02 &lt;&lt; 14)
 DECL|macro|S3C2410_GPE8
 mdefine_line|#define S3C2410_GPE8           S3C2410_GPIONO(S3C2410_GPIO_BANKE, 8)
 DECL|macro|S3C2410_GPE8_INP
@@ -689,6 +693,16 @@ DECL|macro|S3C2410_GPE15_IICSDA
 mdefine_line|#define S3C2410_GPE15_IICSDA   (0x02 &lt;&lt; 30)
 DECL|macro|S3C2410_GPE15_MASK
 mdefine_line|#define S3C2410_GPE15_MASK     (0x03 &lt;&lt; 30)
+DECL|macro|S3C2440_GPE0_ACSYNC
+mdefine_line|#define S3C2440_GPE0_ACSYNC    (0x03 &lt;&lt; 0)
+DECL|macro|S3C2440_GPE1_ACBITCLK
+mdefine_line|#define S3C2440_GPE1_ACBITCLK  (0x03 &lt;&lt; 2)
+DECL|macro|S3C2440_GPE2_ACRESET
+mdefine_line|#define S3C2440_GPE2_ACRESET   (0x03 &lt;&lt; 4)
+DECL|macro|S3C2440_GPE3_ACIN
+mdefine_line|#define S3C2440_GPE3_ACIN      (0x03 &lt;&lt; 6)
+DECL|macro|S3C2440_GPE4_ACOUT
+mdefine_line|#define S3C2440_GPE4_ACOUT     (0x03 &lt;&lt; 8)
 DECL|macro|S3C2410_GPE_PUPDIS
 mdefine_line|#define S3C2410_GPE_PUPDIS(x)  (1&lt;&lt;(x))
 multiline_comment|/* Port F consists of 8 GPIO/Special function&n; *&n; * GPIO / interrupt inputs&n; *&n; * GPFCON has 2 bits for each of the input pins on port F&n; *   00 = 0 input, 1 output, 2 interrupt (EINT0..7), 3 undefined&n; *&n; * pull up works like all other ports.&n;*/
