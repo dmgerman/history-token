@@ -4,7 +4,7 @@ macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/agp_backend.h&gt;
 macro_line|#include &quot;agp.h&quot;
-multiline_comment|/* Will need to be increased if hammer ever goes &gt;8-way. */
+multiline_comment|/* Will need to be increased if AMD64 ever goes &gt;8-way. */
 macro_line|#ifdef CONFIG_SMP
 DECL|macro|MAX_HAMMER_GARTS
 mdefine_line|#define MAX_HAMMER_GARTS   8
@@ -57,10 +57,10 @@ id|gart_iterator
 suffix:semicolon
 DECL|macro|for_each_nb
 mdefine_line|#define for_each_nb() for(gart_iterator=0;gart_iterator&lt;nr_garts;gart_iterator++)
-DECL|function|flush_x86_64_tlb
+DECL|function|flush_amd64_tlb
 r_static
 r_void
-id|flush_x86_64_tlb
+id|flush_amd64_tlb
 c_func
 (paren
 r_struct
@@ -96,10 +96,10 @@ id|tmp
 )paren
 suffix:semicolon
 )brace
-DECL|function|amd_x86_64_tlbflush
+DECL|function|amd64_tlbflush
 r_static
 r_void
-id|amd_x86_64_tlbflush
+id|amd64_tlbflush
 c_func
 (paren
 r_struct
@@ -112,7 +112,7 @@ id|for_each_nb
 c_func
 (paren
 )paren
-id|flush_x86_64_tlb
+id|flush_amd64_tlb
 c_func
 (paren
 id|hammers
@@ -122,10 +122,10 @@ id|gart_iterator
 )paren
 suffix:semicolon
 )brace
-DECL|function|x86_64_insert_memory
+DECL|function|amd64_insert_memory
 r_static
 r_int
-id|x86_64_insert_memory
+id|amd64_insert_memory
 c_func
 (paren
 r_struct
@@ -331,7 +331,7 @@ op_assign
 id|pte
 suffix:semicolon
 )brace
-id|amd_x86_64_tlbflush
+id|amd64_tlbflush
 c_func
 (paren
 id|mem
@@ -342,11 +342,11 @@ l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * This hack alters the order element according&n; * to the size of a long. It sucks. I totally disown this, even&n; * though it does appear to work for the most part.&n; */
-DECL|variable|x86_64_aperture_sizes
+DECL|variable|amd64_aperture_sizes
 r_static
 r_struct
 id|aper_size_info_32
-id|x86_64_aperture_sizes
+id|amd64_aperture_sizes
 (braket
 l_int|7
 )braket
@@ -511,10 +511,10 @@ l_int|3
 )brace
 suffix:semicolon
 multiline_comment|/*&n; * Get the current Aperture size from the x86-64.&n; * Note, that there may be multiple x86-64&squot;s, but we just return&n; * the value from the first one we find. The set_size functions&n; * keep the rest coherent anyway. Or at least should do.&n; */
-DECL|function|amd_x86_64_fetch_size
+DECL|function|amd64_fetch_size
 r_static
 r_int
-id|amd_x86_64_fetch_size
+id|amd64_fetch_size
 c_func
 (paren
 r_void
@@ -577,7 +577,7 @@ op_assign
 id|A_SIZE_32
 c_func
 (paren
-id|x86_64_aperture_sizes
+id|amd64_aperture_sizes
 )paren
 suffix:semicolon
 r_for
@@ -641,10 +641,10 @@ l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * In a multiprocessor x86-64 system, this function gets&n; * called once for each CPU.&n; */
-DECL|function|amd_x86_64_configure
+DECL|function|amd64_configure
 r_static
 id|u64
-id|amd_x86_64_configure
+id|amd64_configure
 (paren
 r_struct
 id|pci_dev
@@ -762,7 +762,7 @@ id|tmp
 )paren
 suffix:semicolon
 multiline_comment|/* keep CPU&squot;s coherent. */
-id|flush_x86_64_tlb
+id|flush_amd64_tlb
 (paren
 id|hammer
 )paren
@@ -886,7 +886,7 @@ c_func
 (brace
 id|agp_bridge-&gt;gart_bus_addr
 op_assign
-id|amd_x86_64_configure
+id|amd64_configure
 c_func
 (paren
 id|hammers
@@ -902,10 +902,10 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-DECL|function|amd_8151_cleanup
+DECL|function|amd64_cleanup
 r_static
 r_void
-id|amd_8151_cleanup
+id|amd64_cleanup
 c_func
 (paren
 r_void
@@ -986,17 +986,17 @@ comma
 dot
 id|fetch_size
 op_assign
-id|amd_x86_64_fetch_size
+id|amd64_fetch_size
 comma
 dot
 id|cleanup
 op_assign
-id|amd_8151_cleanup
+id|amd64_cleanup
 comma
 dot
 id|tlb_flush
 op_assign
-id|amd_x86_64_tlbflush
+id|amd64_tlbflush
 comma
 dot
 id|mask_memory
@@ -1031,7 +1031,7 @@ comma
 dot
 id|insert_memory
 op_assign
-id|x86_64_insert_memory
+id|amd64_insert_memory
 comma
 dot
 id|remove_memory
@@ -1660,11 +1660,11 @@ suffix:colon
 l_int|0
 suffix:semicolon
 )brace
-DECL|function|agp_amdk8_probe
+DECL|function|agp_amd64_probe
 r_static
 r_int
 id|__init
-id|agp_amdk8_probe
+id|agp_amd64_probe
 c_func
 (paren
 r_struct
@@ -1694,7 +1694,7 @@ r_char
 op_star
 id|revstring
 op_assign
-l_string|&quot;  &quot;
+l_int|NULL
 suffix:semicolon
 id|cap_ptr
 op_assign
@@ -1934,11 +1934,11 @@ id|bridge
 )paren
 suffix:semicolon
 )brace
-DECL|function|agp_amdk8_remove
+DECL|function|agp_amd64_remove
 r_static
 r_void
 id|__devexit
-id|agp_amdk8_remove
+id|agp_amd64_remove
 c_func
 (paren
 r_struct
@@ -1967,7 +1967,7 @@ c_func
 id|bridge-&gt;gatt_table_real
 )paren
 comma
-id|x86_64_aperture_sizes
+id|amd64_aperture_sizes
 (braket
 id|bridge-&gt;aperture_size_idx
 )braket
@@ -1988,11 +1988,11 @@ id|bridge
 )paren
 suffix:semicolon
 )brace
-DECL|variable|agp_amdk8_pci_table
+DECL|variable|agp_amd64_pci_table
 r_static
 r_struct
 id|pci_device_id
-id|agp_amdk8_pci_table
+id|agp_amd64_pci_table
 (braket
 )braket
 op_assign
@@ -2160,43 +2160,43 @@ c_func
 (paren
 id|pci
 comma
-id|agp_amdk8_pci_table
+id|agp_amd64_pci_table
 )paren
 suffix:semicolon
-DECL|variable|agp_amdk8_pci_driver
+DECL|variable|agp_amd64_pci_driver
 r_static
 r_struct
 id|pci_driver
-id|agp_amdk8_pci_driver
+id|agp_amd64_pci_driver
 op_assign
 (brace
 dot
 id|name
 op_assign
-l_string|&quot;agpgart-amd-k8&quot;
+l_string|&quot;agpgart-amd64&quot;
 comma
 dot
 id|id_table
 op_assign
-id|agp_amdk8_pci_table
+id|agp_amd64_pci_table
 comma
 dot
 id|probe
 op_assign
-id|agp_amdk8_probe
+id|agp_amd64_probe
 comma
 dot
 id|remove
 op_assign
-id|agp_amdk8_remove
+id|agp_amd64_remove
 comma
 )brace
 suffix:semicolon
 multiline_comment|/* Not static due to IOMMU code calling it early. */
-DECL|function|agp_amdk8_init
+DECL|function|agp_amd64_init
 r_int
 id|__init
-id|agp_amdk8_init
+id|agp_amd64_init
 c_func
 (paren
 r_void
@@ -2223,7 +2223,7 @@ id|pci_module_init
 c_func
 (paren
 op_amp
-id|agp_amdk8_pci_driver
+id|agp_amd64_pci_driver
 )paren
 op_eq
 l_int|0
@@ -2273,7 +2273,7 @@ op_minus
 id|ENODEV
 suffix:semicolon
 )brace
-multiline_comment|/* First check that we have at least one K8 NB */
+multiline_comment|/* First check that we have at least one AMD64 NB */
 r_if
 c_cond
 (paren
@@ -2338,7 +2338,7 @@ multiline_comment|/* Only one bridge supported right now */
 r_if
 c_cond
 (paren
-id|agp_amdk8_probe
+id|agp_amd64_probe
 c_func
 (paren
 id|dev
@@ -2362,11 +2362,11 @@ r_return
 id|err
 suffix:semicolon
 )brace
-DECL|function|agp_amdk8_cleanup
+DECL|function|agp_amd64_cleanup
 r_static
 r_void
 id|__exit
-id|agp_amdk8_cleanup
+id|agp_amd64_cleanup
 c_func
 (paren
 r_void
@@ -2376,24 +2376,24 @@ id|pci_unregister_driver
 c_func
 (paren
 op_amp
-id|agp_amdk8_pci_driver
+id|agp_amd64_pci_driver
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* On x86-64 the PCI driver needs to initialize this driver early&n;   for the IOMMU, so it has to be called via a backdoor. */
+multiline_comment|/* On AMD64 the PCI driver needs to initialize this driver early&n;   for the IOMMU, so it has to be called via a backdoor. */
 macro_line|#ifndef CONFIG_GART_IOMMU
-DECL|variable|agp_amdk8_init
+DECL|variable|agp_amd64_init
 id|module_init
 c_func
 (paren
-id|agp_amdk8_init
+id|agp_amd64_init
 )paren
 suffix:semicolon
-DECL|variable|agp_amdk8_cleanup
+DECL|variable|agp_amd64_cleanup
 id|module_exit
 c_func
 (paren
-id|agp_amdk8_cleanup
+id|agp_amd64_cleanup
 )paren
 suffix:semicolon
 macro_line|#endif
