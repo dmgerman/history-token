@@ -6558,6 +6558,12 @@ c_func
 l_string|&quot;ndisc_send_redirect: alloc_skb failed&bslash;n&quot;
 )paren
 suffix:semicolon
+id|dst_release
+c_func
+(paren
+id|dst
+)paren
+suffix:semicolon
 r_return
 suffix:semicolon
 )brace
