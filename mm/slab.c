@@ -1311,7 +1311,7 @@ multiline_comment|/*&n; * Start the reap timer running on the target CPU.  We ru
 DECL|function|start_cpu_timer
 r_static
 r_void
-id|__init
+id|__devinit
 id|start_cpu_timer
 c_func
 (paren

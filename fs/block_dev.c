@@ -2441,7 +2441,7 @@ r_int
 id|ret
 op_assign
 op_minus
-id|ENXIO
+id|ENODEV
 suffix:semicolon
 r_int
 id|part
@@ -2491,6 +2491,11 @@ suffix:semicolon
 id|owner
 op_assign
 id|disk-&gt;fops-&gt;owner
+suffix:semicolon
+id|ret
+op_assign
+op_minus
+id|ENXIO
 suffix:semicolon
 id|down
 c_func
