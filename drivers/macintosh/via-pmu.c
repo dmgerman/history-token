@@ -8276,6 +8276,8 @@ id|req
 suffix:semicolon
 r_int
 id|bite
+op_assign
+l_int|0
 suffix:semicolon
 r_if
 c_cond

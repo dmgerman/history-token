@@ -4031,6 +4031,8 @@ suffix:semicolon
 r_char
 op_star
 id|kbuf
+op_assign
+l_int|NULL
 suffix:semicolon
 r_int
 r_int

@@ -2137,6 +2137,8 @@ r_int
 r_int
 op_star
 id|opprop
+op_assign
+l_int|NULL
 suffix:semicolon
 r_struct
 id|device_node

@@ -882,6 +882,8 @@ id|direction
 (brace
 id|dma_addr_t
 id|dma_next
+op_assign
+l_int|0
 comma
 id|dma_addr
 suffix:semicolon

@@ -2133,6 +2133,8 @@ id|name
 suffix:semicolon
 r_int
 id|offset
+op_assign
+l_int|0
 suffix:semicolon
 multiline_comment|/* The user has requested a console so this is already set up. */
 r_if
