@@ -1846,6 +1846,13 @@ c_cond
 id|bio
 )paren
 (brace
+multiline_comment|/*&n;&t;&t; * subtle -- if __bio_map_user() ended up bouncing a bio,&n;&t;&t; * it would normally disappear when its bi_end_io is run.&n;&t;&t; * however, we need it for the unmap, so grab an extra&n;&t;&t; * reference to it&n;&t;&t; */
+id|bio_get
+c_func
+(paren
+id|bio
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1876,13 +1883,6 @@ r_return
 l_int|NULL
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t;&t; * subtle -- if __bio_map_user() ended up bouncing a bio,&n;&t;&t; * it would normally disappear when its bi_end_io is run.&n;&t;&t; * however, we need it for the unmap, so grab an extra&n;&t;&t; * reference to it&n;&t;&t; */
-id|bio_get
-c_func
-(paren
-id|bio
-)paren
-suffix:semicolon
 )brace
 r_return
 id|bio

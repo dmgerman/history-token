@@ -4194,9 +4194,6 @@ comma
 id|maxPS
 )paren
 suffix:semicolon
-multiline_comment|/* Code below may sleep, need to lock module while we are here */
-id|MOD_INC_USE_COUNT
-suffix:semicolon
 id|uvd
 op_assign
 id|usbvideo_AllocateDevice
@@ -4550,8 +4547,6 @@ id|cam-&gt;input.phys
 suffix:semicolon
 macro_line|#endif
 )brace
-id|MOD_DEC_USE_COUNT
-suffix:semicolon
 r_if
 c_cond
 (paren

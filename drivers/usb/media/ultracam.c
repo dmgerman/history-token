@@ -4048,9 +4048,6 @@ op_minus
 id|ENODEV
 suffix:semicolon
 )brace
-multiline_comment|/* Code below may sleep, need to lock module while we are here */
-id|MOD_INC_USE_COUNT
-suffix:semicolon
 id|uvd
 op_assign
 id|usbvideo_AllocateDevice
@@ -4193,8 +4190,6 @@ l_int|NULL
 suffix:semicolon
 )brace
 )brace
-id|MOD_DEC_USE_COUNT
-suffix:semicolon
 r_if
 c_cond
 (paren

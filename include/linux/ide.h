@@ -1673,9 +1673,9 @@ DECL|member|remap_0_to_1
 r_int
 id|remap_0_to_1
 suffix:colon
-l_int|2
+l_int|1
 suffix:semicolon
-multiline_comment|/* 0=remap if ezdrive, 1=remap, 2=noremap */
+multiline_comment|/* 0=noremap, 1=remap 0-&gt;1 (for EZDrive) */
 DECL|member|ata_flash
 r_int
 id|ata_flash

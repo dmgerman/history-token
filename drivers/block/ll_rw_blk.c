@@ -1469,7 +1469,7 @@ c_func
 (paren
 id|bqt-&gt;tag_map
 comma
-id|bqt-&gt;tag_map
+id|tag_map
 comma
 id|bits
 op_star
