@@ -77,6 +77,10 @@ op_and_assign
 op_complement
 id|PF_MEMALLOC
 suffix:semicolon
+id|current-&gt;flags
+op_or_assign
+id|PF_RADIX_TREE
+suffix:semicolon
 id|ret
 op_assign
 id|add_to_swap_cache

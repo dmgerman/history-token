@@ -1721,10 +1721,22 @@ suffix:semicolon
 )brace
 id|nopage
 suffix:colon
+r_if
+c_cond
+(paren
+op_logical_neg
+(paren
+id|current-&gt;flags
+op_amp
+id|PF_RADIX_TREE
+)paren
+)paren
+(brace
 id|printk
 c_func
 (paren
-l_string|&quot;%s: page allocation failure. order:%d, mode:0x%x&bslash;n&quot;
+l_string|&quot;%s: page allocation failure.&quot;
+l_string|&quot; order:%d, mode:0x%x&bslash;n&quot;
 comma
 id|current-&gt;comm
 comma
@@ -1733,6 +1745,7 @@ comma
 id|gfp_mask
 )paren
 suffix:semicolon
+)brace
 r_return
 l_int|NULL
 suffix:semicolon
