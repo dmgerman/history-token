@@ -25,10 +25,14 @@ DECL|macro|SESR
 mdefine_line|#define&t;SESR&t;0xff001060
 DECL|macro|SEAR
 mdefine_line|#define&t;SEAR&t;0xff001070
+DECL|macro|SIOC1
+mdefine_line|#define&t;SIOC1&t;0xff001090
 DECL|macro|PGCHP
 mdefine_line|#define&t;PGCHP&t;0xff001100
 DECL|macro|GPDIR
 mdefine_line|#define&t;GPDIR&t;0xff001130
+DECL|macro|GPOUT
+mdefine_line|#define&t;GPOUT&t;0xff001150
 DECL|macro|ATAS
 mdefine_line|#define&t;ATAS&t;0xff001160
 DECL|macro|AVDG
