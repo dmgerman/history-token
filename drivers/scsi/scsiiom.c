@@ -4298,6 +4298,7 @@ c_cond
 id|pDCB
 )paren
 id|printk
+c_func
 (paren
 id|KERN_ERR
 l_string|&quot;DC390: pSRB == pTmpSRB! (TagQ Error?) (%02i-%i)&bslash;n&quot;
@@ -4309,16 +4310,42 @@ id|pDCB-&gt;TargetLUN
 suffix:semicolon
 r_else
 id|printk
+c_func
 (paren
 id|KERN_ERR
 l_string|&quot;DC390: pSRB == pTmpSRB! (TagQ Error?) (DCB 0!)&bslash;n&quot;
 )paren
 suffix:semicolon
+multiline_comment|/* Try to recover - some broken disks react badly to tagged INQUIRY */
+r_if
+c_cond
+(paren
+id|pDCB
+op_logical_and
+id|pACB-&gt;scan_devices
+op_logical_and
+id|pDCB-&gt;GoingSRBCnt
+op_eq
+l_int|1
+)paren
+(brace
+id|pSRB
+op_assign
+id|pDCB-&gt;pGoingSRB
+suffix:semicolon
+id|pDCB-&gt;pActiveSRB
+op_assign
+id|pSRB
+suffix:semicolon
+)brace
+r_else
+(brace
 id|pSRB-&gt;pSRBDCB
 op_assign
 id|pDCB
 suffix:semicolon
 id|dc390_EnableMsgOut_Abort
+c_func
 (paren
 id|pACB
 comma
@@ -4336,6 +4363,7 @@ id|ABORT_DEV
 suffix:semicolon
 r_return
 suffix:semicolon
+)brace
 )brace
 r_if
 c_cond
