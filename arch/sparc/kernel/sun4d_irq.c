@@ -259,7 +259,8 @@ c_cond
 op_logical_neg
 id|action
 )paren
-r_continue
+r_goto
+id|out
 suffix:semicolon
 )brace
 r_else
@@ -323,7 +324,8 @@ r_goto
 id|found_it
 suffix:semicolon
 )brace
-r_continue
+r_goto
+id|out
 suffix:semicolon
 )brace
 id|found_it
@@ -551,6 +553,8 @@ l_char|&squot;&bslash;n&squot;
 )paren
 suffix:semicolon
 )brace
+id|out
+suffix:colon
 r_return
 l_int|0
 suffix:semicolon
