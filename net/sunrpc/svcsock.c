@@ -6243,7 +6243,7 @@ id|dr-&gt;svsk
 op_assign
 l_int|NULL
 suffix:semicolon
-id|spin_lock
+id|spin_lock_bh
 c_func
 (paren
 op_amp
@@ -6260,7 +6260,7 @@ op_amp
 id|svsk-&gt;sk_deferred
 )paren
 suffix:semicolon
-id|spin_unlock
+id|spin_unlock_bh
 c_func
 (paren
 op_amp
@@ -6434,7 +6434,7 @@ l_int|2
 )paren
 suffix:semicolon
 )brace
-id|spin_lock
+id|spin_lock_bh
 c_func
 (paren
 op_amp
@@ -6448,7 +6448,7 @@ id|dr-&gt;svsk
 op_assign
 id|rqstp-&gt;rq_sock
 suffix:semicolon
-id|spin_unlock
+id|spin_unlock_bh
 c_func
 (paren
 op_amp
@@ -6572,7 +6572,7 @@ id|svsk-&gt;sk_flags
 r_return
 l_int|NULL
 suffix:semicolon
-id|spin_lock
+id|spin_lock_bh
 c_func
 (paren
 op_amp
@@ -6630,7 +6630,7 @@ id|svsk-&gt;sk_flags
 )paren
 suffix:semicolon
 )brace
-id|spin_unlock
+id|spin_unlock_bh
 c_func
 (paren
 op_amp
