@@ -3994,15 +3994,6 @@ id|chip-&gt;model
 op_assign
 id|PMAC_SNAPPER
 suffix:semicolon
-id|chip-&gt;can_capture
-op_assign
-l_int|0
-suffix:semicolon
-multiline_comment|/* no capture */
-id|chip-&gt;can_duplex
-op_assign
-l_int|0
-suffix:semicolon
 singleline_comment|// chip-&gt;can_byte_swap = 0; /* FIXME: check this */
 id|chip-&gt;num_freqs
 op_assign
