@@ -249,9 +249,6 @@ comma
 r_int
 r_int
 id|address
-comma
-r_int
-id|write_access
 )paren
 suffix:semicolon
 )brace
@@ -364,8 +361,8 @@ DECL|macro|PG_uptodate
 mdefine_line|#define PG_uptodate&t;&t; 3
 DECL|macro|PG_dirty
 mdefine_line|#define PG_dirty&t;&t; 4
-DECL|macro|PG_decr_after
-mdefine_line|#define PG_decr_after&t;&t; 5
+DECL|macro|PG_unused
+mdefine_line|#define PG_unused&t;&t; 5
 DECL|macro|PG_active
 mdefine_line|#define PG_active&t;&t; 6
 DECL|macro|PG_inactive
@@ -471,12 +468,6 @@ DECL|macro|ClearPageReferenced
 mdefine_line|#define ClearPageReferenced(page)&t;clear_bit(PG_referenced, &amp;(page)-&gt;flags)
 DECL|macro|PageTestandClearReferenced
 mdefine_line|#define PageTestandClearReferenced(page)&t;test_and_clear_bit(PG_referenced, &amp;(page)-&gt;flags)
-DECL|macro|PageDecrAfter
-mdefine_line|#define PageDecrAfter(page)&t;test_bit(PG_decr_after, &amp;(page)-&gt;flags)
-DECL|macro|SetPageDecrAfter
-mdefine_line|#define SetPageDecrAfter(page)&t;set_bit(PG_decr_after, &amp;(page)-&gt;flags)
-DECL|macro|PageTestandClearDecrAfter
-mdefine_line|#define PageTestandClearDecrAfter(page)&t;test_and_clear_bit(PG_decr_after, &amp;(page)-&gt;flags)
 DECL|macro|PageSlab
 mdefine_line|#define PageSlab(page)&t;&t;test_bit(PG_slab, &amp;(page)-&gt;flags)
 DECL|macro|PageSetSlab
@@ -786,9 +777,6 @@ comma
 r_int
 r_int
 id|address
-comma
-r_int
-id|no_share
 )paren
 suffix:semicolon
 r_struct
@@ -1770,8 +1758,6 @@ id|vm_area_struct
 op_star
 comma
 r_int
-r_int
-comma
 r_int
 )paren
 suffix:semicolon

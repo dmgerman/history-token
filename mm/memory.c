@@ -3831,7 +3831,7 @@ id|vma-&gt;vm_page_prot
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * This routine handles present pages, when users try to write&n; * to a shared page. It is done by copying the page to a new address&n; * and decrementing the shared-page counter for the old page.&n; *&n; * Goto-purists beware: the only reason for goto&squot;s here is that it results&n; * in better assembly code.. The &quot;default&quot; path will see no jumps at all.&n; *&n; * Note that this routine assumes that the protection checks have been&n; * done by the caller (the low-level page fault routine in most cases).&n; * Thus we can safely just mark it writable once we&squot;ve done any necessary&n; * COW.&n; *&n; * We also mark the page dirty at this point even though the page will&n; * change only once the write actually happens. This avoids a few races,&n; * and potentially makes it more efficient.&n; *&n; * We hold the mm semaphore and the page_table_lock on entry and exit.&n; */
+multiline_comment|/*&n; * This routine handles present pages, when users try to write&n; * to a shared page. It is done by copying the page to a new address&n; * and decrementing the shared-page counter for the old page.&n; *&n; * Goto-purists beware: the only reason for goto&squot;s here is that it results&n; * in better assembly code.. The &quot;default&quot; path will see no jumps at all.&n; *&n; * Note that this routine assumes that the protection checks have been&n; * done by the caller (the low-level page fault routine in most cases).&n; * Thus we can safely just mark it writable once we&squot;ve done any necessary&n; * COW.&n; *&n; * We also mark the page dirty at this point even though the page will&n; * change only once the write actually happens. This avoids a few races,&n; * and potentially makes it more efficient.&n; *&n; * We hold the mm semaphore and the page_table_lock on entry and exit&n; * with the page_table_lock released.&n; */
 DECL|function|do_wp_page
 r_static
 r_int
@@ -4022,6 +4022,13 @@ id|pte
 )paren
 )paren
 suffix:semicolon
+id|spin_unlock
+c_func
+(paren
+op_amp
+id|mm-&gt;page_table_lock
+)paren
+suffix:semicolon
 r_return
 l_int|1
 suffix:semicolon
@@ -4131,6 +4138,13 @@ op_assign
 id|old_page
 suffix:semicolon
 )brace
+id|spin_unlock
+c_func
+(paren
+op_amp
+id|mm-&gt;page_table_lock
+)paren
+suffix:semicolon
 id|free_lru_page
 c_func
 (paren
@@ -4143,6 +4157,13 @@ suffix:semicolon
 multiline_comment|/* Minor fault */
 id|bad_wp_page
 suffix:colon
+id|spin_unlock
+c_func
+(paren
+op_amp
+id|mm-&gt;page_table_lock
+)paren
+suffix:semicolon
 id|printk
 c_func
 (paren
@@ -4167,13 +4188,6 @@ id|free_lru_page
 c_func
 (paren
 id|old_page
-)paren
-suffix:semicolon
-id|spin_lock
-c_func
-(paren
-op_amp
-id|mm-&gt;page_table_lock
 )paren
 suffix:semicolon
 r_return
@@ -4598,23 +4612,6 @@ id|i
 op_increment
 )paren
 (brace
-multiline_comment|/* Don&squot;t block on I/O for read-ahead */
-r_if
-c_cond
-(paren
-id|atomic_read
-c_func
-(paren
-op_amp
-id|nr_async_pages
-)paren
-op_ge
-id|pager_daemon.swap_cluster
-op_lshift
-id|page_cluster
-)paren
-r_break
-suffix:semicolon
 multiline_comment|/* Ok, do the async read-ahead now */
 id|new_page
 op_assign
@@ -4655,7 +4652,7 @@ suffix:semicolon
 multiline_comment|/* Swap 80% full? Release the pages as they are paged in.. */
 DECL|macro|vm_swap_full
 mdefine_line|#define vm_swap_full() &bslash;&n;&t;(swapper_space.nrpages*5 &gt; total_swap_pages*4)
-multiline_comment|/*&n; * We hold the mm semaphore and the page_table_lock on entry and exit.&n; */
+multiline_comment|/*&n; * We hold the mm semaphore and the page_table_lock on entry and&n; * should release the pagetable lock on exit..&n; */
 DECL|function|do_swap_page
 r_static
 r_int
@@ -4752,6 +4749,10 @@ op_logical_neg
 id|page
 )paren
 (brace
+multiline_comment|/*&n;&t;&t;&t; * Back out if somebody else faulted in this pte while&n;&t;&t;&t; * we released the page table lock.&n;&t;&t;&t; */
+r_int
+id|retval
+suffix:semicolon
 id|spin_lock
 c_func
 (paren
@@ -4759,8 +4760,8 @@ op_amp
 id|mm-&gt;page_table_lock
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t;&t;&t; * Back out if somebody else faulted in this pte while&n;&t;&t;&t; * we released the page table lock.&n;&t;&t;&t; */
-r_return
+id|retval
+op_assign
 id|pte_same
 c_func
 (paren
@@ -4776,6 +4777,16 @@ l_int|1
 suffix:colon
 l_int|1
 suffix:semicolon
+id|spin_unlock
+c_func
+(paren
+op_amp
+id|mm-&gt;page_table_lock
+)paren
+suffix:semicolon
+r_return
+id|retval
+suffix:semicolon
 )brace
 multiline_comment|/* Had to read the page from swap area: Major fault */
 id|ret
@@ -4783,8 +4794,17 @@ op_assign
 l_int|2
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t; * Freeze the &quot;shared&quot;ness of the page, ie page_count + swap_count.&n;&t; * Must lock page before transferring our swap count to already&n;&t; * obtained page count.&n;&t; */
-id|lock_page
+r_if
+c_cond
+(paren
+op_logical_neg
+id|Page_Uptodate
+c_func
+(paren
+id|page
+)paren
+)paren
+id|wait_on_page
 c_func
 (paren
 id|page
@@ -4824,6 +4844,13 @@ c_func
 id|page
 )paren
 suffix:semicolon
+id|spin_unlock
+c_func
+(paren
+op_amp
+id|mm-&gt;page_table_lock
+)paren
+suffix:semicolon
 r_return
 l_int|1
 suffix:semicolon
@@ -4846,70 +4873,6 @@ id|swap_free
 c_func
 (paren
 id|entry
-)paren
-suffix:semicolon
-id|mark_page_accessed
-c_func
-(paren
-id|page
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|exclusive_swap_page
-c_func
-(paren
-id|page
-)paren
-)paren
-(brace
-r_if
-c_cond
-(paren
-id|write_access
-op_logical_or
-id|vm_swap_full
-c_func
-(paren
-)paren
-)paren
-(brace
-id|pte
-op_assign
-id|pte_mkdirty
-c_func
-(paren
-id|pte
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|vma-&gt;vm_flags
-op_amp
-id|VM_WRITE
-)paren
-id|pte
-op_assign
-id|pte_mkwrite
-c_func
-(paren
-id|pte
-)paren
-suffix:semicolon
-id|delete_from_swap_cache
-c_func
-(paren
-id|page
-)paren
-suffix:semicolon
-)brace
-)brace
-id|UnlockPage
-c_func
-(paren
-id|page
 )paren
 suffix:semicolon
 id|flush_page_to_ram
@@ -4943,6 +4906,13 @@ comma
 id|address
 comma
 id|pte
+)paren
+suffix:semicolon
+id|spin_unlock
+c_func
+(paren
+op_amp
+id|mm-&gt;page_table_lock
 )paren
 suffix:semicolon
 r_return
@@ -5070,6 +5040,13 @@ c_func
 id|page
 )paren
 suffix:semicolon
+id|spin_unlock
+c_func
+(paren
+op_amp
+id|mm-&gt;page_table_lock
+)paren
+suffix:semicolon
 r_return
 l_int|1
 suffix:semicolon
@@ -5127,13 +5104,7 @@ comma
 id|entry
 )paren
 suffix:semicolon
-r_return
-l_int|1
-suffix:semicolon
-multiline_comment|/* Minor fault */
-id|no_mem
-suffix:colon
-id|spin_lock
+id|spin_unlock
 c_func
 (paren
 op_amp
@@ -5141,11 +5112,17 @@ id|mm-&gt;page_table_lock
 )paren
 suffix:semicolon
 r_return
+l_int|1
+suffix:semicolon
+multiline_comment|/* Minor fault */
+id|no_mem
+suffix:colon
+r_return
 op_minus
 l_int|1
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * do_no_page() tries to create a new page mapping. It aggressively&n; * tries to share with existing pages, but makes a separate copy if&n; * the &quot;write_access&quot; parameter is true in order to avoid the next&n; * page fault.&n; *&n; * As this is called only for pages that do not currently exist, we&n; * do not need to flush old virtual caches or the TLB.&n; *&n; * This is called with the MM semaphore held and the page table&n; * spinlock held.&n; */
+multiline_comment|/*&n; * do_no_page() tries to create a new page mapping. It aggressively&n; * tries to share with existing pages, but makes a separate copy if&n; * the &quot;write_access&quot; parameter is true in order to avoid the next&n; * page fault.&n; *&n; * As this is called only for pages that do not currently exist, we&n; * do not need to flush old virtual caches or the TLB.&n; *&n; * This is called with the MM semaphore held and the page table&n; * spinlock held. Exit with the spinlock released.&n; */
 DECL|function|do_no_page
 r_static
 r_int
@@ -5213,7 +5190,6 @@ op_amp
 id|mm-&gt;page_table_lock
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * The third argument is &quot;no_share&quot;, which tells the low-level code&n;&t; * to copy, not share the page even if sharing is possible.  It&squot;s&n;&t; * essentially an early COW detection.&n;&t; */
 id|new_page
 op_assign
 id|vma-&gt;vm_ops
@@ -5226,24 +5202,6 @@ comma
 id|address
 op_amp
 id|PAGE_MASK
-comma
-(paren
-id|vma-&gt;vm_flags
-op_amp
-id|VM_SHARED
-)paren
-ques
-c_cond
-l_int|0
-suffix:colon
-id|write_access
-)paren
-suffix:semicolon
-id|spin_lock
-c_func
-(paren
-op_amp
-id|mm-&gt;page_table_lock
 )paren
 suffix:semicolon
 r_if
@@ -5267,6 +5225,73 @@ id|NOPAGE_OOM
 r_return
 op_minus
 l_int|1
+suffix:semicolon
+multiline_comment|/*&n;&t; * Should we do an early C-O-W break?&n;&t; */
+r_if
+c_cond
+(paren
+id|write_access
+op_logical_and
+op_logical_neg
+(paren
+id|vma-&gt;vm_flags
+op_amp
+id|VM_SHARED
+)paren
+)paren
+(brace
+r_struct
+id|page
+op_star
+id|page
+op_assign
+id|alloc_page
+c_func
+(paren
+id|GFP_HIGHUSER
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|page
+)paren
+r_return
+op_minus
+l_int|1
+suffix:semicolon
+id|copy_highpage
+c_func
+(paren
+id|page
+comma
+id|new_page
+)paren
+suffix:semicolon
+id|page_cache_release
+c_func
+(paren
+id|new_page
+)paren
+suffix:semicolon
+id|lru_cache_add
+c_func
+(paren
+id|page
+)paren
+suffix:semicolon
+id|new_page
+op_assign
+id|page
+suffix:semicolon
+)brace
+id|spin_lock
+c_func
+(paren
+op_amp
+id|mm-&gt;page_table_lock
+)paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * This silly early PAGE_DIRTY setting removes a race&n;&t; * due to the bad i386 page protection. But it&squot;s valid&n;&t; * for other architectures too.&n;&t; *&n;&t; * Note that if write_access is true, we either now have&n;&t; * an exclusive copy of the page, or this is a shared mapping,&n;&t; * so we can make it writable and dirty to avoid having to&n;&t; * handle that later.&n;&t; */
 multiline_comment|/* Only go through if we didn&squot;t race with anybody else... */
@@ -5313,7 +5338,6 @@ c_cond
 (paren
 id|write_access
 )paren
-(brace
 id|entry
 op_assign
 id|pte_mkwrite
@@ -5324,34 +5348,6 @@ c_func
 (paren
 id|entry
 )paren
-)paren
-suffix:semicolon
-)brace
-r_else
-r_if
-c_cond
-(paren
-id|page_count
-c_func
-(paren
-id|new_page
-)paren
-OG
-l_int|1
-op_logical_and
-op_logical_neg
-(paren
-id|vma-&gt;vm_flags
-op_amp
-id|VM_SHARED
-)paren
-)paren
-id|entry
-op_assign
-id|pte_wrprotect
-c_func
-(paren
-id|entry
 )paren
 suffix:semicolon
 id|set_pte
@@ -5366,10 +5362,17 @@ suffix:semicolon
 r_else
 (brace
 multiline_comment|/* One of our sibling threads was faster, back out. */
-id|page_cache_release
+id|free_lru_page
 c_func
 (paren
 id|new_page
+)paren
+suffix:semicolon
+id|spin_unlock
+c_func
+(paren
+op_amp
+id|mm-&gt;page_table_lock
 )paren
 suffix:semicolon
 r_return
@@ -5387,12 +5390,19 @@ comma
 id|entry
 )paren
 suffix:semicolon
+id|spin_unlock
+c_func
+(paren
+op_amp
+id|mm-&gt;page_table_lock
+)paren
+suffix:semicolon
 r_return
 l_int|2
 suffix:semicolon
 multiline_comment|/* Major fault */
 )brace
-multiline_comment|/*&n; * These routines also need to handle stuff like marking pages dirty&n; * and/or accessed for architectures that don&squot;t do it in hardware (most&n; * RISC architectures).  The early dirtying is also good on the i386.&n; *&n; * There is also a hook called &quot;update_mmu_cache()&quot; that architectures&n; * with external mmu caches can use to update those (ie the Sparc or&n; * PowerPC hashed page tables that act as extended TLBs).&n; *&n; * Note the &quot;page_table_lock&quot;. It is to protect against kswapd removing&n; * pages from under us. Note that kswapd only ever _removes_ pages, never&n; * adds them. As such, once we have noticed that the page is not present,&n; * we can drop the lock early.&n; *&n; * The adding of pages is protected by the MM semaphore (which we hold),&n; * so we don&squot;t need to worry about a page being suddenly been added into&n; * our VM.&n; */
+multiline_comment|/*&n; * These routines also need to handle stuff like marking pages dirty&n; * and/or accessed for architectures that don&squot;t do it in hardware (most&n; * RISC architectures).  The early dirtying is also good on the i386.&n; *&n; * There is also a hook called &quot;update_mmu_cache()&quot; that architectures&n; * with external mmu caches can use to update those (ie the Sparc or&n; * PowerPC hashed page tables that act as extended TLBs).&n; *&n; * Note the &quot;page_table_lock&quot;. It is to protect against kswapd removing&n; * pages from under us. Note that kswapd only ever _removes_ pages, never&n; * adds them. As such, once we have noticed that the page is not present,&n; * we can drop the lock early.&n; *&n; * The adding of pages is protected by the MM semaphore (which we hold),&n; * so we don&squot;t need to worry about a page being suddenly been added into&n; * our VM.&n; *&n; * We enter with the pagetable spinlock held, we are supposed to&n; * release it when done.&n; */
 DECL|function|handle_pte_fault
 r_static
 r_inline
@@ -5544,6 +5554,13 @@ comma
 id|entry
 )paren
 suffix:semicolon
+id|spin_unlock
+c_func
+(paren
+op_amp
+id|mm-&gt;page_table_lock
+)paren
+suffix:semicolon
 r_return
 l_int|1
 suffix:semicolon
@@ -5572,12 +5589,6 @@ r_int
 id|write_access
 )paren
 (brace
-r_int
-id|ret
-op_assign
-op_minus
-l_int|1
-suffix:semicolon
 id|pgd_t
 op_star
 id|pgd
@@ -5645,8 +5656,7 @@ c_cond
 (paren
 id|pte
 )paren
-id|ret
-op_assign
+r_return
 id|handle_pte_fault
 c_func
 (paren
@@ -5670,7 +5680,8 @@ id|mm-&gt;page_table_lock
 )paren
 suffix:semicolon
 r_return
-id|ret
+op_minus
+l_int|1
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Allocate page middle directory.&n; *&n; * We&squot;ve already handled the fast-path in-line, and we own the&n; * page table lock.&n; *&n; * On a two-level page table, this ends up actually being entirely&n; * optimized away.&n; */

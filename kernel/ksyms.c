@@ -2603,13 +2603,6 @@ c_func
 id|clear_inode
 )paren
 suffix:semicolon
-DECL|variable|nr_async_pages
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|nr_async_pages
-)paren
-suffix:semicolon
 DECL|variable|___strtok
 id|EXPORT_SYMBOL
 c_func

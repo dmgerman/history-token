@@ -2475,9 +2475,6 @@ comma
 r_int
 r_int
 id|address
-comma
-r_int
-id|write_access
 )paren
 suffix:semicolon
 r_extern
@@ -2497,9 +2494,6 @@ comma
 r_int
 r_int
 id|address
-comma
-r_int
-id|write_access
 )paren
 suffix:semicolon
 r_extern
@@ -2519,9 +2513,6 @@ comma
 r_int
 r_int
 id|address
-comma
-r_int
-id|write_access
 )paren
 suffix:semicolon
 r_extern
@@ -2541,9 +2532,6 @@ comma
 r_int
 r_int
 id|address
-comma
-r_int
-id|write_access
 )paren
 suffix:semicolon
 macro_line|#else
@@ -2566,9 +2554,6 @@ comma
 r_int
 r_int
 id|address
-comma
-r_int
-id|write_access
 )paren
 suffix:semicolon
 r_extern
@@ -2589,9 +2574,6 @@ comma
 r_int
 r_int
 id|address
-comma
-r_int
-id|write_access
 )paren
 suffix:semicolon
 r_extern
@@ -2612,9 +2594,6 @@ comma
 r_int
 r_int
 id|address
-comma
-r_int
-id|write_access
 )paren
 suffix:semicolon
 r_extern
@@ -2635,9 +2614,6 @@ comma
 r_int
 r_int
 id|address
-comma
-r_int
-id|write_access
 )paren
 suffix:semicolon
 macro_line|#endif

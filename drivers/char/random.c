@@ -891,6 +891,7 @@ id|r-&gt;input_rotate
 comma
 op_star
 id|in
+op_increment
 )paren
 suffix:semicolon
 id|i

@@ -764,6 +764,8 @@ suffix:colon
 id|cdrom_media_changed
 comma
 )brace
+suffix:semicolon
+DECL|variable|pcd_dops
 r_static
 r_struct
 id|cdrom_device_ops

@@ -14,17 +14,6 @@ DECL|variable|page_cluster
 r_int
 id|page_cluster
 suffix:semicolon
-multiline_comment|/* We track the number of pages currently being asynchronously swapped&n;   out, so that we don&squot;t try to swap TOO many pages out at once */
-DECL|variable|nr_async_pages
-id|atomic_t
-id|nr_async_pages
-op_assign
-id|ATOMIC_INIT
-c_func
-(paren
-l_int|0
-)paren
-suffix:semicolon
 DECL|variable|pager_daemon
 id|pager_daemon_t
 id|pager_daemon

@@ -2920,23 +2920,6 @@ c_func
 id|page
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * Run the hooks that have to be done when a page I/O has completed.&n;&t; */
-r_if
-c_cond
-(paren
-id|PageTestandClearDecrAfter
-c_func
-(paren
-id|page
-)paren
-)paren
-id|atomic_dec
-c_func
-(paren
-op_amp
-id|nr_async_pages
-)paren
-suffix:semicolon
 id|UnlockPage
 c_func
 (paren

@@ -7,7 +7,6 @@ macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/pagemap.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
-multiline_comment|/*&n; * We may have stale swap cache pages in memory: notice&n; * them here and get rid of the unnecessary final write.&n; */
 DECL|function|swap_writepage
 r_static
 r_int
@@ -20,32 +19,6 @@ op_star
 id|page
 )paren
 (brace
-r_if
-c_cond
-(paren
-id|exclusive_swap_page
-c_func
-(paren
-id|page
-)paren
-)paren
-(brace
-id|delete_from_swap_cache
-c_func
-(paren
-id|page
-)paren
-suffix:semicolon
-id|UnlockPage
-c_func
-(paren
-id|page
-)paren
-suffix:semicolon
-r_return
-l_int|0
-suffix:semicolon
-)brace
 id|rw_swap_page
 c_func
 (paren
@@ -267,12 +240,6 @@ op_minus
 id|EEXIST
 suffix:semicolon
 )brace
-id|SetPageUptodate
-c_func
-(paren
-id|page
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -404,21 +371,12 @@ c_func
 (paren
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
 id|block_flushpage
 c_func
 (paren
 id|page
 comma
 l_int|0
-)paren
-)paren
-id|lru_cache_del
-c_func
-(paren
-id|page
 )paren
 suffix:semicolon
 id|entry.val
