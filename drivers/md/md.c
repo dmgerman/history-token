@@ -13228,7 +13228,7 @@ id|mddev2
 )paren
 suffix:semicolon
 r_goto
-id|out
+id|skip
 suffix:semicolon
 )brace
 )brace
@@ -13692,6 +13692,8 @@ comma
 l_int|1
 )paren
 suffix:semicolon
+id|skip
+suffix:colon
 id|mddev-&gt;curr_resync
 op_assign
 l_int|0
