@@ -732,7 +732,7 @@ r_if
 c_cond
 (paren
 (paren
-id|sch-&gt;lpm
+id|sch-&gt;opm
 op_amp
 id|cdev
 op_member_access_from_pointer
@@ -1009,26 +1009,26 @@ id|irb-&gt;ecw
 l_int|0
 )braket
 op_amp
-(paren
 id|SNS0_CMD_REJECT
-op_or
-id|SNS0_INTERVENTION_REQ
-)paren
 )paren
 )paren
 (brace
-multiline_comment|/*&n;&t;&t; * if the device doesn&squot;t support the SenseID&n;&t;&t; *  command further retries wouldn&squot;t help ...&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * if the device doesn&squot;t support the SenseID&n;&t;&t; *  command further retries wouldn&squot;t help ...&n;&t;&t; * NB: We don&squot;t check here for intervention required like we&n;&t;&t; *     did before, because tape devices with no tape inserted&n;&t;&t; *     may present this status *in conjunction with* the&n;&t;&t; *     sense id information. So, for intervention required,&n;&t;&t; *     we use the &quot;whack it until it talks&quot; strategy...&n;&t;&t; */
 id|CIO_MSG_EVENT
 c_func
 (paren
 l_int|2
 comma
-l_string|&quot;SenseID : device %s on Subchannel %s &quot;
-l_string|&quot;reports cmd reject or intervention required&bslash;n&quot;
+l_string|&quot;SenseID : device %04x on Subchannel %04x &quot;
+l_string|&quot;reports cmd reject&bslash;n&quot;
 comma
-id|cdev-&gt;dev.bus_id
+id|cdev
+op_member_access_from_pointer
+r_private
+op_member_access_from_pointer
+id|devno
 comma
-id|sch-&gt;dev.bus_id
+id|sch-&gt;irq
 )paren
 suffix:semicolon
 r_return
@@ -1047,11 +1047,15 @@ c_func
 (paren
 l_int|2
 comma
-l_string|&quot;SenseID : UC on dev %s, &quot;
+l_string|&quot;SenseID : UC on dev %04x, &quot;
 l_string|&quot;lpum %02X, cnt %02d, sns :&quot;
 l_string|&quot; %02X%02X%02X%02X %02X%02X%02X%02X ...&bslash;n&quot;
 comma
-id|cdev-&gt;dev.bus_id
+id|cdev
+op_member_access_from_pointer
+r_private
+op_member_access_from_pointer
+id|devno
 comma
 id|irb-&gt;esw.esw0.sublog.lpum
 comma
@@ -1111,19 +1115,36 @@ op_eq
 l_int|3
 )paren
 (brace
+r_if
+c_cond
+(paren
+(paren
+id|sch-&gt;orb.lpm
+op_amp
+id|sch-&gt;schib.pmcw.pim
+op_amp
+id|sch-&gt;schib.pmcw.pam
+)paren
+op_ne
+l_int|0
+)paren
 id|CIO_MSG_EVENT
 c_func
 (paren
 l_int|2
 comma
-l_string|&quot;SenseID : path %02X for device %s on &quot;
-l_string|&quot;subchannel %s is &squot;not operational&squot;&bslash;n&quot;
+l_string|&quot;SenseID : path %02X for device %04x on&quot;
+l_string|&quot; subchannel %04x is &squot;not operational&squot;&bslash;n&quot;
 comma
 id|sch-&gt;orb.lpm
 comma
-id|cdev-&gt;dev.bus_id
+id|cdev
+op_member_access_from_pointer
+r_private
+op_member_access_from_pointer
+id|devno
 comma
-id|sch-&gt;dev.bus_id
+id|sch-&gt;irq
 )paren
 suffix:semicolon
 r_return
@@ -1137,12 +1158,16 @@ c_func
 (paren
 l_int|2
 comma
-l_string|&quot;SenseID : start_IO() for device %s on &quot;
-l_string|&quot;subchannel %s returns status %02X%02X&bslash;n&quot;
+l_string|&quot;SenseID : start_IO() for device %04x on &quot;
+l_string|&quot;subchannel %04x returns status %02X%02X&bslash;n&quot;
 comma
-id|cdev-&gt;dev.bus_id
+id|cdev
+op_member_access_from_pointer
+r_private
+op_member_access_from_pointer
+id|devno
 comma
-id|sch-&gt;dev.bus_id
+id|sch-&gt;irq
 comma
 id|irb-&gt;scsw.dstat
 comma

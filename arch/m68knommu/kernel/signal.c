@@ -2975,6 +2975,7 @@ macro_line|#if DEBUG
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;Performing stackadjust=%04x&bslash;n&quot;
 comma
 id|regs-&gt;stkadj
@@ -3377,6 +3378,7 @@ macro_line|#if DEBUG
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;Performing stackadjust=%04x&bslash;n&quot;
 comma
 id|regs-&gt;stkadj

@@ -1468,8 +1468,6 @@ id|DREG
 )paren
 )paren
 suffix:semicolon
-id|MOD_INC_USE_COUNT
-suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
@@ -3777,8 +3775,6 @@ multiline_comment|/* We stop the LANCE here -- it occasionally polls&n;&t;   mem
 id|DREG
 op_assign
 id|CSR0_STOP
-suffix:semicolon
-id|MOD_DEC_USE_COUNT
 suffix:semicolon
 r_return
 l_int|0

@@ -2278,6 +2278,16 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+op_logical_neg
+r_new
+)paren
+r_return
+op_minus
+id|EINVAL
+suffix:semicolon
+r_if
+c_cond
+(paren
 id|get_compat_itimerspec
 c_func
 (paren

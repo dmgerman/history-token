@@ -1182,7 +1182,7 @@ suffix:semicolon
 r_int
 id|j
 op_assign
-l_int|0
+l_int|1
 suffix:semicolon
 multiline_comment|/* FIXME: This should be done in userspace --RR */
 r_for
