@@ -179,9 +179,9 @@ suffix:semicolon
 macro_line|#endif
 multiline_comment|/*&n; * DRIVER_VER&n; */
 DECL|macro|IPS_VERSION_HIGH
-mdefine_line|#define IPS_VERSION_HIGH        &quot;5.99&quot;
+mdefine_line|#define IPS_VERSION_HIGH        &quot;6.10&quot;
 DECL|macro|IPS_VERSION_LOW
-mdefine_line|#define IPS_VERSION_LOW         &quot;.01-BETA&quot;
+mdefine_line|#define IPS_VERSION_LOW         &quot;.90-BETA&quot;
 macro_line|#if !defined(__i386__) &amp;&amp; !defined(__ia64__) &amp;&amp; !defined(__x86_64__)
 macro_line|#error &quot;This driver has only been tested on the x86/ia64/x86_64 platforms&quot;
 macro_line|#endif

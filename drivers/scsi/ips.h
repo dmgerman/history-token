@@ -3797,21 +3797,29 @@ multiline_comment|/* Do not modify the next line; it&squot;s what SED is looking
 multiline_comment|/* Version Info                                                                */
 multiline_comment|/*************************************************************************&n;*&n;* VERSION.H -- version numbers and copyright notices in various formats&n;*&n;*************************************************************************/
 DECL|macro|IPS_VER_MAJOR
-mdefine_line|#define IPS_VER_MAJOR 5
+mdefine_line|#define IPS_VER_MAJOR 6
 DECL|macro|IPS_VER_MAJOR_STRING
-mdefine_line|#define IPS_VER_MAJOR_STRING &quot;5&quot;
+mdefine_line|#define IPS_VER_MAJOR_STRING &quot;6&quot;
 DECL|macro|IPS_VER_MINOR
-mdefine_line|#define IPS_VER_MINOR 99
+mdefine_line|#define IPS_VER_MINOR 10
 DECL|macro|IPS_VER_MINOR_STRING
-mdefine_line|#define IPS_VER_MINOR_STRING &quot;99&quot;
+mdefine_line|#define IPS_VER_MINOR_STRING &quot;10&quot;
 DECL|macro|IPS_VER_BUILD
-mdefine_line|#define IPS_VER_BUILD 00
+mdefine_line|#define IPS_VER_BUILD 90
 DECL|macro|IPS_VER_BUILD_STRING
-mdefine_line|#define IPS_VER_BUILD_STRING &quot;00&quot;
+mdefine_line|#define IPS_VER_BUILD_STRING &quot;90&quot;
 DECL|macro|IPS_VER_STRING
-mdefine_line|#define IPS_VER_STRING &quot;5.99.00&quot;
+mdefine_line|#define IPS_VER_STRING &quot;6.10.90&quot;
+DECL|macro|IPS_RELEASE_ID
+mdefine_line|#define IPS_RELEASE_ID 0x00010000
 DECL|macro|IPS_BUILD_IDENT
-mdefine_line|#define IPS_BUILD_IDENT 1132
+mdefine_line|#define IPS_BUILD_IDENT 364
+DECL|macro|IPS_LEGALCOPYRIGHT_STRING
+mdefine_line|#define IPS_LEGALCOPYRIGHT_STRING &quot;(C) Copyright IBM Corp. 1994, 2003. All Rights Reserved.&quot;
+DECL|macro|IPS_ADAPTECCOPYRIGHT_STRING
+mdefine_line|#define IPS_ADAPTECCOPYRIGHT_STRING &quot;(c) Copyright Adaptec, Inc. 2002 to present. All Rights Reserved.&quot;
+DECL|macro|IPS_NT_LEGALCOPYRIGHT_STRING
+mdefine_line|#define IPS_NT_LEGALCOPYRIGHT_STRING &quot;(C) Copyright IBM Corp. 1994, 2003.&quot;
 multiline_comment|/* Version numbers for various adapters */
 DECL|macro|IPS_VER_SERVERAID1
 mdefine_line|#define IPS_VER_SERVERAID1 &quot;2.25.01&quot;
@@ -3820,17 +3828,17 @@ mdefine_line|#define IPS_VER_SERVERAID2 &quot;2.88.13&quot;
 DECL|macro|IPS_VER_NAVAJO
 mdefine_line|#define IPS_VER_NAVAJO &quot;2.88.13&quot;
 DECL|macro|IPS_VER_SERVERAID3
-mdefine_line|#define IPS_VER_SERVERAID3 &quot;5.11.05&quot;
+mdefine_line|#define IPS_VER_SERVERAID3 &quot;6.10.24&quot;
 DECL|macro|IPS_VER_SERVERAID4H
-mdefine_line|#define IPS_VER_SERVERAID4H &quot;5.11.05&quot;
+mdefine_line|#define IPS_VER_SERVERAID4H &quot;6.10.24&quot;
 DECL|macro|IPS_VER_SERVERAID4MLx
-mdefine_line|#define IPS_VER_SERVERAID4MLx &quot;5.11.05&quot;
+mdefine_line|#define IPS_VER_SERVERAID4MLx &quot;6.10.24&quot;
 DECL|macro|IPS_VER_SARASOTA
-mdefine_line|#define IPS_VER_SARASOTA &quot;5.11.05&quot;
+mdefine_line|#define IPS_VER_SARASOTA &quot;6.10.24&quot;
 DECL|macro|IPS_VER_MARCO
-mdefine_line|#define IPS_VER_MARCO &quot;0.00.00&quot;
+mdefine_line|#define IPS_VER_MARCO &quot;6.10.24&quot;
 DECL|macro|IPS_VER_SEBRING
-mdefine_line|#define IPS_VER_SEBRING &quot;0.00.00&quot;
+mdefine_line|#define IPS_VER_SEBRING &quot;6.10.24&quot;
 multiline_comment|/* Compatability IDs for various adapters */
 DECL|macro|IPS_COMPAT_UNKNOWN
 mdefine_line|#define IPS_COMPAT_UNKNOWN &quot;&quot;
@@ -3845,27 +3853,27 @@ mdefine_line|#define IPS_COMPAT_NAVAJO  &quot;2.88.13&quot;
 DECL|macro|IPS_COMPAT_KIOWA
 mdefine_line|#define IPS_COMPAT_KIOWA &quot;2.88.13&quot;
 DECL|macro|IPS_COMPAT_SERVERAID3H
-mdefine_line|#define IPS_COMPAT_SERVERAID3H  &quot;SA510&quot;
+mdefine_line|#define IPS_COMPAT_SERVERAID3H  &quot;SB610&quot;
 DECL|macro|IPS_COMPAT_SERVERAID3L
-mdefine_line|#define IPS_COMPAT_SERVERAID3L  &quot;SA510&quot;
+mdefine_line|#define IPS_COMPAT_SERVERAID3L  &quot;SB610&quot;
 DECL|macro|IPS_COMPAT_SERVERAID4H
-mdefine_line|#define IPS_COMPAT_SERVERAID4H  &quot;SA510&quot;
+mdefine_line|#define IPS_COMPAT_SERVERAID4H  &quot;SB610&quot;
 DECL|macro|IPS_COMPAT_SERVERAID4M
-mdefine_line|#define IPS_COMPAT_SERVERAID4M  &quot;SA510&quot;
+mdefine_line|#define IPS_COMPAT_SERVERAID4M  &quot;SB610&quot;
 DECL|macro|IPS_COMPAT_SERVERAID4L
-mdefine_line|#define IPS_COMPAT_SERVERAID4L  &quot;SA510&quot;
+mdefine_line|#define IPS_COMPAT_SERVERAID4L  &quot;SB610&quot;
 DECL|macro|IPS_COMPAT_SERVERAID4Mx
-mdefine_line|#define IPS_COMPAT_SERVERAID4Mx &quot;SA510&quot;
+mdefine_line|#define IPS_COMPAT_SERVERAID4Mx &quot;SB610&quot;
 DECL|macro|IPS_COMPAT_SERVERAID4Lx
-mdefine_line|#define IPS_COMPAT_SERVERAID4Lx &quot;SA510&quot;
+mdefine_line|#define IPS_COMPAT_SERVERAID4Lx &quot;SB610&quot;
 DECL|macro|IPS_COMPAT_SARASOTA
-mdefine_line|#define IPS_COMPAT_SARASOTA     &quot;SA510&quot;
+mdefine_line|#define IPS_COMPAT_SARASOTA     &quot;SB610&quot;
 DECL|macro|IPS_COMPAT_MARCO
-mdefine_line|#define IPS_COMPAT_MARCO        &quot;SA000&quot;
+mdefine_line|#define IPS_COMPAT_MARCO        &quot;SB610&quot;
 DECL|macro|IPS_COMPAT_SEBRING
-mdefine_line|#define IPS_COMPAT_SEBRING      &quot;SA000&quot;
+mdefine_line|#define IPS_COMPAT_SEBRING      &quot;SB610&quot;
 DECL|macro|IPS_COMPAT_BIOS
-mdefine_line|#define IPS_COMPAT_BIOS &quot;SA510&quot;
+mdefine_line|#define IPS_COMPAT_BIOS &quot;SB610&quot;
 DECL|macro|IPS_COMPAT_MAX_ADAPTER_TYPE
 mdefine_line|#define IPS_COMPAT_MAX_ADAPTER_TYPE 16
 DECL|macro|IPS_COMPAT_ID_LENGTH
