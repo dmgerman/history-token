@@ -301,6 +301,8 @@ id|ENETUNREACH
 comma
 dot
 id|metrics
+op_assign
+(brace
 (braket
 id|RTAX_HOPLIMIT
 op_minus
@@ -308,6 +310,8 @@ l_int|1
 )braket
 op_assign
 l_int|255
+comma
+)brace
 comma
 dot
 id|input
