@@ -1367,7 +1367,6 @@ mdefine_line|#define task_map_rq(rq, flags)&t;&t;ide_map_buffer((rq), (flags))
 DECL|macro|task_unmap_rq
 mdefine_line|#define task_unmap_rq(rq, buf, flags)&t;ide_unmap_buffer((rq), (buf), (flags))
 multiline_comment|/*&n; * Handler for command with PIO data-in phase, READ&n; */
-multiline_comment|/*&n; * FIXME before 2.4 enable ...&n; *&t;DATA integrity issue upon error. &lt;andre@linux-ide.org&gt;&n; */
 DECL|function|task_in_intr
 id|ide_startstop_t
 id|task_in_intr
@@ -1448,30 +1447,6 @@ id|DRQ_STAT
 )paren
 )paren
 (brace
-macro_line|#if 0
-id|DTF
-c_func
-(paren
-l_string|&quot;%s: attempting to recover last &quot;
-"&bslash;"
-l_string|&quot;sector counter status=0x%02x&bslash;n&quot;
-comma
-id|drive-&gt;name
-comma
-id|stat
-)paren
-suffix:semicolon
-multiline_comment|/*&n;&t;&t;&t; * Expect a BUG BOMB if we attempt to rewind the&n;&t;&t;&t; * offset in the BH aka PAGE in the current BLOCK&n;&t;&t;&t; * segment.  This is different than the HOST segment.&n;&t;&t;&t; */
-macro_line|#endif
-r_if
-c_cond
-(paren
-op_logical_neg
-id|rq-&gt;bio
-)paren
-id|rq-&gt;current_nr_sectors
-op_increment
-suffix:semicolon
 r_return
 id|DRIVER
 c_func
@@ -1585,7 +1560,7 @@ op_amp
 id|flags
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * FIXME :: We really can not legally get a new page/bh&n;&t; * regardless, if this is the end of our segment.&n;&t; * BH walking or segment can only be updated after we have a good&n;&t; * hwif-&gt;INB(IDE_STATUS_REG); return.&n;&t; */
+multiline_comment|/* FIXME: check drive status */
 r_if
 c_cond
 (paren
@@ -1746,35 +1721,6 @@ id|DRQ_STAT
 )paren
 )paren
 (brace
-r_if
-c_cond
-(paren
-op_logical_neg
-id|rq-&gt;bio
-)paren
-(brace
-id|rq-&gt;current_nr_sectors
-op_add_assign
-id|drive-&gt;mult_count
-suffix:semicolon
-multiline_comment|/*&n;&t;&t;&t;&t; * NOTE: could rewind beyond beginning :-/&n;&t;&t;&t;&t; */
-)brace
-r_else
-(brace
-id|printk
-c_func
-(paren
-id|KERN_ERR
-l_string|&quot;%s: MULTI-READ assume all data &quot;
-"&bslash;"
-l_string|&quot;transfered is bad status=0x%02x&bslash;n&quot;
-comma
-id|drive-&gt;name
-comma
-id|stat
-)paren
-suffix:semicolon
-)brace
 r_return
 id|DRIVER
 c_func
@@ -1903,7 +1849,7 @@ id|msect
 op_sub_assign
 id|nsect
 suffix:semicolon
-multiline_comment|/*&n;&t;&t; * FIXME :: We really can not legally get a new page/bh&n;&t;&t; * regardless, if this is the end of our segment.&n;&t;&t; * BH walking or segment can only be updated after we have a&n;&t;&t; * good hwif-&gt;INB(IDE_STATUS_REG); return.&n;&t;&t; */
+multiline_comment|/* FIXME: check drive status */
 r_if
 c_cond
 (paren
@@ -2162,21 +2108,6 @@ id|drive-&gt;bad_wstat
 )paren
 )paren
 (brace
-id|DTF
-c_func
-(paren
-l_string|&quot;%s: WRITE attempting to recover last &quot;
-"&bslash;"
-l_string|&quot;sector counter status=0x%02x&bslash;n&quot;
-comma
-id|drive-&gt;name
-comma
-id|stat
-)paren
-suffix:semicolon
-id|rq-&gt;current_nr_sectors
-op_increment
-suffix:semicolon
 r_return
 id|DRIVER
 c_func
@@ -2465,7 +2396,6 @@ c_func
 id|pre_task_mulout_intr
 )paren
 suffix:semicolon
-multiline_comment|/*&n; * FIXME before enabling in 2.4 ... DATA integrity issue upon error.&n; */
 multiline_comment|/*&n; * Handler for command write multiple&n; * Called directly from execute_drive_cmd for the first bunch of sectors,&n; * afterwards only by the ISR&n; */
 DECL|function|task_mulout_intr
 id|ide_startstop_t
@@ -2556,35 +2486,6 @@ id|DRQ_STAT
 )paren
 )paren
 (brace
-r_if
-c_cond
-(paren
-op_logical_neg
-id|rq-&gt;bio
-)paren
-(brace
-id|rq-&gt;current_nr_sectors
-op_add_assign
-id|drive-&gt;mult_count
-suffix:semicolon
-multiline_comment|/*&n;&t;&t;&t;&t; * NOTE: could rewind beyond beginning :-/&n;&t;&t;&t;&t; */
-)brace
-r_else
-(brace
-id|printk
-c_func
-(paren
-id|KERN_ERR
-l_string|&quot;%s: MULTI-WRITE assume all data &quot;
-"&bslash;"
-l_string|&quot;transfered is bad status=0x%02x&bslash;n&quot;
-comma
-id|drive-&gt;name
-comma
-id|stat
-)paren
-suffix:semicolon
-)brace
 r_return
 id|DRIVER
 c_func
@@ -2657,34 +2558,6 @@ id|DRQ_STAT
 )paren
 )paren
 (brace
-r_if
-c_cond
-(paren
-op_logical_neg
-id|rq-&gt;bio
-)paren
-(brace
-id|rq-&gt;current_nr_sectors
-op_add_assign
-id|drive-&gt;mult_count
-suffix:semicolon
-multiline_comment|/*&n;&t;&t;&t;&t; * NOTE: could rewind beyond beginning :-/&n;&t;&t;&t;&t; */
-)brace
-r_else
-(brace
-id|printk
-c_func
-(paren
-l_string|&quot;%s: MULTI-WRITE assume all data &quot;
-"&bslash;"
-l_string|&quot;transfered is bad status=0x%02x&bslash;n&quot;
-comma
-id|drive-&gt;name
-comma
-id|stat
-)paren
-suffix:semicolon
-)brace
 r_return
 id|DRIVER
 c_func
@@ -2869,7 +2742,7 @@ id|rq-&gt;current_nr_sectors
 op_sub_assign
 id|nsect
 suffix:semicolon
-multiline_comment|/*&n;&t;&t; * FIXME :: We really can not legally get a new page/bh&n;&t;&t; * regardless, if this is the end of our segment.&n;&t;&t; * BH walking or segment can only be updated after we&n;&t;&t; * have a good  hwif-&gt;INB(IDE_STATUS_REG); return.&n;&t;&t; */
+multiline_comment|/* FIXME: check drive status */
 r_if
 c_cond
 (paren
