@@ -352,6 +352,14 @@ id|ipcomp_hdr
 )paren
 )paren
 suffix:semicolon
+id|skb-&gt;nh.raw
+op_add_assign
+r_sizeof
+(paren
+r_struct
+id|ipcomp_hdr
+)paren
+suffix:semicolon
 id|memcpy
 c_func
 (paren
@@ -364,6 +372,10 @@ id|tmp_iph.iph.ihl
 op_star
 l_int|4
 )paren
+suffix:semicolon
+id|iph
+op_assign
+id|skb-&gt;nh.iph
 suffix:semicolon
 id|iph-&gt;tot_len
 op_assign
