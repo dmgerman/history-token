@@ -129,7 +129,7 @@ id|clps711x_init_irq
 id|INITTIME
 c_func
 (paren
-id|clp711x_init_time
+id|clps711x_init_time
 )paren
 id|MACHINE_END
 eof

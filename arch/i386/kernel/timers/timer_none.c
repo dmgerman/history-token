@@ -92,7 +92,7 @@ id|loops
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* tsc timer_opts struct */
+multiline_comment|/* none timer_opts struct */
 DECL|variable|timer_none
 r_struct
 id|timer_opts

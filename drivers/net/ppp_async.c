@@ -5,7 +5,7 @@ macro_line|#include &lt;linux/skbuff.h&gt;
 macro_line|#include &lt;linux/tty.h&gt;
 macro_line|#include &lt;linux/netdevice.h&gt;
 macro_line|#include &lt;linux/poll.h&gt;
-macro_line|#include &lt;linux/crc16.h&gt;
+macro_line|#include &lt;linux/crc-ccitt.h&gt;
 macro_line|#include &lt;linux/ppp_defs.h&gt;
 macro_line|#include &lt;linux/if_ppp.h&gt;
 macro_line|#include &lt;linux/ppp_channel.h&gt;

@@ -2878,7 +2878,6 @@ id|dblock
 comma
 id|rec_block
 suffix:semicolon
-suffix:semicolon
 r_struct
 id|inode
 op_star

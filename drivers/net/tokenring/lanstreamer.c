@@ -1497,7 +1497,7 @@ id|sk_buff
 op_star
 id|skb
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|__u16
 id|misr

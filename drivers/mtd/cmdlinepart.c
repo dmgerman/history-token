@@ -186,7 +186,7 @@ id|size
 )paren
 suffix:semicolon
 r_return
-l_int|0
+l_int|NULL
 suffix:semicolon
 )brace
 )brace
@@ -284,7 +284,7 @@ id|delim
 )paren
 suffix:semicolon
 r_return
-l_int|0
+l_int|NULL
 suffix:semicolon
 )brace
 id|name_len
@@ -372,7 +372,7 @@ l_string|&quot;no partitions allowed after a fill-up partition&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
-l_int|0
+l_int|NULL
 suffix:semicolon
 )brace
 multiline_comment|/* more partitions follow, parse them */
@@ -408,7 +408,7 @@ op_eq
 l_int|0
 )paren
 r_return
-l_int|0
+l_int|NULL
 suffix:semicolon
 )brace
 r_else
@@ -463,7 +463,7 @@ l_string|&quot;out of memory&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
-l_int|0
+l_int|NULL
 suffix:semicolon
 )brace
 id|memset

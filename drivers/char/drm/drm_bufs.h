@@ -315,7 +315,7 @@ l_int|1
 suffix:semicolon
 id|map-&gt;handle
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 r_switch
 c_cond
@@ -1865,7 +1865,7 @@ id|buf-&gt;dma_wait
 suffix:semicolon
 id|buf-&gt;filp
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|buf-&gt;dev_priv_size
 op_assign
@@ -3065,7 +3065,7 @@ id|buf-&gt;dma_wait
 suffix:semicolon
 id|buf-&gt;filp
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|buf-&gt;dev_priv_size
 op_assign

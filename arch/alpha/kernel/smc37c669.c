@@ -1832,8 +1832,6 @@ id|SMC37c669_IRQ_TRANSLATION_ENTRY
 op_star
 id|SMC37c669_irq_table
 id|__initdata
-op_assign
-l_int|0
 suffix:semicolon
 multiline_comment|/*&n;** The following definition is for the default IRQ &n;** translation table.&n;*/
 r_static
@@ -1987,8 +1985,6 @@ id|SMC37c669_DRQ_TRANSLATION_ENTRY
 op_star
 id|SMC37c669_drq_table
 id|__initdata
-op_assign
-l_int|0
 suffix:semicolon
 multiline_comment|/*&n;** The following definition is the default DRQ&n;** translation table.&n;*/
 r_static

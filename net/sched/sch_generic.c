@@ -1426,7 +1426,7 @@ id|sch-&gt;dev
 op_assign
 id|dev
 suffix:semicolon
-id|sch-&gt;stats.lock
+id|sch-&gt;stats_lock
 op_assign
 op_amp
 id|dev-&gt;queue_lock

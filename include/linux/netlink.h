@@ -160,6 +160,18 @@ suffix:semicolon
 suffix:semicolon
 DECL|macro|NET_MAJOR
 mdefine_line|#define NET_MAJOR 36&t;&t;/* Major 36 is reserved for networking &t;&t;&t;&t;&t;&t;*/
+r_enum
+(brace
+DECL|enumerator|NETLINK_UNCONNECTED
+id|NETLINK_UNCONNECTED
+op_assign
+l_int|0
+comma
+DECL|enumerator|NETLINK_CONNECTED
+id|NETLINK_CONNECTED
+comma
+)brace
+suffix:semicolon
 macro_line|#ifdef __KERNEL__
 macro_line|#include &lt;linux/capability.h&gt;
 DECL|struct|netlink_skb_parms

@@ -8185,7 +8185,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 )brace
-id|fb_move_buf_aligned
+id|fb_sysmove_buf_aligned
 c_func
 (paren
 id|info
@@ -8482,6 +8482,8 @@ op_or
 id|FBINFO_HWACCEL_FILLRECT
 op_or
 id|FBINFO_HWACCEL_IMAGEBLIT
+op_or
+id|FBINFO_MISC_MODESWITCHLATE
 suffix:semicolon
 id|info-&gt;var
 op_assign

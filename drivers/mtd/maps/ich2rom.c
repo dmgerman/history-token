@@ -503,7 +503,7 @@ comma
 dot
 id|mtd
 op_assign
-l_int|0
+l_int|NULL
 comma
 dot
 id|window_addr
@@ -861,7 +861,7 @@ multiline_comment|/* For now assume the firmware has setup all relevant firmware
 multiline_comment|/* FIXME select the firmware hub and enable a window to it. */
 id|info-&gt;mtd
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|info-&gt;map.map_priv_1
 op_assign
@@ -1009,7 +1009,7 @@ id|info-&gt;mtd
 suffix:semicolon
 id|info-&gt;mtd
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|info-&gt;map.map_priv_1
 op_assign
@@ -1182,7 +1182,7 @@ id|id
 suffix:semicolon
 id|pdev
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 r_for
 c_loop
@@ -1206,7 +1206,7 @@ id|id-&gt;vendor
 comma
 id|id-&gt;device
 comma
-l_int|0
+l_int|NULL
 )paren
 suffix:semicolon
 r_if

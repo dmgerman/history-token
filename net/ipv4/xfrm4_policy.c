@@ -663,7 +663,7 @@ id|rt-&gt;u.dst.input
 suffix:semicolon
 id|dst_prev-&gt;output
 op_assign
-id|dst_prev-&gt;xfrm-&gt;type-&gt;output
+id|xfrm4_output
 suffix:semicolon
 r_if
 c_cond

@@ -383,7 +383,7 @@ id|dl_done_list
 (paren
 id|ohci
 comma
-l_int|0
+l_int|NULL
 )paren
 suffix:semicolon
 id|mdelay
@@ -396,7 +396,7 @@ id|dl_done_list
 (paren
 id|ohci
 comma
-l_int|0
+l_int|NULL
 )paren
 suffix:semicolon
 id|finish_unlinks
@@ -409,7 +409,7 @@ c_func
 id|ohci-&gt;hcca
 )paren
 comma
-l_int|0
+l_int|NULL
 )paren
 suffix:semicolon
 id|writel

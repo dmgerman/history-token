@@ -49,8 +49,6 @@ id|serial_req.flags
 op_assign
 id|UPF_AUTOPROBE
 op_or
-id|UPF_RESOURCES
-op_or
 id|UPF_SHARE_IRQ
 suffix:semicolon
 id|serial_req.baud_base

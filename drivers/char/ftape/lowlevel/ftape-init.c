@@ -51,7 +51,7 @@ id|__initdata
 op_assign
 l_string|&quot;$Date: 1997/11/06 00:38:08 $&quot;
 suffix:semicolon
-macro_line|#ifndef CONFIG_FT_NO_TRACE_AT_ALL
+macro_line|#if defined(MODULE) &amp;&amp; !defined(CONFIG_FT_NO_TRACE_AT_ALL)
 DECL|variable|ft_tracing
 r_static
 r_int

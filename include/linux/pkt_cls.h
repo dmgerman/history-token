@@ -379,14 +379,6 @@ r_int
 r_char
 id|nkeys
 suffix:semicolon
-macro_line|#ifdef fix_u32_bug
-DECL|member|fshift
-r_int
-r_char
-id|fshift
-suffix:semicolon
-multiline_comment|/* fold shift */
-macro_line|#endif
 DECL|member|offmask
 id|__u16
 id|offmask

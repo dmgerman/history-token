@@ -2,7 +2,7 @@ macro_line|#ifndef _SPARC_BUG_H
 DECL|macro|_SPARC_BUG_H
 mdefine_line|#define _SPARC_BUG_H
 multiline_comment|/* Only use the inline asm until a gcc release that can handle __builtin_trap&n; * -rob 2003-06-25&n; *&n; * gcc-3.3.1 and later will be OK -DaveM&n; */
-macro_line|#if (__GNUC__ &gt; 3) || &bslash;&n;    (__GNUC__ == 3 &amp;&amp; __GNUC_MINOR__ &gt; 3) || &bslash;&n;    (__GNUC__ == 3 &amp;&amp; __GNUC_MINOR__ == 3 &amp;&amp; __GNUC_PATCHLEVEL__ &gt;= 1)
+macro_line|#if (__GNUC__ &gt; 3) || &bslash;&n;    (__GNUC__ == 3 &amp;&amp; __GNUC_MINOR__ &gt; 3) || &bslash;&n;    (__GNUC__ == 3 &amp;&amp; __GNUC_MINOR__ == 3 &amp;&amp; __GNUC_PATCHLEVEL__ &gt;= 4)
 DECL|macro|__bug_trap
 mdefine_line|#define __bug_trap()&t;&t;__builtin_trap()
 macro_line|#else

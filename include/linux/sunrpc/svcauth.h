@@ -118,15 +118,6 @@ op_star
 suffix:semicolon
 )brace
 suffix:semicolon
-r_extern
-r_struct
-id|auth_ops
-op_star
-id|authtab
-(braket
-id|RPC_AUTH_MAXFLAVOR
-)braket
-suffix:semicolon
 DECL|macro|SVC_GARBAGE
 mdefine_line|#define&t;SVC_GARBAGE&t;1
 DECL|macro|SVC_SYSERR

@@ -2653,8 +2653,6 @@ comma
 id|buf
 comma
 id|bytes_read
-comma
-l_int|0
 )paren
 suffix:semicolon
 )brace
@@ -4929,6 +4927,7 @@ id|file
 comma
 r_const
 r_char
+id|__user
 op_star
 id|buf
 comma
@@ -5567,6 +5566,7 @@ op_star
 id|file
 comma
 r_char
+id|__user
 op_star
 id|buf
 comma
@@ -6490,7 +6490,7 @@ op_assign
 (brace
 id|priv
 suffix:colon
-l_int|0
+l_int|NULL
 comma
 id|users
 suffix:colon

@@ -794,7 +794,7 @@ r_struct
 id|pnp_dev_node_info
 )paren
 comma
-l_int|0
+l_int|NULL
 comma
 l_int|0
 )paren
@@ -1058,7 +1058,7 @@ id|data
 comma
 l_int|65536
 comma
-l_int|0
+l_int|NULL
 comma
 l_int|0
 )paren
@@ -1335,7 +1335,7 @@ r_struct
 id|pnp_docking_station_info
 )paren
 comma
-l_int|0
+l_int|NULL
 comma
 l_int|0
 )paren

@@ -1077,6 +1077,7 @@ id|hci_dev_get
 suffix:semicolon
 multiline_comment|/* ---- Inquiry support ---- */
 DECL|function|inquiry_cache_flush
+r_static
 r_void
 id|inquiry_cache_flush
 c_func
@@ -1139,11 +1140,11 @@ id|e
 suffix:semicolon
 )brace
 )brace
-DECL|function|inquiry_cache_lookup
+DECL|function|hci_inquiry_cache_lookup
 r_struct
 id|inquiry_entry
 op_star
-id|inquiry_cache_lookup
+id|hci_inquiry_cache_lookup
 c_func
 (paren
 r_struct
@@ -1215,9 +1216,9 @@ r_return
 id|e
 suffix:semicolon
 )brace
-DECL|function|inquiry_cache_update
+DECL|function|hci_inquiry_cache_update
 r_void
-id|inquiry_cache_update
+id|hci_inquiry_cache_update
 c_func
 (paren
 r_struct
@@ -1266,7 +1267,7 @@ op_logical_neg
 (paren
 id|e
 op_assign
-id|inquiry_cache_lookup
+id|hci_inquiry_cache_lookup
 c_func
 (paren
 id|hdev
@@ -1348,6 +1349,7 @@ id|jiffies
 suffix:semicolon
 )brace
 DECL|function|inquiry_cache_dump
+r_static
 r_int
 id|inquiry_cache_dump
 c_func

@@ -101,6 +101,7 @@ id|signr
 suffix:semicolon
 DECL|member|context
 r_void
+id|__user
 op_star
 id|context
 suffix:semicolon
@@ -390,6 +391,7 @@ id|disctask
 suffix:semicolon
 DECL|member|disccontext
 r_void
+id|__user
 op_star
 id|disccontext
 suffix:semicolon

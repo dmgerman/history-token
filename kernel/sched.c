@@ -21,6 +21,7 @@ macro_line|#include &lt;linux/rcupdate.h&gt;
 macro_line|#include &lt;linux/cpu.h&gt;
 macro_line|#include &lt;linux/percpu.h&gt;
 macro_line|#include &lt;linux/kthread.h&gt;
+macro_line|#include &lt;asm/tlb.h&gt;
 macro_line|#include &lt;asm/unistd.h&gt;
 macro_line|#ifdef CONFIG_NUMA
 DECL|macro|cpu_to_node_mask
@@ -11200,6 +11201,12 @@ c_func
 (paren
 op_amp
 id|req.done
+)paren
+suffix:semicolon
+id|tlb_migrate_finish
+c_func
+(paren
+id|p-&gt;mm
 )paren
 suffix:semicolon
 r_return

@@ -2094,7 +2094,7 @@ r_int
 id|dcount
 comma
 r_struct
-id|iovec
+id|kvec
 id|diov
 (braket
 )braket
@@ -2624,8 +2624,14 @@ r_sizeof
 id|conn-&gt;addr
 )paren
 suffix:semicolon
+multiline_comment|/*&n;&t; * the following is safe, since for compiler definitions of kvec and&n;&t; * iovec are identical, yielding the same in-core layout and alignment&n;&t; */
 id|msghdr.msg_iov
 op_assign
+(paren
+r_struct
+id|iovec
+op_star
+)paren
 id|msg-&gt;data
 suffix:semicolon
 id|msghdr.msg_iovlen

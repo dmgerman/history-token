@@ -3944,14 +3944,6 @@ id|ret
 op_assign
 l_int|0
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|up-&gt;port.flags
-op_amp
-id|UPF_RESOURCES
-)paren
-(brace
 id|ret
 op_assign
 id|serial8250_request_std_resource
@@ -3963,7 +3955,6 @@ op_amp
 id|res
 )paren
 suffix:semicolon
-)brace
 multiline_comment|/*&n;&t; * If we have a mapbase, then request that as well.&n;&t; */
 r_if
 c_cond
@@ -4432,8 +4423,6 @@ id|i
 )braket
 dot
 id|flags
-op_or
-id|UPF_RESOURCES
 suffix:semicolon
 id|up-&gt;port.hub6
 op_assign

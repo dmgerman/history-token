@@ -5734,7 +5734,7 @@ suffix:semicolon
 r_else
 id|sitd
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 r_if
 c_cond
@@ -6168,7 +6168,7 @@ l_int|0
 comma
 id|sitd
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|packet
 OL
@@ -6279,7 +6279,7 @@ id|sched
 suffix:semicolon
 id|urb-&gt;hcpriv
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|timer_action
 (paren
@@ -6461,11 +6461,11 @@ id|urb
 suffix:semicolon
 id|sitd-&gt;urb
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|sitd-&gt;stream
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|list_move
 (paren
@@ -6524,7 +6524,7 @@ id|regs
 suffix:semicolon
 id|urb
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 multiline_comment|/* defer stopping schedule; completion can submit */
 id|ehci-&gt;periodic_sched

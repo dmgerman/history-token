@@ -23,6 +23,24 @@ suffix:semicolon
 multiline_comment|/* Must be size_t (1003.1g) */
 )brace
 suffix:semicolon
+macro_line|#ifdef __KERNEL__
+DECL|struct|kvec
+r_struct
+id|kvec
+(brace
+DECL|member|iov_base
+r_void
+op_star
+id|iov_base
+suffix:semicolon
+multiline_comment|/* and that should *never* hold a userland pointer */
+DECL|member|iov_len
+r_int
+id|iov_len
+suffix:semicolon
+)brace
+suffix:semicolon
+macro_line|#endif
 multiline_comment|/*&n; *&t;UIO_MAXIOV shall be at least 16 1003.1g (5.4.1.1)&n; */
 DECL|macro|UIO_FASTIOV
 mdefine_line|#define UIO_FASTIOV&t;8

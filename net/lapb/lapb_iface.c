@@ -558,7 +558,7 @@ id|rc
 op_assign
 id|LAPB_BADTOKEN
 suffix:semicolon
-id|write_unlock_bh
+id|write_lock_bh
 c_func
 (paren
 op_amp

@@ -649,7 +649,7 @@ id|MCAST_EXCLUDE
 suffix:semicolon
 id|mc_lst-&gt;sflist
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 multiline_comment|/*&n;&t; *&t;now add/increase the group membership on the device&n;&t; */
 id|err
@@ -957,14 +957,14 @@ id|net_device
 op_star
 id|dev
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 r_struct
 id|inet6_dev
 op_star
 id|idev
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 r_if
 c_cond
@@ -1034,7 +1034,7 @@ op_logical_neg
 id|dev
 )paren
 r_return
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|idev
 op_assign
@@ -1058,7 +1058,7 @@ id|dev
 )paren
 suffix:semicolon
 r_return
-l_int|0
+l_int|NULL
 suffix:semicolon
 )brace
 id|read_lock_bh
@@ -1094,7 +1094,7 @@ id|dev
 )paren
 suffix:semicolon
 r_return
-l_int|0
+l_int|NULL
 suffix:semicolon
 )brace
 r_return
@@ -1510,7 +1510,7 @@ id|omode
 comma
 l_int|0
 comma
-l_int|0
+l_int|NULL
 comma
 l_int|0
 )paren
@@ -1526,7 +1526,7 @@ id|pmc-&gt;sfmode
 comma
 l_int|0
 comma
-l_int|0
+l_int|NULL
 comma
 l_int|0
 )paren
@@ -2280,7 +2280,7 @@ suffix:semicolon
 r_else
 id|newpsl
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|psl
 op_assign
@@ -2341,7 +2341,7 @@ id|pmc-&gt;sfmode
 comma
 l_int|0
 comma
-l_int|0
+l_int|NULL
 comma
 l_int|0
 )paren
@@ -3400,7 +3400,7 @@ id|im-&gt;mca_tomb
 op_assign
 id|im-&gt;mca_sources
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 r_for
 c_loop
@@ -3492,7 +3492,7 @@ id|idev-&gt;mc_lock
 suffix:semicolon
 id|pmc_prev
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 r_for
 c_loop
@@ -3635,7 +3635,7 @@ id|idev-&gt;mc_tomb
 suffix:semicolon
 id|idev-&gt;mc_tomb
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|write_unlock_bh
 c_func
@@ -3721,7 +3721,7 @@ id|pmc-&gt;mca_tomb
 suffix:semicolon
 id|pmc-&gt;mca_tomb
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|spin_unlock_bh
 c_func
@@ -3889,7 +3889,7 @@ id|MCAST_EXCLUDE
 comma
 l_int|0
 comma
-l_int|0
+l_int|NULL
 comma
 l_int|0
 )paren
@@ -6094,7 +6094,7 @@ op_eq
 l_int|0
 )paren
 r_return
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|skb_reserve
 c_func
@@ -6165,7 +6165,7 @@ id|skb
 )paren
 suffix:semicolon
 r_return
-l_int|0
+l_int|NULL
 suffix:semicolon
 )brace
 )brace
@@ -6581,7 +6581,7 @@ op_logical_neg
 id|skb
 )paren
 r_return
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|pgr
 op_assign
@@ -6698,7 +6698,7 @@ id|mld2_grec
 op_star
 id|pgr
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 r_struct
 id|ip6_sf_list
@@ -6828,7 +6828,7 @@ id|skb
 suffix:semicolon
 id|skb
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 multiline_comment|/* add_grhead will get a new one */
 )brace
@@ -6864,7 +6864,7 @@ op_star
 )paren
 id|skb-&gt;h.raw
 suffix:colon
-l_int|0
+l_int|NULL
 suffix:semicolon
 multiline_comment|/* EX and TO_EX get a fresh packet, if needed */
 r_if
@@ -6932,7 +6932,7 @@ l_int|0
 suffix:semicolon
 id|psf_prev
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 r_for
 c_loop
@@ -7238,7 +7238,7 @@ id|sk_buff
 op_star
 id|skb
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 r_int
 id|type
@@ -7425,7 +7425,7 @@ id|psf
 suffix:semicolon
 id|psf_prev
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 r_for
 c_loop
@@ -7511,7 +7511,7 @@ id|sk_buff
 op_star
 id|skb
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 r_int
 id|type
@@ -7535,7 +7535,7 @@ suffix:semicolon
 multiline_comment|/* deleted MCA&squot;s */
 id|pmc_prev
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 r_for
 c_loop
@@ -8450,7 +8450,7 @@ l_int|0
 suffix:semicolon
 id|psf_prev
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 r_for
 c_loop
@@ -8958,7 +8958,7 @@ id|psf_prev
 suffix:semicolon
 id|psf_prev
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 r_for
 c_loop
@@ -9663,7 +9663,7 @@ suffix:semicolon
 )brace
 id|pmc-&gt;mca_tomb
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 r_for
 c_loop
@@ -9692,7 +9692,7 @@ suffix:semicolon
 )brace
 id|pmc-&gt;mca_sources
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|pmc-&gt;mca_sfmode
 op_assign
@@ -9872,7 +9872,7 @@ id|iml-&gt;sfmode
 comma
 l_int|0
 comma
-l_int|0
+l_int|NULL
 comma
 l_int|0
 )paren
@@ -9913,7 +9913,7 @@ id|iml-&gt;sflist-&gt;sl_max
 suffix:semicolon
 id|iml-&gt;sflist
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 r_return
 id|err
@@ -10010,7 +10010,7 @@ c_func
 (paren
 id|idev
 comma
-l_int|0
+l_int|NULL
 )paren
 suffix:semicolon
 id|__in6_dev_put
@@ -10400,7 +10400,7 @@ id|mld_gq_timer_expire
 suffix:semicolon
 id|idev-&gt;mc_tomb
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|idev-&gt;mc_ifc_count
 op_assign

@@ -10,18 +10,6 @@ macro_line|#include &lt;linux/pm.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;linux/dmi.h&gt;
 macro_line|#include &lt;linux/bootmem.h&gt;
-DECL|variable|dmi_broken
-r_int
-r_int
-id|dmi_broken
-suffix:semicolon
-DECL|variable|dmi_broken
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|dmi_broken
-)paren
-suffix:semicolon
 DECL|variable|es7000_plat
 r_int
 id|es7000_plat
@@ -720,127 +708,6 @@ DECL|macro|NO_MATCH
 mdefine_line|#define NO_MATCH&t;{ DMI_NONE, NULL}
 DECL|macro|MATCH
 mdefine_line|#define MATCH&t;&t;DMI_MATCH
-multiline_comment|/* &n; * Reboot options and system auto-detection code provided by&n; * Dell Inc. so their systems &quot;just work&quot;. :-)&n; */
-multiline_comment|/* &n; * Some machines require the &quot;reboot=b&quot;  commandline option, this quirk makes that automatic.&n; */
-DECL|function|set_bios_reboot
-r_static
-id|__init
-r_int
-id|set_bios_reboot
-c_func
-(paren
-r_struct
-id|dmi_blacklist
-op_star
-id|d
-)paren
-(brace
-r_extern
-r_int
-id|reboot_thru_bios
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|reboot_thru_bios
-op_eq
-l_int|0
-)paren
-(brace
-id|reboot_thru_bios
-op_assign
-l_int|1
-suffix:semicolon
-id|printk
-c_func
-(paren
-id|KERN_INFO
-l_string|&quot;%s series board detected. Selecting BIOS-method for reboots.&bslash;n&quot;
-comma
-id|d-&gt;ident
-)paren
-suffix:semicolon
-)brace
-r_return
-l_int|0
-suffix:semicolon
-)brace
-multiline_comment|/*&n; * Some machines require the &quot;reboot=s&quot;  commandline option, this quirk makes that automatic.&n; */
-DECL|function|set_smp_reboot
-r_static
-id|__init
-r_int
-id|set_smp_reboot
-c_func
-(paren
-r_struct
-id|dmi_blacklist
-op_star
-id|d
-)paren
-(brace
-macro_line|#ifdef CONFIG_SMP
-r_extern
-r_int
-id|reboot_smp
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|reboot_smp
-op_eq
-l_int|0
-)paren
-(brace
-id|reboot_smp
-op_assign
-l_int|1
-suffix:semicolon
-id|printk
-c_func
-(paren
-id|KERN_INFO
-l_string|&quot;%s series board detected. Selecting SMP-method for reboots.&bslash;n&quot;
-comma
-id|d-&gt;ident
-)paren
-suffix:semicolon
-)brace
-macro_line|#endif
-r_return
-l_int|0
-suffix:semicolon
-)brace
-multiline_comment|/*&n; * Some machines require the &quot;reboot=b,s&quot;  commandline option, this quirk makes that automatic.&n; */
-DECL|function|set_smp_bios_reboot
-r_static
-id|__init
-r_int
-id|set_smp_bios_reboot
-c_func
-(paren
-r_struct
-id|dmi_blacklist
-op_star
-id|d
-)paren
-(brace
-id|set_smp_reboot
-c_func
-(paren
-id|d
-)paren
-suffix:semicolon
-id|set_bios_reboot
-c_func
-(paren
-id|d
-)paren
-suffix:semicolon
-r_return
-l_int|0
-suffix:semicolon
-)brace
 multiline_comment|/*&n; * Some machines, usually laptops, can&squot;t handle an enabled local APIC.&n; * The symptoms include hangs or reboots when suspending or resuming,&n; * attaching or detaching the power cord, or entering BIOS setup screens&n; * through magic key sequences.&n; */
 DECL|function|local_apic_kills_bios
 r_static
@@ -909,35 +776,6 @@ c_func
 id|KERN_WARNING
 l_string|&quot;Toshiba with broken keyboard detected. If your keyboard sometimes generates 3 keypresses instead of one, see http://davyd.ucc.asn.au/projects/toshiba/README&bslash;n&quot;
 )paren
-suffix:semicolon
-r_return
-l_int|0
-suffix:semicolon
-)brace
-multiline_comment|/*&n; * Toshiba fails to preserve interrupts over S1&n; */
-DECL|function|init_ints_after_s1
-r_static
-id|__init
-r_int
-id|init_ints_after_s1
-c_func
-(paren
-r_struct
-id|dmi_blacklist
-op_star
-id|d
-)paren
-(brace
-id|printk
-c_func
-(paren
-id|KERN_WARNING
-l_string|&quot;Toshiba with broken S1 detected.&bslash;n&quot;
-)paren
-suffix:semicolon
-id|dmi_broken
-op_or_assign
-id|BROKEN_INIT_AFTER_S1
 suffix:semicolon
 r_return
 l_int|0

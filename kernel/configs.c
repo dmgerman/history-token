@@ -21,17 +21,6 @@ mdefine_line|#define kernel_config_data_size &bslash;&n;&t;(sizeof(kernel_config
 macro_line|#ifdef CONFIG_IKCONFIG_PROC
 multiline_comment|/**************************************************/
 multiline_comment|/* globals and useful constants                   */
-DECL|variable|__initdata
-r_static
-r_const
-r_char
-id|IKCONFIG_VERSION
-(braket
-)braket
-id|__initdata
-op_assign
-l_string|&quot;0.7&quot;
-suffix:semicolon
 r_static
 id|ssize_t
 DECL|function|ikconfig_read_current

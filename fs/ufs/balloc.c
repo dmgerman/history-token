@@ -2024,6 +2024,12 @@ id|KERN_ERR
 l_string|&quot;ufs_new_fragments: bread fail&bslash;n&quot;
 )paren
 suffix:semicolon
+id|unlock_super
+c_func
+(paren
+id|sb
+)paren
+suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon

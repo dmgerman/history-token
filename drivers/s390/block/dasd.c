@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * File...........: linux/drivers/s390/block/dasd.c&n; * Author(s)......: Holger Smolinski &lt;Holger.Smolinski@de.ibm.com&gt;&n; *&t;&t;    Horst Hummel &lt;Horst.Hummel@de.ibm.com&gt;&n; *&t;&t;    Carsten Otte &lt;Cotte@de.ibm.com&gt;&n; *&t;&t;    Martin Schwidefsky &lt;schwidefsky@de.ibm.com&gt;&n; * Bugreports.to..: &lt;Linux390@de.ibm.com&gt;&n; * (C) IBM Corporation, IBM Deutschland Entwicklung GmbH, 1999-2001&n; *&n; * $Revision: 1.146 $&n; */
+multiline_comment|/*&n; * File...........: linux/drivers/s390/block/dasd.c&n; * Author(s)......: Holger Smolinski &lt;Holger.Smolinski@de.ibm.com&gt;&n; *&t;&t;    Horst Hummel &lt;Horst.Hummel@de.ibm.com&gt;&n; *&t;&t;    Carsten Otte &lt;Cotte@de.ibm.com&gt;&n; *&t;&t;    Martin Schwidefsky &lt;schwidefsky@de.ibm.com&gt;&n; * Bugreports.to..: &lt;Linux390@de.ibm.com&gt;&n; * (C) IBM Corporation, IBM Deutschland Entwicklung GmbH, 1999-2001&n; *&n; * $Revision: 1.147 $&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/kmod.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
@@ -2973,6 +2973,39 @@ op_star
 )paren
 id|cqr-&gt;device
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|cqr-&gt;retries
+OL
+l_int|0
+)paren
+(brace
+id|DEV_MESSAGE
+c_func
+(paren
+id|KERN_DEBUG
+comma
+id|device
+comma
+l_string|&quot;start_IO: request %p (%02x/%i) - no retry left.&quot;
+comma
+id|cqr
+comma
+id|cqr-&gt;status
+comma
+id|cqr-&gt;retries
+)paren
+suffix:semicolon
+id|cqr-&gt;status
+op_assign
+id|DASD_CQR_FAILED
+suffix:semicolon
+r_return
+op_minus
+id|EIO
+suffix:semicolon
+)brace
 id|cqr-&gt;startclk
 op_assign
 id|get_clock
@@ -2983,6 +3016,9 @@ suffix:semicolon
 id|cqr-&gt;starttime
 op_assign
 id|jiffies
+suffix:semicolon
+id|cqr-&gt;retries
+op_decrement
 suffix:semicolon
 id|rc
 op_assign
@@ -4365,9 +4401,6 @@ op_eq
 id|DASD_CQR_ERROR
 )paren
 (brace
-id|cqr-&gt;retries
-op_decrement
-suffix:semicolon
 r_if
 c_cond
 (paren

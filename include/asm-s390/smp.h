@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *  include/asm-s390/smp.h&n; *&n; *  S390 version&n; *    Copyright (C) 1999 IBM Deutschland Entwicklung GmbH, IBM Corporation&n; *    Author(s): Denis Joseph Barrow (djbarrow@de.ibm.com,barrow_dj@yahoo.com),&n; *               Martin Schwidefsky (schwidefsky@de.ibm.com)&n; */
+multiline_comment|/*&n; *  include/asm-s390/smp.h&n; *&n; *  S390 version&n; *    Copyright (C) 1999 IBM Deutschland Entwicklung GmbH, IBM Corporation&n; *    Author(s): Denis Joseph Barrow (djbarrow@de.ibm.com,barrow_dj@yahoo.com),&n; *               Martin Schwidefsky (schwidefsky@de.ibm.com)&n; *               Heiko Carstens (heiko.carstens@de.ibm.com)&n; */
 macro_line|#ifndef __ASM_SMP_H
 DECL|macro|__ASM_SMP_H
 mdefine_line|#define __ASM_SMP_H
@@ -69,6 +69,24 @@ DECL|macro|PROC_CHANGE_PENALTY
 mdefine_line|#define PROC_CHANGE_PENALTY&t;20&t;&t;/* Schedule penalty */
 DECL|macro|smp_processor_id
 mdefine_line|#define smp_processor_id() (S390_lowcore.cpu_data.cpu_nr)
+r_extern
+r_int
+id|smp_get_cpu
+c_func
+(paren
+id|cpumask_t
+id|cpu_map
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|smp_put_cpu
+c_func
+(paren
+r_int
+id|cpu
+)paren
+suffix:semicolon
 DECL|function|hard_smp_processor_id
 r_extern
 id|__inline__
@@ -98,10 +116,92 @@ suffix:semicolon
 )brace
 DECL|macro|cpu_logical_map
 mdefine_line|#define cpu_logical_map(cpu) (cpu)
+r_extern
+r_int
+id|__cpu_disable
+(paren
+r_void
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|__cpu_die
+(paren
+r_int
+r_int
+id|cpu
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|cpu_die
+(paren
+r_void
+)paren
+id|__attribute__
+(paren
+(paren
+id|noreturn
+)paren
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|__cpu_up
+(paren
+r_int
+r_int
+id|cpu
+)paren
+suffix:semicolon
 macro_line|#endif
 macro_line|#ifndef CONFIG_SMP
-DECL|macro|smp_call_function_on
-mdefine_line|#define smp_call_function_on(func,info,nonatomic,wait,cpu)      ({ 0; })
+r_static
+r_inline
+r_int
+DECL|function|smp_call_function_on
+id|smp_call_function_on
+c_func
+(paren
+r_void
+(paren
+op_star
+id|func
+)paren
+(paren
+r_void
+op_star
+id|info
+)paren
+comma
+r_void
+op_star
+id|info
+comma
+r_int
+id|nonatomic
+comma
+r_int
+id|wait
+comma
+r_int
+id|cpu
+)paren
+(brace
+id|func
+c_func
+(paren
+id|info
+)paren
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+)brace
+DECL|macro|smp_get_cpu
+mdefine_line|#define smp_get_cpu(cpu) ({ 0; })
+DECL|macro|smp_put_cpu
+mdefine_line|#define smp_put_cpu(cpu) ({ 0; })
 macro_line|#endif
 macro_line|#endif
 eof

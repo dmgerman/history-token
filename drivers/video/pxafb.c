@@ -5730,7 +5730,7 @@ op_assign
 dot
 id|name
 op_assign
-l_string|&quot;pxafb&quot;
+l_string|&quot;pxa2xx-fb&quot;
 comma
 dot
 id|bus

@@ -1647,7 +1647,7 @@ comma
 dot
 id|release
 op_assign
-id|seq_release_private
+id|seq_release
 comma
 )brace
 suffix:semicolon

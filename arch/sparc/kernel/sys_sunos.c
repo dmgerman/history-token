@@ -214,7 +214,7 @@ id|file
 suffix:semicolon
 id|file
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 )brace
 )brace
@@ -2075,6 +2075,7 @@ id|info.si_addr
 op_assign
 (paren
 r_void
+id|__user
 op_star
 )paren
 id|regs-&gt;pc
@@ -3101,7 +3102,7 @@ r_char
 op_star
 id|dev_fname
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 r_char
 op_star

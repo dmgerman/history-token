@@ -609,8 +609,6 @@ DECL|macro|UPF_SHARE_IRQ
 mdefine_line|#define UPF_SHARE_IRQ&t;&t;(1 &lt;&lt; 24)
 DECL|macro|UPF_BOOT_AUTOCONF
 mdefine_line|#define UPF_BOOT_AUTOCONF&t;(1 &lt;&lt; 28)
-DECL|macro|UPF_RESOURCES
-mdefine_line|#define UPF_RESOURCES&t;&t;(1 &lt;&lt; 30)
 DECL|macro|UPF_IOREMAP
 mdefine_line|#define UPF_IOREMAP&t;&t;(1 &lt;&lt; 31)
 DECL|macro|UPF_CHANGE_MASK

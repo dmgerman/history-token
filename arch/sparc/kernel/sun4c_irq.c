@@ -51,7 +51,7 @@ r_char
 op_star
 id|interrupt_enable
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 DECL|variable|sun4c_pil_map
 r_static

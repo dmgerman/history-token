@@ -6997,18 +6997,6 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-op_logical_neg
-(paren
-id|up-&gt;port.flags
-op_amp
-id|UPF_RESOURCES
-)paren
-)paren
-r_return
-suffix:semicolon
-r_if
-c_cond
-(paren
 id|up-&gt;port.type
 op_eq
 id|PORT_RSA
@@ -7176,14 +7164,6 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|up-&gt;port.flags
-op_amp
-id|UPF_RESOURCES
-)paren
-(brace
-r_if
-c_cond
-(paren
 id|up-&gt;port.type
 op_eq
 id|PORT_RSA
@@ -7222,7 +7202,6 @@ op_amp
 id|res
 )paren
 suffix:semicolon
-)brace
 multiline_comment|/*&n;&t; * If we have a mapbase, then request that as well.&n;&t; */
 r_if
 c_cond
@@ -7365,14 +7344,6 @@ r_return
 suffix:semicolon
 macro_line|#endif
 multiline_comment|/*&n;&t; * Find the region that we can probe for.  This in turn&n;&t; * tells us whether we can probe for the type of port.&n;&t; */
-r_if
-c_cond
-(paren
-id|up-&gt;port.flags
-op_amp
-id|UPF_RESOURCES
-)paren
-(brace
 id|ret
 op_assign
 id|serial8250_request_std_resource
@@ -7416,15 +7387,6 @@ op_and_assign
 op_complement
 id|PROBE_RSA
 suffix:semicolon
-)brace
-r_else
-(brace
-id|probeflags
-op_and_assign
-op_complement
-id|PROBE_RSA
-suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -7790,8 +7752,6 @@ id|i
 )braket
 dot
 id|flags
-op_or
-id|UPF_RESOURCES
 suffix:semicolon
 id|up-&gt;port.hub6
 op_assign
@@ -8338,7 +8298,8 @@ id|flow
 )paren
 suffix:semicolon
 )brace
-r_extern
+DECL|variable|serial8250_reg
+r_static
 r_struct
 id|uart_driver
 id|serial8250_reg

@@ -6624,7 +6624,7 @@ c_func
 (paren
 id|event_thread
 comma
-l_int|0
+l_int|NULL
 comma
 l_int|0
 )paren

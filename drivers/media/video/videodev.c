@@ -708,11 +708,7 @@ id|_IOC_NONE
 suffix:colon
 id|parg
 op_assign
-(paren
-r_void
-op_star
-)paren
-id|arg
+l_int|NULL
 suffix:semicolon
 r_break
 suffix:semicolon
@@ -808,6 +804,7 @@ id|parg
 comma
 (paren
 r_void
+id|__user
 op_star
 )paren
 id|arg
@@ -892,6 +889,7 @@ c_func
 (paren
 (paren
 r_void
+id|__user
 op_star
 )paren
 id|arg
@@ -932,7 +930,6 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * open/release helper functions -- handle exclusive opens&n; */
 DECL|function|video_exclusive_open
-r_extern
 r_int
 id|video_exclusive_open
 c_func
@@ -1001,7 +998,6 @@ id|retval
 suffix:semicolon
 )brace
 DECL|function|video_exclusive_release
-r_extern
 r_int
 id|video_exclusive_release
 c_func

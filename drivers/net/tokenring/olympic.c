@@ -888,7 +888,7 @@ id|proc_name
 comma
 l_int|0
 comma
-l_int|0
+l_int|NULL
 comma
 id|olympic_proc_info
 comma

@@ -519,6 +519,17 @@ id|t
 (brace
 )brace
 macro_line|#endif
+multiline_comment|/* EBCDIC -&gt; ASCII conversion for [0-9A-Z] on iSeries */
+r_extern
+r_int
+r_char
+id|e2a
+c_func
+(paren
+r_int
+r_char
+)paren
+suffix:semicolon
 r_extern
 r_struct
 id|task_struct

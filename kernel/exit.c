@@ -1081,6 +1081,7 @@ id|sa.sa_handler
 op_assign
 (paren
 r_void
+id|__user
 op_star
 )paren
 l_int|2
@@ -3194,14 +3195,6 @@ c_func
 (paren
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_NUMA
-id|mpol_free
-c_func
-(paren
-id|tsk-&gt;mempolicy
-)paren
-suffix:semicolon
-macro_line|#endif
 r_if
 c_cond
 (paren
@@ -3240,6 +3233,18 @@ c_func
 id|tsk
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_NUMA
+id|mpol_free
+c_func
+(paren
+id|tsk-&gt;mempolicy
+)paren
+suffix:semicolon
+id|tsk-&gt;mempolicy
+op_assign
+l_int|NULL
+suffix:semicolon
+macro_line|#endif
 id|schedule
 c_func
 (paren

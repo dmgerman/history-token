@@ -537,9 +537,7 @@ id|pLib
 )paren
 (brace
 r_return
-(paren
-l_int|0
-)paren
+l_int|NULL
 suffix:semicolon
 )brace
 id|pmem
@@ -700,9 +698,7 @@ l_string|&quot;Can not open XDI adapter&quot;
 )paren
 suffix:semicolon
 r_return
-(paren
-l_int|0
-)paren
+l_int|NULL
 suffix:semicolon
 )brace
 id|pLib-&gt;Channels
@@ -5296,9 +5292,7 @@ op_ne
 id|ESC
 )paren
 r_return
-(paren
-l_int|0
-)paren
+l_int|NULL
 suffix:semicolon
 id|start
 op_assign
@@ -5332,9 +5326,7 @@ op_ne
 id|ESC
 )paren
 r_return
-(paren
-l_int|0
-)paren
+l_int|NULL
 suffix:semicolon
 r_return
 (paren

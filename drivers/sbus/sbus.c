@@ -866,7 +866,7 @@ id|this_dev-&gt;next
 suffix:semicolon
 id|this_dev-&gt;next
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|this_dev-&gt;parent
 op_assign
@@ -914,7 +914,7 @@ id|sbus
 suffix:semicolon
 id|this_dev-&gt;child-&gt;next
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|fill_sbus_device
 c_func
@@ -1376,6 +1376,16 @@ c_func
 r_void
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_SUN4
+r_extern
+r_void
+id|sun4_dvma_init
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+macro_line|#endif
 DECL|function|sbus_init
 r_static
 r_int
@@ -2040,7 +2050,7 @@ id|sbus
 suffix:semicolon
 id|this_dev-&gt;child-&gt;next
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|fill_sbus_device
 c_func
@@ -2167,7 +2177,7 @@ id|sbus
 suffix:semicolon
 id|this_dev-&gt;child-&gt;next
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|fill_sbus_device
 c_func

@@ -323,7 +323,7 @@ id|scatterlist
 id|sg_out
 op_assign
 (brace
-l_int|0
+l_int|NULL
 comma
 )brace
 suffix:semicolon
@@ -332,7 +332,7 @@ id|scatterlist
 id|sg_in
 op_assign
 (brace
-l_int|0
+l_int|NULL
 comma
 )brace
 suffix:semicolon
@@ -565,7 +565,7 @@ id|scatterlist
 id|sg_out
 op_assign
 (brace
-l_int|0
+l_int|NULL
 comma
 )brace
 suffix:semicolon
@@ -574,7 +574,7 @@ id|scatterlist
 id|sg_in
 op_assign
 (brace
-l_int|0
+l_int|NULL
 comma
 )brace
 suffix:semicolon

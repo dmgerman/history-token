@@ -2887,7 +2887,7 @@ comma
 dot
 id|accept
 op_assign
-id|inet_accept
+id|sock_no_accept
 comma
 dot
 id|getname

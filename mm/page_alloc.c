@@ -5937,9 +5937,12 @@ multiline_comment|/* The shift won&squot;t overflow because ZONE_NORMAL is below
 r_if
 c_cond
 (paren
+op_logical_neg
+id|is_highmem
+c_func
+(paren
 id|zone
-op_ne
-id|ZONE_HIGHMEM
+)paren
 )paren
 id|set_page_address
 c_func

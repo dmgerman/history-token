@@ -1454,7 +1454,7 @@ id|proc_fs_cifs
 comma
 id|cifs_debug_data_read
 comma
-l_int|0
+l_int|NULL
 )paren
 suffix:semicolon
 macro_line|#ifdef CONFIG_CIFS_STATS
@@ -1469,7 +1469,7 @@ id|proc_fs_cifs
 comma
 id|cifs_stats_read
 comma
-l_int|0
+l_int|NULL
 )paren
 suffix:semicolon
 macro_line|#endif
@@ -1486,7 +1486,7 @@ id|proc_fs_cifs
 comma
 id|cifsFYI_read
 comma
-l_int|0
+l_int|NULL
 )paren
 suffix:semicolon
 r_if
@@ -1511,7 +1511,7 @@ id|proc_fs_cifs
 comma
 id|traceSMB_read
 comma
-l_int|0
+l_int|NULL
 )paren
 suffix:semicolon
 r_if
@@ -1536,7 +1536,7 @@ id|proc_fs_cifs
 comma
 id|oplockEnabled_read
 comma
-l_int|0
+l_int|NULL
 )paren
 suffix:semicolon
 r_if
@@ -1561,7 +1561,7 @@ id|proc_fs_cifs
 comma
 id|quotaEnabled_read
 comma
-l_int|0
+l_int|NULL
 )paren
 suffix:semicolon
 r_if
@@ -1586,7 +1586,7 @@ id|proc_fs_cifs
 comma
 id|linuxExtensionsEnabled_read
 comma
-l_int|0
+l_int|NULL
 )paren
 suffix:semicolon
 r_if
@@ -1611,7 +1611,7 @@ id|proc_fs_cifs
 comma
 id|multiuser_mount_read
 comma
-l_int|0
+l_int|NULL
 )paren
 suffix:semicolon
 r_if
@@ -1636,7 +1636,7 @@ id|proc_fs_cifs
 comma
 id|extended_security_read
 comma
-l_int|0
+l_int|NULL
 )paren
 suffix:semicolon
 r_if
@@ -1661,7 +1661,7 @@ id|proc_fs_cifs
 comma
 id|lookupFlag_read
 comma
-l_int|0
+l_int|NULL
 )paren
 suffix:semicolon
 r_if
@@ -1686,7 +1686,7 @@ id|proc_fs_cifs
 comma
 id|ntlmv2_enabled_read
 comma
-l_int|0
+l_int|NULL
 )paren
 suffix:semicolon
 r_if
@@ -1711,7 +1711,7 @@ id|proc_fs_cifs
 comma
 id|packet_signing_enabled_read
 comma
-l_int|0
+l_int|NULL
 )paren
 suffix:semicolon
 r_if

@@ -1107,7 +1107,7 @@ id|linux_ebus
 op_star
 id|ebus_chain
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 macro_line|#ifdef CONFIG_SUN_AUXIO
 r_extern
@@ -2491,7 +2491,7 @@ id|dev-&gt;children
 suffix:semicolon
 id|child-&gt;next
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|child-&gt;parent
 op_assign
@@ -2555,7 +2555,7 @@ id|child-&gt;next
 suffix:semicolon
 id|child-&gt;next
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|child-&gt;parent
 op_assign
@@ -2782,7 +2782,7 @@ id|linux_ebus
 suffix:semicolon
 id|ebus-&gt;next
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|ebus-&gt;is_rio
 op_assign
@@ -2950,11 +2950,11 @@ id|ebus-&gt;devices
 suffix:semicolon
 id|dev-&gt;next
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|dev-&gt;children
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|dev-&gt;bus
 op_assign
@@ -3002,11 +3002,11 @@ id|dev-&gt;next
 suffix:semicolon
 id|dev-&gt;next
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|dev-&gt;children
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|dev-&gt;bus
 op_assign
@@ -3074,7 +3074,7 @@ id|ebus-&gt;next
 suffix:semicolon
 id|ebus-&gt;next
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|ebus-&gt;is_rio
 op_assign

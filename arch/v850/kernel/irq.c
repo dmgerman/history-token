@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * arch/v850/kernel/irq.c -- High-level interrupt handling&n; *&n; *  Copyright (C) 2001,02,03  NEC Electronics Corporation&n; *  Copyright (C) 2001,02,03  Miles Bader &lt;miles@gnu.org&gt;&n; *  Copyright (C) 1994-2000  Ralf Baechle&n; *  Copyright (C) 1992  Linus Torvalds&n; *&n; * This file is subject to the terms and conditions of the GNU General&n; * Public License.  See the file COPYING in the main directory of this&n; * archive for more details.&n; *&n; * This file was was derived from the mips version, arch/mips/kernel/irq.c&n; */
+multiline_comment|/*&n; * arch/v850/kernel/irq.c -- High-level interrupt handling&n; *&n; *  Copyright (C) 2001,02,03,04  NEC Electronics Corporation&n; *  Copyright (C) 2001,02,03,04  Miles Bader &lt;miles@gnu.org&gt;&n; *  Copyright (C) 1994-2000  Ralf Baechle&n; *  Copyright (C) 1992  Linus Torvalds&n; *&n; * This file is subject to the terms and conditions of the GNU General&n; * Public License.  See the file COPYING in the main directory of this&n; * archive for more details.&n; *&n; * This file was was derived from the mips version, arch/mips/kernel/irq.c&n; */
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/irq.h&gt;
@@ -63,6 +63,9 @@ op_star
 id|regs
 )paren
 (brace
+r_return
+id|IRQ_NONE
+suffix:semicolon
 )brace
 multiline_comment|/*&n; * Generic no controller code&n; */
 DECL|function|enable_none

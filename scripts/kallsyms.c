@@ -352,6 +352,35 @@ l_int|0
 r_return
 l_int|0
 suffix:semicolon
+multiline_comment|/* Exclude linker generated symbols which vary between passes */
+r_if
+c_cond
+(paren
+id|strcmp
+c_func
+(paren
+id|s-&gt;sym
+comma
+l_string|&quot;_SDA_BASE_&quot;
+)paren
+op_eq
+l_int|0
+op_logical_or
+multiline_comment|/* ppc */
+id|strcmp
+c_func
+(paren
+id|s-&gt;sym
+comma
+l_string|&quot;_SDA2_BASE_&quot;
+)paren
+op_eq
+l_int|0
+)paren
+multiline_comment|/* ppc */
+r_return
+l_int|0
+suffix:semicolon
 r_return
 l_int|1
 suffix:semicolon

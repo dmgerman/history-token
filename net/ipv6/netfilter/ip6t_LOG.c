@@ -83,7 +83,7 @@ op_assign
 id|SPIN_LOCK_UNLOCKED
 suffix:semicolon
 multiline_comment|/* takes in current header and pointer to the header */
-multiline_comment|/* if another header exists, sets hdrptr to the next header&n;   and returns the new header value, else returns 0 */
+multiline_comment|/* if another header exists, sets hdrptr to the next header&n;   and returns the new header value, else returns IPPROTO_NONE */
 DECL|function|ip6_nexthdr
 r_static
 id|u_int8_t
@@ -104,7 +104,7 @@ id|hdrlen
 comma
 id|nexthdr
 op_assign
-l_int|0
+id|IPPROTO_NONE
 suffix:semicolon
 r_switch
 c_cond
@@ -338,6 +338,8 @@ r_while
 c_loop
 (paren
 id|currenthdr
+op_ne
+id|IPPROTO_NONE
 )paren
 (brace
 r_if
@@ -1083,7 +1085,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 )brace
-multiline_comment|/* Max length: 10 &quot;PROTO 255 &quot; */
+multiline_comment|/* Max length: 10 &quot;PROTO=255 &quot; */
 r_default
 suffix:colon
 id|printk

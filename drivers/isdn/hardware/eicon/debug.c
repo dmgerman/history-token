@@ -451,7 +451,7 @@ id|sizeBuffer
 suffix:semicolon
 id|Q-&gt;Wrap
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|Q-&gt;Count
 op_assign
@@ -505,7 +505,7 @@ id|Q-&gt;Size
 )paren
 (brace
 r_return
-l_int|0
+l_int|NULL
 suffix:semicolon
 multiline_comment|/* full */
 )brace
@@ -546,9 +546,7 @@ id|Q-&gt;Head
 )paren
 (brace
 r_return
-(paren
-l_int|0
-)paren
+l_int|NULL
 suffix:semicolon
 multiline_comment|/* too much */
 )brace
@@ -576,9 +574,7 @@ id|Q-&gt;Head
 )paren
 (brace
 r_return
-(paren
-l_int|0
-)paren
+l_int|NULL
 suffix:semicolon
 multiline_comment|/* too much */
 )brace
@@ -679,7 +675,7 @@ id|Q-&gt;Base
 suffix:semicolon
 id|Q-&gt;Wrap
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 )brace
 )brace
@@ -750,9 +746,7 @@ id|MSG_INCOMPLETE
 )paren
 (brace
 r_return
-(paren
-l_int|0
-)paren
+l_int|NULL
 suffix:semicolon
 )brace
 r_else
@@ -783,23 +777,17 @@ r_static
 id|MSG_QUEUE
 op_star
 id|dbg_queue
-op_assign
-l_int|0
 suffix:semicolon
 DECL|variable|dbg_base
 r_static
 id|byte
 op_star
 id|dbg_base
-op_assign
-l_int|0
 suffix:semicolon
 DECL|variable|external_dbg_queue
 r_static
 r_int
 id|external_dbg_queue
-op_assign
-l_int|0
 suffix:semicolon
 DECL|variable|dbg_q_lock
 r_static
@@ -815,16 +803,12 @@ DECL|variable|dbg_q_busy
 r_static
 r_int
 id|dbg_q_busy
-op_assign
-l_int|0
 suffix:semicolon
 DECL|variable|dbg_sequence
 r_static
 r_volatile
 id|dword
 id|dbg_sequence
-op_assign
-l_int|0
 suffix:semicolon
 DECL|variable|start_sec
 r_static
@@ -1083,11 +1067,11 @@ l_string|&quot;dbg_init&quot;
 (brace
 id|dbg_queue
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|dbg_base
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|external_dbg_queue
 op_assign
@@ -1123,11 +1107,11 @@ l_string|&quot;dbg_init&quot;
 suffix:semicolon
 id|dbg_queue
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|dbg_base
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|external_dbg_queue
 op_assign
@@ -1170,11 +1154,11 @@ id|i
 suffix:semicolon
 id|dbg_queue
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|dbg_base
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 r_if
 c_cond
@@ -1209,7 +1193,7 @@ id|external_dbg_queue
 (brace
 id|ret
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 )brace
 id|external_dbg_queue
@@ -1317,7 +1301,7 @@ id|diva_dbg_entry_head_t
 op_star
 id|pmsg
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|diva_os_enter_spin_lock_hard
 (paren
@@ -1346,9 +1330,7 @@ l_string|&quot;read_busy&quot;
 )paren
 suffix:semicolon
 r_return
-(paren
-l_int|0
-)paren
+l_int|NULL
 suffix:semicolon
 )brace
 id|dbg_q_busy
@@ -1767,7 +1749,7 @@ id|diva_dbg_entry_head_t
 op_star
 id|pmsg
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 r_int
 id|len
@@ -2094,7 +2076,7 @@ id|byte
 op_star
 id|pmem
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|diva_os_get_time
 (paren
@@ -2188,7 +2170,7 @@ id|i
 dot
 id|hDbg
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|hDbg-&gt;id
 op_assign
@@ -2201,15 +2183,15 @@ l_int|0
 suffix:semicolon
 id|hDbg-&gt;dbg_end
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|hDbg-&gt;dbg_prt
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|hDbg-&gt;dbg_irq
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 r_if
 c_cond
@@ -2220,7 +2202,7 @@ l_int|0
 )paren
 id|hDbg-&gt;dbg_old
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|hDbg-&gt;Registered
 op_assign
@@ -2228,7 +2210,7 @@ l_int|0
 suffix:semicolon
 id|hDbg-&gt;next
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 r_if
 c_cond
@@ -2268,7 +2250,7 @@ id|i
 dot
 id|pIdiLib
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|pmem
 op_assign
@@ -2286,7 +2268,7 @@ id|i
 dot
 id|pmem
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 )brace
 multiline_comment|/*&n;        Log driver register, MAINT driver ID is &squot;0&squot;&n;        */
@@ -2546,7 +2528,7 @@ id|diva_dbg_entry_head_t
 op_star
 id|pmsg
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|dword
 id|length
@@ -4241,7 +4223,7 @@ id|diva_dbg_entry_head_t
 op_star
 id|pmsg
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 r_int
 id|len
@@ -4913,7 +4895,7 @@ id|id
 dot
 id|pIdiLib
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 )brace
 )brace
@@ -4954,7 +4936,7 @@ id|id
 dot
 id|request
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|clients
 (braket
@@ -4972,7 +4954,7 @@ id|id
 dot
 id|hDbg
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|diva_os_leave_spin_lock_hard
 (paren
@@ -5295,7 +5277,7 @@ id|byte
 op_star
 id|pmem
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|diva_os_get_time
 (paren
@@ -5429,7 +5411,7 @@ id|i
 dot
 id|pIdiLib
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|pmem
 op_assign
@@ -5447,7 +5429,7 @@ id|i
 dot
 id|pmem
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 )brace
 id|clients
@@ -5457,7 +5439,7 @@ id|i
 dot
 id|hDbg
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|clients
 (braket
@@ -5466,7 +5448,7 @@ id|i
 dot
 id|request
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|clients
 (braket
@@ -5776,9 +5758,7 @@ suffix:semicolon
 )brace
 )brace
 r_return
-(paren
-l_int|0
-)paren
+l_int|NULL
 suffix:semicolon
 )brace
 DECL|function|SuperTraceCloseAdapter
@@ -9231,7 +9211,7 @@ op_increment
 (brace
 id|pmem
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|diva_os_enter_spin_lock_hard
 (paren
@@ -9345,7 +9325,7 @@ id|i
 dot
 id|pIdiLib
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|pmem
 op_assign
@@ -9363,7 +9343,7 @@ id|i
 dot
 id|pmem
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 )brace
 id|clients
@@ -9373,7 +9353,7 @@ id|i
 dot
 id|hDbg
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|clients
 (braket
@@ -9382,7 +9362,7 @@ id|i
 dot
 id|request
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|clients
 (braket

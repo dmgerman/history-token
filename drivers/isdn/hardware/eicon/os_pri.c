@@ -1016,7 +1016,7 @@ id|a-&gt;resources.pci.addr
 id|bar
 )braket
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 )brace
 )brace
@@ -1044,7 +1044,7 @@ id|a-&gt;xdi_adapter.req_soft_isr
 suffix:semicolon
 id|a-&gt;xdi_adapter.isr_soft_isr.object
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|diva_os_destroy_spin_lock
 c_func
@@ -1081,7 +1081,7 @@ id|a-&gt;xdi_adapter.e_tbl
 suffix:semicolon
 id|a-&gt;xdi_adapter.e_tbl
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 )brace
 id|a-&gt;xdi_adapter.Channels
@@ -1110,7 +1110,7 @@ id|dma_map
 suffix:semicolon
 id|a-&gt;xdi_adapter.dma_map
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 multiline_comment|/*&n;&t;   Detach this adapter from debug driver&n;&t; */
 r_return
@@ -2346,7 +2346,7 @@ id|a
 suffix:semicolon
 id|a-&gt;clear_interrupts_proc
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|DBG_ERR
 c_func

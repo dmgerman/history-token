@@ -3675,6 +3675,25 @@ c_func
 (paren
 id|data
 comma
+l_string|&quot;credentials&quot;
+comma
+l_int|4
+)paren
+op_eq
+l_int|0
+)paren
+(brace
+multiline_comment|/* ignore */
+)brace
+r_else
+r_if
+c_cond
+(paren
+id|strnicmp
+c_func
+(paren
+id|data
+comma
 l_string|&quot;version&quot;
 comma
 l_int|3
@@ -7491,7 +7510,7 @@ id|smb_buffer
 comma
 id|SMB_COM_SESSION_SETUP_ANDX
 comma
-l_int|0
+l_int|NULL
 multiline_comment|/* no tCon exists yet */
 comma
 l_int|13
@@ -8923,7 +8942,7 @@ id|smb_buffer
 comma
 id|SMB_COM_SESSION_SETUP_ANDX
 comma
-l_int|0
+l_int|NULL
 multiline_comment|/* no tCon exists yet */
 comma
 l_int|12
@@ -10367,7 +10386,7 @@ id|smb_buffer
 comma
 id|SMB_COM_SESSION_SETUP_ANDX
 comma
-l_int|0
+l_int|NULL
 multiline_comment|/* no tCon exists yet */
 comma
 l_int|12
@@ -11984,7 +12003,7 @@ id|smb_buffer
 comma
 id|SMB_COM_SESSION_SETUP_ANDX
 comma
-l_int|0
+l_int|NULL
 multiline_comment|/* no tCon exists yet */
 comma
 l_int|12
@@ -13746,7 +13765,7 @@ id|smb_buffer
 comma
 id|SMB_COM_TREE_CONNECT_ANDX
 comma
-l_int|0
+l_int|NULL
 multiline_comment|/*no tid */
 comma
 l_int|4

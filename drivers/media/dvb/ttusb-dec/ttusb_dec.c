@@ -1271,7 +1271,7 @@ id|data
 comma
 l_int|188
 comma
-l_int|0
+l_int|NULL
 comma
 l_int|0
 comma
@@ -1322,7 +1322,7 @@ id|data
 comma
 l_int|188
 comma
-l_int|0
+l_int|NULL
 comma
 l_int|0
 comma
@@ -1643,7 +1643,7 @@ id|pva
 comma
 id|length
 comma
-l_int|0
+l_int|NULL
 comma
 l_int|0
 comma
@@ -2069,7 +2069,7 @@ id|pva
 comma
 id|length
 comma
-l_int|0
+l_int|NULL
 comma
 l_int|0
 comma

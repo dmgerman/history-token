@@ -683,7 +683,7 @@ suffix:semicolon
 op_star
 id|pdvbdev
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|printk
 (paren

@@ -894,7 +894,7 @@ op_amp
 id|p-&gt;lock
 )paren
 suffix:semicolon
-id|p-&gt;stats.lock
+id|p-&gt;stats_lock
 op_assign
 op_amp
 id|p-&gt;lock
@@ -1133,6 +1133,8 @@ c_func
 op_amp
 id|p-&gt;stats
 comma
+id|p-&gt;stats_lock
+comma
 id|est
 )paren
 suffix:semicolon
@@ -1311,6 +1313,8 @@ id|skb
 comma
 op_amp
 id|p-&gt;stats
+comma
+id|p-&gt;stats_lock
 )paren
 suffix:semicolon
 r_return
@@ -2124,7 +2128,7 @@ op_amp
 id|p-&gt;lock
 )paren
 suffix:semicolon
-id|p-&gt;stats.lock
+id|p-&gt;stats_lock
 op_assign
 op_amp
 id|p-&gt;lock
@@ -2330,6 +2334,8 @@ c_func
 (paren
 op_amp
 id|p-&gt;stats
+comma
+id|p-&gt;stats_lock
 comma
 id|est
 )paren

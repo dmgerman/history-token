@@ -504,13 +504,13 @@ id|readl
 c_func
 (paren
 op_amp
-id|regs-&gt;HostCtrl
+id|rrpriv-&gt;regs-&gt;HostCtrl
 )paren
 op_or
 id|NO_SWAP
 comma
 op_amp
-id|regs-&gt;HostCtrl
+id|rrpriv-&gt;regs-&gt;HostCtrl
 )paren
 suffix:semicolon
 macro_line|#endif
@@ -2761,7 +2761,7 @@ id|rrpriv-&gt;tx_skbuff
 id|i
 )braket
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 )brace
 id|rrpriv-&gt;info-&gt;tx_ctrl.entry_size
@@ -3285,7 +3285,7 @@ id|rrpriv-&gt;rx_skbuff
 id|i
 )braket
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 )brace
 )brace

@@ -234,10 +234,6 @@ DECL|variable|deviceInfo
 r_static
 id|device_info_t
 id|deviceInfo
-op_assign
-(brace
-l_int|0
-)brace
 suffix:semicolon
 DECL|variable|__initdata
 r_static
@@ -3336,10 +3332,6 @@ suffix:semicolon
 id|fb_memset
 c_func
 (paren
-(paren
-r_int
-r_int
-)paren
 id|info-&gt;screen_base
 comma
 l_int|0

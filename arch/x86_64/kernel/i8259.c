@@ -1218,7 +1218,7 @@ id|i
 dot
 id|action
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|irq_desc
 (braket

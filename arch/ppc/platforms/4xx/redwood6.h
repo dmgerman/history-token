@@ -75,6 +75,8 @@ suffix:semicolon
 macro_line|#endif&t;&t;&t;&t;/* !__ASSEMBLY__ */
 DECL|macro|SMC91111_BASE_ADDR
 mdefine_line|#define SMC91111_BASE_ADDR&t;0xf2030300
+DECL|macro|SMC91111_REG_SIZE
+mdefine_line|#define SMC91111_REG_SIZE&t;16
 DECL|macro|SMC91111_IRQ
 mdefine_line|#define SMC91111_IRQ&t;&t;27
 DECL|macro|IDE_XLINUX_MUX_BASE

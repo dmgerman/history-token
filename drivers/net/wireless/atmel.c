@@ -8468,7 +8468,7 @@ l_string|&quot;driver/atmel&quot;
 comma
 l_int|0
 comma
-l_int|0
+l_int|NULL
 comma
 id|atmel_read_proc
 comma

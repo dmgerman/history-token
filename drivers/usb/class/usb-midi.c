@@ -3588,7 +3588,7 @@ id|m-&gt;min.ep-&gt;cables
 id|m-&gt;min.cableId
 )braket
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 singleline_comment|// discard cable
 id|m-&gt;min.ep-&gt;readers
@@ -3650,7 +3650,7 @@ id|open_wait
 suffix:semicolon
 id|file-&gt;private_data
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 r_return
 l_int|0
@@ -5026,7 +5026,7 @@ suffix:semicolon
 macro_line|#endif
 id|u
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 multiline_comment|/* find audiocontrol interface */
 id|p1
@@ -5106,7 +5106,7 @@ suffix:semicolon
 )brace
 id|u-&gt;deviceName
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|u-&gt;idVendor
 op_assign
@@ -5675,7 +5675,7 @@ l_int|0
 multiline_comment|/* MIDISTREAM */
 id|p2
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 r_for
 c_loop
@@ -5756,7 +5756,7 @@ id|next
 )paren
 id|p2
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 r_if
 c_cond
@@ -8558,9 +8558,9 @@ l_int|0
 suffix:semicolon
 id|u.deviceName
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
-multiline_comment|/* A flag for alloc_usb_midi_device to get device name&n;&t;&t;&t;     from device. */
+multiline_comment|/* A flag for alloc_usb_midi_device to get device&n;&t;&t;&t;&t;name from device. */
 id|u.idVendor
 op_assign
 id|uvendor

@@ -2366,6 +2366,7 @@ id|uss
 )paren
 (brace
 r_void
+id|__user
 op_star
 id|ss_sp
 suffix:semicolon
@@ -3168,7 +3169,7 @@ id|si_code
 suffix:semicolon
 id|info.si_addr
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 multiline_comment|/* FIXME */
 id|send_sig_info
@@ -4177,7 +4178,7 @@ ques
 c_cond
 id|ktvs
 suffix:colon
-l_int|0
+l_int|NULL
 )paren
 suffix:semicolon
 )brace
@@ -5927,6 +5928,7 @@ op_increment
 )paren
 (brace
 r_int
+id|__user
 op_star
 id|iov_len_high
 op_assign

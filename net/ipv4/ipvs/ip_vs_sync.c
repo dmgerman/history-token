@@ -2196,7 +2196,7 @@ id|buflen
 suffix:semicolon
 id|msg.msg_name
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|msg.msg_namelen
 op_assign

@@ -1755,6 +1755,15 @@ suffix:semicolon
 id|info-&gt;flags
 op_assign
 id|FBINFO_FLAG_DEFAULT
+op_or
+(paren
+id|ypan
+)paren
+ques
+c_cond
+id|FBINFO_HWACCEL_YPAN
+suffix:colon
+l_int|0
 suffix:semicolon
 r_if
 c_cond

@@ -2875,7 +2875,7 @@ id|RADEON_PP_TEX_SIZE_2
 comma
 l_int|2
 comma
-l_string|&quot;RADEON_PP_TEX_SIZE_1&quot;
+l_string|&quot;RADEON_PP_TEX_SIZE_2&quot;
 )brace
 comma
 (brace
@@ -10102,7 +10102,7 @@ id|drm_buf_t
 op_star
 id|buf
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 r_int
 id|idx

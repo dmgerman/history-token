@@ -248,7 +248,6 @@ r_struct
 id|file_operations
 id|afs_mntpt_file_operations
 suffix:semicolon
-macro_line|#ifdef AFS_AUTOMOUNT_SUPPORT
 r_extern
 r_struct
 id|afs_timer
@@ -264,7 +263,6 @@ r_int
 r_int
 id|afs_mntpt_expiry_timeout
 suffix:semicolon
-macro_line|#endif
 r_extern
 r_int
 id|afs_mntpt_check_symlink

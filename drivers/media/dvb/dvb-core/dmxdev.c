@@ -94,7 +94,7 @@ id|buffer
 (brace
 id|buffer-&gt;data
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|buffer-&gt;size
 op_assign
@@ -301,6 +301,7 @@ r_int
 id|non_blocking
 comma
 r_char
+id|__user
 op_star
 id|buf
 comma
@@ -630,7 +631,7 @@ op_logical_neg
 id|head
 )paren
 r_return
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|list_for_each
 c_func
@@ -660,7 +661,7 @@ id|pos
 )paren
 suffix:semicolon
 r_return
-l_int|0
+l_int|NULL
 suffix:semicolon
 )brace
 DECL|function|dvb_dmxdev_dvr_state_set
@@ -1068,7 +1069,7 @@ id|dmxdev-&gt;lock
 suffix:semicolon
 id|dmxdev-&gt;dvr_buffer.data
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|spin_unlock_irq
 c_func
@@ -1109,6 +1110,7 @@ id|file
 comma
 r_const
 r_char
+id|__user
 op_star
 id|buf
 comma
@@ -1222,6 +1224,7 @@ op_star
 id|file
 comma
 r_char
+id|__user
 op_star
 id|buf
 comma
@@ -1382,7 +1385,7 @@ id|buf-&gt;data
 suffix:semicolon
 id|buf-&gt;data
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|buf-&gt;size
 op_assign
@@ -2292,7 +2295,7 @@ id|dmxdevfilter
 suffix:semicolon
 id|dmxdevfilter-&gt;feed.sec
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 r_break
 suffix:semicolon
@@ -2325,7 +2328,7 @@ id|dmxdevfilter-&gt;feed.ts
 suffix:semicolon
 id|dmxdevfilter-&gt;feed.ts
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 r_break
 suffix:semicolon
@@ -2546,12 +2549,12 @@ suffix:semicolon
 op_star
 id|secfilter
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 op_star
 id|secfeed
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 multiline_comment|/* find active filter/feed with same PID */
 r_for
@@ -3001,7 +3004,7 @@ id|filter-&gt;feed.ts
 suffix:semicolon
 id|filter-&gt;feed.ts
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|otype
 op_assign
@@ -3352,7 +3355,7 @@ id|DMXDEV_STATE_ALLOCATED
 suffix:semicolon
 id|dmxdevfilter-&gt;feed.ts
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|init_timer
 c_func
@@ -3459,7 +3462,7 @@ id|dmxdev-&gt;lock
 suffix:semicolon
 id|dmxdevfilter-&gt;buffer.data
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|spin_unlock_irq
 c_func
@@ -3745,6 +3748,7 @@ op_star
 id|file
 comma
 r_char
+id|__user
 op_star
 id|buf
 comma
@@ -3965,6 +3969,7 @@ op_star
 id|file
 comma
 r_char
+id|__user
 op_star
 id|buf
 comma
@@ -4753,7 +4758,7 @@ op_assign
 dot
 id|priv
 op_assign
-l_int|0
+l_int|NULL
 comma
 dot
 id|users
@@ -5095,7 +5100,7 @@ op_assign
 dot
 id|priv
 op_assign
-l_int|0
+l_int|NULL
 comma
 dot
 id|users
@@ -5257,7 +5262,7 @@ id|i
 dot
 id|buffer.data
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|dvb_dmxdev_filter_state_set
 c_func
@@ -5287,7 +5292,7 @@ id|i
 dot
 id|buffer.data
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|dvb_dmxdev_filter_state_set
 c_func
@@ -5394,7 +5399,7 @@ id|dmxdev-&gt;filter
 suffix:semicolon
 id|dmxdev-&gt;filter
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 )brace
 r_if
@@ -5411,7 +5416,7 @@ id|dmxdev-&gt;dvr
 suffix:semicolon
 id|dmxdev-&gt;dvr
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 )brace
 id|dmxdev-&gt;demux

@@ -663,10 +663,9 @@ r_int
 id|sioc
 comma
 r_struct
-id|iovec
+id|kvec
+op_star
 id|siov
-(braket
-)braket
 comma
 r_uint8
 id|rxhdr_flags

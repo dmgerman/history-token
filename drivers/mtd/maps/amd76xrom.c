@@ -75,7 +75,7 @@ comma
 dot
 id|mtd
 op_assign
-l_int|0
+l_int|NULL
 comma
 dot
 id|window_addr
@@ -245,7 +245,7 @@ l_string|&quot;cfi_probe&quot;
 comma
 l_string|&quot;jedec_probe&quot;
 comma
-l_int|0
+l_int|NULL
 )brace
 suffix:semicolon
 id|u8
@@ -423,7 +423,7 @@ suffix:semicolon
 )brace
 id|info-&gt;mtd
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 r_for
 c_loop
@@ -642,7 +642,7 @@ id|info-&gt;mtd
 suffix:semicolon
 id|info-&gt;mtd
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|info-&gt;map.virt
 op_assign
@@ -803,7 +803,7 @@ id|id
 suffix:semicolon
 id|pdev
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 r_for
 c_loop
@@ -827,7 +827,7 @@ id|id-&gt;vendor
 comma
 id|id-&gt;device
 comma
-l_int|0
+l_int|NULL
 )paren
 suffix:semicolon
 r_if

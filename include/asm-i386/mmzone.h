@@ -34,7 +34,7 @@ mdefine_line|#define MAX_ELEMENTS 256
 DECL|macro|PAGES_PER_ELEMENT
 mdefine_line|#define PAGES_PER_ELEMENT (MAX_NR_PAGES/MAX_ELEMENTS)
 r_extern
-id|u8
+id|s8
 id|physnode_map
 (braket
 )braket
@@ -53,6 +53,9 @@ id|pfn
 (brace
 macro_line|#ifdef CONFIG_NUMA
 r_return
+(paren
+r_int
+)paren
 id|physnode_map
 (braket
 (paren

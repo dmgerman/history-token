@@ -269,16 +269,7 @@ l_int|0x01e1
 )brace
 comma
 (brace
-l_int|0
-comma
-l_int|0
-comma
-l_int|0
-comma
-l_int|0
-comma
-(brace
-)brace
+l_int|NULL
 )brace
 )brace
 suffix:semicolon
@@ -538,7 +529,7 @@ id|i
 suffix:semicolon
 id|tp-&gt;mtable
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 multiline_comment|/* Detect an old-style (SA only) EEPROM layout:&n;&t;   memcmp(eedata, eedata+16, 8). */
 r_for

@@ -170,5 +170,21 @@ op_star
 id|dev
 )paren
 suffix:semicolon
+multiline_comment|/* From pSeries_pci.h */
+r_void
+id|init_pci_config_tokens
+(paren
+r_void
+)paren
+suffix:semicolon
+r_int
+r_int
+id|get_phb_buid
+(paren
+r_struct
+id|device_node
+op_star
+)paren
+suffix:semicolon
 macro_line|#endif /* __PPC_KERNEL_PCI_H__ */
 eof

@@ -4318,7 +4318,7 @@ id|net2dev_map
 l_int|0
 )braket
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|net2dev_map
 (braket

@@ -212,6 +212,7 @@ op_star
 id|card
 comma
 id|act2000_ddef
+id|__user
 op_star
 id|cb
 )paren

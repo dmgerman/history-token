@@ -4996,7 +4996,7 @@ id|len
 comma
 id|usb_api_blocking_completion
 comma
-l_int|0
+l_int|NULL
 )paren
 suffix:semicolon
 id|retv

@@ -2978,6 +2978,7 @@ id|wait
 suffix:semicolon
 DECL|member|fib
 r_char
+id|__user
 op_star
 id|fib
 suffix:semicolon
@@ -3496,6 +3497,7 @@ r_int
 id|cmd
 comma
 r_void
+id|__user
 op_star
 id|arg
 )paren
@@ -3513,6 +3515,7 @@ r_int
 id|cmd
 comma
 r_void
+id|__user
 op_star
 id|arg
 )paren

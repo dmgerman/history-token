@@ -188,9 +188,4 @@ op_star
 id|idp
 )paren
 suffix:semicolon
-r_extern
-id|kmem_cache_t
-op_star
-id|idr_layer_cache
-suffix:semicolon
 eof

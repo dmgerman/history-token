@@ -89,6 +89,7 @@ suffix:semicolon
 DECL|member|buffer
 r_int
 r_char
+id|__user
 op_star
 id|buffer
 suffix:semicolon

@@ -60,11 +60,6 @@ id|mem
 (braket
 id|MAX_PCBIT_CARDS
 )braket
-op_assign
-(brace
-l_int|0
-comma
-)brace
 suffix:semicolon
 DECL|variable|irq
 r_static
@@ -73,11 +68,6 @@ id|irq
 (braket
 id|MAX_PCBIT_CARDS
 )braket
-op_assign
-(brace
-l_int|0
-comma
-)brace
 suffix:semicolon
 DECL|variable|num_boards
 r_static
@@ -92,11 +82,6 @@ id|dev_pcbit
 (braket
 id|MAX_PCBIT_CARDS
 )braket
-op_assign
-(brace
-l_int|0
-comma
-)brace
 suffix:semicolon
 r_extern
 r_void

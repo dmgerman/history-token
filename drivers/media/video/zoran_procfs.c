@@ -803,6 +803,7 @@ id|file
 comma
 r_const
 r_char
+id|__user
 op_star
 id|buffer
 comma
@@ -1096,7 +1097,7 @@ id|name
 comma
 l_int|0
 comma
-l_int|0
+l_int|NULL
 )paren
 )paren
 )paren
@@ -1205,7 +1206,7 @@ c_func
 (paren
 id|name
 comma
-l_int|0
+l_int|NULL
 )paren
 suffix:semicolon
 )brace

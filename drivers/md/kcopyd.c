@@ -252,7 +252,7 @@ id|pl-&gt;next
 suffix:semicolon
 id|pl-&gt;next
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|spin_unlock
 c_func

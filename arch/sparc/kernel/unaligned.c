@@ -1626,6 +1626,7 @@ id|info.si_addr
 op_assign
 (paren
 r_void
+id|__user
 op_star
 )paren
 id|safe_compute_effective_address

@@ -85,7 +85,7 @@ op_star
 id|mayput
 )paren
 (paren
-r_void
+r_int
 )paren
 suffix:semicolon
 multiline_comment|/* Maybe put char, or -1 */

@@ -1071,10 +1071,6 @@ id|SI_ASYNCIO
 suffix:semicolon
 id|sinfo.si_addr
 op_assign
-(paren
-r_void
-op_star
-)paren
 id|as-&gt;userurb
 suffix:semicolon
 id|send_sig_info

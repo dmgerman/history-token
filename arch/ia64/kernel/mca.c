@@ -519,6 +519,7 @@ id|sal_info_type
 op_ne
 id|SAL_INFO_TYPE_INIT
 suffix:semicolon
+macro_line|#ifdef IA64_MCA_DEBUG_INFO
 r_static
 r_const
 r_char
@@ -538,6 +539,7 @@ comma
 l_string|&quot;CPE&quot;
 )brace
 suffix:semicolon
+macro_line|#endif
 id|size
 op_assign
 id|ia64_log_get
@@ -2265,6 +2267,7 @@ id|_IA64_REG_CR_CMCV
 comma
 id|cmcv.cmcv_regval
 )paren
+suffix:semicolon
 id|IA64_MCA_DEBUG
 c_func
 (paren
@@ -2319,6 +2322,7 @@ id|_IA64_REG_CR_CMCV
 comma
 id|cmcv.cmcv_regval
 )paren
+suffix:semicolon
 id|IA64_MCA_DEBUG
 c_func
 (paren

@@ -209,19 +209,19 @@ id|c
 suffix:semicolon
 id|fmc-&gt;head
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|fmc-&gt;tail
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|fmc-&gt;head_extra
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|fmc-&gt;tail_extra
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|init_MUTEX
 c_func
@@ -294,12 +294,12 @@ suffix:semicolon
 )brace
 id|fmc-&gt;head_extra
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 multiline_comment|/* These two instructions should be omitted.  */
 id|fmc-&gt;tail_extra
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|D3
 c_func
@@ -333,11 +333,6 @@ id|fmc
 r_struct
 id|jffs_fm
 op_star
-id|cur
-suffix:semicolon
-r_struct
-id|jffs_fm
-op_star
 id|next
 op_assign
 id|fmc-&gt;head
@@ -345,13 +340,16 @@ suffix:semicolon
 r_while
 c_loop
 (paren
-(paren
+id|next
+)paren
+(brace
+r_struct
+id|jffs_fm
+op_star
 id|cur
 op_assign
 id|next
-)paren
-)paren
-(brace
+suffix:semicolon
 id|next
 op_assign
 id|next-&gt;next
@@ -608,7 +606,7 @@ suffix:semicolon
 op_star
 id|result
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 r_if
 c_cond
@@ -770,7 +768,7 @@ id|node
 suffix:semicolon
 id|fm-&gt;nodes-&gt;next
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 r_if
 c_cond
@@ -889,7 +887,7 @@ id|free_chunk_size1
 suffix:semicolon
 id|fm-&gt;nodes
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|fmc-&gt;free_size
 op_sub_assign
@@ -903,7 +901,7 @@ multiline_comment|/* Changed by simonk. This seemingly fixes a &n;&t;&t;&t;&t;&t
 )brace
 id|fm-&gt;next
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 r_if
 c_cond
@@ -914,7 +912,7 @@ id|fmc-&gt;head
 (brace
 id|fm-&gt;prev
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|fmc-&gt;head
 op_assign
@@ -1056,7 +1054,7 @@ ques
 c_cond
 id|fm-&gt;nodes
 suffix:colon
-l_int|0
+l_int|NULL
 )paren
 )paren
 suffix:semicolon
@@ -1077,7 +1075,7 @@ id|fm-&gt;nodes
 comma
 id|prev
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|ref
 suffix:semicolon
@@ -1288,7 +1286,7 @@ id|node
 )paren
 suffix:semicolon
 r_return
-l_int|0
+l_int|NULL
 suffix:semicolon
 )brace
 id|fm-&gt;offset
@@ -1301,15 +1299,15 @@ id|size
 suffix:semicolon
 id|fm-&gt;prev
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|fm-&gt;next
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|fm-&gt;nodes
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 r_if
 c_cond
@@ -1361,7 +1359,7 @@ id|fm
 )paren
 suffix:semicolon
 r_return
-l_int|0
+l_int|NULL
 suffix:semicolon
 )brace
 id|DJM
@@ -1377,7 +1375,7 @@ id|node
 suffix:semicolon
 id|fm-&gt;nodes-&gt;next
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|fmc-&gt;used_size
 op_add_assign
@@ -1659,7 +1657,7 @@ op_decrement
 suffix:semicolon
 id|fm-&gt;nodes
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 )brace
 id|fmc-&gt;used_size
@@ -1724,7 +1722,7 @@ l_int|0
 )paren
 (brace
 r_return
-l_int|0
+l_int|NULL
 suffix:semicolon
 )brace
 id|ASSERT
@@ -1744,7 +1742,7 @@ l_string|&quot;jffs_cut_node(): fmc == NULL&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
-l_int|0
+l_int|NULL
 suffix:semicolon
 )brace
 )paren
@@ -1792,7 +1790,7 @@ r_else
 (brace
 id|fm
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 r_break
 suffix:semicolon
@@ -1895,7 +1893,7 @@ id|fm-&gt;next
 suffix:semicolon
 id|fm-&gt;prev
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|fmc-&gt;head
 op_assign
@@ -1952,7 +1950,7 @@ id|jffs_node
 op_star
 id|node
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|ASSERT
 c_func
@@ -1971,7 +1969,7 @@ l_string|&quot;jffs_get_oldest_node(): fmc == NULL&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
-l_int|0
+l_int|NULL
 suffix:semicolon
 )brace
 )paren
@@ -2001,7 +1999,7 @@ id|fm
 )paren
 (brace
 r_return
-l_int|0
+l_int|NULL
 suffix:semicolon
 )brace
 multiline_comment|/* The oldest node is the last one in the reference list.  This list&n;&t;   shouldn&squot;t be too long; just one or perhaps two elements.  */

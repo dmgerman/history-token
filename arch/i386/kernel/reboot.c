@@ -6,6 +6,7 @@ macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/mc146818rtc.h&gt;
 macro_line|#include &lt;linux/efi.h&gt;
+macro_line|#include &lt;linux/dmi.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/apic.h&gt;
 macro_line|#include &quot;mach_reboot.h&quot;
@@ -229,6 +230,265 @@ c_func
 l_string|&quot;reboot=&quot;
 comma
 id|reboot_setup
+)paren
+suffix:semicolon
+multiline_comment|/*&n; * Reboot options and system auto-detection code provided by&n; * Dell Inc. so their systems &quot;just work&quot;. :-)&n; */
+multiline_comment|/*&n; * Some machines require the &quot;reboot=b&quot;  commandline option, this quirk makes that automatic.&n; */
+DECL|function|set_bios_reboot
+r_static
+r_int
+id|__init
+id|set_bios_reboot
+c_func
+(paren
+r_struct
+id|dmi_system_id
+op_star
+id|d
+)paren
+(brace
+r_if
+c_cond
+(paren
+op_logical_neg
+id|reboot_thru_bios
+)paren
+(brace
+id|reboot_thru_bios
+op_assign
+l_int|1
+suffix:semicolon
+id|printk
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;%s series board detected. Selecting BIOS-method for reboots.&bslash;n&quot;
+comma
+id|d-&gt;ident
+)paren
+suffix:semicolon
+)brace
+r_return
+l_int|0
+suffix:semicolon
+)brace
+multiline_comment|/*&n; * Some machines require the &quot;reboot=s&quot;  commandline option, this quirk makes that automatic.&n; */
+DECL|function|set_smp_reboot
+r_static
+r_int
+id|__init
+id|set_smp_reboot
+c_func
+(paren
+r_struct
+id|dmi_system_id
+op_star
+id|d
+)paren
+(brace
+macro_line|#ifdef CONFIG_SMP
+r_if
+c_cond
+(paren
+op_logical_neg
+id|reboot_smp
+)paren
+(brace
+id|reboot_smp
+op_assign
+l_int|1
+suffix:semicolon
+id|printk
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;%s series board detected. Selecting SMP-method for reboots.&bslash;n&quot;
+comma
+id|d-&gt;ident
+)paren
+suffix:semicolon
+)brace
+macro_line|#endif
+r_return
+l_int|0
+suffix:semicolon
+)brace
+multiline_comment|/*&n; * Some machines require the &quot;reboot=b,s&quot;  commandline option, this quirk makes that automatic.&n; */
+DECL|function|set_smp_bios_reboot
+r_static
+r_int
+id|__init
+id|set_smp_bios_reboot
+c_func
+(paren
+r_struct
+id|dmi_system_id
+op_star
+id|d
+)paren
+(brace
+id|set_smp_reboot
+c_func
+(paren
+id|d
+)paren
+suffix:semicolon
+id|set_bios_reboot
+c_func
+(paren
+id|d
+)paren
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+)brace
+DECL|variable|reboot_dmi_table
+r_static
+r_struct
+id|dmi_system_id
+id|__initdata
+id|reboot_dmi_table
+(braket
+)braket
+op_assign
+(brace
+(brace
+multiline_comment|/* Handle problems with rebooting on Dell 1300&squot;s */
+dot
+id|callback
+op_assign
+id|set_smp_bios_reboot
+comma
+dot
+id|ident
+op_assign
+l_string|&quot;Dell PowerEdge 1300&quot;
+comma
+dot
+id|matches
+op_assign
+(brace
+id|DMI_MATCH
+c_func
+(paren
+id|DMI_SYS_VENDOR
+comma
+l_string|&quot;Dell Computer Corporation&quot;
+)paren
+comma
+id|DMI_MATCH
+c_func
+(paren
+id|DMI_PRODUCT_NAME
+comma
+l_string|&quot;PowerEdge 1300/&quot;
+)paren
+comma
+)brace
+comma
+)brace
+comma
+(brace
+multiline_comment|/* Handle problems with rebooting on Dell 300&squot;s */
+dot
+id|callback
+op_assign
+id|set_bios_reboot
+comma
+dot
+id|ident
+op_assign
+l_string|&quot;Dell PowerEdge 300&quot;
+comma
+dot
+id|matches
+op_assign
+(brace
+id|DMI_MATCH
+c_func
+(paren
+id|DMI_SYS_VENDOR
+comma
+l_string|&quot;Dell Computer Corporation&quot;
+)paren
+comma
+id|DMI_MATCH
+c_func
+(paren
+id|DMI_PRODUCT_NAME
+comma
+l_string|&quot;PowerEdge 300/&quot;
+)paren
+comma
+)brace
+comma
+)brace
+comma
+(brace
+multiline_comment|/* Handle problems with rebooting on Dell 2400&squot;s */
+dot
+id|callback
+op_assign
+id|set_bios_reboot
+comma
+dot
+id|ident
+op_assign
+l_string|&quot;Dell PowerEdge 2400&quot;
+comma
+dot
+id|matches
+op_assign
+(brace
+id|DMI_MATCH
+c_func
+(paren
+id|DMI_SYS_VENDOR
+comma
+l_string|&quot;Dell Computer Corporation&quot;
+)paren
+comma
+id|DMI_MATCH
+c_func
+(paren
+id|DMI_PRODUCT_NAME
+comma
+l_string|&quot;PowerEdge 2400&quot;
+)paren
+comma
+)brace
+comma
+)brace
+comma
+(brace
+)brace
+)brace
+suffix:semicolon
+DECL|function|reboot_init
+r_static
+r_int
+id|reboot_init
+c_func
+(paren
+r_void
+)paren
+(brace
+id|dmi_check_system
+c_func
+(paren
+id|reboot_dmi_table
+)paren
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+)brace
+DECL|variable|reboot_init
+id|core_initcall
+c_func
+(paren
+id|reboot_init
 )paren
 suffix:semicolon
 multiline_comment|/* The following code and data reboots the machine by switching to real&n;   mode and jumping to the BIOS reset entry point, as if the CPU has&n;   really been reset.  The previous version asked the keyboard&n;   controller to pulse the CPU reset line, which is more thorough, but&n;   doesn&squot;t work with at least one type of 486 motherboard.  It is easy&n;   to stop this code working; hence the copious comments. */

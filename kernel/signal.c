@@ -76,6 +76,7 @@ id|sig
 )paren
 (brace
 r_void
+id|__user
 op_star
 id|handler
 suffix:semicolon
@@ -8598,6 +8599,7 @@ id|oss.ss_sp
 op_assign
 (paren
 r_void
+id|__user
 op_star
 )paren
 id|current-&gt;sas_ss_sp
@@ -8622,6 +8624,7 @@ id|uss
 )paren
 (brace
 r_void
+id|__user
 op_star
 id|ss_sp
 suffix:semicolon

@@ -97,6 +97,7 @@ op_star
 id|os_handle
 comma
 r_void
+id|__user
 op_star
 id|dst
 comma
@@ -124,6 +125,7 @@ id|dst
 comma
 r_const
 r_void
+id|__user
 op_star
 id|src
 comma
@@ -433,7 +435,7 @@ id|didd_callback
 suffix:semicolon
 id|req.didd_notify.info.context
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|DAdapter
 dot
@@ -633,6 +635,7 @@ id|maint_read_write
 c_func
 (paren
 r_void
+id|__user
 op_star
 id|buf
 comma
@@ -1116,7 +1119,7 @@ id|byte
 op_star
 id|pbuf
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 r_int
 id|written

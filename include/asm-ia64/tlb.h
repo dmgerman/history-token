@@ -9,6 +9,7 @@ macro_line|#include &lt;linux/swap.h&gt;
 macro_line|#include &lt;asm/pgalloc.h&gt;
 macro_line|#include &lt;asm/processor.h&gt;
 macro_line|#include &lt;asm/tlbflush.h&gt;
+macro_line|#include &lt;asm/machvec.h&gt;
 macro_line|#ifdef CONFIG_SMP
 DECL|macro|FREE_PTE_NR
 macro_line|# define FREE_PTE_NR&t;&t;2048
@@ -545,6 +546,8 @@ op_plus
 id|PAGE_SIZE
 suffix:semicolon
 )brace
+DECL|macro|tlb_migrate_finish
+mdefine_line|#define tlb_migrate_finish(mm)&t;platform_tlb_migrate_finish(mm)
 DECL|macro|tlb_start_vma
 mdefine_line|#define tlb_start_vma(tlb, vma)&t;&t;&t;do { } while (0)
 DECL|macro|tlb_end_vma

@@ -371,6 +371,7 @@ op_star
 id|card
 comma
 r_void
+id|__user
 op_star
 id|to
 comma
@@ -540,6 +541,7 @@ id|to
 comma
 r_const
 r_void
+id|__user
 op_star
 id|from
 comma

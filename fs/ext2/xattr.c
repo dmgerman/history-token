@@ -3644,9 +3644,9 @@ id|inode
 comma
 id|goal
 comma
-l_int|0
+l_int|NULL
 comma
-l_int|0
+l_int|NULL
 comma
 op_amp
 id|error

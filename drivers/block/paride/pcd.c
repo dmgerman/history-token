@@ -3912,7 +3912,7 @@ c_func
 (paren
 id|do_pcd_read
 comma
-l_int|0
+l_int|NULL
 comma
 l_int|0
 comma

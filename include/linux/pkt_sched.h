@@ -55,25 +55,10 @@ DECL|member|qlen
 id|__u32
 id|qlen
 suffix:semicolon
-macro_line|#ifdef CONFIG_NET_CLS_ACT
-multiline_comment|/* eventually remove the define here; adding this(useful) &n;field at least fixes the 8 byte layout problems we &n;have with MIPS and PPC because we have a u64&n;*/
-DECL|member|reqs
-id|__u32
-id|reqs
-suffix:semicolon
-multiline_comment|/* number of requeues happened */
-macro_line|#endif
 DECL|member|backlog
 id|__u32
 id|backlog
 suffix:semicolon
-macro_line|#ifdef __KERNEL__
-DECL|member|lock
-id|spinlock_t
-op_star
-id|lock
-suffix:semicolon
-macro_line|#endif
 )brace
 suffix:semicolon
 DECL|struct|tc_estimator
@@ -177,89 +162,6 @@ l_int|1
 )braket
 suffix:semicolon
 multiline_comment|/* Map: logical priority -&gt; PRIO band */
-)brace
-suffix:semicolon
-multiline_comment|/* CSZ section */
-DECL|struct|tc_csz_qopt
-r_struct
-id|tc_csz_qopt
-(brace
-DECL|member|flows
-r_int
-id|flows
-suffix:semicolon
-multiline_comment|/* Maximal number of guaranteed flows */
-DECL|member|R_log
-r_int
-r_char
-id|R_log
-suffix:semicolon
-multiline_comment|/* Fixed point position for round number */
-DECL|member|delta_log
-r_int
-r_char
-id|delta_log
-suffix:semicolon
-multiline_comment|/* Log of maximal managed time interval */
-DECL|member|priomap
-id|__u8
-id|priomap
-(braket
-id|TC_PRIO_MAX
-op_plus
-l_int|1
-)braket
-suffix:semicolon
-multiline_comment|/* Map: logical priority -&gt; CSZ band */
-)brace
-suffix:semicolon
-DECL|struct|tc_csz_copt
-r_struct
-id|tc_csz_copt
-(brace
-DECL|member|slice
-r_struct
-id|tc_ratespec
-id|slice
-suffix:semicolon
-DECL|member|rate
-r_struct
-id|tc_ratespec
-id|rate
-suffix:semicolon
-DECL|member|peakrate
-r_struct
-id|tc_ratespec
-id|peakrate
-suffix:semicolon
-DECL|member|limit
-id|__u32
-id|limit
-suffix:semicolon
-DECL|member|buffer
-id|__u32
-id|buffer
-suffix:semicolon
-DECL|member|mtu
-id|__u32
-id|mtu
-suffix:semicolon
-)brace
-suffix:semicolon
-r_enum
-(brace
-DECL|enumerator|TCA_CSZ_UNSPEC
-id|TCA_CSZ_UNSPEC
-comma
-DECL|enumerator|TCA_CSZ_PARMS
-id|TCA_CSZ_PARMS
-comma
-DECL|enumerator|TCA_CSZ_RTAB
-id|TCA_CSZ_RTAB
-comma
-DECL|enumerator|TCA_CSZ_PTAB
-id|TCA_CSZ_PTAB
-comma
 )brace
 suffix:semicolon
 multiline_comment|/* TBF section */
@@ -1027,23 +929,41 @@ multiline_comment|/* VC state (ATM_VS_*; for output only) */
 suffix:semicolon
 DECL|macro|TCA_ATM_MAX
 mdefine_line|#define TCA_ATM_MAX&t;TCA_ATM_STATE
-multiline_comment|/* Delay section */
-DECL|struct|tc_dly_qopt
+multiline_comment|/* Network emulator */
+DECL|struct|tc_netem_qopt
 r_struct
-id|tc_dly_qopt
+id|tc_netem_qopt
 (brace
 DECL|member|latency
 id|__u32
 id|latency
 suffix:semicolon
+multiline_comment|/* added delay (us) */
 DECL|member|limit
 id|__u32
 id|limit
 suffix:semicolon
+multiline_comment|/* fifo limit (packets) */
 DECL|member|loss
 id|__u32
 id|loss
 suffix:semicolon
+multiline_comment|/* random packet loss (0=none ~0=100%) */
+DECL|member|gap
+id|__u32
+id|gap
+suffix:semicolon
+multiline_comment|/* re-ordering gap (0 for delay all) */
+DECL|member|duplicate
+id|__u32
+id|duplicate
+suffix:semicolon
+multiline_comment|/* random packet dup  (0=none ~0=100%) */
+DECL|member|jitter
+id|__u32
+id|jitter
+suffix:semicolon
+multiline_comment|/* random jitter in latency (us) */
 )brace
 suffix:semicolon
 macro_line|#endif

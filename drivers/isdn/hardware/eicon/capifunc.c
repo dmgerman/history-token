@@ -923,7 +923,7 @@ id|byte
 op_star
 id|string
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|va_list
 id|ap
@@ -5715,7 +5715,7 @@ id|didd_callback
 suffix:semicolon
 id|req.didd_notify.info.context
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|DAdapter
 dot

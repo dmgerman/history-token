@@ -49,9 +49,9 @@ id|spinlock_t
 suffix:semicolon
 macro_line|#ifdef CONFIG_DEBUG_SPINLOCK
 DECL|macro|SPIN_LOCK_UNLOCKED
-mdefine_line|#define SPIN_LOCK_UNLOCKED (spinlock_t) {0, -1, 0, 0, 0, 0}
+mdefine_line|#define SPIN_LOCK_UNLOCKED (spinlock_t) {0, -1, 0, NULL, NULL, NULL}
 DECL|macro|spin_lock_init
-mdefine_line|#define spin_lock_init(x)&t;&t;&t;&t;&t;&t;&bslash;&n;&t;((x)-&gt;lock = 0, (x)-&gt;on_cpu = -1, (x)-&gt;previous = 0, (x)-&gt;task = 0)
+mdefine_line|#define spin_lock_init(x)&t;&t;&t;&t;&t;&t;&bslash;&n;&t;((x)-&gt;lock = 0, (x)-&gt;on_cpu = -1, (x)-&gt;previous = NULL, (x)-&gt;task = NULL)
 macro_line|#else
 DECL|macro|SPIN_LOCK_UNLOCKED
 mdefine_line|#define SPIN_LOCK_UNLOCKED&t;(spinlock_t) { 0 }

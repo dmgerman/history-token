@@ -109,10 +109,74 @@ mdefine_line|#define S3C2410_UERSTAT_FRAME&t;  (1&lt;&lt;2)
 DECL|macro|S3C2410_UERSTAT_ANY
 mdefine_line|#define S3C2410_UERSTAT_ANY&t;  (S3C2410_UERSTAT_OVERRUN | S3C2410_UERSTAT_FRAME)
 multiline_comment|/* fifo size information */
-DECL|macro|S3C2410_UFCON_RXC
-mdefine_line|#define S3C2410_UFCON_RXC(fcon)&t;  (((fcon) &amp; S3C2410_UFSTAT_RXMASK) &gt;&gt; S3C2410_UFSTAT_RXSHIFT)
-DECL|macro|S3C2410_UFCON_TXC
-mdefine_line|#define S3C2410_UFCON_TXC(fcon)&t;  (((fcon) &amp; S3C2410_UFSTAT_TXMASK) &gt;&gt; S3C2410_UFSTAT_TXSHIFT)
+macro_line|#ifndef __ASSEMBLY__
+DECL|function|S3C2410_UFCON_RXC
+r_static
+r_inline
+r_int
+id|S3C2410_UFCON_RXC
+c_func
+(paren
+r_int
+id|fcon
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|fcon
+op_amp
+id|S3C2410_UFSTAT_RXFULL
+)paren
+r_return
+l_int|16
+suffix:semicolon
+r_return
+(paren
+(paren
+id|fcon
+)paren
+op_amp
+id|S3C2410_UFSTAT_RXMASK
+)paren
+op_rshift
+id|S3C2410_UFSTAT_RXSHIFT
+suffix:semicolon
+)brace
+DECL|function|S3C2410_UFCON_TXC
+r_static
+r_inline
+r_int
+id|S3C2410_UFCON_TXC
+c_func
+(paren
+r_int
+id|fcon
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|fcon
+op_amp
+id|S3C2410_UFSTAT_TXFULL
+)paren
+r_return
+l_int|16
+suffix:semicolon
+r_return
+(paren
+(paren
+id|fcon
+)paren
+op_amp
+id|S3C2410_UFSTAT_TXMASK
+)paren
+op_rshift
+id|S3C2410_UFSTAT_TXSHIFT
+suffix:semicolon
+)brace
+macro_line|#endif /* __ASSEMBLY__ */
 DECL|macro|S3C2410_UMSTAT_CTS
 mdefine_line|#define S3C2410_UMSTAT_CTS&t;  (1&lt;&lt;0)
 DECL|macro|S3C2410_UMSTAT_DeltaCTS

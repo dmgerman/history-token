@@ -1198,7 +1198,7 @@ id|ino
 )paren
 suffix:semicolon
 r_return
-l_int|0
+l_int|NULL
 suffix:semicolon
 )brace
 id|raw_inode
@@ -1228,7 +1228,7 @@ l_string|&quot;unable to read i-node block&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
-l_int|0
+l_int|NULL
 suffix:semicolon
 )brace
 id|raw_inode-&gt;i_mode

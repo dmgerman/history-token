@@ -12,6 +12,7 @@ macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;linux/kmod.h&gt;
 macro_line|#include &lt;linux/sem.h&gt;
+macro_line|#include &lt;linux/devfs_fs_kernel.h&gt;
 DECL|macro|PHONE_NUM_DEVICES
 mdefine_line|#define PHONE_NUM_DEVICES&t;256
 multiline_comment|/*&n; *    Active devices &n; */
@@ -350,6 +351,28 @@ id|p-&gt;minor
 op_assign
 id|i
 suffix:semicolon
+id|devfs_mk_cdev
+c_func
+(paren
+id|MKDEV
+c_func
+(paren
+id|PHONE_MAJOR
+comma
+id|i
+)paren
+comma
+id|S_IFCHR
+op_or
+id|S_IRUSR
+op_or
+id|S_IWUSR
+comma
+l_string|&quot;phone/%d&quot;
+comma
+id|i
+)paren
+suffix:semicolon
 id|up
 c_func
 (paren
@@ -407,6 +430,14 @@ id|panic
 c_func
 (paren
 l_string|&quot;phone: bad unregister&quot;
+)paren
+suffix:semicolon
+id|devfs_remove
+c_func
+(paren
+l_string|&quot;phone/%d&quot;
+comma
+id|pfd-&gt;minor
 )paren
 suffix:semicolon
 id|phone_device

@@ -2484,11 +2484,57 @@ id|free_space
 op_assign
 id|tp-&gt;rcv_ssthresh
 suffix:semicolon
-multiline_comment|/* Get the largest window that is a nice multiple of mss.&n;&t; * Window clamp already applied above.&n;&t; * If our current window offering is within 1 mss of the&n;&t; * free space we just keep it. This prevents the divide&n;&t; * and multiply from happening most of the time.&n;&t; * We also don&squot;t do any window rounding when the free space&n;&t; * is too small.&n;&t; */
+multiline_comment|/* Don&squot;t do rounding if we are using window scaling, since the&n;&t; * scaled window will not line up with the MSS boundary anyway.&n;&t; */
 id|window
 op_assign
 id|tp-&gt;rcv_wnd
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|tp-&gt;rcv_wscale
+)paren
+(brace
+id|window
+op_assign
+id|free_space
+suffix:semicolon
+multiline_comment|/* Advertise enough space so that it won&squot;t get scaled away.&n;&t;&t; * Import case: prevent zero window announcement if&n;&t;&t; * 1&lt;&lt;rcv_wscale &gt; mss.&n;&t;&t; */
+r_if
+c_cond
+(paren
+(paren
+(paren
+id|window
+op_rshift
+id|tp-&gt;rcv_wscale
+)paren
+op_lshift
+id|tp-&gt;rcv_wscale
+)paren
+op_ne
+id|window
+)paren
+id|window
+op_assign
+(paren
+(paren
+(paren
+id|window
+op_rshift
+id|tp-&gt;rcv_wscale
+)paren
+op_plus
+l_int|1
+)paren
+op_lshift
+id|tp-&gt;rcv_wscale
+)paren
+suffix:semicolon
+)brace
+r_else
+(brace
+multiline_comment|/* Get the largest window that is a nice multiple of mss.&n;&t;&t; * Window clamp already applied above.&n;&t;&t; * If our current window offering is within 1 mss of the&n;&t;&t; * free space we just keep it. This prevents the divide&n;&t;&t; * and multiply from happening most of the time.&n;&t;&t; * We also don&squot;t do any window rounding when the free space&n;&t;&t; * is too small.&n;&t;&t; */
 r_if
 c_cond
 (paren
@@ -2512,6 +2558,7 @@ id|mss
 op_star
 id|mss
 suffix:semicolon
+)brace
 r_return
 id|window
 suffix:semicolon

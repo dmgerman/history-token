@@ -2036,6 +2036,7 @@ id|info.si_addr
 op_assign
 (paren
 r_void
+id|__user
 op_star
 )paren
 id|regs-&gt;tpc
@@ -6113,14 +6114,11 @@ id|EFAULT
 suffix:semicolon
 id|new_ka.sa.sa_handler
 op_assign
+id|compat_ptr
+c_func
 (paren
-r_void
-op_star
-)paren
-(paren
-r_int
-)paren
 id|u_handler
+)paren
 suffix:semicolon
 id|__get_user
 c_func

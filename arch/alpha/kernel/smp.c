@@ -3119,7 +3119,7 @@ c_func
 suffix:semicolon
 id|smp_call_function_data
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 multiline_comment|/* &n;&t; * If after both the initial and long timeout periods we still don&squot;t&n;&t; * have a response, something is very wrong...&n;&t; */
 id|BUG_ON

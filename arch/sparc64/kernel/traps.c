@@ -264,6 +264,7 @@ id|info.si_addr
 op_assign
 (paren
 r_void
+id|__user
 op_star
 )paren
 id|regs-&gt;tpc
@@ -452,6 +453,7 @@ id|info.si_addr
 op_assign
 (paren
 r_void
+id|__user
 op_star
 )paren
 id|regs-&gt;tpc
@@ -657,6 +659,7 @@ id|info.si_addr
 op_assign
 (paren
 r_void
+id|__user
 op_star
 )paren
 id|sfar
@@ -8124,6 +8127,7 @@ id|info.si_addr
 op_assign
 (paren
 r_void
+id|__user
 op_star
 )paren
 id|regs-&gt;tpc
@@ -8405,6 +8409,7 @@ id|info.si_addr
 op_assign
 (paren
 r_void
+id|__user
 op_star
 )paren
 id|regs-&gt;tpc
@@ -8489,6 +8494,7 @@ id|info.si_addr
 op_assign
 (paren
 r_void
+id|__user
 op_star
 )paren
 id|regs-&gt;tpc
@@ -9391,6 +9397,7 @@ id|info.si_addr
 op_assign
 (paren
 r_void
+id|__user
 op_star
 )paren
 id|pc
@@ -9503,6 +9510,7 @@ id|info.si_addr
 op_assign
 (paren
 r_void
+id|__user
 op_star
 )paren
 id|sfar
@@ -9572,6 +9580,7 @@ id|info.si_addr
 op_assign
 (paren
 r_void
+id|__user
 op_star
 )paren
 id|regs-&gt;tpc

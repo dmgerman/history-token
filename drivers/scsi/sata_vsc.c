@@ -894,6 +894,11 @@ op_assign
 id|ata_qc_prep
 comma
 dot
+id|qc_issue
+op_assign
+id|ata_qc_issue_prot
+comma
+dot
 id|eng_timeout
 op_assign
 id|ata_eng_timeout
@@ -902,6 +907,11 @@ dot
 id|irq_handler
 op_assign
 id|vsc_sata_interrupt
+comma
+dot
+id|irq_clear
+op_assign
+id|ata_bmdma_irq_clear
 comma
 dot
 id|scr_read
