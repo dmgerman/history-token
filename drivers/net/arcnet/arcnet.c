@@ -43,6 +43,11 @@ id|sk_buff
 op_star
 id|skb
 comma
+r_struct
+id|net_device
+op_star
+id|dev
+comma
 r_int
 r_int
 id|type
@@ -1899,6 +1904,8 @@ c_func
 (paren
 id|skb
 comma
+id|dev
+comma
 id|type
 comma
 id|_daddr
@@ -1951,6 +1958,11 @@ r_uint8
 id|daddr
 op_assign
 l_int|0
+suffix:semicolon
+r_struct
+id|ArcProto
+op_star
+id|proto
 suffix:semicolon
 r_if
 c_cond
@@ -2072,6 +2084,8 @@ r_return
 l_int|0
 suffix:semicolon
 multiline_comment|/* add the _real_ header this time! */
+id|proto
+op_assign
 id|arc_proto_map
 (braket
 id|lp-&gt;default_proto
@@ -2079,11 +2093,15 @@ id|lp-&gt;default_proto
 id|daddr
 )braket
 )braket
+suffix:semicolon
+id|proto
 op_member_access_from_pointer
 id|build_header
 c_func
 (paren
 id|skb
+comma
+id|dev
 comma
 id|type
 comma
@@ -3878,6 +3896,11 @@ id|sk_buff
 op_star
 id|skb
 comma
+r_struct
+id|net_device
+op_star
+id|dev
+comma
 r_int
 r_int
 id|type
@@ -3886,13 +3909,6 @@ r_uint8
 id|daddr
 )paren
 (brace
-r_struct
-id|net_device
-op_star
-id|dev
-op_assign
-id|skb-&gt;dev
-suffix:semicolon
 r_struct
 id|arcnet_local
 op_star

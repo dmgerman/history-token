@@ -190,6 +190,11 @@ id|sk_buff
 op_star
 id|skb
 comma
+r_struct
+id|net_device
+op_star
+id|dev
+comma
 r_int
 r_int
 id|ethproto
