@@ -6576,9 +6576,13 @@ id|rt-&gt;rt6i_metric
 suffix:semicolon
 id|ci.rta_lastuse
 op_assign
+id|jiffies_to_clock_t
+c_func
+(paren
 id|jiffies
 op_minus
 id|rt-&gt;u.dst.lastuse
+)paren
 suffix:semicolon
 r_if
 c_cond
