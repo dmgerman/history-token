@@ -71,7 +71,7 @@ c_func
 (paren
 id|IRQ_PCMCIA_CD
 comma
-id|init-&gt;handler
+id|sa1100_pcmcia_interrupt
 comma
 id|SA_INTERRUPT
 comma
@@ -427,7 +427,7 @@ l_int|1
 id|set_irq_type
 c_func
 (paren
-id|IRQ_PCmCIA_CD
+id|IRQ_PCMCIA_CD
 comma
 id|IRQT_BOTHEDGE
 )paren
@@ -456,7 +456,7 @@ l_int|1
 id|set_irq_type
 c_func
 (paren
-id|IRQ_PCmCIA_CD
+id|IRQ_PCMCIA_CD
 comma
 id|IRQT_NOEDGE
 )paren

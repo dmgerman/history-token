@@ -89,23 +89,6 @@ op_or
 id|SHANNON_GPIO_RDY_1
 )paren
 suffix:semicolon
-multiline_comment|/* Set transition detect */
-id|set_irq_type
-c_func
-(paren
-id|SHANNON_IRQ_GPIO_RDY_0
-comma
-id|IRQT_FALLING
-)paren
-suffix:semicolon
-id|set_irq_type
-c_func
-(paren
-id|SHANNON_IRQ_GPIO_RDY_1
-comma
-id|IRQT_FALLING
-)paren
-suffix:semicolon
 id|init-&gt;socket_irq
 (braket
 l_int|0
@@ -152,7 +135,7 @@ id|i
 dot
 id|irq
 comma
-id|init-&gt;handler
+id|sa1100_pcmcia_interrupt
 comma
 id|SA_INTERRUPT
 comma

@@ -61,23 +61,6 @@ id|i
 comma
 id|res
 suffix:semicolon
-multiline_comment|/*&n;&t; * Set transition detect&n;&t; */
-id|set_irq_type
-c_func
-(paren
-id|IRQ_GPIO_H3600_PCMCIA_IRQ0
-comma
-id|IRQT_FALLING
-)paren
-suffix:semicolon
-id|set_irq_type
-c_func
-(paren
-id|IRQ_GPIO_H3600_PCMCIA_IRQ1
-comma
-id|IRQT_FALLING
-)paren
-suffix:semicolon
 multiline_comment|/*&n;&t; * Register interrupts&n;&t; */
 r_for
 c_loop
@@ -112,7 +95,7 @@ id|i
 dot
 id|irq
 comma
-id|init-&gt;handler
+id|sa1100_pcmcia_interrupt
 comma
 id|SA_INTERRUPT
 comma

@@ -123,7 +123,7 @@ c_func
 (paren
 id|irq
 comma
-id|init-&gt;handler
+id|sa1100_pcmcia_interrupt
 comma
 id|SA_INTERRUPT
 comma

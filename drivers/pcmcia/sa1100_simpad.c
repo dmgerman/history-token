@@ -82,23 +82,6 @@ op_or
 id|EN1
 )paren
 suffix:semicolon
-multiline_comment|/* Set transition detect */
-id|set_irq_type
-c_func
-(paren
-id|IRQ_GPIO_CF_CD
-comma
-id|IRQT_NOEDGE
-)paren
-suffix:semicolon
-id|set_irq_type
-c_func
-(paren
-id|IRQ_GPIO_CF_IRQ
-comma
-id|IRQT_FALLING
-)paren
-suffix:semicolon
 id|init-&gt;socket_irq
 (braket
 l_int|1
@@ -118,7 +101,7 @@ c_func
 (paren
 id|irq
 comma
-id|init-&gt;handler
+id|sa1100_pcmcia_interrupt
 comma
 id|SA_INTERRUPT
 comma

@@ -107,15 +107,6 @@ id|LINKUP_PRC
 op_assign
 l_int|0xc0
 suffix:semicolon
-multiline_comment|/* Set transition detect */
-id|set_irq_type
-c_func
-(paren
-id|IRQ_GPIO_FREEBIRD_CF_IRQ
-comma
-id|IRQT_FALLING
-)paren
-suffix:semicolon
 multiline_comment|/* Register interrupts */
 r_for
 c_loop
@@ -136,19 +127,6 @@ id|i
 op_increment
 )paren
 (brace
-id|set_irq_type
-c_func
-(paren
-id|irqs
-(braket
-id|i
-)braket
-dot
-id|irq
-comma
-id|IRQT_NOEDGE
-)paren
-suffix:semicolon
 id|res
 op_assign
 id|request_irq
@@ -161,7 +139,7 @@ id|i
 dot
 id|irq
 comma
-id|init-&gt;handler
+id|sa1100_pcmcia_interrupt
 comma
 id|SA_INTERRUPT
 comma
@@ -182,6 +160,19 @@ id|res
 )paren
 r_goto
 id|irq_err
+suffix:semicolon
+id|set_irq_type
+c_func
+(paren
+id|irqs
+(braket
+id|i
+)braket
+dot
+id|irq
+comma
+id|IRQT_NOEDGE
+)paren
 suffix:semicolon
 )brace
 id|init-&gt;socket_irq

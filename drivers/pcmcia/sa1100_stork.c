@@ -75,23 +75,6 @@ c_func
 l_string|&quot;in stork_pcmcia_init&bslash;n&quot;
 )paren
 suffix:semicolon
-multiline_comment|/* Set transition detect */
-id|set_irq_type
-c_func
-(paren
-id|IRQ_GPIO_STORK_PCMCIA_A_RDY
-comma
-id|IRQT_FALLING
-)paren
-suffix:semicolon
-id|set_irq_type
-c_func
-(paren
-id|IRQ_GPIO_STORK_PCMCIA_B_RDY
-comma
-id|IRQT_FALLING
-)paren
-suffix:semicolon
 id|init-&gt;socket_irq
 (braket
 l_int|0
@@ -138,7 +121,7 @@ id|i
 dot
 id|irq
 comma
-id|init-&gt;handler
+id|sa1100_pcmcia_interrupt
 comma
 id|SA_INTERRUPT
 comma

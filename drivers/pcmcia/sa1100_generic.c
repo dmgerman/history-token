@@ -315,12 +315,6 @@ l_int|1
 suffix:colon
 l_int|0
 suffix:semicolon
-id|conf.irq
-op_assign
-id|state-&gt;io_irq
-op_ne
-l_int|0
-suffix:semicolon
 id|ret
 op_assign
 id|skt-&gt;ops
@@ -997,7 +991,6 @@ suffix:semicolon
 )brace
 multiline_comment|/* sa1100_pcmcia_interrupt()&n; * ^^^^^^^^^^^^^^^^^^^^^^^^^&n; * Service routine for socket driver interrupts (requested by the&n; * low-level PCMCIA init() operation via sa1100_pcmcia_thread()).&n; * The actual interrupt-servicing work is performed by&n; * sa1100_pcmcia_thread(), largely because the Card Services event-&n; * handling code performs scheduling operations which cannot be&n; * executed from within an interrupt context.&n; */
 DECL|function|sa1100_pcmcia_interrupt
-r_static
 r_void
 id|sa1100_pcmcia_interrupt
 c_func
@@ -3308,10 +3301,6 @@ id|ops-&gt;socket_get_timing
 op_assign
 id|sa1100_pcmcia_default_mecr_timing
 suffix:semicolon
-id|pcmcia_init.handler
-op_assign
-id|sa1100_pcmcia_interrupt
-suffix:semicolon
 id|pcmcia_init.socket_irq
 (braket
 l_int|0
@@ -3439,6 +3428,10 @@ id|pcmcia_init.socket_irq
 (braket
 id|i
 )braket
+suffix:semicolon
+id|skt-&gt;irq_state
+op_assign
+l_int|0
 suffix:semicolon
 id|skt-&gt;speed_io
 op_assign

@@ -66,26 +66,8 @@ id|TRIZEPS_GPIO_PCMCIA_IRQ0
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/* Set transition detect */
-singleline_comment|//&t;set_irq_type(SA1100_GPIO_TO_IRQ(GPIO_TRIZEPS_PCMCIA_CD0), IRQT_BOTHEDGE);
-id|set_irq_type
-c_func
-(paren
-id|TRIZEPS_IRQ_PCMCIA_IRQ0
-comma
-id|IRQT_FALLING
-)paren
-suffix:semicolon
 multiline_comment|/* Register SOCKET interrupts */
 multiline_comment|/* WHY? */
-id|set_irq_type
-c_func
-(paren
-id|TRIZEPS_IRQ_PCMCIA_CD0
-comma
-id|IRQT_NOEDGE
-)paren
-suffix:semicolon
 id|res
 op_assign
 id|request_irq
@@ -93,7 +75,7 @@ c_func
 (paren
 id|TRIZEPS_IRQ_PCMCIA_CD0
 comma
-id|init-&gt;handler
+id|sa1100_pcmcia_interrupt
 comma
 id|SA_INTERRUPT
 comma
@@ -114,6 +96,14 @@ r_goto
 id|irq_err
 suffix:semicolon
 )brace
+id|set_irq_type
+c_func
+(paren
+id|TRIZEPS_IRQ_PCMCIA_CD0
+comma
+id|IRQT_NOEDGE
+)paren
+suffix:semicolon
 singleline_comment|//MECR = 0x00060006; // Initialised on trizeps init
 singleline_comment|// return=sa1100_pcmcia_socket_count (sa1100_generic.c)
 singleline_comment|//        -&gt; number of PCMCIA Slots
@@ -499,40 +489,6 @@ c_func
 id|flags
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|configure-&gt;irq
-)paren
-(brace
-id|enable_irq
-c_func
-(paren
-id|TRIZEPS_IRQ_PCMCIA_CD0
-)paren
-suffix:semicolon
-id|enable_irq
-c_func
-(paren
-id|TRIZEPS_IRQ_PCMCIA_IRQ0
-)paren
-suffix:semicolon
-)brace
-r_else
-(brace
-id|disable_irq
-c_func
-(paren
-id|TRIZEPS_IRQ_PCMCIA_IRQ0
-)paren
-suffix:semicolon
-id|disable_irq
-c_func
-(paren
-id|TRIZEPS_IRQ_PCMCIA_CD0
-)paren
-suffix:semicolon
-)brace
 r_return
 l_int|0
 suffix:semicolon
@@ -547,6 +503,14 @@ r_int
 id|sock
 )paren
 (brace
+id|set_irq_type
+c_func
+(paren
+id|TRIZEPS_IRQ_PCMCIA_CD0
+comma
+id|IRQT_BOTHEDGE
+)paren
+suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
@@ -561,6 +525,14 @@ r_int
 id|sock
 )paren
 (brace
+id|set_irq_type
+c_func
+(paren
+id|TRIZEPS_IRQ_PCMCIA_CD0
+comma
+id|IRQT_NOEDGE
+)paren
+suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon

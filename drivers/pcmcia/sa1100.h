@@ -246,6 +246,11 @@ r_int
 r_int
 id|irq
 suffix:semicolon
+DECL|member|irq_state
+r_int
+r_int
+id|irq_state
+suffix:semicolon
 DECL|member|ops
 r_struct
 id|pcmcia_low_level
