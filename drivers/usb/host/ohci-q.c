@@ -592,9 +592,9 @@ suffix:semicolon
 op_star
 id|prev_p
 op_assign
-id|cpu_to_le32p
+id|cpu_to_le32
+c_func
 (paren
-op_amp
 id|ed-&gt;dma
 )paren
 suffix:semicolon
