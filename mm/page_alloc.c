@@ -2112,12 +2112,20 @@ suffix:colon
 r_if
 c_cond
 (paren
+(paren
 id|current-&gt;flags
 op_amp
 (paren
 id|PF_MEMALLOC
 op_or
 id|PF_MEMDIE
+)paren
+)paren
+op_logical_and
+op_logical_neg
+id|in_interrupt
+c_func
+(paren
 )paren
 )paren
 (brace
@@ -2171,36 +2179,6 @@ r_return
 id|page
 suffix:semicolon
 )brace
-id|nopage
-suffix:colon
-r_if
-c_cond
-(paren
-op_logical_neg
-(paren
-id|current-&gt;flags
-op_amp
-id|PF_NOWARN
-)paren
-)paren
-(brace
-id|printk
-c_func
-(paren
-l_string|&quot;%s: page allocation failure.&quot;
-l_string|&quot; order:%d, mode:0x%x&bslash;n&quot;
-comma
-id|current-&gt;comm
-comma
-id|order
-comma
-id|gfp_mask
-)paren
-suffix:semicolon
-)brace
-r_return
-l_int|NULL
-suffix:semicolon
 )brace
 multiline_comment|/* Atomic allocations - we can&squot;t balance anything */
 r_if
@@ -2317,18 +2295,15 @@ id|page
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/* Don&squot;t let big-order allocations loop */
+multiline_comment|/*&n;&t; * Don&squot;t let big-order allocations loop.  Yield for kswapd, try again.&n;&t; */
 r_if
 c_cond
 (paren
 id|order
-OG
+op_le
 l_int|3
 )paren
-r_goto
-id|nopage
-suffix:semicolon
-multiline_comment|/* Yield for kswapd, and try again */
+(brace
 id|yield
 c_func
 (paren
@@ -2336,6 +2311,37 @@ c_func
 suffix:semicolon
 r_goto
 id|rebalance
+suffix:semicolon
+)brace
+id|nopage
+suffix:colon
+r_if
+c_cond
+(paren
+op_logical_neg
+(paren
+id|current-&gt;flags
+op_amp
+id|PF_NOWARN
+)paren
+)paren
+(brace
+id|printk
+c_func
+(paren
+l_string|&quot;%s: page allocation failure.&quot;
+l_string|&quot; order:%d, mode:0x%x&bslash;n&quot;
+comma
+id|current-&gt;comm
+comma
+id|order
+comma
+id|gfp_mask
+)paren
+suffix:semicolon
+)brace
+r_return
+l_int|NULL
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Common helper functions.&n; */
