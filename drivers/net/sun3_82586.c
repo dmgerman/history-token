@@ -56,6 +56,8 @@ DECL|macro|DEBUG
 mdefine_line|#define DEBUG       /* debug on */
 DECL|macro|SYSBUSVAL
 mdefine_line|#define SYSBUSVAL 0 /* 16 Bit */
+DECL|macro|SUN3_82586_TOTAL_SIZE
+mdefine_line|#define SUN3_82586_TOTAL_SIZE&t;PAGE_SIZE
 DECL|macro|sun3_attn586
 mdefine_line|#define sun3_attn586()  {*(volatile unsigned char *)(dev-&gt;base_addr) |= IEOB_ATTEN; *(volatile unsigned char *)(dev-&gt;base_addr) &amp;= ~IEOB_ATTEN;}
 DECL|macro|sun3_reset586
@@ -1120,7 +1122,7 @@ c_func
 (paren
 id|IE_OBIO
 comma
-id|PAGE_SIZE
+id|SUN3_82586_TOTAL_SIZE
 )paren
 suffix:semicolon
 r_if
