@@ -1,4 +1,4 @@
-multiline_comment|/* hermes.c&n; *&n; * Driver core for the &quot;Hermes&quot; wireless MAC controller, as used in&n; * the Lucent Orinoco and Cabletron RoamAbout cards. It should also&n; * work on the hfa3841 and hfa3842 MAC controller chips used in the&n; * Prism II chipsets.&n; *&n; * This is not a complete driver, just low-level access routines for&n; * the MAC controller itself.&n; *&n; * Based on the prism2 driver from Absolute Value Systems&squot; linux-wlan&n; * project, the Linux wvlan_cs driver, Lucent&squot;s HCF-Light&n; * (wvlan_hcf.c) library, and the NetBSD wireless driver (in no&n; * particular order).&n; *&n; * Copyright (C) 2000, David Gibson, Linuxcare Australia &lt;hermes@gibson.dropbear.id.au&gt;&n; * Copyright (C) 2001, David Gibson, IBM &lt;hermes@gibson.dropbear.id.au&gt;&n; * &n; * The contents of this file are subject to the Mozilla Public License&n; * Version 1.1 (the &quot;License&quot;); you may not use this file except in&n; * compliance with the License. You may obtain a copy of the License&n; * at http://www.mozilla.org/MPL/&n; *&n; * Software distributed under the License is distributed on an &quot;AS IS&quot;&n; * basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See&n; * the License for the specific language governing rights and&n; * limitations under the License.&n; *&n; * Alternatively, the contents of this file may be used under the&n; * terms of the GNU General Public License version 2 (the &quot;GPL&quot;), in&n; * which case the provisions of the GPL are applicable instead of the&n; * above.  If you wish to allow the use of your version of this file&n; * only under the terms of the GPL and not to allow others to use your&n; * version of this file under the MPL, indicate your decision by&n; * deleting the provisions above and replace them with the notice and&n; * other provisions required by the GPL.  If you do not delete the&n; * provisions above, a recipient may use your version of this file&n; * under either the MPL or the GPL.&n; */
+multiline_comment|/* hermes.c&n; *&n; * Driver core for the &quot;Hermes&quot; wireless MAC controller, as used in&n; * the Lucent Orinoco and Cabletron RoamAbout cards. It should also&n; * work on the hfa3841 and hfa3842 MAC controller chips used in the&n; * Prism II chipsets.&n; *&n; * This is not a complete driver, just low-level access routines for&n; * the MAC controller itself.&n; *&n; * Based on the prism2 driver from Absolute Value Systems&squot; linux-wlan&n; * project, the Linux wvlan_cs driver, Lucent&squot;s HCF-Light&n; * (wvlan_hcf.c) library, and the NetBSD wireless driver (in no&n; * particular order).&n; *&n; * Copyright (C) 2000, David Gibson, Linuxcare Australia.&n; * (C) Copyright David Gibson, IBM Corp. 2001-2003.&n; * &n; * The contents of this file are subject to the Mozilla Public License&n; * Version 1.1 (the &quot;License&quot;); you may not use this file except in&n; * compliance with the License. You may obtain a copy of the License&n; * at http://www.mozilla.org/MPL/&n; *&n; * Software distributed under the License is distributed on an &quot;AS IS&quot;&n; * basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See&n; * the License for the specific language governing rights and&n; * limitations under the License.&n; *&n; * Alternatively, the contents of this file may be used under the&n; * terms of the GNU General Public License version 2 (the &quot;GPL&quot;), in&n; * which case the provisions of the GPL are applicable instead of the&n; * above.  If you wish to allow the use of your version of this file&n; * only under the terms of the GPL and not to allow others to use your&n; * version of this file under the MPL, indicate your decision by&n; * deleting the provisions above and replace them with the notice and&n; * other provisions required by the GPL.  If you do not delete the&n; * provisions above, a recipient may use your version of this file&n; * under either the MPL or the GPL.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
@@ -19,17 +19,16 @@ suffix:semicolon
 id|MODULE_AUTHOR
 c_func
 (paren
-l_string|&quot;David Gibson &lt;hermes@gibson.dropbear.id.au&gt;&quot;
+l_string|&quot;Pavel Roskin &lt;proski@gnu.org&gt;&quot;
+l_string|&quot; &amp; David Gibson &lt;hermes@gibson.dropbear.id.au&gt;&quot;
 )paren
 suffix:semicolon
-macro_line|#ifdef MODULE_LICENSE
 id|MODULE_LICENSE
 c_func
 (paren
 l_string|&quot;Dual MPL/GPL&quot;
 )paren
 suffix:semicolon
-macro_line|#endif
 multiline_comment|/* These are maximum timeouts. Most often, card wil react much faster */
 DECL|macro|CMD_BUSY_TIMEOUT
 mdefine_line|#define CMD_BUSY_TIMEOUT (100) /* In iterations of ~1us */
@@ -583,7 +582,8 @@ comma
 id|u16
 id|parm0
 comma
-id|hermes_response_t
+r_struct
+id|hermes_response
 op_star
 id|resp
 )paren

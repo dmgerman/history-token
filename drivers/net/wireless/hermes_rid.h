@@ -3,35 +3,35 @@ DECL|macro|_HERMES_RID_H
 mdefine_line|#define _HERMES_RID_H
 multiline_comment|/*&n; * Configuration RIDs&n; */
 DECL|macro|HERMES_RID_CNFPORTTYPE
-mdefine_line|#define HERMES_RID_CNFPORTTYPE&t;&t;&t;0xFC00&t;/* used */
+mdefine_line|#define HERMES_RID_CNFPORTTYPE&t;&t;&t;0xFC00
 DECL|macro|HERMES_RID_CNFOWNMACADDR
-mdefine_line|#define HERMES_RID_CNFOWNMACADDR&t;&t;0xFC01&t;/* used */
+mdefine_line|#define HERMES_RID_CNFOWNMACADDR&t;&t;0xFC01
 DECL|macro|HERMES_RID_CNFDESIREDSSID
-mdefine_line|#define HERMES_RID_CNFDESIREDSSID&t;&t;0xFC02&t;/* used */
+mdefine_line|#define HERMES_RID_CNFDESIREDSSID&t;&t;0xFC02
 DECL|macro|HERMES_RID_CNFOWNCHANNEL
-mdefine_line|#define HERMES_RID_CNFOWNCHANNEL&t;&t;0xFC03&t;/* used */
+mdefine_line|#define HERMES_RID_CNFOWNCHANNEL&t;&t;0xFC03
 DECL|macro|HERMES_RID_CNFOWNSSID
-mdefine_line|#define HERMES_RID_CNFOWNSSID&t;&t;&t;0xFC04&t;/* used */
+mdefine_line|#define HERMES_RID_CNFOWNSSID&t;&t;&t;0xFC04
 DECL|macro|HERMES_RID_CNFOWNATIMWINDOW
 mdefine_line|#define HERMES_RID_CNFOWNATIMWINDOW&t;&t;0xFC05
 DECL|macro|HERMES_RID_CNFSYSTEMSCALE
-mdefine_line|#define HERMES_RID_CNFSYSTEMSCALE&t;&t;0xFC06&t;/* used */
+mdefine_line|#define HERMES_RID_CNFSYSTEMSCALE&t;&t;0xFC06
 DECL|macro|HERMES_RID_CNFMAXDATALEN
 mdefine_line|#define HERMES_RID_CNFMAXDATALEN&t;&t;0xFC07
 DECL|macro|HERMES_RID_CNFWDSADDRESS
 mdefine_line|#define HERMES_RID_CNFWDSADDRESS&t;&t;0xFC08
 DECL|macro|HERMES_RID_CNFPMENABLED
-mdefine_line|#define HERMES_RID_CNFPMENABLED&t;&t;&t;0xFC09&t;/* used */
+mdefine_line|#define HERMES_RID_CNFPMENABLED&t;&t;&t;0xFC09
 DECL|macro|HERMES_RID_CNFPMEPS
 mdefine_line|#define HERMES_RID_CNFPMEPS&t;&t;&t;0xFC0A
 DECL|macro|HERMES_RID_CNFMULTICASTRECEIVE
-mdefine_line|#define HERMES_RID_CNFMULTICASTRECEIVE&t;&t;0xFC0B&t;/* used */
+mdefine_line|#define HERMES_RID_CNFMULTICASTRECEIVE&t;&t;0xFC0B
 DECL|macro|HERMES_RID_CNFMAXSLEEPDURATION
-mdefine_line|#define HERMES_RID_CNFMAXSLEEPDURATION&t;&t;0xFC0C&t;/* used */
+mdefine_line|#define HERMES_RID_CNFMAXSLEEPDURATION&t;&t;0xFC0C
 DECL|macro|HERMES_RID_CNFPMHOLDOVERDURATION
-mdefine_line|#define HERMES_RID_CNFPMHOLDOVERDURATION&t;0xFC0D&t;/* used */
+mdefine_line|#define HERMES_RID_CNFPMHOLDOVERDURATION&t;0xFC0D
 DECL|macro|HERMES_RID_CNFOWNNAME
-mdefine_line|#define HERMES_RID_CNFOWNNAME&t;&t;&t;0xFC0E&t;/* used */
+mdefine_line|#define HERMES_RID_CNFOWNNAME&t;&t;&t;0xFC0E
 DECL|macro|HERMES_RID_CNFOWNDTIMPERIOD
 mdefine_line|#define HERMES_RID_CNFOWNDTIMPERIOD&t;&t;0xFC10
 DECL|macro|HERMES_RID_CNFWDSADDRESS1
@@ -49,27 +49,29 @@ mdefine_line|#define HERMES_RID_CNFWDSADDRESS6&t;&t;0xFC16
 DECL|macro|HERMES_RID_CNFMULTICASTPMBUFFERING
 mdefine_line|#define HERMES_RID_CNFMULTICASTPMBUFFERING&t;0xFC17
 DECL|macro|HERMES_RID_CNFWEPENABLED_AGERE
-mdefine_line|#define HERMES_RID_CNFWEPENABLED_AGERE&t;&t;0xFC20&t;/* used */
+mdefine_line|#define HERMES_RID_CNFWEPENABLED_AGERE&t;&t;0xFC20
+DECL|macro|HERMES_RID_CNFAUTHENTICATION_AGERE
+mdefine_line|#define HERMES_RID_CNFAUTHENTICATION_AGERE&t;0xFC21
 DECL|macro|HERMES_RID_CNFMANDATORYBSSID_SYMBOL
 mdefine_line|#define HERMES_RID_CNFMANDATORYBSSID_SYMBOL&t;0xFC21
 DECL|macro|HERMES_RID_CNFWEPDEFAULTKEYID
-mdefine_line|#define HERMES_RID_CNFWEPDEFAULTKEYID&t;&t;0xFC23&t;/* used */
+mdefine_line|#define HERMES_RID_CNFWEPDEFAULTKEYID&t;&t;0xFC23
 DECL|macro|HERMES_RID_CNFDEFAULTKEY0
-mdefine_line|#define HERMES_RID_CNFDEFAULTKEY0&t;&t;0xFC24&t;/* used */
+mdefine_line|#define HERMES_RID_CNFDEFAULTKEY0&t;&t;0xFC24
 DECL|macro|HERMES_RID_CNFDEFAULTKEY1
-mdefine_line|#define HERMES_RID_CNFDEFAULTKEY1&t;&t;0xFC25&t;/* used */
+mdefine_line|#define HERMES_RID_CNFDEFAULTKEY1&t;&t;0xFC25
 DECL|macro|HERMES_RID_CNFMWOROBUST_AGERE
-mdefine_line|#define HERMES_RID_CNFMWOROBUST_AGERE&t;&t;0xFC25&t;/* used */
+mdefine_line|#define HERMES_RID_CNFMWOROBUST_AGERE&t;&t;0xFC25
 DECL|macro|HERMES_RID_CNFDEFAULTKEY2
-mdefine_line|#define HERMES_RID_CNFDEFAULTKEY2&t;&t;0xFC26&t;/* used */
+mdefine_line|#define HERMES_RID_CNFDEFAULTKEY2&t;&t;0xFC26
 DECL|macro|HERMES_RID_CNFDEFAULTKEY3
-mdefine_line|#define HERMES_RID_CNFDEFAULTKEY3&t;&t;0xFC27&t;/* used */
+mdefine_line|#define HERMES_RID_CNFDEFAULTKEY3&t;&t;0xFC27
 DECL|macro|HERMES_RID_CNFWEPFLAGS_INTERSIL
-mdefine_line|#define HERMES_RID_CNFWEPFLAGS_INTERSIL&t;&t;0xFC28&t;/* used */
+mdefine_line|#define HERMES_RID_CNFWEPFLAGS_INTERSIL&t;&t;0xFC28
 DECL|macro|HERMES_RID_CNFWEPKEYMAPPINGTABLE
 mdefine_line|#define HERMES_RID_CNFWEPKEYMAPPINGTABLE&t;0xFC29
 DECL|macro|HERMES_RID_CNFAUTHENTICATION
-mdefine_line|#define HERMES_RID_CNFAUTHENTICATION&t;&t;0xFC2A&t;/* used */
+mdefine_line|#define HERMES_RID_CNFAUTHENTICATION&t;&t;0xFC2A
 DECL|macro|HERMES_RID_CNFMAXASSOCSTA
 mdefine_line|#define HERMES_RID_CNFMAXASSOCSTA&t;&t;0xFC2B
 DECL|macro|HERMES_RID_CNFKEYLENGTH_SYMBOL
@@ -101,21 +103,21 @@ mdefine_line|#define HERMES_RID_CNFTHIRTY2TALLY&t;&t;0xFC42
 DECL|macro|HERMES_RID_CNFENHSECURITY
 mdefine_line|#define HERMES_RID_CNFENHSECURITY&t;&t;0xFC43
 DECL|macro|HERMES_RID_CNFGROUPADDRESSES
-mdefine_line|#define HERMES_RID_CNFGROUPADDRESSES&t;&t;0xFC80&t;/* used */
+mdefine_line|#define HERMES_RID_CNFGROUPADDRESSES&t;&t;0xFC80
 DECL|macro|HERMES_RID_CNFCREATEIBSS
-mdefine_line|#define HERMES_RID_CNFCREATEIBSS&t;&t;0xFC81&t;/* used */
+mdefine_line|#define HERMES_RID_CNFCREATEIBSS&t;&t;0xFC81
 DECL|macro|HERMES_RID_CNFFRAGMENTATIONTHRESHOLD
-mdefine_line|#define HERMES_RID_CNFFRAGMENTATIONTHRESHOLD&t;0xFC82&t;/* used */
+mdefine_line|#define HERMES_RID_CNFFRAGMENTATIONTHRESHOLD&t;0xFC82
 DECL|macro|HERMES_RID_CNFRTSTHRESHOLD
-mdefine_line|#define HERMES_RID_CNFRTSTHRESHOLD&t;&t;0xFC83&t;/* used */
+mdefine_line|#define HERMES_RID_CNFRTSTHRESHOLD&t;&t;0xFC83
 DECL|macro|HERMES_RID_CNFTXRATECONTROL
-mdefine_line|#define HERMES_RID_CNFTXRATECONTROL&t;&t;0xFC84&t;/* used */
+mdefine_line|#define HERMES_RID_CNFTXRATECONTROL&t;&t;0xFC84
 DECL|macro|HERMES_RID_CNFPROMISCUOUSMODE
-mdefine_line|#define HERMES_RID_CNFPROMISCUOUSMODE&t;&t;0xFC85&t;/* used */
+mdefine_line|#define HERMES_RID_CNFPROMISCUOUSMODE&t;&t;0xFC85
 DECL|macro|HERMES_RID_CNFBASICRATES_SYMBOL
 mdefine_line|#define HERMES_RID_CNFBASICRATES_SYMBOL&t;&t;0xFC8A
 DECL|macro|HERMES_RID_CNFPREAMBLE_SYMBOL
-mdefine_line|#define HERMES_RID_CNFPREAMBLE_SYMBOL&t;&t;0xFC8C&t;/* used */
+mdefine_line|#define HERMES_RID_CNFPREAMBLE_SYMBOL&t;&t;0xFC8C
 DECL|macro|HERMES_RID_CNFFRAGMENTATIONTHRESHOLD0
 mdefine_line|#define HERMES_RID_CNFFRAGMENTATIONTHRESHOLD0&t;0xFC90
 DECL|macro|HERMES_RID_CNFFRAGMENTATIONTHRESHOLD1
@@ -144,22 +146,26 @@ DECL|macro|HERMES_RID_CNFRTSTHRESHOLD5
 mdefine_line|#define HERMES_RID_CNFRTSTHRESHOLD5&t;&t;0xFC9C
 DECL|macro|HERMES_RID_CNFRTSTHRESHOLD6
 mdefine_line|#define HERMES_RID_CNFRTSTHRESHOLD6&t;&t;0xFC9D
+DECL|macro|HERMES_RID_CNFHOSTSCAN_SYMBOL
+mdefine_line|#define HERMES_RID_CNFHOSTSCAN_SYMBOL&t;&t;0xFCAB
 DECL|macro|HERMES_RID_CNFSHORTPREAMBLE
 mdefine_line|#define HERMES_RID_CNFSHORTPREAMBLE&t;&t;0xFCB0
 DECL|macro|HERMES_RID_CNFWEPKEYS_AGERE
-mdefine_line|#define HERMES_RID_CNFWEPKEYS_AGERE&t;&t;0xFCB0&t;/* used */
+mdefine_line|#define HERMES_RID_CNFWEPKEYS_AGERE&t;&t;0xFCB0
 DECL|macro|HERMES_RID_CNFEXCLUDELONGPREAMBLE
 mdefine_line|#define HERMES_RID_CNFEXCLUDELONGPREAMBLE&t;0xFCB1
 DECL|macro|HERMES_RID_CNFTXKEY_AGERE
-mdefine_line|#define HERMES_RID_CNFTXKEY_AGERE&t;&t;0xFCB1&t;/* used */
+mdefine_line|#define HERMES_RID_CNFTXKEY_AGERE&t;&t;0xFCB1
 DECL|macro|HERMES_RID_CNFAUTHENTICATIONRSPTO
 mdefine_line|#define HERMES_RID_CNFAUTHENTICATIONRSPTO&t;0xFCB2
+DECL|macro|HERMES_RID_CNFSCANSSID_AGERE
+mdefine_line|#define HERMES_RID_CNFSCANSSID_AGERE&t;&t;0xFCB2
 DECL|macro|HERMES_RID_CNFBASICRATES
 mdefine_line|#define HERMES_RID_CNFBASICRATES&t;&t;0xFCB3
 DECL|macro|HERMES_RID_CNFSUPPORTEDRATES
 mdefine_line|#define HERMES_RID_CNFSUPPORTEDRATES&t;&t;0xFCB4
 DECL|macro|HERMES_RID_CNFTICKTIME
-mdefine_line|#define HERMES_RID_CNFTICKTIME&t;&t;&t;0xFCE0&t;/* used */
+mdefine_line|#define HERMES_RID_CNFTICKTIME&t;&t;&t;0xFCE0
 DECL|macro|HERMES_RID_CNFSCANREQUEST
 mdefine_line|#define HERMES_RID_CNFSCANREQUEST&t;&t;0xFCE1
 DECL|macro|HERMES_RID_CNFJOINREQUEST
@@ -168,6 +174,8 @@ DECL|macro|HERMES_RID_CNFAUTHENTICATESTATION
 mdefine_line|#define HERMES_RID_CNFAUTHENTICATESTATION&t;0xFCE3
 DECL|macro|HERMES_RID_CNFCHANNELINFOREQUEST
 mdefine_line|#define HERMES_RID_CNFCHANNELINFOREQUEST&t;0xFCE4
+DECL|macro|HERMES_RID_CNFHOSTSCAN
+mdefine_line|#define HERMES_RID_CNFHOSTSCAN&t;&t;&t;0xFCE5
 multiline_comment|/*&n; * Information RIDs&n; */
 DECL|macro|HERMES_RID_MAXLOADTIME
 mdefine_line|#define HERMES_RID_MAXLOADTIME&t;&t;&t;0xFD00
@@ -188,7 +196,7 @@ mdefine_line|#define HERMES_RID_MFISUPRANGE&t;&t;&t;0xFD0C
 DECL|macro|HERMES_RID_CFISUPRANGE
 mdefine_line|#define HERMES_RID_CFISUPRANGE&t;&t;&t;0xFD0D
 DECL|macro|HERMES_RID_CHANNELLIST
-mdefine_line|#define HERMES_RID_CHANNELLIST&t;&t;&t;0xFD10&t;/* used */
+mdefine_line|#define HERMES_RID_CHANNELLIST&t;&t;&t;0xFD10
 DECL|macro|HERMES_RID_REGULATORYDOMAINS
 mdefine_line|#define HERMES_RID_REGULATORYDOMAINS&t;&t;0xFD11
 DECL|macro|HERMES_RID_TEMPTYPE
@@ -196,7 +204,7 @@ mdefine_line|#define HERMES_RID_TEMPTYPE&t;&t;&t;0xFD12
 DECL|macro|HERMES_RID_CIS
 mdefine_line|#define HERMES_RID_CIS&t;&t;&t;&t;0xFD13
 DECL|macro|HERMES_RID_STAID
-mdefine_line|#define HERMES_RID_STAID&t;&t;&t;0xFD20&t;/* used */
+mdefine_line|#define HERMES_RID_STAID&t;&t;&t;0xFD20
 DECL|macro|HERMES_RID_STASUPRANGE
 mdefine_line|#define HERMES_RID_STASUPRANGE&t;&t;&t;0xFD21
 DECL|macro|HERMES_RID_MFIACTRANGES
@@ -204,17 +212,17 @@ mdefine_line|#define HERMES_RID_MFIACTRANGES&t;&t;&t;0xFD22
 DECL|macro|HERMES_RID_CFIACTRANGES2
 mdefine_line|#define HERMES_RID_CFIACTRANGES2&t;&t;0xFD23
 DECL|macro|HERMES_RID_SECONDARYVERSION_SYMBOL
-mdefine_line|#define HERMES_RID_SECONDARYVERSION_SYMBOL&t;0xFD24&t;/* used */
+mdefine_line|#define HERMES_RID_SECONDARYVERSION_SYMBOL&t;0xFD24
 DECL|macro|HERMES_RID_PORTSTATUS
 mdefine_line|#define HERMES_RID_PORTSTATUS&t;&t;&t;0xFD40
 DECL|macro|HERMES_RID_CURRENTSSID
-mdefine_line|#define HERMES_RID_CURRENTSSID&t;&t;&t;0xFD41&t;/* used */
+mdefine_line|#define HERMES_RID_CURRENTSSID&t;&t;&t;0xFD41
 DECL|macro|HERMES_RID_CURRENTBSSID
-mdefine_line|#define HERMES_RID_CURRENTBSSID&t;&t;&t;0xFD42&t;/* used */
+mdefine_line|#define HERMES_RID_CURRENTBSSID&t;&t;&t;0xFD42
 DECL|macro|HERMES_RID_COMMSQUALITY
-mdefine_line|#define HERMES_RID_COMMSQUALITY&t;&t;&t;0xFD43&t;/* used */
+mdefine_line|#define HERMES_RID_COMMSQUALITY&t;&t;&t;0xFD43
 DECL|macro|HERMES_RID_CURRENTTXRATE
-mdefine_line|#define HERMES_RID_CURRENTTXRATE&t;&t;0xFD44&t;/* used */
+mdefine_line|#define HERMES_RID_CURRENTTXRATE&t;&t;0xFD44
 DECL|macro|HERMES_RID_CURRENTBEACONINTERVAL
 mdefine_line|#define HERMES_RID_CURRENTBEACONINTERVAL&t;0xFD45
 DECL|macro|HERMES_RID_CURRENTSCALETHRESHOLDS
@@ -222,11 +230,11 @@ mdefine_line|#define HERMES_RID_CURRENTSCALETHRESHOLDS&t;0xFD46
 DECL|macro|HERMES_RID_PROTOCOLRSPTIME
 mdefine_line|#define HERMES_RID_PROTOCOLRSPTIME&t;&t;0xFD47
 DECL|macro|HERMES_RID_SHORTRETRYLIMIT
-mdefine_line|#define HERMES_RID_SHORTRETRYLIMIT&t;&t;0xFD48&t;/* used */
+mdefine_line|#define HERMES_RID_SHORTRETRYLIMIT&t;&t;0xFD48
 DECL|macro|HERMES_RID_LONGRETRYLIMIT
-mdefine_line|#define HERMES_RID_LONGRETRYLIMIT&t;&t;0xFD49&t;/* used */
+mdefine_line|#define HERMES_RID_LONGRETRYLIMIT&t;&t;0xFD49
 DECL|macro|HERMES_RID_MAXTRANSMITLIFETIME
-mdefine_line|#define HERMES_RID_MAXTRANSMITLIFETIME&t;&t;0xFD4A&t;/* used */
+mdefine_line|#define HERMES_RID_MAXTRANSMITLIFETIME&t;&t;0xFD4A
 DECL|macro|HERMES_RID_MAXRECEIVELIFETIME
 mdefine_line|#define HERMES_RID_MAXRECEIVELIFETIME&t;&t;0xFD4B
 DECL|macro|HERMES_RID_CFPOLLABLE
@@ -235,6 +243,8 @@ DECL|macro|HERMES_RID_AUTHENTICATIONALGORITHMS
 mdefine_line|#define HERMES_RID_AUTHENTICATIONALGORITHMS&t;0xFD4D
 DECL|macro|HERMES_RID_PRIVACYOPTIONIMPLEMENTED
 mdefine_line|#define HERMES_RID_PRIVACYOPTIONIMPLEMENTED&t;0xFD4F
+DECL|macro|HERMES_RID_DBMCOMMSQUALITY_INTERSIL
+mdefine_line|#define HERMES_RID_DBMCOMMSQUALITY_INTERSIL&t;0xFD51
 DECL|macro|HERMES_RID_CURRENTTXRATE1
 mdefine_line|#define HERMES_RID_CURRENTTXRATE1&t;&t;0xFD80
 DECL|macro|HERMES_RID_CURRENTTXRATE2
@@ -254,65 +264,16 @@ mdefine_line|#define HERMES_RID_SCANRESULTSTABLE&t;&t;0xFD88
 DECL|macro|HERMES_RID_PHYTYPE
 mdefine_line|#define HERMES_RID_PHYTYPE&t;&t;&t;0xFDC0
 DECL|macro|HERMES_RID_CURRENTCHANNEL
-mdefine_line|#define HERMES_RID_CURRENTCHANNEL&t;&t;0xFDC1&t;/* used */
+mdefine_line|#define HERMES_RID_CURRENTCHANNEL&t;&t;0xFDC1
 DECL|macro|HERMES_RID_CURRENTPOWERSTATE
 mdefine_line|#define HERMES_RID_CURRENTPOWERSTATE&t;&t;0xFDC2
 DECL|macro|HERMES_RID_CCAMODE
 mdefine_line|#define HERMES_RID_CCAMODE&t;&t;&t;0xFDC3
 DECL|macro|HERMES_RID_SUPPORTEDDATARATES
-mdefine_line|#define HERMES_RID_SUPPORTEDDATARATES&t;&t;0xFDC6&t;/* used */
+mdefine_line|#define HERMES_RID_SUPPORTEDDATARATES&t;&t;0xFDC6
 DECL|macro|HERMES_RID_BUILDSEQ
 mdefine_line|#define HERMES_RID_BUILDSEQ&t;&t;&t;0xFFFE
 DECL|macro|HERMES_RID_FWID
 mdefine_line|#define HERMES_RID_FWID&t;&t;&t;&t;0xFFFF
-multiline_comment|/* &quot;ID&quot; structure - used for ESSID and station nickname */
-DECL|struct|hermes_idstring
-r_struct
-id|hermes_idstring
-(brace
-DECL|member|len
-id|u16
-id|len
-suffix:semicolon
-DECL|member|val
-id|u16
-id|val
-(braket
-l_int|16
-)braket
-suffix:semicolon
-)brace
-id|__attribute__
-(paren
-(paren
-id|packed
-)paren
-)paren
-suffix:semicolon
-DECL|struct|hermes_multicast
-r_typedef
-r_struct
-id|hermes_multicast
-(brace
-DECL|member|addr
-id|u8
-id|addr
-(braket
-id|HERMES_MAX_MULTICAST
-)braket
-(braket
-id|ETH_ALEN
-)braket
-suffix:semicolon
-DECL|typedef|hermes_multicast_t
-)brace
-id|__attribute__
-(paren
-(paren
-id|packed
-)paren
-)paren
-id|hermes_multicast_t
-suffix:semicolon
 macro_line|#endif
 eof
