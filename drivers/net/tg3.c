@@ -2040,8 +2040,10 @@ id|u32
 id|frame_val
 suffix:semicolon
 r_int
+r_int
 id|loops
-comma
+suffix:semicolon
+r_int
 id|ret
 suffix:semicolon
 r_if
@@ -2129,8 +2131,7 @@ r_while
 c_loop
 (paren
 id|loops
-op_decrement
-OG
+op_ne
 l_int|0
 )paren
 (brace
@@ -2177,6 +2178,10 @@ suffix:semicolon
 r_break
 suffix:semicolon
 )brace
+id|loops
+op_sub_assign
+l_int|1
+suffix:semicolon
 )brace
 id|ret
 op_assign
@@ -2187,7 +2192,7 @@ r_if
 c_cond
 (paren
 id|loops
-OG
+op_ne
 l_int|0
 )paren
 (brace
@@ -2256,8 +2261,10 @@ id|u32
 id|frame_val
 suffix:semicolon
 r_int
+r_int
 id|loops
-comma
+suffix:semicolon
+r_int
 id|ret
 suffix:semicolon
 r_if
@@ -2348,8 +2355,7 @@ r_while
 c_loop
 (paren
 id|loops
-op_decrement
-OG
+op_ne
 l_int|0
 )paren
 (brace
@@ -2396,6 +2402,10 @@ suffix:semicolon
 r_break
 suffix:semicolon
 )brace
+id|loops
+op_sub_assign
+l_int|1
+suffix:semicolon
 )brace
 id|ret
 op_assign
@@ -2406,7 +2416,7 @@ r_if
 c_cond
 (paren
 id|loops
-OG
+op_ne
 l_int|0
 )paren
 id|ret
