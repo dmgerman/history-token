@@ -2208,7 +2208,8 @@ c_func
 id|skb-&gt;dev
 )paren
 suffix:semicolon
-multiline_comment|/* Be very paranoid. Must be a device driver bug. */
+macro_line|#ifdef CONFIG_NETFILTER_DEBUG
+multiline_comment|/* Be very paranoid. This probably won&squot;t happen anymore, but let&squot;s&n;&t; * keep the check just to be sure... */
 r_if
 c_cond
 (paren
@@ -2225,60 +2226,11 @@ l_string|&quot;br_netfilter: Argh!! br_nf_post_routing: &quot;
 l_string|&quot;bad mac.raw pointer.&quot;
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|skb-&gt;dev
-op_ne
-l_int|NULL
-)paren
-(brace
-id|printk
-c_func
-(paren
-l_string|&quot;[%s]&quot;
-comma
-id|skb-&gt;dev-&gt;name
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|has_bridge_parent
-c_func
-(paren
-id|skb-&gt;dev
-)paren
-)paren
-id|printk
-c_func
-(paren
-l_string|&quot;[%s]&quot;
-comma
-id|bridge_parent
-c_func
-(paren
-id|skb-&gt;dev
-)paren
-op_member_access_from_pointer
-id|name
-)paren
+r_goto
+id|print_error
 suffix:semicolon
 )brace
-id|printk
-c_func
-(paren
-l_string|&quot; head:%p, raw:%p&bslash;n&quot;
-comma
-id|skb-&gt;head
-comma
-id|skb-&gt;mac.raw
-)paren
-suffix:semicolon
-r_return
-id|NF_ACCEPT
-suffix:semicolon
-)brace
+macro_line|#endif
 macro_line|#ifdef CONFIG_SYSCTL
 r_if
 c_cond
@@ -2307,7 +2259,8 @@ id|IS_VLAN_IP
 r_return
 id|NF_ACCEPT
 suffix:semicolon
-multiline_comment|/* Sometimes we get packets with NULL -&gt;dst here (for example,&n;&t; * running a dhcp client daemon triggers this).&n;&t; */
+macro_line|#ifdef CONFIG_NETFILTER_DEBUG
+multiline_comment|/* Sometimes we get packets with NULL -&gt;dst here (for example,&n;&t; * running a dhcp client daemon triggers this). This should now&n;&t; * be fixed, but let&squot;s keep the check around.&n;&t; */
 r_if
 c_cond
 (paren
@@ -2315,10 +2268,18 @@ id|skb-&gt;dst
 op_eq
 l_int|NULL
 )paren
-r_return
-id|NF_ACCEPT
+(brace
+id|printk
+c_func
+(paren
+id|KERN_CRIT
+l_string|&quot;br_netfilter: skb-&gt;dst == NULL.&quot;
+)paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_NETFILTER_DEBUG
+r_goto
+id|print_error
+suffix:semicolon
+)brace
 id|skb-&gt;nf_debug
 op_xor_assign
 (paren
@@ -2407,6 +2368,65 @@ suffix:semicolon
 r_return
 id|NF_STOLEN
 suffix:semicolon
+macro_line|#ifdef CONFIG_NETFILTER_DEBUG
+id|print_error
+suffix:colon
+r_if
+c_cond
+(paren
+id|skb-&gt;dev
+op_ne
+l_int|NULL
+)paren
+(brace
+id|printk
+c_func
+(paren
+l_string|&quot;[%s]&quot;
+comma
+id|skb-&gt;dev-&gt;name
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|has_bridge_parent
+c_func
+(paren
+id|skb-&gt;dev
+)paren
+)paren
+id|printk
+c_func
+(paren
+l_string|&quot;[%s]&quot;
+comma
+id|bridge_parent
+c_func
+(paren
+id|skb-&gt;dev
+)paren
+op_member_access_from_pointer
+id|name
+)paren
+suffix:semicolon
+)brace
+id|printk
+c_func
+(paren
+l_string|&quot; head:%p, raw:%p, data:%p&bslash;n&quot;
+comma
+id|skb-&gt;head
+comma
+id|skb-&gt;mac.raw
+comma
+id|skb-&gt;data
+)paren
+suffix:semicolon
+r_return
+id|NF_ACCEPT
+suffix:semicolon
+macro_line|#endif
 )brace
 multiline_comment|/* IPv4/SABOTAGE *****************************************************/
 multiline_comment|/* Don&squot;t hand locally destined packets to PF_INET/PRE_ROUTING&n; * for the second time.&n; */

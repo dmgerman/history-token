@@ -298,6 +298,7 @@ id|recent_lock
 op_assign
 id|SPIN_LOCK_UNLOCKED
 suffix:semicolon
+macro_line|#ifdef CONFIG_PROC_FS
 multiline_comment|/* Our /proc/net/ipt_recent entry */
 DECL|variable|proc_net_ipt_recent
 r_static
@@ -308,6 +309,7 @@ id|proc_net_ipt_recent
 op_assign
 l_int|NULL
 suffix:semicolon
+macro_line|#endif
 multiline_comment|/* Function declaration for later. */
 r_static
 r_int
@@ -5543,6 +5545,7 @@ c_func
 id|version
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_PROC_FS
 id|proc_net_ipt_recent
 op_assign
 id|proc_mkdir
@@ -5565,6 +5568,7 @@ op_minus
 id|ENOMEM
 suffix:semicolon
 )brace
+macro_line|#endif
 r_if
 c_cond
 (paren
