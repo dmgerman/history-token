@@ -3874,6 +3874,8 @@ id|handle
 suffix:semicolon
 r_int
 id|error
+comma
+id|error2
 suffix:semicolon
 id|lock_kernel
 c_func
@@ -3928,6 +3930,8 @@ comma
 id|flags
 )paren
 suffix:semicolon
+id|error2
+op_assign
 id|ext3_journal_stop
 c_func
 (paren
@@ -3943,6 +3947,11 @@ c_func
 suffix:semicolon
 r_return
 id|error
+ques
+c_cond
+id|error
+suffix:colon
+id|error2
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * ext3_xattr_delete_inode()&n; *&n; * Free extended attribute resources associated with this inode. This&n; * is called immediately before an inode is freed.&n; */
