@@ -61,11 +61,6 @@ r_int
 id|next_pending
 suffix:semicolon
 multiline_comment|/* Is the next batch already waiting?         */
-DECL|member|lock
-id|seqcount_t
-id|lock
-suffix:semicolon
-multiline_comment|/* For atomic reads of cur and next_pending.  */
 DECL|variable|____cacheline_maxaligned_in_smp
 )brace
 id|____cacheline_maxaligned_in_smp

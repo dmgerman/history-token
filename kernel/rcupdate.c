@@ -33,11 +33,6 @@ id|completed
 op_assign
 op_minus
 l_int|300
-comma
-dot
-id|lock
-op_assign
-id|SEQCNT_ZERO
 )brace
 suffix:semicolon
 DECL|variable|rcu_bh_ctrlblk
@@ -57,11 +52,6 @@ id|completed
 op_assign
 op_minus
 l_int|300
-comma
-dot
-id|lock
-op_assign
-id|SEQCNT_ZERO
 )brace
 suffix:semicolon
 multiline_comment|/* Bookkeeping of the progress of the grace period */
@@ -457,26 +447,18 @@ comma
 id|nohz_cpu_mask
 )paren
 suffix:semicolon
-id|write_seqcount_begin
-c_func
-(paren
-op_amp
-id|rcp-&gt;lock
-)paren
-suffix:semicolon
 id|rcp-&gt;next_pending
 op_assign
 l_int|0
 suffix:semicolon
-id|rcp-&gt;cur
-op_increment
-suffix:semicolon
-id|write_seqcount_end
+multiline_comment|/* next_pending == 0 must be visible in __rcu_process_callbacks()&n;&t;&t; * before it can see new value of cur.&n;&t;&t; */
+id|smp_wmb
 c_func
 (paren
-op_amp
-id|rcp-&gt;lock
 )paren
+suffix:semicolon
+id|rcp-&gt;cur
+op_increment
 suffix:semicolon
 )brace
 )brace
@@ -961,11 +943,6 @@ op_logical_neg
 id|rdp-&gt;curlist
 )paren
 (brace
-r_int
-id|next_pending
-comma
-id|seq
-suffix:semicolon
 id|rdp-&gt;curlist
 op_assign
 id|rdp-&gt;nxtlist
@@ -989,17 +966,6 @@ c_func
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t;&t; * start the next batch of callbacks&n;&t;&t; */
-r_do
-(brace
-id|seq
-op_assign
-id|read_seqcount_begin
-c_func
-(paren
-op_amp
-id|rcp-&gt;lock
-)paren
-suffix:semicolon
 multiline_comment|/* determine batch number */
 id|rdp-&gt;batch
 op_assign
@@ -1007,29 +973,17 @@ id|rcp-&gt;cur
 op_plus
 l_int|1
 suffix:semicolon
-id|next_pending
-op_assign
-id|rcp-&gt;next_pending
-suffix:semicolon
-)brace
-r_while
-c_loop
-(paren
-id|read_seqcount_retry
+multiline_comment|/* see the comment and corresponding wmb() in&n;&t;&t; * the rcu_start_batch()&n;&t;&t; */
+id|smp_rmb
 c_func
 (paren
-op_amp
-id|rcp-&gt;lock
-comma
-id|seq
-)paren
 )paren
 suffix:semicolon
 r_if
 c_cond
 (paren
 op_logical_neg
-id|next_pending
+id|rcp-&gt;next_pending
 )paren
 (brace
 multiline_comment|/* and start it/schedule start if it&squot;s a new batch */
