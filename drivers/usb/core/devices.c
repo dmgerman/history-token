@@ -20,7 +20,7 @@ op_star
 id|format_topo
 op_assign
 multiline_comment|/* T:  Bus=dd Lev=dd Prnt=dd Port=dd Cnt=dd Dev#=ddd Spd=ddd MxCh=dd */
-l_string|&quot;T:  Bus=%2.2d Lev=%2.2d Prnt=%2.2d Port=%2.2d Cnt=%2.2d Dev#=%3d Spd=%3s MxCh=%2d&bslash;n&quot;
+l_string|&quot;&bslash;nT:  Bus=%2.2d Lev=%2.2d Prnt=%2.2d Port=%2.2d Cnt=%2.2d Dev#=%3d Spd=%3s MxCh=%2d&bslash;n&quot;
 suffix:semicolon
 DECL|variable|format_string_manufacturer
 r_static
