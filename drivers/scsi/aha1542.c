@@ -220,16 +220,6 @@ op_minus
 l_int|1
 )brace
 suffix:semicolon
-DECL|variable|__initdata
-r_static
-r_char
-op_star
-id|setup_str
-(braket
-id|MAXBOARDS
-)braket
-id|__initdata
-suffix:semicolon
 multiline_comment|/*&n; * LILO/Module params:  aha1542=&lt;PORTBASE&gt;[,&lt;BUSON&gt;,&lt;BUSOFF&gt;[,&lt;DMASPEED&gt;]]&n; *&n; * Where:  &lt;PORTBASE&gt; is any of the valid AHA addresses:&n; *                      0x130, 0x134, 0x230, 0x234, 0x330, 0x334&n; *         &lt;BUSON&gt;  is the time (in microsecs) that AHA spends on the AT-bus&n; *                  when transferring data.  1542A power-on default is 11us,&n; *                  valid values are in range: 2..15 (decimal)&n; *         &lt;BUSOFF&gt; is the time that AHA spends OFF THE BUS after while&n; *                  it is transferring data (not to monopolize the bus).&n; *                  Power-on default is 4us, valid range: 1..64 microseconds.&n; *         &lt;DMASPEED&gt; Default is jumper selected (1542A: on the J1),&n; *                  but experimenter can alter it with this.&n; *                  Valid values: 5, 6, 7, 8, 10 (MB/s)&n; *                  Factory default is 5 MB/s.&n; */
 macro_line|#if defined(MODULE)
 DECL|variable|isapnp
@@ -4513,6 +4503,16 @@ l_int|0
 suffix:semicolon
 )brace
 macro_line|#ifndef MODULE
+DECL|variable|__initdata
+r_static
+r_char
+op_star
+id|setup_str
+(braket
+id|MAXBOARDS
+)braket
+id|__initdata
+suffix:semicolon
 DECL|variable|setup_idx
 r_static
 r_int
