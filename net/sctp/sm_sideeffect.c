@@ -1,4 +1,4 @@
-multiline_comment|/* SCTP kernel reference Implementation &n; * Copyright (c) 1999 Cisco, Inc.&n; * Copyright (c) 1999-2001 Motorola, Inc.&n; * Copyright (c) 2001-2002 International Business Machines Corp.&n; * &n; * This file is part of the SCTP kernel reference Implementation&n; * &n; * These functions work with the state functions in sctp_sm_statefuns.c&n; * to implement that state operations.  These functions implement the&n; * steps which require modifying existing data structures.&n; * &n; * The SCTP reference implementation is free software; &n; * you can redistribute it and/or modify it under the terms of &n; * the GNU General Public License as published by&n; * the Free Software Foundation; either version 2, or (at your option)&n; * any later version.&n; * &n; * The SCTP reference implementation is distributed in the hope that it &n; * will be useful, but WITHOUT ANY WARRANTY; without even the implied&n; *                 ************************&n; * warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.&n; * See the GNU General Public License for more details.&n; * &n; * You should have received a copy of the GNU General Public License&n; * along with GNU CC; see the file COPYING.  If not, write to&n; * the Free Software Foundation, 59 Temple Place - Suite 330,&n; * Boston, MA 02111-1307, USA.  &n; * &n; * Please send any bug reports or fixes you make to the&n; * email address(es):&n; *    lksctp developers &lt;lksctp-developers@lists.sourceforge.net&gt;&n; * &n; * Or submit a bug report through the following website:&n; *    http://www.sf.net/projects/lksctp&n; *&n; * Written or modified by: &n; *    La Monte H.P. Yarroll &lt;piggy@acm.org&gt;&n; *    Karl Knutson          &lt;karl@athena.chicago.il.us&gt;&n; *    Jon Grimm             &lt;jgrimm@austin.ibm.com&gt;&n; *    Hui Huang&t;&t;    &lt;hui.huang@nokia.com&gt;&n; *    Dajiang Zhang&t;    &lt;dajiang.zhang@nokia.com&gt;&n; *    Daisy Chang&t;    &lt;daisyc@us.ibm.com&gt;&n; *    Sridhar Samudrala&t;    &lt;sri@us.ibm.com&gt;&n; *&n; * Any bugs reported given to us we will try to fix... any fixes shared will&n; * be incorporated into the next SCTP release.&n; */
+multiline_comment|/* SCTP kernel reference Implementation&n; * Copyright (c) 1999 Cisco, Inc.&n; * Copyright (c) 1999-2001 Motorola, Inc.&n; * Copyright (c) 2001-2002 International Business Machines Corp.&n; *&n; * This file is part of the SCTP kernel reference Implementation&n; *&n; * These functions work with the state functions in sctp_sm_statefuns.c&n; * to implement that state operations.  These functions implement the&n; * steps which require modifying existing data structures.&n; *&n; * The SCTP reference implementation is free software;&n; * you can redistribute it and/or modify it under the terms of&n; * the GNU General Public License as published by&n; * the Free Software Foundation; either version 2, or (at your option)&n; * any later version.&n; *&n; * The SCTP reference implementation is distributed in the hope that it&n; * will be useful, but WITHOUT ANY WARRANTY; without even the implied&n; *                 ************************&n; * warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.&n; * See the GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with GNU CC; see the file COPYING.  If not, write to&n; * the Free Software Foundation, 59 Temple Place - Suite 330,&n; * Boston, MA 02111-1307, USA.&n; *&n; * Please send any bug reports or fixes you make to the&n; * email address(es):&n; *    lksctp developers &lt;lksctp-developers@lists.sourceforge.net&gt;&n; *&n; * Or submit a bug report through the following website:&n; *    http://www.sf.net/projects/lksctp&n; *&n; * Written or modified by:&n; *    La Monte H.P. Yarroll &lt;piggy@acm.org&gt;&n; *    Karl Knutson          &lt;karl@athena.chicago.il.us&gt;&n; *    Jon Grimm             &lt;jgrimm@austin.ibm.com&gt;&n; *    Hui Huang&t;&t;    &lt;hui.huang@nokia.com&gt;&n; *    Dajiang Zhang&t;    &lt;dajiang.zhang@nokia.com&gt;&n; *    Daisy Chang&t;    &lt;daisyc@us.ibm.com&gt;&n; *    Sridhar Samudrala&t;    &lt;sri@us.ibm.com&gt;&n; *&n; * Any bugs reported given to us we will try to fix... any fixes shared will&n; * be incorporated into the next SCTP release.&n; */
 macro_line|#include &lt;linux/skbuff.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/socket.h&gt;
@@ -658,6 +658,11 @@ suffix:semicolon
 id|sctp_packet_t
 op_star
 id|packet
+suffix:semicolon
+r_struct
+id|list_head
+op_star
+id|pos
 suffix:semicolon
 r_struct
 id|timer_list
@@ -1375,6 +1380,40 @@ id|command-&gt;obj.to
 )braket
 op_assign
 id|asoc-&gt;max_init_timeo
+suffix:semicolon
+)brace
+multiline_comment|/* If we&squot;ve sent any data bundled with&n;&t;&t;&t; * COOKIE-ECHO we need to resend.&n;&t;&t;&t; */
+id|list_for_each
+c_func
+(paren
+id|pos
+comma
+op_amp
+id|asoc-&gt;peer.transport_addr_list
+)paren
+(brace
+id|t
+op_assign
+id|list_entry
+c_func
+(paren
+id|pos
+comma
+id|sctp_transport_t
+comma
+id|transports
+)paren
+suffix:semicolon
+id|sctp_retransmit_mark
+c_func
+(paren
+op_amp
+id|asoc-&gt;outqueue
+comma
+id|t
+comma
+l_int|0
+)paren
 suffix:semicolon
 )brace
 id|sctp_add_cmd_sf
@@ -2392,6 +2431,36 @@ id|SCTP_EVENT_TIMEOUT_T2_SHUTDOWN
 )paren
 suffix:semicolon
 )brace
+DECL|function|sctp_generate_t5_shutdown_guard_event
+r_void
+id|sctp_generate_t5_shutdown_guard_event
+c_func
+(paren
+r_int
+r_int
+id|data
+)paren
+(brace
+id|sctp_association_t
+op_star
+id|asoc
+op_assign
+(paren
+id|sctp_association_t
+op_star
+)paren
+id|data
+suffix:semicolon
+id|sctp_generate_timeout_event
+c_func
+(paren
+id|asoc
+comma
+id|SCTP_EVENT_TIMEOUT_T5_SHUTDOWN_GUARD
+)paren
+suffix:semicolon
+)brace
+multiline_comment|/* sctp_generate_t5_shutdown_guard_event() */
 DECL|function|sctp_generate_autoclose_event
 r_void
 id|sctp_generate_autoclose_event
@@ -2645,6 +2714,8 @@ l_int|NULL
 comma
 l_int|NULL
 comma
+id|sctp_generate_t5_shutdown_guard_event
+comma
 id|sctp_generate_heartbeat_event
 comma
 id|sctp_generate_sack_event
@@ -2861,6 +2932,20 @@ id|SCTP_ULPEVENT
 c_func
 (paren
 id|event
+)paren
+)paren
+suffix:semicolon
+id|sctp_add_cmd_sf
+c_func
+(paren
+id|commands
+comma
+id|SCTP_CMD_NEW_STATE
+comma
+id|SCTP_STATE
+c_func
+(paren
+id|SCTP_STATE_CLOSED
 )paren
 )paren
 suffix:semicolon

@@ -5544,6 +5544,18 @@ id|q-&gt;direct_qlen
 op_assign
 id|sch-&gt;dev-&gt;tx_queue_len
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|q-&gt;direct_qlen
+OL
+l_int|2
+)paren
+multiline_comment|/* some devices have zero tx_queue_len */
+id|q-&gt;direct_qlen
+op_assign
+l_int|2
+suffix:semicolon
 id|q-&gt;timer.function
 op_assign
 id|htb_timer
@@ -7174,6 +7186,32 @@ id|cl
 )paren
 (brace
 multiline_comment|/* new class */
+multiline_comment|/* check for valid classid */
+r_if
+c_cond
+(paren
+op_logical_neg
+id|classid
+op_logical_or
+id|TC_H_MAJ
+c_func
+(paren
+id|classid
+op_xor
+id|sch-&gt;handle
+)paren
+op_logical_or
+id|htb_find
+c_func
+(paren
+id|classid
+comma
+id|sch
+)paren
+)paren
+r_goto
+id|failure
+suffix:semicolon
 multiline_comment|/* check maximal depth */
 r_if
 c_cond

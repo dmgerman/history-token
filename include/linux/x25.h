@@ -39,8 +39,9 @@ mdefine_line|#define&t;X25_PS2048&t;&t;11
 DECL|macro|X25_PS4096
 mdefine_line|#define&t;X25_PS4096&t;&t;12
 multiline_comment|/*&n; * An X.121 address, it is held as ASCII text, null terminated, up to 15&n; * digits and a null terminator.&n; */
-r_typedef
+DECL|struct|x25_address
 r_struct
+id|x25_address
 (brace
 DECL|member|x25_addr
 r_char
@@ -49,9 +50,7 @@ id|x25_addr
 l_int|16
 )braket
 suffix:semicolon
-DECL|typedef|x25_address
 )brace
-id|x25_address
 suffix:semicolon
 multiline_comment|/*&n; *&t;Linux X.25 Address structure, used for bind, and connect mostly.&n; */
 DECL|struct|sockaddr_x25
@@ -64,6 +63,7 @@ id|sx25_family
 suffix:semicolon
 multiline_comment|/* Must be AF_X25 */
 DECL|member|sx25_addr
+r_struct
 id|x25_address
 id|sx25_addr
 suffix:semicolon
@@ -116,6 +116,7 @@ r_struct
 id|x25_route_struct
 (brace
 DECL|member|address
+r_struct
 id|x25_address
 id|address
 suffix:semicolon
