@@ -20,6 +20,7 @@ r_void
 )paren
 suffix:semicolon
 r_extern
+r_void
 id|s3c2410_init_time
 c_func
 (paren

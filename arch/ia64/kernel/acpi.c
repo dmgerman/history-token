@@ -926,12 +926,11 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/* Hook from generic ACPI tables.c */
-DECL|function|acpi_madt_oem_check
+r_static
 r_void
 id|__init
+DECL|function|acpi_madt_oem_check
 id|acpi_madt_oem_check
-c_func
 (paren
 r_char
 op_star
@@ -970,16 +969,14 @@ l_int|6
 )paren
 )paren
 (brace
-multiline_comment|/* Unfortunatly ITC_DRIFT is not yet part of the&n;&t;&t; * official SAL spec, so the ITC_DRIFT bit is not&n;&t;&t; * set by the BIOS on this hardware.&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * Unfortunately ITC_DRIFT is not yet part of the&n;&t;&t; * official SAL spec, so the ITC_DRIFT bit is not&n;&t;&t; * set by the BIOS on this hardware.&n;&t;&t; */
 id|sal_platform_features
 op_or_assign
 id|IA64_SAL_PLATFORM_FEATURE_ITC_DRIFT
 suffix:semicolon
-multiline_comment|/*Start cyclone clock*/
 id|cyclone_setup
 c_func
 (paren
-l_int|0
 )paren
 suffix:semicolon
 )brace

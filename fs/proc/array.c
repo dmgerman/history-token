@@ -231,6 +231,8 @@ id|TASK_UNINTERRUPTIBLE
 op_or
 id|TASK_ZOMBIE
 op_or
+id|TASK_DEAD
+op_or
 id|TASK_STOPPED
 )paren
 suffix:semicolon
