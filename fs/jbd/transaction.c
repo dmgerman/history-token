@@ -1766,11 +1766,13 @@ comma
 op_amp
 id|bh-&gt;b_state
 comma
-id|BH_Lock
+id|BH_Unshadow
 )paren
 suffix:semicolon
 id|wait_queue_head_t
 op_star
+id|wqh
+suffix:semicolon
 id|wqh
 op_assign
 id|bit_waitqueue
@@ -1779,7 +1781,7 @@ c_func
 op_amp
 id|bh-&gt;b_state
 comma
-id|BH_Lock
+id|BH_Unshadow
 )paren
 suffix:semicolon
 id|JBUFFER_TRACE
