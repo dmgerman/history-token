@@ -35,10 +35,8 @@ suffix:semicolon
 DECL|variable|bridge
 r_static
 r_char
+op_star
 id|bridge
-(braket
-l_int|256
-)braket
 suffix:semicolon
 DECL|variable|bridge_busnr
 r_static

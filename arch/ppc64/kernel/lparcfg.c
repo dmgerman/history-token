@@ -174,7 +174,7 @@ id|cpu
 suffix:semicolon
 id|sum_purr
 op_add_assign
-id|lpaca-&gt;xLpPaca.xEmulatedTimeBase
+id|lpaca-&gt;lppaca.xEmulatedTimeBase
 suffix:semicolon
 macro_line|#ifdef PURR_DEBUG
 id|printk
@@ -185,7 +185,7 @@ l_string|&quot;get_purr for cpu (%d) has value (%ld) &bslash;n&quot;
 comma
 id|cpu
 comma
-id|lpaca-&gt;xLpPaca.xEmulatedTimeBase
+id|lpaca-&gt;lppaca.xEmulatedTimeBase
 )paren
 suffix:semicolon
 macro_line|#endif

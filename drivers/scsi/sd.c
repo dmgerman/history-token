@@ -4564,6 +4564,15 @@ l_int|11
 )braket
 suffix:semicolon
 )brace
+multiline_comment|/* Some devices return the total number of sectors, not the&n;&t; * highest sector number.  Make the necessary adjustment. */
+r_if
+c_cond
+(paren
+id|sdp-&gt;fix_capacity
+)paren
+op_decrement
+id|sdkp-&gt;capacity
+suffix:semicolon
 id|got_data
 suffix:colon
 r_if

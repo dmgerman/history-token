@@ -16,6 +16,7 @@ macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/compat.h&gt;
 macro_line|#include &lt;linux/mempolicy.h&gt;
+macro_line|#include &lt;asm/tlbflush.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 DECL|variable|policy_cache
 r_static
@@ -4260,31 +4261,25 @@ id|start
 op_ge
 id|p-&gt;end
 )paren
-(brace
 id|n
 op_assign
 id|n-&gt;rb_right
 suffix:semicolon
-)brace
 r_else
 r_if
 c_cond
 (paren
 id|end
-OL
+op_le
 id|p-&gt;start
 )paren
-(brace
 id|n
 op_assign
 id|n-&gt;rb_left
 suffix:semicolon
-)brace
 r_else
-(brace
 r_break
 suffix:semicolon
-)brace
 )brace
 r_if
 c_cond

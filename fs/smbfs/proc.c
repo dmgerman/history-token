@@ -9607,13 +9607,7 @@ op_assign
 (paren
 id|server-&gt;mnt-&gt;dir_mode
 op_amp
-(paren
-id|S_IRWXU
-op_or
-id|S_IRWXG
-op_or
-id|S_IRWXO
-)paren
+id|S_IRWXUGO
 )paren
 op_or
 id|S_IFDIR
@@ -9642,16 +9636,14 @@ op_assign
 (paren
 id|server-&gt;mnt-&gt;file_mode
 op_amp
+id|S_IRWXUGO
+)paren
+op_or
 (paren
-id|S_IRWXU
-op_or
-id|S_IRWXG
-op_or
-id|S_IRWXO
+id|fattr-&gt;f_mode
+op_amp
+id|S_IFMT
 )paren
-)paren
-op_or
-id|S_IFREG
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Interpret a long filename structure using the specified info level:&n; *   level 1 for anything below NT1 protocol&n; *   level 260 for NT1 protocol&n; *&n; * qname is filled with the decoded, and possibly translated, name&n; * fattr receives decoded attributes.&n; *&n; * Bugs Noted:&n; * (1) Win NT 4.0 appends a null byte to names and counts it in the length!&n; */

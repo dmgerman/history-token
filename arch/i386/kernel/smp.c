@@ -429,11 +429,15 @@ suffix:semicolon
 multiline_comment|/*&n; *&n; * The flush IPI assumes that a thread switch happens in this order:&n; * [cpu0: the cpu that switches]&n; * 1) switch_mm() either 1a) or 1b)&n; * 1a) thread switch to a different mm&n; * 1a1) cpu_clear(cpu, old_mm-&gt;cpu_vm_mask);&n; * &t;Stop ipi delivery for the old mm. This is not synchronized with&n; * &t;the other cpus, but smp_invalidate_interrupt ignore flush ipis&n; * &t;for the wrong mm, and in the worst case we perform a superflous&n; * &t;tlb flush.&n; * 1a2) set cpu_tlbstate to TLBSTATE_OK&n; * &t;Now the smp_invalidate_interrupt won&squot;t call leave_mm if cpu0&n; *&t;was in lazy tlb mode.&n; * 1a3) update cpu_tlbstate[].active_mm&n; * &t;Now cpu0 accepts tlb flushes for the new mm.&n; * 1a4) cpu_set(cpu, new_mm-&gt;cpu_vm_mask);&n; * &t;Now the other cpus will send tlb flush ipis.&n; * 1a4) change cr3.&n; * 1b) thread switch without mm change&n; *&t;cpu_tlbstate[].active_mm is correct, cpu0 already handles&n; *&t;flush ipis.&n; * 1b1) set cpu_tlbstate to TLBSTATE_OK&n; * 1b2) test_and_set the cpu bit in cpu_vm_mask.&n; * &t;Atomically set the bit [other cpus will start sending flush ipis],&n; * &t;and test the bit.&n; * 1b3) if the bit was 0: leave_mm was called, flush the tlb.&n; * 2) switch %%esp, ie current&n; *&n; * The interrupt must handle 2 special cases:&n; * - cr3 is changed before %%esp, ie. it cannot use current-&gt;{active_,}mm.&n; * - the cpu performs speculative tlb reads, i.e. even if the cpu only&n; *   runs in kernel space, the cpu could load tlb entries for user space&n; *   pages.&n; *&n; * The good news is that cpu_tlbstate is local to each cpu, no&n; * write/read ordering problems.&n; */
 multiline_comment|/*&n; * TLB flush IPI:&n; *&n; * 1) Flush the tlb entries if the cpu uses the mm that&squot;s being flushed.&n; * 2) Leave the mm if we are in the lazy tlb mode.&n; */
 DECL|function|smp_invalidate_interrupt
-id|asmlinkage
+id|fastcall
 r_void
 id|smp_invalidate_interrupt
+c_func
 (paren
-r_void
+r_struct
+id|pt_regs
+op_star
+id|regs
 )paren
 (brace
 r_int
@@ -1443,12 +1447,15 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * Reschedule call back. Nothing to do,&n; * all the work is done automatically when&n; * we return from the interrupt.&n; */
 DECL|function|smp_reschedule_interrupt
-id|asmlinkage
+id|fastcall
 r_void
 id|smp_reschedule_interrupt
 c_func
 (paren
-r_void
+r_struct
+id|pt_regs
+op_star
+id|regs
 )paren
 (brace
 id|ack_APIC_irq
@@ -1458,12 +1465,15 @@ c_func
 suffix:semicolon
 )brace
 DECL|function|smp_call_function_interrupt
-id|asmlinkage
+id|fastcall
 r_void
 id|smp_call_function_interrupt
 c_func
 (paren
-r_void
+r_struct
+id|pt_regs
+op_star
+id|regs
 )paren
 (brace
 r_void

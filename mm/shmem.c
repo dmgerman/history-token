@@ -5891,13 +5891,6 @@ op_amp
 id|info-&gt;lock
 )paren
 suffix:semicolon
-id|mpol_shared_policy_init
-c_func
-(paren
-op_amp
-id|info-&gt;policy
-)paren
-suffix:semicolon
 id|INIT_LIST_HEAD
 c_func
 (paren
@@ -5945,6 +5938,13 @@ op_assign
 op_amp
 id|shmem_file_operations
 suffix:semicolon
+id|mpol_shared_policy_init
+c_func
+(paren
+op_amp
+id|info-&gt;policy
+)paren
+suffix:semicolon
 r_break
 suffix:semicolon
 r_case
@@ -5975,6 +5975,14 @@ suffix:semicolon
 r_case
 id|S_IFLNK
 suffix:colon
+multiline_comment|/*&n;&t;&t;&t; * Must not load anything in the rbtree,&n;&t;&t;&t; * mpol_free_shared_policy will not be called.&n;&t;&t;&t; */
+id|mpol_shared_policy_init
+c_func
+(paren
+op_amp
+id|info-&gt;policy
+)paren
+suffix:semicolon
 r_break
 suffix:semicolon
 )brace
@@ -9348,6 +9356,19 @@ op_star
 id|inode
 )paren
 (brace
+r_if
+c_cond
+(paren
+(paren
+id|inode-&gt;i_mode
+op_amp
+id|S_IFMT
+)paren
+op_eq
+id|S_IFREG
+)paren
+(brace
+multiline_comment|/* only struct inode is valid if it&squot;s an inline symlink */
 id|mpol_free_shared_policy
 c_func
 (paren
@@ -9361,6 +9382,7 @@ op_member_access_from_pointer
 id|policy
 )paren
 suffix:semicolon
+)brace
 id|kmem_cache_free
 c_func
 (paren

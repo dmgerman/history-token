@@ -3715,12 +3715,14 @@ multiline_comment|/*&n;&t; * We take the &squot;long&squot; return path, and the
 )brace
 multiline_comment|/*&n; * Local APIC timer interrupt. This is the most natural way for doing&n; * local interrupts, but local timer interrupts can be emulated by&n; * broadcast interrupts too. [in case the hw doesn&squot;t support APIC timers]&n; *&n; * [ if a single-CPU system runs an SMP kernel then we call the local&n; *   interrupt as well. Thus we cannot inline the local irq ... ]&n; */
 DECL|function|smp_apic_timer_interrupt
+id|fastcall
 r_void
 id|smp_apic_timer_interrupt
 c_func
 (paren
 r_struct
 id|pt_regs
+op_star
 id|regs
 )paren
 (brace
@@ -3756,7 +3758,6 @@ suffix:semicolon
 id|smp_local_timer_interrupt
 c_func
 (paren
-op_amp
 id|regs
 )paren
 suffix:semicolon
@@ -3768,12 +3769,15 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * This interrupt should _never_ happen with our APIC/SMP architecture&n; */
 DECL|function|smp_spurious_interrupt
-id|asmlinkage
+id|fastcall
 r_void
 id|smp_spurious_interrupt
 c_func
 (paren
-r_void
+r_struct
+id|pt_regs
+op_star
+id|regs
 )paren
 (brace
 r_int
@@ -3846,12 +3850,15 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * This interrupt should never happen with our APIC/SMP architecture&n; */
 DECL|function|smp_error_interrupt
-id|asmlinkage
+id|fastcall
 r_void
 id|smp_error_interrupt
 c_func
 (paren
-r_void
+r_struct
+id|pt_regs
+op_star
+id|regs
 )paren
 (brace
 r_int

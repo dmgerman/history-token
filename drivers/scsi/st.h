@@ -245,9 +245,7 @@ DECL|member|drv_file
 r_int
 id|drv_file
 suffix:semicolon
-DECL|variable|ST_partstat
 )brace
-id|ST_partstat
 suffix:semicolon
 DECL|macro|ST_NBR_PARTITIONS
 mdefine_line|#define ST_NBR_PARTITIONS 4
