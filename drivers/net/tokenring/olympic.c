@@ -10439,7 +10439,6 @@ c_func
 r_void
 )paren
 (brace
-r_return
 id|pci_unregister_driver
 c_func
 (paren
