@@ -7,13 +7,12 @@ r_int
 id|use_cyclone
 suffix:semicolon
 r_extern
-r_int
+r_void
 id|__init
 id|cyclone_setup
 c_func
 (paren
-r_char
-op_star
+r_void
 )paren
 suffix:semicolon
 macro_line|#else&t;/* CONFIG_IA64_CYCLONE */
@@ -26,9 +25,7 @@ r_void
 id|cyclone_setup
 c_func
 (paren
-r_char
-op_star
-id|s
+r_void
 )paren
 (brace
 id|printk

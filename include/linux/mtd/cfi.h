@@ -1,4 +1,4 @@
-multiline_comment|/* Common Flash Interface structures &n; * See http://support.intel.com/design/flash/technote/index.htm&n; * $Id: cfi.h,v 1.44 2004/07/13 22:32:52 dwmw2 Exp $&n; */
+multiline_comment|/* Common Flash Interface structures &n; * See http://support.intel.com/design/flash/technote/index.htm&n; * $Id: cfi.h,v 1.45 2004/07/20 02:44:27 dwmw2 Exp $&n; */
 macro_line|#ifndef __MTD_CFI_H__
 DECL|macro|__MTD_CFI_H__
 mdefine_line|#define __MTD_CFI_H__
@@ -1062,7 +1062,6 @@ r_int
 id|us
 )paren
 (brace
-macro_line|#if LINUX_VERSION_CODE &gt;= KERNEL_VERSION(2,2,0)
 r_int
 r_int
 id|t
@@ -1094,7 +1093,6 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
-macro_line|#endif
 id|udelay
 c_func
 (paren
