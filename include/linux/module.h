@@ -349,10 +349,10 @@ DECL|struct|module_sect_attr
 r_struct
 id|module_sect_attr
 (brace
-DECL|member|attr
+DECL|member|mattr
 r_struct
-id|attribute
-id|attr
+id|module_attribute
+id|mattr
 suffix:semicolon
 DECL|member|name
 r_char
@@ -368,14 +368,14 @@ id|address
 suffix:semicolon
 )brace
 suffix:semicolon
-DECL|struct|module_sections
+DECL|struct|module_sect_attrs
 r_struct
-id|module_sections
+id|module_sect_attrs
 (brace
-DECL|member|kobj
+DECL|member|grp
 r_struct
-id|kobject
-id|kobj
+id|attribute_group
+id|grp
 suffix:semicolon
 DECL|member|attrs
 r_struct
@@ -590,7 +590,7 @@ suffix:semicolon
 multiline_comment|/* Section attributes */
 DECL|member|sect_attrs
 r_struct
-id|module_sections
+id|module_sect_attrs
 op_star
 id|sect_attrs
 suffix:semicolon
