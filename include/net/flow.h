@@ -3,6 +3,7 @@ macro_line|#ifndef _NET_FLOW_H
 DECL|macro|_NET_FLOW_H
 mdefine_line|#define _NET_FLOW_H
 macro_line|#include &lt;linux/in6.h&gt;
+macro_line|#include &lt;asm/atomic.h&gt;
 DECL|struct|flowi
 r_struct
 id|flowi

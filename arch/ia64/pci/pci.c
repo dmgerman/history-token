@@ -902,6 +902,15 @@ id|status
 r_if
 c_cond
 (paren
+op_logical_neg
+id|addr.address_length
+)paren
+r_return
+id|AE_OK
+suffix:semicolon
+r_if
+c_cond
+(paren
 id|addr.resource_type
 op_eq
 id|ACPI_MEMORY_RANGE

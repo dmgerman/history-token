@@ -1493,13 +1493,10 @@ c_func
 id|new_len
 )paren
 suffix:semicolon
-multiline_comment|/* Don&squot;t allow the degenerate cases */
+multiline_comment|/*&n;&t; * We allow a zero old-len as a special case&n;&t; * for DOS-emu &quot;duplicate shm area&quot; thing. But&n;&t; * a zero new-len is nonsensical.&n;&t; */
 r_if
 c_cond
 (paren
-op_logical_neg
-id|old_len
-op_logical_or
 op_logical_neg
 id|new_len
 )paren

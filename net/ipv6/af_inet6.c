@@ -3250,11 +3250,6 @@ r_goto
 id|proc_if6_fail
 suffix:semicolon
 macro_line|#endif
-id|ipv6_netdev_notif_init
-c_func
-(paren
-)paren
-suffix:semicolon
 id|ipv6_packet_init
 c_func
 (paren
@@ -3460,11 +3455,6 @@ suffix:semicolon
 macro_line|#endif
 multiline_comment|/* Cleanup code parts. */
 id|sit_cleanup
-c_func
-(paren
-)paren
-suffix:semicolon
-id|ipv6_netdev_notif_cleanup
 c_func
 (paren
 )paren

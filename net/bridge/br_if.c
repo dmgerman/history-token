@@ -1026,9 +1026,11 @@ id|i
 op_assign
 l_int|0
 suffix:semicolon
-id|rtnl_shlock
+id|read_lock
 c_func
 (paren
+op_amp
+id|dev_base_lock
 )paren
 suffix:semicolon
 r_for
@@ -1065,9 +1067,11 @@ op_assign
 id|dev-&gt;ifindex
 suffix:semicolon
 )brace
-id|rtnl_shunlock
+id|read_unlock
 c_func
 (paren
+op_amp
+id|dev_base_lock
 )paren
 suffix:semicolon
 r_return

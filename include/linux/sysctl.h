@@ -1615,6 +1615,11 @@ DECL|enumerator|NET_IPV6_MAX_DESYNC_FACTOR
 id|NET_IPV6_MAX_DESYNC_FACTOR
 op_assign
 l_int|15
+comma
+DECL|enumerator|NET_IPV6_MAX_ADDRESSES
+id|NET_IPV6_MAX_ADDRESSES
+op_assign
+l_int|16
 )brace
 suffix:semicolon
 multiline_comment|/* /proc/sys/net/ipv6/icmp */

@@ -1,5 +1,6 @@
 multiline_comment|/*&n; * linux/arch/ia64/kernel/irq.c&n; *&n; * Copyright (C) 1998-2001 Hewlett-Packard Co&n; *&t;Stephane Eranian &lt;eranian@hpl.hp.com&gt;&n; *&t;David Mosberger-Tang &lt;davidm@hpl.hp.com&gt;&n; *&n; *  6/10/99: Updated to bring in sync with x86 version to facilitate&n; *&t;     support for SMP and different interrupt controllers.&n; *&n; * 09/15/00 Goutham Rao &lt;goutham.rao@intel.com&gt; Implemented pci_irq_to_vector&n; *                      PCI to vector allocation routine.&n; */
 macro_line|#include &lt;linux/config.h&gt;
+macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/jiffies.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
@@ -80,6 +81,13 @@ l_int|0x22
 comma
 l_int|0x21
 )brace
+suffix:semicolon
+DECL|variable|isa_irq_to_vector_map
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|isa_irq_to_vector_map
+)paren
 suffix:semicolon
 r_int
 DECL|function|ia64_alloc_vector

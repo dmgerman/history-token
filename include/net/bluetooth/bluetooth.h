@@ -26,7 +26,9 @@ mdefine_line|#define BTPROTO_SCO   &t;2
 DECL|macro|BTPROTO_RFCOMM
 mdefine_line|#define BTPROTO_RFCOMM&t;3
 DECL|macro|BTPROTO_BNEP
-mdefine_line|#define BTPROTO_BNEP    4
+mdefine_line|#define BTPROTO_BNEP&t;4
+DECL|macro|BTPROTO_CMTP
+mdefine_line|#define BTPROTO_CMTP&t;5
 DECL|macro|SOL_HCI
 mdefine_line|#define SOL_HCI     0
 DECL|macro|SOL_L2CAP

@@ -32,6 +32,9 @@ DECL|macro|page_to_pfn
 mdefine_line|#define page_to_pfn(page)&t;((unsigned long) (page - vmem_map))
 DECL|macro|pfn_to_page
 mdefine_line|#define pfn_to_page(pfn)&t;(vmem_map + (pfn))
+macro_line|#else /* CONFIG_DISCONTIGMEM */
+DECL|macro|NR_MEMBLKS
+macro_line|# define NR_MEMBLKS&t;&t;1
 macro_line|#endif /* CONFIG_DISCONTIGMEM */
 macro_line|#endif /* _ASM_IA64_MMZONE_H */
 eof
