@@ -395,7 +395,7 @@ c_cond
 (paren
 id|e-&gt;ethproto
 op_ne
-id|__constant_htons
+id|htons
 c_func
 (paren
 id|ETH_P_IP

@@ -47,6 +47,7 @@ multiline_comment|/* sigcontext pointer */
 multiline_comment|/*&n;&t; * End of architected state.&n;&t; */
 DECL|member|handler
 r_void
+id|__user
 op_star
 id|handler
 suffix:semicolon

@@ -302,10 +302,13 @@ op_star
 id|data
 )paren
 (brace
+multiline_comment|/*&n;&t; * don&squot;t put large structures on the stack, we are&n;&t; * serialized through the appldata_ops_lock and can use static&n;&t; */
+r_static
 r_struct
 id|sysinfo
 id|val
 suffix:semicolon
+r_static
 r_struct
 id|page_state
 id|ps

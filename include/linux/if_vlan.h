@@ -11,9 +11,6 @@ r_struct
 id|net_device
 suffix:semicolon
 r_struct
-id|sk_buff
-suffix:semicolon
-r_struct
 id|packet_type
 suffix:semicolon
 r_struct
@@ -82,6 +79,32 @@ suffix:semicolon
 multiline_comment|/* packet type ID field (or len) */
 )brace
 suffix:semicolon
+macro_line|#include &lt;linux/skbuff.h&gt;
+DECL|function|vlan_eth_hdr
+r_static
+r_inline
+r_struct
+id|vlan_ethhdr
+op_star
+id|vlan_eth_hdr
+c_func
+(paren
+r_const
+r_struct
+id|sk_buff
+op_star
+id|skb
+)paren
+(brace
+r_return
+(paren
+r_struct
+id|vlan_ethhdr
+op_star
+)paren
+id|skb-&gt;mac.raw
+suffix:semicolon
+)brace
 DECL|struct|vlan_hdr
 r_struct
 id|vlan_hdr
@@ -483,7 +506,13 @@ op_logical_neg
 id|memcmp
 c_func
 (paren
-id|skb-&gt;mac.ethernet-&gt;h_dest
+id|eth_hdr
+c_func
+(paren
+id|skb
+)paren
+op_member_access_from_pointer
+id|h_dest
 comma
 id|skb-&gt;dev-&gt;dev_addr
 comma

@@ -1398,6 +1398,20 @@ r_return
 id|err
 suffix:semicolon
 )brace
+DECL|variable|um_request_irq
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|um_request_irq
+)paren
+suffix:semicolon
+DECL|variable|reactivate_fd
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|reactivate_fd
+)paren
+suffix:semicolon
 multiline_comment|/* this was setup_x86_irq but it seems pretty generic */
 DECL|function|setup_irq
 r_int

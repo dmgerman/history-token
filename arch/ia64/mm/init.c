@@ -170,7 +170,7 @@ r_int
 id|pgd_alloc_one_fast
 c_func
 (paren
-l_int|0
+l_int|NULL
 )paren
 )paren
 suffix:semicolon
@@ -189,7 +189,7 @@ r_int
 id|pmd_alloc_one_fast
 c_func
 (paren
-l_int|0
+l_int|NULL
 comma
 l_int|0
 )paren
@@ -1889,6 +1889,7 @@ id|byte
 comma
 (paren
 r_char
+id|__user
 op_star
 )paren
 id|pg
@@ -1934,6 +1935,7 @@ id|byte
 comma
 (paren
 r_char
+id|__user
 op_star
 )paren
 (paren

@@ -483,19 +483,11 @@ id|lapic-&gt;address
 id|iounmap
 c_func
 (paren
-(paren
-r_void
-op_star
-)paren
 id|ipi_base_addr
 )paren
 suffix:semicolon
 id|ipi_base_addr
 op_assign
-(paren
-r_int
-r_int
-)paren
 id|ioremap
 c_func
 (paren
@@ -1056,10 +1048,6 @@ id|acpi_madt-&gt;lapic_address
 )paren
 id|ipi_base_addr
 op_assign
-(paren
-r_int
-r_int
-)paren
 id|ioremap
 c_func
 (paren
@@ -1073,7 +1061,7 @@ c_func
 (paren
 id|KERN_INFO
 id|PREFIX
-l_string|&quot;Local APIC address 0x%lx&bslash;n&quot;
+l_string|&quot;Local APIC address %p&bslash;n&quot;
 comma
 id|ipi_base_addr
 )paren

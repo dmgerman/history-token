@@ -234,6 +234,8 @@ suffix:semicolon
 r_int
 r_int
 id|initrd_loc
+op_assign
+l_int|0
 comma
 id|TotalMemory
 op_assign

@@ -324,14 +324,14 @@ c_func
 (paren
 id|insn_addr
 comma
-l_int|0x01fffefe000
+l_int|0x01fffefe000UL
 comma
 (paren
 (paren
 (paren
 id|val
 op_amp
-l_int|0x8000000000000000
+l_int|0x8000000000000000UL
 )paren
 op_rshift
 l_int|27
@@ -342,7 +342,7 @@ op_or
 (paren
 id|val
 op_amp
-l_int|0x0000000000200000
+l_int|0x0000000000200000UL
 )paren
 op_lshift
 l_int|0
@@ -353,7 +353,7 @@ op_or
 (paren
 id|val
 op_amp
-l_int|0x00000000001f0000
+l_int|0x00000000001f0000UL
 )paren
 op_lshift
 l_int|6
@@ -364,7 +364,7 @@ op_or
 (paren
 id|val
 op_amp
-l_int|0x000000000000ff80
+l_int|0x000000000000ff80UL
 )paren
 op_lshift
 l_int|20
@@ -375,7 +375,7 @@ op_or
 (paren
 id|val
 op_amp
-l_int|0x000000000000007f
+l_int|0x000000000000007fUL
 )paren
 op_lshift
 l_int|13
@@ -391,7 +391,7 @@ id|insn_addr
 op_minus
 l_int|1
 comma
-l_int|0x1ffffffffff
+l_int|0x1ffffffffffUL
 comma
 id|val
 op_rshift
@@ -415,14 +415,14 @@ c_func
 (paren
 id|insn_addr
 comma
-l_int|0x011ffffe000
+l_int|0x011ffffe000UL
 comma
 (paren
 (paren
 (paren
 id|val
 op_amp
-l_int|0x0800000000000000
+l_int|0x0800000000000000UL
 )paren
 op_rshift
 l_int|23
@@ -433,7 +433,7 @@ op_or
 (paren
 id|val
 op_amp
-l_int|0x00000000000fffff
+l_int|0x00000000000fffffUL
 )paren
 op_lshift
 l_int|13
@@ -449,7 +449,7 @@ id|insn_addr
 op_minus
 l_int|1
 comma
-l_int|0x1fffffffffc
+l_int|0x1fffffffffcUL
 comma
 id|val
 op_rshift
@@ -672,7 +672,7 @@ id|wp
 l_int|0
 )braket
 op_assign
-l_int|0x0000000100000000
+l_int|0x0000000100000000UL
 suffix:semicolon
 multiline_comment|/* nop.m 0; nop.i 0; nop.i 0 */
 id|wp
@@ -680,14 +680,14 @@ id|wp
 l_int|1
 )braket
 op_assign
-l_int|0x0004000000000200
+l_int|0x0004000000000200UL
 suffix:semicolon
 id|wp
 (braket
 l_int|2
 )braket
 op_assign
-l_int|0x0000000100000011
+l_int|0x0000000100000011UL
 suffix:semicolon
 multiline_comment|/* nop.m 0; nop.i 0; br.ret.sptk.many b6 */
 id|wp
@@ -695,7 +695,7 @@ id|wp
 l_int|3
 )braket
 op_assign
-l_int|0x0084006880000200
+l_int|0x0084006880000200UL
 suffix:semicolon
 id|ia64_fc
 c_func

@@ -36,7 +36,7 @@ id|blkp
 suffix:semicolon
 )brace
 suffix:semicolon
-multiline_comment|/* &n; * Use this to get to a cpu&squot;s version of the per-cpu object allocated using&n; * alloc_percpu.  If you want to get &quot;this cpu&squot;s version&quot;, maybe you want&n; * to use get_cpu_ptr... &n; */
+multiline_comment|/* &n; * Use this to get to a cpu&squot;s version of the per-cpu object allocated using&n; * alloc_percpu.  Non-atomic access to the current CPU&squot;s version should&n; * probably be combined with get_cpu()/put_cpu().&n; */
 DECL|macro|per_cpu_ptr
 mdefine_line|#define per_cpu_ptr(ptr, cpu)                   &bslash;&n;({                                              &bslash;&n;        struct percpu_data *__p = (struct percpu_data *)~(unsigned long)(ptr); &bslash;&n;        (__typeof__(ptr))__p-&gt;ptrs[(cpu)];&t;&bslash;&n;})
 r_extern

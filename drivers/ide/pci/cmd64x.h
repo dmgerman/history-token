@@ -15,10 +15,6 @@ macro_line|#else
 DECL|macro|cmdprintk
 mdefine_line|#define cmdprintk(x...)
 macro_line|#endif
-macro_line|#ifndef SPLIT_BYTE
-DECL|macro|SPLIT_BYTE
-mdefine_line|#define SPLIT_BYTE(B,H,L)&t;((H)=(B&gt;&gt;4), (L)=(B-((B&gt;&gt;4)&lt;&lt;4)))
-macro_line|#endif
 multiline_comment|/*&n; * CMD64x specific registers definition.&n; */
 DECL|macro|CFR
 mdefine_line|#define CFR&t;&t;0x50

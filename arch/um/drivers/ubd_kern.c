@@ -1393,10 +1393,11 @@ id|intr_count
 op_assign
 l_int|0
 suffix:semicolon
-DECL|function|ubd_finish
+multiline_comment|/* call ubd_finish if you need to serialize */
+DECL|function|__ubd_finish
 r_static
 r_void
-id|ubd_finish
+id|__ubd_finish
 c_func
 (paren
 r_struct
@@ -1417,26 +1418,12 @@ c_cond
 id|error
 )paren
 (brace
-id|spin_lock
-c_func
-(paren
-op_amp
-id|ubd_io_lock
-)paren
-suffix:semicolon
 id|end_request
 c_func
 (paren
 id|req
 comma
 l_int|0
-)paren
-suffix:semicolon
-id|spin_unlock
-c_func
-(paren
-op_amp
-id|ubd_io_lock
 )paren
 suffix:semicolon
 r_return
@@ -1468,6 +1455,31 @@ id|req-&gt;current_nr_sectors
 op_assign
 l_int|0
 suffix:semicolon
+id|end_request
+c_func
+(paren
+id|req
+comma
+l_int|1
+)paren
+suffix:semicolon
+)brace
+DECL|function|ubd_finish
+r_static
+r_inline
+r_void
+id|ubd_finish
+c_func
+(paren
+r_struct
+id|request
+op_star
+id|req
+comma
+r_int
+id|error
+)paren
+(brace
 id|spin_lock
 c_func
 (paren
@@ -1475,12 +1487,12 @@ op_amp
 id|ubd_io_lock
 )paren
 suffix:semicolon
-id|end_request
+id|__ubd_finish
 c_func
 (paren
 id|req
 comma
-l_int|1
+id|error
 )paren
 suffix:semicolon
 id|spin_unlock
@@ -1491,6 +1503,7 @@ id|ubd_io_lock
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/* Called without ubd_io_lock held */
 DECL|function|ubd_handler
 r_static
 r_void
@@ -3322,6 +3335,7 @@ suffix:semicolon
 r_int
 id|err
 suffix:semicolon
+multiline_comment|/* Set by CONFIG_BLK_DEV_UBD_SYNC or ubd=sync.*/
 r_if
 c_cond
 (paren
@@ -3332,12 +3346,10 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;ubd : Synchronous mode&bslash;n&quot;
+l_string|&quot;ubd: Synchronous mode&bslash;n&quot;
 )paren
 suffix:semicolon
-r_return
-l_int|0
-suffix:semicolon
+multiline_comment|/* Letting ubd=sync be like using ubd#s= instead of ubd#= is&n;&t;&t; * enough. So use anyway the io thread. */
 )brace
 id|stack
 op_assign
@@ -4383,6 +4395,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+multiline_comment|/* Called with ubd_io_lock held */
 DECL|function|prepare_request
 r_static
 r_int
@@ -4459,26 +4472,12 @@ comma
 id|disk-&gt;disk_name
 )paren
 suffix:semicolon
-id|spin_lock
-c_func
-(paren
-op_amp
-id|ubd_io_lock
-)paren
-suffix:semicolon
 id|end_request
 c_func
 (paren
 id|req
 comma
 l_int|0
-)paren
-suffix:semicolon
-id|spin_unlock
-c_func
-(paren
-op_amp
-id|ubd_io_lock
 )paren
 suffix:semicolon
 r_return
@@ -4710,6 +4709,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+multiline_comment|/* Called with ubd_io_lock held */
 DECL|function|do_ubd_request
 r_static
 r_void
@@ -4785,7 +4785,7 @@ op_amp
 id|io_req
 )paren
 suffix:semicolon
-id|ubd_finish
+id|__ubd_finish
 c_func
 (paren
 id|req

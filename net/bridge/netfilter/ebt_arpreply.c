@@ -123,7 +123,7 @@ c_cond
 (paren
 id|ap-&gt;ar_op
 op_ne
-id|__constant_htons
+id|htons
 c_func
 (paren
 id|ARPOP_REQUEST
@@ -135,7 +135,7 @@ id|ETH_ALEN
 op_logical_or
 id|ap-&gt;ar_pro
 op_ne
-id|__constant_htons
+id|htons
 c_func
 (paren
 id|ETH_P_IP
@@ -359,7 +359,7 @@ c_cond
 (paren
 id|e-&gt;ethproto
 op_ne
-id|__constant_htons
+id|htons
 c_func
 (paren
 id|ETH_P_ARP

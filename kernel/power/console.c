@@ -15,6 +15,7 @@ r_static
 r_int
 id|orig_loglevel
 suffix:semicolon
+macro_line|#ifdef SUSPEND_CONSOLE
 DECL|variable|orig_fgconsole
 DECL|variable|orig_kmsg
 r_static
@@ -23,6 +24,7 @@ id|orig_fgconsole
 comma
 id|orig_kmsg
 suffix:semicolon
+macro_line|#endif
 DECL|function|pm_prepare_console
 r_int
 id|pm_prepare_console
@@ -141,6 +143,10 @@ id|release_console_sem
 c_func
 (paren
 )paren
+suffix:semicolon
+id|kmsg_redirect
+op_assign
+id|orig_kmsg
 suffix:semicolon
 macro_line|#endif
 r_return
