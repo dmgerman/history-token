@@ -2111,7 +2111,7 @@ c_cond
 id|adap-&gt;dev.parent
 op_eq
 op_amp
-id|legacy_bus
+id|platform_bus
 )paren
 id|i2c_dev-&gt;class_dev.dev
 op_assign
