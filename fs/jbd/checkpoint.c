@@ -212,12 +212,6 @@ id|JFS_ABORT
 )paren
 r_return
 suffix:semicolon
-id|unlock_journal
-c_func
-(paren
-id|journal
-)paren
-suffix:semicolon
 id|spin_unlock
 c_func
 (paren
@@ -230,12 +224,6 @@ c_func
 (paren
 op_amp
 id|journal-&gt;j_checkpoint_sem
-)paren
-suffix:semicolon
-id|lock_journal
-c_func
-(paren
-id|journal
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t;&t; * Test again, another process may have checkpointed while we&n;&t;&t; * were waiting for the checkpoint lock&n;&t;&t; */
@@ -442,12 +430,6 @@ op_amp
 id|journal-&gt;j_list_lock
 )paren
 suffix:semicolon
-id|unlock_journal
-c_func
-(paren
-id|journal
-)paren
-suffix:semicolon
 id|wait_on_buffer
 c_func
 (paren
@@ -535,12 +517,6 @@ c_func
 id|journal
 comma
 id|transaction
-)paren
-suffix:semicolon
-id|unlock_journal
-c_func
-(paren
-id|journal
 )paren
 suffix:semicolon
 id|log_wait_commit
@@ -643,12 +619,6 @@ id|ret
 suffix:semicolon
 id|out_return_1
 suffix:colon
-id|lock_journal
-c_func
-(paren
-id|journal
-)paren
-suffix:semicolon
 id|spin_lock
 c_func
 (paren

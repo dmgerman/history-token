@@ -830,7 +830,7 @@ id|t_jcb
 suffix:semicolon
 )brace
 suffix:semicolon
-multiline_comment|/**&n; * struct journal_s - The journal_s type is the concrete type associated with&n; *     journal_t.&n; * @j_flags:  General journaling state flags&n; * @j_errno:  Is there an outstanding uncleared error on the journal (from a&n; *     prior abort)? &n; * @j_sb_buffer: First part of superblock buffer&n; * @j_superblock: Second part of superblock buffer&n; * @j_format_version: Version of the superblock format&n; * @j_barrier_count:  Number of processes waiting to create a barrier lock&n; * @j_barrier: The barrier lock itself&n; * @j_running_transaction: The current running transaction..&n; * @j_committing_transaction: the transaction we are pushing to disk&n; * @j_checkpoint_transactions: a linked circular list of all transactions&n; *  waiting for checkpointing&n; * @j_wait_transaction_locked: Wait queue for waiting for a locked transaction&n; *  to start committing, or for a barrier lock to be released&n; * @j_wait_logspace: Wait queue for waiting for checkpointing to complete&n; * @j_wait_done_commit: Wait queue for waiting for commit to complete &n; * @j_wait_checkpoint:  Wait queue to trigger checkpointing&n; * @j_wait_commit: Wait queue to trigger commit&n; * @j_wait_updates: Wait queue to wait for updates to complete&n; * @j_checkpoint_sem: Semaphore for locking against concurrent checkpoints&n; * @j_sem: The main journal lock, used by lock_journal() &n; * @j_head: Journal head - identifies the first unused block in the journal&n; * @j_tail: Journal tail - identifies the oldest still-used block in the&n; *  journal.&n; * @j_free: Journal free - how many free blocks are there in the journal?&n; * @j_first: The block number of the first usable block &n; * @j_last: The block number one beyond the last usable block&n; * @j_dev: Device where we store the journal&n; * @j_blocksize: blocksize for the location where we store the journal.&n; * @j_blk_offset: starting block offset for into the device where we store the&n; *     journal&n; * @j_fs_dev: Device which holds the client fs.  For internal journal this will&n; *     be equal to j_dev&n; * @j_maxlen: Total maximum capacity of the journal region on disk.&n; * @j_inode: Optional inode where we store the journal.  If present, all journal&n; *     block numbers are mapped into this inode via bmap().&n; * @j_tail_sequence:  Sequence number of the oldest transaction in the log &n; * @j_transaction_sequence: Sequence number of the next transaction to grant&n; * @j_commit_sequence: Sequence number of the most recently committed&n; *  transaction&n; * @j_commit_request: Sequence number of the most recent transaction wanting&n; *     commit &n; * @j_uuid: Uuid of client object.&n; * @j_task: Pointer to the current commit thread for this journal&n; * @j_max_transaction_buffers:  Maximum number of metadata buffers to allow in a&n; *     single compound commit transaction&n; * @j_commit_interval: What is the maximum transaction lifetime before we begin&n; *  a commit?&n; * @j_commit_timer:  The timer used to wakeup the commit thread&n; * @j_commit_timer_active: Timer flag&n; * @j_revoke: The revoke table - maintains the list of revoked blocks in the&n; *     current transaction.&n; */
+multiline_comment|/**&n; * struct journal_s - The journal_s type is the concrete type associated with&n; *     journal_t.&n; * @j_flags:  General journaling state flags&n; * @j_errno:  Is there an outstanding uncleared error on the journal (from a&n; *     prior abort)? &n; * @j_sb_buffer: First part of superblock buffer&n; * @j_superblock: Second part of superblock buffer&n; * @j_format_version: Version of the superblock format&n; * @j_barrier_count:  Number of processes waiting to create a barrier lock&n; * @j_barrier: The barrier lock itself&n; * @j_running_transaction: The current running transaction..&n; * @j_committing_transaction: the transaction we are pushing to disk&n; * @j_checkpoint_transactions: a linked circular list of all transactions&n; *  waiting for checkpointing&n; * @j_wait_transaction_locked: Wait queue for waiting for a locked transaction&n; *  to start committing, or for a barrier lock to be released&n; * @j_wait_logspace: Wait queue for waiting for checkpointing to complete&n; * @j_wait_done_commit: Wait queue for waiting for commit to complete &n; * @j_wait_checkpoint:  Wait queue to trigger checkpointing&n; * @j_wait_commit: Wait queue to trigger commit&n; * @j_wait_updates: Wait queue to wait for updates to complete&n; * @j_checkpoint_sem: Semaphore for locking against concurrent checkpoints&n; * @j_head: Journal head - identifies the first unused block in the journal&n; * @j_tail: Journal tail - identifies the oldest still-used block in the&n; *  journal.&n; * @j_free: Journal free - how many free blocks are there in the journal?&n; * @j_first: The block number of the first usable block &n; * @j_last: The block number one beyond the last usable block&n; * @j_dev: Device where we store the journal&n; * @j_blocksize: blocksize for the location where we store the journal.&n; * @j_blk_offset: starting block offset for into the device where we store the&n; *     journal&n; * @j_fs_dev: Device which holds the client fs.  For internal journal this will&n; *     be equal to j_dev&n; * @j_maxlen: Total maximum capacity of the journal region on disk.&n; * @j_inode: Optional inode where we store the journal.  If present, all journal&n; *     block numbers are mapped into this inode via bmap().&n; * @j_tail_sequence:  Sequence number of the oldest transaction in the log &n; * @j_transaction_sequence: Sequence number of the next transaction to grant&n; * @j_commit_sequence: Sequence number of the most recently committed&n; *  transaction&n; * @j_commit_request: Sequence number of the most recent transaction wanting&n; *     commit &n; * @j_uuid: Uuid of client object.&n; * @j_task: Pointer to the current commit thread for this journal&n; * @j_max_transaction_buffers:  Maximum number of metadata buffers to allow in a&n; *     single compound commit transaction&n; * @j_commit_interval: What is the maximum transaction lifetime before we begin&n; *  a commit?&n; * @j_commit_timer:  The timer used to wakeup the commit thread&n; * @j_commit_timer_active: Timer flag&n; * @j_revoke: The revoke table - maintains the list of revoked blocks in the&n; *     current transaction.&n; */
 DECL|struct|journal_s
 r_struct
 id|journal_s
@@ -932,12 +932,6 @@ DECL|member|j_checkpoint_sem
 r_struct
 id|semaphore
 id|j_checkpoint_sem
-suffix:semicolon
-multiline_comment|/* The main journal lock, used by lock_journal() */
-DECL|member|j_sem
-r_struct
-id|semaphore
-id|j_sem
 suffix:semicolon
 multiline_comment|/*&n;&t; * Journal head: identifies the first unused block in the journal.&n;&t; * [j_state_lock]&n;&t; */
 DECL|member|j_head
@@ -1306,69 +1300,7 @@ id|journal_t
 op_star
 )paren
 suffix:semicolon
-multiline_comment|/*&n; * Journal locking.&n; *&n; * We need to lock the journal during transaction state changes so that&n; * nobody ever tries to take a handle on the running transaction while&n; * we are in the middle of moving it to the commit phase.  &n; *&n; * Note that the locking is completely interrupt unsafe.  We never touch&n; * journal structures from interrupts.&n; *&n; * In 2.2, the BKL was required for lock_journal.  This is no longer&n; * the case.&n; */
-DECL|function|lock_journal
-r_static
-r_inline
-r_void
-id|lock_journal
-c_func
-(paren
-id|journal_t
-op_star
-id|journal
-)paren
-(brace
-id|down
-c_func
-(paren
-op_amp
-id|journal-&gt;j_sem
-)paren
-suffix:semicolon
-)brace
-multiline_comment|/* This returns zero if we acquired the semaphore */
-DECL|function|try_lock_journal
-r_static
-r_inline
-r_int
-id|try_lock_journal
-c_func
-(paren
-id|journal_t
-op_star
-id|journal
-)paren
-(brace
-r_return
-id|down_trylock
-c_func
-(paren
-op_amp
-id|journal-&gt;j_sem
-)paren
-suffix:semicolon
-)brace
-DECL|function|unlock_journal
-r_static
-r_inline
-r_void
-id|unlock_journal
-c_func
-(paren
-id|journal_t
-op_star
-id|journal
-)paren
-(brace
-id|up
-c_func
-(paren
-op_amp
-id|journal-&gt;j_sem
-)paren
-suffix:semicolon
-)brace
+multiline_comment|/*&n; * Journal locking.&n; *&n; * We need to lock the journal during transaction state changes so that nobody&n; * ever tries to take a handle on the running transaction while we are in the&n; * middle of moving it to the commit phase.  j_state_lock does this.&n; *&n; * Note that the locking is completely interrupt unsafe.  We never touch&n; * journal structures from interrupts.&n; */
 DECL|function|journal_current_handle
 r_static
 r_inline
