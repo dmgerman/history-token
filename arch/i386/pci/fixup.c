@@ -551,6 +551,17 @@ op_eq
 id|PCI_DEVICE_ID_VIA_8367_0
 )paren
 (brace
+multiline_comment|/* fix pci bus latency issues resulted by NB bios error&n;&t;&t;   it appears on bug free^Wreduced kt266x&squot;s bios forces&n;&t;&t;   NB latency to zero */
+id|pci_write_config_byte
+c_func
+(paren
+id|d
+comma
+id|PCI_LATENCY_TIMER
+comma
+l_int|0
+)paren
+suffix:semicolon
 id|where
 op_assign
 l_int|0x95
