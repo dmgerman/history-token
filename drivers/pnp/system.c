@@ -429,7 +429,7 @@ id|system_pnp_driver
 suffix:semicolon
 )brace
 DECL|variable|pnp_system_init
-id|core_initcall
+id|subsys_initcall
 c_func
 (paren
 id|pnp_system_init
