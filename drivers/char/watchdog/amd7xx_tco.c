@@ -1,6 +1,7 @@
 multiline_comment|/*&n; *&t;AMD 766/768 TCO Timer Driver&n; *&t;(c) Copyright 2002 Zwane Mwaikambo &lt;zwane@holomorphy.com&gt;&n; *&t;All Rights Reserved.&n; *&n; *&t;Parts from;&n; *&t;Hardware driver for the AMD 768 Random Number Generator (RNG)&n; *&t;(c) Copyright 2001 Red Hat Inc &lt;alan@redhat.com&gt;&n; *&n; *&t;This program is free software; you can redistribute it and/or&n; *&t;modify it under the terms of the GNU General Public License version 2&n; *&t;as published by the Free Software Foundation.&n; *&n; *&t;The author(s) of this software shall not be held liable for damages&n; *&t;of any nature resulting due to the use of this software. This&n; *&t;software is provided AS-IS with no warranties.&n; *&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
+macro_line|#include &lt;linux/moduleparam.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/miscdevice.h&gt;
 macro_line|#include &lt;linux/watchdog.h&gt;
@@ -92,12 +93,14 @@ r_static
 r_char
 id|expect_close
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|timeout
 comma
-l_string|&quot;i&quot;
+r_int
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -106,6 +109,41 @@ c_func
 id|timeout
 comma
 l_string|&quot;range is 0-38 seconds, default is 38&quot;
+)paren
+suffix:semicolon
+macro_line|#ifdef CONFIG_WATCHDOG_NOWAYOUT
+DECL|variable|nowayout
+r_static
+r_int
+id|nowayout
+op_assign
+l_int|1
+suffix:semicolon
+macro_line|#else
+DECL|variable|nowayout
+r_static
+r_int
+id|nowayout
+op_assign
+l_int|0
+suffix:semicolon
+macro_line|#endif
+id|module_param
+c_func
+(paren
+id|nowayout
+comma
+r_int
+comma
+l_int|0
+)paren
+suffix:semicolon
+id|MODULE_PARM_DESC
+c_func
+(paren
+id|nowayout
+comma
+l_string|&quot;Watchdog cannot be stopped once started (default=CONFIG_WATCHDOG_NOWAYOUT)&quot;
 )paren
 suffix:semicolon
 DECL|function|seconds_to_ticks
@@ -918,7 +956,12 @@ c_cond
 id|len
 )paren
 (brace
-macro_line|#ifndef CONFIG_WATCHDOG_NOWAYOUT
+r_if
+c_cond
+(paren
+op_logical_neg
+id|nowayout
+)paren
 r_int
 id|i
 suffix:semicolon
@@ -973,7 +1016,7 @@ op_assign
 l_int|42
 suffix:semicolon
 )brace
-macro_line|#endif
+)brace
 id|amdtco_ping
 c_func
 (paren
@@ -984,7 +1027,6 @@ r_return
 id|len
 suffix:semicolon
 )brace
-DECL|function|amdtco_notify_sys
 r_static
 r_int
 id|amdtco_notify_sys
@@ -1024,7 +1066,6 @@ r_return
 id|NOTIFY_DONE
 suffix:semicolon
 )brace
-DECL|variable|amdtco_notifier
 r_static
 r_struct
 id|notifier_block
@@ -1038,7 +1079,6 @@ id|amdtco_notify_sys
 comma
 )brace
 suffix:semicolon
-DECL|variable|amdtco_fops
 r_static
 r_struct
 id|file_operations
@@ -1072,7 +1112,6 @@ id|amdtco_fop_release
 comma
 )brace
 suffix:semicolon
-DECL|variable|amdtco_miscdev
 r_static
 r_struct
 id|miscdevice
@@ -1097,7 +1136,6 @@ id|amdtco_fops
 comma
 )brace
 suffix:semicolon
-DECL|variable|amdtco_pci_tbl
 r_static
 r_struct
 id|pci_device_id
@@ -1132,7 +1170,6 @@ comma
 id|amdtco_pci_tbl
 )paren
 suffix:semicolon
-DECL|function|amdtco_init
 r_static
 r_int
 id|__init
@@ -1338,7 +1375,6 @@ r_return
 id|ret
 suffix:semicolon
 )brace
-DECL|function|amdtco_exit
 r_static
 r_void
 id|__exit
@@ -1364,7 +1400,6 @@ id|amdtco_notifier
 suffix:semicolon
 )brace
 macro_line|#ifndef MODULE
-DECL|function|amdtco_setup
 r_static
 r_int
 id|__init
@@ -1441,14 +1476,12 @@ id|amdtco_setup
 )paren
 suffix:semicolon
 macro_line|#endif
-DECL|variable|amdtco_init
 id|module_init
 c_func
 (paren
 id|amdtco_init
 )paren
 suffix:semicolon
-DECL|variable|amdtco_exit
 id|module_exit
 c_func
 (paren
