@@ -32,6 +32,10 @@ macro_line|#else
 DECL|macro|per_cpu
 macro_line|# define per_cpu(var, cpu)&t;((void)cpu, __get_cpu_var(var))
 macro_line|#endif
+DECL|macro|EXPORT_PER_CPU_SYMBOL
+mdefine_line|#define EXPORT_PER_CPU_SYMBOL(var) EXPORT_SYMBOL(var##__per_cpu)
+DECL|macro|EXPORT_PER_CPU_SYMBOL_GPL
+mdefine_line|#define EXPORT_PER_CPU_SYMBOL_GPL(var) EXPORT_SYMBOL_GPL(var##__per_cpu)
 macro_line|#endif /* !__ASSEMBLY__ */
 macro_line|#endif /* _ASM_IA64_PERCPU_H */
 eof

@@ -47,5 +47,9 @@ c_func
 r_void
 )paren
 suffix:semicolon
+DECL|macro|EXPORT_PER_CPU_SYMBOL
+mdefine_line|#define EXPORT_PER_CPU_SYMBOL(var) EXPORT_SYMBOL(var##__per_cpu)
+DECL|macro|EXPORT_PER_CPU_SYMBOL_GPL
+mdefine_line|#define EXPORT_PER_CPU_SYMBOL_GPL(var) EXPORT_SYMBOL_GPL(var##__per_cpu)
 macro_line|#endif /* _ASM_X8664_PERCPU_H_ */
 eof

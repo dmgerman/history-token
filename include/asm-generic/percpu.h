@@ -33,8 +33,12 @@ DECL|macro|per_cpu
 mdefine_line|#define per_cpu(var, cpu)&t;&t;&t;((void)cpu, var##__per_cpu)
 DECL|macro|__get_cpu_var
 mdefine_line|#define __get_cpu_var(var)&t;&t;&t;var##__per_cpu
-macro_line|#endif
+macro_line|#endif&t;/* SMP */
 DECL|macro|DECLARE_PER_CPU
 mdefine_line|#define DECLARE_PER_CPU(type, name) extern __typeof__(type) name##__per_cpu
+DECL|macro|EXPORT_PER_CPU_SYMBOL
+mdefine_line|#define EXPORT_PER_CPU_SYMBOL(var) EXPORT_SYMBOL(var##__per_cpu)
+DECL|macro|EXPORT_PER_CPU_SYMBOL_GPL
+mdefine_line|#define EXPORT_PER_CPU_SYMBOL_GPL(var) EXPORT_SYMBOL_GPL(var##__per_cpu)
 macro_line|#endif /* _ASM_GENERIC_PERCPU_H_ */
 eof
