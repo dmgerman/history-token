@@ -1008,14 +1008,12 @@ id|aux_s
 id|aux
 suffix:semicolon
 multiline_comment|/* for modem commands/indications&t;*/
-macro_line|#ifdef CONFIG_ISDN_TTY_FAX
 DECL|member|fax
 id|T30_s
 op_star
 id|fax
 suffix:semicolon
 multiline_comment|/* Pointer to ttys fax struct&t;&t;*/
-macro_line|#endif
 DECL|member|userdata
 id|ulong
 id|userdata
