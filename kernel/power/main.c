@@ -1,8 +1,11 @@
 multiline_comment|/*&n; * kernel/power/main.c - PM subsystem core functionality.&n; *&n; * Copyright (c) 2003 Patrick Mochel&n; * Copyright (c) 2003 Open Source Development Lab&n; * &n; * This file is release under the GPLv2&n; *&n; */
+DECL|macro|DEBUG
+mdefine_line|#define DEBUG
 macro_line|#include &lt;linux/suspend.h&gt;
 macro_line|#include &lt;linux/kobject.h&gt;
 macro_line|#include &lt;linux/reboot.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
+macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/pm.h&gt;
@@ -313,30 +316,17 @@ c_func
 id|PM_SUSPEND_DISK
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|error
-)paren
-(brace
-id|device_power_up
-c_func
-(paren
-)paren
+r_break
 suffix:semicolon
-id|local_irq_restore
-c_func
-(paren
-id|flags
-)paren
-suffix:semicolon
-r_return
-id|error
-suffix:semicolon
-)brace
 r_case
 id|PM_DISK_SHUTDOWN
 suffix:colon
+id|printk
+c_func
+(paren
+l_string|&quot;Powering off system&bslash;n&quot;
+)paren
+suffix:semicolon
 id|machine_power_off
 c_func
 (paren
@@ -359,6 +349,17 @@ suffix:semicolon
 id|machine_halt
 c_func
 (paren
+)paren
+suffix:semicolon
+id|device_power_up
+c_func
+(paren
+)paren
+suffix:semicolon
+id|local_irq_restore
+c_func
+(paren
+id|flags
 )paren
 suffix:semicolon
 r_return
@@ -471,6 +472,11 @@ id|in_suspend
 op_assign
 l_int|1
 suffix:semicolon
+id|local_irq_disable
+c_func
+(paren
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -496,6 +502,17 @@ id|pr_debug
 c_func
 (paren
 l_string|&quot;PM: writing image.&bslash;n&quot;
+)paren
+suffix:semicolon
+multiline_comment|/* &n;&t;&t; * FIXME: Leftover from swsusp. Are they necessary? &n;&t;&t; */
+id|mb
+c_func
+(paren
+)paren
+suffix:semicolon
+id|barrier
+c_func
+(paren
 )paren
 suffix:semicolon
 id|error
@@ -540,6 +557,11 @@ c_func
 suffix:semicolon
 id|Done
 suffix:colon
+id|local_irq_enable
+c_func
+(paren
+)paren
+suffix:semicolon
 r_return
 id|error
 suffix:semicolon
@@ -854,7 +876,7 @@ suffix:semicolon
 id|pr_debug
 c_func
 (paren
-l_string|&quot;PM: Preparing system for suspend.&bslash;n&quot;
+l_string|&quot;PM: Preparing system for suspend&bslash;n&quot;
 )paren
 suffix:semicolon
 r_if
@@ -1011,6 +1033,34 @@ id|PM_SUSPEND_DISK
 r_goto
 id|Free
 suffix:semicolon
+id|barrier
+c_func
+(paren
+)paren
+suffix:semicolon
+id|mb
+c_func
+(paren
+)paren
+suffix:semicolon
+id|local_irq_disable
+c_func
+(paren
+)paren
+suffix:semicolon
+multiline_comment|/* FIXME: The following (comment and mdelay()) are from swsusp. &n;&t; * Are they really necessary? &n;&t; *&n;&t; * We do not want some readahead with DMA to corrupt our memory, right?&n;&t; * Do it with disabled interrupts for best effect. That way, if some&n;&t; * driver scheduled DMA, we have good chance for DMA to finish ;-).&n;&t; */
+id|pr_debug
+c_func
+(paren
+l_string|&quot;PM: Waiting for DMAs to settle down.&bslash;n&quot;
+)paren
+suffix:semicolon
+id|mdelay
+c_func
+(paren
+l_int|1000
+)paren
+suffix:semicolon
 id|pr_debug
 c_func
 (paren
@@ -1018,6 +1068,11 @@ l_string|&quot;PM: Restoring saved image.&bslash;n&quot;
 )paren
 suffix:semicolon
 id|swsusp_restore
+c_func
+(paren
+)paren
+suffix:semicolon
+id|local_irq_enable
 c_func
 (paren
 )paren
@@ -1323,10 +1378,8 @@ op_star
 id|buf
 )paren
 (brace
-r_struct
-id|pm_state
-op_star
-id|state
+r_int
+id|i
 suffix:semicolon
 r_char
 op_star
@@ -1337,18 +1390,27 @@ suffix:semicolon
 r_for
 c_loop
 (paren
-id|state
+id|i
 op_assign
-op_amp
+l_int|0
+suffix:semicolon
+id|i
+OL
+id|PM_SUSPEND_MAX
+suffix:semicolon
+id|i
+op_increment
+)paren
+(brace
+r_if
+c_cond
+(paren
 id|pm_states
 (braket
-l_int|0
+id|i
 )braket
-suffix:semicolon
-id|state-&gt;name
-suffix:semicolon
-id|state
-op_increment
+dot
+id|name
 )paren
 id|s
 op_add_assign
@@ -1359,9 +1421,15 @@ id|s
 comma
 l_string|&quot;%s &quot;
 comma
-id|state-&gt;name
+id|pm_states
+(braket
+id|i
+)braket
+dot
+id|name
 )paren
 suffix:semicolon
+)brace
 id|s
 op_add_assign
 id|sprintf
@@ -1402,6 +1470,8 @@ id|n
 (brace
 id|u32
 id|state
+op_assign
+id|PM_SUSPEND_STANDBY
 suffix:semicolon
 r_struct
 id|pm_state
@@ -1414,18 +1484,6 @@ suffix:semicolon
 r_for
 c_loop
 (paren
-id|state
-op_assign
-l_int|0
-suffix:semicolon
-id|state
-OL
-id|PM_SUSPEND_MAX
-suffix:semicolon
-id|state
-op_increment
-)paren
-(brace
 id|s
 op_assign
 op_amp
@@ -1434,11 +1492,18 @@ id|pm_states
 id|state
 )braket
 suffix:semicolon
+id|s-&gt;name
+suffix:semicolon
+id|s
+op_increment
+comma
+id|state
+op_increment
+)paren
+(brace
 r_if
 c_cond
 (paren
-id|s-&gt;name
-op_logical_and
 op_logical_neg
 id|strcmp
 c_func
@@ -1454,7 +1519,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|s
+id|s-&gt;name
 )paren
 id|error
 op_assign
