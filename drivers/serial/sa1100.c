@@ -1614,7 +1614,7 @@ id|CSIZE
 )paren
 op_ne
 id|CS7
-op_logical_or
+op_logical_and
 (paren
 id|termios-&gt;c_cflag
 op_amp
