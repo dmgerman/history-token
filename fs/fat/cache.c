@@ -1005,6 +1005,7 @@ id|cache_lru_lock
 suffix:semicolon
 )brace
 DECL|function|__fat_access
+r_static
 r_int
 id|__fat_access
 c_func
