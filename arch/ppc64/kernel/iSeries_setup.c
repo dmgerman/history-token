@@ -36,6 +36,7 @@ macro_line|#include &lt;asm/iSeries/ItLpQueue.h&gt;
 macro_line|#include &lt;asm/iSeries/IoHriMainStore.h&gt;
 macro_line|#include &lt;asm/iSeries/iSeries_proc.h&gt;
 macro_line|#include &lt;asm/iSeries/mf.h&gt;
+macro_line|#include &lt;asm/iSeries/HvLpEvent.h&gt;
 r_extern
 r_void
 id|hvlog
