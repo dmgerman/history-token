@@ -2044,7 +2044,7 @@ id|tpnt-&gt;use_clustering
 op_assign
 id|DISABLE_CLUSTERING
 suffix:semicolon
-id|spin_unlock
+id|spin_unlock_irq
 c_func
 (paren
 op_amp
@@ -2068,7 +2068,7 @@ id|hostdata
 )paren
 )paren
 suffix:semicolon
-id|spin_lock
+id|spin_lock_irq
 c_func
 (paren
 op_amp
