@@ -1875,15 +1875,6 @@ id|Elf_Sym
 op_star
 id|sym
 suffix:semicolon
-multiline_comment|/* When there&squot;s no vmlinux, don&squot;t print warnings about&n;&t; * unresolved symbols (since there&squot;ll be too many ;) */
-id|have_vmlinux
-op_assign
-id|is_vmlinux
-c_func
-(paren
-id|modname
-)paren
-suffix:semicolon
 id|parse_elf
 c_func
 (paren
@@ -1901,6 +1892,40 @@ c_func
 id|modname
 )paren
 suffix:semicolon
+multiline_comment|/* When there&squot;s no vmlinux, don&squot;t print warnings about&n;&t; * unresolved symbols (since there&squot;ll be too many ;) */
+r_if
+c_cond
+(paren
+id|is_vmlinux
+c_func
+(paren
+id|modname
+)paren
+)paren
+(brace
+r_int
+r_int
+id|fake_crc
+op_assign
+l_int|0
+suffix:semicolon
+id|have_vmlinux
+op_assign
+l_int|1
+suffix:semicolon
+multiline_comment|/* May not have this if !CONFIG_MODULE_UNLOAD: fake it.&n;&t;&t;   If it appears, we&squot;ll get the real CRC. */
+id|add_exported_symbol
+c_func
+(paren
+l_string|&quot;cleanup_module&quot;
+comma
+id|mod
+comma
+op_amp
+id|fake_crc
+)paren
+suffix:semicolon
+)brace
 r_for
 c_loop
 (paren
