@@ -21,7 +21,7 @@ macro_line|#include &quot;qdio.h&quot;
 macro_line|#include &quot;ioasm.h&quot;
 macro_line|#include &quot;chsc.h&quot;
 DECL|macro|VERSION_QDIO_C
-mdefine_line|#define VERSION_QDIO_C &quot;$Revision: 1.78 $&quot;
+mdefine_line|#define VERSION_QDIO_C &quot;$Revision: 1.79 $&quot;
 multiline_comment|/****************** MODULE PARAMETER VARIABLES ********************/
 id|MODULE_AUTHOR
 c_func
@@ -1437,6 +1437,23 @@ comma
 id|flags
 )paren
 suffix:semicolon
+multiline_comment|/* in case cleanup has done this already and simultanously&n;&t;&t; * qdio_unmark_q is called from the interrupt handler, we&squot;ve&n;&t;&t; * got to check this in this specific case again */
+r_if
+c_cond
+(paren
+(paren
+op_logical_neg
+id|q-&gt;list_prev
+)paren
+op_logical_or
+(paren
+op_logical_neg
+id|q-&gt;list_next
+)paren
+)paren
+r_goto
+id|out
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1482,6 +1499,8 @@ op_assign
 l_int|NULL
 suffix:semicolon
 )brace
+id|out
+suffix:colon
 id|spin_unlock_irqrestore
 c_func
 (paren
