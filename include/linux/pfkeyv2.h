@@ -782,6 +782,8 @@ mdefine_line|#define SADB_MAX&t;&t;23
 multiline_comment|/* Security Association flags */
 DECL|macro|SADB_SAFLAGS_PFS
 mdefine_line|#define SADB_SAFLAGS_PFS&t;1
+DECL|macro|SADB_SAFLAGS_DECAP_DSCP
+mdefine_line|#define SADB_SAFLAGS_DECAP_DSCP&t;0x40000000
 DECL|macro|SADB_SAFLAGS_NOECN
 mdefine_line|#define SADB_SAFLAGS_NOECN&t;0x80000000
 multiline_comment|/* Security Association states */

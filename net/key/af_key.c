@@ -3217,6 +3217,17 @@ id|sa-&gt;sadb_sa_flags
 op_or_assign
 id|SADB_SAFLAGS_NOECN
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|x-&gt;props.flags
+op_amp
+id|XFRM_STATE_DECAP_DSCP
+)paren
+id|sa-&gt;sadb_sa_flags
+op_or_assign
+id|SADB_SAFLAGS_DECAP_DSCP
+suffix:semicolon
 multiline_comment|/* hard time */
 r_if
 c_cond
@@ -4748,6 +4759,17 @@ id|SADB_SAFLAGS_NOECN
 id|x-&gt;props.flags
 op_or_assign
 id|XFRM_STATE_NOECN
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|sa-&gt;sadb_sa_flags
+op_amp
+id|SADB_SAFLAGS_DECAP_DSCP
+)paren
+id|x-&gt;props.flags
+op_or_assign
+id|XFRM_STATE_DECAP_DSCP
 suffix:semicolon
 id|lifetime
 op_assign

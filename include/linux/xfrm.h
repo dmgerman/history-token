@@ -508,6 +508,8 @@ id|flags
 suffix:semicolon
 DECL|macro|XFRM_STATE_NOECN
 mdefine_line|#define XFRM_STATE_NOECN&t;1
+DECL|macro|XFRM_STATE_DECAP_DSCP
+mdefine_line|#define XFRM_STATE_DECAP_DSCP&t;2
 )brace
 suffix:semicolon
 DECL|struct|xfrm_usersa_id
