@@ -3879,8 +3879,6 @@ c_func
 id|dev
 )paren
 suffix:semicolon
-id|MOD_INC_USE_COUNT
-suffix:semicolon
 id|DPRINTK
 c_func
 (paren
@@ -4879,8 +4877,6 @@ c_func
 (paren
 l_string|&quot;Adapter is closed.&bslash;n&quot;
 )paren
-suffix:semicolon
-id|MOD_DEC_USE_COUNT
 suffix:semicolon
 r_return
 l_int|0
@@ -9845,9 +9841,11 @@ id|IBMTR_MAX_ADAPTERS
 l_string|&quot;i&quot;
 )paren
 suffix:semicolon
-DECL|function|init_module
+DECL|function|ibmtr_init
+r_static
 r_int
-id|init_module
+id|__init
+id|ibmtr_init
 c_func
 (paren
 r_void
@@ -10046,10 +10044,18 @@ op_minus
 id|EIO
 suffix:semicolon
 )brace
-multiline_comment|/*init_module */
-DECL|function|cleanup_module
+DECL|variable|ibmtr_init
+id|module_init
+c_func
+(paren
+id|ibmtr_init
+)paren
+suffix:semicolon
+DECL|function|ibmtr_cleanup
+r_static
 r_void
-id|cleanup_module
+id|__exit
+id|ibmtr_cleanup
 c_func
 (paren
 r_void
@@ -10057,8 +10063,6 @@ r_void
 (brace
 r_int
 id|i
-comma
-id|j
 suffix:semicolon
 r_for
 c_loop
@@ -10112,27 +10116,13 @@ op_plus
 id|ADAPTRESET
 )paren
 suffix:semicolon
-r_for
-c_loop
-(paren
-id|j
-op_assign
-id|jiffies
-op_plus
-id|TR_RST_TIME
-suffix:semicolon
-id|time_before_eq
+id|schedule_timeout
 c_func
 (paren
-id|jiffies
-comma
-id|j
+id|TR_RST_TIME
 )paren
 suffix:semicolon
-)paren
-(brace
-suffix:semicolon
-)brace
+multiline_comment|/* wait 50ms */
 id|outb
 c_func
 (paren
@@ -10246,5 +10236,12 @@ l_int|NULL
 suffix:semicolon
 )brace
 )brace
-macro_line|#endif&t;&t;&t;&t;/* MODULE */
+DECL|variable|ibmtr_cleanup
+id|module_exit
+c_func
+(paren
+id|ibmtr_cleanup
+)paren
+suffix:semicolon
+macro_line|#endif
 eof
