@@ -398,7 +398,7 @@ id|temp1_max
 )paren
 suffix:semicolon
 DECL|macro|set_temp
-mdefine_line|#define set_temp(value, reg) &bslash;&n;static ssize_t set_##value(struct device *dev, const char *buf, &bslash;&n;&t;size_t count) &bslash;&n;{ &bslash;&n;&t;struct i2c_client *client = to_i2c_client(dev); &bslash;&n;&t;struct lm92_data *data = i2c_get_clientdata(client); &bslash;&n;&t;long val = simple_strtol(buf, NULL, 10); &bslash;&n;&t;data-&gt;value = TEMP_TO_REG(val); &bslash;&n;&t;i2c_smbus_write_word_data(client, reg, swab16(data-&gt;value)); &bslash;&n;&t;return count; &bslash;&n;}
+mdefine_line|#define set_temp(value, reg) &bslash;&n;static ssize_t set_##value(struct device *dev, const char *buf, &bslash;&n;&t;size_t count) &bslash;&n;{ &bslash;&n;&t;struct i2c_client *client = to_i2c_client(dev); &bslash;&n;&t;struct lm92_data *data = i2c_get_clientdata(client); &bslash;&n;&t;long val = simple_strtol(buf, NULL, 10); &bslash;&n; &bslash;&n;&t;down(&amp;data-&gt;update_lock); &bslash;&n;&t;data-&gt;value = TEMP_TO_REG(val); &bslash;&n;&t;i2c_smbus_write_word_data(client, reg, swab16(data-&gt;value)); &bslash;&n;&t;up(&amp;data-&gt;update_lock); &bslash;&n;&t;return count; &bslash;&n;}
 id|set_temp
 c_func
 (paren
@@ -612,14 +612,9 @@ c_func
 id|client
 )paren
 suffix:semicolon
-id|data-&gt;temp1_hyst
+r_int
+id|val
 op_assign
-id|TEMP_FROM_REG
-c_func
-(paren
-id|data-&gt;temp1_crit
-)paren
-op_minus
 id|simple_strtol
 c_func
 (paren
@@ -629,6 +624,23 @@ l_int|NULL
 comma
 l_int|10
 )paren
+suffix:semicolon
+id|down
+c_func
+(paren
+op_amp
+id|data-&gt;update_lock
+)paren
+suffix:semicolon
+id|data-&gt;temp1_hyst
+op_assign
+id|TEMP_FROM_REG
+c_func
+(paren
+id|data-&gt;temp1_crit
+)paren
+op_minus
+id|val
 suffix:semicolon
 id|i2c_smbus_write_word_data
 c_func
@@ -646,6 +658,13 @@ c_func
 id|data-&gt;temp1_hyst
 )paren
 )paren
+)paren
+suffix:semicolon
+id|up
+c_func
+(paren
+op_amp
+id|data-&gt;update_lock
 )paren
 suffix:semicolon
 r_return

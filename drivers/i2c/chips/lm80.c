@@ -699,7 +699,7 @@ l_int|6
 )paren
 suffix:semicolon
 DECL|macro|set_in
-mdefine_line|#define set_in(suffix, value, reg) &bslash;&n;static ssize_t set_in_##suffix(struct device *dev, const char *buf, &bslash;&n;&t;size_t count) &bslash;&n;{ &bslash;&n;&t;struct i2c_client *client = to_i2c_client(dev); &bslash;&n;&t;struct lm80_data *data = i2c_get_clientdata(client); &bslash;&n;&t;long val = simple_strtol(buf, NULL, 10); &bslash;&n;&t;data-&gt;value = IN_TO_REG(val); &bslash;&n;&t;lm80_write_value(client, reg, data-&gt;value); &bslash;&n;&t;return count; &bslash;&n;}
+mdefine_line|#define set_in(suffix, value, reg) &bslash;&n;static ssize_t set_in_##suffix(struct device *dev, const char *buf, &bslash;&n;&t;size_t count) &bslash;&n;{ &bslash;&n;&t;struct i2c_client *client = to_i2c_client(dev); &bslash;&n;&t;struct lm80_data *data = i2c_get_clientdata(client); &bslash;&n;&t;long val = simple_strtol(buf, NULL, 10); &bslash;&n; &bslash;&n;&t;down(&amp;data-&gt;update_lock);&bslash;&n;&t;data-&gt;value = IN_TO_REG(val); &bslash;&n;&t;lm80_write_value(client, reg, data-&gt;value); &bslash;&n;&t;up(&amp;data-&gt;update_lock);&bslash;&n;&t;return count; &bslash;&n;}
 id|set_in
 c_func
 (paren
@@ -1029,7 +1029,7 @@ l_int|1
 )paren
 suffix:semicolon
 DECL|macro|set_fan
-mdefine_line|#define set_fan(suffix, value, reg, div) &bslash;&n;static ssize_t set_fan_##suffix(struct device *dev, const char *buf, &bslash;&n;&t;size_t count) &bslash;&n;{ &bslash;&n;&t;struct i2c_client *client = to_i2c_client(dev); &bslash;&n;&t;struct lm80_data *data = i2c_get_clientdata(client); &bslash;&n;&t;long val = simple_strtoul(buf, NULL, 10); &bslash;&n;&t;data-&gt;value = FAN_TO_REG(val, DIV_FROM_REG(data-&gt;div)); &bslash;&n;&t;lm80_write_value(client, reg, data-&gt;value); &bslash;&n;&t;return count; &bslash;&n;}
+mdefine_line|#define set_fan(suffix, value, reg, div) &bslash;&n;static ssize_t set_fan_##suffix(struct device *dev, const char *buf, &bslash;&n;&t;size_t count) &bslash;&n;{ &bslash;&n;&t;struct i2c_client *client = to_i2c_client(dev); &bslash;&n;&t;struct lm80_data *data = i2c_get_clientdata(client); &bslash;&n;&t;long val = simple_strtoul(buf, NULL, 10); &bslash;&n; &bslash;&n;&t;down(&amp;data-&gt;update_lock);&bslash;&n;&t;data-&gt;value = FAN_TO_REG(val, DIV_FROM_REG(data-&gt;div)); &bslash;&n;&t;lm80_write_value(client, reg, data-&gt;value); &bslash;&n;&t;up(&amp;data-&gt;update_lock);&bslash;&n;&t;return count; &bslash;&n;}
 id|set_fan
 c_func
 (paren
@@ -1125,11 +1125,28 @@ r_int
 id|min
 comma
 id|val
+op_assign
+id|simple_strtoul
+c_func
+(paren
+id|buf
+comma
+l_int|NULL
+comma
+l_int|10
+)paren
 suffix:semicolon
 id|u8
 id|reg
 suffix:semicolon
 multiline_comment|/* Save fan_min */
+id|down
+c_func
+(paren
+op_amp
+id|data-&gt;update_lock
+)paren
+suffix:semicolon
 id|min
 op_assign
 id|FAN_FROM_REG
@@ -1148,18 +1165,6 @@ id|data-&gt;fan_div
 id|nr
 )braket
 )paren
-)paren
-suffix:semicolon
-id|val
-op_assign
-id|simple_strtoul
-c_func
-(paren
-id|buf
-comma
-l_int|NULL
-comma
-l_int|10
 )paren
 suffix:semicolon
 r_switch
@@ -1228,6 +1233,13 @@ l_string|&quot;fan_div value %ld not &quot;
 l_string|&quot;supported. Choose one of 1, 2, 4 or 8!&bslash;n&quot;
 comma
 id|val
+)paren
+suffix:semicolon
+id|up
+c_func
+(paren
+op_amp
+id|data-&gt;update_lock
 )paren
 suffix:semicolon
 r_return
@@ -1329,6 +1341,13 @@ id|nr
 )braket
 )paren
 suffix:semicolon
+id|up
+c_func
+(paren
+op_amp
+id|data-&gt;update_lock
+)paren
+suffix:semicolon
 r_return
 id|count
 suffix:semicolon
@@ -1425,7 +1444,7 @@ id|temp_os_hyst
 )paren
 suffix:semicolon
 DECL|macro|set_temp
-mdefine_line|#define set_temp(suffix, value, reg) &bslash;&n;static ssize_t set_temp_##suffix(struct device *dev, const char *buf, &bslash;&n;&t;size_t count) &bslash;&n;{ &bslash;&n;&t;struct i2c_client *client = to_i2c_client(dev); &bslash;&n;&t;struct lm80_data *data = i2c_get_clientdata(client); &bslash;&n;&t;long val = simple_strtoul(buf, NULL, 10); &bslash;&n;&t;data-&gt;value = TEMP_LIMIT_TO_REG(val); &bslash;&n;&t;lm80_write_value(client, reg, data-&gt;value); &bslash;&n;&t;return count; &bslash;&n;}
+mdefine_line|#define set_temp(suffix, value, reg) &bslash;&n;static ssize_t set_temp_##suffix(struct device *dev, const char *buf, &bslash;&n;&t;size_t count) &bslash;&n;{ &bslash;&n;&t;struct i2c_client *client = to_i2c_client(dev); &bslash;&n;&t;struct lm80_data *data = i2c_get_clientdata(client); &bslash;&n;&t;long val = simple_strtoul(buf, NULL, 10); &bslash;&n; &bslash;&n;&t;down(&amp;data-&gt;update_lock); &bslash;&n;&t;data-&gt;value = TEMP_LIMIT_TO_REG(val); &bslash;&n;&t;lm80_write_value(client, reg, data-&gt;value); &bslash;&n;&t;up(&amp;data-&gt;update_lock); &bslash;&n;&t;return count; &bslash;&n;}
 id|set_temp
 c_func
 (paren
