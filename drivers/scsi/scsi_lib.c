@@ -2646,7 +2646,7 @@ id|SHpnt
 (brace
 id|SHpnt-&gt;host_self_blocked
 op_assign
-id|TRUE
+l_int|1
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Function:    scsi_unblock_requests()&n; *&n; * Purpose:     Utility function used by low-level drivers to allow further&n; *&t;&t;commands from being queued to the device.&n; *&n; * Arguments:   SHpnt       - Host in question&n; *&n; * Returns:     Nothing&n; *&n; * Lock status: No locks are assumed held.&n; *&n; * Notes:       There is no timer nor any other means by which the requests&n; *&t;&t;get unblocked other than the low-level driver calling&n; *&t;&t;scsi_unblock_requests().&n; *&n; *&t;&t;This is done as an API function so that changes to the&n; *&t;&t;internals of the scsi mid-layer won&squot;t require wholesale&n; *&t;&t;changes to drivers that use this feature.&n; */
@@ -2667,7 +2667,7 @@ id|SDloop
 suffix:semicolon
 id|SHpnt-&gt;host_self_blocked
 op_assign
-id|FALSE
+l_int|0
 suffix:semicolon
 multiline_comment|/* Now that we are unblocked, try to start the queues. */
 id|list_for_each_entry
