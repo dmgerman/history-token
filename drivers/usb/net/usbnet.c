@@ -3178,11 +3178,11 @@ id|u32
 id|bmEthernetStatistics
 suffix:semicolon
 DECL|member|wMaxSegmentSize
-id|u16
+id|__le16
 id|wMaxSegmentSize
 suffix:semicolon
 DECL|member|wNumberMCFilters
-id|u16
+id|__le16
 id|wNumberMCFilters
 suffix:semicolon
 DECL|member|bNumberPowerFilters
@@ -3679,7 +3679,7 @@ suffix:semicolon
 )brace
 id|dev-&gt;net-&gt;mtu
 op_assign
-id|cpu_to_le16p
+id|le16_to_cpup
 (paren
 op_amp
 id|info-&gt;ether-&gt;wMaxSegmentSize

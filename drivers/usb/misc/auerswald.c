@@ -7055,7 +7055,7 @@ id|u
 op_assign
 l_int|0
 suffix:semicolon
-id|u16
+id|__le16
 op_star
 id|pbuf
 suffix:semicolon
@@ -7384,7 +7384,7 @@ multiline_comment|/* get the maximum allowed control transfer length */
 id|pbuf
 op_assign
 (paren
-id|u16
+id|__le16
 op_star
 )paren
 id|kmalloc

@@ -631,7 +631,7 @@ id|MinorVersion
 suffix:semicolon
 singleline_comment|//  yy.
 DECL|member|BuildNumber
-id|__u16
+id|__le16
 id|BuildNumber
 suffix:semicolon
 singleline_comment|//  zzzz (LE format)
@@ -799,7 +799,7 @@ id|SerNumDescType
 suffix:semicolon
 singleline_comment|// F0D USB descriptor type (=STRING type)
 DECL|member|SerialNumber
-id|__u16
+id|__le16
 id|SerialNumber
 (braket
 id|MAX_SERIALNUMBER_LEN
@@ -817,7 +817,7 @@ id|AssemblyNumDescType
 suffix:semicolon
 singleline_comment|// F27 USB descriptor type (=STRING type)
 DECL|member|AssemblyNumber
-id|__u16
+id|__le16
 id|AssemblyNumber
 (braket
 id|MAX_ASSEMBLYNUMBER_LEN
@@ -835,7 +835,7 @@ id|OemAssyNumDescType
 suffix:semicolon
 singleline_comment|// F45 USB descriptor type (=STRING type)
 DECL|member|OemAssyNumber
-id|__u16
+id|__le16
 id|OemAssyNumber
 (braket
 id|MAX_ASSEMBLYNUMBER_LEN
@@ -853,7 +853,7 @@ id|ManufDateDescType
 suffix:semicolon
 singleline_comment|// F63 USB descriptor type (=STRING type)
 DECL|member|ManufDate
-id|__u16
+id|__le16
 id|ManufDate
 (braket
 l_int|6
@@ -996,7 +996,7 @@ id|Reserved1
 suffix:semicolon
 singleline_comment|// C3 -- unused, set to 0 --
 DECL|member|BootCodeLength
-id|__u16
+id|__le16
 id|BootCodeLength
 suffix:semicolon
 singleline_comment|// C4 Boot code goes from FF:0000 to FF:(len-1)
@@ -1012,7 +1012,7 @@ id|MinorVersion
 suffix:semicolon
 singleline_comment|// C7&t;&t;&t;yy.
 DECL|member|BuildNumber
-id|__u16
+id|__le16
 id|BuildNumber
 suffix:semicolon
 singleline_comment|// C8&t;&t;&t;zzzz (LE format)
@@ -1032,7 +1032,7 @@ id|Reserved4
 suffix:semicolon
 singleline_comment|// CD Fix Compiler Packing
 DECL|member|Capabilities
-id|__u16
+id|__le16
 id|Capabilities
 suffix:semicolon
 singleline_comment|// CE-CF Capabilities flags (LE format)

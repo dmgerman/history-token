@@ -485,6 +485,7 @@ multiline_comment|/*&n; * Generic mapping function (not visible outside):&n; */
 multiline_comment|/*&n; * Remap an arbitrary physical address space into the kernel virtual&n; * address space. Needed when the kernel wants to access high addresses&n; * directly.&n; *&n; * NOTE! We need to allow non-page-aligned mappings too: we will obviously&n; * have to convert them into an offset in a page-aligned mapping, but the&n; * caller shouldn&squot;t need to know that small detail.&n; */
 DECL|function|__ioremap
 r_void
+id|__iomem
 op_star
 id|__ioremap
 c_func
@@ -552,6 +553,12 @@ OL
 l_int|0x100000
 )paren
 r_return
+(paren
+id|__force
+r_void
+id|__iomem
+op_star
+)paren
 id|phys_to_virt
 c_func
 (paren
@@ -725,7 +732,9 @@ suffix:semicolon
 )brace
 r_return
 (paren
+id|__force
 r_void
+id|__iomem
 op_star
 )paren
 (paren
@@ -742,6 +751,7 @@ suffix:semicolon
 multiline_comment|/**&n; * ioremap_nocache     -   map bus memory into CPU space&n; * @offset:    bus address of the memory&n; * @size:      size of the resource to map&n; *&n; * ioremap_nocache performs a platform specific sequence of operations to&n; * make bus memory CPU accessible via the readb/readw/readl/writeb/&n; * writew/writel functions and the other mmio helpers. The returned&n; * address is not guaranteed to be usable directly as a virtual&n; * address. &n; *&n; * This version of ioremap ensures that the memory is marked uncachable&n; * on the CPU as well as honouring existing caching rules from things like&n; * the PCI bus. Note that there are other caches and buffers on many &n; * busses. In particular driver authors should read up on PCI writes&n; *&n; * It&squot;s useful if some control registers are in such an area and&n; * write combining or read caching is not desirable:&n; * &n; * Must be freed with iounmap.&n; */
 DECL|function|ioremap_nocache
 r_void
+id|__iomem
 op_star
 id|ioremap_nocache
 (paren
@@ -755,6 +765,7 @@ id|size
 )paren
 (brace
 r_void
+id|__iomem
 op_star
 id|p
 op_assign
@@ -887,6 +898,7 @@ id|iounmap
 c_func
 (paren
 r_void
+id|__iomem
 op_star
 id|addr
 )paren

@@ -1662,4 +1662,20 @@ id|agp_special_page
 )paren
 suffix:semicolon
 macro_line|#endif
+macro_line|#if defined(CONFIG_40x) || defined(CONFIG_BOOKE)
+DECL|variable|__mtdcr
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|__mtdcr
+)paren
+suffix:semicolon
+DECL|variable|__mfdcr
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|__mfdcr
+)paren
+suffix:semicolon
+macro_line|#endif
 eof

@@ -4564,7 +4564,7 @@ c_func
 op_star
 (paren
 (paren
-id|u16
+id|__be16
 op_star
 )paren
 id|usblp-&gt;device_id_string

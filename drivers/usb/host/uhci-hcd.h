@@ -125,7 +125,7 @@ r_struct
 id|uhci_frame_list
 (brace
 DECL|member|frame
-id|u32
+id|__le32
 id|frame
 (braket
 id|UHCI_NUMFRAMES
@@ -155,12 +155,12 @@ id|uhci_qh
 (brace
 multiline_comment|/* Hardware fields */
 DECL|member|link
-id|u32
+id|__le32
 id|link
 suffix:semicolon
 multiline_comment|/* Next queue */
 DECL|member|element
-id|u32
+id|__le32
 id|element
 suffix:semicolon
 multiline_comment|/* Queue element pointer */
@@ -285,19 +285,19 @@ id|uhci_td
 (brace
 multiline_comment|/* Hardware fields */
 DECL|member|link
-id|u32
+id|__le32
 id|link
 suffix:semicolon
 DECL|member|status
-id|u32
+id|__le32
 id|status
 suffix:semicolon
 DECL|member|token
-id|u32
+id|__le32
 id|token
 suffix:semicolon
 DECL|member|buffer
-id|u32
+id|__le32
 id|buffer
 suffix:semicolon
 multiline_comment|/* Software fields */

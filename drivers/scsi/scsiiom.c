@@ -5540,7 +5540,7 @@ id|pDCB-&gt;pActiveSRB
 suffix:semicolon
 id|pACB-&gt;pActiveDCB
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|pSRB-&gt;ScsiPhase
 op_assign
@@ -5626,7 +5626,7 @@ suffix:semicolon
 )brace
 id|pDCB-&gt;pGoingSRB
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|dc390_Waiting_process
 (paren
@@ -5746,7 +5746,7 @@ id|pSRB
 suffix:semicolon
 id|pDCB-&gt;pActiveSRB
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|pSRB-&gt;SRBState
 op_assign
@@ -7791,7 +7791,7 @@ c_func
 (paren
 id|pACB
 comma
-l_int|0
+l_int|NULL
 )paren
 suffix:semicolon
 singleline_comment|//dc390_RecoverSRB( pACB );

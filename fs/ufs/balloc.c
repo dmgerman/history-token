@@ -1313,7 +1313,7 @@ id|inode
 op_star
 id|inode
 comma
-id|u32
+id|__fs32
 op_star
 id|p
 comma
@@ -2267,6 +2267,11 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|fs32_to_cpu
+c_func
+(paren
+id|sb
+comma
 id|UFS_SB
 c_func
 (paren
@@ -2280,6 +2285,7 @@ id|cgno
 )paren
 dot
 id|cs_nffree
+)paren
 OL
 id|count
 )paren
@@ -4383,7 +4389,7 @@ c_func
 id|sb
 comma
 (paren
-id|u32
+id|__fs32
 op_star
 )paren
 id|ubh_get_addr
@@ -4416,7 +4422,7 @@ c_func
 id|sb
 comma
 (paren
-id|u32
+id|__fs32
 op_star
 )paren
 id|ubh_get_addr
@@ -4449,7 +4455,7 @@ c_func
 id|sb
 comma
 (paren
-id|u32
+id|__fs32
 op_star
 )paren
 id|ubh_get_addr

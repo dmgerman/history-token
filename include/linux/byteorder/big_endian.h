@@ -12,13 +12,13 @@ macro_line|#endif
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/byteorder/swab.h&gt;
 DECL|macro|__constant_htonl
-mdefine_line|#define __constant_htonl(x) ((__u32)(x))
+mdefine_line|#define __constant_htonl(x) ((__force __be32)(__u32)(x))
 DECL|macro|__constant_ntohl
-mdefine_line|#define __constant_ntohl(x) ((__u32)(x))
+mdefine_line|#define __constant_ntohl(x) ((__force __u32)(__be32)(x))
 DECL|macro|__constant_htons
-mdefine_line|#define __constant_htons(x) ((__u16)(x))
+mdefine_line|#define __constant_htons(x) ((__force __be16)(__u16)(x))
 DECL|macro|__constant_ntohs
-mdefine_line|#define __constant_ntohs(x) ((__u16)(x))
+mdefine_line|#define __constant_ntohs(x) ((__force __u16)(__be16)(x))
 DECL|macro|__constant_cpu_to_le64
 mdefine_line|#define __constant_cpu_to_le64(x) ((__force __le64)___constant_swab64((x)))
 DECL|macro|__constant_le64_to_cpu

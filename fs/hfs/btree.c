@@ -798,7 +798,7 @@ r_struct
 id|hfs_bnode_desc
 id|desc
 suffix:semicolon
-id|u32
+id|__be32
 id|cnid
 suffix:semicolon
 id|node

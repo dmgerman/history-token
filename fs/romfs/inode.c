@@ -88,7 +88,7 @@ id|vfs_inode
 suffix:semicolon
 )brace
 r_static
-id|__s32
+id|__u32
 DECL|function|romfs_checksum
 id|romfs_checksum
 c_func
@@ -101,9 +101,10 @@ r_int
 id|size
 )paren
 (brace
-id|__s32
+id|__u32
 id|sum
-comma
+suffix:semicolon
+id|__be32
 op_star
 id|ptr
 suffix:semicolon
@@ -129,7 +130,7 @@ l_int|0
 (brace
 id|sum
 op_add_assign
-id|ntohl
+id|be32_to_cpu
 c_func
 (paren
 op_star
@@ -239,7 +240,7 @@ id|bh-&gt;b_data
 suffix:semicolon
 id|sz
 op_assign
-id|ntohl
+id|be32_to_cpu
 c_func
 (paren
 id|rsb-&gt;size
@@ -1085,7 +1086,7 @@ id|out
 suffix:semicolon
 id|offset
 op_assign
-id|ntohl
+id|be32_to_cpu
 c_func
 (paren
 id|ri.spec
@@ -1207,7 +1208,7 @@ id|offset
 suffix:semicolon
 id|nextfh
 op_assign
-id|ntohl
+id|be32_to_cpu
 c_func
 (paren
 id|ri.next
@@ -1226,7 +1227,7 @@ id|ROMFH_HRD
 )paren
 id|ino
 op_assign
-id|ntohl
+id|be32_to_cpu
 c_func
 (paren
 id|ri.spec
@@ -1392,7 +1393,7 @@ id|dir-&gt;i_sb
 suffix:semicolon
 id|offset
 op_assign
-id|ntohl
+id|be32_to_cpu
 c_func
 (paren
 id|ri.spec
@@ -1591,7 +1592,7 @@ suffix:semicolon
 multiline_comment|/* next entry */
 id|offset
 op_assign
-id|ntohl
+id|be32_to_cpu
 c_func
 (paren
 id|ri.next
@@ -1605,7 +1606,7 @@ r_if
 c_cond
 (paren
 (paren
-id|ntohl
+id|be32_to_cpu
 c_func
 (paren
 id|ri.next
@@ -1618,7 +1619,7 @@ id|ROMFH_HRD
 )paren
 id|offset
 op_assign
-id|ntohl
+id|be32_to_cpu
 c_func
 (paren
 id|ri.spec
@@ -2061,7 +2062,7 @@ suffix:semicolon
 multiline_comment|/* XXX: do romfs_checksum here too (with name) */
 id|nextfh
 op_assign
-id|ntohl
+id|be32_to_cpu
 c_func
 (paren
 id|ri.next
@@ -2082,7 +2083,7 @@ r_break
 suffix:semicolon
 id|ino
 op_assign
-id|ntohl
+id|be32_to_cpu
 c_func
 (paren
 id|ri.spec
@@ -2098,7 +2099,7 @@ suffix:semicolon
 multiline_comment|/* Hard to decide.. */
 id|i-&gt;i_size
 op_assign
-id|ntohl
+id|be32_to_cpu
 c_func
 (paren
 id|ri.size
@@ -2310,7 +2311,7 @@ suffix:colon
 multiline_comment|/* depending on MBZ for sock/fifos */
 id|nextfh
 op_assign
-id|ntohl
+id|be32_to_cpu
 c_func
 (paren
 id|ri.spec

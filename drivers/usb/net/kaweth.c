@@ -642,7 +642,7 @@ id|__u32
 id|statistics_mask
 suffix:semicolon
 DECL|member|segment_size
-id|__u16
+id|__le16
 id|segment_size
 suffix:semicolon
 DECL|member|max_multicast_filters
@@ -2049,7 +2049,7 @@ id|le16_to_cpup
 c_func
 (paren
 (paren
-id|u16
+id|__le16
 op_star
 )paren
 id|kaweth-&gt;rx_buf
@@ -2747,7 +2747,7 @@ id|kaweth
 op_assign
 id|net-&gt;priv
 suffix:semicolon
-id|u16
+id|__le16
 op_star
 id|private_header
 suffix:semicolon
@@ -2877,7 +2877,7 @@ suffix:semicolon
 id|private_header
 op_assign
 (paren
-id|u16
+id|__le16
 op_star
 )paren
 id|__skb_push

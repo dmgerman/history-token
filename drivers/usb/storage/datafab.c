@@ -2027,7 +2027,7 @@ suffix:semicolon
 r_else
 (paren
 (paren
-id|u16
+id|__be16
 op_star
 )paren
 id|ptr
@@ -2314,7 +2314,7 @@ singleline_comment|// build the reply
 singleline_comment|// we need the last sector, not the number of sectors
 (paren
 (paren
-id|u32
+id|__be32
 op_star
 )paren
 id|ptr
@@ -2333,7 +2333,7 @@ l_int|1
 suffix:semicolon
 (paren
 (paren
-id|u32
+id|__be32
 op_star
 )paren
 id|ptr

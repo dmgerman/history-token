@@ -2437,7 +2437,8 @@ id|num
 OL
 id|s_num
 )paren
-r_continue
+r_goto
+id|next_listen
 suffix:semicolon
 r_if
 c_cond
@@ -2451,7 +2452,8 @@ id|TCPF_LISTEN
 op_logical_or
 id|r-&gt;id.tcpdiag_dport
 )paren
-r_continue
+r_goto
+id|next_listen
 suffix:semicolon
 r_if
 c_cond
@@ -2462,7 +2464,8 @@ id|inet-&gt;sport
 op_logical_and
 id|r-&gt;id.tcpdiag_sport
 )paren
-r_continue
+r_goto
+id|next_listen
 suffix:semicolon
 r_if
 c_cond
@@ -2488,7 +2491,8 @@ comma
 id|sk
 )paren
 )paren
-r_continue
+r_goto
+id|next_listen
 suffix:semicolon
 r_if
 c_cond
@@ -2525,6 +2529,8 @@ r_goto
 id|done
 suffix:semicolon
 )brace
+id|next_listen
+suffix:colon
 op_increment
 id|num
 suffix:semicolon
@@ -2658,7 +2664,8 @@ id|num
 OL
 id|s_num
 )paren
-r_continue
+r_goto
+id|next_normal
 suffix:semicolon
 r_if
 c_cond
@@ -2674,7 +2681,8 @@ id|sk-&gt;sk_state
 )paren
 )paren
 )paren
-r_continue
+r_goto
+id|next_normal
 suffix:semicolon
 r_if
 c_cond
@@ -2685,7 +2693,8 @@ id|inet-&gt;sport
 op_logical_and
 id|r-&gt;id.tcpdiag_sport
 )paren
-r_continue
+r_goto
+id|next_normal
 suffix:semicolon
 r_if
 c_cond
@@ -2696,7 +2705,8 @@ id|inet-&gt;dport
 op_logical_and
 id|r-&gt;id.tcpdiag_dport
 )paren
-r_continue
+r_goto
+id|next_normal
 suffix:semicolon
 r_if
 c_cond
@@ -2722,7 +2732,8 @@ comma
 id|sk
 )paren
 )paren
-r_continue
+r_goto
+id|next_normal
 suffix:semicolon
 r_if
 c_cond
@@ -2761,6 +2772,8 @@ r_goto
 id|done
 suffix:semicolon
 )brace
+id|next_normal
+suffix:colon
 op_increment
 id|num
 suffix:semicolon
@@ -2809,7 +2822,8 @@ id|num
 OL
 id|s_num
 )paren
-r_continue
+r_goto
+id|next_dying
 suffix:semicolon
 r_if
 c_cond
@@ -2820,7 +2834,8 @@ id|inet-&gt;sport
 op_logical_and
 id|r-&gt;id.tcpdiag_sport
 )paren
-r_continue
+r_goto
+id|next_dying
 suffix:semicolon
 r_if
 c_cond
@@ -2831,7 +2846,8 @@ id|inet-&gt;dport
 op_logical_and
 id|r-&gt;id.tcpdiag_dport
 )paren
-r_continue
+r_goto
+id|next_dying
 suffix:semicolon
 r_if
 c_cond
@@ -2857,7 +2873,8 @@ comma
 id|sk
 )paren
 )paren
-r_continue
+r_goto
+id|next_dying
 suffix:semicolon
 r_if
 c_cond
@@ -2896,6 +2913,8 @@ r_goto
 id|done
 suffix:semicolon
 )brace
+id|next_dying
+suffix:colon
 op_increment
 id|num
 suffix:semicolon

@@ -173,12 +173,14 @@ DECL|macro|SPRN_TLB0CFG
 mdefine_line|#define SPRN_TLB0CFG&t;0x2B0&t;/* TLB 0 Config Register */
 DECL|macro|SPRN_TLB1CFG
 mdefine_line|#define SPRN_TLB1CFG&t;0x2B1&t;/* TLB 1 Config Register */
+DECL|macro|SPRN_CCR1
+mdefine_line|#define SPRN_CCR1&t;0x378&t;/* Core Configuration Register 1 */
 DECL|macro|SPRN_ZPR
 mdefine_line|#define SPRN_ZPR&t;0x3B0&t;/* Zone Protection Register (40x) */
 DECL|macro|SPRN_MMUCR
 mdefine_line|#define SPRN_MMUCR&t;0x3B2&t;/* MMU Control Register */
 DECL|macro|SPRN_CCR0
-mdefine_line|#define SPRN_CCR0&t;0x3B3&t;/* Core Configuration Register */
+mdefine_line|#define SPRN_CCR0&t;0x3B3&t;/* Core Configuration Register 0 */
 DECL|macro|SPRN_SGR
 mdefine_line|#define SPRN_SGR&t;0x3B9&t;/* Storage Guarded Register */
 DECL|macro|SPRN_DCWR
@@ -270,6 +272,9 @@ mdefine_line|#define SPRN_CSRR0&t;SPRN_SRR2 /* Critical Save and Restore Registe
 DECL|macro|SPRN_CSRR1
 mdefine_line|#define SPRN_CSRR1&t;SPRN_SRR3 /* Critical Save and Restore Register 1 */
 macro_line|#endif
+multiline_comment|/* Bit definitions for CCR1. */
+DECL|macro|CCR1_TCS
+mdefine_line|#define&t;CCR1_TCS&t;0x00000080 /* Timer Clock Select */
 multiline_comment|/* Bit definitions for the MCSR. */
 macro_line|#ifdef CONFIG_440A
 DECL|macro|MCSR_MCS

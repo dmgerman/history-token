@@ -95,7 +95,7 @@ op_star
 id|inode
 )paren
 (brace
-id|u32
+id|__be32
 id|mtime
 op_assign
 id|hfs_mtime

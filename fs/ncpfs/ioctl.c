@@ -1424,9 +1424,11 @@ id|sr
 suffix:semicolon
 id|__u32
 id|vnum
-comma
+suffix:semicolon
+id|__le32
 id|de
-comma
+suffix:semicolon
+id|__le32
 id|dosde
 suffix:semicolon
 r_struct

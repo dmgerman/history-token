@@ -64,7 +64,7 @@ r_int
 id|volume_number
 suffix:semicolon
 DECL|member|directory_id
-id|__u32
+id|__le32
 id|directory_id
 suffix:semicolon
 )brace
@@ -98,7 +98,7 @@ r_int
 id|volume_number
 suffix:semicolon
 DECL|member|directory_id
-id|__u32
+id|__le32
 id|directory_id
 suffix:semicolon
 DECL|member|dummy1
@@ -188,7 +188,7 @@ r_int
 r_namespace
 suffix:semicolon
 DECL|member|dirEntNum
-id|__u32
+id|__le32
 id|dirEntNum
 suffix:semicolon
 )brace
@@ -596,10 +596,10 @@ r_int
 id|ncp_date_dos2unix
 c_func
 (paren
-id|__u16
+id|__le16
 id|time
 comma
-id|__u16
+id|__le16
 id|date
 )paren
 suffix:semicolon
@@ -610,11 +610,11 @@ c_func
 r_int
 id|unix_date
 comma
-id|__u16
+id|__le16
 op_star
 id|time
 comma
-id|__u16
+id|__le16
 op_star
 id|date
 )paren

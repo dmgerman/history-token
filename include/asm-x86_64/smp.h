@@ -298,9 +298,14 @@ mdefine_line|#define NO_PROC_ID&t;&t;0xFF&t;&t;/* No processor magic marker */
 macro_line|#endif
 DECL|macro|INT_DELIVERY_MODE
 mdefine_line|#define INT_DELIVERY_MODE 1     /* logical delivery */
-DECL|macro|TARGET_CPUS
-mdefine_line|#define TARGET_CPUS 1
 macro_line|#ifndef ASSEMBLY
+macro_line|#ifdef CONFIG_SMP
+DECL|macro|TARGET_CPUS
+mdefine_line|#define TARGET_CPUS cpu_online_map
+macro_line|#else
+DECL|macro|TARGET_CPUS
+mdefine_line|#define TARGET_CPUS cpumask_of_cpu(0)
+macro_line|#endif
 DECL|function|cpu_mask_to_apicid
 r_static
 r_inline

@@ -8,16 +8,18 @@ macro_line|#include &lt;platforms/4xx/ibm440gx.h&gt;
 multiline_comment|/* F/W TLB mapping used in bootloader glue to reset EMAC */
 DECL|macro|PPC44x_EMAC0_MR0
 mdefine_line|#define PPC44x_EMAC0_MR0&t;0xE0000800
-multiline_comment|/* Location of MAC addresses in firmware */
-DECL|macro|OCOTEA_MAC_BASE
-mdefine_line|#define OCOTEA_MAC_BASE&t;&t;(OCOTEA_SMALL_FLASH_HIGH+0xb0500)
-DECL|macro|OCOTEA_MAC_SIZE
-mdefine_line|#define OCOTEA_MAC_SIZE&t;&t;0x200
-DECL|macro|OCOTEA_MAC_OFFSET
-mdefine_line|#define OCOTEA_MAC_OFFSET&t;0x100
-multiline_comment|/* Default clock rate */
-DECL|macro|OCOTEA_SYSCLK
-mdefine_line|#define OCOTEA_SYSCLK&t;&t;25000000
+multiline_comment|/* Location of MAC addresses in PIBS image */
+DECL|macro|OCOTEA_PIBS_FLASH
+mdefine_line|#define OCOTEA_PIBS_FLASH&t;0xfff00000
+DECL|macro|OCOTEA_PIBS_MAC_BASE
+mdefine_line|#define OCOTEA_PIBS_MAC_BASE&t;(OCOTEA_PIBS_FLASH+0xb0500)
+DECL|macro|OCOTEA_PIBS_MAC_SIZE
+mdefine_line|#define OCOTEA_PIBS_MAC_SIZE&t;0x200
+DECL|macro|OCOTEA_PIBS_MAC_OFFSET
+mdefine_line|#define OCOTEA_PIBS_MAC_OFFSET&t;0x100
+multiline_comment|/* External timer clock frequency */
+DECL|macro|OCOTEA_TMR_CLK
+mdefine_line|#define OCOTEA_TMR_CLK&t;25000000
 multiline_comment|/* RTC/NVRAM location */
 DECL|macro|OCOTEA_RTC_ADDR
 mdefine_line|#define OCOTEA_RTC_ADDR&t;&t;0x0000000148000000ULL

@@ -1955,7 +1955,7 @@ singleline_comment|// we &quot;know&quot; this alignment is good, caller used km
 op_star
 (paren
 (paren
-id|u32
+id|__le32
 op_star
 )paren
 id|buf

@@ -61,7 +61,7 @@ r_struct
 id|acm_line
 (brace
 DECL|member|speed
-id|__u32
+id|__le32
 id|speed
 suffix:semicolon
 DECL|member|stopbits

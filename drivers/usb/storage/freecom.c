@@ -73,7 +73,7 @@ id|Timeout
 suffix:semicolon
 multiline_comment|/* Timeout in seconds. */
 DECL|member|Count
-id|u32
+id|__le32
 id|Count
 suffix:semicolon
 multiline_comment|/* Number of bytes to transfer. */
@@ -106,7 +106,7 @@ id|u8
 id|Pad
 suffix:semicolon
 DECL|member|Value
-id|u16
+id|__le16
 id|Value
 suffix:semicolon
 multiline_comment|/* Value to write. */
@@ -150,7 +150,7 @@ id|u8
 id|Reason
 suffix:semicolon
 DECL|member|Count
-id|u16
+id|__le16
 id|Count
 suffix:semicolon
 DECL|member|Pad

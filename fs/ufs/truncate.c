@@ -66,7 +66,7 @@ id|buffer_head
 op_star
 id|bh
 suffix:semicolon
-id|u32
+id|__fs32
 op_star
 id|p
 suffix:semicolon
@@ -790,7 +790,7 @@ comma
 r_int
 id|offset
 comma
-id|u32
+id|__fs32
 op_star
 id|p
 )paren
@@ -815,7 +815,7 @@ id|buffer_head
 op_star
 id|bh
 suffix:semicolon
-id|u32
+id|__fs32
 op_star
 id|ind
 suffix:semicolon
@@ -1340,7 +1340,7 @@ comma
 r_int
 id|offset
 comma
-id|u32
+id|__fs32
 op_star
 id|p
 )paren
@@ -1367,7 +1367,7 @@ id|tmp
 comma
 id|dindirect_block
 suffix:semicolon
-id|u32
+id|__fs32
 op_star
 id|dind
 suffix:semicolon
@@ -1759,7 +1759,7 @@ id|tmp
 comma
 id|i
 suffix:semicolon
-id|u32
+id|__fs32
 op_star
 id|tind
 comma
@@ -2247,7 +2247,7 @@ comma
 id|UFS_IND_BLOCK
 comma
 (paren
-id|u32
+id|__fs32
 op_star
 )paren
 op_amp
@@ -2268,7 +2268,7 @@ op_plus
 id|uspi-&gt;s_apb
 comma
 (paren
-id|u32
+id|__fs32
 op_star
 )paren
 op_amp

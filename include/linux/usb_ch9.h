@@ -84,15 +84,15 @@ id|__u8
 id|bRequest
 suffix:semicolon
 DECL|member|wValue
-id|__u16
+id|__le16
 id|wValue
 suffix:semicolon
 DECL|member|wIndex
-id|__u16
+id|__le16
 id|wIndex
 suffix:semicolon
 DECL|member|wLength
-id|__u16
+id|__le16
 id|wLength
 suffix:semicolon
 )brace
@@ -334,7 +334,7 @@ id|__u8
 id|bDescriptorType
 suffix:semicolon
 DECL|member|wData
-id|__u16
+id|__le16
 id|wData
 (braket
 l_int|1

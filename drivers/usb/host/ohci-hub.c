@@ -2302,7 +2302,7 @@ id|RH_HS_DRWE
 suffix:semicolon
 op_star
 (paren
-id|u32
+id|__le32
 op_star
 )paren
 id|buf
@@ -2344,7 +2344,7 @@ id|wIndex
 suffix:semicolon
 op_star
 (paren
-id|u32
+id|__le32
 op_star
 )paren
 id|buf
