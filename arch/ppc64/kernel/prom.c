@@ -4777,7 +4777,7 @@ c_func
 id|RELOC
 c_func
 (paren
-l_string|&quot;opened &quot;
+l_string|&quot;opening PHB &quot;
 )paren
 )paren
 suffix:semicolon
@@ -4785,11 +4785,6 @@ id|prom_print
 c_func
 (paren
 id|path
-)paren
-suffix:semicolon
-id|prom_print_nl
-c_func
-(paren
 )paren
 suffix:semicolon
 )brace
@@ -4831,7 +4826,7 @@ c_func
 id|RELOC
 c_func
 (paren
-l_string|&quot;open failed&bslash;n&quot;
+l_string|&quot;... failed&bslash;n&quot;
 )paren
 )paren
 suffix:semicolon
@@ -4844,7 +4839,7 @@ c_func
 id|RELOC
 c_func
 (paren
-l_string|&quot;open success&bslash;n&quot;
+l_string|&quot;... done&bslash;n&quot;
 )paren
 )paren
 suffix:semicolon
@@ -5902,7 +5897,7 @@ c_func
 id|RELOC
 c_func
 (paren
-l_string|&quot;...&quot;
+l_string|&quot;... &quot;
 )paren
 )paren
 suffix:semicolon
@@ -5972,7 +5967,7 @@ c_func
 id|RELOC
 c_func
 (paren
-l_string|&quot;ok&bslash;n&quot;
+l_string|&quot;... done&bslash;n&quot;
 )paren
 )paren
 suffix:semicolon
@@ -6038,7 +6033,7 @@ c_func
 id|RELOC
 c_func
 (paren
-l_string|&quot;failed: &quot;
+l_string|&quot;... failed: &quot;
 )paren
 )paren
 suffix:semicolon
@@ -6054,7 +6049,6 @@ c_func
 (paren
 )paren
 suffix:semicolon
-multiline_comment|/* prom_panic(RELOC(&quot;cpu failed to start&quot;)); */
 )brace
 )brace
 macro_line|#ifdef CONFIG_SMP
@@ -9340,7 +9334,7 @@ c_func
 id|RELOC
 c_func
 (paren
-l_string|&quot;OF stdout is   : &quot;
+l_string|&quot;OF stdout is    : &quot;
 )paren
 )paren
 suffix:semicolon
@@ -9823,7 +9817,7 @@ c_func
 id|RELOC
 c_func
 (paren
-l_string|&quot;... ok&bslash;n&quot;
+l_string|&quot;... done&bslash;n&quot;
 )paren
 )paren
 suffix:semicolon
