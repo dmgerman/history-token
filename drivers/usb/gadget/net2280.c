@@ -1,7 +1,6 @@
-multiline_comment|/*&n; * Driver for the NetChip 2280 USB device controller.&n; * Specs and errata are available from &lt;http://www.netchip.com&gt;.&n; *&n; * NetChip Technology Inc. supported the development of this driver.&n; *&n; *&n; * CODE STATUS HIGHLIGHTS&n; *&n; * Used with a gadget driver like &quot;zero.c&quot; this enumerates fine to Windows&n; * or Linux hosts; handles disconnect, reconnect, and reset, for full or&n; * high speed operation; and passes USB-IF &quot;chapter 9&quot; tests.&n; *&n; * Handles standard stress loads from the Linux &quot;usbtest&quot; driver, with&n; * either DMA (default) or PIO (use_dma=n) used for ep-{a,b,c,d}.  Testing&n; * with &quot;ttcp&quot; (and the &quot;ether.c&quot; driver) behaves nicely too.&n; *&n; * DMA is enabled by default, and drivers using transfer queues will use&n; * DMA chaining to remove IRQ latencies between transfers.  (Except when&n; * short OUT transfers happen.)  Drivers can use the req-&gt;no_interrupt&n; * hint to completely eliminate some IRQs, if a later IRQ is guaranteed.&n; */
+multiline_comment|/*&n; * Driver for the NetChip 2280 USB device controller.&n; * Specs and errata are available from &lt;http://www.netchip.com&gt;.&n; *&n; * NetChip Technology Inc. supported the development of this driver.&n; *&n; *&n; * CODE STATUS HIGHLIGHTS&n; *&n; * Used with a gadget driver like &quot;zero.c&quot; this enumerates fine to Windows&n; * or Linux hosts; handles disconnect, reconnect, and reset, for full or&n; * high speed operation; and passes USB-IF &quot;chapter 9&quot; tests.&n; *&n; * Handles standard stress loads from the Linux &quot;usbtest&quot; driver, with&n; * either DMA (default) or PIO (use_dma=n) used for ep-{a,b,c,d}.  Testing&n; * with &quot;ttcp&quot; (and the &quot;ether.c&quot; driver) behaves nicely too.&n; *&n; * DMA is enabled by default.  Drivers using transfer queues might use&n; * DMA chaining to remove IRQ latencies between transfers.  (Except when&n; * short OUT transfers happen.)  Drivers can use the req-&gt;no_interrupt&n; * hint to completely eliminate some IRQs, if a later IRQ is guaranteed&n; * and DMA chaining is enabled.&n; */
 singleline_comment|// #define NET2280_DMA_OUT_WORKAROUND
-DECL|macro|USE_DMA_CHAINING
-mdefine_line|#define USE_DMA_CHAINING
+singleline_comment|// #define USE_DMA_CHAINING
 multiline_comment|/*&n; * Copyright (C) 2003 David Brownell&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 DECL|macro|DEBUG
 mdefine_line|#define DEBUG&t;1
@@ -2169,32 +2168,6 @@ id|req-&gt;req.actual
 op_add_assign
 id|count
 suffix:semicolon
-multiline_comment|/* FIXME we seem to be getting these w/o ZLPs; why? */
-r_if
-c_cond
-(paren
-id|req-&gt;req.actual
-op_eq
-l_int|0
-op_logical_and
-id|req-&gt;req.length
-op_ne
-l_int|0
-)paren
-(brace
-id|VDEBUG
-(paren
-id|ep-&gt;dev
-comma
-l_string|&quot;%s pio out -- bogus zlp?&bslash;n&quot;
-comma
-id|ep-&gt;ep.name
-)paren
-suffix:semicolon
-r_return
-l_int|0
-suffix:semicolon
-)brace
 id|is_short
 op_assign
 (paren
@@ -3290,6 +3263,20 @@ id|USB_SPEED_UNKNOWN
 r_return
 op_minus
 id|ESHUTDOWN
+suffix:semicolon
+multiline_comment|/* FIXME implement PIO fallback for ZLPs with DMA */
+r_if
+c_cond
+(paren
+id|ep-&gt;dma
+op_logical_and
+id|_req-&gt;length
+op_eq
+l_int|0
+)paren
+r_return
+op_minus
+id|EOPNOTSUPP
 suffix:semicolon
 multiline_comment|/* set up dma mapping in case the caller didn&squot;t */
 r_if
