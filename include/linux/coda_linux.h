@@ -4,7 +4,6 @@ DECL|macro|_LINUX_CODA_FS
 mdefine_line|#define _LINUX_CODA_FS
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/param.h&gt;
-macro_line|#include &lt;linux/sched.h&gt; 
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/vmalloc.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
