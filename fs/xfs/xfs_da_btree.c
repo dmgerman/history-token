@@ -10761,6 +10761,10 @@ id|CE_ALERT
 comma
 l_string|&quot;xfs_da_do_buf: bno %lld&bslash;n&quot;
 comma
+(paren
+r_int
+r_int
+)paren
 id|bno
 )paren
 suffix:semicolon
@@ -10771,6 +10775,10 @@ id|CE_ALERT
 comma
 l_string|&quot;dir: inode %lld&bslash;n&quot;
 comma
+(paren
+r_int
+r_int
+)paren
 id|dp-&gt;i_ino
 )paren
 suffix:semicolon
