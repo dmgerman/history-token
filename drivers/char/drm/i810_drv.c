@@ -506,7 +506,7 @@ comma
 dot
 id|mmap
 op_assign
-id|i810_mmap_buffers
+id|drm_mmap
 comma
 dot
 id|poll
