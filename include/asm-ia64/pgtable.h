@@ -856,12 +856,6 @@ id|end
 )paren
 suffix:semicolon
 macro_line|#endif
-DECL|typedef|pte_addr_t
-r_typedef
-id|pte_t
-op_star
-id|pte_addr_t
-suffix:semicolon
 multiline_comment|/*&n; * IA-64 doesn&squot;t have any external MMU info: the page tables contain all the necessary&n; * information.  However, we use this routine to take care of any (delayed) i-cache&n; * flushing that may be necessary.&n; */
 r_extern
 r_void
