@@ -206,12 +206,6 @@ op_assign
 id|nlm_fclose
 comma
 multiline_comment|/* close file */
-dot
-id|detach
-op_assign
-id|exp_nlmdetach
-comma
-multiline_comment|/* lockd shutdown notification */
 )brace
 suffix:semicolon
 multiline_comment|/*&n; * When removing an NFS client entry, notify lockd that it is gone.&n; * FIXME: We should do the same when unexporting an NFS volume.&n; */

@@ -362,9 +362,7 @@ c_cond
 id|nlmsvc_ops
 )paren
 (brace
-id|nlmsvc_ops
-op_member_access_from_pointer
-id|detach
+id|nlmsvc_invalidate_all
 c_func
 (paren
 )paren
@@ -544,9 +542,7 @@ c_cond
 (paren
 id|nlmsvc_ops
 )paren
-id|nlmsvc_ops
-op_member_access_from_pointer
-id|detach
+id|nlmsvc_invalidate_all
 c_func
 (paren
 )paren

@@ -82,16 +82,6 @@ id|file
 op_star
 )paren
 suffix:semicolon
-DECL|member|detach
-r_void
-(paren
-op_star
-id|detach
-)paren
-(paren
-r_void
-)paren
-suffix:semicolon
 )brace
 suffix:semicolon
 r_extern

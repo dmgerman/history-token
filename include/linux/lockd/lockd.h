@@ -579,6 +579,16 @@ c_func
 r_void
 )paren
 suffix:semicolon
+r_extern
+r_struct
+id|nlm_host
+op_star
+id|nlm_find_client
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * Server-side lock handling&n; */
 r_int
 id|nlmsvc_async_call
@@ -725,6 +735,13 @@ c_func
 r_struct
 id|nlm_host
 op_star
+)paren
+suffix:semicolon
+r_void
+id|nlmsvc_invalidate_all
+c_func
+(paren
+r_void
 )paren
 suffix:semicolon
 r_static

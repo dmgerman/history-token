@@ -335,13 +335,6 @@ r_int
 id|errno
 )paren
 suffix:semicolon
-r_void
-id|exp_nlmdetach
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
 macro_line|#endif /* __KERNEL__ */
 macro_line|#endif /* NFSD_EXPORT_H */
 eof
