@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: eicon_dsp.h,v 1.7.6.1 2001/09/23 22:24:37 kai Exp $&n; *&n; * ISDN lowlevel-module for Eicon active cards.&n; * DSP definitions&n; *&n; * Copyright 1999,2000  by Armin Schindler (mac@melware.de)&n; * Copyright 1999,2000  Cytronics &amp; Melware (info@melware.de)&n; *&n; * This software may be used and distributed according to the terms&n; * of the GNU General Public License, incorporated herein by reference.&n; *&n; */
+multiline_comment|/* $Id: eicon_dsp.h,v 1.1.4.1.2.2 2002/10/01 11:29:13 armin Exp $&n; *&n; * ISDN lowlevel-module for Eicon active cards.&n; * DSP definitions&n; *&n; * Copyright 1999,2000  by Armin Schindler (mac@melware.de)&n; * Copyright 1999,2000  Cytronics &amp; Melware (info@melware.de)&n; *&n; * This software may be used and distributed according to the terms&n; * of the GNU General Public License, incorporated herein by reference.&n; *&n; */
 macro_line|#ifndef DSP_H 
 DECL|macro|DSP_H
 mdefine_line|#define DSP_H

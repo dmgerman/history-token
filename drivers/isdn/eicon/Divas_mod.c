@@ -5,6 +5,7 @@ macro_line|#include &lt;linux/fs.h&gt;
 DECL|macro|N_DATA
 macro_line|#undef N_DATA
 macro_line|#include &lt;linux/kernel.h&gt;
+macro_line|#include &lt;linux/tqueue.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/ioport.h&gt;
@@ -28,6 +29,13 @@ id|MODULE_LICENSE
 c_func
 (paren
 l_string|&quot;GPL&quot;
+)paren
+suffix:semicolon
+r_void
+id|DivasInitDpc
+c_func
+(paren
+r_void
 )paren
 suffix:semicolon
 macro_line|#ifdef MODULE
@@ -108,6 +116,11 @@ op_minus
 id|ENODEV
 suffix:semicolon
 macro_line|#endif
+id|DivasInitDpc
+c_func
+(paren
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
