@@ -379,6 +379,13 @@ id|highmem_io
 suffix:colon
 l_int|1
 suffix:semicolon
+multiline_comment|/* &n;     * True if the driver wishes to use the generic block layer&n;     * tag queueing functions&n;     */
+DECL|member|use_blk_tcq
+r_int
+id|use_blk_tcq
+suffix:colon
+l_int|1
+suffix:semicolon
 multiline_comment|/*&n;     * Name of proc directory&n;     */
 DECL|member|proc_name
 r_char
@@ -597,6 +604,12 @@ suffix:semicolon
 DECL|member|highmem_io
 r_int
 id|highmem_io
+suffix:colon
+l_int|1
+suffix:semicolon
+DECL|member|use_blk_tcq
+r_int
+id|use_blk_tcq
 suffix:colon
 l_int|1
 suffix:semicolon
