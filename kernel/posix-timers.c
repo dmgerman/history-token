@@ -18,6 +18,34 @@ macro_line|#include &lt;asm/div64.h&gt;
 DECL|macro|div_long_long_rem
 mdefine_line|#define div_long_long_rem(dividend,divisor,remainder) ({ &bslash;&n;&t;&t;       u64 result = dividend;&t;&t;&bslash;&n;&t;&t;       *remainder = do_div(result,divisor); &bslash;&n;&t;&t;       result; })
 macro_line|#endif
+DECL|macro|CLOCK_REALTIME_RES
+mdefine_line|#define CLOCK_REALTIME_RES TICK_NSEC(TICK_USEC)  
+singleline_comment|// In nano seconds.
+DECL|function|mpy_l_X_l_ll
+r_static
+r_inline
+id|u64
+id|mpy_l_X_l_ll
+c_func
+(paren
+r_int
+r_int
+id|mpy1
+comma
+r_int
+r_int
+id|mpy2
+)paren
+(brace
+r_return
+(paren
+id|u64
+)paren
+id|mpy1
+op_star
+id|mpy2
+suffix:semicolon
+)brace
 multiline_comment|/*&n; * Management arrays for POSIX timers.&t; Timers are kept in slab memory&n; * Timer ids are allocated by an external routine that keeps track of the&n; * id and the timer.  The external interface is:&n; *&n; * void *idr_find(struct idr *idp, int id);           to find timer_id &lt;id&gt;&n; * int idr_get_new(struct idr *idp, void *ptr);       to get a new id and&n; *                                                    related it to &lt;ptr&gt;&n; * void idr_remove(struct idr *idp, int id);          to release &lt;id&gt;&n; * void idr_init(struct idr *idp);                    to initialize &lt;idp&gt;&n; *                                                    which we supply.&n; * The idr_get_new *may* call slab for more memory so it must not be&n; * called under a spin lock.  Likewise idr_remore may release memory&n; * (but it may be ok to do this under a lock...).&n; * idr_find is just a memory look up and is quite fast.  A -1 return&n; * indicates that the requested id does not exist.&n; */
 multiline_comment|/*&n; * Lets keep our timers in a slab cache :-)&n; */
 DECL|variable|posix_timers_cache
@@ -196,9 +224,7 @@ op_assign
 dot
 id|res
 op_assign
-id|NSEC_PER_SEC
-op_div
-id|HZ
+id|CLOCK_REALTIME_RES
 )brace
 suffix:semicolon
 r_struct
@@ -209,9 +235,7 @@ op_assign
 dot
 id|res
 op_assign
-id|NSEC_PER_SEC
-op_div
-id|HZ
+id|CLOCK_REALTIME_RES
 comma
 dot
 id|clock_get
@@ -331,35 +355,37 @@ op_sub_assign
 id|NSEC_PER_SEC
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t; * A note on jiffy overflow: It is possible for the system to&n;&t; * have been up long enough for the jiffies quanity to overflow.&n;&t; * In order for correct timer evaluations we require that the&n;&t; * specified time be somewhere between now and now + (max&n;&t; * unsigned int/2).  Times beyond this will be truncated back to&n;&t; * this value.   This is done in the absolute adjustment code,&n;&t; * below.  Here it is enough to just discard the high order&n;&t; * bits.&n;&t; */
+multiline_comment|/*&n;&t; * The scaling constants are defined in &lt;linux/time.h&gt;&n;&t; * The difference between there and here is that we do the&n;&t; * res rounding and compute a 64-bit result (well so does that&n;&t; * but it then throws away the high bits).&n;  &t; */
 op_star
 id|jiff
 op_assign
 (paren
-id|s64
-)paren
-id|sec
-op_star
-id|HZ
-suffix:semicolon
-multiline_comment|/*&n;&t; * Do the res thing. (Don&squot;t forget the add in the declaration of nsec)&n;&t; */
-id|nsec
-op_sub_assign
-id|nsec
-op_mod
-id|res
-suffix:semicolon
-multiline_comment|/*&n;&t; * Split to jiffie and sub jiffie&n;&t; */
-op_star
-id|jiff
-op_add_assign
-id|nsec
-op_div
+id|mpy_l_X_l_ll
+c_func
 (paren
-id|NSEC_PER_SEC
-op_div
-id|HZ
+id|sec
+comma
+id|SEC_CONVERSION
 )paren
+op_plus
+(paren
+id|mpy_l_X_l_ll
+c_func
+(paren
+id|nsec
+comma
+id|NSEC_CONVERSION
+)paren
+op_rshift
+(paren
+id|NSEC_JIFFIE_SC
+op_minus
+id|SEC_JIFFIE_SC
+)paren
+)paren
+)paren
+op_rshift
+id|SEC_JIFFIE_SC
 suffix:semicolon
 )brace
 DECL|function|schedule_next_timer
@@ -4110,10 +4136,6 @@ id|s64
 l_int|0
 )paren
 (brace
-r_int
-r_int
-id|rmd
-suffix:semicolon
 multiline_comment|/*&n;&t;&t; * Always restart abs calls from scratch to pick up any&n;&t;&t; * clock shifting that happened while we are away.&n;&t;&t; */
 r_if
 c_cond
@@ -4124,6 +4146,14 @@ r_return
 op_minus
 id|ERESTARTNOHAND
 suffix:semicolon
+id|left
+op_mul_assign
+id|TICK_NSEC
+c_func
+(paren
+id|TICK_USEC
+)paren
+suffix:semicolon
 id|tsave-&gt;tv_sec
 op_assign
 id|div_long_long_rem
@@ -4131,20 +4161,10 @@ c_func
 (paren
 id|left
 comma
-id|HZ
+id|NSEC_PER_SEC
 comma
 op_amp
-id|rmd
-)paren
-suffix:semicolon
 id|tsave-&gt;tv_nsec
-op_assign
-id|rmd
-op_star
-(paren
-id|NSEC_PER_SEC
-op_div
-id|HZ
 )paren
 suffix:semicolon
 id|restart_block-&gt;fn
