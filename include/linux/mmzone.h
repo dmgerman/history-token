@@ -550,13 +550,6 @@ r_int
 op_star
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_NUMA
-DECL|macro|MAX_NR_MEMBLKS
-mdefine_line|#define MAX_NR_MEMBLKS&t;BITS_PER_LONG /* Max number of Memory Blocks */
-macro_line|#else /* !CONFIG_NUMA */
-DECL|macro|MAX_NR_MEMBLKS
-mdefine_line|#define MAX_NR_MEMBLKS&t;1
-macro_line|#endif /* CONFIG_NUMA */
 macro_line|#include &lt;linux/topology.h&gt;
 multiline_comment|/* Returns the number of the current Node. */
 DECL|macro|numa_node_id
@@ -601,15 +594,6 @@ c_func
 id|node_online_map
 comma
 id|MAX_NUMNODES
-)paren
-suffix:semicolon
-r_extern
-id|DECLARE_BITMAP
-c_func
-(paren
-id|memblk_online_map
-comma
-id|MAX_NR_MEMBLKS
 )paren
 suffix:semicolon
 macro_line|#if defined(CONFIG_DISCONTIGMEM) || defined(CONFIG_NUMA)
@@ -669,62 +653,6 @@ r_return
 id|num
 suffix:semicolon
 )brace
-DECL|macro|memblk_online
-mdefine_line|#define memblk_online(memblk)&t;&t;test_bit(memblk, memblk_online_map)
-DECL|macro|memblk_set_online
-mdefine_line|#define memblk_set_online(memblk)&t;set_bit(memblk, memblk_online_map)
-DECL|macro|memblk_set_offline
-mdefine_line|#define memblk_set_offline(memblk)&t;clear_bit(memblk, memblk_online_map)
-DECL|function|num_online_memblks
-r_static
-r_inline
-r_int
-r_int
-id|num_online_memblks
-c_func
-(paren
-r_void
-)paren
-(brace
-r_int
-id|i
-comma
-id|num
-op_assign
-l_int|0
-suffix:semicolon
-r_for
-c_loop
-(paren
-id|i
-op_assign
-l_int|0
-suffix:semicolon
-id|i
-OL
-id|MAX_NR_MEMBLKS
-suffix:semicolon
-id|i
-op_increment
-)paren
-(brace
-r_if
-c_cond
-(paren
-id|memblk_online
-c_func
-(paren
-id|i
-)paren
-)paren
-id|num
-op_increment
-suffix:semicolon
-)brace
-r_return
-id|num
-suffix:semicolon
-)brace
 macro_line|#else /* !CONFIG_DISCONTIGMEM &amp;&amp; !CONFIG_NUMA */
 DECL|macro|node_online
 mdefine_line|#define node_online(node) &bslash;&n;&t;({ BUG_ON((node) != 0); test_bit(node, node_online_map); })
@@ -734,14 +662,6 @@ DECL|macro|node_set_offline
 mdefine_line|#define node_set_offline(node) &bslash;&n;&t;({ BUG_ON((node) != 0); clear_bit(node, node_online_map); })
 DECL|macro|num_online_nodes
 mdefine_line|#define num_online_nodes()&t;1
-DECL|macro|memblk_online
-mdefine_line|#define memblk_online(memblk) &bslash;&n;&t;({ BUG_ON((memblk) != 0); test_bit(memblk, memblk_online_map); })
-DECL|macro|memblk_set_online
-mdefine_line|#define memblk_set_online(memblk) &bslash;&n;&t;({ BUG_ON((memblk) != 0); set_bit(memblk, memblk_online_map); })
-DECL|macro|memblk_set_offline
-mdefine_line|#define memblk_set_offline(memblk) &bslash;&n;&t;({ BUG_ON((memblk) != 0); clear_bit(memblk, memblk_online_map); })
-DECL|macro|num_online_memblks
-mdefine_line|#define num_online_memblks()&t;&t;1
 macro_line|#endif /* CONFIG_DISCONTIGMEM || CONFIG_NUMA */
 macro_line|#endif /* !__ASSEMBLY__ */
 macro_line|#endif /* __KERNEL__ */

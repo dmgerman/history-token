@@ -7,10 +7,6 @@ macro_line|#ifndef cpu_to_node
 DECL|macro|cpu_to_node
 mdefine_line|#define cpu_to_node(cpu)&t;(0)
 macro_line|#endif
-macro_line|#ifndef memblk_to_node
-DECL|macro|memblk_to_node
-mdefine_line|#define memblk_to_node(memblk)&t;(0)
-macro_line|#endif
 macro_line|#ifndef parent_node
 DECL|macro|parent_node
 mdefine_line|#define parent_node(node)&t;(0)
@@ -22,10 +18,6 @@ macro_line|#endif
 macro_line|#ifndef node_to_first_cpu
 DECL|macro|node_to_first_cpu
 mdefine_line|#define node_to_first_cpu(node)&t;(0)
-macro_line|#endif
-macro_line|#ifndef node_to_memblk
-DECL|macro|node_to_memblk
-mdefine_line|#define node_to_memblk(node)&t;(0)
 macro_line|#endif
 macro_line|#ifndef pcibus_to_cpumask
 DECL|macro|pcibus_to_cpumask
