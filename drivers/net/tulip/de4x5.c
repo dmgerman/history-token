@@ -5010,12 +5010,6 @@ id|DE4X5_OMR
 )paren
 suffix:semicolon
 multiline_comment|/* Poll for setup frame completion (adapter interrupts are disabled now) */
-id|sti
-c_func
-(paren
-)paren
-suffix:semicolon
-multiline_comment|/* Ensure timer interrupts */
 r_for
 c_loop
 (paren
@@ -5638,6 +5632,7 @@ suffix:semicolon
 id|synchronize_irq
 c_func
 (paren
+id|dev-&gt;irq
 )paren
 suffix:semicolon
 r_for
