@@ -523,11 +523,19 @@ id|max_mapnr
 op_assign
 id|num_physpages
 op_assign
-id|MAP_NR
-c_func
 (paren
+(paren
+(paren
+r_int
+r_int
+)paren
 id|high_memory
 )paren
+op_minus
+id|PAGE_OFFSET
+)paren
+op_rshift
+id|PAGE_SHIFT
 suffix:semicolon
 multiline_comment|/* this will put all memory onto the freelists */
 id|totalram_pages

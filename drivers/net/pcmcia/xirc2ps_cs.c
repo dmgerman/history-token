@@ -387,12 +387,14 @@ id|pc_debug
 op_assign
 id|PCMCIA_DEBUG
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|pc_debug
 comma
-l_string|&quot;i&quot;
+r_int
+comma
+l_int|0
 )paren
 suffix:semicolon
 DECL|macro|DEBUG
@@ -457,7 +459,7 @@ l_string|&quot;Dual MPL/GPL&quot;
 )paren
 suffix:semicolon
 DECL|macro|INT_MODULE_PARM
-mdefine_line|#define INT_MODULE_PARM(n, v) static int n = v; MODULE_PARM(n, &quot;i&quot;)
+mdefine_line|#define INT_MODULE_PARM(n, v) static int n = v; module_param(n, int, 0)
 DECL|variable|irq_list
 r_static
 r_int
@@ -471,12 +473,16 @@ op_minus
 l_int|1
 )brace
 suffix:semicolon
-id|MODULE_PARM
+id|module_param_array
 c_func
 (paren
 id|irq_list
 comma
-l_string|&quot;1-4i&quot;
+r_int
+comma
+l_int|NULL
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|INT_MODULE_PARM
@@ -764,7 +770,9 @@ id|modem
 suffix:semicolon
 multiline_comment|/* is a multi function card (i.e with a modem) */
 DECL|member|dingo_ccr
-id|caddr_t
+r_void
+id|__iomem
+op_star
 id|dingo_ccr
 suffix:semicolon
 multiline_comment|/* only used for CEM56 cards */
@@ -2127,12 +2135,6 @@ id|client_reg.dev_info
 op_assign
 op_amp
 id|dev_info
-suffix:semicolon
-id|client_reg.Attributes
-op_assign
-id|INFO_IO_CLIENT
-op_or
-id|INFO_CARD_SHARE
 suffix:semicolon
 id|client_reg.EventMask
 op_assign
@@ -4474,6 +4476,19 @@ id|link-&gt;state
 op_and_assign
 op_complement
 id|DEV_CONFIG_PENDING
+suffix:semicolon
+id|SET_NETDEV_DEV
+c_func
+(paren
+id|dev
+comma
+op_amp
+id|handle_to_dev
+c_func
+(paren
+id|handle
+)paren
+)paren
 suffix:semicolon
 r_if
 c_cond
@@ -8674,15 +8689,12 @@ op_amp
 id|xirc2ps_cs_driver
 )paren
 suffix:semicolon
-r_while
-c_loop
-(paren
-id|dev_list
-)paren
-id|xirc2ps_detach
+id|BUG_ON
 c_func
 (paren
 id|dev_list
+op_ne
+l_int|NULL
 )paren
 suffix:semicolon
 )brace

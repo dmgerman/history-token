@@ -39,7 +39,7 @@ l_string|&quot;Dual MPL/GPL&quot;
 )paren
 suffix:semicolon
 DECL|macro|INT_MODULE_PARM
-mdefine_line|#define INT_MODULE_PARM(n, v) static int n = v; MODULE_PARM(n, &quot;i&quot;)
+mdefine_line|#define INT_MODULE_PARM(n, v) static int n = v; module_param(n, int, 0)
 multiline_comment|/* Bit map of interrupts to choose from */
 id|INT_MODULE_PARM
 c_func
@@ -62,12 +62,16 @@ op_minus
 l_int|1
 )brace
 suffix:semicolon
-id|MODULE_PARM
+id|module_param_array
 c_func
 (paren
 id|irq_list
 comma
-l_string|&quot;1-4i&quot;
+r_int
+comma
+l_int|NULL
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|INT_MODULE_PARM
@@ -363,12 +367,6 @@ id|client_reg.dev_info
 op_assign
 op_amp
 id|dev_info
-suffix:semicolon
-id|client_reg.Attributes
-op_assign
-id|INFO_IO_CLIENT
-op_or
-id|INFO_CARD_SHARE
 suffix:semicolon
 id|client_reg.EventMask
 op_assign
@@ -1450,18 +1448,12 @@ op_amp
 id|parport_cs_driver
 )paren
 suffix:semicolon
-multiline_comment|/* XXX: this really needs to move into generic code.. */
-r_while
-c_loop
+id|BUG_ON
+c_func
 (paren
 id|dev_list
 op_ne
 l_int|NULL
-)paren
-id|parport_detach
-c_func
-(paren
-id|dev_list
 )paren
 suffix:semicolon
 )brace

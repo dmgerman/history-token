@@ -39,6 +39,36 @@ DECL|macro|MCFINT_UART2
 mdefine_line|#define&t;MCFINT_UART2&t;&t;15&t;&t;/* Interrupt number for UART2 */
 DECL|macro|MCFINT_PIT1
 mdefine_line|#define&t;MCFINT_PIT1&t;&t;36&t;&t;/* Interrupt number for PIT1 */
+multiline_comment|/*&n; *&t;SDRAM configuration registers.&n; */
+macro_line|#ifdef CONFIG_M5271EVB
+DECL|macro|MCFSIM_DCR
+mdefine_line|#define&t;MCFSIM_DCR&t;&t;0x40&t;&t;/* SDRAM control */
+DECL|macro|MCFSIM_DACR0
+mdefine_line|#define&t;MCFSIM_DACR0&t;&t;0x48&t;&t;/* SDRAM base address 0 */
+DECL|macro|MCFSIM_DMR0
+mdefine_line|#define&t;MCFSIM_DMR0&t;&t;0x4c&t;&t;/* SDRAM address mask 0 */
+DECL|macro|MCFSIM_DACR1
+mdefine_line|#define&t;MCFSIM_DACR1&t;&t;0x50&t;&t;/* SDRAM base address 1 */
+DECL|macro|MCFSIM_DMR1
+mdefine_line|#define&t;MCFSIM_DMR1&t;&t;0x54&t;&t;/* SDRAM address mask 1 */
+macro_line|#else
+DECL|macro|MCFSIM_DMR
+mdefine_line|#define&t;MCFSIM_DMR&t;&t;0x40&t;&t;/* SDRAM mode */
+DECL|macro|MCFSIM_DCR
+mdefine_line|#define&t;MCFSIM_DCR&t;&t;0x44&t;&t;/* SDRAM control */
+DECL|macro|MCFSIM_DCFG1
+mdefine_line|#define&t;MCFSIM_DCFG1&t;&t;0x48&t;&t;/* SDRAM configuration 1 */
+DECL|macro|MCFSIM_DCFG2
+mdefine_line|#define&t;MCFSIM_DCFG2&t;&t;0x4c&t;&t;/* SDRAM configuration 2 */
+DECL|macro|MCFSIM_DBAR0
+mdefine_line|#define&t;MCFSIM_DBAR0&t;&t;0x50&t;&t;/* SDRAM base address 0 */
+DECL|macro|MCFSIM_DMR0
+mdefine_line|#define&t;MCFSIM_DMR0&t;&t;0x54&t;&t;/* SDRAM address mask 0 */
+DECL|macro|MCFSIM_DBAR1
+mdefine_line|#define&t;MCFSIM_DBAR1&t;&t;0x58&t;&t;/* SDRAM base address 1 */
+DECL|macro|MCFSIM_DMR1
+mdefine_line|#define&t;MCFSIM_DMR1&t;&t;0x5c&t;&t;/* SDRAM address mask 1 */
+macro_line|#endif
 multiline_comment|/****************************************************************************/
 macro_line|#endif&t;/* m527xsim_h */
 eof

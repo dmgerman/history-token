@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * ds.h 1.56 2000/06/12 21:55:40&n; *&n; * The contents of this file are subject to the Mozilla Public License&n; * Version 1.1 (the &quot;License&quot;); you may not use this file except in&n; * compliance with the License. You may obtain a copy of the License&n; * at http://www.mozilla.org/MPL/&n; *&n; * Software distributed under the License is distributed on an &quot;AS IS&quot;&n; * basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See&n; * the License for the specific language governing rights and&n; * limitations under the License. &n; *&n; * The initial developer of the original code is David A. Hinds&n; * &lt;dahinds@users.sourceforge.net&gt;.  Portions created by David A. Hinds&n; * are Copyright (C) 1999 David A. Hinds.  All Rights Reserved.&n; *&n; * Alternatively, the contents of this file may be used under the&n; * terms of the GNU General Public License version 2 (the &quot;GPL&quot;), in which&n; * case the provisions of the GPL are applicable instead of the&n; * above.  If you wish to allow the use of your version of this file&n; * only under the terms of the GPL and not to allow others to use&n; * your version of this file under the MPL, indicate your decision by&n; * deleting the provisions above and replace them with the notice and&n; * other provisions required by the GPL.  If you do not delete the&n; * provisions above, a recipient may use your version of this file&n; * under either the MPL or the GPL.&n; */
+multiline_comment|/*&n; * ds.h -- 16-bit PCMCIA core support&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; *&n; * The initial developer of the original code is David A. Hinds&n; * &lt;dahinds@users.sourceforge.net&gt;.  Portions created by David A. Hinds&n; * are Copyright (C) 1999 David A. Hinds.  All Rights Reserved.&n; *&n; * (C) 1999&t;&t;David A. Hinds&n; * (C) 2003 - 2004&t;Dominik Brodowski&n; */
 macro_line|#ifndef _LINUX_DS_H
 DECL|macro|_LINUX_DS_H
 mdefine_line|#define _LINUX_DS_H
@@ -335,6 +335,9 @@ DECL|macro|DEV_BUSY
 mdefine_line|#define DEV_BUSY&t;&t;0x80
 DECL|macro|DEV_OK
 mdefine_line|#define DEV_OK(l) &bslash;&n;    ((l) &amp;&amp; ((l-&gt;state &amp; ~DEV_BUSY) == (DEV_CONFIG|DEV_PRESENT)))
+r_struct
+id|pcmcia_socket
+suffix:semicolon
 r_extern
 r_struct
 id|bus_type
@@ -344,10 +347,6 @@ DECL|struct|pcmcia_driver
 r_struct
 id|pcmcia_driver
 (brace
-DECL|member|use_count
-r_int
-id|use_count
-suffix:semicolon
 DECL|member|attach
 id|dev_link_t
 op_star
@@ -404,6 +403,103 @@ op_star
 id|driver
 )paren
 suffix:semicolon
+DECL|struct|pcmcia_device
+r_struct
+id|pcmcia_device
+(brace
+multiline_comment|/* the socket and the device_no [for multifunction devices]&n;&t;   uniquely define a pcmcia_device */
+DECL|member|socket
+r_struct
+id|pcmcia_socket
+op_star
+id|socket
+suffix:semicolon
+DECL|member|device_no
+id|u8
+id|device_no
+suffix:semicolon
+multiline_comment|/* the hardware &quot;function&quot; device; certain subdevices can&n;&t; * share one hardware &quot;function&quot; device. */
+DECL|member|func
+id|u8
+id|func
+suffix:semicolon
+DECL|member|socket_device_list
+r_struct
+id|list_head
+id|socket_device_list
+suffix:semicolon
+multiline_comment|/* deprecated, a cleaned up version will be moved into this&n;&t;   struct soon */
+DECL|member|instance
+id|dev_link_t
+op_star
+id|instance
+suffix:semicolon
+DECL|struct|client_t
+r_struct
+id|client_t
+(brace
+DECL|member|client_magic
+id|u_short
+id|client_magic
+suffix:semicolon
+DECL|member|Socket
+r_struct
+id|pcmcia_socket
+op_star
+id|Socket
+suffix:semicolon
+DECL|member|Function
+id|u_char
+id|Function
+suffix:semicolon
+DECL|member|state
+id|u_int
+id|state
+suffix:semicolon
+DECL|member|EventMask
+id|event_t
+id|EventMask
+suffix:semicolon
+DECL|member|event_handler
+r_int
+(paren
+op_star
+id|event_handler
+)paren
+(paren
+id|event_t
+id|event
+comma
+r_int
+id|priority
+comma
+id|event_callback_args_t
+op_star
+)paren
+suffix:semicolon
+DECL|member|event_callback_args
+id|event_callback_args_t
+id|event_callback_args
+suffix:semicolon
+DECL|member|client
+)brace
+id|client
+suffix:semicolon
+DECL|member|dev
+r_struct
+id|device
+id|dev
+suffix:semicolon
+)brace
+suffix:semicolon
+DECL|macro|to_pcmcia_dev
+mdefine_line|#define to_pcmcia_dev(n) container_of(n, struct pcmcia_device, dev)
+DECL|macro|to_pcmcia_drv
+mdefine_line|#define to_pcmcia_drv(n) container_of(n, struct pcmcia_driver, drv)
+DECL|macro|handle_to_pdev
+mdefine_line|#define handle_to_pdev(handle) container_of(handle, struct pcmcia_device, client);
+DECL|macro|handle_to_dev
+mdefine_line|#define handle_to_dev(handle) ((container_of(handle, struct pcmcia_device, client))-&gt;dev)
 multiline_comment|/* error reporting */
 r_void
 id|cs_error

@@ -39,6 +39,13 @@ id|NR_CPUS
 )braket
 suffix:semicolon
 multiline_comment|/* Package ID of each logical CPU */
+DECL|variable|phys_proc_id
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|phys_proc_id
+)paren
+suffix:semicolon
 multiline_comment|/* bitmap of online cpus */
 DECL|variable|cpu_online_map
 id|cpumask_t

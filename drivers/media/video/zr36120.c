@@ -9282,9 +9282,12 @@ id|ztv-&gt;users
 op_assign
 l_int|0
 suffix:semicolon
+id|rwlock_init
+c_func
+(paren
+op_amp
 id|ztv-&gt;lock
-op_assign
-id|RW_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 id|ztv-&gt;workqueue
 op_assign

@@ -442,6 +442,7 @@ id|asb
 suffix:semicolon
 DECL|member|xl_mmio
 id|u8
+id|__iomem
 op_star
 id|xl_mmio
 suffix:semicolon

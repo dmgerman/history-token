@@ -10,6 +10,7 @@ DECL|macro|VM_ALLOC
 mdefine_line|#define VM_ALLOC&t;0x00000002&t;/* vmalloc() */
 DECL|macro|VM_MAP
 mdefine_line|#define VM_MAP&t;&t;0x00000004&t;/* vmap()ed pages */
+multiline_comment|/* bits [20..32] reserved for arch specific ioremap internals */
 DECL|struct|vm_struct
 r_struct
 id|vm_struct

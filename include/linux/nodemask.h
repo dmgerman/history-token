@@ -1,7 +1,7 @@
 macro_line|#ifndef __LINUX_NODEMASK_H
 DECL|macro|__LINUX_NODEMASK_H
 mdefine_line|#define __LINUX_NODEMASK_H
-multiline_comment|/*&n; * Nodemasks provide a bitmap suitable for representing the&n; * set of Node&squot;s in a system, one bit position per Node number.&n; *&n; * See detailed comments in the file linux/bitmap.h describing the&n; * data type on which these nodemasks are based.&n; *&n; * For details of nodemask_scnprintf() and nodemask_parse(),&n; * see bitmap_scnprintf() and bitmap_parse() in lib/bitmap.c.&n; *&n; * The available nodemask operations are:&n; *&n; * void node_set(node, mask)&t;&t;turn on bit &squot;node&squot; in mask&n; * void node_clear(node, mask)&t;&t;turn off bit &squot;node&squot; in mask&n; * void nodes_setall(mask)&t;&t;set all bits&n; * void nodes_clear(mask)&t;&t;clear all bits&n; * int node_isset(node, mask)&t;&t;true iff bit &squot;node&squot; set in mask&n; * int node_test_and_set(node, mask)&t;test and set bit &squot;node&squot; in mask&n; *&n; * void nodes_and(dst, src1, src2)&t;dst = src1 &amp; src2  [intersection]&n; * void nodes_or(dst, src1, src2)&t;dst = src1 | src2  [union]&n; * void nodes_xor(dst, src1, src2)&t;dst = src1 ^ src2&n; * void nodes_andnot(dst, src1, src2)&t;dst = src1 &amp; ~src2&n; * void nodes_complement(dst, src)&t;dst = ~src&n; *&n; * int nodes_equal(mask1, mask2)&t;Does mask1 == mask2?&n; * int nodes_intersects(mask1, mask2)&t;Do mask1 and mask2 intersect?&n; * int nodes_subset(mask1, mask2)&t;Is mask1 a subset of mask2?&n; * int nodes_empty(mask)&t;&t;Is mask empty (no bits sets)?&n; * int nodes_full(mask)&t;&t;&t;Is mask full (all bits sets)?&n; * int nodes_weight(mask)&t;&t;Hamming weight - number of set bits&n; *&n; * void nodes_shift_right(dst, src, n)&t;Shift right&n; * void nodes_shift_left(dst, src, n)&t;Shift left&n; *&n; * int first_node(mask)&t;&t;&t;Number lowest set bit, or MAX_NUMNODES&n; * int next_node(node, mask)&t;&t;Next node past &squot;node&squot;, or MAX_NUMNODES&n; *&n; * nodemask_t nodemask_of_node(node)&t;Return nodemask with bit &squot;node&squot; set&n; * NODE_MASK_ALL&t;&t;&t;Initializer - all bits set&n; * NODE_MASK_NONE&t;&t;&t;Initializer - no bits set&n; * unsigned long *nodes_addr(mask)&t;Array of unsigned long&squot;s in mask&n; *&n; * int nodemask_scnprintf(buf, len, mask) Format nodemask for printing&n; * int nodemask_parse(ubuf, ulen, mask)&t;Parse ascii string as nodemask&n; *&n; * for_each_node_mask(node, mask)&t;for-loop node over mask&n; *&n; * int num_online_nodes()&t;&t;Number of online Nodes&n; * int num_possible_nodes()&t;&t;Number of all possible Nodes&n; *&n; * int node_online(node)&t;&t;Is some node online?&n; * int node_possible(node)&t;&t;Is some node possible?&n; *&n; * int any_online_node(mask)&t;&t;First online node in mask&n; *&n; * node_set_online(node)&t;&t;set bit &squot;node&squot; in node_online_map&n; * node_set_offline(node)&t;&t;clear bit &squot;node&squot; in node_online_map&n; *&n; * for_each_node(node)&t;&t;&t;for-loop node over node_possible_map&n; * for_each_online_node(node)&t;&t;for-loop node over node_online_map&n; *&n; * Subtlety:&n; * 1) The &squot;type-checked&squot; form of node_isset() causes gcc (3.3.2, anyway)&n; *    to generate slightly worse code.  So use a simple one-line #define&n; *    for node_isset(), instead of wrapping an inline inside a macro, the&n; *    way we do the other calls.&n; */
+multiline_comment|/*&n; * Nodemasks provide a bitmap suitable for representing the&n; * set of Node&squot;s in a system, one bit position per Node number.&n; *&n; * See detailed comments in the file linux/bitmap.h describing the&n; * data type on which these nodemasks are based.&n; *&n; * For details of nodemask_scnprintf() and nodemask_parse(),&n; * see bitmap_scnprintf() and bitmap_parse() in lib/bitmap.c.&n; *&n; * The available nodemask operations are:&n; *&n; * void node_set(node, mask)&t;&t;turn on bit &squot;node&squot; in mask&n; * void node_clear(node, mask)&t;&t;turn off bit &squot;node&squot; in mask&n; * void nodes_setall(mask)&t;&t;set all bits&n; * void nodes_clear(mask)&t;&t;clear all bits&n; * int node_isset(node, mask)&t;&t;true iff bit &squot;node&squot; set in mask&n; * int node_test_and_set(node, mask)&t;test and set bit &squot;node&squot; in mask&n; *&n; * void nodes_and(dst, src1, src2)&t;dst = src1 &amp; src2  [intersection]&n; * void nodes_or(dst, src1, src2)&t;dst = src1 | src2  [union]&n; * void nodes_xor(dst, src1, src2)&t;dst = src1 ^ src2&n; * void nodes_andnot(dst, src1, src2)&t;dst = src1 &amp; ~src2&n; * void nodes_complement(dst, src)&t;dst = ~src&n; *&n; * int nodes_equal(mask1, mask2)&t;Does mask1 == mask2?&n; * int nodes_intersects(mask1, mask2)&t;Do mask1 and mask2 intersect?&n; * int nodes_subset(mask1, mask2)&t;Is mask1 a subset of mask2?&n; * int nodes_empty(mask)&t;&t;Is mask empty (no bits sets)?&n; * int nodes_full(mask)&t;&t;&t;Is mask full (all bits sets)?&n; * int nodes_weight(mask)&t;&t;Hamming weight - number of set bits&n; *&n; * void nodes_shift_right(dst, src, n)&t;Shift right&n; * void nodes_shift_left(dst, src, n)&t;Shift left&n; *&n; * int first_node(mask)&t;&t;&t;Number lowest set bit, or MAX_NUMNODES&n; * int next_node(node, mask)&t;&t;Next node past &squot;node&squot;, or MAX_NUMNODES&n; * int first_unset_node(mask)&t;&t;First node not set in mask, or &n; *&t;&t;&t;&t;&t;MAX_NUMNODES.&n; *&n; * nodemask_t nodemask_of_node(node)&t;Return nodemask with bit &squot;node&squot; set&n; * NODE_MASK_ALL&t;&t;&t;Initializer - all bits set&n; * NODE_MASK_NONE&t;&t;&t;Initializer - no bits set&n; * unsigned long *nodes_addr(mask)&t;Array of unsigned long&squot;s in mask&n; *&n; * int nodemask_scnprintf(buf, len, mask) Format nodemask for printing&n; * int nodemask_parse(ubuf, ulen, mask)&t;Parse ascii string as nodemask&n; *&n; * for_each_node_mask(node, mask)&t;for-loop node over mask&n; *&n; * int num_online_nodes()&t;&t;Number of online Nodes&n; * int num_possible_nodes()&t;&t;Number of all possible Nodes&n; *&n; * int node_online(node)&t;&t;Is some node online?&n; * int node_possible(node)&t;&t;Is some node possible?&n; *&n; * int any_online_node(mask)&t;&t;First online node in mask&n; *&n; * node_set_online(node)&t;&t;set bit &squot;node&squot; in node_online_map&n; * node_set_offline(node)&t;&t;clear bit &squot;node&squot; in node_online_map&n; *&n; * for_each_node(node)&t;&t;&t;for-loop node over node_possible_map&n; * for_each_online_node(node)&t;&t;for-loop node over node_online_map&n; *&n; * Subtlety:&n; * 1) The &squot;type-checked&squot; form of node_isset() causes gcc (3.3.2, anyway)&n; *    to generate slightly worse code.  So use a simple one-line #define&n; *    for node_isset(), instead of wrapping an inline inside a macro, the&n; *    way we do the other calls.&n; */
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/threads.h&gt;
 macro_line|#include &lt;linux/bitmap.h&gt;
@@ -701,6 +701,39 @@ suffix:semicolon
 )brace
 DECL|macro|nodemask_of_node
 mdefine_line|#define nodemask_of_node(node)&t;&t;&t;&t;&t;&t;&bslash;&n;({&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;typeof(_unused_nodemask_arg_) m;&t;&t;&t;&t;&bslash;&n;&t;if (sizeof(m) == sizeof(unsigned long)) {&t;&t;&t;&bslash;&n;&t;&t;m.bits[0] = 1UL&lt;&lt;(node);&t;&t;&t;&t;&bslash;&n;&t;} else {&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;nodes_clear(m);&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;node_set((node), m);&t;&t;&t;&t;&t;&bslash;&n;&t;}&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;m;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;})
+DECL|macro|first_unset_node
+mdefine_line|#define first_unset_node(mask) __first_unset_node(&amp;(mask))
+DECL|function|__first_unset_node
+r_static
+r_inline
+r_int
+id|__first_unset_node
+c_func
+(paren
+r_const
+id|nodemask_t
+op_star
+id|maskp
+)paren
+(brace
+r_return
+id|min_t
+c_func
+(paren
+r_int
+comma
+id|MAX_NUMNODES
+comma
+id|find_first_zero_bit
+c_func
+(paren
+id|maskp-&gt;bits
+comma
+id|MAX_NUMNODES
+)paren
+)paren
+suffix:semicolon
+)brace
 DECL|macro|NODE_MASK_LAST_WORD
 mdefine_line|#define NODE_MASK_LAST_WORD BITMAP_LAST_WORD_MASK(MAX_NUMNODES)
 macro_line|#if MAX_NUMNODES &lt;= BITS_PER_LONG

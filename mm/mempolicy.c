@@ -2326,7 +2326,7 @@ l_int|NULL
 op_logical_and
 id|maxnode
 OL
-id|numnodes
+id|MAX_NUMNODES
 )paren
 r_return
 op_minus

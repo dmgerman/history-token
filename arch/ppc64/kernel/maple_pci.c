@@ -1608,18 +1608,6 @@ c_func
 (paren
 )paren
 suffix:semicolon
-multiline_comment|/* Fixup the pci_bus sysdata pointers */
-id|pci_fix_bus_sysdata
-c_func
-(paren
-)paren
-suffix:semicolon
-multiline_comment|/* Setup the iommu */
-id|iommu_setup_u3
-c_func
-(paren
-)paren
-suffix:semicolon
 id|DBG
 c_func
 (paren

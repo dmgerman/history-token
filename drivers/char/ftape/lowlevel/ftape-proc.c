@@ -462,6 +462,7 @@ id|len
 suffix:semicolon
 )brace
 DECL|function|ftape_read_proc
+r_static
 r_int
 id|ftape_read_proc
 c_func

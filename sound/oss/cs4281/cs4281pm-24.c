@@ -5,6 +5,7 @@ DECL|macro|cs_pm_register
 mdefine_line|#define cs_pm_register(a, b, c) pm_register((a), (b), (c));
 DECL|macro|cs_pm_unregister_all
 mdefine_line|#define cs_pm_unregister_all(a) pm_unregister_all((a));
+r_static
 r_int
 id|cs4281_suspend
 c_func
@@ -15,6 +16,7 @@ op_star
 id|s
 )paren
 suffix:semicolon
+r_static
 r_int
 id|cs4281_resume
 c_func
@@ -31,6 +33,7 @@ mdefine_line|#define CS4281_SUSPEND_TBL cs4281_suspend_null
 DECL|macro|CS4281_RESUME_TBL
 mdefine_line|#define CS4281_RESUME_TBL cs4281_resume_null
 DECL|function|cs4281_pm_callback
+r_static
 r_int
 id|cs4281_pm_callback
 c_func

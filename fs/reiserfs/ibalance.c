@@ -3485,6 +3485,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* Replace delimiting key of buffers L[h] and S[h] by the given key.*/
 DECL|function|replace_lkey
+r_static
 r_void
 id|replace_lkey
 (paren
@@ -3587,6 +3588,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* Replace delimiting key of buffers S[h] and R[h] by the given key.*/
 DECL|function|replace_rkey
+r_static
 r_void
 id|replace_rkey
 (paren

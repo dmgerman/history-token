@@ -351,9 +351,12 @@ id|io7-&gt;pe
 op_assign
 id|pe
 suffix:semicolon
+id|spin_lock_init
+c_func
+(paren
+op_amp
 id|io7-&gt;irq_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 r_for
 c_loop

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *    Disk Array driver for Compaq SA53xx Controllers, SCSI Tape module&n; *    Copyright 2001 Compaq Computer Corporation&n; *&n; *    This program is free software; you can redistribute it and/or modify&n; *    it under the terms of the GNU General Public License as published by&n; *    the Free Software Foundation; either version 2 of the License, or&n; *    (at your option) any later version.&n; *&n; *    This program is distributed in the hope that it will be useful,&n; *    but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *    MERCHANTABILITY OR FITNESS FOR A PARTICULAR PURPOSE, GOOD TITLE or&n; *    NON INFRINGEMENT.  See the GNU General Public License for more details.&n; *&n; *    You should have received a copy of the GNU General Public License&n; *    along with this program; if not, write to the Free Software&n; *    Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; *&n; *    Questions/Comments/Bugfixes to arrays@compaq.com&n; *    &n; *    Author: Stephen M. Cameron&n; */
+multiline_comment|/*&n; *    Disk Array driver for Compaq SA53xx Controllers, SCSI Tape module&n; *    Copyright 2001 Compaq Computer Corporation&n; *&n; *    This program is free software; you can redistribute it and/or modify&n; *    it under the terms of the GNU General Public License as published by&n; *    the Free Software Foundation; either version 2 of the License, or&n; *    (at your option) any later version.&n; *&n; *    This program is distributed in the hope that it will be useful,&n; *    but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *    MERCHANTABILITY OR FITNESS FOR A PARTICULAR PURPOSE, GOOD TITLE or&n; *    NON INFRINGEMENT.  See the GNU General Public License for more details.&n; *&n; *    You should have received a copy of the GNU General Public License&n; *    along with this program; if not, write to the Free Software&n; *    Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; *&n; *    Questions/Comments/Bugfixes to iss_storagedev@hp.com&n; *    &n; *    Author: Stephen M. Cameron&n; */
 macro_line|#ifdef CONFIG_CISS_SCSI_TAPE
 multiline_comment|/* Here we have code to present the driver as a scsi driver &n;   as it is simultaneously presented as a block driver.  The &n;   reason for doing this is to allow access to SCSI tape drives&n;   through the array controller.  Note in particular, neither &n;   physical nor logical disks are presented through the scsi layer. */
 macro_line|#include &lt;scsi/scsi.h&gt; 
@@ -2407,9 +2407,12 @@ id|shba-&gt;scsi_host
 op_assign
 l_int|NULL
 suffix:semicolon
+id|spin_lock_init
+c_func
+(paren
+op_amp
 id|shba-&gt;lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 id|shba-&gt;registered
 op_assign

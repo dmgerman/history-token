@@ -18,9 +18,9 @@ id|sysctl_tcp_tso_win_divisor
 op_assign
 l_int|8
 suffix:semicolon
-r_static
-id|__inline__
 DECL|function|update_send_head
+r_static
+r_inline
 r_void
 id|update_send_head
 c_func
@@ -31,7 +31,7 @@ op_star
 id|sk
 comma
 r_struct
-id|tcp_opt
+id|tcp_sock
 op_star
 id|tp
 comma
@@ -86,7 +86,7 @@ suffix:semicolon
 multiline_comment|/* SND.NXT, if window was not shrunk.&n; * If window has been shrunk, what should we make? It is not clear at all.&n; * Using SND.UNA we will fail to open window, SND.NXT is out of window. :-(&n; * Anything in between SND.UNA...SND.UNA+SND.WND also can be already&n; * invalid. OK, let&squot;s make this for now:&n; */
 DECL|function|tcp_acceptable_seq
 r_static
-id|__inline__
+r_inline
 id|__u32
 id|tcp_acceptable_seq
 c_func
@@ -97,7 +97,7 @@ op_star
 id|sk
 comma
 r_struct
-id|tcp_opt
+id|tcp_sock
 op_star
 id|tp
 )paren
@@ -140,7 +140,7 @@ id|sk
 )paren
 (brace
 r_struct
-id|tcp_opt
+id|tcp_sock
 op_star
 id|tp
 op_assign
@@ -212,7 +212,7 @@ id|tcp_cwnd_restart
 c_func
 (paren
 r_struct
-id|tcp_opt
+id|tcp_sock
 op_star
 id|tp
 comma
@@ -318,13 +318,13 @@ suffix:semicolon
 )brace
 DECL|function|tcp_event_data_sent
 r_static
-id|__inline__
+r_inline
 r_void
 id|tcp_event_data_sent
 c_func
 (paren
 r_struct
-id|tcp_opt
+id|tcp_sock
 op_star
 id|tp
 comma
@@ -416,7 +416,7 @@ id|sk
 )paren
 (brace
 r_struct
-id|tcp_opt
+id|tcp_sock
 op_star
 id|tp
 op_assign
@@ -686,7 +686,7 @@ id|window_clamp
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* Chose a new window to advertise, update state in tcp_opt for the&n; * socket, and return result with RFC1323 scaling applied.  The return&n; * value can be stuffed directly into th-&gt;window for an outgoing&n; * frame.&n; */
+multiline_comment|/* Chose a new window to advertise, update state in tcp_sock for the&n; * socket, and return result with RFC1323 scaling applied.  The return&n; * value can be stuffed directly into th-&gt;window for an outgoing&n; * frame.&n; */
 DECL|function|tcp_select_window
 r_static
 id|__inline__
@@ -701,7 +701,7 @@ id|sk
 )paren
 (brace
 r_struct
-id|tcp_opt
+id|tcp_sock
 op_star
 id|tp
 op_assign
@@ -843,7 +843,7 @@ id|sk
 )paren
 suffix:semicolon
 r_struct
-id|tcp_opt
+id|tcp_sock
 op_star
 id|tp
 op_assign
@@ -1385,7 +1385,7 @@ id|skb
 )paren
 (brace
 r_struct
-id|tcp_opt
+id|tcp_sock
 op_star
 id|tp
 op_assign
@@ -1452,7 +1452,7 @@ id|cur_mss
 )paren
 (brace
 r_struct
-id|tcp_opt
+id|tcp_sock
 op_star
 id|tp
 op_assign
@@ -1653,7 +1653,7 @@ id|len
 )paren
 (brace
 r_struct
-id|tcp_opt
+id|tcp_sock
 op_star
 id|tp
 op_assign
@@ -2481,7 +2481,7 @@ id|pmtu
 )paren
 (brace
 r_struct
-id|tcp_opt
+id|tcp_sock
 op_star
 id|tp
 op_assign
@@ -2641,7 +2641,7 @@ id|large
 )paren
 (brace
 r_struct
-id|tcp_opt
+id|tcp_sock
 op_star
 id|tp
 op_assign
@@ -2868,7 +2868,7 @@ id|nonagle
 )paren
 (brace
 r_struct
-id|tcp_opt
+id|tcp_sock
 op_star
 id|tp
 op_assign
@@ -3071,7 +3071,7 @@ id|sk
 )paren
 (brace
 r_struct
-id|tcp_opt
+id|tcp_sock
 op_star
 id|tp
 op_assign
@@ -3281,7 +3281,7 @@ id|mss_now
 )paren
 (brace
 r_struct
-id|tcp_opt
+id|tcp_sock
 op_star
 id|tp
 op_assign
@@ -3670,7 +3670,7 @@ id|sk
 )paren
 (brace
 r_struct
-id|tcp_opt
+id|tcp_sock
 op_star
 id|tp
 op_assign
@@ -3886,7 +3886,7 @@ id|skb
 )paren
 (brace
 r_struct
-id|tcp_opt
+id|tcp_sock
 op_star
 id|tp
 op_assign
@@ -4492,7 +4492,7 @@ id|sk
 )paren
 (brace
 r_struct
-id|tcp_opt
+id|tcp_sock
 op_star
 id|tp
 op_assign
@@ -4803,7 +4803,7 @@ id|sk
 )paren
 (brace
 r_struct
-id|tcp_opt
+id|tcp_sock
 op_star
 id|tp
 op_assign
@@ -5027,7 +5027,7 @@ id|priority
 )paren
 (brace
 r_struct
-id|tcp_opt
+id|tcp_sock
 op_star
 id|tp
 op_assign
@@ -5410,7 +5410,7 @@ id|req
 )paren
 (brace
 r_struct
-id|tcp_opt
+id|tcp_sock
 op_star
 id|tp
 op_assign
@@ -5853,7 +5853,7 @@ id|sk
 )paren
 suffix:semicolon
 r_struct
-id|tcp_opt
+id|tcp_sock
 op_star
 id|tp
 op_assign
@@ -6061,7 +6061,7 @@ id|sk
 )paren
 (brace
 r_struct
-id|tcp_opt
+id|tcp_sock
 op_star
 id|tp
 op_assign
@@ -6302,7 +6302,7 @@ id|sk
 )paren
 (brace
 r_struct
-id|tcp_opt
+id|tcp_sock
 op_star
 id|tp
 op_assign
@@ -6502,7 +6502,7 @@ id|TCP_CLOSE
 )paren
 (brace
 r_struct
-id|tcp_opt
+id|tcp_sock
 op_star
 id|tp
 op_assign
@@ -6674,7 +6674,7 @@ id|urgent
 )paren
 (brace
 r_struct
-id|tcp_opt
+id|tcp_sock
 op_star
 id|tp
 op_assign
@@ -6838,7 +6838,7 @@ id|TCP_CLOSE
 )paren
 (brace
 r_struct
-id|tcp_opt
+id|tcp_sock
 op_star
 id|tp
 op_assign
@@ -7144,7 +7144,7 @@ id|sk
 )paren
 (brace
 r_struct
-id|tcp_opt
+id|tcp_sock
 op_star
 id|tp
 op_assign

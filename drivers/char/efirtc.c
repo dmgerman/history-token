@@ -16,12 +16,12 @@ mdefine_line|#define EFI_ISDST (EFI_TIME_ADJUST_DAYLIGHT|EFI_TIME_IN_DAYLIGHT)
 multiline_comment|/*&n; * EFI Epoch is 1/1/1998&n; */
 DECL|macro|EFI_RTC_EPOCH
 mdefine_line|#define EFI_RTC_EPOCH&t;&t;1998
-DECL|variable|efi_rtc_lock
 r_static
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|efi_rtc_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 r_static
 r_int

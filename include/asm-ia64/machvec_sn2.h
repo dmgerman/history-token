@@ -43,6 +43,18 @@ id|ia64_mv_local_vector_to_irq
 id|sn_local_vector_to_irq
 suffix:semicolon
 r_extern
+id|ia64_mv_pci_get_legacy_mem_t
+id|sn_pci_get_legacy_mem
+suffix:semicolon
+r_extern
+id|ia64_mv_pci_legacy_read_t
+id|sn_pci_legacy_read
+suffix:semicolon
+r_extern
+id|ia64_mv_pci_legacy_write_t
+id|sn_pci_legacy_write
+suffix:semicolon
+r_extern
 id|ia64_mv_inb_t
 id|__sn_inb
 suffix:semicolon
@@ -205,6 +217,12 @@ DECL|macro|platform_irq_to_vector
 mdefine_line|#define platform_irq_to_vector&t;&t;sn_irq_to_vector
 DECL|macro|platform_local_vector_to_irq
 mdefine_line|#define platform_local_vector_to_irq&t;sn_local_vector_to_irq
+DECL|macro|platform_pci_get_legacy_mem
+mdefine_line|#define platform_pci_get_legacy_mem&t;sn_pci_get_legacy_mem
+DECL|macro|platform_pci_legacy_read
+mdefine_line|#define platform_pci_legacy_read&t;sn_pci_legacy_read
+DECL|macro|platform_pci_legacy_write
+mdefine_line|#define platform_pci_legacy_write&t;sn_pci_legacy_write
 DECL|macro|platform_dma_init
 mdefine_line|#define platform_dma_init&t;&t;machvec_noop
 DECL|macro|platform_dma_alloc_coherent

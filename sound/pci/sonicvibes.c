@@ -1230,8 +1230,8 @@ r_return
 id|value
 suffix:semicolon
 )brace
-macro_line|#ifdef CONFIG_SND_DEBUG
-DECL|function|snd_sonicvibes_debug
+macro_line|#if 0
+r_static
 r_void
 id|snd_sonicvibes_debug
 c_func
@@ -7949,12 +7949,6 @@ id|sonic
 )paren
 )paren
 suffix:semicolon
-id|snd_sonicvibes_proc_init
-c_func
-(paren
-id|sonic
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -7988,6 +7982,12 @@ r_return
 id|err
 suffix:semicolon
 )brace
+id|snd_sonicvibes_proc_init
+c_func
+(paren
+id|sonic
+)paren
+suffix:semicolon
 id|snd_card_set_dev
 c_func
 (paren

@@ -5,6 +5,18 @@ mdefine_line|#define __SOUND_VX_COMMON_H
 macro_line|#include &lt;sound/pcm.h&gt;
 macro_line|#include &lt;sound/hwdep.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
+macro_line|#if defined(CONFIG_FW_LOADER) || defined(CONFIG_FW_LOADER_MODULE)
+macro_line|#if !defined(CONFIG_USE_VXLOADER) &amp;&amp; !defined(CONFIG_SND_VX_LIB) /* built-in kernel */
+DECL|macro|SND_VX_FW_LOADER
+mdefine_line|#define SND_VX_FW_LOADER&t;/* use the standard firmware loader */
+macro_line|#endif
+macro_line|#endif
+r_struct
+id|firmware
+suffix:semicolon
+r_struct
+id|device
+suffix:semicolon
 DECL|typedef|vx_core_t
 r_typedef
 r_struct
@@ -405,10 +417,14 @@ id|vx_core_t
 op_star
 id|chip
 comma
+r_int
+id|idx
+comma
 r_const
-id|snd_hwdep_dsp_image_t
+r_struct
+id|firmware
 op_star
-id|dsp
+id|fw
 )paren
 suffix:semicolon
 DECL|member|reset_dsp
@@ -690,6 +706,12 @@ r_int
 r_int
 id|pcm_running
 suffix:semicolon
+DECL|member|dev
+r_struct
+id|device
+op_star
+id|dev
+suffix:semicolon
 DECL|member|hwdep
 id|snd_hwdep_t
 op_star
@@ -839,6 +861,17 @@ r_struct
 id|semaphore
 id|mixer_mutex
 suffix:semicolon
+DECL|member|firmware
+r_const
+r_struct
+id|firmware
+op_star
+id|firmware
+(braket
+l_int|4
+)braket
+suffix:semicolon
+multiline_comment|/* loaded firmware data */
 )brace
 suffix:semicolon
 multiline_comment|/*&n; * constructor&n; */
@@ -866,7 +899,7 @@ id|extra_size
 )paren
 suffix:semicolon
 r_int
-id|snd_vx_hwdep_new
+id|snd_vx_setup_firmware
 c_func
 (paren
 id|vx_core_t
@@ -883,9 +916,10 @@ op_star
 id|chip
 comma
 r_const
-id|snd_hwdep_dsp_image_t
+r_struct
+id|firmware
 op_star
-id|boot
+id|dsp
 )paren
 suffix:semicolon
 r_int
@@ -897,9 +931,10 @@ op_star
 id|chip
 comma
 r_const
-id|snd_hwdep_dsp_image_t
+r_struct
+id|firmware
 op_star
-id|boot
+id|dsp
 )paren
 suffix:semicolon
 r_int
@@ -911,9 +946,19 @@ op_star
 id|chip
 comma
 r_const
-id|snd_hwdep_dsp_image_t
+r_struct
+id|firmware
 op_star
 id|dsp
+)paren
+suffix:semicolon
+r_void
+id|snd_vx_free_firmware
+c_func
+(paren
+id|vx_core_t
+op_star
+id|chip
 )paren
 suffix:semicolon
 multiline_comment|/*&n; * interrupt handler; exported for pcmcia&n; */
@@ -934,27 +979,6 @@ op_star
 id|regs
 )paren
 suffix:semicolon
-multiline_comment|/*&n; * power-management routines&n; */
-macro_line|#ifdef CONFIG_PM
-r_void
-id|snd_vx_suspend
-c_func
-(paren
-id|vx_core_t
-op_star
-id|chip
-)paren
-suffix:semicolon
-r_void
-id|snd_vx_resume
-c_func
-(paren
-id|vx_core_t
-op_star
-id|chip
-)paren
-suffix:semicolon
-macro_line|#endif
 multiline_comment|/*&n; * lowlevel functions&n; */
 DECL|function|vx_test_and_ack
 r_inline
@@ -1512,18 +1536,6 @@ comma
 r_int
 r_int
 id|freq
-)paren
-suffix:semicolon
-r_void
-id|vx_change_clock_source
-c_func
-(paren
-id|vx_core_t
-op_star
-id|chip
-comma
-r_int
-id|source
 )paren
 suffix:semicolon
 r_void

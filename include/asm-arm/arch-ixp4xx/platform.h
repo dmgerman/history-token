@@ -74,6 +74,14 @@ r_void
 )paren
 suffix:semicolon
 r_extern
+r_void
+id|ixp4xx_sys_init
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+r_extern
 r_struct
 id|sys_timer
 id|ixp4xx_timer

@@ -49,9 +49,9 @@ mdefine_line|#define DRV_MODULE_NAME&t;&t;&quot;tg3&quot;
 DECL|macro|PFX
 mdefine_line|#define PFX DRV_MODULE_NAME&t;&quot;: &quot;
 DECL|macro|DRV_MODULE_VERSION
-mdefine_line|#define DRV_MODULE_VERSION&t;&quot;3.14&quot;
+mdefine_line|#define DRV_MODULE_VERSION&t;&quot;3.15&quot;
 DECL|macro|DRV_MODULE_RELDATE
-mdefine_line|#define DRV_MODULE_RELDATE&t;&quot;November 15, 2004&quot;
+mdefine_line|#define DRV_MODULE_RELDATE&t;&quot;January 6, 2005&quot;
 DECL|macro|TG3_DEF_MAC_MODE
 mdefine_line|#define TG3_DEF_MAC_MODE&t;0
 DECL|macro|TG3_DEF_RX_MODE
@@ -2040,8 +2040,10 @@ id|u32
 id|frame_val
 suffix:semicolon
 r_int
+r_int
 id|loops
-comma
+suffix:semicolon
+r_int
 id|ret
 suffix:semicolon
 r_if
@@ -2079,7 +2081,7 @@ suffix:semicolon
 op_star
 id|val
 op_assign
-l_int|0xffffffff
+l_int|0x0
 suffix:semicolon
 id|frame_val
 op_assign
@@ -2129,8 +2131,7 @@ r_while
 c_loop
 (paren
 id|loops
-op_decrement
-OG
+op_ne
 l_int|0
 )paren
 (brace
@@ -2177,6 +2178,10 @@ suffix:semicolon
 r_break
 suffix:semicolon
 )brace
+id|loops
+op_sub_assign
+l_int|1
+suffix:semicolon
 )brace
 id|ret
 op_assign
@@ -2187,7 +2192,7 @@ r_if
 c_cond
 (paren
 id|loops
-OG
+op_ne
 l_int|0
 )paren
 (brace
@@ -2256,8 +2261,10 @@ id|u32
 id|frame_val
 suffix:semicolon
 r_int
+r_int
 id|loops
-comma
+suffix:semicolon
+r_int
 id|ret
 suffix:semicolon
 r_if
@@ -2348,8 +2355,7 @@ r_while
 c_loop
 (paren
 id|loops
-op_decrement
-OG
+op_ne
 l_int|0
 )paren
 (brace
@@ -2396,6 +2402,10 @@ suffix:semicolon
 r_break
 suffix:semicolon
 )brace
+id|loops
+op_sub_assign
+l_int|1
+suffix:semicolon
 )brace
 id|ret
 op_assign
@@ -2406,7 +2416,7 @@ r_if
 c_cond
 (paren
 id|loops
-OG
+op_ne
 l_int|0
 )paren
 id|ret

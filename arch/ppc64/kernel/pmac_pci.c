@@ -2800,16 +2800,6 @@ c_func
 id|dev
 )paren
 suffix:semicolon
-id|pci_fix_bus_sysdata
-c_func
-(paren
-)paren
-suffix:semicolon
-id|iommu_setup_u3
-c_func
-(paren
-)paren
-suffix:semicolon
 )brace
 DECL|function|pmac_fixup_phb_resources
 r_static

@@ -50,17 +50,16 @@ c_func
 l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM
+id|module_param_array
 c_func
 (paren
 id|speed_duplex
 comma
-l_string|&quot;1-&quot;
-id|__MODULE_STRING
-(paren
-id|MAX_UNITS
-)paren
-l_string|&quot;i&quot;
+r_int
+comma
+l_int|NULL
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -71,18 +70,16 @@ comma
 l_string|&quot;Set device speed and duplex modes, 0: Auto Negotitate, 1: 10Mbps Half Duplex, 2: 10Mbps Full Duplex, 3: 100Mbps Half Duplex, 4: 100Mbps Full Duplex&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM
+id|module_param_array
 c_func
 (paren
 id|coalesce
 comma
-l_string|&quot;1-&quot;
-id|__MODULE_STRING
-c_func
-(paren
-id|MAX_UNITS
-)paren
-l_string|&quot;i&quot;
+r_bool
+comma
+l_int|NULL
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -93,18 +90,16 @@ comma
 l_string|&quot;Enable or Disable interrupt coalescing, 1: Enable, 0: Disable&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM
+id|module_param_array
 c_func
 (paren
 id|dynamic_ipg
 comma
-l_string|&quot;1-&quot;
-id|__MODULE_STRING
-c_func
-(paren
-id|MAX_UNITS
-)paren
-l_string|&quot;i&quot;
+r_bool
+comma
+l_int|NULL
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -7970,7 +7965,7 @@ c_func
 (paren
 id|pci_dev
 comma
-l_int|3
+id|PCI_D3hot
 comma
 l_int|1
 )paren
@@ -7980,12 +7975,11 @@ c_func
 (paren
 id|pci_dev
 comma
-l_int|4
+id|PCI_D3cold
 comma
 l_int|1
 )paren
 suffix:semicolon
-multiline_comment|/* D3 cold */
 )brace
 r_else
 (brace
@@ -7994,7 +7988,7 @@ c_func
 (paren
 id|pci_dev
 comma
-l_int|3
+id|PCI_D3hot
 comma
 l_int|0
 )paren
@@ -8004,12 +7998,11 @@ c_func
 (paren
 id|pci_dev
 comma
-l_int|4
+id|PCI_D3cold
 comma
 l_int|0
 )paren
 suffix:semicolon
-multiline_comment|/* 4 == D3 cold */
 )brace
 id|pci_save_state
 c_func
@@ -8022,7 +8015,7 @@ c_func
 (paren
 id|pci_dev
 comma
-l_int|3
+id|PCI_D3hot
 )paren
 suffix:semicolon
 r_return
@@ -8081,7 +8074,7 @@ c_func
 (paren
 id|pci_dev
 comma
-l_int|0
+id|PCI_D0
 )paren
 suffix:semicolon
 id|pci_restore_state
@@ -8095,7 +8088,7 @@ c_func
 (paren
 id|pci_dev
 comma
-l_int|3
+id|PCI_D3hot
 comma
 l_int|0
 )paren
@@ -8105,7 +8098,7 @@ c_func
 (paren
 id|pci_dev
 comma
-l_int|4
+id|PCI_D3cold
 comma
 l_int|0
 )paren

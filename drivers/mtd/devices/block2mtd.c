@@ -1424,15 +1424,6 @@ r_goto
 id|devinit_err
 suffix:semicolon
 )brace
-id|atomic_set
-c_func
-(paren
-op_amp
-id|bdev-&gt;bd_inode-&gt;i_mapping-&gt;truncate_count
-comma
-l_int|0
-)paren
-suffix:semicolon
 id|init_MUTEX
 c_func
 (paren

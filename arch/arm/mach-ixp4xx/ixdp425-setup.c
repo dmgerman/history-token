@@ -1,4 +1,5 @@
 multiline_comment|/*&n; * arch/arm/mach-ixp4xx/ixdp425-setup.c&n; *&n; * IXDP425/IXCDP1100 board-setup &n; *&n; * Copyright (C) 2003-2004 MontaVista Software, Inc.&n; *&n; * Author: Deepak Saxena &lt;dsaxena@plexity.net&gt;&n; */
+macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/device.h&gt;
 macro_line|#include &lt;linux/serial.h&gt;
@@ -358,6 +359,11 @@ c_func
 r_void
 )paren
 (brace
+id|ixp4xx_sys_init
+c_func
+(paren
+)paren
+suffix:semicolon
 multiline_comment|/*&n;&t; * IXP465 has 32MB window&n;&t; */
 r_if
 c_cond
@@ -376,7 +382,6 @@ suffix:semicolon
 id|platform_add_devices
 c_func
 (paren
-op_amp
 id|ixdp425_devices
 comma
 id|ARRAY_SIZE

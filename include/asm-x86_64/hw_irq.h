@@ -58,26 +58,6 @@ mdefine_line|#define AUTO_ASSIGN&t;&t;-1
 multiline_comment|/*&n; * Various low-level irq details needed by irq.c, process.c,&n; * time.c, io_apic.c and smp.c&n; *&n; * Interrupt entry/exit code at both C and assembly level&n; */
 r_extern
 r_void
-id|mask_irq
-c_func
-(paren
-r_int
-r_int
-id|irq
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|unmask_irq
-c_func
-(paren
-r_int
-r_int
-id|irq
-)paren
-suffix:semicolon
-r_extern
-r_void
 id|disable_8259A_irq
 c_func
 (paren

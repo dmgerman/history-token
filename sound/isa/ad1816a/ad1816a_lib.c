@@ -90,6 +90,7 @@ id|EBUSY
 suffix:semicolon
 )brace
 DECL|function|snd_ad1816a_in
+r_static
 r_inline
 r_int
 r_char
@@ -124,6 +125,7 @@ id|reg
 suffix:semicolon
 )brace
 DECL|function|snd_ad1816a_out
+r_static
 r_inline
 r_void
 id|snd_ad1816a_out
@@ -162,6 +164,7 @@ id|reg
 suffix:semicolon
 )brace
 DECL|function|snd_ad1816a_out_mask
+r_static
 r_inline
 r_void
 id|snd_ad1816a_out_mask
@@ -1757,7 +1760,7 @@ l_int|0
 comma
 )brace
 suffix:semicolon
-DECL|function|snd_ad1816a_timer_close
+macro_line|#if 0 /* not used now */
 r_static
 r_int
 id|snd_ad1816a_timer_close
@@ -1790,7 +1793,6 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-DECL|function|snd_ad1816a_timer_open
 r_static
 r_int
 id|snd_ad1816a_timer_open
@@ -1823,7 +1825,6 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-DECL|function|snd_ad1816a_timer_resolution
 r_static
 r_int
 r_int
@@ -1850,7 +1851,6 @@ r_return
 l_int|10000
 suffix:semicolon
 )brace
-DECL|function|snd_ad1816a_timer_start
 r_static
 r_int
 id|snd_ad1816a_timer_start
@@ -1947,7 +1947,6 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-DECL|function|snd_ad1816a_timer_stop
 r_static
 r_int
 id|snd_ad1816a_timer_stop
@@ -2006,7 +2005,6 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-DECL|variable|snd_ad1816a_timer_table
 r_static
 r_struct
 id|_snd_timer_hardware
@@ -2055,6 +2053,7 @@ id|snd_ad1816a_timer_stop
 comma
 )brace
 suffix:semicolon
+macro_line|#endif /* not used now */
 DECL|function|snd_ad1816a_playback_open
 r_static
 r_int
@@ -3311,7 +3310,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-DECL|function|snd_ad1816a_timer_free
+macro_line|#if 0 /* not used now */
 r_static
 r_void
 id|snd_ad1816a_timer_free
@@ -3333,7 +3332,6 @@ op_assign
 l_int|NULL
 suffix:semicolon
 )brace
-DECL|function|snd_ad1816a_timer
 r_int
 id|snd_ad1816a_timer
 c_func
@@ -3449,6 +3447,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+macro_line|#endif /* not used now */
 multiline_comment|/*&n; *&n; */
 DECL|function|snd_ad1816a_info_mux
 r_static

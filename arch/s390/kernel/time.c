@@ -444,67 +444,6 @@ c_func
 id|do_settimeofday
 )paren
 suffix:semicolon
-macro_line|#ifndef CONFIG_ARCH_S390X
-r_static
-r_inline
-id|__u32
-DECL|function|__calculate_ticks
-id|__calculate_ticks
-c_func
-(paren
-id|__u64
-id|elapsed
-)paren
-(brace
-id|register_pair
-id|rp
-suffix:semicolon
-id|rp.pair
-op_assign
-id|elapsed
-op_rshift
-l_int|1
-suffix:semicolon
-id|asm
-(paren
-l_string|&quot;dr %0,%1&quot;
-suffix:colon
-l_string|&quot;+d&quot;
-(paren
-id|rp
-)paren
-suffix:colon
-l_string|&quot;d&quot;
-(paren
-id|CLK_TICKS_PER_JIFFY
-op_rshift
-l_int|1
-)paren
-)paren
-suffix:semicolon
-r_return
-id|rp.subreg.odd
-suffix:semicolon
-)brace
-macro_line|#else /* CONFIG_ARCH_S390X */
-r_static
-r_inline
-id|__u32
-DECL|function|__calculate_ticks
-id|__calculate_ticks
-c_func
-(paren
-id|__u64
-id|elapsed
-)paren
-(brace
-r_return
-id|elapsed
-op_div
-id|CLK_TICKS_PER_JIFFY
-suffix:semicolon
-)brace
-macro_line|#endif /* CONFIG_ARCH_S390X */
 macro_line|#ifdef CONFIG_PROFILING
 DECL|macro|s390_do_profile
 mdefine_line|#define s390_do_profile(regs)&t;profile_tick(CPU_PROFILING, regs)
@@ -529,6 +468,8 @@ id|tmp
 suffix:semicolon
 id|__u32
 id|ticks
+comma
+id|xticks
 suffix:semicolon
 multiline_comment|/* Calculate how many ticks have passed. */
 r_if
@@ -559,10 +500,12 @@ id|CLK_TICKS_PER_JIFFY
 multiline_comment|/* more than two ticks ? */
 id|ticks
 op_assign
-id|__calculate_ticks
+id|__div
 c_func
 (paren
 id|tmp
+comma
+id|CLK_TICKS_PER_JIFFY
 )paren
 op_plus
 l_int|1
@@ -644,9 +587,6 @@ OG
 id|xtime_cc
 )paren
 (brace
-id|__u32
-id|xticks
-suffix:semicolon
 id|tmp
 op_assign
 id|S390_lowcore.jiffy_timer
@@ -665,10 +605,12 @@ id|CLK_TICKS_PER_JIFFY
 (brace
 id|xticks
 op_assign
-id|__calculate_ticks
+id|__div
 c_func
 (paren
 id|tmp
+comma
+id|CLK_TICKS_PER_JIFFY
 )paren
 suffix:semicolon
 id|xtime_cc
@@ -712,20 +654,33 @@ op_amp
 id|xtime_lock
 )paren
 suffix:semicolon
-r_while
+macro_line|#else
+r_for
 c_loop
 (paren
+id|xticks
+op_assign
 id|ticks
+suffix:semicolon
+id|xticks
+OG
+l_int|0
+suffix:semicolon
+id|xticks
 op_decrement
 )paren
-id|update_process_times
-c_func
-(paren
-id|user_mode
+id|do_timer
 c_func
 (paren
 id|regs
 )paren
+suffix:semicolon
+macro_line|#endif
+macro_line|#ifdef CONFIG_VIRT_CPU_ACCOUNTING
+id|account_user_vtime
+c_func
+(paren
+id|current
 )paren
 suffix:semicolon
 macro_line|#else
@@ -735,13 +690,6 @@ c_loop
 id|ticks
 op_decrement
 )paren
-(brace
-id|do_timer
-c_func
-(paren
-id|regs
-)paren
-suffix:semicolon
 id|update_process_times
 c_func
 (paren
@@ -752,7 +700,6 @@ id|regs
 )paren
 )paren
 suffix:semicolon
-)brace
 macro_line|#endif
 id|s390_do_profile
 c_func

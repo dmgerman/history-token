@@ -18,12 +18,12 @@ c_func
 id|ime_list
 )paren
 suffix:semicolon
-DECL|variable|ime_lock
 r_static
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|ime_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 DECL|variable|kmalloc_failed
 r_static

@@ -31,11 +31,6 @@ id|zoran_formats
 )braket
 suffix:semicolon
 r_extern
-r_const
-r_int
-id|zoran_num_formats
-suffix:semicolon
-r_extern
 r_int
 op_star
 id|zr_debug
@@ -50,12 +45,14 @@ op_assign
 l_int|0
 suffix:semicolon
 multiline_comment|/* 1 will use digital path in capture&n;&t;&t;&t;&t; * mode instead of analog. It can be&n;&t;&t;&t;&t; * used for picture adjustments using&n;&t;&t;&t;&t; * tool like xawtv while watching image&n;&t;&t;&t;&t; * on TV monitor connected to the output.&n;&t;&t;&t;&t; * However, due to absence of 75 Ohm&n;&t;&t;&t;&t; * load on Bt819 input, there will be&n;&t;&t;&t;&t; * some image imperfections */
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|lml33dpath
 comma
-l_string|&quot;i&quot;
+r_bool
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -64,6 +61,16 @@ c_func
 id|lml33dpath
 comma
 l_string|&quot;Use digital path capture mode (on LML33 cards)&quot;
+)paren
+suffix:semicolon
+r_static
+r_void
+id|zr36057_init_vfe
+(paren
+r_struct
+id|zoran
+op_star
+id|zr
 )paren
 suffix:semicolon
 multiline_comment|/*&n; * General Purpose I/O and Guest bus access&n; */
@@ -6939,6 +6946,7 @@ id|ZR36057_GPPGCR1
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * initialize video front end&n; */
+r_static
 r_void
 DECL|function|zr36057_init_vfe
 id|zr36057_init_vfe

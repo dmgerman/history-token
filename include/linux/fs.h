@@ -115,10 +115,6 @@ suffix:semicolon
 macro_line|#endif
 DECL|macro|NR_FILE
 mdefine_line|#define NR_FILE  8192&t;/* this can well be larger on a larger system */
-DECL|macro|NR_RESERVED_FILES
-mdefine_line|#define NR_RESERVED_FILES 10 /* reserved for root */
-DECL|macro|NR_SUPER
-mdefine_line|#define NR_SUPER 256
 DECL|macro|MAY_EXEC
 mdefine_line|#define MAY_EXEC 1
 DECL|macro|MAY_WRITE
@@ -812,7 +808,8 @@ id|i_mmap_lock
 suffix:semicolon
 multiline_comment|/* protect tree, count, list */
 DECL|member|truncate_count
-id|atomic_t
+r_int
+r_int
 id|truncate_count
 suffix:semicolon
 multiline_comment|/* Cover race condition with truncate */
@@ -6008,7 +6005,7 @@ id|inode-&gt;i_mapping
 suffix:semicolon
 )brace
 r_extern
-r_void
+r_int
 id|invalidate_inode_pages2
 c_func
 (paren
@@ -6019,7 +6016,7 @@ id|mapping
 )paren
 suffix:semicolon
 r_extern
-r_void
+r_int
 id|write_inode_now
 c_func
 (paren

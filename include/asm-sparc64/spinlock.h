@@ -679,6 +679,8 @@ mdefine_line|#define _raw_write_unlock(lock) &bslash;&n;do {&t;unsigned long fla
 DECL|macro|_raw_write_trylock
 mdefine_line|#define _raw_write_trylock(lock) &bslash;&n;({&t;unsigned long flags; &bslash;&n;&t;int val; &bslash;&n;&t;local_irq_save(flags); &bslash;&n;&t;val = _do_write_trylock(lock, &quot;write_trylock&quot;); &bslash;&n;&t;local_irq_restore(flags); &bslash;&n;&t;val; &bslash;&n;})
 macro_line|#endif /* CONFIG_DEBUG_SPINLOCK */
+DECL|macro|_raw_read_trylock
+mdefine_line|#define _raw_read_trylock(lock) generic_raw_read_trylock(lock)
 macro_line|#endif /* !(__ASSEMBLY__) */
 macro_line|#endif /* !(__SPARC64_SPINLOCK_H) */
 eof

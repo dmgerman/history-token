@@ -35,19 +35,6 @@ id|primary
 )paren
 suffix:semicolon
 r_extern
-r_struct
-id|pci_controller
-op_star
-id|pci_find_hose_for_OF_device
-c_func
-(paren
-r_struct
-id|device_node
-op_star
-id|node
-)paren
-suffix:semicolon
-r_extern
 r_void
 id|pci_setup_phb_io_dynamic
 c_func
@@ -141,13 +128,6 @@ op_star
 id|phb
 )paren
 suffix:semicolon
-r_void
-id|pci_fix_bus_sysdata
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
 r_struct
 id|device_node
 op_star
@@ -160,8 +140,6 @@ op_star
 id|dev
 )paren
 suffix:semicolon
-DECL|macro|PCI_GET_PHB_PTR
-mdefine_line|#define PCI_GET_PHB_PTR(dev)    (((struct device_node *)(dev)-&gt;sysdata)-&gt;phb)
 multiline_comment|/* PCI address cache management routines */
 r_void
 id|pci_addr_cache_insert_device

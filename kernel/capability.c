@@ -33,10 +33,11 @@ id|cap_bset
 suffix:semicolon
 multiline_comment|/*&n; * This global lock protects task-&gt;cap_* for all tasks including current.&n; * Locking rule: acquire this prior to tasklist_lock.&n; */
 DECL|variable|task_capability_lock
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|task_capability_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 multiline_comment|/*&n; * For sys_getproccap() and sys_setproccap(), any of the three&n; * capability set pointers may be NULL -- indicating that that set is&n; * uninteresting and/or not to be changed.&n; */
 multiline_comment|/*&n; * sys_capget - get the capabilities of a given process.&n; */

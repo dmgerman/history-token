@@ -1,5 +1,4 @@
 multiline_comment|/*&n; *  linux/arch/m32r/mm/init.c&n; *&n; *  Copyright (c) 2001, 2002  Hitoshi Yamamoto&n; *&n; *  Some code taken from sh version.&n; *    Copyright (C) 1999  Niibe Yutaka&n; *    Based on linux/arch/i386/mm/init.c:&n; *      Copyright (C) 1995  Linus Torvalds&n; */
-multiline_comment|/* $Id$ */
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
@@ -8,6 +7,7 @@ macro_line|#include &lt;linux/bootmem.h&gt;
 macro_line|#include &lt;linux/swap.h&gt;
 macro_line|#include &lt;linux/highmem.h&gt;
 macro_line|#include &lt;linux/bitops.h&gt;
+macro_line|#include &lt;linux/nodemask.h&gt;
 macro_line|#include &lt;asm/types.h&gt;
 macro_line|#include &lt;asm/processor.h&gt;
 macro_line|#include &lt;asm/page.h&gt;
@@ -568,19 +568,10 @@ id|reservedpages
 op_assign
 l_int|0
 suffix:semicolon
-r_for
-c_loop
+id|for_each_online_node
+c_func
 (paren
 id|nid
-op_assign
-l_int|0
-suffix:semicolon
-id|nid
-OL
-id|numnodes
-suffix:semicolon
-id|nid
-op_increment
 )paren
 r_for
 c_loop
@@ -663,19 +654,10 @@ id|num_physpages
 op_assign
 l_int|0
 suffix:semicolon
-r_for
-c_loop
+id|for_each_online_node
+c_func
 (paren
 id|nid
-op_assign
-l_int|0
-suffix:semicolon
-id|nid
-OL
-id|numnodes
-suffix:semicolon
-id|nid
-op_increment
 )paren
 id|num_physpages
 op_add_assign
@@ -750,19 +732,10 @@ id|PAGE_SIZE
 )paren
 suffix:semicolon
 multiline_comment|/* this will put all low memory onto the freelists */
-r_for
-c_loop
+id|for_each_online_node
+c_func
 (paren
 id|nid
-op_assign
-l_int|0
-suffix:semicolon
-id|nid
-OL
-id|numnodes
-suffix:semicolon
-id|nid
-op_increment
 )paren
 id|totalram_pages
 op_add_assign

@@ -2126,12 +2126,6 @@ op_assign
 op_amp
 id|dev_info
 suffix:semicolon
-id|client_reg.Attributes
-op_assign
-id|INFO_IO_CLIENT
-op_or
-id|INFO_CARD_SHARE
-suffix:semicolon
 id|client_reg.EventMask
 op_assign
 id|CS_EVENT_CARD_INSERTION
@@ -3386,18 +3380,12 @@ op_amp
 id|btuart_driver
 )paren
 suffix:semicolon
-multiline_comment|/* XXX: this really needs to move into generic code.. */
-r_while
-c_loop
+id|BUG_ON
+c_func
 (paren
 id|dev_list
 op_ne
 l_int|NULL
-)paren
-id|btuart_detach
-c_func
-(paren
-id|dev_list
 )paren
 suffix:semicolon
 )brace

@@ -29,6 +29,18 @@ id|xa_test
 op_assign
 l_int|0
 suffix:semicolon
+id|module_param
+c_func
+(paren
+id|xa_test
+comma
+r_int
+comma
+id|S_IRUGO
+op_or
+id|S_IWUSR
+)paren
+suffix:semicolon
 DECL|macro|IOCTL_RETRIES
 mdefine_line|#define IOCTL_RETRIES 3
 multiline_comment|/* ATAPI drives don&squot;t have a SCMD_PLAYAUDIO_TI command.  When these drives&n;   are emulating a SCSI device via the idescsi module, they need to have&n;   CDROMPLAYTRKIND commands translated into CDROMPLAYMSF commands for them */

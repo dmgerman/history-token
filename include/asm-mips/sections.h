@@ -6,9 +6,5 @@ r_extern
 r_char
 id|_fdata
 suffix:semicolon
-r_extern
-r_char
-id|_end
-suffix:semicolon
 macro_line|#endif /* _ASM_SECTIONS_H */
 eof

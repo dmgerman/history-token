@@ -60,12 +60,14 @@ id|tosh_fn
 op_assign
 l_int|0
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|tosh_fn
 comma
-l_string|&quot;i&quot;
+r_int
+comma
+l_int|0
 )paren
 suffix:semicolon
 r_static
@@ -1330,6 +1332,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * Probe for the presence of a Toshiba laptop&n; *&n; *   returns and non-zero if unable to detect the presence of a Toshiba&n; *   laptop, otherwise zero and determines the Machine ID, BIOS version and&n; *   date, and SCI version.&n; */
 DECL|function|tosh_probe
+r_static
 r_int
 id|tosh_probe
 c_func

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *    Disk Array driver for HP SA 5xxx and 6xxx Controllers&n; *    Copyright 2000, 2002 Hewlett-Packard Development Company, L.P.&n; *&n; *    This program is free software; you can redistribute it and/or modify&n; *    it under the terms of the GNU General Public License as published by&n; *    the Free Software Foundation; either version 2 of the License, or&n; *    (at your option) any later version.&n; *&n; *    This program is distributed in the hope that it will be useful,&n; *    but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *    MERCHANTABILITY OR FITNESS FOR A PARTICULAR PURPOSE, GOOD TITLE or&n; *    NON INFRINGEMENT.  See the GNU General Public License for more details.&n; *&n; *    You should have received a copy of the GNU General Public License&n; *    along with this program; if not, write to the Free Software&n; *    Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; *&n; *    Questions/Comments/Bugfixes to Cciss-discuss@lists.sourceforge.net&n; *&n; */
+multiline_comment|/*&n; *    Disk Array driver for HP SA 5xxx and 6xxx Controllers&n; *    Copyright 2000, 2002 Hewlett-Packard Development Company, L.P.&n; *&n; *    This program is free software; you can redistribute it and/or modify&n; *    it under the terms of the GNU General Public License as published by&n; *    the Free Software Foundation; either version 2 of the License, or&n; *    (at your option) any later version.&n; *&n; *    This program is distributed in the hope that it will be useful,&n; *    but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *    MERCHANTABILITY OR FITNESS FOR A PARTICULAR PURPOSE, GOOD TITLE or&n; *    NON INFRINGEMENT.  See the GNU General Public License for more details.&n; *&n; *    You should have received a copy of the GNU General Public License&n; *    along with this program; if not, write to the Free Software&n; *    Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; *&n; *    Questions/Comments/Bugfixes to iss_storagedev@hp.com&n; *&n; */
 macro_line|#include &lt;linux/config.h&gt;&t;/* CONFIG_PROC_FS */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
@@ -25,9 +25,9 @@ macro_line|#include &lt;linux/completion.h&gt;
 DECL|macro|CCISS_DRIVER_VERSION
 mdefine_line|#define CCISS_DRIVER_VERSION(maj,min,submin) ((maj&lt;&lt;16)|(min&lt;&lt;8)|(submin))
 DECL|macro|DRIVER_NAME
-mdefine_line|#define DRIVER_NAME &quot;HP CISS Driver (v 2.6.2)&quot;
+mdefine_line|#define DRIVER_NAME &quot;HP CISS Driver (v 2.6.4)&quot;
 DECL|macro|DRIVER_VERSION
-mdefine_line|#define DRIVER_VERSION CCISS_DRIVER_VERSION(2,6,2)
+mdefine_line|#define DRIVER_VERSION CCISS_DRIVER_VERSION(2,6,4)
 multiline_comment|/* Embedded module documentation macros - see modules.h */
 id|MODULE_AUTHOR
 c_func
@@ -38,14 +38,14 @@ suffix:semicolon
 id|MODULE_DESCRIPTION
 c_func
 (paren
-l_string|&quot;Driver for HP Controller SA5xxx SA6xxx version 2.6.2&quot;
+l_string|&quot;Driver for HP Controller SA5xxx SA6xxx version 2.6.4&quot;
 )paren
 suffix:semicolon
 id|MODULE_SUPPORTED_DEVICE
 c_func
 (paren
 l_string|&quot;HP SA5i SA5i+ SA532 SA5300 SA5312 SA641 SA642 SA6400&quot;
-l_string|&quot; SA6i V100&quot;
+l_string|&quot; SA6i P600&quot;
 )paren
 suffix:semicolon
 id|MODULE_LICENSE
@@ -212,29 +212,13 @@ l_int|0
 )brace
 comma
 (brace
-id|PCI_VENDOR_ID_COMPAQ
-comma
-id|PCI_DEVICE_ID_COMPAQ_CISSC
-comma
-l_int|0x0E11
-comma
-l_int|0x409E
-comma
-l_int|0
-comma
-l_int|0
-comma
-l_int|0
-)brace
-comma
-(brace
 id|PCI_VENDOR_ID_HP
 comma
-id|PCI_DEVICE_ID_HP_CISS
+id|PCI_DEVICE_ID_HP_CISSA
 comma
 l_int|0x103C
 comma
-l_int|0x3211
+l_int|0x3225
 comma
 l_int|0
 comma
@@ -351,18 +335,9 @@ id|SA5_access
 )brace
 comma
 (brace
-l_int|0x409E0E11
+l_int|0x3225103C
 comma
-l_string|&quot;Smart Array 6422&quot;
-comma
-op_amp
-id|SA5_access
-)brace
-comma
-(brace
-l_int|0x3211103C
-comma
-l_string|&quot;Smart Array V100&quot;
+l_string|&quot;Smart Array P600&quot;
 comma
 op_amp
 id|SA5_access

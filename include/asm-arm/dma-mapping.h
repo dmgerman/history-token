@@ -185,6 +185,32 @@ id|dma_addr_t
 id|handle
 )paren
 suffix:semicolon
+multiline_comment|/**&n; * dma_mmap_coherent - map a coherent DMA allocation into user space&n; * @dev: valid struct device pointer, or NULL for ISA and EISA-like devices&n; * @vma: vm_area_struct describing requested user mapping&n; * @cpu_addr: kernel CPU-view address returned from dma_alloc_coherent&n; * @handle: device-view address returned from dma_alloc_coherent&n; * @size: size of memory originally requested in dma_alloc_coherent&n; *&n; * Map a coherent DMA buffer previously allocated by dma_alloc_coherent&n; * into user space.  The coherent DMA buffer must not be freed by the&n; * driver until the user space mapping has been released.&n; */
+r_int
+id|dma_mmap_coherent
+c_func
+(paren
+r_struct
+id|device
+op_star
+id|dev
+comma
+r_struct
+id|vm_area_struct
+op_star
+id|vma
+comma
+r_void
+op_star
+id|cpu_addr
+comma
+id|dma_addr_t
+id|handle
+comma
+r_int
+id|size
+)paren
+suffix:semicolon
 multiline_comment|/**&n; * dma_alloc_writecombine - allocate writecombining memory for DMA&n; * @dev: valid struct device pointer, or NULL for ISA and EISA-like devices&n; * @size: required memory size&n; * @handle: bus-specific DMA address&n; *&n; * Allocate some uncached, buffered memory for a device for&n; * performing DMA.  This function allocates pages, and will&n; * return the CPU-viewed address, and sets @handle to be the&n; * device-viewed address.&n; */
 r_extern
 r_void
@@ -210,6 +236,31 @@ id|gfp
 suffix:semicolon
 DECL|macro|dma_free_writecombine
 mdefine_line|#define dma_free_writecombine(dev,size,cpu_addr,handle) &bslash;&n;&t;dma_free_coherent(dev,size,cpu_addr,handle)
+r_int
+id|dma_mmap_writecombine
+c_func
+(paren
+r_struct
+id|device
+op_star
+id|dev
+comma
+r_struct
+id|vm_area_struct
+op_star
+id|vma
+comma
+r_void
+op_star
+id|cpu_addr
+comma
+id|dma_addr_t
+id|handle
+comma
+r_int
+id|size
+)paren
+suffix:semicolon
 multiline_comment|/**&n; * dma_map_single - map a single buffer for streaming DMA&n; * @dev: valid struct device pointer, or NULL for ISA and EISA-like devices&n; * @cpu_addr: CPU direct mapped address of buffer&n; * @size: size of buffer to map&n; * @dir: DMA transfer direction&n; *&n; * Ensure that any data held in the cache is appropriately discarded&n; * or written back.&n; *&n; * The device owns this memory once this call has completed.  The CPU&n; * can regain ownership by calling dma_unmap_single() or&n; * dma_sync_single_for_cpu().&n; */
 macro_line|#ifndef CONFIG_DMABOUNCE
 r_static

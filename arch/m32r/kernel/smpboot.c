@@ -667,12 +667,15 @@ suffix:semicolon
 id|ipi
 op_increment
 )paren
+id|spin_lock_init
+c_func
+(paren
+op_amp
 id|ipi_lock
 (braket
 id|ipi
 )braket
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 )brace
 multiline_comment|/*==========================================================================*&n; * Name:         do_boot_cpu&n; *&n; * Description:  This routine boot up one AP.&n; *&n; * Born on Date: 2002.02.05&n; *&n; * Arguments:    phys_id - Target CPU physical ID&n; *&n; * Returns:      void (cannot fail)&n; *&n; * Modification log:&n; * Date       Who Description&n; * ---------- --- --------------------------------------------------------&n; * 2003-06-24 hy  modify for linux-2.5.69&n; *&n; *==========================================================================*/

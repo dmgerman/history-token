@@ -31,12 +31,14 @@ id|erase_size
 op_assign
 id|CONFIG_MTDRAM_ERASE_SIZE
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|total_size
 comma
-l_string|&quot;l&quot;
+id|ulong
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -47,12 +49,14 @@ comma
 l_string|&quot;Total device size in KiB&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|erase_size
 comma
-l_string|&quot;l&quot;
+id|ulong
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC

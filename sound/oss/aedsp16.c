@@ -225,6 +225,7 @@ suffix:semicolon
 )brace
 suffix:semicolon
 DECL|variable|__initdata
+r_static
 r_struct
 id|d_hcfg
 id|decoded_hcfg
@@ -974,6 +975,7 @@ suffix:semicolon
 )brace
 macro_line|#endif
 DECL|function|aedsp16_hard_decode
+r_static
 r_void
 id|__init
 id|aedsp16_hard_decode
@@ -1139,6 +1141,7 @@ l_string|&quot;success.&bslash;n&quot;
 suffix:semicolon
 )brace
 DECL|function|aedsp16_hard_encode
+r_static
 r_void
 id|__init
 id|aedsp16_hard_encode
@@ -3806,6 +3809,7 @@ l_string|&quot;done.&bslash;n&quot;
 suffix:semicolon
 )brace
 DECL|function|init_aedsp16
+r_static
 r_int
 id|__init
 id|init_aedsp16
@@ -3955,6 +3959,7 @@ id|initialized
 suffix:semicolon
 )brace
 DECL|function|uninit_aedsp16
+r_static
 r_void
 id|__init
 id|uninit_aedsp16
@@ -4050,12 +4055,14 @@ op_assign
 op_minus
 l_int|1
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|io
 comma
-l_string|&quot;i&quot;
+r_int
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -4066,12 +4073,14 @@ comma
 l_string|&quot;I/O base address (0x220 0x240)&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|irq
 comma
-l_string|&quot;i&quot;
+r_int
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -4082,12 +4091,14 @@ comma
 l_string|&quot;IRQ line (5 7 9 10 11)&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|dma
 comma
-l_string|&quot;i&quot;
+r_int
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -4098,12 +4109,14 @@ comma
 l_string|&quot;dma line (0 1 3)&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|mpu_irq
 comma
-l_string|&quot;i&quot;
+r_int
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -4114,12 +4127,14 @@ comma
 l_string|&quot;MPU-401 IRQ line (5 7 9 10 0)&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|mss_base
 comma
-l_string|&quot;i&quot;
+r_int
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -4130,12 +4145,14 @@ comma
 l_string|&quot;MSS emulation I/O base address (0x530 0xE80)&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|mpu_base
 comma
-l_string|&quot;i&quot;
+r_int
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC

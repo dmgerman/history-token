@@ -24,7 +24,8 @@ DECL|macro|LOCKD_BUFSIZE
 mdefine_line|#define LOCKD_BUFSIZE&t;&t;(1024 + NLMSVC_XDRSIZE)
 DECL|macro|ALLOWED_SIGS
 mdefine_line|#define ALLOWED_SIGS&t;&t;(sigmask(SIGKILL))
-r_extern
+DECL|variable|nlmsvc_program
+r_static
 r_struct
 id|svc_program
 id|nlmsvc_program
@@ -1616,6 +1617,7 @@ suffix:semicolon
 DECL|macro|NLM_NRVERS
 mdefine_line|#define NLM_NRVERS&t;(sizeof(nlmsvc_version)/sizeof(nlmsvc_version[0]))
 DECL|variable|nlmsvc_program
+r_static
 r_struct
 id|svc_program
 id|nlmsvc_program

@@ -4579,6 +4579,7 @@ id|flags
 suffix:semicolon
 )brace
 DECL|function|snd_opti93x_interrupt
+r_static
 id|irqreturn_t
 id|snd_opti93x_interrupt
 c_func
@@ -5446,6 +5447,7 @@ suffix:semicolon
 )brace
 )brace
 DECL|function|snd_opti93x_create
+r_static
 r_int
 id|snd_opti93x_create
 c_func
@@ -5918,6 +5920,7 @@ id|pcm
 suffix:semicolon
 )brace
 DECL|function|snd_opti93x_pcm
+r_static
 r_int
 id|snd_opti93x_pcm
 c_func
@@ -7555,6 +7558,7 @@ comma
 )brace
 suffix:semicolon
 DECL|function|snd_opti93x_mixer
+r_static
 r_int
 id|snd_opti93x_mixer
 c_func

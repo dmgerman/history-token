@@ -856,12 +856,12 @@ id|ret
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Objects with different lifetime than processes (SHM_LOCK and SHM_HUGETLB&n; * shm segments) get accounted against the user_struct instead.&n; */
-DECL|variable|shmlock_user_lock
 r_static
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|shmlock_user_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 DECL|function|user_shm_lock
 r_int

@@ -34,11 +34,11 @@ mdefine_line|#define __copy_from_user_inatomic __copy_from_user
 DECL|macro|__get_user
 mdefine_line|#define __get_user(x, ptr) &bslash;&n;({ &bslash;&n;        const __typeof__(ptr) __private_ptr = ptr; &bslash;&n;        __typeof__(*(__private_ptr)) __private_val; &bslash;&n;        int __private_ret = -EFAULT; &bslash;&n;        (x) = 0; &bslash;&n;&t;if (__copy_from_user(&amp;__private_val, (__private_ptr), &bslash;&n;&t;    sizeof(*(__private_ptr))) == 0) {&bslash;&n;        &t;(x) = (__typeof__(*(__private_ptr))) __private_val; &bslash;&n;&t;&t;__private_ret = 0; &bslash;&n;&t;} &bslash;&n;        __private_ret; &bslash;&n;}) 
 DECL|macro|get_user
-mdefine_line|#define get_user(x, ptr) &bslash;&n;({ &bslash;&n;        const __typeof__((*(ptr))) *private_ptr = (ptr); &bslash;&n;        (access_ok(VERIFY_READ, private_ptr, sizeof(*private_ptr)) ? &bslash;&n;&t; __get_user(x, private_ptr) : ((x) = 0, -EFAULT)); &bslash;&n;})
+mdefine_line|#define get_user(x, ptr) &bslash;&n;({ &bslash;&n;        const __typeof__((*(ptr))) __user *private_ptr = (ptr); &bslash;&n;        (access_ok(VERIFY_READ, private_ptr, sizeof(*private_ptr)) ? &bslash;&n;&t; __get_user(x, private_ptr) : ((x) = 0, -EFAULT)); &bslash;&n;})
 DECL|macro|__put_user
 mdefine_line|#define __put_user(x, ptr) &bslash;&n;({ &bslash;&n;        __typeof__(ptr) __private_ptr = ptr; &bslash;&n;        __typeof__(*(__private_ptr)) __private_val; &bslash;&n;        int __private_ret = -EFAULT; &bslash;&n;        __private_val = (__typeof__(*(__private_ptr))) (x); &bslash;&n;        if (__copy_to_user((__private_ptr), &amp;__private_val, &bslash;&n;&t;&t;&t;   sizeof(*(__private_ptr))) == 0) { &bslash;&n;&t;&t;__private_ret = 0; &bslash;&n;&t;} &bslash;&n;        __private_ret; &bslash;&n;})
 DECL|macro|put_user
-mdefine_line|#define put_user(x, ptr) &bslash;&n;({ &bslash;&n;        __typeof__(*(ptr)) *private_ptr = (ptr); &bslash;&n;        (access_ok(VERIFY_WRITE, private_ptr, sizeof(*private_ptr)) ? &bslash;&n;&t; __put_user(x, private_ptr) : -EFAULT); &bslash;&n;})
+mdefine_line|#define put_user(x, ptr) &bslash;&n;({ &bslash;&n;        __typeof__(*(ptr)) __user *private_ptr = (ptr); &bslash;&n;        (access_ok(VERIFY_WRITE, private_ptr, sizeof(*private_ptr)) ? &bslash;&n;&t; __put_user(x, private_ptr) : -EFAULT); &bslash;&n;})
 DECL|macro|strlen_user
 mdefine_line|#define strlen_user(str) strnlen_user(str, ~0UL &gt;&gt; 1)
 DECL|struct|exception_table_entry

@@ -59,6 +59,8 @@ DECL|macro|MSR_PE_LG
 mdefine_line|#define MSR_PE_LG&t;3&t;&t;/* Protection Enable */
 DECL|macro|MSR_PX_LG
 mdefine_line|#define MSR_PX_LG&t;2&t;&t;/* Protection Exclusive Mode */
+DECL|macro|MSR_PMM_LG
+mdefine_line|#define MSR_PMM_LG&t;2&t;&t;/* Performance monitor */
 DECL|macro|MSR_RI_LG
 mdefine_line|#define MSR_RI_LG&t;1&t;&t;/* Recoverable Exception */
 DECL|macro|MSR_LE_LG
@@ -116,6 +118,8 @@ DECL|macro|MSR_PE
 mdefine_line|#define MSR_PE&t;&t;__MASK(MSR_PE_LG)&t;/* Protection Enable */
 DECL|macro|MSR_PX
 mdefine_line|#define MSR_PX&t;&t;__MASK(MSR_PX_LG)&t;/* Protection Exclusive Mode */
+DECL|macro|MSR_PMM
+mdefine_line|#define MSR_PMM&t;&t;__MASK(MSR_PMM_LG)&t;/* Performance monitor */
 DECL|macro|MSR_RI
 mdefine_line|#define MSR_RI&t;&t;__MASK(MSR_RI_LG)&t;/* Recoverable Exception */
 DECL|macro|MSR_LE
@@ -557,6 +561,12 @@ DECL|macro|SPRN_SDAR
 mdefine_line|#define SPRN_SDAR&t;781
 DECL|macro|SPRN_MMCRA
 mdefine_line|#define SPRN_MMCRA&t;786
+DECL|macro|MMCRA_SIHV
+mdefine_line|#define   MMCRA_SIHV&t;0x10000000UL /* state of MSR HV when SIAR set */
+DECL|macro|MMCRA_SIPR
+mdefine_line|#define   MMCRA_SIPR&t;0x08000000UL /* state of MSR PR when SIAR set */
+DECL|macro|MMCRA_SAMPLE_ENABLE
+mdefine_line|#define   MMCRA_SAMPLE_ENABLE 0x00000001UL /* enable sampling */
 DECL|macro|SPRN_PMC1
 mdefine_line|#define SPRN_PMC1&t;787
 DECL|macro|SPRN_PMC2
@@ -575,6 +585,45 @@ DECL|macro|SPRN_PMC8
 mdefine_line|#define SPRN_PMC8&t;794
 DECL|macro|SPRN_MMCR0
 mdefine_line|#define SPRN_MMCR0&t;795
+DECL|macro|MMCR0_FC
+mdefine_line|#define   MMCR0_FC&t;0x80000000UL /* freeze counters. set to 1 on a perfmon exception */
+DECL|macro|MMCR0_FCS
+mdefine_line|#define   MMCR0_FCS&t;0x40000000UL /* freeze in supervisor state */
+DECL|macro|MMCR0_KERNEL_DISABLE
+mdefine_line|#define   MMCR0_KERNEL_DISABLE MMCR0_FCS
+DECL|macro|MMCR0_FCP
+mdefine_line|#define   MMCR0_FCP&t;0x20000000UL /* freeze in problem state */
+DECL|macro|MMCR0_PROBLEM_DISABLE
+mdefine_line|#define   MMCR0_PROBLEM_DISABLE MMCR0_FCP
+DECL|macro|MMCR0_FCM1
+mdefine_line|#define   MMCR0_FCM1&t;0x10000000UL /* freeze counters while MSR mark = 1 */
+DECL|macro|MMCR0_FCM0
+mdefine_line|#define   MMCR0_FCM0&t;0x08000000UL /* freeze counters while MSR mark = 0 */
+DECL|macro|MMCR0_PMXE
+mdefine_line|#define   MMCR0_PMXE&t;0x04000000UL /* performance monitor exception enable */
+DECL|macro|MMCR0_FCECE
+mdefine_line|#define   MMCR0_FCECE&t;0x02000000UL /* freeze counters on enabled condition or event */
+multiline_comment|/* time base exception enable */
+DECL|macro|MMCR0_TBEE
+mdefine_line|#define   MMCR0_TBEE&t;0x00400000UL /* time base exception enable */
+DECL|macro|MMCR0_PMC1CE
+mdefine_line|#define   MMCR0_PMC1CE&t;0x00008000UL /* PMC1 count enable*/
+DECL|macro|MMCR0_PMCjCE
+mdefine_line|#define   MMCR0_PMCjCE&t;0x00004000UL /* PMCj count enable*/
+DECL|macro|MMCR0_TRIGGER
+mdefine_line|#define   MMCR0_TRIGGER&t;0x00002000UL /* TRIGGER enable */
+DECL|macro|MMCR0_PMAO
+mdefine_line|#define   MMCR0_PMAO&t;0x00000080UL /* performance monitor alert has occurred, set to 0 after handling exception */
+DECL|macro|MMCR0_SHRFC
+mdefine_line|#define   MMCR0_SHRFC&t;0x00000040UL /* SHRre freeze conditions between threads */
+DECL|macro|MMCR0_FCTI
+mdefine_line|#define   MMCR0_FCTI&t;0x00000008UL /* freeze counters in tags inactive mode */
+DECL|macro|MMCR0_FCTA
+mdefine_line|#define   MMCR0_FCTA&t;0x00000004UL /* freeze counters in tags active mode */
+DECL|macro|MMCR0_FCWAIT
+mdefine_line|#define   MMCR0_FCWAIT&t;0x00000002UL /* freeze counter in WAIT state */
+DECL|macro|MMCR0_FCHV
+mdefine_line|#define   MMCR0_FCHV&t;0x00000001UL /* freeze conditions in hypervisor mode */
 DECL|macro|SPRN_MMCR1
 mdefine_line|#define SPRN_MMCR1&t;798
 multiline_comment|/* Short-hand versions for a number of the above SPRNs */

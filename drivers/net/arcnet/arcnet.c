@@ -203,13 +203,6 @@ c_func
 id|arcnet_debug
 )paren
 suffix:semicolon
-DECL|variable|arcdev_setup
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|arcdev_setup
-)paren
-suffix:semicolon
 DECL|variable|alloc_arcdev
 id|EXPORT_SYMBOL
 c_func
@@ -347,12 +340,14 @@ id|debug
 op_assign
 id|ARCNET_DEBUG
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|debug
 comma
-l_string|&quot;i&quot;
+r_int
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|MODULE_LICENSE
@@ -1226,6 +1221,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* Setup a struct device for ARCnet. */
 DECL|function|arcdev_setup
+r_static
 r_void
 id|arcdev_setup
 c_func

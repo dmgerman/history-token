@@ -1224,6 +1224,7 @@ id|set_atomicity_lock
 op_assign
 id|SPIN_LOCK_UNLOCKED
 suffix:semicolon
+multiline_comment|/*&n; * Since we are disabling the cache don&squot;t allow any interrupts - they&n; * would run extremely slow and would only increase the pain.  The caller must&n; * ensure that local interrupts are disabled and are reenabled after post_set()&n; * has been called.&n; */
 DECL|function|prepare_set
 r_static
 r_void
@@ -1256,11 +1257,6 @@ op_or
 l_int|0x40000000
 suffix:semicolon
 multiline_comment|/* set CD flag */
-id|wbinvd
-c_func
-(paren
-)paren
-suffix:semicolon
 id|write_cr0
 c_func
 (paren
@@ -1291,16 +1287,8 @@ c_func
 (paren
 id|cr4
 op_amp
-(paren
-r_int
-r_char
-)paren
 op_complement
-(paren
-l_int|1
-op_lshift
-l_int|7
-)paren
+id|X86_CR4_PGE
 )paren
 suffix:semicolon
 )brace
@@ -1344,12 +1332,7 @@ c_func
 r_void
 )paren
 (brace
-multiline_comment|/*  Flush caches and TLBs  */
-id|wbinvd
-c_func
-(paren
-)paren
-suffix:semicolon
+multiline_comment|/*  Flush TLBs (no need to flush caches - they are disabled)  */
 id|__flush_tlb
 c_func
 (paren
@@ -1413,6 +1396,16 @@ id|mask
 comma
 id|count
 suffix:semicolon
+r_int
+r_int
+id|flags
+suffix:semicolon
+id|local_irq_save
+c_func
+(paren
+id|flags
+)paren
+suffix:semicolon
 id|prepare_set
 c_func
 (paren
@@ -1432,6 +1425,12 @@ suffix:semicolon
 id|post_set
 c_func
 (paren
+)paren
+suffix:semicolon
+id|local_irq_restore
+c_func
+(paren
+id|flags
 )paren
 suffix:semicolon
 multiline_comment|/*  Use the atomic bitops to update the global mask  */
@@ -1498,6 +1497,16 @@ id|type
 )paren
 multiline_comment|/*  [SUMMARY] Set variable MTRR register on the local CPU.&n;    &lt;reg&gt; The register to set.&n;    &lt;base&gt; The base address of the region.&n;    &lt;size&gt; The size of the region. If this is 0 the region is disabled.&n;    &lt;type&gt; The type of the region.&n;    &lt;do_safe&gt; If TRUE, do the change safely. If FALSE, safety measures should&n;    be done externally.&n;    [RETURNS] Nothing.&n;*/
 (brace
+r_int
+r_int
+id|flags
+suffix:semicolon
+id|local_irq_save
+c_func
+(paren
+id|flags
+)paren
+suffix:semicolon
 id|prepare_set
 c_func
 (paren
@@ -1591,6 +1600,12 @@ suffix:semicolon
 id|post_set
 c_func
 (paren
+)paren
+suffix:semicolon
+id|local_irq_restore
+c_func
+(paren
+id|flags
 )paren
 suffix:semicolon
 )brace

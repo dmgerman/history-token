@@ -309,7 +309,7 @@ id|maceps2_interrupt
 comma
 l_int|0
 comma
-l_string|&quot;PS/2 port&quot;
+l_string|&quot;PS2 port&quot;
 comma
 id|dev
 )paren

@@ -6928,19 +6928,4 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Return the used memory size (in words)&n; */
-r_int
-DECL|function|snd_soundfont_mem_used
-id|snd_soundfont_mem_used
-c_func
-(paren
-id|snd_sf_list_t
-op_star
-id|sflist
-)paren
-(brace
-r_return
-id|sflist-&gt;mem_used
-suffix:semicolon
-)brace
 eof

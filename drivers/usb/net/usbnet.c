@@ -4347,7 +4347,7 @@ id|packets
 suffix:semicolon
 )brace
 suffix:semicolon
-macro_line|#ifdef&t;GENLINK_ACK
+macro_line|#ifdef&t;GENELINK_ACK
 singleline_comment|// FIXME:  this code is incomplete, not debugged; it doesn&squot;t
 singleline_comment|// handle interrupts correctly.  interrupts should be generic
 singleline_comment|// code like all other device I/O, anyway.

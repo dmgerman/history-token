@@ -2324,9 +2324,12 @@ op_minus
 id|EINVAL
 suffix:semicolon
 multiline_comment|/* Basic port init. Needed since we use some uart_??? func before&n;&t; * real init for early access */
+id|spin_lock_init
+c_func
+(paren
+op_amp
 id|port-&gt;lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 id|port-&gt;uartclk
 op_assign
@@ -2644,9 +2647,12 @@ id|idx
 )braket
 suffix:semicolon
 multiline_comment|/* Init the port structure */
+id|spin_lock_init
+c_func
+(paren
+op_amp
 id|port-&gt;lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 id|port-&gt;mapbase
 op_assign

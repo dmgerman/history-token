@@ -376,7 +376,7 @@ id|alloc_page
 c_func
 (paren
 id|GFP_KERNEL
-op_logical_or
+op_or
 id|__GFP_ZERO
 )paren
 suffix:semicolon
@@ -12413,6 +12413,7 @@ id|pkt_ctl_fops
 )brace
 suffix:semicolon
 DECL|function|pkt_init
+r_static
 r_int
 id|pkt_init
 c_func
@@ -12561,6 +12562,7 @@ id|ret
 suffix:semicolon
 )brace
 DECL|function|pkt_exit
+r_static
 r_void
 id|pkt_exit
 c_func

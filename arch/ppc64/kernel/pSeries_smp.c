@@ -6,9 +6,7 @@ macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/smp.h&gt;
-macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
-macro_line|#include &lt;linux/kernel_stat.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
@@ -26,7 +24,6 @@ macro_line|#include &lt;asm/prom.h&gt;
 macro_line|#include &lt;asm/smp.h&gt;
 macro_line|#include &lt;asm/paca.h&gt;
 macro_line|#include &lt;asm/time.h&gt;
-macro_line|#include &lt;asm/ppcdebug.h&gt;
 macro_line|#include &lt;asm/machdep.h&gt;
 macro_line|#include &lt;asm/xics.h&gt;
 macro_line|#include &lt;asm/cputable.h&gt;
@@ -43,7 +40,7 @@ mdefine_line|#define DBG(fmt...)
 macro_line|#endif
 r_extern
 r_void
-id|pseries_secondary_smp_init
+id|pSeries_secondary_smp_init
 c_func
 (paren
 r_int
@@ -132,23 +129,14 @@ id|cpu_status
 suffix:semicolon
 )brace
 macro_line|#ifdef CONFIG_HOTPLUG_CPU
-DECL|function|__cpu_disable
+DECL|function|pSeries_cpu_disable
 r_int
-id|__cpu_disable
+id|pSeries_cpu_disable
 c_func
 (paren
 r_void
 )paren
 (brace
-multiline_comment|/* FIXME: go put this in a header somewhere */
-r_extern
-r_void
-id|xics_migrate_irqs_away
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
 id|systemcfg-&gt;processorCount
 op_decrement
 suffix:semicolon
@@ -181,9 +169,9 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-DECL|function|__cpu_die
+DECL|function|pSeries_cpu_die
 r_void
-id|__cpu_die
+id|pSeries_cpu_die
 c_func
 (paren
 r_int
@@ -543,7 +531,7 @@ r_int
 r_int
 op_star
 )paren
-id|pseries_secondary_smp_init
+id|pSeries_secondary_smp_init
 )paren
 )paren
 suffix:semicolon
@@ -791,14 +779,6 @@ suffix:semicolon
 )brace
 )brace
 )brace
-r_extern
-r_void
-id|xics_request_IPIs
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
 DECL|function|smp_xics_probe
 r_static
 r_int
@@ -845,6 +825,40 @@ c_func
 (paren
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|cur_cpu_spec-&gt;firmware_features
+op_amp
+id|FW_FEATURE_SPLPAR
+)paren
+id|vpa_init
+c_func
+(paren
+id|cpu
+)paren
+suffix:semicolon
+macro_line|#ifdef CONFIG_IRQ_ALL_CPUS
+multiline_comment|/*&n;&t; * Put the calling processor into the GIQ.  This is really only&n;&t; * necessary from a secondary thread as the OF start-cpu interface&n;&t; * performs this function for us on primary threads.&n;&t; */
+id|rtas_set_indicator
+c_func
+(paren
+id|GLOBAL_INTERRUPT_QUEUE
+comma
+(paren
+l_int|1UL
+op_lshift
+id|interrupt_server_size
+)paren
+op_minus
+l_int|1
+op_minus
+id|default_distrib_server
+comma
+l_int|1
+)paren
+suffix:semicolon
+macro_line|#endif
 )brace
 DECL|variable|timebase_lock
 r_static
@@ -987,53 +1001,8 @@ id|timebase_lock
 )paren
 suffix:semicolon
 )brace
-DECL|function|pSeries_late_setup_cpu
-r_static
-r_void
-id|__devinit
-id|pSeries_late_setup_cpu
-c_func
-(paren
-r_int
-id|cpu
-)paren
-(brace
-r_extern
-r_int
-r_int
-id|default_distrib_server
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|cur_cpu_spec-&gt;firmware_features
-op_amp
-id|FW_FEATURE_SPLPAR
-)paren
-(brace
-id|vpa_init
-c_func
-(paren
-id|cpu
-)paren
-suffix:semicolon
-)brace
-macro_line|#ifdef CONFIG_IRQ_ALL_CPUS
-multiline_comment|/* Put the calling processor into the GIQ.  This is really only&n;&t; * necessary from a secondary thread as the OF start-cpu interface&n;&t; * performs this function for us on primary threads.&n;&t; */
-multiline_comment|/* TODO: 9005 is #defined in rtas-proc.c -- move to a header */
-id|rtas_set_indicator
-c_func
-(paren
-l_int|9005
-comma
-id|default_distrib_server
-comma
-l_int|1
-)paren
-suffix:semicolon
-macro_line|#endif
-)brace
 DECL|function|smp_pSeries_kick_cpu
+r_static
 r_void
 id|__devinit
 id|smp_pSeries_kick_cpu
@@ -1105,11 +1074,6 @@ id|setup_cpu
 op_assign
 id|smp_mpic_setup_cpu
 comma
-dot
-id|late_setup_cpu
-op_assign
-id|pSeries_late_setup_cpu
-comma
 )brace
 suffix:semicolon
 DECL|variable|pSeries_xics_smp_ops
@@ -1138,11 +1102,6 @@ dot
 id|setup_cpu
 op_assign
 id|smp_xics_setup_cpu
-comma
-dot
-id|late_setup_cpu
-op_assign
-id|pSeries_late_setup_cpu
 comma
 )brace
 suffix:semicolon
@@ -1185,6 +1144,16 @@ op_assign
 op_amp
 id|pSeries_xics_smp_ops
 suffix:semicolon
+macro_line|#ifdef CONFIG_HOTPLUG_CPU
+id|smp_ops-&gt;cpu_disable
+op_assign
+id|pSeries_cpu_disable
+suffix:semicolon
+id|smp_ops-&gt;cpu_die
+op_assign
+id|pSeries_cpu_die
+suffix:semicolon
+macro_line|#endif
 multiline_comment|/* Start secondary threads on SMT systems; primary threads&n;&t; * are already in the running state.&n;&t; */
 id|for_each_present_cpu
 c_func
@@ -1259,7 +1228,7 @@ r_int
 r_int
 op_star
 )paren
-id|pseries_secondary_smp_init
+id|pSeries_secondary_smp_init
 )paren
 )paren
 comma
@@ -1268,19 +1237,6 @@ id|i
 suffix:semicolon
 )brace
 )brace
-r_if
-c_cond
-(paren
-id|cur_cpu_spec-&gt;firmware_features
-op_amp
-id|FW_FEATURE_SPLPAR
-)paren
-id|vpa_init
-c_func
-(paren
-id|boot_cpuid
-)paren
-suffix:semicolon
 multiline_comment|/* Non-lpar has additional take/give timebase */
 r_if
 c_cond

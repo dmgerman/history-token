@@ -166,8 +166,8 @@ id|cpu_callout_map
 )paren
 suffix:semicolon
 )brace
-DECL|macro|smp_processor_id
-mdefine_line|#define smp_processor_id() read_pda(cpunumber)
+DECL|macro|__smp_processor_id
+mdefine_line|#define __smp_processor_id() read_pda(cpunumber)
 DECL|function|hard_smp_processor_id
 r_extern
 id|__inline

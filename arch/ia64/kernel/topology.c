@@ -6,6 +6,7 @@ macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/node.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/bootmem.h&gt;
+macro_line|#include &lt;linux/nodemask.h&gt;
 macro_line|#include &lt;asm/mmzone.h&gt;
 macro_line|#include &lt;asm/numa.h&gt;
 macro_line|#include &lt;asm/cpu.h&gt;
@@ -206,19 +207,11 @@ op_star
 id|MAX_NUMNODES
 )paren
 suffix:semicolon
-r_for
-c_loop
+multiline_comment|/* MCD - Do we want to register all ONLINE nodes, or all POSSIBLE nodes? */
+id|for_each_online_node
+c_func
 (paren
 id|i
-op_assign
-l_int|0
-suffix:semicolon
-id|i
-OL
-id|numnodes
-suffix:semicolon
-id|i
-op_increment
 )paren
 r_if
 c_cond
