@@ -374,7 +374,6 @@ comma
 dot
 id|data
 op_assign
-op_amp
 (paren
 r_const
 id|snd_usb_audio_quirk_t
@@ -1141,7 +1140,6 @@ comma
 dot
 id|data
 op_assign
-op_amp
 (paren
 r_const
 id|snd_usb_audio_quirk_t
@@ -1396,7 +1394,6 @@ comma
 dot
 id|data
 op_assign
-op_amp
 (paren
 r_const
 id|snd_usb_audio_quirk_t
@@ -1869,7 +1866,6 @@ comma
 dot
 id|data
 op_assign
-op_amp
 (paren
 r_const
 id|snd_usb_audio_quirk_t
@@ -2738,7 +2734,6 @@ comma
 dot
 id|data
 op_assign
-op_amp
 (paren
 r_const
 id|snd_usb_audio_quirk_t
