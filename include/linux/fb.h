@@ -1014,6 +1014,7 @@ id|rop
 suffix:semicolon
 multiline_comment|/* bitop operation */
 DECL|member|mask
+r_const
 r_char
 op_star
 id|mask
