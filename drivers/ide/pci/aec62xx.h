@@ -32,7 +32,6 @@ id|aec6xxx_33_base
 )braket
 op_assign
 (brace
-macro_line|#ifdef CONFIG_BLK_DEV_IDEDMA
 (brace
 id|XFER_UDMA_6
 comma
@@ -113,7 +112,6 @@ comma
 l_int|0x00
 )brace
 comma
-macro_line|#endif /* CONFIG_BLK_DEV_IDEDMA */
 (brace
 id|XFER_PIO_4
 comma
@@ -171,7 +169,6 @@ id|aec6xxx_34_base
 )braket
 op_assign
 (brace
-macro_line|#ifdef CONFIG_BLK_DEV_IDEDMA
 (brace
 id|XFER_UDMA_6
 comma
@@ -252,7 +249,6 @@ comma
 l_int|0x00
 )brace
 comma
-macro_line|#endif /* CONFIG_BLK_DEV_IDEDMA */
 (brace
 id|XFER_PIO_4
 comma

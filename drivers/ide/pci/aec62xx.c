@@ -2421,7 +2421,6 @@ l_int|1
 suffix:semicolon
 )brace
 )brace
-macro_line|#ifdef CONFIG_BLK_DEV_IDEDMA
 DECL|function|config_chipset_for_dma
 r_static
 r_int
@@ -2477,7 +2476,6 @@ id|drive
 )paren
 suffix:semicolon
 )brace
-macro_line|#endif /* CONFIG_BLK_DEV_IDEDMA */
 DECL|function|aec62xx_tune_drive
 r_static
 r_void
@@ -2585,7 +2583,6 @@ id|speed
 )paren
 suffix:semicolon
 )brace
-macro_line|#ifdef CONFIG_BLK_DEV_IDEDMA
 DECL|function|aec62xx_config_drive_xfer_rate
 r_static
 r_int
@@ -3064,7 +3061,6 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-macro_line|#endif /* CONFIG_BLK_DEV_IDEDMA */
 DECL|function|init_chipset_aec62xx
 r_static
 r_int
@@ -3294,7 +3290,6 @@ id|hwif-&gt;swdma_mask
 op_assign
 l_int|0x07
 suffix:semicolon
-macro_line|#ifdef CONFIG_BLK_DEV_IDEDMA
 id|hwif-&gt;ide_dma_check
 op_assign
 op_amp
@@ -3338,7 +3333,6 @@ id|autodma
 op_assign
 id|hwif-&gt;autodma
 suffix:semicolon
-macro_line|#endif /* CONFIG_BLK_DEV_IDEDMA */
 )brace
 DECL|function|init_dma_aec62xx
 r_static
