@@ -799,7 +799,10 @@ op_member_access_from_pointer
 r_private
 suffix:semicolon
 r_int
-id|offset
+r_int
+id|sz
+op_assign
+l_int|0
 suffix:semicolon
 r_int
 r_int
@@ -811,6 +814,8 @@ id|buffer
 l_int|32
 )braket
 suffix:semicolon
+DECL|macro|EMIT
+mdefine_line|#define EMIT(x...) sz += ((sz &gt;= maxlen) ? &bslash;&n;&t;&t;&t;  0 : scnprintf(result + sz, maxlen - sz, x))
 r_switch
 c_cond
 (paren
@@ -832,15 +837,9 @@ suffix:semicolon
 r_case
 id|STATUSTYPE_TABLE
 suffix:colon
-id|offset
-op_assign
-id|scnprintf
+id|EMIT
 c_func
 (paren
-id|result
-comma
-id|maxlen
-comma
 l_string|&quot;%d &quot;
 id|SECTOR_FORMAT
 comma
@@ -879,19 +878,9 @@ dot
 id|dev-&gt;bdev-&gt;bd_dev
 )paren
 suffix:semicolon
-id|offset
-op_add_assign
-id|scnprintf
+id|EMIT
 c_func
 (paren
-id|result
-op_plus
-id|offset
-comma
-id|maxlen
-op_minus
-id|offset
-comma
 l_string|&quot; %s &quot;
 id|SECTOR_FORMAT
 comma
