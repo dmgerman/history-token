@@ -1521,7 +1521,6 @@ id|psmouse-&gt;name
 op_assign
 l_string|&quot;TouchPad&quot;
 suffix:semicolon
-macro_line|#if CONFIG_MOUSE_PS2_SYNAPTICS
 r_if
 c_cond
 (paren
@@ -1540,8 +1539,7 @@ l_int|0
 r_return
 id|PSMOUSE_SYNAPTICS
 suffix:semicolon
-macro_line|#endif
-multiline_comment|/*&n;&t;&t; * Synaptics hardware (according to Peter Berg Larsen) can get confused&n;&t;&t; * by protocol probes below so we have to stop here&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * Synaptics hardware (according to Peter Berg Larsen) can get&n;&t;&t; * confused by protocol probes below so we have to stop here&n;&t;&t; */
 r_return
 id|PSMOUSE_PS2
 suffix:semicolon
