@@ -30,6 +30,8 @@ macro_line|#include &lt;net/ip.h&gt;
 macro_line|#include &lt;linux/if_tunnel.h&gt;
 macro_line|#include &lt;linux/rtnetlink.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
+DECL|macro|IPV6_MAX_ADDRESSES
+mdefine_line|#define IPV6_MAX_ADDRESSES 16
 multiline_comment|/* Set to 3 to get tracing... */
 DECL|macro|ACONF_DEBUG
 mdefine_line|#define ACONF_DEBUG 2
@@ -2315,6 +2317,61 @@ r_return
 id|err
 suffix:semicolon
 )brace
+DECL|function|ipv6_count_addresses
+r_int
+id|ipv6_count_addresses
+c_func
+(paren
+r_struct
+id|inet6_dev
+op_star
+id|idev
+)paren
+(brace
+r_int
+id|cnt
+op_assign
+l_int|0
+suffix:semicolon
+r_struct
+id|inet6_ifaddr
+op_star
+id|ifp
+suffix:semicolon
+id|read_lock_bh
+c_func
+(paren
+op_amp
+id|idev-&gt;lock
+)paren
+suffix:semicolon
+r_for
+c_loop
+(paren
+id|ifp
+op_assign
+id|idev-&gt;addr_list
+suffix:semicolon
+id|ifp
+suffix:semicolon
+id|ifp
+op_assign
+id|ifp-&gt;if_next
+)paren
+id|cnt
+op_increment
+suffix:semicolon
+id|read_unlock_bh
+c_func
+(paren
+op_amp
+id|idev-&gt;lock
+)paren
+suffix:semicolon
+r_return
+id|cnt
+suffix:semicolon
+)brace
 DECL|function|ipv6_chk_addr
 r_int
 id|ipv6_chk_addr
@@ -3733,6 +3790,18 @@ op_logical_and
 id|valid_lft
 )paren
 (brace
+multiline_comment|/* Do not allow to create too much of autoconfigured&n;&t;&t;&t; * addresses; this would be too easy way to crash kernel.&n;&t;&t;&t; */
+r_if
+c_cond
+(paren
+id|ipv6_count_addresses
+c_func
+(paren
+id|in6_dev
+)paren
+OL
+id|IPV6_MAX_ADDRESSES
+)paren
 id|ifp
 op_assign
 id|ipv6_add_addr
