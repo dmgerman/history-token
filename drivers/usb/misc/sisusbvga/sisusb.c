@@ -1880,7 +1880,7 @@ id|packet
 r_int
 id|ret
 suffix:semicolon
-r_int
+id|ssize_t
 id|bytes_transferred
 op_assign
 l_int|0
@@ -2036,7 +2036,7 @@ id|tflags
 r_int
 id|ret
 suffix:semicolon
-r_int
+id|ssize_t
 id|bytes_transferred
 op_assign
 l_int|0
@@ -4040,7 +4040,7 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;sisusbvga[%d]: Wrote %d of &quot;
+l_string|&quot;sisusbvga[%d]: Wrote %Zd of &quot;
 l_string|&quot;%d bytes, error %d&bslash;n&quot;
 comma
 id|sisusb-&gt;minor
@@ -6321,7 +6321,8 @@ r_int
 id|ret
 comma
 id|i
-comma
+suffix:semicolon
+id|ssize_t
 id|j
 suffix:semicolon
 r_if
