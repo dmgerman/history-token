@@ -2181,8 +2181,8 @@ suffix:semicolon
 )brace
 multiline_comment|/* &n; * Process one packet of messages.&n; * Malformed skbs with wrong lengths of messages are discarded silently.&n; */
 DECL|function|rtnetlink_rcv_skb
-r_extern
-id|__inline__
+r_static
+r_inline
 r_int
 id|rtnetlink_rcv_skb
 c_func
