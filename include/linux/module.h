@@ -692,10 +692,55 @@ suffix:semicolon
 DECL|macro|symbol_request
 mdefine_line|#define symbol_request(x) try_then_request_module(symbol_get(x), &quot;symbol:&quot; #x)
 multiline_comment|/* BELOW HERE ALL THESE ARE OBSOLETE AND WILL VANISH */
-DECL|macro|__MOD_INC_USE_COUNT
-mdefine_line|#define __MOD_INC_USE_COUNT(mod) &bslash;&n;&t;do { __unsafe(mod); (void)try_module_get(mod); } while(0)
-DECL|macro|__MOD_DEC_USE_COUNT
-mdefine_line|#define __MOD_DEC_USE_COUNT(mod) module_put(mod)
+DECL|function|__MOD_INC_USE_COUNT
+r_static
+r_inline
+r_void
+id|__deprecated
+id|__MOD_INC_USE_COUNT
+c_func
+(paren
+r_struct
+id|module
+op_star
+id|module
+)paren
+(brace
+id|__unsafe
+c_func
+(paren
+id|module
+)paren
+suffix:semicolon
+multiline_comment|/*&n;&t; * Yes, we ignore the retval here, that&squot;s why it&squot;s deprecated.&n;&t; */
+id|try_module_get
+c_func
+(paren
+id|module
+)paren
+suffix:semicolon
+)brace
+DECL|function|__MOD_DEC_USE_COUNT
+r_static
+r_inline
+r_void
+id|__deprecated
+id|__MOD_DEC_USE_COUNT
+c_func
+(paren
+r_struct
+id|module
+op_star
+id|module
+)paren
+(brace
+id|module_put
+c_func
+(paren
+id|module
+)paren
+suffix:semicolon
+)brace
 DECL|macro|SET_MODULE_OWNER
 mdefine_line|#define SET_MODULE_OWNER(dev) ((dev)-&gt;owner = THIS_MODULE)
 DECL|struct|obsolete_modparm
@@ -738,15 +783,60 @@ DECL|macro|MODULE_PARM
 mdefine_line|#define MODULE_PARM(var,type)
 macro_line|#endif
 multiline_comment|/* People do this inside their init routines, when the module isn&squot;t&n;   &quot;live&quot; yet.  They should no longer be doing that, but&n;   meanwhile... */
+DECL|function|_MOD_INC_USE_COUNT
+r_static
+r_inline
+r_void
+id|__deprecated
+id|_MOD_INC_USE_COUNT
+c_func
+(paren
+r_struct
+id|module
+op_star
+id|module
+)paren
+(brace
+id|__unsafe
+c_func
+(paren
+id|module
+)paren
+suffix:semicolon
 macro_line|#if defined(CONFIG_MODULE_UNLOAD) &amp;&amp; defined(MODULE)
-DECL|macro|MOD_INC_USE_COUNT
-mdefine_line|#define MOD_INC_USE_COUNT&t;&bslash;&n;&t;do { __unsafe(THIS_MODULE); local_inc(&amp;THIS_MODULE-&gt;ref[get_cpu()].count); put_cpu(); } while (0)
+id|local_inc
+c_func
+(paren
+op_amp
+id|module-&gt;ref
+(braket
+id|get_cpu
+c_func
+(paren
+)paren
+)braket
+dot
+id|count
+)paren
+suffix:semicolon
+id|put_cpu
+c_func
+(paren
+)paren
+suffix:semicolon
 macro_line|#else
-DECL|macro|MOD_INC_USE_COUNT
-mdefine_line|#define MOD_INC_USE_COUNT &bslash;&n;&t;do { __unsafe(THIS_MODULE); (void)try_module_get(THIS_MODULE); } while (0)
+id|try_module_get
+c_func
+(paren
+id|module
+)paren
+suffix:semicolon
 macro_line|#endif
+)brace
+DECL|macro|MOD_INC_USE_COUNT
+mdefine_line|#define MOD_INC_USE_COUNT &bslash;&n;&t;_MOD_INC_USE_COUNT(THIS_MODULE)
 DECL|macro|MOD_DEC_USE_COUNT
-mdefine_line|#define MOD_DEC_USE_COUNT module_put(THIS_MODULE)
+mdefine_line|#define MOD_DEC_USE_COUNT &bslash;&n;&t;__MOD_DEC_USE_COUNT(THIS_MODULE)
 DECL|macro|try_inc_mod_count
 mdefine_line|#define try_inc_mod_count(mod) try_module_get(mod)
 DECL|macro|EXPORT_NO_SYMBOLS

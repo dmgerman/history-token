@@ -1106,7 +1106,7 @@ suffix:semicolon
 )brace
 DECL|function|__check_region
 r_int
-id|deprecated
+id|__deprecated
 id|__check_region
 c_func
 (paren
