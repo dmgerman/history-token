@@ -919,6 +919,10 @@ op_eq
 id|reg_b
 )paren
 (brace
+r_struct
+id|timespec
+id|tv
+suffix:semicolon
 multiline_comment|/*&n;&t;&t;&t; * We have a RTC.  Check the battery&n;&t;&t;&t; */
 r_if
 c_cond
@@ -938,11 +942,22 @@ id|KERN_WARNING
 l_string|&quot;RTC: *** warning: CMOS battery bad&bslash;n&quot;
 )paren
 suffix:semicolon
-id|xtime.tv_sec
+id|tv.tv_nsec
+op_assign
+l_int|0
+suffix:semicolon
+id|tv.tv_sec
 op_assign
 id|get_isa_cmos_time
 c_func
 (paren
+)paren
+suffix:semicolon
+id|do_settimeofday
+c_func
+(paren
+op_amp
+id|tv
 )paren
 suffix:semicolon
 id|set_rtc
