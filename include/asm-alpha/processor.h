@@ -135,7 +135,7 @@ mdefine_line|#define KSTK_EIP(tsk) &bslash;&n;  (*(unsigned long *)(PT_REG(pc) +
 DECL|macro|KSTK_ESP
 mdefine_line|#define KSTK_ESP(tsk) &bslash;&n;  ((tsk) == current ? rdusp() : (tsk)-&gt;thread_info-&gt;pcb.usp)
 DECL|macro|cpu_relax
-mdefine_line|#define cpu_relax()&t;do { } while (0)
+mdefine_line|#define cpu_relax()&t;barrier()
 DECL|macro|ARCH_HAS_PREFETCH
 mdefine_line|#define ARCH_HAS_PREFETCH
 DECL|macro|ARCH_HAS_PREFETCHW

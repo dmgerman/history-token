@@ -9754,7 +9754,7 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;%s: Remove route %s failed, (err %d)&bslash;n&quot;
+l_string|&quot;%s: Remove route %u.%u.%u.%u failed, (err %d)&bslash;n&quot;
 comma
 id|card-&gt;devname
 comma
