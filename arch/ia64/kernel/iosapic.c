@@ -117,7 +117,7 @@ DECL|variable|iosapic_lists
 )brace
 id|iosapic_lists
 (braket
-l_int|256
+id|NR_IOSAPICS
 )braket
 suffix:semicolon
 DECL|variable|num_iosapic
