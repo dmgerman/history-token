@@ -415,6 +415,14 @@ c_func
 id|fi
 )paren
 (brace
+r_if
+c_cond
+(paren
+op_logical_neg
+id|nh-&gt;nh_dev
+)paren
+r_continue
+suffix:semicolon
 id|hlist_del
 c_func
 (paren

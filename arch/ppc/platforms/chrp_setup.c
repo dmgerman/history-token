@@ -1560,6 +1560,38 @@ id|address
 suffix:semicolon
 )brace
 )brace
+r_static
+r_int
+id|__init
+DECL|function|chrp_request_cascade
+id|chrp_request_cascade
+c_func
+(paren
+r_void
+)paren
+(brace
+multiline_comment|/* We have a cascade on OpenPIC IRQ 0, Linux IRQ 16 */
+id|openpic_hookup_cascade
+c_func
+(paren
+id|NUM_8259_INTERRUPTS
+comma
+l_string|&quot;82c59 cascade&quot;
+comma
+id|i8259_irq
+)paren
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+)brace
+DECL|variable|chrp_request_cascade
+id|arch_initcall
+c_func
+(paren
+id|chrp_request_cascade
+)paren
+suffix:semicolon
 DECL|function|chrp_init_IRQ
 r_void
 id|__init
@@ -1707,17 +1739,6 @@ id|openpic_init
 c_func
 (paren
 id|NUM_8259_INTERRUPTS
-)paren
-suffix:semicolon
-multiline_comment|/* We have a cascade on OpenPIC IRQ 0, Linux IRQ 16 */
-id|openpic_hookup_cascade
-c_func
-(paren
-id|NUM_8259_INTERRUPTS
-comma
-l_string|&quot;82c59 cascade&quot;
-comma
-id|i8259_irq
 )paren
 suffix:semicolon
 r_for

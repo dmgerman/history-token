@@ -12,6 +12,9 @@ macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#ifndef msec_delay
 DECL|macro|msec_delay
 mdefine_line|#define msec_delay(x)&t;do { if(in_interrupt()) { &bslash;&n;&t;&t;&t;&t;/* Don&squot;t mdelay in interrupt context! */ &bslash;&n;&t;                &t;BUG(); &bslash;&n;&t;&t;&t;} else { &bslash;&n;&t;&t;&t;&t;set_current_state(TASK_UNINTERRUPTIBLE); &bslash;&n;&t;&t;&t;&t;schedule_timeout((x * HZ)/1000 + 2); &bslash;&n;&t;&t;&t;} } while(0)
+multiline_comment|/* Some workarounds require millisecond delays and are run during interrupt&n; * context.  Most notably, when establishing link, the phy may need tweaking&n; * but cannot process phy register reads/writes faster than millisecond&n; * intervals...and we establish link due to a &quot;link status change&quot; interrupt.&n; */
+DECL|macro|msec_delay_irq
+mdefine_line|#define msec_delay_irq(x) mdelay(x)
 macro_line|#endif
 DECL|macro|PCI_COMMAND_REGISTER
 mdefine_line|#define PCI_COMMAND_REGISTER   PCI_COMMAND

@@ -50,6 +50,7 @@ op_star
 id|p0
 )paren
 (brace
+r_int
 r_char
 op_star
 id|p

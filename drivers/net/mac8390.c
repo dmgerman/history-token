@@ -28,10 +28,6 @@ macro_line|#include &lt;asm/dma.h&gt;
 macro_line|#include &lt;asm/hwtest.h&gt;
 macro_line|#include &lt;asm/macints.h&gt;
 macro_line|#include &quot;8390.h&quot;
-macro_line|#if (LINUX_VERSION_CODE &lt; 0x02030e)
-DECL|macro|net_device
-mdefine_line|#define net_device device
-macro_line|#endif
 DECL|macro|WD_START_PG
 mdefine_line|#define WD_START_PG&t;&t;&t;0x00&t;/* First page of TX buffer */
 DECL|macro|CABLETRON_RX_START_PG

@@ -1,7 +1,6 @@
 multiline_comment|/* &n; * Copyright 2001 Mike Corrigan, IBM Corp&n; *&n; * This program is free software; you can redistribute it and/or&n; * modify it under the terms of the GNU General Public License&n; * as published by the Free Software Foundation; either version&n; * 2 of the License, or (at your option) any later version.&n; */
-macro_line|#include &lt;asm/types.h&gt;
-macro_line|#include &lt;asm/page.h&gt;
-macro_line|#include &lt;stddef.h&gt;
+macro_line|#include &lt;linux/config.h&gt;
+macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/threads.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/bitops.h&gt;

@@ -58,6 +58,8 @@ DECL|macro|S3C2410_LCON_PMASK
 mdefine_line|#define S3C2410_LCON_PMASK&t;  (0x7 &lt;&lt; 3)
 DECL|macro|S3C2410_LCON_STOPB
 mdefine_line|#define S3C2410_LCON_STOPB&t;  (1&lt;&lt;2)
+DECL|macro|S3C2410_LCON_IRM
+mdefine_line|#define S3C2410_LCON_IRM          (1&lt;&lt;6)
 DECL|macro|S3C2410_UCON_UCLK
 mdefine_line|#define S3C2410_UCON_UCLK&t;  (1&lt;&lt;10)
 DECL|macro|S3C2410_UCON_SBREAK
@@ -98,6 +100,20 @@ DECL|macro|S3C2410_UFSTAT_RXMASK
 mdefine_line|#define S3C2410_UFSTAT_RXMASK&t;  (15&lt;&lt;0)
 DECL|macro|S3C2410_UFSTAT_RXSHIFT
 mdefine_line|#define S3C2410_UFSTAT_RXSHIFT&t;  (0)
+DECL|macro|S3C2440_UFSTAT_TXFULL
+mdefine_line|#define S3C2440_UFSTAT_TXFULL&t;  (1&lt;&lt;14)
+DECL|macro|S3C2440_UFSTAT_RXFULL
+mdefine_line|#define S3C2440_UFSTAT_RXFULL&t;  (1&lt;&lt;6)
+DECL|macro|S3C2440_UFSTAT_TXSHIFT
+mdefine_line|#define S3C2440_UFSTAT_TXSHIFT&t;  (8)
+DECL|macro|S3C2440_UFSTAT_RXSHIFT
+mdefine_line|#define S3C2440_UFSTAT_RXSHIFT&t;  (0)
+DECL|macro|S3C2440_UFSTAT_TXMASK
+mdefine_line|#define S3C2440_UFSTAT_TXMASK&t;  (63&lt;&lt;8)
+DECL|macro|S3C2440_UFSTAT_RXMASK
+mdefine_line|#define S3C2440_UFSTAT_RXMASK&t;  (63)
+DECL|macro|S3C2410_UTRSTAT_TXE
+mdefine_line|#define S3C2410_UTRSTAT_TXE&t;  (1&lt;&lt;2)
 DECL|macro|S3C2410_UTRSTAT_TXFE
 mdefine_line|#define S3C2410_UTRSTAT_TXFE&t;  (1&lt;&lt;1)
 DECL|macro|S3C2410_UTRSTAT_RXDR

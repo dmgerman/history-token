@@ -476,6 +476,10 @@ DECL|member|v4mapped
 id|__u8
 id|v4mapped
 suffix:semicolon
+DECL|member|adaption_ind
+id|__u32
+id|adaption_ind
+suffix:semicolon
 multiline_comment|/* Receive to here while partial delivery is in effect. */
 DECL|member|pd_lobby
 r_struct
@@ -540,6 +544,10 @@ suffix:semicolon
 DECL|member|prsctp_capable
 id|__u8
 id|prsctp_capable
+suffix:semicolon
+DECL|member|adaption_ind
+id|__u32
+id|adaption_ind
 suffix:semicolon
 multiline_comment|/* This is a shim for my peer&squot;s INIT packet, followed by&n;&t; * a copy of the raw address list of the association.&n;&t; * The length of the raw address list is saved in the&n;&t; * raw_addr_list_len field, which will be used at the time when&n;&t; * the association TCB is re-constructed from the cookie.&n;&t; */
 DECL|member|raw_addr_list_len
@@ -649,6 +657,12 @@ r_union
 id|sctp_addr_param
 op_star
 id|addr
+suffix:semicolon
+DECL|member|aind
+r_struct
+id|sctp_adaption_ind_param
+op_star
+id|aind
 suffix:semicolon
 )brace
 suffix:semicolon
@@ -3760,6 +3774,11 @@ id|__u8
 id|prsctp_capable
 suffix:semicolon
 multiline_comment|/* Can peer do PR-SCTP? */
+DECL|member|adaption_ind
+id|__u32
+id|adaption_ind
+suffix:semicolon
+multiline_comment|/* Adaption Code point. */
 multiline_comment|/* This mask is used to disable sending the ASCONF chunk&n;&t;&t; * with specified parameter to peer.&n;&t;&t; */
 DECL|member|addip_disabled_mask
 id|__u16

@@ -2,10 +2,18 @@ multiline_comment|/*&n; * linux/include/asm-arm/arch-omap/uncompress.h&n; *&n; *
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/serial_reg.h&gt;
-macro_line|#include &lt;asm/hardware.h&gt;
 macro_line|#include &lt;asm/arch/serial.h&gt;
+DECL|variable|system_rev
+r_int
+r_int
+id|system_rev
+suffix:semicolon
 DECL|macro|UART_OMAP_MDR1
 mdefine_line|#define UART_OMAP_MDR1&t;&t;0x08&t;/* mode definition register */
+DECL|macro|OMAP_ID_730
+mdefine_line|#define OMAP_ID_730&t;&t;0x355F
+DECL|macro|ID_MASK
+mdefine_line|#define ID_MASK&t;&t;&t;0x7fff
 DECL|macro|check_port
 mdefine_line|#define check_port(base, shift) ((base[UART_OMAP_MDR1 &lt;&lt; shift] &amp; 7) == 0)
 DECL|macro|omap_get_id
@@ -31,8 +39,6 @@ l_int|0
 suffix:semicolon
 r_int
 id|shift
-op_assign
-l_int|0
 suffix:semicolon
 macro_line|#ifdef&t;CONFIG_OMAP_LL_DEBUG_UART3
 id|uart
@@ -89,46 +95,17 @@ c_cond
 (paren
 id|omap_id
 op_eq
-id|OMAP_ID_1510
-op_logical_or
-id|omap_id
-op_eq
-id|OMAP_ID_1610
-op_logical_or
-id|omap_id
-op_eq
-id|OMAP_ID_1710
-op_logical_or
-id|omap_id
-op_eq
-id|OMAP_ID_5912
-)paren
-(brace
-id|shift
-op_assign
-l_int|2
-suffix:semicolon
-)brace
-r_else
-r_if
-c_cond
-(paren
-id|omap_id
-op_eq
 id|OMAP_ID_730
 )paren
-(brace
 id|shift
 op_assign
 l_int|0
 suffix:semicolon
-)brace
 r_else
-(brace
-multiline_comment|/* Assume nothing for unknown OMAP processors.&n;&t;&t;&t; * Add an entry for your OMAP type to select&n;&t;&t;&t; * the default serial console here. If the&n;&t;&t;&t; * serial port is enabled, we&squot;ll use it to&n;&t;&t;&t; * display status messages. Else we&squot;ll be&n;&t;&t;&t; * quiet.&n;&t;&t;&t; */
-r_return
+id|shift
+op_assign
+l_int|2
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren

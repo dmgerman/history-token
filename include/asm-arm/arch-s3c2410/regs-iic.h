@@ -1,7 +1,7 @@
 multiline_comment|/* linux/include/asm-arm/arch-s3c2410/regs-iic.h&n; *&n; * Copyright (c) 2004 Simtec Electronics &lt;linux@simtec.co.uk&gt;&n; *&t;&t;http://www.simtec.co.uk/products/SWLINUX/&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; *&n; * S3C2410 I2C Controller&n; *&n; *  Changelog:&n; *&t;03-Oct-2004  BJD  Initial include for Linux&n;*/
-macro_line|#ifndef __ASM_ARCH_IIC_H
-DECL|macro|__ASM_ARCH_IIC_H
-mdefine_line|#define __ASM_ARCH_IIC_H __FILE__
+macro_line|#ifndef __ASM_ARCH_REGS_IIC_H
+DECL|macro|__ASM_ARCH_REGS_IIC_H
+mdefine_line|#define __ASM_ARCH_REGS_IIC_H __FILE__
 multiline_comment|/* see s3c2410x user guide, v1.1, section 9 (p447) for more info */
 DECL|macro|S3C2410_IICREG
 mdefine_line|#define S3C2410_IICREG(x) (x)
@@ -51,5 +51,5 @@ DECL|macro|S3C2410_IICSTAT_ADDR0
 mdefine_line|#define S3C2410_IICSTAT_ADDR0&t;&t;(1&lt;&lt;1)
 DECL|macro|S3C2410_IICSTAT_LASTBIT
 mdefine_line|#define S3C2410_IICSTAT_LASTBIT&t;&t;(1&lt;&lt;0)
-macro_line|#endif /* __ASM_ARCH_IIC_H */
+macro_line|#endif /* __ASM_ARCH_REGS_IIC_H */
 eof

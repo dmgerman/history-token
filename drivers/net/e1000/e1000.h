@@ -35,7 +35,6 @@ macro_line|#include &lt;linux/tcp.h&gt;
 macro_line|#include &lt;linux/udp.h&gt;
 macro_line|#include &lt;net/pkt_sched.h&gt;
 macro_line|#include &lt;linux/list.h&gt;
-macro_line|#include &lt;linux/rtnetlink.h&gt;
 macro_line|#include &lt;linux/reboot.h&gt;
 macro_line|#ifdef NETIF_F_TSO
 macro_line|#include &lt;net/checksum.h&gt;
@@ -44,7 +43,6 @@ macro_line|#include &lt;linux/workqueue.h&gt;
 macro_line|#include &lt;linux/mii.h&gt;
 macro_line|#include &lt;linux/ethtool.h&gt;
 macro_line|#include &lt;linux/if_vlan.h&gt;
-macro_line|#include &lt;linux/moduleparam.h&gt;
 DECL|macro|BAR_0
 mdefine_line|#define BAR_0&t;&t;0
 DECL|macro|BAR_1

@@ -12,6 +12,7 @@ macro_line|#include &lt;asm/mach/arch.h&gt;
 macro_line|#include &lt;asm/mach/map.h&gt;
 macro_line|#include &lt;asm/arch/regs-gpio.h&gt;
 macro_line|#include &quot;cpu.h&quot;
+macro_line|#include &quot;clock.h&quot;
 macro_line|#include &quot;s3c2410.h&quot;
 macro_line|#include &quot;s3c2440.h&quot;
 DECL|struct|cpu_table
@@ -324,6 +325,76 @@ r_return
 l_int|NULL
 suffix:semicolon
 )brace
+multiline_comment|/* board information */
+DECL|variable|board
+r_static
+r_struct
+id|s3c24xx_board
+op_star
+id|board
+suffix:semicolon
+DECL|function|s3c24xx_set_board
+r_void
+id|s3c24xx_set_board
+c_func
+(paren
+r_struct
+id|s3c24xx_board
+op_star
+id|b
+)paren
+(brace
+r_int
+id|i
+suffix:semicolon
+id|board
+op_assign
+id|b
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|b-&gt;clocks_count
+op_ne
+l_int|0
+)paren
+(brace
+r_struct
+id|clk
+op_star
+op_star
+id|ptr
+op_assign
+id|b-&gt;clocks
+suffix:semicolon
+suffix:semicolon
+r_for
+c_loop
+(paren
+id|i
+op_assign
+id|b-&gt;clocks_count
+suffix:semicolon
+id|i
+OG
+l_int|0
+suffix:semicolon
+id|i
+op_decrement
+comma
+id|ptr
+op_increment
+)paren
+id|s3c2410_register_clock
+c_func
+(paren
+op_star
+id|ptr
+)paren
+suffix:semicolon
+)brace
+)brace
+multiline_comment|/* cpu information */
 DECL|variable|cpu
 r_static
 r_struct
@@ -461,6 +532,9 @@ c_func
 r_void
 )paren
 (brace
+r_int
+id|ret
+suffix:semicolon
 singleline_comment|// do the correct init for cpu
 r_if
 c_cond
@@ -475,12 +549,66 @@ c_func
 l_string|&quot;s3c_arch_init: NULL cpu&bslash;n&quot;
 )paren
 suffix:semicolon
-r_return
+id|ret
+op_assign
 (paren
 id|cpu-&gt;init
 )paren
 (paren
 )paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|ret
+op_ne
+l_int|0
+)paren
+r_return
+id|ret
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|board
+op_ne
+l_int|NULL
+)paren
+(brace
+id|ret
+op_assign
+id|platform_add_devices
+c_func
+(paren
+id|board-&gt;devices
+comma
+id|board-&gt;devices_count
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|ret
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;s3c24xx: failed to add board devices (%d)&bslash;n&quot;
+comma
+id|ret
+)paren
+suffix:semicolon
+)brace
+multiline_comment|/* mask any error, we may not need all these board&n;&t;&t; * devices */
+id|ret
+op_assign
+l_int|0
+suffix:semicolon
+)brace
+r_return
+id|ret
 suffix:semicolon
 )brace
 DECL|variable|s3c_arch_init

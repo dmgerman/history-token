@@ -21,14 +21,14 @@ id|dev
 op_assign
 id|budget-&gt;dev
 suffix:semicolon
-id|DEB_EE
+id|dprintk
 c_func
 (paren
-(paren
+l_int|2
+comma
 l_string|&quot;budget: %p&bslash;n&quot;
 comma
 id|budget
-)paren
 )paren
 suffix:semicolon
 id|saa7146_setgpio
@@ -72,14 +72,14 @@ id|dev
 op_assign
 id|budget-&gt;dev
 suffix:semicolon
-id|DEB_EE
+id|dprintk
 c_func
 (paren
-(paren
+l_int|2
+comma
 l_string|&quot;budget: %p&bslash;n&quot;
 comma
 id|budget
-)paren
 )paren
 suffix:semicolon
 id|saa7146_setgpio
@@ -148,14 +148,14 @@ l_int|1
 comma
 id|d
 suffix:semicolon
-id|DEB_EE
+id|dprintk
 c_func
 (paren
-(paren
+l_int|2
+comma
 l_string|&quot;budget: %p&bslash;n&quot;
 comma
 id|budget
-)paren
 )paren
 suffix:semicolon
 r_for
@@ -237,14 +237,14 @@ suffix:semicolon
 r_int
 id|i
 suffix:semicolon
-id|DEB_EE
+id|dprintk
 c_func
 (paren
-(paren
+l_int|2
+comma
 l_string|&quot;budget: %p&bslash;n&quot;
 comma
 id|budget
-)paren
 )paren
 suffix:semicolon
 id|saa7146_setgpio
@@ -381,14 +381,14 @@ id|budget
 op_assign
 id|fe-&gt;before_after_data
 suffix:semicolon
-id|DEB_EE
+id|dprintk
 c_func
 (paren
-(paren
+l_int|2
+comma
 l_string|&quot;budget: %p&bslash;n&quot;
 comma
 id|budget
-)paren
 )paren
 suffix:semicolon
 r_switch
@@ -522,14 +522,14 @@ id|dev
 op_assign
 id|budget-&gt;dev
 suffix:semicolon
-id|DEB_EE
+id|dprintk
 c_func
 (paren
-(paren
+l_int|2
+comma
 l_string|&quot;budget: %p&bslash;n&quot;
 comma
 id|budget
-)paren
 )paren
 suffix:semicolon
 r_switch
@@ -605,14 +605,14 @@ id|budget
 op_assign
 id|fe-&gt;before_after_data
 suffix:semicolon
-id|DEB_EE
+id|dprintk
 c_func
 (paren
-(paren
+l_int|2
+comma
 l_string|&quot;budget: %p&bslash;n&quot;
 comma
 id|budget
-)paren
 )paren
 suffix:semicolon
 r_switch
@@ -699,10 +699,11 @@ op_minus
 id|ENOMEM
 suffix:semicolon
 )brace
-id|DEB_EE
+id|dprintk
 c_func
 (paren
-(paren
+l_int|2
+comma
 l_string|&quot;dev:%p, info:%p, budget:%p&bslash;n&quot;
 comma
 id|dev
@@ -710,7 +711,6 @@ comma
 id|info
 comma
 id|budget
-)paren
 )paren
 suffix:semicolon
 id|dev-&gt;ext_priv
@@ -1069,14 +1069,6 @@ c_func
 r_void
 )paren
 (brace
-id|DEB_EE
-c_func
-(paren
-(paren
-l_string|&quot;.&bslash;n&quot;
-)paren
-)paren
-suffix:semicolon
 id|saa7146_unregister_extension
 c_func
 (paren

@@ -87,6 +87,7 @@ id|conf_cnt
 suffix:semicolon
 DECL|variable|line
 r_static
+r_int
 r_char
 id|line
 (braket
@@ -115,11 +116,13 @@ r_void
 id|strip
 c_func
 (paren
+r_int
 r_char
 op_star
 id|str
 )paren
 (brace
+r_int
 r_char
 op_star
 id|p

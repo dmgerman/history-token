@@ -1147,7 +1147,7 @@ id|reason
 r_case
 id|SCTP_LOWER_CWND_T3_RTX
 suffix:colon
-multiline_comment|/* RFC 2960 Section 7.2.3, sctpimpguide-05 Section 2.9.2&n;&t;&t; * When the T3-rtx timer expires on an address, SCTP should&n;&t;&t; * perform slow start by:&n;&t;&t; *      ssthresh = max(cwnd/2, 2*MTU)&n;&t;&t; *      cwnd = 1*MTU&n;&t;&t; *      partial_bytes_acked = 0&n;&t;&t; */
+multiline_comment|/* RFC 2960 Section 7.2.3, sctpimpguide&n;&t;&t; * When the T3-rtx timer expires on an address, SCTP should&n;&t;&t; * perform slow start by:&n;&t;&t; *      ssthresh = max(cwnd/2, 4*MTU)&n;&t;&t; *      cwnd = 1*MTU&n;&t;&t; *      partial_bytes_acked = 0&n;&t;&t; */
 id|transport-&gt;ssthresh
 op_assign
 id|max
@@ -1157,7 +1157,7 @@ id|transport-&gt;cwnd
 op_div
 l_int|2
 comma
-l_int|2
+l_int|4
 op_star
 id|transport-&gt;asoc-&gt;pmtu
 )paren
@@ -1171,7 +1171,7 @@ suffix:semicolon
 r_case
 id|SCTP_LOWER_CWND_FAST_RTX
 suffix:colon
-multiline_comment|/* RFC 2960 7.2.4 Adjust the ssthresh and cwnd of the&n;&t;&t; * destination address(es) to which the missing DATA chunks&n;&t;&t; * were last sent, according to the formula described in&n;&t;&t; * Section 7.2.3.&n;&t; &t; *&n;&t; &t; * RFC 2960 7.2.3, sctpimpguide-05 2.9.2 Upon detection of&n;&t;&t; * packet losses from SACK (see Section 7.2.4), An endpoint&n;&t;&t; * should do the following:&n;&t;&t; *      ssthresh = max(cwnd/2, 2*MTU)&n;&t;&t; *      cwnd = ssthresh&n;&t;&t; *      partial_bytes_acked = 0&n;&t;&t; */
+multiline_comment|/* RFC 2960 7.2.4 Adjust the ssthresh and cwnd of the&n;&t;&t; * destination address(es) to which the missing DATA chunks&n;&t;&t; * were last sent, according to the formula described in&n;&t;&t; * Section 7.2.3.&n;&t; &t; *&n;&t; &t; * RFC 2960 7.2.3, sctpimpguide Upon detection of packet&n;&t;&t; * losses from SACK (see Section 7.2.4), An endpoint&n;&t;&t; * should do the following:&n;&t;&t; *      ssthresh = max(cwnd/2, 4*MTU)&n;&t;&t; *      cwnd = ssthresh&n;&t;&t; *      partial_bytes_acked = 0&n;&t;&t; */
 id|transport-&gt;ssthresh
 op_assign
 id|max
@@ -1181,7 +1181,7 @@ id|transport-&gt;cwnd
 op_div
 l_int|2
 comma
-l_int|2
+l_int|4
 op_star
 id|transport-&gt;asoc-&gt;pmtu
 )paren
@@ -1217,7 +1217,7 @@ id|transport-&gt;cwnd
 op_div
 l_int|2
 comma
-l_int|2
+l_int|4
 op_star
 id|transport-&gt;asoc-&gt;pmtu
 )paren
@@ -1236,7 +1236,7 @@ suffix:semicolon
 r_case
 id|SCTP_LOWER_CWND_INACTIVE
 suffix:colon
-multiline_comment|/* RFC 2960 Section 7.2.1, sctpimpguide-05 Section 2.14.2&n;&t;&t; * When the association does not transmit data on a given&n;&t;&t; * transport address within an RTO, the cwnd of the transport&n;&t;&t; * address should be adjusted to 2*MTU.&n;&t;&t; * NOTE: Although the draft recommends that this check needs&n;&t;&t; * to be done every RTO interval, we do it every hearbeat&n;&t;&t; * interval.&n;&t;&t; */
+multiline_comment|/* RFC 2960 Section 7.2.1, sctpimpguide&n;&t;&t; * When the endpoint does not transmit data on a given&n;&t;&t; * transport address, the cwnd of the transport address&n;&t;&t; * should be adjusted to max(cwnd/2, 4*MTU) per RTO.&n;&t;&t; * NOTE: Although the draft recommends that this check needs&n;&t;&t; * to be done every RTO interval, we do it every hearbeat&n;&t;&t; * interval.&n;&t;&t; */
 r_if
 c_cond
 (paren
@@ -1250,9 +1250,17 @@ id|transport-&gt;rto
 )paren
 id|transport-&gt;cwnd
 op_assign
+id|max
+c_func
+(paren
+id|transport-&gt;cwnd
+op_div
 l_int|2
+comma
+l_int|4
 op_star
 id|transport-&gt;asoc-&gt;pmtu
+)paren
 suffix:semicolon
 r_break
 suffix:semicolon

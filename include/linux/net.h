@@ -662,16 +662,6 @@ id|family
 )paren
 suffix:semicolon
 r_extern
-r_struct
-id|socket
-op_star
-id|sock_alloc
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-r_extern
 r_int
 id|sock_create
 c_func

@@ -6539,6 +6539,11 @@ id|dvbdev_ca
 op_assign
 (brace
 dot
+id|priv
+op_assign
+l_int|NULL
+comma
+dot
 id|users
 op_assign
 l_int|1

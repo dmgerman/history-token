@@ -1,4 +1,4 @@
-multiline_comment|/* linux/include/asm-arm/arch-s3c2410/time.h&n; *&n; *  Copyright (C) 2003 Simtec Electronics &lt;linux@simtec.co.uk&gt;&n; *    Ben Dooks, &lt;ben@simtec.co.uk&gt;&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
+multiline_comment|/* linux/arch/arm/mach-s3c2410/time.c&n; *&n; * Copyright (C) 2003,2004 Simtec Electronics&n; *&t;Ben Dooks, &lt;ben@simtec.co.uk&gt;&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
@@ -26,7 +26,6 @@ r_int
 r_int
 id|timer_ticks_usec
 suffix:semicolon
-multiline_comment|/* with an 12MHz clock, we get 12 ticks per-usec&n; */
 multiline_comment|/***&n; * Returns microsecond  since last clock interrupt.  Note that interrupts&n; * will have been disabled by do_gettimeoffset()&n; * IRQs are disabled before entering here from do_gettimeofday()&n; */
 DECL|macro|SRCPND_TIMER4
 mdefine_line|#define SRCPND_TIMER4 (1&lt;&lt;(IRQ_TIMER4 - IRQ_EINT0))
@@ -184,11 +183,10 @@ id|s3c2410_timer_interrupt
 )brace
 suffix:semicolon
 multiline_comment|/*&n; * Set up timer interrupt, and return the current time in seconds.&n; *&n; * Currently we only use timer4, as it is the only timer which has no&n; * other function that can be exploited externally&n; */
-DECL|function|s3c2410_timer_init
+DECL|function|s3c2410_timer_setup
 r_static
 r_void
-id|__init
-id|s3c2410_timer_init
+id|s3c2410_timer_setup
 (paren
 r_void
 )paren
@@ -273,6 +271,15 @@ l_int|1000
 op_div
 id|HZ
 suffix:semicolon
+id|tcfg1
+op_and_assign
+op_complement
+id|S3C2410_TCFG1_MUX4_MASK
+suffix:semicolon
+id|tcfg1
+op_or_assign
+id|S3C2410_TCFG1_MUX4_TCLK1
+suffix:semicolon
 )brace
 multiline_comment|/* for the h1940, we use the pclk from the core to generate&n;&t; * the timer values. since 67.5MHz is not a value we can directly&n;&t; * generate the timer value from, we need to pre-scale and&n;&t; * divied before using it.&n;&t; *&n;&t; * overall divsior to get 200Hz is 337500&n;&t; *   we can fit tcnt if we pre-scale by 6, producing a tick rate&n;&t; *   of 11.25MHz, and a tcnt of 56250.&n;&t; */
 r_if
@@ -284,6 +291,11 @@ c_func
 )paren
 op_logical_or
 id|machine_is_smdk2410
+c_func
+(paren
+)paren
+op_logical_or
+id|machine_is_rx3715
 c_func
 (paren
 )paren
@@ -456,15 +468,6 @@ l_int|4
 )paren
 )paren
 suffix:semicolon
-id|setup_irq
-c_func
-(paren
-id|IRQ_TIMER4
-comma
-op_amp
-id|s3c2410_timer_irq
-)paren
-suffix:semicolon
 multiline_comment|/* start the timer running */
 id|tcon
 op_or_assign
@@ -484,6 +487,30 @@ id|S3C2410_TCON
 )paren
 suffix:semicolon
 )brace
+DECL|function|s3c2410_timer_init
+r_static
+r_void
+id|__init
+id|s3c2410_timer_init
+(paren
+r_void
+)paren
+(brace
+id|s3c2410_timer_setup
+c_func
+(paren
+)paren
+suffix:semicolon
+id|setup_irq
+c_func
+(paren
+id|IRQ_TIMER4
+comma
+op_amp
+id|s3c2410_timer_irq
+)paren
+suffix:semicolon
+)brace
 DECL|variable|s3c2410_timer
 r_struct
 id|sys_timer
@@ -500,6 +527,10 @@ id|offset
 op_assign
 id|s3c2410_gettimeoffset
 comma
+dot
+id|resume
+op_assign
+id|s3c2410_timer_setup
 )brace
 suffix:semicolon
 eof

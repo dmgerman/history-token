@@ -1,4 +1,4 @@
-multiline_comment|/* linux/arch/arm/mach-s3c2410/usb-simtec.c&n; *&n; * Copyright (c) 2004 Simtec Electronics&n; *   Ben Dooks &lt;ben@simtec.co.uk&gt;&n; *&n; * http://www.simtec.co.uk/products/EB2410ITX/&n; *&n; * Simtec BAST and Thorcom VR1000 USB port support functions&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; *&n; * Modifications:&n; *&t;14-Sep-2004 BJD  Created&n;*/
+multiline_comment|/* linux/arch/arm/mach-s3c2410/usb-simtec.c&n; *&n; * Copyright (c) 2004 Simtec Electronics&n; *   Ben Dooks &lt;ben@simtec.co.uk&gt;&n; *&n; * http://www.simtec.co.uk/products/EB2410ITX/&n; *&n; * Simtec BAST and Thorcom VR1000 USB port support functions&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; *&n; * Modifications:&n; *&t;14-Sep-2004 BJD  Created&n; *&t;18-Oct-2004 BJD  Cleanups, and added code to report OC cleared&n;*/
 DECL|macro|DEBUG
 mdefine_line|#define DEBUG
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -52,7 +52,6 @@ id|port
 op_eq
 l_int|1
 )paren
-(brace
 id|s3c2410_gpio_setpin
 c_func
 (paren
@@ -66,19 +65,6 @@ suffix:colon
 l_int|1
 )paren
 suffix:semicolon
-id|pr_debug
-c_func
-(paren
-l_string|&quot;GPBDAT now %08x&bslash;n&quot;
-comma
-id|__raw_readl
-c_func
-(paren
-id|S3C2410_GPBDAT
-)paren
-)paren
-suffix:semicolon
-)brace
 )brace
 r_static
 id|irqreturn_t
@@ -146,6 +132,14 @@ c_func
 l_string|&quot;usb_simtec: over-current irq (oc cleared)&bslash;n&quot;
 )paren
 suffix:semicolon
+id|s3c2410_report_oc
+c_func
+(paren
+id|info
+comma
+l_int|0
+)paren
+suffix:semicolon
 )brace
 r_return
 id|IRQ_HANDLED
@@ -175,12 +169,6 @@ c_cond
 id|on
 )paren
 (brace
-id|pr_debug
-c_func
-(paren
-l_string|&quot;claiming usb overccurent&bslash;n&quot;
-)paren
-suffix:semicolon
 id|ret
 op_assign
 id|request_irq
@@ -192,7 +180,7 @@ id|usb_simtec_ocirq
 comma
 id|SA_INTERRUPT
 comma
-l_string|&quot;usb-oc&quot;
+l_string|&quot;USB Over-current&quot;
 comma
 id|info
 )paren
@@ -229,7 +217,7 @@ c_func
 (paren
 id|IRQ_USBOC
 comma
-l_int|NULL
+id|info
 )paren
 suffix:semicolon
 )brace
@@ -314,39 +302,6 @@ comma
 l_int|1
 )paren
 suffix:semicolon
-id|pr_debug
-c_func
-(paren
-l_string|&quot;GPB: CON=%08x, DAT=%08x&bslash;n&quot;
-comma
-id|__raw_readl
-c_func
-(paren
-id|S3C2410_GPBCON
-)paren
-comma
-id|__raw_readl
-c_func
-(paren
-id|S3C2410_GPBDAT
-)paren
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-l_int|0
-)paren
-(brace
-id|s3c2410_modify_misccr
-c_func
-(paren
-id|S3C2410_MISCCR_USBHOST
-comma
-id|S3C2410_MISCCR_USBDEV
-)paren
-suffix:semicolon
-)brace
 r_return
 l_int|0
 suffix:semicolon

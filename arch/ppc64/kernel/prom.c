@@ -8509,6 +8509,8 @@ op_minus
 id|EBUSY
 suffix:semicolon
 )brace
+multiline_comment|/* XXX This is a layering violation, should be moved to the caller&n;&t; * --BenH.&n;&t; */
+macro_line|#ifdef CONFIG_PPC_PSERIES
 r_if
 c_cond
 (paren
@@ -8520,6 +8522,7 @@ c_func
 id|np
 )paren
 suffix:semicolon
+macro_line|#endif /* CONFIG_PPC_PSERIES */
 id|write_lock
 c_func
 (paren

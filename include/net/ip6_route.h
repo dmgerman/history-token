@@ -310,7 +310,6 @@ id|output
 r_struct
 id|sk_buff
 op_star
-op_star
 )paren
 )paren
 suffix:semicolon
@@ -396,8 +395,7 @@ r_void
 id|rt6_purge_dflt_routers
 c_func
 (paren
-r_int
-id|lst_resort
+r_void
 )paren
 suffix:semicolon
 r_extern

@@ -1,11 +1,10 @@
 multiline_comment|/*&n; * c 2001 PPC 64 Team, IBM Corp&n; *&n; *      This program is free software; you can redistribute it and/or&n; *      modify it under the terms of the GNU General Public License&n; *      as published by the Free Software Foundation; either version&n; *      2 of the License, or (at your option) any later version.&n; */
-macro_line|#include &lt;asm/types.h&gt;
-macro_line|#include &lt;asm/page.h&gt;
-macro_line|#include &lt;stddef.h&gt;
 macro_line|#include &lt;linux/config.h&gt;
+macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/threads.h&gt;
 macro_line|#include &lt;asm/processor.h&gt;
 macro_line|#include &lt;asm/ptrace.h&gt;
+macro_line|#include &lt;asm/page.h&gt;
 macro_line|#include &lt;asm/iSeries/ItLpPaca.h&gt;
 macro_line|#include &lt;asm/iSeries/ItLpQueue.h&gt;
 macro_line|#include &lt;asm/naca.h&gt;

@@ -2746,6 +2746,7 @@ r_int
 id|nvram_clear_error_log
 c_func
 (paren
+r_void
 )paren
 (brace
 id|loff_t

@@ -1,12 +1,14 @@
 macro_line|#ifndef __UDBG_HDR
 DECL|macro|__UDBG_HDR
 mdefine_line|#define __UDBG_HDR
+macro_line|#include &lt;linux/compiler.h&gt;
 multiline_comment|/*&n; * c 2001 PPC 64 Team, IBM Corp&n; *&n; * This program is free software; you can redistribute it and/or&n; * modify it under the terms of the GNU General Public License&n; * as published by the Free Software Foundation; either version&n; * 2 of the License, or (at your option) any later version.&n; */
 r_void
 id|udbg_init_uart
 c_func
 (paren
 r_void
+id|__iomem
 op_star
 id|comport
 comma

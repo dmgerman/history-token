@@ -1295,43 +1295,13 @@ op_logical_and
 id|drive-&gt;autodma
 )paren
 (brace
-multiline_comment|/* Consult the list of known &quot;bad&quot; drives */
 r_if
 c_cond
 (paren
-id|__ide_dma_bad_drive
+id|ide_use_dma
 c_func
 (paren
 id|drive
-)paren
-)paren
-r_goto
-id|fast_ata_pio
-suffix:semicolon
-multiline_comment|/**&n;&t;&t; * Try to turn DMA on if:&n;&t;&t; *  - UDMA or EIDE modes are supported or&n;&t;&t; *  - drive is a known &quot;good&quot; drive&n;&t;&t; *&n;&t;&t; * Checks for best mode supported are down later by&n;&t;&t; * piix_config_drive_for_dma() -&gt; ide_dma_speed()&n;&t;&t; */
-r_if
-c_cond
-(paren
-(paren
-id|id-&gt;field_valid
-op_amp
-(paren
-l_int|4
-op_or
-l_int|2
-)paren
-)paren
-op_logical_or
-(paren
-id|__ide_dma_good_drive
-c_func
-(paren
-id|drive
-)paren
-op_logical_and
-id|id-&gt;eide_dma_time
-OL
-l_int|150
 )paren
 )paren
 (brace
@@ -1354,7 +1324,6 @@ id|drive
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* For some reason DMA wasn&squot;t turned on, so try PIO. */
 r_goto
 id|fast_ata_pio
 suffix:semicolon

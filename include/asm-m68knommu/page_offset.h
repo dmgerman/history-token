@@ -1,5 +1,4 @@
 macro_line|#include &lt;linux/config.h&gt;
-macro_line|#include &lt;asm/shglcore.h&gt;
 multiline_comment|/* This handles the memory map.. */
 macro_line|#ifdef CONFIG_COLDFIRE
 macro_line|#if defined(CONFIG_SMALL)
@@ -48,9 +47,5 @@ macro_line|#endif
 macro_line|#ifdef CONFIG_M68EN302
 DECL|macro|PAGE_OFFSET_RAW
 mdefine_line|#define PAGE_OFFSET_RAW&t;&t;0x00000000
-macro_line|#endif
-macro_line|#ifdef CONFIG_SHGLCORE
-DECL|macro|PAGE_OFFSET_RAW
-mdefine_line|#define PAGE_OFFSET_RAW&t;&t;SHGLCORE_RAM_BANK_0_ADDR 
 macro_line|#endif
 eof

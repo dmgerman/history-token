@@ -228,9 +228,6 @@ r_struct
 id|in6_addr
 op_star
 id|saddr
-comma
-r_int
-id|onlink
 )paren
 suffix:semicolon
 r_extern

@@ -2628,16 +2628,6 @@ suffix:semicolon
 multiline_comment|/*&n; * Functions to fill in entries in struct proto_ops when a protocol&n; * does not implement a particular function.&n; */
 r_extern
 r_int
-id|sock_no_release
-c_func
-(paren
-r_struct
-id|socket
-op_star
-)paren
-suffix:semicolon
-r_extern
-r_int
 id|sock_no_bind
 c_func
 (paren
@@ -4911,17 +4901,6 @@ suffix:semicolon
 r_extern
 r_void
 id|sock_enable_timestamp
-c_func
-(paren
-r_struct
-id|sock
-op_star
-id|sk
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|sock_disable_timestamp
 c_func
 (paren
 r_struct

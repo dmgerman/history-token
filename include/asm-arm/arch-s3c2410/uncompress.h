@@ -1,16 +1,23 @@
-multiline_comment|/* linux/include/asm-arm/arch-s3c2410/uncompress.h&n; *&n; * (c) 2003 Simtec Electronics&n; *    Ben Dooks &lt;ben@simtec.co.uk&gt;&n; *&n; * S3C2410 - uncompress code&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; *&n; * Changelog:&n; *  22-May-2003 BJD  Created&n; *  08-Sep-2003 BJD  Moved to linux v2.6&n; *  12-Mar-2004 BJD  Updated header protection&n;*/
+multiline_comment|/* linux/include/asm-arm/arch-s3c2410/uncompress.h&n; *&n; * (c) 2003 Simtec Electronics&n; *    Ben Dooks &lt;ben@simtec.co.uk&gt;&n; *&n; * S3C2410 - uncompress code&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; *&n; * Changelog:&n; *  22-May-2003 BJD  Created&n; *  08-Sep-2003 BJD  Moved to linux v2.6&n; *  12-Mar-2004 BJD  Updated header protection&n; *  12-Oct-2004 BJD  Take account of debug uart configuration&n;*/
 macro_line|#ifndef __ASM_ARCH_UNCOMPRESS_H
 DECL|macro|__ASM_ARCH_UNCOMPRESS_H
 mdefine_line|#define __ASM_ARCH_UNCOMPRESS_H
+macro_line|#include &lt;config/debug/s3c2410/port.h&gt;
 multiline_comment|/* defines for UART registers */
 macro_line|#include &quot;asm/arch/regs-serial.h&quot;
+macro_line|#include &quot;asm/arch/regs-gpio.h&quot;
 macro_line|#include &lt;asm/arch/map.h&gt;
+multiline_comment|/* working in physical space... */
+DECL|macro|S3C2410_GPIOREG
+macro_line|#undef S3C2410_GPIOREG
+DECL|macro|S3C2410_GPIOREG
+mdefine_line|#define S3C2410_GPIOREG(x) ((S3C2410_PA_GPIO + (x)))
 multiline_comment|/* how many bytes we allow into the FIFO at a time in FIFO mode */
 DECL|macro|FIFO_MAX
 mdefine_line|#define FIFO_MAX&t; (14)
 macro_line|#if 1
 DECL|macro|uart_base
-mdefine_line|#define uart_base S3C2410_PA_UART
+mdefine_line|#define uart_base S3C2410_PA_UART + (0x4000 * CONFIG_DEBUG_S3C2410_UART)
 macro_line|#else
 DECL|variable|uart_base
 r_static
@@ -136,6 +143,24 @@ r_char
 id|ch
 )paren
 (brace
+r_int
+id|cpuid
+op_assign
+op_star
+(paren
+(paren
+r_volatile
+r_int
+r_int
+op_star
+)paren
+id|S3C2410_GSTATUS1
+)paren
+suffix:semicolon
+id|cpuid
+op_and_assign
+id|S3C2410_GSTATUS1_IDMASK
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -179,6 +204,25 @@ c_func
 id|S3C2410_UFSTAT
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|cpuid
+op_eq
+id|S3C2410_GSTATUS1_2440
+)paren
+(brace
+id|level
+op_and_assign
+id|S3C2440_UFSTAT_TXMASK
+suffix:semicolon
+id|level
+op_rshift_assign
+id|S3C2440_UFSTAT_TXSHIFT
+suffix:semicolon
+)brace
+r_else
+(brace
 id|level
 op_and_assign
 id|S3C2410_UFSTAT_TXMASK
@@ -187,6 +231,7 @@ id|level
 op_rshift_assign
 id|S3C2410_UFSTAT_TXSHIFT
 suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
@@ -211,10 +256,10 @@ c_func
 id|S3C2410_UTRSTAT
 )paren
 op_amp
-id|S3C2410_UTRSTAT_TXFE
+id|S3C2410_UTRSTAT_TXE
 )paren
 op_ne
-id|S3C2410_UTRSTAT_TXFE
+id|S3C2410_UTRSTAT_TXE
 )paren
 suffix:semicolon
 )brace

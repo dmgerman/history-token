@@ -1606,6 +1606,10 @@ id|scp-&gt;state
 op_assign
 id|DN_RJ
 suffix:semicolon
+id|sk-&gt;sk_err
+op_assign
+id|ECONNREFUSED
+suffix:semicolon
 r_break
 suffix:semicolon
 r_case

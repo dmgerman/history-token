@@ -13,6 +13,12 @@ r_extern
 r_int
 id|budget_debug
 suffix:semicolon
+macro_line|#ifdef dprintk
+DECL|macro|dprintk
+macro_line|#undef dprintk
+macro_line|#endif
+DECL|macro|dprintk
+mdefine_line|#define dprintk(level,args...) &bslash;&n;            do { if ((budget_debug &amp; level)) { printk(&quot;%s: %s(): &quot;,__stringify(KBUILD_MODNAME), __FUNCTION__); printk(args); } } while (0)
 DECL|struct|budget_info
 r_struct
 id|budget_info

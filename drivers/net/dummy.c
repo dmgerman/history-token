@@ -196,7 +196,11 @@ id|net_device_stats
 op_star
 id|stats
 op_assign
-id|dev-&gt;priv
+id|netdev_priv
+c_func
+(paren
+id|dev
+)paren
 suffix:semicolon
 id|stats-&gt;tx_packets
 op_increment
@@ -230,7 +234,11 @@ id|dev
 )paren
 (brace
 r_return
-id|dev-&gt;priv
+id|netdev_priv
+c_func
+(paren
+id|dev
+)paren
 suffix:semicolon
 )brace
 DECL|variable|dummies

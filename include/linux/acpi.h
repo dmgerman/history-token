@@ -1581,6 +1581,14 @@ op_star
 id|dev
 )paren
 suffix:semicolon
+r_void
+id|acpi_penalize_isa_irq
+c_func
+(paren
+r_int
+id|irq
+)paren
+suffix:semicolon
 DECL|struct|acpi_pci_driver
 r_struct
 id|acpi_pci_driver

@@ -8,13 +8,19 @@ DECL|macro|OMAP_UART2_BASE
 mdefine_line|#define OMAP_UART2_BASE&t;&t;(unsigned char *)0xfffb0800
 DECL|macro|OMAP_UART3_BASE
 mdefine_line|#define OMAP_UART3_BASE&t;&t;(unsigned char *)0xfffb9800
+DECL|macro|OMAP_MAX_NR_PORTS
+mdefine_line|#define OMAP_MAX_NR_PORTS&t;3
+DECL|macro|PORT_OMAP
+mdefine_line|#define PORT_OMAP&t;&t;16&t;/* Temporary */
 macro_line|#ifndef __ASSEMBLY__
 macro_line|#include &lt;asm/arch/hardware.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
 DECL|macro|OMAP1510_BASE_BAUD
 mdefine_line|#define OMAP1510_BASE_BAUD&t;(12000000/16)
-DECL|macro|OMAP1610_BASE_BAUD
-mdefine_line|#define OMAP1610_BASE_BAUD&t;(48000000/16)
+DECL|macro|OMAP16XX_BASE_BAUD
+mdefine_line|#define OMAP16XX_BASE_BAUD&t;(48000000/16)
+DECL|macro|UART_SYSC
+mdefine_line|#define UART_SYSC&t;&t;0x15
 multiline_comment|/* OMAP FCR trigger  redefinitions */
 DECL|macro|UART_FCR_R_TRIGGER_8
 mdefine_line|#define UART_FCR_R_TRIGGER_8&t;0x00&t;/* Mask for receive trigger set at 8 */

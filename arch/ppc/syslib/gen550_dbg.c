@@ -73,6 +73,11 @@ r_return
 id|readb
 c_func
 (paren
+(paren
+r_void
+id|__iomem
+op_star
+)paren
 id|addr
 )paren
 suffix:semicolon
@@ -96,6 +101,11 @@ c_func
 (paren
 id|val
 comma
+(paren
+r_void
+id|__iomem
+op_star
+)paren
 id|addr
 )paren
 suffix:semicolon

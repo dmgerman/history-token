@@ -39,14 +39,14 @@ op_star
 id|budget
 )paren
 (brace
-id|DEB_EE
+id|dprintk
 c_func
 (paren
-(paren
+l_int|2
+comma
 l_string|&quot;budget: %p&bslash;n&quot;
 comma
 id|budget
-)paren
 )paren
 suffix:semicolon
 r_if
@@ -99,14 +99,14 @@ id|dev
 op_assign
 id|budget-&gt;dev
 suffix:semicolon
-id|DEB_EE
+id|dprintk
 c_func
 (paren
-(paren
+l_int|2
+comma
 l_string|&quot;budget: %p&bslash;n&quot;
 comma
 id|budget
-)paren
 )paren
 suffix:semicolon
 r_if
@@ -676,14 +676,14 @@ suffix:semicolon
 r_int
 id|status
 suffix:semicolon
-id|DEB_EE
+id|dprintk
 c_func
 (paren
-(paren
+l_int|2
+comma
 l_string|&quot;budget: %p&bslash;n&quot;
 comma
 id|budget
-)paren
 )paren
 suffix:semicolon
 r_if
@@ -755,14 +755,14 @@ suffix:semicolon
 r_int
 id|status
 suffix:semicolon
-id|DEB_EE
+id|dprintk
 c_func
 (paren
-(paren
+l_int|2
+comma
 l_string|&quot;budget: %p&bslash;n&quot;
 comma
 id|budget
-)paren
 )paren
 suffix:semicolon
 id|spin_lock
@@ -813,14 +813,14 @@ suffix:semicolon
 r_int
 id|ret
 suffix:semicolon
-id|DEB_EE
+id|dprintk
 c_func
 (paren
-(paren
+l_int|2
+comma
 l_string|&quot;budget: %p&bslash;n&quot;
 comma
 id|budget
-)paren
 )paren
 suffix:semicolon
 id|dvbdemux-&gt;priv
@@ -1000,14 +1000,14 @@ op_assign
 op_amp
 id|budget-&gt;demux
 suffix:semicolon
-id|DEB_EE
+id|dprintk
 c_func
 (paren
-(paren
+l_int|2
+comma
 l_string|&quot;budget: %p&bslash;n&quot;
 comma
 id|budget
-)paren
 )paren
 suffix:semicolon
 id|dvb_net_release
@@ -1243,16 +1243,16 @@ id|budget
 )paren
 )paren
 suffix:semicolon
-id|DEB_EE
+id|dprintk
 c_func
 (paren
-(paren
+l_int|2
+comma
 l_string|&quot;dev: %p, budget: %p&bslash;n&quot;
 comma
 id|dev
 comma
 id|budget
-)paren
 )paren
 suffix:semicolon
 id|budget-&gt;card
@@ -1640,14 +1640,14 @@ id|dev
 op_assign
 id|budget-&gt;dev
 suffix:semicolon
-id|DEB_EE
+id|dprintk
 c_func
 (paren
-(paren
+l_int|2
+comma
 l_string|&quot;budget: %p&bslash;n&quot;
 comma
 id|budget
-)paren
 )paren
 suffix:semicolon
 id|budget_unregister
@@ -1716,16 +1716,16 @@ op_star
 )paren
 id|dev-&gt;ext_priv
 suffix:semicolon
-id|DEB_EE
+id|dprintk
 c_func
 (paren
-(paren
+l_int|8
+comma
 l_string|&quot;dev: %p, budget: %p&bslash;n&quot;
 comma
 id|dev
 comma
 id|budget
-)paren
 )paren
 suffix:semicolon
 r_if

@@ -3,6 +3,7 @@ DECL|macro|SL_CHECK_TRANSMIT
 mdefine_line|#define SL_CHECK_TRANSMIT
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
+macro_line|#include &lt;linux/moduleparam.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;linux/bitops.h&gt;
@@ -36,18 +37,20 @@ op_star
 id|slip_devs
 suffix:semicolon
 DECL|variable|slip_maxdev
+r_static
 r_int
 id|slip_maxdev
 op_assign
 id|SL_NRUNIT
 suffix:semicolon
-multiline_comment|/* Can be overridden with insmod! */
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|slip_maxdev
 comma
-l_string|&quot;i&quot;
+r_int
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -1630,13 +1633,10 @@ id|slip
 op_star
 id|sl
 op_assign
+id|netdev_priv
+c_func
 (paren
-r_struct
-id|slip
-op_star
-)paren
-(paren
-id|dev-&gt;priv
+id|dev
 )paren
 suffix:semicolon
 id|spin_lock
@@ -1656,20 +1656,6 @@ id|dev
 )paren
 )paren
 (brace
-r_struct
-id|slip
-op_star
-id|sl
-op_assign
-(paren
-r_struct
-id|slip
-op_star
-)paren
-(paren
-id|dev-&gt;priv
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1786,13 +1772,10 @@ id|slip
 op_star
 id|sl
 op_assign
+id|netdev_priv
+c_func
 (paren
-r_struct
-id|slip
-op_star
-)paren
-(paren
-id|dev-&gt;priv
+id|dev
 )paren
 suffix:semicolon
 id|spin_lock
@@ -1920,13 +1903,10 @@ id|slip
 op_star
 id|sl
 op_assign
+id|netdev_priv
+c_func
 (paren
-r_struct
-id|slip
-op_star
-)paren
-(paren
-id|dev-&gt;priv
+id|dev
 )paren
 suffix:semicolon
 id|spin_lock_bh
@@ -1996,13 +1976,10 @@ id|slip
 op_star
 id|sl
 op_assign
+id|netdev_priv
+c_func
 (paren
-r_struct
-id|slip
-op_star
-)paren
-(paren
-id|dev-&gt;priv
+id|dev
 )paren
 suffix:semicolon
 r_if
@@ -2055,13 +2032,10 @@ id|slip
 op_star
 id|sl
 op_assign
+id|netdev_priv
+c_func
 (paren
-r_struct
-id|slip
-op_star
-)paren
-(paren
-id|dev-&gt;priv
+id|dev
 )paren
 suffix:semicolon
 r_if
@@ -2120,13 +2094,10 @@ id|slip
 op_star
 id|sl
 op_assign
+id|netdev_priv
+c_func
 (paren
-r_struct
-id|slip
-op_star
-)paren
-(paren
-id|dev-&gt;priv
+id|dev
 )paren
 suffix:semicolon
 macro_line|#ifdef SL_INCLUDE_CSLIP
@@ -2253,13 +2224,10 @@ id|slip
 op_star
 id|sl
 op_assign
+id|netdev_priv
+c_func
 (paren
-r_struct
-id|slip
-op_star
-)paren
-(paren
-id|dev-&gt;priv
+id|dev
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; *&t;Finish setting up the DEVICE info. &n;&t; */
@@ -2306,13 +2274,10 @@ id|slip
 op_star
 id|sl
 op_assign
+id|netdev_priv
+c_func
 (paren
-r_struct
-id|slip
-op_star
-)paren
-(paren
-id|dev-&gt;priv
+id|dev
 )paren
 suffix:semicolon
 id|sl_free_bufs
@@ -2606,7 +2571,11 @@ r_break
 suffix:semicolon
 id|sl
 op_assign
-id|dev-&gt;priv
+id|netdev_priv
+c_func
+(paren
+id|dev
+)paren
 suffix:semicolon
 r_if
 c_cond
@@ -2716,7 +2685,11 @@ r_break
 suffix:semicolon
 id|sl
 op_assign
-id|dev-&gt;priv
+id|netdev_priv
+c_func
+(paren
+id|dev
+)paren
 suffix:semicolon
 r_if
 c_cond
@@ -2882,7 +2855,11 @@ l_int|1
 (brace
 id|sl
 op_assign
-id|dev-&gt;priv
+id|netdev_priv
+c_func
+(paren
+id|dev
+)paren
 suffix:semicolon
 id|sl-&gt;flags
 op_and_assign
@@ -2916,7 +2893,11 @@ id|dev
 (brace
 id|sl
 op_assign
-id|dev-&gt;priv
+id|netdev_priv
+c_func
+(paren
+id|dev
+)paren
 suffix:semicolon
 r_if
 c_cond
@@ -3005,7 +2986,11 @@ suffix:semicolon
 )brace
 id|sl
 op_assign
-id|dev-&gt;priv
+id|netdev_priv
+c_func
+(paren
+id|dev
+)paren
 suffix:semicolon
 multiline_comment|/* Initialize channel control data */
 id|sl-&gt;magic
@@ -4694,13 +4679,10 @@ id|slip
 op_star
 id|sl
 op_assign
+id|netdev_priv
+c_func
 (paren
-r_struct
-id|slip
-op_star
-)paren
-(paren
-id|dev-&gt;priv
+id|dev
 )paren
 suffix:semicolon
 r_int
@@ -5323,7 +5305,11 @@ r_continue
 suffix:semicolon
 id|sl
 op_assign
-id|dev-&gt;priv
+id|netdev_priv
+c_func
+(paren
+id|dev
+)paren
 suffix:semicolon
 id|spin_lock_bh
 c_func
@@ -5410,7 +5396,11 @@ l_int|NULL
 suffix:semicolon
 id|sl
 op_assign
-id|dev-&gt;priv
+id|netdev_priv
+c_func
+(paren
+id|dev
+)paren
 suffix:semicolon
 r_if
 c_cond

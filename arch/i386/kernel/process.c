@@ -55,6 +55,20 @@ DECL|variable|hlt_counter
 r_int
 id|hlt_counter
 suffix:semicolon
+DECL|variable|boot_option_idle_override
+r_int
+r_int
+id|boot_option_idle_override
+op_assign
+l_int|0
+suffix:semicolon
+DECL|variable|boot_option_idle_override
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|boot_option_idle_override
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * Return saved PC of a blocked thread.&n; */
 DECL|function|thread_saved_pc
 r_int
@@ -561,6 +575,10 @@ op_assign
 id|default_idle
 suffix:semicolon
 )brace
+id|boot_option_idle_override
+op_assign
+l_int|1
+suffix:semicolon
 r_return
 l_int|1
 suffix:semicolon

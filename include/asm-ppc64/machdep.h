@@ -644,6 +644,23 @@ r_int
 id|baseport
 )paren
 suffix:semicolon
+multiline_comment|/* Get legacy PCI/IDE interrupt mapping */
+DECL|member|pci_get_legacy_ide_irq
+r_int
+(paren
+op_star
+id|pci_get_legacy_ide_irq
+)paren
+(paren
+r_struct
+id|pci_dev
+op_star
+id|dev
+comma
+r_int
+id|channel
+)paren
+suffix:semicolon
 )brace
 suffix:semicolon
 r_extern

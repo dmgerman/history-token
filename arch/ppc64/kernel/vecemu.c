@@ -1441,6 +1441,7 @@ comma
 (paren
 r_int
 r_int
+id|__user
 op_star
 )paren
 id|regs-&gt;nip

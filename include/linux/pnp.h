@@ -593,6 +593,11 @@ op_star
 id|procent
 suffix:semicolon
 multiline_comment|/* device entry in /proc/bus/isapnp */
+DECL|member|data
+r_void
+op_star
+id|data
+suffix:semicolon
 )brace
 suffix:semicolon
 DECL|macro|global_to_pnp_dev

@@ -10,12 +10,17 @@ DECL|macro|OMAP1610_ETHR_SIZE
 mdefine_line|#define OMAP1610_ETHR_SIZE&t;&t;SZ_4K
 DECL|macro|OMAP1610_ETHR_START
 mdefine_line|#define OMAP1610_ETHR_START&t;&t;0x04000000
-multiline_comment|/* Intel STRATA NOR flash at CS3 */
-DECL|macro|OMAP1610_NOR_FLASH_BASE
-mdefine_line|#define OMAP1610_NOR_FLASH_BASE&t;&t;0xD8000000
-DECL|macro|OMAP1610_NOR_FLASH_SIZE
-mdefine_line|#define OMAP1610_NOR_FLASH_SIZE&t;&t;SZ_32M
-DECL|macro|OMAP1610_NOR_FLASH_START
-mdefine_line|#define OMAP1610_NOR_FLASH_START&t;0x0C000000
+multiline_comment|/* Intel STRATA NOR flash at CS3 or CS2B(NAND Boot) */
+DECL|macro|OMAP_NOR_FLASH_SIZE
+mdefine_line|#define OMAP_NOR_FLASH_SIZE             SZ_32M
+DECL|macro|OMAP_NOR_FLASH_START1
+mdefine_line|#define OMAP_NOR_FLASH_START1           0x0C000000 /* CS3 */
+DECL|macro|OMAP_NOR_FLASH_START2
+mdefine_line|#define OMAP_NOR_FLASH_START2           0x0A000000 /* CS2B */
+multiline_comment|/* Samsung NAND flash at CS2B or CS3(NAND Boot) */
+DECL|macro|OMAP_NAND_FLASH_START1
+mdefine_line|#define OMAP_NAND_FLASH_START1           0x0A000000 /* CS2B */
+DECL|macro|OMAP_NAND_FLASH_START2
+mdefine_line|#define OMAP_NAND_FLASH_START2           0x0C000000 /* CS3 */
 macro_line|#endif /*  __ASM_ARCH_OMAP_H2_H */
 eof

@@ -436,6 +436,7 @@ r_void
 id|parse_config_file
 c_func
 (paren
+r_int
 r_char
 op_star
 id|map
@@ -471,6 +472,7 @@ id|map
 op_plus
 l_int|1
 suffix:semicolon
+r_int
 r_char
 op_star
 id|p
@@ -898,12 +900,14 @@ r_int
 id|len
 )paren
 (brace
+r_int
 r_char
 op_star
 id|m
 op_assign
 id|map
 suffix:semicolon
+r_int
 r_char
 op_star
 id|end
@@ -912,6 +916,7 @@ id|m
 op_plus
 id|len
 suffix:semicolon
+r_int
 r_char
 op_star
 id|p

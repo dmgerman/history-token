@@ -81,6 +81,29 @@ id|xfrm_policy_gc_lock
 op_assign
 id|SPIN_LOCK_UNLOCKED
 suffix:semicolon
+r_static
+r_struct
+id|xfrm_policy_afinfo
+op_star
+id|xfrm_policy_get_afinfo
+c_func
+(paren
+r_int
+r_int
+id|family
+)paren
+suffix:semicolon
+r_static
+r_void
+id|xfrm_policy_put_afinfo
+c_func
+(paren
+r_struct
+id|xfrm_policy_afinfo
+op_star
+id|afinfo
+)paren
+suffix:semicolon
 DECL|function|xfrm_register_type
 r_int
 id|xfrm_register_type
@@ -1245,6 +1268,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* Rule must be locked. Release descentant resources, announce&n; * entry dead. The rule must be unlinked from lists to the moment.&n; */
 DECL|function|xfrm_policy_kill
+r_static
 r_void
 id|xfrm_policy_kill
 c_func
@@ -5680,6 +5704,7 @@ id|err
 suffix:semicolon
 )brace
 DECL|function|xfrm_policy_get_afinfo
+r_static
 r_struct
 id|xfrm_policy_afinfo
 op_star
@@ -5754,6 +5779,7 @@ id|afinfo
 suffix:semicolon
 )brace
 DECL|function|xfrm_policy_put_afinfo
+r_static
 r_void
 id|xfrm_policy_put_afinfo
 c_func

@@ -582,15 +582,13 @@ id|addr
 )paren
 (brace
 r_void
+id|__iomem
 op_star
 id|chip_regs
 suffix:semicolon
 r_volatile
 id|u32
-op_star
-id|tmp
-comma
-id|i
+id|val
 suffix:semicolon
 multiline_comment|/* Python&squot;s register file is 1 MB in size. */
 id|chip_regs
@@ -611,17 +609,11 @@ suffix:semicolon
 multiline_comment|/* &n;&t; * Firmware doesn&squot;t always clear this bit which is critical&n;&t; * for good performance - Anton&n;&t; */
 DECL|macro|PRG_CL_RESET_VALID
 mdefine_line|#define PRG_CL_RESET_VALID 0x00010000
-id|tmp
+id|val
 op_assign
+id|in_be32
+c_func
 (paren
-id|u32
-op_star
-)paren
-(paren
-(paren
-r_int
-r_int
-)paren
 id|chip_regs
 op_plus
 l_int|0xf6030
@@ -630,8 +622,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-op_star
-id|tmp
+id|val
 op_amp
 id|PRG_CL_RESET_VALID
 )paren
@@ -643,24 +634,38 @@ id|KERN_INFO
 l_string|&quot;Python workaround: &quot;
 )paren
 suffix:semicolon
-op_star
-id|tmp
+id|val
 op_and_assign
 op_complement
 id|PRG_CL_RESET_VALID
 suffix:semicolon
+id|out_be32
+c_func
+(paren
+id|chip_regs
+op_plus
+l_int|0xf6030
+comma
+id|val
+)paren
+suffix:semicolon
 multiline_comment|/*&n;&t;&t; * We must read it back for changes to&n;&t;&t; * take effect&n;&t;&t; */
-id|i
+id|val
 op_assign
-op_star
-id|tmp
+id|in_be32
+c_func
+(paren
+id|chip_regs
+op_plus
+l_int|0xf6030
+)paren
 suffix:semicolon
 id|printk
 c_func
 (paren
 l_string|&quot;reg0: %x&bslash;n&quot;
 comma
-id|i
+id|val
 )paren
 suffix:semicolon
 )brace

@@ -956,6 +956,7 @@ id|len
 op_assign
 l_int|0
 suffix:semicolon
+r_int
 r_char
 op_star
 id|p

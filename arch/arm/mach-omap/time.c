@@ -12,7 +12,6 @@ macro_line|#include &lt;asm/leds.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;asm/mach/irq.h&gt;
 macro_line|#include &lt;asm/mach/time.h&gt;
-macro_line|#include &lt;asm/arch/clocks.h&gt;
 macro_line|#ifndef __instrument
 DECL|macro|__instrument
 mdefine_line|#define __instrument

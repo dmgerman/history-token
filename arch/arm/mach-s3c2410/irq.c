@@ -1,4 +1,4 @@
-multiline_comment|/* linux/arch/arm/mach-s3c2410/irq.c&n; *&n; * Copyright (c) 2003,2004 Simtec Electronics&n; *&t;Ben Dooks &lt;ben@simtec.co.uk&gt;&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; *&n; * Changelog:&n; *&n; *   22-Jul-2004  Ben Dooks &lt;ben@simtec.co.uk&gt;&n; *                Fixed compile warnings&n; *&n; *   22-Jul-2004  Roc Wu &lt;cooloney@yahoo.com.cn&gt;&n; *                Fixed s3c_extirq_type&n; *&n; *   21-Jul-2004  Arnaud Patard (Rtp) &lt;arnaud.patard@rtp-net.org&gt;&n; *                Addition of ADC/TC demux&n; *&n; *   04-Oct-2004  Klaus Fetscher &lt;k.fetscher@fetron.de&gt;&n; *&t;&t;  Fix for set_irq_type() on low EINT numbers&n; *&n; *   05-Oct-2004  Ben Dooks &lt;ben@simtec.co.uk&gt;&n; *&t;&t;  Tidy up KF&squot;s patch and sort out new release&n;*/
+multiline_comment|/* linux/arch/arm/mach-s3c2410/irq.c&n; *&n; * Copyright (c) 2003,2004 Simtec Electronics&n; *&t;Ben Dooks &lt;ben@simtec.co.uk&gt;&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; *&n; * Changelog:&n; *&n; *   22-Jul-2004  Ben Dooks &lt;ben@simtec.co.uk&gt;&n; *                Fixed compile warnings&n; *&n; *   22-Jul-2004  Roc Wu &lt;cooloney@yahoo.com.cn&gt;&n; *                Fixed s3c_extirq_type&n; *&n; *   21-Jul-2004  Arnaud Patard (Rtp) &lt;arnaud.patard@rtp-net.org&gt;&n; *                Addition of ADC/TC demux&n; *&n; *   04-Oct-2004  Klaus Fetscher &lt;k.fetscher@fetron.de&gt;&n; *&t;&t;  Fix for set_irq_type() on low EINT numbers&n; *&n; *   05-Oct-2004  Ben Dooks &lt;ben@simtec.co.uk&gt;&n; *&t;&t;  Tidy up KF&squot;s patch and sort out new release&n; *&n; *   05-Oct-2004  Ben Dooks &lt;ben@simtec.co.uk&gt;&n; *&t;&t;  Add support for power management controls&n;*/
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
@@ -11,10 +11,212 @@ macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/mach/irq.h&gt;
 macro_line|#include &lt;asm/arch/regs-irq.h&gt;
 macro_line|#include &lt;asm/arch/regs-gpio.h&gt;
+macro_line|#include &quot;pm.h&quot;
 DECL|macro|irqdbf
 mdefine_line|#define irqdbf(x...)
 DECL|macro|irqdbf2
 mdefine_line|#define irqdbf2(x...)
+DECL|macro|EXTINT_OFF
+mdefine_line|#define EXTINT_OFF (IRQ_EINT4 - 4)
+multiline_comment|/* wakeup irq control */
+macro_line|#ifdef CONFIG_PM
+multiline_comment|/* state for IRQs over sleep */
+multiline_comment|/* default is to allow for EINT0..EINT15, and IRQ_RTC as wakeup sources&n; *&n; * set bit to 1 in allow bitfield to enable the wakeup settings on it&n;*/
+DECL|variable|s3c_irqwake_intallow
+r_int
+r_int
+id|s3c_irqwake_intallow
+op_assign
+l_int|1L
+op_lshift
+(paren
+id|IRQ_RTC
+op_minus
+id|IRQ_EINT0
+)paren
+op_or
+l_int|0xfL
+suffix:semicolon
+DECL|variable|s3c_irqwake_intmask
+r_int
+r_int
+id|s3c_irqwake_intmask
+op_assign
+l_int|0xffffffffL
+suffix:semicolon
+DECL|variable|s3c_irqwake_eintallow
+r_int
+r_int
+id|s3c_irqwake_eintallow
+op_assign
+l_int|0x0000fff0L
+suffix:semicolon
+DECL|variable|s3c_irqwake_eintmask
+r_int
+r_int
+id|s3c_irqwake_eintmask
+op_assign
+l_int|0xffffffffL
+suffix:semicolon
+r_static
+r_int
+DECL|function|s3c_irq_wake
+id|s3c_irq_wake
+c_func
+(paren
+r_int
+r_int
+id|irqno
+comma
+r_int
+r_int
+id|state
+)paren
+(brace
+r_int
+r_int
+id|irqbit
+op_assign
+l_int|1
+op_lshift
+(paren
+id|irqno
+op_minus
+id|IRQ_EINT0
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+(paren
+id|s3c_irqwake_intallow
+op_amp
+id|irqbit
+)paren
+)paren
+r_return
+op_minus
+id|ENOENT
+suffix:semicolon
+id|printk
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;wake %s for irq %d&bslash;n&quot;
+comma
+id|state
+ques
+c_cond
+l_string|&quot;enabled&quot;
+suffix:colon
+l_string|&quot;disabled&quot;
+comma
+id|irqno
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|state
+)paren
+id|s3c_irqwake_intmask
+op_or_assign
+id|irqbit
+suffix:semicolon
+r_else
+id|s3c_irqwake_intmask
+op_and_assign
+id|irqbit
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+)brace
+r_static
+r_int
+DECL|function|s3c_irqext_wake
+id|s3c_irqext_wake
+c_func
+(paren
+r_int
+r_int
+id|irqno
+comma
+r_int
+r_int
+id|state
+)paren
+(brace
+r_int
+r_int
+id|bit
+op_assign
+l_int|1L
+op_lshift
+(paren
+id|irqno
+op_minus
+id|EXTINT_OFF
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+(paren
+id|s3c_irqwake_eintallow
+op_amp
+id|bit
+)paren
+)paren
+r_return
+op_minus
+id|ENOENT
+suffix:semicolon
+id|printk
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;wake %s for irq %d&bslash;n&quot;
+comma
+id|state
+ques
+c_cond
+l_string|&quot;enabled&quot;
+suffix:colon
+l_string|&quot;disabled&quot;
+comma
+id|irqno
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|state
+)paren
+id|s3c_irqwake_eintmask
+op_or_assign
+id|bit
+suffix:semicolon
+r_else
+id|s3c_irqwake_eintmask
+op_and_assign
+op_complement
+id|bit
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+)brace
+macro_line|#else
+DECL|macro|s3c_irqext_wake
+mdefine_line|#define s3c_irqext_wake NULL
+DECL|macro|s3c_irq_wake
+mdefine_line|#define s3c_irq_wake NULL
+macro_line|#endif
 r_static
 r_void
 DECL|function|s3c_irq_mask
@@ -246,6 +448,11 @@ dot
 id|unmask
 op_assign
 id|s3c_irq_unmask
+comma
+dot
+id|wake
+op_assign
+id|s3c_irq_wake
 )brace
 suffix:semicolon
 DECL|variable|s3c_irq_chip
@@ -269,11 +476,14 @@ dot
 id|unmask
 op_assign
 id|s3c_irq_unmask
+comma
+dot
+id|wake
+op_assign
+id|s3c_irq_wake
 )brace
 suffix:semicolon
 multiline_comment|/* S3C2410_EINTMASK&n; * S3C2410_EINTPEND&n; */
-DECL|macro|EXTINT_OFF
-mdefine_line|#define EXTINT_OFF (IRQ_EINT4 - 4)
 r_static
 r_void
 DECL|function|s3c_irqext_mask
@@ -948,6 +1158,11 @@ dot
 id|type
 op_assign
 id|s3c_irqext_type
+comma
+dot
+id|wake
+op_assign
+id|s3c_irqext_wake
 )brace
 suffix:semicolon
 DECL|variable|s3c_irq_eint0t4
@@ -973,9 +1188,15 @@ op_assign
 id|s3c_irq_unmask
 comma
 dot
+id|wake
+op_assign
+id|s3c_irq_wake
+comma
+dot
 id|type
 op_assign
 id|s3c_irqext_type
+comma
 )brace
 suffix:semicolon
 multiline_comment|/* mask values for the parent registers for each of the interrupt types */

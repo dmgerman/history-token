@@ -85,6 +85,12 @@ id|request_queue
 op_star
 id|queue
 suffix:semicolon
+DECL|member|sg
+r_struct
+id|scatterlist
+op_star
+id|sg
+suffix:semicolon
 )brace
 suffix:semicolon
 DECL|struct|mmc_io_request

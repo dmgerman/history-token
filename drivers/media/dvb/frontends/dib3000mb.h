@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * dib3000mb.h&n; *&n; * Copyright (C) 2004 Patrick Boettcher (patrick.boettcher@desy.de)&n; *&n; *&t;This program is free software; you can redistribute it and/or&n; *&t;modify it under the terms of the GNU General Public License as&n; *&t;published by the Free Software Foundation, version 2.&n; *&n; *&n; * for more information see dib3000mb.c .&n; */
+multiline_comment|/*&n; * dib3000mb.h&n; *&n; * Copyright (C) 2004 Patrick Boettcher (patrick.boettcher@desy.de)&n; *&n; *&t;This program is free software; you can redistribute it and/or&n; *&t;modify it under the terms of the GNU General Public License as&n; *&t;published by the Free Software Foundation, version 2.&n; *&n; * &n; *&n; * for more information see dib3000mb.c .&n; */
 macro_line|#ifndef __DIB3000MB_H_INCLUDED__
 DECL|macro|__DIB3000MB_H_INCLUDED__
 mdefine_line|#define __DIB3000MB_H_INCLUDED__
@@ -846,7 +846,7 @@ DECL|macro|DIB3000MB_REG_UNK_108
 mdefine_line|#define DIB3000MB_REG_UNK_108&t;&t;&t;(   108)
 DECL|macro|DIB3000MB_UNK_108
 mdefine_line|#define DIB3000MB_UNK_108&t;&t;&t;&t;&t;(0x0080)
-multiline_comment|/* fft ??? */
+multiline_comment|/* fft */
 DECL|macro|DIB3000MB_REG_UNK_121
 mdefine_line|#define DIB3000MB_REG_UNK_121&t;&t;&t;(   121)
 DECL|macro|DIB3000MB_UNK_121_2K
@@ -885,17 +885,15 @@ DECL|macro|DIB3000MB_REG_VIT_CODE_RATE
 mdefine_line|#define DIB3000MB_REG_VIT_CODE_RATE&t;&t;(   129)
 multiline_comment|/* forward error correction code rates */
 DECL|macro|DIB3000MB_FEC_1_2
-mdefine_line|#define DIB3000MB_FEC_1_2&t;&t;&t;&t;&t;(     0)
+mdefine_line|#define DIB3000MB_FEC_1_2&t;&t;&t;&t;&t;(     1)
 DECL|macro|DIB3000MB_FEC_2_3
-mdefine_line|#define DIB3000MB_FEC_2_3&t;&t;&t;&t;&t;(     1)
+mdefine_line|#define DIB3000MB_FEC_2_3&t;&t;&t;&t;&t;(     2)
 DECL|macro|DIB3000MB_FEC_3_4
-mdefine_line|#define DIB3000MB_FEC_3_4&t;&t;&t;&t;&t;(     2)
-DECL|macro|DIB3000MB_FEC_4_5
-mdefine_line|#define DIB3000MB_FEC_4_5&t;&t;&t;&t;&t;(     3)
+mdefine_line|#define DIB3000MB_FEC_3_4&t;&t;&t;&t;&t;(     3)
 DECL|macro|DIB3000MB_FEC_5_6
-mdefine_line|#define DIB3000MB_FEC_5_6&t;&t;&t;&t;&t;(     4)
+mdefine_line|#define DIB3000MB_FEC_5_6&t;&t;&t;&t;&t;(     5)
 DECL|macro|DIB3000MB_FEC_7_8
-mdefine_line|#define DIB3000MB_FEC_7_8&t;&t;&t;&t;&t;(     5)
+mdefine_line|#define DIB3000MB_FEC_7_8&t;&t;&t;&t;&t;(     7)
 multiline_comment|/* vit select hp */
 DECL|macro|DIB3000MB_REG_VIT_HP
 mdefine_line|#define DIB3000MB_REG_VIT_HP&t;&t;&t;(   130)
@@ -1312,9 +1310,9 @@ mdefine_line|#define DIB3000MB_REG_BER_LSB&t;&t;&t;(   415)
 multiline_comment|/* packet error rate (uncorrected TS packets) (16) */
 DECL|macro|DIB3000MB_REG_PACKET_ERROR_RATE
 mdefine_line|#define DIB3000MB_REG_PACKET_ERROR_RATE&t;(   417)
-multiline_comment|/* packet error count (16) */
-DECL|macro|DIB3000MB_REG_PACKET_ERROR_COUNT
-mdefine_line|#define DIB3000MB_REG_PACKET_ERROR_COUNT&t;(   420)
+multiline_comment|/* uncorrected packet count (16) */
+DECL|macro|DIB3000MB_REG_UNC
+mdefine_line|#define DIB3000MB_REG_UNC&t;&t;&t;&t;(   420)
 multiline_comment|/* viterbi locked (1) */
 DECL|macro|DIB3000MB_REG_VIT_LCK
 mdefine_line|#define DIB3000MB_REG_VIT_LCK&t;&t;&t;(   421)

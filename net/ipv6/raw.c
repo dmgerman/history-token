@@ -2756,7 +2756,7 @@ id|AF_INET6
 )paren
 r_return
 op_minus
-id|EINVAL
+id|EAFNOSUPPORT
 suffix:semicolon
 multiline_comment|/* port is the proto value [0..255] carried in nexthdr */
 id|proto

@@ -4,17 +4,16 @@ multiline_comment|/* This is the only thing that needs to be changed to adjust t
 DECL|macro|E1000_MAX_NIC
 mdefine_line|#define E1000_MAX_NIC 32
 DECL|macro|OPTION_UNSET
-mdefine_line|#define OPTION_UNSET    -1
+mdefine_line|#define OPTION_UNSET   -1
 DECL|macro|OPTION_DISABLED
 mdefine_line|#define OPTION_DISABLED 0
 DECL|macro|OPTION_ENABLED
 mdefine_line|#define OPTION_ENABLED  1
-multiline_comment|/* Module Parameters are always initialized to -1, so that the driver&n; * can tell the difference between no user specified value or the&n; * user asking for the default value.&n; * The true default values are loaded in when e1000_check_options is called.&n; *&n; * This is a GCC extension to ANSI C.&n; * See the item &quot;Labeled Elements in Initializers&quot; in the section&n; * &quot;Extensions to the C Language Family&quot; of the GCC documentation.&n; */
+multiline_comment|/* All parameters are treated the same, as an integer array of values.&n; * This macro just reduces the need to repeat the same declaration code&n; * over and over (plus this helps to avoid typo bugs).&n; */
 DECL|macro|E1000_PARAM_INIT
 mdefine_line|#define E1000_PARAM_INIT { [0 ... E1000_MAX_NIC] = OPTION_UNSET }
-multiline_comment|/* All parameters are treated the same, as an integer array of values.&n; * This macro just reduces the need to repeat the same declaration code&n; * over and over (plus this helps to avoid typo bugs).&n; */
 DECL|macro|E1000_PARAM
-mdefine_line|#define E1000_PARAM(X, S) &bslash;&n;static const int __devinitdata X[E1000_MAX_NIC + 1] = E1000_PARAM_INIT; &bslash;&n;MODULE_PARM(X, &quot;1-&quot; __MODULE_STRING(E1000_MAX_NIC) &quot;i&quot;); &bslash;&n;MODULE_PARM_DESC(X, S);
+mdefine_line|#define E1000_PARAM(X, desc) &bslash;&n;&t;static int __devinitdata X[E1000_MAX_NIC+1] = E1000_PARAM_INIT; &bslash;&n;&t;static int num_##X = 0; &bslash;&n;&t;module_param_array(X, int, &amp;num_##X, 0); &bslash;&n;&t;MODULE_PARM_DESC(X, desc);
 multiline_comment|/* Transmit Descriptor Count&n; *&n; * Valid Range: 80-256 for 82542 and 82543 gigabit ethernet controllers&n; * Valid Range: 80-4096 for 82544 and newer&n; *&n; * Default Value: 256&n; */
 id|E1000_PARAM
 c_func
@@ -557,10 +556,6 @@ comma
 l_string|&quot;Using defaults for all values&bslash;n&quot;
 )paren
 suffix:semicolon
-id|bd
-op_assign
-id|E1000_MAX_NIC
-suffix:semicolon
 )brace
 (brace
 multiline_comment|/* Transmit Descriptor Count */
@@ -634,6 +629,14 @@ id|E1000_MAX_TXD
 suffix:colon
 id|E1000_MAX_82544_TXD
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|num_TxDescriptors
+OG
+id|bd
+)paren
+(brace
 id|tx_ring-&gt;count
 op_assign
 id|TxDescriptors
@@ -661,6 +664,14 @@ comma
 id|REQ_TX_DESCRIPTOR_MULTIPLE
 )paren
 suffix:semicolon
+)brace
+r_else
+(brace
+id|tx_ring-&gt;count
+op_assign
+id|opt.def
+suffix:semicolon
+)brace
 )brace
 (brace
 multiline_comment|/* Receive Descriptor Count */
@@ -734,6 +745,14 @@ id|E1000_MAX_RXD
 suffix:colon
 id|E1000_MAX_82544_RXD
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|num_RxDescriptors
+OG
+id|bd
+)paren
+(brace
 id|rx_ring-&gt;count
 op_assign
 id|RxDescriptors
@@ -761,6 +780,14 @@ comma
 id|REQ_RX_DESCRIPTOR_MULTIPLE
 )paren
 suffix:semicolon
+)brace
+r_else
+(brace
+id|rx_ring-&gt;count
+op_assign
+id|opt.def
+suffix:semicolon
+)brace
 )brace
 (brace
 multiline_comment|/* Checksum Offload Enable/Disable */
@@ -790,6 +817,14 @@ op_assign
 id|OPTION_ENABLED
 )brace
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|num_XsumRX
+OG
+id|bd
+)paren
+(brace
 r_int
 id|rx_csum
 op_assign
@@ -814,6 +849,14 @@ id|adapter-&gt;rx_csum
 op_assign
 id|rx_csum
 suffix:semicolon
+)brace
+r_else
+(brace
+id|adapter-&gt;rx_csum
+op_assign
+id|opt.def
+suffix:semicolon
+)brace
 )brace
 (brace
 multiline_comment|/* Flow Control */
@@ -905,6 +948,14 @@ id|fc_list
 )brace
 )brace
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|num_FlowControl
+OG
+id|bd
+)paren
+(brace
 r_int
 id|fc
 op_assign
@@ -931,6 +982,14 @@ id|adapter-&gt;hw.original_fc
 op_assign
 id|fc
 suffix:semicolon
+)brace
+r_else
+(brace
+id|adapter-&gt;hw.fc
+op_assign
+id|opt.def
+suffix:semicolon
+)brace
 )brace
 (brace
 multiline_comment|/* Transmit Interrupt Delay */
@@ -985,6 +1044,14 @@ id|MAX_TXDELAY
 )brace
 )brace
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|num_TxIntDelay
+OG
+id|bd
+)paren
+(brace
 id|adapter-&gt;tx_int_delay
 op_assign
 id|TxIntDelay
@@ -1004,6 +1071,14 @@ comma
 id|adapter
 )paren
 suffix:semicolon
+)brace
+r_else
+(brace
+id|adapter-&gt;tx_int_delay
+op_assign
+id|opt.def
+suffix:semicolon
+)brace
 )brace
 (brace
 multiline_comment|/* Transmit Absolute Interrupt Delay */
@@ -1058,6 +1133,14 @@ id|MAX_TXABSDELAY
 )brace
 )brace
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|num_TxAbsIntDelay
+OG
+id|bd
+)paren
+(brace
 id|adapter-&gt;tx_abs_int_delay
 op_assign
 id|TxAbsIntDelay
@@ -1077,6 +1160,14 @@ comma
 id|adapter
 )paren
 suffix:semicolon
+)brace
+r_else
+(brace
+id|adapter-&gt;tx_abs_int_delay
+op_assign
+id|opt.def
+suffix:semicolon
+)brace
 )brace
 (brace
 multiline_comment|/* Receive Interrupt Delay */
@@ -1131,6 +1222,14 @@ id|MAX_RXDELAY
 )brace
 )brace
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|num_RxIntDelay
+OG
+id|bd
+)paren
+(brace
 id|adapter-&gt;rx_int_delay
 op_assign
 id|RxIntDelay
@@ -1150,6 +1249,14 @@ comma
 id|adapter
 )paren
 suffix:semicolon
+)brace
+r_else
+(brace
+id|adapter-&gt;rx_int_delay
+op_assign
+id|opt.def
+suffix:semicolon
+)brace
 )brace
 (brace
 multiline_comment|/* Receive Absolute Interrupt Delay */
@@ -1204,6 +1311,14 @@ id|MAX_RXABSDELAY
 )brace
 )brace
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|num_RxAbsIntDelay
+OG
+id|bd
+)paren
+(brace
 id|adapter-&gt;rx_abs_int_delay
 op_assign
 id|RxAbsIntDelay
@@ -1223,6 +1338,14 @@ comma
 id|adapter
 )paren
 suffix:semicolon
+)brace
+r_else
+(brace
+id|adapter-&gt;rx_abs_int_delay
+op_assign
+id|opt.def
+suffix:semicolon
+)brace
 )brace
 (brace
 multiline_comment|/* Interrupt Throttling Rate */
@@ -1277,6 +1400,14 @@ id|MAX_ITR
 )brace
 )brace
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|num_InterruptThrottleRate
+OG
+id|bd
+)paren
+(brace
 id|adapter-&gt;itr
 op_assign
 id|InterruptThrottleRate
@@ -1352,6 +1483,14 @@ r_break
 suffix:semicolon
 )brace
 )brace
+r_else
+(brace
+id|adapter-&gt;itr
+op_assign
+l_int|1
+suffix:semicolon
+)brace
+)brace
 r_switch
 c_cond
 (paren
@@ -1411,28 +1550,12 @@ id|bd
 op_assign
 id|adapter-&gt;bd_number
 suffix:semicolon
-id|bd
-op_assign
-id|bd
-OG
-id|E1000_MAX_NIC
-ques
-c_cond
-id|E1000_MAX_NIC
-suffix:colon
-id|bd
-suffix:semicolon
 r_if
 c_cond
 (paren
-(paren
-id|Speed
-(braket
+id|num_Speed
+OG
 id|bd
-)braket
-op_ne
-id|OPTION_UNSET
-)paren
 )paren
 (brace
 id|DPRINTK
@@ -1450,14 +1573,9 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-(paren
-id|Duplex
-(braket
+id|num_Duplex
+OG
 id|bd
-)braket
-op_ne
-id|OPTION_UNSET
-)paren
 )paren
 (brace
 id|DPRINTK
@@ -1476,12 +1594,9 @@ r_if
 c_cond
 (paren
 (paren
-id|AutoNeg
-(braket
+id|num_AutoNeg
+OG
 id|bd
-)braket
-op_ne
-id|OPTION_UNSET
 )paren
 op_logical_and
 (paren
@@ -1531,17 +1646,6 @@ r_int
 id|bd
 op_assign
 id|adapter-&gt;bd_number
-suffix:semicolon
-id|bd
-op_assign
-id|bd
-OG
-id|E1000_MAX_NIC
-ques
-c_cond
-id|E1000_MAX_NIC
-suffix:colon
-id|bd
 suffix:semicolon
 (brace
 multiline_comment|/* Speed */
@@ -1627,6 +1731,14 @@ id|speed_list
 )brace
 )brace
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|num_Speed
+OG
+id|bd
+)paren
+(brace
 id|speed
 op_assign
 id|Speed
@@ -1646,6 +1758,14 @@ comma
 id|adapter
 )paren
 suffix:semicolon
+)brace
+r_else
+(brace
+id|speed
+op_assign
+id|opt.def
+suffix:semicolon
+)brace
 )brace
 (brace
 multiline_comment|/* Duplex */
@@ -1725,6 +1845,14 @@ id|dplx_list
 )brace
 )brace
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|num_Duplex
+OG
+id|bd
+)paren
+(brace
 id|dplx
 op_assign
 id|Duplex
@@ -1745,15 +1873,22 @@ id|adapter
 )paren
 suffix:semicolon
 )brace
+r_else
+(brace
+id|dplx
+op_assign
+id|opt.def
+suffix:semicolon
+)brace
+)brace
 r_if
 c_cond
 (paren
-id|AutoNeg
-(braket
+(paren
+id|num_AutoNeg
+OG
 id|bd
-)braket
-op_ne
-id|OPTION_UNSET
+)paren
 op_logical_and
 (paren
 id|speed
@@ -2107,19 +2242,21 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|Speed
-(braket
+(paren
+id|num_Speed
+OG
 id|bd
-)braket
+)paren
+op_logical_and
+(paren
+id|speed
 op_ne
-id|OPTION_UNSET
+l_int|0
 op_logical_or
-id|Duplex
-(braket
-id|bd
-)braket
+id|dplx
 op_ne
-id|OPTION_UNSET
+l_int|0
+)paren
 )paren
 (brace
 id|DPRINTK

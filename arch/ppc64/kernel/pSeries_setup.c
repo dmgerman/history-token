@@ -376,13 +376,6 @@ r_int
 op_star
 id|addrp
 suffix:semicolon
-r_int
-r_char
-op_star
-id|chrp_int_ack_special
-op_assign
-l_int|NULL
-suffix:semicolon
 r_struct
 id|device_node
 op_star
@@ -445,11 +438,6 @@ suffix:semicolon
 r_else
 id|chrp_int_ack_special
 op_assign
-(paren
-r_int
-r_char
-op_star
-)paren
 id|ioremap
 c_func
 (paren

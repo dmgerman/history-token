@@ -6,8 +6,7 @@ macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/socket.h&gt;
 DECL|typedef|sctp_assoc_t
 r_typedef
-r_void
-op_star
+id|__s32
 id|sctp_assoc_t
 suffix:semicolon
 multiline_comment|/* The following symbols come from the Sockets API Extensions for&n; * SCTP &lt;draft-ietf-tsvwg-sctpsocket-07.txt&gt;.&n; */

@@ -80,10 +80,20 @@ r_char
 id|c
 )paren
 suffix:semicolon
+multiline_comment|/* Here&squot;s maple real mode debug */
+r_extern
+r_void
+id|udbg_init_maple_realmode
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
 DECL|macro|EARLY_DEBUG_INIT
 mdefine_line|#define EARLY_DEBUG_INIT() do {} while(0)
 macro_line|#if 0
 mdefine_line|#define EARLY_DEBUG_INIT() udbg_init_debug_lpar()
+mdefine_line|#define EARLY_DEBUG_INIT() udbg_init_maple_realmode()
 mdefine_line|#define EARLY_DEBUG_INIT() udbg_init_pmac_realmode()
 mdefine_line|#define EARLY_DEBUG_INIT()&t;&t;&t;&t;&t;&t;&bslash;&n;&t;do { ppc_md.udbg_putc = call_rtas_display_status_delay; } while(0)
 macro_line|#endif
@@ -963,6 +973,11 @@ r_struct
 id|machdep_calls
 id|pmac_md
 suffix:semicolon
+r_extern
+r_struct
+id|machdep_calls
+id|maple_md
+suffix:semicolon
 multiline_comment|/* Ultimately, stuff them in an elf section like initcalls... */
 DECL|variable|machines
 r_static
@@ -985,6 +1000,11 @@ op_amp
 id|pmac_md
 comma
 macro_line|#endif /* CONFIG_PPC_PMAC */
+macro_line|#ifdef CONFIG_PPC_MAPLE
+op_amp
+id|maple_md
+comma
+macro_line|#endif /* CONFIG_PPC_MAPLE */
 l_int|NULL
 )brace
 suffix:semicolon
@@ -1844,6 +1864,14 @@ c_func
 l_string|&quot;systemcfg                     = 0x%p&bslash;n&quot;
 comma
 id|systemcfg
+)paren
+suffix:semicolon
+id|printk
+c_func
+(paren
+l_string|&quot;systemcfg-&gt;platform           = 0x%x&bslash;n&quot;
+comma
+id|systemcfg-&gt;platform
 )paren
 suffix:semicolon
 id|printk

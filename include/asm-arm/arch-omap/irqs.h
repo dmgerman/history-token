@@ -270,10 +270,6 @@ DECL|macro|INT_730_MMC_SDIO
 mdefine_line|#define INT_730_MMC_SDIO&t;(23 + IH2_BASE)
 DECL|macro|INT_730_UPLD
 mdefine_line|#define INT_730_UPLD&t;&t;(24 + IH2_BASE)
-DECL|macro|INT_730_RTC_TIMER
-mdefine_line|#define INT_730_RTC_TIMER&t;(25 + IH2_BASE)
-DECL|macro|INT_730_RTC_ALARM
-mdefine_line|#define INT_730_RTC_ALARM&t;(26 + IH2_BASE)
 DECL|macro|INT_730_USB_HHC_1
 mdefine_line|#define INT_730_USB_HHC_1&t;(27 + IH2_BASE)
 DECL|macro|INT_730_USB_HHC_2
@@ -332,37 +328,6 @@ DECL|macro|INT_730_DMA_CH15
 mdefine_line|#define INT_730_DMA_CH15&t;(62 + IH2_BASE)
 DECL|macro|INT_730_NAND
 mdefine_line|#define INT_730_NAND&t;&t;(63 + IH2_BASE)
-multiline_comment|/* OMAP-730 differences */
-macro_line|#ifdef CONFIG_ARCH_OMAP730
-DECL|macro|INT_IH2_IRQ
-macro_line|#undef&t;INT_IH2_IRQ
-DECL|macro|INT_IH2_IRQ
-mdefine_line|#define INT_IH2_IRQ&t;&t;INT_730_IH2_IRQ
-DECL|macro|INT_KEYBOARD
-macro_line|#undef&t;INT_KEYBOARD
-DECL|macro|INT_KEYBOARD
-mdefine_line|#define INT_KEYBOARD&t;&t;INT_730_MPUIO_KEYPAD
-DECL|macro|INT_UART1
-macro_line|#undef&t;INT_UART1
-DECL|macro|INT_UART1
-mdefine_line|#define INT_UART1&t;&t;INT_730_UART_MODEM_1
-DECL|macro|INT_UART2
-macro_line|#undef&t;INT_UART2
-DECL|macro|INT_UART2
-mdefine_line|#define INT_UART2&t;&t;INT_730_UART_MODEM_IRDA_2
-DECL|macro|INT_MPUIO
-macro_line|#undef&t;INT_MPUIO
-DECL|macro|INT_MPUIO
-mdefine_line|#define INT_MPUIO&t;&t;INT_730_MPUIO
-DECL|macro|INT_RTC_TIMER
-macro_line|#undef&t;INT_RTC_TIMER
-DECL|macro|INT_RTC_TIMER
-mdefine_line|#define INT_RTC_TIMER&t;&t;INT_730_RTC_TIMER
-DECL|macro|INT_RTC_ALARM
-macro_line|#undef&t;INT_RTC_ALARM
-DECL|macro|INT_RTC_ALARM
-mdefine_line|#define INT_RTC_ALARM&t;&t;INT_730_RTC_ALARM
-macro_line|#endif
 multiline_comment|/* Max. 128 level 2 IRQs (OMAP1610), 192 GPIOs (OMAP730) and&n; * 16 MPUIO lines */
 DECL|macro|OMAP_MAX_GPIO_LINES
 mdefine_line|#define OMAP_MAX_GPIO_LINES&t;192
@@ -386,7 +351,7 @@ multiline_comment|/*&n; * The definition of NR_IRQS is in board-specific header 
 macro_line|#include &lt;asm/arch/hardware.h&gt;
 macro_line|#ifndef NR_IRQS
 DECL|macro|NR_IRQS
-mdefine_line|#define NR_IRQS                 256
+mdefine_line|#define NR_IRQS                 IH_BOARD_BASE
 macro_line|#endif
 macro_line|#endif
 eof

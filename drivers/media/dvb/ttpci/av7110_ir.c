@@ -4,37 +4,11 @@ macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/moduleparam.h&gt;
 macro_line|#include &lt;linux/input.h&gt;
 macro_line|#include &lt;linux/proc_fs.h&gt;
-macro_line|#include &lt;linux/bitops.h&gt;
+macro_line|#include &lt;asm/bitops.h&gt;
 macro_line|#include &quot;av7110.h&quot;
 DECL|macro|UP_TIMEOUT
 mdefine_line|#define UP_TIMEOUT (HZ/4)
-DECL|variable|av7110_ir_debug
-r_static
-r_int
-id|av7110_ir_debug
-suffix:semicolon
-id|module_param_named
-c_func
-(paren
-id|debug_ir
-comma
-id|av7110_ir_debug
-comma
-r_int
-comma
-l_int|0644
-)paren
-suffix:semicolon
-id|MODULE_PARM_DESC
-c_func
-(paren
-id|av7110_ir_debug
-comma
-l_string|&quot;Turn on/off IR debugging (default:off).&quot;
-)paren
-suffix:semicolon
-DECL|macro|dprintk
-mdefine_line|#define dprintk(x...)  do { if (av7110_ir_debug) printk (x); } while (0)
+multiline_comment|/* enable ir debugging by or&squot;ing av7110_debug with 16 */
 DECL|variable|input_dev
 r_static
 r_struct
@@ -704,7 +678,10 @@ id|data
 )braket
 suffix:semicolon
 id|dprintk
+c_func
 (paren
+l_int|16
+comma
 l_string|&quot;#########%08x######### addr %i data 0x%02x (keycode %i)&bslash;n&quot;
 comma
 id|ircom

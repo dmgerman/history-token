@@ -867,7 +867,7 @@ ques
 c_cond
 id|asoc-&gt;assoc_id
 suffix:colon
-l_int|NULL
+l_int|0
 )paren
 suffix:semicolon
 )brace

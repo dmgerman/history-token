@@ -8,7 +8,7 @@ mdefine_line|#define OMAP730_MCBSP1_BASE&t;0xfffb1000
 DECL|macro|OMAP730_MCBSP2_BASE
 mdefine_line|#define OMAP730_MCBSP2_BASE&t;0xfffb1800
 DECL|macro|OMAP1510_MCBSP1_BASE
-mdefine_line|#define OMAP1510_MCBSP1_BASE&t;0xe1011000
+mdefine_line|#define OMAP1510_MCBSP1_BASE&t;0xe1011800
 DECL|macro|OMAP1510_MCBSP2_BASE
 mdefine_line|#define OMAP1510_MCBSP2_BASE&t;0xfffb1000
 DECL|macro|OMAP1510_MCBSP3_BASE

@@ -7,6 +7,7 @@ macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/dma-mapping.h&gt;
+macro_line|#include &lt;asm/machdep.h&gt;
 macro_line|#include &lt;asm/scatterlist.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/prom.h&gt;
@@ -14,6 +15,9 @@ DECL|macro|PCIBIOS_MIN_IO
 mdefine_line|#define PCIBIOS_MIN_IO&t;&t;0x1000
 DECL|macro|PCIBIOS_MIN_MEM
 mdefine_line|#define PCIBIOS_MIN_MEM&t;&t;0x10000000
+r_struct
+id|pci_dev
+suffix:semicolon
 macro_line|#ifdef CONFIG_PPC_ISERIES
 DECL|macro|pcibios_scan_all_fns
 mdefine_line|#define pcibios_scan_all_fns(a, b)&t;0
@@ -61,9 +65,49 @@ id|irq
 (brace
 multiline_comment|/* We don&squot;t do dynamic PCI IRQ allocation */
 )brace
+DECL|macro|HAVE_ARCH_PCI_GET_LEGACY_IDE_IRQ
+mdefine_line|#define HAVE_ARCH_PCI_GET_LEGACY_IDE_IRQ
+DECL|function|pci_get_legacy_ide_irq
+r_static
+r_inline
+r_int
+id|pci_get_legacy_ide_irq
+c_func
+(paren
 r_struct
 id|pci_dev
+op_star
+id|dev
+comma
+r_int
+id|channel
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|ppc_md.pci_get_legacy_ide_irq
+)paren
+r_return
+id|ppc_md
+dot
+id|pci_get_legacy_ide_irq
+c_func
+(paren
+id|dev
+comma
+id|channel
+)paren
 suffix:semicolon
+r_return
+id|channel
+ques
+c_cond
+l_int|15
+suffix:colon
+l_int|14
+suffix:semicolon
+)brace
 DECL|macro|HAVE_ARCH_PCI_MWI
 mdefine_line|#define HAVE_ARCH_PCI_MWI 1
 DECL|function|pcibios_prep_mwi

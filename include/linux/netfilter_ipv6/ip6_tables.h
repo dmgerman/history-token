@@ -703,6 +703,7 @@ id|IP6T_FUNCTION_MAXNAMELEN
 )braket
 suffix:semicolon
 multiline_comment|/* Return true or false: return FALSE and set *hotdrop = 1 to&n;           force immediate packet drop. */
+multiline_comment|/* Arguments changed since 2.6.9, as this must now handle&n;&t;   non-linear skb, using skb_header_pointer and&n;&t;   skb_ip_make_writable. */
 DECL|member|match
 r_int
 (paren
@@ -736,13 +737,9 @@ comma
 r_int
 id|offset
 comma
-r_const
-r_void
-op_star
-id|hdr
-comma
-id|u_int16_t
-id|datalen
+r_int
+r_int
+id|protoff
 comma
 r_int
 op_star
@@ -826,7 +823,7 @@ id|name
 id|IP6T_FUNCTION_MAXNAMELEN
 )braket
 suffix:semicolon
-multiline_comment|/* Returns verdict. */
+multiline_comment|/* Returns verdict. Argument order changed since 2.6.9, as this&n;&t;   must now handle non-linear skbs, using skb_copy_bits and&n;&t;   skb_ip_make_writable. */
 DECL|member|target
 r_int
 r_int
@@ -841,10 +838,6 @@ op_star
 op_star
 id|pskb
 comma
-r_int
-r_int
-id|hooknum
-comma
 r_const
 r_struct
 id|net_device
@@ -856,6 +849,10 @@ r_struct
 id|net_device
 op_star
 id|out
+comma
+r_int
+r_int
+id|hooknum
 comma
 r_const
 r_void

@@ -1510,6 +1510,24 @@ id|cis
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/*&n;&t; * If there was a fake CIS, destroy that as well.&n;&t; */
+r_if
+c_cond
+(paren
+id|s-&gt;fake_cis
+)paren
+(brace
+id|kfree
+c_func
+(paren
+id|s-&gt;fake_cis
+)paren
+suffix:semicolon
+id|s-&gt;fake_cis
+op_assign
+l_int|NULL
+suffix:semicolon
+)brace
 )brace
 multiline_comment|/*======================================================================&n;&n;    This verifies if the CIS of a card matches what is in the CIS&n;    cache.&n;    &n;======================================================================*/
 DECL|function|verify_cis_cache

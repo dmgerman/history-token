@@ -6,6 +6,7 @@ macro_line|#include &lt;linux/smp.h&gt;
 macro_line|#include &lt;linux/cpu.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/sysctl.h&gt;
+macro_line|#include &lt;linux/smp.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/processor.h&gt;
 macro_line|#include &lt;asm/mmu.h&gt;
@@ -1088,13 +1089,17 @@ suffix:semicolon
 )brace
 )brace
 macro_line|#endif /* CONFIG_PPC_PSERIES */
-macro_line|#ifdef CONFIG_PPC_PMAC
+macro_line|#ifndef CONFIG_PPC_ISERIES
 r_if
 c_cond
 (paren
 id|systemcfg-&gt;platform
 op_eq
 id|PLATFORM_POWERMAC
+op_logical_or
+id|systemcfg-&gt;platform
+op_eq
+id|PLATFORM_MAPLE
 )paren
 (brace
 id|printk
@@ -1109,7 +1114,7 @@ op_assign
 id|native_idle
 suffix:semicolon
 )brace
-macro_line|#endif /* CONFIG_PPC_PMAC */
+macro_line|#endif /* CONFIG_PPC_ISERIES */
 r_return
 l_int|1
 suffix:semicolon

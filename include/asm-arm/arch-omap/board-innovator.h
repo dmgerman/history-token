@@ -56,21 +56,12 @@ id|reg
 suffix:semicolon
 macro_line|#endif
 macro_line|#endif /* CONFIG_ARCH_OMAP1510 */
-macro_line|#if defined (CONFIG_ARCH_OMAP1610)
+macro_line|#if defined (CONFIG_ARCH_OMAP16XX)
 multiline_comment|/* At OMAP1610 Innovator the Ethernet is directly connected to CS1 */
-DECL|macro|OMAP1610_ETHR_BASE
-mdefine_line|#define OMAP1610_ETHR_BASE&t;&t;0xE8000000
-DECL|macro|OMAP1610_ETHR_SIZE
-mdefine_line|#define OMAP1610_ETHR_SIZE&t;&t;SZ_4K
-DECL|macro|OMAP1610_ETHR_START
-mdefine_line|#define OMAP1610_ETHR_START&t;&t;0x04000000
-multiline_comment|/* Intel STRATA NOR flash at CS3 */
-DECL|macro|OMAP1610_NOR_FLASH_BASE
-mdefine_line|#define OMAP1610_NOR_FLASH_BASE&t;&t;0xD8000000
-DECL|macro|OMAP1610_NOR_FLASH_SIZE
-mdefine_line|#define OMAP1610_NOR_FLASH_SIZE&t;&t;SZ_32M
-DECL|macro|OMAP1610_NOR_FLASH_START
-mdefine_line|#define OMAP1610_NOR_FLASH_START&t;0x0C000000
+DECL|macro|INNOVATOR1610_ETHR_START
+mdefine_line|#define INNOVATOR1610_ETHR_START&t;0x04000000
+DECL|macro|INNOVATOR1610_ETHR_SIZE
+mdefine_line|#define INNOVATOR1610_ETHR_SIZE&t;&t;SZ_4K
 macro_line|#endif /* CONFIG_ARCH_OMAP1610 */
 macro_line|#endif /* __ASM_ARCH_OMAP_INNOVATOR_H */
 eof

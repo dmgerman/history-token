@@ -681,6 +681,7 @@ id|options
 suffix:semicolon
 DECL|member|shared_irq
 r_int
+r_int
 id|shared_irq
 suffix:colon
 l_int|1

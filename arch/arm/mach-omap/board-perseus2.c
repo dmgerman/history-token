@@ -10,6 +10,7 @@ macro_line|#include &lt;asm/arch/clocks.h&gt;
 macro_line|#include &lt;asm/arch/gpio.h&gt;
 macro_line|#include &lt;asm/arch/mux.h&gt;
 macro_line|#include &lt;asm/arch/fpga.h&gt;
+macro_line|#include &lt;asm/arch/serial.h&gt;
 macro_line|#include &quot;common.h&quot;
 DECL|function|omap_perseus2_init_irq
 r_void
@@ -81,6 +82,23 @@ id|IORESOURCE_IRQ
 comma
 )brace
 comma
+)brace
+suffix:semicolon
+DECL|variable|p2_serial_ports
+r_static
+r_int
+id|__initdata
+id|p2_serial_ports
+(braket
+id|OMAP_MAX_NR_PORTS
+)braket
+op_assign
+(brace
+l_int|1
+comma
+l_int|1
+comma
+l_int|0
 )brace
 suffix:semicolon
 DECL|variable|smc91x_device
@@ -274,6 +292,12 @@ op_amp
 l_int|0x1FFFFFFF
 comma
 id|OMAP730_IO_CONF_9
+)paren
+suffix:semicolon
+id|omap_serial_init
+c_func
+(paren
+id|p2_serial_ports
 )paren
 suffix:semicolon
 )brace

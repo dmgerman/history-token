@@ -140,6 +140,7 @@ suffix:semicolon
 DECL|variable|buf
 DECL|variable|bufptr
 r_static
+r_int
 r_char
 id|buf
 (braket
@@ -153,6 +154,7 @@ id|buf
 suffix:semicolon
 DECL|variable|input_buf
 r_static
+r_int
 r_char
 id|input_buf
 (braket

@@ -9,6 +9,8 @@ macro_line|#include &lt;asm/mach/map.h&gt;
 macro_line|#include &lt;asm/arch/clocks.h&gt;
 macro_line|#include &lt;asm/arch/gpio.h&gt;
 macro_line|#include &lt;asm/arch/fpga.h&gt;
+macro_line|#include &lt;asm/arch/usb.h&gt;
+macro_line|#include &lt;asm/arch/serial.h&gt;
 macro_line|#include &quot;common.h&quot;
 DECL|variable|__initdata
 r_static
@@ -21,16 +23,6 @@ id|__initdata
 op_assign
 (brace
 (brace
-id|OMAP_OSK_ETHR_BASE
-comma
-id|OMAP_OSK_ETHR_START
-comma
-id|OMAP_OSK_ETHR_SIZE
-comma
-id|MT_DEVICE
-)brace
-comma
-(brace
 id|OMAP_OSK_NOR_FLASH_BASE
 comma
 id|OMAP_OSK_NOR_FLASH_START
@@ -40,6 +32,23 @@ comma
 id|MT_DEVICE
 )brace
 comma
+)brace
+suffix:semicolon
+DECL|variable|osk_serial_ports
+r_static
+r_int
+id|__initdata
+id|osk_serial_ports
+(braket
+id|OMAP_MAX_NR_PORTS
+)braket
+op_assign
+(brace
+l_int|1
+comma
+l_int|0
+comma
+l_int|0
 )brace
 suffix:semicolon
 DECL|variable|osk5912_smc91x_resources
@@ -164,6 +173,53 @@ c_func
 )paren
 suffix:semicolon
 )brace
+DECL|variable|__initdata
+r_static
+r_struct
+id|omap_usb_config
+id|osk_usb_config
+id|__initdata
+op_assign
+(brace
+multiline_comment|/* has usb host and device, but no Mini-AB port */
+dot
+id|register_host
+op_assign
+l_int|1
+comma
+dot
+id|hmc_mode
+op_assign
+l_int|16
+comma
+dot
+id|pins
+(braket
+l_int|0
+)braket
+op_assign
+l_int|2
+comma
+)brace
+suffix:semicolon
+DECL|variable|osk_config
+r_static
+r_struct
+id|omap_board_config_kernel
+id|osk_config
+(braket
+)braket
+op_assign
+(brace
+(brace
+id|OMAP_TAG_USB
+comma
+op_amp
+id|osk_usb_config
+)brace
+comma
+)brace
+suffix:semicolon
 DECL|function|osk_init
 r_static
 r_void
@@ -184,6 +240,18 @@ c_func
 (paren
 id|osk5912_devices
 )paren
+)paren
+suffix:semicolon
+id|omap_board_config
+op_assign
+id|osk_config
+suffix:semicolon
+id|omap_board_config_size
+op_assign
+id|ARRAY_SIZE
+c_func
+(paren
+id|osk_config
 )paren
 suffix:semicolon
 )brace
@@ -212,6 +280,12 @@ c_func
 (paren
 id|osk5912_io_desc
 )paren
+)paren
+suffix:semicolon
+id|omap_serial_init
+c_func
+(paren
+id|osk_serial_ports
 )paren
 suffix:semicolon
 )brace

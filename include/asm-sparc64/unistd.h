@@ -535,8 +535,7 @@ DECL|macro|__NR_mq_getsetattr
 mdefine_line|#define __NR_mq_getsetattr&t;278
 DECL|macro|__NR_waitid
 mdefine_line|#define __NR_waitid&t;&t;279
-DECL|macro|__NR_sys_setaltroot
-mdefine_line|#define __NR_sys_setaltroot&t;280
+multiline_comment|/*#define __NR_sys_setaltroot&t;280 available (was setaltroot) */
 DECL|macro|__NR_add_key
 mdefine_line|#define __NR_add_key&t;&t;281
 DECL|macro|__NR_request_key

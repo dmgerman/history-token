@@ -2194,13 +2194,17 @@ op_logical_neg
 id|new_transport-&gt;active
 )paren
 (brace
-multiline_comment|/* If the chunk is Heartbeat, send it to&n;&t;&t;&t; * chunk-&gt;transport, even it&squot;s inactive.&n;&t;&t;&t; */
+multiline_comment|/* If the chunk is Heartbeat or Heartbeat Ack, &n;&t;&t;&t; * send it to chunk-&gt;transport, even if it&squot;s &n;&t;&t;&t; * inactive.&n;&t;&t;&t; *&n;&t;&t;&t; * 3.3.6 Heartbeat Acknowledgement:&n;&t;&t;&t; * ...  &n;&t;&t;&t; * A HEARTBEAT ACK is always sent to the source IP&n;&t;&t;&t; * address of the IP datagram containing the&n;&t;&t;&t; * HEARTBEAT chunk to which this ack is responding.&n;&t;&t;&t; * ...  &n;&t;&t;&t; */
 r_if
 c_cond
 (paren
 id|chunk-&gt;chunk_hdr-&gt;type
 op_ne
 id|SCTP_CID_HEARTBEAT
+op_logical_and
+id|chunk-&gt;chunk_hdr-&gt;type
+op_ne
+id|SCTP_CID_HEARTBEAT_ACK
 )paren
 id|new_transport
 op_assign

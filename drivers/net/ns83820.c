@@ -1,10 +1,12 @@
 DECL|macro|_VERSION
 mdefine_line|#define _VERSION &quot;0.20&quot;
-multiline_comment|/* ns83820.c by Benjamin LaHaise with contributions.&n; *&n; * Questions/comments/discussion to linux-ns83820@kvack.org.&n; *&n; * $Revision: 1.34.2.23 $&n; *&n; * Copyright 2001 Benjamin LaHaise.&n; * Copyright 2001, 2002 Red Hat.&n; *&n; * Mmmm, chocolate vanilla mocha...&n; *&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; *&n; *&n; * ChangeLog&n; * =========&n; *&t;20010414&t;0.1 - created&n; *&t;20010622&t;0.2 - basic rx and tx.&n; *&t;20010711&t;0.3 - added duplex and link state detection support.&n; *&t;20010713&t;0.4 - zero copy, no hangs.&n; *&t;&t;&t;0.5 - 64 bit dma support (davem will hate me for this)&n; *&t;&t;&t;    - disable jumbo frames to avoid tx hangs&n; *&t;&t;&t;    - work around tx deadlocks on my 1.02 card via&n; *&t;&t;&t;      fiddling with TXCFG&n; *&t;20010810&t;0.6 - use pci dma api for ringbuffers, work on ia64&n; *&t;20010816&t;0.7 - misc cleanups&n; *&t;20010826&t;0.8 - fix critical zero copy bugs&n; *&t;&t;&t;0.9 - internal experiment&n; *&t;20010827&t;0.10 - fix ia64 unaligned access.&n; *&t;20010906&t;0.11 - accept all packets with checksum errors as&n; *&t;&t;&t;       otherwise fragments get lost&n; *&t;&t;&t;     - fix &gt;&gt; 32 bugs&n; *&t;&t;&t;0.12 - add statistics counters&n; *&t;&t;&t;     - add allmulti/promisc support&n; *&t;20011009&t;0.13 - hotplug support, other smaller pci api cleanups&n; *&t;20011204&t;0.13a - optical transceiver support added&n; *&t;&t;&t;&t;by Michael Clark &lt;michael@metaparadigm.com&gt;&n; *&t;20011205&t;0.13b - call register_netdev earlier in initialization&n; *&t;&t;&t;&t;suppress duplicate link status messages&n; *&t;20011117 &t;0.14 - ethtool GDRVINFO, GLINK support from jgarzik&n; *&t;20011204 &t;0.15&t;get ppc (big endian) working&n; *&t;20011218&t;0.16&t;various cleanups&n; *&t;20020310&t;0.17&t;speedups&n; *&t;20020610&t;0.18 -&t;actually use the pci dma api for highmem&n; *&t;&t;&t;     -&t;remove pci latency register fiddling&n; *&t;&t;&t;0.19 -&t;better bist support&n; *&t;&t;&t;     -&t;add ihr and reset_phy parameters&n; *&t;&t;&t;     -&t;gmii bus probing&n; *&t;&t;&t;     -&t;fix missed txok introduced during performance&n; *&t;&t;&t;&t;tuning&n; *&t;&t;&t;0.20 -&t;fix stupid RFEN thinko.  i am such a smurf.&n; *&n; * Driver Overview&n; * ===============&n; *&n; * This driver was originally written for the National Semiconductor&n; * 83820 chip, a 10/100/1000 Mbps 64 bit PCI ethernet NIC.  Hopefully&n; * this code will turn out to be a) clean, b) correct, and c) fast.&n; * With that in mind, I&squot;m aiming to split the code up as much as&n; * reasonably possible.  At present there are X major sections that&n; * break down into a) packet receive, b) packet transmit, c) link&n; * management, d) initialization and configuration.  Where possible,&n; * these code paths are designed to run in parallel.&n; *&n; * This driver has been tested and found to work with the following&n; * cards (in no particular order):&n; *&n; *&t;Cameo&t;&t;SOHO-GA2000T&t;SOHO-GA2500T&n; *&t;D-Link&t;&t;DGE-500T&n; *&t;PureData&t;PDP8023Z-TG&n; *&t;SMC&t;&t;SMC9452TX&t;SMC9462TX&n; *&t;Netgear&t;&t;GA621&n; *&n; * Special thanks to SMC for providing hardware to test this driver on.&n; *&n; * Reports of success or failure would be greatly appreciated.&n; */
+multiline_comment|/* ns83820.c by Benjamin LaHaise with contributions.&n; *&n; * Questions/comments/discussion to linux-ns83820@kvack.org.&n; *&n; * $Revision: 1.34.2.23 $&n; *&n; * Copyright 2001 Benjamin LaHaise.&n; * Copyright 2001, 2002 Red Hat.&n; *&n; * Mmmm, chocolate vanilla mocha...&n; *&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; *&n; *&n; * ChangeLog&n; * =========&n; *&t;20010414&t;0.1 - created&n; *&t;20010622&t;0.2 - basic rx and tx.&n; *&t;20010711&t;0.3 - added duplex and link state detection support.&n; *&t;20010713&t;0.4 - zero copy, no hangs.&n; *&t;&t;&t;0.5 - 64 bit dma support (davem will hate me for this)&n; *&t;&t;&t;    - disable jumbo frames to avoid tx hangs&n; *&t;&t;&t;    - work around tx deadlocks on my 1.02 card via&n; *&t;&t;&t;      fiddling with TXCFG&n; *&t;20010810&t;0.6 - use pci dma api for ringbuffers, work on ia64&n; *&t;20010816&t;0.7 - misc cleanups&n; *&t;20010826&t;0.8 - fix critical zero copy bugs&n; *&t;&t;&t;0.9 - internal experiment&n; *&t;20010827&t;0.10 - fix ia64 unaligned access.&n; *&t;20010906&t;0.11 - accept all packets with checksum errors as&n; *&t;&t;&t;       otherwise fragments get lost&n; *&t;&t;&t;     - fix &gt;&gt; 32 bugs&n; *&t;&t;&t;0.12 - add statistics counters&n; *&t;&t;&t;     - add allmulti/promisc support&n; *&t;20011009&t;0.13 - hotplug support, other smaller pci api cleanups&n; *&t;20011204&t;0.13a - optical transceiver support added&n; *&t;&t;&t;&t;by Michael Clark &lt;michael@metaparadigm.com&gt;&n; *&t;20011205&t;0.13b - call register_netdev earlier in initialization&n; *&t;&t;&t;&t;suppress duplicate link status messages&n; *&t;20011117 &t;0.14 - ethtool GDRVINFO, GLINK support from jgarzik&n; *&t;20011204 &t;0.15&t;get ppc (big endian) working&n; *&t;20011218&t;0.16&t;various cleanups&n; *&t;20020310&t;0.17&t;speedups&n; *&t;20020610&t;0.18 -&t;actually use the pci dma api for highmem&n; *&t;&t;&t;     -&t;remove pci latency register fiddling&n; *&t;&t;&t;0.19 -&t;better bist support&n; *&t;&t;&t;     -&t;add ihr and reset_phy parameters&n; *&t;&t;&t;     -&t;gmii bus probing&n; *&t;&t;&t;     -&t;fix missed txok introduced during performance&n; *&t;&t;&t;&t;tuning&n; *&t;&t;&t;0.20 -&t;fix stupid RFEN thinko.  i am such a smurf.&n; *&n; *&t;20040828&t;0.21 -&t;add hardware vlan accleration&n; *&t;&t;&t;&t;by Neil Horman &lt;nhorman@redhat.com&gt;&n; * Driver Overview&n; * ===============&n; *&n; * This driver was originally written for the National Semiconductor&n; * 83820 chip, a 10/100/1000 Mbps 64 bit PCI ethernet NIC.  Hopefully&n; * this code will turn out to be a) clean, b) correct, and c) fast.&n; * With that in mind, I&squot;m aiming to split the code up as much as&n; * reasonably possible.  At present there are X major sections that&n; * break down into a) packet receive, b) packet transmit, c) link&n; * management, d) initialization and configuration.  Where possible,&n; * these code paths are designed to run in parallel.&n; *&n; * This driver has been tested and found to work with the following&n; * cards (in no particular order):&n; *&n; *&t;Cameo&t;&t;SOHO-GA2000T&t;SOHO-GA2500T&n; *&t;D-Link&t;&t;DGE-500T&n; *&t;PureData&t;PDP8023Z-TG&n; *&t;SMC&t;&t;SMC9452TX&t;SMC9462TX&n; *&t;Netgear&t;&t;GA621&n; *&n; * Special thanks to SMC for providing hardware to test this driver on.&n; *&n; * Reports of success or failure would be greatly appreciated.&n; */
 singleline_comment|//#define dprintk&t;&t;printk
 DECL|macro|dprintk
 mdefine_line|#define dprintk(x...)&t;&t;do { } while (0)
+macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
+macro_line|#include &lt;linux/moduleparam.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/netdevice.h&gt;
@@ -20,12 +22,13 @@ macro_line|#include &lt;linux/compiler.h&gt;
 macro_line|#include &lt;linux/prefetch.h&gt;
 macro_line|#include &lt;linux/ethtool.h&gt;
 macro_line|#include &lt;linux/timer.h&gt;
+macro_line|#include &lt;linux/if_vlan.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 DECL|macro|DRV_NAME
 mdefine_line|#define DRV_NAME &quot;ns83820&quot;
-multiline_comment|/* Global parameters.  See MODULE_PARM near the bottom. */
+multiline_comment|/* Global parameters.  See module_param near the bottom. */
 DECL|variable|ihr
 r_static
 r_int
@@ -71,6 +74,10 @@ macro_line|#endif
 multiline_comment|/* tunables */
 DECL|macro|RX_BUF_SIZE
 mdefine_line|#define RX_BUF_SIZE&t;1500&t;/* 8192 */
+macro_line|#if defined(CONFIG_VLAN_8021Q) || defined(CONFIG_VLAN_8021Q_MODULE)
+DECL|macro|NS83820_VLAN_ACCEL_SUPPORT
+mdefine_line|#define NS83820_VLAN_ACCEL_SUPPORT
+macro_line|#endif
 multiline_comment|/* Must not exceed ~65000. */
 DECL|macro|NR_RX_DESC
 mdefine_line|#define NR_RX_DESC&t;64
@@ -286,6 +293,10 @@ DECL|macro|EXTSTS_TCPPKT
 mdefine_line|#define EXTSTS_TCPPKT&t;0x00080000
 DECL|macro|EXTSTS_IPPKT
 mdefine_line|#define EXTSTS_IPPKT&t;0x00020000
+DECL|macro|EXTSTS_VPKT
+mdefine_line|#define EXTSTS_VPKT&t;0x00010000
+DECL|macro|EXTSTS_VTG_MASK
+mdefine_line|#define EXTSTS_VTG_MASK&t;0x0000ffff
 DECL|macro|SPDSTS_POLARITY
 mdefine_line|#define SPDSTS_POLARITY&t;(CFG_SPDSTS1 | CFG_SPDSTS0 | CFG_DUPSTS | (lnksts ? CFG_LNKSTS : 0))
 DECL|macro|MIBC_MIBS
@@ -513,6 +524,8 @@ DECL|macro|CMDSTS_ERR
 mdefine_line|#define CMDSTS_ERR&t;0x10000000
 DECL|macro|CMDSTS_OK
 mdefine_line|#define CMDSTS_OK&t;0x08000000
+DECL|macro|CMDSTS_RUNT
+mdefine_line|#define CMDSTS_RUNT&t;0x00200000
 DECL|macro|CMDSTS_LEN_MASK
 mdefine_line|#define CMDSTS_LEN_MASK&t;0x0000ffff
 DECL|macro|CMDSTS_DEST_MASK
@@ -592,6 +605,14 @@ id|pci_dev
 op_star
 id|pci_dev
 suffix:semicolon
+macro_line|#ifdef NS83820_VLAN_ACCEL_SUPPORT
+DECL|member|vlgrp
+r_struct
+id|vlan_group
+op_star
+id|vlgrp
+suffix:semicolon
+macro_line|#endif
 DECL|member|rx_info
 r_struct
 id|rx_info
@@ -825,6 +846,137 @@ suffix:semicolon
 singleline_comment|//free = (tx_done_idx + NR_TX_DESC-2 - free_idx) % NR_TX_DESC
 DECL|macro|start_tx_okay
 mdefine_line|#define start_tx_okay(dev)&t;&bslash;&n;&t;(((NR_TX_DESC-2 + dev-&gt;tx_done_idx - dev-&gt;tx_free_idx) % NR_TX_DESC) &gt; MIN_TX_DESC_FREE)
+macro_line|#ifdef NS83820_VLAN_ACCEL_SUPPORT 
+DECL|function|ns83820_vlan_rx_register
+r_static
+r_void
+id|ns83820_vlan_rx_register
+c_func
+(paren
+r_struct
+id|net_device
+op_star
+id|ndev
+comma
+r_struct
+id|vlan_group
+op_star
+id|grp
+)paren
+(brace
+r_struct
+id|ns83820
+op_star
+id|dev
+op_assign
+id|PRIV
+c_func
+(paren
+id|ndev
+)paren
+suffix:semicolon
+id|spin_lock_irq
+c_func
+(paren
+op_amp
+id|dev-&gt;misc_lock
+)paren
+suffix:semicolon
+id|spin_lock
+c_func
+(paren
+op_amp
+id|dev-&gt;tx_lock
+)paren
+suffix:semicolon
+id|dev-&gt;vlgrp
+op_assign
+id|grp
+suffix:semicolon
+id|spin_unlock
+c_func
+(paren
+op_amp
+id|dev-&gt;tx_lock
+)paren
+suffix:semicolon
+id|spin_unlock_irq
+c_func
+(paren
+op_amp
+id|dev-&gt;misc_lock
+)paren
+suffix:semicolon
+)brace
+DECL|function|ns83820_vlan_rx_kill_vid
+r_static
+r_void
+id|ns83820_vlan_rx_kill_vid
+c_func
+(paren
+r_struct
+id|net_device
+op_star
+id|ndev
+comma
+r_int
+r_int
+id|vid
+)paren
+(brace
+r_struct
+id|ns83820
+op_star
+id|dev
+op_assign
+id|PRIV
+c_func
+(paren
+id|ndev
+)paren
+suffix:semicolon
+id|spin_lock_irq
+c_func
+(paren
+op_amp
+id|dev-&gt;misc_lock
+)paren
+suffix:semicolon
+id|spin_lock
+c_func
+(paren
+op_amp
+id|dev-&gt;tx_lock
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|dev-&gt;vlgrp
+)paren
+id|dev-&gt;vlgrp-&gt;vlan_devices
+(braket
+id|vid
+)braket
+op_assign
+l_int|NULL
+suffix:semicolon
+id|spin_unlock
+c_func
+(paren
+op_amp
+id|dev-&gt;tx_lock
+)paren
+suffix:semicolon
+id|spin_unlock_irq
+c_func
+(paren
+op_amp
+id|dev-&gt;misc_lock
+)paren
+suffix:semicolon
+)brace
+macro_line|#endif
 multiline_comment|/* Packet Receiver&n; *&n; * The hardware supports linked lists of receive descriptors for&n; * which ownership is transfered back and forth by means of an&n; * ownership bit.  While the hardware does support the use of a&n; * ring for receive descriptors, we only make use of a chain in&n; * an attempt to reduce bus traffic under heavy load scenarios.&n; * This will also make bugs a bit more obvious.  The current code&n; * only makes use of a single rx chain; I hope to implement&n; * priority based rx for version 1.0.  Goal: even under overload&n; * conditions, still route realtime traffic with as low jitter as&n; * possible.&n; */
 DECL|function|build_rx_desc
 r_static
@@ -2606,6 +2758,11 @@ suffix:semicolon
 r_int
 id|next_rx
 suffix:semicolon
+r_int
+id|rx_rc
+comma
+id|len
+suffix:semicolon
 id|u32
 id|cmdsts
 comma
@@ -2847,6 +3004,41 @@ comma
 id|PCI_DMA_FROMDEVICE
 )paren
 suffix:semicolon
+id|len
+op_assign
+id|cmdsts
+op_amp
+id|CMDSTS_LEN_MASK
+suffix:semicolon
+macro_line|#ifdef NS83820_VLAN_ACCEL_SUPPORT
+multiline_comment|/* NH: As was mentioned below, this chip is kinda&n;&t;&t; * brain dead about vlan tag stripping.  Frames&n;&t;&t; * that are 64 bytes with a vlan header appended&n;&t;&t; * like arp frames, or pings, are flagged as Runts&n;&t;&t; * when the tag is stripped and hardware.  This&n;&t;&t; * also means that the OK bit in the descriptor &n;&t;&t; * is cleared when the frame comes in so we have&n;&t;&t; * to do a specific length check here to make sure&n;&t;&t; * the frame would have been ok, had we not stripped&n;&t;&t; * the tag.&n;&t;&t; */
+r_if
+c_cond
+(paren
+id|likely
+c_func
+(paren
+(paren
+id|CMDSTS_OK
+op_amp
+id|cmdsts
+)paren
+op_logical_or
+(paren
+(paren
+id|cmdsts
+op_amp
+id|CMDSTS_RUNT
+)paren
+op_logical_and
+id|len
+op_ge
+l_int|56
+)paren
+)paren
+)paren
+(brace
+macro_line|#else
 r_if
 c_cond
 (paren
@@ -2859,13 +3051,7 @@ id|cmdsts
 )paren
 )paren
 (brace
-r_int
-id|len
-op_assign
-id|cmdsts
-op_amp
-l_int|0xffff
-suffix:semicolon
+macro_line|#endif
 id|skb_put
 c_func
 (paren
@@ -2943,16 +3129,69 @@ comma
 id|ndev
 )paren
 suffix:semicolon
+macro_line|#ifdef NS83820_VLAN_ACCEL_SUPPORT 
 r_if
 c_cond
 (paren
-id|NET_RX_DROP
-op_eq
+id|extsts
+op_amp
+id|EXTSTS_VPKT
+)paren
+(brace
+r_int
+r_int
+id|tag
+suffix:semicolon
+id|tag
+op_assign
+id|ntohs
+c_func
+(paren
+id|extsts
+op_amp
+id|EXTSTS_VTG_MASK
+)paren
+suffix:semicolon
+id|rx_rc
+op_assign
+id|vlan_hwaccel_rx
+c_func
+(paren
+id|skb
+comma
+id|dev-&gt;vlgrp
+comma
+id|tag
+)paren
+suffix:semicolon
+)brace
+r_else
+(brace
+id|rx_rc
+op_assign
 id|netif_rx
 c_func
 (paren
 id|skb
 )paren
+suffix:semicolon
+)brace
+macro_line|#else
+id|rx_rc
+op_assign
+id|netif_rx
+c_func
+(paren
+id|skb
+)paren
+suffix:semicolon
+macro_line|#endif
+r_if
+c_cond
+(paren
+id|NET_RX_DROP
+op_eq
+id|rx_rc
 )paren
 (brace
 id|netdev_mangle_me_harder_failed
@@ -3941,6 +4180,41 @@ op_or_assign
 id|EXTSTS_UDPPKT
 suffix:semicolon
 )brace
+macro_line|#ifdef NS83820_VLAN_ACCEL_SUPPORT
+r_if
+c_cond
+(paren
+id|vlan_tx_tag_present
+c_func
+(paren
+id|skb
+)paren
+)paren
+(brace
+multiline_comment|/* fetch the vlan tag info out of the&n;&t;&t; * ancilliary data if the vlan code&n;&t;&t; * is using hw vlan acceleration&n;&t;&t; */
+r_int
+id|tag
+op_assign
+id|vlan_tx_tag_get
+c_func
+(paren
+id|skb
+)paren
+suffix:semicolon
+id|extsts
+op_or_assign
+(paren
+id|EXTSTS_VPKT
+op_or
+id|htons
+c_func
+(paren
+id|tag
+)paren
+)paren
+suffix:semicolon
+)brace
+macro_line|#endif
 id|len
 op_assign
 id|skb-&gt;len
@@ -8277,24 +8551,34 @@ id|PQCR
 )paren
 suffix:semicolon
 multiline_comment|/* Enable IP checksum validation and detetion of VLAN headers.&n;&t; * Note: do not set the reject options as at least the 0x102&n;&t; * revision of the chip does not properly accept IP fragments&n;&t; * at least for UDP.&n;&t; */
-multiline_comment|/* Ramit : Be sure to turn on RXCFG_ARP if VLAN&squot;s are enabled, since&n;&t; * the MAC it calculates the packetsize AFTER stripping the VLAN&n;&t; * header, and if a VLAN Tagged packet of 64 bytes is received (like&n;&t; * a ping with a VLAN header) then the card, strips the 4 byte VLAN&n;&t; * tag and then checks the packet size, so if RXCFG_ARP is not enabled,&n;&t; * it discrards it!.  These guys......&n;&t; */
+multiline_comment|/* Ramit : Be sure to turn on RXCFG_ARP if VLAN&squot;s are enabled, since&n;&t; * the MAC it calculates the packetsize AFTER stripping the VLAN&n;&t; * header, and if a VLAN Tagged packet of 64 bytes is received (like&n;&t; * a ping with a VLAN header) then the card, strips the 4 byte VLAN&n;&t; * tag and then checks the packet size, so if RXCFG_ARP is not enabled,&n;&t; * it discrards it!.  These guys......&n;&t; * also turn on tag stripping if hardware acceleration is enabled&n;&t; */
+macro_line|#ifdef NS83820_VLAN_ACCEL_SUPPORT
+DECL|macro|VRCR_INIT_VALUE
+mdefine_line|#define VRCR_INIT_VALUE (VRCR_IPEN|VRCR_VTDEN|VRCR_VTREN) 
+macro_line|#else
+mdefine_line|#define VRCR_INIT_VALUE (VRCR_IPEN|VRCR_VTDEN)
+macro_line|#endif
 id|writel
 c_func
 (paren
-id|VRCR_IPEN
-op_or
-id|VRCR_VTDEN
+id|VRCR_INIT_VALUE
 comma
 id|dev-&gt;base
 op_plus
 id|VRCR
 )paren
 suffix:semicolon
-multiline_comment|/* Enable per-packet TCP/UDP/IP checksumming */
+multiline_comment|/* Enable per-packet TCP/UDP/IP checksumming&n;&t; * and per packet vlan tag insertion if&n;&t; * vlan hardware acceleration is enabled&n;&t; */
+macro_line|#ifdef NS83820_VLAN_ACCEL_SUPPORT
+DECL|macro|VTCR_INIT_VALUE
+mdefine_line|#define VTCR_INIT_VALUE (VTCR_PPCHK|VTCR_VPPTI)
+macro_line|#else
+mdefine_line|#define VTCR_INIT_VALUE VTCR_PPCHK
+macro_line|#endif
 id|writel
 c_func
 (paren
-id|VTCR_PPCHK
+id|VTCR_INIT_VALUE
 comma
 id|dev-&gt;base
 op_plus
@@ -8357,6 +8641,23 @@ id|ndev-&gt;features
 op_or_assign
 id|NETIF_F_IP_CSUM
 suffix:semicolon
+macro_line|#ifdef NS83820_VLAN_ACCEL_SUPPORT
+multiline_comment|/* We also support hardware vlan acceleration */
+id|ndev-&gt;features
+op_or_assign
+id|NETIF_F_HW_VLAN_TX
+op_or
+id|NETIF_F_HW_VLAN_RX
+suffix:semicolon
+id|ndev-&gt;vlan_rx_register
+op_assign
+id|ns83820_vlan_rx_register
+suffix:semicolon
+id|ndev-&gt;vlan_rx_kill_vid
+op_assign
+id|ns83820_vlan_rx_kill_vid
+suffix:semicolon
+macro_line|#endif
 r_if
 c_cond
 (paren
@@ -8915,12 +9216,14 @@ comma
 id|ns83820_pci_tbl
 )paren
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|lnksts
 comma
-l_string|&quot;i&quot;
+r_int
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -8931,12 +9234,14 @@ comma
 l_string|&quot;Polarity of LNKSTS bit&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|ihr
 comma
-l_string|&quot;i&quot;
+r_int
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -8947,12 +9252,14 @@ comma
 l_string|&quot;Time in 100 us increments to delay interrupts (range 0-127)&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|reset_phy
 comma
-l_string|&quot;i&quot;
+r_int
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC

@@ -15,7 +15,6 @@ macro_line|#include &lt;asm/coldfire.h&gt;
 macro_line|#include &lt;asm/mcftimer.h&gt;
 macro_line|#include &lt;asm/mcfsim.h&gt;
 macro_line|#include &lt;asm/mcfdma.h&gt;
-macro_line|#include &lt;asm/delay.h&gt;
 macro_line|#include &lt;asm/mcfwdebug.h&gt;
 multiline_comment|/***************************************************************************/
 r_void

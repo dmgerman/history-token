@@ -3,6 +3,7 @@ macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
+macro_line|#include &lt;linux/syscalls.h&gt;
 macro_line|#include &lt;linux/keyctl.h&gt;
 macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;linux/err.h&gt;
@@ -883,7 +884,6 @@ multiline_comment|/* end sys_request_key() */
 multiline_comment|/*****************************************************************************/
 multiline_comment|/*&n; * get the ID of the specified process keyring&n; * - the keyring must have search permission to be found&n; * - implements keyctl(KEYCTL_GET_KEYRING_ID)&n; */
 DECL|function|keyctl_get_keyring_ID
-r_static
 r_int
 id|keyctl_get_keyring_ID
 c_func
@@ -959,7 +959,6 @@ multiline_comment|/* end keyctl_get_keyring_ID() */
 multiline_comment|/*****************************************************************************/
 multiline_comment|/*&n; * join the session keyring&n; * - implements keyctl(KEYCTL_JOIN_SESSION_KEYRING)&n; */
 DECL|function|keyctl_join_session_keyring
-r_static
 r_int
 id|keyctl_join_session_keyring
 c_func
@@ -1114,7 +1113,6 @@ multiline_comment|/* end keyctl_join_session_keyring() */
 multiline_comment|/*****************************************************************************/
 multiline_comment|/*&n; * update a key&squot;s data payload&n; * - the key must be writable&n; * - implements keyctl(KEYCTL_UPDATE)&n; */
 DECL|function|keyctl_update_key
-r_static
 r_int
 id|keyctl_update_key
 c_func
@@ -1292,7 +1290,6 @@ multiline_comment|/* end keyctl_update_key() */
 multiline_comment|/*****************************************************************************/
 multiline_comment|/*&n; * revoke a key&n; * - the key must be writable&n; * - implements keyctl(KEYCTL_REVOKE)&n; */
 DECL|function|keyctl_revoke_key
-r_static
 r_int
 id|keyctl_revoke_key
 c_func
@@ -1371,7 +1368,6 @@ multiline_comment|/* end keyctl_revoke_key() */
 multiline_comment|/*****************************************************************************/
 multiline_comment|/*&n; * clear the specified process keyring&n; * - the keyring must be writable&n; * - implements keyctl(KEYCTL_CLEAR)&n; */
 DECL|function|keyctl_keyring_clear
-r_static
 r_int
 id|keyctl_keyring_clear
 c_func
@@ -1448,7 +1444,6 @@ multiline_comment|/* end keyctl_keyring_clear() */
 multiline_comment|/*****************************************************************************/
 multiline_comment|/*&n; * link a key into a keyring&n; * - the keyring must be writable&n; * - the key must be linkable&n; * - implements keyctl(KEYCTL_LINK)&n; */
 DECL|function|keyctl_keyring_link
-r_static
 r_int
 id|keyctl_keyring_link
 c_func
@@ -1577,7 +1572,6 @@ multiline_comment|/* end keyctl_keyring_link() */
 multiline_comment|/*****************************************************************************/
 multiline_comment|/*&n; * unlink the first attachment of a key from a keyring&n; * - the keyring must be writable&n; * - we don&squot;t need any permissions on the key&n; * - implements keyctl(KEYCTL_UNLINK)&n; */
 DECL|function|keyctl_keyring_unlink
-r_static
 r_int
 id|keyctl_keyring_unlink
 c_func
@@ -1706,7 +1700,6 @@ multiline_comment|/* end keyctl_keyring_unlink() */
 multiline_comment|/*****************************************************************************/
 multiline_comment|/*&n; * describe a user key&n; * - the key must have view permission&n; * - if there&squot;s a buffer, we place up to buflen bytes of data into it&n; * - unless there&squot;s an error, we return the amount of description available,&n; *   irrespective of how much we may have copied&n; * - the description is formatted thus:&n; *&t;type;uid;gid;perm;description&lt;NUL&gt;&n; * - implements keyctl(KEYCTL_DESCRIBE)&n; */
 DECL|function|keyctl_describe_key
-r_static
 r_int
 id|keyctl_describe_key
 c_func
@@ -1918,7 +1911,6 @@ multiline_comment|/* end keyctl_describe_key() */
 multiline_comment|/*****************************************************************************/
 multiline_comment|/*&n; * search the specified keyring for a matching key&n; * - the start keyring must be searchable&n; * - nested keyrings may also be searched if they are searchable&n; * - only keys with search permission may be found&n; * - if a key is found, it will be attached to the destination keyring if&n; *   there&squot;s one specified&n; * - implements keyctl(KEYCTL_SEARCH)&n; */
 DECL|function|keyctl_keyring_search
-r_static
 r_int
 id|keyctl_keyring_search
 c_func
@@ -2396,7 +2388,6 @@ multiline_comment|/* end keyctl_read_key_same() */
 multiline_comment|/*****************************************************************************/
 multiline_comment|/*&n; * read a user key&squot;s payload&n; * - the keyring must be readable or the key must be searchable from the&n; *   process&squot;s keyrings&n; * - if there&squot;s a buffer, we place up to buflen bytes of data into it&n; * - unless there&squot;s an error, we return the amount of data in the key,&n; *   irrespective of how much we may have copied&n; * - implements keyctl(KEYCTL_READ)&n; */
 DECL|function|keyctl_read_key
-r_static
 r_int
 id|keyctl_read_key
 c_func
@@ -2609,7 +2600,6 @@ multiline_comment|/* end keyctl_read_key() */
 multiline_comment|/*****************************************************************************/
 multiline_comment|/*&n; * change the ownership of a key&n; * - the keyring owned by the changer&n; * - if the uid or gid is -1, then that parameter is not changed&n; * - implements keyctl(KEYCTL_CHOWN)&n; */
 DECL|function|keyctl_chown_key
-r_static
 r_int
 id|keyctl_chown_key
 c_func
@@ -2850,7 +2840,6 @@ multiline_comment|/* end keyctl_chown_key() */
 multiline_comment|/*****************************************************************************/
 multiline_comment|/*&n; * change the permission mask on a key&n; * - the keyring owned by the changer&n; * - implements keyctl(KEYCTL_SETPERM)&n; */
 DECL|function|keyctl_setperm_key
-r_static
 r_int
 id|keyctl_setperm_key
 c_func
@@ -3007,7 +2996,6 @@ multiline_comment|/* end keyctl_setperm_key() */
 multiline_comment|/*****************************************************************************/
 multiline_comment|/*&n; * instantiate the key with the specified payload, and, if one is given, link&n; * the key into the keyring&n; */
 DECL|function|keyctl_instantiate_key
-r_static
 r_int
 id|keyctl_instantiate_key
 c_func
@@ -3249,7 +3237,6 @@ multiline_comment|/* end keyctl_instantiate_key() */
 multiline_comment|/*****************************************************************************/
 multiline_comment|/*&n; * negatively instantiate the key with the given timeout (in seconds), and, if&n; * one is given, link the key into the keyring&n; */
 DECL|function|keyctl_negate_key
-r_static
 r_int
 id|keyctl_negate_key
 c_func
@@ -3395,7 +3382,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* end keyctl_negate_key() */
 multiline_comment|/*****************************************************************************/
-multiline_comment|/*&n; * the key control system call&n; * - currently invoked through prctl()&n; */
+multiline_comment|/*&n; * the key control system call&n; */
 DECL|function|sys_keyctl
 id|asmlinkage
 r_int

@@ -4276,6 +4276,10 @@ id|args.command_type
 op_assign
 id|IDE_DRIVE_TASK_IN
 suffix:semicolon
+id|args.data_phase
+op_assign
+id|TASKFILE_IN
+suffix:semicolon
 id|args.handler
 op_assign
 op_amp

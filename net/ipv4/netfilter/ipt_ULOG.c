@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * netfilter module for userspace packet logging daemons&n; *&n; * (C) 2000-2002 by Harald Welte &lt;laforge@netfilter.org&gt;&n; *&n; * 2000/09/22 ulog-cprange feature added&n; * 2001/01/04 in-kernel queue as proposed by Sebastian Zander &n; * &t;&t;&t;&t;&t;&t;&lt;zander@fokus.gmd.de&gt;&n; * 2001/01/30 per-rule nlgroup conflicts with global queue. &n; *            nlgroup now global (sysctl)&n; * 2001/04/19 ulog-queue reworked, now fixed buffer size specified at&n; * &t;      module loadtime -HW&n; * 2002/07/07 remove broken nflog_rcv() function -HW&n; * 2002/08/29 fix shifted/unshifted nlgroup bug -HW&n; * 2002/10/30 fix uninitialized mac_len field - &lt;Anders K. Pedersen&gt;&n; *&n; * (C) 1999-2001 Paul `Rusty&squot; Russell&n; * (C) 2002-2004 Netfilter Core Team &lt;coreteam@netfilter.org&gt;&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; *&n; * This module accepts two parameters: &n; * &n; * nlbufsiz:&n; *   The parameter specifies how big the buffer for each netlink multicast&n; * group is. e.g. If you say nlbufsiz=8192, up to eight kb of packets will&n; * get accumulated in the kernel until they are sent to userspace. It is&n; * NOT possible to allocate more than 128kB, and it is strongly discouraged,&n; * because atomically allocating 128kB inside the network rx softirq is not&n; * reliable. Please also keep in mind that this buffer size is allocated for&n; * each nlgroup you are using, so the total kernel memory usage increases&n; * by that factor.&n; *&n; * flushtimeout:&n; *   Specify, after how many hundredths of a second the queue should be&n; *   flushed even if it is not full yet.&n; *&n; * ipt_ULOG.c,v 1.22 2002/10/30 09:07:31 laforge Exp&n; */
+multiline_comment|/*&n; * netfilter module for userspace packet logging daemons&n; *&n; * (C) 2000-2004 by Harald Welte &lt;laforge@netfilter.org&gt;&n; *&n; * 2000/09/22 ulog-cprange feature added&n; * 2001/01/04 in-kernel queue as proposed by Sebastian Zander &n; * &t;&t;&t;&t;&t;&t;&lt;zander@fokus.gmd.de&gt;&n; * 2001/01/30 per-rule nlgroup conflicts with global queue. &n; *            nlgroup now global (sysctl)&n; * 2001/04/19 ulog-queue reworked, now fixed buffer size specified at&n; * &t;      module loadtime -HW&n; * 2002/07/07 remove broken nflog_rcv() function -HW&n; * 2002/08/29 fix shifted/unshifted nlgroup bug -HW&n; * 2002/10/30 fix uninitialized mac_len field - &lt;Anders K. Pedersen&gt;&n; * 2004/10/25 fix erroneous calculation of &squot;len&squot; parameter to NLMSG_PUT&n; *&t;      resulting in bogus &squot;error during NLMSG_PUT&squot; messages.&n; *&n; * (C) 1999-2001 Paul `Rusty&squot; Russell&n; * (C) 2002-2004 Netfilter Core Team &lt;coreteam@netfilter.org&gt;&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; *&n; * This module accepts two parameters: &n; * &n; * nlbufsiz:&n; *   The parameter specifies how big the buffer for each netlink multicast&n; * group is. e.g. If you say nlbufsiz=8192, up to eight kb of packets will&n; * get accumulated in the kernel until they are sent to userspace. It is&n; * NOT possible to allocate more than 128kB, and it is strongly discouraged,&n; * because atomically allocating 128kB inside the network rx softirq is not&n; * reliable. Please also keep in mind that this buffer size is allocated for&n; * each nlgroup you are using, so the total kernel memory usage increases&n; * by that factor.&n; *&n; * flushtimeout:&n; *   Specify, after how many hundredths of a second the queue should be&n; *   flushed even if it is not full yet.&n; *&n; * ipt_ULOG.c,v 1.22 2002/10/30 09:07:31 laforge Exp&n; */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
@@ -631,13 +631,13 @@ id|ub-&gt;qlen
 comma
 id|ULOG_NL_EVENT
 comma
-id|size
-op_minus
 r_sizeof
 (paren
 op_star
-id|nlh
+id|pm
 )paren
+op_plus
+id|copy_len
 )paren
 suffix:semicolon
 id|ub-&gt;qlen

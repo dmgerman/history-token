@@ -7508,9 +7508,6 @@ suffix:semicolon
 id|u16
 id|next_ptr
 suffix:semicolon
-r_int
-id|i
-suffix:semicolon
 id|arb_block
 op_assign
 (paren

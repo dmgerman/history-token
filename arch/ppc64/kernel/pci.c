@@ -1965,6 +1965,7 @@ r_int
 id|phb_io_base_phys
 comma
 r_void
+id|__iomem
 op_star
 id|phb_io_base_virt
 )paren
@@ -2315,6 +2316,15 @@ id|na
 op_plus
 l_int|4
 )braket
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|size
+op_eq
+l_int|0
+)paren
+r_continue
 suffix:semicolon
 r_switch
 c_cond
@@ -2976,6 +2986,7 @@ c_func
 (paren
 (paren
 r_void
+id|__iomem
 op_star
 )paren
 id|start_virt

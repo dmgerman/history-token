@@ -1128,16 +1128,6 @@ op_star
 id|sk
 )paren
 suffix:semicolon
-r_void
-id|vcc_remove_socket
-c_func
-(paren
-r_struct
-id|sock
-op_star
-id|sk
-)paren
-suffix:semicolon
 multiline_comment|/*&n; * This is approximately the algorithm used by alloc_skb.&n; *&n; */
 DECL|function|atm_guess_pdu2truesize
 r_static

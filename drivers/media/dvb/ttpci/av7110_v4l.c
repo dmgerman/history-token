@@ -101,14 +101,14 @@ op_ne
 l_int|1
 )paren
 (brace
-id|printk
+id|dprintk
 c_func
 (paren
-l_string|&quot;av7110(%d): %s(%u = %u) failed&bslash;n&quot;
+l_int|1
+comma
+l_string|&quot;dvb-ttpci: failed @ card %d, %u = %u&bslash;n&quot;
 comma
 id|av7110-&gt;dvb_adapter-&gt;num
-comma
-id|__FUNCTION__
 comma
 id|reg
 comma
@@ -243,14 +243,14 @@ op_ne
 l_int|2
 )paren
 (brace
-id|printk
+id|dprintk
 c_func
 (paren
-l_string|&quot;av7110(%d): %s(%u) failed&bslash;n&quot;
+l_int|1
+comma
+l_string|&quot;dvb-ttpci: failed @ card %d, %u&bslash;n&quot;
 comma
 id|av7110-&gt;dvb_adapter-&gt;num
-comma
-id|__FUNCTION__
 comma
 id|reg
 )paren
@@ -436,14 +436,14 @@ op_assign
 l_int|3
 )brace
 suffix:semicolon
-id|DEB_EE
+id|dprintk
 c_func
 (paren
-(paren
-l_string|&quot;av7710: dev: %p&bslash;n&quot;
+l_int|4
+comma
+l_string|&quot;dev: %p&bslash;n&quot;
 comma
 id|dev
-)paren
 )paren
 suffix:semicolon
 r_if
@@ -519,14 +519,14 @@ op_assign
 l_int|4
 )brace
 suffix:semicolon
-id|DEB_EE
+id|dprintk
 c_func
 (paren
-(paren
-l_string|&quot;av7710: dev: %p&bslash;n&quot;
+l_int|4
+comma
+l_string|&quot;dev: %p&bslash;n&quot;
 comma
 id|dev
-)paren
 )paren
 suffix:semicolon
 r_if
@@ -583,14 +583,14 @@ id|buf
 l_int|4
 )braket
 suffix:semicolon
-id|DEB_EE
+id|dprintk
 c_func
 (paren
-(paren
-l_string|&quot;av7710: freq: 0x%08x&bslash;n&quot;
+l_int|4
+comma
+l_string|&quot;freq: 0x%08x&bslash;n&quot;
 comma
 id|freq
-)paren
 )paren
 suffix:semicolon
 multiline_comment|/* magic number: 614. tuning with the frequency given by v4l2&n;&t;   is always off by 614*62.5 = 38375 kHz...*/
@@ -794,14 +794,14 @@ id|sync
 comma
 id|err
 suffix:semicolon
-id|DEB_EE
+id|dprintk
 c_func
 (paren
-(paren
-l_string|&quot;av7110: %p&bslash;n&quot;
+l_int|4
+comma
+l_string|&quot;%p&bslash;n&quot;
 comma
 id|av7110
-)paren
 )paren
 suffix:semicolon
 r_if
@@ -837,12 +837,12 @@ op_ne
 l_int|0
 )paren
 (brace
-id|DEB_D
+id|dprintk
 c_func
 (paren
-(paren
-l_string|&quot;warning: suspending video failed&bslash;n&quot;
-)paren
+l_int|2
+comma
+l_string|&quot;suspending video failed&bslash;n&quot;
 )paren
 suffix:semicolon
 id|vv-&gt;ov_suspend
@@ -892,10 +892,12 @@ op_star
 l_int|2
 )paren
 suffix:semicolon
-id|printk
+id|dprintk
 c_func
 (paren
-l_string|&quot;av7110: switching to analog TV&bslash;n&quot;
+l_int|1
+comma
+l_string|&quot;switching to analog TV&bslash;n&quot;
 )paren
 suffix:semicolon
 id|msp_writereg
@@ -1012,10 +1014,12 @@ op_star
 l_int|2
 )paren
 suffix:semicolon
-id|printk
+id|dprintk
 c_func
 (paren
-l_string|&quot;av7110: switching DVB mode&bslash;n&quot;
+l_int|1
+comma
+l_string|&quot;switching DVB mode&bslash;n&quot;
 )paren
 suffix:semicolon
 id|msp_writereg
@@ -1115,9 +1119,11 @@ comma
 id|adswitch
 )paren
 )paren
-id|printk
+id|dprintk
 c_func
 (paren
+l_int|1
+comma
 l_string|&quot;ADSwitch error&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -1134,9 +1140,11 @@ comma
 id|band
 )paren
 )paren
-id|printk
+id|dprintk
 c_func
 (paren
+l_int|1
+comma
 l_string|&quot;setting band in demodulator failed.&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -1211,14 +1219,14 @@ op_star
 )paren
 id|dev-&gt;ext_priv
 suffix:semicolon
-id|DEB_EE
+id|dprintk
 c_func
 (paren
-(paren
+l_int|4
+comma
 l_string|&quot;saa7146_dev: %p&bslash;n&quot;
 comma
 id|dev
-)paren
 )paren
 suffix:semicolon
 r_switch
@@ -1244,14 +1252,14 @@ suffix:semicolon
 id|s8
 id|stereo
 suffix:semicolon
-id|DEB_EE
+id|dprintk
 c_func
 (paren
-(paren
+l_int|2
+comma
 l_string|&quot;VIDIOC_G_TUNER: %d&bslash;n&quot;
 comma
 id|t-&gt;index
-)paren
 )paren
 suffix:semicolon
 r_if
@@ -1339,9 +1347,11 @@ op_amp
 id|stereo_det
 )paren
 suffix:semicolon
-id|printk
+id|dprintk
 c_func
 (paren
+l_int|1
+comma
 l_string|&quot;VIDIOC_G_TUNER: msp3400 TV standard detection: 0x%04x&bslash;n&quot;
 comma
 id|stereo_det
@@ -1360,9 +1370,11 @@ op_amp
 id|stereo_det
 )paren
 suffix:semicolon
-id|printk
+id|dprintk
 c_func
 (paren
+l_int|1
+comma
 l_string|&quot;VIDIOC_G_TUNER: msp3400 stereo detection: 0x%04x&bslash;n&quot;
 comma
 id|stereo_det
@@ -1447,14 +1459,14 @@ id|fm_matrix
 comma
 id|src
 suffix:semicolon
-id|DEB_EE
+id|dprintk
 c_func
 (paren
-(paren
+l_int|2
+comma
 l_string|&quot;VIDIOC_S_TUNER: %d&bslash;n&quot;
 comma
 id|t-&gt;index
-)paren
 )paren
 suffix:semicolon
 r_if
@@ -1480,12 +1492,12 @@ id|t-&gt;audmode
 r_case
 id|V4L2_TUNER_MODE_STEREO
 suffix:colon
-id|DEB_D
+id|dprintk
 c_func
 (paren
-(paren
+l_int|2
+comma
 l_string|&quot;VIDIOC_S_TUNER: V4L2_TUNER_MODE_STEREO&bslash;n&quot;
-)paren
 )paren
 suffix:semicolon
 id|fm_matrix
@@ -1502,12 +1514,12 @@ suffix:semicolon
 r_case
 id|V4L2_TUNER_MODE_LANG1
 suffix:colon
-id|DEB_D
+id|dprintk
 c_func
 (paren
-(paren
+l_int|2
+comma
 l_string|&quot;VIDIOC_S_TUNER: V4L2_TUNER_MODE_LANG1&bslash;n&quot;
-)paren
 )paren
 suffix:semicolon
 id|fm_matrix
@@ -1524,12 +1536,12 @@ suffix:semicolon
 r_case
 id|V4L2_TUNER_MODE_LANG2
 suffix:colon
-id|DEB_D
+id|dprintk
 c_func
 (paren
-(paren
+l_int|2
+comma
 l_string|&quot;VIDIOC_S_TUNER: V4L2_TUNER_MODE_LANG2&bslash;n&quot;
-)paren
 )paren
 suffix:semicolon
 id|fm_matrix
@@ -1546,12 +1558,12 @@ suffix:semicolon
 r_default
 suffix:colon
 multiline_comment|/* case V4L2_TUNER_MODE_MONO: {*/
-id|DEB_D
+id|dprintk
 c_func
 (paren
-(paren
+l_int|2
+comma
 l_string|&quot;VIDIOC_S_TUNER: TDA9840_SET_MONO&bslash;n&quot;
-)paren
 )paren
 suffix:semicolon
 id|fm_matrix
@@ -1629,14 +1641,14 @@ id|f
 op_assign
 id|arg
 suffix:semicolon
-id|DEB_EE
+id|dprintk
 c_func
 (paren
-(paren
+l_int|2
+comma
 l_string|&quot;VIDIOC_G_FREQ: freq:0x%08x.&bslash;n&quot;
 comma
 id|f-&gt;frequency
-)paren
 )paren
 suffix:semicolon
 r_if
@@ -1690,14 +1702,14 @@ id|f
 op_assign
 id|arg
 suffix:semicolon
-id|DEB_EE
+id|dprintk
 c_func
 (paren
-(paren
+l_int|2
+comma
 l_string|&quot;VIDIOC_S_FREQUENCY: freq:0x%08x.&bslash;n&quot;
 comma
 id|f-&gt;frequency
-)paren
 )paren
 suffix:semicolon
 r_if
@@ -1829,14 +1841,14 @@ id|i
 op_assign
 id|arg
 suffix:semicolon
-id|DEB_EE
+id|dprintk
 c_func
 (paren
-(paren
+l_int|2
+comma
 l_string|&quot;VIDIOC_ENUMINPUT: %d&bslash;n&quot;
 comma
 id|i-&gt;index
-)paren
 )paren
 suffix:semicolon
 r_if
@@ -1916,15 +1928,15 @@ id|input
 op_assign
 id|av7110-&gt;current_input
 suffix:semicolon
-id|DEB_EE
+id|dprintk
 c_func
 (paren
-(paren
+l_int|2
+comma
 l_string|&quot;VIDIOC_G_INPUT: %d&bslash;n&quot;
 comma
 op_star
 id|input
-)paren
 )paren
 suffix:semicolon
 r_return
@@ -1945,14 +1957,14 @@ op_star
 )paren
 id|arg
 suffix:semicolon
-id|DEB_EE
+id|dprintk
 c_func
 (paren
-(paren
+l_int|2
+comma
 l_string|&quot;VIDIOC_S_INPUT: %d&bslash;n&quot;
 comma
 id|input
-)paren
 )paren
 suffix:semicolon
 r_if
@@ -2003,14 +2015,14 @@ id|a
 op_assign
 id|arg
 suffix:semicolon
-id|DEB_EE
+id|dprintk
 c_func
 (paren
-(paren
+l_int|2
+comma
 l_string|&quot;VIDIOC_G_AUDIO: %d&bslash;n&quot;
 comma
 id|a-&gt;index
-)paren
 )paren
 suffix:semicolon
 r_if
@@ -2053,14 +2065,14 @@ id|a
 op_assign
 id|arg
 suffix:semicolon
-id|DEB_EE
+id|dprintk
 c_func
 (paren
-(paren
+l_int|2
+comma
 l_string|&quot;VIDIOC_S_AUDIO: %d&bslash;n&quot;
 comma
 id|a-&gt;index
-)paren
 )paren
 suffix:semicolon
 r_break
@@ -2438,7 +2450,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;av7110(%d): DVB-C analog module detected, initializing MSP3400&bslash;n&quot;
+l_string|&quot;dvb-ttpci: DVB-C analog module @ card %d detected, initializing MSP3400&bslash;n&quot;
 comma
 id|av7110-&gt;dvb_adapter-&gt;num
 )paren
@@ -2480,10 +2492,12 @@ op_amp
 id|version2
 )paren
 suffix:semicolon
-id|printk
+id|dprintk
 c_func
 (paren
-l_string|&quot;av7110(%d): MSP3400 version 0x%04x 0x%04x&bslash;n&quot;
+l_int|1
+comma
+l_string|&quot;dvb-ttpci: @ card %d MSP3400 version 0x%04x 0x%04x&bslash;n&quot;
 comma
 id|av7110-&gt;dvb_adapter-&gt;num
 comma
@@ -2668,10 +2682,12 @@ op_ne
 l_int|1
 )paren
 (brace
-id|printk
+id|dprintk
 c_func
 (paren
-l_string|&quot;av7110(%d): saa7113 initialization failed&quot;
+l_int|1
+comma
+l_string|&quot;saa7113 initialization failed @ card %d&quot;
 comma
 id|av7110-&gt;dvb_adapter-&gt;num
 )paren

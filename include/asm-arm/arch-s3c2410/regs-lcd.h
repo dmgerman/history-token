@@ -18,7 +18,7 @@ mdefine_line|#define S3C2410_LCDCON5&t;    S3C2410_LCDREG(0x10)
 DECL|macro|S3C2410_LCDCON1_CLKVAL
 mdefine_line|#define S3C2410_LCDCON1_CLKVAL(x)  ((x) &lt;&lt; 8)
 DECL|macro|S3C2410_LCDCON1_MMODE
-mdefine_line|#define S3C2410_LCDCON1_MMODE&t;   (1&lt;&lt;6)
+mdefine_line|#define S3C2410_LCDCON1_MMODE&t;   (1&lt;&lt;7)
 DECL|macro|S3C2410_LCDCON1_DSCAN4
 mdefine_line|#define S3C2410_LCDCON1_DSCAN4&t;   (0&lt;&lt;5)
 DECL|macro|S3C2410_LCDCON1_STN4
@@ -49,8 +49,8 @@ DECL|macro|S3C2410_LCDCON1_TFT16BPP
 mdefine_line|#define S3C2410_LCDCON1_TFT16BPP   (12&lt;&lt;1)
 DECL|macro|S3C2410_LCDCON1_TFT24BPP
 mdefine_line|#define S3C2410_LCDCON1_TFT24BPP   (13&lt;&lt;1)
-DECL|macro|S3C2410_LCDCON1_ENVDI
-mdefine_line|#define S3C2410_LCDCON1_ENVDI&t;   (1)
+DECL|macro|S3C2410_LCDCON1_ENVID
+mdefine_line|#define S3C2410_LCDCON1_ENVID&t;   (1)
 DECL|macro|S3C2410_LCDCON2_VBPD
 mdefine_line|#define S3C2410_LCDCON2_VBPD(x)&t;    ((x) &lt;&lt; 24)
 DECL|macro|S3C2410_LCDCON2_LINEVAL
@@ -60,9 +60,9 @@ mdefine_line|#define S3C2410_LCDCON2_VFPD(x)&t;    ((x) &lt;&lt; 6)
 DECL|macro|S3C2410_LCDCON2_VSPW
 mdefine_line|#define S3C2410_LCDCON2_VSPW(x)&t;    ((x) &lt;&lt; 0)
 DECL|macro|S3C2410_LCDCON3_HBPD
-mdefine_line|#define S3C2410_LCDCON3_HBPD(x)&t;    ((x) &lt;&lt; 25)
+mdefine_line|#define S3C2410_LCDCON3_HBPD(x)&t;    ((x) &lt;&lt; 19)
 DECL|macro|S3C2410_LCDCON3_WDLY
-mdefine_line|#define S3C2410_LCDCON3_WDLY(x)&t;    ((x) &lt;&lt; 25)
+mdefine_line|#define S3C2410_LCDCON3_WDLY(x)&t;    ((x) &lt;&lt; 19)
 DECL|macro|S3C2410_LCDCON3_HOZVAL
 mdefine_line|#define S3C2410_LCDCON3_HOZVAL(x)   ((x) &lt;&lt; 8)
 DECL|macro|S3C2410_LCDCON3_HFPD
@@ -108,6 +108,14 @@ DECL|macro|S3C2410_LCDSADDR2
 mdefine_line|#define S3C2410_LCDSADDR2   S3C2410_LCDREG(0x18)
 DECL|macro|S3C2410_LCDSADDR3
 mdefine_line|#define S3C2410_LCDSADDR3   S3C2410_LCDREG(0x1C)
+DECL|macro|S3C2410_LCDBANK
+mdefine_line|#define S3C2410_LCDBANK(x)&t;((x) &lt;&lt; 21)
+DECL|macro|S3C2410_LCDBASEU
+mdefine_line|#define S3C2410_LCDBASEU(x)&t;(x)
+DECL|macro|S3C2410_OFFSIZE
+mdefine_line|#define S3C2410_OFFSIZE(x)&t;((x) &lt;&lt; 11)
+DECL|macro|S3C2410_PAGEWIDTH
+mdefine_line|#define S3C2410_PAGEWIDTH(x)&t;(x)
 multiline_comment|/* colour lookup and miscellaneous controls */
 DECL|macro|S3C2410_REDLUT
 mdefine_line|#define S3C2410_REDLUT&t;   S3C2410_LCDREG(0x20)

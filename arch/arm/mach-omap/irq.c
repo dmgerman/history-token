@@ -490,7 +490,7 @@ comma
 )brace
 suffix:semicolon
 macro_line|#endif
-macro_line|#if defined(CONFIG_ARCH_OMAP1610) || defined(CONFIG_ARCH_OMAP5912) &bslash;&n;&t;&t;&t;&t;  || defined(CONFIG_ARCH_OMAP1710)
+macro_line|#if defined(CONFIG_ARCH_OMAP16XX)
 DECL|variable|omap1610_irq_banks
 r_static
 r_struct
@@ -521,7 +521,7 @@ comma
 dot
 id|trigger_map
 op_assign
-l_int|0xfffff7ff
+l_int|0xfdb7c1fd
 )brace
 comma
 (brace
@@ -641,21 +641,11 @@ id|omap1510_irq_banks
 suffix:semicolon
 )brace
 macro_line|#endif
-macro_line|#if defined(CONFIG_ARCH_OMAP1610) || defined(CONFIG_ARCH_OMAP5912) &bslash;&n;&t;&t;&t;&t;  || defined(CONFIG_ARCH_OMAP1710)
+macro_line|#if defined(CONFIG_ARCH_OMAP16XX)
 r_if
 c_cond
 (paren
-id|cpu_is_omap1610
-c_func
-(paren
-)paren
-op_logical_or
-id|cpu_is_omap5912
-c_func
-(paren
-)paren
-op_logical_or
-id|cpu_is_omap1710
+id|cpu_is_omap16xx
 c_func
 (paren
 )paren
