@@ -1,4 +1,5 @@
-multiline_comment|/**************************************************************************&n; * Initio A100 device driver for Linux.&n; *&n; * Copyright (c) 1994-1998 Initio Corporation&n; * All rights reserved.&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2, or (at your option)&n; * any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; see the file COPYING.  If not, write to&n; * the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.&n; *&n; * --------------------------------------------------------------------------&n; *&n; * Redistribution and use in source and binary forms, with or without&n; * modification, are permitted provided that the following conditions&n; * are met:&n; * 1. Redistributions of source code must retain the above copyright&n; *    notice, this list of conditions, and the following disclaimer,&n; *    without modification, immediately at the beginning of the file.&n; * 2. Redistributions in binary form must reproduce the above copyright&n; *    notice, this list of conditions and the following disclaimer in the&n; *    documentation and/or other materials provided with the distribution.&n; * 3. The name of the author may not be used to endorse or promote products&n; *    derived from this software without specific prior written permission.&n; *&n; * Where this Software is combined with software released under the terms of &n; * the GNU General Public License (&quot;GPL&quot;) and the terms of the GPL would require the &n; * combined work to also be released under the terms of the GPL, the terms&n; * and conditions of this License will apply in addition to those of the&n; * GPL with the exception of any terms or conditions of this License that&n; * conflict with, or are expressly prohibited by, the GPL.&n; *&n; * THIS SOFTWARE IS PROVIDED BY THE AUTHOR AND CONTRIBUTORS ``AS IS&squot;&squot; AND&n; * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE&n; * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE&n; * ARE DISCLAIMED. IN NO EVENT SHALL THE AUTHOR OR CONTRIBUTORS BE LIABLE FOR&n; * ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL&n; * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS&n; * OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)&n; * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT&n; * LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY&n; * OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF&n; * SUCH DAMAGE.&n; *&n; **************************************************************************&n; * &n; * module: inia100.c&n; * DESCRIPTION:&n; * &t;This is the Linux low-level SCSI driver for Initio INIA100 SCSI host&n; * &t;adapters&n; * 07/02/98 hl&t;- v.91n Initial drivers.&n; * 09/14/98 hl - v1.01 Support new Kernel.&n; * 09/22/98 hl - v1.01a Support reset.&n; * 09/24/98 hl - v1.01b Fixed reset.&n; * 10/05/98 hl - v1.02 split the source code and release.&n; * 12/19/98 bv - v1.02a Use spinlocks for 2.1.95 and up&n; * 01/31/99 bv - v1.02b Use mdelay instead of waitForPause&n; * 08/08/99 bv - v1.02c Use waitForPause again.&n; * 06/25/02 Doug Ledford &lt;dledford@redhat.com&gt; - v1.02d&n; *          - Remove limit on number of controllers&n; *          - Port to DMA mapping API&n; *          - Clean up interrupt handler registration&n; *          - Fix memory leaks&n; *          - Fix allocation of scsi host structs and private data&n; * 18/11/03 Christoph Hellwig &lt;hch@lst.de&gt;&n; *&t;    - Port to new probing API&n; *&t;    - Fix some more leaks in init failure cases&n; * TODO:&n; *&t;    - use list.h macros for SCB queue&n; *&t;  ( - merge with i60uscsi.c )&n; **************************************************************************/
+multiline_comment|/*&n; * Initio A100 device driver for Linux.&n; *&n; * Copyright (c) 1994-1998 Initio Corporation&n; * Copyright (c) 2003-2004 Christoph Hellwig&n; * All rights reserved.&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2, or (at your option)&n; * any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; see the file COPYING.  If not, write to&n; * the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.&n; *&n; * --------------------------------------------------------------------------&n; *&n; * Redistribution and use in source and binary forms, with or without&n; * modification, are permitted provided that the following conditions&n; * are met:&n; * 1. Redistributions of source code must retain the above copyright&n; *    notice, this list of conditions, and the following disclaimer,&n; *    without modification, immediately at the beginning of the file.&n; * 2. Redistributions in binary form must reproduce the above copyright&n; *    notice, this list of conditions and the following disclaimer in the&n; *    documentation and/or other materials provided with the distribution.&n; * 3. The name of the author may not be used to endorse or promote products&n; *    derived from this software without specific prior written permission.&n; *&n; * Where this Software is combined with software released under the terms of &n; * the GNU General Public License (&quot;GPL&quot;) and the terms of the GPL would require the &n; * combined work to also be released under the terms of the GPL, the terms&n; * and conditions of this License will apply in addition to those of the&n; * GPL with the exception of any terms or conditions of this License that&n; * conflict with, or are expressly prohibited by, the GPL.&n; *&n; * THIS SOFTWARE IS PROVIDED BY THE AUTHOR AND CONTRIBUTORS ``AS IS&squot;&squot; AND&n; * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE&n; * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE&n; * ARE DISCLAIMED. IN NO EVENT SHALL THE AUTHOR OR CONTRIBUTORS BE LIABLE FOR&n; * ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL&n; * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS&n; * OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)&n; * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT&n; * LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY&n; * OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF&n; * SUCH DAMAGE.&n; */
+multiline_comment|/*&n; * Revision History:&n; * 07/02/98 hl&t;- v.91n Initial drivers.&n; * 09/14/98 hl - v1.01 Support new Kernel.&n; * 09/22/98 hl - v1.01a Support reset.&n; * 09/24/98 hl - v1.01b Fixed reset.&n; * 10/05/98 hl - v1.02 split the source code and release.&n; * 12/19/98 bv - v1.02a Use spinlocks for 2.1.95 and up&n; * 01/31/99 bv - v1.02b Use mdelay instead of waitForPause&n; * 08/08/99 bv - v1.02c Use waitForPause again.&n; * 06/25/02 Doug Ledford &lt;dledford@redhat.com&gt; - v1.02d&n; *          - Remove limit on number of controllers&n; *          - Port to DMA mapping API&n; *          - Clean up interrupt handler registration&n; *          - Fix memory leaks&n; *          - Fix allocation of scsi host structs and private data&n; * 11/18/03 Christoph Hellwig &lt;hch@lst.de&gt;&n; *&t;    - Port to new probing API&n; *&t;    - Fix some more leaks in init failure cases&n; * 9/28/04 Christoph Hellwig &lt;hch@lst.de&gt;&n; *&t;    - merge the two source files&n; *&t;    - remove internal queueing code&n; */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
@@ -17,216 +18,12 @@ macro_line|#include &lt;scsi/scsi.h&gt;
 macro_line|#include &lt;scsi/scsi_cmnd.h&gt;
 macro_line|#include &lt;scsi/scsi_device.h&gt;
 macro_line|#include &lt;scsi/scsi_host.h&gt;
-macro_line|#include &quot;scsi.h&quot;
 macro_line|#include &quot;a100u2w.h&quot;
-DECL|macro|ORC_RDWORD
-mdefine_line|#define ORC_RDWORD(x,y)         (short)(inl((int)((ULONG)((ULONG)x+(UCHAR)y)) ))
-DECL|variable|inia100_Copyright
-r_char
-op_star
-id|inia100_Copyright
-op_assign
-l_string|&quot;Copyright (C) 1998-99&quot;
-suffix:semicolon
-DECL|variable|inia100_InitioName
-r_char
-op_star
-id|inia100_InitioName
-op_assign
-l_string|&quot;by Initio Corporation&quot;
-suffix:semicolon
-DECL|variable|inia100_ProductName
-r_char
-op_star
-id|inia100_ProductName
-op_assign
-l_string|&quot;INI-A100U2W&quot;
-suffix:semicolon
-DECL|variable|inia100_Version
-r_char
-op_star
-id|inia100_Version
-op_assign
-l_string|&quot;v1.02d&quot;
-suffix:semicolon
 DECL|macro|JIFFIES_TO_MS
 mdefine_line|#define JIFFIES_TO_MS(t) ((t) * 1000 / HZ)
 DECL|macro|MS_TO_JIFFIES
 mdefine_line|#define MS_TO_JIFFIES(j) ((j * HZ) / 1000)
-multiline_comment|/* ---- INTERNAL FUNCTIONS ---- */
 r_static
-id|UCHAR
-id|waitChipReady
-c_func
-(paren
-id|ORC_HCS
-op_star
-id|hcsp
-)paren
-suffix:semicolon
-r_static
-id|UCHAR
-id|waitFWReady
-c_func
-(paren
-id|ORC_HCS
-op_star
-id|hcsp
-)paren
-suffix:semicolon
-r_static
-id|UCHAR
-id|waitFWReady
-c_func
-(paren
-id|ORC_HCS
-op_star
-id|hcsp
-)paren
-suffix:semicolon
-r_static
-id|UCHAR
-id|waitSCSIRSTdone
-c_func
-(paren
-id|ORC_HCS
-op_star
-id|hcsp
-)paren
-suffix:semicolon
-r_static
-id|UCHAR
-id|waitHDOoff
-c_func
-(paren
-id|ORC_HCS
-op_star
-id|hcsp
-)paren
-suffix:semicolon
-r_static
-id|UCHAR
-id|waitHDIset
-c_func
-(paren
-id|ORC_HCS
-op_star
-id|hcsp
-comma
-id|UCHAR
-op_star
-id|pData
-)paren
-suffix:semicolon
-r_static
-r_int
-r_int
-id|get_FW_version
-c_func
-(paren
-id|ORC_HCS
-op_star
-id|hcsp
-)paren
-suffix:semicolon
-r_static
-id|UCHAR
-id|set_NVRAM
-c_func
-(paren
-id|ORC_HCS
-op_star
-id|hcsp
-comma
-r_int
-r_char
-id|address
-comma
-r_int
-r_char
-id|value
-)paren
-suffix:semicolon
-r_static
-id|UCHAR
-id|get_NVRAM
-c_func
-(paren
-id|ORC_HCS
-op_star
-id|hcsp
-comma
-r_int
-r_char
-id|address
-comma
-r_int
-r_char
-op_star
-id|pDataIn
-)paren
-suffix:semicolon
-r_static
-r_int
-id|se2_rd_all
-c_func
-(paren
-id|ORC_HCS
-op_star
-id|hcsp
-)paren
-suffix:semicolon
-r_static
-r_void
-id|se2_update_all
-c_func
-(paren
-id|ORC_HCS
-op_star
-id|hcsp
-)paren
-suffix:semicolon
-multiline_comment|/* setup default pattern        */
-r_static
-r_void
-id|read_eeprom
-c_func
-(paren
-id|ORC_HCS
-op_star
-id|hcsp
-)paren
-suffix:semicolon
-r_static
-id|UCHAR
-id|load_FW
-c_func
-(paren
-id|ORC_HCS
-op_star
-id|hcsp
-)paren
-suffix:semicolon
-r_static
-r_void
-id|setup_SCBs
-c_func
-(paren
-id|ORC_HCS
-op_star
-id|hcsp
-)paren
-suffix:semicolon
-r_static
-r_void
-id|initAFlag
-c_func
-(paren
-id|ORC_HCS
-op_star
-id|hcsp
-)paren
-suffix:semicolon
 id|ORC_SCB
 op_star
 id|orc_alloc_scb
@@ -237,8 +34,7 @@ op_star
 id|hcsp
 )paren
 suffix:semicolon
-multiline_comment|/* ---- EXTERNAL FUNCTIONS ---- */
-r_extern
+r_static
 r_void
 id|inia100SCBPost
 c_func
@@ -254,6 +50,7 @@ id|pScb
 suffix:semicolon
 DECL|variable|nvram
 DECL|variable|nvramp
+r_static
 id|NVRAM
 id|nvram
 comma
@@ -482,6 +279,7 @@ suffix:semicolon
 )brace
 multiline_comment|/***************************************************************************/
 DECL|function|waitChipReady
+r_static
 id|UCHAR
 id|waitChipReady
 c_func
@@ -525,9 +323,7 @@ id|HOSTSTOP
 )paren
 multiline_comment|/* Wait HOSTSTOP set */
 r_return
-(paren
-id|TRUE
-)paren
+l_int|1
 suffix:semicolon
 id|waitForPause
 c_func
@@ -538,13 +334,12 @@ suffix:semicolon
 multiline_comment|/* wait 100ms before try again  */
 )brace
 r_return
-(paren
-id|FALSE
-)paren
+l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/***************************************************************************/
 DECL|function|waitFWReady
+r_static
 id|UCHAR
 id|waitFWReady
 c_func
@@ -588,9 +383,7 @@ id|RREADY
 )paren
 multiline_comment|/* Wait READY set */
 r_return
-(paren
-id|TRUE
-)paren
+l_int|1
 suffix:semicolon
 id|waitForPause
 c_func
@@ -601,13 +394,12 @@ suffix:semicolon
 multiline_comment|/* wait 100ms before try again  */
 )brace
 r_return
-(paren
-id|FALSE
-)paren
+l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/***************************************************************************/
 DECL|function|waitSCSIRSTdone
+r_static
 id|UCHAR
 id|waitSCSIRSTdone
 c_func
@@ -654,9 +446,7 @@ id|SCSIRST
 )paren
 multiline_comment|/* Wait SCSIRST done */
 r_return
-(paren
-id|TRUE
-)paren
+l_int|1
 suffix:semicolon
 id|waitForPause
 c_func
@@ -667,13 +457,12 @@ suffix:semicolon
 multiline_comment|/* wait 100ms before try again  */
 )brace
 r_return
-(paren
-id|FALSE
-)paren
+l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/***************************************************************************/
 DECL|function|waitHDOoff
+r_static
 id|UCHAR
 id|waitHDOoff
 c_func
@@ -720,9 +509,7 @@ id|HDO
 )paren
 multiline_comment|/* Wait HDO off */
 r_return
-(paren
-id|TRUE
-)paren
+l_int|1
 suffix:semicolon
 id|waitForPause
 c_func
@@ -733,13 +520,12 @@ suffix:semicolon
 multiline_comment|/* wait 100ms before try again  */
 )brace
 r_return
-(paren
-id|FALSE
-)paren
+l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/***************************************************************************/
 DECL|function|waitHDIset
+r_static
 id|UCHAR
 id|waitHDIset
 c_func
@@ -791,9 +577,7 @@ op_amp
 id|HDI
 )paren
 r_return
-(paren
-id|TRUE
-)paren
+l_int|1
 suffix:semicolon
 multiline_comment|/* Wait HDI set */
 id|waitForPause
@@ -805,13 +589,12 @@ suffix:semicolon
 multiline_comment|/* wait 100ms before try again  */
 )brace
 r_return
-(paren
-id|FALSE
-)paren
+l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/***************************************************************************/
 DECL|function|get_FW_version
+r_static
 r_int
 r_int
 id|get_FW_version
@@ -870,13 +653,11 @@ c_func
 id|hcsp
 )paren
 op_eq
-id|FALSE
+l_int|0
 )paren
 multiline_comment|/* Wait HDO off   */
 r_return
-(paren
-id|FALSE
-)paren
+l_int|0
 suffix:semicolon
 r_if
 c_cond
@@ -890,13 +671,11 @@ op_amp
 id|bData
 )paren
 op_eq
-id|FALSE
+l_int|0
 )paren
 multiline_comment|/* Wait HDI set   */
 r_return
-(paren
-id|FALSE
-)paren
+l_int|0
 suffix:semicolon
 id|Version.cVersion
 (braket
@@ -934,13 +713,11 @@ op_amp
 id|bData
 )paren
 op_eq
-id|FALSE
+l_int|0
 )paren
 multiline_comment|/* Wait HDI set   */
 r_return
-(paren
-id|FALSE
-)paren
+l_int|0
 suffix:semicolon
 id|Version.cVersion
 (braket
@@ -974,6 +751,7 @@ suffix:semicolon
 )brace
 multiline_comment|/***************************************************************************/
 DECL|function|set_NVRAM
+r_static
 id|UCHAR
 id|set_NVRAM
 c_func
@@ -1021,13 +799,11 @@ c_func
 id|hcsp
 )paren
 op_eq
-id|FALSE
+l_int|0
 )paren
 multiline_comment|/* Wait HDO off   */
 r_return
-(paren
-id|FALSE
-)paren
+l_int|0
 suffix:semicolon
 id|ORC_WR
 c_func
@@ -1059,13 +835,11 @@ c_func
 id|hcsp
 )paren
 op_eq
-id|FALSE
+l_int|0
 )paren
 multiline_comment|/* Wait HDO off   */
 r_return
-(paren
-id|FALSE
-)paren
+l_int|0
 suffix:semicolon
 id|ORC_WR
 c_func
@@ -1097,22 +871,19 @@ c_func
 id|hcsp
 )paren
 op_eq
-id|FALSE
+l_int|0
 )paren
 multiline_comment|/* Wait HDO off   */
 r_return
-(paren
-id|FALSE
-)paren
+l_int|0
 suffix:semicolon
 r_return
-(paren
-id|TRUE
-)paren
+l_int|1
 suffix:semicolon
 )brace
 multiline_comment|/***************************************************************************/
 DECL|function|get_NVRAM
+r_static
 id|UCHAR
 id|get_NVRAM
 c_func
@@ -1165,13 +936,11 @@ c_func
 id|hcsp
 )paren
 op_eq
-id|FALSE
+l_int|0
 )paren
 multiline_comment|/* Wait HDO off   */
 r_return
-(paren
-id|FALSE
-)paren
+l_int|0
 suffix:semicolon
 id|ORC_WR
 c_func
@@ -1203,13 +972,11 @@ c_func
 id|hcsp
 )paren
 op_eq
-id|FALSE
+l_int|0
 )paren
 multiline_comment|/* Wait HDO off   */
 r_return
-(paren
-id|FALSE
-)paren
+l_int|0
 suffix:semicolon
 r_if
 c_cond
@@ -1223,13 +990,11 @@ op_amp
 id|bData
 )paren
 op_eq
-id|FALSE
+l_int|0
 )paren
 multiline_comment|/* Wait HDI set   */
 r_return
-(paren
-id|FALSE
-)paren
+l_int|0
 suffix:semicolon
 op_star
 id|pDataIn
@@ -1254,13 +1019,12 @@ id|bData
 suffix:semicolon
 multiline_comment|/* Clear HDI    */
 r_return
-(paren
-id|TRUE
-)paren
+l_int|1
 suffix:semicolon
 )brace
 multiline_comment|/***************************************************************************/
 DECL|function|orc_exec_scb
+r_static
 r_void
 id|orc_exec_scb
 c_func
@@ -1293,6 +1057,7 @@ suffix:semicolon
 )brace
 multiline_comment|/***********************************************************************&n; Read SCSI H/A configuration parameters from serial EEPROM&n;************************************************************************/
 DECL|function|se2_rd_all
+r_static
 r_int
 id|se2_rd_all
 c_func
@@ -1357,7 +1122,7 @@ comma
 id|np
 )paren
 op_eq
-id|FALSE
+l_int|0
 )paren
 r_return
 op_minus
@@ -1414,6 +1179,7 @@ suffix:semicolon
 )brace
 multiline_comment|/************************************************************************&n; Update SCSI H/A configuration parameters from serial EEPROM&n;*************************************************************************/
 DECL|function|se2_update_all
+r_static
 r_void
 id|se2_update_all
 c_func
@@ -1541,6 +1307,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*************************************************************************&n; Function name  : read_eeprom&n;**************************************************************************/
 DECL|function|read_eeprom
+r_static
 r_void
 id|read_eeprom
 c_func
@@ -1580,6 +1347,7 @@ multiline_comment|/* load again                   */
 )brace
 multiline_comment|/***************************************************************************/
 DECL|function|load_FW
+r_static
 id|UCHAR
 id|load_FW
 c_func
@@ -1673,9 +1441,7 @@ id|bData
 suffix:semicolon
 multiline_comment|/* Disable EEPROM programming */
 r_return
-(paren
-id|FALSE
-)paren
+l_int|0
 suffix:semicolon
 )brace
 id|ORC_WRSHORT
@@ -1714,9 +1480,7 @@ id|bData
 suffix:semicolon
 multiline_comment|/* Disable EEPROM programming */
 r_return
-(paren
-id|FALSE
-)paren
+l_int|0
 suffix:semicolon
 )brace
 id|ORC_WR
@@ -2059,9 +1823,7 @@ id|bData
 suffix:semicolon
 multiline_comment|/*Disable EEPROM programming */
 r_return
-(paren
-id|FALSE
-)paren
+l_int|0
 suffix:semicolon
 )brace
 id|pData
@@ -2098,13 +1860,12 @@ id|bData
 suffix:semicolon
 multiline_comment|/* Disable EEPROM programming */
 r_return
-(paren
-id|TRUE
-)paren
+l_int|1
 suffix:semicolon
 )brace
 multiline_comment|/***************************************************************************/
 DECL|function|setup_SCBs
+r_static
 r_void
 id|setup_SCBs
 c_func
@@ -2165,18 +1926,10 @@ suffix:semicolon
 multiline_comment|/* setup scatter list address with one buffer */
 id|pVirScb
 op_assign
-(paren
-id|ORC_SCB
-op_star
-)paren
 id|hcsp-&gt;HCS_virScbArray
 suffix:semicolon
 id|pVirEscb
 op_assign
-(paren
-id|ESCB
-op_star
-)paren
 id|hcsp-&gt;HCS_virEscbArray
 suffix:semicolon
 r_for
@@ -2303,6 +2056,7 @@ suffix:semicolon
 )brace
 multiline_comment|/***************************************************************************/
 DECL|function|init_orchid
+r_static
 r_int
 id|init_orchid
 c_func
@@ -2390,7 +2144,7 @@ c_func
 id|hcsp
 )paren
 op_eq
-id|FALSE
+l_int|0
 )paren
 r_return
 (paren
@@ -2432,7 +2186,7 @@ c_func
 id|hcsp
 )paren
 op_eq
-id|FALSE
+l_int|0
 )paren
 r_return
 (paren
@@ -2476,7 +2230,7 @@ c_func
 id|hcsp
 )paren
 op_eq
-id|FALSE
+l_int|0
 )paren
 r_return
 (paren
@@ -2519,7 +2273,7 @@ c_func
 id|hcsp
 )paren
 op_eq
-id|FALSE
+l_int|0
 )paren
 multiline_comment|/* Wait for firmware ready      */
 r_return
@@ -2640,6 +2394,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*****************************************************************************&n; Function name  : orc_reset_scsi_bus&n; Description    : Reset registers, reset a hanging bus and&n;                  kill active and disconnected commands for target w/o soft reset&n; Input          : pHCB  -       Pointer to host adapter structure&n; Output         : None.&n; Return         : pSRB  -       Pointer to SCSI request block.&n;*****************************************************************************/
 DECL|function|orc_reset_scsi_bus
+r_static
 r_int
 id|orc_reset_scsi_bus
 c_func
@@ -2690,7 +2445,7 @@ c_func
 id|pHCB
 )paren
 op_eq
-id|FALSE
+l_int|0
 )paren
 (brace
 id|spin_unlock_irqrestore
@@ -2728,6 +2483,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*****************************************************************************&n; Function name  : orc_device_reset&n; Description    : Reset registers, reset a hanging bus and&n;                  kill active and disconnected commands for target w/o soft reset&n; Input          : pHCB  -       Pointer to host adapter structure&n; Output         : None.&n; Return         : pSRB  -       Pointer to SCSI request block.&n;*****************************************************************************/
 DECL|function|orc_device_reset
+r_static
 r_int
 id|orc_device_reset
 c_func
@@ -2736,7 +2492,8 @@ id|ORC_HCS
 op_star
 id|pHCB
 comma
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 id|SCpnt
 comma
@@ -2794,10 +2551,6 @@ suffix:semicolon
 multiline_comment|/* setup scatter list address with one buffer */
 id|pVirScb
 op_assign
-(paren
-id|ORC_SCB
-op_star
-)paren
 id|pHCB-&gt;HCS_virScbArray
 suffix:semicolon
 id|initAFlag
@@ -2979,6 +2732,7 @@ suffix:semicolon
 )brace
 multiline_comment|/***************************************************************************/
 DECL|function|__orc_alloc_scb
+r_static
 id|ORC_SCB
 op_star
 id|__orc_alloc_scb
@@ -3087,7 +2841,8 @@ suffix:semicolon
 id|pTmpScb
 op_assign
 (paren
-id|PVOID
+id|ORC_SCB
+op_star
 )paren
 (paren
 (paren
@@ -3118,6 +2873,7 @@ l_int|NULL
 suffix:semicolon
 )brace
 DECL|function|orc_alloc_scb
+r_static
 id|ORC_SCB
 op_star
 id|orc_alloc_scb
@@ -3173,6 +2929,7 @@ suffix:semicolon
 )brace
 multiline_comment|/***************************************************************************/
 DECL|function|orc_release_scb
+r_static
 r_void
 id|orc_release_scb
 c_func
@@ -3255,6 +3012,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*****************************************************************************&n; Function name  : abort_SCB&n; Description    : Abort a queued command.&n;&t;                 (commands that are on the bus can&squot;t be aborted easily)&n; Input          : pHCB  -       Pointer to host adapter structure&n; Output         : None.&n; Return         : pSRB  -       Pointer to SCSI request block.&n;*****************************************************************************/
 DECL|function|abort_SCB
+r_static
 r_int
 id|abort_SCB
 c_func
@@ -3304,13 +3062,11 @@ c_func
 id|hcsp
 )paren
 op_eq
-id|FALSE
+l_int|0
 )paren
 multiline_comment|/* Wait HDO off   */
 r_return
-(paren
-id|FALSE
-)paren
+l_int|0
 suffix:semicolon
 id|ORC_WR
 c_func
@@ -3342,13 +3098,11 @@ c_func
 id|hcsp
 )paren
 op_eq
-id|FALSE
+l_int|0
 )paren
 multiline_comment|/* Wait HDO off   */
 r_return
-(paren
-id|FALSE
-)paren
+l_int|0
 suffix:semicolon
 r_if
 c_cond
@@ -3362,13 +3116,11 @@ op_amp
 id|bData
 )paren
 op_eq
-id|FALSE
+l_int|0
 )paren
 multiline_comment|/* Wait HDI set   */
 r_return
-(paren
-id|FALSE
-)paren
+l_int|0
 suffix:semicolon
 id|bStatus
 op_assign
@@ -3400,19 +3152,16 @@ l_int|1
 )paren
 multiline_comment|/* 0 - Successfully               */
 r_return
-(paren
-id|FALSE
-)paren
+l_int|0
 suffix:semicolon
 multiline_comment|/* 1 - Fail                     */
 r_return
-(paren
-id|TRUE
-)paren
+l_int|1
 suffix:semicolon
 )brace
 multiline_comment|/*****************************************************************************&n; Function name  : inia100_abort&n; Description    : Abort a queued command.&n;&t;                 (commands that are on the bus can&squot;t be aborted easily)&n; Input          : pHCB  -       Pointer to host adapter structure&n; Output         : None.&n; Return         : pSRB  -       Pointer to SCSI request block.&n;*****************************************************************************/
 DECL|function|orc_abort_srb
+r_static
 r_int
 id|orc_abort_srb
 c_func
@@ -3421,7 +3170,8 @@ id|ORC_HCS
 op_star
 id|hcsp
 comma
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 id|SCpnt
 )paren
@@ -3453,10 +3203,6 @@ id|flags
 suffix:semicolon
 id|pVirScb
 op_assign
-(paren
-id|ORC_SCB
-op_star
-)paren
 id|hcsp-&gt;HCS_virScbArray
 suffix:semicolon
 r_for
@@ -3588,6 +3334,7 @@ suffix:semicolon
 )brace
 multiline_comment|/***********************************************************************&n; Routine Description:&n;&t;  This is the interrupt service routine for the Orchid SCSI adapter.&n;&t;  It reads the interrupt register to determine if the adapter is indeed&n;&t;  the source of the interrupt and clears the interrupt at the device.&n; Arguments:&n;&t;  HwDeviceExtension - HBA miniport driver&squot;s adapter data storage&n; Return Value:&n;***********************************************************************/
 DECL|function|orc_interrupt
+r_static
 r_void
 id|orc_interrupt
 c_func
@@ -3620,7 +3367,7 @@ l_int|0
 (brace
 r_return
 suffix:semicolon
-singleline_comment|// (FALSE);
+singleline_comment|// 0;
 )brace
 r_do
 (brace
@@ -3694,7 +3441,7 @@ id|ORC_RQUEUECNT
 suffix:semicolon
 r_return
 suffix:semicolon
-singleline_comment|//(TRUE);
+singleline_comment|//1;
 )brace
 multiline_comment|/* End of I1060Interrupt() */
 multiline_comment|/*****************************************************************************&n; Function name  : inia100BuildSCB&n; Description    : &n; Input          : pHCB  -       Pointer to host adapter structure&n; Output         : None.&n; Return         : pSRB  -       Pointer to SCSI request block.&n;*****************************************************************************/
@@ -4240,6 +3987,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*****************************************************************************&n; Function name  : inia100SCBPost&n; Description    : This is callback routine be called when orc finish one&n;&t;&t;&t;SCSI command.&n; Input          : pHCB  -       Pointer to host adapter control block.&n;&t;&t;  pSCB  -       Pointer to SCSI control block.&n; Output         : None.&n; Return         : None.&n;*****************************************************************************/
 DECL|function|inia100SCBPost
+r_static
 r_void
 id|inia100SCBPost
 c_func
@@ -5294,9 +5042,9 @@ id|inia100_pci_tbl
 op_assign
 (brace
 (brace
-id|ORC_VENDOR_ID
+id|PCI_VENDOR_ID_INIT
 comma
-id|ORC_DEVICE_ID
+l_int|0x1060
 comma
 id|PCI_ANY_ID
 comma
