@@ -1,4 +1,4 @@
-multiline_comment|/* Driver for USB Mass Storage compliant devices&n; * Ununsual Devices File&n; *&n; * $Id: unusual_devs.h,v 1.20 2001/09/02 05:12:57 mdharm Exp $&n; *&n; * Current development and maintenance by:&n; *   (c) 2000 Matthew Dharm (mdharm-usb@one-eyed-alien.net)&n; *&n; * Initial work by:&n; *   (c) 2000 Adam J. Richter (adam@yggdrasil.com), Yggdrasil Computing, Inc.&n; *&n; * Please see http://www.one-eyed-alien.net/~mdharm/linux-usb for more&n; * information about this driver.&n; *&n; * This program is free software; you can redistribute it and/or modify it&n; * under the terms of the GNU General Public License as published by the&n; * Free Software Foundation; either version 2, or (at your option) any&n; * later version.&n; *&n; * This program is distributed in the hope that it will be useful, but&n; * WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU&n; * General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License along&n; * with this program; if not, write to the Free Software Foundation, Inc.,&n; * 675 Mass Ave, Cambridge, MA 02139, USA.&n; */
+multiline_comment|/* Driver for USB Mass Storage compliant devices&n; * Ununsual Devices File&n; *&n; * $Id: unusual_devs.h,v 1.24 2001/12/29 03:12:45 mdharm Exp $&n; *&n; * Current development and maintenance by:&n; *   (c) 2000 Matthew Dharm (mdharm-usb@one-eyed-alien.net)&n; *&n; * Initial work by:&n; *   (c) 2000 Adam J. Richter (adam@yggdrasil.com), Yggdrasil Computing, Inc.&n; *&n; * Please see http://www.one-eyed-alien.net/~mdharm/linux-usb for more&n; * information about this driver.&n; *&n; * This program is free software; you can redistribute it and/or modify it&n; * under the terms of the GNU General Public License as published by the&n; * Free Software Foundation; either version 2, or (at your option) any&n; * later version.&n; *&n; * This program is distributed in the hope that it will be useful, but&n; * WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU&n; * General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License along&n; * with this program; if not, write to the Free Software Foundation, Inc.,&n; * 675 Mass Ave, Cambridge, MA 02139, USA.&n; */
 multiline_comment|/* IMPORTANT NOTE: This file must be included in another file which does&n; * the following thing for it to work:&n; * The macro UNUSUAL_DEV() must be defined before this file is included&n; */
 macro_line|#include &lt;linux/config.h&gt;
 multiline_comment|/* If you edit this file, please try to keep it sorted first by VendorID,&n; * then by ProductID.&n; */
@@ -89,6 +89,30 @@ comma
 l_string|&quot;HP&quot;
 comma
 l_string|&quot;CD-Writer+ 8200e&quot;
+comma
+id|US_SC_8070
+comma
+id|US_PR_SCM_ATAPI
+comma
+id|init_8200e
+comma
+l_int|0
+)paren
+comma
+id|UNUSUAL_DEV
+c_func
+(paren
+l_int|0x03f0
+comma
+l_int|0x0307
+comma
+l_int|0x0001
+comma
+l_int|0x0001
+comma
+l_string|&quot;HP&quot;
+comma
+l_string|&quot;CD-Writer+ CD-4e&quot;
 comma
 id|US_SC_8070
 comma
@@ -198,6 +222,56 @@ comma
 l_int|NULL
 comma
 id|US_FL_FIX_INQUIRY
+)paren
+comma
+multiline_comment|/* Reported by Peter W&#xfffd;chtler &lt;pwaechtler@loewe-komp.de&gt;&n; * The device needs the flags only.&n; */
+id|UNUSUAL_DEV
+c_func
+(paren
+l_int|0x04ce
+comma
+l_int|0x0002
+comma
+l_int|0x0074
+comma
+l_int|0x0074
+comma
+l_string|&quot;ScanLogic&quot;
+comma
+l_string|&quot;SL11R-IDE&quot;
+comma
+id|US_SC_SCSI
+comma
+id|US_PR_BULK
+comma
+l_int|NULL
+comma
+id|US_FL_FIX_INQUIRY
+)paren
+comma
+multiline_comment|/* Reported by Kriston Fincher &lt;kriston@airmail.net&gt;&n; * Patch submitted by Sean Millichamp &lt;sean@bruenor.org&gt;&n; * This is to support the Panasonic PalmCam PV-SD4090&n; * This entry is needed because the device reports Sub=ff &n; */
+id|UNUSUAL_DEV
+c_func
+(paren
+l_int|0x04da
+comma
+l_int|0x0901
+comma
+l_int|0x0100
+comma
+l_int|0x0200
+comma
+l_string|&quot;Panasonic&quot;
+comma
+l_string|&quot;LS-120 Camera&quot;
+comma
+id|US_SC_UFI
+comma
+id|US_PR_CBI
+comma
+l_int|NULL
+comma
+l_int|0
 )paren
 comma
 multiline_comment|/* Most of the following entries were developed with the help of&n; * Shuttle/SCM directly.&n; */
@@ -495,6 +569,33 @@ comma
 id|US_FL_SCM_MULT_TARG
 )paren
 comma
+multiline_comment|/* Iomega Clik! Drive &n; * Reported by David Chatenay &lt;dchatenay@hotmail.com&gt;&n; * The reason this is needed is not fully known.&n; */
+id|UNUSUAL_DEV
+c_func
+(paren
+l_int|0x0525
+comma
+l_int|0xa140
+comma
+l_int|0x0100
+comma
+l_int|0x0100
+comma
+l_string|&quot;Iomega&quot;
+comma
+l_string|&quot;USB Clik! 40&quot;
+comma
+id|US_SC_8070
+comma
+id|US_PR_BULK
+comma
+l_int|NULL
+comma
+id|US_FL_FIX_INQUIRY
+op_or
+id|US_FL_START_STOP
+)paren
+comma
 multiline_comment|/* This entry is needed because the device reports Sub=ff */
 id|UNUSUAL_DEV
 c_func
@@ -505,7 +606,7 @@ l_int|0x0010
 comma
 l_int|0x0106
 comma
-l_int|0x0322
+l_int|0x0422
 comma
 l_string|&quot;Sony&quot;
 comma
@@ -524,7 +625,7 @@ op_or
 id|US_FL_MODE_XLATE
 )paren
 comma
-multiline_comment|/* Reported by win@geeks.nl */
+multiline_comment|/* Reported by wim@geeks.nl */
 id|UNUSUAL_DEV
 c_func
 (paren
@@ -630,6 +731,31 @@ comma
 id|US_FL_SINGLE_LUN
 op_or
 id|US_FL_START_STOP
+)paren
+comma
+multiline_comment|/* Submitted by Nathan Babb &lt;nathan@lexi.com&gt; */
+id|UNUSUAL_DEV
+c_func
+(paren
+l_int|0x054c
+comma
+l_int|0x006d
+comma
+l_int|0x0000
+comma
+l_int|0x9999
+comma
+l_string|&quot;Sony&quot;
+comma
+l_string|&quot;PEG Mass Storage&quot;
+comma
+id|US_SC_8070
+comma
+id|US_PR_CBI
+comma
+l_int|NULL
+comma
+id|US_FL_FIX_INQUIRY
 )paren
 comma
 id|UNUSUAL_DEV
@@ -906,6 +1032,31 @@ id|US_FL_START_STOP
 )paren
 comma
 macro_line|#endif
+multiline_comment|/* Submitted by f.brugmans@hccnet.nl&n; * Needed for START_STOP flag */
+id|UNUSUAL_DEV
+c_func
+(paren
+l_int|0x0686
+comma
+l_int|0x4007
+comma
+l_int|0x0001
+comma
+l_int|0x0001
+comma
+l_string|&quot;Minolta&quot;
+comma
+l_string|&quot;Dimage S304&quot;
+comma
+id|US_SC_SCSI
+comma
+id|US_PR_BULK
+comma
+l_int|NULL
+comma
+id|US_FL_START_STOP
+)paren
+comma
 id|UNUSUAL_DEV
 c_func
 (paren
@@ -1091,7 +1242,7 @@ l_int|0x0004
 comma
 l_int|0x0100
 comma
-l_int|0x0100
+l_int|0x0133
 comma
 l_string|&quot;Microtech&quot;
 comma
@@ -1314,8 +1465,35 @@ op_or
 id|US_FL_START_STOP
 )paren
 comma
+multiline_comment|/* Submitted by Olaf Hering &lt;olh@suse.de&gt; */
+id|UNUSUAL_DEV
+c_func
+(paren
+l_int|0x07c4
+comma
+l_int|0xa109
+comma
+l_int|0x0000
+comma
+l_int|0xffff
+comma
+l_string|&quot;Datafab Systems, Inc.&quot;
+comma
+l_string|&quot;USB to CF + SM Combo (LC1)&quot;
+comma
+id|US_SC_SCSI
+comma
+id|US_PR_DATAFAB
+comma
+l_int|NULL
+comma
+id|US_FL_MODE_XLATE
+op_or
+id|US_FL_START_STOP
+)paren
+comma
 macro_line|#endif
-multiline_comment|/* Casio QV 2x00/3x00/8000 digital still cameras are not conformant&n; * to the USB storage specification in two ways:&n; * - They tell us they are using transport protocol CBI. In reality they&n; *   are using transport protocol CB.&n; * - They don&squot;t like the INQUIRY command. So we must handle this command&n; *   of the SCSI layer ourselves.&n; */
+multiline_comment|/* Casio QV 2x00/3x00/4000/8000 digital still cameras are not conformant&n; * to the USB storage specification in two ways:&n; * - They tell us they are using transport protocol CBI. In reality they&n; *   are using transport protocol CB.&n; * - They don&squot;t like the INQUIRY command. So we must handle this command&n; *   of the SCSI layer ourselves.&n; */
 id|UNUSUAL_DEV
 c_func
 (paren
@@ -1323,7 +1501,7 @@ l_int|0x07cf
 comma
 l_int|0x1001
 comma
-l_int|0x9009
+l_int|0x1000
 comma
 l_int|0x9009
 comma
@@ -1390,4 +1568,31 @@ l_int|0
 )paren
 comma
 macro_line|#endif
+multiline_comment|/* Reported by Dan Pilone &lt;pilone@slac.com&gt;&n; * The device needs the flags only.&n; */
+id|UNUSUAL_DEV
+c_func
+(paren
+l_int|0x1065
+comma
+l_int|0x2136
+comma
+l_int|0x0000
+comma
+l_int|0x9999
+comma
+l_string|&quot;CCYU TECHNOLOGY&quot;
+comma
+l_string|&quot;EasyDisk Portable Device&quot;
+comma
+id|US_SC_SCSI
+comma
+id|US_PR_BULK
+comma
+l_int|NULL
+comma
+id|US_FL_MODE_XLATE
+op_or
+id|US_FL_START_STOP
+)paren
+comma
 eof

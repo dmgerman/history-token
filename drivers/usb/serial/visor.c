@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * USB HandSpring Visor, Palm m50x, and Sony Clie driver&n; * (supports all of the Palm OS USB devices)&n; *&n; *&t;Copyright (C) 1999 - 2001&n; *&t;    Greg Kroah-Hartman (greg@kroah.com)&n; *&n; *&t;This program is free software; you can redistribute it and/or modify&n; *&t;it under the terms of the GNU General Public License as published by&n; *&t;the Free Software Foundation; either version 2 of the License, or&n; *&t;(at your option) any later version.&n; *&n; * See Documentation/usb/usb-serial.txt for more information on using this driver&n; * &n; * (11/11/2001) gkh&n; *&t;Added support for the m125 devices, and added check to prevent oopses&n; *&t;for Cli&#xfffd; devices that lie about the number of ports they have.&n; *&n; * (08/30/2001) gkh&n; *&t;Added support for the Clie devices, both the 3.5 and 4.0 os versions.&n; *&t;Many thanks to Daniel Burke, and Bryan Payne for helping with this.&n; *&n; * (08/23/2001) gkh&n; *&t;fixed a few potential bugs pointed out by Oliver Neukum.&n; *&n; * (05/30/2001) gkh&n; *&t;switched from using spinlock to a semaphore, which fixes lots of problems.&n; *&n; * (05/28/2000) gkh&n; *&t;Added initial support for the Palm m500 and Palm m505 devices.&n; *&n; * (04/08/2001) gb&n; *&t;Identify version on module load.&n; *&n; * (01/21/2000) gkh&n; *&t;Added write_room and chars_in_buffer, as they were previously using the&n; *&t;generic driver versions which is all wrong now that we are using an urb&n; *&t;pool.  Thanks to Wolfgang Grandegger for pointing this out to me.&n; *&t;Removed count assignment in the write function, which was not needed anymore&n; *&t;either.  Thanks to Al Borchers for pointing this out.&n; *&n; * (12/12/2000) gkh&n; *&t;Moved MOD_DEC to end of visor_close to be nicer, as the final write &n; *&t;message can sleep.&n; * &n; * (11/12/2000) gkh&n; *&t;Fixed bug with data being dropped on the floor by forcing tty-&gt;low_latency&n; *&t;to be on.  Hopefully this fixes the OHCI issue!&n; *&n; * (11/01/2000) Adam J. Richter&n; *&t;usb_device_id table support&n; * &n; * (10/05/2000) gkh&n; *&t;Fixed bug with urb-&gt;dev not being set properly, now that the usb&n; *&t;core needs it.&n; * &n; * (09/11/2000) gkh&n; *&t;Got rid of always calling kmalloc for every urb we wrote out to the&n; *&t;device.&n; *&t;Added visor_read_callback so we can keep track of bytes in and out for&n; *&t;those people who like to know the speed of their device.&n; *&t;Removed DEBUG #ifdefs with call to usb_serial_debug_data&n; *&n; * (09/06/2000) gkh&n; *&t;Fixed oops in visor_exit.  Need to uncomment usb_unlink_urb call _after_&n; *&t;the host controller drivers set urb-&gt;dev = NULL when the urb is finished.&n; *&n; * (08/28/2000) gkh&n; *&t;Added locks for SMP safeness.&n; *&n; * (08/08/2000) gkh&n; *&t;Fixed endian problem in visor_startup.&n; *&t;Fixed MOD_INC and MOD_DEC logic and the ability to open a port more &n; *&t;than once.&n; * &n; * (07/23/2000) gkh&n; *&t;Added pool of write urbs to speed up transfers to the visor.&n; * &n; * (07/19/2000) gkh&n; *&t;Added module_init and module_exit functions to handle the fact that this&n; *&t;driver is a loadable module now.&n; *&n; * (07/03/2000) gkh&n; *&t;Added visor_set_ioctl and visor_set_termios functions (they don&squot;t do much&n; *&t;of anything, but are good for debugging.)&n; * &n; * (06/25/2000) gkh&n; *&t;Fixed bug in visor_unthrottle that should help with the disconnect in PPP&n; *&t;bug that people have been reporting.&n; *&n; * (06/23/2000) gkh&n; *&t;Cleaned up debugging statements in a quest to find UHCI timeout bug.&n; *&n; * (04/27/2000) Ryan VanderBijl&n; * &t;Fixed memory leak in visor_close&n; *&n; * (03/26/2000) gkh&n; *&t;Split driver up into device specific pieces.&n; * &n; */
+multiline_comment|/*&n; * USB HandSpring Visor, Palm m50x, and Sony Clie driver&n; * (supports all of the Palm OS USB devices)&n; *&n; *&t;Copyright (C) 1999 - 2001&n; *&t;    Greg Kroah-Hartman (greg@kroah.com)&n; *&n; *&t;This program is free software; you can redistribute it and/or modify&n; *&t;it under the terms of the GNU General Public License as published by&n; *&t;the Free Software Foundation; either version 2 of the License, or&n; *&t;(at your option) any later version.&n; *&n; * See Documentation/usb/usb-serial.txt for more information on using this driver&n; * &n; * (12/18/2001) gkh&n; *&t;Added better Clie support for 3.5 devices.  Thanks to Geoffrey Levand&n; *&t;for the patch.&n; *&n; * (11/11/2001) gkh&n; *&t;Added support for the m125 devices, and added check to prevent oopses&n; *&t;for Cli&#xfffd; devices that lie about the number of ports they have.&n; *&n; * (08/30/2001) gkh&n; *&t;Added support for the Clie devices, both the 3.5 and 4.0 os versions.&n; *&t;Many thanks to Daniel Burke, and Bryan Payne for helping with this.&n; *&n; * (08/23/2001) gkh&n; *&t;fixed a few potential bugs pointed out by Oliver Neukum.&n; *&n; * (05/30/2001) gkh&n; *&t;switched from using spinlock to a semaphore, which fixes lots of problems.&n; *&n; * (05/28/2000) gkh&n; *&t;Added initial support for the Palm m500 and Palm m505 devices.&n; *&n; * (04/08/2001) gb&n; *&t;Identify version on module load.&n; *&n; * (01/21/2000) gkh&n; *&t;Added write_room and chars_in_buffer, as they were previously using the&n; *&t;generic driver versions which is all wrong now that we are using an urb&n; *&t;pool.  Thanks to Wolfgang Grandegger for pointing this out to me.&n; *&t;Removed count assignment in the write function, which was not needed anymore&n; *&t;either.  Thanks to Al Borchers for pointing this out.&n; *&n; * (12/12/2000) gkh&n; *&t;Moved MOD_DEC to end of visor_close to be nicer, as the final write &n; *&t;message can sleep.&n; * &n; * (11/12/2000) gkh&n; *&t;Fixed bug with data being dropped on the floor by forcing tty-&gt;low_latency&n; *&t;to be on.  Hopefully this fixes the OHCI issue!&n; *&n; * (11/01/2000) Adam J. Richter&n; *&t;usb_device_id table support&n; * &n; * (10/05/2000) gkh&n; *&t;Fixed bug with urb-&gt;dev not being set properly, now that the usb&n; *&t;core needs it.&n; * &n; * (09/11/2000) gkh&n; *&t;Got rid of always calling kmalloc for every urb we wrote out to the&n; *&t;device.&n; *&t;Added visor_read_callback so we can keep track of bytes in and out for&n; *&t;those people who like to know the speed of their device.&n; *&t;Removed DEBUG #ifdefs with call to usb_serial_debug_data&n; *&n; * (09/06/2000) gkh&n; *&t;Fixed oops in visor_exit.  Need to uncomment usb_unlink_urb call _after_&n; *&t;the host controller drivers set urb-&gt;dev = NULL when the urb is finished.&n; *&n; * (08/28/2000) gkh&n; *&t;Added locks for SMP safeness.&n; *&n; * (08/08/2000) gkh&n; *&t;Fixed endian problem in visor_startup.&n; *&t;Fixed MOD_INC and MOD_DEC logic and the ability to open a port more &n; *&t;than once.&n; * &n; * (07/23/2000) gkh&n; *&t;Added pool of write urbs to speed up transfers to the visor.&n; * &n; * (07/19/2000) gkh&n; *&t;Added module_init and module_exit functions to handle the fact that this&n; *&t;driver is a loadable module now.&n; *&n; * (07/03/2000) gkh&n; *&t;Added visor_set_ioctl and visor_set_termios functions (they don&squot;t do much&n; *&t;of anything, but are good for debugging.)&n; * &n; * (06/25/2000) gkh&n; *&t;Fixed bug in visor_unthrottle that should help with the disconnect in PPP&n; *&t;bug that people have been reporting.&n; *&n; * (06/23/2000) gkh&n; *&t;Cleaned up debugging statements in a quest to find UHCI timeout bug.&n; *&n; * (04/27/2000) Ryan VanderBijl&n; * &t;Fixed memory leak in visor_close&n; *&n; * (03/26/2000) gkh&n; *&t;Split driver up into device specific pieces.&n; * &n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
@@ -33,7 +33,7 @@ macro_line|#include &quot;usb-serial.h&quot;
 macro_line|#include &quot;visor.h&quot;
 multiline_comment|/*&n; * Version Information&n; */
 DECL|macro|DRIVER_VERSION
-mdefine_line|#define DRIVER_VERSION &quot;v1.7&quot;
+mdefine_line|#define DRIVER_VERSION &quot;v1.8&quot;
 DECL|macro|DRIVER_AUTHOR
 mdefine_line|#define DRIVER_AUTHOR &quot;Greg Kroah-Hartman &lt;greg@kroah.com&gt;&quot;
 DECL|macro|DRIVER_DESC
@@ -207,6 +207,16 @@ r_struct
 id|urb
 op_star
 id|urb
+)paren
+suffix:semicolon
+r_static
+r_int
+id|clie_3_5_startup
+(paren
+r_struct
+id|usb_serial
+op_star
+id|serial
 )paren
 suffix:semicolon
 DECL|variable|combined_id_table
@@ -389,6 +399,10 @@ id|usb_serial_device_type
 id|handspring_device
 op_assign
 (brace
+id|owner
+suffix:colon
+id|THIS_MODULE
+comma
 id|name
 suffix:colon
 l_string|&quot;Handspring Visor / Palm 4.0 / Cli&#xfffd; 4.0&quot;
@@ -475,6 +489,10 @@ id|usb_serial_device_type
 id|clie_3_5_device
 op_assign
 (brace
+id|owner
+suffix:colon
+id|THIS_MODULE
+comma
 id|name
 suffix:colon
 l_string|&quot;Sony Cli&#xfffd; 3.5&quot;
@@ -514,6 +532,10 @@ comma
 id|unthrottle
 suffix:colon
 id|visor_unthrottle
+comma
+id|startup
+suffix:colon
+id|clie_3_5_startup
 comma
 id|ioctl
 suffix:colon
@@ -651,8 +673,6 @@ id|port-&gt;sem
 suffix:semicolon
 op_increment
 id|port-&gt;open_count
-suffix:semicolon
-id|MOD_INC_USE_COUNT
 suffix:semicolon
 r_if
 c_cond
@@ -901,8 +921,6 @@ id|port-&gt;sem
 suffix:semicolon
 multiline_comment|/* Uncomment the following line if you want to see some statistics in your syslog */
 multiline_comment|/* info (&quot;Bytes In = %d  Bytes Out = %d&quot;, bytes_in, bytes_out); */
-id|MOD_DEC_USE_COUNT
-suffix:semicolon
 )brace
 DECL|function|visor_write
 r_static
@@ -2296,6 +2314,188 @@ id|transfer_buffer
 )paren
 suffix:semicolon
 multiline_comment|/* continue on with initialization */
+r_return
+l_int|0
+suffix:semicolon
+)brace
+DECL|function|clie_3_5_startup
+r_static
+r_int
+id|clie_3_5_startup
+(paren
+r_struct
+id|usb_serial
+op_star
+id|serial
+)paren
+(brace
+r_int
+id|result
+suffix:semicolon
+id|u8
+id|data
+suffix:semicolon
+id|dbg
+c_func
+(paren
+id|__FUNCTION__
+)paren
+suffix:semicolon
+multiline_comment|/*&n;&t; * Note that PEG-300 series devices expect the following two calls.&n;&t; */
+multiline_comment|/* get the config number */
+id|result
+op_assign
+id|usb_control_msg
+(paren
+id|serial-&gt;dev
+comma
+id|usb_rcvctrlpipe
+c_func
+(paren
+id|serial-&gt;dev
+comma
+l_int|0
+)paren
+comma
+id|USB_REQ_GET_CONFIGURATION
+comma
+id|USB_DIR_IN
+comma
+l_int|0
+comma
+l_int|0
+comma
+op_amp
+id|data
+comma
+l_int|1
+comma
+id|HZ
+op_star
+l_int|3
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|result
+OL
+l_int|0
+)paren
+(brace
+id|err
+c_func
+(paren
+id|__FUNCTION__
+l_string|&quot;: get config number failed: %d&quot;
+comma
+id|result
+)paren
+suffix:semicolon
+r_return
+id|result
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+id|result
+op_ne
+l_int|1
+)paren
+(brace
+id|err
+c_func
+(paren
+id|__FUNCTION__
+l_string|&quot;: get config number bad return length: %d&quot;
+comma
+id|result
+)paren
+suffix:semicolon
+r_return
+op_minus
+id|EIO
+suffix:semicolon
+)brace
+multiline_comment|/* get the interface number */
+id|result
+op_assign
+id|usb_control_msg
+(paren
+id|serial-&gt;dev
+comma
+id|usb_rcvctrlpipe
+c_func
+(paren
+id|serial-&gt;dev
+comma
+l_int|0
+)paren
+comma
+id|USB_REQ_GET_INTERFACE
+comma
+id|USB_DIR_IN
+op_or
+id|USB_DT_DEVICE
+comma
+l_int|0
+comma
+l_int|0
+comma
+op_amp
+id|data
+comma
+l_int|1
+comma
+id|HZ
+op_star
+l_int|3
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|result
+OL
+l_int|0
+)paren
+(brace
+id|err
+c_func
+(paren
+id|__FUNCTION__
+l_string|&quot;: get interface number failed: %d&quot;
+comma
+id|result
+)paren
+suffix:semicolon
+r_return
+id|result
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+id|result
+op_ne
+l_int|1
+)paren
+(brace
+id|err
+c_func
+(paren
+id|__FUNCTION__
+l_string|&quot;: get interface number bad return length: %d&quot;
+comma
+id|result
+)paren
+suffix:semicolon
+r_return
+op_minus
+id|EIO
+suffix:semicolon
+)brace
 r_return
 l_int|0
 suffix:semicolon

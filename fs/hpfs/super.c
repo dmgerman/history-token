@@ -1981,9 +1981,6 @@ r_int
 id|silent
 )paren
 (brace
-id|kdev_t
-id|dev
-suffix:semicolon
 r_struct
 id|buffer_head
 op_star
@@ -2192,10 +2189,6 @@ id|bail0
 suffix:semicolon
 )brace
 multiline_comment|/*s-&gt;s_hpfs_mounting = 1;*/
-id|dev
-op_assign
-id|s-&gt;s_dev
-suffix:semicolon
 id|sb_set_blocksize
 c_func
 (paren

@@ -518,6 +518,13 @@ r_struct
 id|timer_list
 id|gscd_timer
 suffix:semicolon
+DECL|variable|gscd_lock
+r_static
+id|spinlock_t
+id|gscd_lock
+op_assign
+id|SPIN_LOCK_UNLOCKED
+suffix:semicolon
 DECL|variable|gscd_fops
 r_static
 r_struct
@@ -563,7 +570,7 @@ id|target
 suffix:semicolon
 id|target
 op_assign
-id|MINOR
+id|minor
 c_func
 (paren
 id|full_dev
@@ -891,7 +898,7 @@ id|INIT_REQUEST
 suffix:semicolon
 id|dev
 op_assign
-id|MINOR
+id|minor
 c_func
 (paren
 id|CURRENT-&gt;rq_dev
@@ -947,11 +954,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|MINOR
-c_func
-(paren
-id|CURRENT-&gt;rq_dev
-)paren
+id|dev
 op_ne
 l_int|0
 )paren
@@ -3523,6 +3526,9 @@ id|MAJOR_NR
 )paren
 comma
 id|DEVICE_REQUEST
+comma
+op_amp
+id|gscd_lock
 )paren
 suffix:semicolon
 id|blksize_size
@@ -3562,7 +3568,7 @@ c_func
 (paren
 l_int|NULL
 comma
-id|MKDEV
+id|mk_kdev
 c_func
 (paren
 id|MAJOR_NR

@@ -2474,7 +2474,7 @@ l_int|1
 suffix:semicolon
 )brace
 DECL|macro|DEVICE_NR
-mdefine_line|#define DEVICE_NR(dev)&t;(MINOR(dev) % 128)
+mdefine_line|#define DEVICE_NR(dev)&t;(minor(dev) &amp; 0x7F)
 DECL|function|pg_open
 r_static
 r_int

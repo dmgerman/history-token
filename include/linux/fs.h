@@ -2235,6 +2235,14 @@ id|quota_mount_options
 id|s_dquot
 suffix:semicolon
 multiline_comment|/* Diskquota specific options */
+DECL|member|s_id
+r_char
+id|s_id
+(braket
+l_int|32
+)braket
+suffix:semicolon
+multiline_comment|/* Informational name */
 r_union
 (brace
 DECL|member|minix_sb

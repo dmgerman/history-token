@@ -98,11 +98,7 @@ c_func
 (paren
 l_string|&quot;Bad inode number %s:%08lx&bslash;n&quot;
 comma
-id|bdevname
-c_func
-(paren
-id|inode-&gt;i_dev
-)paren
+id|inode-&gt;i_sb-&gt;s_id
 comma
 id|ino
 )paren
@@ -150,11 +146,7 @@ c_func
 (paren
 l_string|&quot;Unable to read inode %s:%08lx&bslash;n&quot;
 comma
-id|bdevname
-c_func
-(paren
-id|inode-&gt;i_dev
-)paren
+id|inode-&gt;i_sb-&gt;s_id
 comma
 id|ino
 )paren
@@ -360,11 +352,7 @@ c_func
 (paren
 l_string|&quot;Bad inode number %s:%08lx&bslash;n&quot;
 comma
-id|bdevname
-c_func
-(paren
-id|inode-&gt;i_dev
-)paren
+id|inode-&gt;i_sb-&gt;s_id
 comma
 id|ino
 )paren
@@ -411,11 +399,7 @@ c_func
 (paren
 l_string|&quot;Unable to read inode %s:%08lx&bslash;n&quot;
 comma
-id|bdevname
-c_func
-(paren
-id|inode-&gt;i_dev
-)paren
+id|inode-&gt;i_sb-&gt;s_id
 comma
 id|ino
 )paren
@@ -657,11 +641,7 @@ c_func
 (paren
 l_string|&quot;Unable to read inode %s:%08lx&bslash;n&quot;
 comma
-id|bdevname
-c_func
-(paren
-id|inode-&gt;i_dev
-)paren
+id|inode-&gt;i_sb-&gt;s_id
 comma
 id|ino
 )paren
@@ -1160,11 +1140,7 @@ c_func
 (paren
 l_string|&quot;No BFS filesystem on %s (magic=%08x)&bslash;n&quot;
 comma
-id|bdevname
-c_func
-(paren
-id|s-&gt;s_dev
-)paren
+id|s-&gt;s_id
 comma
 id|bfs_sb-&gt;s_magic
 )paren
@@ -1192,11 +1168,7 @@ c_func
 (paren
 l_string|&quot;%s is unclean, continuing&bslash;n&quot;
 comma
-id|bdevname
-c_func
-(paren
-id|s-&gt;s_dev
-)paren
+id|s-&gt;s_id
 )paren
 suffix:semicolon
 id|s-&gt;s_magic

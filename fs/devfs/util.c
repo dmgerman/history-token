@@ -721,7 +721,8 @@ id|semaphore
 )paren
 suffix:semicolon
 r_return
-id|MKDEV
+id|mk_kdev
+c_func
 (paren
 id|entry-&gt;major
 comma
@@ -839,7 +840,8 @@ id|semaphore
 )paren
 suffix:semicolon
 r_return
-id|MKDEV
+id|mk_kdev
+c_func
 (paren
 id|entry-&gt;major
 comma
@@ -890,9 +892,11 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|kdev_none
+c_func
+(paren
 id|devnum
-op_eq
-id|NODEV
+)paren
 )paren
 r_return
 suffix:semicolon

@@ -128,11 +128,7 @@ r_int
 )paren
 id|f-&gt;f_pos
 comma
-id|bdevname
-c_func
-(paren
-id|dir-&gt;i_dev
-)paren
+id|dir-&gt;i_sb-&gt;s_id
 comma
 id|dir-&gt;i_ino
 )paren
@@ -873,11 +869,7 @@ c_func
 (paren
 l_string|&quot;unlinking non-existent file %s:%lu (nlink=%d)&bslash;n&quot;
 comma
-id|bdevname
-c_func
-(paren
-id|inode-&gt;i_dev
-)paren
+id|inode-&gt;i_sb-&gt;s_id
 comma
 id|inode-&gt;i_ino
 comma

@@ -103,11 +103,7 @@ id|printk
 (paren
 l_string|&quot;IO error syncing qnx4 inode [%s:%08lx]&bslash;n&quot;
 comma
-id|kdevname
-c_func
-(paren
-id|inode-&gt;i_dev
-)paren
+id|inode-&gt;i_sb-&gt;s_id
 comma
 id|inode-&gt;i_ino
 )paren
@@ -286,11 +282,7 @@ c_func
 (paren
 l_string|&quot;qnx4: bad inode number on dev %s: %d is out of range&bslash;n&quot;
 comma
-id|kdevname
-c_func
-(paren
-id|inode-&gt;i_dev
-)paren
+id|inode-&gt;i_sb-&gt;s_id
 comma
 id|ino
 )paren
@@ -340,11 +332,7 @@ c_func
 l_string|&quot;qnx4: major problem: unable to read inode from dev &quot;
 l_string|&quot;%s&bslash;n&quot;
 comma
-id|kdevname
-c_func
-(paren
-id|inode-&gt;i_dev
-)paren
+id|inode-&gt;i_sb-&gt;s_id
 )paren
 suffix:semicolon
 id|unlock_kernel
@@ -1396,11 +1384,7 @@ c_func
 (paren
 l_string|&quot;QNX4 filesystem found on dev %s.&bslash;n&quot;
 comma
-id|kdevname
-c_func
-(paren
-id|sb-&gt;s_dev
-)paren
+id|sb-&gt;s_id
 )paren
 )paren
 suffix:semicolon
@@ -2078,6 +2062,13 @@ id|block
 comma
 id|ino
 suffix:semicolon
+r_struct
+id|super_block
+op_star
+id|sb
+op_assign
+id|inode-&gt;i_sb
+suffix:semicolon
 id|ino
 op_assign
 id|inode-&gt;i_ino
@@ -2108,11 +2099,7 @@ c_func
 (paren
 l_string|&quot;qnx4: bad inode number on dev %s: %d is out of range&bslash;n&quot;
 comma
-id|kdevname
-c_func
-(paren
-id|inode-&gt;i_dev
-)paren
+id|sb-&gt;s_id
 comma
 id|ino
 )paren
@@ -2136,7 +2123,7 @@ op_assign
 id|sb_bread
 c_func
 (paren
-id|inode-&gt;i_sb
+id|sb
 comma
 id|block
 )paren
@@ -2149,11 +2136,7 @@ c_func
 l_string|&quot;qnx4: major problem: unable to read inode from dev &quot;
 l_string|&quot;%s&bslash;n&quot;
 comma
-id|kdevname
-c_func
-(paren
-id|inode-&gt;i_dev
-)paren
+id|sb-&gt;s_id
 )paren
 suffix:semicolon
 r_return
@@ -2360,11 +2343,7 @@ l_string|&quot;qnx4: bad inode %d on dev %s&bslash;n&quot;
 comma
 id|ino
 comma
-id|kdevname
-c_func
-(paren
-id|inode-&gt;i_dev
-)paren
+id|sb-&gt;s_id
 )paren
 suffix:semicolon
 id|brelse

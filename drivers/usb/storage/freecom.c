@@ -1,4 +1,4 @@
-multiline_comment|/* Driver for Freecom USB/IDE adaptor&n; *&n; * $Id: freecom.c,v 1.19 2001/11/11 05:42:34 mdharm Exp $&n; *&n; * Freecom v0.1:&n; *&n; * First release&n; *&n; * Current development and maintenance by:&n; *   (C) 2000 David Brown &lt;usb-storage@davidb.org&gt;&n; *&n; * This program is free software; you can redistribute it and/or modify it&n; * under the terms of the GNU General Public License as published by the&n; * Free Software Foundation; either version 2, or (at your option) any&n; * later version.&n; *&n; * This program is distributed in the hope that it will be useful, but&n; * WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU&n; * General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License along&n; * with this program; if not, write to the Free Software Foundation, Inc.,&n; * 675 Mass Ave, Cambridge, MA 02139, USA.&n; *&n; * This driver was developed with information provided in FREECOM&squot;s USB&n; * Programmers Reference Guide.  For further information contact Freecom&n; * (http://www.freecom.de/)&n; */
+multiline_comment|/* Driver for Freecom USB/IDE adaptor&n; *&n; * $Id: freecom.c,v 1.21 2001/12/29 03:47:33 mdharm Exp $&n; *&n; * Freecom v0.1:&n; *&n; * First release&n; *&n; * Current development and maintenance by:&n; *   (C) 2000 David Brown &lt;usb-storage@davidb.org&gt;&n; *&n; * This program is free software; you can redistribute it and/or modify it&n; * under the terms of the GNU General Public License as published by the&n; * Free Software Foundation; either version 2, or (at your option) any&n; * later version.&n; *&n; * This program is distributed in the hope that it will be useful, but&n; * WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU&n; * General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License along&n; * with this program; if not, write to the Free Software Foundation, Inc.,&n; * 675 Mass Ave, Cambridge, MA 02139, USA.&n; *&n; * This driver was developed with information provided in FREECOM&squot;s USB&n; * Programmers Reference Guide.  For further information contact Freecom&n; * (http://www.freecom.de/)&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &quot;transport.h&quot;
 macro_line|#include &quot;protocol.h&quot;
@@ -575,8 +575,6 @@ r_return
 id|USB_STOR_TRANSPORT_GOOD
 suffix:semicolon
 )brace
-macro_line|#endif
-macro_line|#if 0 /* Unused at this time */
 multiline_comment|/* Read a value from an ide register. */
 r_static
 r_int
@@ -1515,7 +1513,7 @@ l_int|0
 comma
 r_sizeof
 (paren
-id|fcb-&gt;Filler
+id|fcb-&gt;Atapi
 )paren
 )paren
 suffix:semicolon
@@ -1703,7 +1701,49 @@ id|fst-&gt;Count
 )paren
 )paren
 suffix:semicolon
+id|US_DEBUGP
+c_func
+(paren
+l_string|&quot;SCSI requested %d&bslash;n&quot;
+comma
+id|usb_stor_transfer_length
+c_func
+(paren
+id|srb
+)paren
+)paren
+suffix:semicolon
 multiline_comment|/* Find the length we desire to read. */
+r_switch
+c_cond
+(paren
+id|srb-&gt;cmnd
+(braket
+l_int|0
+)braket
+)paren
+(brace
+r_case
+id|INQUIRY
+suffix:colon
+r_case
+id|REQUEST_SENSE
+suffix:colon
+multiline_comment|/* 16 or 18 bytes? spec says 18, lots of devices only have 16 */
+r_case
+id|MODE_SENSE
+suffix:colon
+r_case
+id|MODE_SENSE_10
+suffix:colon
+id|length
+op_assign
+id|fst-&gt;Count
+suffix:semicolon
+r_break
+suffix:semicolon
+r_default
+suffix:colon
 id|length
 op_assign
 id|usb_stor_transfer_length
@@ -1711,14 +1751,7 @@ id|usb_stor_transfer_length
 id|srb
 )paren
 suffix:semicolon
-id|US_DEBUGP
-c_func
-(paren
-l_string|&quot;SCSI requested %d&bslash;n&quot;
-comma
-id|length
-)paren
-suffix:semicolon
+)brace
 multiline_comment|/* verify that this amount is legal */
 r_if
 c_cond

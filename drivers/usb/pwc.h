@@ -56,9 +56,9 @@ multiline_comment|/* Version block */
 DECL|macro|PWC_MAJOR
 mdefine_line|#define PWC_MAJOR&t;8
 DECL|macro|PWC_MINOR
-mdefine_line|#define PWC_MINOR&t;4
+mdefine_line|#define PWC_MINOR&t;5
 DECL|macro|PWC_VERSION
-mdefine_line|#define PWC_VERSION &t;&quot;8.4&quot;
+mdefine_line|#define PWC_VERSION &t;&quot;8.5&quot;
 DECL|macro|PWC_NAME
 mdefine_line|#define PWC_NAME &t;&quot;pwc&quot;
 multiline_comment|/* Turn certain features on/off */

@@ -4773,14 +4773,9 @@ id|bh
 (brace
 id|printk
 (paren
-l_string|&quot;IO error syncing ext2 inode [&quot;
-l_string|&quot;%s:%08lx]&bslash;n&quot;
+l_string|&quot;IO error syncing ext2 inode [%s:%08lx]&bslash;n&quot;
 comma
-id|bdevname
-c_func
-(paren
-id|inode-&gt;i_dev
-)paren
+id|inode-&gt;i_sb-&gt;s_id
 comma
 id|inode-&gt;i_ino
 )paren

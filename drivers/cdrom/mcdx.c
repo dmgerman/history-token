@@ -1072,6 +1072,13 @@ comma
 l_int|0
 )brace
 suffix:semicolon
+DECL|variable|mcdx_lock
+r_static
+id|spinlock_t
+id|mcdx_lock
+op_assign
+id|SPIN_LOCK_UNLOCKED
+suffix:semicolon
 id|MODULE_PARM
 c_func
 (paren
@@ -1179,7 +1186,7 @@ id|stuffp
 op_assign
 id|mcdx_stuffp
 (braket
-id|MINOR
+id|minor
 c_func
 (paren
 id|cdi-&gt;dev
@@ -2243,7 +2250,7 @@ id|INIT_REQUEST
 suffix:semicolon
 id|dev
 op_assign
-id|MINOR
+id|minor
 c_func
 (paren
 id|CURRENT-&gt;rq_dev
@@ -2350,19 +2357,18 @@ comma
 id|CURRENT-&gt;nr_sectors
 )paren
 suffix:semicolon
-r_switch
+r_if
 c_cond
 (paren
 id|CURRENT-&gt;cmd
+op_ne
+id|READ
 )paren
 (brace
-r_case
-id|WRITE
-suffix:colon
 id|xwarn
 c_func
 (paren
-l_string|&quot;do_request(): attempt to write to cd!!&bslash;n&quot;
+l_string|&quot;do_request(): non-read command to cd!!&bslash;n&quot;
 )paren
 suffix:semicolon
 id|xtrace
@@ -2381,9 +2387,9 @@ l_int|0
 suffix:semicolon
 r_return
 suffix:semicolon
-r_case
-id|READ
-suffix:colon
+)brace
+r_else
+(brace
 id|stuffp-&gt;status
 op_assign
 l_int|0
@@ -2470,19 +2476,6 @@ c_func
 l_int|1
 )paren
 suffix:semicolon
-r_break
-suffix:semicolon
-r_default
-suffix:colon
-id|panic
-c_func
-(paren
-id|MCDX
-l_string|&quot;do_request: unknown command.&bslash;n&quot;
-)paren
-suffix:semicolon
-r_break
-suffix:semicolon
 )brace
 r_goto
 id|again
@@ -2520,7 +2513,7 @@ id|stuffp
 op_assign
 id|mcdx_stuffp
 (braket
-id|MINOR
+id|minor
 c_func
 (paren
 id|cdi-&gt;dev
@@ -3103,7 +3096,7 @@ id|stuffp
 op_assign
 id|mcdx_stuffp
 (braket
-id|MINOR
+id|minor
 c_func
 (paren
 id|cdi-&gt;dev
@@ -3151,7 +3144,7 @@ id|stuffp
 op_assign
 id|mcdx_stuffp
 (braket
-id|MINOR
+id|minor
 c_func
 (paren
 id|cdi-&gt;dev
@@ -4858,6 +4851,9 @@ id|MAJOR_NR
 )paren
 comma
 id|DEVICE_REQUEST
+comma
+op_amp
+id|mcdx_lock
 )paren
 suffix:semicolon
 id|read_ahead
@@ -5080,7 +5076,7 @@ id|stuffp
 suffix:semicolon
 id|mcdx_info.dev
 op_assign
-id|MKDEV
+id|mk_kdev
 c_func
 (paren
 id|MAJOR_NR
@@ -7117,7 +7113,7 @@ id|stuffp
 op_assign
 id|mcdx_stuffp
 (braket
-id|MINOR
+id|minor
 c_func
 (paren
 id|cdi-&gt;dev
@@ -8238,7 +8234,7 @@ id|stuffp
 op_assign
 id|mcdx_stuffp
 (braket
-id|MINOR
+id|minor
 c_func
 (paren
 id|cdi-&gt;dev

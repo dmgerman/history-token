@@ -7,6 +7,7 @@ macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;linux/signal.h&gt;
 macro_line|#include &lt;linux/poll.h&gt;
+macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/usb.h&gt;
 macro_line|#include &lt;linux/usbdevice_fs.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
@@ -5964,6 +5965,18 @@ id|retval
 op_eq
 l_int|0
 )paren
+(brace
+r_if
+c_cond
+(paren
+id|ifp-&gt;driver-&gt;owner
+)paren
+id|__MOD_INC_USE_COUNT
+c_func
+(paren
+id|ifp-&gt;driver-&gt;owner
+)paren
+suffix:semicolon
 multiline_comment|/* ifno might usefully be passed ... */
 id|retval
 op_assign
@@ -5977,6 +5990,18 @@ id|buf
 )paren
 suffix:semicolon
 multiline_comment|/* size = min_t(int, size, retval)? */
+r_if
+c_cond
+(paren
+id|ifp-&gt;driver-&gt;owner
+)paren
+id|__MOD_DEC_USE_COUNT
+c_func
+(paren
+id|ifp-&gt;driver-&gt;owner
+)paren
+suffix:semicolon
+)brace
 )brace
 multiline_comment|/* cleanup and return */
 r_if

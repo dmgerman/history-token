@@ -1,4 +1,4 @@
-multiline_comment|/* Driver for SanDisk SDDR-09 SmartMedia reader&n; *&n; * $Id: sddr09.c,v 1.21 2001/11/06 03:18:36 mdharm Exp $&n; *&n; * SDDR09 driver v0.1:&n; *&n; * First release&n; *&n; * Current development and maintenance by:&n; *   (c) 2000, 2001 Robert Baruch (autophile@starband.net)&n; *&n; * The SanDisk SDDR-09 SmartMedia reader uses the Shuttle EUSB-01 chip.&n; * This chip is a programmable USB controller. In the SDDR-09, it has&n; * been programmed to obey a certain limited set of SCSI commands. This&n; * driver translates the &quot;real&quot; SCSI commands to the SDDR-09 SCSI&n; * commands.&n; *&n; * This program is free software; you can redistribute it and/or modify it&n; * under the terms of the GNU General Public License as published by the&n; * Free Software Foundation; either version 2, or (at your option) any&n; * later version.&n; *&n; * This program is distributed in the hope that it will be useful, but&n; * WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU&n; * General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License along&n; * with this program; if not, write to the Free Software Foundation, Inc.,&n; * 675 Mass Ave, Cambridge, MA 02139, USA.&n; */
+multiline_comment|/* Driver for SanDisk SDDR-09 SmartMedia reader&n; *&n; * $Id: sddr09.c,v 1.22 2001/12/08 23:32:48 mdharm Exp $&n; *&n; * SDDR09 driver v0.1:&n; *&n; * First release&n; *&n; * Current development and maintenance by:&n; *   (c) 2000, 2001 Robert Baruch (autophile@starband.net)&n; *&n; * The SanDisk SDDR-09 SmartMedia reader uses the Shuttle EUSB-01 chip.&n; * This chip is a programmable USB controller. In the SDDR-09, it has&n; * been programmed to obey a certain limited set of SCSI commands. This&n; * driver translates the &quot;real&quot; SCSI commands to the SDDR-09 SCSI&n; * commands.&n; *&n; * This program is free software; you can redistribute it and/or modify it&n; * under the terms of the GNU General Public License as published by the&n; * Free Software Foundation; either version 2, or (at your option) any&n; * later version.&n; *&n; * This program is distributed in the hope that it will be useful, but&n; * WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU&n; * General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License along&n; * with this program; if not, write to the Free Software Foundation, Inc.,&n; * 675 Mass Ave, Cambridge, MA 02139, USA.&n; */
 macro_line|#include &quot;transport.h&quot;
 macro_line|#include &quot;protocol.h&quot;
 macro_line|#include &quot;usb.h&quot;
@@ -60,7 +60,7 @@ suffix:semicolon
 singleline_comment|// If data is going to be sent or received with the URB,
 singleline_comment|// then allocate a buffer for it. If data is to be sent,
 singleline_comment|// copy the data into the buffer.
-multiline_comment|/*&n;&t;if (xfer_len &gt; 0) {&n;&t;&t;buffer = kmalloc(xfer_len, GFP_KERNEL);&n;&t;&t;if (!(command[0] &amp; USB_DIR_IN))&n;&t;&t;&t;memcpy(buffer, xfer_data, xfer_len);&n;&t;}&n;*/
+multiline_comment|/*&n;&t;if (xfer_len &gt; 0) {&n;&t;&t;buffer = kmalloc(xfer_len, GFP_NOIO);&n;&t;&t;if (!(command[0] &amp; USB_DIR_IN))&n;&t;&t;&t;memcpy(buffer, xfer_data, xfer_len);&n;&t;}&n;*/
 singleline_comment|// Send the URB to the device and wait for a response.
 multiline_comment|/* Why are request and request type reversed in this call? */
 id|result
@@ -955,7 +955,7 @@ c_func
 (paren
 id|len
 comma
-id|GFP_KERNEL
+id|GFP_NOIO
 )paren
 suffix:semicolon
 r_if
@@ -2270,7 +2270,7 @@ r_struct
 id|scatterlist
 )paren
 comma
-id|GFP_KERNEL
+id|GFP_NOIO
 )paren
 suffix:semicolon
 r_if
@@ -2324,7 +2324,7 @@ op_lshift
 l_int|17
 )paren
 comma
-id|GFP_KERNEL
+id|GFP_NOIO
 )paren
 suffix:semicolon
 id|sg
@@ -2364,7 +2364,7 @@ c_func
 (paren
 id|alloc_len
 comma
-id|GFP_KERNEL
+id|GFP_NOIO
 )paren
 suffix:semicolon
 id|sg
@@ -2579,7 +2579,7 @@ r_sizeof
 r_int
 )paren
 comma
-id|GFP_KERNEL
+id|GFP_NOIO
 )paren
 suffix:semicolon
 id|info-&gt;pba_to_lba
@@ -2594,7 +2594,7 @@ r_sizeof
 r_int
 )paren
 comma
-id|GFP_KERNEL
+id|GFP_NOIO
 )paren
 suffix:semicolon
 r_if
@@ -3280,7 +3280,7 @@ r_struct
 id|sddr09_card_info
 )paren
 comma
-id|GFP_KERNEL
+id|GFP_NOIO
 )paren
 suffix:semicolon
 r_if

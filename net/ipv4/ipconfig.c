@@ -4553,7 +4553,7 @@ id|INADDR_NONE
 op_logical_or
 macro_line|#ifdef CONFIG_ROOT_NFS
 (paren
-id|MAJOR
+id|major
 c_func
 (paren
 id|ROOT_DEV
@@ -4596,14 +4596,18 @@ macro_line|#ifdef CONFIG_ROOT_NFS
 r_if
 c_cond
 (paren
+id|kdev_same
+c_func
+(paren
 id|ROOT_DEV
-op_eq
-id|MKDEV
+comma
+id|mk_kdev
 c_func
 (paren
 id|UNNAMED_MAJOR
 comma
 l_int|255
+)paren
 )paren
 )paren
 (brace

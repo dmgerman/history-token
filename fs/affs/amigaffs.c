@@ -2170,11 +2170,7 @@ c_func
 id|KERN_CRIT
 l_string|&quot;AFFS error (device %s): %s(): %s&bslash;n&quot;
 comma
-id|bdevname
-c_func
-(paren
-id|sb-&gt;s_dev
-)paren
+id|sb-&gt;s_id
 comma
 id|function
 comma
@@ -2266,11 +2262,7 @@ c_func
 id|KERN_WARNING
 l_string|&quot;AFFS warning (device %s): %s(): %s&bslash;n&quot;
 comma
-id|bdevname
-c_func
-(paren
-id|sb-&gt;s_dev
-)paren
+id|sb-&gt;s_id
 comma
 id|function
 comma

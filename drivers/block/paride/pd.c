@@ -418,7 +418,7 @@ mdefine_line|#define DEVICE_NAME &quot;PD&quot;
 DECL|macro|DEVICE_REQUEST
 mdefine_line|#define DEVICE_REQUEST do_pd_request
 DECL|macro|DEVICE_NR
-mdefine_line|#define DEVICE_NR(device) (MINOR(device)&gt;&gt;PD_BITS)
+mdefine_line|#define DEVICE_NR(device) (minor(device)&gt;&gt;PD_BITS)
 DECL|macro|DEVICE_ON
 mdefine_line|#define DEVICE_ON(device)
 DECL|macro|DEVICE_OFF
@@ -1476,8 +1476,11 @@ c_cond
 op_logical_neg
 id|inode
 op_logical_or
-op_logical_neg
+id|kdev_none
+c_func
+(paren
 id|inode-&gt;i_rdev
+)paren
 )paren
 r_return
 op_minus
@@ -3678,7 +3681,7 @@ c_func
 op_amp
 id|pd_gendisk
 comma
-id|MKDEV
+id|mk_kdev
 c_func
 (paren
 id|MAJOR_NR
@@ -3793,7 +3796,7 @@ id|INIT_REQUEST
 suffix:semicolon
 id|pd_dev
 op_assign
-id|MINOR
+id|minor
 c_func
 (paren
 id|CURRENT-&gt;rq_dev
@@ -3988,7 +3991,7 @@ id|pd_cmd
 )paren
 op_logical_or
 (paren
-id|MINOR
+id|minor
 c_func
 (paren
 id|CURRENT-&gt;rq_dev

@@ -4026,7 +4026,11 @@ c_func
 (paren
 id|sd_v2
 comma
+id|kdev_t_to_nr
+c_func
+(paren
 id|inode-&gt;i_rdev
+)paren
 )paren
 suffix:semicolon
 )brace
@@ -4154,7 +4158,11 @@ c_func
 (paren
 id|sd_v1
 comma
+id|kdev_t_to_nr
+c_func
+(paren
 id|inode-&gt;i_rdev
+)paren
 )paren
 suffix:semicolon
 r_else
@@ -6487,10 +6495,6 @@ id|inode-&gt;i_blksize
 op_assign
 id|PAGE_SIZE
 suffix:semicolon
-id|inode-&gt;i_dev
-op_assign
-id|sb-&gt;s_dev
-suffix:semicolon
 singleline_comment|// store in in-core inode the key of stat data and version all
 singleline_comment|// object items will have (directory items will have old offset
 singleline_comment|// format, other new objects will consist of new items)
@@ -7754,11 +7758,7 @@ l_string|&quot;clm-6003: bad item inode %lu, device %s&bslash;n&quot;
 comma
 id|inode-&gt;i_ino
 comma
-id|kdevname
-c_func
-(paren
-id|inode-&gt;i_sb-&gt;s_dev
-)paren
+id|inode-&gt;i_sb-&gt;s_id
 )paren
 suffix:semicolon
 id|retval

@@ -447,6 +447,9 @@ r_int
 id|direction
 )paren
 (brace
+r_return
+l_int|0
+suffix:semicolon
 )brace
 r_void
 DECL|function|pci_unmap_sg

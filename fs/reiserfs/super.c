@@ -1015,9 +1015,14 @@ id|s
 (brace
 r_return
 (paren
+op_logical_neg
+id|kdev_same
+c_func
+(paren
 id|s-&gt;s_dev
-op_ne
-l_int|0
+comma
+id|NODEV
+)paren
 op_logical_and
 id|s-&gt;s_op
 op_eq
@@ -1847,10 +1852,7 @@ id|printk
 l_string|&quot;read_super_block: &quot;
 l_string|&quot;bread failed (dev %s, block %d, size %d)&bslash;n&quot;
 comma
-id|kdevname
-(paren
-id|s-&gt;s_dev
-)paren
+id|s-&gt;s_id
 comma
 id|offset
 op_div
@@ -1887,11 +1889,7 @@ id|printk
 l_string|&quot;read_super_block: &quot;
 l_string|&quot;can&squot;t find a reiserfs filesystem on (dev %s, block %lu, size %d)&bslash;n&quot;
 comma
-id|kdevname
-c_func
-(paren
-id|s-&gt;s_dev
-)paren
+id|s-&gt;s_id
 comma
 id|bh-&gt;b_blocknr
 comma
@@ -1950,10 +1948,7 @@ c_func
 l_string|&quot;read_super_block: &quot;
 l_string|&quot;bread failed (dev %s, block %d, size %d)&bslash;n&quot;
 comma
-id|kdevname
-(paren
-id|s-&gt;s_dev
-)paren
+id|s-&gt;s_id
 comma
 id|offset
 op_div
@@ -1998,11 +1993,7 @@ id|printk
 l_string|&quot;read_super_block: &quot;
 l_string|&quot;can&squot;t find a reiserfs filesystem on (dev %s, block %lu, size %d)&bslash;n&quot;
 comma
-id|kdevname
-c_func
-(paren
-id|s-&gt;s_dev
-)paren
+id|s-&gt;s_id
 comma
 id|bh-&gt;b_blocknr
 comma
@@ -2018,11 +2009,7 @@ id|printk
 (paren
 l_string|&quot;read_super_block: can&squot;t find a reiserfs filesystem on dev %s.&bslash;n&quot;
 comma
-id|kdevname
-c_func
-(paren
-id|s-&gt;s_dev
-)paren
+id|s-&gt;s_id
 )paren
 suffix:semicolon
 r_return

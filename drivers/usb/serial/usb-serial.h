@@ -214,11 +214,17 @@ multiline_comment|/* data private to the specific driver */
 suffix:semicolon
 DECL|macro|NUM_DONT_CARE
 mdefine_line|#define NUM_DONT_CARE&t;(-1)
-multiline_comment|/**&n; * usb_serial_device_type - a structure that defines a usb serial device&n; * @name: pointer to a string that describes this device.  This string used&n; *&t;in the syslog messages when a device is inserted or removed.&n; * @id_table: pointer to a list of usb_device_id structures that define all&n; *&t;of the devices this structure can support.&n; * @num_interrupt_in: the number of interrupt in endpoints this device will&n; *&t;have.&n; * @num_bulk_in: the number of bulk in endpoints this device will have.&n; * @num_bulk_out: the number of bulk out endpoints this device will have.&n; * @num_ports: the number of different ports this device will have.&n; * @startup: pointer to the driver&squot;s startup function.  This will be called&n; *&t;when the driver is inserted into the system.  Return 0 to continue&n; *&t;on with the initialization sequence.  Anything else will abort it.&n; * @shutdown: pointer to the driver&squot;s shutdown function.  This will be&n; *&t;called when the device is removed from the system.&n; *&n; * This structure is defines a USB Serial device.  It provides all of&n; * the information that the USB serial core code needs.  If the function&n; * pointers are defined, then the USB serial core code will call them when&n; * the corresponding tty port functions are called.  If they are not&n; * called, the generic serial function will be used instead.&n; */
+multiline_comment|/**&n; * usb_serial_device_type - a structure that defines a usb serial device&n; * @owner: pointer to the module that owns this device.&n; * @name: pointer to a string that describes this device.  This string used&n; *&t;in the syslog messages when a device is inserted or removed.&n; * @id_table: pointer to a list of usb_device_id structures that define all&n; *&t;of the devices this structure can support.&n; * @num_interrupt_in: the number of interrupt in endpoints this device will&n; *&t;have.&n; * @num_bulk_in: the number of bulk in endpoints this device will have.&n; * @num_bulk_out: the number of bulk out endpoints this device will have.&n; * @num_ports: the number of different ports this device will have.&n; * @startup: pointer to the driver&squot;s startup function.  This will be called&n; *&t;when the driver is inserted into the system.  Return 0 to continue&n; *&t;on with the initialization sequence.  Anything else will abort it.&n; * @shutdown: pointer to the driver&squot;s shutdown function.  This will be&n; *&t;called when the device is removed from the system.&n; *&n; * This structure is defines a USB Serial device.  It provides all of&n; * the information that the USB serial core code needs.  If the function&n; * pointers are defined, then the USB serial core code will call them when&n; * the corresponding tty port functions are called.  If they are not&n; * called, the generic serial function will be used instead.&n; */
 DECL|struct|usb_serial_device_type
 r_struct
 id|usb_serial_device_type
 (brace
+DECL|member|owner
+r_struct
+id|module
+op_star
+id|owner
+suffix:semicolon
 DECL|member|name
 r_char
 op_star

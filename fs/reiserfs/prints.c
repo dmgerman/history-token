@@ -1411,11 +1411,7 @@ comma
 id|sb
 ques
 c_cond
-id|kdevname
-c_func
-(paren
-id|sb-&gt;s_dev
-)paren
+id|sb-&gt;s_id
 suffix:colon
 l_string|&quot;sb == 0&quot;
 comma

@@ -423,19 +423,9 @@ id|inode
 id|dprintk
 c_func
 (paren
-l_string|&quot;NFS: delete_inode(%x:%x/%ld)&bslash;n&quot;
+l_string|&quot;NFS: delete_inode(%s/%ld)&bslash;n&quot;
 comma
-id|major
-c_func
-(paren
-id|inode-&gt;i_dev
-)paren
-comma
-id|minor
-c_func
-(paren
-id|inode-&gt;i_dev
-)paren
+id|inode-&gt;i_sb-&gt;s_id
 comma
 id|inode-&gt;i_ino
 )paren
@@ -996,6 +986,32 @@ comma
 id|version
 comma
 id|maxlen
+suffix:semicolon
+multiline_comment|/* We probably want something more informative here */
+id|snprintf
+c_func
+(paren
+id|sb-&gt;s_id
+comma
+r_sizeof
+(paren
+id|sb-&gt;s_id
+)paren
+comma
+l_string|&quot;%x:%x&quot;
+comma
+id|major
+c_func
+(paren
+id|sb-&gt;s_dev
+)paren
+comma
+id|minor
+c_func
+(paren
+id|sb-&gt;s_dev
+)paren
+)paren
 suffix:semicolon
 id|memset
 c_func
@@ -3284,19 +3300,9 @@ suffix:semicolon
 id|dprintk
 c_func
 (paren
-l_string|&quot;NFS: __nfs_fhget(%x:%x/%Ld ct=%d)&bslash;n&quot;
+l_string|&quot;NFS: __nfs_fhget(%s/%Ld ct=%d)&bslash;n&quot;
 comma
-id|major
-c_func
-(paren
-id|inode-&gt;i_dev
-)paren
-comma
-id|minor
-c_func
-(paren
-id|inode-&gt;i_dev
-)paren
+id|inode-&gt;i_sb-&gt;s_id
 comma
 (paren
 r_int
@@ -3914,19 +3920,9 @@ c_func
 (paren
 id|PAGECACHE
 comma
-l_string|&quot;NFS: revalidating (%x:%x/%Ld)&bslash;n&quot;
+l_string|&quot;NFS: revalidating (%s/%Ld)&bslash;n&quot;
 comma
-id|major
-c_func
-(paren
-id|inode-&gt;i_dev
-)paren
-comma
-id|minor
-c_func
-(paren
-id|inode-&gt;i_dev
-)paren
+id|inode-&gt;i_sb-&gt;s_id
 comma
 (paren
 r_int
@@ -4082,19 +4078,9 @@ c_func
 (paren
 id|PAGECACHE
 comma
-l_string|&quot;nfs_revalidate_inode: (%x:%x/%Ld) getattr failed, error=%d&bslash;n&quot;
+l_string|&quot;nfs_revalidate_inode: (%s/%Ld) getattr failed, error=%d&bslash;n&quot;
 comma
-id|major
-c_func
-(paren
-id|inode-&gt;i_dev
-)paren
-comma
-id|minor
-c_func
-(paren
-id|inode-&gt;i_dev
-)paren
+id|inode-&gt;i_sb-&gt;s_id
 comma
 (paren
 r_int
@@ -4166,19 +4152,9 @@ c_func
 (paren
 id|PAGECACHE
 comma
-l_string|&quot;nfs_revalidate_inode: (%x:%x/%Ld) refresh failed, error=%d&bslash;n&quot;
+l_string|&quot;nfs_revalidate_inode: (%s/%Ld) refresh failed, error=%d&bslash;n&quot;
 comma
-id|major
-c_func
-(paren
-id|inode-&gt;i_dev
-)paren
-comma
-id|minor
-c_func
-(paren
-id|inode-&gt;i_dev
-)paren
+id|inode-&gt;i_sb-&gt;s_id
 comma
 (paren
 r_int
@@ -4202,19 +4178,9 @@ c_func
 (paren
 id|PAGECACHE
 comma
-l_string|&quot;NFS: (%x:%x/%Ld) revalidation complete&bslash;n&quot;
+l_string|&quot;NFS: (%s/%Ld) revalidation complete&bslash;n&quot;
 comma
-id|major
-c_func
-(paren
-id|inode-&gt;i_dev
-)paren
-comma
-id|minor
-c_func
-(paren
-id|inode-&gt;i_dev
-)paren
+id|inode-&gt;i_sb-&gt;s_id
 comma
 (paren
 r_int
@@ -4404,19 +4370,9 @@ c_func
 (paren
 id|VFS
 comma
-l_string|&quot;NFS: refresh_inode(%x:%x/%ld ct=%d info=0x%x)&bslash;n&quot;
+l_string|&quot;NFS: refresh_inode(%s/%ld ct=%d info=0x%x)&bslash;n&quot;
 comma
-id|major
-c_func
-(paren
-id|inode-&gt;i_dev
-)paren
-comma
-id|minor
-c_func
-(paren
-id|inode-&gt;i_dev
-)paren
+id|inode-&gt;i_sb-&gt;s_id
 comma
 id|inode-&gt;i_ino
 comma
@@ -4579,9 +4535,9 @@ id|printk
 c_func
 (paren
 id|KERN_DEBUG
-l_string|&quot;NFS: isize change on %x/%ld&bslash;n&quot;
+l_string|&quot;NFS: isize change on %s/%ld&bslash;n&quot;
 comma
-id|inode-&gt;i_dev
+id|inode-&gt;i_sb-&gt;s_id
 comma
 id|inode-&gt;i_ino
 )paren
@@ -4610,9 +4566,9 @@ id|printk
 c_func
 (paren
 id|KERN_DEBUG
-l_string|&quot;NFS: mtime change on %x/%ld&bslash;n&quot;
+l_string|&quot;NFS: mtime change on %s/%ld&bslash;n&quot;
 comma
-id|inode-&gt;i_dev
+id|inode-&gt;i_sb-&gt;s_id
 comma
 id|inode-&gt;i_ino
 )paren

@@ -395,6 +395,13 @@ op_star
 id|cd
 suffix:semicolon
 multiline_comment|/* the main memory structure */
+DECL|variable|cm206_lock
+r_static
+id|spinlock_t
+id|cm206_lock
+op_assign
+id|SPIN_LOCK_UNLOCKED
+suffix:semicolon
 multiline_comment|/* First, we define some polling functions. These are actually&n;   only being used in the initialization. */
 DECL|function|send_command_polled
 r_void
@@ -3060,7 +3067,6 @@ suffix:semicolon
 id|spin_unlock_irq
 c_func
 (paren
-op_amp
 id|q-&gt;queue_lock
 )paren
 suffix:semicolon
@@ -3242,7 +3248,6 @@ suffix:semicolon
 id|spin_lock_irq
 c_func
 (paren
-op_amp
 id|q-&gt;queue_lock
 )paren
 suffix:semicolon
@@ -6285,7 +6290,7 @@ suffix:semicolon
 )brace
 id|cm206_info.dev
 op_assign
-id|MKDEV
+id|mk_kdev
 c_func
 (paren
 id|MAJOR_NR
@@ -6346,6 +6351,9 @@ id|MAJOR_NR
 )paren
 comma
 id|DEVICE_REQUEST
+comma
+op_amp
+id|cm206_lock
 )paren
 suffix:semicolon
 id|blksize_size

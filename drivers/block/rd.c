@@ -1784,7 +1784,7 @@ c_func
 (paren
 l_int|NULL
 comma
-id|MKDEV
+id|mk_kdev
 c_func
 (paren
 id|MAJOR_NR

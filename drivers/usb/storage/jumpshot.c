@@ -932,7 +932,7 @@ c_func
 (paren
 id|len
 comma
-id|GFP_KERNEL
+id|GFP_NOIO
 )paren
 suffix:semicolon
 r_if
@@ -1485,7 +1485,7 @@ c_func
 (paren
 id|len
 comma
-id|GFP_KERNEL
+id|GFP_NOIO
 )paren
 suffix:semicolon
 r_if
@@ -2966,7 +2966,7 @@ r_struct
 id|jumpshot_info
 )paren
 comma
-id|GFP_KERNEL
+id|GFP_NOIO
 )paren
 suffix:semicolon
 r_if

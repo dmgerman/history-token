@@ -1107,7 +1107,7 @@ id|line
 (brace
 id|ROOT_DEV
 op_assign
-id|MKDEV
+id|mk_kdev
 c_func
 (paren
 id|UNNAMED_MAJOR

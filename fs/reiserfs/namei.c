@@ -3378,11 +3378,7 @@ c_func
 (paren
 l_string|&quot;reiserfs_unlink: deleting nonexistent file (%s:%lu), %d&bslash;n&quot;
 comma
-id|kdevname
-c_func
-(paren
-id|inode-&gt;i_dev
-)paren
+id|inode-&gt;i_sb-&gt;s_id
 comma
 id|inode-&gt;i_ino
 comma

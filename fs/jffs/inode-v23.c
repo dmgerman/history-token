@@ -142,11 +142,7 @@ c_func
 id|KERN_NOTICE
 l_string|&quot;JFFS: Trying to mount device %s.&bslash;n&quot;
 comma
-id|kdevname
-c_func
-(paren
-id|dev
-)paren
+id|sb-&gt;s_id
 )paren
 )paren
 suffix:semicolon
@@ -292,11 +288,7 @@ id|KERN_WARNING
 l_string|&quot;JFFS: Failed to initialize the JFFS &quot;
 l_string|&quot;proc file system for device %s.&bslash;n&quot;
 comma
-id|kdevname
-c_func
-(paren
-id|dev
-)paren
+id|sb-&gt;s_id
 )paren
 suffix:semicolon
 )brace
@@ -382,11 +374,7 @@ c_func
 id|KERN_NOTICE
 l_string|&quot;JFFS: Successfully mounted device %s.&bslash;n&quot;
 comma
-id|kdevname
-c_func
-(paren
-id|dev
-)paren
+id|sb-&gt;s_id
 )paren
 )paren
 suffix:semicolon
@@ -422,11 +410,7 @@ c_func
 id|KERN_WARNING
 l_string|&quot;JFFS: Failed to mount device %s.&bslash;n&quot;
 comma
-id|kdevname
-c_func
-(paren
-id|dev
-)paren
+id|sb-&gt;s_id
 )paren
 suffix:semicolon
 r_return
@@ -457,15 +441,6 @@ id|jffs_control
 op_star
 )paren
 id|sb-&gt;u.generic_sbp
-suffix:semicolon
-id|D1
-c_func
-(paren
-id|kdev_t
-id|dev
-op_assign
-id|sb-&gt;s_dev
-)paren
 suffix:semicolon
 id|D2
 c_func
@@ -549,11 +524,7 @@ c_func
 id|KERN_NOTICE
 l_string|&quot;JFFS: Successfully unmounted device %s.&bslash;n&quot;
 comma
-id|kdevname
-c_func
-(paren
-id|dev
-)paren
+id|sb-&gt;s_id
 )paren
 )paren
 suffix:semicolon

@@ -823,11 +823,7 @@ c_func
 id|KERN_DEBUG
 l_string|&quot;jffs2: read_super for device %s&bslash;n&quot;
 comma
-id|kdevname
-c_func
-(paren
-id|sb-&gt;s_dev
-)paren
+id|sb-&gt;s_id
 )paren
 )paren
 suffix:semicolon

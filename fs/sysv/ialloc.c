@@ -442,11 +442,7 @@ c_func
 l_string|&quot;sysv_free_inode: unable to read inode block on device &quot;
 l_string|&quot;%s&bslash;n&quot;
 comma
-id|bdevname
-c_func
-(paren
-id|inode-&gt;i_dev
-)paren
+id|inode-&gt;i_sb-&gt;s_id
 )paren
 suffix:semicolon
 r_return

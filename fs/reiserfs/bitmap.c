@@ -482,9 +482,9 @@ id|b_data
 id|reiserfs_warning
 (paren
 l_string|&quot;vs-4080: reiserfs_free_block: &quot;
-l_string|&quot;free_block (%04x:%lu)[dev:blocknr]: bit already cleared&bslash;n&quot;
+l_string|&quot;free_block (%s:%lu)[dev:blocknr]: bit already cleared&bslash;n&quot;
 comma
-id|s-&gt;s_dev
+id|s-&gt;s_id
 comma
 id|block
 )paren

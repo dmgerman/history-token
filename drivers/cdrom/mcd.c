@@ -55,7 +55,7 @@ mdefine_line|#define QUICK_LOOP_DELAY udelay(45)&t;/* use udelay */
 DECL|macro|QUICK_LOOP_COUNT
 mdefine_line|#define QUICK_LOOP_COUNT 20
 DECL|macro|CURRENT_VALID
-mdefine_line|#define CURRENT_VALID &bslash;&n;(!QUEUE_EMPTY &amp;&amp; MAJOR(CURRENT -&gt; rq_dev) == MAJOR_NR &amp;&amp; CURRENT -&gt; cmd == READ &bslash;&n;&amp;&amp; CURRENT -&gt; sector != -1)
+mdefine_line|#define CURRENT_VALID &bslash;&n;(!QUEUE_EMPTY &amp;&amp; major(CURRENT -&gt; rq_dev) == MAJOR_NR &amp;&amp; CURRENT -&gt; cmd == READ &bslash;&n;&amp;&amp; CURRENT -&gt; sector != -1)
 DECL|macro|MFL_STATUSorDATA
 mdefine_line|#define MFL_STATUSorDATA (MFL_STATUS | MFL_DATA)
 DECL|macro|MCD_BUF_SIZ
@@ -445,6 +445,13 @@ comma
 r_int
 id|position
 )paren
+suffix:semicolon
+DECL|variable|mcd_spinlock
+r_static
+id|spinlock_t
+id|mcd_spinlock
+op_assign
+id|SPIN_LOCK_UNLOCKED
 suffix:semicolon
 r_int
 id|mcd_audio_ioctl
@@ -2239,30 +2246,6 @@ c_loop
 id|CURRENT_VALID
 )paren
 (brace
-r_if
-c_cond
-(paren
-id|CURRENT-&gt;bh
-)paren
-(brace
-r_if
-c_cond
-(paren
-op_logical_neg
-id|buffer_locked
-c_func
-(paren
-id|CURRENT-&gt;bh
-)paren
-)paren
-id|panic
-c_func
-(paren
-id|DEVICE_NAME
-l_string|&quot;: block not locked&quot;
-)paren
-suffix:semicolon
-)brace
 id|mcd_transfer
 c_func
 (paren
@@ -4330,6 +4313,9 @@ id|MAJOR_NR
 )paren
 comma
 id|DEVICE_REQUEST
+comma
+op_amp
+id|mcd_spinlock
 )paren
 suffix:semicolon
 id|read_ahead
@@ -4783,7 +4769,7 @@ l_int|1
 suffix:semicolon
 id|mcd_info.dev
 op_assign
-id|MKDEV
+id|mk_kdev
 c_func
 (paren
 id|MAJOR_NR

@@ -565,11 +565,7 @@ id|panic
 (paren
 l_string|&quot;EXT3-fs (device %s): panic forced after error&bslash;n&quot;
 comma
-id|bdevname
-c_func
-(paren
-id|sb-&gt;s_dev
-)paren
+id|sb-&gt;s_id
 )paren
 suffix:semicolon
 r_if
@@ -659,11 +655,7 @@ id|printk
 id|KERN_CRIT
 l_string|&quot;EXT3-fs error (device %s): %s: %s&bslash;n&quot;
 comma
-id|bdevname
-c_func
-(paren
-id|sb-&gt;s_dev
-)paren
+id|sb-&gt;s_id
 comma
 id|function
 comma
@@ -849,11 +841,7 @@ id|printk
 id|KERN_CRIT
 l_string|&quot;EXT3-fs error (device %s) in %s: %s&bslash;n&quot;
 comma
-id|bdevname
-c_func
-(paren
-id|sb-&gt;s_dev
-)paren
+id|sb-&gt;s_id
 comma
 id|function
 comma
@@ -937,11 +925,7 @@ id|panic
 (paren
 l_string|&quot;EXT3-fs panic (device %s): %s: %s&bslash;n&quot;
 comma
-id|bdevname
-c_func
-(paren
-id|sb-&gt;s_dev
-)paren
+id|sb-&gt;s_id
 comma
 id|function
 comma
@@ -953,11 +937,7 @@ id|printk
 id|KERN_CRIT
 l_string|&quot;EXT3-fs abort (device %s): %s: %s&bslash;n&quot;
 comma
-id|bdevname
-c_func
-(paren
-id|sb-&gt;s_dev
-)paren
+id|sb-&gt;s_id
 comma
 id|function
 comma
@@ -1067,11 +1047,7 @@ id|panic
 (paren
 l_string|&quot;EXT3-fs panic (device %s): %s: %s&bslash;n&quot;
 comma
-id|bdevname
-c_func
-(paren
-id|sb-&gt;s_dev
-)paren
+id|sb-&gt;s_id
 comma
 id|function
 comma
@@ -1132,11 +1108,7 @@ id|printk
 id|KERN_WARNING
 l_string|&quot;EXT3-fs warning (device %s): %s: %s&bslash;n&quot;
 comma
-id|bdevname
-c_func
-(paren
-id|sb-&gt;s_dev
-)paren
+id|sb-&gt;s_id
 comma
 id|function
 comma
@@ -1460,19 +1432,9 @@ c_func
 (paren
 id|KERN_ERR
 l_string|&quot;  &quot;
-l_string|&quot;inode 0x%04x.0x%04x:%ld at %p: mode %o, nlink %d, next %d&bslash;n&quot;
+l_string|&quot;inode %s:%ld at %p: mode %o, nlink %d, next %d&bslash;n&quot;
 comma
-id|major
-c_func
-(paren
-id|inode-&gt;i_dev
-)paren
-comma
-id|minor
-c_func
-(paren
-id|inode-&gt;i_dev
-)paren
+id|inode-&gt;i_sb-&gt;s_id
 comma
 id|inode-&gt;i_ino
 comma
@@ -3239,11 +3201,7 @@ l_string|&quot;, &quot;
 id|EXT3FS_DATE
 l_string|&quot; on %s, &quot;
 comma
-id|bdevname
-c_func
-(paren
-id|sb-&gt;s_dev
-)paren
+id|sb-&gt;s_id
 )paren
 suffix:semicolon
 r_if
@@ -3657,11 +3615,7 @@ c_func
 id|KERN_INFO
 l_string|&quot;EXT3-fs: %s: orphan cleanup on readonly fs&bslash;n&quot;
 comma
-id|bdevname
-c_func
-(paren
-id|sb-&gt;s_dev
-)paren
+id|sb-&gt;s_id
 )paren
 suffix:semicolon
 id|sb-&gt;s_flags
@@ -3855,11 +3809,7 @@ c_func
 id|KERN_INFO
 l_string|&quot;EXT3-fs: %s: %d orphan inode%s deleted&bslash;n&quot;
 comma
-id|bdevname
-c_func
-(paren
-id|sb-&gt;s_dev
-)paren
+id|sb-&gt;s_id
 comma
 id|PLURAL
 c_func
@@ -3879,11 +3829,7 @@ c_func
 id|KERN_INFO
 l_string|&quot;EXT3-fs: %s: %d truncate%s cleaned up&bslash;n&quot;
 comma
-id|bdevname
-c_func
-(paren
-id|sb-&gt;s_dev
-)paren
+id|sb-&gt;s_id
 comma
 id|PLURAL
 c_func
@@ -4121,15 +4067,9 @@ comma
 l_int|0
 )paren
 )paren
-(brace
-id|sb-&gt;s_dev
-op_assign
-id|NODEV
-suffix:semicolon
 r_goto
 id|out_fail
 suffix:semicolon
-)brace
 id|blocksize
 op_assign
 id|sb_min_blocksize
@@ -4249,11 +4189,7 @@ c_func
 id|KERN_ERR
 l_string|&quot;VFS: Can&squot;t find ext3 filesystem on dev %s.&bslash;n&quot;
 comma
-id|bdevname
-c_func
-(paren
-id|dev
-)paren
+id|sb-&gt;s_id
 )paren
 suffix:semicolon
 r_goto
@@ -4333,11 +4269,7 @@ id|KERN_ERR
 l_string|&quot;EXT3-fs: %s: couldn&squot;t mount because of &quot;
 l_string|&quot;unsupported optional features (%x).&bslash;n&quot;
 comma
-id|bdevname
-c_func
-(paren
-id|dev
-)paren
+id|sb-&gt;s_id
 comma
 id|i
 )paren
@@ -4377,11 +4309,7 @@ id|KERN_ERR
 l_string|&quot;EXT3-fs: %s: couldn&squot;t mount RDWR because of &quot;
 l_string|&quot;unsupported optional features (%x).&bslash;n&quot;
 comma
-id|bdevname
-c_func
-(paren
-id|dev
-)paren
+id|sb-&gt;s_id
 comma
 id|i
 )paren
@@ -4416,11 +4344,7 @@ l_string|&quot;EXT3-fs: Unsupported filesystem blocksize %d on %s.&bslash;n&quot
 comma
 id|blocksize
 comma
-id|bdevname
-c_func
-(paren
-id|dev
-)paren
+id|sb-&gt;s_id
 )paren
 suffix:semicolon
 r_goto
@@ -5191,11 +5115,7 @@ id|printk
 id|KERN_ERR
 l_string|&quot;ext3: No journal on filesystem on %s&bslash;n&quot;
 comma
-id|bdevname
-c_func
-(paren
-id|dev
-)paren
+id|sb-&gt;s_id
 )paren
 suffix:semicolon
 r_goto
@@ -7397,11 +7317,7 @@ l_string|&quot;EXT3-fs: %s: couldn&squot;t &quot;
 l_string|&quot;remount RDWR because of unsupported &quot;
 l_string|&quot;optional features (%x).&bslash;n&quot;
 comma
-id|bdevname
-c_func
-(paren
-id|sb-&gt;s_dev
-)paren
+id|sb-&gt;s_id
 comma
 id|ret
 )paren

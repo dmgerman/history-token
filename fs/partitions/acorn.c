@@ -1154,7 +1154,7 @@ id|nr_sects
 op_assign
 id|hd-&gt;part
 (braket
-id|MINOR
+id|minor
 c_func
 (paren
 id|to_kdev_t

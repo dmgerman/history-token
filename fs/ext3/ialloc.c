@@ -576,24 +576,6 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|kdev_none
-c_func
-(paren
-id|inode-&gt;i_dev
-)paren
-)paren
-(brace
-id|printk
-(paren
-l_string|&quot;ext3_free_inode: inode has no device&bslash;n&quot;
-)paren
-suffix:semicolon
-r_return
-suffix:semicolon
-)brace
-r_if
-c_cond
-(paren
 id|atomic_read
 c_func
 (paren

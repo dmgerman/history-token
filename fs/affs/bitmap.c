@@ -1171,11 +1171,7 @@ c_func
 id|KERN_NOTICE
 l_string|&quot;AFFS: Bitmap invalid - mounting %s read only&bslash;n&quot;
 comma
-id|kdevname
-c_func
-(paren
-id|sb-&gt;s_dev
-)paren
+id|sb-&gt;s_id
 )paren
 suffix:semicolon
 id|sb-&gt;s_flags
@@ -1376,11 +1372,7 @@ l_string|&quot;AFFS: Bitmap %u invalid - mounting %s read only.&bslash;n&quot;
 comma
 id|bm-&gt;bm_key
 comma
-id|kdevname
-c_func
-(paren
-id|sb-&gt;s_dev
-)paren
+id|sb-&gt;s_id
 )paren
 suffix:semicolon
 id|sb-&gt;s_flags

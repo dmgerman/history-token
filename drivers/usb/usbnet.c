@@ -5030,6 +5030,7 @@ op_assign
 id|dev-&gt;driver_info
 suffix:semicolon
 r_int
+r_int
 id|flags
 suffix:semicolon
 macro_line|#ifdef&t;CONFIG_USB_NET1080

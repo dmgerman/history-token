@@ -9042,9 +9042,14 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+op_logical_neg
+id|kdev_same
+c_func
+(paren
 id|p_s_bh-&gt;b_dev
-op_ne
+comma
 id|p_s_sb-&gt;s_dev
+)paren
 op_logical_or
 id|p_s_bh-&gt;b_size
 op_ne

@@ -60,12 +60,12 @@ DECL|member|led_on
 r_int
 id|led_on
 suffix:semicolon
-multiline_comment|/* Led on-time; range = 0..255 */
+multiline_comment|/* Led on-time; range = 0..25000 */
 DECL|member|led_off
 r_int
 id|led_off
 suffix:semicolon
-multiline_comment|/*  */
+multiline_comment|/* Led off-time; range = 0..25000  */
 )brace
 suffix:semicolon
 multiline_comment|/* Restore user settings */

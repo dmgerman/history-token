@@ -56,9 +56,9 @@ multiline_comment|/*&n; * Scheduling quanta.&n; *&n; * NOTE! The unix &quot;nice
 DECL|macro|NICE_RANGE
 mdefine_line|#define NICE_RANGE&t;40
 DECL|macro|MIN_NICE_TSLICE
-mdefine_line|#define MIN_NICE_TSLICE&t;5000
+mdefine_line|#define MIN_NICE_TSLICE&t;10000
 DECL|macro|MAX_NICE_TSLICE
-mdefine_line|#define MAX_NICE_TSLICE&t;70000
+mdefine_line|#define MAX_NICE_TSLICE&t;90000
 DECL|macro|TASK_TIMESLICE
 mdefine_line|#define TASK_TIMESLICE(p)&t;((int) ts_table[19 - (p)-&gt;nice])
 DECL|variable|ts_table
@@ -1396,36 +1396,8 @@ c_cond
 (paren
 id|p-&gt;dyn_prio
 )paren
-(brace
-id|p-&gt;time_slice
-op_decrement
-suffix:semicolon
 id|p-&gt;dyn_prio
 op_decrement
-suffix:semicolon
-)brace
-id|p-&gt;need_resched
-op_assign
-l_int|1
-suffix:semicolon
-)brace
-r_else
-r_if
-c_cond
-(paren
-id|p-&gt;time_slice
-OL
-op_minus
-id|TASK_TIMESLICE
-c_func
-(paren
-id|p
-)paren
-)paren
-(brace
-id|p-&gt;time_slice
-op_assign
-l_int|0
 suffix:semicolon
 id|need_resched
 suffix:colon

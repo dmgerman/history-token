@@ -352,11 +352,7 @@ id|sys_mdb
 )paren
 (brace
 r_return
-id|kdevname
-c_func
-(paren
-id|sys_mdb-&gt;s_dev
-)paren
+id|sys_mdb-&gt;s_id
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * hfs_sysentry&n; */

@@ -825,11 +825,7 @@ id|KERN_ERR
 l_string|&quot;IO error syncing NTFS &quot;
 l_string|&quot;cluster [%s:%i]&bslash;n&quot;
 comma
-id|bdevname
-c_func
-(paren
-id|sb-&gt;s_dev
-)paren
+id|sb-&gt;s_id
 comma
 id|cluster
 )paren

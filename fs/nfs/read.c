@@ -327,7 +327,7 @@ suffix:semicolon
 id|dprintk
 c_func
 (paren
-l_string|&quot;NFS: nfs_proc_read(%s, (%x:%x/%Ld), %Ld, %d, %p)&bslash;n&quot;
+l_string|&quot;NFS: nfs_proc_read(%s, (%s/%Ld), %Ld, %d, %p)&bslash;n&quot;
 comma
 id|NFS_SERVER
 c_func
@@ -337,17 +337,7 @@ id|inode
 op_member_access_from_pointer
 id|hostname
 comma
-id|major
-c_func
-(paren
-id|inode-&gt;i_dev
-)paren
-comma
-id|minor
-c_func
-(paren
-id|inode-&gt;i_dev
-)paren
+id|inode-&gt;i_sb-&gt;s_id
 comma
 (paren
 r_int
@@ -1096,21 +1086,11 @@ multiline_comment|/* Start the async call */
 id|dprintk
 c_func
 (paren
-l_string|&quot;NFS: %4d initiated read call (req %x:%x/%Ld count %d nriov %d.&bslash;n&quot;
+l_string|&quot;NFS: %4d initiated read call (req %s/%Ld count %d nriov %d.&bslash;n&quot;
 comma
 id|task-&gt;tk_pid
 comma
-id|major
-c_func
-(paren
-id|inode-&gt;i_dev
-)paren
-comma
-id|minor
-c_func
-(paren
-id|inode-&gt;i_dev
-)paren
+id|inode-&gt;i_sb-&gt;s_id
 comma
 (paren
 r_int
@@ -1781,19 +1761,9 @@ suffix:semicolon
 id|dprintk
 c_func
 (paren
-l_string|&quot;NFS: read (%x:%x/%Ld %d@%Ld)&bslash;n&quot;
+l_string|&quot;NFS: read (%s/%Ld %d@%Ld)&bslash;n&quot;
 comma
-id|major
-c_func
-(paren
-id|req-&gt;wb_inode-&gt;i_dev
-)paren
-comma
-id|minor
-c_func
-(paren
-id|req-&gt;wb_inode-&gt;i_dev
-)paren
+id|req-&gt;wb_inode-&gt;i_sb-&gt;s_id
 comma
 (paren
 r_int

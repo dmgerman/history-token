@@ -946,11 +946,7 @@ c_func
 l_string|&quot;SysV FS: SCO EAFS on %s detected, &quot;
 l_string|&quot;forcing read-only mode.&bslash;n&quot;
 comma
-id|bdevname
-c_func
-(paren
-id|sb-&gt;s_dev
-)paren
+id|sb-&gt;s_id
 )paren
 suffix:semicolon
 id|sb-&gt;s_flags
@@ -1040,11 +1036,7 @@ c_func
 l_string|&quot;SysV FS: can&squot;t handle long file names on %s, &quot;
 l_string|&quot;forcing read-only mode.&bslash;n&quot;
 comma
-id|kdevname
-c_func
-(paren
-id|sb-&gt;s_dev
-)paren
+id|sb-&gt;s_id
 )paren
 suffix:semicolon
 id|sb-&gt;s_flags
@@ -1521,11 +1513,7 @@ id|found
 comma
 id|sb-&gt;s_blocksize
 comma
-id|bdevname
-c_func
-(paren
-id|sb-&gt;s_dev
-)paren
+id|sb-&gt;s_id
 )paren
 suffix:semicolon
 id|sb-&gt;s_magic
@@ -1658,11 +1646,6 @@ op_star
 id|bh
 op_assign
 l_int|NULL
-suffix:semicolon
-id|kdev_t
-id|dev
-op_assign
-id|sb-&gt;s_dev
 suffix:semicolon
 r_int
 r_int
@@ -2039,11 +2022,7 @@ c_func
 (paren
 l_string|&quot;VFS: unable to find oldfs superblock on device %s&bslash;n&quot;
 comma
-id|bdevname
-c_func
-(paren
-id|dev
-)paren
+id|sb-&gt;s_id
 )paren
 suffix:semicolon
 r_goto
@@ -2111,11 +2090,6 @@ op_star
 id|bh2
 op_assign
 l_int|NULL
-suffix:semicolon
-id|kdev_t
-id|dev
-op_assign
-id|sb-&gt;s_dev
 suffix:semicolon
 r_struct
 id|v7_super_block
@@ -2207,11 +2181,7 @@ c_func
 l_string|&quot;VFS: unable to read V7 FS superblock on &quot;
 l_string|&quot;device %s.&bslash;n&quot;
 comma
-id|bdevname
-c_func
-(paren
-id|dev
-)paren
+id|sb-&gt;s_id
 )paren
 suffix:semicolon
 r_goto

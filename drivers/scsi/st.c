@@ -246,9 +246,9 @@ mdefine_line|#define ST_TIMEOUT (900 * HZ)
 DECL|macro|ST_LONG_TIMEOUT
 mdefine_line|#define ST_LONG_TIMEOUT (14000 * HZ)
 DECL|macro|TAPE_NR
-mdefine_line|#define TAPE_NR(x) (MINOR(x) &amp; ~(128 | ST_MODE_MASK))
+mdefine_line|#define TAPE_NR(x) (minor(x) &amp; ~(-1 &lt;&lt; ST_MODE_SHIFT))
 DECL|macro|TAPE_MODE
-mdefine_line|#define TAPE_MODE(x) ((MINOR(x) &amp; ST_MODE_MASK) &gt;&gt; ST_MODE_SHIFT)
+mdefine_line|#define TAPE_MODE(x) ((minor(x) &amp; ST_MODE_MASK) &gt;&gt; ST_MODE_SHIFT)
 multiline_comment|/* Internal ioctl to set both density (uppermost 8 bits) and blocksize (lower&n;   24 bits) */
 DECL|macro|SET_DENS_AND_BLK
 mdefine_line|#define SET_DENS_AND_BLK 0x10001
@@ -4259,7 +4259,7 @@ op_assign
 id|STp-&gt;autorew_dev
 op_assign
 (paren
-id|MINOR
+id|minor
 c_func
 (paren
 id|inode-&gt;i_rdev
@@ -19821,7 +19821,7 @@ l_int|0
 suffix:semicolon
 id|tpnt-&gt;devt
 op_assign
-id|MKDEV
+id|mk_kdev
 c_func
 (paren
 id|SCSI_TAPE_MAJOR

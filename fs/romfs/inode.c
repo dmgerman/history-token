@@ -101,11 +101,6 @@ id|buffer_head
 op_star
 id|bh
 suffix:semicolon
-id|kdev_t
-id|dev
-op_assign
-id|s-&gt;s_dev
-suffix:semicolon
 r_struct
 id|romfs_super_block
 op_star
@@ -206,11 +201,7 @@ id|printk
 l_string|&quot;VFS: Can&squot;t find a romfs filesystem on dev &quot;
 l_string|&quot;%s.&bslash;n&quot;
 comma
-id|kdevname
-c_func
-(paren
-id|dev
-)paren
+id|s-&gt;s_id
 )paren
 suffix:semicolon
 r_goto
@@ -242,11 +233,7 @@ id|printk
 l_string|&quot;romfs: bad initial checksum on dev &quot;
 l_string|&quot;%s.&bslash;n&quot;
 comma
-id|kdevname
-c_func
-(paren
-id|dev
-)paren
+id|s-&gt;s_id
 )paren
 suffix:semicolon
 r_goto

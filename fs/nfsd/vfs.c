@@ -4943,14 +4943,9 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-op_logical_neg
-id|kdev_same
-c_func
-(paren
-id|fdir-&gt;i_dev
-comma
-id|tdir-&gt;i_dev
-)paren
+id|fdir-&gt;i_sb
+op_ne
+id|tdir-&gt;i_sb
 )paren
 r_goto
 id|out

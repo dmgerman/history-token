@@ -102,13 +102,6 @@ id|blksize
 op_assign
 l_int|2048
 suffix:semicolon
-DECL|variable|hsecsize
-r_static
-r_int
-id|hsecsize
-op_assign
-l_int|2048
-suffix:semicolon
 "&f;"
 multiline_comment|/* Drive hardware/firmware characteristics&n;   Identifiers in accordance with Optics Storage documentation */
 DECL|macro|optcd_port
@@ -449,6 +442,12 @@ id|function
 suffix:colon
 id|sleep_timer
 )brace
+suffix:semicolon
+DECL|variable|optcd_lock
+id|spinlock_t
+id|optcd_lock
+op_assign
+id|SPIN_LOCK_UNLOCKED
 suffix:semicolon
 multiline_comment|/* Timer routine: wake up when desired flag goes low,&n;   or when timeout expires. */
 DECL|function|sleep_timer
@@ -3495,7 +3494,7 @@ suffix:semicolon
 "&f;"
 multiline_comment|/* Request handling */
 DECL|macro|CURRENT_VALID
-mdefine_line|#define CURRENT_VALID &bslash;&n;&t;(!QUEUE_EMPTY &amp;&amp; MAJOR(CURRENT -&gt; rq_dev) == MAJOR_NR &bslash;&n;&t; &amp;&amp; CURRENT -&gt; cmd == READ &amp;&amp; CURRENT -&gt; sector != -1)
+mdefine_line|#define CURRENT_VALID &bslash;&n;&t;(!QUEUE_EMPTY &amp;&amp; major(CURRENT -&gt; rq_dev) == MAJOR_NR &bslash;&n;&t; &amp;&amp; CURRENT -&gt; cmd == READ &amp;&amp; CURRENT -&gt; sector != -1)
 multiline_comment|/* Buffers for block size conversion. */
 DECL|macro|NOBUF
 mdefine_line|#define NOBUF&t;&t;-1
@@ -5108,30 +5107,6 @@ c_loop
 id|CURRENT_VALID
 )paren
 (brace
-r_if
-c_cond
-(paren
-id|CURRENT-&gt;bh
-)paren
-(brace
-r_if
-c_cond
-(paren
-op_logical_neg
-id|buffer_locked
-c_func
-(paren
-id|CURRENT-&gt;bh
-)paren
-)paren
-id|panic
-c_func
-(paren
-id|DEVICE_NAME
-l_string|&quot;: block not locked&quot;
-)paren
-suffix:semicolon
-)brace
 id|transfer
 c_func
 (paren
@@ -8425,14 +8400,6 @@ comma
 l_int|NULL
 )paren
 suffix:semicolon
-id|hardsect_size
-(braket
-id|MAJOR_NR
-)braket
-op_assign
-op_amp
-id|hsecsize
-suffix:semicolon
 id|blksize_size
 (braket
 id|MAJOR_NR
@@ -8451,6 +8418,9 @@ id|MAJOR_NR
 )paren
 comma
 id|DEVICE_REQUEST
+comma
+op_amp
+id|optcd_lock
 )paren
 suffix:semicolon
 id|read_ahead
@@ -8475,7 +8445,7 @@ c_func
 (paren
 l_int|NULL
 comma
-id|MKDEV
+id|mk_kdev
 c_func
 (paren
 id|MAJOR_NR

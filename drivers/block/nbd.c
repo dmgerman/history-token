@@ -119,7 +119,7 @@ id|EINVAL
 suffix:semicolon
 id|dev
 op_assign
-id|MINOR
+id|minor
 c_func
 (paren
 id|inode-&gt;i_rdev
@@ -1026,7 +1026,7 @@ op_ne
 op_amp
 id|nbd_dev
 (braket
-id|MINOR
+id|minor
 c_func
 (paren
 id|req-&gt;rq_dev
@@ -1181,7 +1181,7 @@ op_ne
 op_amp
 id|nbd_dev
 (braket
-id|MINOR
+id|minor
 c_func
 (paren
 id|req-&gt;rq_dev
@@ -1289,7 +1289,7 @@ suffix:semicolon
 macro_line|#endif
 id|dev
 op_assign
-id|MINOR
+id|minor
 c_func
 (paren
 id|req-&gt;rq_dev
@@ -1543,7 +1543,7 @@ id|EINVAL
 suffix:semicolon
 id|dev
 op_assign
-id|MINOR
+id|minor
 c_func
 (paren
 id|inode-&gt;i_rdev
@@ -2065,7 +2065,7 @@ id|ENODEV
 suffix:semicolon
 id|dev
 op_assign
-id|MINOR
+id|minor
 c_func
 (paren
 id|inode-&gt;i_rdev
@@ -2358,7 +2358,7 @@ c_func
 (paren
 l_int|NULL
 comma
-id|MKDEV
+id|mk_kdev
 c_func
 (paren
 id|MAJOR_NR

@@ -714,14 +714,9 @@ id|sb-&gt;sv_ninodes
 id|printk
 c_func
 (paren
-l_string|&quot;Bad inode number on dev %s&quot;
-l_string|&quot;: %d is out of range&bslash;n&quot;
+l_string|&quot;Bad inode number on dev %s: %d is out of range&bslash;n&quot;
 comma
-id|kdevname
-c_func
-(paren
-id|inode-&gt;i_dev
-)paren
+id|inode-&gt;i_sb-&gt;s_id
 comma
 id|ino
 )paren
@@ -755,11 +750,7 @@ c_func
 (paren
 l_string|&quot;Major problem: unable to read inode from dev %s&bslash;n&quot;
 comma
-id|bdevname
-c_func
-(paren
-id|inode-&gt;i_dev
-)paren
+id|inode-&gt;i_sb-&gt;s_id
 )paren
 suffix:semicolon
 r_goto
@@ -1023,11 +1014,7 @@ c_func
 (paren
 l_string|&quot;Bad inode number on dev %s: %d is out of range&bslash;n&quot;
 comma
-id|bdevname
-c_func
-(paren
-id|inode-&gt;i_dev
-)paren
+id|inode-&gt;i_sb-&gt;s_id
 comma
 id|ino
 )paren
@@ -1364,11 +1351,7 @@ id|printk
 (paren
 l_string|&quot;IO error syncing sysv inode [%s:%08lx]&bslash;n&quot;
 comma
-id|bdevname
-c_func
-(paren
-id|inode-&gt;i_dev
-)paren
+id|inode-&gt;i_sb-&gt;s_id
 comma
 id|inode-&gt;i_ino
 )paren

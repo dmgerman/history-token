@@ -1093,11 +1093,7 @@ id|panic
 (paren
 l_string|&quot;UFS-fs panic (device %s): %s: %s&bslash;n&quot;
 comma
-id|kdevname
-c_func
-(paren
-id|sb-&gt;s_dev
-)paren
+id|sb-&gt;s_id
 comma
 id|function
 comma
@@ -1118,11 +1114,7 @@ id|printk
 id|KERN_CRIT
 l_string|&quot;UFS-fs error (device %s): %s: %s&bslash;n&quot;
 comma
-id|kdevname
-c_func
-(paren
-id|sb-&gt;s_dev
-)paren
+id|sb-&gt;s_id
 comma
 id|function
 comma
@@ -1236,11 +1228,7 @@ id|printk
 id|KERN_CRIT
 l_string|&quot;UFS-fs panic (device %s): %s: %s&bslash;n&quot;
 comma
-id|kdevname
-c_func
-(paren
-id|sb-&gt;s_dev
-)paren
+id|sb-&gt;s_id
 comma
 id|function
 comma
@@ -1301,11 +1289,7 @@ id|printk
 id|KERN_WARNING
 l_string|&quot;UFS-fs warning (device %s): %s: %s&bslash;n&quot;
 comma
-id|kdevname
-c_func
-(paren
-id|sb-&gt;s_dev
-)paren
+id|sb-&gt;s_id
 comma
 id|function
 comma

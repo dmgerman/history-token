@@ -5108,7 +5108,6 @@ multiline_comment|/*&n;&t; * jens: driver has lots of races&n;&t; */
 id|spin_unlock_irq
 c_func
 (paren
-op_amp
 id|q-&gt;queue_lock
 )paren
 suffix:semicolon
@@ -5563,7 +5562,6 @@ suffix:colon
 id|spin_lock_irq
 c_func
 (paren
-op_amp
 id|q-&gt;queue_lock
 )paren
 suffix:semicolon
@@ -12990,7 +12988,7 @@ id|handle_abort_timeout
 suffix:semicolon
 id|scd_info.dev
 op_assign
-id|MKDEV
+id|mk_kdev
 c_func
 (paren
 id|MAJOR_NR

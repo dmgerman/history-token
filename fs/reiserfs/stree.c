@@ -1464,6 +1464,9 @@ suffix:semicolon
 id|RFALSE
 c_func
 (paren
+id|kdev_same
+c_func
+(paren
 id|PATH_PLAST_BUFFER
 c_func
 (paren
@@ -1471,8 +1474,9 @@ id|p_s_chk_path
 )paren
 op_member_access_from_pointer
 id|b_dev
-op_eq
+comma
 id|NODEV
+)paren
 comma
 l_string|&quot;PAP-5060: device must not be NODEV&quot;
 )paren

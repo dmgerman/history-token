@@ -1238,11 +1238,7 @@ c_func
 (paren
 l_string|&quot;&lt;%s,%d&gt;(%d,%d) &quot;
 comma
-id|bdevname
-c_func
-(paren
-id|walk-&gt;sb-&gt;s_dev
-)paren
+id|walk-&gt;sb-&gt;s_dev-&gt;s_id
 comma
 id|walk-&gt;start_cluster
 comma

@@ -458,11 +458,7 @@ c_func
 (paren
 l_string|&quot;free_block (%s:%d): bit already cleared&bslash;n&quot;
 comma
-id|kdevname
-c_func
-(paren
-id|sb-&gt;s_dev
-)paren
+id|sb-&gt;s_id
 comma
 id|block
 )paren
@@ -728,11 +724,7 @@ c_func
 (paren
 l_string|&quot;Bad inode number on dev %s: %ld is out of range&bslash;n&quot;
 comma
-id|bdevname
-c_func
-(paren
-id|sb-&gt;s_dev
-)paren
+id|sb-&gt;s_id
 comma
 id|ino
 )paren
@@ -865,11 +857,7 @@ c_func
 (paren
 l_string|&quot;Bad inode number on dev %s: %ld is out of range&bslash;n&quot;
 comma
-id|bdevname
-c_func
-(paren
-id|sb-&gt;s_dev
-)paren
+id|sb-&gt;s_id
 comma
 id|ino
 )paren

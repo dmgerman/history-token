@@ -3243,7 +3243,7 @@ c_func
 (paren
 l_string|&quot;/dev/ram&quot;
 comma
-id|MKDEV
+id|mk_kdev
 c_func
 (paren
 id|RAMDISK_MAJOR
@@ -3690,7 +3690,7 @@ macro_line|#ifdef CONFIG_ROOT_NFS
 r_if
 c_cond
 (paren
-id|MAJOR
+id|major
 c_func
 (paren
 id|ROOT_DEV
@@ -3736,7 +3736,7 @@ l_string|&quot;VFS: Unable to mount root fs via NFS, trying floppy.&bslash;n&quo
 suffix:semicolon
 id|ROOT_DEV
 op_assign
-id|MKDEV
+id|mk_kdev
 c_func
 (paren
 id|FLOPPY_MAJOR
@@ -3975,19 +3975,15 @@ r_void
 )paren
 (brace
 macro_line|#ifdef CONFIG_BLK_DEV_INITRD
-r_int
+id|kdev_t
 id|ram0
 op_assign
-id|kdev_t_to_nr
-c_func
-(paren
-id|MKDEV
+id|mk_kdev
 c_func
 (paren
 id|RAMDISK_MAJOR
 comma
 l_int|0
-)paren
 )paren
 suffix:semicolon
 r_int
@@ -4104,7 +4100,11 @@ c_cond
 (paren
 id|real_root_dev
 op_eq
+id|kdev_t_to_nr
+c_func
+(paren
 id|ram0
+)paren
 )paren
 (brace
 id|sys_chdir
@@ -4118,7 +4118,11 @@ suffix:semicolon
 )brace
 id|ROOT_DEV
 op_assign
+id|to_kdev_t
+c_func
+(paren
 id|real_root_dev
+)paren
 suffix:semicolon
 id|mount_root
 c_func
@@ -4267,7 +4271,7 @@ c_func
 (paren
 l_string|&quot;/dev/ram&quot;
 comma
-id|MKDEV
+id|mk_kdev
 c_func
 (paren
 id|RAMDISK_MAJOR
@@ -4283,7 +4287,7 @@ c_func
 (paren
 l_string|&quot;/dev/initrd&quot;
 comma
-id|MKDEV
+id|mk_kdev
 c_func
 (paren
 id|RAMDISK_MAJOR
@@ -4336,7 +4340,11 @@ l_int|0
 suffix:semicolon
 id|real_root_dev
 op_assign
+id|kdev_t_to_nr
+c_func
+(paren
 id|ROOT_DEV
+)paren
 suffix:semicolon
 macro_line|#endif
 id|sys_mkdir

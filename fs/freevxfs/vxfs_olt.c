@@ -1,5 +1,5 @@
 multiline_comment|/*&n; * Copyright (c) 2000-2001 Christoph Hellwig.&n; * All rights reserved.&n; *&n; * Redistribution and use in source and binary forms, with or without&n; * modification, are permitted provided that the following conditions&n; * are met:&n; * 1. Redistributions of source code must retain the above copyright&n; *    notice, this list of conditions, and the following disclaimer,&n; *    without modification.&n; * 2. The name of the author may not be used to endorse or promote products&n; *    derived from this software without specific prior written permission.&n; *&n; * Alternatively, this software may be distributed under the terms of the&n; * GNU General Public License (&quot;GPL&quot;).&n; *&n; * THIS SOFTWARE IS PROVIDED BY THE AUTHOR AND CONTRIBUTORS ``AS IS&squot;&squot; AND&n; * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE&n; * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE&n; * ARE DISCLAIMED. IN NO EVENT SHALL THE AUTHOR OR CONTRIBUTORS BE LIABLE FOR&n; * ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL&n; * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS&n; * OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)&n; * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT&n; * LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY&n; * OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF&n; * SUCH DAMAGE.&n; */
-macro_line|#ident &quot;$Id: vxfs_olt.c,v 1.9 2001/08/07 16:14:45 hch Exp hch $&quot;
+macro_line|#ident &quot;$Id: vxfs_olt.c,v 1.10 2002/01/02 23:03:58 hch Exp hch $&quot;
 multiline_comment|/* &n; * Veritas filesystem driver - object location table support.&n; */
 macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -165,10 +165,10 @@ id|eaddr
 suffix:semicolon
 id|bp
 op_assign
-id|bread
+id|sb_bread
 c_func
 (paren
-id|sbp-&gt;s_dev
+id|sbp
 comma
 id|vxfs_oblock
 c_func
@@ -179,8 +179,6 @@ id|infp-&gt;vsi_oltext
 comma
 id|bsize
 )paren
-comma
-id|bsize
 )paren
 suffix:semicolon
 r_if
@@ -217,6 +215,33 @@ c_func
 (paren
 id|KERN_NOTICE
 l_string|&quot;vxfs: ivalid olt magic number&bslash;n&quot;
+)paren
+suffix:semicolon
+r_goto
+id|fail
+suffix:semicolon
+)brace
+multiline_comment|/*&n;&t; * It is in theory possible that vsi_oltsize is &gt; 1.&n;&t; * I&squot;ve not seen any such filesystem yet and I&squot;m lazy..  --hch&n;&t; */
+r_if
+c_cond
+(paren
+id|infp-&gt;vsi_oltsize
+OG
+l_int|1
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_NOTICE
+l_string|&quot;vxfs: oltsize &gt; 1 detected.&bslash;n&quot;
+)paren
+suffix:semicolon
+id|printk
+c_func
+(paren
+id|KERN_NOTICE
+l_string|&quot;vxfs: please notify hch@caldera.de&bslash;n&quot;
 )paren
 suffix:semicolon
 r_goto

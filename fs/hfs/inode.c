@@ -1107,27 +1107,6 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|inode-&gt;i_dev
-op_ne
-id|sb-&gt;s_dev
-)paren
-(brace
-id|iput
-c_func
-(paren
-id|inode
-)paren
-suffix:semicolon
-multiline_comment|/* automatically does an hfs_cat_put */
-id|inode
-op_assign
-l_int|NULL
-suffix:semicolon
-)brace
-r_else
-r_if
-c_cond
-(paren
 op_logical_neg
 id|inode-&gt;i_mode
 op_logical_or
@@ -1153,7 +1132,7 @@ id|sb
 suffix:semicolon
 id|inode-&gt;i_rdev
 op_assign
-l_int|0
+id|NODEV
 suffix:semicolon
 id|inode-&gt;i_ctime
 op_assign

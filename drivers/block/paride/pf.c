@@ -407,7 +407,7 @@ mdefine_line|#define DEVICE_NAME &quot;PF&quot;
 DECL|macro|DEVICE_REQUEST
 mdefine_line|#define DEVICE_REQUEST do_pf_request
 DECL|macro|DEVICE_NR
-mdefine_line|#define DEVICE_NR(device) MINOR(device)
+mdefine_line|#define DEVICE_NR(device) minor(device)
 DECL|macro|DEVICE_ON
 mdefine_line|#define DEVICE_ON(device)
 DECL|macro|DEVICE_OFF
@@ -1119,7 +1119,7 @@ c_func
 (paren
 l_int|NULL
 comma
-id|MKDEV
+id|mk_kdev
 c_func
 (paren
 id|MAJOR_NR
@@ -1290,8 +1290,9 @@ op_logical_neg
 id|inode
 )paren
 op_logical_or
+id|kdev_none
+c_func
 (paren
-op_logical_neg
 id|inode-&gt;i_rdev
 )paren
 )paren

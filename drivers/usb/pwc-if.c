@@ -1,6 +1,6 @@
 multiline_comment|/* Linux driver for Philips webcam &n;   USB and Video4Linux interface part.&n;   (C) 1999-2001 Nemosoft Unv.&n;&n;   This program is free software; you can redistribute it and/or modify&n;   it under the terms of the GNU General Public License as published by&n;   the Free Software Foundation; either version 2 of the License, or&n;   (at your option) any later version.&n;&n;   This program is distributed in the hope that it will be useful,&n;   but WITHOUT ANY WARRANTY; without even the implied warranty of&n;   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n;   GNU General Public License for more details.&n;&n;   You should have received a copy of the GNU General Public License&n;   along with this program; if not, write to the Free Software&n;   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n;&n;*/
 multiline_comment|/*  &n;   This code forms the interface between the USB layers and the Philips&n;   specific stuff. Some adanved stuff of the driver falls under an&n;   NDA, signed between me and Philips B.V., Eindhoven, the Netherlands, and&n;   is thus not distributed in source form. The binary pwcx.o module &n;   contains the code that falls under the NDA.&n;   &n;   In case you&squot;re wondering: &squot;pwc&squot; stands for &quot;Philips WebCam&quot;, but &n;   I really didn&squot;t want to type &squot;philips_web_cam&squot; every time (I&squot;m lazy as&n;   any Linux kernel hacker, but I don&squot;t like uncomprehensible abbreviations&n;   without explanation).&n;   &n;   Oh yes, convention: to disctinguish between all the various pointers to&n;   device-structures, I use these names for the pointer variables:&n;   udev: struct usb_device *&n;   vdev: struct video_device *&n;   pdev: struct pwc_devive *&n;*/
-multiline_comment|/* Contributors:&n;   - Alvarado: adding whitebalance code&n;   - Alistar Moire: QuickCam 3000 Pro testing&n;*/
+multiline_comment|/* Contributors:&n;   - Alvarado: adding whitebalance code&n;   - Alistar Moire: QuickCam 3000 Pro device/product ID&n;   - Tony Hoyle: Creative Labs Webcam 5 device/product ID&n;   - Mark Burazin: solving hang in VIDIOCSYNC when camera gets unplugged&n;   - Jk Fang: SOTEC device/product ID&n;*/
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
@@ -155,6 +155,26 @@ c_func
 l_int|0x055D
 comma
 l_int|0x9001
+)paren
+)brace
+comma
+(brace
+id|USB_DEVICE
+c_func
+(paren
+l_int|0x041E
+comma
+l_int|0x400C
+)paren
+)brace
+comma
+(brace
+id|USB_DEVICE
+c_func
+(paren
+l_int|0x04CC
+comma
+l_int|0x8116
 )paren
 )brace
 comma
@@ -3456,6 +3476,7 @@ comma
 l_int|0
 )paren
 suffix:semicolon
+multiline_comment|/* Unlinking ISOC buffers one by one */
 r_for
 c_loop
 (paren
@@ -6109,6 +6130,33 @@ l_int|NULL
 r_if
 c_cond
 (paren
+id|pdev-&gt;unplugged
+)paren
+(brace
+id|remove_wait_queue
+c_func
+(paren
+op_amp
+id|pdev-&gt;frameq
+comma
+op_amp
+id|wait
+)paren
+suffix:semicolon
+id|set_current_state
+c_func
+(paren
+id|TASK_RUNNING
+)paren
+suffix:semicolon
+r_return
+op_minus
+id|ENODEV
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
 id|signal_pending
 c_func
 (paren
@@ -6919,10 +6967,88 @@ suffix:semicolon
 )brace
 )brace
 r_else
+r_if
+c_cond
+(paren
+id|vendor_id
+op_eq
+l_int|0x041e
+)paren
+(brace
+r_switch
+c_cond
+(paren
+id|product_id
+)paren
+(brace
+r_case
+l_int|0x400c
+suffix:colon
+id|Info
+c_func
+(paren
+l_string|&quot;Creative Labs Webcam 5 detected.&bslash;n&quot;
+)paren
+suffix:semicolon
+id|type_id
+op_assign
+l_int|730
+suffix:semicolon
+r_break
+suffix:semicolon
+r_default
+suffix:colon
 r_return
 l_int|NULL
 suffix:semicolon
-multiline_comment|/* Not Philips, Askey, Logitech or Samsung, for sure. */
+r_break
+suffix:semicolon
+)brace
+)brace
+r_else
+r_if
+c_cond
+(paren
+id|vendor_id
+op_eq
+l_int|0x04cc
+)paren
+(brace
+r_switch
+c_cond
+(paren
+id|product_id
+)paren
+(brace
+r_case
+l_int|0x8116
+suffix:colon
+id|Info
+c_func
+(paren
+l_string|&quot;SOTEC CMS-001 USB webcam detected.&bslash;n&quot;
+)paren
+suffix:semicolon
+id|type_id
+op_assign
+l_int|730
+suffix:semicolon
+r_break
+suffix:semicolon
+r_default
+suffix:colon
+r_return
+l_int|NULL
+suffix:semicolon
+r_break
+suffix:semicolon
+)brace
+)brace
+r_else
+r_return
+l_int|NULL
+suffix:semicolon
+multiline_comment|/* Not Philips, Askey, Logitech, Samsung, Creative or SOTEC, for sure. */
 id|memset
 c_func
 (paren
@@ -7329,49 +7455,6 @@ id|pdev
 op_assign
 id|pdev
 suffix:semicolon
-macro_line|#if 0
-multiline_comment|/* Shut down camera now (some people like the LED off) */
-r_if
-c_cond
-(paren
-id|power_save
-)paren
-(brace
-id|Trace
-c_func
-(paren
-id|TRACE_PROBE
-comma
-l_string|&quot;Powering down camera&quot;
-)paren
-suffix:semicolon
-id|i
-op_assign
-id|pwc_camera_power
-c_func
-(paren
-id|pdev
-comma
-l_int|0
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|i
-OL
-l_int|0
-)paren
-id|Info
-c_func
-(paren
-l_string|&quot;Failed to power-down the camera (%d)&bslash;n&quot;
-comma
-id|i
-)paren
-suffix:semicolon
-)brace
-macro_line|#endif
 id|Trace
 c_func
 (paren
@@ -7410,6 +7493,14 @@ id|pdev
 suffix:semicolon
 r_int
 id|hint
+suffix:semicolon
+id|DECLARE_WAITQUEUE
+c_func
+(paren
+id|wait
+comma
+id|current
+)paren
 suffix:semicolon
 id|lock_kernel
 c_func
@@ -7534,7 +7625,7 @@ op_amp
 id|pdev-&gt;frameq
 )paren
 suffix:semicolon
-multiline_comment|/* Wait until we get a &squot;go&squot; from _close(). This&n;&t;&t;&t;   had a gigantic race condition, since we kfree()&n;&t;&t;&t;   stuff here, but we have to wait until close() &n;&t;&t;&t;   is finished. */
+multiline_comment|/* Wait until we get a &squot;go&squot; from _close(). This used&n;&t;&t;&t;   to have a gigantic race condition, since we kfree()&n;&t;&t;&t;   stuff here, but we have to wait until close() &n;&t;&t;&t;   is finished. &n;&t;&t;&t; */
 id|Trace
 c_func
 (paren
@@ -7543,11 +7634,42 @@ comma
 l_string|&quot;Sleeping on remove_ok.&bslash;n&quot;
 )paren
 suffix:semicolon
-id|sleep_on
+id|add_wait_queue
 c_func
 (paren
 op_amp
 id|pdev-&gt;remove_ok
+comma
+op_amp
+id|wait
+)paren
+suffix:semicolon
+id|set_current_state
+c_func
+(paren
+id|TASK_UNINTERRUPTIBLE
+)paren
+suffix:semicolon
+multiline_comment|/* ... wait ... */
+id|schedule
+c_func
+(paren
+)paren
+suffix:semicolon
+id|remove_wait_queue
+c_func
+(paren
+op_amp
+id|pdev-&gt;remove_ok
+comma
+op_amp
+id|wait
+)paren
+suffix:semicolon
+id|set_current_state
+c_func
+(paren
+id|TASK_RUNNING
 )paren
 suffix:semicolon
 id|Trace
@@ -7994,7 +8116,7 @@ suffix:semicolon
 id|Info
 c_func
 (paren
-l_string|&quot;Also supports the Askey VC010, Logitech Quickcam 3000 Pro and the Samsung MPC-C10 and MPC-C30.&bslash;n&quot;
+l_string|&quot;Also supports the Askey VC010, Logitech Quickcam 3000 Pro, Samsung MPC-C10 and MPC-C30, the Creative WebCam 5 and the SOTEC CMS-001.&bslash;n&quot;
 )paren
 suffix:semicolon
 r_if

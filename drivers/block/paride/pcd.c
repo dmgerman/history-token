@@ -367,7 +367,7 @@ mdefine_line|#define DEVICE_NAME &quot;PCD&quot;
 DECL|macro|DEVICE_REQUEST
 mdefine_line|#define DEVICE_REQUEST do_pcd_request
 DECL|macro|DEVICE_NR
-mdefine_line|#define DEVICE_NR(device) (MINOR(device))
+mdefine_line|#define DEVICE_NR(device) (minor(device))
 DECL|macro|DEVICE_ON
 mdefine_line|#define DEVICE_ON(device)
 DECL|macro|DEVICE_OFF
@@ -972,7 +972,7 @@ l_int|NULL
 suffix:semicolon
 id|PCD.info.dev
 op_assign
-id|MKDEV
+id|mk_kdev
 c_func
 (paren
 id|major
@@ -3836,7 +3836,7 @@ id|READ
 (brace
 id|unit
 op_assign
-id|MINOR
+id|minor
 c_func
 (paren
 id|CURRENT-&gt;rq_dev

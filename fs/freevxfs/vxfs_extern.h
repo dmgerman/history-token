@@ -2,7 +2,7 @@ multiline_comment|/*&n; * Copyright (c) 2000-2001 Christoph Hellwig.&n; * All ri
 macro_line|#ifndef _VXFS_EXTERN_H_
 DECL|macro|_VXFS_EXTERN_H_
 mdefine_line|#define _VXFS_EXTERN_H_
-macro_line|#ident &quot;$Id: vxfs_extern.h,v 1.21 2001/08/07 16:13:30 hch Exp hch $&quot;
+macro_line|#ident &quot;$Id: vxfs_extern.h,v 1.22 2001/12/28 20:50:47 hch Exp hch $&quot;
 multiline_comment|/*&n; * Veritas filesystem driver - external prototypes.&n; *&n; * This file contains prototypes for all vxfs functions used&n; * outside their respective source files.&n; */
 r_struct
 id|kmem_cache_s
@@ -168,7 +168,7 @@ id|vxfs_get_page
 c_func
 (paren
 r_struct
-id|inode
+id|address_space
 op_star
 comma
 id|u_long

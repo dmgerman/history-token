@@ -81,11 +81,7 @@ c_func
 id|KERN_CRIT
 l_string|&quot;ADFS-fs error (device %s)%s%s: %s&bslash;n&quot;
 comma
-id|bdevname
-c_func
-(paren
-id|sb-&gt;s_dev
-)paren
+id|sb-&gt;s_id
 comma
 id|function
 ques
@@ -1499,11 +1495,6 @@ r_char
 op_star
 id|b_data
 suffix:semicolon
-id|kdev_t
-id|dev
-op_assign
-id|sb-&gt;s_dev
-suffix:semicolon
 multiline_comment|/* set default options */
 id|sb-&gt;u.adfs_sb.s_uid
 op_assign
@@ -1608,11 +1599,7 @@ c_func
 l_string|&quot;VFS: Can&squot;t find an adfs filesystem on dev &quot;
 l_string|&quot;%s.&bslash;n&quot;
 comma
-id|bdevname
-c_func
-(paren
-id|dev
-)paren
+id|sb-&gt;s_id
 )paren
 suffix:semicolon
 r_goto
@@ -1655,11 +1642,7 @@ c_func
 l_string|&quot;VPS: Can&squot;t find an adfs filesystem on dev &quot;
 l_string|&quot;%s.&bslash;n&quot;
 comma
-id|bdevname
-c_func
-(paren
-id|dev
-)paren
+id|sb-&gt;s_id
 )paren
 suffix:semicolon
 r_goto
@@ -1779,11 +1762,7 @@ id|KERN_ERR
 l_string|&quot;VFS: Unsupported blocksize on dev &quot;
 l_string|&quot;%s.&bslash;n&quot;
 comma
-id|bdevname
-c_func
-(paren
-id|dev
-)paren
+id|sb-&gt;s_id
 )paren
 suffix:semicolon
 r_goto

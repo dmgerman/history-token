@@ -2307,11 +2307,7 @@ l_string|&quot;journal %p: inode %s/%ld, size %Ld, bits %d, blksize %ld&bslash;n
 comma
 id|journal
 comma
-id|bdevname
-c_func
-(paren
-id|inode-&gt;i_dev
-)paren
+id|inode-&gt;i_sb-&gt;s_id
 comma
 id|inode-&gt;i_ino
 comma

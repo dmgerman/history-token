@@ -1707,11 +1707,7 @@ c_func
 (paren
 l_string|&quot;VFS: Can&squot;t find a HFS filesystem on dev %s.&bslash;n&quot;
 comma
-id|kdevname
-c_func
-(paren
-id|dev
-)paren
+id|s-&gt;s_id
 )paren
 suffix:semicolon
 )brace

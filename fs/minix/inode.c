@@ -1178,11 +1178,7 @@ c_func
 l_string|&quot;VFS: Can&squot;t find a Minix or Minix V2 filesystem on device &quot;
 l_string|&quot;%s.&bslash;n&quot;
 comma
-id|bdevname
-c_func
-(paren
-id|s-&gt;s_dev
-)paren
+id|s-&gt;s_id
 )paren
 suffix:semicolon
 id|out_release
@@ -2369,14 +2365,9 @@ id|bh
 (brace
 id|printk
 (paren
-l_string|&quot;IO error syncing minix inode [&quot;
-l_string|&quot;%s:%08lx]&bslash;n&quot;
+l_string|&quot;IO error syncing minix inode [%s:%08lx]&bslash;n&quot;
 comma
-id|kdevname
-c_func
-(paren
-id|inode-&gt;i_dev
-)paren
+id|inode-&gt;i_sb-&gt;s_id
 comma
 id|inode-&gt;i_ino
 )paren

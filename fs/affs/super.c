@@ -1592,11 +1592,7 @@ c_func
 l_string|&quot;AFFS: Dev %s, trying root=%u, bs=%d, &quot;
 l_string|&quot;size=%d, reserved=%d&bslash;n&quot;
 comma
-id|kdevname
-c_func
-(paren
-id|dev
-)paren
+id|sb-&gt;s_id
 comma
 id|AFFS_SB-&gt;s_root_block
 op_plus
@@ -1716,11 +1712,7 @@ c_func
 id|KERN_ERR
 l_string|&quot;AFFS: No valid root block on device %s&bslash;n&quot;
 comma
-id|kdevname
-c_func
-(paren
-id|dev
-)paren
+id|sb-&gt;s_id
 )paren
 suffix:semicolon
 r_goto
@@ -1817,11 +1809,7 @@ c_func
 id|KERN_NOTICE
 l_string|&quot;AFFS: Dircache FS - mounting %s read only&bslash;n&quot;
 comma
-id|kdevname
-c_func
-(paren
-id|dev
-)paren
+id|sb-&gt;s_id
 )paren
 suffix:semicolon
 id|sb-&gt;s_flags
@@ -1936,11 +1924,7 @@ c_func
 id|KERN_ERR
 l_string|&quot;AFFS: Unknown filesystem on device %s: %08X&bslash;n&quot;
 comma
-id|kdevname
-c_func
-(paren
-id|dev
-)paren
+id|sb-&gt;s_id
 comma
 id|chksum
 )paren

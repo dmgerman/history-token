@@ -4052,11 +4052,7 @@ c_func
 (paren
 l_string|&quot;VFS: Can&squot;t find a valid FAT filesystem on dev %s.&bslash;n&quot;
 comma
-id|bdevname
-c_func
-(paren
-id|sb-&gt;s_dev
-)paren
+id|sb-&gt;s_id
 )paren
 suffix:semicolon
 )brace
@@ -5161,11 +5157,7 @@ c_func
 (paren
 l_string|&quot;dev = %s, ino = %d&bslash;n&quot;
 comma
-id|kdevname
-c_func
-(paren
-id|inode-&gt;i_dev
-)paren
+id|sb-&gt;s_id
 comma
 id|i_pos
 )paren

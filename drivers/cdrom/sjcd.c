@@ -5712,13 +5712,6 @@ id|blksize
 op_assign
 l_int|2048
 suffix:semicolon
-DECL|variable|secsize
-r_static
-r_int
-id|secsize
-op_assign
-l_int|2048
-suffix:semicolon
 multiline_comment|/*&n; * Following stuff is intended for initialization of the cdrom. It&n; * first looks for presence of device. If the device is present, it&n; * will be reset. Then read the version of the drive and load status.&n; * The version is two BCD-coded bytes.&n; */
 r_static
 r_struct
@@ -5769,14 +5762,6 @@ id|sjcd_base
 )paren
 suffix:semicolon
 macro_line|#endif
-id|hardsect_size
-(braket
-id|MAJOR_NR
-)braket
-op_assign
-op_amp
-id|secsize
-suffix:semicolon
 id|blksize_size
 (braket
 id|MAJOR_NR

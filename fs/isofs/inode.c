@@ -2215,11 +2215,6 @@ r_int
 id|silent
 )paren
 (brace
-id|kdev_t
-id|dev
-op_assign
-id|s-&gt;s_dev
-suffix:semicolon
 r_struct
 id|buffer_head
 op_star
@@ -3494,11 +3489,7 @@ id|KERN_WARNING
 l_string|&quot;isofs_read_super: &quot;
 l_string|&quot;bread failed, dev=%s, iso_blknum=%d, block=%d&bslash;n&quot;
 comma
-id|kdevname
-c_func
-(paren
-id|dev
-)paren
+id|s-&gt;s_id
 comma
 id|iso_blknum
 comma

@@ -4,15 +4,37 @@ mdefine_line|#define __LINUX_OV511_H
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;linux/videodev.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
+macro_line|#include &lt;linux/usb.h&gt;
 DECL|macro|OV511_DEBUG
 mdefine_line|#define OV511_DEBUG&t;/* Turn on debug messages */
 macro_line|#ifdef OV511_DEBUG
 DECL|macro|PDEBUG
-macro_line|#  define PDEBUG(level, fmt, args...) &bslash;&n;if (debug &gt;= level) info(&quot;[&quot; __PRETTY_FUNCTION__ &quot;:%d] &quot; fmt, __LINE__ , ## args)
+macro_line|#  define PDEBUG(level, fmt, args...) &bslash;&n;if (debug &gt;= (level)) info(&quot;[&quot; __PRETTY_FUNCTION__ &quot;:%d] &quot; fmt, __LINE__ , &bslash;&n;&t;## args)
 macro_line|#else
 DECL|macro|PDEBUG
 macro_line|#  define PDEBUG(level, fmt, args...) do {} while(0)
 macro_line|#endif
+multiline_comment|/* This macro restricts an int variable to an inclusive range */
+DECL|macro|RESTRICT_TO_RANGE
+mdefine_line|#define RESTRICT_TO_RANGE(v,mi,ma) { &bslash;&n;&t;if ((v) &lt; (mi)) (v) = (mi); &bslash;&n;&t;else if ((v) &gt; (ma)) (v) = (ma); &bslash;&n;}
+multiline_comment|/* --------------------------------- */
+multiline_comment|/* DEFINES FOR OV511 AND OTHER CHIPS */
+multiline_comment|/* --------------------------------- */
+multiline_comment|/* USB IDs */
+DECL|macro|VEND_OMNIVISION
+mdefine_line|#define VEND_OMNIVISION&t;0x05A9
+DECL|macro|PROD_OV511
+mdefine_line|#define PROD_OV511&t;0x0511
+DECL|macro|PROD_OV511PLUS
+mdefine_line|#define PROD_OV511PLUS&t;0xA511
+DECL|macro|PROD_OV518
+mdefine_line|#define PROD_OV518&t;0x0518
+DECL|macro|PROD_OV518PLUS
+mdefine_line|#define PROD_OV518PLUS&t;0xA518
+DECL|macro|VEND_MATTEL
+mdefine_line|#define VEND_MATTEL&t;0x0813
+DECL|macro|PROD_ME2CAM
+mdefine_line|#define PROD_ME2CAM&t;0x0002
 multiline_comment|/* Camera interface register numbers */
 DECL|macro|OV511_REG_CAMERA_DELAY_MODE
 mdefine_line|#define OV511_REG_CAMERA_DELAY_MODE&t;&t;0x10
@@ -71,6 +93,8 @@ mdefine_line|#define OV511_REG_PIO_BIST&t;&t;&t;0x3E
 multiline_comment|/* I2C register numbers */
 DECL|macro|OV511_REG_I2C_CONTROL
 mdefine_line|#define OV511_REG_I2C_CONTROL&t;&t;&t;0x40
+DECL|macro|OV518_REG_I2C_CONTROL
+mdefine_line|#define OV518_REG_I2C_CONTROL&t;&t;&t;0x47&t;/* OV518(+) only */
 DECL|macro|OV511_REG_I2C_SLAVE_ID_WRITE
 mdefine_line|#define OV511_REG_I2C_SLAVE_ID_WRITE&t;&t;0x41
 DECL|macro|OV511_REG_I2C_SUB_ADDRESS_3_BYTE
@@ -118,9 +142,25 @@ mdefine_line|#define OV511_REG_SYSTEM_SNAPSHOT&t;&t;0x52
 DECL|macro|OV511_REG_SYSTEM_INIT
 mdefine_line|#define OV511_REG_SYSTEM_INIT         &t;&t;0x53
 DECL|macro|OV511_REG_SYSTEM_PWR_CLK
-mdefine_line|#define OV511_REG_SYSTEM_PWR_CLK&t;&t;0x54&t;/* OV511+ only */
+mdefine_line|#define OV511_REG_SYSTEM_PWR_CLK&t;&t;0x54 /* OV511+/OV518(+) only */
 DECL|macro|OV511_REG_SYSTEM_LED_CTL
 mdefine_line|#define OV511_REG_SYSTEM_LED_CTL&t;&t;0x55&t;/* OV511+ only */
+DECL|macro|OV518_REG_GPIO_IN
+mdefine_line|#define OV518_REG_GPIO_IN&t;&t;&t;0x55&t;/* OV518(+) only */
+DECL|macro|OV518_REG_GPIO_OUT
+mdefine_line|#define OV518_REG_GPIO_OUT&t;&t;&t;0x56&t;/* OV518(+) only */
+DECL|macro|OV518_REG_GPIO_CTL
+mdefine_line|#define OV518_REG_GPIO_CTL&t;&t;&t;0x57&t;/* OV518(+) only */
+DECL|macro|OV518_REG_GPIO_PULSE_IN
+mdefine_line|#define OV518_REG_GPIO_PULSE_IN&t;&t;&t;0x58&t;/* OV518(+) only */
+DECL|macro|OV518_REG_GPIO_PULSE_CLEAR
+mdefine_line|#define OV518_REG_GPIO_PULSE_CLEAR&t;&t;0x59&t;/* OV518(+) only */
+DECL|macro|OV518_REG_GPIO_PULSE_POLARITY
+mdefine_line|#define OV518_REG_GPIO_PULSE_POLARITY&t;&t;0x5a&t;/* OV518(+) only */
+DECL|macro|OV518_REG_GPIO_PULSE_EN
+mdefine_line|#define OV518_REG_GPIO_PULSE_EN&t;&t;&t;0x5b&t;/* OV518(+) only */
+DECL|macro|OV518_REG_GPIO_RESET
+mdefine_line|#define OV518_REG_GPIO_RESET&t;&t;&t;0x5c&t;/* OV518(+) only */
 DECL|macro|OV511_REG_SYSTEM_USER_DEFINED
 mdefine_line|#define OV511_REG_SYSTEM_USER_DEFINED&t;&t;0x5E
 DECL|macro|OV511_REG_SYSTEM_CUSTOM_ID
@@ -188,6 +228,23 @@ DECL|macro|OV511PLUS_ALT_SIZE_769
 mdefine_line|#define OV511PLUS_ALT_SIZE_769&t;6
 DECL|macro|OV511PLUS_ALT_SIZE_961
 mdefine_line|#define OV511PLUS_ALT_SIZE_961&t;7
+multiline_comment|/* Alternate numbers for various max packet sizes (OV518(+) only) */
+DECL|macro|OV518_ALT_SIZE_0
+mdefine_line|#define OV518_ALT_SIZE_0&t;0
+DECL|macro|OV518_ALT_SIZE_128
+mdefine_line|#define OV518_ALT_SIZE_128&t;1
+DECL|macro|OV518_ALT_SIZE_256
+mdefine_line|#define OV518_ALT_SIZE_256&t;2
+DECL|macro|OV518_ALT_SIZE_384
+mdefine_line|#define OV518_ALT_SIZE_384&t;3
+DECL|macro|OV518_ALT_SIZE_512
+mdefine_line|#define OV518_ALT_SIZE_512&t;4
+DECL|macro|OV518_ALT_SIZE_640
+mdefine_line|#define OV518_ALT_SIZE_640&t;5
+DECL|macro|OV518_ALT_SIZE_768
+mdefine_line|#define OV518_ALT_SIZE_768&t;6
+DECL|macro|OV518_ALT_SIZE_896
+mdefine_line|#define OV518_ALT_SIZE_896&t;7
 multiline_comment|/* OV7610 registers */
 DECL|macro|OV7610_REG_GAIN
 mdefine_line|#define OV7610_REG_GAIN          0x00&t;/* gain setting (5:0) */
@@ -281,69 +338,70 @@ mdefine_line|#define OV7610_REG_COM_L         0x35&t;/* misc settings */
 multiline_comment|/* 36-37 reserved */
 DECL|macro|OV7610_REG_COM_K
 mdefine_line|#define OV7610_REG_COM_K         0x38&t;/* misc registers */
-DECL|macro|SCRATCH_BUF_SIZE
-mdefine_line|#define SCRATCH_BUF_SIZE 512
 DECL|macro|FRAMES_PER_DESC
 mdefine_line|#define FRAMES_PER_DESC&t;&t;10&t;/* FIXME - What should this be? */
 DECL|macro|FRAME_SIZE_PER_DESC
 mdefine_line|#define FRAME_SIZE_PER_DESC&t;993&t;/* FIXME - Deprecated */
 DECL|macro|MAX_FRAME_SIZE_PER_DESC
 mdefine_line|#define MAX_FRAME_SIZE_PER_DESC&t;993&t;/* For statically allocated stuff */
+DECL|macro|PIXELS_PER_SEG
+mdefine_line|#define PIXELS_PER_SEG&t;&t;256&t;/* Pixels per segment */
 DECL|macro|OV511_ENDPOINT_ADDRESS
 mdefine_line|#define OV511_ENDPOINT_ADDRESS 1&t;/* Isoc endpoint number */
-singleline_comment|// CAMERA SPECIFIC
-singleline_comment|// FIXME - these can vary between specific models
-DECL|macro|OV7610_I2C_WRITE_ID
-mdefine_line|#define OV7610_I2C_WRITE_ID 0x42
-DECL|macro|OV7610_I2C_READ_ID
-mdefine_line|#define OV7610_I2C_READ_ID  0x43
+multiline_comment|/* I2C addresses */
+DECL|macro|OV7xx0_I2C_WRITE_ID
+mdefine_line|#define OV7xx0_I2C_WRITE_ID   0x42
+DECL|macro|OV7xx0_I2C_READ_ID
+mdefine_line|#define OV7xx0_I2C_READ_ID    0x43
 DECL|macro|OV6xx0_I2C_WRITE_ID
-mdefine_line|#define OV6xx0_I2C_WRITE_ID 0xC0
+mdefine_line|#define OV6xx0_I2C_WRITE_ID   0xC0
 DECL|macro|OV6xx0_I2C_READ_ID
-mdefine_line|#define OV6xx0_I2C_READ_ID  0xC1
+mdefine_line|#define OV6xx0_I2C_READ_ID    0xC1
+DECL|macro|OV8xx0_I2C_WRITE_ID
+mdefine_line|#define OV8xx0_I2C_WRITE_ID   0xA0
+DECL|macro|OV8xx0_I2C_READ_ID
+mdefine_line|#define OV8xx0_I2C_READ_ID    0xA1
+DECL|macro|KS0127_I2C_WRITE_ID
+mdefine_line|#define KS0127_I2C_WRITE_ID   0xD8
+DECL|macro|KS0127_I2C_READ_ID
+mdefine_line|#define KS0127_I2C_READ_ID    0xD9
+DECL|macro|SAA7111A_I2C_WRITE_ID
+mdefine_line|#define SAA7111A_I2C_WRITE_ID 0x48
+DECL|macro|SAA7111A_I2C_READ_ID
+mdefine_line|#define SAA7111A_I2C_READ_ID  0x49
 DECL|macro|OV511_I2C_CLOCK_PRESCALER
 mdefine_line|#define OV511_I2C_CLOCK_PRESCALER 0x03
-multiline_comment|/* Prototypes */
-r_int
-id|usb_ov511_reg_read
-c_func
-(paren
-r_struct
-id|usb_device
-op_star
-id|dev
-comma
-r_int
-r_char
-id|reg
-)paren
-suffix:semicolon
-r_int
-id|usb_ov511_reg_write
-c_func
-(paren
-r_struct
-id|usb_device
-op_star
-id|dev
-comma
-r_int
-r_char
-id|reg
-comma
-r_int
-r_char
-id|value
-)paren
-suffix:semicolon
 multiline_comment|/* Bridge types */
 r_enum
 (brace
+DECL|enumerator|BRG_UNKNOWN
+id|BRG_UNKNOWN
+comma
 DECL|enumerator|BRG_OV511
 id|BRG_OV511
 comma
 DECL|enumerator|BRG_OV511PLUS
 id|BRG_OV511PLUS
+comma
+DECL|enumerator|BRG_OV518
+id|BRG_OV518
+comma
+DECL|enumerator|BRG_OV518PLUS
+id|BRG_OV518PLUS
+comma
+)brace
+suffix:semicolon
+multiline_comment|/* Bridge classes */
+r_enum
+(brace
+DECL|enumerator|BCL_UNKNOWN
+id|BCL_UNKNOWN
+comma
+DECL|enumerator|BCL_OV511
+id|BCL_OV511
+comma
+DECL|enumerator|BCL_OV518
+id|BCL_OV518
 comma
 )brace
 suffix:semicolon
@@ -352,6 +410,9 @@ r_enum
 (brace
 DECL|enumerator|SEN_UNKNOWN
 id|SEN_UNKNOWN
+comma
+DECL|enumerator|SEN_OV76BE
+id|SEN_OV76BE
 comma
 DECL|enumerator|SEN_OV7610
 id|SEN_OV7610
@@ -365,8 +426,56 @@ comma
 DECL|enumerator|SEN_OV6620
 id|SEN_OV6620
 comma
+DECL|enumerator|SEN_OV6630
+id|SEN_OV6630
+comma
+DECL|enumerator|SEN_OV6630AE
+id|SEN_OV6630AE
+comma
+DECL|enumerator|SEN_OV6630AF
+id|SEN_OV6630AF
+comma
+DECL|enumerator|SEN_OV8600
+id|SEN_OV8600
+comma
+DECL|enumerator|SEN_KS0127
+id|SEN_KS0127
+comma
+DECL|enumerator|SEN_KS0127B
+id|SEN_KS0127B
+comma
+DECL|enumerator|SEN_SAA7111A
+id|SEN_SAA7111A
+comma
 )brace
 suffix:semicolon
+singleline_comment|// Not implemented yet
+macro_line|#if 0
+multiline_comment|/* Sensor classes */
+r_enum
+(brace
+id|SCL_UNKNOWN
+comma
+id|SCL_OV7610
+comma
+multiline_comment|/* 7610, 76BE, 7620AE (for now) */
+id|SCL_OV7620
+comma
+id|SCL_OV6620
+comma
+id|SCL_OV6630
+comma
+multiline_comment|/* 6630, 6630AE, 6630AF */
+id|SCL_OV8600
+comma
+id|SCL_KS0127
+comma
+multiline_comment|/* SEN_KS0127, SEN_KS0127B */
+id|SCL_SAA7111A
+comma
+)brace
+suffix:semicolon
+macro_line|#endif
 r_enum
 (brace
 DECL|enumerator|STATE_SCANNING
@@ -398,9 +507,164 @@ comma
 multiline_comment|/* ov511-&gt;buf_timer is set */
 )brace
 suffix:semicolon
-r_struct
-id|usb_device
+multiline_comment|/* --------- Definition of ioctl interface --------- */
+DECL|macro|OV511_INTERFACE_VER
+mdefine_line|#define OV511_INTERFACE_VER 101
+multiline_comment|/* LED options */
+r_enum
+(brace
+DECL|enumerator|LED_OFF
+id|LED_OFF
+comma
+DECL|enumerator|LED_ON
+id|LED_ON
+comma
+DECL|enumerator|LED_AUTO
+id|LED_AUTO
+comma
+)brace
 suffix:semicolon
+multiline_comment|/* Raw frame formats */
+r_enum
+(brace
+DECL|enumerator|RAWFMT_INVALID
+id|RAWFMT_INVALID
+comma
+DECL|enumerator|RAWFMT_YUV400
+id|RAWFMT_YUV400
+comma
+DECL|enumerator|RAWFMT_YUV420
+id|RAWFMT_YUV420
+comma
+DECL|enumerator|RAWFMT_YUV422
+id|RAWFMT_YUV422
+comma
+DECL|enumerator|RAWFMT_GBR422
+id|RAWFMT_GBR422
+comma
+)brace
+suffix:semicolon
+multiline_comment|/* Unsigned short option numbers */
+r_enum
+(brace
+DECL|enumerator|OV511_USOPT_INVALID
+id|OV511_USOPT_INVALID
+comma
+DECL|enumerator|OV511_USOPT_BRIGHT
+id|OV511_USOPT_BRIGHT
+comma
+DECL|enumerator|OV511_USOPT_SAT
+id|OV511_USOPT_SAT
+comma
+DECL|enumerator|OV511_USOPT_HUE
+id|OV511_USOPT_HUE
+comma
+DECL|enumerator|OV511_USOPT_CONTRAST
+id|OV511_USOPT_CONTRAST
+comma
+)brace
+suffix:semicolon
+multiline_comment|/* Unsigned int option numbers */
+r_enum
+(brace
+DECL|enumerator|OV511_UIOPT_INVALID
+id|OV511_UIOPT_INVALID
+comma
+DECL|enumerator|OV511_UIOPT_POWER_FREQ
+id|OV511_UIOPT_POWER_FREQ
+comma
+DECL|enumerator|OV511_UIOPT_BFILTER
+id|OV511_UIOPT_BFILTER
+comma
+DECL|enumerator|OV511_UIOPT_LED
+id|OV511_UIOPT_LED
+comma
+DECL|enumerator|OV511_UIOPT_DEBUG
+id|OV511_UIOPT_DEBUG
+comma
+DECL|enumerator|OV511_UIOPT_COMPRESS
+id|OV511_UIOPT_COMPRESS
+comma
+)brace
+suffix:semicolon
+DECL|struct|ov511_ushort_opt
+r_struct
+id|ov511_ushort_opt
+(brace
+DECL|member|optnum
+r_int
+id|optnum
+suffix:semicolon
+multiline_comment|/* Specific option number */
+DECL|member|val
+r_int
+r_int
+id|val
+suffix:semicolon
+)brace
+suffix:semicolon
+DECL|struct|ov511_uint_opt
+r_struct
+id|ov511_uint_opt
+(brace
+DECL|member|optnum
+r_int
+id|optnum
+suffix:semicolon
+multiline_comment|/* Specific option number */
+DECL|member|val
+r_int
+r_int
+id|val
+suffix:semicolon
+)brace
+suffix:semicolon
+DECL|struct|ov511_i2c_struct
+r_struct
+id|ov511_i2c_struct
+(brace
+DECL|member|slave
+r_int
+r_char
+id|slave
+suffix:semicolon
+multiline_comment|/* Write slave ID (read ID - 1) */
+DECL|member|reg
+r_int
+r_char
+id|reg
+suffix:semicolon
+multiline_comment|/* Index of register */
+DECL|member|value
+r_int
+r_char
+id|value
+suffix:semicolon
+multiline_comment|/* User sets this w/ write, driver does w/ read */
+DECL|member|mask
+r_int
+r_char
+id|mask
+suffix:semicolon
+multiline_comment|/* Bits to be changed. Not used with read ops */
+)brace
+suffix:semicolon
+multiline_comment|/* ioctls */
+DECL|macro|OV511IOC_GINTVER
+mdefine_line|#define OV511IOC_GINTVER  _IOR(&squot;v&squot;, BASE_VIDIOCPRIVATE + 0, int)
+DECL|macro|OV511IOC_GUSHORT
+mdefine_line|#define OV511IOC_GUSHORT _IOWR(&squot;v&squot;, BASE_VIDIOCPRIVATE + 1, &bslash;&n;&t;&t;&t;       struct ov511_ushort_opt)
+DECL|macro|OV511IOC_SUSHORT
+mdefine_line|#define OV511IOC_SUSHORT  _IOW(&squot;v&squot;, BASE_VIDIOCPRIVATE + 2, &bslash;&n;&t;&t;&t;       struct ov511_ushort_opt)
+DECL|macro|OV511IOC_GUINT
+mdefine_line|#define OV511IOC_GUINT   _IOWR(&squot;v&squot;, BASE_VIDIOCPRIVATE + 3, &bslash;&n;&t;&t;&t;       struct ov511_uint_opt)
+DECL|macro|OV511IOC_SUINT
+mdefine_line|#define OV511IOC_SUINT    _IOW(&squot;v&squot;, BASE_VIDIOCPRIVATE + 4, &bslash;&n;&t;&t;&t;       struct ov511_uint_opt)
+DECL|macro|OV511IOC_WI2C
+mdefine_line|#define OV511IOC_WI2C     _IOW(&squot;v&squot;, BASE_VIDIOCPRIVATE + 5, &bslash;&n;&t;&t;&t;       struct ov511_i2c_struct)
+DECL|macro|OV511IOC_RI2C
+mdefine_line|#define OV511IOC_RI2C    _IOWR(&squot;v&squot;, BASE_VIDIOCPRIVATE + 6, &bslash;&n;&t;&t;&t;       struct ov511_i2c_struct)
+multiline_comment|/* ------------- End IOCTL interface -------------- */
 DECL|struct|ov511_sbuf
 r_struct
 id|ov511_sbuf
@@ -476,12 +740,29 @@ DECL|struct|ov511_frame
 r_struct
 id|ov511_frame
 (brace
+DECL|member|framenum
+r_int
+id|framenum
+suffix:semicolon
+multiline_comment|/* Index of this frame */
 DECL|member|data
 r_char
 op_star
 id|data
 suffix:semicolon
 multiline_comment|/* Frame buffer */
+DECL|member|tempdata
+r_char
+op_star
+id|tempdata
+suffix:semicolon
+multiline_comment|/* Temp buffer for multi-stage conversions */
+DECL|member|rawdata
+r_char
+op_star
+id|rawdata
+suffix:semicolon
+multiline_comment|/* Raw camera data buffer */
 DECL|member|depth
 r_int
 id|depth
@@ -496,17 +777,17 @@ DECL|member|height
 r_int
 id|height
 suffix:semicolon
-multiline_comment|/* Height */
-DECL|member|hdrwidth
+multiline_comment|/* Height application is expecting */
+DECL|member|rawwidth
 r_int
-id|hdrwidth
+id|rawwidth
 suffix:semicolon
-multiline_comment|/* Width the frame actually is */
-DECL|member|hdrheight
+multiline_comment|/* Actual width of frame sent from camera */
+DECL|member|rawheight
 r_int
-id|hdrheight
+id|rawheight
 suffix:semicolon
-multiline_comment|/* Height */
+multiline_comment|/* Actual height of frame sent from camera */
 DECL|member|sub_flag
 r_int
 id|sub_flag
@@ -518,11 +799,11 @@ r_int
 id|format
 suffix:semicolon
 multiline_comment|/* Format for this frame */
-DECL|member|segsize
+DECL|member|compressed
 r_int
-id|segsize
+id|compressed
 suffix:semicolon
-multiline_comment|/* How big is each segment from the camera? */
+multiline_comment|/* Is frame compressed? */
 DECL|member|grabstate
 r_volatile
 r_int
@@ -534,30 +815,16 @@ r_int
 id|scanstate
 suffix:semicolon
 multiline_comment|/* State of scanning */
-DECL|member|curline
+DECL|member|bytes_recvd
 r_int
-id|curline
+id|bytes_recvd
 suffix:semicolon
-multiline_comment|/* Line of frame we&squot;re working on */
-DECL|member|curpix
-r_int
-id|curpix
-suffix:semicolon
-DECL|member|segment
-r_int
-id|segment
-suffix:semicolon
-multiline_comment|/* Segment from the incoming data */
-DECL|member|scanlength
-r_int
-id|scanlength
-suffix:semicolon
-multiline_comment|/* uncompressed, raw data length of frame */
+multiline_comment|/* Number of image bytes received from camera */
 DECL|member|bytes_read
 r_int
 id|bytes_read
 suffix:semicolon
-multiline_comment|/* amount of scanlength that has been read from *data */
+multiline_comment|/* Amount that has been read() */
 DECL|member|wq
 id|wait_queue_head_t
 id|wq
@@ -570,10 +837,108 @@ suffix:semicolon
 multiline_comment|/* True if frame was a snapshot */
 )brace
 suffix:semicolon
+DECL|macro|DECOMP_INTERFACE_VER
+mdefine_line|#define DECOMP_INTERFACE_VER 2
+multiline_comment|/* Compression module operations */
+DECL|struct|ov51x_decomp_ops
+r_struct
+id|ov51x_decomp_ops
+(brace
+DECL|member|decomp_400
+r_int
+(paren
+op_star
+id|decomp_400
+)paren
+(paren
+r_int
+r_char
+op_star
+comma
+r_int
+r_char
+op_star
+comma
+r_int
+comma
+r_int
+comma
+r_int
+)paren
+suffix:semicolon
+DECL|member|decomp_420
+r_int
+(paren
+op_star
+id|decomp_420
+)paren
+(paren
+r_int
+r_char
+op_star
+comma
+r_int
+r_char
+op_star
+comma
+r_int
+comma
+r_int
+comma
+r_int
+)paren
+suffix:semicolon
+DECL|member|decomp_422
+r_int
+(paren
+op_star
+id|decomp_422
+)paren
+(paren
+r_int
+r_char
+op_star
+comma
+r_int
+r_char
+op_star
+comma
+r_int
+comma
+r_int
+comma
+r_int
+)paren
+suffix:semicolon
+DECL|member|decomp_lock
+r_void
+(paren
+op_star
+id|decomp_lock
+)paren
+(paren
+r_void
+)paren
+suffix:semicolon
+DECL|member|decomp_unlock
+r_void
+(paren
+op_star
+id|decomp_unlock
+)paren
+(paren
+r_void
+)paren
+suffix:semicolon
+)brace
+suffix:semicolon
 DECL|macro|OV511_NUMFRAMES
 mdefine_line|#define OV511_NUMFRAMES&t;2
+macro_line|#if OV511_NUMFRAMES &gt; VIDEO_MAX_FRAME
+macro_line|#error &quot;OV511_NUMFRAMES is too high&quot;
+macro_line|#endif
 DECL|macro|OV511_NUMSBUF
-mdefine_line|#define OV511_NUMSBUF&t;2
+mdefine_line|#define OV511_NUMSBUF&t;&t;2
 DECL|struct|usb_ov511
 r_struct
 id|usb_ov511
@@ -612,6 +977,14 @@ DECL|member|maxheight
 r_int
 id|maxheight
 suffix:semicolon
+DECL|member|minwidth
+r_int
+id|minwidth
+suffix:semicolon
+DECL|member|minheight
+r_int
+id|minheight
+suffix:semicolon
 DECL|member|brightness
 r_int
 id|brightness
@@ -632,11 +1005,41 @@ DECL|member|whiteness
 r_int
 id|whiteness
 suffix:semicolon
+DECL|member|exposure
+r_int
+id|exposure
+suffix:semicolon
+DECL|member|auto_brt
+r_int
+id|auto_brt
+suffix:semicolon
+multiline_comment|/* Auto brightness enabled flag */
+DECL|member|auto_gain
+r_int
+id|auto_gain
+suffix:semicolon
+multiline_comment|/* Auto gain control enabled flag */
+DECL|member|auto_exp
+r_int
+id|auto_exp
+suffix:semicolon
+multiline_comment|/* Auto exposure enabled flag */
+DECL|member|backlight
+r_int
+id|backlight
+suffix:semicolon
+multiline_comment|/* Backlight exposure algorithm flag */
+DECL|member|led_policy
+r_int
+id|led_policy
+suffix:semicolon
+multiline_comment|/* LED: off|on|auto; OV511+ only */
 DECL|member|lock
 r_struct
 id|semaphore
 id|lock
 suffix:semicolon
+multiline_comment|/* Serializes user-accessible operations */
 DECL|member|user
 r_int
 id|user
@@ -657,12 +1060,39 @@ r_int
 id|compress
 suffix:semicolon
 multiline_comment|/* Should the next frame be compressed? */
+DECL|member|compress_inited
+r_int
+id|compress_inited
+suffix:semicolon
+multiline_comment|/* Are compression params uploaded? */
+DECL|member|lightfreq
+r_int
+id|lightfreq
+suffix:semicolon
+multiline_comment|/* Power (lighting) frequency */
+DECL|member|bandfilt
+r_int
+id|bandfilt
+suffix:semicolon
+multiline_comment|/* Banding filter enabled flag */
 DECL|member|fbuf
 r_char
 op_star
 id|fbuf
 suffix:semicolon
 multiline_comment|/* Videodev buffer area */
+DECL|member|tempfbuf
+r_char
+op_star
+id|tempfbuf
+suffix:semicolon
+multiline_comment|/* Temporary (intermediate) buffer area */
+DECL|member|rawfbuf
+r_char
+op_star
+id|rawfbuf
+suffix:semicolon
+multiline_comment|/* Raw camera data buffer area */
 DECL|member|sub_flag
 r_int
 id|sub_flag
@@ -701,11 +1131,6 @@ id|frame
 id|OV511_NUMFRAMES
 )braket
 suffix:semicolon
-DECL|member|cursbuf
-r_int
-id|cursbuf
-suffix:semicolon
-multiline_comment|/* Current receiving sbuf */
 DECL|member|sbuf
 r_struct
 id|ov511_sbuf
@@ -713,19 +1138,6 @@ id|sbuf
 (braket
 id|OV511_NUMSBUF
 )braket
-suffix:semicolon
-multiline_comment|/* Scratch space from the Isochronous pipe */
-DECL|member|scratch
-r_int
-r_char
-id|scratch
-(braket
-id|SCRATCH_BUF_SIZE
-)braket
-suffix:semicolon
-DECL|member|scratchlen
-r_int
-id|scratchlen
 suffix:semicolon
 DECL|member|wq
 id|wait_queue_head_t
@@ -741,31 +1153,67 @@ DECL|member|bridge
 r_int
 id|bridge
 suffix:semicolon
-multiline_comment|/* Type of bridge (OV511 or OV511+) */
+multiline_comment|/* Type of bridge (BRG_*) */
+DECL|member|bclass
+r_int
+id|bclass
+suffix:semicolon
+multiline_comment|/* Class of bridge (BCL_*) */
 DECL|member|sensor
 r_int
 id|sensor
 suffix:semicolon
-multiline_comment|/* Type of image sensor chip */
+multiline_comment|/* Type of image sensor chip (SEN_*) */
+DECL|member|sclass
+r_int
+id|sclass
+suffix:semicolon
+multiline_comment|/* Type of image sensor chip (SCL_*) */
+DECL|member|tuner
+r_int
+id|tuner
+suffix:semicolon
+multiline_comment|/* Type of TV tuner */
 DECL|member|packet_size
 r_int
 id|packet_size
 suffix:semicolon
 multiline_comment|/* Frame size per isoc desc */
-multiline_comment|/* proc interface */
 DECL|member|param_lock
 r_struct
 id|semaphore
 id|param_lock
 suffix:semicolon
 multiline_comment|/* params lock for this camera */
-DECL|member|proc_entry
+multiline_comment|/* /proc entries, relative to /proc/video/ov511/ */
+DECL|member|proc_devdir
 r_struct
 id|proc_dir_entry
 op_star
-id|proc_entry
+id|proc_devdir
 suffix:semicolon
-multiline_comment|/* /proc/ov511/videoX */
+multiline_comment|/* Per-device proc directory */
+DECL|member|proc_info
+r_struct
+id|proc_dir_entry
+op_star
+id|proc_info
+suffix:semicolon
+multiline_comment|/* &lt;minor#&gt;/info entry */
+DECL|member|proc_button
+r_struct
+id|proc_dir_entry
+op_star
+id|proc_button
+suffix:semicolon
+multiline_comment|/* &lt;minor#&gt;/button entry */
+DECL|member|proc_control
+r_struct
+id|proc_dir_entry
+op_star
+id|proc_control
+suffix:semicolon
+multiline_comment|/* &lt;minor#&gt;/control entry */
 multiline_comment|/* Framebuffer/sbuf management */
 DECL|member|buf_state
 r_int
@@ -781,6 +1229,76 @@ r_struct
 id|timer_list
 id|buf_timer
 suffix:semicolon
+DECL|member|decomp_ops
+r_struct
+id|ov51x_decomp_ops
+op_star
+id|decomp_ops
+suffix:semicolon
+multiline_comment|/* Stop streaming while changing picture settings */
+DECL|member|stop_during_set
+r_int
+id|stop_during_set
+suffix:semicolon
+DECL|member|stopped
+r_int
+id|stopped
+suffix:semicolon
+multiline_comment|/* Streaming is temporarily paused */
+multiline_comment|/* Video decoder stuff */
+DECL|member|input
+r_int
+id|input
+suffix:semicolon
+multiline_comment|/* Composite, S-VIDEO, etc... */
+DECL|member|num_inputs
+r_int
+id|num_inputs
+suffix:semicolon
+multiline_comment|/* Number of inputs */
+DECL|member|norm
+r_int
+id|norm
+suffix:semicolon
+multiline_comment|/* NTSC / PAL / SECAM */
+DECL|member|has_decoder
+r_int
+id|has_decoder
+suffix:semicolon
+multiline_comment|/* Device has a video decoder */
+DECL|member|has_tuner
+r_int
+id|has_tuner
+suffix:semicolon
+multiline_comment|/* Device has a TV tuner */
+DECL|member|has_audio_proc
+r_int
+id|has_audio_proc
+suffix:semicolon
+multiline_comment|/* Device has an audio processor */
+DECL|member|freq
+r_int
+id|freq
+suffix:semicolon
+multiline_comment|/* Current tuner frequency */
+DECL|member|tuner_type
+r_int
+id|tuner_type
+suffix:semicolon
+multiline_comment|/* Specific tuner model */
+multiline_comment|/* I2C interface to kernel */
+DECL|member|i2c_lock
+r_struct
+id|semaphore
+id|i2c_lock
+suffix:semicolon
+multiline_comment|/* Protect I2C controller regs */
+DECL|member|primary_i2c_slave
+r_int
+r_char
+id|primary_i2c_slave
+suffix:semicolon
+multiline_comment|/* I2C write id of sensor */
 )brace
 suffix:semicolon
 DECL|struct|cam_list
@@ -813,9 +1331,9 @@ id|name
 suffix:semicolon
 )brace
 suffix:semicolon
-DECL|struct|mode_list
+DECL|struct|mode_list_518
 r_struct
-id|mode_list
+id|mode_list_518
 (brace
 DECL|member|width
 r_int
@@ -825,44 +1343,48 @@ DECL|member|height
 r_int
 id|height
 suffix:semicolon
-DECL|member|color
-r_int
-id|color
-suffix:semicolon
-multiline_comment|/* 0=grayscale, 1=color */
-DECL|member|pxcnt
+DECL|member|reg28
 id|u8
-id|pxcnt
+id|reg28
 suffix:semicolon
-multiline_comment|/* pixel counter */
-DECL|member|lncnt
+DECL|member|reg29
 id|u8
-id|lncnt
+id|reg29
 suffix:semicolon
-multiline_comment|/* line counter */
-DECL|member|pxdv
+DECL|member|reg2a
 id|u8
-id|pxdv
+id|reg2a
 suffix:semicolon
-multiline_comment|/* pixel divisor */
-DECL|member|lndv
+DECL|member|reg2c
 id|u8
-id|lndv
+id|reg2c
 suffix:semicolon
-multiline_comment|/* line divisor */
-DECL|member|m420
+DECL|member|reg2e
 id|u8
-id|m420
+id|reg2e
 suffix:semicolon
-DECL|member|common_A
+DECL|member|reg24
 id|u8
-id|common_A
+id|reg24
 suffix:semicolon
-DECL|member|common_L
+DECL|member|reg25
 id|u8
-id|common_L
+id|reg25
 suffix:semicolon
 )brace
 suffix:semicolon
+multiline_comment|/* Compression stuff */
+DECL|macro|OV511_QUANTABLESIZE
+mdefine_line|#define OV511_QUANTABLESIZE&t;64
+DECL|macro|OV518_QUANTABLESIZE
+mdefine_line|#define OV518_QUANTABLESIZE&t;32
+DECL|macro|OV511_YQUANTABLE
+mdefine_line|#define OV511_YQUANTABLE { &bslash;&n;&t;0, 1, 1, 2, 2, 3, 3, 4, &bslash;&n;&t;1, 1, 1, 2, 2, 3, 4, 4, &bslash;&n;&t;1, 1, 2, 2, 3, 4, 4, 4, &bslash;&n;&t;2, 2, 2, 3, 4, 4, 4, 4, &bslash;&n;&t;2, 2, 3, 4, 4, 5, 5, 5, &bslash;&n;&t;3, 3, 4, 4, 5, 5, 5, 5, &bslash;&n;&t;3, 4, 4, 4, 5, 5, 5, 5, &bslash;&n;&t;4, 4, 4, 4, 5, 5, 5, 5  &bslash;&n;}
+DECL|macro|OV511_UVQUANTABLE
+mdefine_line|#define OV511_UVQUANTABLE { &bslash;&n;&t;0, 2, 2, 3, 4, 4, 4, 4, &bslash;&n;&t;2, 2, 2, 4, 4, 4, 4, 4, &bslash;&n;&t;2, 2, 3, 4, 4, 4, 4, 4, &bslash;&n;&t;3, 4, 4, 4, 4, 4, 4, 4, &bslash;&n;&t;4, 4, 4, 4, 4, 4, 4, 4, &bslash;&n;&t;4, 4, 4, 4, 4, 4, 4, 4, &bslash;&n;&t;4, 4, 4, 4, 4, 4, 4, 4, &bslash;&n;&t;4, 4, 4, 4, 4, 4, 4, 4  &bslash;&n;}
+DECL|macro|OV518_YQUANTABLE
+mdefine_line|#define OV518_YQUANTABLE { &bslash;&n;&t;5, 4, 5, 6, 6, 7, 7, 7, &bslash;&n;&t;5, 5, 5, 5, 6, 7, 7, 7, &bslash;&n;&t;6, 6, 6, 6, 7, 7, 7, 8, &bslash;&n;&t;7, 7, 6, 7, 7, 7, 8, 8  &bslash;&n;}
+DECL|macro|OV518_UVQUANTABLE
+mdefine_line|#define OV518_UVQUANTABLE { &bslash;&n;&t;6, 6, 6, 7, 7, 7, 7, 7, &bslash;&n;&t;6, 6, 6, 7, 7, 7, 7, 7, &bslash;&n;&t;6, 6, 6, 7, 7, 7, 7, 8, &bslash;&n;&t;7, 7, 7, 7, 7, 7, 8, 8  &bslash;&n;}
 macro_line|#endif
 eof

@@ -173,11 +173,7 @@ id|panic
 (paren
 l_string|&quot;EXT2-fs panic (device %s): %s: %s&bslash;n&quot;
 comma
-id|bdevname
-c_func
-(paren
-id|sb-&gt;s_dev
-)paren
+id|sb-&gt;s_id
 comma
 id|function
 comma
@@ -189,11 +185,7 @@ id|printk
 id|KERN_CRIT
 l_string|&quot;EXT2-fs error (device %s): %s: %s&bslash;n&quot;
 comma
-id|bdevname
-c_func
-(paren
-id|sb-&gt;s_dev
-)paren
+id|sb-&gt;s_id
 comma
 id|function
 comma
@@ -345,11 +337,7 @@ id|panic
 (paren
 l_string|&quot;EXT2-fs panic (device %s): %s: %s&bslash;n&quot;
 comma
-id|bdevname
-c_func
-(paren
-id|sb-&gt;s_dev
-)paren
+id|sb-&gt;s_id
 comma
 id|function
 comma
@@ -410,11 +398,7 @@ id|printk
 id|KERN_WARNING
 l_string|&quot;EXT2-fs warning (device %s): %s: %s&bslash;n&quot;
 comma
-id|bdevname
-c_func
-(paren
-id|sb-&gt;s_dev
-)paren
+id|sb-&gt;s_id
 comma
 id|function
 comma
@@ -2130,11 +2114,6 @@ id|offset
 op_assign
 l_int|0
 suffix:semicolon
-id|kdev_t
-id|dev
-op_assign
-id|sb-&gt;s_dev
-suffix:semicolon
 r_int
 id|blocksize
 op_assign
@@ -2315,11 +2294,7 @@ id|printk
 (paren
 l_string|&quot;VFS: Can&squot;t find ext2 filesystem on dev %s.&bslash;n&quot;
 comma
-id|bdevname
-c_func
-(paren
-id|dev
-)paren
+id|sb-&gt;s_id
 )paren
 suffix:semicolon
 r_goto
@@ -2397,11 +2372,7 @@ c_func
 l_string|&quot;EXT2-fs: %s: couldn&squot;t mount because of &quot;
 l_string|&quot;unsupported optional features (%x).&bslash;n&quot;
 comma
-id|bdevname
-c_func
-(paren
-id|dev
-)paren
+id|sb-&gt;s_id
 comma
 id|i
 )paren
@@ -2440,11 +2411,7 @@ c_func
 l_string|&quot;EXT2-fs: %s: couldn&squot;t mount RDWR because of &quot;
 l_string|&quot;unsupported optional features (%x).&bslash;n&quot;
 comma
-id|bdevname
-c_func
-(paren
-id|dev
-)paren
+id|sb-&gt;s_id
 comma
 id|i
 )paren
@@ -2837,11 +2804,7 @@ id|printk
 l_string|&quot;VFS: Can&squot;t find an ext2 filesystem on dev &quot;
 l_string|&quot;%s.&bslash;n&quot;
 comma
-id|bdevname
-c_func
-(paren
-id|dev
-)paren
+id|sb-&gt;s_id
 )paren
 suffix:semicolon
 r_goto
@@ -2867,11 +2830,7 @@ id|printk
 l_string|&quot;VFS: Unsupported blocksize on dev &quot;
 l_string|&quot;%s.&bslash;n&quot;
 comma
-id|bdevname
-c_func
-(paren
-id|dev
-)paren
+id|sb-&gt;s_id
 )paren
 suffix:semicolon
 r_goto
@@ -3733,11 +3692,7 @@ c_func
 l_string|&quot;EXT2-fs: %s: couldn&squot;t remount RDWR because of &quot;
 l_string|&quot;unsupported optional features (%x).&bslash;n&quot;
 comma
-id|bdevname
-c_func
-(paren
-id|sb-&gt;s_dev
-)paren
+id|sb-&gt;s_id
 comma
 id|ret
 )paren
