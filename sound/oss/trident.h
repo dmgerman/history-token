@@ -35,12 +35,6 @@ macro_line|#ifndef PCI_DEVICE_ID_ALI_1533
 DECL|macro|PCI_DEVICE_ID_ALI_1533
 mdefine_line|#define PCI_DEVICE_ID_ALI_1533&t;&t;0x1533
 macro_line|#endif
-macro_line|#ifndef FALSE
-DECL|macro|FALSE
-mdefine_line|#define FALSE &t;&t;0
-DECL|macro|TRUE
-mdefine_line|#define TRUE  &t;&t;1
-macro_line|#endif
 DECL|macro|CHANNEL_REGS
 mdefine_line|#define CHANNEL_REGS&t;5
 DECL|macro|CHANNEL_START
@@ -1350,7 +1344,7 @@ suffix:semicolon
 )brace
 macro_line|#ifdef DEBUG
 DECL|macro|TRDBG
-mdefine_line|#define TRDBG(msg, args...) do {          &bslash;&n;        printk(KERN_DEBUG msg , ##args ); &bslash;&n;} while (0)
+mdefine_line|#define TRDBG(msg, args...) do {          &bslash;&n;        printk(DEBUG msg , ##args );      &bslash;&n;} while (0)
 macro_line|#else /* !defined(DEBUG) */ 
 DECL|macro|TRDBG
 mdefine_line|#define TRDBG(msg, args...) do { } while (0)
