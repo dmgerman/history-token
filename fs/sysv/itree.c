@@ -1,6 +1,5 @@
 multiline_comment|/*&n; *  linux/fs/sysv/itree.c&n; *&n; *  Handling of indirect blocks&squot; trees.&n; *  AV, Sep--Dec 2000&n; */
 macro_line|#include &lt;linux/locks.h&gt;
-macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &quot;sysv.h&quot;
 DECL|enumerator|DIRECT
 DECL|enumerator|DEPTH
@@ -376,6 +375,13 @@ DECL|typedef|Indirect
 )brace
 id|Indirect
 suffix:semicolon
+DECL|variable|pointers_lock
+r_static
+id|rwlock_t
+id|pointers_lock
+op_assign
+id|RW_LOCK_UNLOCKED
+suffix:semicolon
 DECL|function|add_chain
 r_static
 r_inline
@@ -534,6 +540,7 @@ op_assign
 l_int|0
 suffix:semicolon
 id|add_chain
+c_func
 (paren
 id|chain
 comma
@@ -601,6 +608,13 @@ id|bh
 r_goto
 id|failure
 suffix:semicolon
+id|read_lock
+c_func
+(paren
+op_amp
+id|pointers_lock
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -635,6 +649,13 @@ op_increment
 id|offsets
 )paren
 suffix:semicolon
+id|read_unlock
+c_func
+(paren
+op_amp
+id|pointers_lock
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -650,6 +671,13 @@ l_int|NULL
 suffix:semicolon
 id|changed
 suffix:colon
+id|read_unlock
+c_func
+(paren
+op_amp
+id|pointers_lock
+)paren
+suffix:semicolon
 op_star
 id|err
 op_assign
@@ -992,6 +1020,13 @@ r_int
 id|i
 suffix:semicolon
 multiline_comment|/* Verify that place we are splicing to is still there and vacant */
+id|write_lock
+c_func
+(paren
+op_amp
+id|pointers_lock
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1016,6 +1051,13 @@ op_star
 id|where-&gt;p
 op_assign
 id|where-&gt;key
+suffix:semicolon
+id|write_unlock
+c_func
+(paren
+op_amp
+id|pointers_lock
+)paren
 suffix:semicolon
 id|inode-&gt;i_ctime
 op_assign
@@ -1062,6 +1104,13 @@ l_int|0
 suffix:semicolon
 id|changed
 suffix:colon
+id|write_unlock
+c_func
+(paren
+op_amp
+id|pointers_lock
+)paren
+suffix:semicolon
 r_for
 c_loop
 (paren
@@ -1197,11 +1246,6 @@ l_int|0
 r_goto
 id|out
 suffix:semicolon
-id|lock_kernel
-c_func
-(paren
-)paren
-suffix:semicolon
 id|reread
 suffix:colon
 id|partial
@@ -1305,11 +1349,6 @@ id|partial
 op_decrement
 suffix:semicolon
 )brace
-id|unlock_kernel
-c_func
-(paren
-)paren
-suffix:semicolon
 id|out
 suffix:colon
 r_return
@@ -1528,6 +1567,13 @@ id|k
 op_decrement
 )paren
 suffix:semicolon
+id|write_lock
+c_func
+(paren
+op_amp
+id|pointers_lock
+)paren
+suffix:semicolon
 id|partial
 op_assign
 id|get_branch
@@ -1569,9 +1615,18 @@ op_logical_and
 op_star
 id|partial-&gt;p
 )paren
+(brace
+id|write_unlock
+c_func
+(paren
+op_amp
+id|pointers_lock
+)paren
+suffix:semicolon
 r_goto
 id|no_top
 suffix:semicolon
+)brace
 r_for
 c_loop
 (paren
@@ -1634,6 +1689,13 @@ op_assign
 l_int|0
 suffix:semicolon
 )brace
+id|write_unlock
+c_func
+(paren
+op_amp
+id|pointers_lock
+)paren
+suffix:semicolon
 r_while
 c_loop
 (paren
@@ -2012,11 +2074,6 @@ l_int|0
 )paren
 r_return
 suffix:semicolon
-id|lock_kernel
-c_func
-(paren
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -2260,11 +2317,6 @@ id|mark_inode_dirty
 c_func
 (paren
 id|inode
-)paren
-suffix:semicolon
-id|unlock_kernel
-c_func
-(paren
 )paren
 suffix:semicolon
 )brace
