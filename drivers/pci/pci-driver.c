@@ -150,6 +150,9 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+op_logical_neg
+id|pci_dev-&gt;driver
+op_logical_and
 id|drv-&gt;probe
 )paren
 (brace
