@@ -2773,6 +2773,9 @@ suffix:semicolon
 r_int
 id|j
 suffix:semicolon
+r_int
+id|config
+suffix:semicolon
 multiline_comment|/*&n;&t; * Set the driver for the usb device to point to the &quot;generic&quot; driver.&n;&t; * This prevents the main usb device from being sent to the usb bus&n;&t; * probe function.  Yes, it&squot;s a hack, but a nice one :)&n;&t; *&n;&t; * Do it asap, so more driver model stuff (like the device.h message&n;&t; * utilities) can be used in hcd submit/unlink code paths.&n;&t; */
 id|usb_generic_driver.bus
 op_assign
@@ -3242,7 +3245,16 @@ id|usb_create_driverfs_dev_files
 id|dev
 )paren
 suffix:semicolon
-multiline_comment|/* choose and set the configuration. that registers the interfaces&n;&t; * with the driver core, and lets usb device drivers bind to them.&n;&t; */
+multiline_comment|/* choose and set the configuration. that registers the interfaces&n;&t; * with the driver core, and lets usb device drivers bind to them.&n;&t; * NOTE:  should interact with hub power budgeting.&n;&t; */
+id|config
+op_assign
+id|dev-&gt;config
+(braket
+l_int|0
+)braket
+dot
+id|desc.bConfigurationValue
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -3251,6 +3263,55 @@ op_ne
 l_int|1
 )paren
 (brace
+r_for
+c_loop
+(paren
+id|i
+op_assign
+l_int|0
+suffix:semicolon
+id|i
+OL
+id|dev-&gt;descriptor.bNumConfigurations
+suffix:semicolon
+id|i
+op_increment
+)paren
+(brace
+multiline_comment|/* heuristic:  Linux is more likely to have class&n;&t;&t;&t; * drivers, so avoid vendor-specific interfaces.&n;&t;&t;&t; */
+r_if
+c_cond
+(paren
+id|dev-&gt;config
+(braket
+id|i
+)braket
+dot
+id|interface
+(braket
+l_int|0
+)braket
+op_member_access_from_pointer
+id|altsetting
+op_member_access_from_pointer
+id|desc.bInterfaceClass
+op_eq
+id|USB_CLASS_VENDOR_SPEC
+)paren
+r_continue
+suffix:semicolon
+id|config
+op_assign
+id|dev-&gt;config
+(braket
+id|i
+)braket
+dot
+id|desc.bConfigurationValue
+suffix:semicolon
+r_break
+suffix:semicolon
+)brace
 id|dev_info
 c_func
 (paren
@@ -3259,12 +3320,7 @@ id|dev-&gt;dev
 comma
 l_string|&quot;configuration #%d chosen from %d choices&bslash;n&quot;
 comma
-id|dev-&gt;config
-(braket
-l_int|0
-)braket
-dot
-id|desc.bConfigurationValue
+id|config
 comma
 id|dev-&gt;descriptor.bNumConfigurations
 )paren
@@ -3277,12 +3333,7 @@ c_func
 (paren
 id|dev
 comma
-id|dev-&gt;config
-(braket
-l_int|0
-)braket
-dot
-id|desc.bConfigurationValue
+id|config
 )paren
 suffix:semicolon
 r_if
@@ -3299,12 +3350,7 @@ id|dev-&gt;dev
 comma
 l_string|&quot;can&squot;t set config #%d, error %d&bslash;n&quot;
 comma
-id|dev-&gt;config
-(braket
-l_int|0
-)braket
-dot
-id|desc.bConfigurationValue
+id|config
 comma
 id|err
 )paren
