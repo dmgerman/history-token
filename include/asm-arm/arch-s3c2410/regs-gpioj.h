@@ -1,4 +1,4 @@
-multiline_comment|/* linux/include/asm/hardware/s3c2410/regs-gpioj.h&n; *&n; * Copyright (c) 2004 Simtec Electronics &lt;linux@simtec.co.uk&gt;&n; *&t;&t;      http://www.simtec.co.uk/products/SWLINUX/&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; *&n; * S3C2440 GPIO J register definitions&n; *&n; *  Changelog:&n; *    11-Aug-2004     BJD     Created file&n;*/
+multiline_comment|/* linux/include/asm/hardware/s3c2410/regs-gpioj.h&n; *&n; * Copyright (c) 2004 Simtec Electronics &lt;linux@simtec.co.uk&gt;&n; *&t;&t;      http://www.simtec.co.uk/products/SWLINUX/&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; *&n; * S3C2440 GPIO J register definitions&n; *&n; *  Changelog:&n; *    11-Aug-2004     BJD     Created file&n; *    10-Feb-2005     BJD     Fix GPJ12 definition (Guillaume Gourat)&n;*/
 macro_line|#ifndef __ASM_ARCH_REGS_GPIOJ_H
 DECL|macro|__ASM_ARCH_REGS_GPIOJ_H
 mdefine_line|#define __ASM_ARCH_REGS_GPIOJ_H &quot;gpioj&quot;
@@ -113,7 +113,7 @@ DECL|macro|S3C2440_GPJ12_INP
 mdefine_line|#define S3C2440_GPJ12_INP       (0x00 &lt;&lt; 24)
 DECL|macro|S3C2440_GPJ12_OUTP
 mdefine_line|#define S3C2440_GPJ12_OUTP      (0x01 &lt;&lt; 24)
-DECL|macro|S3C2440_GPJ12_CAMCLKOUT
-mdefine_line|#define S3C2440_GPJ12_CAMCLKOUT (0x02 &lt;&lt; 24)
+DECL|macro|S3C2440_GPJ12_CAMRESET
+mdefine_line|#define S3C2440_GPJ12_CAMRESET  (0x02 &lt;&lt; 24)
 macro_line|#endif&t;/* __ASM_ARCH_REGS_GPIOJ_H */
 eof
