@@ -1819,7 +1819,7 @@ c_cond
 id|pci_find_parent_resource
 c_func
 (paren
-id|bus-&gt;self
+id|dev
 comma
 id|r
 )paren
