@@ -76,16 +76,6 @@ op_star
 id|skb
 )paren
 suffix:semicolon
-DECL|macro|IPPP_OPEN
-mdefine_line|#define IPPP_OPEN&t;0x01
-DECL|macro|IPPP_CONNECT
-mdefine_line|#define IPPP_CONNECT&t;0x02
-DECL|macro|IPPP_CLOSEWAIT
-mdefine_line|#define IPPP_CLOSEWAIT&t;0x04
-DECL|macro|IPPP_NOBLOCK
-mdefine_line|#define IPPP_NOBLOCK&t;0x08
-DECL|macro|IPPP_ASSIGNED
-mdefine_line|#define IPPP_ASSIGNED&t;0x10
 DECL|macro|IPPP_MAX_HEADER
 mdefine_line|#define IPPP_MAX_HEADER 10
 eof
