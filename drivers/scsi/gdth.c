@@ -10256,7 +10256,7 @@ l_int|0
 )paren
 )paren
 suffix:semicolon
-id|spin_lock_irqrestore
+id|spin_unlock_irqrestore
 c_func
 (paren
 op_amp
