@@ -4765,6 +4765,24 @@ id|sbi-&gt;clusters
 op_assign
 id|total_clusters
 suffix:semicolon
+multiline_comment|/* check the free_clusters, it&squot;s not necessarily correct */
+r_if
+c_cond
+(paren
+id|sbi-&gt;free_clusters
+op_ne
+op_minus
+l_int|1
+op_logical_and
+id|sbi-&gt;free_clusters
+OG
+id|sbi-&gt;clusters
+)paren
+id|sbi-&gt;free_clusters
+op_assign
+op_minus
+l_int|1
+suffix:semicolon
 id|brelse
 c_func
 (paren
