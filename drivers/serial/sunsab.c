@@ -12,6 +12,7 @@ macro_line|#include &lt;linux/ptrace.h&gt;
 macro_line|#include &lt;linux/ioport.h&gt;
 macro_line|#include &lt;linux/circ_buf.h&gt;
 macro_line|#include &lt;linux/serial.h&gt;
+macro_line|#include &lt;linux/sysrq.h&gt;
 macro_line|#include &lt;linux/console.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
@@ -20,6 +21,10 @@ macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;asm/oplib.h&gt;
 macro_line|#include &lt;asm/ebus.h&gt;
+macro_line|#if defined(CONFIG_SERIAL_SUNZILOG_CONSOLE) &amp;&amp; defined(CONFIG_MAGIC_SYSRQ)
+DECL|macro|SUPPORT_SYSRQ
+mdefine_line|#define SUPPORT_SYSRQ
+macro_line|#endif
 macro_line|#include &lt;linux/serial_core.h&gt;
 macro_line|#include &quot;suncore.h&quot;
 macro_line|#include &quot;sunsab.h&quot;
@@ -3737,6 +3742,7 @@ r_static
 r_int
 id|num_channels
 suffix:semicolon
+macro_line|#ifdef CONFIG_SERIAL_SUNSAB_CONSOLE
 DECL|function|sunsab_console_putchar
 r_static
 id|__inline__
@@ -4163,6 +4169,8 @@ id|sunsab_reg
 comma
 )brace
 suffix:semicolon
+DECL|macro|SUNSAB_CONSOLE
+mdefine_line|#define SUNSAB_CONSOLE&t;(&amp;sunsab_console)
 DECL|function|sunsab_console_init
 r_static
 r_void
@@ -4247,6 +4255,12 @@ id|sunsab_console
 )paren
 suffix:semicolon
 )brace
+macro_line|#else
+DECL|macro|SUNSAB_CONSOLE
+mdefine_line|#define SUNSAB_CONSOLE&t;&t;(NULL)
+DECL|macro|sunsab_console_init
+mdefine_line|#define sunsab_console_init()&t;do { } while (0)
+macro_line|#endif
 DECL|function|for_each_sab_edev
 r_static
 r_void
@@ -4992,8 +5006,7 @@ id|num_channels
 suffix:semicolon
 id|sunsab_reg.cons
 op_assign
-op_amp
-id|sunsab_console
+id|SUNSAB_CONSOLE
 suffix:semicolon
 id|ret
 op_assign

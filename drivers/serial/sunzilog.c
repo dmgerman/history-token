@@ -14,6 +14,7 @@ macro_line|#include &lt;linux/ioport.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/circ_buf.h&gt;
 macro_line|#include &lt;linux/serial.h&gt;
+macro_line|#include &lt;linux/sysrq.h&gt;
 macro_line|#include &lt;linux/console.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#ifdef CONFIG_SERIO
@@ -26,6 +27,10 @@ macro_line|#ifdef CONFIG_SPARC64
 macro_line|#include &lt;asm/fhc.h&gt;
 macro_line|#endif
 macro_line|#include &lt;asm/sbus.h&gt;
+macro_line|#if defined(CONFIG_SERIAL_SUNZILOG_CONSOLE) &amp;&amp; defined(CONFIG_MAGIC_SYSRQ)
+DECL|macro|SUPPORT_SYSRQ
+mdefine_line|#define SUPPORT_SYSRQ
+macro_line|#endif
 macro_line|#include &lt;linux/serial_core.h&gt;
 macro_line|#include &quot;suncore.h&quot;
 macro_line|#include &quot;sunzilog.h&quot;
@@ -5614,6 +5619,7 @@ id|flags
 suffix:semicolon
 )brace
 macro_line|#endif /* CONFIG_SERIO */
+macro_line|#ifdef CONFIG_SERIAL_SUNZILOG_CONSOLE
 r_static
 r_void
 DECL|function|sunzilog_console_write
@@ -6002,6 +6008,8 @@ id|sunzilog_reg
 comma
 )brace
 suffix:semicolon
+DECL|macro|SUNZILOG_CONSOLE
+mdefine_line|#define SUNZILOG_CONSOLE&t;(&amp;sunzilog_console)
 DECL|function|sunzilog_console_init
 r_static
 r_int
@@ -6100,6 +6108,12 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+macro_line|#else
+DECL|macro|SUNZILOG_CONSOLE
+mdefine_line|#define SUNZILOG_CONSOLE&t;(NULL)
+DECL|macro|sunzilog_console_init
+mdefine_line|#define sunzilog_console_init() do { } while (0)
+macro_line|#endif
 multiline_comment|/*&n; * We scan the PROM tree recursively. This is the most reliable way&n; * to find Zilog nodes on various platforms. However, we face an extreme&n; * shortage of kernel stack, so we must be very careful. To that end,&n; * we scan only to a certain depth, and we use a common property buffer&n; * in the scan structure.&n; */
 DECL|macro|ZS_PROPSIZE
 mdefine_line|#define ZS_PROPSIZE  128
@@ -7399,8 +7413,7 @@ id|NUM_CHANNELS
 suffix:semicolon
 id|sunzilog_reg.cons
 op_assign
-op_amp
-id|sunzilog_console
+id|SUNZILOG_CONSOLE
 suffix:semicolon
 id|sunzilog_reg.minor
 op_assign
