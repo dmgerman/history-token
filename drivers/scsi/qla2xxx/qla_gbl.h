@@ -1,4 +1,4 @@
-multiline_comment|/********************************************************************************&n;*                  QLOGIC LINUX SOFTWARE&n;*&n;* QLogic ISP2x00 device driver for Linux 2.6.x&n;* Copyright (C) 2003 QLogic Corporation&n;* (www.qlogic.com)&n;*&n;* This program is free software; you can redistribute it and/or modify it&n;* under the terms of the GNU General Public License as published by the&n;* Free Software Foundation; either version 2, or (at your option) any&n;* later version.&n;*&n;* This program is distributed in the hope that it will be useful, but&n;* WITHOUT ANY WARRANTY; without even the implied warranty of&n;* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU&n;* General Public License for more details.&n;*&n;******************************************************************************&n;* Global include file.&n;******************************************************************************/
+multiline_comment|/********************************************************************************&n;*                  QLOGIC LINUX SOFTWARE&n;*&n;* QLogic ISP2x00 device driver for Linux 2.6.x&n;* Copyright (C) 2003-2004 QLogic Corporation&n;* (www.qlogic.com)&n;*&n;* This program is free software; you can redistribute it and/or modify it&n;* under the terms of the GNU General Public License as published by the&n;* Free Software Foundation; either version 2, or (at your option) any&n;* later version.&n;*&n;* This program is distributed in the hope that it will be useful, but&n;* WITHOUT ANY WARRANTY; without even the implied warranty of&n;* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU&n;* General Public License for more details.&n;*&n;******************************************************************************&n;* Global include file.&n;******************************************************************************/
 macro_line|#ifndef __QLA_GBL_H
 DECL|macro|__QLA_GBL_H
 mdefine_line|#define&t;__QLA_GBL_H
@@ -213,6 +213,10 @@ id|ql2xintrdelaytimer
 suffix:semicolon
 r_extern
 r_int
+id|ql2xloginretrycount
+suffix:semicolon
+r_extern
+r_int
 id|ConfigRequired
 suffix:semicolon
 r_extern
@@ -250,6 +254,15 @@ id|scsi_qla_host
 op_star
 comma
 r_char
+op_star
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|qla2x00_cmd_timeout
+c_func
+(paren
+id|srb_t
 op_star
 )paren
 suffix:semicolon
@@ -894,7 +907,7 @@ op_star
 comma
 r_uint8
 comma
-r_void
+id|link_stat_t
 op_star
 comma
 r_uint16
@@ -1451,70 +1464,11 @@ op_star
 )paren
 suffix:semicolon
 multiline_comment|/*&n; * Global Function Prototypes in qla_xioctl.c source file.&n; */
-macro_line|#ifdef CONFIG_SCSI_QLA2XXX_IOCTL
-r_extern
-r_void
-id|qla2x00_enqueue_aen
-c_func
-(paren
-id|scsi_qla_host_t
-op_star
-comma
-r_uint16
-comma
-r_void
-op_star
-)paren
-suffix:semicolon
-r_extern
-r_int
-id|qla2x00_alloc_ioctl_mem
-c_func
-(paren
-id|scsi_qla_host_t
-op_star
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|qla2x00_free_ioctl_mem
-c_func
-(paren
-id|scsi_qla_host_t
-op_star
-)paren
-suffix:semicolon
-r_extern
-r_int
-id|qla2x00_get_ioctl_scrap_mem
-c_func
-(paren
-id|scsi_qla_host_t
-op_star
-comma
-r_void
-op_star
-op_star
-comma
-r_uint32
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|qla2x00_free_ioctl_scrap_mem
-c_func
-(paren
-id|scsi_qla_host_t
-op_star
-)paren
-suffix:semicolon
-macro_line|#else
 DECL|macro|qla2x00_enqueue_aen
 mdefine_line|#define qla2x00_enqueue_aen(ha, cmd, mode)&t;do { } while (0)
 DECL|macro|qla2x00_alloc_ioctl_mem
 mdefine_line|#define qla2x00_alloc_ioctl_mem(ha)&t;&t;(0)
 DECL|macro|qla2x00_free_ioctl_mem
 mdefine_line|#define qla2x00_free_ioctl_mem(ha)&t;&t;do { } while (0)
-macro_line|#endif
 macro_line|#endif /* _QLA_GBL_H */
 eof

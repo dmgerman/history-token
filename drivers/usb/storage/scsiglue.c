@@ -26,6 +26,32 @@ r_return
 l_string|&quot;SCSI emulation for USB Mass Storage devices&quot;
 suffix:semicolon
 )brace
+DECL|function|slave_alloc
+r_static
+r_int
+id|slave_alloc
+(paren
+r_struct
+id|scsi_device
+op_star
+id|sdev
+)paren
+(brace
+multiline_comment|/*&n;&t; * Set default bflags. These can be overridden for individual&n;&t; * models and vendors via the scsi devinfo mechanism.&n;&t; */
+id|sdev-&gt;sdev_bflags
+op_assign
+(paren
+id|BLIST_MS_SKIP_PAGE_08
+op_or
+id|BLIST_MS_SKIP_PAGE_3F
+op_or
+id|BLIST_USE_10_BYTE_MS
+)paren
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+)brace
 DECL|function|slave_configure
 r_static
 r_int
@@ -1195,6 +1221,11 @@ op_minus
 l_int|1
 comma
 dot
+id|slave_alloc
+op_assign
+id|slave_alloc
+comma
+dot
 id|slave_configure
 op_assign
 id|slave_configure
@@ -1228,18 +1259,6 @@ dot
 id|sdev_attrs
 op_assign
 id|sysfs_device_attr_list
-comma
-multiline_comment|/* modify scsi_device bits on probe */
-dot
-id|flags
-op_assign
-(paren
-id|BLIST_MS_SKIP_PAGE_08
-op_or
-id|BLIST_MS_SKIP_PAGE_3F
-op_or
-id|BLIST_USE_10_BYTE_MS
-)paren
 comma
 multiline_comment|/* module management */
 dot

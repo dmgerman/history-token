@@ -782,7 +782,11 @@ op_logical_neg
 id|cd-&gt;device
 op_logical_or
 op_logical_neg
-id|cd-&gt;device-&gt;online
+id|scsi_device_online
+c_func
+(paren
+id|cd-&gt;device
+)paren
 )paren
 (brace
 id|SCSI_LOG_HLQUEUE
