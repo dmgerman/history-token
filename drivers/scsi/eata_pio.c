@@ -3034,7 +3034,7 @@ c_func
 (paren
 id|base
 comma
-l_int|8
+l_int|9
 comma
 l_string|&quot;eata_pio&quot;
 )paren
@@ -3341,7 +3341,7 @@ c_func
 (paren
 id|base
 comma
-l_int|8
+l_int|9
 )paren
 suffix:semicolon
 r_return
@@ -4375,7 +4375,7 @@ id|base
 suffix:semicolon
 id|sh-&gt;n_io_port
 op_assign
-l_int|8
+l_int|9
 suffix:semicolon
 id|sh-&gt;irq
 op_assign
@@ -4572,7 +4572,7 @@ id|ISAbases
 id|i
 )braket
 comma
-l_int|8
+l_int|9
 )paren
 suffix:semicolon
 r_else
@@ -4834,7 +4834,7 @@ c_func
 (paren
 id|base
 comma
-l_int|8
+l_int|9
 )paren
 suffix:semicolon
 )brace
@@ -4853,7 +4853,7 @@ c_func
 (paren
 id|base
 comma
-l_int|8
+l_int|9
 )paren
 suffix:semicolon
 )brace
@@ -5077,7 +5077,7 @@ c_func
 (paren
 id|base
 comma
-l_int|8
+l_int|9
 )paren
 suffix:semicolon
 r_continue
@@ -5105,7 +5105,7 @@ c_func
 (paren
 id|base
 comma
-l_int|8
+l_int|9
 )paren
 suffix:semicolon
 r_continue
