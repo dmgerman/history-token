@@ -746,6 +746,11 @@ id|S_IRUGO
 op_or
 id|S_IWUSR
 comma
+dot
+id|owner
+op_assign
+id|THIS_MODULE
+comma
 )brace
 comma
 dot
