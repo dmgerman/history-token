@@ -9887,10 +9887,9 @@ id|parp
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Find out the size of each entry of the interrupts property&n; * for a node.&n; */
-r_static
+DECL|function|prom_n_intr_cells
 r_int
 id|__devinit
-DECL|function|prom_n_intr_cells
 id|prom_n_intr_cells
 c_func
 (paren
