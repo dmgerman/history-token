@@ -49,7 +49,7 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|variable|pxa_leds_init
-id|__initcall
+id|core_initcall
 c_func
 (paren
 id|pxa_leds_init

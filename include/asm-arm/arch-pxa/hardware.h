@@ -85,6 +85,5 @@ macro_line|#endif
 multiline_comment|/*&n; * Implementation specifics&n; */
 macro_line|#include &quot;lubbock.h&quot;
 macro_line|#include &quot;idp.h&quot;
-macro_line|#include &quot;cerf.h&quot;
 macro_line|#endif  /* _ASM_ARCH_HARDWARE_H */
 eof
