@@ -4952,6 +4952,7 @@ r_return
 op_minus
 id|ENOENT
 suffix:semicolon
+multiline_comment|/*&n;&t; * For each port there is one MIDI_IN/OUT_JACK descriptor, not&n;&t; * necessarily with any useful contents.  So simply count &squot;em.&n;&t; */
 r_for
 c_loop
 (paren
@@ -5127,6 +5128,7 @@ c_func
 id|hostif
 )paren
 suffix:semicolon
+multiline_comment|/*&n;&t; * The various MidiSport devices have more or less random endpoint&n;&t; * numbers, so we have to identify the endpoints by their index in&n;&t; * the descriptor array, like the driver for that other OS does.&n;&t; *&n;&t; * There is one interrupt input endpoint for all input ports, one&n;&t; * bulk output endpoint for even-numbered ports, and one for odd-&n;&t; * numbered ports.  Both bulk output endpoints have corresponding&n;&t; * input bulk endpoints (at indices 1 and 3) which aren&squot;t used.&n;&t; */
 r_if
 c_cond
 (paren
