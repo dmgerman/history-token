@@ -7694,6 +7694,14 @@ op_assign
 l_int|1
 suffix:semicolon
 multiline_comment|/* Disabled (masked) */
+multiline_comment|/*&n;&t; * IRQs &lt; 16 are already in the irq_2_pin[] map&n;&t; */
+r_if
+c_cond
+(paren
+id|irq
+op_ge
+l_int|16
+)paren
 id|add_pin_to_irq
 c_func
 (paren
