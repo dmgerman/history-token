@@ -215,33 +215,9 @@ macro_line|#pragma pack()
 macro_line|#ifdef CONFIG_PNPBIOS
 multiline_comment|/* non-exported */
 r_extern
-r_int
-id|pnpbios_dont_use_current_config
-suffix:semicolon
-r_extern
 r_struct
 id|pnp_dev_node_info
 id|node_info
-suffix:semicolon
-r_extern
-r_void
-op_star
-id|pnpbios_kmalloc
-c_func
-(paren
-r_int
-id|size
-comma
-r_int
-id|f
-)paren
-suffix:semicolon
-r_extern
-r_int
-id|pnpbios_init
-(paren
-r_void
-)paren
 suffix:semicolon
 r_extern
 r_int
