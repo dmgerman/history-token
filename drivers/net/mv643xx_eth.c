@@ -15,10 +15,14 @@ macro_line|#include &lt;asm/delay.h&gt;
 macro_line|#include &quot;mv643xx_eth.h&quot;
 multiline_comment|/*&n; * The first part is the high level driver of the gigE ethernet ports.&n; */
 multiline_comment|/* Constants */
+DECL|macro|VLAN_HLEN
+mdefine_line|#define VLAN_HLEN&t;&t;4
+DECL|macro|FCS_LEN
+mdefine_line|#define FCS_LEN&t;&t;&t;4
 DECL|macro|WRAP
-mdefine_line|#define WRAP&t;&t;&t;&t;ETH_HLEN + 2 + 4
+mdefine_line|#define WRAP&t;&t;&t;NET_IP_ALIGN + ETH_HLEN + VLAN_HLEN + FCS_LEN
 DECL|macro|RX_SKB_SIZE
-mdefine_line|#define RX_SKB_SIZE&t;&t;&t;((dev-&gt;mtu + WRAP + 7) &amp; ~0x7)
+mdefine_line|#define RX_SKB_SIZE&t;&t;((dev-&gt;mtu + WRAP + 7) &amp; ~0x7)
 DECL|macro|INT_CAUSE_UNMASK_ALL
 mdefine_line|#define INT_CAUSE_UNMASK_ALL&t;&t;0x0007ffff
 DECL|macro|INT_CAUSE_UNMASK_ALL_EXT
