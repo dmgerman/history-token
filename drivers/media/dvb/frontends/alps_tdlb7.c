@@ -1501,6 +1501,15 @@ comma
 id|p-&gt;frequency
 )paren
 suffix:semicolon
+singleline_comment|// read status reg in order to clear pending irqs
+id|sp8870_readreg
+c_func
+(paren
+id|i2c
+comma
+l_int|0x200
+)paren
+suffix:semicolon
 singleline_comment|// sample rate correction bit [23..17]
 id|sp8870_writereg
 c_func
