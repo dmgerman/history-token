@@ -1917,7 +1917,7 @@ c_func
 (paren
 id|lvcc-&gt;vbase
 op_ne
-l_int|0
+l_int|NULL
 comma
 l_string|&quot;cardvcc_read: unbound vcc!&bslash;n&quot;
 )paren
@@ -1977,7 +1977,7 @@ c_func
 (paren
 id|lvcc-&gt;vbase
 op_ne
-l_int|0
+l_int|NULL
 comma
 l_string|&quot;cardvcc_write: unbound vcc!&bslash;n&quot;
 )paren
@@ -2472,7 +2472,7 @@ c_cond
 (paren
 id|lvcc-&gt;vbase
 op_eq
-l_int|0
+l_int|NULL
 )paren
 multiline_comment|/* We were never bound to a VCI */
 r_return
@@ -2622,7 +2622,7 @@ c_cond
 (paren
 id|lvcc-&gt;vbase
 op_eq
-l_int|0
+l_int|NULL
 )paren
 multiline_comment|/* We were never bound to a VCI */
 r_return
@@ -6785,7 +6785,7 @@ c_cond
 (paren
 id|lvcc-&gt;vbase
 op_ne
-l_int|0
+l_int|NULL
 )paren
 r_return
 suffix:semicolon
@@ -6876,7 +6876,7 @@ c_cond
 (paren
 id|lvcc-&gt;vbase
 op_eq
-l_int|0
+l_int|NULL
 )paren
 r_return
 suffix:semicolon
@@ -9860,7 +9860,7 @@ c_cond
 (paren
 id|lanai-&gt;base
 op_eq
-l_int|0
+l_int|NULL
 )paren
 (brace
 id|printk
@@ -10700,7 +10700,7 @@ c_cond
 (paren
 id|lvcc-&gt;vbase
 op_ne
-l_int|0
+l_int|NULL
 )paren
 id|lanai_cbr_shutdown
 c_func
@@ -11895,7 +11895,7 @@ l_int|NULL
 op_logical_or
 id|lvcc-&gt;vbase
 op_eq
-l_int|0
+l_int|NULL
 op_logical_or
 id|lvcc-&gt;tx.atmvcc
 op_ne
