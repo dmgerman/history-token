@@ -9093,8 +9093,6 @@ id|con_buf
 id|PAGE_SIZE
 )braket
 suffix:semicolon
-DECL|macro|CON_BUF_SIZE
-mdefine_line|#define CON_BUF_SIZE&t;PAGE_SIZE
 DECL|variable|con_buf_sem
 id|DECLARE_MUTEX
 c_func

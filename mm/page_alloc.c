@@ -5222,7 +5222,7 @@ l_int|0
 suffix:semicolon
 id|i
 OL
-id|MAX_NR_ZONES
+id|GFP_ZONETYPES
 suffix:semicolon
 id|i
 op_increment
@@ -5338,7 +5338,7 @@ l_int|0
 suffix:semicolon
 id|i
 OL
-id|MAX_NR_ZONES
+id|GFP_ZONETYPES
 suffix:semicolon
 id|i
 op_increment
@@ -5459,7 +5459,7 @@ l_int|0
 suffix:semicolon
 id|i
 OL
-id|MAX_NR_ZONES
+id|GFP_ZONETYPES
 suffix:semicolon
 id|i
 op_increment
@@ -7697,7 +7697,7 @@ l_int|0
 suffix:semicolon
 id|i
 OL
-id|MAX_NR_ZONES
+id|GFP_ZONETYPES
 suffix:semicolon
 id|i
 op_increment

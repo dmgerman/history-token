@@ -2472,6 +2472,8 @@ op_amp
 id|copy
 )paren
 )paren
+op_ne
+l_int|NULL
 )paren
 r_if
 c_cond

@@ -342,6 +342,7 @@ suffix:semicolon
 )brace
 macro_line|#ifdef CONFIG_FRAME_POINTER
 DECL|function|print_context_stack
+r_static
 r_void
 id|print_context_stack
 c_func
@@ -431,6 +432,7 @@ suffix:semicolon
 )brace
 macro_line|#else
 DECL|function|print_context_stack
+r_static
 r_void
 id|print_context_stack
 c_func
@@ -484,7 +486,7 @@ id|addr
 id|printk
 c_func
 (paren
-l_string|&quot; [&lt;%08lx&gt;] &quot;
+l_string|&quot; [&lt;%08lx&gt;]&quot;
 comma
 id|addr
 )paren
@@ -492,9 +494,15 @@ suffix:semicolon
 id|print_symbol
 c_func
 (paren
-l_string|&quot;%s&bslash;n&quot;
+l_string|&quot; %s&quot;
 comma
 id|addr
+)paren
+suffix:semicolon
+id|printk
+c_func
+(paren
+l_string|&quot;&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace

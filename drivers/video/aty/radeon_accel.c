@@ -168,10 +168,9 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|radeon_accel_disabled
-c_func
-(paren
-)paren
+id|info-&gt;flags
+op_amp
+id|FBINFO_HWACCEL_DISABLED
 )paren
 (brace
 id|cfb_fillrect
@@ -562,10 +561,9 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|radeon_accel_disabled
-c_func
-(paren
-)paren
+id|info-&gt;flags
+op_amp
+id|FBINFO_HWACCEL_DISABLED
 )paren
 (brace
 id|cfb_copyarea

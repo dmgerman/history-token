@@ -12,9 +12,6 @@ DECL|macro|PAGE_MASK
 mdefine_line|#define PAGE_MASK    (~(PAGE_SIZE-1))
 macro_line|#ifdef __KERNEL__
 macro_line|#ifndef __ASSEMBLY__
-multiline_comment|/* Sparc64 is slow at multiplication, we prefer to use some extra space. */
-DECL|macro|WANT_PAGE_VIRTUAL
-mdefine_line|#define WANT_PAGE_VIRTUAL 1
 r_extern
 r_void
 id|_clear_page
@@ -290,15 +287,35 @@ mdefine_line|#define PAGE_ALIGN(addr)&t;(((addr)+PAGE_SIZE-1)&amp;PAGE_MASK)
 multiline_comment|/* We used to stick this into a hard-coded global register (%g4)&n; * but that does not make sense anymore.&n; */
 DECL|macro|PAGE_OFFSET
 mdefine_line|#define PAGE_OFFSET&t;&t;_AC(0xFFFFF80000000000,UL)
+macro_line|#ifndef __ASSEMBLY__
 DECL|macro|__pa
 mdefine_line|#define __pa(x)&t;&t;&t;((unsigned long)(x) - PAGE_OFFSET)
 DECL|macro|__va
 mdefine_line|#define __va(x)&t;&t;&t;((void *)((unsigned long) (x) + PAGE_OFFSET))
-multiline_comment|/* PFNs are real physical page numbers.  However, mem_map only begins to record&n; * per-page information starting at pfn_base.  This is to handle systems where&n; * the first physical page in the machine is at some huge physical address, such&n; * as 4GB.   This is common on a partitioned E10000, for example.&n; */
-DECL|macro|pfn_to_page
-mdefine_line|#define pfn_to_page(pfn)&t;(mem_map + ((pfn)-(pfn_base)))
-DECL|macro|page_to_pfn
-mdefine_line|#define page_to_pfn(page)&t;((unsigned long)(((page) - mem_map) + pfn_base))
+multiline_comment|/* PFNs are real physical page numbers.  However, mem_map only begins to record&n; * per-page information starting at pfn_base.  This is to handle systems where&n; * the first physical page in the machine is at some huge physical address,&n; * such as 4GB.   This is common on a partitioned E10000, for example.&n; */
+r_extern
+r_struct
+id|page
+op_star
+id|pfn_to_page
+c_func
+(paren
+r_int
+r_int
+id|pfn
+)paren
+suffix:semicolon
+r_extern
+r_int
+r_int
+id|page_to_pfn
+c_func
+(paren
+r_struct
+id|page
+op_star
+)paren
+suffix:semicolon
 DECL|macro|virt_to_page
 mdefine_line|#define virt_to_page(kaddr)&t;pfn_to_page(__pa(kaddr)&gt;&gt;PAGE_SHIFT)
 DECL|macro|pfn_valid
@@ -309,7 +326,6 @@ DECL|macro|virt_to_phys
 mdefine_line|#define virt_to_phys __pa
 DECL|macro|phys_to_virt
 mdefine_line|#define phys_to_virt __va
-macro_line|#ifndef __ASSEMBLY__
 multiline_comment|/* The following structure is used to hold the physical&n; * memory configuration of the machine.  This is filled in&n; * probe_memory() and is later used by mem_init() to set up&n; * mem_map[].  We statically allocate SPARC_PHYS_BANKS of&n; * these structs, this is arbitrary.  The entry after the&n; * last valid one has num_bytes==0.&n; */
 DECL|struct|sparc_phys_banks
 r_struct
