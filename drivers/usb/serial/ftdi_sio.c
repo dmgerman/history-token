@@ -709,8 +709,9 @@ id|priv
 id|err
 c_func
 (paren
+l_string|&quot;%s- kmalloc(%Zd) failed.&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;- kmalloc(%Zd) failed.&quot;
 comma
 r_sizeof
 (paren
@@ -782,8 +783,9 @@ id|priv
 id|err
 c_func
 (paren
+l_string|&quot;%s- kmalloc(%Zd) failed.&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;- kmalloc(%Zd) failed.&quot;
 comma
 r_sizeof
 (paren
@@ -823,7 +825,10 @@ id|serial
 )paren
 (brace
 id|dbg
+c_func
 (paren
+l_string|&quot;%s&quot;
+comma
 id|__FUNCTION__
 )paren
 suffix:semicolon
@@ -903,6 +908,8 @@ multiline_comment|/* Needed for the usb_control_msg I think */
 id|dbg
 c_func
 (paren
+l_string|&quot;%s&quot;
+comma
 id|__FUNCTION__
 )paren
 suffix:semicolon
@@ -990,8 +997,9 @@ l_int|0
 id|err
 c_func
 (paren
+l_string|&quot;%s Error from DTR HIGH urb&quot;
+comma
 id|__FUNCTION__
-l_string|&quot; Error from DTR HIGH urb&quot;
 )paren
 suffix:semicolon
 )brace
@@ -1020,8 +1028,9 @@ l_int|0
 id|err
 c_func
 (paren
+l_string|&quot;%s Error from RTS HIGH urb&quot;
+comma
 id|__FUNCTION__
-l_string|&quot; Error from RTS HIGH urb&quot;
 )paren
 suffix:semicolon
 )brace
@@ -1068,8 +1077,9 @@ id|result
 id|err
 c_func
 (paren
+l_string|&quot;%s - failed submitting read urb, error %d&quot;
+comma
 id|__FUNCTION__
-l_string|&quot; - failed submitting read urb, error %d&quot;
 comma
 id|result
 )paren
@@ -1119,6 +1129,8 @@ suffix:semicolon
 id|dbg
 c_func
 (paren
+l_string|&quot;%s&quot;
+comma
 id|__FUNCTION__
 )paren
 suffix:semicolon
@@ -1317,8 +1329,9 @@ suffix:semicolon
 id|dbg
 c_func
 (paren
+l_string|&quot;%s port %d, %d bytes&quot;
+comma
 id|__FUNCTION__
-l_string|&quot; port %d, %d bytes&quot;
 comma
 id|port-&gt;number
 comma
@@ -1365,9 +1378,11 @@ id|EINPROGRESS
 )paren
 (brace
 id|dbg
+c_func
 (paren
+l_string|&quot;%s - already writing&quot;
+comma
 id|__FUNCTION__
-l_string|&quot; - already writing&quot;
 )paren
 suffix:semicolon
 r_return
@@ -1473,8 +1488,9 @@ suffix:semicolon
 id|dbg
 c_func
 (paren
+l_string|&quot;%s Bytes: %d, First Byte: 0x%02x&quot;
+comma
 id|__FUNCTION__
-l_string|&quot; Bytes: %d, First Byte: 0x%02x&quot;
 comma
 id|count
 comma
@@ -1539,8 +1555,9 @@ id|result
 id|err
 c_func
 (paren
+l_string|&quot;%s - failed submitting write urb, error %d&quot;
+comma
 id|__FUNCTION__
-l_string|&quot; - failed submitting write urb, error %d&quot;
 comma
 id|result
 )paren
@@ -1552,8 +1569,9 @@ suffix:semicolon
 id|dbg
 c_func
 (paren
+l_string|&quot;%s write returning: %d&quot;
+comma
 id|__FUNCTION__
-l_string|&quot; write returning: %d&quot;
 comma
 id|count
 op_minus
@@ -1600,7 +1618,7 @@ suffix:semicolon
 id|dbg
 c_func
 (paren
-l_string|&quot;ftdi_sio_write_bulk_callback&quot;
+id|__FUNCTION__
 )paren
 suffix:semicolon
 r_if
@@ -1791,8 +1809,9 @@ suffix:semicolon
 id|dbg
 c_func
 (paren
+l_string|&quot;%s - port %d&quot;
+comma
 id|__FUNCTION__
-l_string|&quot; - port %d&quot;
 comma
 id|port-&gt;number
 )paren
@@ -2143,8 +2162,9 @@ id|result
 id|err
 c_func
 (paren
+l_string|&quot;%s - failed resubmitting read urb, error %d&quot;
+comma
 id|__FUNCTION__
-l_string|&quot; - failed resubmitting read urb, error %d&quot;
 comma
 id|result
 )paren
@@ -2788,6 +2808,8 @@ multiline_comment|/* Perhaps I should dynamically alloc this? */
 id|dbg
 c_func
 (paren
+l_string|&quot;%s&quot;
+comma
 id|__FUNCTION__
 )paren
 suffix:semicolon
@@ -2961,8 +2983,9 @@ l_int|0
 id|err
 c_func
 (paren
+l_string|&quot;%s FAILED to set databits/stopbits/parity&quot;
+comma
 id|__FUNCTION__
-l_string|&quot; FAILED to set databits/stopbits/parity&quot;
 )paren
 suffix:semicolon
 )brace
@@ -3031,8 +3054,9 @@ l_int|0
 id|err
 c_func
 (paren
+l_string|&quot;%s error from disable flowcontrol urb&quot;
+comma
 id|__FUNCTION__
-l_string|&quot; error from disable flowcontrol urb&quot;
 )paren
 suffix:semicolon
 )brace
@@ -3062,8 +3086,9 @@ l_int|0
 id|err
 c_func
 (paren
+l_string|&quot;%s Error from DTR LOW urb&quot;
+comma
 id|__FUNCTION__
-l_string|&quot; Error from DTR LOW urb&quot;
 )paren
 suffix:semicolon
 )brace
@@ -3092,8 +3117,9 @@ l_int|0
 id|err
 c_func
 (paren
+l_string|&quot;%s Error from RTS LOW urb&quot;
+comma
 id|__FUNCTION__
-l_string|&quot; Error from RTS LOW urb&quot;
 )paren
 suffix:semicolon
 )brace
@@ -3157,8 +3183,9 @@ id|CRTSCTS
 id|dbg
 c_func
 (paren
+l_string|&quot;%s Setting to CRTSCTS flow control&quot;
+comma
 id|__FUNCTION__
-l_string|&quot; Setting to CRTSCTS flow control&quot;
 )paren
 suffix:semicolon
 r_if
@@ -3209,8 +3236,9 @@ multiline_comment|/* CHECKME Assuming XON/XOFF handled by tty stack - not by dev
 id|dbg
 c_func
 (paren
+l_string|&quot;%s Turning off hardware flow control&quot;
+comma
 id|__FUNCTION__
-l_string|&quot; Turning off hardware flow control&quot;
 )paren
 suffix:semicolon
 r_if
@@ -3324,8 +3352,9 @@ suffix:semicolon
 id|dbg
 c_func
 (paren
+l_string|&quot;%s cmd 0x%04x&quot;
+comma
 id|__FUNCTION__
-l_string|&quot; cmd 0x%04x&quot;
 comma
 id|cmd
 )paren
@@ -3343,8 +3372,9 @@ suffix:colon
 id|dbg
 c_func
 (paren
+l_string|&quot;%s TIOCMGET&quot;
+comma
 id|__FUNCTION__
-l_string|&quot; TIOCMGET&quot;
 )paren
 suffix:semicolon
 r_if
@@ -3397,8 +3427,9 @@ l_int|0
 id|err
 c_func
 (paren
+l_string|&quot;%s Could not get modem status of device - err: %d&quot;
+comma
 id|__FUNCTION__
-l_string|&quot; Could not get modem status of device - err: %d&quot;
 comma
 id|ret
 )paren
@@ -3452,8 +3483,9 @@ l_int|0
 id|err
 c_func
 (paren
+l_string|&quot;%s Could not get modem status of device - err: %d&quot;
+comma
 id|__FUNCTION__
-l_string|&quot; Could not get modem status of device - err: %d&quot;
 comma
 id|ret
 )paren
@@ -3540,8 +3572,9 @@ multiline_comment|/* Turns on and off the lines as specified by the mask */
 id|dbg
 c_func
 (paren
+l_string|&quot;%s TIOCMSET&quot;
+comma
 id|__FUNCTION__
-l_string|&quot; TIOCMSET&quot;
 )paren
 suffix:semicolon
 r_if
@@ -3661,8 +3694,9 @@ multiline_comment|/* turns on (Sets) the lines as specified by the mask */
 id|dbg
 c_func
 (paren
+l_string|&quot;%s TIOCMBIS&quot;
+comma
 id|__FUNCTION__
-l_string|&quot; TIOCMBIS&quot;
 )paren
 suffix:semicolon
 r_if
@@ -3784,8 +3818,9 @@ multiline_comment|/* turns off (Clears) the lines as specified by the mask */
 id|dbg
 c_func
 (paren
+l_string|&quot;%s TIOCMBIC&quot;
+comma
 id|__FUNCTION__
-l_string|&quot; TIOCMBIC&quot;
 )paren
 suffix:semicolon
 r_if
@@ -3907,8 +3942,9 @@ multiline_comment|/* This is not an error - turns out the higher layers will do 
 id|dbg
 c_func
 (paren
+l_string|&quot;%s arg not supported - it was 0x%04x&quot;
+comma
 id|__FUNCTION__
-l_string|&quot; arg not supported - it was 0x%04x&quot;
 comma
 id|cmd
 )paren
@@ -3937,6 +3973,8 @@ r_void
 id|dbg
 c_func
 (paren
+l_string|&quot;%s&quot;
+comma
 id|__FUNCTION__
 )paren
 suffix:semicolon
@@ -3976,6 +4014,8 @@ r_void
 id|dbg
 c_func
 (paren
+l_string|&quot;%s&quot;
+comma
 id|__FUNCTION__
 )paren
 suffix:semicolon
