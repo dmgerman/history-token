@@ -17,12 +17,6 @@ DECL|macro|ENABLE_CLUSTERING
 mdefine_line|#define ENABLE_CLUSTERING 1
 multiline_comment|/* The various choices mean:&n; * NONE: Self evident.&t;Host adapter is not capable of scatter-gather.&n; * ALL:&t; Means that the host adapter module can do scatter-gather,&n; *&t; and that there is no limit to the size of the table to which&n; *&t; we scatter/gather data.&n; * Anything else:  Indicates the maximum number of chains that can be&n; *&t; used in one scatter-gather request.&n; */
 multiline_comment|/*&n; * The Scsi_Host_Template type has all that is needed to interface with a SCSI&n; * host in a device independent matter.&t; There is one entry for each different&n; * type of host adapter that is supported on the system.&n; */
-DECL|typedef|Disk
-r_typedef
-r_struct
-id|scsi_disk
-id|Disk
-suffix:semicolon
 DECL|struct|SHT
 r_typedef
 r_struct
@@ -791,19 +785,6 @@ id|Scsi_Host
 op_star
 )paren
 suffix:semicolon
-multiline_comment|/*&n; *  scsi_init initializes the scsi hosts.&n; */
-r_extern
-r_int
-id|next_scsi_host
-suffix:semicolon
-r_int
-r_int
-id|scsi_init
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
 r_extern
 r_void
 id|scsi_register_blocked_host
@@ -893,18 +874,6 @@ comma
 id|uint
 )paren
 suffix:semicolon
-r_extern
-r_void
-id|scsi_mark_host_reset
-c_func
-(paren
-r_struct
-id|Scsi_Host
-op_star
-)paren
-suffix:semicolon
-DECL|macro|BLANK_HOST
-mdefine_line|#define BLANK_HOST {&quot;&quot;, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}
 DECL|struct|Scsi_Device_Template
 r_struct
 id|Scsi_Device_Template
@@ -939,18 +908,6 @@ r_int
 r_char
 id|scsi_type
 suffix:semicolon
-DECL|member|detect
-r_int
-(paren
-op_star
-id|detect
-)paren
-(paren
-id|Scsi_Device
-op_star
-)paren
-suffix:semicolon
-multiline_comment|/* Returns 1 if we can attach this device */
 DECL|member|attach
 r_int
 (paren
@@ -1125,16 +1082,7 @@ op_star
 suffix:semicolon
 r_extern
 r_void
-id|scsi_host_hn_init
-c_func
-(paren
-r_char
-op_star
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|scsi_host_hn_release
+id|scsi_host_init
 c_func
 (paren
 r_void

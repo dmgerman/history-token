@@ -1,16 +1,5 @@
 macro_line|#ifndef _SCSI_DEBUG_H
 macro_line|#include &lt;linux/types.h&gt;
-macro_line|#include &lt;linux/kdev_t.h&gt;
-r_static
-r_int
-id|scsi_debug_detect
-c_func
-(paren
-r_struct
-id|SHT
-op_star
-)paren
-suffix:semicolon
 r_static
 r_int
 id|scsi_debug_slave_attach
@@ -31,17 +20,6 @@ id|scsi_device
 op_star
 )paren
 suffix:semicolon
-r_static
-r_int
-id|scsi_debug_release
-c_func
-(paren
-r_struct
-id|Scsi_Host
-op_star
-)paren
-suffix:semicolon
-multiline_comment|/* static int scsi_debug_command(struct scsi_cmnd *); */
 r_static
 r_int
 id|scsi_debug_queuecommand
@@ -171,19 +149,15 @@ id|Scsi_Host
 op_star
 )paren
 suffix:semicolon
-macro_line|#ifndef NULL
-DECL|macro|NULL
-mdefine_line|#define NULL 0
-macro_line|#endif
 multiline_comment|/*&n; * This driver is written for the lk 2.5 series&n; */
 DECL|macro|SCSI_DEBUG_CANQUEUE
 mdefine_line|#define SCSI_DEBUG_CANQUEUE  255 &t;/* needs to be &gt;= 1 */
 DECL|macro|SCSI_DEBUG_MAX_CMD_LEN
 mdefine_line|#define SCSI_DEBUG_MAX_CMD_LEN 16
-DECL|variable|driver_template
+DECL|variable|sdebug_driver_template
 r_static
 id|Scsi_Host_Template
-id|driver_template
+id|sdebug_driver_template
 op_assign
 (brace
 dot
@@ -202,11 +176,6 @@ op_assign
 id|scsi_debug_info
 comma
 dot
-id|detect
-op_assign
-id|scsi_debug_detect
-comma
-dot
 id|slave_attach
 op_assign
 id|scsi_debug_slave_attach
@@ -215,11 +184,6 @@ dot
 id|slave_detach
 op_assign
 id|scsi_debug_slave_detach
-comma
-dot
-id|release
-op_assign
-id|scsi_debug_release
 comma
 dot
 id|ioctl
@@ -277,6 +241,11 @@ op_assign
 l_int|3
 comma
 dot
+id|max_sectors
+op_assign
+l_int|4096
+comma
+dot
 id|unchecked_isa_dma
 op_assign
 l_int|0
@@ -288,6 +257,5 @@ id|ENABLE_CLUSTERING
 comma
 )brace
 suffix:semicolon
-multiline_comment|/* the name &squot;driver_template&squot; is used by scsi_module.c */
 macro_line|#endif
 eof

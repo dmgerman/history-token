@@ -3647,6 +3647,8 @@ id|scsi_deactivate_tcq
 c_func
 (paren
 id|SCp-&gt;device
+comma
+id|host-&gt;cmd_per_lun
 )paren
 suffix:semicolon
 )brace
@@ -8362,19 +8364,6 @@ id|NCR_700_DEV_BEGIN_TAG_QUEUEING
 )paren
 (brace
 multiline_comment|/* upper layer has indicated tags are supported.  We don&squot;t&n;&t;&t; * necessarily believe it yet.&n;&t;&t; *&n;&t;&t; * NOTE: There is a danger here: the mid layer supports&n;&t;&t; * tag queuing per LUN.  We only support it per PUN because&n;&t;&t; * of potential reselection issues */
-id|printk
-c_func
-(paren
-id|KERN_NOTICE
-l_string|&quot;scsi%d: (%d:%d) beginning blk layer TCQ&bslash;n&quot;
-comma
-id|SCp-&gt;device-&gt;host-&gt;host_no
-comma
-id|SCp-&gt;target
-comma
-id|SCp-&gt;lun
-)paren
-suffix:semicolon
 id|scsi_activate_tcq
 c_func
 (paren

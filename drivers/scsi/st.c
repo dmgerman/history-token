@@ -1,4 +1,4 @@
-multiline_comment|/*&n;   SCSI Tape Driver for Linux version 1.1 and newer. See the accompanying&n;   file README.st for more information.&n;&n;   History:&n;   Rewritten from Dwayne Forsyth&squot;s SCSI tape driver by Kai Makisara.&n;   Contribution and ideas from several people including (in alphabetical&n;   order) Klaus Ehrenfried, Eugene Exarevsky, Eric Lee Green, Wolfgang Denk,&n;   Steve Hirsch, Andreas Koppenh&quot;ofer, Michael Leodolter, Eyal Lebedinsky,&n;   Michael Schaefer, J&quot;org Weule, and Eric Youngdale.&n;&n;   Copyright 1992 - 2002 Kai Makisara&n;   email Kai.Makisara@metla.fi&n;&n;   Last modified: Tue Oct 15 22:01:04 2002 by makisara&n;   Some small formal changes - aeb, 950809&n;&n;   Last modified: 18-JAN-1998 Richard Gooch &lt;rgooch@atnf.csiro.au&gt; Devfs support&n; */
+multiline_comment|/*&n;   SCSI Tape Driver for Linux version 1.1 and newer. See the accompanying&n;   file Documentation/scsi/st.txt for more information.&n;&n;   History:&n;   Rewritten from Dwayne Forsyth&squot;s SCSI tape driver by Kai Makisara.&n;   Contribution and ideas from several people including (in alphabetical&n;   order) Klaus Ehrenfried, Eugene Exarevsky, Eric Lee Green, Wolfgang Denk,&n;   Steve Hirsch, Andreas Koppenh&quot;ofer, Michael Leodolter, Eyal Lebedinsky,&n;   Michael Schaefer, J&quot;org Weule, and Eric Youngdale.&n;&n;   Copyright 1992 - 2002 Kai Makisara&n;   email Kai.Makisara@metla.fi&n;&n;   Last modified: Tue Oct 15 22:01:04 2002 by makisara&n;   Some small formal changes - aeb, 950809&n;&n;   Last modified: 18-JAN-1998 Richard Gooch &lt;rgooch@atnf.csiro.au&gt; Devfs support&n; */
 DECL|variable|verstr
 r_static
 r_char
@@ -496,15 +496,6 @@ op_star
 )paren
 suffix:semicolon
 r_static
-r_int
-id|st_detect
-c_func
-(paren
-id|Scsi_Device
-op_star
-)paren
-suffix:semicolon
-r_static
 r_void
 id|st_detach
 c_func
@@ -539,11 +530,6 @@ dot
 id|scsi_type
 op_assign
 id|TYPE_TAPE
-comma
-dot
-id|detect
-op_assign
-id|st_detect
 comma
 dot
 id|attach
@@ -18671,7 +18657,7 @@ id|max_sg_segs
 suffix:semicolon
 )brace
 macro_line|#ifndef MODULE
-multiline_comment|/* Set the boot options. Syntax is defined in README.st.&n; */
+multiline_comment|/* Set the boot options. Syntax is defined in Documenation/scsi/st.txt.&n; */
 DECL|function|st_setup
 r_static
 r_int
@@ -20446,37 +20432,6 @@ l_int|0
 suffix:semicolon
 )brace
 suffix:semicolon
-DECL|function|st_detect
-r_static
-r_int
-id|st_detect
-c_func
-(paren
-id|Scsi_Device
-op_star
-id|SDp
-)paren
-(brace
-r_if
-c_cond
-(paren
-id|SDp-&gt;type
-op_ne
-id|TYPE_TAPE
-op_logical_or
-id|st_incompatible
-c_func
-(paren
-id|SDp
-)paren
-)paren
-r_return
-l_int|0
-suffix:semicolon
-r_return
-l_int|1
-suffix:semicolon
-)brace
 DECL|function|st_detach
 r_static
 r_void
