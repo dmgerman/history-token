@@ -6748,7 +6748,38 @@ comma
 id|val
 )paren
 suffix:semicolon
-multiline_comment|/* 24 Jun 2004 according AMD, in order to change the PHY,&n;     * DANAS (or DISPM for 79C976) must be set; then select the speed,&n;     * duplex, and/or enable auto negotiation, and clear DANAS */
+multiline_comment|/* Allied Telesyn AT 2700/2701 FX looses the link, so skip that */
+r_if
+c_cond
+(paren
+id|lp-&gt;pci_dev-&gt;subsystem_vendor
+op_eq
+id|PCI_VENDOR_ID_AT
+op_logical_and
+(paren
+id|lp-&gt;pci_dev-&gt;subsystem_device
+op_eq
+id|PCI_SUBDEVICE_ID_AT_2700FX
+op_logical_or
+id|lp-&gt;pci_dev-&gt;subsystem_device
+op_eq
+id|PCI_SUBDEVICE_ID_AT_2701FX
+)paren
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_DEBUG
+l_string|&quot;%s: Skipping PHY selection.&bslash;n&quot;
+comma
+id|dev-&gt;name
+)paren
+suffix:semicolon
+)brace
+r_else
+(brace
+multiline_comment|/*&n;&t; * 24 Jun 2004 according AMD, in order to change the PHY,&n;&t; * DANAS (or DISPM for 79C976) must be set; then select the speed,&n;&t; * duplex, and/or enable auto negotiation, and clear DANAS&n;&t; */
 r_if
 c_cond
 (paren
@@ -6896,6 +6927,7 @@ comma
 id|val
 )paren
 suffix:semicolon
+)brace
 )brace
 )brace
 macro_line|#ifdef DO_DXSUFLO
