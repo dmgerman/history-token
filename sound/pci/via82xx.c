@@ -7331,6 +7331,23 @@ r_int
 r_char
 id|val
 suffix:semicolon
+id|pci_write_config_byte
+c_func
+(paren
+id|chip-&gt;pci
+comma
+id|VIA_FUNC_ENABLE
+comma
+id|chip-&gt;old_legacy
+op_amp
+op_complement
+(paren
+id|VIA_FUNC_ENABLE_SB
+op_or
+id|VIA_FUNC_ENABLE_FM
+)paren
+)paren
+suffix:semicolon
 id|caps
 op_assign
 id|chip-&gt;chip_type
@@ -7550,6 +7567,16 @@ op_complement
 id|VIA_FUNC_ENABLE_GAME
 suffix:semicolon
 multiline_comment|/* disable joystick */
+id|legacy
+op_and_assign
+op_complement
+(paren
+id|VIA_FUNC_ENABLE_SB
+op_or
+id|VIA_FUNC_ENABLE_FM
+)paren
+suffix:semicolon
+multiline_comment|/* diable SB &amp; FM */
 r_if
 c_cond
 (paren
