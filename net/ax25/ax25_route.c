@@ -634,7 +634,7 @@ suffix:semicolon
 )brace
 DECL|function|ax25_rt_destroy
 r_static
-r_int
+r_void
 id|ax25_rt_destroy
 c_func
 (paren
