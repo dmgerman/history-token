@@ -2082,8 +2082,9 @@ id|self-&gt;iriap
 id|WARNING
 c_func
 (paren
+l_string|&quot;%s(), busy with a previous query&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), busy with a previous query&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -2288,8 +2289,9 @@ id|self-&gt;iriap
 id|WARNING
 c_func
 (paren
+l_string|&quot;%s(), busy with a previous query&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), busy with a previous query&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -2540,8 +2542,9 @@ id|self-&gt;iriap
 id|WARNING
 c_func
 (paren
+l_string|&quot;%s(), busy with a previous query&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), busy with a previous query&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return

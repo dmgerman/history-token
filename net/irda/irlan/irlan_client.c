@@ -1250,8 +1250,9 @@ id|skb
 id|ERROR
 c_func
 (paren
+l_string|&quot;%s(), Got NULL skb!&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), Got NULL skb!&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return

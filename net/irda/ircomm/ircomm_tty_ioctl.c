@@ -213,8 +213,9 @@ id|IRCOMM_3_WIRE_RAW
 id|WARNING
 c_func
 (paren
+l_string|&quot;%s(), enabling RTS/CTS on link that doesn&squot;t support it (3-wire-raw)&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), enabling RTS/CTS on link that doesn&squot;t support it (3-wire-raw)&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
