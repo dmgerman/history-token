@@ -72,6 +72,19 @@ id|setup_per_cpu_areas
 r_void
 )paren
 suffix:semicolon
+macro_line|#else /* ! SMP */
+DECL|macro|per_cpu
+mdefine_line|#define per_cpu(var, cpu)&t;&t;&t;(*((void)cpu, &amp;per_cpu__##var))
+DECL|macro|__get_cpu_var
+mdefine_line|#define __get_cpu_var(var)&t;&t;&t;per_cpu__##var
+macro_line|#endif&t;/* SMP */
+DECL|macro|EXPORT_PER_CPU_SYMBOL
+mdefine_line|#define EXPORT_PER_CPU_SYMBOL(var)&t;&t;EXPORT_SYMBOL(per_cpu__##var)
+DECL|macro|EXPORT_PER_CPU_SYMBOL_GPL
+mdefine_line|#define EXPORT_PER_CPU_SYMBOL_GPL(var)&t;&t;EXPORT_SYMBOL_GPL(per_cpu__##var)
+multiline_comment|/*&n; * Be extremely careful when taking the address of this variable!  Due to virtual&n; * remapping, it is different from the canonical address returned by __get_cpu_var(var)!&n; * On the positive side, using __ia64_per_cpu_var() instead of __get_cpu_var() is slightly&n; * more efficient.&n; */
+DECL|macro|__ia64_per_cpu_var
+mdefine_line|#define __ia64_per_cpu_var(var)&t;(per_cpu__##var)
 r_extern
 r_void
 op_star
@@ -81,29 +94,6 @@ c_func
 r_void
 )paren
 suffix:semicolon
-macro_line|#else /* ! SMP */
-DECL|macro|per_cpu
-mdefine_line|#define per_cpu(var, cpu)&t;&t;&t;(*((void)cpu, &amp;per_cpu__##var))
-DECL|macro|__get_cpu_var
-mdefine_line|#define __get_cpu_var(var)&t;&t;&t;per_cpu__##var
-DECL|macro|per_cpu_init
-mdefine_line|#define per_cpu_init()&t;&t;&t;&t;(__phys_per_cpu_start)
-macro_line|#endif&t;/* SMP */
-r_extern
-r_int
-r_int
-id|__per_cpu_mca
-(braket
-id|NR_CPUS
-)braket
-suffix:semicolon
-DECL|macro|EXPORT_PER_CPU_SYMBOL
-mdefine_line|#define EXPORT_PER_CPU_SYMBOL(var)&t;&t;EXPORT_SYMBOL(per_cpu__##var)
-DECL|macro|EXPORT_PER_CPU_SYMBOL_GPL
-mdefine_line|#define EXPORT_PER_CPU_SYMBOL_GPL(var)&t;&t;EXPORT_SYMBOL_GPL(per_cpu__##var)
-multiline_comment|/*&n; * Be extremely careful when taking the address of this variable!  Due to virtual&n; * remapping, it is different from the canonical address returned by __get_cpu_var(var)!&n; * On the positive side, using __ia64_per_cpu_var() instead of __get_cpu_var() is slightly&n; * more efficient.&n; */
-DECL|macro|__ia64_per_cpu_var
-mdefine_line|#define __ia64_per_cpu_var(var)&t;(per_cpu__##var)
 macro_line|#endif /* !__ASSEMBLY__ */
 macro_line|#endif /* _ASM_IA64_PERCPU_H */
 eof
