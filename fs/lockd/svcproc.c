@@ -2128,7 +2128,7 @@ suffix:semicolon
 )brace
 suffix:semicolon
 DECL|macro|PROC
-mdefine_line|#define PROC(name, xargt, xrest, argt, rest, respsize)&t;&bslash;&n; { (svc_procfunc) nlmsvc_proc_##name,&t;&bslash;&n;   (kxdrproc_t) nlmsvc_decode_##xargt,&t;&bslash;&n;   (kxdrproc_t) nlmsvc_encode_##xrest,&t;&bslash;&n;   NULL,&t;&t;&t;&t;&bslash;&n;   sizeof(struct nlm_##argt),&t;&t;&bslash;&n;   sizeof(struct nlm_##rest),&t;&t;&bslash;&n;   0,&t;&t;&t;&t;&t;&bslash;&n;   0,&t;&t;&t;&t;&t;&bslash;&n;   respsize,&t;&t;&t;&t;&bslash;&n; }
+mdefine_line|#define PROC(name, xargt, xrest, argt, rest, respsize)&t;&bslash;&n; { .pc_func&t;= (svc_procfunc) nlmsvc_proc_##name,&t;&bslash;&n;   .pc_decode&t;= (kxdrproc_t) nlmsvc_decode_##xargt,&t;&bslash;&n;   .pc_encode&t;= (kxdrproc_t) nlmsvc_encode_##xrest,&t;&bslash;&n;   .pc_release&t;= NULL,&t;&t;&t;&t;&t;&bslash;&n;   .pc_argsize&t;= sizeof(struct nlm_##argt),&t;&t;&bslash;&n;   .pc_ressize&t;= sizeof(struct nlm_##rest),&t;&t;&bslash;&n;   .pc_xdrressize = respsize,&t;&t;&t;&t;&bslash;&n; }
 DECL|macro|Ck
 mdefine_line|#define&t;Ck&t;(1+8)&t;/* cookie */
 DECL|macro|St
