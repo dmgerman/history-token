@@ -8,7 +8,7 @@ macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/pagemap.h&gt;
 macro_line|#include &lt;linux/writeback.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
-singleline_comment|//#include &lt;linux/sysrq.h&gt;
+macro_line|#include &lt;linux/sysrq.h&gt;
 macro_line|#include &lt;linux/backing-dev.h&gt;
 macro_line|#include &lt;linux/mpage.h&gt;
 multiline_comment|/*&n; * The maximum number of pages to writeout in a single bdflush/kupdate&n; * operation.  We do this so we don&squot;t hold I_LOCK against an inode for&n; * enormous amounts of time, which would block a userspace task which has&n; * been forced to throttle against that inode.  Also, the code reevaluates&n; * the dirty each time it has written this many pages.&n; */
@@ -359,6 +359,7 @@ suffix:semicolon
 r_int
 id|nr_to_write
 suffix:semicolon
+id|CHECK_EMERGENCY_SYNC
 r_do
 (brace
 r_struct
