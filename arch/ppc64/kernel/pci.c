@@ -118,12 +118,6 @@ op_assign
 l_int|0
 suffix:semicolon
 multiline_comment|/* Global phb counter    */
-DECL|variable|Pci_Large_Bus_System
-r_int
-id|Pci_Large_Bus_System
-op_assign
-l_int|0
-suffix:semicolon
 DECL|variable|phbtab
 r_struct
 id|pci_controller

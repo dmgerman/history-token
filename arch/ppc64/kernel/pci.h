@@ -202,12 +202,6 @@ c_func
 r_void
 )paren
 suffix:semicolon
-multiline_comment|/*******************************************************************&n; * Platform configuration flags.. (Live in pci.c)&n; *******************************************************************/
-r_extern
-r_int
-id|Pci_Large_Bus_System
-suffix:semicolon
-multiline_comment|/* System has &gt; 256 buses   */
 multiline_comment|/*******************************************************************&n; * Helper macros for extracting data from pci structures.  &n; *   PCI_GET_PHB_PTR(struct pci_dev*)    returns the Phb pointer.&n; *   PCI_GET_PHB_NUMBER(struct pci_dev*) returns the Phb number.&n; *   PCI_GET_BUS_NUMBER(struct pci_dev*) returns the bus number.&n; *******************************************************************/
 DECL|macro|PCI_GET_PHB_PTR
 mdefine_line|#define PCI_GET_PHB_PTR(dev)    (((struct device_node *)(dev)-&gt;sysdata)-&gt;phb)

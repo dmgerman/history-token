@@ -3045,47 +3045,6 @@ c_func
 r_void
 )paren
 (brace
-id|PPCDBG
-c_func
-(paren
-id|PPCDBG_PHBINIT
-comma
-l_string|&quot;&bslash;tppc64_pcibios_init Entry.&bslash;n&quot;
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|get_property
-c_func
-(paren
-id|find_path_device
-c_func
-(paren
-l_string|&quot;/rtas&quot;
-)paren
-comma
-l_string|&quot;ibm,fw-phb-id&quot;
-comma
-l_int|NULL
-)paren
-op_ne
-l_int|NULL
-)paren
-(brace
-id|PPCDBG
-c_func
-(paren
-id|PPCDBG_PHBINIT
-comma
-l_string|&quot;&bslash;tFound: ibm,fw-phb-id&bslash;n&quot;
-)paren
-suffix:semicolon
-id|Pci_Large_Bus_System
-op_assign
-l_int|1
-suffix:semicolon
-)brace
 )brace
 multiline_comment|/*&n; * This is called very early before the page table is setup.&n; */
 r_void
