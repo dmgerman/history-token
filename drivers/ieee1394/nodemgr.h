@@ -139,6 +139,10 @@ r_int
 r_int
 id|id
 suffix:semicolon
+DECL|member|ignore_driver
+r_int
+id|ignore_driver
+suffix:semicolon
 DECL|member|length
 r_int
 id|length
@@ -502,11 +506,15 @@ r_struct
 id|device
 id|nodemgr_dev_template_host
 suffix:semicolon
-multiline_comment|/* Bus attribute to destroy limbo&squot;d nodes */
+multiline_comment|/* Bus attributes we export */
 r_extern
 r_struct
 id|bus_attribute
-id|bus_attr_destroy
+op_star
+r_const
+id|fw_bus_attrs
+(braket
+)braket
 suffix:semicolon
 macro_line|#endif /* _IEEE1394_NODEMGR_H */
 eof
