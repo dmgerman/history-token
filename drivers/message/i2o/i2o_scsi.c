@@ -17,8 +17,10 @@ macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/atomic.h&gt;
 macro_line|#include &lt;linux/blkdev.h&gt;
 macro_line|#include &lt;linux/i2o.h&gt;
-macro_line|#include &quot;../../scsi/scsi.h&quot;
-macro_line|#include &quot;../../scsi/hosts.h&quot;
+macro_line|#include &lt;scsi/scsi.h&gt;
+macro_line|#include &lt;scsi/scsi_cmnd.h&gt;
+macro_line|#include &lt;scsi/scsi_device.h&gt;
+macro_line|#include &lt;scsi/scsi_host.h&gt;
 DECL|macro|VERSION_STRING
 mdefine_line|#define VERSION_STRING        &quot;Version 0.1.2&quot;
 singleline_comment|//#define DRIVERDEBUG
@@ -390,7 +392,8 @@ op_star
 id|msg
 )paren
 (brace
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 id|current_command
 suffix:semicolon
@@ -687,7 +690,8 @@ multiline_comment|/* Create a scsi error for this */
 id|current_command
 op_assign
 (paren
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 )paren
 id|i2o_context_list_get
@@ -927,7 +931,8 @@ suffix:semicolon
 id|current_command
 op_assign
 (paren
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 )paren
 id|i2o_context_list_get
@@ -1155,6 +1160,7 @@ c_cond
 (paren
 id|current_command-&gt;use_sg
 )paren
+(brace
 id|pci_unmap_sg
 c_func
 (paren
@@ -1169,19 +1175,17 @@ id|current_command-&gt;buffer
 comma
 id|current_command-&gt;use_sg
 comma
-id|scsi_to_pci_dma_dir
-c_func
-(paren
 id|current_command-&gt;sc_data_direction
 )paren
-)paren
 suffix:semicolon
+)brace
 r_else
 r_if
 c_cond
 (paren
 id|current_command-&gt;request_bufflen
 )paren
+(brace
 id|pci_unmap_single
 c_func
 (paren
@@ -1199,13 +1203,10 @@ id|current_command-&gt;SCp.ptr
 comma
 id|current_command-&gt;request_bufflen
 comma
-id|scsi_to_pci_dma_dir
-c_func
-(paren
 id|current_command-&gt;sc_data_direction
 )paren
-)paren
 suffix:semicolon
+)brace
 id|lock
 op_assign
 id|current_command-&gt;device-&gt;host-&gt;host_lock
@@ -1683,7 +1684,8 @@ r_int
 id|i2o_scsi_detect
 c_func
 (paren
-id|Scsi_Host_Template
+r_struct
+id|scsi_host_template
 op_star
 id|tpnt
 )paren
@@ -2137,7 +2139,8 @@ r_int
 id|i2o_scsi_queuecommand
 c_func
 (paren
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 id|SCpnt
 comma
@@ -2147,7 +2150,8 @@ op_star
 id|done
 )paren
 (paren
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 )paren
 )paren
@@ -2163,7 +2167,8 @@ id|i2o_controller
 op_star
 id|c
 suffix:semicolon
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 id|current_command
 suffix:semicolon
@@ -2387,22 +2392,22 @@ c_cond
 (paren
 id|SCpnt-&gt;sc_data_direction
 op_eq
-id|SCSI_DATA_NONE
+id|DMA_NONE
 )paren
 (brace
 id|scsidir
 op_assign
 l_int|0x00000000
 suffix:semicolon
-)brace
 singleline_comment|// DATA NO XFER
+)brace
 r_else
 r_if
 c_cond
 (paren
 id|SCpnt-&gt;sc_data_direction
 op_eq
-id|SCSI_DATA_WRITE
+id|DMA_TO_DEVICE
 )paren
 (brace
 id|direction
@@ -2422,7 +2427,7 @@ c_cond
 (paren
 id|SCpnt-&gt;sc_data_direction
 op_eq
-id|SCSI_DATA_READ
+id|DMA_FROM_DEVICE
 )paren
 (brace
 id|scsidir
@@ -2695,11 +2700,7 @@ id|sg
 comma
 id|SCpnt-&gt;use_sg
 comma
-id|scsi_to_pci_dma_dir
-c_func
-(paren
 id|SCpnt-&gt;sc_data_direction
-)paren
 )paren
 suffix:semicolon
 multiline_comment|/* FIXME: handle fail */
@@ -3075,11 +3076,7 @@ id|SCpnt-&gt;request_buffer
 comma
 id|SCpnt-&gt;request_bufflen
 comma
-id|scsi_to_pci_dma_dir
-c_func
-(paren
 id|SCpnt-&gt;sc_data_direction
-)paren
 )paren
 suffix:semicolon
 r_if
@@ -3213,11 +3210,13 @@ suffix:semicolon
 )brace
 multiline_comment|/**&n; *&t;i2o_scsi_abort&t;-&t;abort a running command&n; *&t;@SCpnt: command to abort&n; *&n; *&t;Ask the I2O controller to abort a command. This is an asynchrnous&n; *&t;process and our callback handler will see the command complete&n; *&t;with an aborted message if it succeeds. &n; *&n; *&t;Locks: no locks are held or needed&n; */
 DECL|function|i2o_scsi_abort
+r_static
 r_int
 id|i2o_scsi_abort
 c_func
 (paren
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 id|SCpnt
 )paren
@@ -3401,7 +3400,8 @@ r_int
 id|i2o_scsi_bus_reset
 c_func
 (paren
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 id|SCpnt
 )paren
@@ -3623,38 +3623,6 @@ r_return
 id|SUCCESS
 suffix:semicolon
 )brace
-multiline_comment|/**&n; *&t;i2o_scsi_host_reset&t;-&t;host reset callback&n; *&t;@SCpnt: command causing the reset&n; *&n; *&t;An I2O controller can be many things at once. While we can&n; *&t;reset a controller the potential mess from doing so is vast, and&n; *&t;it&squot;s better to simply hold on and pray&n; */
-DECL|function|i2o_scsi_host_reset
-r_static
-r_int
-id|i2o_scsi_host_reset
-c_func
-(paren
-id|Scsi_Cmnd
-op_star
-id|SCpnt
-)paren
-(brace
-r_return
-id|FAILED
-suffix:semicolon
-)brace
-multiline_comment|/**&n; *&t;i2o_scsi_device_reset&t;-&t;device reset callback&n; *&t;@SCpnt: command causing the reset&n; *&n; *&t;I2O does not (AFAIK) support doing a device reset&n; */
-DECL|function|i2o_scsi_device_reset
-r_static
-r_int
-id|i2o_scsi_device_reset
-c_func
-(paren
-id|Scsi_Cmnd
-op_star
-id|SCpnt
-)paren
-(brace
-r_return
-id|FAILED
-suffix:semicolon
-)brace
 multiline_comment|/**&n; *&t;i2o_scsi_bios_param&t;-&t;Invent disk geometry&n; *&t;@sdev: scsi device &n; *&t;@dev: block layer device&n; *&t;@capacity: size in sectors&n; *&t;@ip: geometry array&n; *&n; *&t;This is anyones guess quite frankly. We use the same rules everyone &n; *&t;else appears to and hope. It seems to work.&n; */
 DECL|function|i2o_scsi_bios_param
 r_static
@@ -3770,7 +3738,8 @@ l_string|&quot;GPL&quot;
 suffix:semicolon
 DECL|variable|driver_template
 r_static
-id|Scsi_Host_Template
+r_struct
+id|scsi_host_template
 id|driver_template
 op_assign
 (brace
@@ -3813,16 +3782,6 @@ dot
 id|eh_bus_reset_handler
 op_assign
 id|i2o_scsi_bus_reset
-comma
-dot
-id|eh_device_reset_handler
-op_assign
-id|i2o_scsi_device_reset
-comma
-dot
-id|eh_host_reset_handler
-op_assign
-id|i2o_scsi_host_reset
 comma
 dot
 id|bios_param
