@@ -275,6 +275,16 @@ c_func
 r_void
 )paren
 suffix:semicolon
+r_void
+id|sym_set_changed
+c_func
+(paren
+r_struct
+id|symbol
+op_star
+id|sym
+)paren
+suffix:semicolon
 DECL|function|sym_get_tristate_value
 r_static
 r_inline
