@@ -27,6 +27,8 @@ DECL|macro|local_bh_count
 mdefine_line|#define local_bh_count(cpu)&t;__IRQ_STAT((cpu), __local_bh_count)
 DECL|macro|syscall_count
 mdefine_line|#define syscall_count(cpu)&t;__IRQ_STAT((cpu), __syscall_count)
+DECL|macro|ksoftirqd_task
+mdefine_line|#define ksoftirqd_task(cpu)&t;__IRQ_STAT((cpu), __ksoftirqd_task)
 multiline_comment|/* arch dependent irq_stat fields */
 DECL|macro|nmi_count
 mdefine_line|#define nmi_count(cpu)&t;&t;__IRQ_STAT((cpu), __nmi_count)&t;&t;/* i386, ia64 */

@@ -194,6 +194,38 @@ c_func
 r_void
 )paren
 suffix:semicolon
+r_extern
+r_void
+id|FASTCALL
+c_func
+(paren
+id|cpu_raise_softirq
+c_func
+(paren
+r_int
+r_int
+id|cpu
+comma
+r_int
+r_int
+id|nr
+)paren
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|FASTCALL
+c_func
+(paren
+id|raise_softirq
+c_func
+(paren
+r_int
+r_int
+id|nr
+)paren
+)paren
+suffix:semicolon
 multiline_comment|/* Tasklets --- multithreaded analogue of BHs.&n;&n;   Main feature differing them of generic softirqs: tasklet&n;   is running only on one CPU simultaneously.&n;&n;   Main feature differing them of BHs: different tasklets&n;   may be run simultaneously on different CPUs.&n;&n;   Properties:&n;   * If tasklet_schedule() is called, then tasklet is guaranteed&n;     to be executed on some cpu at least once after this.&n;   * If the tasklet is already scheduled, but its excecution is still not&n;     started, it will be executed only once.&n;   * If this tasklet is already running on another CPU (or schedule is called&n;     from tasklet itself), it is rescheduled for later.&n;   * Tasklet is strictly serialized wrt itself, but not&n;     wrt another tasklets. If client needs some intertask synchronization,&n;     he makes it with spinlocks.&n; */
 DECL|struct|tasklet_struct
 r_struct
@@ -288,7 +320,7 @@ suffix:semicolon
 DECL|macro|tasklet_trylock
 mdefine_line|#define tasklet_trylock(t) (!test_and_set_bit(TASKLET_STATE_RUN, &amp;(t)-&gt;state))
 DECL|macro|tasklet_unlock
-mdefine_line|#define tasklet_unlock(t) clear_bit(TASKLET_STATE_RUN, &amp;(t)-&gt;state)
+mdefine_line|#define tasklet_unlock(t) do { smp_mb__before_clear_bit(); clear_bit(TASKLET_STATE_RUN, &amp;(t)-&gt;state); } while(0)
 DECL|macro|tasklet_unlock_wait
 mdefine_line|#define tasklet_unlock_wait(t) while (test_bit(TASKLET_STATE_RUN, &amp;(t)-&gt;state)) { barrier(); }
 r_extern

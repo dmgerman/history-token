@@ -28,6 +28,13 @@ r_int
 r_int
 id|__syscall_count
 suffix:semicolon
+DECL|member|__ksoftirqd_task
+r_struct
+id|task_struct
+op_star
+id|__ksoftirqd_task
+suffix:semicolon
+multiline_comment|/* waitqueue is too large */
 DECL|member|__nmi_count
 r_int
 r_int

@@ -44,6 +44,12 @@ r_int
 r_int
 id|__syscall_count
 suffix:semicolon
+DECL|member|__ksoftirqd_task
+r_struct
+id|task_struct
+op_star
+id|__ksoftirqd_task
+suffix:semicolon
 DECL|typedef|irq_cpustat_t
 )brace
 id|____cacheline_aligned

@@ -1673,7 +1673,7 @@ id|output_queue
 op_assign
 id|dev
 suffix:semicolon
-id|__cpu_raise_softirq
+id|cpu_raise_softirq
 c_func
 (paren
 id|cpu
@@ -1909,7 +1909,7 @@ id|completion_queue
 op_assign
 id|skb
 suffix:semicolon
-id|__cpu_raise_softirq
+id|cpu_raise_softirq
 c_func
 (paren
 id|cpu
