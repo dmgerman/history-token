@@ -121,6 +121,12 @@ l_string|&quot;8139cp: maximum number of filtered multicast addresses&quot;
 suffix:semicolon
 DECL|macro|PFX
 mdefine_line|#define PFX&t;&t;&t;DRV_NAME &quot;: &quot;
+macro_line|#ifndef TRUE
+DECL|macro|FALSE
+mdefine_line|#define FALSE 0
+DECL|macro|TRUE
+mdefine_line|#define TRUE (!FALSE)
+macro_line|#endif
 DECL|macro|CP_DEF_MSG_ENABLE
 mdefine_line|#define CP_DEF_MSG_ENABLE&t;(NETIF_MSG_DRV&t;&t;| &bslash;&n;&t;&t;&t;&t; NETIF_MSG_PROBE &t;| &bslash;&n;&t;&t;&t;&t; NETIF_MSG_LINK)
 DECL|macro|CP_NUM_STATS
@@ -2909,6 +2915,8 @@ c_func
 (paren
 id|cp
 )paren
+comma
+id|FALSE
 )paren
 suffix:semicolon
 r_if
@@ -4509,13 +4517,6 @@ op_star
 id|cp
 )paren
 (brace
-r_struct
-id|net_device
-op_star
-id|dev
-op_assign
-id|cp-&gt;dev
-suffix:semicolon
 id|cpw16
 c_func
 (paren
@@ -5671,6 +5672,8 @@ c_func
 (paren
 id|cp
 )paren
+comma
+id|TRUE
 )paren
 suffix:semicolon
 id|netif_start_queue

@@ -1,4 +1,4 @@
-multiline_comment|/*&n;&n;&t;mii.c: MII interface library&n;&n;&t;Maintained by Jeff Garzik &lt;jgarzik@mandrakesoft.com&gt;&n;&t;Copyright 2001 Jeff Garzik&n;&n; */
+multiline_comment|/*&n;&n;&t;mii.c: MII interface library&n;&n;&t;Maintained by Jeff Garzik &lt;jgarzik@mandrakesoft.com&gt;&n;&t;Copyright 2001,2002 Jeff Garzik&n;&n; */
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/netdevice.h&gt;
@@ -809,6 +809,10 @@ comma
 r_int
 r_int
 id|ok_to_print
+comma
+r_int
+r_int
+id|init_media
 )paren
 (brace
 r_int
@@ -866,9 +870,16 @@ multiline_comment|/* if carrier state did not change, this is a &quot;bounce&quo
 r_if
 c_cond
 (paren
+(paren
+op_logical_neg
+id|init_media
+)paren
+op_logical_and
+(paren
 id|old_carrier
 op_eq
 id|new_carrier
+)paren
 )paren
 r_return
 l_int|0
@@ -918,7 +929,14 @@ multiline_comment|/* get MII advertise and LPA values */
 r_if
 c_cond
 (paren
+(paren
+op_logical_neg
+id|init_media
+)paren
+op_logical_and
+(paren
 id|mii-&gt;advertising
+)paren
 )paren
 id|advertise
 op_assign
@@ -1026,9 +1044,15 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+(paren
+id|init_media
+)paren
+op_logical_or
+(paren
 id|mii-&gt;full_duplex
 op_ne
 id|duplex
+)paren
 )paren
 (brace
 id|mii-&gt;full_duplex

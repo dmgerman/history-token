@@ -311,6 +311,10 @@ comma
 r_int
 r_int
 id|ok_to_print
+comma
+r_int
+r_int
+id|init_media
 )paren
 suffix:semicolon
 multiline_comment|/* This structure is used in all SIOCxMIIxxx ioctl calls */
