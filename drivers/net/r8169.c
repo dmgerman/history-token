@@ -33,6 +33,8 @@ mdefine_line|#define assert(expr) do {} while (0)
 DECL|macro|dprintk
 mdefine_line|#define dprintk(fmt, args...)&t;do {} while (0)
 macro_line|#endif /* RTL8169_DEBUG */
+DECL|macro|TX_BUFFS_AVAIL
+mdefine_line|#define TX_BUFFS_AVAIL(tp) &bslash;&n;&t;(tp-&gt;dirty_tx + NUM_TX_DESC - tp-&gt;cur_tx - 1)
 macro_line|#ifdef CONFIG_R8169_NAPI
 DECL|macro|rtl8169_rx_skb
 mdefine_line|#define rtl8169_rx_skb&t;&t;&t;netif_receive_skb
@@ -8074,9 +8076,11 @@ c_cond
 id|unlikely
 c_func
 (paren
-id|tp-&gt;cur_tx
-op_minus
-id|tp-&gt;dirty_tx
+id|TX_BUFFS_AVAIL
+c_func
+(paren
+id|tp
+)paren
 OL
 id|skb_shinfo
 c_func
@@ -8088,12 +8092,6 @@ id|nr_frags
 )paren
 )paren
 (brace
-id|netif_stop_queue
-c_func
-(paren
-id|dev
-)paren
-suffix:semicolon
 id|printk
 c_func
 (paren
@@ -8328,9 +8326,11 @@ singleline_comment|//set polling bit
 r_if
 c_cond
 (paren
-id|tp-&gt;cur_tx
-op_minus
-id|tp-&gt;dirty_tx
+id|TX_BUFFS_AVAIL
+c_func
+(paren
+id|tp
+)paren
 OL
 id|MAX_SKB_FRAGS
 )paren
@@ -8349,9 +8349,11 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|tp-&gt;cur_tx
-op_minus
-id|tp-&gt;dirty_tx
+id|TX_BUFFS_AVAIL
+c_func
+(paren
+id|tp
+)paren
 op_ge
 id|MAX_SKB_FRAGS
 )paren
@@ -8577,13 +8579,25 @@ c_func
 (paren
 id|dev
 )paren
+op_logical_and
+(paren
+id|TX_BUFFS_AVAIL
+c_func
+(paren
+id|tp
 )paren
+op_ge
+id|MAX_SKB_FRAGS
+)paren
+)paren
+(brace
 id|netif_wake_queue
 c_func
 (paren
 id|dev
 )paren
 suffix:semicolon
+)brace
 )brace
 )brace
 DECL|function|rtl8169_rx_csum
