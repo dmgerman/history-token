@@ -115,13 +115,13 @@ r_int
 )paren
 suffix:semicolon
 multiline_comment|/*&n; *&t;Table of the various PIIX capability blocks&n; *&n; */
-DECL|variable|__devinit
+DECL|variable|__initdata
 r_static
 id|ide_pci_device_t
 id|piix_pci_info
 (braket
 )braket
-id|__devinit
+id|__initdata
 op_assign
 (brace
 (brace
