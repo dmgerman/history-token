@@ -470,6 +470,37 @@ op_star
 id|buffer
 )paren
 suffix:semicolon
+multiline_comment|/*&n; * Directory manipulation&n; */
+r_void
+op_star
+id|acpi_os_open_directory
+(paren
+r_char
+op_star
+id|pathname
+comma
+r_char
+op_star
+id|wildcard_spec
+)paren
+suffix:semicolon
+r_char
+op_star
+id|acpi_os_get_next_filename
+(paren
+r_void
+op_star
+id|dir_handle
+)paren
+suffix:semicolon
+r_void
+id|acpi_os_close_directory
+(paren
+r_void
+op_star
+id|dir_handle
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * Debug&n; */
 r_void
 id|acpi_os_dbg_assert

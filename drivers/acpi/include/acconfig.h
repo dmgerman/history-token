@@ -8,7 +8,7 @@ multiline_comment|/*&n; * ACPI_DEBUG_OUTPUT    - This switch enables all the deb
 multiline_comment|/******************************************************************************&n; *&n; * Subsystem Constants&n; *&n; *****************************************************************************/
 multiline_comment|/* Version string */
 DECL|macro|ACPI_CA_VERSION
-mdefine_line|#define ACPI_CA_VERSION                 0x20021217
+mdefine_line|#define ACPI_CA_VERSION                 0x20030109
 multiline_comment|/* Version of ACPI supported */
 DECL|macro|ACPI_CA_SUPPORT_LEVEL
 mdefine_line|#define ACPI_CA_SUPPORT_LEVEL           2
