@@ -9,10 +9,6 @@ macro_line|#include &lt;asm/vsyscall.h&gt;
 macro_line|#include &lt;asm/hpet.h&gt;
 DECL|macro|CLOCK_TICK_RATE
 mdefine_line|#define CLOCK_TICK_RATE&t;PIT_TICK_RATE&t;/* Underlying HZ */
-DECL|macro|CLOCK_TICK_FACTOR
-mdefine_line|#define CLOCK_TICK_FACTOR&t;20&t;/* Factor of both 1000000 and CLOCK_TICK_RATE */
-DECL|macro|FINETUNE
-mdefine_line|#define FINETUNE ((((((int)LATCH * HZ - CLOCK_TICK_RATE) &lt;&lt; SHIFT_HZ) * &bslash;&n;&t;(1000000/CLOCK_TICK_FACTOR) / (CLOCK_TICK_RATE/CLOCK_TICK_FACTOR)) &bslash;&n;&t;&t;&lt;&lt; (SHIFT_SCALE-SHIFT_HZ)) / HZ)
 DECL|typedef|cycles_t
 r_typedef
 r_int
