@@ -5579,13 +5579,9 @@ id|high_sierra
 suffix:semicolon
 id|inode-&gt;i_mtime.tv_nsec
 op_assign
-l_int|0
-suffix:semicolon
 id|inode-&gt;i_atime.tv_nsec
 op_assign
-l_int|0
-suffix:semicolon
-id|inode-&gt;i_mtime.tv_nsec
+id|inode-&gt;i_ctime.tv_nsec
 op_assign
 l_int|0
 suffix:semicolon
