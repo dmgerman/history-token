@@ -563,6 +563,14 @@ DECL|member|num_rmdirs
 id|atomic_t
 id|num_rmdirs
 suffix:semicolon
+DECL|member|num_renames
+id|atomic_t
+id|num_renames
+suffix:semicolon
+DECL|member|num_t2renames
+id|atomic_t
+id|num_t2renames
+suffix:semicolon
 DECL|member|bytes_read
 id|__u64
 id|bytes_read
