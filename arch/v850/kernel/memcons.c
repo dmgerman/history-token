@@ -23,12 +23,12 @@ op_assign
 l_int|0
 suffix:semicolon
 multiline_comment|/* Spinlock protecting memcons_offs.  */
-DECL|variable|memcons_lock
 r_static
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|memcons_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 DECL|function|write
 r_static
