@@ -13,6 +13,15 @@ macro_line|#include &lt;linux/pagevec.h&gt;
 macro_line|#include &lt;linux/blkdev.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/notifier.h&gt;
+macro_line|#include &lt;asm/topology.h&gt;
+id|DECLARE_BITMAP
+c_func
+(paren
+id|memblk_online_map
+comma
+id|MAX_NR_MEMBLKS
+)paren
+suffix:semicolon
 DECL|variable|pgdat_list
 r_struct
 id|pglist_data
@@ -5109,6 +5118,16 @@ comma
 id|zones_size
 comma
 id|zholes_size
+)paren
+suffix:semicolon
+id|memblk_set_online
+c_func
+(paren
+id|__node_to_memblk
+c_func
+(paren
+id|nid
+)paren
 )paren
 suffix:semicolon
 id|calculate_zone_bitmap

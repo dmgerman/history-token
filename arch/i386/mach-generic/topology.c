@@ -104,7 +104,10 @@ l_int|0
 suffix:semicolon
 id|i
 OL
-id|numnodes
+id|num_online_memblks
+c_func
+(paren
+)paren
 suffix:semicolon
 id|i
 op_increment

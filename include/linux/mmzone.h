@@ -532,6 +532,82 @@ multiline_comment|/* page-&gt;zone is currently 8 bits ... */
 DECL|macro|MAX_NR_NODES
 mdefine_line|#define MAX_NR_NODES&t;&t;(255 / MAX_NR_ZONES)
 macro_line|#endif /* !CONFIG_DISCONTIGMEM */
+r_extern
+id|DECLARE_BITMAP
+c_func
+(paren
+id|memblk_online_map
+comma
+id|MAX_NR_MEMBLKS
+)paren
+suffix:semicolon
+macro_line|#if defined(CONFIG_DISCONTIGMEM) || defined(CONFIG_NUMA)
+DECL|macro|memblk_online
+mdefine_line|#define memblk_online(memblk)&t;&t;test_bit(memblk, memblk_online_map)
+DECL|macro|memblk_set_online
+mdefine_line|#define memblk_set_online(memblk)&t;set_bit(memblk, memblk_online_map)
+DECL|macro|memblk_set_offline
+mdefine_line|#define memblk_set_offline(memblk)&t;clear_bit(memblk, memblk_online_map)
+DECL|function|num_online_memblks
+r_static
+r_inline
+r_int
+r_int
+id|num_online_memblks
+c_func
+(paren
+r_void
+)paren
+(brace
+r_int
+id|i
+comma
+id|num
+op_assign
+l_int|0
+suffix:semicolon
+r_for
+c_loop
+(paren
+id|i
+op_assign
+l_int|0
+suffix:semicolon
+id|i
+OL
+id|MAX_NR_MEMBLKS
+suffix:semicolon
+id|i
+op_increment
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|memblk_online
+c_func
+(paren
+id|i
+)paren
+)paren
+id|num
+op_increment
+suffix:semicolon
+)brace
+r_return
+id|num
+suffix:semicolon
+)brace
+macro_line|#else /* !CONFIG_DISCONTIGMEM &amp;&amp; !CONFIG_NUMA */
+DECL|macro|memblk_online
+mdefine_line|#define memblk_online(memblk) &bslash;&n;&t;({ BUG_ON((memblk) != 0); test_bit(memblk, memblk_online_map); })
+DECL|macro|memblk_set_online
+mdefine_line|#define memblk_set_online(memblk) &bslash;&n;&t;({ BUG_ON((memblk) != 0); set_bit(memblk, memblk_online_map); })
+DECL|macro|memblk_set_offline
+mdefine_line|#define memblk_set_offline(memblk) &bslash;&n;&t;({ BUG_ON((memblk) != 0); clear_bit(memblk, memblk_online_map); })
+DECL|macro|num_online_memblks
+mdefine_line|#define num_online_memblks()&t;&t;1
+macro_line|#endif /* CONFIG_DISCONTIGMEM || CONFIG_NUMA */
 DECL|macro|MAP_ALIGN
 mdefine_line|#define MAP_ALIGN(x)&t;((((x) % sizeof(struct page)) == 0) ? (x) : ((x) + &bslash;&n;&t;&t;sizeof(struct page) - ((x) % sizeof(struct page))))
 macro_line|#endif /* !__ASSEMBLY__ */
