@@ -7933,6 +7933,7 @@ suffix:semicolon
 id|synchronize_irq
 c_func
 (paren
+id|dev-&gt;irq
 )paren
 suffix:semicolon
 id|np-&gt;stats.rx_missed_errors
