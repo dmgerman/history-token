@@ -739,8 +739,10 @@ suffix:semicolon
 )brace
 DECL|macro|page_pte
 mdefine_line|#define page_pte(page) page_pte_prot(page, __pgprot(0))
+DECL|macro|pmd_page_kernel
+mdefine_line|#define pmd_page_kernel(pmd) &bslash;&n;((unsigned long) __va(pmd_val(pmd) &amp; PAGE_MASK))
 DECL|macro|pmd_page
-mdefine_line|#define pmd_page(pmd) &bslash;&n;((unsigned long) __va(pmd_val(pmd) &amp; PAGE_MASK))
+mdefine_line|#define pmd_page(pmd) &bslash;&n;&t;(mem_map + (pmd_val(pmd) &gt;&gt; PAGE_SHIFT))
 multiline_comment|/* to find an entry in a page-table-directory. */
 DECL|macro|pgd_index
 mdefine_line|#define pgd_index(address) ((address &gt;&gt; PGDIR_SHIFT) &amp; (PTRS_PER_PGD-1))
@@ -756,8 +758,16 @@ mdefine_line|#define __pmd_offset(address) &bslash;&n;&t;&t;(((address) &gt;&gt;
 multiline_comment|/* Find an entry in the third-level page table.. */
 DECL|macro|__pte_offset
 mdefine_line|#define __pte_offset(address) &bslash;&n;&t;&t;((address &gt;&gt; PAGE_SHIFT) &amp; (PTRS_PER_PTE - 1))
-DECL|macro|pte_offset
-mdefine_line|#define pte_offset(dir, address) ((pte_t *) pmd_page(*(dir)) + &bslash;&n;&t;&t;&t;__pte_offset(address))
+DECL|macro|pte_offset_kernel
+mdefine_line|#define pte_offset_kernel(dir, address) &bslash;&n;&t;((pte_t *) pmd_page_kernel(*(dir)) +  __pte_offset(address))
+DECL|macro|pte_offset_map
+mdefine_line|#define pte_offset_map(dir, address) &bslash;&n;&t;((pte_t *)kmap_atomic(pmd_page(*(dir)),KM_PTE0) + __pte_offset(address))
+DECL|macro|pte_offset_map2
+mdefine_line|#define pte_offset_map2(dir, address) &bslash;&n;&t;((pte_t *)kmap_atomic(pmd_page(*(dir)),KM_PTE1) + __pte_offset(address))
+DECL|macro|pte_unmap
+mdefine_line|#define pte_unmap(pte) kunmap_atomic(pte, KM_PTE0)
+DECL|macro|pte_unmap2
+mdefine_line|#define pte_unmap2(pte) kunmap_atomic(pte, KM_PTE1)
 multiline_comment|/*&n; * The i386 doesn&squot;t have any external MMU info: the kernel page&n; * tables contain all the necessary information.&n; */
 DECL|macro|update_mmu_cache
 mdefine_line|#define update_mmu_cache(vma,address,pte) do { } while (0)

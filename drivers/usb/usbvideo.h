@@ -1165,20 +1165,6 @@ suffix:semicolon
 multiline_comment|/* Memory allocation routines */
 r_int
 r_int
-id|usbvideo_uvirt_to_kva
-c_func
-(paren
-id|pgd_t
-op_star
-id|pgd
-comma
-r_int
-r_int
-id|adr
-)paren
-suffix:semicolon
-r_int
-r_int
 id|usbvideo_kvirt_to_pa
 c_func
 (paren

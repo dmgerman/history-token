@@ -1631,7 +1631,7 @@ suffix:semicolon
 )brace
 id|pte
 op_assign
-id|pte_offset
+id|pte_offset_map
 c_func
 (paren
 id|dir
@@ -1705,6 +1705,14 @@ id|address
 OL
 id|end
 )paren
+)paren
+suffix:semicolon
+id|pte_unmap
+c_func
+(paren
+id|pte
+op_minus
+l_int|1
 )paren
 suffix:semicolon
 )brace

@@ -8,6 +8,7 @@ macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/pgalloc.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
+macro_line|#include &lt;linux/highmem.h&gt;
 DECL|function|change_pte_range
 r_static
 r_inline
@@ -80,7 +81,7 @@ suffix:semicolon
 )brace
 id|pte
 op_assign
-id|pte_offset
+id|pte_offset_map
 c_func
 (paren
 id|pmd
@@ -168,6 +169,14 @@ id|address
 OL
 id|end
 )paren
+)paren
+suffix:semicolon
+id|pte_unmap
+c_func
+(paren
+id|pte
+op_minus
+l_int|1
 )paren
 suffix:semicolon
 )brace

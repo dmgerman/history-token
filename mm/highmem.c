@@ -3,6 +3,7 @@ macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/pagemap.h&gt;
 macro_line|#include &lt;linux/mempool.h&gt;
 macro_line|#include &lt;linux/blkdev.h&gt;
+macro_line|#include &lt;asm/pgalloc.h&gt;
 DECL|variable|page_pool
 DECL|variable|isa_page_pool
 r_static
@@ -1589,4 +1590,77 @@ op_assign
 id|bio
 suffix:semicolon
 )brace
+macro_line|#if CONFIG_DEBUG_HIGHMEM
+DECL|function|check_highmem_ptes
+r_void
+id|check_highmem_ptes
+c_func
+(paren
+r_void
+)paren
+(brace
+r_int
+id|idx
+comma
+id|type
+suffix:semicolon
+r_for
+c_loop
+(paren
+id|type
+op_assign
+l_int|0
+suffix:semicolon
+id|type
+OL
+id|KM_TYPE_NR
+suffix:semicolon
+id|type
+op_increment
+)paren
+(brace
+id|idx
+op_assign
+id|type
+op_plus
+id|KM_TYPE_NR
+op_star
+id|smp_processor_id
+c_func
+(paren
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|pte_none
+c_func
+(paren
+op_star
+(paren
+id|kmap_pte
+op_minus
+id|idx
+)paren
+)paren
+)paren
+(brace
+id|printk
+c_func
+(paren
+l_string|&quot;scheduling with KM_TYPE %d held!&bslash;n&quot;
+comma
+id|type
+)paren
+suffix:semicolon
+id|BUG
+c_func
+(paren
+)paren
+suffix:semicolon
+)brace
+)brace
+)brace
+macro_line|#endif
 eof
