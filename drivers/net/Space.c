@@ -31,14 +31,14 @@ id|dev
 )paren
 suffix:semicolon
 r_extern
-r_int
-id|ultra_probe
-c_func
-(paren
 r_struct
 id|net_device
 op_star
-id|dev
+id|ultra_probe
+c_func
+(paren
+r_int
+id|unit
 )paren
 suffix:semicolon
 r_extern
@@ -972,14 +972,6 @@ l_int|0
 )brace
 comma
 macro_line|#endif
-macro_line|#ifdef CONFIG_ULTRA 
-(brace
-id|ultra_probe
-comma
-l_int|0
-)brace
-comma
-macro_line|#endif
 (brace
 l_int|NULL
 comma
@@ -998,6 +990,14 @@ id|isa_probes2
 id|__initdata
 op_assign
 (brace
+macro_line|#ifdef CONFIG_ULTRA 
+(brace
+id|ultra_probe
+comma
+l_int|0
+)brace
+comma
+macro_line|#endif
 macro_line|#ifdef CONFIG_WD80x3 
 (brace
 id|wd_probe
