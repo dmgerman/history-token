@@ -8,10 +8,6 @@ DECL|macro|IHOLD
 mdefine_line|#define IHOLD(ip)&t;VN_HOLD(XFS_ITOV(ip))
 DECL|macro|ITRACE
 mdefine_line|#define ITRACE(ip)&t;vn_trace_ref(XFS_ITOV(ip), __FILE__, __LINE__, &bslash;&n;&t;&t;&t;&t;(inst_t *)__return_address)
-DECL|macro|DLF_IGET
-mdefine_line|#define DLF_IGET&t;0x01&t;/* get entry inode if name lookup succeeds */
-DECL|macro|DLF_LOCK_SHARED
-mdefine_line|#define DLF_LOCK_SHARED 0x02&t;/* directory locked shared */
 r_struct
 id|bhv_desc
 suffix:semicolon
@@ -87,8 +83,8 @@ id|bhv_desc
 op_star
 id|dir_bdp
 comma
-r_int
-id|flags
+id|uint
+id|lock_mode
 comma
 r_struct
 id|dentry
