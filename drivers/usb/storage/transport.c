@@ -2867,6 +2867,10 @@ id|fake_sense
 op_assign
 l_int|0
 suffix:semicolon
+r_int
+r_int
+id|cswlen
+suffix:semicolon
 multiline_comment|/* set up the command wrapper */
 id|bcb-&gt;Signature
 op_assign
@@ -3109,9 +3113,47 @@ id|bcs
 comma
 id|US_BULK_CS_WRAP_LEN
 comma
-l_int|NULL
+op_amp
+id|cswlen
 )paren
 suffix:semicolon
+multiline_comment|/* Some broken devices add unnecessary zero-length packets to the&n;&t; * end of their data transfers.  Such packets show up as 0-length&n;&t; * CSWs.  If we encounter such a thing, try to read the CSW again.&n;&t; */
+r_if
+c_cond
+(paren
+id|result
+op_eq
+id|USB_STOR_XFER_SHORT
+op_logical_and
+id|cswlen
+op_eq
+l_int|0
+)paren
+(brace
+id|US_DEBUGP
+c_func
+(paren
+l_string|&quot;Received 0-length CSW; retrying...&bslash;n&quot;
+)paren
+suffix:semicolon
+id|result
+op_assign
+id|usb_stor_bulk_transfer_buf
+c_func
+(paren
+id|us
+comma
+id|us-&gt;recv_bulk_pipe
+comma
+id|bcs
+comma
+id|US_BULK_CS_WRAP_LEN
+comma
+op_amp
+id|cswlen
+)paren
+suffix:semicolon
+)brace
 multiline_comment|/* did the attempt to read the CSW fail? */
 r_if
 c_cond
