@@ -400,8 +400,6 @@ DECL|macro|sctp_bh_lock_sock
 mdefine_line|#define sctp_bh_lock_sock(sk) bh_lock_sock(sk)
 DECL|macro|sctp_bh_unlock_sock
 mdefine_line|#define sctp_bh_unlock_sock(sk) bh_unlock_sock(sk)
-DECL|macro|__sctp_sock_busy
-mdefine_line|#define __sctp_sock_busy(sk) ((sk)-&gt;lock.users)
 DECL|macro|SCTP_SOCK_SLEEP_PRE
 mdefine_line|#define SCTP_SOCK_SLEEP_PRE(sk) SOCK_SLEEP_PRE(sk)
 DECL|macro|SCTP_SOCK_SLEEP_POST

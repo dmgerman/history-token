@@ -2127,7 +2127,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|__sctp_sock_busy
+id|sock_owned_by_user
 c_func
 (paren
 id|asoc-&gt;base.sk
@@ -2260,7 +2260,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|__sctp_sock_busy
+id|sock_owned_by_user
 c_func
 (paren
 id|asoc-&gt;base.sk
@@ -2560,7 +2560,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|__sctp_sock_busy
+id|sock_owned_by_user
 c_func
 (paren
 id|asoc-&gt;base.sk
