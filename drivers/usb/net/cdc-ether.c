@@ -1137,7 +1137,7 @@ id|EOPNOTSUPP
 suffix:semicolon
 )brace
 )brace
-DECL|function|CDC_SetEthernetPacketFilter
+macro_line|#if 0
 r_static
 r_void
 id|CDC_SetEthernetPacketFilter
@@ -1197,6 +1197,7 @@ id|HZ
 suffix:semicolon
 multiline_comment|/* timeout */
 )brace
+macro_line|#endif
 DECL|function|CDCEther_set_multicast
 r_static
 r_void
