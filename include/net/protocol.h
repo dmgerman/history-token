@@ -65,7 +65,12 @@ r_struct
 id|sk_buff
 op_star
 op_star
-id|skbp
+id|skb
+comma
+r_int
+r_int
+op_star
+id|nhoffp
 )paren
 suffix:semicolon
 DECL|member|err_handler
@@ -98,12 +103,18 @@ id|__u32
 id|info
 )paren
 suffix:semicolon
-DECL|member|no_policy
+DECL|member|flags
 r_int
-id|no_policy
+r_int
+id|flags
 suffix:semicolon
+multiline_comment|/* INET6_PROTO_xxx */
 )brace
 suffix:semicolon
+DECL|macro|INET6_PROTO_NOPOLICY
+mdefine_line|#define INET6_PROTO_NOPOLICY&t;0x1
+DECL|macro|INET6_PROTO_FINAL
+mdefine_line|#define INET6_PROTO_FINAL&t;0x2
 macro_line|#endif
 multiline_comment|/* This is used to register socket interfaces for IP protocols.  */
 DECL|struct|inet_protosw

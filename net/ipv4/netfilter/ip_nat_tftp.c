@@ -721,6 +721,8 @@ r_int
 id|i
 comma
 id|ret
+op_assign
+l_int|0
 suffix:semicolon
 r_char
 op_star

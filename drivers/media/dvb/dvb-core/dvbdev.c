@@ -778,7 +778,9 @@ c_func
 (paren
 id|name
 comma
-l_string|&quot;%s%d&quot;
+l_string|&quot;dvb/adapter%d%s%d&quot;
+comma
+id|adap-&gt;num
 comma
 id|dnames
 (braket
@@ -793,7 +795,7 @@ op_assign
 id|devfs_register
 c_func
 (paren
-id|adap-&gt;devfs_handle
+l_int|NULL
 comma
 id|name
 comma

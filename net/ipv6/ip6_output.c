@@ -329,6 +329,9 @@ id|dev
 comma
 op_amp
 id|skb-&gt;nh.ipv6h-&gt;daddr
+comma
+op_amp
+id|skb-&gt;nh.ipv6h-&gt;saddr
 )paren
 )paren
 (brace
@@ -504,6 +507,12 @@ c_func
 (paren
 id|KERN_DEBUG
 l_string|&quot;ip6_route_me_harder: No more route.&bslash;n&quot;
+)paren
+suffix:semicolon
+id|dst_release
+c_func
+(paren
+id|dst
 )paren
 suffix:semicolon
 r_return

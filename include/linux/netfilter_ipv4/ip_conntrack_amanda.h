@@ -13,23 +13,6 @@ id|ip_amanda_lock
 )paren
 suffix:semicolon
 macro_line|#endif
-DECL|struct|conn
-r_struct
-id|conn
-(brace
-DECL|member|match
-r_char
-op_star
-id|match
-suffix:semicolon
-DECL|member|matchlen
-r_int
-id|matchlen
-suffix:semicolon
-)brace
-suffix:semicolon
-DECL|macro|NUM_MSGS
-mdefine_line|#define NUM_MSGS &t;3
 DECL|struct|ip_ct_amanda_expect
 r_struct
 id|ip_ct_amanda_expect

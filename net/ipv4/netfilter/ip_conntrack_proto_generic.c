@@ -12,12 +12,14 @@ id|generic_pkt_to_tuple
 c_func
 (paren
 r_const
-r_void
+r_struct
+id|sk_buff
 op_star
-id|datah
+id|skb
 comma
 r_int
-id|datalen
+r_int
+id|dataoff
 comma
 r_struct
 id|ip_conntrack_tuple
@@ -114,10 +116,10 @@ l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/* Returns verdict for packet, or -1 for invalid. */
-DECL|function|established
+DECL|function|packet
 r_static
 r_int
-id|established
+id|packet
 c_func
 (paren
 r_struct
@@ -125,13 +127,11 @@ id|ip_conntrack
 op_star
 id|conntrack
 comma
+r_const
 r_struct
-id|iphdr
+id|sk_buff
 op_star
-id|iph
-comma
-r_int
-id|len
+id|skb
 comma
 r_enum
 id|ip_conntrack_info
@@ -151,9 +151,9 @@ id|NF_ACCEPT
 suffix:semicolon
 )brace
 multiline_comment|/* Called when a new connection for this protocol found. */
+DECL|function|new
 r_static
 r_int
-DECL|function|new
 r_new
 (paren
 r_struct
@@ -161,13 +161,11 @@ id|ip_conntrack
 op_star
 id|conntrack
 comma
+r_const
 r_struct
-id|iphdr
+id|sk_buff
 op_star
-id|iph
-comma
-r_int
-id|len
+id|skb
 )paren
 (brace
 r_return
@@ -198,7 +196,7 @@ id|generic_print_tuple
 comma
 id|generic_print_conntrack
 comma
-id|established
+id|packet
 comma
 r_new
 comma

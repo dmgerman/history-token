@@ -25,7 +25,7 @@ r_char
 op_star
 id|name
 suffix:semicolon
-multiline_comment|/* Try to fill in the third arg; return true if possible. */
+multiline_comment|/* Try to fill in the third arg: dataoff is offset past IP&n;           hdr.  Return true if possible. */
 DECL|member|pkt_to_tuple
 r_int
 (paren
@@ -34,12 +34,14 @@ id|pkt_to_tuple
 )paren
 (paren
 r_const
-r_void
+r_struct
+id|sk_buff
 op_star
-id|datah
+id|skb
 comma
 r_int
-id|datalen
+r_int
+id|dataoff
 comma
 r_struct
 id|ip_conntrack_tuple
@@ -118,13 +120,11 @@ id|ip_conntrack
 op_star
 id|conntrack
 comma
+r_const
 r_struct
-id|iphdr
+id|sk_buff
 op_star
-id|iph
-comma
-r_int
-id|len
+id|skb
 comma
 r_enum
 id|ip_conntrack_info
@@ -144,13 +144,11 @@ id|ip_conntrack
 op_star
 id|conntrack
 comma
+r_const
 r_struct
-id|iphdr
+id|sk_buff
 op_star
-id|iph
-comma
-r_int
-id|len
+id|skb
 )paren
 suffix:semicolon
 multiline_comment|/* Called when a conntrack entry is destroyed */
@@ -180,11 +178,11 @@ id|ip_conntrack_expect
 op_star
 id|exp
 comma
+r_const
 r_struct
 id|sk_buff
 op_star
-op_star
-id|pskb
+id|skb
 )paren
 suffix:semicolon
 multiline_comment|/* Module (if any) which this is connected to. */

@@ -524,7 +524,7 @@ id|host
 comma
 id|RESET_BUS
 comma
-l_int|0
+id|LONG_RESET
 )paren
 suffix:semicolon
 )brace

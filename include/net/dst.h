@@ -5,6 +5,7 @@ mdefine_line|#define _NET_DST_H
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/rtnetlink.h&gt;
 macro_line|#include &lt;linux/rcupdate.h&gt;
+macro_line|#include &lt;linux/jiffies.h&gt;
 macro_line|#include &lt;net/neighbour.h&gt;
 macro_line|#include &lt;asm/processor.h&gt;
 multiline_comment|/*&n; * 0 - no debugging messages&n; * 1 - rare events and bugs (default)&n; * 2 - trace mode.&n; */
@@ -821,16 +822,13 @@ id|dst-&gt;expires
 op_eq
 l_int|0
 op_logical_or
+id|time_before
+c_func
 (paren
-r_int
-)paren
-(paren
-id|dst-&gt;expires
-op_minus
 id|expires
+comma
+id|dst-&gt;expires
 )paren
-OG
-l_int|0
 )paren
 id|dst-&gt;expires
 op_assign

@@ -194,6 +194,20 @@ DECL|macro|IP_DROP_SOURCE_MEMBERSHIP
 mdefine_line|#define IP_DROP_SOURCE_MEMBERSHIP&t;40
 DECL|macro|IP_MSFILTER
 mdefine_line|#define IP_MSFILTER&t;&t;&t;41
+DECL|macro|MCAST_JOIN_GROUP
+mdefine_line|#define MCAST_JOIN_GROUP&t;&t;42
+DECL|macro|MCAST_BLOCK_SOURCE
+mdefine_line|#define MCAST_BLOCK_SOURCE&t;&t;43
+DECL|macro|MCAST_UNBLOCK_SOURCE
+mdefine_line|#define MCAST_UNBLOCK_SOURCE&t;&t;44
+DECL|macro|MCAST_LEAVE_GROUP
+mdefine_line|#define MCAST_LEAVE_GROUP&t;&t;45
+DECL|macro|MCAST_JOIN_SOURCE_GROUP
+mdefine_line|#define MCAST_JOIN_SOURCE_GROUP&t;&t;46
+DECL|macro|MCAST_LEAVE_SOURCE_GROUP
+mdefine_line|#define MCAST_LEAVE_SOURCE_GROUP&t;47
+DECL|macro|MCAST_MSFILTER
+mdefine_line|#define MCAST_MSFILTER&t;&t;&t;48
 DECL|macro|MCAST_EXCLUDE
 mdefine_line|#define MCAST_EXCLUDE&t;0
 DECL|macro|MCAST_INCLUDE
@@ -294,6 +308,84 @@ suffix:semicolon
 suffix:semicolon
 DECL|macro|IP_MSFILTER_SIZE
 mdefine_line|#define IP_MSFILTER_SIZE(numsrc) &bslash;&n;&t;(sizeof(struct ip_msfilter) - sizeof(__u32) &bslash;&n;&t;+ (numsrc) * sizeof(__u32))
+DECL|struct|group_req
+r_struct
+id|group_req
+(brace
+DECL|member|gr_interface
+id|__u32
+id|gr_interface
+suffix:semicolon
+multiline_comment|/* interface index */
+DECL|member|gr_group
+r_struct
+id|sockaddr_storage
+id|gr_group
+suffix:semicolon
+multiline_comment|/* group address */
+)brace
+suffix:semicolon
+DECL|struct|group_source_req
+r_struct
+id|group_source_req
+(brace
+DECL|member|gsr_interface
+id|__u32
+id|gsr_interface
+suffix:semicolon
+multiline_comment|/* interface index */
+DECL|member|gsr_group
+r_struct
+id|sockaddr_storage
+id|gsr_group
+suffix:semicolon
+multiline_comment|/* group address */
+DECL|member|gsr_source
+r_struct
+id|sockaddr_storage
+id|gsr_source
+suffix:semicolon
+multiline_comment|/* source address */
+)brace
+suffix:semicolon
+DECL|struct|group_filter
+r_struct
+id|group_filter
+(brace
+DECL|member|gf_interface
+id|__u32
+id|gf_interface
+suffix:semicolon
+multiline_comment|/* interface index */
+DECL|member|gf_group
+r_struct
+id|sockaddr_storage
+id|gf_group
+suffix:semicolon
+multiline_comment|/* multicast address */
+DECL|member|gf_fmode
+id|__u32
+id|gf_fmode
+suffix:semicolon
+multiline_comment|/* filter mode */
+DECL|member|gf_numsrc
+id|__u32
+id|gf_numsrc
+suffix:semicolon
+multiline_comment|/* number of sources */
+DECL|member|gf_slist
+r_struct
+id|sockaddr_storage
+id|gf_slist
+(braket
+l_int|1
+)braket
+suffix:semicolon
+multiline_comment|/* interface index */
+)brace
+suffix:semicolon
+DECL|macro|GROUP_FILTER_SIZE
+mdefine_line|#define GROUP_FILTER_SIZE(numsrc) &bslash;&n;&t;(sizeof(struct group_filter) - sizeof(struct sockaddr_storage) &bslash;&n;&t;+ (numsrc) * sizeof(struct sockaddr_storage))
 DECL|struct|in_pktinfo
 r_struct
 id|in_pktinfo

@@ -31,21 +31,6 @@ macro_line|#ifdef __KERNEL__
 macro_line|#include &lt;linux/netfilter_ipv4/lockhelp.h&gt;
 DECL|macro|IRC_PORT
 mdefine_line|#define IRC_PORT&t;6667
-DECL|struct|dccproto
-r_struct
-id|dccproto
-(brace
-DECL|member|match
-r_char
-op_star
-id|match
-suffix:semicolon
-DECL|member|matchlen
-r_int
-id|matchlen
-suffix:semicolon
-)brace
-suffix:semicolon
 multiline_comment|/* Protects irc part of conntracks */
 DECL|variable|ip_irc_lock
 id|DECLARE_LOCK_EXTERN

@@ -2903,6 +2903,8 @@ c_func
 id|s
 comma
 id|loc_addr
+comma
+id|rmt_addr
 )paren
 )paren
 (brace
@@ -3146,6 +3148,11 @@ id|sk_buff
 op_star
 op_star
 id|pskb
+comma
+r_int
+r_int
+op_star
+id|nhoffp
 )paren
 (brace
 r_struct
@@ -4586,9 +4593,11 @@ op_assign
 id|udpv6_err
 comma
 dot
-id|no_policy
+id|flags
 op_assign
-l_int|1
+id|INET6_PROTO_NOPOLICY
+op_or
+id|INET6_PROTO_FINAL
 comma
 )brace
 suffix:semicolon

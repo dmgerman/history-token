@@ -2566,9 +2566,9 @@ op_assign
 id|esp6_err
 comma
 dot
-id|no_policy
+id|flags
 op_assign
-l_int|1
+id|INET6_PROTO_NOPOLICY
 comma
 )brace
 suffix:semicolon

@@ -70,13 +70,10 @@ op_star
 id|help
 )paren
 (paren
-r_const
 r_struct
-id|iphdr
+id|sk_buff
 op_star
-comma
-r_int
-id|len
+id|skb
 comma
 r_struct
 id|ip_conntrack

@@ -10,11 +10,7 @@ macro_line|#include &lt;asm/semaphore.h&gt;
 DECL|macro|DEVFS_SUPER_MAGIC
 mdefine_line|#define DEVFS_SUPER_MAGIC                0x1373
 DECL|macro|DEVFS_FL_NONE
-mdefine_line|#define DEVFS_FL_NONE           0x000 /* This helps to make code more readable&n;&t;&t;&t;&t;       */
-DECL|macro|DEVFS_FL_WAIT
-mdefine_line|#define DEVFS_FL_WAIT           0x010 /* Wait for devfsd to finish           */
-DECL|macro|DEVFS_FL_CURRENT_OWNER
-mdefine_line|#define DEVFS_FL_CURRENT_OWNER  0x020 /* Set initial ownership to current    */
+mdefine_line|#define DEVFS_FL_NONE           0x000 /* This helps to make code more readable&n;&t;&t;&t;&t;         no, it doesn&squot;t  --hch */
 DECL|macro|DEVFS_FL_DEFAULT
 mdefine_line|#define DEVFS_FL_DEFAULT        DEVFS_FL_NONE
 DECL|typedef|devfs_handle_t

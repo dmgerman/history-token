@@ -3432,11 +3432,6 @@ c_func
 )paren
 suffix:semicolon
 multiline_comment|/* Init v6 extension headers. */
-id|ipv6_hopopts_init
-c_func
-(paren
-)paren
-suffix:semicolon
 id|ipv6_rthdr_init
 c_func
 (paren
