@@ -2106,9 +2106,6 @@ c_func
 id|journal_t
 op_star
 id|journal
-comma
-r_int
-id|nblocks
 )paren
 suffix:semicolon
 r_void
@@ -2118,9 +2115,6 @@ c_func
 id|journal_t
 op_star
 id|journal
-comma
-r_int
-id|nblocks
 )paren
 suffix:semicolon
 r_extern
@@ -2286,6 +2280,39 @@ op_star
 id|inode
 )paren
 suffix:semicolon
+multiline_comment|/*&n; * Return the minimum number of blocks which must be free in the journal&n; * before a new transaction may be started.  Must be called under j_state_lock.&n; */
+DECL|function|jbd_space_needed
+r_static
+r_inline
+r_int
+id|jbd_space_needed
+c_func
+(paren
+id|journal_t
+op_star
+id|journal
+)paren
+(brace
+r_int
+id|nblocks
+op_assign
+id|journal-&gt;j_max_transaction_buffers
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|journal-&gt;j_committing_transaction
+)paren
+id|nblocks
+op_add_assign
+id|journal-&gt;j_committing_transaction
+op_member_access_from_pointer
+id|t_outstanding_credits
+suffix:semicolon
+r_return
+id|nblocks
+suffix:semicolon
+)brace
 multiline_comment|/*&n; * Definitions which augment the buffer_head layer&n; */
 multiline_comment|/* journaling buffer types */
 DECL|macro|BJ_None

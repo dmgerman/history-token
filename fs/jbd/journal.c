@@ -3574,8 +3574,6 @@ id|log_do_checkpoint
 c_func
 (paren
 id|journal
-comma
-l_int|1
 )paren
 suffix:semicolon
 id|spin_lock
@@ -4314,8 +4312,6 @@ id|log_do_checkpoint
 c_func
 (paren
 id|journal
-comma
-id|journal-&gt;j_maxlen
 )paren
 suffix:semicolon
 id|spin_lock
