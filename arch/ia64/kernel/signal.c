@@ -1874,7 +1874,7 @@ op_amp
 id|SA_ONSTACK
 )paren
 (brace
-multiline_comment|/* We need to check the memory and register stacks separately, because&n;&t;&t;   they&squot;re switched separately (memory stack is switched in the kernel,&n;&t;&t;   register stack is switched in the signal trampoline.  */
+multiline_comment|/*&n;&t;&t; * We need to check the memory and register stacks separately, because&n;&t;&t; * they&squot;re switched separately (memory stack is switched in the kernel,&n;&t;&t; * register stack is switched in the signal trampoline).&n;&t;&t; */
 r_if
 c_cond
 (paren
