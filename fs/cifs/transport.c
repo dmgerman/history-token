@@ -489,8 +489,6 @@ id|ENOTSOCK
 suffix:semicolon
 )brace
 multiline_comment|/* BB eventually add reconnect code here */
-multiline_comment|/*  ssocket-&gt;sk-&gt;allocation = GFP_BUFFER; */
-multiline_comment|/* BB is this spurious? */
 id|iov.iov_base
 op_assign
 id|smb_buffer
