@@ -1,5 +1,5 @@
 multiline_comment|/*&n; *&t;IPv6 fragment reassembly&n; *&t;Linux INET6 implementation &n; *&n; *&t;Authors:&n; *&t;Pedro Roque&t;&t;&lt;roque@di.fc.ul.pt&gt;&t;&n; *&n; *&t;$Id: reassembly.c,v 1.26 2001/03/07 22:00:57 davem Exp $&n; *&n; *&t;Based on: net/ipv4/ip_fragment.c&n; *&n; *&t;This program is free software; you can redistribute it and/or&n; *      modify it under the terms of the GNU General Public License&n; *      as published by the Free Software Foundation; either version&n; *      2 of the License, or (at your option) any later version.&n; */
-multiline_comment|/* &n; *&t;Fixes:&t;&n; *&t;Andi Kleen&t;Make it work with multiple hosts.&n; *&t;&t;&t;More RFC compliance.&n; *&n; *      Horst von Brand Add missing #include &lt;linux/string.h&gt;&n; *&t;Alexey Kuznetsov&t;SMP races, threading, cleanup.&n; *&t;Patrick McHardy&t;&t;LRU queue of frag heads for evictor.&n; *&t;Mitsuru KANDA @USAGI&t;Register inet6_protocol{}.&n; */
+multiline_comment|/* &n; *&t;Fixes:&t;&n; *&t;Andi Kleen&t;Make it work with multiple hosts.&n; *&t;&t;&t;More RFC compliance.&n; *&n; *      Horst von Brand Add missing #include &lt;linux/string.h&gt;&n; *&t;Alexey Kuznetsov&t;SMP races, threading, cleanup.&n; *&t;Patrick McHardy&t;&t;LRU queue of frag heads for evictor.&n; *&t;Mitsuru KANDA @USAGI&t;Register inet6_protocol{}.&n; *&t;David Stevens and&n; *&t;YOSHIFUJI,H. @USAGI&t;Always remove fragment header to&n; *&t;&t;&t;&t;calculate ICV correctly.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
@@ -2389,11 +2389,6 @@ op_assign
 id|fq-&gt;fragments
 suffix:semicolon
 r_int
-id|remove_fraghdr
-op_assign
-l_int|0
-suffix:semicolon
-r_int
 id|payload_len
 suffix:semicolon
 r_int
@@ -2457,27 +2452,13 @@ c_cond
 id|payload_len
 OG
 l_int|65535
+op_plus
+l_int|8
 )paren
 (brace
-id|payload_len
-op_sub_assign
-l_int|8
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|payload_len
-OG
-l_int|65535
-)paren
 r_goto
 id|out_oversize
 suffix:semicolon
-id|remove_fraghdr
-op_assign
-l_int|1
-suffix:semicolon
-)brace
 multiline_comment|/* Head of list must not be cloned. */
 r_if
 c_cond
@@ -2651,13 +2632,7 @@ id|ip6_frag_mem
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* Normally we do not remove frag header from datagram, but&n;&t; * we have to do this and to relocate header, when payload&n;&t; * is &gt; 65535-8. */
-r_if
-c_cond
-(paren
-id|remove_fraghdr
-)paren
-(brace
+multiline_comment|/* We have to remove fragment header from datagram and to relocate&n;&t; * header in order to calculate ICV correctly. */
 id|nhoff
 op_assign
 id|fq-&gt;nhoffset
@@ -2698,23 +2673,6 @@ id|head-&gt;nh.raw
 op_add_assign
 l_int|8
 suffix:semicolon
-)brace
-r_else
-(brace
-(paren
-(paren
-r_struct
-id|frag_hdr
-op_star
-)paren
-id|head-&gt;h.raw
-)paren
-op_member_access_from_pointer
-id|frag_off
-op_assign
-l_int|0
-suffix:semicolon
-)brace
 id|skb_shinfo
 c_func
 (paren
@@ -2930,7 +2888,6 @@ op_minus
 l_int|1
 suffix:semicolon
 )brace
-DECL|function|ipv6_frag_rcv
 r_static
 r_int
 id|ipv6_frag_rcv
@@ -3240,7 +3197,6 @@ op_minus
 l_int|1
 suffix:semicolon
 )brace
-DECL|variable|frag_protocol
 r_static
 r_struct
 id|inet6_protocol
@@ -3259,7 +3215,6 @@ id|INET6_PROTO_NOPOLICY
 comma
 )brace
 suffix:semicolon
-DECL|function|ipv6_frag_init
 r_void
 id|__init
 id|ipv6_frag_init
