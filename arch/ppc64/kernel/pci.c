@@ -1638,6 +1638,9 @@ l_string|&quot;PCI: Probing PCI hardware done.&bslash;n&quot;
 )paren
 suffix:semicolon
 singleline_comment|//ppc64_boot_msg(0x41, &quot;PCI Done&quot;);
+r_return
+l_int|0
+suffix:semicolon
 )brace
 DECL|variable|pcibios_init
 id|subsys_initcall

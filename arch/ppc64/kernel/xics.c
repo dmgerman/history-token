@@ -14,6 +14,7 @@ macro_line|#include &lt;asm/rtas.h&gt;
 macro_line|#include &quot;i8259.h&quot;
 macro_line|#include &quot;xics.h&quot;
 macro_line|#include &lt;asm/ppcdebug.h&gt;
+macro_line|#include &lt;asm/machdep.h&gt;
 r_void
 id|xics_enable_irq
 c_func
