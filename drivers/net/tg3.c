@@ -2908,7 +2908,7 @@ c_func
 (paren
 id|tp-&gt;pci_chip_rev_id
 )paren
-op_ne
+op_eq
 id|ASIC_REV_5703
 op_logical_or
 id|GET_ASIC_REV
@@ -2916,7 +2916,7 @@ c_func
 (paren
 id|tp-&gt;pci_chip_rev_id
 )paren
-op_ne
+op_eq
 id|ASIC_REV_5704
 op_logical_or
 id|GET_ASIC_REV
@@ -2924,7 +2924,7 @@ c_func
 (paren
 id|tp-&gt;pci_chip_rev_id
 )paren
-op_ne
+op_eq
 id|ASIC_REV_5705
 )paren
 (brace
