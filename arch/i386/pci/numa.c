@@ -1,5 +1,6 @@
 multiline_comment|/*&n; * numa.c - Low-level PCI access for NUMA-Q machines&n; */
 macro_line|#include &lt;linux/pci.h&gt;
+macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &quot;pci.h&quot;
 DECL|macro|BUS2QUAD
 mdefine_line|#define BUS2QUAD(global) (mp_bus_id_to_node[global])

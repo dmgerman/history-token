@@ -2199,21 +2199,6 @@ comma
 id|ide_action_t
 )paren
 suffix:semicolon
-multiline_comment|/*&n; * Clean up after success/failure of an explicit drive cmd.&n; */
-r_extern
-r_void
-id|ide_end_drive_cmd
-c_func
-(paren
-r_struct
-id|ata_device
-op_star
-comma
-r_struct
-id|request
-op_star
-)paren
-suffix:semicolon
 DECL|struct|ata_taskfile
 r_struct
 id|ata_taskfile
@@ -2405,7 +2390,7 @@ suffix:semicolon
 )brace
 r_extern
 id|ide_startstop_t
-id|task_no_data_intr
+id|ata_special_intr
 c_func
 (paren
 r_struct

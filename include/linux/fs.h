@@ -1683,8 +1683,9 @@ r_int
 id|fcntl_getlk
 c_func
 (paren
-r_int
-r_int
+r_struct
+id|file
+op_star
 comma
 r_struct
 id|flock
@@ -1696,8 +1697,9 @@ r_int
 id|fcntl_setlk
 c_func
 (paren
-r_int
-r_int
+r_struct
+id|file
+op_star
 comma
 r_int
 r_int
@@ -1712,8 +1714,9 @@ r_int
 id|fcntl_getlk64
 c_func
 (paren
-r_int
-r_int
+r_struct
+id|file
+op_star
 comma
 r_struct
 id|flock64
@@ -1725,8 +1728,9 @@ r_int
 id|fcntl_setlk64
 c_func
 (paren
-r_int
-r_int
+r_struct
+id|file
+op_star
 comma
 r_int
 r_int

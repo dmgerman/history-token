@@ -1,5 +1,5 @@
 multiline_comment|/*&n; * INET&t;&t;An implementation of the TCP/IP protocol suite for the LINUX&n; *&t;&t;operating system.  INET is implemented using the  BSD Socket&n; *&t;&t;interface as the means of communication with the user level.&n; *&n; *&t;&t;Implementation of the Transmission Control Protocol(TCP).&n; *&n; * Version:&t;$Id: tcp_ipv4.c,v 1.240 2002/02/01 22:01:04 davem Exp $&n; *&n; *&t;&t;IPv4 specific functions&n; *&n; *&n; *&t;&t;code split from:&n; *&t;&t;linux/ipv4/tcp.c&n; *&t;&t;linux/ipv4/tcp_input.c&n; *&t;&t;linux/ipv4/tcp_output.c&n; *&n; *&t;&t;See tcp.c for author information&n; *&n; *&t;This program is free software; you can redistribute it and/or&n; *      modify it under the terms of the GNU General Public License&n; *      as published by the Free Software Foundation; either version&n; *      2 of the License, or (at your option) any later version.&n; */
-multiline_comment|/*&n; * Changes:&n; *&t;&t;David S. Miller&t;:&t;New socket lookup architecture.&n; *&t;&t;&t;&t;&t;This code is dedicated to John Dyson.&n; *&t;&t;David S. Miller :&t;Change semantics of established hash,&n; *&t;&t;&t;&t;&t;half is devoted to TIME_WAIT sockets&n; *&t;&t;&t;&t;&t;and the rest go in the other half.&n; *&t;&t;Andi Kleen :&t;&t;Add support for syncookies and fixed&n; *&t;&t;&t;&t;&t;some bugs: ip options weren&squot;t passed to&n; *&t;&t;&t;&t;&t;the TCP layer, missed a check for an ACK bit.&n; *&t;&t;Andi Kleen :&t;&t;Implemented fast path mtu discovery.&n; *&t;     &t;&t;&t;&t;Fixed many serious bugs in the&n; *&t;&t;&t;&t;&t;open_request handling and moved&n; *&t;&t;&t;&t;&t;most of it into the af independent code.&n; *&t;&t;&t;&t;&t;Added tail drop and some other bugfixes.&n; *&t;&t;&t;&t;&t;Added new listen sematics.&n; *&t;&t;Mike McLagan&t;:&t;Routing by source&n; *&t;Juan Jose Ciarlante:&t;&t;ip_dynaddr bits&n; *&t;&t;Andi Kleen:&t;&t;various fixes.&n; *&t;Vitaly E. Lavrov&t;:&t;Transparent proxy revived after year coma.&n; *&t;Andi Kleen&t;&t;:&t;Fix new listen.&n; *&t;Andi Kleen&t;&t;:&t;Fix accept error reporting.&n; */
+multiline_comment|/*&n; * Changes:&n; *&t;&t;David S. Miller&t;:&t;New socket lookup architecture.&n; *&t;&t;&t;&t;&t;This code is dedicated to John Dyson.&n; *&t;&t;David S. Miller :&t;Change semantics of established hash,&n; *&t;&t;&t;&t;&t;half is devoted to TIME_WAIT sockets&n; *&t;&t;&t;&t;&t;and the rest go in the other half.&n; *&t;&t;Andi Kleen :&t;&t;Add support for syncookies and fixed&n; *&t;&t;&t;&t;&t;some bugs: ip options weren&squot;t passed to&n; *&t;&t;&t;&t;&t;the TCP layer, missed a check for an&n; *&t;&t;&t;&t;&t;ACK bit.&n; *&t;&t;Andi Kleen :&t;&t;Implemented fast path mtu discovery.&n; *&t;     &t;&t;&t;&t;Fixed many serious bugs in the&n; *&t;&t;&t;&t;&t;open_request handling and moved&n; *&t;&t;&t;&t;&t;most of it into the af independent code.&n; *&t;&t;&t;&t;&t;Added tail drop and some other bugfixes.&n; *&t;&t;&t;&t;&t;Added new listen sematics.&n; *&t;&t;Mike McLagan&t;:&t;Routing by source&n; *&t;Juan Jose Ciarlante:&t;&t;ip_dynaddr bits&n; *&t;&t;Andi Kleen:&t;&t;various fixes.&n; *&t;Vitaly E. Lavrov&t;:&t;Transparent proxy revived after year&n; *&t;&t;&t;&t;&t;coma.&n; *&t;Andi Kleen&t;&t;:&t;Fix new listen.&n; *&t;Andi Kleen&t;&t;:&t;Fix accept error reporting.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/fcntl.h&gt;
@@ -24,8 +24,6 @@ suffix:semicolon
 DECL|variable|sysctl_tcp_tw_reuse
 r_int
 id|sysctl_tcp_tw_reuse
-op_assign
-l_int|0
 suffix:semicolon
 multiline_comment|/* Check TCP sequence numbers in ICMP packets. */
 DECL|macro|ICMP_MIN_LENGTH
@@ -61,7 +59,6 @@ op_star
 id|skb
 )paren
 suffix:semicolon
-multiline_comment|/*&n; * ALL members must be initialised to prevent gcc-2.7.2.3 miscompilation&n; */
 DECL|variable|tcp_hashinfo
 r_struct
 id|tcp_hashinfo
@@ -69,29 +66,6 @@ id|__cacheline_aligned
 id|tcp_hashinfo
 op_assign
 (brace
-id|__tcp_ehash
-suffix:colon
-l_int|NULL
-comma
-id|__tcp_bhash
-suffix:colon
-l_int|NULL
-comma
-id|__tcp_bhash_size
-suffix:colon
-l_int|0
-comma
-id|__tcp_ehash_size
-suffix:colon
-l_int|0
-comma
-id|__tcp_listening_hash
-suffix:colon
-(brace
-l_int|NULL
-comma
-)brace
-comma
 id|__tcp_lhash_lock
 suffix:colon
 id|RW_LOCK_UNLOCKED
@@ -135,11 +109,9 @@ DECL|variable|tcp_port_rover
 r_int
 id|tcp_port_rover
 op_assign
-(paren
 l_int|1024
 op_minus
 l_int|1
-)paren
 suffix:semicolon
 DECL|function|tcp_hashfn
 r_static
@@ -165,7 +137,6 @@ r_int
 id|h
 op_assign
 (paren
-(paren
 id|laddr
 op_xor
 id|lport
@@ -175,7 +146,6 @@ op_xor
 id|faddr
 op_xor
 id|fport
-)paren
 )paren
 suffix:semicolon
 id|h
@@ -280,8 +250,6 @@ r_struct
 id|tcp_bind_bucket
 op_star
 id|tb
-suffix:semicolon
-id|tb
 op_assign
 id|kmem_cache_alloc
 c_func
@@ -295,8 +263,6 @@ r_if
 c_cond
 (paren
 id|tb
-op_ne
-l_int|NULL
 )paren
 (brace
 id|tb-&gt;port
@@ -322,13 +288,11 @@ id|head-&gt;chain
 op_ne
 l_int|NULL
 )paren
-(brace
 id|tb-&gt;next-&gt;pprev
 op_assign
 op_amp
 id|tb-&gt;next
 suffix:semicolon
-)brace
 id|head-&gt;chain
 op_assign
 id|tb
@@ -595,8 +559,6 @@ c_loop
 (paren
 suffix:semicolon
 id|sk2
-op_ne
-l_int|NULL
 suffix:semicolon
 id|sk2
 op_assign
@@ -649,11 +611,9 @@ op_logical_or
 op_logical_neg
 id|inet-&gt;rcv_saddr
 op_logical_or
-(paren
 id|inet2-&gt;rcv_saddr
 op_eq
 id|inet-&gt;rcv_saddr
-)paren
 )paren
 r_break
 suffix:semicolon
@@ -704,9 +664,8 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+op_logical_neg
 id|snum
-op_eq
-l_int|0
 )paren
 (brace
 r_int
@@ -758,17 +717,9 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-(paren
 id|rover
-OL
-id|low
-)paren
-op_logical_or
-(paren
-id|rover
-OG
+template_param
 id|high
-)paren
 )paren
 id|rover
 op_assign
@@ -902,8 +853,6 @@ op_assign
 id|head-&gt;chain
 suffix:semicolon
 id|tb
-op_ne
-l_int|NULL
 suffix:semicolon
 id|tb
 op_assign
@@ -923,12 +872,8 @@ r_if
 c_cond
 (paren
 id|tb
-op_ne
-l_int|NULL
 op_logical_and
 id|tb-&gt;owners
-op_ne
-l_int|NULL
 )paren
 (brace
 r_if
@@ -949,8 +894,6 @@ OG
 l_int|0
 op_logical_and
 id|sk-&gt;reuse
-op_ne
-l_int|0
 op_logical_and
 id|sk-&gt;state
 op_ne
@@ -990,9 +933,8 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+op_logical_neg
 id|tb
-op_eq
-l_int|NULL
 op_logical_and
 (paren
 id|tb
@@ -1014,9 +956,8 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+op_logical_neg
 id|tb-&gt;owners
-op_eq
-l_int|NULL
 )paren
 (brace
 r_if
@@ -1045,17 +986,12 @@ c_cond
 id|tb-&gt;fastreuse
 op_logical_and
 (paren
-(paren
+op_logical_neg
 id|sk-&gt;reuse
-op_eq
-l_int|0
-)paren
 op_logical_or
-(paren
 id|sk-&gt;state
 op_eq
 id|TCP_LISTEN
-)paren
 )paren
 )paren
 id|tb-&gt;fastreuse
@@ -1067,9 +1003,8 @@ suffix:colon
 r_if
 c_cond
 (paren
+op_logical_neg
 id|sk-&gt;prev
-op_eq
-l_int|NULL
 )paren
 id|tcp_bind_hash
 c_func
@@ -1205,9 +1140,8 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+op_logical_neg
 id|tb-&gt;owners
-op_eq
-l_int|NULL
 )paren
 (brace
 r_if
@@ -1332,14 +1266,13 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+op_logical_neg
 id|atomic_read
 c_func
 (paren
 op_amp
 id|tcp_lhash_users
 )paren
-op_eq
-l_int|0
 )paren
 r_break
 suffix:semicolon
@@ -1411,9 +1344,8 @@ suffix:semicolon
 id|BUG_TRAP
 c_func
 (paren
+op_logical_neg
 id|sk-&gt;pprev
-op_eq
-l_int|NULL
 )paren
 suffix:semicolon
 r_if
@@ -1498,7 +1430,6 @@ id|skp
 op_ne
 l_int|NULL
 )paren
-(brace
 (paren
 op_star
 id|skp
@@ -1509,7 +1440,6 @@ op_assign
 op_amp
 id|sk-&gt;next
 suffix:semicolon
-)brace
 op_star
 id|skp
 op_assign
@@ -1673,12 +1603,10 @@ c_cond
 (paren
 id|sk-&gt;next
 )paren
-(brace
 id|sk-&gt;next-&gt;pprev
 op_assign
 id|sk-&gt;pprev
 suffix:semicolon
-)brace
 op_star
 id|sk-&gt;pprev
 op_assign
@@ -1936,9 +1864,8 @@ id|inet-&gt;num
 op_eq
 id|hnum
 op_logical_and
+op_logical_neg
 id|sk-&gt;next
-op_eq
-l_int|NULL
 op_logical_and
 (paren
 op_logical_neg
@@ -2052,10 +1979,8 @@ id|sock
 op_star
 id|sk
 suffix:semicolon
-r_int
-id|hash
-suffix:semicolon
 multiline_comment|/* Optimize here for direct hit, only listening connections can&n;&t; * have wildcards anyways.&n;&t; */
+r_int
 id|hash
 op_assign
 id|tcp_hashfn
@@ -2118,11 +2043,9 @@ comma
 id|dif
 )paren
 )paren
-(brace
 r_goto
 id|hit
 suffix:semicolon
-)brace
 multiline_comment|/* You sunk my battleship! */
 )brace
 multiline_comment|/* Must check for a TIME_WAIT&squot;er before going to listener hash. */
@@ -2164,11 +2087,11 @@ comma
 id|dif
 )paren
 )paren
-(brace
 r_goto
 id|hit
 suffix:semicolon
-)brace
+id|out
+suffix:colon
 id|read_unlock
 c_func
 (paren
@@ -2177,7 +2100,7 @@ id|head-&gt;lock
 )paren
 suffix:semicolon
 r_return
-l_int|NULL
+id|sk
 suffix:semicolon
 id|hit
 suffix:colon
@@ -2187,15 +2110,8 @@ c_func
 id|sk
 )paren
 suffix:semicolon
-id|read_unlock
-c_func
-(paren
-op_amp
-id|head-&gt;lock
-)paren
-suffix:semicolon
-r_return
-id|sk
+r_goto
+id|out
 suffix:semicolon
 )brace
 DECL|function|__tcp_v4_lookup
@@ -2227,8 +2143,6 @@ r_struct
 id|sock
 op_star
 id|sk
-suffix:semicolon
-id|sk
 op_assign
 id|__tcp_v4_lookup_established
 c_func
@@ -2244,15 +2158,11 @@ comma
 id|dif
 )paren
 suffix:semicolon
-r_if
+r_return
+id|sk
+ques
 c_cond
-(paren
-id|sk
-)paren
-r_return
-id|sk
-suffix:semicolon
-r_return
+suffix:colon
 id|tcp_v4_lookup_listener
 c_func
 (paren
@@ -2661,11 +2571,9 @@ comma
 id|dif
 )paren
 )paren
-(brace
 r_goto
 id|not_unique
 suffix:semicolon
-)brace
 )brace
 id|unique
 suffix:colon
@@ -2685,9 +2593,8 @@ suffix:semicolon
 id|BUG_TRAP
 c_func
 (paren
+op_logical_neg
 id|sk-&gt;pprev
-op_eq
-l_int|NULL
 )paren
 suffix:semicolon
 r_if
@@ -2841,12 +2748,14 @@ id|tcp_bind_bucket
 op_star
 id|tb
 suffix:semicolon
+r_int
+id|ret
+suffix:semicolon
 r_if
 c_cond
 (paren
+op_logical_neg
 id|snum
-op_eq
-l_int|0
 )paren
 (brace
 r_int
@@ -2973,8 +2882,6 @@ id|BUG_TRAP
 c_func
 (paren
 id|tb-&gt;owners
-op_ne
-l_int|NULL
 )paren
 suffix:semicolon
 r_if
@@ -3170,13 +3077,12 @@ id|tw
 )paren
 suffix:semicolon
 )brace
-id|local_bh_enable
-c_func
-(paren
-)paren
-suffix:semicolon
-r_return
+id|ret
+op_assign
 l_int|0
+suffix:semicolon
+r_goto
+id|out
 suffix:semicolon
 )brace
 id|head
@@ -3214,9 +3120,8 @@ id|tb-&gt;owners
 op_eq
 id|sk
 op_logical_and
+op_logical_neg
 id|sk-&gt;bind_next
-op_eq
-l_int|NULL
 )paren
 (brace
 id|__tcp_v4_hash
@@ -3240,9 +3145,6 @@ suffix:semicolon
 )brace
 r_else
 (brace
-r_int
-id|ret
-suffix:semicolon
 id|spin_unlock
 c_func
 (paren
@@ -3263,6 +3165,8 @@ comma
 l_int|NULL
 )paren
 suffix:semicolon
+id|out
+suffix:colon
 id|local_bh_enable
 c_func
 (paren
@@ -3386,9 +3290,8 @@ id|inet-&gt;opt-&gt;srr
 r_if
 c_cond
 (paren
+op_logical_neg
 id|daddr
-op_eq
-l_int|0
 )paren
 r_return
 op_minus
@@ -3863,9 +3766,8 @@ id|family
 id|BUG_TRAP
 c_func
 (paren
+op_logical_neg
 id|req-&gt;sk
-op_eq
-l_int|NULL
 )paren
 suffix:semicolon
 op_star
@@ -3873,13 +3775,12 @@ id|prevp
 op_assign
 id|prev
 suffix:semicolon
-r_return
-id|req
+r_break
 suffix:semicolon
 )brace
 )brace
 r_return
-l_int|NULL
+id|req
 suffix:semicolon
 )brace
 DECL|function|tcp_v4_synq_add
@@ -3977,7 +3878,7 @@ id|sk
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* &n; * This routine does path mtu discovery as defined in RFC1191.&n; */
+multiline_comment|/*&n; * This routine does path mtu discovery as defined in RFC1191.&n; */
 DECL|function|do_pmtu_discovery
 r_static
 r_inline
@@ -4104,7 +4005,7 @@ comma
 id|dst-&gt;pmtu
 )paren
 suffix:semicolon
-multiline_comment|/* Resend the TCP packet because it&squot;s  &n;&t;&t; * clear that the old packet has been&n;&t;&t; * dropped. This is the new &quot;fast&quot; path mtu&n;&t;&t; * discovery.&n;&t;&t; */
+multiline_comment|/* Resend the TCP packet because it&squot;s&n;&t;&t; * clear that the old packet has been&n;&t;&t; * dropped. This is the new &quot;fast&quot; path mtu&n;&t;&t; * discovery.&n;&t;&t; */
 id|tcp_simple_retransmit
 c_func
 (paren
@@ -4238,9 +4139,8 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+op_logical_neg
 id|sk
-op_eq
-l_int|NULL
 )paren
 (brace
 id|ICMP_INC_STATS_BH
@@ -4285,8 +4185,6 @@ r_if
 c_cond
 (paren
 id|sk-&gt;lock.users
-op_ne
-l_int|0
 )paren
 id|NET_INC_STATS_BH
 c_func
@@ -4362,9 +4260,8 @@ multiline_comment|/* This is deprecated, but if someone generated it,&n;&t;&t; *
 r_if
 c_cond
 (paren
+op_logical_neg
 id|sk-&gt;lock.users
-op_eq
-l_int|0
 )paren
 id|tcp_enter_cwr
 c_func
@@ -4409,9 +4306,8 @@ multiline_comment|/* PMTU discovery (RFC1191) */
 r_if
 c_cond
 (paren
+op_logical_neg
 id|sk-&gt;lock.users
-op_eq
-l_int|0
 )paren
 id|do_pmtu_discovery
 c_func
@@ -4475,8 +4371,6 @@ r_if
 c_cond
 (paren
 id|sk-&gt;lock.users
-op_ne
-l_int|0
 )paren
 r_goto
 id|out
@@ -4511,9 +4405,8 @@ multiline_comment|/* ICMPs are not backlogged, hence we cannot get&n;&t;&t;   an
 id|BUG_TRAP
 c_func
 (paren
+op_logical_neg
 id|req-&gt;sk
-op_eq
-l_int|NULL
 )paren
 suffix:semicolon
 r_if
@@ -4534,7 +4427,7 @@ r_goto
 id|out
 suffix:semicolon
 )brace
-multiline_comment|/* &n;&t;&t; * Still in SYN_RECV, just remove it silently.&n;&t;&t; * There is no good way to pass the error to the newly&n;&t;&t; * created socket, and POSIX does not want network&n;&t;&t; * errors returned from accept(). &n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * Still in SYN_RECV, just remove it silently.&n;&t;&t; * There is no good way to pass the error to the newly&n;&t;&t; * created socket, and POSIX does not want network&n;&t;&t; * errors returned from accept().&n;&t;&t; */
 id|tcp_synq_drop
 c_func
 (paren
@@ -4558,9 +4451,8 @@ multiline_comment|/* Cannot happen.&n;&t;&t;&t;       It can f.e. if SYNs crosse
 r_if
 c_cond
 (paren
+op_logical_neg
 id|sk-&gt;lock.users
-op_eq
-l_int|0
 )paren
 (brace
 id|TCP_INC_STATS_BH
@@ -4611,9 +4503,8 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+op_logical_neg
 id|sk-&gt;lock.users
-op_eq
-l_int|0
 op_logical_and
 id|inet-&gt;recverr
 )paren
@@ -5125,7 +5016,7 @@ id|rep.tsopt
 l_int|0
 )braket
 op_assign
-id|__constant_htonl
+id|htonl
 c_func
 (paren
 (paren
@@ -5407,8 +5298,6 @@ r_struct
 id|ip_options
 op_star
 id|opt
-suffix:semicolon
-id|opt
 op_assign
 id|req-&gt;af.v4_req.opt
 suffix:semicolon
@@ -5489,7 +5378,7 @@ op_amp
 id|rt-&gt;u.dst
 suffix:semicolon
 )brace
-multiline_comment|/*&n; *&t;Send a SYN-ACK after having received an ACK. &n; *&t;This still operates on a open_request only, not on a big&n; *&t;socket.&n; */
+multiline_comment|/*&n; *&t;Send a SYN-ACK after having received an ACK.&n; *&t;This still operates on a open_request only, not on a big&n; *&t;socket.&n; */
 DECL|function|tcp_v4_send_synack
 r_static
 r_int
@@ -5527,9 +5416,8 @@ multiline_comment|/* First, grab a route. */
 r_if
 c_cond
 (paren
+op_logical_neg
 id|dst
-op_eq
-l_int|NULL
 op_logical_and
 (paren
 id|dst
@@ -5715,13 +5603,13 @@ id|skb-&gt;h.th-&gt;dest
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/* &n; * Save and compile IPv4 options into the open_request if needed. &n; */
+multiline_comment|/*&n; * Save and compile IPv4 options into the open_request if needed.&n; */
+DECL|function|tcp_v4_save_options
 r_static
 r_inline
 r_struct
 id|ip_options
 op_star
-DECL|function|tcp_v4_save_options
 id|tcp_v4_save_options
 c_func
 (paren
@@ -5821,7 +5709,7 @@ r_return
 id|dopt
 suffix:semicolon
 )brace
-multiline_comment|/* &n; * Maximum number of SYN_RECV sockets in queue per LISTEN socket.&n; * One SYN_RECV socket costs about 80bytes on a 32bit machine.&n; * It would be better to replace it with a global counter for all sockets&n; * but then some measure against one socket starving all other sockets&n; * would be needed.&n; *&n; * It was 128 by default. Experiments with real servers show, that&n; * it is absolutely not enough even at 100conn/sec. 256 cures most&n; * of problems. This value is adjusted to 128 for very small machines&n; * (&lt;=32Mb of memory) and to 1024 on normal or better ones (&gt;=256Mb).&n; * Further increasing requires to change hash table size.&n; */
+multiline_comment|/*&n; * Maximum number of SYN_RECV sockets in queue per LISTEN socket.&n; * One SYN_RECV socket costs about 80bytes on a 32bit machine.&n; * It would be better to replace it with a global counter for all sockets&n; * but then some measure against one socket starving all other sockets&n; * would be needed.&n; *&n; * It was 128 by default. Experiments with real servers show, that&n; * it is absolutely not enough even at 100conn/sec. 256 cures most&n; * of problems. This value is adjusted to 128 for very small machines&n; * (&lt;=32Mb of memory) and to 1024 on normal or better ones (&gt;=256Mb).&n; * Further increasing requires to change hash table size.&n; */
 DECL|variable|sysctl_max_syn_backlog
 r_int
 id|sysctl_max_syn_backlog
@@ -5834,15 +5722,26 @@ id|or_calltable
 id|or_ipv4
 op_assign
 (brace
+id|family
+suffix:colon
 id|PF_INET
 comma
+id|rtx_syn_ack
+suffix:colon
 id|tcp_v4_send_synack
 comma
+id|send_ack
+suffix:colon
 id|tcp_v4_or_send_ack
 comma
+id|destructor
+suffix:colon
 id|tcp_v4_or_free
 comma
+id|send_reset
+suffix:colon
 id|tcp_v4_send_reset
+comma
 )brace
 suffix:semicolon
 DECL|function|tcp_v4_conn_request
@@ -5994,9 +5893,8 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+op_logical_neg
 id|req
-op_eq
-l_int|NULL
 )paren
 r_goto
 id|drop
@@ -6056,9 +5954,8 @@ c_cond
 (paren
 id|tp.saw_tstamp
 op_logical_and
+op_logical_neg
 id|tp.rcv_tsval
-op_eq
-l_int|0
 )paren
 (brace
 multiline_comment|/* Some OSes (unknown ones, but I see them on web server, which&n;&t;&t; * contains information interesting only for windows&squot;&n;&t;&t; * users) do not send their stamp in SYN. It is easy case.&n;&t;&t; * We simply do not advertise TS support.&n;&t;&t; */
@@ -6157,9 +6054,8 @@ r_else
 r_if
 c_cond
 (paren
+op_logical_neg
 id|isn
-op_eq
-l_int|0
 )paren
 (brace
 r_struct
@@ -6279,7 +6175,7 @@ id|dst-&gt;rtt
 )paren
 )paren
 (brace
-multiline_comment|/* Without syncookies last quarter of&n;&t;&t;&t; * backlog is filled with destinations, proven to be alive.&n;&t;&t;&t; * It means that we continue to communicate&n;&t;&t;&t; * to destinations, already remembered&n;&t;&t;&t; * to the moment of synflood.&n;&t;&t;&t; */
+multiline_comment|/* Without syncookies last quarter of&n;&t;&t;&t; * backlog is filled with destinations,&n;&t;&t;&t; * proven to be alive.&n;&t;&t;&t; * It means that we continue to communicate&n;&t;&t;&t; * to destinations, already remembered&n;&t;&t;&t; * to the moment of synflood.&n;&t;&t;&t; */
 id|NETDEBUG
 c_func
 (paren
@@ -6295,7 +6191,9 @@ id|printk
 c_func
 (paren
 id|KERN_DEBUG
-l_string|&quot;TCP: drop open request from %u.%u.%u.%u/%u&bslash;n&quot;
+l_string|&quot;TCP: drop open &quot;
+l_string|&quot;request from %u.%u.&quot;
+l_string|&quot;%u.%u/%u&bslash;n&quot;
 comma
 "&bslash;"
 id|NIPQUAD
@@ -6400,7 +6298,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/* &n; * The three way handshake has completed - we got a valid synack - &n; * now create the new socket. &n; */
+multiline_comment|/*&n; * The three way handshake has completed - we got a valid synack -&n; * now create the new socket.&n; */
 DECL|function|tcp_v4_syn_recv_sock
 r_struct
 id|sock
@@ -6459,9 +6357,8 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+op_logical_neg
 id|dst
-op_eq
-l_int|NULL
 op_logical_and
 (paren
 id|dst
@@ -6659,15 +6556,6 @@ id|skb
 )paren
 (brace
 r_struct
-id|open_request
-op_star
-id|req
-comma
-op_star
-op_star
-id|prev
-suffix:semicolon
-r_struct
 id|tcphdr
 op_star
 id|th
@@ -6697,7 +6585,16 @@ id|sock
 op_star
 id|nsk
 suffix:semicolon
+r_struct
+id|open_request
+op_star
+op_star
+id|prev
+suffix:semicolon
 multiline_comment|/* Find possible connection requests. */
+r_struct
+id|open_request
+op_star
 id|req
 op_assign
 id|tcp_v4_search_req
@@ -7189,7 +7086,7 @@ c_func
 id|skb
 )paren
 suffix:semicolon
-multiline_comment|/* Be careful here. If this function gets more complicated and&n;&t; * gcc suffers from register pressure on the x86, sk (in %ebx) &n;&t; * might be destroyed here. This current version compiles correctly,&n;&t; * but you have been warned.&n;&t; */
+multiline_comment|/* Be careful here. If this function gets more complicated and&n;&t; * gcc suffers from register pressure on the x86, sk (in %ebx)&n;&t; * might be destroyed here. This current version compiles correctly,&n;&t; * but you have been warned.&n;&t; */
 r_return
 l_int|0
 suffix:semicolon
@@ -7461,11 +7358,9 @@ comma
 id|skb
 )paren
 )paren
-(brace
 r_goto
 id|discard_and_relse
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -7664,8 +7559,6 @@ r_struct
 id|sock
 op_star
 id|sk2
-suffix:semicolon
-id|sk2
 op_assign
 id|tcp_v4_lookup_listener
 c_func
@@ -7689,8 +7582,6 @@ r_if
 c_cond
 (paren
 id|sk2
-op_ne
-l_int|NULL
 )paren
 (brace
 id|tcp_tw_deschedule
@@ -8007,8 +7898,6 @@ r_if
 c_cond
 (paren
 id|rt
-op_ne
-l_int|NULL
 )paren
 r_return
 l_int|0
@@ -8234,9 +8123,8 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+op_logical_neg
 id|rt
-op_eq
-l_int|NULL
 op_logical_or
 id|rt-&gt;rt_dst
 op_ne
@@ -8263,9 +8151,8 @@ r_else
 r_if
 c_cond
 (paren
+op_logical_neg
 id|rt-&gt;peer
-op_eq
-l_int|NULL
 )paren
 id|rt_bind_peer
 c_func
@@ -8431,35 +8318,58 @@ id|tcp_func
 id|ipv4_specific
 op_assign
 (brace
+id|queue_xmit
+suffix:colon
 id|ip_queue_xmit
 comma
+id|send_check
+suffix:colon
 id|tcp_v4_send_check
 comma
+id|rebuild_header
+suffix:colon
 id|tcp_v4_rebuild_header
 comma
+id|conn_request
+suffix:colon
 id|tcp_v4_conn_request
 comma
+id|syn_recv_sock
+suffix:colon
 id|tcp_v4_syn_recv_sock
 comma
+id|remember_stamp
+suffix:colon
 id|tcp_v4_remember_stamp
 comma
+id|net_header_len
+suffix:colon
 r_sizeof
 (paren
 r_struct
 id|iphdr
 )paren
 comma
+id|setsockopt
+suffix:colon
 id|ip_setsockopt
 comma
+id|getsockopt
+suffix:colon
 id|ip_getsockopt
 comma
+id|addr2sockaddr
+suffix:colon
 id|v4_addr2sockaddr
 comma
+id|sockaddr_len
+suffix:colon
 r_sizeof
 (paren
 r_struct
 id|sockaddr_in
 )paren
+comma
 )brace
 suffix:semicolon
 multiline_comment|/* NOTE: A lot of things set to zero explicitly by call to&n; *       sk_alloc() so need not be done here.&n; */
@@ -8636,17 +8546,13 @@ r_if
 c_cond
 (paren
 id|sk-&gt;prev
-op_ne
-l_int|NULL
 )paren
-(brace
 id|tcp_put_port
 c_func
 (paren
 id|sk
 )paren
 suffix:semicolon
-)brace
 multiline_comment|/* If sendmsg cached page exists, toss it. */
 r_if
 c_cond
@@ -8790,17 +8696,6 @@ id|i
 )paren
 (brace
 r_int
-r_int
-id|dest
-comma
-id|src
-suffix:semicolon
-id|__u16
-id|destp
-comma
-id|srcp
-suffix:semicolon
-r_int
 id|timer_active
 suffix:semicolon
 r_int
@@ -8829,14 +8724,19 @@ c_func
 id|sp
 )paren
 suffix:semicolon
+r_int
+r_int
 id|dest
 op_assign
 id|inet-&gt;daddr
 suffix:semicolon
+r_int
+r_int
 id|src
 op_assign
 id|inet-&gt;rcv_saddr
 suffix:semicolon
+id|__u16
 id|destp
 op_assign
 id|ntohs
@@ -8845,6 +8745,7 @@ c_func
 id|inet-&gt;dport
 )paren
 suffix:semicolon
+id|__u16
 id|srcp
 op_assign
 id|ntohs
@@ -8925,8 +8826,8 @@ c_func
 (paren
 id|tmpbuf
 comma
-l_string|&quot;%4d: %08X:%04X %08X:%04X&quot;
-l_string|&quot; %02X %08X:%08X %02X:%08lX %08X %5d %8d %lu %d %p %u %u %u %u %d&quot;
+l_string|&quot;%4d: %08X:%04X %08X:%04X %02X %08X:%08X %02X:%08lX &quot;
+l_string|&quot;%08X %5d %8d %lu %d %p %u %u %u %u %d&quot;
 comma
 id|i
 comma
@@ -8997,6 +8898,7 @@ id|tp-&gt;snd_ssthresh
 op_ge
 l_int|0xFFFF
 ques
+c_cond
 op_minus
 l_int|1
 suffix:colon
@@ -9193,7 +9095,8 @@ op_minus
 l_int|1
 comma
 l_string|&quot;  sl  local_address rem_address   st tx_queue &quot;
-l_string|&quot;rx_queue tr tm-&gt;when retrnsmt   uid  timeout inode&quot;
+l_string|&quot;rx_queue tr tm-&gt;when retrnsmt   uid  timeout &quot;
+l_string|&quot;inode&quot;
 )paren
 suffix:semicolon
 id|pos
@@ -9373,8 +9276,6 @@ c_cond
 id|lopt
 op_logical_and
 id|lopt-&gt;qlen
-op_ne
-l_int|0
 )paren
 (brace
 r_for
@@ -9678,8 +9579,6 @@ dot
 id|chain
 suffix:semicolon
 id|tw
-op_ne
-l_int|NULL
 suffix:semicolon
 id|tw
 op_assign

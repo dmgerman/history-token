@@ -110,7 +110,7 @@ id|system_bus
 suffix:semicolon
 )brace
 DECL|variable|sys_bus_init
-id|subsys_initcall
+id|postcore_initcall
 c_func
 (paren
 id|sys_bus_init

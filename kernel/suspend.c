@@ -165,7 +165,6 @@ id|resume_device
 suffix:semicolon
 multiline_comment|/* Local variables that should not be affected by save */
 DECL|variable|__nosavedata
-r_static
 r_int
 r_int
 id|nr_copy_pages
@@ -182,7 +181,6 @@ l_int|0
 suffix:semicolon
 multiline_comment|/* Suspend pagedir is allocated before final copy, therefore it&n;   must be freed after resume &n;&n;   Warning: this is evil. There are actually two pagedirs at time of&n;   resume. One is &quot;pagedir_save&quot;, which is empty frame allocated at&n;   time of suspend, that must be freed. Second is &quot;pagedir_nosave&quot;, &n;   allocated at time of resume, that travels through memory not to&n;   collide with anything.&n; */
 DECL|variable|__nosavedata
-r_static
 id|suspend_pagedir_t
 op_star
 id|pagedir_nosave
@@ -3184,7 +3182,6 @@ multiline_comment|/* NOTREACHED */
 )brace
 multiline_comment|/*&n; * Magic happens here&n; */
 DECL|function|do_magic_resume_1
-r_static
 r_void
 id|do_magic_resume_1
 c_func
@@ -3225,7 +3222,6 @@ suffix:semicolon
 multiline_comment|/* We do not want some readahead with DMA to corrupt our memory, right?&n;&t;&t;&t;   Do it with disabled interrupts for best effect. That way, if some&n;&t;&t;&t;   driver scheduled DMA, we have good chance for DMA to finish ;-). */
 )brace
 DECL|function|do_magic_resume_2
-r_static
 r_void
 id|do_magic_resume_2
 c_func
@@ -3332,7 +3328,6 @@ multiline_comment|/* Hmm, is this the problem? */
 macro_line|#endif
 )brace
 DECL|function|do_magic_suspend_1
-r_static
 r_void
 id|do_magic_suspend_1
 c_func
@@ -3359,7 +3354,6 @@ id|suspend_pagedir_lock
 suffix:semicolon
 )brace
 DECL|function|do_magic_suspend_2
-r_static
 r_void
 id|do_magic_suspend_2
 c_func

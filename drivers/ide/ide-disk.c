@@ -1387,14 +1387,7 @@ suffix:semicolon
 )brace
 )brace
 )brace
-id|ar-&gt;handler
-op_assign
-id|task_no_data_intr
-suffix:semicolon
-id|ar-&gt;command_type
-op_assign
-id|IDE_DRIVE_TASK_NO_DATA
-suffix:semicolon
+multiline_comment|/* not reached! */
 r_return
 id|WIN_NOP
 suffix:semicolon
@@ -2423,15 +2416,22 @@ op_eq
 l_int|1
 )paren
 (brace
-r_struct
-id|ata_taskfile
-id|args
-suffix:semicolon
 id|check_disk_change
 c_func
 (paren
 id|inode-&gt;i_rdev
 )paren
+suffix:semicolon
+multiline_comment|/*&n;&t;&t; * Ignore the return code from door_lock, since the open() has&n;&t;&t; * already succeeded once, and the door_lock is irrelevant at this&n;&t;&t; * time.&n;&t;&t; */
+r_if
+c_cond
+(paren
+id|drive-&gt;doorlocking
+)paren
+(brace
+r_struct
+id|ata_taskfile
+id|args
 suffix:semicolon
 id|memset
 c_func
@@ -2451,20 +2451,9 @@ id|args.cmd
 op_assign
 id|WIN_DOORLOCK
 suffix:semicolon
-id|args.handler
-op_assign
-id|task_no_data_intr
-suffix:semicolon
-id|args.command_type
-op_assign
-id|IDE_DRIVE_TASK_NO_DATA
-suffix:semicolon
-multiline_comment|/*&n;&t;&t; * Ignore the return code from door_lock, since the open() has&n;&t;&t; * already succeeded once, and the door_lock is irrelevant at this&n;&t;&t; * time.&n;&t;&t; */
 r_if
 c_cond
 (paren
-id|drive-&gt;doorlocking
-op_logical_and
 id|ide_raw_taskfile
 c_func
 (paren
@@ -2478,6 +2467,7 @@ id|drive-&gt;doorlocking
 op_assign
 l_int|0
 suffix:semicolon
+)brace
 )brace
 r_return
 l_int|0
@@ -2529,14 +2519,6 @@ id|args.cmd
 op_assign
 id|WIN_FLUSH_CACHE
 suffix:semicolon
-id|args.handler
-op_assign
-id|task_no_data_intr
-suffix:semicolon
-id|args.command_type
-op_assign
-id|IDE_DRIVE_TASK_NO_DATA
-suffix:semicolon
 r_return
 id|ide_raw_taskfile
 c_func
@@ -2579,10 +2561,6 @@ op_logical_neg
 id|drive-&gt;usage
 )paren
 (brace
-r_struct
-id|ata_taskfile
-id|args
-suffix:semicolon
 multiline_comment|/* XXX I don&squot;t think this is up to the lowlevel drivers..  --hch */
 id|invalidate_bdev
 c_func
@@ -2591,6 +2569,16 @@ id|inode-&gt;i_bdev
 comma
 l_int|0
 )paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|drive-&gt;doorlocking
+)paren
+(brace
+r_struct
+id|ata_taskfile
+id|args
 suffix:semicolon
 id|memset
 c_func
@@ -2610,19 +2598,9 @@ id|args.cmd
 op_assign
 id|WIN_DOORUNLOCK
 suffix:semicolon
-id|args.handler
-op_assign
-id|task_no_data_intr
-suffix:semicolon
-id|args.command_type
-op_assign
-id|IDE_DRIVE_TASK_NO_DATA
-suffix:semicolon
 r_if
 c_cond
 (paren
-id|drive-&gt;doorlocking
-op_logical_and
 id|ide_raw_taskfile
 c_func
 (paren
@@ -2636,6 +2614,7 @@ id|drive-&gt;doorlocking
 op_assign
 l_int|0
 suffix:semicolon
+)brace
 )brace
 r_if
 c_cond
@@ -2777,14 +2756,6 @@ id|args.cmd
 op_assign
 id|WIN_SETMULT
 suffix:semicolon
-id|args.handler
-op_assign
-id|task_no_data_intr
-suffix:semicolon
-id|args.command_type
-op_assign
-id|IDE_DRIVE_TASK_NO_DATA
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -2912,14 +2883,6 @@ id|args.cmd
 op_assign
 id|WIN_SETFEATURES
 suffix:semicolon
-id|args.handler
-op_assign
-id|task_no_data_intr
-suffix:semicolon
-id|args.command_type
-op_assign
-id|IDE_DRIVE_TASK_NO_DATA
-suffix:semicolon
 id|ide_raw_taskfile
 c_func
 (paren
@@ -2970,14 +2933,6 @@ suffix:semicolon
 id|args.cmd
 op_assign
 id|WIN_STANDBYNOW1
-suffix:semicolon
-id|args.handler
-op_assign
-id|task_no_data_intr
-suffix:semicolon
-id|args.command_type
-op_assign
-id|IDE_DRIVE_TASK_NO_DATA
 suffix:semicolon
 r_return
 id|ide_raw_taskfile
@@ -3041,14 +2996,6 @@ suffix:semicolon
 id|args.cmd
 op_assign
 id|WIN_SETFEATURES
-suffix:semicolon
-id|args.handler
-op_assign
-id|task_no_data_intr
-suffix:semicolon
-id|args.command_type
-op_assign
-id|IDE_DRIVE_TASK_NO_DATA
 suffix:semicolon
 id|ide_raw_taskfile
 c_func
@@ -3481,11 +3428,6 @@ id|args.cmd
 op_assign
 id|WIN_READ_NATIVE_MAX
 suffix:semicolon
-id|args.handler
-op_assign
-id|task_no_data_intr
-suffix:semicolon
-multiline_comment|/* submit command request */
 id|ide_raw_taskfile
 c_func
 (paren
@@ -3586,11 +3528,6 @@ id|args.cmd
 op_assign
 id|WIN_READ_NATIVE_MAX_EXT
 suffix:semicolon
-id|args.handler
-op_assign
-id|task_no_data_intr
-suffix:semicolon
-multiline_comment|/* submit command request */
 id|ide_raw_taskfile
 c_func
 (paren
@@ -3754,11 +3691,6 @@ id|args.cmd
 op_assign
 id|WIN_SET_MAX
 suffix:semicolon
-id|args.handler
-op_assign
-id|task_no_data_intr
-suffix:semicolon
-multiline_comment|/* submit command request */
 id|ide_raw_taskfile
 c_func
 (paren
@@ -3916,11 +3848,6 @@ id|args.hobfile.device_head
 op_assign
 l_int|0x40
 suffix:semicolon
-id|args.handler
-op_assign
-id|task_no_data_intr
-suffix:semicolon
-multiline_comment|/* submit command request */
 id|ide_raw_taskfile
 c_func
 (paren
@@ -4440,8 +4367,16 @@ l_string|&quot;%s: setmax_ext LBA %llu, native  %llu&bslash;n&quot;
 comma
 id|drive-&gt;name
 comma
+(paren
+r_int
+r_int
+)paren
 id|set_max_ext
 comma
+(paren
+r_int
+r_int
+)paren
 id|capacity_2
 )paren
 suffix:semicolon

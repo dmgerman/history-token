@@ -43,8 +43,8 @@ DECL|macro|BOND_STATE_ACTIVE
 mdefine_line|#define BOND_STATE_ACTIVE       0   /* link is active */
 DECL|macro|BOND_STATE_BACKUP
 mdefine_line|#define BOND_STATE_BACKUP       1   /* link is backup */
-DECL|macro|MAX_BONDS
-mdefine_line|#define MAX_BONDS               1   /* Maximum number of devices to support */
+DECL|macro|BOND_DEFAULT_MAX_BONDS
+mdefine_line|#define BOND_DEFAULT_MAX_BONDS  1   /* Default maximum number of devices to support */
 DECL|struct|ifbond
 r_typedef
 r_struct
@@ -137,6 +137,11 @@ r_char
 id|state
 suffix:semicolon
 multiline_comment|/* one of BOND_STATE_XXXX */
+DECL|member|original_flags
+r_int
+r_int
+id|original_flags
+suffix:semicolon
 DECL|member|link_failure_count
 id|u32
 id|link_failure_count
@@ -219,6 +224,17 @@ r_struct
 id|net_device
 op_star
 id|device
+suffix:semicolon
+DECL|member|mc_list
+r_struct
+id|dev_mc_list
+op_star
+id|mc_list
+suffix:semicolon
+DECL|member|flags
+r_int
+r_int
+id|flags
 suffix:semicolon
 DECL|typedef|bonding_t
 )brace

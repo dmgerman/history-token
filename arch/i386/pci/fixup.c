@@ -1,5 +1,6 @@
 multiline_comment|/*&n; * Exceptions for specific devices. Usually work-arounds for fatal design flaws.&n; */
 macro_line|#include &lt;linux/pci.h&gt;
+macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &quot;pci.h&quot;
 DECL|function|pci_fixup_i450nx
 r_static
