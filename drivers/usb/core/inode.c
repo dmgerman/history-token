@@ -3207,7 +3207,6 @@ suffix:semicolon
 )brace
 DECL|function|usbfs_cleanup
 r_void
-id|__exit
 id|usbfs_cleanup
 c_func
 (paren
