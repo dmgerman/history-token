@@ -88,10 +88,6 @@ DECL|member|last_linkstatus
 id|u16
 id|last_linkstatus
 suffix:semicolon
-DECL|member|connected
-r_int
-id|connected
-suffix:semicolon
 multiline_comment|/* Net device stuff */
 DECL|member|ndev
 r_struct
