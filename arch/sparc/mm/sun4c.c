@@ -1694,7 +1694,7 @@ r_int
 op_star
 id|sun4c_memerr_reg
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 DECL|function|sun4c_probe_memerr_reg
 r_void
@@ -2171,7 +2171,7 @@ id|i
 dot
 id|next
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|mmu_entry_pool
 (braket
@@ -2180,7 +2180,7 @@ id|i
 dot
 id|prev
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|mmu_entry_pool
 (braket
@@ -2216,7 +2216,7 @@ id|i
 dot
 id|lru_next
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|mmu_entry_pool
 (braket
@@ -2225,7 +2225,7 @@ id|i
 dot
 id|lru_prev
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 )brace
 id|mmu_entry_pool
@@ -4787,7 +4787,7 @@ l_string|&quot;Out of iobuffer table&quot;
 )paren
 suffix:semicolon
 r_return
-l_int|0
+l_int|NULL
 suffix:semicolon
 )brace
 DECL|function|sun4c_unlockarea

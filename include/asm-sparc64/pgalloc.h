@@ -915,7 +915,7 @@ id|pte
 )paren
 suffix:semicolon
 r_return
-l_int|0
+l_int|NULL
 suffix:semicolon
 )brace
 DECL|function|pte_alloc_one_fast

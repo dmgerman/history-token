@@ -458,7 +458,7 @@ id|end
 suffix:semicolon
 )brace
 r_return
-l_int|0
+l_int|NULL
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * x86-64 can have upto three kernel stacks: &n; * process stack&n; * interrupt stack&n; * severe exception (double fault, nmi, stack fault) hardware stack&n; * Check and process them in order.&n; */

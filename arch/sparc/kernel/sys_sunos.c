@@ -214,7 +214,7 @@ id|file
 suffix:semicolon
 id|file
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 )brace
 )brace
@@ -3102,7 +3102,7 @@ r_char
 op_star
 id|dev_fname
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 r_char
 op_star

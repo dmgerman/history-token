@@ -75,7 +75,7 @@ id|mostek48t08
 op_star
 id|mstk48t08_regs
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 r_static
 r_int
@@ -961,17 +961,17 @@ r_struct
 id|mostek48t02
 )paren
 comma
-l_int|0
+l_int|NULL
 )paren
 suffix:semicolon
 id|mstk48t08_regs
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 multiline_comment|/* To catch weirdness */
 id|intersil_clock
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 multiline_comment|/* just in case */
 multiline_comment|/* Kick start the clock if it is completely stopped. */
@@ -1055,7 +1055,7 @@ suffix:semicolon
 multiline_comment|/* just be sure */
 id|mstk48t08_regs
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 multiline_comment|/* ditto */
 multiline_comment|/* initialise the clock */
@@ -1456,7 +1456,7 @@ l_string|&quot;mk48t02&quot;
 suffix:semicolon
 id|mstk48t08_regs
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 multiline_comment|/* To catch weirdness */
 )brace

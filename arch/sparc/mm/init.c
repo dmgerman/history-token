@@ -316,7 +316,7 @@ id|ctx
 suffix:semicolon
 id|clist-&gt;ctx_mm
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 )brace
 id|ctx_free.next

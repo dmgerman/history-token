@@ -3171,7 +3171,7 @@ l_string|&quot;io_map&quot;
 comma
 l_int|0
 comma
-l_int|0
+l_int|NULL
 comma
 id|_sparc_io_get_info
 comma
@@ -3186,7 +3186,7 @@ l_string|&quot;dvma_map&quot;
 comma
 l_int|0
 comma
-l_int|0
+l_int|NULL
 comma
 id|_sparc_io_get_info
 comma

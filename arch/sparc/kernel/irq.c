@@ -1164,7 +1164,7 @@ c_func
 (paren
 id|irq
 comma
-l_int|0
+l_int|NULL
 comma
 id|regs
 )paren

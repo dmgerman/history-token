@@ -951,7 +951,7 @@ macro_line|#ifdef CONFIG_IOMMU_LEAK
 DECL|macro|SET_LEAK
 mdefine_line|#define SET_LEAK(x) if (iommu_leak_tab) &bslash;&n;&t;&t;&t;iommu_leak_tab[x] = __builtin_return_address(0);
 DECL|macro|CLEAR_LEAK
-mdefine_line|#define CLEAR_LEAK(x) if (iommu_leak_tab) &bslash;&n;&t;&t;&t;iommu_leak_tab[x] = 0;
+mdefine_line|#define CLEAR_LEAK(x) if (iommu_leak_tab) &bslash;&n;&t;&t;&t;iommu_leak_tab[x] = NULL;
 multiline_comment|/* Debugging aid for drivers that don&squot;t free their IOMMU tables */
 DECL|variable|iommu_leak_tab
 r_static

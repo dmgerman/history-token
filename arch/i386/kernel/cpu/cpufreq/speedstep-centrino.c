@@ -772,7 +772,7 @@ l_int|1700
 )paren
 comma
 (brace
-l_int|0
+l_int|NULL
 comma
 )brace
 )brace
