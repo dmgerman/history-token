@@ -3109,10 +3109,6 @@ r_int
 id|sysctl_ip_vs_nat_icmp_send
 suffix:semicolon
 r_extern
-id|atomic_t
-id|ip_vs_dropentry
-suffix:semicolon
-r_extern
 r_struct
 id|ip_vs_stats
 id|ip_vs_stats
@@ -3186,14 +3182,6 @@ suffix:semicolon
 r_extern
 r_void
 id|ip_vs_use_count_dec
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|update_defense_level
 c_func
 (paren
 r_void
