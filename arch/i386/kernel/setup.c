@@ -3343,7 +3343,7 @@ c_func
 suffix:semicolon
 macro_line|#ifdef CONFIG_ACPI_BOOT
 multiline_comment|/*&n;&t; * Initialize the ACPI boot-time table parser (gets the RSDP and SDT).&n;&t; * Must do this after paging_init (due to reliance on fixmap, and thus&n;&t; * the bootmem allocator) but before get_smp_config (to allow parsing&n;&t; * of MADT).&n;&t; */
-id|acpi_table_init
+id|acpi_boot_init
 c_func
 (paren
 op_star
