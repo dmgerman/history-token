@@ -148,7 +148,8 @@ id|atomic_t
 id|count
 suffix:semicolon
 DECL|member|gc_proc
-id|u32
+r_enum
+id|rpc_gss_proc
 id|gc_proc
 suffix:semicolon
 DECL|member|gc_seq
