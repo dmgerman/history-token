@@ -663,6 +663,11 @@ r_struct
 id|bio
 op_star
 id|bio
+comma
+r_union
+id|map_info
+op_star
+id|map_context
 )paren
 (brace
 r_struct
