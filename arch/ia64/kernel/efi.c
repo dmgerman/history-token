@@ -1661,7 +1661,7 @@ id|cp
 comma
 l_string|&quot;lpmem=&quot;
 comma
-l_int|8
+l_int|6
 )paren
 op_eq
 l_int|0
@@ -1669,7 +1669,7 @@ l_int|0
 (brace
 id|cp
 op_add_assign
-l_int|8
+l_int|6
 suffix:semicolon
 id|htlbzone_pages
 op_assign

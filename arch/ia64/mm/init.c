@@ -1835,7 +1835,7 @@ op_assign
 id|alloc_pages
 c_func
 (paren
-id|GFP_ATOMIC
+id|__GFP_HIGHMEM
 comma
 id|HUGETLB_PAGE_ORDER
 )paren
