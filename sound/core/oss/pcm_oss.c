@@ -10919,7 +10919,7 @@ c_func
 suffix:semicolon
 id|err
 op_assign
-id|snd_pcm_oss_ioctl
+id|_snd_pcm_oss_ioctl
 c_func
 (paren
 id|inode
