@@ -9249,6 +9249,24 @@ multiline_comment|/* ASUS A7V8-X */
 dot
 id|vendor
 op_assign
+l_int|0x1043
+comma
+dot
+id|device
+op_assign
+l_int|0x80b0
+comma
+dot
+id|action
+op_assign
+id|VIA_DXS_ENABLE
+)brace
+comma
+multiline_comment|/* ASUS A7V600 */
+(brace
+dot
+id|vendor
+op_assign
 l_int|0x1297
 comma
 dot
