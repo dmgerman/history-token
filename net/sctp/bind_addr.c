@@ -70,7 +70,7 @@ id|flags
 )paren
 (brace
 r_struct
-id|sockaddr_storage_list
+id|sctp_sockaddr_entry
 op_star
 id|addr
 suffix:semicolon
@@ -107,7 +107,7 @@ c_func
 id|pos
 comma
 r_struct
-id|sockaddr_storage_list
+id|sctp_sockaddr_entry
 comma
 id|list
 )paren
@@ -175,7 +175,7 @@ c_func
 id|pos
 comma
 r_struct
-id|sockaddr_storage_list
+id|sctp_sockaddr_entry
 comma
 id|list
 )paren
@@ -332,7 +332,7 @@ id|bp
 )paren
 (brace
 r_struct
-id|sockaddr_storage_list
+id|sctp_sockaddr_entry
 op_star
 id|addr
 suffix:semicolon
@@ -364,7 +364,7 @@ c_func
 id|pos
 comma
 r_struct
-id|sockaddr_storage_list
+id|sctp_sockaddr_entry
 comma
 id|list
 )paren
@@ -449,7 +449,7 @@ id|gfp
 )paren
 (brace
 r_struct
-id|sockaddr_storage_list
+id|sctp_sockaddr_entry
 op_star
 id|addr
 suffix:semicolon
@@ -460,7 +460,7 @@ id|t_new
 c_func
 (paren
 r_struct
-id|sockaddr_storage_list
+id|sctp_sockaddr_entry
 comma
 id|gfp
 )paren
@@ -475,10 +475,20 @@ r_return
 op_minus
 id|ENOMEM
 suffix:semicolon
+id|memcpy
+c_func
+(paren
+op_amp
 id|addr-&gt;a
-op_assign
+comma
+r_new
+comma
+r_sizeof
+(paren
 op_star
 r_new
+)paren
+)paren
 suffix:semicolon
 multiline_comment|/* Fix up the port if it has not yet been set.&n;&t; * Both v4 and v6 have the port at the same offset.&n;&t; */
 r_if
@@ -544,7 +554,7 @@ op_star
 id|temp
 suffix:semicolon
 r_struct
-id|sockaddr_storage_list
+id|sctp_sockaddr_entry
 op_star
 id|addr
 suffix:semicolon
@@ -567,7 +577,7 @@ c_func
 id|pos
 comma
 r_struct
-id|sockaddr_storage_list
+id|sctp_sockaddr_entry
 comma
 id|list
 )paren
@@ -646,14 +656,15 @@ suffix:semicolon
 r_int
 id|addrparms_len
 suffix:semicolon
-id|sctp_addr_param_t
+r_union
+id|sctp_addr_param
 id|rawaddr
 suffix:semicolon
 r_int
 id|len
 suffix:semicolon
 r_struct
-id|sockaddr_storage_list
+id|sctp_sockaddr_entry
 op_star
 id|addr
 suffix:semicolon
@@ -684,7 +695,8 @@ id|len
 op_add_assign
 r_sizeof
 (paren
-id|sctp_addr_param_t
+r_union
+id|sctp_addr_param
 )paren
 suffix:semicolon
 )brace
@@ -696,7 +708,8 @@ id|len
 op_eq
 r_sizeof
 (paren
-id|sctp_addr_param_t
+r_union
+id|sctp_addr_param
 )paren
 )paren
 (brace
@@ -748,7 +761,7 @@ c_func
 id|pos
 comma
 r_struct
-id|sockaddr_storage_list
+id|sctp_sockaddr_entry
 comma
 id|list
 )paren
@@ -821,11 +834,13 @@ r_int
 id|gfp
 )paren
 (brace
-id|sctp_addr_param_t
+r_union
+id|sctp_addr_param
 op_star
 id|rawaddr
 suffix:semicolon
-id|sctp_paramhdr_t
+r_struct
+id|sctp_paramhdr
 op_star
 id|param
 suffix:semicolon
@@ -851,7 +866,8 @@ id|addrs_len
 id|param
 op_assign
 (paren
-id|sctp_paramhdr_t
+r_struct
+id|sctp_paramhdr
 op_star
 )paren
 id|raw_addr_list
@@ -859,7 +875,8 @@ suffix:semicolon
 id|rawaddr
 op_assign
 (paren
-id|sctp_addr_param_t
+r_union
+id|sctp_addr_param
 op_star
 )paren
 id|raw_addr_list
@@ -991,7 +1008,7 @@ id|opt
 )paren
 (brace
 r_struct
-id|sockaddr_storage_list
+id|sctp_sockaddr_entry
 op_star
 id|laddr
 suffix:semicolon
@@ -1017,7 +1034,7 @@ c_func
 id|pos
 comma
 r_struct
-id|sockaddr_storage_list
+id|sctp_sockaddr_entry
 comma
 id|list
 )paren

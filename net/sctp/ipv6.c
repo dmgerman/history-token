@@ -841,7 +841,7 @@ op_star
 id|addr_lock
 suffix:semicolon
 r_struct
-id|sockaddr_storage_list
+id|sctp_sockaddr_entry
 op_star
 id|laddr
 suffix:semicolon
@@ -964,7 +964,7 @@ c_func
 id|pos
 comma
 r_struct
-id|sockaddr_storage_list
+id|sctp_sockaddr_entry
 comma
 id|list
 )paren
@@ -1118,7 +1118,7 @@ op_star
 id|ifp
 suffix:semicolon
 r_struct
-id|sockaddr_storage_list
+id|sctp_sockaddr_entry
 op_star
 id|addr
 suffix:semicolon
@@ -1183,7 +1183,7 @@ id|t_new
 c_func
 (paren
 r_struct
-id|sockaddr_storage_list
+id|sctp_sockaddr_entry
 comma
 id|GFP_ATOMIC
 )paren

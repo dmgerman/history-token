@@ -487,7 +487,15 @@ r_enum
 (brace
 id|SCTP_MAX_DUP_TSNS
 op_assign
-l_int|128
+l_int|16
+)brace
+suffix:semicolon
+DECL|enumerator|SCTP_MAX_GABS
+r_enum
+(brace
+id|SCTP_MAX_GABS
+op_assign
+l_int|16
 )brace
 suffix:semicolon
 r_typedef
