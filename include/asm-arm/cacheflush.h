@@ -30,7 +30,7 @@ DECL|macro|_CACHE
 macro_line|#  define _CACHE v4
 macro_line|# endif
 macro_line|#endif
-macro_line|#if defined(CONFIG_CPU_ARM920T) || defined(CONFIG_CPU_ARM922T) || &bslash;&n;    defined(CONFIG_CPU_ARM1020)
+macro_line|#if defined(CONFIG_CPU_ARM920T) || defined(CONFIG_CPU_ARM922T) || &bslash;&n;    defined(CONFIG_CPU_ARM925T) || defined(CONFIG_CPU_ARM1020)
 DECL|macro|MULTI_CACHE
 macro_line|# define MULTI_CACHE 1
 macro_line|#endif
