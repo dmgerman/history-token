@@ -5964,11 +5964,16 @@ id|ctrl.ioctl_code
 )paren
 (brace
 multiline_comment|/* disconnect kernel driver from interface, leaving it unbound.  */
+multiline_comment|/* maybe unbound - you get no guarantee it stays unbound */
 r_case
 id|USBDEVFS_DISCONNECT
 suffix:colon
-multiline_comment|/* this function is voodoo. */
-multiline_comment|/* which function ... usb_device_remove()?&n;&t;&t; * FIXME either the module lock (BKL) should be involved&n;&t;&t; * here too, or the &squot;default&squot; case below is broken&n;&t;&t; */
+multiline_comment|/* this function is misdesigned - retained for compatibility */
+id|lock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
 id|driver
 op_assign
 id|ifp-&gt;driver
@@ -6004,18 +6009,33 @@ op_assign
 op_minus
 id|ENODATA
 suffix:semicolon
+id|unlock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
 r_break
 suffix:semicolon
 multiline_comment|/* let kernel drivers try to (re)bind to the interface */
 r_case
 id|USBDEVFS_CONNECT
 suffix:colon
+id|lock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
 id|retval
 op_assign
 id|usb_device_probe
 (paren
 op_amp
 id|ifp-&gt;dev
+)paren
+suffix:semicolon
+id|unlock_kernel
+c_func
+(paren
 )paren
 suffix:semicolon
 r_break
@@ -6095,12 +6115,6 @@ comma
 id|buf
 )paren
 suffix:semicolon
-id|module_put
-(paren
-id|driver-&gt;owner
-)paren
-suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -6114,6 +6128,12 @@ op_assign
 op_minus
 id|ENOTTY
 suffix:semicolon
+id|module_put
+(paren
+id|driver-&gt;owner
+)paren
+suffix:semicolon
+)brace
 )brace
 multiline_comment|/* cleanup and return */
 r_if
