@@ -1,5 +1,6 @@
 multiline_comment|/*&n; * Copyright (C) 2001, 2002 Sistina Software (UK) Limited.&n; *&n; * This file is released under the GPL.&n; */
 macro_line|#include &quot;dm.h&quot;
+macro_line|#include &quot;dm-bio-list.h&quot;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/moduleparam.h&gt;
@@ -105,8 +106,7 @@ id|wait
 suffix:semicolon
 DECL|member|deferred
 r_struct
-id|bio
-op_star
+id|bio_list
 id|deferred
 suffix:semicolon
 multiline_comment|/*&n;&t; * The current mapping.&n;&t; */
@@ -635,13 +635,14 @@ r_return
 l_int|1
 suffix:semicolon
 )brace
-id|bio-&gt;bi_next
-op_assign
+id|bio_list_add
+c_func
+(paren
+op_amp
 id|md-&gt;deferred
-suffix:semicolon
-id|md-&gt;deferred
-op_assign
+comma
 id|bio
+)paren
 suffix:semicolon
 id|up_write
 c_func
@@ -3175,11 +3176,12 @@ id|md-&gt;flags
 suffix:semicolon
 id|def
 op_assign
+id|bio_list_get
+c_func
+(paren
+op_amp
 id|md-&gt;deferred
-suffix:semicolon
-id|md-&gt;deferred
-op_assign
-l_int|NULL
+)paren
 suffix:semicolon
 id|up_write
 c_func
