@@ -5,10 +5,6 @@ multiline_comment|/*   Copyright (C) 2003 Peter Milne, D-TACQ Solutions Ltd&n; *
 multiline_comment|/* ------------------------------------------------------------------------- */
 multiline_comment|/*&n;   With acknowledgements to i2c-algo-ibm_ocp.c by &n;   Ian DaSilva, MontaVista Software, Inc. idasilva@mvista.com&n;&n;   And i2c-algo-pcf.c, which was created by Simon G. Vogl and Hans Berglund:&n;&n;     Copyright (C) 1995-1997 Simon G. Vogl, 1998-2000 Hans Berglund&n;   &n;   And which acknowledged Ky&#xfffd;sti M&#xfffd;lkki &lt;kmalkki@cc.hut.fi&gt;,&n;   Frodo Looijaard &lt;frodol@dds.nl&gt;, Martin Bailey&lt;mbailey@littlefeet-inc.com&gt;&n;&n;  ---------------------------------------------------------------------------*/
 macro_line|#include &lt;linux/config.h&gt;
-macro_line|#ifdef CONFIG_I2C_DEBUG_BUS
-DECL|macro|DEBUG
-mdefine_line|#define DEBUG&t;1
-macro_line|#endif
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
@@ -257,7 +253,7 @@ suffix:semicolon
 multiline_comment|/* &n; * NB: the handler has to clear the source of the interrupt! &n; * Then it passes the SR flags of interest to BH via adap data&n; */
 DECL|function|iop3xx_i2c_handler
 r_static
-r_void
+id|irqreturn_t
 id|iop3xx_i2c_handler
 c_func
 (paren
@@ -314,6 +310,9 @@ id|iop3xx_adap-&gt;waitq
 )paren
 suffix:semicolon
 )brace
+r_return
+id|IRQ_HANDLED
+suffix:semicolon
 )brace
 multiline_comment|/* check all error conditions, clear them , report most important */
 DECL|function|iop3xx_adap_error
@@ -481,6 +480,8 @@ id|done
 suffix:semicolon
 r_int
 id|rc
+op_assign
+l_int|0
 suffix:semicolon
 r_do
 (brace
@@ -550,8 +551,6 @@ op_assign
 id|sr
 suffix:semicolon
 r_return
-id|rc
-op_assign
 op_minus
 id|ETIMEDOUT
 suffix:semicolon
@@ -572,8 +571,6 @@ op_assign
 id|sr
 suffix:semicolon
 r_return
-id|rc
-op_assign
 l_int|0
 suffix:semicolon
 )brace
@@ -886,6 +883,8 @@ id|status
 suffix:semicolon
 r_int
 id|rc
+op_assign
+l_int|0
 suffix:semicolon
 op_star
 id|iop3xx_adap-&gt;biu-&gt;DBR
@@ -968,6 +967,8 @@ id|status
 suffix:semicolon
 r_int
 id|rc
+op_assign
+l_int|0
 suffix:semicolon
 id|cr
 op_and_assign
@@ -1348,8 +1349,8 @@ id|im
 op_ne
 id|num
 suffix:semicolon
-op_increment
 id|im
+op_increment
 )paren
 (brace
 id|ret
@@ -1373,8 +1374,18 @@ c_func
 id|iop3xx_adap
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|ret
+)paren
+(brace
 r_return
 id|ret
+suffix:semicolon
+)brace
+r_return
+id|im
 suffix:semicolon
 )brace
 DECL|function|algo_control
