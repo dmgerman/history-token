@@ -1886,6 +1886,9 @@ id|u16
 op_star
 id|csum
 suffix:semicolon
+id|u32
+id|tmp_csum
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1946,6 +1949,7 @@ r_goto
 id|out
 suffix:semicolon
 )brace
+multiline_comment|/* should be check HW csum miyazawa */
 r_if
 c_cond
 (paren
@@ -1960,30 +1964,13 @@ l_int|1
 )paren
 (brace
 multiline_comment|/*&n;&t;&t; * Only one fragment on the socket.&n;&t;&t; */
-multiline_comment|/* should be check HW csum miyazawa */
-op_star
-id|csum
+id|tmp_csum
 op_assign
-id|csum_ipv6_magic
-c_func
-(paren
-op_amp
-id|fl-&gt;fl6_src
-comma
-op_amp
-id|fl-&gt;fl6_dst
-comma
-id|len
-comma
-id|fl-&gt;proto
-comma
 id|skb-&gt;csum
-)paren
 suffix:semicolon
 )brace
 r_else
 (brace
-id|u32
 id|tmp_csum
 op_assign
 l_int|0
@@ -2008,7 +1995,9 @@ id|skb-&gt;csum
 )paren
 suffix:semicolon
 )brace
-id|tmp_csum
+)brace
+op_star
+id|csum
 op_assign
 id|csum_ipv6_magic
 c_func
@@ -2026,12 +2015,6 @@ comma
 id|tmp_csum
 )paren
 suffix:semicolon
-op_star
-id|csum
-op_assign
-id|tmp_csum
-suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
