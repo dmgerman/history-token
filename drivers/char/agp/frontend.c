@@ -355,7 +355,7 @@ l_int|NULL
 id|DBG
 c_func
 (paren
-l_string|&quot;Freeing %p from client&quot;
+l_string|&quot;Freeing %p from client %p&quot;
 comma
 op_star
 (paren
