@@ -728,10 +728,6 @@ DECL|member|magic
 id|ulong
 id|magic
 suffix:semicolon
-DECL|member|lock
-id|spinlock_t
-id|lock
-suffix:semicolon
 DECL|member|stats
 r_struct
 id|net_device_stats
@@ -1079,6 +1075,7 @@ op_star
 id|slave
 suffix:semicolon
 multiline_comment|/* Ptr to Slave device for masters  */
+singleline_comment|// FIXME kill
 DECL|member|slaves
 r_struct
 id|list_head
