@@ -4,7 +4,6 @@ DECL|macro|__SPARC64_HARDIRQ_H
 mdefine_line|#define __SPARC64_HARDIRQ_H
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/threads.h&gt;
-macro_line|#include &lt;linux/brlock.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;linux/cache.h&gt;
 multiline_comment|/* entry.S is sensitive to the offsets of these fields */
