@@ -27474,6 +27474,10 @@ id|priority
 op_or_assign
 id|GFP_DMA
 suffix:semicolon
+id|priority
+op_or_assign
+id|__GFP_NOWARN
+suffix:semicolon
 multiline_comment|/* Try to allocate the first segment up to OS_DATA_SIZE and the others&n;&t;   big enough to reach the goal (code assumes no segments in place) */
 r_for
 c_loop
