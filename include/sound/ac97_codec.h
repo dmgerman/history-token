@@ -1384,6 +1384,19 @@ macro_line|#endif
 multiline_comment|/* quirk types */
 r_enum
 (brace
+DECL|enumerator|AC97_TUNE_DEFAULT
+id|AC97_TUNE_DEFAULT
+op_assign
+op_minus
+l_int|1
+comma
+multiline_comment|/* use default from quirk list (not valid in list) */
+DECL|enumerator|AC97_TUNE_NONE
+id|AC97_TUNE_NONE
+op_assign
+l_int|0
+comma
+multiline_comment|/* nothing extra to do */
 DECL|enumerator|AC97_TUNE_HP_ONLY
 id|AC97_TUNE_HP_ONLY
 comma
@@ -1449,6 +1462,9 @@ r_struct
 id|ac97_quirk
 op_star
 id|quirk
+comma
+r_int
+id|override
 )paren
 suffix:semicolon
 r_int

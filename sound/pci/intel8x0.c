@@ -124,6 +124,30 @@ op_assign
 l_int|0
 )brace
 suffix:semicolon
+DECL|variable|ac97_quirk
+r_static
+r_int
+id|ac97_quirk
+(braket
+id|SNDRV_CARDS
+)braket
+op_assign
+(brace
+(braket
+l_int|0
+dot
+dot
+dot
+(paren
+id|SNDRV_CARDS
+op_minus
+l_int|1
+)paren
+)braket
+op_assign
+id|AC97_TUNE_DEFAULT
+)brace
+suffix:semicolon
 macro_line|#ifdef SUPPORT_JOYSTICK
 DECL|variable|joystick
 r_static
@@ -264,6 +288,37 @@ id|ac97_clock
 comma
 id|SNDRV_ENABLED
 l_string|&quot;,default:0&quot;
+)paren
+suffix:semicolon
+id|MODULE_PARM
+c_func
+(paren
+id|ac97_quirk
+comma
+l_string|&quot;1-&quot;
+id|__MODULE_STRING
+c_func
+(paren
+id|SNDRV_CARDS
+)paren
+l_string|&quot;i&quot;
+)paren
+suffix:semicolon
+id|MODULE_PARM_DESC
+c_func
+(paren
+id|ac97_quirk
+comma
+l_string|&quot;AC&squot;97 workaround for strange hardware.&quot;
+)paren
+suffix:semicolon
+id|MODULE_PARM_SYNTAX
+c_func
+(paren
+id|ac97_quirk
+comma
+id|SNDRV_ENABLED
+l_string|&quot;,default:-1&quot;
 )paren
 suffix:semicolon
 macro_line|#ifdef SUPPORT_JOYSTICK
@@ -8087,6 +8142,9 @@ id|chip
 comma
 r_int
 id|ac97_clock
+comma
+r_int
+id|ac97_quirk
 )paren
 (brace
 id|ac97_bus_t
@@ -8589,6 +8647,8 @@ l_int|0
 )braket
 comma
 id|ac97_quirks
+comma
+id|ac97_quirk
 )paren
 suffix:semicolon
 multiline_comment|/* enable separate SDINs for ICH4 */
@@ -13080,6 +13140,11 @@ id|ac97_clock
 (braket
 id|dev
 )braket
+comma
+id|ac97_quirk
+(braket
+id|dev
+)braket
 )paren
 )paren
 OL
@@ -14015,7 +14080,7 @@ c_func
 id|alsa_card_intel8x0_exit
 )paren
 macro_line|#ifndef MODULE
-multiline_comment|/* format is: snd-intel8x0=enable,index,id,ac97_clock,mpu_port,joystick */
+multiline_comment|/* format is: snd-intel8x0=enable,index,id,ac97_clock,ac97_quirk,mpu_port,joystick */
 DECL|function|alsa_card_intel8x0_setup
 r_static
 r_int
@@ -14102,6 +14167,20 @@ id|str
 comma
 op_amp
 id|ac97_clock
+(braket
+id|nr_dev
+)braket
+)paren
+op_eq
+l_int|2
+id|get_option
+c_func
+(paren
+op_amp
+id|str
+comma
+op_amp
+id|ac97_quirk
 (braket
 id|nr_dev
 )braket
