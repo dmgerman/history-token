@@ -82,6 +82,16 @@ op_assign
 id|ext2_sync_file
 comma
 dot
+id|readv
+op_assign
+id|generic_file_readv
+comma
+dot
+id|writev
+op_assign
+id|generic_file_writev
+comma
+dot
 id|sendfile
 op_assign
 id|generic_file_sendfile
