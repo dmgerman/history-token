@@ -2633,12 +2633,26 @@ dot
 id|length
 suffix:semicolon
 r_else
+(brace
+multiline_comment|/* short reads are always OK for ISO */
+r_if
+c_cond
+(paren
+id|cc
+op_eq
+id|TD_DATAUNDERRUN
+)paren
+id|cc
+op_assign
+id|TD_CC_NOERROR
+suffix:semicolon
 id|dlen
 op_assign
 id|tdPSW
 op_amp
 l_int|0x3ff
 suffix:semicolon
+)brace
 id|urb-&gt;actual_length
 op_add_assign
 id|dlen
