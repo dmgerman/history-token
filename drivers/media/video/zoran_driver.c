@@ -7,6 +7,7 @@ macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/vmalloc.h&gt;
+macro_line|#include &lt;linux/wait.h&gt;
 macro_line|#include &lt;linux/byteorder/generic.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/i2c.h&gt;
@@ -3202,8 +3203,15 @@ id|EPROTO
 suffix:semicolon
 )brace
 multiline_comment|/* wait on this buffer to get ready */
-r_while
-c_loop
+r_if
+c_cond
+(paren
+op_logical_neg
+id|wait_event_interruptible_timeout
+c_func
+(paren
+id|zr-&gt;v4l_capq
+comma
 (paren
 id|zr-&gt;v4l_buffers.buffer
 (braket
@@ -3211,19 +3219,9 @@ id|frame
 )braket
 dot
 id|state
-op_eq
+op_ne
 id|BUZ_STATE_PEND
 )paren
-(brace
-r_if
-c_cond
-(paren
-op_logical_neg
-id|interruptible_sleep_on_timeout
-c_func
-(paren
-op_amp
-id|zr-&gt;v4l_capq
 comma
 l_int|10
 op_star
@@ -3234,7 +3232,6 @@ r_return
 op_minus
 id|ETIME
 suffix:semicolon
-r_else
 r_if
 c_cond
 (paren
@@ -3248,7 +3245,6 @@ r_return
 op_minus
 id|ERESTARTSYS
 suffix:semicolon
-)brace
 multiline_comment|/* buffer should now be in BUZ_STATE_DONE */
 r_if
 c_cond
@@ -3931,8 +3927,6 @@ id|flags
 suffix:semicolon
 r_int
 id|frame
-comma
-id|timeout
 suffix:semicolon
 r_if
 c_cond
@@ -3994,41 +3988,29 @@ op_minus
 id|EINVAL
 suffix:semicolon
 )brace
-r_while
-c_loop
-(paren
-id|zr-&gt;jpg_que_tail
-op_eq
-id|zr-&gt;jpg_dma_tail
-)paren
-(brace
 r_if
 c_cond
 (paren
+op_logical_neg
+id|wait_event_interruptible_timeout
+c_func
+(paren
+id|zr-&gt;jpg_capq
+comma
+(paren
+id|zr-&gt;jpg_que_tail
+op_ne
+id|zr-&gt;jpg_dma_tail
+op_logical_or
 id|zr-&gt;jpg_dma_tail
 op_eq
 id|zr-&gt;jpg_dma_head
 )paren
-r_break
-suffix:semicolon
-id|timeout
-op_assign
-id|interruptible_sleep_on_timeout
-c_func
-(paren
-op_amp
-id|zr-&gt;jpg_capq
 comma
 l_int|10
 op_star
 id|HZ
 )paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|timeout
 )paren
 (brace
 r_int
@@ -4089,7 +4071,6 @@ op_minus
 id|ETIME
 suffix:semicolon
 )brace
-r_else
 r_if
 c_cond
 (paren
@@ -4103,7 +4084,6 @@ r_return
 op_minus
 id|ERESTARTSYS
 suffix:semicolon
-)brace
 id|spin_lock_irqsave
 c_func
 (paren
