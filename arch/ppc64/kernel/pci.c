@@ -133,6 +133,13 @@ op_assign
 op_amp
 id|hose_head
 suffix:semicolon
+DECL|variable|iSeries_Global_Device_List
+id|LIST_HEAD
+c_func
+(paren
+id|iSeries_Global_Device_List
+)paren
+suffix:semicolon
 multiline_comment|/*******************************************************************&n; * Counters and control flags. &n; *******************************************************************/
 DECL|variable|Pci_Io_Read_Count
 r_int

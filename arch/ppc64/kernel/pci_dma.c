@@ -17,7 +17,9 @@ macro_line|#include &lt;asm/pci-bridge.h&gt;
 macro_line|#include &lt;asm/iSeries/iSeries_pci.h&gt;
 macro_line|#include &lt;asm/machdep.h&gt;
 macro_line|#include &quot;pci.h&quot;
-singleline_comment|// #define DEBUG_TCE 1
+multiline_comment|/* #define DEBUG_TCE 1   */
+multiline_comment|/* #define MONITOR_TCE 1 */
+multiline_comment|/* Turn on to sanity check TCE generation. */
 multiline_comment|/* Initialize so this guy does not end up in the BSS section.&n; * Only used to pass OF initialization data set in prom.c into the main &n; * kernel code -- data ultimately copied into tceTables[].&n; */
 r_extern
 r_struct
@@ -39,6 +41,11 @@ op_star
 op_star
 id|hose_tail
 suffix:semicolon
+r_extern
+r_struct
+id|list_head
+id|iSeries_Global_Device_List
+suffix:semicolon
 DECL|variable|virtBusVethTceTable
 r_struct
 id|TceTable
@@ -53,11 +60,15 @@ suffix:semicolon
 multiline_comment|/* Tce table for virtual I/O */
 DECL|variable|iSeries_veth_dev_node
 r_struct
-id|device_node
+id|iSeries_Device_Node
 id|iSeries_veth_dev_node
 op_assign
 (brace
-id|tce_table
+id|LogicalSlot
+suffix:colon
+l_int|0xFF
+comma
+id|DevTceTable
 suffix:colon
 op_amp
 id|virtBusVethTceTable
@@ -65,11 +76,15 @@ id|virtBusVethTceTable
 suffix:semicolon
 DECL|variable|iSeries_vio_dev_node
 r_struct
-id|device_node
+id|iSeries_Device_Node
 id|iSeries_vio_dev_node
 op_assign
 (brace
-id|tce_table
+id|LogicalSlot
+suffix:colon
+l_int|0xFF
+comma
+id|DevTceTable
 suffix:colon
 op_amp
 id|virtBusVioTceTable
@@ -117,15 +132,8 @@ op_assign
 op_amp
 id|iSeries_vio_dev_st
 suffix:semicolon
-DECL|variable|tceTables
-r_struct
-id|TceTable
-op_star
-id|tceTables
-(braket
-l_int|256
-)braket
-suffix:semicolon
+multiline_comment|/* Device TceTable is stored in Device Node */
+multiline_comment|/* struct TceTable * tceTables[256]; */
 multiline_comment|/* Tce tables for 256 busses&n;&t;&t;&t;&t;&t; * Bus 255 is the virtual bus&n;&t;&t;&t;&t;&t; * zero indicates no bus defined&n;&t;&t;&t;&t;&t; */
 multiline_comment|/* allocates a contiguous range of tces (power-of-2 size) */
 r_static
@@ -294,6 +302,22 @@ id|direction
 suffix:semicolon
 r_static
 r_void
+id|getTceTableParmsiSeries
+c_func
+(paren
+r_struct
+id|iSeries_Device_Node
+op_star
+id|DevNode
+comma
+r_struct
+id|TceTable
+op_star
+id|tce_table_parms
+)paren
+suffix:semicolon
+r_static
+r_void
 id|getTceTableParmsPSeries
 c_func
 (paren
@@ -328,6 +352,19 @@ id|device_node
 op_star
 id|dn
 comma
+r_struct
+id|TceTable
+op_star
+id|newTceTable
+)paren
+suffix:semicolon
+r_static
+r_struct
+id|TceTable
+op_star
+id|findHwTceTable
+c_func
+(paren
 r_struct
 id|TceTable
 op_star
@@ -395,24 +432,23 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-(paren
 id|naca-&gt;platform
 op_eq
 id|PLATFORM_ISERIES_LPAR
 )paren
-op_logical_and
-(paren
-id|dev-&gt;bus
-)paren
-)paren
+(brace
 r_return
-id|tceTables
-(braket
-id|dev-&gt;bus-&gt;number
-)braket
+id|ISERIES_DEVNODE
+c_func
+(paren
+id|dev
+)paren
+op_member_access_from_pointer
+id|DevTceTable
 suffix:semicolon
-multiline_comment|/* On the iSeries, the virtual bus will take this path.  There is a */
-multiline_comment|/* fake pci_dev and dev_node built and used.                        */
+)brace
+r_else
+(brace
 r_return
 id|PCI_GET_DN
 c_func
@@ -422,6 +458,7 @@ id|dev
 op_member_access_from_pointer
 id|tce_table
 suffix:semicolon
+)brace
 )brace
 DECL|function|count_leading_zeros64
 r_static
@@ -602,23 +639,14 @@ c_cond
 id|setTceRc
 )paren
 (brace
-id|printk
+id|panic
 c_func
 (paren
-l_string|&quot;PCI: tce_build failed 0x%lx tcenum: 0x%lx&bslash;n&quot;
+l_string|&quot;PCI_DMA: HvCallXm_setTce failed, Rc: 0x%lx&bslash;n&quot;
 comma
 id|setTceRc
-comma
-(paren
-id|u64
-)paren
-id|tcenum
 )paren
 suffix:semicolon
-singleline_comment|//PPCDBG(PPCDBG_TCE, &quot;setTce failed. rc=%ld&bslash;n&quot;, setTceRc);
-singleline_comment|//PPCDBG(PPCDBG_TCE, &quot;&bslash;tindex   = 0x%lx&bslash;n&quot;, (u64)tbl-&gt;index);
-singleline_comment|//PPCDBG(PPCDBG_TCE, &quot;&bslash;ttce num = 0x%lx&bslash;n&quot;, (u64)tcenum);
-singleline_comment|//PPCDBG(PPCDBG_TCE, &quot;&bslash;ttce val = 0x%lx&bslash;n&quot;, tce.wholeTce );
 )brace
 )brace
 DECL|function|tce_build_pSeries
@@ -729,17 +757,6 @@ r_union
 id|Tce
 )paren
 id|tce.wholeTce
-suffix:semicolon
-multiline_comment|/* Make sure the update is visible to hardware. */
-id|__asm__
-id|__volatile__
-(paren
-l_string|&quot;sync&quot;
-suffix:colon
-suffix:colon
-suffix:colon
-l_string|&quot;memory&quot;
-)paren
 suffix:semicolon
 )brace
 multiline_comment|/* &n; * Build a TceTable structure.  This contains a multi-level bit map which&n; * is used to manage allocation of the tce space.&n; */
@@ -933,12 +950,19 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-op_logical_neg
 id|pos
-)paren
-r_return
+op_eq
 l_int|NULL
+)paren
+(brace
+id|panic
+c_func
+(paren
+l_string|&quot;PCI_DMA: Allocation failed in build_tce_table!&bslash;n&quot;
+)paren
 suffix:semicolon
+)brace
+multiline_comment|/* For each level, fill in the pointer to the bit map,&n;&t; * and turn on the last bit in the bit map (if the&n;&t; * number of bits in the map is odd).  The highest&n;&t; * level will get all of its bits turned on.&n;&t; */
 id|memset
 c_func
 (paren
@@ -949,7 +973,6 @@ comma
 id|totalBytes
 )paren
 suffix:semicolon
-multiline_comment|/* For each level, fill in the pointer to the bit map,&n;&t; * and turn on the last bit in the bit map (if the&n;&t; * number of bits in the map is odd).  The highest&n;&t; * level will get all of its bits turned on.&n;&t; */
 r_for
 c_loop
 (paren
@@ -1318,19 +1341,15 @@ op_ge
 id|NUM_TCE_LEVELS
 )paren
 (brace
-id|PPCDBG
+multiline_comment|/* This can happen if block of TCE&squot;s are not found. This code      */
+multiline_comment|/*  maybe in a recursive loop looking up the bit map for the range.*/
+id|panic
 c_func
 (paren
-id|PPCDBG_TCE
-comma
-l_string|&quot;alloc_tce_range_nolock: invalid order: %d&bslash;n&quot;
+l_string|&quot;PCI_DMA: alloc_tce_range_nolock: invalid order: %d&bslash;n&quot;
 comma
 id|order
 )paren
-suffix:semicolon
-r_return
-op_minus
-l_int|1
 suffix:semicolon
 )brace
 id|numBits
@@ -1415,6 +1434,7 @@ l_int|64
 op_plus
 id|bit
 suffix:semicolon
+multiline_comment|/* Bit count to free entry */
 multiline_comment|/* turn off the bit in the map to indicate&n;&t;&t;&t; * that the block is now in use&n;&t;&t;&t; */
 id|mask
 op_assign
@@ -1490,6 +1510,7 @@ id|order
 OL
 id|tbl-&gt;mlbm.maxLevel
 )paren
+(brace
 id|PPCDBG
 c_func
 (paren
@@ -1498,15 +1519,16 @@ comma
 l_string|&quot;alloc_tce_range_nolock: trying next bigger size&bslash;n&quot;
 )paren
 suffix:semicolon
+)brace
 r_else
-id|PPCDBG
+(brace
+id|panic
 c_func
 (paren
-id|PPCDBG_TCE
-comma
-l_string|&quot;alloc_tce_range_nolock: maximum size reached...failing&bslash;n&quot;
+l_string|&quot;PCI_DMA: alloc_tce_range_nolock: maximum size reached...failing&bslash;n&quot;
 )paren
 suffix:semicolon
+)brace
 )brace
 macro_line|#endif&t;
 multiline_comment|/* If no block of the requested size was found, try the next&n;&t; * size bigger.  If one of those is found, return the second&n;&t; * half of the block to freespace and keep the first half&n;&t; */
@@ -1680,16 +1702,12 @@ op_ge
 id|NUM_TCE_LEVELS
 )paren
 (brace
-id|PPCDBG
+id|panic
 c_func
 (paren
-id|PPCDBG_TCE
-comma
-l_string|&quot;free_tce_range: invalid order: %d, tcenum = %d&bslash;n&quot;
+l_string|&quot;PCI_DMA: free_tce_range: invalid order: 0x%x&bslash;n&quot;
 comma
 id|order
-comma
-id|tcenum
 )paren
 suffix:semicolon
 r_return
@@ -1701,7 +1719,7 @@ id|tcenum
 op_rshift
 id|order
 suffix:semicolon
-macro_line|#ifdef DEBUG_TCE
+macro_line|#ifdef MONITOR_TCE
 r_if
 c_cond
 (paren
@@ -1714,12 +1732,10 @@ id|order
 )paren
 )paren
 (brace
-id|PPCDBG
+id|printk
 c_func
 (paren
-id|PPCDBG_TCE
-comma
-l_string|&quot;free_tce_range: tcenum %lx misaligned for order %x&bslash;n&quot;
+l_string|&quot;PCI_DMA: Free_tce_range: tcenum %lx misaligned for order %x&bslash;n&quot;
 comma
 id|tcenum
 comma
@@ -1742,12 +1758,10 @@ dot
 id|numBits
 )paren
 (brace
-id|PPCDBG
+id|printk
 c_func
 (paren
-id|PPCDBG_TCE
-comma
-l_string|&quot;free_tce_range: tcenum %lx is outside the range of this map (order %x, numBits %lx&bslash;n&quot;
+l_string|&quot;PCI_DMA: Free_tce_range: tcenum %lx is outside the range of this map (order %x, numBits %lx&bslash;n&quot;
 comma
 id|tcenum
 comma
@@ -1778,20 +1792,10 @@ id|order
 )paren
 )paren
 (brace
-id|PPCDBG
+id|printk
 c_func
 (paren
-id|PPCDBG_TCE
-comma
-l_string|&quot;free_tce_range: freeing range not allocated.&bslash;n&quot;
-)paren
-suffix:semicolon
-id|PPCDBG
-c_func
-(paren
-id|PPCDBG_TCE
-comma
-l_string|&quot;&bslash;tTceTable %p, tcenum %lx, order %x&bslash;n&quot;
+l_string|&quot;PCI_DMA: Freeing range not allocated: tTceTable %p, tcenum %lx, order %x&bslash;n&quot;
 comma
 id|tbl
 comma
@@ -1799,6 +1803,8 @@ id|tcenum
 comma
 id|order
 )paren
+suffix:semicolon
+r_return
 suffix:semicolon
 )brace
 macro_line|#endif
@@ -1852,6 +1858,8 @@ comma
 id|order
 )paren
 suffix:semicolon
+macro_line|#endif&t;
+macro_line|#ifdef MONITOR_TCE
 r_if
 c_cond
 (paren
@@ -1860,12 +1868,11 @@ id|bytep
 op_amp
 id|mask
 )paren
-id|PPCDBG
+(brace
+id|panic
 c_func
 (paren
-id|PPCDBG_TCE
-comma
-l_string|&quot;free_tce_range: already free: TceTable %p, tcenum %lx, order %x&bslash;n&quot;
+l_string|&quot;PCI_DMA: Tce already free: TceTable %p, tcenum %lx, order %x&bslash;n&quot;
 comma
 id|tbl
 comma
@@ -1874,6 +1881,7 @@ comma
 id|order
 )paren
 suffix:semicolon
+)brace
 macro_line|#endif&t;
 op_star
 id|bytep
@@ -1884,6 +1892,12 @@ multiline_comment|/* If there is a higher level in the bit map than this we may 
 r_if
 c_cond
 (paren
+(paren
+id|order
+OL
+id|tbl-&gt;mlbm.maxLevel
+)paren
+op_logical_and
 (paren
 id|block
 OG
@@ -2312,24 +2326,37 @@ op_add_assign
 id|PAGE_SIZE
 suffix:semicolon
 )brace
-)brace
-r_else
-id|PPCDBG
-c_func
+multiline_comment|/* Make sure the update is visible to hardware. &n;&t;&t;   sync required to synchronize the update to &n;&t;&t;   the TCE table with the MMIO that will send&n;&t;&t;   the bus address to the IOA */
+id|__asm__
+id|__volatile__
 (paren
-id|PPCDBG_TCE
-comma
-l_string|&quot;alloc_tce_range failed&bslash;n&quot;
+l_string|&quot;sync&quot;
+suffix:colon
+suffix:colon
+suffix:colon
+l_string|&quot;memory&quot;
 )paren
 suffix:semicolon
+)brace
+r_else
+(brace
+id|panic
+c_func
+(paren
+l_string|&quot;PCI_DMA: Tce Allocation failure in get_tces. 0x%p&bslash;n&quot;
+comma
+id|tbl
+)paren
+suffix:semicolon
+)brace
 r_return
 id|retTce
 suffix:semicolon
 )brace
-DECL|function|tce_free_iSeries
+DECL|function|tce_free_one_iSeries
 r_static
 r_void
-id|tce_free_iSeries
+id|tce_free_one_iSeries
 c_func
 (paren
 r_struct
@@ -2337,187 +2364,22 @@ id|TceTable
 op_star
 id|tbl
 comma
-id|dma_addr_t
-id|dma_addr
-comma
 r_int
-id|order
-comma
-r_int
-id|numPages
+id|tcenum
 )paren
 (brace
 id|u64
-id|setTceRc
-suffix:semicolon
-r_int
-id|tcenum
-comma
-id|freeTce
-comma
-id|maxTcenum
-suffix:semicolon
-r_int
-id|i
+id|set_tce_rc
 suffix:semicolon
 r_union
 id|Tce
 id|tce
 suffix:semicolon
-id|maxTcenum
-op_assign
-(paren
-id|tbl-&gt;size
-op_star
-(paren
-id|PAGE_SIZE
-op_div
-r_sizeof
-(paren
-r_union
-id|Tce
-)paren
-)paren
-)paren
-op_minus
-l_int|1
-suffix:semicolon
-id|tcenum
-op_assign
-id|dma_addr
-op_rshift
-id|PAGE_SHIFT
-suffix:semicolon
-id|freeTce
-op_assign
-id|tcenum
-op_minus
-id|tbl-&gt;startOffset
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|freeTce
-OG
-id|maxTcenum
-)paren
-(brace
-id|PPCDBG
-c_func
-(paren
-id|PPCDBG_TCE
-comma
-l_string|&quot;free_tces: tcenum &gt; maxTcenum&bslash;n&quot;
-)paren
-suffix:semicolon
-id|PPCDBG
-c_func
-(paren
-id|PPCDBG_TCE
-comma
-l_string|&quot;&bslash;ttcenum    = 0x%lx&bslash;n&quot;
-comma
-id|tcenum
-)paren
-suffix:semicolon
-id|PPCDBG
-c_func
-(paren
-id|PPCDBG_TCE
-comma
-l_string|&quot;&bslash;tmaxTcenum = 0x%lx&bslash;n&quot;
-comma
-id|maxTcenum
-)paren
-suffix:semicolon
-id|PPCDBG
-c_func
-(paren
-id|PPCDBG_TCE
-comma
-l_string|&quot;&bslash;tTCE Table = 0x%lx&bslash;n&quot;
-comma
-(paren
-id|u64
-)paren
-id|tbl
-)paren
-suffix:semicolon
-id|PPCDBG
-c_func
-(paren
-id|PPCDBG_TCE
-comma
-l_string|&quot;&bslash;tbus#      = 0x%lx&bslash;n&quot;
-comma
-(paren
-id|u64
-)paren
-id|tbl-&gt;busNumber
-)paren
-suffix:semicolon
-id|PPCDBG
-c_func
-(paren
-id|PPCDBG_TCE
-comma
-l_string|&quot;&bslash;tsize      = 0x%lx&bslash;n&quot;
-comma
-(paren
-id|u64
-)paren
-id|tbl-&gt;size
-)paren
-suffix:semicolon
-id|PPCDBG
-c_func
-(paren
-id|PPCDBG_TCE
-comma
-l_string|&quot;&bslash;tstartOff  = 0x%lx&bslash;n&quot;
-comma
-(paren
-id|u64
-)paren
-id|tbl-&gt;startOffset
-)paren
-suffix:semicolon
-id|PPCDBG
-c_func
-(paren
-id|PPCDBG_TCE
-comma
-l_string|&quot;&bslash;tindex     = 0x%lx&bslash;n&quot;
-comma
-(paren
-id|u64
-)paren
-id|tbl-&gt;index
-)paren
-suffix:semicolon
-r_return
-suffix:semicolon
-)brace
-r_for
-c_loop
-(paren
-id|i
-op_assign
-l_int|0
-suffix:semicolon
-id|i
-OL
-id|numPages
-suffix:semicolon
-op_increment
-id|i
-)paren
-(brace
 id|tce.wholeTce
 op_assign
 l_int|0
 suffix:semicolon
-id|setTceRc
+id|set_tce_rc
 op_assign
 id|HvCallXm_setTce
 c_func
@@ -2538,47 +2400,21 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|setTceRc
+id|set_tce_rc
 )paren
-(brace
-id|printk
+id|panic
 c_func
 (paren
-l_string|&quot;PCI: tce_free failed 0x%lx tcenum: 0x%lx&bslash;n&quot;
+l_string|&quot;PCI_DMA: HvCallXm_setTce failed, Rc: 0x%lx&bslash;n&quot;
 comma
-id|setTceRc
-comma
-(paren
-id|u64
-)paren
-id|tcenum
-)paren
-suffix:semicolon
-singleline_comment|//PPCDBG(PPCDBG_TCE, &quot;tce_free: setTce failed&bslash;n&quot;);
-singleline_comment|//PPCDBG(PPCDBG_TCE, &quot;&bslash;trc      = 0x%lx&bslash;n&quot;, setTceRc);
-singleline_comment|//PPCDBG(PPCDBG_TCE, &quot;&bslash;tindex   = 0x%lx&bslash;n&quot;, (u64)tbl-&gt;index);
-singleline_comment|//PPCDBG(PPCDBG_TCE, &quot;&bslash;ttce num = 0x%lx&bslash;n&quot;, (u64)tcenum);
-singleline_comment|//PPCDBG(PPCDBG_TCE, &quot;&bslash;ttce val = 0x%lx&bslash;n&quot;, tce.wholeTce );
-)brace
-op_increment
-id|tcenum
-suffix:semicolon
-)brace
-id|free_tce_range
-c_func
-(paren
-id|tbl
-comma
-id|freeTce
-comma
-id|order
+id|set_tce_rc
 )paren
 suffix:semicolon
 )brace
-DECL|function|tce_free_pSeries
+DECL|function|tce_free_one_pSeries
 r_static
 r_void
-id|tce_free_pSeries
+id|tce_free_one_pSeries
 c_func
 (paren
 r_struct
@@ -2586,26 +2422,10 @@ id|TceTable
 op_star
 id|tbl
 comma
-id|dma_addr_t
-id|dma_addr
-comma
-r_int
-id|order
-comma
-r_int
-id|numPages
-)paren
-(brace
 r_int
 id|tcenum
-comma
-id|freeTce
-comma
-id|maxTcenum
-suffix:semicolon
-r_int
-id|i
-suffix:semicolon
+)paren
+(brace
 r_union
 id|Tce
 id|tce
@@ -2615,156 +2435,6 @@ id|Tce
 op_star
 id|tce_addr
 suffix:semicolon
-id|maxTcenum
-op_assign
-(paren
-id|tbl-&gt;size
-op_star
-(paren
-id|PAGE_SIZE
-op_div
-r_sizeof
-(paren
-r_union
-id|Tce
-)paren
-)paren
-)paren
-op_minus
-l_int|1
-suffix:semicolon
-id|tcenum
-op_assign
-id|dma_addr
-op_rshift
-id|PAGE_SHIFT
-suffix:semicolon
-singleline_comment|// tcenum -= tbl-&gt;startOffset;
-id|freeTce
-op_assign
-id|tcenum
-op_minus
-id|tbl-&gt;startOffset
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|freeTce
-OG
-id|maxTcenum
-)paren
-(brace
-id|PPCDBG
-c_func
-(paren
-id|PPCDBG_TCE
-comma
-l_string|&quot;free_tces: tcenum &gt; maxTcenum&bslash;n&quot;
-)paren
-suffix:semicolon
-id|PPCDBG
-c_func
-(paren
-id|PPCDBG_TCE
-comma
-l_string|&quot;&bslash;ttcenum    = 0x%lx&bslash;n&quot;
-comma
-id|tcenum
-)paren
-suffix:semicolon
-id|PPCDBG
-c_func
-(paren
-id|PPCDBG_TCE
-comma
-l_string|&quot;&bslash;tmaxTcenum = 0x%lx&bslash;n&quot;
-comma
-id|maxTcenum
-)paren
-suffix:semicolon
-id|PPCDBG
-c_func
-(paren
-id|PPCDBG_TCE
-comma
-l_string|&quot;&bslash;tTCE Table = 0x%lx&bslash;n&quot;
-comma
-(paren
-id|u64
-)paren
-id|tbl
-)paren
-suffix:semicolon
-id|PPCDBG
-c_func
-(paren
-id|PPCDBG_TCE
-comma
-l_string|&quot;&bslash;tbus#      = 0x%lx&bslash;n&quot;
-comma
-(paren
-id|u64
-)paren
-id|tbl-&gt;busNumber
-)paren
-suffix:semicolon
-id|PPCDBG
-c_func
-(paren
-id|PPCDBG_TCE
-comma
-l_string|&quot;&bslash;tsize      = 0x%lx&bslash;n&quot;
-comma
-(paren
-id|u64
-)paren
-id|tbl-&gt;size
-)paren
-suffix:semicolon
-id|PPCDBG
-c_func
-(paren
-id|PPCDBG_TCE
-comma
-l_string|&quot;&bslash;tstartOff  = 0x%lx&bslash;n&quot;
-comma
-(paren
-id|u64
-)paren
-id|tbl-&gt;startOffset
-)paren
-suffix:semicolon
-id|PPCDBG
-c_func
-(paren
-id|PPCDBG_TCE
-comma
-l_string|&quot;&bslash;tindex     = 0x%lx&bslash;n&quot;
-comma
-(paren
-id|u64
-)paren
-id|tbl-&gt;index
-)paren
-suffix:semicolon
-r_return
-suffix:semicolon
-)brace
-r_for
-c_loop
-(paren
-id|i
-op_assign
-l_int|0
-suffix:semicolon
-id|i
-OL
-id|numPages
-suffix:semicolon
-op_increment
-id|i
-)paren
-(brace
 id|tce.wholeTce
 op_assign
 l_int|0
@@ -2791,27 +2461,194 @@ id|Tce
 )paren
 id|tce.wholeTce
 suffix:semicolon
+)brace
+DECL|function|tce_free
+r_static
+r_void
+id|tce_free
+c_func
+(paren
+r_struct
+id|TceTable
+op_star
+id|tbl
+comma
+id|dma_addr_t
+id|dma_addr
+comma
+r_int
+id|order
+comma
+r_int
+id|num_pages
+)paren
+(brace
+r_int
+id|tcenum
+comma
+id|total_tces
+comma
+id|free_tce
+suffix:semicolon
+r_int
+id|i
+suffix:semicolon
+id|total_tces
+op_assign
+(paren
+id|tbl-&gt;size
+op_star
+(paren
+id|PAGE_SIZE
+op_div
+r_sizeof
+(paren
+r_union
+id|Tce
+)paren
+)paren
+)paren
+suffix:semicolon
+id|tcenum
+op_assign
+id|dma_addr
+op_rshift
+id|PAGE_SHIFT
+suffix:semicolon
+id|free_tce
+op_assign
+id|tcenum
+op_minus
+id|tbl-&gt;startOffset
+suffix:semicolon
+r_if
+c_cond
+(paren
+(paren
+(paren
+id|free_tce
+op_plus
+id|num_pages
+)paren
+OG
+id|total_tces
+)paren
+op_logical_or
+(paren
+id|tcenum
+OL
+id|tbl-&gt;startOffset
+)paren
+)paren
+(brace
+id|printk
+c_func
+(paren
+l_string|&quot;tce_free: invalid tcenum&bslash;n&quot;
+)paren
+suffix:semicolon
+id|printk
+c_func
+(paren
+l_string|&quot;&bslash;ttcenum    = 0x%lx&bslash;n&quot;
+comma
+id|tcenum
+)paren
+suffix:semicolon
+id|printk
+c_func
+(paren
+l_string|&quot;&bslash;tTCE Table = 0x%lx&bslash;n&quot;
+comma
+(paren
+id|u64
+)paren
+id|tbl
+)paren
+suffix:semicolon
+id|printk
+c_func
+(paren
+l_string|&quot;&bslash;tbus#      = 0x%lx&bslash;n&quot;
+comma
+(paren
+id|u64
+)paren
+id|tbl-&gt;busNumber
+)paren
+suffix:semicolon
+id|printk
+c_func
+(paren
+l_string|&quot;&bslash;tsize      = 0x%lx&bslash;n&quot;
+comma
+(paren
+id|u64
+)paren
+id|tbl-&gt;size
+)paren
+suffix:semicolon
+id|printk
+c_func
+(paren
+l_string|&quot;&bslash;tstartOff  = 0x%lx&bslash;n&quot;
+comma
+(paren
+id|u64
+)paren
+id|tbl-&gt;startOffset
+)paren
+suffix:semicolon
+id|printk
+c_func
+(paren
+l_string|&quot;&bslash;tindex     = 0x%lx&bslash;n&quot;
+comma
+(paren
+id|u64
+)paren
+id|tbl-&gt;index
+)paren
+suffix:semicolon
+r_return
+suffix:semicolon
+)brace
+r_for
+c_loop
+(paren
+id|i
+op_assign
+l_int|0
+suffix:semicolon
+id|i
+OL
+id|num_pages
+suffix:semicolon
+op_increment
+id|i
+)paren
+(brace
+id|ppc_md
+dot
+id|tce_free_one
+c_func
+(paren
+id|tbl
+comma
+id|tcenum
+)paren
+suffix:semicolon
 op_increment
 id|tcenum
 suffix:semicolon
 )brace
-multiline_comment|/* Make sure the update is visible to hardware. */
-id|__asm__
-id|__volatile__
-(paren
-l_string|&quot;sync&quot;
-suffix:colon
-suffix:colon
-suffix:colon
-l_string|&quot;memory&quot;
-)paren
-suffix:semicolon
+multiline_comment|/* No sync (to make TCE change visible) is required here.&n;&t;   The lwsync when acquiring the lock in free_tce_range&n;&t;   is sufficient to synchronize with the bitmap.&n;&t;*/
 id|free_tce_range
 c_func
 (paren
 id|tbl
 comma
-id|freeTce
+id|free_tce
 comma
 id|order
 )paren
@@ -2937,13 +2774,8 @@ c_cond
 id|t
 )paren
 (brace
-id|tceTables
-(braket
-l_int|255
-)braket
-op_assign
-id|t
-suffix:semicolon
+multiline_comment|/* tceTables[255] = t; */
+singleline_comment|//VirtBusVethTceTable = t;
 id|printk
 c_func
 (paren
@@ -3018,6 +2850,7 @@ c_cond
 id|t
 )paren
 (brace
+singleline_comment|//VirtBusVioTceTable = t;
 id|printk
 c_func
 (paren
@@ -3384,6 +3217,7 @@ id|naca-&gt;platform
 op_eq
 id|PLATFORM_PSERIES_LPAR
 )paren
+(brace
 id|create_tce_tables_for_busesLP
 c_func
 (paren
@@ -3391,7 +3225,9 @@ op_amp
 id|pci_root_buses
 )paren
 suffix:semicolon
+)brace
 r_else
+(brace
 id|create_tce_tables_for_buses
 c_func
 (paren
@@ -3399,6 +3235,7 @@ op_amp
 id|pci_root_buses
 )paren
 suffix:semicolon
+)brace
 multiline_comment|/* Now copy the tce_table ptr from the bus devices down to every&n;&t; * pci device_node.  This means get_tce_table() won&squot;t need to search&n;&t; * up the device tree to find it.&n;&t; */
 id|pci_for_each_dev
 c_func
@@ -3442,7 +3279,7 @@ suffix:semicolon
 )brace
 )brace
 )brace
-multiline_comment|/*&n; * iSeries token = busNumber &n; * pSeries token = pci_controller*&n; */
+multiline_comment|/*&n; * iSeries token = iSeries_device_Node*&n; * pSeries token = pci_controller*&n; *&n; */
 DECL|function|create_pci_bus_tce_table
 r_void
 id|create_pci_bus_tce_table
@@ -3456,19 +3293,7 @@ id|token
 r_struct
 id|TceTable
 op_star
-id|builtTceTable
-suffix:semicolon
-r_struct
-id|TceTable
-op_star
 id|newTceTable
-suffix:semicolon
-r_struct
-id|TceTableManagerCB
-id|pciBusTceTableParms
-suffix:semicolon
-id|u64
-id|parmsPtr
 suffix:semicolon
 id|PPCDBG
 c_func
@@ -3490,6 +3315,11 @@ id|token
 suffix:semicolon
 id|newTceTable
 op_assign
+(paren
+r_struct
+id|TceTable
+op_star
+)paren
 id|kmalloc
 c_func
 (paren
@@ -3502,6 +3332,13 @@ comma
 id|GFP_KERNEL
 )paren
 suffix:semicolon
+multiline_comment|/*****************************************************************/
+multiline_comment|/* For the iSeries machines, the HvTce Table can be one of three */
+multiline_comment|/* flavors,                                                      */
+multiline_comment|/* - Single bus TCE table,                                       */
+multiline_comment|/* - Tce Table Share between buses,                              */
+multiline_comment|/* - Tce Table per logical slot.                                 */
+multiline_comment|/*****************************************************************/
 r_if
 c_cond
 (paren
@@ -3510,175 +3347,44 @@ op_eq
 id|PLATFORM_ISERIES_LPAR
 )paren
 (brace
-r_if
-c_cond
-(paren
-id|token
-OG
-l_int|254
-)paren
-(brace
-id|printk
-c_func
-(paren
-l_string|&quot;PCI: Bus TCE table failed, invalid bus number %lu&bslash;n&quot;
-comma
-id|token
-)paren
-suffix:semicolon
-r_return
-suffix:semicolon
-)brace
-id|pciBusTceTableParms.busNumber
-op_assign
-id|token
-suffix:semicolon
-id|pciBusTceTableParms.virtualBusFlag
-op_assign
-l_int|0
-suffix:semicolon
-id|parmsPtr
-op_assign
-id|virt_to_absolute
-c_func
-(paren
-(paren
-id|u64
-)paren
-op_amp
-id|pciBusTceTableParms
-)paren
-suffix:semicolon
-multiline_comment|/* &n;&t;&t; * Call HV with the architected data structure to get TCE table&n;&t;&t; * info. Put the returned data into the Linux representation&n;&t;&t; * of the TCE table data.&n;&t;&t; */
-id|HvCallXm_getTceTableParms
-c_func
-(paren
-id|parmsPtr
-)paren
-suffix:semicolon
-id|printk
-c_func
-(paren
-l_string|&quot;PCI: getTceTableParms: Bus: 0x%lx Size: 0x%lx, Start: 0x%lx, Index: 0x%lx&bslash;n&quot;
-comma
-id|pciBusTceTableParms.busNumber
-comma
-id|pciBusTceTableParms.size
-comma
-id|pciBusTceTableParms.startOffset
-comma
-id|pciBusTceTableParms.index
-)paren
-suffix:semicolon
-multiline_comment|/* Determine if the table identified by the index and startOffset      */
-multiline_comment|/* returned by the hypervisor for this bus has already been created.   */
-multiline_comment|/* If so, set the tceTable entry to point to the linux shared tceTable.*/
-r_int
-id|BusIndex
-suffix:semicolon
-r_for
-c_loop
-(paren
-id|BusIndex
-op_assign
-l_int|0
-suffix:semicolon
-id|BusIndex
-OL
-l_int|255
-suffix:semicolon
-op_increment
-id|BusIndex
-)paren
-(brace
-r_if
-c_cond
-(paren
-id|tceTables
-(braket
-id|BusIndex
-)braket
-op_ne
-l_int|NULL
-)paren
-(brace
 r_struct
-id|TceTable
+id|iSeries_Device_Node
 op_star
-id|CmprTceTable
+id|DevNode
 op_assign
-id|tceTables
-(braket
-id|BusIndex
-)braket
-suffix:semicolon
-r_if
-c_cond
 (paren
-(paren
-id|CmprTceTable-&gt;index
-op_eq
-id|pciBusTceTableParms.index
+r_struct
+id|iSeries_Device_Node
+op_star
 )paren
-op_logical_and
-(paren
-id|CmprTceTable-&gt;startOffset
-op_eq
-id|pciBusTceTableParms.startOffset
-)paren
-)paren
-(brace
-id|tceTables
-(braket
 id|token
-)braket
-op_assign
-id|CmprTceTable
 suffix:semicolon
-id|printk
+id|getTceTableParmsiSeries
 c_func
 (paren
-l_string|&quot;PCI: Bus %lu Shares a TCE table with bus %d&bslash;n&quot;
+id|DevNode
 comma
-id|token
-comma
-id|BusIndex
+id|newTceTable
 )paren
 suffix:semicolon
-r_break
+multiline_comment|/* Look for existing TCE table for this device.          */
+id|DevNode-&gt;DevTceTable
+op_assign
+id|findHwTceTable
+c_func
+(paren
+id|newTceTable
+)paren
 suffix:semicolon
-)brace
-)brace
-)brace
-multiline_comment|/* No shared table, build a new table for this bus. */
 r_if
 c_cond
 (paren
-id|tceTables
-(braket
-id|token
-)braket
+id|DevNode-&gt;DevTceTable
 op_eq
 l_int|NULL
 )paren
 (brace
-id|newTceTable-&gt;size
-op_assign
-id|pciBusTceTableParms.size
-suffix:semicolon
-id|newTceTable-&gt;busNumber
-op_assign
-id|pciBusTceTableParms.busNumber
-suffix:semicolon
-id|newTceTable-&gt;startOffset
-op_assign
-id|pciBusTceTableParms.startOffset
-suffix:semicolon
-id|newTceTable-&gt;index
-op_assign
-id|pciBusTceTableParms.index
-suffix:semicolon
-id|builtTceTable
+id|DevNode-&gt;DevTceTable
 op_assign
 id|build_tce_table
 c_func
@@ -3686,21 +3392,10 @@ c_func
 id|newTceTable
 )paren
 suffix:semicolon
-id|builtTceTable-&gt;tceType
-op_assign
-id|TCE_PCI
-suffix:semicolon
-id|tceTables
-(braket
-id|token
-)braket
-op_assign
-id|builtTceTable
-suffix:semicolon
 )brace
 r_else
 (brace
-multiline_comment|/* We&squot;re using the shared table, not this new one. */
+multiline_comment|/* We&squot;re using a shared table, free this new one.    */
 id|kfree
 c_func
 (paren
@@ -3711,19 +3406,17 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;PCI: Pci bus %lu TceTable: %p&bslash;n&quot;
+l_string|&quot;Pci Device 0x%p TceTable: %p&bslash;n&quot;
 comma
-id|token
+id|DevNode
 comma
-id|tceTables
-(braket
-id|token
-)braket
+id|DevNode-&gt;DevTceTable
 )paren
 suffix:semicolon
 r_return
 suffix:semicolon
 )brace
+multiline_comment|/* pSeries Leg */
 r_else
 (brace
 r_struct
@@ -3777,7 +3470,7 @@ comma
 id|newTceTable
 )paren
 suffix:semicolon
-id|builtTceTable
+id|dn-&gt;tce_table
 op_assign
 id|build_tce_table
 c_func
@@ -3785,36 +3478,297 @@ c_func
 id|newTceTable
 )paren
 suffix:semicolon
-id|dn-&gt;tce_table
-op_assign
-id|builtTceTable
-suffix:semicolon
 )brace
+)brace
+multiline_comment|/***********************************************************************/
+multiline_comment|/* This function compares the known Tce tables to find a TceTable that */
+multiline_comment|/* has already been built for hardware TCEs.                           */
+multiline_comment|/* Search the complete(all devices) for a TCE table assigned.  If the  */
+multiline_comment|/* startOffset, index, and size match, then the TCE for this device has*/
+multiline_comment|/* already been built and it should be shared with this device         */
+multiline_comment|/***********************************************************************/
+DECL|function|findHwTceTable
+r_static
+r_struct
+id|TceTable
+op_star
+id|findHwTceTable
+c_func
+(paren
+r_struct
+id|TceTable
+op_star
+id|newTceTable
+)paren
+(brace
+r_struct
+id|list_head
+op_star
+id|Device_Node_Ptr
+op_assign
+id|iSeries_Global_Device_List.next
+suffix:semicolon
+multiline_comment|/* Cache the compare values. */
+id|u64
+id|startOffset
+op_assign
+id|newTceTable-&gt;startOffset
+suffix:semicolon
+id|u64
+id|index
+op_assign
+id|newTceTable-&gt;index
+suffix:semicolon
+id|u64
+id|size
+op_assign
+id|newTceTable-&gt;size
+suffix:semicolon
+r_while
+c_loop
+(paren
+id|Device_Node_Ptr
+op_ne
+op_amp
+id|iSeries_Global_Device_List
+)paren
+(brace
+r_struct
+id|iSeries_Device_Node
+op_star
+id|CmprNode
+op_assign
+(paren
+r_struct
+id|iSeries_Device_Node
+op_star
+)paren
+id|Device_Node_Ptr
+suffix:semicolon
 r_if
 c_cond
 (paren
-id|builtTceTable
+id|CmprNode-&gt;DevTceTable
+op_ne
+l_int|NULL
+op_logical_and
+id|CmprNode-&gt;DevTceTable-&gt;tceType
+op_eq
+id|TCE_PCI
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|CmprNode-&gt;DevTceTable-&gt;startOffset
+op_eq
+id|startOffset
+op_logical_and
+id|CmprNode-&gt;DevTceTable-&gt;index
+op_eq
+id|index
+op_logical_and
+id|CmprNode-&gt;DevTceTable-&gt;size
+op_eq
+id|size
+)paren
+(brace
+id|printk
+c_func
+(paren
+l_string|&quot;PCI TCE table matches 0x%p &bslash;n&quot;
+comma
+id|CmprNode-&gt;DevTceTable
+)paren
+suffix:semicolon
+r_return
+id|CmprNode-&gt;DevTceTable
+suffix:semicolon
+)brace
+)brace
+multiline_comment|/* Get next Device Node in List             */
+id|Device_Node_Ptr
+op_assign
+id|Device_Node_Ptr-&gt;next
+suffix:semicolon
+)brace
+r_return
+l_int|NULL
+suffix:semicolon
+)brace
+multiline_comment|/***********************************************************************/
+multiline_comment|/* Call Hv with the architected data structure to get TCE table info.  */
+multiline_comment|/* info. Put the returned data into the Linux representation of the    */
+multiline_comment|/* TCE table data.                                                     */
+multiline_comment|/* The Hardware Tce table comes in three flavors.                      */
+multiline_comment|/* 1. TCE table shared between Buses.                                  */
+multiline_comment|/* 2. TCE table per Bus.                                               */
+multiline_comment|/* 3. TCE Table per IOA.                                               */
+multiline_comment|/***********************************************************************/
+DECL|function|getTceTableParmsiSeries
+r_static
+r_void
+id|getTceTableParmsiSeries
+c_func
+(paren
+r_struct
+id|iSeries_Device_Node
+op_star
+id|DevNode
+comma
+r_struct
+id|TceTable
+op_star
+id|newTceTable
+)paren
+(brace
+r_struct
+id|TceTableManagerCB
+op_star
+id|pciBusTceTableParms
+op_assign
+(paren
+r_struct
+id|TceTableManagerCB
+op_star
+)paren
+id|kmalloc
+c_func
+(paren
+r_sizeof
+(paren
+r_struct
+id|TceTableManagerCB
+)paren
+comma
+id|GFP_KERNEL
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|pciBusTceTableParms
 op_eq
 l_int|NULL
 )paren
 (brace
+id|panic
+c_func
+(paren
+l_string|&quot;PCI_DMA: TCE Table Allocation failed.&quot;
+)paren
+suffix:semicolon
+)brace
+id|memset
+c_func
+(paren
+(paren
+r_void
+op_star
+)paren
+id|pciBusTceTableParms
+comma
+l_int|0
+comma
+r_sizeof
+(paren
+r_struct
+id|TceTableManagerCB
+)paren
+)paren
+suffix:semicolon
+id|pciBusTceTableParms-&gt;busNumber
+op_assign
+id|ISERIES_BUS
+c_func
+(paren
+id|DevNode
+)paren
+suffix:semicolon
+id|pciBusTceTableParms-&gt;logicalSlot
+op_assign
+id|DevNode-&gt;LogicalSlot
+suffix:semicolon
+id|pciBusTceTableParms-&gt;virtualBusFlag
+op_assign
+l_int|0
+suffix:semicolon
+id|HvCallXm_getTceTableParms
+c_func
+(paren
+id|REALADDR
+c_func
+(paren
+id|pciBusTceTableParms
+)paren
+)paren
+suffix:semicolon
+multiline_comment|/* PciTceTableParms Bus:0x18 Slot:0x04 Start:0x000000 Offset:0x04c000 Size:0x0020 */
+id|printk
+c_func
+(paren
+l_string|&quot;PciTceTableParms Bus:0x%02lx Slot:0x%02x Start:0x%06lx Offset:0x%06lx Size:0x%04lx&bslash;n&quot;
+comma
+id|pciBusTceTableParms-&gt;busNumber
+comma
+id|pciBusTceTableParms-&gt;logicalSlot
+comma
+id|pciBusTceTableParms-&gt;start
+comma
+id|pciBusTceTableParms-&gt;startOffset
+comma
+id|pciBusTceTableParms-&gt;size
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|pciBusTceTableParms-&gt;size
+op_eq
+l_int|0
+)paren
+(brace
+id|printk
+c_func
+(paren
+l_string|&quot;PCI_DMA: Possible Structure mismatch, 0x%p&bslash;n&quot;
+comma
+id|pciBusTceTableParms
+)paren
+suffix:semicolon
+id|panic
+c_func
+(paren
+l_string|&quot;PCI_DMA: pciBusTceTableParms-&gt;size is zero, halt here!&quot;
+)paren
+suffix:semicolon
+)brace
+id|newTceTable-&gt;size
+op_assign
+id|pciBusTceTableParms-&gt;size
+suffix:semicolon
+id|newTceTable-&gt;busNumber
+op_assign
+id|pciBusTceTableParms-&gt;busNumber
+suffix:semicolon
+id|newTceTable-&gt;startOffset
+op_assign
+id|pciBusTceTableParms-&gt;startOffset
+suffix:semicolon
+id|newTceTable-&gt;index
+op_assign
+id|pciBusTceTableParms-&gt;index
+suffix:semicolon
+id|newTceTable-&gt;tceType
+op_assign
+id|TCE_PCI
+suffix:semicolon
 id|kfree
 c_func
 (paren
-id|newTceTable
+id|pciBusTceTableParms
 )paren
 suffix:semicolon
-id|PPCDBG
-c_func
-(paren
-id|PPCDBG_TCE
-comma
-l_string|&quot;PCI Bus TCE table failed.&bslash;n&quot;
-)paren
-suffix:semicolon
-r_return
-suffix:semicolon
-)brace
 )brace
 DECL|function|getTceTableParmsPSeries
 r_static
@@ -4116,16 +4070,10 @@ l_int|19
 )paren
 )paren
 (brace
-id|udbg_printf
-c_func
-(paren
-l_string|&quot;Unexpected number of IOAs under this PHB&quot;
-)paren
-suffix:semicolon
 id|panic
 c_func
 (paren
-l_string|&quot;Unexpected number of IOAs under this PHB&quot;
+l_string|&quot;PCI_DMA: Unexpected number of IOAs under this PHB.&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
@@ -4231,7 +4179,7 @@ id|dma_window
 id|panic
 c_func
 (paren
-l_string|&quot;getTceTableParmsPSeriesLP:  device %s has no ibm,dma-window property!&bslash;n&quot;
+l_string|&quot;PCI_DMA: getTceTableParmsPSeriesLP: device %s has no ibm,dma-window property!&bslash;n&quot;
 comma
 id|dn-&gt;full_name
 )paren
@@ -4468,6 +4416,32 @@ l_int|1
 op_lshift
 id|order
 suffix:semicolon
+multiline_comment|/* Client asked for way to much space.  This is checked later anyway */
+multiline_comment|/* It is easier to debug here for the drivers than in the tce tables.*/
+r_if
+c_cond
+(paren
+id|order
+op_ge
+id|NUM_TCE_LEVELS
+)paren
+(brace
+id|printk
+c_func
+(paren
+l_string|&quot;PCI_DMA: pci_alloc_consistent size to large: 0x%lx &bslash;n&quot;
+comma
+id|size
+)paren
+suffix:semicolon
+r_return
+(paren
+r_void
+op_star
+)paren
+id|NO_TCE
+suffix:semicolon
+)brace
 id|tbl
 op_assign
 id|get_tce_table
@@ -4700,39 +4674,27 @@ l_int|1
 op_lshift
 id|order
 suffix:semicolon
+multiline_comment|/* Client asked for way to much space.  This is checked later anyway */
+multiline_comment|/* It is easier to debug here for the drivers than in the tce tables.*/
 r_if
 c_cond
 (paren
 id|order
-OG
-l_int|10
+op_ge
+id|NUM_TCE_LEVELS
 )paren
-id|PPCDBG
+(brace
+id|printk
 c_func
 (paren
-id|PPCDBG_TCE
-comma
-l_string|&quot;pci_free_consistent: order=%d, size=%d, nPages=%d, dma_handle=%016lx, vaddr=%016lx&bslash;n&quot;
-comma
-id|order
+l_string|&quot;PCI_DMA: pci_free_consistent size to large: 0x%lx &bslash;n&quot;
 comma
 id|size
-comma
-id|nPages
-comma
-(paren
-r_int
-r_int
-)paren
-id|dma_handle
-comma
-(paren
-r_int
-r_int
-)paren
-id|vaddr
 )paren
 suffix:semicolon
+r_return
+suffix:semicolon
+)brace
 id|tbl
 op_assign
 id|get_tce_table
@@ -4747,8 +4709,6 @@ c_cond
 id|tbl
 )paren
 (brace
-id|ppc_md
-dot
 id|tce_free
 c_func
 (paren
@@ -4890,6 +4850,28 @@ id|nPages
 op_rshift_assign
 id|PAGE_SHIFT
 suffix:semicolon
+multiline_comment|/* Client asked for way to much space.  This is checked later anyway */
+multiline_comment|/* It is easier to debug here for the drivers than in the tce tables.*/
+r_if
+c_cond
+(paren
+id|order
+op_ge
+id|NUM_TCE_LEVELS
+)paren
+(brace
+id|printk
+c_func
+(paren
+l_string|&quot;PCI_DMA: pci_map_single size to large: 0x%lx &bslash;n&quot;
+comma
+id|size
+)paren
+suffix:semicolon
+r_return
+id|NO_TCE
+suffix:semicolon
+)brace
 id|tbl
 op_assign
 id|get_tce_table
@@ -5030,33 +5012,27 @@ id|nPages
 op_rshift_assign
 id|PAGE_SHIFT
 suffix:semicolon
+multiline_comment|/* Client asked for way to much space.  This is checked later anyway */
+multiline_comment|/* It is easier to debug here for the drivers than in the tce tables.*/
 r_if
 c_cond
 (paren
 id|order
-OG
-l_int|10
+op_ge
+id|NUM_TCE_LEVELS
 )paren
-id|PPCDBG
+(brace
+id|printk
 c_func
 (paren
-id|PPCDBG_TCE
-comma
-l_string|&quot;pci_unmap_single: order=%d, size=%d, nPages=%d, dma_handle=%016lx&bslash;n&quot;
-comma
-id|order
+l_string|&quot;PCI_DMA: pci_unmap_single size to large: 0x%lx &bslash;n&quot;
 comma
 id|size
-comma
-id|nPages
-comma
-(paren
-r_int
-r_int
-)paren
-id|dma_handle
 )paren
 suffix:semicolon
+r_return
+suffix:semicolon
+)brace
 id|tbl
 op_assign
 id|get_tce_table
@@ -5070,8 +5046,6 @@ c_cond
 (paren
 id|tbl
 )paren
-id|ppc_md
-dot
 id|tce_free
 c_func
 (paren
@@ -5590,6 +5564,32 @@ op_lshift
 id|PAGE_SHIFT
 )paren
 suffix:semicolon
+multiline_comment|/* Client asked for way to much space.  This is checked later anyway */
+multiline_comment|/* It is easier to debug here for the drivers than in the tce tables.*/
+r_if
+c_cond
+(paren
+id|order
+op_ge
+id|NUM_TCE_LEVELS
+)paren
+(brace
+id|printk
+c_func
+(paren
+l_string|&quot;PCI_DMA: create_tces_sg size to large: 0x%x &bslash;n&quot;
+comma
+(paren
+id|numTces
+op_lshift
+id|PAGE_SHIFT
+)paren
+)paren
+suffix:semicolon
+r_return
+id|NO_TCE
+suffix:semicolon
+)brace
 multiline_comment|/* allocate a block of tces */
 id|tcenum
 op_assign
@@ -5747,6 +5747,17 @@ id|sg
 op_increment
 suffix:semicolon
 )brace
+multiline_comment|/* Make sure the update is visible to hardware. &n;&t;&t;   sync required to synchronize the update to &n;&t;&t;   the TCE table with the MMIO that will send&n;&t;&t;   the bus address to the IOA */
+id|__asm__
+id|__volatile__
+(paren
+l_string|&quot;sync&quot;
+suffix:colon
+suffix:colon
+suffix:colon
+l_string|&quot;memory&quot;
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -6109,39 +6120,31 @@ op_lshift
 id|PAGE_SHIFT
 )paren
 suffix:semicolon
+multiline_comment|/* Client asked for way to much space.  This is checked later anyway */
+multiline_comment|/* It is easier to debug here for the drivers than in the tce tables.*/
 r_if
 c_cond
 (paren
 id|order
-OG
-l_int|10
+op_ge
+id|NUM_TCE_LEVELS
 )paren
-id|PPCDBG
+(brace
+id|printk
 c_func
 (paren
-id|PPCDBG_TCE
+l_string|&quot;PCI_DMA: pci_unmap_sg size to large: 0x%x &bslash;n&quot;
 comma
-l_string|&quot;pci_unmap_sg: order=%d, numTces=%d, nelms=%d, dma_start_page=%016lx, dma_end_page=%016lx&bslash;n&quot;
-comma
-id|order
-comma
+(paren
 id|numTces
-comma
-id|nelms
-comma
-(paren
-r_int
-r_int
+op_lshift
+id|PAGE_SHIFT
 )paren
-id|dma_start_page
-comma
-(paren
-r_int
-r_int
-)paren
-id|dma_end_page
 )paren
 suffix:semicolon
+r_return
+suffix:semicolon
+)brace
 id|tbl
 op_assign
 id|get_tce_table
@@ -6155,8 +6158,6 @@ c_cond
 (paren
 id|tbl
 )paren
-id|ppc_md
-dot
 id|tce_free
 c_func
 (paren
@@ -6772,9 +6773,9 @@ id|ppc_md.tce_build
 op_assign
 id|tce_build_pSeries
 suffix:semicolon
-id|ppc_md.tce_free
+id|ppc_md.tce_free_one
 op_assign
-id|tce_free_pSeries
+id|tce_free_one_pSeries
 suffix:semicolon
 )brace
 DECL|function|tce_init_iSeries
@@ -6789,9 +6790,9 @@ id|ppc_md.tce_build
 op_assign
 id|tce_build_iSeries
 suffix:semicolon
-id|ppc_md.tce_free
+id|ppc_md.tce_free_one
 op_assign
-id|tce_free_iSeries
+id|tce_free_one_iSeries
 suffix:semicolon
 )brace
 eof
