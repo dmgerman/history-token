@@ -18,6 +18,7 @@ macro_line|#include &lt;linux/netfilter.h&gt;
 macro_line|#include &lt;linux/route.h&gt;
 macro_line|#include &lt;linux/mroute.h&gt;
 macro_line|#include &lt;net/route.h&gt;
+macro_line|#include &lt;net/xfrm.h&gt;
 macro_line|#if defined(CONFIG_IPV6) || defined(CONFIG_IPV6_MODULE)
 macro_line|#include &lt;net/transp_v6.h&gt;
 macro_line|#endif
@@ -2873,6 +2874,25 @@ op_assign
 op_logical_neg
 op_logical_neg
 id|val
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+id|IP_IPSEC_POLICY
+suffix:colon
+id|err
+op_assign
+id|xfrm_user_policy
+c_func
+(paren
+id|sk
+comma
+id|optname
+comma
+id|optval
+comma
+id|optlen
+)paren
 suffix:semicolon
 r_break
 suffix:semicolon

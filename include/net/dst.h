@@ -63,6 +63,8 @@ DECL|macro|DST_NOXFRM
 mdefine_line|#define DST_NOXFRM&t;&t;2
 DECL|macro|DST_NOPOLICY
 mdefine_line|#define DST_NOPOLICY&t;&t;4
+DECL|macro|DST_NOHASH
+mdefine_line|#define DST_NOHASH&t;&t;8
 DECL|member|lastuse
 r_int
 r_int
@@ -486,6 +488,42 @@ c_cond
 (paren
 id|dst
 )paren
+(brace
+r_if
+c_cond
+(paren
+id|atomic_read
+c_func
+(paren
+op_amp
+id|dst-&gt;__refcnt
+)paren
+OL
+l_int|1
+)paren
+(brace
+id|__label__
+id|__lbl
+suffix:semicolon
+id|printk
+c_func
+(paren
+l_string|&quot;BUG: dst underflow %d: %p&bslash;n&quot;
+comma
+id|atomic_read
+c_func
+(paren
+op_amp
+id|dst-&gt;__refcnt
+)paren
+comma
+op_logical_and
+id|__lbl
+)paren
+suffix:semicolon
+id|__lbl
+suffix:colon
+)brace
 id|atomic_dec
 c_func
 (paren
@@ -493,6 +531,7 @@ op_amp
 id|dst-&gt;__refcnt
 )paren
 suffix:semicolon
+)brace
 )brace
 multiline_comment|/* Children define the path of the packet through the&n; * Linux networking.  Thus, destinations are stackable.&n; */
 DECL|function|dst_pop

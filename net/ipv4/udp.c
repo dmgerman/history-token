@@ -26,6 +26,7 @@ macro_line|#include &lt;net/icmp.h&gt;
 macro_line|#include &lt;net/route.h&gt;
 macro_line|#include &lt;net/inet_common.h&gt;
 macro_line|#include &lt;net/checksum.h&gt;
+macro_line|#include &lt;net/xfrm.h&gt;
 multiline_comment|/*&n; *&t;Snmp MIB for the UDP layer&n; */
 DECL|variable|udp_statistics
 r_struct
@@ -2329,7 +2330,7 @@ id|dport
 suffix:semicolon
 id|err
 op_assign
-id|ip_route_output_key
+id|ip_route_output_flow
 c_func
 (paren
 op_amp
@@ -2337,6 +2338,12 @@ id|rt
 comma
 op_amp
 id|fl
+comma
+id|sk
+comma
+id|msg-&gt;msg_flags
+op_amp
+id|MSG_DONTWAIT
 )paren
 suffix:semicolon
 r_if
@@ -3908,6 +3915,32 @@ id|skb
 )paren
 (brace
 multiline_comment|/*&n;&t; *&t;Charge it to the socket, dropping if the queue is full.&n;&t; */
+r_if
+c_cond
+(paren
+op_logical_neg
+id|xfrm_policy_check
+c_func
+(paren
+l_int|NULL
+comma
+id|XFRM_POLICY_IN
+comma
+id|skb
+)paren
+)paren
+(brace
+id|kfree_skb
+c_func
+(paren
+id|skb
+)paren
+suffix:semicolon
+r_return
+op_minus
+l_int|1
+suffix:semicolon
+)brace
 macro_line|#if defined(CONFIG_FILTER)
 r_if
 c_cond
@@ -4508,6 +4541,23 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+r_if
+c_cond
+(paren
+op_logical_neg
+id|xfrm_policy_check
+c_func
+(paren
+l_int|NULL
+comma
+id|XFRM_POLICY_IN
+comma
+id|skb
+)paren
+)paren
+r_goto
+id|drop
+suffix:semicolon
 multiline_comment|/* No socket. Drop packet silently, if checksum is wrong */
 r_if
 c_cond
@@ -4661,6 +4711,8 @@ id|ulen
 )paren
 )paren
 suffix:semicolon
+id|drop
+suffix:colon
 id|UDP_INC_STATS_BH
 c_func
 (paren

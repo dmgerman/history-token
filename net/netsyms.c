@@ -1201,13 +1201,6 @@ c_func
 id|xfrm_policy_lookup
 )paren
 suffix:semicolon
-DECL|variable|xfrm_bundle_create
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|xfrm_bundle_create
-)paren
-suffix:semicolon
 DECL|variable|xfrm_lookup
 id|EXPORT_SYMBOL
 c_func

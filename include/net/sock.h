@@ -162,6 +162,15 @@ DECL|member|dst_lock
 id|rwlock_t
 id|dst_lock
 suffix:semicolon
+DECL|member|policy
+r_struct
+id|xfrm_policy
+op_star
+id|policy
+(braket
+l_int|2
+)braket
+suffix:semicolon
 DECL|member|rmem_alloc
 id|atomic_t
 id|rmem_alloc

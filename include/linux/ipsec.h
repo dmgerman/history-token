@@ -117,35 +117,5 @@ DECL|macro|IPSEC_MANUAL_REQID_MAX
 mdefine_line|#define IPSEC_MANUAL_REQID_MAX&t;0x3fff
 DECL|macro|IPSEC_REPLAYWSIZE
 mdefine_line|#define IPSEC_REPLAYWSIZE  32
-macro_line|#ifdef __KERNEL__
-r_struct
-id|sock
-suffix:semicolon
-r_struct
-id|sk_buff
-suffix:semicolon
-DECL|function|ipsec_sk_policy
-r_static
-id|__inline__
-r_int
-id|ipsec_sk_policy
-c_func
-(paren
-r_struct
-id|sock
-op_star
-id|sk
-comma
-r_struct
-id|sk_buff
-op_star
-id|skb
-)paren
-(brace
-r_return
-l_int|1
-suffix:semicolon
-)brace
-macro_line|#endif
 macro_line|#endif&t;/* _LINUX_IPSEC_H */
 eof

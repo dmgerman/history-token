@@ -1124,7 +1124,7 @@ multiline_comment|/* If this fails, retransmit mechanism of transport layer will
 r_if
 c_cond
 (paren
-id|ip_route_output_key
+id|ip_route_output_flow
 c_func
 (paren
 op_amp
@@ -1132,6 +1132,10 @@ id|rt
 comma
 op_amp
 id|fl
+comma
+id|sk
+comma
+l_int|0
 )paren
 )paren
 r_goto
@@ -5231,6 +5235,27 @@ c_func
 (paren
 id|skb-&gt;nh.iph-&gt;tos
 )paren
+)brace
+)brace
+comma
+multiline_comment|/* Not quite clean, but right. */
+dot
+id|uli_u
+op_assign
+(brace
+dot
+id|ports
+op_assign
+(brace
+dot
+id|sport
+op_assign
+id|skb-&gt;h.th-&gt;dest
+comma
+dot
+id|dport
+op_assign
+id|skb-&gt;h.th-&gt;source
 )brace
 )brace
 comma
