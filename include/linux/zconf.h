@@ -46,7 +46,5 @@ id|voidp
 suffix:semicolon
 macro_line|#include &lt;linux/types.h&gt; /* for off_t */
 macro_line|#include &lt;linux/unistd.h&gt;    /* for SEEK_* and off_t */
-DECL|macro|z_off_t
-mdefine_line|#define z_off_t  off_t
 macro_line|#endif /* _ZCONF_H */
 eof
