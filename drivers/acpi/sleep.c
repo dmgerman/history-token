@@ -356,6 +356,7 @@ suffix:semicolon
 r_case
 id|ACPI_STATE_S2
 suffix:colon
+macro_line|#ifdef CONFIG_SOFTWARE_SUSPEND
 r_case
 id|ACPI_STATE_S3
 suffix:colon
@@ -365,6 +366,7 @@ c_func
 l_int|0
 )paren
 suffix:semicolon
+macro_line|#endif
 r_break
 suffix:semicolon
 )brace

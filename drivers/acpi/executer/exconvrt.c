@@ -1,4 +1,4 @@
-multiline_comment|/******************************************************************************&n; *&n; * Module Name: exconvrt - Object conversion routines&n; *              $Revision: 41 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Module Name: exconvrt - Object conversion routines&n; *              $Revision: 44 $&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;acinterp.h&quot;
@@ -251,11 +251,12 @@ id|AE_NO_MEMORY
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* Save the Result, delete original descriptor, store new descriptor */
+multiline_comment|/* Save the Result */
 id|ret_desc-&gt;integer.value
 op_assign
 id|result
 suffix:semicolon
+multiline_comment|/*&n;&t; * If we are about to overwrite the original object on the operand stack,&n;&t; * we must remove a reference on the original object because we are&n;&t; * essentially removing it from the stack.&n;&t; */
 r_if
 c_cond
 (paren
@@ -338,33 +339,26 @@ id|obj_desc
 )paren
 (brace
 r_case
-id|ACPI_TYPE_INTEGER
-suffix:colon
-multiline_comment|/*&n;&t;&t; * Create a new Buffer object&n;&t;&t; */
-id|ret_desc
-op_assign
-id|acpi_ut_create_internal_object
-(paren
 id|ACPI_TYPE_BUFFER
-)paren
+suffix:colon
+multiline_comment|/* No conversion necessary */
+op_star
+id|result_desc
+op_assign
+id|obj_desc
 suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|ret_desc
-)paren
-(brace
 id|return_ACPI_STATUS
 (paren
-id|AE_NO_MEMORY
+id|AE_OK
 )paren
 suffix:semicolon
-)brace
-multiline_comment|/* Need enough space for one integer */
-id|new_buf
+r_case
+id|ACPI_TYPE_INTEGER
+suffix:colon
+multiline_comment|/*&n;&t;&t; * Create a new Buffer object.&n;&t;&t; * Need enough space for one integer&n;&t;&t; */
+id|ret_desc
 op_assign
-id|ACPI_MEM_CALLOCATE
+id|acpi_ut_create_buffer_object
 (paren
 id|acpi_gbl_integer_byte_width
 )paren
@@ -373,21 +367,9 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|new_buf
-)paren
-(brace
-id|ACPI_REPORT_ERROR
-(paren
-(paren
-l_string|&quot;Ex_convert_to_buffer: Buffer allocation failure&bslash;n&quot;
-)paren
-)paren
-suffix:semicolon
-id|acpi_ut_remove_reference
-(paren
 id|ret_desc
 )paren
-suffix:semicolon
+(brace
 id|return_ACPI_STATUS
 (paren
 id|AE_NO_MEMORY
@@ -395,6 +377,10 @@ id|AE_NO_MEMORY
 suffix:semicolon
 )brace
 multiline_comment|/* Copy the integer to the buffer */
+id|new_buf
+op_assign
+id|ret_desc-&gt;buffer.pointer
+suffix:semicolon
 r_for
 c_loop
 (paren
@@ -429,55 +415,15 @@ l_int|8
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* Complete buffer object initialization */
-id|ret_desc-&gt;buffer.flags
-op_or_assign
-id|AOPOBJ_DATA_VALID
-suffix:semicolon
-id|ret_desc-&gt;buffer.pointer
-op_assign
-id|new_buf
-suffix:semicolon
-id|ret_desc-&gt;buffer.length
-op_assign
-id|acpi_gbl_integer_byte_width
-suffix:semicolon
-multiline_comment|/* Return the new buffer descriptor */
-op_star
-id|result_desc
-op_assign
-id|ret_desc
-suffix:semicolon
 r_break
 suffix:semicolon
 r_case
 id|ACPI_TYPE_STRING
 suffix:colon
-multiline_comment|/*&n;&t;&t; * Create a new Buffer object&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * Create a new Buffer object&n;&t;&t; * Size will be the string length&n;&t;&t; */
 id|ret_desc
 op_assign
-id|acpi_ut_create_internal_object
-(paren
-id|ACPI_TYPE_BUFFER
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|ret_desc
-)paren
-(brace
-id|return_ACPI_STATUS
-(paren
-id|AE_NO_MEMORY
-)paren
-suffix:semicolon
-)brace
-multiline_comment|/* Need enough space for one integer */
-id|new_buf
-op_assign
-id|ACPI_MEM_CALLOCATE
+id|acpi_ut_create_buffer_object
 (paren
 id|obj_desc-&gt;string.length
 )paren
@@ -486,27 +432,20 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|new_buf
-)paren
-(brace
-id|ACPI_REPORT_ERROR
-(paren
-(paren
-l_string|&quot;Ex_convert_to_buffer: Buffer allocation failure&bslash;n&quot;
-)paren
-)paren
-suffix:semicolon
-id|acpi_ut_remove_reference
-(paren
 id|ret_desc
 )paren
-suffix:semicolon
+(brace
 id|return_ACPI_STATUS
 (paren
 id|AE_NO_MEMORY
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/* Copy the string to the buffer */
+id|new_buf
+op_assign
+id|ret_desc-&gt;buffer.pointer
+suffix:semicolon
 id|ACPI_STRNCPY
 (paren
 (paren
@@ -524,34 +463,6 @@ comma
 id|obj_desc-&gt;string.length
 )paren
 suffix:semicolon
-id|ret_desc-&gt;buffer.flags
-op_or_assign
-id|AOPOBJ_DATA_VALID
-suffix:semicolon
-id|ret_desc-&gt;buffer.pointer
-op_assign
-id|new_buf
-suffix:semicolon
-id|ret_desc-&gt;buffer.length
-op_assign
-id|obj_desc-&gt;string.length
-suffix:semicolon
-multiline_comment|/* Return the new buffer descriptor */
-op_star
-id|result_desc
-op_assign
-id|ret_desc
-suffix:semicolon
-r_break
-suffix:semicolon
-r_case
-id|ACPI_TYPE_BUFFER
-suffix:colon
-op_star
-id|result_desc
-op_assign
-id|obj_desc
-suffix:semicolon
 r_break
 suffix:semicolon
 r_default
@@ -563,14 +474,39 @@ id|AE_TYPE
 suffix:semicolon
 )brace
 multiline_comment|/* Mark buffer initialized */
+id|ret_desc-&gt;common.flags
+op_or_assign
+id|AOPOBJ_DATA_VALID
+suffix:semicolon
+multiline_comment|/*&n;&t; * If we are about to overwrite the original object on the operand stack,&n;&t; * we must remove a reference on the original object because we are&n;&t; * essentially removing it from the stack.&n;&t; */
+r_if
+c_cond
 (paren
 op_star
 id|result_desc
+op_eq
+id|obj_desc
 )paren
-op_member_access_from_pointer
-id|common.flags
-op_or_assign
-id|AOPOBJ_DATA_VALID
+(brace
+r_if
+c_cond
+(paren
+id|walk_state-&gt;opcode
+op_ne
+id|AML_STORE_OP
+)paren
+(brace
+id|acpi_ut_remove_reference
+(paren
+id|obj_desc
+)paren
+suffix:semicolon
+)brace
+)brace
+op_star
+id|result_desc
+op_assign
+id|ret_desc
 suffix:semicolon
 id|return_ACPI_STATUS
 (paren
@@ -928,6 +864,37 @@ id|obj_desc
 )paren
 (brace
 r_case
+id|ACPI_TYPE_STRING
+suffix:colon
+r_if
+c_cond
+(paren
+id|max_length
+op_ge
+id|obj_desc-&gt;string.length
+)paren
+(brace
+op_star
+id|result_desc
+op_assign
+id|obj_desc
+suffix:semicolon
+id|return_ACPI_STATUS
+(paren
+id|AE_OK
+)paren
+suffix:semicolon
+)brace
+r_else
+(brace
+multiline_comment|/* Must copy the string first and then truncate it */
+id|return_ACPI_STATUS
+(paren
+id|AE_NOT_IMPLEMENTED
+)paren
+suffix:semicolon
+)brace
+r_case
 id|ACPI_TYPE_INTEGER
 suffix:colon
 id|string_length
@@ -1058,36 +1025,6 @@ suffix:semicolon
 id|ret_desc-&gt;buffer.pointer
 op_assign
 id|new_buf
-suffix:semicolon
-multiline_comment|/* Return the new buffer descriptor */
-r_if
-c_cond
-(paren
-op_star
-id|result_desc
-op_eq
-id|obj_desc
-)paren
-(brace
-r_if
-c_cond
-(paren
-id|walk_state-&gt;opcode
-op_ne
-id|AML_STORE_OP
-)paren
-(brace
-id|acpi_ut_remove_reference
-(paren
-id|obj_desc
-)paren
-suffix:semicolon
-)brace
-)brace
-op_star
-id|result_desc
-op_assign
-id|ret_desc
 suffix:semicolon
 r_break
 suffix:semicolon
@@ -1298,7 +1235,17 @@ op_star
 id|new_buf
 )paren
 suffix:semicolon
-multiline_comment|/* Return the new buffer descriptor */
+r_break
+suffix:semicolon
+r_default
+suffix:colon
+id|return_ACPI_STATUS
+(paren
+id|AE_TYPE
+)paren
+suffix:semicolon
+)brace
+multiline_comment|/*&n;&t; * If we are about to overwrite the original object on the operand stack,&n;&t; * we must remove a reference on the original object because we are&n;&t; * essentially removing it from the stack.&n;&t; */
 r_if
 c_cond
 (paren
@@ -1328,44 +1275,6 @@ id|result_desc
 op_assign
 id|ret_desc
 suffix:semicolon
-r_break
-suffix:semicolon
-r_case
-id|ACPI_TYPE_STRING
-suffix:colon
-r_if
-c_cond
-(paren
-id|max_length
-op_ge
-id|obj_desc-&gt;string.length
-)paren
-(brace
-op_star
-id|result_desc
-op_assign
-id|obj_desc
-suffix:semicolon
-)brace
-r_else
-(brace
-multiline_comment|/* Must copy the string first and then truncate it */
-id|return_ACPI_STATUS
-(paren
-id|AE_NOT_IMPLEMENTED
-)paren
-suffix:semicolon
-)brace
-r_break
-suffix:semicolon
-r_default
-suffix:colon
-id|return_ACPI_STATUS
-(paren
-id|AE_TYPE
-)paren
-suffix:semicolon
-)brace
 id|return_ACPI_STATUS
 (paren
 id|AE_OK
