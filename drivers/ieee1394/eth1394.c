@@ -41,7 +41,7 @@ id|version
 )braket
 id|__devinitdata
 op_assign
-l_string|&quot;$Rev: 895 $ Ben Collins &lt;bcollins@debian.org&gt;&quot;
+l_string|&quot;$Rev: 906 $ Ben Collins &lt;bcollins@debian.org&gt;&quot;
 suffix:semicolon
 multiline_comment|/* Our ieee1394 highlevel driver */
 DECL|macro|ETHER1394_DRIVER_NAME
@@ -52,14 +52,11 @@ id|kmem_cache_t
 op_star
 id|packet_task_cache
 suffix:semicolon
-DECL|variable|hl_handle
+DECL|variable|eth1394_highlevel
 r_static
 r_struct
 id|hpsb_highlevel
-op_star
-id|hl_handle
-op_assign
-l_int|NULL
+id|eth1394_highlevel
 suffix:semicolon
 multiline_comment|/* Use common.lf to determine header len */
 DECL|variable|hdr_type_len
@@ -1135,11 +1132,6 @@ r_struct
 id|hpsb_host
 op_star
 id|host
-comma
-r_struct
-id|hpsb_highlevel
-op_star
-id|hl
 )paren
 (brace
 r_struct
@@ -1241,7 +1233,8 @@ op_assign
 id|hpsb_create_hostinfo
 c_func
 (paren
-id|hl
+op_amp
+id|eth1394_highlevel
 comma
 id|host
 comma
@@ -1367,7 +1360,8 @@ id|hi
 id|hpsb_destroy_hostinfo
 c_func
 (paren
-id|hl
+op_amp
+id|eth1394_highlevel
 comma
 id|host
 )paren
@@ -1402,7 +1396,8 @@ op_assign
 id|hpsb_get_hostinfo
 c_func
 (paren
-id|hl_handle
+op_amp
+id|eth1394_highlevel
 comma
 id|host
 )paren
@@ -1471,7 +1466,8 @@ op_assign
 id|hpsb_get_hostinfo
 c_func
 (paren
-id|hl_handle
+op_amp
+id|eth1394_highlevel
 comma
 id|host
 )paren
@@ -2059,7 +2055,8 @@ op_assign
 id|hpsb_get_hostinfo
 c_func
 (paren
-id|hl_handle
+op_amp
+id|eth1394_highlevel
 comma
 id|host
 )paren
@@ -2321,7 +2318,8 @@ op_assign
 id|hpsb_get_hostinfo
 c_func
 (paren
-id|hl_handle
+op_amp
+id|eth1394_highlevel
 comma
 id|iso-&gt;host
 )paren
@@ -3505,13 +3503,18 @@ comma
 )brace
 suffix:semicolon
 multiline_comment|/* Ieee1394 highlevel driver functions */
-DECL|variable|hl_ops
+DECL|variable|eth1394_highlevel
 r_static
 r_struct
-id|hpsb_highlevel_ops
-id|hl_ops
+id|hpsb_highlevel
+id|eth1394_highlevel
 op_assign
 (brace
+dot
+id|name
+op_assign
+id|ETHER1394_DRIVER_NAME
+comma
 dot
 id|add_host
 op_assign
@@ -3561,39 +3564,18 @@ l_int|NULL
 )paren
 suffix:semicolon
 multiline_comment|/* Register ourselves as a highlevel driver */
-id|hl_handle
-op_assign
 id|hpsb_register_highlevel
+c_func
 (paren
-id|ETHER1394_DRIVER_NAME
-comma
 op_amp
-id|hl_ops
+id|eth1394_highlevel
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|hl_handle
-op_eq
-l_int|NULL
-)paren
-(brace
-id|ETH1394_PRINT_G
-(paren
-id|KERN_ERR
-comma
-l_string|&quot;No more memory for driver&bslash;n&quot;
-)paren
-suffix:semicolon
-r_return
-op_minus
-id|ENOMEM
-suffix:semicolon
-)brace
 id|hpsb_register_addrspace
+c_func
 (paren
-id|hl_handle
+op_amp
+id|eth1394_highlevel
 comma
 op_amp
 id|addr_ops
@@ -3617,8 +3599,10 @@ r_void
 )paren
 (brace
 id|hpsb_unregister_highlevel
+c_func
 (paren
-id|hl_handle
+op_amp
+id|eth1394_highlevel
 )paren
 suffix:semicolon
 id|kmem_cache_destroy

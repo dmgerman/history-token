@@ -1197,7 +1197,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*interrupt handler */
 r_static
-r_void
+id|irqreturn_t
 DECL|function|toshoboe_interrupt
 id|toshoboe_interrupt
 (paren
@@ -1253,6 +1253,7 @@ id|irq
 )paren
 suffix:semicolon
 r_return
+id|IRQ_NONE
 suffix:semicolon
 )brace
 id|IRDA_DEBUG
@@ -1283,6 +1284,7 @@ l_int|0xf8
 )paren
 )paren
 r_return
+id|IRQ_NONE
 suffix:semicolon
 id|outb_p
 (paren
@@ -1558,6 +1560,9 @@ id|self-&gt;stats.rx_errors
 op_increment
 suffix:semicolon
 )brace
+r_return
+id|IRQ_HANDLED
+suffix:semicolon
 )brace
 r_static
 r_int

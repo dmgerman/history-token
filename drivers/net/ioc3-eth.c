@@ -2621,7 +2621,7 @@ suffix:semicolon
 multiline_comment|/* The interrupt handler does all of the Rx thread work and cleans up&n;   after the Tx thread.  */
 DECL|function|ioc3_interrupt
 r_static
-r_void
+id|irqreturn_t
 id|ioc3_interrupt
 c_func
 (paren
@@ -2766,6 +2766,9 @@ op_amp
 id|enabled
 suffix:semicolon
 )brace
+r_return
+id|IRQ_HANDLED
+suffix:semicolon
 )brace
 multiline_comment|/*&n; * Auto negotiation.  The scheme is very simple.  We have a timer routine that&n; * keeps watching the auto negotiation process as it progresses.  The DP83840&n; * is first told to start doing it&squot;s thing, we set up the time and place the&n; * timer state machine in it&squot;s initial state.&n; *&n; * Here the timer peeks at the DP83840 status registers at each click to see&n; * if the auto negotiation has completed, we assume here that the DP83840 PHY&n; * will time out at some point and just tell us what (didn&squot;t) happen.  For&n; * complete coverage we only allow so many of the ticks at this level to run,&n; * when this has expired we print a warning message and try another strategy.&n; * This &quot;other&quot; strategy is to force the interface into various speed/duplex&n; * configurations and we stop when we see a link-up condition before the&n; * maximum number of &quot;peek&quot; ticks have occurred.&n; *&n; * Once a valid link status has been detected we configure the IOC3 to speak&n; * the most efficient protocol we could get a clean link for.  The priority&n; * for link configurations, highest first is:&n; *&n; *     100 Base-T Full Duplex&n; *     100 Base-T Half Duplex&n; *     10 Base-T Full Duplex&n; *     10 Base-T Half Duplex&n; *&n; * We start a new timer now, after a successful auto negotiation status has&n; * been detected.  This timer just waits for the link-up bit to get set in&n; * the BMCR of the DP83840.  When this occurs we print a kernel log message&n; * describing the link type in use and the fact that it is up.&n; *&n; * If a fatal error of some sort is signalled and detected in the interrupt&n; * service routine, and the chip is reset, or the link is ifconfig&squot;d down&n; * and then back up, this entire process repeats itself all over again.&n; */
 DECL|function|ioc3_try_next_permutation

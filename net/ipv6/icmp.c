@@ -2362,7 +2362,7 @@ id|ICMPV6_INFOMSG_MASK
 )paren
 r_break
 suffix:semicolon
-multiline_comment|/* &n;&t;&t; * error of unkown type. &n;&t;&t; * must pass to upper level &n;&t;&t; */
+multiline_comment|/* &n;&t;&t; * error of unknown type. &n;&t;&t; * must pass to upper level &n;&t;&t; */
 id|icmpv6_notify
 c_func
 (paren

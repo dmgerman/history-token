@@ -570,14 +570,12 @@ id|lost
 op_ge
 l_int|2
 )paren
-(brace
 id|jiffies
 op_add_assign
 id|lost
 op_minus
 l_int|1
 suffix:semicolon
-)brace
 multiline_comment|/* update the monotonic base value */
 id|this_offset
 op_assign
@@ -638,7 +636,7 @@ l_int|2
 op_div
 id|LATCH
 suffix:semicolon
-multiline_comment|/* catch corner case where tick rollover &n;&t; * occured between tsc and pit reads&n;&t; */
+multiline_comment|/* catch corner case where tick rollover occured &n;&t; * between tsc and pit reads (as noted when &n;&t; * usec delta is &gt; 90% # of usecs/tick)&n;&t; */
 r_if
 c_cond
 (paren
@@ -650,13 +648,15 @@ op_minus
 id|delay_at_last_interrupt
 )paren
 OG
-l_int|900
+(paren
+l_int|900000
+op_div
+id|HZ
 )paren
-(brace
+)paren
 id|jiffies
 op_increment
 suffix:semicolon
-)brace
 )brace
 DECL|function|delay_tsc
 r_static

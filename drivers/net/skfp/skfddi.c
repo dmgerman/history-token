@@ -170,7 +170,7 @@ id|dev
 )paren
 suffix:semicolon
 r_static
-r_void
+id|irqreturn_t
 id|skfp_interrupt
 c_func
 (paren
@@ -3156,7 +3156,7 @@ suffix:semicolon
 singleline_comment|// skfp_close
 multiline_comment|/*&n; * ==================&n; * = skfp_interrupt =&n; * ==================&n; *   &n; * Overview:&n; *   Interrupt processing routine&n; *  &n; * Returns:&n; *   None&n; *       &n; * Arguments:&n; *   irq        - interrupt vector&n; *   dev_id     - pointer to device information&n; *       regs   - pointer to registers structure&n; *&n; * Functional Description:&n; *   This routine calls the interrupt processing routine for this adapter.  It&n; *   disables and reenables adapter interrupts, as appropriate.  We can support&n; *   shared interrupts since the incoming dev_id pointer provides our device&n; *   structure context. All the real work is done in the hardware module.&n; *&n; * Return Codes:&n; *   None&n; *&n; * Assumptions:&n; *   The interrupt acknowledgement at the hardware level (eg. ACKing the PIC&n; *   on Intel-based systems) is done by the operating system outside this&n; *   routine.&n; *&n; *       System interrupts are enabled through this call.&n; *&n; * Side Effects:&n; *   Interrupts are disabled, then reenabled at the adapter.&n; */
 DECL|function|skfp_interrupt
-r_void
+id|irqreturn_t
 id|skfp_interrupt
 c_func
 (paren
@@ -3220,6 +3220,7 @@ id|irq
 )paren
 suffix:semicolon
 r_return
+id|IRQ_NONE
 suffix:semicolon
 )brace
 id|smc
@@ -3250,6 +3251,7 @@ l_int|0
 (brace
 singleline_comment|// IRQs are disabled: must be shared interrupt
 r_return
+id|IRQ_NONE
 suffix:semicolon
 )brace
 singleline_comment|// Note: At this point, IRQs are enabled.
@@ -3272,6 +3274,7 @@ l_int|0
 singleline_comment|// IRQ?
 singleline_comment|// Adapter did not issue an IRQ: must be shared interrupt
 r_return
+id|IRQ_NONE
 suffix:semicolon
 )brace
 id|CLI_FBI
@@ -3325,6 +3328,7 @@ c_func
 suffix:semicolon
 singleline_comment|// Enable IRQs from our adapter.
 r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 singleline_comment|// skfp_interrupt

@@ -274,6 +274,11 @@ op_assign
 id|ebt_hook
 comma
 dot
+id|owner
+op_assign
+id|THIS_MODULE
+comma
+dot
 id|pf
 op_assign
 id|PF_BRIDGE
@@ -297,6 +302,11 @@ op_assign
 id|ebt_hook
 comma
 dot
+id|owner
+op_assign
+id|THIS_MODULE
+comma
+dot
 id|pf
 op_assign
 id|PF_BRIDGE
@@ -318,6 +328,11 @@ dot
 id|hook
 op_assign
 id|ebt_hook
+comma
+dot
+id|owner
+op_assign
+id|THIS_MODULE
 comma
 dot
 id|pf

@@ -365,7 +365,7 @@ suffix:semicolon
 )brace
 DECL|function|pcf_isa_handler
 r_static
-r_void
+id|irqreturn_t
 id|pcf_isa_handler
 c_func
 (paren
@@ -392,6 +392,9 @@ c_func
 op_amp
 id|pcf_wait
 )paren
+suffix:semicolon
+r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 DECL|function|pcf_isa_init

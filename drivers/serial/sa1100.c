@@ -3513,12 +3513,6 @@ op_amp
 id|system_bus_type
 comma
 dot
-id|devclass
-op_assign
-op_amp
-id|tty_devclass
-comma
-dot
 id|suspend
 op_assign
 id|sa1100_serial_suspend

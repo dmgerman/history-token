@@ -4774,6 +4774,16 @@ id|pkt_task_t
 suffix:semicolon
 r_extern
 r_inline
+id|u32
+id|ide_read_24
+c_func
+(paren
+id|ide_drive_t
+op_star
+)paren
+suffix:semicolon
+r_extern
+r_inline
 r_void
 id|SELECT_DRIVE
 c_func

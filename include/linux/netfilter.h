@@ -104,6 +104,12 @@ id|nf_hookfn
 op_star
 id|hook
 suffix:semicolon
+DECL|member|owner
+r_struct
+id|module
+op_star
+id|owner
+suffix:semicolon
 DECL|member|pf
 r_int
 id|pf

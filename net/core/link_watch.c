@@ -29,16 +29,12 @@ r_static
 r_int
 r_int
 id|linkwatch_flags
-op_assign
-l_int|0
 suffix:semicolon
 DECL|variable|linkwatch_nextevent
 r_static
 r_int
 r_int
 id|linkwatch_nextevent
-op_assign
-l_int|0
 suffix:semicolon
 r_static
 r_void

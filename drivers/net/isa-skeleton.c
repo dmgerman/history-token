@@ -168,7 +168,7 @@ id|dev
 )paren
 suffix:semicolon
 r_static
-r_void
+id|irqreturn_t
 id|net_interrupt
 c_func
 (paren
@@ -1424,7 +1424,7 @@ macro_line|#endif
 multiline_comment|/*&n; * The typical workload of the driver:&n; * Handle the network interface interrupts.&n; */
 DECL|function|net_interrupt
 r_static
-r_void
+id|irqreturn_t
 id|net_interrupt
 c_func
 (paren
@@ -1458,6 +1458,11 @@ id|ioaddr
 comma
 id|status
 suffix:semicolon
+r_int
+id|handled
+op_assign
+l_int|0
+suffix:semicolon
 id|ioaddr
 op_assign
 id|dev-&gt;base_addr
@@ -1480,6 +1485,20 @@ id|ioaddr
 op_plus
 l_int|0
 )paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|status
+op_eq
+l_int|0
+)paren
+r_goto
+id|out
+suffix:semicolon
+id|handled
+op_assign
+l_int|1
 suffix:semicolon
 r_if
 c_cond
@@ -1537,6 +1556,15 @@ id|np-&gt;stats.tx_window_errors
 op_increment
 suffix:semicolon
 )brace
+id|out
+suffix:colon
+r_return
+id|IRQ_RETVAL
+c_func
+(paren
+id|handled
+)paren
+suffix:semicolon
 )brace
 multiline_comment|/* We have a good packet(s), get it/them out of the buffers. */
 r_static

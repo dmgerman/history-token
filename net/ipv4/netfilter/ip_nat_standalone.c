@@ -957,6 +957,11 @@ op_assign
 id|ip_nat_fn
 comma
 dot
+id|owner
+op_assign
+id|THIS_MODULE
+comma
+dot
 id|pf
 op_assign
 id|PF_INET
@@ -985,6 +990,11 @@ dot
 id|hook
 op_assign
 id|ip_nat_out
+comma
+dot
+id|owner
+op_assign
+id|THIS_MODULE
 comma
 dot
 id|pf
@@ -1017,6 +1027,11 @@ op_assign
 id|ip_nat_local_fn
 comma
 dot
+id|owner
+op_assign
+id|THIS_MODULE
+comma
+dot
 id|pf
 op_assign
 id|PF_INET
@@ -1045,6 +1060,11 @@ dot
 id|hook
 op_assign
 id|ip_nat_fn
+comma
+dot
+id|owner
+op_assign
+id|THIS_MODULE
 comma
 dot
 id|pf

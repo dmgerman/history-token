@@ -270,7 +270,7 @@ op_star
 )paren
 suffix:semicolon
 r_static
-r_void
+id|irqreturn_t
 id|sbni_interrupt
 c_func
 (paren
@@ -2062,7 +2062,7 @@ multiline_comment|/* -----------------------------------------------------------
 multiline_comment|/* interrupt handler */
 multiline_comment|/*&n; * &t;SBNI12D-10, -11/ISA boards within &quot;common interrupt&quot; mode could not&n; * be looked as two independent single-channel devices. Every channel seems&n; * as Ethernet interface but interrupt handler must be common. Really, first&n; * channel (&quot;master&quot;) driver only registers the handler. In its struct net_local&n; * it has got pointer to &quot;slave&quot; channel&squot;s struct net_local and handles that&squot;s&n; * interrupts too.&n; *&t;dev of successfully attached ISA SBNI boards is linked to list.&n; * While next board driver is initialized, it scans this list. If one&n; * has found dev with same irq and ioaddr different by 4 then it assumes&n; * this board to be &quot;master&quot;.&n; */
 r_static
-r_void
+id|irqreturn_t
 DECL|function|sbni_interrupt
 id|sbni_interrupt
 c_func
@@ -2244,6 +2244,9 @@ c_func
 op_amp
 id|nl-&gt;lock
 )paren
+suffix:semicolon
+r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 r_static

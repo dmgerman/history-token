@@ -147,7 +147,7 @@ id|dev
 )paren
 suffix:semicolon
 r_static
-r_void
+id|irqreturn_t
 id|net_interrupt
 c_func
 (paren
@@ -1615,7 +1615,7 @@ suffix:semicolon
 multiline_comment|/* The typical workload of the driver:&n;   Handle the network interface interrupts. */
 DECL|function|net_interrupt
 r_static
-r_void
+id|irqreturn_t
 id|net_interrupt
 c_func
 (paren
@@ -1665,6 +1665,7 @@ id|irq
 )paren
 suffix:semicolon
 r_return
+id|IRQ_NONE
 suffix:semicolon
 )brace
 r_if
@@ -1937,6 +1938,7 @@ op_assign
 l_int|0
 suffix:semicolon
 r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 multiline_comment|/* We have a good packet(s), get it/them out of the buffers. */

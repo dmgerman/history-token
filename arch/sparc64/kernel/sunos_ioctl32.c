@@ -259,7 +259,7 @@ suffix:semicolon
 r_extern
 id|asmlinkage
 r_int
-id|sys32_ioctl
+id|compat_sys_ioctl
 c_func
 (paren
 r_int
@@ -484,7 +484,7 @@ id|rtentry32
 suffix:colon
 id|ret
 op_assign
-id|sys32_ioctl
+id|compat_sys_ioctl
 c_func
 (paren
 id|fd
@@ -511,7 +511,7 @@ id|rtentry32
 suffix:colon
 id|ret
 op_assign
-id|sys32_ioctl
+id|compat_sys_ioctl
 c_func
 (paren
 id|fd
@@ -538,7 +538,7 @@ id|ifreq32
 suffix:colon
 id|ret
 op_assign
-id|sys32_ioctl
+id|compat_sys_ioctl
 c_func
 (paren
 id|fd
@@ -565,7 +565,7 @@ id|ifreq32
 suffix:colon
 id|ret
 op_assign
-id|sys32_ioctl
+id|compat_sys_ioctl
 c_func
 (paren
 id|fd
@@ -592,7 +592,7 @@ id|ifreq32
 suffix:colon
 id|ret
 op_assign
-id|sys32_ioctl
+id|compat_sys_ioctl
 c_func
 (paren
 id|fd
@@ -619,7 +619,7 @@ id|ifreq32
 suffix:colon
 id|ret
 op_assign
-id|sys32_ioctl
+id|compat_sys_ioctl
 c_func
 (paren
 id|fd
@@ -646,7 +646,7 @@ id|ifreq32
 suffix:colon
 id|ret
 op_assign
-id|sys32_ioctl
+id|compat_sys_ioctl
 c_func
 (paren
 id|fd
@@ -673,7 +673,7 @@ id|ifreq32
 suffix:colon
 id|ret
 op_assign
-id|sys32_ioctl
+id|compat_sys_ioctl
 c_func
 (paren
 id|fd
@@ -700,7 +700,7 @@ id|ifreq32
 suffix:colon
 id|ret
 op_assign
-id|sys32_ioctl
+id|compat_sys_ioctl
 c_func
 (paren
 id|fd
@@ -727,7 +727,7 @@ id|ifreq32
 suffix:colon
 id|ret
 op_assign
-id|sys32_ioctl
+id|compat_sys_ioctl
 c_func
 (paren
 id|fd
@@ -754,7 +754,7 @@ id|ifconf32
 suffix:colon
 id|ret
 op_assign
-id|sys32_ioctl
+id|compat_sys_ioctl
 c_func
 (paren
 id|fd
@@ -837,7 +837,7 @@ id|ifreq32
 suffix:colon
 id|ret
 op_assign
-id|sys32_ioctl
+id|compat_sys_ioctl
 c_func
 (paren
 id|fd
@@ -864,7 +864,7 @@ id|ifreq32
 suffix:colon
 id|ret
 op_assign
-id|sys32_ioctl
+id|compat_sys_ioctl
 c_func
 (paren
 id|fd
@@ -891,7 +891,7 @@ id|ifreq32
 suffix:colon
 id|ret
 op_assign
-id|sys32_ioctl
+id|compat_sys_ioctl
 c_func
 (paren
 id|fd
@@ -918,7 +918,7 @@ id|ifreq32
 suffix:colon
 id|ret
 op_assign
-id|sys32_ioctl
+id|compat_sys_ioctl
 c_func
 (paren
 id|fd
@@ -945,7 +945,7 @@ id|ifreq32
 suffix:colon
 id|ret
 op_assign
-id|sys32_ioctl
+id|compat_sys_ioctl
 c_func
 (paren
 id|fd
@@ -972,7 +972,7 @@ id|ifreq32
 suffix:colon
 id|ret
 op_assign
-id|sys32_ioctl
+id|compat_sys_ioctl
 c_func
 (paren
 id|fd
@@ -999,7 +999,7 @@ id|arpreq
 suffix:colon
 id|ret
 op_assign
-id|sys32_ioctl
+id|compat_sys_ioctl
 c_func
 (paren
 id|fd
@@ -1026,7 +1026,7 @@ id|arpreq
 suffix:colon
 id|ret
 op_assign
-id|sys32_ioctl
+id|compat_sys_ioctl
 c_func
 (paren
 id|fd
@@ -1053,7 +1053,7 @@ id|arpreq
 suffix:colon
 id|ret
 op_assign
-id|sys32_ioctl
+id|compat_sys_ioctl
 c_func
 (paren
 id|fd
@@ -1179,7 +1179,7 @@ id|ifreq32
 suffix:colon
 id|ret
 op_assign
-id|sys32_ioctl
+id|compat_sys_ioctl
 c_func
 (paren
 id|fd
@@ -1206,7 +1206,7 @@ id|ifreq32
 suffix:colon
 id|ret
 op_assign
-id|sys32_ioctl
+id|compat_sys_ioctl
 c_func
 (paren
 id|fd
@@ -1430,7 +1430,7 @@ suffix:semicolon
 )brace
 id|ret
 op_assign
-id|sys32_ioctl
+id|compat_sys_ioctl
 c_func
 (paren
 id|fd
@@ -1549,7 +1549,7 @@ suffix:semicolon
 )brace
 id|ret
 op_assign
-id|sys32_ioctl
+id|compat_sys_ioctl
 c_func
 (paren
 id|fd
@@ -1613,7 +1613,7 @@ suffix:semicolon
 suffix:semicolon
 id|ret
 op_assign
-id|sys32_ioctl
+id|compat_sys_ioctl
 c_func
 (paren
 id|fd

@@ -6152,7 +6152,7 @@ op_amp
 id|dr-&gt;handle
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * recv data from a defered request into an active one&n; */
+multiline_comment|/*&n; * recv data from a deferred request into an active one&n; */
 DECL|function|svc_deferred_recv
 r_static
 r_int

@@ -208,7 +208,7 @@ id|dev
 )paren
 suffix:semicolon
 r_static
-r_void
+id|irqreturn_t
 id|fcc_enet_interrupt
 c_func
 (paren
@@ -222,7 +222,6 @@ comma
 r_struct
 id|pt_regs
 op_star
-id|regs
 )paren
 suffix:semicolon
 r_static
@@ -1219,7 +1218,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* The interrupt handler. */
 r_static
-r_void
+id|irqreturn_t
 DECL|function|fcc_enet_interrupt
 id|fcc_enet_interrupt
 c_func
@@ -1597,6 +1596,7 @@ op_increment
 suffix:semicolon
 )brace
 r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 multiline_comment|/* During a receive, the cur_rx points to the current incoming buffer.&n; * When we update through the ring, if the next incoming buffer has&n; * not been given to the system, we just set the empty indicator,&n; * effectively tossing the packet.&n; */
@@ -3974,7 +3974,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* This interrupt occurs when the PHY detects a link change. */
 r_static
-r_void
+id|irqreturn_t
 DECL|function|mii_link_interrupt
 id|mii_link_interrupt
 c_func
@@ -4023,6 +4023,9 @@ id|phy_cmd_relink
 )paren
 suffix:semicolon
 multiline_comment|/* restart and display status */
+r_return
+id|IRQ_HANDLED
+suffix:semicolon
 )brace
 macro_line|#endif&t;/* CONFIG_USE_MDIO */
 multiline_comment|/* Set or clear the multicast filter for this adaptor.&n; * Skeleton taken from sunlance driver.&n; * The CPM Ethernet implementation allows Multicast as well as individual&n; * MAC address filtering.  Some of the drivers check to make sure it is&n; * a group multicast address, and discard those that are not.  I guess I&n; * will do the same for now, but just remove the test if you want&n; * individual filtering as well (do the upper net layers want or support&n; * this kind of feature?).&n; */

@@ -654,6 +654,11 @@ op_assign
 id|arpt_hook
 comma
 dot
+id|owner
+op_assign
+id|THIS_MODULE
+comma
+dot
 id|pf
 op_assign
 id|NF_ARP
@@ -670,6 +675,11 @@ dot
 id|hook
 op_assign
 id|arpt_hook
+comma
+dot
+id|owner
+op_assign
+id|THIS_MODULE
 comma
 dot
 id|pf

@@ -235,13 +235,6 @@ suffix:semicolon
 macro_line|#endif&t;
 macro_line|#endif
 )brace
-r_extern
-id|pgprot_t
-id|protection_map
-(braket
-l_int|16
-)braket
-suffix:semicolon
 DECL|function|sparc_context_init
 r_void
 id|__init

@@ -1683,7 +1683,7 @@ id|self
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Function irttp_close (self)&n; *&n; *    Remove TSAP from list of all TSAPs and then deallocate all resources&n; *    associated with this TSAP&n; *&n; * Note : because we *free* the tsap structure, it is the responsability&n; * of the caller to make sure we are called only once and to deal with&n; * possible race conditions. - Jean II&n; */
+multiline_comment|/*&n; * Function irttp_close (self)&n; *&n; *    Remove TSAP from list of all TSAPs and then deallocate all resources&n; *    associated with this TSAP&n; *&n; * Note : because we *free* the tsap structure, it is the responsibility&n; * of the caller to make sure we are called only once and to deal with&n; * possible race conditions. - Jean II&n; */
 DECL|function|irttp_close_tsap
 r_int
 id|irttp_close_tsap
@@ -3188,7 +3188,7 @@ l_int|0
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/*&n; * Function irttp_flow_request (self, command)&n; *&n; *    This funtion could be used by the upper layers to tell IrTTP to stop&n; *    delivering frames if the receive queues are starting to get full, or&n; *    to tell IrTTP to start delivering frames again.&n; */
+multiline_comment|/*&n; * Function irttp_flow_request (self, command)&n; *&n; *    This function could be used by the upper layers to tell IrTTP to stop&n; *    delivering frames if the receive queues are starting to get full, or&n; *    to tell IrTTP to start delivering frames again.&n; */
 DECL|function|irttp_flow_request
 r_void
 id|irttp_flow_request

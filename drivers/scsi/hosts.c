@@ -847,10 +847,6 @@ c_cond
 id|dev
 )paren
 (brace
-id|dev-&gt;class_data
-op_assign
-id|shost
-suffix:semicolon
 id|shost-&gt;host_gendev
 op_assign
 id|dev

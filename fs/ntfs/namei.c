@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * namei.c - NTFS kernel directory inode operations. Part of the Linux-NTFS&n; * &t;     project.&n; *&n; * Copyright (c) 2001,2002 Anton Altaparmakov.&n; *&n; * This program/include file is free software; you can redistribute it and/or&n; * modify it under the terms of the GNU General Public License as published&n; * by the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * This program/include file is distributed in the hope that it will be &n; * useful, but WITHOUT ANY WARRANTY; without even the implied warranty &n; * of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program (in the main directory of the Linux-NTFS &n; * distribution in the file COPYING); if not, write to the Free Software&n; * Foundation,Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
+multiline_comment|/*&n; * namei.c - NTFS kernel directory inode operations. Part of the Linux-NTFS&n; * &t;     project.&n; *&n; * Copyright (c) 2001-2003 Anton Altaparmakov&n; *&n; * This program/include file is free software; you can redistribute it and/or&n; * modify it under the terms of the GNU General Public License as published&n; * by the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * This program/include file is distributed in the hope that it will be &n; * useful, but WITHOUT ANY WARRANTY; without even the implied warranty &n; * of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program (in the main directory of the Linux-NTFS &n; * distribution in the file COPYING); if not, write to the Free Software&n; * Foundation,Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &lt;linux/dcache.h&gt;
 macro_line|#include &quot;ntfs.h&quot;
 macro_line|#include &quot;dir.h&quot;
@@ -637,13 +637,7 @@ op_assign
 id|le32_to_cpu
 c_func
 (paren
-id|a
-op_member_access_from_pointer
-id|_ARA
-c_func
-(paren
-id|value_length
-)paren
+id|a-&gt;data.resident.value_length
 )paren
 suffix:semicolon
 r_if
@@ -652,13 +646,7 @@ c_cond
 id|le16_to_cpu
 c_func
 (paren
-id|a
-op_member_access_from_pointer
-id|_ARA
-c_func
-(paren
-id|value_offset
-)paren
+id|a-&gt;data.resident.value_offset
 )paren
 op_plus
 id|val_len
@@ -688,13 +676,7 @@ op_plus
 id|le16_to_cpu
 c_func
 (paren
-id|ctx-&gt;attr
-op_member_access_from_pointer
-id|_ARA
-c_func
-(paren
-id|value_offset
-)paren
+id|ctx-&gt;attr-&gt;data.resident.value_offset
 )paren
 )paren
 suffix:semicolon

@@ -1,4 +1,4 @@
-multiline_comment|/*&n;    NetWinder Floating Point Emulator&n;    (c) Rebel.COM, 1998,1999&n;&n;    Direct questions, comments to Scott Bambrough &lt;scottb@netwinder.org&gt;&n;&n;    This program is free software; you can redistribute it and/or modify&n;    it under the terms of the GNU General Public License as published by&n;    the Free Software Foundation; either version 2 of the License, or&n;    (at your option) any later version.&n;&n;    This program is distributed in the hope that it will be useful,&n;    but WITHOUT ANY WARRANTY; without even the implied warranty of&n;    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n;    GNU General Public License for more details.&n;&n;    You should have received a copy of the GNU General Public License&n;    along with this program; if not, write to the Free Software&n;    Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n;*/
+multiline_comment|/*&n;    NetWinder Floating Point Emulator&n;    (c) Rebel.COM, 1998,1999&n;    (c) Philip Blundell, 2001&n;&n;    Direct questions, comments to Scott Bambrough &lt;scottb@netwinder.org&gt;&n;&n;    This program is free software; you can redistribute it and/or modify&n;    it under the terms of the GNU General Public License as published by&n;    the Free Software Foundation; either version 2 of the License, or&n;    (at your option) any later version.&n;&n;    This program is distributed in the hope that it will be useful,&n;    but WITHOUT ANY WARRANTY; without even the implied warranty of&n;    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n;    GNU General Public License for more details.&n;&n;    You should have received a copy of the GNU General Public License&n;    along with this program; if not, write to the Free Software&n;    Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n;*/
 macro_line|#ifndef __FPOPCODE_H__
 DECL|macro|__FPOPCODE_H__
 mdefine_line|#define __FPOPCODE_H__
@@ -21,7 +21,7 @@ DECL|macro|BIT_LOAD
 mdefine_line|#define BIT_LOAD&t;0x00100000
 multiline_comment|/* masks for load/store */
 DECL|macro|MASK_CPDT
-mdefine_line|#define MASK_CPDT&t;&t;0x0c000000  /* data processing opcode */
+mdefine_line|#define MASK_CPDT&t;&t;0x0c000000&t;/* data processing opcode */
 DECL|macro|MASK_OFFSET
 mdefine_line|#define MASK_OFFSET&t;&t;0x000000ff
 DECL|macro|MASK_TRANSFER_LENGTH
@@ -86,7 +86,7 @@ DECL|macro|MONADIC_INSTRUCTION
 mdefine_line|#define MONADIC_INSTRUCTION(opcode)&t;((opcode &amp; BIT_MONADIC) != 0)
 multiline_comment|/* instruction identification masks */
 DECL|macro|MASK_CPDO
-mdefine_line|#define MASK_CPDO&t;&t;0x0e000000  /* arithmetic opcode */
+mdefine_line|#define MASK_CPDO&t;&t;0x0e000000&t;/* arithmetic opcode */
 DECL|macro|MASK_ARITHMETIC_OPCODE
 mdefine_line|#define MASK_ARITHMETIC_OPCODE&t;0x00f08000
 DECL|macro|MASK_DESTINATION_SIZE
@@ -156,7 +156,7 @@ DECL|macro|NRM_CODE
 mdefine_line|#define NRM_CODE&t;0x00f08000
 multiline_comment|/*&n;===&n;=== Definitions for register transfer and comparison instructions&n;===&n;*/
 DECL|macro|MASK_CPRT
-mdefine_line|#define MASK_CPRT&t;&t;0x0e000010  /* register transfer opcode */
+mdefine_line|#define MASK_CPRT&t;&t;0x0e000010&t;/* register transfer opcode */
 DECL|macro|MASK_CPRT_CODE
 mdefine_line|#define MASK_CPRT_CODE&t;&t;0x00f00000
 DECL|macro|FLT_CODE
@@ -278,6 +278,7 @@ mdefine_line|#define getRd(opcode)&t;&t;((opcode &amp; MASK_Rd) &gt;&gt; 12)
 multiline_comment|/* Get the rounding mode from the opcode. */
 DECL|macro|getRoundingMode
 mdefine_line|#define getRoundingMode(opcode)&t;&t;((opcode &amp; MASK_ROUNDING_MODE) &gt;&gt; 5)
+macro_line|#ifdef CONFIG_FPE_NWFPE_XP
 DECL|function|getExtendedConstant
 r_static
 r_inline
@@ -306,6 +307,7 @@ id|nIndex
 )braket
 suffix:semicolon
 )brace
+macro_line|#endif
 DECL|function|getDoubleConstant
 r_static
 r_inline
@@ -362,7 +364,78 @@ id|nIndex
 )braket
 suffix:semicolon
 )brace
-r_extern
+DECL|function|getTransferLength
+r_static
+r_inline
+r_int
+r_int
+id|getTransferLength
+c_func
+(paren
+r_const
+r_int
+r_int
+id|opcode
+)paren
+(brace
+r_int
+r_int
+id|nRc
+suffix:semicolon
+r_switch
+c_cond
+(paren
+id|opcode
+op_amp
+id|MASK_TRANSFER_LENGTH
+)paren
+(brace
+r_case
+l_int|0x00000000
+suffix:colon
+id|nRc
+op_assign
+l_int|1
+suffix:semicolon
+r_break
+suffix:semicolon
+multiline_comment|/* single precision */
+r_case
+l_int|0x00008000
+suffix:colon
+id|nRc
+op_assign
+l_int|2
+suffix:semicolon
+r_break
+suffix:semicolon
+multiline_comment|/* double precision */
+r_case
+l_int|0x00400000
+suffix:colon
+id|nRc
+op_assign
+l_int|3
+suffix:semicolon
+r_break
+suffix:semicolon
+multiline_comment|/* extended precision */
+r_default
+suffix:colon
+id|nRc
+op_assign
+l_int|0
+suffix:semicolon
+)brace
+r_return
+(paren
+id|nRc
+)paren
+suffix:semicolon
+)brace
+DECL|function|getRegisterCount
+r_static
+r_inline
 r_int
 r_int
 id|getRegisterCount
@@ -373,8 +446,137 @@ r_int
 r_int
 id|opcode
 )paren
+(brace
+r_int
+r_int
+id|nRc
 suffix:semicolon
-r_extern
+r_switch
+c_cond
+(paren
+id|opcode
+op_amp
+id|MASK_REGISTER_COUNT
+)paren
+(brace
+r_case
+l_int|0x00000000
+suffix:colon
+id|nRc
+op_assign
+l_int|4
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+l_int|0x00008000
+suffix:colon
+id|nRc
+op_assign
+l_int|1
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+l_int|0x00400000
+suffix:colon
+id|nRc
+op_assign
+l_int|2
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+l_int|0x00408000
+suffix:colon
+id|nRc
+op_assign
+l_int|3
+suffix:semicolon
+r_break
+suffix:semicolon
+r_default
+suffix:colon
+id|nRc
+op_assign
+l_int|0
+suffix:semicolon
+)brace
+r_return
+(paren
+id|nRc
+)paren
+suffix:semicolon
+)brace
+DECL|function|getRoundingPrecision
+r_static
+r_inline
+r_int
+r_int
+id|getRoundingPrecision
+c_func
+(paren
+r_const
+r_int
+r_int
+id|opcode
+)paren
+(brace
+r_int
+r_int
+id|nRc
+suffix:semicolon
+r_switch
+c_cond
+(paren
+id|opcode
+op_amp
+id|MASK_ROUNDING_PRECISION
+)paren
+(brace
+r_case
+l_int|0x00000000
+suffix:colon
+id|nRc
+op_assign
+l_int|1
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+l_int|0x00000080
+suffix:colon
+id|nRc
+op_assign
+l_int|2
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+l_int|0x00080000
+suffix:colon
+id|nRc
+op_assign
+l_int|3
+suffix:semicolon
+r_break
+suffix:semicolon
+r_default
+suffix:colon
+id|nRc
+op_assign
+l_int|0
+suffix:semicolon
+)brace
+r_return
+(paren
+id|nRc
+)paren
+suffix:semicolon
+)brace
+DECL|function|getDestinationSize
+r_static
+r_inline
 r_int
 r_int
 id|getDestinationSize
@@ -385,6 +587,58 @@ r_int
 r_int
 id|opcode
 )paren
+(brace
+r_int
+r_int
+id|nRc
 suffix:semicolon
+r_switch
+c_cond
+(paren
+id|opcode
+op_amp
+id|MASK_DESTINATION_SIZE
+)paren
+(brace
+r_case
+l_int|0x00000000
+suffix:colon
+id|nRc
+op_assign
+id|typeSingle
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+l_int|0x00000080
+suffix:colon
+id|nRc
+op_assign
+id|typeDouble
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+l_int|0x00080000
+suffix:colon
+id|nRc
+op_assign
+id|typeExtended
+suffix:semicolon
+r_break
+suffix:semicolon
+r_default
+suffix:colon
+id|nRc
+op_assign
+id|typeNone
+suffix:semicolon
+)brace
+r_return
+(paren
+id|nRc
+)paren
+suffix:semicolon
+)brace
 macro_line|#endif
 eof

@@ -757,7 +757,7 @@ id|dev
 )paren
 suffix:semicolon
 r_static
-r_void
+id|irqreturn_t
 id|lance_interrupt
 c_func
 (paren
@@ -3230,7 +3230,7 @@ suffix:semicolon
 multiline_comment|/* The LANCE interrupt handler. */
 DECL|function|lance_interrupt
 r_static
-r_void
+id|irqreturn_t
 id|lance_interrupt
 c_func
 (paren
@@ -3271,6 +3271,11 @@ id|boguscnt
 op_assign
 l_int|10
 suffix:semicolon
+r_int
+id|handled
+op_assign
+l_int|0
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -3290,6 +3295,7 @@ l_string|&quot;lance_interrupt(): interrupt for unknown device.&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
+id|IRQ_NONE
 suffix:semicolon
 )brace
 id|lp
@@ -3340,6 +3346,10 @@ op_ge
 l_int|0
 )paren
 (brace
+id|handled
+op_assign
+l_int|1
+suffix:semicolon
 multiline_comment|/* Acknowledge all of the current interrupt sources ASAP. */
 id|DREG
 op_assign
@@ -3717,6 +3727,13 @@ id|spin_unlock
 (paren
 op_amp
 id|lp-&gt;devlock
+)paren
+suffix:semicolon
+r_return
+id|IRQ_RETVAL
+c_func
+(paren
+id|handled
 )paren
 suffix:semicolon
 )brace

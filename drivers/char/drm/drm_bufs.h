@@ -517,9 +517,7 @@ id|dev-&gt;hose-&gt;mem_space-&gt;start
 suffix:semicolon
 macro_line|#endif
 id|map-&gt;offset
-op_assign
-id|map-&gt;offset
-op_plus
+op_add_assign
 id|dev-&gt;agp-&gt;base
 suffix:semicolon
 id|map-&gt;mtrr
@@ -563,9 +561,7 @@ id|EINVAL
 suffix:semicolon
 )brace
 id|map-&gt;offset
-op_assign
-id|map-&gt;offset
-op_plus
+op_add_assign
 id|dev-&gt;sg-&gt;handle
 suffix:semicolon
 r_break
@@ -3271,6 +3267,12 @@ id|i
 suffix:semicolon
 )brace
 multiline_comment|/* No allocations failed, so now we can replace the orginal pagelist&n;&t; * with the new one.&n;&t; */
+r_if
+c_cond
+(paren
+id|dma-&gt;page_count
+)paren
+(brace
 id|DRM
 c_func
 (paren
@@ -3290,6 +3292,7 @@ comma
 id|DRM_MEM_PAGES
 )paren
 suffix:semicolon
+)brace
 id|dma-&gt;pagelist
 op_assign
 id|temp_pagelist

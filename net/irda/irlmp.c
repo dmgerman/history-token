@@ -3362,7 +3362,7 @@ id|client_next
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/*&n; * Function irlmp_discovery_expiry (expiry)&n; *&n; *&t;This device is no longer been discovered, and therefore it is beeing&n; *&t;purged from the discovery log. Inform all clients who have&n; *&t;registered for this event...&n; *&n; *&t;Note : called exclusively from discovery.c&n; *&t;Note : this is no longer called under discovery spinlock, so the&n; *&t;&t;client can do whatever he wants in the callback.&n; */
+multiline_comment|/*&n; * Function irlmp_discovery_expiry (expiry)&n; *&n; *&t;This device is no longer been discovered, and therefore it is being&n; *&t;purged from the discovery log. Inform all clients who have&n; *&t;registered for this event...&n; *&n; *&t;Note : called exclusively from discovery.c&n; *&t;Note : this is no longer called under discovery spinlock, so the&n; *&t;&t;client can do whatever he wants in the callback.&n; */
 DECL|function|irlmp_discovery_expiry
 r_void
 id|irlmp_discovery_expiry
@@ -4526,7 +4526,7 @@ suffix:semicolon
 )brace
 )brace
 macro_line|#if 0
-multiline_comment|/*&n; * Function irlmp_hint_to_service (hint)&n; *&n; *    Returns a list of all servics contained in the given hint bits. This&n; *    funtion assumes that the hint bits have the size of two bytes only&n; */
+multiline_comment|/*&n; * Function irlmp_hint_to_service (hint)&n; *&n; *    Returns a list of all servics contained in the given hint bits. This&n; *    function assumes that the hint bits have the size of two bytes only&n; */
 id|__u8
 op_star
 id|irlmp_hint_to_service
@@ -5706,7 +5706,7 @@ id|LSAP_MAX
 r_return
 id|TRUE
 suffix:semicolon
-multiline_comment|/*&n;&t; *  Check if slsap is already in use. To do this we have to loop over&n;&t; *  every IrLAP connection and check every LSAP assosiated with each&n;&t; *  the connection.&n;&t; */
+multiline_comment|/*&n;&t; *  Check if slsap is already in use. To do this we have to loop over&n;&t; *  every IrLAP connection and check every LSAP associated with each&n;&t; *  the connection.&n;&t; */
 id|spin_lock_irqsave
 c_func
 (paren

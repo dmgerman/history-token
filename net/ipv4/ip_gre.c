@@ -130,7 +130,7 @@ id|ipgre_lock
 op_assign
 id|RW_LOCK_UNLOCKED
 suffix:semicolon
-multiline_comment|/* Given src, dst and key, find approriate for input tunnel. */
+multiline_comment|/* Given src, dst and key, find appropriate for input tunnel. */
 DECL|function|ipgre_tunnel_lookup
 r_static
 r_struct

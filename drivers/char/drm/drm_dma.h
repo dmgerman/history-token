@@ -761,6 +761,26 @@ op_amp
 id|dev-&gt;struct_sem
 )paren
 suffix:semicolon
+multiline_comment|/* Driver must have been initialized */
+r_if
+c_cond
+(paren
+op_logical_neg
+id|dev-&gt;dev_private
+)paren
+(brace
+id|up
+c_func
+(paren
+op_amp
+id|dev-&gt;struct_sem
+)paren
+suffix:semicolon
+r_return
+op_minus
+id|EINVAL
+suffix:semicolon
+)brace
 r_if
 c_cond
 (paren

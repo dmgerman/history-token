@@ -121,7 +121,7 @@ id|comx_hardware
 id|cmx_hw
 suffix:semicolon
 r_static
-r_void
+id|irqreturn_t
 id|COMX_interrupt
 c_func
 (paren
@@ -1421,7 +1421,7 @@ suffix:semicolon
 )brace
 DECL|function|COMX_interrupt
 r_static
-r_void
+id|irqreturn_t
 id|COMX_interrupt
 c_func
 (paren
@@ -1499,6 +1499,7 @@ id|irq
 )paren
 suffix:semicolon
 r_return
+id|IRQ_NONE
 suffix:semicolon
 )brace
 id|jiffs
@@ -1979,6 +1980,9 @@ id|dev
 comma
 id|interrupted
 )paren
+suffix:semicolon
+r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 DECL|function|COMX_open

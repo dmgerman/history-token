@@ -3845,6 +3845,7 @@ id|dev_out
 suffix:semicolon
 id|source_ok
 suffix:colon
+suffix:semicolon
 )brace
 multiline_comment|/* No destination? Assume its local */
 r_if

@@ -3788,7 +3788,7 @@ suffix:semicolon
 )brace
 DECL|function|sdla_isr
 r_static
-r_void
+id|irqreturn_t
 id|sdla_isr
 c_func
 (paren
@@ -3840,6 +3840,7 @@ id|irq
 )paren
 suffix:semicolon
 r_return
+id|IRQ_NONE
 suffix:semicolon
 )brace
 id|flp
@@ -3865,6 +3866,7 @@ id|irq
 )paren
 suffix:semicolon
 r_return
+id|IRQ_NONE
 suffix:semicolon
 )brace
 id|byte
@@ -4019,6 +4021,9 @@ r_sizeof
 id|byte
 )paren
 )paren
+suffix:semicolon
+r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 DECL|function|sdla_poll

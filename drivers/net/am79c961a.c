@@ -25,7 +25,7 @@ DECL|macro|RX_BUFFERS
 mdefine_line|#define RX_BUFFERS 25
 macro_line|#include &quot;am79c961a.h&quot;
 r_static
-r_void
+id|irqreturn_t
 id|am79c961_interrupt
 (paren
 r_int
@@ -2941,7 +2941,7 @@ id|dev
 suffix:semicolon
 )brace
 r_static
-r_void
+id|irqreturn_t
 DECL|function|am79c961_interrupt
 id|am79c961_interrupt
 c_func
@@ -2986,6 +2986,11 @@ suffix:semicolon
 id|u_int
 id|status
 suffix:semicolon
+r_int
+id|handled
+op_assign
+l_int|0
+suffix:semicolon
 id|status
 op_assign
 id|read_rreg
@@ -3023,6 +3028,11 @@ id|status
 op_amp
 id|CSR0_RINT
 )paren
+(brace
+id|handled
+op_assign
+l_int|1
+suffix:semicolon
 id|am79c961_rx
 c_func
 (paren
@@ -3031,6 +3041,7 @@ comma
 id|priv
 )paren
 suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
@@ -3038,6 +3049,11 @@ id|status
 op_amp
 id|CSR0_TINT
 )paren
+(brace
+id|handled
+op_assign
+l_int|1
+suffix:semicolon
 id|am79c961_tx
 c_func
 (paren
@@ -3046,6 +3062,7 @@ comma
 id|priv
 )paren
 suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
@@ -3053,8 +3070,21 @@ id|status
 op_amp
 id|CSR0_MISS
 )paren
+(brace
+id|handled
+op_assign
+l_int|1
+suffix:semicolon
 id|priv-&gt;stats.rx_dropped
 op_increment
+suffix:semicolon
+)brace
+r_return
+id|IRQ_RETVAL
+c_func
+(paren
+id|handled
+)paren
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Initialise the chip.  Note that we always expect&n; * to be entered with interrupts enabled.&n; */

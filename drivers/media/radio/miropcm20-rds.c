@@ -4,7 +4,6 @@ macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/miscdevice.h&gt;
-macro_line|#include &lt;linux/devfs_fs_kernel.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &quot;miropcm20-rds-core.h&quot;
 DECL|variable|text_buffer
@@ -377,6 +376,11 @@ op_assign
 l_string|&quot;radiotext&quot;
 comma
 dot
+id|devfs_name
+op_assign
+l_string|&quot;v4l/rds/radiotext&quot;
+comma
+dot
 id|fops
 op_assign
 op_amp
@@ -394,50 +398,13 @@ c_func
 r_void
 )paren
 (brace
-r_int
-id|error
-suffix:semicolon
-id|error
-op_assign
+r_return
 id|misc_register
 c_func
 (paren
 op_amp
 id|rds_miscdev
 )paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|error
-)paren
-r_return
-id|error
-suffix:semicolon
-id|error
-op_assign
-id|devfs_mk_symlink
-c_func
-(paren
-l_string|&quot;v4l/rds/radiotext&quot;
-comma
-l_string|&quot;../misc/radiotext&quot;
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|error
-)paren
-id|misc_deregister
-c_func
-(paren
-op_amp
-id|rds_miscdev
-)paren
-suffix:semicolon
-r_return
-id|error
 suffix:semicolon
 )brace
 DECL|function|miropcm20_rds_cleanup
@@ -450,12 +417,6 @@ c_func
 r_void
 )paren
 (brace
-id|devfs_remove
-c_func
-(paren
-l_string|&quot;v4l/rds/radiotext&quot;
-)paren
-suffix:semicolon
 id|misc_deregister
 c_func
 (paren

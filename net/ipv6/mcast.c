@@ -10685,10 +10685,6 @@ id|psf
 suffix:semicolon
 r_int
 r_int
-id|icount
-comma
-id|xcount
-comma
 id|i
 suffix:semicolon
 id|spin_lock_bh

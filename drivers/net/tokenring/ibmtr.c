@@ -379,7 +379,7 @@ op_star
 id|dev
 )paren
 suffix:semicolon
-r_void
+id|irqreturn_t
 id|tok_interrupt
 c_func
 (paren
@@ -5515,7 +5515,7 @@ suffix:semicolon
 )brace
 multiline_comment|/******************************************************************************/
 DECL|function|tok_interrupt
-r_void
+id|irqreturn_t
 id|tok_interrupt
 c_func
 (paren
@@ -5588,6 +5588,7 @@ op_amp
 l_int|1
 )paren
 r_return
+id|IRQ_NONE
 suffix:semicolon
 multiline_comment|/* PCMCIA card extraction flag */
 id|spin_lock
@@ -5697,6 +5698,7 @@ id|ti-&gt;lock
 )paren
 suffix:semicolon
 r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 multiline_comment|/*  Begin interrupt handler HERE inline to avoid the extra&n;&t;    levels of logic and call depth for the original solution. */
@@ -5936,6 +5938,7 @@ id|ti-&gt;lock
 )paren
 suffix:semicolon
 r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 r_if
@@ -6068,6 +6071,7 @@ id|ti-&gt;lock
 )paren
 suffix:semicolon
 r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 r_if
@@ -7298,6 +7302,9 @@ op_amp
 id|ti-&gt;lock
 )paren
 )paren
+suffix:semicolon
+r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 multiline_comment|/*tok_interrupt */

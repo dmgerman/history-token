@@ -19,9 +19,11 @@ mdefine_line|#define DRM_WRITE8(map, offset, val)&t;writeb(val, ((unsigned long)
 DECL|macro|DRM_WRITE32
 mdefine_line|#define DRM_WRITE32(map, offset, val)&t;writel(val, ((unsigned long)(map)-&gt;handle) + (offset))
 DECL|macro|DRM_READMEMORYBARRIER
-mdefine_line|#define DRM_READMEMORYBARRIER(map)&t;mb()
+mdefine_line|#define DRM_READMEMORYBARRIER()&t;&t;rmb()
 DECL|macro|DRM_WRITEMEMORYBARRIER
-mdefine_line|#define DRM_WRITEMEMORYBARRIER(map)&t;wmb()
+mdefine_line|#define DRM_WRITEMEMORYBARRIER()&t;wmb()
+DECL|macro|DRM_MEMORYBARRIER
+mdefine_line|#define DRM_MEMORYBARRIER()&t;&t;mb()
 DECL|macro|DRM_DEVICE
 mdefine_line|#define DRM_DEVICE&t;drm_file_t&t;*priv&t;= filp-&gt;private_data; &bslash;&n;&t;&t;&t;drm_device_t&t;*dev&t;= priv-&gt;dev
 DECL|macro|DRM_IRQ_ARGS

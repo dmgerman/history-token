@@ -48,6 +48,10 @@ macro_line|#ifndef __HAVE_SG
 DECL|macro|__HAVE_SG
 mdefine_line|#define __HAVE_SG&t;&t;&t;0
 macro_line|#endif
+macro_line|#ifndef __HAVE_KERNEL_CTX_SWITCH
+DECL|macro|__HAVE_KERNEL_CTX_SWITCH
+mdefine_line|#define __HAVE_KERNEL_CTX_SWITCH&t;0
+macro_line|#endif
 macro_line|#ifndef __HAVE_DRIVER_FOPS_READ
 DECL|macro|__HAVE_DRIVER_FOPS_READ
 mdefine_line|#define __HAVE_DRIVER_FOPS_READ&t;&t;0
@@ -4713,6 +4717,30 @@ c_func
 suffix:semicolon
 )brace
 macro_line|#endif
+macro_line|#if __HAVE_KERNEL_CTX_SWITCH
+r_if
+c_cond
+(paren
+id|dev-&gt;last_context
+op_ne
+id|lock.context
+)paren
+(brace
+id|DRM
+c_func
+(paren
+id|context_switch
+)paren
+(paren
+id|dev
+comma
+id|dev-&gt;last_context
+comma
+id|lock.context
+)paren
+suffix:semicolon
+)brace
+macro_line|#endif
 )brace
 id|DRM_DEBUG
 c_func
@@ -4833,6 +4861,77 @@ id|_DRM_STAT_UNLOCKS
 )braket
 )paren
 suffix:semicolon
+macro_line|#if __HAVE_KERNEL_CTX_SWITCH
+multiline_comment|/* We no longer really hold it, but if we are the next&n;&t; * agent to request it then we should just be able to&n;&t; * take it immediately and not eat the ioctl.&n;&t; */
+id|dev-&gt;lock.filp
+op_assign
+l_int|0
+suffix:semicolon
+(brace
+id|__volatile__
+r_int
+r_int
+op_star
+id|plock
+op_assign
+op_amp
+id|dev-&gt;lock.hw_lock-&gt;lock
+suffix:semicolon
+r_int
+r_int
+id|old
+comma
+r_new
+comma
+id|prev
+comma
+id|ctx
+suffix:semicolon
+id|ctx
+op_assign
+id|lock.context
+suffix:semicolon
+r_do
+(brace
+id|old
+op_assign
+op_star
+id|plock
+suffix:semicolon
+r_new
+op_assign
+id|ctx
+suffix:semicolon
+id|prev
+op_assign
+id|cmpxchg
+c_func
+(paren
+id|plock
+comma
+id|old
+comma
+r_new
+)paren
+suffix:semicolon
+)brace
+r_while
+c_loop
+(paren
+id|prev
+op_ne
+id|old
+)paren
+suffix:semicolon
+)brace
+id|wake_up_interruptible
+c_func
+(paren
+op_amp
+id|dev-&gt;lock.lock_queue
+)paren
+suffix:semicolon
+macro_line|#else
 id|DRM
 c_func
 (paren
@@ -4894,6 +4993,7 @@ l_string|&quot;&bslash;n&quot;
 suffix:semicolon
 )brace
 )brace
+macro_line|#endif /* !__HAVE_KERNEL_CTX_SWITCH */
 id|unblock_all_signals
 c_func
 (paren

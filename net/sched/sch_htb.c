@@ -3184,7 +3184,7 @@ id|sch
 suffix:semicolon
 )brace
 macro_line|#endif
-multiline_comment|/**&n; * htb_charge_class - charges ammount &quot;bytes&quot; to leaf and ancestors&n; *&n; * Routine assumes that packet &quot;bytes&quot; long was dequeued from leaf cl&n; * borrowing from &quot;level&quot;. It accounts bytes to ceil leaky bucket for&n; * leaf and all ancestors and to rate bucket for ancestors at levels&n; * &quot;level&quot; and higher. It also handles possible change of mode resulting&n; * from the update. Note that mode can also increase here (MAY_BORROW to&n; * CAN_SEND) because we can use more precise clock that event queue here.&n; * In such case we remove class from event queue first.&n; */
+multiline_comment|/**&n; * htb_charge_class - charges amount &quot;bytes&quot; to leaf and ancestors&n; *&n; * Routine assumes that packet &quot;bytes&quot; long was dequeued from leaf cl&n; * borrowing from &quot;level&quot;. It accounts bytes to ceil leaky bucket for&n; * leaf and all ancestors and to rate bucket for ancestors at levels&n; * &quot;level&quot; and higher. It also handles possible change of mode resulting&n; * from the update. Note that mode can also increase here (MAY_BORROW to&n; * CAN_SEND) because we can use more precise clock that event queue here.&n; * In such case we remove class from event queue first.&n; */
 DECL|function|htb_charge_class
 r_static
 r_void

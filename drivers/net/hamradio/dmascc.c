@@ -682,7 +682,7 @@ id|sa
 )paren
 suffix:semicolon
 r_static
-r_void
+id|irqreturn_t
 id|scc_isr
 c_func
 (paren
@@ -4540,7 +4540,7 @@ suffix:semicolon
 )brace
 DECL|function|scc_isr
 r_static
-r_void
+id|irqreturn_t
 id|scc_isr
 c_func
 (paren
@@ -4703,6 +4703,9 @@ l_int|0
 dot
 id|register_lock
 )paren
+suffix:semicolon
+r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 DECL|function|z8530_isr
