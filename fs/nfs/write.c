@@ -883,7 +883,7 @@ id|page
 suffix:semicolon
 id|io_error
 suffix:colon
-id|nfs_end_data_update
+id|nfs_end_data_update_defer
 c_func
 (paren
 id|inode
@@ -1691,7 +1691,7 @@ op_amp
 id|nfs_wreq_lock
 )paren
 suffix:semicolon
-id|nfs_end_data_update
+id|nfs_end_data_update_defer
 c_func
 (paren
 id|inode
