@@ -201,6 +201,22 @@ DECL|macro|_PAGE_KERNEL
 mdefine_line|#define _PAGE_KERNEL&t;_PAGE_BASE | _PAGE_WRENABLE | _PAGE_SHARED | _PAGE_HWEXEC
 DECL|macro|_PAGE_IO
 mdefine_line|#define _PAGE_IO&t;_PAGE_KERNEL | _PAGE_NO_CACHE | _PAGE_GUARDED
+DECL|macro|_PAGE_RAM
+mdefine_line|#define _PAGE_RAM&t;_PAGE_KERNEL
+macro_line|#if defined(CONFIG_KGDB) || defined(CONFIG_XMON)
+multiline_comment|/* We want the debuggers to be able to set breakpoints anywhere, so&n; * don&squot;t write protect the kernel text */
+DECL|macro|_PAGE_RAM_TEXT
+mdefine_line|#define _PAGE_RAM_TEXT&t;_PAGE_RAM
+macro_line|#else
+macro_line|#ifdef CONFIG_PPC_STD_MMU
+multiline_comment|/* On standard PPC MMU, no user access implies kernel read/write&n; * access, so to write-protect the kernel text we must turn on user&n; * access */
+DECL|macro|_PAGE_RAM_TEXT
+mdefine_line|#define _PAGE_RAM_TEXT&t;(_PAGE_RAM &amp; ~_PAGE_WRENABLE) | _PAGE_USER
+macro_line|#else
+DECL|macro|_PAGE_RAM_TEXT
+mdefine_line|#define _PAGE_RAM_TEXT&t;(_PAGE_RAM &amp; ~_PAGE_WRENABLE)
+macro_line|#endif
+macro_line|#endif
 DECL|macro|PAGE_NONE
 mdefine_line|#define PAGE_NONE&t;__pgprot(_PAGE_BASE)
 DECL|macro|PAGE_READONLY
