@@ -306,6 +306,16 @@ id|sdev-&gt;use_10_for_ms
 op_assign
 l_int|1
 suffix:semicolon
+id|blk_queue_max_phys_segments
+c_func
+(paren
+id|sdev-&gt;request_queue
+comma
+id|ATA_MAX_PRD
+op_div
+l_int|2
+)paren
+suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
