@@ -23,10 +23,6 @@ macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
-macro_line|#ifdef CONFIG_AMIGA
-macro_line|#include &lt;asm/amigahw.h&gt;
-macro_line|#include &lt;asm/amigaints.h&gt;
-macro_line|#endif&t;&t;&t;&t;/* CONFIG_AMIGA */
 macro_line|#ifdef CONFIG_ATARI
 macro_line|#include &lt;asm/atariints.h&gt;
 macro_line|#endif
@@ -175,8 +171,6 @@ mdefine_line|#define CURSOR_DRAW_DELAY&t;&t;(1)
 multiline_comment|/* # VBL ints between cursor state changes */
 DECL|macro|ARM_CURSOR_BLINK_RATE
 mdefine_line|#define ARM_CURSOR_BLINK_RATE&t;&t;(10)
-DECL|macro|AMIGA_CURSOR_BLINK_RATE
-mdefine_line|#define AMIGA_CURSOR_BLINK_RATE&t;&t;(20)
 DECL|macro|ATARI_CURSOR_BLINK_RATE
 mdefine_line|#define ATARI_CURSOR_BLINK_RATE&t;&t;(42)
 DECL|macro|MAC_CURSOR_BLINK_RATE
@@ -2815,35 +2809,6 @@ id|info-&gt;display_fg
 op_assign
 id|vc
 suffix:semicolon
-macro_line|#ifdef CONFIG_AMIGA
-r_if
-c_cond
-(paren
-id|MACH_IS_AMIGA
-)paren
-(brace
-id|cursor_blink_rate
-op_assign
-id|AMIGA_CURSOR_BLINK_RATE
-suffix:semicolon
-id|irqres
-op_assign
-id|request_irq
-c_func
-(paren
-id|IRQ_AMIGA_VERTB
-comma
-id|fb_vbl_handler
-comma
-l_int|0
-comma
-l_string|&quot;framebuffer vbl&quot;
-comma
-id|info
-)paren
-suffix:semicolon
-)brace
-macro_line|#endif&t;&t;&t;&t;/* CONFIG_AMIGA */
 macro_line|#ifdef CONFIG_ATARI
 r_if
 c_cond
