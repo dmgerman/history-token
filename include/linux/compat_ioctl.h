@@ -292,6 +292,11 @@ id|HDIO_DRIVE_CMD
 id|COMPATIBLE_IOCTL
 c_func
 (paren
+id|HDIO_DRIVE_TASK
+)paren
+id|COMPATIBLE_IOCTL
+c_func
+(paren
 id|HDIO_SET_PIO_MODE
 )paren
 id|COMPATIBLE_IOCTL

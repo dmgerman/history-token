@@ -12,6 +12,7 @@ macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;linux/unistd.h&gt;
 macro_line|#include &lt;linux/fcntl.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
+macro_line|#include &lt;linux/syscalls.h&gt;
 macro_line|#include &quot;dvb_frontend.h&quot;
 macro_line|#include &quot;dvb_functions.h&quot;
 macro_line|#ifndef DVB_TDA1004X_FIRMWARE_FILE
