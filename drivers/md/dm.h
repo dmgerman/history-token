@@ -171,7 +171,7 @@ id|md
 )paren
 suffix:semicolon
 r_int
-id|dm_add_wait_queue
+id|dm_wait_event
 c_func
 (paren
 r_struct
@@ -179,26 +179,8 @@ id|mapped_device
 op_star
 id|md
 comma
-id|wait_queue_t
-op_star
-id|wq
-comma
-r_uint32
+r_int
 id|event_nr
-)paren
-suffix:semicolon
-r_void
-id|dm_remove_wait_queue
-c_func
-(paren
-r_struct
-id|mapped_device
-op_star
-id|md
-comma
-id|wait_queue_t
-op_star
-id|wq
 )paren
 suffix:semicolon
 multiline_comment|/*&n; * Info functions.&n; */
