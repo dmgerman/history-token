@@ -9048,7 +9048,7 @@ l_int|9
 )paren
 suffix:semicolon
 DECL|macro|MAYBE_SET
-macro_line|#undef  MAYBE_SET(X,Y)
+macro_line|#undef  MAYBE_SET
 r_return
 l_int|0
 suffix:semicolon
