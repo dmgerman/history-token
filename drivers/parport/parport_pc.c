@@ -10519,6 +10519,7 @@ op_star
 id|p
 )paren
 (brace
+macro_line|#ifdef CONFIG_PARPORT_PC_FIFO
 r_struct
 id|parport_pc_private
 op_star
@@ -10526,6 +10527,7 @@ id|priv
 op_assign
 id|p-&gt;private_data
 suffix:semicolon
+macro_line|#endif /* CONFIG_PARPORT_PC_FIFO */
 r_struct
 id|parport_operations
 op_star
@@ -10609,6 +10611,7 @@ c_func
 id|p
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_PARPORT_PC_FIFO
 r_if
 c_cond
 (paren
@@ -10626,6 +10629,7 @@ comma
 id|priv-&gt;dma_handle
 )paren
 suffix:semicolon
+macro_line|#endif /* CONFIG_PARPORT_PC_FIFO */
 id|kfree
 (paren
 id|p-&gt;private_data
