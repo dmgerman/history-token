@@ -884,8 +884,8 @@ suffix:semicolon
 )brace
 r_static
 r_void
-DECL|function|serial21285_settermios
-id|serial21285_settermios
+DECL|function|serial21285_set_termios
+id|serial21285_set_termios
 c_func
 (paren
 r_struct
@@ -1419,9 +1419,9 @@ op_assign
 id|serial21285_shutdown
 comma
 dot
-id|settermios
+id|set_termios
 op_assign
-id|serial21285_settermios
+id|serial21285_set_termios
 comma
 dot
 id|type

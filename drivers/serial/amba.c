@@ -1414,8 +1414,8 @@ suffix:semicolon
 )brace
 r_static
 r_void
-DECL|function|ambauart_settermios
-id|ambauart_settermios
+DECL|function|ambauart_set_termios
+id|ambauart_set_termios
 c_func
 (paren
 r_struct
@@ -2006,9 +2006,9 @@ op_assign
 id|ambauart_shutdown
 comma
 dot
-id|settermios
+id|set_termios
 op_assign
-id|ambauart_settermios
+id|ambauart_set_termios
 comma
 dot
 id|type

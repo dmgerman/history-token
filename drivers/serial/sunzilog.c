@@ -3810,8 +3810,8 @@ suffix:semicolon
 multiline_comment|/* The port lock is not held.  */
 r_static
 r_void
-DECL|function|sunzilog_settermios
-id|sunzilog_settermios
+DECL|function|sunzilog_set_termios
+id|sunzilog_set_termios
 c_func
 (paren
 r_struct
@@ -4088,9 +4088,9 @@ op_assign
 id|sunzilog_shutdown
 comma
 dot
-id|settermios
+id|set_termios
 op_assign
-id|sunzilog_settermios
+id|sunzilog_set_termios
 comma
 dot
 id|type

@@ -1142,8 +1142,8 @@ suffix:semicolon
 )brace
 r_static
 r_void
-DECL|function|clps711xuart_settermios
-id|clps711xuart_settermios
+DECL|function|clps711xuart_set_termios
+id|clps711xuart_set_termios
 c_func
 (paren
 r_struct
@@ -1528,9 +1528,9 @@ op_assign
 id|clps711xuart_shutdown
 comma
 dot
-id|settermios
+id|set_termios
 op_assign
-id|clps711xuart_settermios
+id|clps711xuart_set_termios
 comma
 dot
 id|type

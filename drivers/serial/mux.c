@@ -611,11 +611,11 @@ id|port
 )paren
 (brace
 )brace
-multiline_comment|/**&n; * mux_settermios - Chane port parameters.&n; * @port: Ptr to the uart_port.&n; * @termios: new termios settings.&n; * @old: old termios settings.&n; *&n; * The Serial Mux does not support this function.&n; */
+multiline_comment|/**&n; * mux_set_termios - Chane port parameters.&n; * @port: Ptr to the uart_port.&n; * @termios: new termios settings.&n; * @old: old termios settings.&n; *&n; * The Serial Mux does not support this function.&n; */
 r_static
 r_void
-DECL|function|mux_settermios
-id|mux_settermios
+DECL|function|mux_set_termios
+id|mux_set_termios
 c_func
 (paren
 r_struct
@@ -877,9 +877,9 @@ op_assign
 id|mux_shutdown
 comma
 dot
-id|settermios
+id|set_termios
 op_assign
-id|mux_settermios
+id|mux_set_termios
 comma
 dot
 id|type

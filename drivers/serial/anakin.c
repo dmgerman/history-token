@@ -1115,8 +1115,8 @@ suffix:semicolon
 )brace
 r_static
 r_void
-DECL|function|anakin_settermios
-id|anakin_settermios
+DECL|function|anakin_set_termios
+id|anakin_set_termios
 c_func
 (paren
 r_struct
@@ -1370,9 +1370,9 @@ op_assign
 id|anakin_shutdown
 comma
 dot
-id|settermios
+id|set_termios
 op_assign
-id|anakin_settermios
+id|anakin_set_termios
 comma
 dot
 id|type

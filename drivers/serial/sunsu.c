@@ -2879,7 +2879,7 @@ id|up
 )paren
 suffix:semicolon
 macro_line|#endif
-multiline_comment|/*&n;&t; * Clear the FIFO buffers and disable them.&n;&t; * (they will be reeanbled in settermios())&n;&t; */
+multiline_comment|/*&n;&t; * Clear the FIFO buffers and disable them.&n;&t; * (they will be reeanbled in set_termios())&n;&t; */
 r_if
 c_cond
 (paren
@@ -3120,7 +3120,7 @@ comma
 id|flags
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * Finally, enable interrupts.  Note: Modem status interrupts&n;&t; * are set via settermios(), which will be occuring imminently&n;&t; * anyway, so we don&squot;t enable them here.&n;&t; */
+multiline_comment|/*&n;&t; * Finally, enable interrupts.  Note: Modem status interrupts&n;&t; * are set via set_termios(), which will be occuring imminently&n;&t; * anyway, so we don&squot;t enable them here.&n;&t; */
 id|up-&gt;ier
 op_assign
 id|UART_IER_RLSI
@@ -3957,8 +3957,8 @@ suffix:semicolon
 )brace
 r_static
 r_void
-DECL|function|sunsu_settermios
-id|sunsu_settermios
+DECL|function|sunsu_set_termios
+id|sunsu_set_termios
 c_func
 (paren
 r_struct
@@ -4202,9 +4202,9 @@ op_assign
 id|sunsu_shutdown
 comma
 dot
-id|settermios
+id|set_termios
 op_assign
-id|sunsu_settermios
+id|sunsu_set_termios
 comma
 dot
 id|type

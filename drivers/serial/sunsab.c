@@ -3514,10 +3514,10 @@ id|up-&gt;regs-&gt;rw.mode
 suffix:semicolon
 )brace
 multiline_comment|/* port-&gt;lock is not held.  */
-DECL|function|sunsab_settermios
+DECL|function|sunsab_set_termios
 r_static
 r_void
-id|sunsab_settermios
+id|sunsab_set_termios
 c_func
 (paren
 r_struct
@@ -3742,9 +3742,9 @@ op_assign
 id|sunsab_shutdown
 comma
 dot
-id|settermios
+id|set_termios
 op_assign
-id|sunsab_settermios
+id|sunsab_set_termios
 comma
 dot
 id|type

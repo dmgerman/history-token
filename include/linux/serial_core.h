@@ -220,11 +220,11 @@ id|uart_port
 op_star
 )paren
 suffix:semicolon
-DECL|member|settermios
+DECL|member|set_termios
 r_void
 (paren
 op_star
-id|settermios
+id|set_termios
 )paren
 (paren
 r_struct

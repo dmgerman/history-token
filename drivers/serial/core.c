@@ -1280,7 +1280,7 @@ id|UIF_CHECK_CD
 suffix:semicolon
 id|port-&gt;ops
 op_member_access_from_pointer
-id|settermios
+id|set_termios
 c_func
 (paren
 id|port
@@ -6991,7 +6991,7 @@ id|CRTSCTS
 suffix:semicolon
 id|port-&gt;ops
 op_member_access_from_pointer
-id|settermios
+id|set_termios
 c_func
 (paren
 id|port

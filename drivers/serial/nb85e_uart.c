@@ -1453,8 +1453,8 @@ suffix:semicolon
 )brace
 r_static
 r_void
-DECL|function|nb85e_uart_settermios
-id|nb85e_uart_settermios
+DECL|function|nb85e_uart_set_termios
+id|nb85e_uart_set_termios
 (paren
 r_struct
 id|uart_port
@@ -1646,9 +1646,9 @@ op_assign
 id|nb85e_uart_shutdown
 comma
 dot
-id|settermios
+id|set_termios
 op_assign
-id|nb85e_uart_settermios
+id|nb85e_uart_set_termios
 comma
 dot
 id|type
