@@ -28,7 +28,7 @@ singleline_comment|// buffers are alocated as a large piece inside KorgSharedBuf
 singleline_comment|// ----------------------------------------------------------------------------
 singleline_comment|//#define K1212_LARGEALLOC&t;&t;1
 singleline_comment|// ----------------------------------------------------------------------------
-singleline_comment|// the following enum defines the valid states of the Korg 1212 I/O card.
+singleline_comment|// Valid states of the Korg 1212 I/O card.
 singleline_comment|// ----------------------------------------------------------------------------
 r_typedef
 r_enum
@@ -143,6 +143,18 @@ l_int|7
 comma
 singleline_comment|// tells card to trigger from Adat at a specific
 singleline_comment|//    timecode value.
+DECL|enumerator|K1212_DB_DMAERROR
+id|K1212_DB_DMAERROR
+op_assign
+l_int|0x80
+comma
+singleline_comment|// DMA Error - the PCI bus is congestioned.
+DECL|enumerator|K1212_DB_CARDSTOPPED
+id|K1212_DB_CARDSTOPPED
+op_assign
+l_int|0x81
+comma
+singleline_comment|// Card has stopped by user request.
 DECL|enumerator|K1212_DB_RebootCard
 id|K1212_DB_RebootCard
 op_assign
@@ -172,12 +184,8 @@ DECL|typedef|korg1212_dbcnst_t
 )brace
 id|korg1212_dbcnst_t
 suffix:semicolon
-DECL|macro|K1212_ISRCODE_DMAERROR
-mdefine_line|#define K1212_ISRCODE_DMAERROR      0x80
-DECL|macro|K1212_ISRCODE_CARDSTOPPED
-mdefine_line|#define K1212_ISRCODE_CARDSTOPPED   0x81
 singleline_comment|// ----------------------------------------------------------------------------
-singleline_comment|// The following enumeration defines return codes for DeviceIoControl() calls
+singleline_comment|// The following enumeration defines return codes 
 singleline_comment|// to the Korg 1212 I/O driver.
 singleline_comment|// ----------------------------------------------------------------------------
 r_typedef
@@ -235,11 +243,6 @@ DECL|enumerator|K1212_CMDRET_BadParams
 id|K1212_CMDRET_BadParams
 comma
 singleline_comment|// bad parameters were provided by the caller
-singleline_comment|// --------------------------------------------------------------
-singleline_comment|// the following return errors are specific to the wave device
-singleline_comment|// driver interface.  These will not be encountered by users of
-singleline_comment|// the 32 bit DIOC interface (a.k.a. custom or native API).
-singleline_comment|// --------------------------------------------------------------
 DECL|enumerator|K1212_CMDRET_BadDevice
 id|K1212_CMDRET_BadDevice
 comma
@@ -1049,6 +1052,25 @@ r_int
 id|playcnt
 suffix:semicolon
 singleline_comment|// TriggerPlay count
+DECL|member|errorcnt
+r_int
+id|errorcnt
+suffix:semicolon
+singleline_comment|// Error Count
+DECL|member|totalerrorcnt
+r_int
+r_int
+id|totalerrorcnt
+suffix:semicolon
+singleline_comment|// Total Error Count
+DECL|member|dsp_is_loaded
+r_int
+id|dsp_is_loaded
+suffix:semicolon
+DECL|member|dsp_stop_is_processed
+r_int
+id|dsp_stop_is_processed
+suffix:semicolon
 )brace
 suffix:semicolon
 id|MODULE_DESCRIPTION
@@ -1909,6 +1931,10 @@ comma
 id|flags
 )paren
 suffix:semicolon
+id|korg1212-&gt;dsp_stop_is_processed
+op_assign
+l_int|0
+suffix:semicolon
 id|snd_korg1212_SendStop
 c_func
 (paren
@@ -1924,11 +1950,12 @@ comma
 id|flags
 )paren
 suffix:semicolon
-id|sleep_on_timeout
+id|wait_event_timeout
 c_func
 (paren
-op_amp
 id|korg1212-&gt;wait
+comma
+id|korg1212-&gt;dsp_stop_is_processed
 comma
 (paren
 id|HZ
@@ -1986,6 +2013,10 @@ multiline_comment|/* ack&squot;ed */
 id|korg1212-&gt;stop_pending_cnt
 op_assign
 l_int|0
+suffix:semicolon
+id|korg1212-&gt;dsp_stop_is_processed
+op_assign
+l_int|1
 suffix:semicolon
 id|wake_up
 c_func
@@ -2050,6 +2081,10 @@ comma
 op_amp
 id|korg1212-&gt;sharedBufferPtr-&gt;cardCommand
 )paren
+suffix:semicolon
+id|korg1212-&gt;dsp_stop_is_processed
+op_assign
+l_int|1
 suffix:semicolon
 id|wake_up
 c_func
@@ -2869,22 +2904,9 @@ id|korg1212
 )paren
 (brace
 r_int
-r_int
-id|flags
-suffix:semicolon
-r_int
 id|ret
 op_assign
 l_int|1
-suffix:semicolon
-id|spin_lock_irqsave
-c_func
-(paren
-op_amp
-id|korg1212-&gt;lock
-comma
-id|flags
-)paren
 suffix:semicolon
 r_if
 c_cond
@@ -2913,15 +2935,6 @@ op_assign
 l_int|0
 suffix:semicolon
 )brace
-id|spin_unlock_irqrestore
-c_func
-(paren
-op_amp
-id|korg1212-&gt;lock
-comma
-id|flags
-)paren
-suffix:semicolon
 r_return
 id|ret
 suffix:semicolon
@@ -4181,6 +4194,11 @@ id|korg1212-&gt;cardState
 op_eq
 id|K1212_STATE_DSP_IN_PROCESS
 )paren
+(brace
+id|korg1212-&gt;dsp_is_loaded
+op_assign
+l_int|1
+suffix:semicolon
 id|wake_up
 c_func
 (paren
@@ -4188,13 +4206,14 @@ op_amp
 id|korg1212-&gt;wait
 )paren
 suffix:semicolon
+)brace
 r_break
 suffix:semicolon
 singleline_comment|// ------------------------------------------------------------------------
 singleline_comment|// an error occurred - stop the card
 singleline_comment|// ------------------------------------------------------------------------
 r_case
-id|K1212_ISRCODE_DMAERROR
+id|K1212_DB_DMAERROR
 suffix:colon
 macro_line|#if K1212_DEBUG_LEVEL &gt; 1
 id|K1212_DEBUG_PRINTK
@@ -4213,6 +4232,19 @@ id|korg1212-&gt;cardState
 )paren
 suffix:semicolon
 macro_line|#endif
+id|snd_printk
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;korg1212: DMA Error&bslash;n&quot;
+)paren
+suffix:semicolon
+id|korg1212-&gt;errorcnt
+op_increment
+suffix:semicolon
+id|korg1212-&gt;totalerrorcnt
+op_increment
+suffix:semicolon
 id|writel
 c_func
 (paren
@@ -4237,7 +4269,7 @@ singleline_comment|// the card has stopped by our request.  Clear the command wo
 singleline_comment|// the semaphore in case someone is waiting for this.
 singleline_comment|// ------------------------------------------------------------------------
 r_case
-id|K1212_ISRCODE_CARDSTOPPED
+id|K1212_DB_CARDSTOPPED
 suffix:colon
 macro_line|#if K1212_DEBUG_LEVEL &gt; 1
 id|K1212_DEBUG_PRINTK
@@ -4493,20 +4525,27 @@ id|korg1212-&gt;cardState
 )paren
 suffix:semicolon
 macro_line|#endif
-r_if
-c_cond
-(paren
-op_logical_neg
-id|sleep_on_timeout
+id|korg1212-&gt;dsp_is_loaded
+op_assign
+l_int|0
+suffix:semicolon
+id|wait_event_timeout
 c_func
 (paren
-op_amp
 id|korg1212-&gt;wait
+comma
+id|korg1212-&gt;dsp_is_loaded
 comma
 id|HZ
 op_star
 id|CARD_BOOT_TIMEOUT
 )paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|korg1212-&gt;dsp_is_loaded
 )paren
 r_return
 op_minus
@@ -5351,6 +5390,10 @@ id|korg1212-&gt;channels
 op_assign
 id|K1212_CHANNELS
 suffix:semicolon
+id|korg1212-&gt;errorcnt
+op_assign
+l_int|0
+suffix:semicolon
 id|spin_unlock_irqrestore
 c_func
 (paren
@@ -5426,7 +5469,6 @@ c_func
 id|substream
 )paren
 suffix:semicolon
-singleline_comment|// ???
 id|snd_korg1212_OpenCard
 c_func
 (paren
@@ -8267,6 +8309,16 @@ comma
 id|korg1212-&gt;irqcount
 )paren
 suffix:semicolon
+id|snd_iprintf
+c_func
+(paren
+id|buffer
+comma
+l_string|&quot;    Error count: %ld&bslash;n&quot;
+comma
+id|korg1212-&gt;totalerrorcnt
+)paren
+suffix:semicolon
 )brace
 DECL|function|snd_korg1212_proc_init
 r_static
@@ -8715,6 +8767,10 @@ id|korg1212-&gt;setcnt
 op_assign
 l_int|0
 suffix:semicolon
+id|korg1212-&gt;totalerrorcnt
+op_assign
+l_int|0
+suffix:semicolon
 id|korg1212-&gt;playback_pid
 op_assign
 op_minus
@@ -8915,7 +8971,7 @@ id|snd_printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;unable to remap memory region 0x%lx-0x%lx&bslash;n&quot;
+l_string|&quot;korg1212: unable to remap memory region 0x%lx-0x%lx&bslash;n&quot;
 comma
 id|korg1212-&gt;iomem
 comma
@@ -8969,7 +9025,7 @@ id|snd_printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;unable to grab IRQ %d&bslash;n&quot;
+l_string|&quot;korg1212: unable to grab IRQ %d&bslash;n&quot;
 comma
 id|pci-&gt;irq
 )paren
@@ -9199,7 +9255,7 @@ id|snd_printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;can not allocate shared buffer memory (%Zd bytes)&bslash;n&quot;
+l_string|&quot;korg1212: can not allocate shared buffer memory (%Zd bytes)&bslash;n&quot;
 comma
 r_sizeof
 (paren
@@ -9284,7 +9340,7 @@ id|snd_printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;can not allocate play data buffer memory (%d bytes)&bslash;n&quot;
+l_string|&quot;korg1212: can not allocate play data buffer memory (%d bytes)&bslash;n&quot;
 comma
 id|korg1212-&gt;DataBufsSize
 )paren
@@ -9353,7 +9409,7 @@ id|snd_printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;can not allocate record data buffer memory (%d bytes)&bslash;n&quot;
+l_string|&quot;korg1212: can not allocate record data buffer memory (%d bytes)&bslash;n&quot;
 comma
 id|korg1212-&gt;DataBufsSize
 )paren
@@ -9506,7 +9562,7 @@ id|snd_printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;can not allocate dsp code memory (%d bytes)&bslash;n&quot;
+l_string|&quot;korg1212: can not allocate dsp code memory (%d bytes)&bslash;n&quot;
 comma
 id|korg1212-&gt;dspCodeSize
 )paren
@@ -9637,15 +9693,15 @@ r_return
 op_minus
 id|EBUSY
 suffix:semicolon
-id|printk
+id|snd_printk
 c_func
 (paren
-id|KERN_INFO
-l_string|&quot;dspMemPhy       = %08x U[%08x]&bslash;n&quot;
-l_string|&quot;PlayDataPhy     = %08x L[%08x]&bslash;n&quot;
-l_string|&quot;RecDataPhy      = %08x L[%08x]&bslash;n&quot;
-l_string|&quot;VolumeTablePhy  = %08x L[%08x]&bslash;n&quot;
-l_string|&quot;RoutingTablePhy = %08x L[%08x]&bslash;n&quot;
+id|KERN_ERR
+l_string|&quot;korg1212: dspMemPhy = %08x U[%08x], &quot;
+l_string|&quot;PlayDataPhy = %08x L[%08x]&bslash;n&quot;
+l_string|&quot;korg1212: RecDataPhy = %08x L[%08x], &quot;
+l_string|&quot;VolumeTablePhy = %08x L[%08x]&bslash;n&quot;
+l_string|&quot;korg1212: RoutingTablePhy = %08x L[%08x], &quot;
 l_string|&quot;AdatTimeCodePhy = %08x L[%08x]&bslash;n&quot;
 comma
 (paren
