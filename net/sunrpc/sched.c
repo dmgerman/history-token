@@ -3866,7 +3866,7 @@ l_string|&quot;%05d %04d %04x %06d %8p %6d %8p %08ld %8s %8p %8p&bslash;n&quot;
 comma
 id|t-&gt;tk_pid
 comma
-id|t-&gt;tk_msg.rpc_proc
+id|t-&gt;tk_msg.rpc_proc-&gt;p_proc
 comma
 id|t-&gt;tk_flags
 comma

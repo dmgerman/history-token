@@ -3113,33 +3113,19 @@ DECL|macro|MAX
 macro_line|# define MAX(a, b)&t;(((a) &gt; (b))? (a) : (b))
 macro_line|#endif
 DECL|macro|PROC
-mdefine_line|#define PROC(proc, argtype, restype, timer)&t;&t;&t;&t;&bslash;&n;    { .p_procname =  &quot;nfs_&quot; #proc,&t;&t;&t;&t;&t;&bslash;&n;      .p_encode   =  (kxdrproc_t) nfs_xdr_##argtype,&t;&t;&t;&bslash;&n;      .p_decode   =  (kxdrproc_t) nfs_xdr_##restype,&t;&t;&t;&bslash;&n;      .p_bufsiz   =  MAX(NFS_##argtype##_sz,NFS_##restype##_sz) &lt;&lt; 2,&t;&bslash;&n;      .p_timer    =  timer&t;&t;&t;&t;&t;&t;&bslash;&n;    }
+mdefine_line|#define PROC(proc, argtype, restype, timer)&t;&t;&t;&t;&bslash;&n;[NFSPROC_##proc] = {&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;.p_proc&t;    =  NFSPROC_##proc,&t;&t;&t;&t;&t;&bslash;&n;&t;.p_encode   =  (kxdrproc_t) nfs_xdr_##argtype,&t;&t;&t;&bslash;&n;&t;.p_decode   =  (kxdrproc_t) nfs_xdr_##restype,&t;&t;&t;&bslash;&n;&t;.p_bufsiz   =  MAX(NFS_##argtype##_sz,NFS_##restype##_sz) &lt;&lt; 2,&t;&bslash;&n;&t;.p_timer    =  timer&t;&t;&t;&t;&t;&t;&bslash;&n;&t;}
 DECL|variable|nfs_procedures
-r_static
 r_struct
 id|rpc_procinfo
 id|nfs_procedures
 (braket
-l_int|18
 )braket
 op_assign
 (brace
 id|PROC
 c_func
 (paren
-id|null
-comma
-id|enc_void
-comma
-id|dec_void
-comma
-l_int|0
-)paren
-comma
-id|PROC
-c_func
-(paren
-id|getattr
+id|GETATTR
 comma
 id|fhandle
 comma
@@ -3151,7 +3137,7 @@ comma
 id|PROC
 c_func
 (paren
-id|setattr
+id|SETATTR
 comma
 id|sattrargs
 comma
@@ -3163,19 +3149,7 @@ comma
 id|PROC
 c_func
 (paren
-id|root
-comma
-id|enc_void
-comma
-id|dec_void
-comma
-l_int|0
-)paren
-comma
-id|PROC
-c_func
-(paren
-id|lookup
+id|LOOKUP
 comma
 id|diropargs
 comma
@@ -3187,7 +3161,7 @@ comma
 id|PROC
 c_func
 (paren
-id|readlink
+id|READLINK
 comma
 id|readlinkargs
 comma
@@ -3199,7 +3173,7 @@ comma
 id|PROC
 c_func
 (paren
-id|read
+id|READ
 comma
 id|readargs
 comma
@@ -3211,19 +3185,7 @@ comma
 id|PROC
 c_func
 (paren
-id|writecache
-comma
-id|enc_void
-comma
-id|dec_void
-comma
-l_int|0
-)paren
-comma
-id|PROC
-c_func
-(paren
-id|write
+id|WRITE
 comma
 id|writeargs
 comma
@@ -3235,7 +3197,7 @@ comma
 id|PROC
 c_func
 (paren
-id|create
+id|CREATE
 comma
 id|createargs
 comma
@@ -3247,7 +3209,7 @@ comma
 id|PROC
 c_func
 (paren
-id|remove
+id|REMOVE
 comma
 id|diropargs
 comma
@@ -3259,7 +3221,7 @@ comma
 id|PROC
 c_func
 (paren
-id|rename
+id|RENAME
 comma
 id|renameargs
 comma
@@ -3271,7 +3233,7 @@ comma
 id|PROC
 c_func
 (paren
-id|link
+id|LINK
 comma
 id|linkargs
 comma
@@ -3283,7 +3245,7 @@ comma
 id|PROC
 c_func
 (paren
-id|symlink
+id|SYMLINK
 comma
 id|symlinkargs
 comma
@@ -3295,7 +3257,7 @@ comma
 id|PROC
 c_func
 (paren
-id|mkdir
+id|MKDIR
 comma
 id|createargs
 comma
@@ -3307,7 +3269,7 @@ comma
 id|PROC
 c_func
 (paren
-id|rmdir
+id|RMDIR
 comma
 id|diropargs
 comma
@@ -3319,7 +3281,7 @@ comma
 id|PROC
 c_func
 (paren
-id|readdir
+id|READDIR
 comma
 id|readdirargs
 comma
@@ -3331,7 +3293,7 @@ comma
 id|PROC
 c_func
 (paren
-id|statfs
+id|STATFS
 comma
 id|fhandle
 comma

@@ -56,8 +56,6 @@ DECL|macro|NFS3_pathconf_sz
 mdefine_line|#define NFS3_pathconf_sz&t;&t;
 DECL|macro|NFS3_entry_sz
 mdefine_line|#define NFS3_entry_sz&t;&t;NFS3_filename_sz+3
-DECL|macro|NFS3_enc_void_sz
-mdefine_line|#define NFS3_enc_void_sz&t;0
 DECL|macro|NFS3_sattrargs_sz
 mdefine_line|#define NFS3_sattrargs_sz&t;NFS3_fh_sz+NFS3_sattr_sz+3
 DECL|macro|NFS3_diropargs_sz
@@ -86,8 +84,6 @@ DECL|macro|NFS3_readdirargs_sz
 mdefine_line|#define NFS3_readdirargs_sz&t;NFS3_fh_sz+2
 DECL|macro|NFS3_commitargs_sz
 mdefine_line|#define NFS3_commitargs_sz&t;NFS3_fh_sz+3
-DECL|macro|NFS3_dec_void_sz
-mdefine_line|#define NFS3_dec_void_sz&t;0
 DECL|macro|NFS3_attrstat_sz
 mdefine_line|#define NFS3_attrstat_sz&t;1+NFS3_fattr_sz
 DECL|macro|NFS3_wccstat_sz
@@ -1121,41 +1117,6 @@ id|fattr
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * NFS encode functions&n; */
-multiline_comment|/*&n; * Encode void argument&n; */
-r_static
-r_int
-DECL|function|nfs3_xdr_enc_void
-id|nfs3_xdr_enc_void
-c_func
-(paren
-r_struct
-id|rpc_rqst
-op_star
-id|req
-comma
-id|u32
-op_star
-id|p
-comma
-r_void
-op_star
-id|dummy
-)paren
-(brace
-id|req-&gt;rq_slen
-op_assign
-id|xdr_adjust_iovec
-c_func
-(paren
-id|req-&gt;rq_svec
-comma
-id|p
-)paren
-suffix:semicolon
-r_return
-l_int|0
-suffix:semicolon
-)brace
 multiline_comment|/*&n; * Encode file handle argument&n; */
 r_static
 r_int
@@ -3111,31 +3072,6 @@ l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * NFS XDR decode functions&n; */
-multiline_comment|/*&n; * Decode void reply&n; */
-r_static
-r_int
-DECL|function|nfs3_xdr_dec_void
-id|nfs3_xdr_dec_void
-c_func
-(paren
-r_struct
-id|rpc_rqst
-op_star
-id|req
-comma
-id|u32
-op_star
-id|p
-comma
-r_void
-op_star
-id|dummy
-)paren
-(brace
-r_return
-l_int|0
-suffix:semicolon
-)brace
 multiline_comment|/*&n; * Decode attrstat reply.&n; */
 r_static
 r_int
@@ -4808,33 +4744,19 @@ DECL|macro|MAX
 macro_line|# define MAX(a, b)&t;(((a) &gt; (b))? (a) : (b))
 macro_line|#endif
 DECL|macro|PROC
-mdefine_line|#define PROC(proc, argtype, restype, timer)&t;&t;&t;&t;&bslash;&n;    { .p_procname  = &quot;nfs3_&quot; #proc,&t;&t;&t;&t;&t;&bslash;&n;      .p_encode    = (kxdrproc_t) nfs3_xdr_##argtype,&t;&t;&t;&bslash;&n;      .p_decode    = (kxdrproc_t) nfs3_xdr_##restype,&t;&t;&t;&bslash;&n;      .p_bufsiz    = MAX(NFS3_##argtype##_sz,NFS3_##restype##_sz) &lt;&lt; 2,&t;&bslash;&n;      .p_timer     = timer&t;&t;&t;&t;&t;&t;&bslash;&n;    }
+mdefine_line|#define PROC(proc, argtype, restype, timer)&t;&t;&t;&t;&bslash;&n;[NFS3PROC_##proc] = {&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;.p_proc      = NFS3PROC_##proc,&t;&t;&t;&t;&t;&bslash;&n;&t;.p_encode    = (kxdrproc_t) nfs3_xdr_##argtype,&t;&t;&t;&bslash;&n;&t;.p_decode    = (kxdrproc_t) nfs3_xdr_##restype,&t;&t;&t;&bslash;&n;&t;.p_bufsiz    = MAX(NFS3_##argtype##_sz,NFS3_##restype##_sz) &lt;&lt; 2,&t;&bslash;&n;&t;.p_timer     = timer&t;&t;&t;&t;&t;&t;&bslash;&n;&t;}
 DECL|variable|nfs3_procedures
-r_static
 r_struct
 id|rpc_procinfo
 id|nfs3_procedures
 (braket
-l_int|22
 )braket
 op_assign
 (brace
 id|PROC
 c_func
 (paren
-id|null
-comma
-id|enc_void
-comma
-id|dec_void
-comma
-l_int|0
-)paren
-comma
-id|PROC
-c_func
-(paren
-id|getattr
+id|GETATTR
 comma
 id|fhandle
 comma
@@ -4846,7 +4768,7 @@ comma
 id|PROC
 c_func
 (paren
-id|setattr
+id|SETATTR
 comma
 id|sattrargs
 comma
@@ -4858,7 +4780,7 @@ comma
 id|PROC
 c_func
 (paren
-id|lookup
+id|LOOKUP
 comma
 id|diropargs
 comma
@@ -4870,7 +4792,7 @@ comma
 id|PROC
 c_func
 (paren
-id|access
+id|ACCESS
 comma
 id|accessargs
 comma
@@ -4882,7 +4804,7 @@ comma
 id|PROC
 c_func
 (paren
-id|readlink
+id|READLINK
 comma
 id|readlinkargs
 comma
@@ -4894,7 +4816,7 @@ comma
 id|PROC
 c_func
 (paren
-id|read
+id|READ
 comma
 id|readargs
 comma
@@ -4906,7 +4828,7 @@ comma
 id|PROC
 c_func
 (paren
-id|write
+id|WRITE
 comma
 id|writeargs
 comma
@@ -4918,7 +4840,7 @@ comma
 id|PROC
 c_func
 (paren
-id|create
+id|CREATE
 comma
 id|createargs
 comma
@@ -4930,7 +4852,7 @@ comma
 id|PROC
 c_func
 (paren
-id|mkdir
+id|MKDIR
 comma
 id|mkdirargs
 comma
@@ -4942,7 +4864,7 @@ comma
 id|PROC
 c_func
 (paren
-id|symlink
+id|SYMLINK
 comma
 id|symlinkargs
 comma
@@ -4954,7 +4876,7 @@ comma
 id|PROC
 c_func
 (paren
-id|mknod
+id|MKNOD
 comma
 id|mknodargs
 comma
@@ -4966,7 +4888,7 @@ comma
 id|PROC
 c_func
 (paren
-id|remove
+id|REMOVE
 comma
 id|diropargs
 comma
@@ -4978,7 +4900,7 @@ comma
 id|PROC
 c_func
 (paren
-id|rmdir
+id|RMDIR
 comma
 id|diropargs
 comma
@@ -4990,7 +4912,7 @@ comma
 id|PROC
 c_func
 (paren
-id|rename
+id|RENAME
 comma
 id|renameargs
 comma
@@ -5002,7 +4924,7 @@ comma
 id|PROC
 c_func
 (paren
-id|link
+id|LINK
 comma
 id|linkargs
 comma
@@ -5014,7 +4936,7 @@ comma
 id|PROC
 c_func
 (paren
-id|readdir
+id|READDIR
 comma
 id|readdirargs
 comma
@@ -5026,7 +4948,7 @@ comma
 id|PROC
 c_func
 (paren
-id|readdirplus
+id|READDIRPLUS
 comma
 id|readdirargs
 comma
@@ -5038,7 +4960,7 @@ comma
 id|PROC
 c_func
 (paren
-id|fsstat
+id|FSSTAT
 comma
 id|fhandle
 comma
@@ -5050,7 +4972,7 @@ comma
 id|PROC
 c_func
 (paren
-id|fsinfo
+id|FSINFO
 comma
 id|fhandle
 comma
@@ -5062,7 +4984,7 @@ comma
 id|PROC
 c_func
 (paren
-id|pathconf
+id|PATHCONF
 comma
 id|fhandle
 comma
@@ -5074,7 +4996,7 @@ comma
 id|PROC
 c_func
 (paren
-id|commit
+id|COMMIT
 comma
 id|commitargs
 comma
