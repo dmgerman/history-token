@@ -80,10 +80,10 @@ id|urb_priv
 suffix:semicolon
 )brace
 multiline_comment|/*-------------------------------------------------------------------------*/
-multiline_comment|/*&n; * URB goes back to driver, and isn&squot;t reissued.&n; * It&squot;s completely gone from HC data structures.&n; * PRECONDITION:  no locks held  (Giveback can call into HCD.)&n; */
-DECL|function|finish_urb
+multiline_comment|/*&n; * URB goes back to driver, and isn&squot;t reissued.&n; * It&squot;s completely gone from HC data structures.&n; * PRECONDITION:  no locks held, irqs blocked  (Giveback can call into HCD.)&n; */
 r_static
 r_void
+DECL|function|finish_urb
 id|finish_urb
 (paren
 r_struct
@@ -102,10 +102,6 @@ op_star
 id|regs
 )paren
 (brace
-r_int
-r_int
-id|flags
-suffix:semicolon
 singleline_comment|// ASSERT (urb-&gt;hcpriv != 0);
 id|urb_free_priv
 (paren
@@ -118,12 +114,10 @@ id|urb-&gt;hcpriv
 op_assign
 l_int|NULL
 suffix:semicolon
-id|spin_lock_irqsave
+id|spin_lock
 (paren
 op_amp
 id|urb-&gt;lock
-comma
-id|flags
 )paren
 suffix:semicolon
 r_if
@@ -141,12 +135,10 @@ id|urb-&gt;status
 op_assign
 l_int|0
 suffix:semicolon
-id|spin_unlock_irqrestore
+id|spin_unlock
 (paren
 op_amp
 id|urb-&gt;lock
-comma
-id|flags
 )paren
 suffix:semicolon
 singleline_comment|// what lock protects these?
@@ -3175,9 +3167,9 @@ multiline_comment|/* wrap-aware logic stolen from &lt;linux/jiffies.h&gt; */
 DECL|macro|tick_before
 mdefine_line|#define tick_before(t1,t2) ((((s16)(t1))-((s16)(t2))) &lt; 0)
 multiline_comment|/* there are some urbs/eds to unlink; called in_irq(), with HCD locked */
-DECL|function|finish_unlinks
 r_static
 r_void
+DECL|function|finish_unlinks
 id|finish_unlinks
 (paren
 r_struct
@@ -3642,9 +3634,9 @@ suffix:semicolon
 )brace
 multiline_comment|/*-------------------------------------------------------------------------*/
 multiline_comment|/*&n; * Process normal completions (error or success) and clean the schedules.&n; *&n; * This is the main path for handing urbs back to drivers.  The only other&n; * path is finish_unlinks(), which unlinks URBs using ed_rm_list, instead of&n; * scanning the (re-reversed) donelist as this does.&n; */
-DECL|function|dl_done_list
 r_static
 r_void
+DECL|function|dl_done_list
 id|dl_done_list
 (paren
 r_struct
@@ -3728,12 +3720,10 @@ op_eq
 id|urb_priv-&gt;length
 )paren
 (brace
-id|spin_unlock_irqrestore
+id|spin_unlock
 (paren
 op_amp
 id|ohci-&gt;lock
-comma
-id|flags
 )paren
 suffix:semicolon
 id|finish_urb
@@ -3745,12 +3735,10 @@ comma
 id|regs
 )paren
 suffix:semicolon
-id|spin_lock_irqsave
+id|spin_lock
 (paren
 op_amp
 id|ohci-&gt;lock
-comma
-id|flags
 )paren
 suffix:semicolon
 )brace

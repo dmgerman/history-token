@@ -708,6 +708,10 @@ multiline_comment|/* the registers may look crazy here */
 id|ohci_dump_status
 (paren
 id|ohci
+comma
+l_int|0
+comma
+l_int|0
 )paren
 suffix:semicolon
 macro_line|#endif

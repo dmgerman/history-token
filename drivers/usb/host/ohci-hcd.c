@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * OHCI HCD (Host Controller Driver) for USB.&n; *&n; * (C) Copyright 1999 Roman Weissgaerber &lt;weissg@vienna.at&gt;&n; * (C) Copyright 2000-2002 David Brownell &lt;dbrownell@users.sourceforge.net&gt;&n; * &n; * [ Initialisation is based on Linus&squot;  ]&n; * [ uhci code and gregs ohci fragments ]&n; * [ (C) Copyright 1999 Linus Torvalds  ]&n; * [ (C) Copyright 1999 Gregory P. Smith]&n; * &n; * &n; * OHCI is the main &quot;non-Intel/VIA&quot; standard for USB 1.1 host controller&n; * interfaces (though some non-x86 Intel chips use it).  It supports&n; * smarter hardware than UHCI.  A download link for the spec available&n; * through the http://www.usb.org website.&n; *&n; * History:&n; * &n; * 2002/09/03 get rid of ed hashtables, rework periodic scheduling and&n; * &t;bandwidth accounting; if debugging, show schedules in driverfs&n; * 2002/07/19 fixes to management of ED and schedule state.&n; * 2002/06/09 SA-1111 support (Christopher Hoover)&n; * 2002/06/01 remember frame when HC won&squot;t see EDs any more; use that info&n; *&t;to fix urb unlink races caused by interrupt latency assumptions;&n; *&t;minor ED field and function naming updates&n; * 2002/01/18 package as a patch for 2.5.3; this should match the&n; *&t;2.4.17 kernel modulo some bugs being fixed.&n; *&n; * 2001/10/18 merge pmac cleanup (Benjamin Herrenschmidt) and bugfixes&n; *&t;from post-2.4.5 patches.&n; * 2001/09/20 URB_ZERO_PACKET support; hcca_dma portability, OPTi warning&n; * 2001/09/07 match PCI PM changes, errnos from Linus&squot; tree&n; * 2001/05/05 fork 2.4.5 version into &quot;hcd&quot; framework, cleanup, simplify;&n; *&t;pbook pci quirks gone (please fix pbook pci sw!) (db)&n; *&n; * 2001/04/08 Identify version on module load (gb)&n; * 2001/03/24 td/ed hashing to remove bus_to_virt (Steve Longerbeam);&n; &t;pci_map_single (db)&n; * 2001/03/21 td and dev/ed allocation uses new pci_pool API (db)&n; * 2001/03/07 hcca allocation uses pci_alloc_consistent (Steve Longerbeam)&n; *&n; * 2000/09/26 fixed races in removing the private portion of the urb&n; * 2000/09/07 disable bulk and control lists when unlinking the last&n; *&t;endpoint descriptor in order to avoid unrecoverable errors on&n; *&t;the Lucent chips. (rwc@sgi)&n; * 2000/08/29 use bandwidth claiming hooks (thanks Randy!), fix some&n; *&t;urb unlink probs, indentation fixes&n; * 2000/08/11 various oops fixes mostly affecting iso and cleanup from&n; *&t;device unplugs.&n; * 2000/06/28 use PCI hotplug framework, for better power management&n; *&t;and for Cardbus support (David Brownell)&n; * 2000/earlier:  fixes for NEC/Lucent chips; suspend/resume handling&n; *&t;when the controller loses power; handle UE; cleanup; ...&n; *&n; * v5.2 1999/12/07 URB 3rd preview, &n; * v5.1 1999/11/30 URB 2nd preview, cpia, (usb-scsi)&n; * v5.0 1999/11/22 URB Technical preview, Paul Mackerras powerbook susp/resume &n; * &t;i386: HUB, Keyboard, Mouse, Printer &n; *&n; * v4.3 1999/10/27 multiple HCs, bulk_request&n; * v4.2 1999/09/05 ISO API alpha, new dev alloc, neg Error-codes&n; * v4.1 1999/08/27 Randy Dunlap&squot;s - ISO API first impl.&n; * v4.0 1999/08/18 &n; * v3.0 1999/06/25 &n; * v2.1 1999/05/09  code clean up&n; * v2.0 1999/05/04 &n; * v1.0 1999/04/27 initial release&n; *&n; * This file is licenced under the GPL.&n; */
+multiline_comment|/*&n; * OHCI HCD (Host Controller Driver) for USB.&n; *&n; * (C) Copyright 1999 Roman Weissgaerber &lt;weissg@vienna.at&gt;&n; * (C) Copyright 2000-2002 David Brownell &lt;dbrownell@users.sourceforge.net&gt;&n; * &n; * [ Initialisation is based on Linus&squot;  ]&n; * [ uhci code and gregs ohci fragments ]&n; * [ (C) Copyright 1999 Linus Torvalds  ]&n; * [ (C) Copyright 1999 Gregory P. Smith]&n; * &n; * &n; * OHCI is the main &quot;non-Intel/VIA&quot; standard for USB 1.1 host controller&n; * interfaces (though some non-x86 Intel chips use it).  It supports&n; * smarter hardware than UHCI.  A download link for the spec available&n; * through the http://www.usb.org website.&n; *&n; * History:&n; * &n; * 2003/02/24 show registers in sysfs (Kevin Brosius)&n; *&n; * 2002/09/03 get rid of ed hashtables, rework periodic scheduling and&n; * &t;bandwidth accounting; if debugging, show schedules in driverfs&n; * 2002/07/19 fixes to management of ED and schedule state.&n; * 2002/06/09 SA-1111 support (Christopher Hoover)&n; * 2002/06/01 remember frame when HC won&squot;t see EDs any more; use that info&n; *&t;to fix urb unlink races caused by interrupt latency assumptions;&n; *&t;minor ED field and function naming updates&n; * 2002/01/18 package as a patch for 2.5.3; this should match the&n; *&t;2.4.17 kernel modulo some bugs being fixed.&n; *&n; * 2001/10/18 merge pmac cleanup (Benjamin Herrenschmidt) and bugfixes&n; *&t;from post-2.4.5 patches.&n; * 2001/09/20 URB_ZERO_PACKET support; hcca_dma portability, OPTi warning&n; * 2001/09/07 match PCI PM changes, errnos from Linus&squot; tree&n; * 2001/05/05 fork 2.4.5 version into &quot;hcd&quot; framework, cleanup, simplify;&n; *&t;pbook pci quirks gone (please fix pbook pci sw!) (db)&n; *&n; * 2001/04/08 Identify version on module load (gb)&n; * 2001/03/24 td/ed hashing to remove bus_to_virt (Steve Longerbeam);&n; &t;pci_map_single (db)&n; * 2001/03/21 td and dev/ed allocation uses new pci_pool API (db)&n; * 2001/03/07 hcca allocation uses pci_alloc_consistent (Steve Longerbeam)&n; *&n; * 2000/09/26 fixed races in removing the private portion of the urb&n; * 2000/09/07 disable bulk and control lists when unlinking the last&n; *&t;endpoint descriptor in order to avoid unrecoverable errors on&n; *&t;the Lucent chips. (rwc@sgi)&n; * 2000/08/29 use bandwidth claiming hooks (thanks Randy!), fix some&n; *&t;urb unlink probs, indentation fixes&n; * 2000/08/11 various oops fixes mostly affecting iso and cleanup from&n; *&t;device unplugs.&n; * 2000/06/28 use PCI hotplug framework, for better power management&n; *&t;and for Cardbus support (David Brownell)&n; * 2000/earlier:  fixes for NEC/Lucent chips; suspend/resume handling&n; *&t;when the controller loses power; handle UE; cleanup; ...&n; *&n; * v5.2 1999/12/07 URB 3rd preview, &n; * v5.1 1999/11/30 URB 2nd preview, cpia, (usb-scsi)&n; * v5.0 1999/11/22 URB Technical preview, Paul Mackerras powerbook susp/resume &n; * &t;i386: HUB, Keyboard, Mouse, Printer &n; *&n; * v4.3 1999/10/27 multiple HCs, bulk_request&n; * v4.2 1999/09/05 ISO API alpha, new dev alloc, neg Error-codes&n; * v4.1 1999/08/27 Randy Dunlap&squot;s - ISO API first impl.&n; * v4.0 1999/08/18 &n; * v3.0 1999/06/25 &n; * v2.1 1999/05/09  code clean up&n; * v2.0 1999/05/04 &n; * v1.0 1999/04/27 initial release&n; *&n; * This file is licenced under the GPL.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#ifdef CONFIG_USB_DEBUG
 DECL|macro|DEBUG
@@ -28,9 +28,9 @@ macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/unaligned.h&gt;
 macro_line|#include &lt;asm/byteorder.h&gt;
-multiline_comment|/*&n; * TO DO:&n; *&n; *&t;- &quot;disabled&quot; and &quot;sleeping&quot; should be in hcd-&gt;state&n; *&t;- bandwidth alloc to generic code&n; *&t;- lots more testing!!&n; */
+multiline_comment|/*&n; * TO DO:&n; *&n; *&t;- &quot;disabled&quot; and &quot;sleeping&quot; should be in hcd-&gt;state&n; *&t;- lots more testing!!&n; */
 DECL|macro|DRIVER_VERSION
-mdefine_line|#define DRIVER_VERSION &quot;2002-Sep-17&quot;
+mdefine_line|#define DRIVER_VERSION &quot;2003 Feb 24&quot;
 DECL|macro|DRIVER_AUTHOR
 mdefine_line|#define DRIVER_AUTHOR &quot;Roman Weissgaerber, David Brownell&quot;
 DECL|macro|DRIVER_DESC
@@ -603,6 +603,14 @@ l_int|1
 )paren
 suffix:semicolon
 macro_line|#endif&t;&t;  
+id|spin_lock_irqsave
+(paren
+op_amp
+id|ohci-&gt;lock
+comma
+id|flags
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -615,14 +623,6 @@ op_star
 id|urb_priv
 suffix:semicolon
 multiline_comment|/* Unless an IRQ completed the unlink while it was being&n;&t;&t; * handed to us, flag it for unlink and giveback, and force&n;&t;&t; * some upcoming INTR_SF to call finish_unlinks()&n;&t;&t; */
-id|spin_lock_irqsave
-(paren
-op_amp
-id|ohci-&gt;lock
-comma
-id|flags
-)paren
-suffix:semicolon
 id|urb_priv
 op_assign
 id|urb-&gt;hcpriv
@@ -652,18 +652,22 @@ id|urb_priv-&gt;ed
 )paren
 suffix:semicolon
 )brace
-id|spin_unlock_irqrestore
-(paren
-op_amp
-id|ohci-&gt;lock
-comma
-id|flags
-)paren
-suffix:semicolon
 )brace
 r_else
 (brace
 multiline_comment|/*&n;&t;&t; * with HC dead, we won&squot;t respect hc queue pointers&n;&t;&t; * any more ... just clean up every urb&squot;s memory.&n;&t;&t; */
+r_if
+c_cond
+(paren
+id|urb-&gt;hcpriv
+)paren
+(brace
+id|spin_unlock
+(paren
+op_amp
+id|ohci-&gt;lock
+)paren
+suffix:semicolon
 id|finish_urb
 (paren
 id|ohci
@@ -673,7 +677,22 @@ comma
 l_int|NULL
 )paren
 suffix:semicolon
+id|spin_lock
+(paren
+op_amp
+id|ohci-&gt;lock
+)paren
+suffix:semicolon
 )brace
+)brace
+id|spin_unlock_irqrestore
+(paren
+op_amp
+id|ohci-&gt;lock
+comma
+id|flags
+)paren
+suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
