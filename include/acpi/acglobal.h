@@ -92,6 +92,7 @@ id|ACPI_EXTERN
 id|u8
 id|acpi_gbl_integer_nybble_width
 suffix:semicolon
+multiline_comment|/* Keep local copies of these FADT-based registers */
 DECL|variable|acpi_gbl_xpm1a_enable
 id|ACPI_EXTERN
 r_struct

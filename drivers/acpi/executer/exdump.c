@@ -1511,9 +1511,9 @@ id|ACPI_TYPE_DEVICE
 suffix:colon
 id|acpi_ex_out_pointer
 (paren
-l_string|&quot;address_space&quot;
+l_string|&quot;Handler&quot;
 comma
-id|obj_desc-&gt;device.address_space
+id|obj_desc-&gt;device.handler
 )paren
 suffix:semicolon
 id|acpi_ex_out_pointer
@@ -1657,9 +1657,9 @@ id|obj_desc-&gt;region.length
 suffix:semicolon
 id|acpi_ex_out_pointer
 (paren
-l_string|&quot;address_space&quot;
+l_string|&quot;Handler&quot;
 comma
-id|obj_desc-&gt;region.address_space
+id|obj_desc-&gt;region.handler
 )paren
 suffix:semicolon
 id|acpi_ex_out_pointer
@@ -1747,9 +1747,9 @@ id|obj_desc-&gt;processor.device_notify
 suffix:semicolon
 id|acpi_ex_out_pointer
 (paren
-l_string|&quot;address_space&quot;
+l_string|&quot;Handler&quot;
 comma
-id|obj_desc-&gt;processor.address_space
+id|obj_desc-&gt;processor.handler
 )paren
 suffix:semicolon
 r_break
@@ -1773,9 +1773,9 @@ id|obj_desc-&gt;thermal_zone.device_notify
 suffix:semicolon
 id|acpi_ex_out_pointer
 (paren
-l_string|&quot;address_space&quot;
+l_string|&quot;Handler&quot;
 comma
-id|obj_desc-&gt;thermal_zone.address_space
+id|obj_desc-&gt;thermal_zone.handler
 )paren
 suffix:semicolon
 r_break

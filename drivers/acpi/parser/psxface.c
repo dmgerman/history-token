@@ -182,10 +182,12 @@ op_logical_neg
 id|op
 )paren
 (brace
-id|return_ACPI_STATUS
-(paren
+id|status
+op_assign
 id|AE_NO_MEMORY
-)paren
+suffix:semicolon
+r_goto
+id|cleanup1
 suffix:semicolon
 )brace
 multiline_comment|/*&n;&t; * Get a new owner_id for objects created by this method. Namespace&n;&t; * objects (such as Operation Regions) can be created during the&n;&t; * first pass parse.&n;&t; */
@@ -217,10 +219,12 @@ op_logical_neg
 id|walk_state
 )paren
 (brace
-id|return_ACPI_STATUS
-(paren
+id|status
+op_assign
 id|AE_NO_MEMORY
-)paren
+suffix:semicolon
+r_goto
+id|cleanup2
 suffix:semicolon
 )brace
 id|status
@@ -253,15 +257,8 @@ id|status
 )paren
 )paren
 (brace
-id|acpi_ds_delete_walk_state
-(paren
-id|walk_state
-)paren
-suffix:semicolon
-id|return_ACPI_STATUS
-(paren
-id|status
-)paren
+r_goto
+id|cleanup3
 suffix:semicolon
 )brace
 multiline_comment|/* Parse the AML */
@@ -277,6 +274,20 @@ id|acpi_ps_delete_parse_tree
 id|op
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|ACPI_FAILURE
+(paren
+id|status
+)paren
+)paren
+(brace
+r_goto
+id|cleanup1
+suffix:semicolon
+multiline_comment|/* Walk state is already deleted */
+)brace
 multiline_comment|/*&n;&t; * 2) Execute the method.  Performs second pass parse simultaneously&n;&t; */
 id|ACPI_DEBUG_PRINT
 (paren
@@ -305,10 +316,12 @@ op_logical_neg
 id|op
 )paren
 (brace
-id|return_ACPI_STATUS
-(paren
+id|status
+op_assign
 id|AE_NO_MEMORY
-)paren
+suffix:semicolon
+r_goto
+id|cleanup1
 suffix:semicolon
 )brace
 multiline_comment|/* Init new op with the method name and pointer back to the NS node */
@@ -344,10 +357,12 @@ op_logical_neg
 id|walk_state
 )paren
 (brace
-id|return_ACPI_STATUS
-(paren
+id|status
+op_assign
 id|AE_NO_MEMORY
-)paren
+suffix:semicolon
+r_goto
+id|cleanup2
 suffix:semicolon
 )brace
 id|status
@@ -380,15 +395,8 @@ id|status
 )paren
 )paren
 (brace
-id|acpi_ds_delete_walk_state
-(paren
-id|walk_state
-)paren
-suffix:semicolon
-id|return_ACPI_STATUS
-(paren
-id|status
-)paren
+r_goto
+id|cleanup3
 suffix:semicolon
 )brace
 multiline_comment|/*&n;&t; * The walk of the parse tree is where we actually execute the method&n;&t; */
@@ -399,11 +407,26 @@ id|acpi_ps_parse_aml
 id|walk_state
 )paren
 suffix:semicolon
+r_goto
+id|cleanup2
+suffix:semicolon
+multiline_comment|/* Walk state already deleted */
+id|cleanup3
+suffix:colon
+id|acpi_ds_delete_walk_state
+(paren
+id|walk_state
+)paren
+suffix:semicolon
+id|cleanup2
+suffix:colon
 id|acpi_ps_delete_parse_tree
 (paren
 id|op
 )paren
 suffix:semicolon
+id|cleanup1
+suffix:colon
 r_if
 c_cond
 (paren
@@ -442,6 +465,21 @@ id|REF_DECREMENT
 )paren
 suffix:semicolon
 )brace
+)brace
+r_if
+c_cond
+(paren
+id|ACPI_FAILURE
+(paren
+id|status
+)paren
+)paren
+(brace
+id|return_ACPI_STATUS
+(paren
+id|status
+)paren
+suffix:semicolon
 )brace
 multiline_comment|/*&n;&t; * If the method has returned an object, signal this to the caller with&n;&t; * a control exception code&n;&t; */
 r_if

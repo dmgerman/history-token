@@ -184,7 +184,7 @@ suffix:semicolon
 multiline_comment|/* Walk the handler list for this device */
 id|handler_desc
 op_assign
-id|object-&gt;device.address_space
+id|object-&gt;device.handler
 suffix:semicolon
 r_while
 c_loop
@@ -335,7 +335,7 @@ id|second_desc
 multiline_comment|/*&n;&t;&t;&t; * Free the region_context if and only if the handler is one of the&n;&t;&t;&t; * default handlers -- and therefore, we created the context object&n;&t;&t;&t; * locally, it was not created by an external caller.&n;&t;&t;&t; */
 id|handler_desc
 op_assign
-id|object-&gt;region.address_space
+id|object-&gt;region.handler
 suffix:semicolon
 r_if
 c_cond

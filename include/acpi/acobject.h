@@ -29,7 +29,7 @@ DECL|macro|ACPI_COMMON_BUFFER_INFO
 mdefine_line|#define ACPI_COMMON_BUFFER_INFO &bslash;&n;&t;u32                                     length;
 multiline_comment|/*&n; * Common fields for objects that support ASL notifications&n; */
 DECL|macro|ACPI_COMMON_NOTIFY_INFO
-mdefine_line|#define ACPI_COMMON_NOTIFY_INFO &bslash;&n;&t;union acpi_operand_object               *system_notify;     /* Handler for system notifies */&bslash;&n;&t;union acpi_operand_object               *device_notify;     /* Handler for driver notifies */&bslash;&n;&t;union acpi_operand_object               *address_space;     /* Handler for Address space */
+mdefine_line|#define ACPI_COMMON_NOTIFY_INFO &bslash;&n;&t;union acpi_operand_object               *system_notify;     /* Handler for system notifies */&bslash;&n;&t;union acpi_operand_object               *device_notify;     /* Handler for driver notifies */&bslash;&n;&t;union acpi_operand_object               *handler;           /* Handler for Address space */
 multiline_comment|/******************************************************************************&n; *&n; * Basic data types&n; *&n; *****************************************************************************/
 DECL|struct|acpi_object_common
 r_struct
@@ -242,11 +242,11 @@ DECL|member|space_id
 id|u8
 id|space_id
 suffix:semicolon
-DECL|member|address_space
+DECL|member|handler
 r_union
 id|acpi_operand_object
 op_star
-id|address_space
+id|handler
 suffix:semicolon
 multiline_comment|/* Handler for region access */
 DECL|member|node

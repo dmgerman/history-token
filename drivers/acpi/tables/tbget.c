@@ -845,6 +845,11 @@ l_int|1
 )paren
 (brace
 multiline_comment|/* Get the first */
+op_star
+id|table_ptr_loc
+op_assign
+l_int|NULL
+suffix:semicolon
 r_if
 c_cond
 (paren

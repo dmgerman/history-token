@@ -102,11 +102,9 @@ op_logical_neg
 id|acpi_gbl_FADT-&gt;smi_cmd
 )paren
 (brace
-id|ACPI_DEBUG_PRINT
+id|ACPI_REPORT_ERROR
 (paren
 (paren
-id|ACPI_DB_ERROR
-comma
 l_string|&quot;No SMI_CMD in FADT, mode transition failed.&bslash;n&quot;
 )paren
 )paren
@@ -128,12 +126,10 @@ op_logical_neg
 id|acpi_gbl_FADT-&gt;acpi_disable
 )paren
 (brace
-id|ACPI_DEBUG_PRINT
+id|ACPI_REPORT_ERROR
 (paren
 (paren
-id|ACPI_DB_INFO
-comma
-l_string|&quot;No mode transition supported in this system.&bslash;n&quot;
+l_string|&quot;No ACPI mode transition supported in this system (enable/disable both zero)&bslash;n&quot;
 )paren
 )paren
 suffix:semicolon
@@ -224,6 +220,18 @@ id|status
 )paren
 )paren
 (brace
+id|ACPI_REPORT_ERROR
+(paren
+(paren
+l_string|&quot;Could not write mode change, %s&bslash;n&quot;
+comma
+id|acpi_format_exception
+(paren
+id|status
+)paren
+)paren
+)paren
+suffix:semicolon
 id|return_ACPI_STATUS
 (paren
 id|status
@@ -241,10 +249,6 @@ c_loop
 id|retry
 )paren
 (brace
-id|status
-op_assign
-id|AE_NO_HARDWARE_RESPONSE
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -267,11 +271,10 @@ id|mode
 )paren
 )paren
 suffix:semicolon
-id|status
-op_assign
+id|return_ACPI_STATUS
+(paren
 id|AE_OK
-suffix:semicolon
-r_break
+)paren
 suffix:semicolon
 )brace
 id|acpi_os_stall
@@ -284,9 +287,16 @@ id|retry
 op_decrement
 suffix:semicolon
 )brace
+id|ACPI_REPORT_ERROR
+(paren
+(paren
+l_string|&quot;Hardware never changed modes&bslash;n&quot;
+)paren
+)paren
+suffix:semicolon
 id|return_ACPI_STATUS
 (paren
-id|status
+id|AE_NO_HARDWARE_RESPONSE
 )paren
 suffix:semicolon
 )brace

@@ -1426,7 +1426,7 @@ id|ACPI_DESC_TYPE_NAMED
 (brace
 r_return
 (paren
-l_string|&quot;INVALID NODE&quot;
+l_string|&quot;****&quot;
 )paren
 suffix:semicolon
 )brace
@@ -1447,7 +1447,7 @@ id|node-&gt;name.ascii
 (brace
 r_return
 (paren
-l_string|&quot;INVALID NODE NAME&quot;
+l_string|&quot;----&quot;
 )paren
 suffix:semicolon
 )brace

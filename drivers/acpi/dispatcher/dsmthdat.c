@@ -1109,6 +1109,11 @@ id|acpi_operand_object
 op_star
 id|current_obj_desc
 suffix:semicolon
+r_union
+id|acpi_operand_object
+op_star
+id|new_obj_desc
+suffix:semicolon
 id|ACPI_FUNCTION_TRACE
 (paren
 l_string|&quot;ds_store_object_to_local&quot;
@@ -1205,6 +1210,49 @@ id|status
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/*&n;&t; * If the reference count on the object is more than one, we must&n;&t; * take a copy of the object before we store.&n;&t; */
+id|new_obj_desc
+op_assign
+id|obj_desc
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|obj_desc-&gt;common.reference_count
+OG
+l_int|1
+)paren
+(brace
+id|status
+op_assign
+id|acpi_ut_copy_iobject_to_iobject
+(paren
+id|obj_desc
+comma
+op_amp
+id|new_obj_desc
+comma
+id|walk_state
+)paren
+suffix:semicolon
+id|new_obj_desc
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|ACPI_FAILURE
+(paren
+id|status
+)paren
+)paren
+(brace
+id|return_ACPI_STATUS
+(paren
+id|status
+)paren
+suffix:semicolon
+)brace
+)brace
 multiline_comment|/*&n;&t; * If there is an object already in this slot, we either&n;&t; * have to delete it, or if this is an argument and there&n;&t; * is an object reference stored there, we have to do&n;&t; * an indirect store!&n;&t; */
 r_if
 c_cond
@@ -1275,7 +1323,7 @@ id|ACPI_DB_EXEC
 comma
 l_string|&quot;Arg (%p) is an obj_ref(Node), storing in node %p&bslash;n&quot;
 comma
-id|obj_desc
+id|new_obj_desc
 comma
 id|current_obj_desc
 )paren
@@ -1286,13 +1334,28 @@ id|status
 op_assign
 id|acpi_ex_store_object_to_node
 (paren
-id|obj_desc
+id|new_obj_desc
 comma
 id|current_obj_desc-&gt;reference.object
 comma
 id|walk_state
 )paren
 suffix:semicolon
+multiline_comment|/* Remove local reference if we copied the object above */
+r_if
+c_cond
+(paren
+id|new_obj_desc
+op_ne
+id|obj_desc
+)paren
+(brace
+id|acpi_ut_remove_reference
+(paren
+id|new_obj_desc
+)paren
+suffix:semicolon
+)brace
 id|return_ACPI_STATUS
 (paren
 id|status
@@ -1311,7 +1374,7 @@ id|walk_state
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t; * Install the obj_stack descriptor (*obj_desc) into&n;&t; * the descriptor for the Arg or Local.&n;&t; * Install the new object in the stack entry&n;&t; * (increments the object reference count by one)&n;&t; */
+multiline_comment|/*&n;&t; * Install the Obj descriptor (*new_obj_desc) into&n;&t; * the descriptor for the Arg or Local.&n;&t; * (increments the object reference count by one)&n;&t; */
 id|status
 op_assign
 id|acpi_ds_method_data_set_value
@@ -1320,11 +1383,26 @@ id|opcode
 comma
 id|index
 comma
-id|obj_desc
+id|new_obj_desc
 comma
 id|walk_state
 )paren
 suffix:semicolon
+multiline_comment|/* Remove local reference if we copied the object above */
+r_if
+c_cond
+(paren
+id|new_obj_desc
+op_ne
+id|obj_desc
+)paren
+(brace
+id|acpi_ut_remove_reference
+(paren
+id|new_obj_desc
+)paren
+suffix:semicolon
+)brace
 id|return_ACPI_STATUS
 (paren
 id|status

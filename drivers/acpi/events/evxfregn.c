@@ -296,7 +296,7 @@ id|obj_desc
 multiline_comment|/*&n;&t;&t; * The attached device object already exists.&n;&t;&t; * Make sure the handler is not already installed.&n;&t;&t; */
 id|handler_obj
 op_assign
-id|obj_desc-&gt;device.address_space
+id|obj_desc-&gt;device.handler
 suffix:semicolon
 multiline_comment|/* Walk the handler list for this device */
 r_while
@@ -529,10 +529,10 @@ suffix:semicolon
 multiline_comment|/* Install at head of Device.address_space list */
 id|handler_obj-&gt;address_space.next
 op_assign
-id|obj_desc-&gt;device.address_space
+id|obj_desc-&gt;device.handler
 suffix:semicolon
 multiline_comment|/*&n;&t; * The Device object is the first reference on the handler_obj.&n;&t; * Each region that uses the handler adds a reference.&n;&t; */
-id|obj_desc-&gt;device.address_space
+id|obj_desc-&gt;device.handler
 op_assign
 id|handler_obj
 suffix:semicolon
@@ -550,6 +550,26 @@ comma
 id|ACPI_NS_WALK_UNLOCK
 comma
 id|acpi_ev_install_handler
+comma
+id|handler_obj
+comma
+l_int|NULL
+)paren
+suffix:semicolon
+multiline_comment|/*&n;&t; * Now we can run the _REG methods for all Regions for this&n;&t; * space ID.  This is a separate walk in order to handle any&n;&t; * interdependencies between regions and _REG methods.  (i.e. handlers&n;&t; * must be installed for all regions of this Space ID before we&n;&t; * can run any _REG methods.&n;&t; */
+id|status
+op_assign
+id|acpi_ns_walk_namespace
+(paren
+id|ACPI_TYPE_ANY
+comma
+id|device
+comma
+id|ACPI_UINT32_MAX
+comma
+id|ACPI_NS_WALK_UNLOCK
+comma
+id|acpi_ev_reg_run
 comma
 id|handler_obj
 comma
@@ -706,12 +726,12 @@ suffix:semicolon
 multiline_comment|/* Find the address handler the user requested */
 id|handler_obj
 op_assign
-id|obj_desc-&gt;device.address_space
+id|obj_desc-&gt;device.handler
 suffix:semicolon
 id|last_obj_ptr
 op_assign
 op_amp
-id|obj_desc-&gt;device.address_space
+id|obj_desc-&gt;device.handler
 suffix:semicolon
 r_while
 c_loop

@@ -274,7 +274,7 @@ id|ACPI_DEBUG_PRINT
 (paren
 id|ACPI_DB_DISPATCH
 comma
-l_string|&quot;State=%p Op=%p [%s] &quot;
+l_string|&quot;State=%p Op=%p [%s]&bslash;n&quot;
 comma
 id|walk_state
 comma
@@ -478,24 +478,34 @@ id|flags
 op_or_assign
 id|ACPI_NS_ERROR_IF_FOUND
 suffix:semicolon
-id|ACPI_DEBUG_PRINT_RAW
+id|ACPI_DEBUG_PRINT
 (paren
 (paren
 id|ACPI_DB_DISPATCH
 comma
-l_string|&quot;Cannot already exist&bslash;n&quot;
+l_string|&quot;[%s] Cannot already exist&bslash;n&quot;
+comma
+id|acpi_ut_get_type_name
+(paren
+id|object_type
+)paren
 )paren
 )paren
 suffix:semicolon
 )brace
 r_else
 (brace
-id|ACPI_DEBUG_PRINT_RAW
+id|ACPI_DEBUG_PRINT
 (paren
 (paren
 id|ACPI_DB_DISPATCH
 comma
-l_string|&quot;Both Find or Create allowed&bslash;n&quot;
+l_string|&quot;[%s] Both Find or Create allowed&bslash;n&quot;
+comma
+id|acpi_ut_get_type_name
+(paren
+id|object_type
+)paren
 )paren
 )paren
 suffix:semicolon

@@ -944,7 +944,7 @@ id|status
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ev_delete_gpe_block&n; *&n; * PARAMETERS:  gpe_block       - Existing GPE block&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Install new GPE block with mutex support&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ev_delete_gpe_block&n; *&n; * PARAMETERS:  gpe_block       - Existing GPE block&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Remove a GPE block&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_ev_delete_gpe_block
 id|acpi_ev_delete_gpe_block

@@ -208,15 +208,19 @@ op_assign
 op_star
 id|buffer
 suffix:semicolon
-multiline_comment|/*&n;&t;&t; * Check for HE, LL or HL&n;&t;&t; */
-r_if
+multiline_comment|/*&n;&t;&t; * Check for HE, LL interrupts&n;&t;&t; */
+r_switch
 c_cond
 (paren
 id|temp8
 op_amp
-l_int|0x01
+l_int|0x09
 )paren
 (brace
+r_case
+l_int|0x01
+suffix:colon
+multiline_comment|/* HE */
 id|output_struct-&gt;data.irq.edge_level
 op_assign
 id|ACPI_EDGE_SENSITIVE
@@ -225,17 +229,12 @@ id|output_struct-&gt;data.irq.active_high_low
 op_assign
 id|ACPI_ACTIVE_HIGH
 suffix:semicolon
-)brace
-r_else
-(brace
-r_if
-c_cond
-(paren
-id|temp8
-op_amp
-l_int|0x8
-)paren
-(brace
+r_break
+suffix:semicolon
+r_case
+l_int|0x08
+suffix:colon
+multiline_comment|/* LL */
 id|output_struct-&gt;data.irq.edge_level
 op_assign
 id|ACPI_LEVEL_SENSITIVE
@@ -244,16 +243,19 @@ id|output_struct-&gt;data.irq.active_high_low
 op_assign
 id|ACPI_ACTIVE_LOW
 suffix:semicolon
-)brace
-r_else
-(brace
-multiline_comment|/*&n;&t;&t;&t;&t; * Only _LL and _HE polarity/trigger interrupts&n;&t;&t;&t;&t; * are allowed (ACPI spec v1.0b ection 6.4.2.1),&n;&t;&t;&t;&t; * so an error will occur if we reach this point&n;&t;&t;&t;&t; */
+r_break
+suffix:semicolon
+r_default
+suffix:colon
+multiline_comment|/*&n;&t;&t;&t; * Only _LL and _HE polarity/trigger interrupts&n;&t;&t;&t; * are allowed (ACPI spec, section &quot;IRQ Format&quot;)&n;&t;&t;&t; * so 0x00 and 0x09 are illegal.&n;&t;&t;&t; */
 id|ACPI_DEBUG_PRINT
 (paren
 (paren
 id|ACPI_DB_ERROR
 comma
-l_string|&quot;Invalid interrupt polarity/trigger in resource list&bslash;n&quot;
+l_string|&quot;Invalid interrupt polarity/trigger in resource list, %X&bslash;n&quot;
+comma
+id|temp8
 )paren
 )paren
 suffix:semicolon
@@ -262,7 +264,6 @@ id|return_ACPI_STATUS
 id|AE_BAD_DATA
 )paren
 suffix:semicolon
-)brace
 )brace
 multiline_comment|/*&n;&t;&t; * Check for sharable&n;&t;&t; */
 id|output_struct-&gt;data.irq.shared_exclusive
@@ -820,6 +821,10 @@ r_char
 op_star
 )paren
 (paren
+(paren
+r_char
+op_star
+)paren
 id|output_struct
 op_plus
 id|struct_size
