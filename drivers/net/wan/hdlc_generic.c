@@ -555,15 +555,15 @@ suffix:semicolon
 )brace
 macro_line|#ifndef CONFIG_HDLC_RAW
 DECL|macro|hdlc_raw_ioctl
-mdefine_line|#define hdlc_raw_ioctl(hdlc, ifr)&t;-ENOSYS
+mdefine_line|#define hdlc_raw_ioctl(dev, ifr)&t;-ENOSYS
 macro_line|#endif
 macro_line|#ifndef CONFIG_HDLC_RAW_ETH
 DECL|macro|hdlc_raw_eth_ioctl
-mdefine_line|#define hdlc_raw_eth_ioctl(hdlc, ifr)&t;-ENOSYS
+mdefine_line|#define hdlc_raw_eth_ioctl(dev, ifr)&t;-ENOSYS
 macro_line|#endif
 macro_line|#ifndef CONFIG_HDLC_PPP
 DECL|macro|hdlc_ppp_ioctl
-mdefine_line|#define hdlc_ppp_ioctl(hdlc, ifr)&t;-ENOSYS
+mdefine_line|#define hdlc_ppp_ioctl(dev, ifr)&t;-ENOSYS
 macro_line|#endif
 macro_line|#ifndef CONFIG_HDLC_CISCO
 DECL|macro|hdlc_cisco_ioctl
@@ -671,7 +671,7 @@ r_return
 id|hdlc_raw_ioctl
 c_func
 (paren
-id|hdlc
+id|dev
 comma
 id|ifr
 )paren
@@ -683,7 +683,7 @@ r_return
 id|hdlc_raw_eth_ioctl
 c_func
 (paren
-id|hdlc
+id|dev
 comma
 id|ifr
 )paren
@@ -695,7 +695,7 @@ r_return
 id|hdlc_ppp_ioctl
 c_func
 (paren
-id|hdlc
+id|dev
 comma
 id|ifr
 )paren
