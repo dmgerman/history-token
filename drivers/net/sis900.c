@@ -991,7 +991,11 @@ id|printk
 id|KERN_INFO
 l_string|&quot;%s: Error EERPOM read %x&bslash;n&quot;
 comma
-id|net_dev-&gt;name
+id|pci_name
+c_func
+(paren
+id|pci_dev
+)paren
 comma
 id|signature
 )paren
@@ -1116,7 +1120,11 @@ c_func
 (paren
 l_string|&quot;%s: Can not find ISA bridge&bslash;n&quot;
 comma
-id|net_dev-&gt;name
+id|pci_name
+c_func
+(paren
+id|pci_dev
+)paren
 )paren
 suffix:semicolon
 r_return
@@ -1864,22 +1872,6 @@ op_assign
 op_amp
 id|sis900_ethtool_ops
 suffix:semicolon
-id|ret
-op_assign
-id|register_netdev
-c_func
-(paren
-id|net_dev
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|ret
-)paren
-r_goto
-id|err_unmap_rx
-suffix:semicolon
 multiline_comment|/* Get Mac address according to the chip revision */
 id|pci_read_config_byte
 c_func
@@ -1982,7 +1974,7 @@ op_minus
 id|ENODEV
 suffix:semicolon
 r_goto
-id|err_out_unregister
+id|err_unmap_rx
 suffix:semicolon
 )brace
 multiline_comment|/* 630ET : set the mii access mode as software-mode */
@@ -2030,7 +2022,7 @@ op_minus
 id|ENODEV
 suffix:semicolon
 r_goto
-id|err_out_unregister
+id|err_unmap_rx
 suffix:semicolon
 )brace
 multiline_comment|/* save our host bridge revision */
@@ -2070,6 +2062,22 @@ id|dev
 )paren
 suffix:semicolon
 )brace
+id|ret
+op_assign
+id|register_netdev
+c_func
+(paren
+id|net_dev
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|ret
+)paren
+r_goto
+id|err_unmap_rx
+suffix:semicolon
 multiline_comment|/* print some information about our NIC */
 id|printk
 c_func
@@ -2127,14 +2135,6 @@ id|i
 suffix:semicolon
 r_return
 l_int|0
-suffix:semicolon
-id|err_out_unregister
-suffix:colon
-id|unregister_netdev
-c_func
-(paren
-id|net_dev
-)paren
 suffix:semicolon
 id|err_unmap_rx
 suffix:colon
@@ -2212,6 +2212,17 @@ op_star
 id|sis_priv
 op_assign
 id|net_dev-&gt;priv
+suffix:semicolon
+r_const
+r_char
+op_star
+id|dev_name
+op_assign
+id|pci_name
+c_func
+(paren
+id|sis_priv-&gt;pci_dev
+)paren
 suffix:semicolon
 id|u16
 id|poll_bit
@@ -2515,7 +2526,7 @@ c_func
 id|KERN_INFO
 l_string|&quot;%s: %s transceiver found at address %d.&bslash;n&quot;
 comma
-id|net_dev-&gt;name
+id|dev_name
 comma
 id|mii_chip_table
 (braket
@@ -2548,7 +2559,7 @@ c_func
 id|KERN_INFO
 l_string|&quot;%s: Unknown PHY transceiver found at address %d.&bslash;n&quot;
 comma
-id|net_dev-&gt;name
+id|dev_name
 comma
 id|phy_addr
 )paren
@@ -2573,7 +2584,7 @@ c_func
 id|KERN_INFO
 l_string|&quot;%s: No MII transceivers found!&bslash;n&quot;
 comma
-id|net_dev-&gt;name
+id|dev_name
 )paren
 suffix:semicolon
 r_return
@@ -2706,7 +2717,7 @@ c_func
 id|KERN_WARNING
 l_string|&quot;%s: reset phy and link down now&bslash;n&quot;
 comma
-id|net_dev-&gt;name
+id|dev_name
 )paren
 suffix:semicolon
 r_return
@@ -3031,7 +3042,11 @@ c_func
 id|KERN_INFO
 l_string|&quot;%s: Using transceiver found at address %d as default&bslash;n&quot;
 comma
-id|net_dev-&gt;name
+id|pci_name
+c_func
+(paren
+id|sis_priv-&gt;pci_dev
+)paren
 comma
 id|sis_priv-&gt;cur_phy
 )paren
