@@ -6,12 +6,6 @@ macro_line|#include &lt;asm/contregs.h&gt;
 multiline_comment|/* PMD_SHIFT determines the size of the area a second-level page table can map */
 DECL|macro|SUN4C_PMD_SHIFT
 mdefine_line|#define SUN4C_PMD_SHIFT       23
-DECL|macro|SUN4C_PMD_SIZE
-mdefine_line|#define SUN4C_PMD_SIZE        (1UL &lt;&lt; SUN4C_PMD_SHIFT)
-DECL|macro|SUN4C_PMD_MASK
-mdefine_line|#define SUN4C_PMD_MASK        (~(SUN4C_PMD_SIZE-1))
-DECL|macro|SUN4C_PMD_ALIGN
-mdefine_line|#define SUN4C_PMD_ALIGN(addr) (((addr)+SUN4C_PMD_SIZE-1)&amp;SUN4C_PMD_MASK)
 multiline_comment|/* PGDIR_SHIFT determines what a third-level page table entry can map */
 DECL|macro|SUN4C_PGDIR_SHIFT
 mdefine_line|#define SUN4C_PGDIR_SHIFT       23
