@@ -72,18 +72,31 @@ DECL|macro|USBPORTSC_PE
 mdefine_line|#define   USBPORTSC_PE&t;&t;0x0004&t;/* Port Enable */
 DECL|macro|USBPORTSC_PEC
 mdefine_line|#define   USBPORTSC_PEC&t;&t;0x0008&t;/* Port Enable Change */
-DECL|macro|USBPORTSC_LS
-mdefine_line|#define   USBPORTSC_LS&t;&t;0x0030&t;/* Line Status */
+DECL|macro|USBPORTSC_DPLUS
+mdefine_line|#define   USBPORTSC_DPLUS&t;0x0010&t;/* D+ high (line status) */
+DECL|macro|USBPORTSC_DMINUS
+mdefine_line|#define   USBPORTSC_DMINUS&t;0x0020&t;/* D- high (line status) */
 DECL|macro|USBPORTSC_RD
 mdefine_line|#define   USBPORTSC_RD&t;&t;0x0040&t;/* Resume Detect */
+DECL|macro|USBPORTSC_RES1
+mdefine_line|#define   USBPORTSC_RES1&t;0x0080&t;/* reserved, always 1 */
 DECL|macro|USBPORTSC_LSDA
 mdefine_line|#define   USBPORTSC_LSDA&t;0x0100&t;/* Low Speed Device Attached */
 DECL|macro|USBPORTSC_PR
 mdefine_line|#define   USBPORTSC_PR&t;&t;0x0200&t;/* Port Reset */
+multiline_comment|/* OC and OCC from Intel 430TX and later (not UHCI 1.1d spec) */
 DECL|macro|USBPORTSC_OC
 mdefine_line|#define   USBPORTSC_OC&t;&t;0x0400&t;/* Over Current condition */
+DECL|macro|USBPORTSC_OCC
+mdefine_line|#define   USBPORTSC_OCC&t;&t;0x0800&t;/* Over Current Change R/WC */
 DECL|macro|USBPORTSC_SUSP
 mdefine_line|#define   USBPORTSC_SUSP&t;0x1000&t;/* Suspend */
+DECL|macro|USBPORTSC_RES2
+mdefine_line|#define   USBPORTSC_RES2&t;0x2000&t;/* reserved, write zeroes */
+DECL|macro|USBPORTSC_RES3
+mdefine_line|#define   USBPORTSC_RES3&t;0x4000&t;/* reserved, write zeroes */
+DECL|macro|USBPORTSC_RES4
+mdefine_line|#define   USBPORTSC_RES4&t;0x8000&t;/* reserved, write zeroes */
 multiline_comment|/* Legacy support register */
 DECL|macro|USBLEGSUP
 mdefine_line|#define USBLEGSUP&t;&t;0xc0
