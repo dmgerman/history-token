@@ -5,6 +5,16 @@ macro_line|#include &quot;radeon_drm.h&quot;
 macro_line|#include &quot;radeon_drv.h&quot;
 DECL|macro|RADEON_FIFO_DEBUG
 mdefine_line|#define RADEON_FIFO_DEBUG&t;0
+r_static
+r_int
+id|radeon_do_cleanup_cp
+c_func
+(paren
+id|drm_device_t
+op_star
+id|dev
+)paren
+suffix:semicolon
 multiline_comment|/* CP microcode (from ATI) */
 DECL|variable|R200_cp_microcode
 r_static
@@ -4654,6 +4664,7 @@ comma
 )brace
 suffix:semicolon
 DECL|function|RADEON_READ_PLL
+r_static
 r_int
 id|RADEON_READ_PLL
 c_func
@@ -7485,6 +7496,7 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|function|radeon_do_cleanup_cp
+r_static
 r_int
 id|radeon_do_cleanup_cp
 c_func
