@@ -1,4 +1,7 @@
 multiline_comment|/*&n; * arch/ppc64/kernel/ppc_asm.h&n; *&n; * Definitions used by various bits of low-level assembly code on PowerPC.&n; *&n; * Copyright (C) 1995-1999 Gary Thomas, Paul Mackerras, Cort Dougan.&n; *&n; *  This program is free software; you can redistribute it and/or&n; *  modify it under the terms of the GNU General Public License&n; *  as published by the Free Software Foundation; either version&n; *  2 of the License, or (at your option) any later version.&n; */
+macro_line|#ifndef _PPC64_PPC_ASM_H
+DECL|macro|_PPC64_PPC_ASM_H
+mdefine_line|#define _PPC64_PPC_ASM_H
 multiline_comment|/*&n; * Macros for storing registers into and loading registers from&n; * exception frames.&n; */
 DECL|macro|SAVE_GPR
 mdefine_line|#define SAVE_GPR(n, base)&t;std&t;n,GPR0+8*(n)(base)
@@ -307,4 +310,5 @@ DECL|macro|vr30
 mdefine_line|#define&t;vr30&t;30
 DECL|macro|vr31
 mdefine_line|#define&t;vr31&t;31
+macro_line|#endif /* _PPC64_PPC_ASM_H */
 eof

@@ -1,0 +1,91 @@
+multiline_comment|/*&n; * generic/default IDE host driver&n; *&n; * Copyright (C) 2004 Bartlomiej Zolnierkiewicz&n; * This code was split off from ide.c.  See it for original copyrights.&n; *&n; * May be copied or modified under the terms of the GNU General Public License.&n; */
+macro_line|#include &lt;linux/kernel.h&gt;
+macro_line|#include &lt;linux/init.h&gt;
+macro_line|#include &lt;linux/module.h&gt;
+macro_line|#include &lt;linux/ide.h&gt;
+DECL|function|ide_generic_init
+r_static
+r_int
+id|__init
+id|ide_generic_init
+c_func
+(paren
+r_void
+)paren
+(brace
+id|MOD_INC_USE_COUNT
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|ide_hwifs
+(braket
+l_int|0
+)braket
+dot
+id|io_ports
+(braket
+id|IDE_DATA_OFFSET
+)braket
+)paren
+id|ide_get_lock
+c_func
+(paren
+l_int|NULL
+comma
+l_int|NULL
+)paren
+suffix:semicolon
+multiline_comment|/* for atari only */
+(paren
+r_void
+)paren
+id|ideprobe_init
+c_func
+(paren
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|ide_hwifs
+(braket
+l_int|0
+)braket
+dot
+id|io_ports
+(braket
+id|IDE_DATA_OFFSET
+)braket
+)paren
+id|ide_release_lock
+c_func
+(paren
+)paren
+suffix:semicolon
+multiline_comment|/* for atari only */
+macro_line|#ifdef CONFIG_PROC_FS
+id|create_proc_ide_interfaces
+c_func
+(paren
+)paren
+suffix:semicolon
+macro_line|#endif
+r_return
+l_int|0
+suffix:semicolon
+)brace
+DECL|variable|ide_generic_init
+id|module_init
+c_func
+(paren
+id|ide_generic_init
+)paren
+suffix:semicolon
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
+)paren
+suffix:semicolon
+eof

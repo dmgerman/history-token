@@ -768,6 +768,8 @@ multiline_comment|/* skip the rest of the message including the 0 byte */
 id|i_msg
 op_assign
 id|count
+op_minus
+l_int|1
 suffix:semicolon
 r_break
 suffix:semicolon

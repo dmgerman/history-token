@@ -1,4 +1,7 @@
-multiline_comment|/*&n; * include/asm-ppc/serial.h&n; */
+multiline_comment|/*&n; * include/asm-ppc64/serial.h&n; */
+macro_line|#ifndef _PPC64_SERIAL_H
+DECL|macro|_PPC64_SERIAL_H
+mdefine_line|#define _PPC64_SERIAL_H
 macro_line|#include &lt;linux/config.h&gt;
 multiline_comment|/*&n; * This assumes you have a 1.8432 MHz clock for your UART.&n; *&n; * It&squot;d be nice if someone built a serial card with a 24.576 MHz&n; * clock, since the 16550A is capable of handling a top speed of 1.5&n; * megabits/second; but this requires the faster clock.&n; *&n; * This program is free software; you can redistribute it and/or&n; * modify it under the terms of the GNU General Public License&n; * as published by the Free Software Foundation; either version&n; * 2 of the License, or (at your option) any later version.&n; */
 DECL|macro|BASE_BAUD
@@ -52,4 +55,5 @@ DECL|macro|MCA_SERIAL_PORT_DFNS
 mdefine_line|#define MCA_SERIAL_PORT_DFNS
 DECL|macro|SERIAL_PORT_DFNS
 mdefine_line|#define SERIAL_PORT_DFNS&t;&t;&bslash;&n;&t;STD_SERIAL_PORT_DEFNS&t;&t;&bslash;&n;&t;EXTRA_SERIAL_PORT_DEFNS&t;&t;&bslash;&n;&t;HUB6_SERIAL_PORT_DFNS&t;&t;&bslash;&n;&t;MCA_SERIAL_PORT_DFNS
+macro_line|#endif /* _PPC64_SERIAL_H */
 eof

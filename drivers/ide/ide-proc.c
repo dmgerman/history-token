@@ -1404,21 +1404,13 @@ r_char
 op_star
 id|name
 suffix:semicolon
+multiline_comment|/*&n;&t; * Neither ide_unknown nor ide_forced should be set at this point.&n;&t; */
 r_switch
 c_cond
 (paren
 id|hwif-&gt;chipset
 )paren
 (brace
-r_case
-id|ide_unknown
-suffix:colon
-id|name
-op_assign
-l_string|&quot;(none)&quot;
-suffix:semicolon
-r_break
-suffix:semicolon
 r_case
 id|ide_generic
 suffix:colon
