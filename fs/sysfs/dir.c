@@ -875,6 +875,7 @@ id|err
 suffix:semicolon
 )brace
 DECL|function|sysfs_lookup
+r_static
 r_struct
 id|dentry
 op_star
