@@ -76,6 +76,38 @@ id|rc
 op_assign
 l_int|0
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|tcon
+)paren
+r_if
+c_cond
+(paren
+id|tcon-&gt;ses
+)paren
+r_if
+c_cond
+(paren
+id|tcon-&gt;ses-&gt;status
+op_eq
+id|CifsNeedReconnect
+)paren
+(brace
+id|setup_session
+c_func
+(paren
+l_int|0
+comma
+id|tcon-&gt;ses
+comma
+id|load_nls_default
+c_func
+(paren
+)paren
+)paren
+suffix:semicolon
+)brace
 op_star
 id|request_buf
 op_assign
@@ -143,12 +175,6 @@ r_struct
 id|cifsSesInfo
 op_star
 id|ses
-comma
-r_char
-id|cryptokey
-(braket
-id|CIFS_CRYPTO_KEY_SIZE
-)braket
 )paren
 (brace
 id|NEGOTIATE_REQ
@@ -167,6 +193,33 @@ suffix:semicolon
 r_int
 id|bytes_returned
 suffix:semicolon
+r_struct
+id|TCP_Server_Info
+op_star
+id|server
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|ses-&gt;server
+)paren
+(brace
+id|server
+op_assign
+id|ses-&gt;server
+suffix:semicolon
+)brace
+r_else
+(brace
+id|rc
+op_assign
+op_minus
+id|EIO
+suffix:semicolon
+r_return
+id|rc
+suffix:semicolon
+)brace
 id|rc
 op_assign
 id|smb_init
@@ -308,20 +361,17 @@ op_eq
 l_int|0
 )paren
 (brace
-id|ses-&gt;dialectIndex
-op_assign
-id|le16_to_cpu
-c_func
-(paren
-id|pSMBr-&gt;DialectIndex
-)paren
-suffix:semicolon
-id|ses-&gt;secMode
+id|server-&gt;secMode
 op_assign
 id|pSMBr-&gt;SecurityMode
 suffix:semicolon
+id|server-&gt;secType
+op_assign
+id|NTLM
+suffix:semicolon
+multiline_comment|/* BB override default for NTLMv2 or krb*/
 multiline_comment|/* one byte - no need to convert this or EncryptionKeyLen from le,*/
-id|ses-&gt;maxReq
+id|server-&gt;maxReq
 op_assign
 id|le16_to_cpu
 c_func
@@ -330,7 +380,7 @@ id|pSMBr-&gt;MaxMpxCount
 )paren
 suffix:semicolon
 multiline_comment|/* probably no need to store and check maxvcs */
-id|ses-&gt;maxBuf
+id|server-&gt;maxBuf
 op_assign
 id|min
 c_func
@@ -349,7 +399,7 @@ op_plus
 id|MAX_CIFS_HDR_SIZE
 )paren
 suffix:semicolon
-id|ses-&gt;maxRw
+id|server-&gt;maxRw
 op_assign
 id|le32_to_cpu
 c_func
@@ -360,19 +410,19 @@ suffix:semicolon
 id|cFYI
 c_func
 (paren
-l_int|1
+l_int|0
 comma
 (paren
-l_string|&quot;&bslash;nMax buf = %d &quot;
+l_string|&quot;Max buf = %d &quot;
 comma
-id|ses-&gt;maxBuf
+id|ses-&gt;server-&gt;maxBuf
 )paren
 )paren
 suffix:semicolon
 id|GETU32
 c_func
 (paren
-id|ses-&gt;sessid
+id|ses-&gt;server-&gt;sessid
 )paren
 op_assign
 id|le32_to_cpu
@@ -381,7 +431,7 @@ c_func
 id|pSMBr-&gt;SessionKey
 )paren
 suffix:semicolon
-id|ses-&gt;capabilities
+id|server-&gt;capabilities
 op_assign
 id|le32_to_cpu
 c_func
@@ -389,7 +439,7 @@ c_func
 id|pSMBr-&gt;Capabilities
 )paren
 suffix:semicolon
-id|ses-&gt;timeZone
+id|server-&gt;timeZone
 op_assign
 id|le16_to_cpu
 c_func
@@ -409,7 +459,7 @@ id|CIFS_CRYPTO_KEY_SIZE
 id|memcpy
 c_func
 (paren
-id|cryptokey
+id|server-&gt;cryptKey
 comma
 id|pSMBr-&gt;u.EncryptionKey
 comma
@@ -472,14 +522,14 @@ op_eq
 l_int|16
 )paren
 (brace
-id|ses-&gt;secType
+id|server-&gt;secType
 op_assign
 id|RawNTLMSSP
 suffix:semicolon
 r_if
 c_cond
 (paren
-id|ses-&gt;server-&gt;socketUseCount.counter
+id|server-&gt;socketUseCount.counter
 OG
 l_int|1
 )paren
@@ -489,7 +539,7 @@ c_cond
 (paren
 id|memcmp
 (paren
-id|ses-&gt;server-&gt;server_GUID
+id|server-&gt;server_GUID
 comma
 id|pSMBr-&gt;u.extended_response
 dot
@@ -514,7 +564,7 @@ suffix:semicolon
 id|memcpy
 c_func
 (paren
-id|ses-&gt;server
+id|server
 op_member_access_from_pointer
 id|server_GUID
 comma
@@ -533,7 +583,7 @@ r_else
 id|memcpy
 c_func
 (paren
-id|ses-&gt;server-&gt;server_GUID
+id|server-&gt;server_GUID
 comma
 id|pSMBr-&gt;u.extended_response
 dot
@@ -561,13 +611,13 @@ op_minus
 l_int|16
 comma
 op_amp
-id|ses-&gt;secType
+id|server-&gt;secType
 )paren
 suffix:semicolon
 )brace
 )brace
 r_else
-id|ses-&gt;capabilities
+id|server-&gt;capabilities
 op_and_assign
 op_complement
 id|CAP_EXTENDED_SECURITY
@@ -583,7 +633,7 @@ id|FALSE
 r_if
 c_cond
 (paren
-id|ses-&gt;secMode
+id|server-&gt;secMode
 op_amp
 id|SECMODE_SIGN_REQUIRED
 )paren
@@ -594,12 +644,12 @@ c_func
 l_int|1
 comma
 (paren
-l_string|&quot;&bslash;nServer required CIFS packet signing - enable /proc/fs/cifs/PacketSigningEnabled&quot;
+l_string|&quot;Server required CIFS packet signing - enable /proc/fs/cifs/PacketSigningEnabled&quot;
 )paren
 )paren
 suffix:semicolon
 )brace
-id|ses-&gt;secMode
+id|server-&gt;secMode
 op_and_assign
 op_complement
 (paren
@@ -664,7 +714,7 @@ c_func
 l_int|1
 comma
 (paren
-l_string|&quot;&bslash;nIn tree disconnect&quot;
+l_string|&quot;In tree disconnect&quot;
 )paren
 )paren
 suffix:semicolon
@@ -720,6 +770,34 @@ suffix:semicolon
 )brace
 multiline_comment|/* BB remove (from server) list of shares - but with smp safety  BB */
 multiline_comment|/* BB is ses active - do we need to check here - but how? BB */
+r_if
+c_cond
+(paren
+(paren
+id|tcon-&gt;ses
+op_eq
+l_int|0
+)paren
+op_logical_or
+(paren
+id|tcon-&gt;ses-&gt;server
+op_eq
+l_int|0
+)paren
+)paren
+(brace
+id|up
+c_func
+(paren
+op_amp
+id|tcon-&gt;tconSem
+)paren
+suffix:semicolon
+r_return
+op_minus
+id|EIO
+suffix:semicolon
+)brace
 id|rc
 op_assign
 id|smb_init
@@ -861,7 +939,7 @@ c_func
 l_int|1
 comma
 (paren
-l_string|&quot;&bslash;nIn SMBLogoff for session disconnect&quot;
+l_string|&quot;In SMBLogoff for session disconnect&quot;
 )paren
 )paren
 suffix:semicolon
@@ -918,7 +996,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|ses-&gt;secMode
+id|ses-&gt;server-&gt;secMode
 op_amp
 (paren
 id|SECMODE_SIGN_REQUIRED
@@ -1281,13 +1359,13 @@ c_cond
 id|rc
 )paren
 (brace
-id|cERROR
+id|cFYI
 c_func
 (paren
 l_int|1
 comma
 (paren
-l_string|&quot;&bslash;nSend error in RMFile = %d&bslash;n&quot;
+l_string|&quot;Error in RMFile = %d&quot;
 comma
 id|rc
 )paren
@@ -1365,7 +1443,7 @@ c_func
 l_int|1
 comma
 (paren
-l_string|&quot;&bslash;nIn CIFSSMBRmDir&quot;
+l_string|&quot;In CIFSSMBRmDir&quot;
 )paren
 )paren
 suffix:semicolon
@@ -1526,13 +1604,13 @@ c_cond
 id|rc
 )paren
 (brace
-id|cERROR
+id|cFYI
 c_func
 (paren
 l_int|1
 comma
 (paren
-l_string|&quot;&bslash;nSend error in RMDir = %d&bslash;n&quot;
+l_string|&quot;Error in RMDir = %d&quot;
 comma
 id|rc
 )paren
@@ -1610,7 +1688,7 @@ c_func
 l_int|1
 comma
 (paren
-l_string|&quot;&bslash;nIn CIFSSMBMkDir&quot;
+l_string|&quot;In CIFSSMBMkDir&quot;
 )paren
 )paren
 suffix:semicolon
@@ -1772,13 +1850,13 @@ c_cond
 id|rc
 )paren
 (brace
-id|cERROR
+id|cFYI
 c_func
 (paren
 l_int|1
 comma
 (paren
-l_string|&quot;&bslash;nSend error in RMDir = %d&bslash;n&quot;
+l_string|&quot;Error in Mkdir = %d&quot;
 comma
 id|rc
 )paren
@@ -2011,6 +2089,8 @@ c_cond
 (paren
 op_star
 id|pOplock
+op_amp
+id|REQ_OPLOCK
 )paren
 id|pSMB-&gt;OpenFlags
 op_assign
@@ -2020,6 +2100,25 @@ c_func
 id|REQ_OPLOCK
 )paren
 suffix:semicolon
+r_else
+r_if
+c_cond
+(paren
+op_star
+id|pOplock
+op_amp
+id|REQ_BATCHOPLOCK
+)paren
+(brace
+id|pSMB-&gt;OpenFlags
+op_assign
+id|cpu_to_le32
+c_func
+(paren
+id|REQ_BATCHOPLOCK
+)paren
+suffix:semicolon
+)brace
 id|pSMB-&gt;DesiredAccess
 op_assign
 id|cpu_to_le32
@@ -2141,13 +2240,13 @@ c_cond
 id|rc
 )paren
 (brace
-id|cERROR
+id|cFYI
 c_func
 (paren
 l_int|1
 comma
 (paren
-l_string|&quot;&bslash;nSend error in Open = %d&bslash;n&quot;
+l_string|&quot;Error in Open = %d&quot;
 comma
 id|rc
 )paren
@@ -2186,6 +2285,7 @@ r_return
 id|rc
 suffix:semicolon
 )brace
+multiline_comment|/* If no buffer passed in, then caller wants to do the copy&n;&t;as in the case of readpages so the SMB buffer must be&n;&t;freed by the caller */
 r_int
 DECL|function|CIFSSMBRead
 id|CIFSSMBRead
@@ -2221,6 +2321,7 @@ id|nbytes
 comma
 r_char
 op_star
+op_star
 id|buf
 )paren
 (brace
@@ -2245,9 +2346,16 @@ suffix:semicolon
 r_char
 op_star
 id|pReadData
+op_assign
+l_int|NULL
 suffix:semicolon
 r_int
 id|bytes_returned
+suffix:semicolon
+op_star
+id|nbytes
+op_assign
+l_int|0
 suffix:semicolon
 id|rc
 op_assign
@@ -2329,7 +2437,7 @@ c_func
 id|count
 comma
 (paren
-id|tcon-&gt;ses-&gt;maxBuf
+id|tcon-&gt;ses-&gt;server-&gt;maxBuf
 op_minus
 id|MAX_CIFS_HDR_SIZE
 )paren
@@ -2388,16 +2496,11 @@ c_func
 l_int|1
 comma
 (paren
-l_string|&quot;&bslash;nSend error in read = %d&bslash;n&quot;
+l_string|&quot;Send error in read = %d&quot;
 comma
 id|rc
 )paren
 )paren
-suffix:semicolon
-op_star
-id|nbytes
-op_assign
-l_int|0
 suffix:semicolon
 )brace
 r_else
@@ -2432,6 +2535,20 @@ id|count
 )paren
 )paren
 (brace
+id|cFYI
+c_func
+(paren
+l_int|1
+comma
+(paren
+l_string|&quot;bad length %d for count %d&quot;
+comma
+id|pSMBr-&gt;DataLength
+comma
+id|count
+)paren
+)paren
+suffix:semicolon
 id|rc
 op_assign
 op_minus
@@ -2462,11 +2579,19 @@ c_func
 id|pSMBr-&gt;DataOffset
 )paren
 suffix:semicolon
-multiline_comment|/*&t;&t;&t;if(rc = copy_to_user(buf, pReadData, pSMBr-&gt;DataLength)) {&n;&t;&t;&t;&t;cERROR(1,(&quot;&bslash;nFaulting on read rc = %d&quot;,rc));&n;&t;&t;&t;&t;rc = -EFAULT;&n;&t;&t;&t;}*/
+multiline_comment|/*&t;&t;&t;if(rc = copy_to_user(buf, pReadData, pSMBr-&gt;DataLength)) {&n;&t;&t;&t;&t;cERROR(1,(&quot;Faulting on read rc = %d&quot;,rc));&n;&t;&t;&t;&t;rc = -EFAULT;&n;&t;&t;&t;}*/
 multiline_comment|/* can not use copy_to_user when using page cache*/
+r_if
+c_cond
+(paren
+op_star
+id|buf
+)paren
+(brace
 id|memcpy
 c_func
 (paren
+op_star
 id|buf
 comma
 id|pReadData
@@ -2476,17 +2601,38 @@ id|pSMBr-&gt;DataLength
 suffix:semicolon
 )brace
 )brace
+)brace
 r_if
 c_cond
 (paren
 id|pSMB
 )paren
+(brace
+r_if
+c_cond
+(paren
+op_star
+id|buf
+)paren
+(brace
 id|buf_release
 c_func
 (paren
 id|pSMB
 )paren
 suffix:semicolon
+)brace
+r_else
+op_star
+id|buf
+op_assign
+(paren
+r_char
+op_star
+)paren
+id|pSMB
+suffix:semicolon
+)brace
 r_return
 id|rc
 suffix:semicolon
@@ -2631,7 +2777,7 @@ id|count
 OG
 (paren
 (paren
-id|tcon-&gt;ses-&gt;maxBuf
+id|tcon-&gt;ses-&gt;server-&gt;maxBuf
 op_minus
 id|MAX_CIFS_HDR_SIZE
 )paren
@@ -2642,7 +2788,7 @@ l_int|0xFFFFFF00
 id|pSMB-&gt;DataLengthLow
 op_assign
 (paren
-id|tcon-&gt;ses-&gt;maxBuf
+id|tcon-&gt;ses-&gt;server-&gt;maxBuf
 op_minus
 id|MAX_CIFS_HDR_SIZE
 )paren
@@ -2752,7 +2898,7 @@ c_func
 l_int|1
 comma
 (paren
-l_string|&quot;&bslash;nSend error in write = %d&bslash;n&quot;
+l_string|&quot;Send error in write = %d&quot;
 comma
 id|rc
 )paren
@@ -2859,7 +3005,7 @@ c_func
 l_int|1
 comma
 (paren
-l_string|&quot;&bslash;nIn CIFSSMBLock&quot;
+l_string|&quot;In CIFSSMBLock&quot;
 )paren
 )paren
 suffix:semicolon
@@ -3028,7 +3174,7 @@ c_func
 l_int|1
 comma
 (paren
-l_string|&quot;&bslash;nSend error in Lock = %d&bslash;n&quot;
+l_string|&quot;Send error in Lock = %d&quot;
 comma
 id|rc
 )paren
@@ -3095,7 +3241,7 @@ c_func
 l_int|1
 comma
 (paren
-l_string|&quot;&bslash;nIn CIFSSMBClose&quot;
+l_string|&quot;In CIFSSMBClose&quot;
 )paren
 )paren
 suffix:semicolon
@@ -3191,7 +3337,7 @@ c_func
 l_int|1
 comma
 (paren
-l_string|&quot;&bslash;nSend error in Close = %d&bslash;n&quot;
+l_string|&quot;Send error in Close = %d&quot;
 comma
 id|rc
 )paren
@@ -3276,7 +3422,7 @@ c_func
 l_int|1
 comma
 (paren
-l_string|&quot;&bslash;nIn CIFSSMBRename&quot;
+l_string|&quot;In CIFSSMBRename&quot;
 )paren
 )paren
 suffix:semicolon
@@ -3564,7 +3710,7 @@ c_func
 l_int|1
 comma
 (paren
-l_string|&quot;&bslash;nSend error in RMDir = %d&bslash;n&quot;
+l_string|&quot;Send error in RMDir = %d&quot;
 comma
 id|rc
 )paren
@@ -3656,7 +3802,7 @@ c_func
 l_int|1
 comma
 (paren
-l_string|&quot;&bslash;nIn Symlink Unix style&quot;
+l_string|&quot;In Symlink Unix style&quot;
 )paren
 )paren
 suffix:semicolon
@@ -4032,7 +4178,7 @@ c_func
 l_int|1
 comma
 (paren
-l_string|&quot;&bslash;nSend error in SetPathInfo (create symlink) = %d&bslash;n&quot;
+l_string|&quot;Send error in SetPathInfo (create symlink) = %d&quot;
 comma
 id|rc
 )paren
@@ -4124,7 +4270,7 @@ c_func
 l_int|1
 comma
 (paren
-l_string|&quot;&bslash;nIn Create Hard link Unix style&quot;
+l_string|&quot;In Create Hard link Unix style&quot;
 )paren
 )paren
 suffix:semicolon
@@ -4500,7 +4646,7 @@ c_func
 l_int|1
 comma
 (paren
-l_string|&quot;&bslash;nSend error in SetPathInfo (hard link) = %d&bslash;n&quot;
+l_string|&quot;Send error in SetPathInfo (hard link) = %d&quot;
 comma
 id|rc
 )paren
@@ -4585,7 +4731,7 @@ c_func
 l_int|1
 comma
 (paren
-l_string|&quot;&bslash;nIn CIFSCreateHardLink&quot;
+l_string|&quot;In CIFSCreateHardLink&quot;
 )paren
 )paren
 suffix:semicolon
@@ -4884,7 +5030,7 @@ c_func
 l_int|1
 comma
 (paren
-l_string|&quot;&bslash;nSend error in hard link (NT rename) = %d&bslash;n&quot;
+l_string|&quot;Send error in hard link (NT rename) = %d&quot;
 comma
 id|rc
 )paren
@@ -4972,7 +5118,7 @@ c_func
 l_int|1
 comma
 (paren
-l_string|&quot;&bslash;nIn QPathSymLinkInfo (Unix) for path %s&quot;
+l_string|&quot;In QPathSymLinkInfo (Unix) for path %s&quot;
 comma
 id|searchName
 )paren
@@ -5254,7 +5400,7 @@ c_func
 l_int|1
 comma
 (paren
-l_string|&quot;&bslash;nSend error in QuerySymLinkInfo = %d&bslash;n&quot;
+l_string|&quot;Send error in QuerySymLinkInfo = %d&quot;
 comma
 id|rc
 )paren
@@ -5506,7 +5652,7 @@ c_func
 l_int|1
 comma
 (paren
-l_string|&quot;&bslash;nIn Windows reparse style QueryLink info for path %s&quot;
+l_string|&quot;In Windows reparse style QueryLink info for path %s&quot;
 comma
 id|searchName
 )paren
@@ -5676,7 +5822,7 @@ c_func
 l_int|1
 comma
 (paren
-l_string|&quot;&bslash;nSend error in QueryReparseLinkInfo = %d&bslash;n&quot;
+l_string|&quot;Send error in QueryReparseLinkInfo = %d&quot;
 comma
 id|rc
 )paren
@@ -5856,7 +6002,7 @@ c_func
 l_int|1
 comma
 (paren
-l_string|&quot;&bslash;nInvalid return data count on get reparse info ioctl&quot;
+l_string|&quot;Invalid return data count on get reparse info ioctl&quot;
 )paren
 )paren
 suffix:semicolon
@@ -5875,7 +6021,7 @@ c_func
 l_int|1
 comma
 (paren
-l_string|&quot;&bslash;nreadlink result - %s &quot;
+l_string|&quot;readlink result - %s &quot;
 comma
 id|symlinkinfo
 )paren
@@ -5960,7 +6106,7 @@ c_func
 l_int|1
 comma
 (paren
-l_string|&quot;&bslash;nIn QPathInfo path %s&quot;
+l_string|&quot;In QPathInfo path %s&quot;
 comma
 id|searchName
 )paren
@@ -6242,7 +6388,7 @@ c_func
 l_int|1
 comma
 (paren
-l_string|&quot;&bslash;nSend error in QPathInfo = %d&bslash;n&quot;
+l_string|&quot;Send error in QPathInfo = %d&quot;
 comma
 id|rc
 )paren
@@ -6387,7 +6533,7 @@ c_func
 l_int|1
 comma
 (paren
-l_string|&quot;&bslash;nIn QPathInfo (Unix) the path %s&quot;
+l_string|&quot;In QPathInfo (Unix) the path %s&quot;
 comma
 id|searchName
 )paren
@@ -6669,7 +6815,7 @@ c_func
 l_int|1
 comma
 (paren
-l_string|&quot;&bslash;nSend error in QPathInfo = %d&bslash;n&quot;
+l_string|&quot;Send error in QPathInfo = %d&quot;
 comma
 id|rc
 )paren
@@ -6813,7 +6959,7 @@ c_func
 l_int|1
 comma
 (paren
-l_string|&quot;&bslash;nIn FindUnique&quot;
+l_string|&quot;In FindUnique&quot;
 )paren
 )paren
 suffix:semicolon
@@ -7123,7 +7269,7 @@ c_func
 l_int|1
 comma
 (paren
-l_string|&quot;&bslash;nSend error in FindFileDirInfo = %d&bslash;n&quot;
+l_string|&quot;Send error in FindFileDirInfo = %d&quot;
 comma
 id|rc
 )paren
@@ -7227,7 +7373,7 @@ c_func
 l_int|1
 comma
 (paren
-l_string|&quot;&bslash;nIn FindFirst&quot;
+l_string|&quot;In FindFirst&quot;
 )paren
 )paren
 suffix:semicolon
@@ -7357,7 +7503,7 @@ id|cpu_to_le16
 c_func
 (paren
 (paren
-id|tcon-&gt;ses-&gt;maxBuf
+id|tcon-&gt;ses-&gt;server-&gt;maxBuf
 op_minus
 id|MAX_CIFS_HDR_SIZE
 )paren
@@ -7579,7 +7725,7 @@ c_func
 l_int|1
 comma
 (paren
-l_string|&quot;&bslash;nError in FindFirst = %d&bslash;n&quot;
+l_string|&quot;Error in FindFirst = %d&quot;
 comma
 id|rc
 )paren
@@ -7772,7 +7918,7 @@ c_func
 l_int|1
 comma
 (paren
-l_string|&quot;&bslash;nIn FindNext&quot;
+l_string|&quot;In FindNext&quot;
 )paren
 )paren
 suffix:semicolon
@@ -7836,7 +7982,7 @@ id|cpu_to_le16
 c_func
 (paren
 (paren
-id|tcon-&gt;ses-&gt;maxBuf
+id|tcon-&gt;ses-&gt;server-&gt;maxBuf
 op_minus
 id|MAX_CIFS_HDR_SIZE
 )paren
@@ -8067,7 +8213,7 @@ c_func
 l_int|1
 comma
 (paren
-l_string|&quot;&bslash;nFindNext returned = %d&bslash;n&quot;
+l_string|&quot;FindNext returned = %d&quot;
 comma
 id|rc
 )paren
@@ -8266,7 +8412,7 @@ c_func
 l_int|1
 comma
 (paren
-l_string|&quot;&bslash;nIn GetDFSRefer the path %s&quot;
+l_string|&quot;In GetDFSRefer the path %s&quot;
 comma
 id|searchName
 )paren
@@ -8356,7 +8502,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|ses-&gt;secMode
+id|ses-&gt;server-&gt;secMode
 op_amp
 (paren
 id|SECMODE_SIGN_REQUIRED
@@ -8603,7 +8749,7 @@ c_func
 l_int|1
 comma
 (paren
-l_string|&quot;&bslash;nSend error in GetDFSRefer = %d&bslash;n&quot;
+l_string|&quot;Send error in GetDFSRefer = %d&quot;
 comma
 id|rc
 )paren
@@ -8690,7 +8836,7 @@ c_func
 l_int|1
 comma
 (paren
-l_string|&quot;&bslash;nIn QFSInfo&quot;
+l_string|&quot;In QFSInfo&quot;
 )paren
 )paren
 suffix:semicolon
@@ -8896,7 +9042,7 @@ c_func
 l_int|1
 comma
 (paren
-l_string|&quot;&bslash;nSend error in QFSInfo = %d&bslash;n&quot;
+l_string|&quot;Send error in QFSInfo = %d&quot;
 comma
 id|rc
 )paren
@@ -8920,7 +9066,7 @@ c_func
 l_int|1
 comma
 (paren
-l_string|&quot;&bslash;nDecoding qfsinfo response.  BCC: %d  Offset %d&bslash;n&quot;
+l_string|&quot;Decoding qfsinfo response.  BCC: %d  Offset %d&quot;
 comma
 id|pSMBr-&gt;ByteCount
 comma
@@ -9011,7 +9157,7 @@ c_func
 l_int|1
 comma
 (paren
-l_string|&quot;&bslash;nBlocks: %ld  Free: %ld Block size %ld&bslash;n&quot;
+l_string|&quot;Blocks: %ld  Free: %ld Block size %ld&quot;
 comma
 id|FSData-&gt;f_blocks
 comma
@@ -9091,7 +9237,7 @@ c_func
 l_int|1
 comma
 (paren
-l_string|&quot;&bslash;nIn QFSAttributeInfo&quot;
+l_string|&quot;In QFSAttributeInfo&quot;
 )paren
 )paren
 suffix:semicolon
@@ -9297,7 +9443,7 @@ c_func
 l_int|1
 comma
 (paren
-l_string|&quot;&bslash;nSend error in QFSAttributeInfo = %d&bslash;n&quot;
+l_string|&quot;Send error in QFSAttributeInfo = %d&quot;
 comma
 id|rc
 )paren
@@ -9444,7 +9590,7 @@ c_func
 l_int|1
 comma
 (paren
-l_string|&quot;&bslash;nIn QFSDeviceInfo&quot;
+l_string|&quot;In QFSDeviceInfo&quot;
 )paren
 )paren
 suffix:semicolon
@@ -9650,7 +9796,7 @@ c_func
 l_int|1
 comma
 (paren
-l_string|&quot;&bslash;nSend error in QFSDeviceInfo = %d&bslash;n&quot;
+l_string|&quot;Send error in QFSDeviceInfo = %d&quot;
 comma
 id|rc
 )paren
@@ -9797,7 +9943,7 @@ c_func
 l_int|1
 comma
 (paren
-l_string|&quot;&bslash;nIn QFSUnixInfo&quot;
+l_string|&quot;In QFSUnixInfo&quot;
 )paren
 )paren
 suffix:semicolon
@@ -10003,7 +10149,7 @@ c_func
 l_int|1
 comma
 (paren
-l_string|&quot;&bslash;nSend error in QFSUnixInfo = %d&bslash;n&quot;
+l_string|&quot;Send error in QFSUnixInfo = %d&quot;
 comma
 id|rc
 )paren
@@ -10165,7 +10311,7 @@ c_func
 l_int|1
 comma
 (paren
-l_string|&quot;&bslash;nIn SetEOF&quot;
+l_string|&quot;In SetEOF&quot;
 )paren
 )paren
 suffix:semicolon
@@ -10547,7 +10693,7 @@ c_func
 l_int|1
 comma
 (paren
-l_string|&quot;&bslash;nSetPathInfo (file size) returned %d&bslash;n&quot;
+l_string|&quot;SetPathInfo (file size) returned %d&quot;
 comma
 id|rc
 )paren
@@ -10638,7 +10784,7 @@ c_func
 l_int|1
 comma
 (paren
-l_string|&quot;&bslash;nSetFileSize (via SetFileInfo)&quot;
+l_string|&quot;SetFileSize (via SetFileInfo)&quot;
 )paren
 )paren
 suffix:semicolon
@@ -10992,7 +11138,7 @@ c_func
 l_int|1
 comma
 (paren
-l_string|&quot;&bslash;nSend error in SetFileInfo (SetFileSize) = %d&bslash;n&quot;
+l_string|&quot;Send error in SetFileInfo (SetFileSize) = %d&quot;
 comma
 id|rc
 )paren
@@ -11077,7 +11223,7 @@ c_func
 l_int|1
 comma
 (paren
-l_string|&quot;&bslash;nIn SetTimes&quot;
+l_string|&quot;In SetTimes&quot;
 )paren
 )paren
 suffix:semicolon
@@ -11421,7 +11567,7 @@ c_func
 l_int|1
 comma
 (paren
-l_string|&quot;&bslash;nSetPathInfo (times) returned %d&bslash;n&quot;
+l_string|&quot;SetPathInfo (times) returned %d&quot;
 comma
 id|rc
 )paren
@@ -11512,7 +11658,7 @@ c_func
 l_int|1
 comma
 (paren
-l_string|&quot;&bslash;nIn SetUID/GID/Mode&quot;
+l_string|&quot;In SetUID/GID/Mode&quot;
 )paren
 )paren
 suffix:semicolon
@@ -11855,7 +12001,7 @@ c_func
 l_int|1
 comma
 (paren
-l_string|&quot;&bslash;nSetPathInfo (perms) returned %d&bslash;n&quot;
+l_string|&quot;SetPathInfo (perms) returned %d&quot;
 comma
 id|rc
 )paren

@@ -67,9 +67,9 @@ r_int
 )paren
 suffix:semicolon
 DECL|macro|GetXid
-mdefine_line|#define GetXid() (int)_GetXid(); cFYI(1,(&quot;&bslash;nCIFS VFS: in %s as Xid: %d with uid: %d&quot;,__FUNCTION__, xid,current-&gt;fsuid));
+mdefine_line|#define GetXid() (int)_GetXid(); cFYI(1,(&quot;CIFS VFS: in %s as Xid: %d with uid: %d&quot;,__FUNCTION__, xid,current-&gt;fsuid));
 DECL|macro|FreeXid
-mdefine_line|#define FreeXid(curr_xid) {_FreeXid(curr_xid); cFYI(1,(&quot;&bslash;nCIFS VFS: leaving %s (xid = %d) rc = %d&bslash;n&quot;,__FUNCTION__,curr_xid,rc));}
+mdefine_line|#define FreeXid(curr_xid) {_FreeXid(curr_xid); cFYI(1,(&quot;CIFS VFS: leaving %s (xid = %d) rc = %d&quot;,__FUNCTION__,curr_xid,rc));}
 r_extern
 r_char
 op_star
@@ -383,6 +383,26 @@ id|sb
 suffix:semicolon
 r_extern
 r_int
+id|setup_session
+c_func
+(paren
+r_int
+r_int
+id|xid
+comma
+r_struct
+id|cifsSesInfo
+op_star
+id|pSesInfo
+comma
+r_struct
+id|nls_table
+op_star
+id|nls_info
+)paren
+suffix:semicolon
+r_extern
+r_int
 id|CIFSSMBNegotiate
 c_func
 (paren
@@ -394,12 +414,6 @@ r_struct
 id|cifsSesInfo
 op_star
 id|ses
-comma
-r_char
-id|cryptokey
-(braket
-id|CIFS_CRYPTO_KEY_SIZE
-)braket
 )paren
 suffix:semicolon
 r_extern
@@ -415,14 +429,6 @@ r_struct
 id|cifsSesInfo
 op_star
 id|ses
-comma
-r_char
-op_star
-id|user
-comma
-r_char
-op_star
-id|domain
 comma
 r_char
 op_star
@@ -454,14 +460,6 @@ id|ses
 comma
 r_char
 op_star
-id|user
-comma
-r_char
-op_star
-id|domain
-comma
-r_char
-op_star
 id|SecurityBlob
 comma
 r_int
@@ -487,14 +485,6 @@ id|cifsSesInfo
 op_star
 id|ses
 comma
-r_char
-op_star
-id|domain
-comma
-r_char
-op_star
-id|ntlm_session_key
-comma
 r_int
 op_star
 id|ntlmv2_flag
@@ -518,14 +508,6 @@ r_struct
 id|cifsSesInfo
 op_star
 id|ses
-comma
-r_char
-op_star
-id|user
-comma
-r_char
-op_star
-id|domain
 comma
 r_char
 op_star
@@ -1379,6 +1361,7 @@ op_star
 id|nbytes
 comma
 r_char
+op_star
 op_star
 id|buf
 )paren

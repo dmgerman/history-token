@@ -1,5 +1,6 @@
 multiline_comment|/*&n; *   fs/cifs/inode.c&n; *&n; *   Copyright (c) International Business Machines  Corp., 2002&n; *   Author(s): Steve French (sfrench@us.ibm.com)&n; *&n; *   This library is free software; you can redistribute it and/or modify&n; *   it under the terms of the GNU Lesser General Public License as published&n; *   by the Free Software Foundation; either version 2.1 of the License, or&n; *   (at your option) any later version.&n; *&n; *   This library is distributed in the hope that it will be useful,&n; *   but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See&n; *   the GNU Lesser General Public License for more details.&n; *&n; *   You should have received a copy of the GNU Lesser General Public License&n; *   along with this library; if not, write to the Free Software&n; *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA&n; */
 macro_line|#include &lt;linux/fs.h&gt;
+macro_line|#include &lt;linux/buffer_head.h&gt;
 macro_line|#include &lt;linux/stat.h&gt;
 macro_line|#include &lt;asm/div64.h&gt;
 macro_line|#include &quot;cifsfs.h&quot;
@@ -84,7 +85,7 @@ c_func
 l_int|1
 comma
 (paren
-l_string|&quot;&bslash;nGetting info on %s &quot;
+l_string|&quot; Getting info on %s &quot;
 comma
 id|search_path
 )paren
@@ -266,7 +267,7 @@ c_func
 l_int|1
 comma
 (paren
-l_string|&quot;&bslash;nAlloc new inode %p &quot;
+l_string|&quot; Alloc new inode %p &quot;
 comma
 op_star
 id|pinode
@@ -295,7 +296,7 @@ c_func
 l_int|1
 comma
 (paren
-l_string|&quot;&bslash;nOld time %ld &quot;
+l_string|&quot; Old time %ld &quot;
 comma
 id|cifsInfo-&gt;time
 )paren
@@ -520,7 +521,7 @@ suffix:semicolon
 id|inode-&gt;i_blksize
 op_assign
 (paren
-id|pTcon-&gt;ses-&gt;maxBuf
+id|pTcon-&gt;ses-&gt;server-&gt;maxBuf
 op_minus
 id|MAX_CIFS_HDR_SIZE
 )paren
@@ -550,7 +551,7 @@ c_func
 l_int|1
 comma
 (paren
-l_string|&quot;&bslash;nServer inconsistency Error: it says allocation size less than end of file &quot;
+l_string|&quot;Server inconsistency Error: it says allocation size less than end of file &quot;
 )paren
 )paren
 suffix:semicolon
@@ -560,7 +561,7 @@ c_func
 l_int|1
 comma
 (paren
-l_string|&quot;&bslash;nCIFS FFIRST: Size %ld and blocks %ld &quot;
+l_string|&quot;Size %ld and blocks %ld &quot;
 comma
 (paren
 r_int
@@ -677,7 +678,7 @@ c_func
 l_int|1
 comma
 (paren
-l_string|&quot;&bslash;nInit special inode &quot;
+l_string|&quot; Init special inode &quot;
 )paren
 )paren
 suffix:semicolon
@@ -783,7 +784,7 @@ c_func
 l_int|1
 comma
 (paren
-l_string|&quot;&bslash;nGetting info on %s &quot;
+l_string|&quot; Getting info on %s &quot;
 comma
 id|search_path
 )paren
@@ -965,7 +966,7 @@ c_func
 l_int|1
 comma
 (paren
-l_string|&quot;&bslash;nAlloc new inode %p &quot;
+l_string|&quot; Alloc new inode %p &quot;
 comma
 op_star
 id|pinode
@@ -1004,7 +1005,7 @@ c_func
 l_int|1
 comma
 (paren
-l_string|&quot;&bslash;nOld time %ld &quot;
+l_string|&quot; Old time %ld &quot;
 comma
 id|cifsInfo-&gt;time
 )paren
@@ -1037,7 +1038,7 @@ multiline_comment|/* inc on every refresh of inode */
 id|inode-&gt;i_blksize
 op_assign
 (paren
-id|pTcon-&gt;ses-&gt;maxBuf
+id|pTcon-&gt;ses-&gt;server-&gt;maxBuf
 op_minus
 id|MAX_CIFS_HDR_SIZE
 )paren
@@ -1102,7 +1103,7 @@ c_func
 l_int|0
 comma
 (paren
-l_string|&quot;&bslash;nAttributes came in as 0x%x&bslash;n&quot;
+l_string|&quot; Attributes came in as 0x%x &quot;
 comma
 id|findData.Attributes
 )paren
@@ -1181,7 +1182,7 @@ c_func
 l_int|1
 comma
 (paren
-l_string|&quot;&bslash;n Size %ld and blocks %ld &quot;
+l_string|&quot; Size %ld and blocks %ld &quot;
 comma
 (paren
 r_int
@@ -1432,7 +1433,7 @@ c_func
 l_int|1
 comma
 (paren
-l_string|&quot;&bslash;n cifs_unlink, inode = 0x%p with &quot;
+l_string|&quot; cifs_unlink, inode = 0x%p with &quot;
 comma
 id|inode
 )paren
@@ -1671,7 +1672,7 @@ c_func
 l_int|1
 comma
 (paren
-l_string|&quot;In cifs_mkdir, mode = 0x%x inode = 0x%p&bslash;n&quot;
+l_string|&quot;In cifs_mkdir, mode = 0x%x inode = 0x%p &quot;
 comma
 id|mode
 comma
@@ -1733,7 +1734,7 @@ c_func
 l_int|1
 comma
 (paren
-l_string|&quot;&bslash;ncifs_mkdir returned 0x%x &quot;
+l_string|&quot;cifs_mkdir returned 0x%x &quot;
 comma
 id|rc
 )paren
@@ -1899,7 +1900,7 @@ c_func
 l_int|1
 comma
 (paren
-l_string|&quot;&bslash;nn cifs_rmdir, inode = 0x%p with &quot;
+l_string|&quot; cifs_rmdir, inode = 0x%p with &quot;
 comma
 id|inode
 )paren
@@ -2271,7 +2272,7 @@ c_func
 l_int|1
 comma
 (paren
-l_string|&quot; full path: %s for inode 0x%p with count %d dentry: 0x%p d_time %ld at time %ld &bslash;n&quot;
+l_string|&quot; full path: %s for inode 0x%p with count %d dentry: 0x%p d_time %ld at time %ld &quot;
 comma
 id|full_path
 comma
@@ -2604,7 +2605,7 @@ c_func
 l_int|1
 comma
 (paren
-l_string|&quot;&bslash;nSetEOF (truncate) rc = %d&quot;
+l_string|&quot; SetEOF (truncate) rc = %d&quot;
 comma
 id|rc
 )paren
@@ -2682,7 +2683,7 @@ c_func
 l_int|1
 comma
 (paren
-l_string|&quot;&bslash;nNo open files to get file handle from&quot;
+l_string|&quot; No open files to get file handle from&quot;
 )paren
 )paren
 suffix:semicolon
@@ -2821,7 +2822,7 @@ c_func
 l_int|1
 comma
 (paren
-l_string|&quot;&bslash;nIn cifs_setattr, name = %s attrs-&gt;iavalid 0x%x&bslash;n&quot;
+l_string|&quot; In cifs_setattr, name = %s attrs-&gt;iavalid 0x%x &quot;
 comma
 id|direntry-&gt;d_name.name
 comma
@@ -2864,7 +2865,7 @@ c_func
 l_int|1
 comma
 (paren
-l_string|&quot;&bslash;nChanging attributes 0x%x&quot;
+l_string|&quot; Changing attributes 0x%x&quot;
 comma
 id|attrs-&gt;ia_valid
 )paren
@@ -2902,7 +2903,7 @@ c_func
 l_int|1
 comma
 (paren
-l_string|&quot;&bslash;nSetEOF (setattrs) rc = %d&quot;
+l_string|&quot; SetEOF (setattrs) rc = %d&quot;
 comma
 id|rc
 )paren
@@ -2972,29 +2973,14 @@ c_func
 l_int|1
 comma
 (paren
-l_string|&quot;&bslash;nNo open files to get file handle from&quot;
+l_string|&quot; No open files to get file handle from&quot;
 )paren
 )paren
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/*  Set Allocation Size of file - might not even need to call the&n;            following but might as well and it does not hurt if it fails */
-id|CIFSSMBSetEOF
-c_func
-(paren
-id|xid
-comma
-id|pTcon
-comma
-id|full_path
-comma
-id|attrs-&gt;ia_size
-comma
-id|TRUE
-comma
-id|cifs_sb-&gt;local_nls
-)paren
-suffix:semicolon
+multiline_comment|/*  For Allocation Size - do not need to call the following&n;            it did not hurt if it fails but why bother */
+multiline_comment|/*&t;CIFSSMBSetEOF(xid, pTcon, full_path, attrs-&gt;ia_size, TRUE, cifs_sb-&gt;local_nls);*/
 r_if
 c_cond
 (paren
@@ -3002,6 +2988,9 @@ id|rc
 op_eq
 l_int|0
 )paren
+(brace
+id|rc
+op_assign
 id|vmtruncate
 c_func
 (paren
@@ -3010,7 +2999,16 @@ comma
 id|attrs-&gt;ia_size
 )paren
 suffix:semicolon
-multiline_comment|/* BB add special case to handle sharing violation (due to Samba bug)&n;&t;&t;   by calling SetFileInfo to set the sizes */
+id|nobh_truncate_page
+c_func
+(paren
+id|direntry-&gt;d_inode-&gt;i_mapping
+comma
+id|direntry-&gt;d_inode-&gt;i_size
+)paren
+suffix:semicolon
+multiline_comment|/*          cFYI(1,(&quot;truncate_page to 0x%lx &bslash;n&quot;,direntry-&gt;d_inode-&gt;i_size)); */
+)brace
 )brace
 r_if
 c_cond
@@ -3026,7 +3024,7 @@ c_func
 l_int|1
 comma
 (paren
-l_string|&quot;&bslash;nCIFS - UID changed to %d&quot;
+l_string|&quot; CIFS - UID changed to %d&quot;
 comma
 id|attrs-&gt;ia_uid
 )paren
@@ -3052,7 +3050,7 @@ c_func
 l_int|1
 comma
 (paren
-l_string|&quot;&bslash;nCIFS - GID changed to %d&quot;
+l_string|&quot; CIFS - GID changed to %d&quot;
 comma
 id|attrs-&gt;ia_gid
 )paren
@@ -3078,7 +3076,7 @@ c_func
 l_int|1
 comma
 (paren
-l_string|&quot;&bslash;nCIFS - Mode changed to 0x%x&quot;
+l_string|&quot; CIFS - Mode changed to 0x%x&quot;
 comma
 id|attrs-&gt;ia_mode
 )paren
@@ -3212,7 +3210,7 @@ c_func
 l_int|1
 comma
 (paren
-l_string|&quot;&bslash;nCIFS - CTIME changed &quot;
+l_string|&quot; CIFS - CTIME changed &quot;
 )paren
 )paren
 suffix:semicolon
@@ -3270,10 +3268,7 @@ id|cifs_sb-&gt;local_nls
 )paren
 suffix:semicolon
 )brace
-id|cifsInode-&gt;time
-op_assign
-l_int|0
-suffix:semicolon
+multiline_comment|/*&t;cifsInode-&gt;time = 0; */
 multiline_comment|/* force revalidate to get attributes when needed */
 r_if
 c_cond
@@ -3314,7 +3309,7 @@ c_func
 l_int|1
 comma
 (paren
-l_string|&quot;In cifs_delete_inode, inode = 0x%p&bslash;n&quot;
+l_string|&quot;In cifs_delete_inode, inode = 0x%p &quot;
 comma
 id|inode
 )paren

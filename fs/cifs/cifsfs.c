@@ -239,7 +239,7 @@ c_func
 l_int|1
 comma
 (paren
-l_string|&quot;cifs_mount failed w/return code = %d&bslash;n&quot;
+l_string|&quot;cifs_mount failed w/return code = %d&quot;
 comma
 id|rc
 )paren
@@ -309,13 +309,13 @@ l_int|0
 suffix:semicolon
 id|out_no_root
 suffix:colon
-id|cEVENT
+id|cERROR
 c_func
 (paren
 l_int|1
 comma
 (paren
-l_string|&quot;cifs_read_super: get root inode failed&bslash;n&quot;
+l_string|&quot;cifs_read_super: get root inode failed&quot;
 )paren
 )paren
 suffix:semicolon
@@ -330,23 +330,6 @@ c_func
 id|inode
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|rc
-)paren
-(brace
-id|cERROR
-c_func
-(paren
-l_int|1
-comma
-(paren
-l_string|&quot;cifs_mount failed with no root inode&quot;
-)paren
-)paren
-suffix:semicolon
-)brace
 id|out_mount_failed
 suffix:colon
 r_if
@@ -394,7 +377,7 @@ c_func
 l_int|1
 comma
 (paren
-l_string|&quot;In cifs_put_super&bslash;n&quot;
+l_string|&quot;In cifs_put_super&quot;
 )paren
 )paren
 suffix:semicolon
@@ -420,7 +403,7 @@ c_func
 l_int|1
 comma
 (paren
-l_string|&quot;&bslash;nEmpty cifs superblock info passed to unmount&quot;
+l_string|&quot;Empty cifs superblock info passed to unmount&quot;
 )paren
 )paren
 suffix:semicolon
@@ -449,7 +432,7 @@ c_func
 l_int|1
 comma
 (paren
-l_string|&quot;cifs_umount failed with return code %d&bslash;n&quot;
+l_string|&quot;cifs_umount failed with return code %d&quot;
 comma
 id|rc
 )paren
@@ -646,10 +629,17 @@ id|cifs_inode-&gt;time
 op_assign
 l_int|0
 suffix:semicolon
-id|cifs_inode-&gt;clientCanCache
+r_if
+c_cond
+(paren
+id|oplockEnabled
+)paren
+(brace
+id|cifs_inode-&gt;clientCanCacheAll
 op_assign
-l_int|0
+l_int|1
 suffix:semicolon
+)brace
 id|INIT_LIST_HEAD
 c_func
 (paren
@@ -862,7 +852,7 @@ c_func
 l_int|1
 comma
 (paren
-l_string|&quot;&bslash;nDevname: %s flags: %d &quot;
+l_string|&quot;Devname: %s flags: %d &quot;
 comma
 id|dev_name
 comma
@@ -1048,11 +1038,39 @@ id|getattr
 op_assign
 id|cifs_getattr
 comma
+multiline_comment|/* do we need this anymore? */
 dot
 id|rename
 op_assign
 id|cifs_rename
 comma
+macro_line|#ifdef CIFS_XATTR
+dot
+id|setxattr
+op_assign
+id|cifs_setxattr
+comma
+dot
+id|getxattr
+op_assign
+id|cifs_getxattr
+comma
+dot
+id|listxattr
+op_assign
+id|cifs_listxattr
+comma
+dot
+id|removexattr
+op_assign
+id|cifs_removexattr
+comma
+dot
+id|permission
+op_assign
+id|cifs_permission
+comma
+macro_line|#endif 
 )brace
 suffix:semicolon
 DECL|variable|cifs_symlink_inode_ops
@@ -1074,6 +1092,28 @@ comma
 multiline_comment|/* BB add the following two eventually */
 multiline_comment|/* revalidate: cifs_revalidate,&n;&t;   setattr:    cifs_notify_change, */
 multiline_comment|/* BB do we need notify change */
+macro_line|#ifdef CIFS_XATTR
+dot
+id|setxattr
+op_assign
+id|cifs_setxattr
+comma
+dot
+id|getxattr
+op_assign
+id|cifs_getxattr
+comma
+dot
+id|listxattr
+op_assign
+id|cifs_listxattr
+comma
+dot
+id|removexattr
+op_assign
+id|cifs_removexattr
+comma
+macro_line|#endif 
 )brace
 suffix:semicolon
 DECL|variable|cifs_file_ops
@@ -1113,9 +1153,19 @@ op_assign
 id|cifs_fsync
 comma
 dot
+id|flush
+op_assign
+id|cifs_flush
+comma
+dot
 id|mmap
 op_assign
 id|cifs_file_mmap
+comma
+dot
+id|sendfile
+op_assign
+id|generic_file_sendfile
 comma
 )brace
 suffix:semicolon
@@ -1265,7 +1315,7 @@ id|cifs_inode_cachep
 id|printk
 c_func
 (paren
-id|KERN_INFO
+id|KERN_WARNING
 l_string|&quot;cifs_inode_cache: error freeing&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -1333,7 +1383,7 @@ id|cifs_req_cachep
 id|printk
 c_func
 (paren
-id|KERN_INFO
+id|KERN_WARNING
 l_string|&quot;cifs_destroy_request_cache: error not all structures were freed&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -1403,7 +1453,7 @@ id|cifs_mid_cachep
 id|printk
 c_func
 (paren
-id|KERN_INFO
+id|KERN_WARNING
 l_string|&quot;cifs_destroy_mids: error not all structures were freed&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -1616,7 +1666,7 @@ c_func
 l_int|0
 comma
 (paren
-l_string|&quot;&bslash;nIn unregister ie exit_cifs&quot;
+l_string|&quot;In unregister ie exit_cifs&quot;
 )paren
 )paren
 suffix:semicolon
