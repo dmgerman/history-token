@@ -1689,7 +1689,7 @@ id|bio
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * bio_set_pages_dirty() and bio_check_pages_dirty() are support functions&n; * for performing direct-IO in BIOs.&n; *&n; * The problem is that we cannot run set_page_dirty() from interrupt context&n; * because the required locks are not interrupt-safe.  So what we can do is to&n; * mark the pages dirty _before_ performing IO.  And in interrupt context,&n; * check that the pages are still dirty.   If so, fine.  If not, redirty them&n; * in process context.&n; *&n; * Note that this code is very hard to test under normal circumstances because&n; * direct-io pins the pages with get_user_pages().  This makes&n; * is_page_cache_freeable return false, and the VM will not clean the pages.&n; * But other code (eg, pdflush) could clean the pages if they are mapped&n; * pagecache.&n; *&n; * Simply disabling the call to bio_set_pages_dirty() is a good way to test the&n; * deferred bio dirtying paths.&n; */
+multiline_comment|/*&n; * bio_set_pages_dirty() and bio_check_pages_dirty() are support functions&n; * for performing direct-IO in BIOs.&n; *&n; * The problem is that we cannot run set_page_dirty() from interrupt context&n; * because the required locks are not interrupt-safe.  So what we can do is to&n; * mark the pages dirty _before_ performing IO.  And in interrupt context,&n; * check that the pages are still dirty.   If so, fine.  If not, redirty them&n; * in process context.&n; *&n; * We special-case compound pages here: normally this means reads into hugetlb&n; * pages.  The logic in here doesn&squot;t really work right for compound pages&n; * because the VM does not uniformly chase down the head page in all cases.&n; * But dirtiness of compound pages is pretty meaningless anyway: the VM doesn&squot;t&n; * handle them at all.  So we skip compound pages here at an early stage.&n; *&n; * Note that this code is very hard to test under normal circumstances because&n; * direct-io pins the pages with get_user_pages().  This makes&n; * is_page_cache_freeable return false, and the VM will not clean the pages.&n; * But other code (eg, pdflush) could clean the pages if they are mapped&n; * pagecache.&n; *&n; * Simply disabling the call to bio_set_pages_dirty() is a good way to test the&n; * deferred bio dirtying paths.&n; */
 multiline_comment|/*&n; * bio_set_pages_dirty() will mark all the bio&squot;s pages as dirty.&n; */
 DECL|function|bio_set_pages_dirty
 r_void
@@ -1743,16 +1743,18 @@ r_if
 c_cond
 (paren
 id|page
+op_logical_and
+op_logical_neg
+id|PageCompound
+c_func
+(paren
+id|page
+)paren
 )paren
 id|set_page_dirty_lock
 c_func
 (paren
-id|bvec
-(braket
-id|i
-)braket
-dot
-id|bv_page
+id|page
 )paren
 suffix:semicolon
 )brace
@@ -1997,6 +1999,12 @@ r_if
 c_cond
 (paren
 id|PageDirty
+c_func
+(paren
+id|page
+)paren
+op_logical_or
+id|PageCompound
 c_func
 (paren
 id|page
