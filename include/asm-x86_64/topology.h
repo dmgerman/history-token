@@ -9,6 +9,7 @@ r_extern
 r_int
 id|fake_node
 suffix:semicolon
+multiline_comment|/* This is actually a cpumask_t, but doesn&squot;t matter because we don&squot;t have&n;   &gt;BITS_PER_LONG CPUs */
 r_extern
 r_int
 r_int
@@ -22,8 +23,8 @@ DECL|macro|parent_node
 mdefine_line|#define parent_node(node)&t;&t;(node)
 DECL|macro|node_to_first_cpu
 mdefine_line|#define node_to_first_cpu(node) &t;(fake_node ? 0 : (node))
-DECL|macro|node_to_cpu_mask
-mdefine_line|#define node_to_cpu_mask(node)&t;(fake_node ? cpu_online_map : (1UL &lt;&lt; (node)))
+DECL|macro|node_to_cpumask
+mdefine_line|#define node_to_cpumask(node)&t;(fake_node ? cpu_online_map : (1UL &lt;&lt; (node)))
 DECL|macro|node_to_memblk
 mdefine_line|#define node_to_memblk(node)&t;&t;(node)
 DECL|function|pcibus_to_cpumask

@@ -6,7 +6,7 @@ macro_line|#ifdef __KERNEL__
 DECL|macro|SONYPI_DRIVER_MAJORVERSION
 mdefine_line|#define SONYPI_DRIVER_MAJORVERSION&t; 1
 DECL|macro|SONYPI_DRIVER_MINORVERSION
-mdefine_line|#define SONYPI_DRIVER_MINORVERSION&t;20
+mdefine_line|#define SONYPI_DRIVER_MINORVERSION&t;21
 DECL|macro|SONYPI_DEVICE_MODEL_TYPE1
 mdefine_line|#define SONYPI_DEVICE_MODEL_TYPE1&t;1
 DECL|macro|SONYPI_DEVICE_MODEL_TYPE2
@@ -1153,7 +1153,7 @@ comma
 (brace
 id|SONYPI_DEVICE_MODEL_TYPE2
 comma
-l_int|0x08
+l_int|0x21
 comma
 id|SONYPI_ZOOM_MASK
 comma
@@ -1163,7 +1163,7 @@ comma
 (brace
 id|SONYPI_DEVICE_MODEL_TYPE2
 comma
-l_int|0x08
+l_int|0x20
 comma
 id|SONYPI_THUMBPHRASE_MASK
 comma

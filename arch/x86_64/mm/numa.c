@@ -583,6 +583,12 @@ op_lshift
 id|nodeid
 )paren
 suffix:semicolon
+id|node_set_online
+c_func
+(paren
+id|nodeid
+)paren
+suffix:semicolon
 )brace
 multiline_comment|/* Initialize final allocator for a zone */
 DECL|function|setup_node_zones

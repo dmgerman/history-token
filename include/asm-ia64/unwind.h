@@ -312,6 +312,24 @@ suffix:semicolon
 )brace
 suffix:semicolon
 multiline_comment|/*&n; * The official API follows below:&n; */
+DECL|struct|unw_table_entry
+r_struct
+id|unw_table_entry
+(brace
+DECL|member|start_offset
+id|u64
+id|start_offset
+suffix:semicolon
+DECL|member|end_offset
+id|u64
+id|end_offset
+suffix:semicolon
+DECL|member|info_offset
+id|u64
+id|info_offset
+suffix:semicolon
+)brace
+suffix:semicolon
 multiline_comment|/*&n; * Initialize unwind support.&n; */
 r_extern
 r_void

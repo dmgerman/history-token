@@ -2675,6 +2675,10 @@ id|tsk-&gt;state
 op_assign
 id|TASK_ZOMBIE
 suffix:semicolon
+id|tsk-&gt;flags
+op_or_assign
+id|PF_DEAD
+suffix:semicolon
 multiline_comment|/*&n;&t; * In the preemption case it must be impossible for the task&n;&t; * to get runnable again, so use &quot;_raw_&quot; unlock to keep&n;&t; * preempt_count elevated until we schedule().&n;&t; *&n;&t; * To avoid deadlock on SMP, interrupts must be unmasked.  If we&n;&t; * don&squot;t, subsequently called functions (e.g, wait_task_inactive()&n;&t; * via release_task()) will spin, with interrupt flags&n;&t; * unwittingly blocked, until the other task sleeps.  That task&n;&t; * may itself be waiting for smp_call_function() to answer and&n;&t; * complete, and with interrupts blocked that will never happen.&n;&t; */
 id|_raw_write_unlock
 c_func

@@ -770,6 +770,17 @@ id|rr
 op_increment
 suffix:semicolon
 )brace
+r_if
+c_cond
+(paren
+id|found
+op_eq
+l_int|1
+)paren
+id|fake_node
+op_assign
+l_int|1
+suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon

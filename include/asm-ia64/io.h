@@ -107,6 +107,22 @@ id|PAGE_OFFSET
 )paren
 suffix:semicolon
 )brace
+DECL|macro|ARCH_HAS_VALID_PHYS_ADDR_RANGE
+mdefine_line|#define ARCH_HAS_VALID_PHYS_ADDR_RANGE
+r_extern
+r_int
+id|valid_phys_addr_range
+(paren
+r_int
+r_int
+id|addr
+comma
+r_int
+op_star
+id|count
+)paren
+suffix:semicolon
+multiline_comment|/* efi.c */
 multiline_comment|/*&n; * The following two macros are deprecated and scheduled for removal.&n; * Please use the PCI-DMA interface defined in &lt;asm/pci.h&gt; instead.&n; */
 DECL|macro|bus_to_virt
 mdefine_line|#define bus_to_virt&t;phys_to_virt
