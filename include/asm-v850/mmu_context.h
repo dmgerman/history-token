@@ -1,7 +1,6 @@
 macro_line|#ifndef __V850_MMU_CONTEXT_H__
 DECL|macro|__V850_MMU_CONTEXT_H__
 mdefine_line|#define __V850_MMU_CONTEXT_H__
-macro_line|#include &lt;linux/sched.h&gt;
 DECL|macro|destroy_context
 mdefine_line|#define destroy_context(mm)&t;&t;((void)0)
 DECL|macro|init_new_context

@@ -1,7 +1,6 @@
 multiline_comment|/*&n; * linux/arch/v850/kernel/time.c -- Arch-dependent timer functions&n; *&n; *  Copyright (C) 1991, 1992, 1995, 2001, 2002  Linus Torvalds&n; *&n; * This file contains the v850-specific time handling details.&n; * Most of the stuff is located in the machine specific files.&n; *&n; * 1997-09-10&t;Updated NTP code according to technical memorandum Jan &squot;96&n; *&t;&t;&quot;A Kernel Model for Precision Timekeeping&quot; by Dave Mills&n; */
 macro_line|#include &lt;linux/config.h&gt; /* CONFIG_HEARTBEAT */
 macro_line|#include &lt;linux/errno.h&gt;
-macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/param.h&gt;
 macro_line|#include &lt;linux/string.h&gt;

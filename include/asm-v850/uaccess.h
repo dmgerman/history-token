@@ -2,7 +2,8 @@ macro_line|#ifndef __V850_UACCESS_H__
 DECL|macro|__V850_UACCESS_H__
 mdefine_line|#define __V850_UACCESS_H__
 multiline_comment|/*&n; * User space memory access functions&n; */
-macro_line|#include &lt;linux/sched.h&gt;
+macro_line|#include &lt;linux/errno.h&gt;
+macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;asm/segment.h&gt;
 macro_line|#include &lt;asm/machdep.h&gt;
 DECL|macro|VERIFY_READ

@@ -1,7 +1,6 @@
 multiline_comment|/*&n; * arch/v850/kernel/syscalls.c -- Various system-call definitions not&n; * &t;defined in machine-independent code&n; *&n; *  Copyright (C) 2001,02  NEC Corporation&n; *  Copyright (C) 2001,02  Miles Bader &lt;miles@gnu.org&gt;&n; *&n; * This file is subject to the terms and conditions of the GNU General&n; * Public License.  See the file COPYING in the main directory of this&n; * archive for more details.&n; *&n; * This file was derived the ppc version, arch/ppc/kernel/syscalls.c&n; * ... which was derived from &quot;arch/i386/kernel/sys_i386.c&quot; by Gary Thomas;&n; *     modified by Cort Dougan (cort@cs.nmt.edu)&n; *     and Paul Mackerras (paulus@cs.anu.edu.au).&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
-macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/smp.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
