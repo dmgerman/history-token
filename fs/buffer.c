@@ -8249,6 +8249,17 @@ l_int|1
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * Notice that we are _not_ going to block here - end of page is&n;&t; * unmapped, so this will only try to map the rest of page, see&n;&t; * that it is unmapped (typically even will not look into inode -&n;&t; * -&gt;i_size will be enough for everything) and zero it out.&n;&t; * OTOH it&squot;s obviously correct and should make the page up-to-date.&n;&t; */
+r_if
+c_cond
+(paren
+op_logical_neg
+id|PageUptodate
+c_func
+(paren
+id|page
+)paren
+)paren
+(brace
 id|err
 op_assign
 id|mapping-&gt;a_ops
@@ -8267,6 +8278,16 @@ c_func
 id|page
 )paren
 suffix:semicolon
+)brace
+r_else
+(brace
+id|unlock_page
+c_func
+(paren
+id|page
+)paren
+suffix:semicolon
+)brace
 id|page_cache_release
 c_func
 (paren
