@@ -2859,13 +2859,6 @@ id|chan-&gt;pppdev.dev
 op_assign
 id|d
 suffix:semicolon
-id|sppp_attach
-c_func
-(paren
-op_amp
-id|chan-&gt;pppdev
-)paren
-suffix:semicolon
 id|d-&gt;base_addr
 op_assign
 id|chan-&gt;cosa-&gt;datareg
@@ -2881,6 +2874,13 @@ suffix:semicolon
 id|d-&gt;priv
 op_assign
 id|chan
+suffix:semicolon
+id|sppp_attach
+c_func
+(paren
+op_amp
+id|chan-&gt;pppdev
+)paren
 suffix:semicolon
 r_if
 c_cond
