@@ -680,6 +680,16 @@ op_star
 id|pAC
 )paren
 suffix:semicolon
+r_extern
+r_void
+id|SkGeBlinkTimer
+c_func
+(paren
+r_int
+r_int
+id|data
+)paren
+suffix:semicolon
 macro_line|#ifdef DEBUG
 r_static
 r_void
@@ -1862,6 +1872,26 @@ c_func
 (paren
 op_amp
 id|pAC-&gt;SlowPathLock
+)paren
+suffix:semicolon
+multiline_comment|/* setup phy_id blink timer */
+id|pAC-&gt;BlinkTimer.function
+op_assign
+id|SkGeBlinkTimer
+suffix:semicolon
+id|pAC-&gt;BlinkTimer.data
+op_assign
+(paren
+r_int
+r_int
+)paren
+id|dev
+suffix:semicolon
+id|init_timer
+c_func
+(paren
+op_amp
+id|pAC-&gt;BlinkTimer
 )paren
 suffix:semicolon
 multiline_comment|/* level 0 init common modules here */

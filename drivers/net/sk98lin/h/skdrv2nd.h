@@ -870,6 +870,16 @@ id|spinlock_t
 id|SlowPathLock
 suffix:semicolon
 multiline_comment|/* Normal IRQ lock */
+DECL|member|BlinkTimer
+r_struct
+id|timer_list
+id|BlinkTimer
+suffix:semicolon
+multiline_comment|/* for LED blinking */
+DECL|member|LedsOn
+r_int
+id|LedsOn
+suffix:semicolon
 DECL|member|PnmiStruct
 id|SK_PNMI_STRUCT_DATA
 id|PnmiStruct
