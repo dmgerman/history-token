@@ -744,11 +744,15 @@ l_int|1
 suffix:semicolon
 multiline_comment|/* Part of multi-function device */
 macro_line|#ifdef CONFIG_PCI_NAMES
+DECL|macro|PCI_NAME_SIZE
+mdefine_line|#define PCI_NAME_SIZE&t;50
+DECL|macro|PCI_NAME_HALF
+mdefine_line|#define PCI_NAME_HALF&t;__stringify(20)&t;/* less than half to handle slop */
 DECL|member|pretty_name
 r_char
 id|pretty_name
 (braket
-id|DEVICE_NAME_SIZE
+id|PCI_NAME_SIZE
 )braket
 suffix:semicolon
 multiline_comment|/* pretty name for users to see */
