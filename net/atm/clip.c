@@ -3575,11 +3575,6 @@ op_star
 id|vcc
 )paren
 (brace
-r_struct
-id|net_device
-op_star
-id|dev
-suffix:semicolon
 r_if
 c_cond
 (paren
