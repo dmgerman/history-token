@@ -1322,7 +1322,7 @@ c_cond
 (paren
 id|latency
 OL
-l_int|10000
+l_int|100
 )paren
 (brace
 id|printk
@@ -1330,14 +1330,14 @@ id|printk
 id|KERN_INFO
 id|PFX
 l_string|&quot;BIOS set settling time to %d microseconds.&quot;
-l_string|&quot;Should be at least 10000. Correcting.&bslash;n&quot;
+l_string|&quot;Should be at least 100. Correcting.&bslash;n&quot;
 comma
 id|latency
 )paren
 suffix:semicolon
 id|latency
 op_assign
-l_int|10000
+l_int|100
 suffix:semicolon
 )brace
 id|dprintk
@@ -1358,6 +1358,11 @@ comma
 id|psb-&gt;numpst
 )paren
 suffix:semicolon
+id|latency
+op_mul_assign
+l_int|100
+suffix:semicolon
+multiline_comment|/* SGTC needs to be in units of 10ns */
 id|p
 op_add_assign
 r_sizeof
