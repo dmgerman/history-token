@@ -87,7 +87,7 @@ mdefine_line|#define W9968CF_MIN_PACKET_SIZE  63 /* minimum value */
 DECL|macro|W9968CF_ISO_PACKETS
 mdefine_line|#define W9968CF_ISO_PACKETS      5 /* n.of packets for isochronous transfers */
 DECL|macro|W9968CF_USB_CTRL_TIMEOUT
-mdefine_line|#define W9968CF_USB_CTRL_TIMEOUT HZ /* timeout for usb control commands */
+mdefine_line|#define W9968CF_USB_CTRL_TIMEOUT 1000 /* timeout (ms) for usb control commands */
 DECL|macro|W9968CF_URBS
 mdefine_line|#define W9968CF_URBS             2 /* n. of scheduled URBs for ISO transfer */
 DECL|macro|W9968CF_I2C_BUS_DELAY
