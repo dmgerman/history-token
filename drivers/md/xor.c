@@ -3,7 +3,6 @@ DECL|macro|BH_TRACE
 mdefine_line|#define BH_TRACE 0
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/raid/md.h&gt;
-macro_line|#include &lt;linux/raid/md_compatible.h&gt;
 macro_line|#include &lt;linux/raid/xor.h&gt;
 macro_line|#include &lt;asm/xor.h&gt;
 multiline_comment|/* The xor routines to use.  */
@@ -23,11 +22,14 @@ r_int
 r_int
 id|count
 comma
-r_struct
-id|buffer_head
+r_int
+r_int
+id|bytes
+comma
+r_void
 op_star
 op_star
-id|bh_ptr
+id|ptr
 )paren
 (brace
 r_int
@@ -47,17 +49,6 @@ comma
 op_star
 id|p4
 suffix:semicolon
-r_int
-r_int
-id|bytes
-op_assign
-id|bh_ptr
-(braket
-l_int|0
-)braket
-op_member_access_from_pointer
-id|b_size
-suffix:semicolon
 id|p0
 op_assign
 (paren
@@ -65,12 +56,10 @@ r_int
 r_int
 op_star
 )paren
-id|bh_ptr
+id|ptr
 (braket
 l_int|0
 )braket
-op_member_access_from_pointer
-id|b_data
 suffix:semicolon
 id|p1
 op_assign
@@ -79,12 +68,10 @@ r_int
 r_int
 op_star
 )paren
-id|bh_ptr
+id|ptr
 (braket
 l_int|1
 )braket
-op_member_access_from_pointer
-id|b_data
 suffix:semicolon
 r_if
 c_cond
@@ -116,12 +103,10 @@ r_int
 r_int
 op_star
 )paren
-id|bh_ptr
+id|ptr
 (braket
 l_int|2
 )braket
-op_member_access_from_pointer
-id|b_data
 suffix:semicolon
 r_if
 c_cond
@@ -155,12 +140,10 @@ r_int
 r_int
 op_star
 )paren
-id|bh_ptr
+id|ptr
 (braket
 l_int|3
 )braket
-op_member_access_from_pointer
-id|b_data
 suffix:semicolon
 r_if
 c_cond
@@ -196,12 +179,10 @@ r_int
 r_int
 op_star
 )paren
-id|bh_ptr
+id|ptr
 (braket
 l_int|4
 )braket
-op_member_access_from_pointer
-id|b_data
 suffix:semicolon
 id|active_template
 op_member_access_from_pointer
@@ -416,7 +397,7 @@ op_assign
 r_void
 op_star
 )paren
-id|md__get_free_pages
+id|__get_free_pages
 c_func
 (paren
 id|GFP_KERNEL
@@ -545,7 +526,7 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|variable|xor_block
-id|MD_EXPORT_SYMBOL
+id|EXPORT_SYMBOL
 c_func
 (paren
 id|xor_block
