@@ -196,7 +196,7 @@ c_func
 id|asoc-&gt;ep
 )paren
 suffix:semicolon
-multiline_comment|/* Hold the sock. */
+multiline_comment|/* Hold the sock.  */
 id|asoc-&gt;base.sk
 op_assign
 (paren
@@ -212,12 +212,12 @@ c_func
 id|asoc-&gt;base.sk
 )paren
 suffix:semicolon
-multiline_comment|/* Initialize the common base substructure. */
+multiline_comment|/* Initialize the common base substructure.  */
 id|asoc-&gt;base.type
 op_assign
 id|SCTP_EP_TYPE_ASSOCIATION
 suffix:semicolon
-multiline_comment|/* Initialize the object handling fields. */
+multiline_comment|/* Initialize the object handling fields.  */
 id|atomic_set
 c_func
 (paren
@@ -235,7 +235,7 @@ id|asoc-&gt;base.malloced
 op_assign
 l_int|0
 suffix:semicolon
-multiline_comment|/* Initialize the bind addr area. */
+multiline_comment|/* Initialize the bind addr area.  */
 id|sctp_bind_addr_init
 c_func
 (paren
@@ -274,7 +274,7 @@ id|asoc-&gt;frag_point
 op_assign
 l_int|0
 suffix:semicolon
-multiline_comment|/* Initialize the default association max_retrans and RTO values. */
+multiline_comment|/* Initialize the default association max_retrans and RTO values.  */
 id|asoc-&gt;max_retrans
 op_assign
 id|ep-&gt;proto-&gt;max_retrans_association
@@ -795,6 +795,20 @@ id|asoc
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/* Free peer&squot;s cached cookie. */
+r_if
+c_cond
+(paren
+id|asoc-&gt;peer.cookie
+)paren
+(brace
+id|kfree
+c_func
+(paren
+id|asoc-&gt;peer.cookie
+)paren
+suffix:semicolon
+)brace
 multiline_comment|/* Release the transport structures. */
 id|list_for_each_safe
 c_func
@@ -1173,6 +1187,44 @@ op_amp
 id|asoc-&gt;peer.transport_addr_list
 )paren
 suffix:semicolon
+multiline_comment|/* If we do not yet have a primary path, set one.  */
+r_if
+c_cond
+(paren
+l_int|NULL
+op_eq
+id|asoc-&gt;peer.primary_path
+)paren
+(brace
+id|asoc-&gt;peer.primary_path
+op_assign
+id|peer
+suffix:semicolon
+multiline_comment|/* Set a default msg_name for events. */
+id|memcpy
+c_func
+(paren
+op_amp
+id|asoc-&gt;peer.primary_addr
+comma
+op_amp
+id|peer-&gt;ipaddr
+comma
+r_sizeof
+(paren
+id|sockaddr_storage_t
+)paren
+)paren
+suffix:semicolon
+id|asoc-&gt;peer.active_path
+op_assign
+id|peer
+suffix:semicolon
+id|asoc-&gt;peer.retran_path
+op_assign
+id|peer
+suffix:semicolon
+)brace
 multiline_comment|/* If we do not yet have a primary path, set one.  */
 r_if
 c_cond
