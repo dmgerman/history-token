@@ -475,15 +475,14 @@ r_goto
 id|clean_2
 suffix:semicolon
 )brace
-id|info
+id|dev_info
 (paren
-l_string|&quot;%s @ %s, %s&quot;
+op_star
+id|hcd-&gt;controller
 comma
-id|hcd-&gt;description
+l_string|&quot;%s&bslash;n&quot;
 comma
-id|dev-&gt;slot_name
-comma
-id|dev-&gt;dev.name
+id|hcd-&gt;product_desc
 )paren
 suffix:semicolon
 macro_line|#ifndef __sparc__
@@ -525,9 +524,12 @@ op_ne
 l_int|0
 )paren
 (brace
-id|err
+id|dev_err
 (paren
-l_string|&quot;request interrupt %s failed&quot;
+op_star
+id|hcd-&gt;controller
+comma
+l_string|&quot;request interrupt %s failed&bslash;n&quot;
 comma
 id|bufp
 )paren
@@ -553,9 +555,12 @@ id|hcd-&gt;region
 op_assign
 id|region
 suffix:semicolon
-id|info
+id|dev_info
 (paren
-l_string|&quot;irq %s, %s %p&quot;
+op_star
+id|hcd-&gt;controller
+comma
+l_string|&quot;irq %s, %s %p&bslash;n&quot;
 comma
 id|bufp
 comma
@@ -672,11 +677,12 @@ id|hcd
 )paren
 r_return
 suffix:semicolon
-id|info
+id|dev_info
 (paren
-l_string|&quot;remove: %s, state %x&quot;
+op_star
+id|hcd-&gt;controller
 comma
-id|hcd-&gt;self.bus_name
+l_string|&quot;remove, state %x&bslash;n&quot;
 comma
 id|hcd-&gt;state
 )paren
@@ -700,11 +706,12 @@ id|hcd-&gt;state
 op_assign
 id|USB_STATE_QUIESCING
 suffix:semicolon
-id|dbg
+id|dev_dbg
 (paren
-l_string|&quot;%s: roothub graceful disconnect&quot;
+op_star
+id|hcd-&gt;controller
 comma
-id|hcd-&gt;self.bus_name
+l_string|&quot;roothub graceful disconnect&bslash;n&quot;
 )paren
 suffix:semicolon
 id|usb_disconnect
@@ -726,6 +733,13 @@ suffix:semicolon
 id|hcd-&gt;state
 op_assign
 id|USB_STATE_HALT
+suffix:semicolon
+id|pci_set_drvdata
+(paren
+id|dev
+comma
+l_int|0
+)paren
 suffix:semicolon
 id|free_irq
 (paren
@@ -802,13 +816,26 @@ id|hcd-&gt;self.refcnt
 op_ne
 l_int|1
 )paren
-id|err
+(brace
+id|dev_warn
 (paren
-l_string|&quot;usb_hcd_pci_remove %s, count != 1&quot;
+op_star
+id|hcd-&gt;controller
 comma
-id|hcd-&gt;self.bus_name
+l_string|&quot;dangling refs (%d) to bus %d!&bslash;n&quot;
+comma
+id|atomic_read
+(paren
+op_amp
+id|hcd-&gt;self.refcnt
+)paren
+op_minus
+l_int|1
+comma
+id|hcd-&gt;self.busnum
 )paren
 suffix:semicolon
+)brace
 id|hcd-&gt;driver-&gt;hcd_free
 (paren
 id|hcd
@@ -855,11 +882,12 @@ c_func
 id|dev
 )paren
 suffix:semicolon
-id|info
+id|dev_info
 (paren
-l_string|&quot;suspend %s to state %d&quot;
+op_star
+id|hcd-&gt;controller
 comma
-id|hcd-&gt;self.bus_name
+l_string|&quot;suspend to state %d&bslash;n&quot;
 comma
 id|state
 )paren
@@ -932,11 +960,12 @@ c_func
 id|dev
 )paren
 suffix:semicolon
-id|info
+id|dev_info
 (paren
-l_string|&quot;resume %s&quot;
+op_star
+id|hcd-&gt;controller
 comma
-id|hcd-&gt;self.bus_name
+l_string|&quot;resume&bslash;n&quot;
 )paren
 suffix:semicolon
 multiline_comment|/* guard against multiple resumes (APM bug?) */
@@ -958,11 +987,12 @@ op_ne
 l_int|1
 )paren
 (brace
-id|err
+id|dev_err
 (paren
-l_string|&quot;concurrent PCI resumes for %s&quot;
+op_star
+id|hcd-&gt;controller
 comma
-id|hcd-&gt;self.bus_name
+l_string|&quot;concurrent PCI resumes&bslash;n&quot;
 )paren
 suffix:semicolon
 id|retval
@@ -986,9 +1016,12 @@ op_ne
 id|USB_STATE_SUSPENDED
 )paren
 (brace
-id|dbg
+id|dev_dbg
 (paren
-l_string|&quot;can&squot;t resume, not suspended!&quot;
+op_star
+id|hcd-&gt;controller
+comma
+l_string|&quot;can&squot;t resume, not suspended!&bslash;n&quot;
 )paren
 suffix:semicolon
 r_goto
@@ -1030,11 +1063,12 @@ id|hcd-&gt;state
 )paren
 )paren
 (brace
-id|dbg
+id|dev_dbg
 (paren
-l_string|&quot;resume %s failure, retval %d&quot;
+op_star
+id|hcd-&gt;controller
 comma
-id|hcd-&gt;self.bus_name
+l_string|&quot;resume fail, retval %d&bslash;n&quot;
 comma
 id|retval
 )paren

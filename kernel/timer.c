@@ -2938,7 +2938,7 @@ r_return
 id|current-&gt;tgid
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * This is not strictly SMP safe: p_opptr could change&n; * from under us. However, rather than getting any lock&n; * we can use an optimistic algorithm: get the parent&n; * pid, and go back and check that the parent is still&n; * the same. If it has changed (which is extremely unlikely&n; * indeed), we just try again..&n; *&n; * NOTE! This depends on the fact that even if we _do_&n; * get an old value of &quot;parent&quot;, we can happily dereference&n; * the pointer: we just can&squot;t necessarily trust the result&n; * until we know that the parent pointer is valid.&n; *&n; * The &quot;mb()&quot; macro is a memory barrier - a synchronizing&n; * event. It also makes sure that gcc doesn&squot;t optimize&n; * away the necessary memory references.. The barrier doesn&squot;t&n; * have to have all that strong semantics: on x86 we don&squot;t&n; * really require a synchronizing instruction, for example.&n; * The barrier is more important for code generation than&n; * for any real memory ordering semantics (even if there is&n; * a small window for a race, using the old pointer is&n; * harmless for a while).&n; */
+multiline_comment|/*&n; * Accessing -&gt;group_leader-&gt;real_parent is not SMP-safe, it could&n; * change from under us. However, rather than getting any lock&n; * we can use an optimistic algorithm: get the parent&n; * pid, and go back and check that the parent is still&n; * the same. If it has changed (which is extremely unlikely&n; * indeed), we just try again..&n; *&n; * NOTE! This depends on the fact that even if we _do_&n; * get an old value of &quot;parent&quot;, we can happily dereference&n; * the pointer (it was and remains a dereferencable kernel pointer&n; * no matter what): we just can&squot;t necessarily trust the result&n; * until we know that the parent pointer is valid.&n; *&n; * NOTE2: -&gt;group_leader never changes from under us.&n; */
 DECL|function|sys_getppid
 id|asmlinkage
 r_int
@@ -2965,7 +2965,7 @@ id|parent
 suffix:semicolon
 id|parent
 op_assign
-id|me-&gt;real_parent
+id|me-&gt;group_leader-&gt;real_parent
 suffix:semicolon
 r_for
 c_loop
@@ -2976,7 +2976,7 @@ suffix:semicolon
 (brace
 id|pid
 op_assign
-id|parent-&gt;pid
+id|parent-&gt;tgid
 suffix:semicolon
 macro_line|#if CONFIG_SMP
 (brace
@@ -2987,14 +2987,15 @@ id|old
 op_assign
 id|parent
 suffix:semicolon
-id|mb
+multiline_comment|/*&n;&t;&t; * Make sure we read the pid before re-reading the&n;&t;&t; * parent pointer:&n;&t;&t; */
+id|rmb
 c_func
 (paren
 )paren
 suffix:semicolon
 id|parent
 op_assign
-id|me-&gt;real_parent
+id|me-&gt;group_leader-&gt;real_parent
 suffix:semicolon
 r_if
 c_cond

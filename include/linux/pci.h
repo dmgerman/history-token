@@ -646,12 +646,6 @@ op_star
 id|driver
 suffix:semicolon
 multiline_comment|/* which driver has allocated this device */
-DECL|member|driver_data
-r_void
-op_star
-id|driver_data
-suffix:semicolon
-multiline_comment|/* data private to the driver */
 DECL|member|dma_mask
 id|u64
 id|dma_mask
@@ -3038,7 +3032,7 @@ DECL|macro|pci_resource_flags
 mdefine_line|#define pci_resource_flags(dev,bar)   ((dev)-&gt;resource[(bar)].flags)
 DECL|macro|pci_resource_len
 mdefine_line|#define pci_resource_len(dev,bar) &bslash;&n;&t;((pci_resource_start((dev),(bar)) == 0 &amp;&amp;&t;&bslash;&n;&t;  pci_resource_end((dev),(bar)) ==&t;&t;&bslash;&n;&t;  pci_resource_start((dev),(bar))) ? 0 :&t;&bslash;&n;&t;  &t;&t;&t;&t;&t;&t;&bslash;&n;&t; (pci_resource_end((dev),(bar)) -&t;&t;&bslash;&n;&t;  pci_resource_start((dev),(bar)) + 1))
-multiline_comment|/* Similar to the helpers above, these manipulate per-pci_dev&n; * driver-specific data.  Currently stored as pci_dev::driver_data,&n; * a void pointer, but it is not present on older kernels.&n; */
+multiline_comment|/* Similar to the helpers above, these manipulate per-pci_dev&n; * driver-specific data.  They are really just a wrapper around&n; * the generic device structure functions of these calls.&n; */
 DECL|function|pci_get_drvdata
 r_static
 r_inline
@@ -3053,7 +3047,12 @@ id|pdev
 )paren
 (brace
 r_return
-id|pdev-&gt;driver_data
+id|dev_get_drvdata
+c_func
+(paren
+op_amp
+id|pdev-&gt;dev
+)paren
 suffix:semicolon
 )brace
 DECL|function|pci_set_drvdata
@@ -3072,9 +3071,14 @@ op_star
 id|data
 )paren
 (brace
-id|pdev-&gt;driver_data
-op_assign
+id|dev_set_drvdata
+c_func
+(paren
+op_amp
+id|pdev-&gt;dev
+comma
 id|data
+)paren
 suffix:semicolon
 )brace
 multiline_comment|/*&n; *  The world is not perfect and supplies us with broken PCI devices.&n; *  For at least a part of these bugs we need a work-around, so both&n; *  generic (drivers/pci/quirks.c) and per-architecture code can define&n; *  fixup hooks to be called for particular buggy devices.&n; */

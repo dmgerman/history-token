@@ -3,9 +3,6 @@ macro_line|#ifndef __XFS_DIR2_H__
 DECL|macro|__XFS_DIR2_H__
 mdefine_line|#define __XFS_DIR2_H__
 r_struct
-id|dirent
-suffix:semicolon
-r_struct
 id|uio
 suffix:semicolon
 r_struct

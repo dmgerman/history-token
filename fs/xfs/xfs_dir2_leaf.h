@@ -4,9 +4,6 @@ DECL|macro|__XFS_DIR2_LEAF_H__
 mdefine_line|#define __XFS_DIR2_LEAF_H__
 multiline_comment|/*&n; * Directory version 2, leaf block structures.&n; */
 r_struct
-id|dirent
-suffix:semicolon
-r_struct
 id|uio
 suffix:semicolon
 r_struct

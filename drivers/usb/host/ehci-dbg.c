@@ -1,5 +1,14 @@
 multiline_comment|/*&n; * Copyright (c) 2001-2002 by David Brownell&n; * &n; * This program is free software; you can redistribute it and/or modify it&n; * under the terms of the GNU General Public License as published by the&n; * Free Software Foundation; either version 2 of the License, or (at your&n; * option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful, but&n; * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY&n; * or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License&n; * for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software Foundation,&n; * Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; */
 multiline_comment|/* this file is part of ehci-hcd.c */
+DECL|macro|ehci_dbg
+mdefine_line|#define ehci_dbg(ehci, fmt, args...) &bslash;&n;&t;dev_dbg (*(ehci)-&gt;hcd.controller, fmt, ## args )
+macro_line|#ifdef EHCI_VERBOSE_DEBUG
+DECL|macro|ehci_vdbg
+mdefine_line|#define ehci_vdbg(ehci, fmt, args...) &bslash;&n;&t;dev_dbg (*(ehci)-&gt;hcd.controller, fmt, ## args )
+macro_line|#else
+DECL|macro|ehci_vdbg
+mdefine_line|#define ehci_vdbg(ehci, fmt, args...) do { } while (0)
+macro_line|#endif
 macro_line|#ifdef EHCI_VERBOSE_DEBUG
 DECL|macro|vdbg
 macro_line|#&t;define vdbg dbg
@@ -47,9 +56,11 @@ op_amp
 id|ehci-&gt;caps-&gt;hcs_params
 )paren
 suffix:semicolon
-id|dbg
+id|ehci_dbg
 (paren
-l_string|&quot;%s hcs_params 0x%x dbg=%d%s cc=%d pcc=%d%s%s ports=%d&quot;
+id|ehci
+comma
+l_string|&quot;%s hcs_params 0x%x dbg=%d%s cc=%d pcc=%d%s%s ports=%d&bslash;n&quot;
 comma
 id|label
 comma
@@ -216,17 +227,11 @@ id|tmp
 )paren
 suffix:semicolon
 )brace
-id|dbg
+id|ehci_dbg
 (paren
-l_string|&quot;%s: %s portroute %s&quot;
+id|ehci
 comma
-id|hcd_to_bus
-(paren
-op_amp
-id|ehci-&gt;hcd
-)paren
-op_member_access_from_pointer
-id|bus_name
+l_string|&quot;%s portroute %s&bslash;n&quot;
 comma
 id|label
 comma
@@ -283,38 +288,17 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|HCC_EXT_CAPS
-(paren
-id|params
-)paren
-)paren
-(brace
-singleline_comment|// EHCI 0.96 ... could interpret these (legacy?)
-id|dbg
-(paren
-l_string|&quot;%s extended capabilities at pci %2x&quot;
-comma
-id|label
-comma
-id|HCC_EXT_CAPS
-(paren
-id|params
-)paren
-)paren
-suffix:semicolon
-)brace
-r_if
-c_cond
-(paren
 id|HCC_ISOC_CACHE
 (paren
 id|params
 )paren
 )paren
 (brace
-id|dbg
+id|ehci_dbg
 (paren
-l_string|&quot;%s hcc_params %04x caching frame %s%s%s&quot;
+id|ehci
+comma
+l_string|&quot;%s hcc_params %04x caching frame %s%s%s&bslash;n&quot;
 comma
 id|label
 comma
@@ -354,9 +338,11 @@ suffix:semicolon
 )brace
 r_else
 (brace
-id|dbg
+id|ehci_dbg
 (paren
-l_string|&quot;%s hcc_params %04x caching %d uframes %s%s%s&quot;
+id|ehci
+comma
+l_string|&quot;%s hcc_params %04x thresh %d uframes %s%s%s&bslash;n&quot;
 comma
 id|label
 comma
@@ -1357,11 +1343,11 @@ suffix:semicolon
 macro_line|#endif&t;/* DEBUG */
 multiline_comment|/* functions have the &quot;wrong&quot; filename when they&squot;re output... */
 DECL|macro|dbg_status
-mdefine_line|#define dbg_status(ehci, label, status) { &bslash;&n;&t;char _buf [80]; &bslash;&n;&t;dbg_status_buf (_buf, sizeof _buf, label, status); &bslash;&n;&t;dbg (&quot;%s&quot;, _buf); &bslash;&n;}
+mdefine_line|#define dbg_status(ehci, label, status) { &bslash;&n;&t;char _buf [80]; &bslash;&n;&t;dbg_status_buf (_buf, sizeof _buf, label, status); &bslash;&n;&t;ehci_dbg (ehci, &quot;%s&bslash;n&quot;, _buf); &bslash;&n;}
 DECL|macro|dbg_cmd
-mdefine_line|#define dbg_cmd(ehci, label, command) { &bslash;&n;&t;char _buf [80]; &bslash;&n;&t;dbg_command_buf (_buf, sizeof _buf, label, command); &bslash;&n;&t;dbg (&quot;%s&quot;, _buf); &bslash;&n;}
+mdefine_line|#define dbg_cmd(ehci, label, command) { &bslash;&n;&t;char _buf [80]; &bslash;&n;&t;dbg_command_buf (_buf, sizeof _buf, label, command); &bslash;&n;&t;ehci_dbg (ehci, &quot;%s&bslash;n&quot;, _buf); &bslash;&n;}
 DECL|macro|dbg_port
-mdefine_line|#define dbg_port(hcd, label, port, status) { &bslash;&n;&t;char _buf [80]; &bslash;&n;&t;dbg_port_buf (_buf, sizeof _buf, label, port, status); &bslash;&n;&t;dbg (&quot;%s&quot;, _buf); &bslash;&n;}
+mdefine_line|#define dbg_port(ehci, label, port, status) { &bslash;&n;&t;char _buf [80]; &bslash;&n;&t;dbg_port_buf (_buf, sizeof _buf, label, port, status); &bslash;&n;&t;ehci_dbg (ehci, &quot;%s&bslash;n&quot;, _buf); &bslash;&n;}
 multiline_comment|/*-------------------------------------------------------------------------*/
 macro_line|#ifdef STUB_DEBUG_FILES
 DECL|function|create_debug_files
@@ -1776,18 +1762,19 @@ comma
 id|flags
 )paren
 suffix:semicolon
-r_if
-c_cond
+r_for
+c_loop
 (paren
-id|ehci-&gt;async
-)paren
-(brace
 id|qh
 op_assign
-id|ehci-&gt;async
+id|ehci-&gt;async-&gt;qh_next.qh
 suffix:semicolon
-r_do
-(brace
+id|qh
+suffix:semicolon
+id|qh
+op_assign
+id|qh-&gt;qh_next.qh
+)paren
 id|qh_lines
 (paren
 id|qh
@@ -1799,20 +1786,6 @@ op_amp
 id|size
 )paren
 suffix:semicolon
-)brace
-r_while
-c_loop
-(paren
-(paren
-id|qh
-op_assign
-id|qh-&gt;qh_next.qh
-)paren
-op_ne
-id|ehci-&gt;async
-)paren
-suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
