@@ -1313,9 +1313,16 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|base_ni-&gt;ext.extent_ntfs_inos
+id|base_ni-&gt;nr_extents
 )paren
 (brace
+id|BUG_ON
+c_func
+(paren
+op_logical_neg
+id|base_ni-&gt;ext.extent_ntfs_inos
+)paren
+suffix:semicolon
 id|memcpy
 c_func
 (paren
