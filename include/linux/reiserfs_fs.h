@@ -1350,6 +1350,9 @@ id|KEY_FORMAT_3_5
 ques
 c_cond
 (paren
+r_void
+)paren
+(paren
 id|key-&gt;u.k_offset_v1.k_offset
 op_assign
 id|cpu_to_le32
@@ -1359,6 +1362,9 @@ id|offset
 )paren
 suffix:colon
 multiline_comment|/* jdm check */
+(paren
+r_void
+)paren
 (paren
 id|set_offset_v2_k_offset
 c_func
@@ -1430,6 +1436,9 @@ id|KEY_FORMAT_3_5
 ques
 c_cond
 (paren
+r_void
+)paren
+(paren
 id|key-&gt;u.k_offset_v1.k_uniqueness
 op_assign
 id|cpu_to_le32
@@ -1443,6 +1452,9 @@ id|type
 )paren
 )paren
 suffix:colon
+(paren
+r_void
+)paren
 (paren
 id|set_offset_v2_k_type
 c_func
