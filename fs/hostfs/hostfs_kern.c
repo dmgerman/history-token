@@ -1883,6 +1883,11 @@ op_assign
 id|generic_file_read
 comma
 dot
+id|sendfile
+op_assign
+id|generic_file_sendfile
+comma
+dot
 id|write
 op_assign
 id|generic_file_write
