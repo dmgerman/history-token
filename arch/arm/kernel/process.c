@@ -226,13 +226,6 @@ c_func
 (paren
 )paren
 suffix:semicolon
-macro_line|#ifndef CONFIG_NO_PGT_CACHE
-id|check_pgt_cache
-c_func
-(paren
-)paren
-suffix:semicolon
-macro_line|#endif
 )brace
 )brace
 DECL|variable|reboot_mode
