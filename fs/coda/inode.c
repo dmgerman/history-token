@@ -777,6 +777,15 @@ c_func
 id|root
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|sb-&gt;s_root
+)paren
+r_goto
+id|error
+suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
