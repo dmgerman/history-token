@@ -2260,8 +2260,6 @@ id|cifsInodeInfo
 comma
 l_int|0
 comma
-id|SLAB_HWCACHE_ALIGN
-op_or
 id|SLAB_RECLAIM_ACCOUNT
 comma
 id|cifs_init_once
