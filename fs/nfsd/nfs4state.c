@@ -6009,6 +6009,9 @@ c_func
 (paren
 l_string|&quot;NFSD: nfsd4_open_confirm on file %.*s&bslash;n&quot;
 comma
+(paren
+r_int
+)paren
 id|current_fh-&gt;fh_dentry-&gt;d_name.len
 comma
 id|current_fh-&gt;fh_dentry-&gt;d_name.name
@@ -6156,6 +6159,9 @@ c_func
 (paren
 l_string|&quot;NFSD: nfsd4_open_downgrade on file %.*s&bslash;n&quot;
 comma
+(paren
+r_int
+)paren
 id|current_fh-&gt;fh_dentry-&gt;d_name.len
 comma
 id|current_fh-&gt;fh_dentry-&gt;d_name.name
@@ -6341,6 +6347,9 @@ c_func
 (paren
 l_string|&quot;NFSD: nfsd4_close on file %.*s&bslash;n&quot;
 comma
+(paren
+r_int
+)paren
 id|current_fh-&gt;fh_dentry-&gt;d_name.len
 comma
 id|current_fh-&gt;fh_dentry-&gt;d_name.name
