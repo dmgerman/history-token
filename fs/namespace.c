@@ -1142,6 +1142,19 @@ comma
 id|PAGE_SIZE
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|IS_ERR
+c_func
+(paren
+id|path
+)paren
+)paren
+id|path
+op_assign
+l_string|&quot; (too long)&quot;
+suffix:semicolon
 id|mangle
 c_func
 (paren
