@@ -1,15 +1,15 @@
 macro_line|#include &lt;media/saa7146_vv.h&gt;
-DECL|variable|memory
+DECL|variable|max_memory
 r_static
 r_int
-id|memory
+id|max_memory
 op_assign
 l_int|32
 suffix:semicolon
 id|MODULE_PARM
 c_func
 (paren
-id|memory
+id|max_memory
 comma
 l_string|&quot;i&quot;
 )paren
@@ -17,7 +17,7 @@ suffix:semicolon
 id|MODULE_PARM_DESC
 c_func
 (paren
-id|memory
+id|max_memory
 comma
 l_string|&quot;maximum memory usage for capture buffers (default: 32Mb)&quot;
 )paren
@@ -6227,7 +6227,7 @@ id|size
 op_assign
 id|fh-&gt;video_fmt.sizeimage
 suffix:semicolon
-multiline_comment|/* check if we exceed the &quot;memory&quot; parameter */
+multiline_comment|/* check if we exceed the &quot;max_memory&quot; parameter */
 r_if
 c_cond
 (paren
@@ -6240,7 +6240,7 @@ id|size
 )paren
 OG
 (paren
-id|memory
+id|max_memory
 op_star
 l_int|1048576
 )paren
@@ -6250,7 +6250,7 @@ op_star
 id|count
 op_assign
 (paren
-id|memory
+id|max_memory
 op_star
 l_int|1048576
 )paren
