@@ -398,7 +398,7 @@ c_func
 id|blk_queue_prep_rq
 )paren
 suffix:semicolon
-multiline_comment|/**&n; * blk_queue_merge_bvec - set a merge_bvec function for queue&n; * @q:&t;&t;queue&n; * @mbfn:&t;merge_bvec_fn&n; *&n; * Usually queues have static limitations on the max sectors or segments that&n; * we can put in a request. Stacking drivers may have some settings that&n; * are dynamic, and thus we have to query the queue whether it is ok to&n; * add a new bio_vec to a bio at a given offset or not. If the block device&n; * has such limitations, it needs to register a merge_bvec_fn to control&n; * the size of bio&squot;s sent to it. Per default now merge_bvec_fn is defined for&n; * a queue, and only the fixed limits are honored.&n; *&n; */
+multiline_comment|/**&n; * blk_queue_merge_bvec - set a merge_bvec function for queue&n; * @q:&t;&t;queue&n; * @mbfn:&t;merge_bvec_fn&n; *&n; * Usually queues have static limitations on the max sectors or segments that&n; * we can put in a request. Stacking drivers may have some settings that&n; * are dynamic, and thus we have to query the queue whether it is ok to&n; * add a new bio_vec to a bio at a given offset or not. If the block device&n; * has such limitations, it needs to register a merge_bvec_fn to control&n; * the size of bio&squot;s sent to it. Note that a block device *must* allow a&n; * single page to be added to an empty bio. The block device driver may want&n; * to use the bio_split() function to deal with these bio&squot;s. By default&n; * no merge_bvec_fn is defined for a queue, and only the fixed limits are&n; * honored.&n; */
 DECL|function|blk_queue_merge_bvec
 r_void
 id|blk_queue_merge_bvec
