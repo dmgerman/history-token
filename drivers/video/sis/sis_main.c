@@ -240,7 +240,7 @@ macro_line|#endif
 )brace
 r_static
 r_void
-id|__init
+id|__devinit
 DECL|function|sisfb_search_vesamode
 id|sisfb_search_vesamode
 c_func
@@ -33409,7 +33409,7 @@ macro_line|#endif
 macro_line|#endif
 DECL|function|sisfb_init_module
 r_int
-id|__init
+id|__devinit
 id|sisfb_init_module
 c_func
 (paren
