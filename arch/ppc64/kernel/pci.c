@@ -1037,7 +1037,7 @@ suffix:semicolon
 multiline_comment|/* Cache the location of the ISA bridge (if we have one) */
 id|ppc64_isabridge_dev
 op_assign
-id|pci_find_class
+id|pci_get_class
 c_func
 (paren
 id|PCI_CLASS_BRIDGE_ISA
