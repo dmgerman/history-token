@@ -1331,8 +1331,8 @@ DECL|macro|GPIO1_RST
 mdefine_line|#define GPIO1_RST&t;&t;1&t;/* reset */
 DECL|macro|GPIO6_MMCCLK
 mdefine_line|#define GPIO6_MMCCLK&t;&t;6&t;/* MMC Clock */
-DECL|macro|GPIO8_48MHz
-mdefine_line|#define GPIO8_48MHz&t;&t;7&t;/* 48 MHz clock output */
+DECL|macro|GPIO7_48MHz
+mdefine_line|#define GPIO7_48MHz&t;&t;7&t;/* 48 MHz clock output */
 DECL|macro|GPIO8_MMCCS0
 mdefine_line|#define GPIO8_MMCCS0&t;&t;8&t;/* MMC Chip Select 0 */
 DECL|macro|GPIO9_MMCCS1
@@ -1530,8 +1530,8 @@ DECL|macro|GPIO1_RTS_MD
 mdefine_line|#define GPIO1_RTS_MD&t;&t;( 1 | GPIO_ALT_FN_1_IN)
 DECL|macro|GPIO6_MMCCLK_MD
 mdefine_line|#define GPIO6_MMCCLK_MD&t;&t;( 6 | GPIO_ALT_FN_1_OUT)
-DECL|macro|GPIO8_48MHz_MD
-mdefine_line|#define GPIO8_48MHz_MD&t;&t;( 8 | GPIO_ALT_FN_1_OUT)
+DECL|macro|GPIO7_48MHz_MD
+mdefine_line|#define GPIO7_48MHz_MD&t;&t;( 7 | GPIO_ALT_FN_1_OUT)
 DECL|macro|GPIO8_MMCCS0_MD
 mdefine_line|#define GPIO8_MMCCS0_MD&t;&t;( 8 | GPIO_ALT_FN_1_OUT)
 DECL|macro|GPIO9_MMCCS1_MD
