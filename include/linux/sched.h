@@ -27,6 +27,7 @@ macro_line|#include &lt;linux/signal.h&gt;
 macro_line|#include &lt;linux/securebits.h&gt;
 macro_line|#include &lt;linux/fs_struct.h&gt;
 macro_line|#include &lt;linux/compiler.h&gt;
+macro_line|#include &lt;linux/completion.h&gt;
 r_struct
 id|exec_domain
 suffix:semicolon
@@ -167,9 +168,6 @@ r_int
 id|sched_priority
 suffix:semicolon
 )brace
-suffix:semicolon
-r_struct
-id|completion
 suffix:semicolon
 macro_line|#ifdef __KERNEL__
 macro_line|#include &lt;linux/spinlock.h&gt;
@@ -519,6 +517,20 @@ DECL|member|shared_pending
 r_struct
 id|sigpending
 id|shared_pending
+suffix:semicolon
+multiline_comment|/* thread group exit support */
+DECL|member|group_exit
+r_int
+id|group_exit
+suffix:semicolon
+DECL|member|group_exit_code
+r_int
+id|group_exit_code
+suffix:semicolon
+DECL|member|group_exit_done
+r_struct
+id|completion
+id|group_exit_done
 suffix:semicolon
 )brace
 suffix:semicolon
@@ -2011,6 +2023,20 @@ r_int
 suffix:semicolon
 r_extern
 r_int
+id|__broadcast_thread_group
+c_func
+(paren
+r_struct
+id|task_struct
+op_star
+id|p
+comma
+r_int
+id|sig
+)paren
+suffix:semicolon
+r_extern
+r_int
 id|kill_pg
 c_func
 (paren
@@ -2630,6 +2656,16 @@ suffix:semicolon
 r_extern
 r_void
 id|exit_sighand
+c_func
+(paren
+r_struct
+id|task_struct
+op_star
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|__exit_sighand
 c_func
 (paren
 r_struct
