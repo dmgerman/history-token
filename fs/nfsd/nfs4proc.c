@@ -2858,6 +2858,7 @@ DECL|macro|PROC
 mdefine_line|#define PROC(name, argt, rest, relt, cache, respsize)&t;&bslash;&n; { (svc_procfunc) nfsd4_proc_##name,&t;&t;&bslash;&n;   (kxdrproc_t) nfs4svc_decode_##argt##args,&t;&bslash;&n;   (kxdrproc_t) nfs4svc_encode_##rest##res,&t;&bslash;&n;   (kxdrproc_t) nfs4svc_release_##relt,&t;&t;&bslash;&n;   sizeof(struct nfsd4_##argt##args),&t;&t;&bslash;&n;   sizeof(struct nfsd4_##rest##res),&t;&t;&bslash;&n;   0,&t;&t;&t;&t;&t;&t;&bslash;&n;   cache,&t;&t;&t;&t;&t;&bslash;&n;   respsize,&t;&t;&t;&t;&t;&bslash;&n; }
 multiline_comment|/*&n; * TODO: At the present time, the NFSv4 server does not do XID caching&n; * of requests.  Implementing XID caching would not be a serious problem,&n; * although it would require a mild change in interfaces since one&n; * doesn&squot;t know whether an NFSv4 request is idempotent until after the&n; * XDR decode.  However, XID caching totally confuses pynfs (Peter&n; * Astrand&squot;s regression testsuite for NFSv4 servers), which reuses&n; * XID&squot;s liberally, so I&squot;ve left it unimplemented until pynfs generates&n; * better XID&squot;s.&n; */
 DECL|variable|nfsd_procedures4
+r_static
 r_struct
 id|svc_procedure
 id|nfsd_procedures4
@@ -2897,6 +2898,39 @@ id|RC_NOCACHE
 comma
 id|NFSD_BUFSIZE
 )paren
+)brace
+suffix:semicolon
+DECL|variable|nfsd_version4
+r_struct
+id|svc_version
+id|nfsd_version4
+op_assign
+(brace
+dot
+id|vs_vers
+op_assign
+l_int|4
+comma
+dot
+id|vs_nproc
+op_assign
+l_int|2
+comma
+dot
+id|vs_proc
+op_assign
+id|nfsd_procedures4
+comma
+dot
+id|vs_dispatch
+op_assign
+id|nfsd_dispatch
+comma
+dot
+id|vs_xdrsize
+op_assign
+id|NFS4_SVC_XDRSIZE
+comma
 )brace
 suffix:semicolon
 multiline_comment|/*&n; * Local variables:&n; *  c-basic-offset: 8&n; * End:&n; */
