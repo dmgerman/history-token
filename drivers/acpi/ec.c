@@ -882,6 +882,13 @@ r_return
 id|err
 suffix:semicolon
 )brace
+DECL|variable|ec_read
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|ec_read
+)paren
+suffix:semicolon
 r_int
 DECL|function|ec_write
 id|ec_write
@@ -936,6 +943,13 @@ r_return
 id|err
 suffix:semicolon
 )brace
+DECL|variable|ec_write
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|ec_write
+)paren
+suffix:semicolon
 r_static
 r_int
 DECL|function|acpi_ec_query

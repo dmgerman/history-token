@@ -3062,7 +3062,6 @@ id|handle
 suffix:semicolon
 macro_line|#endif /*CONFIG_ACPI_DEBUG_OUTPUT*/
 )brace
-r_static
 r_int
 DECL|function|acpi_bus_add
 id|acpi_bus_add
@@ -3451,6 +3450,13 @@ id|result
 )paren
 suffix:semicolon
 )brace
+DECL|variable|acpi_bus_add
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|acpi_bus_add
+)paren
+suffix:semicolon
 DECL|function|acpi_bus_scan
 r_static
 r_int
@@ -3770,6 +3776,13 @@ l_int|0
 )paren
 suffix:semicolon
 )brace
+DECL|variable|acpi_bus_register_driver
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|acpi_bus_register_driver
+)paren
+suffix:semicolon
 r_static
 r_int
 DECL|function|acpi_bus_scan_fixed
@@ -3864,6 +3877,13 @@ id|result
 )paren
 suffix:semicolon
 )brace
+DECL|variable|acpi_bus_unregister_driver
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|acpi_bus_unregister_driver
+)paren
+suffix:semicolon
 DECL|function|acpi_scan_init
 r_static
 r_int
@@ -3970,6 +3990,13 @@ id|result
 )paren
 suffix:semicolon
 )brace
+DECL|variable|acpi_bus_scan
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|acpi_bus_scan
+)paren
+suffix:semicolon
 DECL|variable|acpi_scan_init
 id|subsys_initcall
 c_func
