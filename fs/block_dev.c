@@ -407,7 +407,7 @@ id|iblock
 op_plus
 id|max_blocks
 )paren
-op_ge
+OG
 id|max_block
 c_func
 (paren
