@@ -5977,6 +5977,13 @@ id|Controller-&gt;ModelName
 )paren
 suffix:semicolon
 multiline_comment|/*&n;    Initialize the Controller Firmware Version field and verify that it&n;    is a supported firmware version.  The supported firmware versions are:&n;&n;    DAC1164P&t;&t;    5.06 and above&n;    DAC960PTL/PRL/PJ/PG&t;    4.06 and above&n;    DAC960PU/PD/PL&t;    3.51 and above&n;    DAC960PU/PD/PL/P&t;    2.73 and above&n;  */
+macro_line|#if defined(CONFIG_ALPHA)
+multiline_comment|/*&n;    DEC Alpha machines were often equipped with DAC960 cards that were&n;    OEMed from Mylex, and had their own custom firmware. Version 2.70,&n;    the last custom FW revision to be released by DEC for these older&n;    controllers, appears to work quite well with this driver.&n;&n;    Cards tested successfully were several versions each of the PD and&n;    PU, called by DEC the KZPSC and KZPAC, respectively, and having&n;    the Manufacturer Numbers (from Mylex), usually on a sticker on the&n;    back of the board, of:&n;&n;    KZPSC:  D040347 (1-channel) or D040348 (2-channel) or D040349 (3-channel)&n;    KZPAC:  D040395 (1-channel) or D040396 (2-channel) or D040397 (3-channel)&n;  */
+DECL|macro|FIRMWARE_27X
+macro_line|# define FIRMWARE_27X&t;&quot;2.70&quot;
+macro_line|#else
+macro_line|# define FIRMWARE_27X&t;&quot;2.73&quot;
+macro_line|#endif
 r_if
 c_cond
 (paren
@@ -6093,7 +6100,7 @@ c_func
 (paren
 id|Controller-&gt;FirmwareVersion
 comma
-l_string|&quot;2.73&quot;
+id|FIRMWARE_27X
 )paren
 op_ge
 l_int|0
@@ -10584,7 +10591,12 @@ op_assign
 r_void
 op_star
 )paren
+(paren
+(paren
+r_int
+)paren
 id|i
+)paren
 suffix:semicolon
 )brace
 id|init_waitqueue_head
