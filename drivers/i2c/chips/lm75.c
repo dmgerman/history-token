@@ -427,6 +427,8 @@ r_const
 r_char
 op_star
 id|name
+op_assign
+l_string|&quot;&quot;
 suffix:semicolon
 multiline_comment|/* Make sure we aren&squot;t probing the ISA bus!! This is just a safety check&n;&t;   at this moment; i2c_detect really won&squot;t call us. */
 macro_line|#ifdef DEBUG
@@ -707,23 +709,6 @@ id|lm75
 id|name
 op_assign
 l_string|&quot;lm75&quot;
-suffix:semicolon
-)brace
-r_else
-(brace
-id|dev_dbg
-c_func
-(paren
-op_amp
-id|adapter-&gt;dev
-comma
-l_string|&quot;Internal error: unknown kind (%d)?!?&quot;
-comma
-id|kind
-)paren
-suffix:semicolon
-r_goto
-id|exit_free
 suffix:semicolon
 )brace
 multiline_comment|/* Fill in the remaining client fields and put it into the global list */

@@ -3280,6 +3280,8 @@ r_const
 r_char
 op_star
 id|client_name
+op_assign
+l_string|&quot;&quot;
 suffix:semicolon
 r_struct
 id|w83781d_data
@@ -3714,11 +3716,6 @@ id|client_name
 op_assign
 l_string|&quot;as99127f subclient&quot;
 suffix:semicolon
-r_else
-id|client_name
-op_assign
-l_string|&quot;unknown subclient?&quot;
-suffix:semicolon
 r_for
 c_loop
 (paren
@@ -3996,6 +3993,74 @@ id|I2C_FUNC_SMBUS_BYTE_DATA
 )paren
 )paren
 (brace
+id|err
+op_assign
+op_minus
+id|EINVAL
+suffix:semicolon
+r_goto
+id|ERROR0
+suffix:semicolon
+)brace
+multiline_comment|/* Prevent users from forcing a kind for a bus it isn&squot;t supposed&n;&t;   to possibly be on */
+r_if
+c_cond
+(paren
+id|is_isa
+op_logical_and
+(paren
+id|kind
+op_eq
+id|as99127f
+op_logical_or
+id|kind
+op_eq
+id|w83783s
+)paren
+)paren
+(brace
+id|dev_err
+c_func
+(paren
+op_amp
+id|adapter-&gt;dev
+comma
+l_string|&quot;Cannot force I2C-only chip for ISA address 0x%02x.&bslash;n&quot;
+comma
+id|address
+)paren
+suffix:semicolon
+id|err
+op_assign
+op_minus
+id|EINVAL
+suffix:semicolon
+r_goto
+id|ERROR0
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+op_logical_neg
+id|is_isa
+op_logical_and
+id|kind
+op_eq
+id|w83697hf
+)paren
+(brace
+id|dev_err
+c_func
+(paren
+op_amp
+id|adapter-&gt;dev
+comma
+l_string|&quot;Cannot force ISA-only chip for I2C address 0x%02x.&bslash;n&quot;
+comma
+id|address
+)paren
+suffix:semicolon
 id|err
 op_assign
 op_minus
@@ -4829,29 +4894,6 @@ id|w83697hf
 id|client_name
 op_assign
 l_string|&quot;w83697hf&quot;
-suffix:semicolon
-)brace
-r_else
-(brace
-id|dev_err
-c_func
-(paren
-op_amp
-id|new_client-&gt;dev
-comma
-l_string|&quot;Internal error: unknown &quot;
-l_string|&quot;kind (%d)?!?&quot;
-comma
-id|kind
-)paren
-suffix:semicolon
-id|err
-op_assign
-op_minus
-id|ENODEV
-suffix:semicolon
-r_goto
-id|ERROR2
 suffix:semicolon
 )brace
 multiline_comment|/* Fill in the remaining client fields and put into the global list */

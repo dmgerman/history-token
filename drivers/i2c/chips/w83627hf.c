@@ -3089,6 +3089,23 @@ op_assign
 id|w83637hf
 suffix:semicolon
 )brace
+r_else
+(brace
+id|dev_info
+c_func
+(paren
+op_amp
+id|adapter-&gt;dev
+comma
+l_string|&quot;Unsupported chip (dev_id=0x%02X).&bslash;n&quot;
+comma
+id|val
+)paren
+suffix:semicolon
+r_goto
+id|ERROR1
+suffix:semicolon
+)brace
 id|superio_select
 c_func
 (paren
@@ -3282,29 +3299,6 @@ id|w83637hf
 id|client_name
 op_assign
 l_string|&quot;w83637hf&quot;
-suffix:semicolon
-)brace
-r_else
-(brace
-id|dev_err
-c_func
-(paren
-op_amp
-id|new_client-&gt;dev
-comma
-l_string|&quot;Internal error: unknown &quot;
-l_string|&quot;kind (%d)?!?&quot;
-comma
-id|kind
-)paren
-suffix:semicolon
-id|err
-op_assign
-op_minus
-id|ENODEV
-suffix:semicolon
-r_goto
-id|ERROR2
 suffix:semicolon
 )brace
 multiline_comment|/* Fill in the remaining client fields and put into the global list */

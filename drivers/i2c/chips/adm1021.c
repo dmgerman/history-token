@@ -1115,23 +1115,6 @@ op_assign
 l_string|&quot;mc1066&quot;
 suffix:semicolon
 )brace
-r_else
-(brace
-id|dev_err
-c_func
-(paren
-op_amp
-id|adapter-&gt;dev
-comma
-l_string|&quot;Internal error: unknown kind (%d)?!?&quot;
-comma
-id|kind
-)paren
-suffix:semicolon
-r_goto
-id|error1
-suffix:semicolon
-)brace
 multiline_comment|/* Fill in the remaining client fields and put it into the global list */
 id|strlcpy
 c_func

@@ -63,16 +63,11 @@ id|I2C_CLIENT_ISA_END
 )brace
 suffix:semicolon
 multiline_comment|/* Insmod parameters */
-id|SENSORS_INSMOD_4
+DECL|variable|it87
+id|SENSORS_INSMOD_1
 c_func
 (paren
 id|it87
-comma
-id|it8705
-comma
-id|it8712
-comma
-id|sis950
 )paren
 suffix:semicolon
 multiline_comment|/* Update battery voltage after every reading if true */
@@ -2683,24 +2678,6 @@ op_assign
 l_string|&quot;it87&quot;
 suffix:semicolon
 )brace
-multiline_comment|/* else if (kind == it8712) {&n;&t;&t;name = &quot;it8712&quot;;&n;&t;} */
-r_else
-(brace
-id|dev_dbg
-c_func
-(paren
-op_amp
-id|adapter-&gt;dev
-comma
-l_string|&quot;Internal error: unknown kind (%d)?!?&quot;
-comma
-id|kind
-)paren
-suffix:semicolon
-r_goto
-id|ERROR1
-suffix:semicolon
-)brace
 multiline_comment|/* Fill in the remaining client fields and put it into the global list */
 id|strlcpy
 c_func
@@ -4023,13 +4000,10 @@ id|i
 suffix:semicolon
 )brace
 multiline_comment|/* The 8705 does not have VID capability */
-multiline_comment|/*if (data-&gt;type == it8712) {&n;&t;&t;&t;data-&gt;vid = it87_read_value(client, IT87_REG_VID);&n;&t;&t;&t;data-&gt;vid &amp;= 0x1f;&n;&t;&t;}&n;&t;&t;else */
-(brace
 id|data-&gt;vid
 op_assign
 l_int|0x1f
 suffix:semicolon
-)brace
 id|i
 op_assign
 id|it87_read_value
