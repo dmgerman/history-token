@@ -8256,14 +8256,16 @@ c_func
 (paren
 l_string|&quot;reiserfs: checking transaction log (%s) for (%s)&bslash;n&quot;
 comma
-id|__bdevname
+id|bdevname
 c_func
 (paren
-id|SB_JOURNAL_DEV
+id|SB_JOURNAL
 c_func
 (paren
 id|p_s_sb
 )paren
+op_member_access_from_pointer
+id|j_dev_bd
 )paren
 comma
 id|reiserfs_bdevname
