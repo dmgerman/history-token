@@ -3538,7 +3538,7 @@ suffix:semicolon
 id|mbio-&gt;bi_sector
 op_assign
 id|r1_bio-&gt;sector
-op_or
+op_plus
 id|conf-&gt;mirrors
 (braket
 id|i
