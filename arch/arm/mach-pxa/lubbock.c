@@ -554,7 +554,11 @@ l_int|0xa0000000
 comma
 l_int|0x40000000
 comma
-l_int|0xfc000000
+id|io_p2v
+c_func
+(paren
+l_int|0x40000000
+)paren
 )paren
 id|MAPIO
 c_func

@@ -257,7 +257,7 @@ id|MT_DEVICE
 comma
 multiline_comment|/* PCMCIA1 IO */
 (brace
-l_int|0xfc000000
+l_int|0xf8000000
 comma
 l_int|0x40000000
 comma
@@ -268,26 +268,37 @@ id|MT_DEVICE
 comma
 multiline_comment|/* Devs */
 (brace
-l_int|0xfe000000
+l_int|0xfa000000
 comma
 l_int|0x44000000
 comma
-l_int|0x00200000
+l_int|0x00100000
 comma
 id|MT_DEVICE
 )brace
 comma
 multiline_comment|/* LCD */
 (brace
-l_int|0xff000000
+l_int|0xfc000000
 comma
 l_int|0x48000000
 comma
-l_int|0x00200000
+l_int|0x00100000
 comma
 id|MT_DEVICE
 )brace
+comma
 multiline_comment|/* Mem Ctl */
+(brace
+l_int|0xff000000
+comma
+l_int|0x00000000
+comma
+l_int|0x00100000
+comma
+id|MT_DEVICE
+)brace
+multiline_comment|/* UNCACHED_PHYS_0 */
 )brace
 suffix:semicolon
 DECL|function|pxa_map_io

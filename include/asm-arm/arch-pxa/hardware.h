@@ -9,11 +9,19 @@ DECL|macro|PCMCIA_IO_0_BASE
 mdefine_line|#define PCMCIA_IO_0_BASE&t;0xf6000000
 DECL|macro|PCMCIA_IO_1_BASE
 mdefine_line|#define PCMCIA_IO_1_BASE&t;0xf7000000
-multiline_comment|/*&n; * Intel PXA internal I/O mappings&n; */
+multiline_comment|/*&n; * We requires absolute addresses.&n; */
+DECL|macro|PCIO_BASE
+mdefine_line|#define PCIO_BASE&t;&t;0
+multiline_comment|/*&n; * Workarounds for at least 2 errata so far require this.&n; * The mapping is set in mach-pxa/generic.c.&n; */
+DECL|macro|UNCACHED_PHYS_0
+mdefine_line|#define UNCACHED_PHYS_0&t;&t;0xff000000
+DECL|macro|UNCACHED_ADDR
+mdefine_line|#define UNCACHED_ADDR&t;&t;UNCACHED_PHYS_0
+multiline_comment|/*&n; * Intel PXA internal I/O mappings:&n; *&n; * 0x40000000 - 0x41ffffff &lt;--&gt; 0xf8000000 - 0xf9ffffff&n; * 0x44000000 - 0x45ffffff &lt;--&gt; 0xfa000000 - 0xfbffffff&n; * 0x48000000 - 0x49ffffff &lt;--&gt; 0xfc000000 - 0xfdffffff&n; */
 DECL|macro|io_p2v
-mdefine_line|#define io_p2v(x)&t;&bslash;&n;&t;(((x) &lt; 0x44000000) ? ((x) - 0x40000000 + 0xfc000000) :&t;&bslash;&n;&t; ((x) &lt; 0x48000000) ? ((x) - 0x44000000 + 0xfe000000) :&t;&bslash;&n;&t; &t;&t;      ((x) - 0x48000000 + 0xff000000))
+mdefine_line|#define io_p2v(x)&t;( ((x) | 0xbe000000) ^ (~((x) &gt;&gt; 1) &amp; 0x06000000) )
 DECL|macro|io_v2p
-mdefine_line|#define io_v2p( x )&t;&bslash;&n;&t;(((x) &lt; 0xfe000000) ? ((x) - 0xfc000000 + 0x40000000) :&t;&bslash;&n;&t; ((x) &lt; 0xff000000) ? ((x) - 0xfe000000 + 0x44000000) :&t;&bslash;&n;&t; &t;&t;      ((x) - 0xff000000 + 0x48000000))
+mdefine_line|#define io_v2p( x )&t;( ((x) &amp; 0x41ffffff) ^ ( ((x) &amp; 0x06000000) &lt;&lt; 1) )
 macro_line|#ifndef __ASSEMBLY__
 macro_line|#if 0
 macro_line|# define __REG(x)&t;(*((volatile u32 *)io_p2v(x)))
@@ -29,7 +37,7 @@ r_volatile
 id|u32
 id|offset
 (braket
-l_int|1024
+l_int|4096
 )braket
 suffix:semicolon
 )brace
@@ -77,5 +85,6 @@ macro_line|#endif
 multiline_comment|/*&n; * Implementation specifics&n; */
 macro_line|#include &quot;lubbock.h&quot;
 macro_line|#include &quot;idp.h&quot;
+macro_line|#include &quot;cerf.h&quot;
 macro_line|#endif  /* _ASM_ARCH_HARDWARE_H */
 eof
