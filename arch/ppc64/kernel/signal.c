@@ -769,7 +769,7 @@ r_return
 id|ret
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * When we have signals to deliver, we set up on the&n; * user stack, going down from the original stack pointer:&n; *&t;a sigregs struct&n; *&t;one or more sigcontext structs with&n; *&t;a gap of __SIGNAL_FRAMESIZE bytes&n; *&n; * Each of these things must be a multiple of 16 bytes in size.&n; *&n; * XXX ultimately we will have to stack up a siginfo and ucontext&n; * for each rt signal.&n; */
+multiline_comment|/*&n; * When we have signals to deliver, we set up on the&n; * user stack, going down from the original stack pointer:&n; *&t;a sigregs struct&n; *&t;one or more sigcontext structs with&n; *&t;a gap of __SIGNAL_FRAMESIZE bytes&n; *&n; * Each of these things must be a multiple of 16 bytes in size.&n; *&n; */
 DECL|struct|sigregs
 r_struct
 id|sigregs
@@ -1002,16 +1002,6 @@ op_amp
 id|current-&gt;sigmask_lock
 )paren
 suffix:semicolon
-multiline_comment|/* restore registers -&n;&t; * sigctx is initialized to point to the &n;&t; * preamble frame (where registers are stored) &n;&t; * see handle_signal()&n;&t; */
-id|sr
-op_assign
-(paren
-r_struct
-id|sigregs
-op_star
-)paren
-id|sigctx.regs
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1024,6 +1014,16 @@ c_func
 (paren
 id|current
 )paren
+suffix:semicolon
+multiline_comment|/* restore registers -&n;&t; * sigctx is initialized to point to the &n;&t; * preamble frame (where registers are stored) &n;&t; * see handle_signal()&n;&t; */
+id|sr
+op_assign
+(paren
+r_struct
+id|sigregs
+op_star
+)paren
+id|sigctx.regs
 suffix:semicolon
 r_if
 c_cond
@@ -1618,16 +1618,6 @@ op_amp
 id|current-&gt;sigmask_lock
 )paren
 suffix:semicolon
-multiline_comment|/* restore registers */
-id|sr
-op_assign
-(paren
-r_struct
-id|sigregs
-op_star
-)paren
-id|sigctx.regs
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1640,6 +1630,16 @@ c_func
 (paren
 id|current
 )paren
+suffix:semicolon
+multiline_comment|/* restore registers */
+id|sr
+op_assign
+(paren
+r_struct
+id|sigregs
+op_star
+)paren
+id|sigctx.regs
 suffix:semicolon
 r_if
 c_cond

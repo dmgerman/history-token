@@ -3115,10 +3115,6 @@ suffix:semicolon
 id|stack_t
 id|stack
 suffix:semicolon
-r_int
-r_int
-id|previous_stack
-suffix:semicolon
 id|ret
 op_assign
 l_int|0
