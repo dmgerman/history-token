@@ -75,22 +75,6 @@ macro_line|# endif /* KERNEL */
 multiline_comment|/*&n; * Memory fence w/accept.  This should never be used in code that is&n; * not IA-64 specific.&n; */
 DECL|macro|__ia64_mf_a
 mdefine_line|#define __ia64_mf_a()&t;__asm__ __volatile__ (&quot;mf.a&quot; ::: &quot;memory&quot;)
-multiline_comment|/**&n; * __ia64_mmiob - I/O space memory barrier&n; *&n; * Acts as a memory mapped I/O barrier for platforms that queue writes to&n; * I/O space.  This ensures that subsequent writes to I/O space arrive after&n; * all previous writes.  For most ia64 platforms, this is a simple&n; * &squot;mf.a&squot; instruction, so the address is ignored.  For other platforms,&n; * the address may be required to ensure proper ordering of writes to I/O space&n; * since a &squot;dummy&squot; read might be necessary to barrier the write operation.&n; */
-r_static
-r_inline
-r_void
-DECL|function|__ia64_mmiob
-id|__ia64_mmiob
-(paren
-r_void
-)paren
-(brace
-id|__ia64_mf_a
-c_func
-(paren
-)paren
-suffix:semicolon
-)brace
 r_static
 r_inline
 r_const
@@ -949,8 +933,6 @@ DECL|macro|__outw
 mdefine_line|#define __outw&t;&t;platform_outw
 DECL|macro|__outl
 mdefine_line|#define __outl&t;&t;platform_outl
-DECL|macro|__mmiob
-mdefine_line|#define __mmiob         platform_mmiob
 DECL|macro|inb
 mdefine_line|#define inb(p)&t;&t;__inb(p)
 DECL|macro|inw
@@ -975,8 +957,6 @@ DECL|macro|outsw
 mdefine_line|#define outsw(p,s,c)&t;__outsw(p,s,c)
 DECL|macro|outsl
 mdefine_line|#define outsl(p,s,c)&t;__outsl(p,s,c)
-DECL|macro|mmiob
-mdefine_line|#define mmiob()&t;&t;__mmiob()
 multiline_comment|/*&n; * The address passed to these functions are ioremap()ped already.&n; */
 r_static
 r_inline

@@ -59,10 +59,6 @@ id|ia64_mv_outl_t
 id|sn_outl
 suffix:semicolon
 r_extern
-id|ia64_mv_mmiob_t
-id|sn2_mmiob
-suffix:semicolon
-r_extern
 id|ia64_mv_pci_alloc_consistent
 id|sn_pci_alloc_consistent
 suffix:semicolon
@@ -127,8 +123,6 @@ DECL|macro|platform_outw
 mdefine_line|#define platform_outw&t;&t;&t;sn_outw
 DECL|macro|platform_outl
 mdefine_line|#define platform_outl&t;&t;&t;sn_outl
-DECL|macro|platform_mmiob
-mdefine_line|#define platform_mmiob&t;&t;&t;sn2_mmiob
 DECL|macro|platform_irq_desc
 mdefine_line|#define platform_irq_desc&t;&t;sn_irq_desc
 DECL|macro|platform_irq_to_vector
