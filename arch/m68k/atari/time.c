@@ -939,15 +939,10 @@ id|HWCLK_POLL_INTERVAL
 )paren
 suffix:semicolon
 )brace
-id|save_flags
+id|local_irq_save
 c_func
 (paren
 id|flags
-)paren
-suffix:semicolon
-id|cli
-c_func
-(paren
 )paren
 suffix:semicolon
 id|RTC_WRITE
@@ -1103,7 +1098,7 @@ op_complement
 id|RTC_SET
 )paren
 suffix:semicolon
-id|restore_flags
+id|local_irq_restore
 c_func
 (paren
 id|flags

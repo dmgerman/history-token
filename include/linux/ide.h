@@ -663,9 +663,9 @@ macro_line|#endif
 multiline_comment|/* Currently only Atari needs it */
 macro_line|#ifndef IDE_ARCH_LOCK
 DECL|macro|ide_release_lock
-macro_line|# define ide_release_lock(lock)&t;&t;&t;do {} while (0)
+macro_line|# define ide_release_lock()&t;&t;&t;do {} while (0)
 DECL|macro|ide_get_lock
-macro_line|# define ide_get_lock(lock, hdlr, data)&t;&t;do {} while (0)
+macro_line|# define ide_get_lock(hdlr, data)&t;&t;do {} while (0)
 macro_line|#endif /* IDE_ARCH_LOCK */
 multiline_comment|/*&n; * Now for the data we need to maintain per-drive:  ide_drive_t&n; */
 DECL|macro|ide_scsi

@@ -2,9 +2,9 @@ multiline_comment|/*&n; * some sbus structures and macros to make usage of sbus 
 macro_line|#ifndef __M68K_SBUS_H
 DECL|macro|__M68K_SBUS_H
 mdefine_line|#define __M68K_SBUS_H
-DECL|struct|linux_sbus_device
+DECL|struct|sbus_dev
 r_struct
-id|linux_sbus_device
+id|sbus_dev
 (brace
 r_struct
 (brace

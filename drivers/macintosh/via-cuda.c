@@ -9,6 +9,7 @@ macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/adb.h&gt;
 macro_line|#include &lt;linux/cuda.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
+macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#ifdef CONFIG_PPC
 macro_line|#include &lt;asm/prom.h&gt;
 macro_line|#include &lt;asm/machdep.h&gt;

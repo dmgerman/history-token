@@ -1065,6 +1065,7 @@ id|OPROFILE_CPU_ATHLON
 suffix:semicolon
 r_break
 suffix:semicolon
+macro_line|#ifndef CONFIG_X86_64
 r_case
 id|X86_VENDOR_INTEL
 suffix:colon
@@ -1123,6 +1124,7 @@ id|op_ppro_spec
 suffix:semicolon
 r_break
 suffix:semicolon
+macro_line|#endif
 r_default
 suffix:colon
 r_return

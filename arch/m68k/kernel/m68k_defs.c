@@ -2,10 +2,10 @@ multiline_comment|/*&n; * This program is used to generate definitions needed by
 macro_line|#include &lt;linux/stddef.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/kernel_stat.h&gt;
-macro_line|#include &lt;linux/font.h&gt;
 macro_line|#include &lt;asm/bootinfo.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;asm/amigahw.h&gt;
+macro_line|#include &lt;video/font.h&gt;
 DECL|macro|DEFINE
 mdefine_line|#define DEFINE(sym, val) &bslash;&n;&t;asm volatile(&quot;&bslash;n#define &quot; #sym &quot; %c0&quot; : : &quot;i&quot; (val))
 DECL|function|main
@@ -612,7 +612,7 @@ id|data
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/* offsets into font_desc (linux/font.h) */
+multiline_comment|/* offsets into font_desc (drivers/video/console/font.h) */
 id|DEFINE
 c_func
 (paren

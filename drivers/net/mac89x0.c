@@ -1,5 +1,5 @@
 multiline_comment|/* mac89x0.c: A Crystal Semiconductor CS89[02]0 driver for linux. */
-multiline_comment|/*&n;&t;Written 1996 by Russell Nelson, with reference to skeleton.c&n;&t;written 1993-1994 by Donald Becker.&n;&n;&t;This software may be used and distributed according to the terms&n;&t;of the GNU General Public License, incorporated herein by reference.&n;&n;&t;The author may be reached at nelson@crynwr.com, Crynwr&n;&t;Software, 11 Grant St., Potsdam, NY 13676&n;&n;  Changelog:&n;&n;  Mike Cruse        : mcruse@cti-ltd.com&n;                    : Changes for Linux 2.0 compatibility. &n;                    : Added dev_id parameter in net_interrupt(),&n;                    : request_irq() and free_irq(). Just NULL for now.&n;&n;  Mike Cruse        : Added MOD_INC_USE_COUNT and MOD_DEC_USE_COUNT macros&n;                    : in net_open() and net_close() so kerneld would know&n;                    : that the module is in use and wouldn&squot;t eject the &n;                    : driver prematurely.&n;&n;  Mike Cruse        : Rewrote init_module() and cleanup_module using 8390.c&n;                    : as an example. Disabled autoprobing in init_module(),&n;                    : not a good thing to do to other devices while Linux&n;                    : is running from all accounts.&n;                    &n;  Alan Cox          : Removed 1.2 support, added 2.1 extra counters.&n;&n;  David Huggins-Daines &lt;dhd@debian.org&gt;&n;  &n;  Split this off into mac89x0.c, and gutted it of all parts which are&n;  not relevant to the existing CS8900 cards on the Macintosh&n;  (i.e. basically the Daynaport CS and LC cards).  To be precise:&n;&n;    * Removed all the media-detection stuff, because these cards are&n;    TP-only.&n;&n;    * Lobotomized the ISA interrupt bogosity, because these cards use&n;    a hardwired NuBus interrupt and a magic ISAIRQ value in the card.&n;&n;    * Basically eliminated everything not relevant to getting the&n;    cards minimally functioning on the Macintosh.&n;&n;  I might add that these cards are badly designed even from the Mac&n;  standpoint, in that Dayna, in their infinite wisdom, used NuBus slot&n;  I/O space and NuBus interrupts for these cards, but neglected to&n;  provide anything even remotely resembling a NuBus ROM.  Therefore we&n;  have to probe for them in a brain-damaged ISA-like fashion.&n;&n;  Arnaldo Carvalho de Melo &lt;acme@conectiva.com.br&gt; - 11/01/2001&n;  check kmalloc and release the allocated memory on failure in&n;  mac89x0_probe and in init_module&n;  use save_flags/restore_flags in net_get_stat, not just cli/sti&n;*/
+multiline_comment|/*&n;&t;Written 1996 by Russell Nelson, with reference to skeleton.c&n;&t;written 1993-1994 by Donald Becker.&n;&n;&t;This software may be used and distributed according to the terms&n;&t;of the GNU General Public License, incorporated herein by reference.&n;&n;&t;The author may be reached at nelson@crynwr.com, Crynwr&n;&t;Software, 11 Grant St., Potsdam, NY 13676&n;&n;  Changelog:&n;&n;  Mike Cruse        : mcruse@cti-ltd.com&n;                    : Changes for Linux 2.0 compatibility. &n;                    : Added dev_id parameter in net_interrupt(),&n;                    : request_irq() and free_irq(). Just NULL for now.&n;&n;  Mike Cruse        : Added MOD_INC_USE_COUNT and MOD_DEC_USE_COUNT macros&n;                    : in net_open() and net_close() so kerneld would know&n;                    : that the module is in use and wouldn&squot;t eject the &n;                    : driver prematurely.&n;&n;  Mike Cruse        : Rewrote init_module() and cleanup_module using 8390.c&n;                    : as an example. Disabled autoprobing in init_module(),&n;                    : not a good thing to do to other devices while Linux&n;                    : is running from all accounts.&n;                    &n;  Alan Cox          : Removed 1.2 support, added 2.1 extra counters.&n;&n;  David Huggins-Daines &lt;dhd@debian.org&gt;&n;  &n;  Split this off into mac89x0.c, and gutted it of all parts which are&n;  not relevant to the existing CS8900 cards on the Macintosh&n;  (i.e. basically the Daynaport CS and LC cards).  To be precise:&n;&n;    * Removed all the media-detection stuff, because these cards are&n;    TP-only.&n;&n;    * Lobotomized the ISA interrupt bogosity, because these cards use&n;    a hardwired NuBus interrupt and a magic ISAIRQ value in the card.&n;&n;    * Basically eliminated everything not relevant to getting the&n;    cards minimally functioning on the Macintosh.&n;&n;  I might add that these cards are badly designed even from the Mac&n;  standpoint, in that Dayna, in their infinite wisdom, used NuBus slot&n;  I/O space and NuBus interrupts for these cards, but neglected to&n;  provide anything even remotely resembling a NuBus ROM.  Therefore we&n;  have to probe for them in a brain-damaged ISA-like fashion.&n;&n;  Arnaldo Carvalho de Melo &lt;acme@conectiva.com.br&gt; - 11/01/2001&n;  check kmalloc and release the allocated memory on failure in&n;  mac89x0_probe and in init_module&n;  use local_irq_{save,restore}(flags) in net_get_stat, not just&n;  local_irq_{dis,en}able()&n;*/
 DECL|variable|version
 r_static
 r_char
@@ -507,15 +507,10 @@ suffix:semicolon
 r_int
 id|card_present
 suffix:semicolon
-id|save_flags
+id|local_irq_save
 c_func
 (paren
 id|flags
-)paren
-suffix:semicolon
-id|cli
-c_func
-(paren
 )paren
 suffix:semicolon
 id|card_present
@@ -544,7 +539,7 @@ op_plus
 id|DATA_PORT
 )paren
 suffix:semicolon
-id|restore_flags
+id|local_irq_restore
 c_func
 (paren
 id|flags
@@ -1524,15 +1519,10 @@ l_int|1
 )paren
 suffix:semicolon
 multiline_comment|/* keep the upload from being interrupted, since we&n;                   ask the chip to start transmitting before the&n;                   whole packet has been completely uploaded. */
-id|save_flags
+id|local_irq_save
 c_func
 (paren
 id|flags
-)paren
-suffix:semicolon
-id|cli
-c_func
-(paren
 )paren
 suffix:semicolon
 multiline_comment|/* initiate a transmit sequence */
@@ -1576,7 +1566,7 @@ l_int|0
 )paren
 (brace
 multiline_comment|/* Gasp!  It hasn&squot;t.  But that shouldn&squot;t happen since&n;&t;&t;&t;   we&squot;re waiting for TxOk, so return 1 and requeue this packet. */
-id|restore_flags
+id|local_irq_restore
 c_func
 (paren
 id|flags
@@ -1601,7 +1591,7 @@ op_plus
 l_int|1
 )paren
 suffix:semicolon
-id|restore_flags
+id|local_irq_restore
 c_func
 (paren
 id|flags
@@ -2302,15 +2292,10 @@ r_int
 r_int
 id|flags
 suffix:semicolon
-id|save_flags
+id|local_irq_save
 c_func
 (paren
 id|flags
-)paren
-suffix:semicolon
-id|cli
-c_func
-(paren
 )paren
 suffix:semicolon
 multiline_comment|/* Update the statistics from the device registers. */
@@ -2342,7 +2327,7 @@ op_rshift
 l_int|6
 )paren
 suffix:semicolon
-id|restore_flags
+id|local_irq_restore
 c_func
 (paren
 id|flags
