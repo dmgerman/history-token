@@ -40,7 +40,7 @@ macro_line|#include &lt;asm/dma.h&gt;
 macro_line|#include &lt;asm/mpspec.h&gt;
 macro_line|#include &lt;asm/mmu_context.h&gt;
 macro_line|#include &lt;asm/arch_hooks.h&gt;
-macro_line|#include &quot;setup_arch.h&quot;
+macro_line|#include &quot;setup_arch_pre.h&quot;
 r_static
 r_inline
 r_char
@@ -12088,8 +12088,6 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-DECL|macro|SETUP_POST
-mdefine_line|#define SETUP_POST
-macro_line|#include &quot;setup_arch.h&quot;
+macro_line|#include &quot;setup_arch_post.h&quot;
 multiline_comment|/*&n; * Local Variables:&n; * mode:c&n; * c-file-style:&quot;k&amp;r&quot;&n; * c-basic-offset:8&n; * End:&n; */
 eof

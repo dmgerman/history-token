@@ -1,7 +1,4 @@
-macro_line|#ifndef SETUP_POST
-DECL|macro|ARCH_SETUP
-mdefine_line|#define ARCH_SETUP
-macro_line|#else
+multiline_comment|/* Hook for machine specific memory setup.&n; *&n; * This is included late in kernel/setup.c so that it can make use of all of&n; * the static functions. */
 DECL|function|machine_specific_memory_setup
 r_static
 r_inline
@@ -113,5 +110,4 @@ r_return
 id|who
 suffix:semicolon
 )brace
-macro_line|#endif
 eof
