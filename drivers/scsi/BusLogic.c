@@ -1093,7 +1093,7 @@ suffix:semicolon
 r_int
 id|TimeoutCounter
 suffix:semicolon
-multiline_comment|/*&n;    Clear out the Reply Data if provided.&n;  */
+multiline_comment|/*&n;&t;   Clear out the Reply Data if provided.&n;&t; */
 r_if
 c_cond
 (paren
@@ -1111,7 +1111,7 @@ comma
 id|ReplyLength
 )paren
 suffix:semicolon
-multiline_comment|/*&n;    If the IRQ Channel has not yet been acquired, then interrupts must be&n;    disabled while issuing host adapter commands since a Command Complete&n;    interrupt could occur if the IRQ Channel was previously enabled by another&n;    BusLogic Host Adapter or another driver sharing the same IRQ Channel.&n;  */
+multiline_comment|/*&n;&t;   If the IRQ Channel has not yet been acquired, then interrupts must be&n;&t;   disabled while issuing host adapter commands since a Command Complete&n;&t;   interrupt could occur if the IRQ Channel was previously enabled by another&n;&t;   BusLogic Host Adapter or another driver sharing the same IRQ Channel.&n;&t; */
 r_if
 c_cond
 (paren
@@ -1131,7 +1131,7 @@ c_func
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n;    Wait for the Host Adapter Ready bit to be set and the Command/Parameter&n;    Register Busy bit to be reset in the Status Register.&n;  */
+multiline_comment|/*&n;&t;   Wait for the Host Adapter Ready bit to be set and the Command/Parameter&n;&t;   Register Busy bit to be reset in the Status Register.&n;&t; */
 id|TimeoutCounter
 op_assign
 l_int|10000
@@ -1191,7 +1191,7 @@ r_goto
 id|Done
 suffix:semicolon
 )brace
-multiline_comment|/*&n;    Write the OperationCode to the Command/Parameter Register.&n;  */
+multiline_comment|/*&n;&t;   Write the OperationCode to the Command/Parameter Register.&n;&t; */
 id|HostAdapter-&gt;HostAdapterCommandCompleted
 op_assign
 l_bool|false
@@ -1204,7 +1204,7 @@ comma
 id|OperationCode
 )paren
 suffix:semicolon
-multiline_comment|/*&n;    Write any additional Parameter Bytes.&n;  */
+multiline_comment|/*&n;&t;   Write any additional Parameter Bytes.&n;&t; */
 id|TimeoutCounter
 op_assign
 l_int|10000
@@ -1222,7 +1222,7 @@ op_ge
 l_int|0
 )paren
 (brace
-multiline_comment|/*&n;&t;Wait 100 microseconds to give the Host Adapter enough time to determine&n;&t;whether the last value written to the Command/Parameter Register was&n;&t;valid or not.  If the Command Complete bit is set in the Interrupt&n;&t;Register, then the Command Invalid bit in the Status Register will be&n;&t;reset if the Operation Code or Parameter was valid and the command&n;&t;has completed, or set if the Operation Code or Parameter was invalid.&n;&t;If the Data In Register Ready bit is set in the Status Register, then&n;&t;the Operation Code was valid, and data is waiting to be read back&n;&t;from the Host Adapter.  Otherwise, wait for the Command/Parameter&n;&t;Register Busy bit in the Status Register to be reset.&n;      */
+multiline_comment|/*&n;&t;&t;   Wait 100 microseconds to give the Host Adapter enough time to determine&n;&t;&t;   whether the last value written to the Command/Parameter Register was&n;&t;&t;   valid or not.  If the Command Complete bit is set in the Interrupt&n;&t;&t;   Register, then the Command Invalid bit in the Status Register will be&n;&t;&t;   reset if the Operation Code or Parameter was valid and the command&n;&t;&t;   has completed, or set if the Operation Code or Parameter was invalid.&n;&t;&t;   If the Data In Register Ready bit is set in the Status Register, then&n;&t;&t;   the Operation Code was valid, and data is waiting to be read back&n;&t;&t;   from the Host Adapter.  Otherwise, wait for the Command/Parameter&n;&t;&t;   Register Busy bit in the Status Register to be reset.&n;&t;&t; */
 id|udelay
 c_func
 (paren
@@ -1308,7 +1308,7 @@ r_goto
 id|Done
 suffix:semicolon
 )brace
-multiline_comment|/*&n;    The Modify I/O Address command does not cause a Command Complete Interrupt.&n;  */
+multiline_comment|/*&n;&t;   The Modify I/O Address command does not cause a Command Complete Interrupt.&n;&t; */
 r_if
 c_cond
 (paren
@@ -1370,7 +1370,7 @@ r_goto
 id|Done
 suffix:semicolon
 )brace
-multiline_comment|/*&n;    Select an appropriate timeout value for awaiting command completion.&n;  */
+multiline_comment|/*&n;&t;   Select an appropriate timeout value for awaiting command completion.&n;&t; */
 r_switch
 c_cond
 (paren
@@ -1405,7 +1405,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 )brace
-multiline_comment|/*&n;    Receive any Reply Bytes, waiting for either the Command Complete bit to&n;    be set in the Interrupt Register, or for the Interrupt Handler to set the&n;    Host Adapter Command Completed bit in the Host Adapter structure.&n;  */
+multiline_comment|/*&n;&t;   Receive any Reply Bytes, waiting for either the Command Complete bit to&n;&t;   be set in the Interrupt Register, or for the Interrupt Handler to set the&n;&t;   Host Adapter Command Completed bit in the Host Adapter structure.&n;&t; */
 r_while
 c_loop
 (paren
@@ -1516,14 +1516,14 @@ r_goto
 id|Done
 suffix:semicolon
 )brace
-multiline_comment|/*&n;    Clear any pending Command Complete Interrupt.&n;  */
+multiline_comment|/*&n;&t;   Clear any pending Command Complete Interrupt.&n;&t; */
 id|BusLogic_InterruptReset
 c_func
 (paren
 id|HostAdapter
 )paren
 suffix:semicolon
-multiline_comment|/*&n;    Provide tracing information if requested.&n;  */
+multiline_comment|/*&n;&t;   Provide tracing information if requested.&n;&t; */
 r_if
 c_cond
 (paren
@@ -1603,14 +1603,14 @@ id|HostAdapter
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n;    Process Command Invalid conditions.&n;  */
+multiline_comment|/*&n;&t;   Process Command Invalid conditions.&n;&t; */
 r_if
 c_cond
 (paren
 id|StatusRegister.sr.CommandInvalid
 )paren
 (brace
-multiline_comment|/*&n;&t;Some early BusLogic Host Adapters may not recover properly from&n;&t;a Command Invalid condition, so if this appears to be the case,&n;&t;a Soft Reset is issued to the Host Adapter.  Potentially invalid&n;&t;commands are never attempted after Mailbox Initialization is&n;&t;performed, so there should be no Host Adapter state lost by a&n;&t;Soft Reset in response to a Command Invalid condition.&n;      */
+multiline_comment|/*&n;&t;&t;   Some early BusLogic Host Adapters may not recover properly from&n;&t;&t;   a Command Invalid condition, so if this appears to be the case,&n;&t;&t;   a Soft Reset is issued to the Host Adapter.  Potentially invalid&n;&t;&t;   commands are never attempted after Mailbox Initialization is&n;&t;&t;   performed, so there should be no Host Adapter state lost by a&n;&t;&t;   Soft Reset in response to a Command Invalid condition.&n;&t;&t; */
 id|udelay
 c_func
 (paren
@@ -1673,7 +1673,7 @@ r_goto
 id|Done
 suffix:semicolon
 )brace
-multiline_comment|/*&n;    Handle Excess Parameters Supplied conditions.&n;  */
+multiline_comment|/*&n;&t;   Handle Excess Parameters Supplied conditions.&n;&t; */
 r_if
 c_cond
 (paren
@@ -1695,7 +1695,7 @@ r_goto
 id|Done
 suffix:semicolon
 )brace
-multiline_comment|/*&n;    Indicate the command completed successfully.&n;  */
+multiline_comment|/*&n;&t;   Indicate the command completed successfully.&n;&t; */
 id|BusLogic_CommandFailureReason
 op_assign
 l_int|NULL
@@ -1704,7 +1704,7 @@ id|Result
 op_assign
 id|ReplyBytes
 suffix:semicolon
-multiline_comment|/*&n;    Restore the interrupt status if necessary and return.&n;  */
+multiline_comment|/*&n;&t;   Restore the interrupt status if necessary and return.&n;&t; */
 id|Done
 suffix:colon
 r_if
@@ -1790,7 +1790,7 @@ op_star
 id|PrototypeHostAdapter
 )paren
 (brace
-multiline_comment|/*&n;    If BusLogic Driver Options specifications requested that ISA Bus Probes&n;    be inhibited, do not proceed further.&n;  */
+multiline_comment|/*&n;&t;   If BusLogic Driver Options specifications requested that ISA Bus Probes&n;&t;   be inhibited, do not proceed further.&n;&t; */
 r_if
 c_cond
 (paren
@@ -1798,7 +1798,7 @@ id|BusLogic_ProbeOptions.NoProbeISA
 )paren
 r_return
 suffix:semicolon
-multiline_comment|/*&n;    Append the list of standard BusLogic MultiMaster ISA I/O Addresses.&n;  */
+multiline_comment|/*&n;&t;   Append the list of standard BusLogic MultiMaster ISA I/O Addresses.&n;&t; */
 r_if
 c_cond
 (paren
@@ -2205,7 +2205,7 @@ id|i
 op_assign
 l_bool|false
 suffix:semicolon
-multiline_comment|/*&n;    Iterate over the MultiMaster PCI Host Adapters.  For each enumerated host&n;    adapter, determine whether its ISA Compatible I/O Port is enabled and if&n;    so, whether it is assigned the Primary I/O Address.  A host adapter that is&n;    assigned the Primary I/O Address will always be the preferred boot device.&n;    The MultiMaster BIOS will first recognize a host adapter at the Primary I/O&n;    Address, then any other PCI host adapters, and finally any host adapters&n;    located at the remaining standard ISA I/O Addresses.  When a PCI host&n;    adapter is found with its ISA Compatible I/O Port enabled, a command is&n;    issued to disable the ISA Compatible I/O Port, and it is noted that the&n;    particular standard ISA I/O Address need not be probed.&n;  */
+multiline_comment|/*&n;&t;   Iterate over the MultiMaster PCI Host Adapters.  For each enumerated host&n;&t;   adapter, determine whether its ISA Compatible I/O Port is enabled and if&n;&t;   so, whether it is assigned the Primary I/O Address.  A host adapter that is&n;&t;   assigned the Primary I/O Address will always be the preferred boot device.&n;&t;   The MultiMaster BIOS will first recognize a host adapter at the Primary I/O&n;&t;   Address, then any other PCI host adapters, and finally any host adapters&n;&t;   located at the remaining standard ISA I/O Addresses.  When a PCI host&n;&t;   adapter is found with its ISA Compatible I/O Port enabled, a command is&n;&t;   issued to disable the ISA Compatible I/O Port, and it is noted that the&n;&t;   particular standard ISA I/O Address need not be probed.&n;&t; */
 id|PrimaryProbeInfo-&gt;IO_Address
 op_assign
 l_int|0
@@ -2491,7 +2491,7 @@ id|PCI_Address
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t;Issue the Inquire PCI Host Adapter Information command to determine&n;&t;the ISA Compatible I/O Port.  If the ISA Compatible I/O Port is&n;&t;known and enabled, note that the particular Standard ISA I/O&n;&t;Address should not be probed.&n;      */
+multiline_comment|/*&n;&t;&t;   Issue the Inquire PCI Host Adapter Information command to determine&n;&t;&t;   the ISA Compatible I/O Port.  If the ISA Compatible I/O Port is&n;&t;&t;   known and enabled, note that the particular Standard ISA I/O&n;&t;&t;   Address should not be probed.&n;&t;&t; */
 id|HostAdapter-&gt;IO_Address
 op_assign
 id|IO_Address
@@ -2540,9 +2540,7 @@ l_int|6
 )paren
 id|StandardAddressSeen
 (braket
-id|PCIHostAdapterInformation
-dot
-id|ISACompatibleIOPort
+id|PCIHostAdapterInformation.ISACompatibleIOPort
 )braket
 op_assign
 l_bool|true
@@ -2553,7 +2551,7 @@ id|PCIHostAdapterInformation.ISACompatibleIOPort
 op_assign
 id|BusLogic_IO_Disable
 suffix:semicolon
-multiline_comment|/*&n;       * Issue the Modify I/O Address command to disable the ISA Compatible&n;       * I/O Port.  On PCI Host Adapters, the Modify I/O Address command&n;       * allows modification of the ISA compatible I/O Address that the Host&n;       * Adapter responds to; it does not affect the PCI compliant I/O Address&n;       * assigned at system initialization.&n;       */
+multiline_comment|/*&n;&t;&t; * Issue the Modify I/O Address command to disable the ISA Compatible&n;&t;&t; * I/O Port.  On PCI Host Adapters, the Modify I/O Address command&n;&t;&t; * allows modification of the ISA compatible I/O Address that the Host&n;&t;&t; * Adapter responds to; it does not affect the PCI compliant I/O Address&n;&t;&t; * assigned at system initialization.&n;&t;&t; */
 id|ModifyIOAddressRequest
 op_assign
 id|BusLogic_IO_Disable
@@ -2578,7 +2576,7 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t;For the first MultiMaster Host Adapter enumerated, issue the Fetch&n;&t;Host Adapter Local RAM command to read byte 45 of the AutoSCSI area,&n;&t;for the setting of the &quot;Use Bus And Device # For PCI Scanning Seq.&quot;&n;&t;option.  Issue the Inquire Board ID command since this option is&n;&t;only valid for the BT-948/958/958D.&n;      */
+multiline_comment|/*&n;&t;&t;   For the first MultiMaster Host Adapter enumerated, issue the Fetch&n;&t;&t;   Host Adapter Local RAM command to read byte 45 of the AutoSCSI area,&n;&t;&t;   for the setting of the &quot;Use Bus And Device # For PCI Scanning Seq.&quot;&n;&t;&t;   option.  Issue the Inquire Board ID command since this option is&n;&t;&t;   only valid for the BT-948/958/958D.&n;&t;&t; */
 r_if
 c_cond
 (paren
@@ -2671,7 +2669,7 @@ op_assign
 l_bool|true
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t;Determine whether this MultiMaster Host Adapter has its ISA&n;&t;Compatible I/O Port enabled and is assigned the Primary I/O Address.&n;&t;If it does, then it is the Primary MultiMaster Host Adapter and must&n;&t;be recognized first.  If it does not, then it is added to the list&n;&t;for probing after any Primary MultiMaster Host Adapter is probed.&n;      */
+multiline_comment|/*&n;&t;&t;   Determine whether this MultiMaster Host Adapter has its ISA&n;&t;&t;   Compatible I/O Port enabled and is assigned the Primary I/O Address.&n;&t;&t;   If it does, then it is the Primary MultiMaster Host Adapter and must&n;&t;&t;   be recognized first.  If it does not, then it is added to the list&n;&t;&t;   for probing after any Primary MultiMaster Host Adapter is probed.&n;&t;&t; */
 r_if
 c_cond
 (paren
@@ -2787,7 +2785,7 @@ l_int|NULL
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n;    If the AutoSCSI &quot;Use Bus And Device # For PCI Scanning Seq.&quot; option is ON&n;    for the first enumerated MultiMaster Host Adapter, and if that host adapter&n;    is a BT-948/958/958D, then the MultiMaster BIOS will recognize MultiMaster&n;    Host Adapters in the order of increasing PCI Bus and Device Number.  In&n;    that case, sort the probe information into the same order the BIOS uses.&n;    If this option is OFF, then the MultiMaster BIOS will recognize MultiMaster&n;    Host Adapters in the order they are enumerated by the PCI BIOS, and hence&n;    no sorting is necessary.&n;  */
+multiline_comment|/*&n;&t;   If the AutoSCSI &quot;Use Bus And Device # For PCI Scanning Seq.&quot; option is ON&n;&t;   for the first enumerated MultiMaster Host Adapter, and if that host adapter&n;&t;   is a BT-948/958/958D, then the MultiMaster BIOS will recognize MultiMaster&n;&t;   Host Adapters in the order of increasing PCI Bus and Device Number.  In&n;&t;   that case, sort the probe information into the same order the BIOS uses.&n;&t;   If this option is OFF, then the MultiMaster BIOS will recognize MultiMaster&n;&t;   Host Adapters in the order they are enumerated by the PCI BIOS, and hence&n;&t;   no sorting is necessary.&n;&t; */
 r_if
 c_cond
 (paren
@@ -2805,7 +2803,7 @@ comma
 id|NonPrimaryPCIMultiMasterCount
 )paren
 suffix:semicolon
-multiline_comment|/*&n;    If no PCI MultiMaster Host Adapter is assigned the Primary I/O Address,&n;    then the Primary I/O Address must be probed explicitly before any PCI&n;    host adapters are probed.&n;  */
+multiline_comment|/*&n;&t;   If no PCI MultiMaster Host Adapter is assigned the Primary I/O Address,&n;&t;   then the Primary I/O Address must be probed explicitly before any PCI&n;&t;   host adapters are probed.&n;&t; */
 r_if
 c_cond
 (paren
@@ -2850,7 +2848,7 @@ op_assign
 l_int|0x330
 suffix:semicolon
 )brace
-multiline_comment|/*&n;    Append the list of standard BusLogic MultiMaster ISA I/O Addresses,&n;    omitting the Primary I/O Address which has already been handled.&n;  */
+multiline_comment|/*&n;&t;   Append the list of standard BusLogic MultiMaster ISA I/O Addresses,&n;&t;   omitting the Primary I/O Address which has already been handled.&n;&t; */
 r_if
 c_cond
 (paren
@@ -3019,7 +3017,7 @@ l_int|0x134
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n;    Iterate over the older non-compliant MultiMaster PCI Host Adapters,&n;    noting the PCI bus location and assigned IRQ Channel.&n;  */
+multiline_comment|/*&n;&t;   Iterate over the older non-compliant MultiMaster PCI Host Adapters,&n;&t;   noting the PCI bus location and assigned IRQ Channel.&n;&t; */
 id|PCI_Device
 op_assign
 l_int|NULL
@@ -3225,7 +3223,7 @@ id|PCI_Device
 op_assign
 l_int|NULL
 suffix:semicolon
-multiline_comment|/*&n;    Interrogate PCI Configuration Space for any FlashPoint Host Adapters.&n;  */
+multiline_comment|/*&n;&t;   Interrogate PCI Configuration Space for any FlashPoint Host Adapters.&n;&t; */
 r_while
 c_loop
 (paren
@@ -3599,7 +3597,7 @@ l_int|NULL
 suffix:semicolon
 macro_line|#endif
 )brace
-multiline_comment|/*&n;    The FlashPoint BIOS will scan for FlashPoint Host Adapters in the order of&n;    increasing PCI Bus and Device Number, so sort the probe information into&n;    the same order the BIOS uses.&n;  */
+multiline_comment|/*&n;&t;   The FlashPoint BIOS will scan for FlashPoint Host Adapters in the order of&n;&t;   increasing PCI Bus and Device Number, so sort the probe information into&n;&t;   the same order the BIOS uses.&n;&t; */
 id|BusLogic_SortProbeInfo
 c_func
 (paren
@@ -3630,7 +3628,7 @@ op_star
 id|PrototypeHostAdapter
 )paren
 (brace
-multiline_comment|/*&n;    If a PCI BIOS is present, interrogate it for MultiMaster and FlashPoint&n;    Host Adapters; otherwise, default to the standard ISA MultiMaster probe.&n;  */
+multiline_comment|/*&n;&t;   If a PCI BIOS is present, interrogate it for MultiMaster and FlashPoint&n;&t;   Host Adapters; otherwise, default to the standard ISA MultiMaster probe.&n;&t; */
 r_if
 c_cond
 (paren
@@ -3788,7 +3786,7 @@ id|Drive0MapByte
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t;&t;If the Map Byte for BIOS Drive 0 indicates that BIOS Drive 0&n;&t;&t;is controlled by this PCI MultiMaster Host Adapter, then&n;&t;&t;reverse the probe order so that MultiMaster Host Adapters are&n;&t;&t;probed before FlashPoint Host Adapters.&n;&t;      */
+multiline_comment|/*&n;&t;&t;&t;&t;   If the Map Byte for BIOS Drive 0 indicates that BIOS Drive 0&n;&t;&t;&t;&t;   is controlled by this PCI MultiMaster Host Adapter, then&n;&t;&t;&t;&t;   reverse the probe order so that MultiMaster Host Adapters are&n;&t;&t;&t;&t;   probed before FlashPoint Host Adapters.&n;&t;&t;&t;&t; */
 r_if
 c_cond
 (paren
@@ -3887,7 +3885,7 @@ id|PrototypeHostAdapter
 )paren
 suffix:semicolon
 )brace
-macro_line|#endif  /* CONFIG_PCI */
+macro_line|#endif&t;&t;&t;&t;/* CONFIG_PCI */
 multiline_comment|/*&n;  BusLogic_Failure prints a standardized error message, and then returns false.&n;*/
 DECL|function|BusLogic_Failure
 r_static
@@ -4013,7 +4011,7 @@ r_union
 id|BusLogic_GeometryRegister
 id|GeometryRegister
 suffix:semicolon
-multiline_comment|/*&n;    FlashPoint Host Adapters are Probed by the FlashPoint SCCB Manager.&n;  */
+multiline_comment|/*&n;&t;   FlashPoint Host Adapters are Probed by the FlashPoint SCCB Manager.&n;&t; */
 r_if
 c_cond
 (paren
@@ -4117,12 +4115,12 @@ comma
 id|HostAdapter-&gt;IO_Address
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t;Indicate the Host Adapter Probe completed successfully.&n;      */
+multiline_comment|/*&n;&t;&t;   Indicate the Host Adapter Probe completed successfully.&n;&t;&t; */
 r_return
 l_bool|true
 suffix:semicolon
 )brace
-multiline_comment|/*&n;    Read the Status, Interrupt, and Geometry Registers to test if there are I/O&n;    ports that respond, and to check the values to determine if they are from a&n;    BusLogic Host Adapter.  A nonexistent I/O port will return 0xFF, in which&n;    case there is definitely no BusLogic Host Adapter at this base I/O Address.&n;    The test here is a subset of that used by the BusLogic Host Adapter BIOS.&n;  */
+multiline_comment|/*&n;&t;   Read the Status, Interrupt, and Geometry Registers to test if there are I/O&n;&t;   ports that respond, and to check the values to determine if they are from a&n;&t;   BusLogic Host Adapter.  A nonexistent I/O port will return 0xFF, in which&n;&t;   case there is definitely no BusLogic Host Adapter at this base I/O Address.&n;&t;   The test here is a subset of that used by the BusLogic Host Adapter BIOS.&n;&t; */
 id|StatusRegister.All
 op_assign
 id|BusLogic_ReadStatusRegister
@@ -4191,7 +4189,7 @@ l_int|0
 r_return
 l_bool|false
 suffix:semicolon
-multiline_comment|/*&n;    Check the undocumented Geometry Register to test if there is an I/O port&n;    that responded.  Adaptec Host Adapters do not implement the Geometry&n;    Register, so this test helps serve to avoid incorrectly recognizing an&n;    Adaptec 1542A or 1542B as a BusLogic.  Unfortunately, the Adaptec 1542C&n;    series does respond to the Geometry Register I/O port, but it will be&n;    rejected later when the Inquire Extended Setup Information command is&n;    issued in BusLogic_CheckHostAdapter.  The AMI FastDisk Host Adapter is a&n;    BusLogic clone that implements the same interface as earlier BusLogic&n;    Host Adapters, including the undocumented commands, and is therefore&n;    supported by this driver.  However, the AMI FastDisk always returns 0x00&n;    upon reading the Geometry Register, so the extended translation option&n;    should always be left disabled on the AMI FastDisk.&n;  */
+multiline_comment|/*&n;&t;   Check the undocumented Geometry Register to test if there is an I/O port&n;&t;   that responded.  Adaptec Host Adapters do not implement the Geometry&n;&t;   Register, so this test helps serve to avoid incorrectly recognizing an&n;&t;   Adaptec 1542A or 1542B as a BusLogic.  Unfortunately, the Adaptec 1542C&n;&t;   series does respond to the Geometry Register I/O port, but it will be&n;&t;   rejected later when the Inquire Extended Setup Information command is&n;&t;   issued in BusLogic_CheckHostAdapter.  The AMI FastDisk Host Adapter is a&n;&t;   BusLogic clone that implements the same interface as earlier BusLogic&n;&t;   Host Adapters, including the undocumented commands, and is therefore&n;&t;   supported by this driver.  However, the AMI FastDisk always returns 0x00&n;&t;   upon reading the Geometry Register, so the extended translation option&n;&t;   should always be left disabled on the AMI FastDisk.&n;&t; */
 r_if
 c_cond
 (paren
@@ -4202,7 +4200,7 @@ l_int|0xFF
 r_return
 l_bool|false
 suffix:semicolon
-multiline_comment|/*&n;    Indicate the Host Adapter Probe completed successfully.&n;  */
+multiline_comment|/*&n;&t;   Indicate the Host Adapter Probe completed successfully.&n;&t; */
 r_return
 l_bool|true
 suffix:semicolon
@@ -4230,7 +4228,7 @@ suffix:semicolon
 r_int
 id|TimeoutCounter
 suffix:semicolon
-multiline_comment|/*&n;    FlashPoint Host Adapters are Hard Reset by the FlashPoint SCCB Manager.&n;  */
+multiline_comment|/*&n;&t;   FlashPoint Host Adapters are Hard Reset by the FlashPoint SCCB Manager.&n;&t; */
 r_if
 c_cond
 (paren
@@ -4276,12 +4274,12 @@ id|FlashPoint_BadCardHandle
 r_return
 l_bool|false
 suffix:semicolon
-multiline_comment|/*&n;&t;Indicate the Host Adapter Hard Reset completed successfully.&n;      */
+multiline_comment|/*&n;&t;&t;   Indicate the Host Adapter Hard Reset completed successfully.&n;&t;&t; */
 r_return
 l_bool|true
 suffix:semicolon
 )brace
-multiline_comment|/*&n;    Issue a Hard Reset or Soft Reset Command to the Host Adapter.  The Host&n;    Adapter should respond by setting Diagnostic Active in the Status Register.&n;  */
+multiline_comment|/*&n;&t;   Issue a Hard Reset or Soft Reset Command to the Host Adapter.  The Host&n;&t;   Adapter should respond by setting Diagnostic Active in the Status Register.&n;&t; */
 r_if
 c_cond
 (paren
@@ -4300,7 +4298,7 @@ c_func
 id|HostAdapter
 )paren
 suffix:semicolon
-multiline_comment|/*&n;    Wait until Diagnostic Active is set in the Status Register.&n;  */
+multiline_comment|/*&n;&t;   Wait until Diagnostic Active is set in the Status Register.&n;&t; */
 id|TimeoutCounter
 op_assign
 l_int|5
@@ -4366,14 +4364,14 @@ l_int|0
 r_return
 l_bool|false
 suffix:semicolon
-multiline_comment|/*&n;    Wait 100 microseconds to allow completion of any initial diagnostic&n;    activity which might leave the contents of the Status Register&n;    unpredictable.&n;  */
+multiline_comment|/*&n;&t;   Wait 100 microseconds to allow completion of any initial diagnostic&n;&t;   activity which might leave the contents of the Status Register&n;&t;   unpredictable.&n;&t; */
 id|udelay
 c_func
 (paren
 l_int|100
 )paren
 suffix:semicolon
-multiline_comment|/*&n;    Wait until Diagnostic Active is reset in the Status Register.&n;  */
+multiline_comment|/*&n;&t;   Wait until Diagnostic Active is reset in the Status Register.&n;&t; */
 id|TimeoutCounter
 op_assign
 l_int|10
@@ -4440,7 +4438,7 @@ l_int|0
 r_return
 l_bool|false
 suffix:semicolon
-multiline_comment|/*&n;    Wait until at least one of the Diagnostic Failure, Host Adapter Ready,&n;    or Data In Register Ready bits is set in the Status Register.&n;  */
+multiline_comment|/*&n;&t;   Wait until at least one of the Diagnostic Failure, Host Adapter Ready,&n;&t;   or Data In Register Ready bits is set in the Status Register.&n;&t; */
 id|TimeoutCounter
 op_assign
 l_int|10000
@@ -4508,7 +4506,7 @@ l_int|0
 r_return
 l_bool|false
 suffix:semicolon
-multiline_comment|/*&n;    If Diagnostic Failure is set or Host Adapter Ready is reset, then an&n;    error occurred during the Host Adapter diagnostics.  If Data In Register&n;    Ready is set, then there is an Error Code available.&n;  */
+multiline_comment|/*&n;&t;   If Diagnostic Failure is set or Host Adapter Ready is reset, then an&n;&t;   error occurred during the Host Adapter diagnostics.  If Data In Register&n;&t;   Ready is set, then there is an Error Code available.&n;&t; */
 r_if
 c_cond
 (paren
@@ -4571,7 +4569,7 @@ r_return
 l_bool|false
 suffix:semicolon
 )brace
-multiline_comment|/*&n;    Indicate the Host Adapter Hard Reset completed successfully.&n;  */
+multiline_comment|/*&n;&t;   Indicate the Host Adapter Hard Reset completed successfully.&n;&t; */
 r_return
 l_bool|true
 suffix:semicolon
@@ -4603,7 +4601,7 @@ id|Result
 op_assign
 l_bool|true
 suffix:semicolon
-multiline_comment|/*&n;    FlashPoint Host Adapters do not require this protection.&n;  */
+multiline_comment|/*&n;&t;   FlashPoint Host Adapters do not require this protection.&n;&t; */
 r_if
 c_cond
 (paren
@@ -4616,7 +4614,7 @@ id|HostAdapter
 r_return
 l_bool|true
 suffix:semicolon
-multiline_comment|/*&n;    Issue the Inquire Extended Setup Information command.  Only genuine&n;    BusLogic Host Adapters and true clones support this command.  Adaptec 1542C&n;    series Host Adapters that respond to the Geometry Register I/O port will&n;    fail this command.&n;  */
+multiline_comment|/*&n;&t;   Issue the Inquire Extended Setup Information command.  Only genuine&n;&t;   BusLogic Host Adapters and true clones support this command.  Adaptec 1542C&n;&t;   series Host Adapters that respond to the Geometry Register I/O port will&n;&t;   fail this command.&n;&t; */
 id|RequestedReplyLength
 op_assign
 r_sizeof
@@ -4660,7 +4658,7 @@ id|Result
 op_assign
 l_bool|false
 suffix:semicolon
-multiline_comment|/*&n;    Provide tracing information if requested and return.&n;  */
+multiline_comment|/*&n;&t;   Provide tracing information if requested and return.&n;&t; */
 r_if
 c_cond
 (paren
@@ -4766,7 +4764,7 @@ id|TargetID
 comma
 id|i
 suffix:semicolon
-multiline_comment|/*&n;    Configuration Information for FlashPoint Host Adapters is provided in the&n;    FlashPoint_Info structure by the FlashPoint SCCB Manager&squot;s Probe Function.&n;    Initialize fields in the Host Adapter structure from the FlashPoint_Info&n;    structure.&n;  */
+multiline_comment|/*&n;&t;   Configuration Information for FlashPoint Host Adapters is provided in the&n;&t;   FlashPoint_Info structure by the FlashPoint SCCB Manager&squot;s Probe Function.&n;&t;   Initialize fields in the Host Adapter structure from the FlashPoint_Info&n;&t;   structure.&n;&t; */
 r_if
 c_cond
 (paren
@@ -4973,7 +4971,7 @@ r_goto
 id|Common
 suffix:semicolon
 )brace
-multiline_comment|/*&n;    Issue the Inquire Board ID command.&n;  */
+multiline_comment|/*&n;&t;   Issue the Inquire Board ID command.&n;&t; */
 r_if
 c_cond
 (paren
@@ -5011,7 +5009,7 @@ comma
 l_string|&quot;INQUIRE BOARD ID&quot;
 )paren
 suffix:semicolon
-multiline_comment|/*&n;    Issue the Inquire Configuration command.&n;  */
+multiline_comment|/*&n;&t;   Issue the Inquire Configuration command.&n;&t; */
 r_if
 c_cond
 (paren
@@ -5049,7 +5047,7 @@ comma
 l_string|&quot;INQUIRE CONFIGURATION&quot;
 )paren
 suffix:semicolon
-multiline_comment|/*&n;    Issue the Inquire Setup Information command.&n;  */
+multiline_comment|/*&n;&t;   Issue the Inquire Setup Information command.&n;&t; */
 id|RequestedReplyLength
 op_assign
 r_sizeof
@@ -5098,7 +5096,7 @@ comma
 l_string|&quot;INQUIRE SETUP INFORMATION&quot;
 )paren
 suffix:semicolon
-multiline_comment|/*&n;    Issue the Inquire Extended Setup Information command.&n;  */
+multiline_comment|/*&n;&t;   Issue the Inquire Extended Setup Information command.&n;&t; */
 id|RequestedReplyLength
 op_assign
 r_sizeof
@@ -5147,7 +5145,7 @@ comma
 l_string|&quot;INQUIRE EXTENDED SETUP INFORMATION&quot;
 )paren
 suffix:semicolon
-multiline_comment|/*&n;    Issue the Inquire Firmware Version 3rd Digit command.&n;  */
+multiline_comment|/*&n;&t;   Issue the Inquire Firmware Version 3rd Digit command.&n;&t; */
 id|FirmwareVersion3rdDigit
 op_assign
 l_char|&squot;&bslash;0&squot;
@@ -5196,7 +5194,7 @@ comma
 l_string|&quot;INQUIRE FIRMWARE 3RD DIGIT&quot;
 )paren
 suffix:semicolon
-multiline_comment|/*&n;    Issue the Inquire Host Adapter Model Number command.&n;  */
+multiline_comment|/*&n;&t;   Issue the Inquire Host Adapter Model Number command.&n;&t; */
 r_if
 c_cond
 (paren
@@ -5326,8 +5324,8 @@ l_string|&quot;INQUIRE HOST ADAPTER MODEL NUMBER&quot;
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n;    BusLogic MultiMaster Host Adapters can be identified by their model number&n;    and the major version number of their firmware as follows:&n;&n;    5.xx&t;BusLogic &quot;W&quot; Series Host Adapters:&n;&t;&t;  BT-948/958/958D&n;    4.xx&t;BusLogic &quot;C&quot; Series Host Adapters:&n;&t;&t;  BT-946C/956C/956CD/747C/757C/757CD/445C/545C/540CF&n;    3.xx&t;BusLogic &quot;S&quot; Series Host Adapters:&n;&t;&t;  BT-747S/747D/757S/757D/445S/545S/542D&n;&t;&t;  BT-542B/742A (revision H)&n;    2.xx&t;BusLogic &quot;A&quot; Series Host Adapters:&n;&t;&t;  BT-542B/742A (revision G and below)&n;    0.xx&t;AMI FastDisk VLB/EISA BusLogic Clone Host Adapter&n;  */
-multiline_comment|/*&n;    Save the Model Name and Host Adapter Name in the Host Adapter structure.&n;  */
+multiline_comment|/*&n;&t;   BusLogic MultiMaster Host Adapters can be identified by their model number&n;&t;   and the major version number of their firmware as follows:&n;&n;&t;   5.xx       BusLogic &quot;W&quot; Series Host Adapters:&n;&t;   BT-948/958/958D&n;&t;   4.xx       BusLogic &quot;C&quot; Series Host Adapters:&n;&t;   BT-946C/956C/956CD/747C/757C/757CD/445C/545C/540CF&n;&t;   3.xx       BusLogic &quot;S&quot; Series Host Adapters:&n;&t;   BT-747S/747D/757S/757D/445S/545S/542D&n;&t;   BT-542B/742A (revision H)&n;&t;   2.xx       BusLogic &quot;A&quot; Series Host Adapters:&n;&t;   BT-542B/742A (revision G and below)&n;&t;   0.xx       AMI FastDisk VLB/EISA BusLogic Clone Host Adapter&n;&t; */
+multiline_comment|/*&n;&t;   Save the Model Name and Host Adapter Name in the Host Adapter structure.&n;&t; */
 id|TargetPointer
 op_assign
 id|HostAdapter-&gt;ModelName
@@ -5401,7 +5399,7 @@ op_increment
 op_assign
 l_char|&squot;&bslash;0&squot;
 suffix:semicolon
-multiline_comment|/*&n;    Save the Firmware Version in the Host Adapter structure.&n;  */
+multiline_comment|/*&n;&t;   Save the Firmware Version in the Host Adapter structure.&n;&t; */
 id|TargetPointer
 op_assign
 id|HostAdapter-&gt;FirmwareVersion
@@ -5446,7 +5444,7 @@ id|TargetPointer
 op_assign
 l_char|&squot;&bslash;0&squot;
 suffix:semicolon
-multiline_comment|/*&n;    Issue the Inquire Firmware Version Letter command.&n;  */
+multiline_comment|/*&n;&t;   Issue the Inquire Firmware Version Letter command.&n;&t; */
 r_if
 c_cond
 (paren
@@ -5521,12 +5519,12 @@ op_assign
 l_char|&squot;&bslash;0&squot;
 suffix:semicolon
 )brace
-multiline_comment|/*&n;    Save the Host Adapter SCSI ID in the Host Adapter structure.&n;  */
+multiline_comment|/*&n;&t;   Save the Host Adapter SCSI ID in the Host Adapter structure.&n;&t; */
 id|HostAdapter-&gt;SCSI_ID
 op_assign
 id|Configuration.HostAdapterID
 suffix:semicolon
-multiline_comment|/*&n;    Determine the Bus Type and save it in the Host Adapter structure, determine&n;    and save the IRQ Channel if necessary, and determine and save the DMA&n;    Channel for ISA Host Adapters.&n;  */
+multiline_comment|/*&n;&t;   Determine the Bus Type and save it in the Host Adapter structure, determine&n;&t;   and save the IRQ Channel if necessary, and determine and save the DMA&n;&t;   Channel for ISA Host Adapters.&n;&t; */
 id|HostAdapter-&gt;HostAdapterBusType
 op_assign
 id|BusLogic_HostAdapterBusTypes
@@ -5645,7 +5643,7 @@ op_assign
 l_int|7
 suffix:semicolon
 )brace
-multiline_comment|/*&n;    Determine whether Extended Translation is enabled and save it in&n;    the Host Adapter structure.&n;  */
+multiline_comment|/*&n;&t;   Determine whether Extended Translation is enabled and save it in&n;&t;   the Host Adapter structure.&n;&t; */
 id|GeometryRegister.All
 op_assign
 id|BusLogic_ReadGeometryRegister
@@ -5658,7 +5656,7 @@ id|HostAdapter-&gt;ExtendedTranslationEnabled
 op_assign
 id|GeometryRegister.gr.ExtendedTranslationEnabled
 suffix:semicolon
-multiline_comment|/*&n;    Save the Scatter Gather Limits, Level Sensitive Interrupt flag, Wide&n;    SCSI flag, Differential SCSI flag, SCAM Supported flag, and&n;    Ultra SCSI flag in the Host Adapter structure.&n;  */
+multiline_comment|/*&n;&t;   Save the Scatter Gather Limits, Level Sensitive Interrupt flag, Wide&n;&t;   SCSI flag, Differential SCSI flag, SCAM Supported flag, and&n;&t;   Ultra SCSI flag in the Host Adapter structure.&n;&t; */
 id|HostAdapter-&gt;HostAdapterScatterGatherLimit
 op_assign
 id|ExtendedSetupInformation.ScatterGatherLimit
@@ -5703,7 +5701,7 @@ id|HostAdapter-&gt;HostUltraSCSI
 op_assign
 id|ExtendedSetupInformation.HostUltraSCSI
 suffix:semicolon
-multiline_comment|/*&n;    Determine whether Extended LUN Format CCBs are supported and save the&n;    information in the Host Adapter structure.&n;  */
+multiline_comment|/*&n;&t;   Determine whether Extended LUN Format CCBs are supported and save the&n;&t;   information in the Host Adapter structure.&n;&t; */
 r_if
 c_cond
 (paren
@@ -5729,7 +5727,7 @@ id|HostAdapter-&gt;ExtendedLUNSupport
 op_assign
 l_bool|true
 suffix:semicolon
-multiline_comment|/*&n;    Issue the Inquire PCI Host Adapter Information command to read the&n;    Termination Information from &quot;W&quot; series MultiMaster Host Adapters.&n;  */
+multiline_comment|/*&n;&t;   Issue the Inquire PCI Host Adapter Information command to read the&n;&t;   Termination Information from &quot;W&quot; series MultiMaster Host Adapters.&n;&t; */
 r_if
 c_cond
 (paren
@@ -5778,7 +5776,7 @@ comma
 l_string|&quot;INQUIRE PCI HOST ADAPTER INFORMATION&quot;
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t;Save the Termination Information in the Host Adapter structure.&n;      */
+multiline_comment|/*&n;&t;&t;   Save the Termination Information in the Host Adapter structure.&n;&t;&t; */
 r_if
 c_cond
 (paren
@@ -5799,7 +5797,7 @@ id|PCIHostAdapterInformation.HighByteTerminated
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/*&n;    Issue the Fetch Host Adapter Local RAM command to read the AutoSCSI data&n;    from &quot;W&quot; and &quot;C&quot; series MultiMaster Host Adapters.&n;  */
+multiline_comment|/*&n;&t;   Issue the Fetch Host Adapter Local RAM command to read the AutoSCSI data&n;&t;   from &quot;W&quot; and &quot;C&quot; series MultiMaster Host Adapters.&n;&t; */
 r_if
 c_cond
 (paren
@@ -5863,7 +5861,7 @@ comma
 l_string|&quot;FETCH HOST ADAPTER LOCAL RAM&quot;
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t;Save the Parity Checking Enabled, Bus Reset Enabled, and Termination&n;&t;Information in the Host Adapter structure.&n;      */
+multiline_comment|/*&n;&t;&t;   Save the Parity Checking Enabled, Bus Reset Enabled, and Termination&n;&t;&t;   Information in the Host Adapter structure.&n;&t;&t; */
 id|HostAdapter-&gt;ParityCheckingEnabled
 op_assign
 id|AutoSCSIData.ParityCheckingEnabled
@@ -5896,7 +5894,7 @@ op_assign
 id|AutoSCSIData.HighByteTerminated
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t;Save the Wide Permitted, Fast Permitted, Synchronous Permitted,&n;&t;Disconnect Permitted, Ultra Permitted, and SCAM Information in the&n;&t;Host Adapter structure.&n;      */
+multiline_comment|/*&n;&t;&t;   Save the Wide Permitted, Fast Permitted, Synchronous Permitted,&n;&t;&t;   Disconnect Permitted, Ultra Permitted, and SCAM Information in the&n;&t;&t;   Host Adapter structure.&n;&t;&t; */
 id|HostAdapter-&gt;WidePermitted
 op_assign
 id|AutoSCSIData.WidePermitted
@@ -5938,7 +5936,7 @@ id|AutoSCSIData.SCAM_Level2
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/*&n;    Initialize fields in the Host Adapter structure for &quot;S&quot; and &quot;A&quot; series&n;    MultiMaster Host Adapters.&n;  */
+multiline_comment|/*&n;&t;   Initialize fields in the Host Adapter structure for &quot;S&quot; and &quot;A&quot; series&n;&t;   MultiMaster Host Adapters.&n;&t; */
 r_if
 c_cond
 (paren
@@ -6009,7 +6007,7 @@ op_assign
 l_bool|true
 suffix:semicolon
 )brace
-multiline_comment|/*&n;    Determine the maximum number of Target IDs and Logical Units supported by&n;    this driver for Wide and Narrow Host Adapters.&n;  */
+multiline_comment|/*&n;&t;   Determine the maximum number of Target IDs and Logical Units supported by&n;&t;   this driver for Wide and Narrow Host Adapters.&n;&t; */
 id|HostAdapter-&gt;MaxTargetDevices
 op_assign
 (paren
@@ -6032,7 +6030,7 @@ suffix:colon
 l_int|8
 )paren
 suffix:semicolon
-multiline_comment|/*&n;    Select appropriate values for the Mailbox Count, Driver Queue Depth,&n;    Initial CCBs, and Incremental CCBs variables based on whether or not Strict&n;    Round Robin Mode is supported.  If Strict Round Robin Mode is supported,&n;    then there is no performance degradation in using the maximum possible&n;    number of Outgoing and Incoming Mailboxes and allowing the Tagged and&n;    Untagged Queue Depths to determine the actual utilization.  If Strict Round&n;    Robin Mode is not supported, then the Host Adapter must scan all the&n;    Outgoing Mailboxes whenever an Outgoing Mailbox entry is made, which can&n;    cause a substantial performance penalty.  The host adapters actually have&n;    room to store the following number of CCBs internally; that is, they can&n;    internally queue and manage this many active commands on the SCSI bus&n;    simultaneously.  Performance measurements demonstrate that the Driver Queue&n;    Depth should be set to the Mailbox Count, rather than the Host Adapter&n;    Queue Depth (internal CCB capacity), as it is more efficient to have the&n;    queued commands waiting in Outgoing Mailboxes if necessary than to block&n;    the process in the higher levels of the SCSI Subsystem.&n;&n;&t;192&t;  BT-948/958/958D&n;&t;100&t;  BT-946C/956C/956CD/747C/757C/757CD/445C&n;&t; 50&t;  BT-545C/540CF&n;&t; 30&t;  BT-747S/747D/757S/757D/445S/545S/542D/542B/742A&n;  */
+multiline_comment|/*&n;&t;   Select appropriate values for the Mailbox Count, Driver Queue Depth,&n;&t;   Initial CCBs, and Incremental CCBs variables based on whether or not Strict&n;&t;   Round Robin Mode is supported.  If Strict Round Robin Mode is supported,&n;&t;   then there is no performance degradation in using the maximum possible&n;&t;   number of Outgoing and Incoming Mailboxes and allowing the Tagged and&n;&t;   Untagged Queue Depths to determine the actual utilization.  If Strict Round&n;&t;   Robin Mode is not supported, then the Host Adapter must scan all the&n;&t;   Outgoing Mailboxes whenever an Outgoing Mailbox entry is made, which can&n;&t;   cause a substantial performance penalty.  The host adapters actually have&n;&t;   room to store the following number of CCBs internally; that is, they can&n;&t;   internally queue and manage this many active commands on the SCSI bus&n;&t;   simultaneously.  Performance measurements demonstrate that the Driver Queue&n;&t;   Depth should be set to the Mailbox Count, rather than the Host Adapter&n;&t;   Queue Depth (internal CCB capacity), as it is more efficient to have the&n;&t;   queued commands waiting in Outgoing Mailboxes if necessary than to block&n;&t;   the process in the higher levels of the SCSI Subsystem.&n;&n;&t;   192          BT-948/958/958D&n;&t;   100          BT-946C/956C/956CD/747C/757C/757CD/445C&n;&t;   50   BT-545C/540CF&n;&t;   30   BT-747S/747D/757S/757D/445S/545S/542D/542B/742A&n;&t; */
 r_if
 c_cond
 (paren
@@ -6124,7 +6122,7 @@ id|HostAdapter-&gt;IncrementalCCBs
 op_assign
 id|BusLogic_CCB_AllocationGroupSize
 suffix:semicolon
-multiline_comment|/*&n;    Tagged Queuing support is available and operates properly on all &quot;W&quot; series&n;    MultiMaster Host Adapters, on &quot;C&quot; series MultiMaster Host Adapters with&n;    firmware version 4.22 and above, and on &quot;S&quot; series MultiMaster Host&n;    Adapters with firmware version 3.35 and above.&n;  */
+multiline_comment|/*&n;&t;   Tagged Queuing support is available and operates properly on all &quot;W&quot; series&n;&t;   MultiMaster Host Adapters, on &quot;C&quot; series MultiMaster Host Adapters with&n;&t;   firmware version 4.22 and above, and on &quot;S&quot; series MultiMaster Host&n;&t;   Adapters with firmware version 3.35 and above.&n;&t; */
 id|HostAdapter-&gt;TaggedQueuingPermitted
 op_assign
 l_int|0
@@ -6192,14 +6190,14 @@ suffix:semicolon
 r_break
 suffix:semicolon
 )brace
-multiline_comment|/*&n;    Determine the Host Adapter BIOS Address if the BIOS is enabled and&n;    save it in the Host Adapter structure.  The BIOS is disabled if the&n;    BIOS_Address is 0.&n;  */
+multiline_comment|/*&n;&t;   Determine the Host Adapter BIOS Address if the BIOS is enabled and&n;&t;   save it in the Host Adapter structure.  The BIOS is disabled if the&n;&t;   BIOS_Address is 0.&n;&t; */
 id|HostAdapter-&gt;BIOS_Address
 op_assign
 id|ExtendedSetupInformation.BIOS_Address
 op_lshift
 l_int|12
 suffix:semicolon
-multiline_comment|/*&n;    ISA Host Adapters require Bounce Buffers if there is more than 16MB memory.&n;  */
+multiline_comment|/*&n;&t;   ISA Host Adapters require Bounce Buffers if there is more than 16MB memory.&n;&t; */
 r_if
 c_cond
 (paren
@@ -6223,7 +6221,7 @@ id|HostAdapter-&gt;BounceBuffersRequired
 op_assign
 l_bool|true
 suffix:semicolon
-multiline_comment|/*&n;    BusLogic BT-445S Host Adapters prior to board revision E have a hardware&n;    bug whereby when the BIOS is enabled, transfers to/from the same address&n;    range the BIOS occupies modulo 16MB are handled incorrectly.  Only properly&n;    functioning BT-445S Host Adapters have firmware version 3.37, so require&n;    that ISA Bounce Buffers be used for the buggy BT-445S models if there is&n;    more than 16MB memory.&n;  */
+multiline_comment|/*&n;&t;   BusLogic BT-445S Host Adapters prior to board revision E have a hardware&n;&t;   bug whereby when the BIOS is enabled, transfers to/from the same address&n;&t;   range the BIOS occupies modulo 16MB are handled incorrectly.  Only properly&n;&t;   functioning BT-445S Host Adapters have firmware version 3.37, so require&n;&t;   that ISA Bounce Buffers be used for the buggy BT-445S models if there is&n;&t;   more than 16MB memory.&n;&t; */
 r_if
 c_cond
 (paren
@@ -6259,10 +6257,10 @@ id|HostAdapter-&gt;BounceBuffersRequired
 op_assign
 l_bool|true
 suffix:semicolon
-multiline_comment|/*&n;    Initialize parameters common to MultiMaster and FlashPoint Host Adapters.&n;  */
+multiline_comment|/*&n;&t;   Initialize parameters common to MultiMaster and FlashPoint Host Adapters.&n;&t; */
 id|Common
 suffix:colon
-multiline_comment|/*&n;    Initialize the Host Adapter Full Model Name from the Model Name.&n;  */
+multiline_comment|/*&n;&t;   Initialize the Host Adapter Full Model Name from the Model Name.&n;&t; */
 id|strcpy
 c_func
 (paren
@@ -6279,7 +6277,7 @@ comma
 id|HostAdapter-&gt;ModelName
 )paren
 suffix:semicolon
-multiline_comment|/*&n;    Select an appropriate value for the Tagged Queue Depth either from a&n;    BusLogic Driver Options specification, or based on whether this Host&n;    Adapter requires that ISA Bounce Buffers be used.  The Tagged Queue Depth&n;    is left at 0 for automatic determination in BusLogic_SelectQueueDepths.&n;    Initialize the Untagged Queue Depth.&n;  */
+multiline_comment|/*&n;&t;   Select an appropriate value for the Tagged Queue Depth either from a&n;&t;   BusLogic Driver Options specification, or based on whether this Host&n;&t;   Adapter requires that ISA Bounce Buffers be used.  The Tagged Queue Depth&n;&t;   is left at 0 for automatic determination in BusLogic_SelectQueueDepths.&n;&t;   Initialize the Untagged Queue Depth.&n;&t; */
 r_for
 c_loop
 (paren
@@ -6380,12 +6378,12 @@ id|HostAdapter-&gt;UntaggedQueueDepth
 op_assign
 id|HostAdapter-&gt;CommonQueueDepth
 suffix:semicolon
-multiline_comment|/*&n;    Tagged Queuing is only allowed if Disconnect/Reconnect is permitted.&n;    Therefore, mask the Tagged Queuing Permitted Default bits with the&n;    Disconnect/Reconnect Permitted bits.&n;  */
+multiline_comment|/*&n;&t;   Tagged Queuing is only allowed if Disconnect/Reconnect is permitted.&n;&t;   Therefore, mask the Tagged Queuing Permitted Default bits with the&n;&t;   Disconnect/Reconnect Permitted bits.&n;&t; */
 id|HostAdapter-&gt;TaggedQueuingPermitted
 op_and_assign
 id|HostAdapter-&gt;DisconnectPermitted
 suffix:semicolon
-multiline_comment|/*&n;    Combine the default Tagged Queuing Permitted bits with any BusLogic Driver&n;    Options Tagged Queuing specification.&n;  */
+multiline_comment|/*&n;&t;   Combine the default Tagged Queuing Permitted bits with any BusLogic Driver&n;&t;   Options Tagged Queuing specification.&n;&t; */
 r_if
 c_cond
 (paren
@@ -6408,7 +6406,7 @@ op_complement
 id|HostAdapter-&gt;DriverOptions-&gt;TaggedQueuingPermittedMask
 )paren
 suffix:semicolon
-multiline_comment|/*&n;    Select an appropriate value for Bus Settle Time either from a BusLogic&n;    Driver Options specification, or from BusLogic_DefaultBusSettleTime.&n;  */
+multiline_comment|/*&n;&t;   Select an appropriate value for Bus Settle Time either from a BusLogic&n;&t;   Driver Options specification, or from BusLogic_DefaultBusSettleTime.&n;&t; */
 r_if
 c_cond
 (paren
@@ -6429,7 +6427,7 @@ id|HostAdapter-&gt;BusSettleTime
 op_assign
 id|BusLogic_DefaultBusSettleTime
 suffix:semicolon
-multiline_comment|/*&n;    Indicate reading the Host Adapter Configuration completed successfully.&n;  */
+multiline_comment|/*&n;&t;   Indicate reading the Host Adapter Configuration completed successfully.&n;&t; */
 r_return
 l_bool|true
 suffix:semicolon
@@ -7539,7 +7537,7 @@ id|HostAdapter
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n;    Indicate reporting the Host Adapter configuration completed successfully.&n;  */
+multiline_comment|/*&n;&t;   Indicate reporting the Host Adapter configuration completed successfully.&n;&t; */
 r_return
 l_bool|true
 suffix:semicolon
@@ -7578,7 +7576,7 @@ r_return
 l_bool|false
 suffix:semicolon
 )brace
-multiline_comment|/*&n;    Acquire shared access to the IRQ Channel.&n;  */
+multiline_comment|/*&n;&t;   Acquire shared access to the IRQ Channel.&n;&t; */
 r_if
 c_cond
 (paren
@@ -7617,7 +7615,7 @@ id|HostAdapter-&gt;IRQ_ChannelAcquired
 op_assign
 l_bool|true
 suffix:semicolon
-multiline_comment|/*&n;    Acquire exclusive access to the DMA Channel.&n;  */
+multiline_comment|/*&n;&t;   Acquire exclusive access to the DMA Channel.&n;&t; */
 r_if
 c_cond
 (paren
@@ -7673,7 +7671,7 @@ op_assign
 l_bool|true
 suffix:semicolon
 )brace
-multiline_comment|/*&n;    Indicate the System Resource Acquisition completed successfully,&n;  */
+multiline_comment|/*&n;&t;   Indicate the System Resource Acquisition completed successfully,&n;&t; */
 r_return
 l_bool|true
 suffix:semicolon
@@ -7691,7 +7689,7 @@ op_star
 id|HostAdapter
 )paren
 (brace
-multiline_comment|/*&n;    Release shared access to the IRQ Channel.&n;  */
+multiline_comment|/*&n;&t;   Release shared access to the IRQ Channel.&n;&t; */
 r_if
 c_cond
 (paren
@@ -7705,7 +7703,7 @@ comma
 id|HostAdapter
 )paren
 suffix:semicolon
-multiline_comment|/*&n;    Release exclusive access to the DMA Channel.&n;  */
+multiline_comment|/*&n;&t;   Release exclusive access to the DMA Channel.&n;&t; */
 r_if
 c_cond
 (paren
@@ -7717,7 +7715,7 @@ c_func
 id|HostAdapter-&gt;DMA_Channel
 )paren
 suffix:semicolon
-multiline_comment|/*&n;    Release any allocated memory structs not released elsewhere&n;  */
+multiline_comment|/*&n;&t;   Release any allocated memory structs not released elsewhere&n;&t; */
 r_if
 c_cond
 (paren
@@ -7776,7 +7774,7 @@ suffix:semicolon
 r_int
 id|TargetID
 suffix:semicolon
-multiline_comment|/*&n;    Initialize the pointers to the first and last CCBs that are queued for&n;    completion processing.&n;  */
+multiline_comment|/*&n;&t;   Initialize the pointers to the first and last CCBs that are queued for&n;&t;   completion processing.&n;&t; */
 id|HostAdapter-&gt;FirstCompletedCCB
 op_assign
 l_int|NULL
@@ -7785,7 +7783,7 @@ id|HostAdapter-&gt;LastCompletedCCB
 op_assign
 l_int|NULL
 suffix:semicolon
-multiline_comment|/*&n;    Initialize the Bus Device Reset Pending CCB, Tagged Queuing Active,&n;    Command Successful Flag, Active Commands, and Commands Since Reset&n;    for each Target Device.&n;  */
+multiline_comment|/*&n;&t;   Initialize the Bus Device Reset Pending CCB, Tagged Queuing Active,&n;&t;   Command Successful Flag, Active Commands, and Commands Since Reset&n;&t;   for each Target Device.&n;&t; */
 r_for
 c_loop
 (paren
@@ -7841,7 +7839,7 @@ op_assign
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/*&n;    FlashPoint Host Adapters do not use Outgoing and Incoming Mailboxes.&n;  */
+multiline_comment|/*&n;&t;   FlashPoint Host Adapters do not use Outgoing and Incoming Mailboxes.&n;&t; */
 r_if
 c_cond
 (paren
@@ -7854,7 +7852,7 @@ id|HostAdapter
 r_goto
 id|Done
 suffix:semicolon
-multiline_comment|/*&n;    Initialize the Outgoing and Incoming Mailbox pointers.&n;  */
+multiline_comment|/*&n;&t;   Initialize the Outgoing and Incoming Mailbox pointers.&n;&t; */
 id|HostAdapter-&gt;MailboxSize
 op_assign
 id|HostAdapter-&gt;MailboxCount
@@ -7948,7 +7946,7 @@ id|HostAdapter-&gt;NextIncomingMailbox
 op_assign
 id|HostAdapter-&gt;FirstIncomingMailbox
 suffix:semicolon
-multiline_comment|/*&n;    Initialize the Outgoing and Incoming Mailbox structures.&n;  */
+multiline_comment|/*&n;&t;   Initialize the Outgoing and Incoming Mailbox structures.&n;&t; */
 id|memset
 c_func
 (paren
@@ -7981,7 +7979,7 @@ id|BusLogic_IncomingMailbox
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/*&n;    Initialize the Host Adapter&squot;s Pointer to the Outgoing/Incoming Mailboxes.&n;  */
+multiline_comment|/*&n;&t;   Initialize the Host Adapter&squot;s Pointer to the Outgoing/Incoming Mailboxes.&n;&t; */
 id|ExtendedMailboxRequest.MailboxCount
 op_assign
 id|HostAdapter-&gt;MailboxCount
@@ -8027,7 +8025,7 @@ comma
 l_string|&quot;MAILBOX INITIALIZATION&quot;
 )paren
 suffix:semicolon
-multiline_comment|/*&n;    Enable Strict Round Robin Mode if supported by the Host Adapter.  In&n;    Strict Round Robin Mode, the Host Adapter only looks at the next Outgoing&n;    Mailbox for each new command, rather than scanning through all the&n;    Outgoing Mailboxes to find any that have new commands in them.  Strict&n;    Round Robin Mode is significantly more efficient.&n;  */
+multiline_comment|/*&n;&t;   Enable Strict Round Robin Mode if supported by the Host Adapter.  In&n;&t;   Strict Round Robin Mode, the Host Adapter only looks at the next Outgoing&n;&t;   Mailbox for each new command, rather than scanning through all the&n;&t;   Outgoing Mailboxes to find any that have new commands in them.  Strict&n;&t;   Round Robin Mode is significantly more efficient.&n;&t; */
 r_if
 c_cond
 (paren
@@ -8073,7 +8071,7 @@ l_string|&quot;ENABLE STRICT ROUND ROBIN MODE&quot;
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n;    For Host Adapters that support Extended LUN Format CCBs, issue the Set CCB&n;    Format command to allow 32 Logical Units per Target Device.&n;  */
+multiline_comment|/*&n;&t;   For Host Adapters that support Extended LUN Format CCBs, issue the Set CCB&n;&t;   Format command to allow 32 Logical Units per Target Device.&n;&t; */
 r_if
 c_cond
 (paren
@@ -8119,7 +8117,7 @@ l_string|&quot;SET CCB FORMAT&quot;
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n;    Announce Successful Initialization.&n;  */
+multiline_comment|/*&n;&t;   Announce Successful Initialization.&n;&t; */
 id|Done
 suffix:colon
 r_if
@@ -8163,7 +8161,7 @@ id|HostAdapter-&gt;HostAdapterInitialized
 op_assign
 l_bool|true
 suffix:semicolon
-multiline_comment|/*&n;    Indicate the Host Adapter Initialization completed successfully.&n;  */
+multiline_comment|/*&n;&t;   Indicate the Host Adapter Initialization completed successfully.&n;&t; */
 r_return
 l_bool|true
 suffix:semicolon
@@ -8208,14 +8206,14 @@ suffix:semicolon
 r_int
 id|TargetID
 suffix:semicolon
-multiline_comment|/*&n;    Wait a few seconds between the Host Adapter Hard Reset which initiates&n;    a SCSI Bus Reset and issuing any SCSI Commands.  Some SCSI devices get&n;    confused if they receive SCSI Commands too soon after a SCSI Bus Reset.&n;  */
+multiline_comment|/*&n;&t;   Wait a few seconds between the Host Adapter Hard Reset which initiates&n;&t;   a SCSI Bus Reset and issuing any SCSI Commands.  Some SCSI devices get&n;&t;   confused if they receive SCSI Commands too soon after a SCSI Bus Reset.&n;&t; */
 id|BusLogic_Delay
 c_func
 (paren
 id|HostAdapter-&gt;BusSettleTime
 )paren
 suffix:semicolon
-multiline_comment|/*&n;    FlashPoint Host Adapters do not provide for Target Device Inquiry.&n;  */
+multiline_comment|/*&n;&t;   FlashPoint Host Adapters do not provide for Target Device Inquiry.&n;&t; */
 r_if
 c_cond
 (paren
@@ -8228,7 +8226,7 @@ id|HostAdapter
 r_return
 l_bool|true
 suffix:semicolon
-multiline_comment|/*&n;    Inhibit the Target Device Inquiry if requested.&n;  */
+multiline_comment|/*&n;&t;   Inhibit the Target Device Inquiry if requested.&n;&t; */
 r_if
 c_cond
 (paren
@@ -8241,7 +8239,7 @@ id|HostAdapter-&gt;DriverOptions-&gt;LocalOptions.InhibitTargetInquiry
 r_return
 l_bool|true
 suffix:semicolon
-multiline_comment|/*&n;    Issue the Inquire Target Devices command for host adapters with firmware&n;    version 4.25 or later, or the Inquire Installed Devices ID 0 to 7 command&n;    for older host adapters.  This is necessary to force Synchronous Transfer&n;    Negotiation so that the Inquire Setup Information and Inquire Synchronous&n;    Period commands will return valid data.  The Inquire Target Devices command&n;    is preferable to Inquire Installed Devices ID 0 to 7 since it only probes&n;    Logical Unit 0 of each Target Device.&n;  */
+multiline_comment|/*&n;&t;   Issue the Inquire Target Devices command for host adapters with firmware&n;&t;   version 4.25 or later, or the Inquire Installed Devices ID 0 to 7 command&n;&t;   for older host adapters.  This is necessary to force Synchronous Transfer&n;&t;   Negotiation so that the Inquire Setup Information and Inquire Synchronous&n;&t;   Period commands will return valid data.  The Inquire Target Devices command&n;&t;   is preferable to Inquire Installed Devices ID 0 to 7 since it only probes&n;&t;   Logical Unit 0 of each Target Device.&n;&t; */
 r_if
 c_cond
 (paren
@@ -8256,7 +8254,7 @@ op_ge
 l_int|0
 )paren
 (brace
-multiline_comment|/*&n;       * Issue a Inquire Target Devices command.  Inquire Target Devices only&n;       * tests Logical Unit 0 of each Target Device unlike the Inquire Installed&n;       * Devices commands which test Logical Units 0 - 7.  Two bytes are&n;       * returned, where byte 0 bit 0 set indicates that Target Device 0 exists,&n;       * and so on.&n;       */
+multiline_comment|/*&n;&t;&t; * Issue a Inquire Target Devices command.  Inquire Target Devices only&n;&t;&t; * tests Logical Unit 0 of each Target Device unlike the Inquire Installed&n;&t;&t; * Devices commands which test Logical Units 0 - 7.  Two bytes are&n;&t;&t; * returned, where byte 0 bit 0 set indicates that Target Device 0 exists,&n;&t;&t; * and so on.&n;&t;&t; */
 r_if
 c_cond
 (paren
@@ -8333,7 +8331,7 @@ suffix:semicolon
 )brace
 r_else
 (brace
-multiline_comment|/*&n;       * Issue an Inquire Installed Devices command.  For each Target Device,&n;       * a byte is returned where bit 0 set indicates that Logical Unit 0&n;       * exists, bit 1 set indicates that Logical Unit 1 exists, and so on.&n;       */
+multiline_comment|/*&n;&t;&t; * Issue an Inquire Installed Devices command.  For each Target Device,&n;&t;&t; * a byte is returned where bit 0 set indicates that Logical Unit 0&n;&t;&t; * exists, bit 1 set indicates that Logical Unit 1 exists, and so on.&n;&t;&t; */
 r_if
 c_cond
 (paren
@@ -8407,7 +8405,7 @@ l_bool|false
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n;    Issue the Inquire Setup Information command.&n;  */
+multiline_comment|/*&n;&t;   Issue the Inquire Setup Information command.&n;&t; */
 id|RequestedReplyLength
 op_assign
 r_sizeof
@@ -8573,7 +8571,7 @@ l_bool|false
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/*&n;    Issue the Inquire Synchronous Period command.&n;  */
+multiline_comment|/*&n;&t;   Issue the Inquire Synchronous Period command.&n;&t; */
 r_if
 c_cond
 (paren
@@ -8585,7 +8583,7 @@ op_ge
 l_char|&squot;3&squot;
 )paren
 (brace
-multiline_comment|/* Issue a Inquire Synchronous Period command.  For each Target Device,&n;       * a byte is returned which represents the Synchronous Transfer Period&n;       * in units of 10 nanoseconds.&n;       */
+multiline_comment|/* Issue a Inquire Synchronous Period command.  For each Target Device,&n;&t;&t; * a byte is returned which represents the Synchronous Transfer Period&n;&t;&t; * in units of 10 nanoseconds.&n;&t;&t; */
 id|RequestedReplyLength
 op_assign
 r_sizeof
@@ -8702,7 +8700,7 @@ id|TargetID
 dot
 id|TransferPeriod
 suffix:semicolon
-multiline_comment|/*&n;    Indicate the Target Device Inquiry completed successfully.&n;  */
+multiline_comment|/*&n;&t;   Indicate the Target Device Inquiry completed successfully.&n;&t; */
 r_return
 l_bool|true
 suffix:semicolon
@@ -9216,7 +9214,7 @@ id|BusLogic_HostAdapterAddressCount
 id|HostAdapter-&gt;HostAdapterType
 )braket
 suffix:semicolon
-multiline_comment|/*&n;&t;Probe the Host Adapter.  If unsuccessful, abort further initialization.&n;      */
+multiline_comment|/*&n;&t;&t;   Probe the Host Adapter.  If unsuccessful, abort further initialization.&n;&t;&t; */
 r_if
 c_cond
 (paren
@@ -9229,7 +9227,7 @@ id|HostAdapter
 )paren
 r_continue
 suffix:semicolon
-multiline_comment|/*&n;&t;Hard Reset the Host Adapter.  If unsuccessful, abort further&n;&t;initialization.&n;      */
+multiline_comment|/*&n;&t;&t;   Hard Reset the Host Adapter.  If unsuccessful, abort further&n;&t;&t;   initialization.&n;&t;&t; */
 r_if
 c_cond
 (paren
@@ -9244,7 +9242,7 @@ l_bool|true
 )paren
 r_continue
 suffix:semicolon
-multiline_comment|/*&n;&t;Check the Host Adapter.  If unsuccessful, abort further initialization.&n;      */
+multiline_comment|/*&n;&t;&t;   Check the Host Adapter.  If unsuccessful, abort further initialization.&n;&t;&t; */
 r_if
 c_cond
 (paren
@@ -9257,7 +9255,7 @@ id|HostAdapter
 )paren
 r_continue
 suffix:semicolon
-multiline_comment|/*&n;&t;Initialize the Driver Options field if provided.&n;      */
+multiline_comment|/*&n;&t;&t;   Initialize the Driver Options field if provided.&n;&t;&t; */
 r_if
 c_cond
 (paren
@@ -9274,14 +9272,14 @@ id|DriverOptionsIndex
 op_increment
 )braket
 suffix:semicolon
-multiline_comment|/*&n;&t;Announce the Driver Version and Date, Author&squot;s Name, Copyright Notice,&n;&t;and Electronic Mail Address.&n;      */
+multiline_comment|/*&n;&t;&t;   Announce the Driver Version and Date, Author&squot;s Name, Copyright Notice,&n;&t;&t;   and Electronic Mail Address.&n;&t;&t; */
 id|BusLogic_AnnounceDriver
 c_func
 (paren
 id|HostAdapter
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t;Register usage of the I/O Address range.  From this point onward, any&n;&t;failure will be assumed to be due to a problem with the Host Adapter,&n;&t;rather than due to having mistakenly identified this port as belonging&n;&t;to a BusLogic Host Adapter.  The I/O Address range will not be&n;&t;released, thereby preventing it from being incorrectly identified as&n;&t;any other type of Host Adapter.&n;      */
+multiline_comment|/*&n;&t;&t;   Register usage of the I/O Address range.  From this point onward, any&n;&t;&t;   failure will be assumed to be due to a problem with the Host Adapter,&n;&t;&t;   rather than due to having mistakenly identified this port as belonging&n;&t;&t;   to a BusLogic Host Adapter.  The I/O Address range will not be&n;&t;&t;   released, thereby preventing it from being incorrectly identified as&n;&t;&t;   any other type of Host Adapter.&n;&t;&t; */
 r_if
 c_cond
 (paren
@@ -9298,7 +9296,7 @@ l_string|&quot;BusLogic&quot;
 )paren
 r_continue
 suffix:semicolon
-multiline_comment|/*&n;&t;Register the SCSI Host structure.&n;      */
+multiline_comment|/*&n;&t;&t;   Register the SCSI Host structure.&n;&t;&t; */
 id|Host
 op_assign
 id|scsi_host_alloc
@@ -9363,14 +9361,14 @@ id|HostAdapter-&gt;HostNumber
 op_assign
 id|Host-&gt;host_no
 suffix:semicolon
-multiline_comment|/*&n;&t;Add Host Adapter to the end of the list of registered BusLogic&n;&t;Host Adapters.&n;      */
+multiline_comment|/*&n;&t;&t;   Add Host Adapter to the end of the list of registered BusLogic&n;&t;&t;   Host Adapters.&n;&t;&t; */
 id|BusLogic_RegisterHostAdapter
 c_func
 (paren
 id|HostAdapter
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t;Read the Host Adapter Configuration, Configure the Host Adapter,&n;&t;Acquire the System Resources necessary to use the Host Adapter, then&n;&t;Create the Initial CCBs, Initialize the Host Adapter, and finally&n;&t;perform Target Device Inquiry.&n;      */
+multiline_comment|/*&n;&t;&t;   Read the Host Adapter Configuration, Configure the Host Adapter,&n;&t;&t;   Acquire the System Resources necessary to use the Host Adapter, then&n;&t;&t;   Create the Initial CCBs, Initialize the Host Adapter, and finally&n;&t;&t;   perform Target Device Inquiry.&n;&t;&t; */
 r_if
 c_cond
 (paren
@@ -9411,7 +9409,7 @@ id|HostAdapter
 )paren
 )paren
 (brace
-multiline_comment|/*&n;&t;    Initialization has been completed successfully.  Release and&n;&t;    re-register usage of the I/O Address range so that the Model&n;&t;    Name of the Host Adapter will appear, and initialize the SCSI&n;&t;    Host structure.&n;&t;  */
+multiline_comment|/*&n;&t;&t;&t;   Initialization has been completed successfully.  Release and&n;&t;&t;&t;   re-register usage of the I/O Address range so that the Model&n;&t;&t;&t;   Name of the Host Adapter will appear, and initialize the SCSI&n;&t;&t;&t;   Host structure.&n;&t;&t;&t; */
 id|release_region
 c_func
 (paren
@@ -9505,7 +9503,7 @@ suffix:semicolon
 )brace
 r_else
 (brace
-multiline_comment|/*&n;&t;    An error occurred during Host Adapter Configuration Querying, Host&n;&t;    Adapter Configuration, Resource Acquisition, CCB Creation, Host&n;&t;    Adapter Initialization, or Target Device Inquiry, so remove Host&n;&t;    Adapter from the list of registered BusLogic Host Adapters, destroy&n;&t;    the CCBs, Release the System Resources, and Unregister the SCSI&n;&t;    Host.&n;&t;  */
+multiline_comment|/*&n;&t;&t;&t;   An error occurred during Host Adapter Configuration Querying, Host&n;&t;&t;&t;   Adapter Configuration, Resource Acquisition, CCB Creation, Host&n;&t;&t;&t;   Adapter Initialization, or Target Device Inquiry, so remove Host&n;&t;&t;&t;   Adapter from the list of registered BusLogic Host Adapters, destroy&n;&t;&t;&t;   the CCBs, Release the System Resources, and Unregister the SCSI&n;&t;&t;&t;   Host.&n;&t;&t;&t; */
 id|BusLogic_DestroyCCBs
 c_func
 (paren
@@ -9578,7 +9576,7 @@ op_star
 )paren
 id|Host-&gt;hostdata
 suffix:semicolon
-multiline_comment|/*&n;    FlashPoint Host Adapters must first be released by the FlashPoint&n;    SCCB Manager.&n;  */
+multiline_comment|/*&n;&t;   FlashPoint Host Adapters must first be released by the FlashPoint&n;&t;   SCCB Manager.&n;&t; */
 r_if
 c_cond
 (paren
@@ -9594,7 +9592,7 @@ c_func
 id|HostAdapter-&gt;CardHandle
 )paren
 suffix:semicolon
-multiline_comment|/*&n;    Destroy the CCBs and release any system resources acquired to&n;    support Host Adapter.&n;  */
+multiline_comment|/*&n;&t;   Destroy the CCBs and release any system resources acquired to&n;&t;   support Host Adapter.&n;&t; */
 id|BusLogic_DestroyCCBs
 c_func
 (paren
@@ -9607,7 +9605,7 @@ c_func
 id|HostAdapter
 )paren
 suffix:semicolon
-multiline_comment|/*&n;    Release usage of the I/O Address range.&n;  */
+multiline_comment|/*&n;&t;   Release usage of the I/O Address range.&n;&t; */
 id|release_region
 c_func
 (paren
@@ -9616,7 +9614,7 @@ comma
 id|HostAdapter-&gt;AddressCount
 )paren
 suffix:semicolon
-multiline_comment|/*&n;    Remove Host Adapter from the list of registered BusLogic Host Adapters.&n;  */
+multiline_comment|/*&n;&t;   Remove Host Adapter from the list of registered BusLogic Host Adapters.&n;&t; */
 id|BusLogic_UnregisterHostAdapter
 c_func
 (paren
@@ -9871,7 +9869,7 @@ op_star
 id|HostAdapter
 )paren
 (brace
-multiline_comment|/*&n;    Scan through the Incoming Mailboxes in Strict Round Robin fashion, saving&n;    any completed CCBs for further processing.  It is essential that for each&n;    CCB and SCSI Command issued, command completion processing is performed&n;    exactly once.  Therefore, only Incoming Mailboxes with completion code&n;    Command Completed Without Error, Command Completed With Error, or Command&n;    Aborted At Host Request are saved for completion processing.  When an&n;    Incoming Mailbox has a completion code of Aborted Command Not Found, the&n;    CCB had already completed or been aborted before the current Abort request&n;    was processed, and so completion processing has already occurred and no&n;    further action should be taken.&n;  */
+multiline_comment|/*&n;&t;   Scan through the Incoming Mailboxes in Strict Round Robin fashion, saving&n;&t;   any completed CCBs for further processing.  It is essential that for each&n;&t;   CCB and SCSI Command issued, command completion processing is performed&n;&t;   exactly once.  Therefore, only Incoming Mailboxes with completion code&n;&t;   Command Completed Without Error, Command Completed With Error, or Command&n;&t;   Aborted At Host Request are saved for completion processing.  When an&n;&t;   Incoming Mailbox has a completion code of Aborted Command Not Found, the&n;&t;   CCB had already completed or been aborted before the current Abort request&n;&t;   was processed, and so completion processing has already occurred and no&n;&t;   further action should be taken.&n;&t; */
 r_struct
 id|BusLogic_IncomingMailbox
 op_star
@@ -9895,7 +9893,7 @@ op_ne
 id|BusLogic_IncomingMailboxFree
 )paren
 (brace
-multiline_comment|/*&n;        We are only allowed to do this because we limit our architectures we&n;        run on to machines where bus_to_virt() actually works.  There *needs*&n;        to be a dma_addr_to_virt() in the new PCI DMA mapping interface to&n;        replace bus_to_virt() or else this code is going to become very&n;        innefficient.&n;      */
+multiline_comment|/*&n;&t;&t;   We are only allowed to do this because we limit our architectures we&n;&t;&t;   run on to machines where bus_to_virt() actually works.  There *needs*&n;&t;&t;   to be a dma_addr_to_virt() in the new PCI DMA mapping interface to&n;&t;&t;   replace bus_to_virt() or else this code is going to become very&n;&t;&t;   innefficient.&n;&t;&t; */
 r_struct
 id|BusLogic_CCB
 op_star
@@ -9932,7 +9930,7 @@ op_eq
 id|BusLogic_CCB_Reset
 )paren
 (brace
-multiline_comment|/*&n;&t;&t;Save the Completion Code for this CCB and queue the CCB&n;&t;&t;for completion processing.&n;&t;      */
+multiline_comment|/*&n;&t;&t;&t;&t;   Save the Completion Code for this CCB and queue the CCB&n;&t;&t;&t;&t;   for completion processing.&n;&t;&t;&t;&t; */
 id|CCB-&gt;CompletionCode
 op_assign
 id|CompletionCode
@@ -9946,7 +9944,7 @@ suffix:semicolon
 )brace
 r_else
 (brace
-multiline_comment|/*&n;&t;&t;If a CCB ever appears in an Incoming Mailbox and is not marked&n;&t;&t;as status Active or Reset, then there is most likely a bug in&n;&t;&t;the Host Adapter firmware.&n;&t;      */
+multiline_comment|/*&n;&t;&t;&t;&t;   If a CCB ever appears in an Incoming Mailbox and is not marked&n;&t;&t;&t;&t;   as status Active or Reset, then there is most likely a bug in&n;&t;&t;&t;&t;   the Host Adapter firmware.&n;&t;&t;&t;&t; */
 id|BusLogic_Warning
 c_func
 (paren
@@ -10045,7 +10043,7 @@ id|HostAdapter-&gt;LastCompletedCCB
 op_assign
 l_int|NULL
 suffix:semicolon
-multiline_comment|/*&n;&t;Process the Completed CCB.&n;      */
+multiline_comment|/*&n;&t;&t;   Process the Completed CCB.&n;&t;&t; */
 r_if
 c_cond
 (paren
@@ -10107,15 +10105,15 @@ id|TargetID
 op_assign
 id|jiffies
 suffix:semicolon
-multiline_comment|/*&n;&t;    Place CCB back on the Host Adapter&squot;s free list.&n;&t;  */
+multiline_comment|/*&n;&t;&t;&t;   Place CCB back on the Host Adapter&squot;s free list.&n;&t;&t;&t; */
 id|BusLogic_DeallocateCCB
 c_func
 (paren
 id|CCB
 )paren
 suffix:semicolon
-macro_line|#if 0&t;/* this needs to be redone different for new EH */
-multiline_comment|/*&n;&t;    Bus Device Reset CCBs have the Command field non-NULL only when a&n;&t;    Bus Device Reset was requested for a Command that did not have a&n;&t;    currently active CCB in the Host Adapter (i.e., a Synchronous&n;&t;    Bus Device Reset), and hence would not have its Completion Routine&n;&t;    called otherwise.&n;&t;  */
+macro_line|#if 0&t;&t;&t;&t;/* this needs to be redone different for new EH */
+multiline_comment|/*&n;&t;&t;&t;   Bus Device Reset CCBs have the Command field non-NULL only when a&n;&t;&t;&t;   Bus Device Reset was requested for a Command that did not have a&n;&t;&t;&t;   currently active CCB in the Host Adapter (i.e., a Synchronous&n;&t;&t;&t;   Bus Device Reset), and hence would not have its Completion Routine&n;&t;&t;&t;   called otherwise.&n;&t;&t;&t; */
 r_while
 c_loop
 (paren
@@ -10155,7 +10153,7 @@ id|NextCommand
 suffix:semicolon
 )brace
 macro_line|#endif
-multiline_comment|/*&n;&t;    Iterate over the CCBs for this Host Adapter performing completion&n;&t;    processing for any CCBs marked as Reset for this Target.&n;&t;  */
+multiline_comment|/*&n;&t;&t;&t;   Iterate over the CCBs for this Host Adapter performing completion&n;&t;&t;&t;   processing for any CCBs marked as Reset for this Target.&n;&t;&t;&t; */
 r_for
 c_loop
 (paren
@@ -10224,7 +10222,7 @@ suffix:semicolon
 )brace
 r_else
 (brace
-multiline_comment|/*&n;&t;    Translate the Completion Code, Host Adapter Status, and Target&n;&t;    Device Status into a SCSI Subsystem Result Code.&n;&t;  */
+multiline_comment|/*&n;&t;&t;&t;   Translate the Completion Code, Host Adapter Status, and Target&n;&t;&t;&t;   Device Status into a SCSI Subsystem Result Code.&n;&t;&t;&t; */
 r_switch
 c_cond
 (paren
@@ -10468,7 +10466,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t;    When an INQUIRY command completes normally, save the&n;&t;    CmdQue (Tagged Queuing Supported) and WBus16 (16 Bit&n;&t;    Wide Data Transfers Supported) bits.&n;&t;  */
+multiline_comment|/*&n;&t;&t;&t;   When an INQUIRY command completes normally, save the&n;&t;&t;&t;   CmdQue (Tagged Queuing Supported) and WBus16 (16 Bit&n;&t;&t;&t;   Wide Data Transfers Supported) bits.&n;&t;&t;&t; */
 r_if
 c_cond
 (paren
@@ -10527,14 +10525,14 @@ op_assign
 id|InquiryResult-&gt;WBus16
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t;    Place CCB back on the Host Adapter&squot;s free list.&n;&t;  */
+multiline_comment|/*&n;&t;&t;&t;   Place CCB back on the Host Adapter&squot;s free list.&n;&t;&t;&t; */
 id|BusLogic_DeallocateCCB
 c_func
 (paren
 id|CCB
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t;    Call the SCSI Command Completion Routine.&n;&t;  */
+multiline_comment|/*&n;&t;&t;&t;   Call the SCSI Command Completion Routine.&n;&t;&t;&t; */
 id|Command
 op_member_access_from_pointer
 id|scsi_done
@@ -10586,7 +10584,7 @@ r_int
 r_int
 id|ProcessorFlags
 suffix:semicolon
-multiline_comment|/*&n;    Acquire exclusive access to Host Adapter.&n;  */
+multiline_comment|/*&n;&t;   Acquire exclusive access to Host Adapter.&n;&t; */
 id|BusLogic_AcquireHostAdapterLockIH
 c_func
 (paren
@@ -10596,7 +10594,7 @@ op_amp
 id|ProcessorFlags
 )paren
 suffix:semicolon
-multiline_comment|/*&n;    Handle Interrupts appropriately for each Host Adapter type.&n;  */
+multiline_comment|/*&n;&t;   Handle Interrupts appropriately for each Host Adapter type.&n;&t; */
 r_if
 c_cond
 (paren
@@ -10611,7 +10609,7 @@ r_union
 id|BusLogic_InterruptRegister
 id|InterruptRegister
 suffix:semicolon
-multiline_comment|/*&n;&t;Read the Host Adapter Interrupt Register.&n;      */
+multiline_comment|/*&n;&t;&t;   Read the Host Adapter Interrupt Register.&n;&t;&t; */
 id|InterruptRegister.All
 op_assign
 id|BusLogic_ReadInterruptRegister
@@ -10626,14 +10624,14 @@ c_cond
 id|InterruptRegister.ir.InterruptValid
 )paren
 (brace
-multiline_comment|/*&n;&t;    Acknowledge the interrupt and reset the Host Adapter&n;&t;    Interrupt Register.&n;&t;  */
+multiline_comment|/*&n;&t;&t;&t;   Acknowledge the interrupt and reset the Host Adapter&n;&t;&t;&t;   Interrupt Register.&n;&t;&t;&t; */
 id|BusLogic_InterruptReset
 c_func
 (paren
 id|HostAdapter
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t;    Process valid External SCSI Bus Reset and Incoming Mailbox&n;&t;    Loaded Interrupts.  Command Complete Interrupts are noted,&n;&t;    and Outgoing Mailbox Available Interrupts are ignored, as&n;&t;    they are never enabled.&n;&t;  */
+multiline_comment|/*&n;&t;&t;&t;   Process valid External SCSI Bus Reset and Incoming Mailbox&n;&t;&t;&t;   Loaded Interrupts.  Command Complete Interrupts are noted,&n;&t;&t;&t;   and Outgoing Mailbox Available Interrupts are ignored, as&n;&t;&t;&t;   they are never enabled.&n;&t;&t;&t; */
 r_if
 c_cond
 (paren
@@ -10669,7 +10667,7 @@ suffix:semicolon
 )brace
 r_else
 (brace
-multiline_comment|/*&n;&t;Check if there is a pending interrupt for this Host Adapter.&n;      */
+multiline_comment|/*&n;&t;&t;   Check if there is a pending interrupt for this Host Adapter.&n;&t;&t; */
 r_if
 c_cond
 (paren
@@ -10723,7 +10721,7 @@ r_break
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/*&n;    Process any completed CCBs.&n;  */
+multiline_comment|/*&n;&t;   Process any completed CCBs.&n;&t; */
 r_if
 c_cond
 (paren
@@ -10737,7 +10735,7 @@ c_func
 id|HostAdapter
 )paren
 suffix:semicolon
-multiline_comment|/*&n;    Reset the Host Adapter if requested.&n;  */
+multiline_comment|/*&n;&t;   Reset the Host Adapter if requested.&n;&t; */
 r_if
 c_cond
 (paren
@@ -10811,7 +10809,7 @@ op_assign
 l_bool|false
 suffix:semicolon
 )brace
-multiline_comment|/*&n;    Release exclusive access to Host Adapter.&n;  */
+multiline_comment|/*&n;&t;   Release exclusive access to Host Adapter.&n;&t; */
 id|BusLogic_ReleaseHostAdapterLockIH
 c_func
 (paren
@@ -10868,7 +10866,7 @@ id|CCB-&gt;Status
 op_assign
 id|BusLogic_CCB_Active
 suffix:semicolon
-multiline_comment|/*&n;&t;The CCB field must be written before the Action Code field since&n;&t;the Host Adapter is operating asynchronously and the locking code&n;&t;does not protect against simultaneous access by the Host Adapter.&n;      */
+multiline_comment|/*&n;&t;&t;   The CCB field must be written before the Action Code field since&n;&t;&t;   the Host Adapter is operating asynchronously and the locking code&n;&t;&t;   does not protect against simultaneous access by the Host Adapter.&n;&t;&t; */
 id|NextOutgoingMailbox-&gt;CCB
 op_assign
 id|CCB-&gt;DMA_Handle
@@ -11092,7 +11090,7 @@ id|BusLogic_CCB
 op_star
 id|CCB
 suffix:semicolon
-multiline_comment|/*&n;    SCSI REQUEST_SENSE commands will be executed automatically by the Host&n;    Adapter for any errors, so they should not be executed explicitly unless&n;    the Sense Data is zero indicating that no error occurred.&n;  */
+multiline_comment|/*&n;&t;   SCSI REQUEST_SENSE commands will be executed automatically by the Host&n;&t;   Adapter for any errors, so they should not be executed explicitly unless&n;&t;   the Sense Data is zero indicating that no error occurred.&n;&t; */
 r_if
 c_cond
 (paren
@@ -11127,7 +11125,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/*&n;    Allocate a CCB from the Host Adapter&squot;s free list.  In the unlikely event&n;    that there are none available and memory allocation fails, wait 1 second&n;    and try again.  If that fails, the Host Adapter is probably hung so signal&n;    an error as a Host Adapter Hard Reset should be initiated soon.&n;  */
+multiline_comment|/*&n;&t;   Allocate a CCB from the Host Adapter&squot;s free list.  In the unlikely event&n;&t;   that there are none available and memory allocation fails, wait 1 second&n;&t;   and try again.  If that fails, the Host Adapter is probably hung so signal&n;&t;   an error as a Host Adapter Hard Reset should be initiated soon.&n;&t; */
 id|CCB
 op_assign
 id|BusLogic_AllocateCCB
@@ -11195,7 +11193,7 @@ l_int|0
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/*&n;    Initialize the fields in the BusLogic Command Control Block (CCB).&n;  */
+multiline_comment|/*&n;&t;   Initialize the fields in the BusLogic Command Control Block (CCB).&n;&t; */
 r_if
 c_cond
 (paren
@@ -11536,7 +11534,7 @@ id|CCB-&gt;LegacyTagEnable
 op_assign
 l_bool|false
 suffix:semicolon
-multiline_comment|/*&n;    BusLogic recommends that after a Reset the first couple of commands that&n;    are sent to a Target Device be sent in a non Tagged Queue fashion so that&n;    the Host Adapter and Target Device can establish Synchronous and Wide&n;    Transfer before Queue Tag messages can interfere with the Synchronous and&n;    Wide Negotiation messages.  By waiting to enable Tagged Queuing until after&n;    the first BusLogic_MaxTaggedQueueDepth commands have been queued, it is&n;    assured that after a Reset any pending commands are requeued before Tagged&n;    Queuing is enabled and that the Tagged Queuing message will not occur while&n;    the partition table is being printed.  In addition, some devices do not&n;    properly handle the transition from non-tagged to tagged commands, so it is&n;    necessary to wait until there are no pending commands for a target device&n;    before queuing tagged commands.&n;  */
+multiline_comment|/*&n;&t;   BusLogic recommends that after a Reset the first couple of commands that&n;&t;   are sent to a Target Device be sent in a non Tagged Queue fashion so that&n;&t;   the Host Adapter and Target Device can establish Synchronous and Wide&n;&t;   Transfer before Queue Tag messages can interfere with the Synchronous and&n;&t;   Wide Negotiation messages.  By waiting to enable Tagged Queuing until after&n;&t;   the first BusLogic_MaxTaggedQueueDepth commands have been queued, it is&n;&t;   assured that after a Reset any pending commands are requeued before Tagged&n;&t;   Queuing is enabled and that the Tagged Queuing message will not occur while&n;&t;   the partition table is being printed.  In addition, some devices do not&n;&t;   properly handle the transition from non-tagged to tagged commands, so it is&n;&t;   necessary to wait until there are no pending commands for a target device&n;&t;   before queuing tagged commands.&n;&t; */
 r_if
 c_cond
 (paren
@@ -11598,7 +11596,7 @@ id|QueueTag
 op_assign
 id|BusLogic_SimpleQueueTag
 suffix:semicolon
-multiline_comment|/*&n;&t;When using Tagged Queuing with Simple Queue Tags, it appears that disk&n;&t;drive controllers do not guarantee that a queued command will not&n;&t;remain in a disconnected state indefinitely if commands that read or&n;&t;write nearer the head position continue to arrive without interruption.&n;&t;Therefore, for each Target Device this driver keeps track of the last&n;&t;time either the queue was empty or an Ordered Queue Tag was issued.  If&n;&t;more than 4 seconds (one fifth of the 20 second disk timeout) have&n;&t;elapsed since this last sequence point, this command will be issued&n;&t;with an Ordered Queue Tag rather than a Simple Queue Tag, which forces&n;&t;the Target Device to complete all previously queued commands before&n;&t;this command may be executed.&n;      */
+multiline_comment|/*&n;&t;&t;   When using Tagged Queuing with Simple Queue Tags, it appears that disk&n;&t;&t;   drive controllers do not guarantee that a queued command will not&n;&t;&t;   remain in a disconnected state indefinitely if commands that read or&n;&t;&t;   write nearer the head position continue to arrive without interruption.&n;&t;&t;   Therefore, for each Target Device this driver keeps track of the last&n;&t;&t;   time either the queue was empty or an Ordered Queue Tag was issued.  If&n;&t;&t;   more than 4 seconds (one fifth of the 20 second disk timeout) have&n;&t;&t;   elapsed since this last sequence point, this command will be issued&n;&t;&t;   with an Ordered Queue Tag rather than a Simple Queue Tag, which forces&n;&t;&t;   the Target Device to complete all previously queued commands before&n;&t;&t;   this command may be executed.&n;&t;&t; */
 r_if
 c_cond
 (paren
@@ -11720,7 +11718,7 @@ id|HostAdapter
 )paren
 )paren
 (brace
-multiline_comment|/*&n;&t;Place the CCB in an Outgoing Mailbox.  The higher levels of the SCSI&n;&t;Subsystem should not attempt to queue more commands than can be placed&n;&t;in Outgoing Mailboxes, so there should always be one free.  In the&n;&t;unlikely event that there are none available, wait 1 second and try&n;&t;again.  If that fails, the Host Adapter is probably hung so signal an&n;&t;error as a Host Adapter Hard Reset should be initiated soon.&n;      */
+multiline_comment|/*&n;&t;&t;   Place the CCB in an Outgoing Mailbox.  The higher levels of the SCSI&n;&t;&t;   Subsystem should not attempt to queue more commands than can be placed&n;&t;&t;   in Outgoing Mailboxes, so there should always be one free.  In the&n;&t;&t;   unlikely event that there are none available, wait 1 second and try&n;&t;&t;   again.  If that fails, the Host Adapter is probably hung so signal an&n;&t;&t;   error as a Host Adapter Hard Reset should be initiated soon.&n;&t;&t; */
 r_if
 c_cond
 (paren
@@ -11812,7 +11810,7 @@ suffix:semicolon
 )brace
 r_else
 (brace
-multiline_comment|/*&n;&t;Call the FlashPoint SCCB Manager to start execution of the CCB.&n;      */
+multiline_comment|/*&n;&t;&t;   Call the FlashPoint SCCB Manager to start execution of the CCB.&n;&t;&t; */
 id|CCB-&gt;Status
 op_assign
 id|BusLogic_CCB_Active
@@ -11839,7 +11837,7 @@ comma
 id|CCB
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t;The Command may have already completed and BusLogic_QueueCompletedCCB&n;&t;been called, or it may still be pending.&n;      */
+multiline_comment|/*&n;&t;&t;   The Command may have already completed and BusLogic_QueueCompletedCCB&n;&t;&t;   been called, or it may still be pending.&n;&t;&t; */
 r_if
 c_cond
 (paren
@@ -11905,7 +11903,7 @@ dot
 id|CommandAbortsRequested
 )paren
 suffix:semicolon
-multiline_comment|/*&n;    If this Command has already completed, then no Abort is necessary.&n;  */
+multiline_comment|/*&n;&t;   If this Command has already completed, then no Abort is necessary.&n;&t; */
 r_if
 c_cond
 (paren
@@ -11929,7 +11927,7 @@ r_return
 id|SUCCESS
 suffix:semicolon
 )brace
-multiline_comment|/*&n;    Attempt to find an Active CCB for this Command.  If no Active CCB for this&n;    Command is found, then no Abort is necessary.&n;  */
+multiline_comment|/*&n;&t;   Attempt to find an Active CCB for this Command.  If no Active CCB for this&n;&t;   Command is found, then no Abort is necessary.&n;&t; */
 r_for
 c_loop
 (paren
@@ -12035,7 +12033,7 @@ id|HostAdapter
 )paren
 )paren
 (brace
-multiline_comment|/*&n;&t;Attempt to Abort this CCB.  MultiMaster Firmware versions prior to 5.xx&n;&t;do not generate Abort Tag messages, but only generate the non-tagged&n;&t;Abort message.  Since non-tagged commands are not sent by the Host&n;&t;Adapter until the queue of outstanding tagged commands has completed,&n;&t;and the Abort message is treated as a non-tagged command, it is&n;&t;effectively impossible to abort commands when Tagged Queuing is active.&n;&t;Firmware version 5.xx does generate Abort Tag messages, so it is&n;&t;possible to abort commands when Tagged Queuing is active.&n;      */
+multiline_comment|/*&n;&t;&t;   Attempt to Abort this CCB.  MultiMaster Firmware versions prior to 5.xx&n;&t;&t;   do not generate Abort Tag messages, but only generate the non-tagged&n;&t;&t;   Abort message.  Since non-tagged commands are not sent by the Host&n;&t;&t;   Adapter until the queue of outstanding tagged commands has completed,&n;&t;&t;   and the Abort message is treated as a non-tagged command, it is&n;&t;&t;   effectively impossible to abort commands when Tagged Queuing is active.&n;&t;&t;   Firmware version 5.xx does generate Abort Tag messages, so it is&n;&t;&t;   possible to abort commands when Tagged Queuing is active.&n;&t;&t; */
 r_if
 c_cond
 (paren
@@ -12136,7 +12134,7 @@ suffix:semicolon
 )brace
 r_else
 (brace
-multiline_comment|/*&n;&t;Call the FlashPoint SCCB Manager to abort execution of the CCB.&n;      */
+multiline_comment|/*&n;&t;&t;   Call the FlashPoint SCCB Manager to abort execution of the CCB.&n;&t;&t; */
 id|BusLogic_Warning
 c_func
 (paren
@@ -12169,7 +12167,7 @@ comma
 id|CCB
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t;The Abort may have already been completed and&n;&t;BusLogic_QueueCompletedCCB been called, or it&n;&t;may still be pending.&n;      */
+multiline_comment|/*&n;&t;&t;   The Abort may have already been completed and&n;&t;&t;   BusLogic_QueueCompletedCCB been called, or it&n;&t;&t;   may still be pending.&n;&t;&t; */
 r_if
 c_cond
 (paren
@@ -12488,7 +12486,7 @@ l_int|NULL
 r_return
 l_int|0
 suffix:semicolon
-multiline_comment|/*&n;    If the boot sector partition table flag is valid, search for a partition&n;    table entry whose end_head matches one of the standard BusLogic geometry&n;    translations (64/32, 128/32, or 255/63).&n;  */
+multiline_comment|/*&n;&t;   If the boot sector partition table flag is valid, search for a partition&n;&t;   table entry whose end_head matches one of the standard BusLogic geometry&n;&t;   translations (64/32, 128/32, or 255/63).&n;&t; */
 r_if
 c_cond
 (paren
@@ -15159,7 +15157,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t;Tagged Queuing is disabled when the Queue Depth is 1 since queuing&n;&t;multiple commands is not possible.&n;      */
+multiline_comment|/*&n;&t;&t;   Tagged Queuing is disabled when the Queue Depth is 1 since queuing&n;&t;&t;   multiple commands is not possible.&n;&t;&t; */
 r_for
 c_loop
 (paren
