@@ -17,14 +17,6 @@ op_star
 id|p
 )paren
 (brace
-id|p-&gt;next_line
-op_assign
-id|p-&gt;fb_info-&gt;fix.line_length
-suffix:semicolon
-id|p-&gt;next_plane
-op_assign
-l_int|0
-suffix:semicolon
 )brace
 DECL|function|fbcon_accel_bmove
 r_void

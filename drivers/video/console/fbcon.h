@@ -303,25 +303,6 @@ r_int
 r_int
 id|cursor_pos
 suffix:semicolon
-DECL|member|fgcol
-r_int
-id|fgcol
-suffix:semicolon
-multiline_comment|/* text colors */
-DECL|member|bgcol
-r_int
-id|bgcol
-suffix:semicolon
-DECL|member|next_line
-id|u_long
-id|next_line
-suffix:semicolon
-multiline_comment|/* offset to one line below */
-DECL|member|next_plane
-id|u_long
-id|next_plane
-suffix:semicolon
-multiline_comment|/* offset to next plane */
 DECL|member|fontname
 r_char
 id|fontname
@@ -334,16 +315,6 @@ DECL|member|fontdata
 id|u_char
 op_star
 id|fontdata
-suffix:semicolon
-DECL|member|_fontheightlog
-r_int
-r_int
-id|_fontheightlog
-suffix:semicolon
-DECL|member|_fontwidthlog
-r_int
-r_int
-id|_fontwidthlog
 suffix:semicolon
 DECL|member|_fontheight
 r_int
@@ -416,8 +387,6 @@ id|newidx
 suffix:semicolon
 DECL|macro|fontheight
 mdefine_line|#define fontheight(p) ((p)-&gt;_fontheight)
-DECL|macro|fontheightlog
-mdefine_line|#define fontheightlog(p) ((p)-&gt;_fontheightlog)
 macro_line|#ifdef CONFIG_FBCON_FONTWIDTH8_ONLY
 multiline_comment|/* fontwidth w is supported by dispsw */
 DECL|macro|FONTWIDTH
@@ -427,8 +396,6 @@ DECL|macro|FONTWIDTHRANGE
 mdefine_line|#define FONTWIDTHRANGE(w1,w2)&t;FONTWIDTH(8)
 DECL|macro|fontwidth
 mdefine_line|#define fontwidth(p) (8)
-DECL|macro|fontwidthlog
-mdefine_line|#define fontwidthlog(p) (0)
 macro_line|#else
 multiline_comment|/* fontwidth w is supported by dispsw */
 DECL|macro|FONTWIDTH
@@ -438,8 +405,6 @@ DECL|macro|FONTWIDTHRANGE
 mdefine_line|#define FONTWIDTHRANGE(w1,w2)&t;(FONTWIDTH(w2+1) - FONTWIDTH(w1))
 DECL|macro|fontwidth
 mdefine_line|#define fontwidth(p) ((p)-&gt;_fontwidth)
-DECL|macro|fontwidthlog
-mdefine_line|#define fontwidthlog(p) ((p)-&gt;_fontwidthlog)
 macro_line|#endif
 multiline_comment|/*&n;     *  Attribute Decoding&n;     */
 multiline_comment|/* Color */
