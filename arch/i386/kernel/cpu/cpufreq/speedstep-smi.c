@@ -315,6 +315,22 @@ l_int|0
 )paren
 )paren
 suffix:semicolon
+multiline_comment|/* abort if results are obviously incorrect... */
+r_if
+c_cond
+(paren
+(paren
+id|high_mhz
+op_plus
+id|low_mhz
+)paren
+OL
+l_int|600
+)paren
+r_return
+op_minus
+id|EINVAL
+suffix:semicolon
 op_star
 id|high
 op_assign
@@ -606,9 +622,12 @@ id|KERN_INFO
 l_string|&quot;cpufreq: change to %u MHz succeeded after %u tries with result %u&bslash;n&quot;
 comma
 (paren
-id|freqs
+id|speedstep_freqs
+(braket
+id|new_state
+)braket
 dot
-r_new
+id|frequency
 op_div
 l_int|1000
 )paren
