@@ -355,6 +355,7 @@ r_int
 id|data
 )paren
 suffix:semicolon
+macro_line|#if 0
 r_static
 r_int
 id|w9966_rReg_i2c
@@ -369,6 +370,7 @@ r_int
 id|reg
 )paren
 suffix:semicolon
+macro_line|#endif
 r_static
 r_int
 id|w9966_wReg_i2c
@@ -553,6 +555,7 @@ r_int
 id|data
 )paren
 suffix:semicolon
+macro_line|#if 0
 r_static
 r_int
 id|w9966_i2c_rbyte
@@ -564,6 +567,7 @@ op_star
 id|cam
 )paren
 suffix:semicolon
+macro_line|#endif
 r_static
 r_int
 id|w9966_v4l_ioctl
@@ -2555,6 +2559,7 @@ id|state
 )paren
 (brace
 r_int
+r_int
 id|timeout
 suffix:semicolon
 r_if
@@ -2829,7 +2834,7 @@ suffix:semicolon
 )brace
 singleline_comment|// Read a data byte with ack from the i2c-bus
 singleline_comment|// Expects a claimed pdev. -1 on error
-DECL|function|w9966_i2c_rbyte
+macro_line|#if 0
 r_static
 r_int
 id|w9966_i2c_rbyte
@@ -2923,9 +2928,10 @@ r_return
 id|data
 suffix:semicolon
 )brace
+macro_line|#endif
 singleline_comment|// Read a register from the i2c device.
 singleline_comment|// Expects claimed pdev. -1 on error
-DECL|function|w9966_rReg_i2c
+macro_line|#if 0
 r_static
 r_int
 id|w9966_rReg_i2c
@@ -3099,6 +3105,7 @@ r_return
 id|data
 suffix:semicolon
 )brace
+macro_line|#endif
 singleline_comment|// Write a register to the i2c device.
 singleline_comment|// Expects claimed pdev. -1 on error
 DECL|function|w9966_wReg_i2c

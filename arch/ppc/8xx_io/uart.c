@@ -129,7 +129,9 @@ id|count
 )paren
 suffix:semicolon
 r_static
-id|kdev_t
+r_struct
+id|tty_driver
+op_star
 id|serial_console_device
 c_func
 (paren
@@ -137,8 +139,11 @@ r_struct
 id|console
 op_star
 id|c
+comma
+r_int
+op_star
+id|index
 )paren
-suffix:semicolon
 macro_line|#if defined(CONFIG_SERIAL_CONSOLE) &amp;&amp; defined(CONFIG_MAGIC_SYSRQ)
 DECL|variable|break_pressed
 r_static
@@ -9180,7 +9185,9 @@ suffix:semicolon
 macro_line|#endif
 DECL|function|serial_console_device
 r_static
-id|kdev_t
+r_struct
+id|tty_driver
+op_star
 id|serial_console_device
 c_func
 (paren
@@ -9188,18 +9195,20 @@ r_struct
 id|console
 op_star
 id|c
+comma
+r_int
+op_star
+id|index
 )paren
 (brace
-r_return
-id|MKDEV
-c_func
-(paren
-id|TTY_MAJOR
-comma
-l_int|64
-op_plus
+op_star
+id|index
+op_assign
 id|c-&gt;index
-)paren
+suffix:semicolon
+r_return
+op_amp
+id|serial_driver
 suffix:semicolon
 )brace
 multiline_comment|/*&n; *&t;Register console.&n; */

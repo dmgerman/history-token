@@ -672,22 +672,6 @@ comma
 )brace
 suffix:semicolon
 multiline_comment|/*&t;Indirect exported functions. These functions are exported by their&n;&t;addresses, such as mcdx_open and mcdx_close in the&n;&t;structure mcdx_dops. */
-multiline_comment|/* ???  exported by the mcdx_sigaction struct */
-r_static
-r_void
-id|mcdx_intr
-c_func
-(paren
-r_int
-comma
-r_void
-op_star
-comma
-r_struct
-id|pt_regs
-op_star
-)paren
-suffix:semicolon
 multiline_comment|/* exported by file_ops */
 r_static
 r_int
@@ -3411,7 +3395,7 @@ suffix:semicolon
 )brace
 DECL|function|mcdx_intr
 r_static
-r_void
+id|irqreturn_t
 id|mcdx_intr
 c_func
 (paren
@@ -3461,6 +3445,7 @@ id|irq
 )paren
 suffix:semicolon
 r_return
+id|IRQ_NONE
 suffix:semicolon
 )brace
 macro_line|#ifdef AK2
@@ -3583,6 +3568,9 @@ c_func
 op_amp
 id|stuffp-&gt;busyq
 )paren
+suffix:semicolon
+r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 DECL|function|mcdx_talk

@@ -5917,7 +5917,7 @@ suffix:semicolon
 )brace
 DECL|function|fs_irq
 r_static
-r_void
+id|irqreturn_t
 id|fs_irq
 (paren
 r_int
@@ -5962,6 +5962,7 @@ op_logical_neg
 id|status
 )paren
 r_return
+id|IRQ_NONE
 suffix:semicolon
 id|func_enter
 (paren
@@ -6400,6 +6401,9 @@ suffix:semicolon
 id|func_exit
 (paren
 )paren
+suffix:semicolon
+r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 macro_line|#ifdef FS_POLL_FREQ

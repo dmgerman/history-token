@@ -533,7 +533,7 @@ suffix:semicolon
 DECL|macro|FD_BRDS
 mdefine_line|#define FD_BRDS sizeof(fd_mcs_adapters)/sizeof(struct fd_mcs_adapters_struct)
 r_static
-r_void
+id|irqreturn_t
 id|fd_mcs_intr
 c_func
 (paren
@@ -2609,7 +2609,7 @@ macro_line|#endif
 multiline_comment|/* only my_done needs to be protected  */
 DECL|function|fd_mcs_intr
 r_static
-r_void
+id|irqreturn_t
 id|fd_mcs_intr
 c_func
 (paren
@@ -2696,6 +2696,7 @@ id|shpnt
 )paren
 (brace
 r_return
+id|IRQ_NONE
 suffix:semicolon
 )brace
 id|INTR_Processed
@@ -2726,7 +2727,7 @@ l_string|&quot;Interrupt after abort, ignoring&bslash;n&quot;
 )paren
 suffix:semicolon
 macro_line|#endif
-multiline_comment|/* return; */
+multiline_comment|/* return IRQ_HANDLED; */
 )brace
 macro_line|#if DEBUG_RACE
 op_increment
@@ -2796,6 +2797,7 @@ id|flags
 )paren
 suffix:semicolon
 r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 id|current_SC-&gt;SCp.phase
@@ -2931,6 +2933,7 @@ id|flags
 )paren
 suffix:semicolon
 r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 r_else
@@ -2985,6 +2988,7 @@ l_int|0
 suffix:semicolon
 macro_line|#endif
 r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 multiline_comment|/* current_SC-&gt;SCp.phase == in_other: this is the body of the routine */
@@ -4021,6 +4025,7 @@ l_int|0
 suffix:semicolon
 macro_line|#endif
 r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 DECL|function|fd_mcs_release

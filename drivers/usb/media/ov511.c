@@ -11,7 +11,6 @@ macro_line|#include &lt;linux/pagemap.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/semaphore.h&gt;
 macro_line|#include &lt;asm/processor.h&gt;
-macro_line|#include &lt;linux/wrapper.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#if defined (__i386__)
 macro_line|#include &lt;asm/cpufeature.h&gt;

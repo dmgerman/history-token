@@ -68,8 +68,6 @@ DECL|macro|HASHDEV
 mdefine_line|#define HASHDEV(dev)&t;(kdev_val(dev))
 DECL|macro|NODEV
 mdefine_line|#define NODEV&t;&t;(mk_kdev(0,0))
-DECL|macro|B_FREE
-mdefine_line|#define B_FREE&t;&t;(mk_kdev(0xff,0xff))
 DECL|function|kdev_same
 r_static
 r_inline

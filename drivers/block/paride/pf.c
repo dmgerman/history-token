@@ -4001,6 +4001,7 @@ r_void
 )paren
 (brace
 r_int
+r_int
 id|saved_flags
 suffix:semicolon
 id|pf_count
@@ -4083,6 +4084,7 @@ r_int
 id|success
 )paren
 (brace
+r_int
 r_int
 id|saved_flags
 suffix:semicolon

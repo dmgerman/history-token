@@ -5635,7 +5635,7 @@ macro_line|#endif
 multiline_comment|/*--------------------------------------------------------------------&n; * Interrupt service routine&n; *--------------------------------------------------------------------*/
 DECL|function|megaraid_isr
 r_static
-r_void
+id|irqreturn_t
 id|megaraid_isr
 (paren
 r_int
@@ -5697,6 +5697,11 @@ id|Scsi_Cmnd
 op_star
 id|SCpnt
 suffix:semicolon
+r_int
+id|handled
+op_assign
+l_int|0
+suffix:semicolon
 id|megaCfg
 op_assign
 (paren
@@ -5721,6 +5726,10 @@ op_eq
 id|irq
 )paren
 (brace
+id|handled
+op_assign
+l_int|1
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -5792,7 +5801,8 @@ op_and_assign
 op_complement
 id|IN_ISR
 suffix:semicolon
-r_return
+r_goto
+id|out
 suffix:semicolon
 )brace
 )brace
@@ -5825,7 +5835,8 @@ op_and_assign
 op_complement
 id|IN_ISR
 suffix:semicolon
-r_return
+r_goto
+id|out
 suffix:semicolon
 )brace
 id|WRITE_PORT
@@ -6292,6 +6303,15 @@ id|megaCfg-&gt;host
 )paren
 suffix:semicolon
 )brace
+id|out
+suffix:colon
+r_return
+id|IRQ_RETVAL
+c_func
+(paren
+id|handled
+)paren
+suffix:semicolon
 )brace
 multiline_comment|/*==================================================*/
 multiline_comment|/* Wait until the controller&squot;s mailbox is available */

@@ -1392,6 +1392,14 @@ DECL|macro|RADEON_PARAM_IRQ_NR
 mdefine_line|#define RADEON_PARAM_IRQ_NR                5
 DECL|macro|RADEON_PARAM_AGP_BASE
 mdefine_line|#define RADEON_PARAM_AGP_BASE              6 /* card offset of agp base */
+DECL|macro|RADEON_PARAM_REGISTER_HANDLE
+mdefine_line|#define RADEON_PARAM_REGISTER_HANDLE       7 /* for drmMap() */
+DECL|macro|RADEON_PARAM_STATUS_HANDLE
+mdefine_line|#define RADEON_PARAM_STATUS_HANDLE         8
+DECL|macro|RADEON_PARAM_SAREA_HANDLE
+mdefine_line|#define RADEON_PARAM_SAREA_HANDLE          9
+DECL|macro|RADEON_PARAM_AGP_TEX_HANDLE
+mdefine_line|#define RADEON_PARAM_AGP_TEX_HANDLE        10
 DECL|struct|drm_radeon_getparam
 r_typedef
 r_struct

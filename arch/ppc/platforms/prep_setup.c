@@ -234,7 +234,7 @@ DECL|macro|cached_A1
 mdefine_line|#define cached_A1&t;(((char *)(ppc_cached_irq_mask))[2])
 multiline_comment|/* for the mac fs */
 DECL|variable|boot_dev
-id|kdev_t
+id|dev_t
 id|boot_dev
 suffix:semicolon
 macro_line|#ifdef CONFIG_SOUND_CS4232 

@@ -2088,7 +2088,7 @@ suffix:semicolon
 )brace
 DECL|function|sca_intr
 r_static
-r_void
+id|irqreturn_t
 id|sca_intr
 c_func
 (paren
@@ -2117,6 +2117,11 @@ suffix:semicolon
 id|u8
 id|stat
 suffix:semicolon
+r_int
+id|handled
+op_assign
+l_int|0
+suffix:semicolon
 macro_line|#ifndef ALL_PAGES_ALWAYS_MAPPED
 id|u8
 id|page
@@ -2144,6 +2149,10 @@ op_ne
 l_int|0
 )paren
 (brace
+id|handled
+op_assign
+l_int|1
+suffix:semicolon
 r_for
 c_loop
 (paren
@@ -2242,6 +2251,13 @@ id|page
 suffix:semicolon
 multiline_comment|/* Restore original page */
 macro_line|#endif
+r_return
+id|IRQ_RETVAL
+c_func
+(paren
+id|handled
+)paren
+suffix:semicolon
 )brace
 DECL|function|sca_set_port
 r_static

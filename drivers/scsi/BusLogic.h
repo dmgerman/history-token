@@ -5154,7 +5154,7 @@ op_star
 )paren
 suffix:semicolon
 r_static
-r_void
+id|irqreturn_t
 id|BusLogic_InterruptHandler
 c_func
 (paren

@@ -7909,7 +7909,7 @@ id|_asc_def_iop_base
 suffix:semicolon
 multiline_comment|/*&n; * --- Driver Function Prototypes&n; *&n; * advansys.h contains function prototypes for functions global to Linux.&n; */
 id|STATIC
-r_void
+id|irqreturn_t
 id|advansys_interrupt
 c_func
 (paren
@@ -15138,7 +15138,7 @@ macro_line|#endif
 multiline_comment|/*&n; * --- Miscellaneous Driver Functions&n; */
 multiline_comment|/*&n; * First-level interrupt handler.&n; *&n; * &squot;dev_id&squot; is a pointer to the interrupting adapter&squot;s asc_board_t. Because&n; * all boards are currently checked for interrupts on each interrupt, &squot;dev_id&squot;&n; * is not referenced. &squot;dev_id&squot; could be used to identify an interrupt passed&n; * to the AdvanSys driver which is for a device sharing an interrupt with&n; * an AdvanSys adapter.&n; */
 id|STATIC
-r_void
+id|irqreturn_t
 DECL|function|advansys_interrupt
 id|advansys_interrupt
 c_func
@@ -15494,6 +15494,7 @@ l_string|&quot;advansys_interrupt: end&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Set the number of commands to queue per device for the&n; * specified host adapter.&n; */
@@ -23077,9 +23078,6 @@ id|len
 suffix:semicolon
 r_int
 id|chip_scsi_id
-suffix:semicolon
-r_int
-id|i
 suffix:semicolon
 id|boardp
 op_assign

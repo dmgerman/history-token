@@ -1988,6 +1988,7 @@ r_int
 id|ret
 suffix:semicolon
 r_int
+r_int
 id|timeo
 suffix:semicolon
 r_int

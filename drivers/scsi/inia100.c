@@ -81,7 +81,7 @@ op_star
 l_int|NULL
 suffix:semicolon
 r_static
-r_void
+id|irqreturn_t
 id|inia100_intr
 c_func
 (paren
@@ -2267,7 +2267,7 @@ suffix:semicolon
 multiline_comment|/*&n; * Interrupt handler (main routine of the driver)&n; */
 DECL|function|inia100_intr
 r_static
-r_void
+id|irqreturn_t
 id|inia100_intr
 c_func
 (paren
@@ -2334,6 +2334,9 @@ id|host-&gt;host_lock
 comma
 id|flags
 )paren
+suffix:semicolon
+r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 multiline_comment|/* &n; * Dump the current driver status and panic...&n; */

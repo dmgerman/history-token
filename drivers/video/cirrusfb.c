@@ -11929,10 +11929,6 @@ l_int|1
 op_assign
 l_int|0
 suffix:semicolon
-id|fb_info-&gt;gen.info.node
-op_assign
-id|NODEV
-suffix:semicolon
 id|fb_info-&gt;gen.info.fbops
 op_assign
 op_amp

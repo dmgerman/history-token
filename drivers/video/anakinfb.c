@@ -294,10 +294,6 @@ id|fb_info
 )paren
 )paren
 suffix:semicolon
-id|fb_info.node
-op_assign
-id|NODEV
-suffix:semicolon
 id|fb_info.flags
 op_assign
 id|FBINFO_FLAG_DEFAULT

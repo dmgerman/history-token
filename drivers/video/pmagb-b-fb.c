@@ -407,10 +407,6 @@ id|info-&gt;par
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; *      Let there be consoles..&n;&t; */
-id|info-&gt;node
-op_assign
-id|NODEV
-suffix:semicolon
 id|info-&gt;fbops
 op_assign
 op_amp

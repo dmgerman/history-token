@@ -2158,10 +2158,6 @@ suffix:colon
 l_int|0x400000
 )paren
 suffix:semicolon
-id|all-&gt;info.node
-op_assign
-id|NODEV
-suffix:semicolon
 id|all-&gt;info.flags
 op_assign
 id|FBINFO_FLAG_DEFAULT

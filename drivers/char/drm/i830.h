@@ -52,7 +52,7 @@ mdefine_line|#define __HAVE_DMA&t;&t;1
 DECL|macro|__HAVE_DMA_QUEUE
 mdefine_line|#define __HAVE_DMA_QUEUE&t;1
 DECL|macro|__HAVE_DMA_WAITLIST
-mdefine_line|#define __HAVE_DMA_WAITLIST&t;1
+mdefine_line|#define __HAVE_DMA_WAITLIST&t;0
 DECL|macro|__HAVE_DMA_RECLAIM
 mdefine_line|#define __HAVE_DMA_RECLAIM&t;1
 DECL|macro|__HAVE_DMA_QUIESCENT

@@ -2045,10 +2045,6 @@ id|hga_fix.smem_len
 op_assign
 id|hga_vram_len
 suffix:semicolon
-id|fb_info.node
-op_assign
-id|NODEV
-suffix:semicolon
 id|fb_info.flags
 op_assign
 id|FBINFO_FLAG_DEFAULT
@@ -2116,11 +2112,7 @@ c_func
 id|KERN_INFO
 l_string|&quot;fb%d: %s frame buffer device&bslash;n&quot;
 comma
-id|minor
-c_func
-(paren
 id|fb_info.node
-)paren
 comma
 id|fb_info.fix.id
 )paren

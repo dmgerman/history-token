@@ -4768,7 +4768,7 @@ suffix:semicolon
 )brace
 )brace
 r_static
-r_void
+id|irqreturn_t
 DECL|function|fore200e_interrupt
 id|fore200e_interrupt
 c_func
@@ -4830,6 +4830,7 @@ l_int|9
 )paren
 suffix:semicolon
 r_return
+id|IRQ_NONE
 suffix:semicolon
 )brace
 id|DPRINTK
@@ -4859,6 +4860,9 @@ c_func
 (paren
 id|fore200e
 )paren
+suffix:semicolon
+r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 r_static

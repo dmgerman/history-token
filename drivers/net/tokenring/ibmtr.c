@@ -746,6 +746,10 @@ id|i
 comma
 id|j
 suffix:semicolon
+r_int
+r_int
+id|jif
+suffix:semicolon
 r_void
 op_star
 id|ram_mapped
@@ -955,7 +959,7 @@ suffix:semicolon
 r_for
 c_loop
 (paren
-id|i
+id|jif
 op_assign
 id|jiffies
 op_plus
@@ -966,7 +970,7 @@ c_func
 (paren
 id|jiffies
 comma
-id|i
+id|jif
 )paren
 suffix:semicolon
 )paren
@@ -1102,7 +1106,7 @@ suffix:semicolon
 r_for
 c_loop
 (paren
-id|i
+id|jif
 op_assign
 id|jiffies
 op_plus
@@ -1113,7 +1117,7 @@ c_func
 (paren
 id|jiffies
 comma
-id|i
+id|jif
 )paren
 suffix:semicolon
 )paren

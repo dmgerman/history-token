@@ -365,29 +365,6 @@ id|count
 )paren
 suffix:semicolon
 )brace
-DECL|function|sh_console_device
-r_static
-id|kdev_t
-id|sh_console_device
-c_func
-(paren
-r_struct
-id|console
-op_star
-id|c
-)paren
-(brace
-multiline_comment|/* /dev/null */
-r_return
-id|mk_kdev
-c_func
-(paren
-id|MEM_MAJOR
-comma
-l_int|3
-)paren
-suffix:semicolon
-)brace
 multiline_comment|/*&n; *&t;Setup initial baud/bits/parity. We do two things here:&n; *&t;- construct a cflag setting for the first rs_open()&n; *&t;- initialize the serial port&n; *&t;Return non-zero if we didn&squot;t find a serial port.&n; */
 DECL|function|sh_console_setup
 r_static
@@ -449,11 +426,6 @@ dot
 id|write
 op_assign
 id|sh_console_write
-comma
-dot
-id|device
-op_assign
-id|sh_console_device
 comma
 dot
 id|setup

@@ -1807,7 +1807,7 @@ id|z8530_nop
 suffix:semicolon
 multiline_comment|/**&n; *&t;z8530_interrupt - Handle an interrupt from a Z8530&n; *&t;@irq: &t;Interrupt number&n; *&t;@dev_id: The Z8530 device that is interrupting.&n; *&t;@regs: unused&n; *&n; *&t;A Z85[2]30 device has stuck its hand in the air for attention.&n; *&t;We scan both the channels on the chip for events and then call&n; *&t;the channel specific call backs for each channel that has events.&n; *&t;We have to use callback functions because the two channels can be&n; *&t;in different modes.&n; *&n; *&t;Locking is done for the handlers. Note that locking is done&n; *&t;at the chip level (the 5uS delay issue is per chip not per&n; *&t;channel). c-&gt;lock for both channels points to dev-&gt;lock&n; */
 DECL|function|z8530_interrupt
-r_void
+id|irqreturn_t
 id|z8530_interrupt
 c_func
 (paren
@@ -1867,6 +1867,7 @@ l_string|&quot;IRQ re-enter&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
+id|IRQ_NONE
 suffix:semicolon
 )brace
 id|locker
@@ -2102,6 +2103,9 @@ multiline_comment|/* Ok all done */
 id|locker
 op_assign
 l_int|0
+suffix:semicolon
+r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 DECL|variable|z8530_interrupt
