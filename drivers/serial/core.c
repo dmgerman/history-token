@@ -9022,9 +9022,9 @@ id|port-&gt;flags
 suffix:semicolon
 id|state-&gt;port-&gt;line
 op_assign
-id|drv-&gt;state
-op_minus
 id|state
+op_minus
+id|drv-&gt;state
 suffix:semicolon
 id|__uart_register_port
 c_func
