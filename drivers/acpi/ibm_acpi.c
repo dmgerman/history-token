@@ -1,6 +1,6 @@
-multiline_comment|/*&n; *  ibm_acpi.c - IBM ThinkPad ACPI Extras&n; *&n; *&n; *  Copyright (C) 2004 Borislav Deianov&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; *&n; *  Changelog:&n; *&n; *  2004-08-09&t;0.1&t;initial release, support for X series&n; *  2004-08-14&t;0.2&t;support for T series, X20&n; *&t;&t;&t;bluetooth enable/disable&n; *&t;&t;&t;hotkey events disabled by default&n; *&t;&t;&t;removed fan control, currently useless&n; *  2004-08-17&t;0.3&t;support for R40&n; *&t;&t;&t;lcd off, brightness control&n; *&t;&t;&t;thinklight on/off&n; *  2004-09-16&t;0.4&t;support for module parameters&n; *&t;&t;&t;hotkey mask can be prefixed by 0x&n; *&t;&t;&t;video output switching&n; *&t;&t;&t;video expansion control&n; *&t;&t;&t;ultrabay eject support&n; *&t;&t;&t;removed lcd brightness/on/off control, didn&squot;t work&n; *  2004-10-18&t;0.5&t;thinklight support on A21e, G40, R32, T20, T21, X20&n; *&t;&t;&t;proc file format changed&n; *&t;&t;&t;video_switch command&n; *&t;&t;&t;experimental cmos control&n; *&t;&t;&t;experimental led control&n; *&t;&t;&t;experimental acpi sounds&n; *  2004-10-19&t;0.6&t;use acpi_bus_register_driver() to claim HKEY device&n; */
+multiline_comment|/*&n; *  ibm_acpi.c - IBM ThinkPad ACPI Extras&n; *&n; *&n; *  Copyright (C) 2004 Borislav Deianov&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; *&n; *  Changelog:&n; *&n; *  2004-08-09&t;0.1&t;initial release, support for X series&n; *  2004-08-14&t;0.2&t;support for T series, X20&n; *&t;&t;&t;bluetooth enable/disable&n; *&t;&t;&t;hotkey events disabled by default&n; *&t;&t;&t;removed fan control, currently useless&n; *  2004-08-17&t;0.3&t;support for R40&n; *&t;&t;&t;lcd off, brightness control&n; *&t;&t;&t;thinklight on/off&n; *  2004-09-16&t;0.4&t;support for module parameters&n; *&t;&t;&t;hotkey mask can be prefixed by 0x&n; *&t;&t;&t;video output switching&n; *&t;&t;&t;video expansion control&n; *&t;&t;&t;ultrabay eject support&n; *&t;&t;&t;removed lcd brightness/on/off control, didn&squot;t work&n; *  2004-10-18&t;0.5&t;thinklight support on A21e, G40, R32, T20, T21, X20&n; *&t;&t;&t;proc file format changed&n; *&t;&t;&t;video_switch command&n; *&t;&t;&t;experimental cmos control&n; *&t;&t;&t;experimental led control&n; *&t;&t;&t;experimental acpi sounds&n; *  2004-10-19&t;0.6&t;use acpi_bus_register_driver() to claim HKEY device&n; *  2004-10-23&t;0.7&t;fix module loading on A21e, A22p, T20, T21, X20&n; *&t;&t;&t;fix LED control on A21e&n; */
 DECL|macro|IBM_VERSION
-mdefine_line|#define IBM_VERSION &quot;0.6&quot;
+mdefine_line|#define IBM_VERSION &quot;0.7&quot;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
@@ -20,8 +20,6 @@ mdefine_line|#define IBM_URL &quot;http:
 singleline_comment|//ibm-acpi.sf.net/&quot;
 DECL|macro|IBM_DIR
 mdefine_line|#define IBM_DIR IBM_NAME
-DECL|macro|IBM_CLASS
-mdefine_line|#define IBM_CLASS IBM_NAME
 DECL|macro|IBM_LOG
 mdefine_line|#define IBM_LOG IBM_FILE &quot;: &quot;
 DECL|macro|IBM_ERR
@@ -69,7 +67,7 @@ id|root
 comma
 l_string|&quot;&bslash;&bslash;_SB.PCI0.ISA.EC&quot;
 comma
-multiline_comment|/* A21e, T20, T21, X20 */
+multiline_comment|/* A21e, A22p, T20, T21, X20 */
 l_string|&quot;&bslash;&bslash;_SB.PCI0.LPC.EC&quot;
 comma
 multiline_comment|/* all others */
@@ -108,6 +106,7 @@ comma
 multiline_comment|/* R40, R40e */
 )paren
 suffix:semicolon
+multiline_comment|/* A21e, A22p, T20, T21, X20 */
 id|IBM_HANDLE
 c_func
 (paren
@@ -120,7 +119,7 @@ comma
 multiline_comment|/* X30, X31, X40 */
 l_string|&quot;&bslash;&bslash;_SB.PCI0.DOCK&quot;
 comma
-multiline_comment|/* T20, T21, X20 */
+multiline_comment|/* A22p, T20, T21, X20 */
 l_string|&quot;&bslash;&bslash;_SB.PCI0.PCI1.DOCK&quot;
 comma
 multiline_comment|/* all others */
@@ -148,7 +147,7 @@ comma
 l_string|&quot;&bslash;&bslash;_SB.PCI0.IDE0.SCND.MSTR._EJ0&quot;
 )paren
 suffix:semicolon
-multiline_comment|/* all except A21e, A31, A31p */
+multiline_comment|/* all except A2x, A3x */
 id|IBM_HANDLE
 c_func
 (paren
@@ -159,7 +158,7 @@ comma
 l_string|&quot;&bslash;&bslash;LGHT&quot;
 )paren
 suffix:semicolon
-multiline_comment|/* A21e, T20, T21, X20 */
+multiline_comment|/* A21e, A22p, T20, T21, X20 */
 id|IBM_HANDLE
 c_func
 (paren
@@ -181,7 +180,7 @@ comma
 l_string|&quot;LED&quot;
 )paren
 suffix:semicolon
-multiline_comment|/* all except A21e, T20, T21, X20 */
+multiline_comment|/* all except A21e, A22p, T20, T21, X20 */
 id|IBM_HANDLE
 c_func
 (paren
@@ -192,7 +191,7 @@ comma
 l_string|&quot;SYSL&quot;
 )paren
 suffix:semicolon
-multiline_comment|/* A21e, T20, T21, X20 */
+multiline_comment|/* A21e, A22p, T20, T21, X20 */
 id|IBM_HANDLE
 c_func
 (paren
@@ -203,7 +202,7 @@ comma
 l_string|&quot;BLED&quot;
 )paren
 suffix:semicolon
-multiline_comment|/* T20, T21, X20 */
+multiline_comment|/* A22p, T20, T21, X20 */
 id|IBM_HANDLE
 c_func
 (paren
@@ -1171,7 +1170,7 @@ OL
 l_int|0
 )paren
 (brace
-multiline_comment|/* mask not supported on A21e, T20, T21, X20, X22, X24 */
+multiline_comment|/* mask not supported on A21e, A22p, T20, T21, X20, X22, X24 */
 id|ibm-&gt;supported
 op_assign
 l_int|0
@@ -3468,7 +3467,7 @@ op_star
 id|ibm
 )paren
 (brace
-multiline_comment|/* bay not supported on A21e, G40, R32, R40e */
+multiline_comment|/* bay not supported on A21e, A22p, A31, A31p, G40, R32, R40e */
 id|ibm-&gt;supported
 op_assign
 id|bay_handle
@@ -3720,7 +3719,7 @@ id|len
 op_assign
 l_int|0
 suffix:semicolon
-multiline_comment|/* cmos not supported on A21e, T20, T21, X20 */
+multiline_comment|/* cmos not supported on A21e, A22p, T20, T21, X20 */
 r_if
 c_cond
 (paren
@@ -3939,19 +3938,6 @@ comma
 id|bled_a
 comma
 id|bled_b
-suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|led_handle
-op_logical_and
-op_logical_neg
-id|bled_handle
-)paren
-r_return
-op_minus
-id|EINVAL
 suffix:semicolon
 r_while
 c_loop
@@ -5792,7 +5778,7 @@ c_func
 id|vid
 )paren
 suffix:semicolon
-id|IBM_HANDLE_INIT_REQ
+id|IBM_HANDLE_INIT
 c_func
 (paren
 id|cmos
@@ -5846,6 +5832,28 @@ c_func
 id|beep
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|cmos_handle
+op_logical_and
+op_logical_neg
+id|lght_handle
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|IBM_ERR
+l_string|&quot;neither cmos nor lght object found&bslash;n&quot;
+)paren
+suffix:semicolon
+r_return
+op_minus
+id|ENODEV
+suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
