@@ -109,6 +109,12 @@ r_struct
 id|input_dev
 id|dev
 suffix:semicolon
+DECL|member|pm_dev
+r_struct
+id|pm_dev
+op_star
+id|pm_dev
+suffix:semicolon
 DECL|member|serio
 r_struct
 id|serio
@@ -1562,7 +1568,7 @@ suffix:semicolon
 )brace
 singleline_comment|//h3600_flite_control(1, 25);     /* default brightness */
 macro_line|#ifdef CONFIG_PM
-id|ts-&gt;dev.pm_dev
+id|ts-&gt;pm_dev
 op_assign
 id|pm_register
 c_func

@@ -1509,12 +1509,6 @@ r_struct
 id|timer_list
 id|timer
 suffix:semicolon
-DECL|member|pm_dev
-r_struct
-id|pm_dev
-op_star
-id|pm_dev
-suffix:semicolon
 DECL|member|regs
 r_struct
 id|pt_regs
