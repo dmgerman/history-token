@@ -805,34 +805,12 @@ suffix:semicolon
 macro_line|#else
 DECL|macro|proc_root_driver
 mdefine_line|#define proc_root_driver NULL
+DECL|macro|proc_net
+mdefine_line|#define proc_net NULL
 DECL|macro|proc_net_fops_create
-mdefine_line|#define proc_net_fops_create(name,mode,fops) do {} while(0)
-DECL|function|proc_net_create
-r_static
-r_inline
-r_struct
-id|proc_dir_entry
-op_star
-id|proc_net_create
-c_func
-(paren
-r_const
-r_char
-op_star
-id|name
-comma
-id|mode_t
-id|mode
-comma
-id|get_info_t
-op_star
-id|get_info
-)paren
-(brace
-r_return
-l_int|NULL
-suffix:semicolon
-)brace
+mdefine_line|#define proc_net_fops_create(name, mode, fops)  ({ (void)(mode), NULL; })
+DECL|macro|proc_net_create
+mdefine_line|#define proc_net_create(name, mode, info)&t;({ (void)(mode), NULL; })
 DECL|function|proc_net_remove
 r_static
 r_inline
