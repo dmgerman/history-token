@@ -1816,10 +1816,18 @@ r_int
 r_int
 id|__user
 op_star
-id|mask
+id|oldmask
 op_assign
 op_amp
 id|sc-&gt;oldmask
+suffix:semicolon
+r_int
+r_int
+id|__user
+op_star
+id|extramask
+op_assign
+id|frame-&gt;extramask
 suffix:semicolon
 r_int
 id|sig_size
@@ -1848,7 +1856,7 @@ id|set.sig
 l_int|0
 )braket
 comma
-id|mask
+id|oldmask
 comma
 r_sizeof
 (paren
@@ -1869,7 +1877,7 @@ id|set.sig
 l_int|1
 )braket
 comma
-id|mask
+id|extramask
 comma
 id|sig_size
 )paren
