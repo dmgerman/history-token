@@ -1559,6 +1559,10 @@ op_amp
 id|ohci-&gt;hcd
 )paren
 suffix:semicolon
+id|ohci-&gt;hcd.state
+op_assign
+id|USB_STATE_RUNNING
+suffix:semicolon
 id|up
 (paren
 op_amp
