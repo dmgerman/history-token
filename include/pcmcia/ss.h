@@ -358,6 +358,25 @@ id|mem
 suffix:semicolon
 )brace
 suffix:semicolon
+DECL|struct|pccard_resource_ops
+r_struct
+id|pccard_resource_ops
+(brace
+DECL|member|validate_mem
+r_void
+(paren
+op_star
+id|validate_mem
+)paren
+(paren
+r_struct
+id|pcmcia_socket
+op_star
+id|s
+)paren
+suffix:semicolon
+)brace
+suffix:semicolon
 multiline_comment|/*&n; *  Calls to set up low-level &quot;Socket Services&quot; drivers&n; */
 r_struct
 id|pcmcia_socket
@@ -626,6 +645,12 @@ r_struct
 id|pccard_operations
 op_star
 id|ops
+suffix:semicolon
+DECL|member|resource_ops
+r_struct
+id|pccard_resource_ops
+op_star
+id|resource_ops
 suffix:semicolon
 multiline_comment|/* Zoom video behaviour is so chip specific its not worth adding&n;&t;   this to _ops */
 DECL|member|zoom_video

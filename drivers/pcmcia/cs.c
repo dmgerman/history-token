@@ -784,7 +784,25 @@ id|socket-&gt;cis_mem.speed
 op_assign
 id|cis_speed
 suffix:semicolon
-multiline_comment|/* init resource database */
+multiline_comment|/* init resource handling */
+r_if
+c_cond
+(paren
+id|socket-&gt;features
+op_amp
+id|SS_CAP_STATIC_MAP
+)paren
+id|socket-&gt;resource_ops
+op_assign
+op_amp
+id|pccard_static_ops
+suffix:semicolon
+r_else
+id|socket-&gt;resource_ops
+op_assign
+op_amp
+id|pccard_nonstatic_ops
+suffix:semicolon
 id|socket-&gt;mem_db.next
 op_assign
 op_amp
