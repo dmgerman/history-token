@@ -701,6 +701,7 @@ op_star
 id|regs
 )paren
 (brace
+r_return
 (paren
 op_star
 id|acpi_irq_handler
@@ -708,10 +709,6 @@ id|acpi_irq_handler
 (paren
 id|acpi_irq_context
 )paren
-suffix:semicolon
-multiline_comment|/* FIXME!! We really should check that the irq was really ours! */
-r_return
-id|IRQ_HANDLED
 suffix:semicolon
 )brace
 id|acpi_status
