@@ -265,6 +265,11 @@ id|acpi_resource
 op_star
 id|resource
 suffix:semicolon
+r_struct
+id|acpi_resource
+op_star
+id|buffer_end
+suffix:semicolon
 id|ACPI_FUNCTION_TRACE
 (paren
 l_string|&quot;acpi_walk_resources&quot;
@@ -336,6 +341,7 @@ id|status
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/* Setup pointers */
 id|resource
 op_assign
 (paren
@@ -345,6 +351,24 @@ op_star
 )paren
 id|buffer.pointer
 suffix:semicolon
+id|buffer_end
+op_assign
+(paren
+r_struct
+id|acpi_resource
+op_star
+)paren
+(paren
+(paren
+id|u8
+op_star
+)paren
+id|buffer.pointer
+op_plus
+id|buffer.length
+)paren
+suffix:semicolon
+multiline_comment|/* Walk the resource list */
 r_for
 c_loop
 (paren
@@ -412,6 +436,7 @@ r_goto
 id|cleanup
 suffix:semicolon
 )brace
+multiline_comment|/* Get the next resource descriptor */
 id|resource
 op_assign
 id|ACPI_NEXT_RESOURCE
@@ -419,6 +444,19 @@ id|ACPI_NEXT_RESOURCE
 id|resource
 )paren
 suffix:semicolon
+multiline_comment|/* Check for end-of-buffer */
+r_if
+c_cond
+(paren
+id|resource
+op_ge
+id|buffer_end
+)paren
+(brace
+r_goto
+id|cleanup
+suffix:semicolon
+)brace
 )brace
 id|cleanup
 suffix:colon
