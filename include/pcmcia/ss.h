@@ -594,9 +594,6 @@ r_struct
 id|config_t
 suffix:semicolon
 r_struct
-id|region_t
-suffix:semicolon
-r_struct
 id|pcmcia_callback
 suffix:semicolon
 DECL|struct|pcmcia_socket
@@ -672,16 +669,6 @@ id|win
 (braket
 id|MAX_WIN
 )braket
-suffix:semicolon
-DECL|member|c_region
-DECL|member|a_region
-r_struct
-id|region_t
-op_star
-id|c_region
-comma
-op_star
-id|a_region
 suffix:semicolon
 DECL|member|cis_cache
 r_struct
