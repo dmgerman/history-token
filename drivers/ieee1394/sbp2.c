@@ -2722,6 +2722,11 @@ comma
 id|host
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|hi
+)paren
 id|scsi_block_requests
 c_func
 (paren
