@@ -868,6 +868,20 @@ c_func
 l_string|&quot;lockd: TEST_MSG      called&bslash;n&quot;
 )paren
 suffix:semicolon
+id|memset
+c_func
+(paren
+op_amp
+id|res
+comma
+l_int|0
+comma
+r_sizeof
+(paren
+id|res
+)paren
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -937,6 +951,20 @@ id|dprintk
 c_func
 (paren
 l_string|&quot;lockd: LOCK_MSG      called&bslash;n&quot;
+)paren
+suffix:semicolon
+id|memset
+c_func
+(paren
+op_amp
+id|res
+comma
+l_int|0
+comma
+r_sizeof
+(paren
+id|res
+)paren
 )paren
 suffix:semicolon
 r_if
@@ -1010,6 +1038,20 @@ c_func
 l_string|&quot;lockd: CANCEL_MSG    called&bslash;n&quot;
 )paren
 suffix:semicolon
+id|memset
+c_func
+(paren
+op_amp
+id|res
+comma
+l_int|0
+comma
+r_sizeof
+(paren
+id|res
+)paren
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1081,6 +1123,20 @@ c_func
 l_string|&quot;lockd: UNLOCK_MSG    called&bslash;n&quot;
 )paren
 suffix:semicolon
+id|memset
+c_func
+(paren
+op_amp
+id|res
+comma
+l_int|0
+comma
+r_sizeof
+(paren
+id|res
+)paren
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1150,6 +1206,20 @@ id|dprintk
 c_func
 (paren
 l_string|&quot;lockd: GRANTED_MSG   called&bslash;n&quot;
+)paren
+suffix:semicolon
+id|memset
+c_func
+(paren
+op_amp
+id|res
+comma
+l_int|0
+comma
+r_sizeof
+(paren
+id|res
+)paren
 )paren
 suffix:semicolon
 r_if
