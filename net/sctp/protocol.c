@@ -11,7 +11,8 @@ macro_line|#include &lt;net/addrconf.h&gt;
 macro_line|#include &lt;net/inet_common.h&gt;
 multiline_comment|/* Global data structures. */
 DECL|variable|sctp_proto
-id|sctp_protocol_t
+r_struct
+id|sctp_protocol
 id|sctp_proto
 suffix:semicolon
 DECL|variable|proc_net_sctp
@@ -70,6 +71,22 @@ r_struct
 id|net_proto_family
 id|inet_family_ops
 suffix:semicolon
+r_extern
+r_int
+id|sctp_snmp_proc_init
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|sctp_snmp_proc_exit
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
 multiline_comment|/* Return the address of the control sock. */
 DECL|function|sctp_get_ctl_sock
 r_struct
@@ -88,13 +105,18 @@ suffix:semicolon
 multiline_comment|/* Set up the proc fs entry for the SCTP protocol. */
 DECL|function|sctp_proc_init
 id|__init
-r_void
+r_int
 id|sctp_proc_init
 c_func
 (paren
 r_void
 )paren
 (brace
+r_int
+id|rc
+op_assign
+l_int|0
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -132,7 +154,29 @@ op_assign
 id|ent
 suffix:semicolon
 )brace
+r_else
+id|rc
+op_assign
+op_minus
+id|ENOMEM
+suffix:semicolon
 )brace
+r_if
+c_cond
+(paren
+id|sctp_snmp_proc_init
+c_func
+(paren
+)paren
+)paren
+id|rc
+op_assign
+op_minus
+id|ENOMEM
+suffix:semicolon
+r_return
+id|rc
+suffix:semicolon
 )brace
 multiline_comment|/* Clean up the proc fs entry for the SCTP protocol. */
 DECL|function|sctp_proc_exit
@@ -143,6 +187,11 @@ c_func
 r_void
 )paren
 (brace
+id|sctp_snmp_proc_exit
+c_func
+(paren
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -268,13 +317,6 @@ c_cond
 id|addr
 )paren
 (brace
-id|INIT_LIST_HEAD
-c_func
-(paren
-op_amp
-id|addr-&gt;list
-)paren
-suffix:semicolon
 id|addr-&gt;a.v4.sin_family
 op_assign
 id|AF_INET
@@ -320,7 +362,8 @@ r_void
 id|__sctp_get_local_addr_list
 c_func
 (paren
-id|sctp_protocol_t
+r_struct
+id|sctp_protocol
 op_star
 id|proto
 )paren
@@ -410,7 +453,8 @@ r_void
 id|sctp_get_local_addr_list
 c_func
 (paren
-id|sctp_protocol_t
+r_struct
+id|sctp_protocol
 op_star
 id|proto
 )paren
@@ -457,7 +501,8 @@ r_void
 id|__sctp_free_local_addr_list
 c_func
 (paren
-id|sctp_protocol_t
+r_struct
+id|sctp_protocol
 op_star
 id|proto
 )paren
@@ -520,7 +565,8 @@ r_void
 id|sctp_free_local_addr_list
 c_func
 (paren
-id|sctp_protocol_t
+r_struct
+id|sctp_protocol
 op_star
 id|proto
 )paren
@@ -565,11 +611,13 @@ r_int
 id|sctp_copy_local_addr_list
 c_func
 (paren
-id|sctp_protocol_t
+r_struct
+id|sctp_protocol
 op_star
 id|proto
 comma
-id|sctp_bind_addr_t
+r_struct
+id|sctp_bind_addr
 op_star
 id|bp
 comma
@@ -1230,7 +1278,7 @@ r_return
 id|retval
 suffix:semicolon
 )brace
-multiline_comment|/* Returns a valid dst cache entry for the given source and destination ip&n; * addresses. If an association is passed, trys to get a dst entry with a&n; * source adddress that matches an address in the bind address list. &n; */
+multiline_comment|/* Returns a valid dst cache entry for the given source and destination ip&n; * addresses. If an association is passed, trys to get a dst entry with a&n; * source adddress that matches an address in the bind address list.&n; */
 DECL|function|sctp_v4_get_dst
 r_struct
 id|dst_entry
@@ -1507,19 +1555,6 @@ id|laddr-&gt;a.sa.sa_family
 id|fl.fl4_src
 op_assign
 id|laddr-&gt;a.v4.sin_addr.s_addr
-suffix:semicolon
-id|dst
-op_assign
-id|sctp_v4_get_dst
-c_func
-(paren
-id|asoc
-comma
-id|daddr
-comma
-op_amp
-id|laddr-&gt;a
-)paren
 suffix:semicolon
 r_if
 c_cond
@@ -1943,7 +1978,8 @@ r_void
 id|sctp_inet_event_msgname
 c_func
 (paren
-id|sctp_ulpevent_t
+r_struct
+id|sctp_ulpevent
 op_star
 id|event
 comma
@@ -2189,6 +2225,35 @@ id|addr
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/* Fill in Supported Address Type information for INIT and INIT-ACK&n; * chunks.  Returns number of addresses supported.&n; */
+DECL|function|sctp_inet_supported_addrs
+r_static
+r_int
+id|sctp_inet_supported_addrs
+c_func
+(paren
+r_const
+r_struct
+id|sctp_opt
+op_star
+id|opt
+comma
+id|__u16
+op_star
+id|types
+)paren
+(brace
+id|types
+(braket
+l_int|0
+)braket
+op_assign
+id|SCTP_PARAM_IPV4_ADDRESS
+suffix:semicolon
+r_return
+l_int|1
+suffix:semicolon
+)brace
 multiline_comment|/* Wrapper routine that calls the ip transmit routine. */
 DECL|function|sctp_v4_xmit
 r_static
@@ -2254,6 +2319,12 @@ id|rt_dst
 )paren
 )paren
 suffix:semicolon
+id|SCTP_INC_STATS
+c_func
+(paren
+id|SctpOutSCTPPacks
+)paren
+suffix:semicolon
 r_return
 id|ip_queue_xmit
 c_func
@@ -2300,6 +2371,11 @@ dot
 id|bind_verify
 op_assign
 id|sctp_inet_bind_verify
+comma
+dot
+id|supported_addrs
+op_assign
+id|sctp_inet_supported_addrs
 comma
 dot
 id|af

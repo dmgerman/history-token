@@ -8,8 +8,12 @@ r_struct
 id|sctp_ulpq
 (brace
 DECL|member|malloced
-r_int
+r_char
 id|malloced
+suffix:semicolon
+DECL|member|pd_mode
+r_char
+id|pd_mode
 suffix:semicolon
 DECL|member|asoc
 id|sctp_association_t
@@ -75,12 +79,11 @@ r_struct
 id|sctp_ulpq
 op_star
 comma
-id|sctp_chunk_t
+r_struct
+id|sctp_chunk
 op_star
-id|chunk
 comma
 r_int
-id|priority
 )paren
 suffix:semicolon
 multiline_comment|/* Add a new event for propagation to the ULP. */
@@ -98,14 +101,59 @@ op_star
 id|ev
 )paren
 suffix:semicolon
-multiline_comment|/* Is the ulpqueue empty. */
-r_int
-id|sctp_ulpqueue_is_empty
+multiline_comment|/* Renege previously received chunks.  */
+r_void
+id|sctp_ulpq_renege
 c_func
 (paren
 r_struct
 id|sctp_ulpq
 op_star
+comma
+r_struct
+id|sctp_chunk
+op_star
+comma
+r_int
+)paren
+suffix:semicolon
+multiline_comment|/* Perform partial delivery. */
+r_void
+id|sctp_ulpq_partial_delivery
+c_func
+(paren
+r_struct
+id|sctp_ulpq
+op_star
+comma
+r_struct
+id|sctp_chunk
+op_star
+comma
+r_int
+)paren
+suffix:semicolon
+multiline_comment|/* Abort the partial delivery. */
+r_void
+id|sctp_ulpq_abort_pd
+c_func
+(paren
+r_struct
+id|sctp_ulpq
+op_star
+comma
+r_int
+)paren
+suffix:semicolon
+multiline_comment|/* Clear the partial data delivery condition on this socket. */
+r_int
+id|sctp_clear_pd
+c_func
+(paren
+r_struct
+id|sock
+op_star
+id|sk
 )paren
 suffix:semicolon
 macro_line|#endif /* __sctp_ulpqueue_h__ */

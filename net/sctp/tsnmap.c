@@ -1,30 +1,32 @@
-multiline_comment|/* SCTP kernel reference Implementation&n; * Copyright (c) 1999-2000 Cisco, Inc.&n; * Copyright (c) 1999-2001 Motorola, Inc.&n; * Copyright (c) 2001 International Business Machines, Corp.&n; * Copyright (c) 2001 Intel Corp.&n; * &n; * This file is part of the SCTP kernel reference Implementation&n; * &n; * These functions manipulate sctp tsn mapping array.&n; * &n; * The SCTP reference implementation is free software; &n; * you can redistribute it and/or modify it under the terms of &n; * the GNU General Public License as published by&n; * the Free Software Foundation; either version 2, or (at your option)&n; * any later version.&n; * &n; * The SCTP reference implementation is distributed in the hope that it &n; * will be useful, but WITHOUT ANY WARRANTY; without even the implied&n; *                 ************************&n; * warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.&n; * See the GNU General Public License for more details.&n; * &n; * You should have received a copy of the GNU General Public License&n; * along with GNU CC; see the file COPYING.  If not, write to&n; * the Free Software Foundation, 59 Temple Place - Suite 330,&n; * Boston, MA 02111-1307, USA.  &n; * &n; * Please send any bug reports or fixes you make to the&n; * email address(es):&n; *    lksctp developers &lt;lksctp-developers@lists.sourceforge.net&gt;&n; * &n; * Or submit a bug report through the following website:&n; *    http://www.sf.net/projects/lksctp&n; *&n; * Written or modified by: &n; *    La Monte H.P. Yarroll &lt;piggy@acm.org&gt;&n; *    Jon Grimm             &lt;jgrimm@us.ibm.com&gt;&n; *    Karl Knutson          &lt;karl@athena.chicago.il.us&gt;&n; * &n; * Any bugs reported given to us we will try to fix... any fixes shared will&n; * be incorporated into the next SCTP release.&n; */
+multiline_comment|/* SCTP kernel reference Implementation&n; * Copyright (c) 1999-2000 Cisco, Inc.&n; * Copyright (c) 1999-2001 Motorola, Inc.&n; * Copyright (c) 2001 International Business Machines, Corp.&n; * Copyright (c) 2001 Intel Corp.&n; *&n; * This file is part of the SCTP kernel reference Implementation&n; *&n; * These functions manipulate sctp tsn mapping array.&n; *&n; * The SCTP reference implementation is free software;&n; * you can redistribute it and/or modify it under the terms of&n; * the GNU General Public License as published by&n; * the Free Software Foundation; either version 2, or (at your option)&n; * any later version.&n; *&n; * The SCTP reference implementation is distributed in the hope that it&n; * will be useful, but WITHOUT ANY WARRANTY; without even the implied&n; *                 ************************&n; * warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.&n; * See the GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with GNU CC; see the file COPYING.  If not, write to&n; * the Free Software Foundation, 59 Temple Place - Suite 330,&n; * Boston, MA 02111-1307, USA.&n; *&n; * Please send any bug reports or fixes you make to the&n; * email address(es):&n; *    lksctp developers &lt;lksctp-developers@lists.sourceforge.net&gt;&n; *&n; * Or submit a bug report through the following website:&n; *    http://www.sf.net/projects/lksctp&n; *&n; * Written or modified by:&n; *    La Monte H.P. Yarroll &lt;piggy@acm.org&gt;&n; *    Jon Grimm             &lt;jgrimm@us.ibm.com&gt;&n; *    Karl Knutson          &lt;karl@athena.chicago.il.us&gt;&n; *&n; * Any bugs reported given to us we will try to fix... any fixes shared will&n; * be incorporated into the next SCTP release.&n; */
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;net/sctp/sctp.h&gt;
 macro_line|#include &lt;net/sctp/sm.h&gt;
 r_static
 r_void
-id|_sctp_tsnmap_update
+id|sctp_tsnmap_update
 c_func
 (paren
-id|sctp_tsnmap_t
+r_struct
+id|sctp_tsnmap
 op_star
 id|map
 )paren
 suffix:semicolon
 r_static
 r_void
-id|_sctp_tsnmap_update_pending_data
+id|sctp_tsnmap_update_pending_data
 c_func
 (paren
-id|sctp_tsnmap_t
+r_struct
+id|sctp_tsnmap
 op_star
 id|map
 )paren
 suffix:semicolon
 r_static
 r_void
-id|_sctp_tsnmap_find_gap_ack
+id|sctp_tsnmap_find_gap_ack
 c_func
 (paren
 id|__u8
@@ -59,7 +61,8 @@ id|end
 suffix:semicolon
 multiline_comment|/* Create a new sctp_tsnmap.&n; * Allocate room to store at least &squot;len&squot; contiguous TSNs.&n; */
 DECL|function|sctp_tsnmap_new
-id|sctp_tsnmap_t
+r_struct
+id|sctp_tsnmap
 op_star
 id|sctp_tsnmap_new
 c_func
@@ -74,7 +77,8 @@ r_int
 id|priority
 )paren
 (brace
-id|sctp_tsnmap_t
+r_struct
+id|sctp_tsnmap
 op_star
 id|retval
 suffix:semicolon
@@ -85,7 +89,8 @@ c_func
 (paren
 r_sizeof
 (paren
-id|sctp_tsnmap_t
+r_struct
+id|sctp_tsnmap
 )paren
 op_plus
 id|sctp_tsnmap_storage_size
@@ -146,12 +151,14 @@ suffix:semicolon
 )brace
 multiline_comment|/* Initialize a block of memory as a tsnmap.  */
 DECL|function|sctp_tsnmap_init
-id|sctp_tsnmap_t
+r_struct
+id|sctp_tsnmap
 op_star
 id|sctp_tsnmap_init
 c_func
 (paren
-id|sctp_tsnmap_t
+r_struct
+id|sctp_tsnmap
 op_star
 id|map
 comma
@@ -218,6 +225,10 @@ id|map-&gt;pending_data
 op_assign
 l_int|0
 suffix:semicolon
+id|map-&gt;num_dup_tsns
+op_assign
+l_int|0
+suffix:semicolon
 r_return
 id|map
 suffix:semicolon
@@ -229,7 +240,8 @@ id|sctp_tsnmap_check
 c_func
 (paren
 r_const
-id|sctp_tsnmap_t
+r_struct
+id|sctp_tsnmap
 op_star
 id|map
 comma
@@ -328,7 +340,8 @@ id|sctp_tsnmap_has_gap
 c_func
 (paren
 r_const
-id|sctp_tsnmap_t
+r_struct
+id|sctp_tsnmap
 op_star
 id|map
 )paren
@@ -354,7 +367,8 @@ r_void
 id|sctp_tsnmap_mark
 c_func
 (paren
-id|sctp_tsnmap_t
+r_struct
+id|sctp_tsnmap
 op_star
 id|map
 comma
@@ -444,12 +458,27 @@ id|map-&gt;len
 op_increment
 suffix:semicolon
 multiline_comment|/* Go fixup any internal TSN mapping variables including&n;&t; * cumulative_tsn_ack_point.&n;&t; */
-id|_sctp_tsnmap_update
+id|sctp_tsnmap_update
 c_func
 (paren
 id|map
 )paren
 suffix:semicolon
+)brace
+DECL|function|sctp_tsnmap_report_dup
+r_void
+id|sctp_tsnmap_report_dup
+c_func
+(paren
+r_struct
+id|sctp_tsnmap
+op_star
+id|map
+comma
+id|__u32
+id|tsn
+)paren
+(brace
 )brace
 multiline_comment|/* Retrieve the Cumulative TSN Ack Point. */
 DECL|function|sctp_tsnmap_get_ctsn
@@ -458,7 +487,8 @@ id|sctp_tsnmap_get_ctsn
 c_func
 (paren
 r_const
-id|sctp_tsnmap_t
+r_struct
+id|sctp_tsnmap
 op_star
 id|map
 )paren
@@ -474,7 +504,8 @@ id|sctp_tsnmap_get_max_tsn_seen
 c_func
 (paren
 r_const
-id|sctp_tsnmap_t
+r_struct
+id|sctp_tsnmap
 op_star
 id|map
 )paren
@@ -489,7 +520,8 @@ r_void
 id|sctp_tsnmap_free
 c_func
 (paren
-id|sctp_tsnmap_t
+r_struct
+id|sctp_tsnmap
 op_star
 id|map
 )paren
@@ -513,11 +545,13 @@ id|sctp_tsnmap_iter_init
 c_func
 (paren
 r_const
-id|sctp_tsnmap_t
+r_struct
+id|sctp_tsnmap
 op_star
 id|map
 comma
-id|sctp_tsnmap_iter_t
+r_struct
+id|sctp_tsnmap_iter
 op_star
 id|iter
 )paren
@@ -530,18 +564,20 @@ op_plus
 l_int|1
 suffix:semicolon
 )brace
-multiline_comment|/* Get the next Gap Ack Blocks. Returns 0 if there was not&n; * another block to get.&n; */
+multiline_comment|/* Get the next Gap Ack Blocks. Returns 0 if there was not another block&n; * to get.&n; */
 DECL|function|sctp_tsnmap_next_gap_ack
 r_int
 id|sctp_tsnmap_next_gap_ack
 c_func
 (paren
 r_const
-id|sctp_tsnmap_t
+r_struct
+id|sctp_tsnmap
 op_star
 id|map
 comma
-id|sctp_tsnmap_iter_t
+r_struct
+id|sctp_tsnmap_iter
 op_star
 id|iter
 comma
@@ -590,7 +626,7 @@ id|iter-&gt;start
 op_minus
 id|map-&gt;base_tsn
 suffix:semicolon
-id|_sctp_tsnmap_find_gap_ack
+id|sctp_tsnmap_find_gap_ack
 c_func
 (paren
 id|map-&gt;tsn_map
@@ -647,7 +683,7 @@ op_minus
 id|map-&gt;len
 suffix:semicolon
 multiline_comment|/* Search the overflow map.  */
-id|_sctp_tsnmap_find_gap_ack
+id|sctp_tsnmap_find_gap_ack
 c_func
 (paren
 id|map-&gt;overflow_map
@@ -740,13 +776,14 @@ suffix:semicolon
 )brace
 multiline_comment|/********************************************************************&n; * 2nd Level Abstractions&n; ********************************************************************/
 multiline_comment|/* This private helper function updates the tsnmap buffers and&n; * the Cumulative TSN Ack Point.&n; */
-DECL|function|_sctp_tsnmap_update
+DECL|function|sctp_tsnmap_update
 r_static
 r_void
-id|_sctp_tsnmap_update
+id|sctp_tsnmap_update
 c_func
 (paren
-id|sctp_tsnmap_t
+r_struct
+id|sctp_tsnmap
 op_star
 id|map
 )paren
@@ -825,20 +862,21 @@ op_minus
 l_int|1
 suffix:semicolon
 multiline_comment|/* Back up one. */
-id|_sctp_tsnmap_update_pending_data
+id|sctp_tsnmap_update_pending_data
 c_func
 (paren
 id|map
 )paren
 suffix:semicolon
 )brace
-DECL|function|_sctp_tsnmap_update_pending_data
+DECL|function|sctp_tsnmap_update_pending_data
 r_static
 r_void
-id|_sctp_tsnmap_update_pending_data
+id|sctp_tsnmap_update_pending_data
 c_func
 (paren
-id|sctp_tsnmap_t
+r_struct
+id|sctp_tsnmap
 op_star
 id|map
 )paren
@@ -1021,10 +1059,10 @@ id|pending_data
 suffix:semicolon
 )brace
 multiline_comment|/* This is a private helper for finding Gap Ack Blocks.  It searches a&n; * single array for the start and end of a Gap Ack Block.&n; *&n; * The flags &quot;started&quot; and &quot;ended&quot; tell is if we found the beginning&n; * or (respectively) the end of a Gap Ack Block.&n; */
-DECL|function|_sctp_tsnmap_find_gap_ack
+DECL|function|sctp_tsnmap_find_gap_ack
 r_static
 r_void
-id|_sctp_tsnmap_find_gap_ack
+id|sctp_tsnmap_find_gap_ack
 c_func
 (paren
 id|__u8
@@ -1062,7 +1100,7 @@ id|i
 op_assign
 id|off
 suffix:semicolon
-multiline_comment|/* Let&squot;s look through the entire array, but break out&n;&t; * early if we have found the end of the Gap Ack Block.&n;&t; */
+multiline_comment|/* Look through the entire array, but break out&n;&t; * early if we have found the end of the Gap Ack Block.&n;&t; */
 multiline_comment|/* Look for the start. */
 r_if
 c_cond
@@ -1164,5 +1202,87 @@ suffix:semicolon
 )brace
 )brace
 )brace
+)brace
+multiline_comment|/* Renege that we have seen a TSN.  */
+DECL|function|sctp_tsnmap_renege
+r_void
+id|sctp_tsnmap_renege
+c_func
+(paren
+r_struct
+id|sctp_tsnmap
+op_star
+id|map
+comma
+id|__u32
+id|tsn
+)paren
+(brace
+id|__s32
+id|gap
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|TSN_lt
+c_func
+(paren
+id|tsn
+comma
+id|map-&gt;base_tsn
+)paren
+)paren
+r_return
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|TSN_lt
+c_func
+(paren
+id|tsn
+comma
+id|map-&gt;base_tsn
+op_plus
+id|map-&gt;len
+op_plus
+id|map-&gt;len
+)paren
+)paren
+r_return
+suffix:semicolon
+multiline_comment|/* Assert: TSN is in range.  */
+id|gap
+op_assign
+id|tsn
+op_minus
+id|map-&gt;base_tsn
+suffix:semicolon
+multiline_comment|/* Pretend we never saw the TSN.  */
+r_if
+c_cond
+(paren
+id|gap
+OL
+id|map-&gt;len
+)paren
+id|map-&gt;tsn_map
+(braket
+id|gap
+)braket
+op_assign
+l_int|0
+suffix:semicolon
+r_else
+id|map-&gt;overflow_map
+(braket
+id|gap
+op_minus
+id|map-&gt;len
+)braket
+op_assign
+l_int|0
+suffix:semicolon
 )brace
 eof

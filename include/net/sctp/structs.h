@@ -1,4 +1,4 @@
-multiline_comment|/* SCTP kernel reference Implementation&n; * Copyright (c) 1999-2000 Cisco, Inc.&n; * Copyright (c) 1999-2001 Motorola, Inc.&n; * Copyright (c) 2001 Intel Corp.&n; * Copyright (c) 2001-2002 International Business Machines Corp.&n; *&n; * This file is part of the SCTP kernel reference Implementation&n; *&n; * The SCTP reference implementation is free software;&n; * you can redistribute it and/or modify it under the terms of&n; * the GNU General Public License as published by&n; * the Free Software Foundation; either version 2, or (at your option)&n; * any later version.&n; *&n; * The SCTP reference implementation is distributed in the hope that it&n; * will be useful, but WITHOUT ANY WARRANTY; without even the implied&n; *                 ************************&n; * warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.&n; * See the GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with GNU CC; see the file COPYING.  If not, write to&n; * the Free Software Foundation, 59 Temple Place - Suite 330,&n; * Boston, MA 02111-1307, USA.&n; *&n; * Please send any bug reports or fixes you make to the&n; * email addresses:&n; *    lksctp developers &lt;lksctp-developers@lists.sourceforge.net&gt;&n; *&n; * Or submit a bug report through the following website:&n; *    http://www.sf.net/projects/lksctp&n; *&n; * Written or modified by:&n; *    Randall Stewart       &lt;randall@sctp.chicago.il.us&gt;&n; *    Ken Morneau           &lt;kmorneau@cisco.com&gt;&n; *    Qiaobing Xie          &lt;qxie1@email.mot.com&gt;&n; *    La Monte H.P. Yarroll &lt;piggy@acm.org&gt;&n; *    Karl Knutson          &lt;karl@athena.chicago.il.us&gt;&n; *    Jon Grimm             &lt;jgrimm@us.ibm.com&gt;&n; *    Xingang Guo           &lt;xingang.guo@intel.com&gt;&n; *    Hui Huang             &lt;hui.huang@nokia.com&gt;&n; *    Sridhar Samudrala     &lt;sri@us.ibm.com&gt;&n; *    Daisy Chang&t;    &lt;daisyc@us.ibm.com&gt;&n; *    Dajiang Zhang         &lt;dajiang.zhang@nokia.com&gt;&n; *    Ardelle Fan           &lt;ardelle.fan@intel.com&gt;&n; *&n; * Any bugs reported given to us we will try to fix... any fixes shared will&n; * be incorporated into the next SCTP release.&n; */
+multiline_comment|/* SCTP kernel reference Implementation&n; * Copyright (c) 1999-2000 Cisco, Inc.&n; * Copyright (c) 1999-2001 Motorola, Inc.&n; * Copyright (c) 2001 Intel Corp.&n; * Copyright (c) 2001-2003 International Business Machines Corp.&n; *&n; * This file is part of the SCTP kernel reference Implementation&n; *&n; * The SCTP reference implementation is free software;&n; * you can redistribute it and/or modify it under the terms of&n; * the GNU General Public License as published by&n; * the Free Software Foundation; either version 2, or (at your option)&n; * any later version.&n; *&n; * The SCTP reference implementation is distributed in the hope that it&n; * will be useful, but WITHOUT ANY WARRANTY; without even the implied&n; *                 ************************&n; * warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.&n; * See the GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with GNU CC; see the file COPYING.  If not, write to&n; * the Free Software Foundation, 59 Temple Place - Suite 330,&n; * Boston, MA 02111-1307, USA.&n; *&n; * Please send any bug reports or fixes you make to the&n; * email addresses:&n; *    lksctp developers &lt;lksctp-developers@lists.sourceforge.net&gt;&n; *&n; * Or submit a bug report through the following website:&n; *    http://www.sf.net/projects/lksctp&n; *&n; * Written or modified by:&n; *    Randall Stewart       &lt;randall@sctp.chicago.il.us&gt;&n; *    Ken Morneau           &lt;kmorneau@cisco.com&gt;&n; *    Qiaobing Xie          &lt;qxie1@email.mot.com&gt;&n; *    La Monte H.P. Yarroll &lt;piggy@acm.org&gt;&n; *    Karl Knutson          &lt;karl@athena.chicago.il.us&gt;&n; *    Jon Grimm             &lt;jgrimm@us.ibm.com&gt;&n; *    Xingang Guo           &lt;xingang.guo@intel.com&gt;&n; *    Hui Huang             &lt;hui.huang@nokia.com&gt;&n; *    Sridhar Samudrala     &lt;sri@us.ibm.com&gt;&n; *    Daisy Chang&t;    &lt;daisyc@us.ibm.com&gt;&n; *    Dajiang Zhang         &lt;dajiang.zhang@nokia.com&gt;&n; *    Ardelle Fan           &lt;ardelle.fan@intel.com&gt;&n; *&n; * Any bugs reported given to us we will try to fix... any fixes shared will&n; * be incorporated into the next SCTP release.&n; */
 macro_line|#ifndef __sctp_structs_h__
 DECL|macro|__sctp_structs_h__
 mdefine_line|#define __sctp_structs_h__
@@ -38,28 +38,28 @@ r_struct
 id|sctp_protocol
 suffix:semicolon
 r_struct
-id|SCTP_endpoint
+id|sctp_endpoint
 suffix:semicolon
 r_struct
-id|SCTP_association
+id|sctp_association
 suffix:semicolon
 r_struct
 id|sctp_transport
 suffix:semicolon
 r_struct
-id|SCTP_packet
+id|sctp_packet
 suffix:semicolon
 r_struct
-id|SCTP_chunk
+id|sctp_chunk
 suffix:semicolon
 r_struct
-id|SCTP_inqueue
+id|sctp_inq
 suffix:semicolon
 r_struct
 id|sctp_outq
 suffix:semicolon
 r_struct
-id|SCTP_bind_addr
+id|sctp_bind_addr
 suffix:semicolon
 r_struct
 id|sctp_ulpq
@@ -73,53 +73,35 @@ suffix:semicolon
 r_struct
 id|sctp_ssnmap
 suffix:semicolon
-DECL|typedef|sctp_protocol_t
-r_typedef
-r_struct
-id|sctp_protocol
-id|sctp_protocol_t
-suffix:semicolon
 DECL|typedef|sctp_endpoint_t
 r_typedef
 r_struct
-id|SCTP_endpoint
+id|sctp_endpoint
 id|sctp_endpoint_t
 suffix:semicolon
 DECL|typedef|sctp_association_t
 r_typedef
 r_struct
-id|SCTP_association
+id|sctp_association
 id|sctp_association_t
 suffix:semicolon
 DECL|typedef|sctp_packet_t
 r_typedef
 r_struct
-id|SCTP_packet
+id|sctp_packet
 id|sctp_packet_t
 suffix:semicolon
 DECL|typedef|sctp_chunk_t
 r_typedef
 r_struct
-id|SCTP_chunk
+id|sctp_chunk
 id|sctp_chunk_t
-suffix:semicolon
-DECL|typedef|sctp_inqueue_t
-r_typedef
-r_struct
-id|SCTP_inqueue
-id|sctp_inqueue_t
 suffix:semicolon
 DECL|typedef|sctp_bind_addr_t
 r_typedef
 r_struct
-id|SCTP_bind_addr
+id|sctp_bind_addr
 id|sctp_bind_addr_t
-suffix:semicolon
-DECL|typedef|sctp_opt_t
-r_typedef
-r_struct
-id|sctp_opt
-id|sctp_opt_t
 suffix:semicolon
 DECL|typedef|sctp_endpoint_common_t
 r_typedef
@@ -432,7 +414,8 @@ op_star
 id|get_dst
 )paren
 (paren
-id|sctp_association_t
+r_struct
+id|sctp_association
 op_star
 id|asoc
 comma
@@ -454,7 +437,8 @@ op_star
 id|get_saddr
 )paren
 (paren
-id|sctp_association_t
+r_struct
+id|sctp_association
 op_star
 id|asoc
 comma
@@ -718,7 +702,8 @@ op_star
 id|event_msgname
 )paren
 (paren
-id|sctp_ulpevent_t
+r_struct
+id|sctp_ulpevent
 op_star
 comma
 r_char
@@ -794,6 +779,22 @@ id|sctp_addr
 op_star
 )paren
 suffix:semicolon
+DECL|member|supported_addrs
+r_int
+(paren
+op_star
+id|supported_addrs
+)paren
+(paren
+r_const
+r_struct
+id|sctp_opt
+op_star
+comma
+id|__u16
+op_star
+)paren
+suffix:semicolon
 DECL|member|af
 r_struct
 id|sctp_af
@@ -829,6 +830,13 @@ multiline_comment|/* What kind of a socket is this? */
 DECL|member|type
 id|sctp_socket_type_t
 id|type
+suffix:semicolon
+multiline_comment|/* PF_ family specific functions.  */
+DECL|member|pf
+r_struct
+id|sctp_pf
+op_star
+id|pf
 suffix:semicolon
 multiline_comment|/* What is our base endpointer? */
 DECL|member|ep
@@ -877,11 +885,15 @@ DECL|member|disable_fragments
 id|__u8
 id|disable_fragments
 suffix:semicolon
-DECL|member|pf
+DECL|member|pd_mode
+id|__u8
+id|pd_mode
+suffix:semicolon
+multiline_comment|/* Receive to here while partial delivery is in effect. */
+DECL|member|pd_lobby
 r_struct
-id|sctp_pf
-op_star
-id|pf
+id|sk_buff_head
+id|pd_lobby
 suffix:semicolon
 )brace
 suffix:semicolon
@@ -1213,9 +1225,9 @@ op_increment
 suffix:semicolon
 )brace
 multiline_comment|/* RFC2960 1.4 Key Terms&n; *&n; * o Chunk: A unit of information within an SCTP packet, consisting of&n; * a chunk header and chunk-specific content.&n; *&n; * As a matter of convenience, we remember the SCTP common header for&n; * each chunk as well as a few other header pointers...&n; */
-DECL|struct|SCTP_chunk
+DECL|struct|sctp_chunk
 r_struct
-id|SCTP_chunk
+id|sctp_chunk
 (brace
 multiline_comment|/* These first three elements MUST PRECISELY match the first&n;&t; * three elements of struct sk_buff.  This allows us to reuse&n;&t; * all the skb_* queue management functions.&n;&t; */
 DECL|member|next
@@ -1559,9 +1571,9 @@ op_star
 )paren
 suffix:semicolon
 multiline_comment|/* This structure holds lists of chunks as we are assembling for&n; * transmission.&n; */
-DECL|struct|SCTP_packet
+DECL|struct|sctp_packet
 r_struct
-id|SCTP_packet
+id|sctp_packet
 (brace
 multiline_comment|/* These are the SCTP header values (host order) for the packet. */
 DECL|member|source_port
@@ -2104,11 +2116,11 @@ op_star
 )paren
 suffix:semicolon
 multiline_comment|/* This is the structure we use to queue packets as they come into&n; * SCTP.  We write packets to it and read chunks from it.&n; */
-DECL|struct|SCTP_inqueue
+DECL|struct|sctp_inq
 r_struct
-id|SCTP_inqueue
+id|sctp_inq
 (brace
-multiline_comment|/* This is actually a queue of sctp_chunk_t each&n;&t; * containing a partially decoded packet.&n;&t; */
+multiline_comment|/* This is actually a queue of sctp_chunk each&n;&t; * containing a partially decoded packet.&n;&t; */
 DECL|member|in
 r_struct
 id|sk_buff_head
@@ -2133,35 +2145,39 @@ suffix:semicolon
 multiline_comment|/* Is this structure kfree()able?  */
 )brace
 suffix:semicolon
-id|sctp_inqueue_t
+r_struct
+id|sctp_inq
 op_star
-id|sctp_inqueue_new
+id|sctp_inq_new
 c_func
 (paren
 r_void
 )paren
 suffix:semicolon
 r_void
-id|sctp_inqueue_init
+id|sctp_inq_init
 c_func
 (paren
-id|sctp_inqueue_t
+r_struct
+id|sctp_inq
 op_star
 )paren
 suffix:semicolon
 r_void
-id|sctp_inqueue_free
+id|sctp_inq_free
 c_func
 (paren
-id|sctp_inqueue_t
+r_struct
+id|sctp_inq
 op_star
 )paren
 suffix:semicolon
 r_void
-id|sctp_push_inqueue
+id|sctp_inq_push
 c_func
 (paren
-id|sctp_inqueue_t
+r_struct
+id|sctp_inq
 op_star
 comma
 id|sctp_chunk_t
@@ -2169,20 +2185,23 @@ op_star
 id|packet
 )paren
 suffix:semicolon
-id|sctp_chunk_t
+r_struct
+id|sctp_chunk
 op_star
-id|sctp_pop_inqueue
+id|sctp_inq_pop
 c_func
 (paren
-id|sctp_inqueue_t
+r_struct
+id|sctp_inq
 op_star
 )paren
 suffix:semicolon
 r_void
-id|sctp_inqueue_set_th_handler
+id|sctp_inq_set_th_handler
 c_func
 (paren
-id|sctp_inqueue_t
+r_struct
+id|sctp_inq
 op_star
 comma
 r_void
@@ -2425,9 +2444,9 @@ id|__u8
 )paren
 suffix:semicolon
 multiline_comment|/* These bind address data fields common between endpoints and associations */
-DECL|struct|SCTP_bind_addr
+DECL|struct|sctp_bind_addr
 r_struct
-id|SCTP_bind_addr
+id|sctp_bind_addr
 (brace
 multiline_comment|/* RFC 2960 12.1 Parameters necessary for the SCTP instance&n;&t; *&n;&t; * SCTP Port:   The local SCTP port number the endpoint is&n;&t; * &t;&t;bound to.&n;&t; */
 DECL|member|port
@@ -2692,7 +2711,8 @@ id|sk
 suffix:semicolon
 multiline_comment|/* This is where we receive inbound chunks.  */
 DECL|member|inqueue
-id|sctp_inqueue_t
+r_struct
+id|sctp_inq
 id|inqueue
 suffix:semicolon
 multiline_comment|/* This substructure includes the defining parameters of the&n;&t; * endpoint:&n;&t; * bind_addr.port is our shared port number.&n;&t; * bind_addr.address_list is our set of local IP addresses.&n;&t; */
@@ -2708,9 +2728,9 @@ suffix:semicolon
 )brace
 suffix:semicolon
 multiline_comment|/* RFC Section 1.4 Key Terms&n; *&n; * o SCTP endpoint: The logical sender/receiver of SCTP packets. On a&n; *   multi-homed host, an SCTP endpoint is represented to its peers as a&n; *   combination of a set of eligible destination transport addresses to&n; *   which SCTP packets can be sent and a set of eligible source&n; *   transport addresses from which SCTP packets can be received.&n; *   All transport addresses used by an SCTP endpoint must use the&n; *   same port number, but can use multiple IP addresses. A transport&n; *   address used by an SCTP endpoint must not be used by another&n; *   SCTP endpoint. In other words, a transport address is unique&n; *   to an SCTP endpoint.&n; *&n; * From an implementation perspective, each socket has one of these.&n; * A TCP-style socket will have exactly one association on one of&n; * these.  An UDP-style socket will have multiple associations hanging&n; * off one of these.&n; */
-DECL|struct|SCTP_endpoint
+DECL|struct|sctp_endpoint
 r_struct
-id|SCTP_endpoint
+id|sctp_endpoint
 (brace
 multiline_comment|/* Common substructure for endpoint and association. */
 DECL|member|base
@@ -2811,7 +2831,8 @@ op_star
 id|sctp_endpoint_new
 c_func
 (paren
-id|sctp_protocol_t
+r_struct
+id|sctp_protocol
 op_star
 comma
 r_struct
@@ -2826,10 +2847,12 @@ op_star
 id|sctp_endpoint_init
 c_func
 (paren
-id|sctp_endpoint_t
+r_struct
+id|sctp_endpoint
 op_star
 comma
-id|sctp_protocol_t
+r_struct
+id|sctp_protocol
 op_star
 comma
 r_struct
@@ -3037,9 +3060,9 @@ id|ep
 suffix:semicolon
 multiline_comment|/* RFC2960&n; *&n; * 12. Recommended Transmission Control Block (TCB) Parameters&n; *&n; * This section details a recommended set of parameters that should&n; * be contained within the TCB for an implementation. This section is&n; * for illustrative purposes and should not be deemed as requirements&n; * on an implementation or as an exhaustive list of all parameters&n; * inside an SCTP TCB. Each implementation may need its own additional&n; * parameters for optimization.&n; */
 multiline_comment|/* Here we have information about each individual association. */
-DECL|struct|SCTP_association
+DECL|struct|sctp_association
 r_struct
-id|SCTP_association
+id|sctp_association
 (brace
 multiline_comment|/* A base structure common to endpoint and association.&n;&t; * In this context, it represents the associations&squot;s view&n;&t; * of the local endpoint of the association.&n;&t; */
 DECL|member|base
@@ -3130,7 +3153,8 @@ id|last_data_from
 suffix:semicolon
 multiline_comment|/*&n;&t;&t; * Mapping  An array of bits or bytes indicating which out of&n;&t;&t; * Array    order TSN&squot;s have been received (relative to the&n;&t;&t; *          Last Rcvd TSN). If no gaps exist, i.e. no out of&n;&t;&t; *          order packets have been received, this array&n;&t;&t; *          will be set to all zero. This structure may be&n;&t;&t; *          in the form of a circular buffer or bit array.&n;&t;&t; *&n;&t;&t; * Last Rcvd   : This is the last TSN received in&n;&t;&t; * TSN&t;       : sequence. This value is set initially by&n;&t;&t; *             : taking the peer&squot;s Initial TSN, received in&n;&t;&t; *             : the INIT or INIT ACK chunk, and subtracting&n;&t;&t; *             : one from it.&n;&t;&t; *&n;&t;&t; * Throughout most of the specification this is called the&n;&t;&t; * &quot;Cumulative TSN ACK Point&quot;.  In this case, we&n;&t;&t; * ignore the advice in 12.2 in favour of the term&n;&t;&t; * used in the bulk of the text.  This value is hidden&n;&t;&t; * in tsn_map--we get it by calling sctp_tsnmap_get_ctsn().&n;&t;&t; */
 DECL|member|tsn_map
-id|sctp_tsnmap_t
+r_struct
+id|sctp_tsnmap
 id|tsn_map
 suffix:semicolon
 DECL|member|_map
@@ -3144,21 +3168,9 @@ id|SCTP_TSN_MAP_SIZE
 )paren
 )braket
 suffix:semicolon
-multiline_comment|/* We record duplicate TSNs here.  We clear this after&n;&t;&t; * every SACK.&n;&t;&t; * FIXME: We should move this into the tsnmap? --jgrimm&n;&t;&t; */
-DECL|member|dup_tsns
-id|sctp_dup_tsn_t
-id|dup_tsns
-(braket
-id|SCTP_MAX_DUP_TSNS
-)braket
-suffix:semicolon
-DECL|member|next_dup_tsn
-r_int
-id|next_dup_tsn
-suffix:semicolon
 multiline_comment|/* Do we need to sack the peer? */
 DECL|member|sack_needed
-r_uint8
+id|__u8
 id|sack_needed
 suffix:semicolon
 multiline_comment|/* These are capabilities which our peer advertised.  */
@@ -3361,9 +3373,21 @@ DECL|member|stream
 id|__u16
 id|stream
 suffix:semicolon
+DECL|member|flags
+id|__u16
+id|flags
+suffix:semicolon
 DECL|member|ppid
 id|__u32
 id|ppid
+suffix:semicolon
+DECL|member|context
+id|__u32
+id|context
+suffix:semicolon
+DECL|member|timetolive
+id|__u32
+id|timetolive
 suffix:semicolon
 DECL|member|defaults
 )brace
@@ -3574,6 +3598,14 @@ id|sctp_association_t
 op_star
 )paren
 suffix:semicolon
+r_void
+id|sctp_assoc_update_retran_path
+c_func
+(paren
+id|sctp_association_t
+op_star
+)paren
+suffix:semicolon
 r_struct
 id|sctp_transport
 op_star
@@ -3614,7 +3646,8 @@ r_void
 id|sctp_assoc_control_transport
 c_func
 (paren
-id|sctp_association_t
+r_struct
+id|sctp_association
 op_star
 comma
 r_struct
@@ -3684,39 +3717,31 @@ id|src
 )paren
 suffix:semicolon
 id|__u32
-id|__sctp_association_get_next_tsn
+id|sctp_association_get_next_tsn
 c_func
 (paren
-id|sctp_association_t
+r_struct
+id|sctp_association
 op_star
 )paren
 suffix:semicolon
 id|__u32
-id|__sctp_association_get_tsn_block
+id|sctp_association_get_tsn_block
 c_func
 (paren
-id|sctp_association_t
+r_struct
+id|sctp_association
 op_star
 comma
 r_int
-)paren
-suffix:semicolon
-id|__u16
-id|__sctp_association_get_next_ssn
-c_func
-(paren
-id|sctp_association_t
-op_star
-comma
-id|__u16
-id|sid
 )paren
 suffix:semicolon
 r_void
 id|sctp_assoc_sync_pmtu
 c_func
 (paren
-id|sctp_association_t
+r_struct
+id|sctp_association
 op_star
 )paren
 suffix:semicolon
@@ -3724,7 +3749,8 @@ r_void
 id|sctp_assoc_rwnd_increase
 c_func
 (paren
-id|sctp_association_t
+r_struct
+id|sctp_association
 op_star
 comma
 r_int
@@ -3734,10 +3760,24 @@ r_void
 id|sctp_assoc_rwnd_decrease
 c_func
 (paren
-id|sctp_association_t
+r_struct
+id|sctp_association
 op_star
 comma
 r_int
+)paren
+suffix:semicolon
+r_void
+id|sctp_assoc_set_primary
+c_func
+(paren
+r_struct
+id|sctp_association
+op_star
+comma
+r_struct
+id|sctp_transport
+op_star
 )paren
 suffix:semicolon
 r_int

@@ -10,47 +10,6 @@ macro_line|#include &lt;linux/skbuff.h&gt;
 macro_line|#include &lt;linux/random.h&gt;&t;/* for get_random_bytes */
 macro_line|#include &lt;net/sctp/sctp.h&gt;
 macro_line|#include &lt;net/sctp/sm.h&gt;
-multiline_comment|/* RFC 2960 3.3.2 Initiation (INIT) (1)&n; *&n; * Note 4: This parameter, when present, specifies all the&n; * address types the sending endpoint can support. The absence&n; * of this parameter indicates that the sending endpoint can&n; * support any address type.&n; */
-DECL|variable|sat_param
-r_static
-r_const
-id|sctp_supported_addrs_param_t
-id|sat_param
-op_assign
-(brace
-(brace
-id|SCTP_PARAM_SUPPORTED_ADDRESS_TYPES
-comma
-id|__constant_htons
-c_func
-(paren
-id|SCTP_SAT_LEN
-)paren
-comma
-)brace
-)brace
-suffix:semicolon
-multiline_comment|/* gcc 3.2 doesn&squot;t allow initialization of zero-length arrays. So the above&n; * structure is split and the address types array is initialized using a&n; * fixed length array.&n; */
-DECL|variable|sat_addr_types
-r_static
-r_const
-id|__u16
-id|sat_addr_types
-(braket
-l_int|2
-)braket
-op_assign
-(brace
-id|SCTP_PARAM_IPV4_ADDRESS
-comma
-id|SCTP_V6
-c_func
-(paren
-id|SCTP_PARAM_IPV6_ADDRESS
-comma
-)paren
-)brace
-suffix:semicolon
 multiline_comment|/* RFC 2960 3.3.2 Initiation (INIT) (1)&n; *&n; * Note 2: The ECN capable field is reserved for future use of&n; * Explicit Congestion Notification.&n; */
 DECL|variable|ecap_param
 r_static
@@ -205,9 +164,25 @@ op_assign
 l_int|NULL
 suffix:semicolon
 r_int
+id|num_types
+comma
 id|addrs_len
 op_assign
 l_int|0
+suffix:semicolon
+r_struct
+id|sctp_opt
+op_star
+id|sp
+suffix:semicolon
+id|sctp_supported_addrs_param_t
+id|sat
+suffix:semicolon
+id|__u16
+id|types
+(braket
+l_int|2
+)braket
 suffix:semicolon
 multiline_comment|/* RFC 2960 3.3.2 Initiation (INIT) (1)&n;&t; *&n;&t; * Note 1: The INIT chunks can contain multiple addresses that&n;&t; * can be IPv4 and/or IPv6 in any combination.&n;&t; */
 id|retval
@@ -281,6 +256,27 @@ c_func
 id|asoc-&gt;c.initial_tsn
 )paren
 suffix:semicolon
+multiline_comment|/* How many address types are needed? */
+id|sp
+op_assign
+id|sctp_sk
+c_func
+(paren
+id|asoc-&gt;base.sk
+)paren
+suffix:semicolon
+id|num_types
+op_assign
+id|sp-&gt;pf
+op_member_access_from_pointer
+id|supported_addrs
+c_func
+(paren
+id|sp
+comma
+id|types
+)paren
+suffix:semicolon
 id|chunksize
 op_assign
 r_sizeof
@@ -291,6 +287,10 @@ op_plus
 id|addrs_len
 op_plus
 id|SCTP_SAT_LEN
+c_func
+(paren
+id|num_types
+)paren
 suffix:semicolon
 id|chunksize
 op_add_assign
@@ -355,18 +355,21 @@ comma
 id|addrs.v
 )paren
 suffix:semicolon
-id|sctp_addto_chunk
+multiline_comment|/* RFC 2960 3.3.2 Initiation (INIT) (1)&n;&t; *&n;&t; * Note 4: This parameter, when present, specifies all the&n;&t; * address types the sending endpoint can support. The absence&n;&t; * of this parameter indicates that the sending endpoint can&n;&t; * support any address type.&n;&t; */
+id|sat.param_hdr.type
+op_assign
+id|SCTP_PARAM_SUPPORTED_ADDRESS_TYPES
+suffix:semicolon
+id|sat.param_hdr.length
+op_assign
+id|htons
 c_func
 (paren
-id|retval
-comma
-r_sizeof
+id|SCTP_SAT_LEN
+c_func
 (paren
-id|sctp_paramhdr_t
+id|num_types
 )paren
-comma
-op_amp
-id|sat_param
 )paren
 suffix:semicolon
 id|sctp_addto_chunk
@@ -376,10 +379,27 @@ id|retval
 comma
 r_sizeof
 (paren
-id|sat_addr_types
+id|sat
 )paren
 comma
-id|sat_addr_types
+op_amp
+id|sat
+)paren
+suffix:semicolon
+id|sctp_addto_chunk
+c_func
+(paren
+id|retval
+comma
+id|num_types
+op_star
+r_sizeof
+(paren
+id|__u16
+)paren
+comma
+op_amp
+id|types
 )paren
 suffix:semicolon
 id|sctp_addto_chunk
@@ -1379,22 +1399,25 @@ suffix:semicolon
 id|__u32
 id|ctsn
 suffix:semicolon
-id|sctp_tsnmap_iter_t
+r_struct
+id|sctp_tsnmap_iter
 id|iter
 suffix:semicolon
 id|__u16
 id|num_gabs
-suffix:semicolon
-id|__u16
+comma
 id|num_dup_tsns
-op_assign
-id|asoc-&gt;peer.next_dup_tsn
 suffix:semicolon
-r_const
-id|sctp_tsnmap_t
+r_struct
+id|sctp_tsnmap
 op_star
 id|map
 op_assign
+(paren
+r_struct
+id|sctp_tsnmap
+op_star
+)paren
 op_amp
 id|asoc-&gt;peer.tsn_map
 suffix:semicolon
@@ -1409,7 +1432,7 @@ suffix:semicolon
 id|SCTP_DEBUG_PRINTK
 c_func
 (paren
-l_string|&quot;make_sack: sackCTSNAck sent is 0x%x.&bslash;n&quot;
+l_string|&quot;sackCTSNAck sent is 0x%x.&bslash;n&quot;
 comma
 id|ctsn
 )paren
@@ -1452,6 +1475,14 @@ op_increment
 (brace
 multiline_comment|/* Do nothing. */
 )brace
+id|num_dup_tsns
+op_assign
+id|sctp_tsnmap_num_dups
+c_func
+(paren
+id|map
+)paren
+suffix:semicolon
 multiline_comment|/* Initialize the SACK header.  */
 id|sack.cum_tsn_ack
 op_assign
@@ -1501,7 +1532,7 @@ id|num_gabs
 op_plus
 r_sizeof
 (paren
-id|sctp_dup_tsn_t
+id|__u32
 )paren
 op_star
 id|num_dup_tsns
@@ -1619,13 +1650,16 @@ id|retval
 comma
 r_sizeof
 (paren
-id|sctp_dup_tsn_t
+id|__u32
 )paren
 op_star
 id|num_dup_tsns
 comma
-op_amp
-id|asoc-&gt;peer.dup_tsns
+id|sctp_tsnmap_get_dups
+c_func
+(paren
+id|map
+)paren
 )paren
 suffix:semicolon
 id|nodata
@@ -1634,7 +1668,7 @@ r_return
 id|retval
 suffix:semicolon
 )brace
-multiline_comment|/* FIXME: Comments. */
+multiline_comment|/* Make a SHUTDOWN chunk. */
 DECL|function|sctp_make_shutdown
 id|sctp_chunk_t
 op_star
@@ -3375,6 +3409,19 @@ id|offset
 op_assign
 l_int|0
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|whole
+op_logical_and
+id|over
+)paren
+id|SCTP_INC_STATS_USER
+c_func
+(paren
+id|SctpFragUsrMsgs
+)paren
+suffix:semicolon
 multiline_comment|/* Create chunks for all the full sized DATA chunks. */
 r_for
 c_loop
@@ -3797,7 +3844,7 @@ op_assign
 id|htonl
 c_func
 (paren
-id|__sctp_association_get_next_tsn
+id|sctp_association_get_next_tsn
 c_func
 (paren
 id|chunk-&gt;asoc
