@@ -19,31 +19,6 @@ macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/processor.h&gt;
 macro_line|#include &lt;asm/ppcdebug.h&gt;
-r_extern
-r_int
-id|fix_alignment
-c_func
-(paren
-r_struct
-id|pt_regs
-op_star
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|bad_page_fault
-c_func
-(paren
-r_struct
-id|pt_regs
-op_star
-comma
-r_int
-r_int
-comma
-r_int
-)paren
-suffix:semicolon
 macro_line|#ifdef CONFIG_PPC_PSERIES
 multiline_comment|/* This is true if we are using the firmware NMI handler (typically LPAR) */
 r_extern
@@ -182,7 +157,7 @@ op_assign
 id|SPIN_LOCK_UNLOCKED
 suffix:semicolon
 DECL|function|die
-r_void
+r_int
 id|die
 c_func
 (paren
@@ -208,6 +183,30 @@ r_int
 id|nl
 op_assign
 l_int|0
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|debugger_fault_handler
+c_func
+(paren
+id|regs
+)paren
+)paren
+r_return
+l_int|1
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|debugger
+c_func
+(paren
+id|regs
+)paren
+)paren
+r_return
+l_int|1
 suffix:semicolon
 id|console_verbose
 c_func
@@ -441,6 +440,9 @@ c_func
 id|SIGSEGV
 )paren
 suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
 )brace
 r_static
 r_void
@@ -475,14 +477,6 @@ id|regs
 r_if
 c_cond
 (paren
-id|debugger
-c_func
-(paren
-id|regs
-)paren
-)paren
-r_return
-suffix:semicolon
 id|die
 c_func
 (paren
@@ -492,6 +486,8 @@ id|regs
 comma
 id|signr
 )paren
+)paren
+r_return
 suffix:semicolon
 )brace
 id|force_sig_info
@@ -707,16 +703,6 @@ c_func
 suffix:semicolon
 )brace
 macro_line|#endif
-r_if
-c_cond
-(paren
-op_logical_neg
-id|debugger
-c_func
-(paren
-id|regs
-)paren
-)paren
 id|die
 c_func
 (paren
@@ -875,7 +861,7 @@ l_int|0
 suffix:semicolon
 )brace
 macro_line|#endif
-multiline_comment|/*&n; * Handle a machine check.&n; *&n; * Note that on Power 4 and beyond Firmware Non-Maskable Interrupts (fwnmi)&n; * should be present.  If so the handler which called us tells us if the&n; * error was recovered (never true if RI=0).&n; *&n; * On hardware prior to Power 4 these exceptions were asynchronous which&n; * means we can&squot;t tell exactly where it occurred and so we can&squot;t recover.&n; *&n; * Note that the debugger should test RI=0 and warn the user that system&n; * state has been corrupted.&n; */
+multiline_comment|/*&n; * Handle a machine check.&n; *&n; * Note that on Power 4 and beyond Firmware Non-Maskable Interrupts (fwnmi)&n; * should be present.  If so the handler which called us tells us if the&n; * error was recovered (never true if RI=0).&n; *&n; * On hardware prior to Power 4 these exceptions were asynchronous which&n; * means we can&squot;t tell exactly where it occurred and so we can&squot;t recover.&n; */
 r_void
 DECL|function|MachineCheckException
 id|MachineCheckException
@@ -942,36 +928,31 @@ r_return
 suffix:semicolon
 )brace
 macro_line|#endif
-r_if
-c_cond
-(paren
-id|debugger_fault_handler
-c_func
-(paren
-id|regs
-)paren
-)paren
-r_return
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|debugger
-c_func
-(paren
-id|regs
-)paren
-)paren
-r_return
-suffix:semicolon
 id|die
 c_func
 (paren
-l_string|&quot;Machine check in kernel mode&quot;
+l_string|&quot;Machine check&quot;
 comma
 id|regs
 comma
 l_int|0
+)paren
+suffix:semicolon
+multiline_comment|/* Must die if the interrupt is not recoverable */
+r_if
+c_cond
+(paren
+op_logical_neg
+(paren
+id|regs-&gt;msr
+op_amp
+id|MSR_RI
+)paren
+)paren
+id|panic
+c_func
+(paren
+l_string|&quot;Unrecoverable Machine check&quot;
 )paren
 suffix:semicolon
 )brace
@@ -1475,17 +1456,6 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|debugger_fault_handler
-c_func
-(paren
-id|regs
-)paren
-)paren
-r_return
-suffix:semicolon
-r_if
-c_cond
-(paren
 id|regs-&gt;msr
 op_amp
 l_int|0x100000
@@ -1647,8 +1617,8 @@ id|regs
 suffix:semicolon
 )brace
 )brace
-r_void
 DECL|function|KernelFPUnavailableException
+r_void
 id|KernelFPUnavailableException
 c_func
 (paren
@@ -1658,19 +1628,31 @@ op_star
 id|regs
 )paren
 (brace
+id|printk
+c_func
+(paren
+id|KERN_EMERG
+l_string|&quot;Unrecoverable FP Unavailable Exception &quot;
+l_string|&quot;%lx at %lx&bslash;n&quot;
+comma
+id|regs-&gt;trap
+comma
+id|regs-&gt;nip
+)paren
+suffix:semicolon
 id|die
 c_func
 (paren
-l_string|&quot;Unrecoverable FP Unavailable Exception in Kernel&quot;
+l_string|&quot;Unrecoverable FP Unavailable Exception&quot;
 comma
 id|regs
 comma
-l_int|0
+id|SIGABRT
 )paren
 suffix:semicolon
 )brace
-r_void
 DECL|function|KernelAltivecUnavailableException
+r_void
 id|KernelAltivecUnavailableException
 c_func
 (paren
@@ -1680,14 +1662,26 @@ op_star
 id|regs
 )paren
 (brace
+id|printk
+c_func
+(paren
+id|KERN_EMERG
+l_string|&quot;Unrecoverable VMX/Altivec Unavailable Exception &quot;
+l_string|&quot;%lx at %lx&bslash;n&quot;
+comma
+id|regs-&gt;trap
+comma
+id|regs-&gt;nip
+)paren
+suffix:semicolon
 id|die
 c_func
 (paren
-l_string|&quot;Unrecoverable VMX/Altivec Unavailable Exception in Kernel&quot;
+l_string|&quot;Unrecoverable VMX/Altivec Unavailable Exception&quot;
 comma
 id|regs
 comma
-l_int|0
+id|SIGABRT
 )paren
 suffix:semicolon
 )brace
@@ -2019,12 +2013,6 @@ comma
 id|regs-&gt;nip
 )paren
 suffix:semicolon
-id|debugger
-c_func
-(paren
-id|regs
-)paren
-suffix:semicolon
 id|die
 c_func
 (paren
@@ -2060,12 +2048,6 @@ l_int|1
 )braket
 comma
 id|regs-&gt;nip
-)paren
-suffix:semicolon
-id|debugger
-c_func
-(paren
-id|regs
 )paren
 suffix:semicolon
 id|die

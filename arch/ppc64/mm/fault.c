@@ -17,20 +17,6 @@ macro_line|#include &lt;asm/mmu.h&gt;
 macro_line|#include &lt;asm/mmu_context.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
-r_void
-id|bad_page_fault
-c_func
-(paren
-r_struct
-id|pt_regs
-op_star
-comma
-r_int
-r_int
-comma
-r_int
-)paren
-suffix:semicolon
 multiline_comment|/*&n; * The error_code parameter is&n; *  - DSISR for a non-SLB data access fault,&n; *  - SRR1 &amp; 0x08000000 for a non-SLB instruction access fault&n; *  - 0 any SLB fault.&n; */
 DECL|function|do_page_fault
 r_void
@@ -565,8 +551,8 @@ id|SIGBUS
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * bad_page_fault is called when we have a bad access from the kernel.&n; * It is called from do_page_fault above and from some of the procedures&n; * in traps.c.&n; */
-r_void
 DECL|function|bad_page_fault
+r_void
 id|bad_page_fault
 c_func
 (paren
@@ -583,22 +569,6 @@ r_int
 id|sig
 )paren
 (brace
-r_extern
-r_void
-id|die
-c_func
-(paren
-r_const
-r_char
-op_star
-comma
-r_struct
-id|pt_regs
-op_star
-comma
-r_int
-)paren
-suffix:semicolon
 r_const
 r_struct
 id|exception_table_entry
@@ -630,17 +600,6 @@ r_return
 suffix:semicolon
 )brace
 multiline_comment|/* kernel has accessed a bad area */
-r_if
-c_cond
-(paren
-id|debugger
-c_func
-(paren
-id|regs
-)paren
-)paren
-r_return
-suffix:semicolon
 id|die
 c_func
 (paren
