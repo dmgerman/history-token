@@ -135,11 +135,15 @@ DECL|enumerator|SNDRV_HWDEP_IFACE_USX2Y
 id|SNDRV_HWDEP_IFACE_USX2Y
 comma
 multiline_comment|/* Tascam US122, US224 &amp; US428 usb */
+DECL|enumerator|SNDRV_HWDEP_IFACE_EMUX_WAVETABLE
+id|SNDRV_HWDEP_IFACE_EMUX_WAVETABLE
+comma
+multiline_comment|/* EmuX wavetable */
 multiline_comment|/* Don&squot;t forget to change the following: */
 DECL|enumerator|SNDRV_HWDEP_IFACE_LAST
 id|SNDRV_HWDEP_IFACE_LAST
 op_assign
-id|SNDRV_HWDEP_IFACE_USX2Y
+id|SNDRV_HWDEP_IFACE_EMUX_WAVETABLE
 comma
 )brace
 suffix:semicolon

@@ -2,8 +2,15 @@ macro_line|#ifndef __SOUND_SFNT_INFO_H
 DECL|macro|__SOUND_SFNT_INFO_H
 mdefine_line|#define __SOUND_SFNT_INFO_H
 multiline_comment|/*&n; *  Patch record compatible with AWE driver on OSS&n; *&n; *  Copyright (C) 1999-2000 Takashi Iwai&n; *&n; *   This program is free software; you can redistribute it and/or modify&n; *   it under the terms of the GNU General Public License as published by&n; *   the Free Software Foundation; either version 2 of the License, or&n; *   (at your option) any later version.&n; *&n; *   This program is distributed in the hope that it will be useful,&n; *   but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *   GNU General Public License for more details.&n; *&n; *   You should have received a copy of the GNU General Public License&n; *   along with this program; if not, write to the Free Software&n; *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA&n; *&n; */
-macro_line|#include &quot;seq_oss_legacy.h&quot;
+macro_line|#include &lt;sound/asound.h&gt;
 multiline_comment|/*&n; * patch information record&n; */
+macro_line|#ifdef SNDRV_BIG_ENDIAN
+DECL|macro|SNDRV_OSS_PATCHKEY
+mdefine_line|#define SNDRV_OSS_PATCHKEY(id) (0xfd00|id)
+macro_line|#else
+DECL|macro|SNDRV_OSS_PATCHKEY
+mdefine_line|#define SNDRV_OSS_PATCHKEY(id) ((id&lt;&lt;8)|0xfd)
+macro_line|#endif
 multiline_comment|/* patch interface header: 16 bytes */
 DECL|struct|soundfont_patch_info_t
 r_typedef
@@ -17,7 +24,7 @@ id|key
 suffix:semicolon
 multiline_comment|/* use the key below */
 DECL|macro|SNDRV_OSS_SOUNDFONT_PATCH
-mdefine_line|#define SNDRV_OSS_SOUNDFONT_PATCH&t;&t;_PATCHKEY(0x07)
+mdefine_line|#define SNDRV_OSS_SOUNDFONT_PATCH&t;&t;SNDRV_OSS_PATCHKEY(0x07)
 DECL|member|device_no
 r_int
 id|device_no
@@ -538,6 +545,115 @@ suffix:semicolon
 DECL|typedef|soundfont_voice_map_t
 )brace
 id|soundfont_voice_map_t
+suffix:semicolon
+multiline_comment|/*&n; * ioctls for hwdep&n; */
+DECL|macro|SNDRV_EMUX_HWDEP_NAME
+mdefine_line|#define SNDRV_EMUX_HWDEP_NAME&t;&quot;Emux WaveTable&quot;
+DECL|macro|SNDRV_EMUX_VERSION
+mdefine_line|#define SNDRV_EMUX_VERSION&t;((1 &lt;&lt; 16) | (0 &lt;&lt; 8) | 0)&t;/* 1.0.0 */
+DECL|struct|sndrv_emux_misc_mode
+r_struct
+id|sndrv_emux_misc_mode
+(brace
+DECL|member|port
+r_int
+id|port
+suffix:semicolon
+multiline_comment|/* -1 = all */
+DECL|member|mode
+r_int
+id|mode
+suffix:semicolon
+DECL|member|value
+r_int
+id|value
+suffix:semicolon
+DECL|member|value2
+r_int
+id|value2
+suffix:semicolon
+multiline_comment|/* reserved */
+)brace
+suffix:semicolon
+r_enum
+(brace
+DECL|enumerator|SNDRV_EMUX_IOCTL_VERSION
+id|SNDRV_EMUX_IOCTL_VERSION
+op_assign
+id|_IOR
+c_func
+(paren
+l_char|&squot;H&squot;
+comma
+l_int|0x80
+comma
+r_int
+r_int
+)paren
+comma
+DECL|enumerator|SNDRV_EMUX_IOCTL_LOAD_PATCH
+id|SNDRV_EMUX_IOCTL_LOAD_PATCH
+op_assign
+id|_IOWR
+c_func
+(paren
+l_char|&squot;H&squot;
+comma
+l_int|0x81
+comma
+id|soundfont_patch_info_t
+)paren
+comma
+DECL|enumerator|SNDRV_EMUX_IOCTL_RESET_SAMPLES
+id|SNDRV_EMUX_IOCTL_RESET_SAMPLES
+op_assign
+id|_IO
+c_func
+(paren
+l_char|&squot;H&squot;
+comma
+l_int|0x82
+)paren
+comma
+DECL|enumerator|SNDRV_EMUX_IOCTL_REMOVE_LAST_SAMPLES
+id|SNDRV_EMUX_IOCTL_REMOVE_LAST_SAMPLES
+op_assign
+id|_IO
+c_func
+(paren
+l_char|&squot;H&squot;
+comma
+l_int|0x83
+)paren
+comma
+DECL|enumerator|SNDRV_EMUX_IOCTL_MEM_AVAIL
+id|SNDRV_EMUX_IOCTL_MEM_AVAIL
+op_assign
+id|_IOW
+c_func
+(paren
+l_char|&squot;H&squot;
+comma
+l_int|0x84
+comma
+r_int
+)paren
+comma
+DECL|enumerator|SNDRV_EMUX_IOCTL_MISC_MODE
+id|SNDRV_EMUX_IOCTL_MISC_MODE
+op_assign
+id|_IOWR
+c_func
+(paren
+l_char|&squot;H&squot;
+comma
+l_int|0x84
+comma
+r_struct
+id|sndrv_emux_misc_mode
+)paren
+comma
+)brace
 suffix:semicolon
 macro_line|#endif /* __SOUND_SFNT_INFO_H */
 eof

@@ -323,6 +323,13 @@ id|i
 op_assign
 id|p-&gt;chset.port
 suffix:semicolon
+id|emu-&gt;portptrs
+(braket
+id|i
+)braket
+op_assign
+id|p
+suffix:semicolon
 )brace
 r_return
 l_int|0

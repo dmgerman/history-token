@@ -376,6 +376,17 @@ suffix:colon
 l_int|1
 suffix:semicolon
 multiline_comment|/* panning is linear (sbawe = 1, emu10k1 = 0) */
+DECL|member|hwdep_idx
+r_int
+id|hwdep_idx
+suffix:semicolon
+multiline_comment|/* hwdep device index */
+DECL|member|hwdep
+id|snd_hwdep_t
+op_star
+id|hwdep
+suffix:semicolon
+multiline_comment|/* hwdep device */
 multiline_comment|/* private */
 DECL|member|num_voices
 r_int
@@ -422,6 +433,14 @@ id|SNDRV_EMUX_MAX_PORTS
 )braket
 suffix:semicolon
 multiline_comment|/* The ports for this device */
+DECL|member|portptrs
+id|snd_emux_port_t
+op_star
+id|portptrs
+(braket
+id|SNDRV_EMUX_MAX_PORTS
+)braket
+suffix:semicolon
 DECL|member|used
 r_int
 id|used

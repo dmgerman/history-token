@@ -194,6 +194,11 @@ id|emu-&gt;linear_panning
 op_assign
 l_int|1
 suffix:semicolon
+id|emu-&gt;hwdep_idx
+op_assign
+l_int|2
+suffix:semicolon
+multiline_comment|/* FIXED */
 r_if
 c_cond
 (paren
