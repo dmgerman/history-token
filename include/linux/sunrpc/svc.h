@@ -281,7 +281,7 @@ multiline_comment|/* space on socket outq&n;&t;&t;&t;&t;&t;&t; * reserved for th
 multiline_comment|/* Catering to nfsd */
 DECL|member|rq_client
 r_struct
-id|svc_client
+id|auth_domain
 op_star
 id|rq_client
 suffix:semicolon

@@ -7,10 +7,6 @@ multiline_comment|/* Dummy declarations */
 r_struct
 id|svc_rqst
 suffix:semicolon
-r_struct
-id|svc_client
-suffix:semicolon
-multiline_comment|/* opaque type */
 multiline_comment|/*&n; * This is the set of functions for lockd-&gt;nfsd communication&n; */
 DECL|struct|nlmsvc_binding
 r_struct

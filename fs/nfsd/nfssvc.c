@@ -17,6 +17,7 @@ macro_line|#include &lt;linux/sunrpc/types.h&gt;
 macro_line|#include &lt;linux/sunrpc/stats.h&gt;
 macro_line|#include &lt;linux/sunrpc/svc.h&gt;
 macro_line|#include &lt;linux/sunrpc/svcsock.h&gt;
+macro_line|#include &lt;linux/sunrpc/cache.h&gt;
 macro_line|#include &lt;linux/nfsd/nfsd.h&gt;
 macro_line|#include &lt;linux/nfsd/stats.h&gt;
 macro_line|#include &lt;linux/nfsd/cache.h&gt;
@@ -686,6 +687,10 @@ op_eq
 op_minus
 id|EAGAIN
 )paren
+id|cache_clean
+c_func
+(paren
+)paren
 suffix:semicolon
 r_if
 c_cond
@@ -768,6 +773,23 @@ id|rqstp
 )paren
 suffix:semicolon
 multiline_comment|/* Unlock export hash tables */
+r_if
+c_cond
+(paren
+id|rqstp-&gt;rq_client
+)paren
+(brace
+id|auth_domain_put
+c_func
+(paren
+id|rqstp-&gt;rq_client
+)paren
+suffix:semicolon
+id|rqstp-&gt;rq_client
+op_assign
+l_int|NULL
+suffix:semicolon
+)brace
 id|exp_readunlock
 c_func
 (paren

@@ -46,25 +46,6 @@ mdefine_line|#define NFSEXP_FSID&t;&t;0x2000
 DECL|macro|NFSEXP_ALLFLAGS
 mdefine_line|#define NFSEXP_ALLFLAGS&t;&t;0x3FFF
 macro_line|#ifdef __KERNEL__
-DECL|struct|svc_client
-r_struct
-id|svc_client
-(brace
-DECL|member|cl_next
-r_struct
-id|svc_client
-op_star
-id|cl_next
-suffix:semicolon
-DECL|member|cl_ident
-r_char
-id|cl_ident
-(braket
-id|NFSCLNT_IDMAX
-)braket
-suffix:semicolon
-)brace
-suffix:semicolon
 DECL|struct|svc_export
 r_struct
 id|svc_export
@@ -76,7 +57,7 @@ id|ex_hash
 suffix:semicolon
 DECL|member|ex_client
 r_struct
-id|svc_client
+id|auth_domain
 op_star
 id|ex_client
 suffix:semicolon
@@ -122,7 +103,7 @@ id|ek_hash
 suffix:semicolon
 DECL|member|ek_client
 r_struct
-id|svc_client
+id|auth_domain
 op_star
 id|ek_client
 suffix:semicolon
@@ -187,7 +168,7 @@ r_void
 )paren
 suffix:semicolon
 r_struct
-id|svc_client
+id|auth_domain
 op_star
 id|exp_getclient
 c_func
@@ -198,16 +179,6 @@ op_star
 id|sin
 )paren
 suffix:semicolon
-r_void
-id|exp_putclient
-c_func
-(paren
-r_struct
-id|svc_client
-op_star
-id|clp
-)paren
-suffix:semicolon
 r_struct
 id|svc_expkey
 op_star
@@ -215,7 +186,7 @@ id|exp_find_key
 c_func
 (paren
 r_struct
-id|svc_client
+id|auth_domain
 op_star
 id|clp
 comma
@@ -234,7 +205,7 @@ id|exp_get_by_name
 c_func
 (paren
 r_struct
-id|svc_client
+id|auth_domain
 op_star
 id|clp
 comma
@@ -256,7 +227,7 @@ id|exp_parent
 c_func
 (paren
 r_struct
-id|svc_client
+id|auth_domain
 op_star
 id|clp
 comma
@@ -276,7 +247,7 @@ id|exp_rootfh
 c_func
 (paren
 r_struct
-id|svc_client
+id|auth_domain
 op_star
 comma
 r_char
@@ -296,7 +267,7 @@ id|exp_pseudoroot
 c_func
 (paren
 r_struct
-id|svc_client
+id|auth_domain
 op_star
 comma
 r_struct
@@ -323,7 +294,7 @@ id|exp_find
 c_func
 (paren
 r_struct
-id|svc_client
+id|auth_domain
 op_star
 id|clp
 comma

@@ -139,6 +139,17 @@ op_amp
 id|fh
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|rqstp-&gt;rq_client
+)paren
+id|auth_domain_put
+c_func
+(paren
+id|rqstp-&gt;rq_client
+)paren
+suffix:semicolon
 id|rqstp-&gt;rq_client
 op_assign
 l_int|NULL

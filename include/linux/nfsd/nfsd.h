@@ -708,15 +708,6 @@ c_func
 r_void
 )paren
 suffix:semicolon
-r_void
-id|nfsd_lockd_unexport
-c_func
-(paren
-r_struct
-id|svc_client
-op_star
-)paren
-suffix:semicolon
 multiline_comment|/*&n; * These macros provide pre-xdr&squot;ed values for faster operation.&n; */
 DECL|macro|nfs_ok
 mdefine_line|#define&t;nfs_ok&t;&t;&t;__constant_htonl(NFS_OK)

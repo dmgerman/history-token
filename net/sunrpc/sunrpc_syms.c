@@ -8,6 +8,7 @@ macro_line|#include &lt;linux/socket.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/uio.h&gt;
 macro_line|#include &lt;linux/unistd.h&gt;
+macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/sunrpc/sched.h&gt;
 macro_line|#include &lt;linux/sunrpc/clnt.h&gt;
 macro_line|#include &lt;linux/sunrpc/svc.h&gt;
@@ -494,4 +495,105 @@ id|nlm_debug
 )paren
 suffix:semicolon
 macro_line|#endif
+r_static
+r_int
+id|__init
+DECL|function|init_sunrpc
+id|init_sunrpc
+c_func
+(paren
+r_void
+)paren
+(brace
+macro_line|#ifdef RPC_DEBUG
+id|rpc_register_sysctl
+c_func
+(paren
+)paren
+suffix:semicolon
+macro_line|#endif
+macro_line|#ifdef CONFIG_PROC_FS
+id|rpc_proc_init
+c_func
+(paren
+)paren
+suffix:semicolon
+macro_line|#endif
+id|cache_register
+c_func
+(paren
+op_amp
+id|auth_domain_cache
+)paren
+suffix:semicolon
+id|cache_register
+c_func
+(paren
+op_amp
+id|ip_map_cache
+)paren
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+)brace
+r_static
+r_void
+id|__exit
+DECL|function|cleanup_sunrpc
+id|cleanup_sunrpc
+c_func
+(paren
+r_void
+)paren
+(brace
+id|cache_unregister
+c_func
+(paren
+op_amp
+id|auth_domain_cache
+)paren
+suffix:semicolon
+id|cache_unregister
+c_func
+(paren
+op_amp
+id|ip_map_cache
+)paren
+suffix:semicolon
+macro_line|#ifdef RPC_DEBUG
+id|rpc_unregister_sysctl
+c_func
+(paren
+)paren
+suffix:semicolon
+macro_line|#endif
+macro_line|#ifdef CONFIG_PROCFS
+id|rpc_proc_exit
+c_func
+(paren
+)paren
+suffix:semicolon
+macro_line|#endif
+)brace
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
+)paren
+suffix:semicolon
+DECL|variable|init_sunrpc
+id|module_init
+c_func
+(paren
+id|init_sunrpc
+)paren
+suffix:semicolon
+DECL|variable|cleanup_sunrpc
+id|module_exit
+c_func
+(paren
+id|cleanup_sunrpc
+)paren
+suffix:semicolon
 eof

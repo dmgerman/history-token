@@ -1185,7 +1185,7 @@ op_star
 id|sin
 suffix:semicolon
 r_struct
-id|svc_client
+id|auth_domain
 op_star
 id|clp
 suffix:semicolon
@@ -1335,6 +1335,7 @@ op_minus
 id|EPERM
 suffix:semicolon
 r_else
+(brace
 id|err
 op_assign
 id|exp_rootfh
@@ -1349,6 +1350,13 @@ comma
 id|data.gd_maxlen
 )paren
 suffix:semicolon
+id|auth_domain_put
+c_func
+(paren
+id|clp
+)paren
+suffix:semicolon
+)brace
 id|exp_readunlock
 c_func
 (paren
@@ -1456,7 +1464,7 @@ op_star
 id|sin
 suffix:semicolon
 r_struct
-id|svc_client
+id|auth_domain
 op_star
 id|clp
 suffix:semicolon
@@ -1591,6 +1599,7 @@ op_minus
 id|EPERM
 suffix:semicolon
 r_else
+(brace
 id|err
 op_assign
 id|exp_rootfh
@@ -1606,6 +1615,13 @@ comma
 id|NFS_FHSIZE
 )paren
 suffix:semicolon
+id|auth_domain_put
+c_func
+(paren
+id|clp
+)paren
+suffix:semicolon
+)brace
 id|exp_readunlock
 c_func
 (paren
