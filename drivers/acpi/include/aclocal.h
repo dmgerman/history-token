@@ -1,4 +1,4 @@
-multiline_comment|/******************************************************************************&n; *&n; * Name: aclocal.h - Internal data types used across the ACPI subsystem&n; *       $Revision: 179 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Name: aclocal.h - Internal data types used across the ACPI subsystem&n; *       $Revision: 181 $&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#ifndef __ACLOCAL_H__
 DECL|macro|__ACLOCAL_H__
@@ -498,10 +498,6 @@ multiline_comment|/* Information about each GPE register block */
 r_typedef
 r_struct
 (brace
-DECL|member|address_space_id
-id|u8
-id|address_space_id
-suffix:semicolon
 DECL|member|block_address
 id|acpi_generic_address
 op_star
@@ -565,11 +561,12 @@ multiline_comment|/* Information about each particular GPE level */
 r_typedef
 r_struct
 (brace
-DECL|member|method_handle
-id|acpi_handle
-id|method_handle
+DECL|member|method_node
+id|acpi_namespace_node
+op_star
+id|method_node
 suffix:semicolon
-multiline_comment|/* Method handle for direct (fast) execution */
+multiline_comment|/* Method node for this GPE level */
 DECL|member|handler
 id|acpi_gpe_handler
 id|handler
