@@ -759,6 +759,11 @@ id|cd-&gt;last_close
 op_assign
 l_int|0
 suffix:semicolon
+id|cd-&gt;last_warn
+op_assign
+op_minus
+l_int|1
+suffix:semicolon
 id|list_add
 c_func
 (paren
@@ -3982,6 +3987,48 @@ op_assign
 id|len
 suffix:semicolon
 )brace
+DECL|function|warn_no_listener
+r_void
+id|warn_no_listener
+c_func
+(paren
+r_struct
+id|cache_detail
+op_star
+id|detail
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|detail-&gt;last_warn
+op_ne
+id|detail-&gt;last_close
+)paren
+(brace
+id|detail-&gt;last_warn
+op_assign
+id|detail-&gt;last_close
+suffix:semicolon
+id|printk
+c_func
+(paren
+id|KERN_WARNING
+l_string|&quot;nfsd: nobody listening for %s upcall;&quot;
+l_string|&quot; has some daemon %s?&bslash;n&quot;
+comma
+id|detail-&gt;name
+comma
+id|detail-&gt;last_close
+ques
+c_cond
+l_string|&quot;died&quot;
+suffix:colon
+l_string|&quot;not been started&quot;
+)paren
+suffix:semicolon
+)brace
+)brace
 multiline_comment|/*&n; * register an upcall request to user-space.&n; * Each request is at most one page long.&n; */
 DECL|function|cache_make_upcall
 r_static
@@ -4046,13 +4093,20 @@ c_func
 (paren
 )paren
 op_minus
-l_int|60
+l_int|30
 )paren
-multiline_comment|/* nobody is listening */
+(brace
+id|warn_no_listener
+c_func
+(paren
+id|detail
+)paren
+suffix:semicolon
 r_return
 op_minus
 id|EINVAL
 suffix:semicolon
+)brace
 id|buf
 op_assign
 id|kmalloc

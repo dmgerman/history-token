@@ -216,7 +216,12 @@ DECL|member|last_close
 id|time_t
 id|last_close
 suffix:semicolon
-multiline_comment|/* it no readers, when did last close */
+multiline_comment|/* if no readers, when did last close */
+DECL|member|last_warn
+id|time_t
+id|last_warn
+suffix:semicolon
+multiline_comment|/* when we last warned about no readers */
 )brace
 suffix:semicolon
 multiline_comment|/* this must be embedded in any request structure that&n; * identifies an object that will want a callback on&n; * a cache fill&n; */
