@@ -371,10 +371,14 @@ id|type
 r_return
 (paren
 (paren
-id|HASHDEV
-c_func
 (paren
-id|sb-&gt;s_dev
+(paren
+r_int
+r_int
+)paren
+id|sb
+op_rshift
+id|L1_CACHE_SHIFT
 )paren
 op_xor
 id|id

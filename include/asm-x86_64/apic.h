@@ -139,21 +139,12 @@ id|APIC_ICR_BUSY
 )paren
 suffix:semicolon
 )brace
-macro_line|#ifdef CONFIG_X86_GOOD_APIC
 DECL|macro|FORCE_READ_AROUND_WRITE
-macro_line|# define FORCE_READ_AROUND_WRITE 0
+mdefine_line|#define FORCE_READ_AROUND_WRITE 0
 DECL|macro|apic_read_around
-macro_line|# define apic_read_around(x)
+mdefine_line|#define apic_read_around(x)
 DECL|macro|apic_write_around
-macro_line|# define apic_write_around(x,y) apic_write((x),(y))
-macro_line|#else
-DECL|macro|FORCE_READ_AROUND_WRITE
-macro_line|# define FORCE_READ_AROUND_WRITE 1
-DECL|macro|apic_read_around
-macro_line|# define apic_read_around(x) apic_read(x)
-DECL|macro|apic_write_around
-macro_line|# define apic_write_around(x,y) apic_write_atomic((x),(y))
-macro_line|#endif
+mdefine_line|#define apic_write_around(x,y) apic_write((x),(y))
 DECL|function|ack_APIC_irq
 r_static
 r_inline

@@ -16,6 +16,10 @@ macro_line|#include &lt;linux/major.h&gt;
 macro_line|#ifdef  CONFIG_BLK_DEV_PS2
 DECL|macro|MAJOR_NR
 mdefine_line|#define MAJOR_NR PS2ESDI_MAJOR
+DECL|macro|DEVICE_NAME
+mdefine_line|#define DEVICE_NAME &quot;PS/2 ESDI&quot;
+DECL|macro|DEVICE_NR
+mdefine_line|#define DEVICE_NR(device) (minor(device) &gt;&gt; 6)
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
@@ -2186,12 +2190,8 @@ c_func
 id|QUEUE
 )paren
 )paren
-(brace
-id|CLEAR_INTR
-suffix:semicolon
 r_return
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -2221,6 +2221,8 @@ suffix:semicolon
 id|end_request
 c_func
 (paren
+id|CURRENT
+comma
 id|FAIL
 )paren
 suffix:semicolon
@@ -2363,6 +2365,8 @@ suffix:semicolon
 id|end_request
 c_func
 (paren
+id|CURRENT
+comma
 id|FAIL
 )paren
 suffix:semicolon
@@ -2398,6 +2402,8 @@ suffix:semicolon
 id|end_request
 c_func
 (paren
+id|CURRENT
+comma
 id|FAIL
 )paren
 suffix:semicolon
@@ -2693,6 +2699,8 @@ id|MAX_RETRIES
 id|end_request
 c_func
 (paren
+id|CURRENT
+comma
 id|FAIL
 )paren
 suffix:semicolon
@@ -4778,6 +4786,8 @@ suffix:semicolon
 id|end_request
 c_func
 (paren
+id|CURRENT
+comma
 id|ending
 )paren
 suffix:semicolon

@@ -1,4 +1,4 @@
-multiline_comment|/*********************************************************************&n; *                &n; * Filename:      irlap_event.c&n; * Version:       0.9&n; * Description:   IrLAP state machine implementation&n; * Status:        Experimental.&n; * Author:        Dag Brattli &lt;dag@brattli.net&gt;&n; * Created at:    Sat Aug 16 00:59:29 1997&n; * Modified at:   Sat Dec 25 21:07:57 1999&n; * Modified by:   Dag Brattli &lt;dag@brattli.net&gt;&n; * &n; *     Copyright (c) 1998-2000 Dag Brattli &lt;dag@brattli.net&gt;,&n; *     Copyright (c) 1998      Thomas Davis &lt;ratbert@radiks.net&gt;&n; *     All Rights Reserved.&n; *     Copyright (c) 2000-2001 Jean Tourrilhes &lt;jt@hpl.hp.com&gt;&n; *     &n; *     This program is free software; you can redistribute it and/or &n; *     modify it under the terms of the GNU General Public License as &n; *     published by the Free Software Foundation; either version 2 of &n; *     the License, or (at your option) any later version.&n; *&n; *     Neither Dag Brattli nor University of Troms&#xfffd; admit liability nor&n; *     provide warranty for any of this software. This material is &n; *     provided &quot;AS-IS&quot; and at no charge.&n; *&n; ********************************************************************/
+multiline_comment|/*********************************************************************&n; *&n; * Filename:      irlap_event.c&n; * Version:       0.9&n; * Description:   IrLAP state machine implementation&n; * Status:        Experimental.&n; * Author:        Dag Brattli &lt;dag@brattli.net&gt;&n; * Created at:    Sat Aug 16 00:59:29 1997&n; * Modified at:   Sat Dec 25 21:07:57 1999&n; * Modified by:   Dag Brattli &lt;dag@brattli.net&gt;&n; *&n; *     Copyright (c) 1998-2000 Dag Brattli &lt;dag@brattli.net&gt;,&n; *     Copyright (c) 1998      Thomas Davis &lt;ratbert@radiks.net&gt;&n; *     All Rights Reserved.&n; *     Copyright (c) 2000-2001 Jean Tourrilhes &lt;jt@hpl.hp.com&gt;&n; *&n; *     This program is free software; you can redistribute it and/or&n; *     modify it under the terms of the GNU General Public License as&n; *     published by the Free Software Foundation; either version 2 of&n; *     the License, or (at your option) any later version.&n; *&n; *     Neither Dag Brattli nor University of Troms&#xfffd; admit liability nor&n; *     provide warranty for any of this software. This material is&n; *     provided &quot;AS-IS&quot; and at no charge.&n; *&n; ********************************************************************/
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -655,7 +655,7 @@ suffix:semicolon
 )paren
 suffix:semicolon
 macro_line|#ifdef CONFIG_IRDA_FAST_RR
-multiline_comment|/* &n;&t; * Send out the RR frames faster if our own transmit queue is empty, or&n;&t; * if the peer is busy. The effect is a much faster conversation&n;&t; */
+multiline_comment|/*&n;&t; * Send out the RR frames faster if our own transmit queue is empty, or&n;&t; * if the peer is busy. The effect is a much faster conversation&n;&t; */
 r_if
 c_cond
 (paren
@@ -780,7 +780,7 @@ id|irlap_poll_timer_expired
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Function irlap_do_event (event, skb, info)&n; *&n; *    Rushes through the state machine without any delay. If state == XMIT&n; *    then send queued data frames. &n; */
+multiline_comment|/*&n; * Function irlap_do_event (event, skb, info)&n; *&n; *    Rushes through the state machine without any delay. If state == XMIT&n; *    then send queued data frames.&n; */
 DECL|function|irlap_do_event
 r_void
 id|irlap_do_event
@@ -858,7 +858,7 @@ comma
 id|info
 )paren
 suffix:semicolon
-multiline_comment|/* &n;&t; *  Check if there are any pending events that needs to be executed&n;&t; */
+multiline_comment|/*&n;&t; *  Check if there are any pending events that needs to be executed&n;&t; */
 r_switch
 c_cond
 (paren
@@ -872,7 +872,7 @@ multiline_comment|/* FALLTHROUGH */
 r_case
 id|LAP_XMIT_S
 suffix:colon
-multiline_comment|/* &n;&t;&t; * We just received the pf bit and are at the beginning&n;&t;&t; * of a new LAP transmit window.&n;&t;&t; * Check if there are any queued data frames, and do not&n;&t;&t; * try to disconnect link if we send any data frames, since&n;&t;&t; * that will change the state away form XMIT&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * We just received the pf bit and are at the beginning&n;&t;&t; * of a new LAP transmit window.&n;&t;&t; * Check if there are any queued data frames, and do not&n;&t;&t; * try to disconnect link if we send any data frames, since&n;&t;&t; * that will change the state away form XMIT&n;&t;&t; */
 id|IRDA_DEBUG
 c_func
 (paren
@@ -1011,9 +1011,9 @@ suffix:semicolon
 r_break
 suffix:semicolon
 multiline_comment|/*&t;case LAP_NDM: */
-multiline_comment|/* &t;case LAP_CONN: */
-multiline_comment|/* &t;case LAP_RESET_WAIT: */
-multiline_comment|/* &t;case LAP_RESET_CHECK: */
+multiline_comment|/*&t;case LAP_CONN: */
+multiline_comment|/*&t;case LAP_RESET_WAIT: */
+multiline_comment|/*&t;case LAP_RESET_CHECK: */
 r_default
 suffix:colon
 r_break
@@ -1037,7 +1037,7 @@ id|IRLAP_STATE
 id|state
 )paren
 (brace
-multiline_comment|/*&n;&t;if (!self || self-&gt;magic != LAP_MAGIC)&n;&t;&t;return;&n;&t;&n;&t;IRDA_DEBUG(4, &quot;next LAP state = %s&bslash;n&quot;, irlap_state[state]);&n;&t;*/
+multiline_comment|/*&n;&t;if (!self || self-&gt;magic != LAP_MAGIC)&n;&t;&t;return;&n;&n;&t;IRDA_DEBUG(4, &quot;next LAP state = %s&bslash;n&quot;, irlap_state[state]);&n;&t;*/
 id|self-&gt;state
 op_assign
 id|state
@@ -1416,7 +1416,7 @@ id|self-&gt;frame_sent
 op_assign
 id|FALSE
 suffix:semicolon
-multiline_comment|/* &n;&t;&t;&t; * Remember to multiply the query timeout value with &n;&t;&t;&t; * the number of slots used&n;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t; * Remember to multiply the query timeout value with&n;&t;&t;&t; * the number of slots used&n;&t;&t;&t; */
 id|irlap_start_query_timer
 c_func
 (paren
@@ -1688,7 +1688,7 @@ id|test_frame
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/* &n;&t;&t; * Send response. This skb will not be sent out again, and&n;&t;&t; * will only be used to send out the same info as the cmd&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * Send response. This skb will not be sent out again, and&n;&t;&t; * will only be used to send out the same info as the cmd&n;&t;&t; */
 id|irlap_send_test_frame
 c_func
 (paren
@@ -1858,10 +1858,11 @@ id|self-&gt;discovery_log
 id|WARNING
 c_func
 (paren
-id|__FUNCTION__
-l_string|&quot;(), discovery log is gone! &quot;
+l_string|&quot;%s: discovery log is gone! &quot;
 l_string|&quot;maybe the discovery timeout has been set to &quot;
 l_string|&quot;short?&bslash;n&quot;
+comma
+id|__FUNCTION__
 )paren
 suffix:semicolon
 r_break
@@ -1936,7 +1937,7 @@ suffix:semicolon
 r_case
 id|SLOT_TIMER_EXPIRED
 suffix:colon
-multiline_comment|/*&n;&t;&t; * Wait a little longer if we detect an incoming frame. This&n;&t;&t; * is not mentioned in the spec, but is a good thing to do, &n;&t;&t; * since we want to work even with devices that violate the&n;&t;&t; * timing requirements.&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * Wait a little longer if we detect an incoming frame. This&n;&t;&t; * is not mentioned in the spec, but is a good thing to do,&n;&t;&t; * since we want to work even with devices that violate the&n;&t;&t; * timing requirements.&n;&t;&t; */
 r_if
 c_cond
 (paren
@@ -2053,7 +2054,7 @@ comma
 id|LAP_NDM
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t;&t;&t; *  We are now finished with the discovery procedure, &n;&t;&t;&t; *  so now we must return the results&n;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t; *  We are now finished with the discovery procedure,&n;&t;&t;&t; *  so now we must return the results&n;&t;&t;&t; */
 id|irlap_discovery_confirm
 c_func
 (paren
@@ -2098,7 +2099,7 @@ r_return
 id|ret
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Function irlap_state_reply (self, event, skb, info)&n; *&n; *    REPLY, we have received a XID discovery frame from a device and we&n; *    are waiting for the right time slot to send a response XID frame&n; * &n; */
+multiline_comment|/*&n; * Function irlap_state_reply (self, event, skb, info)&n; *&n; *    REPLY, we have received a XID discovery frame from a device and we&n; *    are waiting for the right time slot to send a response XID frame&n; *&n; */
 DECL|function|irlap_state_reply
 r_static
 r_int
@@ -2335,7 +2336,7 @@ r_return
 id|ret
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Function irlap_state_conn (event, skb, info)&n; *&n; *    CONN, we have received a SNRM command and is waiting for the upper&n; *    layer to accept or refuse connection &n; *&n; */
+multiline_comment|/*&n; * Function irlap_state_conn (event, skb, info)&n; *&n; *    CONN, we have received a SNRM command and is waiting for the upper&n; *    layer to accept or refuse connection&n; *&n; */
 DECL|function|irlap_state_conn
 r_static
 r_int
@@ -2454,7 +2455,7 @@ c_func
 id|self
 )paren
 suffix:semicolon
-multiline_comment|/* &n;&t;&t; * Applying the parameters now will make sure we change speed&n;&t;&t; * *after* we have sent the next frame&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * Applying the parameters now will make sure we change speed&n;&t;&t; * *after* we have sent the next frame&n;&t;&t; */
 id|irlap_apply_connection_parameters
 c_func
 (paren
@@ -2463,7 +2464,7 @@ comma
 id|FALSE
 )paren
 suffix:semicolon
-multiline_comment|/* &n;&t;&t; * Sending this frame will force a speed change after it has&n;&t;&t; * been sent (i.e. the frame will be sent at 9600).&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * Sending this frame will force a speed change after it has&n;&t;&t; * been sent (i.e. the frame will be sent at 9600).&n;&t;&t; */
 id|irlap_send_ua_response_frame
 c_func
 (paren
@@ -2474,7 +2475,7 @@ id|self-&gt;qos_rx
 )paren
 suffix:semicolon
 macro_line|#if 0
-multiline_comment|/* &n;&t;&t; * We are allowed to send two frames, but this may increase&n;&t;&t; * the connect latency, so lets not do it for now.&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * We are allowed to send two frames, but this may increase&n;&t;&t; * the connect latency, so lets not do it for now.&n;&t;&t; */
 multiline_comment|/* This is full of good intentions, but doesn&squot;t work in&n;&t;&t; * practice.&n;&t;&t; * After sending the first UA response, we switch the&n;&t;&t; * dongle to the negociated speed, which is usually&n;&t;&t; * different than 9600 kb/s.&n;&t;&t; * From there, there is two solutions :&n;&t;&t; * 1) The other end has received the first UA response :&n;&t;&t; * it will set up the connection, move to state LAP_NRM_P,&n;&t;&t; * and will ignore and drop the second UA response.&n;&t;&t; * Actually, it&squot;s even worse : the other side will almost&n;&t;&t; * immediately send a RR that will likely collide with the&n;&t;&t; * UA response (depending on negociated turnaround).&n;&t;&t; * 2) The other end has not received the first UA response,&n;&t;&t; * will stay at 9600 and will never see the second UA response.&n;&t;&t; * Jean II */
 id|irlap_send_ua_response_frame
 c_func
@@ -2486,7 +2487,7 @@ id|self-&gt;qos_rx
 )paren
 suffix:semicolon
 macro_line|#endif
-multiline_comment|/*&n;&t;&t; *  The WD-timer could be set to the duration of the P-timer &n;&t;&t; *  for this case, but it is recommended to use twice the &n;&t;&t; *  value (note 3 IrLAP p. 60). &n;&t;&t; */
+multiline_comment|/*&n;&t;&t; *  The WD-timer could be set to the duration of the P-timer&n;&t;&t; *  for this case, but it is recommended to use twice the&n;&t;&t; *  value (note 3 IrLAP p. 60).&n;&t;&t; */
 id|irlap_start_wd_timer
 c_func
 (paren
@@ -2676,7 +2677,7 @@ OL
 id|self-&gt;N3
 )paren
 (brace
-multiline_comment|/* &n; *  Perform random backoff, Wait a random number of time units, minimum &n; *  duration half the time taken to transmitt a SNRM frame, maximum duration &n; *  1.5 times the time taken to transmit a SNRM frame. So this time should &n; *  between 15 msecs and 45 msecs.&n; */
+multiline_comment|/*&n; *  Perform random backoff, Wait a random number of time units, minimum&n; *  duration half the time taken to transmitt a SNRM frame, maximum duration&n; *  1.5 times the time taken to transmit a SNRM frame. So this time should&n; *  between 15 msecs and 45 msecs.&n; */
 id|irlap_start_backoff_timer
 c_func
 (paren
@@ -2872,7 +2873,7 @@ comma
 id|skb
 )paren
 suffix:semicolon
-multiline_comment|/* &n;&t;&t;&t; *  The WD-timer could be set to the duration of the&n;&t;&t;&t; *  P-timer for this case, but it is recommended&n;&t;&t;&t; *  to use twice the value (note 3 IrLAP p. 60).  &n;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t; *  The WD-timer could be set to the duration of the&n;&t;&t;&t; *  P-timer for this case, but it is recommended&n;&t;&t;&t; *  to use twice the value (note 3 IrLAP p. 60).&n;&t;&t;&t; */
 id|irlap_start_wd_timer
 c_func
 (paren
@@ -3123,7 +3124,7 @@ op_minus
 l_int|1
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Function irlap_state_xmit_p (self, event, skb, info)&n; * &n; *    XMIT, Only the primary station has right to transmit, and we&n; *    therefore do not expect to receive any transmissions from other&n; *    stations.&n; * &n; */
+multiline_comment|/*&n; * Function irlap_state_xmit_p (self, event, skb, info)&n; *&n; *    XMIT, Only the primary station has right to transmit, and we&n; *    therefore do not expect to receive any transmissions from other&n; *    stations.&n; *&n; */
 DECL|function|irlap_state_xmit_p
 r_static
 r_int
@@ -3180,7 +3181,7 @@ id|self-&gt;remote_busy
 )paren
 (brace
 macro_line|#ifdef CONFIG_IRDA_DYNAMIC_WINDOW
-multiline_comment|/*&n;&t;&t;&t; *  Test if we have transmitted more bytes over the &n;&t;&t;&t; *  link than its possible to do with the current &n;&t;&t;&t; *  speed and turn-around-time.&n;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t; *  Test if we have transmitted more bytes over the&n;&t;&t;&t; *  link than its possible to do with the current&n;&t;&t;&t; *  speed and turn-around-time.&n;&t;&t;&t; */
 r_if
 c_cond
 (paren
@@ -3278,7 +3279,7 @@ comma
 id|LAP_NRM_P
 )paren
 suffix:semicolon
-multiline_comment|/* &n;&t;&t;&t;&t; * Make sure state machine does not try to send&n;&t;&t;&t;&t; * any more frames &n;&t;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t;&t; * Make sure state machine does not try to send&n;&t;&t;&t;&t; * any more frames&n;&t;&t;&t;&t; */
 id|ret
 op_assign
 op_minus
@@ -3317,7 +3318,7 @@ id|skb
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t;&t;&t; *  The next ret is important, because it tells &n;&t;&t;&t; *  irlap_next_state _not_ to deliver more frames&n;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t; *  The next ret is important, because it tells&n;&t;&t;&t; *  irlap_next_state _not_ to deliver more frames&n;&t;&t;&t; */
 id|ret
 op_assign
 op_minus
@@ -3718,7 +3719,7 @@ suffix:colon
 multiline_comment|/* Optimize for the common case */
 multiline_comment|/* FIXME: must check for remote_busy below */
 macro_line|#ifdef CONFIG_IRDA_FAST_RR
-multiline_comment|/* &n;&t;&t; *  Reset the fast_RR so we can use the fast RR code with&n;&t;&t; *  full speed the next time since peer may have more frames&n;&t;&t; *  to transmitt&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; *  Reset the fast_RR so we can use the fast RR code with&n;&t;&t; *  full speed the next time since peer may have more frames&n;&t;&t; *  to transmitt&n;&t;&t; */
 id|self-&gt;fast_RR
 op_assign
 id|FALSE
@@ -3757,7 +3758,7 @@ comma
 id|info-&gt;nr
 )paren
 suffix:semicolon
-multiline_comment|/* &n;&t;&t; *  Check for expected I(nformation) frame&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; *  Check for expected I(nformation) frame&n;&t;&t; */
 r_if
 c_cond
 (paren
@@ -3853,7 +3854,7 @@ comma
 id|info-&gt;nr
 )paren
 suffix:semicolon
-multiline_comment|/*  &n;&t;&t;&t;&t; *  Got expected NR, so reset the&n;&t;&t;&t;&t; *  retry_count. This is not done by IrLAP,&n;&t;&t;&t;&t; *  which is strange!  &n;&t;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t;&t; *  Got expected NR, so reset the&n;&t;&t;&t;&t; *  retry_count. This is not done by IrLAP,&n;&t;&t;&t;&t; *  which is strange!&n;&t;&t;&t;&t; */
 id|self-&gt;retry_count
 op_assign
 l_int|0
@@ -3936,7 +3937,7 @@ comma
 id|info-&gt;nr
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t;&t;&t;&t; *  Wait until the last frame before doing &n;&t;&t;&t;&t; *  anything&n;&t;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t;&t; *  Wait until the last frame before doing&n;&t;&t;&t;&t; *  anything&n;&t;&t;&t;&t; */
 multiline_comment|/* Keep state */
 id|irlap_next_state
 c_func
@@ -4008,7 +4009,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 )brace
-multiline_comment|/* &n;&t;&t; *  Unexpected next to receive (Nr) &n;&t;&t; */
+multiline_comment|/*&n;&t;&t; *  Unexpected next to receive (Nr)&n;&t;&t; */
 r_if
 c_cond
 (paren
@@ -4093,7 +4094,7 @@ suffix:semicolon
 )brace
 r_else
 (brace
-multiline_comment|/* &n;&t;&t;&t;&t; *  Do not resend frames until the last&n;&t;&t;&t;&t; *  frame has arrived from the other&n;&t;&t;&t;&t; *  device. This is not documented in&n;&t;&t;&t;&t; *  IrLAP!!  &n;&t;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t;&t; *  Do not resend frames until the last&n;&t;&t;&t;&t; *  frame has arrived from the other&n;&t;&t;&t;&t; *  device. This is not documented in&n;&t;&t;&t;&t; *  IrLAP!!&n;&t;&t;&t;&t; */
 id|self-&gt;vr
 op_assign
 (paren
@@ -4377,8 +4378,9 @@ suffix:semicolon
 id|printk
 c_func
 (paren
+l_string|&quot;%s: RECV_UI_FRAME: next state %s&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(): RECV_UI_FRAME: next state %s&bslash;n&quot;
 comma
 id|irlap_state
 (braket
@@ -4400,12 +4402,12 @@ suffix:semicolon
 r_case
 id|RECV_RR_RSP
 suffix:colon
-multiline_comment|/*  &n;&t;&t; *  If you get a RR, the remote isn&squot;t busy anymore, &n;&t;&t; *  no matter what the NR &n;&t;&t; */
+multiline_comment|/*&n;&t;&t; *  If you get a RR, the remote isn&squot;t busy anymore,&n;&t;&t; *  no matter what the NR&n;&t;&t; */
 id|self-&gt;remote_busy
 op_assign
 id|FALSE
 suffix:semicolon
-multiline_comment|/* &n;&t;&t; *  Nr as expected? &n;&t;&t; */
+multiline_comment|/*&n;&t;&t; *  Nr as expected?&n;&t;&t; */
 id|ret
 op_assign
 id|irlap_validate_nr_received
@@ -4441,7 +4443,7 @@ comma
 id|info-&gt;nr
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t;&t;&t; *  Got expected NR, so reset the retry_count. This &n;&t;&t;&t; *  is not done by the IrLAP standard , which is &n;&t;&t;&t; *  strange! DB.&n;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t; *  Got expected NR, so reset the retry_count. This&n;&t;&t;&t; *  is not done by the IrLAP standard , which is&n;&t;&t;&t; *  strange! DB.&n;&t;&t;&t; */
 id|self-&gt;retry_count
 op_assign
 l_int|0
@@ -4495,7 +4497,7 @@ l_int|1
 suffix:semicolon
 )paren
 suffix:semicolon
-multiline_comment|/* &n;&t;&t;&t; *  Unexpected nr! &n;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t; *  Unexpected nr!&n;&t;&t;&t; */
 multiline_comment|/* Update Nr received */
 id|irlap_update_nr_received
 c_func
@@ -4680,7 +4682,7 @@ suffix:semicolon
 r_case
 id|FINAL_TIMER_EXPIRED
 suffix:colon
-multiline_comment|/* &n;&t;&t; *  We are allowed to wait for additional 300 ms if&n;&t;&t; *  final timer expires when we are in the middle&n;&t;&t; *  of receiving a frame (page 45, IrLAP). Check that&n;&t;&t; *  we only do this once for each frame.&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; *  We are allowed to wait for additional 300 ms if&n;&t;&t; *  final timer expires when we are in the middle&n;&t;&t; *  of receiving a frame (page 45, IrLAP). Check that&n;&t;&t; *  we only do this once for each frame.&n;&t;&t; */
 r_if
 c_cond
 (paren
@@ -4715,7 +4717,7 @@ l_int|300
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t;&t;&t; *  Don&squot;t allow this to happen one more time in a row, &n;&t;&t;&t; *  or else we can get a pretty tight loop here if &n;&t;&t;&t; *  if we only receive half a frame. DB.&n;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t; *  Don&squot;t allow this to happen one more time in a row,&n;&t;&t;&t; *  or else we can get a pretty tight loop here if&n;&t;&t;&t; *  if we only receive half a frame. DB.&n;&t;&t;&t; */
 id|self-&gt;add_wait
 op_assign
 id|TRUE
@@ -5470,7 +5472,7 @@ suffix:semicolon
 r_case
 id|RECV_SNRM_CMD
 suffix:colon
-multiline_comment|/* &n;&t;&t; * SNRM frame is not allowed to contain an I-field in this &n;&t;&t; * state&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * SNRM frame is not allowed to contain an I-field in this&n;&t;&t; * state&n;&t;&t; */
 r_if
 c_cond
 (paren
@@ -5575,7 +5577,7 @@ r_return
 id|ret
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Function irlap_state_xmit_s (event, skb, info)&n; * &n; *   XMIT_S, The secondary station has been given the right to transmit,&n; *   and we therefor do not expect to receive any transmissions from other&n; *   stations.  &n; */
+multiline_comment|/*&n; * Function irlap_state_xmit_s (event, skb, info)&n; *&n; *   XMIT_S, The secondary station has been given the right to transmit,&n; *   and we therefor do not expect to receive any transmissions from other&n; *   stations.&n; */
 DECL|function|irlap_state_xmit_s
 r_static
 r_int
@@ -5672,7 +5674,7 @@ id|self-&gt;remote_busy
 )paren
 (brace
 macro_line|#ifdef CONFIG_IRDA_DYNAMIC_WINDOW
-multiline_comment|/*&n;&t;&t;&t; *  Test if we have transmitted more bytes over the &n;&t;&t;&t; *  link than its possible to do with the current &n;&t;&t;&t; *  speed and turn-around-time.&n;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t; *  Test if we have transmitted more bytes over the&n;&t;&t;&t; *  link than its possible to do with the current&n;&t;&t;&t; *  speed and turn-around-time.&n;&t;&t;&t; */
 r_if
 c_cond
 (paren
@@ -5694,7 +5696,7 @@ id|skb
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t;&t;&t;&t; *  Switch to NRM_S, this is only possible&n;&t;&t;&t;&t; *  when we are in secondary mode, since we &n;&t;&t;&t;&t; *  must be sure that we don&squot;t miss any RR&n;&t;&t;&t;&t; *  frames&n;&t;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t;&t; *  Switch to NRM_S, this is only possible&n;&t;&t;&t;&t; *  when we are in secondary mode, since we&n;&t;&t;&t;&t; *  must be sure that we don&squot;t miss any RR&n;&t;&t;&t;&t; *  frames&n;&t;&t;&t;&t; */
 id|self-&gt;window
 op_assign
 id|self-&gt;window_size
@@ -5785,7 +5787,7 @@ comma
 id|LAP_NRM_S
 )paren
 suffix:semicolon
-multiline_comment|/* &n;&t;&t;&t;&t; * Make sure state machine does not try to send&n;&t;&t;&t;&t; * any more frames &n;&t;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t;&t; * Make sure state machine does not try to send&n;&t;&t;&t;&t; * any more frames&n;&t;&t;&t;&t; */
 id|ret
 op_assign
 op_minus
@@ -5892,7 +5894,7 @@ r_return
 id|ret
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Function irlap_state_nrm_s (event, skb, info)&n; *&n; *    NRM_S (Normal Response Mode as Secondary) state, in this state we are &n; *    expecting to receive frames from the primary station&n; *&n; */
+multiline_comment|/*&n; * Function irlap_state_nrm_s (event, skb, info)&n; *&n; *    NRM_S (Normal Response Mode as Secondary) state, in this state we are&n; *    expecting to receive frames from the primary station&n; *&n; */
 DECL|function|irlap_state_nrm_s
 r_static
 r_int
@@ -6029,7 +6031,7 @@ comma
 id|info-&gt;nr
 )paren
 suffix:semicolon
-multiline_comment|/* &n;&t;&t; *  Check for expected I(nformation) frame&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; *  Check for expected I(nformation) frame&n;&t;&t; */
 r_if
 c_cond
 (paren
@@ -6046,7 +6048,7 @@ id|NR_EXPECTED
 )paren
 )paren
 (brace
-multiline_comment|/* &n;&t;&t;&t; *  poll bit cleared?&n;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t; *  poll bit cleared?&n;&t;&t;&t; */
 r_if
 c_cond
 (paren
@@ -6131,7 +6133,7 @@ comma
 id|info-&gt;nr
 )paren
 suffix:semicolon
-multiline_comment|/* &n;&t;&t;&t;&t; *  We should wait before sending RR, and&n;&t;&t;&t;&t; *  also before changing to XMIT_S&n;&t;&t;&t;&t; *  state. (note 1, IrLAP p. 82) &n;&t;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t;&t; *  We should wait before sending RR, and&n;&t;&t;&t;&t; *  also before changing to XMIT_S&n;&t;&t;&t;&t; *  state. (note 1, IrLAP p. 82)&n;&t;&t;&t;&t; */
 id|irlap_wait_min_turn_around
 c_func
 (paren
@@ -6141,7 +6143,7 @@ op_amp
 id|self-&gt;qos_tx
 )paren
 suffix:semicolon
-multiline_comment|/*  &n;&t;&t;&t;&t; * Give higher layers a chance to&n;&t;&t;&t;&t; * immediately reply with some data before&n;&t;&t;&t;&t; * we decide if we should send a RR frame&n;&t;&t;&t;&t; * or not&n;&t;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t;&t; * Give higher layers a chance to&n;&t;&t;&t;&t; * immediately reply with some data before&n;&t;&t;&t;&t; * we decide if we should send a RR frame&n;&t;&t;&t;&t; * or not&n;&t;&t;&t;&t; */
 id|irlap_data_indication
 c_func
 (paren
@@ -6308,7 +6310,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 )brace
-multiline_comment|/* &n;&t;&t; *  Unexpected Next to Receive(NR) ?&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; *  Unexpected Next to Receive(NR) ?&n;&t;&t; */
 r_if
 c_cond
 (paren
@@ -6494,7 +6496,7 @@ suffix:semicolon
 r_case
 id|RECV_UI_FRAME
 suffix:colon
-multiline_comment|/* &n;&t;&t; *  poll bit cleared?&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; *  poll bit cleared?&n;&t;&t; */
 r_if
 c_cond
 (paren
@@ -6636,7 +6638,7 @@ id|self-&gt;retry_count
 op_assign
 l_int|0
 suffix:semicolon
-multiline_comment|/* &n;&t;&t; *  Nr as expected? &n;&t;&t; */
+multiline_comment|/*&n;&t;&t; *  Nr as expected?&n;&t;&t; */
 id|nr_status
 op_assign
 id|irlap_validate_nr_received
@@ -7293,7 +7295,7 @@ r_return
 id|ret
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Function irlap_state_sclose (self, event, skb, info)&n; *&n; *    &n; *&n; */
+multiline_comment|/*&n; * Function irlap_state_sclose (self, event, skb, info)&n; */
 DECL|function|irlap_state_sclose
 r_static
 r_int

@@ -1,6 +1,7 @@
 macro_line|#ifndef _ASMx8664_SIGNAL_H
 DECL|macro|_ASMx8664_SIGNAL_H
 mdefine_line|#define _ASMx8664_SIGNAL_H
+macro_line|#ifndef __ASSEMBLY__
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/linkage.h&gt;
 multiline_comment|/* Avoid too many header ordering problems.  */
@@ -66,6 +67,7 @@ r_int
 id|sigset_t
 suffix:semicolon
 macro_line|#endif /* __KERNEL__ */
+macro_line|#endif
 DECL|macro|SIGHUP
 mdefine_line|#define SIGHUP&t;&t; 1
 DECL|macro|SIGINT
@@ -187,6 +189,7 @@ DECL|macro|SIG_UNBLOCK
 mdefine_line|#define SIG_UNBLOCK        1&t;/* for unblocking signals */
 DECL|macro|SIG_SETMASK
 mdefine_line|#define SIG_SETMASK        2&t;/* for setting the signal mask */
+macro_line|#ifndef __ASSEMBLY__
 multiline_comment|/* Type of a signal handler.  */
 DECL|typedef|__sighandler_t
 r_typedef
@@ -475,6 +478,7 @@ r_return
 id|word
 suffix:semicolon
 )brace
+macro_line|#endif
 macro_line|#endif
 macro_line|#endif /* __KERNEL__ */
 macro_line|#endif

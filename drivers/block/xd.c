@@ -17,6 +17,8 @@ macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/dma.h&gt;
 DECL|macro|MAJOR_NR
 mdefine_line|#define MAJOR_NR XT_DISK_MAJOR
+DECL|macro|DEVICE_NR
+mdefine_line|#define DEVICE_NR(device) (minor(device) &gt;&gt; 6)
 macro_line|#include &lt;linux/blk.h&gt;
 macro_line|#include &lt;linux/blkpg.h&gt;
 macro_line|#include &quot;xd.h&quot;
@@ -1199,12 +1201,8 @@ c_func
 id|QUEUE
 )paren
 )paren
-(brace
-id|CLEAR_INTR
-suffix:semicolon
 r_return
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -1322,6 +1320,8 @@ suffix:semicolon
 id|end_request
 c_func
 (paren
+id|CURRENT
+comma
 id|code
 )paren
 suffix:semicolon

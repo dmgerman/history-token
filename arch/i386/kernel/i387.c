@@ -1574,6 +1574,9 @@ op_star
 id|buf
 )paren
 (brace
+r_int
+id|err
+suffix:semicolon
 r_struct
 id|task_struct
 op_star
@@ -1587,9 +1590,8 @@ c_func
 id|tsk
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
+id|err
+op_assign
 id|__copy_from_user
 c_func
 (paren
@@ -1608,9 +1610,6 @@ r_struct
 id|i387_fxsave_struct
 )paren
 )paren
-)paren
-r_return
-l_int|1
 suffix:semicolon
 multiline_comment|/* mxcsr bit 6 and 31-16 must be zero for security reasons */
 id|tsk-&gt;thread.i387.fxsave.mxcsr
@@ -1618,6 +1617,11 @@ op_and_assign
 l_int|0xffbf
 suffix:semicolon
 r_return
+id|err
+ques
+c_cond
+l_int|1
+suffix:colon
 id|convert_fxsr_from_user
 c_func
 (paren

@@ -192,6 +192,10 @@ id|u_fpvalid
 suffix:semicolon
 multiline_comment|/* True if math co-processor being used. */
 multiline_comment|/* for this mess. Not yet used. */
+DECL|member|pad0
+r_int
+id|pad0
+suffix:semicolon
 DECL|member|i387
 r_struct
 id|user_i387_struct
@@ -243,6 +247,10 @@ r_int
 id|reserved
 suffix:semicolon
 multiline_comment|/* No longer used */
+DECL|member|pad1
+r_int
+id|pad1
+suffix:semicolon
 DECL|member|u_ar0
 r_struct
 id|user_pt_regs
@@ -280,6 +288,18 @@ id|u_debugreg
 l_int|8
 )braket
 suffix:semicolon
+DECL|member|error_code
+r_int
+r_int
+id|error_code
+suffix:semicolon
+multiline_comment|/* CPU error code or 0 */
+DECL|member|fault_address
+r_int
+r_int
+id|fault_address
+suffix:semicolon
+multiline_comment|/* CR3 or 0 */
 )brace
 suffix:semicolon
 DECL|macro|NBPG

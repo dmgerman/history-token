@@ -13,7 +13,7 @@ DECL|macro|HISAX_STATUS_BUFSIZE
 mdefine_line|#define HISAX_STATUS_BUFSIZE 4096
 DECL|macro|INCLUDE_INLINE_FUNCS
 mdefine_line|#define INCLUDE_INLINE_FUNCS
-multiline_comment|/*&n; * This structure array contains one entry per card. An entry looks&n; * like this:&n; *&n; * { type, protocol, p0, p1, p2, NULL }&n; *&n; * type&n; *    1 Teles 16.0       p0=irq p1=membase p2=iobase&n; *    2 Teles  8.0       p0=irq p1=membase&n; *    3 Teles 16.3       p0=irq p1=iobase&n; *    4 Creatix PNP      p0=irq p1=IO0 (ISAC)  p2=IO1 (HSCX)&n; *    5 AVM A1 (Fritz)   p0=irq p1=iobase&n; *    6 ELSA PC          [p0=iobase] or nothing (autodetect)&n; *    7 ELSA Quickstep   p0=irq p1=iobase&n; *    8 Teles PCMCIA     p0=irq p1=iobase&n; *    9 ITK ix1-micro    p0=irq p1=iobase&n; *   10 ELSA PCMCIA      p0=irq p1=iobase&n; *   11 Eicon.Diehl Diva p0=irq p1=iobase&n; *   12 Asuscom ISDNLink p0=irq p1=iobase&n; *   13 Teleint          p0=irq p1=iobase&n; *   14 Teles 16.3c      p0=irq p1=iobase&n; *   15 Sedlbauer speed  p0=irq p1=iobase&n; *   15 Sedlbauer PC/104&t;p0=irq p1=iobase&n; *   15 Sedlbauer speed pci&t;no parameter&n; *   16 USR Sportster internal  p0=irq  p1=iobase&n; *   17 MIC card                p0=irq  p1=iobase&n; *   18 ELSA Quickstep 1000PCI  no parameter&n; *   19 Compaq ISDN S0 ISA card p0=irq  p1=IO0 (HSCX)  p2=IO1 (ISAC) p3=IO2&n; *   20 Travers Technologies NETjet-S PCI card&n; *   21 TELES PCI               no parameter&n; *   22 Sedlbauer Speed Star    p0=irq p1=iobase&n; *   23 reserved&n; *   24 Dr Neuhaus Niccy PnP/PCI card p0=irq p1=IO0 p2=IO1 (PnP only)&n; *   25 Teles S0Box             p0=irq p1=iobase (from isapnp setup)&n; *   26 AVM A1 PCMCIA (Fritz)   p0=irq p1=iobase&n; *   27 AVM PnP/PCI &t;&t;p0=irq p1=iobase (PCI no parameter)&n; *   28 Sedlbauer Speed Fax+ &t;p0=irq p1=iobase (from isapnp setup)&n; *   29 Siemens I-Surf          p0=irq p1=iobase p2=memory (from isapnp setup)&n; *   30 ACER P10                p0=irq p1=iobase (from isapnp setup)&n; *   31 HST Saphir              p0=irq  p1=iobase&n; *   32 Telekom A4T             none&n; *   33 Scitel Quadro&t;&t;p0=subcontroller (4*S0, subctrl 1...4)&n; *   34&t;Gazel ISDN cards&n; *   35 HFC 2BDS0 PCI           none&n; *   36 Winbond 6692 PCI        none&n; *   37 HFC 2BDS0 S+/SP         p0=irq p1=iobase&n; *   38 Travers Technologies NETspider-U PCI card&n; *   39 HFC 2BDS0-SP PCMCIA     p0=irq p1=iobase&n; *&n; * protocol can be either ISDN_PTYPE_EURO or ISDN_PTYPE_1TR6 or ISDN_PTYPE_NI1&n; *&n; *&n; */
+multiline_comment|/*&n; * This structure array contains one entry per card. An entry looks&n; * like this:&n; *&n; * { type, protocol, p0, p1, p2, NULL }&n; *&n; * type&n; *    1 Teles 16.0       p0=irq p1=membase p2=iobase&n; *    2 Teles  8.0       p0=irq p1=membase&n; *    3 Teles 16.3       p0=irq p1=iobase&n; *    4 Creatix PNP      p0=irq p1=IO0 (ISAC)  p2=IO1 (HSCX)&n; *    5 AVM A1 (Fritz)   p0=irq p1=iobase&n; *    6 ELSA PC          [p0=iobase] or nothing (autodetect)&n; *    7 ELSA Quickstep   p0=irq p1=iobase&n; *    8 Teles PCMCIA     p0=irq p1=iobase&n; *    9 ITK ix1-micro    p0=irq p1=iobase&n; *   10 ELSA PCMCIA      p0=irq p1=iobase&n; *   11 Eicon.Diehl Diva p0=irq p1=iobase&n; *   12 Asuscom ISDNLink p0=irq p1=iobase&n; *   13 Teleint          p0=irq p1=iobase&n; *   14 Teles 16.3c      p0=irq p1=iobase&n; *   15 Sedlbauer speed  p0=irq p1=iobase&n; *   15 Sedlbauer PC/104&t;p0=irq p1=iobase&n; *   15 Sedlbauer speed pci&t;no parameter&n; *   16 USR Sportster internal  p0=irq  p1=iobase&n; *   17 MIC card                p0=irq  p1=iobase&n; *   18 ELSA Quickstep 1000PCI  no parameter&n; *   19 Compaq ISDN S0 ISA card p0=irq  p1=IO0 (HSCX)  p2=IO1 (ISAC) p3=IO2&n; *   20 Travers Technologies NETjet-S PCI card&n; *   21 TELES PCI               no parameter&n; *   22 Sedlbauer Speed Star    p0=irq p1=iobase&n; *   23 reserved&n; *   24 Dr Neuhaus Niccy PnP/PCI card p0=irq p1=IO0 p2=IO1 (PnP only)&n; *   25 Teles S0Box             p0=irq p1=iobase (from isapnp setup)&n; *   26 AVM A1 PCMCIA (Fritz)   p0=irq p1=iobase&n; *   27 AVM PnP/PCI &t;&t;p0=irq p1=iobase (PCI no parameter)&n; *   28 Sedlbauer Speed Fax+ &t;p0=irq p1=iobase (from isapnp setup)&n; *   29 Siemens I-Surf          p0=irq p1=iobase p2=memory (from isapnp setup)&n; *   30 ACER P10                p0=irq p1=iobase (from isapnp setup)&n; *   31 HST Saphir              p0=irq  p1=iobase&n; *   32 Telekom A4T             none&n; *   33 Scitel Quadro&t;&t;p0=subcontroller (4*S0, subctrl 1...4)&n; *   34&t;Gazel ISDN cards&n; *   35 HFC 2BDS0 PCI           none&n; *   36 Winbond 6692 PCI        none&n; *   37 HFC 2BDS0 S+/SP         p0=irq p1=iobase&n; *   38 Travers Technologies NETspider-U PCI card&n; *   39 HFC 2BDS0-SP PCMCIA     p0=irq p1=iobase&n; *   40 hotplug interface&n; *   41 Formula-n enter:now ISDN PCI a/b   none&n; *&n; * protocol can be either ISDN_PTYPE_EURO or ISDN_PTYPE_1TR6 or ISDN_PTYPE_NI1&n; *&n; *&n; */
 DECL|variable|CardType
 r_const
 r_char
@@ -102,6 +102,10 @@ comma
 l_string|&quot;NETspider-U&quot;
 comma
 l_string|&quot;HFC-2BDS0-SP PCMCIA&quot;
+comma
+l_string|&quot;Hotplug&quot;
+comma
+l_string|&quot;Formula-n enter:now PCI a/b&quot;
 comma
 )brace
 suffix:semicolon
@@ -1703,6 +1707,19 @@ macro_line|#if CARD_NETJET_U
 r_extern
 r_int
 id|setup_netjet_u
+c_func
+(paren
+r_struct
+id|IsdnCard
+op_star
+id|card
+)paren
+suffix:semicolon
+macro_line|#endif
+macro_line|#if CARD_FN_ENTERNOW_PCI
+r_extern
+r_int
+id|setup_enternow_pci
 c_func
 (paren
 r_struct
@@ -4086,6 +4103,21 @@ suffix:colon
 id|ret
 op_assign
 id|setup_netjet_u
+c_func
+(paren
+id|card
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
+macro_line|#endif
+macro_line|#if CARD_FN_ENTERNOW_PCI
+r_case
+id|ISDN_CTYPE_ENTERNOW
+suffix:colon
+id|ret
+op_assign
+id|setup_enternow_pci
 c_func
 (paren
 id|card
@@ -9478,6 +9510,16 @@ comma
 id|PCI_ANY_ID
 )brace
 comma
+(brace
+id|PCI_VENDOR_ID_EICON
+comma
+id|PCI_DEVICE_ID_EICON_DIVA202
+comma
+id|PCI_ANY_ID
+comma
+id|PCI_ANY_ID
+)brace
+comma
 macro_line|#endif
 macro_line|#ifdef CONFIG_HISAX_ELSA
 (brace
@@ -9842,6 +9884,55 @@ id|module_exit
 c_func
 (paren
 id|HiSax_exit
+)paren
+suffix:semicolon
+DECL|variable|FsmNew
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|FsmNew
+)paren
+suffix:semicolon
+DECL|variable|FsmFree
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|FsmFree
+)paren
+suffix:semicolon
+DECL|variable|FsmEvent
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|FsmEvent
+)paren
+suffix:semicolon
+DECL|variable|FsmChangeState
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|FsmChangeState
+)paren
+suffix:semicolon
+DECL|variable|FsmInitTimer
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|FsmInitTimer
+)paren
+suffix:semicolon
+DECL|variable|FsmDelTimer
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|FsmDelTimer
+)paren
+suffix:semicolon
+DECL|variable|FsmRestartTimer
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|FsmRestartTimer
 )paren
 suffix:semicolon
 eof

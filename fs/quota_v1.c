@@ -444,11 +444,7 @@ c_func
 id|KERN_WARNING
 l_string|&quot;VFS: dquota write failed on dev %s&bslash;n&quot;
 comma
-id|kdevname
-c_func
-(paren
-id|dquot-&gt;dq_sb-&gt;s_dev
-)paren
+id|dquot-&gt;dq_sb-&gt;s_id
 )paren
 suffix:semicolon
 r_if
@@ -710,11 +706,7 @@ c_func
 id|KERN_INFO
 l_string|&quot;VFS: %s: Refusing to turn on old quota format on given file. It probably contains newer quota format.&bslash;n&quot;
 comma
-id|kdevname
-c_func
-(paren
-id|sb-&gt;s_dev
-)paren
+id|sb-&gt;s_id
 )paren
 suffix:semicolon
 r_return

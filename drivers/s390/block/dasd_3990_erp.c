@@ -1,890 +1,55 @@
-multiline_comment|/* &n; * File...........: linux/drivers/s390/block/dasd_3990_erp.c&n; * Author(s)......: Horst  Hummel    &lt;Horst.Hummel@de.ibm.com&gt; &n; *                  Holger Smolinski &lt;Holger.Smolinski@de.ibm.com&gt;&n; * Bugreports.to..: &lt;Linux390@de.ibm.com&gt;&n; * (C) IBM Corporation, IBM Deutschland Entwicklung GmbH, 2000, 2001&n; *&n; * History of changes:&n; * 05/14/01 fixed PL030160GTO (BUG() in erp_action_5)&n; */
-macro_line|#include &lt;asm/ccwcache.h&gt;
+multiline_comment|/* &n; * File...........: linux/drivers/s390/block/dasd_3990_erp.c&n; * Author(s)......: Horst  Hummel    &lt;Horst.Hummel@de.ibm.com&gt; &n; *&t;&t;    Holger Smolinski &lt;Holger.Smolinski@de.ibm.com&gt;&n; * Bugreports.to..: &lt;Linux390@de.ibm.com&gt;&n; * (C) IBM Corporation, IBM Deutschland Entwicklung GmbH, 2000, 2001&n; *&n; * History of changes:&n; * 05/14/01 fixed PL030160GTO (BUG() in erp_action_5)&n; * 05/04/02 code restructuring.&n; */
+macro_line|#include &lt;linux/timer.h&gt;
+macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;asm/idals.h&gt;
 macro_line|#include &lt;asm/s390io.h&gt;
-macro_line|#include &lt;linux/timer.h&gt;
-macro_line|#include &quot;dasd_int.h&quot;
-macro_line|#include &quot;dasd_eckd.h&quot;
-macro_line|#include &quot;dasd_3990_erp.h&quot;
-macro_line|#ifdef PRINTK_HEADER
-DECL|macro|PRINTK_HEADER
-macro_line|#undef PRINTK_HEADER
-macro_line|#endif&t;&t;&t;&t;/* PRINTK_HEADER */
+macro_line|#include &lt;asm/todclk.h&gt;
 DECL|macro|PRINTK_HEADER
 mdefine_line|#define PRINTK_HEADER &quot;dasd_erp(3990): &quot;
-multiline_comment|/*&n; ***************************************************************************** &n; * SECTION DEBUG ROUTINES&n; ***************************************************************************** &n; */
-r_void
-DECL|function|log_erp_chain
-id|log_erp_chain
-(paren
-id|ccw_req_t
-op_star
-id|cqr
-comma
+macro_line|#include &quot;dasd_int.h&quot;
+macro_line|#include &quot;dasd_eckd.h&quot;
+DECL|struct|DCTL_data_t
+r_typedef
+r_struct
+id|DCTL_data_t
+(brace
+DECL|member|subcommand
 r_int
-id|caller
-comma
-id|__u32
-id|cpa
-)paren
-(brace
-id|ccw_req_t
-op_star
-id|loop_cqr
-op_assign
-id|cqr
+r_char
+id|subcommand
 suffix:semicolon
-id|dasd_device_t
-op_star
-id|device
-op_assign
-id|cqr-&gt;device
-suffix:semicolon
+multiline_comment|/* e.g Inhibit Write, Enable Write,... */
+DECL|member|modifier
 r_int
-id|i
-suffix:semicolon
 r_char
-op_star
-id|nl
-comma
-op_star
-id|end_cqr
-comma
-op_star
-id|begin
-comma
-op_star
-id|end
+id|modifier
 suffix:semicolon
-multiline_comment|/* dump sense data */
-r_if
-c_cond
-(paren
-id|device-&gt;discipline
-op_logical_and
-id|device-&gt;discipline-&gt;dump_sense
-)paren
-(brace
-id|device-&gt;discipline-&gt;dump_sense
-(paren
-id|device
-comma
-id|cqr
-)paren
-suffix:semicolon
-)brace
-multiline_comment|/* log the channel program */
-r_while
-c_loop
-(paren
-id|loop_cqr
-op_ne
-l_int|NULL
-)paren
-(brace
-id|DASD_MESSAGE
-(paren
-id|KERN_ERR
-comma
-id|device
-comma
-l_string|&quot;(%s) ERP chain report for req: %p&quot;
-comma
-id|caller
-op_eq
-l_int|0
-ques
-c_cond
-l_string|&quot;EXAMINE&quot;
-suffix:colon
-l_string|&quot;ACTION&quot;
-comma
-id|loop_cqr
-)paren
-suffix:semicolon
-id|nl
-op_assign
-(paren
-r_char
-op_star
-)paren
-id|loop_cqr
-suffix:semicolon
-id|end_cqr
-op_assign
-id|nl
-op_plus
-r_sizeof
-(paren
-id|ccw_req_t
-)paren
-suffix:semicolon
-r_while
-c_loop
-(paren
-id|nl
-OL
-id|end_cqr
-)paren
-(brace
-id|DASD_MESSAGE
-(paren
-id|KERN_ERR
-comma
-id|device
-comma
-l_string|&quot;%p: %02x%02x%02x%02x %02x%02x%02x%02x &quot;
-l_string|&quot;%02x%02x%02x%02x %02x%02x%02x%02x&quot;
-comma
-id|nl
-comma
-id|nl
-(braket
-l_int|0
-)braket
-comma
-id|nl
-(braket
-l_int|1
-)braket
-comma
-id|nl
-(braket
-l_int|2
-)braket
-comma
-id|nl
-(braket
-l_int|3
-)braket
-comma
-id|nl
-(braket
-l_int|4
-)braket
-comma
-id|nl
-(braket
-l_int|5
-)braket
-comma
-id|nl
-(braket
-l_int|6
-)braket
-comma
-id|nl
-(braket
-l_int|7
-)braket
-comma
-id|nl
-(braket
-l_int|8
-)braket
-comma
-id|nl
-(braket
-l_int|9
-)braket
-comma
-id|nl
-(braket
-l_int|10
-)braket
-comma
-id|nl
-(braket
-l_int|11
-)braket
-comma
-id|nl
-(braket
-l_int|12
-)braket
-comma
-id|nl
-(braket
-l_int|13
-)braket
-comma
-id|nl
-(braket
-l_int|14
-)braket
-comma
-id|nl
-(braket
-l_int|15
-)braket
-)paren
-suffix:semicolon
-id|nl
-op_add_assign
-l_int|16
-suffix:semicolon
-)brace
-id|nl
-op_assign
-(paren
-r_char
-op_star
-)paren
-id|loop_cqr-&gt;cpaddr
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|loop_cqr-&gt;cplength
-OG
-l_int|40
-)paren
-(brace
-multiline_comment|/* log only parts of the CP */
-id|DASD_MESSAGE
-(paren
-id|KERN_ERR
-comma
-id|device
-comma
-l_string|&quot;%s&quot;
-comma
-l_string|&quot;Start of channel program:&quot;
-)paren
-suffix:semicolon
-r_for
-c_loop
-(paren
-id|i
-op_assign
-l_int|0
-suffix:semicolon
-id|i
-OL
-l_int|20
-suffix:semicolon
-id|i
-op_add_assign
-l_int|2
-)paren
-(brace
-id|DASD_MESSAGE
-(paren
-id|KERN_ERR
-comma
-id|device
-comma
-l_string|&quot;%p: %02x%02x%02x%02x %02x%02x%02x%02x &quot;
-l_string|&quot;%02x%02x%02x%02x %02x%02x%02x%02x&quot;
-comma
-id|nl
-comma
-id|nl
-(braket
-l_int|0
-)braket
-comma
-id|nl
-(braket
-l_int|1
-)braket
-comma
-id|nl
-(braket
-l_int|2
-)braket
-comma
-id|nl
-(braket
-l_int|3
-)braket
-comma
-id|nl
-(braket
-l_int|4
-)braket
-comma
-id|nl
-(braket
-l_int|5
-)braket
-comma
-id|nl
-(braket
-l_int|6
-)braket
-comma
-id|nl
-(braket
-l_int|7
-)braket
-comma
-id|nl
-(braket
-l_int|8
-)braket
-comma
-id|nl
-(braket
-l_int|9
-)braket
-comma
-id|nl
-(braket
-l_int|10
-)braket
-comma
-id|nl
-(braket
-l_int|11
-)braket
-comma
-id|nl
-(braket
-l_int|12
-)braket
-comma
-id|nl
-(braket
-l_int|13
-)braket
-comma
-id|nl
-(braket
-l_int|14
-)braket
-comma
-id|nl
-(braket
-l_int|15
-)braket
-)paren
-suffix:semicolon
-id|nl
-op_add_assign
-l_int|16
-suffix:semicolon
-)brace
-id|DASD_MESSAGE
-(paren
-id|KERN_ERR
-comma
-id|device
-comma
-l_string|&quot;%s&quot;
-comma
-l_string|&quot;End of channel program:&quot;
-)paren
-suffix:semicolon
-id|nl
-op_assign
-(paren
-r_char
-op_star
-)paren
-id|loop_cqr-&gt;cpaddr
-suffix:semicolon
-id|nl
-op_add_assign
-(paren
-(paren
-id|loop_cqr-&gt;cplength
-op_minus
-l_int|10
-)paren
-op_star
-l_int|8
-)paren
-suffix:semicolon
-r_for
-c_loop
-(paren
-id|i
-op_assign
-l_int|0
-suffix:semicolon
-id|i
-OL
-l_int|20
-suffix:semicolon
-id|i
-op_add_assign
-l_int|2
-)paren
-(brace
-id|DASD_MESSAGE
-(paren
-id|KERN_ERR
-comma
-id|device
-comma
-l_string|&quot;%p: %02x%02x%02x%02x %02x%02x%02x%02x &quot;
-l_string|&quot;%02x%02x%02x%02x %02x%02x%02x%02x&quot;
-comma
-id|nl
-comma
-id|nl
-(braket
-l_int|0
-)braket
-comma
-id|nl
-(braket
-l_int|1
-)braket
-comma
-id|nl
-(braket
-l_int|2
-)braket
-comma
-id|nl
-(braket
-l_int|3
-)braket
-comma
-id|nl
-(braket
-l_int|4
-)braket
-comma
-id|nl
-(braket
-l_int|5
-)braket
-comma
-id|nl
-(braket
-l_int|6
-)braket
-comma
-id|nl
-(braket
-l_int|7
-)braket
-comma
-id|nl
-(braket
-l_int|8
-)braket
-comma
-id|nl
-(braket
-l_int|9
-)braket
-comma
-id|nl
-(braket
-l_int|10
-)braket
-comma
-id|nl
-(braket
-l_int|11
-)braket
-comma
-id|nl
-(braket
-l_int|12
-)braket
-comma
-id|nl
-(braket
-l_int|13
-)braket
-comma
-id|nl
-(braket
-l_int|14
-)braket
-comma
-id|nl
-(braket
-l_int|15
-)braket
-)paren
-suffix:semicolon
-id|nl
-op_add_assign
-l_int|16
-suffix:semicolon
-)brace
-)brace
-r_else
-(brace
-multiline_comment|/* log the whole CP */
-id|DASD_MESSAGE
-(paren
-id|KERN_ERR
-comma
-id|device
-comma
-l_string|&quot;%s&quot;
-comma
-l_string|&quot;Channel program (complete):&quot;
-)paren
-suffix:semicolon
-r_for
-c_loop
-(paren
-id|i
-op_assign
-l_int|0
-suffix:semicolon
-id|i
-OL
-(paren
-id|loop_cqr-&gt;cplength
-op_plus
-l_int|4
-)paren
-suffix:semicolon
-id|i
-op_add_assign
-l_int|2
-)paren
-(brace
-id|DASD_MESSAGE
-(paren
-id|KERN_ERR
-comma
-id|device
-comma
-l_string|&quot;%p: %02x%02x%02x%02x %02x%02x%02x%02x &quot;
-l_string|&quot;%02x%02x%02x%02x %02x%02x%02x%02x&quot;
-comma
-id|nl
-comma
-id|nl
-(braket
-l_int|0
-)braket
-comma
-id|nl
-(braket
-l_int|1
-)braket
-comma
-id|nl
-(braket
-l_int|2
-)braket
-comma
-id|nl
-(braket
-l_int|3
-)braket
-comma
-id|nl
-(braket
-l_int|4
-)braket
-comma
-id|nl
-(braket
-l_int|5
-)braket
-comma
-id|nl
-(braket
-l_int|6
-)braket
-comma
-id|nl
-(braket
-l_int|7
-)braket
-comma
-id|nl
-(braket
-l_int|8
-)braket
-comma
-id|nl
-(braket
-l_int|9
-)braket
-comma
-id|nl
-(braket
-l_int|10
-)braket
-comma
-id|nl
-(braket
-l_int|11
-)braket
-comma
-id|nl
-(braket
-l_int|12
-)braket
-comma
-id|nl
-(braket
-l_int|13
-)braket
-comma
-id|nl
-(braket
-l_int|14
-)braket
-comma
-id|nl
-(braket
-l_int|15
-)braket
-)paren
-suffix:semicolon
-id|nl
-op_add_assign
-l_int|16
-suffix:semicolon
-)brace
-)brace
-multiline_comment|/* log bytes arround failed CCW if not already done */
-id|begin
-op_assign
-(paren
-r_char
-op_star
-)paren
-id|loop_cqr-&gt;cpaddr
-suffix:semicolon
-id|end
-op_assign
-id|begin
-op_plus
-(paren
-(paren
-id|loop_cqr-&gt;cplength
-op_plus
-l_int|4
-)paren
-op_star
-l_int|8
-)paren
-suffix:semicolon
-id|nl
-op_assign
-(paren
-r_void
-op_star
-)paren
-(paren
+multiline_comment|/* Subcommand modifier&t;&t;       */
+DECL|member|res
 r_int
-)paren
-id|cpa
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|loop_cqr
-op_eq
-id|cqr
-)paren
-(brace
-multiline_comment|/* log only once */
-multiline_comment|/* if not whole CP logged OR CCW outside logged CP */
-r_if
-c_cond
-(paren
-(paren
-id|loop_cqr-&gt;cplength
-OG
-l_int|40
-)paren
-op_logical_or
-(paren
-(paren
-id|nl
-OL
-id|begin
-)paren
-op_logical_and
-(paren
-id|nl
-OG
-id|end
-)paren
-)paren
-)paren
-(brace
-id|nl
-op_sub_assign
-l_int|10
-op_star
-l_int|8
-suffix:semicolon
-multiline_comment|/* start some bytes before */
-id|DASD_MESSAGE
-(paren
-id|KERN_ERR
-comma
-id|device
-comma
-l_string|&quot;Failed CCW (%p) (area):&quot;
-comma
-(paren
-r_void
-op_star
-)paren
-(paren
 r_int
-)paren
-id|cpa
-)paren
+id|res
 suffix:semicolon
-r_for
-c_loop
+multiline_comment|/* reserved */
+DECL|typedef|DCTL_data_t
+)brace
+id|__attribute__
 (paren
-id|i
-op_assign
-l_int|0
-suffix:semicolon
-id|i
-OL
-l_int|20
-suffix:semicolon
-id|i
-op_add_assign
-l_int|2
-)paren
-(brace
-id|DASD_MESSAGE
 (paren
-id|KERN_ERR
-comma
-id|device
-comma
-l_string|&quot;%p: %02x%02x%02x%02x %02x%02x%02x%02x &quot;
-l_string|&quot;%02x%02x%02x%02x %02x%02x%02x%02x&quot;
-comma
-id|nl
-comma
-id|nl
-(braket
-l_int|0
-)braket
-comma
-id|nl
-(braket
-l_int|1
-)braket
-comma
-id|nl
-(braket
-l_int|2
-)braket
-comma
-id|nl
-(braket
-l_int|3
-)braket
-comma
-id|nl
-(braket
-l_int|4
-)braket
-comma
-id|nl
-(braket
-l_int|5
-)braket
-comma
-id|nl
-(braket
-l_int|6
-)braket
-comma
-id|nl
-(braket
-l_int|7
-)braket
-comma
-id|nl
-(braket
-l_int|8
-)braket
-comma
-id|nl
-(braket
-l_int|9
-)braket
-comma
-id|nl
-(braket
-l_int|10
-)braket
-comma
-id|nl
-(braket
-l_int|11
-)braket
-comma
-id|nl
-(braket
-l_int|12
-)braket
-comma
-id|nl
-(braket
-l_int|13
-)braket
-comma
-id|nl
-(braket
-l_int|14
-)braket
-comma
-id|nl
-(braket
-l_int|15
-)braket
+id|packed
 )paren
-suffix:semicolon
-id|nl
-op_add_assign
-l_int|16
-suffix:semicolon
-)brace
-)brace
-r_else
-(brace
-id|DASD_MESSAGE
-(paren
-id|KERN_ERR
-comma
-id|device
-comma
-l_string|&quot;Failed CCW (%p) already logged&quot;
-comma
-(paren
-r_void
-op_star
 )paren
-(paren
-r_int
-)paren
-id|cpa
-)paren
+id|DCTL_data_t
 suffix:semicolon
-)brace
-)brace
-id|loop_cqr
-op_assign
-id|loop_cqr-&gt;refers
-suffix:semicolon
-)brace
-)brace
-multiline_comment|/* end log_erp_chain */
 multiline_comment|/*&n; ***************************************************************************** &n; * SECTION ERP EXAMINATION&n; ***************************************************************************** &n; */
-multiline_comment|/*&n; * DASD_3990_ERP_EXAMINE_24 &n; *&n; * DESCRIPTION&n; *   Checks only for fatal (unrecoverable) error. &n; *   A detailed examination of the sense data is done later outside&n; *   the interrupt handler.&n; *&n; *   Each bit configuration leading to an action code 2 (Exit with&n; *   programming error or unusual condition indication)&n; *   are handled as fatal error&#xfffd;s.&n; * &n; *   All other configurations are handled as recoverable errors.&n; *&n; * RETURN VALUES&n; *   dasd_era_fatal     for all fatal (unrecoverable errors)&n; *   dasd_era_recover   for all others.&n; */
+multiline_comment|/*&n; * DASD_3990_ERP_EXAMINE_24 &n; *&n; * DESCRIPTION&n; *   Checks only for fatal (unrecoverable) error. &n; *   A detailed examination of the sense data is done later outside&n; *   the interrupt handler.&n; *&n; *   Each bit configuration leading to an action code 2 (Exit with&n; *   programming error or unusual condition indication)&n; *   are handled as fatal error&#xfffd;s.&n; * &n; *   All other configurations are handled as recoverable errors.&n; *&n; * RETURN VALUES&n; *   dasd_era_fatal&t;for all fatal (unrecoverable errors)&n; *   dasd_era_recover&t;for all others.&n; */
+r_static
 id|dasd_era_t
 DECL|function|dasd_3990_erp_examine_24
 id|dasd_3990_erp_examine_24
+c_func
 (paren
-id|ccw_req_t
+id|dasd_ccw_req_t
 op_star
 id|cqr
 comma
@@ -925,7 +90,8 @@ id|SNS2_ENV_DATA_PRESENT
 )paren
 )paren
 (brace
-id|DASD_MESSAGE
+id|DEV_MESSAGE
+c_func
 (paren
 id|KERN_ERR
 comma
@@ -967,7 +133,8 @@ id|SNS2_ENV_DATA_PRESENT
 )paren
 )paren
 (brace
-id|DASD_MESSAGE
+id|DEV_MESSAGE
+c_func
 (paren
 id|KERN_ERR
 comma
@@ -995,15 +162,23 @@ op_amp
 id|SNS1_NO_REC_FOUND
 )paren
 (brace
-id|DASD_MESSAGE
+multiline_comment|/* FIXME: fatal error ?!? */
+id|DEV_MESSAGE
+c_func
 (paren
 id|KERN_ERR
 comma
 id|device
 comma
-l_string|&quot;%s&quot;
+l_string|&quot;EXAMINE 24: No Record Found detected %s&quot;
 comma
-l_string|&quot;EXAMINE 24: No Record Found detected &quot;
+id|device-&gt;state
+op_le
+id|DASD_STATE_BASIC
+ques
+c_cond
+l_string|&quot; &quot;
+suffix:colon
 l_string|&quot;- fatal error&quot;
 )paren
 suffix:semicolon
@@ -1017,12 +192,14 @@ id|dasd_era_recover
 suffix:semicolon
 )brace
 multiline_comment|/* END dasd_3990_erp_examine_24 */
-multiline_comment|/*&n; * DASD_3990_ERP_EXAMINE_32 &n; *&n; * DESCRIPTION&n; *   Checks only for fatal/no/recoverable error. &n; *   A detailed examination of the sense data is done later outside&n; *   the interrupt handler.&n; *&n; * RETURN VALUES&n; *   dasd_era_none      no error &n; *   dasd_era_fatal     for all fatal (unrecoverable errors)&n; *   dasd_era_recover   for recoverable others.&n; */
+multiline_comment|/*&n; * DASD_3990_ERP_EXAMINE_32 &n; *&n; * DESCRIPTION&n; *   Checks only for fatal/no/recoverable error. &n; *   A detailed examination of the sense data is done later outside&n; *   the interrupt handler.&n; *&n; * RETURN VALUES&n; *   dasd_era_none&t;no error &n; *   dasd_era_fatal&t;for all fatal (unrecoverable errors)&n; *   dasd_era_recover&t;for recoverable others.&n; */
+r_static
 id|dasd_era_t
 DECL|function|dasd_3990_erp_examine_32
 id|dasd_3990_erp_examine_32
+c_func
 (paren
-id|ccw_req_t
+id|dasd_ccw_req_t
 op_star
 id|cqr
 comma
@@ -1055,7 +232,8 @@ suffix:semicolon
 r_case
 l_int|0x01
 suffix:colon
-id|DASD_MESSAGE
+id|DEV_MESSAGE
+c_func
 (paren
 id|KERN_ERR
 comma
@@ -1077,12 +255,13 @@ suffix:semicolon
 )brace
 )brace
 multiline_comment|/* end dasd_3990_erp_examine_32 */
-multiline_comment|/*&n; * DASD_3990_ERP_EXAMINE &n; *&n; * DESCRIPTION&n; *   Checks only for fatal/no/recover error. &n; *   A detailed examination of the sense data is done later outside&n; *   the interrupt handler.&n; *&n; *   The logic is based on the &squot;IBM 3990 Storage Control  Reference&squot; manual&n; *   &squot;Chapter 7. Error Recovery Procedures&squot;.&n; *&n; * RETURN VALUES&n; *   dasd_era_none      no error &n; *   dasd_era_fatal     for all fatal (unrecoverable errors)&n; *   dasd_era_recover   for all others.&n; */
+multiline_comment|/*&n; * DASD_3990_ERP_EXAMINE &n; *&n; * DESCRIPTION&n; *   Checks only for fatal/no/recover error. &n; *   A detailed examination of the sense data is done later outside&n; *   the interrupt handler.&n; *&n; *   The logic is based on the &squot;IBM 3990 Storage Control  Reference&squot; manual&n; *   &squot;Chapter 7. Error Recovery Procedures&squot;.&n; *&n; * RETURN VALUES&n; *   dasd_era_none&t;no error &n; *   dasd_era_fatal&t;for all fatal (unrecoverable errors)&n; *   dasd_era_recover&t;for all others.&n; */
 id|dasd_era_t
 DECL|function|dasd_3990_erp_examine
 id|dasd_3990_erp_examine
+c_func
 (paren
-id|ccw_req_t
+id|dasd_ccw_req_t
 op_star
 id|cqr
 comma
@@ -1101,6 +280,12 @@ id|dasd_era_t
 id|era
 op_assign
 id|dasd_era_recover
+suffix:semicolon
+id|dasd_device_t
+op_star
+id|device
+op_assign
+id|cqr-&gt;device
 suffix:semicolon
 multiline_comment|/* check for successful execution first */
 r_if
@@ -1136,6 +321,7 @@ id|DASD_SENSE_BIT_0
 id|era
 op_assign
 id|dasd_3990_erp_examine_24
+c_func
 (paren
 id|cqr
 comma
@@ -1148,6 +334,7 @@ r_else
 id|era
 op_assign
 id|dasd_3990_erp_examine_32
+c_func
 (paren
 id|cqr
 comma
@@ -1159,12 +346,20 @@ multiline_comment|/* log the erp chain if fatal error occurred */
 r_if
 c_cond
 (paren
+(paren
 id|era
 op_eq
 id|dasd_era_fatal
 )paren
-(brace
-id|log_erp_chain
+op_logical_and
+(paren
+id|device-&gt;state
+op_ge
+id|DASD_STATE_READY
+)paren
+)paren
+id|dasd_log_ccw
+c_func
 (paren
 id|cqr
 comma
@@ -1173,7 +368,6 @@ comma
 id|stat-&gt;cpa
 )paren
 suffix:semicolon
-)brace
 r_return
 id|era
 suffix:semicolon
@@ -1181,13 +375,15 @@ suffix:semicolon
 multiline_comment|/* END dasd_3990_erp_examine */
 multiline_comment|/*&n; ***************************************************************************** &n; * SECTION ERP HANDLING&n; ***************************************************************************** &n; */
 multiline_comment|/*&n; ***************************************************************************** &n; * 24 and 32 byte sense ERP functions&n; ***************************************************************************** &n; */
-multiline_comment|/*&n; * DASD_3990_ERP_CLEANUP &n; *&n; * DESCRIPTION&n; *   Removes the already build but not neccessary ERP request and sets&n; *   the status of the original cqr / erp to the given (final) status&n; *&n; *  PARAMETER&n; *   erp                request to be blocked&n; *   final_status       either CQR_STATUS_DONE or CQR_STATUS_FAILED &n; *&n; * RETURN VALUES&n; *   cqr                original cqr               &n; */
-id|ccw_req_t
+multiline_comment|/*&n; * DASD_3990_ERP_CLEANUP &n; *&n; * DESCRIPTION&n; *   Removes the already build but not neccessary ERP request and sets&n; *   the status of the original cqr / erp to the given (final) status&n; *&n; *  PARAMETER&n; *   erp&t;&t;request to be blocked&n; *   final_status&t;either DASD_CQR_DONE or DASD_CQR_FAILED &n; *&n; * RETURN VALUES&n; *   cqr&t;&t;original cqr&t;&t;   &n; */
+r_static
+id|dasd_ccw_req_t
 op_star
 DECL|function|dasd_3990_erp_cleanup
 id|dasd_3990_erp_cleanup
+c_func
 (paren
-id|ccw_req_t
+id|dasd_ccw_req_t
 op_star
 id|erp
 comma
@@ -1195,44 +391,40 @@ r_char
 id|final_status
 )paren
 (brace
-id|ccw_req_t
+id|dasd_ccw_req_t
 op_star
 id|cqr
 op_assign
 id|erp-&gt;refers
 suffix:semicolon
-id|dasd_free_request
+id|dasd_free_erp_request
+c_func
 (paren
 id|erp
 comma
 id|erp-&gt;device
 )paren
 suffix:semicolon
-id|check_then_set
-(paren
-op_amp
 id|cqr-&gt;status
-comma
-id|CQR_STATUS_ERROR
-comma
+op_assign
 id|final_status
-)paren
 suffix:semicolon
 r_return
 id|cqr
 suffix:semicolon
 )brace
 multiline_comment|/* end dasd_3990_erp_cleanup */
-multiline_comment|/*&n; * DASD_3990_ERP_BLOCK_QUEUE &n; *&n; * DESCRIPTION&n; *   Block the given device request queue to prevent from further&n; *   processing until the started timer has expired or an related&n; *   interrupt was received.&n; *&n; *  PARAMETER&n; *   erp                request to be blocked&n; *   expires            time to wait until restart (in seconds) &n; *&n; * RETURN VALUES&n; *   void               &n; */
+multiline_comment|/*&n; * DASD_3990_ERP_BLOCK_QUEUE &n; *&n; * DESCRIPTION&n; *   Block the given device request queue to prevent from further&n; *   processing until the started timer has expired or an related&n; *   interrupt was received.&n; *&n; *  PARAMETER&n; *   erp&t;&t;request to be blocked&n; *   expires&t;&t;time to wait until restart (in jiffies) &n; *&n; * RETURN VALUES&n; *   void&t;&t;&n; */
+r_static
 r_void
 DECL|function|dasd_3990_erp_block_queue
 id|dasd_3990_erp_block_queue
+c_func
 (paren
-id|ccw_req_t
+id|dasd_ccw_req_t
 op_star
 id|erp
 comma
-r_int
 r_int
 id|expires
 )paren
@@ -1243,7 +435,8 @@ id|device
 op_assign
 id|erp-&gt;device
 suffix:semicolon
-id|DASD_MESSAGE
+id|DEV_MESSAGE
+c_func
 (paren
 id|KERN_INFO
 comma
@@ -1251,145 +444,31 @@ id|device
 comma
 l_string|&quot;blocking request queue for %is&quot;
 comma
-(paren
-r_int
-)paren
 id|expires
 )paren
 suffix:semicolon
-id|check_then_set
-(paren
-op_amp
 id|erp-&gt;status
-comma
-id|CQR_STATUS_ERROR
-comma
-id|CQR_STATUS_PENDING
-)paren
-suffix:semicolon
-multiline_comment|/* restart queue after some time */
-id|device-&gt;timer.function
 op_assign
-id|dasd_3990_erp_restart_queue
+id|DASD_CQR_PENDING
 suffix:semicolon
-id|device-&gt;timer.data
-op_assign
-(paren
-r_int
-r_int
-)paren
-id|erp
-suffix:semicolon
-id|device-&gt;timer.expires
-op_assign
-id|jiffies
-op_plus
-(paren
-id|expires
-op_star
-id|HZ
-)paren
-suffix:semicolon
-id|add_timer
+id|dasd_set_timer
 c_func
 (paren
-op_amp
-id|device-&gt;timer
+id|device
+comma
+id|expires
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* end dasd_3990_erp_block_queue */
-multiline_comment|/*&n; * DASD_3990_ERP_RESTART_QUEUE &n; *&n; * DESCRIPTION&n; *   Restarts request currently in status PENDING.&n; *   This has to be done if either an related interrupt has received, or &n; *   a timer has expired.&n; *   &n; *&n; *  PARAMETER&n; *   erp                pointer to the PENDING ERP&n; *&n; * RETURN VALUES&n; *   void               &n; *&n; */
-r_void
-DECL|function|dasd_3990_erp_restart_queue
-id|dasd_3990_erp_restart_queue
-(paren
-r_int
-r_int
-id|erp
-)paren
-(brace
-id|ccw_req_t
-op_star
-id|cqr
-op_assign
-(paren
-r_void
-op_star
-)paren
-id|erp
-suffix:semicolon
-id|dasd_device_t
-op_star
-id|device
-op_assign
-id|cqr-&gt;device
-suffix:semicolon
-r_int
-r_int
-id|flags
-suffix:semicolon
-multiline_comment|/* get the needed locks to modify the request queue */
-id|s390irq_spin_lock_irqsave
-(paren
-id|device-&gt;devinfo.irq
-comma
-id|flags
-)paren
-suffix:semicolon
-multiline_comment|/* &squot;restart&squot; the device queue */
-r_if
-c_cond
-(paren
-id|cqr-&gt;status
-op_eq
-id|CQR_STATUS_PENDING
-)paren
-(brace
-id|DASD_MESSAGE
-(paren
-id|KERN_INFO
-comma
-id|device
-comma
-l_string|&quot;%s&quot;
-comma
-l_string|&quot;request queue restarted by MIH&quot;
-)paren
-suffix:semicolon
-id|check_then_set
-(paren
-op_amp
-id|cqr-&gt;status
-comma
-id|CQR_STATUS_PENDING
-comma
-id|CQR_STATUS_QUEUED
-)paren
-suffix:semicolon
-)brace
-multiline_comment|/* release the lock */
-id|s390irq_spin_unlock_irqrestore
-(paren
-id|device-&gt;devinfo.irq
-comma
-id|flags
-)paren
-suffix:semicolon
-id|dasd_schedule_bh
-(paren
-id|device
-)paren
-suffix:semicolon
-)brace
-multiline_comment|/* end dasd_3990_erp_restart_queue */
-multiline_comment|/*&n; * DASD_3990_ERP_INT_REQ &n; *&n; * DESCRIPTION&n; *   Handles &squot;Intervention Required&squot; error.&n; *   This means either device offline or not installed.&n; *&n; * PARAMETER&n; *   erp                current erp&n; * RETURN VALUES&n; *   erp                modified erp&n; */
-id|ccw_req_t
+multiline_comment|/*&n; * DASD_3990_ERP_INT_REQ &n; *&n; * DESCRIPTION&n; *   Handles &squot;Intervention Required&squot; error.&n; *   This means either device offline or not installed.&n; *&n; * PARAMETER&n; *   erp&t;&t;current erp&n; * RETURN VALUES&n; *   erp&t;&t;modified erp&n; */
+r_static
+id|dasd_ccw_req_t
 op_star
 DECL|function|dasd_3990_erp_int_req
 id|dasd_3990_erp_int_req
+c_func
 (paren
-id|ccw_req_t
+id|dasd_ccw_req_t
 op_star
 id|erp
 )paren
@@ -1401,8 +480,8 @@ op_assign
 id|erp-&gt;device
 suffix:semicolon
 multiline_comment|/* first time set initial retry counter and erp_function */
-multiline_comment|/* and retry once without blocking queue                 */
-multiline_comment|/* (this enables easier enqueing of the cqr)             */
+multiline_comment|/* and retry once without blocking queue&t;&t; */
+multiline_comment|/* (this enables easier enqueing of the cqr)&t;&t; */
 r_if
 c_cond
 (paren
@@ -1423,7 +502,8 @@ suffix:semicolon
 r_else
 (brace
 multiline_comment|/* issue a message and wait for &squot;device ready&squot; interrupt */
-id|DASD_MESSAGE
+id|DEV_MESSAGE
+c_func
 (paren
 id|KERN_ERR
 comma
@@ -1436,10 +516,13 @@ l_string|&quot;INTERVENTION REQUIRED!!&quot;
 )paren
 suffix:semicolon
 id|dasd_3990_erp_block_queue
+c_func
 (paren
 id|erp
 comma
 l_int|60
+op_star
+id|HZ
 )paren
 suffix:semicolon
 )brace
@@ -1448,12 +531,14 @@ id|erp
 suffix:semicolon
 )brace
 multiline_comment|/* end dasd_3990_erp_int_req */
-multiline_comment|/*&n; * DASD_3990_ERP_ALTERNATE_PATH &n; *&n; * DESCRIPTION&n; *   Repeat the operation on a different channel path.&n; *   If all alternate paths have been tried, the request is posted with a&n; *   permanent error.&n; *&n; *  PARAMETER&n; *   erp                pointer to the current ERP&n; *&n; * RETURN VALUES&n; *   erp                modified pointer to the ERP&n; *&n; */
+multiline_comment|/*&n; * DASD_3990_ERP_ALTERNATE_PATH &n; *&n; * DESCRIPTION&n; *   Repeat the operation on a different channel path.&n; *   If all alternate paths have been tried, the request is posted with a&n; *   permanent error.&n; *&n; *  PARAMETER&n; *   erp&t;&t;pointer to the current ERP&n; *&n; * RETURN VALUES&n; *   erp&t;&t;modified pointer to the ERP&n; *&n; */
+r_static
 r_void
 DECL|function|dasd_3990_erp_alternate_path
 id|dasd_3990_erp_alternate_path
+c_func
 (paren
-id|ccw_req_t
+id|dasd_ccw_req_t
 op_star
 id|erp
 )paren
@@ -1499,7 +584,8 @@ op_ne
 l_int|0x00
 )paren
 (brace
-id|DASD_MESSAGE
+id|DEV_MESSAGE
+c_func
 (paren
 id|KERN_DEBUG
 comma
@@ -1520,15 +606,9 @@ id|opm
 )paren
 suffix:semicolon
 multiline_comment|/* reset status to queued to handle the request again... */
-id|check_then_set
-(paren
-op_amp
 id|erp-&gt;status
-comma
-id|CQR_STATUS_ERROR
-comma
-id|CQR_STATUS_QUEUED
-)paren
+op_assign
+id|DASD_CQR_QUEUED
 suffix:semicolon
 id|erp-&gt;retries
 op_assign
@@ -1537,7 +617,8 @@ suffix:semicolon
 )brace
 r_else
 (brace
-id|DASD_MESSAGE
+id|DEV_MESSAGE
+c_func
 (paren
 id|KERN_ERR
 comma
@@ -1557,26 +638,22 @@ id|opm
 )paren
 suffix:semicolon
 multiline_comment|/* post request with permanent error */
-id|check_then_set
-(paren
-op_amp
 id|erp-&gt;status
-comma
-id|CQR_STATUS_ERROR
-comma
-id|CQR_STATUS_FAILED
-)paren
+op_assign
+id|DASD_CQR_FAILED
 suffix:semicolon
 )brace
 )brace
 multiline_comment|/* end dasd_3990_erp_alternate_path */
-multiline_comment|/*&n; * DASD_3990_ERP_DCTL&n; *&n; * DESCRIPTION&n; *   Setup cqr to do the Diagnostic Control (DCTL) command with an &n; *   Inhibit Write subcommand (0x20) and the given modifier.&n; *&n; *  PARAMETER&n; *   erp                pointer to the current (failed) ERP&n; *   modifier           subcommand modifier&n; *   &n; * RETURN VALUES&n; *   dctl_cqr           pointer to NEW dctl_cqr &n; *&n; */
-id|ccw_req_t
+multiline_comment|/*&n; * DASD_3990_ERP_DCTL&n; *&n; * DESCRIPTION&n; *   Setup cqr to do the Diagnostic Control (DCTL) command with an &n; *   Inhibit Write subcommand (0x20) and the given modifier.&n; *&n; *  PARAMETER&n; *   erp&t;&t;pointer to the current (failed) ERP&n; *   modifier&t;&t;subcommand modifier&n; *   &n; * RETURN VALUES&n; *   dctl_cqr&t;&t;pointer to NEW dctl_cqr &n; *&n; */
+r_static
+id|dasd_ccw_req_t
 op_star
 DECL|function|dasd_3990_erp_DCTL
 id|dasd_3990_erp_DCTL
+c_func
 (paren
-id|ccw_req_t
+id|dasd_ccw_req_t
 op_star
 id|erp
 comma
@@ -1598,11 +675,14 @@ id|ccw1_t
 op_star
 id|ccw
 suffix:semicolon
-id|ccw_req_t
+id|dasd_ccw_req_t
 op_star
 id|dctl_cqr
+suffix:semicolon
+id|dctl_cqr
 op_assign
-id|dasd_alloc_request
+id|dasd_alloc_erp_request
+c_func
 (paren
 (paren
 r_char
@@ -1624,11 +704,15 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-op_logical_neg
+id|IS_ERR
+c_func
+(paren
 id|dctl_cqr
 )paren
+)paren
 (brace
-id|DASD_MESSAGE
+id|DEV_MESSAGE
+c_func
 (paren
 id|KERN_ERR
 comma
@@ -1639,15 +723,9 @@ comma
 l_string|&quot;Unable to allocate DCTL-CQR&quot;
 )paren
 suffix:semicolon
-id|check_then_set
-(paren
-op_amp
 id|erp-&gt;status
-comma
-id|CQR_STATUS_ERROR
-comma
-id|CQR_STATUS_FAILED
-)paren
+op_assign
+id|DASD_CQR_FAILED
 suffix:semicolon
 r_return
 id|erp
@@ -1671,6 +749,7 @@ op_assign
 id|dctl_cqr-&gt;cpaddr
 suffix:semicolon
 id|memset
+c_func
 (paren
 id|ccw
 comma
@@ -1690,57 +769,16 @@ id|ccw-&gt;count
 op_assign
 l_int|4
 suffix:semicolon
-r_if
-c_cond
+id|ccw-&gt;cda
+op_assign
 (paren
-id|dasd_set_normalized_cda
-c_func
+id|__u32
+)paren
 (paren
-id|ccw
-comma
-id|__pa
-(paren
+id|addr_t
+)paren
 id|DCTL_data
-)paren
-comma
-id|dctl_cqr
-comma
-id|erp-&gt;device
-)paren
-)paren
-(brace
-id|dasd_free_request
-(paren
-id|dctl_cqr
-comma
-id|erp-&gt;device
-)paren
 suffix:semicolon
-id|DASD_MESSAGE
-(paren
-id|KERN_ERR
-comma
-id|device
-comma
-l_string|&quot;%s&quot;
-comma
-l_string|&quot;Unable to allocate DCTL-CQR&quot;
-)paren
-suffix:semicolon
-id|check_then_set
-(paren
-op_amp
-id|erp-&gt;status
-comma
-id|CQR_STATUS_ERROR
-comma
-id|CQR_STATUS_FAILED
-)paren
-suffix:semicolon
-r_return
-id|erp
-suffix:semicolon
-)brace
 id|dctl_cqr-&gt;function
 op_assign
 id|dasd_3990_erp_DCTL
@@ -1765,39 +803,39 @@ id|dctl_cqr-&gt;expires
 op_assign
 l_int|5
 op_star
-id|TOD_MIN
+l_int|60
+op_star
+id|HZ
 suffix:semicolon
 id|dctl_cqr-&gt;retries
 op_assign
 l_int|2
 suffix:semicolon
-id|asm
-r_volatile
-(paren
-l_string|&quot;STCK %0&quot;
-suffix:colon
-l_string|&quot;=m&quot;
-(paren
 id|dctl_cqr-&gt;buildclk
-)paren
+op_assign
+id|get_clock
+c_func
+(paren
 )paren
 suffix:semicolon
 id|dctl_cqr-&gt;status
 op_assign
-id|CQR_STATUS_FILLED
+id|DASD_CQR_FILLED
 suffix:semicolon
 r_return
 id|dctl_cqr
 suffix:semicolon
 )brace
 multiline_comment|/* end dasd_3990_erp_DCTL */
-multiline_comment|/*&n; * DASD_3990_ERP_ACTION_1 &n; *&n; * DESCRIPTION&n; *   Setup ERP to do the ERP action 1 (see Reference manual).&n; *   Repeat the operation on a different channel path.&n; *   If all alternate paths have been tried, the request is posted with a&n; *   permanent error.&n; *   Note: duplex handling is not implemented (yet).&n; *&n; *  PARAMETER&n; *   erp                pointer to the current ERP&n; *&n; * RETURN VALUES&n; *   erp                pointer to the ERP&n; *&n; */
-id|ccw_req_t
+multiline_comment|/*&n; * DASD_3990_ERP_ACTION_1 &n; *&n; * DESCRIPTION&n; *   Setup ERP to do the ERP action 1 (see Reference manual).&n; *   Repeat the operation on a different channel path.&n; *   If all alternate paths have been tried, the request is posted with a&n; *   permanent error.&n; *   Note: duplex handling is not implemented (yet).&n; *&n; *  PARAMETER&n; *   erp&t;&t;pointer to the current ERP&n; *&n; * RETURN VALUES&n; *   erp&t;&t;pointer to the ERP&n; *&n; */
+r_static
+id|dasd_ccw_req_t
 op_star
 DECL|function|dasd_3990_erp_action_1
 id|dasd_3990_erp_action_1
+c_func
 (paren
-id|ccw_req_t
+id|dasd_ccw_req_t
 op_star
 id|erp
 )paren
@@ -1807,6 +845,7 @@ op_assign
 id|dasd_3990_erp_action_1
 suffix:semicolon
 id|dasd_3990_erp_alternate_path
+c_func
 (paren
 id|erp
 )paren
@@ -1816,13 +855,15 @@ id|erp
 suffix:semicolon
 )brace
 multiline_comment|/* end dasd_3990_erp_action_1 */
-multiline_comment|/*&n; * DASD_3990_ERP_ACTION_4 &n; *&n; * DESCRIPTION&n; *   Setup ERP to do the ERP action 4 (see Reference manual).&n; *   Set the current request to PENDING to block the CQR queue for that device&n; *   until the state change interrupt appears.&n; *   Use a timer (20 seconds) to retry the cqr if the interrupt is still missing.&n; *&n; *  PARAMETER&n; *   sense              sense data of the actual error&n; *   erp                pointer to the current ERP&n; *&n; * RETURN VALUES&n; *   erp                pointer to the ERP&n; *&n; */
-id|ccw_req_t
+multiline_comment|/*&n; * DASD_3990_ERP_ACTION_4 &n; *&n; * DESCRIPTION&n; *   Setup ERP to do the ERP action 4 (see Reference manual).&n; *   Set the current request to PENDING to block the CQR queue for that device&n; *   until the state change interrupt appears.&n; *   Use a timer (20 seconds) to retry the cqr if the interrupt is still missing.&n; *&n; *  PARAMETER&n; *   sense&t;&t;sense data of the actual error&n; *   erp&t;&t;pointer to the current ERP&n; *&n; * RETURN VALUES&n; *   erp&t;&t;pointer to the ERP&n; *&n; */
+r_static
+id|dasd_ccw_req_t
 op_star
 DECL|function|dasd_3990_erp_action_4
 id|dasd_3990_erp_action_4
+c_func
 (paren
-id|ccw_req_t
+id|dasd_ccw_req_t
 op_star
 id|erp
 comma
@@ -1839,7 +880,7 @@ id|erp-&gt;device
 suffix:semicolon
 multiline_comment|/* first time set initial retry counter and erp_function    */
 multiline_comment|/* and retry once without waiting for state change pending  */
-multiline_comment|/* interrupt (this enables easier enqueing of the cqr)      */
+multiline_comment|/* interrupt (this enables easier enqueing of the cqr)&t;    */
 r_if
 c_cond
 (paren
@@ -1871,7 +912,8 @@ l_int|0x1D
 )paren
 (brace
 multiline_comment|/* state change pending */
-id|DASD_MESSAGE
+id|DEV_MESSAGE
+c_func
 (paren
 id|KERN_INFO
 comma
@@ -1884,25 +926,22 @@ l_string|&quot;int&quot;
 )paren
 suffix:semicolon
 id|dasd_3990_erp_block_queue
+c_func
 (paren
 id|erp
 comma
 l_int|30
+op_star
+id|HZ
 )paren
 suffix:semicolon
 )brace
 r_else
 (brace
 multiline_comment|/* no state change pending - retry */
-id|check_then_set
-(paren
-op_amp
 id|erp-&gt;status
-comma
-id|CQR_STATUS_ERROR
-comma
-id|CQR_STATUS_QUEUED
-)paren
+op_assign
+id|DASD_CQR_QUEUED
 suffix:semicolon
 )brace
 )brace
@@ -1912,13 +951,15 @@ suffix:semicolon
 )brace
 multiline_comment|/* end dasd_3990_erp_action_4 */
 multiline_comment|/*&n; ***************************************************************************** &n; * 24 byte sense ERP functions (only)&n; ***************************************************************************** &n; */
-multiline_comment|/*&n; * DASD_3990_ERP_ACTION_5 &n; *&n; * DESCRIPTION&n; *   Setup ERP to do the ERP action 5 (see Reference manual).&n; *   NOTE: Further handling is done in xxx_further_erp after the retries.&n; *&n; *  PARAMETER&n; *   erp                pointer to the current ERP&n; *&n; * RETURN VALUES&n; *   erp                pointer to the ERP&n; *&n; */
-id|ccw_req_t
+multiline_comment|/*&n; * DASD_3990_ERP_ACTION_5 &n; *&n; * DESCRIPTION&n; *   Setup ERP to do the ERP action 5 (see Reference manual).&n; *   NOTE: Further handling is done in xxx_further_erp after the retries.&n; *&n; *  PARAMETER&n; *   erp&t;&t;pointer to the current ERP&n; *&n; * RETURN VALUES&n; *   erp&t;&t;pointer to the ERP&n; *&n; */
+r_static
+id|dasd_ccw_req_t
 op_star
 DECL|function|dasd_3990_erp_action_5
 id|dasd_3990_erp_action_5
+c_func
 (paren
-id|ccw_req_t
+id|dasd_ccw_req_t
 op_star
 id|erp
 )paren
@@ -1937,12 +978,14 @@ id|erp
 suffix:semicolon
 )brace
 multiline_comment|/* end dasd_3990_erp_action_5 */
-multiline_comment|/*&n; * DASD_3990_HANDLE_ENV_DATA&n; *&n; * DESCRIPTION&n; *   Handles 24 byte &squot;Environmental data present&squot;.&n; *   Does a analysis of the sense data (message Format)&n; *   and prints the error messages.&n; *&n; * PARAMETER&n; *   sense              current sense data&n; *   &n; * RETURN VALUES&n; *   void&n; */
+multiline_comment|/*&n; * DASD_3990_HANDLE_ENV_DATA&n; *&n; * DESCRIPTION&n; *   Handles 24 byte &squot;Environmental data present&squot;.&n; *   Does a analysis of the sense data (message Format)&n; *   and prints the error messages.&n; *&n; * PARAMETER&n; *   sense&t;&t;current sense data&n; *   &n; * RETURN VALUES&n; *   void&n; */
+r_static
 r_void
 DECL|function|dasd_3990_handle_env_data
 id|dasd_3990_handle_env_data
+c_func
 (paren
-id|ccw_req_t
+id|dasd_ccw_req_t
 op_star
 id|erp
 comma
@@ -2018,7 +1061,8 @@ suffix:semicolon
 r_case
 l_int|0x01
 suffix:colon
-id|DASD_MESSAGE
+id|DEV_MESSAGE
+c_func
 (paren
 id|KERN_WARNING
 comma
@@ -2034,7 +1078,8 @@ suffix:semicolon
 r_case
 l_int|0x02
 suffix:colon
-id|DASD_MESSAGE
+id|DEV_MESSAGE
+c_func
 (paren
 id|KERN_WARNING
 comma
@@ -2051,7 +1096,8 @@ suffix:semicolon
 r_case
 l_int|0x03
 suffix:colon
-id|DASD_MESSAGE
+id|DEV_MESSAGE
+c_func
 (paren
 id|KERN_WARNING
 comma
@@ -2068,7 +1114,8 @@ suffix:semicolon
 r_case
 l_int|0x04
 suffix:colon
-id|DASD_MESSAGE
+id|DEV_MESSAGE
+c_func
 (paren
 id|KERN_WARNING
 comma
@@ -2084,7 +1131,8 @@ suffix:semicolon
 r_case
 l_int|0x05
 suffix:colon
-id|DASD_MESSAGE
+id|DEV_MESSAGE
+c_func
 (paren
 id|KERN_WARNING
 comma
@@ -2101,7 +1149,8 @@ suffix:semicolon
 r_case
 l_int|0x07
 suffix:colon
-id|DASD_MESSAGE
+id|DEV_MESSAGE
+c_func
 (paren
 id|KERN_WARNING
 comma
@@ -2118,7 +1167,8 @@ suffix:semicolon
 r_case
 l_int|0x08
 suffix:colon
-id|DASD_MESSAGE
+id|DEV_MESSAGE
+c_func
 (paren
 id|KERN_WARNING
 comma
@@ -2134,7 +1184,8 @@ suffix:semicolon
 r_case
 l_int|0x09
 suffix:colon
-id|DASD_MESSAGE
+id|DEV_MESSAGE
+c_func
 (paren
 id|KERN_WARNING
 comma
@@ -2150,7 +1201,8 @@ suffix:semicolon
 r_case
 l_int|0x0A
 suffix:colon
-id|DASD_MESSAGE
+id|DEV_MESSAGE
+c_func
 (paren
 id|KERN_WARNING
 comma
@@ -2170,7 +1222,8 @@ suffix:semicolon
 r_case
 l_int|0x0B
 suffix:colon
-id|DASD_MESSAGE
+id|DEV_MESSAGE
+c_func
 (paren
 id|KERN_WARNING
 comma
@@ -2187,7 +1240,8 @@ suffix:semicolon
 r_case
 l_int|0x0C
 suffix:colon
-id|DASD_MESSAGE
+id|DEV_MESSAGE
+c_func
 (paren
 id|KERN_WARNING
 comma
@@ -2204,7 +1258,8 @@ suffix:semicolon
 r_case
 l_int|0x0E
 suffix:colon
-id|DASD_MESSAGE
+id|DEV_MESSAGE
+c_func
 (paren
 id|KERN_WARNING
 comma
@@ -2221,7 +1276,8 @@ suffix:semicolon
 r_case
 l_int|0x0F
 suffix:colon
-id|DASD_MESSAGE
+id|DEV_MESSAGE
+c_func
 (paren
 id|KERN_WARNING
 comma
@@ -2240,7 +1296,8 @@ r_break
 suffix:semicolon
 r_default
 suffix:colon
-id|DASD_MESSAGE
+id|DEV_MESSAGE
+c_func
 (paren
 id|KERN_WARNING
 comma
@@ -2270,7 +1327,8 @@ suffix:semicolon
 r_case
 l_int|0x01
 suffix:colon
-id|DASD_MESSAGE
+id|DEV_MESSAGE
+c_func
 (paren
 id|KERN_WARNING
 comma
@@ -2286,7 +1344,8 @@ suffix:semicolon
 r_case
 l_int|0x02
 suffix:colon
-id|DASD_MESSAGE
+id|DEV_MESSAGE
+c_func
 (paren
 id|KERN_WARNING
 comma
@@ -2302,7 +1361,8 @@ suffix:semicolon
 r_case
 l_int|0x03
 suffix:colon
-id|DASD_MESSAGE
+id|DEV_MESSAGE
+c_func
 (paren
 id|KERN_WARNING
 comma
@@ -2322,7 +1382,8 @@ suffix:semicolon
 r_case
 l_int|0x04
 suffix:colon
-id|DASD_MESSAGE
+id|DEV_MESSAGE
+c_func
 (paren
 id|KERN_WARNING
 comma
@@ -2338,7 +1399,8 @@ r_break
 suffix:semicolon
 r_default
 suffix:colon
-id|DASD_MESSAGE
+id|DEV_MESSAGE
+c_func
 (paren
 id|KERN_WARNING
 comma
@@ -2372,7 +1434,8 @@ suffix:semicolon
 r_case
 l_int|0x01
 suffix:colon
-id|DASD_MESSAGE
+id|DEV_MESSAGE
+c_func
 (paren
 id|KERN_WARNING
 comma
@@ -2389,7 +1452,8 @@ suffix:semicolon
 r_case
 l_int|0x03
 suffix:colon
-id|DASD_MESSAGE
+id|DEV_MESSAGE
+c_func
 (paren
 id|KERN_WARNING
 comma
@@ -2405,7 +1469,8 @@ suffix:semicolon
 r_case
 l_int|0x04
 suffix:colon
-id|DASD_MESSAGE
+id|DEV_MESSAGE
+c_func
 (paren
 id|KERN_WARNING
 comma
@@ -2421,7 +1486,8 @@ suffix:semicolon
 r_case
 l_int|0x05
 suffix:colon
-id|DASD_MESSAGE
+id|DEV_MESSAGE
+c_func
 (paren
 id|KERN_WARNING
 comma
@@ -2438,7 +1504,8 @@ suffix:semicolon
 r_case
 l_int|0x06
 suffix:colon
-id|DASD_MESSAGE
+id|DEV_MESSAGE
+c_func
 (paren
 id|KERN_WARNING
 comma
@@ -2455,7 +1522,8 @@ suffix:semicolon
 r_case
 l_int|0x07
 suffix:colon
-id|DASD_MESSAGE
+id|DEV_MESSAGE
+c_func
 (paren
 id|KERN_WARNING
 comma
@@ -2472,7 +1540,8 @@ suffix:semicolon
 r_case
 l_int|0x08
 suffix:colon
-id|DASD_MESSAGE
+id|DEV_MESSAGE
+c_func
 (paren
 id|KERN_WARNING
 comma
@@ -2488,7 +1557,8 @@ suffix:semicolon
 r_case
 l_int|0x09
 suffix:colon
-id|DASD_MESSAGE
+id|DEV_MESSAGE
+c_func
 (paren
 id|KERN_WARNING
 comma
@@ -2504,7 +1574,8 @@ suffix:semicolon
 r_case
 l_int|0x0A
 suffix:colon
-id|DASD_MESSAGE
+id|DEV_MESSAGE
+c_func
 (paren
 id|KERN_WARNING
 comma
@@ -2521,7 +1592,8 @@ suffix:semicolon
 r_case
 l_int|0x0B
 suffix:colon
-id|DASD_MESSAGE
+id|DEV_MESSAGE
+c_func
 (paren
 id|KERN_WARNING
 comma
@@ -2537,7 +1609,8 @@ suffix:semicolon
 r_case
 l_int|0x0C
 suffix:colon
-id|DASD_MESSAGE
+id|DEV_MESSAGE
+c_func
 (paren
 id|KERN_WARNING
 comma
@@ -2553,7 +1626,8 @@ suffix:semicolon
 r_case
 l_int|0x0D
 suffix:colon
-id|DASD_MESSAGE
+id|DEV_MESSAGE
+c_func
 (paren
 id|KERN_WARNING
 comma
@@ -2569,7 +1643,8 @@ suffix:semicolon
 r_case
 l_int|0x0E
 suffix:colon
-id|DASD_MESSAGE
+id|DEV_MESSAGE
+c_func
 (paren
 id|KERN_WARNING
 comma
@@ -2586,7 +1661,8 @@ suffix:semicolon
 r_case
 l_int|0x0F
 suffix:colon
-id|DASD_MESSAGE
+id|DEV_MESSAGE
+c_func
 (paren
 id|KERN_WARNING
 comma
@@ -2602,7 +1678,8 @@ r_break
 suffix:semicolon
 r_default
 suffix:colon
-id|DASD_MESSAGE
+id|DEV_MESSAGE
+c_func
 (paren
 id|KERN_WARNING
 comma
@@ -2629,7 +1706,8 @@ id|msg_no
 r_case
 l_int|0x08
 suffix:colon
-id|DASD_MESSAGE
+id|DEV_MESSAGE
+c_func
 (paren
 id|KERN_WARNING
 comma
@@ -2645,7 +1723,8 @@ suffix:semicolon
 r_case
 l_int|0x0E
 suffix:colon
-id|DASD_MESSAGE
+id|DEV_MESSAGE
+c_func
 (paren
 id|KERN_WARNING
 comma
@@ -2661,7 +1740,8 @@ suffix:semicolon
 r_case
 l_int|0x0F
 suffix:colon
-id|DASD_MESSAGE
+id|DEV_MESSAGE
+c_func
 (paren
 id|KERN_WARNING
 comma
@@ -2679,7 +1759,8 @@ r_break
 suffix:semicolon
 r_default
 suffix:colon
-id|DASD_MESSAGE
+id|DEV_MESSAGE
+c_func
 (paren
 id|KERN_WARNING
 comma
@@ -2706,7 +1787,8 @@ id|msg_no
 r_case
 l_int|0x0F
 suffix:colon
-id|DASD_MESSAGE
+id|DEV_MESSAGE
+c_func
 (paren
 id|KERN_WARNING
 comma
@@ -2721,7 +1803,8 @@ r_break
 suffix:semicolon
 r_default
 suffix:colon
-id|DASD_MESSAGE
+id|DEV_MESSAGE
+c_func
 (paren
 id|KERN_WARNING
 comma
@@ -2748,7 +1831,8 @@ id|msg_no
 r_case
 l_int|0x00
 suffix:colon
-id|DASD_MESSAGE
+id|DEV_MESSAGE
+c_func
 (paren
 id|KERN_WARNING
 comma
@@ -2764,7 +1848,8 @@ suffix:semicolon
 r_case
 l_int|0x01
 suffix:colon
-id|DASD_MESSAGE
+id|DEV_MESSAGE
+c_func
 (paren
 id|KERN_WARNING
 comma
@@ -2780,7 +1865,8 @@ suffix:semicolon
 r_case
 l_int|0x02
 suffix:colon
-id|DASD_MESSAGE
+id|DEV_MESSAGE
+c_func
 (paren
 id|KERN_WARNING
 comma
@@ -2796,7 +1882,8 @@ suffix:semicolon
 r_case
 l_int|0x03
 suffix:colon
-id|DASD_MESSAGE
+id|DEV_MESSAGE
+c_func
 (paren
 id|KERN_WARNING
 comma
@@ -2812,7 +1899,8 @@ suffix:semicolon
 r_case
 l_int|0x04
 suffix:colon
-id|DASD_MESSAGE
+id|DEV_MESSAGE
+c_func
 (paren
 id|KERN_WARNING
 comma
@@ -2829,7 +1917,8 @@ suffix:semicolon
 r_case
 l_int|0x05
 suffix:colon
-id|DASD_MESSAGE
+id|DEV_MESSAGE
+c_func
 (paren
 id|KERN_WARNING
 comma
@@ -2846,7 +1935,8 @@ suffix:semicolon
 r_case
 l_int|0x06
 suffix:colon
-id|DASD_MESSAGE
+id|DEV_MESSAGE
+c_func
 (paren
 id|KERN_WARNING
 comma
@@ -2862,7 +1952,8 @@ suffix:semicolon
 r_case
 l_int|0x07
 suffix:colon
-id|DASD_MESSAGE
+id|DEV_MESSAGE
+c_func
 (paren
 id|KERN_WARNING
 comma
@@ -2878,7 +1969,8 @@ suffix:semicolon
 r_case
 l_int|0x08
 suffix:colon
-id|DASD_MESSAGE
+id|DEV_MESSAGE
+c_func
 (paren
 id|KERN_WARNING
 comma
@@ -2895,7 +1987,8 @@ suffix:semicolon
 r_case
 l_int|0x09
 suffix:colon
-id|DASD_MESSAGE
+id|DEV_MESSAGE
+c_func
 (paren
 id|KERN_WARNING
 comma
@@ -2912,7 +2005,8 @@ suffix:semicolon
 r_case
 l_int|0x0A
 suffix:colon
-id|DASD_MESSAGE
+id|DEV_MESSAGE
+c_func
 (paren
 id|KERN_WARNING
 comma
@@ -2929,7 +2023,8 @@ suffix:semicolon
 r_case
 l_int|0x0B
 suffix:colon
-id|DASD_MESSAGE
+id|DEV_MESSAGE
+c_func
 (paren
 id|KERN_WARNING
 comma
@@ -2946,7 +2041,8 @@ suffix:semicolon
 r_case
 l_int|0x0C
 suffix:colon
-id|DASD_MESSAGE
+id|DEV_MESSAGE
+c_func
 (paren
 id|KERN_WARNING
 comma
@@ -2963,7 +2059,8 @@ suffix:semicolon
 r_case
 l_int|0x0D
 suffix:colon
-id|DASD_MESSAGE
+id|DEV_MESSAGE
+c_func
 (paren
 id|KERN_WARNING
 comma
@@ -2980,7 +2077,8 @@ suffix:semicolon
 r_case
 l_int|0x0E
 suffix:colon
-id|DASD_MESSAGE
+id|DEV_MESSAGE
+c_func
 (paren
 id|KERN_WARNING
 comma
@@ -2997,7 +2095,8 @@ suffix:semicolon
 r_case
 l_int|0x0F
 suffix:colon
-id|DASD_MESSAGE
+id|DEV_MESSAGE
+c_func
 (paren
 id|KERN_WARNING
 comma
@@ -3013,7 +2112,8 @@ r_break
 suffix:semicolon
 r_default
 suffix:colon
-id|DASD_MESSAGE
+id|DEV_MESSAGE
+c_func
 (paren
 id|KERN_WARNING
 comma
@@ -3040,7 +2140,8 @@ id|msg_no
 r_case
 l_int|0x00
 suffix:colon
-id|DASD_MESSAGE
+id|DEV_MESSAGE
+c_func
 (paren
 id|KERN_WARNING
 comma
@@ -3057,7 +2158,8 @@ suffix:semicolon
 r_case
 l_int|0x01
 suffix:colon
-id|DASD_MESSAGE
+id|DEV_MESSAGE
+c_func
 (paren
 id|KERN_WARNING
 comma
@@ -3073,7 +2175,8 @@ suffix:semicolon
 r_case
 l_int|0x02
 suffix:colon
-id|DASD_MESSAGE
+id|DEV_MESSAGE
+c_func
 (paren
 id|KERN_WARNING
 comma
@@ -3089,7 +2192,8 @@ suffix:semicolon
 r_case
 l_int|0x03
 suffix:colon
-id|DASD_MESSAGE
+id|DEV_MESSAGE
+c_func
 (paren
 id|KERN_WARNING
 comma
@@ -3105,7 +2209,8 @@ suffix:semicolon
 r_case
 l_int|0x08
 suffix:colon
-id|DASD_MESSAGE
+id|DEV_MESSAGE
+c_func
 (paren
 id|KERN_WARNING
 comma
@@ -3122,7 +2227,8 @@ suffix:semicolon
 r_case
 l_int|0x09
 suffix:colon
-id|DASD_MESSAGE
+id|DEV_MESSAGE
+c_func
 (paren
 id|KERN_WARNING
 comma
@@ -3139,7 +2245,8 @@ suffix:semicolon
 r_case
 l_int|0x0A
 suffix:colon
-id|DASD_MESSAGE
+id|DEV_MESSAGE
+c_func
 (paren
 id|KERN_WARNING
 comma
@@ -3156,7 +2263,8 @@ suffix:semicolon
 r_case
 l_int|0x0B
 suffix:colon
-id|DASD_MESSAGE
+id|DEV_MESSAGE
+c_func
 (paren
 id|KERN_WARNING
 comma
@@ -3172,7 +2280,8 @@ r_break
 suffix:semicolon
 r_default
 suffix:colon
-id|DASD_MESSAGE
+id|DEV_MESSAGE
+c_func
 (paren
 id|KERN_WARNING
 comma
@@ -3199,7 +2308,8 @@ id|msg_no
 r_case
 l_int|0x00
 suffix:colon
-id|DASD_MESSAGE
+id|DEV_MESSAGE
+c_func
 (paren
 id|KERN_WARNING
 comma
@@ -3215,7 +2325,8 @@ suffix:semicolon
 r_case
 l_int|0x01
 suffix:colon
-id|DASD_MESSAGE
+id|DEV_MESSAGE
+c_func
 (paren
 id|KERN_WARNING
 comma
@@ -3231,7 +2342,8 @@ suffix:semicolon
 r_case
 l_int|0x02
 suffix:colon
-id|DASD_MESSAGE
+id|DEV_MESSAGE
+c_func
 (paren
 id|KERN_WARNING
 comma
@@ -3247,7 +2359,8 @@ suffix:semicolon
 r_case
 l_int|0x03
 suffix:colon
-id|DASD_MESSAGE
+id|DEV_MESSAGE
+c_func
 (paren
 id|KERN_WARNING
 comma
@@ -3263,7 +2376,8 @@ suffix:semicolon
 r_case
 l_int|0x04
 suffix:colon
-id|DASD_MESSAGE
+id|DEV_MESSAGE
+c_func
 (paren
 id|KERN_WARNING
 comma
@@ -3279,7 +2393,8 @@ suffix:semicolon
 r_case
 l_int|0x05
 suffix:colon
-id|DASD_MESSAGE
+id|DEV_MESSAGE
+c_func
 (paren
 id|KERN_WARNING
 comma
@@ -3295,7 +2410,8 @@ suffix:semicolon
 r_case
 l_int|0x06
 suffix:colon
-id|DASD_MESSAGE
+id|DEV_MESSAGE
+c_func
 (paren
 id|KERN_WARNING
 comma
@@ -3311,7 +2427,8 @@ suffix:semicolon
 r_case
 l_int|0x07
 suffix:colon
-id|DASD_MESSAGE
+id|DEV_MESSAGE
+c_func
 (paren
 id|KERN_WARNING
 comma
@@ -3326,7 +2443,8 @@ r_break
 suffix:semicolon
 r_default
 suffix:colon
-id|DASD_MESSAGE
+id|DEV_MESSAGE
+c_func
 (paren
 id|KERN_WARNING
 comma
@@ -3353,7 +2471,8 @@ id|msg_no
 r_case
 l_int|0x00
 suffix:colon
-id|DASD_MESSAGE
+id|DEV_MESSAGE
+c_func
 (paren
 id|KERN_WARNING
 comma
@@ -3370,7 +2489,8 @@ suffix:semicolon
 r_case
 l_int|0x01
 suffix:colon
-id|DASD_MESSAGE
+id|DEV_MESSAGE
+c_func
 (paren
 id|KERN_WARNING
 comma
@@ -3387,7 +2507,8 @@ suffix:semicolon
 r_case
 l_int|0x02
 suffix:colon
-id|DASD_MESSAGE
+id|DEV_MESSAGE
+c_func
 (paren
 id|KERN_WARNING
 comma
@@ -3404,7 +2525,8 @@ suffix:semicolon
 r_case
 l_int|0x03
 suffix:colon
-id|DASD_MESSAGE
+id|DEV_MESSAGE
+c_func
 (paren
 id|KERN_WARNING
 comma
@@ -3421,7 +2543,8 @@ suffix:semicolon
 r_case
 l_int|0x04
 suffix:colon
-id|DASD_MESSAGE
+id|DEV_MESSAGE
+c_func
 (paren
 id|KERN_WARNING
 comma
@@ -3437,7 +2560,8 @@ suffix:semicolon
 r_case
 l_int|0x05
 suffix:colon
-id|DASD_MESSAGE
+id|DEV_MESSAGE
+c_func
 (paren
 id|KERN_WARNING
 comma
@@ -3454,7 +2578,8 @@ suffix:semicolon
 r_case
 l_int|0x06
 suffix:colon
-id|DASD_MESSAGE
+id|DEV_MESSAGE
+c_func
 (paren
 id|KERN_WARNING
 comma
@@ -3471,7 +2596,8 @@ suffix:semicolon
 r_case
 l_int|0x07
 suffix:colon
-id|DASD_MESSAGE
+id|DEV_MESSAGE
+c_func
 (paren
 id|KERN_WARNING
 comma
@@ -3488,7 +2614,8 @@ suffix:semicolon
 r_case
 l_int|0x08
 suffix:colon
-id|DASD_MESSAGE
+id|DEV_MESSAGE
+c_func
 (paren
 id|KERN_WARNING
 comma
@@ -3505,7 +2632,8 @@ suffix:semicolon
 r_case
 l_int|0x09
 suffix:colon
-id|DASD_MESSAGE
+id|DEV_MESSAGE
+c_func
 (paren
 id|KERN_WARNING
 comma
@@ -3522,7 +2650,8 @@ suffix:semicolon
 r_case
 l_int|0x0A
 suffix:colon
-id|DASD_MESSAGE
+id|DEV_MESSAGE
+c_func
 (paren
 id|KERN_WARNING
 comma
@@ -3539,7 +2668,8 @@ suffix:semicolon
 r_case
 l_int|0x0B
 suffix:colon
-id|DASD_MESSAGE
+id|DEV_MESSAGE
+c_func
 (paren
 id|KERN_WARNING
 comma
@@ -3556,7 +2686,8 @@ suffix:semicolon
 r_case
 l_int|0x0C
 suffix:colon
-id|DASD_MESSAGE
+id|DEV_MESSAGE
+c_func
 (paren
 id|KERN_WARNING
 comma
@@ -3573,7 +2704,8 @@ suffix:semicolon
 r_case
 l_int|0x0D
 suffix:colon
-id|DASD_MESSAGE
+id|DEV_MESSAGE
+c_func
 (paren
 id|KERN_WARNING
 comma
@@ -3589,7 +2721,8 @@ r_break
 suffix:semicolon
 r_default
 suffix:colon
-id|DASD_MESSAGE
+id|DEV_MESSAGE
+c_func
 (paren
 id|KERN_WARNING
 comma
@@ -3620,7 +2753,8 @@ multiline_comment|/* No Message */
 r_case
 l_int|0x01
 suffix:colon
-id|DASD_MESSAGE
+id|DEV_MESSAGE
+c_func
 (paren
 id|KERN_WARNING
 comma
@@ -3637,7 +2771,8 @@ suffix:semicolon
 r_case
 l_int|0x03
 suffix:colon
-id|DASD_MESSAGE
+id|DEV_MESSAGE
+c_func
 (paren
 id|KERN_WARNING
 comma
@@ -3654,7 +2789,8 @@ suffix:semicolon
 r_case
 l_int|0x04
 suffix:colon
-id|DASD_MESSAGE
+id|DEV_MESSAGE
+c_func
 (paren
 id|KERN_WARNING
 comma
@@ -3671,7 +2807,8 @@ suffix:semicolon
 r_case
 l_int|0x05
 suffix:colon
-id|DASD_MESSAGE
+id|DEV_MESSAGE
+c_func
 (paren
 id|KERN_WARNING
 comma
@@ -3688,7 +2825,8 @@ suffix:semicolon
 r_case
 l_int|0x06
 suffix:colon
-id|DASD_MESSAGE
+id|DEV_MESSAGE
+c_func
 (paren
 id|KERN_WARNING
 comma
@@ -3705,7 +2843,8 @@ suffix:semicolon
 r_case
 l_int|0x07
 suffix:colon
-id|DASD_MESSAGE
+id|DEV_MESSAGE
+c_func
 (paren
 id|KERN_WARNING
 comma
@@ -3721,7 +2860,8 @@ suffix:semicolon
 r_case
 l_int|0x08
 suffix:colon
-id|DASD_MESSAGE
+id|DEV_MESSAGE
+c_func
 (paren
 id|KERN_WARNING
 comma
@@ -3738,7 +2878,8 @@ suffix:semicolon
 r_case
 l_int|0x09
 suffix:colon
-id|DASD_MESSAGE
+id|DEV_MESSAGE
+c_func
 (paren
 id|KERN_WARNING
 comma
@@ -3755,7 +2896,8 @@ suffix:semicolon
 r_case
 l_int|0x0A
 suffix:colon
-id|DASD_MESSAGE
+id|DEV_MESSAGE
+c_func
 (paren
 id|KERN_WARNING
 comma
@@ -3771,7 +2913,8 @@ r_break
 suffix:semicolon
 r_default
 suffix:colon
-id|DASD_MESSAGE
+id|DEV_MESSAGE
+c_func
 (paren
 id|KERN_WARNING
 comma
@@ -3804,7 +2947,8 @@ multiline_comment|/* No Message */
 r_case
 l_int|0x06
 suffix:colon
-id|DASD_MESSAGE
+id|DEV_MESSAGE
+c_func
 (paren
 id|KERN_WARNING
 comma
@@ -3820,7 +2964,8 @@ suffix:semicolon
 r_case
 l_int|0x07
 suffix:colon
-id|DASD_MESSAGE
+id|DEV_MESSAGE
+c_func
 (paren
 id|KERN_WARNING
 comma
@@ -3836,7 +2981,8 @@ suffix:semicolon
 r_case
 l_int|0x0A
 suffix:colon
-id|DASD_MESSAGE
+id|DEV_MESSAGE
+c_func
 (paren
 id|KERN_WARNING
 comma
@@ -3853,7 +2999,8 @@ suffix:semicolon
 r_case
 l_int|0x0E
 suffix:colon
-id|DASD_MESSAGE
+id|DEV_MESSAGE
+c_func
 (paren
 id|KERN_WARNING
 comma
@@ -3869,7 +3016,8 @@ r_break
 suffix:semicolon
 r_default
 suffix:colon
-id|DASD_MESSAGE
+id|DEV_MESSAGE
+c_func
 (paren
 id|KERN_WARNING
 comma
@@ -3896,7 +3044,8 @@ id|msg_no
 r_case
 l_int|0x00
 suffix:colon
-id|DASD_MESSAGE
+id|DEV_MESSAGE
+c_func
 (paren
 id|KERN_WARNING
 comma
@@ -3912,7 +3061,8 @@ suffix:semicolon
 r_case
 l_int|0x01
 suffix:colon
-id|DASD_MESSAGE
+id|DEV_MESSAGE
+c_func
 (paren
 id|KERN_WARNING
 comma
@@ -3928,7 +3078,8 @@ suffix:semicolon
 r_case
 l_int|0x02
 suffix:colon
-id|DASD_MESSAGE
+id|DEV_MESSAGE
+c_func
 (paren
 id|KERN_WARNING
 comma
@@ -3945,7 +3096,8 @@ suffix:semicolon
 r_case
 l_int|0x04
 suffix:colon
-id|DASD_MESSAGE
+id|DEV_MESSAGE
+c_func
 (paren
 id|KERN_WARNING
 comma
@@ -3961,7 +3113,8 @@ suffix:semicolon
 r_case
 l_int|0x06
 suffix:colon
-id|DASD_MESSAGE
+id|DEV_MESSAGE
+c_func
 (paren
 id|KERN_WARNING
 comma
@@ -3978,7 +3131,8 @@ suffix:semicolon
 r_case
 l_int|0x07
 suffix:colon
-id|DASD_MESSAGE
+id|DEV_MESSAGE
+c_func
 (paren
 id|KERN_WARNING
 comma
@@ -3994,7 +3148,8 @@ suffix:semicolon
 r_case
 l_int|0x09
 suffix:colon
-id|DASD_MESSAGE
+id|DEV_MESSAGE
+c_func
 (paren
 id|KERN_WARNING
 comma
@@ -4010,7 +3165,8 @@ suffix:semicolon
 r_case
 l_int|0x0A
 suffix:colon
-id|DASD_MESSAGE
+id|DEV_MESSAGE
+c_func
 (paren
 id|KERN_WARNING
 comma
@@ -4027,7 +3183,8 @@ suffix:semicolon
 r_case
 l_int|0x0B
 suffix:colon
-id|DASD_MESSAGE
+id|DEV_MESSAGE
+c_func
 (paren
 id|KERN_WARNING
 comma
@@ -4043,7 +3200,8 @@ suffix:semicolon
 r_case
 l_int|0x0C
 suffix:colon
-id|DASD_MESSAGE
+id|DEV_MESSAGE
+c_func
 (paren
 id|KERN_WARNING
 comma
@@ -4060,7 +3218,8 @@ suffix:semicolon
 r_case
 l_int|0x0D
 suffix:colon
-id|DASD_MESSAGE
+id|DEV_MESSAGE
+c_func
 (paren
 id|KERN_WARNING
 comma
@@ -4077,7 +3236,8 @@ suffix:semicolon
 r_case
 l_int|0x0E
 suffix:colon
-id|DASD_MESSAGE
+id|DEV_MESSAGE
+c_func
 (paren
 id|KERN_WARNING
 comma
@@ -4092,7 +3252,8 @@ r_break
 suffix:semicolon
 r_default
 suffix:colon
-id|DASD_MESSAGE
+id|DEV_MESSAGE
+c_func
 (paren
 id|KERN_WARNING
 comma
@@ -4108,20 +3269,22 @@ r_break
 suffix:semicolon
 r_default
 suffix:colon
-(brace
-)brace
 multiline_comment|/* unknown message format - should not happen */
+r_break
+suffix:semicolon
 )brace
 multiline_comment|/* end switch message format */
 )brace
 multiline_comment|/* end dasd_3990_handle_env_data */
-multiline_comment|/*&n; * DASD_3990_ERP_COM_REJ&n; *&n; * DESCRIPTION&n; *   Handles 24 byte &squot;Command Reject&squot; error.&n; *&n; * PARAMETER&n; *   erp                current erp_head&n; *   sense              current sense data&n; * &n; * RETURN VALUES&n; *   erp                &squot;new&squot; erp_head - pointer to new ERP &n; */
-id|ccw_req_t
+multiline_comment|/*&n; * DASD_3990_ERP_COM_REJ&n; *&n; * DESCRIPTION&n; *   Handles 24 byte &squot;Command Reject&squot; error.&n; *&n; * PARAMETER&n; *   erp&t;&t;current erp_head&n; *   sense&t;&t;current sense data&n; * &n; * RETURN VALUES&n; *   erp&t;&t;&squot;new&squot; erp_head - pointer to new ERP &n; */
+r_static
+id|dasd_ccw_req_t
 op_star
 DECL|function|dasd_3990_erp_com_rej
 id|dasd_3990_erp_com_rej
+c_func
 (paren
-id|ccw_req_t
+id|dasd_ccw_req_t
 op_star
 id|erp
 comma
@@ -4152,7 +3315,8 @@ op_amp
 id|SNS2_ENV_DATA_PRESENT
 )paren
 (brace
-id|DASD_MESSAGE
+id|DEV_MESSAGE
+c_func
 (paren
 id|KERN_DEBUG
 comma
@@ -4164,6 +3328,7 @@ l_string|&quot;Command Reject - environmental data present&quot;
 )paren
 suffix:semicolon
 id|dasd_3990_handle_env_data
+c_func
 (paren
 id|erp
 comma
@@ -4178,7 +3343,8 @@ suffix:semicolon
 r_else
 (brace
 multiline_comment|/* fatal error -  set status to FAILED */
-id|DASD_MESSAGE
+id|DEV_MESSAGE
+c_func
 (paren
 id|KERN_ERR
 comma
@@ -4192,10 +3358,11 @@ suffix:semicolon
 id|erp
 op_assign
 id|dasd_3990_erp_cleanup
+c_func
 (paren
 id|erp
 comma
-id|CQR_STATUS_FAILED
+id|DASD_CQR_FAILED
 )paren
 suffix:semicolon
 )brace
@@ -4204,13 +3371,15 @@ id|erp
 suffix:semicolon
 )brace
 multiline_comment|/* end dasd_3990_erp_com_rej */
-multiline_comment|/*&n; * DASD_3990_ERP_BUS_OUT &n; *&n; * DESCRIPTION&n; *   Handles 24 byte &squot;Bus Out Parity Check&squot; error.&n; *&n; * PARAMETER&n; *   erp                current erp_head&n; * RETURN VALUES&n; *   erp                new erp_head - pointer to new ERP&n; */
-id|ccw_req_t
+multiline_comment|/*&n; * DASD_3990_ERP_BUS_OUT &n; *&n; * DESCRIPTION&n; *   Handles 24 byte &squot;Bus Out Parity Check&squot; error.&n; *&n; * PARAMETER&n; *   erp&t;&t;current erp_head&n; * RETURN VALUES&n; *   erp&t;&t;new erp_head - pointer to new ERP&n; */
+r_static
+id|dasd_ccw_req_t
 op_star
 DECL|function|dasd_3990_erp_bus_out
 id|dasd_3990_erp_bus_out
+c_func
 (paren
-id|ccw_req_t
+id|dasd_ccw_req_t
 op_star
 id|erp
 )paren
@@ -4222,8 +3391,8 @@ op_assign
 id|erp-&gt;device
 suffix:semicolon
 multiline_comment|/* first time set initial retry counter and erp_function */
-multiline_comment|/* and retry once without blocking queue                 */
-multiline_comment|/* (this enables easier enqueing of the cqr)             */
+multiline_comment|/* and retry once without blocking queue&t;&t; */
+multiline_comment|/* (this enables easier enqueing of the cqr)&t;&t; */
 r_if
 c_cond
 (paren
@@ -4244,7 +3413,8 @@ suffix:semicolon
 r_else
 (brace
 multiline_comment|/* issue a message and wait for &squot;device ready&squot; interrupt */
-id|DASD_MESSAGE
+id|DEV_MESSAGE
+c_func
 (paren
 id|KERN_DEBUG
 comma
@@ -4257,10 +3427,13 @@ l_string|&quot;channel&quot;
 )paren
 suffix:semicolon
 id|dasd_3990_erp_block_queue
+c_func
 (paren
 id|erp
 comma
 l_int|60
+op_star
+id|HZ
 )paren
 suffix:semicolon
 )brace
@@ -4269,13 +3442,15 @@ id|erp
 suffix:semicolon
 )brace
 multiline_comment|/* end dasd_3990_erp_bus_out */
-multiline_comment|/*&n; * DASD_3990_ERP_EQUIP_CHECK&n; *&n; * DESCRIPTION&n; *   Handles 24 byte &squot;Equipment Check&squot; error.&n; *&n; * PARAMETER&n; *   erp                current erp_head&n; * RETURN VALUES&n; *   erp                new erp_head - pointer to new ERP&n; */
-id|ccw_req_t
+multiline_comment|/*&n; * DASD_3990_ERP_EQUIP_CHECK&n; *&n; * DESCRIPTION&n; *   Handles 24 byte &squot;Equipment Check&squot; error.&n; *&n; * PARAMETER&n; *   erp&t;&t;current erp_head&n; * RETURN VALUES&n; *   erp&t;&t;new erp_head - pointer to new ERP&n; */
+r_static
+id|dasd_ccw_req_t
 op_star
 DECL|function|dasd_3990_erp_equip_check
 id|dasd_3990_erp_equip_check
+c_func
 (paren
-id|ccw_req_t
+id|dasd_ccw_req_t
 op_star
 id|erp
 comma
@@ -4305,7 +3480,8 @@ op_amp
 id|SNS1_WRITE_INHIBITED
 )paren
 (brace
-id|DASD_MESSAGE
+id|DEV_MESSAGE
+c_func
 (paren
 id|KERN_DEBUG
 comma
@@ -4317,7 +3493,8 @@ l_string|&quot;Write inhibited path encountered&quot;
 )paren
 suffix:semicolon
 multiline_comment|/* vary path offline */
-id|DASD_MESSAGE
+id|DEV_MESSAGE
+c_func
 (paren
 id|KERN_ERR
 comma
@@ -4333,6 +3510,7 @@ suffix:semicolon
 id|erp
 op_assign
 id|dasd_3990_erp_action_1
+c_func
 (paren
 id|erp
 )paren
@@ -4350,7 +3528,8 @@ op_amp
 id|SNS2_ENV_DATA_PRESENT
 )paren
 (brace
-id|DASD_MESSAGE
+id|DEV_MESSAGE
+c_func
 (paren
 id|KERN_DEBUG
 comma
@@ -4363,6 +3542,7 @@ l_string|&quot;environmental data present&quot;
 )paren
 suffix:semicolon
 id|dasd_3990_handle_env_data
+c_func
 (paren
 id|erp
 comma
@@ -4372,6 +3552,7 @@ suffix:semicolon
 id|erp
 op_assign
 id|dasd_3990_erp_action_4
+c_func
 (paren
 id|erp
 comma
@@ -4391,7 +3572,8 @@ op_amp
 id|SNS1_PERM_ERR
 )paren
 (brace
-id|DASD_MESSAGE
+id|DEV_MESSAGE
+c_func
 (paren
 id|KERN_DEBUG
 comma
@@ -4406,6 +3588,7 @@ suffix:semicolon
 id|erp
 op_assign
 id|dasd_3990_erp_action_1
+c_func
 (paren
 id|erp
 )paren
@@ -4415,7 +3598,8 @@ r_else
 (brace
 multiline_comment|/* all other equipment checks - Action 5 */
 multiline_comment|/* rest is done when retries == 0 */
-id|DASD_MESSAGE
+id|DEV_MESSAGE
+c_func
 (paren
 id|KERN_DEBUG
 comma
@@ -4429,6 +3613,7 @@ suffix:semicolon
 id|erp
 op_assign
 id|dasd_3990_erp_action_5
+c_func
 (paren
 id|erp
 )paren
@@ -4439,13 +3624,15 @@ id|erp
 suffix:semicolon
 )brace
 multiline_comment|/* end dasd_3990_erp_equip_check */
-multiline_comment|/*&n; * DASD_3990_ERP_DATA_CHECK&n; *&n; * DESCRIPTION&n; *   Handles 24 byte &squot;Data Check&squot; error.&n; *&n; * PARAMETER&n; *   erp                current erp_head&n; * RETURN VALUES&n; *   erp                new erp_head - pointer to new ERP&n; */
-id|ccw_req_t
+multiline_comment|/*&n; * DASD_3990_ERP_DATA_CHECK&n; *&n; * DESCRIPTION&n; *   Handles 24 byte &squot;Data Check&squot; error.&n; *&n; * PARAMETER&n; *   erp&t;&t;current erp_head&n; * RETURN VALUES&n; *   erp&t;&t;new erp_head - pointer to new ERP&n; */
+r_static
+id|dasd_ccw_req_t
 op_star
 DECL|function|dasd_3990_erp_data_check
 id|dasd_3990_erp_data_check
+c_func
 (paren
-id|ccw_req_t
+id|dasd_ccw_req_t
 op_star
 id|erp
 comma
@@ -4477,7 +3664,8 @@ id|SNS2_CORRECTABLE
 (brace
 multiline_comment|/* correctable data check */
 multiline_comment|/* issue message that the data has been corrected */
-id|DASD_MESSAGE
+id|DEV_MESSAGE
+c_func
 (paren
 id|KERN_EMERG
 comma
@@ -4510,7 +3698,8 @@ op_amp
 id|SNS2_ENV_DATA_PRESENT
 )paren
 (brace
-id|DASD_MESSAGE
+id|DEV_MESSAGE
+c_func
 (paren
 id|KERN_DEBUG
 comma
@@ -4525,6 +3714,7 @@ suffix:semicolon
 id|erp
 op_assign
 id|dasd_3990_erp_action_4
+c_func
 (paren
 id|erp
 comma
@@ -4544,7 +3734,8 @@ op_amp
 id|SNS1_PERM_ERR
 )paren
 (brace
-id|DASD_MESSAGE
+id|DEV_MESSAGE
+c_func
 (paren
 id|KERN_DEBUG
 comma
@@ -4559,6 +3750,7 @@ suffix:semicolon
 id|erp
 op_assign
 id|dasd_3990_erp_action_1
+c_func
 (paren
 id|erp
 )paren
@@ -4567,7 +3759,8 @@ suffix:semicolon
 r_else
 (brace
 multiline_comment|/* all other data checks */
-id|DASD_MESSAGE
+id|DEV_MESSAGE
+c_func
 (paren
 id|KERN_DEBUG
 comma
@@ -4582,6 +3775,7 @@ suffix:semicolon
 id|erp
 op_assign
 id|dasd_3990_erp_action_5
+c_func
 (paren
 id|erp
 )paren
@@ -4592,13 +3786,15 @@ id|erp
 suffix:semicolon
 )brace
 multiline_comment|/* end dasd_3990_erp_data_check */
-multiline_comment|/*&n; * DASD_3990_ERP_OVERRUN&n; *&n; * DESCRIPTION&n; *   Handles 24 byte &squot;Overrun&squot; error.&n; *&n; * PARAMETER&n; *   erp                current erp_head&n; * RETURN VALUES&n; *   erp                new erp_head - pointer to new ERP&n; */
-id|ccw_req_t
+multiline_comment|/*&n; * DASD_3990_ERP_OVERRUN&n; *&n; * DESCRIPTION&n; *   Handles 24 byte &squot;Overrun&squot; error.&n; *&n; * PARAMETER&n; *   erp&t;&t;current erp_head&n; * RETURN VALUES&n; *   erp&t;&t;new erp_head - pointer to new ERP&n; */
+r_static
+id|dasd_ccw_req_t
 op_star
 DECL|function|dasd_3990_erp_overrun
 id|dasd_3990_erp_overrun
+c_func
 (paren
-id|ccw_req_t
+id|dasd_ccw_req_t
 op_star
 id|erp
 comma
@@ -4617,7 +3813,8 @@ id|erp-&gt;function
 op_assign
 id|dasd_3990_erp_overrun
 suffix:semicolon
-id|DASD_MESSAGE
+id|DEV_MESSAGE
+c_func
 (paren
 id|KERN_DEBUG
 comma
@@ -4632,6 +3829,7 @@ suffix:semicolon
 id|erp
 op_assign
 id|dasd_3990_erp_action_5
+c_func
 (paren
 id|erp
 )paren
@@ -4641,13 +3839,15 @@ id|erp
 suffix:semicolon
 )brace
 multiline_comment|/* end dasd_3990_erp_overrun */
-multiline_comment|/*&n; * DASD_3990_ERP_INV_FORMAT&n; *&n; * DESCRIPTION&n; *   Handles 24 byte &squot;Invalid Track Format&squot; error.&n; *&n; * PARAMETER&n; *   erp                current erp_head&n; * RETURN VALUES&n; *   erp                new erp_head - pointer to new ERP&n; */
-id|ccw_req_t
+multiline_comment|/*&n; * DASD_3990_ERP_INV_FORMAT&n; *&n; * DESCRIPTION&n; *   Handles 24 byte &squot;Invalid Track Format&squot; error.&n; *&n; * PARAMETER&n; *   erp&t;&t;current erp_head&n; * RETURN VALUES&n; *   erp&t;&t;new erp_head - pointer to new ERP&n; */
+r_static
+id|dasd_ccw_req_t
 op_star
 DECL|function|dasd_3990_erp_inv_format
 id|dasd_3990_erp_inv_format
+c_func
 (paren
-id|ccw_req_t
+id|dasd_ccw_req_t
 op_star
 id|erp
 comma
@@ -4677,7 +3877,8 @@ op_amp
 id|SNS2_ENV_DATA_PRESENT
 )paren
 (brace
-id|DASD_MESSAGE
+id|DEV_MESSAGE
+c_func
 (paren
 id|KERN_DEBUG
 comma
@@ -4690,6 +3891,7 @@ l_string|&quot;staging data&quot;
 )paren
 suffix:semicolon
 id|dasd_3990_handle_env_data
+c_func
 (paren
 id|erp
 comma
@@ -4699,6 +3901,7 @@ suffix:semicolon
 id|erp
 op_assign
 id|dasd_3990_erp_action_4
+c_func
 (paren
 id|erp
 comma
@@ -4708,7 +3911,8 @@ suffix:semicolon
 )brace
 r_else
 (brace
-id|DASD_MESSAGE
+id|DEV_MESSAGE
+c_func
 (paren
 id|KERN_ERR
 comma
@@ -4723,10 +3927,11 @@ suffix:semicolon
 id|erp
 op_assign
 id|dasd_3990_erp_cleanup
+c_func
 (paren
 id|erp
 comma
-id|CQR_STATUS_FAILED
+id|DASD_CQR_FAILED
 )paren
 suffix:semicolon
 )brace
@@ -4735,13 +3940,15 @@ id|erp
 suffix:semicolon
 )brace
 multiline_comment|/* end dasd_3990_erp_inv_format */
-multiline_comment|/*&n; * DASD_3990_ERP_EOC&n; *&n; * DESCRIPTION&n; *   Handles 24 byte &squot;End-of-Cylinder&squot; error.&n; *&n; * PARAMETER&n; *   erp                already added default erp&n; * RETURN VALUES&n; *   erp                pointer to original (failed) cqr.&n; */
-id|ccw_req_t
+multiline_comment|/*&n; * DASD_3990_ERP_EOC&n; *&n; * DESCRIPTION&n; *   Handles 24 byte &squot;End-of-Cylinder&squot; error.&n; *&n; * PARAMETER&n; *   erp&t;&t;already added default erp&n; * RETURN VALUES&n; *   erp&t;&t;pointer to original (failed) cqr.&n; */
+r_static
+id|dasd_ccw_req_t
 op_star
 DECL|function|dasd_3990_erp_EOC
 id|dasd_3990_erp_EOC
+c_func
 (paren
-id|ccw_req_t
+id|dasd_ccw_req_t
 op_star
 id|default_erp
 comma
@@ -4756,7 +3963,8 @@ id|device
 op_assign
 id|default_erp-&gt;device
 suffix:semicolon
-id|DASD_MESSAGE
+id|DEV_MESSAGE
+c_func
 (paren
 id|KERN_ERR
 comma
@@ -4770,21 +3978,24 @@ suffix:semicolon
 multiline_comment|/* implement action 7 - BUG */
 r_return
 id|dasd_3990_erp_cleanup
+c_func
 (paren
 id|default_erp
 comma
-id|CQR_STATUS_FAILED
+id|DASD_CQR_FAILED
 )paren
 suffix:semicolon
 )brace
 multiline_comment|/* end dasd_3990_erp_EOC */
-multiline_comment|/*&n; * DASD_3990_ERP_ENV_DATA&n; *&n; * DESCRIPTION&n; *   Handles 24 byte &squot;Environmental-Data Present&squot; error.&n; *&n; * PARAMETER&n; *   erp                current erp_head&n; * RETURN VALUES&n; *   erp                new erp_head - pointer to new ERP&n; */
-id|ccw_req_t
+multiline_comment|/*&n; * DASD_3990_ERP_ENV_DATA&n; *&n; * DESCRIPTION&n; *   Handles 24 byte &squot;Environmental-Data Present&squot; error.&n; *&n; * PARAMETER&n; *   erp&t;&t;current erp_head&n; * RETURN VALUES&n; *   erp&t;&t;new erp_head - pointer to new ERP&n; */
+r_static
+id|dasd_ccw_req_t
 op_star
 DECL|function|dasd_3990_erp_env_data
 id|dasd_3990_erp_env_data
+c_func
 (paren
-id|ccw_req_t
+id|dasd_ccw_req_t
 op_star
 id|erp
 comma
@@ -4803,7 +4014,8 @@ id|erp-&gt;function
 op_assign
 id|dasd_3990_erp_env_data
 suffix:semicolon
-id|DASD_MESSAGE
+id|DEV_MESSAGE
+c_func
 (paren
 id|KERN_DEBUG
 comma
@@ -4815,6 +4027,7 @@ l_string|&quot;Environmental data present&quot;
 )paren
 suffix:semicolon
 id|dasd_3990_handle_env_data
+c_func
 (paren
 id|erp
 comma
@@ -4836,6 +4049,7 @@ l_int|0x0F
 id|erp
 op_assign
 id|dasd_3990_erp_action_4
+c_func
 (paren
 id|erp
 comma
@@ -4848,10 +4062,11 @@ r_else
 id|erp
 op_assign
 id|dasd_3990_erp_cleanup
+c_func
 (paren
 id|erp
 comma
-id|CQR_STATUS_IN_IO
+id|DASD_CQR_IN_IO
 )paren
 suffix:semicolon
 )brace
@@ -4860,13 +4075,15 @@ id|erp
 suffix:semicolon
 )brace
 multiline_comment|/* end dasd_3990_erp_env_data */
-multiline_comment|/*&n; * DASD_3990_ERP_NO_REC&n; *&n; * DESCRIPTION&n; *   Handles 24 byte &squot;No Record Found&squot; error.&n; *&n; * PARAMETER&n; *   erp                already added default ERP&n; *              &n; * RETURN VALUES&n; *   erp                new erp_head - pointer to new ERP&n; */
-id|ccw_req_t
+multiline_comment|/*&n; * DASD_3990_ERP_NO_REC&n; *&n; * DESCRIPTION&n; *   Handles 24 byte &squot;No Record Found&squot; error.&n; *&n; * PARAMETER&n; *   erp&t;&t;already added default ERP&n; *&t;&t;&n; * RETURN VALUES&n; *   erp&t;&t;new erp_head - pointer to new ERP&n; */
+r_static
+id|dasd_ccw_req_t
 op_star
 DECL|function|dasd_3990_erp_no_rec
 id|dasd_3990_erp_no_rec
+c_func
 (paren
-id|ccw_req_t
+id|dasd_ccw_req_t
 op_star
 id|default_erp
 comma
@@ -4881,7 +4098,8 @@ id|device
 op_assign
 id|default_erp-&gt;device
 suffix:semicolon
-id|DASD_MESSAGE
+id|DEV_MESSAGE
+c_func
 (paren
 id|KERN_ERR
 comma
@@ -4895,21 +4113,24 @@ l_string|&quot;have been handled within the interrupt handler&quot;
 suffix:semicolon
 r_return
 id|dasd_3990_erp_cleanup
+c_func
 (paren
 id|default_erp
 comma
-id|CQR_STATUS_FAILED
+id|DASD_CQR_FAILED
 )paren
 suffix:semicolon
 )brace
 multiline_comment|/* end dasd_3990_erp_no_rec */
-multiline_comment|/*&n; * DASD_3990_ERP_FILE_PROT&n; *&n; * DESCRIPTION&n; *   Handles 24 byte &squot;File Protected&squot; error.&n; *   Note: Seek related recovery is not implemented because&n; *         wee don&squot;t use the seek command yet.&n; *&n; * PARAMETER&n; *   erp                current erp_head&n; * RETURN VALUES&n; *   erp                new erp_head - pointer to new ERP&n; */
-id|ccw_req_t
+multiline_comment|/*&n; * DASD_3990_ERP_FILE_PROT&n; *&n; * DESCRIPTION&n; *   Handles 24 byte &squot;File Protected&squot; error.&n; *   Note: Seek related recovery is not implemented because&n; *&t;   wee don&squot;t use the seek command yet.&n; *&n; * PARAMETER&n; *   erp&t;&t;current erp_head&n; * RETURN VALUES&n; *   erp&t;&t;new erp_head - pointer to new ERP&n; */
+r_static
+id|dasd_ccw_req_t
 op_star
 DECL|function|dasd_3990_erp_file_prot
 id|dasd_3990_erp_file_prot
+c_func
 (paren
-id|ccw_req_t
+id|dasd_ccw_req_t
 op_star
 id|erp
 )paren
@@ -4920,7 +4141,8 @@ id|device
 op_assign
 id|erp-&gt;device
 suffix:semicolon
-id|DASD_MESSAGE
+id|DEV_MESSAGE
+c_func
 (paren
 id|KERN_ERR
 comma
@@ -4933,21 +4155,24 @@ l_string|&quot;File Protected&quot;
 suffix:semicolon
 r_return
 id|dasd_3990_erp_cleanup
+c_func
 (paren
 id|erp
 comma
-id|CQR_STATUS_FAILED
+id|DASD_CQR_FAILED
 )paren
 suffix:semicolon
 )brace
 multiline_comment|/* end dasd_3990_erp_file_prot */
-multiline_comment|/*&n; * DASD_3990_ERP_INSPECT_24 &n; *&n; * DESCRIPTION&n; *   Does a detailed inspection of the 24 byte sense data&n; *   and sets up a related error recovery action.  &n; *&n; * PARAMETER&n; *   sense              sense data of the actual error&n; *   erp                pointer to the currently created default ERP&n; *&n; * RETURN VALUES&n; *   erp                pointer to the (addtitional) ERP&n; */
-id|ccw_req_t
+multiline_comment|/*&n; * DASD_3990_ERP_INSPECT_24 &n; *&n; * DESCRIPTION&n; *   Does a detailed inspection of the 24 byte sense data&n; *   and sets up a related error recovery action.  &n; *&n; * PARAMETER&n; *   sense&t;&t;sense data of the actual error&n; *   erp&t;&t;pointer to the currently created default ERP&n; *&n; * RETURN VALUES&n; *   erp&t;&t;pointer to the (addtitional) ERP&n; */
+r_static
+id|dasd_ccw_req_t
 op_star
 DECL|function|dasd_3990_erp_inspect_24
 id|dasd_3990_erp_inspect_24
+c_func
 (paren
-id|ccw_req_t
+id|dasd_ccw_req_t
 op_star
 id|erp
 comma
@@ -4956,14 +4181,14 @@ op_star
 id|sense
 )paren
 (brace
-id|ccw_req_t
+id|dasd_ccw_req_t
 op_star
 id|erp_filled
 op_assign
 l_int|NULL
 suffix:semicolon
-multiline_comment|/* Check sense for ....    */
-multiline_comment|/* &squot;Command Reject&squot;        */
+multiline_comment|/* Check sense for ....&t;   */
+multiline_comment|/* &squot;Command Reject&squot;&t;   */
 r_if
 c_cond
 (paren
@@ -4986,6 +4211,7 @@ id|SNS0_CMD_REJECT
 id|erp_filled
 op_assign
 id|dasd_3990_erp_com_rej
+c_func
 (paren
 id|erp
 comma
@@ -5016,6 +4242,7 @@ id|SNS0_INTERVENTION_REQ
 id|erp_filled
 op_assign
 id|dasd_3990_erp_int_req
+c_func
 (paren
 id|erp
 )paren
@@ -5044,12 +4271,13 @@ id|SNS0_BUS_OUT_CHECK
 id|erp_filled
 op_assign
 id|dasd_3990_erp_bus_out
+c_func
 (paren
 id|erp
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* &squot;Equipment Check&squot;       */
+multiline_comment|/* &squot;Equipment Check&squot;&t;   */
 r_if
 c_cond
 (paren
@@ -5072,6 +4300,7 @@ id|SNS0_EQUIPMENT_CHECK
 id|erp_filled
 op_assign
 id|dasd_3990_erp_equip_check
+c_func
 (paren
 id|erp
 comma
@@ -5079,7 +4308,7 @@ id|sense
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* &squot;Data Check&squot;            */
+multiline_comment|/* &squot;Data Check&squot;&t;&t;   */
 r_if
 c_cond
 (paren
@@ -5102,6 +4331,7 @@ id|SNS0_DATA_CHECK
 id|erp_filled
 op_assign
 id|dasd_3990_erp_data_check
+c_func
 (paren
 id|erp
 comma
@@ -5109,7 +4339,7 @@ id|sense
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* &squot;Overrun&squot;               */
+multiline_comment|/* &squot;Overrun&squot;&t;&t;   */
 r_if
 c_cond
 (paren
@@ -5132,6 +4362,7 @@ id|SNS0_OVERRUN
 id|erp_filled
 op_assign
 id|dasd_3990_erp_overrun
+c_func
 (paren
 id|erp
 comma
@@ -5162,6 +4393,7 @@ id|SNS1_INV_TRACK_FORMAT
 id|erp_filled
 op_assign
 id|dasd_3990_erp_inv_format
+c_func
 (paren
 id|erp
 comma
@@ -5169,7 +4401,7 @@ id|sense
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* &squot;End-of-Cylinder&squot;       */
+multiline_comment|/* &squot;End-of-Cylinder&squot;&t;   */
 r_if
 c_cond
 (paren
@@ -5192,6 +4424,7 @@ id|SNS1_EOC
 id|erp_filled
 op_assign
 id|dasd_3990_erp_EOC
+c_func
 (paren
 id|erp
 comma
@@ -5199,7 +4432,7 @@ id|sense
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* &squot;Environmental Data&squot;    */
+multiline_comment|/* &squot;Environmental Data&squot;&t;   */
 r_if
 c_cond
 (paren
@@ -5222,6 +4455,7 @@ id|SNS2_ENV_DATA_PRESENT
 id|erp_filled
 op_assign
 id|dasd_3990_erp_env_data
+c_func
 (paren
 id|erp
 comma
@@ -5229,7 +4463,7 @@ id|sense
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* &squot;No Record Found&squot;       */
+multiline_comment|/* &squot;No Record Found&squot;&t;   */
 r_if
 c_cond
 (paren
@@ -5252,6 +4486,7 @@ id|SNS1_NO_REC_FOUND
 id|erp_filled
 op_assign
 id|dasd_3990_erp_no_rec
+c_func
 (paren
 id|erp
 comma
@@ -5259,7 +4494,7 @@ id|sense
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* &squot;File Protected&squot;        */
+multiline_comment|/* &squot;File Protected&squot;&t;   */
 r_if
 c_cond
 (paren
@@ -5282,6 +4517,7 @@ id|SNS1_FILE_PROTECTED
 id|erp_filled
 op_assign
 id|dasd_3990_erp_file_prot
+c_func
 (paren
 id|erp
 )paren
@@ -5307,13 +4543,15 @@ suffix:semicolon
 )brace
 multiline_comment|/* END dasd_3990_erp_inspect_24 */
 multiline_comment|/*&n; ***************************************************************************** &n; * 32 byte sense ERP functions (only)&n; ***************************************************************************** &n; */
-multiline_comment|/*&n; * DASD_3990_ERPACTION_10_32 &n; *&n; * DESCRIPTION&n; *   Handles 32 byte &squot;Action 10&squot; of Single Program Action Codes.&n; *   Just retry and if retry doesn&squot;t work, return with error.&n; *&n; * PARAMETER&n; *   erp                current erp_head&n; *   sense              current sense data &n; * RETURN VALUES&n; *   erp                modified erp_head&n; */
-id|ccw_req_t
+multiline_comment|/*&n; * DASD_3990_ERPACTION_10_32 &n; *&n; * DESCRIPTION&n; *   Handles 32 byte &squot;Action 10&squot; of Single Program Action Codes.&n; *   Just retry and if retry doesn&squot;t work, return with error.&n; *&n; * PARAMETER&n; *   erp&t;&t;current erp_head&n; *   sense&t;&t;current sense data &n; * RETURN VALUES&n; *   erp&t;&t;modified erp_head&n; */
+r_static
+id|dasd_ccw_req_t
 op_star
 DECL|function|dasd_3990_erp_action_10_32
 id|dasd_3990_erp_action_10_32
+c_func
 (paren
-id|ccw_req_t
+id|dasd_ccw_req_t
 op_star
 id|erp
 comma
@@ -5336,7 +4574,8 @@ id|erp-&gt;function
 op_assign
 id|dasd_3990_erp_action_10_32
 suffix:semicolon
-id|DASD_MESSAGE
+id|DEV_MESSAGE
+c_func
 (paren
 id|KERN_DEBUG
 comma
@@ -5352,13 +4591,15 @@ id|erp
 suffix:semicolon
 )brace
 multiline_comment|/* end dasd_3990_erp_action_10_32 */
-multiline_comment|/*&n; * DASD_3990_ERP_ACTION_1B_32&n; *&n; * DESCRIPTION&n; *   Handles 32 byte &squot;Action 1B&squot; of Single Program Action Codes.&n; *   A write operation could not be finished because of an unexpected &n; *   condition.&n; *   The already created &squot;default erp&squot; is used to get the link to &n; *   the erp chain, but it can not be used for this recovery &n; *   action because it contains no DE/LO data space.&n; *&n; * PARAMETER&n; *   default_erp        already added default erp.&n; *   sense              current sense data &n; *&n; * RETURN VALUES&n; *   erp                new erp or &n; *                      default_erp in case of imprecise ending or error&n; */
-id|ccw_req_t
+multiline_comment|/*&n; * DASD_3990_ERP_ACTION_1B_32&n; *&n; * DESCRIPTION&n; *   Handles 32 byte &squot;Action 1B&squot; of Single Program Action Codes.&n; *   A write operation could not be finished because of an unexpected &n; *   condition.&n; *   The already created &squot;default erp&squot; is used to get the link to &n; *   the erp chain, but it can not be used for this recovery &n; *   action because it contains no DE/LO data space.&n; *&n; * PARAMETER&n; *   default_erp&t;already added default erp.&n; *   sense&t;&t;current sense data &n; *&n; * RETURN VALUES&n; *   erp&t;&t;new erp or &n; *&t;&t;&t;default_erp in case of imprecise ending or error&n; */
+r_static
+id|dasd_ccw_req_t
 op_star
 DECL|function|dasd_3990_erp_action_1B_32
 id|dasd_3990_erp_action_1B_32
+c_func
 (paren
-id|ccw_req_t
+id|dasd_ccw_req_t
 op_star
 id|default_erp
 comma
@@ -5378,11 +4619,11 @@ id|cpa
 op_assign
 l_int|0
 suffix:semicolon
-id|ccw_req_t
+id|dasd_ccw_req_t
 op_star
 id|cqr
 suffix:semicolon
-id|ccw_req_t
+id|dasd_ccw_req_t
 op_star
 id|erp
 suffix:semicolon
@@ -5399,7 +4640,8 @@ id|ccw1_t
 op_star
 id|ccw
 suffix:semicolon
-id|DASD_MESSAGE
+id|DEV_MESSAGE
+c_func
 (paren
 id|KERN_DEBUG
 comma
@@ -5444,7 +4686,8 @@ op_amp
 l_int|0x01
 )paren
 (brace
-id|DASD_MESSAGE
+id|DEV_MESSAGE
+c_func
 (paren
 id|KERN_DEBUG
 comma
@@ -5473,7 +4716,8 @@ op_eq
 l_int|0
 )paren
 (brace
-id|DASD_MESSAGE
+id|DEV_MESSAGE
+c_func
 (paren
 id|KERN_DEBUG
 comma
@@ -5487,17 +4731,19 @@ l_string|&quot;to be restarted&quot;
 suffix:semicolon
 r_return
 id|dasd_3990_erp_cleanup
+c_func
 (paren
 id|default_erp
 comma
-id|CQR_STATUS_FAILED
+id|DASD_CQR_FAILED
 )paren
 suffix:semicolon
 )brace
 multiline_comment|/* Build new ERP request including DE/LO */
 id|erp
 op_assign
-id|dasd_alloc_request
+id|dasd_alloc_erp_request
+c_func
 (paren
 (paren
 r_char
@@ -5527,11 +4773,15 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-op_logical_neg
+id|IS_ERR
+c_func
+(paren
 id|erp
 )paren
+)paren
 (brace
-id|DASD_MESSAGE
+id|DEV_MESSAGE
+c_func
 (paren
 id|KERN_ERR
 comma
@@ -5544,10 +4794,11 @@ l_string|&quot;Unable to allocate ERP&quot;
 suffix:semicolon
 r_return
 id|dasd_3990_erp_cleanup
+c_func
 (paren
 id|default_erp
 comma
-id|CQR_STATUS_FAILED
+id|DASD_CQR_FAILED
 )paren
 suffix:semicolon
 )brace
@@ -5557,6 +4808,7 @@ op_assign
 id|erp-&gt;data
 suffix:semicolon
 id|memcpy
+c_func
 (paren
 id|DE_data
 comma
@@ -5600,7 +4852,8 @@ l_int|0x01
 )paren
 )paren
 (brace
-id|DASD_MESSAGE
+id|DEV_MESSAGE
+c_func
 (paren
 id|KERN_ERR
 comma
@@ -5613,10 +4866,11 @@ l_string|&quot;BUG - this should not happen&quot;
 suffix:semicolon
 r_return
 id|dasd_3990_erp_cleanup
+c_func
 (paren
 id|default_erp
 comma
-id|CQR_STATUS_FAILED
+id|DASD_CQR_FAILED
 )paren
 suffix:semicolon
 )brace
@@ -5749,6 +5003,7 @@ l_int|31
 suffix:semicolon
 multiline_comment|/* seek_addr.head 2nd byte */
 id|memcpy
+c_func
 (paren
 op_amp
 (paren
@@ -5775,6 +5030,7 @@ op_assign
 id|erp-&gt;cpaddr
 suffix:semicolon
 id|memset
+c_func
 (paren
 id|ccw
 comma
@@ -5798,56 +5054,22 @@ id|ccw-&gt;count
 op_assign
 l_int|16
 suffix:semicolon
-r_if
-c_cond
+id|ccw-&gt;cda
+op_assign
 (paren
-id|dasd_set_normalized_cda
+id|__u32
+)paren
 (paren
-id|ccw
-comma
-id|__pa
-(paren
+id|addr_t
+)paren
 id|DE_data
-)paren
-comma
-id|erp
-comma
-id|device
-)paren
-)paren
-(brace
-id|dasd_free_request
-(paren
-id|erp
-comma
-id|device
-)paren
 suffix:semicolon
-id|DASD_MESSAGE
-(paren
-id|KERN_ERR
-comma
-id|device
-comma
-l_string|&quot;%s&quot;
-comma
-l_string|&quot;Unable to allocate ERP&quot;
-)paren
-suffix:semicolon
-r_return
-id|dasd_3990_erp_cleanup
-(paren
-id|default_erp
-comma
-id|CQR_STATUS_FAILED
-)paren
-suffix:semicolon
-)brace
 multiline_comment|/* create LO ccw */
 id|ccw
 op_increment
 suffix:semicolon
 id|memset
+c_func
 (paren
 id|ccw
 comma
@@ -5871,51 +5093,16 @@ id|ccw-&gt;count
 op_assign
 l_int|16
 suffix:semicolon
-r_if
-c_cond
+id|ccw-&gt;cda
+op_assign
 (paren
-id|dasd_set_normalized_cda
+id|__u32
+)paren
 (paren
-id|ccw
-comma
-id|__pa
-(paren
+id|addr_t
+)paren
 id|LO_data
-)paren
-comma
-id|erp
-comma
-id|device
-)paren
-)paren
-(brace
-id|dasd_free_request
-(paren
-id|erp
-comma
-id|device
-)paren
 suffix:semicolon
-id|DASD_MESSAGE
-(paren
-id|KERN_ERR
-comma
-id|device
-comma
-l_string|&quot;%s&quot;
-comma
-l_string|&quot;Unable to allocate ERP&quot;
-)paren
-suffix:semicolon
-r_return
-id|dasd_3990_erp_cleanup
-(paren
-id|default_erp
-comma
-id|CQR_STATUS_FAILED
-)paren
-suffix:semicolon
-)brace
 multiline_comment|/* TIC to the failed ccw */
 id|ccw
 op_increment
@@ -5959,10 +5146,11 @@ l_int|256
 suffix:semicolon
 id|erp-&gt;status
 op_assign
-id|CQR_STATUS_FILLED
+id|DASD_CQR_FILLED
 suffix:semicolon
 multiline_comment|/* remove the default erp */
-id|dasd_free_request
+id|dasd_free_erp_request
+c_func
 (paren
 id|default_erp
 comma
@@ -5974,13 +5162,15 @@ id|erp
 suffix:semicolon
 )brace
 multiline_comment|/* end dasd_3990_erp_action_1B_32 */
-multiline_comment|/*&n; * DASD_3990_UPDATE_1B&n; *&n; * DESCRIPTION&n; *   Handles the update to the 32 byte &squot;Action 1B&squot; of Single Program &n; *   Action Codes in case the first action was not successful.&n; *   The already created &squot;previous_erp&squot; is the currently not successful&n; *   ERP. &n; *&n; * PARAMETER&n; *   previous_erp       already created previous erp.&n; *   sense              current sense data &n; * RETURN VALUES&n; *   erp                modified erp &n; */
-id|ccw_req_t
+multiline_comment|/*&n; * DASD_3990_UPDATE_1B&n; *&n; * DESCRIPTION&n; *   Handles the update to the 32 byte &squot;Action 1B&squot; of Single Program &n; *   Action Codes in case the first action was not successful.&n; *   The already created &squot;previous_erp&squot; is the currently not successful&n; *   ERP. &n; *&n; * PARAMETER&n; *   previous_erp&t;already created previous erp.&n; *   sense&t;&t;current sense data &n; * RETURN VALUES&n; *   erp&t;&t;modified erp &n; */
+r_static
+id|dasd_ccw_req_t
 op_star
 DECL|function|dasd_3990_update_1B
 id|dasd_3990_update_1B
+c_func
 (paren
-id|ccw_req_t
+id|dasd_ccw_req_t
 op_star
 id|previous_erp
 comma
@@ -6000,11 +5190,11 @@ id|cpa
 op_assign
 l_int|0
 suffix:semicolon
-id|ccw_req_t
+id|dasd_ccw_req_t
 op_star
 id|cqr
 suffix:semicolon
-id|ccw_req_t
+id|dasd_ccw_req_t
 op_star
 id|erp
 suffix:semicolon
@@ -6017,7 +5207,8 @@ id|ccw1_t
 op_star
 id|ccw
 suffix:semicolon
-id|DASD_MESSAGE
+id|DEV_MESSAGE
+c_func
 (paren
 id|KERN_DEBUG
 comma
@@ -6059,7 +5250,8 @@ op_amp
 l_int|0x01
 )paren
 (brace
-id|DASD_MESSAGE
+id|DEV_MESSAGE
+c_func
 (paren
 id|KERN_DEBUG
 comma
@@ -6070,15 +5262,9 @@ comma
 l_string|&quot;Imprecise ending is set - just retry&quot;
 )paren
 suffix:semicolon
-id|check_then_set
-(paren
-op_amp
 id|previous_erp-&gt;status
-comma
-id|CQR_STATUS_ERROR
-comma
-id|CQR_STATUS_QUEUED
-)paren
+op_assign
+id|DASD_CQR_QUEUED
 suffix:semicolon
 r_return
 id|previous_erp
@@ -6098,7 +5284,8 @@ op_eq
 l_int|0
 )paren
 (brace
-id|DASD_MESSAGE
+id|DEV_MESSAGE
+c_func
 (paren
 id|KERN_DEBUG
 comma
@@ -6110,15 +5297,9 @@ l_string|&quot;Unable to determine address of the CCW &quot;
 l_string|&quot;to be restarted&quot;
 )paren
 suffix:semicolon
-id|check_then_set
-(paren
-op_amp
 id|previous_erp-&gt;status
-comma
-id|CQR_STATUS_ERROR
-comma
-id|CQR_STATUS_FAILED
-)paren
+op_assign
+id|DASD_CQR_FAILED
 suffix:semicolon
 r_return
 id|previous_erp
@@ -6160,7 +5341,8 @@ l_int|0x01
 )paren
 )paren
 (brace
-id|DASD_MESSAGE
+id|DEV_MESSAGE
+c_func
 (paren
 id|KERN_ERR
 comma
@@ -6171,15 +5353,9 @@ comma
 l_string|&quot;BUG - this should not happen&quot;
 )paren
 suffix:semicolon
-id|check_then_set
-(paren
-op_amp
 id|previous_erp-&gt;status
-comma
-id|CQR_STATUS_ERROR
-comma
-id|CQR_STATUS_FAILED
-)paren
+op_assign
+id|DASD_CQR_FAILED
 suffix:semicolon
 r_return
 id|previous_erp
@@ -6314,6 +5490,7 @@ l_int|31
 suffix:semicolon
 multiline_comment|/* seek_addr.head 2nd byte */
 id|memcpy
+c_func
 (paren
 op_amp
 (paren
@@ -6352,27 +5529,23 @@ id|ccw-&gt;cda
 op_assign
 id|cpa
 suffix:semicolon
-id|check_then_set
-(paren
-op_amp
 id|erp-&gt;status
-comma
-id|CQR_STATUS_ERROR
-comma
-id|CQR_STATUS_QUEUED
-)paren
+op_assign
+id|DASD_CQR_QUEUED
 suffix:semicolon
 r_return
 id|erp
 suffix:semicolon
 )brace
 multiline_comment|/* end dasd_3990_update_1B */
-multiline_comment|/*&n; * DASD_3990_ERP_COMPOUND_RETRY &n; *&n; * DESCRIPTION&n; *   Handles the compound ERP action retry code.&n; *   NOTE: At least one retry is done even if zero is specified&n; *         by the sense data. This makes enqueueing of the request&n; *         easier.&n; *&n; * PARAMETER&n; *   sense              sense data of the actual error&n; *   erp                pointer to the currently created ERP&n; *&n; * RETURN VALUES&n; *   erp                modified ERP pointer&n; *&n; */
+multiline_comment|/*&n; * DASD_3990_ERP_COMPOUND_RETRY &n; *&n; * DESCRIPTION&n; *   Handles the compound ERP action retry code.&n; *   NOTE: At least one retry is done even if zero is specified&n; *&t;   by the sense data. This makes enqueueing of the request&n; *&t;   easier.&n; *&n; * PARAMETER&n; *   sense&t;&t;sense data of the actual error&n; *   erp&t;&t;pointer to the currently created ERP&n; *&n; * RETURN VALUES&n; *   erp&t;&t;modified ERP pointer&n; *&n; */
+r_static
 r_void
 DECL|function|dasd_3990_erp_compound_retry
 id|dasd_3990_erp_compound_retry
+c_func
 (paren
-id|ccw_req_t
+id|dasd_ccw_req_t
 op_star
 id|erp
 comma
@@ -6446,12 +5619,14 @@ id|dasd_3990_erp_compound_retry
 suffix:semicolon
 )brace
 multiline_comment|/* end dasd_3990_erp_compound_retry */
-multiline_comment|/*&n; * DASD_3990_ERP_COMPOUND_PATH &n; *&n; * DESCRIPTION&n; *   Handles the compound ERP action for retry on alternate&n; *   channel path.&n; *&n; * PARAMETER&n; *   sense              sense data of the actual error&n; *   erp                pointer to the currently created ERP&n; *&n; * RETURN VALUES&n; *   erp                modified ERP pointer&n; *&n; */
+multiline_comment|/*&n; * DASD_3990_ERP_COMPOUND_PATH &n; *&n; * DESCRIPTION&n; *   Handles the compound ERP action for retry on alternate&n; *   channel path.&n; *&n; * PARAMETER&n; *   sense&t;&t;sense data of the actual error&n; *   erp&t;&t;pointer to the currently created ERP&n; *&n; * RETURN VALUES&n; *   erp&t;&t;modified ERP pointer&n; *&n; */
+r_static
 r_void
 DECL|function|dasd_3990_erp_compound_path
 id|dasd_3990_erp_compound_path
+c_func
 (paren
-id|ccw_req_t
+id|dasd_ccw_req_t
 op_star
 id|erp
 comma
@@ -6472,6 +5647,7 @@ id|DASD_SENSE_BIT_3
 )paren
 (brace
 id|dasd_3990_erp_alternate_path
+c_func
 (paren
 id|erp
 )paren
@@ -6481,23 +5657,17 @@ c_cond
 (paren
 id|erp-&gt;status
 op_eq
-id|CQR_STATUS_FAILED
+id|DASD_CQR_FAILED
 )paren
 (brace
-multiline_comment|/* reset the lpm and the status to be able to &n;                         * try further actions. */
+multiline_comment|/* reset the lpm and the status to be able to &n;&t;&t;&t; * try further actions. */
 id|erp-&gt;lpm
 op_assign
 id|LPM_ANYPATH
 suffix:semicolon
-id|check_then_set
-(paren
-op_amp
 id|erp-&gt;status
-comma
-id|CQR_STATUS_FAILED
-comma
-id|CQR_STATUS_ERROR
-)paren
+op_assign
+id|DASD_CQR_ERROR
 suffix:semicolon
 )brace
 )brace
@@ -6507,13 +5677,15 @@ id|dasd_3990_erp_compound_path
 suffix:semicolon
 )brace
 multiline_comment|/* end dasd_3990_erp_compound_path */
-multiline_comment|/*&n; * DASD_3990_ERP_COMPOUND_CODE &n; *&n; * DESCRIPTION&n; *   Handles the compound ERP action for retry code.&n; *&n; * PARAMETER&n; *   sense              sense data of the actual error&n; *   erp                pointer to the currently created ERP&n; *&n; * RETURN VALUES&n; *   erp                NEW ERP pointer&n; *&n; */
-id|ccw_req_t
+multiline_comment|/*&n; * DASD_3990_ERP_COMPOUND_CODE &n; *&n; * DESCRIPTION&n; *   Handles the compound ERP action for retry code.&n; *&n; * PARAMETER&n; *   sense&t;&t;sense data of the actual error&n; *   erp&t;&t;pointer to the currently created ERP&n; *&n; * RETURN VALUES&n; *   erp&t;&t;NEW ERP pointer&n; *&n; */
+r_static
+id|dasd_ccw_req_t
 op_star
 DECL|function|dasd_3990_erp_compound_code
 id|dasd_3990_erp_compound_code
+c_func
 (paren
-id|ccw_req_t
+id|dasd_ccw_req_t
 op_star
 id|erp
 comma
@@ -6545,10 +5717,11 @@ l_int|28
 r_case
 l_int|0x17
 suffix:colon
-multiline_comment|/* issue a Diagnostic Control command with an &n;                         * Inhibit Write subcommand and controler modifier */
+multiline_comment|/* issue a Diagnostic Control command with an &n;&t;&t;&t; * Inhibit Write subcommand and controler modifier */
 id|erp
 op_assign
 id|dasd_3990_erp_DCTL
+c_func
 (paren
 id|erp
 comma
@@ -6570,15 +5743,17 @@ id|dasd_3990_erp_block_queue
 id|erp
 comma
 l_int|5
+op_star
+id|HZ
 )paren
 suffix:semicolon
 r_break
 suffix:semicolon
 r_default
 suffix:colon
-(brace
-)brace
 multiline_comment|/* should not happen - continue */
+r_break
+suffix:semicolon
 )brace
 )brace
 id|erp-&gt;function
@@ -6590,12 +5765,14 @@ id|erp
 suffix:semicolon
 )brace
 multiline_comment|/* end dasd_3990_erp_compound_code */
-multiline_comment|/*&n; * DASD_3990_ERP_COMPOUND_CONFIG &n; *&n; * DESCRIPTION&n; *   Handles the compound ERP action for configruation&n; *   dependent error.&n; *   Note: duplex handling is not implemented (yet).&n; *&n; * PARAMETER&n; *   sense              sense data of the actual error&n; *   erp                pointer to the currently created ERP&n; *&n; * RETURN VALUES&n; *   erp                modified ERP pointer&n; *&n; */
+multiline_comment|/*&n; * DASD_3990_ERP_COMPOUND_CONFIG &n; *&n; * DESCRIPTION&n; *   Handles the compound ERP action for configruation&n; *   dependent error.&n; *   Note: duplex handling is not implemented (yet).&n; *&n; * PARAMETER&n; *   sense&t;&t;sense data of the actual error&n; *   erp&t;&t;pointer to the currently created ERP&n; *&n; * RETURN VALUES&n; *   erp&t;&t;modified ERP pointer&n; *&n; */
+r_static
 r_void
 DECL|function|dasd_3990_erp_compound_config
 id|dasd_3990_erp_compound_config
+c_func
 (paren
-id|ccw_req_t
+id|dasd_ccw_req_t
 op_star
 id|erp
 comma
@@ -6633,7 +5810,8 @@ id|device
 op_assign
 id|erp-&gt;device
 suffix:semicolon
-id|DASD_MESSAGE
+id|DEV_MESSAGE
+c_func
 (paren
 id|KERN_ERR
 comma
@@ -6654,13 +5832,15 @@ id|dasd_3990_erp_compound_config
 suffix:semicolon
 )brace
 multiline_comment|/* end dasd_3990_erp_compound_config */
-multiline_comment|/*&n; * DASD_3990_ERP_COMPOUND &n; *&n; * DESCRIPTION&n; *   Does the further compound program action if &n; *   compound retry was not successful.&n; *&n; * PARAMETER&n; *   sense              sense data of the actual error&n; *   erp                pointer to the current (failed) ERP&n; *&n; * RETURN VALUES&n; *   erp                (additional) ERP pointer&n; *&n; */
-id|ccw_req_t
+multiline_comment|/*&n; * DASD_3990_ERP_COMPOUND &n; *&n; * DESCRIPTION&n; *   Does the further compound program action if &n; *   compound retry was not successful.&n; *&n; * PARAMETER&n; *   sense&t;&t;sense data of the actual error&n; *   erp&t;&t;pointer to the current (failed) ERP&n; *&n; * RETURN VALUES&n; *   erp&t;&t;(additional) ERP pointer&n; *&n; */
+r_static
+id|dasd_ccw_req_t
 op_star
 DECL|function|dasd_3990_erp_compound
 id|dasd_3990_erp_compound
+c_func
 (paren
-id|ccw_req_t
+id|dasd_ccw_req_t
 op_star
 id|erp
 comma
@@ -6681,11 +5861,12 @@ op_logical_and
 (paren
 id|erp-&gt;status
 op_eq
-id|CQR_STATUS_ERROR
+id|DASD_CQR_ERROR
 )paren
 )paren
 (brace
 id|dasd_3990_erp_compound_path
+c_func
 (paren
 id|erp
 comma
@@ -6705,13 +5886,14 @@ op_logical_and
 (paren
 id|erp-&gt;status
 op_eq
-id|CQR_STATUS_ERROR
+id|DASD_CQR_ERROR
 )paren
 )paren
 (brace
 id|erp
 op_assign
 id|dasd_3990_erp_compound_code
+c_func
 (paren
 id|erp
 comma
@@ -6731,11 +5913,12 @@ op_logical_and
 (paren
 id|erp-&gt;status
 op_eq
-id|CQR_STATUS_ERROR
+id|DASD_CQR_ERROR
 )paren
 )paren
 (brace
 id|dasd_3990_erp_compound_config
+c_func
 (paren
 id|erp
 comma
@@ -6749,18 +5932,12 @@ c_cond
 (paren
 id|erp-&gt;status
 op_eq
-id|CQR_STATUS_ERROR
+id|DASD_CQR_ERROR
 )paren
 (brace
-id|check_then_set
-(paren
-op_amp
 id|erp-&gt;status
-comma
-id|CQR_STATUS_ERROR
-comma
-id|CQR_STATUS_FAILED
-)paren
+op_assign
+id|DASD_CQR_FAILED
 suffix:semicolon
 )brace
 r_return
@@ -6768,13 +5945,15 @@ id|erp
 suffix:semicolon
 )brace
 multiline_comment|/* end dasd_3990_erp_compound */
-multiline_comment|/*&n; * DASD_3990_ERP_INSPECT_32 &n; *&n; * DESCRIPTION&n; *   Does a detailed inspection of the 32 byte sense data&n; *   and sets up a related error recovery action.  &n; *&n; * PARAMETER&n; *   sense              sense data of the actual error&n; *   erp                pointer to the currently created default ERP&n; *&n; * RETURN VALUES&n; *   erp_filled         pointer to the ERP&n; *&n; */
-id|ccw_req_t
+multiline_comment|/*&n; * DASD_3990_ERP_INSPECT_32 &n; *&n; * DESCRIPTION&n; *   Does a detailed inspection of the 32 byte sense data&n; *   and sets up a related error recovery action.  &n; *&n; * PARAMETER&n; *   sense&t;&t;sense data of the actual error&n; *   erp&t;&t;pointer to the currently created default ERP&n; *&n; * RETURN VALUES&n; *   erp_filled&t;&t;pointer to the ERP&n; *&n; */
+r_static
+id|dasd_ccw_req_t
 op_star
 DECL|function|dasd_3990_erp_inspect_32
 id|dasd_3990_erp_inspect_32
+c_func
 (paren
-id|ccw_req_t
+id|dasd_ccw_req_t
 op_star
 id|erp
 comma
@@ -6806,6 +5985,7 @@ id|DASD_SENSE_BIT_0
 (brace
 multiline_comment|/* compound program action codes (byte25 bit 0 == &squot;1&squot;) */
 id|dasd_3990_erp_compound_retry
+c_func
 (paren
 id|erp
 comma
@@ -6829,7 +6009,8 @@ r_case
 l_int|0x00
 suffix:colon
 multiline_comment|/* success */
-id|DASD_MESSAGE
+id|DEV_MESSAGE
+c_func
 (paren
 id|KERN_DEBUG
 comma
@@ -6844,10 +6025,11 @@ suffix:semicolon
 id|erp
 op_assign
 id|dasd_3990_erp_cleanup
+c_func
 (paren
 id|erp
 comma
-id|CQR_STATUS_DONE
+id|DASD_CQR_DONE
 )paren
 suffix:semicolon
 r_break
@@ -6856,7 +6038,8 @@ r_case
 l_int|0x01
 suffix:colon
 multiline_comment|/* fatal error */
-id|DASD_MESSAGE
+id|DEV_MESSAGE
+c_func
 (paren
 id|KERN_ERR
 comma
@@ -6871,10 +6054,11 @@ suffix:semicolon
 id|erp
 op_assign
 id|dasd_3990_erp_cleanup
+c_func
 (paren
 id|erp
 comma
-id|CQR_STATUS_FAILED
+id|DASD_CQR_FAILED
 )paren
 suffix:semicolon
 r_break
@@ -6890,6 +6074,7 @@ multiline_comment|/* intervention required during dual copy */
 id|erp
 op_assign
 id|dasd_3990_erp_int_req
+c_func
 (paren
 id|erp
 )paren
@@ -6900,7 +6085,8 @@ r_case
 l_int|0x0F
 suffix:colon
 multiline_comment|/* length mismatch during update write command */
-id|DASD_MESSAGE
+id|DEV_MESSAGE
+c_func
 (paren
 id|KERN_ERR
 comma
@@ -6918,10 +6104,11 @@ suffix:semicolon
 id|erp
 op_assign
 id|dasd_3990_erp_cleanup
+c_func
 (paren
 id|erp
 comma
-id|CQR_STATUS_FAILED
+id|DASD_CQR_FAILED
 )paren
 suffix:semicolon
 r_break
@@ -6933,6 +6120,7 @@ multiline_comment|/* logging required for other channel program */
 id|erp
 op_assign
 id|dasd_3990_erp_action_10_32
+c_func
 (paren
 id|erp
 comma
@@ -6945,7 +6133,8 @@ r_case
 l_int|0x15
 suffix:colon
 multiline_comment|/* next track outside defined extend */
-id|DASD_MESSAGE
+id|DEV_MESSAGE
+c_func
 (paren
 id|KERN_ERR
 comma
@@ -6963,10 +6152,11 @@ suffix:semicolon
 id|erp
 op_assign
 id|dasd_3990_erp_cleanup
+c_func
 (paren
 id|erp
 comma
-id|CQR_STATUS_FAILED
+id|DASD_CQR_FAILED
 )paren
 suffix:semicolon
 r_break
@@ -6978,6 +6168,7 @@ multiline_comment|/* unexpected condition during write */
 id|erp
 op_assign
 id|dasd_3990_erp_action_1B_32
+c_func
 (paren
 id|erp
 comma
@@ -6990,7 +6181,8 @@ r_case
 l_int|0x1C
 suffix:colon
 multiline_comment|/* invalid data */
-id|DASD_MESSAGE
+id|DEV_MESSAGE
+c_func
 (paren
 id|KERN_EMERG
 comma
@@ -7004,7 +6196,6 @@ l_string|&quot;fetch mode active&quot;
 suffix:semicolon
 multiline_comment|/* not possible to handle this situation in Linux */
 id|panic
-c_func
 (paren
 l_string|&quot;Invalid data - No way to inform appliction about &quot;
 l_string|&quot;the possibly incorret data&quot;
@@ -7016,7 +6207,8 @@ r_case
 l_int|0x1D
 suffix:colon
 multiline_comment|/* state-change pending */
-id|DASD_MESSAGE
+id|DEV_MESSAGE
+c_func
 (paren
 id|KERN_DEBUG
 comma
@@ -7031,6 +6223,7 @@ suffix:semicolon
 id|erp
 op_assign
 id|dasd_3990_erp_action_4
+c_func
 (paren
 id|erp
 comma
@@ -7041,9 +6234,9 @@ r_break
 suffix:semicolon
 r_default
 suffix:colon
-(brace
-)brace
 multiline_comment|/* all others errors - default erp  */
+r_break
+suffix:semicolon
 )brace
 )brace
 r_return
@@ -7052,25 +6245,27 @@ suffix:semicolon
 )brace
 multiline_comment|/* end dasd_3990_erp_inspect_32 */
 multiline_comment|/*&n; ***************************************************************************** &n; * main ERP control fuctions (24 and 32 byte sense)&n; ***************************************************************************** &n; */
-multiline_comment|/*&n; * DASD_3990_ERP_INSPECT&n; *&n; * DESCRIPTION&n; *   Does a detailed inspection for sense data by calling either&n; *   the 24-byte or the 32-byte inspection routine.&n; *&n; * PARAMETER&n; *   erp                pointer to the currently created default ERP&n; * RETURN VALUES&n; *   erp_new            contens was possibly modified &n; */
-id|ccw_req_t
+multiline_comment|/*&n; * DASD_3990_ERP_INSPECT&n; *&n; * DESCRIPTION&n; *   Does a detailed inspection for sense data by calling either&n; *   the 24-byte or the 32-byte inspection routine.&n; *&n; * PARAMETER&n; *   erp&t;&t;pointer to the currently created default ERP&n; * RETURN VALUES&n; *   erp_new&t;&t;contens was possibly modified &n; */
+r_static
+id|dasd_ccw_req_t
 op_star
 DECL|function|dasd_3990_erp_inspect
 id|dasd_3990_erp_inspect
+c_func
 (paren
-id|ccw_req_t
+id|dasd_ccw_req_t
 op_star
 id|erp
 )paren
 (brace
-id|ccw_req_t
+id|dasd_ccw_req_t
 op_star
 id|erp_new
 op_assign
 l_int|NULL
 suffix:semicolon
 multiline_comment|/* sense data are located in the refers record of the */
-multiline_comment|/* already set up new ERP !                           */
+multiline_comment|/* already set up new ERP !&t;&t;&t;      */
 r_char
 op_star
 id|sense
@@ -7093,6 +6288,7 @@ multiline_comment|/* inspect the 24 byte sense data */
 id|erp_new
 op_assign
 id|dasd_3990_erp_inspect_24
+c_func
 (paren
 id|erp
 comma
@@ -7106,6 +6302,7 @@ multiline_comment|/* inspect the 32 byte sense data */
 id|erp_new
 op_assign
 id|dasd_3990_erp_inspect_32
+c_func
 (paren
 id|erp
 comma
@@ -7119,13 +6316,15 @@ id|erp_new
 suffix:semicolon
 )brace
 multiline_comment|/* END dasd_3990_erp_inspect */
-multiline_comment|/*&n; * DASD_3990_ERP_ADD_ERP&n; * &n; * DESCRIPTION&n; *   This funtion adds an additional request block (ERP) to the head of&n; *   the given cqr (or erp).&n; *   This erp is initialized as an default erp (retry TIC)&n; *&n; * PARAMETER&n; *   cqr                head of the current ERP-chain (or single cqr if &n; *                      first error)&n; * RETURN VALUES&n; *   erp                pointer to new ERP-chain head&n; */
-id|ccw_req_t
+multiline_comment|/*&n; * DASD_3990_ERP_ADD_ERP&n; * &n; * DESCRIPTION&n; *   This funtion adds an additional request block (ERP) to the head of&n; *   the given cqr (or erp).&n; *   This erp is initialized as an default erp (retry TIC)&n; *&n; * PARAMETER&n; *   cqr&t;&t;head of the current ERP-chain (or single cqr if &n; *&t;&t;&t;first error)&n; * RETURN VALUES&n; *   erp&t;&t;pointer to new ERP-chain head&n; */
+r_static
+id|dasd_ccw_req_t
 op_star
 DECL|function|dasd_3990_erp_add_erp
 id|dasd_3990_erp_add_erp
+c_func
 (paren
-id|ccw_req_t
+id|dasd_ccw_req_t
 op_star
 id|cqr
 )paren
@@ -7137,11 +6336,14 @@ op_assign
 id|cqr-&gt;device
 suffix:semicolon
 multiline_comment|/* allocate additional request block */
-id|ccw_req_t
+id|dasd_ccw_req_t
 op_star
 id|erp
+suffix:semicolon
+id|erp
 op_assign
-id|dasd_alloc_request
+id|dasd_alloc_erp_request
+c_func
 (paren
 (paren
 r_char
@@ -7160,11 +6362,15 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-op_logical_neg
+id|IS_ERR
+c_func
+(paren
 id|erp
 )paren
+)paren
 (brace
-id|DASD_MESSAGE
+id|DEV_MESSAGE
+c_func
 (paren
 id|KERN_ERR
 comma
@@ -7175,15 +6381,9 @@ comma
 l_string|&quot;Unable to allocate ERP request&quot;
 )paren
 suffix:semicolon
-id|check_then_set
-(paren
-op_amp
 id|cqr-&gt;status
-comma
-id|CQR_STATUS_ERROR
-comma
-id|CQR_STATUS_FAILED
-)paren
+op_assign
+id|DASD_CQR_FAILED
 suffix:semicolon
 r_return
 id|cqr
@@ -7233,24 +6433,26 @@ l_int|256
 suffix:semicolon
 id|erp-&gt;status
 op_assign
-id|CQR_STATUS_FILLED
+id|DASD_CQR_FILLED
 suffix:semicolon
 r_return
 id|erp
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * DASD_3990_ERP_ADDITIONAL_ERP &n; * &n; * DESCRIPTION&n; *   An additional ERP is needed to handle the current error.&n; *   Add ERP to the head of the ERP-chain containing the ERP processing&n; *   determined based on the sense data.&n; *&n; * PARAMETER&n; *   cqr                head of the current ERP-chain (or single cqr if &n; *                      first error)&n; *&n; * RETURN VALUES&n; *   erp                pointer to new ERP-chain head&n; */
-id|ccw_req_t
+multiline_comment|/*&n; * DASD_3990_ERP_ADDITIONAL_ERP &n; * &n; * DESCRIPTION&n; *   An additional ERP is needed to handle the current error.&n; *   Add ERP to the head of the ERP-chain containing the ERP processing&n; *   determined based on the sense data.&n; *&n; * PARAMETER&n; *   cqr&t;&t;head of the current ERP-chain (or single cqr if &n; *&t;&t;&t;first error)&n; *&n; * RETURN VALUES&n; *   erp&t;&t;pointer to new ERP-chain head&n; */
+r_static
+id|dasd_ccw_req_t
 op_star
 DECL|function|dasd_3990_erp_additional_erp
 id|dasd_3990_erp_additional_erp
+c_func
 (paren
-id|ccw_req_t
+id|dasd_ccw_req_t
 op_star
 id|cqr
 )paren
 (brace
-id|ccw_req_t
+id|dasd_ccw_req_t
 op_star
 id|erp
 op_assign
@@ -7260,6 +6462,7 @@ multiline_comment|/* add erp and initialize with default TIC */
 id|erp
 op_assign
 id|dasd_3990_erp_add_erp
+c_func
 (paren
 id|cqr
 )paren
@@ -7276,6 +6479,7 @@ id|cqr
 id|erp
 op_assign
 id|dasd_3990_erp_inspect
+c_func
 (paren
 id|erp
 )paren
@@ -7286,16 +6490,18 @@ id|erp
 suffix:semicolon
 )brace
 multiline_comment|/* end dasd_3990_erp_additional_erp */
-multiline_comment|/*&n; * DASD_3990_ERP_ERROR_MATCH&n; *&n; * DESCRIPTION&n; *   check if the the device status of the given cqr is the same.&n; *   This means that the failed CCW and the relevant sense data&n; *   must match.&n; *   I don&squot;t distinguish between 24 and 32 byte sense becaus in case of&n; *   24 byte sense byte 25 and 27 is set as well.&n; *&n; * PARAMETER&n; *   cqr1               first cqr, which will be compared with the &n; *   cqr2               second cqr.&n; *&n; * RETURN VALUES&n; *   match              &squot;boolean&squot; for match found&n; *                      returns 1 if match found, otherwise 0.&n; */
+multiline_comment|/*&n; * DASD_3990_ERP_ERROR_MATCH&n; *&n; * DESCRIPTION&n; *   check if the the device status of the given cqr is the same.&n; *   This means that the failed CCW and the relevant sense data&n; *   must match.&n; *   I don&squot;t distinguish between 24 and 32 byte sense becaus in case of&n; *   24 byte sense byte 25 and 27 is set as well.&n; *&n; * PARAMETER&n; *   cqr1&t;&t;first cqr, which will be compared with the &n; *   cqr2&t;&t;second cqr.&n; *&n; * RETURN VALUES&n; *   match&t;&t;&squot;boolean&squot; for match found&n; *&t;&t;&t;returns 1 if match found, otherwise 0.&n; */
+r_static
 r_int
 DECL|function|dasd_3990_erp_error_match
 id|dasd_3990_erp_error_match
+c_func
 (paren
-id|ccw_req_t
+id|dasd_ccw_req_t
 op_star
 id|cqr1
 comma
-id|ccw_req_t
+id|dasd_ccw_req_t
 op_star
 id|cqr2
 )paren
@@ -7319,6 +6525,7 @@ op_logical_neg
 (paren
 (paren
 id|strncmp
+c_func
 (paren
 id|cqr1-&gt;dstat-&gt;ii.sense.data
 comma
@@ -7367,18 +6574,20 @@ suffix:semicolon
 multiline_comment|/* match */
 )brace
 multiline_comment|/* end dasd_3990_erp_error_match */
-multiline_comment|/*&n; * DASD_3990_ERP_IN_ERP&n; *&n; * DESCRIPTION&n; *   check if the current error already happened before.&n; *   quick exit if current cqr is not an ERP (cqr-&gt;refers=NULL)&n; *&n; * PARAMETER&n; *   cqr                failed cqr (either original cqr or already an erp)&n; *&n; * RETURN VALUES&n; *   erp                erp-pointer to the already defined error &n; *                      recovery procedure OR&n; *                      NULL if a &squot;new&squot; error occurred.&n; */
-id|ccw_req_t
+multiline_comment|/*&n; * DASD_3990_ERP_IN_ERP&n; *&n; * DESCRIPTION&n; *   check if the current error already happened before.&n; *   quick exit if current cqr is not an ERP (cqr-&gt;refers=NULL)&n; *&n; * PARAMETER&n; *   cqr&t;&t;failed cqr (either original cqr or already an erp)&n; *&n; * RETURN VALUES&n; *   erp&t;&t;erp-pointer to the already defined error &n; *&t;&t;&t;recovery procedure OR&n; *&t;&t;&t;NULL if a &squot;new&squot; error occurred.&n; */
+r_static
+id|dasd_ccw_req_t
 op_star
 DECL|function|dasd_3990_erp_in_erp
 id|dasd_3990_erp_in_erp
+c_func
 (paren
-id|ccw_req_t
+id|dasd_ccw_req_t
 op_star
 id|cqr
 )paren
 (brace
-id|ccw_req_t
+id|dasd_ccw_req_t
 op_star
 id|erp_head
 op_assign
@@ -7416,6 +6625,7 @@ r_do
 id|match
 op_assign
 id|dasd_3990_erp_error_match
+c_func
 (paren
 id|erp_head
 comma
@@ -7466,13 +6676,15 @@ suffix:semicolon
 multiline_comment|/* return address of matching erp */
 )brace
 multiline_comment|/* END dasd_3990_erp_in_erp */
-multiline_comment|/*&n; * DASD_3990_ERP_FURTHER_ERP (24 &amp; 32 byte sense)&n; *&n; * DESCRIPTION&n; *   No retry is left for the current ERP. Check what has to be done &n; *   with the ERP.&n; *     - do further defined ERP action or&n; *     - wait for interrupt or  &n; *     - exit with permanent error&n; *&n; * PARAMETER&n; *   erp                ERP which is in progress wiht no retry left&n; *&n; * RETURN VALUES&n; *   erp                modified/additional ERP&n; */
-id|ccw_req_t
+multiline_comment|/*&n; * DASD_3990_ERP_FURTHER_ERP (24 &amp; 32 byte sense)&n; *&n; * DESCRIPTION&n; *   No retry is left for the current ERP. Check what has to be done &n; *   with the ERP.&n; *     - do further defined ERP action or&n; *     - wait for interrupt or&t;&n; *     - exit with permanent error&n; *&n; * PARAMETER&n; *   erp&t;&t;ERP which is in progress wiht no retry left&n; *&n; * RETURN VALUES&n; *   erp&t;&t;modified/additional ERP&n; */
+r_static
+id|dasd_ccw_req_t
 op_star
 DECL|function|dasd_3990_erp_further_erp
 id|dasd_3990_erp_further_erp
+c_func
 (paren
-id|ccw_req_t
+id|dasd_ccw_req_t
 op_star
 id|erp
 )paren
@@ -7515,6 +6727,7 @@ id|dasd_3990_erp_action_4
 id|erp
 op_assign
 id|dasd_3990_erp_action_1
+c_func
 (paren
 id|erp
 )paren
@@ -7534,6 +6747,7 @@ multiline_comment|/* prepare erp for retry on different channel path */
 id|erp
 op_assign
 id|dasd_3990_erp_action_1
+c_func
 (paren
 id|erp
 )paren
@@ -7552,7 +6766,7 @@ id|DASD_SENSE_BIT_0
 )paren
 )paren
 (brace
-multiline_comment|/* issue a Diagnostic Control command with an &n;                         * Inhibit Write subcommand */
+multiline_comment|/* issue a Diagnostic Control command with an &n;&t;&t;&t; * Inhibit Write subcommand */
 r_switch
 c_cond
 (paren
@@ -7573,6 +6787,7 @@ multiline_comment|/* controller */
 id|erp
 op_assign
 id|dasd_3990_erp_DCTL
+c_func
 (paren
 id|erp
 comma
@@ -7593,6 +6808,7 @@ multiline_comment|/* channel path */
 id|erp
 op_assign
 id|dasd_3990_erp_DCTL
+c_func
 (paren
 id|erp
 comma
@@ -7613,6 +6829,7 @@ multiline_comment|/* storage director */
 id|erp
 op_assign
 id|dasd_3990_erp_DCTL
+c_func
 (paren
 id|erp
 comma
@@ -7624,7 +6841,8 @@ suffix:semicolon
 )brace
 r_default
 suffix:colon
-id|DASD_MESSAGE
+id|DEV_MESSAGE
+c_func
 (paren
 id|KERN_DEBUG
 comma
@@ -7675,6 +6893,7 @@ id|dasd_3990_erp_compound_config
 id|erp
 op_assign
 id|dasd_3990_erp_compound
+c_func
 (paren
 id|erp
 comma
@@ -7685,7 +6904,8 @@ suffix:semicolon
 r_else
 (brace
 multiline_comment|/* no retry left and no additional special handling necessary */
-id|DASD_MESSAGE
+id|DEV_MESSAGE
+c_func
 (paren
 id|KERN_ERR
 comma
@@ -7697,15 +6917,9 @@ comma
 id|erp
 )paren
 suffix:semicolon
-id|check_then_set
-(paren
-op_amp
 id|erp-&gt;status
-comma
-id|CQR_STATUS_ERROR
-comma
-id|CQR_STATUS_FAILED
-)paren
+op_assign
+id|DASD_CQR_FAILED
 suffix:semicolon
 )brace
 r_return
@@ -7713,17 +6927,19 @@ id|erp
 suffix:semicolon
 )brace
 multiline_comment|/* end dasd_3990_erp_further_erp */
-multiline_comment|/*&n; * DASD_3990_ERP_HANDLE_MATCH_ERP &n; *&n; * DESCRIPTION&n; *   An error occurred again and an ERP has been detected which is already&n; *   used to handle this error (e.g. retries). &n; *   All prior ERP&squot;s are asumed to be successful and therefore removed&n; *   from queue.&n; *   If retry counter of matching erp is already 0, it is checked if further &n; *   action is needed (besides retry) or if the ERP has failed.&n; *&n; * PARAMETER&n; *   erp_head           first ERP in ERP-chain&n; *   erp                ERP that handles the actual error.&n; *                      (matching erp)&n; *&n; * RETURN VALUES&n; *   erp                modified/additional ERP&n; */
-id|ccw_req_t
+multiline_comment|/*&n; * DASD_3990_ERP_HANDLE_MATCH_ERP &n; *&n; * DESCRIPTION&n; *   An error occurred again and an ERP has been detected which is already&n; *   used to handle this error (e.g. retries). &n; *   All prior ERP&squot;s are asumed to be successful and therefore removed&n; *   from queue.&n; *   If retry counter of matching erp is already 0, it is checked if further &n; *   action is needed (besides retry) or if the ERP has failed.&n; *&n; * PARAMETER&n; *   erp_head&t;&t;first ERP in ERP-chain&n; *   erp&t;&t;ERP that handles the actual error.&n; *&t;&t;&t;(matching erp)&n; *&n; * RETURN VALUES&n; *   erp&t;&t;modified/additional ERP&n; */
+r_static
+id|dasd_ccw_req_t
 op_star
 DECL|function|dasd_3990_erp_handle_match_erp
 id|dasd_3990_erp_handle_match_erp
+c_func
 (paren
-id|ccw_req_t
+id|dasd_ccw_req_t
 op_star
 id|erp_head
 comma
-id|ccw_req_t
+id|dasd_ccw_req_t
 op_star
 id|erp
 )paren
@@ -7734,14 +6950,14 @@ id|device
 op_assign
 id|erp_head-&gt;device
 suffix:semicolon
-id|ccw_req_t
+id|dasd_ccw_req_t
 op_star
 id|erp_done
 op_assign
 id|erp_head
 suffix:semicolon
 multiline_comment|/* finished req */
-id|ccw_req_t
+id|dasd_ccw_req_t
 op_star
 id|erp_free
 op_assign
@@ -7766,6 +6982,7 @@ l_int|NULL
 )paren
 multiline_comment|/* end of chain reached */
 id|panic
+c_func
 (paren
 id|PRINTK_HEADER
 l_string|&quot;Programming error in ERP! The &quot;
@@ -7773,12 +6990,11 @@ l_string|&quot;original request was lost&bslash;n&quot;
 )paren
 suffix:semicolon
 multiline_comment|/* remove the request from the device queue */
-id|dasd_chanq_deq
+id|list_del
+c_func
 (paren
 op_amp
-id|device-&gt;queue
-comma
-id|erp_done
+id|erp_done-&gt;list
 )paren
 suffix:semicolon
 id|erp_free
@@ -7790,7 +7006,8 @@ op_assign
 id|erp_done-&gt;refers
 suffix:semicolon
 multiline_comment|/* free the finished erp request */
-id|dasd_free_request
+id|dasd_free_erp_request
+c_func
 (paren
 id|erp_free
 comma
@@ -7825,6 +7042,7 @@ id|dasd_3990_erp_action_4
 id|erp
 op_assign
 id|dasd_3990_erp_action_4
+c_func
 (paren
 id|erp
 comma
@@ -7844,6 +7062,7 @@ id|dasd_3990_erp_action_1B_32
 id|erp
 op_assign
 id|dasd_3990_update_1B
+c_func
 (paren
 id|erp
 comma
@@ -7863,6 +7082,7 @@ id|dasd_3990_erp_int_req
 id|erp
 op_assign
 id|dasd_3990_erp_int_req
+c_func
 (paren
 id|erp
 )paren
@@ -7870,8 +7090,9 @@ suffix:semicolon
 )brace
 r_else
 (brace
-multiline_comment|/* simple retry   */
-id|DASD_MESSAGE
+multiline_comment|/* simple retry&t;  */
+id|DEV_MESSAGE
+c_func
 (paren
 id|KERN_DEBUG
 comma
@@ -7885,25 +7106,20 @@ id|erp
 )paren
 suffix:semicolon
 multiline_comment|/* handle the request again... */
-id|check_then_set
-(paren
-op_amp
 id|erp-&gt;status
-comma
-id|CQR_STATUS_ERROR
-comma
-id|CQR_STATUS_QUEUED
-)paren
+op_assign
+id|DASD_CQR_QUEUED
 suffix:semicolon
 )brace
 )brace
 r_else
 (brace
-multiline_comment|/* no retry left - check for further necessary action    */
+multiline_comment|/* no retry left - check for further necessary action&t; */
 multiline_comment|/* if no further actions, handle rest as permanent error */
 id|erp
 op_assign
 id|dasd_3990_erp_further_erp
+c_func
 (paren
 id|erp
 )paren
@@ -7914,18 +7130,19 @@ id|erp
 suffix:semicolon
 )brace
 multiline_comment|/* end dasd_3990_erp_handle_match_erp */
-multiline_comment|/*&n; * DASD_3990_ERP_ACTION&n; *&n; * DESCRIPTION&n; *   controll routine for 3990 erp actions.&n; *   Has to be called with the queue lock (namely the s390_irq_lock) acquired.&n; *&n; * PARAMETER&n; *   cqr                failed cqr (either original cqr or already an erp)&n; *&n; * RETURN VALUES&n; *   erp                erp-pointer to the head of the ERP action chain.&n; *                      This means:&n; *                       - either a ptr to an additional ERP cqr or&n; *                       - the original given cqr (which&squot;s status might &n; *                         be modified)&n; */
-id|ccw_req_t
+multiline_comment|/*&n; * DASD_3990_ERP_ACTION&n; *&n; * DESCRIPTION&n; *   controll routine for 3990 erp actions.&n; *   Has to be called with the queue lock (namely the s390_irq_lock) acquired.&n; *&n; * PARAMETER&n; *   cqr&t;&t;failed cqr (either original cqr or already an erp)&n; *&n; * RETURN VALUES&n; *   erp&t;&t;erp-pointer to the head of the ERP action chain.&n; *&t;&t;&t;This means:&n; *&t;&t;&t; - either a ptr to an additional ERP cqr or&n; *&t;&t;&t; - the original given cqr (which&squot;s status might &n; *&t;&t;&t;   be modified)&n; */
+id|dasd_ccw_req_t
 op_star
 DECL|function|dasd_3990_erp_action
 id|dasd_3990_erp_action
+c_func
 (paren
-id|ccw_req_t
+id|dasd_ccw_req_t
 op_star
 id|cqr
 )paren
 (brace
-id|ccw_req_t
+id|dasd_ccw_req_t
 op_star
 id|erp
 op_assign
@@ -7942,25 +7159,10 @@ id|cpa
 op_assign
 id|cqr-&gt;dstat-&gt;cpa
 suffix:semicolon
-macro_line|#ifdef ERP_DEBUG 
-id|DASD_MESSAGE
-(paren
-id|KERN_DEBUG
-comma
-id|device
-comma
-l_string|&quot;entering 3990 ERP for &quot;
-l_string|&quot;0x%04X on sch %d = /dev/%s &quot;
-comma
-id|device-&gt;devinfo.devno
-comma
-id|device-&gt;devinfo.irq
-comma
-id|device-&gt;name
-)paren
-suffix:semicolon
+macro_line|#ifdef ERP_DEBUG
 multiline_comment|/* print current erp_chain */
-id|DASD_MESSAGE
+id|DEV_MESSAGE
+c_func
 (paren
 id|KERN_DEBUG
 comma
@@ -7972,7 +7174,7 @@ l_string|&quot;ERP chain at BEGINNING of ERP-ACTION&quot;
 )paren
 suffix:semicolon
 (brace
-id|ccw_req_t
+id|dasd_ccw_req_t
 op_star
 id|temp_erp
 op_assign
@@ -7994,13 +7196,14 @@ op_assign
 id|temp_erp-&gt;refers
 )paren
 (brace
-id|DASD_MESSAGE
+id|DEV_MESSAGE
+c_func
 (paren
 id|KERN_DEBUG
 comma
 id|device
 comma
-l_string|&quot;      erp %p refers to %p&quot;
+l_string|&quot;&t;   erp %p refers to %p&quot;
 comma
 id|temp_erp
 comma
@@ -8009,7 +7212,7 @@ id|temp_erp-&gt;refers
 suffix:semicolon
 )brace
 )brace
-macro_line|#endif /* ERP_DEBUG */
+macro_line|#endif&t;&t;&t;&t;/* ERP_DEBUG */
 multiline_comment|/* double-check if current erp/cqr was successfull */
 r_if
 c_cond
@@ -8031,7 +7234,8 @@ id|DEV_STAT_DEV_END
 )paren
 )paren
 (brace
-id|DASD_MESSAGE
+id|DEV_MESSAGE
+c_func
 (paren
 id|KERN_DEBUG
 comma
@@ -8043,15 +7247,9 @@ comma
 id|cqr
 )paren
 suffix:semicolon
-id|check_then_set
-(paren
-op_amp
 id|cqr-&gt;status
-comma
-id|CQR_STATUS_ERROR
-comma
-id|CQR_STATUS_DONE
-)paren
+op_assign
+id|DASD_CQR_DONE
 suffix:semicolon
 r_return
 id|cqr
@@ -8065,7 +7263,8 @@ op_logical_neg
 id|cqr-&gt;dstat-&gt;ii.sense.data
 )paren
 (brace
-id|DASD_MESSAGE
+id|DEV_MESSAGE
+c_func
 (paren
 id|KERN_DEBUG
 comma
@@ -8077,15 +7276,9 @@ comma
 id|cqr
 )paren
 suffix:semicolon
-id|check_then_set
-(paren
-op_amp
 id|cqr-&gt;status
-comma
-id|CQR_STATUS_ERROR
-comma
-id|CQR_STATUS_FAILED
-)paren
+op_assign
+id|DASD_CQR_FAILED
 suffix:semicolon
 r_return
 id|cqr
@@ -8095,6 +7288,7 @@ multiline_comment|/* check if error happened before */
 id|erp
 op_assign
 id|dasd_3990_erp_in_erp
+c_func
 (paren
 id|cqr
 )paren
@@ -8111,6 +7305,7 @@ multiline_comment|/* no matching erp found - set up erp */
 id|erp
 op_assign
 id|dasd_3990_erp_additional_erp
+c_func
 (paren
 id|cqr
 )paren
@@ -8122,6 +7317,7 @@ multiline_comment|/* matching erp found - set all leading erp&squot;s to DONE */
 id|erp
 op_assign
 id|dasd_3990_erp_handle_match_erp
+c_func
 (paren
 id|cqr
 comma
@@ -8131,7 +7327,8 @@ suffix:semicolon
 )brace
 macro_line|#ifdef ERP_DEBUG
 multiline_comment|/* print current erp_chain */
-id|DASD_MESSAGE
+id|DEV_MESSAGE
+c_func
 (paren
 id|KERN_DEBUG
 comma
@@ -8143,7 +7340,7 @@ l_string|&quot;ERP chain at END of ERP-ACTION&quot;
 )paren
 suffix:semicolon
 (brace
-id|ccw_req_t
+id|dasd_ccw_req_t
 op_star
 id|temp_erp
 op_assign
@@ -8165,13 +7362,14 @@ op_assign
 id|temp_erp-&gt;refers
 )paren
 (brace
-id|DASD_MESSAGE
+id|DEV_MESSAGE
+c_func
 (paren
 id|KERN_DEBUG
 comma
 id|device
 comma
-l_string|&quot;      erp %p refers to %p&quot;
+l_string|&quot;&t;   erp %p refers to %p&quot;
 comma
 id|temp_erp
 comma
@@ -8180,16 +7378,16 @@ id|temp_erp-&gt;refers
 suffix:semicolon
 )brace
 )brace
-macro_line|#endif /* ERP_DEBUG */
+macro_line|#endif&t;&t;&t;&t;/* ERP_DEBUG */
 r_if
 c_cond
 (paren
 id|erp-&gt;status
 op_eq
-id|CQR_STATUS_FAILED
+id|DASD_CQR_FAILED
 )paren
-(brace
-id|log_erp_chain
+id|dasd_log_ccw
+c_func
 (paren
 id|erp
 comma
@@ -8198,7 +7396,6 @@ comma
 id|cpa
 )paren
 suffix:semicolon
-)brace
 multiline_comment|/* enqueue added ERP request */
 r_if
 c_cond
@@ -8212,16 +7409,22 @@ op_logical_and
 (paren
 id|erp-&gt;status
 op_eq
-id|CQR_STATUS_FILLED
+id|DASD_CQR_FILLED
 )paren
 )paren
 (brace
-id|dasd_chanq_enq_head
+id|erp-&gt;status
+op_assign
+id|DASD_CQR_QUEUED
+suffix:semicolon
+id|list_add
+c_func
 (paren
 op_amp
-id|device-&gt;queue
+id|erp-&gt;list
 comma
-id|erp
+op_amp
+id|device-&gt;ccw_queue
 )paren
 suffix:semicolon
 )brace
@@ -8233,7 +7436,7 @@ c_cond
 (paren
 id|erp-&gt;status
 op_eq
-id|CQR_STATUS_FILLED
+id|DASD_CQR_FILLED
 )paren
 op_logical_or
 (paren
@@ -8244,7 +7447,8 @@ id|cqr
 )paren
 (brace
 multiline_comment|/* something strange happened - log the error and throw a BUG() */
-id|DASD_MESSAGE
+id|DEV_MESSAGE
+c_func
 (paren
 id|KERN_ERR
 comma
@@ -8256,7 +7460,8 @@ l_string|&quot;Problems with ERP chain!!! BUG&quot;
 )paren
 suffix:semicolon
 multiline_comment|/* print current erp_chain */
-id|DASD_MESSAGE
+id|DEV_MESSAGE
+c_func
 (paren
 id|KERN_DEBUG
 comma
@@ -8268,7 +7473,7 @@ l_string|&quot;ERP chain at END of ERP-ACTION&quot;
 )paren
 suffix:semicolon
 (brace
-id|ccw_req_t
+id|dasd_ccw_req_t
 op_star
 id|temp_erp
 op_assign
@@ -8290,13 +7495,15 @@ op_assign
 id|temp_erp-&gt;refers
 )paren
 (brace
-id|DASD_MESSAGE
+id|DEV_MESSAGE
+c_func
 (paren
 id|KERN_DEBUG
 comma
 id|device
 comma
-l_string|&quot;      erp %p (function %p) refers to %p&quot;
+l_string|&quot;&t;   erp %p (function %p)&quot;
+l_string|&quot; refers to %p&quot;
 comma
 id|temp_erp
 comma
@@ -8319,239 +7526,5 @@ id|erp
 suffix:semicolon
 )brace
 multiline_comment|/* end dasd_3990_erp_action */
-multiline_comment|/*&n; * DASD_3990_ERP_POSTACTION&n; *&n; * DESCRIPTION&n; *   Frees all ERPs of the current ERP Chain and set the status&n; *   of the original CQR either to CQR_STATUS_DONE if ERP was successful&n; *   or to CQR_STATUS_FAILED if ERP was NOT successful.&n; *&n; * PARAMETER&n; *   erp                current erp_head&n; *&n; * RETURN VALUES&n; *   cqr                pointer to the original CQR&n; */
-id|ccw_req_t
-op_star
-DECL|function|dasd_3990_erp_postaction
-id|dasd_3990_erp_postaction
-(paren
-id|ccw_req_t
-op_star
-id|erp
-)paren
-(brace
-id|ccw_req_t
-op_star
-id|cqr
-op_assign
-l_int|NULL
-comma
-op_star
-id|free_erp
-op_assign
-l_int|NULL
-suffix:semicolon
-id|dasd_device_t
-op_star
-id|device
-op_assign
-id|erp-&gt;device
-suffix:semicolon
-r_int
-id|success
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|erp-&gt;refers
-op_eq
-l_int|NULL
-op_logical_or
-id|erp-&gt;function
-op_eq
-l_int|NULL
-)paren
-(brace
-id|BUG
-(paren
-)paren
-suffix:semicolon
-)brace
-r_if
-c_cond
-(paren
-id|erp-&gt;status
-op_eq
-id|CQR_STATUS_DONE
-)paren
-id|success
-op_assign
-l_int|1
-suffix:semicolon
-r_else
-id|success
-op_assign
-l_int|0
-suffix:semicolon
-macro_line|#ifdef ERP_DEBUG
-multiline_comment|/* print current erp_chain */
-id|printk
-(paren
-id|KERN_DEBUG
-id|PRINTK_HEADER
-l_string|&quot;3990 ERP postaction called for erp chain:&bslash;n&quot;
-)paren
-suffix:semicolon
-(brace
-id|ccw_req_t
-op_star
-id|temp_erp
-op_assign
-l_int|NULL
-suffix:semicolon
-r_for
-c_loop
-(paren
-id|temp_erp
-op_assign
-id|erp
-suffix:semicolon
-id|temp_erp
-op_ne
-l_int|NULL
-suffix:semicolon
-id|temp_erp
-op_assign
-id|temp_erp-&gt;refers
-)paren
-(brace
-id|printk
-(paren
-id|KERN_DEBUG
-id|PRINTK_HEADER
-l_string|&quot;       erp %p refers to %p with erp function %p&bslash;n&quot;
-comma
-id|temp_erp
-comma
-id|temp_erp-&gt;refers
-comma
-id|temp_erp-&gt;function
-)paren
-suffix:semicolon
-)brace
-)brace
-macro_line|#endif /* ERP_DEBUG */
-multiline_comment|/* free all ERPs - but NOT the original cqr */
-r_while
-c_loop
-(paren
-id|erp-&gt;refers
-op_ne
-l_int|NULL
-)paren
-(brace
-id|free_erp
-op_assign
-id|erp
-suffix:semicolon
-id|erp
-op_assign
-id|erp-&gt;refers
-suffix:semicolon
-multiline_comment|/* remove the request from the device queue */
-id|dasd_chanq_deq
-(paren
-op_amp
-id|device-&gt;queue
-comma
-id|free_erp
-)paren
-suffix:semicolon
-multiline_comment|/* free the finished erp request */
-id|dasd_free_request
-(paren
-id|free_erp
-comma
-id|free_erp-&gt;device
-)paren
-suffix:semicolon
-)brace
-multiline_comment|/* save ptr to original cqr */
-id|cqr
-op_assign
-id|erp
-suffix:semicolon
-multiline_comment|/* set corresponding status to original cqr */
-r_if
-c_cond
-(paren
-id|success
-)paren
-(brace
-id|check_then_set
-(paren
-op_amp
-id|cqr-&gt;status
-comma
-id|CQR_STATUS_ERROR
-comma
-id|CQR_STATUS_DONE
-)paren
-suffix:semicolon
-)brace
-r_else
-(brace
-id|check_then_set
-(paren
-op_amp
-id|cqr-&gt;status
-comma
-id|CQR_STATUS_ERROR
-comma
-id|CQR_STATUS_FAILED
-)paren
-suffix:semicolon
-)brace
-macro_line|#ifdef ERP_DEBUG
-multiline_comment|/* print current erp_chain */
-id|printk
-(paren
-id|KERN_DEBUG
-id|PRINTK_HEADER
-l_string|&quot;3990 ERP postaction finished with remaining chain:&bslash;n&quot;
-)paren
-suffix:semicolon
-(brace
-id|ccw_req_t
-op_star
-id|temp_erp
-op_assign
-l_int|NULL
-suffix:semicolon
-r_for
-c_loop
-(paren
-id|temp_erp
-op_assign
-id|cqr
-suffix:semicolon
-id|temp_erp
-op_ne
-l_int|NULL
-suffix:semicolon
-id|temp_erp
-op_assign
-id|temp_erp-&gt;refers
-)paren
-(brace
-id|printk
-(paren
-id|KERN_DEBUG
-id|PRINTK_HEADER
-l_string|&quot; erp %p refers to %p &bslash;n&quot;
-comma
-id|temp_erp
-comma
-id|temp_erp-&gt;refers
-)paren
-suffix:semicolon
-)brace
-)brace
-macro_line|#endif /* ERP_DEBUG */
-r_return
-id|cqr
-suffix:semicolon
-)brace
-multiline_comment|/* end dasd_3990_erp_postaction */
-multiline_comment|/*&n; * Overrides for Emacs so that we follow Linus&squot;s tabbing style.&n; * Emacs will notice this stuff at the end of the file and automatically&n; * adjust the settings for this buffer only.  This must remain at the end&n; * of the file.&n; * ---------------------------------------------------------------------------&n; * Local variables:&n; * c-indent-level: 4 &n; * c-brace-imaginary-offset: 0&n; * c-brace-offset: -4&n; * c-argdecl-indent: 4&n; * c-label-offset: -4&n; * c-continued-statement-offset: 4&n; * c-continued-brace-offset: 0&n; * indent-tabs-mode: nil&n; * tab-width: 8&n; * End:&n; */
+multiline_comment|/*&n; * Overrides for Emacs so that we follow Linus&squot;s tabbing style.&n; * Emacs will notice this stuff at the end of the file and automatically&n; * adjust the settings for this buffer only.  This must remain at the end&n; * of the file.&n; * ---------------------------------------------------------------------------&n; * Local variables:&n; * c-indent-level: 4 &n; * c-brace-imaginary-offset: 0&n; * c-brace-offset: -4&n; * c-argdecl-indent: 4&n; * c-label-offset: -4&n; * c-continued-statement-offset: 4&n; * c-continued-brace-offset: 0&n; * indent-tabs-mode: 1&n; * tab-width: 8&n; * End:&n; */
 eof

@@ -1,4 +1,4 @@
-multiline_comment|/*********************************************************************&n; *                &n; * Filename:      wrapper.c&n; * Version:       1.2&n; * Description:   IrDA SIR async wrapper layer&n; * Status:        Stable&n; * Author:        Dag Brattli &lt;dagb@cs.uit.no&gt;&n; * Created at:    Mon Aug  4 20:40:53 1997&n; * Modified at:   Fri Jan 28 13:21:09 2000&n; * Modified by:   Dag Brattli &lt;dagb@cs.uit.no&gt;&n; * Modified at:   Fri May 28  3:11 CST 1999&n; * Modified by:   Horst von Brand &lt;vonbrand@sleipnir.valparaiso.cl&gt;&n; * &n; *     Copyright (c) 1998-2000 Dag Brattli &lt;dagb@cs.uit.no&gt;, &n; *     All Rights Reserved.&n; *     &n; *     This program is free software; you can redistribute it and/or &n; *     modify it under the terms of the GNU General Public License as &n; *     published by the Free Software Foundation; either version 2 of &n; *     the License, or (at your option) any later version.&n; *&n; *     Neither Dag Brattli nor University of Troms&#xfffd; admit liability nor&n; *     provide warranty for any of this software. This material is &n; *     provided &quot;AS-IS&quot; and at no charge.&n; *&n; ********************************************************************/
+multiline_comment|/*********************************************************************&n; *&n; * Filename:      wrapper.c&n; * Version:       1.2&n; * Description:   IrDA SIR async wrapper layer&n; * Status:        Stable&n; * Author:        Dag Brattli &lt;dagb@cs.uit.no&gt;&n; * Created at:    Mon Aug  4 20:40:53 1997&n; * Modified at:   Fri Jan 28 13:21:09 2000&n; * Modified by:   Dag Brattli &lt;dagb@cs.uit.no&gt;&n; * Modified at:   Fri May 28  3:11 CST 1999&n; * Modified by:   Horst von Brand &lt;vonbrand@sleipnir.valparaiso.cl&gt;&n; *&n; *     Copyright (c) 1998-2000 Dag Brattli &lt;dagb@cs.uit.no&gt;,&n; *     All Rights Reserved.&n; *&n; *     This program is free software; you can redistribute it and/or&n; *     modify it under the terms of the GNU General Public License as&n; *     published by the Free Software Foundation; either version 2 of&n; *     the License, or (at your option) any later version.&n; *&n; *     Neither Dag Brattli nor University of Troms&#xfffd; admit liability nor&n; *     provide warranty for any of this software. This material is&n; *     provided &quot;AS-IS&quot; and at no charge.&n; *&n; ********************************************************************/
 macro_line|#include &lt;linux/skbuff.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;asm/byteorder.h&gt;
@@ -154,7 +154,7 @@ id|state_inside_frame
 comma
 )brace
 suffix:semicolon
-multiline_comment|/*&n; * Function async_wrap (skb, *tx_buff, buffsize)&n; *&n; *    Makes a new buffer with wrapping and stuffing, should check that &n; *    we don&squot;t get tx buffer overflow.&n; */
+multiline_comment|/*&n; * Function async_wrap (skb, *tx_buff, buffsize)&n; *&n; *    Makes a new buffer with wrapping and stuffing, should check that&n; *    we don&squot;t get tx buffer overflow.&n; */
 DECL|function|async_wrap_skb
 r_int
 id|async_wrap_skb
@@ -226,7 +226,7 @@ op_ne
 id|LAP_MAGIC
 )paren
 (brace
-multiline_comment|/* &n;&t;&t; * This will happen for all frames sent from user-space.&n;&t;&t; * Nothing to worry about, but we set the default number of &n;&t;&t; * BOF&squot;s&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * This will happen for all frames sent from user-space.&n;&t;&t; * Nothing to worry about, but we set the default number of&n;&t;&t; * BOF&squot;s&n;&t;&t; */
 id|IRDA_DEBUG
 c_func
 (paren
@@ -325,7 +325,7 @@ id|i
 op_increment
 )paren
 (brace
-multiline_comment|/*&n;&t;&t; *  Check for the possibility of tx buffer overflow. We use&n;&t;&t; *  bufsize-5 since the maximum number of bytes that can be &n;&t;&t; *  transmitted after this point is 5.&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; *  Check for the possibility of tx buffer overflow. We use&n;&t;&t; *  bufsize-5 since the maximum number of bytes that can be&n;&t;&t; *  transmitted after this point is 5.&n;&t;&t; */
 id|ASSERT
 c_func
 (paren
@@ -452,7 +452,7 @@ r_return
 id|n
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Function stuff_byte (byte, buf)&n; *&n; *    Byte stuff one single byte and put the result in buffer pointed to by&n; *    buf. The buffer must at all times be able to have two bytes inserted.&n; * &n; */
+multiline_comment|/*&n; * Function stuff_byte (byte, buf)&n; *&n; *    Byte stuff one single byte and put the result in buffer pointed to by&n; *    buf. The buffer must at all times be able to have two bytes inserted.&n; *&n; */
 DECL|function|stuff_byte
 r_static
 r_inline
@@ -935,8 +935,9 @@ suffix:colon
 id|WARNING
 c_func
 (paren
+l_string|&quot;%s: state not defined&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), state not defined&bslash;n&quot;
 )paren
 suffix:semicolon
 r_break
@@ -953,7 +954,7 @@ r_break
 suffix:semicolon
 r_default
 suffix:colon
-multiline_comment|/* &n;&t;&t; *  Stuffed char, complement bit 5 of byte &n;&t;&t; *  following CE, IrLAP p.114 &n;&t;&t; */
+multiline_comment|/*&n;&t;&t; *  Stuffed char, complement bit 5 of byte&n;&t;&t; *  following CE, IrLAP p.114&n;&t;&t; */
 id|byte
 op_xor_assign
 id|IRDA_TRANS

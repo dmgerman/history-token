@@ -8,6 +8,7 @@ macro_line|#include &lt;linux/pagemap.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
+macro_line|#include &lt;linux/namei.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &quot;pci_hotplug.h&quot;
@@ -19,7 +20,7 @@ DECL|macro|MY_NAME
 mdefine_line|#define MY_NAME&t;THIS_MODULE-&gt;name
 macro_line|#endif
 DECL|macro|dbg
-mdefine_line|#define dbg(fmt, arg...) do { if (debug) printk(KERN_DEBUG &quot;%s: &quot;__FUNCTION__&quot;: &quot; fmt , MY_NAME , ## arg); } while (0)
+mdefine_line|#define dbg(fmt, arg...) do { if (debug) printk(KERN_DEBUG &quot;%s: %s: &quot; fmt, MY_NAME, __FUNCTION__, ## arg); } while (0)
 DECL|macro|err
 mdefine_line|#define err(format, arg...) printk(KERN_ERR &quot;%s: &quot; format , MY_NAME , ## arg)
 DECL|macro|info

@@ -39,6 +39,7 @@ macro_line|#include &lt;linux/seq_file.h&gt;
 macro_line|#include &lt;linux/binfmts.h&gt;
 macro_line|#include &lt;linux/namei.h&gt;
 macro_line|#include &lt;linux/buffer_head.h&gt;
+macro_line|#include &lt;linux/root_dev.h&gt;
 macro_line|#include &lt;asm/checksum.h&gt;
 macro_line|#if defined(CONFIG_PROC_FS)
 macro_line|#include &lt;linux/proc_fs.h&gt;
@@ -328,6 +329,20 @@ c_func
 id|__vmalloc
 )paren
 suffix:semicolon
+DECL|variable|vmalloc
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|vmalloc
+)paren
+suffix:semicolon
+DECL|variable|vmalloc_32
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|vmalloc_32
+)paren
+suffix:semicolon
 DECL|variable|vmalloc_to_page
 id|EXPORT_SYMBOL
 c_func
@@ -455,6 +470,13 @@ id|EXPORT_SYMBOL
 c_func
 (paren
 id|get_fs_type
+)paren
+suffix:semicolon
+DECL|variable|user_get_super
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|user_get_super
 )paren
 suffix:semicolon
 DECL|variable|get_super
@@ -1340,6 +1362,13 @@ c_func
 id|vfs_lstat
 )paren
 suffix:semicolon
+DECL|variable|vfs_getattr
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|vfs_getattr
+)paren
+suffix:semicolon
 DECL|variable|lock_rename
 id|EXPORT_SYMBOL
 c_func
@@ -1789,6 +1818,13 @@ id|EXPORT_SYMBOL
 c_func
 (paren
 id|is_read_only
+)paren
+suffix:semicolon
+DECL|variable|bdev_read_only
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|bdev_read_only
 )paren
 suffix:semicolon
 DECL|variable|set_device_ro
@@ -2434,6 +2470,16 @@ c_func
 id|__wake_up
 )paren
 suffix:semicolon
+macro_line|#if CONFIG_SMP
+DECL|variable|__wake_up_sync
+id|EXPORT_SYMBOL_GPL
+c_func
+(paren
+id|__wake_up_sync
+)paren
+suffix:semicolon
+multiline_comment|/* internal use only */
+macro_line|#endif
 DECL|variable|wake_up_process
 id|EXPORT_SYMBOL
 c_func

@@ -42,7 +42,6 @@ id|urb_priv-&gt;td
 l_int|0
 )braket
 suffix:semicolon
-macro_line|#ifdef CONFIG_PCI
 r_int
 id|len
 op_assign
@@ -120,9 +119,6 @@ comma
 id|dir
 )paren
 suffix:semicolon
-macro_line|#else
-macro_line|#&t;warning &quot;assuming no buffer unmapping is needed&quot;
-macro_line|#endif
 r_for
 c_loop
 (paren
@@ -308,7 +304,6 @@ r_int
 r_int
 id|flags
 suffix:semicolon
-macro_line|#ifdef CONFIG_PCI
 singleline_comment|// FIXME rewrite this resubmit path.  use pci_dma_sync_single()
 singleline_comment|// and requeue more cheaply, and only if needed.
 singleline_comment|// Better yet ... abolish the notion of automagic resubmission.
@@ -336,7 +331,6 @@ suffix:colon
 id|PCI_DMA_FROMDEVICE
 )paren
 suffix:semicolon
-macro_line|#endif
 multiline_comment|/* FIXME: MP race.  If another CPU partially unlinks&n;&t; * this URB (urb-&gt;status was updated, hasn&squot;t yet told&n;&t; * us to dequeue) before we call complete() here, an&n;&t; * extra &quot;unlinked&quot; completion will be reported...&n;&t; */
 id|spin_lock_irqsave
 (paren
@@ -835,13 +829,13 @@ id|PIPE_INTERRUPT
 suffix:colon
 id|load
 op_assign
-id|ed-&gt;int_load
+id|ed-&gt;intriso.intr_info.int_load
 suffix:semicolon
 id|interval
 op_assign
 id|ep_2_n_interval
 (paren
-id|ed-&gt;int_period
+id|ed-&gt;intriso.intr_info.int_period
 )paren
 suffix:semicolon
 id|ed-&gt;interval
@@ -859,7 +853,7 @@ comma
 id|load
 )paren
 suffix:semicolon
-id|ed-&gt;int_branch
+id|ed-&gt;intriso.intr_info.int_branch
 op_assign
 id|int_branch
 suffix:semicolon
@@ -1465,7 +1459,7 @@ id|ohci
 comma
 id|ed
 comma
-id|ed-&gt;int_branch
+id|ed-&gt;intriso.intr_info.int_branch
 comma
 id|ed-&gt;interval
 )paren
@@ -1475,7 +1469,7 @@ c_loop
 (paren
 id|i
 op_assign
-id|ed-&gt;int_branch
+id|ed-&gt;intriso.intr_info.int_branch
 suffix:semicolon
 id|i
 OL
@@ -1490,7 +1484,7 @@ id|ohci-&gt;ohci_int_load
 id|i
 )braket
 op_sub_assign
-id|ed-&gt;int_load
+id|ed-&gt;intriso.intr_info.int_load
 suffix:semicolon
 macro_line|#ifdef OHCI_VERBOSE_DEBUG
 id|ohci_dump_periodic
@@ -1801,6 +1795,10 @@ r_return
 l_int|NULL
 suffix:semicolon
 )brace
+id|ed-&gt;dummy
+op_assign
+id|td
+suffix:semicolon
 id|ed-&gt;hwTailP
 op_assign
 id|cpu_to_le32
@@ -1812,6 +1810,7 @@ id|ed-&gt;hwHeadP
 op_assign
 id|ed-&gt;hwTailP
 suffix:semicolon
+multiline_comment|/* ED_C, ED_H zeroed */
 id|ed-&gt;state
 op_assign
 id|ED_UNLINK
@@ -1824,8 +1823,9 @@ id|pipe
 )paren
 suffix:semicolon
 )brace
-singleline_comment|// FIXME:  don&squot;t do this if it&squot;s linked to the HC,
-singleline_comment|// we might clobber data toggle or other state ...
+singleline_comment|// FIXME:  don&squot;t do this if it&squot;s linked to the HC, or without knowing it&squot;s
+singleline_comment|// safe to clobber state/mode info tied to (previous) config/altsetting.
+singleline_comment|// (but dev0/ep0, used by set_address, must get clobbered)
 id|ed-&gt;hwINFO
 op_assign
 id|cpu_to_le32
@@ -1911,11 +1911,11 @@ op_eq
 id|ED_UNLINK
 )paren
 (brace
-id|ed-&gt;int_period
+id|ed-&gt;intriso.intr_info.int_period
 op_assign
 id|interval
 suffix:semicolon
-id|ed-&gt;int_load
+id|ed-&gt;intriso.intr_info.int_load
 op_assign
 id|load
 suffix:semicolon
@@ -2088,7 +2088,6 @@ r_int
 id|index
 )paren
 (brace
-r_volatile
 r_struct
 id|td
 op_star
@@ -2102,6 +2101,13 @@ op_star
 id|urb_priv
 op_assign
 id|urb-&gt;hcpriv
+suffix:semicolon
+r_int
+id|is_iso
+op_assign
+id|info
+op_amp
+id|TD_ISO
 suffix:semicolon
 r_if
 c_cond
@@ -2119,8 +2125,7 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
-macro_line|#if 0
-multiline_comment|/* no interrupt needed except for URB&squot;s last TD */
+multiline_comment|/* aim for only one interrupt per urb.  mostly applies to control&n;&t; * and iso; other urbs rarely need more than one TD per urb.&n;&t; *&n;&t; * NOTE: could delay interrupts even for the last TD, and get fewer&n;&t; * interrupts ... increasing per-urb latency by sharing interrupts.&n;&t; */
 r_if
 c_cond
 (paren
@@ -2134,9 +2139,19 @@ l_int|1
 )paren
 id|info
 op_or_assign
-id|TD_DI
+id|is_iso
+ques
+c_cond
+id|TD_DI_SET
+(paren
+l_int|7
+)paren
+suffix:colon
+id|TD_DI_SET
+(paren
+l_int|1
+)paren
 suffix:semicolon
-macro_line|#endif
 multiline_comment|/* use this td as the next dummy */
 id|td_pt
 op_assign
@@ -2157,16 +2172,11 @@ id|urb_priv-&gt;td
 id|index
 )braket
 op_assign
-id|dma_to_td
-(paren
-id|ohci
-comma
-id|le32_to_cpup
-(paren
-op_amp
-id|urb_priv-&gt;ed-&gt;hwTailP
-)paren
-)paren
+id|urb_priv-&gt;ed-&gt;dummy
+suffix:semicolon
+id|urb_priv-&gt;ed-&gt;dummy
+op_assign
+id|td_pt
 suffix:semicolon
 id|td-&gt;ed
 op_assign
@@ -2208,11 +2218,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-(paren
-id|td-&gt;ed-&gt;type
-)paren
-op_eq
-id|PIPE_ISOCHRONOUS
+id|is_iso
 )paren
 (brace
 id|td-&gt;hwCBP
@@ -2224,7 +2230,7 @@ op_amp
 l_int|0xFFFFF000
 )paren
 suffix:semicolon
-id|td-&gt;ed-&gt;last_iso
+id|td-&gt;ed-&gt;intriso.last_iso
 op_assign
 id|info
 op_amp
@@ -2408,7 +2414,6 @@ c_cond
 id|data_len
 )paren
 (brace
-macro_line|#ifdef CONFIG_PCI
 id|data
 op_assign
 id|pci_map_single
@@ -2430,9 +2435,6 @@ suffix:colon
 id|PCI_DMA_FROMDEVICE
 )paren
 suffix:semicolon
-macro_line|#else
-macro_line|#&t;error &quot;what dma addr to use&quot;
-macro_line|#endif
 )brace
 r_else
 id|data
@@ -2681,7 +2683,6 @@ id|ohci
 comma
 id|info
 comma
-macro_line|#ifdef CONFIG_PCI
 id|pci_map_single
 (paren
 id|ohci-&gt;hcd.pdev
@@ -2693,9 +2694,6 @@ comma
 id|PCI_DMA_TODEVICE
 )paren
 comma
-macro_line|#else
-macro_line|#&t;error &quot;what dma addr to use&quot;&t;&t;&t;&t;
-macro_line|#endif
 l_int|8
 comma
 id|urb
@@ -3745,7 +3743,7 @@ id|td-&gt;hwNextTD
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/* FIXME actually want four cases here:&n;&t;&t; * (a) finishing URB unlink&n;&t;&t; *     [a1] no URBs queued, so start ED unlink&n;&t;&t; *     [a2] some (earlier) URBs still linked, re-enable&n;&t;&t; * (b) finishing ED unlink&n;&t;&t; *     [b1] no URBs queued, ED is truly idle now&n;&t;&t; *     [b2] URBs now queued, link ED back into schedule&n;&t;&t; * right now we only have (a)&n;&t;&t; */
+multiline_comment|/* FIXME actually want four cases here:&n;&t;&t; * (a) finishing URB unlink&n;&t;&t; *     [a1] no URBs queued, so start ED unlink&n;&t;&t; *     [a2] some (earlier) URBs still linked, re-enable&n;&t;&t; * (b) finishing ED unlink&n;&t;&t; *     [b1] no URBs queued, ED is truly idle now&n;&t;&t; *          ... we could set state ED_NEW and free dummy&n;&t;&t; *     [b2] URBs now queued, link ED back into schedule&n;&t;&t; * right now we only have (a)&n;&t;&t; */
 id|ed-&gt;state
 op_and_assign
 op_complement
@@ -3785,21 +3783,6 @@ id|ohci
 comma
 id|ed
 )paren
-suffix:semicolon
-id|td_free
-(paren
-id|ohci
-comma
-id|tdTailP
-)paren
-suffix:semicolon
-id|ed-&gt;hwINFO
-op_assign
-id|ED_SKIP
-suffix:semicolon
-id|ed-&gt;state
-op_assign
-id|ED_NEW
 suffix:semicolon
 )brace
 r_else

@@ -3,6 +3,7 @@ macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;linux/raid/multipath.h&gt;
+macro_line|#include &lt;linux/buffer_head.h&gt;
 macro_line|#include &lt;asm/atomic.h&gt;
 DECL|macro|MAJOR_NR
 mdefine_line|#define MAJOR_NR MD_MAJOR
@@ -10,6 +11,8 @@ DECL|macro|MD_DRIVER
 mdefine_line|#define MD_DRIVER
 DECL|macro|MD_PERSONALITY
 mdefine_line|#define MD_PERSONALITY
+DECL|macro|DEVICE_NR
+mdefine_line|#define DEVICE_NR(device) (minor(device))
 DECL|macro|MAX_WORK_PER_DISK
 mdefine_line|#define MAX_WORK_PER_DISK 128
 DECL|macro|NR_RESERVED_BUFS

@@ -23,6 +23,10 @@ macro_line|#include &lt;asm/amigaints.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
 DECL|macro|MAJOR_NR
 mdefine_line|#define MAJOR_NR FLOPPY_MAJOR
+DECL|macro|DEVICE_NAME
+mdefine_line|#define DEVICE_NAME &quot;floppy&quot;
+DECL|macro|DEVICE_NR
+mdefine_line|#define DEVICE_NR(device) ( (minor(device) &amp; 3) | ((minor(device) &amp; 0x80 ) &gt;&gt; 5 ))
 macro_line|#include &lt;linux/blk.h&gt;
 DECL|macro|DEBUG
 macro_line|#undef DEBUG /* print _LOTS_ of infos */
@@ -7526,6 +7530,8 @@ id|floppy-&gt;blocks
 id|end_request
 c_func
 (paren
+id|CURRENT
+comma
 l_int|0
 )paren
 suffix:semicolon
@@ -7610,6 +7616,8 @@ suffix:semicolon
 id|end_request
 c_func
 (paren
+id|CURRENT
+comma
 l_int|0
 )paren
 suffix:semicolon
@@ -7635,6 +7643,8 @@ l_int|1
 id|end_request
 c_func
 (paren
+id|CURRENT
+comma
 l_int|0
 )paren
 suffix:semicolon
@@ -7713,6 +7723,8 @@ id|drive
 id|end_request
 c_func
 (paren
+id|CURRENT
+comma
 l_int|0
 )paren
 suffix:semicolon
@@ -7786,6 +7798,8 @@ suffix:semicolon
 id|end_request
 c_func
 (paren
+id|CURRENT
+comma
 l_int|1
 )paren
 suffix:semicolon

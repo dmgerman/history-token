@@ -10,6 +10,7 @@ macro_line|#include &lt;linux/time.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/smp.h&gt;
+macro_line|#include &lt;linux/device.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/smp.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
@@ -22,7 +23,6 @@ macro_line|#include &lt;linux/mc146818rtc.h&gt;
 macro_line|#include &lt;linux/timex.h&gt;
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;asm/fixmap.h&gt;
-multiline_comment|/*&n; * for x86_do_profile()&n; */
 macro_line|#include &lt;linux/irq.h&gt;
 DECL|variable|cpu_khz
 r_int
@@ -60,13 +60,6 @@ id|timeval
 id|__xtime
 id|__section_xtime
 suffix:semicolon
-DECL|variable|__section_jiffies
-r_volatile
-r_int
-r_int
-id|__jiffies
-id|__section_jiffies
-suffix:semicolon
 DECL|variable|__section_wall_jiffies
 r_int
 r_int
@@ -78,6 +71,13 @@ r_struct
 id|timezone
 id|__sys_tz
 id|__section_sys_tz
+suffix:semicolon
+DECL|variable|__section_jiffies
+r_volatile
+r_int
+r_int
+id|__jiffies
+id|__section_jiffies
 suffix:semicolon
 DECL|variable|rtc_lock
 id|spinlock_t
@@ -1587,4 +1587,46 @@ id|irq0
 )paren
 suffix:semicolon
 )brace
+DECL|variable|device_i8253
+r_static
+r_struct
+id|device
+id|device_i8253
+op_assign
+(brace
+id|name
+suffix:colon
+l_string|&quot;i8253&quot;
+comma
+id|bus_id
+suffix:colon
+l_string|&quot;0040&quot;
+comma
+)brace
+suffix:semicolon
+DECL|function|time_init_driverfs
+r_static
+r_int
+id|time_init_driverfs
+c_func
+(paren
+r_void
+)paren
+(brace
+r_return
+id|register_sys_device
+c_func
+(paren
+op_amp
+id|device_i8253
+)paren
+suffix:semicolon
+)brace
+DECL|variable|time_init_driverfs
+id|__initcall
+c_func
+(paren
+id|time_init_driverfs
+)paren
+suffix:semicolon
 eof

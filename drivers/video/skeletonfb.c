@@ -478,6 +478,9 @@ id|fb_var_screeninfo
 op_star
 id|var
 comma
+r_int
+id|con
+comma
 r_const
 r_struct
 id|fb_info

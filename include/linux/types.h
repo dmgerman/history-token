@@ -3,6 +3,8 @@ DECL|macro|_LINUX_TYPES_H
 mdefine_line|#define _LINUX_TYPES_H
 macro_line|#ifdef&t;__KERNEL__
 macro_line|#include &lt;linux/config.h&gt;
+DECL|macro|bitmap_member
+mdefine_line|#define bitmap_member(name,bits) &bslash;&n;&t;unsigned long name[((bits)+BITS_PER_LONG-1)/BITS_PER_LONG]
 macro_line|#endif
 macro_line|#include &lt;linux/posix_types.h&gt;
 macro_line|#include &lt;asm/types.h&gt;

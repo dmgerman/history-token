@@ -1,4 +1,4 @@
-multiline_comment|/*********************************************************************&n; *                &n; * Filename:      iriap.c&n; * Version:       0.8&n; * Description:   Information Access Protocol (IAP)&n; * Status:        Experimental.&n; * Author:        Dag Brattli &lt;dagb@cs.uit.no&gt;&n; * Created at:    Thu Aug 21 00:02:07 1997&n; * Modified at:   Sat Dec 25 16:42:42 1999&n; * Modified by:   Dag Brattli &lt;dagb@cs.uit.no&gt;&n; * &n; *     Copyright (c) 1998-1999 Dag Brattli &lt;dagb@cs.uit.no&gt;, &n; *     All Rights Reserved.&n; *     Copyright (c) 2000-2001 Jean Tourrilhes &lt;jt@hpl.hp.com&gt;&n; *     &n; *     This program is free software; you can redistribute it and/or &n; *     modify it under the terms of the GNU General Public License as &n; *     published by the Free Software Foundation; either version 2 of &n; *     the License, or (at your option) any later version.&n; *&n; *     Neither Dag Brattli nor University of Troms&#xfffd; admit liability nor&n; *     provide warranty for any of this software. This material is &n; *     provided &quot;AS-IS&quot; and at no charge.&n; *&n; ********************************************************************/
+multiline_comment|/*********************************************************************&n; *&n; * Filename:      iriap.c&n; * Version:       0.8&n; * Description:   Information Access Protocol (IAP)&n; * Status:        Experimental.&n; * Author:        Dag Brattli &lt;dagb@cs.uit.no&gt;&n; * Created at:    Thu Aug 21 00:02:07 1997&n; * Modified at:   Sat Dec 25 16:42:42 1999&n; * Modified by:   Dag Brattli &lt;dagb@cs.uit.no&gt;&n; *&n; *     Copyright (c) 1998-1999 Dag Brattli &lt;dagb@cs.uit.no&gt;,&n; *     All Rights Reserved.&n; *     Copyright (c) 2000-2001 Jean Tourrilhes &lt;jt@hpl.hp.com&gt;&n; *&n; *     This program is free software; you can redistribute it and/or&n; *     modify it under the terms of the GNU General Public License as&n; *     published by the Free Software Foundation; either version 2 of&n; *     the License, or (at your option) any later version.&n; *&n; *     Neither Dag Brattli nor University of Troms&#xfffd; admit liability nor&n; *     provide warranty for any of this software. This material is&n; *     provided &quot;AS-IS&quot; and at no charge.&n; *&n; ********************************************************************/
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/skbuff.h&gt;
@@ -198,7 +198,7 @@ op_star
 id|skb
 )paren
 suffix:semicolon
-multiline_comment|/*&n; * Function iriap_init (void)&n; *&n; *    Initializes the IrIAP layer, called by the module initialization code&n; *    in irmod.c &n; */
+multiline_comment|/*&n; * Function iriap_init (void)&n; *&n; *    Initializes the IrIAP layer, called by the module initialization code&n; *    in irmod.c&n; */
 DECL|function|iriap_init
 r_int
 id|__init
@@ -264,8 +264,9 @@ id|objects
 id|WARNING
 c_func
 (paren
+l_string|&quot;%s: Can&squot;t allocate objects hashbin!&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), Can&squot;t allocate objects hashbin!&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -273,7 +274,7 @@ op_minus
 id|ENOMEM
 suffix:semicolon
 )brace
-multiline_comment|/* &n;&t; *  Register some default services for IrLMP &n;&t; */
+multiline_comment|/*&n;&t; *  Register some default services for IrLMP&n;&t; */
 id|hints
 op_assign
 id|irlmp_service_to_hint
@@ -367,7 +368,7 @@ c_func
 id|obj
 )paren
 suffix:semicolon
-multiline_comment|/*  &n;&t; *  Register server support with IrLMP so we can accept incoming &n;&t; *  connections &n;&t; */
+multiline_comment|/*&n;&t; *  Register server support with IrLMP so we can accept incoming&n;&t; *  connections&n;&t; */
 id|server
 op_assign
 id|iriap_open
@@ -417,7 +418,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Function iriap_cleanup (void)&n; *&n; *    Initializes the IrIAP layer, called by the module cleanup code in &n; *    irmod.c&n; */
+multiline_comment|/*&n; * Function iriap_cleanup (void)&n; *&n; *    Initializes the IrIAP layer, called by the module cleanup code in&n; *    irmod.c&n; */
 DECL|function|iriap_cleanup
 r_void
 id|iriap_cleanup
@@ -515,8 +516,9 @@ id|self
 id|WARNING
 c_func
 (paren
+l_string|&quot;%s: Unable to kmalloc!&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), Unable to kmalloc!&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -915,8 +917,9 @@ l_int|NULL
 id|ERROR
 c_func
 (paren
+l_string|&quot;%s: Unable to allocated LSAP!&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), Unable to allocated LSAP!&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -1051,7 +1054,7 @@ comma
 l_int|NULL
 )paren
 suffix:semicolon
-multiline_comment|/* &n;&t;&t; * Inform service user that the request failed by sending &n;&t;&t; * it a NULL value. Warning, the client might close us, so&n;&t;&t; * remember no to use self anymore after calling confirm&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * Inform service user that the request failed by sending&n;&t;&t; * it a NULL value. Warning, the client might close us, so&n;&t;&t; * remember no to use self anymore after calling confirm&n;&t;&t; */
 r_if
 c_cond
 (paren
@@ -1112,7 +1115,7 @@ id|userdata
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Function iriap_disconnect_request (handle)&n; *&n; *    &n; *&n; */
+multiline_comment|/*&n; * Function iriap_disconnect_request (handle)&n; */
 DECL|function|iriap_disconnect_request
 r_void
 id|iriap_disconnect_request
@@ -1190,7 +1193,7 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
-multiline_comment|/* &n;&t; *  Reserve space for MUX control and LAP header &n;&t; */
+multiline_comment|/*&n;&t; *  Reserve space for MUX control and LAP header&n;&t; */
 id|skb_reserve
 c_func
 (paren
@@ -1385,7 +1388,7 @@ id|self-&gt;saddr
 op_assign
 id|saddr
 suffix:semicolon
-multiline_comment|/* &n;&t; *  Save operation, so we know what the later indication is about&n;&t; */
+multiline_comment|/*&n;&t; *  Save operation, so we know what the later indication is about&n;&t; */
 id|self-&gt;operation
 op_assign
 id|GET_VALUE_BY_CLASS
@@ -1792,16 +1795,16 @@ id|CS_ASCII
 suffix:colon
 r_break
 suffix:semicolon
-multiline_comment|/* &t;&t;case CS_ISO_8859_1: */
-multiline_comment|/* &t;&t;case CS_ISO_8859_2: */
-multiline_comment|/* &t;&t;case CS_ISO_8859_3: */
-multiline_comment|/* &t;&t;case CS_ISO_8859_4: */
-multiline_comment|/* &t;&t;case CS_ISO_8859_5: */
-multiline_comment|/* &t;&t;case CS_ISO_8859_6: */
-multiline_comment|/* &t;&t;case CS_ISO_8859_7: */
-multiline_comment|/* &t;&t;case CS_ISO_8859_8: */
-multiline_comment|/* &t;&t;case CS_ISO_8859_9: */
-multiline_comment|/* &t;&t;case CS_UNICODE: */
+multiline_comment|/*&t;&t;case CS_ISO_8859_1: */
+multiline_comment|/*&t;&t;case CS_ISO_8859_2: */
+multiline_comment|/*&t;&t;case CS_ISO_8859_3: */
+multiline_comment|/*&t;&t;case CS_ISO_8859_4: */
+multiline_comment|/*&t;&t;case CS_ISO_8859_5: */
+multiline_comment|/*&t;&t;case CS_ISO_8859_6: */
+multiline_comment|/*&t;&t;case CS_ISO_8859_7: */
+multiline_comment|/*&t;&t;case CS_ISO_8859_8: */
+multiline_comment|/*&t;&t;case CS_ISO_8859_9: */
+multiline_comment|/*&t;&t;case CS_UNICODE: */
 r_default
 suffix:colon
 id|IRDA_DEBUG
@@ -1950,7 +1953,7 @@ c_func
 id|self
 )paren
 suffix:semicolon
-multiline_comment|/* Warning, the client might close us, so remember no to use self&n;&t; * anymore after calling confirm &n;&t; */
+multiline_comment|/* Warning, the client might close us, so remember no to use self&n;&t; * anymore after calling confirm&n;&t; */
 r_if
 c_cond
 (paren
@@ -1995,7 +1998,7 @@ id|skb
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Function iriap_getvaluebyclass_response ()&n; *&n; *    Send answer back to remote LM-IAS&n; * &n; */
+multiline_comment|/*&n; * Function iriap_getvaluebyclass_response ()&n; *&n; *    Send answer back to remote LM-IAS&n; *&n; */
 DECL|function|iriap_getvaluebyclass_response
 r_void
 id|iriap_getvaluebyclass_response
@@ -2093,7 +2096,7 @@ id|n
 op_assign
 l_int|0
 suffix:semicolon
-multiline_comment|/* &n;&t; *  We must adjust the size of the response after the length of the &n;&t; *  value. We add 32 bytes because of the 6 bytes for the frame and&n;&t; *  max 5 bytes for the value coding.&n;&t; */
+multiline_comment|/*&n;&t; *  We must adjust the size of the response after the length of the&n;&t; *  value. We add 32 bytes because of the 6 bytes for the frame and&n;&t; *  max 5 bytes for the value coding.&n;&t; */
 id|skb
 op_assign
 id|dev_alloc_skb
@@ -3367,9 +3370,10 @@ id|IAP_LST
 id|WARNING
 c_func
 (paren
-id|__FUNCTION__
-l_string|&quot;(), IrIAS multiframe commands or &quot;
+l_string|&quot;%s:, IrIAS multiframe commands or &quot;
 l_string|&quot;results is not implemented yet!&bslash;n&quot;
+comma
+id|__FUNCTION__
 )paren
 suffix:semicolon
 id|dev_kfree_skb
@@ -3495,7 +3499,7 @@ c_func
 id|self
 )paren
 suffix:semicolon
-multiline_comment|/* &n;&t;&t;&t; * Warning, the client might close us, so remember&n;&t;&t;&t; * no to use self anymore after calling confirm &n;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t; * Warning, the client might close us, so remember&n;&t;&t;&t; * no to use self anymore after calling confirm&n;&t;&t;&t; */
 r_if
 c_cond
 (paren
@@ -3542,7 +3546,7 @@ c_func
 id|self
 )paren
 suffix:semicolon
-multiline_comment|/* &n;&t;&t;&t; * Warning, the client might close us, so remember&n;&t;&t;&t; * no to use self anymore after calling confirm &n;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t; * Warning, the client might close us, so remember&n;&t;&t;&t; * no to use self anymore after calling confirm&n;&t;&t;&t; */
 r_if
 c_cond
 (paren
@@ -3688,9 +3692,10 @@ l_int|0x80
 id|WARNING
 c_func
 (paren
-id|__FUNCTION__
-l_string|&quot;(), IrIAS multiframe commands or results&quot;
+l_string|&quot;%s: IrIAS multiframe commands or results&quot;
 l_string|&quot;is not implemented yet!&bslash;n&quot;
+comma
+id|__FUNCTION__
 )paren
 suffix:semicolon
 r_return
@@ -3713,8 +3718,9 @@ suffix:colon
 id|WARNING
 c_func
 (paren
+l_string|&quot;%s: GetInfoBaseDetails not implemented yet!&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), GetInfoBaseDetails not implemented yet!&bslash;n&quot;
 )paren
 suffix:semicolon
 r_break

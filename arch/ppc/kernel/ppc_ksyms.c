@@ -956,7 +956,7 @@ c_func
 id|__global_restore_flags
 )paren
 suffix:semicolon
-macro_line|#ifdef SPINLOCK_DEBUG
+macro_line|#ifdef CONFIG_DEBUG_SPINLOCK
 DECL|variable|_raw_spin_lock
 id|EXPORT_SYMBOL
 c_func

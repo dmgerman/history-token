@@ -1,4 +1,4 @@
-multiline_comment|/*******************************************************************************&n; *&n; * Module Name: rsutils - Utilities for the resource manager&n; *              $Revision: 30 $&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * Module Name: rsutils - Utilities for the resource manager&n; *              $Revision: 33 $&n; *&n; ******************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;acnamesp.h&quot;
@@ -24,7 +24,7 @@ id|ret_buffer
 (brace
 id|acpi_operand_object
 op_star
-id|ret_obj
+id|obj_desc
 suffix:semicolon
 id|acpi_status
 id|status
@@ -47,7 +47,7 @@ comma
 l_int|NULL
 comma
 op_amp
-id|ret_obj
+id|obj_desc
 )paren
 suffix:semicolon
 r_if
@@ -69,7 +69,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|ret_obj
+id|obj_desc
 )paren
 (brace
 multiline_comment|/* Return object is required */
@@ -88,13 +88,16 @@ id|AE_TYPE
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t; * The return object will be a package, so check the parameters.  If the&n;&t; * return object is not a package, then the underlying AML code is corrupt&n;&t; * or improperly written.&n;&t; */
+multiline_comment|/*&n;&t; * The return object must be a package, so check the parameters.  If the&n;&t; * return object is not a package, then the underlying AML code is corrupt&n;&t; * or improperly written.&n;&t; */
 r_if
 c_cond
 (paren
-id|ACPI_TYPE_PACKAGE
+id|ACPI_GET_OBJECT_TYPE
+(paren
+id|obj_desc
+)paren
 op_ne
-id|ret_obj-&gt;common.type
+id|ACPI_TYPE_PACKAGE
 )paren
 (brace
 id|ACPI_DEBUG_PRINT
@@ -104,9 +107,9 @@ id|ACPI_DB_ERROR
 comma
 l_string|&quot;_PRT did not return a Package, returned %s&bslash;n&quot;
 comma
-id|acpi_ut_get_type_name
+id|acpi_ut_get_object_type_name
 (paren
-id|ret_obj-&gt;common.type
+id|obj_desc
 )paren
 )paren
 )paren
@@ -124,7 +127,7 @@ id|status
 op_assign
 id|acpi_rs_create_pci_routing_table
 (paren
-id|ret_obj
+id|obj_desc
 comma
 id|ret_buffer
 )paren
@@ -134,7 +137,7 @@ id|cleanup
 suffix:colon
 id|acpi_ut_remove_reference
 (paren
-id|ret_obj
+id|obj_desc
 )paren
 suffix:semicolon
 id|return_ACPI_STATUS
@@ -158,7 +161,7 @@ id|ret_buffer
 (brace
 id|acpi_operand_object
 op_star
-id|ret_obj
+id|obj_desc
 suffix:semicolon
 id|acpi_status
 id|status
@@ -181,7 +184,7 @@ comma
 l_int|NULL
 comma
 op_amp
-id|ret_obj
+id|obj_desc
 )paren
 suffix:semicolon
 r_if
@@ -203,7 +206,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|ret_obj
+id|obj_desc
 )paren
 (brace
 multiline_comment|/* Return object is required */
@@ -226,9 +229,12 @@ multiline_comment|/*&n;&t; * The return object will be a buffer, but check the&n
 r_if
 c_cond
 (paren
-id|ACPI_TYPE_BUFFER
+id|ACPI_GET_OBJECT_TYPE
+(paren
+id|obj_desc
+)paren
 op_ne
-id|ret_obj-&gt;common.type
+id|ACPI_TYPE_BUFFER
 )paren
 (brace
 id|ACPI_DEBUG_PRINT
@@ -238,9 +244,9 @@ id|ACPI_DB_ERROR
 comma
 l_string|&quot;_CRS did not return a Buffer, returned %s&bslash;n&quot;
 comma
-id|acpi_ut_get_type_name
+id|acpi_ut_get_object_type_name
 (paren
-id|ret_obj-&gt;common.type
+id|obj_desc
 )paren
 )paren
 )paren
@@ -258,7 +264,7 @@ id|status
 op_assign
 id|acpi_rs_create_resource_list
 (paren
-id|ret_obj
+id|obj_desc
 comma
 id|ret_buffer
 )paren
@@ -268,7 +274,7 @@ id|cleanup
 suffix:colon
 id|acpi_ut_remove_reference
 (paren
-id|ret_obj
+id|obj_desc
 )paren
 suffix:semicolon
 id|return_ACPI_STATUS
@@ -292,7 +298,7 @@ id|ret_buffer
 (brace
 id|acpi_operand_object
 op_star
-id|ret_obj
+id|obj_desc
 suffix:semicolon
 id|acpi_status
 id|status
@@ -315,7 +321,7 @@ comma
 l_int|NULL
 comma
 op_amp
-id|ret_obj
+id|obj_desc
 )paren
 suffix:semicolon
 r_if
@@ -337,7 +343,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|ret_obj
+id|obj_desc
 )paren
 (brace
 multiline_comment|/* Return object is required */
@@ -360,9 +366,12 @@ multiline_comment|/*&n;&t; * The return object will be a buffer, but check the&n
 r_if
 c_cond
 (paren
-id|ACPI_TYPE_BUFFER
+id|ACPI_GET_OBJECT_TYPE
+(paren
+id|obj_desc
+)paren
 op_ne
-id|ret_obj-&gt;common.type
+id|ACPI_TYPE_BUFFER
 )paren
 (brace
 id|ACPI_DEBUG_PRINT
@@ -372,9 +381,9 @@ id|ACPI_DB_ERROR
 comma
 l_string|&quot;_PRS did not return a Buffer, returned %s&bslash;n&quot;
 comma
-id|acpi_ut_get_type_name
+id|acpi_ut_get_object_type_name
 (paren
-id|ret_obj-&gt;common.type
+id|obj_desc
 )paren
 )paren
 )paren
@@ -392,7 +401,7 @@ id|status
 op_assign
 id|acpi_rs_create_resource_list
 (paren
-id|ret_obj
+id|obj_desc
 comma
 id|ret_buffer
 )paren
@@ -402,7 +411,7 @@ id|cleanup
 suffix:colon
 id|acpi_ut_remove_reference
 (paren
-id|ret_obj
+id|obj_desc
 )paren
 suffix:semicolon
 id|return_ACPI_STATUS
@@ -526,6 +535,15 @@ op_member_access_from_pointer
 id|buffer.pointer
 op_assign
 id|buffer.pointer
+suffix:semicolon
+id|params
+(braket
+l_int|0
+)braket
+op_member_access_from_pointer
+id|common.flags
+op_assign
+id|AOPOBJ_DATA_VALID
 suffix:semicolon
 id|params
 (braket

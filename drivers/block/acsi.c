@@ -3,6 +3,10 @@ multiline_comment|/*&n; * Still to in this file:&n; *  - If a command ends with 
 multiline_comment|/*&n; * General notes:&n; *&n; *  - All ACSI devices (disks, CD-ROMs, ...) use major number 28.&n; *    Minors are organized like it is with SCSI: The upper 4 bits&n; *    identify the device, the lower 4 bits the partition.&n; *    The device numbers (the upper 4 bits) are given in the same&n; *    order as the devices are found on the bus.&n; *  - Up to 8 LUNs are supported for each target (if CONFIG_ACSI_MULTI_LUN&n; *    is defined), but only a total of 16 devices (due to minor&n; *    numbers...). Note that Atari allows only a maximum of 4 targets&n; *    (i.e. controllers, not devices) on the ACSI bus!&n; *  - A optimizing scheme similar to SCSI scatter-gather is implemented.&n; *  - Removable media are supported. After a medium change to device&n; *    is reinitialized (partition check etc.). Also, if the device&n; *    knows the PREVENT/ALLOW MEDIUM REMOVAL command, the door should&n; *    be locked and unlocked when mounting the first or unmounting the&n; *    last filesystem on the device. The code is untested, because I&n; *    don&squot;t have a removable hard disk.&n; *&n; */
 DECL|macro|MAJOR_NR
 mdefine_line|#define MAJOR_NR ACSI_MAJOR
+DECL|macro|DEVICE_NAME
+mdefine_line|#define DEVICE_NAME &quot;ACSI&quot;
+DECL|macro|DEVICE_NR
+mdefine_line|#define DEVICE_NR(device) (minor(device) &gt;&gt; 4)
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
@@ -38,6 +42,19 @@ macro_line|#include &lt;asm/atariints.h&gt;
 macro_line|#include &lt;asm/atari_acsi.h&gt;
 macro_line|#include &lt;asm/atari_stdma.h&gt;
 macro_line|#include &lt;asm/atari_stram.h&gt;
+DECL|variable|do_acsi
+r_static
+r_void
+(paren
+op_star
+id|do_acsi
+)paren
+(paren
+r_void
+)paren
+op_assign
+l_int|NULL
+suffix:semicolon
 DECL|macro|DEBUG
 mdefine_line|#define DEBUG
 DECL|macro|DEBUG_DETECT
@@ -2717,9 +2734,9 @@ id|acsi_irq_handler
 r_void
 )paren
 op_assign
-id|DEVICE_INTR
+id|do_acsi
 suffix:semicolon
-id|DEVICE_INTR
+id|do_acsi
 op_assign
 l_int|NULL
 suffix:semicolon
@@ -2794,6 +2811,8 @@ id|MAX_ERRORS
 id|end_request
 c_func
 (paren
+id|CURRENT
+comma
 l_int|0
 )paren
 suffix:semicolon
@@ -3128,11 +3147,11 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|DEVICE_INTR
+id|do_acsi
 )paren
 r_return
 suffix:semicolon
-id|DEVICE_INTR
+id|do_acsi
 op_assign
 l_int|NULL
 suffix:semicolon
@@ -3175,6 +3194,8 @@ macro_line|#endif
 id|end_request
 c_func
 (paren
+id|CURRENT
+comma
 l_int|0
 )paren
 suffix:semicolon
@@ -3428,6 +3449,8 @@ l_int|0
 id|end_request
 c_func
 (paren
+id|CURRENT
+comma
 l_int|1
 )paren
 suffix:semicolon
@@ -3470,6 +3493,8 @@ suffix:semicolon
 id|end_request
 c_func
 (paren
+id|CURRENT
+comma
 l_int|1
 )paren
 suffix:semicolon
@@ -3546,7 +3571,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|DEVICE_INTR
+id|do_acsi
 )paren
 r_return
 suffix:semicolon
@@ -3560,7 +3585,9 @@ id|QUEUE
 )paren
 )paren
 (brace
-id|CLEAR_INTR
+id|do_acsi
+op_assign
+l_int|NULL
 suffix:semicolon
 id|ENABLE_IRQ
 c_func
@@ -3689,6 +3716,8 @@ macro_line|#endif
 id|end_request
 c_func
 (paren
+id|CURRENT
+comma
 l_int|0
 )paren
 suffix:semicolon
@@ -3730,6 +3759,8 @@ suffix:semicolon
 id|end_request
 c_func
 (paren
+id|CURRENT
+comma
 l_int|0
 )paren
 suffix:semicolon
@@ -4040,7 +4071,7 @@ comma
 l_int|1
 )paren
 suffix:semicolon
-id|DEVICE_INTR
+id|do_acsi
 op_assign
 id|write_intr
 suffix:semicolon
@@ -4063,7 +4094,9 @@ l_int|1
 )paren
 )paren
 (brace
-id|CLEAR_INTR
+id|do_acsi
+op_assign
+l_int|NULL
 suffix:semicolon
 id|printk
 c_func
@@ -4123,7 +4156,7 @@ comma
 id|nsect
 )paren
 suffix:semicolon
-id|DEVICE_INTR
+id|do_acsi
 op_assign
 id|read_intr
 suffix:semicolon
@@ -4146,7 +4179,9 @@ l_int|1
 )paren
 )paren
 (brace
-id|CLEAR_INTR
+id|do_acsi
+op_assign
+l_int|NULL
 suffix:semicolon
 id|printk
 c_func

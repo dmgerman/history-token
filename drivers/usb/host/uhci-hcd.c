@@ -6628,22 +6628,6 @@ l_int|0
 )paren
 (brace
 multiline_comment|/* not yet checked/allocated */
-r_if
-c_cond
-(paren
-id|urb-&gt;number_of_packets
-op_le
-l_int|0
-)paren
-(brace
-id|ret
-op_assign
-op_minus
-id|EINVAL
-suffix:semicolon
-r_break
-suffix:semicolon
-)brace
 id|bustime
 op_assign
 id|usb_check_bandwidth
@@ -7805,15 +7789,7 @@ op_plus
 id|u-&gt;timeout
 )paren
 )paren
-(brace
-id|list_del
-c_func
-(paren
-op_amp
-id|up-&gt;urb_list
-)paren
-suffix:semicolon
-id|list_add_tail
+id|list_move_tail
 c_func
 (paren
 op_amp
@@ -7823,7 +7799,6 @@ op_amp
 id|list
 )paren
 suffix:semicolon
-)brace
 id|spin_unlock
 c_func
 (paren

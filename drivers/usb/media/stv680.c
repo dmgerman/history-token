@@ -49,7 +49,7 @@ op_assign
 l_int|0
 suffix:semicolon
 DECL|macro|PDEBUG
-mdefine_line|#define PDEBUG(level, fmt, args...) &bslash;&n;&t;do { &bslash;&n;&t;if (debug &gt;= level)&t;&bslash;&n;&t;&t;info(&quot;[&quot; __PRETTY_FUNCTION__ &quot;:%d] &quot; fmt, __LINE__ , ## args);&t;&bslash;&n;&t;} while (0)
+mdefine_line|#define PDEBUG(level, fmt, args...) &bslash;&n;&t;do { &bslash;&n;&t;if (debug &gt;= level)&t;&bslash;&n;&t;&t;info(&quot;[%s:%d] &quot; fmt, __FUNCTION__, __LINE__ , ## args);&t;&bslash;&n;&t;} while (0)
 multiline_comment|/*&n; * Version Information&n; */
 DECL|macro|DRIVER_VERSION
 mdefine_line|#define DRIVER_VERSION &quot;v0.25&quot;

@@ -1459,9 +1459,8 @@ r_break
 suffix:semicolon
 r_default
 suffix:colon
-(brace
-)brace
 multiline_comment|/* BIOS refused */
+suffix:semicolon
 )brace
 )brace
 r_if

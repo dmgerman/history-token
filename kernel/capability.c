@@ -78,6 +78,7 @@ id|version
 op_ne
 id|_LINUX_CAPABILITY_VERSION
 )paren
+(brace
 r_if
 c_cond
 (paren
@@ -98,6 +99,7 @@ r_return
 op_minus
 id|EINVAL
 suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
@@ -408,6 +410,7 @@ id|version
 op_ne
 id|_LINUX_CAPABILITY_VERSION
 )paren
+(brace
 r_if
 c_cond
 (paren
@@ -428,6 +431,7 @@ r_return
 op_minus
 id|EINVAL
 suffix:semicolon
+)brace
 r_if
 c_cond
 (paren

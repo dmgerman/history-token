@@ -1,4 +1,4 @@
-multiline_comment|/*******************************************************************************&n; *&n; * Module Name: hwregs - Read/write access functions for the various ACPI&n; *                       control and status registers.&n; *              $Revision: 130 $&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * Module Name: hwregs - Read/write access functions for the various ACPI&n; *                       control and status registers.&n; *              $Revision: 133 $&n; *&n; ******************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;acnamesp.h&quot;
@@ -249,7 +249,7 @@ id|ACPI_FUNCTION_TRACE
 l_string|&quot;Acpi_get_sleep_type_data&quot;
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; *  Validate parameters&n;&t; */
+multiline_comment|/*&n;&t; * Validate parameters&n;&t; */
 r_if
 c_cond
 (paren
@@ -272,7 +272,7 @@ id|AE_BAD_PARAMETER
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t; *  Acpi_evaluate the namespace object containing the values for this state&n;&t; */
+multiline_comment|/*&n;&t; * Evaluate the namespace object containing the values for this state&n;&t; */
 id|status
 op_assign
 id|acpi_ns_evaluate_by_name
@@ -307,6 +307,7 @@ id|status
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/* Must have a return object */
 r_if
 c_cond
 (paren
@@ -321,22 +322,38 @@ l_string|&quot;Missing Sleep State object&bslash;n&quot;
 )paren
 )paren
 suffix:semicolon
-id|return_ACPI_STATUS
-(paren
-id|AE_NOT_EXIST
-)paren
-suffix:semicolon
-)brace
-multiline_comment|/*&n;&t; *  We got something, now ensure it is correct.  The object must&n;&t; *  be a package and must have at least 2 numeric values as the&n;&t; *  two elements&n;&t; */
-multiline_comment|/* Even though Acpi_evaluate_object resolves package references,&n;&t; * Ns_evaluate doesn&squot;t. So, we do it here.&n;&t; */
 id|status
 op_assign
-id|acpi_ut_resolve_package_references
-c_func
+id|AE_NOT_EXIST
+suffix:semicolon
+)brace
+multiline_comment|/* It must be of type Package */
+r_else
+r_if
+c_cond
+(paren
+id|ACPI_GET_OBJECT_TYPE
 (paren
 id|obj_desc
 )paren
+op_ne
+id|ACPI_TYPE_PACKAGE
+)paren
+(brace
+id|ACPI_REPORT_ERROR
+(paren
+(paren
+l_string|&quot;Sleep State object not a Package&bslash;n&quot;
+)paren
+)paren
 suffix:semicolon
+id|status
+op_assign
+id|AE_AML_OPERAND_TYPE
+suffix:semicolon
+)brace
+multiline_comment|/* The package must have at least two elements */
+r_else
 r_if
 c_cond
 (paren
@@ -345,7 +362,6 @@ OL
 l_int|2
 )paren
 (brace
-multiline_comment|/* Must have at least two elements */
 id|ACPI_REPORT_ERROR
 (paren
 (paren
@@ -358,42 +374,56 @@ op_assign
 id|AE_AML_NO_OPERAND
 suffix:semicolon
 )brace
+multiline_comment|/* The first two elements must both be of type Integer */
 r_else
 r_if
 c_cond
 (paren
 (paren
+id|ACPI_GET_OBJECT_TYPE
 (paren
 id|obj_desc-&gt;package.elements
 (braket
 l_int|0
 )braket
 )paren
-op_member_access_from_pointer
-id|common.type
 op_ne
 id|ACPI_TYPE_INTEGER
 )paren
 op_logical_or
 (paren
+id|ACPI_GET_OBJECT_TYPE
 (paren
 id|obj_desc-&gt;package.elements
 (braket
 l_int|1
 )braket
 )paren
-op_member_access_from_pointer
-id|common.type
 op_ne
 id|ACPI_TYPE_INTEGER
 )paren
 )paren
 (brace
-multiline_comment|/* Must have two  */
 id|ACPI_REPORT_ERROR
 (paren
 (paren
-l_string|&quot;Sleep State package elements are not both of type Number&bslash;n&quot;
+l_string|&quot;Sleep State package elements are not both Integers (%s, %s)&bslash;n&quot;
+comma
+id|acpi_ut_get_object_type_name
+(paren
+id|obj_desc-&gt;package.elements
+(braket
+l_int|0
+)braket
+)paren
+comma
+id|acpi_ut_get_object_type_name
+(paren
+id|obj_desc-&gt;package.elements
+(braket
+l_int|1
+)braket
+)paren
 )paren
 )paren
 suffix:semicolon
@@ -404,7 +434,7 @@ suffix:semicolon
 )brace
 r_else
 (brace
-multiline_comment|/*&n;&t;&t; *  Valid _Sx_ package size, type, and value&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * Valid _Sx_ package size, type, and value&n;&t;&t; */
 op_star
 id|sleep_type_a
 op_assign
@@ -450,11 +480,14 @@ id|ACPI_DEBUG_PRINT
 (paren
 id|ACPI_DB_ERROR
 comma
-l_string|&quot;Bad Sleep object %p type %X&bslash;n&quot;
+l_string|&quot;Bad Sleep object %p type %s&bslash;n&quot;
 comma
 id|obj_desc
 comma
-id|obj_desc-&gt;common.type
+id|acpi_ut_get_object_type_name
+(paren
+id|obj_desc
+)paren
 )paren
 )paren
 suffix:semicolon
@@ -470,7 +503,7 @@ id|status
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_hw_get_register_bit_mask&n; *&n; * PARAMETERS:  Register_id     - index of ACPI Register to access&n; *&n; * RETURN:      The bit mask to be used when accessing the register&n; *&n; * DESCRIPTION: Map Register_id into a register bit mask.&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_hw_get_register_bit_mask&n; *&n; * PARAMETERS:  Register_id         - Index of ACPI Register to access&n; *&n; * RETURN:      The bit mask to be used when accessing the register&n; *&n; * DESCRIPTION: Map Register_id into a register bit mask.&n; *&n; ******************************************************************************/
 id|ACPI_BIT_REGISTER_INFO
 op_star
 DECL|function|acpi_hw_get_bit_register_info
@@ -520,7 +553,7 @@ id|register_id
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_get_register&n; *&n; * PARAMETERS:  Register_id     - index of ACPI Register to access&n; *              Use_lock        - Lock the hardware&n; *&n; * RETURN:      Value is read from specified Register.  Value returned is&n; *              normalized to bit0 (is shifted all the way right)&n; *&n; * DESCRIPTION: ACPI Bit_register read function.&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_get_register&n; *&n; * PARAMETERS:  Register_id         - Index of ACPI Register to access&n; *              Use_lock            - Lock the hardware&n; *&n; * RETURN:      Value is read from specified Register.  Value returned is&n; *              normalized to bit0 (is shifted all the way right)&n; *&n; * DESCRIPTION: ACPI Bit_register read function.&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_get_register
 id|acpi_get_register

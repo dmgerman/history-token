@@ -5,7 +5,6 @@ mdefine_line|#define _SPARC64_PGTABLE_H
 multiline_comment|/* This file contains the functions and defines necessary to modify and use&n; * the SpitFire page tables.&n; */
 macro_line|#include &lt;asm/spitfire.h&gt;
 macro_line|#include &lt;asm/asi.h&gt;
-macro_line|#include &lt;asm/mmu_context.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/page.h&gt;
 macro_line|#include &lt;asm/processor.h&gt;
@@ -47,6 +46,7 @@ mdefine_line|#define PGDIR_SIZE&t;(1UL &lt;&lt; PGDIR_SHIFT)
 DECL|macro|PGDIR_MASK
 mdefine_line|#define PGDIR_MASK&t;(~(PGDIR_SIZE-1))
 macro_line|#ifndef __ASSEMBLY__
+macro_line|#include &lt;linux/sched.h&gt;
 multiline_comment|/* Certain architectures need to do special things when pte&squot;s&n; * within a page table are directly modified.  Thus, the following&n; * hook is made available.&n; */
 DECL|macro|set_pte
 mdefine_line|#define set_pte(pteptr, pteval) ((*(pteptr)) = (pteval))
@@ -369,6 +369,9 @@ DECL|macro|mmu_lockarea
 mdefine_line|#define mmu_lockarea(vaddr, len)&t;&t;(vaddr)
 DECL|macro|mmu_unlockarea
 mdefine_line|#define mmu_unlockarea(vaddr, len)&t;&t;do { } while(0)
+r_struct
+id|vm_area_struct
+suffix:semicolon
 r_extern
 r_void
 id|update_mmu_cache

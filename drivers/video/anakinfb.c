@@ -309,6 +309,8 @@ id|anakinfb_fix.id
 suffix:semicolon
 id|fb_info.node
 op_assign
+id|NODEV
+suffix:semicolon
 id|fb_info.currcon
 op_assign
 op_minus

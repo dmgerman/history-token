@@ -1437,7 +1437,7 @@ macro_line|#else /* !CONFIG_SND_DEBUG */
 DECL|macro|snd_printd
 mdefine_line|#define snd_printd(fmt, args...)&t;/* nothing */
 DECL|macro|snd_assert
-mdefine_line|#define snd_assert(expr, args...)&t;/* nothing */
+mdefine_line|#define snd_assert(expr, args...)&t;(void)(expr)
 DECL|macro|snd_runtime_check
 mdefine_line|#define snd_runtime_check(expr, args...) do { if (!(expr)) { args; } } while (0)
 macro_line|#endif /* CONFIG_SND_DEBUG */

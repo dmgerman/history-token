@@ -52,6 +52,12 @@ op_star
 id|ed_prev
 suffix:semicolon
 multiline_comment|/* for non-interrupt EDs */
+DECL|member|dummy
+r_struct
+id|td
+op_star
+id|dummy
+suffix:semicolon
 DECL|member|type
 id|u8
 id|type
@@ -81,14 +87,18 @@ DECL|member|int_load
 id|u8
 id|int_load
 suffix:semicolon
+DECL|member|intr_info
 )brace
+id|intr_info
 suffix:semicolon
 DECL|member|last_iso
 id|u16
 id|last_iso
 suffix:semicolon
 multiline_comment|/* isochronous */
+DECL|member|intriso
 )brace
+id|intriso
 suffix:semicolon
 DECL|member|state
 id|u8
@@ -139,11 +149,21 @@ id|__u32
 id|hwINFO
 suffix:semicolon
 multiline_comment|/* transfer info bitmask */
+multiline_comment|/* hwINFO bits for both general and iso tds: */
 DECL|macro|TD_CC
 mdefine_line|#define TD_CC       0xf0000000&t;&t;&t;/* condition code */
 DECL|macro|TD_CC_GET
 mdefine_line|#define TD_CC_GET(td_p) ((td_p &gt;&gt;28) &amp; 0x0f)
 singleline_comment|//#define TD_CC_SET(td_p, cc) (td_p) = ((td_p) &amp; 0x0fffffff) | (((cc) &amp; 0x0f) &lt;&lt; 28)
+DECL|macro|TD_DI
+mdefine_line|#define TD_DI       0x00E00000&t;&t;&t;/* frames before interrupt */
+DECL|macro|TD_DI_SET
+mdefine_line|#define TD_DI_SET(X) (((X) &amp; 0x07)&lt;&lt; 21)
+multiline_comment|/* these two bits are available for definition/use by HCDs in both&n;&t; * general and iso tds ... others are available for only one type&n;&t; */
+singleline_comment|//#define TD____&t;    0x00020000
+DECL|macro|TD_ISO
+mdefine_line|#define TD_ISO&t;    0x00010000&t;&t;&t;/* copy of ED_ISO */
+multiline_comment|/* hwINFO bits for general tds: */
 DECL|macro|TD_EC
 mdefine_line|#define TD_EC       0x0C000000&t;&t;&t;/* error count */
 DECL|macro|TD_T
@@ -154,9 +174,6 @@ DECL|macro|TD_T_DATA1
 mdefine_line|#define TD_T_DATA1  0x03000000&t;&t;&t;&t;/* DATA1 */
 DECL|macro|TD_T_TOGGLE
 mdefine_line|#define TD_T_TOGGLE 0x00000000&t;&t;&t;&t;/* uses ED_C */
-DECL|macro|TD_DI
-mdefine_line|#define TD_DI       0x00E00000&t;&t;&t;/* frames before interrupt */
-singleline_comment|//#define TD_DI_SET(X) (((X) &amp; 0x07)&lt;&lt; 21)
 DECL|macro|TD_DP
 mdefine_line|#define TD_DP       0x00180000&t;&t;&t;/* direction/pid */
 DECL|macro|TD_DP_SETUP
@@ -168,9 +185,7 @@ mdefine_line|#define TD_DP_OUT   0x00080000&t;&t;&t;&t;/* OUT pid */
 multiline_comment|/* 0x00180000 rsvd */
 DECL|macro|TD_R
 mdefine_line|#define TD_R        0x00040000&t;&t;&t;/* round: short packets OK? */
-multiline_comment|/* bits 0x1ffff are defined by HCD */
-DECL|macro|TD_ISO
-mdefine_line|#define TD_ISO&t;    0x00010000&t;&t;&t;/* copy of ED_ISO */
+multiline_comment|/* (no hwINFO #defines yet for iso tds) */
 DECL|member|hwCBP
 id|__u32
 id|hwCBP
@@ -747,6 +762,13 @@ DECL|member|lock
 id|spinlock_t
 id|lock
 suffix:semicolon
+multiline_comment|/*&n;&t; * parent device&n;&t; */
+DECL|member|parent_dev
+r_struct
+id|device
+op_star
+id|parent_dev
+suffix:semicolon
 multiline_comment|/*&n;&t; * I/O memory used to communicate with the HC (uncached);&n;&t; */
 DECL|member|regs
 r_struct
@@ -793,7 +815,6 @@ op_star
 id|ed_isotail
 suffix:semicolon
 multiline_comment|/* last in iso list */
-macro_line|#ifdef CONFIG_PCI
 DECL|member|td_cache
 r_struct
 id|pci_pool
@@ -822,7 +843,6 @@ id|ed_hash
 id|ED_HASH_SIZE
 )braket
 suffix:semicolon
-macro_line|#endif
 multiline_comment|/*&n;&t; * driver state&n;&t; */
 DECL|member|disabled
 r_int

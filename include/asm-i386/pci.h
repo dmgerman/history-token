@@ -3,6 +3,7 @@ DECL|macro|__i386_PCI_H
 mdefine_line|#define __i386_PCI_H
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#ifdef __KERNEL__
+macro_line|#include &lt;linux/mm.h&gt;&t;&t;/* for struct page */
 multiline_comment|/* Can be used to override the logic in pci_scan_bus for skipping&n;   already-configured bus numbers - to be used for buggy BIOSes&n;   or architectures with incomplete PCI setup by the loader */
 macro_line|#ifdef CONFIG_PCI
 r_extern
@@ -328,6 +329,9 @@ c_func
 )paren
 suffix:semicolon
 r_return
+(paren
+id|dma_addr_t
+)paren
 (paren
 id|page
 op_minus

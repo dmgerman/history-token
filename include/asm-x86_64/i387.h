@@ -363,6 +363,21 @@ id|child-&gt;used_math
 )paren
 (brace
 multiline_comment|/* Simulate an empty FPU. */
+id|memset
+c_func
+(paren
+op_amp
+id|child-&gt;thread.i387.fxsave
+comma
+l_int|0
+comma
+r_sizeof
+(paren
+r_struct
+id|i387_fxsave_struct
+)paren
+)paren
+suffix:semicolon
 id|child-&gt;thread.i387.fxsave.cwd
 op_assign
 l_int|0x037f

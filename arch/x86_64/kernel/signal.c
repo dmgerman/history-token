@@ -10,10 +10,8 @@ macro_line|#include &lt;linux/wait.h&gt;
 macro_line|#include &lt;linux/ptrace.h&gt;
 macro_line|#include &lt;linux/unistd.h&gt;
 macro_line|#include &lt;linux/stddef.h&gt;
-macro_line|#include &lt;linux/tty.h&gt;
 macro_line|#include &lt;linux/personality.h&gt;
 macro_line|#include &lt;linux/compiler.h&gt;
-macro_line|#include &lt;linux/binfmts.h&gt;
 macro_line|#include &lt;asm/ucontext.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/i387.h&gt;
@@ -276,17 +274,6 @@ DECL|member|fpstate
 r_struct
 id|_fpstate
 id|fpstate
-id|__attribute__
-c_func
-(paren
-(paren
-id|aligned
-c_func
-(paren
-l_int|8
-)paren
-)paren
-)paren
 suffix:semicolon
 )brace
 suffix:semicolon
@@ -623,9 +610,11 @@ id|frame
 )paren
 )paren
 )paren
+(brace
 r_goto
 id|badframe
 suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
@@ -644,9 +633,11 @@ id|set
 )paren
 )paren
 )paren
+(brace
 r_goto
 id|badframe
 suffix:semicolon
+)brace
 id|sigdelsetmask
 c_func
 (paren
@@ -696,9 +687,11 @@ op_amp
 id|eax
 )paren
 )paren
+(brace
 r_goto
 id|badframe
 suffix:semicolon
+)brace
 macro_line|#if DEBUG_SIG
 id|printk
 c_func
@@ -735,9 +728,11 @@ id|st
 )paren
 )paren
 )paren
+(brace
 r_goto
 id|badframe
 suffix:semicolon
+)brace
 multiline_comment|/* It is more difficult to avoid calling this function than to&n;&t;   call it and ignore errors.  */
 id|do_sigaltstack
 c_func
@@ -755,24 +750,15 @@ id|eax
 suffix:semicolon
 id|badframe
 suffix:colon
-macro_line|#if DEBUG_SIG
-id|printk
+id|signal_fault
 c_func
 (paren
-l_string|&quot;%d bad frame %p&bslash;n&quot;
-comma
-id|current-&gt;pid
+op_amp
+id|regs
 comma
 id|frame
-)paren
-suffix:semicolon
-macro_line|#endif
-id|force_sig
-c_func
-(paren
-id|SIGSEGV
 comma
-id|current
+l_string|&quot;sigreturn&quot;
 )paren
 suffix:semicolon
 r_return
@@ -1173,7 +1159,8 @@ suffix:semicolon
 multiline_comment|/*&n; * Determine which stack to use..&n; */
 r_static
 r_inline
-r_void
+r_struct
+id|rt_sigframe
 op_star
 DECL|function|get_sigframe
 id|get_sigframe
@@ -1188,9 +1175,6 @@ r_struct
 id|pt_regs
 op_star
 id|regs
-comma
-r_int
-id|frame_size
 )paren
 (brace
 r_int
@@ -1232,20 +1216,25 @@ op_plus
 id|current-&gt;sas_ss_size
 suffix:semicolon
 )brace
-(brace
-r_extern
-r_void
-id|bad_sigframe
-c_func
+id|rsp
+op_assign
 (paren
-r_void
+id|rsp
+op_minus
+r_sizeof
+(paren
+r_struct
+id|_fpstate
+)paren
+)paren
+op_amp
+op_complement
+(paren
+l_int|15UL
 )paren
 suffix:semicolon
-multiline_comment|/* beginning of sigframe is 8 bytes misaligned, but fpstate&n;&t;&t;   must end up on a 16byte boundary */
-r_if
-c_cond
-(paren
-(paren
+id|rsp
+op_sub_assign
 m_offsetof
 (paren
 r_struct
@@ -1253,37 +1242,14 @@ id|rt_sigframe
 comma
 id|fpstate
 )paren
-op_amp
-l_int|16
-)paren
-op_ne
-l_int|0
-)paren
-id|bad_sigframe
-c_func
-(paren
-)paren
 suffix:semicolon
-)brace
 r_return
 (paren
-r_void
+r_struct
+id|rt_sigframe
 op_star
 )paren
-(paren
-(paren
 id|rsp
-op_minus
-id|frame_size
-)paren
-op_amp
-op_complement
-(paren
-l_int|15UL
-)paren
-)paren
-op_minus
-l_int|8
 suffix:semicolon
 )brace
 DECL|function|setup_rt_frame
@@ -1332,12 +1298,6 @@ c_func
 id|ka
 comma
 id|regs
-comma
-r_sizeof
-(paren
-op_star
-id|frame
-)paren
 )paren
 suffix:semicolon
 r_if
@@ -1385,9 +1345,11 @@ c_cond
 (paren
 id|err
 )paren
+(brace
 r_goto
 id|give_sigsegv
 suffix:semicolon
+)brace
 )brace
 multiline_comment|/* Create the ucontext.  */
 id|err
@@ -1490,9 +1452,11 @@ c_cond
 (paren
 id|err
 )paren
+(brace
 r_goto
 id|give_sigsegv
 suffix:semicolon
+)brace
 multiline_comment|/* Set up to return from userspace.  If provided, use a stub&n;&t;   already in userspace.  */
 multiline_comment|/* x86-64 should always use SA_RESTORER. */
 r_if
@@ -1536,9 +1500,17 @@ c_cond
 (paren
 id|err
 )paren
+(brace
+id|printk
+c_func
+(paren
+l_string|&quot;fault 3&bslash;n&quot;
+)paren
+suffix:semicolon
 r_goto
 id|give_sigsegv
 suffix:semicolon
+)brace
 macro_line|#if DEBUG_SIG
 id|printk
 c_func
@@ -1680,12 +1652,14 @@ id|ka-&gt;sa.sa_handler
 op_assign
 id|SIG_DFL
 suffix:semicolon
-id|force_sig
+id|signal_fault
 c_func
 (paren
-id|SIGSEGV
+id|regs
 comma
-id|current
+id|frame
+comma
+l_string|&quot;signal setup&quot;
 )paren
 suffix:semicolon
 )brace
@@ -2141,6 +2115,70 @@ c_func
 id|regs
 comma
 id|oldset
+)paren
+suffix:semicolon
+)brace
+r_extern
+r_int
+id|exception_trace
+suffix:semicolon
+DECL|function|signal_fault
+r_void
+id|signal_fault
+c_func
+(paren
+r_struct
+id|pt_regs
+op_star
+id|regs
+comma
+r_void
+op_star
+id|frame
+comma
+r_char
+op_star
+id|where
+)paren
+(brace
+r_struct
+id|task_struct
+op_star
+id|me
+op_assign
+id|current
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|exception_trace
+)paren
+id|printk
+c_func
+(paren
+l_string|&quot;%s[%d] bad frame in %s frame:%p rip:%lx rsp:%lx orax:%lx&bslash;n&quot;
+comma
+id|me-&gt;comm
+comma
+id|me-&gt;pid
+comma
+id|where
+comma
+id|frame
+comma
+id|regs-&gt;rip
+comma
+id|regs-&gt;rsp
+comma
+id|regs-&gt;orig_rax
+)paren
+suffix:semicolon
+id|force_sig
+c_func
+(paren
+id|SIGSEGV
+comma
+id|me
 )paren
 suffix:semicolon
 )brace

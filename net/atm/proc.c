@@ -1202,7 +1202,7 @@ id|here
 comma
 l_string|&quot; %04lx  %5d %7d/%7d %7d/%7d&bslash;n&quot;
 comma
-id|vcc-&gt;flags.bits
+id|vcc-&gt;flags
 comma
 id|vcc-&gt;reply
 comma

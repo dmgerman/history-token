@@ -360,24 +360,13 @@ DECL|macro|ATM_PHY_SIG_FOUND
 mdefine_line|#define ATM_PHY_SIG_FOUND   2&t;/* carrier/light okay */
 DECL|macro|ATM_ATMOPT_CLP
 mdefine_line|#define ATM_ATMOPT_CLP&t;1&t;/* set CLP bit */
-DECL|member|bits
-DECL|typedef|atm_vcc_flags_t
-r_typedef
-r_struct
-(brace
-r_int
-r_int
-id|bits
-suffix:semicolon
-)brace
-id|atm_vcc_flags_t
-suffix:semicolon
 DECL|struct|atm_vcc
 r_struct
 id|atm_vcc
 (brace
 DECL|member|flags
-id|atm_vcc_flags_t
+r_int
+r_int
 id|flags
 suffix:semicolon
 multiline_comment|/* VCC flags (ATM_VF_*) */
@@ -666,18 +655,6 @@ suffix:semicolon
 multiline_comment|/* next address */
 )brace
 suffix:semicolon
-DECL|member|bits
-DECL|typedef|atm_dev_flags_t
-r_typedef
-r_struct
-(brace
-r_int
-r_int
-id|bits
-suffix:semicolon
-)brace
-id|atm_dev_flags_t
-suffix:semicolon
 DECL|struct|atm_dev
 r_struct
 id|atm_dev
@@ -738,7 +715,8 @@ id|phy_data
 suffix:semicolon
 multiline_comment|/* private PHY date */
 DECL|member|flags
-id|atm_dev_flags_t
+r_int
+r_int
 id|flags
 suffix:semicolon
 multiline_comment|/* device flags (ATM_DF_*) */
@@ -1287,7 +1265,8 @@ comma
 r_int
 id|number
 comma
-id|atm_dev_flags_t
+r_int
+r_int
 op_star
 id|flags
 )paren

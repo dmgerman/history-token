@@ -302,11 +302,7 @@ c_func
 id|KERN_WARNING
 l_string|&quot;Can&squot;t read info structure on device %s.&bslash;n&quot;
 comma
-id|kdevname
-c_func
-(paren
-id|f-&gt;f_dentry-&gt;d_sb-&gt;s_dev
-)paren
+id|f-&gt;f_vfsmnt-&gt;mnt_sb-&gt;s_id
 )paren
 suffix:semicolon
 r_return
@@ -546,11 +542,7 @@ c_func
 id|KERN_WARNING
 l_string|&quot;Can&squot;t write info structure on device %s.&bslash;n&quot;
 comma
-id|kdevname
-c_func
-(paren
-id|f-&gt;f_dentry-&gt;d_sb-&gt;s_dev
-)paren
+id|f-&gt;f_vfsmnt-&gt;mnt_sb-&gt;s_id
 )paren
 suffix:semicolon
 r_return
@@ -2650,11 +2642,7 @@ c_func
 id|KERN_WARNING
 l_string|&quot;VFS: dquota write failed on dev %s&bslash;n&quot;
 comma
-id|kdevname
-c_func
-(paren
-id|dquot-&gt;dq_sb-&gt;s_dev
-)paren
+id|dquot-&gt;dq_sb-&gt;s_id
 )paren
 suffix:semicolon
 r_if

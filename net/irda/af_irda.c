@@ -1,4 +1,4 @@
-multiline_comment|/*********************************************************************&n; *                &n; * Filename:      af_irda.c&n; * Version:       0.9&n; * Description:   IrDA sockets implementation&n; * Status:        Stable&n; * Author:        Dag Brattli &lt;dagb@cs.uit.no&gt;&n; * Created at:    Sun May 31 10:12:43 1998&n; * Modified at:   Sat Dec 25 21:10:23 1999&n; * Modified by:   Dag Brattli &lt;dag@brattli.net&gt;&n; * Sources:       af_netroom.c, af_ax25.c, af_rose.c, af_x25.c etc.&n; * &n; *     Copyright (c) 1999 Dag Brattli &lt;dagb@cs.uit.no&gt;&n; *     Copyright (c) 1999-2001 Jean Tourrilhes &lt;jt@hpl.hp.com&gt;&n; *     All Rights Reserved.&n; *&n; *     This program is free software; you can redistribute it and/or &n; *     modify it under the terms of the GNU General Public License as &n; *     published by the Free Software Foundation; either version 2 of &n; *     the License, or (at your option) any later version.&n; * &n; *     This program is distributed in the hope that it will be useful,&n; *     but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the&n; *     GNU General Public License for more details.&n; * &n; *     You should have received a copy of the GNU General Public License &n; *     along with this program; if not, write to the Free Software &n; *     Foundation, Inc., 59 Temple Place, Suite 330, Boston, &n; *     MA 02111-1307 USA&n; *&n; *     Linux-IrDA now supports four different types of IrDA sockets:&n; *&n; *     o SOCK_STREAM:    TinyTP connections with SAR disabled. The&n; *                       max SDU size is 0 for conn. of this type&n; *     o SOCK_SEQPACKET: TinyTP connections with SAR enabled. TTP may &n; *                       fragment the messages, but will preserve&n; *                       the message boundaries&n; *     o SOCK_DGRAM:     IRDAPROTO_UNITDATA: TinyTP connections with Unitdata &n; *                       (unreliable) transfers&n; *                       IRDAPROTO_ULTRA: Connectionless and unreliable data&n; *     &n; ********************************************************************/
+multiline_comment|/*********************************************************************&n; *&n; * Filename:      af_irda.c&n; * Version:       0.9&n; * Description:   IrDA sockets implementation&n; * Status:        Stable&n; * Author:        Dag Brattli &lt;dagb@cs.uit.no&gt;&n; * Created at:    Sun May 31 10:12:43 1998&n; * Modified at:   Sat Dec 25 21:10:23 1999&n; * Modified by:   Dag Brattli &lt;dag@brattli.net&gt;&n; * Sources:       af_netroom.c, af_ax25.c, af_rose.c, af_x25.c etc.&n; *&n; *     Copyright (c) 1999 Dag Brattli &lt;dagb@cs.uit.no&gt;&n; *     Copyright (c) 1999-2001 Jean Tourrilhes &lt;jt@hpl.hp.com&gt;&n; *     All Rights Reserved.&n; *&n; *     This program is free software; you can redistribute it and/or&n; *     modify it under the terms of the GNU General Public License as&n; *     published by the Free Software Foundation; either version 2 of&n; *     the License, or (at your option) any later version.&n; *&n; *     This program is distributed in the hope that it will be useful,&n; *     but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the&n; *     GNU General Public License for more details.&n; *&n; *     You should have received a copy of the GNU General Public License&n; *     along with this program; if not, write to the Free Software&n; *     Foundation, Inc., 59 Temple Place, Suite 330, Boston,&n; *     MA 02111-1307 USA&n; *&n; *     Linux-IrDA now supports four different types of IrDA sockets:&n; *&n; *     o SOCK_STREAM:    TinyTP connections with SAR disabled. The&n; *                       max SDU size is 0 for conn. of this type&n; *     o SOCK_SEQPACKET: TinyTP connections with SAR enabled. TTP may&n; *                       fragment the messages, but will preserve&n; *                       the message boundaries&n; *     o SOCK_DGRAM:     IRDAPROTO_UNITDATA: TinyTP connections with Unitdata&n; *                       (unreliable) transfers&n; *                       IRDAPROTO_ULTRA: Connectionless and unreliable data&n; *&n; ********************************************************************/
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
@@ -473,8 +473,9 @@ l_int|0
 id|ERROR
 c_func
 (paren
+l_string|&quot;%s: max_sdu_size must be 0&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), max_sdu_size must be 0&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -504,8 +505,9 @@ l_int|0
 id|ERROR
 c_func
 (paren
+l_string|&quot;%s: max_sdu_size cannot be 0&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), max_sdu_size cannot be 0&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -682,8 +684,9 @@ l_int|0
 id|ERROR
 c_func
 (paren
+l_string|&quot;%s: max_sdu_size must be 0&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), max_sdu_size must be 0&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -713,8 +716,9 @@ l_int|0
 id|ERROR
 c_func
 (paren
+l_string|&quot;%s: max_sdu_size cannot be 0&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), max_sdu_size cannot be 0&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -1055,8 +1059,9 @@ id|self
 id|WARNING
 c_func
 (paren
+l_string|&quot;%s: lost myself!&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), lost myself!&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -1190,8 +1195,9 @@ id|self
 id|WARNING
 c_func
 (paren
+l_string|&quot;%s: lost myself!&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), lost myself!&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -1332,8 +1338,9 @@ id|self-&gt;tsap
 id|WARNING
 c_func
 (paren
+l_string|&quot;%s: busy!&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), busy!&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -1587,8 +1594,9 @@ id|self-&gt;iriap
 id|WARNING
 c_func
 (paren
+l_string|&quot;%s: busy with a previous query&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), busy with a previous query&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -1885,7 +1893,7 @@ op_minus
 id|ENETUNREACH
 suffix:semicolon
 multiline_comment|/* No nodes discovered */
-multiline_comment|/* &n;&t; * Now, check all discovered devices (if any), and connect&n;&t; * client only about the services that the client is&n;&t; * interested in...&n;&t; */
+multiline_comment|/*&n;&t; * Now, check all discovered devices (if any), and connect&n;&t; * client only about the services that the client is&n;&t; * interested in...&n;&t; */
 r_for
 c_loop
 (paren
@@ -3698,8 +3706,9 @@ suffix:colon
 id|ERROR
 c_func
 (paren
+l_string|&quot;%s: protocol not supported!&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), protocol not supported!&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -3900,7 +3909,7 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Function irda_release (sock)&n; *&n; *    &n; *&n; */
+multiline_comment|/*&n; * Function irda_release (sock)&n; */
 DECL|function|irda_release
 r_static
 r_int
@@ -4000,12 +4009,12 @@ c_func
 id|sk
 )paren
 suffix:semicolon
-multiline_comment|/* Notes on socket locking and deallocation... - Jean II&n;&t; * In theory we should put pairs of sock_hold() / sock_put() to&n;&t; * prevent the socket to be destroyed whenever there is an&n;&t; * outstanding request or outstanding incomming packet or event.&n;&t; *&n;&t; * 1) This may include IAS request, both in connect and getsockopt.&n;&t; * Unfortunately, the situation is a bit more messy than it looks,&n;&t; * because we close iriap and kfree(self) above.&n;&t; * &n;&t; * 2) This may include selective discovery in getsockopt.&n;&t; * Same stuff as above, irlmp registration and self are gone.&n;&t; *&n;&t; * Probably 1 and 2 may not matter, because it&squot;s all triggered&n;&t; * by a process and the socket layer already prevent the&n;&t; * socket to go away while a process is holding it, through&n;&t; * sockfd_put() and fput()...&n;&t; *&n;&t; * 3) This may include deferred TSAP closure. In particular,&n;&t; * we may receive a late irda_disconnect_indication()&n;&t; * Fortunately, (tsap_cb *)-&gt;close_pend should protect us&n;&t; * from that.&n;&t; *&n;&t; * I did some testing on SMP, and it looks solid. And the socket&n;&t; * memory leak is now gone... - Jean II&n;&t; */
+multiline_comment|/* Notes on socket locking and deallocation... - Jean II&n;&t; * In theory we should put pairs of sock_hold() / sock_put() to&n;&t; * prevent the socket to be destroyed whenever there is an&n;&t; * outstanding request or outstanding incomming packet or event.&n;&t; *&n;&t; * 1) This may include IAS request, both in connect and getsockopt.&n;&t; * Unfortunately, the situation is a bit more messy than it looks,&n;&t; * because we close iriap and kfree(self) above.&n;&t; *&n;&t; * 2) This may include selective discovery in getsockopt.&n;&t; * Same stuff as above, irlmp registration and self are gone.&n;&t; *&n;&t; * Probably 1 and 2 may not matter, because it&squot;s all triggered&n;&t; * by a process and the socket layer already prevent the&n;&t; * socket to go away while a process is holding it, through&n;&t; * sockfd_put() and fput()...&n;&t; *&n;&t; * 3) This may include deferred TSAP closure. In particular,&n;&t; * we may receive a late irda_disconnect_indication()&n;&t; * Fortunately, (tsap_cb *)-&gt;close_pend should protect us&n;&t; * from that.&n;&t; *&n;&t; * I did some testing on SMP, and it looks solid. And the socket&n;&t; * memory leak is now gone... - Jean II&n;&t; */
 r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Function irda_sendmsg (sock, msg, len, scm)&n; *&n; *    Send message down to TinyTP. This function is used for both STREAM and&n; *    SEQPACK services. This is possible since it forces the client to &n; *    fragment the message if necessary&n; */
+multiline_comment|/*&n; * Function irda_sendmsg (sock, msg, len, scm)&n; *&n; *    Send message down to TinyTP. This function is used for both STREAM and&n; *    SEQPACK services. This is possible since it forces the client to&n; *    fragment the message if necessary&n; */
 DECL|function|irda_sendmsg
 r_static
 r_int
@@ -4264,7 +4273,7 @@ comma
 id|len
 )paren
 suffix:semicolon
-multiline_comment|/* &n;&t; * Just send the message to TinyTP, and let it deal with possible &n;&t; * errors. No need to duplicate all that here&n;&t; */
+multiline_comment|/*&n;&t; * Just send the message to TinyTP, and let it deal with possible&n;&t; * errors. No need to duplicate all that here&n;&t; */
 id|err
 op_assign
 id|irttp_data_request
@@ -4596,7 +4605,7 @@ r_return
 id|ret
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Function irda_recvmsg_stream (sock, msg, size, flags, scm)&n; *&n; *    &n; *&n; */
+multiline_comment|/*&n; * Function irda_recvmsg_stream (sock, msg, size, flags, scm)&n; */
 DECL|function|irda_recvmsg_stream
 r_static
 r_int
@@ -5132,7 +5141,7 @@ l_int|1
 suffix:semicolon
 )paren
 suffix:semicolon
-multiline_comment|/*  &n;&t; * Check that we don&squot;t send out to big frames. This is an unreliable &n;&t; * service, so we have no fragmentation and no coalescence &n;&t; */
+multiline_comment|/*&n;&t; * Check that we don&squot;t send out to big frames. This is an unreliable&n;&t; * service, so we have no fragmentation and no coalescence&n;&t; */
 r_if
 c_cond
 (paren
@@ -5228,7 +5237,7 @@ comma
 id|len
 )paren
 suffix:semicolon
-multiline_comment|/* &n;&t; * Just send the message to TinyTP, and let it deal with possible &n;&t; * errors. No need to duplicate all that here&n;&t; */
+multiline_comment|/*&n;&t; * Just send the message to TinyTP, and let it deal with possible&n;&t; * errors. No need to duplicate all that here&n;&t; */
 id|err
 op_assign
 id|irttp_udata_request
@@ -5383,7 +5392,7 @@ l_int|1
 suffix:semicolon
 )paren
 suffix:semicolon
-multiline_comment|/*  &n;&t; * Check that we don&squot;t send out to big frames. This is an unreliable &n;&t; * service, so we have no fragmentation and no coalescence &n;&t; */
+multiline_comment|/*&n;&t; * Check that we don&squot;t send out to big frames. This is an unreliable&n;&t; * service, so we have no fragmentation and no coalescence&n;&t; */
 r_if
 c_cond
 (paren
@@ -5515,7 +5524,7 @@ id|len
 suffix:semicolon
 )brace
 macro_line|#endif /* CONFIG_IRDA_ULTRA */
-multiline_comment|/*&n; * Function irda_shutdown (sk, how)&n; *&n; *    &n; *&n; */
+multiline_comment|/*&n; * Function irda_shutdown (sk, how)&n; */
 DECL|function|irda_shutdown
 r_static
 r_int
@@ -5655,7 +5664,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Function irda_poll (file, sock, wait)&n; *&n; *    &n; *&n; */
+multiline_comment|/*&n; * Function irda_poll (file, sock, wait)&n; */
 DECL|function|irda_poll
 r_static
 r_int
@@ -5912,7 +5921,7 @@ r_return
 id|mask
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Function irda_ioctl (sock, cmd, arg)&n; *&n; *    &n; *&n; */
+multiline_comment|/*&n; * Function irda_ioctl (sock, cmd, arg)&n; */
 DECL|function|irda_ioctl
 r_static
 r_int
@@ -6950,9 +6959,9 @@ r_else
 id|WARNING
 c_func
 (paren
+l_string|&quot;%s: not allowed to set MAXSDUSIZE for this socket type!&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), not allowed to set MAXSDUSIZE for this &quot;
-l_string|&quot;socket type!&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -7207,7 +7216,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Function irda_getsockopt (sock, level, optname, optval, optlen)&n; *&n; *    &n; *&n; */
+multiline_comment|/*&n; * Function irda_getsockopt (sock, level, optname, optval, optlen)&n; */
 DECL|function|irda_getsockopt
 r_static
 r_int
@@ -7964,8 +7973,9 @@ id|self-&gt;iriap
 id|WARNING
 c_func
 (paren
+l_string|&quot;%s: busy with a previous query&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;(), busy with a previous query&bslash;n&quot;
 )paren
 suffix:semicolon
 id|kfree

@@ -4,8 +4,6 @@ DECL|macro|__ASM_SPINLOCK_H
 mdefine_line|#define __ASM_SPINLOCK_H
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/processor.h&gt;
-DECL|macro|SPINLOCK_DEBUG
-macro_line|#undef SPINLOCK_DEBUG
 multiline_comment|/*&n; * Simple spin lock operations.&n; */
 r_typedef
 r_struct
@@ -16,7 +14,7 @@ r_int
 r_int
 id|lock
 suffix:semicolon
-macro_line|#ifdef SPINLOCK_DEBUG
+macro_line|#ifdef CONFIG_DEBUG_SPINLOCK
 DECL|member|owner_pc
 r_volatile
 r_int
@@ -35,7 +33,7 @@ DECL|typedef|spinlock_t
 id|spinlock_t
 suffix:semicolon
 macro_line|#ifdef __KERNEL__
-macro_line|#if SPINLOCK_DEBUG
+macro_line|#if CONFIG_DEBUG_SPINLOCK
 DECL|macro|SPINLOCK_DEBUG_INIT
 mdefine_line|#define SPINLOCK_DEBUG_INIT     , 0, 0
 macro_line|#else
@@ -50,7 +48,7 @@ DECL|macro|spin_is_locked
 mdefine_line|#define spin_is_locked(x)&t;((x)-&gt;lock != 0)
 DECL|macro|spin_unlock_wait
 mdefine_line|#define spin_unlock_wait(x)&t;do { barrier(); } while(spin_is_locked(x))
-macro_line|#ifndef SPINLOCK_DEBUG
+macro_line|#ifndef CONFIG_DEBUG_SPINLOCK
 DECL|function|_raw_spin_lock
 r_static
 r_inline
@@ -193,7 +191,7 @@ r_int
 r_int
 id|lock
 suffix:semicolon
-macro_line|#ifdef SPINLOCK_DEBUG
+macro_line|#ifdef CONFIG_DEBUG_SPINLOCK
 DECL|member|owner_pc
 r_volatile
 r_int
@@ -205,7 +203,7 @@ DECL|typedef|rwlock_t
 )brace
 id|rwlock_t
 suffix:semicolon
-macro_line|#if SPINLOCK_DEBUG
+macro_line|#if CONFIG_DEBUG_SPINLOCK
 DECL|macro|RWLOCK_DEBUG_INIT
 mdefine_line|#define RWLOCK_DEBUG_INIT     , 0
 macro_line|#else
@@ -216,7 +214,7 @@ DECL|macro|RW_LOCK_UNLOCKED
 mdefine_line|#define RW_LOCK_UNLOCKED (rwlock_t) { 0 RWLOCK_DEBUG_INIT }
 DECL|macro|rwlock_init
 mdefine_line|#define rwlock_init(lp) do { *(lp) = RW_LOCK_UNLOCKED; } while(0)
-macro_line|#ifndef SPINLOCK_DEBUG
+macro_line|#ifndef CONFIG_DEBUG_SPINLOCK
 DECL|function|_raw_read_lock
 r_static
 id|__inline__

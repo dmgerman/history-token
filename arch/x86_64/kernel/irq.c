@@ -447,15 +447,16 @@ id|p
 comma
 l_string|&quot;%10u &quot;
 comma
-id|nmi_count
-c_func
-(paren
+id|cpu_pda
+(braket
 id|cpu_logical_map
 c_func
 (paren
 id|j
 )paren
-)paren
+)braket
+dot
+id|__nmi_count
 )paren
 suffix:semicolon
 id|seq_putc

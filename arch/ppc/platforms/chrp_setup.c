@@ -26,6 +26,7 @@ macro_line|#include &lt;linux/ide.h&gt;
 macro_line|#include &lt;linux/irq.h&gt;
 macro_line|#include &lt;linux/console.h&gt;
 macro_line|#include &lt;linux/seq_file.h&gt;
+macro_line|#include &lt;linux/root_dev.h&gt;
 macro_line|#include &lt;asm/processor.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
@@ -974,23 +975,13 @@ id|initrd_start
 )paren
 id|ROOT_DEV
 op_assign
-id|mk_kdev
-c_func
-(paren
-id|RAMDISK_MAJOR
-comma
-l_int|0
-)paren
+id|Root_RAM0
 suffix:semicolon
 r_else
 macro_line|#endif
 id|ROOT_DEV
 op_assign
-id|to_kdev_t
-c_func
-(paren
-l_int|0x0802
-)paren
+id|Root_SDA2
 suffix:semicolon
 multiline_comment|/* sda2 (sda1 is for the kernel) */
 multiline_comment|/* Lookup PCI host bridges */

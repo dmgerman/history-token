@@ -4989,6 +4989,17 @@ op_star
 id|rq
 )paren
 (brace
+r_int
+r_int
+id|flags
+suffix:semicolon
+r_struct
+id|ata_channel
+op_star
+id|ch
+op_assign
+id|drive-&gt;channel
+suffix:semicolon
 id|idetape_tape_t
 op_star
 id|tape
@@ -5448,6 +5459,15 @@ id|ide_stopped
 suffix:semicolon
 )brace
 macro_line|#endif
+multiline_comment|/* FIXME: this locking should encompass the above register&n;&t; * file access too.&n;&t; */
+id|spin_lock_irqsave
+c_func
+(paren
+id|ch-&gt;lock
+comma
+id|flags
+)paren
+suffix:semicolon
 id|bcount.b.high
 op_assign
 id|IN_BYTE
@@ -5477,6 +5497,14 @@ c_cond
 id|ireason.b.cod
 )paren
 (brace
+id|spin_unlock_irqrestore
+c_func
+(paren
+id|ch-&gt;lock
+comma
+id|flags
+)paren
+suffix:semicolon
 id|printk
 (paren
 id|KERN_ERR
@@ -5502,6 +5530,14 @@ id|pc-&gt;flags
 )paren
 (brace
 multiline_comment|/* Hopefully, we will never get here */
+id|spin_unlock_irqrestore
+c_func
+(paren
+id|ch-&gt;lock
+comma
+id|flags
+)paren
+suffix:semicolon
 id|printk
 (paren
 id|KERN_ERR
@@ -5581,7 +5617,7 @@ comma
 id|bcount.all
 )paren
 suffix:semicolon
-id|ide_set_handler
+id|ata_set_handler
 c_func
 (paren
 id|drive
@@ -5591,6 +5627,14 @@ comma
 id|IDETAPE_WAIT_CMD
 comma
 l_int|NULL
+)paren
+suffix:semicolon
+id|spin_unlock_irqrestore
+c_func
+(paren
+id|ch-&gt;lock
+comma
+id|flags
 )paren
 suffix:semicolon
 r_return
@@ -5718,7 +5762,7 @@ id|bcount.all
 )paren
 suffix:semicolon
 macro_line|#endif
-id|ide_set_handler
+id|ata_set_handler
 c_func
 (paren
 id|drive
@@ -5731,6 +5775,14 @@ l_int|NULL
 )paren
 suffix:semicolon
 multiline_comment|/* And set the interrupt handler again */
+id|spin_unlock_irqrestore
+c_func
+(paren
+id|ch-&gt;lock
+comma
+id|flags
+)paren
+suffix:semicolon
 r_return
 id|ide_started
 suffix:semicolon
@@ -5753,6 +5805,17 @@ op_star
 id|rq
 )paren
 (brace
+r_int
+r_int
+id|flags
+suffix:semicolon
+r_struct
+id|ata_channel
+op_star
+id|ch
+op_assign
+id|drive-&gt;channel
+suffix:semicolon
 id|idetape_tape_t
 op_star
 id|tape
@@ -5777,24 +5840,27 @@ suffix:semicolon
 id|ide_startstop_t
 id|startstop
 suffix:semicolon
+r_int
+id|ret
+suffix:semicolon
 r_if
 c_cond
 (paren
-id|ide_wait_stat
+id|ata_status_poll
 c_func
 (paren
-op_amp
-id|startstop
-comma
 id|drive
-comma
-id|rq
 comma
 id|DRQ_STAT
 comma
 id|BUSY_STAT
 comma
 id|WAIT_READY
+comma
+id|rq
+comma
+op_amp
+id|startstop
 )paren
 )paren
 (brace
@@ -5808,6 +5874,15 @@ r_return
 id|startstop
 suffix:semicolon
 )brace
+multiline_comment|/* FIXME: this locking should encompass the above register&n;&t; * file access too.&n;&t; */
+id|spin_lock_irqsave
+c_func
+(paren
+id|ch-&gt;lock
+comma
+id|flags
+)paren
+suffix:semicolon
 id|ireason.all
 op_assign
 id|IN_BYTE
@@ -5890,15 +5965,18 @@ id|KERN_ERR
 l_string|&quot;ide-tape: (IO,CoD) != (0,1) while issuing a packet command&bslash;n&quot;
 )paren
 suffix:semicolon
-r_return
+id|ret
+op_assign
 id|ide_stopped
 suffix:semicolon
 )brace
+r_else
+(brace
 id|tape-&gt;cmd_start_time
 op_assign
 id|jiffies
 suffix:semicolon
-id|ide_set_handler
+id|ata_set_handler
 c_func
 (paren
 id|drive
@@ -5922,8 +6000,21 @@ l_int|12
 )paren
 suffix:semicolon
 multiline_comment|/* Send the actual packet */
-r_return
+id|ret
+op_assign
 id|ide_started
+suffix:semicolon
+)brace
+id|spin_unlock_irqrestore
+c_func
+(paren
+id|ch-&gt;lock
+comma
+id|flags
+)paren
+suffix:semicolon
+r_return
+id|ret
 suffix:semicolon
 )brace
 DECL|function|idetape_issue_packet_command
@@ -6320,7 +6411,27 @@ id|tape-&gt;flags
 )paren
 )paren
 (brace
-id|ide_set_handler
+r_int
+r_int
+id|flags
+suffix:semicolon
+r_struct
+id|ata_channel
+op_star
+id|ch
+op_assign
+id|drive-&gt;channel
+suffix:semicolon
+multiline_comment|/* FIXME: this locking should encompass the above register&n;&t;&t; * file access too.&n;&t;&t; */
+id|spin_lock_irqsave
+c_func
+(paren
+id|ch-&gt;lock
+comma
+id|flags
+)paren
+suffix:semicolon
+id|ata_set_handler
 c_func
 (paren
 id|drive
@@ -6338,6 +6449,14 @@ c_func
 id|WIN_PACKETCMD
 comma
 id|IDE_COMMAND_REG
+)paren
+suffix:semicolon
+id|spin_unlock_irqrestore
+c_func
+(paren
+id|ch-&gt;lock
+comma
+id|flags
 )paren
 suffix:semicolon
 r_return
@@ -7956,7 +8075,7 @@ comma
 id|rq-&gt;flags
 )paren
 suffix:semicolon
-id|ide_end_request
+id|ata_end_request
 c_func
 (paren
 id|drive
@@ -13493,8 +13612,8 @@ id|KERN_INFO
 l_string|&quot;ide-tape: Reached idetape_add_chrdev_write_request&bslash;n&quot;
 )paren
 suffix:semicolon
-macro_line|#endif /* IDETAPE_DEBUG_LOG */
-multiline_comment|/*&n;     &t; *&t;Attempt to allocate a new stage.&n;&t; *&t;Pay special attention to possible race conditions.&n;&t; */
+macro_line|#endif
+multiline_comment|/*&n;&t; *&t;Attempt to allocate a new stage.&n;&t; *&t;Pay special attention to possible race conditions.&n;&t; */
 r_while
 c_loop
 (paren

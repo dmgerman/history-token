@@ -1,4 +1,4 @@
-multiline_comment|/******************************************************************************&n; *&n; * Module Name: exstoren - AML Interpreter object store support,&n; *                        Store to Node (namespace object)&n; *              $Revision: 48 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Module Name: exstoren - AML Interpreter object store support,&n; *                        Store to Node (namespace object)&n; *              $Revision: 50 $&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;acinterp.h&quot;
@@ -76,7 +76,10 @@ multiline_comment|/*&n;&t;&t; * Stores into a Field/Region or into a Integer/Buf
 r_if
 c_cond
 (paren
-id|source_desc-&gt;common.type
+id|ACPI_GET_OBJECT_TYPE
+(paren
+id|source_desc
+)paren
 op_eq
 id|INTERNAL_TYPE_REFERENCE
 )paren
@@ -109,19 +112,28 @@ r_if
 c_cond
 (paren
 (paren
-id|source_desc-&gt;common.type
+id|ACPI_GET_OBJECT_TYPE
+(paren
+id|source_desc
+)paren
 op_ne
 id|ACPI_TYPE_INTEGER
 )paren
 op_logical_and
 (paren
-id|source_desc-&gt;common.type
+id|ACPI_GET_OBJECT_TYPE
+(paren
+id|source_desc
+)paren
 op_ne
 id|ACPI_TYPE_BUFFER
 )paren
 op_logical_and
 (paren
-id|source_desc-&gt;common.type
+id|ACPI_GET_OBJECT_TYPE
+(paren
+id|source_desc
+)paren
 op_ne
 id|ACPI_TYPE_STRING
 )paren
@@ -135,9 +147,9 @@ id|ACPI_DB_ERROR
 comma
 l_string|&quot;Cannot assign type %s to %s (must be type Int/Str/Buf)&bslash;n&quot;
 comma
-id|acpi_ut_get_type_name
+id|acpi_ut_get_object_type_name
 (paren
-id|source_desc-&gt;common.type
+id|source_desc
 )paren
 comma
 id|acpi_ut_get_type_name
@@ -259,9 +271,15 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|source_desc-&gt;common.type
+id|ACPI_GET_OBJECT_TYPE
+(paren
+id|source_desc
+)paren
 op_ne
-id|dest_desc-&gt;common.type
+id|ACPI_GET_OBJECT_TYPE
+(paren
+id|dest_desc
+)paren
 )paren
 (brace
 multiline_comment|/*&n;&t;&t; * The source type does not match the type of the destination.&n;&t;&t; * Perform the &quot;implicit conversion&quot; of the source to the current type&n;&t;&t; * of the target as per the ACPI specification.&n;&t;&t; *&n;&t;&t; * If no conversion performed, Actual_src_desc = Source_desc.&n;&t;&t; * Otherwise, Actual_src_desc is a temporary object to hold the&n;&t;&t; * converted object.&n;&t;&t; */
@@ -269,7 +287,10 @@ id|status
 op_assign
 id|acpi_ex_convert_to_target_type
 (paren
-id|dest_desc-&gt;common.type
+id|ACPI_GET_OBJECT_TYPE
+(paren
+id|dest_desc
+)paren
 comma
 id|source_desc
 comma
@@ -299,7 +320,10 @@ multiline_comment|/*&n;&t; * We now have two objects of identical types, and we 
 r_switch
 c_cond
 (paren
-id|dest_desc-&gt;common.type
+id|ACPI_GET_OBJECT_TYPE
+(paren
+id|dest_desc
+)paren
 )paren
 (brace
 r_case
@@ -313,8 +337,6 @@ multiline_comment|/* Truncate value if we are executing from a 32-bit ACPI table
 id|acpi_ex_truncate_for32bit_table
 (paren
 id|dest_desc
-comma
-id|walk_state
 )paren
 suffix:semicolon
 r_break
@@ -374,9 +396,9 @@ id|ACPI_DB_WARN
 comma
 l_string|&quot;Store into type %s not implemented&bslash;n&quot;
 comma
-id|acpi_ut_get_type_name
+id|acpi_ut_get_object_type_name
 (paren
-id|dest_desc-&gt;common.type
+id|dest_desc
 )paren
 )paren
 )paren

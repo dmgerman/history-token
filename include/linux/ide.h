@@ -351,6 +351,10 @@ suffix:semicolon
 macro_line|#include &lt;asm/ide.h&gt;
 multiline_comment|/* Currently only m68k, apus and m8xx need it */
 macro_line|#ifdef ATA_ARCH_ACK_INTR
+r_extern
+r_int
+id|ide_irq_lock
+suffix:semicolon
 DECL|macro|ide_ack_intr
 macro_line|# define ide_ack_intr(hwif) (hwif-&gt;hw.ack_intr ? hwif-&gt;hw.ack_intr(hwif) : 1)
 macro_line|#else
@@ -1968,10 +1972,13 @@ DECL|macro|IDE_DRIVER
 mdefine_line|#define IDE_DRIVER&t;&t;/* Toggle some magic bits in blk.h */
 DECL|macro|LOCAL_END_REQUEST
 mdefine_line|#define LOCAL_END_REQUEST&t;/* Don&squot;t generate end_request in blk.h */
+DECL|macro|DEVICE_NR
+mdefine_line|#define DEVICE_NR(device)&t;(minor(device) &gt;&gt; PARTN_BITS)
 macro_line|#include &lt;linux/blk.h&gt;
+multiline_comment|/* Not locking and locking variant: */
 r_extern
 r_int
-id|__ide_end_request
+id|__ata_end_request
 c_func
 (paren
 r_struct
@@ -1990,7 +1997,7 @@ r_int
 suffix:semicolon
 r_extern
 r_int
-id|ide_end_request
+id|ata_end_request
 c_func
 (paren
 r_struct
@@ -2005,10 +2012,9 @@ comma
 r_int
 )paren
 suffix:semicolon
-multiline_comment|/*&n; * This is used on exit from the driver, to designate the next irq handler&n; * and also to start the safety timer.&n; */
 r_extern
 r_void
-id|ide_set_handler
+id|ata_set_handler
 c_func
 (paren
 r_struct
@@ -2080,31 +2086,6 @@ comma
 r_const
 r_int
 id|byteswap
-)paren
-suffix:semicolon
-r_extern
-r_int
-id|ide_wait_stat
-c_func
-(paren
-id|ide_startstop_t
-op_star
-comma
-r_struct
-id|ata_device
-op_star
-comma
-r_struct
-id|request
-op_star
-id|rq
-comma
-id|byte
-comma
-id|byte
-comma
-r_int
-r_int
 )paren
 suffix:semicolon
 r_extern
@@ -3139,6 +3120,19 @@ op_star
 suffix:semicolon
 r_extern
 r_int
+id|ata_busy_poll
+c_func
+(paren
+r_struct
+id|ata_device
+op_star
+comma
+r_int
+r_int
+)paren
+suffix:semicolon
+r_extern
+r_int
 id|ata_status
 c_func
 (paren
@@ -3149,6 +3143,31 @@ comma
 id|u8
 comma
 id|u8
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|ata_status_poll
+c_func
+(paren
+r_struct
+id|ata_device
+op_star
+comma
+id|u8
+comma
+id|u8
+comma
+r_int
+r_int
+comma
+r_struct
+id|request
+op_star
+id|rq
+comma
+id|ide_startstop_t
+op_star
 )paren
 suffix:semicolon
 r_extern

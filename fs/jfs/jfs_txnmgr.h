@@ -529,22 +529,31 @@ id|count
 suffix:semicolon
 multiline_comment|/* 1: number of pxd/xad */
 multiline_comment|/* (8) */
-DECL|member|xdlist
+multiline_comment|/*&n;&t; * We need xdlistlock_t to be 64 bits (8 bytes), regardless of&n;&t; * whether void * is 32 or 64 bits&n;&t; */
+r_union
+(brace
+DECL|member|_xdlist
 r_void
 op_star
-id|xdlist
+id|_xdlist
 suffix:semicolon
-multiline_comment|/* 4: pxd/xad list */
-DECL|member|rsrvd
-id|s32
-id|rsrvd
+multiline_comment|/* pxd/xad list */
+DECL|member|pad
+id|s64
+id|pad
 suffix:semicolon
-multiline_comment|/* 4: */
+multiline_comment|/* 8: Force 64-bit xdlist size */
+DECL|member|union64
+)brace
+id|union64
+suffix:semicolon
 DECL|typedef|xdlistlock_t
 )brace
 id|xdlistlock_t
 suffix:semicolon
 multiline_comment|/* (16): */
+DECL|macro|xdlist
+mdefine_line|#define xdlist union64._xdlist
 multiline_comment|/*&n; *&t;commit&n; *&n; * parameter to the commit manager routines&n; */
 DECL|struct|commit
 r_typedef
