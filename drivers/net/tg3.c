@@ -14438,6 +14438,15 @@ comma
 id|TG3_FW_TEXT_ADDR
 )paren
 suffix:semicolon
+multiline_comment|/* Flush posted writes. */
+id|tr32
+c_func
+(paren
+id|RX_CPU_BASE
+op_plus
+id|CPU_PC
+)paren
+suffix:semicolon
 r_for
 c_loop
 (paren
@@ -14496,6 +14505,15 @@ op_plus
 id|CPU_PC
 comma
 id|TG3_FW_TEXT_ADDR
+)paren
+suffix:semicolon
+multiline_comment|/* Flush posted writes. */
+id|tr32
+c_func
+(paren
+id|RX_CPU_BASE
+op_plus
+id|CPU_PC
 )paren
 suffix:semicolon
 id|udelay
@@ -14557,6 +14575,15 @@ op_plus
 id|CPU_MODE
 comma
 l_int|0x00000000
+)paren
+suffix:semicolon
+multiline_comment|/* Flush posted writes. */
+id|tr32
+c_func
+(paren
+id|RX_CPU_BASE
+op_plus
+id|CPU_MODE
 )paren
 suffix:semicolon
 r_return
