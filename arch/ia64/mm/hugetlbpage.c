@@ -11,12 +11,6 @@ macro_line|#include &lt;asm/mman.h&gt;
 macro_line|#include &lt;asm/pgalloc.h&gt;
 macro_line|#include &lt;asm/tlb.h&gt;
 macro_line|#include &lt;asm/tlbflush.h&gt;
-DECL|variable|hugetlb_vm_ops
-r_static
-r_struct
-id|vm_operations_struct
-id|hugetlb_vm_ops
-suffix:semicolon
 DECL|variable|htlbpage_freelist
 r_struct
 id|list_head
@@ -1666,6 +1660,36 @@ r_int
 id|htlbzone_pages
 suffix:semicolon
 )brace
+r_static
+r_struct
+id|page
+op_star
+DECL|function|hugetlb_nopage
+id|hugetlb_nopage
+c_func
+(paren
+r_struct
+id|vm_area_struct
+op_star
+id|vma
+comma
+r_int
+r_int
+id|address
+comma
+r_int
+id|unused
+)paren
+(brace
+id|BUG
+c_func
+(paren
+)paren
+suffix:semicolon
+r_return
+l_int|NULL
+suffix:semicolon
+)brace
 DECL|variable|hugetlb_vm_ops
 r_static
 r_struct
@@ -1674,9 +1698,15 @@ id|hugetlb_vm_ops
 op_assign
 (brace
 dot
+id|nopage
+op_assign
+id|hugetlb_nopage
+comma
+dot
 id|close
 op_assign
 id|zap_hugetlb_resources
+comma
 )brace
 suffix:semicolon
 eof

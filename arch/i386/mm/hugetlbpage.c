@@ -29,11 +29,6 @@ r_static
 r_int
 id|htlbzone_pages
 suffix:semicolon
-DECL|variable|hugetlb_vm_ops
-r_struct
-id|vm_operations_struct
-id|hugetlb_vm_ops
-suffix:semicolon
 r_static
 id|LIST_HEAD
 c_func
@@ -2340,18 +2335,19 @@ r_return
 l_int|1
 suffix:semicolon
 )brace
-DECL|function|hugetlb_nopage
+multiline_comment|/*&n; * We cannot handle pagefaults against hugetlb pages at all.  They cause&n; * handle_mm_fault() to try to instantiate regular-sized pages in the&n; * hugegpage VMA.  do_page_fault() is supposed to trap this, so BUG is we get&n; * this far.&n; */
 r_static
 r_struct
 id|page
 op_star
+DECL|function|hugetlb_nopage
 id|hugetlb_nopage
 c_func
 (paren
 r_struct
 id|vm_area_struct
 op_star
-id|area
+id|vma
 comma
 r_int
 r_int
