@@ -7,8 +7,6 @@ macro_line|#include &lt;linux/kmod.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;sound/core.h&gt;
 macro_line|#include &quot;pmac.h&quot;
-DECL|macro|chip_t
-mdefine_line|#define chip_t pmac_t
 multiline_comment|/* i2c address */
 DECL|macro|DACA_I2C_ADDR
 mdefine_line|#define DACA_I2C_ADDR&t;0x4d

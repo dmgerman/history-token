@@ -1065,13 +1065,7 @@ c_func
 l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
-id|MODULE_CLASSES
-c_func
-(paren
-l_string|&quot;{sound}&quot;
-)paren
-suffix:semicolon
-id|MODULE_DEVICES
+id|MODULE_SUPPORTED_DEVICE
 c_func
 (paren
 l_string|&quot;{{KORG,korg1212}}&quot;
@@ -1136,14 +1130,6 @@ comma
 l_string|&quot;Index value for Korg 1212 soundcard.&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM_SYNTAX
-c_func
-(paren
-id|index
-comma
-id|SNDRV_INDEX_DESC
-)paren
-suffix:semicolon
 id|module_param_array
 c_func
 (paren
@@ -1164,14 +1150,6 @@ comma
 l_string|&quot;ID string for Korg 1212 soundcard.&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM_SYNTAX
-c_func
-(paren
-id|id
-comma
-id|SNDRV_ID_DESC
-)paren
-suffix:semicolon
 id|module_param_array
 c_func
 (paren
@@ -1190,14 +1168,6 @@ c_func
 id|enable
 comma
 l_string|&quot;Enable Korg 1212 soundcard.&quot;
-)paren
-suffix:semicolon
-id|MODULE_PARM_SYNTAX
-c_func
-(paren
-id|enable
-comma
-id|SNDRV_ENABLE_DESC
 )paren
 suffix:semicolon
 id|MODULE_AUTHOR
@@ -1992,19 +1962,11 @@ id|korg1212_t
 op_star
 id|korg1212
 op_assign
-id|snd_magic_cast
-c_func
 (paren
 id|korg1212_t
-comma
-(paren
-r_void
 op_star
 )paren
 id|data
-comma
-r_return
-)paren
 suffix:semicolon
 id|spin_lock
 c_func
@@ -4049,16 +4011,7 @@ id|korg1212_t
 op_star
 id|korg1212
 op_assign
-id|snd_magic_cast
-c_func
-(paren
-id|korg1212_t
-comma
 id|dev_id
-comma
-r_return
-id|IRQ_NONE
-)paren
 suffix:semicolon
 r_if
 c_cond
@@ -5237,7 +5190,7 @@ id|korg1212_t
 op_star
 id|korg1212
 op_assign
-id|_snd_pcm_substream_chip
+id|snd_pcm_substream_chip
 c_func
 (paren
 id|substream
@@ -5262,6 +5215,11 @@ id|korg1212-&gt;cardState
 )paren
 suffix:semicolon
 macro_line|#endif
+id|substream-&gt;dma_device
+op_assign
+id|korg1212-&gt;dma_dev
+suffix:semicolon
+multiline_comment|/* set for mmap */
 id|snd_pcm_set_sync
 c_func
 (paren
@@ -5279,17 +5237,14 @@ id|runtime-&gt;hw
 op_assign
 id|snd_korg1212_playback_info
 suffix:semicolon
-id|runtime-&gt;dma_area
-op_assign
+id|snd_pcm_set_runtime_buffer
+c_func
 (paren
-r_char
-op_star
+id|substream
+comma
+op_amp
+id|korg1212-&gt;dma_play
 )paren
-id|korg1212-&gt;playDataBufsPtr
-suffix:semicolon
-id|runtime-&gt;dma_bytes
-op_assign
-id|K1212_BUF_SIZE
 suffix:semicolon
 id|spin_lock_irqsave
 c_func
@@ -5356,7 +5311,7 @@ id|korg1212_t
 op_star
 id|korg1212
 op_assign
-id|_snd_pcm_substream_chip
+id|snd_pcm_substream_chip
 c_func
 (paren
 id|substream
@@ -5381,6 +5336,11 @@ id|korg1212-&gt;cardState
 )paren
 suffix:semicolon
 macro_line|#endif
+id|substream-&gt;dma_device
+op_assign
+id|korg1212-&gt;dma_dev
+suffix:semicolon
+multiline_comment|/* set for mmap */
 id|snd_pcm_set_sync
 c_func
 (paren
@@ -5398,17 +5358,14 @@ id|runtime-&gt;hw
 op_assign
 id|snd_korg1212_capture_info
 suffix:semicolon
-id|runtime-&gt;dma_area
-op_assign
+id|snd_pcm_set_runtime_buffer
+c_func
 (paren
-r_char
-op_star
+id|substream
+comma
+op_amp
+id|korg1212-&gt;dma_rec
 )paren
-id|korg1212-&gt;recordDataBufsPtr
-suffix:semicolon
-id|runtime-&gt;dma_bytes
-op_assign
-id|K1212_BUF_SIZE
 suffix:semicolon
 id|spin_lock_irqsave
 c_func
@@ -5475,7 +5432,7 @@ id|korg1212_t
 op_star
 id|korg1212
 op_assign
-id|_snd_pcm_substream_chip
+id|snd_pcm_substream_chip
 c_func
 (paren
 id|substream
@@ -5565,7 +5522,7 @@ id|korg1212_t
 op_star
 id|korg1212
 op_assign
-id|_snd_pcm_substream_chip
+id|snd_pcm_substream_chip
 c_func
 (paren
 id|substream
@@ -5732,7 +5689,7 @@ id|korg1212_t
 op_star
 id|korg1212
 op_assign
-id|_snd_pcm_substream_chip
+id|snd_pcm_substream_chip
 c_func
 (paren
 id|substream
@@ -5839,7 +5796,7 @@ id|korg1212_t
 op_star
 id|korg1212
 op_assign
-id|_snd_pcm_substream_chip
+id|snd_pcm_substream_chip
 c_func
 (paren
 id|substream
@@ -5950,7 +5907,7 @@ id|korg1212_t
 op_star
 id|korg1212
 op_assign
-id|_snd_pcm_substream_chip
+id|snd_pcm_substream_chip
 c_func
 (paren
 id|substream
@@ -6062,7 +6019,7 @@ id|korg1212_t
 op_star
 id|korg1212
 op_assign
-id|_snd_pcm_substream_chip
+id|snd_pcm_substream_chip
 c_func
 (paren
 id|substream
@@ -6111,7 +6068,7 @@ id|korg1212_t
 op_star
 id|korg1212
 op_assign
-id|_snd_pcm_substream_chip
+id|snd_pcm_substream_chip
 c_func
 (paren
 id|substream
@@ -6175,7 +6132,7 @@ id|korg1212_t
 op_star
 id|korg1212
 op_assign
-id|_snd_pcm_substream_chip
+id|snd_pcm_substream_chip
 c_func
 (paren
 id|substream
@@ -6243,7 +6200,7 @@ id|korg1212_t
 op_star
 id|korg1212
 op_assign
-id|_snd_pcm_substream_chip
+id|snd_pcm_substream_chip
 c_func
 (paren
 id|substream
@@ -6310,7 +6267,7 @@ id|korg1212_t
 op_star
 id|korg1212
 op_assign
-id|_snd_pcm_substream_chip
+id|snd_pcm_substream_chip
 c_func
 (paren
 id|substream
@@ -6510,7 +6467,7 @@ id|korg1212_t
 op_star
 id|korg1212
 op_assign
-id|_snd_kcontrol_chip
+id|snd_kcontrol_chip
 c_func
 (paren
 id|kcontrol
@@ -6595,7 +6552,7 @@ id|korg1212_t
 op_star
 id|korg1212
 op_assign
-id|_snd_kcontrol_chip
+id|snd_kcontrol_chip
 c_func
 (paren
 id|kcontrol
@@ -6863,7 +6820,7 @@ id|korg1212_t
 op_star
 id|korg1212
 op_assign
-id|_snd_kcontrol_chip
+id|snd_kcontrol_chip
 c_func
 (paren
 id|kcontrol
@@ -6958,7 +6915,7 @@ id|korg1212_t
 op_star
 id|korg1212
 op_assign
-id|_snd_kcontrol_chip
+id|snd_kcontrol_chip
 c_func
 (paren
 id|kcontrol
@@ -7211,7 +7168,7 @@ id|korg1212_t
 op_star
 id|korg1212
 op_assign
-id|_snd_kcontrol_chip
+id|snd_kcontrol_chip
 c_func
 (paren
 id|kcontrol
@@ -7298,7 +7255,7 @@ id|korg1212_t
 op_star
 id|korg1212
 op_assign
-id|_snd_kcontrol_chip
+id|snd_kcontrol_chip
 c_func
 (paren
 id|kcontrol
@@ -7472,7 +7429,7 @@ id|korg1212_t
 op_star
 id|korg1212
 op_assign
-id|_snd_kcontrol_chip
+id|snd_kcontrol_chip
 c_func
 (paren
 id|kcontrol
@@ -7537,7 +7494,7 @@ id|korg1212_t
 op_star
 id|korg1212
 op_assign
-id|_snd_kcontrol_chip
+id|snd_kcontrol_chip
 c_func
 (paren
 id|kcontrol
@@ -7705,7 +7662,7 @@ id|korg1212_t
 op_star
 id|korg1212
 op_assign
-id|_snd_kcontrol_chip
+id|snd_kcontrol_chip
 c_func
 (paren
 id|kcontrol
@@ -7763,7 +7720,7 @@ id|korg1212_t
 op_star
 id|korg1212
 op_assign
-id|_snd_kcontrol_chip
+id|snd_kcontrol_chip
 c_func
 (paren
 id|kcontrol
@@ -8492,7 +8449,7 @@ op_assign
 l_int|NULL
 suffix:semicolon
 )brace
-id|snd_magic_kfree
+id|kfree
 c_func
 (paren
 id|korg1212
@@ -8517,17 +8474,7 @@ id|korg1212_t
 op_star
 id|korg1212
 op_assign
-id|snd_magic_cast
-c_func
-(paren
-id|korg1212_t
-comma
 id|device-&gt;device_data
-comma
-r_return
-op_minus
-id|ENXIO
-)paren
 suffix:semicolon
 macro_line|#if K1212_DEBUG_LEVEL &gt; 0
 id|K1212_DEBUG_PRINTK
@@ -8622,12 +8569,16 @@ id|err
 suffix:semicolon
 id|korg1212
 op_assign
-id|snd_magic_kcalloc
+id|kcalloc
 c_func
 (paren
-id|korg1212_t
+l_int|1
 comma
-l_int|0
+r_sizeof
+(paren
+op_star
+id|korg1212
+)paren
 comma
 id|GFP_KERNEL
 )paren

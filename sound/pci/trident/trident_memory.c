@@ -630,7 +630,11 @@ id|snd_sg_buf
 op_star
 id|sgbuf
 op_assign
-id|runtime-&gt;dma_private
+id|snd_pcm_substream_sgbuf
+c_func
+(paren
+id|substream
+)paren
 suffix:semicolon
 id|snd_assert
 c_func

@@ -6,8 +6,6 @@ macro_line|#include &lt;linux/time.h&gt;
 macro_line|#include &lt;sound/core.h&gt;
 macro_line|#include &lt;sound/sb.h&gt;
 macro_line|#include &lt;sound/control.h&gt;
-DECL|macro|chip_t
-mdefine_line|#define chip_t sb_t
 DECL|macro|IO_DEBUG
 macro_line|#undef IO_DEBUG
 DECL|function|snd_sbmixer_write

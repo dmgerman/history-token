@@ -1849,12 +1849,15 @@ suffix:semicolon
 multiline_comment|/* create pool block */
 id|pool
 op_assign
-id|snd_kcalloc
+id|kcalloc
 c_func
 (paren
+l_int|1
+comma
 r_sizeof
 (paren
-id|pool_t
+op_star
+id|pool
 )paren
 comma
 id|GFP_KERNEL

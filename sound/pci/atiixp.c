@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *   ALSA driver for ATI IXP 150/200/250 AC97 controllers&n; *&n; *&t;Copyright (c) 2004 Takashi Iwai &lt;tiwai@suse.de&gt;&n; *&n; *   This program is free software; you can redistribute it and/or modify&n; *   it under the terms of the GNU General Public License as published by&n; *   the Free Software Foundation; either version 2 of the License, or&n; *   (at your option) any later version.&n; *&n; *   This program is distributed in the hope that it will be useful,&n; *   but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *   GNU General Public License for more details.&n; *&n; *   You should have received a copy of the GNU General Public License&n; *   along with this program; if not, write to the Free Software&n; *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA&n; *&n; */
+multiline_comment|/*&n; *   ALSA driver for ATI IXP 150/200/250/300 AC97 controllers&n; *&n; *&t;Copyright (c) 2004 Takashi Iwai &lt;tiwai@suse.de&gt;&n; *&n; *   This program is free software; you can redistribute it and/or modify&n; *   it under the terms of the GNU General Public License as published by&n; *   the Free Software Foundation; either version 2 of the License, or&n; *   (at your option) any later version.&n; *&n; *   This program is distributed in the hope that it will be useful,&n; *   but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *   GNU General Public License for more details.&n; *&n; *   You should have received a copy of the GNU General Public License&n; *   along with this program; if not, write to the Free Software&n; *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA&n; *&n; */
 macro_line|#include &lt;sound/driver.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
@@ -31,13 +31,7 @@ c_func
 l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
-id|MODULE_CLASSES
-c_func
-(paren
-l_string|&quot;{sound}&quot;
-)paren
-suffix:semicolon
-id|MODULE_DEVICES
+id|MODULE_SUPPORTED_DEVICE
 c_func
 (paren
 l_string|&quot;{{ATI,IXP150/200/250/300}}&quot;
@@ -150,14 +144,6 @@ comma
 l_string|&quot;Index value for ATI IXP controller.&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM_SYNTAX
-c_func
-(paren
-id|index
-comma
-id|SNDRV_INDEX_DESC
-)paren
-suffix:semicolon
 id|module_param_array
 c_func
 (paren
@@ -176,14 +162,6 @@ c_func
 id|id
 comma
 l_string|&quot;ID string for ATI IXP controller.&quot;
-)paren
-suffix:semicolon
-id|MODULE_PARM_SYNTAX
-c_func
-(paren
-id|id
-comma
-id|SNDRV_ID_DESC
 )paren
 suffix:semicolon
 id|module_param_array
@@ -206,14 +184,6 @@ comma
 l_string|&quot;Enable audio part of ATI IXP controller.&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM_SYNTAX
-c_func
-(paren
-id|enable
-comma
-id|SNDRV_ENABLE_DESC
-)paren
-suffix:semicolon
 id|module_param_array
 c_func
 (paren
@@ -234,15 +204,6 @@ comma
 l_string|&quot;AC&squot;97 codec clock (default 48000Hz).&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM_SYNTAX
-c_func
-(paren
-id|ac97_clock
-comma
-id|SNDRV_ENABLED
-l_string|&quot;,default:48000&quot;
-)paren
-suffix:semicolon
 id|module_param_array
 c_func
 (paren
@@ -261,16 +222,6 @@ c_func
 id|spdif_aclink
 comma
 l_string|&quot;S/PDIF over AC-link.&quot;
-)paren
-suffix:semicolon
-id|MODULE_PARM_SYNTAX
-c_func
-(paren
-id|spdif_aclink
-comma
-id|SNDRV_ENABLED
-l_string|&quot;,&quot;
-id|SNDRV_BOOLEAN_TRUE_DESC
 )paren
 suffix:semicolon
 multiline_comment|/*&n; */
@@ -517,8 +468,6 @@ r_struct
 id|snd_atiixp_dma_ops
 id|atiixp_dma_ops_t
 suffix:semicolon
-DECL|macro|chip_t
-mdefine_line|#define chip_t atiixp_t
 multiline_comment|/*&n; * DMA packate descriptor&n; */
 DECL|struct|atiixp_dma_desc
 r_typedef
@@ -1659,16 +1608,7 @@ id|atiixp_t
 op_star
 id|chip
 op_assign
-id|snd_magic_cast
-c_func
-(paren
-id|atiixp_t
-comma
 id|ac97-&gt;private_data
-comma
-r_return
-l_int|0xffff
-)paren
 suffix:semicolon
 r_int
 r_int
@@ -1727,15 +1667,7 @@ id|atiixp_t
 op_star
 id|chip
 op_assign
-id|snd_magic_cast
-c_func
-(paren
-id|atiixp_t
-comma
 id|ac97-&gt;private_data
-comma
-r_return
-)paren
 suffix:semicolon
 id|spin_lock
 c_func
@@ -3800,6 +3732,8 @@ id|SNDRV_PCM_INFO_INTERLEAVED
 op_or
 id|SNDRV_PCM_INFO_BLOCK_TRANSFER
 op_or
+id|SNDRV_PCM_INFO_RESUME
+op_or
 id|SNDRV_PCM_INFO_MMAP_VALID
 )paren
 comma
@@ -5367,16 +5301,7 @@ id|atiixp_t
 op_star
 id|chip
 op_assign
-id|snd_magic_cast
-c_func
-(paren
-id|atiixp_t
-comma
 id|dev_id
-comma
-r_return
-id|IRQ_NONE
-)paren
 suffix:semicolon
 r_int
 r_int
@@ -5802,18 +5727,6 @@ OL
 l_int|0
 )paren
 (brace
-r_if
-c_cond
-(paren
-id|chip-&gt;codec_not_ready_bits
-)paren
-multiline_comment|/* codec(s) was detected but not available.&n;&t;&t;&t;&t; * return the error&n;&t;&t;&t;&t; */
-r_return
-id|err
-suffix:semicolon
-r_else
-(brace
-multiline_comment|/* codec(s) was NOT detected, so just ignore here */
 id|chip-&gt;ac97
 (braket
 id|i
@@ -5822,17 +5735,16 @@ op_assign
 l_int|NULL
 suffix:semicolon
 multiline_comment|/* to be sure */
-id|snd_printd
+id|snd_printdd
 c_func
 (paren
-l_string|&quot;atiixp: codec %d not found&bslash;n&quot;
+l_string|&quot;atiixp: codec %d not available for audio&bslash;n&quot;
 comma
 id|i
 )paren
 suffix:semicolon
 r_continue
 suffix:semicolon
-)brace
 )brace
 id|codec_count
 op_increment
@@ -5883,17 +5795,7 @@ id|atiixp_t
 op_star
 id|chip
 op_assign
-id|snd_magic_cast
-c_func
-(paren
-id|atiixp_t
-comma
 id|card-&gt;pm_private_data
-comma
-r_return
-op_minus
-id|EINVAL
-)paren
 suffix:semicolon
 r_int
 id|i
@@ -6025,17 +5927,7 @@ id|atiixp_t
 op_star
 id|chip
 op_assign
-id|snd_magic_cast
-c_func
-(paren
-id|atiixp_t
-comma
 id|card-&gt;pm_private_data
-comma
-r_return
-op_minus
-id|EINVAL
-)paren
 suffix:semicolon
 r_int
 id|i
@@ -6138,15 +6030,7 @@ id|atiixp_t
 op_star
 id|chip
 op_assign
-id|snd_magic_cast
-c_func
-(paren
-id|atiixp_t
-comma
 id|entry-&gt;private_data
-comma
-r_return
-)paren
 suffix:semicolon
 r_int
 id|i
@@ -6318,7 +6202,7 @@ op_star
 id|chip
 )paren
 suffix:semicolon
-id|snd_magic_kfree
+id|kfree
 c_func
 (paren
 id|chip
@@ -6343,17 +6227,7 @@ id|atiixp_t
 op_star
 id|chip
 op_assign
-id|snd_magic_cast
-c_func
-(paren
-id|atiixp_t
-comma
 id|device-&gt;device_data
-comma
-r_return
-op_minus
-id|ENXIO
-)paren
 suffix:semicolon
 r_return
 id|snd_atiixp_free
@@ -6425,12 +6299,16 @@ id|err
 suffix:semicolon
 id|chip
 op_assign
-id|snd_magic_kcalloc
+id|kcalloc
 c_func
 (paren
-id|atiixp_t
+l_int|1
 comma
-l_int|0
+r_sizeof
+(paren
+op_star
+id|chip
+)paren
 comma
 id|GFP_KERNEL
 )paren

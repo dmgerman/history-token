@@ -30,13 +30,7 @@ c_func
 l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
-id|MODULE_CLASSES
-c_func
-(paren
-l_string|&quot;{sound}&quot;
-)paren
-suffix:semicolon
-id|MODULE_DEVICES
+id|MODULE_SUPPORTED_DEVICE
 c_func
 (paren
 l_string|&quot;{{Yamaha,YMF719E-S},&quot;
@@ -245,14 +239,6 @@ comma
 l_string|&quot;Index value for OPL3-SA soundcard.&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM_SYNTAX
-c_func
-(paren
-id|index
-comma
-id|SNDRV_INDEX_DESC
-)paren
-suffix:semicolon
 id|module_param_array
 c_func
 (paren
@@ -273,14 +259,6 @@ comma
 l_string|&quot;ID string for OPL3-SA soundcard.&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM_SYNTAX
-c_func
-(paren
-id|id
-comma
-id|SNDRV_ID_DESC
-)paren
-suffix:semicolon
 id|module_param_array
 c_func
 (paren
@@ -299,14 +277,6 @@ c_func
 id|enable
 comma
 l_string|&quot;Enable OPL3-SA soundcard.&quot;
-)paren
-suffix:semicolon
-id|MODULE_PARM_SYNTAX
-c_func
-(paren
-id|enable
-comma
-id|SNDRV_ENABLE_DESC
 )paren
 suffix:semicolon
 macro_line|#ifdef CONFIG_PNP
@@ -330,14 +300,6 @@ comma
 l_string|&quot;PnP detection for specified soundcard.&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM_SYNTAX
-c_func
-(paren
-id|isapnp
-comma
-id|SNDRV_ISAPNP_DESC
-)paren
-suffix:semicolon
 macro_line|#endif
 id|module_param_array
 c_func
@@ -357,15 +319,6 @@ c_func
 id|port
 comma
 l_string|&quot;Port # for OPL3-SA driver.&quot;
-)paren
-suffix:semicolon
-id|MODULE_PARM_SYNTAX
-c_func
-(paren
-id|port
-comma
-id|SNDRV_ENABLED
-l_string|&quot;,allows:{{0xf86},{0x370},{0x100}},dialog:list&quot;
 )paren
 suffix:semicolon
 id|module_param_array
@@ -388,15 +341,6 @@ comma
 l_string|&quot;SB port # for OPL3-SA driver.&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM_SYNTAX
-c_func
-(paren
-id|sb_port
-comma
-id|SNDRV_ENABLED
-l_string|&quot;,allows:{{0x220},{0x240},{0x260}},dialog:list&quot;
-)paren
-suffix:semicolon
 id|module_param_array
 c_func
 (paren
@@ -415,15 +359,6 @@ c_func
 id|wss_port
 comma
 l_string|&quot;WSS port # for OPL3-SA driver.&quot;
-)paren
-suffix:semicolon
-id|MODULE_PARM_SYNTAX
-c_func
-(paren
-id|wss_port
-comma
-id|SNDRV_ENABLED
-l_string|&quot;,allows:{{0x530},{0xe80},{0xf40},{0x604}},dialog:list&quot;
 )paren
 suffix:semicolon
 id|module_param_array
@@ -446,15 +381,6 @@ comma
 l_string|&quot;FM port # for OPL3-SA driver.&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM_SYNTAX
-c_func
-(paren
-id|fm_port
-comma
-id|SNDRV_ENABLED
-l_string|&quot;,allows:{{0x388}},dialog:list&quot;
-)paren
-suffix:semicolon
 id|module_param_array
 c_func
 (paren
@@ -473,15 +399,6 @@ c_func
 id|midi_port
 comma
 l_string|&quot;MIDI port # for OPL3-SA driver.&quot;
-)paren
-suffix:semicolon
-id|MODULE_PARM_SYNTAX
-c_func
-(paren
-id|midi_port
-comma
-id|SNDRV_ENABLED
-l_string|&quot;,allows:{{0x330},{0x300}},dialog:list&quot;
 )paren
 suffix:semicolon
 id|module_param_array
@@ -504,15 +421,6 @@ comma
 l_string|&quot;IRQ # for OPL3-SA driver.&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM_SYNTAX
-c_func
-(paren
-id|irq
-comma
-id|SNDRV_ENABLED
-l_string|&quot;,allows:{{0},{1},{3},{5},{9},{11},{12},{15}},dialog:list&quot;
-)paren
-suffix:semicolon
 id|module_param_array
 c_func
 (paren
@@ -531,15 +439,6 @@ c_func
 id|dma1
 comma
 l_string|&quot;DMA1 # for OPL3-SA driver.&quot;
-)paren
-suffix:semicolon
-id|MODULE_PARM_SYNTAX
-c_func
-(paren
-id|dma1
-comma
-id|SNDRV_ENABLED
-l_string|&quot;,allows:{{1},{3},{5},{6},{7}},dialog:list&quot;
 )paren
 suffix:semicolon
 id|module_param_array
@@ -562,15 +461,6 @@ comma
 l_string|&quot;DMA2 # for OPL3-SA driver.&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM_SYNTAX
-c_func
-(paren
-id|dma2
-comma
-id|SNDRV_ENABLED
-l_string|&quot;,allows:{{1},{3},{5},{6},{7}},dialog:list&quot;
-)paren
-suffix:semicolon
 id|module_param_array
 c_func
 (paren
@@ -591,16 +481,6 @@ comma
 l_string|&quot;Speaker size selection for 3D Enhancement mode: Desktop/Large Notebook/Small Notebook/HiFi.&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM_SYNTAX
-c_func
-(paren
-id|opl3sa3_ymode
-comma
-id|SNDRV_ENABLED
-l_string|&quot;,allows:{{0,3}},dialog:list&quot;
-)paren
-suffix:semicolon
-multiline_comment|/* SL Added */
 multiline_comment|/* control ports */
 DECL|macro|OPL3SA2_PM_CTRL
 mdefine_line|#define OPL3SA2_PM_CTRL&t;&t;0x01
@@ -650,8 +530,6 @@ r_struct
 id|snd_opl3sa2
 id|opl3sa2_t
 suffix:semicolon
-DECL|macro|chip_t
-mdefine_line|#define chip_t opl3sa2_t
 DECL|struct|snd_opl3sa2
 r_struct
 id|snd_opl3sa2
@@ -1599,16 +1477,7 @@ id|opl3sa2_t
 op_star
 id|chip
 op_assign
-id|snd_magic_cast
-c_func
-(paren
-id|opl3sa2_t
-comma
 id|dev_id
-comma
-r_return
-id|IRQ_NONE
-)paren
 suffix:semicolon
 r_int
 id|handled
@@ -2824,18 +2693,10 @@ id|opl3sa2_t
 op_star
 id|chip
 op_assign
-id|snd_magic_cast
-c_func
-(paren
-id|opl3sa2_t
-comma
-id|_snd_kcontrol_chip
+id|snd_kcontrol_chip
 c_func
 (paren
 id|kcontrol
-)paren
-comma
-r_return
 )paren
 suffix:semicolon
 id|chip-&gt;master_switch
@@ -3241,17 +3102,7 @@ id|opl3sa2_t
 op_star
 id|chip
 op_assign
-id|snd_magic_cast
-c_func
-(paren
-id|opl3sa2_t
-comma
 id|card-&gt;pm_private_data
-comma
-r_return
-op_minus
-id|EINVAL
-)paren
 suffix:semicolon
 id|snd_pcm_suspend_all
 c_func
@@ -3310,17 +3161,7 @@ id|opl3sa2_t
 op_star
 id|chip
 op_assign
-id|snd_magic_cast
-c_func
-(paren
-id|opl3sa2_t
-comma
 id|card-&gt;pm_private_data
-comma
-r_return
-op_minus
-id|EINVAL
-)paren
 suffix:semicolon
 r_int
 id|i
@@ -4032,7 +3873,7 @@ id|chip-&gt;res_port
 )paren
 suffix:semicolon
 )brace
-id|snd_magic_kfree
+id|kfree
 c_func
 (paren
 id|chip
@@ -4057,17 +3898,7 @@ id|opl3sa2_t
 op_star
 id|chip
 op_assign
-id|snd_magic_cast
-c_func
-(paren
-id|opl3sa2_t
-comma
 id|device-&gt;device_data
-comma
-r_return
-op_minus
-id|ENXIO
-)paren
 suffix:semicolon
 r_return
 id|snd_opl3sa2_free
@@ -4290,12 +4121,16 @@ l_string|&quot;Yamaha OPL3-SA2&quot;
 suffix:semicolon
 id|chip
 op_assign
-id|snd_magic_kcalloc
+id|kcalloc
 c_func
 (paren
-id|opl3sa2_t
+l_int|1
 comma
-l_int|0
+r_sizeof
+(paren
+op_star
+id|chip
+)paren
 comma
 id|GFP_KERNEL
 )paren

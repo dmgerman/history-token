@@ -73,14 +73,6 @@ comma
 l_string|&quot;Index value for Sun AMD7930 soundcard.&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM_SYNTAX
-c_func
-(paren
-id|index
-comma
-id|SNDRV_INDEX_DESC
-)paren
-suffix:semicolon
 id|module_param_array
 c_func
 (paren
@@ -99,14 +91,6 @@ c_func
 id|id
 comma
 l_string|&quot;ID string for Sun AMD7930 soundcard.&quot;
-)paren
-suffix:semicolon
-id|MODULE_PARM_SYNTAX
-c_func
-(paren
-id|id
-comma
-id|SNDRV_ID_DESC
 )paren
 suffix:semicolon
 id|module_param_array
@@ -129,14 +113,6 @@ comma
 l_string|&quot;Enable Sun AMD7930 soundcard.&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM_SYNTAX
-c_func
-(paren
-id|enable
-comma
-id|SNDRV_ENABLE_DESC
-)paren
-suffix:semicolon
 id|MODULE_AUTHOR
 c_func
 (paren
@@ -155,13 +131,7 @@ c_func
 l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
-id|MODULE_CLASSES
-c_func
-(paren
-l_string|&quot;{sound}&quot;
-)paren
-suffix:semicolon
-id|MODULE_DEVICES
+id|MODULE_SUPPORTED_DEVICE
 c_func
 (paren
 l_string|&quot;{{Sun,AMD7930}}&quot;
@@ -750,8 +720,6 @@ DECL|typedef|amd7930_t
 )brace
 id|amd7930_t
 suffix:semicolon
-DECL|macro|chip_t
-mdefine_line|#define chip_t amd7930_t
 DECL|variable|amd7930_list
 r_static
 id|amd7930_t
@@ -3035,15 +3003,7 @@ id|amd7930_t
 op_star
 id|amd
 op_assign
-id|snd_magic_cast
-c_func
-(paren
-id|amd7930_t
-comma
 id|pcm-&gt;private_data
-comma
-r_return
-)paren
 suffix:semicolon
 id|amd-&gt;pcm
 op_assign
@@ -3796,7 +3756,7 @@ comma
 id|amd-&gt;regs_size
 )paren
 suffix:semicolon
-id|snd_magic_kfree
+id|kfree
 c_func
 (paren
 id|amd
@@ -3821,17 +3781,7 @@ id|amd7930_t
 op_star
 id|amd
 op_assign
-id|snd_magic_cast
-c_func
-(paren
-id|amd7930_t
-comma
 id|device-&gt;device_data
-comma
-r_return
-op_minus
-id|ENXIO
-)paren
 suffix:semicolon
 r_return
 id|snd_amd7930_free
@@ -3911,10 +3861,16 @@ l_int|NULL
 suffix:semicolon
 id|amd
 op_assign
-id|snd_magic_kcalloc
+id|kcalloc
 c_func
 (paren
-id|amd7930_t
+l_int|1
+comma
+r_sizeof
+(paren
+op_star
+id|amd
+)paren
 comma
 l_int|0
 comma

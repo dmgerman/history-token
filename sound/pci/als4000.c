@@ -31,13 +31,7 @@ c_func
 l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
-id|MODULE_CLASSES
-c_func
-(paren
-l_string|&quot;{sound}&quot;
-)paren
-suffix:semicolon
-id|MODULE_DEVICES
+id|MODULE_SUPPORTED_DEVICE
 c_func
 (paren
 l_string|&quot;{{Avance Logic,ALS4000}}&quot;
@@ -116,14 +110,6 @@ comma
 l_string|&quot;Index value for ALS4000 soundcard.&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM_SYNTAX
-c_func
-(paren
-id|index
-comma
-id|SNDRV_INDEX_DESC
-)paren
-suffix:semicolon
 id|module_param_array
 c_func
 (paren
@@ -144,14 +130,6 @@ comma
 l_string|&quot;ID string for ALS4000 soundcard.&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM_SYNTAX
-c_func
-(paren
-id|id
-comma
-id|SNDRV_ID_DESC
-)paren
-suffix:semicolon
 id|module_param_array
 c_func
 (paren
@@ -170,14 +148,6 @@ c_func
 id|enable
 comma
 l_string|&quot;Enable ALS4000 soundcard.&quot;
-)paren
-suffix:semicolon
-id|MODULE_PARM_SYNTAX
-c_func
-(paren
-id|enable
-comma
-id|SNDRV_INDEX_DESC
 )paren
 suffix:semicolon
 macro_line|#ifdef SUPPORT_JOYSTICK
@@ -201,17 +171,7 @@ comma
 l_string|&quot;Joystick port address for ALS4000 soundcard. (0 = disabled)&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM_SYNTAX
-c_func
-(paren
-id|joystick_port
-comma
-id|SNDRV_ENABLED
-)paren
-suffix:semicolon
 macro_line|#endif
-DECL|macro|chip_t
-mdefine_line|#define chip_t sb_t
 r_typedef
 r_struct
 (brace
@@ -1503,16 +1463,7 @@ id|sb_t
 op_star
 id|chip
 op_assign
-id|snd_magic_cast
-c_func
-(paren
-id|sb_t
-comma
 id|dev_id
-comma
-r_return
-id|IRQ_NONE
-)paren
 suffix:semicolon
 r_int
 r_int
@@ -2134,15 +2085,7 @@ id|sb_t
 op_star
 id|chip
 op_assign
-id|snd_magic_cast
-c_func
-(paren
-id|sb_t
-comma
 id|pcm-&gt;private_data
-comma
-r_return
-)paren
 suffix:semicolon
 id|chip-&gt;pcm
 op_assign

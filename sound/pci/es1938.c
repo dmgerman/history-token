@@ -7,6 +7,7 @@ macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/gameport.h&gt;
 macro_line|#include &lt;linux/moduleparam.h&gt;
+macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;sound/core.h&gt;
 macro_line|#include &lt;sound/control.h&gt;
 macro_line|#include &lt;sound/pcm.h&gt;
@@ -14,8 +15,6 @@ macro_line|#include &lt;sound/opl3.h&gt;
 macro_line|#include &lt;sound/mpu401.h&gt;
 macro_line|#include &lt;sound/initval.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
-DECL|macro|chip_t
-mdefine_line|#define chip_t es1938_t
 id|MODULE_AUTHOR
 c_func
 (paren
@@ -34,13 +33,7 @@ c_func
 l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
-id|MODULE_CLASSES
-c_func
-(paren
-l_string|&quot;{sound}&quot;
-)paren
-suffix:semicolon
-id|MODULE_DEVICES
+id|MODULE_SUPPORTED_DEVICE
 c_func
 (paren
 l_string|&quot;{{ESS,ES1938},&quot;
@@ -116,14 +109,6 @@ comma
 l_string|&quot;Index value for ESS Solo-1 soundcard.&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM_SYNTAX
-c_func
-(paren
-id|index
-comma
-id|SNDRV_INDEX_DESC
-)paren
-suffix:semicolon
 id|module_param_array
 c_func
 (paren
@@ -144,14 +129,6 @@ comma
 l_string|&quot;ID string for ESS Solo-1 soundcard.&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM_SYNTAX
-c_func
-(paren
-id|id
-comma
-id|SNDRV_ID_DESC
-)paren
-suffix:semicolon
 id|module_param_array
 c_func
 (paren
@@ -170,14 +147,6 @@ c_func
 id|enable
 comma
 l_string|&quot;Enable ESS Solo-1 soundcard.&quot;
-)paren
-suffix:semicolon
-id|MODULE_PARM_SYNTAX
-c_func
-(paren
-id|enable
-comma
-id|SNDRV_ENABLE_DESC
 )paren
 suffix:semicolon
 DECL|macro|SLIO_REG
@@ -2280,9 +2249,26 @@ id|chip
 comma
 id|ESSSB_IREG_AUDIO2CONTROL1
 comma
+l_int|0x92
+)paren
+suffix:semicolon
+id|udelay
+c_func
+(paren
+l_int|10
+)paren
+suffix:semicolon
+id|snd_es1938_mixer_write
+c_func
+(paren
+id|chip
+comma
+id|ESSSB_IREG_AUDIO2CONTROL1
+comma
 l_int|0x93
 )paren
 suffix:semicolon
+multiline_comment|/* This two stage init gives the FIFO -&gt; DAC connection time to&n;                 * settle before first data from DMA flows in.  This should ensure&n;                 * no swapping of stereo channels.  Report a bug if otherwise :-) */
 id|outb
 c_func
 (paren
@@ -2829,6 +2815,12 @@ op_minus
 id|mono
 op_minus
 id|is8
+suffix:semicolon
+id|snd_es1938_reset_fifo
+c_func
+(paren
+id|chip
+)paren
 suffix:semicolon
 multiline_comment|/* set clock and counters */
 id|snd_es1938_rate_set
@@ -3819,8 +3811,9 @@ comma
 dot
 id|buffer_bytes_max
 op_assign
-l_int|65536
+l_int|0x8000
 comma
+multiline_comment|/* DMA controller screws on higher values */
 dot
 id|period_bytes_min
 op_assign
@@ -3829,7 +3822,7 @@ comma
 dot
 id|period_bytes_max
 op_assign
-l_int|65536
+l_int|0x8000
 comma
 dot
 id|periods_min
@@ -3909,8 +3902,9 @@ comma
 dot
 id|buffer_bytes_max
 op_assign
-l_int|65536
+l_int|0x8000
 comma
+multiline_comment|/* DMA controller screws on higher values */
 dot
 id|period_bytes_min
 op_assign
@@ -3919,7 +3913,7 @@ comma
 dot
 id|period_bytes_max
 op_assign
-l_int|65536
+l_int|0x8000
 comma
 dot
 id|periods_min
@@ -5050,18 +5044,10 @@ id|es1938_t
 op_star
 id|chip
 op_assign
-id|snd_magic_cast
-c_func
-(paren
-id|es1938_t
-comma
-id|_snd_kcontrol_chip
+id|snd_kcontrol_chip
 c_func
 (paren
 id|kcontrol
-)paren
-comma
-r_return
 )paren
 suffix:semicolon
 id|chip-&gt;master_volume
@@ -6688,7 +6674,7 @@ op_star
 id|chip
 )paren
 suffix:semicolon
-id|snd_magic_kfree
+id|kfree
 c_func
 (paren
 id|chip
@@ -6713,17 +6699,7 @@ id|es1938_t
 op_star
 id|chip
 op_assign
-id|snd_magic_cast
-c_func
-(paren
-id|es1938_t
-comma
 id|device-&gt;device_data
-comma
-r_return
-op_minus
-id|ENXIO
-)paren
 suffix:semicolon
 r_return
 id|snd_es1938_free
@@ -6836,12 +6812,16 @@ suffix:semicolon
 )brace
 id|chip
 op_assign
-id|snd_magic_kcalloc
+id|kcalloc
 c_func
 (paren
-id|es1938_t
+l_int|1
 comma
-l_int|0
+r_sizeof
+(paren
+op_star
+id|chip
+)paren
 comma
 id|GFP_KERNEL
 )paren
@@ -7388,16 +7368,7 @@ id|es1938_t
 op_star
 id|chip
 op_assign
-id|snd_magic_cast
-c_func
-(paren
-id|es1938_t
-comma
 id|dev_id
-comma
-r_return
-id|IRQ_NONE
-)paren
 suffix:semicolon
 r_int
 r_char

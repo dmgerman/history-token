@@ -22,8 +22,6 @@ c_func
 l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
-DECL|macro|chip_t
-mdefine_line|#define chip_t tea6330t_t
 DECL|macro|TEA6330T_ADDR
 mdefine_line|#define TEA6330T_ADDR&t;&t;&t;(0x80&gt;&gt;1) /* fixed address */
 DECL|macro|TEA6330T_SADDR_VOLUME_LEFT
@@ -1237,17 +1235,9 @@ id|tea6330t_t
 op_star
 id|tea
 op_assign
-id|snd_magic_cast
-c_func
-(paren
-id|tea6330t_t
-comma
 id|device-&gt;private_data
-comma
-r_return
-)paren
 suffix:semicolon
-id|snd_magic_kfree
+id|kfree
 c_func
 (paren
 id|tea
@@ -1310,12 +1300,16 @@ l_int|7
 suffix:semicolon
 id|tea
 op_assign
-id|snd_magic_kcalloc
+id|kcalloc
 c_func
 (paren
-id|tea6330t_t
+l_int|1
 comma
-l_int|0
+r_sizeof
+(paren
+op_star
+id|tea
+)paren
 comma
 id|GFP_KERNEL
 )paren
@@ -1354,7 +1348,7 @@ OL
 l_int|0
 )paren
 (brace
-id|snd_magic_kfree
+id|kfree
 c_func
 (paren
 id|tea

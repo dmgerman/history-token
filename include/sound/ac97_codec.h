@@ -1034,6 +1034,12 @@ DECL|member|reg_lock
 id|spinlock_t
 id|reg_lock
 suffix:semicolon
+DECL|member|mutex
+r_struct
+id|semaphore
+id|mutex
+suffix:semicolon
+multiline_comment|/* mutex for AD18xx multi-codecs and paging (2.3) */
 DECL|member|num
 r_int
 r_int
@@ -1170,11 +1176,6 @@ l_int|3
 )braket
 suffix:semicolon
 singleline_comment|// CODEC_CFG bits
-DECL|member|mutex
-r_struct
-id|semaphore
-id|mutex
-suffix:semicolon
 DECL|member|ad18xx
 )brace
 id|ad18xx
@@ -1271,6 +1272,28 @@ r_return
 id|ac97-&gt;ext_id
 op_amp
 id|AC97_EI_AMAP
+)paren
+op_ne
+l_int|0
+suffix:semicolon
+)brace
+DECL|function|ac97_can_spdif
+r_static
+r_inline
+r_int
+id|ac97_can_spdif
+c_func
+(paren
+id|ac97_t
+op_star
+id|ac97
+)paren
+(brace
+r_return
+(paren
+id|ac97-&gt;ext_id
+op_amp
+id|AC97_EI_SPDIF
 )paren
 op_ne
 l_int|0

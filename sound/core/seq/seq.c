@@ -118,18 +118,6 @@ c_func
 l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
-id|MODULE_CLASSES
-c_func
-(paren
-l_string|&quot;{sound}&quot;
-)paren
-suffix:semicolon
-id|MODULE_SUPPORTED_DEVICE
-c_func
-(paren
-l_string|&quot;sound&quot;
-)paren
-suffix:semicolon
 DECL|variable|boot_devs
 r_static
 r_int
@@ -486,6 +474,13 @@ id|EXPORT_SYMBOL
 c_func
 (paren
 id|snd_seq_kernel_client_write_poll
+)paren
+suffix:semicolon
+DECL|variable|snd_seq_set_queue_tempo
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|snd_seq_set_queue_tempo
 )paren
 suffix:semicolon
 multiline_comment|/* seq_memory.c */

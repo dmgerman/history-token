@@ -27,8 +27,6 @@ c_func
 l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
-DECL|macro|chip_t
-mdefine_line|#define chip_t cs4231_t
 multiline_comment|/*&n; *&n; */
 DECL|variable|snd_cs4236_ext_map
 r_static

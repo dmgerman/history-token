@@ -26,12 +26,6 @@ c_func
 l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
-id|MODULE_CLASSES
-c_func
-(paren
-l_string|&quot;{sound}&quot;
-)paren
-suffix:semicolon
 multiline_comment|/* Takashi says this is really only for sound-service-0-, but this is OK. */
 DECL|variable|SNDRV_MINOR_OSS_SEQUENCER
 id|MODULE_ALIAS_SNDRV_MINOR

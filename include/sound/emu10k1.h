@@ -8,6 +8,7 @@ macro_line|#include &lt;sound/rawmidi.h&gt;
 macro_line|#include &lt;sound/hwdep.h&gt;
 macro_line|#include &lt;sound/ac97_codec.h&gt;
 macro_line|#include &lt;sound/util_mem.h&gt;
+macro_line|#include &lt;sound/pcm-indirect.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#ifndef PCI_VENDOR_ID_CREATIVE
@@ -1620,34 +1621,9 @@ l_int|32
 )braket
 suffix:semicolon
 multiline_comment|/* external TRAM address &amp; data */
-DECL|member|sw_data
-DECL|member|hw_data
-r_int
-r_int
-id|sw_data
-comma
-id|hw_data
-suffix:semicolon
-DECL|member|sw_io
-DECL|member|hw_io
-r_int
-r_int
-id|sw_io
-comma
-id|hw_io
-suffix:semicolon
-DECL|member|sw_ready
-DECL|member|hw_ready
-r_int
-r_int
-id|sw_ready
-comma
-id|hw_ready
-suffix:semicolon
-DECL|member|appl_ptr
-r_int
-r_int
-id|appl_ptr
+DECL|member|pcm_rec
+id|snd_pcm_indirect_t
+id|pcm_rec
 suffix:semicolon
 DECL|member|tram_pos
 r_int
@@ -1885,8 +1861,14 @@ DECL|member|rear_ac97
 id|rear_ac97
 suffix:colon
 l_int|1
-suffix:semicolon
+comma
 multiline_comment|/* rear channels are on AC&squot;97 */
+DECL|member|spk71
+id|spk71
+suffix:colon
+l_int|1
+suffix:semicolon
+multiline_comment|/* 7.1 configuration (Audigy 2 ZS) */
 DECL|member|audigy
 r_int
 r_int
@@ -2038,11 +2020,6 @@ DECL|member|pcm_efx
 id|snd_pcm_t
 op_star
 id|pcm_efx
-suffix:semicolon
-DECL|member|pcm_fx8010
-id|snd_pcm_t
-op_star
-id|pcm_fx8010
 suffix:semicolon
 DECL|member|synth_lock
 id|spinlock_t
@@ -2866,6 +2843,46 @@ op_star
 id|emu
 )paren
 suffix:semicolon
+multiline_comment|/* fx8010 irq handler */
+r_int
+id|snd_emu10k1_fx8010_register_irq_handler
+c_func
+(paren
+id|emu10k1_t
+op_star
+id|emu
+comma
+id|snd_fx8010_irq_handler_t
+op_star
+id|handler
+comma
+r_int
+r_char
+id|gpr_running
+comma
+r_void
+op_star
+id|private_data
+comma
+id|snd_emu10k1_fx8010_irq_t
+op_star
+op_star
+id|r_irq
+)paren
+suffix:semicolon
+r_int
+id|snd_emu10k1_fx8010_unregister_irq_handler
+c_func
+(paren
+id|emu10k1_t
+op_star
+id|emu
+comma
+id|snd_emu10k1_fx8010_irq_t
+op_star
+id|irq
+)paren
+suffix:semicolon
 macro_line|#endif /* __KERNEL__ */
 multiline_comment|/*&n; * ---- FX8010 ----&n; */
 DECL|macro|EMU10K1_CARD_CREATIVE
@@ -3026,6 +3043,10 @@ DECL|macro|FXBUS_MIDI_REVERB
 mdefine_line|#define FXBUS_MIDI_REVERB&t;0x0c
 DECL|macro|FXBUS_MIDI_CHORUS
 mdefine_line|#define FXBUS_MIDI_CHORUS&t;0x0d
+DECL|macro|FXBUS_PCM_LEFT_SIDE
+mdefine_line|#define FXBUS_PCM_LEFT_SIDE&t;0x0e
+DECL|macro|FXBUS_PCM_RIGHT_SIDE
+mdefine_line|#define FXBUS_PCM_RIGHT_SIDE&t;0x0f
 DECL|macro|FXBUS_PT_LEFT
 mdefine_line|#define FXBUS_PT_LEFT&t;&t;0x14
 DECL|macro|FXBUS_PT_RIGHT
@@ -3144,8 +3165,10 @@ DECL|macro|A_EXTOUT_ACENTER
 mdefine_line|#define A_EXTOUT_ACENTER&t;0x0a&t;/* analog center */
 DECL|macro|A_EXTOUT_ALFE
 mdefine_line|#define A_EXTOUT_ALFE&t;&t;0x0b&t;/* analog LFE */
-multiline_comment|/* 0x0c ?? */
-multiline_comment|/* 0x0d ?? */
+DECL|macro|A_EXTOUT_ASIDE_L
+mdefine_line|#define A_EXTOUT_ASIDE_L&t;0x0c&t;/* analog side left  - Audigy 2 ZS */
+DECL|macro|A_EXTOUT_ASIDE_R
+mdefine_line|#define A_EXTOUT_ASIDE_R&t;0x0d&t;/*             right - Audigy 2 ZS */
 DECL|macro|A_EXTOUT_AREAR_L
 mdefine_line|#define A_EXTOUT_AREAR_L&t;0x0e&t;/* analog rear left */
 DECL|macro|A_EXTOUT_AREAR_R
