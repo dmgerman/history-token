@@ -84,5 +84,53 @@ id|u32
 id|mask
 )paren
 suffix:semicolon
+DECL|macro|NFS4_ACL_TYPE_DEFAULT
+mdefine_line|#define NFS4_ACL_TYPE_DEFAULT&t;0x01
+DECL|macro|NFS4_ACL_DIR
+mdefine_line|#define NFS4_ACL_DIR&t;&t;0x02
+DECL|macro|NFS4_ACL_OWNER
+mdefine_line|#define NFS4_ACL_OWNER&t;&t;0x04
+r_struct
+id|nfs4_acl
+op_star
+id|nfs4_acl_posix_to_nfsv4
+c_func
+(paren
+r_struct
+id|posix_acl
+op_star
+comma
+r_struct
+id|posix_acl
+op_star
+comma
+r_int
+r_int
+id|flags
+)paren
+suffix:semicolon
+r_int
+id|nfs4_acl_nfsv4_to_posix
+c_func
+(paren
+r_struct
+id|nfs4_acl
+op_star
+comma
+r_struct
+id|posix_acl
+op_star
+op_star
+comma
+r_struct
+id|posix_acl
+op_star
+op_star
+comma
+r_int
+r_int
+id|flags
+)paren
+suffix:semicolon
 macro_line|#endif /* LINUX_NFS4_ACL_H */
 eof
