@@ -1,5 +1,7 @@
 multiline_comment|/*&n; * generic helper functions for video4linux capture buffers, to handle&n; * memory management and PCI DMA.  Right now bttv + saa7134 use it.&n; *&n; * The functions expect the hardware being able to scatter gatter&n; * (i.e. the buffers are not linear in physical memory, but fragmented&n; * into PAGE_SIZE chunks).  They also assume the driver does not need&n; * to touch the video data (thus it is probably not useful for USB as&n; * data often must be uncompressed by the drivers).&n; * &n; * (c) 2001,02 Gerd Knorr &lt;kraxel@bytesex.org&gt;&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; */
 macro_line|#include &lt;linux/videodev.h&gt;
+DECL|macro|UNSET
+mdefine_line|#define UNSET (-1U)
 multiline_comment|/* --------------------------------------------------------------------- */
 multiline_comment|/*&n; * Return a scatterlist for some page-aligned vmalloc()&squot;ed memory&n; * block (NULL on errors).  Memory for the scatterlist is allocated&n; * using kmalloc.  The caller must free the memory.&n; */
 r_struct
@@ -337,6 +339,11 @@ r_int
 r_int
 id|size
 suffix:semicolon
+DECL|member|input
+r_int
+r_int
+id|input
+suffix:semicolon
 DECL|member|field
 r_enum
 id|v4l2_field
@@ -520,6 +527,12 @@ r_enum
 id|v4l2_buf_type
 id|type
 suffix:semicolon
+DECL|member|inputs
+r_int
+r_int
+id|inputs
+suffix:semicolon
+multiline_comment|/* for V4L2_BUF_FLAG_INPUT */
 DECL|member|msize
 r_int
 r_int
