@@ -3594,12 +3594,14 @@ comma
 id|vc-&gt;tx_vcc-&gt;vci
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_ATM_IDT77252_DEBUG
 id|idt77252_tx_dump
 c_func
 (paren
 id|card
 )paren
 suffix:semicolon
+macro_line|#endif
 id|scq-&gt;trans_start
 op_assign
 id|jiffies

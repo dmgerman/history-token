@@ -3534,7 +3534,7 @@ r_if
 c_cond
 (paren
 (paren
-id|base
+id|io_base_lo
 op_amp
 id|PCI_IO_RANGE_TYPE_MASK
 )paren

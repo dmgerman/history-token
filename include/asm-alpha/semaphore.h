@@ -8,10 +8,6 @@ macro_line|#include &lt;asm/atomic.h&gt;
 macro_line|#include &lt;linux/compiler.h&gt;
 macro_line|#include &lt;linux/wait.h&gt;
 macro_line|#include &lt;linux/rwsem.h&gt;
-DECL|macro|DEBUG_SEMAPHORE
-mdefine_line|#define DEBUG_SEMAPHORE 0
-DECL|macro|DEBUG_RW_SEMAPHORE
-mdefine_line|#define DEBUG_RW_SEMAPHORE 0
 DECL|struct|semaphore
 r_struct
 id|semaphore
@@ -259,13 +255,11 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|__builtin_expect
+id|unlikely
 c_func
 (paren
 id|count
 OL
-l_int|0
-comma
 l_int|0
 )paren
 )paren
@@ -302,13 +296,11 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|__builtin_expect
+id|unlikely
 c_func
 (paren
 id|count
 OL
-l_int|0
-comma
 l_int|0
 )paren
 )paren
@@ -481,13 +473,11 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|__builtin_expect
+id|unlikely
 c_func
 (paren
 id|ret
 op_le
-l_int|0
-comma
 l_int|0
 )paren
 )paren
@@ -498,7 +488,7 @@ id|sem
 )paren
 suffix:semicolon
 )brace
-macro_line|#if !WAITQUEUE_DEBUG &amp;&amp; !DEBUG_SEMAPHORE
+macro_line|#if !WAITQUEUE_DEBUG &amp;&amp; !defined(CONFIG_DEBUG_SEMAPHORE)
 DECL|function|down
 r_extern
 r_inline

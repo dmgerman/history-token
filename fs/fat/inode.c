@@ -382,6 +382,13 @@ c_func
 id|i-&gt;i_fat_inode
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|inode
+)paren
+r_break
+suffix:semicolon
 )brace
 id|spin_unlock
 c_func

@@ -159,13 +159,13 @@ mdefine_line|#define PCI_IO_BASE&t;&t;0x1c&t;/* I/O range behind the bridge */
 DECL|macro|PCI_IO_LIMIT
 mdefine_line|#define PCI_IO_LIMIT&t;&t;0x1d
 DECL|macro|PCI_IO_RANGE_TYPE_MASK
-mdefine_line|#define  PCI_IO_RANGE_TYPE_MASK&t;0x0f&t;/* I/O bridging type */
+mdefine_line|#define  PCI_IO_RANGE_TYPE_MASK&t;0x0fUL&t;/* I/O bridging type */
 DECL|macro|PCI_IO_RANGE_TYPE_16
 mdefine_line|#define  PCI_IO_RANGE_TYPE_16&t;0x00
 DECL|macro|PCI_IO_RANGE_TYPE_32
 mdefine_line|#define  PCI_IO_RANGE_TYPE_32&t;0x01
 DECL|macro|PCI_IO_RANGE_MASK
-mdefine_line|#define  PCI_IO_RANGE_MASK&t;~0x0f
+mdefine_line|#define  PCI_IO_RANGE_MASK&t;(~0x0fUL)
 DECL|macro|PCI_SEC_STATUS
 mdefine_line|#define PCI_SEC_STATUS&t;&t;0x1e&t;/* Secondary status register, only bit 14 used */
 DECL|macro|PCI_MEMORY_BASE
@@ -173,21 +173,21 @@ mdefine_line|#define PCI_MEMORY_BASE&t;&t;0x20&t;/* Memory range behind */
 DECL|macro|PCI_MEMORY_LIMIT
 mdefine_line|#define PCI_MEMORY_LIMIT&t;0x22
 DECL|macro|PCI_MEMORY_RANGE_TYPE_MASK
-mdefine_line|#define  PCI_MEMORY_RANGE_TYPE_MASK 0x0f
+mdefine_line|#define  PCI_MEMORY_RANGE_TYPE_MASK 0x0fUL
 DECL|macro|PCI_MEMORY_RANGE_MASK
-mdefine_line|#define  PCI_MEMORY_RANGE_MASK&t;~0x0f
+mdefine_line|#define  PCI_MEMORY_RANGE_MASK&t;(~0x0fUL)
 DECL|macro|PCI_PREF_MEMORY_BASE
 mdefine_line|#define PCI_PREF_MEMORY_BASE&t;0x24&t;/* Prefetchable memory range behind */
 DECL|macro|PCI_PREF_MEMORY_LIMIT
 mdefine_line|#define PCI_PREF_MEMORY_LIMIT&t;0x26
 DECL|macro|PCI_PREF_RANGE_TYPE_MASK
-mdefine_line|#define  PCI_PREF_RANGE_TYPE_MASK 0x0f
+mdefine_line|#define  PCI_PREF_RANGE_TYPE_MASK 0x0fUL
 DECL|macro|PCI_PREF_RANGE_TYPE_32
 mdefine_line|#define  PCI_PREF_RANGE_TYPE_32&t;0x00
 DECL|macro|PCI_PREF_RANGE_TYPE_64
 mdefine_line|#define  PCI_PREF_RANGE_TYPE_64&t;0x01
 DECL|macro|PCI_PREF_RANGE_MASK
-mdefine_line|#define  PCI_PREF_RANGE_MASK&t;~0x0f
+mdefine_line|#define  PCI_PREF_RANGE_MASK&t;(~0x0fUL)
 DECL|macro|PCI_PREF_BASE_UPPER32
 mdefine_line|#define PCI_PREF_BASE_UPPER32&t;0x28&t;/* Upper half of prefetchable memory range */
 DECL|macro|PCI_PREF_LIMIT_UPPER32
@@ -256,7 +256,7 @@ mdefine_line|#define PCI_CB_IO_LIMIT_1&t;0x38
 DECL|macro|PCI_CB_IO_LIMIT_1_HI
 mdefine_line|#define PCI_CB_IO_LIMIT_1_HI&t;0x3a
 DECL|macro|PCI_CB_IO_RANGE_MASK
-mdefine_line|#define  PCI_CB_IO_RANGE_MASK&t;~0x03
+mdefine_line|#define  PCI_CB_IO_RANGE_MASK&t;(~0x03UL)
 multiline_comment|/* 0x3c-0x3d are same as for htype 0 */
 DECL|macro|PCI_CB_BRIDGE_CONTROL
 mdefine_line|#define PCI_CB_BRIDGE_CONTROL&t;0x3e
@@ -738,7 +738,7 @@ mdefine_line|#define PCI_BRIDGE_RESOURCES 7
 DECL|macro|PCI_NUM_RESOURCES
 mdefine_line|#define PCI_NUM_RESOURCES 11
 DECL|macro|PCI_REGION_FLAG_MASK
-mdefine_line|#define PCI_REGION_FLAG_MASK 0x0f&t;/* These bits of resource flags tell us the PCI region flags */
+mdefine_line|#define PCI_REGION_FLAG_MASK 0x0fU&t;/* These bits of resource flags tell us the PCI region flags */
 DECL|struct|pci_bus
 r_struct
 id|pci_bus

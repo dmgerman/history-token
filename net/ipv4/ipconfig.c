@@ -4552,6 +4552,14 @@ id|INADDR_NONE
 op_logical_or
 macro_line|#ifdef CONFIG_ROOT_NFS
 (paren
+id|MAJOR
+c_func
+(paren
+id|ROOT_DEV
+)paren
+op_eq
+id|UNNAMED_MAJOR
+op_logical_and
 id|root_server_addr
 op_eq
 id|INADDR_NONE

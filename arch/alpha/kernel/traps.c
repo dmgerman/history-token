@@ -11,6 +11,7 @@ macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/unaligned.h&gt;
 macro_line|#include &lt;asm/sysinfo.h&gt;
 macro_line|#include &lt;asm/hwrpb.h&gt;
+macro_line|#include &lt;asm/mmu_context.h&gt;
 macro_line|#include &quot;proto.h&quot;
 multiline_comment|/* data/code implementing a work-around for some SRMs which&n;   mishandle opDEC faults&n;*/
 DECL|variable|opDEC_testing
@@ -1438,11 +1439,26 @@ l_int|4
 r_return
 suffix:semicolon
 )brace
-multiline_comment|/* fallthrough as illegal instruction .. */
+r_break
+suffix:semicolon
 r_case
 l_int|3
 suffix:colon
 multiline_comment|/* FEN fault */
+multiline_comment|/* Irritating users can call PAL_clrfen to disable the&n;&t;&t;   FPU for the process.  The kernel will then trap in&n;&t;&t;   do_switch_stack and undo_switch_stack when we try&n;&t;&t;   to save and restore the FP registers.&n;&n;&t;&t;   Given that GCC by default generates code that uses the&n;&t;&t;   FP registers, PAL_clrfen is not useful except for DoS&n;&t;&t;   attacks.  So turn the bleeding FPU back on and be done&n;&t;&t;   with it.  */
+id|current-&gt;thread.pal_flags
+op_or_assign
+l_int|1
+suffix:semicolon
+id|__reload_thread
+c_func
+(paren
+op_amp
+id|current-&gt;thread
+)paren
+suffix:semicolon
+r_return
+suffix:semicolon
 r_case
 l_int|5
 suffix:colon

@@ -3479,9 +3479,9 @@ id|TYPE_INTA
 comma
 l_int|0
 comma
-id|INT_MAX
+l_int|4096
 comma
-l_int|1
+id|PAGE_SIZE
 comma
 l_int|1024
 comma

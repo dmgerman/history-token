@@ -1202,11 +1202,10 @@ op_amp
 id|inode-&gt;u.nfs_i.writeback
 )paren
 )paren
-id|atomic_inc
+id|igrab
 c_func
 (paren
-op_amp
-id|inode-&gt;i_count
+id|inode
 )paren
 suffix:semicolon
 id|inode-&gt;u.nfs_i.npages

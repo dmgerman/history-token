@@ -21,7 +21,7 @@ comma
 id|current
 )paren
 suffix:semicolon
-macro_line|#if DEBUG_SEMAPHORE
+macro_line|#ifdef CONFIG_DEBUG_SEMAPHORE
 id|printk
 c_func
 (paren
@@ -137,7 +137,7 @@ id|current-&gt;state
 op_assign
 id|TASK_RUNNING
 suffix:semicolon
-macro_line|#if DEBUG_SEMAPHORE
+macro_line|#ifdef CONFIG_DEBUG_SEMAPHORE
 id|printk
 c_func
 (paren
@@ -174,7 +174,7 @@ suffix:semicolon
 r_int
 id|ret
 suffix:semicolon
-macro_line|#if DEBUG_SEMAPHORE
+macro_line|#ifdef CONFIG_DEBUG_SEMAPHORE
 id|printk
 c_func
 (paren
@@ -335,7 +335,7 @@ op_amp
 id|sem-&gt;wait
 )paren
 suffix:semicolon
-macro_line|#if DEBUG_SEMAPHORE
+macro_line|#ifdef CONFIG_DEBUG_SEMAPHORE
 id|printk
 c_func
 (paren
@@ -412,7 +412,7 @@ id|sem-&gt;__magic
 )paren
 suffix:semicolon
 macro_line|#endif
-macro_line|#if DEBUG_SEMAPHORE
+macro_line|#ifdef CONFIG_DEBUG_SEMAPHORE
 id|printk
 c_func
 (paren
@@ -465,7 +465,7 @@ id|sem-&gt;__magic
 )paren
 suffix:semicolon
 macro_line|#endif
-macro_line|#if DEBUG_SEMAPHORE
+macro_line|#ifdef CONFIG_DEBUG_SEMAPHORE
 id|printk
 c_func
 (paren
@@ -530,7 +530,7 @@ c_func
 id|sem
 )paren
 suffix:semicolon
-macro_line|#if DEBUG_SEMAPHORE
+macro_line|#ifdef CONFIG_DEBUG_SEMAPHORE
 id|printk
 c_func
 (paren
@@ -578,7 +578,7 @@ id|sem-&gt;__magic
 )paren
 suffix:semicolon
 macro_line|#endif
-macro_line|#if DEBUG_SEMAPHORE
+macro_line|#ifdef CONFIG_DEBUG_SEMAPHORE
 id|printk
 c_func
 (paren

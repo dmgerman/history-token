@@ -421,7 +421,7 @@ id|where
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * Finally.&n;&t; */
-macro_line|#if DEBUG_SPINLOCK
+macro_line|#ifdef CONFIG_DEBUG_SPINLOCK
 id|global_irq_lock.task
 op_assign
 id|current

@@ -4115,7 +4115,7 @@ suffix:semicolon
 )brace
 )brace
 "&f;"
-macro_line|#if DEBUG_SPINLOCK
+macro_line|#ifdef CONFIG_DEBUG_SPINLOCK
 r_void
 DECL|function|spin_unlock
 id|spin_unlock
@@ -4439,9 +4439,9 @@ r_return
 id|ret
 suffix:semicolon
 )brace
-macro_line|#endif /* DEBUG_SPINLOCK */
+macro_line|#endif /* CONFIG_DEBUG_SPINLOCK */
 "&f;"
-macro_line|#if DEBUG_RWLOCK
+macro_line|#ifdef CONFIG_DEBUG_RWLOCK
 DECL|function|write_lock
 r_void
 id|write_lock
@@ -4721,5 +4721,5 @@ id|try_again
 suffix:semicolon
 )brace
 )brace
-macro_line|#endif /* DEBUG_RWLOCK */
+macro_line|#endif /* CONFIG_DEBUG_RWLOCK */
 eof

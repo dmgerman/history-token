@@ -1,13 +1,10 @@
 macro_line|#ifndef _ALPHA_SPINLOCK_H
 DECL|macro|_ALPHA_SPINLOCK_H
 mdefine_line|#define _ALPHA_SPINLOCK_H
+macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;asm/current.h&gt;
-DECL|macro|DEBUG_SPINLOCK
-mdefine_line|#define DEBUG_SPINLOCK 0
-DECL|macro|DEBUG_RWLOCK
-mdefine_line|#define DEBUG_RWLOCK 0
 multiline_comment|/*&n; * Simple spin lock operations.  There are two variants, one clears IRQ&squot;s&n; * on the local processor, one does not.&n; *&n; * We make no fairness assumptions. They have a cost.&n; */
 r_typedef
 r_struct
@@ -19,7 +16,7 @@ r_int
 id|lock
 multiline_comment|/*__attribute__((aligned(32))) */
 suffix:semicolon
-macro_line|#if DEBUG_SPINLOCK
+macro_line|#if CONFIG_DEBUG_SPINLOCK
 DECL|member|on_cpu
 r_int
 id|on_cpu
@@ -50,7 +47,7 @@ DECL|typedef|spinlock_t
 )brace
 id|spinlock_t
 suffix:semicolon
-macro_line|#if DEBUG_SPINLOCK
+macro_line|#if CONFIG_DEBUG_SPINLOCK
 DECL|macro|SPIN_LOCK_UNLOCKED
 mdefine_line|#define SPIN_LOCK_UNLOCKED (spinlock_t) {0, -1, 0, 0, 0, 0}
 DECL|macro|spin_lock_init
@@ -65,7 +62,7 @@ DECL|macro|spin_is_locked
 mdefine_line|#define spin_is_locked(x)&t;((x)-&gt;lock != 0)
 DECL|macro|spin_unlock_wait
 mdefine_line|#define spin_unlock_wait(x)&t;({ do { barrier(); } while ((x)-&gt;lock); })
-macro_line|#if DEBUG_SPINLOCK
+macro_line|#if CONFIG_DEBUG_SPINLOCK
 r_extern
 r_void
 id|spin_unlock
@@ -192,7 +189,7 @@ DECL|macro|spin_trylock
 mdefine_line|#define spin_trylock(lock) (!test_and_set_bit(0,(lock)))
 DECL|macro|spin_lock_own
 mdefine_line|#define spin_lock_own(LOCK, LOCATION)&t;((void)0)
-macro_line|#endif /* DEBUG_SPINLOCK */
+macro_line|#endif /* CONFIG_DEBUG_SPINLOCK */
 multiline_comment|/***********************************************************/
 r_typedef
 r_struct
@@ -218,7 +215,7 @@ DECL|macro|RW_LOCK_UNLOCKED
 mdefine_line|#define RW_LOCK_UNLOCKED (rwlock_t) { 0, 0 }
 DECL|macro|rwlock_init
 mdefine_line|#define rwlock_init(x)&t;do { *(x) = RW_LOCK_UNLOCKED; } while(0)
-macro_line|#if DEBUG_RWLOCK
+macro_line|#if CONFIG_DEBUG_RWLOCK
 r_extern
 r_void
 id|write_lock
@@ -364,7 +361,7 @@ l_string|&quot;memory&quot;
 )paren
 suffix:semicolon
 )brace
-macro_line|#endif /* DEBUG_RWLOCK */
+macro_line|#endif /* CONFIG_DEBUG_RWLOCK */
 DECL|function|write_unlock
 r_static
 r_inline
