@@ -8715,11 +8715,9 @@ l_int|1
 )paren
 )paren
 (brace
-id|pcibios_read_config_word
+id|pci_read_config_word
 (paren
-id|pciBus
-comma
-id|pciDevFun
+id|pdev
 comma
 id|PCI_CONF_AMISIG
 comma
@@ -8751,11 +8749,9 @@ suffix:semicolon
 multiline_comment|/* not an AMI board */
 )brace
 macro_line|#if LINUX_VERSION_CODE &gt;= KERNEL_VERSION(2,4,0)
-id|pcibios_read_config_dword
+id|pci_read_config_dword
 (paren
-id|pciBus
-comma
-id|pciDevFun
+id|pdev
 comma
 id|PCI_CONF_AMISIG64
 comma
