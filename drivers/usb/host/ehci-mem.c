@@ -71,26 +71,6 @@ r_return
 l_int|NULL
 suffix:semicolon
 )brace
-DECL|function|ehci_hcd_free
-r_static
-r_void
-id|ehci_hcd_free
-(paren
-r_struct
-id|usb_hcd
-op_star
-id|hcd
-)paren
-(brace
-id|kfree
-(paren
-id|hcd_to_ehci
-(paren
-id|hcd
-)paren
-)paren
-suffix:semicolon
-)brace
 multiline_comment|/*-------------------------------------------------------------------------*/
 multiline_comment|/* Allocate the key transfer structures from the previously allocated pool */
 DECL|function|ehci_qtd_init

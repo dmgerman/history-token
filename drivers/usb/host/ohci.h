@@ -717,6 +717,13 @@ DECL|struct|ohci_hcd
 r_struct
 id|ohci_hcd
 (brace
+multiline_comment|/*&n;&t; * framework state&n;&t; */
+DECL|member|hcd
+r_struct
+id|usb_hcd
+id|hcd
+suffix:semicolon
+multiline_comment|/* must come first! */
 DECL|member|lock
 id|spinlock_t
 id|lock
@@ -851,12 +858,6 @@ mdefine_line|#define&t;OHCI_QUIRK_SUPERIO&t;0x02&t;&t;&t;/* natsemi */
 DECL|macro|OHCI_QUIRK_INITRESET
 mdefine_line|#define&t;OHCI_QUIRK_INITRESET&t;0x04&t;&t;&t;/* SiS, OPTi, ... */
 singleline_comment|// there are also chip quirks/bugs in init logic
-multiline_comment|/*&n;&t; * framework state&n;&t; */
-DECL|member|hcd
-r_struct
-id|usb_hcd
-id|hcd
-suffix:semicolon
 )brace
 suffix:semicolon
 DECL|macro|hcd_to_ohci
