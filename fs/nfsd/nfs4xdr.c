@@ -9607,6 +9607,16 @@ r_if
 c_cond
 (paren
 id|nfserr
+op_eq
+id|nfserr_isdir
+)paren
+r_return
+id|nfserr_inval
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|nfserr
 )paren
 r_return
 id|nfserr
