@@ -1877,7 +1877,7 @@ r_void
 )paren
 (brace
 macro_line|#warning need to loop over userspace_pids in kill_off_processes_skas
-id|os_kill_process
+id|os_kill_ptraced_process
 c_func
 (paren
 id|userspace_pid
