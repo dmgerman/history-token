@@ -587,31 +587,7 @@ DECL|macro|IPS_SCSI_MP3_Removeable
 mdefine_line|#define IPS_SCSI_MP3_Removeable      0x04
 DECL|macro|IPS_SCSI_MP3_AllocateSurface
 mdefine_line|#define IPS_SCSI_MP3_AllocateSurface 0x08
-multiline_comment|/*&n;    * Configuration Structure Flags&n;    */
-DECL|macro|IPS_CFG_USEROPT_UPDATECOUNT
-mdefine_line|#define IPS_CFG_USEROPT_UPDATECOUNT(cfg)   (((cfg)-&gt;UserOpt &amp; 0xffff000) &gt;&gt; 16)
-DECL|macro|IPS_CFG_USEROPT_CONCURSTART
-mdefine_line|#define IPS_CFG_USEROPT_CONCURSTART(cfg)   (((cfg)-&gt;UserOpt &amp; 0xf000) &gt;&gt; 12)
-DECL|macro|IPS_CFG_USEROPT_STARTUPDELAY
-mdefine_line|#define IPS_CFG_USEROPT_STARTUPDELAY(cfg)  (((cfg)-&gt;UserOpt &amp; 0xf00) &gt;&gt; 8)
-DECL|macro|IPS_CFG_USEROPT_REARRANGE
-mdefine_line|#define IPS_CFG_USEROPT_REARRANGE(cfg)     ((cfg)-&gt;UserOpt &amp; 0x80)
-DECL|macro|IPS_CFG_USEROPT_CDBOOT
-mdefine_line|#define IPS_CFG_USEROPT_CDBOOT(cfg)        ((cfg)-&gt;UserOpt &amp; 0x40)
-DECL|macro|IPS_CFG_USEROPT_CLUSTER
-mdefine_line|#define IPS_CFG_USEROPT_CLUSTER(cfg)       ((cfg)-&gt;UserOpt &amp; 0x20)
-multiline_comment|/*&n;    * Host adapter Flags (bit numbers)&n;    */
-DECL|macro|IPS_IN_INTR
-mdefine_line|#define IPS_IN_INTR                  0
-DECL|macro|IPS_IN_ABORT
-mdefine_line|#define IPS_IN_ABORT                 1
-DECL|macro|IPS_IN_RESET
-mdefine_line|#define IPS_IN_RESET                 2
 multiline_comment|/*&n;    * SCB Flags&n;    */
-DECL|macro|IPS_SCB_ACTIVE
-mdefine_line|#define IPS_SCB_ACTIVE               0x00001
-DECL|macro|IPS_SCB_WAITING
-mdefine_line|#define IPS_SCB_WAITING              0x00002
 DECL|macro|IPS_SCB_MAP_SG
 mdefine_line|#define IPS_SCB_MAP_SG               0x00008
 DECL|macro|IPS_SCB_MAP_SINGLE
@@ -625,8 +601,6 @@ DECL|macro|IPS_NUMCTRLS
 mdefine_line|#define IPS_NUMCTRLS                ((&squot;C&squot;&lt;&lt;8) | 68)
 DECL|macro|IPS_CTRLINFO
 mdefine_line|#define IPS_CTRLINFO                ((&squot;C&squot;&lt;&lt;8) | 69)
-DECL|macro|IPS_FLASHBIOS
-mdefine_line|#define IPS_FLASHBIOS               ((&squot;C&squot;&lt;&lt;8) | 70)
 multiline_comment|/* flashing defines */
 DECL|macro|IPS_FW_IMAGE
 mdefine_line|#define IPS_FW_IMAGE                0x00
@@ -660,10 +634,7 @@ mdefine_line|#define IPS_DAYS_LEAP_YEAR           366
 DECL|macro|IPS_EPOCH_YEAR
 mdefine_line|#define IPS_EPOCH_YEAR               1970
 multiline_comment|/*&n;    * Scsi_Host Template&n;    */
-macro_line|#if LINUX_VERSION_CODE &lt; LinuxVersionCode(2,4,0)
-DECL|macro|IPS
-mdefine_line|#define IPS {&t;&bslash;&n;&t;.module&t;&t;&t;&t;= NULL,&t;&t;&bslash;&n;&t;.proc_info&t;&t;&t;= NULL,&t;&t;&bslash;&n;&t;.proc_dir&t;&t;&t;= NULL,&t;&t;&bslash;&n;&t;.name&t;&t;&t;&t;= NULL,&t;&t;&bslash;&n;&t;.detect&t;&t;&t;&t;= ips_detect,&t;&bslash;&n;&t;.release&t;&t;&t;= ips_release,&t;&bslash;&n;&t;.info&t;&t;&t;&t;= ips_info,&t;&bslash;&n;&t;.command&t;&t;&t;= NULL,&t;&t;&bslash;&n;&t;.queuecommand&t;&t;&t;= ips_queue,&t;&bslash;&n;&t;.eh_strategy_handler&t;&t;= NULL,&t;&t;&bslash;&n;&t;.eh_abort_handler&t;&t;= ips_eh_abort,&t;&bslash;&n;&t;.eh_device_reset_handler&t;= NULL,&t;&t;&bslash;&n;&t;.eh_bus_reset_handler&t;&t;= NULL,&t;&t;&bslash;&n;&t;.eh_host_reset_handler&t;&t;= ips_eh_reset,&t;&bslash;&n;&t;.abort&t;&t;&t;&t;= NULL,&t;&t;&bslash;&n;&t;.reset&t;&t;&t;&t;= NULL,&t;&t;&bslash;&n;&t;.slave_attach&t;&t;&t;= NULL,&t;&t;&bslash;&n;&t;.bios_param&t;&t;&t;= ips_biosparam,&bslash;&n;&t;.can_queue&t;&t;&t;= 0,&t;&t;&bslash;&n;&t;.this_id&t;&t;&t;= -1,&t;&t;&bslash;&n;&t;.sg_tablesize&t;&t;&t;= IPS_MAX_SG,&t;&bslash;&n;&t;.cmd_per_lun&t;&t;&t;= 3,&t;&t;&bslash;&n;&t;.present&t;&t;&t;= 0,&t;&t;&bslash;&n;&t;.unchecked_isa_dma&t;&t;= 0,&t;&t;&bslash;&n;&t;.use_clustering&t;&t;&t;= ENABLE_CLUSTERING,&t;&bslash;&n;&t;.use_new_eh_code&t;&t;= 1 &bslash;&n;}
-macro_line|#elif LINUX_VERSION_CODE &lt; LinuxVersionCode(2,5,0)
+macro_line|#if LINUX_VERSION_CODE &lt; LinuxVersionCode(2,5,0)
 DECL|macro|IPS
 mdefine_line|#define IPS{&t;&bslash;&n;&t;.module&t;&t;&t;&t;= NULL,&t;&t;&bslash;&n;&t;.proc_info&t;&t;&t;= NULL,&t;&t;&bslash;&n;&t;.name&t;&t;&t;&t;= NULL,&t;&t;&bslash;&n;&t;.detect&t;&t;&t;&t;= ips_detect,&t;&bslash;&n;&t;.release&t;&t;&t;= ips_release,&t;&bslash;&n;&t;.info&t;&t;&t;&t;= ips_info,&t;&bslash;&n;&t;.command&t;&t;&t;= NULL,&t;&t;&bslash;&n;&t;.queuecommand&t;&t;&t;= ips_queue,&t;&bslash;&n;&t;.eh_strategy_handler&t;&t;= NULL,&t;&t;&bslash;&n;&t;.eh_abort_handler&t;&t;= ips_eh_abort,&t;&bslash;&n;&t;.eh_device_reset_handler&t;= NULL,&t;&t;&bslash;&n;&t;.eh_bus_reset_handler&t;&t;= NULL,&t;&t;&bslash;&n;&t;.eh_host_reset_handler&t;&t;= ips_eh_reset,&t;&bslash;&n;&t;.abort&t;&t;&t;&t;= NULL,&t;&t;&bslash;&n;&t;.reset&t;&t;&t;&t;= NULL,&t;&t;&bslash;&n;&t;.slave_attach&t;&t;&t;= NULL,&t;&t;&bslash;&n;&t;.bios_param&t;&t;&t;= ips_biosparam,&bslash;&n;&t;.can_queue&t;&t;&t;= 0,&t;&t;&bslash;&n;&t;.this_id&t;&t;&t;= -1,&t;&t;&bslash;&n;&t;.sg_tablesize&t;&t;&t;= IPS_MAX_SG,&t;&bslash;&n;&t;.cmd_per_lun&t;&t;&t;= 3,&t;&t;&bslash;&n;&t;.present&t;&t;&t;= 0,&t;&t;&bslash;&n;&t;.unchecked_isa_dma&t;&t;= 0,&t;&t;&bslash;&n;&t;.use_clustering&t;&t;&t;= ENABLE_CLUSTERING,&bslash;&n;&t;.use_new_eh_code&t;&t;= 1 &bslash;&n;}
 macro_line|#else
@@ -2688,60 +2659,6 @@ suffix:semicolon
 DECL|typedef|IPS_OPTION
 )brace
 id|IPS_OPTION
-suffix:semicolon
-r_typedef
-r_struct
-(brace
-DECL|member|userbuffer
-r_void
-op_star
-id|userbuffer
-suffix:semicolon
-DECL|member|usersize
-r_uint32
-id|usersize
-suffix:semicolon
-DECL|member|kernbuffer
-r_void
-op_star
-id|kernbuffer
-suffix:semicolon
-DECL|member|kernsize
-r_uint32
-id|kernsize
-suffix:semicolon
-DECL|member|ha
-r_void
-op_star
-id|ha
-suffix:semicolon
-DECL|member|SC
-r_void
-op_star
-id|SC
-suffix:semicolon
-DECL|member|pt
-r_void
-op_star
-id|pt
-suffix:semicolon
-DECL|member|sem
-r_struct
-id|semaphore
-op_star
-id|sem
-suffix:semicolon
-DECL|member|offset
-r_uint32
-id|offset
-suffix:semicolon
-DECL|member|retcode
-r_uint32
-id|retcode
-suffix:semicolon
-DECL|typedef|IPS_FLASH_DATA
-)brace
-id|IPS_FLASH_DATA
 suffix:semicolon
 multiline_comment|/*&n; * Status Info&n; */
 DECL|struct|ips_stat

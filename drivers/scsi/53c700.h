@@ -3,6 +3,7 @@ multiline_comment|/* Driver for 53c700 and 53c700-66 chips from NCR and Symbios&
 macro_line|#ifndef _53C700_H
 DECL|macro|_53C700_H
 mdefine_line|#define _53C700_H
+macro_line|#include &lt;asm/io.h&gt;
 multiline_comment|/* Turn on for general debugging---too verbose for normal use */
 DECL|macro|NCR_700_DEBUG
 macro_line|#undef&t;NCR_700_DEBUG
