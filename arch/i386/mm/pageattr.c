@@ -564,15 +564,7 @@ op_assign
 id|virt_to_page
 c_func
 (paren
-(paren
-(paren
-r_int
-r_int
-)paren
 id|kpte
-)paren
-op_amp
-id|PAGE_MASK
 )paren
 suffix:semicolon
 r_if
