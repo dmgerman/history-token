@@ -154,11 +154,6 @@ id|mmc_host_ops
 op_star
 id|ops
 suffix:semicolon
-DECL|member|priv
-r_void
-op_star
-id|priv
-suffix:semicolon
 DECL|member|f_min
 r_int
 r_int

@@ -2815,12 +2815,6 @@ op_plus
 id|extra
 )paren
 suffix:semicolon
-id|host-&gt;priv
-op_assign
-id|host
-op_plus
-l_int|1
-suffix:semicolon
 id|spin_lock_init
 c_func
 (paren
