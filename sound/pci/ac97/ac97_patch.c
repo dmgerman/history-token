@@ -1972,6 +1972,11 @@ op_assign
 op_amp
 id|patch_sigmatel_stac9708_ops
 suffix:semicolon
+id|ac97-&gt;caps
+op_or_assign
+l_int|0x10
+suffix:semicolon
+multiline_comment|/* HP (sigmatel surround) support */
 id|codec72
 op_assign
 id|snd_ac97_read
