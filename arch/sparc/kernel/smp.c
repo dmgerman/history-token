@@ -112,16 +112,6 @@ id|cpu_online_map
 op_assign
 id|CPU_MASK_NONE
 suffix:semicolon
-DECL|variable|sparc_num_cpus_possible
-id|atomic_t
-id|sparc_num_cpus_possible
-op_assign
-id|ATOMIC_INIT
-c_func
-(paren
-l_int|0
-)paren
-suffix:semicolon
 DECL|variable|phys_cpu_present_map
 id|cpumask_t
 id|phys_cpu_present_map

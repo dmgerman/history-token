@@ -26,12 +26,6 @@ id|phys_cpu_present_map
 suffix:semicolon
 DECL|macro|cpu_possible_map
 mdefine_line|#define cpu_possible_map phys_cpu_present_map
-r_extern
-id|atomic_t
-id|sparc_num_cpus_possible
-suffix:semicolon
-DECL|macro|num_possible_cpus
-mdefine_line|#define num_possible_cpus()&t;(atomic_read(&amp;sparc_num_cpus_possible))
 DECL|typedef|smpfunc_t
 r_typedef
 r_void
@@ -656,9 +650,6 @@ DECL|macro|MBOX_IDLECPU2
 mdefine_line|#define MBOX_IDLECPU2         0xFD
 DECL|macro|MBOX_STOPCPU2
 mdefine_line|#define MBOX_STOPCPU2         0xFE
-macro_line|#else /* SMP */
-DECL|macro|num_possible_cpus
-mdefine_line|#define num_possible_cpus()&t;(1)
 macro_line|#endif /* SMP */
 DECL|macro|NO_PROC_ID
 mdefine_line|#define NO_PROC_ID            0xFF
