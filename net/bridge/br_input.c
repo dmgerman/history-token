@@ -5,6 +5,7 @@ macro_line|#include &lt;linux/etherdevice.h&gt;
 macro_line|#include &lt;linux/netfilter_bridge.h&gt;
 macro_line|#include &quot;br_private.h&quot;
 DECL|variable|bridge_ula
+r_const
 r_int
 r_char
 id|bridge_ula

@@ -343,6 +343,7 @@ id|notifier_block
 id|br_device_notifier
 suffix:semicolon
 r_extern
+r_const
 r_int
 r_char
 id|bridge_ula
