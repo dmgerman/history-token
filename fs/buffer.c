@@ -9451,7 +9451,7 @@ id|page
 )paren
 (brace
 multiline_comment|/*&n;&t;&t; * If the filesystem writes its buffers by hand (eg ext3)&n;&t;&t; * then we can have clean buffers against a dirty page.  We&n;&t;&t; * clean the page here; otherwise later reattachment of buffers&n;&t;&t; * could encounter a non-uptodate page, which is unresolvable.&n;&t;&t; * This only applies in the rare case where try_to_free_buffers&n;&t;&t; * succeeds but the page is not freed.&n;&t;&t; */
-id|ClearPageDirty
+id|clear_page_dirty
 c_func
 (paren
 id|page

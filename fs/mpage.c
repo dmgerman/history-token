@@ -2211,7 +2211,7 @@ c_func
 id|page
 )paren
 op_logical_and
-id|TestClearPageDirty
+id|test_clear_page_dirty
 c_func
 (paren
 id|page
