@@ -1286,6 +1286,7 @@ id|AE_OK
 )paren
 suffix:semicolon
 )brace
+macro_line|#ifdef ACPI_FUTURE_USAGE
 multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ns_dump_objects&n; *&n; * PARAMETERS:  Type                - Object type to be dumped&n; *              max_depth           - Maximum depth of dump. Use ACPI_UINT32_MAX&n; *                                    for an effectively unlimited depth.&n; *              owner_id            - Dump only objects owned by this ID.  Use&n; *                                    ACPI_UINT32_MAX to match all owners.&n; *              start_handle        - Where in namespace to start/end search&n; *&n; * DESCRIPTION: Dump typed objects within the loaded namespace.&n; *              Uses acpi_ns_walk_namespace in conjunction with acpi_ns_dump_one_object.&n; *&n; ******************************************************************************/
 r_void
 DECL|function|acpi_ns_dump_objects
@@ -1434,6 +1435,7 @@ suffix:semicolon
 id|return_VOID
 suffix:semicolon
 )brace
+macro_line|#endif  /*  ACPI_FUTURE_USAGE  */
 multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ns_dump_entry&n; *&n; * PARAMETERS:  Handle              - Node to be dumped&n; *              debug_level         - Output level&n; *&n; * DESCRIPTION: Dump a single Node&n; *&n; ******************************************************************************/
 r_void
 DECL|function|acpi_ns_dump_entry

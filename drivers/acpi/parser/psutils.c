@@ -387,6 +387,7 @@ l_char|&squot;^&squot;
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Get op&squot;s name (4-byte name segment) or 0 if unnamed&n; */
+macro_line|#ifdef ACPI_FUTURE_USAGE
 id|u32
 DECL|function|acpi_ps_get_name
 id|acpi_ps_get_name
@@ -419,6 +420,7 @@ id|op-&gt;named.name
 )paren
 suffix:semicolon
 )brace
+macro_line|#endif  /*  ACPI_FUTURE_USAGE  */
 multiline_comment|/*&n; * Set op&squot;s name&n; */
 r_void
 DECL|function|acpi_ps_set_name

@@ -869,6 +869,7 @@ id|acpi_disable_event
 )paren
 suffix:semicolon
 multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_clear_event&n; *&n; * PARAMETERS:  Event           - The fixed event to be cleared&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Clear an ACPI event (fixed)&n; *&n; ******************************************************************************/
+macro_line|#ifdef ACPI_FUTURE_USAGE
 id|acpi_status
 DECL|function|acpi_clear_event
 id|acpi_clear_event
@@ -932,6 +933,7 @@ c_func
 id|acpi_clear_event
 )paren
 suffix:semicolon
+macro_line|#endif  /*  ACPI_FUTURE_USAGE  */
 multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_clear_gpe&n; *&n; * PARAMETERS:  gpe_device      - Parent GPE Device&n; *              gpe_number      - GPE level within the GPE block&n; *              Flags           - Called from an ISR or not&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Clear an ACPI event (general purpose)&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_clear_gpe
@@ -1051,6 +1053,7 @@ id|status
 )paren
 suffix:semicolon
 )brace
+macro_line|#ifdef ACPI_FUTURE_USAGE
 multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_get_event_status&n; *&n; * PARAMETERS:  Event           - The fixed event&n; *              Event Status    - Where the current status of the event will&n; *                                be returned&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Obtains and returns the current status of the event&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_get_event_status
@@ -1251,6 +1254,7 @@ id|status
 )paren
 suffix:semicolon
 )brace
+macro_line|#endif  /*  ACPI_FUTURE_USAGE  */
 multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_install_gpe_block&n; *&n; * PARAMETERS:  gpe_device          - Handle to the parent GPE Block Device&n; *              gpe_block_address   - Address and space_iD&n; *              register_count      - Number of GPE register pairs in the block&n; *              interrupt_level     - H/W interrupt for the block&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Create and Install a block of GPE registers&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_install_gpe_block

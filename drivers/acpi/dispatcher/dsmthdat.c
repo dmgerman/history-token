@@ -692,6 +692,7 @@ id|status
 suffix:semicolon
 )brace
 multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ds_method_data_get_type&n; *&n; * PARAMETERS:  Opcode              - Either AML_LOCAL_OP or AML_ARG_OP&n; *              Index               - which local_var or argument whose type&n; *                                      to get&n; *              walk_state          - Current walk state object&n; *&n; * RETURN:      Data type of current value of the selected Arg or Local&n; *&n; ******************************************************************************/
+macro_line|#ifdef ACPI_FUTURE_USAGE
 id|acpi_object_type
 DECL|function|acpi_ds_method_data_get_type
 id|acpi_ds_method_data_get_type
@@ -790,6 +791,7 @@ id|object
 )paren
 suffix:semicolon
 )brace
+macro_line|#endif  /*  ACPI_FUTURE_USAGE  */
 multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ds_method_data_get_value&n; *&n; * PARAMETERS:  Opcode              - Either AML_LOCAL_OP or AML_ARG_OP&n; *              Index               - which local_var or argument to get&n; *              walk_state          - Current walk state object&n; *              *dest_desc          - Ptr to Descriptor into which selected Arg&n; *                                    or Local value should be copied&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Retrieve value of selected Arg or Local from the method frame&n; *              at the current top of the method stack.&n; *              Used only in acpi_ex_resolve_to_value().&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_ds_method_data_get_value

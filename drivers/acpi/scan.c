@@ -1,6 +1,7 @@
 multiline_comment|/*&n; * scan.c - support for transforming the ACPI namespace into individual objects&n; */
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/acpi.h&gt;
+macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;acpi/acpi_drivers.h&gt;
 macro_line|#include &lt;acpi/acinterp.h&gt;&t;/* for acpi_ex_eisa_id_to_string() */
 DECL|macro|_COMPONENT
@@ -1789,6 +1790,13 @@ id|count
 )paren
 suffix:semicolon
 )brace
+DECL|variable|acpi_bus_register_driver
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|acpi_bus_register_driver
+)paren
+suffix:semicolon
 multiline_comment|/**&n; * acpi_bus_unregister_driver &n; * --------------------------&n; * Unregisters a driver with the ACPI bus.  Searches the namespace for all&n; * devices that match the driver&squot;s criteria and unbinds.&n; */
 r_int
 DECL|function|acpi_bus_unregister_driver
@@ -1871,6 +1879,13 @@ id|error
 )paren
 suffix:semicolon
 )brace
+DECL|variable|acpi_bus_unregister_driver
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|acpi_bus_unregister_driver
+)paren
+suffix:semicolon
 multiline_comment|/**&n; * acpi_bus_find_driver &n; * --------------------&n; * Parses the list of registered drivers looking for a driver applicable for&n; * the specified device.&n; */
 r_static
 r_int

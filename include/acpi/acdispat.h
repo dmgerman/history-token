@@ -33,6 +33,7 @@ op_star
 id|walk_state
 )paren
 suffix:semicolon
+macro_line|#ifdef ACPI_FUTURE_USAGE
 r_void
 op_star
 id|acpi_ds_obj_stack_get_value
@@ -46,6 +47,7 @@ op_star
 id|walk_state
 )paren
 suffix:semicolon
+macro_line|#endif
 id|acpi_status
 id|acpi_ds_obj_stack_pop_object
 (paren
@@ -500,6 +502,7 @@ op_star
 id|obj_desc
 )paren
 suffix:semicolon
+macro_line|#ifdef ACPI_FUTURE_USAGE
 id|acpi_object_type
 id|acpi_ds_method_data_get_type
 (paren
@@ -515,6 +518,7 @@ op_star
 id|walk_state
 )paren
 suffix:semicolon
+macro_line|#endif
 id|acpi_status
 id|acpi_ds_method_data_get_value
 (paren
@@ -1008,6 +1012,7 @@ id|u32
 id|pass_number
 )paren
 suffix:semicolon
+macro_line|#ifdef ACPI_FUTURE_USAGE
 id|acpi_status
 id|acpi_ds_obj_stack_delete_all
 (paren
@@ -1017,6 +1022,7 @@ op_star
 id|walk_state
 )paren
 suffix:semicolon
+macro_line|#endif
 id|acpi_status
 id|acpi_ds_obj_stack_pop_and_delete
 (paren
@@ -1107,6 +1113,7 @@ id|acpi_ds_delete_walk_state_cache
 r_void
 )paren
 suffix:semicolon
+macro_line|#ifdef ACPI_FUTURE_USAGE
 id|acpi_status
 id|acpi_ds_result_insert
 (paren
@@ -1141,6 +1148,7 @@ op_star
 id|walk_state
 )paren
 suffix:semicolon
+macro_line|#endif
 id|acpi_status
 id|acpi_ds_result_pop
 (paren

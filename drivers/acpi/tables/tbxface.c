@@ -234,6 +234,7 @@ id|status
 )paren
 suffix:semicolon
 )brace
+macro_line|#ifdef ACPI_FUTURE_USAGE
 multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_load_table&n; *&n; * PARAMETERS:  table_ptr       - pointer to a buffer containing the entire&n; *                                table to be loaded&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: This function is called to load a table from the caller&squot;s&n; *              buffer.  The buffer must contain an entire ACPI Table including&n; *              a valid header.  The header fields will be verified, and if it&n; *              is determined that the table is invalid, the call will fail.&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_load_table
@@ -649,6 +650,7 @@ id|status
 )paren
 suffix:semicolon
 )brace
+macro_line|#endif  /*  ACPI_FUTURE_USAGE  */
 multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_get_table&n; *&n; * PARAMETERS:  table_type      - one of the defined table types&n; *              Instance        - the non zero instance of the table, allows&n; *                                support for multiple tables of the same type&n; *                                see acpi_gbl_acpi_table_flag&n; *              ret_buffer      - pointer to a structure containing a buffer to&n; *                                receive the table&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: This function is called to get an ACPI table.  The caller&n; *              supplies an out_buffer large enough to contain the entire ACPI&n; *              table.  The caller should call the acpi_get_table_header function&n; *              first to determine the buffer size needed.  Upon completion&n; *              the out_buffer-&gt;Length field will indicate the number of bytes&n; *              copied into the out_buffer-&gt;buf_ptr buffer. This table will be&n; *              a complete table including the header.&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_get_table

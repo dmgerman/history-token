@@ -436,8 +436,10 @@ DECL|macro|ACPI_DUMP_OPERANDS
 mdefine_line|#define ACPI_DUMP_OPERANDS(a,b,c,d,e)   acpi_ex_dump_operands(a,b,c,d,e,_THIS_MODULE,__LINE__)
 DECL|macro|ACPI_DUMP_ENTRY
 mdefine_line|#define ACPI_DUMP_ENTRY(a,b)            acpi_ns_dump_entry (a,b)
+macro_line|#ifdef ACPI_FUTURE_USAGE
 DECL|macro|ACPI_DUMP_TABLES
 mdefine_line|#define ACPI_DUMP_TABLES(a,b)           acpi_ns_dump_tables(a,b)
+macro_line|#endif
 DECL|macro|ACPI_DUMP_PATHNAME
 mdefine_line|#define ACPI_DUMP_PATHNAME(a,b,c,d)     acpi_ns_dump_pathname(a,b,c,d)
 DECL|macro|ACPI_DUMP_RESOURCE_LIST
@@ -499,8 +501,10 @@ DECL|macro|ACPI_DUMP_OPERANDS
 mdefine_line|#define ACPI_DUMP_OPERANDS(a,b,c,d,e)
 DECL|macro|ACPI_DUMP_ENTRY
 mdefine_line|#define ACPI_DUMP_ENTRY(a,b)
+macro_line|#ifdef ACPI_FUTURE_USAGE
 DECL|macro|ACPI_DUMP_TABLES
 mdefine_line|#define ACPI_DUMP_TABLES(a,b)
+macro_line|#endif
 DECL|macro|ACPI_DUMP_PATHNAME
 mdefine_line|#define ACPI_DUMP_PATHNAME(a,b,c,d)
 DECL|macro|ACPI_DUMP_RESOURCE_LIST
