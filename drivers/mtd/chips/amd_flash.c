@@ -4386,7 +4386,11 @@ op_assign
 op_amp
 id|amd_flash_chipdrv
 suffix:semicolon
-id|MOD_INC_USE_COUNT
+id|__module_get
+c_func
+(paren
+id|THIS_MODULE
+)paren
 suffix:semicolon
 r_return
 id|mtd
