@@ -1126,6 +1126,12 @@ DECL|member|opcnt
 id|u32
 id|opcnt
 suffix:semicolon
+DECL|member|tagp
+id|u32
+op_star
+id|tagp
+suffix:semicolon
+multiline_comment|/* where to encode tag and  opcount */
 )brace
 suffix:semicolon
 DECL|macro|NFS4_SVC_XDRSIZE
