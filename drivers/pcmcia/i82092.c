@@ -3248,9 +3248,10 @@ op_star
 id|mem
 )paren
 (brace
-r_int
-r_int
-id|sock
+r_struct
+id|socket_info
+op_star
+id|sock_info
 op_assign
 id|container_of
 c_func
@@ -3262,8 +3263,16 @@ id|socket_info
 comma
 id|socket
 )paren
-op_member_access_from_pointer
-id|number
+suffix:semicolon
+r_int
+r_int
+id|sock
+op_assign
+id|sock_info-&gt;number
+suffix:semicolon
+r_struct
+id|pci_bus_region
+id|region
 suffix:semicolon
 r_int
 r_int
@@ -3279,6 +3288,17 @@ id|enter
 c_func
 (paren
 l_string|&quot;i82092aa_set_mem_map&quot;
+)paren
+suffix:semicolon
+id|pcibios_resource_to_bus
+c_func
+(paren
+id|sock_info-&gt;dev
+comma
+op_amp
+id|region
+comma
+id|mem-&gt;res
 )paren
 suffix:semicolon
 id|map
@@ -3314,9 +3334,9 @@ l_int|0x3ffffff
 )paren
 op_logical_or
 (paren
-id|mem-&gt;sys_start
+id|region.start
 OG
-id|mem-&gt;sys_stop
+id|region.end
 )paren
 op_logical_or
 (paren
@@ -3339,9 +3359,9 @@ l_string|&quot;invalid mem map for socket %i : %lx to %lx with a start of %x &bs
 comma
 id|sock
 comma
-id|mem-&gt;sys_start
+id|region.start
 comma
-id|mem-&gt;sys_stop
+id|region.end
 comma
 id|mem-&gt;card_start
 )paren
@@ -3383,7 +3403,7 @@ id|map
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/* &t;printk(&quot;set_mem_map: Setting map %i range to %x - %x on socket %i, speed is %i, active = %i &bslash;n&quot;,map, mem-&gt;sys_start,mem-&gt;sys_stop,sock,mem-&gt;speed,mem-&gt;flags &amp; MAP_ACTIVE);  */
+multiline_comment|/* &t;printk(&quot;set_mem_map: Setting map %i range to %x - %x on socket %i, speed is %i, active = %i &bslash;n&quot;,map, region.start,region.end,sock,mem-&gt;speed,mem-&gt;flags &amp; MAP_ACTIVE);  */
 multiline_comment|/* write the start address */
 id|base
 op_assign
@@ -3396,7 +3416,7 @@ suffix:semicolon
 id|i
 op_assign
 (paren
-id|mem-&gt;sys_start
+id|region.start
 op_rshift
 l_int|12
 )paren
@@ -3441,7 +3461,7 @@ multiline_comment|/* write the stop address */
 id|i
 op_assign
 (paren
-id|mem-&gt;sys_stop
+id|region.end
 op_rshift
 l_int|12
 )paren
@@ -3511,7 +3531,7 @@ op_assign
 (paren
 id|mem-&gt;card_start
 op_minus
-id|mem-&gt;sys_start
+id|region.start
 )paren
 op_rshift
 l_int|12
