@@ -620,12 +620,6 @@ r_char
 id|inleaf
 suffix:semicolon
 multiline_comment|/* insert into 1-&gt;lf, 0-&gt;splf */
-DECL|member|holeok
-r_int
-r_char
-id|holeok
-suffix:semicolon
-multiline_comment|/* T/F: can deal with a hole */
 DECL|member|extravalid
 r_int
 r_char
