@@ -110,9 +110,15 @@ c_func
 l_int|NULL
 )paren
 suffix:semicolon
-id|br_handle_frame_hook
-op_assign
-l_int|NULL
+id|br_cleanup_bridges
+c_func
+(paren
+)paren
+suffix:semicolon
+id|synchronize_net
+c_func
+(paren
+)paren
 suffix:semicolon
 macro_line|#if defined(CONFIG_ATM_LANE) || defined(CONFIG_ATM_LANE_MODULE)
 id|br_fdb_get_hook
@@ -124,15 +130,9 @@ op_assign
 l_int|NULL
 suffix:semicolon
 macro_line|#endif
-id|br_cleanup_bridges
-c_func
-(paren
-)paren
-suffix:semicolon
-id|synchronize_net
-c_func
-(paren
-)paren
+id|br_handle_frame_hook
+op_assign
+l_int|NULL
 suffix:semicolon
 )brace
 DECL|variable|br_should_route_hook
