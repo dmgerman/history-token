@@ -733,11 +733,11 @@ l_int|0x0010
 comma
 l_int|0x0106
 comma
-l_int|0x0440
+l_int|0x0450
 comma
 l_string|&quot;Sony&quot;
 comma
-l_string|&quot;DSC-S30/S70/S75/505V/F505/F707/F717&quot;
+l_string|&quot;DSC-S30/S70/S75/505V/F505/F707/F717/P8&quot;
 comma
 id|US_SC_SCSI
 comma
