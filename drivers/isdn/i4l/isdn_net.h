@@ -261,6 +261,22 @@ id|isdn_net_dev
 op_star
 )paren
 suffix:semicolon
+r_extern
+r_int
+id|isdn_net_autodial
+c_func
+(paren
+r_struct
+id|sk_buff
+op_star
+id|skb
+comma
+r_struct
+id|net_device
+op_star
+id|ndev
+)paren
+suffix:semicolon
 DECL|macro|ISDN_NET_MAX_QUEUE_LENGTH
 mdefine_line|#define ISDN_NET_MAX_QUEUE_LENGTH 2
 multiline_comment|/*&n; * is this particular channel busy?&n; */

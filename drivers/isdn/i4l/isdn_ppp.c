@@ -5174,9 +5174,28 @@ suffix:semicolon
 r_int
 id|slot
 suffix:semicolon
-id|mlp
+id|ndev-&gt;trans_start
 op_assign
-id|netdev-&gt;priv
+id|jiffies
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|list_empty
+c_func
+(paren
+op_amp
+id|mlp-&gt;online
+)paren
+)paren
+r_return
+id|isdn_net_autodial
+c_func
+(paren
+id|skb
+comma
+id|ndev
+)paren
 suffix:semicolon
 id|slot
 op_assign
@@ -5242,6 +5261,12 @@ id|KERN_INFO
 l_string|&quot;%s: IP frame delayed.&bslash;n&quot;
 comma
 id|netdev-&gt;name
+)paren
+suffix:semicolon
+id|netif_stop_queue
+c_func
+(paren
+id|ndev
 )paren
 suffix:semicolon
 r_return
@@ -5320,6 +5345,12 @@ id|KERN_WARNING
 l_string|&quot;%s: all channels busy - requeuing!&bslash;n&quot;
 comma
 id|netdev-&gt;name
+)paren
+suffix:semicolon
+id|netif_stop_queue
+c_func
+(paren
+id|ndev
 )paren
 suffix:semicolon
 r_return
