@@ -1094,6 +1094,7 @@ l_int|0xffff
 suffix:semicolon
 )brace
 r_static
+r_inline
 r_int
 DECL|function|fls
 id|fls

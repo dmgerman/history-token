@@ -160,6 +160,11 @@ suffix:colon
 l_string|&quot;memory&quot;
 )paren
 suffix:semicolon
+r_else
+id|vma-&gt;vm_mm-&gt;context
+op_assign
+l_int|0
+suffix:semicolon
 macro_line|#endif
 )brace
 multiline_comment|/*&n; * Flush the TLB entries mapping the virtually mapped linear page&n; * table corresponding to address range [START-END).&n; */
@@ -183,54 +188,7 @@ r_int
 id|end
 )paren
 (brace
-r_struct
-id|vm_area_struct
-id|vma
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|REGION_NUMBER
-c_func
-(paren
-id|start
-)paren
-op_ne
-id|REGION_NUMBER
-c_func
-(paren
-id|end
-)paren
-)paren
-id|printk
-c_func
-(paren
-l_string|&quot;flush_tlb_pgtables: can&squot;t flush across regions!!&bslash;n&quot;
-)paren
-suffix:semicolon
-id|vma.vm_mm
-op_assign
-id|mm
-suffix:semicolon
-id|flush_tlb_range
-c_func
-(paren
-op_amp
-id|vma
-comma
-id|ia64_thash
-c_func
-(paren
-id|start
-)paren
-comma
-id|ia64_thash
-c_func
-(paren
-id|end
-)paren
-)paren
-suffix:semicolon
+multiline_comment|/*&n;&t; * Deprecated.  The virtual page table is now flushed via the normal gather/flush&n;&t; * interface (see tlb.h).&n;&t; */
 )brace
 DECL|macro|flush_tlb_kernel_range
 mdefine_line|#define flush_tlb_kernel_range(start, end)&t;flush_tlb_all()&t;/* XXX fix me */

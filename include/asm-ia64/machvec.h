@@ -726,6 +726,10 @@ r_extern
 id|ia64_mv_pci_dma_address
 id|swiotlb_dma_address
 suffix:semicolon
+r_extern
+id|ia64_mv_pci_dma_supported
+id|swiotlb_pci_dma_supported
+suffix:semicolon
 multiline_comment|/*&n; * Define default versions so we can extend machvec for new platforms without having&n; * to update the machvec files for all existing platforms.&n; */
 macro_line|#ifndef platform_setup
 DECL|macro|platform_setup
