@@ -655,7 +655,7 @@ op_star
 id|atalk_sockets
 suffix:semicolon
 r_extern
-id|spinlock_t
+id|rwlock_t
 id|atalk_sockets_lock
 suffix:semicolon
 r_extern
@@ -675,7 +675,7 @@ op_star
 id|atalk_interfaces
 suffix:semicolon
 r_extern
-id|spinlock_t
+id|rwlock_t
 id|atalk_interfaces_lock
 suffix:semicolon
 r_extern

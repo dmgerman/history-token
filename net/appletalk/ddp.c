@@ -78,9 +78,7 @@ op_star
 id|sa
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_SYSCTL
 r_extern
-r_inline
 r_void
 id|atalk_register_sysctl
 c_func
@@ -89,7 +87,6 @@ r_void
 )paren
 suffix:semicolon
 r_extern
-r_inline
 r_void
 id|atalk_unregister_sysctl
 c_func
@@ -97,7 +94,6 @@ c_func
 r_void
 )paren
 suffix:semicolon
-macro_line|#endif /* CONFIG_SYSCTL */
 DECL|variable|ddp_dl
 DECL|variable|aarp_dl
 r_struct
@@ -122,10 +118,10 @@ op_star
 id|atalk_sockets
 suffix:semicolon
 DECL|variable|atalk_sockets_lock
-id|spinlock_t
+id|rwlock_t
 id|atalk_sockets_lock
 op_assign
-id|SPIN_LOCK_UNLOCKED
+id|RW_LOCK_UNLOCKED
 suffix:semicolon
 DECL|function|atalk_insert_socket
 r_extern
@@ -140,7 +136,7 @@ op_star
 id|sk
 )paren
 (brace
-id|spin_lock_bh
+id|write_lock_bh
 c_func
 (paren
 op_amp
@@ -170,7 +166,7 @@ op_assign
 op_amp
 id|atalk_sockets
 suffix:semicolon
-id|spin_unlock_bh
+id|write_unlock_bh
 c_func
 (paren
 op_amp
@@ -191,7 +187,7 @@ op_star
 id|sk
 )paren
 (brace
-id|spin_lock_bh
+id|write_lock_bh
 c_func
 (paren
 op_amp
@@ -223,7 +219,7 @@ op_assign
 l_int|NULL
 suffix:semicolon
 )brace
-id|spin_unlock_bh
+id|write_unlock_bh
 c_func
 (paren
 op_amp
@@ -255,7 +251,7 @@ id|sock
 op_star
 id|s
 suffix:semicolon
-id|spin_lock_bh
+id|read_lock_bh
 c_func
 (paren
 op_amp
@@ -361,7 +357,7 @@ r_break
 suffix:semicolon
 )brace
 )brace
-id|spin_unlock_bh
+id|read_unlock_bh
 c_func
 (paren
 op_amp
@@ -397,7 +393,7 @@ id|sock
 op_star
 id|s
 suffix:semicolon
-id|spin_lock_bh
+id|write_lock_bh
 c_func
 (paren
 op_amp
@@ -479,7 +475,7 @@ op_amp
 id|atalk_sockets
 suffix:semicolon
 )brace
-id|spin_unlock_bh
+id|write_unlock_bh
 c_func
 (paren
 op_amp
@@ -655,7 +651,7 @@ suffix:semicolon
 )brace
 )brace
 multiline_comment|/**************************************************************************&bslash;&n;*                                                                          *&n;* Routing tables for the AppleTalk socket layer.                           *&n;*                                                                          *&n;&bslash;**************************************************************************/
-multiline_comment|/* Anti-deadlock ordering is router_lock --&gt; iface_lock -DaveM */
+multiline_comment|/* Anti-deadlock ordering is atalk_routes_lock --&gt; iface_lock -DaveM */
 DECL|variable|atalk_routes
 r_struct
 id|atalk_route
@@ -675,10 +671,10 @@ op_star
 id|atalk_interfaces
 suffix:semicolon
 DECL|variable|atalk_interfaces_lock
-id|spinlock_t
+id|rwlock_t
 id|atalk_interfaces_lock
 op_assign
-id|SPIN_LOCK_UNLOCKED
+id|RW_LOCK_UNLOCKED
 suffix:semicolon
 multiline_comment|/* For probing devices or in a routerless network */
 DECL|variable|atrtr_default
@@ -714,7 +710,7 @@ id|atalk_iface
 op_star
 id|tmp
 suffix:semicolon
-id|spin_lock_bh
+id|write_lock_bh
 c_func
 (paren
 op_amp
@@ -767,7 +763,7 @@ op_amp
 id|tmp-&gt;next
 suffix:semicolon
 )brace
-id|spin_unlock_bh
+id|write_unlock_bh
 c_func
 (paren
 op_amp
@@ -841,7 +837,7 @@ id|iface-&gt;status
 op_assign
 l_int|0
 suffix:semicolon
-id|spin_lock_bh
+id|write_lock_bh
 c_func
 (paren
 op_amp
@@ -856,7 +852,7 @@ id|atalk_interfaces
 op_assign
 id|iface
 suffix:semicolon
-id|spin_unlock_bh
+id|write_unlock_bh
 c_func
 (paren
 op_amp
@@ -1374,7 +1370,7 @@ op_star
 id|iface
 suffix:semicolon
 multiline_comment|/*&n;&t; * Return a point-to-point interface only if&n;&t; * there is no non-ptp interface available.&n;&t; */
-id|spin_lock_bh
+id|read_lock_bh
 c_func
 (paren
 op_amp
@@ -1465,7 +1461,7 @@ l_int|NULL
 suffix:semicolon
 id|out
 suffix:colon
-id|spin_unlock_bh
+id|read_unlock_bh
 c_func
 (paren
 op_amp
@@ -1568,7 +1564,7 @@ id|atalk_iface
 op_star
 id|iface
 suffix:semicolon
-id|spin_lock_bh
+id|read_lock_bh
 c_func
 (paren
 op_amp
@@ -1658,7 +1654,7 @@ id|iface-&gt;nets.nr_lastnet
 r_break
 suffix:semicolon
 )brace
-id|spin_unlock_bh
+id|read_unlock_bh
 c_func
 (paren
 op_amp
@@ -2031,7 +2027,7 @@ id|riface
 op_assign
 l_int|NULL
 suffix:semicolon
-id|spin_lock_bh
+id|read_lock_bh
 c_func
 (paren
 op_amp
@@ -2102,7 +2098,7 @@ op_assign
 id|iface
 suffix:semicolon
 )brace
-id|spin_unlock_bh
+id|read_unlock_bh
 c_func
 (paren
 op_amp
@@ -3815,7 +3811,7 @@ suffix:semicolon
 r_int
 id|retval
 suffix:semicolon
-id|spin_lock_bh
+id|write_lock_bh
 c_func
 (paren
 op_amp
@@ -3933,7 +3929,7 @@ id|EBUSY
 suffix:semicolon
 id|out
 suffix:colon
-id|spin_unlock_bh
+id|write_unlock_bh
 c_func
 (paren
 op_amp
@@ -7046,6 +7042,28 @@ c_func
 id|atalk_find_dev_addr
 )paren
 suffix:semicolon
+DECL|variable|__initdata
+r_static
+r_char
+id|atalk_banner
+(braket
+)braket
+id|__initdata
+op_assign
+id|KERN_INFO
+l_string|&quot;NET4: AppleTalk 0.20 for Linux NET4.0&bslash;n&quot;
+suffix:semicolon
+DECL|variable|__initdata
+r_static
+r_char
+id|atalk_err_snap
+(braket
+)braket
+id|__initdata
+op_assign
+id|KERN_CRIT
+l_string|&quot;Unable to register DDP with SNAP.&bslash;n&quot;
+suffix:semicolon
 multiline_comment|/* Called by proto.c on kernel start up */
 DECL|function|atalk_init
 r_static
@@ -7086,8 +7104,7 @@ id|ddp_dl
 id|printk
 c_func
 (paren
-id|KERN_CRIT
-l_string|&quot;Unable to register DDP with SNAP.&bslash;n&quot;
+id|atalk_err_snap
 )paren
 suffix:semicolon
 id|dev_add_pack
@@ -7128,18 +7145,15 @@ c_func
 )paren
 suffix:semicolon
 macro_line|#endif /* CONFIG_PROC_FS */
-macro_line|#ifdef CONFIG_SYSCTL
 id|atalk_register_sysctl
 c_func
 (paren
 )paren
 suffix:semicolon
-macro_line|#endif /* CONFIG_SYSCTL */
 id|printk
 c_func
 (paren
-id|KERN_INFO
-l_string|&quot;NET4: AppleTalk 0.20 for Linux NET4.0&bslash;n&quot;
+id|atalk_banner
 )paren
 suffix:semicolon
 r_return
@@ -7153,7 +7167,6 @@ c_func
 id|atalk_init
 )paren
 suffix:semicolon
-macro_line|#ifdef MODULE
 multiline_comment|/*&n; * Note on MOD_{INC,DEC}_USE_COUNT:&n; *&n; * Use counts are incremented/decremented when&n; * sockets are created/deleted.&n; *&n; * AppleTalk interfaces are not incremented until atalkd is run&n; * and are only decremented when they are downed.&n; *&n; * Ergo, before the AppleTalk module can be removed, all AppleTalk&n; * sockets be closed from user space.&n; */
 DECL|function|atalk_exit
 r_static
@@ -7231,7 +7244,6 @@ c_func
 id|atalk_exit
 )paren
 suffix:semicolon
-macro_line|#endif  /* MODULE */
 id|MODULE_LICENSE
 c_func
 (paren

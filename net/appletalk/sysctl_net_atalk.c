@@ -1,5 +1,6 @@
 multiline_comment|/*&n; * sysctl_net_atalk.c: sysctl interface to net AppleTalk subsystem.&n; *&n; * Begun April 1, 1996, Mike Shaver.&n; * Added /proc/sys/net/atalk directory entry (empty =) ). [MS]&n; * Dynamic registration, added aarp entries. (5/30/97 Chris Horn)&n; */
 macro_line|#include &lt;linux/config.h&gt;
+macro_line|#ifdef CONFIG_SYSCTL
 macro_line|#include &lt;linux/sysctl.h&gt;
 r_extern
 r_int
@@ -17,7 +18,6 @@ r_extern
 r_int
 id|sysctl_aarp_resolve_time
 suffix:semicolon
-macro_line|#ifdef CONFIG_SYSCTL
 DECL|variable|atalk_table
 r_static
 r_struct
@@ -302,7 +302,7 @@ id|atalk_table_header
 )paren
 suffix:semicolon
 )brace
-macro_line|#else
+macro_line|#else /* CONFIG_PROC_FS */
 DECL|function|atalk_register_sysctl
 r_void
 id|atalk_register_sysctl
@@ -321,5 +321,5 @@ r_void
 )paren
 (brace
 )brace
-macro_line|#endif
+macro_line|#endif /* CONFIG_PROC_FS */ 
 eof

@@ -69,7 +69,7 @@ op_assign
 op_star
 id|pos
 suffix:semicolon
-id|spin_lock_bh
+id|read_lock_bh
 c_func
 (paren
 op_amp
@@ -183,7 +183,7 @@ op_star
 id|v
 )paren
 (brace
-id|spin_unlock_bh
+id|read_unlock_bh
 c_func
 (paren
 op_amp
@@ -642,7 +642,7 @@ op_assign
 op_star
 id|pos
 suffix:semicolon
-id|spin_lock_bh
+id|read_lock_bh
 c_func
 (paren
 op_amp
@@ -756,7 +756,7 @@ op_star
 id|v
 )paren
 (brace
-id|spin_unlock_bh
+id|read_unlock_bh
 c_func
 (paren
 op_amp
