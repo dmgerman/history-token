@@ -2033,8 +2033,9 @@ op_star
 id|ifp
 op_assign
 id|dev-&gt;actconfig-&gt;interface
-op_plus
+(braket
 id|i
+)braket
 suffix:semicolon
 r_struct
 id|usb_host_interface

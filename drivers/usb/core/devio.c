@@ -1532,7 +1532,6 @@ l_int|0
 suffix:semicolon
 id|iface
 op_assign
-op_amp
 id|dev-&gt;actconfig-&gt;interface
 (braket
 id|intf
@@ -1671,7 +1670,6 @@ id|ps-&gt;ifclaimed
 (brace
 id|iface
 op_assign
-op_amp
 id|dev-&gt;actconfig-&gt;interface
 (braket
 id|intf
@@ -1845,7 +1843,6 @@ op_increment
 (brace
 id|iface
 op_assign
-op_amp
 id|dev-&gt;actconfig-&gt;interface
 (braket
 id|i
@@ -1978,7 +1975,6 @@ op_increment
 (brace
 id|iface
 op_assign
-op_amp
 id|dev-&gt;actconfig-&gt;interface
 (braket
 id|i
@@ -3677,7 +3673,6 @@ id|usb_interface
 op_star
 id|intf
 op_assign
-op_amp
 id|ps-&gt;dev-&gt;actconfig-&gt;interface
 (braket
 id|i

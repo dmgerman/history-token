@@ -145,7 +145,7 @@ id|dev-&gt;actconfig-&gt;interface
 (braket
 l_int|0
 )braket
-dot
+op_member_access_from_pointer
 id|dev
 suffix:semicolon
 )brace
@@ -2949,8 +2949,12 @@ op_star
 id|hub
 op_assign
 id|usb_get_intfdata
+c_func
 (paren
 id|dev-&gt;actconfig-&gt;interface
+(braket
+l_int|0
+)braket
 )paren
 suffix:semicolon
 r_int
@@ -5490,7 +5494,6 @@ id|usb_interface
 op_star
 id|intf
 op_assign
-op_amp
 id|dev-&gt;actconfig-&gt;interface
 (braket
 id|i
