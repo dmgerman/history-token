@@ -2972,6 +2972,7 @@ id|CIA_IOC_CIA_ERR
 suffix:semicolon
 multiline_comment|/* re-read to force write.  */
 )brace
+macro_line|#ifdef CONFIG_VERBOSE_MCHECK
 r_static
 r_void
 DECL|function|cia_decode_pci_error
@@ -4481,6 +4482,7 @@ id|mask
 )paren
 suffix:semicolon
 )brace
+macro_line|#endif
 r_static
 r_int
 DECL|function|cia_decode_mchk
@@ -4501,9 +4503,6 @@ r_struct
 id|el_CIA_sysdata_mcheck
 op_star
 id|cia
-suffix:semicolon
-r_int
-id|which
 suffix:semicolon
 id|com
 op_assign
@@ -4539,19 +4538,16 @@ l_int|0
 r_return
 l_int|0
 suffix:semicolon
-id|which
-op_assign
-id|cia-&gt;cia_err
-op_amp
-l_int|0xfff
-suffix:semicolon
+macro_line|#ifdef CONFIG_VERBOSE_MCHECK
 r_switch
 c_cond
 (paren
 id|ffs
 c_func
 (paren
-id|which
+id|cia-&gt;cia_err
+op_amp
+l_int|0xfff
 )paren
 op_minus
 l_int|1
@@ -4889,6 +4885,7 @@ l_string|&quot;CIA lost machine check: &quot;
 l_string|&quot;I/O timeout&bslash;n&quot;
 )paren
 suffix:semicolon
+macro_line|#endif
 r_return
 l_int|1
 suffix:semicolon
