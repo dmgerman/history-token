@@ -5,7 +5,7 @@ macro_line|#include &lt;linux/mtd/compatmac.h&gt;
 macro_line|#include &lt;linux/mtd/mtd.h&gt;
 multiline_comment|/*#define PSYCHO_DEBUG */
 macro_line|#include &lt;linux/kernel.h&gt;
-macro_line|#include &lt;linux/sched.h&gt;
+macro_line|#include &lt;linux/jiffies.h&gt;
 macro_line|#include &lt;linux/ptrace.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/string.h&gt;

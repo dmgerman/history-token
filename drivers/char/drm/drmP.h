@@ -18,7 +18,7 @@ macro_line|#include &lt;linux/file.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/wrapper.h&gt;
 macro_line|#include &lt;linux/version.h&gt;
-macro_line|#include &lt;linux/sched.h&gt;
+macro_line|#include &lt;linux/jiffies.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;&t;/* For (un)lock_kernel */
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#if defined(__alpha__) || defined(__powerpc__)
