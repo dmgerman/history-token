@@ -32,11 +32,6 @@ op_assign
 l_int|1
 suffix:semicolon
 multiline_comment|/* reset all PnP cards (deactivate) */
-DECL|variable|isapnp_skip_pci_scan
-r_int
-id|isapnp_skip_pci_scan
-suffix:semicolon
-multiline_comment|/* skip PCI resource scanning */
 DECL|variable|isapnp_verbose
 r_int
 id|isapnp_verbose
@@ -110,22 +105,6 @@ c_func
 id|isapnp_allow_dma0
 comma
 l_string|&quot;i&quot;
-)paren
-suffix:semicolon
-id|MODULE_PARM
-c_func
-(paren
-id|isapnp_skip_pci_scan
-comma
-l_string|&quot;i&quot;
-)paren
-suffix:semicolon
-id|MODULE_PARM_DESC
-c_func
-(paren
-id|isapnp_skip_pci_scan
-comma
-l_string|&quot;ISA Plug &amp; Play skip PCI resource scanning&quot;
 )paren
 suffix:semicolon
 id|MODULE_PARM
@@ -5906,20 +5885,6 @@ id|str
 comma
 op_amp
 id|isapnp_reset
-)paren
-op_eq
-l_int|2
-)paren
-op_logical_and
-(paren
-id|get_option
-c_func
-(paren
-op_amp
-id|str
-comma
-op_amp
-id|isapnp_skip_pci_scan
 )paren
 op_eq
 l_int|2
