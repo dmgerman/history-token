@@ -9910,6 +9910,12 @@ c_func
 id|gp
 )paren
 suffix:semicolon
+id|gem_init_pause_thresholds
+c_func
+(paren
+id|gp
+)paren
+suffix:semicolon
 id|gem_init_dma
 c_func
 (paren
@@ -9917,12 +9923,6 @@ id|gp
 )paren
 suffix:semicolon
 id|gem_init_mac
-c_func
-(paren
-id|gp
-)paren
-suffix:semicolon
-id|gem_init_pause_thresholds
 c_func
 (paren
 id|gp
