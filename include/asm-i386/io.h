@@ -2,6 +2,8 @@ macro_line|#ifndef _ASM_IO_H
 DECL|macro|_ASM_IO_H
 mdefine_line|#define _ASM_IO_H
 macro_line|#include &lt;linux/config.h&gt;
+macro_line|#include &lt;linux/string.h&gt;
+macro_line|#include &lt;linux/compiler.h&gt;
 multiline_comment|/*&n; * This file contains the definitions for the x86 IO instructions&n; * inb/inw/inl/outb/outw/outl and the &quot;string versions&quot; of the same&n; * (insb/insw/insl/outsb/outsw/outsl). You can also use &quot;pausing&quot;&n; * versions of the single-IO instructions (inb_p/inw_p/..).&n; *&n; * This file is not meant to be obfuscating: it&squot;s just complicated&n; * to (a) handle it all in a way that makes gcc able to optimize it&n; * as well as possible and (b) trying to avoid writing the same thing&n; * over and over again with slight variations and possibly making a&n; * mistake somewhere.&n; */
 multiline_comment|/*&n; * Thanks to James van Artsdalen for a better timing-fix than&n; * the two short jumps: using outb&squot;s to a nonexistent port seems&n; * to guarantee better timings even on fast machines.&n; *&n; * On the other hand, I&squot;d like to be sure of a non-existent port:&n; * I feel a bit unsafe about using 0x80 (should be safe, though)&n; *&n; *&t;&t;Linus&n; */
 multiline_comment|/*&n;  *  Bit simplified and optimized by Jan Hubicka&n;  *  Support of BIGMEM added by Gerhard Wichert, Siemens AG, July 1999.&n;  *&n;  *  isa_memset_io, isa_memcpy_fromio, isa_memcpy_toio added,&n;  *  isa_read[wl] and isa_write[wl] fixed&n;  *  - Arnaldo Carvalho de Melo &lt;acme@conectiva.com.br&gt;&n;  */
@@ -63,6 +65,7 @@ DECL|macro|page_to_phys
 mdefine_line|#define page_to_phys(page)    ((dma_addr_t)page_to_pfn(page) &lt;&lt; PAGE_SHIFT)
 r_extern
 r_void
+id|__iomem
 op_star
 id|__ioremap
 c_func
@@ -85,8 +88,10 @@ DECL|function|ioremap
 r_static
 r_inline
 r_void
+id|__iomem
 op_star
 id|ioremap
+c_func
 (paren
 r_int
 r_int
@@ -111,8 +116,10 @@ suffix:semicolon
 )brace
 r_extern
 r_void
+id|__iomem
 op_star
 id|ioremap_nocache
+c_func
 (paren
 r_int
 r_int
@@ -128,7 +135,9 @@ r_void
 id|iounmap
 c_func
 (paren
+r_volatile
 r_void
+id|__iomem
 op_star
 id|addr
 )paren
@@ -176,12 +185,90 @@ mdefine_line|#define virt_to_bus virt_to_phys
 DECL|macro|bus_to_virt
 mdefine_line|#define bus_to_virt phys_to_virt
 multiline_comment|/*&n; * readX/writeX() are used to access memory mapped devices. On some&n; * architectures the memory mapped IO stuff needs to be accessed&n; * differently. On the x86 architecture, we just read/write the&n; * memory location directly.&n; */
-DECL|macro|readb
-mdefine_line|#define readb(addr) (*(volatile unsigned char *) (addr))
-DECL|macro|readw
-mdefine_line|#define readw(addr) (*(volatile unsigned short *) (addr))
-DECL|macro|readl
-mdefine_line|#define readl(addr) (*(volatile unsigned int *) (addr))
+DECL|function|readb
+r_static
+r_inline
+r_int
+r_char
+id|readb
+c_func
+(paren
+r_const
+r_volatile
+r_void
+id|__iomem
+op_star
+id|addr
+)paren
+(brace
+r_return
+op_star
+(paren
+r_volatile
+r_int
+r_char
+id|__force
+op_star
+)paren
+id|addr
+suffix:semicolon
+)brace
+DECL|function|readw
+r_static
+r_inline
+r_int
+r_int
+id|readw
+c_func
+(paren
+r_const
+r_volatile
+r_void
+id|__iomem
+op_star
+id|addr
+)paren
+(brace
+r_return
+op_star
+(paren
+r_volatile
+r_int
+r_int
+id|__force
+op_star
+)paren
+id|addr
+suffix:semicolon
+)brace
+DECL|function|readl
+r_static
+r_inline
+r_int
+r_int
+id|readl
+c_func
+(paren
+r_const
+r_volatile
+r_void
+id|__iomem
+op_star
+id|addr
+)paren
+(brace
+r_return
+op_star
+(paren
+r_volatile
+r_int
+r_int
+id|__force
+op_star
+)paren
+id|addr
+suffix:semicolon
+)brace
 DECL|macro|readb_relaxed
 mdefine_line|#define readb_relaxed(addr) readb(addr)
 DECL|macro|readw_relaxed
@@ -194,27 +281,219 @@ DECL|macro|__raw_readw
 mdefine_line|#define __raw_readw readw
 DECL|macro|__raw_readl
 mdefine_line|#define __raw_readl readl
-DECL|macro|writeb
-mdefine_line|#define writeb(b,addr) (*(volatile unsigned char *) (addr) = (b))
-DECL|macro|writew
-mdefine_line|#define writew(b,addr) (*(volatile unsigned short *) (addr) = (b))
-DECL|macro|writel
-mdefine_line|#define writel(b,addr) (*(volatile unsigned int *) (addr) = (b))
+DECL|function|writeb
+r_static
+r_inline
+r_void
+id|writeb
+c_func
+(paren
+r_int
+r_char
+id|b
+comma
+r_volatile
+r_void
+id|__iomem
+op_star
+id|addr
+)paren
+(brace
+op_star
+(paren
+r_volatile
+r_int
+r_char
+id|__force
+op_star
+)paren
+id|addr
+op_assign
+id|b
+suffix:semicolon
+)brace
+DECL|function|writew
+r_static
+r_inline
+r_void
+id|writew
+c_func
+(paren
+r_int
+r_int
+id|b
+comma
+r_volatile
+r_void
+id|__iomem
+op_star
+id|addr
+)paren
+(brace
+op_star
+(paren
+r_volatile
+r_int
+r_int
+id|__force
+op_star
+)paren
+id|addr
+op_assign
+id|b
+suffix:semicolon
+)brace
+DECL|function|writel
+r_static
+r_inline
+r_void
+id|writel
+c_func
+(paren
+r_int
+r_int
+id|b
+comma
+r_volatile
+r_void
+id|__iomem
+op_star
+id|addr
+)paren
+(brace
+op_star
+(paren
+r_volatile
+r_int
+r_int
+id|__force
+op_star
+)paren
+id|addr
+op_assign
+id|b
+suffix:semicolon
+)brace
 DECL|macro|__raw_writeb
 mdefine_line|#define __raw_writeb writeb
 DECL|macro|__raw_writew
 mdefine_line|#define __raw_writew writew
 DECL|macro|__raw_writel
 mdefine_line|#define __raw_writel writel
-DECL|macro|memset_io
-mdefine_line|#define memset_io(a,b,c)&t;memset((void *)(a),(b),(c))
-DECL|macro|memcpy_fromio
-mdefine_line|#define memcpy_fromio(a,b,c)&t;__memcpy((a),(void *)(b),(c))
-DECL|macro|memcpy_toio
-mdefine_line|#define memcpy_toio(a,b,c)&t;__memcpy((void *)(a),(b),(c))
+DECL|function|memset_io
+r_static
+r_inline
+r_void
+id|memset_io
+c_func
+(paren
+r_volatile
+r_void
+id|__iomem
+op_star
+id|addr
+comma
+r_int
+r_char
+id|val
+comma
+r_int
+id|count
+)paren
+(brace
+id|memset
+c_func
+(paren
+(paren
+r_void
+id|__force
+op_star
+)paren
+id|addr
+comma
+id|val
+comma
+id|count
+)paren
+suffix:semicolon
+)brace
+DECL|function|memcpy_fromio
+r_static
+r_inline
+r_void
+id|memcpy_fromio
+c_func
+(paren
+r_void
+op_star
+id|dst
+comma
+r_volatile
+r_void
+id|__iomem
+op_star
+id|src
+comma
+r_int
+id|count
+)paren
+(brace
+id|__memcpy
+c_func
+(paren
+id|dst
+comma
+(paren
+r_void
+id|__force
+op_star
+)paren
+id|src
+comma
+id|count
+)paren
+suffix:semicolon
+)brace
+DECL|function|memcpy_toio
+r_static
+r_inline
+r_void
+id|memcpy_toio
+c_func
+(paren
+r_volatile
+r_void
+id|__iomem
+op_star
+id|dst
+comma
+r_void
+op_star
+id|src
+comma
+r_int
+id|count
+)paren
+(brace
+id|__memcpy
+c_func
+(paren
+(paren
+r_void
+id|__force
+op_star
+)paren
+id|dst
+comma
+id|src
+comma
+id|count
+)paren
+suffix:semicolon
+)brace
 multiline_comment|/*&n; * ISA space is &squot;always mapped&squot; on a typical x86 system, no need to&n; * explicitly ioremap() it. The fact that the ISA IO space is mapped&n; * to PAGE_OFFSET is pure coincidence - it does not mean ISA values&n; * are physical addresses. The following constant pointer can be&n; * used as the IO-area pointer (it can be iounmapped as well, so the&n; * analogy with PCI is quite large):&n; */
 DECL|macro|__ISA_IO_base
-mdefine_line|#define __ISA_IO_base ((char *)(PAGE_OFFSET))
+mdefine_line|#define __ISA_IO_base ((char __iomem *)(PAGE_OFFSET))
 DECL|macro|isa_readb
 mdefine_line|#define isa_readb(a) readb(__ISA_IO_base + (a))
 DECL|macro|isa_readw
@@ -235,9 +514,9 @@ DECL|macro|isa_memcpy_toio
 mdefine_line|#define isa_memcpy_toio(a,b,c)&t;&t;memcpy_toio(__ISA_IO_base + (a),(b),(c))
 multiline_comment|/*&n; * Again, i386 does not require mem IO specific function.&n; */
 DECL|macro|eth_io_copy_and_sum
-mdefine_line|#define eth_io_copy_and_sum(a,b,c,d)&t;&t;eth_copy_and_sum((a),(void *)(b),(c),(d))
+mdefine_line|#define eth_io_copy_and_sum(a,b,c,d)&t;&t;eth_copy_and_sum((a),(void __force *)(b),(c),(d))
 DECL|macro|isa_eth_io_copy_and_sum
-mdefine_line|#define isa_eth_io_copy_and_sum(a,b,c,d)&t;eth_copy_and_sum((a),(void *)(__ISA_IO_base + (b)),(c),(d))
+mdefine_line|#define isa_eth_io_copy_and_sum(a,b,c,d)&t;eth_copy_and_sum((a),(void __force *)(__ISA_IO_base + (b)),(c),(d))
 multiline_comment|/**&n; *&t;check_signature&t;&t;-&t;find BIOS signatures&n; *&t;@io_addr: mmio address to check &n; *&t;@signature:  signature block&n; *&t;@length: length of signature&n; *&n; *&t;Perform a signature comparison with the mmio address io_addr. This&n; *&t;address should have been obtained by ioremap.&n; *&t;Returns 1 on a match.&n; */
 DECL|function|check_signature
 r_static
@@ -246,8 +525,10 @@ r_int
 id|check_signature
 c_func
 (paren
-r_int
-r_int
+r_volatile
+r_void
+id|__iomem
+op_star
 id|io_addr
 comma
 r_const
