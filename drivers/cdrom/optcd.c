@@ -3954,8 +3954,9 @@ id|timer_list
 id|req_timer
 op_assign
 (brace
+dot
 id|function
-suffix:colon
+op_assign
 id|poll
 )brace
 suffix:semicolon
