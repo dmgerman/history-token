@@ -12361,6 +12361,8 @@ c_func
 id|dev
 comma
 id|edev-&gt;base_addr
+op_plus
+l_int|0xC38
 comma
 id|HP100_BUS_EISA
 comma
