@@ -7282,6 +7282,11 @@ id|urbp
 op_assign
 id|urb-&gt;hcpriv
 suffix:semicolon
+r_int
+id|prevactive
+op_assign
+l_int|1
+suffix:semicolon
 multiline_comment|/* We can get called when urbp allocation fails, so check */
 r_if
 c_cond
@@ -7300,6 +7305,7 @@ id|urb
 )paren
 suffix:semicolon
 multiline_comment|/* Safe since it checks */
+multiline_comment|/*&n;&t; * Now we need to find out what the last successful toggle was&n;&t; * so we can update the local data toggle for the next transfer&n;&t; *&n;&t; * There&squot;s 3 way&squot;s the last successful completed TD is found:&n;&t; *&n;&t; * 1) The TD is NOT active and the actual length &lt; expected length&n;&t; * 2) The TD is NOT active and it&squot;s the last TD in the chain&n;&t; * 3) The TD is active and the previous TD is NOT active&n;&t; *&n;&t; * Control and Isochronous ignore the toggle, so this is safe&n;&t; * for all types&n;&t; */
 id|head
 op_assign
 op_amp
@@ -7337,11 +7343,8 @@ id|tmp
 op_assign
 id|tmp-&gt;next
 suffix:semicolon
-multiline_comment|/* Control and Isochronous ignore the toggle, so this */
-multiline_comment|/* is safe for all types */
 r_if
 c_cond
-(paren
 (paren
 op_logical_neg
 (paren
@@ -7362,14 +7365,12 @@ c_func
 (paren
 id|td-&gt;info
 )paren
-)paren
 op_logical_or
 id|tmp
 op_eq
 id|head
 )paren
 )paren
-(brace
 id|usb_settoggle
 c_func
 (paren
@@ -7396,7 +7397,49 @@ op_xor
 l_int|1
 )paren
 suffix:semicolon
-)brace
+r_else
+r_if
+c_cond
+(paren
+(paren
+id|td-&gt;status
+op_amp
+id|TD_CTRL_ACTIVE
+)paren
+op_logical_and
+op_logical_neg
+id|prevactive
+)paren
+id|usb_settoggle
+c_func
+(paren
+id|urb-&gt;dev
+comma
+id|uhci_endpoint
+c_func
+(paren
+id|td-&gt;info
+)paren
+comma
+id|uhci_packetout
+c_func
+(paren
+id|td-&gt;info
+)paren
+comma
+id|uhci_toggle
+c_func
+(paren
+id|td-&gt;info
+)paren
+)paren
+suffix:semicolon
+id|prevactive
+op_assign
+id|td-&gt;status
+op_amp
+id|TD_CTRL_ACTIVE
+suffix:semicolon
 )brace
 id|uhci_delete_queued_urb
 c_func
