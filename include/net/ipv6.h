@@ -1079,12 +1079,6 @@ r_struct
 id|flowi
 op_star
 id|fl
-comma
-r_struct
-id|in6_addr
-op_star
-op_star
-id|saddr
 )paren
 suffix:semicolon
 multiline_comment|/*&n; *&t;skb processing functions&n; */

@@ -3546,11 +3546,9 @@ id|board-&gt;loopback
 op_assign
 id|SLICECOM_LOOPBACK_DEFAULT
 suffix:semicolon
-id|SET_MODULE_OWNER
-c_func
-(paren
-id|board
-)paren
+id|board-&gt;owner
+op_assign
+id|THIS_MODULE
 suffix:semicolon
 )brace
 r_else
