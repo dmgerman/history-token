@@ -1,5 +1,5 @@
 multiline_comment|/******************************************************************************&n; *&n; * Module Name: nsutils - Utilities for accessing ACPI namespace, accessing&n; *                        parents and siblings and Scope manipulation&n; *&n; *****************************************************************************/
-multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
+multiline_comment|/*&n; *  Copyright (C) 2000 - 2003, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;acnamesp.h&quot;
 macro_line|#include &quot;amlcode.h&quot;
@@ -132,6 +132,7 @@ r_char
 op_star
 id|message
 comma
+r_struct
 id|acpi_namespace_node
 op_star
 id|prefix_node
@@ -147,6 +148,7 @@ id|method_status
 id|acpi_status
 id|status
 suffix:semicolon
+r_struct
 id|acpi_namespace_node
 op_star
 id|node
@@ -223,6 +225,7 @@ r_void
 DECL|function|acpi_ns_print_node_pathname
 id|acpi_ns_print_node_pathname
 (paren
+r_struct
 id|acpi_namespace_node
 op_star
 id|node
@@ -232,6 +235,7 @@ op_star
 id|msg
 )paren
 (brace
+r_struct
 id|acpi_buffer
 id|buffer
 suffix:semicolon
@@ -333,6 +337,7 @@ id|acpi_object_type
 DECL|function|acpi_ns_get_type
 id|acpi_ns_get_type
 (paren
+r_struct
 id|acpi_namespace_node
 op_star
 id|node
@@ -429,6 +434,7 @@ r_void
 DECL|function|acpi_ns_get_internal_name_length
 id|acpi_ns_get_internal_name_length
 (paren
+r_struct
 id|acpi_namestring_info
 op_star
 id|info
@@ -570,6 +576,7 @@ id|acpi_status
 DECL|function|acpi_ns_build_internal_name
 id|acpi_ns_build_internal_name
 (paren
+r_struct
 id|acpi_namestring_info
 op_star
 id|info
@@ -998,6 +1005,7 @@ r_char
 op_star
 id|internal_name
 suffix:semicolon
+r_struct
 id|acpi_namestring_info
 id|info
 suffix:semicolon
@@ -1600,6 +1608,7 @@ id|AE_OK
 suffix:semicolon
 )brace
 multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ns_map_handle_to_node&n; *&n; * PARAMETERS:  Handle          - Handle to be converted to an Node&n; *&n; * RETURN:      A Name table entry pointer&n; *&n; * DESCRIPTION: Convert a namespace handle to a real Node&n; *&n; * Note: Real integer handles allow for more verification&n; *       and keep all pointers within this subsystem.&n; *&n; ******************************************************************************/
+r_struct
 id|acpi_namespace_node
 op_star
 DECL|function|acpi_ns_map_handle_to_node
@@ -1662,6 +1671,7 @@ suffix:semicolon
 r_return
 (paren
 (paren
+r_struct
 id|acpi_namespace_node
 op_star
 )paren
@@ -1674,6 +1684,7 @@ id|acpi_handle
 DECL|function|acpi_ns_convert_entry_to_handle
 id|acpi_ns_convert_entry_to_handle
 (paren
+r_struct
 id|acpi_namespace_node
 op_star
 id|node
@@ -1698,10 +1709,12 @@ id|acpi_ns_terminate
 r_void
 )paren
 (brace
+r_union
 id|acpi_operand_object
 op_star
 id|obj_desc
 suffix:semicolon
+r_struct
 id|acpi_namespace_node
 op_star
 id|this_node
@@ -1847,6 +1860,7 @@ r_char
 op_star
 id|pathname
 comma
+r_struct
 id|acpi_namespace_node
 op_star
 id|start_node
@@ -1854,12 +1868,14 @@ comma
 id|u32
 id|flags
 comma
+r_struct
 id|acpi_namespace_node
 op_star
 op_star
 id|return_node
 )paren
 (brace
+r_union
 id|acpi_generic_state
 id|scope_info
 suffix:semicolon
@@ -2023,11 +2039,13 @@ id|acpi_name
 DECL|function|acpi_ns_find_parent_name
 id|acpi_ns_find_parent_name
 (paren
+r_struct
 id|acpi_namespace_node
 op_star
 id|child_node
 )paren
 (brace
+r_struct
 id|acpi_namespace_node
 op_star
 id|parent_node
@@ -2111,11 +2129,13 @@ id|ACPI_UNKNOWN_NAME
 suffix:semicolon
 )brace
 multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ns_get_parent_node&n; *&n; * PARAMETERS:  Node       - Current table entry&n; *&n; * RETURN:      Parent entry of the given entry&n; *&n; * DESCRIPTION: Obtain the parent entry for a given entry in the namespace.&n; *&n; ******************************************************************************/
+r_struct
 id|acpi_namespace_node
 op_star
 DECL|function|acpi_ns_get_parent_node
 id|acpi_ns_get_parent_node
 (paren
+r_struct
 id|acpi_namespace_node
 op_star
 id|node
@@ -2162,11 +2182,13 @@ id|node-&gt;peer
 suffix:semicolon
 )brace
 multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ns_get_next_valid_node&n; *&n; * PARAMETERS:  Node       - Current table entry&n; *&n; * RETURN:      Next valid Node in the linked node list.  NULL if no more valid&n; *              nodess&n; *&n; * DESCRIPTION: Find the next valid node within a name table.&n; *              Useful for implementing NULL-end-of-list loops.&n; *&n; ******************************************************************************/
+r_struct
 id|acpi_namespace_node
 op_star
 DECL|function|acpi_ns_get_next_valid_node
 id|acpi_ns_get_next_valid_node
 (paren
+r_struct
 id|acpi_namespace_node
 op_star
 id|node

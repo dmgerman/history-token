@@ -1,5 +1,5 @@
 multiline_comment|/******************************************************************************&n; *&n; * Name: actables.h - ACPI table management&n; *&n; *****************************************************************************/
-multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
+multiline_comment|/*&n; *  Copyright (C) 2000 - 2003, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#ifndef __ACTABLES_H__
 DECL|macro|__ACTABLES_H__
 mdefine_line|#define __ACTABLES_H__
@@ -12,6 +12,7 @@ id|acpi_tb_handle_to_object
 id|u16
 id|table_id
 comma
+r_struct
 id|acpi_table_desc
 op_star
 op_star
@@ -22,6 +23,7 @@ multiline_comment|/*&n; * tbconvrt - Table conversion routines&n; */
 id|acpi_status
 id|acpi_tb_convert_to_xsdt
 (paren
+r_struct
 id|acpi_table_desc
 op_star
 id|table_info
@@ -36,6 +38,7 @@ suffix:semicolon
 id|acpi_status
 id|acpi_tb_build_common_facs
 (paren
+r_struct
 id|acpi_table_desc
 op_star
 id|table_info
@@ -44,10 +47,12 @@ suffix:semicolon
 id|u32
 id|acpi_tb_get_table_count
 (paren
+r_struct
 id|rsdp_descriptor
 op_star
 id|RSDP
 comma
+r_struct
 id|acpi_table_header
 op_star
 id|RSDT
@@ -57,10 +62,12 @@ multiline_comment|/*&n; * tbget - Table &quot;get&quot; routines&n; */
 id|acpi_status
 id|acpi_tb_get_table
 (paren
+r_struct
 id|acpi_pointer
 op_star
 id|address
 comma
+r_struct
 id|acpi_table_desc
 op_star
 id|table_info
@@ -69,10 +76,12 @@ suffix:semicolon
 id|acpi_status
 id|acpi_tb_get_table_header
 (paren
+r_struct
 id|acpi_pointer
 op_star
 id|address
 comma
+r_struct
 id|acpi_table_header
 op_star
 id|return_header
@@ -81,14 +90,17 @@ suffix:semicolon
 id|acpi_status
 id|acpi_tb_get_table_body
 (paren
+r_struct
 id|acpi_pointer
 op_star
 id|address
 comma
+r_struct
 id|acpi_table_header
 op_star
 id|header
 comma
+r_struct
 id|acpi_table_desc
 op_star
 id|table_info
@@ -97,14 +109,17 @@ suffix:semicolon
 id|acpi_status
 id|acpi_tb_get_this_table
 (paren
+r_struct
 id|acpi_pointer
 op_star
 id|address
 comma
+r_struct
 id|acpi_table_header
 op_star
 id|header
 comma
+r_struct
 id|acpi_table_desc
 op_star
 id|table_info
@@ -113,10 +128,12 @@ suffix:semicolon
 id|acpi_status
 id|acpi_tb_table_override
 (paren
+r_struct
 id|acpi_table_header
 op_star
 id|header
 comma
+r_struct
 id|acpi_table_desc
 op_star
 id|table_info
@@ -131,6 +148,7 @@ comma
 id|u32
 id|instance
 comma
+r_struct
 id|acpi_table_header
 op_star
 op_star
@@ -140,6 +158,7 @@ suffix:semicolon
 id|acpi_status
 id|acpi_tb_verify_rsdp
 (paren
+r_struct
 id|acpi_pointer
 op_star
 id|address
@@ -148,6 +167,7 @@ suffix:semicolon
 r_void
 id|acpi_tb_get_rsdt_address
 (paren
+r_struct
 id|acpi_pointer
 op_star
 id|out_address
@@ -156,6 +176,7 @@ suffix:semicolon
 id|acpi_status
 id|acpi_tb_validate_rsdt
 (paren
+r_struct
 id|acpi_table_header
 op_star
 id|table_ptr
@@ -170,10 +191,12 @@ suffix:semicolon
 id|acpi_status
 id|acpi_tb_get_primary_table
 (paren
+r_struct
 id|acpi_pointer
 op_star
 id|address
 comma
+r_struct
 id|acpi_table_desc
 op_star
 id|table_info
@@ -182,6 +205,7 @@ suffix:semicolon
 id|acpi_status
 id|acpi_tb_get_secondary_table
 (paren
+r_struct
 id|acpi_pointer
 op_star
 id|address
@@ -189,6 +213,7 @@ comma
 id|acpi_string
 id|signature
 comma
+r_struct
 id|acpi_table_desc
 op_star
 id|table_info
@@ -198,6 +223,7 @@ multiline_comment|/*&n; * tbinstall - Table installation&n; */
 id|acpi_status
 id|acpi_tb_install_table
 (paren
+r_struct
 id|acpi_table_desc
 op_star
 id|table_info
@@ -210,6 +236,7 @@ r_char
 op_star
 id|signature
 comma
+r_struct
 id|acpi_table_desc
 op_star
 id|table_info
@@ -221,6 +248,7 @@ suffix:semicolon
 id|acpi_status
 id|acpi_tb_recognize_table
 (paren
+r_struct
 id|acpi_table_desc
 op_star
 id|table_info
@@ -235,6 +263,7 @@ id|acpi_tb_init_table_descriptor
 id|acpi_table_type
 id|table_type
 comma
+r_struct
 id|acpi_table_desc
 op_star
 id|table_info
@@ -257,15 +286,18 @@ suffix:semicolon
 r_void
 id|acpi_tb_delete_single_table
 (paren
+r_struct
 id|acpi_table_desc
 op_star
 id|table_desc
 )paren
 suffix:semicolon
+r_struct
 id|acpi_table_desc
 op_star
 id|acpi_tb_uninstall_table
 (paren
+r_struct
 id|acpi_table_desc
 op_star
 id|table_desc
@@ -274,6 +306,7 @@ suffix:semicolon
 r_void
 id|acpi_tb_free_acpi_tables_of_type
 (paren
+r_struct
 id|acpi_table_desc
 op_star
 id|table_info
@@ -301,6 +334,7 @@ suffix:semicolon
 id|acpi_status
 id|acpi_tb_find_rsdp
 (paren
+r_struct
 id|acpi_table_desc
 op_star
 id|table_info
@@ -325,6 +359,7 @@ r_char
 op_star
 id|oem_table_id
 comma
+r_struct
 id|acpi_table_header
 op_star
 op_star
@@ -334,6 +369,7 @@ suffix:semicolon
 id|acpi_status
 id|acpi_tb_verify_table_checksum
 (paren
+r_struct
 id|acpi_table_header
 op_star
 id|table_header
@@ -353,6 +389,7 @@ suffix:semicolon
 id|acpi_status
 id|acpi_tb_validate_table_header
 (paren
+r_struct
 id|acpi_table_header
 op_star
 id|table_header

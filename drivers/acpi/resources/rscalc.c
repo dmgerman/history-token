@@ -1,5 +1,5 @@
 multiline_comment|/*******************************************************************************&n; *&n; * Module Name: rscalc - Calculate stream and list lengths&n; *&n; ******************************************************************************/
-multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
+multiline_comment|/*&n; *  Copyright (C) 2000 - 2003, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;acresrc.h&quot;
 macro_line|#include &quot;amlcode.h&quot;
@@ -15,6 +15,7 @@ id|acpi_status
 DECL|function|acpi_rs_get_byte_stream_length
 id|acpi_rs_get_byte_stream_length
 (paren
+r_struct
 id|acpi_resource
 op_star
 id|linked_list
@@ -32,6 +33,7 @@ suffix:semicolon
 id|acpi_size
 id|segment_size
 suffix:semicolon
+r_struct
 id|acpi_resource_ext_irq
 op_star
 id|ex_irq
@@ -331,6 +333,7 @@ id|linked_list
 op_assign
 id|ACPI_PTR_ADD
 (paren
+r_struct
 id|acpi_resource
 comma
 id|linked_list
@@ -453,6 +456,7 @@ id|structure_size
 op_assign
 id|ACPI_SIZEOF_RESOURCE
 (paren
+r_struct
 id|acpi_resource_mem24
 )paren
 suffix:semicolon
@@ -498,6 +502,7 @@ id|structure_size
 op_assign
 id|ACPI_SIZEOF_RESOURCE
 (paren
+r_struct
 id|acpi_resource_vendor
 )paren
 op_plus
@@ -524,6 +529,7 @@ id|structure_size
 op_assign
 id|ACPI_SIZEOF_RESOURCE
 (paren
+r_struct
 id|acpi_resource_mem32
 )paren
 suffix:semicolon
@@ -541,6 +547,7 @@ id|structure_size
 op_assign
 id|ACPI_SIZEOF_RESOURCE
 (paren
+r_struct
 id|acpi_resource_fixed_mem32
 )paren
 suffix:semicolon
@@ -614,6 +621,7 @@ id|structure_size
 op_assign
 id|ACPI_SIZEOF_RESOURCE
 (paren
+r_struct
 id|acpi_resource_address64
 )paren
 op_plus
@@ -696,6 +704,7 @@ id|structure_size
 op_assign
 id|ACPI_SIZEOF_RESOURCE
 (paren
+r_struct
 id|acpi_resource_address32
 )paren
 op_plus
@@ -778,6 +787,7 @@ id|structure_size
 op_assign
 id|ACPI_SIZEOF_RESOURCE
 (paren
+r_struct
 id|acpi_resource_address16
 )paren
 op_plus
@@ -892,6 +902,7 @@ id|structure_size
 op_assign
 id|ACPI_SIZEOF_RESOURCE
 (paren
+r_struct
 id|acpi_resource_ext_irq
 )paren
 op_plus
@@ -997,6 +1008,7 @@ id|structure_size
 op_assign
 id|ACPI_SIZEOF_RESOURCE
 (paren
+r_struct
 id|acpi_resource_io
 )paren
 op_plus
@@ -1069,6 +1081,7 @@ id|structure_size
 op_assign
 id|ACPI_SIZEOF_RESOURCE
 (paren
+r_struct
 id|acpi_resource_dma
 )paren
 op_plus
@@ -1120,6 +1133,7 @@ id|structure_size
 op_assign
 id|ACPI_SIZEOF_RESOURCE
 (paren
+r_struct
 id|acpi_resource_start_dpf
 )paren
 suffix:semicolon
@@ -1151,6 +1165,7 @@ id|structure_size
 op_assign
 id|ACPI_SIZEOF_RESOURCE
 (paren
+r_struct
 id|acpi_resource_io
 )paren
 suffix:semicolon
@@ -1168,6 +1183,7 @@ id|structure_size
 op_assign
 id|ACPI_SIZEOF_RESOURCE
 (paren
+r_struct
 id|acpi_resource_fixed_io
 )paren
 suffix:semicolon
@@ -1218,6 +1234,7 @@ id|structure_size
 op_assign
 id|ACPI_SIZEOF_RESOURCE
 (paren
+r_struct
 id|acpi_resource_vendor
 )paren
 op_plus
@@ -1295,6 +1312,7 @@ id|acpi_status
 DECL|function|acpi_rs_get_pci_routing_table_length
 id|acpi_rs_get_pci_routing_table_length
 (paren
+r_union
 id|acpi_operand_object
 op_star
 id|package_object
@@ -1312,6 +1330,7 @@ id|temp_size_needed
 op_assign
 l_int|0
 suffix:semicolon
+r_union
 id|acpi_operand_object
 op_star
 op_star
@@ -1320,10 +1339,12 @@ suffix:semicolon
 id|u32
 id|index
 suffix:semicolon
+r_union
 id|acpi_operand_object
 op_star
 id|package_element
 suffix:semicolon
+r_union
 id|acpi_operand_object
 op_star
 op_star
@@ -1453,6 +1474,7 @@ op_add_assign
 (paren
 r_sizeof
 (paren
+r_struct
 id|acpi_pci_routing_table
 )paren
 op_minus
@@ -1528,7 +1550,7 @@ id|ACPI_ROUND_UP_to_64_bITS
 id|temp_size_needed
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t;&t; * Point to the next acpi_operand_object&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * Point to the next union acpi_operand_object&n;&t;&t; */
 id|top_object_list
 op_increment
 suffix:semicolon
@@ -1541,6 +1563,7 @@ id|temp_size_needed
 op_plus
 r_sizeof
 (paren
+r_struct
 id|acpi_pci_routing_table
 )paren
 suffix:semicolon

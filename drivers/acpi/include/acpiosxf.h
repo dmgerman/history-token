@@ -1,5 +1,5 @@
 multiline_comment|/******************************************************************************&n; *&n; * Name: acpiosxf.h - All interfaces to the OS Services Layer (OSL).  These&n; *                    interfaces must be implemented by OSL to interface the&n; *                    ACPI components to the host operating system.&n; *&n; *****************************************************************************/
-multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
+multiline_comment|/*&n; *  Copyright (C) 2000 - 2003, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#ifndef __ACPIOSXF_H__
 DECL|macro|__ACPIOSXF_H__
 mdefine_line|#define __ACPIOSXF_H__
@@ -23,10 +23,9 @@ DECL|macro|ACPI_SIGNAL_FATAL
 mdefine_line|#define ACPI_SIGNAL_FATAL           0
 DECL|macro|ACPI_SIGNAL_BREAKPOINT
 mdefine_line|#define ACPI_SIGNAL_BREAKPOINT      1
-DECL|struct|acpi_fatal_info
-r_typedef
+DECL|struct|acpi_signal_fatal_info
 r_struct
-id|acpi_fatal_info
+id|acpi_signal_fatal_info
 (brace
 DECL|member|type
 id|u32
@@ -40,9 +39,7 @@ DECL|member|argument
 id|u32
 id|argument
 suffix:semicolon
-DECL|typedef|acpi_signal_fatal_info
 )brace
-id|acpi_signal_fatal_info
 suffix:semicolon
 multiline_comment|/*&n; * Types specific to the OS service interfaces&n; */
 r_typedef
@@ -93,6 +90,7 @@ id|acpi_os_get_root_pointer
 id|u32
 id|flags
 comma
+r_struct
 id|acpi_pointer
 op_star
 id|address
@@ -101,10 +99,12 @@ suffix:semicolon
 id|acpi_status
 id|acpi_os_table_override
 (paren
+r_struct
 id|acpi_table_header
 op_star
 id|existing_table
 comma
+r_struct
 id|acpi_table_header
 op_star
 op_star
@@ -334,12 +334,13 @@ multiline_comment|/*&n; * Platform and hardware-independent PCI configuration sp
 id|acpi_status
 id|acpi_os_read_pci_configuration
 (paren
+r_struct
 id|acpi_pci_id
 op_star
 id|pci_id
 comma
 id|u32
-id|reg
+r_register
 comma
 r_void
 op_star
@@ -352,12 +353,13 @@ suffix:semicolon
 id|acpi_status
 id|acpi_os_write_pci_configuration
 (paren
+r_struct
 id|acpi_pci_id
 op_star
 id|pci_id
 comma
 id|u32
-id|reg
+r_register
 comma
 id|acpi_integer
 id|value
@@ -377,6 +379,7 @@ comma
 id|acpi_handle
 id|chandle
 comma
+r_struct
 id|acpi_pci_id
 op_star
 op_star

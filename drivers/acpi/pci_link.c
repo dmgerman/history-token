@@ -178,6 +178,7 @@ id|status
 op_assign
 id|AE_OK
 suffix:semicolon
+r_struct
 id|acpi_buffer
 id|buffer
 op_assign
@@ -187,6 +188,7 @@ comma
 l_int|NULL
 )brace
 suffix:semicolon
+r_struct
 id|acpi_resource
 op_star
 id|resource
@@ -263,6 +265,7 @@ suffix:semicolon
 id|resource
 op_assign
 (paren
+r_struct
 id|acpi_resource
 op_star
 )paren
@@ -294,6 +297,7 @@ r_case
 id|ACPI_RSTYPE_IRQ
 suffix:colon
 (brace
+r_struct
 id|acpi_resource_irq
 op_star
 id|p
@@ -400,6 +404,7 @@ r_case
 id|ACPI_RSTYPE_EXT_IRQ
 suffix:colon
 (brace
+r_struct
 id|acpi_resource_ext_irq
 op_star
 id|p
@@ -573,6 +578,7 @@ id|status
 op_assign
 id|AE_OK
 suffix:semicolon
+r_struct
 id|acpi_buffer
 id|buffer
 op_assign
@@ -582,6 +588,7 @@ comma
 l_int|NULL
 )brace
 suffix:semicolon
+r_struct
 id|acpi_resource
 op_star
 id|resource
@@ -716,6 +723,7 @@ suffix:semicolon
 id|resource
 op_assign
 (paren
+r_struct
 id|acpi_resource
 op_star
 )paren
@@ -731,6 +739,7 @@ r_case
 id|ACPI_RSTYPE_IRQ
 suffix:colon
 (brace
+r_struct
 id|acpi_resource_irq
 op_star
 id|p
@@ -781,6 +790,7 @@ r_case
 id|ACPI_RSTYPE_EXT_IRQ
 suffix:colon
 (brace
+r_struct
 id|acpi_resource_ext_irq
 op_star
 id|p
@@ -932,15 +942,18 @@ id|AE_OK
 suffix:semicolon
 r_struct
 (brace
+r_struct
 id|acpi_resource
 id|res
 suffix:semicolon
+r_struct
 id|acpi_resource
 id|end
 suffix:semicolon
 )brace
 id|resource
 suffix:semicolon
+r_struct
 id|acpi_buffer
 id|buffer
 op_assign
@@ -1083,6 +1096,7 @@ id|resource.res.length
 op_assign
 r_sizeof
 (paren
+r_struct
 id|acpi_resource
 )paren
 suffix:semicolon

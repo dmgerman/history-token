@@ -1,5 +1,5 @@
 multiline_comment|/*******************************************************************************&n; *&n; * Module Name: rscreate - Create resource lists/tables&n; *&n; ******************************************************************************/
-multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
+multiline_comment|/*&n; *  Copyright (C) 2000 - 2003, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;acresrc.h&quot;
 macro_line|#include &quot;amlcode.h&quot;
@@ -15,10 +15,12 @@ id|acpi_status
 DECL|function|acpi_rs_create_resource_list
 id|acpi_rs_create_resource_list
 (paren
+r_union
 id|acpi_operand_object
 op_star
 id|byte_stream_buffer
 comma
+r_struct
 id|acpi_buffer
 op_star
 id|output_buffer
@@ -182,15 +184,17 @@ id|AE_OK
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_rs_create_pci_routing_table&n; *&n; * PARAMETERS:  package_object          - Pointer to an acpi_operand_object&n; *                                        package&n; *              output_buffer           - Pointer to the user&squot;s buffer&n; *&n; * RETURN:      Status  AE_OK if okay, else a valid acpi_status code.&n; *              If the output_buffer is too small, the error will be&n; *              AE_BUFFER_OVERFLOW and output_buffer-&gt;Length will point&n; *              to the size buffer needed.&n; *&n; * DESCRIPTION: Takes the acpi_operand_object  package and creates a&n; *              linked list of PCI interrupt descriptions&n; *&n; * NOTE: It is the caller&squot;s responsibility to ensure that the start of the&n; * output buffer is aligned properly (if necessary).&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_rs_create_pci_routing_table&n; *&n; * PARAMETERS:  package_object          - Pointer to an union acpi_operand_object&n; *                                        package&n; *              output_buffer           - Pointer to the user&squot;s buffer&n; *&n; * RETURN:      Status  AE_OK if okay, else a valid acpi_status code.&n; *              If the output_buffer is too small, the error will be&n; *              AE_BUFFER_OVERFLOW and output_buffer-&gt;Length will point&n; *              to the size buffer needed.&n; *&n; * DESCRIPTION: Takes the union acpi_operand_object    package and creates a&n; *              linked list of PCI interrupt descriptions&n; *&n; * NOTE: It is the caller&squot;s responsibility to ensure that the start of the&n; * output buffer is aligned properly (if necessary).&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_rs_create_pci_routing_table
 id|acpi_rs_create_pci_routing_table
 (paren
+r_union
 id|acpi_operand_object
 op_star
 id|package_object
 comma
+r_struct
 id|acpi_buffer
 op_star
 id|output_buffer
@@ -200,16 +204,19 @@ id|u8
 op_star
 id|buffer
 suffix:semicolon
+r_union
 id|acpi_operand_object
 op_star
 op_star
 id|top_object_list
 suffix:semicolon
+r_union
 id|acpi_operand_object
 op_star
 op_star
 id|sub_object_list
 suffix:semicolon
+r_union
 id|acpi_operand_object
 op_star
 id|obj_desc
@@ -225,10 +232,12 @@ suffix:semicolon
 id|u32
 id|index
 suffix:semicolon
+r_struct
 id|acpi_pci_routing_table
 op_star
 id|user_prt
 suffix:semicolon
+r_struct
 id|acpi_namespace_node
 op_star
 id|node
@@ -236,6 +245,7 @@ suffix:semicolon
 id|acpi_status
 id|status
 suffix:semicolon
+r_struct
 id|acpi_buffer
 id|path_buffer
 suffix:semicolon
@@ -327,6 +337,7 @@ id|user_prt
 op_assign
 id|ACPI_CAST_PTR
 (paren
+r_struct
 id|acpi_pci_routing_table
 comma
 id|buffer
@@ -356,6 +367,7 @@ id|user_prt
 op_assign
 id|ACPI_CAST_PTR
 (paren
+r_struct
 id|acpi_pci_routing_table
 comma
 id|buffer
@@ -367,6 +379,7 @@ op_assign
 (paren
 r_sizeof
 (paren
+r_struct
 id|acpi_pci_routing_table
 )paren
 op_minus
@@ -776,7 +789,7 @@ id|AE_BAD_DATA
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* Point to the next acpi_operand_object in the top level package */
+multiline_comment|/* Point to the next union acpi_operand_object in the top level package */
 id|top_object_list
 op_increment
 suffix:semicolon
@@ -808,10 +821,12 @@ id|acpi_status
 DECL|function|acpi_rs_create_byte_stream
 id|acpi_rs_create_byte_stream
 (paren
+r_struct
 id|acpi_resource
 op_star
 id|linked_list_buffer
 comma
+r_struct
 id|acpi_buffer
 op_star
 id|output_buffer

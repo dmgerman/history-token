@@ -1,5 +1,5 @@
 multiline_comment|/******************************************************************************&n; *&n; * Module Name: utglobal - Global variables for the ACPI subsystem&n; *&n; *****************************************************************************/
-multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
+multiline_comment|/*&n; *  Copyright (C) 2000 - 2003, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 DECL|macro|DEFINE_ACPI_GLOBALS
 mdefine_line|#define DEFINE_ACPI_GLOBALS
 macro_line|#include &quot;acpi.h&quot;
@@ -338,6 +338,7 @@ multiline_comment|/*************************************************************
 multiline_comment|/*&n; * Predefined ACPI Names (Built-in to the Interpreter)&n; *&n; * Initial values are currently supported only for types String and Number.&n; * Both are specified as strings in this table.&n; *&n; * NOTES:&n; * 1) _SB_ is defined to be a device to allow _SB_/_INI to be run&n; *    during the initialization sequence.&n; */
 DECL|variable|acpi_gbl_pre_defined_names
 r_const
+r_struct
 id|acpi_predefined_names
 id|acpi_gbl_pre_defined_names
 (braket
@@ -604,6 +605,7 @@ suffix:semicolon
 )brace
 multiline_comment|/******************************************************************************&n; *&n; * Table name globals&n; *&n; * NOTE: This table includes ONLY the ACPI tables that the subsystem consumes.&n; * it is NOT an exhaustive list of all possible ACPI tables.  All ACPI tables&n; * that are not used by the subsystem are simply ignored.&n; *&n; * Do NOT add any table to this list that is not consumed directly by this&n; * subsystem.&n; *&n; ******************************************************************************/
 DECL|variable|acpi_gbl_acpi_tables
+r_struct
 id|acpi_table_desc
 id|acpi_gbl_acpi_tables
 (braket
@@ -611,7 +613,8 @@ id|NUM_ACPI_TABLES
 )braket
 suffix:semicolon
 DECL|variable|acpi_gbl_acpi_table_data
-id|ACPI_TABLE_SUPPORT
+r_struct
+id|acpi_table_support
 id|acpi_gbl_acpi_table_data
 (braket
 id|NUM_ACPI_TABLES
@@ -787,6 +790,7 @@ comma
 suffix:semicolon
 multiline_comment|/******************************************************************************&n; *&n; * Event and Hardware globals&n; *&n; ******************************************************************************/
 DECL|variable|acpi_gbl_bit_register_info
+r_struct
 id|acpi_bit_register_info
 id|acpi_gbl_bit_register_info
 (braket
@@ -977,6 +981,7 @@ id|ACPI_BITMASK_ARB_DISABLE
 )brace
 suffix:semicolon
 DECL|variable|acpi_gbl_fixed_event_info
+r_struct
 id|acpi_fixed_event_info
 id|acpi_gbl_fixed_event_info
 (braket
@@ -1344,6 +1349,7 @@ op_star
 DECL|function|acpi_ut_get_object_type_name
 id|acpi_ut_get_object_type_name
 (paren
+r_union
 id|acpi_operand_object
 op_star
 id|obj_desc
@@ -1577,6 +1583,7 @@ l_int|0
 comma
 r_sizeof
 (paren
+r_struct
 id|acpi_memory_list
 )paren
 op_star
@@ -1599,6 +1606,7 @@ op_amp
 (paren
 (paren
 (paren
+r_union
 id|acpi_generic_state
 op_star
 )paren
@@ -1627,6 +1635,7 @@ op_amp
 (paren
 (paren
 (paren
+r_union
 id|acpi_parse_object
 op_star
 )paren
@@ -1655,6 +1664,7 @@ op_amp
 (paren
 (paren
 (paren
+r_union
 id|acpi_parse_object
 op_star
 )paren
@@ -1683,6 +1693,7 @@ op_amp
 (paren
 (paren
 (paren
+r_union
 id|acpi_operand_object
 op_star
 )paren
@@ -1711,6 +1722,7 @@ op_amp
 (paren
 (paren
 (paren
+r_struct
 id|acpi_walk_state
 op_star
 )paren
@@ -1732,6 +1744,7 @@ id|object_size
 op_assign
 r_sizeof
 (paren
+r_struct
 id|acpi_namespace_node
 )paren
 suffix:semicolon
@@ -1744,6 +1757,7 @@ id|object_size
 op_assign
 r_sizeof
 (paren
+r_union
 id|acpi_generic_state
 )paren
 suffix:semicolon
@@ -1756,6 +1770,7 @@ id|object_size
 op_assign
 r_sizeof
 (paren
+r_struct
 id|acpi_parse_obj_common
 )paren
 suffix:semicolon
@@ -1768,6 +1783,7 @@ id|object_size
 op_assign
 r_sizeof
 (paren
+r_struct
 id|acpi_parse_obj_named
 )paren
 suffix:semicolon
@@ -1780,6 +1796,7 @@ id|object_size
 op_assign
 r_sizeof
 (paren
+r_union
 id|acpi_operand_object
 )paren
 suffix:semicolon
@@ -1792,6 +1809,7 @@ id|object_size
 op_assign
 r_sizeof
 (paren
+r_struct
 id|acpi_walk_state
 )paren
 suffix:semicolon

@@ -1,5 +1,5 @@
 multiline_comment|/******************************************************************************&n; *&n; * Module Name: uteval - Object evaluation&n; *&n; *****************************************************************************/
-multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
+multiline_comment|/*&n; *  Copyright (C) 2000 - 2003, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;acnamesp.h&quot;
 macro_line|#include &quot;acinterp.h&quot;
@@ -14,6 +14,7 @@ id|acpi_status
 DECL|function|acpi_ut_evaluate_object
 id|acpi_ut_evaluate_object
 (paren
+r_struct
 id|acpi_namespace_node
 op_star
 id|prefix_node
@@ -25,12 +26,14 @@ comma
 id|u32
 id|expected_return_btypes
 comma
+r_union
 id|acpi_operand_object
 op_star
 op_star
 id|return_desc
 )paren
 (brace
+r_union
 id|acpi_operand_object
 op_star
 id|obj_desc
@@ -276,6 +279,7 @@ r_char
 op_star
 id|object_name
 comma
+r_struct
 id|acpi_namespace_node
 op_star
 id|device_node
@@ -285,6 +289,7 @@ op_star
 id|address
 )paren
 (brace
+r_union
 id|acpi_operand_object
 op_star
 id|obj_desc
@@ -349,15 +354,18 @@ id|acpi_status
 DECL|function|acpi_ut_execute_HID
 id|acpi_ut_execute_HID
 (paren
+r_struct
 id|acpi_namespace_node
 op_star
 id|device_node
 comma
+r_struct
 id|acpi_device_id
 op_star
 id|hid
 )paren
 (brace
+r_union
 id|acpi_operand_object
 op_star
 id|obj_desc
@@ -457,15 +465,18 @@ id|acpi_status
 DECL|function|acpi_ut_execute_CID
 id|acpi_ut_execute_CID
 (paren
+r_struct
 id|acpi_namespace_node
 op_star
 id|device_node
 comma
+r_struct
 id|acpi_device_id
 op_star
 id|cid
 )paren
 (brace
+r_union
 id|acpi_operand_object
 op_star
 id|obj_desc
@@ -591,15 +602,18 @@ id|acpi_status
 DECL|function|acpi_ut_execute_UID
 id|acpi_ut_execute_UID
 (paren
+r_struct
 id|acpi_namespace_node
 op_star
 id|device_node
 comma
+r_struct
 id|acpi_device_id
 op_star
 id|uid
 )paren
 (brace
+r_union
 id|acpi_operand_object
 op_star
 id|obj_desc
@@ -696,6 +710,7 @@ id|acpi_status
 DECL|function|acpi_ut_execute_STA
 id|acpi_ut_execute_STA
 (paren
+r_struct
 id|acpi_namespace_node
 op_star
 id|device_node
@@ -705,6 +720,7 @@ op_star
 id|flags
 )paren
 (brace
+r_union
 id|acpi_operand_object
 op_star
 id|obj_desc

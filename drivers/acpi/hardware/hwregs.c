@@ -1,5 +1,5 @@
 multiline_comment|/*******************************************************************************&n; *&n; * Module Name: hwregs - Read/write access functions for the various ACPI&n; *                       control and status registers.&n; *&n; ******************************************************************************/
-multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
+multiline_comment|/*&n; *  Copyright (C) 2000 - 2003, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;acnamesp.h&quot;
 DECL|macro|_COMPONENT
@@ -237,6 +237,7 @@ id|status
 op_assign
 id|AE_OK
 suffix:semicolon
+r_union
 id|acpi_operand_object
 op_star
 id|obj_desc
@@ -525,6 +526,7 @@ id|status
 suffix:semicolon
 )brace
 multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_hw_get_register_bit_mask&n; *&n; * PARAMETERS:  register_id         - Index of ACPI Register to access&n; *&n; * RETURN:      The bit mask to be used when accessing the register&n; *&n; * DESCRIPTION: Map register_id into a register bit mask.&n; *&n; ******************************************************************************/
+r_struct
 id|acpi_bit_register_info
 op_star
 DECL|function|acpi_hw_get_bit_register_info
@@ -595,6 +597,7 @@ id|register_value
 op_assign
 l_int|0
 suffix:semicolon
+r_struct
 id|acpi_bit_register_info
 op_star
 id|bit_reg_info
@@ -753,6 +756,7 @@ id|register_value
 op_assign
 l_int|0
 suffix:semicolon
+r_struct
 id|acpi_bit_register_info
 op_star
 id|bit_reg_info
@@ -1849,6 +1853,7 @@ id|u32
 op_star
 id|value
 comma
+r_struct
 id|acpi_generic_address
 op_star
 id|reg
@@ -1863,6 +1868,7 @@ suffix:semicolon
 id|acpi_io_address
 id|io_address
 suffix:semicolon
+r_struct
 id|acpi_pci_id
 id|pci_id
 suffix:semicolon
@@ -2059,6 +2065,7 @@ comma
 id|u32
 id|value
 comma
+r_struct
 id|acpi_generic_address
 op_star
 id|reg
@@ -2073,6 +2080,7 @@ suffix:semicolon
 id|acpi_io_address
 id|io_address
 suffix:semicolon
+r_struct
 id|acpi_pci_id
 id|pci_id
 suffix:semicolon
