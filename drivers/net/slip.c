@@ -3431,7 +3431,7 @@ r_return
 suffix:semicolon
 id|tty-&gt;disc_data
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|sl-&gt;tty
 op_assign

@@ -3892,7 +3892,7 @@ id|hmp-&gt;tx_skbuff
 id|entry
 )braket
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 )brace
 id|hmp-&gt;tx_ring
@@ -4363,7 +4363,7 @@ id|hmp-&gt;tx_skbuff
 id|i
 )braket
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 )brace
 )brace
@@ -4472,7 +4472,7 @@ id|hmp-&gt;rx_skbuff
 id|i
 )braket
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 )brace
 )brace
@@ -4776,7 +4776,7 @@ id|hmp-&gt;rx_skbuff
 id|i
 )braket
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 )brace
 multiline_comment|/* Fill in the Rx buffers.  Handle allocation failure gracefully. */
@@ -4931,7 +4931,7 @@ id|hmp-&gt;tx_skbuff
 id|i
 )braket
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|hmp-&gt;tx_ring
 (braket
@@ -5698,7 +5698,7 @@ id|hmp-&gt;tx_skbuff
 id|entry
 )braket
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 )brace
 id|hmp-&gt;tx_ring
@@ -7775,7 +7775,7 @@ id|hmp-&gt;rx_skbuff
 id|i
 )braket
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 )brace
 )brace
@@ -7835,7 +7835,7 @@ id|hmp-&gt;tx_skbuff
 id|i
 )braket
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 )brace
 )brace

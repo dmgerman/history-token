@@ -2861,7 +2861,7 @@ id|lp-&gt;tx_skbuff
 id|tx_index
 )braket
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|lp-&gt;tx_dma_addr
 (braket
@@ -6558,7 +6558,7 @@ l_int|0
 suffix:semicolon
 id|lp-&gt;mc_list
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|lp-&gt;options
 op_and_assign
