@@ -1429,9 +1429,12 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|usb_new_device
+id|usb_register_root_hub
 (paren
 id|udev
+comma
+op_amp
+id|ohci-&gt;hcd.pdev-&gt;dev
 )paren
 op_ne
 l_int|0
