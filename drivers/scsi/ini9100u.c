@@ -130,7 +130,7 @@ op_star
 l_int|NULL
 suffix:semicolon
 r_static
-r_void
+id|irqreturn_t
 id|i91u_intr0
 c_func
 (paren
@@ -147,7 +147,7 @@ op_star
 )paren
 suffix:semicolon
 r_static
-r_void
+id|irqreturn_t
 id|i91u_intr1
 c_func
 (paren
@@ -164,7 +164,7 @@ op_star
 )paren
 suffix:semicolon
 r_static
-r_void
+id|irqreturn_t
 id|i91u_intr2
 c_func
 (paren
@@ -181,7 +181,7 @@ op_star
 )paren
 suffix:semicolon
 r_static
-r_void
+id|irqreturn_t
 id|i91u_intr3
 c_func
 (paren
@@ -198,7 +198,7 @@ op_star
 )paren
 suffix:semicolon
 r_static
-r_void
+id|irqreturn_t
 id|i91u_intr4
 c_func
 (paren
@@ -215,7 +215,7 @@ op_star
 )paren
 suffix:semicolon
 r_static
-r_void
+id|irqreturn_t
 id|i91u_intr5
 c_func
 (paren
@@ -232,7 +232,7 @@ op_star
 )paren
 suffix:semicolon
 r_static
-r_void
+id|irqreturn_t
 id|i91u_intr6
 c_func
 (paren
@@ -249,7 +249,7 @@ op_star
 )paren
 suffix:semicolon
 r_static
-r_void
+id|irqreturn_t
 id|i91u_intr7
 c_func
 (paren
@@ -2735,7 +2735,7 @@ suffix:semicolon
 multiline_comment|/*&n; * Interrupts handler (main routine of the driver)&n; */
 DECL|function|i91u_intr0
 r_static
-r_void
+id|irqreturn_t
 id|i91u_intr0
 c_func
 (paren
@@ -2776,6 +2776,7 @@ op_ne
 id|irqno
 )paren
 r_return
+id|IRQ_NONE
 suffix:semicolon
 id|spin_lock_irqsave
 c_func
@@ -2803,10 +2804,13 @@ comma
 id|flags
 )paren
 suffix:semicolon
+r_return
+id|IRQ_HANDLED
+suffix:semicolon
 )brace
 DECL|function|i91u_intr1
 r_static
-r_void
+id|irqreturn_t
 id|i91u_intr1
 c_func
 (paren
@@ -2847,6 +2851,7 @@ op_ne
 id|irqno
 )paren
 r_return
+id|IRQ_NONE
 suffix:semicolon
 id|spin_lock_irqsave
 c_func
@@ -2874,10 +2879,13 @@ comma
 id|flags
 )paren
 suffix:semicolon
+r_return
+id|IRQ_HANDLED
+suffix:semicolon
 )brace
 DECL|function|i91u_intr2
 r_static
-r_void
+id|irqreturn_t
 id|i91u_intr2
 c_func
 (paren
@@ -2918,6 +2926,7 @@ op_ne
 id|irqno
 )paren
 r_return
+id|IRQ_NONE
 suffix:semicolon
 id|spin_lock_irqsave
 c_func
@@ -2945,10 +2954,13 @@ comma
 id|flags
 )paren
 suffix:semicolon
+r_return
+id|IRQ_HANDLED
+suffix:semicolon
 )brace
 DECL|function|i91u_intr3
 r_static
-r_void
+id|irqreturn_t
 id|i91u_intr3
 c_func
 (paren
@@ -2989,6 +3001,7 @@ op_ne
 id|irqno
 )paren
 r_return
+id|IRQ_NONE
 suffix:semicolon
 id|spin_lock_irqsave
 c_func
@@ -3016,10 +3029,13 @@ comma
 id|flags
 )paren
 suffix:semicolon
+r_return
+id|IRQ_HANDLED
+suffix:semicolon
 )brace
 DECL|function|i91u_intr4
 r_static
-r_void
+id|irqreturn_t
 id|i91u_intr4
 c_func
 (paren
@@ -3060,6 +3076,7 @@ op_ne
 id|irqno
 )paren
 r_return
+id|IRQ_NONE
 suffix:semicolon
 id|spin_lock_irqsave
 c_func
@@ -3087,10 +3104,13 @@ comma
 id|flags
 )paren
 suffix:semicolon
+r_return
+id|IRQ_HANDLED
+suffix:semicolon
 )brace
 DECL|function|i91u_intr5
 r_static
-r_void
+id|irqreturn_t
 id|i91u_intr5
 c_func
 (paren
@@ -3131,6 +3151,7 @@ op_ne
 id|irqno
 )paren
 r_return
+id|IRQ_NONE
 suffix:semicolon
 id|spin_lock_irqsave
 c_func
@@ -3158,10 +3179,13 @@ comma
 id|flags
 )paren
 suffix:semicolon
+r_return
+id|IRQ_HANDLED
+suffix:semicolon
 )brace
 DECL|function|i91u_intr6
 r_static
-r_void
+id|irqreturn_t
 id|i91u_intr6
 c_func
 (paren
@@ -3202,6 +3226,7 @@ op_ne
 id|irqno
 )paren
 r_return
+id|IRQ_NONE
 suffix:semicolon
 id|spin_lock_irqsave
 c_func
@@ -3229,10 +3254,13 @@ comma
 id|flags
 )paren
 suffix:semicolon
+r_return
+id|IRQ_HANDLED
+suffix:semicolon
 )brace
 DECL|function|i91u_intr7
 r_static
-r_void
+id|irqreturn_t
 id|i91u_intr7
 c_func
 (paren
@@ -3273,6 +3301,7 @@ op_ne
 id|irqno
 )paren
 r_return
+id|IRQ_NONE
 suffix:semicolon
 id|spin_lock_irqsave
 c_func
@@ -3299,6 +3328,9 @@ id|dev-&gt;host_lock
 comma
 id|flags
 )paren
+suffix:semicolon
+r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 multiline_comment|/* &n; * Dump the current driver status and panic...&n; */

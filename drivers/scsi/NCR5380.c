@@ -1453,7 +1453,7 @@ suffix:semicolon
 multiline_comment|/**&n; *&t;probe_intr&t;-&t;helper for IRQ autoprobe&n; *&t;@irq: interrupt number&n; *&t;@dev_id: unused&n; *&t;@regs: unused&n; *&n; *&t;Set a flag to indicate the IRQ in question was received. This is&n; *&t;used by the IRQ probe code.&n; */
 DECL|function|probe_intr
 r_static
-r_void
+id|irqreturn_t
 id|__init
 id|probe_intr
 c_func
@@ -1474,6 +1474,9 @@ id|regs
 id|probe_irq
 op_assign
 id|irq
+suffix:semicolon
+r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 multiline_comment|/**&n; *&t;NCR5380_probe_irq&t;-&t;find the IRQ of an NCR5380&n; *&t;@instance: NCR5380 controller&n; *&t;@possible: bitmask of ISA IRQ lines&n; *&n; *&t;Autoprobe for the IRQ line used by the NCR5380 by triggering an IRQ&n; *&t;and then looking to see what interrupt actually turned up.&n; *&n; *&t;Locks: none, irqs must be enabled on entry&n; */
@@ -3488,6 +3491,8 @@ suffix:semicolon
 r_int
 r_int
 id|flags
+op_assign
+l_int|0
 suffix:semicolon
 multiline_comment|/*&n;&t; * We run (with interrupts disabled) until we&squot;re sure that none of &n;&t; * the host adapters have anything that can be done, at which point &n;&t; * we can exit&n;&t; *&n;&t; * Interrupts are enabled before doing various other internal &n;&t; * instructions, after we&squot;ve decided that we need to run through&n;&t; * the loop again.&n;&t; *&n;&t; * this should prevent any race conditions.&n;&t; */
 id|instance
@@ -3961,7 +3966,7 @@ macro_line|#ifndef DONT_USE_INTR
 multiline_comment|/**&n; * &t;NCR5380_intr&t;-&t;generic NCR5380 irq handler&n; *&t;@irq: interrupt number&n; *&t;@dev_id: device info&n; *&t;@regs: registers (unused)&n; *&n; *&t;Handle interrupts, reestablishing I_T_L or I_T_L_Q nexuses&n; *      from the disconnected queue, and restarting NCR5380_main() &n; *      as required.&n; *&n; *&t;Locks: takes the needed instance locks&n; */
 DECL|function|NCR5380_intr
 r_static
-r_void
+id|irqreturn_t
 id|NCR5380_intr
 c_func
 (paren
@@ -3999,6 +4004,11 @@ r_struct
 id|NCR5380_hostdata
 op_star
 id|hostdata
+suffix:semicolon
+r_int
+id|handled
+op_assign
+l_int|0
 suffix:semicolon
 id|dprintk
 c_func
@@ -4047,6 +4057,10 @@ op_eq
 id|irq
 )paren
 (brace
+id|handled
+op_assign
+l_int|1
+suffix:semicolon
 id|spin_lock_irq
 c_func
 (paren
@@ -4396,6 +4410,13 @@ c_loop
 (paren
 op_logical_neg
 id|done
+)paren
+suffix:semicolon
+r_return
+id|IRQ_RETVAL
+c_func
+(paren
+id|handled
 )paren
 suffix:semicolon
 )brace

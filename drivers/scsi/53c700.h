@@ -3,6 +3,7 @@ multiline_comment|/* Driver for 53c700 and 53c700-66 chips from NCR and Symbios&
 macro_line|#ifndef _53C700_H
 DECL|macro|_53C700_H
 mdefine_line|#define _53C700_H
+macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 multiline_comment|/* Turn on for general debugging---too verbose for normal use */
 DECL|macro|NCR_700_DEBUG
@@ -69,7 +70,7 @@ op_star
 id|host
 )paren
 suffix:semicolon
-r_void
+id|irqreturn_t
 id|NCR_700_intr
 c_func
 (paren

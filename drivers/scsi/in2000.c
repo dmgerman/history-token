@@ -2231,7 +2231,7 @@ macro_line|#endif
 multiline_comment|/* We need to use spin_lock_irqsave() &amp; spin_unlock_irqrestore() in this&n; * function in order to work in an SMP environment. (I&squot;d be surprised&n; * if the driver is ever used by anyone on a real multi-CPU motherboard,&n; * but it _does_ need to be able to compile and run in an SMP kernel.)&n; */
 DECL|function|in2000_intr
 r_static
-r_void
+id|irqreturn_t
 id|in2000_intr
 c_func
 (paren
@@ -2660,6 +2660,7 @@ id|flags
 )paren
 suffix:semicolon
 r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 multiline_comment|/* This interrupt was triggered by the WD33c93 chip. The fifo interrupt&n; * may also be asserted, but we don&squot;t bother to check it: we get more&n; * detailed info from FIFO_READING and FIFO_WRITING (see below).&n; */
@@ -2738,6 +2739,7 @@ id|flags
 )paren
 suffix:semicolon
 r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 id|DB
@@ -4418,6 +4420,7 @@ id|flags
 )paren
 suffix:semicolon
 r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 id|DB
@@ -5111,6 +5114,9 @@ id|instance-&gt;host_lock
 comma
 id|flags
 )paren
+suffix:semicolon
+r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 DECL|macro|RESET_CARD
@@ -6476,6 +6482,7 @@ suffix:semicolon
 id|uchar
 id|hrev
 suffix:semicolon
+r_int
 r_int
 id|flags
 suffix:semicolon

@@ -4,6 +4,7 @@ DECL|macro|CPQFCTSSTRUCTS_H
 mdefine_line|#define CPQFCTSSTRUCTS_H
 macro_line|#include &lt;linux/timer.h&gt;  
 singleline_comment|// timer declaration in our host data
+macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;asm/atomic.h&gt;
 macro_line|#include &quot;cpqfcTSioctl.h&quot;
 DECL|macro|DbgDelay
@@ -2624,7 +2625,7 @@ id|cnt
 suffix:semicolon
 singleline_comment|//ULONG virt_to_phys( PVOID virtaddr );
 singleline_comment|// Linux interrupt handler
-r_void
+id|irqreturn_t
 id|cpqfcTS_intr_handler
 c_func
 (paren

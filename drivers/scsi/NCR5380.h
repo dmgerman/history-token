@@ -3,6 +3,7 @@ multiline_comment|/*&n; * $Log: NCR5380.h,v $&n; */
 macro_line|#ifndef NCR5380_H
 DECL|macro|NCR5380_H
 mdefine_line|#define NCR5380_H
+macro_line|#include &lt;linux/interrupt.h&gt;
 DECL|macro|NCR5380_PUBLIC_RELEASE
 mdefine_line|#define NCR5380_PUBLIC_RELEASE 7
 DECL|macro|NCR53C400_PUBLIC_RELEASE
@@ -502,7 +503,7 @@ id|instance
 suffix:semicolon
 macro_line|#ifndef DONT_USE_INTR
 r_static
-r_void
+id|irqreturn_t
 id|NCR5380_intr
 c_func
 (paren

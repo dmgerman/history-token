@@ -80,9 +80,8 @@ op_star
 id|secs
 )paren
 suffix:semicolon
-macro_line|#if LINUX_VERSION_CODE &gt;= 0x010346
 r_static
-r_void
+id|irqreturn_t
 id|gdth_interrupt
 c_func
 (paren
@@ -99,22 +98,6 @@ op_star
 id|regs
 )paren
 suffix:semicolon
-macro_line|#else
-r_static
-r_void
-id|gdth_interrupt
-c_func
-(paren
-r_int
-id|irq
-comma
-r_struct
-id|pt_regs
-op_star
-id|regs
-)paren
-suffix:semicolon
-macro_line|#endif
 r_static
 r_int
 id|gdth_sync_event
@@ -9568,7 +9551,6 @@ id|TRUE
 suffix:semicolon
 r_do
 (brace
-macro_line|#if LINUX_VERSION_CODE &gt;= 0x010346
 id|gdth_interrupt
 c_func
 (paren
@@ -9582,19 +9564,6 @@ comma
 l_int|NULL
 )paren
 suffix:semicolon
-macro_line|#else
-id|gdth_interrupt
-c_func
-(paren
-(paren
-r_int
-)paren
-id|ha-&gt;irq
-comma
-l_int|NULL
-)paren
-suffix:semicolon
-macro_line|#endif
 r_if
 c_cond
 (paren
@@ -18206,10 +18175,9 @@ l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/* SCSI interface functions */
-macro_line|#if LINUX_VERSION_CODE &gt;= 0x010346
 DECL|function|gdth_interrupt
 r_static
-r_void
+id|irqreturn_t
 id|gdth_interrupt
 c_func
 (paren
@@ -18225,21 +18193,6 @@ id|pt_regs
 op_star
 id|regs
 )paren
-macro_line|#else
-r_static
-r_void
-id|gdth_interrupt
-c_func
-(paren
-r_int
-id|irq
-comma
-r_struct
-id|pt_regs
-op_star
-id|regs
-)paren
-macro_line|#endif
 (brace
 r_register
 id|gdth_ha_str
@@ -18305,6 +18258,7 @@ id|gdth_from_wait
 )paren
 (brace
 r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 )brace
@@ -18371,6 +18325,7 @@ id|flags
 )paren
 suffix:semicolon
 r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 macro_line|#ifdef GDTH_STATISTICS
@@ -19107,6 +19062,7 @@ id|flags
 )paren
 suffix:semicolon
 r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 id|TRACE
@@ -19188,6 +19144,7 @@ id|hanum
 )paren
 suffix:semicolon
 r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 r_if
@@ -19249,6 +19206,7 @@ id|flags
 )paren
 suffix:semicolon
 r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 id|scp
@@ -19349,6 +19307,7 @@ id|flags
 )paren
 suffix:semicolon
 r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 r_if
@@ -19386,6 +19345,7 @@ id|flags
 )paren
 suffix:semicolon
 r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 id|TRACE
@@ -19534,6 +19494,9 @@ c_func
 (paren
 id|hanum
 )paren
+suffix:semicolon
+r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 DECL|function|gdth_sync_event

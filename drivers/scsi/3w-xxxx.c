@@ -139,24 +139,6 @@ id|len
 )paren
 suffix:semicolon
 r_static
-r_void
-id|tw_interrupt
-c_func
-(paren
-r_int
-id|irq
-comma
-r_void
-op_star
-id|dev_instance
-comma
-r_struct
-id|pt_regs
-op_star
-id|regs
-)paren
-suffix:semicolon
-r_static
 r_int
 id|tw_halt
 c_func
@@ -6221,7 +6203,7 @@ multiline_comment|/* End tw_initialize_units() */
 multiline_comment|/* This function is the interrupt service routine */
 DECL|function|tw_interrupt
 r_static
-r_void
+id|irqreturn_t
 id|tw_interrupt
 c_func
 (paren
@@ -6281,6 +6263,11 @@ id|TW_Command
 op_star
 id|command_packet
 suffix:semicolon
+r_int
+id|handled
+op_assign
+l_int|0
+suffix:semicolon
 id|dprintk
 c_func
 (paren
@@ -6302,6 +6289,7 @@ id|tw_dev-&gt;flags
 )paren
 )paren
 r_return
+id|IRQ_NONE
 suffix:semicolon
 multiline_comment|/* Get the host lock for io completions */
 id|spin_lock_irqsave
@@ -6321,6 +6309,10 @@ op_eq
 id|irq
 )paren
 (brace
+id|handled
+op_assign
+l_int|1
+suffix:semicolon
 multiline_comment|/* Make sure io isn&squot;t queueing */
 id|spin_lock
 c_func
@@ -7218,6 +7210,13 @@ id|TW_IN_INTR
 comma
 op_amp
 id|tw_dev-&gt;flags
+)paren
+suffix:semicolon
+r_return
+id|IRQ_RETVAL
+c_func
+(paren
+id|handled
 )paren
 suffix:semicolon
 )brace
