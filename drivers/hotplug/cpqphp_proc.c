@@ -464,6 +464,14 @@ comma
 l_int|0
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|new_slot
+)paren
+r_break
+suffix:semicolon
 id|out
 op_add_assign
 id|sprintf

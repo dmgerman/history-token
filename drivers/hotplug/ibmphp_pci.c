@@ -5061,6 +5061,11 @@ comma
 id|func-&gt;busno
 )paren
 suffix:semicolon
+id|kfree
+(paren
+id|amount_needed
+)paren
+suffix:semicolon
 r_return
 id|rc
 suffix:semicolon
@@ -8072,7 +8077,7 @@ c_cond
 (paren
 id|cur_func-&gt;io
 (braket
-id|count
+id|i
 )braket
 )paren
 (brace
@@ -8080,7 +8085,7 @@ id|debug
 (paren
 l_string|&quot;io[%d] exists &bslash;n&quot;
 comma
-id|count
+id|i
 )paren
 suffix:semicolon
 r_if
@@ -8094,13 +8099,13 @@ id|ibmphp_remove_resource
 (paren
 id|cur_func-&gt;io
 (braket
-id|count
+id|i
 )braket
 )paren
 suffix:semicolon
 id|cur_func-&gt;io
 (braket
-id|count
+id|i
 )braket
 op_assign
 l_int|NULL
@@ -8111,7 +8116,7 @@ c_cond
 (paren
 id|cur_func-&gt;mem
 (braket
-id|count
+id|i
 )braket
 )paren
 (brace
@@ -8119,7 +8124,7 @@ id|debug
 (paren
 l_string|&quot;mem[%d] exists &bslash;n&quot;
 comma
-id|count
+id|i
 )paren
 suffix:semicolon
 r_if
@@ -8133,13 +8138,13 @@ id|ibmphp_remove_resource
 (paren
 id|cur_func-&gt;mem
 (braket
-id|count
+id|i
 )braket
 )paren
 suffix:semicolon
 id|cur_func-&gt;mem
 (braket
-id|count
+id|i
 )braket
 op_assign
 l_int|NULL
@@ -8150,7 +8155,7 @@ c_cond
 (paren
 id|cur_func-&gt;pfmem
 (braket
-id|count
+id|i
 )braket
 )paren
 (brace
@@ -8158,7 +8163,7 @@ id|debug
 (paren
 l_string|&quot;pfmem[%d] exists &bslash;n&quot;
 comma
-id|count
+id|i
 )paren
 suffix:semicolon
 r_if
@@ -8172,13 +8177,13 @@ id|ibmphp_remove_resource
 (paren
 id|cur_func-&gt;pfmem
 (braket
-id|count
+id|i
 )braket
 )paren
 suffix:semicolon
 id|cur_func-&gt;pfmem
 (braket
-id|count
+id|i
 )braket
 op_assign
 l_int|NULL

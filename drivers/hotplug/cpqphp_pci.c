@@ -1817,6 +1817,16 @@ c_func
 (paren
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|PCIIRQRoutingInfoLength
+)paren
+r_return
+op_minus
+l_int|1
+suffix:semicolon
 id|len
 op_assign
 (paren
@@ -5324,6 +5334,8 @@ comma
 id|func-&gt;config_space
 (braket
 id|cloop
+op_rshift
+l_int|2
 )braket
 )paren
 suffix:semicolon

@@ -24,4 +24,15 @@ r_int
 id|buffer_size
 )paren
 suffix:semicolon
+r_extern
+r_void
+id|pci_create_sysfs_dev_files
+c_func
+(paren
+r_struct
+id|pci_dev
+op_star
+id|pdev
+)paren
+suffix:semicolon
 eof

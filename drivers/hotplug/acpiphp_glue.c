@@ -2236,6 +2236,12 @@ c_func
 l_string|&quot;out of memory&bslash;n&quot;
 )paren
 suffix:semicolon
+id|kfree
+c_func
+(paren
+id|bridge
+)paren
+suffix:semicolon
 r_return
 suffix:semicolon
 )brace
@@ -2364,6 +2370,12 @@ c_func
 l_string|&quot;out of memory&bslash;n&quot;
 )paren
 suffix:semicolon
+id|kfree
+c_func
+(paren
+id|bridge
+)paren
+suffix:semicolon
 r_return
 suffix:semicolon
 )brace
@@ -2488,6 +2500,12 @@ c_func
 l_string|&quot;out of memory&bslash;n&quot;
 )paren
 suffix:semicolon
+id|kfree
+c_func
+(paren
+id|bridge
+)paren
+suffix:semicolon
 r_return
 suffix:semicolon
 )brace
@@ -2607,6 +2625,12 @@ id|err
 c_func
 (paren
 l_string|&quot;out of memory&bslash;n&quot;
+)paren
+suffix:semicolon
+id|kfree
+c_func
+(paren
+id|bridge
 )paren
 suffix:semicolon
 r_return
@@ -2732,6 +2756,12 @@ id|err
 c_func
 (paren
 l_string|&quot;out of memory&bslash;n&quot;
+)paren
+suffix:semicolon
+id|kfree
+c_func
+(paren
+id|bridge
 )paren
 suffix:semicolon
 r_return
