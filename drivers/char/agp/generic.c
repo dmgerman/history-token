@@ -18,6 +18,14 @@ DECL|variable|agp_memory_reserved
 r_int
 id|agp_memory_reserved
 suffix:semicolon
+multiline_comment|/* Needed by the Nforce GART driver for the time being. Would be&n; * nice to do this some other way instead of needing this export. */
+DECL|variable|agp_memory_reserved
+id|EXPORT_SYMBOL_GPL
+c_func
+(paren
+id|agp_memory_reserved
+)paren
+suffix:semicolon
 DECL|variable|agp_memory_reserved
 id|EXPORT_SYMBOL
 c_func
