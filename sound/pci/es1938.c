@@ -7,6 +7,7 @@ macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/gameport.h&gt;
 macro_line|#include &lt;linux/moduleparam.h&gt;
+macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;sound/core.h&gt;
 macro_line|#include &lt;sound/control.h&gt;
 macro_line|#include &lt;sound/pcm.h&gt;
@@ -2248,9 +2249,26 @@ id|chip
 comma
 id|ESSSB_IREG_AUDIO2CONTROL1
 comma
+l_int|0x92
+)paren
+suffix:semicolon
+id|udelay
+c_func
+(paren
+l_int|10
+)paren
+suffix:semicolon
+id|snd_es1938_mixer_write
+c_func
+(paren
+id|chip
+comma
+id|ESSSB_IREG_AUDIO2CONTROL1
+comma
 l_int|0x93
 )paren
 suffix:semicolon
+multiline_comment|/* This two stage init gives the FIFO -&gt; DAC connection time to&n;                 * settle before first data from DMA flows in.  This should ensure&n;                 * no swapping of stereo channels.  Report a bug if otherwise :-) */
 id|outb
 c_func
 (paren
@@ -2797,6 +2815,12 @@ op_minus
 id|mono
 op_minus
 id|is8
+suffix:semicolon
+id|snd_es1938_reset_fifo
+c_func
+(paren
+id|chip
+)paren
 suffix:semicolon
 multiline_comment|/* set clock and counters */
 id|snd_es1938_rate_set
@@ -3787,8 +3811,9 @@ comma
 dot
 id|buffer_bytes_max
 op_assign
-l_int|65536
+l_int|0x8000
 comma
+multiline_comment|/* DMA controller screws on higher values */
 dot
 id|period_bytes_min
 op_assign
@@ -3797,7 +3822,7 @@ comma
 dot
 id|period_bytes_max
 op_assign
-l_int|65536
+l_int|0x8000
 comma
 dot
 id|periods_min
@@ -3877,8 +3902,9 @@ comma
 dot
 id|buffer_bytes_max
 op_assign
-l_int|65536
+l_int|0x8000
 comma
+multiline_comment|/* DMA controller screws on higher values */
 dot
 id|period_bytes_min
 op_assign
@@ -3887,7 +3913,7 @@ comma
 dot
 id|period_bytes_max
 op_assign
-l_int|65536
+l_int|0x8000
 comma
 dot
 id|periods_min
