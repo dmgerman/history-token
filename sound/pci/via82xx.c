@@ -310,7 +310,7 @@ c_func
 (paren
 id|dxs_support
 comma
-l_string|&quot;Support for DXS channels (0 = auto, 1 = enable, 2 = disable, 3 = 48k only)&quot;
+l_string|&quot;Support for DXS channels (0 = auto, 1 = enable, 2 = disable, 3 = 48k only, 4 = no VRA)&quot;
 )paren
 suffix:semicolon
 id|MODULE_PARM_SYNTAX
@@ -659,6 +659,8 @@ DECL|macro|VIA_DXS_DISABLE
 mdefine_line|#define VIA_DXS_DISABLE&t;2
 DECL|macro|VIA_DXS_48K
 mdefine_line|#define VIA_DXS_48K&t;3
+DECL|macro|VIA_DXS_NO_VRA
+mdefine_line|#define VIA_DXS_NO_VRA&t;4
 multiline_comment|/*&n; */
 DECL|typedef|via82xx_t
 r_typedef
@@ -1330,6 +1332,14 @@ suffix:colon
 l_int|1
 suffix:semicolon
 multiline_comment|/* DXS channel accepts only 48kHz */
+DECL|member|no_vra
+r_int
+r_int
+id|no_vra
+suffix:colon
+l_int|1
+suffix:semicolon
+multiline_comment|/* no need to set VRA on DXS channels */
 DECL|member|rmidi
 id|snd_rawmidi_t
 op_star
@@ -1641,21 +1651,6 @@ op_amp
 l_int|0xffff
 suffix:semicolon
 )brace
-id|snd_printk
-c_func
-(paren
-id|KERN_ERR
-l_string|&quot;codec_valid: codec %i is not valid [0x%x]&bslash;n&quot;
-comma
-id|secondary
-comma
-id|snd_via82xx_codec_xread
-c_func
-(paren
-id|chip
-)paren
-)paren
-suffix:semicolon
 r_return
 op_minus
 id|EIO
@@ -1910,6 +1905,21 @@ c_func
 (paren
 op_amp
 id|chip-&gt;ac97_lock
+)paren
+suffix:semicolon
+id|snd_printk
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;codec_read: codec %i is not valid [0x%x]&bslash;n&quot;
+comma
+id|ac97-&gt;num
+comma
+id|snd_via82xx_codec_xread
+c_func
+(paren
+id|chip
+)paren
 )paren
 suffix:semicolon
 r_return
@@ -3586,6 +3596,8 @@ r_if
 c_cond
 (paren
 id|rate_changed
+op_logical_or
+id|chip-&gt;no_vra
 )paren
 (brace
 id|snd_ac97_set_rate
@@ -3595,29 +3607,19 @@ id|chip-&gt;ac97
 comma
 id|AC97_PCM_FRONT_DAC_RATE
 comma
+id|chip-&gt;no_vra
+ques
+c_cond
+l_int|48000
+suffix:colon
 id|runtime-&gt;rate
 )paren
 suffix:semicolon
-id|snd_ac97_set_rate
-c_func
+r_if
+c_cond
 (paren
-id|chip-&gt;ac97
-comma
-id|AC97_PCM_SURR_DAC_RATE
-comma
-id|runtime-&gt;rate
+id|rate_changed
 )paren
-suffix:semicolon
-id|snd_ac97_set_rate
-c_func
-(paren
-id|chip-&gt;ac97
-comma
-id|AC97_PCM_LFE_DAC_RATE
-comma
-id|runtime-&gt;rate
-)paren
-suffix:semicolon
 id|snd_ac97_set_rate
 c_func
 (paren
@@ -9364,6 +9366,24 @@ comma
 dot
 id|vendor
 op_assign
+l_int|0x1043
+comma
+dot
+id|device
+op_assign
+l_int|0x80a1
+comma
+dot
+id|action
+op_assign
+id|VIA_DXS_NO_VRA
+)brace
+comma
+multiline_comment|/* ASUS A7V8-X */
+(brace
+dot
+id|vendor
+op_assign
 l_int|0x1297
 comma
 dot
@@ -9382,12 +9402,12 @@ multiline_comment|/* Shuttle SK41G */
 dot
 id|vendor
 op_assign
-l_int|0x1043
+l_int|0x1458
 comma
 dot
 id|device
 op_assign
-l_int|0x80a1
+l_int|0xa002
 comma
 dot
 id|action
@@ -9395,7 +9415,7 @@ op_assign
 id|VIA_DXS_ENABLE
 )brace
 comma
-multiline_comment|/* ASUS A7V8-X */
+multiline_comment|/* Gigabyte GA-7VAXP */
 (brace
 dot
 id|vendor
@@ -9523,7 +9543,14 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;         Please try dxs_support=1 option and report if it works on your machine.&bslash;n&quot;
+l_string|&quot;         Please try dxs_support=1 or dxs_support=4 option&bslash;n&quot;
+)paren
+suffix:semicolon
+id|printk
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;         and report if it works on your machine.&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -10011,6 +10038,21 @@ op_eq
 id|VIA_DXS_48K
 )paren
 id|chip-&gt;dxs_fixed
+op_assign
+l_int|1
+suffix:semicolon
+r_else
+r_if
+c_cond
+(paren
+id|dxs_support
+(braket
+id|dev
+)braket
+op_eq
+id|VIA_DXS_NO_VRA
+)paren
+id|chip-&gt;no_vra
 op_assign
 l_int|1
 suffix:semicolon
