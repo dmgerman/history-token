@@ -1957,6 +1957,20 @@ suffix:semicolon
 )brace
 )brace
 multiline_comment|/* b1.c */
+r_void
+id|b1_set_revision
+c_func
+(paren
+r_struct
+id|capi_driver
+op_star
+id|driver
+comma
+r_char
+op_star
+id|rev
+)paren
+suffix:semicolon
 id|avmcard
 op_star
 id|b1_alloc_card
