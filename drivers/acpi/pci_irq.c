@@ -1070,25 +1070,13 @@ comma
 id|pin
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|irq
-)paren
-id|dev-&gt;irq
-op_assign
-id|irq
-suffix:semicolon
-multiline_comment|/*&n;&t; * If no PRT entry was found and the device wasn&squot;t assigned an IRQ &n;&t; * during boot we&squot;ll try to derive an IRQ from the device&squot;s parent &n;&t; * bridge.&n;&t; */
+multiline_comment|/*&n;&t; * If no PRT entry was found, we&squot;ll try to derive an IRQ from the&n;&t; * device&squot;s parent bridge.&n;&t; */
 r_if
 c_cond
 (paren
 op_logical_neg
-id|dev-&gt;irq
-op_logical_and
-id|dev-&gt;bus-&gt;self
+id|irq
 )paren
-(brace
 id|irq
 op_assign
 id|acpi_pci_irq_derive
@@ -1108,7 +1096,6 @@ id|dev-&gt;irq
 op_assign
 id|irq
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren

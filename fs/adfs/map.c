@@ -697,8 +697,11 @@ id|adfs_sb_info
 op_star
 id|asb
 op_assign
-op_amp
-id|sb-&gt;u.adfs_sb
+id|ADFS_SB
+c_func
+(paren
+id|sb
+)paren
 suffix:semicolon
 r_struct
 id|adfs_discmap

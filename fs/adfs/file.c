@@ -5,7 +5,8 @@ macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;linux/fcntl.h&gt;
 macro_line|#include &lt;linux/time.h&gt;
 macro_line|#include &lt;linux/stat.h&gt;
-macro_line|#include &lt;linux/buffer_head.h&gt;&t;&t;/* for file_fsync() */
+macro_line|#include &lt;linux/buffer_head.h&gt;&t;&t;&t;/* for file_fsync() */
+macro_line|#include &lt;linux/adfs_fs.h&gt;
 macro_line|#include &quot;adfs.h&quot;
 DECL|variable|adfs_file_operations
 r_struct

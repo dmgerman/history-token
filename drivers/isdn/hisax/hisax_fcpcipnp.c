@@ -1665,7 +1665,7 @@ c_func
 (paren
 l_int|0x40
 comma
-l_string|&quot;&quot;
+l_string|&quot;hdlc_fill_fifo&quot;
 )paren
 suffix:semicolon
 r_if

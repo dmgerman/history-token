@@ -499,4 +499,10 @@ c_func
 (paren
 id|exit_script_binfmt
 )paren
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
+)paren
+suffix:semicolon
 eof

@@ -3120,12 +3120,15 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|check_region
+op_logical_neg
+id|request_region
 c_func
 (paren
 id|cs-&gt;hw.elsa.base
 comma
 l_int|16
+comma
+l_string|&quot;elsa isdn modem&quot;
 )paren
 )paren
 (brace
@@ -3150,17 +3153,6 @@ l_int|16
 )paren
 suffix:semicolon
 )brace
-r_else
-id|request_region
-c_func
-(paren
-id|cs-&gt;hw.elsa.base
-comma
-l_int|16
-comma
-l_string|&quot;elsa isdn modem&quot;
-)paren
-suffix:semicolon
 )brace
 r_else
 r_if
@@ -3202,12 +3194,15 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|check_region
+op_logical_neg
+id|request_region
 c_func
 (paren
 id|cs-&gt;hw.elsa.base
 comma
 l_int|16
+comma
+l_string|&quot;elsa isdn modem&quot;
 )paren
 )paren
 (brace
@@ -3232,17 +3227,6 @@ l_int|16
 )paren
 suffix:semicolon
 )brace
-r_else
-id|request_region
-c_func
-(paren
-id|cs-&gt;hw.elsa.base
-comma
-l_int|16
-comma
-l_string|&quot;elsa isdn modem&quot;
-)paren
-suffix:semicolon
 )brace
 r_else
 id|printk
@@ -5556,13 +5540,19 @@ c_cond
 id|cs-&gt;typ
 op_ne
 id|ISDN_CTYPE_ELSA_PCMCIA
-op_logical_and
-id|check_region
+)paren
+r_if
+c_cond
+(paren
+op_logical_neg
+id|request_region
 c_func
 (paren
 id|cs-&gt;hw.elsa.base
 comma
 id|bytecnt
+comma
+l_string|&quot;elsa isdn&quot;
 )paren
 )paren
 (brace
@@ -5590,19 +5580,6 @@ l_int|0
 )paren
 suffix:semicolon
 )brace
-r_else
-(brace
-id|request_region
-c_func
-(paren
-id|cs-&gt;hw.elsa.base
-comma
-id|bytecnt
-comma
-l_string|&quot;elsa isdn&quot;
-)paren
-suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -5622,12 +5599,15 @@ id|ELSA_QS3000PCI
 r_if
 c_cond
 (paren
-id|check_region
+op_logical_neg
+id|pci_request_region
 c_func
 (paren
 id|cs-&gt;hw.elsa.cfg
 comma
 l_int|0x80
+comma
+l_string|&quot;elsa isdn pci&quot;
 )paren
 )paren
 (brace
@@ -5660,19 +5640,6 @@ suffix:semicolon
 r_return
 (paren
 l_int|0
-)paren
-suffix:semicolon
-)brace
-r_else
-(brace
-id|request_region
-c_func
-(paren
-id|cs-&gt;hw.elsa.cfg
-comma
-l_int|0x80
-comma
-l_string|&quot;elsa isdn pci&quot;
 )paren
 suffix:semicolon
 )brace
