@@ -6773,7 +6773,7 @@ op_minus
 id|ENOMEM
 suffix:semicolon
 )brace
-multiline_comment|/* Align, init, and map the RFA. */
+multiline_comment|/* Align, init, and map the RFD. */
 id|rx-&gt;skb-&gt;dev
 op_assign
 id|nic-&gt;netdev
@@ -6812,7 +6812,7 @@ id|rx-&gt;skb-&gt;data
 comma
 id|RFD_BUF_LEN
 comma
-id|PCI_DMA_FROMDEVICE
+id|PCI_DMA_BIDIRECTIONAL
 )paren
 suffix:semicolon
 multiline_comment|/* Link the RFD to end of RFA by linking previous RFD to&n;&t; * this one, and clearing EL bit of previous.  */
