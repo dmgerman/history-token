@@ -5134,6 +5134,8 @@ c_func
 (paren
 id|port
 )paren
+op_logical_and
+id|port-&gt;cons-&gt;cflag
 )paren
 (brace
 id|tty-&gt;termios-&gt;c_cflag
