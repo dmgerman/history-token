@@ -10,7 +10,7 @@ mdefine_line|#define tlb_start_vma(tlb,vma)&t;&bslash;&n;&t;flush_cache_range(vm
 DECL|macro|tlb_end_vma
 mdefine_line|#define tlb_end_vma(tlb,vma)&t;&bslash;&n;&t;flush_tlb_range(vma, vma-&gt;vm_start, vma-&gt;vm_end)
 DECL|macro|tlb_remove_tlb_entry
-mdefine_line|#define tlb_remove_tlb_entry(tlb, pte, address) do { } while (0)
+mdefine_line|#define tlb_remove_tlb_entry(tlb, ptep, address) do { } while (0)
 macro_line|#include &lt;asm-generic/tlb.h&gt;
 DECL|macro|pmd_free_tlb
 mdefine_line|#define pmd_free_tlb(tlb, pmd)&t;pmd_free(pmd)
