@@ -2012,7 +2012,7 @@ id|write_super
 suffix:colon
 id|ext3_write_super
 comma
-multiline_comment|/* BKL held */
+multiline_comment|/* BKL not held. We take it. Needed? */
 id|write_super_lockfs
 suffix:colon
 id|ext3_write_super_lockfs
@@ -7137,6 +7137,11 @@ id|sb
 id|tid_t
 id|target
 suffix:semicolon
+id|lock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -7208,6 +7213,11 @@ id|sb
 )paren
 suffix:semicolon
 )brace
+id|unlock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
 )brace
 multiline_comment|/*&n; * LVM calls this function before a (read-only) snapshot is created.  This&n; * gives us a chance to flush the journal completely and mark the fs clean.&n; */
 DECL|function|ext3_write_super_lockfs

@@ -41,6 +41,7 @@ macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &quot;sd.h&quot;
 macro_line|#include &quot;scsi.h&quot;
 macro_line|#include &quot;hosts.h&quot;
+macro_line|#include &lt;scsi/scsicam.h&gt;
 macro_line|#include &quot;megaraid.h&quot;
 multiline_comment|/*&n; *================================================================&n; *  #Defines&n; *================================================================&n; */
 DECL|macro|MAX_SERBUF
@@ -1693,12 +1694,19 @@ c_func
 op_amp
 id|c
 comma
+id|cpu_to_le32
+c_func
+(paren
+id|sg_dma_address
+c_func
+(paren
+op_amp
 id|sgList
 (braket
 l_int|0
 )braket
-dot
-id|address
+)paren
+)paren
 comma
 l_int|0x1
 )paren
@@ -14829,17 +14837,14 @@ c_cond
 (paren
 op_logical_neg
 id|inode
-op_logical_or
-op_logical_neg
-(paren
-id|dev
-op_assign
-id|inode-&gt;i_rdev
-)paren
 )paren
 r_return
 op_minus
 id|EINVAL
+suffix:semicolon
+id|dev
+op_assign
+id|inode-&gt;i_rdev
 suffix:semicolon
 r_if
 c_cond
@@ -16896,12 +16901,20 @@ id|scbp
 suffix:semicolon
 multiline_comment|/*&n;&t; * Stop sending commands to the controller, queue them internally.&n;&t; * When deletion is complete, ISR will flush the queue.&n;&t; */
 id|IO_LOCK
+c_func
+(paren
+id|this_hba-&gt;host
+)paren
 suffix:semicolon
 id|this_hba-&gt;quiescent
 op_assign
 l_int|1
 suffix:semicolon
 id|IO_UNLOCK
+c_func
+(paren
+id|this_hba-&gt;host
+)paren
 suffix:semicolon
 r_while
 c_loop
@@ -16933,6 +16946,10 @@ id|logdrv
 )paren
 suffix:semicolon
 id|IO_LOCK
+c_func
+(paren
+id|this_hba-&gt;host
+)paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * Attach the internal queue to the pending queue&n;&t; */
 r_if
@@ -17047,6 +17064,10 @@ op_assign
 l_int|0
 suffix:semicolon
 id|IO_UNLOCK
+c_func
+(paren
+id|this_hba-&gt;host
+)paren
 suffix:semicolon
 r_return
 id|rval

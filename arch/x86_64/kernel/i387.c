@@ -93,157 +93,6 @@ l_int|2
 )paren
 suffix:semicolon
 multiline_comment|/* clear TS and EM */
-id|asm
-c_func
-(paren
-l_string|&quot;fninit&quot;
-)paren
-suffix:semicolon
-id|load_mxcsr
-c_func
-(paren
-l_int|0x1f80
-)paren
-suffix:semicolon
-multiline_comment|/* initialize MMX state. normally this will be covered by fninit, but the &n;&t;   architecture doesn&squot;t guarantee it so do it explicitely. */
-id|asm
-r_volatile
-(paren
-l_string|&quot;movq %0,%%mm0&bslash;n&bslash;t&quot;
-l_string|&quot;movq %%mm0,%%mm1&bslash;n&bslash;t&quot;
-l_string|&quot;movq %%mm0,%%mm2&bslash;n&bslash;t&quot;
-l_string|&quot;movq %%mm0,%%mm3&bslash;n&bslash;t&quot;
-l_string|&quot;movq %%mm0,%%mm4&bslash;n&bslash;t&quot;
-l_string|&quot;movq %%mm0,%%mm5&bslash;n&bslash;t&quot;
-l_string|&quot;movq %%mm0,%%mm6&bslash;n&bslash;t&quot;
-l_string|&quot;movq %%mm0,%%mm7&bslash;n&bslash;t&quot;
-op_scope_resolution
-l_string|&quot;m&quot;
-(paren
-l_int|0ULL
-)paren
-)paren
-suffix:semicolon
-id|asm
-c_func
-(paren
-l_string|&quot;emms&quot;
-)paren
-suffix:semicolon
-multiline_comment|/* initialize XMM state */
-id|asm
-c_func
-(paren
-l_string|&quot;xorpd %xmm0,%xmm0&quot;
-)paren
-suffix:semicolon
-id|asm
-c_func
-(paren
-l_string|&quot;xorpd %xmm1,%xmm1&quot;
-)paren
-suffix:semicolon
-id|asm
-c_func
-(paren
-l_string|&quot;xorpd %xmm2,%xmm2&quot;
-)paren
-suffix:semicolon
-id|asm
-c_func
-(paren
-l_string|&quot;xorpd %xmm3,%xmm3&quot;
-)paren
-suffix:semicolon
-id|asm
-c_func
-(paren
-l_string|&quot;xorpd %xmm4,%xmm4&quot;
-)paren
-suffix:semicolon
-id|asm
-c_func
-(paren
-l_string|&quot;xorpd %xmm5,%xmm5&quot;
-)paren
-suffix:semicolon
-id|asm
-c_func
-(paren
-l_string|&quot;xorpd %xmm6,%xmm6&quot;
-)paren
-suffix:semicolon
-id|asm
-c_func
-(paren
-l_string|&quot;xorpd %xmm7,%xmm7&quot;
-)paren
-suffix:semicolon
-id|asm
-c_func
-(paren
-l_string|&quot;xorpd %xmm8,%xmm8&quot;
-)paren
-suffix:semicolon
-id|asm
-c_func
-(paren
-l_string|&quot;xorpd %xmm9,%xmm9&quot;
-)paren
-suffix:semicolon
-id|asm
-c_func
-(paren
-l_string|&quot;xorpd %xmm10,%xmm10&quot;
-)paren
-suffix:semicolon
-id|asm
-c_func
-(paren
-l_string|&quot;xorpd %xmm11,%xmm11&quot;
-)paren
-suffix:semicolon
-id|asm
-c_func
-(paren
-l_string|&quot;xorpd %xmm12,%xmm12&quot;
-)paren
-suffix:semicolon
-id|asm
-c_func
-(paren
-l_string|&quot;xorpd %xmm13,%xmm13&quot;
-)paren
-suffix:semicolon
-id|asm
-c_func
-(paren
-l_string|&quot;xorpd %xmm14,%xmm14&quot;
-)paren
-suffix:semicolon
-id|asm
-c_func
-(paren
-l_string|&quot;xorpd %xmm15,%xmm15&quot;
-)paren
-suffix:semicolon
-id|load_mxcsr
-c_func
-(paren
-l_int|0x1f80
-)paren
-suffix:semicolon
-id|asm
-r_volatile
-(paren
-l_string|&quot;fxsave %0&quot;
-suffix:colon
-l_string|&quot;=m&quot;
-(paren
-id|init_fpu_env
-)paren
-)paren
-suffix:semicolon
 multiline_comment|/* clean state in init */
 id|stts
 c_func
@@ -270,33 +119,37 @@ c_func
 r_void
 )paren
 (brace
-macro_line|#if 0
-id|asm
+r_struct
+id|task_struct
+op_star
+id|me
+op_assign
+id|current
+suffix:semicolon
+id|memset
 c_func
 (paren
-l_string|&quot;fninit&quot;
+op_amp
+id|me-&gt;thread.i387.fxsave
+comma
+l_int|0
+comma
+r_sizeof
+(paren
+r_struct
+id|i387_fxsave_struct
+)paren
 )paren
 suffix:semicolon
-id|load_mxcsr
-c_func
-(paren
+id|me-&gt;thread.i387.fxsave.cwd
+op_assign
+l_int|0x37f
+suffix:semicolon
+id|me-&gt;thread.i387.fxsave.mxcsr
+op_assign
 l_int|0x1f80
-)paren
 suffix:semicolon
-macro_line|#else
-id|asm
-r_volatile
-(paren
-l_string|&quot;fxrstor %0&quot;
-op_scope_resolution
-l_string|&quot;m&quot;
-(paren
-id|init_fpu_env
-)paren
-)paren
-suffix:semicolon
-macro_line|#endif
-id|current-&gt;used_math
+id|me-&gt;used_math
 op_assign
 l_int|1
 suffix:semicolon
