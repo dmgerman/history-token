@@ -7789,6 +7789,15 @@ op_eq
 l_int|NULL
 )paren
 (brace
+id|spin_unlock_irqrestore
+c_func
+(paren
+op_amp
+id|pTxPort-&gt;TxDesRingLock
+comma
+id|Flags
+)paren
+suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
