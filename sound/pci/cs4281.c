@@ -5561,12 +5561,6 @@ op_eq
 l_int|NULL
 )paren
 (brace
-id|snd_cs4281_free
-c_func
-(paren
-id|chip
-)paren
-suffix:semicolon
 id|snd_printk
 c_func
 (paren
@@ -5580,6 +5574,12 @@ op_plus
 id|CS4281_BA0_SIZE
 op_minus
 l_int|1
+)paren
+suffix:semicolon
+id|snd_cs4281_free
+c_func
+(paren
+id|chip
 )paren
 suffix:semicolon
 r_return
@@ -5607,12 +5607,6 @@ op_eq
 l_int|NULL
 )paren
 (brace
-id|snd_cs4281_free
-c_func
-(paren
-id|chip
-)paren
-suffix:semicolon
 id|snd_printk
 c_func
 (paren
@@ -5626,6 +5620,12 @@ op_plus
 id|CS4281_BA1_SIZE
 op_minus
 l_int|1
+)paren
+suffix:semicolon
+id|snd_cs4281_free
+c_func
+(paren
+id|chip
 )paren
 suffix:semicolon
 r_return
@@ -5657,12 +5657,6 @@ id|chip
 )paren
 )paren
 (brace
-id|snd_cs4281_free
-c_func
-(paren
-id|chip
-)paren
-suffix:semicolon
 id|snd_printk
 c_func
 (paren
@@ -5670,6 +5664,12 @@ id|KERN_ERR
 l_string|&quot;unable to grab IRQ %d&bslash;n&quot;
 comma
 id|pci-&gt;irq
+)paren
+suffix:semicolon
+id|snd_cs4281_free
+c_func
+(paren
+id|chip
 )paren
 suffix:semicolon
 r_return

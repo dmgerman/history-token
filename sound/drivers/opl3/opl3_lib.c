@@ -1856,12 +1856,6 @@ OL
 l_int|0
 )paren
 (brace
-id|snd_opl3_free
-c_func
-(paren
-id|opl3
-)paren
-suffix:semicolon
 id|snd_printd
 c_func
 (paren
@@ -1870,6 +1864,12 @@ comma
 id|opl3-&gt;l_port
 comma
 id|opl3-&gt;r_port
+)paren
+suffix:semicolon
+id|snd_opl3_free
+c_func
+(paren
+id|opl3
 )paren
 suffix:semicolon
 r_return
