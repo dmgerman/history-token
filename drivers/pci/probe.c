@@ -184,6 +184,12 @@ op_star
 id|b
 )paren
 (brace
+r_if
+c_cond
+(paren
+id|b-&gt;legacy_io
+)paren
+(brace
 id|class_device_remove_bin_file
 c_func
 (paren
@@ -209,6 +215,7 @@ id|b-&gt;legacy_io
 )paren
 suffix:semicolon
 multiline_comment|/* both are allocated here */
+)brace
 )brace
 macro_line|#else /* !HAVE_PCI_LEGACY */
 DECL|function|pci_create_legacy_files
