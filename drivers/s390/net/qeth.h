@@ -18,7 +18,7 @@ macro_line|#include &lt;asm/ccwdev.h&gt;
 macro_line|#include &lt;asm/ccwgroup.h&gt;
 macro_line|#include &quot;qeth_mpc.h&quot;
 DECL|macro|VERSION_QETH_H
-mdefine_line|#define VERSION_QETH_H &t;&t;&quot;$Revision: 1.116 $&quot;
+mdefine_line|#define VERSION_QETH_H &t;&t;&quot;$Revision: 1.123 $&quot;
 macro_line|#ifdef CONFIG_QETH_IPV6
 DECL|macro|QETH_VERSION_IPV6
 mdefine_line|#define QETH_VERSION_IPV6 &t;&quot;:IPv6&quot;
@@ -1221,6 +1221,9 @@ comma
 DECL|enumerator|QETH_IP_TYPE_RXIP
 id|QETH_IP_TYPE_RXIP
 comma
+DECL|enumerator|QETH_IP_TYPE_DEL_ALL_MC
+id|QETH_IP_TYPE_DEL_ALL_MC
+comma
 )brace
 suffix:semicolon
 DECL|enum|qeth_cmd_buffer_state
@@ -1790,15 +1793,10 @@ id|QETH_SET_IP_THREAD
 op_assign
 l_int|1
 comma
-DECL|enumerator|QETH_SET_MC_THREAD
-id|QETH_SET_MC_THREAD
-op_assign
-l_int|2
-comma
 DECL|enumerator|QETH_RECOVER_THREAD
 id|QETH_RECOVER_THREAD
 op_assign
-l_int|4
+l_int|2
 comma
 )brace
 suffix:semicolon
@@ -1932,6 +1930,7 @@ suffix:semicolon
 DECL|member|ip_tbd_list
 r_struct
 id|list_head
+op_star
 id|ip_tbd_list
 suffix:semicolon
 DECL|member|ipato
