@@ -606,6 +606,10 @@ id|ent-&gt;set
 op_assign
 id|arg-&gt;active_set
 suffix:semicolon
+id|ent-&gt;tgid
+op_assign
+id|current-&gt;tgid
+suffix:semicolon
 multiline_comment|/*&n;&t; * selectively store PMDs in increasing index number&n;&t; */
 r_if
 c_cond

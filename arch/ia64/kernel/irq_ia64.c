@@ -252,6 +252,11 @@ suffix:semicolon
 )brace
 macro_line|#endif /* IRQ_DEBUG */
 multiline_comment|/*&n;&t; * Always set TPR to limit maximum interrupt nesting depth to&n;&t; * 16 (without this, it would be ~240, which could easily lead&n;&t; * to kernel stack overflows).&n;&t; */
+id|irq_enter
+c_func
+(paren
+)paren
+suffix:semicolon
 id|saved_tpr
 op_assign
 id|ia64_getreg
@@ -338,15 +343,7 @@ c_func
 suffix:semicolon
 )brace
 multiline_comment|/*&n;&t; * This must be done *after* the ia64_eoi().  For example, the keyboard softirq&n;&t; * handler needs to be able to wait for further keyboard interrupts, which can&squot;t&n;&t; * come through until ia64_eoi() has been done.&n;&t; */
-r_if
-c_cond
-(paren
-id|local_softirq_pending
-c_func
-(paren
-)paren
-)paren
-id|do_softirq
+id|irq_exit
 c_func
 (paren
 )paren

@@ -34,41 +34,20 @@ mdefine_line|#define PERCPU_PAGE_SIZE&t;(__IA64_UL_CONST(1) &lt;&lt; PERCPU_PAGE
 DECL|macro|RGN_MAP_LIMIT
 mdefine_line|#define RGN_MAP_LIMIT&t;((1UL &lt;&lt; (4*PAGE_SHIFT - 12)) - PAGE_SIZE)&t;/* per region addr limit */
 macro_line|#ifdef CONFIG_HUGETLB_PAGE
-macro_line|# if defined(CONFIG_HUGETLB_PAGE_SIZE_4GB)
-DECL|macro|HPAGE_SHIFT
-macro_line|#  define HPAGE_SHIFT&t;32
-macro_line|# elif defined(CONFIG_HUGETLB_PAGE_SIZE_1GB)
-DECL|macro|HPAGE_SHIFT
-macro_line|#  define HPAGE_SHIFT&t;30
-macro_line|# elif defined(CONFIG_HUGETLB_PAGE_SIZE_256MB)
-DECL|macro|HPAGE_SHIFT
-macro_line|#  define HPAGE_SHIFT&t;28
-macro_line|# elif defined(CONFIG_HUGETLB_PAGE_SIZE_64MB)
-DECL|macro|HPAGE_SHIFT
-macro_line|#  define HPAGE_SHIFT&t;26
-macro_line|# elif defined(CONFIG_HUGETLB_PAGE_SIZE_16MB)
-DECL|macro|HPAGE_SHIFT
-macro_line|#  define HPAGE_SHIFT&t;24
-macro_line|# elif defined(CONFIG_HUGETLB_PAGE_SIZE_4MB)
-DECL|macro|HPAGE_SHIFT
-macro_line|#  define HPAGE_SHIFT&t;22
-macro_line|# elif defined(CONFIG_HUGETLB_PAGE_SIZE_1MB)
-DECL|macro|HPAGE_SHIFT
-macro_line|#  define HPAGE_SHIFT&t;20
-macro_line|# elif defined(CONFIG_HUGETLB_PAGE_SIZE_256KB)
-DECL|macro|HPAGE_SHIFT
-macro_line|#  define HPAGE_SHIFT&t;18
-macro_line|# else
-macro_line|#  error Unsupported IA-64 HugeTLB Page Size!
-macro_line|# endif
 DECL|macro|REGION_HPAGE
-macro_line|# define REGION_HPAGE&t;(4UL)&t;/* note: this is hardcoded in mmu_context.h:reload_context()!*/
+macro_line|# define REGION_HPAGE&t;&t;(4UL)&t;/* note: this is hardcoded in reload_context()!*/
 DECL|macro|REGION_SHIFT
-macro_line|# define REGION_SHIFT&t;61
+macro_line|# define REGION_SHIFT&t;&t;61
+DECL|macro|HPAGE_REGION_BASE
+macro_line|# define HPAGE_REGION_BASE&t;(REGION_HPAGE &lt;&lt; REGION_SHIFT)
+DECL|macro|HPAGE_SHIFT
+macro_line|# define HPAGE_SHIFT&t;&t;hpage_shift
+DECL|macro|HPAGE_SHIFT_DEFAULT
+macro_line|# define HPAGE_SHIFT_DEFAULT&t;28&t;/* check ia64 SDM for architecture supported size */
 DECL|macro|HPAGE_SIZE
-macro_line|# define HPAGE_SIZE&t;(__IA64_UL_CONST(1) &lt;&lt; HPAGE_SHIFT)
+macro_line|# define HPAGE_SIZE&t;&t;(__IA64_UL_CONST(1) &lt;&lt; HPAGE_SHIFT)
 DECL|macro|HPAGE_MASK
-macro_line|# define HPAGE_MASK&t;(~(HPAGE_SIZE - 1))
+macro_line|# define HPAGE_MASK&t;&t;(~(HPAGE_SIZE - 1))
 DECL|macro|HAVE_ARCH_HUGETLB_UNMAPPED_AREA
 macro_line|# define HAVE_ARCH_HUGETLB_UNMAPPED_AREA
 DECL|macro|ARCH_HAS_HUGEPAGE_ONLY_RANGE
@@ -199,6 +178,11 @@ DECL|macro|HUGETLB_PAGE_ORDER
 macro_line|# define HUGETLB_PAGE_ORDER&t;(HPAGE_SHIFT - PAGE_SHIFT)
 DECL|macro|is_hugepage_only_range
 macro_line|# define is_hugepage_only_range(addr, len)&t;&t;&bslash;&n;&t; (REGION_NUMBER(addr) == REGION_HPAGE &amp;&amp;&t;&bslash;&n;&t;  REGION_NUMBER((addr)+(len)) == REGION_HPAGE)
+r_extern
+r_int
+r_int
+id|hpage_shift
+suffix:semicolon
 macro_line|#endif
 r_static
 id|__inline__

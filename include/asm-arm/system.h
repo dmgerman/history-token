@@ -17,8 +17,10 @@ DECL|macro|CPU_ARCH_ARMv5T
 mdefine_line|#define CPU_ARCH_ARMv5T&t;&t;5
 DECL|macro|CPU_ARCH_ARMv5TE
 mdefine_line|#define CPU_ARCH_ARMv5TE&t;6
+DECL|macro|CPU_ARCH_ARMv5TEJ
+mdefine_line|#define CPU_ARCH_ARMv5TEJ&t;7
 DECL|macro|CPU_ARCH_ARMv6
-mdefine_line|#define CPU_ARCH_ARMv6&t;&t;7
+mdefine_line|#define CPU_ARCH_ARMv6&t;&t;8
 multiline_comment|/*&n; * CR1 bits (CP#15 CR1)&n; */
 DECL|macro|CR_M
 mdefine_line|#define CR_M&t;(1 &lt;&lt; 0)&t;/* MMU enable&t;&t;&t;&t;*/
@@ -261,6 +263,19 @@ op_star
 suffix:semicolon
 DECL|macro|switch_to
 mdefine_line|#define switch_to(prev,next,last)&t;&t;&t;&t;&t;&t;&bslash;&n;&t;do {&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;last = __switch_to(prev,prev-&gt;thread_info,next-&gt;thread_info);&t;&bslash;&n;&t;&t;mb();&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;} while (0)
+multiline_comment|/*&n; * CPU interrupt mask handling.&n; */
+macro_line|#if __LINUX_ARM_ARCH__ &gt;= 6
+DECL|macro|local_irq_save
+mdefine_line|#define local_irq_save(x)&t;&t;&t;&t;&t;&bslash;&n;&t;({&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;__asm__ __volatile__(&t;&t;&t;&t;&t;&bslash;&n;&t;&quot;mrs&t;%0, cpsr&t;&t;@ local_irq_save&bslash;n&quot;&t;&bslash;&n;&t;&quot;cpsid&t;i&quot;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;: &quot;=r&quot; (x) : : &quot;memory&quot;, &quot;cc&quot;);&t;&t;&t;&t;&bslash;&n;&t;})
+DECL|macro|local_irq_enable
+mdefine_line|#define local_irq_enable()  __asm__(&quot;cpsie i&t;@ __sti&quot; : : : &quot;memory&quot;, &quot;cc&quot;)
+DECL|macro|local_irq_disable
+mdefine_line|#define local_irq_disable() __asm__(&quot;cpsid i&t;@ __cli&quot; : : : &quot;memory&quot;, &quot;cc&quot;)
+DECL|macro|local_fiq_enable
+mdefine_line|#define local_fiq_enable()  __asm__(&quot;cpsie f&t;@ __stf&quot; : : : &quot;memory&quot;, &quot;cc&quot;)
+DECL|macro|local_fiq_disable
+mdefine_line|#define local_fiq_disable() __asm__(&quot;cpsid f&t;@ __clf&quot; : : : &quot;memory&quot;, &quot;cc&quot;)
+macro_line|#else
 multiline_comment|/*&n; * Save the current interrupt enable state &amp; disable IRQs&n; */
 DECL|macro|local_irq_save
 mdefine_line|#define local_irq_save(x)&t;&t;&t;&t;&t;&bslash;&n;&t;({&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;unsigned long temp;&t;&t;&t;&t;&bslash;&n;&t;&t;(void) (&amp;temp == &amp;x);&t;&t;&t;&t;&bslash;&n;&t;__asm__ __volatile__(&t;&t;&t;&t;&t;&bslash;&n;&t;&quot;mrs&t;%0, cpsr&t;&t;@ local_irq_save&bslash;n&quot;&t;&bslash;&n;&quot;&t;orr&t;%1, %0, #128&bslash;n&quot;&t;&t;&t;&t;&t;&bslash;&n;&quot;&t;msr&t;cpsr_c, %1&quot;&t;&t;&t;&t;&t;&bslash;&n;&t;: &quot;=r&quot; (x), &quot;=r&quot; (temp)&t;&t;&t;&t;&t;&bslash;&n;&t;:&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;: &quot;memory&quot;, &quot;cc&quot;);&t;&t;&t;&t;&t;&bslash;&n;&t;})
@@ -276,6 +291,7 @@ mdefine_line|#define __stf()&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;({&t;&t;&t;&t;&t;
 multiline_comment|/*&n; * Disable FIQs&n; */
 DECL|macro|__clf
 mdefine_line|#define __clf()&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;({&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;unsigned long temp;&t;&t;&t;&t;&bslash;&n;&t;__asm__ __volatile__(&t;&t;&t;&t;&t;&bslash;&n;&t;&quot;mrs&t;%0, cpsr&t;&t;@ clf&bslash;n&quot;&t;&t;&bslash;&n;&quot;&t;orr&t;%0, %0, #64&bslash;n&quot;&t;&t;&t;&t;&t;&bslash;&n;&quot;&t;msr&t;cpsr_c, %0&quot;&t;&t;&t;&t;&t;&bslash;&n;&t;: &quot;=r&quot; (temp)&t;&t;&t;&t;&t;&t;&bslash;&n;&t;:&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;: &quot;memory&quot;, &quot;cc&quot;);&t;&t;&t;&t;&t;&bslash;&n;&t;})
+macro_line|#endif
 multiline_comment|/*&n; * Save the current interrupt enable state.&n; */
 DECL|macro|local_save_flags
 mdefine_line|#define local_save_flags(x)&t;&t;&t;&t;&t;&bslash;&n;&t;({&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;__asm__ __volatile__(&t;&t;&t;&t;&t;&bslash;&n;&t;&quot;mrs&t;%0, cpsr&t;&t;@ local_save_flags&quot;&t;&bslash;&n;&t;: &quot;=r&quot; (x) : : &quot;memory&quot;, &quot;cc&quot;);&t;&t;&t;&t;&bslash;&n;&t;})

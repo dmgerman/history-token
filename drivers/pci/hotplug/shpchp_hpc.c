@@ -3658,6 +3658,7 @@ id|ctrl-&gt;hpc_ctlr_handle
 suffix:semicolon
 )brace
 r_else
+(brace
 id|php_ctlr
 op_assign
 (paren
@@ -3666,6 +3667,25 @@ id|php_ctlr_state_s
 op_star
 )paren
 id|dev_id
+suffix:semicolon
+id|ctrl
+op_assign
+(paren
+r_struct
+id|controller
+op_star
+)paren
+id|php_ctlr-&gt;callback_instance_id
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+op_logical_neg
+id|ctrl
+)paren
+r_return
+id|IRQ_NONE
 suffix:semicolon
 r_if
 c_cond
@@ -3717,6 +3737,13 @@ comma
 id|intr_loc
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|shpchp_poll_mode
+)paren
+(brace
 multiline_comment|/* Mask Global Interrupt Mask - see implementation note on p. 139 */
 multiline_comment|/* of SHPC spec rev 1.0*/
 id|temp_dword
@@ -3783,6 +3810,7 @@ comma
 id|intr_loc2
 )paren
 suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
@@ -4138,6 +4166,13 @@ id|intr_loc2
 suffix:semicolon
 )brace
 )brace
+r_if
+c_cond
+(paren
+op_logical_neg
+id|shpchp_poll_mode
+)paren
+(brace
 multiline_comment|/* Unmask Global Interrupt Mask */
 id|temp_dword
 op_assign
@@ -4183,6 +4218,7 @@ op_plus
 id|SERR_INTR_ENABLE
 )paren
 suffix:semicolon
+)brace
 r_return
 id|IRQ_HANDLED
 suffix:semicolon

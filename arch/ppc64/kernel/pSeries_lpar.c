@@ -9,7 +9,7 @@ macro_line|#include &lt;asm/machdep.h&gt;
 macro_line|#include &lt;asm/abs_addr.h&gt;
 macro_line|#include &lt;asm/mmu_context.h&gt;
 macro_line|#include &lt;asm/ppcdebug.h&gt;
-macro_line|#include &lt;asm/pci_dma.h&gt;
+macro_line|#include &lt;asm/iommu.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;asm/naca.h&gt;
 macro_line|#include &lt;asm/tlbflush.h&gt;
@@ -459,12 +459,15 @@ id|tce_build_pSeriesLP
 c_func
 (paren
 r_struct
-id|TceTable
+id|iommu_table
 op_star
 id|tbl
 comma
 r_int
 id|tcenum
+comma
+r_int
+id|npages
 comma
 r_int
 r_int
@@ -475,41 +478,17 @@ id|direction
 )paren
 (brace
 id|u64
-id|set_tce_rc
+id|rc
 suffix:semicolon
 r_union
-id|Tce
+id|tce_entry
 id|tce
 suffix:semicolon
-id|PPCDBG
-c_func
-(paren
-id|PPCDBG_TCE
-comma
-l_string|&quot;build_tce: uaddr = 0x%lx&bslash;n&quot;
-comma
-id|uaddr
-)paren
-suffix:semicolon
-id|PPCDBG
-c_func
-(paren
-id|PPCDBG_TCE
-comma
-l_string|&quot;&bslash;ttcenum = 0x%lx, tbl = 0x%lx, index=%lx&bslash;n&quot;
-comma
-id|tcenum
-comma
-id|tbl
-comma
-id|tbl-&gt;index
-)paren
-suffix:semicolon
-id|tce.wholeTce
+id|tce.te_word
 op_assign
 l_int|0
 suffix:semicolon
-id|tce.tceBits.rpn
+id|tce.te_rpn
 op_assign
 (paren
 id|virt_to_absolute
@@ -521,7 +500,7 @@ id|uaddr
 op_rshift
 id|PAGE_SHIFT
 suffix:semicolon
-id|tce.tceBits.readWrite
+id|tce.te_rdwr
 op_assign
 l_int|1
 suffix:semicolon
@@ -532,11 +511,18 @@ id|direction
 op_ne
 id|PCI_DMA_TODEVICE
 )paren
-id|tce.tceBits.pciWrite
+id|tce.te_pciwr
 op_assign
 l_int|1
 suffix:semicolon
-id|set_tce_rc
+r_while
+c_loop
+(paren
+id|npages
+op_decrement
+)paren
+(brace
+id|rc
 op_assign
 id|plpar_tce_put
 c_func
@@ -544,7 +530,7 @@ c_func
 (paren
 id|u64
 )paren
-id|tbl-&gt;index
+id|tbl-&gt;it_index
 comma
 (paren
 id|u64
@@ -553,13 +539,18 @@ id|tcenum
 op_lshift
 l_int|12
 comma
-id|tce.wholeTce
+id|tce.te_word
 )paren
 suffix:semicolon
 r_if
 c_cond
 (paren
-id|set_tce_rc
+id|rc
+op_logical_and
+id|printk_ratelimit
+c_func
+(paren
+)paren
 )paren
 (brace
 id|printk
@@ -567,7 +558,7 @@ c_func
 (paren
 l_string|&quot;tce_build_pSeriesLP: plpar_tce_put failed. rc=%ld&bslash;n&quot;
 comma
-id|set_tce_rc
+id|rc
 )paren
 suffix:semicolon
 id|printk
@@ -578,7 +569,7 @@ comma
 (paren
 id|u64
 )paren
-id|tbl-&gt;index
+id|tbl-&gt;it_index
 )paren
 suffix:semicolon
 id|printk
@@ -597,38 +588,71 @@ c_func
 (paren
 l_string|&quot;&bslash;ttce val = 0x%lx&bslash;n&quot;
 comma
-id|tce.wholeTce
+id|tce.te_word
+)paren
+suffix:semicolon
+id|show_stack
+c_func
+(paren
+id|current
+comma
+(paren
+r_int
+r_int
+op_star
+)paren
+id|__get_SP
+c_func
+(paren
+)paren
 )paren
 suffix:semicolon
 )brace
+id|tcenum
+op_increment
+suffix:semicolon
+id|tce.te_rpn
+op_increment
+suffix:semicolon
 )brace
-DECL|function|tce_free_one_pSeriesLP
+)brace
+DECL|function|tce_free_pSeriesLP
 r_static
 r_void
-id|tce_free_one_pSeriesLP
+id|tce_free_pSeriesLP
 c_func
 (paren
 r_struct
-id|TceTable
+id|iommu_table
 op_star
 id|tbl
 comma
 r_int
 id|tcenum
+comma
+r_int
+id|npages
 )paren
 (brace
 id|u64
-id|set_tce_rc
+id|rc
 suffix:semicolon
 r_union
-id|Tce
+id|tce_entry
 id|tce
 suffix:semicolon
-id|tce.wholeTce
+id|tce.te_word
 op_assign
 l_int|0
 suffix:semicolon
-id|set_tce_rc
+r_while
+c_loop
+(paren
+id|npages
+op_decrement
+)paren
+(brace
+id|rc
 op_assign
 id|plpar_tce_put
 c_func
@@ -636,7 +660,7 @@ c_func
 (paren
 id|u64
 )paren
-id|tbl-&gt;index
+id|tbl-&gt;it_index
 comma
 (paren
 id|u64
@@ -645,19 +669,24 @@ id|tcenum
 op_lshift
 l_int|12
 comma
-id|tce.wholeTce
+id|tce.te_word
 )paren
 suffix:semicolon
 r_if
 c_cond
 (paren
-id|set_tce_rc
+id|rc
+op_logical_and
+id|printk_ratelimit
+c_func
+(paren
+)paren
 )paren
 (brace
 id|printk
 c_func
 (paren
-l_string|&quot;tce_free_one_pSeriesLP: plpar_tce_put failed&bslash;n&quot;
+l_string|&quot;tce_free_pSeriesLP: plpar_tce_put failed&bslash;n&quot;
 )paren
 suffix:semicolon
 id|printk
@@ -665,7 +694,7 @@ c_func
 (paren
 l_string|&quot;&bslash;trc      = %ld&bslash;n&quot;
 comma
-id|set_tce_rc
+id|rc
 )paren
 suffix:semicolon
 id|printk
@@ -676,7 +705,7 @@ comma
 (paren
 id|u64
 )paren
-id|tbl-&gt;index
+id|tbl-&gt;it_index
 )paren
 suffix:semicolon
 id|printk
@@ -695,8 +724,28 @@ c_func
 (paren
 l_string|&quot;&bslash;ttce val = 0x%lx&bslash;n&quot;
 comma
-id|tce.wholeTce
+id|tce.te_word
 )paren
+suffix:semicolon
+id|show_stack
+c_func
+(paren
+id|current
+comma
+(paren
+r_int
+r_int
+op_star
+)paren
+id|__get_SP
+c_func
+(paren
+)paren
+)paren
+suffix:semicolon
+)brace
+id|tcenum
+op_increment
 suffix:semicolon
 )brace
 )brace
@@ -1262,9 +1311,14 @@ id|ppc_md.tce_build
 op_assign
 id|tce_build_pSeriesLP
 suffix:semicolon
-id|ppc_md.tce_free_one
+id|ppc_md.tce_free
 op_assign
-id|tce_free_one_pSeriesLP
+id|tce_free_pSeriesLP
+suffix:semicolon
+id|pci_iommu_init
+c_func
+(paren
+)paren
 suffix:semicolon
 macro_line|#ifdef CONFIG_SMP
 id|smp_init_pSeries
@@ -1692,18 +1746,10 @@ id|lpar_rc
 op_eq
 id|H_Not_Found
 )paren
-(brace
-id|udbg_printf
-c_func
-(paren
-l_string|&quot;updatepp missed&bslash;n&quot;
-)paren
-suffix:semicolon
 r_return
 op_minus
 l_int|1
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -2140,16 +2186,8 @@ id|lpar_rc
 op_eq
 id|H_Not_Found
 )paren
-(brace
-id|udbg_printf
-c_func
-(paren
-l_string|&quot;invalidate missed&bslash;n&quot;
-)paren
-suffix:semicolon
 r_return
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -2197,13 +2235,11 @@ op_star
 id|batch
 op_assign
 op_amp
-id|ppc64_tlb_batch
-(braket
-id|smp_processor_id
+id|__get_cpu_var
 c_func
 (paren
+id|ppc64_tlb_batch
 )paren
-)braket
 suffix:semicolon
 id|spin_lock_irqsave
 c_func

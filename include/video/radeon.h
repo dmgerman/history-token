@@ -41,6 +41,8 @@ DECL|macro|BM_STATUS
 mdefine_line|#define BM_STATUS                              0x0160
 DECL|macro|CAP0_TRIG_CNTL
 mdefine_line|#define CAP0_TRIG_CNTL&t;&t;&t;       0x0950
+DECL|macro|CAP1_TRIG_CNTL
+mdefine_line|#define CAP1_TRIG_CNTL&t;&t;               0x09c0
 DECL|macro|VIPH_CONTROL
 mdefine_line|#define VIPH_CONTROL&t;&t;&t;       0x0C40
 DECL|macro|VENDOR_ID

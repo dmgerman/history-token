@@ -858,6 +858,13 @@ c_func
 id|cpu_sibling_map
 )paren
 suffix:semicolon
+DECL|variable|smp_num_siblings
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|smp_num_siblings
+)paren
+suffix:semicolon
 macro_line|#endif
 r_extern
 r_void

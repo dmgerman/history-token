@@ -1460,11 +1460,6 @@ suffix:semicolon
 r_int
 id|cpu
 suffix:semicolon
-id|irq_enter
-c_func
-(paren
-)paren
-suffix:semicolon
 id|cpu
 op_assign
 id|smp_processor_id
@@ -1707,11 +1702,6 @@ id|desc-&gt;lock
 )paren
 suffix:semicolon
 )brace
-id|irq_exit
-c_func
-(paren
-)paren
-suffix:semicolon
 r_return
 l_int|1
 suffix:semicolon

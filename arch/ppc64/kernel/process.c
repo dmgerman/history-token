@@ -31,6 +31,7 @@ macro_line|#include &lt;asm/iSeries/HvCallHpt.h&gt;
 macro_line|#include &lt;asm/hardirq.h&gt;
 macro_line|#include &lt;asm/cputable.h&gt;
 macro_line|#include &lt;asm/sections.h&gt;
+macro_line|#include &lt;asm/tlbflush.h&gt;
 macro_line|#ifndef CONFIG_SMP
 DECL|variable|last_task_used_math
 r_struct
@@ -55,13 +56,39 @@ id|mm_struct
 id|ioremap_mm
 op_assign
 (brace
+dot
 id|pgd
-suffix:colon
+op_assign
 id|ioremap_dir
 comma
+dot
+id|mm_users
+op_assign
+id|ATOMIC_INIT
+c_func
+(paren
+l_int|2
+)paren
+comma
+dot
+id|mm_count
+op_assign
+id|ATOMIC_INIT
+c_func
+(paren
+l_int|1
+)paren
+comma
+dot
+id|cpu_vm_mask
+op_assign
+id|CPU_MASK_ALL
+comma
+dot
 id|page_table_lock
-suffix:colon
+op_assign
 id|SPIN_LOCK_UNLOCKED
+comma
 )brace
 suffix:semicolon
 DECL|variable|sysmap
@@ -396,6 +423,11 @@ op_or_assign
 id|MSR_VEC
 suffix:semicolon
 macro_line|#endif /* CONFIG_ALTIVEC */
+id|flush_tlb_pending
+c_func
+(paren
+)paren
+suffix:semicolon
 id|new_thread
 op_assign
 op_amp

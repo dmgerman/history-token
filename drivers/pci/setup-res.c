@@ -595,13 +595,22 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;PCI: Failed to allocate resource %d(%lx-%lx) for %s&bslash;n&quot;
+l_string|&quot;PCI: Failed to allocate %s resource #%d:%lx@%lx for %s&bslash;n&quot;
+comma
+id|res-&gt;flags
+op_amp
+id|IORESOURCE_IO
+ques
+c_cond
+l_string|&quot;I/O&quot;
+suffix:colon
+l_string|&quot;mem&quot;
 comma
 id|resno
 comma
-id|res-&gt;start
+id|size
 comma
-id|res-&gt;end
+id|res-&gt;start
 comma
 id|pci_name
 c_func

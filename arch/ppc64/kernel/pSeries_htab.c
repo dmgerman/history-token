@@ -1159,13 +1159,11 @@ op_star
 id|batch
 op_assign
 op_amp
-id|ppc64_tlb_batch
-(braket
-id|smp_processor_id
+id|__get_cpu_var
 c_func
 (paren
+id|ppc64_tlb_batch
 )paren
-)braket
 suffix:semicolon
 multiline_comment|/* XXX fix for large ptes */
 r_int

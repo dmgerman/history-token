@@ -557,9 +557,9 @@ suffix:semicolon
 multiline_comment|/*&n; * Change &quot;struct page&quot; to physical address.&n; */
 DECL|macro|page_to_phys
 mdefine_line|#define page_to_phys(page)&t;(page_to_pfn(page) &lt;&lt; PAGE_SHIFT)
-macro_line|#if 0
-mdefine_line|#define BIO_VMERGE_BOUNDARY&t;4096
-macro_line|#endif
+multiline_comment|/* We do NOT want virtual merging, it would put too much pressure on&n; * our iommu allocator. Instead, we want drivers to be smart enough&n; * to coalesce sglists that happen to have been mapped in a contiguous&n; * way by the iommu&n; */
+DECL|macro|BIO_VMERGE_BOUNDARY
+mdefine_line|#define BIO_VMERGE_BOUNDARY&t;0
 macro_line|#endif /* __KERNEL__ */
 DECL|function|iosync
 r_static

@@ -56,7 +56,7 @@ mdefine_line|#define PFM_REG_END&t;&t;0x2 /* end marker */
 DECL|macro|PFM_REG_MONITOR
 mdefine_line|#define PFM_REG_MONITOR&t;&t;(0x1&lt;&lt;4|PFM_REG_IMPL) /* a PMC with a pmc.pm field only */
 DECL|macro|PFM_REG_COUNTING
-mdefine_line|#define PFM_REG_COUNTING&t;(0x2&lt;&lt;4|PFM_REG_MONITOR|PFM_REG_IMPL) /* a monitor + pmc.oi+ PMD used as a counter */
+mdefine_line|#define PFM_REG_COUNTING&t;(0x2&lt;&lt;4|PFM_REG_MONITOR) /* a monitor + pmc.oi+ PMD used as a counter */
 DECL|macro|PFM_REG_CONTROL
 mdefine_line|#define PFM_REG_CONTROL&t;&t;(0x4&lt;&lt;4|PFM_REG_IMPL) /* PMU control register */
 DECL|macro|PFM_REG_CONFIG
@@ -93,17 +93,18 @@ DECL|macro|PMD_PMD_DEP
 mdefine_line|#define PMD_PMD_DEP(i)&t;   pmu_conf.pmd_desc[i].dep_pmd[0]
 DECL|macro|PMC_PMD_DEP
 mdefine_line|#define PMC_PMD_DEP(i)&t;   pmu_conf.pmc_desc[i].dep_pmd[0]
-multiline_comment|/* k assumed unsigned (up to 64 registers) */
-DECL|macro|IBR_IS_IMPL
-mdefine_line|#define IBR_IS_IMPL(k)&t;  (k&lt; IA64_NUM_DBG_REGS)
-DECL|macro|DBR_IS_IMPL
-mdefine_line|#define DBR_IS_IMPL(k)&t;  (k&lt; IA64_NUM_DBG_REGS)
+DECL|macro|PFM_NUM_IBRS
+mdefine_line|#define PFM_NUM_IBRS&t;  IA64_NUM_DBG_REGS
+DECL|macro|PFM_NUM_DBRS
+mdefine_line|#define PFM_NUM_DBRS&t;  IA64_NUM_DBG_REGS
 DECL|macro|CTX_OVFL_NOBLOCK
 mdefine_line|#define CTX_OVFL_NOBLOCK(c)&t;((c)-&gt;ctx_fl_block == 0)
 DECL|macro|CTX_HAS_SMPL
 mdefine_line|#define CTX_HAS_SMPL(c)&t;&t;((c)-&gt;ctx_fl_is_sampling)
 DECL|macro|PFM_CTX_TASK
 mdefine_line|#define PFM_CTX_TASK(h)&t;&t;(h)-&gt;ctx_task
+DECL|macro|PMU_PMC_OI
+mdefine_line|#define PMU_PMC_OI&t;&t;5 /* position of pmc.oi bit */
 multiline_comment|/* XXX: does not support more than 64 PMDs */
 DECL|macro|CTX_USED_PMD
 mdefine_line|#define CTX_USED_PMD(ctx, mask) (ctx)-&gt;ctx_used_pmds[0] |= (mask)
@@ -173,74 +174,14 @@ mdefine_line|#define PMC0_HAS_OVFL(cmp0)  (cmp0 &amp; ~0x1UL)
 DECL|macro|PFMFS_MAGIC
 mdefine_line|#define PFMFS_MAGIC 0xa0b4d889
 multiline_comment|/*&n; * debugging&n; */
+DECL|macro|PFM_DEBUGGING
+mdefine_line|#define PFM_DEBUGGING 1
+macro_line|#ifdef PFM_DEBUGGING
 DECL|macro|DPRINT
 mdefine_line|#define DPRINT(a) &bslash;&n;&t;do { &bslash;&n;&t;&t;if (unlikely(pfm_sysctl.debug &gt;0)) { printk(&quot;%s.%d: CPU%d [%d] &quot;, __FUNCTION__, __LINE__, smp_processor_id(), current-&gt;pid); printk a; } &bslash;&n;&t;} while (0)
 DECL|macro|DPRINT_ovfl
 mdefine_line|#define DPRINT_ovfl(a) &bslash;&n;&t;do { &bslash;&n;&t;&t;if (unlikely(pfm_sysctl.debug &gt; 0 &amp;&amp; pfm_sysctl.debug_ovfl &gt;0)) { printk(&quot;%s.%d: CPU%d [%d] &quot;, __FUNCTION__, __LINE__, smp_processor_id(), current-&gt;pid); printk a; } &bslash;&n;&t;} while (0)
-multiline_comment|/*&n; * Architected PMC structure&n; */
-r_typedef
-r_struct
-(brace
-DECL|member|pmc_plm
-r_int
-r_int
-id|pmc_plm
-suffix:colon
-l_int|4
-suffix:semicolon
-multiline_comment|/* privilege level mask */
-DECL|member|pmc_ev
-r_int
-r_int
-id|pmc_ev
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* external visibility */
-DECL|member|pmc_oi
-r_int
-r_int
-id|pmc_oi
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* overflow interrupt */
-DECL|member|pmc_pm
-r_int
-r_int
-id|pmc_pm
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* privileged monitor */
-DECL|member|pmc_ig1
-r_int
-r_int
-id|pmc_ig1
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* reserved */
-DECL|member|pmc_es
-r_int
-r_int
-id|pmc_es
-suffix:colon
-l_int|8
-suffix:semicolon
-multiline_comment|/* event select */
-DECL|member|pmc_ig2
-r_int
-r_int
-id|pmc_ig2
-suffix:colon
-l_int|48
-suffix:semicolon
-multiline_comment|/* reserved */
-DECL|typedef|pfm_monitor_t
-)brace
-id|pfm_monitor_t
-suffix:semicolon
+macro_line|#endif
 multiline_comment|/*&n; * 64-bit software counter structure&n; *&n; * the next_reset_type is applied to the next call to pfm_reset_regs()&n; */
 r_typedef
 r_struct
@@ -1118,28 +1059,18 @@ DECL|macro|PFM_CMD_ARG_RW
 mdefine_line|#define PFM_CMD_ARG_RW&t;&t;0x04&t;/* command must read/write argument(s) */
 DECL|macro|PFM_CMD_STOP
 mdefine_line|#define PFM_CMD_STOP&t;&t;0x08&t;/* command does not work on zombie context */
-DECL|macro|PFM_CMD_IDX
-mdefine_line|#define PFM_CMD_IDX(cmd)&t;(cmd)
-DECL|macro|PFM_CMD_IS_VALID
-mdefine_line|#define PFM_CMD_IS_VALID(cmd)&t;((PFM_CMD_IDX(cmd) &gt;= 0) &amp;&amp; (PFM_CMD_IDX(cmd) &lt; PFM_CMD_COUNT) &bslash;&n;&t;&t;&t;&t;  &amp;&amp; pfm_cmd_tab[PFM_CMD_IDX(cmd)].cmd_func != NULL)
 DECL|macro|PFM_CMD_NAME
-mdefine_line|#define PFM_CMD_NAME(cmd)&t;pfm_cmd_tab[PFM_CMD_IDX(cmd)].cmd_name
+mdefine_line|#define PFM_CMD_NAME(cmd)&t;pfm_cmd_tab[(cmd)].cmd_name
 DECL|macro|PFM_CMD_READ_ARG
-mdefine_line|#define PFM_CMD_READ_ARG(cmd)&t;(pfm_cmd_tab[PFM_CMD_IDX(cmd)].cmd_flags &amp; PFM_CMD_ARG_READ)
+mdefine_line|#define PFM_CMD_READ_ARG(cmd)&t;(pfm_cmd_tab[(cmd)].cmd_flags &amp; PFM_CMD_ARG_READ)
 DECL|macro|PFM_CMD_RW_ARG
-mdefine_line|#define PFM_CMD_RW_ARG(cmd)&t;(pfm_cmd_tab[PFM_CMD_IDX(cmd)].cmd_flags &amp; PFM_CMD_ARG_RW)
+mdefine_line|#define PFM_CMD_RW_ARG(cmd)&t;(pfm_cmd_tab[(cmd)].cmd_flags &amp; PFM_CMD_ARG_RW)
 DECL|macro|PFM_CMD_USE_FD
-mdefine_line|#define PFM_CMD_USE_FD(cmd)&t;(pfm_cmd_tab[PFM_CMD_IDX(cmd)].cmd_flags &amp; PFM_CMD_FD)
+mdefine_line|#define PFM_CMD_USE_FD(cmd)&t;(pfm_cmd_tab[(cmd)].cmd_flags &amp; PFM_CMD_FD)
 DECL|macro|PFM_CMD_STOPPED
-mdefine_line|#define PFM_CMD_STOPPED(cmd)&t;(pfm_cmd_tab[PFM_CMD_IDX(cmd)].cmd_flags &amp; PFM_CMD_STOP)
+mdefine_line|#define PFM_CMD_STOPPED(cmd)&t;(pfm_cmd_tab[(cmd)].cmd_flags &amp; PFM_CMD_STOP)
 DECL|macro|PFM_CMD_ARG_MANY
 mdefine_line|#define PFM_CMD_ARG_MANY&t;-1 /* cannot be zero */
-DECL|macro|PFM_CMD_NARG
-mdefine_line|#define PFM_CMD_NARG(cmd)&t;(pfm_cmd_tab[PFM_CMD_IDX(cmd)].cmd_narg)
-DECL|macro|PFM_CMD_ARG_SIZE
-mdefine_line|#define PFM_CMD_ARG_SIZE(cmd)&t;(pfm_cmd_tab[PFM_CMD_IDX(cmd)].cmd_argsize)
-DECL|macro|PFM_CMD_GETSIZE
-mdefine_line|#define PFM_CMD_GETSIZE(cmd)&t;(pfm_cmd_tab[PFM_CMD_IDX(cmd)].cmd_getsize)
 r_typedef
 r_struct
 (brace
@@ -9958,6 +9889,11 @@ id|thread
 op_assign
 l_int|NULL
 suffix:semicolon
+r_struct
+id|task_struct
+op_star
+id|task
+suffix:semicolon
 id|pfarg_reg_t
 op_star
 id|req
@@ -9971,12 +9907,16 @@ suffix:semicolon
 r_int
 r_int
 id|value
+comma
+id|pmc_pm
 suffix:semicolon
 r_int
 r_int
 id|smpl_pmds
 comma
 id|reset_pmds
+comma
+id|impl_pmds
 suffix:semicolon
 r_int
 r_int
@@ -9985,6 +9925,8 @@ comma
 id|reg_flags
 comma
 id|flags
+comma
+id|pmc_type
 suffix:semicolon
 r_int
 id|i
@@ -10031,6 +9973,17 @@ id|is_system
 op_assign
 id|ctx-&gt;ctx_fl_system
 suffix:semicolon
+id|task
+op_assign
+id|ctx-&gt;ctx_task
+suffix:semicolon
+id|impl_pmds
+op_assign
+id|pmu_conf.impl_pmds
+(braket
+l_int|0
+)braket
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -10055,7 +10008,7 @@ id|is_loaded
 id|thread
 op_assign
 op_amp
-id|ctx-&gt;ctx_task-&gt;thread
+id|task-&gt;thread
 suffix:semicolon
 multiline_comment|/*&n;&t;&t; * In system wide and when the context is loaded, access can only happen&n;&t;&t; * when the caller is running on the CPU being monitored by the session.&n;&t;&t; * It does not have to be the owner (ctx_task) of the context per se.&n;&t;&t; */
 r_if
@@ -10095,7 +10048,7 @@ c_func
 (paren
 )paren
 op_eq
-id|ctx-&gt;ctx_task
+id|task
 op_logical_or
 id|is_system
 ques
@@ -10153,48 +10106,112 @@ id|flags
 op_assign
 l_int|0
 suffix:semicolon
-id|is_counting
-op_assign
-id|PMC_IS_COUNTING
-c_func
-(paren
-id|cnum
-)paren
-suffix:semicolon
-id|is_monitor
-op_assign
-id|PMC_IS_MONITOR
-c_func
-(paren
-id|cnum
-)paren
-suffix:semicolon
-multiline_comment|/*&n;&t;&t; * we reject all non implemented PMC as well&n;&t;&t; * as attempts to modify PMC[0-3] which are used&n;&t;&t; * as status registers by the PMU&n;&t;&t; */
 r_if
 c_cond
 (paren
-id|PMC_IS_IMPL
-c_func
-(paren
 id|cnum
-)paren
-op_eq
-l_int|0
-op_logical_or
-id|PMC_IS_CONTROL
-c_func
-(paren
-id|cnum
-)paren
+op_ge
+id|PMU_MAX_PMCS
 )paren
 (brace
 id|DPRINT
 c_func
 (paren
 (paren
-l_string|&quot;pmc%u is unimplemented or invalid&bslash;n&quot;
+l_string|&quot;pmc%u is invalid&bslash;n&quot;
 comma
 id|cnum
+)paren
+)paren
+suffix:semicolon
+r_goto
+id|error
+suffix:semicolon
+)brace
+id|pmc_type
+op_assign
+id|pmu_conf.pmc_desc
+(braket
+id|cnum
+)braket
+dot
+id|type
+suffix:semicolon
+id|pmc_pm
+op_assign
+(paren
+id|value
+op_rshift
+id|pmu_conf.pmc_desc
+(braket
+id|cnum
+)braket
+dot
+id|pm_pos
+)paren
+op_amp
+l_int|0x1
+suffix:semicolon
+id|is_counting
+op_assign
+(paren
+id|pmc_type
+op_amp
+id|PFM_REG_COUNTING
+)paren
+op_eq
+id|PFM_REG_COUNTING
+ques
+c_cond
+l_int|1
+suffix:colon
+l_int|0
+suffix:semicolon
+id|is_monitor
+op_assign
+(paren
+id|pmc_type
+op_amp
+id|PFM_REG_MONITOR
+)paren
+op_eq
+id|PFM_REG_MONITOR
+ques
+c_cond
+l_int|1
+suffix:colon
+l_int|0
+suffix:semicolon
+multiline_comment|/*&n;&t;&t; * we reject all non implemented PMC as well&n;&t;&t; * as attempts to modify PMC[0-3] which are used&n;&t;&t; * as status registers by the PMU&n;&t;&t; */
+r_if
+c_cond
+(paren
+(paren
+id|pmc_type
+op_amp
+id|PFM_REG_IMPL
+)paren
+op_eq
+l_int|0
+op_logical_or
+(paren
+id|pmc_type
+op_amp
+id|PFM_REG_CONTROL
+)paren
+op_eq
+id|PFM_REG_CONTROL
+)paren
+(brace
+id|DPRINT
+c_func
+(paren
+(paren
+l_string|&quot;pmc%u is unimplemented or no-access pmc_type=%x&bslash;n&quot;
+comma
+id|cnum
+comma
+id|pmc_type
 )paren
 )paren
 suffix:semicolon
@@ -10206,11 +10223,7 @@ multiline_comment|/*&n;&t;&t; * If the PMC is a monitor, then if the value is no
 r_if
 c_cond
 (paren
-(paren
 id|is_monitor
-op_logical_or
-id|is_counting
-)paren
 op_logical_and
 id|value
 op_ne
@@ -10220,34 +10233,22 @@ c_func
 id|cnum
 )paren
 op_logical_and
-id|PFM_CHECK_PMC_PM
-c_func
-(paren
-id|ctx
-comma
-id|cnum
-comma
-id|value
-)paren
+id|is_system
+op_xor
+id|pmc_pm
 )paren
 (brace
 id|DPRINT
 c_func
 (paren
 (paren
-l_string|&quot;pmc%u pmc_pm=%ld fl_system=%d&bslash;n&quot;
+l_string|&quot;pmc%u pmc_pm=%lu is_system=%d&bslash;n&quot;
 comma
 id|cnum
 comma
-id|PMC_PM
-c_func
-(paren
-id|cnum
+id|pmc_pm
 comma
-id|value
-)paren
-comma
-id|ctx-&gt;ctx_fl_system
+id|is_system
 )paren
 )paren
 suffix:semicolon
@@ -10261,21 +10262,12 @@ c_cond
 id|is_counting
 )paren
 (brace
-id|pfm_monitor_t
-op_star
-id|p
-op_assign
-(paren
-id|pfm_monitor_t
-op_star
-)paren
-op_amp
-id|value
-suffix:semicolon
 multiline_comment|/*&n;&t;&t; &t; * enforce generation of overflow interrupt. Necessary on all&n;&t;&t; &t; * CPUs.&n;&t;&t; &t; */
-id|p-&gt;pmc_oi
-op_assign
+id|value
+op_or_assign
 l_int|1
+op_lshift
+id|PMU_PMC_OI
 suffix:semicolon
 r_if
 c_cond
@@ -10308,10 +10300,7 @@ c_cond
 (paren
 id|smpl_pmds
 op_amp
-id|pmu_conf.impl_pmds
-(braket
-l_int|0
-)braket
+id|impl_pmds
 )paren
 op_ne
 id|smpl_pmds
@@ -10340,10 +10329,7 @@ c_cond
 (paren
 id|reset_pmds
 op_amp
-id|pmu_conf.impl_pmds
-(braket
-l_int|0
-)braket
+id|impl_pmds
 )paren
 op_ne
 id|reset_pmds
@@ -10415,7 +10401,7 @@ c_func
 id|cnum
 )paren
 (paren
-id|ctx-&gt;ctx_task
+id|task
 comma
 id|ctx
 comma
@@ -10554,7 +10540,7 @@ l_int|0
 )braket
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t;&t; * keep track of the monitor PMC that we are using.&n;&t;&t; * we save the value of the pmc in ctx_pmcs[] and if&n;&t;&t; * the monitoring is not stopped for the context we also&n;&t;&t; * place it in the saved state area so that it will be&n;&t;&t; * picked up later by the context switch code.&n;&t;&t; *&n;&t;&t; * The value in ctx_pmcs[] can only be changed in pfm_write_pmcs().&n;&t;&t; *&n;&t;&t; * The value in t-&gt;pmc[] may be modified on overflow, i.e.,  when&n;&t;&t; * monitoring needs to be stopped.&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * keep track of the monitor PMC that we are using.&n;&t;&t; * we save the value of the pmc in ctx_pmcs[] and if&n;&t;&t; * the monitoring is not stopped for the context we also&n;&t;&t; * place it in the saved state area so that it will be&n;&t;&t; * picked up later by the context switch code.&n;&t;&t; *&n;&t;&t; * The value in ctx_pmcs[] can only be changed in pfm_write_pmcs().&n;&t;&t; *&n;&t;&t; * The value in thread-&gt;pmcs[] may be modified on overflow, i.e.,  when&n;&t;&t; * monitoring needs to be stopped.&n;&t;&t; */
 r_if
 c_cond
 (paren
@@ -10708,24 +10694,6 @@ comma
 id|PFM_REG_RETFL_EINVAL
 )paren
 suffix:semicolon
-id|req-&gt;reg_flags
-op_assign
-id|PFM_REG_RETFL_EINVAL
-suffix:semicolon
-id|DPRINT
-c_func
-(paren
-(paren
-l_string|&quot;pmc[%u]=0x%lx error %d&bslash;n&quot;
-comma
-id|cnum
-comma
-id|value
-comma
-id|ret
-)paren
-)paren
-suffix:semicolon
 r_return
 id|ret
 suffix:semicolon
@@ -10759,6 +10727,11 @@ op_star
 id|thread
 op_assign
 l_int|NULL
+suffix:semicolon
+r_struct
+id|task_struct
+op_star
+id|task
 suffix:semicolon
 id|pfarg_reg_t
 op_star
@@ -10827,8 +10800,15 @@ id|ovfl_mask
 op_assign
 id|pmu_conf.ovfl_val
 suffix:semicolon
+id|task
+op_assign
+id|ctx-&gt;ctx_task
+suffix:semicolon
 r_if
 c_cond
+(paren
+id|unlikely
+c_func
 (paren
 id|state
 op_eq
@@ -10838,6 +10818,7 @@ id|state
 op_eq
 id|PFM_CTX_ZOMBIE
 )paren
+)paren
 r_return
 op_minus
 id|EINVAL
@@ -10846,17 +10827,24 @@ multiline_comment|/*&n;&t; * on both UP and SMP, we can only write to the PMC wh
 r_if
 c_cond
 (paren
+id|likely
+c_func
+(paren
 id|is_loaded
+)paren
 )paren
 (brace
 id|thread
 op_assign
 op_amp
-id|ctx-&gt;ctx_task-&gt;thread
+id|task-&gt;thread
 suffix:semicolon
 multiline_comment|/*&n;&t;&t; * In system wide and when the context is loaded, access can only happen&n;&t;&t; * when the caller is running on the CPU being monitored by the session.&n;&t;&t; * It does not have to be the owner (ctx_task) of the context per se.&n;&t;&t; */
 r_if
 c_cond
+(paren
+id|unlikely
+c_func
 (paren
 id|is_system
 op_logical_and
@@ -10865,6 +10853,7 @@ op_ne
 id|smp_processor_id
 c_func
 (paren
+)paren
 )paren
 )paren
 (brace
@@ -10892,7 +10881,7 @@ c_func
 (paren
 )paren
 op_eq
-id|ctx-&gt;ctx_task
+id|task
 op_logical_or
 id|is_system
 ques
@@ -10986,7 +10975,7 @@ c_func
 id|cnum
 )paren
 (paren
-id|ctx-&gt;ctx_task
+id|task
 comma
 id|ctx
 comma
@@ -11327,25 +11316,6 @@ comma
 id|PFM_REG_RETFL_EINVAL
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * we change the return value to EFAULT in case we cannot write register return code.&n;&t; * The caller first must correct this error, then a resubmission of the request will&n;&t; * eventually yield the EINVAL.&n;&t; */
-id|req-&gt;reg_flags
-op_assign
-id|PFM_REG_RETFL_EINVAL
-suffix:semicolon
-id|DPRINT
-c_func
-(paren
-(paren
-l_string|&quot;pmd[%u]=0x%lx ret %d&bslash;n&quot;
-comma
-id|cnum
-comma
-id|value
-comma
-id|ret
-)paren
-)paren
-suffix:semicolon
 r_return
 id|ret
 suffix:semicolon
@@ -11381,6 +11351,11 @@ id|thread
 op_assign
 l_int|NULL
 suffix:semicolon
+r_struct
+id|task_struct
+op_star
+id|task
+suffix:semicolon
 r_int
 r_int
 id|val
@@ -11390,6 +11365,8 @@ comma
 id|lval
 comma
 id|ovfl_mask
+comma
+id|sval
 suffix:semicolon
 id|pfarg_reg_t
 op_star
@@ -11422,6 +11399,8 @@ r_int
 id|is_loaded
 comma
 id|is_system
+comma
+id|is_counting
 suffix:semicolon
 r_int
 id|ret
@@ -11453,6 +11432,10 @@ id|ovfl_mask
 op_assign
 id|pmu_conf.ovfl_val
 suffix:semicolon
+id|task
+op_assign
+id|ctx-&gt;ctx_task
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -11467,17 +11450,24 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|likely
+c_func
+(paren
 id|is_loaded
+)paren
 )paren
 (brace
 id|thread
 op_assign
 op_amp
-id|ctx-&gt;ctx_task-&gt;thread
+id|task-&gt;thread
 suffix:semicolon
 multiline_comment|/*&n;&t;&t; * In system wide and when the context is loaded, access can only happen&n;&t;&t; * when the caller is running on the CPU being monitored by the session.&n;&t;&t; * It does not have to be the owner (ctx_task) of the context per se.&n;&t;&t; */
 r_if
 c_cond
+(paren
+id|unlikely
+c_func
 (paren
 id|is_system
 op_logical_and
@@ -11486,6 +11476,7 @@ op_ne
 id|smp_processor_id
 c_func
 (paren
+)paren
 )paren
 )paren
 (brace
@@ -11514,7 +11505,7 @@ c_func
 (paren
 )paren
 op_eq
-id|ctx-&gt;ctx_task
+id|task
 op_logical_or
 id|is_system
 ques
@@ -11538,13 +11529,13 @@ id|DPRINT
 c_func
 (paren
 (paren
-l_string|&quot;enter loaded=%d access_pmu=%d ctx_state=%d&bslash;n&quot;
+l_string|&quot;loaded=%d access_pmu=%d ctx_state=%d&bslash;n&quot;
 comma
 id|is_loaded
 comma
 id|can_access_pmu
 comma
-id|ctx-&gt;ctx_state
+id|state
 )paren
 )paren
 suffix:semicolon
@@ -11567,10 +11558,6 @@ id|req
 op_increment
 )paren
 (brace
-id|lval
-op_assign
-l_int|0UL
-suffix:semicolon
 id|cnum
 op_assign
 id|req-&gt;reg_num
@@ -11582,11 +11569,15 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|unlikely
+c_func
+(paren
 op_logical_neg
 id|PMD_IS_IMPL
 c_func
 (paren
 id|cnum
+)paren
 )paren
 )paren
 r_goto
@@ -11595,6 +11586,9 @@ suffix:semicolon
 multiline_comment|/*&n;&t;&t; * we can only read the register that we use. That includes&n;&t;&t; * the one we explicitely initialize AND the one we want included&n;&t;&t; * in the sampling buffer (smpl_regs).&n;&t;&t; *&n;&t;&t; * Having this restriction allows optimization in the ctxsw routine&n;&t;&t; * without compromising security (leaks)&n;&t;&t; */
 r_if
 c_cond
+(paren
+id|unlikely
+c_func
 (paren
 op_logical_neg
 id|CTX_IS_USED_PMD
@@ -11605,8 +11599,35 @@ comma
 id|cnum
 )paren
 )paren
+)paren
 r_goto
 id|error
+suffix:semicolon
+id|sval
+op_assign
+id|ctx-&gt;ctx_pmds
+(braket
+id|cnum
+)braket
+dot
+id|val
+suffix:semicolon
+id|lval
+op_assign
+id|ctx-&gt;ctx_pmds
+(braket
+id|cnum
+)braket
+dot
+id|lval
+suffix:semicolon
+id|is_counting
+op_assign
+id|PMD_IS_COUNTING
+c_func
+(paren
+id|cnum
+)paren
 suffix:semicolon
 multiline_comment|/*&n;&t;&t; * If the task is not the current one, then we check if the&n;&t;&t; * PMU state is still in the local live register due to lazy ctxsw.&n;&t;&t; * If true, then we read directly from the registers.&n;&t;&t; */
 r_if
@@ -11629,9 +11650,7 @@ r_else
 multiline_comment|/*&n;&t;&t;&t; * context has been saved&n;&t;&t;&t; * if context is zombie, then task does not exist anymore.&n;&t;&t;&t; * In this case, we use the full value saved in the context (pfm_flush_regs()).&n;&t;&t;&t; */
 id|val
 op_assign
-id|state
-op_eq
-id|PFM_CTX_LOADED
+id|is_loaded
 ques
 c_cond
 id|thread-&gt;pmds
@@ -11645,11 +11664,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|PMD_IS_COUNTING
-c_func
-(paren
-id|cnum
-)paren
+id|is_counting
 )paren
 (brace
 multiline_comment|/*&n;&t;&t;&t; * XXX: need to check for overflow when loaded&n;&t;&t;&t; */
@@ -11659,31 +11674,21 @@ id|ovfl_mask
 suffix:semicolon
 id|val
 op_add_assign
-id|ctx-&gt;ctx_pmds
-(braket
-id|cnum
-)braket
-dot
-id|val
-suffix:semicolon
-id|lval
-op_assign
-id|ctx-&gt;ctx_pmds
-(braket
-id|cnum
-)braket
-dot
-id|lval
+id|sval
 suffix:semicolon
 )brace
 multiline_comment|/*&n;&t;&t; * execute read checker, if any&n;&t;&t; */
 r_if
 c_cond
 (paren
+id|unlikely
+c_func
+(paren
 id|PMD_RD_FUNC
 c_func
 (paren
 id|cnum
+)paren
 )paren
 )paren
 (brace
@@ -11743,17 +11748,11 @@ id|DPRINT
 c_func
 (paren
 (paren
-l_string|&quot;pmd[%u]=0x%lx loaded=%d access_pmu=%d ctx_state=%d&bslash;n&quot;
+l_string|&quot;pmd[%u]=0x%lx&bslash;n&quot;
 comma
 id|cnum
 comma
 id|val
-comma
-id|is_loaded
-comma
-id|can_access_pmu
-comma
-id|ctx-&gt;ctx_state
 )paren
 )paren
 suffix:semicolon
@@ -11779,25 +11778,9 @@ suffix:colon
 id|PFM_REG_RETFLAG_SET
 c_func
 (paren
-id|reg_flags
-comma
-id|PFM_REG_RETFL_EINVAL
-)paren
-suffix:semicolon
 id|req-&gt;reg_flags
-op_assign
+comma
 id|PFM_REG_RETFL_EINVAL
-suffix:semicolon
-id|DPRINT
-c_func
-(paren
-(paren
-l_string|&quot;error pmd[%u]=0x%lx&bslash;n&quot;
-comma
-id|cnum
-comma
-id|val
-)paren
 )paren
 suffix:semicolon
 r_return
@@ -12662,7 +12645,7 @@ l_int|0
 suffix:semicolon
 id|rst_ctrl.bits.reset_ovfl_pmds
 op_assign
-l_int|1
+l_int|0
 suffix:semicolon
 r_if
 c_cond
@@ -13058,6 +13041,11 @@ id|thread
 op_assign
 l_int|NULL
 suffix:semicolon
+r_struct
+id|task_struct
+op_star
+id|task
+suffix:semicolon
 id|pfarg_dbreg_t
 op_star
 id|req
@@ -13131,6 +13119,10 @@ id|is_system
 op_assign
 id|ctx-&gt;ctx_fl_system
 suffix:semicolon
+id|task
+op_assign
+id|ctx-&gt;ctx_task
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -13156,11 +13148,14 @@ id|is_loaded
 id|thread
 op_assign
 op_amp
-id|ctx-&gt;ctx_task-&gt;thread
+id|task-&gt;thread
 suffix:semicolon
 multiline_comment|/*&n;&t;&t; * In system wide and when the context is loaded, access can only happen&n;&t;&t; * when the caller is running on the CPU being monitored by the session.&n;&t;&t; * It does not have to be the owner (ctx_task) of the context per se.&n;&t;&t; */
 r_if
 c_cond
+(paren
+id|unlikely
+c_func
 (paren
 id|is_system
 op_logical_and
@@ -13169,6 +13164,7 @@ op_ne
 id|smp_processor_id
 c_func
 (paren
+)paren
 )paren
 )paren
 (brace
@@ -13196,7 +13192,7 @@ c_func
 (paren
 )paren
 op_eq
-id|ctx-&gt;ctx_task
+id|task
 op_logical_or
 id|is_system
 ques
@@ -13234,7 +13230,7 @@ c_func
 (paren
 l_string|&quot;debug registers already in use for [%d]&bslash;n&quot;
 comma
-id|ctx-&gt;ctx_task-&gt;pid
+id|task-&gt;pid
 )paren
 )paren
 suffix:semicolon
@@ -13316,7 +13312,7 @@ c_func
 (paren
 l_string|&quot;[%d] clearing ibrs, dbrs&bslash;n&quot;
 comma
-id|ctx-&gt;ctx_task-&gt;pid
+id|task-&gt;pid
 )paren
 )paren
 suffix:semicolon
@@ -13429,12 +13425,9 @@ id|mode
 op_eq
 id|PFM_CODE_RR
 op_logical_and
-op_logical_neg
-id|IBR_IS_IMPL
-c_func
-(paren
 id|rnum
-)paren
+op_ge
+id|PFM_NUM_IBRS
 )paren
 op_logical_or
 (paren
@@ -13444,12 +13437,9 @@ op_eq
 id|PFM_DATA_RR
 )paren
 op_logical_and
-op_logical_neg
-id|DBR_IS_IMPL
-c_func
-(paren
 id|rnum
-)paren
+op_ge
+id|PFM_NUM_DBRS
 )paren
 )paren
 (brace
@@ -15346,6 +15336,9 @@ id|state
 comma
 id|is_system
 suffix:semicolon
+r_int
+id|ret
+suffix:semicolon
 id|DPRINT
 c_func
 (paren
@@ -15402,6 +15395,8 @@ l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/*&n;&t; * clear psr and dcr bits&n;&t; */
+id|ret
+op_assign
 id|pfm_stop
 c_func
 (paren
@@ -15413,6 +15408,14 @@ l_int|0
 comma
 id|regs
 )paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|ret
+)paren
+r_return
+id|ret
 suffix:semicolon
 id|ctx-&gt;ctx_state
 op_assign
@@ -16279,16 +16282,60 @@ comma
 id|call_made
 op_assign
 l_int|0
+comma
+id|cmd_flags
+suffix:semicolon
+r_int
+(paren
+op_star
+id|func
+)paren
+(paren
+id|pfm_context_t
+op_star
+id|ctx
+comma
+r_void
+op_star
+id|arg
+comma
+r_int
+id|count
+comma
+r_struct
+id|pt_regs
+op_star
+id|regs
+)paren
+suffix:semicolon
+r_int
+(paren
+op_star
+id|getsize
+)paren
+(paren
+r_void
+op_star
+id|arg
+comma
+r_int
+op_star
+id|sz
+)paren
 suffix:semicolon
 DECL|macro|PFM_MAX_ARGSIZE
 mdefine_line|#define PFM_MAX_ARGSIZE&t;4096
-multiline_comment|/*&n;&t; * reject any call if perfmon was disabled at initialization time&n;&t; mask*/
+multiline_comment|/*&n;&t; * reject any call if perfmon was disabled at initialization&n;&t; */
 r_if
 c_cond
+(paren
+id|unlikely
+c_func
 (paren
 id|PFM_IS_DISABLED
 c_func
 (paren
+)paren
 )paren
 )paren
 r_return
@@ -16301,13 +16348,87 @@ c_cond
 id|unlikely
 c_func
 (paren
-id|PFM_CMD_IS_VALID
+id|cmd
+OL
+l_int|0
+op_logical_or
+id|cmd
+op_ge
+id|PFM_CMD_COUNT
+)paren
+)paren
+(brace
+id|DPRINT
 c_func
 (paren
+(paren
+l_string|&quot;[%d] invalid cmd=%d&bslash;n&quot;
+comma
+id|current-&gt;pid
+comma
 id|cmd
 )paren
+)paren
+suffix:semicolon
+r_return
+op_minus
+id|EINVAL
+suffix:semicolon
+)brace
+id|func
+op_assign
+id|pfm_cmd_tab
+(braket
+id|cmd
+)braket
+dot
+id|cmd_func
+suffix:semicolon
+id|narg
+op_assign
+id|pfm_cmd_tab
+(braket
+id|cmd
+)braket
+dot
+id|cmd_narg
+suffix:semicolon
+id|base_sz
+op_assign
+id|pfm_cmd_tab
+(braket
+id|cmd
+)braket
+dot
+id|cmd_argsize
+suffix:semicolon
+id|getsize
+op_assign
+id|pfm_cmd_tab
+(braket
+id|cmd
+)braket
+dot
+id|cmd_getsize
+suffix:semicolon
+id|cmd_flags
+op_assign
+id|pfm_cmd_tab
+(braket
+id|cmd
+)braket
+dot
+id|cmd_flags
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|unlikely
+c_func
+(paren
+id|func
 op_eq
-l_int|0
+l_int|NULL
 )paren
 )paren
 (brace
@@ -16332,7 +16453,7 @@ id|DPRINT
 c_func
 (paren
 (paren
-l_string|&quot;cmd=%s idx=%d valid=%d narg=0x%x argsz=%lu count=%d&bslash;n&quot;
+l_string|&quot;cmd=%s idx=%d narg=0x%x argsz=%lu count=%d&bslash;n&quot;
 comma
 id|PFM_CMD_NAME
 c_func
@@ -16340,45 +16461,22 @@ c_func
 id|cmd
 )paren
 comma
-id|PFM_CMD_IDX
-c_func
-(paren
 id|cmd
-)paren
 comma
-id|PFM_CMD_IS_VALID
-c_func
-(paren
-id|cmd
-)paren
+id|narg
 comma
-id|PFM_CMD_NARG
-c_func
-(paren
-id|cmd
-)paren
-comma
-id|PFM_CMD_ARG_SIZE
-c_func
-(paren
-id|cmd
-)paren
+id|base_sz
 comma
 id|count
 )paren
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * check if number of arguments matches what the command expects&n;&t; */
-id|narg
-op_assign
-id|PFM_CMD_NARG
-c_func
-(paren
-id|cmd
-)paren
-suffix:semicolon
 r_if
 c_cond
+(paren
+id|unlikely
+c_func
 (paren
 (paren
 id|narg
@@ -16400,18 +16498,10 @@ op_ne
 id|count
 )paren
 )paren
+)paren
 r_return
 op_minus
 id|EINVAL
-suffix:semicolon
-multiline_comment|/* get single argument size */
-id|base_sz
-op_assign
-id|PFM_CMD_ARG_SIZE
-c_func
-(paren
-id|cmd
-)paren
 suffix:semicolon
 id|restart_args
 suffix:colon
@@ -16456,11 +16546,15 @@ multiline_comment|/*&n;&t; * allocate default-sized argument buffer&n;&t; */
 r_if
 c_cond
 (paren
+id|likely
+c_func
+(paren
 id|count
 op_logical_and
 id|args_k
 op_eq
 l_int|NULL
+)paren
 )paren
 (brace
 id|args_k
@@ -16533,20 +16627,15 @@ id|completed_args
 op_eq
 l_int|0
 op_logical_and
-id|PFM_CMD_GETSIZE
-c_func
-(paren
-id|cmd
-)paren
+id|getsize
 )paren
 (brace
 multiline_comment|/*&n;&t;&t; * get extra parameters size (based on main argument)&n;&t;&t; */
 id|ret
 op_assign
-id|PFM_CMD_GETSIZE
-c_func
 (paren
-id|cmd
+op_star
+id|getsize
 )paren
 (paren
 id|args_k
@@ -16585,7 +16674,11 @@ multiline_comment|/* retry if necessary */
 r_if
 c_cond
 (paren
+id|likely
+c_func
+(paren
 id|xtra_sz
+)paren
 )paren
 r_goto
 id|restart_args
@@ -16594,13 +16687,21 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|PFM_CMD_USE_FD
+id|unlikely
 c_func
 (paren
-id|cmd
+(paren
+id|cmd_flags
+op_amp
+id|PFM_CMD_FD
+)paren
+op_eq
+l_int|0
 )paren
 )paren
-(brace
+r_goto
+id|skip_fd
+suffix:semicolon
 id|ret
 op_assign
 op_minus
@@ -16617,9 +16718,13 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|unlikely
+c_func
+(paren
 id|file
 op_eq
 l_int|NULL
+)paren
 )paren
 (brace
 id|DPRINT
@@ -16641,6 +16746,9 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|unlikely
+c_func
+(paren
 id|PFM_IS_FILE
 c_func
 (paren
@@ -16648,6 +16756,7 @@ id|file
 )paren
 op_eq
 l_int|0
+)paren
 )paren
 (brace
 id|DPRINT
@@ -16677,9 +16786,13 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|unlikely
+c_func
+(paren
 id|ctx
 op_eq
 l_int|NULL
+)paren
 )paren
 (brace
 id|DPRINT
@@ -16698,6 +16811,13 @@ r_goto
 id|error_args
 suffix:semicolon
 )brace
+id|prefetch
+c_func
+(paren
+op_amp
+id|ctx-&gt;ctx_state
+)paren
+suffix:semicolon
 id|PROTECT_CTX
 c_func
 (paren
@@ -16706,7 +16826,7 @@ comma
 id|flags
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t;&t; * check task is stopped&n;&t;&t; */
+multiline_comment|/*&n;&t; * check task is stopped&n;&t; */
 id|ret
 op_assign
 id|pfm_check_task_state
@@ -16722,26 +16842,22 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|unlikely
+c_func
+(paren
 id|ret
+)paren
 )paren
 r_goto
 id|abort_locked
 suffix:semicolon
-)brace
+id|skip_fd
+suffix:colon
 id|ret
 op_assign
 (paren
 op_star
-id|pfm_cmd_tab
-(braket
-id|PFM_CMD_IDX
-c_func
-(paren
-id|cmd
-)paren
-)braket
-dot
-id|cmd_func
+id|func
 )paren
 (paren
 id|ctx
@@ -16762,7 +16878,11 @@ suffix:colon
 r_if
 c_cond
 (paren
+id|likely
+c_func
+(paren
 id|ctx
+)paren
 )paren
 (brace
 id|DPRINT
@@ -16910,7 +17030,7 @@ l_int|0
 suffix:semicolon
 id|rst_ctrl.bits.reset_ovfl_pmds
 op_assign
-l_int|1
+l_int|0
 suffix:semicolon
 r_if
 c_cond
@@ -17583,12 +17703,8 @@ l_int|0UL
 suffix:semicolon
 id|msg-&gt;pfm_ovfl_msg.msg_tstamp
 op_assign
-id|ia64_get_itc
-c_func
-(paren
-)paren
+l_int|0UL
 suffix:semicolon
-multiline_comment|/* relevant on UP only */
 )brace
 id|DPRINT
 c_func
@@ -17661,6 +17777,21 @@ op_minus
 l_int|1
 suffix:semicolon
 )brace
+multiline_comment|/* no leak */
+id|memset
+c_func
+(paren
+id|msg
+comma
+l_int|0
+comma
+r_sizeof
+(paren
+op_star
+id|msg
+)paren
+)paren
+suffix:semicolon
 id|msg-&gt;pfm_end_msg.msg_type
 op_assign
 id|PFM_MSG_END
@@ -17671,12 +17802,8 @@ id|ctx-&gt;ctx_fd
 suffix:semicolon
 id|msg-&gt;pfm_ovfl_msg.msg_tstamp
 op_assign
-id|ia64_get_itc
-c_func
-(paren
-)paren
+l_int|0UL
 suffix:semicolon
-multiline_comment|/* relevant on UP only */
 id|DPRINT
 c_func
 (paren
@@ -17740,6 +17867,8 @@ r_int
 id|old_val
 comma
 id|ovfl_val
+comma
+id|new_val
 suffix:semicolon
 r_int
 r_int
@@ -17754,6 +17883,8 @@ comma
 id|smpl_pmds
 op_assign
 l_int|0UL
+comma
+id|reset_pmds
 suffix:semicolon
 r_int
 r_int
@@ -17823,12 +17954,20 @@ id|ovfl_val
 op_assign
 id|pmu_conf.ovfl_val
 suffix:semicolon
+id|has_smpl
+op_assign
+id|CTX_HAS_SMPL
+c_func
+(paren
+id|ctx
+)paren
+suffix:semicolon
 id|DPRINT_ovfl
 c_func
 (paren
 (paren
 l_string|&quot;pmc0=0x%lx pid=%d iip=0x%lx, %s &quot;
-l_string|&quot;used_pmds=0x%lx reload_pmcs=0x%lx&bslash;n&quot;
+l_string|&quot;used_pmds=0x%lx&bslash;n&quot;
 comma
 id|pmc0
 comma
@@ -17864,20 +18003,7 @@ id|ctx-&gt;ctx_used_pmds
 (braket
 l_int|0
 )braket
-comma
-id|ctx-&gt;ctx_reload_pmcs
-(braket
-l_int|0
-)braket
 )paren
-)paren
-suffix:semicolon
-id|has_smpl
-op_assign
-id|CTX_HAS_SMPL
-c_func
-(paren
-id|ctx
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * first we update the virtual counters&n;&t; * assume there was a prior ia64_srlz_d() issued&n;&t; */
@@ -17912,31 +18038,10 @@ l_int|0
 )paren
 r_continue
 suffix:semicolon
-id|DPRINT_ovfl
-c_func
-(paren
-(paren
-l_string|&quot;pmd[%d] overflowed hw_pmd=0x%lx ctx_pmd=0x%lx&bslash;n&quot;
-comma
-id|i
-comma
-id|ia64_get_pmd
-c_func
-(paren
-id|i
-)paren
-comma
-id|ctx-&gt;ctx_pmds
-(braket
-id|i
-)braket
-dot
-id|val
-)paren
-)paren
-suffix:semicolon
 multiline_comment|/*&n;&t;&t; * Note that the pmd is not necessarily 0 at this point as qualified events&n;&t;&t; * may have happened before the PMU was frozen. The residual count is not&n;&t;&t; * taken into consideration here but will be with any read of the pmd via&n;&t;&t; * pfm_read_pmds().&n;&t;&t; */
 id|old_val
+op_assign
+id|new_val
 op_assign
 id|ctx-&gt;ctx_pmds
 (braket
@@ -17945,16 +18050,20 @@ id|i
 dot
 id|val
 suffix:semicolon
+id|new_val
+op_add_assign
+l_int|1
+op_plus
+id|ovfl_val
+suffix:semicolon
 id|ctx-&gt;ctx_pmds
 (braket
 id|i
 )braket
 dot
 id|val
-op_add_assign
-l_int|1
-op_plus
-id|ovfl_val
+op_assign
+id|new_val
 suffix:semicolon
 multiline_comment|/*&n;&t;&t; * check for overflow condition&n;&t;&t; */
 r_if
@@ -17965,12 +18074,7 @@ c_func
 (paren
 id|old_val
 OG
-id|ctx-&gt;ctx_pmds
-(braket
-id|i
-)braket
-dot
-id|val
+id|new_val
 )paren
 )paren
 (brace
@@ -18002,16 +18106,11 @@ id|DPRINT_ovfl
 c_func
 (paren
 (paren
-l_string|&quot;ctx_pmd[%d].val=0x%lx old_val=0x%lx pmd=0x%lx ovfl_pmds=0x%lx ovfl_notify=0x%lx smpl_pmds=0x%lx&bslash;n&quot;
+l_string|&quot;ctx_pmd[%d].val=0x%lx old_val=0x%lx pmd=0x%lx ovfl_pmds=0x%lx ovfl_notify=0x%lx&bslash;n&quot;
 comma
 id|i
 comma
-id|ctx-&gt;ctx_pmds
-(braket
-id|i
-)braket
-dot
-id|val
+id|new_val
 comma
 id|old_val
 comma
@@ -18026,8 +18125,6 @@ comma
 id|ovfl_pmds
 comma
 id|ovfl_notify
-comma
-id|smpl_pmds
 )paren
 )paren
 suffix:semicolon
@@ -18046,6 +18143,10 @@ multiline_comment|/* &n;&t; * reset all control bits&n;&t; */
 id|ovfl_ctrl.val
 op_assign
 l_int|0
+suffix:semicolon
+id|reset_pmds
+op_assign
+l_int|0UL
 suffix:semicolon
 multiline_comment|/*&n;&t; * if a sampling format module exists, then we &quot;cache&quot; the overflow by &n;&t; * calling the module&squot;s handler() routine.&n;&t; */
 r_if
@@ -18351,11 +18452,16 @@ id|ovfl_ctrl.bits.mask_monitoring
 op_or_assign
 id|ovfl_arg.ovfl_ctrl.bits.mask_monitoring
 suffix:semicolon
-id|ovfl_ctrl.bits.reset_ovfl_pmds
-op_or_assign
+multiline_comment|/*&n;&t;&t;&t; * build the bitmask of pmds to reset now&n;&t;&t;&t; */
+r_if
+c_cond
+(paren
 id|ovfl_arg.ovfl_ctrl.bits.reset_ovfl_pmds
+)paren
+id|reset_pmds
+op_or_assign
+id|mask
 suffix:semicolon
-multiline_comment|/* yes or no */
 id|pfm_stats
 (braket
 id|this_cpu
@@ -18392,6 +18498,12 @@ id|PMU_FIRST_COUNTER
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/*&n;&t;&t; * remove the pmds we reset now from the set of pmds to reset in pfm_restart()&n;&t;&t; */
+id|ovfl_pmds
+op_and_assign
+op_complement
+id|reset_pmds
+suffix:semicolon
 )brace
 r_else
 (brace
@@ -18433,19 +18545,45 @@ l_int|0
 suffix:colon
 l_int|1
 suffix:semicolon
-)brace
-multiline_comment|/*&n;&t; * if we (still) have some overflowed PMD but no notification is requested&n;&t; * then we use the short reset period.&n;&t; */
+multiline_comment|/*&n;&t;&t; * if needed, we reset all overflowed pmds&n;&t;&t; */
 r_if
 c_cond
 (paren
-id|ovfl_ctrl.bits.reset_ovfl_pmds
+id|ovfl_notify
+op_eq
+l_int|0
+)paren
+id|reset_pmds
+op_assign
+id|ovfl_pmds
+suffix:semicolon
+)brace
+id|DPRINT
+c_func
+(paren
+(paren
+l_string|&quot;current [%d] ovfl_pmds=0x%lx reset_pmds=0x%lx&bslash;n&quot;
+comma
+id|current-&gt;pid
+comma
+id|ovfl_pmds
+comma
+id|reset_pmds
+)paren
+)paren
+suffix:semicolon
+multiline_comment|/*&n;&t; * reset the requested PMD registers using the short reset values&n;&t; */
+r_if
+c_cond
+(paren
+id|reset_pmds
 )paren
 (brace
 r_int
 r_int
 id|bm
 op_assign
-id|ovfl_pmds
+id|reset_pmds
 suffix:semicolon
 id|pfm_reset_regs
 c_func

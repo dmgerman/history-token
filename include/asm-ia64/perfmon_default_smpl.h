@@ -122,7 +122,7 @@ DECL|member|pid
 r_int
 id|pid
 suffix:semicolon
-multiline_comment|/* active process at PMU interrupt point */
+multiline_comment|/* thread id (for NPTL, this is gettid()) */
 DECL|member|reserved1
 r_int
 r_char
@@ -168,12 +168,11 @@ r_int
 id|set
 suffix:semicolon
 multiline_comment|/* event set active when overflow ocurred   */
-DECL|member|reserved2
+DECL|member|tgid
 r_int
-r_int
-id|reserved2
+id|tgid
 suffix:semicolon
-multiline_comment|/* for future use */
+multiline_comment|/* thread group id (for NPTL, this is getpid()) */
 DECL|typedef|pfm_default_smpl_entry_t
 )brace
 id|pfm_default_smpl_entry_t

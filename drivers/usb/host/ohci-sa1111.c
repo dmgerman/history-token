@@ -314,7 +314,7 @@ suffix:semicolon
 macro_line|#endif
 DECL|function|usb_hcd_sa1111_hcim_irq
 r_static
-r_void
+id|irqreturn_t
 id|usb_hcd_sa1111_hcim_irq
 (paren
 r_int
@@ -354,6 +354,7 @@ r_return
 suffix:semicolon
 )brace
 macro_line|#endif
+r_return
 id|usb_hcd_irq
 c_func
 (paren

@@ -30,7 +30,7 @@ macro_line|#include &lt;asm/pgtable.h&gt;
 macro_line|#include &lt;asm/bitops.h&gt;
 macro_line|#include &lt;asm/naca.h&gt;
 macro_line|#include &lt;asm/pci.h&gt;
-macro_line|#include &lt;asm/pci_dma.h&gt;
+macro_line|#include &lt;asm/iommu.h&gt;
 macro_line|#include &lt;asm/bootinfo.h&gt;
 macro_line|#include &lt;asm/ppcdebug.h&gt;
 macro_line|#include &lt;asm/btext.h&gt;
@@ -2373,6 +2373,13 @@ r_return
 id|mem
 suffix:semicolon
 )brace
+macro_line|#ifdef CONFIG_PMAC_DART
+DECL|variable|dart_force_on
+r_static
+r_int
+id|dart_force_on
+suffix:semicolon
+macro_line|#endif
 r_static
 r_int
 r_int
@@ -2452,6 +2459,155 @@ l_int|2
 )paren
 op_div
 l_int|8
+suffix:semicolon
+r_int
+id|nodart
+op_assign
+l_int|0
+suffix:semicolon
+macro_line|#ifdef CONFIG_PMAC_DART
+r_char
+op_star
+id|opt
+suffix:semicolon
+id|opt
+op_assign
+id|strstr
+c_func
+(paren
+id|RELOC
+c_func
+(paren
+id|cmd_line
+)paren
+comma
+id|RELOC
+c_func
+(paren
+l_string|&quot;iommu=&quot;
+)paren
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|opt
+)paren
+(brace
+id|prom_print
+c_func
+(paren
+id|RELOC
+c_func
+(paren
+l_string|&quot;opt is:&quot;
+)paren
+)paren
+suffix:semicolon
+id|prom_print
+c_func
+(paren
+id|opt
+)paren
+suffix:semicolon
+id|prom_print
+c_func
+(paren
+id|RELOC
+c_func
+(paren
+l_string|&quot;&bslash;n&quot;
+)paren
+)paren
+suffix:semicolon
+id|opt
+op_add_assign
+l_int|6
+suffix:semicolon
+r_while
+c_loop
+(paren
+op_star
+id|opt
+op_logical_and
+op_star
+id|opt
+op_eq
+l_char|&squot; &squot;
+)paren
+id|opt
+op_increment
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|strncmp
+c_func
+(paren
+id|opt
+comma
+id|RELOC
+c_func
+(paren
+l_string|&quot;off&quot;
+)paren
+comma
+l_int|3
+)paren
+)paren
+id|nodart
+op_assign
+l_int|1
+suffix:semicolon
+r_else
+r_if
+c_cond
+(paren
+op_logical_neg
+id|strncmp
+c_func
+(paren
+id|opt
+comma
+id|RELOC
+c_func
+(paren
+l_string|&quot;force&quot;
+)paren
+comma
+l_int|5
+)paren
+)paren
+id|RELOC
+c_func
+(paren
+id|dart_force_on
+)paren
+op_assign
+l_int|1
+suffix:semicolon
+)brace
+macro_line|#else
+id|nodart
+op_assign
+l_int|1
+suffix:semicolon
+macro_line|#endif /* CONFIG_PMAC_DART */
+r_if
+c_cond
+(paren
+id|nodart
+)paren
+id|prom_print
+c_func
+(paren
+id|RELOC
+c_func
+(paren
+l_string|&quot;DART disabled on PowerMac !&bslash;n&quot;
+)paren
+)paren
 suffix:semicolon
 id|lmb_init
 c_func
@@ -2638,6 +2794,8 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|nodart
+op_logical_and
 id|lmb_base
 OG
 l_int|0x80000000ull
@@ -2649,7 +2807,8 @@ c_func
 id|RELOC
 c_func
 (paren
-l_string|&quot;Skipping memory above 2Gb for now, not yet supported&bslash;n&quot;
+l_string|&quot;Skipping memory above 2Gb for &quot;
+l_string|&quot;now, DART support disabled&bslash;n&quot;
 )paren
 )paren
 suffix:semicolon
@@ -3641,6 +3800,122 @@ suffix:semicolon
 )brace
 )brace
 macro_line|#endif /* DEBUG_PROM */
+macro_line|#ifdef CONFIG_PMAC_DART
+DECL|function|prom_initialize_dart_table
+r_void
+id|prom_initialize_dart_table
+c_func
+(paren
+r_void
+)paren
+(brace
+r_int
+r_int
+id|offset
+op_assign
+id|reloc_offset
+c_func
+(paren
+)paren
+suffix:semicolon
+r_extern
+r_int
+r_int
+id|dart_tablebase
+suffix:semicolon
+r_extern
+r_int
+r_int
+id|dart_tablesize
+suffix:semicolon
+multiline_comment|/* Only reserve DART space if machine has more than 2GB of RAM&n;&t; * or if requested with iommu=on on cmdline.&n;&t; */
+r_if
+c_cond
+(paren
+id|lmb_end_of_DRAM
+c_func
+(paren
+)paren
+op_le
+l_int|0x80000000ull
+op_logical_and
+op_logical_neg
+id|RELOC
+c_func
+(paren
+id|dart_force_on
+)paren
+)paren
+r_return
+suffix:semicolon
+multiline_comment|/* 512 pages is max DART tablesize. */
+id|RELOC
+c_func
+(paren
+id|dart_tablesize
+)paren
+op_assign
+l_int|1UL
+op_lshift
+l_int|19
+suffix:semicolon
+multiline_comment|/* 16MB (1 &lt;&lt; 24) alignment. We allocate a full 16Mb chuck since we&n;&t; * will blow up an entire large page anyway in the kernel mapping&n;&t; */
+id|RELOC
+c_func
+(paren
+id|dart_tablebase
+)paren
+op_assign
+id|absolute_to_virt
+c_func
+(paren
+id|lmb_alloc_base
+c_func
+(paren
+l_int|1UL
+op_lshift
+l_int|24
+comma
+l_int|1UL
+op_lshift
+l_int|24
+comma
+l_int|0x80000000L
+)paren
+)paren
+suffix:semicolon
+id|prom_print
+c_func
+(paren
+id|RELOC
+c_func
+(paren
+l_string|&quot;Dart at: &quot;
+)paren
+)paren
+suffix:semicolon
+id|prom_print_hex
+c_func
+(paren
+id|RELOC
+c_func
+(paren
+id|dart_tablebase
+)paren
+)paren
+suffix:semicolon
+id|prom_print
+c_func
+(paren
+id|RELOC
+c_func
+(paren
+l_string|&quot;&bslash;n&quot;
+)paren
+)paren
+suffix:semicolon
+)brace
+macro_line|#endif /* CONFIG_PMAC_DART */
 r_void
 DECL|function|prom_initialize_tce_table
 id|prom_initialize_tce_table
@@ -8558,6 +8833,20 @@ c_func
 (paren
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_PMAC_DART
+r_if
+c_cond
+(paren
+id|_systemcfg-&gt;platform
+op_eq
+id|PLATFORM_POWERMAC
+)paren
+id|prom_initialize_dart_table
+c_func
+(paren
+)paren
+suffix:semicolon
+macro_line|#endif
 macro_line|#ifdef CONFIG_BOOTX_TEXT
 r_if
 c_cond
@@ -15904,7 +16193,7 @@ op_amp
 l_int|0xff
 suffix:semicolon
 )brace
-multiline_comment|/* fixing up tce_table */
+multiline_comment|/* fixing up iommu_table */
 r_if
 c_cond
 (paren
@@ -15933,21 +16222,17 @@ id|node-&gt;bussubno
 op_assign
 id|node-&gt;busno
 suffix:semicolon
-id|create_pci_bus_tce_table
+id|iommu_devnode_init
 c_func
 (paren
-(paren
-r_int
-r_int
-)paren
 id|node
 )paren
 suffix:semicolon
 )brace
 r_else
-id|node-&gt;tce_table
+id|node-&gt;iommu_table
 op_assign
-id|parent-&gt;tce_table
+id|parent-&gt;iommu_table
 suffix:semicolon
 id|out
 suffix:colon

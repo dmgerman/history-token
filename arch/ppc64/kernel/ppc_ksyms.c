@@ -60,18 +60,6 @@ c_func
 r_int
 )paren
 suffix:semicolon
-r_extern
-r_struct
-id|pci_dev
-op_star
-id|iSeries_veth_dev
-suffix:semicolon
-r_extern
-r_struct
-id|pci_dev
-op_star
-id|iSeries_vio_dev
-suffix:semicolon
 DECL|variable|do_signal
 id|EXPORT_SYMBOL
 c_func
@@ -635,20 +623,6 @@ id|eeh_total_mmio_ffs
 suffix:semicolon
 macro_line|#endif /* CONFIG_PPC_ISERIES */
 macro_line|#endif /* CONFIG_PCI */
-DECL|variable|iSeries_veth_dev
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|iSeries_veth_dev
-)paren
-suffix:semicolon
-DECL|variable|iSeries_vio_dev
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|iSeries_vio_dev
-)paren
-suffix:semicolon
 DECL|variable|start_thread
 id|EXPORT_SYMBOL
 c_func

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * IA-64 Huge TLB Page Support for Kernel.&n; *&n; * Copyright (C) 2002, Rohit Seth &lt;rohit.seth@intel.com&gt;&n; */
+multiline_comment|/*&n; * IA-64 Huge TLB Page Support for Kernel.&n; *&n; * Copyright (C) 2002-2004 Rohit Seth &lt;rohit.seth@intel.com&gt;&n; * Copyright (C) 2003-2004 Ken Chen &lt;kenneth.w.chen@intel.com&gt;&n; *&n; * Sep, 2003: add numa support&n; * Feb, 2004: dynamic hugetlb page size via boot parameter&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/fs.h&gt;
@@ -12,8 +12,6 @@ macro_line|#include &lt;asm/mman.h&gt;
 macro_line|#include &lt;asm/pgalloc.h&gt;
 macro_line|#include &lt;asm/tlb.h&gt;
 macro_line|#include &lt;asm/tlbflush.h&gt;
-DECL|macro|TASK_HPAGE_BASE
-mdefine_line|#define TASK_HPAGE_BASE (REGION_HPAGE &lt;&lt; REGION_SHIFT)
 DECL|variable|htlbpagemem
 r_static
 r_int
@@ -27,6 +25,13 @@ DECL|variable|htlbzone_pages
 r_static
 r_int
 id|htlbzone_pages
+suffix:semicolon
+DECL|variable|hpage_shift
+r_int
+r_int
+id|hpage_shift
+op_assign
+id|HPAGE_SHIFT_DEFAULT
 suffix:semicolon
 DECL|variable|hugepage_freelists
 r_static
@@ -2087,7 +2092,7 @@ l_int|1
 )paren
 id|addr
 op_assign
-id|TASK_HPAGE_BASE
+id|HPAGE_REGION_BASE
 suffix:semicolon
 r_else
 id|addr
@@ -2694,6 +2699,136 @@ comma
 id|hugetlb_setup
 )paren
 suffix:semicolon
+DECL|function|hugetlb_setup_sz
+r_static
+r_int
+id|__init
+id|hugetlb_setup_sz
+c_func
+(paren
+r_char
+op_star
+id|str
+)paren
+(brace
+id|u64
+id|tr_pages
+suffix:semicolon
+r_int
+r_int
+r_int
+id|size
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|ia64_pal_vm_page_size
+c_func
+(paren
+op_amp
+id|tr_pages
+comma
+l_int|NULL
+)paren
+op_ne
+l_int|0
+)paren
+multiline_comment|/*&n;&t;&t; * shouldn&squot;t happen, but just in case.&n;&t;&t; */
+id|tr_pages
+op_assign
+l_int|0x15557000UL
+suffix:semicolon
+id|size
+op_assign
+id|memparse
+c_func
+(paren
+id|str
+comma
+op_amp
+id|str
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_star
+id|str
+op_logical_or
+(paren
+id|size
+op_amp
+(paren
+id|size
+op_minus
+l_int|1
+)paren
+)paren
+op_logical_or
+op_logical_neg
+(paren
+id|tr_pages
+op_amp
+id|size
+)paren
+op_logical_or
+id|size
+op_le
+id|PAGE_SIZE
+op_logical_or
+id|size
+op_ge
+(paren
+l_int|1UL
+op_lshift
+id|PAGE_SHIFT
+op_lshift
+id|MAX_ORDER
+)paren
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_WARNING
+l_string|&quot;Invalid huge page size specified&bslash;n&quot;
+)paren
+suffix:semicolon
+r_return
+l_int|1
+suffix:semicolon
+)brace
+id|hpage_shift
+op_assign
+id|__ffs
+c_func
+(paren
+id|size
+)paren
+suffix:semicolon
+multiline_comment|/*&n;&t; * boot cpu already executed ia64_mmu_init, and has HPAGE_SHIFT_DEFAULT&n;&t; * override here with new page shift.&n;&t; */
+id|ia64_set_rr
+c_func
+(paren
+id|HPAGE_REGION_BASE
+comma
+id|hpage_shift
+op_lshift
+l_int|2
+)paren
+suffix:semicolon
+r_return
+l_int|1
+suffix:semicolon
+)brace
+id|__setup
+c_func
+(paren
+l_string|&quot;hugepagesz=&quot;
+comma
+id|hugetlb_setup_sz
+)paren
+suffix:semicolon
 DECL|function|hugetlb_init
 r_static
 r_int
@@ -2808,7 +2943,7 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|variable|hugetlb_init
-id|module_init
+id|__initcall
 c_func
 (paren
 id|hugetlb_init
