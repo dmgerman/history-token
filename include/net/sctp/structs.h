@@ -62,8 +62,9 @@ multiline_comment|/* __ss_pad1, __ss_align fields is 112 */
 )brace
 suffix:semicolon
 multiline_comment|/* A convenience structure for handling sockaddr structures.&n; * We should wean ourselves off this.&n; */
-r_typedef
+DECL|union|sctp_addr
 r_union
+id|sctp_addr
 (brace
 DECL|member|v4
 r_struct
@@ -80,9 +81,7 @@ r_struct
 id|sockaddr
 id|sa
 suffix:semicolon
-DECL|typedef|sockaddr_storage_t
 )brace
-id|sockaddr_storage_t
 suffix:semicolon
 multiline_comment|/* Forward declarations for data structures. */
 r_struct
@@ -478,13 +477,31 @@ op_star
 id|get_dst
 )paren
 (paren
-id|sockaddr_storage_t
+r_union
+id|sctp_addr
 op_star
 id|daddr
 comma
-id|sockaddr_storage_t
+r_union
+id|sctp_addr
 op_star
 id|saddr
+)paren
+suffix:semicolon
+DECL|member|copy_addrlist
+r_void
+(paren
+op_star
+id|copy_addrlist
+)paren
+(paren
+r_struct
+id|list_head
+op_star
+comma
+r_struct
+id|net_device
+op_star
 )paren
 suffix:semicolon
 DECL|member|cmp_saddr
@@ -499,8 +516,47 @@ id|dst_entry
 op_star
 id|dst
 comma
-id|sockaddr_storage_t
+r_union
+id|sctp_addr
 op_star
+id|saddr
+)paren
+suffix:semicolon
+DECL|member|addr_copy
+r_void
+(paren
+op_star
+id|addr_copy
+)paren
+(paren
+r_union
+id|sctp_addr
+op_star
+id|dst
+comma
+r_union
+id|sctp_addr
+op_star
+id|src
+)paren
+suffix:semicolon
+DECL|member|from_skb
+r_void
+(paren
+op_star
+id|from_skb
+)paren
+(paren
+r_union
+id|sctp_addr
+op_star
+comma
+r_struct
+id|sk_buff
+op_star
+id|skb
+comma
+r_int
 id|saddr
 )paren
 suffix:semicolon
@@ -530,10 +586,7 @@ op_star
 id|sctp_get_af_specific
 c_func
 (paren
-r_const
-id|sockaddr_storage_t
-op_star
-id|address
+id|sa_family_t
 )paren
 suffix:semicolon
 multiline_comment|/* Protocol family functions. */
@@ -713,7 +766,8 @@ id|initial_tsn
 suffix:semicolon
 multiline_comment|/* This holds the originating address of the INIT packet.  */
 DECL|member|peer_addr
-id|sockaddr_storage_t
+r_union
+id|sctp_addr
 id|peer_addr
 suffix:semicolon
 multiline_comment|/* This is a shim for my peer&squot;s INIT packet, followed by&n;&t; * a copy of the raw address list of the association.&n;&t; * The length of the raw address list is saved in the&n;&t; * raw_addr_list_len field, which will be used at the time when&n;&t; * the association TCB is re-constructed from the cookie.&n;&t; */
@@ -832,7 +886,8 @@ id|sctp_paramhdr_t
 id|param_hdr
 suffix:semicolon
 DECL|member|daddr
-id|sockaddr_storage_t
+r_union
+id|sctp_addr
 id|daddr
 suffix:semicolon
 DECL|member|sent_at
@@ -1051,12 +1106,14 @@ suffix:semicolon
 multiline_comment|/* Data chunk missing counter. */
 multiline_comment|/* What is the origin IP address for this chunk?  */
 DECL|member|source
-id|sockaddr_storage_t
+r_union
+id|sctp_addr
 id|source
 suffix:semicolon
 multiline_comment|/* Destination address for this chunk. */
 DECL|member|dest
-id|sockaddr_storage_t
+r_union
+id|sctp_addr
 id|dest
 suffix:semicolon
 multiline_comment|/* For an inbound chunk, this tells us where it came from.&n;&t; * For an outbound chunk, it tells us where we&squot;d like it to&n;&t; * go.  It is NULL if we have no preference.&n;&t; */
@@ -1169,7 +1226,8 @@ id|chunk
 )paren
 suffix:semicolon
 r_const
-id|sockaddr_storage_t
+r_union
+id|sctp_addr
 op_star
 id|sctp_source
 c_func
@@ -1192,7 +1250,8 @@ id|list_head
 id|list
 suffix:semicolon
 DECL|member|a
-id|sockaddr_storage_t
+r_union
+id|sctp_addr
 id|a
 suffix:semicolon
 )brace
@@ -1387,7 +1446,7 @@ id|sctp_packet_t
 op_star
 )paren
 suffix:semicolon
-multiline_comment|/* This represents a remote transport address.&n; * For local transport addresses, we just use sockaddr_storage_t.&n; *&n; * RFC2960 Section 1.4 Key Terms&n; *&n; *   o  Transport address:  A Transport Address is traditionally defined&n; *      by Network Layer address, Transport Layer protocol and Transport&n; *      Layer port number.  In the case of SCTP running over IP, a&n; *      transport address is defined by the combination of an IP address&n; *      and an SCTP port number (where SCTP is the Transport protocol).&n; *&n; * RFC2960 Section 7.1 SCTP Differences from TCP Congestion control&n; *&n; *   o  The sender keeps a separate congestion control parameter set for&n; *      each of the destination addresses it can send to (not each&n; *      source-destination pair but for each destination).  The parameters&n; *      should decay if the address is not used for a long enough time&n; *      period.&n; *&n; */
+multiline_comment|/* This represents a remote transport address.&n; * For local transport addresses, we just use union sctp_addr.&n; *&n; * RFC2960 Section 1.4 Key Terms&n; *&n; *   o  Transport address:  A Transport Address is traditionally defined&n; *      by Network Layer address, Transport Layer protocol and Transport&n; *      Layer port number.  In the case of SCTP running over IP, a&n; *      transport address is defined by the combination of an IP address&n; *      and an SCTP port number (where SCTP is the Transport protocol).&n; *&n; * RFC2960 Section 7.1 SCTP Differences from TCP Congestion control&n; *&n; *   o  The sender keeps a separate congestion control parameter set for&n; *      each of the destination addresses it can send to (not each&n; *      source-destination pair but for each destination).  The parameters&n; *      should decay if the address is not used for a long enough time&n; *      period.&n; *&n; */
 DECL|struct|SCTP_transport
 r_struct
 id|SCTP_transport
@@ -1409,7 +1468,8 @@ id|dead
 suffix:semicolon
 multiline_comment|/* This is the peer&squot;s IP address and port. */
 DECL|member|ipaddr
-id|sockaddr_storage_t
+r_union
+id|sctp_addr
 id|ipaddr
 suffix:semicolon
 multiline_comment|/* These are the functions we call to handle LLP stuff.  */
@@ -1584,7 +1644,8 @@ id|sctp_transport_new
 c_func
 (paren
 r_const
-id|sockaddr_storage_t
+r_union
+id|sctp_addr
 op_star
 comma
 r_int
@@ -1600,7 +1661,8 @@ id|sctp_transport_t
 op_star
 comma
 r_const
-id|sockaddr_storage_t
+r_union
+id|sctp_addr
 op_star
 comma
 r_int
@@ -1626,7 +1688,8 @@ c_func
 id|sctp_transport_t
 op_star
 comma
-id|sockaddr_storage_t
+r_union
+id|sctp_addr
 op_star
 )paren
 suffix:semicolon
@@ -2106,7 +2169,8 @@ c_func
 id|sctp_bind_addr_t
 op_star
 comma
-id|sockaddr_storage_t
+r_union
+id|sctp_addr
 op_star
 comma
 r_int
@@ -2120,7 +2184,8 @@ c_func
 id|sctp_bind_addr_t
 op_star
 comma
-id|sockaddr_storage_t
+r_union
+id|sctp_addr
 op_star
 )paren
 suffix:semicolon
@@ -2132,7 +2197,8 @@ id|sctp_bind_addr_t
 op_star
 comma
 r_const
-id|sockaddr_storage_t
+r_union
+id|sctp_addr
 op_star
 )paren
 suffix:semicolon
@@ -2182,7 +2248,8 @@ id|sctp_scope
 c_func
 (paren
 r_const
-id|sockaddr_storage_t
+r_union
+id|sctp_addr
 op_star
 )paren
 suffix:semicolon
@@ -2191,7 +2258,8 @@ id|sctp_in_scope
 c_func
 (paren
 r_const
-id|sockaddr_storage_t
+r_union
+id|sctp_addr
 op_star
 id|addr
 comma
@@ -2205,7 +2273,8 @@ id|sctp_is_any
 c_func
 (paren
 r_const
-id|sockaddr_storage_t
+r_union
+id|sctp_addr
 op_star
 id|addr
 )paren
@@ -2215,7 +2284,8 @@ id|sctp_addr_is_valid
 c_func
 (paren
 r_const
-id|sockaddr_storage_t
+r_union
+id|sctp_addr
 op_star
 id|addr
 )paren
@@ -2477,7 +2547,8 @@ op_star
 id|ep
 comma
 r_const
-id|sockaddr_storage_t
+r_union
+id|sctp_addr
 op_star
 id|paddr
 comma
@@ -2495,7 +2566,8 @@ id|sctp_endpoint_t
 op_star
 comma
 r_const
-id|sockaddr_storage_t
+r_union
+id|sctp_addr
 op_star
 )paren
 suffix:semicolon
@@ -2504,12 +2576,14 @@ id|sctp_has_association
 c_func
 (paren
 r_const
-id|sockaddr_storage_t
+r_union
+id|sctp_addr
 op_star
 id|laddr
 comma
 r_const
-id|sockaddr_storage_t
+r_union
+id|sctp_addr
 op_star
 id|paddr
 )paren
@@ -2552,7 +2626,8 @@ id|sctp_cid_t
 id|cid
 comma
 r_const
-id|sockaddr_storage_t
+r_union
+id|sctp_addr
 op_star
 id|peer_addr
 comma
@@ -2577,7 +2652,8 @@ id|sctp_params
 id|param
 comma
 r_const
-id|sockaddr_storage_t
+r_union
+id|sctp_addr
 op_star
 id|peer_addr
 comma
@@ -2665,7 +2741,8 @@ id|primary_path
 suffix:semicolon
 multiline_comment|/* Cache the primary path address here, when we&n;&t;&t; * need a an address for msg_name.&n;&t;&t; */
 DECL|member|primary_addr
-id|sockaddr_storage_t
+r_union
+id|sctp_addr
 id|primary_addr
 suffix:semicolon
 multiline_comment|/* active_path&n;&t;&t; *   The path that we are currently using to&n;&t;&t; *   transmit new data and most control chunks.&n;&t;&t; */
@@ -3156,7 +3233,8 @@ id|sctp_association_t
 op_star
 comma
 r_const
-id|sockaddr_storage_t
+r_union
+id|sctp_addr
 op_star
 )paren
 suffix:semicolon
@@ -3169,7 +3247,8 @@ id|sctp_association_t
 op_star
 comma
 r_const
-id|sockaddr_storage_t
+r_union
+id|sctp_addr
 op_star
 id|address
 comma
@@ -3213,11 +3292,13 @@ id|sctp_association_t
 op_star
 comma
 r_const
-id|sockaddr_storage_t
+r_union
+id|sctp_addr
 op_star
 comma
 r_const
-id|sockaddr_storage_t
+r_union
+id|sctp_addr
 op_star
 )paren
 suffix:semicolon
@@ -3280,12 +3361,14 @@ id|sctp_cmp_addr
 c_func
 (paren
 r_const
-id|sockaddr_storage_t
+r_union
+id|sctp_addr
 op_star
 id|ss1
 comma
 r_const
-id|sockaddr_storage_t
+r_union
+id|sctp_addr
 op_star
 id|ss2
 )paren
@@ -3295,12 +3378,14 @@ id|sctp_cmp_addr_exact
 c_func
 (paren
 r_const
-id|sockaddr_storage_t
+r_union
+id|sctp_addr
 op_star
 id|ss1
 comma
 r_const
-id|sockaddr_storage_t
+r_union
+id|sctp_addr
 op_star
 id|ss2
 )paren

@@ -1203,7 +1203,8 @@ r_void
 id|sctp_param2sockaddr
 c_func
 (paren
-id|sockaddr_storage_t
+r_union
+id|sctp_addr
 op_star
 id|addr
 comma
@@ -1222,7 +1223,8 @@ r_const
 r_union
 id|sctp_params
 comma
-id|sockaddr_storage_t
+r_union
+id|sctp_addr
 op_star
 )paren
 suffix:semicolon
@@ -1231,7 +1233,8 @@ id|sockaddr2sctp_addr
 c_func
 (paren
 r_const
-id|sockaddr_storage_t
+r_union
+id|sctp_addr
 op_star
 comma
 id|sctp_addr_param_t

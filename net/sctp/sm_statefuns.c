@@ -2142,7 +2142,8 @@ id|chunk
 op_assign
 id|arg
 suffix:semicolon
-id|sockaddr_storage_t
+r_union
+id|sctp_addr
 id|from_addr
 suffix:semicolon
 id|sctp_transport_t
@@ -2320,7 +2321,8 @@ r_int
 id|sctp_sf_send_restart_abort
 c_func
 (paren
-id|sockaddr_storage_t
+r_union
+id|sctp_addr
 op_star
 id|ssa
 comma
@@ -10913,7 +10915,8 @@ c_func
 id|transport
 comma
 (paren
-id|sockaddr_storage_t
+r_union
+id|sctp_addr
 op_star
 )paren
 op_amp
