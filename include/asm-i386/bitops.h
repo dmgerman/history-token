@@ -17,7 +17,7 @@ mdefine_line|#define ADDR (*(volatile long *) addr)
 multiline_comment|/**&n; * set_bit - Atomically set a bit in memory&n; * @nr: the bit to set&n; * @addr: the address to start counting from&n; *&n; * This function is atomic and may not be reordered.  See __set_bit()&n; * if you do not require the atomic guarantees.&n; * Note that @nr may be almost arbitrarily large; this function is not&n; * restricted to acting on a single-word quantity.&n; */
 DECL|function|set_bit
 r_static
-id|__inline__
+r_inline
 r_void
 id|set_bit
 c_func
@@ -54,7 +54,7 @@ suffix:semicolon
 multiline_comment|/**&n; * __set_bit - Set a bit in memory&n; * @nr: the bit to set&n; * @addr: the address to start counting from&n; *&n; * Unlike set_bit(), this function is non-atomic and may be reordered.&n; * If it&squot;s called on the same region of memory simultaneously, the effect&n; * may be that only one operation succeeds.&n; */
 DECL|function|__set_bit
 r_static
-id|__inline__
+r_inline
 r_void
 id|__set_bit
 c_func
@@ -89,7 +89,7 @@ suffix:semicolon
 multiline_comment|/**&n; * clear_bit - Clears a bit in memory&n; * @nr: Bit to clear&n; * @addr: Address to start counting from&n; *&n; * clear_bit() is atomic and may not be reordered.  However, it does&n; * not contain a memory barrier, so if it is used for locking purposes,&n; * you should call smp_mb__before_clear_bit() and/or smp_mb__after_clear_bit()&n; * in order to ensure changes are visible on other processors.&n; */
 DECL|function|clear_bit
 r_static
-id|__inline__
+r_inline
 r_void
 id|clear_bit
 c_func
@@ -125,7 +125,7 @@ suffix:semicolon
 )brace
 DECL|function|__clear_bit
 r_static
-id|__inline__
+r_inline
 r_void
 id|__clear_bit
 c_func
@@ -165,7 +165,7 @@ mdefine_line|#define smp_mb__after_clear_bit()&t;barrier()
 multiline_comment|/**&n; * __change_bit - Toggle a bit in memory&n; * @nr: the bit to change&n; * @addr: the address to start counting from&n; *&n; * Unlike change_bit(), this function is non-atomic and may be reordered.&n; * If it&squot;s called on the same region of memory simultaneously, the effect&n; * may be that only one operation succeeds.&n; */
 DECL|function|__change_bit
 r_static
-id|__inline__
+r_inline
 r_void
 id|__change_bit
 c_func
@@ -201,7 +201,7 @@ suffix:semicolon
 multiline_comment|/**&n; * change_bit - Toggle a bit in memory&n; * @nr: Bit to change&n; * @addr: Address to start counting from&n; *&n; * change_bit() is atomic and may not be reordered.&n; * Note that @nr may be almost arbitrarily large; this function is not&n; * restricted to acting on a single-word quantity.&n; */
 DECL|function|change_bit
 r_static
-id|__inline__
+r_inline
 r_void
 id|change_bit
 c_func
@@ -238,7 +238,7 @@ suffix:semicolon
 multiline_comment|/**&n; * test_and_set_bit - Set a bit and return its old value&n; * @nr: Bit to set&n; * @addr: Address to count from&n; *&n; * This operation is atomic and cannot be reordered.  &n; * It also implies a memory barrier.&n; */
 DECL|function|test_and_set_bit
 r_static
-id|__inline__
+r_inline
 r_int
 id|test_and_set_bit
 c_func
@@ -288,7 +288,7 @@ suffix:semicolon
 multiline_comment|/**&n; * __test_and_set_bit - Set a bit and return its old value&n; * @nr: Bit to set&n; * @addr: Address to count from&n; *&n; * This operation is non-atomic and can be reordered.  &n; * If two examples of this operation race, one can appear to succeed&n; * but actually fail.  You must protect multiple accesses with a lock.&n; */
 DECL|function|__test_and_set_bit
 r_static
-id|__inline__
+r_inline
 r_int
 id|__test_and_set_bit
 c_func
@@ -334,7 +334,7 @@ suffix:semicolon
 multiline_comment|/**&n; * test_and_clear_bit - Clear a bit and return its old value&n; * @nr: Bit to clear&n; * @addr: Address to count from&n; *&n; * This operation is atomic and cannot be reordered.  &n; * It also implies a memory barrier.&n; */
 DECL|function|test_and_clear_bit
 r_static
-id|__inline__
+r_inline
 r_int
 id|test_and_clear_bit
 c_func
@@ -384,7 +384,7 @@ suffix:semicolon
 multiline_comment|/**&n; * __test_and_clear_bit - Clear a bit and return its old value&n; * @nr: Bit to clear&n; * @addr: Address to count from&n; *&n; * This operation is non-atomic and can be reordered.  &n; * If two examples of this operation race, one can appear to succeed&n; * but actually fail.  You must protect multiple accesses with a lock.&n; */
 DECL|function|__test_and_clear_bit
 r_static
-id|__inline__
+r_inline
 r_int
 id|__test_and_clear_bit
 c_func
@@ -430,7 +430,7 @@ suffix:semicolon
 multiline_comment|/* WARNING: non atomic and it can be reordered! */
 DECL|function|__test_and_change_bit
 r_static
-id|__inline__
+r_inline
 r_int
 id|__test_and_change_bit
 c_func
@@ -479,7 +479,7 @@ suffix:semicolon
 multiline_comment|/**&n; * test_and_change_bit - Change a bit and return its old value&n; * @nr: Bit to change&n; * @addr: Address to count from&n; *&n; * This operation is atomic and cannot be reordered.  &n; * It also implies a memory barrier.&n; */
 DECL|function|test_and_change_bit
 r_static
-id|__inline__
+r_inline
 r_int
 id|test_and_change_bit
 c_func
@@ -589,7 +589,7 @@ suffix:semicolon
 )brace
 DECL|function|variable_test_bit
 r_static
-id|__inline__
+r_inline
 r_int
 id|variable_test_bit
 c_func
@@ -641,7 +641,7 @@ macro_line|#undef ADDR
 multiline_comment|/**&n; * find_first_zero_bit - find the first zero bit in a memory region&n; * @addr: The address to start the search at&n; * @size: The maximum size to search&n; *&n; * Returns the bit-number of the first zero bit, not the number of the byte&n; * containing a bit.&n; */
 DECL|function|find_first_zero_bit
 r_static
-id|__inline__
+r_inline
 r_int
 id|find_first_zero_bit
 c_func
@@ -739,10 +739,28 @@ r_return
 id|res
 suffix:semicolon
 )brace
+multiline_comment|/**&n; * find_next_zero_bit - find the first zero bit in a memory region&n; * @addr: The address to base the search on&n; * @offset: The bitnumber to start searching at&n; * @size: The maximum size to search&n; */
+r_int
+id|find_next_zero_bit
+c_func
+(paren
+r_const
+r_int
+r_int
+op_star
+id|addr
+comma
+r_int
+id|size
+comma
+r_int
+id|offset
+)paren
+suffix:semicolon
 multiline_comment|/**&n; * find_first_bit - find the first set bit in a memory region&n; * @addr: The address to start the search at&n; * @size: The maximum size to search&n; *&n; * Returns the bit-number of the first set bit, not the number of the byte&n; * containing a bit.&n; */
 DECL|function|find_first_bit
 r_static
-id|__inline__
+r_inline
 r_int
 id|find_first_bit
 c_func
@@ -822,155 +840,7 @@ r_return
 id|res
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * find_next_zero_bit - find the first zero bit in a memory region&n; * @addr: The address to base the search on&n; * @offset: The bitnumber to start searching at&n; * @size: The maximum size to search&n; */
-DECL|function|find_next_zero_bit
-r_static
-id|__inline__
-r_int
-id|find_next_zero_bit
-c_func
-(paren
-r_const
-r_int
-r_int
-op_star
-id|addr
-comma
-r_int
-id|size
-comma
-r_int
-id|offset
-)paren
-(brace
-r_int
-r_int
-op_star
-id|p
-op_assign
-(paren
-(paren
-r_int
-r_int
-op_star
-)paren
-id|addr
-)paren
-op_plus
-(paren
-id|offset
-op_rshift
-l_int|5
-)paren
-suffix:semicolon
-r_int
-id|set
-op_assign
-l_int|0
-comma
-id|bit
-op_assign
-id|offset
-op_amp
-l_int|31
-comma
-id|res
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|bit
-)paren
-(brace
-multiline_comment|/*&n;&t;&t; * Look for zero in the first 32 bits.&n;&t;&t; */
-id|__asm__
-c_func
-(paren
-l_string|&quot;bsfl %1,%0&bslash;n&bslash;t&quot;
-l_string|&quot;jne 1f&bslash;n&bslash;t&quot;
-l_string|&quot;movl $32, %0&bslash;n&quot;
-l_string|&quot;1:&quot;
-suffix:colon
-l_string|&quot;=r&quot;
-(paren
-id|set
-)paren
-suffix:colon
-l_string|&quot;r&quot;
-(paren
-op_complement
-(paren
-op_star
-id|p
-op_rshift
-id|bit
-)paren
-)paren
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|set
-OL
-(paren
-l_int|32
-op_minus
-id|bit
-)paren
-)paren
-r_return
-id|set
-op_plus
-id|offset
-suffix:semicolon
-id|set
-op_assign
-l_int|32
-op_minus
-id|bit
-suffix:semicolon
-id|p
-op_increment
-suffix:semicolon
-)brace
-multiline_comment|/*&n;&t; * No zero yet, search remaining full bytes for a zero&n;&t; */
-id|res
-op_assign
-id|find_first_zero_bit
-(paren
-id|p
-comma
-id|size
-op_minus
-l_int|32
-op_star
-(paren
-id|p
-op_minus
-(paren
-r_int
-r_int
-op_star
-)paren
-id|addr
-)paren
-)paren
-suffix:semicolon
-r_return
-(paren
-id|offset
-op_plus
-id|set
-op_plus
-id|res
-)paren
-suffix:semicolon
-)brace
 multiline_comment|/**&n; * find_next_bit - find the first set bit in a memory region&n; * @addr: The address to base the search on&n; * @offset: The bitnumber to start searching at&n; * @size: The maximum size to search&n; */
-DECL|function|find_next_bit
-r_static
-id|__inline__
 r_int
 id|find_next_bit
 c_func
@@ -987,121 +857,11 @@ comma
 r_int
 id|offset
 )paren
-(brace
-r_const
-r_int
-r_int
-op_star
-id|p
-op_assign
-id|addr
-op_plus
-(paren
-id|offset
-op_rshift
-l_int|5
-)paren
 suffix:semicolon
-r_int
-id|set
-op_assign
-l_int|0
-comma
-id|bit
-op_assign
-id|offset
-op_amp
-l_int|31
-comma
-id|res
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|bit
-)paren
-(brace
-multiline_comment|/*&n;&t;&t; * Look for nonzero in the first 32 bits:&n;&t;&t; */
-id|__asm__
-c_func
-(paren
-l_string|&quot;bsfl %1,%0&bslash;n&bslash;t&quot;
-l_string|&quot;jne 1f&bslash;n&bslash;t&quot;
-l_string|&quot;movl $32, %0&bslash;n&quot;
-l_string|&quot;1:&quot;
-suffix:colon
-l_string|&quot;=r&quot;
-(paren
-id|set
-)paren
-suffix:colon
-l_string|&quot;r&quot;
-(paren
-op_star
-id|p
-op_rshift
-id|bit
-)paren
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|set
-OL
-(paren
-l_int|32
-op_minus
-id|bit
-)paren
-)paren
-r_return
-id|set
-op_plus
-id|offset
-suffix:semicolon
-id|set
-op_assign
-l_int|32
-op_minus
-id|bit
-suffix:semicolon
-id|p
-op_increment
-suffix:semicolon
-)brace
-multiline_comment|/*&n;&t; * No set bit yet, search remaining full words for a bit&n;&t; */
-id|res
-op_assign
-id|find_first_bit
-(paren
-id|p
-comma
-id|size
-op_minus
-l_int|32
-op_star
-(paren
-id|p
-op_minus
-id|addr
-)paren
-)paren
-suffix:semicolon
-r_return
-(paren
-id|offset
-op_plus
-id|set
-op_plus
-id|res
-)paren
-suffix:semicolon
-)brace
 multiline_comment|/**&n; * ffz - find first zero in word.&n; * @word: The word to search&n; *&n; * Undefined if no zero exists, so code should check against ~0UL first.&n; */
 DECL|function|ffz
 r_static
-id|__inline__
+r_inline
 r_int
 r_int
 id|ffz
@@ -1136,7 +896,7 @@ suffix:semicolon
 multiline_comment|/**&n; * __ffs - find first bit in word.&n; * @word: The word to search&n; *&n; * Undefined if no bit exists, so code should check against 0 first.&n; */
 DECL|function|__ffs
 r_static
-id|__inline__
+r_inline
 r_int
 r_int
 id|__ffs
@@ -1292,7 +1052,7 @@ suffix:semicolon
 multiline_comment|/**&n; * ffs - find first bit set&n; * @x: the word to search&n; *&n; * This is defined the same way as&n; * the libc and compiler builtin ffs routines, therefore&n; * differs in spirit from the above ffz (man ffs).&n; */
 DECL|function|ffs
 r_static
-id|__inline__
+r_inline
 r_int
 id|ffs
 c_func
