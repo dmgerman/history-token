@@ -545,10 +545,6 @@ id|len
 )paren
 suffix:semicolon
 )brace
-r_extern
-id|atomic_t
-id|vm_committed_space
-suffix:semicolon
 DECL|function|meminfo_read_proc
 r_static
 r_int
