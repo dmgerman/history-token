@@ -7,7 +7,6 @@ macro_line|#include &lt;linux/config.h&gt;
 macro_line|#ifndef __ASSEMBLER__
 macro_line|#include &lt;asm/types.h&gt;
 macro_line|#endif
-macro_line|#include &lt;asm/mach-types.h&gt;
 multiline_comment|/*&n; * ----------------------------------------------------------------------------&n; * I/O mapping&n; * ----------------------------------------------------------------------------&n; */
 DECL|macro|IO_PHYS
 mdefine_line|#define IO_PHYS&t;&t;&t;0xFFFB0000
