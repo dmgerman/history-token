@@ -2158,7 +2158,6 @@ mdefine_line|#define ROUND(a, b, n)  b ^= P[n]; a ^= bf_F (b)
 multiline_comment|/*&n; * The blowfish encipher, processes 64-bit blocks.&n; * NOTE: This function MUSTN&squot;T respect endianess &n; */
 DECL|function|encrypt_block
 r_static
-r_inline
 r_void
 id|encrypt_block
 c_func
