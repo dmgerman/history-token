@@ -3,7 +3,7 @@ DECL|macro|__LINUX_COMPILER_H
 mdefine_line|#define __LINUX_COMPILER_H
 macro_line|#ifdef __CHECKER__
 DECL|macro|__user
-mdefine_line|#define __user&t;__attribute__((address_space(1)))
+mdefine_line|#define __user&t;__attribute__((noderef, address_space(1)))
 DECL|macro|__kernel
 mdefine_line|#define __kernel&t;/* default address space */
 macro_line|#else
