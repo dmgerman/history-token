@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *&t;Generate devlist.h and classlist.h from the PCI ID file.&n; *&n; *&t;(c) 1999--2000 Martin Mares &lt;mj@ucw.cz&gt;&n; */
+multiline_comment|/*&n; *&t;Generate devlist.h and classlist.h from the PCI ID file.&n; *&n; *&t;(c) 1999--2002 Martin Mares &lt;mj@ucw.cz&gt;&n; */
 macro_line|#include &lt;stdio.h&gt;
 macro_line|#include &lt;string.h&gt;
 DECL|macro|MAX_NAME_SIZE
@@ -43,6 +43,7 @@ l_string|&quot;&bslash;&bslash;&bslash;&quot;&quot;
 )paren
 suffix:semicolon
 r_else
+(brace
 id|fputc
 c_func
 (paren
@@ -52,6 +53,33 @@ comma
 id|f
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_star
+id|c
+op_eq
+l_char|&squot;?&squot;
+op_logical_and
+id|c
+(braket
+l_int|1
+)braket
+op_eq
+l_char|&squot;?&squot;
+)paren
+(brace
+multiline_comment|/* Avoid trigraphs */
+id|fprintf
+c_func
+(paren
+id|f
+comma
+l_string|&quot;&bslash;&quot; &bslash;&quot;&quot;
+)paren
+suffix:semicolon
+)brace
+)brace
 id|c
 op_increment
 suffix:semicolon
