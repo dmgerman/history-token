@@ -9,6 +9,13 @@ macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/prom.h&gt;
 macro_line|#include &lt;asm/pci-bridge.h&gt;
 macro_line|#include &lt;asm/machdep.h&gt;
+macro_line|#ifdef CONFIG_PPC_INDIRECT_PCI_BE
+DECL|macro|PCI_CFG_OUT
+mdefine_line|#define PCI_CFG_OUT out_be32
+macro_line|#else
+DECL|macro|PCI_CFG_OUT
+mdefine_line|#define PCI_CFG_OUT out_le32
+macro_line|#endif
 r_static
 r_int
 DECL|function|indirect_read_config
@@ -90,8 +97,7 @@ id|cfg_type
 op_assign
 l_int|1
 suffix:semicolon
-macro_line|#ifdef CONFIG_PPC_INDIRECT_PCI_BE
-id|out_be32
+id|PCI_CFG_OUT
 c_func
 (paren
 id|hose-&gt;cfg_addr
@@ -127,44 +133,6 @@ id|cfg_type
 )paren
 )paren
 suffix:semicolon
-macro_line|#else
-id|out_le32
-c_func
-(paren
-id|hose-&gt;cfg_addr
-comma
-(paren
-l_int|0x80000000
-op_or
-(paren
-(paren
-id|dev-&gt;bus-&gt;number
-op_minus
-id|hose-&gt;bus_offset
-)paren
-op_lshift
-l_int|16
-)paren
-op_or
-(paren
-id|dev-&gt;devfn
-op_lshift
-l_int|8
-)paren
-op_or
-(paren
-(paren
-id|offset
-op_amp
-l_int|0xfc
-)paren
-op_or
-id|cfg_type
-)paren
-)paren
-)paren
-suffix:semicolon
-macro_line|#endif
 multiline_comment|/*&n;&t; * Note: the caller has already checked that offset is&n;&t; * suitably aligned and that len is 1, 2 or 4.&n;&t; */
 id|cfg_data
 op_assign
@@ -320,8 +288,7 @@ id|cfg_type
 op_assign
 l_int|1
 suffix:semicolon
-macro_line|#ifdef CONFIG_PPC_INDIRECT_PCI_BE
-id|out_be32
+id|PCI_CFG_OUT
 c_func
 (paren
 id|hose-&gt;cfg_addr
@@ -357,44 +324,6 @@ id|cfg_type
 )paren
 )paren
 suffix:semicolon
-macro_line|#else
-id|out_le32
-c_func
-(paren
-id|hose-&gt;cfg_addr
-comma
-(paren
-l_int|0x80000000
-op_or
-(paren
-(paren
-id|dev-&gt;bus-&gt;number
-op_minus
-id|hose-&gt;bus_offset
-)paren
-op_lshift
-l_int|16
-)paren
-op_or
-(paren
-id|dev-&gt;devfn
-op_lshift
-l_int|8
-)paren
-op_or
-(paren
-(paren
-id|offset
-op_amp
-l_int|0xfc
-)paren
-op_or
-id|cfg_type
-)paren
-)paren
-)paren
-suffix:semicolon
-macro_line|#endif
 multiline_comment|/*&n;&t; * Note: the caller has already checked that offset is&n;&t; * suitably aligned and that len is 1, 2 or 4.&n;&t; */
 id|cfg_data
 op_assign
