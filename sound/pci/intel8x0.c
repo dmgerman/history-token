@@ -7243,9 +7243,11 @@ comma
 l_int|0
 )brace
 comma
-id|AC97_RATES_SPDIF
+op_minus
+l_int|1
 )brace
 comma
+multiline_comment|/* spdif is 48k only */
 )brace
 suffix:semicolon
 DECL|variable|__devinitdata
