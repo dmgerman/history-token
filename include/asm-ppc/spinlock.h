@@ -211,8 +211,6 @@ DECL|macro|RW_LOCK_UNLOCKED
 mdefine_line|#define RW_LOCK_UNLOCKED (rwlock_t) { 0 RWLOCK_DEBUG_INIT }
 DECL|macro|rwlock_init
 mdefine_line|#define rwlock_init(lp) do { *(lp) = RW_LOCK_UNLOCKED; } while(0)
-DECL|macro|rwlock_is_locked
-mdefine_line|#define rwlock_is_locked(x)&t;((x)-&gt;lock != 0)
 macro_line|#ifndef CONFIG_DEBUG_SPINLOCK
 DECL|function|_raw_read_lock
 r_static

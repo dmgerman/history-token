@@ -133,8 +133,6 @@ DECL|macro|RW_LOCK_UNLOCKED
 mdefine_line|#define RW_LOCK_UNLOCKED&t;(rwlock_t) { { 0 }, { RW_LOCK_BIAS } }
 DECL|macro|rwlock_init
 mdefine_line|#define rwlock_init(x)&t;&t;do { *(x) = RW_LOCK_UNLOCKED; } while (0)
-DECL|macro|rwlock_is_locked
-mdefine_line|#define rwlock_is_locked(x)&t;(atomic_read(&amp;(x)-&gt;counter) != RW_LOCK_BIAS)
 DECL|function|_raw_read_lock
 r_static
 r_inline

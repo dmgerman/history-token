@@ -78,11 +78,6 @@ op_assign
 id|matchinfo
 suffix:semicolon
 r_struct
-id|ip_conntrack_expect
-op_star
-id|exp
-suffix:semicolon
-r_struct
 id|ip_conntrack
 op_star
 id|ct
@@ -148,10 +143,6 @@ r_return
 id|ret
 suffix:semicolon
 )brace
-id|exp
-op_assign
-id|ct-&gt;master
-suffix:semicolon
 id|READ_LOCK
 c_func
 (paren
@@ -163,26 +154,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|exp-&gt;expectant
-)paren
-(brace
-id|DEBUGP
-c_func
-(paren
-l_string|&quot;ipt_helper: expectation %p without expectant !?!&bslash;n&quot;
-comma
-id|exp
-)paren
-suffix:semicolon
-r_goto
-id|out_unlock
-suffix:semicolon
-)brace
-r_if
-c_cond
-(paren
-op_logical_neg
-id|exp-&gt;expectant-&gt;helper
+id|ct-&gt;master-&gt;helper
 )paren
 (brace
 id|DEBUGP
@@ -202,7 +174,7 @@ c_func
 (paren
 l_string|&quot;master&squot;s name = %s , info-&gt;name = %s&bslash;n&quot;
 comma
-id|exp-&gt;expectant-&gt;helper-&gt;name
+id|ct-&gt;master-&gt;helper-&gt;name
 comma
 id|info-&gt;name
 )paren
@@ -228,14 +200,14 @@ op_logical_neg
 id|strncmp
 c_func
 (paren
-id|exp-&gt;expectant-&gt;helper-&gt;name
+id|ct-&gt;master-&gt;helper-&gt;name
 comma
 id|info-&gt;name
 comma
 id|strlen
 c_func
 (paren
-id|exp-&gt;expectant-&gt;helper-&gt;name
+id|ct-&gt;master-&gt;helper-&gt;name
 )paren
 )paren
 suffix:semicolon

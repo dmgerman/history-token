@@ -276,10 +276,17 @@ id|last_hop
 suffix:semicolon
 )brace
 suffix:semicolon
-DECL|struct|ipx_opt
+macro_line|#include &lt;net/sock.h&gt;
+DECL|struct|ipx_sock
 r_struct
-id|ipx_opt
+id|ipx_sock
 (brace
+multiline_comment|/* struct sock has to be the first member of ipx_sock */
+DECL|member|sk
+r_struct
+id|sock
+id|sk
+suffix:semicolon
 DECL|member|dest_addr
 r_struct
 id|ipx_address
@@ -319,8 +326,30 @@ id|ipx_ncp_conn
 suffix:semicolon
 )brace
 suffix:semicolon
-DECL|macro|ipx_sk
-mdefine_line|#define ipx_sk(__sk) ((struct ipx_opt *)(__sk)-&gt;sk_protinfo)
+DECL|function|ipx_sk
+r_static
+r_inline
+r_struct
+id|ipx_sock
+op_star
+id|ipx_sk
+c_func
+(paren
+r_struct
+id|sock
+op_star
+id|sk
+)paren
+(brace
+r_return
+(paren
+r_struct
+id|ipx_sock
+op_star
+)paren
+id|sk
+suffix:semicolon
+)brace
 DECL|macro|IPX_SKB_CB
 mdefine_line|#define IPX_SKB_CB(__skb) ((struct ipx_cb *)&amp;((__skb)-&gt;cb[0]))
 macro_line|#endif

@@ -385,44 +385,10 @@ DECL|macro|RW_LOCK_UNLOCKED
 mdefine_line|#define RW_LOCK_UNLOCKED (rwlock_t) { 0 }
 DECL|macro|rwlock_init
 mdefine_line|#define rwlock_init(x)&t;&t;do { *(x) = RW_LOCK_UNLOCKED; } while(0)
-DECL|macro|rwlock_is_locked
-mdefine_line|#define rwlock_is_locked(x)&t;((x)-&gt;lock)
-DECL|function|is_read_locked
-r_static
-id|__inline__
-r_int
-id|is_read_locked
-c_func
-(paren
-id|rwlock_t
-op_star
-id|rw
-)paren
-(brace
-r_return
-id|rw-&gt;lock
-OG
-l_int|0
-suffix:semicolon
-)brace
-DECL|function|is_write_locked
-r_static
-id|__inline__
-r_int
-id|is_write_locked
-c_func
-(paren
-id|rwlock_t
-op_star
-id|rw
-)paren
-(brace
-r_return
-id|rw-&gt;lock
-OL
-l_int|0
-suffix:semicolon
-)brace
+DECL|macro|read_can_lock
+mdefine_line|#define read_can_lock(rw)&t;((rw)-&gt;lock &gt;= 0)
+DECL|macro|write_can_lock
+mdefine_line|#define write_can_lock(rw)&t;(!(rw)-&gt;lock)
 DECL|function|_raw_write_unlock
 r_static
 id|__inline__
