@@ -1207,15 +1207,6 @@ id|reg
 )paren
 suffix:semicolon
 r_int
-id|pcmcia_bind_device
-c_func
-(paren
-id|bind_req_t
-op_star
-id|req
-)paren
-suffix:semicolon
-r_int
 id|pcmcia_bind_mtd
 c_func
 (paren
