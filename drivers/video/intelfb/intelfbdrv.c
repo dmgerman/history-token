@@ -4274,7 +4274,6 @@ c_func
 l_string|&quot;intelfb_set_fbinfo&bslash;n&quot;
 )paren
 suffix:semicolon
-singleline_comment|//info-&gt;currcon = -1;
 id|info-&gt;flags
 op_assign
 id|FBINFO_FLAG_DEFAULT

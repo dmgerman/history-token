@@ -2133,12 +2133,6 @@ id|work_struct
 id|queue
 suffix:semicolon
 multiline_comment|/* Framebuffer event queue */
-DECL|member|cursor_timer
-r_struct
-id|timer_list
-id|cursor_timer
-suffix:semicolon
-multiline_comment|/* Cursor timer */
 DECL|member|pixmap
 r_struct
 id|fb_pixmap
@@ -2197,11 +2191,6 @@ r_int
 id|screen_size
 suffix:semicolon
 multiline_comment|/* Amount of ioremapped VRAM or 0 */
-DECL|member|currcon
-r_int
-id|currcon
-suffix:semicolon
-multiline_comment|/* Current VC. */
 DECL|member|pseudo_palette
 r_void
 op_star

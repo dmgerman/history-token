@@ -3167,11 +3167,6 @@ id|FBINFO_HWACCEL_XPAN
 op_or
 id|FBINFO_HWACCEL_YPAN
 suffix:semicolon
-id|m2info-&gt;fbcon.currcon
-op_assign
-op_minus
-l_int|1
-suffix:semicolon
 id|m2info-&gt;fbcon.pseudo_palette
 op_assign
 id|m2info-&gt;cmap
@@ -3364,14 +3359,6 @@ op_minus
 id|ENXIO
 suffix:semicolon
 )brace
-r_if
-c_cond
-(paren
-id|m2info-&gt;fbcon.currcon
-OL
-l_int|0
-)paren
-(brace
 id|fb_set_var
 c_func
 (paren
@@ -3382,7 +3369,6 @@ op_amp
 id|matroxfb_dh_defined
 )paren
 suffix:semicolon
-)brace
 id|down_write
 c_func
 (paren
