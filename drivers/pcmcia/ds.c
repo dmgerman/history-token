@@ -2019,15 +2019,6 @@ op_star
 id|file
 )paren
 (brace
-id|socket_t
-id|i
-op_assign
-id|iminor
-c_func
-(paren
-id|inode
-)paren
-suffix:semicolon
 r_struct
 id|pcmcia_bus_socket
 op_star
@@ -2048,7 +2039,11 @@ l_int|0
 comma
 l_string|&quot;ds_release(socket %d)&bslash;n&quot;
 comma
-id|i
+id|iminor
+c_func
+(paren
+id|inode
+)paren
 )paren
 suffix:semicolon
 id|user
@@ -2198,15 +2193,6 @@ op_star
 id|ppos
 )paren
 (brace
-id|socket_t
-id|i
-op_assign
-id|iminor
-c_func
-(paren
-id|file-&gt;f_dentry-&gt;d_inode
-)paren
-suffix:semicolon
 r_struct
 id|pcmcia_bus_socket
 op_star
@@ -2226,7 +2212,11 @@ l_int|2
 comma
 l_string|&quot;ds_read(socket %d)&bslash;n&quot;
 comma
-id|i
+id|iminor
+c_func
+(paren
+id|inode
+)paren
 )paren
 suffix:semicolon
 r_if
@@ -2348,15 +2338,6 @@ op_star
 id|ppos
 )paren
 (brace
-id|socket_t
-id|i
-op_assign
-id|iminor
-c_func
-(paren
-id|file-&gt;f_dentry-&gt;d_inode
-)paren
-suffix:semicolon
 r_struct
 id|pcmcia_bus_socket
 op_star
@@ -2373,7 +2354,11 @@ l_int|2
 comma
 l_string|&quot;ds_write(socket %d)&bslash;n&quot;
 comma
-id|i
+id|iminor
+c_func
+(paren
+id|inode
+)paren
 )paren
 suffix:semicolon
 r_if
@@ -2506,15 +2491,6 @@ op_star
 id|wait
 )paren
 (brace
-id|socket_t
-id|i
-op_assign
-id|iminor
-c_func
-(paren
-id|file-&gt;f_dentry-&gt;d_inode
-)paren
-suffix:semicolon
 r_struct
 id|pcmcia_bus_socket
 op_star
@@ -2531,7 +2507,11 @@ l_int|2
 comma
 l_string|&quot;ds_poll(socket %d)&bslash;n&quot;
 comma
-id|i
+id|iminor
+c_func
+(paren
+id|inode
+)paren
 )paren
 suffix:semicolon
 id|user
@@ -2610,15 +2590,6 @@ id|u_long
 id|arg
 )paren
 (brace
-id|socket_t
-id|i
-op_assign
-id|iminor
-c_func
-(paren
-id|inode
-)paren
-suffix:semicolon
 r_struct
 id|pcmcia_bus_socket
 op_star
@@ -2646,7 +2617,11 @@ l_int|2
 comma
 l_string|&quot;ds_ioctl(socket %d, %#x, %#lx)&bslash;n&quot;
 comma
-id|i
+id|iminor
+c_func
+(paren
+id|inode
+)paren
 comma
 id|cmd
 comma
