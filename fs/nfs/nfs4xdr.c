@@ -394,10 +394,14 @@ c_func
 (paren
 l_int|12
 op_plus
+(paren
 id|XDR_QUADLEN
 c_func
 (paren
 id|hdr-&gt;taglen
+)paren
+op_lshift
+l_int|2
 )paren
 )paren
 suffix:semicolon

@@ -2415,17 +2415,6 @@ id|rcvbuf-&gt;len
 op_assign
 id|bufsiz
 suffix:semicolon
-multiline_comment|/* Zero buffer so we have automatic zero-padding of opaque &amp; string */
-id|memset
-c_func
-(paren
-id|task-&gt;tk_buffer
-comma
-l_int|0
-comma
-id|bufsiz
-)paren
-suffix:semicolon
 multiline_comment|/* Encode header and provided arguments */
 id|encode
 op_assign
