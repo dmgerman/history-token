@@ -719,6 +719,12 @@ id|dev-&gt;minor
 op_assign
 id|minor
 suffix:semicolon
+id|pci_enable_device
+c_func
+(paren
+id|pdev
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -781,12 +787,6 @@ r_goto
 id|err_g1
 suffix:semicolon
 )brace
-id|pci_enable_device
-c_func
-(paren
-id|pdev
-)paren
-suffix:semicolon
 id|dev_class
 op_assign
 id|class_simple_device_add
