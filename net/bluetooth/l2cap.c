@@ -10095,6 +10095,7 @@ dot
 id|create
 op_assign
 id|l2cap_sock_create
+comma
 )brace
 suffix:semicolon
 DECL|variable|l2cap_hci_proto

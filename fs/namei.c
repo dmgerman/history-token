@@ -701,6 +701,23 @@ id|dentry
 op_star
 id|dentry
 op_assign
+id|__d_lookup
+c_func
+(paren
+id|parent
+comma
+id|name
+)paren
+suffix:semicolon
+multiline_comment|/* lockess __d_lookup may fail due to concurrent d_move() &n;&t; * in some unrelated directory, so try with d_lookup&n;&t; */
+r_if
+c_cond
+(paren
+op_logical_neg
+id|dentry
+)paren
+id|dentry
+op_assign
 id|d_lookup
 c_func
 (paren
@@ -918,14 +935,7 @@ op_amp
 id|dir-&gt;i_sem
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * First re-do the cached lookup just in case it was created&n;&t; * while we waited for the directory semaphore..&n;&t; *&n;&t; * FIXME! This could use version numbering or similar to&n;&t; * avoid unnecessary cache lookups.&n;&t; *&n;&t; * The &quot;dcache_lock&quot; is purely to protect the RCU list walker&n;&t; * from concurrent renames at this point (we mustn&squot;t get false&n;&t; * negatives from the RCU list walk here, unlike the optimistic&n;&t; * fast walk).&n;&t; *&n;&t; * We really should do a sequence number thing to avoid this&n;&t; * all.&n;&t; */
-id|spin_lock
-c_func
-(paren
-op_amp
-id|dcache_lock
-)paren
-suffix:semicolon
+multiline_comment|/*&n;&t; * First re-do the cached lookup just in case it was created&n;&t; * while we waited for the directory semaphore..&n;&t; *&n;&t; * FIXME! This could use version numbering or similar to&n;&t; * avoid unnecessary cache lookups.&n;&t; *&n;&t; * The &quot;dcache_lock&quot; is purely to protect the RCU list walker&n;&t; * from concurrent renames at this point (we mustn&squot;t get false&n;&t; * negatives from the RCU list walk here, unlike the optimistic&n;&t; * fast walk).&n;&t; *&n;&t; * so doing d_lookup() (with seqlock), instead of lockfree __d_lookup&n;&t; */
 id|result
 op_assign
 id|d_lookup
@@ -934,13 +944,6 @@ c_func
 id|parent
 comma
 id|name
-)paren
-suffix:semicolon
-id|spin_unlock
-c_func
-(paren
-op_amp
-id|dcache_lock
 )paren
 suffix:semicolon
 r_if
@@ -1826,7 +1829,7 @@ id|dentry
 op_star
 id|dentry
 op_assign
-id|d_lookup
+id|__d_lookup
 c_func
 (paren
 id|nd-&gt;dentry

@@ -4845,7 +4845,11 @@ id|sa
 comma
 id|regs
 comma
-id|REGWIN_SZ
+r_sizeof
+(paren
+r_struct
+id|reg_window32
+)paren
 op_plus
 id|SVR4_SF_ALIGNED
 )paren

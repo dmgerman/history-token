@@ -2825,6 +2825,7 @@ dot
 id|create
 op_assign
 id|hci_sock_create
+comma
 )brace
 suffix:semicolon
 DECL|variable|hci_sock_nblock

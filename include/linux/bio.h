@@ -234,14 +234,10 @@ mdefine_line|#define bio_to_phys(bio)&t;(page_to_phys(bio_page((bio))) + (unsign
 DECL|macro|bvec_to_phys
 mdefine_line|#define bvec_to_phys(bv)&t;(page_to_phys((bv)-&gt;bv_page) + (unsigned long) (bv)-&gt;bv_offset)
 multiline_comment|/*&n; * queues that have highmem support enabled may still need to revert to&n; * PIO transfers occasionally and thus map high pages temporarily. For&n; * permanent PIO fall back, user is probably better off disabling highmem&n; * I/O completely on that queue (see ide-dma for example)&n; */
-DECL|macro|__bio_kmap
-mdefine_line|#define __bio_kmap(bio, idx) (kmap(bio_iovec_idx((bio), (idx))-&gt;bv_page) + bio_iovec_idx((bio), (idx))-&gt;bv_offset)
-DECL|macro|bio_kmap
-mdefine_line|#define bio_kmap(bio)&t;__bio_kmap((bio), (bio)-&gt;bi_idx)
-DECL|macro|__bio_kunmap
-mdefine_line|#define __bio_kunmap(bio, idx)&t;kunmap(bio_iovec_idx((bio), (idx))-&gt;bv_page)
-DECL|macro|bio_kunmap
-mdefine_line|#define bio_kunmap(bio)&t;&t;__bio_kunmap((bio), (bio)-&gt;bi_idx)
+DECL|macro|__bio_kmap_atomic
+mdefine_line|#define __bio_kmap_atomic(bio, idx, kmtype)&t;&t;&t;&t;&bslash;&n;&t;(kmap_atomic(bio_iovec_idx((bio), (idx))-&gt;bv_page, kmtype) +&t;&bslash;&n;&t;&t;bio_iovec_idx((bio), (idx))-&gt;bv_offset)
+DECL|macro|__bio_kunmap_atomic
+mdefine_line|#define __bio_kunmap_atomic(addr, kmtype) kunmap_atomic(addr, kmtype)
 multiline_comment|/*&n; * merge helpers etc&n; */
 DECL|macro|__BVEC_END
 mdefine_line|#define __BVEC_END(bio)&t;&t;bio_iovec_idx((bio), (bio)-&gt;bi_vcnt - 1)
@@ -503,7 +499,7 @@ r_int
 id|addr
 suffix:semicolon
 multiline_comment|/*&n;&t; * might not be a highmem page, but the preempt/irq count&n;&t; * balancing is a lot nicer this way&n;&t; */
-id|local_save_flags
+id|local_irq_save
 c_func
 (paren
 op_star

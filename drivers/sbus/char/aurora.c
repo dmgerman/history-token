@@ -3475,24 +3475,13 @@ id|ASYNC_CALLOUT_NOHUP
 )paren
 )paren
 )paren
-(brace
-id|MOD_INC_USE_COUNT
-suffix:semicolon
-r_if
-c_cond
-(paren
 id|schedule_task
 c_func
 (paren
 op_amp
 id|port-&gt;tqueue_hangup
 )paren
-op_eq
-l_int|0
-)paren
-id|MOD_DEC_USE_COUNT
 suffix:semicolon
-)brace
 )brace
 multiline_comment|/* We don&squot;t have such things yet. My aurora board has DTR and RTS swapped, but that doesn&squot;t count in this driver. Let&squot;s hope&n; * Aurora didn&squot;t made any boards with CTS or DSR broken...&n; */
 multiline_comment|/* #ifdef AURORA_BRAIN_DAMAGED_CTS&n;&t;if (mcr &amp; MCR_CTSCHG)  {&n;&t;&t;if (aurora_in(bp, CD180_MSVR) &amp; MSVR_CTS)  {&n;&t;&t;&t;tty-&gt;hw_stopped = 0;&n;&t;&t;&t;port-&gt;SRER |= SRER_TXRDY;&n;&t;&t;&t;if (port-&gt;xmit_cnt &lt;= port-&gt;wakeup_chars)&n;&t;&t;&t;&t;aurora_mark_event(port, RS_EVENT_WRITE_WAKEUP);&n;&t;&t;} else  {&n;&t;&t;&t;tty-&gt;hw_stopped = 1;&n;&t;&t;&t;port-&gt;SRER &amp;= ~SRER_TXRDY;&n;&t;&t;}&n;&t;&t;sbus_writeb(port-&gt;SRER, &amp;bp-&gt;r[chip]-&gt;r[CD180_SRER]);&n;&t;}&n;&t;if (mcr &amp; MCR_DSRCHG)  {&n;&t;&t;if (aurora_in(bp, CD180_MSVR) &amp; MSVR_DSR)  {&n;&t;&t;&t;tty-&gt;hw_stopped = 0;&n;&t;&t;&t;port-&gt;SRER |= SRER_TXRDY;&n;&t;&t;&t;if (port-&gt;xmit_cnt &lt;= port-&gt;wakeup_chars)&n;&t;&t;&t;&t;aurora_mark_event(port, RS_EVENT_WRITE_WAKEUP);&n;&t;&t;} else  {&n;&t;&t;&t;tty-&gt;hw_stopped = 1;&n;&t;&t;&t;port-&gt;SRER &amp;= ~SRER_TXRDY;&n;&t;&t;}&n;&t;&t;sbus_writeb(port-&gt;SRER, &amp;bp-&gt;r[chip]-&gt;r[CD180_SRER]);&n;&t;}&n;#endif AURORA_BRAIN_DAMAGED_CTS */
@@ -6339,15 +6328,12 @@ macro_line|#ifdef MODULE
 r_if
 c_cond
 (paren
+(paren
 id|port-&gt;count
 op_eq
 l_int|1
 )paren
-(brace
-id|MOD_INC_USE_COUNT
-suffix:semicolon
-r_if
-c_cond
+op_logical_and
 (paren
 (paren
 op_increment
@@ -6356,13 +6342,11 @@ id|bp-&gt;count
 op_eq
 l_int|1
 )paren
-(brace
+)paren
 id|bp-&gt;flags
 op_or_assign
 id|AURORA_BOARD_ACTIVE
 suffix:semicolon
-)brace
-)brace
 macro_line|#endif
 id|port-&gt;xmit_cnt
 op_assign
@@ -6736,8 +6720,6 @@ op_assign
 l_int|0
 suffix:semicolon
 )brace
-id|MOD_DEC_USE_COUNT
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -11327,8 +11309,6 @@ l_string|&quot;do_aurora_hangup: end&bslash;n&quot;
 suffix:semicolon
 macro_line|#endif
 )brace
-id|MOD_DEC_USE_COUNT
-suffix:semicolon
 )brace
 DECL|function|aurora_hangup
 r_static
@@ -11769,6 +11749,10 @@ suffix:semicolon
 id|aurora_driver.magic
 op_assign
 id|TTY_DRIVER_MAGIC
+suffix:semicolon
+id|aurora_driver.owner
+op_assign
+id|THIS_MODULE
 suffix:semicolon
 id|aurora_driver.name
 op_assign

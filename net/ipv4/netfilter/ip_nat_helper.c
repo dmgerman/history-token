@@ -7,7 +7,6 @@ macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/timer.h&gt;
 macro_line|#include &lt;linux/skbuff.h&gt;
 macro_line|#include &lt;linux/netfilter_ipv4.h&gt;
-macro_line|#include &lt;linux/brlock.h&gt;
 macro_line|#include &lt;net/checksum.h&gt;
 macro_line|#include &lt;net/icmp.h&gt;
 macro_line|#include &lt;net/ip.h&gt;
@@ -2482,16 +2481,9 @@ id|ip_nat_lock
 )paren
 suffix:semicolon
 multiline_comment|/* Someone could be still looking at the helper in a bh. */
-id|br_write_lock_bh
+id|synchronize_net
 c_func
 (paren
-id|BR_NETPROTO_LOCK
-)paren
-suffix:semicolon
-id|br_write_unlock_bh
-c_func
-(paren
-id|BR_NETPROTO_LOCK
 )paren
 suffix:semicolon
 multiline_comment|/* Find anything using it, and umm, kill them.  We can&squot;t turn&n;&t;   them into normal connections: if we&squot;ve adjusted SYNs, then&n;&t;   they&squot;ll ackstorm.  So we just drop it.  We used to just&n;&t;   bump module count when a connection existed, but that&n;&t;   forces admins to gen fake RSTs or bounce box, either of&n;&t;   which is just a long-winded way of making things&n;&t;   worse. --RR */
