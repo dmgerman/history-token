@@ -162,8 +162,6 @@ DECL|macro|TRACEREG_SZ
 mdefine_line|#define TRACEREG_SZ   sizeof(struct pt_regs)
 DECL|macro|STACKFRAME_SZ
 mdefine_line|#define STACKFRAME_SZ sizeof(struct sparc_stackf)
-DECL|macro|REGWIN_SZ
-mdefine_line|#define REGWIN_SZ     sizeof(struct reg_window)
 macro_line|#ifdef __KERNEL__
 DECL|macro|user_mode
 mdefine_line|#define user_mode(regs) (!((regs)-&gt;psr &amp; PSR_PS))
@@ -186,8 +184,6 @@ DECL|macro|TRACEREG_SZ
 mdefine_line|#define TRACEREG_SZ       0x50
 DECL|macro|STACKFRAME_SZ
 mdefine_line|#define STACKFRAME_SZ     0x60
-DECL|macro|REGWIN_SZ
-mdefine_line|#define REGWIN_SZ         0x40
 macro_line|#endif
 multiline_comment|/*&n; * The asm_offsets.h is a generated file, so we cannot include it.&n; * It may be OK for glibc headers, but it&squot;s utterly pointless for C code.&n; * The assembly code using those offsets has to include it explicitly.&n; */
 multiline_comment|/* #include &lt;asm/asm_offsets.h&gt; */
