@@ -646,9 +646,6 @@ id|_guess
 (paren
 r_int
 id|guess
-comma
-r_int
-id|maxmult
 )paren
 (brace
 r_int
@@ -704,8 +701,7 @@ r_int
 id|guess_fsb
 c_func
 (paren
-r_int
-id|maxmult
+r_void
 )paren
 (brace
 r_int
@@ -770,8 +766,6 @@ id|speeds
 (braket
 id|i
 )braket
-comma
-id|maxmult
 )paren
 op_eq
 id|speed
@@ -792,6 +786,7 @@ r_static
 r_int
 id|__init
 id|longhaul_get_ranges
+c_func
 (paren
 r_void
 )paren
@@ -1004,7 +999,6 @@ op_assign
 id|guess_fsb
 c_func
 (paren
-id|maxmult
 )paren
 suffix:semicolon
 r_break
