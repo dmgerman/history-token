@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *  asus_acpi.c - Asus Laptop ACPI Extras&n; *&n; *&n; *  Copyright (C) 2002, 2003 Julien Lerouge, Karol Kozimor&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; *&n; *&n; *  The development page for this driver is located at&n; *  http://sourceforge.net/projects/acpi4asus/&n; *&n; *  Credits:&n; *  Johann Wiesner - Small compile fixes&n; *  John Belmonte  - ACPI code for Toshiba laptop was a good starting point.&n; *&n; *  TODO:&n; *  add Fn key status&n; *  Add mode selection on module loading (parameter) -&gt; still necessary?&n; *  Complete display switching -- may require dirty hacks?&n; *  Complete support for Centrino laptops&n; *  Reading certain fields (e.g. &bslash;SG66 in A2500H) consistently fails, while &n; *    reading others (&bslash;BAOF, the same machine) succeeds. Why?&n; *&n; */
+multiline_comment|/*&n; *  asus_acpi.c - Asus Laptop ACPI Extras&n; *&n; *&n; *  Copyright (C) 2002, 2003 Julien Lerouge, Karol Kozimor&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; *&n; *&n; *  The development page for this driver is located at&n; *  http://sourceforge.net/projects/acpi4asus/&n; *&n; *  Credits:&n; *  Johann Wiesner - Small compile fixes&n; *  John Belmonte  - ACPI code for Toshiba laptop was a good starting point.&n; *&n; *  TODO:&n; *  add Fn key status&n; *  Add mode selection on module loading (parameter) -&gt; still necessary?&n; *  Complete display switching -- may require dirty hacks?&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#if defined (CONFIG_MODVERSIONS) &amp;&amp; !defined (MODVERSIONS) &amp;&amp; defined (MODULE)
 macro_line|#include &lt;linux/modversions.h&gt;
@@ -11,7 +11,7 @@ macro_line|#include &lt;linux/proc_fs.h&gt;
 macro_line|#include &lt;acpi/acpi_drivers.h&gt;
 macro_line|#include &lt;acpi/acpi_bus.h&gt;
 DECL|macro|ASUS_ACPI_VERSION
-mdefine_line|#define ASUS_ACPI_VERSION &quot;0.25&quot;
+mdefine_line|#define ASUS_ACPI_VERSION &quot;0.26&quot;
 DECL|macro|PROC_ASUS
 mdefine_line|#define PROC_ASUS       &quot;asus&quot;&t;
 singleline_comment|//the directory
@@ -259,7 +259,7 @@ singleline_comment|//L1400B
 DECL|enumerator|L2X
 id|L2X
 comma
-singleline_comment|//L200D -&gt; TODO check Q11 (Fn+F8)
+singleline_comment|//L2000D -&gt; TODO check Q11 (Fn+F8)
 singleline_comment|//&t;   Calling this method simply hangs the
 singleline_comment|//&t;   computer, ISMI method hangs the laptop.
 DECL|enumerator|L3D
@@ -270,6 +270,11 @@ DECL|enumerator|L3X
 id|L3X
 comma
 singleline_comment|//L3C
+DECL|enumerator|L5X
+id|L5X
+comma
+singleline_comment|//L5C TODO this model seems to have one more
+singleline_comment|//         LED, add support
 DECL|enumerator|M2X
 id|M2X
 comma
@@ -286,7 +291,7 @@ DECL|enumerator|S2X
 id|S2X
 comma
 singleline_comment|//S200 (J1 reported), Victor MP-XP7210
-singleline_comment|//TODO  A1370D does not seems to have a ATK device 
+singleline_comment|//TODO  A1370D does not seem to have an ATK device 
 singleline_comment|//&t;L8400 model doesn&squot;t have ATK
 DECL|enumerator|END_MODEL
 id|END_MODEL
@@ -546,6 +551,36 @@ comma
 l_string|&quot;SDSP&quot;
 comma
 l_string|&quot;&bslash;&bslash;_SB.PCI0.PCI1.VGAC.NMAP&quot;
+)brace
+comma
+(brace
+l_string|&quot;L5X&quot;
+comma
+l_string|&quot;MLED&quot;
+comma
+l_int|NULL
+comma
+l_string|&quot;WLED&quot;
+comma
+l_string|&quot;WRED&quot;
+comma
+l_string|&quot;&bslash;&bslash;Q0D&quot;
+comma
+l_string|&quot;&bslash;&bslash;BAOF&quot;
+comma
+l_string|&quot;&bslash;&bslash;Q0C&quot;
+comma
+l_string|&quot;&bslash;&bslash;Q0B&quot;
+comma
+l_string|&quot;SPLV&quot;
+comma
+l_string|&quot;GPLV&quot;
+comma
+l_int|NULL
+comma
+l_string|&quot;SDSP&quot;
+comma
+l_string|&quot;&bslash;&bslash;INFB&quot;
 )brace
 comma
 (brace
@@ -961,6 +996,9 @@ id|len
 op_assign
 l_int|0
 suffix:semicolon
+r_int
+id|sfun
+suffix:semicolon
 r_struct
 id|asus_hotk
 op_star
@@ -1011,21 +1049,18 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|asus_info
-)paren
-(brace
-id|snprintf
+id|read_acpi_int
 c_func
 (paren
-id|buf
+id|hotk-&gt;handle
 comma
-l_int|5
+l_string|&quot;SFUN&quot;
 comma
-l_string|&quot;%s&quot;
-comma
-id|asus_info-&gt;signature
+op_amp
+id|sfun
 )paren
-suffix:semicolon
+)paren
+(brace
 id|len
 op_add_assign
 id|sprintf
@@ -1035,11 +1070,18 @@ id|page
 op_plus
 id|len
 comma
-l_string|&quot;ACPI signature     : %s&bslash;n&quot;
+l_string|&quot;SFUN value         : 0x%04x&bslash;n&quot;
 comma
-id|buf
+id|sfun
 )paren
 suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+id|asus_info
+)paren
+(brace
 id|snprintf
 c_func
 (paren
@@ -1061,33 +1103,7 @@ id|page
 op_plus
 id|len
 comma
-l_string|&quot;Table length       : %s&bslash;n&quot;
-comma
-id|buf
-)paren
-suffix:semicolon
-id|snprintf
-c_func
-(paren
-id|buf
-comma
-l_int|16
-comma
-l_string|&quot;%d&quot;
-comma
-id|asus_info-&gt;revision
-)paren
-suffix:semicolon
-id|len
-op_add_assign
-id|sprintf
-c_func
-(paren
-id|page
-op_plus
-id|len
-comma
-l_string|&quot;ACPI minor version : %s&bslash;n&quot;
+l_string|&quot;DSDT length        : %s&bslash;n&quot;
 comma
 id|buf
 )paren
@@ -1113,7 +1129,33 @@ id|page
 op_plus
 id|len
 comma
-l_string|&quot;Checksum           : %s&bslash;n&quot;
+l_string|&quot;DSDT checksum      : %s&bslash;n&quot;
+comma
+id|buf
+)paren
+suffix:semicolon
+id|snprintf
+c_func
+(paren
+id|buf
+comma
+l_int|16
+comma
+l_string|&quot;%d&quot;
+comma
+id|asus_info-&gt;revision
+)paren
+suffix:semicolon
+id|len
+op_add_assign
+id|sprintf
+c_func
+(paren
+id|page
+op_plus
+id|len
+comma
+l_string|&quot;DSDT revision      : %s&bslash;n&quot;
 comma
 id|buf
 )paren
@@ -1139,7 +1181,7 @@ id|page
 op_plus
 id|len
 comma
-l_string|&quot;OEM identification : %s&bslash;n&quot;
+l_string|&quot;OEM id             : %s&bslash;n&quot;
 comma
 id|buf
 )paren
@@ -1191,7 +1233,7 @@ id|page
 op_plus
 id|len
 comma
-l_string|&quot;OEM rev number     : 0x%s&bslash;n&quot;
+l_string|&quot;OEM revision       : 0x%s&bslash;n&quot;
 comma
 id|buf
 )paren
@@ -1217,7 +1259,7 @@ id|page
 op_plus
 id|len
 comma
-l_string|&quot;ASL comp vendor ID : %s&bslash;n&quot;
+l_string|&quot;ASL comp vendor id : %s&bslash;n&quot;
 comma
 id|buf
 )paren
@@ -1243,7 +1285,7 @@ id|page
 op_plus
 id|len
 comma
-l_string|&quot;ASL comp rev number: 0x%s&bslash;n&quot;
+l_string|&quot;ASL comp revision  : 0x%s&bslash;n&quot;
 comma
 id|buf
 )paren
@@ -1343,7 +1385,7 @@ r_else
 id|printk
 c_func
 (paren
-id|KERN_NOTICE
+id|KERN_WARNING
 l_string|&quot;Asus ACPI: Error reading MLED &quot;
 l_string|&quot;status&bslash;n&quot;
 )paren
@@ -1486,7 +1528,7 @@ l_int|NULL
 id|printk
 c_func
 (paren
-id|KERN_NOTICE
+id|KERN_WARNING
 l_string|&quot;Asus ACPI: MLED write failed&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -1559,7 +1601,7 @@ c_func
 (paren
 l_int|NULL
 comma
-id|hotk-&gt;methods-&gt;mled_status
+id|hotk-&gt;methods-&gt;wled_status
 comma
 op_amp
 id|led_status
@@ -1581,7 +1623,7 @@ r_else
 id|printk
 c_func
 (paren
-id|KERN_NOTICE
+id|KERN_WARNING
 l_string|&quot;Asus ACPI: Error reading WLED &quot;
 l_string|&quot;status&bslash;n&quot;
 )paren
@@ -1723,7 +1765,7 @@ l_int|NULL
 id|printk
 c_func
 (paren
-id|KERN_NOTICE
+id|KERN_WARNING
 l_string|&quot;Asus ACPI: WLED write failed&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -1767,7 +1809,7 @@ id|lcd
 id|printk
 c_func
 (paren
-id|KERN_NOTICE
+id|KERN_WARNING
 l_string|&quot;Asus ACPI: Error reading LCD status&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -1963,7 +2005,7 @@ id|status
 id|printk
 c_func
 (paren
-id|KERN_NOTICE
+id|KERN_WARNING
 l_string|&quot;Asus ACPI: Error switching LCD&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -2019,7 +2061,7 @@ l_int|NULL
 id|printk
 c_func
 (paren
-id|KERN_NOTICE
+id|KERN_WARNING
 l_string|&quot;Asus ACPI: Error changing brightness&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -2087,7 +2129,7 @@ id|status
 id|printk
 c_func
 (paren
-id|KERN_NOTICE
+id|KERN_WARNING
 l_string|&quot;Asus ACPI: Error changing brightness&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -2135,7 +2177,7 @@ id|value
 id|printk
 c_func
 (paren
-id|KERN_NOTICE
+id|KERN_WARNING
 l_string|&quot;Asus ACPI: Error reading brightness&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -2166,7 +2208,7 @@ id|value
 id|printk
 c_func
 (paren
-id|KERN_NOTICE
+id|KERN_WARNING
 l_string|&quot;Asus ACPI: Error reading brightness&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -2336,7 +2378,7 @@ r_else
 id|printk
 c_func
 (paren
-id|KERN_NOTICE
+id|KERN_WARNING
 l_string|&quot;Asus ACPI: Error reading user input&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -2380,7 +2422,7 @@ l_int|NULL
 id|printk
 c_func
 (paren
-id|KERN_NOTICE
+id|KERN_WARNING
 l_string|&quot;Asus ACPI: Error setting display&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -2453,7 +2495,7 @@ id|value
 id|printk
 c_func
 (paren
-id|KERN_NOTICE
+id|KERN_WARNING
 l_string|&quot;Asus ACPI: Error reading display status&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -2540,7 +2582,7 @@ r_else
 id|printk
 c_func
 (paren
-id|KERN_NOTICE
+id|KERN_WARNING
 l_string|&quot;Asus ACPI: Error reading user input&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -2552,6 +2594,7 @@ suffix:semicolon
 DECL|function|asus_hotk_add_fs
 r_static
 r_int
+id|__init
 id|asus_hotk_add_fs
 c_func
 (paren
@@ -2696,7 +2739,7 @@ r_else
 id|printk
 c_func
 (paren
-id|KERN_NOTICE
+id|KERN_WARNING
 l_string|&quot;  Unable to create &quot;
 id|PROC_INFOS
 l_string|&quot; fs entry&bslash;n&quot;
@@ -2766,7 +2809,7 @@ r_else
 id|printk
 c_func
 (paren
-id|KERN_NOTICE
+id|KERN_WARNING
 l_string|&quot;  Unable to create &quot;
 id|PROC_WLED
 l_string|&quot; fs entry&bslash;n&quot;
@@ -2837,7 +2880,7 @@ r_else
 id|printk
 c_func
 (paren
-id|KERN_NOTICE
+id|KERN_WARNING
 l_string|&quot;  Unable to create &quot;
 id|PROC_MLED
 l_string|&quot; fs entry&bslash;n&quot;
@@ -2911,7 +2954,7 @@ r_else
 id|printk
 c_func
 (paren
-id|KERN_NOTICE
+id|KERN_WARNING
 l_string|&quot;  Unable to create &quot;
 id|PROC_LCD
 l_string|&quot; fs entry&bslash;n&quot;
@@ -2992,7 +3035,7 @@ r_else
 id|printk
 c_func
 (paren
-id|KERN_NOTICE
+id|KERN_WARNING
 l_string|&quot;  Unable to create &quot;
 id|PROC_BRN
 l_string|&quot; fs entry&bslash;n&quot;
@@ -3063,7 +3106,7 @@ r_else
 id|printk
 c_func
 (paren
-id|KERN_NOTICE
+id|KERN_WARNING
 l_string|&quot;  Unable to create &quot;
 id|PROC_DISP
 l_string|&quot; fs entry&bslash;n&quot;
@@ -3072,9 +3115,7 @@ suffix:semicolon
 )brace
 )brace
 r_return
-(paren
-id|AE_OK
-)paren
+l_int|0
 suffix:semicolon
 )brace
 DECL|function|asus_hotk_notify
@@ -3205,6 +3246,7 @@ multiline_comment|/*&n; * This function is used to initialize the hotk with righ
 DECL|function|asus_hotk_get_info
 r_static
 r_int
+id|__init
 id|asus_hotk_get_info
 c_func
 (paren
@@ -3224,6 +3266,16 @@ comma
 l_int|NULL
 )brace
 suffix:semicolon
+r_struct
+id|acpi_buffer
+id|dsdt
+op_assign
+(brace
+id|ACPI_ALLOCATE_BUFFER
+comma
+l_int|NULL
+)brace
+suffix:semicolon
 r_union
 id|acpi_object
 op_star
@@ -3231,7 +3283,53 @@ id|model
 op_assign
 l_int|NULL
 suffix:semicolon
-multiline_comment|/* &n;&t; * We have to write 0 on init this far for all ASUS models&n;&t; */
+r_int
+id|bsts_result
+suffix:semicolon
+id|acpi_status
+id|status
+suffix:semicolon
+multiline_comment|/*&n;&t; * Get DSDT headers early enough to allow for differentiating between &n;&t; * models, but late enough to allow acpi_bus_register_driver() to fail &n;&t; * before doing anything ACPI-specific. Should we encounter a machine,&n;&t; * which needs special handling (i.e. its hotkey device has a different&n;&t; * HID), this bit will be moved. A global variable asus_info contains&n;&t; * the DSDT header.&n;&t; */
+id|status
+op_assign
+id|acpi_get_table
+c_func
+(paren
+id|ACPI_TABLE_DSDT
+comma
+l_int|1
+comma
+op_amp
+id|dsdt
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|ACPI_FAILURE
+c_func
+(paren
+id|status
+)paren
+)paren
+id|printk
+c_func
+(paren
+id|KERN_WARNING
+l_string|&quot;  Couldn&squot;t get the DSDT table header&bslash;n&quot;
+)paren
+suffix:semicolon
+r_else
+id|asus_info
+op_assign
+(paren
+r_struct
+id|acpi_table_header
+op_star
+)paren
+id|dsdt.pointer
+suffix:semicolon
+multiline_comment|/* We have to write 0 on init this far for all ASUS models */
 r_if
 c_cond
 (paren
@@ -3253,7 +3351,7 @@ id|buffer
 id|printk
 c_func
 (paren
-id|KERN_NOTICE
+id|KERN_ERR
 l_string|&quot;  Hotkey initialization failed&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -3262,6 +3360,44 @@ op_minus
 id|ENODEV
 suffix:semicolon
 )brace
+multiline_comment|/* For testing purposes */
+r_if
+c_cond
+(paren
+op_logical_neg
+id|read_acpi_int
+c_func
+(paren
+id|hotk-&gt;handle
+comma
+l_string|&quot;BSTS&quot;
+comma
+op_amp
+id|bsts_result
+)paren
+)paren
+id|printk
+c_func
+(paren
+id|KERN_WARNING
+l_string|&quot;  Error calling BSTS&bslash;n&quot;
+)paren
+suffix:semicolon
+r_else
+r_if
+c_cond
+(paren
+id|bsts_result
+)paren
+id|printk
+c_func
+(paren
+id|KERN_NOTICE
+l_string|&quot;  BSTS called, 0x%02x returned&bslash;n&quot;
+comma
+id|bsts_result
+)paren
+suffix:semicolon
 multiline_comment|/*&n;&t; * Here, we also use asus_info to make decision. For example, on INIT&n;&t; * method, S1X and L1X models both reports to be L84F, but they don&squot;t&n;&t; * have the same methods (L1X has WLED, S1X don&squot;t)&n;&t; */
 id|model
 op_assign
@@ -3435,7 +3571,14 @@ l_int|2
 op_eq
 l_int|0
 )paren
+(brace
 multiline_comment|/* S1300A reports L84F, but L1400B too */
+r_if
+c_cond
+(paren
+id|asus_info
+)paren
+(brace
 r_if
 c_cond
 (paren
@@ -3455,11 +3598,13 @@ id|hotk-&gt;model
 op_assign
 id|L1X
 suffix:semicolon
+)brace
 r_else
 id|hotk-&gt;model
 op_assign
 id|S1X
 suffix:semicolon
+)brace
 r_else
 r_if
 c_cond
@@ -3540,6 +3685,26 @@ id|hotk-&gt;model
 op_assign
 id|S2X
 suffix:semicolon
+r_else
+r_if
+c_cond
+(paren
+id|strncmp
+c_func
+(paren
+id|model-&gt;string.pointer
+comma
+l_string|&quot;L5&quot;
+comma
+l_int|2
+)paren
+op_eq
+l_int|0
+)paren
+id|hotk-&gt;model
+op_assign
+id|L5X
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -3552,8 +3717,8 @@ multiline_comment|/* By default use the same values, as I don&squot;t know other
 id|printk
 c_func
 (paren
-l_string|&quot;unsupported, trying default values, contact the &quot;
-l_string|&quot;developers&bslash;n&quot;
+l_string|&quot;unsupported, trying default values, supply the &quot;
+l_string|&quot;developers with your DSDT&bslash;n&quot;
 )paren
 suffix:semicolon
 id|hotk-&gt;model
@@ -3591,6 +3756,7 @@ suffix:semicolon
 DECL|function|asus_hotk_check
 r_static
 r_int
+id|__init
 id|asus_hotk_check
 c_func
 (paren
@@ -3651,7 +3817,7 @@ r_else
 id|printk
 c_func
 (paren
-id|KERN_NOTICE
+id|KERN_ERR
 l_string|&quot;  Hotkey device not present, aborting&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -3667,6 +3833,7 @@ suffix:semicolon
 DECL|function|asus_hotk_add
 r_static
 r_int
+id|__init
 id|asus_hotk_add
 c_func
 (paren
@@ -3700,6 +3867,15 @@ id|device
 r_return
 op_minus
 id|EINVAL
+suffix:semicolon
+id|printk
+c_func
+(paren
+id|KERN_NOTICE
+l_string|&quot;Asus Laptop ACPI Extras version %s&bslash;n&quot;
+comma
+id|ASUS_ACPI_VERSION
+)paren
 suffix:semicolon
 id|hotk
 op_assign
@@ -3844,25 +4020,13 @@ c_func
 id|status
 )paren
 )paren
-(brace
 id|printk
 c_func
 (paren
-id|KERN_NOTICE
+id|KERN_ERR
 l_string|&quot;  Error installing notify handler&bslash;n&quot;
 )paren
 suffix:semicolon
-)brace
-r_else
-(brace
-id|printk
-c_func
-(paren
-id|KERN_DEBUG
-l_string|&quot;  Notify Handler installed successfully&bslash;n&quot;
-)paren
-suffix:semicolon
-)brace
 multiline_comment|/* For laptops without GPLV: init the hotk-&gt;brightness value */
 r_if
 c_cond
@@ -3910,7 +4074,7 @@ id|status
 id|printk
 c_func
 (paren
-id|KERN_NOTICE
+id|KERN_WARNING
 l_string|&quot;  Error changing brightness&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -3942,7 +4106,7 @@ id|status
 id|printk
 c_func
 (paren
-id|KERN_NOTICE
+id|KERN_WARNING
 l_string|&quot;  Strange, error changing&quot;
 l_string|&quot; brightness&bslash;n&quot;
 )paren
@@ -3971,6 +4135,7 @@ suffix:semicolon
 DECL|function|asus_hotk_remove
 r_static
 r_int
+id|__exit
 id|asus_hotk_remove
 c_func
 (paren
@@ -4049,8 +4214,8 @@ id|status
 id|printk
 c_func
 (paren
-id|KERN_NOTICE
-l_string|&quot;Error removing notify handler&bslash;n&quot;
+id|KERN_ERR
+l_string|&quot;Asus ACPI: Error removing notify handler&bslash;n&quot;
 )paren
 suffix:semicolon
 id|kfree
@@ -4075,77 +4240,7 @@ r_void
 (brace
 r_int
 id|result
-op_assign
-l_int|0
 suffix:semicolon
-id|acpi_status
-id|status
-op_assign
-l_int|0
-suffix:semicolon
-r_struct
-id|acpi_buffer
-id|dsdt
-op_assign
-(brace
-id|ACPI_ALLOCATE_BUFFER
-comma
-l_int|NULL
-)brace
-suffix:semicolon
-id|printk
-c_func
-(paren
-id|KERN_NOTICE
-l_string|&quot;Asus Laptop ACPI Extras version %s&bslash;n&quot;
-comma
-id|ASUS_ACPI_VERSION
-)paren
-suffix:semicolon
-multiline_comment|/*&n;&t; * Here is the code to know the model we are running on. We need to&n;&t; * know this before calling the acpi_bus_register_driver function, in&n;&t; * case the HID for the laptop we are running on is different from&n;&t; * ACPI_HOTK_HID, which I have never seen yet :)&n;&t; * &n;&t; * This information is then available in the global var asus_info&n;&t; */
-id|status
-op_assign
-id|acpi_get_table
-c_func
-(paren
-id|ACPI_TABLE_DSDT
-comma
-l_int|1
-comma
-op_amp
-id|dsdt
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|ACPI_FAILURE
-c_func
-(paren
-id|status
-)paren
-)paren
-(brace
-id|printk
-c_func
-(paren
-id|KERN_NOTICE
-l_string|&quot;  Couldn&squot;t get the DSDT table header&bslash;n&quot;
-)paren
-suffix:semicolon
-)brace
-r_else
-(brace
-id|asus_info
-op_assign
-(paren
-r_struct
-id|acpi_table_header
-op_star
-)paren
-id|dsdt.pointer
-suffix:semicolon
-)brace
 id|asus_proc_dir
 op_assign
 id|proc_mkdir
@@ -4162,10 +4257,19 @@ c_cond
 op_logical_neg
 id|asus_proc_dir
 )paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;Asus ACPI: Unable to create /proc entry&quot;
+)paren
+suffix:semicolon
 r_return
 op_minus
 id|ENODEV
 suffix:semicolon
+)brace
 id|asus_proc_dir-&gt;owner
 op_assign
 id|THIS_MODULE
@@ -4187,15 +4291,6 @@ OL
 l_int|0
 )paren
 (brace
-id|printk
-c_func
-(paren
-id|KERN_NOTICE
-l_string|&quot;  Error registering &quot;
-id|ACPI_HOTK_NAME
-l_string|&quot; &bslash;n&quot;
-)paren
-suffix:semicolon
 id|remove_proc_entry
 c_func
 (paren
