@@ -6,6 +6,17 @@ macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;asm/types.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;video/fbcon.h&gt;
+macro_line|#if BITS_PER_LONG == 32
+DECL|macro|FB_READ
+mdefine_line|#define FB_READ&t;&t;fb_readl
+DECL|macro|FB_WRITE
+mdefine_line|#define FB_WRITE&t;fb_writel
+macro_line|#else
+DECL|macro|FB_READ
+mdefine_line|#define FB_READ&t;&t;fb_readq
+DECL|macro|FB_WRITE
+mdefine_line|#define FB_WRITE&t;fb_writeq
+macro_line|#endif
 DECL|function|cfb_copyarea
 r_void
 id|cfb_copyarea
@@ -621,7 +632,7 @@ suffix:semicolon
 id|last
 op_assign
 (paren
-id|fb_readl
+id|FB_READ
 c_func
 (paren
 id|src
@@ -637,10 +648,10 @@ id|shift
 OG
 l_int|0
 )paren
-id|fb_writel
+id|FB_WRITE
 c_func
 (paren
-id|fb_readl
+id|FB_READ
 c_func
 (paren
 id|dst
@@ -675,7 +686,7 @@ op_increment
 suffix:semicolon
 id|tmp
 op_assign
-id|fb_readl
+id|FB_READ
 c_func
 (paren
 id|src
@@ -684,7 +695,7 @@ suffix:semicolon
 id|src
 op_increment
 suffix:semicolon
-id|fb_writel
+id|FB_WRITE
 c_func
 (paren
 (paren
@@ -710,10 +721,10 @@ id|src
 op_increment
 suffix:semicolon
 )brace
-id|fb_writel
+id|FB_WRITE
 c_func
 (paren
-id|fb_readl
+id|FB_READ
 c_func
 (paren
 id|dst
@@ -781,7 +792,7 @@ suffix:semicolon
 id|last
 op_assign
 (paren
-id|fb_readl
+id|FB_READ
 c_func
 (paren
 id|src
@@ -797,10 +808,10 @@ id|shift
 OL
 l_int|0
 )paren
-id|fb_writel
+id|FB_WRITE
 c_func
 (paren
-id|fb_readl
+id|FB_READ
 c_func
 (paren
 id|dst
@@ -835,7 +846,7 @@ op_decrement
 suffix:semicolon
 id|tmp
 op_assign
-id|fb_readl
+id|FB_READ
 c_func
 (paren
 id|src
@@ -844,7 +855,7 @@ suffix:semicolon
 id|src
 op_decrement
 suffix:semicolon
-id|fb_writel
+id|FB_WRITE
 c_func
 (paren
 (paren
@@ -870,10 +881,10 @@ id|src
 op_decrement
 suffix:semicolon
 )brace
-id|fb_writel
+id|FB_WRITE
 c_func
 (paren
-id|fb_readl
+id|FB_READ
 c_func
 (paren
 id|dst
@@ -951,10 +962,10 @@ c_cond
 (paren
 id|start_mask
 )paren
-id|fb_writel
+id|FB_WRITE
 c_func
 (paren
-id|fb_readl
+id|FB_READ
 c_func
 (paren
 id|src
@@ -980,10 +991,10 @@ id|j
 op_increment
 )paren
 (brace
-id|fb_writel
+id|FB_WRITE
 c_func
 (paren
-id|fb_readl
+id|FB_READ
 c_func
 (paren
 id|src
@@ -1004,10 +1015,10 @@ c_cond
 (paren
 id|end_mask
 )paren
-id|fb_writel
+id|FB_WRITE
 c_func
 (paren
-id|fb_readl
+id|FB_READ
 c_func
 (paren
 id|src
@@ -1063,10 +1074,10 @@ c_cond
 (paren
 id|start_mask
 )paren
-id|fb_writel
+id|FB_WRITE
 c_func
 (paren
-id|fb_readl
+id|FB_READ
 c_func
 (paren
 id|src
@@ -1092,10 +1103,10 @@ id|j
 op_increment
 )paren
 (brace
-id|fb_writel
+id|FB_WRITE
 c_func
 (paren
-id|fb_readl
+id|FB_READ
 c_func
 (paren
 id|src

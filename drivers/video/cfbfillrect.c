@@ -3,6 +3,17 @@ macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/fb.h&gt;
 macro_line|#include &lt;asm/types.h&gt;
 macro_line|#include &lt;video/fbcon.h&gt;
+macro_line|#if BITS_PER_LONG == 32
+DECL|macro|FB_READ
+mdefine_line|#define FB_READ&t;&t;fb_readl
+DECL|macro|FB_WRITE
+mdefine_line|#define FB_WRITE&t;fb_writel
+macro_line|#else
+DECL|macro|FB_READ
+mdefine_line|#define FB_READ&t;&t;fb_readq
+DECL|macro|FB_WRITE
+mdefine_line|#define FB_WRITE&t;fb_writeq
+macro_line|#endif
 DECL|function|cfb_fillrect
 r_void
 id|cfb_fillrect
@@ -401,26 +412,10 @@ c_cond
 id|start_mask
 )paren
 (brace
-macro_line|#if BITS_PER_LONG == 32
-id|fb_writel
+id|FB_WRITE
 c_func
 (paren
-id|fb_readl
-c_func
-(paren
-id|dst
-)paren
-op_or
-id|start_mask
-comma
-id|dst
-)paren
-suffix:semicolon
-macro_line|#else
-id|fb_writeq
-c_func
-(paren
-id|fb_readq
+id|FB_READ
 c_func
 (paren
 id|dst
@@ -431,7 +426,6 @@ comma
 id|dst
 )paren
 suffix:semicolon
-macro_line|#endif
 id|dst
 op_increment
 suffix:semicolon
@@ -451,8 +445,7 @@ id|i
 op_increment
 )paren
 (brace
-macro_line|#if BITS_PER_LONG == 32
-id|fb_writel
+id|FB_WRITE
 c_func
 (paren
 id|fg
@@ -460,16 +453,6 @@ comma
 id|dst
 )paren
 suffix:semicolon
-macro_line|#else
-id|fb_writeq
-c_func
-(paren
-id|fg
-comma
-id|dst
-)paren
-suffix:semicolon
-macro_line|#endif
 id|dst
 op_increment
 suffix:semicolon
@@ -479,26 +462,10 @@ c_cond
 (paren
 id|end_mask
 )paren
-macro_line|#if BITS_PER_LONG == 32
-id|fb_writel
+id|FB_WRITE
 c_func
 (paren
-id|fb_readl
-c_func
-(paren
-id|dst
-)paren
-op_or
-id|end_mask
-comma
-id|dst
-)paren
-suffix:semicolon
-macro_line|#else
-id|fb_writeq
-c_func
-(paren
-id|fb_readq
+id|FB_READ
 c_func
 (paren
 id|dst
@@ -509,7 +476,6 @@ comma
 id|dst
 )paren
 suffix:semicolon
-macro_line|#endif
 id|dst1
 op_add_assign
 id|linesize
@@ -548,26 +514,10 @@ c_cond
 id|start_mask
 )paren
 (brace
-macro_line|#if BITS_PER_LONG == 32
-id|fb_writel
+id|FB_WRITE
 c_func
 (paren
-id|fb_readl
-c_func
-(paren
-id|dst
-)paren
-op_xor
-id|start_mask
-comma
-id|dst
-)paren
-suffix:semicolon
-macro_line|#else
-id|fb_writeq
-c_func
-(paren
-id|fb_readq
+id|FB_READ
 c_func
 (paren
 id|dst
@@ -578,7 +528,6 @@ comma
 id|dst
 )paren
 suffix:semicolon
-macro_line|#endif
 id|dst
 op_increment
 suffix:semicolon
@@ -598,26 +547,10 @@ id|i
 op_increment
 )paren
 (brace
-macro_line|#if BITS_PER_LONG == 32
-id|fb_writel
+id|FB_WRITE
 c_func
 (paren
-id|fb_readl
-c_func
-(paren
-id|dst
-)paren
-op_xor
-id|fg
-comma
-id|dst
-)paren
-suffix:semicolon
-macro_line|#else
-id|fb_writeq
-c_func
-(paren
-id|fb_readq
+id|FB_READ
 c_func
 (paren
 id|dst
@@ -628,7 +561,6 @@ comma
 id|dst
 )paren
 suffix:semicolon
-macro_line|#endif
 id|dst
 op_increment
 suffix:semicolon
@@ -639,26 +571,10 @@ c_cond
 id|end_mask
 )paren
 (brace
-macro_line|#if BITS_PER_LONG == 32
-id|fb_writel
+id|FB_WRITE
 c_func
 (paren
-id|fb_readl
-c_func
-(paren
-id|dst
-)paren
-op_xor
-id|end_mask
-comma
-id|dst
-)paren
-suffix:semicolon
-macro_line|#else
-id|fb_writeq
-c_func
-(paren
-id|fb_readq
+id|FB_READ
 c_func
 (paren
 id|dst
@@ -669,7 +585,6 @@ comma
 id|dst
 )paren
 suffix:semicolon
-macro_line|#endif
 )brace
 id|dst1
 op_add_assign
