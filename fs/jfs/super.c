@@ -283,6 +283,11 @@ comma
 r_int
 )paren
 suffix:semicolon
+r_extern
+r_struct
+id|dentry_operations
+id|jfs_ci_dentry_operations
+suffix:semicolon
 macro_line|#ifdef PROC_FS_JFS&t;&t;/* see jfs_debug.h */
 r_extern
 r_void
@@ -531,6 +536,13 @@ c_func
 id|inode
 )paren
 suffix:semicolon
+id|spin_lock_irq
+c_func
+(paren
+op_amp
+id|ji-&gt;ag_lock
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -563,7 +575,19 @@ id|ji-&gt;active_ag
 )braket
 )paren
 suffix:semicolon
+id|ji-&gt;active_ag
+op_assign
+op_minus
+l_int|1
+suffix:semicolon
 )brace
+id|spin_unlock_irq
+c_func
+(paren
+op_amp
+id|ji-&gt;ag_lock
+)paren
+suffix:semicolon
 macro_line|#ifdef CONFIG_JFS_POSIX_ACL
 r_if
 c_cond
@@ -1967,6 +1991,18 @@ id|sb-&gt;s_root
 r_goto
 id|out_no_root
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|sbi-&gt;mntflag
+op_amp
+id|JFS_OS2
+)paren
+id|sb-&gt;s_root-&gt;d_op
+op_assign
+op_amp
+id|jfs_ci_dentry_operations
+suffix:semicolon
 multiline_comment|/* logical blocks are represented by 40 bits in pxd_t, etc. */
 id|sb-&gt;s_maxbytes
 op_assign
@@ -2543,6 +2579,13 @@ c_func
 (paren
 op_amp
 id|jfs_ip-&gt;xattr_sem
+)paren
+suffix:semicolon
+id|spin_lock_init
+c_func
+(paren
+op_amp
+id|jfs_ip-&gt;ag_lock
 )paren
 suffix:semicolon
 id|jfs_ip-&gt;active_ag
