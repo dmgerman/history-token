@@ -4231,9 +4231,8 @@ r_void
 id|outsb
 c_func
 (paren
-r_void
-op_star
-id|__iomem
+r_int
+r_int
 id|addr
 comma
 r_const
@@ -4256,7 +4255,7 @@ id|count
 op_sub_assign
 l_int|1
 suffix:semicolon
-id|writeb
+id|outb
 c_func
 (paren
 op_star
@@ -4274,10 +4273,7 @@ id|src
 op_add_assign
 l_int|1
 suffix:semicolon
-id|addr
-op_add_assign
-l_int|1
-suffix:semicolon
+multiline_comment|/* addr += 1; */
 )brace
 )brace
 DECL|function|outsw
@@ -4285,9 +4281,8 @@ r_void
 id|outsw
 c_func
 (paren
-r_void
-op_star
-id|__iomem
+r_int
+r_int
 id|addr
 comma
 r_const
@@ -4310,7 +4305,7 @@ id|count
 op_sub_assign
 l_int|2
 suffix:semicolon
-id|writew
+id|outw
 c_func
 (paren
 op_star
@@ -4328,10 +4323,7 @@ id|src
 op_add_assign
 l_int|2
 suffix:semicolon
-id|addr
-op_add_assign
-l_int|2
-suffix:semicolon
+multiline_comment|/* addr += 2; */
 )brace
 )brace
 DECL|function|outsl
@@ -4339,9 +4331,8 @@ r_void
 id|outsl
 c_func
 (paren
-r_void
-op_star
-id|__iomem
+r_int
+r_int
 id|addr
 comma
 r_const
@@ -4364,7 +4355,7 @@ id|count
 op_sub_assign
 l_int|4
 suffix:semicolon
-id|writel
+id|outl
 c_func
 (paren
 op_star
@@ -4382,10 +4373,7 @@ id|src
 op_add_assign
 l_int|4
 suffix:semicolon
-id|addr
-op_add_assign
-l_int|4
-suffix:semicolon
+multiline_comment|/* addr += 4; */
 )brace
 )brace
 DECL|function|insb
@@ -4393,9 +4381,8 @@ r_void
 id|insb
 c_func
 (paren
-r_void
-op_star
-id|__iomem
+r_int
+r_int
 id|addr
 comma
 r_void
@@ -4425,7 +4412,7 @@ op_star
 )paren
 id|dst
 op_assign
-id|readb
+id|inb
 c_func
 (paren
 id|addr
@@ -4435,10 +4422,7 @@ id|dst
 op_add_assign
 l_int|1
 suffix:semicolon
-id|addr
-op_add_assign
-l_int|1
-suffix:semicolon
+multiline_comment|/* addr += 1; */
 )brace
 )brace
 DECL|function|insw
@@ -4446,9 +4430,8 @@ r_void
 id|insw
 c_func
 (paren
-r_void
-op_star
-id|__iomem
+r_int
+r_int
 id|addr
 comma
 r_void
@@ -4478,7 +4461,7 @@ op_star
 )paren
 id|dst
 op_assign
-id|readw
+id|inw
 c_func
 (paren
 id|addr
@@ -4488,10 +4471,7 @@ id|dst
 op_add_assign
 l_int|2
 suffix:semicolon
-id|addr
-op_add_assign
-l_int|2
-suffix:semicolon
+multiline_comment|/* addr += 2; */
 )brace
 )brace
 DECL|function|insl
@@ -4499,9 +4479,8 @@ r_void
 id|insl
 c_func
 (paren
-r_void
-op_star
-id|__iomem
+r_int
+r_int
 id|addr
 comma
 r_void
@@ -4532,7 +4511,7 @@ op_star
 )paren
 id|dst
 op_assign
-id|readl
+id|inl
 c_func
 (paren
 id|addr
@@ -4542,10 +4521,7 @@ id|dst
 op_add_assign
 l_int|4
 suffix:semicolon
-id|addr
-op_add_assign
-l_int|4
-suffix:semicolon
+multiline_comment|/* addr += 4; */
 )brace
 )brace
 DECL|variable|pcic_init
