@@ -1987,19 +1987,8 @@ id|APP_INT_ON_TIMER
 id|printk
 (paren
 id|KERN_INFO
-"&quot;"
-op_mod
-id|s
-suffix:colon
-id|Failed
-id|to
-id|set
-id|interrupt
-id|triggers
-op_logical_neg
-"&bslash;"
-id|n
-"&quot;"
+l_string|&quot;%s: &quot;
+l_string|&quot;Failed to set interrupt triggers!&bslash;n&quot;
 comma
 id|card-&gt;devname
 )paren
