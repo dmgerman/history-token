@@ -5,6 +5,7 @@ macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/workqueue.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
+macro_line|#include &lt;linux/device.h&gt;
 macro_line|#include &lt;pcmcia/ss.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &quot;pci_socket.h&quot;
@@ -1057,6 +1058,18 @@ id|resume
 op_assign
 id|cardbus_resume
 comma
+dot
+id|driver
+op_assign
+(brace
+dot
+id|devclass
+op_assign
+op_amp
+id|pcmcia_socket_class
+comma
+)brace
+comma
 )brace
 suffix:semicolon
 DECL|function|pci_socket_init
@@ -1070,7 +1083,7 @@ r_void
 )paren
 (brace
 r_return
-id|pci_module_init
+id|pci_register_driver
 (paren
 op_amp
 id|pci_cardbus_driver

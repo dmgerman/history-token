@@ -476,5 +476,10 @@ op_star
 id|ops
 )paren
 suffix:semicolon
+r_extern
+r_struct
+id|device_class
+id|pcmcia_socket_class
+suffix:semicolon
 macro_line|#endif /* _LINUX_SS_H */
 eof

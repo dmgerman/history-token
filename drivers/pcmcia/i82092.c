@@ -6,6 +6,7 @@ macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/workqueue.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
+macro_line|#include &lt;linux/device.h&gt;
 macro_line|#include &lt;pcmcia/cs_types.h&gt;
 macro_line|#include &lt;pcmcia/ss.h&gt;
 macro_line|#include &lt;pcmcia/cs.h&gt;
@@ -94,6 +95,18 @@ c_func
 (paren
 id|i82092aa_pci_remove
 )paren
+comma
+dot
+id|driver
+op_assign
+(brace
+dot
+id|devclass
+op_assign
+op_amp
+id|pcmcia_socket_class
+comma
+)brace
 comma
 )brace
 suffix:semicolon

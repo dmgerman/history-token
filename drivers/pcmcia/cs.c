@@ -15,6 +15,7 @@ macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/proc_fs.h&gt;
 macro_line|#include &lt;linux/pm.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
+macro_line|#include &lt;linux/device.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
 DECL|macro|IN_CARD_SERVICES
@@ -11396,6 +11397,26 @@ c_func
 id|pcmcia_resume_socket
 )paren
 suffix:semicolon
+DECL|variable|pcmcia_socket_class
+r_struct
+id|device_class
+id|pcmcia_socket_class
+op_assign
+(brace
+dot
+id|name
+op_assign
+l_string|&quot;pcmcia_socket&quot;
+comma
+)brace
+suffix:semicolon
+DECL|variable|pcmcia_socket_class
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|pcmcia_socket_class
+)paren
+suffix:semicolon
 DECL|function|init_pcmcia_cs
 r_static
 r_int
@@ -11432,6 +11453,13 @@ comma
 l_string|&quot;%s&bslash;n&quot;
 comma
 id|version
+)paren
+suffix:semicolon
+id|devclass_register
+c_func
+(paren
+op_amp
+id|pcmcia_socket_class
 )paren
 suffix:semicolon
 r_if
@@ -11515,9 +11543,16 @@ c_func
 (paren
 )paren
 suffix:semicolon
+id|devclass_unregister
+c_func
+(paren
+op_amp
+id|pcmcia_socket_class
+)paren
+suffix:semicolon
 )brace
 DECL|variable|init_pcmcia_cs
-id|module_init
+id|subsys_initcall
 c_func
 (paren
 id|init_pcmcia_cs

@@ -10,6 +10,7 @@ macro_line|#include &lt;linux/vmalloc.h&gt;
 macro_line|#include &lt;asm/errno.h&gt;
 macro_line|#include &lt;linux/irq.h&gt;
 macro_line|#include &lt;linux/workqueue.h&gt;
+macro_line|#include &lt;linux/device.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/hd64465.h&gt;
 macro_line|#include &lt;pcmcia/version.h&gt;
@@ -3559,6 +3560,62 @@ id|sp-&gt;io_vma-&gt;addr
 )paren
 suffix:semicolon
 )brace
+DECL|variable|hd64465_driver
+r_static
+r_struct
+id|device_driver
+id|hd64465_driver
+op_assign
+(brace
+dot
+id|name
+op_assign
+l_string|&quot;hd64465-pcmcia&quot;
+comma
+dot
+id|bus
+op_assign
+op_amp
+id|platform_bus_type
+comma
+dot
+id|devclass
+op_assign
+op_amp
+id|pcmcia_socket_class
+comma
+)brace
+suffix:semicolon
+DECL|variable|hd64465_device
+r_static
+r_struct
+id|platform_device
+id|hd64465_device
+op_assign
+(brace
+dot
+id|name
+op_assign
+l_string|&quot;hd64465-pcmcia&quot;
+comma
+dot
+id|id
+op_assign
+l_int|0
+comma
+dot
+id|dev
+op_assign
+(brace
+dot
+id|name
+op_assign
+l_string|&quot;hd64465-pcmcia&quot;
+comma
+)brace
+comma
+)brace
+suffix:semicolon
 DECL|function|init_hs
 r_static
 r_int
@@ -3609,6 +3666,13 @@ id|ENODEV
 suffix:semicolon
 )brace
 multiline_comment|/*&t;hd64465_io_debug = 1; */
+id|register_driver
+c_func
+(paren
+op_amp
+id|hd64465_driver
+)paren
+suffix:semicolon
 multiline_comment|/* Wake both sockets out of STANDBY mode */
 multiline_comment|/* TODO: wait 15ms */
 id|v
@@ -3732,9 +3796,18 @@ id|i
 OL
 l_int|0
 )paren
+(brace
+id|unregister_driver
+c_func
+(paren
+op_amp
+id|hd64465_driver
+)paren
+suffix:semicolon
 r_return
 id|i
 suffix:semicolon
+)brace
 id|i
 op_assign
 id|hs_init_socket
@@ -3760,10 +3833,26 @@ id|i
 OL
 l_int|0
 )paren
+(brace
+id|unregister_driver
+c_func
+(paren
+op_amp
+id|hd64465_driver
+)paren
+suffix:semicolon
 r_return
 id|i
 suffix:semicolon
+)brace
 multiline_comment|/*&t;hd64465_io_debug = 0; */
+id|platform_device_register
+c_func
+(paren
+op_amp
+id|hd64465_device
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -3801,6 +3890,20 @@ id|hs_sockets
 (braket
 id|i
 )braket
+)paren
+suffix:semicolon
+id|platform_device_unregister
+c_func
+(paren
+op_amp
+id|hd64465_device
+)paren
+suffix:semicolon
+id|unregister_driver
+c_func
+(paren
+op_amp
+id|hd64465_driver
 )paren
 suffix:semicolon
 r_return
@@ -3915,6 +4018,13 @@ id|i
 )braket
 )paren
 suffix:semicolon
+id|platform_device_unregister
+c_func
+(paren
+op_amp
+id|hd64465_device
+)paren
+suffix:semicolon
 id|unregister_ss_entry
 c_func
 (paren
@@ -3926,6 +4036,13 @@ id|restore_flags
 c_func
 (paren
 id|flags
+)paren
+suffix:semicolon
+id|unregister_driver
+c_func
+(paren
+op_amp
+id|hd64465_driver
 )paren
 suffix:semicolon
 )brace
