@@ -3071,50 +3071,15 @@ id|pci_register_driver
 id|drv
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|rc
-OG
-l_int|0
-)paren
-r_return
-l_int|0
-suffix:semicolon
-multiline_comment|/* iff CONFIG_HOTPLUG and built into kernel, we should&n;&t; * leave the driver around for future hotplug events.&n;&t; * For the module case, a hotplug daemon of some sort&n;&t; * should load a module in response to an insert event. */
-macro_line|#if defined(CONFIG_HOTPLUG) &amp;&amp; !defined(MODULE)
-r_if
-c_cond
-(paren
-id|rc
-op_eq
-l_int|0
-)paren
-r_return
-l_int|0
-suffix:semicolon
-macro_line|#else
-r_if
-c_cond
-(paren
-id|rc
-op_eq
-l_int|0
-)paren
-id|rc
-op_assign
-op_minus
-id|ENODEV
-suffix:semicolon
-macro_line|#endif
-multiline_comment|/* if we get here, we need to clean up pci driver instance&n;&t; * and return some sort of error */
-id|pci_unregister_driver
-(paren
-id|drv
-)paren
-suffix:semicolon
 r_return
 id|rc
+OL
+l_int|0
+ques
+c_cond
+id|rc
+suffix:colon
+l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * PCI domain support.  Sometimes called PCI segment (eg by ACPI),&n; * a PCI domain is defined to be a set of PCI busses which share&n; * configuration space.&n; */
