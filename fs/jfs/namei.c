@@ -2905,7 +2905,7 @@ id|JFS_CREATE
 )paren
 )paren
 r_goto
-id|out
+id|free_dname
 suffix:semicolon
 multiline_comment|/*&n;&t; * create entry for new link in parent directory&n;&t; */
 id|ino
@@ -2937,7 +2937,7 @@ id|btstack
 )paren
 )paren
 r_goto
-id|out
+id|free_dname
 suffix:semicolon
 multiline_comment|/* update object inode */
 id|ip-&gt;i_nlink
@@ -2999,6 +2999,15 @@ l_int|0
 )braket
 comma
 l_int|0
+)paren
+suffix:semicolon
+id|free_dname
+suffix:colon
+id|free_UCSname
+c_func
+(paren
+op_amp
+id|dname
 )paren
 suffix:semicolon
 id|out
