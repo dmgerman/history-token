@@ -7113,7 +7113,7 @@ id|found
 (brace
 id|my_smt_snooze_delay
 op_assign
-l_int|30000
+l_int|0
 suffix:semicolon
 multiline_comment|/* default value */
 )brace
