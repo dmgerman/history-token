@@ -347,12 +347,6 @@ id|msleep
 c_func
 (paren
 l_int|1
-op_plus
-id|jiffies_to_msecs
-c_func
-(paren
-l_int|1
-)paren
 )paren
 suffix:semicolon
 )brace
@@ -388,12 +382,6 @@ id|msleep
 c_func
 (paren
 l_int|1
-op_plus
-id|jiffies_to_msecs
-c_func
-(paren
-l_int|1
-)paren
 )paren
 suffix:semicolon
 )brace
@@ -438,18 +426,10 @@ l_int|0x05
 )paren
 suffix:semicolon
 multiline_comment|/* Delay is way too big but it&squot;s ok, we schedule */
-id|set_current_state
+id|msleep
 c_func
 (paren
-id|TASK_UNINTERRUPTIBLE
-)paren
-suffix:semicolon
-id|schedule_timeout
-c_func
-(paren
-id|HZ
-op_div
-l_int|100
+l_int|10
 )paren
 suffix:semicolon
 )brace
@@ -542,18 +522,10 @@ l_int|0x04
 )paren
 suffix:semicolon
 multiline_comment|/* Delay is way too big but it&squot;s ok, we schedule */
-id|set_current_state
+id|msleep
 c_func
 (paren
-id|TASK_UNINTERRUPTIBLE
-)paren
-suffix:semicolon
-id|schedule_timeout
-c_func
-(paren
-id|HZ
-op_div
-l_int|100
+l_int|10
 )paren
 suffix:semicolon
 )brace
