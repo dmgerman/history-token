@@ -3004,7 +3004,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|mp-&gt;m_frozen
+id|vfsp-&gt;vfs_super-&gt;s_frozen
 op_logical_or
 id|XFS_FORCED_SHUTDOWN
 c_func
