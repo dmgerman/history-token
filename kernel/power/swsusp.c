@@ -8,8 +8,8 @@ macro_line|#include &lt;linux/utsname.h&gt;
 macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/reboot.h&gt;
-macro_line|#include &lt;linux/vt_kern.h&gt;
 macro_line|#include &lt;linux/bitops.h&gt;
+macro_line|#include &lt;linux/vt_kern.h&gt;
 macro_line|#include &lt;linux/kbd_kern.h&gt;
 macro_line|#include &lt;linux/keyboard.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
@@ -26,6 +26,7 @@ macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/mmu_context.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
+macro_line|#include &quot;power.h&quot;
 r_extern
 r_int
 id|sys_sync
@@ -41,13 +42,6 @@ id|software_suspend_enabled
 op_assign
 l_int|0
 suffix:semicolon
-DECL|macro|SUSPEND_CONSOLE
-mdefine_line|#define SUSPEND_CONSOLE&t;(MAX_NR_CONSOLES-1)
-multiline_comment|/* With SUSPEND_CONSOLE defined, it suspend looks *really* cool, but&n;   we probably do not take enough locks for switching consoles, etc,&n;   so bad things might happen.&n;*/
-macro_line|#if !defined(CONFIG_VT) || !defined(CONFIG_VT_CONSOLE)
-DECL|macro|SUSPEND_CONSOLE
-macro_line|#undef SUSPEND_CONSOLE
-macro_line|#endif
 DECL|macro|__ADDRESS
 mdefine_line|#define __ADDRESS(x)  ((unsigned long) phys_to_virt(x))
 DECL|macro|ADDRESS
@@ -80,26 +74,6 @@ op_assign
 id|SPIN_LOCK_UNLOCKED
 suffix:semicolon
 multiline_comment|/* Variables to be preserved over suspend */
-DECL|variable|new_loglevel
-r_static
-r_int
-id|new_loglevel
-op_assign
-l_int|7
-suffix:semicolon
-DECL|variable|orig_loglevel
-r_static
-r_int
-id|orig_loglevel
-suffix:semicolon
-DECL|variable|orig_fgconsole
-DECL|variable|orig_kmsg
-r_static
-r_int
-id|orig_fgconsole
-comma
-id|orig_kmsg
-suffix:semicolon
 DECL|variable|pagedir_order_check
 r_static
 r_int
@@ -1927,106 +1901,6 @@ r_return
 id|pagedir
 suffix:semicolon
 )brace
-DECL|function|prepare_suspend_console
-r_static
-r_int
-id|prepare_suspend_console
-c_func
-(paren
-r_void
-)paren
-(brace
-id|orig_loglevel
-op_assign
-id|console_loglevel
-suffix:semicolon
-id|console_loglevel
-op_assign
-id|new_loglevel
-suffix:semicolon
-macro_line|#ifdef CONFIG_VT
-id|orig_fgconsole
-op_assign
-id|fg_console
-suffix:semicolon
-macro_line|#ifdef SUSPEND_CONSOLE
-r_if
-c_cond
-(paren
-id|vc_allocate
-c_func
-(paren
-id|SUSPEND_CONSOLE
-)paren
-)paren
-(brace
-multiline_comment|/* we can&squot;t have a free VC for now. Too bad,&n;&t;   * we don&squot;t want to mess the screen for now. */
-r_return
-l_int|1
-suffix:semicolon
-)brace
-id|set_console
-(paren
-id|SUSPEND_CONSOLE
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|vt_waitactive
-c_func
-(paren
-id|SUSPEND_CONSOLE
-)paren
-)paren
-(brace
-id|PRINTK
-c_func
-(paren
-l_string|&quot;Bummer. Can&squot;t switch VCs.&quot;
-)paren
-suffix:semicolon
-r_return
-l_int|1
-suffix:semicolon
-)brace
-id|orig_kmsg
-op_assign
-id|kmsg_redirect
-suffix:semicolon
-id|kmsg_redirect
-op_assign
-id|SUSPEND_CONSOLE
-suffix:semicolon
-macro_line|#endif
-macro_line|#endif
-r_return
-l_int|0
-suffix:semicolon
-)brace
-DECL|function|restore_console
-r_static
-r_void
-id|restore_console
-c_func
-(paren
-r_void
-)paren
-(brace
-id|console_loglevel
-op_assign
-id|orig_loglevel
-suffix:semicolon
-macro_line|#ifdef SUSPEND_CONSOLE
-id|set_console
-(paren
-id|orig_fgconsole
-)paren
-suffix:semicolon
-macro_line|#endif
-r_return
-suffix:semicolon
-)brace
 DECL|function|prepare_suspend_processes
 r_static
 r_int
@@ -3005,7 +2879,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|prepare_suspend_console
+id|pm_prepare_console
 c_func
 (paren
 )paren
@@ -3076,7 +2950,7 @@ c_func
 l_int|1000
 )paren
 suffix:semicolon
-id|restore_console
+id|pm_restore_console
 c_func
 (paren
 )paren
@@ -4173,22 +4047,6 @@ id|cur
 )paren
 suffix:semicolon
 )brace
-r_if
-c_cond
-(paren
-id|prepare_suspend_console
-c_func
-(paren
-)paren
-)paren
-id|printk
-c_func
-(paren
-l_string|&quot;%sCan&squot;t allocate a console... proceeding&bslash;n&quot;
-comma
-id|name_resume
-)paren
-suffix:semicolon
 id|printk
 c_func
 (paren
@@ -4826,13 +4684,19 @@ c_func
 l_int|1000
 )paren
 suffix:semicolon
-id|orig_loglevel
-op_assign
-id|console_loglevel
-suffix:semicolon
-id|console_loglevel
-op_assign
-id|new_loglevel
+r_if
+c_cond
+(paren
+id|pm_prepare_console
+c_func
+(paren
+)paren
+)paren
+id|printk
+c_func
+(paren
+l_string|&quot;swsusp: Can&squot;t allocate a console... proceeding&bslash;n&quot;
+)paren
 suffix:semicolon
 r_if
 c_cond
@@ -4893,9 +4757,10 @@ l_string|&quot;This never returns&quot;
 suffix:semicolon
 id|read_failure
 suffix:colon
-id|console_loglevel
-op_assign
-id|orig_loglevel
+id|pm_restore_console
+c_func
+(paren
+)paren
 suffix:semicolon
 r_return
 suffix:semicolon
