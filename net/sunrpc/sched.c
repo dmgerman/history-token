@@ -138,14 +138,6 @@ id|workqueue_struct
 op_star
 id|rpciod_workqueue
 suffix:semicolon
-multiline_comment|/*&n; * Spinlock for wait queues. Access to the latter also has to be&n; * interrupt-safe in order to allow timers to wake up sleeping tasks.&n; */
-DECL|variable|rpc_queue_lock
-r_static
-id|spinlock_t
-id|rpc_queue_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
-suffix:semicolon
 multiline_comment|/*&n; * Spinlock for other critical sections of code.&n; */
 DECL|variable|rpc_sched_lock
 r_static
@@ -154,7 +146,7 @@ id|rpc_sched_lock
 op_assign
 id|SPIN_LOCK_UNLOCKED
 suffix:semicolon
-multiline_comment|/*&n; * Disable the timer for a given RPC task. Should be called with&n; * rpc_queue_lock and bh_disabled in order to avoid races within&n; * rpc_run_timer().&n; */
+multiline_comment|/*&n; * Disable the timer for a given RPC task. Should be called with&n; * queue-&gt;lock and bh_disabled in order to avoid races within&n; * rpc_run_timer().&n; */
 r_static
 r_inline
 r_void
@@ -310,7 +302,7 @@ id|task-&gt;tk_timeout
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Delete any timer for the current task. Because we use del_timer_sync(),&n; * this function should never be called while holding rpc_queue_lock.&n; */
+multiline_comment|/*&n; * Delete any timer for the current task. Because we use del_timer_sync(),&n; * this function should never be called while holding queue-&gt;lock.&n; */
 r_static
 r_inline
 r_void
@@ -799,6 +791,13 @@ id|maxprio
 r_int
 id|i
 suffix:semicolon
+id|spin_lock_init
+c_func
+(paren
+op_amp
+id|queue-&gt;lock
+)paren
+suffix:semicolon
 r_for
 c_loop
 (paren
@@ -1170,8 +1169,8 @@ id|timer
 )paren
 suffix:semicolon
 )brace
-r_void
 DECL|function|rpc_sleep_on
+r_void
 id|rpc_sleep_on
 c_func
 (paren
@@ -1197,7 +1196,7 @@ id|spin_lock_bh
 c_func
 (paren
 op_amp
-id|rpc_queue_lock
+id|q-&gt;lock
 )paren
 suffix:semicolon
 id|__rpc_sleep_on
@@ -1216,11 +1215,11 @@ id|spin_unlock_bh
 c_func
 (paren
 op_amp
-id|rpc_queue_lock
+id|q-&gt;lock
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * __rpc_do_wake_up_task - wake up a single rpc_task&n; * @task: task to be woken up&n; *&n; * Caller must hold rpc_queue_lock, and have cleared the task queued flag.&n; */
+multiline_comment|/**&n; * __rpc_do_wake_up_task - wake up a single rpc_task&n; * @task: task to be woken up&n; *&n; * Caller must hold queue-&gt;lock, and have cleared the task queued flag.&n; */
 DECL|function|__rpc_do_wake_up_task
 r_static
 r_void
@@ -1433,11 +1432,18 @@ id|task
 )paren
 )paren
 (brace
+r_struct
+id|rpc_wait_queue
+op_star
+id|queue
+op_assign
+id|task-&gt;u.tk_wait.rpc_waitq
+suffix:semicolon
 id|spin_lock_bh
 c_func
 (paren
 op_amp
-id|rpc_queue_lock
+id|queue-&gt;lock
 )paren
 suffix:semicolon
 id|__rpc_do_wake_up_task
@@ -1450,7 +1456,7 @@ id|spin_unlock_bh
 c_func
 (paren
 op_amp
-id|rpc_queue_lock
+id|queue-&gt;lock
 )paren
 suffix:semicolon
 )brace
@@ -1720,7 +1726,7 @@ id|spin_lock_bh
 c_func
 (paren
 op_amp
-id|rpc_queue_lock
+id|queue-&gt;lock
 )paren
 suffix:semicolon
 r_if
@@ -1764,14 +1770,14 @@ id|spin_unlock_bh
 c_func
 (paren
 op_amp
-id|rpc_queue_lock
+id|queue-&gt;lock
 )paren
 suffix:semicolon
 r_return
 id|task
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * rpc_wake_up - wake up all rpc_tasks&n; * @queue: rpc_wait_queue on which the tasks are sleeping&n; *&n; * Grabs rpc_queue_lock&n; */
+multiline_comment|/**&n; * rpc_wake_up - wake up all rpc_tasks&n; * @queue: rpc_wait_queue on which the tasks are sleeping&n; *&n; * Grabs queue-&gt;lock&n; */
 DECL|function|rpc_wake_up
 r_void
 id|rpc_wake_up
@@ -1797,7 +1803,7 @@ id|spin_lock_bh
 c_func
 (paren
 op_amp
-id|rpc_queue_lock
+id|queue-&gt;lock
 )paren
 suffix:semicolon
 id|head
@@ -1867,11 +1873,11 @@ id|spin_unlock_bh
 c_func
 (paren
 op_amp
-id|rpc_queue_lock
+id|queue-&gt;lock
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * rpc_wake_up_status - wake up all rpc_tasks and set their status value.&n; * @queue: rpc_wait_queue on which the tasks are sleeping&n; * @status: status value to set&n; *&n; * Grabs rpc_queue_lock&n; */
+multiline_comment|/**&n; * rpc_wake_up_status - wake up all rpc_tasks and set their status value.&n; * @queue: rpc_wait_queue on which the tasks are sleeping&n; * @status: status value to set&n; *&n; * Grabs queue-&gt;lock&n; */
 DECL|function|rpc_wake_up_status
 r_void
 id|rpc_wake_up_status
@@ -1900,7 +1906,7 @@ id|spin_lock_bh
 c_func
 (paren
 op_amp
-id|rpc_queue_lock
+id|queue-&gt;lock
 )paren
 suffix:semicolon
 id|head
@@ -1974,7 +1980,7 @@ id|spin_unlock_bh
 c_func
 (paren
 op_amp
-id|rpc_queue_lock
+id|queue-&gt;lock
 )paren
 suffix:semicolon
 )brace
@@ -3036,8 +3042,8 @@ r_goto
 id|out
 suffix:semicolon
 )brace
-r_void
 DECL|function|rpc_release_task
+r_void
 id|rpc_release_task
 c_func
 (paren
@@ -3193,13 +3199,13 @@ id|task
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * rpc_find_parent - find the parent of a child task.&n; * @child: child task&n; *&n; * Checks that the parent task is still sleeping on the&n; * queue &squot;childq&squot;. If so returns a pointer to the parent.&n; * Upon failure returns NULL.&n; *&n; * Caller must hold rpc_queue_lock&n; */
+multiline_comment|/**&n; * rpc_find_parent - find the parent of a child task.&n; * @child: child task&n; *&n; * Checks that the parent task is still sleeping on the&n; * queue &squot;childq&squot;. If so returns a pointer to the parent.&n; * Upon failure returns NULL.&n; *&n; * Caller must hold childq.lock&n; */
+DECL|function|rpc_find_parent
 r_static
 r_inline
 r_struct
 id|rpc_task
 op_star
-DECL|function|rpc_find_parent
 id|rpc_find_parent
 c_func
 (paren
@@ -3258,9 +3264,9 @@ r_return
 l_int|NULL
 suffix:semicolon
 )brace
+DECL|function|rpc_child_exit
 r_static
 r_void
-DECL|function|rpc_child_exit
 id|rpc_child_exit
 c_func
 (paren
@@ -3279,7 +3285,7 @@ id|spin_lock_bh
 c_func
 (paren
 op_amp
-id|rpc_queue_lock
+id|childq.lock
 )paren
 suffix:semicolon
 r_if
@@ -3313,7 +3319,7 @@ id|spin_unlock_bh
 c_func
 (paren
 op_amp
-id|rpc_queue_lock
+id|childq.lock
 )paren
 suffix:semicolon
 )brace
@@ -3386,8 +3392,8 @@ r_return
 l_int|NULL
 suffix:semicolon
 )brace
-r_void
 DECL|function|rpc_run_child
+r_void
 id|rpc_run_child
 c_func
 (paren
@@ -3409,7 +3415,7 @@ id|spin_lock_bh
 c_func
 (paren
 op_amp
-id|rpc_queue_lock
+id|childq.lock
 )paren
 suffix:semicolon
 multiline_comment|/* N.B. Is it possible for the child to have already finished? */
@@ -3436,13 +3442,13 @@ id|spin_unlock_bh
 c_func
 (paren
 op_amp
-id|rpc_queue_lock
+id|childq.lock
 )paren
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Kill all tasks for the given client.&n; * XXX: kill their descendants as well?&n; */
-r_void
 DECL|function|rpc_killall_tasks
+r_void
 id|rpc_killall_tasks
 c_func
 (paren
@@ -3534,9 +3540,9 @@ c_func
 id|rpciod_running
 )paren
 suffix:semicolon
+DECL|function|rpciod_killall
 r_static
 r_void
-DECL|function|rpciod_killall
 id|rpciod_killall
 c_func
 (paren

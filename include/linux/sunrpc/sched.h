@@ -4,6 +4,7 @@ DECL|macro|_LINUX_SUNRPC_SCHED_H_
 mdefine_line|#define _LINUX_SUNRPC_SCHED_H_
 macro_line|#include &lt;linux/timer.h&gt;
 macro_line|#include &lt;linux/sunrpc/types.h&gt;
+macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;linux/wait.h&gt;
 macro_line|#include &lt;linux/workqueue.h&gt;
 macro_line|#include &lt;linux/sunrpc/xdr.h&gt;
@@ -395,6 +396,10 @@ DECL|struct|rpc_wait_queue
 r_struct
 id|rpc_wait_queue
 (brace
+DECL|member|lock
+id|spinlock_t
+id|lock
+suffix:semicolon
 DECL|member|tasks
 r_struct
 id|list_head
@@ -449,10 +454,10 @@ DECL|macro|RPC_BATCH_COUNT
 mdefine_line|#define RPC_BATCH_COUNT&t;&t;&t;16
 macro_line|#ifndef RPC_DEBUG
 DECL|macro|RPC_WAITQ_INIT
-macro_line|# define RPC_WAITQ_INIT(var,qname) { &bslash;&n;&t;&t;.tasks = { &bslash;&n;&t;&t;&t;[0] = LIST_HEAD_INIT(var.tasks[0]), &bslash;&n;&t;&t;&t;[1] = LIST_HEAD_INIT(var.tasks[1]), &bslash;&n;&t;&t;&t;[2] = LIST_HEAD_INIT(var.tasks[2]), &bslash;&n;&t;&t;}, &bslash;&n;&t;}
+macro_line|# define RPC_WAITQ_INIT(var,qname) { &bslash;&n;&t;&t;.lock = SPIN_LOCK_UNLOCKED, &bslash;&n;&t;&t;.tasks = { &bslash;&n;&t;&t;&t;[0] = LIST_HEAD_INIT(var.tasks[0]), &bslash;&n;&t;&t;&t;[1] = LIST_HEAD_INIT(var.tasks[1]), &bslash;&n;&t;&t;&t;[2] = LIST_HEAD_INIT(var.tasks[2]), &bslash;&n;&t;&t;}, &bslash;&n;&t;}
 macro_line|#else
 DECL|macro|RPC_WAITQ_INIT
-macro_line|# define RPC_WAITQ_INIT(var,qname) { &bslash;&n;&t;&t;.tasks = { &bslash;&n;&t;&t;&t;[0] = LIST_HEAD_INIT(var.tasks[0]), &bslash;&n;&t;&t;&t;[1] = LIST_HEAD_INIT(var.tasks[1]), &bslash;&n;&t;&t;&t;[2] = LIST_HEAD_INIT(var.tasks[2]), &bslash;&n;&t;&t;}, &bslash;&n;&t;&t;.name = qname, &bslash;&n;&t;}
+macro_line|# define RPC_WAITQ_INIT(var,qname) { &bslash;&n;&t;&t;.lock = SPIN_LOCK_UNLOCKED, &bslash;&n;&t;&t;.tasks = { &bslash;&n;&t;&t;&t;[0] = LIST_HEAD_INIT(var.tasks[0]), &bslash;&n;&t;&t;&t;[1] = LIST_HEAD_INIT(var.tasks[1]), &bslash;&n;&t;&t;&t;[2] = LIST_HEAD_INIT(var.tasks[2]), &bslash;&n;&t;&t;}, &bslash;&n;&t;&t;.name = qname, &bslash;&n;&t;}
 macro_line|#endif
 DECL|macro|RPC_WAITQ
 macro_line|# define RPC_WAITQ(var,qname)      struct rpc_wait_queue var = RPC_WAITQ_INIT(var,qname)
