@@ -1787,7 +1787,7 @@ suffix:semicolon
 )brace
 )brace
 DECL|macro|POLL_INTERVAL
-mdefine_line|#define POLL_INTERVAL&t;(5 * HZ)
+mdefine_line|#define POLL_INTERVAL&t;(5 * 1000)
 DECL|variable|last_warning_jiffies
 r_static
 r_int
@@ -1858,11 +1858,7 @@ id|bbc_fan_control
 op_star
 id|fp
 suffix:semicolon
-id|current-&gt;state
-op_assign
-id|TASK_INTERRUPTIBLE
-suffix:semicolon
-id|schedule_timeout
+id|msleep_interruptible
 c_func
 (paren
 id|POLL_INTERVAL
