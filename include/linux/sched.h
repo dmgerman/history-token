@@ -538,16 +538,10 @@ id|files
 suffix:semicolon
 multiline_comment|/* How many open files does this user have? */
 multiline_comment|/* Hash table maintenance information */
-DECL|member|next
-DECL|member|pprev
+DECL|member|uidhash_list
 r_struct
-id|user_struct
-op_star
-id|next
-comma
-op_star
-op_star
-id|pprev
+id|list_head
+id|uidhash_list
 suffix:semicolon
 DECL|member|uid
 id|uid_t
