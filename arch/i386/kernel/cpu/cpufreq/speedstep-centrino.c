@@ -2043,7 +2043,7 @@ l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
 DECL|variable|centrino_init
-id|module_init
+id|late_initcall
 c_func
 (paren
 id|centrino_init
