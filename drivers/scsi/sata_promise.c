@@ -16,7 +16,7 @@ macro_line|#undef DIRECT_HDMA
 DECL|macro|DRV_NAME
 mdefine_line|#define DRV_NAME&t;&quot;sata_promise&quot;
 DECL|macro|DRV_VERSION
-mdefine_line|#define DRV_VERSION&t;&quot;0.84&quot;
+mdefine_line|#define DRV_VERSION&t;&quot;0.85&quot;
 r_enum
 (brace
 DECL|enumerator|PDC_PRD_TBL
@@ -4238,7 +4238,7 @@ suffix:semicolon
 )brace
 id|mask
 op_and_assign
-l_int|0xf
+l_int|0xffff
 suffix:semicolon
 multiline_comment|/* only 16 tags possible */
 r_if
@@ -4985,7 +4985,7 @@ suffix:semicolon
 )brace
 id|mask
 op_and_assign
-l_int|0xf
+l_int|0xffff
 suffix:semicolon
 multiline_comment|/* only 16 tags possible */
 r_if
