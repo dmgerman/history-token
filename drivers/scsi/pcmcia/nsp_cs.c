@@ -7117,6 +7117,13 @@ comma
 l_int|NULL
 )paren
 suffix:semicolon
+multiline_comment|/* XXX handle failure */
+id|scsi_scan_host
+c_func
+(paren
+id|host
+)paren
+suffix:semicolon
 id|link-&gt;state
 op_and_assign
 op_complement

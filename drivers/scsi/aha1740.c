@@ -2949,6 +2949,11 @@ comma
 id|dev
 )paren
 suffix:semicolon
+multiline_comment|/* XXX handle failure */
+id|scsi_scan_host
+(paren
+id|shpnt
+)paren
 r_return
 l_int|0
 suffix:semicolon

@@ -504,6 +504,15 @@ op_amp
 id|intf-&gt;dev
 )paren
 suffix:semicolon
+multiline_comment|/* XXX handle failure */
+id|scsi_scan_host
+c_func
+(paren
+r_new
+op_member_access_from_pointer
+id|host
+)paren
+suffix:semicolon
 r_new
 op_member_access_from_pointer
 id|sense_command

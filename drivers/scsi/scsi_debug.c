@@ -9677,6 +9677,13 @@ id|hpnt
 )paren
 suffix:semicolon
 )brace
+r_else
+id|scsi_scan_host
+c_func
+(paren
+id|hpnt
+)paren
+suffix:semicolon
 r_return
 id|error
 suffix:semicolon

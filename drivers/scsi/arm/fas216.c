@@ -10677,6 +10677,13 @@ comma
 id|CMD_RESETCHIP
 )paren
 suffix:semicolon
+r_else
+id|scsi_scan_host
+c_func
+(paren
+id|host
+)paren
+suffix:semicolon
 r_return
 id|ret
 suffix:semicolon

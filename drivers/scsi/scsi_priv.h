@@ -412,16 +412,6 @@ macro_line|#endif /* CONFIG_PROC_FS */
 multiline_comment|/* scsi_scan.c */
 r_extern
 r_void
-id|scsi_scan_host
-c_func
-(paren
-r_struct
-id|Scsi_Host
-op_star
-)paren
-suffix:semicolon
-r_extern
-r_void
 id|scsi_forget_host
 c_func
 (paren

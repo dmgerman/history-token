@@ -47,6 +47,13 @@ c_func
 id|scsi_add_host
 )paren
 suffix:semicolon
+DECL|variable|scsi_scan_host
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|scsi_scan_host
+)paren
+suffix:semicolon
 DECL|variable|scsi_remove_host
 id|EXPORT_SYMBOL
 c_func
