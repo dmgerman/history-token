@@ -784,12 +784,6 @@ id|net_device_stats
 id|stats
 suffix:semicolon
 )brace
-id|__attribute__
-(paren
-(paren
-id|packed
-)paren
-)paren
 suffix:semicolon
 multiline_comment|/****************************************************************&n; *     kaweth_control&n; ****************************************************************/
 DECL|function|kaweth_control
