@@ -3920,7 +3920,7 @@ op_star
 id|slot
 comma
 r_enum
-id|pcie_link_speed
+id|pci_bus_speed
 op_star
 id|value
 )paren
@@ -4289,7 +4289,7 @@ op_star
 id|slot
 comma
 r_enum
-id|pcie_link_speed
+id|pci_bus_speed
 op_star
 id|value
 )paren
