@@ -391,6 +391,11 @@ id|bridge_ate_t
 id|bd_ate_prime
 suffix:semicolon
 multiline_comment|/* value of 1st ATE written */
+DECL|member|bd_dma_addr
+id|dma_addr_t
+id|bd_dma_addr
+suffix:semicolon
+multiline_comment|/* Linux dma handle */
 )brace
 suffix:semicolon
 DECL|macro|IBUFSIZE

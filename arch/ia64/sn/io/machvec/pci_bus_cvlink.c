@@ -3091,7 +3091,7 @@ c_func
 r_sizeof
 (paren
 r_struct
-id|sn_dma_maps_s
+id|pcibr_dmamap_s
 )paren
 op_star
 id|MAX_ATE_MAPS
@@ -3141,7 +3141,7 @@ comma
 r_sizeof
 (paren
 r_struct
-id|sn_dma_maps_s
+id|pcibr_dmamap_s
 )paren
 op_star
 id|MAX_ATE_MAPS
@@ -3365,7 +3365,7 @@ c_func
 r_sizeof
 (paren
 r_struct
-id|sn_dma_maps_s
+id|pcibr_dmamap_s
 )paren
 op_star
 id|MAX_ATE_MAPS
@@ -3411,7 +3411,7 @@ comma
 r_sizeof
 (paren
 r_struct
-id|sn_dma_maps_s
+id|pcibr_dmamap_s
 )paren
 op_star
 id|MAX_ATE_MAPS
