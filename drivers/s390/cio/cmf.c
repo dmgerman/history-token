@@ -1758,13 +1758,13 @@ c_func
 (paren
 id|data
 comma
+l_int|0
+comma
 r_sizeof
 (paren
 r_struct
 id|cmbdata
 )paren
-comma
-l_int|0
 )paren
 suffix:semicolon
 multiline_comment|/* we only know values before device_busy_time */
@@ -2651,13 +2651,13 @@ id|memset
 (paren
 id|data
 comma
+l_int|0
+comma
 r_sizeof
 (paren
 r_struct
 id|cmbdata
 )paren
-comma
-l_int|0
 )paren
 suffix:semicolon
 multiline_comment|/* we only know values before device_busy_time */

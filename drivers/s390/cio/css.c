@@ -1972,13 +1972,13 @@ c_func
 (paren
 id|new_slow_sch
 comma
+l_int|0
+comma
 r_sizeof
 (paren
 r_struct
 id|slow_subchannel
 )paren
-comma
-l_int|0
 )paren
 suffix:semicolon
 id|new_slow_sch-&gt;schid
