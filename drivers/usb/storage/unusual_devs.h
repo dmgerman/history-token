@@ -2186,4 +2186,31 @@ id|US_FL_SINGLE_LUN
 )paren
 comma
 macro_line|#endif
+multiline_comment|/* Aiptek PocketCAM 3Mega&n; * Nicolas DUPEUX &lt;nicolas@dupeux.net&gt; &n; */
+id|UNUSUAL_DEV
+c_func
+(paren
+l_int|0x08ca
+comma
+l_int|0x2011
+comma
+l_int|0x0000
+comma
+l_int|0x9999
+comma
+l_string|&quot;AIPTEK&quot;
+comma
+l_string|&quot;PocketCAM 3Mega&quot;
+comma
+id|US_SC_SCSI
+comma
+id|US_PR_BULK
+comma
+l_int|NULL
+comma
+id|US_FL_MODE_XLATE
+op_or
+id|US_FL_START_STOP
+)paren
+comma
 eof
