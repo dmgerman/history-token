@@ -89,24 +89,6 @@ DECL|macro|IDE_FEATURE_OFFSET
 mdefine_line|#define IDE_FEATURE_OFFSET&t;IDE_ERROR_OFFSET
 DECL|macro|IDE_COMMAND_OFFSET
 mdefine_line|#define IDE_COMMAND_OFFSET&t;IDE_STATUS_OFFSET
-DECL|macro|IDE_DATA_OFFSET_HOB
-mdefine_line|#define IDE_DATA_OFFSET_HOB&t;(0)
-DECL|macro|IDE_ERROR_OFFSET_HOB
-mdefine_line|#define IDE_ERROR_OFFSET_HOB&t;(1)
-DECL|macro|IDE_NSECTOR_OFFSET_HOB
-mdefine_line|#define IDE_NSECTOR_OFFSET_HOB&t;(2)
-DECL|macro|IDE_SECTOR_OFFSET_HOB
-mdefine_line|#define IDE_SECTOR_OFFSET_HOB&t;(3)
-DECL|macro|IDE_LCYL_OFFSET_HOB
-mdefine_line|#define IDE_LCYL_OFFSET_HOB&t;(4)
-DECL|macro|IDE_HCYL_OFFSET_HOB
-mdefine_line|#define IDE_HCYL_OFFSET_HOB&t;(5)
-DECL|macro|IDE_SELECT_OFFSET_HOB
-mdefine_line|#define IDE_SELECT_OFFSET_HOB&t;(6)
-DECL|macro|IDE_CONTROL_OFFSET_HOB
-mdefine_line|#define IDE_CONTROL_OFFSET_HOB&t;(7)
-DECL|macro|IDE_FEATURE_OFFSET_HOB
-mdefine_line|#define IDE_FEATURE_OFFSET_HOB&t;IDE_ERROR_OFFSET_HOB
 DECL|macro|IDE_DATA_REG
 mdefine_line|#define IDE_DATA_REG&t;&t;(HWIF(drive)-&gt;io_ports[IDE_DATA_OFFSET])
 DECL|macro|IDE_ERROR_REG
@@ -127,24 +109,6 @@ DECL|macro|IDE_CONTROL_REG
 mdefine_line|#define IDE_CONTROL_REG&t;&t;(HWIF(drive)-&gt;io_ports[IDE_CONTROL_OFFSET])
 DECL|macro|IDE_IRQ_REG
 mdefine_line|#define IDE_IRQ_REG&t;&t;(HWIF(drive)-&gt;io_ports[IDE_IRQ_OFFSET])
-DECL|macro|IDE_DATA_REG_HOB
-mdefine_line|#define IDE_DATA_REG_HOB&t;(HWIF(drive)-&gt;io_ports[IDE_DATA_OFFSET])
-DECL|macro|IDE_ERROR_REG_HOB
-mdefine_line|#define IDE_ERROR_REG_HOB&t;(HWIF(drive)-&gt;io_ports[IDE_ERROR_OFFSET])
-DECL|macro|IDE_NSECTOR_REG_HOB
-mdefine_line|#define IDE_NSECTOR_REG_HOB&t;(HWIF(drive)-&gt;io_ports[IDE_NSECTOR_OFFSET])
-DECL|macro|IDE_SECTOR_REG_HOB
-mdefine_line|#define IDE_SECTOR_REG_HOB&t;(HWIF(drive)-&gt;io_ports[IDE_SECTOR_OFFSET])
-DECL|macro|IDE_LCYL_REG_HOB
-mdefine_line|#define IDE_LCYL_REG_HOB&t;(HWIF(drive)-&gt;io_ports[IDE_LCYL_OFFSET])
-DECL|macro|IDE_HCYL_REG_HOB
-mdefine_line|#define IDE_HCYL_REG_HOB&t;(HWIF(drive)-&gt;io_ports[IDE_HCYL_OFFSET])
-DECL|macro|IDE_SELECT_REG_HOB
-mdefine_line|#define IDE_SELECT_REG_HOB&t;(HWIF(drive)-&gt;io_ports[IDE_SELECT_OFFSET])
-DECL|macro|IDE_STATUS_REG_HOB
-mdefine_line|#define IDE_STATUS_REG_HOB&t;(HWIF(drive)-&gt;io_ports[IDE_STATUS_OFFSET])
-DECL|macro|IDE_CONTROL_REG_HOB
-mdefine_line|#define IDE_CONTROL_REG_HOB&t;(HWIF(drive)-&gt;io_ports[IDE_CONTROL_OFFSET])
 DECL|macro|IDE_FEATURE_REG
 mdefine_line|#define IDE_FEATURE_REG&t;&t;IDE_ERROR_REG
 DECL|macro|IDE_COMMAND_REG
@@ -2444,19 +2408,15 @@ r_typedef
 r_struct
 id|ide_task_s
 (brace
-DECL|member|tfRegister
-id|task_ioreg_t
-id|tfRegister
-(braket
-l_int|8
-)braket
+DECL|member|taskfile
+r_struct
+id|hd_drive_task_hdr
+id|taskfile
 suffix:semicolon
-DECL|member|hobRegister
-id|task_ioreg_t
-id|hobRegister
-(braket
-l_int|8
-)braket
+DECL|member|hobfile
+r_struct
+id|hd_drive_hob_hdr
+id|hobfile
 suffix:semicolon
 DECL|member|command_type
 r_int

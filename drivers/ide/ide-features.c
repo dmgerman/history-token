@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * linux/drivers/block/ide-features.c&t;Version 0.04&t;June 9, 2000&n; *&n; *  Copyright (C) 1999-2000&t;Linus Torvalds &amp; authors (see below)&n; *  &n; *  Copyright (C) 1999-2000&t;Andre Hedrick &lt;andre@linux-ide.org&gt;&n; *&n; *  Extracts if ide.c to address the evolving transfer rate code for&n; *  the SETFEATURES_XFER callouts.  Various parts of any given function&n; *  are credited to previous ATA-IDE maintainers.&n; *&n; *  Auto-CRC downgrade for Ultra DMA(ing)&n; *&n; *  May be copied or modified under the terms of the GNU General Public License&n; */
+multiline_comment|/*&n; * linux/drivers/block/ide-features.c&t;Version 0.04&t;June 9, 2000&n; *&n; *  Copyright (C) 1999-2000&t;Linus Torvalds &amp; authors (see below)&n; *&n; *  Copyright (C) 1999-2000&t;Andre Hedrick &lt;andre@linux-ide.org&gt;&n; *&n; *  Extracts if ide.c to address the evolving transfer rate code for&n; *  the SETFEATURES_XFER callouts.  Various parts of any given function&n; *  are credited to previous ATA-IDE maintainers.&n; *&n; *  Auto-CRC downgrade for Ultra DMA(ing)&n; *&n; *  May be copied or modified under the terms of the GNU General Public License&n; */
 macro_line|#include &lt;linux/config.h&gt;
 DECL|macro|__NO_VERSION__
 mdefine_line|#define __NO_VERSION__
@@ -678,28 +678,19 @@ r_if
 c_cond
 (paren
 (paren
-id|args-&gt;tfRegister
-(braket
-id|IDE_COMMAND_OFFSET
-)braket
+id|args-&gt;taskfile.command
 op_eq
 id|WIN_SETFEATURES
 )paren
 op_logical_and
 (paren
-id|args-&gt;tfRegister
-(braket
-id|IDE_SECTOR_OFFSET
-)braket
+id|args-&gt;taskfile.sector_number
 OG
 id|XFER_UDMA_2
 )paren
 op_logical_and
 (paren
-id|args-&gt;tfRegister
-(braket
-id|IDE_FEATURE_OFFSET
-)braket
+id|args-&gt;taskfile.feature
 op_eq
 id|SETFEATURES_XFER
 )paren
@@ -810,28 +801,19 @@ r_if
 c_cond
 (paren
 (paren
-id|args-&gt;tfRegister
-(braket
-id|IDE_COMMAND_OFFSET
-)braket
+id|args-&gt;taskfile.command
 op_eq
 id|WIN_SETFEATURES
 )paren
 op_logical_and
 (paren
-id|args-&gt;tfRegister
-(braket
-id|IDE_SECTOR_OFFSET
-)braket
+id|args-&gt;taskfile.sector_number
 op_ge
 id|XFER_SW_DMA_0
 )paren
 op_logical_and
 (paren
-id|args-&gt;tfRegister
-(braket
-id|IDE_FEATURE_OFFSET
-)braket
+id|args-&gt;taskfile.feature
 op_eq
 id|SETFEATURES_XFER
 )paren

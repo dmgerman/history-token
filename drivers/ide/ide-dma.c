@@ -2539,10 +2539,7 @@ suffix:semicolon
 id|OUT_BYTE
 c_func
 (paren
-id|args-&gt;tfRegister
-(braket
-id|IDE_COMMAND_OFFSET
-)braket
+id|args-&gt;taskfile.command
 comma
 id|IDE_COMMAND_REG
 )paren
