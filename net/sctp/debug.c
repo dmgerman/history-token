@@ -252,8 +252,6 @@ id|SCTP_NUM_PRIMITIVE_TYPES
 )braket
 op_assign
 (brace
-l_string|&quot;PRIMITIVE_INITIALIZE&quot;
-comma
 l_string|&quot;PRIMITIVE_ASSOCIATE&quot;
 comma
 l_string|&quot;PRIMITIVE_SHUTDOWN&quot;
@@ -262,27 +260,8 @@ l_string|&quot;PRIMITIVE_ABORT&quot;
 comma
 l_string|&quot;PRIMITIVE_SEND&quot;
 comma
-l_string|&quot;PRIMITIVE_SETPRIMARY&quot;
-comma
-l_string|&quot;PRIMITIVE_RECEIVE&quot;
-comma
-l_string|&quot;PRIMITIVE_STATUS&quot;
-comma
-l_string|&quot;PRIMITIVE_CHANGEHEARTBEAT&quot;
-comma
 l_string|&quot;PRIMITIVE_REQUESTHEARTBEAT&quot;
 comma
-l_string|&quot;PRIMITIVE_GETSRTTREPORT&quot;
-comma
-l_string|&quot;PRIMITIVE_SETFAILURETHRESHOLD&quot;
-comma
-l_string|&quot;PRIMITIVE_SETPROTOPARAMETERS&quot;
-comma
-l_string|&quot;PRIMITIVE_RECEIVE_UNSENT&quot;
-comma
-l_string|&quot;PRIMITIVE_RECEIVE_UNACKED&quot;
-comma
-l_string|&quot;PRIMITIVE_DESTROY&quot;
 )brace
 suffix:semicolon
 multiline_comment|/* Lookup primitive debug name. */
@@ -337,7 +316,6 @@ op_assign
 (brace
 l_string|&quot;NO_PENDING_TSN&quot;
 comma
-l_string|&quot;ICMP_UNREACHFRAG&quot;
 )brace
 suffix:semicolon
 multiline_comment|/* Lookup &quot;other&quot; debug name. */
@@ -399,8 +377,6 @@ comma
 l_string|&quot;TIMEOUT_T2_SHUTDOWN&quot;
 comma
 l_string|&quot;TIMEOUT_T3_RTX&quot;
-comma
-l_string|&quot;TIMEOUT_T4_RTO&quot;
 comma
 l_string|&quot;TIMEOUT_T5_SHUTDOWN_GUARD&quot;
 comma

@@ -2861,8 +2861,6 @@ id|sctp_generate_t2_shutdown_event
 comma
 l_int|NULL
 comma
-l_int|NULL
-comma
 id|sctp_generate_t5_shutdown_guard_event
 comma
 id|sctp_generate_heartbeat_event

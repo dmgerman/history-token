@@ -3040,6 +3040,12 @@ op_amp
 id|sctp_proto
 )paren
 suffix:semicolon
+id|__unsafe
+c_func
+(paren
+id|THIS_MODULE
+)paren
+suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
