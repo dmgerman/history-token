@@ -388,6 +388,14 @@ DECL|macro|__NR_io_cancel
 mdefine_line|#define __NR_io_cancel&t;&t;247
 DECL|macro|__NR_exit_group
 mdefine_line|#define __NR_exit_group&t;&t;248
+DECL|macro|__NR_epoll_create
+mdefine_line|#define __NR_epoll_create&t;249
+DECL|macro|__NR_epoll_ctl
+mdefine_line|#define __NR_epoll_ctl&t;&t;250
+DECL|macro|__NR_epoll_wait
+mdefine_line|#define __NR_epoll_wait&t;&t;251
+DECL|macro|__NR_set_tid_address
+mdefine_line|#define __NR_set_tid_address&t;252
 multiline_comment|/* user-visible error numbers are in the range -1 - -122: see &lt;asm-s390/errno.h&gt; */
 DECL|macro|__syscall_return
 mdefine_line|#define __syscall_return(type, res)                          &bslash;&n;do {                                                         &bslash;&n;        if ((unsigned long)(res) &gt;= (unsigned long)(-125)) { &bslash;&n;                errno = -(res);                              &bslash;&n;                res = -1;                                    &bslash;&n;        }                                                    &bslash;&n;        return (type) (res);                                 &bslash;&n;} while (0)
