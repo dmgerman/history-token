@@ -4727,6 +4727,13 @@ r_if
 c_cond
 (paren
 id|swap_file
+op_logical_and
+op_logical_neg
+id|IS_ERR
+c_func
+(paren
+id|swap_file
+)paren
 )paren
 id|filp_close
 c_func
