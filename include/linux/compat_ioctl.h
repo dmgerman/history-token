@@ -1,4 +1,4 @@
-multiline_comment|/* List here explicitly which ioctl&squot;s are known to have&n; * compatible types passed or none at all...&n; */
+multiline_comment|/* List here explicitly which ioctl&squot;s are known to have&n; * compatible types passed or none at all... Please include&n; * only stuff that is compatible on *all architectures*.&n; */
 multiline_comment|/* Big T */
 id|COMPATIBLE_IOCTL
 c_func
@@ -1681,6 +1681,32 @@ id|COMPATIBLE_IOCTL
 c_func
 (paren
 id|CDROM_GET_CAPABILITY
+)paren
+multiline_comment|/* Ignore cdrom.h about these next 5 ioctls, they absolutely do&n; * not take a struct cdrom_read, instead they take a struct cdrom_msf&n; * which is compatible.&n; */
+id|COMPATIBLE_IOCTL
+c_func
+(paren
+id|CDROMREADMODE2
+)paren
+id|COMPATIBLE_IOCTL
+c_func
+(paren
+id|CDROMREADMODE1
+)paren
+id|COMPATIBLE_IOCTL
+c_func
+(paren
+id|CDROMREADRAW
+)paren
+id|COMPATIBLE_IOCTL
+c_func
+(paren
+id|CDROMREADCOOKED
+)paren
+id|COMPATIBLE_IOCTL
+c_func
+(paren
+id|CDROMREADALL
 )paren
 multiline_comment|/* DVD ioctls */
 id|COMPATIBLE_IOCTL
