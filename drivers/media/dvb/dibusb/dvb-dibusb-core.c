@@ -202,7 +202,7 @@ mdefine_line|#define USB_PID_UNK_HYPER_PALTEK_WARM&t;&t;0x005f
 DECL|macro|USB_PID_HANFTEK_UMT_010_COLD
 mdefine_line|#define USB_PID_HANFTEK_UMT_010_COLD&t;&t;0x0001
 DECL|macro|USB_PID_HANFTEK_UMT_010_WARM
-mdefine_line|#define USB_PID_HANFTEK_UMT_010_WARM&t;&t;0x0025
+mdefine_line|#define USB_PID_HANFTEK_UMT_010_WARM&t;&t;0x0015
 DECL|macro|USB_PID_YAKUMO_DTT200U_COLD
 mdefine_line|#define USB_PID_YAKUMO_DTT200U_COLD&t;&t;&t;0x0201
 DECL|macro|USB_PID_YAKUMO_DTT200U_WARM
@@ -935,17 +935,15 @@ id|dibusb_usb_ctrl
 l_int|2
 )braket
 comma
-l_string|&quot;dvb-dibusb-umt-1.fw&quot;
+l_string|&quot;dvb-dibusb-umt-2.fw&quot;
 comma
 l_int|0x01
 comma
-l_int|0x02
+l_int|0x06
 comma
-l_int|7
+l_int|20
 comma
-l_int|188
-op_star
-l_int|21
+l_int|512
 comma
 id|DIBUSB_RC_NO
 comma
