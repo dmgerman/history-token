@@ -261,6 +261,11 @@ id|snd_seq_oss_synth_unregister
 comma
 )brace
 suffix:semicolon
+id|snd_seq_autoload_lock
+c_func
+(paren
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -275,8 +280,8 @@ c_func
 OL
 l_int|0
 )paren
-r_return
-id|rc
+r_goto
+id|error
 suffix:semicolon
 r_if
 c_cond
@@ -298,8 +303,8 @@ c_func
 (paren
 )paren
 suffix:semicolon
-r_return
-id|rc
+r_goto
+id|error
 suffix:semicolon
 )brace
 r_if
@@ -327,8 +332,8 @@ c_func
 (paren
 )paren
 suffix:semicolon
-r_return
-id|rc
+r_goto
+id|error
 suffix:semicolon
 )brace
 r_if
@@ -370,8 +375,8 @@ c_func
 (paren
 )paren
 suffix:semicolon
-r_return
-id|rc
+r_goto
+id|error
 suffix:semicolon
 )brace
 multiline_comment|/* success */
@@ -380,8 +385,15 @@ c_func
 (paren
 )paren
 suffix:semicolon
+id|error
+suffix:colon
+id|snd_seq_autoload_unlock
+c_func
+(paren
+)paren
+suffix:semicolon
 r_return
-l_int|0
+id|rc
 suffix:semicolon
 )brace
 DECL|function|alsa_seq_oss_exit

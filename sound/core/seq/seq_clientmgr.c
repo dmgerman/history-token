@@ -514,10 +514,6 @@ OL
 id|snd_ecards_limit
 )paren
 (brace
-r_extern
-r_int
-id|snd_seq_in_init
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -542,13 +538,6 @@ id|card
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* Calling request_module during module_init()&n;&t;&t;&t;&t; * may cause blocking.&n;&t;&t;&t;&t; */
-r_if
-c_cond
-(paren
-op_logical_neg
-id|snd_seq_in_init
-)paren
 id|snd_seq_device_load_drivers
 c_func
 (paren
