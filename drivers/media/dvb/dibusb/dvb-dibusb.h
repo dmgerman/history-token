@@ -94,6 +94,9 @@ comma
 DECL|enumerator|UMT2_0
 id|UMT2_0
 comma
+DECL|enumerator|DIBUSB2_0B
+id|DIBUSB2_0B
+comma
 DECL|typedef|dibusb_class_t
 )brace
 id|dibusb_class_t

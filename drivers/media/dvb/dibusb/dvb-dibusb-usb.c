@@ -594,6 +594,9 @@ id|dib-&gt;dibdev-&gt;dev_cl-&gt;id
 r_case
 id|DIBUSB2_0
 suffix:colon
+r_case
+id|DIBUSB2_0B
+suffix:colon
 r_if
 c_cond
 (paren
@@ -961,7 +964,7 @@ id|DIBUSB_STATE_URB_SUBMIT
 suffix:semicolon
 )brace
 multiline_comment|/* dib-&gt;pid_parse here contains the value of the module parameter */
-multiline_comment|/* decide if pid parsing can be deactivated:&n;&t; * is possible (by speed) and wanted (by user)&n;&t; */
+multiline_comment|/* decide if pid parsing can be deactivated:&n;&t; * is possible (by device type) and wanted (by user)&n;&t; */
 r_switch
 c_cond
 (paren
@@ -970,6 +973,9 @@ id|dib-&gt;dibdev-&gt;dev_cl-&gt;id
 (brace
 r_case
 id|DIBUSB2_0
+suffix:colon
+r_case
+id|DIBUSB2_0B
 suffix:colon
 r_if
 c_cond

@@ -3240,8 +3240,34 @@ r_int
 id|onoff
 )paren
 (brace
-singleline_comment|//struct dib3000_state *state = fe-&gt;demodulator_priv;
-multiline_comment|/* switch it off and on */
+r_struct
+id|dib3000_state
+op_star
+id|state
+op_assign
+id|fe-&gt;demodulator_priv
+suffix:semicolon
+id|deb_xfer
+c_func
+(paren
+l_string|&quot;%s pid parsing&bslash;n&quot;
+comma
+id|onoff
+ques
+c_cond
+l_string|&quot;enabling&quot;
+suffix:colon
+l_string|&quot;disabling&quot;
+)paren
+suffix:semicolon
+id|wr
+c_func
+(paren
+id|DIB3000MB_REG_PID_PARSE
+comma
+id|onoff
+)paren
+suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon

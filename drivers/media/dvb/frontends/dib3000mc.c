@@ -3976,20 +3976,6 @@ c_cond
 id|onoff
 )paren
 (brace
-id|deb_xfer
-c_func
-(paren
-l_string|&quot;%d %x&bslash;n&quot;
-comma
-id|tmp
-op_or
-id|DIB3000MC_SMO_MODE_PID_PARSE
-comma
-id|tmp
-op_or
-id|DIB3000MC_SMO_MODE_PID_PARSE
-)paren
-suffix:semicolon
 id|wr
 c_func
 (paren
@@ -4003,20 +3989,6 @@ suffix:semicolon
 )brace
 r_else
 (brace
-id|deb_xfer
-c_func
-(paren
-l_string|&quot;%d %x&bslash;n&quot;
-comma
-id|tmp
-op_amp
-id|DIB3000MC_SMO_MODE_NO_PID_PARSE
-comma
-id|tmp
-op_amp
-id|DIB3000MC_SMO_MODE_NO_PID_PARSE
-)paren
-suffix:semicolon
 id|wr
 c_func
 (paren
