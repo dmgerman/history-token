@@ -2361,6 +2361,15 @@ c_func
 (paren
 id|b
 comma
+l_string|&quot;#undef unix&bslash;n&quot;
+)paren
+suffix:semicolon
+multiline_comment|/* We have a module called &quot;unix&quot; */
+id|buf_printf
+c_func
+(paren
+id|b
+comma
 l_string|&quot;struct module __this_module&bslash;n&quot;
 )paren
 suffix:semicolon
