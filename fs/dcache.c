@@ -575,6 +575,13 @@ id|dcache_lock
 suffix:semicolon
 )brace
 multiline_comment|/*&n;&t; * Somebody else still using it?&n;&t; *&n;&t; * If it&squot;s a directory, we can&squot;t drop it&n;&t; * for fear of somebody re-populating it&n;&t; * with children (even though dropping it&n;&t; * would make it unreachable from the root,&n;&t; * we might still populate it if it was a&n;&t; * working directory or similar).&n;&t; */
+id|spin_lock
+c_func
+(paren
+op_amp
+id|dentry-&gt;d_lock
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -604,6 +611,13 @@ id|spin_unlock
 c_func
 (paren
 op_amp
+id|dentry-&gt;d_lock
+)paren
+suffix:semicolon
+id|spin_unlock
+c_func
+(paren
+op_amp
 id|dcache_lock
 )paren
 suffix:semicolon
@@ -617,6 +631,13 @@ id|__d_drop
 c_func
 (paren
 id|dentry
+)paren
+suffix:semicolon
+id|spin_unlock
+c_func
+(paren
+op_amp
+id|dentry-&gt;d_lock
 )paren
 suffix:semicolon
 id|spin_unlock
