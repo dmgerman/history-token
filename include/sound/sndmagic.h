@@ -318,6 +318,10 @@ DECL|macro|bt87x_t_magic
 mdefine_line|#define bt87x_t_magic&t;&t;&t;&t;0xa15a4400
 DECL|macro|pdacf_t_magic
 mdefine_line|#define pdacf_t_magic&t;&t;&t;&t;0xa15a4500
+DECL|macro|vortex_t_magic
+mdefine_line|#define vortex_t_magic&t;&t;&t;&t;0xa15a4601
+DECL|macro|atiixp_t_magic
+mdefine_line|#define atiixp_t_magic&t;&t;&t;&t;0xa15a4701
 macro_line|#else
 DECL|macro|snd_magic_kcalloc
 mdefine_line|#define snd_magic_kcalloc(type, extra, flags) (type *) snd_kcalloc(sizeof(type) + extra, flags)
