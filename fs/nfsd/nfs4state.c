@@ -5930,10 +5930,6 @@ id|open-&gt;op_owner
 r_goto
 id|out
 suffix:semicolon
-id|status
-op_assign
-id|nfserr_stale_clientid
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -5945,7 +5941,7 @@ id|open-&gt;op_clientid
 )paren
 )paren
 r_return
-id|status
+id|nfserr_stale_clientid
 suffix:semicolon
 id|strhashval
 op_assign
@@ -6003,10 +5999,6 @@ l_string|&quot;nfsd4_process_open1:&quot;
 l_string|&quot; replay with no replay cache&bslash;n&quot;
 )paren
 suffix:semicolon
-id|status
-op_assign
-id|NFS_OK
-suffix:semicolon
 r_goto
 id|renew
 suffix:semicolon
@@ -6028,15 +6020,9 @@ id|sop-&gt;so_seqid
 op_plus
 l_int|1
 )paren
-(brace
-id|status
-op_assign
-id|nfs_ok
-suffix:semicolon
 r_goto
 id|renew
 suffix:semicolon
-)brace
 id|status
 op_assign
 id|nfserr_bad_seqid
@@ -6113,12 +6099,12 @@ id|open-&gt;op_stateowner
 op_assign
 id|sop
 suffix:semicolon
+id|renew
+suffix:colon
 id|status
 op_assign
 id|nfs_ok
 suffix:semicolon
-id|renew
-suffix:colon
 id|renew_client
 c_func
 (paren
