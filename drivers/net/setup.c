@@ -30,38 +30,6 @@ r_void
 suffix:semicolon
 r_extern
 r_int
-id|awc4500_pci_probe
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-r_extern
-r_int
-id|awc4500_isa_probe
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-r_extern
-r_int
-id|awc4500_pnp_probe
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-r_extern
-r_int
-id|awc4500_365_probe
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-r_extern
-r_int
 id|arcnet_init
 c_func
 (paren
@@ -239,25 +207,6 @@ comma
 l_int|0
 )brace
 comma
-macro_line|#endif
-multiline_comment|/*&n;*&n;*&t;Wireless non-HAM&n;*&n;*/
-macro_line|#ifdef CONFIG_AIRONET4500_NONCS
-macro_line|#ifdef CONFIG_AIRONET4500_PCI
-(brace
-id|awc4500_pci_probe
-comma
-l_int|0
-)brace
-comma
-macro_line|#endif
-macro_line|#ifdef CONFIG_AIRONET4500_PNP
-(brace
-id|awc4500_pnp_probe
-comma
-l_int|0
-)brace
-comma
-macro_line|#endif
 macro_line|#endif
 multiline_comment|/*&n; *&t;Token Ring Drivers&n; */
 macro_line|#ifdef CONFIG_MADGEMC
