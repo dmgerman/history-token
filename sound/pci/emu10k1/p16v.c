@@ -502,9 +502,24 @@ suffix:semicolon
 r_int
 id|i
 suffix:semicolon
+id|u32
+id|tmp
+suffix:semicolon
 singleline_comment|//snd_printk(&quot;prepare:channel_number=%d, rate=%d, format=0x%x, channels=%d, buffer_size=%ld, period_size=%ld, periods=%u, frames_to_bytes=%d&bslash;n&quot;,channel, runtime-&gt;rate, runtime-&gt;format, runtime-&gt;channels, runtime-&gt;buffer_size, runtime-&gt;period_size, runtime-&gt;periods, frames_to_bytes(runtime, 1));
 singleline_comment|//snd_printk(&quot;dma_addr=%x, dma_area=%p, table_base=%p&bslash;n&quot;,runtime-&gt;dma_addr, runtime-&gt;dma_area, table_base);
 singleline_comment|//snd_printk(&quot;dma_addr=%x, dma_area=%p, dma_bytes(size)=%x&bslash;n&quot;,emu-&gt;p16v_buffer.addr, emu-&gt;p16v_buffer.area, emu-&gt;p16v_buffer.bytes);
+id|tmp
+op_assign
+id|snd_emu10k1_ptr_read
+c_func
+(paren
+id|emu
+comma
+id|A_SPDIF_SAMPLERATE
+comma
+id|channel
+)paren
+suffix:semicolon
 r_switch
 c_cond
 (paren
@@ -523,6 +538,13 @@ id|A_SPDIF_SAMPLERATE
 comma
 id|channel
 comma
+(paren
+id|tmp
+op_amp
+op_complement
+l_int|0xe000
+)paren
+op_or
 l_int|0x8000
 )paren
 suffix:semicolon
@@ -541,7 +563,14 @@ id|A_SPDIF_SAMPLERATE
 comma
 id|channel
 comma
-l_int|0x1000
+(paren
+id|tmp
+op_amp
+op_complement
+l_int|0xe000
+)paren
+op_or
+l_int|0x0000
 )paren
 suffix:semicolon
 multiline_comment|/* FIXME: This will change the capture rate as well! */
@@ -559,6 +588,13 @@ id|A_SPDIF_SAMPLERATE
 comma
 id|channel
 comma
+(paren
+id|tmp
+op_amp
+op_complement
+l_int|0xe000
+)paren
+op_or
 l_int|0x4000
 )paren
 suffix:semicolon
@@ -577,6 +613,13 @@ id|A_SPDIF_SAMPLERATE
 comma
 id|channel
 comma
+(paren
+id|tmp
+op_amp
+op_complement
+l_int|0xe000
+)paren
+op_or
 l_int|0x2000
 )paren
 suffix:semicolon
