@@ -197,6 +197,11 @@ r_int
 r_int
 id|i8042_noloop
 suffix:semicolon
+r_extern
+r_int
+r_int
+id|i8042_dmi_noloop
+suffix:semicolon
 id|__obsolete_setup
 c_func
 (paren
