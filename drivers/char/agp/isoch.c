@@ -204,7 +204,7 @@ id|dev
 comma
 id|cur-&gt;capndx
 op_plus
-l_int|0x0c
+id|AGPNISTAT
 comma
 op_amp
 id|nistat
@@ -425,7 +425,7 @@ id|td
 comma
 id|bridge-&gt;capndx
 op_plus
-l_int|0x0c
+id|AGPNISTAT
 comma
 op_amp
 id|tnistat
@@ -536,7 +536,7 @@ id|dev
 comma
 id|cur-&gt;capndx
 op_plus
-l_int|0x0c
+id|AGPNISTAT
 comma
 op_amp
 id|mnistat
@@ -664,7 +664,7 @@ id|td
 comma
 id|bridge-&gt;capndx
 op_plus
-l_int|0x20
+id|AGPNICMD
 comma
 op_amp
 id|tnicmd
@@ -692,7 +692,7 @@ id|td
 comma
 id|bridge-&gt;capndx
 op_plus
-l_int|0x20
+id|AGPNICMD
 comma
 id|tnicmd
 )paren
@@ -705,7 +705,7 @@ id|td
 comma
 id|bridge-&gt;capndx
 op_plus
-l_int|0x0c
+id|AGPNISTAT
 comma
 op_amp
 id|tnistat
@@ -1060,7 +1060,7 @@ id|dev
 comma
 id|cur-&gt;capndx
 op_plus
-l_int|0x20
+id|AGPNICMD
 comma
 op_amp
 id|mnicmd
@@ -1158,7 +1158,7 @@ id|dev
 comma
 id|cur-&gt;capndx
 op_plus
-l_int|0x20
+id|AGPNICMD
 comma
 id|mnicmd
 )paren
@@ -1241,7 +1241,7 @@ id|bridge-&gt;dev
 comma
 id|bridge-&gt;capndx
 op_plus
-l_int|0x04
+id|AGPSTAT
 comma
 op_amp
 id|tstatus
@@ -1635,7 +1635,7 @@ id|td
 comma
 id|bridge-&gt;capndx
 op_plus
-l_int|0x04
+id|AGPSTAT
 comma
 op_amp
 id|tstatus
@@ -1878,7 +1878,7 @@ id|dev
 comma
 id|cur-&gt;capndx
 op_plus
-l_int|0x04
+id|AGPSTAT
 comma
 op_amp
 id|mstatus

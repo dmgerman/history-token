@@ -1140,8 +1140,12 @@ DECL|macro|AGPSTAT
 mdefine_line|#define AGPSTAT&t;&t;&t;0x4
 DECL|macro|AGPCMD
 mdefine_line|#define AGPCMD&t;&t;&t;0x8
+DECL|macro|AGPNISTAT
+mdefine_line|#define AGPNISTAT&t;&t;0xc
 DECL|macro|AGPNEPG
 mdefine_line|#define AGPNEPG&t;&t;&t;0x16
+DECL|macro|AGPNICMD
+mdefine_line|#define AGPNICMD&t;&t;0x20
 DECL|macro|AGP_MAJOR_VERSION_SHIFT
 mdefine_line|#define AGP_MAJOR_VERSION_SHIFT&t;(20)
 DECL|macro|AGP_MINOR_VERSION_SHIFT
