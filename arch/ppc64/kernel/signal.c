@@ -161,7 +161,7 @@ id|spin_lock_irq
 c_func
 (paren
 op_amp
-id|current-&gt;sigmask_lock
+id|current-&gt;sig-&gt;siglock
 )paren
 suffix:semicolon
 id|saveset
@@ -186,7 +186,7 @@ id|spin_unlock_irq
 c_func
 (paren
 op_amp
-id|current-&gt;sigmask_lock
+id|current-&gt;sig-&gt;siglock
 )paren
 suffix:semicolon
 id|regs-&gt;gpr
@@ -318,7 +318,7 @@ id|spin_lock_irq
 c_func
 (paren
 op_amp
-id|current-&gt;sigmask_lock
+id|current-&gt;sig-&gt;siglock
 )paren
 suffix:semicolon
 id|saveset
@@ -338,7 +338,7 @@ id|spin_unlock_irq
 c_func
 (paren
 op_amp
-id|current-&gt;sigmask_lock
+id|current-&gt;sig-&gt;siglock
 )paren
 suffix:semicolon
 id|regs-&gt;gpr
@@ -779,7 +779,7 @@ id|spin_lock_irq
 c_func
 (paren
 op_amp
-id|current-&gt;sigmask_lock
+id|current-&gt;sig-&gt;siglock
 )paren
 suffix:semicolon
 id|current-&gt;blocked
@@ -795,7 +795,7 @@ id|spin_unlock_irq
 c_func
 (paren
 op_amp
-id|current-&gt;sigmask_lock
+id|current-&gt;sig-&gt;siglock
 )paren
 suffix:semicolon
 r_if
@@ -1406,7 +1406,7 @@ id|spin_lock_irq
 c_func
 (paren
 op_amp
-id|current-&gt;sigmask_lock
+id|current-&gt;sig-&gt;siglock
 )paren
 suffix:semicolon
 id|current-&gt;blocked
@@ -1422,7 +1422,7 @@ id|spin_unlock_irq
 c_func
 (paren
 op_amp
-id|current-&gt;sigmask_lock
+id|current-&gt;sig-&gt;siglock
 )paren
 suffix:semicolon
 r_if
@@ -2282,7 +2282,7 @@ id|spin_lock_irq
 c_func
 (paren
 op_amp
-id|current-&gt;sigmask_lock
+id|current-&gt;sig-&gt;siglock
 )paren
 suffix:semicolon
 id|sigorsets
@@ -2316,7 +2316,7 @@ id|spin_unlock_irq
 c_func
 (paren
 op_amp
-id|current-&gt;sigmask_lock
+id|current-&gt;sig-&gt;siglock
 )paren
 suffix:semicolon
 )brace
