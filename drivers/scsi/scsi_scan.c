@@ -4,6 +4,7 @@ macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/moduleparam.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/blkdev.h&gt;
+macro_line|#include &lt;asm/semaphore.h&gt;
 macro_line|#include &quot;scsi.h&quot;
 macro_line|#include &quot;hosts.h&quot;
 macro_line|#include &lt;scsi/scsi_driver.h&gt;
@@ -109,6 +110,14 @@ l_string|&quot; between 1 and 16384)&quot;
 )paren
 suffix:semicolon
 macro_line|#endif
+multiline_comment|/*&n; * This mutex serializes all scsi scanning activity from kernel- and&n; * userspace.  It could easily be made per-host but I&squot;d like to avoid&n; * the overhead for now.&n; */
+r_static
+id|DECLARE_MUTEX
+c_func
+(paren
+id|scsi_scan_mutex
+)paren
+suffix:semicolon
 multiline_comment|/**&n; * scsi_unlock_floptical - unlock device via a special MODE SENSE command&n; * @sreq:&t;used to send the command&n; * @result:&t;area to store the result of the MODE SENSE&n; *&n; * Description:&n; *     Send a vendor specific MODE SENSE (not a MODE SELECT) command using&n; *     @sreq to unlock a device, storing the (unused) results into result.&n; *     Called for BLIST_KEY devices.&n; **/
 DECL|function|scsi_unlock_floptical
 r_static
@@ -3397,6 +3406,13 @@ suffix:semicolon
 r_int
 id|res
 suffix:semicolon
+id|down
+c_func
+(paren
+op_amp
+id|scsi_scan_mutex
+)paren
+suffix:semicolon
 id|res
 op_assign
 id|scsi_probe_and_add_lun
@@ -3432,6 +3448,13 @@ c_func
 (paren
 op_minus
 id|ENODEV
+)paren
+suffix:semicolon
+id|up
+c_func
+(paren
+op_amp
+id|scsi_scan_mutex
 )paren
 suffix:semicolon
 r_return
@@ -3868,6 +3891,13 @@ r_return
 op_minus
 id|EINVAL
 suffix:semicolon
+id|down
+c_func
+(paren
+op_amp
+id|scsi_scan_mutex
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -3916,6 +3946,13 @@ comma
 id|lun
 comma
 id|rescan
+)paren
+suffix:semicolon
+id|up
+c_func
+(paren
+op_amp
+id|scsi_scan_mutex
 )paren
 suffix:semicolon
 r_return
