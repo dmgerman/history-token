@@ -2,7 +2,9 @@ multiline_comment|/*&n; * serial/acpi.c&n; * Copyright (c) 2002-2003 Matthew Wil
 macro_line|#include &lt;linux/acpi.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
+macro_line|#include &lt;linux/tty.h&gt;
 macro_line|#include &lt;linux/serial.h&gt;
+macro_line|#include &lt;linux/serial_core.h&gt;
 macro_line|#include &lt;acpi/acpi_bus.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/serial.h&gt;
@@ -458,11 +460,13 @@ id|BASE_BAUD
 suffix:semicolon
 id|serial_req.flags
 op_assign
-id|ASYNC_SKIP_TEST
+id|UPF_SKIP_TEST
 op_or
-id|ASYNC_BOOT_AUTOCONF
+id|UPF_BOOT_AUTOCONF
 op_or
-id|ASYNC_AUTO_IRQ
+id|UPF_AUTO_IRQ
+op_or
+id|UPF_RESOURCES
 suffix:semicolon
 id|line
 op_assign
@@ -485,7 +489,7 @@ id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;Couldn&squot;t register serial port %s: %d&quot;
+l_string|&quot;Couldn&squot;t register serial port %s: %d&bslash;n&quot;
 comma
 id|device-&gt;pnp.bus_id
 comma
