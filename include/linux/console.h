@@ -690,6 +690,14 @@ r_void
 )paren
 suffix:semicolon
 r_extern
+r_int
+id|try_acquire_console_sem
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+r_extern
 r_void
 id|release_console_sem
 c_func
