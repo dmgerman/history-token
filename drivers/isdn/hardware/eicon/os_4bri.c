@@ -19,7 +19,7 @@ r_void
 op_star
 id|diva_xdiLoadFileFile
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 DECL|variable|diva_xdiLoadFileLength
 id|dword
@@ -1107,7 +1107,7 @@ id|a-&gt;slave_adapters
 l_int|0
 )braket
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|diva_4bri_cleanup_adapter
 c_func
@@ -1177,14 +1177,14 @@ id|a-&gt;slave_adapters
 l_int|0
 )braket
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|a-&gt;slave_adapters
 (braket
 l_int|1
 )braket
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|diva_4bri_cleanup_adapter
 c_func
@@ -1352,7 +1352,7 @@ id|a-&gt;slave_adapters
 id|i
 )braket
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 )brace
 id|diva_4bri_cleanup_adapter
@@ -2274,7 +2274,7 @@ id|a-&gt;resources.pci.addr
 id|bar
 )braket
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 )brace
 )brace
@@ -2346,7 +2346,7 @@ id|a-&gt;resources.pci.addr
 l_int|1
 )braket
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 )brace
 r_if
@@ -2365,7 +2365,7 @@ id|a-&gt;slave_list
 suffix:semicolon
 id|a-&gt;slave_list
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 )brace
 r_return
@@ -2815,7 +2815,7 @@ id|req_soft_isr
 suffix:semicolon
 id|diva_current-&gt;xdi_adapter.isr_soft_isr.object
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 r_if
 c_cond
@@ -2836,7 +2836,7 @@ suffix:semicolon
 )brace
 id|diva_current-&gt;xdi_adapter.e_tbl
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|diva_current-&gt;xdi_adapter.e_max
 op_assign
@@ -3606,7 +3606,7 @@ suffix:semicolon
 )brace
 id|diva_xdiLoadFileFile
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|diva_xdiLoadFileLength
 op_assign
@@ -3678,7 +3678,7 @@ id|a-&gt;xdi_adapter
 suffix:semicolon
 id|diva_xdiLoadFileFile
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|diva_xdiLoadFileLength
 op_assign
@@ -4971,7 +4971,7 @@ id|a
 suffix:semicolon
 id|a-&gt;clear_interrupts_proc
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|DBG_ERR
 c_func

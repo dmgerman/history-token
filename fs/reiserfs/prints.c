@@ -3005,11 +3005,11 @@ r_else
 (brace
 id|tbSh
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|tbFh
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 )brace
 id|sprintf
@@ -3603,7 +3603,7 @@ id|IH_SIZE
 )paren
 id|reiserfs_panic
 (paren
-l_int|0
+l_int|NULL
 comma
 l_string|&quot;vs-6010: check_leaf_block_head: invalid item number %z&quot;
 comma
@@ -3629,7 +3629,7 @@ id|nr
 )paren
 id|reiserfs_panic
 (paren
-l_int|0
+l_int|NULL
 comma
 l_string|&quot;vs-6020: check_leaf_block_head: invalid free space %z&quot;
 comma
@@ -3682,7 +3682,7 @@ id|MAX_HEIGHT
 )paren
 id|reiserfs_panic
 (paren
-l_int|0
+l_int|NULL
 comma
 l_string|&quot;vs-6025: check_internal_block_head: invalid level %z&quot;
 comma
@@ -3707,7 +3707,7 @@ id|IH_SIZE
 )paren
 id|reiserfs_panic
 (paren
-l_int|0
+l_int|NULL
 comma
 l_string|&quot;vs-6030: check_internal_block_head: invalid item number %z&quot;
 comma
@@ -3746,7 +3746,7 @@ l_int|1
 )paren
 id|reiserfs_panic
 (paren
-l_int|0
+l_int|NULL
 comma
 l_string|&quot;vs-6040: check_internal_block_head: invalid free space %z&quot;
 comma

@@ -20542,7 +20542,7 @@ op_lshift
 l_int|1
 )paren
 comma
-l_int|0
+l_int|NULL
 )paren
 suffix:semicolon
 r_if

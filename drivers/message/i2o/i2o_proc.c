@@ -19112,7 +19112,7 @@ c_func
 (paren
 l_string|&quot;i2o&quot;
 comma
-l_int|0
+l_int|NULL
 )paren
 suffix:semicolon
 r_if
@@ -19263,7 +19263,7 @@ c_func
 (paren
 l_string|&quot;i2o&quot;
 comma
-l_int|0
+l_int|NULL
 )paren
 suffix:semicolon
 )brace

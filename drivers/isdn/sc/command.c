@@ -485,6 +485,7 @@ id|ioc
 comma
 (paren
 id|scs_ioctl
+id|__user
 op_star
 )paren
 id|cmdptr
@@ -872,7 +873,7 @@ l_int|0
 comma
 l_int|0
 comma
-l_int|0
+l_int|NULL
 )paren
 suffix:semicolon
 id|pr_debug

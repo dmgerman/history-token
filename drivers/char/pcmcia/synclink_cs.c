@@ -6208,7 +6208,7 @@ id|info-&gt;tx_buf
 suffix:semicolon
 id|info-&gt;tx_buf
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 )brace
 id|spin_lock_irqsave
@@ -11221,7 +11221,7 @@ l_int|0
 suffix:semicolon
 id|info-&gt;tty
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 r_if
 c_cond
@@ -11648,7 +11648,7 @@ id|ASYNC_NORMAL_ACTIVE
 suffix:semicolon
 id|info-&gt;tty
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|wake_up_interruptible
 c_func
@@ -12432,7 +12432,7 @@ l_int|1
 )paren
 id|info-&gt;tty
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 multiline_comment|/* tty layer will release tty struct */
 r_if

@@ -951,7 +951,7 @@ id|make_le_item_head
 op_amp
 id|s_ih
 comma
-l_int|0
+l_int|NULL
 comma
 id|get_inode_item_key_version
 (paren

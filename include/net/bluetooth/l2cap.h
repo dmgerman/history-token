@@ -453,6 +453,16 @@ id|packed
 )paren
 )paren
 suffix:semicolon
+multiline_comment|/* info type */
+DECL|macro|L2CAP_IT_CL_MTU
+mdefine_line|#define L2CAP_IT_CL_MTU     0x0001
+DECL|macro|L2CAP_IT_FEAT_MASK
+mdefine_line|#define L2CAP_IT_FEAT_MASK  0x0002
+multiline_comment|/* info result */
+DECL|macro|L2CAP_IR_SUCCESS
+mdefine_line|#define L2CAP_IR_SUCCESS    0x0000
+DECL|macro|L2CAP_IR_NOTSUPP
+mdefine_line|#define L2CAP_IR_NOTSUPP    0x0001
 multiline_comment|/* ----- L2CAP connections ----- */
 DECL|struct|l2cap_chan_list
 r_struct

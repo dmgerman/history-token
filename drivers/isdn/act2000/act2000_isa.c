@@ -1773,6 +1773,7 @@ op_star
 id|card
 comma
 id|act2000_ddef
+id|__user
 op_star
 id|cb
 )paren
@@ -1798,6 +1799,7 @@ op_star
 id|b
 suffix:semicolon
 id|u_char
+id|__user
 op_star
 id|p
 suffix:semicolon
@@ -1839,10 +1841,6 @@ c_func
 op_amp
 id|cblock
 comma
-(paren
-r_char
-op_star
-)paren
 id|cb
 comma
 r_sizeof
@@ -1876,10 +1874,6 @@ c_func
 (paren
 id|VERIFY_READ
 comma
-(paren
-r_void
-op_star
-)paren
 id|p
 comma
 id|length

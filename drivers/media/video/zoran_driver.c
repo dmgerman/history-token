@@ -1162,7 +1162,7 @@ l_int|0
 dot
 id|fbuffer
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|fh-&gt;v4l_buffers.buffer
 (braket
@@ -1211,7 +1211,7 @@ id|i
 dot
 id|fbuffer
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|fh-&gt;v4l_buffers.buffer
 (braket
@@ -5392,6 +5392,7 @@ op_star
 id|file
 comma
 r_char
+id|__user
 op_star
 id|data
 comma
@@ -5421,6 +5422,7 @@ id|file
 comma
 r_const
 r_char
+id|__user
 op_star
 id|data
 comma
@@ -5734,6 +5736,7 @@ id|height
 comma
 r_struct
 id|video_clip
+id|__user
 op_star
 id|clips
 comma
@@ -5741,6 +5744,7 @@ r_int
 id|clipcount
 comma
 r_void
+id|__user
 op_star
 id|bitmap
 )paren
@@ -10602,6 +10606,7 @@ comma
 (paren
 r_struct
 id|video_clip
+id|__user
 op_star
 )paren
 id|fmt-&gt;fmt.win.clips

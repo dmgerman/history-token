@@ -2105,6 +2105,7 @@ op_star
 id|q
 comma
 r_char
+id|__user
 op_star
 id|buf
 comma
@@ -2466,7 +2467,7 @@ c_func
 (paren
 id|q
 comma
-l_int|0
+l_int|NULL
 )paren
 suffix:semicolon
 multiline_comment|/* reset state machine */
@@ -3252,6 +3253,7 @@ op_star
 id|file
 comma
 r_char
+id|__user
 op_star
 id|buf
 comma

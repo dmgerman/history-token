@@ -795,7 +795,7 @@ id|e
 (brace
 id|e-&gt;os_ref
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|e-&gt;status
 op_assign
@@ -803,7 +803,7 @@ l_int|0
 suffix:semicolon
 id|e-&gt;adapter
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|e-&gt;e.Id
 op_assign
@@ -939,9 +939,7 @@ id|e
 )paren
 suffix:semicolon
 r_return
-(paren
-l_int|0
-)paren
+l_int|NULL
 suffix:semicolon
 )brace
 id|memset
@@ -993,9 +991,7 @@ id|e
 )paren
 suffix:semicolon
 r_return
-(paren
-l_int|0
-)paren
+l_int|NULL
 suffix:semicolon
 )brace
 r_if
@@ -1042,9 +1038,7 @@ id|e
 )paren
 suffix:semicolon
 r_return
-(paren
-l_int|0
-)paren
+l_int|NULL
 suffix:semicolon
 )brace
 id|diva_os_enter_spin_lock
@@ -1121,9 +1115,7 @@ id|e
 )paren
 suffix:semicolon
 r_return
-(paren
-l_int|0
-)paren
+l_int|NULL
 suffix:semicolon
 )brace
 id|e-&gt;os_ref
@@ -2797,15 +2789,15 @@ l_int|0
 suffix:semicolon
 id|e-&gt;e.callback
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|e-&gt;e.X
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|e-&gt;e.R
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|write_return_code
 c_func
@@ -2905,7 +2897,7 @@ id|e
 suffix:semicolon
 id|e-&gt;e.callback
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|e-&gt;e.Id
 op_assign
@@ -2937,11 +2929,11 @@ l_int|0
 suffix:semicolon
 id|e-&gt;e.X
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|e-&gt;e.R
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|e-&gt;e.XNum
 op_assign
@@ -3008,7 +3000,7 @@ id|e-&gt;e.Id
 multiline_comment|/* REMOVE COMPLETE */
 id|e-&gt;e.callback
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|e-&gt;e.Id
 op_assign
@@ -3040,11 +3032,11 @@ l_int|0
 suffix:semicolon
 id|e-&gt;e.X
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|e-&gt;e.R
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|e-&gt;e.XNum
 op_assign

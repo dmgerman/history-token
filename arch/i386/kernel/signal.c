@@ -473,11 +473,25 @@ DECL|function|sys_sigaltstack
 id|sys_sigaltstack
 c_func
 (paren
-r_struct
-id|pt_regs
-id|regs
+r_int
+r_int
+id|ebx
 )paren
 (brace
+multiline_comment|/* This is needed to make gcc realize it doesn&squot;t own the &quot;struct pt_regs&quot; */
+r_struct
+id|pt_regs
+op_star
+id|regs
+op_assign
+(paren
+r_struct
+id|pt_regs
+op_star
+)paren
+op_amp
+id|ebx
+suffix:semicolon
 r_const
 id|stack_t
 id|__user
@@ -490,7 +504,7 @@ id|stack_t
 id|__user
 op_star
 )paren
-id|regs.ebx
+id|ebx
 suffix:semicolon
 id|stack_t
 id|__user
@@ -502,7 +516,7 @@ id|stack_t
 id|__user
 op_star
 )paren
-id|regs.ecx
+id|regs-&gt;ecx
 suffix:semicolon
 r_return
 id|do_sigaltstack
@@ -512,7 +526,7 @@ id|uss
 comma
 id|uoss
 comma
-id|regs.esp
+id|regs-&gt;esp
 )paren
 suffix:semicolon
 )brace

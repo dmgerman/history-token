@@ -147,7 +147,7 @@ op_assign
 id|acpi_get_handle
 c_func
 (paren
-l_int|0
+l_int|NULL
 comma
 (paren
 r_char
@@ -239,7 +239,7 @@ op_assign
 id|acpi_evaluate_object
 c_func
 (paren
-l_int|0
+l_int|NULL
 comma
 (paren
 r_char
@@ -250,7 +250,7 @@ comma
 op_amp
 id|params
 comma
-l_int|0
+l_int|NULL
 )paren
 suffix:semicolon
 r_return
@@ -471,7 +471,7 @@ op_assign
 id|acpi_evaluate_object
 c_func
 (paren
-l_int|0
+l_int|NULL
 comma
 (paren
 r_char
@@ -1988,17 +1988,12 @@ l_string|&quot;version&quot;
 comma
 id|read_version
 comma
-l_int|0
+l_int|NULL
 )brace
 comma
 (brace
-l_int|0
-comma
-l_int|0
-comma
-l_int|0
+l_int|NULL
 )brace
-comma
 )brace
 suffix:semicolon
 r_static

@@ -283,7 +283,7 @@ l_string|&quot;HPFS: hpfs_map_4sectors: unaligned read&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
-l_int|0
+l_int|NULL
 suffix:semicolon
 )brace
 id|qbh-&gt;data
@@ -568,7 +568,7 @@ l_string|&quot;HPFS: hpfs_get_4sectors: unaligned read&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
-l_int|0
+l_int|NULL
 suffix:semicolon
 )brace
 multiline_comment|/*return hpfs_map_4sectors(s, secno, qbh, 0);*/

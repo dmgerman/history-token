@@ -127,6 +127,7 @@ suffix:semicolon
 multiline_comment|/* end of requested part of page */
 DECL|member|buffer
 r_void
+id|__user
 op_star
 id|buffer
 suffix:semicolon

@@ -235,7 +235,7 @@ id|ENTITY
 op_star
 id|this
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|BUFFERS
 op_star
@@ -4060,7 +4060,7 @@ id|byte
 op_star
 id|cma
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 macro_line|#ifdef USE_EXTENDED_DEBUGS
 (brace
@@ -4378,9 +4378,9 @@ comma
 op_amp
 id|final
 comma
-l_int|0
+l_int|NULL
 comma
-l_int|0
+l_int|NULL
 )paren
 suffix:semicolon
 )brace

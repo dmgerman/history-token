@@ -3030,10 +3030,6 @@ id|UniCaseRangeUff40
 comma
 (brace
 l_int|0
-comma
-l_int|0
-comma
-l_int|NULL
 )brace
 )brace
 suffix:semicolon

@@ -56,7 +56,7 @@ r_char
 op_star
 id|mptscsih
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 macro_line|#endif
 multiline_comment|/*=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=*/

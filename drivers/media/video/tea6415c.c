@@ -99,7 +99,7 @@ id|i2c_client
 op_star
 id|client
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 r_int
 id|err

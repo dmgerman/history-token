@@ -3255,7 +3255,7 @@ id|chan-&gt;tx_skb
 suffix:semicolon
 id|chan-&gt;tx_skb
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 )brace
 id|netif_wake_queue
@@ -3329,7 +3329,7 @@ id|chan-&gt;rx_skb
 suffix:semicolon
 id|chan-&gt;rx_skb
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 )brace
 r_if
@@ -3346,7 +3346,7 @@ id|chan-&gt;tx_skb
 suffix:semicolon
 id|chan-&gt;tx_skb
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 )brace
 id|chan-&gt;usage
@@ -3512,7 +3512,7 @@ id|chan-&gt;rx_skb
 suffix:semicolon
 id|chan-&gt;rx_skb
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|chan-&gt;pppdev.dev-&gt;last_rx
 op_assign
@@ -3572,7 +3572,7 @@ id|chan-&gt;tx_skb
 suffix:semicolon
 id|chan-&gt;tx_skb
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|chan-&gt;stats.tx_packets
 op_increment

@@ -50,6 +50,7 @@ id|command
 suffix:semicolon
 DECL|member|dataptr
 r_void
+id|__user
 op_star
 id|dataptr
 suffix:semicolon

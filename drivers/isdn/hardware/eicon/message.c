@@ -2856,7 +2856,7 @@ id|controller
 suffix:semicolon
 id|plci
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 r_if
 c_cond
@@ -3703,7 +3703,7 @@ r_else
 (brace
 id|plci
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 )brace
 )brace
@@ -4201,7 +4201,7 @@ id|i
 dot
 id|info
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 )brace
 r_return
@@ -4375,7 +4375,7 @@ id|i
 dot
 id|info
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|out-&gt;parms
 (braket
@@ -4704,7 +4704,7 @@ id|plci-&gt;internal_command_queue
 id|i
 )braket
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 )brace
 DECL|function|start_internal_command
@@ -4855,7 +4855,7 @@ id|plci-&gt;internal_command_queue
 l_int|0
 )braket
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 r_while
 c_loop
@@ -4903,7 +4903,7 @@ op_minus
 l_int|1
 )braket
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 (paren
 op_star
@@ -4936,7 +4936,7 @@ id|plci-&gt;internal_command_queue
 l_int|0
 )braket
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 )brace
 )brace
@@ -6547,7 +6547,7 @@ l_int|0
 suffix:semicolon
 id|plci-&gt;appl
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 r_if
 c_cond
@@ -10576,7 +10576,7 @@ id|PLCI
 op_star
 id|rc_plci
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|API_PARSE
 id|ai_parms
@@ -13080,7 +13080,7 @@ l_int|0
 comma
 id|rplci
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|i
 OL
@@ -25241,7 +25241,7 @@ suffix:semicolon
 multiline_comment|/* not supported */
 id|plci-&gt;relatedPTYPLCI
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|plci-&gt;ptyState
 op_assign
@@ -25355,7 +25355,7 @@ suffix:semicolon
 multiline_comment|/* not supported */
 id|plci-&gt;relatedPTYPLCI
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|plci-&gt;ptyState
 op_assign
@@ -26245,7 +26245,7 @@ suffix:semicolon
 multiline_comment|/* not supported */
 id|plci-&gt;relatedPTYPLCI
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|plci-&gt;ptyState
 op_assign
@@ -26970,7 +26970,7 @@ l_int|0
 suffix:semicolon
 id|a-&gt;automatic_lawPLCI
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 )brace
 r_break
@@ -27050,7 +27050,7 @@ id|plci
 suffix:semicolon
 id|a-&gt;automatic_lawPLCI
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 )brace
 r_break
@@ -27577,7 +27577,7 @@ id|PLCI
 op_star
 id|tplci
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|byte
 id|chi
@@ -28402,7 +28402,7 @@ id|plci
 suffix:semicolon
 id|a-&gt;automatic_lawPLCI
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 )brace
 )brace
@@ -28832,7 +28832,7 @@ suffix:semicolon
 id|SendSSExtInd
 c_func
 (paren
-l_int|0
+l_int|NULL
 comma
 id|plci
 comma
@@ -29272,7 +29272,7 @@ suffix:semicolon
 )brace
 id|plci-&gt;relatedPTYPLCI
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|plci-&gt;ptyState
 op_assign
@@ -30205,7 +30205,7 @@ id|S_CONF_ADD
 suffix:semicolon
 id|plci-&gt;relatedPTYPLCI
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|tplci
 op_assign
@@ -30432,7 +30432,7 @@ id|IDLE
 suffix:semicolon
 id|plci-&gt;relatedPTYPLCI
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|plci-&gt;ptyState
 op_assign
@@ -30508,7 +30508,7 @@ id|IDLE
 suffix:semicolon
 id|plci-&gt;relatedPTYPLCI
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|plci-&gt;ptyState
 op_assign
@@ -33796,7 +33796,7 @@ l_int|0
 comma
 id|tplci
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|i
 OL
@@ -33972,7 +33972,7 @@ id|SHIFT
 op_or
 l_int|6
 comma
-l_int|0
+l_int|NULL
 )paren
 suffix:semicolon
 id|add_p
@@ -34782,7 +34782,7 @@ suffix:colon
 id|SendSSExtInd
 c_func
 (paren
-l_int|0
+l_int|NULL
 comma
 id|plci
 comma
@@ -35493,7 +35493,7 @@ l_int|2
 suffix:semicolon
 id|Info_Element
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 r_break
 suffix:semicolon
@@ -41693,11 +41693,11 @@ l_int|0
 suffix:semicolon
 id|plci-&gt;appl
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|plci-&gt;relatedPTYPLCI
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|plci-&gt;State
 op_assign
@@ -53976,7 +53976,7 @@ id|SHIFT
 op_or
 l_int|6
 comma
-l_int|0
+l_int|NULL
 )paren
 suffix:semicolon
 id|add_p
@@ -55719,16 +55719,16 @@ l_int|0
 suffix:semicolon
 id|a-&gt;AdvCodecPLCI
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|a-&gt;AdvSignalAppl
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 )brace
 id|a-&gt;AdvSignalPLCI
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 )brace
 )brace
@@ -56346,7 +56346,7 @@ op_minus
 l_int|1
 )braket
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|a-&gt;requested_options_table
 (braket
@@ -56537,7 +56537,7 @@ id|this
 (brace
 id|plci-&gt;appl
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|plci_remove
 c_func
@@ -56640,7 +56640,7 @@ id|SHIFT
 op_or
 l_int|6
 comma
-l_int|0
+l_int|NULL
 )paren
 suffix:semicolon
 id|add_p
@@ -56732,11 +56732,11 @@ suffix:semicolon
 )brace
 id|a-&gt;AdvSignalAppl
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|a-&gt;AdvSignalPLCI
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|a-&gt;AdvCodecFLAG
 op_assign
@@ -56744,7 +56744,7 @@ l_int|0
 suffix:semicolon
 id|a-&gt;AdvCodecPLCI
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 )brace
 )brace
@@ -56893,7 +56893,7 @@ l_int|0
 suffix:semicolon
 id|plci-&gt;appl
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|plci-&gt;notifiedcall
 op_assign
@@ -61433,14 +61433,10 @@ DECL|variable|li_config_table
 id|LI_CONFIG
 op_star
 id|li_config_table
-op_assign
-l_int|0
 suffix:semicolon
 DECL|variable|li_total_channels
 id|word
 id|li_total_channels
-op_assign
-l_int|0
 suffix:semicolon
 multiline_comment|/*------------------------------------------------------------------*/
 multiline_comment|/* translate a CHI information element to a channel number          */
@@ -91127,7 +91123,7 @@ id|SHIFT
 op_or
 l_int|6
 comma
-l_int|0
+l_int|NULL
 )paren
 suffix:semicolon
 id|add_p
@@ -91693,7 +91689,7 @@ l_int|1
 suffix:semicolon
 id|pReq-&gt;xdi_dma_descriptor_operation.info.descriptor_address
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|pReq-&gt;xdi_dma_descriptor_operation.info.descriptor_magic
 op_assign
@@ -91843,7 +91839,7 @@ id|nr
 suffix:semicolon
 id|pReq-&gt;xdi_dma_descriptor_operation.info.descriptor_address
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|pReq-&gt;xdi_dma_descriptor_operation.info.descriptor_magic
 op_assign
