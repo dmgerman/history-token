@@ -140,22 +140,12 @@ DECL|macro|TASK_DEAD
 mdefine_line|#define TASK_DEAD&t;&t;16
 DECL|macro|__set_task_state
 mdefine_line|#define __set_task_state(tsk, state_value)&t;&t;&bslash;&n;&t;do { (tsk)-&gt;state = (state_value); } while (0)
-macro_line|#ifdef CONFIG_SMP
 DECL|macro|set_task_state
 mdefine_line|#define set_task_state(tsk, state_value)&t;&t;&bslash;&n;&t;set_mb((tsk)-&gt;state, (state_value))
-macro_line|#else
-DECL|macro|set_task_state
-mdefine_line|#define set_task_state(tsk, state_value)&t;&t;&bslash;&n;&t;__set_task_state((tsk), (state_value))
-macro_line|#endif
 DECL|macro|__set_current_state
 mdefine_line|#define __set_current_state(state_value)&t;&t;&t;&bslash;&n;&t;do { current-&gt;state = (state_value); } while (0)
-macro_line|#ifdef CONFIG_SMP
 DECL|macro|set_current_state
 mdefine_line|#define set_current_state(state_value)&t;&t;&bslash;&n;&t;set_mb(current-&gt;state, (state_value))
-macro_line|#else
-DECL|macro|set_current_state
-mdefine_line|#define set_current_state(state_value)&t;&t;&bslash;&n;&t;__set_current_state(state_value)
-macro_line|#endif
 multiline_comment|/*&n; * Scheduling policies&n; */
 DECL|macro|SCHED_NORMAL
 mdefine_line|#define SCHED_NORMAL&t;&t;0

@@ -281,6 +281,10 @@ DECL|macro|mb
 mdefine_line|#define mb()  __asm__ __volatile__ (&quot;sync&quot; : : :&quot;memory&quot;)
 DECL|macro|wmb
 mdefine_line|#define wmb() mb()
+DECL|macro|set_mb
+mdefine_line|#define set_mb(var, value)  do { var = value; mb(); } while (0)
+DECL|macro|set_wmb
+mdefine_line|#define set_wmb(var, value) do { var = value; wmb(); } while (0)
 r_extern
 r_int
 r_int

@@ -139,6 +139,10 @@ DECL|macro|rmb
 mdefine_line|#define rmb() mb()
 DECL|macro|wmb
 mdefine_line|#define wmb() mb()
+DECL|macro|set_mb
+mdefine_line|#define set_mb(var, value)  do { var = value; mb(); } while (0)
+DECL|macro|set_wmb
+mdefine_line|#define set_wmb(var, value) do { var = value; wmb(); } while (0)
 DECL|macro|nop
 mdefine_line|#define nop() __asm__ __volatile__(&quot;mov&bslash;tr0,r0&bslash;t@ nop&bslash;n&bslash;t&quot;);
 DECL|macro|prepare_to_switch
