@@ -30,7 +30,7 @@ suffix:semicolon
 id|MODULE_DESCRIPTION
 c_func
 (paren
-l_string|&quot;Supports Dell PERC2, 2/Si, 3/Si, 3/Di, Adaptec 2120S, 2200S, 5400S, and HP NetRAID-4M devices. http://domsch.com/linux/ or http://linux.adaptec.com&quot;
+l_string|&quot;Supports Dell PERC2, 2/Si, 3/Si, 3/Di, PERC 320/DC, Adaptec 2120S, 2200S, 5400S, and HP NetRAID-4M devices. http://domsch.com/linux/ or http://linux.adaptec.com&quot;
 )paren
 suffix:semicolon
 id|MODULE_LICENSE
@@ -391,6 +391,27 @@ l_int|2
 )brace
 comma
 multiline_comment|/* Adaptec 2200S (Vulcan-2m)*/
+(brace
+l_int|0x9005
+comma
+l_int|0x0285
+comma
+l_int|0x1028
+comma
+l_int|0x0287
+comma
+id|aac_rx_init
+comma
+l_string|&quot;percraid&quot;
+comma
+l_string|&quot;DELL    &quot;
+comma
+l_string|&quot;PERCRAID        &quot;
+comma
+l_int|2
+)brace
+comma
+multiline_comment|/* Dell PERC 320/DC */
 (brace
 l_int|0x1011
 comma
