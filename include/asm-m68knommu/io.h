@@ -98,6 +98,18 @@ DECL|macro|writew
 mdefine_line|#define writew(b,addr) (void)((*(volatile unsigned short *) (addr)) = (b))
 DECL|macro|writel
 mdefine_line|#define writel(b,addr) (void)((*(volatile unsigned int *) (addr)) = (b))
+DECL|macro|__raw_readb
+mdefine_line|#define __raw_readb readb
+DECL|macro|__raw_readw
+mdefine_line|#define __raw_readw readw
+DECL|macro|__raw_readl
+mdefine_line|#define __raw_readl readl
+DECL|macro|__raw_writeb
+mdefine_line|#define __raw_writeb writeb
+DECL|macro|__raw_writew
+mdefine_line|#define __raw_writew writew
+DECL|macro|__raw_writel
+mdefine_line|#define __raw_writel writel
 DECL|function|io_outsb
 r_static
 r_inline
@@ -476,7 +488,7 @@ mdefine_line|#define memcpy_fromio(a,b,c)&t;memcpy((a),(void *)(b),(c))
 DECL|macro|memcpy_toio
 mdefine_line|#define memcpy_toio(a,b,c)&t;memcpy((void *)(a),(b),(c))
 DECL|macro|inb
-mdefine_line|#define inb(addr)      readb(addr)
+mdefine_line|#define inb(addr)    readb(addr)
 DECL|macro|inw
 mdefine_line|#define inw(addr)    readw(addr)
 DECL|macro|inl
