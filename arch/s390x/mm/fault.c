@@ -390,7 +390,7 @@ op_logical_neg
 (paren
 id|regs-&gt;psw.mask
 op_amp
-id|PSW_PROBLEM_STATE
+id|PSW_MASK_PSTATE
 )paren
 )paren
 (brace
@@ -663,7 +663,7 @@ c_cond
 (paren
 id|regs-&gt;psw.mask
 op_amp
-id|PSW_PROBLEM_STATE
+id|PSW_MASK_PSTATE
 )paren
 (brace
 id|tsk-&gt;thread.prot_addr
@@ -800,7 +800,7 @@ c_cond
 (paren
 id|regs-&gt;psw.mask
 op_amp
-id|PSW_PROBLEM_STATE
+id|PSW_MASK_PSTATE
 )paren
 id|do_exit
 c_func
@@ -845,7 +845,7 @@ op_logical_neg
 (paren
 id|regs-&gt;psw.mask
 op_amp
-id|PSW_PROBLEM_STATE
+id|PSW_MASK_PSTATE
 )paren
 )paren
 r_goto
@@ -1292,7 +1292,7 @@ c_cond
 (paren
 id|regs-&gt;psw.mask
 op_amp
-id|PSW_PROBLEM_STATE
+id|PSW_MASK_PSTATE
 )paren
 id|local_irq_enable
 c_func

@@ -115,10 +115,18 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
-multiline_comment|/* &n;&t; * Wait for external, I/O or machine check interrupt and&n;&t; * switch of machine check bit after the wait has ended.&n;&t; */
+multiline_comment|/* &n;&t; * Wait for external, I/O or machine check interrupt and&n;&t; * switch off machine check bit after the wait has ended.&n;&t; */
 id|wait_psw.mask
 op_assign
-id|_WAIT_PSW_MASK
+id|PSW_KERNEL_BITS
+op_or
+id|PSW_MASK_MCHECK
+op_or
+id|PSW_MASK_WAIT
+op_or
+id|PSW_MASK_IO
+op_or
+id|PSW_MASK_EXT
 suffix:semicolon
 id|asm
 r_volatile
@@ -260,7 +268,7 @@ op_logical_neg
 (paren
 id|regs-&gt;psw.mask
 op_amp
-id|PSW_PROBLEM_STATE
+id|PSW_MASK_PSTATE
 )paren
 )paren
 id|show_trace
@@ -349,7 +357,7 @@ id|regs
 suffix:semicolon
 id|regs.psw.mask
 op_assign
-id|_SVC_PSW_MASK
+id|PSW_KERNEL_BITS
 suffix:semicolon
 id|regs.psw.addr
 op_assign
@@ -358,7 +366,7 @@ id|__u32
 )paren
 id|kernel_thread_starter
 op_or
-id|_ADDR_31
+id|PSW_ADDR_AMODE31
 suffix:semicolon
 id|regs.gprs
 (braket

@@ -17,18 +17,9 @@ macro_line|#include &lt;linux/binfmts.h&gt;
 macro_line|#include &lt;asm/ucontext.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &quot;linux32.h&quot;
+macro_line|#include &quot;ptrace32.h&quot;
 DECL|macro|_BLOCKABLE
 mdefine_line|#define _BLOCKABLE (~(sigmask(SIGKILL) | sigmask(SIGSTOP)))
-DECL|macro|_ADDR_31
-mdefine_line|#define _ADDR_31 0x80000000
-DECL|macro|_USER_PSW_MASK_EMU32
-mdefine_line|#define _USER_PSW_MASK_EMU32 0x070DC000
-DECL|macro|_USER_PSW_MASK32
-mdefine_line|#define _USER_PSW_MASK32 0x0705C00080000000
-DECL|macro|PSW_MASK_DEBUGCHANGE32
-mdefine_line|#define PSW_MASK_DEBUGCHANGE32 0x00003000UL
-DECL|macro|PSW_ADDR_DEBUGCHANGE32
-mdefine_line|#define PSW_ADDR_DEBUGCHANGE32 0x7FFFFFFFUL
 r_typedef
 r_struct
 (brace
@@ -1669,24 +1660,24 @@ id|i
 suffix:semicolon
 id|regs32.psw.mask
 op_assign
-id|_USER_PSW_MASK_EMU32
+id|PSW32_USER_BITS
 op_or
+(paren
 (paren
 id|__u32
 )paren
 (paren
-(paren
 id|regs-&gt;psw.mask
-op_amp
-id|PSW_MASK_DEBUGCHANGE
-)paren
 op_rshift
 l_int|32
+)paren
+op_amp
+id|PSW32_MASK_CC
 )paren
 suffix:semicolon
 id|regs32.psw.addr
 op_assign
-id|_ADDR_31
+id|PSW32_ADDR_AMODE31
 op_or
 (paren
 id|__u32
@@ -1834,7 +1825,7 @@ id|err
 suffix:semicolon
 id|regs-&gt;psw.mask
 op_assign
-id|_USER_PSW_MASK32
+id|PSW_USER32_BITS
 op_or
 (paren
 id|__u64
@@ -1842,7 +1833,7 @@ id|__u64
 (paren
 id|regs32.psw.mask
 op_amp
-id|PSW_MASK_DEBUGCHANGE32
+id|PSW32_MASK_CC
 )paren
 op_lshift
 l_int|32
@@ -1855,7 +1846,7 @@ id|__u64
 (paren
 id|regs32.psw.addr
 op_amp
-id|PSW_ADDR_DEBUGCHANGE32
+id|PSW32_ADDR_INSN
 )paren
 suffix:semicolon
 r_for
@@ -2608,11 +2599,10 @@ id|regs-&gt;gprs
 l_int|14
 )braket
 op_assign
-id|FIX_PSW
-c_func
 (paren
-id|ka-&gt;sa.sa_restorer
+id|__u64
 )paren
+id|ka-&gt;sa.sa_restorer
 suffix:semicolon
 )brace
 r_else
@@ -2622,11 +2612,10 @@ id|regs-&gt;gprs
 l_int|14
 )braket
 op_assign
-id|FIX_PSW
-c_func
 (paren
-id|frame-&gt;retcode
+id|__u64
 )paren
+id|frame-&gt;retcode
 suffix:semicolon
 r_if
 c_cond
@@ -2681,21 +2670,20 @@ l_int|15
 )braket
 op_assign
 (paren
-id|addr_t
+id|__u64
 )paren
 id|frame
 suffix:semicolon
 id|regs-&gt;psw.addr
 op_assign
-id|FIX_PSW
-c_func
 (paren
-id|ka-&gt;sa.sa_handler
+id|__u64
 )paren
+id|ka-&gt;sa.sa_handler
 suffix:semicolon
 id|regs-&gt;psw.mask
 op_assign
-id|_USER_PSW_MASK32
+id|PSW_USER32_BITS
 suffix:semicolon
 id|regs-&gt;gprs
 (braket
@@ -2714,7 +2702,7 @@ l_int|3
 )braket
 op_assign
 (paren
-id|addr_t
+id|__u64
 )paren
 op_amp
 id|frame-&gt;sc
@@ -2956,11 +2944,10 @@ id|regs-&gt;gprs
 l_int|14
 )braket
 op_assign
-id|FIX_PSW
-c_func
 (paren
-id|ka-&gt;sa.sa_restorer
+id|__u64
 )paren
+id|ka-&gt;sa.sa_restorer
 suffix:semicolon
 )brace
 r_else
@@ -2970,11 +2957,10 @@ id|regs-&gt;gprs
 l_int|14
 )braket
 op_assign
-id|FIX_PSW
-c_func
 (paren
-id|frame-&gt;retcode
+id|__u64
 )paren
+id|frame-&gt;retcode
 suffix:semicolon
 id|err
 op_or_assign
@@ -3025,21 +3011,20 @@ l_int|15
 )braket
 op_assign
 (paren
-id|addr_t
+id|__u64
 )paren
 id|frame
 suffix:semicolon
 id|regs-&gt;psw.addr
 op_assign
-id|FIX_PSW
-c_func
 (paren
-id|ka-&gt;sa.sa_handler
+id|__u64
 )paren
+id|ka-&gt;sa.sa_handler
 suffix:semicolon
 id|regs-&gt;psw.mask
 op_assign
-id|_USER_PSW_MASK32
+id|PSW_USER32_BITS
 suffix:semicolon
 id|regs-&gt;gprs
 (braket
@@ -3058,7 +3043,7 @@ l_int|3
 )braket
 op_assign
 (paren
-id|addr_t
+id|__u64
 )paren
 op_amp
 id|frame-&gt;info
@@ -3069,7 +3054,7 @@ l_int|4
 )braket
 op_assign
 (paren
-id|addr_t
+id|__u64
 )paren
 op_amp
 id|frame-&gt;uc

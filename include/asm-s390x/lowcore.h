@@ -76,47 +76,6 @@ DECL|macro|__LC_CREGS_SAVE_AREA
 mdefine_line|#define __LC_CREGS_SAVE_AREA            0x1380
 DECL|macro|__LC_PFAULT_INTPARM
 mdefine_line|#define __LC_PFAULT_INTPARM             0x11B8
-multiline_comment|/* interrupt handler start with all io, external and mcck interrupt disabled */
-DECL|macro|_RESTART_PSW_MASK
-mdefine_line|#define _RESTART_PSW_MASK    0x0000000180000000
-DECL|macro|_EXT_PSW_MASK
-mdefine_line|#define _EXT_PSW_MASK        0x0400000180000000
-DECL|macro|_PGM_PSW_MASK
-mdefine_line|#define _PGM_PSW_MASK        0x0400000180000000
-DECL|macro|_SVC_PSW_MASK
-mdefine_line|#define _SVC_PSW_MASK        0x0400000180000000
-DECL|macro|_MCCK_PSW_MASK
-mdefine_line|#define _MCCK_PSW_MASK       0x0400000180000000
-DECL|macro|_IO_PSW_MASK
-mdefine_line|#define _IO_PSW_MASK         0x0400000180000000
-DECL|macro|_USER_PSW_MASK
-mdefine_line|#define _USER_PSW_MASK       0x0705C00180000000
-DECL|macro|_WAIT_PSW_MASK
-mdefine_line|#define _WAIT_PSW_MASK       0x0706000180000000
-DECL|macro|_DW_PSW_MASK
-mdefine_line|#define _DW_PSW_MASK         0x0002000180000000
-DECL|macro|_PRIMARY_MASK
-mdefine_line|#define _PRIMARY_MASK        0x0000    /* MASK for SACF                    */
-DECL|macro|_SECONDARY_MASK
-mdefine_line|#define _SECONDARY_MASK      0x0100    /* MASK for SACF                    */
-DECL|macro|_ACCESS_MASK
-mdefine_line|#define _ACCESS_MASK         0x0200    /* MASK for SACF                    */
-DECL|macro|_HOME_MASK
-mdefine_line|#define _HOME_MASK           0x0300    /* MASK for SACF                    */
-DECL|macro|_PSW_PRIM_SPACE_MODE
-mdefine_line|#define _PSW_PRIM_SPACE_MODE 0x0000000000000000
-DECL|macro|_PSW_SEC_SPACE_MODE
-mdefine_line|#define _PSW_SEC_SPACE_MODE  0x0000800000000000
-DECL|macro|_PSW_ACC_REG_MODE
-mdefine_line|#define _PSW_ACC_REG_MODE    0x0000400000000000
-DECL|macro|_PSW_HOME_SPACE_MODE
-mdefine_line|#define _PSW_HOME_SPACE_MODE 0x0000C00000000000
-DECL|macro|_PSW_WAIT_MASK_BIT
-mdefine_line|#define _PSW_WAIT_MASK_BIT   0x0002000000000000
-DECL|macro|_PSW_IO_MASK_BIT
-mdefine_line|#define _PSW_IO_MASK_BIT     0x0200000000000000
-DECL|macro|_PSW_IO_WAIT
-mdefine_line|#define _PSW_IO_WAIT         0x0202000000000000
 macro_line|#ifndef __ASSEMBLY__
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;asm/processor.h&gt;
