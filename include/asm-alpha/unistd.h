@@ -535,10 +535,10 @@ DECL|macro|__NR_query_module
 mdefine_line|#define __NR_query_module&t;&t;347
 DECL|macro|__NR_prctl
 mdefine_line|#define __NR_prctl&t;&t;&t;348
-DECL|macro|__NR_pread
-mdefine_line|#define __NR_pread&t;&t;&t;349
-DECL|macro|__NR_pwrite
-mdefine_line|#define __NR_pwrite&t;&t;&t;350
+DECL|macro|__NR_pread64
+mdefine_line|#define __NR_pread64&t;&t;&t;349
+DECL|macro|__NR_pwrite64
+mdefine_line|#define __NR_pwrite64&t;&t;&t;350
 DECL|macro|__NR_rt_sigreturn
 mdefine_line|#define __NR_rt_sigreturn&t;&t;351
 DECL|macro|__NR_rt_sigaction
