@@ -2,6 +2,7 @@ macro_line|#ifndef _ASM_IA64_UACCESS_H
 DECL|macro|_ASM_IA64_UACCESS_H
 mdefine_line|#define _ASM_IA64_UACCESS_H
 multiline_comment|/*&n; * This file defines various macros to transfer memory areas across&n; * the user/kernel boundary.  This needs to be done carefully because&n; * this code is executed in kernel mode and uses user-specified&n; * addresses.  Thus, we need to be careful not to let the user to&n; * trick us into accessing kernel memory that would normally be&n; * inaccessible.  This code is also fairly performance sensitive,&n; * so we want to spend as little time doing safety checks as&n; * possible.&n; *&n; * To make matters a bit more interesting, these macros sometimes also&n; * called from within the kernel itself, in which case the address&n; * validity check must be skipped.  The get_fs() macro tells us what&n; * to do: if get_fs()==USER_DS, checking is performed, if&n; * get_fs()==KERNEL_DS, checking is bypassed.&n; *&n; * Note that even if the memory area specified by the user is in a&n; * valid address range, it is still possible that we&squot;ll get a page&n; * fault while accessing it.  This is handled by filling out an&n; * exception handler fixup entry for each instruction that has the&n; * potential to fault.  When such a fault occurs, the page fault&n; * handler checks to see whether the faulting instruction has a fixup&n; * associated and, if so, sets r8 to -EFAULT and clears r9 to 0 and&n; * then resumes execution at the continuation point.&n; *&n; * Copyright (C) 1998, 1999, 2001-2003 Hewlett-Packard Co&n; *&t;David Mosberger-Tang &lt;davidm@hpl.hp.com&gt;&n; */
+macro_line|#include &lt;linux/compiler.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;asm/intrinsics.h&gt;
@@ -25,7 +26,7 @@ DECL|macro|segment_eq
 mdefine_line|#define segment_eq(a,b)&t;((a).seg == (b).seg)
 multiline_comment|/*&n; * When accessing user memory, we need to make sure the entire area really is in&n; * user-level space.  In order to do this efficiently, we make sure that the page at&n; * address TASK_SIZE is never valid.  We also need to make sure that the address doesn&squot;t&n; * point inside the virtually mapped linear page table.&n; */
 DECL|macro|__access_ok
-mdefine_line|#define __access_ok(addr,size,segment)&t;(((unsigned long) (addr)) &lt;= (segment).seg&t;&bslash;&n;&t; &amp;&amp; ((segment).seg == KERNEL_DS.seg&t;&t;&t;&t;&t;&t;&bslash;&n;&t;     || REGION_OFFSET((unsigned long) (addr)) &lt; RGN_MAP_LIMIT))
+mdefine_line|#define __access_ok(addr,size,segment)&t;&t;&t;&t;&t;&t;&bslash;&n;&t;likely(((unsigned long) (addr)) &lt;= (segment).seg&t;&t;&t;&bslash;&n;&t;       &amp;&amp; ((segment).seg == KERNEL_DS.seg&t;&t;&t;&t;&bslash;&n;&t;&t;   || REGION_OFFSET((unsigned long) (addr)) &lt; RGN_MAP_LIMIT))
 DECL|macro|access_ok
 mdefine_line|#define access_ok(type,addr,size)&t;__access_ok((addr),(size),get_fs())
 r_static

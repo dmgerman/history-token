@@ -4,7 +4,6 @@ DECL|macro|_ASM_SN_XTALK_XSWITCH_H
 mdefine_line|#define _ASM_SN_XTALK_XSWITCH_H
 multiline_comment|/*&n; * xswitch.h - controls the format of the data&n; * provided by xswitch verticies back to the&n; * xtalk bus providers.&n; */
 macro_line|#ifndef __ASSEMBLY__
-macro_line|#include &lt;linux/devfs_fs_kernel.h&gt;
 macro_line|#include &lt;asm/sn/xtalk/xtalk.h&gt;
 DECL|typedef|xswitch_info_t
 r_typedef

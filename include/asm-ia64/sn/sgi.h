@@ -6,7 +6,6 @@ macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;asm/sn/types.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;&t;&t;/* for copy_??_user */
 macro_line|#include &lt;linux/mm.h&gt;
-macro_line|#include &lt;linux/devfs_fs_kernel.h&gt;
 macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;asm/sn/hwgfs.h&gt;
 DECL|typedef|vertex_hdl_t

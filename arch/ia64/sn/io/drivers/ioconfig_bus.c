@@ -6,8 +6,6 @@ macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;asm/sn/sgi.h&gt;
-macro_line|#include &lt;linux/devfs_fs.h&gt;
-macro_line|#include &lt;linux/devfs_fs_kernel.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/sn/iograph.h&gt;
 macro_line|#include &lt;asm/sn/invent.h&gt;
@@ -1297,7 +1295,7 @@ id|ioconfig_bus_close
 multiline_comment|/* release */
 )brace
 suffix:semicolon
-multiline_comment|/*&n; * init_ifconfig_bus() - Boot time initialization.  Ensure that it is called &n; *&t;after devfs has been initialized.&n; *&n; */
+multiline_comment|/*&n; * init_ifconfig_bus() - Boot time initialization.  Ensure that it is called &n; *&t;after hwgfs has been initialized.&n; *&n; */
 DECL|function|init_ioconfig_bus
 r_int
 id|init_ioconfig_bus
