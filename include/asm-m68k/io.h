@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * linux/include/asm-m68k/io.h &n; *&n; * 4/1/00 RZ: - rewritten to avoid clashes between ISA/PCI and other&n; *              IO access&n; *            - added Q40 support&n; *            - added skeleton for GG-II and Amiga PCMCIA&n; * 2/3/01 RZ: - moved a few more defs into raw_io.h&n; *&n; * inX/outX/readX/writeX should not be used by any driver unless it does&n; * ISA or PCI access. Other drivers should use function defined in raw_io.h&n; * or define its own macros on top of these.&n; *&n; *    inX(),outX()              are for PCI and ISA I/O&n; *    readX(),writeX()          are for PCI memory&n; *    isa_readX(),isa_writeX()  are for ISA memory&n; *&n; * moved mem{cpy,set}_*io inside CONFIG_PCI&n; */
+multiline_comment|/*&n; * linux/include/asm-m68k/io.h&n; *&n; * 4/1/00 RZ: - rewritten to avoid clashes between ISA/PCI and other&n; *              IO access&n; *            - added Q40 support&n; *            - added skeleton for GG-II and Amiga PCMCIA&n; * 2/3/01 RZ: - moved a few more defs into raw_io.h&n; *&n; * inX/outX/readX/writeX should not be used by any driver unless it does&n; * ISA or PCI access. Other drivers should use function defined in raw_io.h&n; * or define its own macros on top of these.&n; *&n; *    inX(),outX()              are for PCI and ISA I/O&n; *    readX(),writeX()          are for PCI memory&n; *    isa_readX(),isa_writeX()  are for ISA memory&n; *&n; * moved mem{cpy,set}_*io inside CONFIG_PCI&n; */
 macro_line|#ifndef _IO_H
 DECL|macro|_IO_H
 mdefine_line|#define _IO_H
@@ -44,7 +44,7 @@ mdefine_line|#define GG2_ISA_MEM_W(madr)  (gg2_isa_base+  (((unsigned long)(madr
 macro_line|#ifndef MULTI_ISA
 DECL|macro|MULTI_ISA
 mdefine_line|#define MULTI_ISA 0
-macro_line|#else 
+macro_line|#else
 DECL|macro|MULTI_ISA
 macro_line|#undef MULTI_ISA
 DECL|macro|MULTI_ISA
@@ -60,7 +60,7 @@ mdefine_line|#define AG_ISA_IO_W(ioaddr) ( GAYLE_IO+(ioaddr) )
 macro_line|#ifndef MULTI_ISA
 DECL|macro|MULTI_ISA
 mdefine_line|#define MULTI_ISA 0
-macro_line|#else 
+macro_line|#else
 DECL|macro|MULTI_ISA
 macro_line|#undef MULTI_ISA
 DECL|macro|MULTI_ISA
@@ -89,7 +89,7 @@ DECL|macro|ISA_TYPE
 mdefine_line|#define ISA_TYPE AG_ISA
 DECL|macro|ISA_SEX
 mdefine_line|#define ISA_SEX  1
-macro_line|#endif 
+macro_line|#endif
 macro_line|#if defined(CONFIG_GG2) &amp;&amp; !defined(MULTI_ISA)
 DECL|macro|ISA_TYPE
 mdefine_line|#define ISA_TYPE GG2_ISA
@@ -480,7 +480,7 @@ mdefine_line|#define isa_insw(port, buf, nr)     &bslash;&n;       (ISA_SEX ? ra
 DECL|macro|isa_outsw
 mdefine_line|#define isa_outsw(port, buf, nr)    &bslash;&n;       (ISA_SEX ? raw_outsw(isa_itw(port), (buf), (nr)) :  &bslash;&n;                  raw_outsw_swapw(isa_itw(port), (buf), (nr)))
 macro_line|#endif  /* CONFIG_ISA */
-macro_line|#if defined(CONFIG_ISA) &amp;&amp; !defined(CONFIG_PCI) 
+macro_line|#if defined(CONFIG_ISA) &amp;&amp; !defined(CONFIG_PCI)
 DECL|macro|inb
 mdefine_line|#define inb     isa_inb
 DECL|macro|inb_p
@@ -548,7 +548,7 @@ mdefine_line|#define inw(port)      in_le16(port)
 DECL|macro|outw
 mdefine_line|#define outw(val,port) out_le16((port),(val))
 macro_line|#else
-multiline_comment|/*&n; * kernel with both ISA and PCI compiled in, those have &n; * conflicting defs for in/out. Simply consider port &lt; 1024 &n; * ISA and everything else PCI. read,write not defined&n; * in this case&n; */
+multiline_comment|/*&n; * kernel with both ISA and PCI compiled in, those have&n; * conflicting defs for in/out. Simply consider port &lt; 1024&n; * ISA and everything else PCI. read,write not defined&n; * in this case&n; */
 DECL|macro|inb
 mdefine_line|#define inb(port) ((port)&lt;1024 ? isa_inb(port) : in_8(port))
 DECL|macro|inb_p

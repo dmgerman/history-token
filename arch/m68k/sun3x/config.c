@@ -173,7 +173,7 @@ op_star
 id|SUN3X_INTREG
 suffix:semicolon
 multiline_comment|/* only the serial console is known to work anyway... */
-macro_line|#if 0    
+macro_line|#if 0
 r_switch
 c_cond
 (paren

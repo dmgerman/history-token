@@ -1665,7 +1665,7 @@ id|paddr
 comma
 id|i
 suffix:semicolon
-multiline_comment|/*&n;   * 68060 manual says: &n;   *  cpush %dc : flush DC, remains valid (with our %cacr setup)&n;   *  cpush %ic : invalidate IC&n;   *  cpush %bc : flush DC + invalidate IC&n;   */
+multiline_comment|/*&n;   * 68060 manual says:&n;   *  cpush %dc : flush DC, remains valid (with our %cacr setup)&n;   *  cpush %ic : invalidate IC&n;   *  cpush %bc : flush DC + invalidate IC&n;   */
 r_switch
 c_cond
 (paren

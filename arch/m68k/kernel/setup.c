@@ -345,7 +345,7 @@ op_assign
 l_int|0x00ffffff
 suffix:semicolon
 multiline_comment|/* default set to the lower 16MB */
-macro_line|#if defined(CONFIG_AMIGA_FLOPPY) || defined(CONFIG_ATARI_FLOPPY) 
+macro_line|#if defined(CONFIG_AMIGA_FLOPPY) || defined(CONFIG_ATARI_FLOPPY)
 r_void
 (paren
 op_star
@@ -1108,7 +1108,7 @@ id|zero
 )paren
 suffix:semicolon
 )brace
-macro_line|#endif&t;
+macro_line|#endif
 id|init_mm.start_code
 op_assign
 id|PAGE_OFFSET
@@ -1788,7 +1788,7 @@ c_func
 suffix:semicolon
 multiline_comment|/* set ISA defs early as possible */
 macro_line|#if defined(CONFIG_ISA) &amp;&amp; defined(MULTI_ISA)
-macro_line|#if defined(CONFIG_Q40) 
+macro_line|#if defined(CONFIG_Q40)
 r_if
 c_cond
 (paren

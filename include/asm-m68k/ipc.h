@@ -1,7 +1,7 @@
 macro_line|#ifndef __m68k_IPC_H__
 DECL|macro|__m68k_IPC_H__
 mdefine_line|#define __m68k_IPC_H__
-multiline_comment|/* &n; * These are used to wrap system calls on m68k.&n; *&n; * See arch/m68k/kernel/sys_m68k.c for ugly details..&n; */
+multiline_comment|/*&n; * These are used to wrap system calls on m68k.&n; *&n; * See arch/m68k/kernel/sys_m68k.c for ugly details..&n; */
 DECL|struct|ipc_kludge
 r_struct
 id|ipc_kludge

@@ -445,7 +445,7 @@ id|addr
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* sun3_map_test(addr, val) -- Reads a byte from addr, storing to val,&n; * trapping the potential read fault.  Returns 0 if the access faulted,&n; * 1 on success.&n; *  &n; * This function is primarily used to check addresses on the VME bus.&n; *&n; * Mucking with the page fault handler seems a little hackish to me, but&n; * SunOS, NetBSD, and Mach all implemented this check in such a manner, &n; * so I figure we&squot;re allowed.&n; */
+multiline_comment|/* sun3_map_test(addr, val) -- Reads a byte from addr, storing to val,&n; * trapping the potential read fault.  Returns 0 if the access faulted,&n; * 1 on success.&n; *&n; * This function is primarily used to check addresses on the VME bus.&n; *&n; * Mucking with the page fault handler seems a little hackish to me, but&n; * SunOS, NetBSD, and Mach all implemented this check in such a manner,&n; * so I figure we&squot;re allowed.&n; */
 DECL|function|sun3_map_test
 r_int
 id|sun3_map_test

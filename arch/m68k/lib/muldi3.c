@@ -1,4 +1,4 @@
-multiline_comment|/* muldi3.c extracted from gcc-2.7.2.3/libgcc2.c and &n;&t;&t;&t;   gcc-2.7.2.3/longlong.h which is: */
+multiline_comment|/* muldi3.c extracted from gcc-2.7.2.3/libgcc2.c and&n;&t;&t;&t;   gcc-2.7.2.3/longlong.h which is: */
 multiline_comment|/* Copyright (C) 1989, 1992, 1993, 1994, 1995 Free Software Foundation, Inc.&n;&n;This file is part of GNU CC.&n;&n;GNU CC is free software; you can redistribute it and/or modify&n;it under the terms of the GNU General Public License as published by&n;the Free Software Foundation; either version 2, or (at your option)&n;any later version.&n;&n;GNU CC is distributed in the hope that it will be useful,&n;but WITHOUT ANY WARRANTY; without even the implied warranty of&n;MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n;GNU General Public License for more details.&n;&n;You should have received a copy of the GNU General Public License&n;along with GNU CC; see the file COPYING.  If not, write to&n;the Free Software Foundation, 59 Temple Place - Suite 330,&n;Boston, MA 02111-1307, USA.  */
 DECL|macro|BITS_PER_UNIT
 mdefine_line|#define BITS_PER_UNIT 8

@@ -5,9 +5,9 @@ macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;asm/traps.h&gt;
-macro_line|#include &lt;asm/bootinfo.h&gt; 
-macro_line|#include &lt;asm/macintosh.h&gt; 
-macro_line|#include &lt;asm/macints.h&gt; 
+macro_line|#include &lt;asm/bootinfo.h&gt;
+macro_line|#include &lt;asm/macintosh.h&gt;
+macro_line|#include &lt;asm/macints.h&gt;
 macro_line|#include &lt;asm/mac_psc.h&gt;
 DECL|macro|DEBUG_PSC
 mdefine_line|#define DEBUG_PSC

@@ -276,7 +276,7 @@ mdefine_line|#define MAC_SCC_QUADRA&t;&t;3
 DECL|macro|MAC_SCC_PSC
 mdefine_line|#define MAC_SCC_PSC&t;&t;4
 DECL|macro|MAC_ETHER_NONE
-mdefine_line|#define MAC_ETHER_NONE&t;&t;0&t;
+mdefine_line|#define MAC_ETHER_NONE&t;&t;0
 DECL|macro|MAC_ETHER_SONIC
 mdefine_line|#define MAC_ETHER_SONIC&t;&t;1
 DECL|macro|MAC_ETHER_MACE
@@ -329,7 +329,7 @@ mdefine_line|#define MAC_MODEL_PB160&t;&t;34
 DECL|macro|MAC_MODEL_Q800
 mdefine_line|#define MAC_MODEL_Q800&t;&t;35&t;/* aka: WGS80 */
 DECL|macro|MAC_MODEL_Q650
-mdefine_line|#define MAC_MODEL_Q650&t;&t;36 
+mdefine_line|#define MAC_MODEL_Q650&t;&t;36
 DECL|macro|MAC_MODEL_LCII
 mdefine_line|#define MAC_MODEL_LCII&t;&t;37&t;/* aka: P400/405/410/430 */
 DECL|macro|MAC_MODEL_PB250

@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: dvma.h,v 1.4 1999/03/27 20:23:41 tsbogend Exp $&n; * include/asm-m68k/dma.h&n; *&n; * Copyright 1995 (C) David S. Miller (davem@caip.rutgers.edu)&n; * &n; * Hacked to fit Sun3x needs by Thomas Bogendoerfer&n; */
+multiline_comment|/* $Id: dvma.h,v 1.4 1999/03/27 20:23:41 tsbogend Exp $&n; * include/asm-m68k/dma.h&n; *&n; * Copyright 1995 (C) David S. Miller (davem@caip.rutgers.edu)&n; *&n; * Hacked to fit Sun3x needs by Thomas Bogendoerfer&n; */
 macro_line|#ifndef __M68K_DVMA_H
 DECL|macro|__M68K_DVMA_H
 mdefine_line|#define __M68K_DVMA_H
@@ -113,7 +113,7 @@ DECL|macro|IOMMU_TOTAL_ENTRIES
 mdefine_line|#define IOMMU_TOTAL_ENTRIES 128
 DECL|macro|IOMMU_ENTRIES
 mdefine_line|#define IOMMU_ENTRIES 120
-multiline_comment|/* empirical kludge -- dvma regions only seem to work right on 0x10000 &n;   byte boundaries */
+multiline_comment|/* empirical kludge -- dvma regions only seem to work right on 0x10000&n;   byte boundaries */
 DECL|macro|DVMA_REGION_SIZE
 mdefine_line|#define DVMA_REGION_SIZE 0x10000
 DECL|macro|DVMA_ALIGN
@@ -203,7 +203,7 @@ r_int
 id|len
 )paren
 suffix:semicolon
-multiline_comment|/* everything below this line is specific to dma used for the onboard &n;   ESP scsi on sun3x */
+multiline_comment|/* everything below this line is specific to dma used for the onboard&n;   ESP scsi on sun3x */
 multiline_comment|/* Structure to describe the current status of DMA registers on the Sparc */
 DECL|struct|sparc_dma_registers
 r_struct

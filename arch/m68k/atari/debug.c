@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * linux/arch/m68k/atari/debug.c&n; *&n; * Atari debugging and serial console stuff&n; *&n; * Assembled of parts of former atari/config.c 97-12-18 by Roman Hodek&n; *  &n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file COPYING in the main directory of this archive&n; * for more details.&n; */
+multiline_comment|/*&n; * linux/arch/m68k/atari/debug.c&n; *&n; * Atari debugging and serial console stuff&n; *&n; * Assembled of parts of former atari/config.c 97-12-18 by Roman Hodek&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file COPYING in the main directory of this archive&n; * for more details.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/tty.h&gt;
@@ -1242,7 +1242,7 @@ op_assign
 l_int|1
 suffix:semicolon
 )brace
-macro_line|#ifndef CONFIG_SERIAL_CONSOLE 
+macro_line|#ifndef CONFIG_SERIAL_CONSOLE
 DECL|function|atari_init_midi_port
 r_static
 r_void

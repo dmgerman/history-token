@@ -83,7 +83,7 @@ id|paddr
 )paren
 suffix:semicolon
 )brace
-macro_line|#endif 
+macro_line|#endif
 macro_line|#ifdef CONFIG_SINGLE_MEMORY_CHUNK
 DECL|function|virt_to_phys
 r_static

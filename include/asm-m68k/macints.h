@@ -34,7 +34,7 @@ mdefine_line|#define BABOON_SOURCE_BASE&t;64
 multiline_comment|/*&n; * Maximum IRQ number is BABOON_SOURCE_BASE + 7,&n; * giving us IRQs up through 71&n; */
 DECL|macro|NUM_MAC_SOURCES
 mdefine_line|#define NUM_MAC_SOURCES&t;&t;72
-multiline_comment|/* &n; * clean way to separate IRQ into its source and index&n; */
+multiline_comment|/*&n; * clean way to separate IRQ into its source and index&n; */
 DECL|macro|IRQ_SRC
 mdefine_line|#define IRQ_SRC(irq)&t;(irq &gt;&gt; 3)
 DECL|macro|IRQ_IDX
@@ -64,7 +64,7 @@ mdefine_line|#define IRQ_VIA1_1        (9)&t;&t;/* VBlank int. */
 DECL|macro|IRQ_MAC_VBL
 mdefine_line|#define IRQ_MAC_VBL&t;  IRQ_VIA1_1
 DECL|macro|IRQ_VIA1_2
-mdefine_line|#define IRQ_VIA1_2 &t;  (10)&t;&t;/* ADB SR shifts complete */
+mdefine_line|#define IRQ_VIA1_2&t;  (10)&t;&t;/* ADB SR shifts complete */
 DECL|macro|IRQ_MAC_ADB
 mdefine_line|#define IRQ_MAC_ADB&t;  IRQ_VIA1_2
 DECL|macro|IRQ_MAC_ADB_SR
@@ -97,7 +97,7 @@ mdefine_line|#define IRQ_VIA2_1        (17)
 DECL|macro|IRQ_MAC_NUBUS
 mdefine_line|#define IRQ_MAC_NUBUS&t;  IRQ_VIA2_1
 DECL|macro|IRQ_VIA2_2
-mdefine_line|#define IRQ_VIA2_2 &t;  (18)
+mdefine_line|#define IRQ_VIA2_2&t;  (18)
 DECL|macro|IRQ_VIA2_3
 mdefine_line|#define IRQ_VIA2_3&t;  (19)
 DECL|macro|IRQ_MAC_SCSI
@@ -123,7 +123,7 @@ DECL|macro|IRQ_PSC3_3
 mdefine_line|#define IRQ_PSC3_3&t;  (27)
 multiline_comment|/* Level 4 (SCC) interrupts */
 DECL|macro|IRQ_SCC
-mdefine_line|#define IRQ_SCC &t;     (32)
+mdefine_line|#define IRQ_SCC&t;&t;     (32)
 DECL|macro|IRQ_SCCA
 mdefine_line|#define IRQ_SCCA&t;     (33)
 DECL|macro|IRQ_SCCB
