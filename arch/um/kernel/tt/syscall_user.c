@@ -143,7 +143,7 @@ l_int|1
 suffix:semicolon
 )brace
 DECL|function|do_syscall
-r_int
+r_void
 id|do_syscall
 c_func
 (paren
@@ -251,16 +251,7 @@ l_string|&quot;I&squot;m tracing myself and I can&squot;t get out&quot;
 )paren
 suffix:semicolon
 )brace
-r_if
-c_cond
-(paren
-id|local_using_sysemu
-)paren
-(brace
-r_return
-l_int|1
-suffix:semicolon
-)brace
+multiline_comment|/* syscall number -1 in sysemu skips syscall restarting in host */
 r_if
 c_cond
 (paren
@@ -273,6 +264,12 @@ id|pid
 comma
 id|PT_SYSCALL_NR_OFFSET
 comma
+id|local_using_sysemu
+ques
+c_cond
+op_minus
+l_int|1
+suffix:colon
 id|__NR_getpid
 )paren
 OL
@@ -289,9 +286,6 @@ id|errno
 )paren
 suffix:semicolon
 )brace
-r_return
-l_int|1
-suffix:semicolon
 )brace
 multiline_comment|/*&n; * Overrides for Emacs so that we follow Linus&squot;s tabbing style.&n; * Emacs will notice this stuff at the end of the file and automatically&n; * adjust the settings for this buffer only.  This must remain at the end&n; * of the file.&n; * ---------------------------------------------------------------------------&n; * Local variables:&n; * c-file-style: &quot;linux&quot;&n; * End:&n; */
 eof

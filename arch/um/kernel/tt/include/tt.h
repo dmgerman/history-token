@@ -159,7 +159,7 @@ id|task
 )paren
 suffix:semicolon
 r_extern
-r_int
+r_void
 id|do_syscall
 c_func
 (paren
