@@ -2930,7 +2930,7 @@ op_star
 r_char
 op_star
 )paren
-id|dev_priv-&gt;buffers-&gt;handle
+id|dev-&gt;agp_buffer_map-&gt;handle
 op_plus
 id|buf-&gt;offset
 op_plus
@@ -3099,7 +3099,7 @@ suffix:semicolon
 r_int
 id|offset
 op_assign
-id|dev_priv-&gt;buffers-&gt;offset
+id|dev-&gt;agp_buffer_map-&gt;offset
 op_minus
 id|dev_priv-&gt;cce_buffers_offset
 suffix:semicolon
@@ -3201,7 +3201,7 @@ op_star
 r_char
 op_star
 )paren
-id|dev_priv-&gt;buffers-&gt;handle
+id|dev-&gt;agp_buffer_map-&gt;handle
 op_plus
 id|buf-&gt;offset
 op_plus
@@ -3667,7 +3667,7 @@ op_star
 r_char
 op_star
 )paren
-id|dev_priv-&gt;buffers-&gt;handle
+id|dev-&gt;agp_buffer_map-&gt;handle
 op_plus
 id|buf-&gt;offset
 )paren
@@ -7564,6 +7564,13 @@ op_star
 id|dev
 )paren
 (brace
+id|dev-&gt;dev_priv_size
+op_assign
+r_sizeof
+(paren
+id|drm_r128_buf_priv_t
+)paren
+suffix:semicolon
 id|dev-&gt;fn_tbl.prerelease
 op_assign
 id|r128_driver_prerelease

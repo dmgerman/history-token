@@ -54,10 +54,5 @@ multiline_comment|/* Don&squot;t need an irq any more.  The template code will m
 multiline_comment|/* XXX: Add vblank support? */
 DECL|macro|__HAVE_IRQ
 mdefine_line|#define __HAVE_IRQ&t;&t;0
-multiline_comment|/* Buffer customization:&n; */
-DECL|macro|DRIVER_BUF_PRIV_T
-mdefine_line|#define DRIVER_BUF_PRIV_T&t;drm_i810_buf_priv_t
-DECL|macro|DRIVER_AGP_BUFFERS_MAP
-mdefine_line|#define DRIVER_AGP_BUFFERS_MAP( dev )&t;&t;&t;&t;&t;&bslash;&n;&t;((drm_i810_private_t *)((dev)-&gt;dev_private))-&gt;buffer_map
 macro_line|#endif
 eof

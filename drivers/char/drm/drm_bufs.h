@@ -10,18 +10,6 @@ macro_line|#ifndef __HAVE_SG
 DECL|macro|__HAVE_SG
 mdefine_line|#define __HAVE_SG&t;&t;0
 macro_line|#endif
-macro_line|#ifndef DRIVER_BUF_PRIV_T
-DECL|macro|DRIVER_BUF_PRIV_T
-mdefine_line|#define DRIVER_BUF_PRIV_T&t;&t;u32
-macro_line|#endif
-macro_line|#ifndef DRIVER_AGP_BUFFERS_MAP
-macro_line|#if __HAVE_AGP &amp;&amp; __HAVE_DMA
-macro_line|#error &quot;You must define DRIVER_AGP_BUFFERS_MAP()&quot;
-macro_line|#else
-DECL|macro|DRIVER_AGP_BUFFERS_MAP
-mdefine_line|#define DRIVER_AGP_BUFFERS_MAP( dev )&t;NULL
-macro_line|#endif
-macro_line|#endif
 multiline_comment|/**&n; * Compute size order.  Returns the exponent of the smaller power of two which&n; * is greater or equal to given number.&n; * &n; * &bslash;param size size.&n; * &bslash;return order.&n; *&n; * &bslash;todo Can be made faster.&n; */
 DECL|function|order
 r_int
@@ -1877,10 +1865,7 @@ l_int|NULL
 suffix:semicolon
 id|buf-&gt;dev_priv_size
 op_assign
-r_sizeof
-(paren
-id|DRIVER_BUF_PRIV_T
-)paren
+id|dev-&gt;dev_priv_size
 suffix:semicolon
 id|buf-&gt;dev_private
 op_assign
@@ -1890,10 +1875,7 @@ c_func
 id|alloc
 )paren
 (paren
-r_sizeof
-(paren
-id|DRIVER_BUF_PRIV_T
-)paren
+id|buf-&gt;dev_priv_size
 comma
 id|DRM_MEM_BUFS
 )paren
@@ -3089,10 +3071,7 @@ l_int|NULL
 suffix:semicolon
 id|buf-&gt;dev_priv_size
 op_assign
-r_sizeof
-(paren
-id|DRIVER_BUF_PRIV_T
-)paren
+id|dev-&gt;dev_priv_size
 suffix:semicolon
 id|buf-&gt;dev_private
 op_assign
@@ -3102,10 +3081,7 @@ c_func
 id|alloc
 )paren
 (paren
-r_sizeof
-(paren
-id|DRIVER_BUF_PRIV_T
-)paren
+id|dev-&gt;dev_priv_size
 comma
 id|DRM_MEM_BUFS
 )paren
@@ -4037,10 +4013,7 @@ l_int|NULL
 suffix:semicolon
 id|buf-&gt;dev_priv_size
 op_assign
-r_sizeof
-(paren
-id|DRIVER_BUF_PRIV_T
-)paren
+id|dev-&gt;dev_priv_size
 suffix:semicolon
 id|buf-&gt;dev_private
 op_assign
@@ -4050,10 +4023,7 @@ c_func
 id|alloc
 )paren
 (paren
-r_sizeof
-(paren
-id|DRIVER_BUF_PRIV_T
-)paren
+id|dev-&gt;dev_priv_size
 comma
 id|DRM_MEM_BUFS
 )paren
@@ -5467,11 +5437,7 @@ id|drm_map_t
 op_star
 id|map
 op_assign
-id|DRIVER_AGP_BUFFERS_MAP
-c_func
-(paren
-id|dev
-)paren
+id|dev-&gt;agp_buffer_map
 suffix:semicolon
 r_if
 c_cond

@@ -46,10 +46,5 @@ DECL|macro|__HAVE_VBL_IRQ
 mdefine_line|#define __HAVE_VBL_IRQ&t;&t;1
 DECL|macro|__HAVE_SHARED_IRQ
 mdefine_line|#define __HAVE_SHARED_IRQ       1
-multiline_comment|/* Buffer customization:&n; */
-DECL|macro|DRIVER_BUF_PRIV_T
-mdefine_line|#define DRIVER_BUF_PRIV_T&t;drm_radeon_buf_priv_t
-DECL|macro|DRIVER_AGP_BUFFERS_MAP
-mdefine_line|#define DRIVER_AGP_BUFFERS_MAP( dev )&t;&t;&t;&t;&bslash;&n;&t;((drm_radeon_private_t *)((dev)-&gt;dev_private))-&gt;buffers
 macro_line|#endif
 eof

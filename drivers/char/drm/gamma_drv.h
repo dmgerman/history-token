@@ -17,11 +17,6 @@ id|drm_map_t
 op_star
 id|sarea
 suffix:semicolon
-DECL|member|buffers
-id|drm_map_t
-op_star
-id|buffers
-suffix:semicolon
 DECL|member|mmio0
 id|drm_map_t
 op_star

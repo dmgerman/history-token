@@ -1563,7 +1563,7 @@ suffix:semicolon
 id|DRM_FIND_MAP
 c_func
 (paren
-id|dev_priv-&gt;buffer_map
+id|dev-&gt;agp_buffer_map
 comma
 id|init-&gt;buffers_offset
 )paren
@@ -1572,7 +1572,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|dev_priv-&gt;buffer_map
+id|dev-&gt;agp_buffer_map
 )paren
 (brace
 id|dev-&gt;dev_private
@@ -6372,6 +6372,13 @@ op_star
 id|dev
 )paren
 (brace
+id|dev-&gt;dev_priv_size
+op_assign
+r_sizeof
+(paren
+id|drm_i810_buf_priv_t
+)paren
+suffix:semicolon
 id|dev-&gt;fn_tbl.pretakedown
 op_assign
 id|i810_driver_pretakedown

@@ -1918,7 +1918,7 @@ suffix:semicolon
 id|DRM_FIND_MAP
 c_func
 (paren
-id|dev_priv-&gt;buffers
+id|dev-&gt;agp_buffer_map
 comma
 id|init-&gt;buffers_offset
 )paren
@@ -1927,7 +1927,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|dev_priv-&gt;buffers
+id|dev-&gt;agp_buffer_map
 )paren
 (brace
 id|DRM_ERROR
@@ -1994,7 +1994,7 @@ suffix:semicolon
 id|DRM_IOREMAP
 c_func
 (paren
-id|dev_priv-&gt;buffers
+id|dev-&gt;agp_buffer_map
 comma
 id|dev
 )paren
@@ -2009,7 +2009,7 @@ op_logical_neg
 id|dev_priv-&gt;primary-&gt;handle
 op_logical_or
 op_logical_neg
-id|dev_priv-&gt;buffers-&gt;handle
+id|dev-&gt;agp_buffer_map-&gt;handle
 )paren
 (brace
 id|DRM_ERROR
@@ -2382,14 +2382,14 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|dev_priv-&gt;buffers
+id|dev-&gt;agp_buffer_map
 op_ne
 l_int|NULL
 )paren
 id|DRM_IOREMAPFREE
 c_func
 (paren
-id|dev_priv-&gt;buffers
+id|dev-&gt;agp_buffer_map
 comma
 id|dev
 )paren

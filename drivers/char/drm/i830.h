@@ -63,10 +63,5 @@ macro_line|#else
 DECL|macro|__HAVE_IRQ
 mdefine_line|#define __HAVE_IRQ          0
 macro_line|#endif
-multiline_comment|/* Buffer customization:&n; */
-DECL|macro|DRIVER_BUF_PRIV_T
-mdefine_line|#define DRIVER_BUF_PRIV_T&t;drm_i830_buf_priv_t
-DECL|macro|DRIVER_AGP_BUFFERS_MAP
-mdefine_line|#define DRIVER_AGP_BUFFERS_MAP( dev )&t;&t;&t;&t;&t;&bslash;&n;&t;((drm_i830_private_t *)((dev)-&gt;dev_private))-&gt;buffer_map
 macro_line|#endif
 eof

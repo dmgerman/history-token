@@ -5323,7 +5323,7 @@ suffix:semicolon
 id|DRM_FIND_MAP
 c_func
 (paren
-id|dev_priv-&gt;buffers
+id|dev-&gt;agp_buffer_map
 comma
 id|init-&gt;buffers_offset
 )paren
@@ -5332,7 +5332,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|dev_priv-&gt;buffers
+id|dev-&gt;agp_buffer_map
 )paren
 (brace
 id|DRM_ERROR
@@ -5456,7 +5456,7 @@ suffix:semicolon
 id|DRM_IOREMAP
 c_func
 (paren
-id|dev_priv-&gt;buffers
+id|dev-&gt;agp_buffer_map
 comma
 id|dev
 )paren
@@ -5471,7 +5471,7 @@ op_logical_neg
 id|dev_priv-&gt;ring_rptr-&gt;handle
 op_logical_or
 op_logical_neg
-id|dev_priv-&gt;buffers-&gt;handle
+id|dev-&gt;agp_buffer_map-&gt;handle
 )paren
 (brace
 id|DRM_ERROR
@@ -5522,13 +5522,13 @@ op_star
 )paren
 id|dev_priv-&gt;ring_rptr-&gt;offset
 suffix:semicolon
-id|dev_priv-&gt;buffers-&gt;handle
+id|dev-&gt;agp_buffer_map-&gt;handle
 op_assign
 (paren
 r_void
 op_star
 )paren
-id|dev_priv-&gt;buffers-&gt;offset
+id|dev-&gt;agp_buffer_map-&gt;offset
 suffix:semicolon
 id|DRM_DEBUG
 c_func
@@ -5549,9 +5549,9 @@ suffix:semicolon
 id|DRM_DEBUG
 c_func
 (paren
-l_string|&quot;dev_priv-&gt;buffers-&gt;handle %p&bslash;n&quot;
+l_string|&quot;dev-&gt;agp_buffer_map-&gt;handle %p&bslash;n&quot;
 comma
-id|dev_priv-&gt;buffers-&gt;handle
+id|dev-&gt;agp_buffer_map-&gt;handle
 )paren
 suffix:semicolon
 )brace
@@ -5665,7 +5665,7 @@ id|dev_priv-&gt;is_pci
 id|dev_priv-&gt;gart_buffers_offset
 op_assign
 (paren
-id|dev_priv-&gt;buffers-&gt;offset
+id|dev-&gt;agp_buffer_map-&gt;offset
 op_minus
 id|dev-&gt;agp-&gt;base
 op_plus
@@ -5677,7 +5677,7 @@ macro_line|#endif
 id|dev_priv-&gt;gart_buffers_offset
 op_assign
 (paren
-id|dev_priv-&gt;buffers-&gt;offset
+id|dev-&gt;agp_buffer_map-&gt;offset
 op_minus
 id|dev-&gt;sg-&gt;handle
 op_plus
@@ -5968,14 +5968,14 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|dev_priv-&gt;buffers
+id|dev-&gt;agp_buffer_map
 op_ne
 l_int|NULL
 )paren
 id|DRM_IOREMAPFREE
 c_func
 (paren
-id|dev_priv-&gt;buffers
+id|dev-&gt;agp_buffer_map
 comma
 id|dev
 )paren

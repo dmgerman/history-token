@@ -1315,6 +1315,11 @@ r_int
 id|sis_init_context
 c_func
 (paren
+r_struct
+id|drm_device
+op_star
+id|dev
+comma
 r_int
 id|context
 )paren
@@ -1511,6 +1516,11 @@ r_int
 id|sis_final_context
 c_func
 (paren
+r_struct
+id|drm_device
+op_star
+id|dev
+comma
 r_int
 id|context
 )paren
@@ -1752,5 +1762,13 @@ op_star
 id|dev
 )paren
 (brace
+id|dev-&gt;fn_tbl.context_ctor
+op_assign
+id|sis_init_context
+suffix:semicolon
+id|dev-&gt;fn_tbl.context_dtor
+op_assign
+id|sis_final_context
+suffix:semicolon
 )brace
 eof

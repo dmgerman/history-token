@@ -38,30 +38,5 @@ DECL|macro|DRIVER_IOCTLS
 mdefine_line|#define DRIVER_IOCTLS &bslash;&n;&t;[DRM_IOCTL_NR(DRM_IOCTL_SIS_FB_ALLOC)]  = { sis_fb_alloc,&t;1, 0 }, &bslash;&n;&t;[DRM_IOCTL_NR(DRM_IOCTL_SIS_FB_FREE)]   = { sis_fb_free,&t;1, 0 }, &bslash;&n;&t;[DRM_IOCTL_NR(DRM_IOCTL_SIS_AGP_INIT)]  = { sis_ioctl_agp_init,&t;1, 1 }, &bslash;&n;&t;[DRM_IOCTL_NR(DRM_IOCTL_SIS_AGP_ALLOC)] = { sis_ioctl_agp_alloc, 1, 0 }, &bslash;&n;&t;[DRM_IOCTL_NR(DRM_IOCTL_SIS_AGP_FREE)]&t;= { sis_ioctl_agp_free,&t;1, 0 }, &bslash;&n;&t;[DRM_IOCTL_NR(DRM_IOCTL_SIS_FB_INIT)]&t;= { sis_fb_init,&t;1, 1 }
 DECL|macro|__HAVE_COUNTERS
 mdefine_line|#define __HAVE_COUNTERS&t;&t;5
-multiline_comment|/* Buffer customization:&n; */
-DECL|macro|DRIVER_AGP_BUFFERS_MAP
-mdefine_line|#define DRIVER_AGP_BUFFERS_MAP( dev )&t;&t;&t;&t;&t;&bslash;&n;&t;((drm_sis_private_t *)((dev)-&gt;dev_private))-&gt;buffers
-r_extern
-r_int
-id|sis_init_context
-c_func
-(paren
-r_int
-id|context
-)paren
-suffix:semicolon
-r_extern
-r_int
-id|sis_final_context
-c_func
-(paren
-r_int
-id|context
-)paren
-suffix:semicolon
-DECL|macro|DRIVER_CTX_CTOR
-mdefine_line|#define DRIVER_CTX_CTOR sis_init_context
-DECL|macro|DRIVER_CTX_DTOR
-mdefine_line|#define DRIVER_CTX_DTOR sis_final_context
 macro_line|#endif
 eof

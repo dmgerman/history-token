@@ -72,7 +72,5 @@ DECL|macro|__HAVE_IRQ
 mdefine_line|#define __HAVE_IRQ&t;&t;&t;1
 DECL|macro|__HAVE_IRQ_BH
 mdefine_line|#define __HAVE_IRQ_BH&t;&t;&t;1
-DECL|macro|DRIVER_AGP_BUFFERS_MAP
-mdefine_line|#define DRIVER_AGP_BUFFERS_MAP( dev )&t;&t;&t;&t;&t;&bslash;&n;&t;((drm_gamma_private_t *)((dev)-&gt;dev_private))-&gt;buffers
 macro_line|#endif /* __GAMMA_H__ */
 eof

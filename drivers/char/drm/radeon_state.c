@@ -5654,7 +5654,7 @@ op_star
 r_char
 op_star
 )paren
-id|dev_priv-&gt;buffers-&gt;handle
+id|dev-&gt;agp_buffer_map-&gt;handle
 op_plus
 id|buf-&gt;offset
 op_plus
@@ -5878,7 +5878,7 @@ op_star
 r_char
 op_star
 )paren
-id|dev_priv-&gt;buffers-&gt;handle
+id|dev-&gt;agp_buffer_map-&gt;handle
 op_plus
 id|elt_buf-&gt;offset
 op_plus
@@ -6434,7 +6434,7 @@ op_star
 r_char
 op_star
 )paren
-id|dev_priv-&gt;buffers-&gt;handle
+id|dev-&gt;agp_buffer_map-&gt;handle
 op_plus
 id|buf-&gt;offset
 )paren
@@ -11090,6 +11090,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+multiline_comment|/* When a client dies:&n; *    - Check for and clean up flipped page state&n; *    - Free any alloced GART memory.&n; *&n; * DRM infrastructure takes care of reclaiming dma buffers.&n; */
 DECL|function|radeon_driver_prerelease
 r_static
 r_void
@@ -11212,6 +11213,13 @@ op_star
 id|dev
 )paren
 (brace
+id|dev-&gt;dev_priv_size
+op_assign
+r_sizeof
+(paren
+id|drm_radeon_buf_priv_t
+)paren
+suffix:semicolon
 id|dev-&gt;fn_tbl.prerelease
 op_assign
 id|radeon_driver_prerelease
