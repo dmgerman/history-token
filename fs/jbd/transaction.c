@@ -3298,6 +3298,11 @@ op_star
 id|jh
 suffix:semicolon
 r_int
+id|drop_reserve
+op_assign
+l_int|0
+suffix:semicolon
+r_int
 id|err
 op_assign
 l_int|0
@@ -3419,6 +3424,10 @@ c_func
 id|jh
 )paren
 suffix:semicolon
+id|drop_reserve
+op_assign
+l_int|1
+suffix:semicolon
 multiline_comment|/* &n;&t;&t; * We are no longer going to journal this buffer.&n;&t;&t; * However, the commit of this transaction is still&n;&t;&t; * important to the buffer: the delete that we are now&n;&t;&t; * processing might obsolete an old log entry, so by&n;&t;&t; * committing, we can satisfy the buffer&squot;s checkpoint.&n;&t;&t; *&n;&t;&t; * So, if we have a checkpoint on the buffer, we should&n;&t;&t; * now refile the buffer on our BJ_Forget list so that&n;&t;&t; * we know to remove the checkpoint after we commit. &n;&t;&t; */
 r_if
 c_cond
@@ -3481,8 +3490,8 @@ c_func
 id|bh
 )paren
 suffix:semicolon
-r_return
-l_int|0
+r_goto
+id|drop
 suffix:semicolon
 )brace
 )brace
@@ -3534,6 +3543,10 @@ id|jh-&gt;b_next_transaction
 op_assign
 l_int|NULL
 suffix:semicolon
+id|drop_reserve
+op_assign
+l_int|1
+suffix:semicolon
 )brace
 )brace
 id|not_jbd
@@ -3557,6 +3570,19 @@ c_func
 id|bh
 )paren
 suffix:semicolon
+id|drop
+suffix:colon
+r_if
+c_cond
+(paren
+id|drop_reserve
+)paren
+(brace
+multiline_comment|/* no need to reserve log space for this block -bzzz */
+id|handle-&gt;h_buffer_credits
+op_increment
+suffix:semicolon
+)brace
 r_return
 id|err
 suffix:semicolon
