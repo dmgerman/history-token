@@ -89,6 +89,7 @@ multiline_comment|/* This is the partition master nasid */
 multiline_comment|/*&n; * per_hub_init&n; *&n; * &t;This code is executed once for each Hub chip.&n; */
 r_static
 r_void
+id|__init
 DECL|function|per_hub_init
 id|per_hub_init
 c_func
@@ -336,22 +337,12 @@ suffix:semicolon
 id|cnode
 op_increment
 )paren
-(brace
-r_extern
-r_void
-id|per_hub_init
-c_func
-(paren
-id|cnodeid_t
-)paren
-suffix:semicolon
 id|per_hub_init
 c_func
 (paren
 id|cnode
 )paren
 suffix:semicolon
-)brace
 multiline_comment|/*&n;&t; *&n;&t; * Our IO Infrastructure drivers are in place .. &n;&t; * Initialize the whole IO Infrastructure .. xwidget/device probes.&n;&t; *&n;&t; */
 id|init_all_devices
 c_func
