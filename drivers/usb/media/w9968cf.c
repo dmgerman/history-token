@@ -16104,7 +16104,6 @@ id|tuner.tuner
 op_ne
 l_int|0
 )paren
-suffix:semicolon
 r_return
 op_minus
 id|EINVAL
