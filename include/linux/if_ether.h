@@ -60,6 +60,8 @@ DECL|macro|ETH_P_IPX
 mdefine_line|#define ETH_P_IPX&t;0x8137&t;&t;/* IPX over DIX&t;&t;&t;*/
 DECL|macro|ETH_P_IPV6
 mdefine_line|#define ETH_P_IPV6&t;0x86DD&t;&t;/* IPv6 over bluebook&t;&t;*/
+DECL|macro|ETH_P_WCCP
+mdefine_line|#define ETH_P_WCCP&t;0x883E&t;&t;/* Web-cache coordination protocol&n;&t;&t;&t;&t;&t; * defined in draft-wilson-wrec-wccp-v2-00.txt */
 DECL|macro|ETH_P_PPP_DISC
 mdefine_line|#define ETH_P_PPP_DISC&t;0x8863&t;&t;/* PPPoE discovery messages     */
 DECL|macro|ETH_P_PPP_SES
