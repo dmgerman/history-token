@@ -3594,13 +3594,13 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|inode-&gt;i_mapping
+id|f-&gt;f_mapping
 op_logical_or
 op_logical_neg
-id|inode-&gt;i_mapping-&gt;a_ops
+id|f-&gt;f_mapping-&gt;a_ops
 op_logical_or
 op_logical_neg
-id|inode-&gt;i_mapping-&gt;a_ops-&gt;direct_IO
+id|f-&gt;f_mapping-&gt;a_ops-&gt;direct_IO
 )paren
 (brace
 id|fput

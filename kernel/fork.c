@@ -1161,7 +1161,7 @@ id|down
 c_func
 (paren
 op_amp
-id|inode-&gt;i_mapping-&gt;i_shared_sem
+id|file-&gt;f_mapping-&gt;i_shared_sem
 )paren
 suffix:semicolon
 id|list_add_tail
@@ -1178,7 +1178,7 @@ id|up
 c_func
 (paren
 op_amp
-id|inode-&gt;i_mapping-&gt;i_shared_sem
+id|file-&gt;f_mapping-&gt;i_shared_sem
 )paren
 suffix:semicolon
 )brace

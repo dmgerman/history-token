@@ -2665,6 +2665,11 @@ id|lo_device
 op_assign
 l_int|NULL
 suffix:semicolon
+r_struct
+id|address_space
+op_star
+id|mapping
+suffix:semicolon
 r_int
 id|lo_blocksize
 suffix:semicolon
@@ -2720,9 +2725,13 @@ id|file
 r_goto
 id|out
 suffix:semicolon
+id|mapping
+op_assign
+id|file-&gt;f_mapping
+suffix:semicolon
 id|inode
 op_assign
-id|file-&gt;f_dentry-&gt;d_inode
+id|mapping-&gt;host
 suffix:semicolon
 r_if
 c_cond
@@ -2807,7 +2816,7 @@ id|address_space_operations
 op_star
 id|aops
 op_assign
-id|inode-&gt;i_mapping-&gt;a_ops
+id|mapping-&gt;a_ops
 suffix:semicolon
 multiline_comment|/*&n;&t;&t; * If we can&squot;t read - sorry. If we only can&squot;t write - well,&n;&t;&t; * it&squot;s going to be read-only.&n;&t;&t; */
 id|error
@@ -2934,13 +2943,13 @@ op_assign
 id|mapping_gfp_mask
 c_func
 (paren
-id|inode-&gt;i_mapping
+id|mapping
 )paren
 suffix:semicolon
 id|mapping_set_gfp_mask
 c_func
 (paren
-id|inode-&gt;i_mapping
+id|mapping
 comma
 id|lo-&gt;old_gfp_mask
 op_amp

@@ -888,13 +888,13 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|inode-&gt;i_mapping
+id|filp-&gt;f_mapping
 op_logical_or
 op_logical_neg
-id|inode-&gt;i_mapping-&gt;a_ops
+id|filp-&gt;f_mapping-&gt;a_ops
 op_logical_or
 op_logical_neg
-id|inode-&gt;i_mapping-&gt;a_ops-&gt;direct_IO
+id|filp-&gt;f_mapping-&gt;a_ops-&gt;direct_IO
 )paren
 r_return
 op_minus
