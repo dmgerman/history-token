@@ -1,6 +1,6 @@
 DECL|macro|_VERSION
-mdefine_line|#define _VERSION &quot;0.19&quot;
-multiline_comment|/* ns83820.c by Benjamin LaHaise with contributions.&n; *&n; * Questions/comments/discussion to linux-ns83820@kvack.org.&n; *&n; * $Revision: 1.34.2.20 $&n; *&n; * Copyright 2001 Benjamin LaHaise.&n; * Copyright 2001, 2002 Red Hat.&n; *&n; * Mmmm, chocolate vanilla mocha...&n; *&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; *&n; *&n; * ChangeLog&n; * =========&n; *&t;20010414&t;0.1 - created&n; *&t;20010622&t;0.2 - basic rx and tx.&n; *&t;20010711&t;0.3 - added duplex and link state detection support.&n; *&t;20010713&t;0.4 - zero copy, no hangs.&n; *&t;&t;&t;0.5 - 64 bit dma support (davem will hate me for this)&n; *&t;&t;&t;    - disable jumbo frames to avoid tx hangs&n; *&t;&t;&t;    - work around tx deadlocks on my 1.02 card via&n; *&t;&t;&t;      fiddling with TXCFG&n; *&t;20010810&t;0.6 - use pci dma api for ringbuffers, work on ia64&n; *&t;20010816&t;0.7 - misc cleanups&n; *&t;20010826&t;0.8 - fix critical zero copy bugs&n; *&t;&t;&t;0.9 - internal experiment&n; *&t;20010827&t;0.10 - fix ia64 unaligned access.&n; *&t;20010906&t;0.11 - accept all packets with checksum errors as&n; *&t;&t;&t;       otherwise fragments get lost&n; *&t;&t;&t;     - fix &gt;&gt; 32 bugs&n; *&t;&t;&t;0.12 - add statistics counters&n; *&t;&t;&t;     - add allmulti/promisc support&n; *&t;20011009&t;0.13 - hotplug support, other smaller pci api cleanups&n; *&t;20011204&t;0.13a - optical transceiver support added&n; *&t;&t;&t;&t;by Michael Clark &lt;michael@metaparadigm.com&gt;&n; *&t;20011205&t;0.13b - call register_netdev earlier in initialization&n; *&t;&t;&t;&t;suppress duplicate link status messages&n; *&t;20011117 &t;0.14 - ethtool GDRVINFO, GLINK support from jgarzik&n; *&t;20011204 &t;0.15&t;get ppc (big endian) working&n; *&t;20011218&t;0.16&t;various cleanups&n; *&t;20020310&t;0.17&t;speedups&n; *&t;20020610&t;0.18 -&t;actually use the pci dma api for highmem&n; *&t;&t;&t;     -&t;remove pci latency register fiddling&n; *&t;&t;&t;0.19 -&t;better bist support&n; *&t;&t;&t;     -&t;add ihr and reset_phy parameters&n; *&t;&t;&t;     -&t;gmii bus probing&n; *&t;&t;&t;     -&t;fix missed txok introduced during performance&n; *&t;&t;&t;&t;tuning&n; *&n; * Driver Overview&n; * ===============&n; *&n; * This driver was originally written for the National Semiconductor&n; * 83820 chip, a 10/100/1000 Mbps 64 bit PCI ethernet NIC.  Hopefully&n; * this code will turn out to be a) clean, b) correct, and c) fast.&n; * With that in mind, I&squot;m aiming to split the code up as much as&n; * reasonably possible.  At present there are X major sections that&n; * break down into a) packet receive, b) packet transmit, c) link&n; * management, d) initialization and configuration.  Where possible,&n; * these code paths are designed to run in parallel.&n; *&n; * This driver has been tested and found to work with the following&n; * cards (in no particular order):&n; *&n; *&t;Cameo&t;&t;SOHO-GA2000T&t;SOHO-GA2500T&n; *&t;D-Link&t;&t;DGE-500T&n; *&t;PureData&t;PDP8023Z-TG&n; *&t;SMC&t;&t;SMC9452TX&t;SMC9462TX&n; *&t;Netgear&t;&t;GA621&n; *&n; * Special thanks to SMC for providing hardware to test this driver on.&n; *&n; * Reports of success or failure would be greatly appreciated.&n; */
+mdefine_line|#define _VERSION &quot;0.20&quot;
+multiline_comment|/* ns83820.c by Benjamin LaHaise with contributions.&n; *&n; * Questions/comments/discussion to linux-ns83820@kvack.org.&n; *&n; * $Revision: 1.34.2.23 $&n; *&n; * Copyright 2001 Benjamin LaHaise.&n; * Copyright 2001, 2002 Red Hat.&n; *&n; * Mmmm, chocolate vanilla mocha...&n; *&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; *&n; *&n; * ChangeLog&n; * =========&n; *&t;20010414&t;0.1 - created&n; *&t;20010622&t;0.2 - basic rx and tx.&n; *&t;20010711&t;0.3 - added duplex and link state detection support.&n; *&t;20010713&t;0.4 - zero copy, no hangs.&n; *&t;&t;&t;0.5 - 64 bit dma support (davem will hate me for this)&n; *&t;&t;&t;    - disable jumbo frames to avoid tx hangs&n; *&t;&t;&t;    - work around tx deadlocks on my 1.02 card via&n; *&t;&t;&t;      fiddling with TXCFG&n; *&t;20010810&t;0.6 - use pci dma api for ringbuffers, work on ia64&n; *&t;20010816&t;0.7 - misc cleanups&n; *&t;20010826&t;0.8 - fix critical zero copy bugs&n; *&t;&t;&t;0.9 - internal experiment&n; *&t;20010827&t;0.10 - fix ia64 unaligned access.&n; *&t;20010906&t;0.11 - accept all packets with checksum errors as&n; *&t;&t;&t;       otherwise fragments get lost&n; *&t;&t;&t;     - fix &gt;&gt; 32 bugs&n; *&t;&t;&t;0.12 - add statistics counters&n; *&t;&t;&t;     - add allmulti/promisc support&n; *&t;20011009&t;0.13 - hotplug support, other smaller pci api cleanups&n; *&t;20011204&t;0.13a - optical transceiver support added&n; *&t;&t;&t;&t;by Michael Clark &lt;michael@metaparadigm.com&gt;&n; *&t;20011205&t;0.13b - call register_netdev earlier in initialization&n; *&t;&t;&t;&t;suppress duplicate link status messages&n; *&t;20011117 &t;0.14 - ethtool GDRVINFO, GLINK support from jgarzik&n; *&t;20011204 &t;0.15&t;get ppc (big endian) working&n; *&t;20011218&t;0.16&t;various cleanups&n; *&t;20020310&t;0.17&t;speedups&n; *&t;20020610&t;0.18 -&t;actually use the pci dma api for highmem&n; *&t;&t;&t;     -&t;remove pci latency register fiddling&n; *&t;&t;&t;0.19 -&t;better bist support&n; *&t;&t;&t;     -&t;add ihr and reset_phy parameters&n; *&t;&t;&t;     -&t;gmii bus probing&n; *&t;&t;&t;     -&t;fix missed txok introduced during performance&n; *&t;&t;&t;&t;tuning&n; *&t;&t;&t;0.20 -&t;fix stupid RFEN thinko.  i am such a smurf.&n; *&n; * Driver Overview&n; * ===============&n; *&n; * This driver was originally written for the National Semiconductor&n; * 83820 chip, a 10/100/1000 Mbps 64 bit PCI ethernet NIC.  Hopefully&n; * this code will turn out to be a) clean, b) correct, and c) fast.&n; * With that in mind, I&squot;m aiming to split the code up as much as&n; * reasonably possible.  At present there are X major sections that&n; * break down into a) packet receive, b) packet transmit, c) link&n; * management, d) initialization and configuration.  Where possible,&n; * these code paths are designed to run in parallel.&n; *&n; * This driver has been tested and found to work with the following&n; * cards (in no particular order):&n; *&n; *&t;Cameo&t;&t;SOHO-GA2000T&t;SOHO-GA2500T&n; *&t;D-Link&t;&t;DGE-500T&n; *&t;PureData&t;PDP8023Z-TG&n; *&t;SMC&t;&t;SMC9452TX&t;SMC9462TX&n; *&t;Netgear&t;&t;GA621&n; *&n; * Special thanks to SMC for providing hardware to test this driver on.&n; *&n; * Reports of success or failure would be greatly appreciated.&n; */
 singleline_comment|//#define dprintk&t;&t;printk
 DECL|macro|dprintk
 mdefine_line|#define dprintk(x...)&t;&t;do { } while (0)
@@ -3387,12 +3387,6 @@ c_func
 id|skb
 )paren
 suffix:semicolon
-id|dev_kfree_skb
-c_func
-(paren
-id|skb
-)paren
-suffix:semicolon
 id|atomic_dec
 c_func
 (paren
@@ -5945,14 +5939,14 @@ id|u32
 id|and_mask
 op_assign
 l_int|0xffffffff
-op_amp
-op_complement
-id|RFCR_RFEN
 suffix:semicolon
 id|u32
 id|or_mask
 op_assign
 l_int|0
+suffix:semicolon
+id|u32
+id|val
 suffix:semicolon
 r_if
 c_cond
@@ -6001,9 +5995,8 @@ op_amp
 id|dev-&gt;misc_lock
 )paren
 suffix:semicolon
-id|writel
-c_func
-(paren
+id|val
+op_assign
 (paren
 id|readl
 c_func
@@ -6015,6 +6008,23 @@ id|and_mask
 )paren
 op_or
 id|or_mask
+suffix:semicolon
+multiline_comment|/* Ramit : RFCR Write Fix doc says RFEN must be 0 modify other bits */
+id|writel
+c_func
+(paren
+id|val
+op_amp
+op_complement
+id|RFCR_RFEN
+comma
+id|rfcr
+)paren
+suffix:semicolon
+id|writel
+c_func
+(paren
+id|val
 comma
 id|rfcr
 )paren
