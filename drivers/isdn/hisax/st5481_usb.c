@@ -950,16 +950,9 @@ c_cond
 (paren
 id|status
 op_assign
-id|usb_set_configuration
+id|usb_reset_configuration
 (paren
 id|dev
-comma
-id|dev-&gt;config
-(braket
-l_int|0
-)braket
-dot
-id|desc.bConfigurationValue
 )paren
 )paren
 OL
@@ -969,7 +962,7 @@ l_int|0
 id|WARN
 c_func
 (paren
-l_string|&quot;set_configuration failed,status=%d&quot;
+l_string|&quot;reset_configuration failed,status=%d&quot;
 comma
 id|status
 )paren

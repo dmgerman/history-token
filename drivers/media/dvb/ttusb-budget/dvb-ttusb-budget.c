@@ -4693,12 +4693,10 @@ op_star
 id|ttusb
 )paren
 (brace
-id|usb_set_configuration
+id|usb_reset_configuration
 c_func
 (paren
 id|ttusb-&gt;dev
-comma
-l_int|1
 )paren
 suffix:semicolon
 id|usb_set_interface

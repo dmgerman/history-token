@@ -2913,19 +2913,40 @@ comma
 id|__FUNCTION__
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|serial-&gt;dev-&gt;actconfig-&gt;desc.bConfigurationValue
+op_ne
+l_int|1
+)paren
+(brace
+id|err
+c_func
+(paren
+l_string|&quot;active config #%d != 1 ??&quot;
+comma
+id|serial-&gt;dev-&gt;actconfig-&gt;desc.bConfigurationValue
+)paren
+suffix:semicolon
+r_return
+op_minus
+id|ENODEV
+suffix:semicolon
+)brace
 id|dbg
 c_func
 (paren
-l_string|&quot;%s - Set config to 1&quot;
+l_string|&quot;%s - reset config&quot;
 comma
 id|__FUNCTION__
 )paren
 suffix:semicolon
-id|usb_set_configuration
+id|retval
+op_assign
+id|usb_reset_configuration
 (paren
 id|serial-&gt;dev
-comma
-l_int|1
 )paren
 suffix:semicolon
 r_if

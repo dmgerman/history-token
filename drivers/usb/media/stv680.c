@@ -599,11 +599,13 @@ id|alternate
 r_if
 c_cond
 (paren
-id|usb_set_configuration
+id|configuration
+op_ne
+id|dev-&gt;udev-&gt;actconfig-&gt;desc.bConfigurationValue
+op_logical_or
+id|usb_reset_configuration
 (paren
 id|dev-&gt;udev
-comma
-id|configuration
 )paren
 OL
 l_int|0
@@ -613,7 +615,7 @@ id|PDEBUG
 (paren
 l_int|1
 comma
-l_string|&quot;STV(e): FAILED to set configuration %i&quot;
+l_string|&quot;STV(e): FAILED to reset configuration %i&quot;
 comma
 id|configuration
 )paren

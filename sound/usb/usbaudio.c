@@ -12466,18 +12466,10 @@ id|err
 suffix:semicolon
 id|err
 op_assign
-id|usb_set_configuration
+id|usb_reset_configuration
 c_func
 (paren
 id|dev
-comma
-id|get_cfg_desc
-c_func
-(paren
-id|config
-)paren
-op_member_access_from_pointer
-id|bConfigurationValue
 )paren
 suffix:semicolon
 r_if
@@ -12490,7 +12482,7 @@ l_int|0
 id|snd_printdd
 c_func
 (paren
-l_string|&quot;error usb_set_configuration: %d&bslash;n&quot;
+l_string|&quot;error usb_reset_configuration: %d&bslash;n&quot;
 comma
 id|err
 )paren
@@ -13334,18 +13326,10 @@ multiline_comment|/* first, set the current configuration for this device */
 r_if
 c_cond
 (paren
-id|usb_set_configuration
+id|usb_reset_configuration
 c_func
 (paren
 id|dev
-comma
-id|get_cfg_desc
-c_func
-(paren
-id|config
-)paren
-op_member_access_from_pointer
-id|bConfigurationValue
 )paren
 OL
 l_int|0
@@ -13355,7 +13339,7 @@ id|snd_printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;cannot set configuration (value 0x%x)&bslash;n&quot;
+l_string|&quot;cannot reset configuration (value 0x%x)&bslash;n&quot;
 comma
 id|get_cfg_desc
 c_func

@@ -4719,20 +4719,13 @@ r_goto
 id|err_out_2
 suffix:semicolon
 )brace
-multiline_comment|/* Is this really necessary? */
+multiline_comment|/* Is this really necessary? (no, except maybe for broken devices) */
 r_if
 c_cond
 (paren
-id|usb_set_configuration
+id|usb_reset_configuration
 (paren
 id|dev
-comma
-id|dev-&gt;config
-(braket
-l_int|0
-)braket
-dot
-id|desc.bConfigurationValue
 )paren
 OL
 l_int|0
@@ -4741,7 +4734,7 @@ l_int|0
 id|err
 c_func
 (paren
-l_string|&quot;set_configuration failed&quot;
+l_string|&quot;reset_configuration failed&quot;
 )paren
 suffix:semicolon
 id|ret

@@ -3225,20 +3225,40 @@ id|US_PR_DPCM_USB
 )paren
 (brace
 multiline_comment|/* set the configuration -- STALL is an acceptable response here */
+r_if
+c_cond
+(paren
+id|us-&gt;pusb_dev-&gt;actconfig-&gt;desc.bConfigurationValue
+op_ne
+l_int|1
+)paren
+(brace
+id|US_DEBUGP
+c_func
+(paren
+l_string|&quot;active config #%d != 1 ??&bslash;n&quot;
+comma
+id|us-&gt;pusb_dev
+op_member_access_from_pointer
+id|actconfig-&gt;desc.bConfigurationValue
+)paren
+suffix:semicolon
+r_goto
+id|BadDevice
+suffix:semicolon
+)brace
 id|result
 op_assign
-id|usb_set_configuration
+id|usb_reset_configuration
 c_func
 (paren
 id|us-&gt;pusb_dev
-comma
-l_int|1
 )paren
 suffix:semicolon
 id|US_DEBUGP
 c_func
 (paren
-l_string|&quot;Result from usb_set_configuration is %d&bslash;n&quot;
+l_string|&quot;Result of usb_reset_configuration is %d&bslash;n&quot;
 comma
 id|result
 )paren
