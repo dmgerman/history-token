@@ -1,6 +1,4 @@
 multiline_comment|/*&n; * linux/fs/lockd/lockd_syms.c&n; *&n; * Symbols exported by the lockd module.&n; *&n; * Authors:&t;Olaf Kirch (okir@monad.swb.de)&n; *&n; * Copyright (C) 1997 Olaf Kirch &lt;okir@monad.swb.de&gt;&n; */
-DECL|macro|__NO_VERSION__
-mdefine_line|#define __NO_VERSION__
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#ifdef CONFIG_MODULES
