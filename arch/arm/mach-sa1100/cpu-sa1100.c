@@ -609,10 +609,7 @@ r_return
 op_minus
 id|EINVAL
 suffix:semicolon
-id|sa1100_driver.cpu_cur_freq
-(braket
-id|policy-&gt;cpu
-)braket
+id|policy-&gt;cur
 op_assign
 id|policy-&gt;min
 op_assign
@@ -682,6 +679,11 @@ c_func
 r_void
 )paren
 (brace
+id|cpufreq_gov_userspace_init
+c_func
+(paren
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren

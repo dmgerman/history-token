@@ -764,10 +764,7 @@ op_assign
 l_int|1000
 suffix:semicolon
 multiline_comment|/* 1 ms, assumed */
-id|integrator_driver.cpu_cur_freq
-(braket
-id|policy-&gt;cpu
-)braket
+id|policy-&gt;cur
 op_assign
 id|policy-&gt;min
 op_assign

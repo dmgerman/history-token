@@ -1195,10 +1195,7 @@ r_return
 op_minus
 id|EINVAL
 suffix:semicolon
-id|sa1110_driver.cpu_cur_freq
-(braket
-id|policy-&gt;cpu
-)braket
+id|policy-&gt;cur
 op_assign
 id|policy-&gt;min
 op_assign
@@ -1338,6 +1335,11 @@ comma
 id|sdram-&gt;refresh
 comma
 id|sdram-&gt;cas_latency
+)paren
+suffix:semicolon
+id|cpufreq_gov_userspace_init
+c_func
+(paren
 )paren
 suffix:semicolon
 id|memcpy
