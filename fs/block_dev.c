@@ -3667,6 +3667,13 @@ id|ioctl
 op_assign
 id|block_ioctl
 comma
+macro_line|#ifdef CONFIG_COMPAT
+dot
+id|compat_ioctl
+op_assign
+id|compat_blkdev_ioctl
+comma
+macro_line|#endif
 dot
 id|readv
 op_assign
