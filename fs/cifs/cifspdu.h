@@ -14,7 +14,7 @@ mdefine_line|#define SMB_COM_CREATE_DIRECTORY      0x00 /* trivial response */
 DECL|macro|SMB_COM_DELETE_DIRECTORY
 mdefine_line|#define SMB_COM_DELETE_DIRECTORY      0x01 /* trivial response */
 DECL|macro|SMB_COM_CLOSE
-mdefine_line|#define SMB_COM_CLOSE                 0x04 /* trivial rsp, timestamp ignored */
+mdefine_line|#define SMB_COM_CLOSE                 0x04 /* triv req/rsp, timestamp ignored */
 DECL|macro|SMB_COM_DELETE
 mdefine_line|#define SMB_COM_DELETE                0x06 /* trivial response */
 DECL|macro|SMB_COM_RENAME
