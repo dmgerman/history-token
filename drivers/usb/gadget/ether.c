@@ -6917,7 +6917,26 @@ id|usb_request
 op_star
 id|resp
 suffix:semicolon
-multiline_comment|/* RNDIS completion function */
+multiline_comment|/* in case RNDIS calls this after disconnect */
+r_if
+c_cond
+(paren
+op_logical_neg
+id|dev-&gt;status_ep
+)paren
+(brace
+id|DEBUG
+(paren
+id|dev
+comma
+l_string|&quot;status ENODEV&bslash;n&quot;
+)paren
+suffix:semicolon
+r_return
+op_minus
+id|ENODEV
+suffix:semicolon
+)brace
 multiline_comment|/* Allocate memory for notification ie. ACK */
 id|resp
 op_assign

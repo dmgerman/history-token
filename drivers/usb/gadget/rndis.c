@@ -12,8 +12,32 @@ macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/byteorder.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &quot;rndis.h&quot;
-DECL|macro|DEBUG
+macro_line|#if 0
 mdefine_line|#define DEBUG if (rndis_debug) printk 
+r_static
+r_int
+id|rndis_debug
+op_assign
+l_int|0
+suffix:semicolon
+id|MODULE_PARM
+(paren
+id|rndis_debug
+comma
+l_string|&quot;i&quot;
+)paren
+suffix:semicolon
+id|MODULE_PARM_DESC
+(paren
+id|rndis_debug
+comma
+l_string|&quot;enable debugging&quot;
+)paren
+suffix:semicolon
+macro_line|#else
+DECL|macro|DEBUG
+mdefine_line|#define DEBUG(str,args...) do{}while(0)
+macro_line|#endif
 DECL|macro|RNDIS_MAX_CONFIGS
 mdefine_line|#define RNDIS_MAX_CONFIGS&t;1
 DECL|variable|rndis_connect_dir
@@ -40,27 +64,6 @@ id|rndis_per_dev_params
 (braket
 id|RNDIS_MAX_CONFIGS
 )braket
-suffix:semicolon
-DECL|variable|rndis_debug
-r_static
-r_int
-id|rndis_debug
-op_assign
-l_int|0
-suffix:semicolon
-id|MODULE_PARM
-(paren
-id|rndis_debug
-comma
-l_string|&quot;i&quot;
-)paren
-suffix:semicolon
-id|MODULE_PARM_DESC
-(paren
-id|rndis_debug
-comma
-l_string|&quot;enable debugging&quot;
-)paren
 suffix:semicolon
 multiline_comment|/* Driver Version */
 DECL|variable|rndis_driver_version
@@ -4749,7 +4752,7 @@ id|configNr
 id|DEBUG
 c_func
 (paren
-l_string|&quot;%s: &quot;
+l_string|&quot;%s: &bslash;n&quot;
 comma
 id|__FUNCTION__
 )paren
@@ -4796,7 +4799,7 @@ id|stats
 id|DEBUG
 c_func
 (paren
-l_string|&quot;%s: &quot;
+l_string|&quot;%s:&bslash;n&quot;
 comma
 id|__FUNCTION__
 )paren
@@ -4866,7 +4869,7 @@ id|vendorDescr
 id|DEBUG
 c_func
 (paren
-l_string|&quot;%s: &quot;
+l_string|&quot;%s:&bslash;n&quot;
 comma
 id|__FUNCTION__
 )paren
@@ -4931,7 +4934,7 @@ id|speed
 id|DEBUG
 c_func
 (paren
-l_string|&quot;%s: &quot;
+l_string|&quot;%s:&bslash;n&quot;
 comma
 id|__FUNCTION__
 )paren
@@ -5915,6 +5918,11 @@ id|rndis_connect_dir
 )paren
 suffix:semicolon
 )brace
+id|DEBUG
+(paren
+l_string|&quot;&bslash;n&quot;
+)paren
+suffix:semicolon
 id|remove_proc_entry
 (paren
 l_string|&quot;000&quot;
