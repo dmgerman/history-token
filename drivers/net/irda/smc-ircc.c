@@ -1,4 +1,4 @@
-multiline_comment|/*********************************************************************&n; *                &n; * Filename:      smc-ircc.c&n; * Version:       0.4&n; * Description:   Driver for the SMC Infrared Communications Controller&n; * Status:        Experimental.&n; * Author:        Thomas Davis (tadavis@jps.net)&n; * Created at:    &n; * Modified at:   Tue Feb 22 10:05:06 2000&n; * Modified by:   Dag Brattli &lt;dag@brattli.net&gt;&n; * Modified at:   Tue Jun 26 2001&n; * Modified by:   Stefani Seibold &lt;stefani@seibold.net&gt;&n; * &n; *     Copyright (c) 2001      Stefani Seibold&n; *     Copyright (c) 1999-2001 Dag Brattli&n; *     Copyright (c) 1998-1999 Thomas Davis, &n; *     All Rights Reserved.&n; *      &n; *     This program is free software; you can redistribute it and/or &n; *     modify it under the terms of the GNU General Public License as &n; *     published by the Free Software Foundation; either version 2 of &n; *     the License, or (at your option) any later version.&n; * &n; *     This program is distributed in the hope that it will be useful,&n; *     but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the&n; *     GNU General Public License for more details.&n; * &n; *     You should have received a copy of the GNU General Public License &n; *     along with this program; if not, write to the Free Software &n; *     Foundation, Inc., 59 Temple Place, Suite 330, Boston, &n; *     MA 02111-1307 USA&n; *&n; *     SIO&squot;s: all SIO documentet by SMC (June, 2001)&n; *     Applicable Models :&t;Fujitsu Lifebook 635t, Sony PCG-505TX,&n; *     &t;&t;&t;&t;Dell Inspiron 8000&n; *&n; ********************************************************************/
+multiline_comment|/*********************************************************************&n; *                &n; * Filename:      smc-ircc.c&n; * Version:       0.4&n; * Description:   Driver for the SMC Infrared Communications Controller&n; * Status:        Experimental.&n; * Author:        Thomas Davis (tadavis@jps.net)&n; * Created at:    &n; * Modified at:   Tue Feb 22 10:05:06 2000&n; * Modified by:   Dag Brattli &lt;dag@brattli.net&gt;&n; * Modified at:   Tue Jun 26 2001&n; * Modified by:   Stefani Seibold &lt;stefani@seibold.net&gt;&n; * Modified at:   Thur Apr 18 2002&n; * Modified by:   Jeff Snyder &lt;je4d@pobox.com&gt;&n; * &n; *     Copyright (c) 2001      Stefani Seibold&n; *     Copyright (c) 1999-2001 Dag Brattli&n; *     Copyright (c) 1998-1999 Thomas Davis, &n; *     All Rights Reserved.&n; *      &n; *     This program is free software; you can redistribute it and/or &n; *     modify it under the terms of the GNU General Public License as &n; *     published by the Free Software Foundation; either version 2 of &n; *     the License, or (at your option) any later version.&n; * &n; *     This program is distributed in the hope that it will be useful,&n; *     but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the&n; *     GNU General Public License for more details.&n; * &n; *     You should have received a copy of the GNU General Public License &n; *     along with this program; if not, write to the Free Software &n; *     Foundation, Inc., 59 Temple Place, Suite 330, Boston, &n; *     MA 02111-1307 USA&n; *&n; *     SIO&squot;s: all SIO documentet by SMC (June, 2001)&n; *     Applicable Models :&t;Fujitsu Lifebook 635t, Sony PCG-505TX,&n; *     &t;&t;&t;&t;Dell Inspiron 8000&n; *&n; ********************************************************************/
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
@@ -2438,7 +2438,7 @@ l_string|&quot;%s, Overriding IRQ - chip says %d, using %d&bslash;n&quot;
 comma
 id|driver_name
 comma
-id|self-&gt;io-&gt;irq
+id|irq
 comma
 id|ircc_irq
 )paren
@@ -2475,7 +2475,7 @@ l_string|&quot;%s, Overriding DMA - chip says %d, using %d&bslash;n&quot;
 comma
 id|driver_name
 comma
-id|self-&gt;io-&gt;dma
+id|dma
 comma
 id|ircc_dma
 )paren
@@ -2493,7 +2493,7 @@ suffix:semicolon
 id|request_region
 c_func
 (paren
-id|fir_base
+id|self-&gt;io-&gt;fir_base
 comma
 id|CHIP_IO_EXTENT
 comma
@@ -5047,15 +5047,15 @@ comma
 id|__FUNCTION__
 l_string|&quot;(), releasing 0x%03x&bslash;n&quot;
 comma
-id|self-&gt;io-&gt;fir_base
+id|iobase
 )paren
 suffix:semicolon
 id|release_region
 c_func
 (paren
-id|self-&gt;io-&gt;fir_base
+id|iobase
 comma
-id|self-&gt;io-&gt;fir_ext
+id|CHIP_IO_EXTENT
 )paren
 suffix:semicolon
 r_if
