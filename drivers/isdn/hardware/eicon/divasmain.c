@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: divasmain.c,v 1.55.4.1 2004/05/21 12:15:00 armin Exp $&n; *&n; * Low level driver for Eicon DIVA Server ISDN cards.&n; *&n; * Copyright 2000-2003 by Armin Schindler (mac@melware.de)&n; * Copyright 2000-2003 Cytronics &amp; Melware (info@melware.de)&n; *&n; * This software may be used and distributed according to the terms&n; * of the GNU General Public License, incorporated herein by reference.&n; */
+multiline_comment|/* $Id: divasmain.c,v 1.55.4.6 2005/02/09 19:28:20 armin Exp $&n; *&n; * Low level driver for Eicon DIVA Server ISDN cards.&n; *&n; * Copyright 2000-2003 by Armin Schindler (mac@melware.de)&n; * Copyright 2000-2003 Cytronics &amp; Melware (info@melware.de)&n; *&n; * This software may be used and distributed according to the terms&n; * of the GNU General Public License, incorporated herein by reference.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
@@ -37,7 +37,7 @@ r_char
 op_star
 id|main_revision
 op_assign
-l_string|&quot;$Revision: 1.55.4.1 $&quot;
+l_string|&quot;$Revision: 1.55.4.6 $&quot;
 suffix:semicolon
 DECL|variable|major
 r_static
@@ -3552,7 +3552,7 @@ c_cond
 (paren
 id|ret
 op_assign
-id|pci_module_init
+id|pci_register_driver
 c_func
 (paren
 op_amp
