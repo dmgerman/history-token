@@ -139,10 +139,15 @@ DECL|macro|RGB_16
 mdefine_line|#define RGB_16&t;(1)
 DECL|macro|NR_RGB
 mdefine_line|#define NR_RGB&t;2
-DECL|struct|sa1100_par
+DECL|struct|sa1100fb_info
 r_struct
-id|sa1100_par
+id|sa1100fb_info
 (brace
+DECL|member|fb
+r_struct
+id|fb_info
+id|fb
+suffix:semicolon
 DECL|member|rgb
 r_struct
 id|sa1100fb_rgb
@@ -152,6 +157,10 @@ id|rgb
 id|NR_RGB
 )braket
 suffix:semicolon
+DECL|member|max_bpp
+id|u_int
+id|max_bpp
+suffix:semicolon
 DECL|member|max_xres
 id|u_int
 id|max_xres
@@ -159,14 +168,6 @@ suffix:semicolon
 DECL|member|max_yres
 id|u_int
 id|max_yres
-suffix:semicolon
-DECL|member|max_bpp
-id|u_int
-id|max_bpp
-suffix:semicolon
-DECL|member|bpp
-id|u_int
-id|bpp
 suffix:semicolon
 multiline_comment|/*&n;&t; * These are the addresses we mapped&n;&t; * the framebuffer memory region to.&n;&t; */
 DECL|member|map_dma
@@ -212,6 +213,14 @@ DECL|member|dbar2
 id|dma_addr_t
 id|dbar2
 suffix:semicolon
+DECL|member|lccr0
+id|u_int
+id|lccr0
+suffix:semicolon
+DECL|member|lccr3
+id|u_int
+id|lccr3
+suffix:semicolon
 DECL|member|cmap_inverse
 id|u_int
 id|cmap_inverse
@@ -227,14 +236,6 @@ DECL|member|unused
 id|unused
 suffix:colon
 l_int|30
-suffix:semicolon
-DECL|member|lccr0
-id|u_int
-id|lccr0
-suffix:semicolon
-DECL|member|lccr3
-id|u_int
-id|lccr3
 suffix:semicolon
 DECL|member|reg_lccr0
 id|u_int
@@ -284,12 +285,19 @@ op_star
 id|pm
 suffix:semicolon
 macro_line|#endif
+macro_line|#ifdef CONFIG_CPU_FREQ
+DECL|member|clockchg
+r_struct
+id|notifier_block
+id|clockchg
+suffix:semicolon
+macro_line|#endif
 )brace
 suffix:semicolon
 DECL|macro|__type_entry
 mdefine_line|#define __type_entry(ptr,type,member) ((type *)((char *)(ptr)-offsetof(type,member)))
 DECL|macro|TO_INF
-mdefine_line|#define TO_INF(ptr,member)&t;__type_entry(ptr, struct fb_info, member)
+mdefine_line|#define TO_INF(ptr,member)&t;__type_entry(ptr,struct sa1100fb_info,member)
 DECL|macro|SA1100_PALETTE_MODE_VAL
 mdefine_line|#define SA1100_PALETTE_MODE_VAL(bpp)    (((bpp) &amp; 0x018) &lt;&lt; 9)
 multiline_comment|/*&n; * These are the actions for set_ctrlr_state&n; */

@@ -49,8 +49,6 @@ DECL|macro|NV_ARCH_04
 mdefine_line|#define NV_ARCH_04  0x04
 DECL|macro|NV_ARCH_10
 mdefine_line|#define NV_ARCH_10  0x10
-DECL|macro|NV_ARCH_20
-mdefine_line|#define NV_ARCH_20  0x20
 multiline_comment|/***************************************************************************&bslash;&n;*                                                                           *&n;*                             FIFO registers.                               *&n;*                                                                           *&n;&bslash;***************************************************************************/
 multiline_comment|/*&n; * Raster OPeration. Windows style ROP3.&n; */
 r_typedef
