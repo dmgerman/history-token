@@ -1058,13 +1058,14 @@ id|ACPI_NUM_PREDEFINED_REGIONS
 )braket
 op_assign
 (brace
-l_string|&quot;system_memory&quot;
+multiline_comment|/*! [Begin] no source code translation (keep these ASL Keywords as-is) */
+l_string|&quot;SystemMemory&quot;
 comma
-l_string|&quot;system_iO&quot;
+l_string|&quot;SystemIO&quot;
 comma
 l_string|&quot;PCI_Config&quot;
 comma
-l_string|&quot;embedded_control&quot;
+l_string|&quot;EmbeddedControl&quot;
 comma
 l_string|&quot;SMBus&quot;
 comma
@@ -1072,8 +1073,8 @@ l_string|&quot;CMOS&quot;
 comma
 l_string|&quot;PCIBARTarget&quot;
 comma
-l_string|&quot;data_table&quot;
-comma
+l_string|&quot;DataTable&quot;
+multiline_comment|/*! [End] no source code translation !*/
 )brace
 suffix:semicolon
 r_char
@@ -1110,7 +1111,7 @@ id|ACPI_NUM_PREDEFINED_REGIONS
 (brace
 r_return
 (paren
-l_string|&quot;invalid_space_iD&quot;
+l_string|&quot;invalid_space_id&quot;
 )paren
 suffix:semicolon
 )brace

@@ -745,16 +745,6 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
-id|ARGI_REGION
-suffix:colon
-multiline_comment|/* Need an operand of type ACPI_TYPE_REGION */
-id|type_needed
-op_assign
-id|ACPI_TYPE_REGION
-suffix:semicolon
-r_break
-suffix:semicolon
-r_case
 id|ARGI_PACKAGE
 suffix:colon
 multiline_comment|/* Package */
@@ -1023,6 +1013,87 @@ r_goto
 id|next_operand
 suffix:semicolon
 r_case
+id|ARGI_BUFFER_OR_STRING
+suffix:colon
+multiline_comment|/* Need an operand of type STRING or BUFFER */
+r_switch
+c_cond
+(paren
+id|ACPI_GET_OBJECT_TYPE
+(paren
+id|obj_desc
+)paren
+)paren
+(brace
+r_case
+id|ACPI_TYPE_STRING
+suffix:colon
+r_case
+id|ACPI_TYPE_BUFFER
+suffix:colon
+multiline_comment|/* Valid operand */
+r_break
+suffix:semicolon
+r_case
+id|ACPI_TYPE_INTEGER
+suffix:colon
+multiline_comment|/* Highest priority conversion is to type Buffer */
+id|status
+op_assign
+id|acpi_ex_convert_to_buffer
+(paren
+id|obj_desc
+comma
+id|stack_ptr
+comma
+id|walk_state
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|ACPI_FAILURE
+(paren
+id|status
+)paren
+)paren
+(brace
+id|return_ACPI_STATUS
+(paren
+id|status
+)paren
+suffix:semicolon
+)brace
+r_break
+suffix:semicolon
+r_default
+suffix:colon
+id|ACPI_DEBUG_PRINT
+(paren
+(paren
+id|ACPI_DB_ERROR
+comma
+l_string|&quot;Needed [Integer/String/Buffer], found [%s] %p&bslash;n&quot;
+comma
+id|acpi_ut_get_object_type_name
+(paren
+id|obj_desc
+)paren
+comma
+id|obj_desc
+)paren
+)paren
+suffix:semicolon
+id|return_ACPI_STATUS
+(paren
+id|AE_AML_OPERAND_TYPE
+)paren
+suffix:semicolon
+)brace
+r_goto
+id|next_operand
+suffix:semicolon
+r_case
 id|ARGI_DATAOBJECT
 suffix:colon
 multiline_comment|/*&n;&t;&t;&t; * ARGI_DATAOBJECT is only used by the size_of operator.&n;&t;&t;&t; * Need a buffer, string, package, or ref_of reference.&n;&t;&t;&t; *&n;&t;&t;&t; * The only reference allowed here is a direct reference to&n;&t;&t;&t; * a namespace node.&n;&t;&t;&t; */
@@ -1057,7 +1128,7 @@ id|ACPI_DEBUG_PRINT
 (paren
 id|ACPI_DB_ERROR
 comma
-l_string|&quot;Needed [Buf/Str/Pkg], found [%s] %p&bslash;n&quot;
+l_string|&quot;Needed [Buffer/String/Package/Reference], found [%s] %p&bslash;n&quot;
 comma
 id|acpi_ut_get_object_type_name
 (paren
@@ -1109,7 +1180,62 @@ id|ACPI_DEBUG_PRINT
 (paren
 id|ACPI_DB_ERROR
 comma
-l_string|&quot;Needed [Buf/Str/Pkg], found [%s] %p&bslash;n&quot;
+l_string|&quot;Needed [Buffer/String/Package], found [%s] %p&bslash;n&quot;
+comma
+id|acpi_ut_get_object_type_name
+(paren
+id|obj_desc
+)paren
+comma
+id|obj_desc
+)paren
+)paren
+suffix:semicolon
+id|return_ACPI_STATUS
+(paren
+id|AE_AML_OPERAND_TYPE
+)paren
+suffix:semicolon
+)brace
+r_goto
+id|next_operand
+suffix:semicolon
+r_case
+id|ARGI_REGION_OR_FIELD
+suffix:colon
+multiline_comment|/* Need an operand of type ACPI_TYPE_REGION or a FIELD in a region */
+r_switch
+c_cond
+(paren
+id|ACPI_GET_OBJECT_TYPE
+(paren
+id|obj_desc
+)paren
+)paren
+(brace
+r_case
+id|ACPI_TYPE_REGION
+suffix:colon
+r_case
+id|ACPI_TYPE_LOCAL_REGION_FIELD
+suffix:colon
+r_case
+id|ACPI_TYPE_LOCAL_BANK_FIELD
+suffix:colon
+r_case
+id|ACPI_TYPE_LOCAL_INDEX_FIELD
+suffix:colon
+multiline_comment|/* Valid operand */
+r_break
+suffix:semicolon
+r_default
+suffix:colon
+id|ACPI_DEBUG_PRINT
+(paren
+(paren
+id|ACPI_DB_ERROR
+comma
+l_string|&quot;Needed [Region/region_field], found [%s] %p&bslash;n&quot;
 comma
 id|acpi_ut_get_object_type_name
 (paren

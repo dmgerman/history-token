@@ -394,7 +394,7 @@ mdefine_line|#define ARGI_LNOT_OP                    ARGI_LIST1 (ARGI_INTEGER)
 DECL|macro|ARGI_LNOTEQUAL_OP
 mdefine_line|#define ARGI_LNOTEQUAL_OP               ARGI_INVALID_OPCODE
 DECL|macro|ARGI_LOAD_OP
-mdefine_line|#define ARGI_LOAD_OP                    ARGI_LIST2 (ARGI_REGION,     ARGI_TARGETREF)
+mdefine_line|#define ARGI_LOAD_OP                    ARGI_LIST2 (ARGI_REGION_OR_FIELD,ARGI_TARGETREF)
 DECL|macro|ARGI_LOAD_TABLE_OP
 mdefine_line|#define ARGI_LOAD_TABLE_OP              ARGI_LIST6 (ARGI_STRING,     ARGI_STRING,        ARGI_STRING,       ARGI_STRING,    ARGI_STRING, ARGI_ANYTYPE)
 DECL|macro|ARGI_LOCAL0
@@ -422,7 +422,7 @@ mdefine_line|#define ARGI_METHOD_OP                  ARGI_INVALID_OPCODE
 DECL|macro|ARGI_METHODCALL_OP
 mdefine_line|#define ARGI_METHODCALL_OP              ARGI_INVALID_OPCODE
 DECL|macro|ARGI_MID_OP
-mdefine_line|#define ARGI_MID_OP                     ARGI_LIST4 (ARGI_BUFFERSTRING,ARGI_INTEGER,      ARGI_INTEGER,      ARGI_TARGETREF)
+mdefine_line|#define ARGI_MID_OP                     ARGI_LIST4 (ARGI_BUFFER_OR_STRING,ARGI_INTEGER,  ARGI_INTEGER,      ARGI_TARGETREF)
 DECL|macro|ARGI_MOD_OP
 mdefine_line|#define ARGI_MOD_OP                     ARGI_LIST3 (ARGI_INTEGER,    ARGI_INTEGER,       ARGI_TARGETREF)
 DECL|macro|ARGI_MULTIPLY_OP

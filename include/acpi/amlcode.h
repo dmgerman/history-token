@@ -283,7 +283,7 @@ DECL|macro|AML_INT_EVAL_SUBTREE_OP
 mdefine_line|#define AML_INT_EVAL_SUBTREE_OP     (u16) 0x0037
 DECL|macro|ARG_NONE
 mdefine_line|#define ARG_NONE                    0x0
-multiline_comment|/*&n; * Argument types for the AML Parser&n; * Each field in the arg_types u32 is 5 bits, allowing for a maximum of 6 arguments.&n; * There can be up to 31 unique argument types&n; */
+multiline_comment|/*&n; * Argument types for the AML Parser&n; * Each field in the arg_types u32 is 5 bits, allowing for a maximum of 6 arguments.&n; * There can be up to 31 unique argument types&n; * Zero is reserved as end-of-list indicator&n; */
 DECL|macro|ARGP_BYTEDATA
 mdefine_line|#define ARGP_BYTEDATA               0x01
 DECL|macro|ARGP_BYTELIST
@@ -320,55 +320,54 @@ DECL|macro|ARGP_QWORDDATA
 mdefine_line|#define ARGP_QWORDDATA              0x11
 DECL|macro|ARGP_SIMPLENAME
 mdefine_line|#define ARGP_SIMPLENAME             0x12
-multiline_comment|/*&n; * Resolved argument types for the AML Interpreter&n; * Each field in the arg_types u32 is 5 bits, allowing for a maximum of 6 arguments.&n; * There can be up to 31 unique argument types (0 is end-of-arg-list indicator)&n; *&n; * Note: If and when 5 bits becomes insufficient, it would probably be best&n; * to convert to a 6-byte array of argument types, allowing 8 bits per argument.&n; */
-multiline_comment|/* &quot;Standard&quot; ACPI types are 1-15 (0x0F) */
-DECL|macro|ARGI_INTEGER
-mdefine_line|#define ARGI_INTEGER                ACPI_TYPE_INTEGER       /* 1 */
-DECL|macro|ARGI_STRING
-mdefine_line|#define ARGI_STRING                 ACPI_TYPE_STRING        /* 2 */
-DECL|macro|ARGI_BUFFER
-mdefine_line|#define ARGI_BUFFER                 ACPI_TYPE_BUFFER        /* 3 */
-DECL|macro|ARGI_PACKAGE
-mdefine_line|#define ARGI_PACKAGE                ACPI_TYPE_PACKAGE       /* 4 */
-DECL|macro|ARGI_EVENT
-mdefine_line|#define ARGI_EVENT                  ACPI_TYPE_EVENT
-DECL|macro|ARGI_MUTEX
-mdefine_line|#define ARGI_MUTEX                  ACPI_TYPE_MUTEX
-DECL|macro|ARGI_REGION
-mdefine_line|#define ARGI_REGION                 ACPI_TYPE_REGION
-DECL|macro|ARGI_DDBHANDLE
-mdefine_line|#define ARGI_DDBHANDLE              ACPI_TYPE_DDB_HANDLE
-multiline_comment|/* Custom types are 0x10 through 0x1F */
-DECL|macro|ARGI_IF
-mdefine_line|#define ARGI_IF                     0x10
-DECL|macro|ARGI_ANYOBJECT
-mdefine_line|#define ARGI_ANYOBJECT              0x11
+multiline_comment|/*&n; * Resolved argument types for the AML Interpreter&n; * Each field in the arg_types u32 is 5 bits, allowing for a maximum of 6 arguments.&n; * There can be up to 31 unique argument types (0 is end-of-arg-list indicator)&n; *&n; * Note1: These values are completely independent from the ACPI_TYPEs&n; *        i.e., ARGI_INTEGER != ACPI_TYPE_INTEGER&n; *&n; * Note2: If and when 5 bits becomes insufficient, it would probably be best&n; * to convert to a 6-byte array of argument types, allowing 8 bits per argument.&n; */
+multiline_comment|/* Single, simple types */
 DECL|macro|ARGI_ANYTYPE
-mdefine_line|#define ARGI_ANYTYPE                0x12
+mdefine_line|#define ARGI_ANYTYPE                0x01    /* Don&squot;t care */
+DECL|macro|ARGI_PACKAGE
+mdefine_line|#define ARGI_PACKAGE                0x02
+DECL|macro|ARGI_EVENT
+mdefine_line|#define ARGI_EVENT                  0x03
+DECL|macro|ARGI_MUTEX
+mdefine_line|#define ARGI_MUTEX                  0x04
+DECL|macro|ARGI_DDBHANDLE
+mdefine_line|#define ARGI_DDBHANDLE              0x05
+multiline_comment|/* Interchangeable types (via implicit conversion) */
+DECL|macro|ARGI_INTEGER
+mdefine_line|#define ARGI_INTEGER                0x06
+DECL|macro|ARGI_STRING
+mdefine_line|#define ARGI_STRING                 0x07
+DECL|macro|ARGI_BUFFER
+mdefine_line|#define ARGI_BUFFER                 0x08
+DECL|macro|ARGI_BUFFER_OR_STRING
+mdefine_line|#define ARGI_BUFFER_OR_STRING       0x09    /* Used by MID op only */
 DECL|macro|ARGI_COMPUTEDATA
-mdefine_line|#define ARGI_COMPUTEDATA            0x13     /* Buffer, String, or Integer */
-DECL|macro|ARGI_DATAOBJECT
-mdefine_line|#define ARGI_DATAOBJECT             0x14     /* Buffer, String, package or reference to a Node - Used only by size_of operator*/
-DECL|macro|ARGI_COMPLEXOBJ
-mdefine_line|#define ARGI_COMPLEXOBJ             0x15     /* Buffer, String, or package (Used by INDEX op only) */
+mdefine_line|#define ARGI_COMPUTEDATA            0x0A    /* Buffer, String, or Integer */
+multiline_comment|/* Reference objects */
 DECL|macro|ARGI_INTEGER_REF
-mdefine_line|#define ARGI_INTEGER_REF            0x16
+mdefine_line|#define ARGI_INTEGER_REF            0x0B
 DECL|macro|ARGI_OBJECT_REF
-mdefine_line|#define ARGI_OBJECT_REF             0x17
+mdefine_line|#define ARGI_OBJECT_REF             0x0C
 DECL|macro|ARGI_DEVICE_REF
-mdefine_line|#define ARGI_DEVICE_REF             0x18
+mdefine_line|#define ARGI_DEVICE_REF             0x0D
 DECL|macro|ARGI_REFERENCE
-mdefine_line|#define ARGI_REFERENCE              0x19
+mdefine_line|#define ARGI_REFERENCE              0x0E
 DECL|macro|ARGI_TARGETREF
-mdefine_line|#define ARGI_TARGETREF              0x1A     /* Target, subject to implicit conversion */
+mdefine_line|#define ARGI_TARGETREF              0x0F    /* Target, subject to implicit conversion */
 DECL|macro|ARGI_FIXED_TARGET
-mdefine_line|#define ARGI_FIXED_TARGET           0x1B     /* Target, no implicit conversion */
+mdefine_line|#define ARGI_FIXED_TARGET           0x10    /* Target, no implicit conversion */
 DECL|macro|ARGI_SIMPLE_TARGET
-mdefine_line|#define ARGI_SIMPLE_TARGET          0x1C     /* Name, Local, Arg -- no implicit conversion */
-DECL|macro|ARGI_BUFFERSTRING
-mdefine_line|#define ARGI_BUFFERSTRING           0x1D
+mdefine_line|#define ARGI_SIMPLE_TARGET          0x11    /* Name, Local, Arg -- no implicit conversion */
+multiline_comment|/* Multiple/complex types */
+DECL|macro|ARGI_DATAOBJECT
+mdefine_line|#define ARGI_DATAOBJECT             0x12    /* Buffer, String, package or reference to a Node - Used only by size_of operator*/
+DECL|macro|ARGI_COMPLEXOBJ
+mdefine_line|#define ARGI_COMPLEXOBJ             0x13    /* Buffer, String, or package (Used by INDEX op only) */
 DECL|macro|ARGI_REF_OR_STRING
-mdefine_line|#define ARGI_REF_OR_STRING          0x1E     /* Reference or String (Used by DEREFOF op only) */
+mdefine_line|#define ARGI_REF_OR_STRING          0x14    /* Reference or String (Used by DEREFOF op only) */
+DECL|macro|ARGI_REGION_OR_FIELD
+mdefine_line|#define ARGI_REGION_OR_FIELD        0x15    /* Used by LOAD op only */
+multiline_comment|/* Note: types above can expand to 0x1F maximum */
 DECL|macro|ARGI_INVALID_OPCODE
 mdefine_line|#define ARGI_INVALID_OPCODE         0xFFFFFFFF
 multiline_comment|/*&n; * hash offsets&n; */

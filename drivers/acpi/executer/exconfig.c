@@ -851,9 +851,6 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
-id|ACPI_TYPE_BUFFER_FIELD
-suffix:colon
-r_case
 id|ACPI_TYPE_LOCAL_REGION_FIELD
 suffix:colon
 r_case
