@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * File...........: linux/drivers/s390/block/dasd.c&n; * Author(s)......: Holger Smolinski &lt;Holger.Smolinski@de.ibm.com&gt;&n; *&t;&t;    Horst Hummel &lt;Horst.Hummel@de.ibm.com&gt;&n; *&t;&t;    Carsten Otte &lt;Cotte@de.ibm.com&gt;&n; *&t;&t;    Martin Schwidefsky &lt;schwidefsky@de.ibm.com&gt;&n; * Bugreports.to..: &lt;Linux390@de.ibm.com&gt;&n; * (C) IBM Corporation, IBM Deutschland Entwicklung GmbH, 1999-2001&n; *&n; * $Revision: 1.10 $&n; */
+multiline_comment|/*&n; * File...........: linux/drivers/s390/block/dasd.c&n; * Author(s)......: Holger Smolinski &lt;Holger.Smolinski@de.ibm.com&gt;&n; *&t;&t;    Horst Hummel &lt;Horst.Hummel@de.ibm.com&gt;&n; *&t;&t;    Carsten Otte &lt;Cotte@de.ibm.com&gt;&n; *&t;&t;    Martin Schwidefsky &lt;schwidefsky@de.ibm.com&gt;&n; * Bugreports.to..: &lt;Linux390@de.ibm.com&gt;&n; * (C) IBM Corporation, IBM Deutschland Entwicklung GmbH, 1999-2001&n; *&n; * $Revision: 1.11 $&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/ctype.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
@@ -345,11 +345,19 @@ comma
 l_int|4
 )paren
 suffix:semicolon
-id|atomic_inc
+id|set_bit
 c_func
 (paren
+id|DASD_CQR_FLAGS_USE_ERP
+comma
 op_amp
-id|device-&gt;ref_count
+id|cqr-&gt;flags
+)paren
+suffix:semicolon
+id|dasd_get_device
+c_func
+(paren
+id|device
 )paren
 suffix:semicolon
 r_return
