@@ -1578,7 +1578,7 @@ op_assign
 id|new_mtu
 suffix:semicolon
 r_return
-id|new_mtu
+l_int|0
 suffix:semicolon
 )brace
 DECL|function|vlan_dev_set_ingress_priority
