@@ -5,6 +5,7 @@ macro_line|#include &lt;linux/device.h&gt;
 macro_line|#include &lt;linux/wait.h&gt;
 macro_line|#include &lt;linux/completion.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
+macro_line|#include &lt;linux/err.h&gt;
 macro_line|#include &lt;asm/delay.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
@@ -12,6 +13,7 @@ macro_line|#include &lt;asm/arch/dma.h&gt;
 macro_line|#include &lt;asm/arch/mux.h&gt;
 macro_line|#include &lt;asm/arch/irqs.h&gt;
 macro_line|#include &lt;asm/arch/mcbsp.h&gt;
+macro_line|#include &lt;asm/hardware/clock.h&gt;
 macro_line|#ifdef CONFIG_MCBSP_DEBUG
 DECL|macro|DBG
 mdefine_line|#define DBG(x...)&t;printk(x)
@@ -104,6 +106,24 @@ id|mcbsp
 (braket
 id|OMAP_MAX_MCBSP_COUNT
 )braket
+suffix:semicolon
+DECL|variable|mcbsp_dsp_ck
+r_static
+r_struct
+id|clk
+op_star
+id|mcbsp_dsp_ck
+op_assign
+l_int|0
+suffix:semicolon
+DECL|variable|mcbsp_api_ck
+r_static
+r_struct
+id|clk
+op_star
+id|mcbsp_api_ck
+op_assign
+l_int|0
 suffix:semicolon
 DECL|function|omap_mcbsp_dump_reg
 r_static
@@ -753,7 +773,7 @@ c_func
 (paren
 id|io_base
 comma
-id|SRGR2
+id|MCR2
 comma
 id|config-&gt;mcr2
 )paren
@@ -763,7 +783,7 @@ c_func
 (paren
 id|io_base
 comma
-id|SRGR1
+id|MCR1
 comma
 id|config-&gt;mcr1
 )paren
@@ -881,6 +901,8 @@ op_minus
 l_int|1
 suffix:semicolon
 )brace
+DECL|macro|EN_XORPCK
+mdefine_line|#define EN_XORPCK&t;&t;1
 DECL|macro|DSP_RSTCT2
 mdefine_line|#define DSP_RSTCT2              0xe1008014
 DECL|function|omap_mcbsp_dsp_request
@@ -937,42 +959,16 @@ comma
 id|ARM_RSTCT1
 )paren
 suffix:semicolon
-id|omap_writew
+id|clk_enable
 c_func
 (paren
-(paren
-id|omap_readw
-c_func
-(paren
-id|ARM_CKCTL
-)paren
-op_or
-l_int|1
-op_lshift
-id|EN_DSPCK
-)paren
-comma
-id|ARM_CKCTL
+id|mcbsp_dsp_ck
 )paren
 suffix:semicolon
-id|omap_writew
+id|clk_enable
 c_func
 (paren
-(paren
-id|omap_readw
-c_func
-(paren
-id|ARM_IDLECT2
-)paren
-op_or
-(paren
-l_int|1
-op_lshift
-id|EN_APICK
-)paren
-)paren
-comma
-id|ARM_IDLECT2
+id|mcbsp_api_ck
 )paren
 suffix:semicolon
 multiline_comment|/* enable 12MHz clock to mcbsp 1 &amp; 3 */
@@ -2899,7 +2895,7 @@ comma
 )brace
 suffix:semicolon
 macro_line|#endif
-macro_line|#if defined(CONFIG_ARCH_OMAP1610) || defined(CONFIG_ARCH_OMAP1710)
+macro_line|#if defined(CONFIG_ARCH_OMAP16XX)
 DECL|variable|mcbsp_1610
 r_static
 r_const
@@ -3040,6 +3036,76 @@ c_func
 l_string|&quot;Initializing OMAP McBSP system&bslash;n&quot;
 )paren
 suffix:semicolon
+id|mcbsp_dsp_ck
+op_assign
+id|clk_get
+c_func
+(paren
+l_int|0
+comma
+l_string|&quot;dsp_ck&quot;
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|IS_ERR
+c_func
+(paren
+id|mcbsp_dsp_ck
+)paren
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;mcbsp: could not acquire dsp_ck handle.&bslash;n&quot;
+)paren
+suffix:semicolon
+r_return
+id|PTR_ERR
+c_func
+(paren
+id|mcbsp_dsp_ck
+)paren
+suffix:semicolon
+)brace
+id|mcbsp_api_ck
+op_assign
+id|clk_get
+c_func
+(paren
+l_int|0
+comma
+l_string|&quot;api_ck&quot;
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|IS_ERR
+c_func
+(paren
+id|mcbsp_dsp_ck
+)paren
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;mcbsp: could not acquire api_ck handle.&bslash;n&quot;
+)paren
+suffix:semicolon
+r_return
+id|PTR_ERR
+c_func
+(paren
+id|mcbsp_api_ck
+)paren
+suffix:semicolon
+)brace
 macro_line|#ifdef CONFIG_ARCH_OMAP730
 r_if
 c_cond
@@ -3088,7 +3154,7 @@ id|mcbsp_1510
 suffix:semicolon
 )brace
 macro_line|#endif
-macro_line|#if defined(CONFIG_ARCH_OMAP1610) || defined(CONFIG_ARCH_OMAP1710)
+macro_line|#if defined(CONFIG_ARCH_OMAP16XX)
 r_if
 c_cond
 (paren

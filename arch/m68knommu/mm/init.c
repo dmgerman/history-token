@@ -21,7 +21,6 @@ macro_line|#include &lt;asm/page.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/machdep.h&gt;
-macro_line|#include &lt;asm/shglcore.h&gt;
 DECL|macro|DEBUG
 macro_line|#undef DEBUG
 r_extern

@@ -167,10 +167,6 @@ op_star
 id|cb
 )paren
 suffix:semicolon
-DECL|variable|netlink_sock_nr
-id|atomic_t
-id|netlink_sock_nr
-suffix:semicolon
 DECL|variable|nl_table_lock
 r_static
 id|rwlock_t
@@ -286,31 +282,6 @@ id|sk
 )paren
 )paren
 suffix:semicolon
-id|atomic_dec
-c_func
-(paren
-op_amp
-id|netlink_sock_nr
-)paren
-suffix:semicolon
-macro_line|#ifdef NETLINK_REFCNT_DEBUG
-id|printk
-c_func
-(paren
-id|KERN_DEBUG
-l_string|&quot;NETLINK %p released, %d are still alive&bslash;n&quot;
-comma
-id|sk
-comma
-id|atomic_read
-c_func
-(paren
-op_amp
-id|netlink_sock_nr
-)paren
-)paren
-suffix:semicolon
-macro_line|#endif
 )brace
 multiline_comment|/* This lock without WQ_FLAG_EXCLUSIVE is good on UP and it is _very_ bad on SMP.&n; * Look, when several writers sleep and reader wakes them up, all but one&n; * immediately hit write lock and grab all the cpus. Exclusive sleep solves&n; * this, _but_ remember, it adds useless work on UP machines.&n; */
 DECL|function|netlink_table_grab
@@ -931,13 +902,6 @@ suffix:semicolon
 id|sk-&gt;sk_destruct
 op_assign
 id|netlink_sock_destruct
-suffix:semicolon
-id|atomic_inc
-c_func
-(paren
-op_amp
-id|netlink_sock_nr
-)paren
 suffix:semicolon
 id|sk-&gt;sk_protocol
 op_assign
@@ -4036,6 +4000,9 @@ id|data_ready
 op_assign
 id|input
 suffix:semicolon
+r_if
+c_cond
+(paren
 id|netlink_insert
 c_func
 (paren
@@ -4043,7 +4010,18 @@ id|sk
 comma
 l_int|0
 )paren
+)paren
+(brace
+id|sock_release
+c_func
+(paren
+id|sock
+)paren
 suffix:semicolon
+r_return
+l_int|NULL
+suffix:semicolon
+)brace
 r_return
 id|sk
 suffix:semicolon

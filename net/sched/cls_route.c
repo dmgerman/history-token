@@ -23,7 +23,8 @@ macro_line|#include &lt;net/ip.h&gt;
 macro_line|#include &lt;net/route.h&gt;
 macro_line|#include &lt;linux/skbuff.h&gt;
 macro_line|#include &lt;net/sock.h&gt;
-macro_line|#include &lt;net/pkt_sched.h&gt;
+macro_line|#include &lt;net/act_api.h&gt;
+macro_line|#include &lt;net/pkt_cls.h&gt;
 multiline_comment|/*&n;   1. For now we assume that route tags &lt; 256.&n;      It allows to use direct table lookups, instead of hash tables.&n;   2. For now we assume that &quot;from TAG&quot; and &quot;fromdev DEV&quot; statements&n;      are mutually  exclusive.&n;   3. &quot;to TAG from ANY&quot; has higher priority, than &quot;to ANY from XXX&quot;&n; */
 DECL|struct|route4_fastmap
 r_struct

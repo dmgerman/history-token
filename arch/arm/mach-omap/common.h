@@ -18,5 +18,16 @@ r_struct
 id|sys_timer
 id|omap_timer
 suffix:semicolon
+r_extern
+r_void
+id|omap_serial_init
+c_func
+(paren
+r_int
+id|ports
+(braket
+)braket
+)paren
+suffix:semicolon
 macro_line|#endif /* __ARCH_ARM_MACH_OMAP_COMMON_H */
 eof

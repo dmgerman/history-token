@@ -14,6 +14,7 @@ macro_line|#include &lt;asm/mach/map.h&gt;
 macro_line|#include &lt;asm/arch/irqs.h&gt;
 macro_line|#include &lt;asm/arch/gpio.h&gt;
 macro_line|#include &lt;asm/mach-types.h&gt;
+macro_line|#include &lt;asm/arch/serial.h&gt;
 macro_line|#include &quot;common.h&quot;
 DECL|function|h3_init_irq
 r_void
@@ -29,6 +30,23 @@ c_func
 )paren
 suffix:semicolon
 )brace
+DECL|variable|h3_serial_ports
+r_static
+r_int
+id|__initdata
+id|h3_serial_ports
+(braket
+id|OMAP_MAX_NR_PORTS
+)braket
+op_assign
+(brace
+l_int|1
+comma
+l_int|1
+comma
+l_int|1
+)brace
+suffix:semicolon
 DECL|variable|smc91x_resources
 r_static
 r_struct
@@ -162,38 +180,6 @@ id|devices
 )paren
 suffix:semicolon
 )brace
-DECL|variable|__initdata
-r_static
-r_struct
-id|map_desc
-id|h3_io_desc
-(braket
-)braket
-id|__initdata
-op_assign
-(brace
-(brace
-id|OMAP1710_ETHR_BASE
-comma
-id|OMAP1710_ETHR_START
-comma
-id|OMAP1710_ETHR_SIZE
-comma
-id|MT_DEVICE
-)brace
-comma
-(brace
-id|OMAP_NOR_FLASH_BASE
-comma
-id|OMAP_NOR_FLASH_START
-comma
-id|OMAP_NOR_FLASH_SIZE
-comma
-id|MT_DEVICE
-)brace
-comma
-)brace
-suffix:semicolon
 DECL|function|h3_map_io
 r_static
 r_void
@@ -209,16 +195,10 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|iotable_init
+id|omap_serial_init
 c_func
 (paren
-id|h3_io_desc
-comma
-id|ARRAY_SIZE
-c_func
-(paren
-id|h3_io_desc
-)paren
+id|h3_serial_ports
 )paren
 suffix:semicolon
 )brace

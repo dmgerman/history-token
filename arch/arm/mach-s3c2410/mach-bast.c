@@ -1,4 +1,4 @@
-multiline_comment|/* linux/arch/arm/mach-s3c2410/mach-bast.c&n; *&n; * Copyright (c) 2003,2004 Simtec Electronics&n; *   Ben Dooks &lt;ben@simtec.co.uk&gt;&n; *&n; * http://www.simtec.co.uk/products/EB2410ITX/&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; *&n; * Modifications:&n; *     14-Sep-2004 BJD  USB power control&n; *     20-Aug-2004 BJD  Added s3c2410_board struct&n; *     18-Aug-2004 BJD  Added platform devices from default set&n; *     16-May-2003 BJD  Created initial version&n; *     16-Aug-2003 BJD  Fixed header files and copyright, added URL&n; *     05-Sep-2003 BJD  Moved to v2.6 kernel&n; *     06-Jan-2003 BJD  Updates for &lt;arch/map.h&gt;&n; *     18-Jan-2003 BJD  Added serial port configuration&n;*/
+multiline_comment|/* linux/arch/arm/mach-s3c2410/mach-bast.c&n; *&n; * Copyright (c) 2003,2004 Simtec Electronics&n; *   Ben Dooks &lt;ben@simtec.co.uk&gt;&n; *&n; * http://www.simtec.co.uk/products/EB2410ITX/&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; *&n; * Modifications:&n; *     14-Sep-2004 BJD  USB power control&n; *     20-Aug-2004 BJD  Added s3c2410_board struct&n; *     18-Aug-2004 BJD  Added platform devices from default set&n; *     16-May-2003 BJD  Created initial version&n; *     16-Aug-2003 BJD  Fixed header files and copyright, added URL&n; *     05-Sep-2003 BJD  Moved to v2.6 kernel&n; *     06-Jan-2003 BJD  Updates for &lt;arch/map.h&gt;&n; *     18-Jan-2003 BJD  Added serial port configuration&n; *     05-Oct-2004 BJD  Power management code&n;*/
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
@@ -10,16 +10,22 @@ macro_line|#include &lt;asm/mach/arch.h&gt;
 macro_line|#include &lt;asm/mach/map.h&gt;
 macro_line|#include &lt;asm/mach/irq.h&gt;
 macro_line|#include &lt;asm/arch/bast-map.h&gt;
+macro_line|#include &lt;asm/arch/bast-irq.h&gt;
 macro_line|#include &lt;asm/hardware.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;asm/mach-types.h&gt;
 singleline_comment|//#include &lt;asm/debug-ll.h&gt;
 macro_line|#include &lt;asm/arch/regs-serial.h&gt;
+macro_line|#include &lt;asm/arch/regs-gpio.h&gt;
+macro_line|#include &lt;asm/arch/regs-mem.h&gt;
 macro_line|#include &quot;s3c2410.h&quot;
 macro_line|#include &quot;devs.h&quot;
 macro_line|#include &quot;cpu.h&quot;
 macro_line|#include &quot;usb-simtec.h&quot;
+macro_line|#include &quot;pm.h&quot;
+DECL|macro|COPYRIGHT
+mdefine_line|#define COPYRIGHT &quot;, (c) 2004 Simtec Electronics&quot;
 multiline_comment|/* macros for virtual address mods for the io space entries */
 DECL|macro|VA_C5
 mdefine_line|#define VA_C5(item) ((item) + BAST_VAM_CS5)
@@ -1149,7 +1155,7 @@ suffix:semicolon
 DECL|variable|__initdata
 r_static
 r_struct
-id|s3c2410_board
+id|s3c24xx_board
 id|bast_board
 id|__initdata
 op_assign
@@ -1202,7 +1208,7 @@ id|bast_uartcfgs
 )paren
 )paren
 suffix:semicolon
-id|s3c2410_set_board
+id|s3c24xx_set_board
 c_func
 (paren
 op_amp
@@ -1230,6 +1236,115 @@ c_func
 )paren
 suffix:semicolon
 )brace
+macro_line|#ifdef CONFIG_PM
+multiline_comment|/* bast_init_pm&n; *&n; * enable the power management functions for the EB2410ITX&n;*/
+DECL|function|bast_init_pm
+r_static
+id|__init
+r_int
+id|bast_init_pm
+c_func
+(paren
+r_void
+)paren
+(brace
+r_int
+r_int
+id|gstatus4
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|machine_is_bast
+c_func
+(paren
+)paren
+)paren
+r_return
+l_int|0
+suffix:semicolon
+id|printk
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;BAST Power Manangement&quot;
+id|COPYRIGHT
+l_string|&quot;&bslash;n&quot;
+)paren
+suffix:semicolon
+id|gstatus4
+op_assign
+(paren
+id|__raw_readl
+c_func
+(paren
+id|S3C2410_BANKCON7
+)paren
+op_amp
+l_int|0x3
+)paren
+op_lshift
+l_int|30
+suffix:semicolon
+id|gstatus4
+op_or_assign
+(paren
+id|__raw_readl
+c_func
+(paren
+id|S3C2410_BANKCON6
+)paren
+op_amp
+l_int|0x3
+)paren
+op_lshift
+l_int|28
+suffix:semicolon
+id|gstatus4
+op_or_assign
+(paren
+id|__raw_readl
+c_func
+(paren
+id|S3C2410_BANKSIZE
+)paren
+op_amp
+id|S3C2410_BANKSIZE_MASK
+)paren
+suffix:semicolon
+id|printk
+c_func
+(paren
+id|KERN_DEBUG
+l_string|&quot;setting GSTATUS4 to %08lx&bslash;n&quot;
+comma
+id|gstatus4
+)paren
+suffix:semicolon
+id|__raw_writel
+c_func
+(paren
+id|gstatus4
+comma
+id|S3C2410_GSTATUS4
+)paren
+suffix:semicolon
+r_return
+id|s3c2410_pm_init
+c_func
+(paren
+)paren
+suffix:semicolon
+)brace
+DECL|variable|bast_init_pm
+id|late_initcall
+c_func
+(paren
+id|bast_init_pm
+)paren
+suffix:semicolon
+macro_line|#endif
 id|MACHINE_START
 c_func
 (paren

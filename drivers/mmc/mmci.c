@@ -2117,7 +2117,7 @@ l_int|16
 suffix:semicolon
 id|mmc-&gt;max_phys_segs
 op_assign
-l_int|16
+id|NR_SG
 suffix:semicolon
 multiline_comment|/*&n;&t; * Since we only have a 16-bit data length register, we must&n;&t; * ensure that we don&squot;t exceed 2^16-1 bytes in a single request.&n;&t; * Choose 64 (512-byte) sectors as the limit.&n;&t; */
 id|mmc-&gt;max_sectors

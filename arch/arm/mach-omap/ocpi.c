@@ -48,7 +48,7 @@ r_int
 id|val
 suffix:semicolon
 multiline_comment|/* Make sure there&squot;s clock for OCPI */
-macro_line|#if defined(CONFIG_ARCH_OMAP1610) || defined(CONFIG_ARCH_OMAP1710)
+macro_line|#if defined(CONFIG_ARCH_OMAP16XX)
 r_if
 c_cond
 (paren
@@ -68,7 +68,7 @@ op_assign
 id|omap_readl
 c_func
 (paren
-id|OMAP1610_ARM_IDLECT3
+id|OMAP16XX_ARM_IDLECT3
 )paren
 suffix:semicolon
 id|val
@@ -85,44 +85,7 @@ c_func
 (paren
 id|val
 comma
-id|OMAP1610_ARM_IDLECT3
-)paren
-suffix:semicolon
-)brace
-macro_line|#endif
-macro_line|#ifdef CONFIG_ARCH_OMAP5912
-r_if
-c_cond
-(paren
-id|cpu_is_omap5912
-c_func
-(paren
-)paren
-)paren
-(brace
-id|val
-op_assign
-id|omap_readl
-c_func
-(paren
-id|OMAP5912_ARM_IDLECT3
-)paren
-suffix:semicolon
-id|val
-op_or_assign
-id|EN_OCPI_CK
-suffix:semicolon
-id|val
-op_and_assign
-op_complement
-id|IDLOCPI_ARM
-suffix:semicolon
-id|omap_writel
-c_func
-(paren
-id|val
-comma
-id|OMAP5912_ARM_IDLECT3
+id|OMAP16XX_ARM_IDLECT3
 )paren
 suffix:semicolon
 )brace

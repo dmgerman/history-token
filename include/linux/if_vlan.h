@@ -1099,6 +1099,14 @@ id|SET_VLAN_NAME_TYPE_CMD
 comma
 DECL|enumerator|SET_VLAN_FLAG_CMD
 id|SET_VLAN_FLAG_CMD
+comma
+DECL|enumerator|GET_VLAN_REALDEV_NAME_CMD
+id|GET_VLAN_REALDEV_NAME_CMD
+comma
+multiline_comment|/* If this works, you know it&squot;s a VLAN device, btw */
+DECL|enumerator|GET_VLAN_VID_CMD
+id|GET_VLAN_VID_CMD
+multiline_comment|/* Get the VID of this VLAN (specified by name) */
 )brace
 suffix:semicolon
 DECL|enum|vlan_name_types

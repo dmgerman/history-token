@@ -283,6 +283,15 @@ c_func
 (paren
 (paren
 id|skb-&gt;pkt_type
+op_eq
+id|HCI_VENDOR_PKT
+)paren
+ques
+c_cond
+l_int|0
+suffix:colon
+(paren
+id|skb-&gt;pkt_type
 op_amp
 id|HCI_FLT_TYPE_BITS
 )paren
