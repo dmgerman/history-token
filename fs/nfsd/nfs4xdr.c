@@ -7837,7 +7837,7 @@ id|nospc
 suffix:colon
 id|cd-&gt;common.err
 op_assign
-id|nfserr_readdir_nospc
+id|nfserr_toosmall
 suffix:semicolon
 r_return
 op_minus
@@ -9709,7 +9709,7 @@ OL
 l_int|0
 )paren
 r_return
-id|nfserr_readdir_nospc
+id|nfserr_toosmall
 suffix:semicolon
 id|svc_take_page
 c_func
@@ -9777,7 +9777,7 @@ id|nfs_ok
 op_logical_and
 id|readdir-&gt;common.err
 op_eq
-id|nfserr_readdir_nospc
+id|nfserr_toosmall
 op_logical_and
 id|readdir-&gt;buffer
 op_eq
@@ -9785,7 +9785,7 @@ id|page
 )paren
 id|nfserr
 op_assign
-id|nfserr_readdir_nospc
+id|nfserr_toosmall
 suffix:semicolon
 r_if
 c_cond

@@ -4508,7 +4508,7 @@ id|elen
 (brace
 id|cd-&gt;common.err
 op_assign
-id|nfserr_readdir_nospc
+id|nfserr_toosmall
 suffix:semicolon
 r_return
 op_minus
