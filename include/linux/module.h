@@ -121,10 +121,6 @@ DECL|macro|MODULE_GENERIC_TABLE
 mdefine_line|#define MODULE_GENERIC_TABLE(gtype,name)&t;&t;&t;&bslash;&n;extern const struct gtype##_id __mod_##gtype##_table&t;&t;&bslash;&n;  __attribute__ ((unused, alias(__stringify(name))))
 DECL|macro|THIS_MODULE
 mdefine_line|#define THIS_MODULE (&amp;__this_module)
-DECL|macro|MOD_INC_USE_COUNT
-mdefine_line|#define MOD_INC_USE_COUNT _MOD_INC_USE_COUNT(THIS_MODULE)
-DECL|macro|MOD_DEC_USE_COUNT
-mdefine_line|#define MOD_DEC_USE_COUNT __MOD_DEC_USE_COUNT(THIS_MODULE)
 multiline_comment|/*&n; * The following license idents are currently accepted as indicating free&n; * software modules&n; *&n; *&t;&quot;GPL&quot;&t;&t;&t;&t;[GNU Public License v2 or later]&n; *&t;&quot;GPL v2&quot;&t;&t;&t;[GNU Public License v2]&n; *&t;&quot;GPL and additional rights&quot;&t;[GNU Public License v2 rights and more]&n; *&t;&quot;Dual BSD/GPL&quot;&t;&t;&t;[GNU Public License v2&n; *&t;&t;&t;&t;&t; or BSD license choice]&n; *&t;&quot;Dual MPL/GPL&quot;&t;&t;&t;[GNU Public License v2&n; *&t;&t;&t;&t;&t; or Mozilla license choice]&n; *&n; * The following other idents are available&n; *&n; *&t;&quot;Proprietary&quot;&t;&t;&t;[Non free products]&n; *&n; * There are dual licensed components, but when running with Linux it is the&n; * GPL that is relevant so this is a non issue. Similarly LGPL linked with GPL&n; * is a GPL combined work.&n; *&n; * This exists for several reasons&n; * 1.&t;So modinfo can show license info for users wanting to vet their setup &n; *&t;is free&n; * 2.&t;So the community can ignore bug reports including proprietary modules&n; * 3.&t;So vendors can do likewise based on their own policies&n; */
 DECL|macro|MODULE_LICENSE
 mdefine_line|#define MODULE_LICENSE(license)&t;&t;&t;&t;&t;&bslash;&n;&t;static const char __module_license[]&t;&t;&t;&bslash;&n;&t;&t;__attribute__((section(&quot;.init.license&quot;), unused)) = license
@@ -135,10 +131,6 @@ DECL|macro|MODULE_GENERIC_TABLE
 mdefine_line|#define MODULE_GENERIC_TABLE(gtype,name)
 DECL|macro|THIS_MODULE
 mdefine_line|#define THIS_MODULE ((struct module *)0)
-DECL|macro|MOD_INC_USE_COUNT
-mdefine_line|#define MOD_INC_USE_COUNT&t;do { } while (0)
-DECL|macro|MOD_DEC_USE_COUNT
-mdefine_line|#define MOD_DEC_USE_COUNT&t;do { } while (0)
 DECL|macro|MODULE_LICENSE
 mdefine_line|#define MODULE_LICENSE(license)
 macro_line|#endif
@@ -936,55 +928,6 @@ macro_line|#endif /* MODULE */
 DECL|macro|symbol_request
 mdefine_line|#define symbol_request(x) try_then_request_module(symbol_get(x), &quot;symbol:&quot; #x)
 multiline_comment|/* BELOW HERE ALL THESE ARE OBSOLETE AND WILL VANISH */
-DECL|function|__MOD_INC_USE_COUNT
-r_static
-r_inline
-r_void
-id|__deprecated
-id|__MOD_INC_USE_COUNT
-c_func
-(paren
-r_struct
-id|module
-op_star
-id|module
-)paren
-(brace
-id|__unsafe
-c_func
-(paren
-id|module
-)paren
-suffix:semicolon
-multiline_comment|/*&n;&t; * Yes, we ignore the retval here, that&squot;s why it&squot;s deprecated.&n;&t; */
-id|try_module_get
-c_func
-(paren
-id|module
-)paren
-suffix:semicolon
-)brace
-DECL|function|__MOD_DEC_USE_COUNT
-r_static
-r_inline
-r_void
-id|__deprecated
-id|__MOD_DEC_USE_COUNT
-c_func
-(paren
-r_struct
-id|module
-op_star
-id|module
-)paren
-(brace
-id|module_put
-c_func
-(paren
-id|module
-)paren
-suffix:semicolon
-)brace
 DECL|macro|SET_MODULE_OWNER
 mdefine_line|#define SET_MODULE_OWNER(dev) ((dev)-&gt;owner = THIS_MODULE)
 DECL|struct|obsolete_modparm
@@ -1022,17 +965,12 @@ macro_line|#ifdef MODULE
 multiline_comment|/* DEPRECATED: Do not use. */
 DECL|macro|MODULE_PARM
 mdefine_line|#define MODULE_PARM(var,type)&t;&t;&t;&t;&t;&t;    &bslash;&n;struct obsolete_modparm __parm_##var __attribute__((section(&quot;__obsparm&quot;))) = &bslash;&n;{ __stringify(var), type };
-macro_line|#else
-DECL|macro|MODULE_PARM
-mdefine_line|#define MODULE_PARM(var,type)
-macro_line|#endif
-multiline_comment|/* People do this inside their init routines, when the module isn&squot;t&n;   &quot;live&quot; yet.  They should no longer be doing that, but&n;   meanwhile... */
-DECL|function|_MOD_INC_USE_COUNT
+DECL|function|MOD_INC_USE_COUNT
 r_static
 r_inline
 r_void
 id|__deprecated
-id|_MOD_INC_USE_COUNT
+id|MOD_INC_USE_COUNT
 c_func
 (paren
 r_struct
@@ -1069,6 +1007,9 @@ c_func
 )paren
 suffix:semicolon
 macro_line|#else
+(paren
+r_void
+)paren
 id|try_module_get
 c_func
 (paren
@@ -1077,6 +1018,39 @@ id|module
 suffix:semicolon
 macro_line|#endif
 )brace
+DECL|function|MOD_DEC_USE_COUNT
+r_static
+r_inline
+r_void
+id|__deprecated
+id|MOD_DEC_USE_COUNT
+c_func
+(paren
+r_struct
+id|module
+op_star
+id|module
+)paren
+(brace
+id|module_put
+c_func
+(paren
+id|module
+)paren
+suffix:semicolon
+)brace
+DECL|macro|MOD_INC_USE_COUNT
+mdefine_line|#define MOD_INC_USE_COUNT&t;MOD_INC_USE_COUNT(THIS_MODULE)
+DECL|macro|MOD_DEC_USE_COUNT
+mdefine_line|#define MOD_DEC_USE_COUNT&t;MOD_DEC_USE_COUNT(THIS_MODULE)
+macro_line|#else
+DECL|macro|MODULE_PARM
+mdefine_line|#define MODULE_PARM(var,type)
+DECL|macro|MOD_INC_USE_COUNT
+mdefine_line|#define MOD_INC_USE_COUNT&t;do { } while (0)
+DECL|macro|MOD_DEC_USE_COUNT
+mdefine_line|#define MOD_DEC_USE_COUNT&t;do { } while (0)
+macro_line|#endif
 DECL|macro|__MODULE_STRING
 mdefine_line|#define __MODULE_STRING(x) __stringify(x)
 multiline_comment|/*&n; * The exception and symbol tables, and the lock&n; * to protect them.&n; */
