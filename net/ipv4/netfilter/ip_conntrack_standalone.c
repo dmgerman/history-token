@@ -1343,7 +1343,7 @@ id|st-&gt;drop
 comma
 id|st-&gt;early_drop
 comma
-id|st-&gt;icmp_error
+id|st-&gt;error
 comma
 id|st-&gt;expect_new
 comma

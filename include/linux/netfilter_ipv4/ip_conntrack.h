@@ -765,10 +765,10 @@ r_int
 r_int
 id|early_drop
 suffix:semicolon
-DECL|member|icmp_error
+DECL|member|error
 r_int
 r_int
-id|icmp_error
+id|error
 suffix:semicolon
 DECL|member|expect_new
 r_int
@@ -787,6 +787,8 @@ id|expect_delete
 suffix:semicolon
 )brace
 suffix:semicolon
+DECL|macro|CONNTRACK_STAT_INC
+mdefine_line|#define CONNTRACK_STAT_INC(count) (__get_cpu_var(ip_conntrack_stat).count++)
 multiline_comment|/* eg. PROVIDES_CONNTRACK(ftp); */
 DECL|macro|PROVIDES_CONNTRACK
 mdefine_line|#define PROVIDES_CONNTRACK(name)                        &bslash;&n;        int needs_ip_conntrack_##name;                  &bslash;&n;        EXPORT_SYMBOL(needs_ip_conntrack_##name)
