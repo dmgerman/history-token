@@ -84,6 +84,9 @@ DECL|macro|PORT_SCIF
 mdefine_line|#define PORT_SCIF&t;53
 DECL|macro|PORT_IRDA
 mdefine_line|#define PORT_IRDA&t;54
+multiline_comment|/* Samsung S3C2410 SoC and derivatives thereof */
+DECL|macro|PORT_S3C2410
+mdefine_line|#define PORT_S3C2410    55
 macro_line|#ifdef __KERNEL__
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
