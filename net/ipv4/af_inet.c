@@ -4262,6 +4262,11 @@ c_func
 (paren
 )paren
 suffix:semicolon
+id|fib_proc_init
+c_func
+(paren
+)paren
+suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
