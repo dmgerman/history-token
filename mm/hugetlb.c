@@ -6,6 +6,7 @@ macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/hugetlb.h&gt;
 macro_line|#include &lt;linux/sysctl.h&gt;
+macro_line|#include &lt;linux/highmem.h&gt;
 DECL|variable|hugetlb_zero
 DECL|variable|hugetlb_infinity
 r_const
@@ -323,6 +324,9 @@ id|page
 op_star
 id|page
 suffix:semicolon
+r_int
+id|i
+suffix:semicolon
 id|spin_lock
 c_func
 (paren
@@ -381,18 +385,32 @@ op_star
 )paren
 id|free_huge_page
 suffix:semicolon
-id|memset
-c_func
+r_for
+c_loop
 (paren
-id|page_address
-c_func
-(paren
-id|page
-)paren
-comma
+id|i
+op_assign
 l_int|0
-comma
+suffix:semicolon
+id|i
+OL
+(paren
 id|HPAGE_SIZE
+op_div
+id|PAGE_SIZE
+)paren
+suffix:semicolon
+op_increment
+id|i
+)paren
+id|clear_highpage
+c_func
+(paren
+op_amp
+id|page
+(braket
+id|i
+)braket
 )paren
 suffix:semicolon
 r_return
