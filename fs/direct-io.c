@@ -3130,6 +3130,10 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|rw
+op_eq
+id|WRITE
+op_logical_and
 id|mapping-&gt;nrpages
 )paren
 id|invalidate_inode_pages2
