@@ -1040,6 +1040,33 @@ id|d-&gt;name
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/*&n;&t; * assume all devices can do 32-bit dma for now. we can add a&n;&t; * dma mask field to the ide_pci_device_t if we need it (or let&n;&t; * lower level driver set the dma mask)&n;&t; */
+r_if
+c_cond
+(paren
+id|pci_set_dma_mask
+c_func
+(paren
+id|dev
+comma
+l_int|0xffffffff
+)paren
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;%s: can&squot;t set dma mask&bslash;n&quot;
+comma
+id|d-&gt;name
+)paren
+suffix:semicolon
+r_return
+op_minus
+id|EBUSY
+suffix:semicolon
+)brace
 multiline_comment|/* FIXME: Temporary - until we put in the hotplug interface logic&n;&t;   Check that the bits we want are not in use by someone else */
 r_if
 c_cond
