@@ -2150,7 +2150,7 @@ id|XFS_BTNUM_BNO
 comma
 id|ARCH_CONVERT
 )paren
-suffix:semicolon
+comma
 (paren
 r_void
 op_star
@@ -2168,7 +2168,7 @@ id|XFS_BTNUM_CNT
 comma
 id|ARCH_CONVERT
 )paren
-suffix:semicolon
+comma
 (paren
 r_void
 op_star
@@ -2186,7 +2186,7 @@ id|XFS_BTNUM_BNO
 comma
 id|ARCH_CONVERT
 )paren
-suffix:semicolon
+comma
 (paren
 r_void
 op_star
@@ -2204,7 +2204,7 @@ id|XFS_BTNUM_CNT
 comma
 id|ARCH_CONVERT
 )paren
-suffix:semicolon
+comma
 (paren
 r_void
 op_star

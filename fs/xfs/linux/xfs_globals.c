@@ -70,4 +70,11 @@ c_func
 id|xfs_bmbt_get_all
 )paren
 suffix:semicolon
+DECL|variable|xfs_bmbt_disk_get_all
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|xfs_bmbt_disk_get_all
+)paren
+suffix:semicolon
 eof
