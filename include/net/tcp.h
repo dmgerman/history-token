@@ -12,6 +12,7 @@ macro_line|#undef TCP_CLEAR_TIMERS
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/tcp.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
+macro_line|#include &lt;linux/cache.h&gt;
 macro_line|#include &lt;net/checksum.h&gt;
 macro_line|#include &lt;net/sock.h&gt;
 macro_line|#if defined(CONFIG_IPV6) || defined (CONFIG_IPV6_MODULE)
@@ -138,20 +139,10 @@ id|TCP_LHTABLE_SIZE
 )braket
 suffix:semicolon
 multiline_comment|/* All the above members are written once at bootup and&n;&t; * never written again _or_ are predominantly read-access.&n;&t; *&n;&t; * Now align to a new cache line as all the following members&n;&t; * are often dirty.&n;&t; */
-DECL|member|__tcp_lhash_lock
+DECL|member|____cacheline_aligned
 id|rwlock_t
 id|__tcp_lhash_lock
-id|__attribute__
-c_func
-(paren
-(paren
-id|__aligned__
-c_func
-(paren
-id|SMP_CACHE_BYTES
-)paren
-)paren
-)paren
+id|____cacheline_aligned
 suffix:semicolon
 DECL|member|__tcp_lhash_users
 id|atomic_t
