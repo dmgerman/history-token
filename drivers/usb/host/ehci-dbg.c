@@ -1957,9 +1957,9 @@ id|qh-&gt;hw_token
 )paren
 ques
 c_cond
-l_string|&quot;data0&quot;
-suffix:colon
 l_string|&quot;data1&quot;
+suffix:colon
+l_string|&quot;data0&quot;
 comma
 (paren
 id|cpu_to_le32p
