@@ -1083,9 +1083,9 @@ op_assign
 id|pci_find_device
 c_func
 (paren
-id|PCI_ANY_ID
+id|PCI_VENDOR_ID_AMD
 comma
-id|PCI_ANY_ID
+l_int|0x1103
 comma
 id|loop_dev
 )paren
@@ -1424,9 +1424,9 @@ op_assign
 id|pci_find_device
 c_func
 (paren
-id|PCI_ANY_ID
+id|PCI_VENDOR_ID_AMD
 comma
-id|PCI_ANY_ID
+l_int|0x1103
 comma
 id|loop_dev
 )paren
