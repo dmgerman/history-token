@@ -157,7 +157,12 @@ id|MAX_ROOT_PORTS
 r_if
 c_cond
 (paren
-id|ohci-&gt;disabled
+op_logical_neg
+id|HCD_IS_RUNNING
+c_func
+(paren
+id|ohci-&gt;hcd.state
+)paren
 )paren
 r_return
 op_minus

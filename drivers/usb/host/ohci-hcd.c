@@ -27,9 +27,8 @@ macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/unaligned.h&gt;
 macro_line|#include &lt;asm/byteorder.h&gt;
-multiline_comment|/*&n; * TO DO:&n; *&n; *&t;- &quot;disabled&quot; and &quot;sleeping&quot; should be in hcd-&gt;state&n; *&t;- lots more testing!!&n; */
 DECL|macro|DRIVER_VERSION
-mdefine_line|#define DRIVER_VERSION &quot;2003 Feb 24&quot;
+mdefine_line|#define DRIVER_VERSION &quot;2003 Oct 13&quot;
 DECL|macro|DRIVER_AUTHOR
 mdefine_line|#define DRIVER_AUTHOR &quot;Roman Weissgaerber, David Brownell&quot;
 DECL|macro|DRIVER_DESC
@@ -65,10 +64,6 @@ op_star
 id|ohci
 )paren
 (brace
-id|ohci-&gt;disabled
-op_assign
-l_int|1
-suffix:semicolon
 id|ohci-&gt;hcd.state
 op_assign
 id|USB_STATE_HALT
@@ -418,9 +413,12 @@ multiline_comment|/* don&squot;t submit to a dead HC */
 r_if
 c_cond
 (paren
-id|ohci-&gt;disabled
-op_logical_or
-id|ohci-&gt;sleeping
+op_logical_neg
+id|HCD_IS_RUNNING
+c_func
+(paren
+id|ohci-&gt;hcd.state
+)paren
 )paren
 (brace
 id|retval
@@ -613,8 +611,11 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-op_logical_neg
-id|ohci-&gt;disabled
+id|HCD_IS_RUNNING
+c_func
+(paren
+id|ohci-&gt;hcd.state
+)paren
 )paren
 (brace
 id|urb_priv_t
@@ -632,10 +633,6 @@ c_cond
 id|urb_priv
 )paren
 (brace
-id|urb_priv-&gt;state
-op_assign
-id|URB_DEL
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -806,8 +803,6 @@ id|HCD_IS_RUNNING
 (paren
 id|ohci-&gt;hcd.state
 )paren
-op_logical_or
-id|ohci-&gt;disabled
 )paren
 id|ed-&gt;state
 op_assign
@@ -892,7 +887,7 @@ id|ohci_err
 (paren
 id|ohci
 comma
-l_string|&quot;ed %p (#%d) state %d%s&bslash;n&quot;
+l_string|&quot;leak ed %p (#%d) state %d%s&bslash;n&quot;
 comma
 id|ed
 comma
@@ -909,7 +904,7 @@ ques
 c_cond
 l_string|&quot;&quot;
 suffix:colon
-l_string|&quot;(has tds)&quot;
+l_string|&quot; (has tds)&quot;
 )paren
 suffix:semicolon
 id|td_free
@@ -1247,13 +1242,10 @@ op_amp
 id|ohci-&gt;lock
 )paren
 suffix:semicolon
-id|ohci-&gt;disabled
-op_assign
-l_int|1
-suffix:semicolon
-id|ohci-&gt;sleeping
-op_assign
-l_int|0
+id|disable
+(paren
+id|ohci
+)paren
 suffix:semicolon
 multiline_comment|/* Tell the controller where the control and bulk lists are&n;&t; * The lists are empty now. */
 id|writel
@@ -1384,10 +1376,6 @@ id|OHCI_CONTROL_INIT
 op_or
 id|OHCI_USB_OPER
 suffix:semicolon
-id|ohci-&gt;disabled
-op_assign
-l_int|0
-suffix:semicolon
 id|writel
 (paren
 id|ohci-&gt;hc_control
@@ -1395,6 +1383,10 @@ comma
 op_amp
 id|ohci-&gt;regs-&gt;control
 )paren
+suffix:semicolon
+id|ohci-&gt;hcd.state
+op_assign
+id|USB_STATE_RUNNING
 suffix:semicolon
 multiline_comment|/* Choose the interrupts we care about now, others later on demand */
 id|mask
@@ -1789,6 +1781,15 @@ op_amp
 id|OHCI_INTR_WDH
 )paren
 (brace
+r_if
+c_cond
+(paren
+id|HCD_IS_RUNNING
+c_func
+(paren
+id|hcd-&gt;state
+)paren
+)paren
 id|writel
 (paren
 id|OHCI_INTR_WDH
@@ -1809,6 +1810,15 @@ comma
 id|ptregs
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|HCD_IS_RUNNING
+c_func
+(paren
+id|hcd-&gt;state
+)paren
+)paren
 id|writel
 (paren
 id|OHCI_INTR_WDH
@@ -1856,6 +1866,12 @@ l_int|0
 op_logical_and
 op_logical_neg
 id|ohci-&gt;ed_rm_list
+op_logical_and
+id|HCD_IS_RUNNING
+c_func
+(paren
+id|ohci-&gt;hcd.state
+)paren
 )paren
 id|writel
 (paren
@@ -1871,6 +1887,16 @@ op_amp
 id|ohci-&gt;lock
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|HCD_IS_RUNNING
+c_func
+(paren
+id|ohci-&gt;hcd.state
+)paren
+)paren
+(brace
 id|writel
 (paren
 id|ints
@@ -1898,6 +1924,7 @@ id|ohci-&gt;regs-&gt;control
 )paren
 suffix:semicolon
 )brace
+)brace
 multiline_comment|/*-------------------------------------------------------------------------*/
 DECL|function|ohci_stop
 r_static
@@ -1924,7 +1951,7 @@ id|ohci_dbg
 (paren
 id|ohci
 comma
-l_string|&quot;stop %s controller%s&bslash;n&quot;
+l_string|&quot;stop %s controller (state 0x%02x)&bslash;n&quot;
 comma
 id|hcfs2string
 (paren
@@ -1933,12 +1960,7 @@ op_amp
 id|OHCI_CTRL_HCFS
 )paren
 comma
-id|ohci-&gt;disabled
-ques
-c_cond
-l_string|&quot; (disabled)&quot;
-suffix:colon
-l_string|&quot;&quot;
+id|ohci-&gt;hcd.state
 )paren
 suffix:semicolon
 id|ohci_dump
@@ -1951,8 +1973,11 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-op_logical_neg
-id|ohci-&gt;disabled
+id|HCD_IS_RUNNING
+c_func
+(paren
+id|ohci-&gt;hcd.state
+)paren
 )paren
 id|hc_reset
 (paren
@@ -2021,13 +2046,10 @@ suffix:semicolon
 r_int
 id|i
 suffix:semicolon
-id|ohci-&gt;disabled
-op_assign
-l_int|1
-suffix:semicolon
-id|ohci-&gt;sleeping
-op_assign
-l_int|0
+id|disable
+(paren
+id|ohci
+)paren
 suffix:semicolon
 r_if
 c_cond
