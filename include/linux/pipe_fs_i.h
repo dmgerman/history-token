@@ -127,5 +127,15 @@ op_star
 id|inode
 )paren
 suffix:semicolon
+r_void
+id|free_pipe_info
+c_func
+(paren
+r_struct
+id|inode
+op_star
+id|inode
+)paren
+suffix:semicolon
 macro_line|#endif
 eof
