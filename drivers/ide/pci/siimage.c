@@ -3298,8 +3298,9 @@ DECL|function|init_chipset_siimage
 r_static
 r_int
 r_int
-id|__init
+id|__devinit
 id|init_chipset_siimage
+c_func
 (paren
 r_struct
 id|pci_dev
@@ -3626,8 +3627,9 @@ multiline_comment|/**&n; *&t;init_mmio_iops_siimage&t;-&t;set up the iops for MM
 DECL|function|init_mmio_iops_siimage
 r_static
 r_void
-id|__init
+id|__devinit
 id|init_mmio_iops_siimage
+c_func
 (paren
 id|ide_hwif_t
 op_star
@@ -4169,8 +4171,9 @@ multiline_comment|/**&n; *&t;init_iops_siimage&t;-&t;set up iops&n; *&t;@hwif: i
 DECL|function|init_iops_siimage
 r_static
 r_void
-id|__init
+id|__devinit
 id|init_iops_siimage
+c_func
 (paren
 id|ide_hwif_t
 op_star
@@ -4260,8 +4263,9 @@ DECL|function|ata66_siimage
 r_static
 r_int
 r_int
-id|__init
+id|__devinit
 id|ata66_siimage
+c_func
 (paren
 id|ide_hwif_t
 op_star
@@ -4344,8 +4348,9 @@ multiline_comment|/**&n; *&t;init_hwif_siimage&t;-&t;set up hwif structs&n; *&t;
 DECL|function|init_hwif_siimage
 r_static
 r_void
-id|__init
+id|__devinit
 id|init_hwif_siimage
+c_func
 (paren
 id|ide_hwif_t
 op_star

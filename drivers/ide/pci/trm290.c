@@ -802,8 +802,9 @@ macro_line|#endif /* CONFIG_BLK_DEV_IDEDMA */
 multiline_comment|/*&n; * Invoked from ide-dma.c at boot time.&n; */
 DECL|function|init_hwif_trm290
 r_void
-id|__init
+id|__devinit
 id|init_hwif_trm290
+c_func
 (paren
 id|ide_hwif_t
 op_star
