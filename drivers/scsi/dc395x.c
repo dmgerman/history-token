@@ -17945,6 +17945,11 @@ comma
 id|scsi_device-&gt;lun
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|dcb
+)paren
 id|adapter_remove_and_free_device
 c_func
 (paren
