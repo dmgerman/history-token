@@ -233,6 +233,12 @@ id|fl.fl6_dst
 )paren
 )paren
 suffix:semicolon
+id|SCTP_INC_STATS
+c_func
+(paren
+id|SctpOutSCTPPacks
+)paren
+suffix:semicolon
 r_return
 id|ip6_xmit
 c_func
@@ -1567,7 +1573,8 @@ r_void
 id|sctp_inet6_event_msgname
 c_func
 (paren
-id|sctp_ulpevent_t
+r_struct
+id|sctp_ulpevent
 op_star
 id|event
 comma
