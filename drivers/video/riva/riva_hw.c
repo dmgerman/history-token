@@ -7800,7 +7800,7 @@ c_func
 (paren
 id|chip-&gt;PGRAPH
 comma
-l_int|0x000009A
+l_int|0x000009A4
 comma
 id|NV_RD32
 c_func
