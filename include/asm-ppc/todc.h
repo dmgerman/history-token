@@ -14,20 +14,17 @@ multiline_comment|/* your particular chip */
 multiline_comment|/*&n;&t; * Following are the addresses of the AS0, AS1, and DATA registers&n;&t; * of these chips.  Note that these are board-specific.&n;&t; */
 DECL|member|nvram_as0
 r_int
-r_char
-op_star
+r_int
 id|nvram_as0
 suffix:semicolon
 DECL|member|nvram_as1
 r_int
-r_char
-op_star
+r_int
 id|nvram_as1
 suffix:semicolon
 DECL|member|nvram_data
 r_int
-r_char
-op_star
+r_int
 id|nvram_data
 suffix:semicolon
 multiline_comment|/*&n;&t; * Define bits to stop external set of regs from changing so&n;&t; * the chip can be read/written reliably.&n;&t; */
@@ -566,7 +563,7 @@ multiline_comment|/*&n; * Define macros to allocate and init the todc_info_t tab
 DECL|macro|TODC_ALLOC
 mdefine_line|#define&t;TODC_ALLOC()&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;static todc_info_t todc_info_alloc;&t;&t;&t;&t;&bslash;&n;&t;todc_info_t *todc_info = &amp;todc_info_alloc;
 DECL|macro|TODC_INIT
-mdefine_line|#define&t;TODC_INIT(clock_type, as0, as1, data, bits) {&t;&t;&t;&bslash;&n;&t;todc_info-&gt;rtc_type = clock_type;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;todc_info-&gt;nvram_as0  = (unsigned char *)(as0);&t;&t;&t;&bslash;&n;&t;todc_info-&gt;nvram_as1  = (unsigned char *)(as1);&t;&t;&t;&bslash;&n;&t;todc_info-&gt;nvram_data = (unsigned char *)(data);&t;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;todc_info-&gt;as0_bits = (bits);&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;todc_info-&gt;year          = clock_type ##_YEAR;&t;&t;&t;&bslash;&n;&t;todc_info-&gt;month         = clock_type ##_MONTH;&t;&t;&t;&bslash;&n;&t;todc_info-&gt;day_of_month  = clock_type ##_DOM;&t;&t;&t;&bslash;&n;&t;todc_info-&gt;day_of_week   = clock_type ##_DOW;&t;&t;&t;&bslash;&n;&t;todc_info-&gt;hours         = clock_type ##_HOURS;&t;&t;&t;&bslash;&n;&t;todc_info-&gt;minutes       = clock_type ##_MINUTES;&t;&t;&bslash;&n;&t;todc_info-&gt;seconds       = clock_type ##_SECONDS;&t;&t;&bslash;&n;&t;todc_info-&gt;control_b     = clock_type ##_CNTL_B;&t;&t;&bslash;&n;&t;todc_info-&gt;control_a     = clock_type ##_CNTL_A;&t;&t;&bslash;&n;&t;todc_info-&gt;watchdog      = clock_type ##_WATCHDOG;&t;&t;&bslash;&n;&t;todc_info-&gt;interrupts    = clock_type ##_INTERRUPTS;&t;&t;&bslash;&n;&t;todc_info-&gt;alarm_date    = clock_type ##_ALARM_DATE;&t;&t;&bslash;&n;&t;todc_info-&gt;alarm_hour    = clock_type ##_ALARM_HOUR;&t;&t;&bslash;&n;&t;todc_info-&gt;alarm_minutes = clock_type ##_ALARM_MINUTES;&t;&t;&bslash;&n;&t;todc_info-&gt;alarm_seconds = clock_type ##_ALARM_SECONDS;&t;&t;&bslash;&n;&t;todc_info-&gt;century       = clock_type ##_CENTURY;&t;&t;&bslash;&n;&t;todc_info-&gt;flags         = clock_type ##_FLAGS;&t;&t;&t;&bslash;&n;}
+mdefine_line|#define&t;TODC_INIT(clock_type, as0, as1, data, bits) {&t;&t;&t;&bslash;&n;&t;todc_info-&gt;rtc_type = clock_type;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;todc_info-&gt;nvram_as0  = (unsigned int)(as0);&t;&t;&t;&bslash;&n;&t;todc_info-&gt;nvram_as1  = (unsigned int)(as1);&t;&t;&t;&bslash;&n;&t;todc_info-&gt;nvram_data = (unsigned int)(data);&t;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;todc_info-&gt;as0_bits = (bits);&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;todc_info-&gt;year          = clock_type ##_YEAR;&t;&t;&t;&bslash;&n;&t;todc_info-&gt;month         = clock_type ##_MONTH;&t;&t;&t;&bslash;&n;&t;todc_info-&gt;day_of_month  = clock_type ##_DOM;&t;&t;&t;&bslash;&n;&t;todc_info-&gt;day_of_week   = clock_type ##_DOW;&t;&t;&t;&bslash;&n;&t;todc_info-&gt;hours         = clock_type ##_HOURS;&t;&t;&t;&bslash;&n;&t;todc_info-&gt;minutes       = clock_type ##_MINUTES;&t;&t;&bslash;&n;&t;todc_info-&gt;seconds       = clock_type ##_SECONDS;&t;&t;&bslash;&n;&t;todc_info-&gt;control_b     = clock_type ##_CNTL_B;&t;&t;&bslash;&n;&t;todc_info-&gt;control_a     = clock_type ##_CNTL_A;&t;&t;&bslash;&n;&t;todc_info-&gt;watchdog      = clock_type ##_WATCHDOG;&t;&t;&bslash;&n;&t;todc_info-&gt;interrupts    = clock_type ##_INTERRUPTS;&t;&t;&bslash;&n;&t;todc_info-&gt;alarm_date    = clock_type ##_ALARM_DATE;&t;&t;&bslash;&n;&t;todc_info-&gt;alarm_hour    = clock_type ##_ALARM_HOUR;&t;&t;&bslash;&n;&t;todc_info-&gt;alarm_minutes = clock_type ##_ALARM_MINUTES;&t;&t;&bslash;&n;&t;todc_info-&gt;alarm_seconds = clock_type ##_ALARM_SECONDS;&t;&t;&bslash;&n;&t;todc_info-&gt;century       = clock_type ##_CENTURY;&t;&t;&bslash;&n;&t;todc_info-&gt;flags         = clock_type ##_FLAGS;&t;&t;&t;&bslash;&n;}
 r_extern
 id|todc_info_t
 op_star

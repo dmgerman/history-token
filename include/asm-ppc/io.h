@@ -120,8 +120,7 @@ DECL|macro|insl
 mdefine_line|#define insl(port, buf, nl)&t;_insl_ns((u32 *)((port)+_IO_BASE), (buf), (nl))
 DECL|macro|outsl
 mdefine_line|#define outsl(port, buf, nl)&t;_outsl_ns((u32 *)((port)+_IO_BASE), (buf), (nl))
-macro_line|#ifdef CONFIG_PPC_PMAC
-multiline_comment|/*&n; * On powermacs, we will get a machine check exception if we&n; * try to read data from a non-existent I/O port.  Because the&n; * machine check is an asynchronous exception, it isn&squot;t&n; * well-defined which instruction SRR0 will point to when the&n; * exception occurs.&n; * With the sequence below (twi; isync; nop), we have found that&n; * the machine check occurs on one of the three instructions on&n; * all PPC implementations tested so far.  The twi and isync are&n; * needed on the 601 (in fact twi; sync works too), the isync and&n; * nop are needed on 604[e|r], and any of twi, sync or isync will&n; * work on 603[e], 750, 74x0.&n; * The twi creates an explicit data dependency on the returned&n; * value which seems to be needed to make the 601 wait for the&n; * load to finish.&n; */
+multiline_comment|/*&n; * On powermacs, we will get a machine check exception if we&n; * try to read data from a non-existent I/O port.  Because the&n; * machine check is an asynchronous exception, it isn&squot;t&n; * well-defined which instruction SRR0 will point to when the&n; * exception occurs.&n; * With the sequence below (twi; isync; nop), we have found that&n; * the machine check occurs on one of the three instructions on&n; * all PPC implementations tested so far.  The twi and isync are&n; * needed on the 601 (in fact twi; sync works too), the isync and&n; * nop are needed on 604[e|r], and any of twi, sync or isync will&n; * work on 603[e], 750, 74xx.&n; * The twi creates an explicit data dependency on the returned&n; * value which seems to be needed to make the 601 wait for the&n; * load to finish.&n; */
 DECL|macro|__do_in_asm
 mdefine_line|#define __do_in_asm(name, op)&t;&t;&t;&t;&bslash;&n;extern __inline__ unsigned int name(unsigned int port)&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;unsigned int x;&t;&t;&t;&t;&t;&bslash;&n;&t;__asm__ __volatile__(&t;&t;&t;&t;&bslash;&n;&t;&t;&t;op &quot;&t;%0,0,%1&bslash;n&quot;&t;&t;&bslash;&n;&t;&t;&quot;1:&t;twi&t;0,%0,0&bslash;n&quot;&t;&t;&bslash;&n;&t;&t;&quot;2:&t;isync&bslash;n&quot;&t;&t;&t;&bslash;&n;&t;&t;&quot;3:&t;nop&bslash;n&quot;&t;&t;&t;&t;&bslash;&n;&t;&t;&quot;4:&bslash;n&quot;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&quot;.section .fixup,&bslash;&quot;ax&bslash;&quot;&bslash;n&quot;&t;&t;&bslash;&n;&t;&t;&quot;5:&t;li&t;%0,-1&bslash;n&quot;&t;&t;&bslash;&n;&t;&t;&quot;&t;b&t;4b&bslash;n&quot;&t;&t;&t;&bslash;&n;&t;&t;&quot;.previous&bslash;n&quot;&t;&t;&t;&t;&bslash;&n;&t;&t;&quot;.section __ex_table,&bslash;&quot;a&bslash;&quot;&bslash;n&quot;&t;&t;&bslash;&n;&t;&t;&quot;&t;.align&t;2&bslash;n&quot;&t;&t;&t;&bslash;&n;&t;&t;&quot;&t;.long&t;1b,5b&bslash;n&quot;&t;&t;&bslash;&n;&t;&t;&quot;&t;.long&t;2b,5b&bslash;n&quot;&t;&t;&bslash;&n;&t;&t;&quot;&t;.long&t;3b,5b&bslash;n&quot;&t;&t;&bslash;&n;&t;&t;&quot;.previous&quot;&t;&t;&t;&t;&bslash;&n;&t;&t;: &quot;=&amp;r&quot; (x)&t;&t;&t;&t;&bslash;&n;&t;&t;: &quot;r&quot; (port + _IO_BASE));&t;&t;&bslash;&n;&t;return x;&t;&t;&t;&t;&t;&bslash;&n;}
 DECL|macro|__do_out_asm
@@ -133,6 +132,43 @@ id|inb
 comma
 l_string|&quot;lbzx&quot;
 )paren
+id|__do_out_asm
+c_func
+(paren
+id|outb
+comma
+l_string|&quot;stbx&quot;
+)paren
+macro_line|#ifdef CONFIG_APUS
+id|__do_in_asm
+c_func
+(paren
+id|inw
+comma
+l_string|&quot;lhz%U1%X1&quot;
+)paren
+id|__do_in_asm
+c_func
+(paren
+id|inl
+comma
+l_string|&quot;lwz%U1%X1&quot;
+)paren
+id|__do_out_asm
+c_func
+(paren
+id|outl
+comma
+l_string|&quot;stw%U0%X0&quot;
+)paren
+id|__do_out_asm
+c_func
+(paren
+id|outw
+comma
+l_string|&quot;sth%U0%X0&quot;
+)paren
+macro_line|#else
 id|__do_in_asm
 c_func
 (paren
@@ -150,13 +186,6 @@ l_string|&quot;lwbrx&quot;
 id|__do_out_asm
 c_func
 (paren
-id|outb
-comma
-l_string|&quot;stbx&quot;
-)paren
-id|__do_out_asm
-c_func
-(paren
 id|outw
 comma
 l_string|&quot;sthbrx&quot;
@@ -168,20 +197,6 @@ id|outl
 comma
 l_string|&quot;stwbrx&quot;
 )paren
-macro_line|#elif defined(CONFIG_APUS)
-mdefine_line|#define inb(port)&t;&t;in_8((u8 *)((port)+_IO_BASE))
-mdefine_line|#define outb(val, port)&t;&t;out_8((u8 *)((port)+_IO_BASE), (val))
-mdefine_line|#define inw(port)&t;&t;in_be16((u16 *)((port)+_IO_BASE))
-mdefine_line|#define outw(val, port)&t;&t;out_be16((u16 *)((port)+_IO_BASE), (val))
-mdefine_line|#define inl(port)&t;&t;in_be32((u32 *)((port)+_IO_BASE))
-mdefine_line|#define outl(val, port)&t;&t;out_be32((u32 *)((port)+_IO_BASE), (val))
-macro_line|#else /* not APUS or PMAC */
-mdefine_line|#define inb(port)&t;&t;in_8((u8 *)((port)+_IO_BASE))
-mdefine_line|#define outb(val, port)&t;&t;out_8((u8 *)((port)+_IO_BASE), (val))
-mdefine_line|#define inw(port)&t;&t;in_le16((u16 *)((port)+_IO_BASE))
-mdefine_line|#define outw(val, port)&t;&t;out_le16((u16 *)((port)+_IO_BASE), (val))
-mdefine_line|#define inl(port)&t;&t;in_le32((u32 *)((port)+_IO_BASE))
-mdefine_line|#define outl(val, port)&t;&t;out_le32((u32 *)((port)+_IO_BASE), (val))
 macro_line|#endif
 DECL|macro|inb_p
 mdefine_line|#define inb_p(port)&t;&t;inb((port))
