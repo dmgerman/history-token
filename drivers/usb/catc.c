@@ -2904,6 +2904,8 @@ id|usb_alloc_urb
 c_func
 (paren
 l_int|0
+comma
+id|GFP_KERNEL
 )paren
 suffix:semicolon
 id|catc-&gt;tx_urb
@@ -2912,6 +2914,8 @@ id|usb_alloc_urb
 c_func
 (paren
 l_int|0
+comma
+id|GFP_KERNEL
 )paren
 suffix:semicolon
 id|catc-&gt;rx_urb
@@ -2920,6 +2924,8 @@ id|usb_alloc_urb
 c_func
 (paren
 l_int|0
+comma
+id|GFP_KERNEL
 )paren
 suffix:semicolon
 id|catc-&gt;irq_urb
@@ -2928,6 +2934,8 @@ id|usb_alloc_urb
 c_func
 (paren
 l_int|0
+comma
+id|GFP_KERNEL
 )paren
 suffix:semicolon
 r_if

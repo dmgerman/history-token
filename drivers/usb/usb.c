@@ -3233,7 +3233,7 @@ id|dev-&gt;refcnt
 suffix:semicolon
 )brace
 multiline_comment|/* ---------------------------------------------------------------------- &n; * New USB Core Functions&n; * ----------------------------------------------------------------------*/
-multiline_comment|/**&n; * usb_alloc_urb - creates a new urb for a USB driver to use&n; * @iso_packets: number of iso packets for this urb&n; *&n; * Creates an urb for the USB driver to use, initializes a few internal&n; * structures, incrementes the usage counter, and returns a pointer to it.&n; *&n; * If no memory is available, NULL is returned.&n; *&n; * If the driver want to use this urb for interrupt, control, or bulk&n; * endpoints, pass &squot;0&squot; as the number of iso packets.&n; *&n; * The driver must call usb_free_urb() when it is finished with the urb.&n; */
+multiline_comment|/**&n; * usb_alloc_urb - creates a new urb for a USB driver to use&n; * @iso_packets: number of iso packets for this urb&n; * @mem_flags: the type of memory to allocate, see kmalloc() for a list of valid options for this.&n; *&n; * Creates an urb for the USB driver to use, initializes a few internal&n; * structures, incrementes the usage counter, and returns a pointer to it.&n; *&n; * If no memory is available, NULL is returned.&n; *&n; * If the driver want to use this urb for interrupt, control, or bulk&n; * endpoints, pass &squot;0&squot; as the number of iso packets.&n; *&n; * The driver must call usb_free_urb() when it is finished with the urb.&n; */
 DECL|function|usb_alloc_urb
 r_struct
 id|urb
@@ -3243,6 +3243,9 @@ c_func
 (paren
 r_int
 id|iso_packets
+comma
+r_int
+id|mem_flags
 )paren
 (brace
 r_struct
@@ -3274,15 +3277,7 @@ r_struct
 id|usb_iso_packet_descriptor
 )paren
 comma
-id|in_interrupt
-c_func
-(paren
-)paren
-ques
-c_cond
-id|GFP_ATOMIC
-suffix:colon
-id|GFP_KERNEL
+id|mem_flags
 )paren
 suffix:semicolon
 r_if
@@ -3837,6 +3832,8 @@ id|usb_alloc_urb
 c_func
 (paren
 l_int|0
+comma
+id|GFP_KERNEL
 )paren
 suffix:semicolon
 r_if
@@ -4086,6 +4083,8 @@ id|usb_alloc_urb
 c_func
 (paren
 l_int|0
+comma
+id|GFP_KERNEL
 )paren
 suffix:semicolon
 r_if

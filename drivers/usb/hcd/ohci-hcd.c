@@ -2185,7 +2185,7 @@ id|_MACH_Pmac
 )paren
 id|disable_irq
 (paren
-id|ohci-&gt;irq
+id|hcd-&gt;pdev-&gt;irq
 )paren
 suffix:semicolon
 multiline_comment|/* else, 2.4 assumes shared irqs -- don&squot;t disable */
@@ -2886,7 +2886,7 @@ id|_MACH_Pmac
 )paren
 id|enable_irq
 (paren
-id|ohci-&gt;irq
+id|hcd-&gt;pdev-&gt;irq
 )paren
 suffix:semicolon
 macro_line|#endif

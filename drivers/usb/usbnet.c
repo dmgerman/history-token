@@ -795,6 +795,8 @@ op_assign
 id|usb_alloc_urb
 (paren
 l_int|0
+comma
+id|GFP_KERNEL
 )paren
 )paren
 op_eq
@@ -5111,6 +5113,8 @@ op_assign
 id|usb_alloc_urb
 (paren
 l_int|0
+comma
+id|GFP_ATOMIC
 )paren
 )paren
 )paren
@@ -5702,6 +5706,8 @@ op_assign
 id|usb_alloc_urb
 (paren
 l_int|0
+comma
+id|GFP_ATOMIC
 )paren
 )paren
 op_ne
