@@ -32,33 +32,17 @@ r_int
 r_int
 id|U16
 suffix:semicolon
-macro_line|#if defined(unix) || defined(__arm) || defined(ALPHA)
 DECL|typedef|S32
 r_typedef
-r_int
-r_int
+r_int32
 id|S32
 suffix:semicolon
 DECL|typedef|U32
 r_typedef
-r_int
-r_int
+id|u_int32_t
 id|U32
 suffix:semicolon
-macro_line|#else
-DECL|typedef|S32
-r_typedef
-r_int
-r_int
-id|S32
-suffix:semicolon
-DECL|typedef|U32
-r_typedef
-r_int
-r_int
-id|U32
-suffix:semicolon
-macro_line|#endif
+multiline_comment|/*&n; *  The only way crap below could work on big-endian boxen would be if it&n; *  wasn&squot;t used at all.&n; */
 DECL|struct|_S64
 r_typedef
 r_struct
