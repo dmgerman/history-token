@@ -132,7 +132,7 @@ mdefine_line|#define NLMSG_DATA(nlh)  ((void*)(((char*)nlh) + NLMSG_LENGTH(0)))
 DECL|macro|NLMSG_NEXT
 mdefine_line|#define NLMSG_NEXT(nlh,len)&t; ((len) -= NLMSG_ALIGN((nlh)-&gt;nlmsg_len), &bslash;&n;&t;&t;&t;&t;  (struct nlmsghdr*)(((char*)(nlh)) + NLMSG_ALIGN((nlh)-&gt;nlmsg_len)))
 DECL|macro|NLMSG_OK
-mdefine_line|#define NLMSG_OK(nlh,len) ((len) &gt; 0 &amp;&amp; (nlh)-&gt;nlmsg_len &gt;= sizeof(struct nlmsghdr) &amp;&amp; &bslash;&n;&t;&t;&t;   (nlh)-&gt;nlmsg_len &lt;= (len))
+mdefine_line|#define NLMSG_OK(nlh,len) ((len) &gt;= (int)sizeof(struct nlmsghdr) &amp;&amp; &bslash;&n;&t;&t;&t;   (nlh)-&gt;nlmsg_len &gt;= sizeof(struct nlmsghdr) &amp;&amp; &bslash;&n;&t;&t;&t;   (nlh)-&gt;nlmsg_len &lt;= (len))
 DECL|macro|NLMSG_PAYLOAD
 mdefine_line|#define NLMSG_PAYLOAD(nlh,len) ((nlh)-&gt;nlmsg_len - NLMSG_SPACE((len)))
 DECL|macro|NLMSG_NOOP

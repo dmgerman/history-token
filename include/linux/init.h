@@ -125,9 +125,9 @@ id|early
 suffix:semicolon
 )brace
 suffix:semicolon
-multiline_comment|/* Only for really core code.  See moduleparam.h for the normal way. */
+multiline_comment|/*&n; * Only for really core code.  See moduleparam.h for the normal way.&n; *&n; * Force the alignment so the compiler doesn&squot;t space elements of the&n; * obs_kernel_param &quot;array&quot; too far apart in .init.setup.&n; */
 DECL|macro|__setup_param
-mdefine_line|#define __setup_param(str, unique_id, fn, early)&t;&t;&t;&bslash;&n;&t;static char __setup_str_##unique_id[] __initdata = str;&t;&bslash;&n;&t;static struct obs_kernel_param __setup_##unique_id&t;&bslash;&n;&t;&t; __attribute_used__&t;&t;&t;&t;&bslash;&n;&t;&t; __attribute__((__section__(&quot;.init.setup&quot;)))&t;&bslash;&n;&t;&t;= { __setup_str_##unique_id, fn, early }
+mdefine_line|#define __setup_param(str, unique_id, fn, early)&t;&t;&t;&bslash;&n;&t;static char __setup_str_##unique_id[] __initdata = str;&t;&bslash;&n;&t;static struct obs_kernel_param __setup_##unique_id&t;&bslash;&n;&t;&t;__attribute_used__&t;&t;&t;&t;&bslash;&n;&t;&t;__attribute__((__section__(&quot;.init.setup&quot;)))&t;&bslash;&n;&t;&t;__attribute__((aligned((sizeof(long)))))&t;&bslash;&n;&t;&t;= { __setup_str_##unique_id, fn, early }
 DECL|macro|__setup_null_param
 mdefine_line|#define __setup_null_param(str, unique_id)&t;&t;&t;&bslash;&n;&t;__setup_param(str, unique_id, NULL, 0)
 DECL|macro|__setup

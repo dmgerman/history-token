@@ -5681,6 +5681,11 @@ c_func
 id|skb-&gt;tc_verd
 )paren
 suffix:semicolon
+id|rcu_read_lock
+c_func
+(paren
+)paren
+suffix:semicolon
 r_goto
 id|ncls
 suffix:semicolon

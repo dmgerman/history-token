@@ -1150,7 +1150,6 @@ id|result
 suffix:semicolon
 )brace
 r_static
-r_inline
 r_int
 id|__vfs_follow_link
 c_func
@@ -9512,10 +9511,9 @@ r_return
 id|res
 suffix:semicolon
 )brace
-r_static
-r_inline
-r_int
 DECL|function|__vfs_follow_link
+r_static
+r_int
 id|__vfs_follow_link
 c_func
 (paren

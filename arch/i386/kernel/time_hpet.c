@@ -464,7 +464,7 @@ id|hd.hd_flags
 op_assign
 id|HPET_DATA_PLATFORM
 suffix:semicolon
-id|HD_STATE
+id|hpet_reserve_timer
 c_func
 (paren
 op_amp
@@ -474,7 +474,7 @@ l_int|0
 )paren
 suffix:semicolon
 macro_line|#ifdef&t;CONFIG_HPET_EMULATE_RTC
-id|HD_STATE
+id|hpet_reserve_timer
 c_func
 (paren
 op_amp

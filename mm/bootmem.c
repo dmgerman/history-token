@@ -6,6 +6,7 @@ macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/bootmem.h&gt;
 macro_line|#include &lt;linux/mmzone.h&gt;
+macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;asm/dma.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 multiline_comment|/*&n; * Access to this subsystem has to be serialized externally. (this is&n; * true for the boot process anyway)&n; */
@@ -24,6 +25,14 @@ r_int
 r_int
 id|max_pfn
 suffix:semicolon
+DECL|variable|max_pfn
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|max_pfn
+)paren
+suffix:semicolon
+multiline_comment|/* This is exported so&n;&t;&t;&t;&t; * dma_get_required_mask(), which uses&n;&t;&t;&t;&t; * it, can be an inline function */
 multiline_comment|/* return the number of _pages_ that will be allocated for the boot bitmap */
 DECL|function|bootmem_bootmap_pages
 r_int

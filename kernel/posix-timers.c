@@ -294,9 +294,9 @@ l_int|0
 comma
 l_int|0
 comma
-l_int|0
+l_int|NULL
 comma
-l_int|0
+l_int|NULL
 )paren
 suffix:semicolon
 id|idr_init
@@ -963,7 +963,7 @@ id|tmr
 suffix:semicolon
 id|tmr
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 )brace
 r_return
@@ -1107,7 +1107,7 @@ id|task_struct
 op_star
 id|process
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 r_int
 r_int
@@ -1472,7 +1472,7 @@ id|flags
 suffix:semicolon
 id|process
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 )brace
 )brace

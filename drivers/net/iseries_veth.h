@@ -126,7 +126,5 @@ id|u
 suffix:semicolon
 )brace
 suffix:semicolon
-DECL|macro|HVMAXARCHITECTEDVIRTUALLANS
-mdefine_line|#define HVMAXARCHITECTEDVIRTUALLANS (16)
 macro_line|#endif&t;/* _ISERIES_VETH_H */
 eof

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (c) 2000-2003 Silicon Graphics, Inc.  All Rights Reserved.&n; */
+multiline_comment|/*&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (c) 2000-2004 Silicon Graphics, Inc.  All Rights Reserved.&n; */
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;asm/smp.h&gt;
@@ -687,11 +687,11 @@ id|spin_unlock
 c_func
 (paren
 op_amp
-id|pda-&gt;cpu_bte_if
+id|err_nodepda-&gt;bte_if
 (braket
 id|i
 )braket
-op_member_access_from_pointer
+dot
 id|spinlock
 )paren
 suffix:semicolon

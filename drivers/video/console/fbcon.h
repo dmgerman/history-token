@@ -52,6 +52,7 @@ suffix:semicolon
 suffix:semicolon
 multiline_comment|/* drivers/video/console/fbcon.c */
 r_extern
+r_int
 r_char
 id|con2fb_map
 (braket

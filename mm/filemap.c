@@ -392,6 +392,8 @@ op_plus
 l_int|1
 )paren
 )paren
+op_ne
+l_int|0
 )paren
 (brace
 r_int

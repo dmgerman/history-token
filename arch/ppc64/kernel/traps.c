@@ -1014,7 +1014,7 @@ l_int|0
 suffix:semicolon
 id|info.si_addr
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|_exception
 c_func

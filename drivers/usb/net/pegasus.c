@@ -5661,12 +5661,6 @@ id|pegasus
 op_assign
 id|net-&gt;priv
 suffix:semicolon
-id|netif_stop_queue
-c_func
-(paren
-id|net
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -5761,12 +5755,6 @@ c_func
 id|pegasus-&gt;ctrl_urb
 comma
 l_int|NULL
-)paren
-suffix:semicolon
-id|netif_wake_queue
-c_func
-(paren
-id|net
 )paren
 suffix:semicolon
 )brace

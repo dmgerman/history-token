@@ -105,7 +105,7 @@ l_int|6
 op_assign
 l_int|0xFF
 suffix:semicolon
-multiline_comment|/* A20-25, A0,A1 &#x1b;$BM-8z&#x1b;(B */
+multiline_comment|/* valid A0,A1,A20-A25 */
 id|AS85EP1_PORT_PMC
 c_func
 (paren
@@ -114,7 +114,7 @@ l_int|7
 op_assign
 l_int|0x0E
 suffix:semicolon
-multiline_comment|/* CS1,2,3       &#x1b;$BM-8z&#x1b;(B */
+multiline_comment|/* valid CS1-CS3       */
 id|AS85EP1_PORT_PMC
 c_func
 (paren
@@ -123,7 +123,7 @@ l_int|9
 op_assign
 l_int|0xFF
 suffix:semicolon
-multiline_comment|/* D16-23        &#x1b;$BM-8z&#x1b;(B */
+multiline_comment|/* valid D16-D23       */
 id|AS85EP1_PORT_PMC
 c_func
 (paren
@@ -132,7 +132,7 @@ l_int|10
 op_assign
 l_int|0xFF
 suffix:semicolon
-multiline_comment|/* D24-31        &#x1b;$BM-8z&#x1b;(B */
+multiline_comment|/* valid D24-D31       */
 id|AS85EP1_RFS
 c_func
 (paren
@@ -171,7 +171,7 @@ id|AS85EP1_IRAMM
 op_assign
 l_int|0x3
 suffix:semicolon
-multiline_comment|/* &#x1b;$BFbB&quot;L?Na&#x1b;(BRAM&#x1b;$B$O!V&#x1b;(Bwrite-mode&#x1b;$B!W$K$J$j$^$9&#x1b;(B */
+multiline_comment|/* &quot;write-mode&quot; for the internal instruction memory */
 id|src
 op_assign
 (paren
@@ -298,7 +298,7 @@ id|AS85EP1_IRAMM
 op_assign
 l_int|0x0
 suffix:semicolon
-multiline_comment|/* &#x1b;$BFbB&quot;L?Na&#x1b;(BRAM&#x1b;$B$O!V&#x1b;(Bread-mode&#x1b;$B!W$K$J$j$^$9&#x1b;(B */
+multiline_comment|/* &quot;read-mode&quot; for the internal instruction memory */
 macro_line|#endif /* !CONFIG_ROM_KERNEL */
 id|v850e_intc_disable_irqs
 (paren

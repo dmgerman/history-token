@@ -349,6 +349,7 @@ id|__copy_user_intel
 c_func
 (paren
 r_void
+id|__user
 op_star
 id|to
 comma
@@ -522,6 +523,7 @@ id|to
 comma
 r_const
 r_void
+id|__user
 op_star
 id|from
 comma
@@ -678,6 +680,7 @@ id|to
 comma
 r_const
 r_void
+id|__user
 op_star
 id|from
 comma
@@ -692,6 +695,7 @@ id|__copy_user_intel
 c_func
 (paren
 r_void
+id|__user
 op_star
 id|to
 comma
@@ -978,10 +982,6 @@ id|n
 id|__copy_user
 c_func
 (paren
-(paren
-r_void
-op_star
-)paren
 id|to
 comma
 id|from
@@ -995,10 +995,6 @@ op_assign
 id|__copy_user_intel
 c_func
 (paren
-(paren
-r_void
-op_star
-)paren
 id|to
 comma
 id|from
@@ -1049,11 +1045,6 @@ c_func
 (paren
 id|to
 comma
-(paren
-r_const
-r_void
-op_star
-)paren
 id|from
 comma
 id|n
@@ -1067,11 +1058,6 @@ c_func
 (paren
 id|to
 comma
-(paren
-r_const
-r_void
-op_star
-)paren
 id|from
 comma
 id|n

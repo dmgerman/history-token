@@ -27,6 +27,12 @@ macro_line|#else
 DECL|macro|DPRINTK
 mdefine_line|#define DPRINTK(format,args...)
 macro_line|#endif
+macro_line|#if 0 /* data */
+mdefine_line|#define D2PRINTK(format,args...) printk(KERN_DEBUG format,##args)
+macro_line|#else
+DECL|macro|D2PRINTK
+mdefine_line|#define D2PRINTK(format,args...)
+macro_line|#endif
 DECL|variable|act_base
 r_static
 r_struct
@@ -585,7 +591,7 @@ c_func
 id|skb-&gt;tc_verd
 )paren
 suffix:semicolon
-id|DPRINTK
+id|D2PRINTK
 c_func
 (paren
 l_string|&quot;(%p)tcf_action_exec: cleared TC_NCLS in %s out %s&bslash;n&quot;
@@ -3985,6 +3991,20 @@ r_return
 op_minus
 id|ENOMEM
 suffix:semicolon
+id|memset
+c_func
+(paren
+id|act
+comma
+l_int|0
+comma
+r_sizeof
+(paren
+op_star
+id|act
+)paren
+)paren
+suffix:semicolon
 id|ret
 op_assign
 id|tcf_action_init
@@ -4616,39 +4636,6 @@ c_func
 id|kind
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_KMOD
-r_if
-c_cond
-(paren
-l_int|NULL
-op_eq
-id|a_o
-)paren
-(brace
-id|DPRINTK
-c_func
-(paren
-l_string|&quot;tc_dump_action: trying to load module %s&bslash;n&quot;
-comma
-id|kind
-)paren
-suffix:semicolon
-id|request_module
-c_func
-(paren
-id|kind
-)paren
-suffix:semicolon
-id|a_o
-op_assign
-id|tc_lookup_action_n
-c_func
-(paren
-id|kind
-)paren
-suffix:semicolon
-)brace
-macro_line|#endif
 r_if
 c_cond
 (paren

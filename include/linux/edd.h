@@ -1,11 +1,11 @@
-multiline_comment|/*&n; * linux/include/linux/edd.h&n; *  Copyright (C) 2002, 2003 Dell Inc.&n; *  by Matt Domsch &lt;Matt_Domsch@dell.com&gt;&n; *&n; * structures and definitions for the int 13h, ax={41,48}h&n; * BIOS Enhanced Disk Drive Services&n; * This is based on the T13 group document D1572 Revision 0 (August 14 2002)&n; * available at http://www.t13.org/docs2002/d1572r0.pdf.  It is&n; * very similar to D1484 Revision 3 http://www.t13.org/docs2002/d1484r3.pdf&n; *&n; * In a nutshell, arch/{i386,x86_64}/boot/setup.S populates a scratch table&n; * in the empty_zero_block that contains a list of BIOS-enumerated&n; * boot devices.&n; * In arch/{i386,x86_64}/kernel/setup.c, this information is&n; * transferred into the edd structure, and in drivers/firmware/edd.c, that&n; * information is used to identify BIOS boot disk.  The code in setup.S&n; * is very sensitive to the size of these structures.&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License v2.0 as published by&n; * the Free Software Foundation&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; */
+multiline_comment|/*&n; * linux/include/linux/edd.h&n; *  Copyright (C) 2002, 2003, 2004 Dell Inc.&n; *  by Matt Domsch &lt;Matt_Domsch@dell.com&gt;&n; *&n; * structures and definitions for the int 13h, ax={41,48}h&n; * BIOS Enhanced Disk Drive Services&n; * This is based on the T13 group document D1572 Revision 0 (August 14 2002)&n; * available at http://www.t13.org/docs2002/d1572r0.pdf.  It is&n; * very similar to D1484 Revision 3 http://www.t13.org/docs2002/d1484r3.pdf&n; *&n; * In a nutshell, arch/{i386,x86_64}/boot/setup.S populates a scratch&n; * table in the boot_params that contains a list of BIOS-enumerated&n; * boot devices.&n; * In arch/{i386,x86_64}/kernel/setup.c, this information is&n; * transferred into the edd structure, and in drivers/firmware/edd.c, that&n; * information is used to identify BIOS boot disk.  The code in setup.S&n; * is very sensitive to the size of these structures.&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License v2.0 as published by&n; * the Free Software Foundation&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; */
 macro_line|#ifndef _LINUX_EDD_H
 DECL|macro|_LINUX_EDD_H
 mdefine_line|#define _LINUX_EDD_H
 DECL|macro|EDDNR
-mdefine_line|#define EDDNR 0x1e9&t;&t;/* addr of number of edd_info structs at EDDBUF&n;&t;&t;&t;&t;   in empty_zero_block - treat this as 1 byte  */
+mdefine_line|#define EDDNR 0x1e9&t;&t;/* addr of number of edd_info structs at EDDBUF&n;&t;&t;&t;&t;   in boot_params - treat this as 1 byte  */
 DECL|macro|EDDBUF
-mdefine_line|#define EDDBUF&t;0x600&t;&t;/* addr of edd_info structs in empty_zero_block */
+mdefine_line|#define EDDBUF&t;0x600&t;&t;/* addr of edd_info structs in boot_params */
 DECL|macro|EDDMAXNR
 mdefine_line|#define EDDMAXNR 6&t;&t;/* number of edd_info structs starting at EDDBUF  */
 DECL|macro|EDDEXTSIZE
@@ -23,11 +23,15 @@ mdefine_line|#define EDDMAGIC1 0x55AA
 DECL|macro|EDDMAGIC2
 mdefine_line|#define EDDMAGIC2 0xAA55
 DECL|macro|READ_SECTORS
-mdefine_line|#define READ_SECTORS 0x02
-DECL|macro|MBR_SIG_OFFSET
-mdefine_line|#define MBR_SIG_OFFSET 0x1B8
-DECL|macro|DISK80_SIG_BUFFER
-mdefine_line|#define DISK80_SIG_BUFFER 0x2cc
+mdefine_line|#define READ_SECTORS 0x02         /* int13 AH=0x02 is READ_SECTORS command */
+DECL|macro|EDD_MBR_SIG_OFFSET
+mdefine_line|#define EDD_MBR_SIG_OFFSET 0x1B8  /* offset of signature in the MBR */
+DECL|macro|EDD_MBR_SIG_BUF
+mdefine_line|#define EDD_MBR_SIG_BUF    0x290  /* addr in boot params */
+DECL|macro|EDD_MBR_SIG_MAX
+mdefine_line|#define EDD_MBR_SIG_MAX 16        /* max number of signatures to store */
+DECL|macro|EDD_MBR_SIG_NR_BUF
+mdefine_line|#define EDD_MBR_SIG_NR_BUF 0x1ea  /* addr of number of MBR signtaures at EDD_MBR_SIG_BUF&n;&t;&t;&t;&t;     in boot_params - treat this as 1 byte  */
 macro_line|#ifndef __ASSEMBLY__
 DECL|macro|EDD_EXT_FIXED_DISK_ACCESS
 mdefine_line|#define EDD_EXT_FIXED_DISK_ACCESS           (1 &lt;&lt; 0)
@@ -564,23 +568,42 @@ id|packed
 )paren
 )paren
 suffix:semicolon
-r_extern
+DECL|struct|edd
+r_struct
+id|edd
+(brace
+DECL|member|mbr_signature
+r_int
+r_int
+id|mbr_signature
+(braket
+id|EDD_MBR_SIG_MAX
+)braket
+suffix:semicolon
+DECL|member|edd_info
 r_struct
 id|edd_info
-id|edd
+id|edd_info
 (braket
 id|EDDMAXNR
 )braket
 suffix:semicolon
-r_extern
+DECL|member|mbr_signature_nr
 r_int
 r_char
-id|eddnr
+id|mbr_signature_nr
+suffix:semicolon
+DECL|member|edd_info_nr
+r_int
+r_char
+id|edd_info_nr
+suffix:semicolon
+)brace
 suffix:semicolon
 r_extern
-r_int
-r_int
-id|edd_disk80_sig
+r_struct
+id|edd
+id|edd
 suffix:semicolon
 macro_line|#endif&t;&t;&t;&t;/*!__ASSEMBLY__ */
 macro_line|#endif&t;&t;&t;&t;/* _LINUX_EDD_H */

@@ -617,7 +617,7 @@ id|sigqueue
 op_star
 id|q
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 r_if
 c_cond
@@ -665,7 +665,7 @@ l_int|0
 suffix:semicolon
 id|q-&gt;lock
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|q-&gt;user
 op_assign
@@ -1370,7 +1370,7 @@ comma
 op_star
 id|first
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 r_int
 id|still_pending
