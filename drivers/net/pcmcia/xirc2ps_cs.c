@@ -1147,81 +1147,8 @@ DECL|macro|PutByte
 mdefine_line|#define PutByte(reg,value) outb((value), ioaddr+(reg))
 DECL|macro|PutWord
 mdefine_line|#define PutWord(reg,value) outw((value), ioaddr+(reg))
-r_static
-r_void
-DECL|function|busy_loop
-id|busy_loop
-c_func
-(paren
-id|u_long
-id|len
-)paren
-(brace
-r_if
-c_cond
-(paren
-id|in_interrupt
-c_func
-(paren
-)paren
-)paren
-(brace
-id|u_long
-id|timeout
-op_assign
-id|jiffies
-op_plus
-id|len
-suffix:semicolon
-id|u_long
-id|flags
-suffix:semicolon
-id|save_flags
-c_func
-(paren
-id|flags
-)paren
-suffix:semicolon
-id|sti
-c_func
-(paren
-)paren
-suffix:semicolon
-r_while
-c_loop
-(paren
-id|time_before_eq
-c_func
-(paren
-id|jiffies
-comma
-id|timeout
-)paren
-)paren
-suffix:semicolon
-id|restore_flags
-c_func
-(paren
-id|flags
-)paren
-suffix:semicolon
-)brace
-r_else
-(brace
-id|__set_current_state
-c_func
-(paren
-id|TASK_UNINTERRUPTIBLE
-)paren
-suffix:semicolon
-id|schedule_timeout
-c_func
-(paren
-id|len
-)paren
-suffix:semicolon
-)brace
-)brace
+DECL|macro|Wait
+mdefine_line|#define Wait(n) do { &bslash;&n;&t;set_current_state(TASK_UNINTERRUPTIBLE); &bslash;&n;&t;schedule_timeout(n); &bslash;&n;} while (0)
 multiline_comment|/*====== Functions used for debugging =================================*/
 macro_line|#if defined(PCMCIA_DEBUG) &amp;&amp; 0 /* reading regs may change system status */
 r_static
@@ -7442,7 +7369,7 @@ l_int|0
 )paren
 suffix:semicolon
 multiline_comment|/* clear bit 0: power down */
-id|busy_loop
+id|Wait
 c_func
 (paren
 id|HZ
@@ -7477,7 +7404,7 @@ l_int|4
 )paren
 suffix:semicolon
 multiline_comment|/* set bit 0: power up, bit 2: AIC */
-id|busy_loop
+id|Wait
 c_func
 (paren
 id|HZ
@@ -7550,7 +7477,7 @@ id|SoftReset
 )paren
 suffix:semicolon
 multiline_comment|/* set */
-id|busy_loop
+id|Wait
 c_func
 (paren
 id|HZ
@@ -7568,7 +7495,7 @@ l_int|0
 )paren
 suffix:semicolon
 multiline_comment|/* clear */
-id|busy_loop
+id|Wait
 c_func
 (paren
 id|HZ
@@ -7600,7 +7527,7 @@ l_int|0x0e
 suffix:semicolon
 )brace
 multiline_comment|/* give the circuits some time to power up */
-id|busy_loop
+id|Wait
 c_func
 (paren
 id|HZ
@@ -7718,7 +7645,7 @@ l_int|0x80
 )paren
 suffix:semicolon
 )brace
-id|busy_loop
+id|Wait
 c_func
 (paren
 id|HZ
@@ -8009,7 +7936,7 @@ op_or
 l_int|0x08
 )paren
 suffix:semicolon
-id|busy_loop
+id|Wait
 c_func
 (paren
 id|HZ
@@ -8061,7 +7988,7 @@ comma
 l_int|0x80
 )paren
 suffix:semicolon
-id|busy_loop
+id|Wait
 c_func
 (paren
 id|HZ
@@ -8506,7 +8433,7 @@ id|i
 op_increment
 )paren
 (brace
-id|busy_loop
+id|Wait
 c_func
 (paren
 id|HZ
