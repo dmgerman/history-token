@@ -11,6 +11,8 @@ id|kmem_cache_t
 suffix:semicolon
 macro_line|#include&t;&lt;linux/gfp.h&gt;
 macro_line|#include&t;&lt;linux/types.h&gt;
+macro_line|#include&t;&lt;asm/page.h&gt;
+macro_line|#include&t;&lt;asm/cache.h&gt;
 multiline_comment|/* flags for kmem_cache_alloc() */
 DECL|macro|SLAB_NOFS
 mdefine_line|#define&t;SLAB_NOFS&t;&t;GFP_NOFS
