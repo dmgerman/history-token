@@ -2502,12 +2502,6 @@ l_int|32
 )braket
 suffix:semicolon
 multiline_comment|/* Informational name */
-DECL|member|kobj
-r_struct
-id|kobject
-id|kobj
-suffix:semicolon
-multiline_comment|/* anchor for sysfs */
 DECL|member|s_fs_info
 r_void
 op_star
