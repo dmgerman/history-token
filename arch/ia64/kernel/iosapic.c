@@ -2365,6 +2365,26 @@ r_int
 r_int
 id|dest
 suffix:semicolon
+id|irq_desc_t
+op_star
+id|desc
+suffix:semicolon
+multiline_comment|/*&n;&t; * In the case of a shared interrupt, do not re-route the vector, and&n;&t; * especially do not mask a running interrupt (startup will not get&n;&t; * called for a shared interrupt).&n;&t; */
+id|desc
+op_assign
+id|irq_descp
+c_func
+(paren
+id|vector
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|desc-&gt;action
+)paren
+r_return
+suffix:semicolon
 macro_line|#ifdef CONFIG_SMP
 multiline_comment|/*&n;&t; * For platforms that do not support interrupt redirect via the XTP interface, we&n;&t; * can round-robin the PCI device interrupts to the processors&n;&t; */
 r_if
