@@ -5816,16 +5816,6 @@ comma
 id|PCI_CAP_ID_AGP
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|cap_ptr
-)paren
-r_return
-op_minus
-id|ENODEV
-suffix:semicolon
 id|bridge
 op_assign
 id|agp_alloc_bridge
@@ -6357,6 +6347,12 @@ id|name
 )paren
 suffix:semicolon
 multiline_comment|/* Fill in the mode register */
+r_if
+c_cond
+(paren
+id|cap_ptr
+)paren
+(brace
 id|pci_read_config_dword
 c_func
 (paren
@@ -6370,6 +6366,7 @@ op_amp
 id|bridge-&gt;mode
 )paren
 suffix:semicolon
+)brace
 id|pci_set_drvdata
 c_func
 (paren
