@@ -443,7 +443,7 @@ suffix:semicolon
 multiline_comment|/* Use my own max window until I learn something better.  */
 id|asoc-&gt;peer.rwnd
 op_assign
-id|sctp_rmem
+id|SCTP_DEFAULT_MAXWINDOW
 suffix:semicolon
 multiline_comment|/* Set the sndbuf size for transmit.  */
 id|asoc-&gt;sndbuf_used
@@ -1255,7 +1255,7 @@ suffix:semicolon
 multiline_comment|/* At this point, we may not have the receiver&squot;s advertised window,&n;&t; * so initialize ssthresh to the default value and it will be set&n;&t; * later when we process the INIT.&n;&t; */
 id|peer-&gt;ssthresh
 op_assign
-id|sctp_rmem
+id|SCTP_DEFAULT_MAXWINDOW
 suffix:semicolon
 id|peer-&gt;partial_bytes_acked
 op_assign
