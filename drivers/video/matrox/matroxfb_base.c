@@ -6126,7 +6126,7 @@ id|blank
 )paren
 (brace
 r_case
-l_int|1
+id|FB_BLANK_NORMAL
 suffix:colon
 id|seq
 op_assign
@@ -6140,7 +6140,7 @@ r_break
 suffix:semicolon
 multiline_comment|/* works ??? */
 r_case
-l_int|2
+id|FB_BLANK_VSYNC_SUSPEND
 suffix:colon
 id|seq
 op_assign
@@ -6153,7 +6153,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
-l_int|3
+id|FB_BLANK_HSYNC_SUSPEND
 suffix:colon
 id|seq
 op_assign
@@ -6166,7 +6166,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
-l_int|4
+id|FB_BLANK_POWERDOWN
 suffix:colon
 id|seq
 op_assign

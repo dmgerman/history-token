@@ -7052,8 +7052,12 @@ r_if
 c_cond
 (paren
 id|current_mode
-op_ne
-id|VESA_NO_BLANKING
+op_eq
+id|FB_BLANK_NORMAL
+op_logical_or
+id|current_mode
+op_eq
+id|FB_BLANK_UNBLANK
 )paren
 (brace
 multiline_comment|/* unblank the screen */
@@ -7094,8 +7098,8 @@ r_if
 c_cond
 (paren
 id|blank_mode
-op_ne
-id|VESA_NO_BLANKING
+OG
+id|FB_BLANK_NORMAL
 )paren
 (brace
 multiline_comment|/* blank the screen */
@@ -7128,12 +7132,15 @@ id|blank_mode
 )paren
 (brace
 r_case
-id|VESA_NO_BLANKING
+id|FB_BLANK_UNBLANK
+suffix:colon
+r_case
+id|FB_BLANK_NORMAL
 suffix:colon
 r_break
 suffix:semicolon
 r_case
-id|VESA_VSYNC_SUSPEND
+id|FB_BLANK_VSYNC_SUSPEND
 suffix:colon
 id|vga_wgfx
 (paren
@@ -7147,7 +7154,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
-id|VESA_HSYNC_SUSPEND
+id|FB_BLANK_HSYNC_SUSPEND
 suffix:colon
 id|vga_wgfx
 (paren
@@ -7161,7 +7168,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
-id|VESA_POWERDOWN
+id|FB_BLANK_POWERDOWN
 suffix:colon
 id|vga_wgfx
 (paren
@@ -7194,7 +7201,17 @@ id|DPRINTK
 l_string|&quot;EXIT, returning 0&bslash;n&quot;
 )paren
 suffix:semicolon
+multiline_comment|/* Let fbcon do a soft blank for us */
 r_return
+(paren
+id|blank_mode
+op_eq
+id|FB_BLANK_NORMAL
+)paren
+ques
+c_cond
+l_int|1
+suffix:colon
 l_int|0
 suffix:semicolon
 )brace

@@ -1346,9 +1346,13 @@ multiline_comment|/* Non-lpar has additional take/give timebase */
 r_if
 c_cond
 (paren
-id|systemcfg-&gt;platform
-op_eq
-id|PLATFORM_PSERIES
+id|rtas_token
+c_func
+(paren
+l_string|&quot;freeze-time-base&quot;
+)paren
+op_ne
+id|RTAS_UNKNOWN_SERVICE
 )paren
 (brace
 id|smp_ops-&gt;give_timebase

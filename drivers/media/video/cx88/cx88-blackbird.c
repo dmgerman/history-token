@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * $Id: cx88-blackbird.c,v 1.14 2004/10/12 07:33:22 kraxel Exp $&n; *&n; *  Support for a cx23416 mpeg encoder via cx2388x host port.&n; *  &quot;blackbird&quot; reference design.&n; *&n; *    (c) 2004 Jelle Foks &lt;jelle@foks.8m.com&gt;&n; *    (c) 2004 Gerd Knorr &lt;kraxel@bytesex.org&gt;&n; *&n; *  Includes parts from the ivtv driver( http://ivtv.sourceforge.net/),&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; */
+multiline_comment|/*&n; * $Id: cx88-blackbird.c,v 1.17 2004/11/07 13:17:15 kraxel Exp $&n; *&n; *  Support for a cx23416 mpeg encoder via cx2388x host port.&n; *  &quot;blackbird&quot; reference design.&n; *&n; *    (c) 2004 Jelle Foks &lt;jelle@foks.8m.com&gt;&n; *    (c) 2004 Gerd Knorr &lt;kraxel@bytesex.org&gt;&n; *&n; *  Includes parts from the ivtv driver( http://ivtv.sourceforge.net/),&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/fs.h&gt;
@@ -2777,9 +2777,10 @@ r_int
 id|bb_buf_setup
 c_func
 (paren
-r_void
+r_struct
+id|videobuf_queue
 op_star
-id|priv
+id|q
 comma
 r_int
 r_int
@@ -2797,7 +2798,7 @@ id|cx8802_fh
 op_star
 id|fh
 op_assign
-id|priv
+id|q-&gt;priv_data
 suffix:semicolon
 id|fh-&gt;dev-&gt;ts_packet_size
 op_assign
@@ -2863,9 +2864,10 @@ DECL|function|bb_buf_prepare
 id|bb_buf_prepare
 c_func
 (paren
-r_void
+r_struct
+id|videobuf_queue
 op_star
-id|priv
+id|q
 comma
 r_struct
 id|videobuf_buffer
@@ -2882,7 +2884,7 @@ id|cx8802_fh
 op_star
 id|fh
 op_assign
-id|priv
+id|q-&gt;priv_data
 suffix:semicolon
 r_return
 id|cx8802_buf_prepare
@@ -2905,9 +2907,10 @@ DECL|function|bb_buf_queue
 id|bb_buf_queue
 c_func
 (paren
-r_void
+r_struct
+id|videobuf_queue
 op_star
-id|priv
+id|q
 comma
 r_struct
 id|videobuf_buffer
@@ -2920,7 +2923,7 @@ id|cx8802_fh
 op_star
 id|fh
 op_assign
-id|priv
+id|q-&gt;priv_data
 suffix:semicolon
 id|cx8802_buf_queue
 c_func
@@ -2936,15 +2939,16 @@ id|vb
 )paren
 suffix:semicolon
 )brace
-DECL|function|bb_buf_release
 r_static
 r_void
+DECL|function|bb_buf_release
 id|bb_buf_release
 c_func
 (paren
-r_void
+r_struct
+id|videobuf_queue
 op_star
-id|priv
+id|q
 comma
 r_struct
 id|videobuf_buffer
@@ -2957,7 +2961,7 @@ id|cx8802_fh
 op_star
 id|fh
 op_assign
-id|priv
+id|q-&gt;priv_data
 suffix:semicolon
 id|cx88_free_buffer
 c_func
@@ -3200,8 +3204,6 @@ r_return
 id|videobuf_reqbufs
 c_func
 (paren
-id|file-&gt;private_data
-comma
 op_amp
 id|fh-&gt;mpegq
 comma
@@ -3228,8 +3230,6 @@ r_return
 id|videobuf_qbuf
 c_func
 (paren
-id|file-&gt;private_data
-comma
 op_amp
 id|fh-&gt;mpegq
 comma
@@ -3243,8 +3243,6 @@ r_return
 id|videobuf_dqbuf
 c_func
 (paren
-id|file-&gt;private_data
-comma
 op_amp
 id|fh-&gt;mpegq
 comma
@@ -3262,8 +3260,6 @@ r_return
 id|videobuf_streamon
 c_func
 (paren
-id|file-&gt;private_data
-comma
 op_amp
 id|fh-&gt;mpegq
 )paren
@@ -3275,8 +3271,6 @@ r_return
 id|videobuf_streamoff
 c_func
 (paren
-id|file-&gt;private_data
-comma
 op_amp
 id|fh-&gt;mpegq
 )paren
@@ -3520,13 +3514,8 @@ r_sizeof
 r_struct
 id|cx88_buffer
 )paren
-)paren
-suffix:semicolon
-id|init_MUTEX
-c_func
-(paren
-op_amp
-id|fh-&gt;mpegq.lock
+comma
+id|fh
 )paren
 suffix:semicolon
 r_return
@@ -3584,8 +3573,6 @@ id|fh-&gt;mpegq.streaming
 id|videobuf_streamoff
 c_func
 (paren
-id|file-&gt;private_data
-comma
 op_amp
 id|fh-&gt;mpegq
 )paren
@@ -3598,8 +3585,6 @@ id|fh-&gt;mpegq.reading
 id|videobuf_read_stop
 c_func
 (paren
-id|file-&gt;private_data
-comma
 op_amp
 id|fh-&gt;mpegq
 )paren
@@ -3652,8 +3637,6 @@ r_return
 id|videobuf_read_stream
 c_func
 (paren
-id|file-&gt;private_data
-comma
 op_amp
 id|fh-&gt;mpegq
 comma
@@ -3702,8 +3685,6 @@ c_func
 (paren
 id|file
 comma
-id|file-&gt;private_data
-comma
 op_amp
 id|fh-&gt;mpegq
 comma
@@ -3739,10 +3720,10 @@ r_return
 id|videobuf_mmap_mapper
 c_func
 (paren
-id|vma
-comma
 op_amp
 id|fh-&gt;mpegq
+comma
+id|vma
 )paren
 suffix:semicolon
 )brace
@@ -4277,7 +4258,11 @@ comma
 dot
 id|remove
 op_assign
+id|__devexit_p
+c_func
+(paren
 id|blackbird_remove
+)paren
 comma
 dot
 id|suspend

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * PCF8563 RTC&n; *&n; * From Phillips&squot; datasheet:&n; *&n; * The PCF8563 is a CMOS real-time clock/calendar optimized for low power&n; * consumption. A programmable clock output, interupt output and voltage&n; * low detector are also provided. All address and data are transferred&n; * serially via two-line bidirectional I2C-bus. Maximum bus speed is&n; * 400 kbits/s. The built-in word address register is incremented&n; * automatically after each written or read bute.&n; *&n; * Copyright (c) 2002, Axis Communications AB&n; * All rights reserved.&n; *&n; * Author: Tobias Anderberg &lt;tobiasa@axis.com&gt;.&n; *&n; * $Id: pcf8563.c,v 1.4 2004/05/28 09:26:59 starvik Exp $&n; */
+multiline_comment|/*&n; * PCF8563 RTC&n; *&n; * From Phillips&squot; datasheet:&n; *&n; * The PCF8563 is a CMOS real-time clock/calendar optimized for low power&n; * consumption. A programmable clock output, interupt output and voltage&n; * low detector are also provided. All address and data are transferred&n; * serially via two-line bidirectional I2C-bus. Maximum bus speed is&n; * 400 kbits/s. The built-in word address register is incremented&n; * automatically after each written or read bute.&n; *&n; * Copyright (c) 2002, Axis Communications AB&n; * All rights reserved.&n; *&n; * Author: Tobias Anderberg &lt;tobiasa@axis.com&gt;.&n; *&n; * $Id: pcf8563.c,v 1.8 2004/08/24 06:42:51 starvik Exp $&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
@@ -23,7 +23,7 @@ mdefine_line|#define DEVICE_NAME &quot;rtc&quot;&t;&t;/* Name which is registere
 DECL|macro|PCF8563_NAME
 mdefine_line|#define PCF8563_NAME &quot;PCF8563&quot;
 DECL|macro|DRIVER_VERSION
-mdefine_line|#define DRIVER_VERSION &quot;$Revision: 1.4 $&quot;
+mdefine_line|#define DRIVER_VERSION &quot;$Revision: 1.8 $&quot;
 multiline_comment|/* I2C bus slave registers. */
 DECL|macro|RTC_I2C_READ
 mdefine_line|#define RTC_I2C_READ&t;&t;0xa3

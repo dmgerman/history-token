@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * $Id: saa7134-vbi.c,v 1.3 2004/09/23 13:58:19 kraxel Exp $&n; *&n; * device driver for philips saa7134 based TV cards&n; * video4linux video interface&n; *&n; * (c) 2001,02 Gerd Knorr &lt;kraxel@bytesex.org&gt; [SuSE Labs]&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; */
+multiline_comment|/*&n; * $Id: saa7134-vbi.c,v 1.5 2004/11/07 13:17:15 kraxel Exp $&n; *&n; * device driver for philips saa7134 based TV cards&n; * video4linux video interface&n; *&n; * (c) 2001,02 Gerd Knorr &lt;kraxel@bytesex.org&gt; [SuSE Labs]&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; */
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/list.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
@@ -15,12 +15,14 @@ id|vbi_debug
 op_assign
 l_int|0
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|vbi_debug
 comma
-l_string|&quot;i&quot;
+r_int
+comma
+l_int|0644
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -39,12 +41,14 @@ id|vbibufs
 op_assign
 l_int|4
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|vbibufs
 comma
-l_string|&quot;i&quot;
+r_int
+comma
+l_int|0444
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -561,9 +565,10 @@ r_int
 id|buffer_prepare
 c_func
 (paren
-r_void
+r_struct
+id|videobuf_queue
 op_star
-id|priv
+id|q
 comma
 r_struct
 id|videobuf_buffer
@@ -580,7 +585,7 @@ id|saa7134_fh
 op_star
 id|fh
 op_assign
-id|priv
+id|q-&gt;priv_data
 suffix:semicolon
 r_struct
 id|saa7134_dev
@@ -594,12 +599,16 @@ id|saa7134_buf
 op_star
 id|buf
 op_assign
+id|container_of
+c_func
 (paren
+id|vb
+comma
 r_struct
 id|saa7134_buf
-op_star
-)paren
+comma
 id|vb
+)paren
 suffix:semicolon
 r_struct
 id|saa7134_tvnorm
@@ -816,9 +825,10 @@ DECL|function|buffer_setup
 id|buffer_setup
 c_func
 (paren
-r_void
+r_struct
+id|videobuf_queue
 op_star
-id|priv
+id|q
 comma
 r_int
 r_int
@@ -836,7 +846,7 @@ id|saa7134_fh
 op_star
 id|fh
 op_assign
-id|priv
+id|q-&gt;priv_data
 suffix:semicolon
 r_struct
 id|saa7134_dev
@@ -933,9 +943,10 @@ r_void
 id|buffer_queue
 c_func
 (paren
-r_void
+r_struct
+id|videobuf_queue
 op_star
-id|priv
+id|q
 comma
 r_struct
 id|videobuf_buffer
@@ -948,7 +959,7 @@ id|saa7134_fh
 op_star
 id|fh
 op_assign
-id|priv
+id|q-&gt;priv_data
 suffix:semicolon
 r_struct
 id|saa7134_dev
@@ -962,12 +973,16 @@ id|saa7134_buf
 op_star
 id|buf
 op_assign
+id|container_of
+c_func
 (paren
+id|vb
+comma
 r_struct
 id|saa7134_buf
-op_star
-)paren
+comma
 id|vb
+)paren
 suffix:semicolon
 id|saa7134_buffer_queue
 c_func
@@ -987,9 +1002,10 @@ r_void
 id|buffer_release
 c_func
 (paren
-r_void
+r_struct
+id|videobuf_queue
 op_star
-id|priv
+id|q
 comma
 r_struct
 id|videobuf_buffer
@@ -1002,7 +1018,7 @@ id|saa7134_fh
 op_star
 id|fh
 op_assign
-id|priv
+id|q-&gt;priv_data
 suffix:semicolon
 r_struct
 id|saa7134_dev
@@ -1016,12 +1032,16 @@ id|saa7134_buf
 op_star
 id|buf
 op_assign
+id|container_of
+c_func
 (paren
+id|vb
+comma
 r_struct
 id|saa7134_buf
-op_star
-)paren
+comma
 id|vb
+)paren
 suffix:semicolon
 id|saa7134_dma_free
 c_func

@@ -12420,12 +12420,10 @@ r_switch
 c_cond
 (paren
 id|do_blank
-op_minus
-l_int|1
 )paren
 (brace
 r_case
-id|VESA_VSYNC_SUSPEND
+id|FB_BLANK_VSYNC_SUSPEND
 suffix:colon
 id|custom.hsstrt
 op_assign
@@ -12466,7 +12464,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
-id|VESA_HSYNC_SUSPEND
+id|FB_BLANK_HSYNC_SUSPEND
 suffix:colon
 id|custom.hsstrt
 op_assign
@@ -12507,7 +12505,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
-id|VESA_POWERDOWN
+id|FB_BLANK_POWERDOWN
 suffix:colon
 id|custom.hsstrt
 op_assign

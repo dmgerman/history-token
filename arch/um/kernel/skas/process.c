@@ -44,7 +44,7 @@ c_cond
 (paren
 id|pid
 op_ne
-id|getpid
+id|os_getpid
 c_func
 (paren
 )paren

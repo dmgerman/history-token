@@ -71,17 +71,6 @@ op_star
 id|p
 )paren
 suffix:semicolon
-r_struct
-id|kobject
-op_star
-id|cdev_get
-c_func
-(paren
-r_struct
-id|cdev
-op_star
-)paren
-suffix:semicolon
 r_int
 id|cdev_add
 c_func

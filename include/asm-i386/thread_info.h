@@ -141,37 +141,16 @@ id|ti
 suffix:semicolon
 )brace
 multiline_comment|/* how to get the current stack pointer from C */
-DECL|function|current_stack_pointer
-r_static
-r_inline
+r_register
 r_int
 r_int
 id|current_stack_pointer
+id|asm
 c_func
 (paren
-r_void
-)paren
-(brace
-r_int
-r_int
-id|ti
-suffix:semicolon
-id|__asm__
-c_func
-(paren
-l_string|&quot;movl %%esp,%0; &quot;
-suffix:colon
-l_string|&quot;=r&quot;
-(paren
-id|ti
-)paren
-suffix:colon
+l_string|&quot;esp&quot;
 )paren
 suffix:semicolon
-r_return
-id|ti
-suffix:semicolon
-)brace
 multiline_comment|/* thread information allocation */
 macro_line|#ifdef CONFIG_DEBUG_STACK_USAGE
 DECL|macro|alloc_thread_info

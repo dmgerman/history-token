@@ -6806,7 +6806,7 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-id|rsv_window_add
+id|ext3_rsv_window_add
 c_func
 (paren
 id|sb

@@ -57,17 +57,20 @@ DECL|variable|fd_def_df0
 r_static
 r_int
 r_int
+r_int
 id|fd_def_df0
 op_assign
 id|FD_DD_3
 suffix:semicolon
 multiline_comment|/* default for df0 if it doesn&squot;t identify */
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|fd_def_df0
 comma
-l_string|&quot;l&quot;
+id|ulong
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|MODULE_LICENSE

@@ -1,4 +1,4 @@
-multiline_comment|/*&n;    $Id: bttv-vbi.c,v 1.6 2004/10/13 10:39:00 kraxel Exp $&n;&n;    bttv - Bt848 frame grabber driver&n;    vbi interface&n;&n;    (c) 2002 Gerd Knorr &lt;kraxel@bytesex.org&gt;&n;&n;    This program is free software; you can redistribute it and/or modify&n;    it under the terms of the GNU General Public License as published by&n;    the Free Software Foundation; either version 2 of the License, or&n;    (at your option) any later version.&n;&n;    This program is distributed in the hope that it will be useful,&n;    but WITHOUT ANY WARRANTY; without even the implied warranty of&n;    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n;    GNU General Public License for more details.&n;&n;    You should have received a copy of the GNU General Public License&n;    along with this program; if not, write to the Free Software&n;    Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n;*/
+multiline_comment|/*&n;    $Id: bttv-vbi.c,v 1.7 2004/11/07 13:17:15 kraxel Exp $&n;&n;    bttv - Bt848 frame grabber driver&n;    vbi interface&n;&n;    (c) 2002 Gerd Knorr &lt;kraxel@bytesex.org&gt;&n;&n;    This program is free software; you can redistribute it and/or modify&n;    it under the terms of the GNU General Public License as published by&n;    the Free Software Foundation; either version 2 of the License, or&n;    (at your option) any later version.&n;&n;    This program is distributed in the hope that it will be useful,&n;    but WITHOUT ANY WARRANTY; without even the implied warranty of&n;    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n;    GNU General Public License for more details.&n;&n;    You should have received a copy of the GNU General Public License&n;    along with this program; if not, write to the Free Software&n;    Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n;*/
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/fs.h&gt;
@@ -28,12 +28,24 @@ id|vbi_debug
 op_assign
 l_int|0
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|vbibufs
 comma
-l_string|&quot;i&quot;
+r_int
+comma
+l_int|0444
+)paren
+suffix:semicolon
+id|module_param
+c_func
+(paren
+id|vbi_debug
+comma
+r_int
+comma
+l_int|0644
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -42,14 +54,6 @@ c_func
 id|vbibufs
 comma
 l_string|&quot;number of vbi buffers, range 2-32, default 4&quot;
-)paren
-suffix:semicolon
-id|MODULE_PARM
-c_func
-(paren
-id|vbi_debug
-comma
-l_string|&quot;i&quot;
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -147,9 +151,10 @@ r_int
 id|vbi_buffer_setup
 c_func
 (paren
-r_void
+r_struct
+id|videobuf_queue
 op_star
-id|priv
+id|q
 comma
 r_int
 r_int
@@ -167,7 +172,7 @@ id|bttv_fh
 op_star
 id|fh
 op_assign
-id|priv
+id|q-&gt;priv_data
 suffix:semicolon
 r_struct
 id|bttv
@@ -216,9 +221,10 @@ r_int
 id|vbi_buffer_prepare
 c_func
 (paren
-r_void
+r_struct
+id|videobuf_queue
 op_star
-id|priv
+id|q
 comma
 r_struct
 id|videobuf_buffer
@@ -235,7 +241,7 @@ id|bttv_fh
 op_star
 id|fh
 op_assign
-id|priv
+id|q-&gt;priv_data
 suffix:semicolon
 r_struct
 id|bttv
@@ -249,12 +255,16 @@ id|bttv_buffer
 op_star
 id|buf
 op_assign
+id|container_of
+c_func
 (paren
+id|vb
+comma
 r_struct
 id|bttv_buffer
-op_star
-)paren
+comma
 id|vb
+)paren
 suffix:semicolon
 r_int
 id|rc
@@ -386,9 +396,10 @@ DECL|function|vbi_buffer_queue
 id|vbi_buffer_queue
 c_func
 (paren
-r_void
+r_struct
+id|videobuf_queue
 op_star
-id|priv
+id|q
 comma
 r_struct
 id|videobuf_buffer
@@ -401,7 +412,7 @@ id|bttv_fh
 op_star
 id|fh
 op_assign
-id|priv
+id|q-&gt;priv_data
 suffix:semicolon
 r_struct
 id|bttv
@@ -415,12 +426,16 @@ id|bttv_buffer
 op_star
 id|buf
 op_assign
+id|container_of
+c_func
 (paren
+id|vb
+comma
 r_struct
 id|bttv_buffer
-op_star
-)paren
+comma
 id|vb
+)paren
 suffix:semicolon
 id|dprintk
 c_func
@@ -472,9 +487,10 @@ r_void
 id|vbi_buffer_release
 c_func
 (paren
-r_void
+r_struct
+id|videobuf_queue
 op_star
-id|priv
+id|q
 comma
 r_struct
 id|videobuf_buffer
@@ -487,7 +503,7 @@ id|bttv_fh
 op_star
 id|fh
 op_assign
-id|priv
+id|q-&gt;priv_data
 suffix:semicolon
 r_struct
 id|bttv
@@ -501,12 +517,16 @@ id|bttv_buffer
 op_star
 id|buf
 op_assign
+id|container_of
+c_func
 (paren
+id|vb
+comma
 r_struct
 id|bttv_buffer
-op_star
-)paren
+comma
 id|vb
+)paren
 suffix:semicolon
 id|dprintk
 c_func

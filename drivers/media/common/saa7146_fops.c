@@ -1621,9 +1621,9 @@ r_return
 id|videobuf_mmap_mapper
 c_func
 (paren
-id|vma
-comma
 id|q
+comma
+id|vma
 )paren
 suffix:semicolon
 )brace
@@ -1697,8 +1697,6 @@ id|videobuf_poll_stream
 c_func
 (paren
 id|file
-comma
-id|file-&gt;private_data
 comma
 op_amp
 id|fh-&gt;vbi_q

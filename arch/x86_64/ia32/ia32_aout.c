@@ -23,6 +23,7 @@ macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/pgalloc.h&gt;
 macro_line|#include &lt;asm/cacheflush.h&gt;
 macro_line|#include &lt;asm/user32.h&gt;
+macro_line|#include &lt;asm/ia32.h&gt;
 DECL|macro|WARN_OLD
 macro_line|#undef WARN_OLD
 DECL|macro|CORE_DUMP
