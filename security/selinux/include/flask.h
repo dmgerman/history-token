@@ -63,6 +63,30 @@ DECL|macro|SECCLASS_IPC
 mdefine_line|#define SECCLASS_IPC                                     29
 DECL|macro|SECCLASS_PASSWD
 mdefine_line|#define SECCLASS_PASSWD                                  30
+DECL|macro|SECCLASS_DRAWABLE
+mdefine_line|#define SECCLASS_DRAWABLE                                31
+DECL|macro|SECCLASS_WINDOW
+mdefine_line|#define SECCLASS_WINDOW                                  32
+DECL|macro|SECCLASS_GC
+mdefine_line|#define SECCLASS_GC                                      33
+DECL|macro|SECCLASS_FONT
+mdefine_line|#define SECCLASS_FONT                                    34
+DECL|macro|SECCLASS_COLORMAP
+mdefine_line|#define SECCLASS_COLORMAP                                35
+DECL|macro|SECCLASS_PROPERTY
+mdefine_line|#define SECCLASS_PROPERTY                                36
+DECL|macro|SECCLASS_CURSOR
+mdefine_line|#define SECCLASS_CURSOR                                  37
+DECL|macro|SECCLASS_XCLIENT
+mdefine_line|#define SECCLASS_XCLIENT                                 38
+DECL|macro|SECCLASS_XINPUT
+mdefine_line|#define SECCLASS_XINPUT                                  39
+DECL|macro|SECCLASS_XSERVER
+mdefine_line|#define SECCLASS_XSERVER                                 40
+DECL|macro|SECCLASS_XEXTENSION
+mdefine_line|#define SECCLASS_XEXTENSION                              41
+DECL|macro|SECCLASS_PAX
+mdefine_line|#define SECCLASS_PAX                                     42
 multiline_comment|/*&n; * Security identifier indices for initial entities&n; */
 DECL|macro|SECINITSID_KERNEL
 mdefine_line|#define SECINITSID_KERNEL                               1
