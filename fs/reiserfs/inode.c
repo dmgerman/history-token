@@ -7452,6 +7452,10 @@ id|bh
 op_assign
 l_int|NULL
 suffix:semicolon
+id|lock_kernel
+(paren
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -7698,7 +7702,9 @@ id|page
 )paren
 suffix:semicolon
 )brace
-r_return
+id|unlock_kernel
+(paren
+)paren
 suffix:semicolon
 )brace
 DECL|function|map_block_for_writepage
