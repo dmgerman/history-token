@@ -2830,18 +2830,6 @@ r_return
 l_int|NULL
 suffix:semicolon
 )brace
-multiline_comment|/* Initialize the work queue */
-id|INIT_WORK
-c_func
-(paren
-op_amp
-id|info-&gt;queue
-comma
-id|fb_flashcursor
-comma
-id|info
-)paren
-suffix:semicolon
 multiline_comment|/* Setup default font */
 id|vc-&gt;vc_font.data
 op_assign
@@ -3079,15 +3067,24 @@ id|info
 )paren
 suffix:semicolon
 macro_line|#endif
+multiline_comment|/* Initialize the work queue. If the driver provides its&n;&t; * own work queue this means it will use something besides &n;&t; * default timer to flash the cursor. */
 r_if
 c_cond
 (paren
-id|irqres
+op_logical_neg
+id|info-&gt;queue.func
 )paren
 (brace
-id|cursor_blink_rate
-op_assign
-id|DEFAULT_CURSOR_BLINK_RATE
+id|INIT_WORK
+c_func
+(paren
+op_amp
+id|info-&gt;queue
+comma
+id|fb_flashcursor
+comma
+id|info
+)paren
 suffix:semicolon
 id|cursor_timer.expires
 op_assign

@@ -262,6 +262,16 @@ comma
 id|GFP_ATOMIC
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|info-&gt;cursor.mask
+)paren
+r_return
+op_minus
+id|ENOMEM
+suffix:semicolon
 id|memcpy
 c_func
 (paren
