@@ -13655,12 +13655,6 @@ r_int
 id|logdrv
 )paren
 (brace
-id|DECLARE_WAIT_QUEUE_HEAD
-c_func
-(paren
-id|wq
-)paren
-suffix:semicolon
 r_int
 r_int
 id|flags
@@ -13703,20 +13697,13 @@ op_amp
 id|adapter-&gt;pending_list
 )paren
 )paren
-(brace
-id|sleep_on_timeout
+id|msleep
 c_func
 (paren
-op_amp
-id|wq
-comma
-l_int|1
-op_star
-id|HZ
+l_int|1000
 )paren
 suffix:semicolon
 multiline_comment|/* sleep for 1s */
-)brace
 id|rval
 op_assign
 id|mega_do_del_logdrv
