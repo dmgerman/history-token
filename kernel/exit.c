@@ -512,14 +512,14 @@ id|pid
 r_if
 c_cond
 (paren
-id|p-&gt;session
+id|p-&gt;signal-&gt;session
 OG
 l_int|0
 )paren
 (brace
 id|sid
 op_assign
-id|p-&gt;session
+id|p-&gt;signal-&gt;session
 suffix:semicolon
 r_goto
 id|out
@@ -540,7 +540,7 @@ id|p
 )paren
 id|sid
 op_assign
-id|p-&gt;session
+id|p-&gt;signal-&gt;session
 suffix:semicolon
 id|out
 suffix:colon
@@ -632,9 +632,9 @@ id|p-&gt;real_parent
 op_ne
 id|pgrp
 op_logical_and
-id|p-&gt;real_parent-&gt;session
+id|p-&gt;real_parent-&gt;signal-&gt;session
 op_eq
-id|p-&gt;session
+id|p-&gt;signal-&gt;session
 )paren
 (brace
 id|ret
@@ -927,7 +927,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|curr-&gt;session
+id|curr-&gt;signal-&gt;session
 op_ne
 id|session
 )paren
@@ -940,7 +940,7 @@ comma
 id|PIDTYPE_SID
 )paren
 suffix:semicolon
-id|curr-&gt;session
+id|curr-&gt;signal-&gt;session
 op_assign
 id|session
 suffix:semicolon
@@ -975,7 +975,7 @@ comma
 id|PIDTYPE_PGID
 )paren
 suffix:semicolon
-id|curr-&gt;group_leader-&gt;__pgrp
+id|curr-&gt;signal-&gt;pgrp
 op_assign
 id|pgrp
 suffix:semicolon
@@ -1242,7 +1242,7 @@ comma
 l_int|1
 )paren
 suffix:semicolon
-id|current-&gt;tty
+id|current-&gt;signal-&gt;tty
 op_assign
 l_int|NULL
 suffix:semicolon
@@ -2173,9 +2173,9 @@ id|father
 )paren
 op_logical_and
 (paren
-id|p-&gt;session
+id|p-&gt;signal-&gt;session
 op_eq
-id|father-&gt;session
+id|father-&gt;signal-&gt;session
 )paren
 )paren
 (brace
@@ -2604,9 +2604,9 @@ id|tsk
 )paren
 op_logical_and
 (paren
-id|t-&gt;session
+id|t-&gt;signal-&gt;session
 op_eq
-id|tsk-&gt;session
+id|tsk-&gt;signal-&gt;session
 )paren
 op_logical_and
 id|will_become_orphaned_pgrp
@@ -3015,7 +3015,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|tsk-&gt;leader
+id|tsk-&gt;signal-&gt;leader
 )paren
 id|disassociate_ctty
 c_func

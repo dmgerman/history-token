@@ -10761,7 +10761,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|current-&gt;tty
+id|current-&gt;signal-&gt;tty
 op_ne
 id|tty
 op_logical_and

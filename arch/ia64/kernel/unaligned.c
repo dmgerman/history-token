@@ -5882,7 +5882,7 @@ id|regs
 id|tty_write_message
 c_func
 (paren
-id|current-&gt;tty
+id|current-&gt;signal-&gt;tty
 comma
 id|buf
 )paren

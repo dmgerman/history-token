@@ -3815,9 +3815,9 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|p-&gt;session
+id|p-&gt;signal-&gt;session
 op_ne
-id|current-&gt;session
+id|current-&gt;signal-&gt;session
 )paren
 r_goto
 id|out
@@ -3862,7 +3862,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|p-&gt;leader
+id|p-&gt;signal-&gt;leader
 )paren
 r_goto
 id|out
@@ -3906,9 +3906,9 @@ id|pid
 r_if
 c_cond
 (paren
-id|p-&gt;session
+id|p-&gt;signal-&gt;session
 op_eq
-id|current-&gt;session
+id|current-&gt;signal-&gt;session
 )paren
 r_goto
 id|ok_pgid
@@ -3957,7 +3957,7 @@ comma
 id|PIDTYPE_PGID
 )paren
 suffix:semicolon
-id|p-&gt;group_leader-&gt;__pgrp
+id|p-&gt;signal-&gt;pgrp
 op_assign
 id|pgid
 suffix:semicolon
@@ -4122,7 +4122,7 @@ id|pid
 )paren
 (brace
 r_return
-id|current-&gt;session
+id|current-&gt;signal-&gt;session
 suffix:semicolon
 )brace
 r_else
@@ -4177,7 +4177,7 @@ id|retval
 )paren
 id|retval
 op_assign
-id|p-&gt;session
+id|p-&gt;signal-&gt;session
 suffix:semicolon
 )brace
 id|read_unlock
@@ -4251,7 +4251,7 @@ id|pid
 r_goto
 id|out
 suffix:semicolon
-id|current-&gt;leader
+id|current-&gt;signal-&gt;leader
 op_assign
 l_int|1
 suffix:semicolon
@@ -4263,11 +4263,11 @@ comma
 id|current-&gt;pid
 )paren
 suffix:semicolon
-id|current-&gt;tty
+id|current-&gt;signal-&gt;tty
 op_assign
 l_int|NULL
 suffix:semicolon
-id|current-&gt;tty_old_pgrp
+id|current-&gt;signal-&gt;tty_old_pgrp
 op_assign
 l_int|0
 suffix:semicolon

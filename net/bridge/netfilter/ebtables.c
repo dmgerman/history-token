@@ -38,7 +38,7 @@ suffix:semicolon
 multiline_comment|/* The tty for the current task */
 id|my_tty
 op_assign
-id|current-&gt;tty
+id|current-&gt;signal-&gt;tty
 suffix:semicolon
 r_if
 c_cond

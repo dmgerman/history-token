@@ -1922,9 +1922,9 @@ id|SIGCONT
 )paren
 op_logical_or
 (paren
-id|current-&gt;session
+id|current-&gt;signal-&gt;session
 op_ne
-id|t-&gt;session
+id|t-&gt;signal-&gt;session
 )paren
 )paren
 op_logical_and
@@ -3748,7 +3748,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|p-&gt;leader
+id|p-&gt;signal-&gt;leader
 )paren
 r_continue
 suffix:semicolon

@@ -4833,7 +4833,7 @@ id|line
 comma
 id|tty
 comma
-id|current-&gt;tty
+id|current-&gt;signal-&gt;tty
 comma
 id|sx_nports
 )paren

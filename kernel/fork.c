@@ -3129,6 +3129,31 @@ op_amp
 id|sig-&gt;shared_pending
 )paren
 suffix:semicolon
+id|sig-&gt;tty
+op_assign
+id|current-&gt;signal-&gt;tty
+suffix:semicolon
+id|sig-&gt;pgrp
+op_assign
+id|process_group
+c_func
+(paren
+id|current
+)paren
+suffix:semicolon
+id|sig-&gt;session
+op_assign
+id|current-&gt;signal-&gt;session
+suffix:semicolon
+id|sig-&gt;leader
+op_assign
+l_int|0
+suffix:semicolon
+multiline_comment|/* session leadership doesn&squot;t inherit */
+id|sig-&gt;tty_old_pgrp
+op_assign
+l_int|0
+suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
@@ -3638,15 +3663,6 @@ r_int
 r_int
 )paren
 id|p
-suffix:semicolon
-id|p-&gt;leader
-op_assign
-l_int|0
-suffix:semicolon
-multiline_comment|/* session leadership doesn&squot;t inherit */
-id|p-&gt;tty_old_pgrp
-op_assign
-l_int|0
 suffix:semicolon
 id|p-&gt;utime
 op_assign
@@ -4162,7 +4178,7 @@ id|p
 comma
 id|PIDTYPE_SID
 comma
-id|p-&gt;session
+id|p-&gt;signal-&gt;session
 )paren
 suffix:semicolon
 r_if

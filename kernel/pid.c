@@ -1039,7 +1039,7 @@ id|thread
 comma
 id|PIDTYPE_PGID
 comma
-id|leader-&gt;__pgrp
+id|thread-&gt;signal-&gt;pgrp
 )paren
 suffix:semicolon
 id|attach_pid
@@ -1049,7 +1049,7 @@ id|thread
 comma
 id|PIDTYPE_SID
 comma
-id|thread-&gt;session
+id|thread-&gt;signal-&gt;session
 )paren
 suffix:semicolon
 id|list_add_tail
@@ -1089,7 +1089,7 @@ id|leader
 comma
 id|PIDTYPE_PGID
 comma
-id|leader-&gt;__pgrp
+id|leader-&gt;signal-&gt;pgrp
 )paren
 suffix:semicolon
 id|attach_pid
@@ -1099,7 +1099,7 @@ id|leader
 comma
 id|PIDTYPE_SID
 comma
-id|leader-&gt;session
+id|leader-&gt;signal-&gt;session
 )paren
 suffix:semicolon
 )brace
