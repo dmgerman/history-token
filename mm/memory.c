@@ -2084,10 +2084,10 @@ macro_line|#if !defined(CONFIG_SMP) &amp;&amp; defined(CONFIG_PREEMPT)
 DECL|macro|ZAP_BLOCK_SIZE
 mdefine_line|#define ZAP_BLOCK_SIZE&t;(256 * PAGE_SIZE)
 macro_line|#endif
-multiline_comment|/* No preempt: go for the best straight-line efficiency */
+multiline_comment|/* No preempt: go for improved straight-line efficiency */
 macro_line|#if !defined(CONFIG_PREEMPT)
 DECL|macro|ZAP_BLOCK_SIZE
-mdefine_line|#define ZAP_BLOCK_SIZE&t;(~(0UL))
+mdefine_line|#define ZAP_BLOCK_SIZE&t;(1024 * PAGE_SIZE)
 macro_line|#endif
 multiline_comment|/**&n; * unmap_vmas - unmap a range of memory covered by a list of vma&squot;s&n; * @tlbp: address of the caller&squot;s struct mmu_gather&n; * @mm: the controlling mm_struct&n; * @vma: the starting vma&n; * @start_addr: virtual address at which to start unmapping&n; * @end_addr: virtual address at which to end unmapping&n; * @nr_accounted: Place number of unmapped pages in vm-accountable vma&squot;s here&n; *&n; * Returns the number of vma&squot;s which were covered by the unmapping.&n; *&n; * Unmap all pages in the vma list.  Called under page_table_lock.&n; *&n; * We aim to not hold page_table_lock for too long (for scheduling latency&n; * reasons).  So zap pages in ZAP_BLOCK_SIZE bytecounts.  This means we need to&n; * return the ending mmu_gather to the caller.&n; *&n; * Only addresses between `start&squot; and `end&squot; will be unmapped.&n; *&n; * The VMA list must be sorted in ascending virtual address order.&n; *&n; * unmap_vmas() assumes that the caller will flush the whole unmapped address&n; * range after unmap_vmas() returns.  So the only responsibility here is to&n; * ensure that any thus-far unmapped pages are flushed before unmap_vmas()&n; * drops the lock and schedules.&n; */
 DECL|function|unmap_vmas
