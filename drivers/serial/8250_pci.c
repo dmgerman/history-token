@@ -7,12 +7,7 @@ macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/serial.h&gt;
-multiline_comment|/* 2.4.6 compatibility cruft - to be removed with the old serial.c code */
-DECL|macro|pci_board
-mdefine_line|#define pci_board __pci_board
 macro_line|#include &lt;linux/serialP.h&gt;
-DECL|macro|pci_board
-macro_line|#undef pci_board
 macro_line|#include &lt;asm/bitops.h&gt;
 macro_line|#include &lt;asm/byteorder.h&gt;
 macro_line|#include &lt;asm/serial.h&gt;
