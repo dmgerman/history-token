@@ -11,6 +11,25 @@ macro_line|#include &lt;asm/processor.h&gt;
 macro_line|#include &lt;asm/mca_asm.h&gt;
 DECL|macro|IA64_MCA_RENDEZ_TIMEOUT
 mdefine_line|#define IA64_MCA_RENDEZ_TIMEOUT&t;&t;(20 * 1000)&t;/* value in milliseconds - 20 seconds */
+DECL|struct|ia64_fptr
+r_typedef
+r_struct
+id|ia64_fptr
+(brace
+DECL|member|fp
+r_int
+r_int
+id|fp
+suffix:semicolon
+DECL|member|gp
+r_int
+r_int
+id|gp
+suffix:semicolon
+DECL|typedef|ia64_fptr_t
+)brace
+id|ia64_fptr_t
+suffix:semicolon
 DECL|union|cmcv_reg_u
 r_typedef
 r_union
@@ -354,6 +373,23 @@ id|ia64_mca_cmc_vector_setup
 c_func
 (paren
 r_void
+)paren
+suffix:semicolon
+r_extern
+r_int
+(paren
+op_star
+id|ia64_mca_ucmc_other_recover_fp
+)paren
+(paren
+r_void
+op_star
+comma
+id|ia64_mca_sal_to_os_state_t
+op_star
+comma
+id|ia64_mca_os_to_sal_state_t
+op_star
 )paren
 suffix:semicolon
 macro_line|#endif /* !__ASSEMBLY__ */
