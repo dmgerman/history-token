@@ -6298,11 +6298,11 @@ op_assign
 id|alloc_skb
 c_func
 (paren
-id|allocation
-comma
 id|len
 op_plus
 l_int|16
+comma
+id|allocation
 )paren
 suffix:semicolon
 r_if
