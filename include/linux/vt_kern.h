@@ -388,21 +388,6 @@ id|srccons
 )paren
 suffix:semicolon
 multiline_comment|/* vt.c */
-r_extern
-r_int
-r_int
-id|video_font_height
-suffix:semicolon
-r_extern
-r_int
-r_int
-id|default_font_height
-suffix:semicolon
-r_extern
-r_int
-r_int
-id|video_scan_lines
-suffix:semicolon
 r_void
 id|complete_change_console
 c_func

@@ -28,6 +28,39 @@ r_int
 id|vc_size_row
 suffix:semicolon
 multiline_comment|/* Bytes per row */
+DECL|member|vc_scan_lines
+r_int
+r_int
+id|vc_scan_lines
+suffix:semicolon
+multiline_comment|/* # of scan lines */
+DECL|member|vc_origin
+r_int
+r_int
+id|vc_origin
+suffix:semicolon
+multiline_comment|/* [!] Start of real screen */
+DECL|member|vc_scr_end
+r_int
+r_int
+id|vc_scr_end
+suffix:semicolon
+multiline_comment|/* [!] End of real screen */
+DECL|member|vc_visible_origin
+r_int
+r_int
+id|vc_visible_origin
+suffix:semicolon
+multiline_comment|/* [!] Top of visible window */
+DECL|member|vc_top
+DECL|member|vc_bottom
+r_int
+r_int
+id|vc_top
+comma
+id|vc_bottom
+suffix:semicolon
+multiline_comment|/* Scrolling region */
 DECL|member|vc_sw
 r_const
 r_struct
@@ -47,6 +80,7 @@ r_int
 r_int
 id|vc_screenbuf_size
 suffix:semicolon
+multiline_comment|/* attributes for all characters on screen */
 DECL|member|vc_attr
 r_int
 r_char
@@ -83,12 +117,48 @@ r_char
 id|vc_halfcolor
 suffix:semicolon
 multiline_comment|/* Color for half intensity mode */
+multiline_comment|/* cursor */
+DECL|member|vc_cursor_type
+r_int
+r_int
+id|vc_cursor_type
+suffix:semicolon
 DECL|member|vc_complement_mask
 r_int
 r_int
 id|vc_complement_mask
 suffix:semicolon
 multiline_comment|/* [#] Xor mask for mouse pointer */
+DECL|member|vc_s_complement_mask
+r_int
+r_int
+id|vc_s_complement_mask
+suffix:semicolon
+multiline_comment|/* Saved mouse pointer mask */
+DECL|member|vc_x
+DECL|member|vc_y
+r_int
+r_int
+id|vc_x
+comma
+id|vc_y
+suffix:semicolon
+multiline_comment|/* Cursor position */
+DECL|member|vc_saved_x
+DECL|member|vc_saved_y
+r_int
+r_int
+id|vc_saved_x
+comma
+id|vc_saved_y
+suffix:semicolon
+DECL|member|vc_pos
+r_int
+r_int
+id|vc_pos
+suffix:semicolon
+multiline_comment|/* Cursor address */
+multiline_comment|/* fonts */
 DECL|member|vc_hi_font_mask
 r_int
 r_int
@@ -107,30 +177,7 @@ r_int
 id|vc_video_erase_char
 suffix:semicolon
 multiline_comment|/* Background erase character */
-DECL|member|vc_s_complement_mask
-r_int
-r_int
-id|vc_s_complement_mask
-suffix:semicolon
-multiline_comment|/* Saved mouse pointer mask */
-DECL|member|vc_x
-DECL|member|vc_y
-r_int
-r_int
-id|vc_x
-comma
-id|vc_y
-suffix:semicolon
-multiline_comment|/* Cursor position */
-DECL|member|vc_top
-DECL|member|vc_bottom
-r_int
-r_int
-id|vc_top
-comma
-id|vc_bottom
-suffix:semicolon
-multiline_comment|/* Scrolling region */
+multiline_comment|/* VT terminal data */
 DECL|member|vc_state
 r_int
 r_int
@@ -156,40 +203,6 @@ op_star
 id|vc_tty
 suffix:semicolon
 multiline_comment|/* TTY we are attached to */
-DECL|member|vc_origin
-r_int
-r_int
-id|vc_origin
-suffix:semicolon
-multiline_comment|/* [!] Start of real screen */
-DECL|member|vc_scr_end
-r_int
-r_int
-id|vc_scr_end
-suffix:semicolon
-multiline_comment|/* [!] End of real screen */
-DECL|member|vc_visible_origin
-r_int
-r_int
-id|vc_visible_origin
-suffix:semicolon
-multiline_comment|/* [!] Top of visible window */
-DECL|member|vc_pos
-r_int
-r_int
-id|vc_pos
-suffix:semicolon
-multiline_comment|/* Cursor address */
-DECL|member|vc_saved_x
-r_int
-r_int
-id|vc_saved_x
-suffix:semicolon
-DECL|member|vc_saved_y
-r_int
-r_int
-id|vc_saved_y
-suffix:semicolon
 multiline_comment|/* mode flags */
 DECL|member|vc_charset
 r_int
@@ -441,11 +454,6 @@ r_int
 id|vc_bell_duration
 suffix:semicolon
 multiline_comment|/* Console bell duration */
-DECL|member|vc_cursor_type
-r_int
-r_int
-id|vc_cursor_type
-suffix:semicolon
 DECL|member|vc_display_fg
 r_struct
 id|vc_data
