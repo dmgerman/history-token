@@ -5724,8 +5724,7 @@ id|u32
 id|count
 )paren
 (brace
-r_int
-r_int
+id|__kernel_ssize_t32
 id|tot_len
 suffix:semicolon
 r_struct
@@ -5868,6 +5867,11 @@ id|ivp
 op_assign
 id|iov
 suffix:semicolon
+id|retval
+op_assign
+op_minus
+id|EINVAL
+suffix:semicolon
 r_while
 c_loop
 (paren
@@ -5876,7 +5880,12 @@ OG
 l_int|0
 )paren
 (brace
-id|u32
+id|__kernel_ssize_t32
+id|tmp
+op_assign
+id|tot_len
+suffix:semicolon
+id|__kernel_ssize_t32
 id|len
 suffix:semicolon
 id|u32
@@ -5900,9 +5909,31 @@ op_amp
 id|vector-&gt;iov_base
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|len
+OL
+l_int|0
+)paren
+multiline_comment|/* size_t not fittina an ssize_t32 .. */
+r_goto
+id|out
+suffix:semicolon
 id|tot_len
 op_add_assign
 id|len
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|tot_len
+OL
+id|tmp
+)paren
+multiline_comment|/* maths overflow on the ssize_t32 */
+r_goto
+id|out
 suffix:semicolon
 id|ivp-&gt;iov_base
 op_assign
