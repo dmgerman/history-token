@@ -33,8 +33,11 @@ DECL|macro|UPDATE_PULSE_AWAKE
 mdefine_line|#define UPDATE_PULSE_AWAKE       (1&lt;&lt;2)
 DECL|macro|UPDATE_PULSE_MODE
 mdefine_line|#define UPDATE_PULSE_MODE        (1&lt;&lt;3)
-DECL|macro|POWERMATE_PAYLOAD_SIZE
-mdefine_line|#define POWERMATE_PAYLOAD_SIZE 3
+multiline_comment|/* at least two versions of the hardware exist, with differing payload&n;   sizes. the first three bytes always contain the &quot;interesting&quot; data in&n;   the relevant format. */
+DECL|macro|POWERMATE_PAYLOAD_SIZE_MAX
+mdefine_line|#define POWERMATE_PAYLOAD_SIZE_MAX 6
+DECL|macro|POWERMATE_PAYLOAD_SIZE_MIN
+mdefine_line|#define POWERMATE_PAYLOAD_SIZE_MIN 3
 DECL|struct|powermate_device
 r_struct
 id|powermate_device
@@ -1041,7 +1044,7 @@ c_func
 (paren
 id|udev
 comma
-id|POWERMATE_PAYLOAD_SIZE
+id|POWERMATE_PAYLOAD_SIZE_MAX
 comma
 id|SLAB_ATOMIC
 comma
@@ -1121,7 +1124,7 @@ c_func
 (paren
 id|udev
 comma
-id|POWERMATE_PAYLOAD_SIZE
+id|POWERMATE_PAYLOAD_SIZE_MAX
 comma
 id|pm-&gt;data
 comma
@@ -1480,19 +1483,27 @@ r_if
 c_cond
 (paren
 id|maxp
-op_ne
-id|POWERMATE_PAYLOAD_SIZE
+template_param
+id|POWERMATE_PAYLOAD_SIZE_MAX
 )paren
+(brace
 id|printk
 c_func
 (paren
-l_string|&quot;powermate: Expected payload of %d bytes, found %d bytes!&bslash;n&quot;
+l_string|&quot;powermate: Expected payload of %d--%d bytes, found %d bytes!&bslash;n&quot;
 comma
-id|POWERMATE_PAYLOAD_SIZE
+id|POWERMATE_PAYLOAD_SIZE_MIN
+comma
+id|POWERMATE_PAYLOAD_SIZE_MAX
 comma
 id|maxp
 )paren
 suffix:semicolon
+id|maxp
+op_assign
+id|POWERMATE_PAYLOAD_SIZE_MAX
+suffix:semicolon
+)brace
 id|usb_fill_int_urb
 c_func
 (paren
@@ -1504,7 +1515,7 @@ id|pipe
 comma
 id|pm-&gt;data
 comma
-id|POWERMATE_PAYLOAD_SIZE
+id|maxp
 comma
 id|powermate_irq
 comma

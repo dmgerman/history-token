@@ -3451,6 +3451,16 @@ r_return
 id|FAILED
 suffix:semicolon
 )brace
+multiline_comment|/* permit the clear-halt transfers to take place */
+id|clear_bit
+c_func
+(paren
+id|US_FLIDX_ABORTING
+comma
+op_amp
+id|us-&gt;flags
+)paren
+suffix:semicolon
 id|US_DEBUGP
 c_func
 (paren
