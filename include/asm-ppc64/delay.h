@@ -12,6 +12,8 @@ DECL|macro|__HMT_low
 mdefine_line|#define __HMT_low()&t;asm volatile(&quot;or 1,1,1&quot;)
 DECL|macro|__HMT_medium
 mdefine_line|#define __HMT_medium()&t;asm volatile(&quot;or 2,2,2&quot;)
+DECL|macro|__barrier
+mdefine_line|#define __barrier()&t;asm volatile(&quot;&quot;:::&quot;memory&quot;)
 DECL|function|__get_tb
 r_static
 r_inline
@@ -85,6 +87,11 @@ c_func
 suffix:semicolon
 )brace
 id|__HMT_medium
+c_func
+(paren
+)paren
+suffix:semicolon
+id|__barrier
 c_func
 (paren
 )paren
