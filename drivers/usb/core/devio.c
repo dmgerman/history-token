@@ -2175,7 +2175,7 @@ id|ENOENT
 suffix:semicolon
 id|dev
 op_assign
-id|inode-&gt;u.generic_ip
+id|file-&gt;f_dentry-&gt;d_parent-&gt;d_fsdata
 suffix:semicolon
 r_if
 c_cond
