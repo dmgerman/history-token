@@ -7,8 +7,6 @@ multiline_comment|/* This remains constant for all DRM template files.&n; */
 DECL|macro|DRM
 mdefine_line|#define DRM(x) i915_##x
 multiline_comment|/* General customization:&n; */
-DECL|macro|__HAVE_CTX_BITMAP
-mdefine_line|#define __HAVE_CTX_BITMAP&t;1
 DECL|macro|DRIVER_AUTHOR
 mdefine_line|#define DRIVER_AUTHOR&t;&t;&quot;Tungsten Graphics, Inc.&quot;
 DECL|macro|DRIVER_NAME

@@ -2,14 +2,6 @@ multiline_comment|/**&n; * &bslash;file drm_bufs.h &n; * Generic buffer template
 multiline_comment|/*&n; * Created: Thu Nov 23 03:10:50 2000 by gareth@valinux.com&n; *&n; * Copyright 1999, 2000 Precision Insight, Inc., Cedar Park, Texas.&n; * Copyright 2000 VA Linux Systems, Inc., Sunnyvale, California.&n; * All Rights Reserved.&n; *&n; * Permission is hereby granted, free of charge, to any person obtaining a&n; * copy of this software and associated documentation files (the &quot;Software&quot;),&n; * to deal in the Software without restriction, including without limitation&n; * the rights to use, copy, modify, merge, publish, distribute, sublicense,&n; * and/or sell copies of the Software, and to permit persons to whom the&n; * Software is furnished to do so, subject to the following conditions:&n; *&n; * The above copyright notice and this permission notice (including the next&n; * paragraph) shall be included in all copies or substantial portions of the&n; * Software.&n; *&n; * THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR&n; * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,&n; * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL&n; * VA LINUX SYSTEMS AND/OR ITS SUPPLIERS BE LIABLE FOR ANY CLAIM, DAMAGES OR&n; * OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,&n; * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR&n; * OTHER DEALINGS IN THE SOFTWARE.&n; */
 macro_line|#include &lt;linux/vmalloc.h&gt;
 macro_line|#include &quot;drmP.h&quot;
-macro_line|#ifndef __HAVE_PCI_DMA
-DECL|macro|__HAVE_PCI_DMA
-mdefine_line|#define __HAVE_PCI_DMA&t;&t;0
-macro_line|#endif
-macro_line|#ifndef __HAVE_SG
-DECL|macro|__HAVE_SG
-mdefine_line|#define __HAVE_SG&t;&t;0
-macro_line|#endif
 multiline_comment|/**&n; * Compute size order.  Returns the exponent of the smaller power of two which&n; * is greater or equal to given number.&n; * &n; * &bslash;param size size.&n; * &bslash;return order.&n; *&n; * &bslash;todo Can be made faster.&n; */
 DECL|function|order
 r_int
@@ -2155,7 +2147,6 @@ l_int|0
 suffix:semicolon
 )brace
 macro_line|#endif /* __OS_HAS_AGP */
-macro_line|#if __HAVE_PCI_DMA
 DECL|function|addbufs_pci
 r_int
 id|DRM
@@ -2268,6 +2259,22 @@ id|__user
 op_star
 )paren
 id|arg
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|drm_core_check_feature
+c_func
+(paren
+id|dev
+comma
+id|DRIVER_PCI_DMA
+)paren
+)paren
+r_return
+op_minus
+id|EINVAL
 suffix:semicolon
 r_if
 c_cond
@@ -3383,8 +3390,6 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-macro_line|#endif /* __HAVE_PCI_DMA */
-macro_line|#if __HAVE_SG
 DECL|function|addbufs_sg
 r_int
 id|DRM
@@ -3489,6 +3494,22 @@ id|drm_buf_t
 op_star
 op_star
 id|temp_buflist
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|drm_core_check_feature
+c_func
+(paren
+id|dev
+comma
+id|DRIVER_SG
+)paren
+)paren
+r_return
+op_minus
+id|EINVAL
 suffix:semicolon
 r_if
 c_cond
@@ -4206,7 +4227,6 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-macro_line|#endif /* __HAVE_SG */
 multiline_comment|/**&n; * Add buffers for DMA transfers (ioctl).&n; *&n; * &bslash;param inode device inode.&n; * &bslash;param filp file pointer.&n; * &bslash;param cmd command.&n; * &bslash;param arg pointer to a drm_buf_desc_t request.&n; * &bslash;return zero on success or a negative number on failure.&n; *&n; * According with the memory type specified in drm_buf_desc::flags and the&n; * build options, it dispatches the call either to addbufs_agp(),&n; * addbufs_sg() or addbufs_pci() for AGP, scatter-gather or consistent&n; * PCI memory respectively.&n; */
 DECL|function|addbufs
 r_int
@@ -4290,7 +4310,6 @@ id|arg
 suffix:semicolon
 r_else
 macro_line|#endif
-macro_line|#if __HAVE_SG
 r_if
 c_cond
 (paren
@@ -4315,8 +4334,6 @@ id|arg
 )paren
 suffix:semicolon
 r_else
-macro_line|#endif
-macro_line|#if __HAVE_PCI_DMA
 r_return
 id|DRM
 c_func
@@ -4333,12 +4350,6 @@ comma
 id|arg
 )paren
 suffix:semicolon
-macro_line|#else
-r_return
-op_minus
-id|EINVAL
-suffix:semicolon
-macro_line|#endif
 )brace
 multiline_comment|/**&n; * Get information about the buffer mappings.&n; *&n; * This was originally mean for debugging purposes, or by a sophisticated&n; * client library to determine how best to use the available buffers (e.g.,&n; * large buffers can be used for image transfer).&n; *&n; * &bslash;param inode device inode.&n; * &bslash;param filp file pointer.&n; * &bslash;param cmd command.&n; * &bslash;param arg pointer to a drm_buf_info structure.&n; * &bslash;return zero on success or a negative number on failure.&n; *&n; * Increments drm_device::buf_use while holding the drm_device::count_lock&n; * lock, preventing of allocating more buffers after this call. Information&n; * about each requested buffer is then copied into user space.&n; */
 DECL|function|infobufs
@@ -5298,7 +5309,13 @@ id|_DRM_DMA_USE_AGP
 )paren
 op_logical_or
 (paren
-id|__HAVE_SG
+id|drm_core_check_feature
+c_func
+(paren
+id|dev
+comma
+id|DRIVER_SG
+)paren
 op_logical_and
 (paren
 id|dma-&gt;flags

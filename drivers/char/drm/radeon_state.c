@@ -11218,6 +11218,10 @@ op_assign
 id|DRIVER_USE_AGP
 op_or
 id|DRIVER_USE_MTRR
+op_or
+id|DRIVER_PCI_DMA
+op_or
+id|DRIVER_SG
 suffix:semicolon
 id|dev-&gt;dev_priv_size
 op_assign

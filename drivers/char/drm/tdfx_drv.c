@@ -17,6 +17,7 @@ macro_line|#include &quot;drm_memory.h&quot;
 macro_line|#include &quot;drm_proc.h&quot;
 macro_line|#include &quot;drm_vm.h&quot;
 macro_line|#include &quot;drm_stub.h&quot;
+macro_line|#include &quot;drm_scatter.h&quot;
 DECL|function|driver_register_fns
 r_void
 id|DRM

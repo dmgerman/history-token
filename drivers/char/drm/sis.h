@@ -12,8 +12,6 @@ DECL|macro|DRM
 mdefine_line|#define DRM(x) sis_##x
 macro_line|#endif
 multiline_comment|/* General customization:&n; */
-DECL|macro|__HAVE_CTX_BITMAP
-mdefine_line|#define __HAVE_CTX_BITMAP&t;1
 DECL|macro|DRIVER_AUTHOR
 mdefine_line|#define DRIVER_AUTHOR&t;&t;&quot;SIS&quot;
 DECL|macro|DRIVER_NAME

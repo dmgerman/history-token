@@ -53,10 +53,10 @@ DECL|macro|DRIVER_REQUIRE_AGP
 mdefine_line|#define DRIVER_REQUIRE_AGP 0x2
 DECL|macro|DRIVER_USE_MTRR
 mdefine_line|#define DRIVER_USE_MTRR    0x4
-macro_line|#ifndef __HAVE_CTX_BITMAP
-DECL|macro|__HAVE_CTX_BITMAP
-mdefine_line|#define __HAVE_CTX_BITMAP&t;0
-macro_line|#endif
+DECL|macro|DRIVER_PCI_DMA
+mdefine_line|#define DRIVER_PCI_DMA     0x8
+DECL|macro|DRIVER_SG
+mdefine_line|#define DRIVER_SG          0x10
 macro_line|#ifndef __HAVE_DMA
 DECL|macro|__HAVE_DMA
 mdefine_line|#define __HAVE_DMA&t;&t;0
@@ -65,9 +65,6 @@ macro_line|#ifndef __HAVE_IRQ
 DECL|macro|__HAVE_IRQ
 mdefine_line|#define __HAVE_IRQ&t;&t;0
 macro_line|#endif
-DECL|macro|__REALLY_HAVE_SG
-mdefine_line|#define __REALLY_HAVE_SG&t;(__HAVE_SG)
-multiline_comment|/*@}*/
 multiline_comment|/***********************************************************************/
 multiline_comment|/** &bslash;name Begin the DRM... */
 multiline_comment|/*@{*/
@@ -3138,7 +3135,6 @@ r_int
 r_new
 )paren
 suffix:semicolon
-macro_line|#if __HAVE_CTX_BITMAP
 r_extern
 r_int
 id|DRM
@@ -3165,7 +3161,6 @@ op_star
 id|dev
 )paren
 suffix:semicolon
-macro_line|#endif
 r_extern
 r_int
 id|DRM
@@ -4314,7 +4309,6 @@ op_star
 id|dev_root
 )paren
 suffix:semicolon
-macro_line|#ifdef __HAVE_SG
 multiline_comment|/* Scatter Gather Support (drm_scatter.h) */
 r_extern
 r_void
@@ -4383,7 +4377,6 @@ r_int
 id|arg
 )paren
 suffix:semicolon
-macro_line|#endif
 multiline_comment|/* ATI PCIGART support (ati_pcigart.h) */
 r_extern
 r_int
