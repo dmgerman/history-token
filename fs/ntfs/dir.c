@@ -4478,7 +4478,7 @@ id|bmp_vi
 id|ntfs_debug
 c_func
 (paren
-l_string|&quot;Inode %lu, regetting index bitmap.&quot;
+l_string|&quot;Inode 0x%lx, regetting index bitmap.&quot;
 comma
 id|vdir-&gt;i_ino
 )paren

@@ -3013,7 +3013,7 @@ c_func
 id|tmp_ni
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * Set up our little cheat allowing us to reuse the async io&n;&t; * completion handler for directories.&n;&t; */
+multiline_comment|/*&n;&t; * Set up our little cheat allowing us to reuse the async read io&n;&t; * completion handler for directories.&n;&t; */
 id|tmp_ni-&gt;itype.index.block_size
 op_assign
 id|vol-&gt;mft_record_size
