@@ -455,6 +455,9 @@ c_func
 r_int
 id|sl
 comma
+r_int
+id|usage
+comma
 r_void
 op_star
 id|priv

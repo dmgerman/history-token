@@ -201,6 +201,8 @@ r_int
 comma
 r_int
 comma
+r_int
+comma
 id|setup_parm
 op_star
 )paren

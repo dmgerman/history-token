@@ -4652,6 +4652,8 @@ c_func
 (paren
 id|idev-&gt;isdn_slot
 comma
+l_int|0
+comma
 l_int|NULL
 comma
 l_int|NULL
@@ -4766,6 +4768,8 @@ id|isdn_slot_set_priv
 c_func
 (paren
 id|idev-&gt;isdn_slot
+comma
+id|ISDN_USAGE_NET
 comma
 id|idev
 comma
@@ -5467,6 +5471,17 @@ c_func
 id|idev-&gt;isdn_slot
 comma
 id|ISDN_CMD_SETL3
+comma
+op_amp
+id|cmd
+)paren
+suffix:semicolon
+id|isdn_slot_command
+c_func
+(paren
+id|idev-&gt;isdn_slot
+comma
+id|ISDN_CMD_ACCEPTD
 comma
 op_amp
 id|cmd
@@ -7506,6 +7521,14 @@ comma
 id|idev-&gt;name
 )paren
 suffix:semicolon
+singleline_comment|// FIXME via state machine
+r_if
+c_cond
+(paren
+id|idev-&gt;isdn_slot
+op_ge
+l_int|0
+)paren
 id|isdn_slot_command
 c_func
 (paren

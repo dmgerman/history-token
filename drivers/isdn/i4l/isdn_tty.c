@@ -2637,6 +2637,8 @@ c_func
 (paren
 id|i
 comma
+id|ISDN_USAGE_MODEM
+comma
 id|info
 comma
 id|isdn_tty_stat_callback
@@ -2973,6 +2975,8 @@ id|isdn_slot_set_priv
 c_func
 (paren
 id|slot
+comma
+l_int|0
 comma
 l_int|NULL
 comma
@@ -3395,6 +3399,8 @@ id|isdn_slot_set_priv
 c_func
 (paren
 id|i
+comma
+id|ISDN_USAGE_MODEM
 comma
 id|info
 comma
@@ -3832,6 +3838,8 @@ id|isdn_slot_set_priv
 c_func
 (paren
 id|i
+comma
+id|ISDN_USAGE_MODEM
 comma
 id|info
 comma
@@ -9225,6 +9233,9 @@ comma
 r_int
 id|ch
 comma
+r_int
+id|sl
+comma
 id|setup_parm
 op_star
 id|setup
@@ -9538,6 +9549,8 @@ id|isdn_slot_set_priv
 c_func
 (paren
 id|idx
+comma
+id|ISDN_USAGE_MODEM
 comma
 id|info
 comma
