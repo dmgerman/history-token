@@ -854,11 +854,6 @@ c_func
 id|cs
 )paren
 suffix:semicolon
-id|cs-&gt;dc_hw_ops
-op_assign
-op_amp
-id|netjet_dc_ops
-suffix:semicolon
 id|cs-&gt;irq_flags
 op_or_assign
 id|SA_SHIRQ
@@ -868,12 +863,13 @@ op_assign
 op_amp
 id|nj_u_ops
 suffix:semicolon
-id|ICCVersion
+id|icc_setup
 c_func
 (paren
 id|cs
 comma
-l_string|&quot;NETspider-U:&quot;
+op_amp
+id|netjet_dc_ops
 )paren
 suffix:semicolon
 r_return

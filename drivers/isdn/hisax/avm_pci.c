@@ -3675,11 +3675,6 @@ comma
 id|cs-&gt;hw.avm.cfg_reg
 )paren
 suffix:semicolon
-id|cs-&gt;dc_hw_ops
-op_assign
-op_amp
-id|isac_ops
-suffix:semicolon
 id|cs-&gt;bc_hw_ops
 op_assign
 op_amp
@@ -3695,21 +3690,13 @@ op_assign
 op_amp
 id|avm_pci_ops
 suffix:semicolon
-id|ISACVersion
+id|isac_setup
 c_func
 (paren
 id|cs
 comma
-(paren
-id|cs-&gt;subtyp
-op_eq
-id|AVM_FRITZ_PCI
-)paren
-ques
-c_cond
-l_string|&quot;AVM PCI:&quot;
-suffix:colon
-l_string|&quot;AVM PnP:&quot;
+op_amp
+id|isac_ops
 )paren
 suffix:semicolon
 r_return
