@@ -480,8 +480,6 @@ suffix:semicolon
 r_int
 id|i
 suffix:semicolon
-singleline_comment|// debugging aid: &quot;show_stack(NULL);&quot; prints the
-singleline_comment|// back trace for this cpu.
 r_if
 c_cond
 (paren
@@ -490,6 +488,21 @@ op_eq
 l_int|NULL
 )paren
 (brace
+r_if
+c_cond
+(paren
+id|task
+)paren
+id|esp
+op_assign
+(paren
+r_int
+r_int
+op_star
+)paren
+id|task-&gt;thread.esp
+suffix:semicolon
+r_else
 id|esp
 op_assign
 (paren
