@@ -715,12 +715,10 @@ r_int
 id|inflateEnd
 c_func
 (paren
-id|z
-)paren
 id|z_stream
 op_star
 id|z
-suffix:semicolon
+)paren
 (brace
 id|uLong
 id|c
@@ -798,17 +796,13 @@ r_int
 id|inflateInit2
 c_func
 (paren
-id|z
-comma
-id|w
-)paren
 id|z_stream
 op_star
 id|z
-suffix:semicolon
+comma
 r_int
 id|w
-suffix:semicolon
+)paren
 (brace
 multiline_comment|/* initialize state */
 r_if
@@ -972,12 +966,10 @@ r_int
 id|inflateInit
 c_func
 (paren
-id|z
-)paren
 id|z_stream
 op_star
 id|z
-suffix:semicolon
+)paren
 (brace
 r_return
 id|inflateInit2
@@ -3966,12 +3958,10 @@ r_int
 id|inflate_packet_flush
 c_func
 (paren
-id|s
-)paren
 id|inflate_blocks_statef
 op_star
 id|s
-suffix:semicolon
+)paren
 (brace
 r_if
 c_cond
@@ -6179,20 +6169,16 @@ r_int
 id|inflate_trees_free
 c_func
 (paren
-id|t
-comma
-id|z
-)paren
 id|inflate_huft
 op_star
 id|t
-suffix:semicolon
+comma
 multiline_comment|/* table to free */
 id|z_stream
 op_star
 id|z
-suffix:semicolon
 multiline_comment|/* for zfree function */
+)paren
 multiline_comment|/* Free the malloc&squot;ed tables built by huft_build(), which makes a linked&n;   list of the tables it made, with the links in a dummy first entry of&n;   each table. */
 (brace
 r_register
