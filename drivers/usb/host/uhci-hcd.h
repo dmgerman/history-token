@@ -133,7 +133,7 @@ suffix:semicolon
 r_struct
 id|urb_priv
 suffix:semicolon
-multiline_comment|/* One role of a QH is to hold a queue of TDs for some endpoint.  Each QH is&n; * used with one URB, and qh-&gt;element (updated by the HC) is either:&n; *   - the next unprocessed TD for the URB, or&n; *   - UHCI_PTR_TERM (when there&squot;s no more traffic for this endpoint), or&n; *   - the QH for the next URB queued to the same endpoint.&n; *&n; * The other role of a QH is to serve as a &quot;skeleton&quot; framelist entry, so we&n; * can easily splice a QH for some endpoint into the schedule at the right&n; * place.  Then qh-&gt;element is UHCI_PTR_TERM.&n; *&n; * In the frame list, qh-&gt;link maintains a list of QHs seen by the HC:&n; *     skel1 --&gt; ep1-qh --&gt; ep2-qh --&gt; ... --&gt; skel2 --&gt; ...&n; */
+multiline_comment|/*&n; * One role of a QH is to hold a queue of TDs for some endpoint.  Each QH is&n; * used with one URB, and qh-&gt;element (updated by the HC) is either:&n; *   - the next unprocessed TD for the URB, or&n; *   - UHCI_PTR_TERM (when there&squot;s no more traffic for this endpoint), or&n; *   - the QH for the next URB queued to the same endpoint.&n; *&n; * The other role of a QH is to serve as a &quot;skeleton&quot; framelist entry, so we&n; * can easily splice a QH for some endpoint into the schedule at the right&n; * place.  Then qh-&gt;element is UHCI_PTR_TERM.&n; *&n; * In the frame list, qh-&gt;link maintains a list of QHs seen by the HC:&n; *     skel1 --&gt; ep1-qh --&gt; ep2-qh --&gt; ... --&gt; skel2 --&gt; ...&n; */
 DECL|struct|uhci_qh
 r_struct
 id|uhci_qh
@@ -332,40 +332,34 @@ l_int|16
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/*&n; * There are various standard queues. We set up several different&n; * queues for each of the three basic queue types: interrupt,&n; * control, and bulk.&n; *&n; *  - There are various different interrupt latencies: ranging from&n; *    every other USB frame (2 ms apart) to every 256 USB frames (ie&n; *    256 ms apart). Make your choice according to how obnoxious you&n; *    want to be on the wire, vs how critical latency is for you.&n; *  - The control list is done every frame.&n; *  - There are 4 bulk lists, so that up to four devices can have a&n; *    bulk list of their own and when run concurrently all four lists&n; *    will be be serviced.&n; *&n; * This is a bit misleading, there are various interrupt latencies, but they&n; * vary a bit, interrupt2 isn&squot;t exactly 2ms, it can vary up to 4ms since the&n; * other queues can &quot;override&quot; it. interrupt4 can vary up to 8ms, etc. Minor&n; * problem&n; *&n; * In the case of the root hub, these QH&squot;s are just head&squot;s of qh&squot;s. Don&squot;t&n; * be scared, it kinda makes sense. Look at this wonderful picture care of&n; * Linus:&n; *&n; *  generic-  -&gt;  dev1-  -&gt;  generic-  -&gt;  dev1-  -&gt;  control-  -&gt;  bulk- -&gt; ...&n; *   iso-QH      iso-QH       irq-QH      irq-QH        QH           QH&n; *      |           |            |           |           |            |&n; *     End     dev1-iso-TD1     End     dev1-irq-TD1    ...          ... &n; *                  |&n; *             dev1-iso-TD2&n; *                  |&n; *                ....&n; *&n; * This may vary a bit (the UHCI docs don&squot;t explicitly say you can put iso&n; * transfers in QH&squot;s and all of their pictures don&squot;t have that either) but&n; * other than that, that is what we&squot;re doing now&n; *&n; * And now we don&squot;t put Iso transfers in QH&squot;s, so we don&squot;t waste one on it&n; * --jerdfelt&n; *&n; * To keep with Linus&squot; nomenclature, this is called the QH skeleton. These&n; * labels (below) are only signficant to the root hub&squot;s QH&squot;s&n; *&n; *&n; * NOTE:  That ASCII art doesn&squot;t match the current (August 2002) code, in&n; * more ways than just not using QHs for ISO.&n; *&n; * NOTE:  Another way to look at the UHCI schedules is to compare them to what&n; * other host controller interfaces use.  EHCI, OHCI, and UHCI all have tables&n; * of transfers that the controller scans, frame by frame, and which hold the&n; * scheduled periodic transfers.  The key differences are that UHCI&n; *&n; *   (a) puts control and bulk transfers into that same table; the others&n; *       have separate data structures for non-periodic transfers.&n; *   (b) lets QHs be linked from TDs, not just other QHs, since they don&squot;t&n; *       hold endpoint data.  this driver chooses to use one QH per URB.&n; *   (c) needs more TDs, since it uses one per packet.  the data toggle&n; *       is stored in those TDs, along with all other endpoint state.&n; */
-DECL|macro|UHCI_NUM_SKELTD
-mdefine_line|#define UHCI_NUM_SKELTD&t;&t;10
-DECL|macro|skel_int1_td
-mdefine_line|#define skel_int1_td&t;&t;skeltd[0]
-DECL|macro|skel_int2_td
-mdefine_line|#define skel_int2_td&t;&t;skeltd[1]
-DECL|macro|skel_int4_td
-mdefine_line|#define skel_int4_td&t;&t;skeltd[2]
-DECL|macro|skel_int8_td
-mdefine_line|#define skel_int8_td&t;&t;skeltd[3]
-DECL|macro|skel_int16_td
-mdefine_line|#define skel_int16_td&t;&t;skeltd[4]
-DECL|macro|skel_int32_td
-mdefine_line|#define skel_int32_td&t;&t;skeltd[5]
-DECL|macro|skel_int64_td
-mdefine_line|#define skel_int64_td&t;&t;skeltd[6]
-DECL|macro|skel_int128_td
-mdefine_line|#define skel_int128_td&t;&t;skeltd[7]
-DECL|macro|skel_int256_td
-mdefine_line|#define skel_int256_td&t;&t;skeltd[8]
-DECL|macro|skel_term_td
-mdefine_line|#define skel_term_td&t;&t;skeltd[9]&t;/* To work around PIIX UHCI bug */
+multiline_comment|/*&n; * The UHCI driver places Interrupt, Control and Bulk into QH&squot;s both&n; * to group together TD&squot;s for one transfer, and also to faciliate queuing&n; * of URB&squot;s. To make it easy to insert entries into the schedule, we have&n; * a skeleton of QH&squot;s for each predefined Interrupt latency, low speed&n; * control, high speed control and terminating QH (see explanation for&n; * the terminating QH below).&n; *&n; * When we want to add a new QH, we add it to the end of the list for the&n; * skeleton QH.&n; *&n; * For instance, the queue can look like this:&n; *&n; * skel int1 QH&n; * dev 1 interrupt QH&n; * dev 5 interrupt QH&n; * skel int2 QH&n; * skel int4 QH&n; * ...&n; * skel int128 QH&n; * skel low speed control QH&n; * dev 5 control QH&n; * skel high speed control QH&n; * skel bulk QH&n; * dev 1 bulk QH&n; * dev 2 bulk QH&n; * skel terminating QH&n; *&n; * The terminating QH is used for 2 reasons:&n; * - To place a terminating TD which is used to workaround a PIIX bug&n; *   (see Intel errata for explanation)&n; * - To loop back to the high speed control queue for full speed bandwidth&n; *   reclamation&n; *&n; * Isochronous transfers are stored before the start of the skeleton&n; * schedule and don&squot;t use QH&squot;s. While the UHCI spec doesn&squot;t forbid the&n; * use of QH&squot;s for Isochronous, it doesn&squot;t use them either. Since we don&squot;t&n; * need to use them either, we follow the spec diagrams in hope that it&squot;ll&n; * be more compatible with future UHCI implementations.&n; */
 DECL|macro|UHCI_NUM_SKELQH
-mdefine_line|#define UHCI_NUM_SKELQH&t;&t;4
+mdefine_line|#define UHCI_NUM_SKELQH&t;&t;12
+DECL|macro|skel_int128_qh
+mdefine_line|#define skel_int128_qh&t;&t;skelqh[0]
+DECL|macro|skel_int64_qh
+mdefine_line|#define skel_int64_qh&t;&t;skelqh[1]
+DECL|macro|skel_int32_qh
+mdefine_line|#define skel_int32_qh&t;&t;skelqh[2]
+DECL|macro|skel_int16_qh
+mdefine_line|#define skel_int16_qh&t;&t;skelqh[3]
+DECL|macro|skel_int8_qh
+mdefine_line|#define skel_int8_qh&t;&t;skelqh[4]
+DECL|macro|skel_int4_qh
+mdefine_line|#define skel_int4_qh&t;&t;skelqh[5]
+DECL|macro|skel_int2_qh
+mdefine_line|#define skel_int2_qh&t;&t;skelqh[6]
+DECL|macro|skel_int1_qh
+mdefine_line|#define skel_int1_qh&t;&t;skelqh[7]
 DECL|macro|skel_ls_control_qh
-mdefine_line|#define skel_ls_control_qh&t;skelqh[0]
+mdefine_line|#define skel_ls_control_qh&t;skelqh[8]
 DECL|macro|skel_hs_control_qh
-mdefine_line|#define skel_hs_control_qh&t;skelqh[1]
+mdefine_line|#define skel_hs_control_qh&t;skelqh[9]
 DECL|macro|skel_bulk_qh
-mdefine_line|#define skel_bulk_qh&t;&t;skelqh[2]
+mdefine_line|#define skel_bulk_qh&t;&t;skelqh[10]
 DECL|macro|skel_term_qh
-mdefine_line|#define skel_term_qh&t;&t;skelqh[3]
-multiline_comment|/*&n; * Search tree for determining where &lt;interval&gt; fits in the&n; * skelqh[] skeleton.&n; *&n; * An interrupt request should be placed into the slowest skelqh[]&n; * which meets the interval/period/frequency requirement.&n; * An interrupt request is allowed to be faster than &lt;interval&gt; but not slower.&n; *&n; * For a given &lt;interval&gt;, this function returns the appropriate/matching&n; * skelqh[] index value.&n; *&n; * NOTE: For UHCI, we don&squot;t really need int256_qh since the maximum interval&n; * is 255 ms.  However, we do need an int1_qh since 1 is a valid interval&n; * and we should meet that frequency when requested to do so.&n; * This will require some change(s) to the UHCI skeleton.&n; */
+mdefine_line|#define skel_term_qh&t;&t;skelqh[11]
+multiline_comment|/*&n; * Search tree for determining where &lt;interval&gt; fits in the skelqh[]&n; * skeleton.&n; *&n; * An interrupt request should be placed into the slowest skelqh[]&n; * which meets the interval/period/frequency requirement.&n; * An interrupt request is allowed to be faster than &lt;interval&gt; but not slower.&n; *&n; * For a given &lt;interval&gt;, this function returns the appropriate/matching&n; * skelqh[] index value.&n; */
 DECL|function|__interval_to_skel
 r_static
 r_inline
@@ -401,11 +395,11 @@ OL
 l_int|2
 )paren
 r_return
-l_int|0
+l_int|7
 suffix:semicolon
 multiline_comment|/* int1 for 0-1 ms */
 r_return
-l_int|1
+l_int|6
 suffix:semicolon
 multiline_comment|/* int2 for 2-3 ms */
 )brace
@@ -417,11 +411,11 @@ OL
 l_int|8
 )paren
 r_return
-l_int|2
+l_int|5
 suffix:semicolon
 multiline_comment|/* int4 for 4-7 ms */
 r_return
-l_int|3
+l_int|4
 suffix:semicolon
 multiline_comment|/* int8 for 8-15 ms */
 )brace
@@ -441,11 +435,11 @@ OL
 l_int|32
 )paren
 r_return
-l_int|4
+l_int|3
 suffix:semicolon
 multiline_comment|/* int16 for 16-31 ms */
 r_return
-l_int|5
+l_int|2
 suffix:semicolon
 multiline_comment|/* int32 for 32-63 ms */
 )brace
@@ -457,11 +451,11 @@ OL
 l_int|128
 )paren
 r_return
-l_int|6
+l_int|1
 suffix:semicolon
 multiline_comment|/* int64 for 64-127 ms */
 r_return
-l_int|7
+l_int|0
 suffix:semicolon
 multiline_comment|/* int128 for 128-255 ms (Max.) */
 )brace
@@ -510,16 +504,13 @@ id|usb_bus
 op_star
 id|bus
 suffix:semicolon
-DECL|member|skeltd
+DECL|member|term_td
 r_struct
 id|uhci_td
 op_star
-id|skeltd
-(braket
-id|UHCI_NUM_SKELTD
-)braket
+id|term_td
 suffix:semicolon
-multiline_comment|/* Skeleton TD&squot;s */
+multiline_comment|/* Terminating TD, see UHCI bug */
 DECL|member|skelqh
 r_struct
 id|uhci_qh
