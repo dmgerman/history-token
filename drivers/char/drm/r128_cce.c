@@ -2088,15 +2088,13 @@ c_func
 (paren
 id|R128_PM4_BUFFER_DL_RPTR_ADDR
 comma
-id|virt_to_bus
+id|page_to_bus
 c_func
 (paren
 id|entry-&gt;pagelist
 (braket
 id|page_ofs
 )braket
-op_member_access_from_pointer
-r_virtual
 )paren
 )paren
 suffix:semicolon
@@ -2105,15 +2103,13 @@ c_func
 (paren
 l_string|&quot;ring rptr: offset=0x%08lx handle=0x%08lx&bslash;n&quot;
 comma
-id|virt_to_bus
+id|page_to_bus
 c_func
 (paren
 id|entry-&gt;pagelist
 (braket
 id|page_ofs
 )braket
-op_member_access_from_pointer
-r_virtual
 )paren
 comma
 id|entry-&gt;handle

@@ -1147,14 +1147,17 @@ suffix:semicolon
 )brace
 r_else
 (brace
-multiline_comment|/* Assume the initrd to be in the first node */
 id|reserve_bootmem_node
 c_func
 (paren
 id|NODE_DATA
 c_func
 (paren
-id|nid
+id|KVADDR_TO_NID
+c_func
+(paren
+id|initrd_start
+)paren
 )paren
 comma
 id|virt_to_phys

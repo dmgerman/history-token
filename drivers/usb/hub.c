@@ -2,6 +2,7 @@ multiline_comment|/*&n; * USB hub driver.&n; *&n; * (C) Copyright 1999 Linus Tor
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
+macro_line|#include &lt;linux/completion.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/list.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
@@ -66,7 +67,7 @@ l_int|0
 suffix:semicolon
 multiline_comment|/* PID of khubd */
 r_static
-id|DECLARE_MUTEX_LOCKED
+id|DECLARE_COMPLETION
 c_func
 (paren
 id|khubd_exited
@@ -3569,7 +3570,7 @@ c_func
 l_string|&quot;usb_hub_thread exiting&quot;
 )paren
 suffix:semicolon
-id|up_and_exit
+id|complete_and_exit
 c_func
 (paren
 op_amp
@@ -3750,7 +3751,7 @@ comma
 l_int|1
 )paren
 suffix:semicolon
-id|down
+id|wait_for_completion
 c_func
 (paren
 op_amp

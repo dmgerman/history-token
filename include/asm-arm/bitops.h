@@ -464,8 +464,8 @@ id|offset
 suffix:semicolon
 multiline_comment|/*&n; * This routine doesn&squot;t need to be atomic.&n; */
 DECL|function|test_bit
-r_extern
-id|__inline__
+r_static
+r_inline
 r_int
 id|test_bit
 c_func
@@ -507,8 +507,8 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * ffz = Find First Zero in word. Undefined if no zero exists,&n; * so code should check against ~0UL first..&n; */
 DECL|function|ffz
-r_extern
-id|__inline__
+r_static
+r_inline
 r_int
 r_int
 id|ffz

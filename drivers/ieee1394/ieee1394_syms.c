@@ -1,6 +1,7 @@
 multiline_comment|/*&n; * IEEE 1394 for Linux&n; *&n; * Exported symbols for module usage.&n; *&n; * Copyright (C) 1999 Andreas E. Bombe&n; *&n; * This code is licensed under the GPL.  See the file COPYING in the root&n; * directory of the kernel sources for details.&n; */
-macro_line|#include &lt;linux/types.h&gt;
+macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
+macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &quot;ieee1394_types.h&quot;
 macro_line|#include &quot;hosts.h&quot;
@@ -104,13 +105,6 @@ id|EXPORT_SYMBOL
 c_func
 (paren
 id|hpsb_packet_received
-)paren
-suffix:semicolon
-DECL|variable|hpsb_generation
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|hpsb_generation
 )paren
 suffix:semicolon
 DECL|variable|get_tlabel
@@ -372,11 +366,18 @@ c_func
 id|highlevel_add_one_host
 )paren
 suffix:semicolon
-DECL|variable|hpsb_guid_get_handle
+DECL|variable|hpsb_guid_get_entry
 id|EXPORT_SYMBOL
 c_func
 (paren
-id|hpsb_guid_get_handle
+id|hpsb_guid_get_entry
+)paren
+suffix:semicolon
+DECL|variable|hpsb_nodeid_get_entry
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|hpsb_nodeid_get_entry
 )paren
 suffix:semicolon
 DECL|variable|hpsb_get_host_by_ne

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * BK Id: SCCS/s.apus_setup.c 1.11 05/17/01 18:14:21 cort&n; */
+multiline_comment|/*&n; * BK Id: SCCS/s.apus_setup.c 1.14 07/06/01 09:19:28 trini&n; */
 multiline_comment|/*&n; *  linux/arch/ppc/kernel/apus_setup.c&n; *&n; *  Copyright (C) 1998, 1999  Jesper Skov&n; *&n; *  Basically what is needed to replace functionality found in&n; *  arch/m68k allowing Amiga drivers to work under APUS.&n; *  Bits of code and/or ideas from arch/m68k and arch/ppc files.&n; *&n; * TODO:&n; *  This file needs a *really* good cleanup. Restructure and optimize.&n; *  Make sure it can be compiled for non-APUS configs. Begin to move&n; *  Amiga specific stuff into mach/amiga.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
@@ -156,19 +156,17 @@ macro_line|#include &lt;asm/dma.h&gt;
 macro_line|#include &lt;asm/machdep.h&gt;
 macro_line|#include &lt;asm/init.h&gt;
 macro_line|#include &quot;local_irq.h&quot;
-DECL|variable|__apusdata
+DECL|variable|m68k_machtype
 r_int
 r_int
 id|m68k_machtype
-id|__apusdata
 suffix:semicolon
-DECL|variable|__apusdata
+DECL|variable|debug_device
 r_char
 id|debug_device
 (braket
 l_int|6
 )braket
-id|__apusdata
 op_assign
 l_string|&quot;&quot;
 suffix:semicolon
@@ -219,6 +217,7 @@ id|__initdata
 op_assign
 l_int|NULL
 suffix:semicolon
+DECL|variable|mach_kbdrate
 r_int
 (paren
 op_star
@@ -229,10 +228,10 @@ r_struct
 id|kbd_repeat
 op_star
 )paren
-id|__apusdata
 op_assign
 l_int|NULL
 suffix:semicolon
+DECL|variable|mach_kbd_leds
 r_void
 (paren
 op_star
@@ -242,7 +241,6 @@ id|mach_kbd_leds
 r_int
 r_int
 )paren
-id|__apusdata
 op_assign
 l_int|NULL
 suffix:semicolon
@@ -259,6 +257,7 @@ id|__initdata
 op_assign
 l_int|NULL
 suffix:semicolon
+DECL|variable|mach_default_handler
 r_void
 (paren
 op_star
@@ -279,10 +278,10 @@ r_struct
 id|pt_regs
 op_star
 )paren
-id|__apusdata
 op_assign
 l_int|NULL
 suffix:semicolon
+DECL|variable|mach_get_model
 r_void
 (paren
 op_star
@@ -293,10 +292,10 @@ r_char
 op_star
 id|model
 )paren
-id|__apusdata
 op_assign
 l_int|NULL
 suffix:semicolon
+DECL|variable|mach_get_hardware_list
 r_int
 (paren
 op_star
@@ -307,10 +306,10 @@ r_char
 op_star
 id|buffer
 )paren
-id|__apusdata
 op_assign
 l_int|NULL
 suffix:semicolon
+DECL|variable|mach_get_irq_list
 r_int
 (paren
 op_star
@@ -320,10 +319,10 @@ id|mach_get_irq_list
 r_char
 op_star
 )paren
-id|__apusdata
 op_assign
 l_int|NULL
 suffix:semicolon
+DECL|variable|mach_process_int
 r_void
 (paren
 op_star
@@ -336,11 +335,11 @@ r_struct
 id|pt_regs
 op_star
 )paren
-id|__apusdata
 op_assign
 l_int|NULL
 suffix:semicolon
 multiline_comment|/* machine dependent timer functions */
+DECL|variable|mach_gettimeoffset
 r_int
 r_int
 (paren
@@ -350,8 +349,8 @@ id|mach_gettimeoffset
 (paren
 r_void
 )paren
-id|__apusdata
 suffix:semicolon
+DECL|variable|mach_gettod
 r_void
 (paren
 op_star
@@ -376,8 +375,8 @@ comma
 r_int
 op_star
 )paren
-id|__apusdata
 suffix:semicolon
+DECL|variable|mach_hwclk
 r_int
 (paren
 op_star
@@ -390,10 +389,10 @@ r_struct
 id|hwclk_time
 op_star
 )paren
-id|__apusdata
 op_assign
 l_int|NULL
 suffix:semicolon
+DECL|variable|mach_set_clock_mmss
 r_int
 (paren
 op_star
@@ -403,10 +402,10 @@ id|mach_set_clock_mmss
 r_int
 r_int
 )paren
-id|__apusdata
 op_assign
 l_int|NULL
 suffix:semicolon
+DECL|variable|mach_reset
 r_void
 (paren
 op_star
@@ -415,12 +414,10 @@ id|mach_reset
 (paren
 r_void
 )paren
-id|__apusdata
 suffix:semicolon
-DECL|variable|__apusdata
+DECL|variable|mach_max_dma_address
 r_int
 id|mach_max_dma_address
-id|__apusdata
 op_assign
 l_int|0x00ffffff
 suffix:semicolon
@@ -442,6 +439,7 @@ id|__initdata
 op_assign
 l_int|NULL
 suffix:semicolon
+DECL|variable|mach_floppy_eject
 r_void
 (paren
 op_star
@@ -450,12 +448,12 @@ id|mach_floppy_eject
 (paren
 r_void
 )paren
-id|__apusdata
 op_assign
 l_int|NULL
 suffix:semicolon
 macro_line|#endif
 macro_line|#ifdef CONFIG_HEARTBEAT
+DECL|variable|mach_heartbeat
 r_void
 (paren
 op_star
@@ -464,7 +462,6 @@ id|mach_heartbeat
 (paren
 r_int
 )paren
-id|__apusdata
 op_assign
 l_int|NULL
 suffix:semicolon
@@ -496,46 +493,41 @@ r_int
 id|count_period_den
 suffix:semicolon
 multiline_comment|/* count_period_num / count_period_den us */
-DECL|variable|__apusdata
+DECL|variable|num_memory
 r_int
 id|num_memory
-id|__apusdata
 op_assign
 l_int|0
 suffix:semicolon
-DECL|variable|__apusdata
+DECL|variable|memory
 r_struct
 id|mem_info
 id|memory
 (braket
 id|NUM_MEMINFO
 )braket
-id|__apusdata
 suffix:semicolon
 multiline_comment|/* memory description */
 multiline_comment|/* FIXME: Duplicate memory data to avoid conflicts with m68k shared code. */
-DECL|variable|__apusdata
+DECL|variable|m68k_realnum_memory
 r_int
 id|m68k_realnum_memory
-id|__apusdata
 op_assign
 l_int|0
 suffix:semicolon
-DECL|variable|__apusdata
+DECL|variable|m68k_memory
 r_struct
 id|mem_info
 id|m68k_memory
 (braket
 id|NUM_MEMINFO
 )braket
-id|__apusdata
 suffix:semicolon
 multiline_comment|/* memory description */
-DECL|variable|__apusdata
+DECL|variable|ramdisk
 r_struct
 id|mem_info
 id|ramdisk
-id|__apusdata
 suffix:semicolon
 r_extern
 r_void
@@ -557,34 +549,30 @@ c_func
 r_void
 )paren
 suffix:semicolon
-DECL|variable|__apusdata
+DECL|variable|__60nsram
 r_static
 r_int
 id|__60nsram
-id|__apusdata
 op_assign
 l_int|0
 suffix:semicolon
 multiline_comment|/* for cpuinfo */
-DECL|variable|__apusdata
+DECL|variable|__bus_speed
 r_static
 r_int
 id|__bus_speed
-id|__apusdata
 op_assign
 l_int|0
 suffix:semicolon
-DECL|variable|__apusdata
+DECL|variable|__speed_test_failed
 r_static
 r_int
 id|__speed_test_failed
-id|__apusdata
 op_assign
 l_int|0
 suffix:semicolon
 multiline_comment|/********************************************** COMPILE PROTECTION */
 multiline_comment|/* Provide some stubs that links to Amiga specific functions. &n; * This allows CONFIG_APUS to be removed from generic PPC files while&n; * preventing link errors for other PPC targets.&n; */
-id|__apus
 DECL|function|apus_get_rtc_time
 r_int
 r_int
@@ -615,7 +603,6 @@ l_int|0
 suffix:semicolon
 macro_line|#endif
 )brace
-id|__apus
 DECL|function|apus_set_rtc_time
 r_int
 id|apus_set_rtc_time
@@ -1101,7 +1088,6 @@ suffix:semicolon
 macro_line|#endif
 macro_line|#endif
 )brace
-id|__apus
 r_int
 DECL|function|apus_get_cpuinfo
 id|apus_get_cpuinfo
@@ -1226,7 +1212,6 @@ id|len
 suffix:semicolon
 macro_line|#endif
 )brace
-id|__apus
 DECL|function|get_current_tb
 r_static
 r_void
@@ -1265,7 +1250,6 @@ l_string|&quot;r6&quot;
 )paren
 suffix:semicolon
 )brace
-id|__apus
 DECL|function|apus_calibrate_decr
 r_void
 id|apus_calibrate_decr
@@ -1646,7 +1630,6 @@ id|speed_test_failed
 suffix:semicolon
 macro_line|#endif
 )brace
-id|__apus
 DECL|function|arch_gettod
 r_void
 id|arch_gettod
@@ -1769,7 +1752,6 @@ id|ints
 )paren
 suffix:semicolon
 )brace
-id|__apus
 DECL|function|floppy_eject
 r_void
 id|floppy_eject
@@ -1793,7 +1775,7 @@ macro_line|#endif
 multiline_comment|/*********************************************************** MEMORY */
 DECL|macro|KMAP_MAX
 mdefine_line|#define KMAP_MAX 32
-DECL|variable|__apusdata
+DECL|variable|kmap_chunks
 r_int
 r_int
 id|kmap_chunks
@@ -1802,17 +1784,14 @@ id|KMAP_MAX
 op_star
 l_int|3
 )braket
-id|__apusdata
 suffix:semicolon
-DECL|variable|__apusdata
+DECL|variable|kmap_chunk_count
 r_int
 id|kmap_chunk_count
-id|__apusdata
 op_assign
 l_int|0
 suffix:semicolon
 multiline_comment|/* From pgtable.h */
-id|__apus
 DECL|function|my_find_pte
 r_static
 id|__inline__
@@ -1911,7 +1890,6 @@ id|pte
 suffix:semicolon
 )brace
 multiline_comment|/* Again simulating an m68k/mm/kmap.c function. */
-id|__apus
 DECL|function|kernel_set_cachemode
 r_void
 id|kernel_set_cachemode
@@ -2073,7 +2051,6 @@ id|PAGE_SIZE
 suffix:semicolon
 )brace
 )brace
-id|__apus
 DECL|function|mm_ptov
 r_int
 r_int
@@ -2214,7 +2191,6 @@ r_return
 id|ret
 suffix:semicolon
 )brace
-id|__apus
 DECL|function|mm_end_of_chunk
 r_int
 id|mm_end_of_chunk
@@ -2260,7 +2236,6 @@ DECL|macro|L1_CACHE_BYTES
 mdefine_line|#define L1_CACHE_BYTES 32
 DECL|macro|MAX_CACHE_SIZE
 mdefine_line|#define MAX_CACHE_SIZE 8192
-id|__apus
 DECL|function|cache_push
 r_void
 id|cache_push
@@ -2334,7 +2309,6 @@ id|addr
 )paren
 suffix:semicolon
 )brace
-id|__apus
 DECL|function|cache_clear
 r_void
 id|cache_clear
@@ -2947,7 +2921,6 @@ suffix:semicolon
 )brace
 macro_line|#endif
 multiline_comment|/****************************************************** IRQ stuff */
-id|__apus
 DECL|function|apus_irq_cannonicalize
 r_static
 r_int
@@ -2964,7 +2937,6 @@ r_return
 id|irq
 suffix:semicolon
 )brace
-id|__apus
 DECL|function|apus_get_irq_list
 r_int
 id|apus_get_irq_list
@@ -2999,7 +2971,6 @@ suffix:semicolon
 macro_line|#endif
 )brace
 multiline_comment|/* IPL must be between 0 and 7 */
-id|__apus
 DECL|function|apus_set_IPL
 r_static
 r_inline
@@ -3056,7 +3027,6 @@ id|IPLEMU_DISABLEINT
 )paren
 suffix:semicolon
 )brace
-id|__apus
 DECL|function|apus_get_IPL
 r_static
 r_inline
@@ -3092,7 +3062,6 @@ id|IPLEMU_IPLMASK
 )paren
 suffix:semicolon
 )brace
-id|__apus
 DECL|function|apus_get_prev_IPL
 r_static
 r_inline
@@ -3353,7 +3322,6 @@ id|dev_id
 suffix:semicolon
 )brace
 macro_line|#endif
-id|__apus
 DECL|function|apus_get_irq
 r_int
 id|apus_get_irq
@@ -3423,7 +3391,6 @@ l_int|0
 suffix:semicolon
 macro_line|#endif
 )brace
-id|__apus
 DECL|function|apus_post_irq
 r_void
 id|apus_post_irq
@@ -3465,7 +3432,6 @@ id|regs
 suffix:semicolon
 )brace
 multiline_comment|/****************************************************** keyboard */
-id|__apus
 DECL|function|apus_kbd_setkeycode
 r_static
 r_int
@@ -3486,7 +3452,6 @@ op_minus
 id|EOPNOTSUPP
 suffix:semicolon
 )brace
-id|__apus
 DECL|function|apus_kbd_getkeycode
 r_static
 r_int
@@ -3510,7 +3475,6 @@ suffix:colon
 id|scancode
 suffix:semicolon
 )brace
-id|__apus
 DECL|function|apus_kbd_translate
 r_static
 r_int
@@ -3539,7 +3503,6 @@ r_return
 l_int|1
 suffix:semicolon
 )brace
-id|__apus
 DECL|function|apus_kbd_unexpected_up
 r_static
 r_char
@@ -3555,7 +3518,6 @@ r_return
 l_int|0200
 suffix:semicolon
 )brace
-id|__apus
 DECL|function|apus_kbd_leds
 r_static
 r_void
@@ -3568,7 +3530,6 @@ id|leds
 )paren
 (brace
 )brace
-id|__apus
 DECL|function|apus_kbd_init_hw
 r_static
 r_void
@@ -3635,7 +3596,6 @@ id|SER_RTS
 suffix:semicolon
 multiline_comment|/* active low */
 )brace
-id|__apus
 DECL|function|__debug_ser_out
 r_int
 id|__debug_ser_out
@@ -3676,7 +3636,6 @@ r_return
 l_int|1
 suffix:semicolon
 )brace
-id|__apus
 DECL|function|__debug_ser_in
 r_int
 r_char
@@ -3721,7 +3680,6 @@ r_return
 id|c
 suffix:semicolon
 )brace
-id|__apus
 DECL|function|__debug_serinit
 r_int
 id|__debug_serinit
@@ -3803,7 +3761,6 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-id|__apus
 DECL|function|__debug_print_hex
 r_void
 id|__debug_print_hex
@@ -3872,7 +3829,6 @@ l_char|&squot;&bslash;r&squot;
 )paren
 suffix:semicolon
 )brace
-id|__apus
 DECL|function|__debug_print_string
 r_void
 id|__debug_print_string
@@ -3919,7 +3875,6 @@ l_char|&squot;&bslash;r&squot;
 )paren
 suffix:semicolon
 )brace
-id|__apus
 DECL|function|apus_progress
 r_static
 r_void

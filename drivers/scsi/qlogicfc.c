@@ -64,7 +64,7 @@ macro_line|#include &quot;qlogicfc.h&quot;
 multiline_comment|/* Configuration section **************************************************** */
 multiline_comment|/* Set the following macro to 1 to reload the ISP2x00&squot;s firmware.  This is&n;   version 1.17.30 of the isp2100&squot;s firmware and version 2.00.40 of the &n;   isp2200&squot;s firmware. &n;*/
 DECL|macro|RELOAD_FIRMWARE
-mdefine_line|#define RELOAD_FIRMWARE&t;&t;1
+mdefine_line|#define RELOAD_FIRMWARE&t;&t;0
 DECL|macro|USE_NVRAM_DEFAULTS
 mdefine_line|#define USE_NVRAM_DEFAULTS      1
 DECL|macro|ISP2x00_PORTDB
@@ -734,7 +734,7 @@ DECL|macro|MBOX_SEND_CHANGE_REQUEST
 mdefine_line|#define MBOX_SEND_CHANGE_REQUEST        0x0070
 DECL|macro|MBOX_PORT_LOGOUT
 mdefine_line|#define MBOX_PORT_LOGOUT                0x0071
-macro_line|#include &quot;qlogicfc_asm.c&quot;
+singleline_comment|//#include &quot;qlogicfc_asm.c&quot;
 multiline_comment|/* Each element in mbox_param is an 8 bit bitmap where each bit indicates&n;   if that mbox should be copied as input.  For example 0x2 would mean&n;   only copy mbox1. */
 DECL|variable|mbox_param
 r_const
@@ -8275,6 +8275,12 @@ id|loop_count
 suffix:semicolon
 id|dma64_addr_t
 id|busaddr
+suffix:semicolon
+r_int
+r_int
+id|risc_code_addr01
+op_assign
+l_int|0x1000
 suffix:semicolon
 id|ENTER
 c_func

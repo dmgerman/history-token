@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * BK Id: SCCS/s.ppc_ksyms.c 1.36 06/28/01 15:50:16 paulus&n; */
+multiline_comment|/*&n; * BK Id: SCCS/s.ppc_ksyms.c 1.38 07/23/01 15:35:53 trini&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/threads.h&gt;
@@ -1118,13 +1118,6 @@ id|EXPORT_SYMBOL
 c_func
 (paren
 id|find_path_device
-)paren
-suffix:semicolon
-DECL|variable|find_phandle
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|find_phandle
 )paren
 suffix:semicolon
 DECL|variable|device_is_compatible

@@ -373,7 +373,7 @@ suffix:semicolon
 suffix:semicolon
 multiline_comment|/* --------------------------------------------------------------------- */
 DECL|function|write_seq
-r_extern
+r_static
 r_inline
 r_void
 id|write_seq
@@ -485,7 +485,7 @@ l_int|0xc
 suffix:semicolon
 )brace
 DECL|function|read_seq
-r_extern
+r_static
 r_inline
 r_int
 id|read_seq
@@ -837,7 +837,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* --------------------------------------------------------------------- */
 DECL|function|ld2
-r_extern
+r_static
 r_inline
 r_int
 id|ld2
@@ -937,7 +937,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* --------------------------------------------------------------------- */
 DECL|function|stop_dac
-r_extern
+r_static
 r_inline
 r_void
 id|stop_dac
@@ -1075,7 +1075,7 @@ id|flags
 suffix:semicolon
 )brace
 DECL|function|stop_adc
-r_extern
+r_static
 r_inline
 r_void
 id|stop_adc
@@ -1478,7 +1478,7 @@ mdefine_line|#define DMABUF_DEFAULTORDER (15-PAGE_SHIFT)
 DECL|macro|DMABUF_MINORDER
 mdefine_line|#define DMABUF_MINORDER 1
 DECL|function|dealloc_dmabuf
-r_extern
+r_static
 r_inline
 r_void
 id|dealloc_dmabuf
@@ -1901,7 +1901,7 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|function|prog_dmabuf_adc
-r_extern
+r_static
 r_inline
 r_int
 id|prog_dmabuf_adc
@@ -2086,7 +2086,7 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|function|prog_dmabuf_dac
-r_extern
+r_static
 r_inline
 r_int
 id|prog_dmabuf_dac
@@ -2255,7 +2255,7 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|function|clear_advance
-r_extern
+r_static
 r_inline
 r_void
 id|clear_advance
@@ -4795,30 +4795,6 @@ suffix:semicolon
 )brace
 )brace
 multiline_comment|/* --------------------------------------------------------------------- */
-DECL|function|solo1_llseek
-r_static
-id|loff_t
-id|solo1_llseek
-c_func
-(paren
-r_struct
-id|file
-op_star
-id|file
-comma
-id|loff_t
-id|offset
-comma
-r_int
-id|origin
-)paren
-(brace
-r_return
-op_minus
-id|ESPIPE
-suffix:semicolon
-)brace
-multiline_comment|/* --------------------------------------------------------------------- */
 DECL|function|solo1_open_mixdev
 r_static
 r_int
@@ -5035,7 +5011,7 @@ id|THIS_MODULE
 comma
 id|llseek
 suffix:colon
-id|solo1_llseek
+id|no_llseek
 comma
 id|ioctl
 suffix:colon
@@ -9434,7 +9410,7 @@ id|THIS_MODULE
 comma
 id|llseek
 suffix:colon
-id|solo1_llseek
+id|no_llseek
 comma
 id|read
 suffix:colon
@@ -11485,7 +11461,7 @@ id|THIS_MODULE
 comma
 id|llseek
 suffix:colon
-id|solo1_llseek
+id|no_llseek
 comma
 id|read
 suffix:colon
@@ -12863,7 +12839,7 @@ id|THIS_MODULE
 comma
 id|llseek
 suffix:colon
-id|solo1_llseek
+id|no_llseek
 comma
 id|ioctl
 suffix:colon
@@ -13313,7 +13289,7 @@ l_int|0
 suffix:semicolon
 )brace
 r_static
-r_void
+r_int
 DECL|function|solo1_suspend
 id|solo1_suspend
 c_func
@@ -13322,6 +13298,9 @@ r_struct
 id|pci_dev
 op_star
 id|pci_dev
+comma
+id|u32
+id|state
 )paren
 (brace
 r_struct
@@ -13391,9 +13370,12 @@ comma
 l_int|0
 )paren
 suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
 )brace
 r_static
-r_void
+r_int
 DECL|function|solo1_resume
 id|solo1_resume
 c_func
@@ -13427,12 +13409,16 @@ op_logical_neg
 id|s
 )paren
 r_return
+l_int|1
 suffix:semicolon
 id|setup_solo1
 c_func
 (paren
 id|s
 )paren
+suffix:semicolon
+r_return
+l_int|0
 suffix:semicolon
 )brace
 DECL|function|solo1_probe

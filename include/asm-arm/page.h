@@ -168,8 +168,8 @@ DECL|macro|PAGE_BUG
 mdefine_line|#define PAGE_BUG(page)&t;__bug(__FILE__, __LINE__, page)
 multiline_comment|/* Pure 2^n version of get_order */
 DECL|function|get_order
-r_extern
-id|__inline__
+r_static
+r_inline
 r_int
 id|get_order
 c_func

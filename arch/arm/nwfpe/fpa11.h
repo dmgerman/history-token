@@ -5,6 +5,8 @@ mdefine_line|#define __FPA11_H__
 multiline_comment|/* includes */
 macro_line|#include &quot;fpsr.h&quot;&t;&t;/* FP control and status register definitions */
 macro_line|#include &quot;softfloat.h&quot;
+multiline_comment|/* Need task_struct */
+macro_line|#include &lt;linux/sched.h&gt;
 DECL|macro|typeNone
 mdefine_line|#define&t;&t;typeNone&t;&t;0x00
 DECL|macro|typeSingle
@@ -40,6 +42,12 @@ r_typedef
 r_struct
 id|tagFPA11
 (brace
+DECL|member|userRegisters
+r_int
+r_int
+op_star
+id|userRegisters
+suffix:semicolon
 DECL|member|fpreg
 id|FPREG
 id|fpreg
@@ -104,10 +112,9 @@ r_int
 r_int
 )paren
 suffix:semicolon
-r_extern
-id|FPA11
-op_star
-id|fpa11
-suffix:semicolon
+DECL|macro|GET_FPA11
+mdefine_line|#define GET_FPA11() ((FPA11 *)(&amp;current-&gt;thread.fpstate))
+DECL|macro|GET_USERREG
+mdefine_line|#define GET_USERREG() (GET_FPA11()-&gt;userRegisters)
 macro_line|#endif
 eof

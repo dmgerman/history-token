@@ -219,6 +219,9 @@ id|address
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/*&n; * Change &quot;struct page&quot; to physical address.&n; */
+DECL|macro|page_to_phys
+mdefine_line|#define page_to_phys(page)&t;((page - mem_map) &lt;&lt; PAGE_SHIFT)
 r_extern
 r_void
 op_star
@@ -310,6 +313,8 @@ DECL|macro|virt_to_bus
 mdefine_line|#define virt_to_bus virt_to_phys
 DECL|macro|bus_to_virt
 mdefine_line|#define bus_to_virt phys_to_virt
+DECL|macro|page_to_bus
+mdefine_line|#define page_to_bus page_to_phys
 multiline_comment|/*&n; * readX/writeX() are used to access memory mapped devices. On some&n; * architectures the memory mapped IO stuff needs to be accessed&n; * differently. On the x86 architecture, we just read/write the&n; * memory location directly.&n; */
 DECL|macro|readb
 mdefine_line|#define readb(addr) (*(volatile unsigned char *) __io_virt(addr))

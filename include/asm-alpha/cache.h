@@ -4,7 +4,7 @@ DECL|macro|__ARCH_ALPHA_CACHE_H
 mdefine_line|#define __ARCH_ALPHA_CACHE_H
 macro_line|#include &lt;linux/config.h&gt;
 multiline_comment|/* Bytes per L1 (data) cache line. */
-macro_line|#if defined(CONFIG_ALPHA_GENERIC) || defined(CONFIG_ALPHA_EV6)
+macro_line|#if defined(CONFIG_ALPHA_GENERIC) || defined(CONFIG_ALPHA_EV6) || defined(CONFIG_ALPHA_EV67)
 DECL|macro|L1_CACHE_BYTES
 macro_line|# define L1_CACHE_BYTES     64
 DECL|macro|L1_CACHE_SHIFT

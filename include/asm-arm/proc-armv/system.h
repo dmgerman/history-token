@@ -82,8 +82,8 @@ DECL|macro|swp_is_buggy
 mdefine_line|#define swp_is_buggy
 macro_line|#endif
 DECL|function|__xchg
-r_extern
-id|__inline__
+r_static
+r_inline
 r_int
 r_int
 id|__xchg

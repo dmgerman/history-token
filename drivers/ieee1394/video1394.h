@@ -90,6 +90,11 @@ r_int
 r_int
 id|fps
 suffix:semicolon
+DECL|member|syt_offset
+r_int
+r_int
+id|syt_offset
+suffix:semicolon
 DECL|member|flags
 r_int
 r_int

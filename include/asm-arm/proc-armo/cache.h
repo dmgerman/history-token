@@ -39,8 +39,8 @@ DECL|macro|flush_tlb_page
 mdefine_line|#define flush_tlb_page(vma, vmaddr)&t;&t;do { } while (0)
 multiline_comment|/*&n; * The following handle the weird MEMC chip&n; */
 DECL|function|memc_update_all
-r_extern
-id|__inline__
+r_static
+r_inline
 r_void
 id|memc_update_all
 c_func
@@ -124,8 +124,8 @@ id|mm-&gt;pgd
 )paren
 suffix:semicolon
 )brace
-r_extern
-id|__inline__
+r_static
+r_inline
 r_void
 DECL|function|memc_clear
 id|memc_clear

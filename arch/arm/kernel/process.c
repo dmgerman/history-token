@@ -11,6 +11,7 @@ macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/user.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/reboot.h&gt;
+macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
@@ -40,19 +41,6 @@ c_func
 (paren
 r_char
 id|mode
-)paren
-suffix:semicolon
-id|asmlinkage
-r_void
-id|ret_from_sys_call
-c_func
-(paren
-r_void
-)paren
-id|__asm__
-c_func
-(paren
-l_string|&quot;ret_from_sys_call&quot;
 )paren
 suffix:semicolon
 DECL|variable|hlt_counter
@@ -990,6 +978,19 @@ id|dead_task
 )paren
 (brace
 )brace
+id|asmlinkage
+r_void
+id|ret_from_fork
+c_func
+(paren
+r_void
+)paren
+id|__asm__
+c_func
+(paren
+l_string|&quot;ret_from_fork&quot;
+)paren
+suffix:semicolon
 DECL|function|copy_thread
 r_int
 id|copy_thread
@@ -1090,11 +1091,18 @@ id|childregs
 op_minus
 l_int|1
 suffix:semicolon
-id|init_thread_css
-c_func
-(paren
+op_star
 id|save
+op_assign
+id|INIT_CSS
+suffix:semicolon
+id|save-&gt;pc
+op_or_assign
+(paren
+r_int
+r_int
 )paren
+id|ret_from_fork
 suffix:semicolon
 id|p-&gt;thread.save
 op_assign

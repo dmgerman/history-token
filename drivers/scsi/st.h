@@ -277,6 +277,12 @@ r_char
 id|default_drvbuffer
 suffix:semicolon
 multiline_comment|/* 0xff = don&squot;t touch, value 3 bits */
+DECL|member|use_pf
+r_int
+r_char
+id|use_pf
+suffix:semicolon
+multiline_comment|/* Set Page Format bit in all mode selects? */
 DECL|member|tape_type
 r_int
 id|tape_type
@@ -473,6 +479,11 @@ DECL|typedef|Scsi_Tape
 )brace
 id|Scsi_Tape
 suffix:semicolon
+multiline_comment|/* Bit masks for use_pf */
+DECL|macro|USE_PF
+mdefine_line|#define USE_PF      1
+DECL|macro|PF_TESTED
+mdefine_line|#define PF_TESTED   2
 multiline_comment|/* Values of eof */
 DECL|macro|ST_NOEOF
 mdefine_line|#define&t;ST_NOEOF&t;0

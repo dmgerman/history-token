@@ -23,6 +23,7 @@ macro_line|#include &quot;hosts.h&quot;
 singleline_comment|// struct Scsi_Host definition for T handler
 macro_line|#include &quot;cpqfcTSchip.h&quot;
 macro_line|#include &quot;cpqfcTSstructs.h&quot;
+macro_line|#include &quot;cpqfcTStrigger.h&quot;
 singleline_comment|//#define LOGIN_DBG 1
 singleline_comment|// REMARKS:
 singleline_comment|// Since Tachyon chips may be permitted to wait from 500ms up to 2 sec
@@ -8744,6 +8745,13 @@ suffix:semicolon
 )brace
 r_else
 (brace
+r_if
+c_cond
+(paren
+id|wwn
+)paren
+singleline_comment|// non-null arg? (OK to pass NULL when not searching WWN)
+(brace
 r_for
 c_loop
 (paren
@@ -8759,13 +8767,6 @@ id|i
 op_increment
 )paren
 singleline_comment|// valid WWN passed?  NULL WWN invalid
-(brace
-r_if
-c_cond
-(paren
-id|wwn
-)paren
-singleline_comment|// non-null arg? (OK to pass NULL when not searching WWN)
 (brace
 r_if
 c_cond
@@ -8882,6 +8883,21 @@ id|pLoggedInPort-&gt;ScsiNexus.lun
 id|Cmnd-&gt;lun
 )braket
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|pLoggedInPort-&gt;ScsiNexus.lun
+(braket
+id|Cmnd-&gt;lun
+)braket
+op_eq
+l_int|0xFF
+)paren
+r_return
+l_int|NULL
+suffix:semicolon
+singleline_comment|// printk(&quot;xlating lun %d to 0x%02x&bslash;n&quot;, Cmnd-&gt;lun, 
+singleline_comment|//&t;pLoggedInPort-&gt;ScsiNexus.lun[Cmnd-&gt;lun]);
 )brace
 r_else
 id|Cmnd-&gt;SCp.have_data_in

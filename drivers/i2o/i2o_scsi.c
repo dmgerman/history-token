@@ -3189,8 +3189,10 @@ suffix:semicolon
 )brace
 id|msg
 op_assign
-id|bus_to_virt
-c_func
+(paren
+id|u32
+op_star
+)paren
 (paren
 id|c-&gt;mem_offset
 op_plus
@@ -3382,8 +3384,10 @@ suffix:semicolon
 )brace
 id|msg
 op_assign
-id|bus_to_virt
-c_func
+(paren
+id|u32
+op_star
+)paren
 (paren
 id|c-&gt;mem_offset
 op_plus
@@ -3454,6 +3458,11 @@ id|msg
 (braket
 l_int|3
 )braket
+)paren
+suffix:semicolon
+id|wmb
+c_func
+(paren
 )paren
 suffix:semicolon
 id|i2o_post_message

@@ -4,7 +4,7 @@ macro_line|#include &lt;linux/tty.h&gt;
 macro_line|#include &lt;linux/console.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/fb.h&gt;
-macro_line|#include &lt;asm/delay.h&gt;
+macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;asm/types.h&gt;
 macro_line|#include &lt;video/fbcon.h&gt;
 macro_line|#include &lt;video/fbcon-mfb.h&gt;
@@ -1671,24 +1671,36 @@ id|display_switch
 id|fbcon_sti
 op_assign
 (brace
+id|setup
+suffix:colon
 id|fbcon_sti_setup
 comma
+id|bmove
+suffix:colon
 id|fbcon_sti_bmove
 comma
+id|clear
+suffix:colon
 id|fbcon_sti_clear
 comma
+id|putc
+suffix:colon
 id|fbcon_sti_putc
 comma
+id|putcs
+suffix:colon
 id|fbcon_sti_putcs
 comma
+id|revc
+suffix:colon
 id|fbcon_sti_revc
 comma
-l_int|NULL
-comma
-l_int|NULL
-comma
+id|clear_margins
+suffix:colon
 id|fbcon_sti_clear_margins
 comma
+id|fontwidthmask
+suffix:colon
 id|FONTWIDTH
 c_func
 (paren

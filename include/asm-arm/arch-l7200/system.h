@@ -29,7 +29,7 @@ suffix:semicolon
 multiline_comment|/* idle mode */
 )brace
 DECL|function|arch_reset
-r_extern
+r_static
 r_inline
 r_void
 id|arch_reset

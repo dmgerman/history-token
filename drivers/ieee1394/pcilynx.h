@@ -82,12 +82,15 @@ DECL|member|phyic
 id|phyic
 suffix:semicolon
 DECL|enumerator|clear
+DECL|enumerator|have_host_struct
 DECL|enumerator|have_intr
 DECL|enumerator|have_aux_buf
 DECL|enumerator|have_pcl_mem
 r_enum
 (brace
 id|clear
+comma
+id|have_host_struct
 comma
 id|have_intr
 comma
@@ -323,7 +326,7 @@ id|running
 suffix:semicolon
 DECL|member|tq
 r_struct
-id|tq_struct
+id|tasklet_struct
 id|tq
 suffix:semicolon
 DECL|member|lock
@@ -380,8 +383,8 @@ suffix:semicolon
 suffix:semicolon
 multiline_comment|/*&n; * Register read and write helper functions.&n; */
 DECL|function|reg_write
-r_inline
 r_static
+r_inline
 r_void
 id|reg_write
 c_func
@@ -411,8 +414,8 @@ id|offset
 suffix:semicolon
 )brace
 DECL|function|reg_read
-r_inline
 r_static
+r_inline
 id|u32
 id|reg_read
 c_func
@@ -438,8 +441,8 @@ id|offset
 suffix:semicolon
 )brace
 DECL|function|reg_set_bits
-r_inline
 r_static
+r_inline
 r_void
 id|reg_set_bits
 c_func
@@ -479,8 +482,8 @@ id|mask
 suffix:semicolon
 )brace
 DECL|function|reg_clear_bits
-r_inline
 r_static
+r_inline
 r_void
 id|reg_clear_bits
 c_func
@@ -919,8 +922,8 @@ DECL|macro|pcloffs
 mdefine_line|#define pcloffs(MEMBER) (offsetof(struct ti_pcl, MEMBER))
 macro_line|#ifdef CONFIG_IEEE1394_PCILYNX_LOCALRAM
 DECL|function|put_pcl
-r_inline
 r_static
+r_inline
 r_void
 id|put_pcl
 c_func
@@ -998,12 +1001,8 @@ op_increment
 id|writel
 c_func
 (paren
-id|cpu_to_le32
-c_func
-(paren
 op_star
 id|in
-)paren
 comma
 id|out
 )paren
@@ -1011,8 +1010,8 @@ suffix:semicolon
 )brace
 )brace
 DECL|function|get_pcl
-r_inline
 r_static
+r_inline
 r_void
 id|get_pcl
 c_func
@@ -1089,21 +1088,17 @@ op_increment
 op_star
 id|out
 op_assign
-id|le32_to_cpu
-c_func
-(paren
 id|readl
 c_func
 (paren
 id|in
 )paren
-)paren
 suffix:semicolon
 )brace
 )brace
 DECL|function|pcl_bus
-r_inline
 r_static
+r_inline
 id|u32
 id|pcl_bus
 c_func
@@ -1138,8 +1133,8 @@ suffix:semicolon
 )brace
 macro_line|#else /* CONFIG_IEEE1394_PCILYNX_LOCALRAM */
 DECL|function|put_pcl
-r_inline
 r_static
+r_inline
 r_void
 id|put_pcl
 c_func
@@ -1194,8 +1189,8 @@ id|ti_pcl
 suffix:semicolon
 )brace
 DECL|function|get_pcl
-r_inline
 r_static
+r_inline
 r_void
 id|get_pcl
 c_func
@@ -1249,8 +1244,8 @@ id|ti_pcl
 suffix:semicolon
 )brace
 DECL|function|pcl_bus
-r_inline
 r_static
+r_inline
 id|u32
 id|pcl_bus
 c_func
@@ -1286,8 +1281,8 @@ id|ti_pcl
 id|pcltmp_t
 suffix:semicolon
 DECL|function|edit_pcl
-r_inline
 r_static
+r_inline
 r_struct
 id|ti_pcl
 op_star
@@ -1323,8 +1318,8 @@ id|tmp
 suffix:semicolon
 )brace
 DECL|function|commit_pcl
-r_inline
 r_static
+r_inline
 r_void
 id|commit_pcl
 c_func
@@ -1362,8 +1357,8 @@ id|pcltmp_t
 suffix:semicolon
 multiline_comment|/* just a dummy */
 DECL|function|edit_pcl
-r_inline
 r_static
+r_inline
 r_struct
 id|ti_pcl
 op_star
@@ -1397,8 +1392,8 @@ id|ti_pcl
 suffix:semicolon
 )brace
 DECL|function|commit_pcl
-r_inline
 r_static
+r_inline
 r_void
 id|commit_pcl
 c_func
@@ -1420,8 +1415,8 @@ id|tmp
 )brace
 macro_line|#endif
 DECL|function|run_sub_pcl
-r_inline
 r_static
+r_inline
 r_void
 id|run_sub_pcl
 c_func
@@ -1484,8 +1479,8 @@ id|DMA_CHAN_CTRL_LINK
 suffix:semicolon
 )brace
 DECL|function|run_pcl
-r_inline
 r_static
+r_inline
 r_void
 id|run_pcl
 c_func

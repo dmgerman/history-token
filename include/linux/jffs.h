@@ -4,6 +4,7 @@ DECL|macro|__LINUX_JFFS_H__
 mdefine_line|#define __LINUX_JFFS_H__
 DECL|macro|JFFS_VERSION_STRING
 mdefine_line|#define JFFS_VERSION_STRING &quot;1.0&quot;
+macro_line|#include &lt;linux/completion.h&gt;
 multiline_comment|/* This is a magic number that is used as an identification number for&n;   this file system.  It is written to the super_block structure.  */
 DECL|macro|JFFS_MAGIC_SB_BITMASK
 mdefine_line|#define JFFS_MAGIC_SB_BITMASK 0x07c0  /* 1984 */
@@ -480,10 +481,10 @@ op_star
 id|gc_task
 suffix:semicolon
 multiline_comment|/* GC task struct */
-DECL|member|gc_thread_sem
+DECL|member|gc_thread_comp
 r_struct
-id|semaphore
-id|gc_thread_sem
+id|completion
+id|gc_thread_comp
 suffix:semicolon
 multiline_comment|/* GC thread exit mutex */
 DECL|member|gc_minfree_threshold

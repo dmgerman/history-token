@@ -29,7 +29,7 @@ DECL|macro|arch_reset
 mdefine_line|#define arch_reset(x) machine_power_off()
 macro_line|#else
 DECL|function|arch_reset
-r_extern
+r_static
 r_inline
 r_void
 id|arch_reset

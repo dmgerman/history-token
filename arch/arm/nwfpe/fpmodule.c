@@ -14,12 +14,6 @@ macro_line|#include &quot;fpopcode.h&quot;
 macro_line|#include &quot;fpmodule.h&quot;
 macro_line|#include &quot;fpa11.h&quot;
 macro_line|#include &quot;fpa11.inl&quot;
-multiline_comment|/* external data */
-r_extern
-id|FPA11
-op_star
-id|fpa11
-suffix:semicolon
 multiline_comment|/* kernel symbols required for signal handling */
 DECL|typedef|PTASK
 r_typedef
@@ -109,13 +103,6 @@ c_func
 (paren
 r_void
 )paren
-suffix:semicolon
-multiline_comment|/* Address of user registers on the kernel stack. */
-DECL|variable|userRegisters
-r_int
-r_int
-op_star
-id|userRegisters
 suffix:semicolon
 macro_line|#ifdef MODULE
 multiline_comment|/*&n; * Return 0 if we can be unloaded.  This can only happen if&n; * kern_fp_enter is still pointing at nwfpe_enter&n; */
@@ -297,7 +284,10 @@ c_func
 l_int|0
 )paren
 comma
-id|userRegisters
+id|GET_USERREG
+c_func
+(paren
+)paren
 (braket
 l_int|15
 )braket

@@ -213,7 +213,7 @@ op_assign
 macro_line|#include &quot;pwc_timon.h&quot;
 )brace
 suffix:semicolon
-multiline_comment|/* Entries for the Kiara (730/740) camera */
+multiline_comment|/* Entries for the Kiara (730/740/750) camera */
 DECL|struct|Kiara_table_entry
 r_struct
 id|Kiara_table_entry
@@ -1591,6 +1591,9 @@ suffix:colon
 r_case
 l_int|740
 suffix:colon
+r_case
+l_int|750
+suffix:colon
 id|ret
 op_assign
 id|set_video_mode_Kiara
@@ -1701,14 +1704,6 @@ dot
 id|y
 comma
 id|pdev-&gt;vpalette
-)paren
-suffix:semicolon
-id|Debug
-c_func
-(paren
-l_string|&quot;bandlength = %d&bslash;n&quot;
-comma
-id|pdev-&gt;vbandlength
 )paren
 suffix:semicolon
 r_return
@@ -3151,6 +3146,9 @@ l_int|730
 suffix:colon
 r_case
 l_int|740
+suffix:colon
+r_case
+l_int|750
 suffix:colon
 multiline_comment|/* speed seems to range from 0x0 to 0xff */
 id|buf

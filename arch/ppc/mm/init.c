@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * BK Id: SCCS/s.init.c 1.27 06/28/01 15:50:17 paulus&n; */
+multiline_comment|/*&n; * BK Id: SCCS/s.init.c 1.30 07/06/01 09:19:29 trini&n; */
 multiline_comment|/*&n; *  PowerPC version &n; *    Copyright (C) 1995-1996 Gary Thomas (gdt@linuxppc.org)&n; *&n; *  Modifications by Paul Mackerras (PowerMac) (paulus@cs.anu.edu.au)&n; *  and Cort Dougan (PReP) (cort@cs.nmt.edu)&n; *    Copyright (C) 1996 Paul Mackerras&n; *  Amiga/APUS changes by Jesper Skov (jskov@cygnus.co.uk).&n; *&n; *  Derived from &quot;arch/i386/mm/init.c&quot;&n; *    Copyright (C) 1991, 1992, 1993, 1994  Linus Torvalds&n; *&n; *  This program is free software; you can redistribute it and/or&n; *  modify it under the terms of the GNU General Public License&n; *  as published by the Free Software Foundation; either version&n; *  2 of the License, or (at your option) any later version.&n; *&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/signal.h&gt;
@@ -195,12 +195,6 @@ r_char
 id|__pmac_begin
 comma
 id|__pmac_end
-suffix:semicolon
-r_extern
-r_char
-id|__apus_begin
-comma
-id|__apus_end
 suffix:semicolon
 r_extern
 r_char
@@ -3029,19 +3023,14 @@ OL
 id|end
 )paren
 (brace
-id|clear_bit
+id|ClearPageReserved
 c_func
 (paren
-id|PG_reserved
-comma
-op_amp
 id|virt_to_page
 c_func
 (paren
 id|start
 )paren
-op_member_access_from_pointer
-id|flags
 )paren
 suffix:semicolon
 id|set_page_count
@@ -3075,6 +3064,7 @@ c_cond
 (paren
 id|cnt
 )paren
+(brace
 id|printk
 c_func
 (paren
@@ -3089,6 +3079,11 @@ comma
 id|name
 )paren
 suffix:semicolon
+id|totalram_pages
+op_add_assign
+id|cnt
+suffix:semicolon
+)brace
 )brace
 DECL|function|free_initmem
 r_void
@@ -3148,19 +3143,6 @@ id|FREESEC
 c_func
 (paren
 id|prep
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|_machine
-op_ne
-id|_MACH_apus
-)paren
-id|FREESEC
-c_func
-(paren
-id|apus
 )paren
 suffix:semicolon
 r_if

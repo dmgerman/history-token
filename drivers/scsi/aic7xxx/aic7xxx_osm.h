@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * Adaptec AIC7xxx device driver for Linux.&n; *&n; * Copyright (c) 1994 John Aycock&n; *   The University of Calgary Department of Computer Science.&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2, or (at your option)&n; * any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; see the file COPYING.  If not, write to&n; * the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.&n; * &n; * $Id: //depot/src/linux/drivers/scsi/aic7xxx/aic7xxx_linux.h#59 $&n; *&n; * Copyright (c) 2000, 2001 Adaptec Inc.&n; * All rights reserved.&n; *&n; * Redistribution and use in source and binary forms, with or without&n; * modification, are permitted provided that the following conditions&n; * are met:&n; * 1. Redistributions of source code must retain the above copyright&n; *    notice, this list of conditions, and the following disclaimer,&n; *    without modification.&n; * 2. The name of the author may not be used to endorse or promote products&n; *    derived from this software without specific prior written permission.&n; *&n; * Alternatively, this software may be distributed under the terms of the&n; * GNU Public License (&quot;GPL&quot;).&n; *&n; * THIS SOFTWARE IS PROVIDED BY THE AUTHOR AND CONTRIBUTORS ``AS IS&squot;&squot; AND&n; * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE&n; * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE&n; * ARE DISCLAIMED. IN NO EVENT SHALL THE AUTHOR OR CONTRIBUTORS BE LIABLE FOR&n; * ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL&n; * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS&n; * OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)&n; * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT&n; * LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY&n; * OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF&n; * SUCH DAMAGE.&n; *&n; * $Id: //depot/src/linux/drivers/scsi/aic7xxx/aic7xxx_linux.h#59 $&n; *&n; */
+multiline_comment|/*&n; * Adaptec AIC7xxx device driver for Linux.&n; *&n; * Copyright (c) 1994 John Aycock&n; *   The University of Calgary Department of Computer Science.&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2, or (at your option)&n; * any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; see the file COPYING.  If not, write to&n; * the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.&n; * &n; * $Id: //depot/src/linux/drivers/scsi/aic7xxx/aic7xxx_linux.h#65 $&n; *&n; * Copyright (c) 2000, 2001 Adaptec Inc.&n; * All rights reserved.&n; *&n; * Redistribution and use in source and binary forms, with or without&n; * modification, are permitted provided that the following conditions&n; * are met:&n; * 1. Redistributions of source code must retain the above copyright&n; *    notice, this list of conditions, and the following disclaimer,&n; *    without modification.&n; * 2. The name of the author may not be used to endorse or promote products&n; *    derived from this software without specific prior written permission.&n; *&n; * Alternatively, this software may be distributed under the terms of the&n; * GNU Public License (&quot;GPL&quot;).&n; *&n; * THIS SOFTWARE IS PROVIDED BY THE AUTHOR AND CONTRIBUTORS ``AS IS&squot;&squot; AND&n; * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE&n; * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE&n; * ARE DISCLAIMED. IN NO EVENT SHALL THE AUTHOR OR CONTRIBUTORS BE LIABLE FOR&n; * ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL&n; * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS&n; * OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)&n; * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT&n; * LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY&n; * OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF&n; * SUCH DAMAGE.&n; *&n; * $Id: //depot/src/linux/drivers/scsi/aic7xxx/aic7xxx_linux.h#65 $&n; *&n; */
 macro_line|#ifndef _AIC7XXX_LINUX_H_
 DECL|macro|_AIC7XXX_LINUX_H_
 mdefine_line|#define _AIC7XXX_LINUX_H_
@@ -7,7 +7,7 @@ macro_line|#include &lt;linux/blk.h&gt;
 macro_line|#include &lt;linux/blkdev.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/ioport.h&gt;
-macro_line|#include &lt;linux/malloc.h&gt;
+macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/version.h&gt;
 macro_line|#ifndef KERNEL_VERSION
@@ -230,6 +230,8 @@ DECL|macro|BUS_DMA_LOAD_SEGS
 mdefine_line|#define BUS_DMA_LOAD_SEGS&t;0x4&t;/*&n;&t;&t;&t;&t;&t; * Argument is an S/G list not&n;&t;&t;&t;&t;&t; * a single buffer.&n;&t;&t;&t;&t;&t; */
 DECL|macro|BUS_SPACE_MAXADDR
 mdefine_line|#define BUS_SPACE_MAXADDR&t;0xFFFFFFFF
+DECL|macro|BUS_SPACE_MAXADDR_32BIT
+mdefine_line|#define BUS_SPACE_MAXADDR_32BIT&t;0xFFFFFFFF
 DECL|macro|BUS_SPACE_MAXSIZE_32BIT
 mdefine_line|#define BUS_SPACE_MAXSIZE_32BIT&t;0xFFFFFFFF
 r_int
@@ -396,9 +398,18 @@ comma
 id|bus_dmamap_t
 )paren
 suffix:semicolon
-multiline_comment|/* XXX May do selective memory barrier operations on certain platforms */
+multiline_comment|/*&n; * Operations performed by ahc_dmamap_sync().&n; */
+DECL|macro|BUS_DMASYNC_PREREAD
+mdefine_line|#define BUS_DMASYNC_PREREAD&t;0x01&t;/* pre-read synchronization */
+DECL|macro|BUS_DMASYNC_POSTREAD
+mdefine_line|#define BUS_DMASYNC_POSTREAD&t;0x02&t;/* post-read synchronization */
+DECL|macro|BUS_DMASYNC_PREWRITE
+mdefine_line|#define BUS_DMASYNC_PREWRITE&t;0x04&t;/* pre-write synchronization */
+DECL|macro|BUS_DMASYNC_POSTWRITE
+mdefine_line|#define BUS_DMASYNC_POSTWRITE&t;0x08&t;/* post-write synchronization */
+multiline_comment|/*&n; * XXX&n; * ahc_dmamap_sync is only used on buffers allocated with&n; * the pci_alloc_consistent() API.  Although I&squot;m not sure how&n; * this works on architectures with a write buffer, Linux does&n; * not have an API to sync &quot;coherent&quot; memory.  Perhaps we need&n; * to do an mb()?&n; */
 DECL|macro|ahc_dmamap_sync
-mdefine_line|#define ahc_dmamap_sync(ahc, dma_tag, dmamap, op)
+mdefine_line|#define ahc_dmamap_sync(ahc, dma_tag, dmamap, offset, len, op)
 multiline_comment|/************************** SCSI Constants/Structures *************************/
 DECL|macro|SCSI_REV_2
 mdefine_line|#define SCSI_REV_2 2
@@ -509,6 +520,38 @@ id|extra_bytes
 (braket
 l_int|14
 )braket
+suffix:semicolon
+)brace
+suffix:semicolon
+DECL|struct|scsi_inquiry
+r_struct
+id|scsi_inquiry
+(brace
+DECL|member|opcode
+id|u_int8_t
+id|opcode
+suffix:semicolon
+DECL|member|byte2
+id|u_int8_t
+id|byte2
+suffix:semicolon
+DECL|macro|SI_EVPD
+mdefine_line|#define&t;SI_EVPD 0x01
+DECL|member|page_code
+id|u_int8_t
+id|page_code
+suffix:semicolon
+DECL|member|reserved
+id|u_int8_t
+id|reserved
+suffix:semicolon
+DECL|member|length
+id|u_int8_t
+id|length
+suffix:semicolon
+DECL|member|control
+id|u_int8_t
+id|control
 suffix:semicolon
 )brace
 suffix:semicolon
@@ -744,7 +787,7 @@ macro_line|#elif LINUX_VERSION_CODE &gt;= KERNEL_VERSION(2,1,93)
 macro_line|#include &lt;linux/smp.h&gt;
 macro_line|#endif
 DECL|macro|AIC7XXX_DRIVER_VERSION
-mdefine_line|#define AIC7XXX_DRIVER_VERSION  &quot;6.1.13&quot;
+mdefine_line|#define AIC7XXX_DRIVER_VERSION  &quot;6.2.1&quot;
 multiline_comment|/**************************** Front End Queues ********************************/
 multiline_comment|/*&n; * Data structure used to cast the Linux struct scsi_cmnd to something&n; * that allows us to use the queue macros.  The linux structure has&n; * plenty of space to hold the links fields as required by the queue&n; * macros, but the queue macors require them to have the correct type.&n; */
 DECL|struct|ahc_cmd_internal
@@ -884,7 +927,7 @@ DECL|struct|ahc_linux_device
 r_struct
 id|ahc_linux_device
 (brace
-id|LIST_ENTRY
+id|TAILQ_ENTRY
 c_func
 (paren
 id|ahc_linux_device
@@ -1046,7 +1089,7 @@ id|targets
 id|AHC_NUM_TARGETS
 )braket
 suffix:semicolon
-id|LIST_HEAD
+id|TAILQ_HEAD
 c_func
 (paren
 comma
@@ -1100,6 +1143,10 @@ r_uint32
 id|mem_busaddr
 suffix:semicolon
 multiline_comment|/* Mem Base Addr */
+DECL|member|hw_dma_mask
+id|bus_addr_t
+id|hw_dma_mask
+suffix:semicolon
 )brace
 suffix:semicolon
 multiline_comment|/************************** OS Utility Wrappers *******************************/
@@ -1157,31 +1204,9 @@ suffix:semicolon
 )brace
 )brace
 multiline_comment|/***************************** Low Level I/O **********************************/
-macro_line|#if defined(__powerpc__)
+macro_line|#if defined(__powerpc__) || defined(__i386__) || defined(__ia64__)
 DECL|macro|MMAPIO
 mdefine_line|#define MMAPIO
-macro_line|#ifdef mb
-DECL|macro|mb
-macro_line|#undef mb
-macro_line|#endif
-DECL|macro|mb
-mdefine_line|#define mb() &bslash;&n;&t;__asm__ __volatile__(&quot;eieio&quot; ::: &quot;memory&quot;)
-macro_line|#elif defined(__i386__)
-DECL|macro|MMAPIO
-mdefine_line|#define MMAPIO
-macro_line|#ifdef mb
-DECL|macro|mb
-macro_line|#undef mb
-macro_line|#endif
-DECL|macro|mb
-mdefine_line|#define mb() &bslash;&n;&t;do { ; } while(0)
-macro_line|#elif defined(__alpha__)
-macro_line|#ifdef mb
-DECL|macro|mb
-macro_line|#undef mb
-macro_line|#endif
-DECL|macro|mb
-mdefine_line|#define mb() &bslash;&n;&t;__asm__ __volatile__(&quot;mb&quot;: : :&quot;memory&quot;)
 macro_line|#endif
 r_static
 id|__inline
@@ -1523,6 +1548,13 @@ op_star
 comma
 id|Scsi_Host_Template
 op_star
+)paren
+suffix:semicolon
+r_uint64
+id|ahc_linux_get_memsize
+c_func
+(paren
+r_void
 )paren
 suffix:semicolon
 multiline_comment|/*************************** Pretty Printing **********************************/
@@ -2216,6 +2248,11 @@ l_string|&quot;ahc_pci_read_config: Read size too big&quot;
 )paren
 suffix:semicolon
 multiline_comment|/* NOTREACHED */
+r_return
+(paren
+l_int|0
+)paren
+suffix:semicolon
 )brace
 )brace
 r_static

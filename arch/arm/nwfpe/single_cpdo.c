@@ -108,6 +108,15 @@ r_int
 id|opcode
 )paren
 (brace
+id|FPA11
+op_star
+id|fpa11
+op_assign
+id|GET_FPA11
+c_func
+(paren
+)paren
+suffix:semicolon
 id|float32
 id|rFm
 comma

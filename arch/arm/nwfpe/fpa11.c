@@ -35,12 +35,6 @@ r_int
 r_int
 )paren
 suffix:semicolon
-multiline_comment|/* Emulator registers */
-DECL|variable|fpa11
-id|FPA11
-op_star
-id|fpa11
-suffix:semicolon
 multiline_comment|/* Reset the FPA11 chip.  Called to initialize and reset the emulator. */
 DECL|function|resetFPA11
 r_void
@@ -52,6 +46,15 @@ r_void
 (brace
 r_int
 id|i
+suffix:semicolon
+id|FPA11
+op_star
+id|fpa11
+op_assign
+id|GET_FPA11
+c_func
+(paren
+)paren
 suffix:semicolon
 multiline_comment|/* initialize the register type array */
 r_for
@@ -283,6 +286,10 @@ r_int
 r_int
 id|flags
 suffix:semicolon
+id|FPA11
+op_star
+id|fpa11
+suffix:semicolon
 id|save_flags
 c_func
 (paren
@@ -290,6 +297,13 @@ id|flags
 )paren
 suffix:semicolon
 id|sti
+c_func
+(paren
+)paren
+suffix:semicolon
+id|fpa11
+op_assign
+id|GET_FPA11
 c_func
 (paren
 )paren

@@ -114,4 +114,15 @@ op_star
 id|sysdata
 )paren
 suffix:semicolon
+r_extern
+r_void
+id|__init
+id|via82c505_init
+c_func
+(paren
+r_void
+op_star
+id|sysdata
+)paren
+suffix:semicolon
 eof

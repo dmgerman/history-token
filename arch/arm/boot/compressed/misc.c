@@ -228,8 +228,8 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|function|memcpy
-r_extern
-id|__inline__
+r_static
+r_inline
 id|__ptr_t
 id|memcpy
 c_func

@@ -2203,6 +2203,60 @@ op_amp
 id|port-&gt;pardevice_lock
 )paren
 suffix:semicolon
+multiline_comment|/* Make sure we haven&squot;t left any pointers around in the wait&n;&t; * list. */
+id|spin_lock
+(paren
+op_amp
+id|port-&gt;waitlist_lock
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|dev-&gt;waitprev
+op_logical_or
+id|dev-&gt;waitnext
+op_logical_or
+id|port-&gt;waithead
+op_eq
+id|dev
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|dev-&gt;waitprev
+)paren
+id|dev-&gt;waitprev-&gt;waitnext
+op_assign
+id|dev-&gt;waitnext
+suffix:semicolon
+r_else
+id|port-&gt;waithead
+op_assign
+id|dev-&gt;waitnext
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|dev-&gt;waitnext
+)paren
+id|dev-&gt;waitnext-&gt;waitprev
+op_assign
+id|dev-&gt;waitprev
+suffix:semicolon
+r_else
+id|port-&gt;waittail
+op_assign
+id|dev-&gt;waitprev
+suffix:semicolon
+)brace
+id|spin_unlock
+(paren
+op_amp
+id|port-&gt;waitlist_lock
+)paren
+suffix:semicolon
 id|kfree
 c_func
 (paren
@@ -3028,6 +3082,7 @@ id|dev-&gt;state
 )paren
 suffix:semicolon
 multiline_comment|/* If anybody is waiting, find out who&squot;s been there longest and&n;&t;   then wake them up. (Note: no locking required) */
+multiline_comment|/* !!! LOCKING IS NEEDED HERE */
 r_for
 c_loop
 (paren
@@ -3119,6 +3174,7 @@ suffix:semicolon
 )brace
 )brace
 multiline_comment|/* Nobody was waiting, so walk the list to see if anyone is&n;&t;   interested in being woken up. (Note: no locking required) */
+multiline_comment|/* !!! LOCKING IS NEEDED HERE */
 r_for
 c_loop
 (paren

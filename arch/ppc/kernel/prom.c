@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * BK Id: SCCS/s.prom.c 1.26 06/28/01 15:50:16 paulus&n; */
+multiline_comment|/*&n; * BK Id: SCCS/s.prom.c 1.35 07/25/01 14:11:37 trini&n; */
 multiline_comment|/*&n; * Procedures for interfacing to the Open Firmware PROM on&n; * Power Macintosh computers.&n; *&n; * In particular, we are interested in the device tree&n; * and in using some of its services (exit, write to stdout).&n; *&n; * Paul Mackerras&t;August 1996.&n; * Copyright (C) 1996 Paul Mackerras.&n; */
 macro_line|#include &lt;stdarg.h&gt;
 macro_line|#include &lt;linux/config.h&gt;
@@ -627,6 +627,16 @@ r_char
 op_star
 )paren
 suffix:semicolon
+r_static
+r_struct
+id|device_node
+op_star
+id|find_phandle
+c_func
+(paren
+id|phandle
+)paren
+suffix:semicolon
 macro_line|#ifdef CONFIG_BOOTX_TEXT
 r_static
 r_void
@@ -715,9 +725,9 @@ mdefine_line|#define BOOT_INFO_IS_V2_COMPATIBLE(bi)&t;((bi)-&gt;version &gt;= 2)
 DECL|macro|BOOT_INFO_IS_V4_COMPATIBLE
 mdefine_line|#define BOOT_INFO_IS_V4_COMPATIBLE(bi)&t;((bi)-&gt;version &gt;= 4)
 multiline_comment|/*&n; * Note that prom_init() and anything called from prom_init() must&n; * use the RELOC/PTRRELOC macros to access any static data in&n; * memory, since the kernel may be running at an address that is&n; * different from the address that it was linked at.&n; * (Note that strings count as static variables.)&n; */
-id|__init
 r_static
 r_void
+id|__init
 DECL|function|prom_exit
 id|prom_exit
 c_func
@@ -768,8 +778,8 @@ suffix:semicolon
 multiline_comment|/* should never get here */
 suffix:semicolon
 )brace
-id|__init
 r_void
+id|__init
 DECL|function|prom_enter
 id|prom_enter
 c_func
@@ -817,10 +827,10 @@ id|args
 )paren
 suffix:semicolon
 )brace
-id|__init
 r_static
 r_void
 op_star
+id|__init
 DECL|function|call_prom
 id|call_prom
 c_func
@@ -954,8 +964,8 @@ id|nargs
 )braket
 suffix:semicolon
 )brace
-id|__init
 r_void
+id|__init
 DECL|function|prom_print
 id|prom_print
 c_func
@@ -1131,7 +1141,9 @@ suffix:semicolon
 )brace
 )brace
 )brace
+r_static
 r_void
+id|__init
 DECL|function|prom_print_hex
 id|prom_print_hex
 c_func
@@ -1233,34 +1245,6 @@ id|buf
 )paren
 suffix:semicolon
 )brace
-r_void
-DECL|function|prom_print_nl
-id|prom_print_nl
-c_func
-(paren
-r_void
-)paren
-(brace
-r_int
-r_int
-id|offset
-op_assign
-id|reloc_offset
-c_func
-(paren
-)paren
-suffix:semicolon
-id|prom_print
-c_func
-(paren
-id|RELOC
-c_func
-(paren
-l_string|&quot;&bslash;n&quot;
-)paren
-)paren
-suffix:semicolon
-)brace
 DECL|variable|__initdata
 r_int
 r_int
@@ -1273,6 +1257,7 @@ macro_line|#ifdef CONFIG_SMP
 multiline_comment|/*&n; * With CHRP SMP we need to use the OF to start the other&n; * processors so we can&squot;t wait until smp_boot_cpus (the OF is&n; * trashed by then) so we have to put the processors into&n; * a holding pattern controlled by the kernel (not OF) before&n; * we destroy the OF.&n; *&n; * This uses a chunk of high memory, puts some holding pattern&n; * code there and sends the other processors off to there until&n; * smp_boot_cpus tells them to do something.  We do that by using&n; * physical address 0x0.  The holding pattern checks that address&n; * until its cpu # is there, when it is that cpu jumps to&n; * __secondary_start().  smp_boot_cpus() takes care of setting those&n; * values.&n; *&n; * We also use physical address 0x4 here to tell when a cpu&n; * is in its holding pattern code.&n; *&n; * -- Cort&n; */
 r_static
 r_void
+id|__init
 DECL|function|prom_hold_cpus
 id|prom_hold_cpus
 c_func
@@ -1765,9 +1750,14 @@ op_star
 l_int|0x4
 )paren
 suffix:semicolon
-id|prom_print_nl
+id|prom_print
 c_func
 (paren
+id|RELOC
+c_func
+(paren
+l_string|&quot;&bslash;n&quot;
+)paren
 )paren
 suffix:semicolon
 )brace
@@ -1775,6 +1765,7 @@ suffix:semicolon
 )brace
 macro_line|#endif /* CONFIG_SMP */
 r_void
+id|__init
 DECL|function|bootx_init
 id|bootx_init
 c_func
@@ -2341,7 +2332,9 @@ r_int
 r_int
 id|Hash_size
 suffix:semicolon
+r_static
 r_void
+id|__init
 DECL|function|prom_alloc_htab
 id|prom_alloc_htab
 c_func
@@ -2486,8 +2479,8 @@ suffix:semicolon
 )brace
 macro_line|#endif /* CONFIG_PPC64BRIDGE */
 r_static
-id|__init
 r_void
+id|__init
 DECL|function|prom_instantiate_rtas
 id|prom_instantiate_rtas
 c_func
@@ -2829,9 +2822,9 @@ l_string|&quot; done&bslash;n&quot;
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * We enter here early on, when the Open Firmware prom is still&n; * handling exceptions and the MMU hash table for us.&n; */
+r_int
+r_int
 id|__init
-r_int
-r_int
 DECL|function|prom_init
 id|prom_init
 c_func
@@ -3996,9 +3989,9 @@ id|rtas_data
 suffix:semicolon
 )brace
 macro_line|#ifdef CONFIG_BOOTX_TEXT
-id|__init
 r_static
 r_void
+id|__init
 DECL|function|prom_welcome
 id|prom_welcome
 c_func
@@ -4281,9 +4274,9 @@ l_string|&quot;&bslash;n&bslash;n&quot;
 suffix:semicolon
 )brace
 multiline_comment|/* Calc BAT values for mapping the display and store them&n; * in disp_BAT.  Those values are then used from head.S to map&n; * the display during identify_machine() and MMU_Init()&n; * &n; * For now, the display is mapped in place (1:1). This should&n; * be changed if the display physical address overlaps&n; * KERNELBASE, which is fortunately not the case on any machine&n; * I know of. This mapping is temporary and will disappear as&n; * soon as the setup done by MMU_Init() is applied&n; * &n; * For now, we align the BAT and then map 8Mb on 601 and 16Mb&n; * on other PPCs. This may cause trouble if the framebuffer&n; * is really badly aligned, but I didn&squot;t encounter this case&n; * yet.&n; */
-id|__init
 r_static
 r_void
+id|__init
 DECL|function|prepare_disp_BAT
 id|prepare_disp_BAT
 c_func
@@ -4431,9 +4424,10 @@ id|bi-&gt;dispDeviceBase
 suffix:semicolon
 )brace
 macro_line|#endif
-DECL|function|prom_set_color
 r_static
 r_int
+id|__init
+DECL|function|prom_set_color
 id|prom_set_color
 c_func
 (paren
@@ -4565,10 +4559,10 @@ l_int|6
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * If we have a display that we don&squot;t know how to drive,&n; * we will want to try to execute OF&squot;s open method for it&n; * later.  However, OF will probably fall over if we do that&n; * we&squot;ve taken over the MMU.&n; * So we check whether we will need to open the display,&n; * and if so, open it now.&n; */
-id|__init
 r_static
 r_int
 r_int
+id|__init
 DECL|function|check_display
 id|check_display
 c_func
@@ -5208,9 +5202,9 @@ suffix:semicolon
 )brace
 multiline_comment|/* This function will enable the early boot text when doing OF booting. This&n; * way, xmon output should work too&n; */
 macro_line|#ifdef CONFIG_BOOTX_TEXT
-id|__init
 r_static
 r_void
+id|__init
 DECL|function|setup_disp_fake_bi
 id|setup_disp_fake_bi
 c_func
@@ -5785,9 +5779,9 @@ id|height
 suffix:semicolon
 )brace
 macro_line|#endif
-id|__init
 r_static
 r_int
+id|__init
 DECL|function|prom_next_node
 id|prom_next_node
 c_func
@@ -5943,10 +5937,10 @@ suffix:semicolon
 )brace
 )brace
 multiline_comment|/*&n; * Make a copy of the device tree from the PROM.&n; */
-id|__init
 r_static
 r_int
 r_int
+id|__init
 DECL|function|copy_device_tree
 id|copy_device_tree
 c_func
@@ -6073,10 +6067,10 @@ r_return
 id|new_start
 suffix:semicolon
 )brace
-id|__init
 r_static
 r_int
 r_int
+id|__init
 DECL|function|inspect_node
 id|inspect_node
 c_func
@@ -6491,13 +6485,19 @@ c_func
 id|namep
 )paren
 suffix:semicolon
-id|strcpy
+multiline_comment|/* Work around a GCC3 bug */
+id|memcpy
 c_func
 (paren
 id|namep
 comma
 id|RELOC
 c_func
+(paren
+l_string|&quot;linux,phandle&quot;
+)paren
+comma
+r_sizeof
 (paren
 l_string|&quot;linux,phandle&quot;
 )paren
@@ -6699,8 +6699,8 @@ id|mem_start
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * finish_device_tree is called once things are running normally&n; * (i.e. with text and data mapped to the address they were linked at).&n; * It traverses the device tree and fills in the name, type,&n; * {n_}addrs and {n_}intrs fields of each node.&n; */
-id|__init
 r_void
+id|__init
 DECL|function|finish_device_tree
 id|finish_device_tree
 c_func
@@ -6917,9 +6917,10 @@ id|mem
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * early_get_property is used to access the device tree image prepared&n; * by BootX very early on, before the pointers in it have been relocated.&n; */
-id|__init
+r_static
 r_void
 op_star
+id|__init
 DECL|function|early_get_property
 id|early_get_property
 c_func
@@ -7038,10 +7039,10 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-id|__init
 r_static
 r_int
 r_int
+id|__init
 DECL|function|finish_node
 id|finish_node
 c_func
@@ -7489,11 +7490,12 @@ id|mem_start
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Find the interrupt parent of a node.&n; */
-DECL|function|intr_parent
 r_static
 r_struct
 id|device_node
 op_star
+id|__init
+DECL|function|intr_parent
 id|intr_parent
 c_func
 (paren
@@ -7571,6 +7573,7 @@ suffix:semicolon
 multiline_comment|/*&n; * Find out the size of each entry of the interrupts property&n; * for a node.&n; */
 r_static
 r_int
+id|__init
 DECL|function|prom_n_intr_cells
 id|prom_n_intr_cells
 c_func
@@ -7696,6 +7699,7 @@ suffix:semicolon
 multiline_comment|/*&n; * Map an interrupt from a device up to the platform interrupt&n; * descriptor.&n; */
 r_static
 r_int
+id|__init
 DECL|function|map_interrupt
 id|map_interrupt
 c_func
@@ -8268,6 +8272,7 @@ multiline_comment|/*&n; * New version of finish_node_interrupts.&n; */
 r_static
 r_int
 r_int
+id|__init
 DECL|function|finish_node_interrupts
 id|finish_node_interrupts
 c_func
@@ -8565,9 +8570,9 @@ id|mem_start
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * When BootX makes a copy of the device tree from the MacOS&n; * Name Registry, it is in the format we use but all of the pointers&n; * are offsets from the start of the tree.&n; * This procedure updates the pointers.&n; */
+r_void
 id|__init
 DECL|function|relocate_nodes
-r_void
 id|relocate_nodes
 c_func
 (paren
@@ -8703,6 +8708,7 @@ suffix:semicolon
 )brace
 )brace
 r_int
+id|__init
 DECL|function|prom_n_addr_cells
 id|prom_n_addr_cells
 c_func
@@ -8768,6 +8774,7 @@ l_int|1
 suffix:semicolon
 )brace
 r_int
+id|__init
 DECL|function|prom_n_size_cells
 id|prom_n_size_cells
 c_func
@@ -8832,10 +8839,10 @@ r_return
 l_int|1
 suffix:semicolon
 )brace
-id|__init
 r_static
 r_int
 r_int
+id|__init
 DECL|function|interpret_pci_props
 id|interpret_pci_props
 c_func
@@ -9155,10 +9162,10 @@ r_return
 id|mem_start
 suffix:semicolon
 )brace
-id|__init
 r_static
 r_int
 r_int
+id|__init
 DECL|function|interpret_dbdma_props
 id|interpret_dbdma_props
 c_func
@@ -9507,10 +9514,10 @@ r_return
 id|mem_start
 suffix:semicolon
 )brace
-id|__init
 r_static
 r_int
 r_int
+id|__init
 DECL|function|interpret_macio_props
 id|interpret_macio_props
 c_func
@@ -9871,10 +9878,10 @@ r_return
 id|mem_start
 suffix:semicolon
 )brace
-id|__init
 r_static
 r_int
 r_int
+id|__init
 DECL|function|interpret_isa_props
 id|interpret_isa_props
 c_func
@@ -10163,10 +10170,10 @@ r_return
 id|mem_start
 suffix:semicolon
 )brace
-id|__init
 r_static
 r_int
 r_int
+id|__init
 DECL|function|interpret_root_props
 id|interpret_root_props
 c_func
@@ -10602,7 +10609,6 @@ suffix:semicolon
 )brace
 )brace
 multiline_comment|/*&n; * Construct and return a list of the device_nodes with a given name.&n; */
-id|__openfirmware
 r_struct
 id|device_node
 op_star
@@ -10689,7 +10695,6 @@ id|head
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Construct and return a list of the device_nodes with a given type.&n; */
-id|__openfirmware
 r_struct
 id|device_node
 op_star
@@ -10776,9 +10781,9 @@ id|head
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Returns all nodes linked together&n; */
-id|__openfirmware
 r_struct
 id|device_node
+id|__openfirmware
 op_star
 DECL|function|find_all_nodes
 id|find_all_nodes
@@ -10841,7 +10846,6 @@ id|head
 suffix:semicolon
 )brace
 multiline_comment|/* Checks if the given &quot;compat&quot; string matches one of the strings in&n; * the device&squot;s &quot;compatible&quot; property&n; */
-id|__openfirmware
 r_int
 DECL|function|device_is_compatible
 id|device_is_compatible
@@ -10949,7 +10953,6 @@ l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Indicates whether the root node has a given value in its&n; * compatible property.&n; */
-id|__openfirmware
 r_int
 DECL|function|machine_is_compatible
 id|machine_is_compatible
@@ -10995,7 +10998,6 @@ id|compat
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Construct and return a list of the device_nodes with a given type&n; * and compatible property.&n; */
-id|__openfirmware
 r_struct
 id|device_node
 op_star
@@ -11107,7 +11109,6 @@ id|head
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Find the device_node with a given full_name.&n; */
-id|__openfirmware
 r_struct
 id|device_node
 op_star
@@ -11166,9 +11167,10 @@ l_int|NULL
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Find the device_node with a given phandle.&n; */
-id|__openfirmware
+r_static
 r_struct
 id|device_node
+id|__init
 op_star
 DECL|function|find_phandle
 id|find_phandle
@@ -11213,7 +11215,6 @@ l_int|NULL
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Find a property with a given name for a given node&n; * and return the value.&n; */
-id|__openfirmware
 r_int
 r_char
 op_star
@@ -11295,8 +11296,8 @@ l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Add a property to a node&n; */
-id|__openfirmware
 r_void
+id|__openfirmware
 DECL|function|prom_add_property
 id|prom_add_property
 c_func
@@ -11348,8 +11349,8 @@ id|prop
 suffix:semicolon
 )brace
 macro_line|#if 0
-id|__openfirmware
 r_void
+id|__openfirmware
 id|print_properties
 c_func
 (paren
@@ -11683,8 +11684,8 @@ op_assign
 id|SPIN_LOCK_UNLOCKED
 suffix:semicolon
 multiline_comment|/* this can be called after setup -- Cort */
-id|__openfirmware
 r_int
+id|__openfirmware
 DECL|function|call_rtas
 id|call_rtas
 c_func
@@ -11950,8 +11951,8 @@ l_int|3
 )braket
 suffix:semicolon
 )brace
-id|__init
 r_void
+id|__init
 DECL|function|abort
 m_abort
 (paren
@@ -12073,11 +12074,11 @@ l_int|1
 suffix:semicolon
 )brace
 multiline_comment|/* Calc the base address of a given point (x,y) */
-id|__pmac
 r_static
 r_int
 r_char
 op_star
+id|__pmac
 DECL|function|calc_base
 id|calc_base
 c_func
@@ -12149,6 +12150,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* Adjust the display to a new resolution */
 r_void
+id|__openfirmware
 DECL|function|bootx_update_display
 id|bootx_update_display
 c_func
@@ -12286,9 +12288,9 @@ op_div
 l_int|16
 suffix:semicolon
 )brace
-id|__pmac
 r_static
 r_void
+id|__pmac
 DECL|function|clearscreen
 id|clearscreen
 c_func
@@ -12458,9 +12460,9 @@ id|addr
 )paren
 suffix:semicolon
 )brace
-id|__pmac
 r_static
 r_void
+id|__pmac
 DECL|function|flushscreen
 id|flushscreen
 c_func
@@ -12612,9 +12614,9 @@ suffix:semicolon
 )brace
 )brace
 macro_line|#ifndef NO_SCROLL
-id|__pmac
 r_static
 r_void
+id|__pmac
 DECL|function|scrollscreen
 id|scrollscreen
 c_func
@@ -12871,8 +12873,8 @@ multiline_comment|/* PMU will not shut us down ! */
 macro_line|#endif
 )brace
 macro_line|#endif /* ndef NO_SCROLL */
-id|__pmac
 r_void
+id|__pmac
 DECL|function|prom_drawchar
 id|prom_drawchar
 c_func
@@ -13153,8 +13155,8 @@ suffix:semicolon
 )brace
 macro_line|#endif
 )brace
-id|__pmac
 r_void
+id|__pmac
 DECL|function|prom_drawstring
 id|prom_drawstring
 c_func
@@ -13201,8 +13203,8 @@ op_increment
 )paren
 suffix:semicolon
 )brace
-id|__pmac
 r_void
+id|__pmac
 DECL|function|prom_drawhex
 id|prom_drawhex
 c_func
@@ -13394,9 +13396,9 @@ l_int|0x0000000FUL
 )paren
 suffix:semicolon
 )brace
-id|__pmac
 r_static
 r_void
+id|__pmac
 DECL|function|draw_byte
 id|draw_byte
 c_func
@@ -13554,8 +13556,7 @@ r_break
 suffix:semicolon
 )brace
 )brace
-id|__pmac
-DECL|variable|expand_bits_8
+DECL|variable|__pmacdata
 r_static
 r_int
 r_int
@@ -13563,6 +13564,7 @@ id|expand_bits_8
 (braket
 l_int|16
 )braket
+id|__pmacdata
 op_assign
 (brace
 l_int|0x00000000
@@ -13598,8 +13600,7 @@ comma
 l_int|0xffffffff
 )brace
 suffix:semicolon
-id|__pmac
-DECL|variable|expand_bits_16
+DECL|variable|__pmacdata
 r_static
 r_int
 r_int
@@ -13607,6 +13608,7 @@ id|expand_bits_16
 (braket
 l_int|4
 )braket
+id|__pmacdata
 op_assign
 (brace
 l_int|0x00000000
@@ -13618,9 +13620,9 @@ comma
 l_int|0xffffffff
 )brace
 suffix:semicolon
-id|__pmac
 r_static
 r_void
+id|__pmac
 DECL|function|draw_byte_32
 id|draw_byte_32
 c_func
@@ -13862,9 +13864,9 @@ id|rb
 suffix:semicolon
 )brace
 )brace
-id|__pmac
 r_static
 r_void
+id|__pmac
 DECL|function|draw_byte_16
 id|draw_byte_16
 c_func
@@ -14038,9 +14040,9 @@ id|rb
 suffix:semicolon
 )brace
 )brace
-id|__pmac
 r_static
 r_void
+id|__pmac
 DECL|function|draw_byte_8
 id|draw_byte_8
 c_func
@@ -14170,8 +14172,7 @@ id|rb
 suffix:semicolon
 )brace
 )brace
-id|__pmac
-DECL|variable|vga_font
+DECL|variable|__pmacdata
 r_static
 r_int
 r_char
@@ -14179,6 +14180,7 @@ id|vga_font
 (braket
 id|cmapsz
 )braket
+id|__pmacdata
 op_assign
 (brace
 l_int|0x00

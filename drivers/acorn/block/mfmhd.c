@@ -1822,7 +1822,7 @@ suffix:semicolon
 )brace
 suffix:semicolon
 multiline_comment|/* Result read */
-multiline_comment|/*console_printf (&quot;mfm_rw_intr nearexit [%02X]&bslash;n&quot;, inb(mfm_IRQPollLoc)); */
+multiline_comment|/*console_printf (&quot;mfm_rw_intr nearexit [%02X]&bslash;n&quot;, __raw_readb(mfm_IRQPollLoc)); */
 multiline_comment|/* If end of command move on */
 r_if
 c_cond
@@ -5933,9 +5933,13 @@ l_int|0x800
 suffix:semicolon
 id|mfm_IRQPollLoc
 op_assign
+id|ioaddr
+c_func
+(paren
 id|mfm_addr
 op_plus
 l_int|0x400
+)paren
 suffix:semicolon
 id|mfm_irqenable
 op_assign
@@ -6020,11 +6024,7 @@ id|mfm_addr
 suffix:semicolon
 id|hdc63463_irqpolladdress
 op_assign
-id|ioaddr
-c_func
-(paren
 id|mfm_IRQPollLoc
-)paren
 suffix:semicolon
 id|hdc63463_irqpollmask
 op_assign

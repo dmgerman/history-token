@@ -13,14 +13,14 @@ DECL|macro|SIG
 mdefine_line|#define SIG(A,B) ((A &lt;&lt; 8) | B)
 multiline_comment|/* This is a way of ensuring that we have something in the system&n;   use fields that is compatible with Rock Ridge */
 DECL|macro|CHECK_SP
-mdefine_line|#define CHECK_SP(FAIL)&t;       &t;&t;&t;&bslash;&n;      if(rr-&gt;u.SP.magic[0] != 0xbe) FAIL;&t;&bslash;&n;      if(rr-&gt;u.SP.magic[1] != 0xef) FAIL;
+mdefine_line|#define CHECK_SP(FAIL)&t;       &t;&t;&t;&bslash;&n;      if(rr-&gt;u.SP.magic[0] != 0xbe) FAIL;&t;&bslash;&n;      if(rr-&gt;u.SP.magic[1] != 0xef) FAIL;       &bslash;&n;      inode-&gt;i_sb-&gt;u.isofs_sb.s_rock_offset=rr-&gt;u.SP.skip;
 multiline_comment|/* We define a series of macros because each function must do exactly the&n;   same thing in certain places.  We use the macros to ensure that everything&n;   is done correctly */
 DECL|macro|CONTINUE_DECLS
 mdefine_line|#define CONTINUE_DECLS &bslash;&n;  int cont_extent = 0, cont_offset = 0, cont_size = 0;   &bslash;&n;  void * buffer = 0
 DECL|macro|CHECK_CE
 mdefine_line|#define CHECK_CE&t;       &t;&t;&t;&bslash;&n;      {cont_extent = isonum_733(rr-&gt;u.CE.extent); &bslash;&n;      cont_offset = isonum_733(rr-&gt;u.CE.offset); &bslash;&n;      cont_size = isonum_733(rr-&gt;u.CE.size);}
 DECL|macro|SETUP_ROCK_RIDGE
-mdefine_line|#define SETUP_ROCK_RIDGE(DE,CHR,LEN)&t;      &t;&t;      &t;&bslash;&n;  {LEN= sizeof(struct iso_directory_record) + DE-&gt;name_len[0];&t;&bslash;&n;  if(LEN &amp; 1) LEN++;&t;&t;&t;&t;&t;&t;&bslash;&n;  CHR = ((unsigned char *) DE) + LEN;&t;&t;&t;&t;&bslash;&n;  LEN = *((unsigned char *) DE) - LEN;}
+mdefine_line|#define SETUP_ROCK_RIDGE(DE,CHR,LEN)&t;      &t;&t;      &t;&bslash;&n;  {LEN= sizeof(struct iso_directory_record) + DE-&gt;name_len[0];&t;&bslash;&n;  if(LEN &amp; 1) LEN++;&t;&t;&t;&t;&t;&t;&bslash;&n;  CHR = ((unsigned char *) DE) + LEN;&t;&t;&t;&t;&bslash;&n;  LEN = *((unsigned char *) DE) - LEN;                          &bslash;&n;  if (inode-&gt;i_sb-&gt;u.isofs_sb.s_rock_offset!=-1)                &bslash;&n;  {                                                             &bslash;&n;     LEN-=inode-&gt;i_sb-&gt;u.isofs_sb.s_rock_offset;                &bslash;&n;     CHR+=inode-&gt;i_sb-&gt;u.isofs_sb.s_rock_offset;                &bslash;&n;     if (LEN&lt;0) LEN=0;                                          &bslash;&n;  }                                                             &bslash;&n;}                                     
 DECL|macro|MAYBE_CONTINUE
 mdefine_line|#define MAYBE_CONTINUE(LABEL,DEV) &bslash;&n;  {if (buffer) kfree(buffer); &bslash;&n;  if (cont_extent){ &bslash;&n;    int block, offset, offset1; &bslash;&n;    struct buffer_head * pbh; &bslash;&n;    buffer = kmalloc(cont_size,GFP_KERNEL); &bslash;&n;    if (!buffer) goto out; &bslash;&n;    block = cont_extent; &bslash;&n;    offset = cont_offset; &bslash;&n;    offset1 = 0; &bslash;&n;    pbh = bread(DEV-&gt;i_dev, block, ISOFS_BUFFER_SIZE(DEV)); &bslash;&n;    if(pbh){       &bslash;&n;      memcpy(buffer + offset1, pbh-&gt;b_data + offset, cont_size - offset1); &bslash;&n;      brelse(pbh); &bslash;&n;      chr = (unsigned char *) buffer; &bslash;&n;      len = cont_size; &bslash;&n;      cont_extent = 0; &bslash;&n;      cont_size = 0; &bslash;&n;      cont_offset = 0; &bslash;&n;      goto LABEL; &bslash;&n;    }    &bslash;&n;    printk(&quot;Unable to read rock-ridge attributes&bslash;n&quot;);    &bslash;&n;  }}
 multiline_comment|/* This is the inner layer of the get filename routine, and is called&n;   for each system area and continuation record related to the file */
@@ -711,10 +711,10 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-DECL|function|parse_rock_ridge_inode
+DECL|function|parse_rock_ridge_inode_internal
 r_int
 (def_block
-id|parse_rock_ridge_inode
+id|parse_rock_ridge_inode_internal
 c_func
 (paren
 r_struct
@@ -726,6 +726,9 @@ r_struct
 id|inode
 op_star
 id|inode
+comma
+r_int
+id|regard_xa
 )paren
 (brace
 r_int
@@ -761,6 +764,33 @@ id|chr
 comma
 id|len
 )paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|regard_xa
+)paren
+(brace
+id|chr
+op_add_assign
+l_int|14
+suffix:semicolon
+id|len
+op_sub_assign
+l_int|14
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|len
+OL
+l_int|0
+)paren
+id|len
+op_assign
+l_int|0
+suffix:semicolon
+)brace
 suffix:semicolon
 id|repeat
 suffix:colon
@@ -1733,6 +1763,11 @@ r_if
 c_cond
 (paren
 (paren
+op_logical_neg
+id|rootflag
+)paren
+op_logical_and
+(paren
 id|rr-&gt;u.SL.flags
 op_amp
 l_int|1
@@ -1779,6 +1814,79 @@ r_return
 id|rpnt
 suffix:semicolon
 )brace
+DECL|function|parse_rock_ridge_inode
+r_int
+id|parse_rock_ridge_inode
+c_func
+(paren
+r_struct
+id|iso_directory_record
+op_star
+id|de
+comma
+r_struct
+id|inode
+op_star
+id|inode
+)paren
+(brace
+r_int
+id|result
+op_assign
+id|parse_rock_ridge_inode_internal
+c_func
+(paren
+id|de
+comma
+id|inode
+comma
+l_int|0
+)paren
+suffix:semicolon
+multiline_comment|/* if rockridge flag was reset and we didn&squot;t look for attributes&n;    * behind eventual XA attributes, have a look there */
+r_if
+c_cond
+(paren
+(paren
+id|inode-&gt;i_sb-&gt;u.isofs_sb.s_rock_offset
+op_eq
+op_minus
+l_int|1
+)paren
+op_logical_and
+(paren
+id|inode-&gt;i_sb-&gt;u.isofs_sb.s_rock
+op_eq
+l_int|2
+)paren
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_DEBUG
+l_string|&quot;scanning for RockRidge behind XA attributes&bslash;n&quot;
+)paren
+suffix:semicolon
+id|result
+op_assign
+id|parse_rock_ridge_inode_internal
+c_func
+(paren
+id|de
+comma
+id|inode
+comma
+l_int|14
+)paren
+suffix:semicolon
+)brace
+suffix:semicolon
+r_return
+id|result
+suffix:semicolon
+)brace
+suffix:semicolon
 multiline_comment|/* readpage() for symlinks: reads symlink contents into the page and either&n;   makes it uptodate and returns 0 or returns error (-EIO) */
 DECL|function|rock_ridge_symlink_readpage
 r_static

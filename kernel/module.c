@@ -68,7 +68,6 @@ id|weak
 )paren
 suffix:semicolon
 DECL|variable|kernel_module
-r_static
 r_struct
 id|module
 id|kernel_module

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * Linux driver attachment glue for PCI based controllers.&n; *&n; * Copyright (c) 2000 Adaptec Inc.&n; * All rights reserved.&n; *&n; * Redistribution and use in source and binary forms, with or without&n; * modification, are permitted provided that the following conditions&n; * are met:&n; * 1. Redistributions of source code must retain the above copyright&n; *    notice, this list of conditions, and the following disclaimer,&n; *    without modification.&n; * 2. The name of the author may not be used to endorse or promote products&n; *    derived from this software without specific prior written permission.&n; *&n; * Alternatively, this software may be distributed under the terms of the&n; * GNU Public License (&quot;GPL&quot;).&n; *&n; * THIS SOFTWARE IS PROVIDED BY THE AUTHOR AND CONTRIBUTORS ``AS IS&squot;&squot; AND&n; * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE&n; * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE&n; * ARE DISCLAIMED. IN NO EVENT SHALL THE AUTHOR OR CONTRIBUTORS BE LIABLE FOR&n; * ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL&n; * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS&n; * OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)&n; * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT&n; * LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY&n; * OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF&n; * SUCH DAMAGE.&n; *&n; * $Id: //depot/src/linux/drivers/scsi/aic7xxx/aic7xxx_linux_pci.c#17 $&n; */
+multiline_comment|/*&n; * Linux driver attachment glue for PCI based controllers.&n; *&n; * Copyright (c) 2000, 2001 Adaptec Inc.&n; * All rights reserved.&n; *&n; * Redistribution and use in source and binary forms, with or without&n; * modification, are permitted provided that the following conditions&n; * are met:&n; * 1. Redistributions of source code must retain the above copyright&n; *    notice, this list of conditions, and the following disclaimer,&n; *    without modification.&n; * 2. The name of the author may not be used to endorse or promote products&n; *    derived from this software without specific prior written permission.&n; *&n; * Alternatively, this software may be distributed under the terms of the&n; * GNU Public License (&quot;GPL&quot;).&n; *&n; * THIS SOFTWARE IS PROVIDED BY THE AUTHOR AND CONTRIBUTORS ``AS IS&squot;&squot; AND&n; * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE&n; * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE&n; * ARE DISCLAIMED. IN NO EVENT SHALL THE AUTHOR OR CONTRIBUTORS BE LIABLE FOR&n; * ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL&n; * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS&n; * OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)&n; * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT&n; * LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY&n; * OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF&n; * SUCH DAMAGE.&n; *&n; * $Id: //depot/src/linux/drivers/scsi/aic7xxx/aic7xxx_linux_pci.c#23 $&n; */
 macro_line|#include &quot;aic7xxx_osm.h&quot;
 macro_line|#if LINUX_VERSION_CODE &lt; KERNEL_VERSION(2,4,0)
 DECL|struct|pci_device_id
@@ -26,7 +26,6 @@ id|ent
 )paren
 suffix:semicolon
 macro_line|#if LINUX_VERSION_CODE &gt;= KERNEL_VERSION(2,4,0)
-macro_line|#include &lt;linux/module.h&gt;
 r_static
 r_void
 id|ahc_linux_pci_dev_remove
@@ -38,7 +37,7 @@ op_star
 id|pdev
 )paren
 suffix:semicolon
-multiline_comment|/* We do our own ID filtering.  So we grab all Adaptec SCSI storage class&n; * devices here.&n; */
+multiline_comment|/* We do our own ID filtering.  So, grab all SCSI storage class devices. */
 DECL|variable|ahc_linux_pci_id_table
 r_static
 r_struct
@@ -88,14 +87,6 @@ comma
 l_int|0
 )brace
 )brace
-suffix:semicolon
-id|MODULE_DEVICE_TABLE
-c_func
-(paren
-id|pci
-comma
-id|ahc_linux_pci_id_table
-)paren
 suffix:semicolon
 DECL|variable|aic7xxx_pci_driver
 r_struct
@@ -371,6 +362,103 @@ c_func
 id|pdev
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+r_sizeof
+(paren
+id|bus_addr_t
+)paren
+OG
+l_int|4
+macro_line|#if LINUX_VERSION_CODE &gt;= KERNEL_VERSION(2,4,3)
+op_logical_and
+id|ahc_linux_get_memsize
+c_func
+(paren
+)paren
+OG
+l_int|0x80000000
+op_logical_and
+id|pci_set_dma_mask
+c_func
+(paren
+id|pdev
+comma
+l_int|0x7FFFFFFFFFULL
+)paren
+op_eq
+l_int|0
+)paren
+(brace
+macro_line|#else
+op_logical_and
+id|ahc_linux_get_memsize
+c_func
+(paren
+)paren
+OG
+l_int|0x80000000
+)paren
+(brace
+id|ahc-&gt;dev_softc-&gt;dma_mask
+op_assign
+(paren
+id|bus_addr_t
+)paren
+(paren
+l_int|0x7FFFFFFFFFULL
+op_amp
+(paren
+(paren
+l_int|1ULL
+op_lshift
+(paren
+r_sizeof
+(paren
+id|bus_addr_t
+)paren
+op_star
+l_int|8
+)paren
+)paren
+op_minus
+l_int|1
+)paren
+)paren
+suffix:semicolon
+macro_line|#endif
+id|ahc-&gt;flags
+op_or_assign
+id|AHC_39BIT_ADDRESSING
+suffix:semicolon
+id|ahc-&gt;platform_data-&gt;hw_dma_mask
+op_assign
+(paren
+id|bus_addr_t
+)paren
+(paren
+l_int|0x7FFFFFFFFFULL
+op_amp
+(paren
+(paren
+l_int|1ULL
+op_lshift
+(paren
+r_sizeof
+(paren
+id|bus_addr_t
+)paren
+op_star
+l_int|8
+)paren
+)paren
+op_minus
+l_int|1
+)paren
+)paren
+suffix:semicolon
+)brace
 macro_line|#endif
 id|ahc-&gt;dev_softc
 op_assign
@@ -625,6 +713,7 @@ suffix:semicolon
 id|u_long
 id|base
 suffix:semicolon
+macro_line|#ifdef MMAPIO
 id|u_long
 id|start
 suffix:semicolon
@@ -634,6 +723,7 @@ suffix:semicolon
 id|u_long
 id|base_offset
 suffix:semicolon
+macro_line|#endif
 r_uint8
 op_star
 id|maddr

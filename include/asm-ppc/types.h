@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * BK Id: SCCS/s.types.h 1.5 05/17/01 18:14:26 cort&n; */
+multiline_comment|/*&n; * BK Id: SCCS/s.types.h 1.8 07/07/01 13:37:26 paulus&n; */
 macro_line|#ifndef _PPC_TYPES_H
 DECL|macro|_PPC_TYPES_H
 mdefine_line|#define _PPC_TYPES_H
@@ -145,13 +145,14 @@ r_typedef
 id|u32
 id|dma_addr_t
 suffix:semicolon
+macro_line|#endif /* __KERNEL__ */
+multiline_comment|/*&n; * XXX allowed outside of __KERNEL__ for now, until glibc gets&n; * a proper set of asm headers of its own.  -- paulus&n; */
 DECL|typedef|umode_t
 r_typedef
 r_int
 r_int
 id|umode_t
 suffix:semicolon
-macro_line|#endif /* __KERNEL__ */
 macro_line|#endif /* __ASSEMBLY__ */
 macro_line|#endif
 eof

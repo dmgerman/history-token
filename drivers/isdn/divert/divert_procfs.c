@@ -1123,29 +1123,6 @@ multiline_comment|/* success */
 )brace
 multiline_comment|/* isdn_divert_ioctl */
 macro_line|#ifdef CONFIG_PROC_FS
-r_static
-id|loff_t
-DECL|function|isdn_divert_lseek
-id|isdn_divert_lseek
-c_func
-(paren
-r_struct
-id|file
-op_star
-id|file
-comma
-id|loff_t
-id|offset
-comma
-r_int
-id|orig
-)paren
-(brace
-r_return
-op_minus
-id|ESPIPE
-suffix:semicolon
-)brace
 DECL|variable|isdn_fops
 r_static
 r_struct
@@ -1155,7 +1132,7 @@ op_assign
 (brace
 id|llseek
 suffix:colon
-id|isdn_divert_lseek
+id|no_llseek
 comma
 id|read
 suffix:colon

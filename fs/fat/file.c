@@ -1,7 +1,4 @@
 multiline_comment|/*&n; *  linux/fs/fat/file.c&n; *&n; *  Written 1992,1993 by Werner Almesberger&n; *&n; *  regular file handling primitives for fat-based filesystems&n; */
-DECL|macro|ASC_LINUX_VERSION
-mdefine_line|#define ASC_LINUX_VERSION(V, P, S)&t;(((V) * 65536) + ((P) * 256) + (S))
-macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/locks.h&gt;
 macro_line|#include &lt;linux/fs.h&gt;
@@ -14,11 +11,6 @@ macro_line|#include &lt;linux/pagemap.h&gt;
 macro_line|#include &lt;linux/fat_cvf.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
-macro_line|#include &quot;msbuffer.h&quot;
-DECL|macro|MIN
-mdefine_line|#define MIN(a,b) (((a) &lt; (b)) ? (a) : (b))
-DECL|macro|MAX
-mdefine_line|#define MAX(a,b) (((a) &gt; (b)) ? (a) : (b))
 DECL|macro|PRINTK
 mdefine_line|#define PRINTK(x)
 DECL|macro|Printk
@@ -29,6 +21,10 @@ id|file_operations
 id|fat_file_operations
 op_assign
 (brace
+id|llseek
+suffix:colon
+id|generic_file_llseek
+comma
 id|read
 suffix:colon
 id|fat_file_read
@@ -243,6 +239,8 @@ c_func
 (paren
 id|inode
 )paren
+OL
+l_int|0
 )paren
 r_return
 op_minus

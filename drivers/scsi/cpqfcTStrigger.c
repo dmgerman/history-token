@@ -2,6 +2,8 @@ singleline_comment|// Routine to trigger Finisar GTA analyzer. Runs of GPIO2
 singleline_comment|// NOTE: DEBUG ONLY! Could interfere with FCMNGR/Miniport operation
 singleline_comment|// since it writes directly to the Tachyon board.  This function
 singleline_comment|// developed for Compaq HBA Tachyon TS v1.2 (Rev X5 PCB)
+macro_line|#include &quot;cpqfcTStrigger.h&quot;
+macro_line|#if TRIGGERABLE_HBA
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/ioport.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
@@ -67,4 +69,5 @@ l_string|&quot; -GPIO0 set- &quot;
 suffix:semicolon
 )brace
 )brace
+macro_line|#endif
 eof

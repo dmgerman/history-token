@@ -995,6 +995,7 @@ suffix:semicolon
 DECL|function|printEEPROMInfo
 r_static
 r_void
+id|__init
 id|printEEPROMInfo
 c_func
 (paren
@@ -1508,6 +1509,7 @@ multiline_comment|/* This is the real probe routine.  Linux has a history of fri
 DECL|function|eepro_probe1
 r_static
 r_int
+id|__init
 id|eepro_probe1
 c_func
 (paren

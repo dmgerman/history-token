@@ -1021,7 +1021,7 @@ comma
 r_int
 id|namlen
 comma
-id|off_t
+id|loff_t
 id|offset
 comma
 id|ino_t
@@ -1443,7 +1443,7 @@ comma
 r_int
 id|namlen
 comma
-id|off_t
+id|loff_t
 id|offset
 comma
 id|ino_t

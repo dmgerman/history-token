@@ -1,20 +1,21 @@
-multiline_comment|/*&n; *  linux/arch/arm/mach-integrator/time.c&n; *&n; *  Copyright (C) 2000 Deep Blue Solutions&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; */
+multiline_comment|/*&n; *  linux/arch/arm/mach-integrator/time.c&n; *&n; *  Copyright (C) 2000-2001 Deep Blue Solutions&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; */
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;asm/hardware.h&gt;
+macro_line|#include &lt;asm/io.h&gt;
 DECL|macro|RTC_DR
-mdefine_line|#define RTC_DR&t;&t;(*(unsigned long *)(IO_ADDRESS(INTEGRATOR_RTC_BASE) + 0))
+mdefine_line|#define RTC_DR&t;&t;(IO_ADDRESS(INTEGRATOR_RTC_BASE) + 0)
 DECL|macro|RTC_MR
-mdefine_line|#define RTC_MR&t;&t;(*(unsigned long *)(IO_ADDRESS(INTEGRATOR_RTC_BASE) + 4))
+mdefine_line|#define RTC_MR&t;&t;(IO_ADDRESS(INTEGRATOR_RTC_BASE) + 4)
 DECL|macro|RTC_STAT
-mdefine_line|#define RTC_STAT&t;(*(unsigned long *)(IO_ADDRESS(INTEGRATOR_RTC_BASE) + 8))
+mdefine_line|#define RTC_STAT&t;(IO_ADDRESS(INTEGRATOR_RTC_BASE) + 8)
 DECL|macro|RTC_EOI
-mdefine_line|#define RTC_EOI&t;&t;(*(unsigned long *)(IO_ADDRESS(INTEGRATOR_RTC_BASE) + 8))
+mdefine_line|#define RTC_EOI&t;&t;(IO_ADDRESS(INTEGRATOR_RTC_BASE) + 8)
 DECL|macro|RTC_LR
-mdefine_line|#define RTC_LR&t;&t;(*(unsigned long *)(IO_ADDRESS(INTEGRATOR_RTC_BASE) + 12))
+mdefine_line|#define RTC_LR&t;&t;(IO_ADDRESS(INTEGRATOR_RTC_BASE) + 12)
 DECL|macro|RTC_CR
-mdefine_line|#define RTC_CR&t;&t;(*(unsigned long *)(IO_ADDRESS(INTEGRATOR_RTC_BASE) + 16))
+mdefine_line|#define RTC_CR&t;&t;(IO_ADDRESS(INTEGRATOR_RTC_BASE) + 16)
 DECL|macro|RTC_CR_MIE
 mdefine_line|#define RTC_CR_MIE&t;0x00000001
 r_extern
@@ -36,9 +37,13 @@ c_func
 r_void
 )paren
 (brace
-id|RTC_LR
-op_assign
+id|__raw_writel
+c_func
+(paren
 id|xtime.tv_sec
+comma
+id|RTC_LR
+)paren
 suffix:semicolon
 r_return
 l_int|1
@@ -53,17 +58,29 @@ c_func
 r_void
 )paren
 (brace
+id|__raw_writel
+c_func
+(paren
+l_int|0
+comma
 id|RTC_CR
-op_assign
-l_int|0
+)paren
 suffix:semicolon
-id|RTC_EOI
-op_assign
+id|__raw_writel
+c_func
+(paren
 l_int|0
+comma
+id|RTC_EOI
+)paren
 suffix:semicolon
 id|xtime.tv_sec
 op_assign
+id|__raw_readl
+c_func
+(paren
 id|RTC_DR
+)paren
 suffix:semicolon
 id|set_rtc
 op_assign

@@ -18,8 +18,8 @@ DECL|macro|__PORT_PCIO
 mdefine_line|#define __PORT_PCIO(x)&t;(!((x) &amp; 0x80000000))
 multiline_comment|/*&n; * Dynamic IO functions - let the compiler&n; * optimize the expressions&n; */
 DECL|function|__outb
-r_extern
-id|__inline__
+r_static
+r_inline
 r_void
 id|__outb
 (paren
@@ -77,8 +77,8 @@ l_string|&quot;cc&quot;
 suffix:semicolon
 )brace
 DECL|function|__outw
-r_extern
-id|__inline__
+r_static
+r_inline
 r_void
 id|__outw
 (paren
@@ -140,8 +140,8 @@ l_string|&quot;cc&quot;
 suffix:semicolon
 )brace
 DECL|function|__outl
-r_extern
-id|__inline__
+r_static
+r_inline
 r_void
 id|__outl
 (paren
@@ -199,10 +199,10 @@ l_string|&quot;cc&quot;
 suffix:semicolon
 )brace
 DECL|macro|DECLARE_DYN_IN
-mdefine_line|#define DECLARE_DYN_IN(sz,fnsuffix,instr)&t;&t;&t;&t;&t;&bslash;&n;extern __inline__ unsigned sz __in##fnsuffix (unsigned int port)&t;&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;unsigned long temp, value;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;__asm__ __volatile__(&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&quot;tst&t;%2, #0x80000000&bslash;n&bslash;t&quot;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&quot;mov&t;%0, %4&bslash;n&bslash;t&quot;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&quot;addeq&t;%0, %0, %3&bslash;n&bslash;t&quot;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&quot;ldr&quot; instr &quot;&t;%1, [%0, %2, lsl #2]&t;@ in&quot; #fnsuffix&t;&t;&t;&bslash;&n;&t;: &quot;=&amp;r&quot; (temp), &quot;=r&quot; (value)&t;&t;&t;&t;&t;&t;&bslash;&n;&t;: &quot;r&quot; (port), &quot;Ir&quot; (PCIO_BASE - IO_BASE), &quot;Ir&quot; (IO_BASE)&t;&t;&bslash;&n;&t;: &quot;cc&quot;);&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;return (unsigned sz)value;&t;&t;&t;&t;&t;&t;&bslash;&n;}
+mdefine_line|#define DECLARE_DYN_IN(sz,fnsuffix,instr)&t;&t;&t;&t;&t;&bslash;&n;static inline unsigned sz __in##fnsuffix (unsigned int port)&t;&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;unsigned long temp, value;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;__asm__ __volatile__(&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&quot;tst&t;%2, #0x80000000&bslash;n&bslash;t&quot;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&quot;mov&t;%0, %4&bslash;n&bslash;t&quot;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&quot;addeq&t;%0, %0, %3&bslash;n&bslash;t&quot;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&quot;ldr&quot; instr &quot;&t;%1, [%0, %2, lsl #2]&t;@ in&quot; #fnsuffix&t;&t;&t;&bslash;&n;&t;: &quot;=&amp;r&quot; (temp), &quot;=r&quot; (value)&t;&t;&t;&t;&t;&t;&bslash;&n;&t;: &quot;r&quot; (port), &quot;Ir&quot; (PCIO_BASE - IO_BASE), &quot;Ir&quot; (IO_BASE)&t;&t;&bslash;&n;&t;: &quot;cc&quot;);&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;return (unsigned sz)value;&t;&t;&t;&t;&t;&t;&bslash;&n;}
 DECL|function|__ioaddr
-r_extern
-id|__inline__
+r_static
+r_inline
 r_int
 r_int
 id|__ioaddr

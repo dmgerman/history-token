@@ -35,8 +35,8 @@ id|spinlock_t
 id|dma_spin_lock
 suffix:semicolon
 DECL|function|claim_dma_lock
-r_extern
-id|__inline__
+r_static
+r_inline
 r_int
 r_int
 id|claim_dma_lock
@@ -63,8 +63,8 @@ id|flags
 suffix:semicolon
 )brace
 DECL|function|release_dma_lock
-r_extern
-id|__inline__
+r_static
+r_inline
 r_void
 id|release_dma_lock
 c_func
@@ -239,6 +239,10 @@ suffix:semicolon
 macro_line|#else
 DECL|macro|isa_dma_bridge_buggy
 mdefine_line|#define isa_dma_bridge_buggy    (0)
+macro_line|#endif
+macro_line|#ifndef arch_adjust_zones
+DECL|macro|arch_adjust_zones
+mdefine_line|#define arch_adjust_zones(node,size,holes)
 macro_line|#endif
 macro_line|#endif /* _ARM_DMA_H */
 eof

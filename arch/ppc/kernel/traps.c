@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * BK Id: SCCS/s.traps.c 1.14 06/15/01 13:00:20 paulus&n; */
+multiline_comment|/*&n; * BK Id: SCCS/s.traps.c 1.16 07/31/01 10:53:34 trini&n; */
 multiline_comment|/*&n; *  linux/arch/ppc/kernel/traps.c&n; *&n; *  Copyright (C) 1995-1996  Gary Thomas (gdt@linuxppc.org)&n; *&n; *  This program is free software; you can redistribute it and/or&n; *  modify it under the terms of the GNU General Public License&n; *  as published by the Free Software Foundation; either version&n; *  2 of the License, or (at your option) any later version.&n; *&n; *  Modified by Cort Dougan (cort@cs.nmt.edu)&n; *  and Paul Mackerras (paulus@cs.anu.edu.au)&n; */
 multiline_comment|/*&n; * This file handles the architecture-dependent parts of hardware exceptions&n; */
 macro_line|#include &lt;linux/errno.h&gt;
@@ -40,6 +40,9 @@ op_star
 comma
 r_int
 r_int
+comma
+r_int
+id|sig
 )paren
 suffix:semicolon
 macro_line|#ifdef CONFIG_XMON
@@ -1186,6 +1189,8 @@ c_func
 id|regs
 comma
 id|regs-&gt;dar
+comma
+id|SIGSEGV
 )paren
 suffix:semicolon
 r_return

@@ -222,7 +222,7 @@ mdefine_line|#define pte_dirty(pte)&t;&t;&t;(pte_val(pte) &amp; L_PTE_DIRTY)
 DECL|macro|pte_young
 mdefine_line|#define pte_young(pte)&t;&t;&t;(pte_val(pte) &amp; L_PTE_YOUNG)
 DECL|macro|PTE_BIT_FUNC
-mdefine_line|#define PTE_BIT_FUNC(fn,op)&t;&t;&t;&bslash;&n;extern inline pte_t pte_##fn(pte_t pte) { pte_val(pte) op; return pte; }
+mdefine_line|#define PTE_BIT_FUNC(fn,op)&t;&t;&t;&bslash;&n;static inline pte_t pte_##fn(pte_t pte) { pte_val(pte) op; return pte; }
 multiline_comment|/*PTE_BIT_FUNC(rdprotect, &amp;= ~L_PTE_USER);*/
 multiline_comment|/*PTE_BIT_FUNC(mkread,    |= L_PTE_USER);*/
 id|PTE_BIT_FUNC

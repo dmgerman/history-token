@@ -800,7 +800,7 @@ mdefine_line|#define NETIF_F_DYNALLOC&t;16&t;/* Self-dectructable device. */
 DECL|macro|NETIF_F_HIGHDMA
 mdefine_line|#define NETIF_F_HIGHDMA&t;&t;32&t;/* Can DMA to high memory. */
 DECL|macro|NETIF_F_FRAGLIST
-mdefine_line|#define NETIF_F_FRAGLIST&t;1&t;/* Scatter/gather IO. */
+mdefine_line|#define NETIF_F_FRAGLIST&t;64&t;/* Scatter/gather IO. */
 multiline_comment|/* Called after device is detached from network. */
 DECL|member|uninit
 r_void

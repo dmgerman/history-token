@@ -1,7 +1,8 @@
-multiline_comment|/*&n; *  linux/kernel/arch/arm/drivers/block/fd1772.c&n; *  Based on ataflop.c in the m68k Linux&n; *  Copyright (C) 1993  Greg Harp&n; *  Atari Support by Bjoern Brauel, Roman Hodek&n; *  Archimedes Support by Dave Gilbert (gilbertd@cs.man.ac.uk)&n; *&n; *  Big cleanup Sep 11..14 1994 Roman Hodek:&n; *   - Driver now works interrupt driven&n; *   - Support for two drives; should work, but I cannot test that :-(&n; *   - Reading is done in whole tracks and buffered to speed up things&n; *   - Disk change detection and drive deselecting after motor-off&n; *     similar to TOS&n; *   - Autodetection of disk format (DD/HD); untested yet, because I&n; *     don&squot;t have an HD drive :-(&n; *&n; *  Fixes Nov 13 1994 Martin Schaller:&n; *   - Autodetection works now&n; *   - Support for 5 1/4&quot; disks&n; *   - Removed drive type (unknown on atari)&n; *   - Do seeks with 8 Mhz&n; *&n; *  Changes by Andreas Schwab:&n; *   - After errors in multiple read mode try again reading single sectors&n; *  (Feb 1995):&n; *   - Clean up error handling&n; *   - Set blk_size for proper size checking&n; *   - Initialize track register when testing presence of floppy&n; *   - Implement some ioctl&squot;s&n; *&n; *  Changes by Torsten Lang:&n; *   - When probing the floppies we should add the FDC1772CMDADD_H flag since&n; *     the FDC1772 will otherwise wait forever when no disk is inserted...&n; *&n; *  Things left to do:&n; *   - Formatting&n; *   - Maybe a better strategy for disk change detection (does anyone&n; *     know one?)&n; *   - There are some strange problems left: The strangest one is&n; *     that, at least on my TT (4+4MB), the first 2 Bytes of the last&n; *     page of the TT-Ram (!) change their contents (some bits get&n; *     set) while a floppy DMA is going on. But there are no accesses&n; *     to these memory locations from the kernel... (I tested that by&n; *     making the page read-only). I cannot explain what&squot;s going on...&n; *   - Sometimes the drive-change-detection stops to work. The&n; *     function is still called, but the WP bit always reads as 0...&n; *     Maybe a problem with the status reg mode or a timing problem.&n; *     Note 10/12/94: The change detection now seems to work reliably.&n; *     There is no proof, but I&squot;ve seen no hang for a long time...&n; *&n; * ARCHIMEDES changes: (gilbertd@cs.man.ac.uk)&n; *     26/12/95 - Changed all names starting with FDC to FDC1772&n; *                Removed all references to clock speed of FDC - we&squot;re stuck with 8MHz&n; *                Modified disk_type structure to remove HD formats&n; *&n; *      7/ 1/96 - Wrote FIQ code, removed most remaining atariisms&n; *&n; *     13/ 1/96 - Well I think its read a single sector; but there is a problem&n; *                fd_rwsec_done which is called in FIQ mode starts another transfer&n; *                off (in fd_rwsec) while still in FIQ mode.  Because its still in&n; *                FIQ mode it can&squot;t service the DMA and loses data. So need to&n; *                heavily restructure.&n; *     14/ 1/96 - Found that the definitions of the register numbers of the&n; *                FDC were multiplied by 2 in the header for the 16bit words&n; *                of the atari so half the writes were going in the wrong place.&n; *                Also realised that the FIQ entry didn&squot;t make any attempt to&n; *                preserve registers or return correctly; now in assembler.&n; *&n; *     11/ 2/96 - Hmm - doesn&squot;t work on real machine.  Auto detect doesn&squot;t&n; *                and hacking that past seems to wait forever - check motor&n; *                being turned on.&n; *&n; *     17/ 2/96 - still having problems - forcing track to -1 when selecting&n; *                new drives seems to allow it to read first few sectors&n; *                but then we get solid hangs at apparently random places&n; *                which change depending what is happening.&n; *&n; *      9/ 3/96 - Fiddled a lot of stuff around to move to kernel 1.3.35&n; *                A lot of fiddling in DMA stuff. Having problems with it&n; *                constnatly thinking its timeing out. Ah - its timeout&n; *                was set to (6*HZ) rather than jiffies+(6*HZ).  Now giving&n; *                duff data!&n; *&n; *      5/ 4/96 - Made it use the new IOC_ macros rather than *ioc&n; *                Hmm - giving unexpected FIQ and then timeouts&n; *     18/ 8/96 - Ran through indent -kr -i8&n; *                Some changes to disc change detect; don&squot;t know how well it&n; *                works.&n; *     24/ 8/96 - Put all the track buffering code back in from the atari&n; *                code - I wonder if it will still work... No :-)&n; *                Still works if I turn off track buffering.&n; *     25/ 8/96 - Changed the timer expires that I&squot;d added back to be &n; *                jiffies + ....; and it all sprang to life! Got 2.8K/sec&n; *                off a cp -r of a 679K disc (showed 94% cpu usage!)&n; *                (PC gets 14.3K/sec - 0% CPU!) Hmm - hard drive corrupt!&n; *                Also perhaps that compile was with cache off.&n; *                changed cli in fd_readtrack_check to cliIF&n; *                changed vmallocs to kmalloc (whats the difference!!)&n; *                Removed the busy wait loop in do_fd_request and replaced&n; *                by a routine on tq_immediate; only 11% cpu on a dd off the&n; *                raw disc - but the speed is the same.&n; *&t;1/ 9/96 - Idea (failed!) - set the &squot;disable spin-up seqeunce&squot;&n; *&t;&t;  when we read the track if we know the motor is on; didn&squot;t&n; *&t;&t;  help - perhaps we have to do it in stepping as well.&n; *&t;&t;  Nope. Still doesn&squot;t help.&n; *&t;&t;  Hmm - what seems to be happening is that fd_readtrack_check&n; *&t;&t;  is never getting called. Its job is to terminate the read&n; *&t;&t;  just after we think we should have got the data; otherwise&n; *&t;&t;  the fdc takes 1 second to timeout; which is what&squot;s happening&n; *&t;&t;  Now I can see &squot;readtrack_timer&squot; being set (which should do the&n; *&t;&t;  call); but it never seems to be called - hmm!&n; *&t;&t;  OK - I&squot;ve moved the check to my tq_immediate code -&n; *&t;&t;  and it WORKS! 13.95K/second at 19% CPU.&n; *&t;&t;  I wish I knew why that timer didn&squot;t work.....&n; *&n; *     16/11/96 - Fiddled and frigged for 2.0.18&n; *&n; * DAG 30/01/99 - Started frobbing for 2.2.1&n; * DAG 20/06/99 - A little more frobbing:&n; *     Included include/asm/uaccess.h for get_user/put_user&n; */
+multiline_comment|/*&n; *  linux/kernel/arch/arm/drivers/block/fd1772.c&n; *  Based on ataflop.c in the m68k Linux&n; *  Copyright (C) 1993  Greg Harp&n; *  Atari Support by Bjoern Brauel, Roman Hodek&n; *  Archimedes Support by Dave Gilbert (linux@treblig.org)&n; *&n; *  Big cleanup Sep 11..14 1994 Roman Hodek:&n; *   - Driver now works interrupt driven&n; *   - Support for two drives; should work, but I cannot test that :-(&n; *   - Reading is done in whole tracks and buffered to speed up things&n; *   - Disk change detection and drive deselecting after motor-off&n; *     similar to TOS&n; *   - Autodetection of disk format (DD/HD); untested yet, because I&n; *     don&squot;t have an HD drive :-(&n; *&n; *  Fixes Nov 13 1994 Martin Schaller:&n; *   - Autodetection works now&n; *   - Support for 5 1/4&quot; disks&n; *   - Removed drive type (unknown on atari)&n; *   - Do seeks with 8 Mhz&n; *&n; *  Changes by Andreas Schwab:&n; *   - After errors in multiple read mode try again reading single sectors&n; *  (Feb 1995):&n; *   - Clean up error handling&n; *   - Set blk_size for proper size checking&n; *   - Initialize track register when testing presence of floppy&n; *   - Implement some ioctl&squot;s&n; *&n; *  Changes by Torsten Lang:&n; *   - When probing the floppies we should add the FDC1772CMDADD_H flag since&n; *     the FDC1772 will otherwise wait forever when no disk is inserted...&n; *&n; *  Things left to do:&n; *   - Formatting&n; *   - Maybe a better strategy for disk change detection (does anyone&n; *     know one?)&n; *   - There are some strange problems left: The strangest one is&n; *     that, at least on my TT (4+4MB), the first 2 Bytes of the last&n; *     page of the TT-Ram (!) change their contents (some bits get&n; *     set) while a floppy DMA is going on. But there are no accesses&n; *     to these memory locations from the kernel... (I tested that by&n; *     making the page read-only). I cannot explain what&squot;s going on...&n; *   - Sometimes the drive-change-detection stops to work. The&n; *     function is still called, but the WP bit always reads as 0...&n; *     Maybe a problem with the status reg mode or a timing problem.&n; *     Note 10/12/94: The change detection now seems to work reliably.&n; *     There is no proof, but I&squot;ve seen no hang for a long time...&n; *&n; * ARCHIMEDES changes: (gilbertd@cs.man.ac.uk)&n; *     26/12/95 - Changed all names starting with FDC to FDC1772&n; *                Removed all references to clock speed of FDC - we&squot;re stuck with 8MHz&n; *                Modified disk_type structure to remove HD formats&n; *&n; *      7/ 1/96 - Wrote FIQ code, removed most remaining atariisms&n; *&n; *     13/ 1/96 - Well I think its read a single sector; but there is a problem&n; *                fd_rwsec_done which is called in FIQ mode starts another transfer&n; *                off (in fd_rwsec) while still in FIQ mode.  Because its still in&n; *                FIQ mode it can&squot;t service the DMA and loses data. So need to&n; *                heavily restructure.&n; *     14/ 1/96 - Found that the definitions of the register numbers of the&n; *                FDC were multiplied by 2 in the header for the 16bit words&n; *                of the atari so half the writes were going in the wrong place.&n; *                Also realised that the FIQ entry didn&squot;t make any attempt to&n; *                preserve registers or return correctly; now in assembler.&n; *&n; *     11/ 2/96 - Hmm - doesn&squot;t work on real machine.  Auto detect doesn&squot;t&n; *                and hacking that past seems to wait forever - check motor&n; *                being turned on.&n; *&n; *     17/ 2/96 - still having problems - forcing track to -1 when selecting&n; *                new drives seems to allow it to read first few sectors&n; *                but then we get solid hangs at apparently random places&n; *                which change depending what is happening.&n; *&n; *      9/ 3/96 - Fiddled a lot of stuff around to move to kernel 1.3.35&n; *                A lot of fiddling in DMA stuff. Having problems with it&n; *                constnatly thinking its timeing out. Ah - its timeout&n; *                was set to (6*HZ) rather than jiffies+(6*HZ).  Now giving&n; *                duff data!&n; *&n; *      5/ 4/96 - Made it use the new IOC_ macros rather than *ioc&n; *                Hmm - giving unexpected FIQ and then timeouts&n; *     18/ 8/96 - Ran through indent -kr -i8&n; *                Some changes to disc change detect; don&squot;t know how well it&n; *                works.&n; *     24/ 8/96 - Put all the track buffering code back in from the atari&n; *                code - I wonder if it will still work... No :-)&n; *                Still works if I turn off track buffering.&n; *     25/ 8/96 - Changed the timer expires that I&squot;d added back to be &n; *                jiffies + ....; and it all sprang to life! Got 2.8K/sec&n; *                off a cp -r of a 679K disc (showed 94% cpu usage!)&n; *                (PC gets 14.3K/sec - 0% CPU!) Hmm - hard drive corrupt!&n; *                Also perhaps that compile was with cache off.&n; *                changed cli in fd_readtrack_check to cliIF&n; *                changed vmallocs to kmalloc (whats the difference!!)&n; *                Removed the busy wait loop in do_fd_request and replaced&n; *                by a routine on tq_immediate; only 11% cpu on a dd off the&n; *                raw disc - but the speed is the same.&n; *&t;1/ 9/96 - Idea (failed!) - set the &squot;disable spin-up seqeunce&squot;&n; *&t;&t;  when we read the track if we know the motor is on; didn&squot;t&n; *&t;&t;  help - perhaps we have to do it in stepping as well.&n; *&t;&t;  Nope. Still doesn&squot;t help.&n; *&t;&t;  Hmm - what seems to be happening is that fd_readtrack_check&n; *&t;&t;  is never getting called. Its job is to terminate the read&n; *&t;&t;  just after we think we should have got the data; otherwise&n; *&t;&t;  the fdc takes 1 second to timeout; which is what&squot;s happening&n; *&t;&t;  Now I can see &squot;readtrack_timer&squot; being set (which should do the&n; *&t;&t;  call); but it never seems to be called - hmm!&n; *&t;&t;  OK - I&squot;ve moved the check to my tq_immediate code -&n; *&t;&t;  and it WORKS! 13.95K/second at 19% CPU.&n; *&t;&t;  I wish I knew why that timer didn&squot;t work.....&n; *&n; *     16/11/96 - Fiddled and frigged for 2.0.18&n; *&n; * DAG 30/01/99 - Started frobbing for 2.2.1&n; * DAG 20/06/99 - A little more frobbing:&n; *&t;&t;  Included include/asm/uaccess.h for get_user/put_user&n; *&n; * DAG  1/09/00 - Dusted off for 2.4.0-test7&n; *                MAX_SECTORS was name clashing so it is now FD1772_...&n; *                Minor parameter, name layouts for 2.4.x differences&n; */
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;linux/fcntl.h&gt;
+macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/timer.h&gt;
@@ -13,16 +14,15 @@ macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;asm/arch/oldlatches.h&gt;
-macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/bitops.h&gt;
 macro_line|#include &lt;asm/dma.h&gt;
 macro_line|#include &lt;asm/hardware.h&gt;
+macro_line|#include &lt;asm/hardware/ioc.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
-macro_line|#include &lt;asm/ioc.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;asm/mach-types.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
-macro_line|#include &lt;asm/segment.h&gt;
+macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 DECL|macro|MAJOR_NR
 mdefine_line|#define MAJOR_NR FLOPPY_MAJOR
@@ -31,9 +31,7 @@ mdefine_line|#define FLOPPY_DMA 0
 macro_line|#include &lt;linux/blk.h&gt;
 multiline_comment|/* Note: FD_MAX_UNITS could be redefined to 2 for the Atari (with&n; * little additional rework in this file). But I&squot;m not yet sure if&n; * some other code depends on the number of floppies... (It is defined&n; * in a public header!)&n; */
 macro_line|#if 0
-DECL|macro|FD_MAX_UNITS
 macro_line|#undef FD_MAX_UNITS
-DECL|macro|FD_MAX_UNITS
 mdefine_line|#define&t;FD_MAX_UNITS&t;2
 macro_line|#endif
 multiline_comment|/* Ditto worries for Arc - DAG */
@@ -286,8 +284,8 @@ id|FDC1772BASE
 suffix:semicolon
 )brace
 suffix:semicolon
-DECL|macro|MAX_SECTORS
-mdefine_line|#define&t;MAX_SECTORS&t;22
+DECL|macro|FD1772_MAX_SECTORS
+mdefine_line|#define&t;FD1772_MAX_SECTORS&t;22
 DECL|variable|DMABuffer
 r_int
 r_char
@@ -432,21 +430,15 @@ mdefine_line|#define FLOPPY_TIMEOUT&t;&t;(6*HZ)
 DECL|macro|RECALIBRATE_ERRORS
 mdefine_line|#define RECALIBRATE_ERRORS&t;4&t;/* After this many errors the drive&n;&t;&t;&t;&t;&t; * will be recalibrated. */
 DECL|macro|MAX_ERRORS
-mdefine_line|#define MAX_ERRORS&t;&t;&t;8&t;/* After this many errors the driver&n;&t;&t;&t;&t;&t;&t; * will give up. */
-DECL|variable|fd_timer
-r_static
-r_struct
-id|timer_list
-id|fd_timer
-suffix:semicolon
+mdefine_line|#define MAX_ERRORS&t;&t;8&t;/* After this many errors the driver&n;&t;&t;&t;&t;&t; * will give up. */
 DECL|macro|START_MOTOR_OFF_TIMER
-mdefine_line|#define&t;START_MOTOR_OFF_TIMER(delay)&t;&t;&t;&bslash;&n;    do {&t;&t;&t;&t;&t;&t;&bslash;&n;        motor_off_timer.expires = jiffies + (delay);&t;&t;&bslash;&n;        add_timer( &amp;motor_off_timer );&t;&t;&t;&bslash;&n;        MotorOffTrys = 0;&t;&t;&t;&t;&bslash;&n;&t;} while(0)
+mdefine_line|#define&t;START_MOTOR_OFF_TIMER(delay)&t;&t;&t;&t;&bslash;&n;&t;do {&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;motor_off_timer.expires = jiffies + (delay);&t;&bslash;&n;&t;&t;add_timer( &amp;motor_off_timer );&t;&t;&t;&bslash;&n;&t;&t;MotorOffTrys = 0;&t;&t;&t;&t;&bslash;&n;&t;} while(0)
 DECL|macro|START_CHECK_CHANGE_TIMER
-mdefine_line|#define&t;START_CHECK_CHANGE_TIMER(delay)&t;&t;&t;&t;&bslash;&n;    do {&t;&t;&t;&t;&t;&t;&t;&bslash;&n;        mod_timer(&amp;fd_timer, jiffies + (delay));&t;&t;&bslash;&n;&t;} while(0)
+mdefine_line|#define&t;START_CHECK_CHANGE_TIMER(delay)&t;&t;&t;&t;&bslash;&n;&t;do {&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;        mod_timer(&amp;fd_timer, jiffies + (delay));&t;&bslash;&n;&t;} while(0)
 DECL|macro|START_TIMEOUT
-mdefine_line|#define&t;START_TIMEOUT()&t;&t;&t;&t;&t;     &bslash;&n;    do {&t;&t;&t;&t;&t;&t;     &bslash;&n;        mod_timer(&amp;timeout_timer, jiffies+FLOPPY_TIMEOUT); &bslash;&n;&t;} while(0)
+mdefine_line|#define&t;START_TIMEOUT()&t;&t;&t;&t;&t;&t;&bslash;&n;&t;do {&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;mod_timer(&amp;timeout_timer, jiffies+FLOPPY_TIMEOUT); &bslash;&n;&t;} while(0)
 DECL|macro|STOP_TIMEOUT
-mdefine_line|#define&t;STOP_TIMEOUT()&t;&t;&t;&t;&t;&bslash;&n;    do {&t;&t;&t;&t;&t;&t;&bslash;&n;        del_timer( &amp;timeout_timer );&t;&t;&t;&bslash;&n;&t;} while(0)
+mdefine_line|#define&t;STOP_TIMEOUT()&t;&t;&t;&t;&t;&t;&bslash;&n;&t;do {&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;del_timer( &amp;timeout_timer );&t;&t;&t;&bslash;&n;&t;} while(0)
 DECL|macro|ENABLE_IRQ
 mdefine_line|#define ENABLE_IRQ() enable_irq(FIQ_FD1772+64);
 DECL|macro|DISABLE_IRQ
@@ -783,7 +775,7 @@ id|filp
 )paren
 suffix:semicolon
 r_static
-r_void
+r_int
 id|floppy_release
 c_func
 (paren
@@ -806,15 +798,10 @@ id|timer_list
 id|motor_off_timer
 op_assign
 (brace
-l_int|NULL
-comma
-l_int|NULL
-comma
-l_int|0
-comma
-l_int|0
-comma
+id|function
+suffix:colon
 id|fd_motor_off_timer
+comma
 )brace
 suffix:semicolon
 macro_line|#ifdef TRACKBUFFER
@@ -825,15 +812,10 @@ id|timer_list
 id|readtrack_timer
 op_assign
 (brace
-l_int|NULL
-comma
-l_int|NULL
-comma
-l_int|0
-comma
-l_int|0
-comma
+id|function
+suffix:colon
 id|fd_readtrack_check
+comma
 )brace
 suffix:semicolon
 macro_line|#endif
@@ -844,15 +826,23 @@ id|timer_list
 id|timeout_timer
 op_assign
 (brace
-l_int|NULL
-comma
-l_int|NULL
-comma
-l_int|0
-comma
-l_int|0
-comma
+id|function
+suffix:colon
 id|fd_times_out
+comma
+)brace
+suffix:semicolon
+DECL|variable|fd_timer
+r_static
+r_struct
+id|timer_list
+id|fd_timer
+op_assign
+(brace
+id|function
+suffix:colon
+id|check_change
+comma
 )brace
 suffix:semicolon
 multiline_comment|/* DAG: Haven&squot;t got a clue what this is? */
@@ -880,21 +870,6 @@ r_int
 id|side
 )paren
 (brace
-r_int
-r_int
-id|flags
-suffix:semicolon
-id|save_flags
-c_func
-(paren
-id|flags
-)paren
-suffix:semicolon
-id|cli
-c_func
-(paren
-)paren
-suffix:semicolon
 id|oldlatch_aupdate
 c_func
 (paren
@@ -906,12 +881,6 @@ c_cond
 l_int|0
 suffix:colon
 id|LATCHA_SIDESEL
-)paren
-suffix:semicolon
-id|restore_flags
-c_func
-(paren
-id|flags
 )paren
 suffix:semicolon
 )brace
@@ -926,10 +895,6 @@ r_int
 id|drive
 )paren
 (brace
-r_int
-r_int
-id|flags
-suffix:semicolon
 macro_line|#ifdef DEBUG
 id|printk
 c_func
@@ -960,17 +925,6 @@ id|SelectedDrive
 )paren
 r_return
 suffix:semicolon
-id|save_flags
-c_func
-(paren
-id|flags
-)paren
-suffix:semicolon
-id|cli
-c_func
-(paren
-)paren
-suffix:semicolon
 id|oldlatch_aupdate
 c_func
 (paren
@@ -983,12 +937,6 @@ l_int|1
 op_lshift
 id|drive
 )paren
-)paren
-suffix:semicolon
-id|restore_flags
-c_func
-(paren
-id|flags
 )paren
 suffix:semicolon
 multiline_comment|/* restore track register to saved value */
@@ -1038,17 +986,6 @@ l_string|&quot;fd_deselect&bslash;n&quot;
 )paren
 )paren
 suffix:semicolon
-id|save_flags
-c_func
-(paren
-id|flags
-)paren
-suffix:semicolon
-id|cli
-c_func
-(paren
-)paren
-suffix:semicolon
 id|oldlatch_aupdate
 c_func
 (paren
@@ -1063,12 +1000,6 @@ op_or
 id|LATCHA_MOTOR
 op_or
 id|LATCHA_INUSE
-)paren
-suffix:semicolon
-id|restore_flags
-c_func
-(paren
-id|flags
 )paren
 suffix:semicolon
 id|SelectedDrive
@@ -1156,8 +1087,7 @@ l_int|0x80
 )paren
 )paren
 (brace
-multiline_comment|/* motor already turned off by FDC1772 -&gt; deselect drives */
-multiline_comment|/* In actual fact its this deselection which turns the motor off on the&n;        Arc, since the motor control is actually on Latch A */
+multiline_comment|/*&n;&t;&t; * motor already turned off by FDC1772 -&gt; deselect drives&n;&t;&t; * In actual fact its this deselection which turns the motor&n;&t;&t; * off on the Arc, since the motor control is actually on&n;&t;&t; * Latch A&n;&t;&t; */
 id|DPRINT
 c_func
 (paren
@@ -1737,7 +1667,7 @@ suffix:semicolon
 )brace
 r_else
 (brace
-multiline_comment|/* cmd == WRITE, pay attention to track buffer&n;       * consistency! */
+multiline_comment|/* cmd == WRITE, pay attention to track buffer&n;&t;&t;&t; * consistency! */
 id|copy_buffer
 c_func
 (paren
@@ -2056,7 +1986,7 @@ c_func
 id|flags
 )paren
 suffix:semicolon
-id|cliIF
+id|clf
 c_func
 (paren
 )paren
@@ -2280,6 +2210,14 @@ suffix:semicolon
 )brace
 r_else
 (brace
+id|paddr
+op_assign
+(paren
+r_int
+r_int
+)paren
+id|PhysDMABuffer
+suffix:semicolon
 macro_line|#ifdef TRACKBUFFER
 r_if
 c_cond
@@ -2293,24 +2231,6 @@ r_int
 r_int
 )paren
 id|PhysTrackBuffer
-suffix:semicolon
-r_else
-id|paddr
-op_assign
-(paren
-r_int
-r_int
-)paren
-id|PhysDMABuffer
-suffix:semicolon
-macro_line|#else
-id|paddr
-op_assign
-(paren
-r_int
-r_int
-)paren
-id|PhysDMABuffer
 suffix:semicolon
 macro_line|#endif
 id|rwflag
@@ -2426,7 +2346,7 @@ c_func
 id|flags
 )paren
 suffix:semicolon
-id|cliIF
+id|clf
 c_func
 (paren
 )paren
@@ -2594,20 +2514,14 @@ c_cond
 id|read_track
 )paren
 (brace
-multiline_comment|/* If reading a whole track, wait about one disk rotation and&n;     * then check if all sectors are read. The FDC will even&n;     * search for the first non-existant sector and need 1 sec to&n;     * recognise that it isn&squot;t present :-(&n;     */
-id|del_timer
+multiline_comment|/*&n;&t;&t; * If reading a whole track, wait about one disk rotation and&n;&t;&t; * then check if all sectors are read. The FDC will even&n;&t;&t; * search for the first non-existant sector and need 1 sec to&n;&t;&t; * recognise that it isn&squot;t present :-(&n;&t;&t; */
+multiline_comment|/* 1 rot. + 5 rot.s if motor was off  */
+id|mod_timer
 c_func
 (paren
 op_amp
 id|readtrack_timer
-)paren
-suffix:semicolon
-id|readtrack_timer.function
-op_assign
-id|fd_readtrack_check
-suffix:semicolon
-id|readtrack_timer.expires
-op_assign
+comma
 id|jiffies
 op_plus
 id|HZ
@@ -2622,8 +2536,8 @@ l_int|0
 suffix:colon
 id|HZ
 )paren
+)paren
 suffix:semicolon
-multiline_comment|/* 1 rot. + 5 rot.s if motor was off  */
 id|DPRINT
 c_func
 (paren
@@ -2634,13 +2548,6 @@ id|readtrack_timer.expires
 comma
 id|jiffies
 )paren
-)paren
-suffix:semicolon
-id|add_timer
-c_func
-(paren
-op_amp
-id|readtrack_timer
 )paren
 suffix:semicolon
 id|MultReadInProgress
@@ -2697,7 +2604,7 @@ c_func
 id|flags
 )paren
 suffix:semicolon
-id|cliIF
+id|clf
 c_func
 (paren
 )paren
@@ -2716,7 +2623,7 @@ op_logical_neg
 id|MultReadInProgress
 )paren
 (brace
-multiline_comment|/* This prevents a race condition that could arise if the&n;     * interrupt is triggered while the calling of this timer&n;     * callback function takes place. The IRQ function then has&n;     * already cleared &squot;MultReadInProgress&squot;  when control flow&n;     * gets here.&n;     */
+multiline_comment|/* This prevents a race condition that could arise if the&n;&t;&t; * interrupt is triggered while the calling of this timer&n;&t;&t; * callback function takes place. The IRQ function then has&n;&t;&t; * already cleared &squot;MultReadInProgress&squot;  when control flow&n;&t;&t; * gets here.&n;&t;&t; */
 id|restore_flags
 c_func
 (paren
@@ -2729,6 +2636,10 @@ suffix:semicolon
 multiline_comment|/* get the current DMA address */
 id|addr
 op_assign
+(paren
+r_int
+r_int
+)paren
 id|fdc1772_dataaddr
 suffix:semicolon
 multiline_comment|/* DAG - ? */
@@ -2749,6 +2660,10 @@ c_cond
 (paren
 id|addr
 op_ge
+(paren
+r_int
+r_int
+)paren
 id|PhysTrackBuffer
 op_plus
 id|unit
@@ -2761,7 +2676,7 @@ op_star
 l_int|512
 )paren
 (brace
-multiline_comment|/* already read enough data, force an FDC interrupt to stop&n;     * the read operation&n;     */
+multiline_comment|/* already read enough data, force an FDC interrupt to stop&n;&t;&t; * the read operation&n;&t;&t; */
 id|SET_IRQ_HANDLER
 c_func
 (paren
@@ -2796,7 +2711,7 @@ c_func
 l_int|25
 )paren
 suffix:semicolon
-multiline_comment|/* No error until now -- the FDC would have interrupted&n;     * otherwise!&n;     */
+multiline_comment|/* No error until now -- the FDC would have interrupted&n;&t;&t; * otherwise!&n;&t;&t; */
 id|fd_rwsec_done
 c_func
 (paren
@@ -2971,7 +2886,7 @@ op_amp
 id|FDC1772STAT_RECNF
 )paren
 macro_line|#ifdef TRACKBUFFER
-multiline_comment|/* RECNF is no error after a multiple read when the FDC&n;     * searched for a non-existant sector!&n;     */
+multiline_comment|/* RECNF is no error after a multiple read when the FDC&n;&t;     * searched for a non-existant sector!&n;&t;     */
 op_logical_and
 op_logical_neg
 (paren
@@ -3230,7 +3145,7 @@ suffix:semicolon
 )brace
 r_else
 (brace
-multiline_comment|/*cache_clear (PhysTrackBuffer, MAX_SECTORS * 512);*/
+multiline_comment|/*cache_clear (PhysTrackBuffer, FD1772_MAX_SECTORS * 512);*/
 id|BufferDrive
 op_assign
 id|SelectedDrive
@@ -3590,37 +3505,19 @@ suffix:semicolon
 multiline_comment|/* Prevent &quot;aliased&quot; accesses. */
 DECL|variable|fd_ref
 r_static
+r_int
 id|fd_ref
 (braket
 l_int|4
 )braket
-op_assign
-(brace
-l_int|0
-comma
-l_int|0
-comma
-l_int|0
-comma
-l_int|0
-)brace
 suffix:semicolon
 DECL|variable|fd_device
 r_static
+r_int
 id|fd_device
 (braket
 l_int|4
 )braket
-op_assign
-(brace
-l_int|0
-comma
-l_int|0
-comma
-l_int|0
-comma
-l_int|0
-)brace
 suffix:semicolon
 multiline_comment|/*&n; * Current device number. Taken either from the block header or from the&n; * format request descriptor.&n; */
 DECL|macro|CURRENT_DEVICE
@@ -4388,15 +4285,15 @@ id|IMMEDIATE_BH
 )paren
 suffix:semicolon
 )brace
-suffix:semicolon
 )brace
-suffix:semicolon
 DECL|function|do_fd_request
 r_void
 id|do_fd_request
 c_func
 (paren
-r_void
+id|request_queue_t
+op_star
+id|q
 )paren
 (brace
 r_int
@@ -4557,21 +4454,6 @@ id|device
 op_assign
 id|inode-&gt;i_rdev
 suffix:semicolon
-r_switch
-c_cond
-(paren
-id|cmd
-)paren
-(brace
-id|RO_IOCTLS
-c_func
-(paren
-id|inode-&gt;i_rdev
-comma
-id|param
-)paren
-suffix:semicolon
-)brace
 id|drive
 op_assign
 id|MINOR
@@ -4842,7 +4724,11 @@ multiline_comment|/* Well this is my nearest guess - quit when we get an FDC int
 r_if
 c_cond
 (paren
+id|ioc_readb
+c_func
+(paren
 id|IOC_FIQSTAT
+)paren
 op_amp
 l_int|2
 )paren
@@ -4934,7 +4820,11 @@ c_loop
 (paren
 op_logical_neg
 (paren
+id|ioc_readb
+c_func
+(paren
 id|IOC_FIQSTAT
+)paren
 op_amp
 l_int|2
 )paren
@@ -5349,7 +5239,7 @@ suffix:semicolon
 )brace
 DECL|function|floppy_release
 r_static
-r_void
+r_int
 id|floppy_release
 c_func
 (paren
@@ -5418,6 +5308,9 @@ op_assign
 l_int|0
 suffix:semicolon
 )brace
+r_return
+l_int|0
+suffix:semicolon
 )brace
 DECL|variable|floppy_fops
 r_static
@@ -5426,10 +5319,6 @@ id|block_device_operations
 id|floppy_fops
 op_assign
 (brace
-id|owner
-suffix:colon
-id|THIS_MODULE
-comma
 id|open
 suffix:colon
 id|floppy_open
@@ -5467,7 +5356,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|machine_is_arc
+id|machine_is_archimedes
 c_func
 (paren
 )paren
@@ -5574,24 +5463,14 @@ suffix:semicolon
 macro_line|#ifdef TRACKBUFFER
 id|BufferDrive
 op_assign
+id|BufferSide
+op_assign
+id|BufferTrack
+op_assign
 op_minus
 l_int|1
 suffix:semicolon
-macro_line|#endif
-multiline_comment|/* initialize check_change timer */
-id|init_timer
-c_func
-(paren
-op_amp
-id|fd_timer
-)paren
-suffix:semicolon
-id|fd_timer.function
-op_assign
-id|check_change
-suffix:semicolon
-)brace
-macro_line|#ifdef TRACKBUFFER
+multiline_comment|/* Atari uses 512 - I want to eventually cope with 1K sectors */
 id|DMABuffer
 op_assign
 (paren
@@ -5602,7 +5481,7 @@ id|kmalloc
 c_func
 (paren
 (paren
-id|MAX_SECTORS
+id|FD1772_MAX_SECTORS
 op_plus
 l_int|1
 )paren
@@ -5612,7 +5491,6 @@ comma
 id|GFP_KERNEL
 )paren
 suffix:semicolon
-multiline_comment|/* Atari uses 512 - I want to eventually cope with 1K sectors */
 id|TrackBuffer
 op_assign
 id|DMABuffer
@@ -5634,17 +5512,6 @@ l_int|2048
 )paren
 suffix:semicolon
 multiline_comment|/* Copes with pretty large sectors */
-macro_line|#endif
-macro_line|#ifdef TRACKBUFFER  
-id|BufferDrive
-op_assign
-id|BufferSide
-op_assign
-id|BufferTrack
-op_assign
-op_minus
-l_int|1
-suffix:semicolon
 macro_line|#endif
 r_for
 c_loop
@@ -5747,14 +5614,17 @@ id|MAJOR_NR
 op_assign
 id|floppy_blocksizes
 suffix:semicolon
-id|blk_dev
-(braket
+id|blk_init_queue
+c_func
+(paren
+id|BLK_DEFAULT_QUEUE
+c_func
+(paren
 id|MAJOR_NR
-)braket
-dot
-id|request_fn
-op_assign
+)paren
+comma
 id|DEVICE_REQUEST
+)paren
 suffix:semicolon
 id|config_types
 c_func
@@ -5765,21 +5635,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/* Just a dummy at the moment */
-r_void
-id|floppy_setup
-c_func
-(paren
-r_char
-op_star
-id|str
-comma
-r_int
-op_star
-id|ints
-)paren
-(brace
-)brace
+DECL|function|floppy_eject
 r_void
 id|floppy_eject
 c_func

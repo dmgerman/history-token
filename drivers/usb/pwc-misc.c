@@ -310,6 +310,9 @@ suffix:colon
 r_case
 l_int|740
 suffix:colon
+r_case
+l_int|750
+suffix:colon
 id|pdev-&gt;view_min.x
 op_assign
 l_int|160

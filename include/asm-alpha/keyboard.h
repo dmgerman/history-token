@@ -71,6 +71,17 @@ id|leds
 )paren
 suffix:semicolon
 r_extern
+r_int
+id|pckbd_rate
+c_func
+(paren
+r_struct
+id|kbd_repeat
+op_star
+id|rep
+)paren
+suffix:semicolon
+r_extern
 r_void
 id|pckbd_init_hw
 c_func
@@ -96,6 +107,8 @@ DECL|macro|kbd_unexpected_up
 mdefine_line|#define kbd_unexpected_up&t;pckbd_unexpected_up
 DECL|macro|kbd_leds
 mdefine_line|#define kbd_leds&t;&t;pckbd_leds
+DECL|macro|kbd_rate
+mdefine_line|#define kbd_rate               pckbd_rate
 DECL|macro|kbd_init_hw
 mdefine_line|#define kbd_init_hw&t;&t;pckbd_init_hw
 DECL|macro|kbd_sysrq_xlate

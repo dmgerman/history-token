@@ -41,22 +41,6 @@ suffix:semicolon
 macro_line|#endif /* def MODULE */
 multiline_comment|/* struct file_operations changed too often in the 2.1 series for nice code */
 r_static
-id|loff_t
-id|i2cdev_lseek
-(paren
-r_struct
-id|file
-op_star
-id|file
-comma
-id|loff_t
-id|offset
-comma
-r_int
-id|origin
-)paren
-suffix:semicolon
-r_static
 id|ssize_t
 id|i2cdev_read
 (paren
@@ -229,7 +213,7 @@ comma
 macro_line|#endif /* LINUX_KERNEL_VERSION &gt;= KERNEL_VERSION(2,4,0) */
 id|llseek
 suffix:colon
-id|i2cdev_lseek
+id|no_llseek
 comma
 id|read
 suffix:colon
@@ -354,56 +338,6 @@ r_static
 r_int
 id|i2cdev_initialized
 suffix:semicolon
-multiline_comment|/* Note that the lseek function is called llseek in 2.1 kernels. But things&n;   are complicated enough as is. */
-DECL|function|i2cdev_lseek
-id|loff_t
-id|i2cdev_lseek
-(paren
-r_struct
-id|file
-op_star
-id|file
-comma
-id|loff_t
-id|offset
-comma
-r_int
-id|origin
-)paren
-(brace
-macro_line|#ifdef DEBUG
-r_struct
-id|inode
-op_star
-id|inode
-op_assign
-id|file-&gt;f_dentry-&gt;d_inode
-suffix:semicolon
-id|printk
-c_func
-(paren
-l_string|&quot;i2c-dev.o: i2c-%d lseek to %ld bytes relative to %d.&bslash;n&quot;
-comma
-id|MINOR
-c_func
-(paren
-id|inode-&gt;i_rdev
-)paren
-comma
-(paren
-r_int
-)paren
-id|offset
-comma
-id|origin
-)paren
-suffix:semicolon
-macro_line|#endif /* DEBUG */
-r_return
-op_minus
-id|ESPIPE
-suffix:semicolon
-)brace
 DECL|function|i2cdev_read
 r_static
 id|ssize_t

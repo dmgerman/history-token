@@ -1810,19 +1810,6 @@ l_int|0x3ff
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/**&n; * pcibios_set_master - Setup device for bus mastering.&n; * @dev: PCI device to be setup&n; */
-DECL|function|pcibios_set_master
-r_void
-id|pcibios_set_master
-c_func
-(paren
-r_struct
-id|pci_dev
-op_star
-id|dev
-)paren
-(brace
-)brace
 multiline_comment|/**&n; * pcibios_enable_device - Enable I/O and memory.&n; * @dev: PCI device to be enabled&n; */
 DECL|function|pcibios_enable_device
 r_int

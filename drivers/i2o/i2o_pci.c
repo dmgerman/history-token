@@ -512,6 +512,10 @@ id|c-&gt;bus.pci.short_req
 op_assign
 l_int|0
 suffix:semicolon
+id|c-&gt;bus.pci.pdev
+op_assign
+id|dev
+suffix:semicolon
 id|c-&gt;irq_mask
 op_assign
 (paren
@@ -844,12 +848,6 @@ id|c
 )paren
 suffix:semicolon
 macro_line|#endif /* MODULE */&t;
-id|kfree
-c_func
-(paren
-id|c
-)paren
-suffix:semicolon
 id|iounmap
 c_func
 (paren

@@ -1038,7 +1038,7 @@ id|dest
 op_increment
 suffix:semicolon
 )brace
-id|__flush_dcache_range
+id|flush_kernel_dcache_range
 c_func
 (paren
 (paren
@@ -1050,7 +1050,7 @@ comma
 id|count
 )paren
 suffix:semicolon
-id|__flush_icache_range
+id|flush_icache_range
 c_func
 (paren
 (paren
@@ -1059,6 +1059,8 @@ r_int
 )paren
 id|dest
 comma
+id|dest
+op_plus
 id|count
 )paren
 suffix:semicolon

@@ -1,6 +1,4 @@
 multiline_comment|/*&n; * SiS 300/630/540 frame buffer device For Kernal 2.4.x&n; *&n; * This driver is partly based on the VBE 2.0 compliant graphic &n; * boards framebuffer driver, which is &n; * &n; * (c) 1998 Gerd Knorr &lt;kraxel@goldbach.in-berlin.de&gt;&n; *&n; */
-DECL|macro|EXPORT_SYMTAB
-mdefine_line|#define EXPORT_SYMTAB
 DECL|macro|SISFBDEBUG
 macro_line|#undef  SISFBDEBUG
 macro_line|#include &lt;linux/config.h&gt;

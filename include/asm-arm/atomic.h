@@ -231,8 +231,8 @@ id|result
 suffix:semicolon
 )brace
 DECL|function|atomic_add_negative
-r_extern
-id|__inline__
+r_static
+r_inline
 r_int
 id|atomic_add_negative
 c_func
@@ -321,6 +321,15 @@ id|flags
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/* Atomic operations are already serializing on ARM */
+DECL|macro|smp_mb__before_atomic_dec
+mdefine_line|#define smp_mb__before_atomic_dec()&t;barrier()
+DECL|macro|smp_mb__after_atomic_dec
+mdefine_line|#define smp_mb__after_atomic_dec()&t;barrier()
+DECL|macro|smp_mb__before_atomic_inc
+mdefine_line|#define smp_mb__before_atomic_inc()&t;barrier()
+DECL|macro|smp_mb__after_atomic_inc
+mdefine_line|#define smp_mb__after_atomic_inc()&t;barrier()
 macro_line|#endif
 macro_line|#endif
 eof

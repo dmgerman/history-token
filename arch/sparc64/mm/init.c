@@ -1,4 +1,4 @@
-multiline_comment|/*  $Id: init.c,v 1.178 2001/08/06 13:09:00 davem Exp $&n; *  arch/sparc64/mm/init.c&n; *&n; *  Copyright (C) 1996-1999 David S. Miller (davem@caip.rutgers.edu)&n; *  Copyright (C) 1997-1999 Jakub Jelinek (jj@sunsite.mff.cuni.cz)&n; */
+multiline_comment|/*  $Id: init.c,v 1.179 2001/08/08 07:52:00 davem Exp $&n; *  arch/sparc64/mm/init.c&n; *&n; *  Copyright (C) 1996-1999 David S. Miller (davem@caip.rutgers.edu)&n; *  Copyright (C) 1997-1999 Jakub Jelinek (jj@sunsite.mff.cuni.cz)&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
@@ -4318,7 +4318,7 @@ id|pgtable_cache_struct
 id|pgt_quicklists
 suffix:semicolon
 macro_line|#endif
-multiline_comment|/* OK, we have to color these pages because during DTLB&n; * protection faults we set the dirty bit via a non-Dcache&n; * enabled mapping in the VPTE area.  The kernel can end&n; * up missing the dirty bit resulting in processes crashing&n; * _iff_ the VPTE mapping of the ptes have a virtual address&n; * bit 13 which is different from bit 13 of the physical address.&n; *&n; * The sequence is:&n; *&t;1) DTLB protection fault, write dirty bit into pte via VPTE&n; *&t;   mappings.&n; *&t;2) Swapper checks pte, does not see dirty bit, frees page.&n; *&t;3) Process faults back in the page, the old pre-dirtied copy&n; *&t;   is provided and here is the corruption.&n; */
+multiline_comment|/* OK, we have to color these pages. The page tables are accessed&n; * by non-Dcache enabled mapping in the VPTE area by the dtlb_backend.S&n; * code, as well as by PAGE_OFFSET range direct-mapped addresses by &n; * other parts of the kernel. By coloring, we make sure that the tlbmiss &n; * fast handlers do not get data from old/garbage dcache lines that &n; * correspond to an old/stale virtual address (user/kernel) that &n; * previously mapped the pagetable page while accessing vpte range &n; * addresses. The idea is that if the vpte color and PAGE_OFFSET range &n; * color is the same, then when the kernel initializes the pagetable &n; * using the later address range, accesses with the first address&n; * range will not see the newly initialized data rather than the&n; * garbage.&n; */
 DECL|function|pte_alloc_one
 id|pte_t
 op_star

@@ -2,44 +2,213 @@ multiline_comment|/*&n; * Copyright (C) 2000&t;Andreas E. Bombe&n; *            
 macro_line|#ifndef _IEEE1394_NODEMGR_H
 DECL|macro|_IEEE1394_NODEMGR_H
 mdefine_line|#define _IEEE1394_NODEMGR_H
-multiline_comment|/*&n; * General information: Finding out which GUID belongs to which node is done by&n; * sending packets and therefore waiting for the answers.  Wherever it is&n; * mentioned that a node is inaccessible this could just as well mean that we&n; * just don&squot;t know yet (usually, bus reset handlers can&squot;t rely on GUIDs being&n; * associated with current nodes).&n; */
+multiline_comment|/* &squot;1&squot; &squot;3&squot; &squot;9&squot; &squot;4&squot; in ASCII */
+DECL|macro|IEEE1394_BUSID_MAGIC
+mdefine_line|#define IEEE1394_BUSID_MAGIC&t;0x31333934
+multiline_comment|/* This is the start of a Node entry structure. It should be a stable API&n; * for which to gather info from the Node Manager about devices attached&n; * to the bus.  */
+DECL|struct|bus_options
+r_struct
+id|bus_options
+(brace
+DECL|member|irmc
+id|u8
+id|irmc
+suffix:semicolon
+multiline_comment|/* Iso Resource Manager Capable */
+DECL|member|cmc
+id|u8
+id|cmc
+suffix:semicolon
+multiline_comment|/* Cycle Master Capable */
+DECL|member|isc
+id|u8
+id|isc
+suffix:semicolon
+multiline_comment|/* Iso Capable */
+DECL|member|bmc
+id|u8
+id|bmc
+suffix:semicolon
+multiline_comment|/* Bus Master Capable */
+DECL|member|pmc
+id|u8
+id|pmc
+suffix:semicolon
+multiline_comment|/* Power Manager Capable (PNP spec) */
+DECL|member|cyc_clk_acc
+id|u8
+id|cyc_clk_acc
+suffix:semicolon
+multiline_comment|/* Cycle clock accuracy */
+DECL|member|generation
+id|u8
+id|generation
+suffix:semicolon
+multiline_comment|/* Incremented when configrom changes */
+DECL|member|lnkspd
+id|u8
+id|lnkspd
+suffix:semicolon
+multiline_comment|/* Link speed */
+DECL|member|max_rec
+id|u16
+id|max_rec
+suffix:semicolon
+multiline_comment|/* Maximum packet size node can receive */
+)brace
+suffix:semicolon
+DECL|macro|UNIT_DIRECTORY_VENDOR_ID
+mdefine_line|#define UNIT_DIRECTORY_VENDOR_ID    0x01
+DECL|macro|UNIT_DIRECTORY_MODEL_ID
+mdefine_line|#define UNIT_DIRECTORY_MODEL_ID     0x02
+DECL|macro|UNIT_DIRECTORY_SPECIFIER_ID
+mdefine_line|#define UNIT_DIRECTORY_SPECIFIER_ID 0x04
+DECL|macro|UNIT_DIRECTORY_VERSION
+mdefine_line|#define UNIT_DIRECTORY_VERSION      0x08
+DECL|struct|unit_directory
+r_struct
+id|unit_directory
+(brace
+DECL|member|list
+r_struct
+id|list_head
+id|list
+suffix:semicolon
+DECL|member|address
+id|octlet_t
+id|address
+suffix:semicolon
+multiline_comment|/* Address of the unit directory on the node */
+DECL|member|flags
+id|u8
+id|flags
+suffix:semicolon
+multiline_comment|/* Indicates which entries were read */
+DECL|member|vendor_id
+id|quadlet_t
+id|vendor_id
+suffix:semicolon
+DECL|member|vendor_name
+r_char
+op_star
+id|vendor_name
+suffix:semicolon
+DECL|member|model_id
+id|quadlet_t
+id|model_id
+suffix:semicolon
+DECL|member|model_name
+r_char
+op_star
+id|model_name
+suffix:semicolon
+DECL|member|specifier_id
+id|quadlet_t
+id|specifier_id
+suffix:semicolon
+DECL|member|version
+id|quadlet_t
+id|version
+suffix:semicolon
+)brace
+suffix:semicolon
+DECL|struct|node_entry
 r_struct
 id|node_entry
+(brace
+DECL|member|list
+r_struct
+id|list_head
+id|list
 suffix:semicolon
-DECL|typedef|hpsb_guid_t
-r_typedef
+DECL|member|guid
+id|u64
+id|guid
+suffix:semicolon
+multiline_comment|/* GUID of this node */
+DECL|member|host
+r_struct
+id|hpsb_host
+op_star
+id|host
+suffix:semicolon
+multiline_comment|/* Host this node is attached to */
+DECL|member|nodeid
+id|nodeid_t
+id|nodeid
+suffix:semicolon
+multiline_comment|/* NodeID */
+DECL|member|busopt
+r_struct
+id|bus_options
+id|busopt
+suffix:semicolon
+multiline_comment|/* Bus Options */
+DECL|member|generation
+id|atomic_t
+id|generation
+suffix:semicolon
+multiline_comment|/* Synced with hpsb generation */
+multiline_comment|/* The following is read from the config rom */
+DECL|member|vendor_id
+id|u32
+id|vendor_id
+suffix:semicolon
+DECL|member|capabilities
+id|u32
+id|capabilities
+suffix:semicolon
+DECL|member|unit_directories
+r_struct
+id|list_head
+id|unit_directories
+suffix:semicolon
+)brace
+suffix:semicolon
+multiline_comment|/*&n; * Returns a node entry (which has its reference count incremented) or NULL if&n; * the GUID in question is not known.  Getting a valid entry does not mean that&n; * the node with this GUID is currently accessible (might be powered down).&n; */
 r_struct
 id|node_entry
 op_star
-id|hpsb_guid_t
-suffix:semicolon
-multiline_comment|/*&n; * Returns a guid handle (which has its reference count incremented) or NULL if&n; * there is the GUID in question is not known of.  Getting a valid handle does&n; * not mean that the node with this GUID is currently accessible (might not be&n; * plugged in or powered down).&n; */
-id|hpsb_guid_t
-id|hpsb_guid_get_handle
+id|hpsb_guid_get_entry
 c_func
 (paren
 id|u64
 id|guid
 )paren
 suffix:semicolon
-multiline_comment|/*&n; * If the handle refers to a local host, this function will return the pointer&n; * to the hpsb_host structure.  It will return NULL otherwise.  Once you have&n; * established it is a local host, you can use that knowledge from then on (the&n; * GUID won&squot;t wander to an external node).&n; *&n; * Note that the local GUID currently isn&squot;t collected, so this will always&n; * return NULL.&n; */
+multiline_comment|/* Same as above, but use the nodeid to get an node entry. This is not&n; * fool-proof by itself, since the nodeid can change.  */
+r_struct
+id|node_entry
+op_star
+id|hpsb_nodeid_get_entry
+c_func
+(paren
+id|nodeid_t
+id|nodeid
+)paren
+suffix:semicolon
+multiline_comment|/*&n; * If the entry refers to a local host, this function will return the pointer&n; * to the hpsb_host structure.  It will return NULL otherwise.  Once you have&n; * established it is a local host, you can use that knowledge from then on (the&n; * GUID won&squot;t wander to an external node).  */
 r_struct
 id|hpsb_host
 op_star
 id|hpsb_get_host_by_ne
 c_func
 (paren
-id|hpsb_guid_t
-id|handle
+r_struct
+id|node_entry
+op_star
+id|ne
 )paren
 suffix:semicolon
-multiline_comment|/*&n; * This will fill in the given, pre-initialised hpsb_packet with the current&n; * information from the GUID handle (host, node ID, generation number).  It will&n; * return false if the node owning the GUID is not accessible (and not modify the &n; * hpsb_packet) and return true otherwise.&n; *&n; * Note that packet sending may still fail in hpsb_send_packet if a bus reset&n; * happens while you are trying to set up the packet (due to obsolete generation&n; * number).  It will at least reliably fail so that you don&squot;t accidentally and&n; * unknowingly send your packet to the wrong node.&n; */
+multiline_comment|/*&n; * This will fill in the given, pre-initialised hpsb_packet with the current&n; * information from the node entry (host, node ID, generation number).  It will&n; * return false if the node owning the GUID is not accessible (and not modify the &n; * hpsb_packet) and return true otherwise.&n; *&n; * Note that packet sending may still fail in hpsb_send_packet if a bus reset&n; * happens while you are trying to set up the packet (due to obsolete generation&n; * number).  It will at least reliably fail so that you don&squot;t accidentally and&n; * unknowingly send your packet to the wrong node.&n; */
 r_int
 id|hpsb_guid_fill_packet
 c_func
 (paren
-id|hpsb_guid_t
-id|handle
+r_struct
+id|node_entry
+op_star
+id|ne
 comma
 r_struct
 id|hpsb_packet

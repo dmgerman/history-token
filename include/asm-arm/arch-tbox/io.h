@@ -8,8 +8,8 @@ DECL|macro|__io
 mdefine_line|#define __io(_x)&t;&t;((_x) &lt;&lt; 2)
 multiline_comment|/*&n; * Generic virtual read/write&n; */
 DECL|function|__arch_getw
-r_extern
-id|__inline__
+r_static
+r_inline
 r_int
 r_int
 id|__arch_getw
@@ -46,8 +46,8 @@ id|value
 suffix:semicolon
 )brace
 DECL|function|__arch_putw
-r_extern
-id|__inline__
+r_static
+r_inline
 r_void
 id|__arch_putw
 c_func

@@ -23,9 +23,9 @@ mdefine_line|#define BCR_BASE  0xf1000000
 DECL|macro|BCR
 mdefine_line|#define BCR (*(volatile unsigned int *)(BCR_BASE))
 DECL|macro|BCR_DB1110
-mdefine_line|#define BCR_DB1110&t;(0x00A07410)
+mdefine_line|#define BCR_DB1110 &bslash;&n;&t;(BCR_SPK_OFF  | BCR_QMUTE     | BCR_LED_GREEN  | BCR_LED_RED   | &bslash;&n;&t; BCR_RS232EN  | BCR_LCD_12RGB | BCR_IRDA_MD0)
 DECL|macro|BCR_DB1111
-mdefine_line|#define BCR_DB1111&t;(0x00A074E2)
+mdefine_line|#define BCR_DB1111 &bslash;&n;&t;(BCR_SPK_OFF  | BCR_QMUTE     | BCR_LED_GREEN  | BCR_LED_RED   | &bslash;&n;&t; BCR_RS232EN  | BCR_LCD_12RGB | BCR_CF_BUS_OFF | BCR_STEREO_LB | &bslash;&n;&t; BCR_IRDA_MD1 | BCR_CF_RST)
 DECL|macro|BCR_CF_PWR
 mdefine_line|#define BCR_CF_PWR&t;(1&lt;&lt;0)&t;/* Compact Flash Power (1 = 3.3v, 0 = off) */
 DECL|macro|BCR_CF_RST
@@ -92,6 +92,26 @@ mdefine_line|#define BCR_set( x )&t;BCR = (BCR_value |= (x))
 DECL|macro|BCR_clear
 mdefine_line|#define BCR_clear( x )&t;BCR = (BCR_value &amp;= ~(x))
 macro_line|#endif
+DECL|macro|BSR_BASE
+mdefine_line|#define BSR_BASE&t;0xf1000000
+DECL|macro|BSR
+mdefine_line|#define BSR (*(volatile unsigned int*)(BSR_BASE))
+DECL|macro|BSR_RS232_VALID
+mdefine_line|#define BSR_RS232_VALID&t;(1 &lt;&lt; 24)
+DECL|macro|BSR_COM_DCD
+mdefine_line|#define BSR_COM_DCD&t;(1 &lt;&lt; 25)
+DECL|macro|BSR_COM_CTS
+mdefine_line|#define BSR_COM_CTS&t;(1 &lt;&lt; 26)
+DECL|macro|BSR_COM_DSR
+mdefine_line|#define BSR_COM_DSR&t;(1 &lt;&lt; 27)
+DECL|macro|BSR_RAD_CTS
+mdefine_line|#define BSR_RAD_CTS&t;(1 &lt;&lt; 28)
+DECL|macro|BSR_RAD_DSR
+mdefine_line|#define BSR_RAD_DSR&t;(1 &lt;&lt; 29)
+DECL|macro|BSR_RAD_DCD
+mdefine_line|#define BSR_RAD_DCD&t;(1 &lt;&lt; 30)
+DECL|macro|BSR_RAD_RI
+mdefine_line|#define BSR_RAD_RI&t;(1 &lt;&lt; 31)
 multiline_comment|/* GPIOs for which the generic definition doesn&squot;t say much */
 DECL|macro|GPIO_RADIO_IRQ
 mdefine_line|#define GPIO_RADIO_IRQ&t;&t;GPIO_GPIO (14)&t;/* Radio interrupt request  */
@@ -206,6 +226,26 @@ DECL|macro|AUD_SEL_1341
 mdefine_line|#define AUD_SEL_1341            (1&lt;&lt;0)
 DECL|macro|AUD_MUTE_1341
 mdefine_line|#define AUD_MUTE_1341           (1&lt;&lt;1)
+DECL|macro|MDM_CTL0_RTS1
+mdefine_line|#define MDM_CTL0_RTS1&t;&t;(1 &lt;&lt; 0)
+DECL|macro|MDM_CTL0_DTR1
+mdefine_line|#define MDM_CTL0_DTR1&t;&t;(1 &lt;&lt; 1)
+DECL|macro|MDM_CTL0_RTS2
+mdefine_line|#define MDM_CTL0_RTS2&t;&t;(1 &lt;&lt; 2)
+DECL|macro|MDM_CTL0_DTR2
+mdefine_line|#define MDM_CTL0_DTR2&t;&t;(1 &lt;&lt; 3)
+DECL|macro|MDM_CTL1_CTS1
+mdefine_line|#define MDM_CTL1_CTS1&t;&t;(1 &lt;&lt; 0)
+DECL|macro|MDM_CTL1_DSR1
+mdefine_line|#define MDM_CTL1_DSR1&t;&t;(1 &lt;&lt; 1)
+DECL|macro|MDM_CTL1_DCD1
+mdefine_line|#define MDM_CTL1_DCD1&t;&t;(1 &lt;&lt; 2)
+DECL|macro|MDM_CTL1_CTS2
+mdefine_line|#define MDM_CTL1_CTS2&t;&t;(1 &lt;&lt; 3)
+DECL|macro|MDM_CTL1_DSR2
+mdefine_line|#define MDM_CTL1_DSR2&t;&t;(1 &lt;&lt; 4)
+DECL|macro|MDM_CTL1_DCD2
+mdefine_line|#define MDM_CTL1_DCD2&t;&t;(1 &lt;&lt; 5)
 DECL|macro|NCR_GP01_OFF
 mdefine_line|#define NCR_GP01_OFF&t;&t;(1&lt;&lt;0)
 DECL|macro|NCR_TP_PWR_EN

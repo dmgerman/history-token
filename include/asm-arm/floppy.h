@@ -77,8 +77,8 @@ DECL|macro|fd_setdor
 mdefine_line|#define fd_setdor(dor)&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;do {&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;int new_dor = (dor);&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;if (new_dor &amp; 0xf0)&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;new_dor = (new_dor &amp; 0x0c) | floppy_selects[fdc][new_dor &amp; 3];&t;&bslash;&n;&t;else&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;new_dor &amp;= 0x0c;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;outb(new_dor, FD_DOR);&t;&t;&t;&t;&t;&t;&t;&bslash;&n;} while (0)
 multiline_comment|/*&n; * Someday, we&squot;ll automatically detect which drives are present...&n; */
 DECL|function|fd_scandrives
-r_extern
-id|__inline__
+r_static
+r_inline
 r_void
 id|fd_scandrives
 (paren

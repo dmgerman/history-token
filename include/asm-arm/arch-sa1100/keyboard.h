@@ -155,7 +155,25 @@ DECL|macro|kbd_disable_irq
 mdefine_line|#define kbd_disable_irq         gc_kbd_disable_irq
 DECL|macro|kbd_sysrq_xlate
 mdefine_line|#define kbd_sysrq_xlate         gc_kbd_sysrq_xlate
-macro_line|#elif defined(CONFIG_SA1111)   /*@@@@@*/
+macro_line|#elif CONFIG_SA1100_BITSY
+DECL|macro|kbd_setkeycode
+mdefine_line|#define kbd_setkeycode(x...)    (-ENOSYS)
+DECL|macro|kbd_getkeycode
+mdefine_line|#define kbd_getkeycode(x...)    (-ENOSYS)
+DECL|macro|kbd_translate
+mdefine_line|#define kbd_translate(sc_,kc_,rm_)&t;((*(kc_)=(sc_)),1)
+DECL|macro|kbd_unexpected_up
+mdefine_line|#define kbd_unexpected_up(x...) (1)
+DECL|macro|kbd_leds
+mdefine_line|#define kbd_leds(x...)&t;&t;do { } while (0)
+DECL|macro|kbd_init_hw
+mdefine_line|#define kbd_init_hw(x...)&t;do { } while (0)
+DECL|macro|kbd_enable_irq
+mdefine_line|#define kbd_enable_irq(x...)&t;do { } while (0)
+DECL|macro|kbd_disable_irq
+mdefine_line|#define kbd_disable_irq(x...)&t;do { } while (0)
+macro_line|#elif 0 
+singleline_comment|//defined(CONFIG_SA1111)   /*@@@@@*/
 DECL|macro|KEYBOARD_IRQ
 mdefine_line|#define KEYBOARD_IRQ           TPRXINT
 DECL|macro|DISABLE_KBD_DURING_INTERRUPTS
@@ -358,7 +376,7 @@ macro_line|#endif
 multiline_comment|/* needed if MAGIC_SYSRQ is enabled for serial console */
 macro_line|#ifndef SYSRQ_KEY
 DECL|macro|SYSRQ_KEY
-mdefine_line|#define SYSRQ_KEY&t;&t;-1
+mdefine_line|#define SYSRQ_KEY&t;&t;((unsigned char)(-1))
 DECL|macro|kbd_sysrq_xlate
 mdefine_line|#define kbd_sysrq_xlate         ((unsigned char *)NULL)
 macro_line|#endif

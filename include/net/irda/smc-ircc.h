@@ -193,60 +193,6 @@ DECL|macro|IRCC_1152
 mdefine_line|#define IRCC_1152                  0x80
 DECL|macro|IRCC_CRC
 mdefine_line|#define IRCC_CRC                   0x40
-DECL|struct|smc_chip
-r_struct
-id|smc_chip
-(brace
-DECL|member|name
-r_char
-op_star
-id|name
-suffix:semicolon
-DECL|member|entr1
-r_int
-r_char
-id|entr1
-suffix:semicolon
-DECL|member|entr2
-r_int
-r_char
-id|entr2
-suffix:semicolon
-DECL|member|cid_index
-r_int
-r_char
-id|cid_index
-suffix:semicolon
-DECL|member|cid_value
-r_int
-r_char
-id|cid_value
-suffix:semicolon
-DECL|member|probe
-r_int
-(paren
-op_star
-id|probe
-)paren
-(paren
-r_struct
-id|smc_chip
-op_star
-id|chip
-comma
-id|chipio_t
-op_star
-id|info
-)paren
-suffix:semicolon
-)brace
-suffix:semicolon
-DECL|typedef|smc_chip_t
-r_typedef
-r_struct
-id|smc_chip
-id|smc_chip_t
-suffix:semicolon
 multiline_comment|/* Private data for each instance */
 DECL|struct|ircc_cb
 r_struct
@@ -268,6 +214,7 @@ suffix:semicolon
 multiline_comment|/* The link layer we are binded to */
 DECL|member|io
 id|chipio_t
+op_star
 id|io
 suffix:semicolon
 multiline_comment|/* IrDA controller information */

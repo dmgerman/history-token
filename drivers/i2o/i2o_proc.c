@@ -8,6 +8,7 @@ DECL|macro|U64_VAL
 mdefine_line|#define U64_VAL(pu64) *((u32*)(pu64)+1), *((u32*)(pu64))
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
+macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/i2o.h&gt;
 macro_line|#include &lt;linux/proc_fs.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
@@ -5180,6 +5181,7 @@ suffix:semicolon
 r_int
 id|i
 suffix:semicolon
+r_typedef
 r_struct
 (brace
 id|u16
@@ -5210,9 +5212,14 @@ id|MAX_I2O_MODULES
 )braket
 suffix:semicolon
 )brace
+id|i2o_driver_result_table
+suffix:semicolon
+id|i2o_driver_result_table
+op_star
 id|result
 suffix:semicolon
 id|i2o_driver_store_table
+op_star
 id|dst
 suffix:semicolon
 id|spin_lock
@@ -5226,6 +5233,32 @@ id|len
 op_assign
 l_int|0
 suffix:semicolon
+id|result
+op_assign
+id|kmalloc
+c_func
+(paren
+r_sizeof
+(paren
+id|i2o_driver_result_table
+)paren
+comma
+id|GFP_KERNEL
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|result
+op_eq
+l_int|NULL
+)paren
+(brace
+r_return
+op_minus
+id|ENOMEM
+suffix:semicolon
+)brace
 id|token
 op_assign
 id|i2o_query_table
@@ -5246,11 +5279,11 @@ l_int|NULL
 comma
 l_int|0
 comma
-op_amp
 id|result
 comma
 r_sizeof
 (paren
+op_star
 id|result
 )paren
 )paren
@@ -5284,6 +5317,12 @@ op_amp
 id|i2o_proc_lock
 )paren
 suffix:semicolon
+id|kfree
+c_func
+(paren
+id|result
+)paren
+suffix:semicolon
 r_return
 id|len
 suffix:semicolon
@@ -5310,18 +5349,20 @@ l_int|0
 comma
 id|dst
 op_assign
-id|result.dst
+op_amp
+id|result-&gt;dst
 (braket
 l_int|0
 )braket
 suffix:semicolon
 id|i
 OL
-id|result.row_count
+id|result-&gt;row_count
 suffix:semicolon
 id|dst
 op_assign
-id|result.dst
+op_amp
+id|result-&gt;dst
 (braket
 op_increment
 id|i
@@ -5339,13 +5380,13 @@ id|len
 comma
 l_string|&quot;%-3d&quot;
 comma
-id|dst.stored_ddm_index
+id|dst-&gt;stored_ddm_index
 )paren
 suffix:semicolon
 r_switch
 c_cond
 (paren
-id|dst.module_type
+id|dst-&gt;module_type
 )paren
 (brace
 r_case
@@ -5417,7 +5458,7 @@ id|len
 comma
 l_string|&quot;%-d&quot;
 comma
-id|dst.module_state
+id|dst-&gt;module_state
 )paren
 suffix:semicolon
 )brace
@@ -5433,7 +5474,7 @@ id|len
 comma
 l_string|&quot;%-#7x&quot;
 comma
-id|dst.i2o_vendor_id
+id|dst-&gt;i2o_vendor_id
 )paren
 suffix:semicolon
 id|len
@@ -5447,7 +5488,7 @@ id|len
 comma
 l_string|&quot;%-#8x&quot;
 comma
-id|dst.module_id
+id|dst-&gt;module_id
 )paren
 suffix:semicolon
 id|len
@@ -5464,7 +5505,7 @@ comma
 id|chtostr
 c_func
 (paren
-id|dst.module_name_version
+id|dst-&gt;module_name_version
 comma
 l_int|28
 )paren
@@ -5484,7 +5525,7 @@ comma
 id|chtostr
 c_func
 (paren
-id|dst.date
+id|dst-&gt;date
 comma
 l_int|8
 )paren
@@ -5501,7 +5542,7 @@ id|len
 comma
 l_string|&quot;%8d &quot;
 comma
-id|dst.module_size
+id|dst-&gt;module_size
 )paren
 suffix:semicolon
 id|len
@@ -5515,7 +5556,7 @@ id|len
 comma
 l_string|&quot;%8d &quot;
 comma
-id|dst.mpb_size
+id|dst-&gt;mpb_size
 )paren
 suffix:semicolon
 id|len
@@ -5529,7 +5570,7 @@ id|len
 comma
 l_string|&quot;0x%04x&quot;
 comma
-id|dst.module_flags
+id|dst-&gt;module_flags
 )paren
 suffix:semicolon
 macro_line|#if 0
@@ -5552,7 +5593,7 @@ id|len
 comma
 l_string|&quot;%d&quot;
 comma
-id|dst.notification_level
+id|dst-&gt;notification_level
 )paren
 suffix:semicolon
 )brace
@@ -5575,6 +5616,12 @@ c_func
 (paren
 op_amp
 id|i2o_proc_lock
+)paren
+suffix:semicolon
+id|kfree
+c_func
+(paren
+id|result
 )paren
 suffix:semicolon
 r_return

@@ -99,6 +99,7 @@ r_return
 id|bp
 suffix:semicolon
 )brace
+multiline_comment|/*&n; *&t;We have to be cautious here. We have seen BIOSes with DMI pointers&n; *&t;pointing to completely the wrong place for example&n; */
 DECL|function|dmi_table
 r_static
 r_int
@@ -145,11 +146,6 @@ id|i
 op_assign
 l_int|1
 suffix:semicolon
-r_int
-id|last
-op_assign
-l_int|0
-suffix:semicolon
 id|buf
 op_assign
 id|ioremap
@@ -177,6 +173,7 @@ id|data
 op_assign
 id|buf
 suffix:semicolon
+multiline_comment|/*&n; &t; *&t;Stop when we see al the items the table claimed to have&n; &t; *&t;OR we run off the end of the table (also happens)&n; &t; */
 r_while
 c_loop
 (paren
@@ -202,21 +199,24 @@ op_star
 )paren
 id|data
 suffix:semicolon
+multiline_comment|/*&n;&t;&t; *&t;Avoid misparsing crud if the length of the last&n;&t; &t; *&t;record is crap &n;&t;&t; */
 r_if
 c_cond
 (paren
-id|dm-&gt;type
-OL
-id|last
+(paren
+id|data
+op_minus
+id|buf
+op_plus
+id|dm-&gt;length
+)paren
+op_ge
+id|len
 )paren
 (brace
 r_break
 suffix:semicolon
 )brace
-id|last
-op_assign
-id|dm-&gt;type
-suffix:semicolon
 id|decode
 c_func
 (paren
@@ -227,8 +227,18 @@ id|data
 op_add_assign
 id|dm-&gt;length
 suffix:semicolon
+multiline_comment|/*&n;&t;&t; *&t;Don&squot;t go off the end of the data if there is&n;&t; &t; *&t;stuff looking like string fill past the end&n;&t; &t; */
 r_while
 c_loop
+(paren
+(paren
+id|data
+op_minus
+id|buf
+)paren
+OL
+id|len
+op_logical_and
 (paren
 op_star
 id|data
@@ -237,6 +247,7 @@ id|data
 (braket
 l_int|1
 )braket
+)paren
 )paren
 (brace
 id|data

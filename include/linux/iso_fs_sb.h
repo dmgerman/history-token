@@ -42,6 +42,11 @@ r_int
 r_char
 id|s_mapping
 suffix:semicolon
+DECL|member|s_rock_offset
+r_int
+id|s_rock_offset
+suffix:semicolon
+multiline_comment|/* offset of SUSP fields within SU area */
 DECL|member|s_rock
 r_int
 r_char

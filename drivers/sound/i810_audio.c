@@ -64,6 +64,7 @@ l_int|48000
 suffix:semicolon
 singleline_comment|//#define DEBUG
 singleline_comment|//#define DEBUG2
+singleline_comment|//#define DEBUG_INTERRUPTS
 DECL|macro|ADC_RUNNING
 mdefine_line|#define ADC_RUNNING&t;1
 DECL|macro|DAC_RUNNING
@@ -227,7 +228,7 @@ mdefine_line|#define INT_GPI&t;&t;(1&lt;&lt;0)
 DECL|macro|INT_MASK
 mdefine_line|#define INT_MASK (INT_SEC|INT_PRI|INT_MC|INT_PO|INT_PI|INT_MO|INT_NI|INT_GPI)
 DECL|macro|DRIVER_VERSION
-mdefine_line|#define DRIVER_VERSION &quot;0.02&quot;
+mdefine_line|#define DRIVER_VERSION &quot;0.03&quot;
 multiline_comment|/* magic numbers to protect our data structures */
 DECL|macro|I810_CARD_MAGIC
 mdefine_line|#define I810_CARD_MAGIC&t;&t;0x5072696E /* &quot;Prin&quot; */
@@ -549,17 +550,27 @@ id|wait
 suffix:semicolon
 multiline_comment|/* put process on wait queue when no more space in buffer */
 multiline_comment|/* redundant, but makes calculations easier */
-DECL|member|fragsize
-r_int
-id|fragsize
-suffix:semicolon
+multiline_comment|/* what the hardware uses */
 DECL|member|dmasize
 r_int
 id|dmasize
 suffix:semicolon
+DECL|member|fragsize
+r_int
+id|fragsize
+suffix:semicolon
 DECL|member|fragsamples
 r_int
 id|fragsamples
+suffix:semicolon
+multiline_comment|/* what we tell the user to expect */
+DECL|member|userfrags
+r_int
+id|userfrags
+suffix:semicolon
+DECL|member|userfragsize
+r_int
+id|userfragsize
 suffix:semicolon
 multiline_comment|/* OSS stuff */
 DECL|member|mapped
@@ -788,26 +799,9 @@ r_int
 id|arg
 )paren
 suffix:semicolon
-r_static
-id|loff_t
-id|i810_llseek
-c_func
-(paren
-r_struct
-id|file
-op_star
-id|file
-comma
-id|loff_t
-id|offset
-comma
-r_int
-id|origin
-)paren
-suffix:semicolon
 DECL|function|ld2
-r_extern
-id|__inline__
+r_static
+r_inline
 r_int
 id|ld2
 c_func
@@ -1568,8 +1562,8 @@ suffix:semicolon
 )brace
 multiline_comment|/* get current playback/recording dma buffer pointer (byte offset from LBA),&n;   called with spinlock held! */
 DECL|function|i810_get_dma_addr
-r_extern
-id|__inline__
+r_static
+r_inline
 r_int
 id|i810_get_dma_addr
 c_func
@@ -1705,8 +1699,8 @@ singleline_comment|//&t;dmabuf-&gt;hwptr=dmabuf-&gt;swptr = offset;
 singleline_comment|//}
 multiline_comment|/* Stop recording (lock held) */
 DECL|function|__stop_adc
-r_extern
-id|__inline__
+r_static
+r_inline
 r_void
 id|__stop_adc
 c_func
@@ -1745,6 +1739,58 @@ comma
 id|card-&gt;iobase
 op_plus
 id|PI_CR
+)paren
+suffix:semicolon
+singleline_comment|// wait for the card to acknowledge shutdown
+r_while
+c_loop
+(paren
+id|inb
+c_func
+(paren
+id|card-&gt;iobase
+op_plus
+id|PI_CR
+)paren
+op_ne
+l_int|0
+)paren
+(brace
+suffix:semicolon
+)brace
+singleline_comment|// now clear any latent interrupt bits (like the halt bit)
+id|outb
+c_func
+(paren
+id|inb
+c_func
+(paren
+id|card-&gt;iobase
+op_plus
+id|PI_SR
+)paren
+comma
+id|card-&gt;iobase
+op_plus
+id|PI_SR
+)paren
+suffix:semicolon
+id|outl
+c_func
+(paren
+id|inl
+c_func
+(paren
+id|card-&gt;iobase
+op_plus
+id|GLOB_STA
+)paren
+op_amp
+id|INT_PI
+comma
+id|card-&gt;iobase
+op_plus
+id|GLOB_STA
 )paren
 suffix:semicolon
 )brace
@@ -1894,8 +1940,8 @@ suffix:semicolon
 )brace
 multiline_comment|/* stop playback (lock held) */
 DECL|function|__stop_dac
-r_extern
-id|__inline__
+r_static
+r_inline
 r_void
 id|__stop_dac
 c_func
@@ -1934,6 +1980,58 @@ comma
 id|card-&gt;iobase
 op_plus
 id|PO_CR
+)paren
+suffix:semicolon
+singleline_comment|// wait for the card to acknowledge shutdown
+r_while
+c_loop
+(paren
+id|inb
+c_func
+(paren
+id|card-&gt;iobase
+op_plus
+id|PO_CR
+)paren
+op_ne
+l_int|0
+)paren
+(brace
+suffix:semicolon
+)brace
+singleline_comment|// now clear any latent interrupt bits (like the halt bit)
+id|outb
+c_func
+(paren
+id|inb
+c_func
+(paren
+id|card-&gt;iobase
+op_plus
+id|PO_SR
+)paren
+comma
+id|card-&gt;iobase
+op_plus
+id|PO_SR
+)paren
+suffix:semicolon
+id|outl
+c_func
+(paren
+id|inl
+c_func
+(paren
+id|card-&gt;iobase
+op_plus
+id|GLOB_STA
+)paren
+op_amp
+id|INT_PO
+comma
+id|card-&gt;iobase
+op_plus
+id|GLOB_STA
 )paren
 suffix:semicolon
 )brace
@@ -2565,6 +2663,16 @@ id|dmabuf-&gt;fragsize
 op_rshift
 l_int|1
 suffix:semicolon
+id|dmabuf-&gt;userfragsize
+op_assign
+id|dmabuf-&gt;ossfragsize
+suffix:semicolon
+id|dmabuf-&gt;userfrags
+op_assign
+id|dmabuf-&gt;dmasize
+op_div
+id|dmabuf-&gt;ossfragsize
+suffix:semicolon
 id|memset
 c_func
 (paren
@@ -2587,12 +2695,6 @@ id|fragint
 op_assign
 l_int|8
 suffix:semicolon
-id|dmabuf-&gt;ossfragsize
-op_assign
-id|dmabuf-&gt;dmasize
-op_rshift
-l_int|2
-suffix:semicolon
 id|dmabuf-&gt;fragshift
 op_assign
 l_int|2
@@ -2610,12 +2712,6 @@ l_int|8
 id|fragint
 op_assign
 l_int|4
-suffix:semicolon
-id|dmabuf-&gt;ossfragsize
-op_assign
-id|dmabuf-&gt;dmasize
-op_rshift
-l_int|3
 suffix:semicolon
 id|dmabuf-&gt;fragshift
 op_assign
@@ -2635,12 +2731,6 @@ id|fragint
 op_assign
 l_int|2
 suffix:semicolon
-id|dmabuf-&gt;ossfragsize
-op_assign
-id|dmabuf-&gt;dmasize
-op_rshift
-l_int|4
-suffix:semicolon
 id|dmabuf-&gt;fragshift
 op_assign
 l_int|4
@@ -2651,12 +2741,6 @@ r_else
 id|fragint
 op_assign
 l_int|1
-suffix:semicolon
-id|dmabuf-&gt;ossfragsize
-op_assign
-id|dmabuf-&gt;dmasize
-op_rshift
-l_int|5
 suffix:semicolon
 id|dmabuf-&gt;fragshift
 op_assign
@@ -3246,7 +3330,7 @@ c_cond
 (paren
 id|dmabuf-&gt;count
 OG
-id|dmabuf-&gt;ossfragsize
+id|dmabuf-&gt;userfragsize
 )paren
 id|wake_up
 c_func
@@ -3380,7 +3464,7 @@ OL
 (paren
 id|dmabuf-&gt;dmasize
 op_minus
-id|dmabuf-&gt;ossfragsize
+id|dmabuf-&gt;userfragsize
 )paren
 )paren
 id|wake_up
@@ -3602,6 +3686,17 @@ r_break
 suffix:semicolon
 )brace
 )brace
+id|stop_dac
+c_func
+(paren
+id|state
+)paren
+suffix:semicolon
+id|synchronize_irq
+c_func
+(paren
+)paren
+suffix:semicolon
 id|remove_wait_queue
 c_func
 (paren
@@ -3763,7 +3858,7 @@ macro_line|#ifdef DEBUG_INTERRUPTS
 id|printk
 c_func
 (paren
-l_string|&quot;NUM %d PORT %lX IRQ ( ST%d &quot;
+l_string|&quot;NUM %d PORT %X IRQ ( ST%d &quot;
 comma
 id|c-&gt;num
 comma
@@ -3791,9 +3886,11 @@ macro_line|#ifdef DEBUG_INTERRUPTS
 id|printk
 c_func
 (paren
-l_string|&quot;COMP%d &quot;
+l_string|&quot;COMP %d &quot;
 comma
-id|x
+id|dmabuf-&gt;hwptr
+op_div
+id|dmabuf-&gt;fragsize
 )paren
 suffix:semicolon
 macro_line|#endif
@@ -4045,29 +4142,6 @@ id|card-&gt;lock
 )paren
 suffix:semicolon
 )brace
-DECL|function|i810_llseek
-r_static
-id|loff_t
-id|i810_llseek
-c_func
-(paren
-r_struct
-id|file
-op_star
-id|file
-comma
-id|loff_t
-id|offset
-comma
-r_int
-id|origin
-)paren
-(brace
-r_return
-op_minus
-id|ESPIPE
-suffix:semicolon
-)brace
 multiline_comment|/* in this loop, dmabuf.count signifies the amount of data that is waiting to be copied to&n;   the user&squot;s buffer.  it is filled by the dma machine and drained by this loop. */
 DECL|function|i810_read
 r_static
@@ -4281,13 +4355,16 @@ id|dmabuf-&gt;dmasize
 (brace
 id|dmabuf-&gt;count
 op_assign
-l_int|0
+id|dmabuf-&gt;dmasize
 suffix:semicolon
 )brace
 id|cnt
 op_assign
 id|dmabuf-&gt;count
+op_minus
+id|dmabuf-&gt;fragsize
 suffix:semicolon
+singleline_comment|// this is to make the copy_to_user simpler below
 r_if
 c_cond
 (paren
@@ -4339,16 +4416,6 @@ r_int
 r_int
 id|tmo
 suffix:semicolon
-singleline_comment|// are we already running?  only start us if we aren&squot;t running
-singleline_comment|// currently
-id|i810_update_lvi
-c_func
-(paren
-id|state
-comma
-l_int|1
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -4367,6 +4434,14 @@ id|state
 )paren
 suffix:semicolon
 )brace
+id|i810_update_lvi
+c_func
+(paren
+id|state
+comma
+l_int|1
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -4561,12 +4636,24 @@ comma
 l_int|1
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+(paren
+id|dmabuf-&gt;enable
+op_amp
+id|ADC_RUNNING
+)paren
+)paren
+(brace
 id|start_adc
 c_func
 (paren
 id|state
 )paren
 suffix:semicolon
+)brace
 r_return
 id|ret
 suffix:semicolon
@@ -4796,8 +4883,11 @@ id|cnt
 op_assign
 id|dmabuf-&gt;dmasize
 op_minus
-id|swptr
+id|dmabuf-&gt;fragsize
+op_minus
+id|dmabuf-&gt;count
 suffix:semicolon
+singleline_comment|// this is to make the copy_from_user simpler below
 r_if
 c_cond
 (paren
@@ -4806,7 +4896,7 @@ OG
 (paren
 id|dmabuf-&gt;dmasize
 op_minus
-id|dmabuf-&gt;count
+id|swptr
 )paren
 )paren
 (brace
@@ -4814,7 +4904,7 @@ id|cnt
 op_assign
 id|dmabuf-&gt;dmasize
 op_minus
-id|dmabuf-&gt;count
+id|swptr
 suffix:semicolon
 )brace
 id|spin_unlock_irqrestore
@@ -4826,6 +4916,17 @@ comma
 id|flags
 )paren
 suffix:semicolon
+macro_line|#ifdef DEBUG2
+id|printk
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;i810_audio: i810_write: %d bytes available space&bslash;n&quot;
+comma
+id|cnt
+)paren
+suffix:semicolon
+macro_line|#endif
 r_if
 c_cond
 (paren
@@ -4850,14 +4951,6 @@ r_int
 id|tmo
 suffix:semicolon
 singleline_comment|// There is data waiting to be played
-id|i810_update_lvi
-c_func
-(paren
-id|state
-comma
-l_int|0
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -4880,6 +4973,17 @@ id|state
 )paren
 suffix:semicolon
 )brace
+singleline_comment|// Update the LVI pointer in case we have already
+singleline_comment|// written data in this syscall and are just waiting
+singleline_comment|// on the tail bit of data
+id|i810_update_lvi
+c_func
+(paren
+id|state
+comma
+l_int|0
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -5082,18 +5186,6 @@ op_mod
 id|dmabuf-&gt;fragsize
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-(paren
-id|x
-op_plus
-id|dmabuf-&gt;count
-)paren
-OL
-id|dmabuf-&gt;dmasize
-)paren
-(brace
 id|memset
 c_func
 (paren
@@ -5106,7 +5198,6 @@ comma
 id|x
 )paren
 suffix:semicolon
-)brace
 )brace
 id|i810_update_lvi
 c_func
@@ -5124,7 +5215,7 @@ id|dmabuf-&gt;enable
 op_logical_and
 id|dmabuf-&gt;count
 op_ge
-id|dmabuf-&gt;ossfragsize
+id|dmabuf-&gt;userfragsize
 )paren
 id|start_dac
 c_func
@@ -5816,17 +5907,6 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-id|stop_dac
-c_func
-(paren
-id|state
-)paren
-suffix:semicolon
-id|synchronize_irq
-c_func
-(paren
-)paren
-suffix:semicolon
 id|dmabuf-&gt;ready
 op_assign
 l_int|0
@@ -6153,7 +6233,7 @@ c_func
 (paren
 l_string|&quot;SNDCTL_DSP_GETBLKSIZE %d&bslash;n&quot;
 comma
-id|dmabuf-&gt;ossfragsize
+id|dmabuf-&gt;userfragsize
 )paren
 suffix:semicolon
 macro_line|#endif
@@ -6161,7 +6241,7 @@ r_return
 id|put_user
 c_func
 (paren
-id|dmabuf-&gt;ossfragsize
+id|dmabuf-&gt;userfragsize
 comma
 (paren
 r_int
@@ -6588,11 +6668,11 @@ id|state
 suffix:semicolon
 id|abinfo.fragsize
 op_assign
-id|dmabuf-&gt;ossfragsize
+id|dmabuf-&gt;userfragsize
 suffix:semicolon
 id|abinfo.fragstotal
 op_assign
-id|dmabuf-&gt;ossmaxfrags
+id|dmabuf-&gt;userfrags
 suffix:semicolon
 r_if
 c_cond
@@ -6616,7 +6696,7 @@ id|abinfo.fragments
 op_assign
 id|abinfo.bytes
 op_div
-id|dmabuf-&gt;ossfragsize
+id|dmabuf-&gt;userfragsize
 suffix:semicolon
 id|spin_unlock_irqrestore
 c_func
@@ -6739,7 +6819,7 @@ op_minus
 id|dmabuf-&gt;count
 )paren
 op_div
-id|dmabuf-&gt;ossfragsize
+id|dmabuf-&gt;userfragsize
 suffix:semicolon
 r_if
 c_cond
@@ -6756,7 +6836,7 @@ op_minus
 id|dmabuf-&gt;count
 op_amp
 (paren
-id|dmabuf-&gt;ossfragsize
+id|dmabuf-&gt;userfragsize
 op_minus
 l_int|1
 )paren
@@ -6873,11 +6953,11 @@ id|state
 suffix:semicolon
 id|abinfo.fragsize
 op_assign
-id|dmabuf-&gt;ossfragsize
+id|dmabuf-&gt;userfragsize
 suffix:semicolon
 id|abinfo.fragstotal
 op_assign
-id|dmabuf-&gt;ossmaxfrags
+id|dmabuf-&gt;userfrags
 suffix:semicolon
 id|abinfo.bytes
 op_assign
@@ -6889,7 +6969,7 @@ id|abinfo.fragments
 op_assign
 id|abinfo.bytes
 op_div
-id|dmabuf-&gt;ossfragsize
+id|dmabuf-&gt;userfragsize
 suffix:semicolon
 id|spin_unlock_irqrestore
 c_func
@@ -7004,7 +7084,7 @@ id|cinfo.blocks
 op_assign
 id|dmabuf-&gt;count
 op_div
-id|dmabuf-&gt;ossfragsize
+id|dmabuf-&gt;userfragsize
 suffix:semicolon
 id|cinfo.ptr
 op_assign
@@ -7018,9 +7098,11 @@ id|dmabuf-&gt;mapped
 (brace
 id|dmabuf-&gt;count
 op_and_assign
-id|dmabuf-&gt;ossfragsize
+(paren
+id|dmabuf-&gt;userfragsize
 op_minus
 l_int|1
+)paren
 suffix:semicolon
 id|__i810_update_lvi
 c_func
@@ -7321,7 +7403,7 @@ id|dmabuf-&gt;enable
 op_logical_and
 id|dmabuf-&gt;count
 OG
-id|dmabuf-&gt;fragsize
+id|dmabuf-&gt;userfragsize
 )paren
 id|start_dac
 c_func
@@ -7421,7 +7503,7 @@ OL
 (paren
 id|dmabuf-&gt;dmasize
 op_minus
-id|dmabuf-&gt;fragsize
+id|dmabuf-&gt;userfragsize
 )paren
 )paren
 id|start_adc
@@ -7935,13 +8017,6 @@ op_or_assign
 id|PCM_ENABLE_OUTPUT
 suffix:semicolon
 )brace
-id|down
-c_func
-(paren
-op_amp
-id|state-&gt;open_sem
-)paren
-suffix:semicolon
 multiline_comment|/* set default sample format. According to OSS Programmer&squot;s Guide  /dev/dsp&n;&t;   should be default to unsigned 8-bits, mono, with sample rate 8kHz and&n;&t;   /dev/dspW will accept 16-bits sample, but we don&squot;t support those so we&n;&t;   set it immediately to stereo and 16bit, which is all we do support */
 id|dmabuf-&gt;fmt
 op_or_assign
@@ -7969,13 +8044,6 @@ op_amp
 id|FMODE_READ
 op_or
 id|FMODE_WRITE
-)paren
-suffix:semicolon
-id|up
-c_func
-(paren
-op_amp
-id|state-&gt;open_sem
 )paren
 suffix:semicolon
 r_return
@@ -8012,6 +8080,13 @@ op_star
 id|file-&gt;private_data
 suffix:semicolon
 r_struct
+id|i810_card
+op_star
+id|card
+op_assign
+id|state-&gt;card
+suffix:semicolon
+r_struct
 id|dmabuf
 op_star
 id|dmabuf
@@ -8019,16 +8094,13 @@ op_assign
 op_amp
 id|state-&gt;dmabuf
 suffix:semicolon
+r_int
+r_int
+id|flags
+suffix:semicolon
 id|lock_kernel
 c_func
 (paren
-)paren
-suffix:semicolon
-id|down
-c_func
-(paren
-op_amp
-id|state-&gt;open_sem
 )paren
 suffix:semicolon
 multiline_comment|/* stop DMA state machine and free DMA buffers/channels */
@@ -8036,7 +8108,7 @@ r_if
 c_cond
 (paren
 id|dmabuf-&gt;enable
-op_eq
+op_amp
 id|DAC_RUNNING
 op_logical_or
 (paren
@@ -8058,12 +8130,6 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-id|stop_dac
-c_func
-(paren
-id|state
-)paren
-suffix:semicolon
 )brace
 r_if
 c_cond
@@ -8080,6 +8146,15 @@ id|state
 )paren
 suffix:semicolon
 )brace
+id|spin_lock_irqsave
+c_func
+(paren
+op_amp
+id|card-&gt;lock
+comma
+id|flags
+)paren
+suffix:semicolon
 id|dealloc_dmabuf
 c_func
 (paren
@@ -8124,14 +8199,6 @@ id|dmabuf-&gt;read_channel-&gt;num
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* we&squot;re covered by the open_sem */
-id|up
-c_func
-(paren
-op_amp
-id|state-&gt;open_sem
-)paren
-suffix:semicolon
 id|state-&gt;card-&gt;states
 (braket
 id|state-&gt;virt
@@ -8143,6 +8210,15 @@ id|kfree
 c_func
 (paren
 id|state
+)paren
+suffix:semicolon
+id|spin_unlock_irqrestore
+c_func
+(paren
+op_amp
+id|card-&gt;lock
+comma
+id|flags
 )paren
 suffix:semicolon
 id|unlock_kernel
@@ -8168,7 +8244,7 @@ id|THIS_MODULE
 comma
 id|llseek
 suffix:colon
-id|i810_llseek
+id|no_llseek
 comma
 id|read
 suffix:colon
@@ -8506,7 +8582,7 @@ id|THIS_MODULE
 comma
 id|llseek
 suffix:colon
-id|i810_llseek
+id|no_llseek
 comma
 id|ioctl
 suffix:colon

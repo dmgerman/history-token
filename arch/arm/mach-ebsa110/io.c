@@ -990,7 +990,7 @@ c_func
 )paren
 suffix:semicolon
 )brace
-id|__arch_writesb
+id|__raw_writesb
 c_func
 (paren
 id|ISAIO_BASE
@@ -1064,7 +1064,7 @@ c_func
 )paren
 suffix:semicolon
 )brace
-id|__arch_readsb
+id|__raw_readsb
 c_func
 (paren
 id|ISAIO_BASE
@@ -1139,7 +1139,7 @@ c_func
 )paren
 suffix:semicolon
 )brace
-id|__arch_writesw
+id|__raw_writesw
 c_func
 (paren
 id|ISAIO_BASE
@@ -1213,7 +1213,7 @@ c_func
 )paren
 suffix:semicolon
 )brace
-id|__arch_readsw
+id|__raw_readsw
 c_func
 (paren
 id|ISAIO_BASE

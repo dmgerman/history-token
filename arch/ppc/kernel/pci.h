@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * BK Id: SCCS/s.pci.h 1.7 05/17/01 18:14:21 cort&n; */
+multiline_comment|/*&n; * BK Id: SCCS/s.pci.h 1.10 08/08/01 16:35:43 paulus&n; */
 macro_line|#ifndef __PPC_KERNEL_PCI_H__
 DECL|macro|__PPC_KERNEL_PCI_H__
 mdefine_line|#define __PPC_KERNEL_PCI_H__
@@ -72,9 +72,6 @@ r_struct
 id|pci_controller
 op_star
 id|hose
-comma
-r_int
-id|io_space_size
 )paren
 suffix:semicolon
 macro_line|#endif /* __PPC_KERNEL_PCI_H__ */

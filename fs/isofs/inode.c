@@ -3250,7 +3250,7 @@ c_cond
 id|opt.iocharset
 )paren
 r_goto
-id|out_freebh
+id|out_unlock
 suffix:semicolon
 id|s-&gt;u.isofs_sb.s_nls_iocharset
 op_assign
@@ -3284,6 +3284,12 @@ suffix:colon
 l_int|0
 )paren
 suffix:semicolon
+id|s-&gt;u.isofs_sb.s_rock_offset
+op_assign
+op_minus
+l_int|1
+suffix:semicolon
+multiline_comment|/* initial offset, will guess until SP is found*/
 id|s-&gt;u.isofs_sb.s_cruft
 op_assign
 id|opt.cruft

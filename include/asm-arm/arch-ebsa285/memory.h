@@ -70,5 +70,7 @@ DECL|macro|__phys_to_virt__is_a_macro
 mdefine_line|#define __phys_to_virt__is_a_macro
 DECL|macro|__phys_to_virt
 mdefine_line|#define __phys_to_virt(ppage) ((unsigned long)(ppage) + PAGE_OFFSET)
+DECL|macro|PHYS_TO_NID
+mdefine_line|#define PHYS_TO_NID(addr)&t;(0)
 macro_line|#endif
 eof

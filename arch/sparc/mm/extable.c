@@ -233,6 +233,10 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+r_extern
+id|spinlock_t
+id|modlist_lock
+suffix:semicolon
 r_int
 r_int
 DECL|function|search_exception_table

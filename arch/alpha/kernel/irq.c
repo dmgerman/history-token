@@ -2453,6 +2453,8 @@ id|buf
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * handle_irq handles all normal device IRQ&squot;s (the special&n; * SMP cross-CPU interrupts have their own specific&n; * handlers).&n; */
+DECL|macro|MAX_ILLEGAL_IRQS
+mdefine_line|#define MAX_ILLEGAL_IRQS 16
 r_void
 DECL|function|handle_irq
 id|handle_irq
@@ -2493,6 +2495,13 @@ r_int
 r_int
 id|status
 suffix:semicolon
+r_static
+r_int
+r_int
+id|illegal_count
+op_assign
+l_int|0
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -2502,9 +2511,16 @@ r_int
 id|irq
 OG
 id|ACTUAL_NR_IRQS
+op_logical_and
+id|illegal_count
+OL
+id|MAX_ILLEGAL_IRQS
 )paren
 (brace
 id|irq_err_count
+op_increment
+suffix:semicolon
+id|illegal_count
 op_increment
 suffix:semicolon
 id|printk

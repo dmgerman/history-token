@@ -2,6 +2,7 @@ multiline_comment|/*&n; *&t;Precise Delay Loops for i386&n; *&n; *&t;Copyright (
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
+macro_line|#include &lt;asm/processor.h&gt;
 macro_line|#include &lt;asm/delay.h&gt;
 macro_line|#ifdef CONFIG_SMP
 macro_line|#include &lt;asm/smp.h&gt;
@@ -39,6 +40,11 @@ id|bclock
 suffix:semicolon
 r_do
 (brace
+id|rep_nop
+c_func
+(paren
+)paren
+suffix:semicolon
 id|rdtscl
 c_func
 (paren
@@ -57,9 +63,7 @@ id|bclock
 OL
 id|loops
 )paren
-(brace
 suffix:semicolon
-)brace
 )brace
 multiline_comment|/*&n; *&t;Non TSC based delay loop for 386, 486, MediaGX&n; */
 DECL|function|__loop_delay
@@ -113,14 +117,12 @@ c_cond
 (paren
 id|x86_udelay_tsc
 )paren
-(brace
 id|__rdtsc_delay
 c_func
 (paren
 id|loops
 )paren
 suffix:semicolon
-)brace
 r_else
 id|__loop_delay
 c_func

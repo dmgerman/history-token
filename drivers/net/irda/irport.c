@@ -1088,6 +1088,12 @@ id|iobase
 op_assign
 id|self-&gt;io.sir_base
 suffix:semicolon
+id|irport_stop
+c_func
+(paren
+id|self
+)paren
+suffix:semicolon
 id|spin_lock_irqsave
 c_func
 (paren
@@ -1095,12 +1101,6 @@ op_amp
 id|self-&gt;lock
 comma
 id|flags
-)paren
-suffix:semicolon
-id|irport_stop
-c_func
-(paren
-id|self
 )paren
 suffix:semicolon
 multiline_comment|/* Initialize UART */
@@ -1291,7 +1291,7 @@ suffix:semicolon
 id|IRDA_DEBUG
 c_func
 (paren
-l_int|2
+l_int|0
 comma
 id|__FUNCTION__
 l_string|&quot;(), Setting speed to: %d&bslash;n&quot;
@@ -2168,8 +2168,17 @@ suffix:semicolon
 r_int
 id|iobase
 suffix:semicolon
-id|__s32
+id|s32
 id|speed
+suffix:semicolon
+id|IRDA_DEBUG
+c_func
+(paren
+l_int|0
+comma
+id|__FUNCTION__
+l_string|&quot;()&bslash;n&quot;
+)paren
 suffix:semicolon
 id|ASSERT
 c_func
@@ -2715,6 +2724,15 @@ suffix:semicolon
 r_int
 id|iobase
 suffix:semicolon
+id|IRDA_DEBUG
+c_func
+(paren
+l_int|0
+comma
+id|__FUNCTION__
+l_string|&quot;()&bslash;n&quot;
+)paren
+suffix:semicolon
 id|ASSERT
 c_func
 (paren
@@ -2762,10 +2780,23 @@ op_star
 id|dev
 )paren
 )paren
+(brace
+id|IRDA_DEBUG
+c_func
+(paren
+l_int|0
+comma
+id|__FUNCTION__
+l_string|&quot;(), unable to allocate irq=%d&bslash;n&quot;
+comma
+id|self-&gt;io.irq
+)paren
+suffix:semicolon
 r_return
 op_minus
 id|EAGAIN
 suffix:semicolon
+)brace
 id|irport_start
 c_func
 (paren

@@ -56,7 +56,7 @@ DECL|macro|FASTCALL
 mdefine_line|#define FASTCALL(x)&t;x
 macro_line|#endif
 r_struct
-id|semaphore
+id|completion
 suffix:semicolon
 r_extern
 r_struct
@@ -105,11 +105,11 @@ id|ATTRIB_NORET
 suffix:semicolon
 id|NORET_TYPE
 r_void
-id|up_and_exit
+id|complete_and_exit
 c_func
 (paren
 r_struct
-id|semaphore
+id|completion
 op_star
 comma
 r_int

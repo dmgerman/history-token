@@ -1525,6 +1525,13 @@ op_ne
 id|CS_SUCCESS
 )paren
 (brace
+id|printk
+c_func
+(paren
+id|KERN_NOTICE
+l_string|&quot;serial_cs: no usable port range found, giving up&bslash;n&quot;
+)paren
+suffix:semicolon
 id|cs_error
 c_func
 (paren
@@ -2006,6 +2013,13 @@ op_ne
 id|CS_SUCCESS
 )paren
 (brace
+id|printk
+c_func
+(paren
+id|KERN_NOTICE
+l_string|&quot;serial_cs: no usable port range found, giving up&bslash;n&quot;
+)paren
+suffix:semicolon
 id|cs_error
 c_func
 (paren

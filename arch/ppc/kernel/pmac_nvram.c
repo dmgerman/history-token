@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * BK Id: SCCS/s.pmac_nvram.c 1.5 05/17/01 18:14:21 cort&n; */
+multiline_comment|/*&n; * BK Id: SCCS/s.pmac_nvram.c 1.10 08/08/01 16:23:35 paulus&n; */
 multiline_comment|/*&n; * Miscellaneous procedures for dealing with the PowerMac hardware.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -148,14 +148,14 @@ op_star
 id|nvram_image
 suffix:semicolon
 macro_line|#else
-DECL|variable|nvram_image
-id|__pmac
+DECL|variable|__pmacdata
 r_static
 r_char
 id|nvram_image
 (braket
 id|NVRAM_SIZE
 )braket
+id|__pmacdata
 suffix:semicolon
 macro_line|#endif
 r_extern
@@ -164,6 +164,7 @@ id|pmac_newworld
 suffix:semicolon
 r_static
 id|u8
+id|__openfirmware
 DECL|function|chrp_checksum
 id|chrp_checksum
 c_func
@@ -234,6 +235,7 @@ suffix:semicolon
 )brace
 r_static
 id|u32
+id|__pmac
 DECL|function|core99_calc_adler
 id|core99_calc_adler
 c_func
@@ -335,6 +337,7 @@ suffix:semicolon
 )brace
 r_static
 id|u32
+id|__pmac
 DECL|function|core99_check
 id|core99_check
 c_func
@@ -431,6 +434,7 @@ suffix:semicolon
 )brace
 r_static
 r_int
+id|__pmac
 DECL|function|core99_erase_bank
 id|core99_erase_bank
 c_func
@@ -569,6 +573,7 @@ suffix:semicolon
 )brace
 r_static
 r_int
+id|__pmac
 DECL|function|core99_write_bank
 id|core99_write_bank
 c_func
@@ -748,6 +753,7 @@ suffix:semicolon
 )brace
 r_static
 r_void
+id|__init
 DECL|function|lookup_partitions
 id|lookup_partitions
 c_func
@@ -983,9 +989,9 @@ id|pmac_nvram_NR
 suffix:semicolon
 macro_line|#endif&t;
 )brace
+r_void
 id|__init
 DECL|function|pmac_nvram_init
-r_void
 id|pmac_nvram_init
 c_func
 (paren
@@ -1239,6 +1245,8 @@ l_int|0
 )braket
 dot
 id|address
+op_plus
+id|isa_mem_base
 comma
 id|dp-&gt;addrs
 (braket
@@ -1388,6 +1396,7 @@ c_func
 suffix:semicolon
 )brace
 r_void
+id|__pmac
 DECL|function|pmac_nvram_update
 id|pmac_nvram_update
 c_func
@@ -1529,10 +1538,10 @@ id|core99_bank
 )paren
 suffix:semicolon
 )brace
-id|__openfirmware
-DECL|function|nvram_read_byte
 r_int
 r_char
+id|__openfirmware
+DECL|function|nvram_read_byte
 id|nvram_read_byte
 c_func
 (paren
@@ -1667,9 +1676,9 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+r_void
 id|__openfirmware
 DECL|function|nvram_write_byte
-r_void
 id|nvram_write_byte
 c_func
 (paren
@@ -1820,6 +1829,7 @@ c_func
 suffix:semicolon
 )brace
 r_int
+id|__pmac
 DECL|function|pmac_get_partition
 id|pmac_get_partition
 c_func
@@ -1836,6 +1846,7 @@ id|partition
 suffix:semicolon
 )brace
 id|u8
+id|__pmac
 DECL|function|pmac_xpram_read
 id|pmac_xpram_read
 c_func
@@ -1873,6 +1884,7 @@ id|offset
 suffix:semicolon
 )brace
 r_void
+id|__pmac
 DECL|function|pmac_xpram_write
 id|pmac_xpram_write
 c_func

@@ -12,6 +12,7 @@ macro_line|#include &lt;linux/tty.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
+macro_line|#include &lt;asm/console.h&gt;
 macro_line|#include &lt;asm/hwrpb.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/processor.h&gt;
@@ -173,6 +174,29 @@ c_func
 id|perf_irq
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_ALPHA_SRM
+DECL|variable|callback_getenv
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|callback_getenv
+)paren
+suffix:semicolon
+DECL|variable|callback_setenv
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|callback_setenv
+)paren
+suffix:semicolon
+DECL|variable|callback_save_env
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|callback_save_env
+)paren
+suffix:semicolon
+macro_line|#endif /* CONFIG_ALPHA_SRM */
 multiline_comment|/* platform dependent support */
 DECL|variable|_inb
 id|EXPORT_SYMBOL

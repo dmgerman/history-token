@@ -9117,6 +9117,13 @@ id|lp
 op_assign
 id|thisDepca.priv
 suffix:semicolon
+id|unregister_netdev
+c_func
+(paren
+op_amp
+id|thisDepca
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -9161,13 +9168,6 @@ suffix:semicolon
 id|thisDepca.irq
 op_assign
 l_int|0
-suffix:semicolon
-id|unregister_netdev
-c_func
-(paren
-op_amp
-id|thisDepca
-)paren
 suffix:semicolon
 id|release_region
 c_func

@@ -20,8 +20,8 @@ mdefine_line|#define __arch_getb(a)          (*(volatile unsigned char *)(a))
 DECL|macro|__arch_getl
 mdefine_line|#define __arch_getl(a)          (*(volatile unsigned int  *)(a))
 DECL|function|__arch_getw
-r_extern
-id|__inline__
+r_static
+r_inline
 r_int
 r_int
 id|__arch_getw
@@ -62,8 +62,8 @@ mdefine_line|#define __arch_putb(v,a)        (*(volatile unsigned char *)(a) = (
 DECL|macro|__arch_putl
 mdefine_line|#define __arch_putl(v,a)        (*(volatile unsigned int  *)(a) = (v))
 DECL|function|__arch_putw
-r_extern
-id|__inline__
+r_static
+r_inline
 r_void
 id|__arch_putw
 c_func

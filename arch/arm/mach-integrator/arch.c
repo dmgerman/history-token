@@ -111,7 +111,7 @@ comma
 r_struct
 id|param_struct
 op_star
-id|params
+id|unused
 comma
 r_char
 op_star

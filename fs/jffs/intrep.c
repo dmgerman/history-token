@@ -12621,11 +12621,11 @@ id|current-&gt;pgrp
 op_assign
 l_int|1
 suffix:semicolon
-id|init_MUTEX_LOCKED
+id|init_completion
 c_func
 (paren
 op_amp
-id|c-&gt;gc_thread_sem
+id|c-&gt;gc_thread_comp
 )paren
 suffix:semicolon
 multiline_comment|/* barrier */
@@ -12824,11 +12824,11 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|up_and_exit
+id|complete_and_exit
 c_func
 (paren
 op_amp
-id|c-&gt;gc_thread_sem
+id|c-&gt;gc_thread_comp
 comma
 l_int|0
 )paren

@@ -351,15 +351,13 @@ op_increment
 (brace
 id|page_base
 op_assign
-id|virt_to_bus
+id|page_to_bus
 c_func
 (paren
 id|entry-&gt;pagelist
 (braket
 id|i
 )braket
-op_member_access_from_pointer
-r_virtual
 )paren
 suffix:semicolon
 r_for

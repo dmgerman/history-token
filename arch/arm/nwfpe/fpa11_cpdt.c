@@ -5,8 +5,8 @@ macro_line|#include &quot;fpa11.h&quot;
 macro_line|#include &quot;fpmodule.h&quot;
 macro_line|#include &quot;fpmodule.inl&quot;
 macro_line|#include &lt;asm/uaccess.h&gt;
-r_extern
-id|__inline__
+r_static
+r_inline
 DECL|function|loadSingle
 r_void
 id|loadSingle
@@ -24,6 +24,15 @@ op_star
 id|pMem
 )paren
 (brace
+id|FPA11
+op_star
+id|fpa11
+op_assign
+id|GET_FPA11
+c_func
+(paren
+)paren
+suffix:semicolon
 id|fpa11-&gt;fType
 (braket
 id|Fn
@@ -45,8 +54,8 @@ id|pMem
 )paren
 suffix:semicolon
 )brace
-r_extern
-id|__inline__
+r_static
+r_inline
 DECL|function|loadDouble
 r_void
 id|loadDouble
@@ -64,6 +73,15 @@ op_star
 id|pMem
 )paren
 (brace
+id|FPA11
+op_star
+id|fpa11
+op_assign
+id|GET_FPA11
+c_func
+(paren
+)paren
+suffix:semicolon
 r_int
 r_int
 op_star
@@ -123,8 +141,8 @@ l_int|0
 suffix:semicolon
 multiline_comment|/* sign &amp; exponent */
 )brace
-r_extern
-id|__inline__
+r_static
+r_inline
 DECL|function|loadExtended
 r_void
 id|loadExtended
@@ -142,6 +160,15 @@ op_star
 id|pMem
 )paren
 (brace
+id|FPA11
+op_star
+id|fpa11
+op_assign
+id|GET_FPA11
+c_func
+(paren
+)paren
+suffix:semicolon
 r_int
 r_int
 op_star
@@ -218,8 +245,8 @@ l_int|1
 suffix:semicolon
 multiline_comment|/* ms bits */
 )brace
-r_extern
-id|__inline__
+r_static
+r_inline
 DECL|function|loadMultiple
 r_void
 id|loadMultiple
@@ -237,6 +264,15 @@ op_star
 id|pMem
 )paren
 (brace
+id|FPA11
+op_star
+id|fpa11
+op_assign
+id|GET_FPA11
+c_func
+(paren
+)paren
+suffix:semicolon
 r_register
 r_int
 r_int
@@ -397,8 +433,8 @@ r_break
 suffix:semicolon
 )brace
 )brace
-r_extern
-id|__inline__
+r_static
+r_inline
 DECL|function|storeSingle
 r_void
 id|storeSingle
@@ -415,6 +451,15 @@ op_star
 id|pMem
 )paren
 (brace
+id|FPA11
+op_star
+id|fpa11
+op_assign
+id|GET_FPA11
+c_func
+(paren
+)paren
+suffix:semicolon
 id|float32
 id|val
 suffix:semicolon
@@ -501,8 +546,8 @@ id|pMem
 )paren
 suffix:semicolon
 )brace
-r_extern
-id|__inline__
+r_static
+r_inline
 DECL|function|storeDouble
 r_void
 id|storeDouble
@@ -519,6 +564,15 @@ op_star
 id|pMem
 )paren
 (brace
+id|FPA11
+op_star
+id|fpa11
+op_assign
+id|GET_FPA11
+c_func
+(paren
+)paren
+suffix:semicolon
 id|float64
 id|val
 suffix:semicolon
@@ -626,8 +680,8 @@ l_int|1
 suffix:semicolon
 multiline_comment|/* lsw */
 )brace
-r_extern
-id|__inline__
+r_static
+r_inline
 DECL|function|storeExtended
 r_void
 id|storeExtended
@@ -644,6 +698,15 @@ op_star
 id|pMem
 )paren
 (brace
+id|FPA11
+op_star
+id|fpa11
+op_assign
+id|GET_FPA11
+c_func
+(paren
+)paren
+suffix:semicolon
 id|floatx80
 id|val
 suffix:semicolon
@@ -766,8 +829,8 @@ l_int|1
 suffix:semicolon
 multiline_comment|/* msw */
 )brace
-r_extern
-id|__inline__
+r_static
+r_inline
 DECL|function|storeMultiple
 r_void
 id|storeMultiple
@@ -784,6 +847,15 @@ op_star
 id|pMem
 )paren
 (brace
+id|FPA11
+op_star
+id|fpa11
+op_assign
+id|GET_FPA11
+c_func
+(paren
+)paren
+suffix:semicolon
 r_register
 r_int
 r_int

@@ -135,7 +135,7 @@ id|version
 )braket
 id|__devinitdata
 op_assign
-l_string|&quot;v0.50 15/Jul/01 Ben Collins &lt;bcollins@debian.org&gt;&quot;
+l_string|&quot;v0.51 08/08/01 Ben Collins &lt;bcollins@debian.org&gt;&quot;
 suffix:semicolon
 multiline_comment|/* Module Parameters */
 id|MODULE_PARM
@@ -357,7 +357,7 @@ id|KERN_ERR
 comma
 id|ohci-&gt;id
 comma
-l_string|&quot;Get PHY Reg timeout [0x%08x/0x%08x/%d]&bslash;n&quot;
+l_string|&quot;Get PHY Reg timeout [0x%08x/0x%08x/%d]&quot;
 comma
 id|r
 comma
@@ -502,7 +502,7 @@ id|KERN_ERR
 comma
 id|ohci-&gt;id
 comma
-l_string|&quot;Set PHY Reg timeout [0x%08x/0x%08x/%d]&bslash;n&quot;
+l_string|&quot;Set PHY Reg timeout [0x%08x/0x%08x/%d]&quot;
 comma
 id|r
 comma
@@ -573,7 +573,7 @@ suffix:semicolon
 )brace
 DECL|function|handle_selfid
 r_static
-r_int
+r_void
 id|handle_selfid
 c_func
 (paren
@@ -724,8 +724,6 @@ l_string|&quot;Too many errors on SelfID error reception, giving up!&quot;
 suffix:semicolon
 )brace
 r_return
-op_minus
-l_int|1
 suffix:semicolon
 )brace
 id|size
@@ -899,7 +897,6 @@ id|isroot
 )paren
 suffix:semicolon
 r_return
-l_int|0
 suffix:semicolon
 )brace
 DECL|function|ohci_soft_reset
@@ -1380,7 +1377,7 @@ c_func
 (paren
 id|ohci-&gt;id
 comma
-l_string|&quot;Transmit dma ctx=%d initialized&quot;
+l_string|&quot;Transmit DMA ctx=%d initialized&quot;
 comma
 id|d-&gt;ctx
 )paren
@@ -1602,6 +1599,36 @@ comma
 l_int|0x00080000
 )paren
 suffix:semicolon
+multiline_comment|/* After enabling LPS, we need to wait for the connection&n;&t; * between phy and link to be established.  This should be&n;&t; * signaled by the LPS bit becoming 1, but this happens&n;&t; * immediately.  Instead we wait for reads from LinkControl to&n;&t; * give a valid result, i.e. not 0xffffffff. */
+r_while
+c_loop
+(paren
+id|reg_read
+c_func
+(paren
+id|ohci
+comma
+id|OHCI1394_LinkControlSet
+)paren
+op_eq
+l_int|0xffffffff
+)paren
+(brace
+id|DBGMSG
+c_func
+(paren
+id|ohci-&gt;id
+comma
+l_string|&quot;waiting for phy-link connection&quot;
+)paren
+suffix:semicolon
+id|mdelay
+c_func
+(paren
+l_int|2
+)paren
+suffix:semicolon
+)brace
 multiline_comment|/* Set the bus number */
 id|reg_write
 c_func
@@ -2299,7 +2326,7 @@ c_func
 (paren
 id|ohci-&gt;id
 comma
-l_string|&quot;Inserting packet for node %d, tlabel=%d, tcode=0x%x, speed=%d&bslash;n&quot;
+l_string|&quot;Inserting packet for node %d, tlabel=%d, tcode=0x%x, speed=%d&quot;
 comma
 id|packet-&gt;node_id
 comma
@@ -3005,7 +3032,7 @@ c_func
 (paren
 id|ohci-&gt;id
 comma
-l_string|&quot;iso xmit context info: header[%08x %08x]&bslash;n&quot;
+l_string|&quot;Iso xmit context info: header[%08x %08x]&bslash;n&quot;
 l_string|&quot;                       begin=%08x %08x %08x %08x&bslash;n&quot;
 l_string|&quot;                             %08x %08x %08x %08x&bslash;n&quot;
 l_string|&quot;                       end  =%08x %08x %08x %08x&quot;
@@ -3618,7 +3645,7 @@ c_func
 (paren
 id|ohci-&gt;id
 comma
-l_string|&quot;Bus reset requested%s&quot;
+l_string|&quot;devctl: Bus reset requested%s&quot;
 comma
 (paren
 (paren
@@ -4497,7 +4524,7 @@ c_func
 (paren
 id|ohci-&gt;id
 comma
-l_string|&quot;Bus reset requested%s&quot;
+l_string|&quot;irq_handler: Bus reset requested%s&quot;
 comma
 (paren
 (paren
@@ -5344,7 +5371,7 @@ id|KERN_ERR
 comma
 id|ohci-&gt;id
 comma
-l_string|&quot;Unhandled interrupt(s) 0x%08x&bslash;n&quot;
+l_string|&quot;Unhandled interrupt(s) 0x%08x&quot;
 comma
 id|event
 )paren
@@ -6003,7 +6030,7 @@ c_func
 (paren
 id|ohci-&gt;id
 comma
-l_string|&quot;Split packet rcv&squot;d&bslash;n&quot;
+l_string|&quot;Split packet rcv&squot;d&quot;
 )paren
 suffix:semicolon
 r_if
@@ -6268,7 +6295,7 @@ c_func
 (paren
 id|ohci-&gt;id
 comma
-l_string|&quot;Single packet rcv&squot;d&bslash;n&quot;
+l_string|&quot;Single packet rcv&squot;d&quot;
 )paren
 suffix:semicolon
 id|memcpy
@@ -8724,7 +8751,7 @@ mdefine_line|#define cf_put_1quad(cr, q) (((cr)-&gt;data++)[0] = cpu_to_be32(q))
 DECL|macro|cf_put_4bytes
 mdefine_line|#define cf_put_4bytes(cr, b1, b2, b3, b4) &bslash;&n;&t;(((cr)-&gt;data++)[0] = cpu_to_be32(((b1) &lt;&lt; 24) | ((b2) &lt;&lt; 16) | ((b3) &lt;&lt; 8) | (b4)))
 DECL|macro|cf_put_keyval
-mdefine_line|#define cf_put_keyval(cr, key, val) (((cr)-&gt;data++)[0] = cpu_to_be32((key) &lt;&lt; 24) | (val))
+mdefine_line|#define cf_put_keyval(cr, key, val) (((cr)-&gt;data++)[0] = cpu_to_be32(((key) &lt;&lt; 24) | (val)))
 DECL|function|cf_put_crc16
 r_static
 r_inline
@@ -8822,6 +8849,8 @@ id|unit
 dot
 id|refer
 op_or_assign
+id|cpu_to_be32
+(paren
 id|cr-&gt;data
 op_minus
 id|cr-&gt;unitdir
@@ -8830,6 +8859,7 @@ id|unit
 )braket
 dot
 id|refer
+)paren
 suffix:semicolon
 id|cf_put_crc16
 c_func
@@ -9086,7 +9116,7 @@ c_func
 (paren
 id|ohci-&gt;id
 comma
-l_string|&quot;GUID: %08x:%08x&bslash;n&quot;
+l_string|&quot;GUID: %08x:%08x&quot;
 comma
 id|reg_read
 c_func
@@ -9641,13 +9671,17 @@ op_amp
 id|cr
 )paren
 suffix:semicolon
-r_return
+id|ohci-&gt;csr_config_rom_length
+op_assign
+id|cr.data
+op_minus
+id|ohci-&gt;csr_config_rom_cpu
 suffix:semicolon
 )brace
-DECL|function|get_ohci_rom
+DECL|function|ohci_get_rom
 r_static
 r_int
-id|get_ohci_rom
+id|ohci_get_rom
 c_func
 (paren
 r_struct
@@ -9685,10 +9719,9 @@ op_assign
 id|ohci-&gt;csr_config_rom_cpu
 suffix:semicolon
 r_return
-r_sizeof
-(paren
-id|ohci-&gt;csr_config_rom_cpu
-)paren
+id|ohci-&gt;csr_config_rom_length
+op_star
+l_int|4
 suffix:semicolon
 )brace
 DECL|function|ohci_compare_swap
@@ -9865,7 +9898,7 @@ id|ohci_remove
 comma
 id|get_rom
 suffix:colon
-id|get_ohci_rom
+id|ohci_get_rom
 comma
 id|transmit_packet
 suffix:colon
@@ -11093,7 +11126,7 @@ c_func
 (paren
 id|KERN_ERR
 comma
-l_string|&quot;Invalid tcode in packet_swab (0x%x)&bslash;n&quot;
+l_string|&quot;Invalid tcode in packet_swab (0x%x)&quot;
 comma
 id|tcode
 )paren
@@ -11509,7 +11542,7 @@ c_func
 (paren
 id|KERN_ERR
 comma
-l_string|&quot;PCI module init failed&bslash;n&quot;
+l_string|&quot;PCI module init failed&quot;
 )paren
 suffix:semicolon
 id|hpsb_unregister_lowlevel

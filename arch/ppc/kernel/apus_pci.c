@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * BK Id: SCCS/s.apus_pci.c 1.3 05/17/01 18:14:21 cort&n; */
+multiline_comment|/*&n; * BK Id: SCCS/s.apus_pci.c 1.4 07/06/01 09:19:28 trini&n; */
 multiline_comment|/*&n; * Copyright (C) Michel D&#xfffd;nzer &lt;michdaen@iiic.ethz.ch&gt;&n; *&n; * APUS PCI routines.&n; *&n; * Currently, only B/CVisionPPC cards (Permedia2) are supported.&n; *&n; * Thanks to Geert Uytterhoeven for the idea:&n; * Read values from given config space(s) for the first devices, -1 otherwise&n; *&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#ifdef CONFIG_AMIGA
@@ -44,7 +44,6 @@ id|pci_controller
 op_star
 id|apus_hose
 suffix:semicolon
-id|__apus
 DECL|function|pci_io_base
 r_void
 op_star
@@ -73,7 +72,7 @@ mdefine_line|#define cfg_read_val(val)&t;*val
 DECL|macro|cfg_write_val
 mdefine_line|#define cfg_write_val(val)&t;val
 DECL|macro|APUS_PCI_OP
-mdefine_line|#define APUS_PCI_OP(rw, size, type, op, mask)&t;&t;&t;&t;&t;&bslash;&n;__apus int&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;apus_pcibios_##rw##_config_##size(struct pci_dev *dev, int offset, type val)&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;int fnno = FNNO(dev-&gt;devfn);&t;&t;&t;&t;&t;&t;&bslash;&n;&t;int devno = DEVNO(dev-&gt;devfn);&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;if (dev-&gt;bus-&gt;number &gt; 0 || devno != 1) {&t;&t;&t;&t;&bslash;&n;&t;&t;cfg_##rw##_bad;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;return PCIBIOS_DEVICE_NOT_FOUND;&t;&t;&t;&t;&bslash;&n;&t;}&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;/* base address + function offset + offset ^ endianness conversion */&t;&bslash;&n;&t;cfg_##rw(val, apus_hose-&gt;cfg_data + (fnno&lt;&lt;5) + (offset ^ mask),&t;&bslash;&n;&t;&t; type, op);&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;DPRINTK(#op &quot; b: 0x%x, d: 0x%x, f: 0x%x, o: 0x%x, v: 0x%x&bslash;n&quot;,&t;&t;&bslash;&n;&t;&t;dev-&gt;bus-&gt;number, dev-&gt;devfn&gt;&gt;3, dev-&gt;devfn&amp;7,&t;&t;&t;&bslash;&n;&t;&t;offset, cfg_##rw##_val(val));&t;&t;&t;&t;&t;&bslash;&n;&t;return PCIBIOS_SUCCESSFUL;&t;&t;&t;&t;&t;&t;&bslash;&n;}
+mdefine_line|#define APUS_PCI_OP(rw, size, type, op, mask)&t;&t;&t;&t;&t;&bslash;&n;int&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;apus_pcibios_##rw##_config_##size(struct pci_dev *dev, int offset, type val)&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;int fnno = FNNO(dev-&gt;devfn);&t;&t;&t;&t;&t;&t;&bslash;&n;&t;int devno = DEVNO(dev-&gt;devfn);&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;if (dev-&gt;bus-&gt;number &gt; 0 || devno != 1) {&t;&t;&t;&t;&bslash;&n;&t;&t;cfg_##rw##_bad;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;return PCIBIOS_DEVICE_NOT_FOUND;&t;&t;&t;&t;&bslash;&n;&t;}&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;/* base address + function offset + offset ^ endianness conversion */&t;&bslash;&n;&t;cfg_##rw(val, apus_hose-&gt;cfg_data + (fnno&lt;&lt;5) + (offset ^ mask),&t;&bslash;&n;&t;&t; type, op);&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;DPRINTK(#op &quot; b: 0x%x, d: 0x%x, f: 0x%x, o: 0x%x, v: 0x%x&bslash;n&quot;,&t;&t;&bslash;&n;&t;&t;dev-&gt;bus-&gt;number, dev-&gt;devfn&gt;&gt;3, dev-&gt;devfn&amp;7,&t;&t;&t;&bslash;&n;&t;&t;offset, cfg_##rw##_val(val));&t;&t;&t;&t;&t;&bslash;&n;&t;return PCIBIOS_SUCCESSFUL;&t;&t;&t;&t;&t;&t;&bslash;&n;}
 id|APUS_PCI_OP
 c_func
 (paren

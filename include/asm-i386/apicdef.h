@@ -50,6 +50,10 @@ DECL|macro|APIC_DFR
 mdefine_line|#define&t;&t;APIC_DFR&t;0xE0
 DECL|macro|APIC_SPIV
 mdefine_line|#define&t;&t;APIC_SPIV&t;0xF0
+DECL|macro|APIC_SPIV_FOCUS_DISABLED
+mdefine_line|#define&t;&t;&t;APIC_SPIV_FOCUS_DISABLED&t;(1&lt;&lt;9)
+DECL|macro|APIC_SPIV_APIC_ENABLED
+mdefine_line|#define&t;&t;&t;APIC_SPIV_APIC_ENABLED&t;&t;(1&lt;&lt;8)
 DECL|macro|APIC_ISR
 mdefine_line|#define&t;&t;APIC_ISR&t;0x100
 DECL|macro|APIC_TMR

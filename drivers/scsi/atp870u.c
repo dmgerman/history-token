@@ -16130,7 +16130,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot; last_lenu= %x &quot;
+l_string|&quot; last_lenu= %lx &quot;
 comma
 id|dev-&gt;id
 (braket

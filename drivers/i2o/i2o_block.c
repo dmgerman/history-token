@@ -16,6 +16,7 @@ macro_line|#include &lt;linux/notifier.h&gt;
 macro_line|#include &lt;linux/reboot.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/semaphore.h&gt;
+macro_line|#include &lt;linux/completion.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/atomic.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
@@ -319,7 +320,7 @@ id|i2ob_evt_sem
 )paren
 suffix:semicolon
 r_static
-id|DECLARE_MUTEX_LOCKED
+id|DECLARE_COMPLETION
 c_func
 (paren
 id|i2ob_thread_dead
@@ -2987,7 +2988,7 @@ suffix:semicolon
 )brace
 )brace
 suffix:semicolon
-id|up_and_exit
+id|complete_and_exit
 c_func
 (paren
 op_amp
@@ -7366,7 +7367,7 @@ l_string|&quot;waiting...&quot;
 suffix:semicolon
 )brace
 multiline_comment|/* Be sure it died */
-id|down
+id|wait_for_completion
 c_func
 (paren
 op_amp

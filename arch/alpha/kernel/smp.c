@@ -586,7 +586,8 @@ id|__init
 DECL|function|smp_tune_scheduling
 id|smp_tune_scheduling
 (paren
-r_void
+r_int
+id|cpuid
 )paren
 (brace
 r_struct
@@ -617,6 +618,10 @@ op_star
 id|hwrpb
 op_plus
 id|hwrpb-&gt;processor_offset
+op_plus
+id|cpuid
+op_star
+id|hwrpb-&gt;processor_size
 )paren
 suffix:semicolon
 r_switch
@@ -2075,6 +2080,7 @@ suffix:semicolon
 id|smp_tune_scheduling
 c_func
 (paren
+id|boot_cpuid
 )paren
 suffix:semicolon
 id|smp_setup_percpu_timer

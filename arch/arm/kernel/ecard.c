@@ -683,6 +683,7 @@ suffix:semicolon
 )brace
 )brace
 macro_line|#ifdef CONFIG_CPU_32
+macro_line|#include &lt;linux/completion.h&gt;
 DECL|variable|ecard_pid
 r_static
 id|pid_t
@@ -701,10 +702,10 @@ op_star
 id|ecard_req
 suffix:semicolon
 r_static
-id|DECLARE_MUTEX_LOCKED
+id|DECLARE_COMPLETION
 c_func
 (paren
-id|ecard_done_sem
+id|ecard_completion
 )paren
 suffix:semicolon
 multiline_comment|/*&n; * Set up the expansion card daemon&squot;s page tables.&n; */
@@ -1046,11 +1047,11 @@ c_func
 id|req
 )paren
 suffix:semicolon
-id|up
+id|complete
 c_func
 (paren
 op_amp
-id|ecard_done_sem
+id|ecard_completion
 )paren
 suffix:semicolon
 )brace
@@ -1122,11 +1123,11 @@ id|ecard_wait
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * Now wait for kecardd to run.&n;&t; */
-id|down
+id|wait_for_completion
 c_func
 (paren
 op_amp
-id|ecard_done_sem
+id|ecard_completion
 )paren
 suffix:semicolon
 )brace

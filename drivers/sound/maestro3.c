@@ -9,7 +9,7 @@ macro_line|#include &lt;linux/ioport.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/sound.h&gt;
-macro_line|#include &lt;linux/malloc.h&gt;
+macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/soundcard.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/vmalloc.h&gt;
@@ -4891,30 +4891,6 @@ DECL|macro|VALIDATE_STATE
 mdefine_line|#define VALIDATE_STATE(a) VALIDATE_MAGIC(a,M3_STATE_MAGIC)
 DECL|macro|VALIDATE_CARD
 mdefine_line|#define VALIDATE_CARD(a) VALIDATE_MAGIC(a,M3_CARD_MAGIC)
-multiline_comment|/* --------------------------------------------------------------------- */
-DECL|function|m3_llseek
-r_static
-id|loff_t
-id|m3_llseek
-c_func
-(paren
-r_struct
-id|file
-op_star
-id|file
-comma
-id|loff_t
-id|offset
-comma
-r_int
-id|origin
-)paren
-(brace
-r_return
-op_minus
-id|ESPIPE
-suffix:semicolon
-)brace
 multiline_comment|/* --------------------------------------------------------------------- */
 DECL|function|drain_dac
 r_static
@@ -9825,7 +9801,7 @@ op_assign
 (brace
 id|llseek
 suffix:colon
-id|m3_llseek
+id|no_llseek
 comma
 id|ioctl
 suffix:colon
@@ -11499,7 +11475,7 @@ op_assign
 id|llseek
 suffix:colon
 op_amp
-id|m3_llseek
+id|no_llseek
 comma
 id|read
 suffix:colon

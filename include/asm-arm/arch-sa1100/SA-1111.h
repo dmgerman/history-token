@@ -266,7 +266,7 @@ mdefine_line|#define SACR2_DRPL&t;(1&lt;&lt;4)
 DECL|macro|SACR2_ENLBF
 mdefine_line|#define SACR2_ENLBF&t;(1&lt;&lt;5)
 DECL|macro|SACR2_RESET
-mdefine_line|#define SACR2_RESET&t;(1&lt;&lt;5)
+mdefine_line|#define SACR2_RESET&t;(1&lt;&lt;6)
 DECL|macro|SASR0_TNF
 mdefine_line|#define SASR0_TNF&t;(1&lt;&lt;0)
 DECL|macro|SASR0_RNE
@@ -535,9 +535,9 @@ mdefine_line|#define _MSESTAT    _SA1111( 0x0C04 )
 DECL|macro|_MSEDATA
 mdefine_line|#define _MSEDATA    _SA1111( 0x0C08 )
 DECL|macro|_MSECLKDIV
-mdefine_line|#define _MSECLKDIV  _SA1111( 0x0C10 )
+mdefine_line|#define _MSECLKDIV  _SA1111( 0x0C0C )
 DECL|macro|_MSEPRECNT
-mdefine_line|#define _MSEPRECNT  _SA1111( 0x0C14 )
+mdefine_line|#define _MSEPRECNT  _SA1111( 0x0C10 )
 macro_line|#if ( LANGUAGE == C )
 DECL|macro|KBDCR
 mdefine_line|#define KBDCR       (*((volatile Word *) SA1111_p2v (_KBDCR)))

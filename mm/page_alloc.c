@@ -1549,7 +1549,7 @@ c_cond
 op_logical_neg
 id|order
 op_logical_or
-id|total_free_shortage
+id|free_shortage
 c_func
 (paren
 )paren

@@ -17,7 +17,7 @@ mdefine_line|#define VER_MAJOR 2
 DECL|macro|VER_MINOR
 mdefine_line|#define VER_MINOR 0
 DECL|macro|VER_SUBMINOR
-mdefine_line|#define VER_SUBMINOR 2
+mdefine_line|#define VER_SUBMINOR 5
 singleline_comment|// Macros for kernel (esp. SMP) tracing using a PCI analyzer
 singleline_comment|// (e.g. x86).
 singleline_comment|//#define PCI_KERNEL_TRACE
@@ -72,8 +72,10 @@ singleline_comment|// PDA is Peripheral Device Address, VSA is Volume Set Addres
 singleline_comment|// Linux SCSI parameters
 DECL|macro|CPQFCTS_MAX_TARGET_ID
 mdefine_line|#define CPQFCTS_MAX_TARGET_ID 64
+singleline_comment|// Note, changing CPQFCTS_MAX_LUN to less than 32 (e.g, 8) will result in
+singleline_comment|// strange behavior if a box with more than, e.g. 8, is on the loop.
 DECL|macro|CPQFCTS_MAX_LUN
-mdefine_line|#define CPQFCTS_MAX_LUN 8    
+mdefine_line|#define CPQFCTS_MAX_LUN 32    
 singleline_comment|// The RA-4x00 supports 32 (Linux SCSI supports 8)
 DECL|macro|CPQFCTS_MAX_CHANNEL
 mdefine_line|#define CPQFCTS_MAX_CHANNEL 0 
@@ -2978,21 +2980,6 @@ op_star
 id|pLastLoggedInPort
 )paren
 suffix:semicolon
-singleline_comment|// don&squot;t do this unless you have the right hardware!
-DECL|macro|TRIGGERABLE_HBA
-mdefine_line|#define TRIGGERABLE_HBA 1
-macro_line|#ifdef TRIGGERABLE_HBA
-r_void
-id|TriggerHBA
-c_func
-(paren
-r_void
-op_star
-comma
-r_int
-)paren
-suffix:semicolon
-macro_line|#endif
 r_void
 id|cpqfcTSPutLinkQue
 c_func

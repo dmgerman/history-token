@@ -8,29 +8,168 @@ macro_line|#include &lt;asm/memory.h&gt;
 macro_line|#include &lt;asm/arch/hardware.h&gt;
 multiline_comment|/*&n; * Generic virtual read/write.  Note that we don&squot;t support half-word&n; * read/writes.  We define __arch_*[bl] here, and leave __arch_*w&n; * to the architecture specific code.&n; */
 DECL|macro|__arch_getb
-mdefine_line|#define __arch_getb(a)&t;&t;(*(volatile unsigned char *)(a))
+mdefine_line|#define __arch_getb(a)&t;&t;&t;(*(volatile unsigned char *)(a))
 DECL|macro|__arch_getl
-mdefine_line|#define __arch_getl(a)&t;&t;(*(volatile unsigned int  *)(a))
+mdefine_line|#define __arch_getl(a)&t;&t;&t;(*(volatile unsigned int  *)(a))
 DECL|macro|__arch_putb
-mdefine_line|#define __arch_putb(v,a)&t;(*(volatile unsigned char *)(a) = (v))
+mdefine_line|#define __arch_putb(v,a)&t;&t;(*(volatile unsigned char *)(a) = (v))
 DECL|macro|__arch_putl
-mdefine_line|#define __arch_putl(v,a)&t;(*(volatile unsigned int  *)(a) = (v))
+mdefine_line|#define __arch_putl(v,a)&t;&t;(*(volatile unsigned int  *)(a) = (v))
+r_extern
+r_void
+id|__raw_writesb
+c_func
+(paren
+r_int
+r_int
+id|addr
+comma
+r_void
+op_star
+id|data
+comma
+r_int
+id|bytelen
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|__raw_writesw
+c_func
+(paren
+r_int
+r_int
+id|addr
+comma
+r_void
+op_star
+id|data
+comma
+r_int
+id|wordlen
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|__raw_writesl
+c_func
+(paren
+r_int
+r_int
+id|addr
+comma
+r_void
+op_star
+id|data
+comma
+r_int
+id|longlen
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|__raw_readsb
+c_func
+(paren
+r_int
+r_int
+id|addr
+comma
+r_void
+op_star
+id|data
+comma
+r_int
+id|bytelen
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|__raw_readsw
+c_func
+(paren
+r_int
+r_int
+id|addr
+comma
+r_void
+op_star
+id|data
+comma
+r_int
+id|wordlen
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|__raw_readsl
+c_func
+(paren
+r_int
+r_int
+id|addr
+comma
+r_void
+op_star
+id|data
+comma
+r_int
+id|longlen
+)paren
+suffix:semicolon
+DECL|macro|__raw_writeb
+mdefine_line|#define __raw_writeb(v,a)&t;&t;__arch_putb(v,a)
+DECL|macro|__raw_writew
+mdefine_line|#define __raw_writew(v,a)&t;&t;__arch_putw(v,a)
+DECL|macro|__raw_writel
+mdefine_line|#define __raw_writel(v,a)&t;&t;__arch_putl(v,a)
+DECL|macro|__raw_readb
+mdefine_line|#define __raw_readb(a)&t;&t;&t;__arch_getb(a)
+DECL|macro|__raw_readw
+mdefine_line|#define __raw_readw(a)&t;&t;&t;__arch_getw(a)
+DECL|macro|__raw_readl
+mdefine_line|#define __raw_readl(a)&t;&t;&t;__arch_getl(a)
+multiline_comment|/*&n; * The compiler seems to be incapable of optimising constants&n; * properly.  Spell it out to the compiler in some cases.&n; * These are only valid for small values of &quot;off&quot; (&lt; 1&lt;&lt;12)&n; */
+DECL|macro|__raw_base_writeb
+mdefine_line|#define __raw_base_writeb(val,base,off)&t;__arch_base_putb(val,base,off)
+DECL|macro|__raw_base_writew
+mdefine_line|#define __raw_base_writew(val,base,off)&t;__arch_base_putw(val,base,off)
+DECL|macro|__raw_base_writel
+mdefine_line|#define __raw_base_writel(val,base,off)&t;__arch_base_putl(val,base,off)
+DECL|macro|__raw_base_readb
+mdefine_line|#define __raw_base_readb(base,off)&t;__arch_base_getb(base,off)
+DECL|macro|__raw_base_readw
+mdefine_line|#define __raw_base_readw(base,off)&t;__arch_base_getw(base,off)
+DECL|macro|__raw_base_readl
+mdefine_line|#define __raw_base_readl(base,off)&t;__arch_base_getl(base,off)
 multiline_comment|/*&n; * Now, pick up the machine-defined IO definitions&n; */
 macro_line|#include &lt;asm/arch/io.h&gt;
-multiline_comment|/*&n; * IO definitions.  We define {out,in}[bwl] if __io is defined by&n; * the machine.  Otherwise, these definitions are left for the&n; * machine specific header files to pick up.&n; */
+multiline_comment|/*&n; * IO definitions.  We define {out,in,outs,ins}[bwl] if __io is&n; * defined by the machine.  Otherwise, these definitions are left&n; * for the machine specific header files to pick up.&n; */
 macro_line|#ifdef __io
 DECL|macro|outb
-mdefine_line|#define outb(v,p)&t;&t;&t;__arch_putb(v,__io(p))
+mdefine_line|#define outb(v,p)&t;&t;&t;__raw_writeb(v,__io(p))
 DECL|macro|outw
-mdefine_line|#define outw(v,p)&t;&t;&t;__arch_putw(v,__io(p))
+mdefine_line|#define outw(v,p)&t;&t;&t;__raw_writew(v,__io(p))
 DECL|macro|outl
-mdefine_line|#define outl(v,p)&t;&t;&t;__arch_putl(v,__io(p))
+mdefine_line|#define outl(v,p)&t;&t;&t;__raw_writel(v,__io(p))
 DECL|macro|inb
-mdefine_line|#define inb(p)&t;&t;&t;&t;__arch_getb(__io(p))
+mdefine_line|#define inb(p)&t;&t;&t;&t;__raw_readb(__io(p))
 DECL|macro|inw
-mdefine_line|#define inw(p)&t;&t;&t;&t;__arch_getw(__io(p))
+mdefine_line|#define inw(p)&t;&t;&t;&t;__raw_readw(__io(p))
 DECL|macro|inl
-mdefine_line|#define inl(p)&t;&t;&t;&t;__arch_getl(__io(p))
+mdefine_line|#define inl(p)&t;&t;&t;&t;__raw_readl(__io(p))
+DECL|macro|outsb
+mdefine_line|#define outsb(p,d,l)&t;&t;&t;__raw_writesb(__io(p),d,l)
+DECL|macro|outsw
+mdefine_line|#define outsw(p,d,l)&t;&t;&t;__raw_writesw(__io(p),d,l)
+DECL|macro|outsl
+mdefine_line|#define outsl(p,d,l)&t;&t;&t;__raw_writesl(__io(p),d,l)
+DECL|macro|insb
+mdefine_line|#define insb(p,d,l)&t;&t;&t;__raw_readsb(__io(p),d,l)
+DECL|macro|insw
+mdefine_line|#define insw(p,d,l)&t;&t;&t;__raw_readsw(__io(p),d,l)
+DECL|macro|insl
+mdefine_line|#define insl(p,d,l)&t;&t;&t;__raw_readsl(__io(p),d,l)
 macro_line|#endif
 DECL|macro|outb_p
 mdefine_line|#define outb_p(val,port)&t;&t;outb((val),(port))
@@ -44,111 +183,6 @@ DECL|macro|inw_p
 mdefine_line|#define inw_p(port)&t;&t;&t;inw((port))
 DECL|macro|inl_p
 mdefine_line|#define inl_p(port)&t;&t;&t;inl((port))
-r_extern
-r_void
-id|outsb
-c_func
-(paren
-r_int
-r_int
-id|port
-comma
-r_const
-r_void
-op_star
-id|from
-comma
-r_int
-id|len
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|outsw
-c_func
-(paren
-r_int
-r_int
-id|port
-comma
-r_const
-r_void
-op_star
-id|from
-comma
-r_int
-id|len
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|outsl
-c_func
-(paren
-r_int
-r_int
-id|port
-comma
-r_const
-r_void
-op_star
-id|from
-comma
-r_int
-id|len
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|insb
-c_func
-(paren
-r_int
-r_int
-id|port
-comma
-r_void
-op_star
-id|from
-comma
-r_int
-id|len
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|insw
-c_func
-(paren
-r_int
-r_int
-id|port
-comma
-r_void
-op_star
-id|from
-comma
-r_int
-id|len
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|insl
-c_func
-(paren
-r_int
-r_int
-id|port
-comma
-r_void
-op_star
-id|from
-comma
-r_int
-id|len
-)paren
-suffix:semicolon
 DECL|macro|outsb_p
 mdefine_line|#define outsb_p(port,from,len)&t;&t;outsb(port,from,len)
 DECL|macro|outsw_p
@@ -253,31 +287,6 @@ r_int
 id|rw
 )paren
 suffix:semicolon
-DECL|macro|__raw_writeb
-mdefine_line|#define __raw_writeb(v,a)&t;&t;__arch_putb(v,a)
-DECL|macro|__raw_writew
-mdefine_line|#define __raw_writew(v,a)&t;&t;__arch_putw(v,a)
-DECL|macro|__raw_writel
-mdefine_line|#define __raw_writel(v,a)&t;&t;__arch_putl(v,a)
-DECL|macro|__raw_readb
-mdefine_line|#define __raw_readb(a)&t;&t;&t;__arch_getb(a)
-DECL|macro|__raw_readw
-mdefine_line|#define __raw_readw(a)&t;&t;&t;__arch_getw(a)
-DECL|macro|__raw_readl
-mdefine_line|#define __raw_readl(a)&t;&t;&t;__arch_getl(a)
-multiline_comment|/*&n; * The compiler seems to be incapable of optimising constants&n; * properly.  Spell it out to the compiler in some cases.&n; * These are only valid for small values of &quot;off&quot; (&lt; 1&lt;&lt;12)&n; */
-DECL|macro|__raw_base_writeb
-mdefine_line|#define __raw_base_writeb(val,base,off)&t;__arch_base_putb(val,base,off)
-DECL|macro|__raw_base_writew
-mdefine_line|#define __raw_base_writew(val,base,off)&t;__arch_base_putw(val,base,off)
-DECL|macro|__raw_base_writel
-mdefine_line|#define __raw_base_writel(val,base,off)&t;__arch_base_putl(val,base,off)
-DECL|macro|__raw_base_readb
-mdefine_line|#define __raw_base_readb(base,off)&t;__arch_base_getb(base,off)
-DECL|macro|__raw_base_readw
-mdefine_line|#define __raw_base_readw(base,off)&t;__arch_base_getw(base,off)
-DECL|macro|__raw_base_readl
-mdefine_line|#define __raw_base_readl(base,off)&t;__arch_base_getl(base,off)
 multiline_comment|/*&n; * String version of IO memory access ops:&n; */
 r_extern
 r_void

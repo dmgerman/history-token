@@ -117,6 +117,8 @@ l_int|0xfff00000
 (brace
 r_int
 id|i
+comma
+id|fixup_start
 op_assign
 (paren
 l_int|0xfff00000
@@ -129,6 +131,9 @@ suffix:semicolon
 r_for
 c_loop
 (paren
+id|i
+op_assign
+l_int|0
 suffix:semicolon
 id|i
 OL
@@ -143,6 +148,8 @@ op_increment
 )paren
 id|arena-&gt;ptes
 (braket
+id|fixup_start
+op_plus
 id|i
 )braket
 op_assign
@@ -1349,7 +1356,6 @@ suffix:semicolon
 )brace
 multiline_comment|/* Classify the elements of the scatterlist.  Write dma_address&n;   of each element with:&n;&t;0   : Followers all physically adjacent.&n;&t;1   : Followers all virtually adjacent.&n;&t;-1  : Not leader, physically adjacent to previous.&n;&t;-2  : Not leader, virtually adjacent to previous.&n;   Write dma_length of each leader with the combined lengths of&n;   the mergable followers.  */
 r_static
-r_inline
 r_void
 DECL|function|sg_classify
 id|sg_classify
@@ -1692,35 +1698,15 @@ op_minus
 l_int|1
 suffix:semicolon
 multiline_comment|/* Otherwise, break up the remaining virtually contiguous&n;&t;&t;   hunks into individual direct maps.  */
-r_for
-c_loop
+id|sg_classify
+c_func
 (paren
-id|sg
-op_assign
 id|leader
-suffix:semicolon
-id|sg
-OL
+comma
 id|end
-suffix:semicolon
-op_increment
-id|sg
-)paren
-r_if
-c_cond
-(paren
-id|sg-&gt;dma_address
-op_eq
-l_int|1
-op_logical_or
-id|sg-&gt;dma_address
-op_eq
-op_minus
-l_int|2
-)paren
-id|sg-&gt;dma_address
-op_assign
+comma
 l_int|0
+)paren
 suffix:semicolon
 multiline_comment|/* Retry.  */
 r_return

@@ -2,7 +2,7 @@ multiline_comment|/*&n;&n;&t;8139too.c: A RealTek RTL-8139 Fast Ethernet driver 
 DECL|macro|DRV_NAME
 mdefine_line|#define DRV_NAME&t;&quot;8139too&quot;
 DECL|macro|DRV_VERSION
-mdefine_line|#define DRV_VERSION&t;&quot;0.9.18&quot;
+mdefine_line|#define DRV_VERSION&t;&quot;0.9.18a&quot;
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -15,6 +15,7 @@ macro_line|#include &lt;linux/rtnetlink.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/ethtool.h&gt;
 macro_line|#include &lt;linux/mii.h&gt;
+macro_line|#include &lt;linux/completion.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 DECL|macro|RTL8139_DRIVER_NAME
@@ -1661,7 +1662,7 @@ id|thr_wait
 suffix:semicolon
 DECL|member|thr_exited
 r_struct
-id|semaphore
+id|completion
 id|thr_exited
 suffix:semicolon
 DECL|member|rx_config
@@ -3286,7 +3287,7 @@ op_amp
 id|tp-&gt;thr_wait
 )paren
 suffix:semicolon
-id|init_MUTEX_LOCKED
+id|init_completion
 (paren
 op_amp
 id|tp-&gt;thr_exited
@@ -6242,7 +6243,7 @@ id|rtnl_unlock
 )paren
 suffix:semicolon
 )brace
-id|up_and_exit
+id|complete_and_exit
 (paren
 op_amp
 id|tp-&gt;thr_exited
@@ -8446,7 +8447,7 @@ r_return
 id|ret
 suffix:semicolon
 )brace
-id|down
+id|wait_for_completion
 (paren
 op_amp
 id|tp-&gt;thr_exited

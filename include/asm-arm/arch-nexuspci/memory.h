@@ -35,5 +35,7 @@ DECL|macro|__bus_to_virt__is_a_macro
 mdefine_line|#define __bus_to_virt__is_a_macro
 DECL|macro|__bus_to_virt
 mdefine_line|#define __bus_to_virt(x) ((unsigned long)(x) + PAGE_OFFSET - BUS_OFFSET)
+DECL|macro|PHYS_TO_NID
+mdefine_line|#define PHYS_TO_NID(addr)&t;(0)
 macro_line|#endif
 eof

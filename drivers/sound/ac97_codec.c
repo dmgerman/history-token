@@ -178,14 +178,157 @@ id|codec
 suffix:semicolon
 r_static
 r_int
-id|enable_eapd
+id|eapd_control
 c_func
 (paren
 r_struct
 id|ac97_codec
 op_star
 id|codec
+comma
+r_int
 )paren
+suffix:semicolon
+r_static
+r_int
+id|crystal_digital_control
+c_func
+(paren
+r_struct
+id|ac97_codec
+op_star
+id|codec
+comma
+r_int
+id|mode
+)paren
+suffix:semicolon
+multiline_comment|/*&n; *&t;AC97 operations.&n; *&n; *&t;If you are adding a codec then you should be able to use&n; *&t;&t;eapd_ops - any codec that supports EAPD amp control (most)&n; *&t;&t;null_ops - any ancient codec that supports nothing&n; *&n; *&t;The three functions are&n; *&t;&t;init - used for non AC97 standard initialisation&n; *&t;&t;amplifier - used to do amplifier control (1=on 0=off)&n; *&t;&t;digital - switch to digital modes (0 = analog)&n; *&n; *&t;Not all codecs support all features, not all drivers use all the&n; *&t;operations yet&n; */
+DECL|variable|null_ops
+r_static
+r_struct
+id|ac97_ops
+id|null_ops
+op_assign
+(brace
+l_int|NULL
+comma
+l_int|NULL
+comma
+l_int|NULL
+)brace
+suffix:semicolon
+DECL|variable|default_ops
+r_static
+r_struct
+id|ac97_ops
+id|default_ops
+op_assign
+(brace
+l_int|NULL
+comma
+id|eapd_control
+comma
+l_int|NULL
+)brace
+suffix:semicolon
+DECL|variable|wolfson_ops
+r_static
+r_struct
+id|ac97_ops
+id|wolfson_ops
+op_assign
+(brace
+id|wolfson_init
+comma
+l_int|NULL
+comma
+l_int|NULL
+)brace
+suffix:semicolon
+DECL|variable|tritech_ops
+r_static
+r_struct
+id|ac97_ops
+id|tritech_ops
+op_assign
+(brace
+id|tritech_init
+comma
+l_int|NULL
+comma
+l_int|NULL
+)brace
+suffix:semicolon
+DECL|variable|tritech_m_ops
+r_static
+r_struct
+id|ac97_ops
+id|tritech_m_ops
+op_assign
+(brace
+id|tritech_maestro_init
+comma
+l_int|NULL
+comma
+l_int|NULL
+)brace
+suffix:semicolon
+DECL|variable|sigmatel_9708_ops
+r_static
+r_struct
+id|ac97_ops
+id|sigmatel_9708_ops
+op_assign
+(brace
+id|sigmatel_9708_init
+comma
+l_int|NULL
+comma
+l_int|NULL
+)brace
+suffix:semicolon
+DECL|variable|sigmatel_9721_ops
+r_static
+r_struct
+id|ac97_ops
+id|sigmatel_9721_ops
+op_assign
+(brace
+id|sigmatel_9721_init
+comma
+l_int|NULL
+comma
+l_int|NULL
+)brace
+suffix:semicolon
+DECL|variable|sigmatel_9744_ops
+r_static
+r_struct
+id|ac97_ops
+id|sigmatel_9744_ops
+op_assign
+(brace
+id|sigmatel_9744_init
+comma
+l_int|NULL
+comma
+l_int|NULL
+)brace
+suffix:semicolon
+DECL|variable|crystal_digital_ops
+r_static
+r_struct
+id|ac97_ops
+id|crystal_digital_ops
+op_assign
+(brace
+l_int|NULL
+comma
+id|eapd_control
+comma
+id|crystal_digital_control
+)brace
 suffix:semicolon
 multiline_comment|/* sorted by vendor/device id */
 r_static
@@ -201,18 +344,11 @@ r_char
 op_star
 id|name
 suffix:semicolon
-DECL|member|init
-r_int
-(paren
-op_star
-id|init
-)paren
-(paren
+DECL|member|ops
 r_struct
-id|ac97_codec
+id|ac97_ops
 op_star
-id|codec
-)paren
+id|ops
 suffix:semicolon
 DECL|variable|ac97_codec_ids
 )brace
@@ -226,7 +362,8 @@ l_int|0x41445303
 comma
 l_string|&quot;Analog Devices AD1819&quot;
 comma
-l_int|NULL
+op_amp
+id|null_ops
 )brace
 comma
 (brace
@@ -234,7 +371,8 @@ l_int|0x41445340
 comma
 l_string|&quot;Analog Devices AD1881&quot;
 comma
-l_int|NULL
+op_amp
+id|null_ops
 )brace
 comma
 (brace
@@ -242,7 +380,8 @@ l_int|0x41445348
 comma
 l_string|&quot;Analog Devices AD1881A&quot;
 comma
-l_int|NULL
+op_amp
+id|null_ops
 )brace
 comma
 (brace
@@ -250,7 +389,8 @@ l_int|0x41445460
 comma
 l_string|&quot;Analog Devices AD1885&quot;
 comma
-id|enable_eapd
+op_amp
+id|default_ops
 )brace
 comma
 (brace
@@ -258,7 +398,8 @@ l_int|0x414B4D00
 comma
 l_string|&quot;Asahi Kasei AK4540&quot;
 comma
-l_int|NULL
+op_amp
+id|null_ops
 )brace
 comma
 (brace
@@ -266,7 +407,8 @@ l_int|0x414B4D01
 comma
 l_string|&quot;Asahi Kasei AK4542&quot;
 comma
-l_int|NULL
+op_amp
+id|null_ops
 )brace
 comma
 (brace
@@ -274,7 +416,8 @@ l_int|0x414B4D02
 comma
 l_string|&quot;Asahi Kasei AK4543&quot;
 comma
-l_int|NULL
+op_amp
+id|null_ops
 )brace
 comma
 (brace
@@ -282,7 +425,8 @@ l_int|0x414C4710
 comma
 l_string|&quot;ALC200/200P&quot;
 comma
-l_int|NULL
+op_amp
+id|null_ops
 )brace
 comma
 (brace
@@ -290,7 +434,8 @@ l_int|0x43525900
 comma
 l_string|&quot;Cirrus Logic CS4297&quot;
 comma
-id|enable_eapd
+op_amp
+id|default_ops
 )brace
 comma
 (brace
@@ -298,7 +443,8 @@ l_int|0x43525903
 comma
 l_string|&quot;Cirrus Logic CS4297&quot;
 comma
-id|enable_eapd
+op_amp
+id|default_ops
 )brace
 comma
 (brace
@@ -306,7 +452,8 @@ l_int|0x43525913
 comma
 l_string|&quot;Cirrus Logic CS4297A rev A&quot;
 comma
-id|enable_eapd
+op_amp
+id|default_ops
 )brace
 comma
 (brace
@@ -314,7 +461,8 @@ l_int|0x43525914
 comma
 l_string|&quot;Cirrus Logic CS4297A rev B&quot;
 comma
-l_int|NULL
+op_amp
+id|default_ops
 )brace
 comma
 (brace
@@ -322,7 +470,8 @@ l_int|0x43525923
 comma
 l_string|&quot;Cirrus Logic CS4298&quot;
 comma
-l_int|NULL
+op_amp
+id|null_ops
 )brace
 comma
 (brace
@@ -330,7 +479,8 @@ l_int|0x4352592B
 comma
 l_string|&quot;Cirrus Logic CS4294&quot;
 comma
-l_int|NULL
+op_amp
+id|null_ops
 )brace
 comma
 (brace
@@ -338,7 +488,8 @@ l_int|0x4352592D
 comma
 l_string|&quot;Cirrus Logic CS4294&quot;
 comma
-l_int|NULL
+op_amp
+id|null_ops
 )brace
 comma
 (brace
@@ -346,7 +497,8 @@ l_int|0x43525931
 comma
 l_string|&quot;Cirrus Logic CS4299 rev A&quot;
 comma
-l_int|NULL
+op_amp
+id|crystal_digital_ops
 )brace
 comma
 (brace
@@ -354,7 +506,8 @@ l_int|0x43525933
 comma
 l_string|&quot;Cirrus Logic CS4299 rev C&quot;
 comma
-l_int|NULL
+op_amp
+id|crystal_digital_ops
 )brace
 comma
 (brace
@@ -362,7 +515,8 @@ l_int|0x43525934
 comma
 l_string|&quot;Cirrus Logic CS4299 rev D&quot;
 comma
-l_int|NULL
+op_amp
+id|crystal_digital_ops
 )brace
 comma
 (brace
@@ -370,7 +524,8 @@ l_int|0x45838308
 comma
 l_string|&quot;ESS Allegro ES1988&quot;
 comma
-l_int|NULL
+op_amp
+id|null_ops
 )brace
 comma
 (brace
@@ -378,7 +533,8 @@ l_int|0x49434511
 comma
 l_string|&quot;ICE1232&quot;
 comma
-l_int|NULL
+op_amp
+id|null_ops
 )brace
 comma
 multiline_comment|/* I hope --jk */
@@ -387,7 +543,8 @@ l_int|0x4e534331
 comma
 l_string|&quot;National Semiconductor LM4549&quot;
 comma
-l_int|NULL
+op_amp
+id|null_ops
 )brace
 comma
 (brace
@@ -395,7 +552,8 @@ l_int|0x53494c22
 comma
 l_string|&quot;Silicon Laboratory Si3036&quot;
 comma
-l_int|NULL
+op_amp
+id|null_ops
 )brace
 comma
 (brace
@@ -403,7 +561,8 @@ l_int|0x53494c23
 comma
 l_string|&quot;Silicon Laboratory Si3038&quot;
 comma
-l_int|NULL
+op_amp
+id|null_ops
 )brace
 comma
 (brace
@@ -411,7 +570,8 @@ l_int|0x545200FF
 comma
 l_string|&quot;TriTech TR?????&quot;
 comma
-id|tritech_maestro_init
+op_amp
+id|tritech_m_ops
 )brace
 comma
 (brace
@@ -419,7 +579,8 @@ l_int|0x54524102
 comma
 l_string|&quot;TriTech TR28022&quot;
 comma
-l_int|NULL
+op_amp
+id|null_ops
 )brace
 comma
 (brace
@@ -427,7 +588,8 @@ l_int|0x54524103
 comma
 l_string|&quot;TriTech TR28023&quot;
 comma
-l_int|NULL
+op_amp
+id|null_ops
 )brace
 comma
 (brace
@@ -435,7 +597,8 @@ l_int|0x54524106
 comma
 l_string|&quot;TriTech TR28026&quot;
 comma
-l_int|NULL
+op_amp
+id|null_ops
 )brace
 comma
 (brace
@@ -443,7 +606,8 @@ l_int|0x54524108
 comma
 l_string|&quot;TriTech TR28028&quot;
 comma
-id|tritech_init
+op_amp
+id|tritech_ops
 )brace
 comma
 (brace
@@ -451,7 +615,8 @@ l_int|0x54524123
 comma
 l_string|&quot;TriTech TR?????&quot;
 comma
-l_int|NULL
+op_amp
+id|null_ops
 )brace
 comma
 (brace
@@ -459,7 +624,8 @@ l_int|0x574D4C00
 comma
 l_string|&quot;Wolfson WM9704&quot;
 comma
-id|wolfson_init
+op_amp
+id|wolfson_ops
 )brace
 comma
 (brace
@@ -467,7 +633,8 @@ l_int|0x574D4C03
 comma
 l_string|&quot;Wolfson WM9703/9704&quot;
 comma
-id|wolfson_init
+op_amp
+id|wolfson_ops
 )brace
 comma
 (brace
@@ -475,7 +642,8 @@ l_int|0x574D4C04
 comma
 l_string|&quot;Wolfson WM9704 (quad)&quot;
 comma
-id|wolfson_init
+op_amp
+id|wolfson_ops
 )brace
 comma
 (brace
@@ -483,7 +651,8 @@ l_int|0x83847600
 comma
 l_string|&quot;SigmaTel STAC????&quot;
 comma
-l_int|NULL
+op_amp
+id|null_ops
 )brace
 comma
 (brace
@@ -491,7 +660,8 @@ l_int|0x83847604
 comma
 l_string|&quot;SigmaTel STAC9701/3/4/5&quot;
 comma
-l_int|NULL
+op_amp
+id|null_ops
 )brace
 comma
 (brace
@@ -499,7 +669,8 @@ l_int|0x83847605
 comma
 l_string|&quot;SigmaTel STAC9704&quot;
 comma
-l_int|NULL
+op_amp
+id|null_ops
 )brace
 comma
 (brace
@@ -507,7 +678,8 @@ l_int|0x83847608
 comma
 l_string|&quot;SigmaTel STAC9708&quot;
 comma
-id|sigmatel_9708_init
+op_amp
+id|sigmatel_9708_ops
 )brace
 comma
 (brace
@@ -515,7 +687,8 @@ l_int|0x83847609
 comma
 l_string|&quot;SigmaTel STAC9721/23&quot;
 comma
-id|sigmatel_9721_init
+op_amp
+id|sigmatel_9721_ops
 )brace
 comma
 (brace
@@ -523,7 +696,8 @@ l_int|0x83847644
 comma
 l_string|&quot;SigmaTel STAC9744/45&quot;
 comma
-id|sigmatel_9744_init
+op_amp
+id|sigmatel_9744_ops
 )brace
 comma
 (brace
@@ -531,7 +705,8 @@ l_int|0x83847656
 comma
 l_string|&quot;SigmaTel STAC9756/57&quot;
 comma
-id|sigmatel_9744_init
+op_amp
+id|sigmatel_9744_ops
 )brace
 comma
 (brace
@@ -539,7 +714,17 @@ l_int|0x83847684
 comma
 l_string|&quot;SigmaTel STAC9783/84?&quot;
 comma
-l_int|NULL
+op_amp
+id|null_ops
+)brace
+comma
+(brace
+l_int|0x57454301
+comma
+l_string|&quot;Winbond 83971D&quot;
+comma
+op_amp
+id|null_ops
 )brace
 comma
 (brace
@@ -640,7 +825,7 @@ multiline_comment|/*  26 */
 l_string|&quot;SigmaTel 3D Enhancement&quot;
 comma
 multiline_comment|/*  27 */
-l_string|&quot;Reserved 27&quot;
+l_string|&quot;Winbond 3D Stereo Enhancement&quot;
 comma
 multiline_comment|/*  28 */
 l_string|&quot;Rockwell 3D Stereo Enhancement&quot;
@@ -3577,9 +3762,10 @@ id|codec-&gt;name
 op_assign
 l_int|NULL
 suffix:semicolon
-id|codec-&gt;codec_init
+id|codec-&gt;codec_ops
 op_assign
-l_int|NULL
+op_amp
+id|null_ops
 suffix:semicolon
 id|id1
 op_assign
@@ -3663,14 +3849,14 @@ id|i
 dot
 id|name
 suffix:semicolon
-id|codec-&gt;codec_init
+id|codec-&gt;codec_ops
 op_assign
 id|ac97_codec_ids
 (braket
 id|i
 )braket
 dot
-id|init
+id|ops
 suffix:semicolon
 r_break
 suffix:semicolon
@@ -3860,14 +4046,14 @@ multiline_comment|/* codec specific initialization for 4-6 channel output or sec
 r_if
 c_cond
 (paren
-id|codec-&gt;codec_init
+id|codec-&gt;codec_ops-&gt;init
 op_ne
 l_int|NULL
 )paren
 (brace
-id|codec
+id|codec-&gt;codec_ops
 op_member_access_from_pointer
-id|codec_init
+id|init
 c_func
 (paren
 id|codec
@@ -4521,17 +4707,26 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/*&n; *&t;External AMP management for EAPD using codecs&n; *&t;(CS4279A, AD1885, ...)&n; */
-DECL|function|enable_eapd
+multiline_comment|/*&n; *&t;This is basically standard AC97. It should work as a default for&n; *&t;almost all modern codecs. Note that some cards wire EAPD *backwards*&n; *&t;That side of it is up to the card driver not us to cope with.&n; *&n; */
+DECL|function|eapd_control
 r_static
 r_int
-id|enable_eapd
+id|eapd_control
 c_func
 (paren
 r_struct
 id|ac97_codec
 op_star
 id|codec
+comma
+r_int
+id|on
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|on
 )paren
 (brace
 id|codec
@@ -4554,6 +4749,110 @@ id|AC97_POWER_CONTROL
 )paren
 op_or
 l_int|0x8000
+)paren
+suffix:semicolon
+)brace
+r_else
+id|codec
+op_member_access_from_pointer
+id|codec_write
+c_func
+(paren
+id|codec
+comma
+id|AC97_POWER_CONTROL
+comma
+id|codec
+op_member_access_from_pointer
+id|codec_read
+c_func
+(paren
+id|codec
+comma
+id|AC97_POWER_CONTROL
+)paren
+op_amp
+op_complement
+l_int|0x8000
+)paren
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+)brace
+multiline_comment|/*&n; *&t;Crystal digital audio control (CS4299&n; */
+DECL|function|crystal_digital_control
+r_static
+r_int
+id|crystal_digital_control
+c_func
+(paren
+r_struct
+id|ac97_codec
+op_star
+id|codec
+comma
+r_int
+id|mode
+)paren
+(brace
+id|u16
+id|cv
+suffix:semicolon
+r_switch
+c_cond
+(paren
+id|mode
+)paren
+(brace
+r_case
+l_int|0
+suffix:colon
+id|cv
+op_assign
+l_int|0x0
+suffix:semicolon
+r_break
+suffix:semicolon
+multiline_comment|/* SPEN off */
+r_case
+l_int|1
+suffix:colon
+id|cv
+op_assign
+l_int|0x8004
+suffix:semicolon
+r_break
+suffix:semicolon
+multiline_comment|/* 48KHz digital */
+r_case
+l_int|2
+suffix:colon
+id|cv
+op_assign
+l_int|0x8104
+suffix:semicolon
+r_break
+suffix:semicolon
+multiline_comment|/* 44.1KHz digital */
+r_default
+suffix:colon
+r_return
+op_minus
+l_int|1
+suffix:semicolon
+multiline_comment|/* Not supported yet(eg AC3) */
+)brace
+id|codec
+op_member_access_from_pointer
+id|codec_write
+c_func
+(paren
+id|codec
+comma
+l_int|0x68
+comma
+id|cv
 )paren
 suffix:semicolon
 r_return

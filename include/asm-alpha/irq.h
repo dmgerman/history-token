@@ -20,7 +20,7 @@ macro_line|# define NR_IRQS&t;48
 macro_line|#elif defined(CONFIG_ALPHA_SABLE)     || &bslash;&n;      defined(CONFIG_ALPHA_SX164)
 DECL|macro|NR_IRQS
 macro_line|# define NR_IRQS&t;40
-macro_line|#elif defined(CONFIG_ALPHA_DP264) || &bslash;&n;      defined(CONFIG_ALPHA_EIGER)
+macro_line|#elif defined(CONFIG_ALPHA_DP264) || &bslash;&n;      defined(CONFIG_ALPHA_SHARK) || &bslash;&n;      defined(CONFIG_ALPHA_EIGER)
 DECL|macro|NR_IRQS
 macro_line|# define NR_IRQS&t;64
 macro_line|#elif defined(CONFIG_ALPHA_TITAN)

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * BK Id: SCCS/s.setup.c 1.44 06/28/01 08:01:06 trini&n; */
+multiline_comment|/*&n; * BK Id: SCCS/s.setup.c 1.46 07/26/01 14:18:18 trini&n; */
 multiline_comment|/*&n; * Common prep/pmac/chrp boot and setup code.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
@@ -2255,13 +2255,6 @@ l_int|1
 suffix:semicolon
 )brace
 macro_line|#endif
-id|cmd_line
-(braket
-l_int|0
-)braket
-op_assign
-l_int|0
-suffix:semicolon
 id|chosen
 op_assign
 id|find_devices

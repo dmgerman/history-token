@@ -4,8 +4,8 @@ DECL|macro|__ASM_ARM_MEMORY_H
 mdefine_line|#define __ASM_ARM_MEMORY_H
 macro_line|#include &lt;asm/arch/memory.h&gt;
 DECL|function|virt_to_phys
-r_extern
-id|__inline__
+r_static
+r_inline
 r_int
 r_int
 id|virt_to_phys
@@ -32,8 +32,8 @@ id|x
 suffix:semicolon
 )brace
 DECL|function|phys_to_virt
-r_extern
-id|__inline__
+r_static
+r_inline
 r_void
 op_star
 id|phys_to_virt

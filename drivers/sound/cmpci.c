@@ -1,8 +1,6 @@
 multiline_comment|/*****************************************************************************/
 multiline_comment|/*&n; *      cmpci.c  --  C-Media PCI audio driver.&n; *&n; *      Copyright (C) 1999  ChenLi Tien (cltien@cmedia.com.tw)&n; *      &t;&t;    C-media support (support@cmedia.com.tw)&n; *&n; *      Based on the PCI drivers by Thomas Sailer (sailer@ife.ee.ethz.ch)&n; *&n; * &t;For update, visit:&n; * &t;&t;http://members.home.net/puresoft/cmedia.html&n; * &t;&t;http://www.cmedia.com.tw&n; * &t;&n; *      This program is free software; you can redistribute it and/or modify&n; *      it under the terms of the GNU General Public License as published by&n; *      the Free Software Foundation; either version 2 of the License, or&n; *      (at your option) any later version.&n; *&n; *      This program is distributed in the hope that it will be useful,&n; *      but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *      MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *      GNU General Public License for more details.&n; *&n; *      You should have received a copy of the GNU General Public License&n; *      along with this program; if not, write to the Free Software&n; *      Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; *&n; * Special thanks to David C. Niemi, Jan Pfeifer&n; *&n; *&n; * Module command line parameters:&n; *   none so far&n; *&n; *&n; *  Supported devices:&n; *  /dev/dsp    standard /dev/dsp device, (mostly) OSS compatible&n; *  /dev/mixer  standard /dev/mixer device, (mostly) OSS compatible&n; *  /dev/midi   simple MIDI UART interface, no ioctl&n; *&n; *  The card has both an FM and a Wavetable synth, but I have to figure&n; *  out first how to drive them...&n; *&n; *  Revision history&n; *    06.05.98   0.1   Initial release&n; *    10.05.98   0.2   Fixed many bugs, esp. ADC rate calculation&n; *                     First stab at a simple midi interface (no bells&amp;whistles)&n; *    13.05.98   0.3   Fix stupid cut&amp;paste error: set_adc_rate was called instead of&n; *                     set_dac_rate in the FMODE_WRITE case in cm_open&n; *                     Fix hwptr out of bounds (now mpg123 works)&n; *    14.05.98   0.4   Don&squot;t allow excessive interrupt rates&n; *    08.06.98   0.5   First release using Alan Cox&squot; soundcore instead of miscdevice&n; *    03.08.98   0.6   Do not include modversions.h&n; *                     Now mixer behaviour can basically be selected between&n; *                     &quot;OSS documented&quot; and &quot;OSS actual&quot; behaviour&n; *    31.08.98   0.7   Fix realplayer problems - dac.count issues&n; *    10.12.98   0.8   Fix drain_dac trying to wait on not yet initialized DMA&n; *    16.12.98   0.9   Fix a few f_file &amp; FMODE_ bugs&n; *    06.01.99   0.10  remove the silly SA_INTERRUPT flag.&n; *                     hopefully killed the egcs section type conflict&n; *    12.03.99   0.11  cinfo.blocks should be reset after GETxPTR ioctl.&n; *                     reported by Johan Maes &lt;joma@telindus.be&gt;&n; *    22.03.99   0.12  return EAGAIN instead of EBUSY when O_NONBLOCK&n; *                     read/write cannot be executed&n; *    18.08.99   1.5   Only deallocate DMA buffer when unloading.&n; *    02.09.99   1.6   Enable SPDIF LOOP&n; *                     Change the mixer read back&n; *    21.09.99   2.33  Use RCS version as driver version.&n; *                     Add support for modem, S/PDIF loop and 4 channels.&n; *                     (8738 only)&n; *                     Fix bug cause x11amp cannot play.&n; *&n; *    Fixes:&n; *    Arnaldo Carvalho de Melo &lt;acme@conectiva.com.br&gt;&n; *    18/05/2001 - .bss nitpicks, fix a bug in set_dac_channels where it&n; *    &t;&t;   was calling prog_dmabuf with s-&gt;lock held, call missing&n; *    &t;&t;   unlock_kernel in cm_midi_release&n; *&n; *    Fri May 25 2001 - Carlos Eduardo Gorges &lt;carlos@techlinux.com.br&gt;&n; *    - some driver cleanups&n; *    - spin[un]lock* revision ( fix SMP support )&n; *    - cosmetic code changes&n; *&n; */
 multiline_comment|/*****************************************************************************/
-DECL|macro|EXPORT_SYMTAB
-mdefine_line|#define EXPORT_SYMTAB
 macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
@@ -11,7 +9,7 @@ macro_line|#include &lt;linux/ioport.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/sound.h&gt;
-macro_line|#include &lt;linux/malloc.h&gt;
+macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/soundcard.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/wrapper.h&gt;
@@ -607,8 +605,8 @@ id|wavetable_mem
 suffix:semicolon
 multiline_comment|/* --------------------------------------------------------------------- */
 DECL|function|ld2
-r_extern
-id|__inline__
+r_static
+r_inline
 r_int
 id|ld2
 c_func
@@ -711,8 +709,8 @@ DECL|macro|hweight32
 macro_line|#undef hweight32
 macro_line|#endif
 DECL|function|hweight32
-r_extern
-id|__inline__
+r_static
+r_inline
 r_int
 r_int
 id|hweight32
@@ -1199,8 +1197,8 @@ id|count
 suffix:semicolon
 )brace
 DECL|function|get_dmadac
-r_extern
-id|__inline__
+r_static
+r_inline
 r_int
 id|get_dmadac
 c_func
@@ -1286,8 +1284,8 @@ id|curr_addr
 suffix:semicolon
 )brace
 DECL|function|get_dmaadc
-r_extern
-id|__inline__
+r_static
+r_inline
 r_int
 id|get_dmaadc
 c_func
@@ -3280,7 +3278,7 @@ id|s
 suffix:semicolon
 )brace
 DECL|function|disable_adc
-r_extern
+r_static
 r_inline
 r_void
 id|disable_adc
@@ -3318,7 +3316,7 @@ id|s
 suffix:semicolon
 )brace
 DECL|function|disable_dac
-r_extern
+r_static
 r_inline
 r_void
 id|disable_dac
@@ -3369,7 +3367,7 @@ id|s
 suffix:semicolon
 )brace
 DECL|function|enable_adc
-r_extern
+r_static
 r_inline
 r_void
 id|enable_adc
@@ -3425,7 +3423,7 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|function|enable_dac_unlocked
-r_extern
+r_static
 r_inline
 r_void
 id|enable_dac_unlocked
@@ -3494,7 +3492,7 @@ id|s
 suffix:semicolon
 )brace
 DECL|function|enable_dac
-r_extern
+r_static
 r_inline
 r_void
 id|enable_dac
@@ -3536,7 +3534,7 @@ id|flags
 suffix:semicolon
 )brace
 DECL|function|stop_adc_unlocked
-r_extern
+r_static
 r_inline
 r_void
 id|stop_adc_unlocked
@@ -3581,7 +3579,7 @@ suffix:semicolon
 )brace
 )brace
 DECL|function|stop_adc
-r_extern
+r_static
 r_inline
 r_void
 id|stop_adc
@@ -3623,7 +3621,7 @@ id|flags
 suffix:semicolon
 )brace
 DECL|function|stop_dac_unlocked
-r_extern
+r_static
 r_inline
 r_void
 id|stop_dac_unlocked
@@ -3681,7 +3679,7 @@ id|s
 suffix:semicolon
 )brace
 DECL|function|stop_dac
-r_extern
+r_static
 r_inline
 r_void
 id|stop_dac
@@ -5145,8 +5143,8 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|function|clear_advance
-r_extern
-id|__inline__
+r_static
+r_inline
 r_void
 id|clear_advance
 c_func
@@ -8155,30 +8153,6 @@ macro_line|#endif /* OSS_DOCUMENTED_MIXER_SEMANTICS */
 )brace
 )brace
 multiline_comment|/* --------------------------------------------------------------------- */
-DECL|function|cm_llseek
-r_static
-id|loff_t
-id|cm_llseek
-c_func
-(paren
-r_struct
-id|file
-op_star
-id|file
-comma
-id|loff_t
-id|offset
-comma
-r_int
-id|origin
-)paren
-(brace
-r_return
-op_minus
-id|ESPIPE
-suffix:semicolon
-)brace
-multiline_comment|/* --------------------------------------------------------------------- */
 DECL|function|cm_open_mixdev
 r_static
 r_int
@@ -8344,7 +8318,7 @@ id|THIS_MODULE
 comma
 id|llseek
 suffix:colon
-id|cm_llseek
+id|no_llseek
 comma
 id|ioctl
 suffix:colon
@@ -13396,7 +13370,7 @@ id|THIS_MODULE
 comma
 id|llseek
 suffix:colon
-id|cm_llseek
+id|no_llseek
 comma
 id|read
 suffix:colon
@@ -15034,7 +15008,7 @@ id|THIS_MODULE
 comma
 id|llseek
 suffix:colon
-id|cm_llseek
+id|no_llseek
 comma
 id|read
 suffix:colon
@@ -16282,7 +16256,7 @@ id|THIS_MODULE
 comma
 id|llseek
 suffix:colon
-id|cm_llseek
+id|no_llseek
 comma
 id|ioctl
 suffix:colon

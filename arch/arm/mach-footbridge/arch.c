@@ -1,5 +1,6 @@
 multiline_comment|/*&n; * linux/arch/arm/mach-footbridge/arch.c&n; *&n; * Architecture specific fixups.  This is where any&n; * parameters in the params struct are fixed up, or&n; * any additional architecture specific information&n; * is pulled from the params struct.&n; */
 macro_line|#include &lt;linux/config.h&gt;
+macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/tty.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/pm.h&gt;
@@ -23,6 +24,50 @@ id|footbridge_init_irq
 c_func
 (paren
 r_void
+)paren
+suffix:semicolon
+DECL|variable|mem_fclk_21285
+r_int
+r_int
+id|mem_fclk_21285
+op_assign
+l_int|50000000
+suffix:semicolon
+DECL|variable|mem_fclk_21285
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|mem_fclk_21285
+)paren
+suffix:semicolon
+DECL|function|parse_tag_memclk
+r_static
+r_int
+id|__init
+id|parse_tag_memclk
+c_func
+(paren
+r_const
+r_struct
+id|tag
+op_star
+id|tag
+)paren
+(brace
+id|mem_fclk_21285
+op_assign
+id|tag-&gt;u.memclk.fmemclk
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+)brace
+id|__tagtable
+c_func
+(paren
+id|ATAG_MEMCLK
+comma
+id|parse_tag_memclk
 )paren
 suffix:semicolon
 macro_line|#ifdef CONFIG_ARCH_EBSA285
@@ -192,9 +237,9 @@ l_string|&quot;detected, using defaults&bslash;n&quot;
 suffix:semicolon
 id|params-&gt;u1.s.nr_pages
 op_assign
-l_int|0x2000
+l_int|0x1000
 suffix:semicolon
-multiline_comment|/* 32MB */
+multiline_comment|/* 16MB */
 id|params-&gt;u1.s.ramdisk_size
 op_assign
 l_int|0
@@ -294,7 +339,7 @@ comma
 r_struct
 id|param_struct
 op_star
-id|params
+id|unused
 comma
 r_char
 op_star
@@ -380,7 +425,7 @@ comma
 r_struct
 id|param_struct
 op_star
-id|params
+id|unused
 comma
 r_char
 op_star

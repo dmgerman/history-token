@@ -89,8 +89,8 @@ id|slow_out
 suffix:colon
 )brace
 DECL|function|arch_reset
-r_extern
-id|__inline__
+r_static
+r_inline
 r_void
 id|arch_reset
 c_func

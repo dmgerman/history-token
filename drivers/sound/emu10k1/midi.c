@@ -12,7 +12,7 @@ macro_line|#include &quot;cardmo.h&quot;
 macro_line|#include &quot;cardmi.h&quot;
 macro_line|#include &quot;midi.h&quot;
 macro_line|#ifdef EMU10K1_SEQUENCER
-macro_line|#include &quot;sound_config.h&quot;
+macro_line|#include &quot;../sound_config.h&quot;
 macro_line|#endif
 r_static
 id|spinlock_t

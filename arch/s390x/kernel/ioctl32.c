@@ -11,6 +11,7 @@ macro_line|#include &lt;linux/kd.h&gt;
 macro_line|#include &lt;linux/netdevice.h&gt;
 macro_line|#include &lt;linux/route.h&gt;
 macro_line|#include &lt;linux/ext2_fs.h&gt;
+macro_line|#include &lt;linux/hdreg.h&gt;
 macro_line|#include &lt;asm/types.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/dasd.h&gt;
@@ -1833,6 +1834,12 @@ comma
 id|IOCTL32_DEFAULT
 c_func
 (paren
+id|DASDAPIVER
+)paren
+comma
+id|IOCTL32_DEFAULT
+c_func
+(paren
 id|BIODASDDISABLE
 )paren
 comma
@@ -1863,19 +1870,13 @@ comma
 id|IOCTL32_DEFAULT
 c_func
 (paren
-id|BIODASDRSID
+id|BIODASDINFO
 )paren
 comma
 id|IOCTL32_DEFAULT
 c_func
 (paren
-id|BIODASDFORMAT
-)paren
-comma
-id|IOCTL32_DEFAULT
-c_func
-(paren
-id|BIODASDRWTB
+id|BIODASDFMT
 )paren
 comma
 id|IOCTL32_DEFAULT

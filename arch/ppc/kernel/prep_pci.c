@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * BK Id: SCCS/s.prep_pci.c 1.18 05/17/01 18:14:22 cort&n; */
+multiline_comment|/*&n; * BK Id: SCCS/s.prep_pci.c 1.22 08/05/01 16:18:54 trini&n; */
 multiline_comment|/*&n; * PReP pci functions.&n; * Originally by Gary Thomas&n; * rewritten and updated by Cort Dougan (cort@cs.nmt.edu)&n; *&n; * The motherboard routes/maps will disappear shortly. -- Cort&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
@@ -3022,7 +3022,7 @@ l_int|0xff
 suffix:colon
 id|Motherboard_map_name
 op_assign
-l_string|&quot;IBM 850/860 Portable&bslash;n&quot;
+l_string|&quot;IBM 850/860 Portable&quot;
 suffix:semicolon
 id|Motherboard_map
 op_assign

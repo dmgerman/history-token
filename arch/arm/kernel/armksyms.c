@@ -310,6 +310,15 @@ c_func
 r_void
 )paren
 suffix:semicolon
+multiline_comment|/*&n; * This has a special calling convention; it doesn&squot;t&n; * modify any of the usual registers, except for LR.&n; */
+r_extern
+r_void
+id|__do_softirq
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
 DECL|macro|EXPORT_SYMBOL_ALIAS
 mdefine_line|#define EXPORT_SYMBOL_ALIAS(sym,orig)&t;&t;&bslash;&n; const char __kstrtab_##sym##[]&t;&t;&t;&bslash;&n;  __attribute__((section(&quot;.kstrtab&quot;))) =&t;&bslash;&n;    __MODULE_STRING(sym);&t;&t;&t;&bslash;&n; const struct module_symbol __ksymtab_##sym&t;&bslash;&n;  __attribute__((section(&quot;__ksymtab&quot;))) =&t;&bslash;&n;    { (unsigned long)&amp;##orig, __kstrtab_##sym };
 multiline_comment|/*&n; * floating point math emulator support.&n; * These symbols will never change their calling convention...&n; */
@@ -362,6 +371,13 @@ id|kd_mksound
 )paren
 suffix:semicolon
 macro_line|#endif
+DECL|variable|__do_softirq
+id|EXPORT_SYMBOL_NOVERS
+c_func
+(paren
+id|__do_softirq
+)paren
+suffix:semicolon
 multiline_comment|/* platform dependent support */
 DECL|variable|dump_thread
 id|EXPORT_SYMBOL
@@ -426,13 +442,6 @@ id|EXPORT_SYMBOL
 c_func
 (paren
 id|system_serial_high
-)paren
-suffix:semicolon
-DECL|variable|mem_fclk_21285
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|mem_fclk_21285
 )paren
 suffix:semicolon
 DECL|variable|__bug
@@ -508,48 +517,60 @@ id|__csum_ipv6_magic
 )paren
 suffix:semicolon
 multiline_comment|/* io */
-DECL|variable|outsb
-id|EXPORT_SYMBOL
+macro_line|#ifndef __raw_readsb
+DECL|variable|__raw_readsb
+id|EXPORT_SYMBOL_NOVERS
 c_func
 (paren
-id|outsb
+id|__raw_readsb
 )paren
 suffix:semicolon
-DECL|variable|outsw
-id|EXPORT_SYMBOL
+macro_line|#endif
+macro_line|#ifndef __raw_readsw
+DECL|variable|__raw_readsw
+id|EXPORT_SYMBOL_NOVERS
 c_func
 (paren
-id|outsw
+id|__raw_readsw
 )paren
 suffix:semicolon
-DECL|variable|outsl
-id|EXPORT_SYMBOL
+macro_line|#endif
+macro_line|#ifndef __raw_readsl
+DECL|variable|__raw_readsl
+id|EXPORT_SYMBOL_NOVERS
 c_func
 (paren
-id|outsl
+id|__raw_readsl
 )paren
 suffix:semicolon
-DECL|variable|insb
-id|EXPORT_SYMBOL
+macro_line|#endif
+macro_line|#ifndef __raw_writesb
+DECL|variable|__raw_writesb
+id|EXPORT_SYMBOL_NOVERS
 c_func
 (paren
-id|insb
+id|__raw_writesb
 )paren
 suffix:semicolon
-DECL|variable|insw
-id|EXPORT_SYMBOL
+macro_line|#endif
+macro_line|#ifndef __raw_writesw
+DECL|variable|__raw_writesw
+id|EXPORT_SYMBOL_NOVERS
 c_func
 (paren
-id|insw
+id|__raw_writesw
 )paren
 suffix:semicolon
-DECL|variable|insl
-id|EXPORT_SYMBOL
+macro_line|#endif
+macro_line|#ifndef __raw_writesl
+DECL|variable|__raw_writesl
+id|EXPORT_SYMBOL_NOVERS
 c_func
 (paren
-id|insl
+id|__raw_writesl
 )paren
 suffix:semicolon
+macro_line|#endif
 multiline_comment|/* address translation */
 macro_line|#ifndef __virt_to_phys__is_a_macro
 DECL|variable|__virt_to_phys
@@ -1067,27 +1088,6 @@ id|EXPORT_SYMBOL_NOVERS
 c_func
 (paren
 id|__up_wakeup
-)paren
-suffix:semicolon
-DECL|variable|__down_read_failed
-id|EXPORT_SYMBOL_NOVERS
-c_func
-(paren
-id|__down_read_failed
-)paren
-suffix:semicolon
-DECL|variable|__down_write_failed
-id|EXPORT_SYMBOL_NOVERS
-c_func
-(paren
-id|__down_write_failed
-)paren
-suffix:semicolon
-DECL|variable|__rwsem_wake
-id|EXPORT_SYMBOL_NOVERS
-c_func
-(paren
-id|__rwsem_wake
 )paren
 suffix:semicolon
 DECL|variable|get_wchan

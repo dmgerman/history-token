@@ -1846,10 +1846,6 @@ id|a5kkbd_init_hw
 r_void
 )paren
 (brace
-r_int
-r_int
-id|flags
-suffix:semicolon
 r_if
 c_cond
 (paren

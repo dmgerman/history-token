@@ -184,7 +184,7 @@ multiline_comment|/*&n; * On certain platforms whose physical address space can 
 macro_line|#if defined(CONFIG_ALPHA_GENERIC) &amp;&amp; defined(USE_48_BIT_KSEG)
 macro_line|#error &quot;EV6-only feature in a generic kernel&quot;
 macro_line|#endif
-macro_line|#if defined(CONFIG_ALPHA_GENERIC) || &bslash;&n;    (defined(CONFIG_ALPHA_EV6) &amp;&amp; !defined(USE_48_BIT_KSEG))
+macro_line|#if defined(CONFIG_ALPHA_GENERIC) || &bslash;&n;    ((defined(CONFIG_ALPHA_EV6) || defined(CONFIG_ALPHA_EV67)) &amp;&amp; &bslash;&n;     !defined(USE_48_BIT_KSEG))
 DECL|macro|PHYS_TWIDDLE
 mdefine_line|#define PHYS_TWIDDLE(phys) &bslash;&n;  ((((phys) &amp; 0xc0000000000UL) == 0x40000000000UL) &bslash;&n;  ? ((phys) ^= 0xc0000000000UL) : (phys))
 macro_line|#else

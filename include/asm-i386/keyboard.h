@@ -6,6 +6,7 @@ mdefine_line|#define _I386_KEYBOARD_H
 macro_line|#ifdef __KERNEL__
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/ioport.h&gt;
+macro_line|#include &lt;linux/kd.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 DECL|macro|KEYBOARD_IRQ
 mdefine_line|#define KEYBOARD_IRQ&t;&t;&t;1
@@ -74,8 +75,27 @@ id|leds
 )paren
 suffix:semicolon
 r_extern
+r_int
+id|pckbd_rate
+c_func
+(paren
+r_struct
+id|kbd_repeat
+op_star
+id|rep
+)paren
+suffix:semicolon
+r_extern
 r_void
 id|pckbd_init_hw
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|pckbd_pm_resume
 c_func
 (paren
 r_void
@@ -99,6 +119,8 @@ DECL|macro|kbd_unexpected_up
 mdefine_line|#define kbd_unexpected_up&t;pckbd_unexpected_up
 DECL|macro|kbd_leds
 mdefine_line|#define kbd_leds&t;&t;pckbd_leds
+DECL|macro|kbd_rate
+mdefine_line|#define kbd_rate&t;&t;pckbd_rate
 DECL|macro|kbd_init_hw
 mdefine_line|#define kbd_init_hw&t;&t;pckbd_init_hw
 DECL|macro|kbd_sysrq_xlate

@@ -2760,32 +2760,28 @@ c_func
 (paren
 id|RADEON_CP_RB_RPTR_ADDR
 comma
-id|virt_to_bus
+id|page_to_bus
 c_func
 (paren
 id|entry-&gt;pagelist
 (braket
 id|page_ofs
 )braket
-op_member_access_from_pointer
-r_virtual
 )paren
 )paren
 suffix:semicolon
 id|DRM_DEBUG
 c_func
 (paren
-l_string|&quot;ring rptr: offset=0x%08lx handle=0x%08lx&bslash;n&quot;
+l_string|&quot;ring rptr: offset=0x%08x handle=0x%08lx&bslash;n&quot;
 comma
-id|virt_to_bus
+id|page_to_bus
 c_func
 (paren
 id|entry-&gt;pagelist
 (braket
 id|page_ofs
 )braket
-op_member_access_from_pointer
-r_virtual
 )paren
 comma
 id|entry-&gt;handle

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * Core definitions and data structures shareable across OS platforms.&n; *&n; * Copyright (c) 1994-2001 Justin T. Gibbs.&n; * All rights reserved.&n; *&n; * Redistribution and use in source and binary forms, with or without&n; * modification, are permitted provided that the following conditions&n; * are met:&n; * 1. Redistributions of source code must retain the above copyright&n; *    notice, this list of conditions, and the following disclaimer,&n; *    without modification.&n; * 2. The name of the author may not be used to endorse or promote products&n; *    derived from this software without specific prior written permission.&n; *&n; * Alternatively, this software may be distributed under the terms of the&n; * GNU Public License (&quot;GPL&quot;).&n; *&n; * THIS SOFTWARE IS PROVIDED BY THE AUTHOR AND CONTRIBUTORS ``AS IS&squot;&squot; AND&n; * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE&n; * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE&n; * ARE DISCLAIMED. IN NO EVENT SHALL THE AUTHOR OR CONTRIBUTORS BE LIABLE FOR&n; * ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL&n; * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS&n; * OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)&n; * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT&n; * LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY&n; * OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF&n; * SUCH DAMAGE.&n; *&n; * $Id: //depot/src/aic7xxx/aic7xxx.h#27 $&n; *&n; * $FreeBSD: src/sys/dev/aic7xxx/aic7xxx.h,v 1.30 2000/11/10 20:13:40 gibbs Exp $&n; */
+multiline_comment|/*&n; * Core definitions and data structures shareable across OS platforms.&n; *&n; * Copyright (c) 1994-2001 Justin T. Gibbs.&n; * All rights reserved.&n; *&n; * Redistribution and use in source and binary forms, with or without&n; * modification, are permitted provided that the following conditions&n; * are met:&n; * 1. Redistributions of source code must retain the above copyright&n; *    notice, this list of conditions, and the following disclaimer,&n; *    without modification.&n; * 2. The name of the author may not be used to endorse or promote products&n; *    derived from this software without specific prior written permission.&n; *&n; * Alternatively, this software may be distributed under the terms of the&n; * GNU Public License (&quot;GPL&quot;).&n; *&n; * THIS SOFTWARE IS PROVIDED BY THE AUTHOR AND CONTRIBUTORS ``AS IS&squot;&squot; AND&n; * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE&n; * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE&n; * ARE DISCLAIMED. IN NO EVENT SHALL THE AUTHOR OR CONTRIBUTORS BE LIABLE FOR&n; * ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL&n; * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS&n; * OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)&n; * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT&n; * LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY&n; * OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF&n; * SUCH DAMAGE.&n; *&n; * $Id: //depot/src/aic7xxx/aic7xxx.h#29 $&n; *&n; * $FreeBSD: src/sys/dev/aic7xxx/aic7xxx.h,v 1.30 2000/11/10 20:13:40 gibbs Exp $&n; */
 macro_line|#ifndef _AIC7XXX_H_
 DECL|macro|_AIC7XXX_H_
 mdefine_line|#define _AIC7XXX_H_
@@ -81,7 +81,7 @@ mdefine_line|#define AHC_MAXTRANSFER_SIZE&t; 0x00ffffff&t;/* limited by 24bit co
 multiline_comment|/*&n; * The maximum amount of SCB storage in hardware on a controller.&n; * This value represents an upper bound.  Controllers vary in the number&n; * they actually support.&n; */
 DECL|macro|AHC_SCB_MAX
 mdefine_line|#define AHC_SCB_MAX&t;255
-multiline_comment|/*&n; * The maximum number of concurrent transactions supported per driver instance.&n; * Sequencer Control Blocks (SCBs) store per-transaction information.  Although&n; * the space for SCBs on the host adapter varies by model, the driver will&n; * page the SCBs between host and controller memory as needed.  We are limited&n; * to 253 because:&n; * &t;1) The 8bit nature of the RISC engine holds us to an 8bit value.&n; * &t;2) We reserve one value, 255, to represent the invalid element.&n; *&t;3) Our input queue scheme requires one SCB to always be reserved&n; *&t;   in advance of queuing any SCBs.  This takes us down to 254.&n; *&t;4) To handle our output queue correctly on machines that only&n; * &t;   support 32bit stores, we must clear the array 4 bytes at a&n; *&t;   time.  To avoid colliding with a DMA write from the sequencer,&n; *&t;   we must be sure that 4 slots are empty when we write to clear&n; *&t;   the queue.  This reduces us to 253 SCBs: 1 that just completed&n; *&t;   and the known three additional empty slots in the queue that&n; *&t;   preceed it.&n; */
+multiline_comment|/*&n; * The maximum number of concurrent transactions supported per driver instance.&n; * Sequencer Control Blocks (SCBs) store per-transaction information.  Although&n; * the space for SCBs on the host adapter varies by model, the driver will&n; * page the SCBs between host and controller memory as needed.  We are limited&n; * to 253 because:&n; * &t;1) The 8bit nature of the RISC engine holds us to an 8bit value.&n; * &t;2) We reserve one value, 255, to represent the invalid element.&n; *&t;3) Our input queue scheme requires one SCB to always be reserved&n; *&t;   in advance of queuing any SCBs.  This takes us down to 254.&n; *&t;4) To handle our output queue correctly on machines that only&n; * &t;   support 32bit stores, we must clear the array 4 bytes at a&n; *&t;   time.  To avoid colliding with a DMA write from the sequencer,&n; *&t;   we must be sure that 4 slots are empty when we write to clear&n; *&t;   the queue.  This reduces us to 253 SCBs: 1 that just completed&n; *&t;   and the known three additional empty slots in the queue that&n; *&t;   precede it.&n; */
 DECL|macro|AHC_MAX_QUEUE
 mdefine_line|#define AHC_MAX_QUEUE&t;253
 multiline_comment|/*&n; * Ring Buffer of incoming target commands.&n; * We allocate 256 to simplify the logic in the sequencer&n; * by using the natural wrap point of an 8bit counter.&n; */
@@ -604,12 +604,6 @@ id|AHC_ALL_INTERRUPTS
 op_assign
 l_int|0x100000
 comma
-DECL|enumerator|AHC_ULTRA_DISABLED
-id|AHC_ULTRA_DISABLED
-op_assign
-l_int|0x200000
-comma
-multiline_comment|/*&n;&t;&t;&t;&t;&t;   * The precision resistor for&n;&t;&t;&t;&t;&t;   * ultra transmission speeds is&n;&t;&t;&t;&t;&t;   * missing, so we must limit&n;&t;&t;&t;&t;&t;   * ourselves to fast SCSI.&n;&t;&t;&t;&t;&t;   */
 DECL|enumerator|AHC_PAGESCBS
 id|AHC_PAGESCBS
 op_assign
@@ -620,47 +614,16 @@ DECL|enumerator|AHC_EDGE_INTERRUPT
 id|AHC_EDGE_INTERRUPT
 op_assign
 l_int|0x800000
+comma
 multiline_comment|/* Device uses edge triggered ints */
+DECL|enumerator|AHC_39BIT_ADDRESSING
+id|AHC_39BIT_ADDRESSING
+op_assign
+l_int|0x1000000
+multiline_comment|/* Use 39 bit addressing scheme. */
 DECL|typedef|ahc_flag
 )brace
 id|ahc_flag
-suffix:semicolon
-multiline_comment|/*&n; * Controller  Information composed at probe time.&n; */
-DECL|struct|ahc_probe_config
-r_struct
-id|ahc_probe_config
-(brace
-DECL|member|description
-r_const
-r_char
-op_star
-id|description
-suffix:semicolon
-DECL|member|channel
-r_char
-id|channel
-suffix:semicolon
-DECL|member|channel_b
-r_char
-id|channel_b
-suffix:semicolon
-DECL|member|chip
-id|ahc_chip
-id|chip
-suffix:semicolon
-DECL|member|features
-id|ahc_feature
-id|features
-suffix:semicolon
-DECL|member|bugs
-id|ahc_bug
-id|bugs
-suffix:semicolon
-DECL|member|flags
-id|ahc_flag
-id|flags
-suffix:semicolon
-)brace
 suffix:semicolon
 multiline_comment|/************************* Hardware  SCB Definition ***************************/
 multiline_comment|/*&n; * The driver keeps up to MAX_SCB scb structures per card in memory.  The SCB&n; * consists of a &quot;hardware SCB&quot; mirroring the fields availible on the card&n; * and additional information the kernel stores for each transaction.&n; *&n; * To minimize space utilization, a portion of the hardware scb stores&n; * different data during different portions of a SCSI transaction.&n; * As initialized by the host driver for the initiator role, this area&n; * contains the SCSI cdb (or a pointer to the  cdb) to be executed.  After&n; * the cdb has been presented to the target, this area serves to store&n; * residual transfer information and the SCSI status byte.&n; * For the target role, the contents of this area do not change, but&n; * still serve a different purpose than for the initiator role.  See&n; * struct target_data for details.&n; */
@@ -845,6 +808,33 @@ DECL|macro|AHC_SG_LEN_MASK
 mdefine_line|#define&t;AHC_SG_LEN_MASK&t;&t;0x00FFFFFF
 )brace
 suffix:semicolon
+DECL|struct|sg_map_node
+r_struct
+id|sg_map_node
+(brace
+DECL|member|sg_dmamap
+id|bus_dmamap_t
+id|sg_dmamap
+suffix:semicolon
+DECL|member|sg_physaddr
+id|bus_addr_t
+id|sg_physaddr
+suffix:semicolon
+DECL|member|sg_vaddr
+r_struct
+id|ahc_dma_seg
+op_star
+id|sg_vaddr
+suffix:semicolon
+id|SLIST_ENTRY
+c_func
+(paren
+id|sg_map_node
+)paren
+id|links
+suffix:semicolon
+)brace
+suffix:semicolon
 multiline_comment|/*&n; * The current state of this SCB.&n; */
 r_typedef
 r_enum
@@ -978,6 +968,12 @@ id|scb_platform_data
 op_star
 id|platform_data
 suffix:semicolon
+DECL|member|sg_map
+r_struct
+id|sg_map_node
+op_star
+id|sg_map
+suffix:semicolon
 DECL|member|sg_list
 r_struct
 id|ahc_dma_seg
@@ -993,33 +989,6 @@ id|u_int
 id|sg_count
 suffix:semicolon
 multiline_comment|/* How full ahc_dma_seg is */
-)brace
-suffix:semicolon
-DECL|struct|sg_map_node
-r_struct
-id|sg_map_node
-(brace
-DECL|member|sg_dmamap
-id|bus_dmamap_t
-id|sg_dmamap
-suffix:semicolon
-DECL|member|sg_physaddr
-id|bus_addr_t
-id|sg_physaddr
-suffix:semicolon
-DECL|member|sg_vaddr
-r_struct
-id|ahc_dma_seg
-op_star
-id|sg_vaddr
-suffix:semicolon
-id|SLIST_ENTRY
-c_func
-(paren
-id|sg_map_node
-)paren
-id|links
-suffix:semicolon
 )brace
 suffix:semicolon
 DECL|struct|scb_data
@@ -2122,10 +2091,8 @@ r_int
 id|ahc_device_setup_t
 )paren
 (paren
-id|ahc_dev_softc_t
-comma
 r_struct
-id|ahc_probe_config
+id|ahc_softc
 op_star
 )paren
 suffix:semicolon
@@ -2378,15 +2345,6 @@ id|role
 )paren
 suffix:semicolon
 multiline_comment|/****************************** Initialization ********************************/
-r_void
-id|ahc_init_probe_config
-c_func
-(paren
-r_struct
-id|ahc_probe_config
-op_star
-)paren
-suffix:semicolon
 r_struct
 id|ahc_softc
 op_star
@@ -2408,10 +2366,6 @@ c_func
 (paren
 r_struct
 id|ahc_softc
-op_star
-comma
-r_struct
-id|ahc_probe_config
 op_star
 )paren
 suffix:semicolon

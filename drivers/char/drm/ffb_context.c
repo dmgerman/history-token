@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: ffb_context.c,v 1.4 2000/08/29 07:01:55 davem Exp $&n; * ffb_context.c: Creator/Creator3D DRI/DRM context switching.&n; *&n; * Copyright (C) 2000 David S. Miller (davem@redhat.com)&n; *&n; * Almost entirely stolen from tdfx_context.c, see there&n; * for authors.&n; */
+multiline_comment|/* $Id: ffb_context.c,v 1.5 2001/08/09 17:47:51 davem Exp $&n; * ffb_context.c: Creator/Creator3D DRI/DRM context switching.&n; *&n; * Copyright (C) 2000 David S. Miller (davem@redhat.com)&n; *&n; * Almost entirely stolen from tdfx_context.c, see there&n; * for authors.&n; */
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;asm/upa.h&gt;
 macro_line|#include &quot;ffb.h&quot;
@@ -2121,13 +2121,6 @@ id|ffb_dev_priv_t
 op_star
 )paren
 id|dev-&gt;dev_private
-suffix:semicolon
-id|atomic_inc
-c_func
-(paren
-op_amp
-id|dev-&gt;total_ctx
-)paren
 suffix:semicolon
 macro_line|#if DRM_DMA_HISTOGRAM
 id|dev-&gt;ctx_start

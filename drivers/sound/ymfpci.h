@@ -634,7 +634,7 @@ r_struct
 id|ymf_voice
 id|voices
 (braket
-l_int|64
+id|YDSXG_PLAYBACK_VOICES
 )braket
 suffix:semicolon
 DECL|member|capture
@@ -642,7 +642,7 @@ r_struct
 id|ymf_capture
 id|capture
 (braket
-l_int|5
+id|YDSXG_CAPTURE_VOICES
 )braket
 suffix:semicolon
 DECL|member|ac97_codec

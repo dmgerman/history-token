@@ -29,13 +29,20 @@ DECL|macro|SPEED_S1600
 mdefine_line|#define SPEED_S1600&t;&t;&t;0x4
 DECL|macro|SPEED_S3200
 mdefine_line|#define SPEED_S3200&t;&t;&t;0x5
-multiline_comment|/* 2^(MAX_PAYLOAD+2) = Maximum data transfer length */
+multiline_comment|/* 2^(MAX_PAYLOAD+1) = Maximum data transfer length */
 DECL|macro|MAX_PAYLOAD_S100
 mdefine_line|#define MAX_PAYLOAD_S100&t;&t;0x7
 DECL|macro|MAX_PAYLOAD_S200
 mdefine_line|#define MAX_PAYLOAD_S200&t;&t;0x8
 DECL|macro|MAX_PAYLOAD_S400
 mdefine_line|#define MAX_PAYLOAD_S400&t;&t;0x9
+multiline_comment|/* Max rec matches node_entry values */
+DECL|macro|MAX_REC_S100
+mdefine_line|#define MAX_REC_S100&t;&t;&t;512
+DECL|macro|MAX_REC_S200
+mdefine_line|#define MAX_REC_S200&t;&t;&t;1024
+DECL|macro|MAX_REC_S400
+mdefine_line|#define MAX_REC_S400&t;&t;&t;2048
 DECL|macro|ORB_SET_NOTIFY
 mdefine_line|#define ORB_SET_NOTIFY(value)                   ((value &amp; 0x1) &lt;&lt; 31)
 DECL|macro|ORB_SET_RQ_FMT
@@ -458,14 +465,8 @@ DECL|macro|CONFIG_ROM_BASE_ADDRESS
 mdefine_line|#define CONFIG_ROM_BASE_ADDRESS&t;&t;&t;&t;&t;0xfffff0000400ULL
 DECL|macro|CONFIG_ROM_ROOT_DIR_BASE
 mdefine_line|#define CONFIG_ROM_ROOT_DIR_BASE&t;&t;&t;&t;0xfffff0000414ULL
-DECL|macro|CONFIG_ROM_NODE_UNIQUE_ID_HI_ADDRESS
-mdefine_line|#define CONFIG_ROM_NODE_UNIQUE_ID_HI_ADDRESS&t;&t;&t;0xfffff000040cULL
-DECL|macro|CONFIG_ROM_NODE_UNIQUE_ID_LO_ADDRESS
-mdefine_line|#define CONFIG_ROM_NODE_UNIQUE_ID_LO_ADDRESS&t;&t;&t;0xfffff0000410ULL
 DECL|macro|CONFIG_ROM_SIGNATURE_ADDRESS
 mdefine_line|#define CONFIG_ROM_SIGNATURE_ADDRESS&t;&t;&t;&t;0xfffff0000404ULL
-DECL|macro|CONFIG_ROM_NODE_OPTIONS
-mdefine_line|#define CONFIG_ROM_NODE_OPTIONS&t;&t;&t;&t;&t;0xfffff0000408ULL
 DECL|macro|CONFIG_ROM_UNIT_DIRECTORY_OFFSET
 mdefine_line|#define CONFIG_ROM_UNIT_DIRECTORY_OFFSET&t;&t;&t;0xfffff0000424ULL
 DECL|macro|IEEE1394_CONFIG_ROM_SIGNATURE
@@ -1025,9 +1026,6 @@ comma
 id|DUN
 )brace
 suffix:semicolon
-multiline_comment|/*&n; * Scsi_Host structure&n; */
-DECL|macro|SBP2SCSI
-mdefine_line|#define SBP2SCSI { &bslash;&n;&t;name:&t;&t;&quot;IEEE1394 SBP-2&quot;,&t;&t;&bslash;&n;&t;detect:&t;&t;sbp2scsi_detect,&t;&t;&bslash;&n;&t;release:&t;sbp2scsi_release,&t;&t;&bslash;&n;&t;info:&t;&t;sbp2scsi_info,&t;&t;&t;&bslash;&n;&t;queuecommand:&t;sbp2scsi_queuecommand,&t;&t;&bslash;&n;&t;abort:&t;&t;sbp2scsi_abort,&t;&t;&t;&bslash;&n;&t;reset:&t;&t;sbp2scsi_reset,&t;&t;&t;&bslash;&n;&t;bios_param:&t;sbp2scsi_biosparam,&t;&t;&bslash;&n;&t;can_queue:&t;SBP2SCSI_MAX_OUTSTANDING_CMDS,&t;&bslash;&n;&t;this_id:&t;-1,&t;&t;&t;&t;&bslash;&n;&t;sg_tablesize:&t;SBP2_MAX_SG_ELEMENTS,&t;&t;&bslash;&n;&t;cmd_per_lun:&t;SBP2SCSI_MAX_CMDS_PER_LUN,&t;&bslash;&n;&t;use_clustering:&t;SBP2_CLUSTERING,&t;&t;&bslash;&n;&t;emulated:&t;1&t;&t;&t;&t;&bslash;&n;}
 multiline_comment|/*&n; * Number of request packets available for actual sbp2 I/O requests (these are used&n; * for sending command and agent reset packets).&n; */
 DECL|macro|SBP2_MAX_REQUEST_PACKETS
 mdefine_line|#define SBP2_MAX_REQUEST_PACKETS&t;SBP2SCSI_MAX_OUTSTANDING_CMDS&t;/* Per host adapter instance */

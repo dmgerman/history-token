@@ -11,6 +11,10 @@ id|file_operations
 id|qnx4_file_operations
 op_assign
 (brace
+id|llseek
+suffix:colon
+id|generic_file_llseek
+comma
 id|read
 suffix:colon
 id|generic_file_read

@@ -2602,6 +2602,7 @@ suffix:semicolon
 DECL|function|read_eeprom
 r_static
 r_int
+id|__init
 id|read_eeprom
 c_func
 (paren

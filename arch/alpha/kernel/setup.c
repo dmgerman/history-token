@@ -432,6 +432,13 @@ c_func
 id|sable_gamma_mv
 )paren
 suffix:semicolon
+DECL|variable|shark_mv
+id|WEAK
+c_func
+(paren
+id|shark_mv
+)paren
+suffix:semicolon
 DECL|variable|sx164_mv
 id|WEAK
 c_func
@@ -2783,6 +2790,14 @@ comma
 l_string|&quot;Webbrick&quot;
 comma
 l_string|&quot;Catamaran&quot;
+comma
+l_string|&quot;Brisbane&quot;
+comma
+l_string|&quot;Melbourne&quot;
+comma
+l_string|&quot;Flying Clipper&quot;
+comma
+l_string|&quot;Shark&quot;
 )brace
 suffix:semicolon
 DECL|variable|tsunami_indices
@@ -2810,6 +2825,14 @@ comma
 l_int|7
 comma
 l_int|8
+comma
+l_int|9
+comma
+l_int|10
+comma
+l_int|11
+comma
+l_int|12
 )brace
 suffix:semicolon
 r_static
@@ -3145,6 +3168,19 @@ op_amp
 id|dp264_mv
 comma
 multiline_comment|/* catamaran */
+l_int|NULL
+comma
+multiline_comment|/* brisbane? */
+l_int|NULL
+comma
+multiline_comment|/* melbourne? */
+l_int|NULL
+comma
+multiline_comment|/* flying clipper? */
+op_amp
+id|shark_mv
+comma
+multiline_comment|/* shark */
 )brace
 suffix:semicolon
 multiline_comment|/* ??? Do we need to distinguish between Rawhides?  */
@@ -3649,6 +3685,9 @@ id|sable_mv
 comma
 op_amp
 id|sable_gamma_mv
+comma
+op_amp
+id|shark_mv
 comma
 op_amp
 id|sx164_mv

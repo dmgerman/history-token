@@ -1045,7 +1045,7 @@ comma
 l_int|1
 )paren
 suffix:semicolon
-r_break
+r_return
 suffix:semicolon
 r_case
 l_int|1
@@ -1061,7 +1061,7 @@ comma
 l_int|1
 )paren
 suffix:semicolon
-r_break
+r_return
 suffix:semicolon
 r_case
 l_int|2
@@ -1111,7 +1111,7 @@ comma
 l_int|1
 )paren
 suffix:semicolon
-r_break
+r_return
 suffix:semicolon
 r_case
 id|GEN_DECOVF
@@ -1174,25 +1174,9 @@ comma
 l_int|1
 )paren
 suffix:semicolon
-r_break
+r_return
 suffix:semicolon
 )brace
-r_break
-suffix:semicolon
-r_case
-l_int|3
-suffix:colon
-multiline_comment|/* FEN fault */
-id|send_sig
-c_func
-(paren
-id|SIGILL
-comma
-id|current
-comma
-l_int|1
-)paren
-suffix:semicolon
 r_break
 suffix:semicolon
 r_case
@@ -1225,6 +1209,21 @@ l_int|4
 r_return
 suffix:semicolon
 )brace
+multiline_comment|/* fallthrough as illegal instruction .. */
+r_case
+l_int|3
+suffix:colon
+multiline_comment|/* FEN fault */
+r_case
+l_int|5
+suffix:colon
+multiline_comment|/* illoc */
+r_default
+suffix:colon
+(brace
+)brace
+multiline_comment|/* unexpected instruction-fault type */
+)brace
 id|send_sig
 c_func
 (paren
@@ -1235,17 +1234,6 @@ comma
 l_int|1
 )paren
 suffix:semicolon
-r_break
-suffix:semicolon
-r_default
-suffix:colon
-id|panic
-c_func
-(paren
-l_string|&quot;do_entIF: unexpected instruction-fault type&quot;
-)paren
-suffix:semicolon
-)brace
 )brace
 multiline_comment|/* There is an ifdef in the PALcode in MILO that enables a &n;   &quot;kernel debugging entry point&quot; as an unprivilaged call_pal.&n;&n;   We don&squot;t want to have anything to do with it, but unfortunately&n;   several versions of MILO included in distributions have it enabled,&n;   and if we don&squot;t put something on the entry point we&squot;ll oops.  */
 id|asmlinkage

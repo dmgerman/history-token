@@ -9,7 +9,7 @@ macro_line|#include &lt;linux/ioport.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/sound.h&gt;
-macro_line|#include &lt;linux/malloc.h&gt;
+macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/soundcard.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/bitops.h&gt;
@@ -11389,30 +11389,6 @@ suffix:semicolon
 )brace
 )brace
 singleline_comment|// --------------------------------------------------------------------- 
-DECL|function|cs4281_llseek
-r_static
-id|loff_t
-id|cs4281_llseek
-c_func
-(paren
-r_struct
-id|file
-op_star
-id|file
-comma
-id|loff_t
-id|offset
-comma
-r_int
-id|origin
-)paren
-(brace
-r_return
-op_minus
-id|ESPIPE
-suffix:semicolon
-)brace
-singleline_comment|// --------------------------------------------------------------------- 
 DECL|function|cs4281_open_mixdev
 r_static
 r_int
@@ -11662,7 +11638,7 @@ op_assign
 (brace
 id|llseek
 suffix:colon
-id|cs4281_llseek
+id|no_llseek
 comma
 id|ioctl
 suffix:colon
@@ -17418,7 +17394,7 @@ op_assign
 (brace
 id|llseek
 suffix:colon
-id|cs4281_llseek
+id|no_llseek
 comma
 id|read
 suffix:colon
@@ -19365,7 +19341,7 @@ op_assign
 (brace
 id|llseek
 suffix:colon
-id|cs4281_llseek
+id|no_llseek
 comma
 id|read
 suffix:colon

@@ -2,6 +2,7 @@ macro_line|#ifndef _IEEE1394_CORE_H
 DECL|macro|_IEEE1394_CORE_H
 mdefine_line|#define _IEEE1394_CORE_H
 macro_line|#include &lt;linux/tqueue.h&gt;
+macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;asm/semaphore.h&gt;
 macro_line|#include &quot;hosts.h&quot;
 DECL|struct|hpsb_packet
@@ -47,13 +48,13 @@ id|packed
 )paren
 id|type
 suffix:semicolon
-multiline_comment|/* Okay, this is core internal and a no care for hosts.&n;         * queued   = queued for sending&n;         * pending  = sent, waiting for response&n;         * completed = processing completed, successful or not&n;         * incoming = incoming packet&n;         */
+multiline_comment|/* Okay, this is core internal and a no care for hosts.&n;         * queued   = queued for sending&n;         * pending  = sent, waiting for response&n;         * complete = processing completed, successful or not&n;         * incoming = incoming packet&n;         */
 r_enum
 (brace
 DECL|enumerator|unused
 DECL|enumerator|queued
 DECL|enumerator|pending
-DECL|enumerator|completed
+DECL|enumerator|complete
 DECL|enumerator|incoming
 id|unused
 comma
@@ -61,7 +62,7 @@ id|queued
 comma
 id|pending
 comma
-id|completed
+id|complete
 comma
 id|incoming
 DECL|member|state
@@ -211,19 +212,18 @@ id|packet
 suffix:semicolon
 multiline_comment|/*&n; * Generation counter for the complete 1394 subsystem.  Generation gets&n; * incremented on every change in the subsystem (e.g. bus reset).&n; *&n; * Use the functions, not the variable.&n; */
 macro_line|#include &lt;asm/atomic.h&gt;
-r_extern
-id|atomic_t
-id|hpsb_generation
-suffix:semicolon
 DECL|function|get_hpsb_generation
-r_inline
 r_static
+r_inline
 r_int
 r_int
 id|get_hpsb_generation
 c_func
 (paren
-r_void
+r_struct
+id|hpsb_host
+op_star
+id|host
 )paren
 (brace
 r_return
@@ -231,25 +231,7 @@ id|atomic_read
 c_func
 (paren
 op_amp
-id|hpsb_generation
-)paren
-suffix:semicolon
-)brace
-DECL|function|inc_hpsb_generation
-r_inline
-r_static
-r_void
-id|inc_hpsb_generation
-c_func
-(paren
-r_void
-)paren
-(brace
-id|atomic_inc
-c_func
-(paren
-op_amp
-id|hpsb_generation
+id|host-&gt;generation
 )paren
 suffix:semicolon
 )brace

@@ -284,33 +284,6 @@ l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/* process_line */
-multiline_comment|/*************************/
-multiline_comment|/* dummy file operations */
-multiline_comment|/*************************/
-r_static
-id|loff_t
-DECL|function|hysdn_dummy_lseek
-id|hysdn_dummy_lseek
-c_func
-(paren
-r_struct
-id|file
-op_star
-id|file
-comma
-id|loff_t
-id|offset
-comma
-r_int
-id|orig
-)paren
-(brace
-r_return
-op_minus
-id|ESPIPE
-suffix:semicolon
-)brace
-multiline_comment|/* hysdn_dummy_lseek */
 multiline_comment|/***********************************/
 multiline_comment|/* conf file operations and tables */
 multiline_comment|/***********************************/
@@ -1748,7 +1721,7 @@ op_assign
 (brace
 id|llseek
 suffix:colon
-id|hysdn_dummy_lseek
+id|no_llseek
 comma
 id|read
 suffix:colon

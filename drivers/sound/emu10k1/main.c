@@ -20,8 +20,8 @@ DECL|macro|MIDI_SYNTH_NAME
 mdefine_line|#define MIDI_SYNTH_NAME &quot;EMU10K1 MIDI&quot;
 DECL|macro|MIDI_SYNTH_CAPS
 mdefine_line|#define MIDI_SYNTH_CAPS SYNTH_CAP_INPUT
-macro_line|#include &quot;sound_config.h&quot;
-macro_line|#include &quot;midi_synth.h&quot;
+macro_line|#include &quot;../sound_config.h&quot;
+macro_line|#include &quot;../midi_synth.h&quot;
 multiline_comment|/* this should be in dev_table.h */
 DECL|macro|SNDCARD_EMU10K1
 mdefine_line|#define SNDCARD_EMU10K1 46
@@ -4374,6 +4374,8 @@ id|midi_operations
 id|emu10k1_midi_operations
 op_assign
 (brace
+id|THIS_MODULE
+comma
 (brace
 l_string|&quot;EMU10K1 MIDI&quot;
 comma

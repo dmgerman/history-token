@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * BK Id: SCCS/s.pmac_pci.c 1.18 07/01/01 12:23:31 trini&n; */
+multiline_comment|/*&n; * BK Id: SCCS/s.pmac_pci.c 1.22 08/08/01 16:35:43 paulus&n; */
 multiline_comment|/*&n; * Support for PCI bridges found on Power Macintoshes.&n; * At present the &quot;bandit&quot; and &quot;chaos&quot; bridges are supported.&n; * Fortunately you access configuration space in the same&n; * way with either bridge.&n; *&n; * Copyright (C) 1997 Paul Mackerras (paulus@cs.anu.edu.au)&n; *&n; * This program is free software; you can redistribute it and/or&n; * modify it under the terms of the GNU General Public License&n; * as published by the Free Software Foundation; either version&n; * 2 of the License, or (at your option) any later version.&n; */
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
@@ -1611,9 +1611,6 @@ r_struct
 id|pci_controller
 op_star
 id|hose
-comma
-r_int
-id|io_space_size
 )paren
 (brace
 id|setup_indirect_pci
@@ -1897,8 +1894,6 @@ id|setup_grackle
 c_func
 (paren
 id|hose
-comma
-l_int|0x20000
 )paren
 suffix:semicolon
 id|disp_name

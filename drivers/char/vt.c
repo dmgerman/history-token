@@ -13,11 +13,10 @@ macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/major.h&gt;
 macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;linux/console.h&gt;
+macro_line|#include &lt;linux/irq.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
-macro_line|#if defined(__mc68000__) || defined(CONFIG_APUS)
-macro_line|#include &lt;asm/machdep.h&gt;
-macro_line|#endif
+macro_line|#include &lt;asm/keyboard.h&gt;
 macro_line|#include &lt;linux/kbd_kern.h&gt;
 macro_line|#include &lt;linux/vt_kern.h&gt;
 macro_line|#include &lt;linux/kbd_diacr.h&gt;
@@ -2162,8 +2161,7 @@ suffix:colon
 l_int|0
 suffix:semicolon
 macro_line|#endif
-macro_line|#if defined(__mc68000__) || defined(CONFIG_APUS)
-multiline_comment|/* Linux/m68k interface for setting the keyboard delay/repeat rate */
+multiline_comment|/* Linux m68k/i386 interface for setting the keyboard delay/repeat rate */
 r_case
 id|KDKBDREP
 suffix:colon
@@ -2176,7 +2174,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|mach_kbdrate
+id|kbd_rate
 )paren
 r_return
 op_minus
@@ -2186,9 +2184,10 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|suser
+id|capable
 c_func
 (paren
+id|CAP_SYS_ADMIN
 )paren
 )paren
 r_return
@@ -2227,7 +2226,7 @@ c_cond
 (paren
 id|i
 op_assign
-id|mach_kbdrate
+id|kbd_rate
 c_func
 (paren
 op_amp
@@ -2268,7 +2267,6 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-macro_line|#endif
 r_case
 id|KDSETMODE
 suffix:colon

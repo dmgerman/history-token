@@ -7,8 +7,8 @@ mdefine_line|#define KERNEL_DS&t;0x00000000
 DECL|macro|USER_DS
 mdefine_line|#define USER_DS&t;&t;PAGE_OFFSET
 DECL|function|set_fs
-r_extern
-id|__inline__
+r_static
+r_inline
 r_void
 id|set_fs
 (paren

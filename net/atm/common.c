@@ -856,7 +856,7 @@ op_ne
 id|ATM_VCI_ANY
 op_logical_and
 id|vci
-OG
+op_rshift
 id|dev-&gt;ci_range.vci_bits
 )paren
 )paren

@@ -56,8 +56,6 @@ mdefine_line|#define IOEB_PSCLR&t;&t;(IOEB_BASE + 0x58)
 DECL|macro|IOEB_MONTYPE
 mdefine_line|#define IOEB_MONTYPE&t;&t;(IOEB_BASE + 0x70)
 macro_line|#endif
-DECL|macro|IO_EC_IOC4_BASE
-mdefine_line|#define IO_EC_IOC4_BASE&t;&t;0x8009c000
 DECL|macro|IO_EC_IOC_BASE
 mdefine_line|#define IO_EC_IOC_BASE&t;&t;0x80090000
 DECL|macro|IO_EC_MEMC_BASE

@@ -154,8 +154,8 @@ DECL|macro|pages_to_mb
 mdefine_line|#define pages_to_mb(x)&t;&t;((x) &gt;&gt; (20 - PAGE_SHIFT))
 multiline_comment|/*&n; * Conversion functions: convert a page and protection to a page entry,&n; * and a page entry and page directory to the page they refer to.&n; */
 DECL|function|mk_pte_phys
-r_extern
-id|__inline__
+r_static
+r_inline
 id|pte_t
 id|mk_pte_phys
 c_func
@@ -224,8 +224,8 @@ DECL|macro|pte_offset
 mdefine_line|#define pte_offset(dir, addr)&t;((pte_t *)pmd_page(*(dir)) + __pte_offset(addr))
 macro_line|#include &lt;asm/proc/pgtable.h&gt;
 DECL|function|pte_modify
-r_extern
-id|__inline__
+r_static
+r_inline
 id|pte_t
 id|pte_modify
 c_func

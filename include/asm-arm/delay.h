@@ -23,8 +23,8 @@ id|usecs
 )paren
 suffix:semicolon
 DECL|function|muldiv
-r_extern
-id|__inline__
+r_static
+r_inline
 r_int
 r_int
 id|muldiv

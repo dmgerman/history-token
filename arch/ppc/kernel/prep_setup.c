@@ -1,7 +1,8 @@
-multiline_comment|/*&n; * BK Id: SCCS/s.prep_setup.c 1.23 07/18/01 22:56:39 paulus&n; */
+multiline_comment|/*&n; * BK Id: SCCS/s.prep_setup.c 1.26 08/05/01 16:18:54 trini&n; */
 multiline_comment|/*&n; *  linux/arch/ppc/kernel/setup.c&n; *&n; *  Copyright (C) 1995  Linus Torvalds&n; *  Adapted from &squot;alpha&squot; version by Gary Thomas&n; *  Modified by Cort Dougan (cort@cs.nmt.edu)&n; */
 multiline_comment|/*&n; * bootup setup stuff..&n; */
 macro_line|#include &lt;linux/config.h&gt;
+macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
@@ -493,7 +494,7 @@ id|buffer
 op_plus
 id|len
 comma
-l_string|&quot;%sync&bslash;n&quot;
+l_string|&quot;%ssync&bslash;n&quot;
 comma
 (paren
 (paren
@@ -2083,6 +2084,133 @@ l_int|1
 suffix:semicolon
 multiline_comment|/*&n;&t; * Not reached&n;&t; */
 )brace
+multiline_comment|/*&n; * On IBM PReP&squot;s, power management is handled by a Signetics 87c750 behind the&n; * Utah component on the ISA bus. To access the 750 you must write a series of&n; * nibbles to port 0x82a (decoded by the Utah). This is described somewhat in&n; * the IBM Carolina Technical Specification.&n; * -Hollis&n; */
+r_static
+r_void
+id|__prep
+DECL|function|utah_sig87c750_setbit
+id|utah_sig87c750_setbit
+c_func
+(paren
+r_int
+r_int
+id|bytenum
+comma
+r_int
+r_int
+id|bitnum
+comma
+r_int
+id|value
+)paren
+(brace
+multiline_comment|/*&n;&t; * byte1: 0 0 0 1 0  d  a5 a4&n;&t; * byte2: 0 0 0 1 a3 a2 a1 a0&n;&t; *&n;&t; * d = the bit&squot;s value, enabled or disabled&n;&t; * (a5 a4 a3) = the byte number, minus 20&n;&t; * (a2 a1 a0) = the bit number&n;&t; *&n;&t; * example: set the 5th bit of byte 21 (21.5)&n;&t; *     a5 a4 a3 = 001 (byte 1)&n;&t; *     a2 a1 a0 = 101 (bit 5)&n;&t; *&n;&t; *     byte1 = 0001 0100 (0x14)&n;&t; *     byte2 = 0001 1101 (0x1d)&n;&t; */
+r_int
+r_char
+id|byte1
+op_assign
+l_int|0x10
+comma
+id|byte2
+op_assign
+l_int|0x10
+suffix:semicolon
+r_const
+r_int
+r_int
+id|pm_reg_1
+op_assign
+l_int|0x82a
+suffix:semicolon
+multiline_comment|/* ISA address */
+multiline_comment|/* the 750&squot;s &squot;20.0&squot; is accessed as &squot;0.0&squot; through Utah (which adds 20) */
+id|bytenum
+op_sub_assign
+l_int|20
+suffix:semicolon
+id|byte1
+op_or_assign
+(paren
+op_logical_neg
+op_logical_neg
+id|value
+)paren
+op_lshift
+l_int|2
+suffix:semicolon
+multiline_comment|/* set d */
+id|byte1
+op_or_assign
+(paren
+id|bytenum
+op_rshift
+l_int|1
+)paren
+op_amp
+l_int|0x3
+suffix:semicolon
+multiline_comment|/* set a5, a4 */
+id|byte2
+op_or_assign
+(paren
+id|bytenum
+op_amp
+l_int|0x1
+)paren
+op_lshift
+l_int|3
+suffix:semicolon
+multiline_comment|/* set a3 */
+id|byte2
+op_or_assign
+id|bitnum
+op_amp
+l_int|0x7
+suffix:semicolon
+multiline_comment|/* set a2, a1, a0 */
+id|outb
+c_func
+(paren
+id|byte1
+comma
+id|pm_reg_1
+)paren
+suffix:semicolon
+multiline_comment|/* first nibble */
+id|mb
+c_func
+(paren
+)paren
+suffix:semicolon
+id|udelay
+c_func
+(paren
+l_int|100
+)paren
+suffix:semicolon
+multiline_comment|/* important: let controller recover */
+id|outb
+c_func
+(paren
+id|byte2
+comma
+id|pm_reg_1
+)paren
+suffix:semicolon
+multiline_comment|/* second nibble */
+id|mb
+c_func
+(paren
+)paren
+suffix:semicolon
+id|udelay
+c_func
+(paren
+l_int|100
+)paren
+suffix:semicolon
+multiline_comment|/* important: let controller recover */
+)brace
 r_void
 id|__prep
 DECL|function|prep_power_off
@@ -2092,11 +2220,66 @@ c_func
 r_void
 )paren
 (brace
+r_if
+c_cond
+(paren
+id|_prep_type
+op_eq
+id|_PREP_IBM
+)paren
+(brace
+multiline_comment|/* tested on:&n;&t;&t; * &t;&t;Carolina&squot;s: 7248-43P, 6070 (PowerSeries 850)&n;&t;&t; * should work on:&n;&t;&t; * &t;&t;Carolina: 6050 (PowerSeries 830)&n;&t;&t; * &t;&t;7043-140 (Tiger 1)&n;&t;&t; */
+r_int
+r_int
+id|flags
+suffix:semicolon
+id|__cli
+c_func
+(paren
+)paren
+suffix:semicolon
+multiline_comment|/* set exception prefix high - to the prom */
+id|save_flags
+c_func
+(paren
+id|flags
+)paren
+suffix:semicolon
+id|restore_flags
+c_func
+(paren
+id|flags
+op_or
+id|MSR_IP
+)paren
+suffix:semicolon
+id|utah_sig87c750_setbit
+c_func
+(paren
+l_int|21
+comma
+l_int|5
+comma
+l_int|1
+)paren
+suffix:semicolon
+multiline_comment|/* set bit 21.5, &quot;PMEXEC_OFF&quot; */
+r_while
+c_loop
+(paren
+l_int|1
+)paren
+suffix:semicolon
+multiline_comment|/* not reached */
+)brace
+r_else
+(brace
 id|prep_halt
 c_func
 (paren
 )paren
 suffix:semicolon
+)brace
 )brace
 r_int
 id|__prep

@@ -6,8 +6,8 @@ macro_line|#include &lt;asm/proc-fns.h&gt;
 DECL|macro|vectors_base
 mdefine_line|#define vectors_base()&t;(0)
 DECL|function|__xchg
-r_extern
-id|__inline__
+r_static
+r_inline
 r_int
 r_int
 id|__xchg

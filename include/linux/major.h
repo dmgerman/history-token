@@ -275,5 +275,27 @@ id|m
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/*&n; * Tests for IDE devices&n; */
+DECL|macro|IDE_DISK_MAJOR
+mdefine_line|#define IDE_DISK_MAJOR(M)&t;((M) == IDE0_MAJOR || (M) == IDE1_MAJOR || &bslash;&n;&t;&t;&t;&t;(M) == IDE2_MAJOR || (M) == IDE3_MAJOR || &bslash;&n;&t;&t;&t;&t;(M) == IDE4_MAJOR || (M) == IDE5_MAJOR || &bslash;&n;&t;&t;&t;&t;(M) == IDE6_MAJOR || (M) == IDE7_MAJOR || &bslash;&n;&t;&t;&t;&t;(M) == IDE8_MAJOR || (M) == IDE9_MAJOR)
+DECL|function|ide_blk_major
+r_static
+id|__inline__
+r_int
+id|ide_blk_major
+c_func
+(paren
+r_int
+id|m
+)paren
+(brace
+r_return
+id|IDE_DISK_MAJOR
+c_func
+(paren
+id|m
+)paren
+suffix:semicolon
+)brace
 macro_line|#endif
 eof

@@ -138,6 +138,13 @@ DECL|struct|i2o_pci
 r_struct
 id|i2o_pci
 (brace
+DECL|member|pdev
+r_struct
+id|pci_dev
+op_star
+id|pdev
+suffix:semicolon
+multiline_comment|/* PCI device */
 DECL|member|irq
 r_int
 id|irq
@@ -303,6 +310,32 @@ suffix:colon
 l_int|1
 suffix:semicolon
 multiline_comment|/* Has a battery backup */
+DECL|member|io_alloc
+r_int
+id|io_alloc
+suffix:colon
+l_int|1
+suffix:semicolon
+multiline_comment|/* An I/O resource was allocated */
+DECL|member|mem_alloc
+r_int
+id|mem_alloc
+suffix:colon
+l_int|1
+suffix:semicolon
+multiline_comment|/* A memory resource was allocated */
+DECL|member|io_resource
+r_struct
+id|resource
+id|io_resource
+suffix:semicolon
+multiline_comment|/* I/O resource allocated to the IOP */
+DECL|member|mem_resource
+r_struct
+id|resource
+id|mem_resource
+suffix:semicolon
+multiline_comment|/* Mem resource allocated to the IOP */
 DECL|member|proc_entry
 r_struct
 id|proc_dir_entry

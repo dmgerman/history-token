@@ -12716,6 +12716,20 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
+id|currcons
+op_assign
+id|fg_console
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|vcmode
+op_ne
+id|KD_TEXT
+)paren
+r_return
+suffix:semicolon
+multiline_comment|/* but leave console_blanked != 0 */
 id|console_timer.function
 op_assign
 id|blank_screen
@@ -12738,10 +12752,6 @@ id|blankinterval
 )paren
 suffix:semicolon
 )brace
-id|currcons
-op_assign
-id|fg_console
-suffix:semicolon
 id|console_blanked
 op_assign
 l_int|0

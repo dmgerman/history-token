@@ -58,23 +58,6 @@ id|timer_list
 id|rtc_irq_timer
 suffix:semicolon
 r_static
-id|loff_t
-id|rtc_llseek
-c_func
-(paren
-r_struct
-id|file
-op_star
-id|file
-comma
-id|loff_t
-id|offset
-comma
-r_int
-id|origin
-)paren
-suffix:semicolon
-r_static
 id|ssize_t
 id|rtc_read
 c_func
@@ -411,29 +394,6 @@ suffix:semicolon
 )brace
 macro_line|#endif
 multiline_comment|/*&n; *&t;Now all the various file operations that we export.&n; */
-DECL|function|rtc_llseek
-r_static
-id|loff_t
-id|rtc_llseek
-c_func
-(paren
-r_struct
-id|file
-op_star
-id|file
-comma
-id|loff_t
-id|offset
-comma
-r_int
-id|origin
-)paren
-(brace
-r_return
-op_minus
-id|ESPIPE
-suffix:semicolon
-)brace
 DECL|function|rtc_read
 r_static
 id|ssize_t
@@ -2068,7 +2028,7 @@ id|THIS_MODULE
 comma
 id|llseek
 suffix:colon
-id|rtc_llseek
+id|no_llseek
 comma
 id|read
 suffix:colon
@@ -2505,6 +2465,24 @@ r_if
 c_cond
 (paren
 id|year
+OL
+l_int|20
+)paren
+(brace
+id|epoch
+op_assign
+l_int|2000
+suffix:semicolon
+id|guess
+op_assign
+l_string|&quot;SRM (post-2000)&quot;
+suffix:semicolon
+)brace
+r_else
+r_if
+c_cond
+(paren
+id|year
 op_ge
 l_int|20
 op_logical_and
@@ -2543,6 +2521,7 @@ id|guess
 op_assign
 l_string|&quot;Digital UNIX&quot;
 suffix:semicolon
+macro_line|#if defined(__mips__)
 )brace
 r_else
 r_if
@@ -2565,6 +2544,26 @@ id|guess
 op_assign
 l_string|&quot;Digital DECstation&quot;
 suffix:semicolon
+macro_line|#else
+)brace
+r_else
+r_if
+c_cond
+(paren
+id|year
+op_ge
+l_int|70
+)paren
+(brace
+id|epoch
+op_assign
+l_int|1900
+suffix:semicolon
+id|guess
+op_assign
+l_string|&quot;Standard PC (1900)&quot;
+suffix:semicolon
+macro_line|#endif
 )brace
 r_if
 c_cond

@@ -1,7 +1,7 @@
 macro_line|#ifndef _SERIO_H
 DECL|macro|_SERIO_H
 mdefine_line|#define _SERIO_H
-multiline_comment|/*&n; * $Id: serio.h,v 1.8 2000/07/17 10:42:14 vojtech Exp $&n; *&n; * Copyright (C) 1999 Vojtech Pavlik&n; *&n; * Sponsored by SuSE&n; */
+multiline_comment|/*&n; * $Id: serio.h,v 1.11 2001/05/29 02:58:50 jsimmons Exp $&n; *&n; * Copyright (C) 1999 Vojtech Pavlik&n; *&n; * Sponsored by SuSE&n; */
 multiline_comment|/*&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or &n; * (at your option) any later version.&n; * &n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; * &n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA&n; * &n; * Should you need to contact me, the author, you can do so either by&n; * e-mail - mail your message to &lt;vojtech@ucw.cz&gt;, or by paper mail:&n; * Vojtech Pavlik, Ucitelska 1576, Prague 8, 182 00 Czech Republic&n; */
 multiline_comment|/*&n; * The serial port set type ioctl.&n; */
 macro_line|#include &lt;linux/ioctl.h&gt;
@@ -298,6 +298,14 @@ DECL|macro|SERIO_IFORCE
 mdefine_line|#define SERIO_IFORCE&t;0x1d
 DECL|macro|SERIO_STINGER
 mdefine_line|#define SERIO_STINGER&t;0x1e
+DECL|macro|SERIO_NEWTON
+mdefine_line|#define SERIO_NEWTON&t;0x1f
+DECL|macro|SERIO_STOWAWAY
+mdefine_line|#define SERIO_STOWAWAY&t;0x20
+DECL|macro|SERIO_H3600
+mdefine_line|#define SERIO_H3600&t;0x21
+DECL|macro|SERIO_PS2SER
+mdefine_line|#define SERIO_PS2SER&t;0x22
 DECL|macro|SERIO_ID
 mdefine_line|#define SERIO_ID&t;0xff00UL
 DECL|macro|SERIO_EXTRA

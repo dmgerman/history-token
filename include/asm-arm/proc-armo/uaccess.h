@@ -12,8 +12,8 @@ comma
 id|uaccess_kernel
 suffix:semicolon
 DECL|function|set_fs
-r_extern
-id|__inline__
+r_static
+r_inline
 r_void
 id|set_fs
 (paren

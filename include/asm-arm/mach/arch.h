@@ -1,7 +1,7 @@
 multiline_comment|/*&n; *  linux/include/asm-arm/mach/arch.h&n; *&n; *  Copyright (C) 2000 Russell King&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; */
 multiline_comment|/*&n; * The size of struct machine_desc&n; *   (for assembler code)&n; */
 DECL|macro|SIZEOF_MACHINE_DESC
-mdefine_line|#define SIZEOF_MACHINE_DESC&t;56
+mdefine_line|#define SIZEOF_MACHINE_DESC&t;48
 macro_line|#ifndef __ASSEMBLY__
 r_extern
 r_void
@@ -35,9 +35,6 @@ r_int
 r_int
 id|rd_sz
 )paren
-suffix:semicolon
-r_struct
-id|tagtable
 suffix:semicolon
 DECL|struct|machine_desc
 r_struct
@@ -125,19 +122,6 @@ suffix:colon
 l_int|1
 suffix:semicolon
 multiline_comment|/* soft reboot&t;&t;*/
-DECL|member|tagtable
-r_const
-r_struct
-id|tagtable
-op_star
-id|tagtable
-suffix:semicolon
-multiline_comment|/* tag table&t;&t;*/
-DECL|member|tagsize
-r_int
-id|tagsize
-suffix:semicolon
-multiline_comment|/* tag table size&t;*/
 DECL|member|fixup
 r_void
 (paren

@@ -15,8 +15,8 @@ DECL|macro|reacquire_kernel_lock
 mdefine_line|#define reacquire_kernel_lock(task) &bslash;&n;do { &bslash;&n;&t;if (task-&gt;lock_depth &gt;= 0) &bslash;&n;&t;&t;spin_lock(&amp;kernel_flag); &bslash;&n;} while (0)
 multiline_comment|/*&n; * Getting the big kernel lock.&n; *&n; * This cannot happen asynchronously,&n; * so we only need to worry about other&n; * CPU&squot;s.&n; */
 DECL|function|lock_kernel
-r_extern
-id|__inline__
+r_static
+r_inline
 r_void
 id|lock_kernel
 c_func
@@ -40,8 +40,8 @@ id|kernel_flag
 suffix:semicolon
 )brace
 DECL|function|unlock_kernel
-r_extern
-id|__inline__
+r_static
+r_inline
 r_void
 id|unlock_kernel
 c_func

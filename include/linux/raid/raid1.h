@@ -123,11 +123,23 @@ r_int
 id|freebh_cnt
 suffix:semicolon
 multiline_comment|/* how many are on the list */
+DECL|member|freebh_blocked
+r_int
+id|freebh_blocked
+suffix:semicolon
 DECL|member|freer1
 r_struct
 id|raid1_bh
 op_star
 id|freer1
+suffix:semicolon
+DECL|member|freer1_blocked
+r_int
+id|freer1_blocked
+suffix:semicolon
+DECL|member|freer1_cnt
+r_int
+id|freer1_cnt
 suffix:semicolon
 DECL|member|freebuf
 r_struct

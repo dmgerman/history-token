@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * BK Id: SCCS/s.pmac_time.c 1.8 05/17/01 18:14:21 cort&n; */
+multiline_comment|/*&n; * BK Id: SCCS/s.pmac_time.c 1.11 07/06/01 15:46:39 trini&n; */
 multiline_comment|/*&n; * Support for periodic interrupts (100 per second) and for getting&n; * the current time from the RTC on Power Macintoshes.&n; *&n; * We use the decrementer register for our periodic interrupts.&n; *&n; * Paul Mackerras&t;August 1996.&n; * Copyright (C) 1996 Paul Mackerras.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
@@ -58,9 +58,9 @@ r_struct
 id|timezone
 id|sys_tz
 suffix:semicolon
+r_int
 id|__init
 DECL|function|pmac_time_init
-r_int
 id|pmac_time_init
 c_func
 (paren
@@ -175,10 +175,10 @@ l_int|0
 suffix:semicolon
 macro_line|#endif
 )brace
+r_int
+r_int
 id|__pmac
 DECL|function|pmac_get_rtc_time
-r_int
-r_int
 id|pmac_get_rtc_time
 c_func
 (paren
@@ -396,8 +396,9 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-DECL|function|pmac_set_rtc_time
 r_int
+id|__pmac
+DECL|function|pmac_set_rtc_time
 id|pmac_set_rtc_time
 c_func
 (paren
@@ -580,9 +581,9 @@ suffix:semicolon
 )brace
 )brace
 multiline_comment|/*&n; * Calibrate the decrementer register using VIA timer 1.&n; * This is used both on powermacs and CHRP machines.&n; */
-DECL|function|via_calibrate_decr
 r_int
 id|__init
+DECL|function|via_calibrate_decr
 id|via_calibrate_decr
 c_func
 (paren
@@ -861,9 +862,10 @@ suffix:semicolon
 )brace
 macro_line|#ifdef CONFIG_PMAC_PBOOK
 multiline_comment|/*&n; * Reset the time after a sleep.&n; */
-DECL|function|time_sleep_notify
 r_static
 r_int
+id|__pmac
+DECL|function|time_sleep_notify
 id|time_sleep_notify
 c_func
 (paren
@@ -988,11 +990,12 @@ r_return
 id|PBOOK_SLEEP_OK
 suffix:semicolon
 )brace
-DECL|variable|time_sleep_notifier
+DECL|variable|__pmacdata
 r_static
 r_struct
 id|pmu_sleep_notifier
 id|time_sleep_notifier
+id|__pmacdata
 op_assign
 (brace
 id|time_sleep_notify
@@ -1003,9 +1006,9 @@ comma
 suffix:semicolon
 macro_line|#endif /* CONFIG_PMAC_PBOOK */
 multiline_comment|/*&n; * Query the OF and get the decr frequency.&n; * This was taken from the pmac time_init() when merging the prep/pmac&n; * time functions.&n; */
-DECL|function|pmac_calibrate_decr
 r_void
 id|__init
+DECL|function|pmac_calibrate_decr
 id|pmac_calibrate_decr
 c_func
 (paren

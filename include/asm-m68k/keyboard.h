@@ -5,6 +5,7 @@ DECL|macro|__M68K_KEYBOARD_H
 mdefine_line|#define __M68K_KEYBOARD_H
 macro_line|#ifdef __KERNEL__
 macro_line|#include &lt;linux/config.h&gt;
+macro_line|#include &lt;linux/kd.h&gt;
 macro_line|#include &lt;asm/machdep.h&gt;
 macro_line|#ifdef CONFIG_Q40
 macro_line|#include &lt;asm/q40_keyboard.h&gt;
@@ -142,6 +143,8 @@ DECL|macro|kbd_init_hw
 mdefine_line|#define kbd_init_hw&t;&t;mach_keyb_init
 DECL|macro|kbd_translate
 mdefine_line|#define kbd_translate&t;&t;mach_kbd_translate
+DECL|macro|kbd_rate
+mdefine_line|#define kbd_rate&t;&t;mach_kbdrate
 DECL|macro|kbd_sysrq_xlate
 mdefine_line|#define kbd_sysrq_xlate&t;&t;mach_sysrq_xlate
 multiline_comment|/* resource allocation */

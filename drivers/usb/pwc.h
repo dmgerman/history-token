@@ -54,9 +54,9 @@ multiline_comment|/* Version block */
 DECL|macro|PWC_MAJOR
 mdefine_line|#define PWC_MAJOR&t;8
 DECL|macro|PWC_MINOR
-mdefine_line|#define PWC_MINOR&t;0
+mdefine_line|#define PWC_MINOR&t;1
 DECL|macro|PWC_VERSION
-mdefine_line|#define PWC_VERSION &t;&quot;8.0&quot;
+mdefine_line|#define PWC_VERSION &t;&quot;8.1&quot;
 DECL|macro|PWC_NAME
 mdefine_line|#define PWC_NAME &t;&quot;pwc&quot;
 multiline_comment|/* Turn certain features on/off */
@@ -330,7 +330,7 @@ id|pwc_frame_buf
 op_star
 id|fill_frame
 suffix:semicolon
-multiline_comment|/* frame currently filled */
+multiline_comment|/* frame currently being filled */
 DECL|member|read_frame
 r_struct
 id|pwc_frame_buf

@@ -327,7 +327,7 @@ c_func
 id|KERN_DEBUG
 l_string|&quot;%s: Exception at [&lt;%lx&gt;] addr=%lx (fixup: %lx)&bslash;n&quot;
 comma
-id|tsk-&gt;comm
+id|current-&gt;comm
 comma
 id|regs-&gt;ARM_pc
 comma

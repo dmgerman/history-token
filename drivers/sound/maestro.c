@@ -5205,7 +5205,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* Stop our host of recording apus */
 DECL|function|stop_adc
-r_extern
+r_static
 r_inline
 r_void
 id|stop_adc
@@ -6798,8 +6798,8 @@ suffix:semicolon
 )brace
 multiline_comment|/* Playback pointer */
 DECL|function|get_dmaa
-r_extern
-id|__inline__
+r_static
+r_inline
 r_int
 id|get_dmaa
 c_func
@@ -6843,8 +6843,8 @@ multiline_comment|/* hardware is in words */
 )brace
 multiline_comment|/* Record pointer */
 DECL|function|get_dmac
-r_extern
-id|__inline__
+r_static
+r_inline
 r_int
 id|get_dmac
 c_func
@@ -9311,30 +9311,6 @@ suffix:semicolon
 )brace
 )brace
 multiline_comment|/* --------------------------------------------------------------------- */
-DECL|function|ess_llseek
-r_static
-id|loff_t
-id|ess_llseek
-c_func
-(paren
-r_struct
-id|file
-op_star
-id|file
-comma
-id|loff_t
-id|offset
-comma
-r_int
-id|origin
-)paren
-(brace
-r_return
-op_minus
-id|ESPIPE
-suffix:semicolon
-)brace
-multiline_comment|/* --------------------------------------------------------------------- */
 DECL|function|ess_open_mixdev
 r_static
 r_int
@@ -9557,7 +9533,7 @@ id|THIS_MODULE
 comma
 id|llseek
 suffix:colon
-id|ess_llseek
+id|no_llseek
 comma
 id|ioctl
 suffix:colon
@@ -14714,7 +14690,7 @@ id|THIS_MODULE
 comma
 id|llseek
 suffix:colon
-id|ess_llseek
+id|no_llseek
 comma
 id|read
 suffix:colon

@@ -2468,7 +2468,7 @@ id|seconds
 r_int
 id|i
 suffix:semicolon
-id|WORD
+id|BYTE
 op_star
 id|pwFlags
 suffix:semicolon
@@ -2851,10 +2851,6 @@ l_int|0
 comma
 id|pwFlags
 op_assign
-(paren
-id|WORD
-op_star
-)paren
 op_amp
 (paren
 id|i91unvramp-&gt;NVM_SCSIInfo

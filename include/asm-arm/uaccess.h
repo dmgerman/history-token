@@ -44,8 +44,8 @@ macro_line|#include &lt;asm/proc/uaccess.h&gt;
 DECL|macro|access_ok
 mdefine_line|#define access_ok(type,addr,size)&t;(__range_ok(addr,size) == 0)
 DECL|function|verify_area
-r_extern
-id|__inline__
+r_static
+r_inline
 r_int
 id|verify_area
 c_func
@@ -438,8 +438,8 @@ suffix:semicolon
 DECL|macro|strlen_user
 mdefine_line|#define strlen_user(s)&t;strnlen_user(s, ~0UL &gt;&gt; 1)
 DECL|function|strnlen_user
-r_extern
-id|__inline__
+r_static
+r_inline
 r_int
 id|strnlen_user
 c_func

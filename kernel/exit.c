@@ -4,6 +4,7 @@ macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
+macro_line|#include &lt;linux/completion.h&gt;
 macro_line|#include &lt;linux/tty.h&gt;
 macro_line|#ifdef CONFIG_BSD_PROCESS_ACCT
 macro_line|#include &lt;linux/acct.h&gt;
@@ -1643,16 +1644,16 @@ r_goto
 id|fake_volatile
 suffix:semicolon
 )brace
-DECL|function|up_and_exit
+DECL|function|complete_and_exit
 id|NORET_TYPE
 r_void
-id|up_and_exit
+id|complete_and_exit
 c_func
 (paren
 r_struct
-id|semaphore
+id|completion
 op_star
-id|sem
+id|comp
 comma
 r_int
 id|code
@@ -1661,12 +1662,12 @@ id|code
 r_if
 c_cond
 (paren
-id|sem
+id|comp
 )paren
-id|up
+id|complete
 c_func
 (paren
-id|sem
+id|comp
 )paren
 suffix:semicolon
 id|do_exit

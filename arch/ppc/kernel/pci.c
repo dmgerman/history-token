@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * BK Id: SCCS/s.pci.c 1.26 06/28/01 08:02:41 trini&n; */
+multiline_comment|/*&n; * BK Id: SCCS/s.pci.c 1.28 08/08/01 16:35:43 paulus&n; */
 multiline_comment|/*&n; * Common pmac/prep/chrp pci routines. -- Cort&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -53,6 +53,17 @@ suffix:semicolon
 r_static
 r_void
 id|pcibios_fixup_resources
+c_func
+(paren
+r_struct
+id|pci_dev
+op_star
+id|dev
+)paren
+suffix:semicolon
+r_static
+r_void
+id|fixup_broken_pcnet32
 c_func
 (paren
 r_struct
@@ -117,6 +128,16 @@ op_assign
 (brace
 id|PCI_FIXUP_HEADER
 comma
+id|PCI_VENDOR_ID_TRIDENT
+comma
+id|PCI_ANY_ID
+comma
+id|fixup_broken_pcnet32
+)brace
+comma
+(brace
+id|PCI_FIXUP_HEADER
+comma
 id|PCI_ANY_ID
 comma
 id|PCI_ANY_ID
@@ -142,6 +163,54 @@ l_int|0
 )brace
 )brace
 suffix:semicolon
+r_static
+r_void
+DECL|function|fixup_broken_pcnet32
+id|fixup_broken_pcnet32
+c_func
+(paren
+r_struct
+id|pci_dev
+op_star
+id|dev
+)paren
+(brace
+r_if
+c_cond
+(paren
+(paren
+id|dev
+op_member_access_from_pointer
+r_class
+op_rshift
+l_int|8
+op_eq
+id|PCI_CLASS_NETWORK_ETHERNET
+)paren
+)paren
+(brace
+id|dev-&gt;vendor
+op_assign
+id|PCI_VENDOR_ID_AMD
+suffix:semicolon
+id|pci_write_config_word
+c_func
+(paren
+id|dev
+comma
+id|PCI_VENDOR_ID
+comma
+id|PCI_VENDOR_ID_AMD
+)paren
+suffix:semicolon
+id|pci_name_device
+c_func
+(paren
+id|dev
+)paren
+suffix:semicolon
+)brace
+)brace
 r_void
 DECL|function|pcibios_update_resource
 id|pcibios_update_resource

@@ -51,8 +51,8 @@ id|regs
 suffix:semicolon
 )brace
 DECL|function|setup_timer
-r_extern
-id|__inline__
+r_static
+r_inline
 r_void
 id|setup_timer
 (paren

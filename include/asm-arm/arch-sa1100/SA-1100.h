@@ -485,6 +485,21 @@ DECL|macro|_Ser3UTSR0
 mdefine_line|#define _Ser3UTSR0&t;_UTSR0 (3)&t;/* Ser. port 3 UART Status Reg. 0  */
 DECL|macro|_Ser3UTSR1
 mdefine_line|#define _Ser3UTSR1&t;_UTSR1 (3)&t;/* Ser. port 3 UART Status Reg. 1  */
+multiline_comment|/*&n; * Register offsets&n; */
+DECL|macro|UTCR0
+mdefine_line|#define UTCR0&t;&t;0x00
+DECL|macro|UTCR1
+mdefine_line|#define UTCR1&t;&t;0x04
+DECL|macro|UTCR2
+mdefine_line|#define UTCR2&t;&t;0x08
+DECL|macro|UTCR3
+mdefine_line|#define UTCR3&t;&t;0x0c
+DECL|macro|UTDR
+mdefine_line|#define UTDR&t;&t;0x14
+DECL|macro|UTSR0
+mdefine_line|#define UTSR0&t;&t;0x1c
+DECL|macro|UTSR1
+mdefine_line|#define UTSR1&t;&t;0x20
 macro_line|#if LANGUAGE == C
 DECL|macro|Ser1UTCR0
 mdefine_line|#define Ser1UTCR0&t;        &t;/* Ser. port 1 UART Control Reg. 0 */ &bslash;&n;                &t;(*((volatile Word *) io_p2v (_Ser1UTCR0)))
@@ -2142,6 +2157,8 @@ DECL|macro|_MSC0
 mdefine_line|#define _MSC0   &t;_MSC (0)&t;/*  Static memory Control reg. 0   */
 DECL|macro|_MSC1
 mdefine_line|#define _MSC1   &t;_MSC (1)&t;/*  Static memory Control reg. 1   */
+DECL|macro|_MSC2
+mdefine_line|#define _MSC2&t;&t;0xA000002C&t;/*  Static memory Control reg. 2, not contiguous   */
 macro_line|#if LANGUAGE == C
 multiline_comment|/* Memory system:                  */
 DECL|macro|MSC
@@ -2150,6 +2167,8 @@ DECL|macro|MSC0
 mdefine_line|#define MSC0    &t;(MSC [0])&t;/*  Static memory Control reg. 0   */
 DECL|macro|MSC1
 mdefine_line|#define MSC1    &t;(MSC [1])&t;/*  Static memory Control reg. 1   */
+DECL|macro|MSC2
+mdefine_line|#define MSC2    &t;(*(volatile Word *) io_p2v (_MSC2))&t;/*  Static memory Control reg. 2   */
 macro_line|#elif LANGUAGE == Assembly
 DECL|macro|MSC0
 mdefine_line|#define MSC0&t;&t;io_p2v(0xa0000010)
@@ -2861,9 +2880,9 @@ DECL|macro|LCCR1_DisWdth
 mdefine_line|#define LCCR1_DisWdth(Pixel)    &t;/*  Display Width [16..1024 pix.]  */ &bslash;&n;                &t;(((Pixel) - 16)/16 &lt;&lt; FShft (LCCR1_PPL))
 DECL|macro|LCCR1_HSW
 mdefine_line|#define LCCR1_HSW&t;Fld (6, 10)&t;/* Horizontal Synchronization      */
-multiline_comment|/* pulse Width - 2 [Tpix] (L_LCLK) */
+multiline_comment|/* pulse Width - 1 [Tpix] (L_LCLK) */
 DECL|macro|LCCR1_HorSnchWdth
-mdefine_line|#define LCCR1_HorSnchWdth(Tpix) &t;/*  Horizontal Synchronization     */ &bslash;&n;                &t;        &t;/*  pulse Width [2..65 Tpix]       */ &bslash;&n;                &t;(((Tpix) - 2) &lt;&lt; FShft (LCCR1_HSW))
+mdefine_line|#define LCCR1_HorSnchWdth(Tpix) &t;/*  Horizontal Synchronization     */ &bslash;&n;&t;&t;&t;&t;&t;/*  pulse Width [1..64 Tpix]       */ &bslash;&n;&t;&t;&t;(((Tpix) - 1) &lt;&lt; FShft (LCCR1_HSW))
 DECL|macro|LCCR1_ELW
 mdefine_line|#define LCCR1_ELW&t;Fld (8, 16)&t;/* End-of-Line pixel clock Wait    */
 multiline_comment|/* count - 1 [Tpix]                */
@@ -2944,10 +2963,10 @@ mdefine_line|#define LCCR3_HorSnchL&t;(LCCR3_HSP*1)&t;/*  Horizontal Synchroniza
 multiline_comment|/*  pulse active Low               */
 DECL|macro|LCCR3_PCP
 mdefine_line|#define LCCR3_PCP&t;0x00400000&t;/* Pixel Clock Polarity (L_PCLK)   */
-DECL|macro|LCCR3_PixFlEdg
-mdefine_line|#define LCCR3_PixFlEdg&t;(LCCR3_PCP*0)&t;/*  Pixel clock Falling-Edge       */
 DECL|macro|LCCR3_PixRsEdg
-mdefine_line|#define LCCR3_PixRsEdg&t;(LCCR3_PCP*1)&t;/*  Pixel clock Rising-Edge        */
+mdefine_line|#define LCCR3_PixRsEdg&t;(LCCR3_PCP*0)&t;/*  Pixel clock Rising-Edge        */
+DECL|macro|LCCR3_PixFlEdg
+mdefine_line|#define LCCR3_PixFlEdg&t;(LCCR3_PCP*1)&t;/*  Pixel clock Falling-Edge       */
 DECL|macro|LCCR3_OEP
 mdefine_line|#define LCCR3_OEP&t;0x00800000&t;/* Output Enable Polarity (L_BIAS, */
 multiline_comment|/* active display mode)            */

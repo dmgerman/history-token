@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * BK Id: SCCS/s.feature.c 1.14 06/17/01 09:33:37 trini&n; */
+multiline_comment|/*&n; * BK Id: SCCS/s.feature.c 1.16 07/06/01 14:42:47 trini&n; */
 multiline_comment|/*&n; *  arch/ppc/kernel/feature.c&n; *&n; *  Copyright (C) 1996 Paul Mackerras (paulus@cs.anu.edu.au)&n; *                     Ben. Herrenschmidt (benh@kernel.crashing.org)&n; *&n; *  This program is free software; you can redistribute it and/or&n; *  modify it under the terms of the GNU General Public License&n; *  as published by the Free Software Foundation; either version&n; *  2 of the License, or (at your option) any later version.&n; *&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
@@ -7,6 +7,7 @@ macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
+macro_line|#include &lt;asm/init.h&gt;
 macro_line|#include &lt;asm/errno.h&gt;
 macro_line|#include &lt;asm/ohare.h&gt;
 macro_line|#include &lt;asm/heathrow.h&gt;
@@ -72,12 +73,13 @@ DECL|typedef|fbit
 id|fbit
 suffix:semicolon
 multiline_comment|/* Those features concern for OHare-based PowerBooks (2400, 3400, 3500)&n; */
-DECL|variable|feature_bits_ohare_pbook
+DECL|variable|__pmacdata
 r_static
 id|fbit
 id|feature_bits_ohare_pbook
 (braket
 )braket
+id|__pmacdata
 op_assign
 (brace
 (brace
@@ -326,12 +328,13 @@ multiline_comment|/* FEATURE_Airport_reset */
 )brace
 suffix:semicolon
 multiline_comment|/* Those bits concern heathrow-based desktop machines (Beige G3s). We have removed&n; * the SCC related bits and init them once. They have proven to occasionally cause&n; * problems with the desktop units.&n; */
-DECL|variable|feature_bits_heathrow
+DECL|variable|__pmacdata
 r_static
 id|fbit
 id|feature_bits_heathrow
 (braket
 )braket
+id|__pmacdata
 op_assign
 (brace
 (brace
@@ -580,12 +583,13 @@ multiline_comment|/* FEATURE_Airport_reset */
 )brace
 suffix:semicolon
 multiline_comment|/* Those bits concern heathrow-based PowerBooks (wallstreet/mainstreet).&n; * Heathrow-based desktop macs (Beige G3s) are _not_ handled here&n; */
-DECL|variable|feature_bits_wallstreet
+DECL|variable|__pmacdata
 r_static
 id|fbit
 id|feature_bits_wallstreet
 (braket
 )braket
+id|__pmacdata
 op_assign
 (brace
 (brace
@@ -834,12 +838,13 @@ multiline_comment|/* FEATURE_Airport_reset */
 )brace
 suffix:semicolon
 multiline_comment|/*&n; * Those bits are from a 1999 G3 PowerBook, with a paddington chip.&n; * Mostly the same as the heathrow. They are used on both PowerBooks&n; * and desktop machines using the paddington chip&n; */
-DECL|variable|feature_bits_paddington
+DECL|variable|__pmacdata
 r_static
 id|fbit
 id|feature_bits_paddington
 (braket
 )braket
+id|__pmacdata
 op_assign
 (brace
 (brace
@@ -1088,12 +1093,13 @@ multiline_comment|/* FEATURE_Airport_reset */
 )brace
 suffix:semicolon
 multiline_comment|/* Those bits are for Core99 machines (iBook,G4,iMacSL/DV,Pismo,...).&n; * Note: Different sets may be needed for iBook, especially for sound&n; */
-DECL|variable|feature_bits_keylargo
+DECL|variable|__pmacdata
 r_static
 id|fbit
 id|feature_bits_keylargo
 (braket
 )braket
+id|__pmacdata
 op_assign
 (brace
 (brace
@@ -1730,6 +1736,7 @@ r_int
 id|powersave_nap
 suffix:semicolon
 r_void
+id|__init
 DECL|function|feature_init
 id|feature_init
 c_func
@@ -2267,6 +2274,7 @@ macro_line|#endif
 r_static
 r_struct
 id|feature_controller
+id|__init
 op_star
 DECL|function|feature_add_controller
 id|feature_add_controller
@@ -2423,6 +2431,7 @@ suffix:semicolon
 r_static
 r_struct
 id|feature_controller
+id|__pmac
 op_star
 DECL|function|feature_lookup_controller
 id|feature_lookup_controller
@@ -2506,6 +2515,7 @@ l_int|NULL
 suffix:semicolon
 )brace
 r_int
+id|__pmac
 DECL|function|feature_set
 id|feature_set
 c_func
@@ -2689,6 +2699,7 @@ l_int|0
 suffix:semicolon
 )brace
 r_int
+id|__pmac
 DECL|function|feature_clear
 id|feature_clear
 c_func
@@ -2872,6 +2883,7 @@ l_int|0
 suffix:semicolon
 )brace
 r_int
+id|__pmac
 DECL|function|feature_test
 id|feature_test
 c_func
@@ -3004,6 +3016,7 @@ id|bit-&gt;mask
 suffix:semicolon
 )brace
 r_int
+id|__pmac
 DECL|function|feature_can_sleep
 id|feature_can_sleep
 c_func
@@ -3026,6 +3039,7 @@ suffix:semicolon
 multiline_comment|/*&n; * Core99 functions&n; * &n; * Note: We currently assume there is _one_ UniN chip and _one_ KeyLargo&n; *       chip, which is the case on all Core99 machines so far&n; */
 multiline_comment|/* Only one GMAC is assumed */
 r_void
+id|__pmac
 DECL|function|feature_set_gmac_power
 id|feature_set_gmac_power
 c_func
@@ -3103,6 +3117,7 @@ l_int|20
 suffix:semicolon
 )brace
 r_void
+id|__pmac
 DECL|function|feature_gmac_phy_reset
 id|feature_gmac_phy_reset
 c_func
@@ -3251,6 +3266,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* Pass the node of the correct controller, please */
 r_void
+id|__pmac
 DECL|function|feature_set_usb_power
 id|feature_set_usb_power
 c_func
@@ -3753,6 +3769,7 @@ id|flags
 suffix:semicolon
 )brace
 r_void
+id|__pmac
 DECL|function|feature_set_firewire_power
 id|feature_set_firewire_power
 c_func
@@ -3828,6 +3845,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* Warning: will kill the PHY.. */
 r_void
+id|__pmac
 DECL|function|feature_set_firewire_cable_power
 id|feature_set_firewire_cable_power
 c_func
@@ -3926,6 +3944,7 @@ suffix:semicolon
 )brace
 macro_line|#ifdef CONFIG_SMP
 r_void
+id|__pmac
 DECL|function|feature_core99_kick_cpu
 id|feature_core99_kick_cpu
 c_func
@@ -4053,6 +4072,7 @@ macro_line|#endif&t;
 )brace
 macro_line|#endif /* CONFIG_SMP */
 r_void
+id|__pmac
 DECL|function|feature_set_airport_power
 id|feature_set_airport_power
 c_func
@@ -4497,6 +4517,7 @@ suffix:semicolon
 multiline_comment|/* Initialize the Core99 UniNorth host bridge and memory controller&n; */
 r_static
 r_void
+id|__init
 DECL|function|uninorth_init
 id|uninorth_init
 c_func
@@ -4642,6 +4663,7 @@ suffix:semicolon
 multiline_comment|/* Initialize the Core99 KeyLargo ASIC. &n; */
 r_static
 r_void
+id|__init
 DECL|function|keylargo_init
 id|keylargo_init
 c_func
@@ -4706,6 +4728,7 @@ suffix:semicolon
 )brace
 macro_line|#ifdef CONFIG_PMAC_PBOOK
 r_void
+id|__pmac
 DECL|function|feature_prepare_for_sleep
 id|feature_prepare_for_sleep
 c_func
@@ -4788,6 +4811,7 @@ suffix:semicolon
 )brace
 )brace
 r_void
+id|__pmac
 DECL|function|feature_wake_up
 id|feature_wake_up
 c_func
@@ -4921,6 +4945,7 @@ l_int|13
 suffix:semicolon
 r_static
 r_void
+id|__pmac
 DECL|function|heathrow_prepare_for_sleep
 id|heathrow_prepare_for_sleep
 c_func
@@ -5002,6 +5027,7 @@ suffix:semicolon
 )brace
 r_static
 r_void
+id|__pmac
 DECL|function|heathrow_wakeup
 id|heathrow_wakeup
 c_func
@@ -5094,6 +5120,7 @@ suffix:semicolon
 )brace
 r_static
 r_void
+id|__pmac
 DECL|function|turn_off_keylargo
 id|turn_off_keylargo
 c_func
@@ -5351,6 +5378,7 @@ suffix:semicolon
 )brace
 r_static
 r_void
+id|__pmac
 DECL|function|turn_off_pangea
 id|turn_off_pangea
 c_func
@@ -5533,6 +5561,7 @@ suffix:semicolon
 )brace
 r_static
 r_void
+id|__pmac
 DECL|function|core99_prepare_for_sleep
 id|core99_prepare_for_sleep
 c_func
@@ -5944,6 +5973,7 @@ suffix:semicolon
 )brace
 r_static
 r_void
+id|__pmac
 DECL|function|core99_wake_up
 id|core99_wake_up
 c_func

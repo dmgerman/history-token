@@ -2,6 +2,7 @@ multiline_comment|/*&n; ********************************************************
 macro_line|#ifndef _PASSTHROUGH_H
 DECL|macro|_PASSTHROUGH_H
 mdefine_line|#define _PASSTHROUGH_H
+macro_line|#include &quot;hwaccess.h&quot;
 macro_line|#include &quot;audio.h&quot;
 multiline_comment|/* number of 16-bit stereo samples in XTRAM buffer */
 DECL|macro|PT_SAMPLES

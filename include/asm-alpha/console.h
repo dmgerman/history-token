@@ -33,9 +33,9 @@ mdefine_line|#define CCB_GET_ENV&t;&t;0x22
 DECL|macro|CCB_SAVE_ENV
 mdefine_line|#define CCB_SAVE_ENV&t;&t;0x23
 DECL|macro|CCB_PSWITCH
-mdefine_line|#define CCB_PSWITCH            0x30
+mdefine_line|#define CCB_PSWITCH&t;&t;0x30
 DECL|macro|CCB_BIOS_EMUL
-mdefine_line|#define CCB_BIOS_EMUL          0x32
+mdefine_line|#define CCB_BIOS_EMUL&t;&t;0x32
 multiline_comment|/*&n; * Environment variable numbers&n; */
 DECL|macro|ENV_AUTO_ACTION
 mdefine_line|#define ENV_AUTO_ACTION&t;&t;0x01
@@ -145,6 +145,32 @@ comma
 r_int
 r_int
 id|buf_size
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|callback_setenv
+c_func
+(paren
+r_int
+id|id
+comma
+r_const
+r_char
+op_star
+id|buf
+comma
+r_int
+r_int
+id|buf_size
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|callback_save_env
+c_func
+(paren
+r_void
 )paren
 suffix:semicolon
 r_extern

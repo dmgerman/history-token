@@ -20,6 +20,10 @@ id|hpsb_host
 op_star
 id|next
 suffix:semicolon
+DECL|member|generation
+id|atomic_t
+id|generation
+suffix:semicolon
 DECL|member|pending_packets
 r_struct
 id|list_head

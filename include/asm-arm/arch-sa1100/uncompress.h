@@ -1,6 +1,5 @@
 multiline_comment|/*&n; * linux/include/asm-arm/arch-brutus/uncompress.h&n; *&n; * (C) 1999 Nicolas Pitre &lt;nico@cam.org&gt;&n; *&n; * Reorganised to use machine_is_*() macros.&n; */
 macro_line|#include &quot;hardware.h&quot;
-macro_line|#include &quot;serial_reg.h&quot;
 macro_line|#include &lt;asm/mach-types.h&gt;
 multiline_comment|/* Assabet&squot;s Status Control &quot;Register&quot; */
 DECL|variable|SCR_value
@@ -21,6 +20,8 @@ suffix:semicolon
 DECL|macro|arch_decomp_setup
 mdefine_line|#define arch_decomp_setup()&t;sa1100_setup(arch_id)
 multiline_comment|/*&n; * The following code assumes the serial port has already been&n; * initialized by the bootloader or such...&n; */
+DECL|macro|UART
+mdefine_line|#define UART(x)&t;&t;(*(volatile unsigned long *)(serial_port + (x)))
 DECL|function|puts
 r_static
 r_void
@@ -33,10 +34,8 @@ op_star
 id|s
 )paren
 (brace
-r_volatile
 r_int
 r_int
-op_star
 id|serial_port
 suffix:semicolon
 r_if
@@ -59,22 +58,12 @@ c_func
 (brace
 id|serial_port
 op_assign
-(paren
-r_int
-r_int
-op_star
-)paren
 id|_Ser3UTCR0
 suffix:semicolon
 )brace
 r_else
 id|serial_port
 op_assign
-(paren
-r_int
-r_int
-op_star
-)paren
 id|_Ser1UTCR0
 suffix:semicolon
 )brace
@@ -96,14 +85,24 @@ id|machine_is_pangolin
 c_func
 (paren
 )paren
+op_logical_or
+id|machine_is_freebird
+c_func
+(paren
+)paren
+op_logical_or
+id|machine_is_pfs168
+c_func
+(paren
+)paren
+op_logical_or
+id|machine_is_flexanet
+c_func
+(paren
+)paren
 )paren
 id|serial_port
 op_assign
-(paren
-r_int
-r_int
-op_star
-)paren
 id|_Ser1UTCR0
 suffix:semicolon
 r_else
@@ -134,14 +133,24 @@ id|machine_is_sherman
 c_func
 (paren
 )paren
+op_logical_or
+id|machine_is_yopy
+c_func
+(paren
+)paren
+op_logical_or
+id|machine_is_huw_webpanel
+c_func
+(paren
+)paren
+op_logical_or
+id|machine_is_itsy
+c_func
+(paren
+)paren
 )paren
 id|serial_port
 op_assign
-(paren
-r_int
-r_int
-op_star
-)paren
 id|_Ser3UTCR0
 suffix:semicolon
 r_else
@@ -164,20 +173,22 @@ c_loop
 (paren
 op_logical_neg
 (paren
-id|serial_port
-(braket
+id|UART
+c_func
+(paren
 id|UTSR1
-)braket
+)paren
 op_amp
 id|UTSR1_TNF
 )paren
 )paren
 suffix:semicolon
 multiline_comment|/* send the character out. */
-id|serial_port
-(braket
-id|UART_TX
-)braket
+id|UART
+c_func
+(paren
+id|UTDR
+)paren
 op_assign
 op_star
 id|s
@@ -197,19 +208,21 @@ c_loop
 (paren
 op_logical_neg
 (paren
-id|serial_port
-(braket
+id|UART
+c_func
+(paren
 id|UTSR1
-)braket
+)paren
 op_amp
 id|UTSR1_TNF
 )paren
 )paren
 suffix:semicolon
-id|serial_port
-(braket
-id|UART_TX
-)braket
+id|UART
+c_func
+(paren
+id|UTDR
+)paren
 op_assign
 l_int|13
 suffix:semicolon

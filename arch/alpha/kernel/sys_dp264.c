@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *&t;linux/arch/alpha/kernel/sys_dp264.c&n; *&n; *&t;Copyright (C) 1995 David A Rusling&n; *&t;Copyright (C) 1996, 1999 Jay A Estabrook&n; *&t;Copyright (C) 1998, 1999 Richard Henderson&n; *&n; * Code supporting the DP264 (EV6+TSUNAMI).&n; */
+multiline_comment|/*&n; *&t;linux/arch/alpha/kernel/sys_dp264.c&n; *&n; *&t;Copyright (C) 1995 David A Rusling&n; *&t;Copyright (C) 1996, 1999 Jay A Estabrook&n; *&t;Copyright (C) 1998, 1999 Richard Henderson&n; *&n; *&t;Modified by Christopher C. Chimelis, 2001 to&n; *&t;add support for the addition of Shark to the&n; *&t;Tsunami family.&n; *&n; * Code supporting the DP264 (EV6+TSUNAMI).&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
@@ -2759,6 +2759,80 @@ op_assign
 id|vector_name
 suffix:colon
 l_string|&quot;Clipper&quot;
+comma
+id|DO_EV6_MMU
+comma
+id|DO_DEFAULT_RTC
+comma
+id|DO_TSUNAMI_IO
+comma
+id|DO_TSUNAMI_BUS
+comma
+id|machine_check
+suffix:colon
+id|tsunami_machine_check
+comma
+id|max_dma_address
+suffix:colon
+id|ALPHA_MAX_DMA_ADDRESS
+comma
+id|min_io_address
+suffix:colon
+id|DEFAULT_IO_BASE
+comma
+id|min_mem_address
+suffix:colon
+id|DEFAULT_MEM_BASE
+comma
+id|nr_irqs
+suffix:colon
+l_int|64
+comma
+id|device_interrupt
+suffix:colon
+id|dp264_device_interrupt
+comma
+id|init_arch
+suffix:colon
+id|tsunami_init_arch
+comma
+id|init_irq
+suffix:colon
+id|clipper_init_irq
+comma
+id|init_rtc
+suffix:colon
+id|common_init_rtc
+comma
+id|init_pci
+suffix:colon
+id|common_init_pci
+comma
+id|kill_arch
+suffix:colon
+id|tsunami_kill_arch
+comma
+id|pci_map_irq
+suffix:colon
+id|clipper_map_irq
+comma
+id|pci_swizzle
+suffix:colon
+id|common_swizzle
+comma
+)brace
+suffix:semicolon
+multiline_comment|/* Sharks strongly resemble Clipper, at least as far&n; * as interrupt routing, etc, so we&squot;re using the&n; * same functions as Clipper does&n; */
+DECL|variable|__initmv
+r_struct
+id|alpha_machine_vector
+id|shark_mv
+id|__initmv
+op_assign
+(brace
+id|vector_name
+suffix:colon
+l_string|&quot;Shark&quot;
 comma
 id|DO_EV6_MMU
 comma

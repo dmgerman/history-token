@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *  linux/include/asm-arm/hardware/pci_v3.h&n; *&n; *  Internal header file PCI V3 chip&n; *&n; *  Copyright (C) ARM Limited&n; *  Copyright (C) 2000 Deep Blue Solutions Ltd.&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
+multiline_comment|/*&n; *  linux/include/asm-arm/hardware/pci_v3.h&n; *&n; *  Internal header file PCI V3 chip&n; *&n; *  Copyright (C) ARM Limited&n; *  Copyright (C) 2000-2001 Deep Blue Solutions Ltd.&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#ifndef ASM_ARM_HARDWARE_PCI_V3_H
 DECL|macro|ASM_ARM_HARDWARE_PCI_V3_H
 mdefine_line|#define ASM_ARM_HARDWARE_PCI_V3_H
@@ -158,29 +158,75 @@ DECL|macro|V3_PCI_MAP_M_REG_EN
 mdefine_line|#define V3_PCI_MAP_M_REG_EN             (1 &lt;&lt; 1)
 DECL|macro|V3_PCI_MAP_M_ENABLE
 mdefine_line|#define V3_PCI_MAP_M_ENABLE             (1 &lt;&lt; 0)
-multiline_comment|/*  9 =&gt; 512M window size&n; */
-DECL|macro|V3_PCI_MAP_M_ADR_SIZE_512M
-mdefine_line|#define V3_PCI_MAP_M_ADR_SIZE_512M      0x00000090
-multiline_comment|/*  A =&gt; 1024M window size&n; */
-DECL|macro|V3_PCI_MAP_M_ADR_SIZE_1024M
-mdefine_line|#define V3_PCI_MAP_M_ADR_SIZE_1024M     0x000000A0      
-multiline_comment|/*  LB_BASE register bits (Local bus -&gt; PCI)&n; */
-DECL|macro|V3_LB_BASE_M_MAP_ADR
-mdefine_line|#define V3_LB_BASE_M_MAP_ADR            0xFFF00000
-DECL|macro|V3_LB_BASE_M_SWAP
-mdefine_line|#define V3_LB_BASE_M_SWAP               (3 &lt;&lt; 8)
-DECL|macro|V3_LB_BASE_M_ADR_SIZE
-mdefine_line|#define V3_LB_BASE_M_ADR_SIZE           0x000000F0
-DECL|macro|V3_LB_BASE_M_PREFETCH
-mdefine_line|#define V3_LB_BASE_M_PREFETCH           (1 &lt;&lt; 3)
-DECL|macro|V3_LB_BASE_M_ENABLE
-mdefine_line|#define V3_LB_BASE_M_ENABLE             (1 &lt;&lt; 0)
-multiline_comment|/*  LB_MAP register bits (Local bus -&gt; PCI)&n; */
-DECL|macro|V3_LB_MAP_M_MAP_ADR
-mdefine_line|#define V3_LB_MAP_M_MAP_ADR             0xFFF0
-DECL|macro|V3_LB_MAP_M_TYPE
-mdefine_line|#define V3_LB_MAP_M_TYPE                0x000E
-DECL|macro|V3_LB_MAP_M_AD_LOW_EN
-mdefine_line|#define V3_LB_MAP_M_AD_LOW_EN           (1 &lt;&lt; 0)
+multiline_comment|/*&n; *  LB_BASE0,1 register bits (Local bus -&gt; PCI)&n; */
+DECL|macro|V3_LB_BASE_ADR_BASE
+mdefine_line|#define V3_LB_BASE_ADR_BASE&t;&t;0xfff00000
+DECL|macro|V3_LB_BASE_SWAP
+mdefine_line|#define V3_LB_BASE_SWAP&t;&t;&t;(3 &lt;&lt; 8)
+DECL|macro|V3_LB_BASE_ADR_SIZE
+mdefine_line|#define V3_LB_BASE_ADR_SIZE&t;&t;(15 &lt;&lt; 4)
+DECL|macro|V3_LB_BASE_PREFETCH
+mdefine_line|#define V3_LB_BASE_PREFETCH&t;&t;(1 &lt;&lt; 3)
+DECL|macro|V3_LB_BASE_ENABLE
+mdefine_line|#define V3_LB_BASE_ENABLE&t;&t;(1 &lt;&lt; 0)
+DECL|macro|V3_LB_BASE_ADR_SIZE_1MB
+mdefine_line|#define V3_LB_BASE_ADR_SIZE_1MB&t;&t;(0 &lt;&lt; 4)
+DECL|macro|V3_LB_BASE_ADR_SIZE_2MB
+mdefine_line|#define V3_LB_BASE_ADR_SIZE_2MB&t;&t;(1 &lt;&lt; 4)
+DECL|macro|V3_LB_BASE_ADR_SIZE_4MB
+mdefine_line|#define V3_LB_BASE_ADR_SIZE_4MB&t;&t;(2 &lt;&lt; 4)
+DECL|macro|V3_LB_BASE_ADR_SIZE_8MB
+mdefine_line|#define V3_LB_BASE_ADR_SIZE_8MB&t;&t;(3 &lt;&lt; 4)
+DECL|macro|V3_LB_BASE_ADR_SIZE_16MB
+mdefine_line|#define V3_LB_BASE_ADR_SIZE_16MB&t;(4 &lt;&lt; 4)
+DECL|macro|V3_LB_BASE_ADR_SIZE_32MB
+mdefine_line|#define V3_LB_BASE_ADR_SIZE_32MB&t;(5 &lt;&lt; 4)
+DECL|macro|V3_LB_BASE_ADR_SIZE_64MB
+mdefine_line|#define V3_LB_BASE_ADR_SIZE_64MB&t;(6 &lt;&lt; 4)
+DECL|macro|V3_LB_BASE_ADR_SIZE_128MB
+mdefine_line|#define V3_LB_BASE_ADR_SIZE_128MB&t;(7 &lt;&lt; 4)
+DECL|macro|V3_LB_BASE_ADR_SIZE_256MB
+mdefine_line|#define V3_LB_BASE_ADR_SIZE_256MB&t;(8 &lt;&lt; 4)
+DECL|macro|V3_LB_BASE_ADR_SIZE_512MB
+mdefine_line|#define V3_LB_BASE_ADR_SIZE_512MB&t;(9 &lt;&lt; 4)
+DECL|macro|V3_LB_BASE_ADR_SIZE_1GB
+mdefine_line|#define V3_LB_BASE_ADR_SIZE_1GB&t;&t;(10 &lt;&lt; 4)
+DECL|macro|V3_LB_BASE_ADR_SIZE_2GB
+mdefine_line|#define V3_LB_BASE_ADR_SIZE_2GB&t;&t;(11 &lt;&lt; 4)
+DECL|macro|v3_addr_to_lb_base
+mdefine_line|#define v3_addr_to_lb_base(a)&t;((a) &amp; V3_LB_BASE_ADR_BASE)
+multiline_comment|/*&n; *  LB_MAP0,1 register bits (Local bus -&gt; PCI)&n; */
+DECL|macro|V3_LB_MAP_MAP_ADR
+mdefine_line|#define V3_LB_MAP_MAP_ADR&t;&t;0xfff0
+DECL|macro|V3_LB_MAP_TYPE
+mdefine_line|#define V3_LB_MAP_TYPE&t;&t;&t;(7 &lt;&lt; 1)
+DECL|macro|V3_LB_MAP_AD_LOW_EN
+mdefine_line|#define V3_LB_MAP_AD_LOW_EN&t;&t;(1 &lt;&lt; 0)
+DECL|macro|V3_LB_MAP_TYPE_IACK
+mdefine_line|#define V3_LB_MAP_TYPE_IACK&t;&t;(0 &lt;&lt; 1)
+DECL|macro|V3_LB_MAP_TYPE_IO
+mdefine_line|#define V3_LB_MAP_TYPE_IO&t;&t;(1 &lt;&lt; 1)
+DECL|macro|V3_LB_MAP_TYPE_MEM
+mdefine_line|#define V3_LB_MAP_TYPE_MEM&t;&t;(3 &lt;&lt; 1)
+DECL|macro|V3_LB_MAP_TYPE_CONFIG
+mdefine_line|#define V3_LB_MAP_TYPE_CONFIG&t;&t;(5 &lt;&lt; 1)
+DECL|macro|V3_LB_MAP_TYPE_MEM_MULTIPLE
+mdefine_line|#define V3_LB_MAP_TYPE_MEM_MULTIPLE&t;(6 &lt;&lt; 1)
+DECL|macro|v3_addr_to_lb_map
+mdefine_line|#define v3_addr_to_lb_map(a)&t;(((a) &gt;&gt; 16) &amp; V3_LB_MAP_MAP_ADR)
+multiline_comment|/*&n; *  LB_BASE2 register bits (Local bus -&gt; PCI IO)&n; */
+DECL|macro|V3_LB_BASE2_ADR_BASE
+mdefine_line|#define V3_LB_BASE2_ADR_BASE&t;&t;0xff00
+DECL|macro|V3_LB_BASE2_SWAP
+mdefine_line|#define V3_LB_BASE2_SWAP&t;&t;(3 &lt;&lt; 6)
+DECL|macro|V3_LB_BASE2_ENABLE
+mdefine_line|#define V3_LB_BASE2_ENABLE&t;&t;(1 &lt;&lt; 0)
+DECL|macro|v3_addr_to_lb_base2
+mdefine_line|#define v3_addr_to_lb_base2(a)&t;(((a) &gt;&gt; 16) &amp; V3_LB_BASE2_ADR_BASE)
+multiline_comment|/*&n; *  LB_MAP2 register bits (Local bus -&gt; PCI IO)&n; */
+DECL|macro|V3_LB_MAP2_MAP_ADR
+mdefine_line|#define V3_LB_MAP2_MAP_ADR&t;&t;0xff00
+DECL|macro|v3_addr_to_lb_map2
+mdefine_line|#define v3_addr_to_lb_map2(a)&t;(((a) &gt;&gt; 16) &amp; V3_LB_MAP2_MAP_ADR)
 macro_line|#endif
 eof

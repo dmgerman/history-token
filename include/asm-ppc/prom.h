@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * BK Id: SCCS/s.prom.h 1.14 06/13/01 15:28:43 paulus&n; */
+multiline_comment|/*&n; * BK Id: SCCS/s.prom.h 1.16 07/25/01 14:11:37 trini&n; */
 multiline_comment|/*&n; * Definitions for talking to the Open Firmware PROM on&n; * Power Macintosh computers.&n; *&n; * Copyright (C) 1996 Paul Mackerras.&n; */
 macro_line|#ifdef __KERNEL__
 macro_line|#ifndef _PPC_PROM_H
@@ -317,16 +317,6 @@ r_const
 r_char
 op_star
 id|compat
-)paren
-suffix:semicolon
-r_extern
-r_struct
-id|device_node
-op_star
-id|find_phandle
-c_func
-(paren
-id|phandle
 )paren
 suffix:semicolon
 r_extern

@@ -2607,6 +2607,7 @@ c_func
 id|dentry
 )paren
 op_ne
+op_minus
 id|EINVAL
 )paren
 id|error

@@ -240,19 +240,11 @@ DECL|member|type
 r_int
 id|type
 suffix:semicolon
-multiline_comment|/* codec specific init/reset routines, used mainly for 4 or 6 channel support */
-DECL|member|codec_init
-r_int
-(paren
-op_star
-id|codec_init
-)paren
-(paren
+DECL|member|codec_ops
 r_struct
-id|ac97_codec
+id|ac97_ops
 op_star
-id|codec
-)paren
+id|codec_ops
 suffix:semicolon
 multiline_comment|/* controller specific lower leverl ac97 accessing routines */
 DECL|member|codec_read
@@ -435,6 +427,61 @@ comma
 r_int
 r_int
 id|arg
+)paren
+suffix:semicolon
+)brace
+suffix:semicolon
+multiline_comment|/*&n; *&t;Operation structures for each known AC97 chip&n; */
+DECL|struct|ac97_ops
+r_struct
+id|ac97_ops
+(brace
+multiline_comment|/* Initialise */
+DECL|member|init
+r_int
+(paren
+op_star
+id|init
+)paren
+(paren
+r_struct
+id|ac97_codec
+op_star
+id|c
+)paren
+suffix:semicolon
+multiline_comment|/* Amplifier control */
+DECL|member|amplifier
+r_int
+(paren
+op_star
+id|amplifier
+)paren
+(paren
+r_struct
+id|ac97_codec
+op_star
+id|codec
+comma
+r_int
+id|on
+)paren
+suffix:semicolon
+multiline_comment|/* Digital mode control */
+DECL|member|digital
+r_int
+(paren
+op_star
+id|digital
+)paren
+(paren
+r_struct
+id|ac97_codec
+op_star
+id|codec
+comma
+r_int
+id|format
 )paren
 suffix:semicolon
 )brace

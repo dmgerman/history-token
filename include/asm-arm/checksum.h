@@ -699,8 +699,8 @@ r_int
 id|sum
 )paren
 suffix:semicolon
-r_extern
-id|__inline__
+r_static
+r_inline
 r_int
 r_int
 r_int

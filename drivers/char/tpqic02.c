@@ -6066,33 +6066,6 @@ suffix:semicolon
 )brace
 )brace
 multiline_comment|/* qic02_tape_interrupt */
-DECL|function|qic02_tape_lseek
-r_static
-r_int
-r_int
-id|qic02_tape_lseek
-c_func
-(paren
-r_struct
-id|file
-op_star
-id|file
-comma
-r_int
-r_int
-id|offset
-comma
-r_int
-id|origin
-)paren
-(brace
-r_return
-op_minus
-id|EINVAL
-suffix:semicolon
-multiline_comment|/* not supported */
-)brace
-multiline_comment|/* qic02_tape_lseek */
 multiline_comment|/* read/write routines:&n; * This code copies between a kernel buffer and a user buffer. The &n; * actual data transfer is done using DMA and interrupts. Time-outs&n; * are also used.&n; *&n; * When a filemark is read, we return &squot;0 bytes read&squot; and continue with the&n; * next file after that.&n; * When EOM is read, we return &squot;0 bytes read&squot; twice.&n; * When the EOT marker is detected on writes, &squot;0 bytes read&squot; should be&n; * returned twice. If user program does a MTNOP after that, 2 additional&n; * blocks may be written.&t;------- FIXME: Implement this correctly  *************************************************&n; *&n; * Only read/writes in multiples of 512 bytes are accepted.&n; * When no bytes are available, we sleep() until they are. The controller will&n; * generate an interrupt, and we (should) get a wake_up() call.&n; *&n; * Simple buffering is used. User program should ensure that a large enough&n; * buffer is used. Usually the drive does some buffering as well (something&n; * like 4k or so).&n; *&n; * Scott S. Bertilson suggested to continue filling the user buffer, rather&n; * than waste time on a context switch, when the kernel buffer fills up.&n; */
 multiline_comment|/*&n; * Problem: tar(1) doesn&squot;t always read the entire file. Sometimes the entire file&n; * has been read, but the EOF token is never returned to tar(1), simply because&n; * tar(1) knows it has already read all of the data it needs. So we must use&n; * open/release to reset the `reported_read_eof&squot; flag. If we don&squot;t, the next read&n; * request would return the EOF flag for the previous file.&n; */
 DECL|function|qic02_tape_read
@@ -9290,9 +9263,8 @@ id|THIS_MODULE
 comma
 id|llseek
 suffix:colon
-id|qic02_tape_lseek
+id|no_llseek
 comma
-multiline_comment|/* not allowed */
 id|read
 suffix:colon
 id|qic02_tape_read

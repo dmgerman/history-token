@@ -455,10 +455,11 @@ l_int|1
 )paren
 suffix:semicolon
 )brace
-id|down
+id|wait_for_completion
+c_func
 (paren
 op_amp
-id|c-&gt;gc_thread_sem
+id|c-&gt;gc_thread_comp
 )paren
 suffix:semicolon
 id|D1

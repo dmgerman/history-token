@@ -52,6 +52,16 @@ id|lp_count
 op_assign
 l_int|0
 suffix:semicolon
+macro_line|#ifdef CONFIG_LP_CONSOLE
+DECL|variable|console_registered
+r_static
+r_struct
+id|parport
+op_star
+id|console_registered
+suffix:semicolon
+singleline_comment|// initially NULL
+macro_line|#endif /* CONFIG_LP_CONSOLE */
 DECL|macro|LP_DEBUG
 macro_line|#undef LP_DEBUG
 multiline_comment|/* --- low-level port access ----------------------------------- */
@@ -2723,13 +2733,15 @@ op_amp
 id|PARPORT_MODE_SAFEININT
 )paren
 (brace
-id|MOD_INC_USE_COUNT
-suffix:semicolon
 id|register_console
 (paren
 op_amp
 id|lpcons
 )paren
+suffix:semicolon
+id|console_registered
+op_assign
+id|port
 suffix:semicolon
 id|printk
 (paren
@@ -2909,6 +2921,27 @@ id|port
 )paren
 (brace
 multiline_comment|/* Write this some day. */
+macro_line|#ifdef CONFIG_LP_CONSOLE
+r_if
+c_cond
+(paren
+id|console_registered
+op_eq
+id|port
+)paren
+(brace
+id|unregister_console
+(paren
+op_amp
+id|lpcons
+)paren
+suffix:semicolon
+id|console_registered
+op_assign
+l_int|NULL
+suffix:semicolon
+)brace
+macro_line|#endif /* CONFIG_LP_CONSOLE */
 )brace
 DECL|variable|lp_driver
 r_static

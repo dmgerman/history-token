@@ -3769,32 +3769,6 @@ l_int|20
 )brace
 suffix:semicolon
 macro_line|#endif /* HAS_14BIT_TABLES */
-multiline_comment|/*&n;     *  Common stuff&n;     */
-DECL|function|sound_lseek
-r_static
-r_int
-r_int
-id|sound_lseek
-c_func
-(paren
-r_struct
-id|file
-op_star
-id|file
-comma
-r_int
-r_int
-id|offset
-comma
-r_int
-id|orig
-)paren
-(brace
-r_return
-op_minus
-id|ESPIPE
-suffix:semicolon
-)brace
 multiline_comment|/*&n;     *  Mid level stuff&n;     */
 DECL|variable|dmasound
 r_struct
@@ -4375,7 +4349,7 @@ id|THIS_MODULE
 comma
 id|llseek
 suffix:colon
-id|sound_lseek
+id|no_llseek
 comma
 id|ioctl
 suffix:colon
@@ -6504,7 +6478,7 @@ id|THIS_MODULE
 comma
 id|llseek
 suffix:colon
-id|sound_lseek
+id|no_llseek
 comma
 id|write
 suffix:colon
@@ -7117,7 +7091,7 @@ id|THIS_MODULE
 comma
 id|llseek
 suffix:colon
-id|sound_lseek
+id|no_llseek
 comma
 id|read
 suffix:colon

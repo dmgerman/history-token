@@ -14,8 +14,8 @@ DECL|macro|__mem_isa
 mdefine_line|#define __mem_isa(a)&t;&t;(PCIMEM_BASE + (unsigned long)(a))
 macro_line|#else
 DECL|function|___mem_pci
-r_extern
-id|__inline__
+r_static
+r_inline
 r_int
 r_int
 id|___mem_pci
@@ -47,8 +47,8 @@ id|a
 suffix:semicolon
 )brace
 DECL|function|___mem_isa
-r_extern
-id|__inline__
+r_static
+r_inline
 r_int
 r_int
 id|___mem_isa

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * BK Id: SCCS/s.pmac_setup.c 1.21 05/17/01 18:14:21 cort&n; */
+multiline_comment|/*&n; * BK Id: SCCS/s.pmac_setup.c 1.24 07/06/01 14:49:51 trini&n; */
 multiline_comment|/*&n; *  linux/arch/ppc/kernel/setup.c&n; *&n; *  PowerPC version &n; *    Copyright (C) 1995-1996 Gary Thomas (gdt@linuxppc.org)&n; *&n; *  Adapted for Power Macintosh by Paul Mackerras&n; *    Copyright (C) 1996 Paul Mackerras (paulus@cs.anu.edu.au)&n; *&n; *  Derived from &quot;arch/alpha/kernel/setup.c&quot;&n; *    Copyright (C) 1995 Linus Torvalds&n; *&n; *  This program is free software; you can redistribute it and/or&n; *  modify it under the terms of the GNU General Public License&n; *  as published by the Free Software Foundation; either version&n; *  2 of the License, or (at your option) any later version.&n; *&n; */
 multiline_comment|/*&n; * bootup setup stuff..&n; */
 macro_line|#include &lt;linux/config.h&gt;
@@ -418,8 +418,9 @@ r_int
 r_int
 id|core99_l2_cache
 suffix:semicolon
-DECL|function|core99_init_l2
 r_void
+id|__pmac
+DECL|function|core99_init_l2
 id|core99_init_l2
 c_func
 (paren
@@ -525,8 +526,8 @@ suffix:semicolon
 )brace
 )brace
 macro_line|#endif /* CONFIG_SMP */
-id|__pmac
 r_int
+id|__pmac
 DECL|function|pmac_get_cpuinfo
 id|pmac_get_cpuinfo
 c_func
@@ -1159,9 +1160,9 @@ macro_line|#include &quot;../../../drivers/scsi/sd.h&quot;
 macro_line|#endif
 macro_line|#ifdef CONFIG_VT
 multiline_comment|/*&n; * Dummy mksound function that does nothing.&n; * The real one is in the dmasound driver.&n; */
-id|__pmac
 r_static
 r_void
+id|__pmac
 DECL|function|pmac_mksound
 id|pmac_mksound
 c_func
@@ -1856,9 +1857,9 @@ suffix:semicolon
 )brace
 macro_line|#endif
 macro_line|#if defined(CONFIG_BLK_DEV_IDE) &amp;&amp; defined(CONFIG_BLK_DEV_IDE_PMAC)
-DECL|function|find_ide_boot
 id|kdev_t
 id|__init
+DECL|function|find_ide_boot
 id|find_ide_boot
 c_func
 (paren
@@ -1932,9 +1933,9 @@ id|n
 suffix:semicolon
 )brace
 macro_line|#endif /* CONFIG_BLK_DEV_IDE &amp;&amp; CONFIG_BLK_DEV_IDE_PMAC */
-DECL|function|find_boot_device
 r_void
 id|__init
+DECL|function|find_boot_device
 id|find_boot_device
 c_func
 (paren
@@ -1982,9 +1983,9 @@ suffix:semicolon
 macro_line|#endif
 )brace
 multiline_comment|/* can&squot;t be __init - can be called whenever a disk is first accessed */
+r_void
 id|__pmac
 DECL|function|note_bootable_part
-r_void
 id|note_bootable_part
 c_func
 (paren
@@ -2123,6 +2124,7 @@ suffix:semicolon
 )brace
 )brace
 r_void
+id|__pmac
 DECL|function|pmac_restart
 id|pmac_restart
 c_func
@@ -2202,6 +2204,7 @@ suffix:semicolon
 )brace
 )brace
 r_void
+id|__pmac
 DECL|function|pmac_power_off
 id|pmac_power_off
 c_func
@@ -2279,6 +2282,7 @@ suffix:semicolon
 )brace
 )brace
 r_void
+id|__pmac
 DECL|function|pmac_halt
 id|pmac_halt
 c_func
@@ -2295,6 +2299,7 @@ suffix:semicolon
 macro_line|#if defined(CONFIG_BLK_DEV_IDE) || defined(CONFIG_BLK_DEV_IDE_MODULE)
 multiline_comment|/*&n; * IDE stuff.&n; */
 r_void
+id|__pmac
 DECL|function|pmac_ide_insw
 id|pmac_ide_insw
 c_func
@@ -2331,6 +2336,7 @@ id|ns
 suffix:semicolon
 )brace
 r_void
+id|__pmac
 DECL|function|pmac_ide_outsw
 id|pmac_ide_outsw
 c_func
@@ -2367,6 +2373,7 @@ id|ns
 suffix:semicolon
 )brace
 r_int
+id|__pmac
 DECL|function|pmac_ide_default_irq
 id|pmac_ide_default_irq
 c_func
@@ -2399,6 +2406,7 @@ suffix:semicolon
 macro_line|#endif
 )brace
 id|ide_ioreg_t
+id|__pmac
 DECL|function|pmac_ide_default_io_base
 id|pmac_ide_default_io_base
 c_func
@@ -2431,6 +2439,7 @@ suffix:semicolon
 macro_line|#endif
 )brace
 r_int
+id|__pmac
 DECL|function|pmac_ide_check_region
 id|pmac_ide_check_region
 c_func
@@ -2466,6 +2475,7 @@ id|extent
 suffix:semicolon
 )brace
 r_void
+id|__pmac
 DECL|function|pmac_ide_request_region
 id|pmac_ide_request_region
 c_func
@@ -2503,6 +2513,7 @@ id|name
 suffix:semicolon
 )brace
 r_void
+id|__pmac
 DECL|function|pmac_ide_release_region
 id|pmac_ide_release_region
 c_func
@@ -2535,6 +2546,7 @@ suffix:semicolon
 macro_line|#if defined(CONFIG_BLK_DEV_IDE) &amp;&amp; defined(CONFIG_BLK_DEV_IDE_PMAC)
 multiline_comment|/* This is declared in drivers/block/ide-pmac.c */
 r_void
+id|__pmac
 id|pmac_ide_init_hwif_ports
 (paren
 id|hw_regs_t
@@ -2554,8 +2566,9 @@ id|irq
 suffix:semicolon
 macro_line|#else
 multiline_comment|/*&n; * This registers the standard ports for this architecture with the IDE&n; * driver.&n; */
-DECL|function|pmac_ide_init_hwif_ports
 r_void
+id|__pmac
+DECL|function|pmac_ide_init_hwif_ports
 id|pmac_ide_init_hwif_ports
 c_func
 (paren
@@ -2578,10 +2591,10 @@ id|irq
 macro_line|#endif
 macro_line|#endif
 multiline_comment|/*&n; * Read in a property describing some pieces of memory.&n; */
-DECL|function|get_mem_prop
 r_static
 r_void
 id|__init
+DECL|function|get_mem_prop
 id|get_mem_prop
 c_func
 (paren
@@ -2790,10 +2803,10 @@ id|mp
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * On systems with Open Firmware, collect information about&n; * physical RAM and which pieces are already in use.&n; * At this point, we have (at least) the first 8MB mapped with a BAT.&n; * Our text, data, bss use something over 1MB, starting at 0.&n; * Open Firmware may be using 1MB at the 4MB point.&n; */
-DECL|function|pmac_find_end_of_memory
 r_int
 r_int
 id|__init
+DECL|function|pmac_find_end_of_memory
 id|pmac_find_end_of_memory
 c_func
 (paren
@@ -3227,6 +3240,7 @@ op_star
 id|disp_bi
 suffix:semicolon
 r_void
+id|__init
 DECL|function|pmac_progress
 id|pmac_progress
 c_func

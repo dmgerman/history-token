@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *  Copyright 1999 Jaroslav Kysela &lt;perex@suse.cz&gt;&n; *  Copyright 2000 Alan Cox &lt;alan@redhat.com&gt;&n; *&n; *  Yamaha YMF7xx driver.&n; *&n; *  This code is a result of high-speed collision&n; *  between ymfpci.c of ALSA and cs46xx.c of Linux.&n; *  -- Pete Zaitcev &lt;zaitcev@yahoo.com&gt;; 2000/09/18&n; *&n; *   This program is free software; you can redistribute it and/or modify&n; *   it under the terms of the GNU General Public License as published by&n; *   the Free Software Foundation; either version 2 of the License, or&n; *   (at your option) any later version.&n; *&n; *   This program is distributed in the hope that it will be useful,&n; *   but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *   GNU General Public License for more details.&n; *&n; *   You should have received a copy of the GNU General Public License&n; *   along with this program; if not, write to the Free Software&n; *   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; *&n; * TODO:&n; *  - Use P44Slot for 44.1 playback (beware of idle buzzing in P44Slot).&n; *  - 96KHz playback for DVD - use pitch of 2.0.&n; *  - Retain DMA buffer on close, do not wait the end of frame.&n; *  - Resolve XXX tagged questions.&n; *  - Cannot play 5133Hz.&n; *  - 2001/01/07 Consider if we can remove voice_lock, like so:&n; *     : Allocate/deallocate voices in open/close under semafore.&n; *     : We access voices in interrupt, that only for pcms that open.&n; *    voice_lock around playback_prepare closes interrupts for insane duration.&n; *  - Revisit the way voice_alloc is done - too confusing, overcomplicated.&n; *    Should support various channel types, however.&n; *  - Remove prog_dmabuf from read/write, leave it in open.&n; *  - 2001/01/07 Replace the OPL3 part of CONFIG_SOUND_YMFPCI_LEGACY code with&n; *    native synthesizer through a playback slot.&n; *  - Use new 2.3.x cache coherent PCI DMA routines instead of virt_to_bus.&n; */
+multiline_comment|/*&n; *  Copyright 1999 Jaroslav Kysela &lt;perex@suse.cz&gt;&n; *  Copyright 2000 Alan Cox &lt;alan@redhat.com&gt;&n; *&n; *  Yamaha YMF7xx driver.&n; *&n; *  This code is a result of high-speed collision&n; *  between ymfpci.c of ALSA and cs46xx.c of Linux.&n; *  -- Pete Zaitcev &lt;zaitcev@yahoo.com&gt;; 2000/09/18&n; *&n; *   This program is free software; you can redistribute it and/or modify&n; *   it under the terms of the GNU General Public License as published by&n; *   the Free Software Foundation; either version 2 of the License, or&n; *   (at your option) any later version.&n; *&n; *   This program is distributed in the hope that it will be useful,&n; *   but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *   GNU General Public License for more details.&n; *&n; *   You should have received a copy of the GNU General Public License&n; *   along with this program; if not, write to the Free Software&n; *   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; *&n; * TODO:&n; *  - Use P44Slot for 44.1 playback (beware of idle buzzing in P44Slot).&n; *  - 96KHz playback for DVD - use pitch of 2.0.&n; *  - Retain DMA buffer on close, do not wait the end of frame.&n; *  - Resolve XXX tagged questions.&n; *  - Cannot play 5133Hz.&n; *  - 2001/01/07 Consider if we can remove voice_lock, like so:&n; *     : Allocate/deallocate voices in open/close under semafore.&n; *     : We access voices in interrupt, that only for pcms that open.&n; *    voice_lock around playback_prepare closes interrupts for insane duration.&n; *  - Revisit the way voice_alloc is done - too confusing, overcomplicated.&n; *    Should support various channel types, however.&n; *  - Remove prog_dmabuf from read/write, leave it in open.&n; *  - 2001/01/07 Replace the OPL3 part of CONFIG_SOUND_YMFPCI_LEGACY code with&n; *    native synthesizer through a playback slot.&n; *  - Use new 2.3.x cache coherent PCI DMA routines instead of virt_to_bus.&n; *  - Make the thing big endian compatible. ALSA has it done.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
@@ -2001,7 +2001,7 @@ c_func
 (paren
 id|ymfpci_t
 op_star
-id|codec
+id|unit
 )paren
 (brace
 r_int
@@ -2012,7 +2012,7 @@ id|spin_lock_irqsave
 c_func
 (paren
 op_amp
-id|codec-&gt;reg_lock
+id|unit-&gt;reg_lock
 comma
 id|flags
 )paren
@@ -2020,7 +2020,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|codec-&gt;start_count
+id|unit-&gt;start_count
 op_increment
 op_eq
 l_int|0
@@ -2029,19 +2029,27 @@ l_int|0
 id|ymfpci_writel
 c_func
 (paren
-id|codec
+id|unit
 comma
 id|YDSXGR_MODE
 comma
+id|ymfpci_readl
+c_func
+(paren
+id|unit
+comma
+id|YDSXGR_MODE
+)paren
+op_or
 l_int|3
 )paren
 suffix:semicolon
-id|codec-&gt;active_bank
+id|unit-&gt;active_bank
 op_assign
 id|ymfpci_readl
 c_func
 (paren
-id|codec
+id|unit
 comma
 id|YDSXGR_CTRLSELECT
 )paren
@@ -2053,7 +2061,7 @@ id|spin_unlock_irqrestore
 c_func
 (paren
 op_amp
-id|codec-&gt;reg_lock
+id|unit-&gt;reg_lock
 comma
 id|flags
 )paren
@@ -2067,7 +2075,7 @@ c_func
 (paren
 id|ymfpci_t
 op_star
-id|codec
+id|unit
 )paren
 (brace
 r_int
@@ -2083,7 +2091,7 @@ id|spin_lock_irqsave
 c_func
 (paren
 op_amp
-id|codec-&gt;reg_lock
+id|unit-&gt;reg_lock
 comma
 id|flags
 )paren
@@ -2092,7 +2100,7 @@ r_if
 c_cond
 (paren
 op_decrement
-id|codec-&gt;start_count
+id|unit-&gt;start_count
 op_eq
 l_int|0
 )paren
@@ -2100,11 +2108,20 @@ l_int|0
 id|ymfpci_writel
 c_func
 (paren
-id|codec
+id|unit
 comma
 id|YDSXGR_MODE
 comma
-l_int|0
+id|ymfpci_readl
+c_func
+(paren
+id|unit
+comma
+id|YDSXGR_MODE
+)paren
+op_amp
+op_complement
+l_int|3
 )paren
 suffix:semicolon
 r_while
@@ -2123,7 +2140,7 @@ c_cond
 id|ymfpci_readl
 c_func
 (paren
-id|codec
+id|unit
 comma
 id|YDSXGR_STATUS
 )paren
@@ -2141,7 +2158,7 @@ id|spin_unlock_irqrestore
 c_func
 (paren
 op_amp
-id|codec-&gt;reg_lock
+id|unit-&gt;reg_lock
 comma
 id|flags
 )paren
@@ -2190,7 +2207,7 @@ l_int|0
 suffix:semicolon
 id|idx
 OL
-l_int|64
+id|YDSXG_PLAYBACK_VOICES
 suffix:semicolon
 id|idx
 op_add_assign
@@ -3906,10 +3923,6 @@ op_eq
 l_int|0
 )paren
 (brace
-id|bank-&gt;format
-op_or_assign
-l_int|1
-suffix:semicolon
 id|bank-&gt;left_gain
 op_assign
 id|bank-&gt;left_gain_end
@@ -3919,6 +3932,10 @@ suffix:semicolon
 )brace
 r_else
 (brace
+id|bank-&gt;format
+op_or_assign
+l_int|1
+suffix:semicolon
 id|bank-&gt;right_gain
 op_assign
 id|bank-&gt;right_gain_end
@@ -3941,10 +3958,6 @@ op_eq
 l_int|0
 )paren
 (brace
-id|bank-&gt;format
-op_or_assign
-l_int|1
-suffix:semicolon
 id|bank-&gt;eff2_gain
 op_assign
 id|bank-&gt;eff2_gain_end
@@ -3954,6 +3967,10 @@ suffix:semicolon
 )brace
 r_else
 (brace
+id|bank-&gt;format
+op_or_assign
+l_int|1
+suffix:semicolon
 id|bank-&gt;eff3_gain
 op_assign
 id|bank-&gt;eff3_gain_end
@@ -4515,7 +4532,7 @@ l_int|0
 suffix:semicolon
 id|nvoice
 OL
-l_int|64
+id|YDSXG_PLAYBACK_VOICES
 suffix:semicolon
 id|nvoice
 op_increment
@@ -4552,7 +4569,7 @@ l_int|0
 suffix:semicolon
 id|nvoice
 OL
-l_int|5
+id|YDSXG_CAPTURE_VOICES
 suffix:semicolon
 id|nvoice
 op_increment
@@ -5103,29 +5120,6 @@ mdefine_line|#define SND_PCM_AES3_CON_CLOCK_50PPM&t;(1&lt;&lt;4)&t;/* 50 ppm */
 DECL|macro|SND_PCM_AES3_CON_CLOCK_VARIABLE
 mdefine_line|#define SND_PCM_AES3_CON_CLOCK_VARIABLE&t;(2&lt;&lt;4)&t;/* variable pitch */
 multiline_comment|/*&n; * User interface&n; */
-DECL|function|ymf_llseek
-r_static
-id|loff_t
-id|ymf_llseek
-c_func
-(paren
-r_struct
-id|file
-op_star
-id|file
-comma
-id|loff_t
-id|offset
-comma
-r_int
-id|origin
-)paren
-(brace
-r_return
-op_minus
-id|ESPIPE
-suffix:semicolon
-)brace
 multiline_comment|/*&n; * in this loop, dmabuf.count signifies the amount of data that is&n; * waiting to be copied to the user&squot;s buffer.  it is filled by the dma&n; * machine and drained by this loop.&n; */
 r_static
 id|ssize_t
@@ -8995,7 +8989,7 @@ op_assign
 (brace
 id|llseek
 suffix:colon
-id|ymf_llseek
+id|no_llseek
 comma
 id|read
 suffix:colon
@@ -9037,7 +9031,7 @@ op_assign
 (brace
 id|llseek
 suffix:colon
-id|ymf_llseek
+id|no_llseek
 comma
 id|ioctl
 suffix:colon

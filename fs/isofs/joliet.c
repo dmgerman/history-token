@@ -3,6 +3,7 @@ macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/nls.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/iso_fs.h&gt;
+macro_line|#include &lt;asm/unaligned.h&gt;
 multiline_comment|/*&n; * Convert Unicode 16 to UTF8 or ASCII.&n; */
 r_static
 r_int
@@ -31,6 +32,8 @@ id|nls
 m_wchar_t
 op_star
 id|ip
+comma
+id|ch
 suffix:semicolon
 r_int
 r_char
@@ -48,8 +51,15 @@ suffix:semicolon
 r_while
 c_loop
 (paren
-op_star
+(paren
+id|ch
+op_assign
+id|get_unaligned
+c_func
+(paren
 id|ip
+)paren
+)paren
 op_logical_and
 id|len
 )paren
@@ -57,14 +67,12 @@ id|len
 r_int
 id|llen
 suffix:semicolon
-m_wchar_t
 id|ch
 op_assign
 id|be16_to_cpu
 c_func
 (paren
-op_star
-id|ip
+id|ch
 )paren
 suffix:semicolon
 r_if

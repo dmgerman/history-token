@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * Product specific probe and attach routines for:&n; * &t;27/284X and aic7770 motherboard SCSI controllers&n; *&n; * Copyright (c) 1994-1998, 2000, 2001 Justin T. Gibbs.&n; * All rights reserved.&n; *&n; * Redistribution and use in source and binary forms, with or without&n; * modification, are permitted provided that the following conditions&n; * are met:&n; * 1. Redistributions of source code must retain the above copyright&n; *    notice immediately at the beginning of the file, without modification,&n; *    this list of conditions, and the following disclaimer.&n; * 2. The name of the author may not be used to endorse or promote products&n; *    derived from this software without specific prior written permission.&n; *&n; * Alternatively, this software may be distributed under the terms of the&n; * GNU Public License (&quot;GPL&quot;).&n; *&n; * THIS SOFTWARE IS PROVIDED BY THE AUTHOR AND CONTRIBUTORS ``AS IS&squot;&squot; AND&n; * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE&n; * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE&n; * ARE DISCLAIMED. IN NO EVENT SHALL THE AUTHOR OR CONTRIBUTORS BE LIABLE FOR&n; * ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL&n; * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS&n; * OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)&n; * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT&n; * LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY&n; * OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF&n; * SUCH DAMAGE.&n; *&n; * $Id: //depot/src/aic7xxx/aic7770.c#11 $&n; *&n; * $FreeBSD: src/sys/dev/aic7xxx/aic7770.c,v 1.1 2000/09/16 20:02:27 gibbs Exp $&n; */
+multiline_comment|/*&n; * Product specific probe and attach routines for:&n; * &t;27/284X and aic7770 motherboard SCSI controllers&n; *&n; * Copyright (c) 1994-1998, 2000, 2001 Justin T. Gibbs.&n; * All rights reserved.&n; *&n; * Redistribution and use in source and binary forms, with or without&n; * modification, are permitted provided that the following conditions&n; * are met:&n; * 1. Redistributions of source code must retain the above copyright&n; *    notice immediately at the beginning of the file, without modification,&n; *    this list of conditions, and the following disclaimer.&n; * 2. The name of the author may not be used to endorse or promote products&n; *    derived from this software without specific prior written permission.&n; *&n; * Alternatively, this software may be distributed under the terms of the&n; * GNU Public License (&quot;GPL&quot;).&n; *&n; * THIS SOFTWARE IS PROVIDED BY THE AUTHOR AND CONTRIBUTORS ``AS IS&squot;&squot; AND&n; * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE&n; * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE&n; * ARE DISCLAIMED. IN NO EVENT SHALL THE AUTHOR OR CONTRIBUTORS BE LIABLE FOR&n; * ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL&n; * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS&n; * OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)&n; * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT&n; * LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY&n; * OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF&n; * SUCH DAMAGE.&n; *&n; * $Id: //depot/src/aic7xxx/aic7770.c#12 $&n; *&n; * $FreeBSD: src/sys/dev/aic7xxx/aic7770.c,v 1.1 2000/09/16 20:02:27 gibbs Exp $&n; */
 macro_line|#include &quot;aic7xxx_osm.h&quot;
 macro_line|#include &quot;aic7xxx_inline.h&quot;
 macro_line|#include &quot;aic7xxx_93cx6.h&quot;
@@ -169,10 +169,6 @@ op_star
 id|entry
 )paren
 (brace
-r_struct
-id|ahc_probe_config
-id|probe_config
-suffix:semicolon
 r_int
 id|error
 suffix:semicolon
@@ -185,13 +181,6 @@ suffix:semicolon
 id|u_int
 id|intdef
 suffix:semicolon
-id|ahc_init_probe_config
-c_func
-(paren
-op_amp
-id|probe_config
-)paren
-suffix:semicolon
 id|error
 op_assign
 id|entry
@@ -199,10 +188,7 @@ op_member_access_from_pointer
 id|setup
 c_func
 (paren
-id|ahc-&gt;dev_softc
-comma
-op_amp
-id|probe_config
+id|ahc
 )paren
 suffix:semicolon
 r_if
@@ -237,7 +223,7 @@ r_return
 id|error
 )paren
 suffix:semicolon
-id|probe_config.description
+id|ahc-&gt;description
 op_assign
 id|entry-&gt;name
 suffix:semicolon
@@ -247,9 +233,6 @@ id|ahc_softc_init
 c_func
 (paren
 id|ahc
-comma
-op_amp
-id|probe_config
 )paren
 suffix:semicolon
 id|error
@@ -349,7 +332,7 @@ suffix:semicolon
 r_switch
 c_cond
 (paren
-id|probe_config.chip
+id|ahc-&gt;chip
 op_amp
 (paren
 id|AHC_EISA
@@ -1147,13 +1130,10 @@ DECL|function|ahc_aic7770_VL_setup
 id|ahc_aic7770_VL_setup
 c_func
 (paren
-id|ahc_dev_softc_t
-id|dev
-comma
 r_struct
-id|ahc_probe_config
+id|ahc_softc
 op_star
-id|probe_config
+id|ahc
 )paren
 (brace
 r_int
@@ -1164,12 +1144,10 @@ op_assign
 id|ahc_aic7770_setup
 c_func
 (paren
-id|dev
-comma
-id|probe_config
+id|ahc
 )paren
 suffix:semicolon
-id|probe_config-&gt;chip
+id|ahc-&gt;chip
 op_or_assign
 id|AHC_VL
 suffix:semicolon
@@ -1185,13 +1163,10 @@ DECL|function|ahc_aic7770_EISA_setup
 id|ahc_aic7770_EISA_setup
 c_func
 (paren
-id|ahc_dev_softc_t
-id|dev
-comma
 r_struct
-id|ahc_probe_config
+id|ahc_softc
 op_star
-id|probe_config
+id|ahc
 )paren
 (brace
 r_int
@@ -1202,12 +1177,10 @@ op_assign
 id|ahc_aic7770_setup
 c_func
 (paren
-id|dev
-comma
-id|probe_config
+id|ahc
 )paren
 suffix:semicolon
-id|probe_config-&gt;chip
+id|ahc-&gt;chip
 op_or_assign
 id|AHC_EISA
 suffix:semicolon
@@ -1223,36 +1196,33 @@ DECL|function|ahc_aic7770_setup
 id|ahc_aic7770_setup
 c_func
 (paren
-id|ahc_dev_softc_t
-id|dev
-comma
 r_struct
-id|ahc_probe_config
+id|ahc_softc
 op_star
-id|probe_config
+id|ahc
 )paren
 (brace
-id|probe_config-&gt;channel
+id|ahc-&gt;channel
 op_assign
 l_char|&squot;A&squot;
 suffix:semicolon
-id|probe_config-&gt;channel_b
+id|ahc-&gt;channel_b
 op_assign
 l_char|&squot;B&squot;
 suffix:semicolon
-id|probe_config-&gt;chip
+id|ahc-&gt;chip
 op_assign
 id|AHC_AIC7770
 suffix:semicolon
-id|probe_config-&gt;features
+id|ahc-&gt;features
 op_assign
 id|AHC_AIC7770_FE
 suffix:semicolon
-id|probe_config-&gt;bugs
+id|ahc-&gt;bugs
 op_or_assign
 id|AHC_TMODE_WIDEODD_BUG
 suffix:semicolon
-id|probe_config-&gt;flags
+id|ahc-&gt;flags
 op_or_assign
 id|AHC_PAGESCBS
 suffix:semicolon

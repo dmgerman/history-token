@@ -8,7 +8,7 @@ macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/major.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
-macro_line|#include &lt;linux/malloc.h&gt;
+macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/poll.h&gt;
 macro_line|#include &lt;linux/fcntl.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
@@ -1211,29 +1211,6 @@ r_return
 id|ret
 suffix:semicolon
 )brace
-DECL|function|tun_chr_lseek
-r_static
-id|loff_t
-id|tun_chr_lseek
-c_func
-(paren
-r_struct
-id|file
-op_star
-id|file
-comma
-id|loff_t
-id|offset
-comma
-r_int
-id|origin
-)paren
-(brace
-r_return
-op_minus
-id|ESPIPE
-suffix:semicolon
-)brace
 DECL|function|tun_set_iff
 r_static
 r_int
@@ -2134,7 +2111,7 @@ id|THIS_MODULE
 comma
 id|llseek
 suffix:colon
-id|tun_chr_lseek
+id|no_llseek
 comma
 id|read
 suffix:colon

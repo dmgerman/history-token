@@ -366,6 +366,10 @@ DECL|member|csr_config_rom_bus
 id|dma_addr_t
 id|csr_config_rom_bus
 suffix:semicolon
+DECL|member|csr_config_rom_length
+r_int
+id|csr_config_rom_length
+suffix:semicolon
 DECL|member|max_packet_size
 r_int
 r_int

@@ -1,19 +1,56 @@
 multiline_comment|/*&n; * Definitions shared between dma-sa1100.c and dma-sa1111.c&n; * (C) 2000 Nicolas Pitre &lt;nico@cam.org&gt;&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; */
 macro_line|#include &lt;linux/config.h&gt;
-multiline_comment|/*&n; * DMA channel structure.&n; */
-DECL|typedef|dma_buf_t
+multiline_comment|/*&n; * DMA buffer structure&n; */
+DECL|struct|dma_buf_s
 r_typedef
 r_struct
 id|dma_buf_s
+(brace
+DECL|member|size
+r_int
+id|size
+suffix:semicolon
+multiline_comment|/* buffer size */
+DECL|member|dma_start
+id|dma_addr_t
+id|dma_start
+suffix:semicolon
+multiline_comment|/* starting DMA address */
+DECL|member|dma_ptr
+id|dma_addr_t
+id|dma_ptr
+suffix:semicolon
+multiline_comment|/* next DMA pointer to use */
+DECL|member|ref
+r_int
+id|ref
+suffix:semicolon
+multiline_comment|/* number of DMA references */
+DECL|member|id
+r_void
+op_star
+id|id
+suffix:semicolon
+multiline_comment|/* to identify buffer from outside */
+DECL|member|next
+r_struct
+id|dma_buf_s
+op_star
+id|next
+suffix:semicolon
+multiline_comment|/* next buffer to process */
+DECL|typedef|dma_buf_t
+)brace
 id|dma_buf_t
 suffix:semicolon
+multiline_comment|/*&n; * DMA channel structure.&n; */
 r_typedef
 r_struct
 (brace
-DECL|member|lock
+DECL|member|in_use
 r_int
 r_int
-id|lock
+id|in_use
 suffix:semicolon
 multiline_comment|/* Device is allocated */
 DECL|member|device_id
@@ -23,6 +60,11 @@ op_star
 id|device_id
 suffix:semicolon
 multiline_comment|/* Device name */
+DECL|member|device
+id|dma_device_t
+id|device
+suffix:semicolon
+multiline_comment|/* ... to which this channel is attached */
 DECL|member|head
 id|dma_buf_t
 op_star
@@ -46,11 +88,6 @@ r_int
 id|ready
 suffix:semicolon
 multiline_comment|/* 1 if DMA can occur */
-DECL|member|active
-r_int
-id|active
-suffix:semicolon
-multiline_comment|/* 1 if DMA is actually processing data */
 DECL|member|regs
 id|dma_regs_t
 op_star

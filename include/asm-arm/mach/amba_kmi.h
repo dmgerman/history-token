@@ -39,6 +39,10 @@ DECL|member|res
 id|u_short
 id|res
 suffix:semicolon
+DECL|member|present
+id|u_char
+id|present
+suffix:semicolon
 DECL|member|wait_q
 id|wait_queue_head_t
 id|wait_q

@@ -1,3 +1,4 @@
+multiline_comment|/*&n; *  linux/include/asm-arm/unistd.h&n; *&n; *  Copyright (C) 2001 Russell King&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; *&n; * Please forward _all_ changes to this file to rmk@arm.linux.org.uk,&n; * no matter what the change is.  Thanks!&n; */
 macro_line|#ifndef __ASM_ARM_UNISTD_H
 DECL|macro|__ASM_ARM_UNISTD_H
 mdefine_line|#define __ASM_ARM_UNISTD_H
@@ -148,8 +149,8 @@ DECL|macro|__NR_sethostname
 mdefine_line|#define __NR_sethostname&t;&t;(__NR_SYSCALL_BASE+ 74)
 DECL|macro|__NR_setrlimit
 mdefine_line|#define __NR_setrlimit&t;&t;&t;(__NR_SYSCALL_BASE+ 75)
-DECL|macro|__NR_old_getrlimit
-mdefine_line|#define __NR_old_getrlimit&t;&t;(__NR_SYSCALL_BASE+ 76)&t;/* Back compat 2GB limited rlimit */
+DECL|macro|__NR_getrlimit
+mdefine_line|#define __NR_getrlimit&t;&t;&t;(__NR_SYSCALL_BASE+ 76)&t;/* Back compat 2GB limited rlimit */
 DECL|macro|__NR_getrusage
 mdefine_line|#define __NR_getrusage&t;&t;&t;(__NR_SYSCALL_BASE+ 77)
 DECL|macro|__NR_gettimeofday
@@ -370,8 +371,8 @@ multiline_comment|/* 188 reserved */
 multiline_comment|/* 189 reserved */
 DECL|macro|__NR_vfork
 mdefine_line|#define __NR_vfork&t;&t;&t;(__NR_SYSCALL_BASE+190)
-DECL|macro|__NR_getrlimit
-mdefine_line|#define __NR_getrlimit&t;&t;&t;(__NR_SYSCALL_BASE+191)&t;/* SuS compliant getrlimit */
+DECL|macro|__NR_ugetrlimit
+mdefine_line|#define __NR_ugetrlimit&t;&t;&t;(__NR_SYSCALL_BASE+191)&t;/* SuS compliant getrlimit */
 DECL|macro|__NR_mmap2
 mdefine_line|#define __NR_mmap2&t;&t;&t;(__NR_SYSCALL_BASE+192)
 DECL|macro|__NR_truncate64
@@ -432,6 +433,17 @@ DECL|macro|__NR_madvise
 mdefine_line|#define __NR_madvise&t;&t;&t;(__NR_SYSCALL_BASE+220)
 DECL|macro|__NR_fcntl64
 mdefine_line|#define __NR_fcntl64&t;&t;&t;(__NR_SYSCALL_BASE+221)
+multiline_comment|/*&n; * The following SWIs are ARM private.&n; */
+DECL|macro|__ARM_NR_BASE
+mdefine_line|#define __ARM_NR_BASE&t;&t;&t;(__NR_SYSCALL_BASE+0x0f0000)
+DECL|macro|__ARM_NR_breakpoint
+mdefine_line|#define __ARM_NR_breakpoint&t;&t;(__ARM_NR_BASE+1)
+DECL|macro|__ARM_NR_cacheflush
+mdefine_line|#define __ARM_NR_cacheflush&t;&t;(__ARM_NR_BASE+2)
+DECL|macro|__ARM_NR_usr26
+mdefine_line|#define __ARM_NR_usr26&t;&t;&t;(__ARM_NR_BASE+3)
+DECL|macro|__ARM_NR_usr32
+mdefine_line|#define __ARM_NR_usr32&t;&t;&t;(__ARM_NR_BASE+4)
 DECL|macro|__sys2
 mdefine_line|#define __sys2(x) #x
 DECL|macro|__sys1

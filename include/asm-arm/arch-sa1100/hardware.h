@@ -53,6 +53,16 @@ r_int
 id|edge_mask
 )paren
 suffix:semicolon
+multiline_comment|/*&n; * Return the current CPU clock frequency in units of 100kHz&n; */
+r_extern
+r_int
+r_int
+id|get_cclk_frequency
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
 macro_line|#endif
 multiline_comment|/*&n; * Implementation specifics&n; */
 macro_line|#ifdef CONFIG_SA1100_PANGOLIN
@@ -64,6 +74,18 @@ macro_line|#else
 DECL|macro|machine_has_neponset
 mdefine_line|#define machine_has_neponset()&t;(0)
 macro_line|#endif
+macro_line|#ifdef CONFIG_SA1100_HUW_WEBPANEL
+macro_line|#include &quot;huw_webpanel.h&quot;
+macro_line|#endif
+macro_line|#ifdef CONFIG_SA1100_PFS168
+macro_line|#include &quot;pfs168.h&quot;
+macro_line|#endif
+macro_line|#ifdef CONFIG_SA1100_YOPY
+macro_line|#include &quot;yopy.h&quot;
+macro_line|#endif
+macro_line|#ifdef CONFIG_SA1100_FREEBIRD
+macro_line|#include &quot;freebird.h&quot;
+macro_line|#endif
 macro_line|#ifdef CONFIG_SA1100_CERF
 macro_line|#include &quot;cerf.h&quot;
 macro_line|#endif
@@ -73,8 +95,26 @@ macro_line|#endif
 macro_line|#ifdef CONFIG_SA1100_BITSY
 macro_line|#include &quot;bitsy.h&quot;
 macro_line|#endif
+macro_line|#ifdef CONFIG_SA1100_ITSY
+macro_line|#include &quot;itsy.h&quot;
+macro_line|#endif
 macro_line|#if defined(CONFIG_SA1100_GRAPHICSCLIENT)
 macro_line|#include &quot;graphicsclient.h&quot;
+macro_line|#endif
+macro_line|#if defined(CONFIG_SA1100_OMNIMETER)
+macro_line|#include &quot;omnimeter.h&quot;
+macro_line|#endif
+macro_line|#if defined(CONFIG_SA1100_JORNADA720)
+macro_line|#include &quot;jornada720.h&quot;
+macro_line|#endif
+macro_line|#if defined(CONFIG_SA1100_PLEB)
+macro_line|#include &quot;pleb.h&quot;
+macro_line|#endif
+macro_line|#if defined(CONFIG_SA1100_LART)
+macro_line|#include &quot;lart.h&quot;
+macro_line|#endif
+macro_line|#ifdef CONFIG_SA1100_SIMPAD
+macro_line|#include &quot;simpad.h&quot;
 macro_line|#endif
 macro_line|#ifdef CONFIG_SA1101
 multiline_comment|/*&n; * We have mapped the sa1101 depending on the value of SA1101_BASE.&n; * It then appears from 0xf4000000.&n; */
@@ -83,6 +123,15 @@ mdefine_line|#define SA1101_p2v( x )         ((x) - SA1101_BASE + 0xf4000000)
 DECL|macro|SA1101_v2p
 mdefine_line|#define SA1101_v2p( x )         ((x) - 0xf4000000  + SA1101_BASE)
 macro_line|#include &quot;SA-1101.h&quot;
+macro_line|#endif
+macro_line|#if defined(CONFIG_SA1100_OMNIMETER)
+macro_line|#include &quot;omnimeter.h&quot;
+macro_line|#endif
+macro_line|#if defined(CONFIG_SA1100_JORNADA720)
+macro_line|#include &quot;jornada720.h&quot;
+macro_line|#endif
+macro_line|#if defined(CONFIG_SA1100_FLEXANET)
+macro_line|#include &quot;flexanet.h&quot;
 macro_line|#endif
 macro_line|#ifdef CONFIG_SA1111
 DECL|macro|SA1111_p2v

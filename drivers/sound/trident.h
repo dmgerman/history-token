@@ -184,9 +184,14 @@ op_assign
 l_int|0xdc
 comma
 DECL|enumerator|ALI_MPUR2
+DECL|enumerator|ALI_GPIO
 id|ALI_MPUR2
 op_assign
 l_int|0x22
+comma
+id|ALI_GPIO
+op_assign
+l_int|0x7c
 comma
 DECL|enumerator|ALI_EBUF1
 id|ALI_EBUF1

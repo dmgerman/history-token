@@ -551,6 +551,16 @@ comma
 id|i
 )paren
 suffix:semicolon
+id|parport_unregister_device
+(paren
+id|imm_hosts
+(braket
+id|i
+)braket
+dot
+id|dev
+)paren
+suffix:semicolon
 id|spin_lock_irq
 c_func
 (paren

@@ -13,7 +13,9 @@ macro_line|#include &lt;linux/ioport.h&gt;
 singleline_comment|// request_region() prototype
 macro_line|#include &lt;linux/vmalloc.h&gt; 
 singleline_comment|// ioremap()
+macro_line|#if LINUX_VERSION_CODE &gt;= LinuxVersionCode(2,4,7)
 macro_line|#include &lt;linux/completion.h&gt;
+macro_line|#endif
 macro_line|#ifdef __alpha__
 DECL|macro|__KERNEL_SYSCALLS__
 mdefine_line|#define __KERNEL_SYSCALLS__
@@ -29,6 +31,7 @@ macro_line|#include &lt;scsi/scsi_ioctl.h&gt;
 macro_line|#include &quot;hosts.h&quot;
 macro_line|#include &quot;cpqfcTSchip.h&quot;
 macro_line|#include &quot;cpqfcTSstructs.h&quot;
+macro_line|#include &quot;cpqfcTStrigger.h&quot;
 macro_line|#include &quot;cpqfcTS.h&quot;
 macro_line|#include &lt;linux/config.h&gt;  
 macro_line|#include &lt;linux/module.h&gt;
@@ -93,6 +96,25 @@ singleline_comment|// nlink_t nlink
 singleline_comment|// etc. ...
 )brace
 suffix:semicolon
+macro_line|#endif
+macro_line|#if LINUX_VERSION_CODE &gt;= LinuxVersionCode(2,4,7)
+DECL|macro|CPQFC_DECLARE_COMPLETION
+macro_line|#  define CPQFC_DECLARE_COMPLETION(x) DECLARE_COMPLETION(x)
+DECL|macro|CPQFC_WAITING
+macro_line|#  define CPQFC_WAITING waiting
+DECL|macro|CPQFC_COMPLETE
+macro_line|#  define CPQFC_COMPLETE(x) complete(x)
+DECL|macro|CPQFC_WAIT_FOR_COMPLETION
+macro_line|#  define CPQFC_WAIT_FOR_COMPLETION(x) wait_for_completion(x);
+macro_line|#else
+DECL|macro|CPQFC_DECLARE_COMPLETION
+macro_line|#  define CPQFC_DECLARE_COMPLETION(x) DECLARE_MUTEX_LOCKED(x)
+DECL|macro|CPQFC_WAITING
+macro_line|#  define CPQFC_WAITING sem
+DECL|macro|CPQFC_COMPLETE
+macro_line|#  define CPQFC_COMPLETE(x) up(x)
+DECL|macro|CPQFC_WAIT_FOR_COMPLETION
+macro_line|#  define CPQFC_WAIT_FOR_COMPLETION(x) down(x)
 macro_line|#endif
 multiline_comment|/* local function to load our per-HBA (local) data for chip&n;   registers, FC link state, all FC exchanges, etc.&n;&n;   We allocate space and compute address offsets for the&n;   most frequently accessed addresses; others (like World Wide&n;   Name) are not necessary.&n;   &n;*/
 DECL|function|Cpqfc_initHBAdata
@@ -508,6 +530,14 @@ op_assign
 op_amp
 id|sem
 suffix:semicolon
+multiline_comment|/* must unlock before kernel_thread(), for it may cause a reschedule. */
+id|spin_unlock_irq
+c_func
+(paren
+op_amp
+id|io_request_lock
+)paren
+suffix:semicolon
 id|kernel_thread
 c_func
 (paren
@@ -537,6 +567,13 @@ id|down
 (paren
 op_amp
 id|sem
+)paren
+suffix:semicolon
+id|spin_lock_irq
+c_func
+(paren
+op_amp
+id|io_request_lock
 )paren
 suffix:semicolon
 id|cpqfcHBAdata-&gt;notify_wt
@@ -1202,27 +1239,17 @@ singleline_comment|// 3.0       LIP(F8,F7) incoming (switch passes Tach Prim.Sig
 singleline_comment|// 3.028     LILP received, link up, FLOGI starts
 singleline_comment|// slowest(worst) case, measured on 1Gb Finisar GT analyzer
 r_int
-id|wait_time
-suffix:semicolon
 r_int
-r_int
-id|flags
-op_assign
-l_int|0
+id|stop_time
 suffix:semicolon
-id|spin_unlock_irqrestore
+id|spin_unlock_irq
 c_func
 (paren
 op_amp
 id|io_request_lock
-comma
-id|flags
 )paren
 suffix:semicolon
-r_for
-c_loop
-(paren
-id|wait_time
+id|stop_time
 op_assign
 id|jiffies
 op_plus
@@ -1230,26 +1257,28 @@ l_int|4
 op_star
 id|HZ
 suffix:semicolon
-id|wait_time
-OG
+r_while
+c_loop
+(paren
+id|time_before
+c_func
+(paren
 id|jiffies
-suffix:semicolon
+comma
+id|stop_time
 )paren
-(brace
+)paren
 id|schedule
 c_func
 (paren
 )paren
 suffix:semicolon
-)brace
 singleline_comment|// (our worker task needs to run)
-id|spin_lock_irqsave
+id|spin_lock_irq
 c_func
 (paren
 op_amp
 id|io_request_lock
-comma
-id|flags
 )paren
 suffix:semicolon
 )brace
@@ -1297,18 +1326,16 @@ multiline_comment|/* Busy, but indicate request done */
 r_if
 c_cond
 (paren
-id|req-&gt;waiting
+id|req-&gt;CPQFC_WAITING
 op_ne
 l_int|NULL
 )paren
-(brace
-id|complete
+id|CPQFC_COMPLETE
 c_func
 (paren
-id|req-&gt;waiting
+id|req-&gt;CPQFC_WAITING
 )paren
 suffix:semicolon
-)brace
 )brace
 DECL|function|cpqfcTS_ioctl
 r_int
@@ -1380,10 +1407,6 @@ suffix:semicolon
 id|Scsi_Cmnd
 op_star
 id|ScsiPassThruCmnd
-suffix:semicolon
-r_int
-r_int
-id|flags
 suffix:semicolon
 id|ENTER
 c_func
@@ -1675,23 +1698,14 @@ singleline_comment|// to our own HBA.  We do this in order to stall the
 singleline_comment|// thread calling the IOCTL until it completes, and use
 singleline_comment|// the same &quot;_quecommand&quot; function for synchronizing
 singleline_comment|// FC Link events with our &quot;worker thread&quot;.
-id|spin_lock_irqsave
-c_func
-(paren
-op_amp
-id|io_request_lock
-comma
-id|flags
-)paren
-suffix:semicolon
 (brace
-id|DECLARE_COMPLETION
+id|CPQFC_DECLARE_COMPLETION
 c_func
 (paren
 id|wait
 )paren
 suffix:semicolon
-id|ScsiPassThruCmnd-&gt;request.waiting
+id|ScsiPassThruCmnd-&gt;request.CPQFC_WAITING
 op_assign
 op_amp
 id|wait
@@ -1722,34 +1736,16 @@ l_int|1
 )paren
 suffix:semicolon
 singleline_comment|// timeout,retries
-id|spin_unlock_irqrestore
-c_func
-(paren
-op_amp
-id|io_request_lock
-comma
-id|flags
-)paren
-suffix:semicolon
 singleline_comment|// Other I/Os can now resume; we wait for our ioctl
 singleline_comment|// command to complete
-id|wait_for_completion
+id|CPQFC_WAIT_FOR_COMPLETION
 c_func
 (paren
 op_amp
 id|wait
 )paren
 suffix:semicolon
-id|spin_lock_irqsave
-c_func
-(paren
-op_amp
-id|io_request_lock
-comma
-id|flags
-)paren
-suffix:semicolon
-id|ScsiPassThruCmnd-&gt;request.waiting
+id|ScsiPassThruCmnd-&gt;request.CPQFC_WAITING
 op_assign
 l_int|NULL
 suffix:semicolon
@@ -1804,15 +1800,6 @@ c_func
 (paren
 op_amp
 id|SDpnt-&gt;scpnt_wait
-)paren
-suffix:semicolon
-id|spin_unlock_irqrestore
-c_func
-(paren
-op_amp
-id|io_request_lock
-comma
-id|flags
 )paren
 suffix:semicolon
 singleline_comment|// need to pass data back to user (space)?
@@ -4043,6 +4030,33 @@ id|Cmnd
 suffix:semicolon
 )brace
 r_else
+r_if
+c_cond
+(paren
+id|Cmnd-&gt;lun
+op_ge
+id|CPQFCTS_MAX_LUN
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_WARNING
+l_string|&quot;cpqfc: Invalid LUN: %d&bslash;n&quot;
+comma
+id|Cmnd-&gt;lun
+)paren
+suffix:semicolon
+id|QueBadTargetCmnd
+c_func
+(paren
+id|cpqfcHBAdata
+comma
+id|Cmnd
+)paren
+suffix:semicolon
+)brace
+r_else
 singleline_comment|// we know what FC device to send to...
 (brace
 singleline_comment|// does this device support FCP target functions?
@@ -4703,10 +4717,6 @@ l_int|12
 )braket
 suffix:semicolon
 r_int
-r_int
-id|flags
-suffix:semicolon
-r_int
 id|result
 suffix:semicolon
 id|Scsi_Cmnd
@@ -4746,15 +4756,6 @@ l_int|0
 op_assign
 id|RELEASE
 suffix:semicolon
-id|spin_lock_irqsave
-c_func
-(paren
-op_amp
-id|io_request_lock
-comma
-id|flags
-)paren
-suffix:semicolon
 singleline_comment|// allocate with wait = true, interruptible = false 
 id|SCpnt
 op_assign
@@ -4769,7 +4770,7 @@ l_int|0
 )paren
 suffix:semicolon
 (brace
-id|DECLARE_COMPLETION
+id|CPQFC_DECLARE_COMPLETION
 c_func
 (paren
 id|wait
@@ -4779,7 +4780,7 @@ id|SCpnt-&gt;SCp.buffers_residual
 op_assign
 id|FCP_TARGET_RESET
 suffix:semicolon
-id|SCpnt-&gt;request.waiting
+id|SCpnt-&gt;request.CPQFC_WAITING
 op_assign
 op_amp
 id|wait
@@ -4802,32 +4803,14 @@ comma
 id|retries
 )paren
 suffix:semicolon
-id|spin_unlock_irqrestore
-c_func
-(paren
-op_amp
-id|io_request_lock
-comma
-id|flags
-)paren
-suffix:semicolon
-id|wait_for_completion
+id|CPQFC_WAIT_FOR_COMPLETION
 c_func
 (paren
 op_amp
 id|wait
 )paren
 suffix:semicolon
-id|spin_lock_irqsave
-c_func
-(paren
-op_amp
-id|io_request_lock
-comma
-id|flags
-)paren
-suffix:semicolon
-id|SCpnt-&gt;request.waiting
+id|SCpnt-&gt;request.CPQFC_WAITING
 op_assign
 l_int|NULL
 suffix:semicolon
@@ -4860,15 +4843,6 @@ op_amp
 id|SDpnt-&gt;scpnt_wait
 )paren
 suffix:semicolon
-id|spin_unlock_irqrestore
-c_func
-(paren
-op_amp
-id|io_request_lock
-comma
-id|flags
-)paren
-suffix:semicolon
 singleline_comment|// printk(&quot;   LEAVING cpqfcTS_TargetDeviceReset() - return SUCCESS &bslash;n&quot;);
 r_return
 id|SUCCESS
@@ -4884,6 +4858,9 @@ op_star
 id|Cmnd
 )paren
 (brace
+r_int
+id|retval
+suffix:semicolon
 id|Scsi_Device
 op_star
 id|SDpnt
@@ -4891,7 +4868,15 @@ op_assign
 id|Cmnd-&gt;device
 suffix:semicolon
 singleline_comment|// printk(&quot;   ENTERING cpqfcTS_eh_device_reset() &bslash;n&quot;);
-r_return
+id|spin_unlock_irq
+c_func
+(paren
+op_amp
+id|io_request_lock
+)paren
+suffix:semicolon
+id|retval
+op_assign
 id|cpqfcTS_TargetDeviceReset
 c_func
 (paren
@@ -4899,6 +4884,16 @@ id|SDpnt
 comma
 l_int|0
 )paren
+suffix:semicolon
+id|spin_lock_irq
+c_func
+(paren
+op_amp
+id|io_request_lock
+)paren
+suffix:semicolon
+r_return
+id|retval
 suffix:semicolon
 )brace
 DECL|function|cpqfcTS_reset

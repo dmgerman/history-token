@@ -167,14 +167,14 @@ id|name
 suffix:semicolon
 )brace
 suffix:semicolon
-DECL|variable|smc_mca_adapters
+DECL|variable|__initdata
 r_static
-r_const
 r_struct
 id|smc_mca_adapters_t
 id|smc_mca_adapters
 (braket
 )braket
+id|__initdata
 op_assign
 (brace
 (brace

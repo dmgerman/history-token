@@ -74,8 +74,8 @@ multiline_comment|/* Clear interrupt */
 )brace
 multiline_comment|/*&n; * Set up RTC timer interrupt, and return the current time in seconds.&n; */
 DECL|function|setup_timer
-r_extern
-id|__inline__
+r_static
+r_inline
 r_void
 id|setup_timer
 c_func

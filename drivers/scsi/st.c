@@ -1,4 +1,12 @@
-multiline_comment|/*&n;   SCSI Tape Driver for Linux version 1.1 and newer. See the accompanying&n;   file README.st for more information.&n;&n;   History:&n;   Rewritten from Dwayne Forsyth&squot;s SCSI tape driver by Kai Makisara.&n;   Contribution and ideas from several people including (in alphabetical&n;   order) Klaus Ehrenfried, Eric Lee Green, Wolfgang Denk, Steve Hirsch,&n;   Andreas Koppenh&quot;ofer, Michael Leodolter, Eyal Lebedinsky, Michael Schaefer,&n;   J&quot;org Weule, and Eric Youngdale.&n;&n;   Copyright 1992 - 2000 Kai Makisara&n;   email Kai.Makisara@metla.fi&n;&n;   Last modified: Mon Nov 13 21:01:09 2000 by makisara@kai.makisara.local&n;   Some small formal changes - aeb, 950809&n;&n;   Last modified: 18-JAN-1998 Richard Gooch &lt;rgooch@atnf.csiro.au&gt; Devfs support&n;&n;   Reminder: write_lock_irqsave() can be replaced by write_lock() when the old SCSI&n;   error handling will be discarded.&n; */
+multiline_comment|/*&n;   SCSI Tape Driver for Linux version 1.1 and newer. See the accompanying&n;   file README.st for more information.&n;&n;   History:&n;   Rewritten from Dwayne Forsyth&squot;s SCSI tape driver by Kai Makisara.&n;   Contribution and ideas from several people including (in alphabetical&n;   order) Klaus Ehrenfried, Eugene Exarevsky, Eric Lee Green, Wolfgang Denk,&n;   Steve Hirsch, Andreas Koppenh&quot;ofer, Michael Leodolter, Eyal Lebedinsky,&n;   Michael Schaefer, J&quot;org Weule, and Eric Youngdale.&n;&n;   Copyright 1992 - 2001 Kai Makisara&n;   email Kai.Makisara@metla.fi&n;&n;   Last modified: Sun Aug 12 12:34:28 2001 by makisara@kai.makisara.local&n;   Some small formal changes - aeb, 950809&n;&n;   Last modified: 18-JAN-1998 Richard Gooch &lt;rgooch@atnf.csiro.au&gt; Devfs support&n;&n;   Reminder: write_lock_irqsave() can be replaced by write_lock() when the old SCSI&n;   error handling will be discarded.&n; */
+DECL|variable|verstr
+r_static
+r_char
+op_star
+id|verstr
+op_assign
+l_string|&quot;20010812&quot;
+suffix:semicolon
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -88,12 +96,28 @@ comma
 l_string|&quot;i&quot;
 )paren
 suffix:semicolon
+id|MODULE_PARM_DESC
+c_func
+(paren
+id|buffer_kbs
+comma
+l_string|&quot;Default driver buffer size (KB; 32)&quot;
+)paren
+suffix:semicolon
 id|MODULE_PARM
 c_func
 (paren
 id|write_threshold_kbs
 comma
 l_string|&quot;i&quot;
+)paren
+suffix:semicolon
+id|MODULE_PARM_DESC
+c_func
+(paren
+id|write_threshold_kbs
+comma
+l_string|&quot;Asynchronous write threshold (KB; 30)&quot;
 )paren
 suffix:semicolon
 id|MODULE_PARM
@@ -104,12 +128,28 @@ comma
 l_string|&quot;i&quot;
 )paren
 suffix:semicolon
+id|MODULE_PARM_DESC
+c_func
+(paren
+id|max_buffers
+comma
+l_string|&quot;Maximum number of buffer allocated at initialisation (4)&quot;
+)paren
+suffix:semicolon
 id|MODULE_PARM
 c_func
 (paren
 id|max_sg_segs
 comma
 l_string|&quot;i&quot;
+)paren
+suffix:semicolon
+id|MODULE_PARM_DESC
+c_func
+(paren
+id|max_sg_segs
+comma
+l_string|&quot;Maximum number of scatter/gather segments to use (32)&quot;
 )paren
 suffix:semicolon
 macro_line|#ifndef MODULE
@@ -1052,10 +1092,6 @@ id|Scsi_Tape
 op_star
 id|STp
 suffix:semicolon
-r_if
-c_cond
-(paren
-(paren
 id|st_nbr
 op_assign
 id|TAPE_NR
@@ -1063,11 +1099,7 @@ c_func
 (paren
 id|SCpnt-&gt;request.rq_dev
 )paren
-)paren
-OL
-id|st_template.nr_dev
-)paren
-(brace
+suffix:semicolon
 id|read_lock
 c_func
 (paren
@@ -1246,26 +1278,6 @@ c_func
 id|SCpnt-&gt;request.waiting
 )paren
 suffix:semicolon
-)brace
-id|DEB
-c_func
-(paren
-r_else
-r_if
-(paren
-id|debugging
-)paren
-id|printk
-c_func
-(paren
-id|KERN_ERR
-l_string|&quot;st?: Illegal interrupt device %x&bslash;n&quot;
-comma
-id|st_nbr
-)paren
-suffix:semicolon
-)paren
-multiline_comment|/* end DEB */
 )brace
 multiline_comment|/* Do the scsi command. Waits until command performed if do_wait is true.&n;   Otherwise write_behind_check() is used to check that the command&n;   has finished. */
 r_static
@@ -6508,10 +6520,6 @@ l_int|0x40
 r_if
 c_cond
 (paren
-id|STp-&gt;block_size
-op_ne
-l_int|0
-op_logical_and
 (paren
 id|SRpnt-&gt;sr_sense_buffer
 (braket
@@ -12022,7 +12030,7 @@ id|STp
 comma
 id|MTFSF
 comma
-l_int|0x3fff
+l_int|0x7fffff
 )paren
 suffix:semicolon
 id|fileno
@@ -12329,6 +12337,22 @@ l_int|0
 )braket
 op_assign
 id|MODE_SELECT
+suffix:semicolon
+r_if
+c_cond
+(paren
+(paren
+id|STp-&gt;use_pf
+op_amp
+id|USE_PF
+)paren
+)paren
+id|cmd
+(braket
+l_int|1
+)braket
+op_assign
+id|MODE_SELECT_PAGE_FORMAT
 suffix:semicolon
 id|cmd
 (braket
@@ -13213,6 +13237,25 @@ id|MTBSFM
 r_if
 c_cond
 (paren
+id|arg
+OG
+l_int|0
+op_logical_and
+id|undone
+OL
+l_int|0
+)paren
+multiline_comment|/* Some drives get this wrong */
+id|undone
+op_assign
+(paren
+op_minus
+id|undone
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
 id|STps-&gt;drv_file
 op_ge
 l_int|0
@@ -13338,6 +13381,25 @@ r_else
 r_if
 c_cond
 (paren
+id|arg
+OG
+l_int|0
+op_logical_and
+id|undone
+OL
+l_int|0
+)paren
+multiline_comment|/* Some drives get this wrong */
+id|undone
+op_assign
+(paren
+op_minus
+id|undone
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
 id|STps-&gt;drv_block
 op_ge
 l_int|0
@@ -13381,6 +13443,80 @@ id|STps-&gt;eof
 op_assign
 id|ST_EOD
 suffix:semicolon
+)brace
+r_else
+r_if
+c_cond
+(paren
+id|cmd_in
+op_eq
+id|MTSETBLK
+op_logical_or
+id|cmd_in
+op_eq
+id|MTSETDENSITY
+op_logical_or
+id|cmd_in
+op_eq
+id|MTSETDRVBUFFER
+op_logical_or
+id|cmd_in
+op_eq
+id|SET_DENS_AND_BLK
+)paren
+(brace
+r_if
+c_cond
+(paren
+(paren
+id|SRpnt-&gt;sr_sense_buffer
+(braket
+l_int|2
+)braket
+op_amp
+l_int|0x0f
+)paren
+op_eq
+id|ILLEGAL_REQUEST
+op_logical_and
+op_logical_neg
+(paren
+id|STp-&gt;use_pf
+op_amp
+id|PF_TESTED
+)paren
+)paren
+(brace
+multiline_comment|/* Try the other possible state of Page Format if not&n;&t;&t;&t;&t;   already tried */
+id|STp-&gt;use_pf
+op_assign
+op_logical_neg
+id|STp-&gt;use_pf
+op_or
+id|PF_TESTED
+suffix:semicolon
+id|scsi_release_request
+c_func
+(paren
+id|SRpnt
+)paren
+suffix:semicolon
+id|SRpnt
+op_assign
+l_int|NULL
+suffix:semicolon
+r_return
+id|st_int_ioctl
+c_func
+(paren
+id|STp
+comma
+id|cmd_in
+comma
+id|arg
+)paren
+suffix:semicolon
+)brace
 )brace
 r_else
 r_if
@@ -19241,6 +19377,14 @@ id|SDp-&gt;host
 op_member_access_from_pointer
 id|unchecked_isa_dma
 suffix:semicolon
+id|tpnt-&gt;use_pf
+op_assign
+(paren
+id|SDp-&gt;scsi_level
+op_ge
+id|SCSI_2
+)paren
+suffix:semicolon
 id|tpnt-&gt;density
 op_assign
 l_int|0
@@ -19612,7 +19756,9 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;st: bufsize %d, wrt %d, max init. buffers %d, s/g segs %d.&bslash;n&quot;
+l_string|&quot;st: Version %s, bufsize %d, wrt %d, max init. bufs %d, s/g segs %d&bslash;n&quot;
+comma
+id|verstr
 comma
 id|st_buffer_size
 comma

@@ -804,6 +804,13 @@ c_func
 id|fsync_dev
 )paren
 suffix:semicolon
+DECL|variable|fsync_no_super
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|fsync_no_super
+)paren
+suffix:semicolon
 DECL|variable|permission
 id|EXPORT_SYMBOL
 c_func
@@ -2242,11 +2249,11 @@ id|iomem_resource
 )paren
 suffix:semicolon
 multiline_comment|/* process management */
-DECL|variable|up_and_exit
+DECL|variable|complete_and_exit
 id|EXPORT_SYMBOL
 c_func
 (paren
-id|up_and_exit
+id|complete_and_exit
 )paren
 suffix:semicolon
 DECL|variable|__wake_up

@@ -1,10 +1,11 @@
-multiline_comment|/*&n; *  linux/include/asm/setup.h&n; *&n; *  Copyright (C) 1997-1999 Russell King&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; *&n; *  Structure passed to kernel to tell it about the&n; *  hardware it&squot;s running on.  See linux/Documentation/arm/Setup&n; *  for more info.&n; */
+multiline_comment|/*&n; *  linux/include/asm/setup.h&n; *&n; *  Copyright (C) 1997-1999 Russell King&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; *&n; *  Structure passed to kernel to tell it about the&n; *  hardware it&squot;s running on.  See linux/Documentation/arm/Setup&n; *  for more info.&n; *&n; * NOTE:&n; *  This file contains two ways to pass information from the boot&n; *  loader to the kernel. The old struct param_struct is deprecated,&n; *  but it will be kept in the kernel for 5 years from now&n; *  (2001). This will allow boot loaders to convert to the new struct&n; *  tag way.&n; */
 macro_line|#ifndef __ASMARM_SETUP_H
 DECL|macro|__ASMARM_SETUP_H
 mdefine_line|#define __ASMARM_SETUP_H
 multiline_comment|/*&n; * Usage:&n; *  - do not go blindly adding fields, add them at the end&n; *  - when adding fields, don&squot;t rely on the address until&n; *    a patch from me has been released&n; *  - unused fields should be zero (for future expansion)&n; *  - this structure is relatively short-lived - only&n; *    guaranteed to contain useful data in setup_arch()&n; */
 DECL|macro|COMMAND_LINE_SIZE
 mdefine_line|#define COMMAND_LINE_SIZE 1024
+multiline_comment|/* This is the old deprecated way to pass parameters to the kernel */
 DECL|struct|param_struct
 r_struct
 id|param_struct
@@ -224,7 +225,8 @@ id|COMMAND_LINE_SIZE
 suffix:semicolon
 )brace
 suffix:semicolon
-multiline_comment|/*&n; * New idea - a list of tagged entries&n; */
+multiline_comment|/*&n; * The new way of passing information: a list of tagged entries&n; */
+multiline_comment|/* The list ends with an ATAG_NONE node. */
 DECL|macro|ATAG_NONE
 mdefine_line|#define ATAG_NONE&t;0x00000000
 DECL|struct|tag_header
@@ -241,6 +243,7 @@ id|tag
 suffix:semicolon
 )brace
 suffix:semicolon
+multiline_comment|/* The list must start with an ATAG_CORE node */
 DECL|macro|ATAG_CORE
 mdefine_line|#define ATAG_CORE&t;0x54410001
 DECL|struct|tag_core
@@ -262,6 +265,7 @@ id|rootdev
 suffix:semicolon
 )brace
 suffix:semicolon
+multiline_comment|/* it is allowed to have multiple ATAG_MEM nodes */
 DECL|macro|ATAG_MEM
 mdefine_line|#define ATAG_MEM&t;&t;0x54410002
 DECL|struct|tag_mem32
@@ -276,8 +280,10 @@ DECL|member|start
 id|u32
 id|start
 suffix:semicolon
+multiline_comment|/* physical start address */
 )brace
 suffix:semicolon
+multiline_comment|/* VGA text type displays */
 DECL|macro|ATAG_VIDEOTEXT
 mdefine_line|#define ATAG_VIDEOTEXT&t;0x54410003
 DECL|struct|tag_videotext
@@ -322,6 +328,7 @@ id|video_points
 suffix:semicolon
 )brace
 suffix:semicolon
+multiline_comment|/* describes how the ramdisk will be used in kernel */
 DECL|macro|ATAG_RAMDISK
 mdefine_line|#define ATAG_RAMDISK&t;0x54410004
 DECL|struct|tag_ramdisk
@@ -332,17 +339,20 @@ DECL|member|flags
 id|u32
 id|flags
 suffix:semicolon
-multiline_comment|/* b0 = load, b1 = prompt */
+multiline_comment|/* bit 0 = load, bit 1 = prompt */
 DECL|member|size
 id|u32
 id|size
 suffix:semicolon
+multiline_comment|/* decompressed ramdisk size */
 DECL|member|start
 id|u32
 id|start
 suffix:semicolon
+multiline_comment|/* starting block of floppy-based RAM disk image */
 )brace
 suffix:semicolon
+multiline_comment|/* describes where the compressed ramdisk image lives */
 DECL|macro|ATAG_INITRD
 mdefine_line|#define ATAG_INITRD&t;0x54410005
 DECL|struct|tag_initrd
@@ -353,12 +363,15 @@ DECL|member|start
 id|u32
 id|start
 suffix:semicolon
+multiline_comment|/* physical start address */
 DECL|member|size
 id|u32
 id|size
 suffix:semicolon
+multiline_comment|/* size of compressed ramdisk image */
 )brace
 suffix:semicolon
+multiline_comment|/* board serial number. &quot;64 bits should be enough for everybody&quot; */
 DECL|macro|ATAG_SERIAL
 mdefine_line|#define ATAG_SERIAL&t;0x54410006
 DECL|struct|tag_serialnr
@@ -375,6 +388,7 @@ id|high
 suffix:semicolon
 )brace
 suffix:semicolon
+multiline_comment|/* board revision */
 DECL|macro|ATAG_REVISION
 mdefine_line|#define ATAG_REVISION&t;0x54410007
 DECL|struct|tag_revision
@@ -387,6 +401,7 @@ id|rev
 suffix:semicolon
 )brace
 suffix:semicolon
+multiline_comment|/* initial values for vesafb-type framebuffers. see struct screen_info&n; * in include/linux/tty.h&n; */
 DECL|macro|ATAG_VIDEOLFB
 mdefine_line|#define ATAG_VIDEOLFB&t;0x54410008
 DECL|struct|tag_videolfb
@@ -451,6 +466,7 @@ id|rsvd_pos
 suffix:semicolon
 )brace
 suffix:semicolon
+multiline_comment|/* command line: &bslash;0 terminated string */
 DECL|macro|ATAG_CMDLINE
 mdefine_line|#define ATAG_CMDLINE&t;0x54410009
 DECL|struct|tag_cmdline
@@ -464,8 +480,10 @@ id|cmdline
 l_int|1
 )braket
 suffix:semicolon
+multiline_comment|/* this is the minimum size */
 )brace
 suffix:semicolon
+multiline_comment|/* acorn RiscPC specific information */
 DECL|macro|ATAG_ACORN
 mdefine_line|#define ATAG_ACORN&t;0x41000101
 DECL|struct|tag_acorn
@@ -490,6 +508,7 @@ id|adfsdrives
 suffix:semicolon
 )brace
 suffix:semicolon
+multiline_comment|/* footbridge memory clock, see arch/arm/mach-footbridge/arch.c */
 DECL|macro|ATAG_MEMCLK
 mdefine_line|#define ATAG_MEMCLK&t;0x41000402
 DECL|struct|tag_memclk
@@ -599,6 +618,18 @@ op_star
 suffix:semicolon
 )brace
 suffix:semicolon
+DECL|macro|__tag
+mdefine_line|#define __tag __attribute__((unused, __section__(&quot;.taglist&quot;)))
+DECL|macro|__tagtable
+mdefine_line|#define __tagtable(tag, fn) &bslash;&n;static struct tagtable __tagtable_##fn __tag = { tag, fn }
+DECL|macro|tag_member_present
+mdefine_line|#define tag_member_present(tag,member)&t;&t;&t;&t;&bslash;&n;&t;((unsigned long)(&amp;((struct tag *)0L)-&gt;member + 1)&t;&bslash;&n;&t;&t;&lt;= (tag)-&gt;hdr.size * 4)
+DECL|macro|tag_next
+mdefine_line|#define tag_next(t)&t;((struct tag *)((u32 *)(t) + (t)-&gt;hdr.size))
+DECL|macro|tag_size
+mdefine_line|#define tag_size(type)&t;((sizeof(struct tag_header) + sizeof(struct type)) &gt;&gt; 2)
+DECL|macro|for_each_tag
+mdefine_line|#define for_each_tag(t,base)&t;&t;&bslash;&n;&t;for (t = base; t-&gt;hdr.size; t = tag_next(t))
 multiline_comment|/*&n; * Memory map description&n; */
 DECL|macro|NR_BANKS
 mdefine_line|#define NR_BANKS 8

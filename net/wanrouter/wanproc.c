@@ -4,7 +4,7 @@ macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/stddef.h&gt;&t;/* offsetof(), etc. */
 macro_line|#include &lt;linux/errno.h&gt;&t;/* return codes */
 macro_line|#include &lt;linux/kernel.h&gt;
-macro_line|#include &lt;linux/malloc.h&gt;&t;/* kmalloc(), kfree() */
+macro_line|#include &lt;linux/slab.h&gt;&t;/* kmalloc(), kfree() */
 macro_line|#include &lt;linux/mm.h&gt;&t;&t;/* verify_area(), etc. */
 macro_line|#include &lt;linux/string.h&gt;&t;/* inline mem*, str* functions */
 macro_line|#include &lt;asm/byteorder.h&gt;&t;/* htons(), etc. */
@@ -3857,16 +3857,13 @@ suffix:semicolon
 macro_line|#endif /* End of ifdef LINUX_2_4 */
 macro_line|#else
 multiline_comment|/*&n; *&t;No /proc - output stubs&n; */
-DECL|function|__initfunc
-id|__initfunc
-c_func
-(paren
+DECL|function|wanrouter_proc_init
 r_int
+id|__init
 id|wanrouter_proc_init
 c_func
 (paren
 r_void
-)paren
 )paren
 (brace
 r_return

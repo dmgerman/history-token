@@ -435,7 +435,7 @@ macro_line|#ifdef CONFIG_ALPHA_EV5
 DECL|macro|implver
 mdefine_line|#define implver() IMPLVER_EV5
 macro_line|#endif
-macro_line|#ifdef CONFIG_ALPHA_EV6
+macro_line|#if defined(CONFIG_ALPHA_EV6) || defined(CONFIG_ALPHA_EV67)
 DECL|macro|implver
 mdefine_line|#define implver() IMPLVER_EV6
 macro_line|#endif

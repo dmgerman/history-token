@@ -55,8 +55,8 @@ mdefine_line|#define __pgd_next(pgd) (((unsigned long *)pgd)[1])
 DECL|macro|__pte_next
 mdefine_line|#define __pte_next(pte)&t;(((unsigned long *)pte)[0])
 DECL|function|get_pgd_fast
-r_extern
-id|__inline__
+r_static
+r_inline
 id|pgd_t
 op_star
 id|get_pgd_fast
@@ -126,8 +126,8 @@ id|ret
 suffix:semicolon
 )brace
 DECL|function|free_pgd_fast
-r_extern
-id|__inline__
+r_static
+r_inline
 r_void
 id|free_pgd_fast
 c_func
@@ -236,8 +236,8 @@ id|ret
 suffix:semicolon
 )brace
 DECL|function|free_pte_fast
-r_extern
-id|__inline__
+r_static
+r_inline
 r_void
 id|free_pte_fast
 c_func
@@ -326,8 +326,8 @@ id|pgd
 )paren
 suffix:semicolon
 DECL|function|pgd_alloc
-r_extern
-id|__inline__
+r_static
+r_inline
 id|pgd_t
 op_star
 id|pgd_alloc

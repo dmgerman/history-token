@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * BK Id: SCCS/s.init.h 1.5 05/17/01 18:14:24 cort&n; */
+multiline_comment|/*&n; * BK Id: SCCS/s.init.h 1.8 07/06/01 09:19:30 trini&n; */
 macro_line|#ifdef __KERNEL__
 macro_line|#ifndef _PPC_INIT_H
 DECL|macro|_PPC_INIT_H
@@ -22,12 +22,6 @@ DECL|macro|__chrpdata
 mdefine_line|#define __chrpdata __attribute__ ((__section__ (&quot;.data.chrp&quot;)))
 DECL|macro|__chrpfunc
 mdefine_line|#define __chrpfunc(__argchrp) &bslash;&n;&t;__argchrp __chrp; &bslash;&n;&t;__argchrp
-DECL|macro|__apus
-mdefine_line|#define __apus __attribute__ ((__section__ (&quot;.text.apus&quot;)))
-DECL|macro|__apusdata
-mdefine_line|#define __apusdata __attribute__ ((__section__ (&quot;.data.apus&quot;)))
-DECL|macro|__apusfunc
-mdefine_line|#define __apusfunc(__argapus) &bslash;&n;&t;__argapus __apus; &bslash;&n;&t;__argapus
 multiline_comment|/* this is actually just common chrp/pmac code, not OF code -- Cort */
 DECL|macro|__openfirmware
 mdefine_line|#define __openfirmware __attribute__ ((__section__ (&quot;.text.openfirmware&quot;)))
