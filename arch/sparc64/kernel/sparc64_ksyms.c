@@ -735,6 +735,23 @@ c_func
 id|__global_restore_flags
 )paren
 suffix:semicolon
+macro_line|#if defined(CONFIG_MCOUNT)
+r_extern
+r_void
+id|mcount
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+DECL|variable|mcount
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|mcount
+)paren
+suffix:semicolon
+macro_line|#endif
 multiline_comment|/* Per-CPU information table */
 DECL|variable|cpu_data
 id|EXPORT_SYMBOL
