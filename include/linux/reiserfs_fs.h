@@ -5754,6 +5754,15 @@ op_star
 id|s
 )paren
 suffix:semicolon
+r_char
+op_star
+id|reiserfs_hashname
+c_func
+(paren
+r_int
+id|code
+)paren
+suffix:semicolon
 multiline_comment|/* lbalance.c */
 r_int
 id|leaf_move_items
