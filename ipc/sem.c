@@ -260,10 +260,6 @@ id|sma-&gt;sem_perm.security
 op_assign
 l_int|NULL
 suffix:semicolon
-r_if
-c_cond
-(paren
-(paren
 id|retval
 op_assign
 id|security_sem_alloc
@@ -271,7 +267,11 @@ c_func
 (paren
 id|sma
 )paren
-)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|retval
 )paren
 (brace
 id|ipc_rcu_free
