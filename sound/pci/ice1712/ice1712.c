@@ -14088,6 +14088,12 @@ c_func
 id|ice
 )paren
 suffix:semicolon
+id|pci_disable_device
+c_func
+(paren
+id|ice-&gt;pci
+)paren
+suffix:semicolon
 id|kfree
 c_func
 (paren
@@ -14230,6 +14236,12 @@ c_func
 l_string|&quot;architecture does not support 28bit PCI busmaster DMA&bslash;n&quot;
 )paren
 suffix:semicolon
+id|pci_disable_device
+c_func
+(paren
+id|pci
+)paren
+suffix:semicolon
 r_return
 op_minus
 id|ENXIO
@@ -14258,10 +14270,18 @@ id|ice
 op_eq
 l_int|NULL
 )paren
+(brace
+id|pci_disable_device
+c_func
+(paren
+id|pci
+)paren
+suffix:semicolon
 r_return
 op_minus
 id|ENOMEM
 suffix:semicolon
+)brace
 id|ice-&gt;omni
 op_assign
 id|omni
@@ -14423,6 +14443,12 @@ id|kfree
 c_func
 (paren
 id|ice
+)paren
+suffix:semicolon
+id|pci_disable_device
+c_func
+(paren
+id|pci
 )paren
 suffix:semicolon
 r_return
