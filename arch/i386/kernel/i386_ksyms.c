@@ -28,6 +28,7 @@ macro_line|#include &lt;asm/desc.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
 macro_line|#include &lt;asm/pgalloc.h&gt;
 macro_line|#include &lt;asm/tlbflush.h&gt;
+macro_line|#include &lt;asm/edd.h&gt;
 r_extern
 r_void
 id|dump_thread
@@ -712,4 +713,20 @@ c_func
 id|__PAGE_KERNEL
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_EDD_MODULE
+DECL|variable|edd
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|edd
+)paren
+suffix:semicolon
+DECL|variable|eddnr
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|eddnr
+)paren
+suffix:semicolon
+macro_line|#endif
 eof
