@@ -1525,6 +1525,10 @@ id|usb_free_dev
 id|udev
 )paren
 suffix:semicolon
+id|ohci-&gt;hcd.self.root_hub
+op_assign
+l_int|NULL
+suffix:semicolon
 id|disable
 (paren
 id|ohci

@@ -1091,6 +1091,11 @@ l_string|&quot;hcca&quot;
 )paren
 suffix:semicolon
 macro_line|#endif
+r_if
+c_cond
+(paren
+id|controller-&gt;hcca
+)paren
 id|dbg
 (paren
 l_string|&quot;hcca frame #%04x&quot;

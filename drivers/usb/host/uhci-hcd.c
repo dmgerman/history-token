@@ -10140,6 +10140,10 @@ c_func
 id|udev
 )paren
 suffix:semicolon
+id|hcd-&gt;self.root_hub
+op_assign
+l_int|NULL
+suffix:semicolon
 id|err_alloc_root_hub
 suffix:colon
 id|pci_pool_destroy
