@@ -350,7 +350,8 @@ id|mmap
 suffix:semicolon
 multiline_comment|/* list of VMAs */
 DECL|member|mm_rb
-id|rb_root_t
+r_struct
+id|rb_root
 id|mm_rb
 suffix:semicolon
 DECL|member|mmap_cache
