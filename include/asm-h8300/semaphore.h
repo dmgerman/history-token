@@ -265,6 +265,7 @@ l_string|&quot;dec.l #1,er1&bslash;n&bslash;t&quot;
 l_string|&quot;mov.l er1,%0&bslash;n&bslash;t&quot;
 l_string|&quot;bpl 1f&bslash;n&bslash;t&quot;
 l_string|&quot;ldc r3l,ccr&bslash;n&bslash;t&quot;
+l_string|&quot;mov.l %1,er0&bslash;n&bslash;t&quot;
 l_string|&quot;jsr @___down&bslash;n&bslash;t&quot;
 l_string|&quot;bra 2f&bslash;n&quot;
 l_string|&quot;1:&bslash;n&bslash;t&quot;
@@ -277,6 +278,10 @@ op_star
 id|count
 )paren
 suffix:colon
+l_string|&quot;g&quot;
+(paren
+id|sem
+)paren
 suffix:colon
 l_string|&quot;cc&quot;
 comma
@@ -342,6 +347,7 @@ l_string|&quot;dec.l #1,er2&bslash;n&bslash;t&quot;
 l_string|&quot;mov.l er2,%1&bslash;n&bslash;t&quot;
 l_string|&quot;bpl 1f&bslash;n&bslash;t&quot;
 l_string|&quot;ldc r1l,ccr&bslash;n&bslash;t&quot;
+l_string|&quot;mov.l %2,er0&bslash;n&bslash;t&quot;
 l_string|&quot;jsr @___down_interruptible&bslash;n&bslash;t&quot;
 l_string|&quot;bra 2f&bslash;n&quot;
 l_string|&quot;1:&bslash;n&bslash;t&quot;
@@ -360,6 +366,10 @@ op_star
 id|count
 )paren
 suffix:colon
+l_string|&quot;g&quot;
+(paren
+id|sem
+)paren
 suffix:colon
 l_string|&quot;cc&quot;
 comma
@@ -433,6 +443,7 @@ c_func
 l_string|&quot;.align 2&bslash;n&bslash;t&quot;
 )paren
 l_string|&quot;3:&bslash;n&bslash;t&quot;
+l_string|&quot;mov.l %2,er0&bslash;n&bslash;t&quot;
 l_string|&quot;jsr @___down_trylock&bslash;n&bslash;t&quot;
 l_string|&quot;jmp @2f&bslash;n&bslash;t&quot;
 id|LOCK_SECTION_END
@@ -452,6 +463,10 @@ l_string|&quot;=r&quot;
 id|count
 )paren
 suffix:colon
+l_string|&quot;g&quot;
+(paren
+id|sem
+)paren
 suffix:colon
 l_string|&quot;cc&quot;
 comma
@@ -521,6 +536,7 @@ l_string|&quot;ldc r3l,ccr&bslash;n&bslash;t&quot;
 l_string|&quot;sub.l er2,er2&bslash;n&bslash;t&quot;
 l_string|&quot;cmp.l er2,er1&bslash;n&bslash;t&quot;
 l_string|&quot;bgt 1f&bslash;n&bslash;t&quot;
+l_string|&quot;mov.l %1,er0&bslash;n&bslash;t&quot;
 l_string|&quot;jsr @___up&bslash;n&quot;
 l_string|&quot;1:&quot;
 suffix:colon
@@ -530,6 +546,10 @@ op_star
 id|count
 )paren
 suffix:colon
+l_string|&quot;g&quot;
+(paren
+id|sem
+)paren
 suffix:colon
 l_string|&quot;cc&quot;
 comma

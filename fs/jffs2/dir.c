@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * JFFS2 -- Journalling Flash File System, Version 2.&n; *&n; * Copyright (C) 2001, 2002 Red Hat, Inc.&n; *&n; * Created by David Woodhouse &lt;dwmw2@cambridge.redhat.com&gt;&n; *&n; * For licensing information, see the file &squot;LICENCE&squot; in this directory.&n; *&n; * $Id: dir.c,v 1.77 2003/06/05 14:42:24 dwmw2 Exp $&n; *&n; */
+multiline_comment|/*&n; * JFFS2 -- Journalling Flash File System, Version 2.&n; *&n; * Copyright (C) 2001-2003 Red Hat, Inc.&n; *&n; * Created by David Woodhouse &lt;dwmw2@redhat.com&gt;&n; *&n; * For licensing information, see the file &squot;LICENCE&squot; in this directory.&n; *&n; * $Id: dir.c,v 1.82 2003/10/11 11:47:23 dwmw2 Exp $&n; *&n; */
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
@@ -9,7 +9,7 @@ macro_line|#include &lt;linux/jffs2_fs_i.h&gt;
 macro_line|#include &lt;linux/jffs2_fs_sb.h&gt;
 macro_line|#include &lt;linux/time.h&gt;
 macro_line|#include &quot;nodelist.h&quot;
-multiline_comment|/* Urgh. Please tell me there&squot;s a nicer way of doing this. */
+multiline_comment|/* Urgh. Please tell me there&squot;s a nicer way of doing these. */
 macro_line|#include &lt;linux/version.h&gt;
 macro_line|#if LINUX_VERSION_CODE &lt; KERNEL_VERSION(2,5,48)
 DECL|typedef|mknod_arg_t
@@ -17,12 +17,16 @@ r_typedef
 r_int
 id|mknod_arg_t
 suffix:semicolon
+DECL|macro|NAMEI_COMPAT
+mdefine_line|#define NAMEI_COMPAT(x) ((void *)x)
 macro_line|#else
 DECL|typedef|mknod_arg_t
 r_typedef
 id|dev_t
 id|mknod_arg_t
 suffix:semicolon
+DECL|macro|NAMEI_COMPAT
+mdefine_line|#define NAMEI_COMPAT(x) (x)
 macro_line|#endif
 r_static
 r_int
@@ -225,12 +229,20 @@ op_assign
 dot
 id|create
 op_assign
+id|NAMEI_COMPAT
+c_func
+(paren
 id|jffs2_create
+)paren
 comma
 dot
 id|lookup
 op_assign
+id|NAMEI_COMPAT
+c_func
+(paren
 id|jffs2_lookup
+)paren
 comma
 dot
 id|link
@@ -1438,9 +1450,6 @@ id|alloclen
 comma
 id|phys_ofs
 suffix:semicolon
-r_uint32
-id|writtenlen
-suffix:semicolon
 r_int
 id|ret
 suffix:semicolon
@@ -1714,8 +1723,7 @@ id|target
 comma
 id|phys_ofs
 comma
-op_amp
-id|writtenlen
+id|ALLOC_NORMAL
 )paren
 suffix:semicolon
 id|jffs2_free_raw_inode
@@ -1774,38 +1782,6 @@ op_amp
 id|f-&gt;sem
 )paren
 suffix:semicolon
-multiline_comment|/* Work out where to put the dirent node now. */
-id|writtenlen
-op_assign
-id|PAD
-c_func
-(paren
-id|writtenlen
-)paren
-suffix:semicolon
-id|phys_ofs
-op_add_assign
-id|writtenlen
-suffix:semicolon
-id|alloclen
-op_sub_assign
-id|writtenlen
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|alloclen
-OL
-r_sizeof
-(paren
-op_star
-id|rd
-)paren
-op_plus
-id|namelen
-)paren
-(brace
-multiline_comment|/* Not enough space left in this chunk. Get some more */
 id|jffs2_complete_reservation
 c_func
 (paren
@@ -1852,7 +1828,6 @@ suffix:semicolon
 r_return
 id|ret
 suffix:semicolon
-)brace
 )brace
 id|rd
 op_assign
@@ -2052,8 +2027,7 @@ id|namelen
 comma
 id|phys_ofs
 comma
-op_amp
-id|writtenlen
+id|ALLOC_NORMAL
 )paren
 suffix:semicolon
 r_if
@@ -2221,9 +2195,6 @@ r_uint32
 id|alloclen
 comma
 id|phys_ofs
-suffix:semicolon
-r_uint32
-id|writtenlen
 suffix:semicolon
 r_int
 id|ret
@@ -2412,8 +2383,7 @@ l_int|0
 comma
 id|phys_ofs
 comma
-op_amp
-id|writtenlen
+id|ALLOC_NORMAL
 )paren
 suffix:semicolon
 id|jffs2_free_raw_inode
@@ -2472,38 +2442,6 @@ op_amp
 id|f-&gt;sem
 )paren
 suffix:semicolon
-multiline_comment|/* Work out where to put the dirent node now. */
-id|writtenlen
-op_assign
-id|PAD
-c_func
-(paren
-id|writtenlen
-)paren
-suffix:semicolon
-id|phys_ofs
-op_add_assign
-id|writtenlen
-suffix:semicolon
-id|alloclen
-op_sub_assign
-id|writtenlen
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|alloclen
-OL
-r_sizeof
-(paren
-op_star
-id|rd
-)paren
-op_plus
-id|namelen
-)paren
-(brace
-multiline_comment|/* Not enough space left in this chunk. Get some more */
 id|jffs2_complete_reservation
 c_func
 (paren
@@ -2550,7 +2488,6 @@ suffix:semicolon
 r_return
 id|ret
 suffix:semicolon
-)brace
 )brace
 id|rd
 op_assign
@@ -2750,8 +2687,7 @@ id|namelen
 comma
 id|phys_ofs
 comma
-op_amp
-id|writtenlen
+id|ALLOC_NORMAL
 )paren
 suffix:semicolon
 r_if
@@ -3015,9 +2951,6 @@ r_uint32
 id|alloclen
 comma
 id|phys_ofs
-suffix:semicolon
-r_uint32
-id|writtenlen
 suffix:semicolon
 r_int
 id|ret
@@ -3318,8 +3251,7 @@ id|devlen
 comma
 id|phys_ofs
 comma
-op_amp
-id|writtenlen
+id|ALLOC_NORMAL
 )paren
 suffix:semicolon
 id|jffs2_free_raw_inode
@@ -3378,38 +3310,6 @@ op_amp
 id|f-&gt;sem
 )paren
 suffix:semicolon
-multiline_comment|/* Work out where to put the dirent node now. */
-id|writtenlen
-op_assign
-id|PAD
-c_func
-(paren
-id|writtenlen
-)paren
-suffix:semicolon
-id|phys_ofs
-op_add_assign
-id|writtenlen
-suffix:semicolon
-id|alloclen
-op_sub_assign
-id|writtenlen
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|alloclen
-OL
-r_sizeof
-(paren
-op_star
-id|rd
-)paren
-op_plus
-id|namelen
-)paren
-(brace
-multiline_comment|/* Not enough space left in this chunk. Get some more */
 id|jffs2_complete_reservation
 c_func
 (paren
@@ -3456,7 +3356,6 @@ suffix:semicolon
 r_return
 id|ret
 suffix:semicolon
-)brace
 )brace
 id|rd
 op_assign
@@ -3663,8 +3562,7 @@ id|namelen
 comma
 id|phys_ofs
 comma
-op_amp
-id|writtenlen
+id|ALLOC_NORMAL
 )paren
 suffix:semicolon
 r_if

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * JFFS2 -- Journalling Flash File System, Version 2.&n; *&n; * Copyright (C) 2002 Red Hat, Inc.&n; *&n; * Created by David Woodhouse &lt;dwmw2@cambridge.redhat.com&gt;&n; *&n; * For licensing information, see the file &squot;LICENCE&squot; in this directory.&n; *&n; * $Id: os-linux.h,v 1.26 2003/05/16 18:45:25 dwmw2 Exp $&n; *&n; */
+multiline_comment|/*&n; * JFFS2 -- Journalling Flash File System, Version 2.&n; *&n; * Copyright (C) 2002-2003 Red Hat, Inc.&n; *&n; * Created by David Woodhouse &lt;dwmw2@redhat.com&gt;&n; *&n; * For licensing information, see the file &squot;LICENCE&squot; in this directory.&n; *&n; * $Id: os-linux.h,v 1.37 2003/10/11 11:47:23 dwmw2 Exp $&n; *&n; */
 macro_line|#ifndef __JFFS2_OS_LINUX_H__
 DECL|macro|__JFFS2_OS_LINUX_H__
 mdefine_line|#define __JFFS2_OS_LINUX_H__
@@ -8,6 +8,10 @@ DECL|macro|os_to_jffs2_mode
 mdefine_line|#define os_to_jffs2_mode(x) (x)
 DECL|macro|jffs2_to_os_mode
 mdefine_line|#define jffs2_to_os_mode(x) (x)
+macro_line|#if LINUX_VERSION_CODE &lt; KERNEL_VERSION(2,5,73)
+DECL|macro|kstatfs
+mdefine_line|#define kstatfs statfs
+macro_line|#endif
 macro_line|#if LINUX_VERSION_CODE &gt; KERNEL_VERSION(2,5,2)
 DECL|macro|JFFS2_INODE_INFO
 mdefine_line|#define JFFS2_INODE_INFO(i) (list_entry(i, struct jffs2_inode_info, vfs_inode))
@@ -80,7 +84,7 @@ DECL|macro|JFFS2_F_I_ATIME
 mdefine_line|#define JFFS2_F_I_ATIME(f) (OFNI_EDONI_2SFFJ(f)-&gt;i_atime)
 macro_line|#endif
 multiline_comment|/* Hmmm. P&squot;raps generic code should only ever see versions of signal&n;   functions which do the locking automatically? */
-macro_line|#if LINUX_VERSION_CODE &lt; KERNEL_VERSION(2,5,40)
+macro_line|#if LINUX_VERSION_CODE &lt; KERNEL_VERSION(2,5,40) &amp;&amp; !defined(__rh_config_h__)
 DECL|macro|current_sig_lock
 mdefine_line|#define current_sig_lock current-&gt;sigmask_lock
 macro_line|#else
@@ -164,14 +168,22 @@ DECL|macro|jffs2_flash_write
 mdefine_line|#define jffs2_flash_write(c, ofs, len, retlen, buf) ((c)-&gt;mtd-&gt;write((c)-&gt;mtd, ofs, len, retlen, buf))
 DECL|macro|jffs2_flash_read
 mdefine_line|#define jffs2_flash_read(c, ofs, len, retlen, buf) ((c)-&gt;mtd-&gt;read((c)-&gt;mtd, ofs, len, retlen, buf))
-DECL|macro|jffs2_flush_wbuf
-mdefine_line|#define jffs2_flush_wbuf(c, flag) do { ; } while(0)
+DECL|macro|jffs2_flush_wbuf_pad
+mdefine_line|#define jffs2_flush_wbuf_pad(c) ({ (void)(c), 0; })
+DECL|macro|jffs2_flush_wbuf_gc
+mdefine_line|#define jffs2_flush_wbuf_gc(c, i) ({ (void)(c), (void) i, 0; })
 DECL|macro|jffs2_nand_read_failcnt
 mdefine_line|#define jffs2_nand_read_failcnt(c,jeb) do { ; } while(0)
 DECL|macro|jffs2_write_nand_badblock
 mdefine_line|#define jffs2_write_nand_badblock(c,jeb) do { ; } while(0)
+DECL|macro|jffs2_nand_flash_setup
+mdefine_line|#define jffs2_nand_flash_setup(c) (0)
+DECL|macro|jffs2_nand_flash_cleanup
+mdefine_line|#define jffs2_nand_flash_cleanup(c) do {} while(0)
+DECL|macro|jffs2_wbuf_dirty
+mdefine_line|#define jffs2_wbuf_dirty(c) (0)
 DECL|macro|jffs2_flash_writev
-mdefine_line|#define jffs2_flash_writev jffs2_flash_direct_writev
+mdefine_line|#define jffs2_flash_writev(a,b,c,d,e,f) jffs2_flash_direct_writev(a,b,c,d,e)
 DECL|macro|jffs2_wbuf_timeout
 mdefine_line|#define jffs2_wbuf_timeout NULL
 DECL|macro|jffs2_wbuf_process
@@ -185,6 +197,8 @@ DECL|macro|jffs2_flash_write_oob
 mdefine_line|#define jffs2_flash_write_oob(c, ofs, len, retlen, buf) ((c)-&gt;mtd-&gt;write_oob((c)-&gt;mtd, ofs, len, retlen, buf))
 DECL|macro|jffs2_flash_read_oob
 mdefine_line|#define jffs2_flash_read_oob(c, ofs, len, retlen, buf) ((c)-&gt;mtd-&gt;read_oob((c)-&gt;mtd, ofs, len, retlen, buf))
+DECL|macro|jffs2_wbuf_dirty
+mdefine_line|#define jffs2_wbuf_dirty(c) (!!(c)-&gt;wbuf_len)
 r_struct
 id|kstatfs
 suffix:semicolon
@@ -214,6 +228,9 @@ comma
 r_int
 op_star
 id|retlen
+comma
+r_uint32
+id|ino
 )paren
 suffix:semicolon
 r_int
@@ -346,6 +363,26 @@ op_star
 id|data
 )paren
 suffix:semicolon
+r_int
+id|jffs2_nand_flash_setup
+c_func
+(paren
+r_struct
+id|jffs2_sb_info
+op_star
+id|c
+)paren
+suffix:semicolon
+r_void
+id|jffs2_nand_flash_cleanup
+c_func
+(paren
+r_struct
+id|jffs2_sb_info
+op_star
+id|c
+)paren
+suffix:semicolon
 macro_line|#endif /* NAND */
 multiline_comment|/* background.c */
 r_int
@@ -418,20 +455,6 @@ id|dentry
 op_star
 comma
 r_int
-)paren
-suffix:semicolon
-r_int
-id|jffs2_setattr
-(paren
-r_struct
-id|dentry
-op_star
-id|dentry
-comma
-r_struct
-id|iattr
-op_star
-id|iattr
 )paren
 suffix:semicolon
 r_int
@@ -533,6 +556,18 @@ id|inode_operations
 id|jffs2_symlink_inode_operations
 suffix:semicolon
 multiline_comment|/* fs.c */
+r_int
+id|jffs2_setattr
+(paren
+r_struct
+id|dentry
+op_star
+comma
+r_struct
+id|iattr
+op_star
+)paren
+suffix:semicolon
 r_void
 id|jffs2_read_inode
 (paren
@@ -547,6 +582,16 @@ id|jffs2_clear_inode
 r_struct
 id|inode
 op_star
+)paren
+suffix:semicolon
+r_void
+id|jffs2_dirty_inode
+c_func
+(paren
+r_struct
+id|inode
+op_star
+id|inode
 )paren
 suffix:semicolon
 r_struct

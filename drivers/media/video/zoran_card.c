@@ -16,6 +16,7 @@ macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/video_decoder.h&gt;
 macro_line|#include &lt;linux/video_encoder.h&gt;
+macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &quot;videocodec.h&quot;
 macro_line|#include &quot;zoran.h&quot;
 macro_line|#include &quot;zoran_card.h&quot;

@@ -1727,7 +1727,7 @@ id|ACPI_DEBUG_PRINT
 (paren
 id|ACPI_DB_ALLOCATIONS
 comma
-l_string|&quot;Freeing size %X&bslash;n&quot;
+l_string|&quot;Freeing size 0%X&bslash;n&quot;
 comma
 id|allocation-&gt;size
 )paren

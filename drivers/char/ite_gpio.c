@@ -900,10 +900,6 @@ r_return
 op_minus
 id|ENODEV
 suffix:semicolon
-macro_line|#ifdef MODULE
-id|MOD_INC_USE_COUNT
-suffix:semicolon
-macro_line|#endif
 r_return
 l_int|0
 suffix:semicolon
@@ -925,10 +921,6 @@ op_star
 id|file
 )paren
 (brace
-macro_line|#ifdef MODULE
-id|MOD_DEC_USE_COUNT
-suffix:semicolon
-macro_line|#endif
 r_return
 l_int|0
 suffix:semicolon

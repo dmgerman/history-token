@@ -1791,18 +1791,6 @@ id|hwif-&gt;pci_dev
 suffix:semicolon
 id|u8
 id|speed
-op_assign
-id|ide_rate_filter
-c_func
-(paren
-id|svwks_ratemask
-c_func
-(paren
-id|drive
-)paren
-comma
-id|xferspeed
-)paren
 suffix:semicolon
 id|u8
 id|pio
@@ -1859,6 +1847,35 @@ id|u16
 id|csb5_pio
 op_assign
 l_int|0
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|xferspeed
+op_eq
+l_int|255
+)paren
+multiline_comment|/* PIO auto-tuning */
+id|speed
+op_assign
+id|XFER_PIO_0
+op_plus
+id|pio
+suffix:semicolon
+r_else
+id|speed
+op_assign
+id|ide_rate_filter
+c_func
+(paren
+id|svwks_ratemask
+c_func
+(paren
+id|drive
+)paren
+comma
+id|xferspeed
+)paren
 suffix:semicolon
 multiline_comment|/* If we are about to put a disk into UDMA mode we screwed up.&n;&t;   Our code assumes we never _ever_ do this on an OSB4 */
 r_if
@@ -3100,6 +3117,15 @@ r_goto
 id|no_dma_set
 suffix:semicolon
 )brace
+r_return
+id|hwif
+op_member_access_from_pointer
+id|ide_dma_on
+c_func
+(paren
+id|drive
+)paren
+suffix:semicolon
 )brace
 r_else
 r_if
@@ -3139,14 +3165,9 @@ id|drive
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/* IORDY not supported */
 r_return
-id|hwif
-op_member_access_from_pointer
-id|ide_dma_on
-c_func
-(paren
-id|drive
-)paren
+l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/* This can go soon */

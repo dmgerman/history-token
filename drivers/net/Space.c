@@ -1645,16 +1645,11 @@ suffix:semicolon
 op_increment
 id|num
 )paren
-r_if
-c_cond
-(paren
 id|sbni_probe
 c_func
 (paren
 id|num
 )paren
-)paren
-r_break
 suffix:semicolon
 macro_line|#endif
 macro_line|#ifdef CONFIG_TR
@@ -1672,16 +1667,11 @@ suffix:semicolon
 op_increment
 id|num
 )paren
-r_if
-c_cond
-(paren
 id|trif_probe
 c_func
 (paren
 id|num
 )paren
-)paren
-r_break
 suffix:semicolon
 macro_line|#endif
 r_for
@@ -1698,16 +1688,11 @@ suffix:semicolon
 op_increment
 id|num
 )paren
-r_if
-c_cond
-(paren
 id|ethif_probe
 c_func
 (paren
 id|num
 )paren
-)paren
-r_break
 suffix:semicolon
 macro_line|#ifdef CONFIG_COPS
 id|cops_probe

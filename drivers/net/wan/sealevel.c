@@ -18,6 +18,12 @@ DECL|struct|slvl_device
 r_struct
 id|slvl_device
 (brace
+DECL|member|if_ptr
+r_void
+op_star
+id|if_ptr
+suffix:semicolon
+multiline_comment|/* General purpose pointer (used by SPPP) */
 DECL|member|chan
 r_struct
 id|z8530_channel
@@ -683,6 +689,11 @@ suffix:semicolon
 id|sv
 op_assign
 id|d-&gt;priv
+suffix:semicolon
+id|sv-&gt;if_ptr
+op_assign
+op_amp
+id|sv-&gt;pppdev
 suffix:semicolon
 id|sv-&gt;pppdev.dev
 op_assign

@@ -1182,7 +1182,7 @@ c_func
 (paren
 id|seq
 comma
-l_string|&quot; %04lx  %5d %7d/%7d %7d/%7d [%d] 0x%x&bslash;n&quot;
+l_string|&quot; %04lx  %5d %7d/%7d %7d/%7d [%d]&bslash;n&quot;
 comma
 id|vcc-&gt;flags
 comma
@@ -1212,8 +1212,6 @@ c_func
 op_amp
 id|vcc-&gt;sk-&gt;sk_refcnt
 )paren
-comma
-id|vcc-&gt;sk-&gt;sk_hashent
 )paren
 suffix:semicolon
 )brace
@@ -1738,7 +1736,7 @@ comma
 l_string|&quot;Address &quot;
 comma
 l_string|&quot;Itf VPI VCI   Fam Flags Reply &quot;
-l_string|&quot;Send buffer     Recv buffer&bslash;n&quot;
+l_string|&quot;Send buffer     Recv buffer      [refcnt]&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace

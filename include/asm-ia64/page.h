@@ -112,8 +112,7 @@ DECL|macro|copy_user_page
 mdefine_line|#define copy_user_page(to, from, vaddr, page)&t;&bslash;&n;do {&t;&t;&t;&t;&t;&t;&bslash;&n;&t;copy_page((to), (from));&t;&t;&bslash;&n;&t;flush_dcache_page(page);&t;&t;&bslash;&n;} while (0)
 DECL|macro|virt_addr_valid
 mdefine_line|#define virt_addr_valid(kaddr)&t;pfn_valid(__pa(kaddr) &gt;&gt; PAGE_SHIFT)
-macro_line|#ifndef CONFIG_DISCONTIGMEM
-macro_line|# ifdef CONFIG_VIRTUAL_MEM_MAP
+macro_line|#ifdef CONFIG_VIRTUAL_MEM_MAP
 r_extern
 r_int
 id|ia64_pfn_valid
@@ -123,21 +122,22 @@ r_int
 id|pfn
 )paren
 suffix:semicolon
+macro_line|#else
+DECL|macro|ia64_pfn_valid
+macro_line|# define ia64_pfn_valid(pfn) 1
+macro_line|#endif
+macro_line|#ifndef CONFIG_DISCONTIGMEM
 DECL|macro|pfn_valid
-macro_line|#  define pfn_valid(pfn)&t;(((pfn) &lt; max_mapnr) &amp;&amp; ia64_pfn_valid(pfn))
-macro_line|# else
-DECL|macro|pfn_valid
-macro_line|#  define pfn_valid(pfn)&t;((pfn) &lt; max_mapnr)
-macro_line|# endif
-DECL|macro|virt_to_page
-mdefine_line|#define virt_to_page(kaddr)&t;pfn_to_page(__pa(kaddr) &gt;&gt; PAGE_SHIFT)
+mdefine_line|#define pfn_valid(pfn)&t;&t;(((pfn) &lt; max_mapnr) &amp;&amp; ia64_pfn_valid(pfn))
 DECL|macro|page_to_pfn
 mdefine_line|#define page_to_pfn(page)&t;((unsigned long) (page - mem_map))
 DECL|macro|pfn_to_page
 mdefine_line|#define pfn_to_page(pfn)&t;(mem_map + (pfn))
+macro_line|#endif /* CONFIG_DISCONTIGMEM */
 DECL|macro|page_to_phys
 mdefine_line|#define page_to_phys(page)&t;(page_to_pfn(page) &lt;&lt; PAGE_SHIFT)
-macro_line|#endif
+DECL|macro|virt_to_page
+mdefine_line|#define virt_to_page(kaddr)&t;pfn_to_page(__pa(kaddr) &gt;&gt; PAGE_SHIFT)
 DECL|union|ia64_va
 r_typedef
 r_union

@@ -732,6 +732,11 @@ id|ignored
 comma
 id|caught
 suffix:semicolon
+r_int
+id|num_threads
+op_assign
+l_int|0
+suffix:semicolon
 id|sigemptyset
 c_func
 (paren
@@ -812,6 +817,15 @@ op_amp
 id|caught
 )paren
 suffix:semicolon
+id|num_threads
+op_assign
+id|atomic_read
+c_func
+(paren
+op_amp
+id|p-&gt;signal-&gt;count
+)paren
+suffix:semicolon
 id|spin_unlock_irq
 c_func
 (paren
@@ -825,6 +839,18 @@ c_func
 (paren
 op_amp
 id|tasklist_lock
+)paren
+suffix:semicolon
+id|buffer
+op_add_assign
+id|sprintf
+c_func
+(paren
+id|buffer
+comma
+l_string|&quot;Threads:&bslash;t%d&bslash;n&quot;
+comma
+id|num_threads
 )paren
 suffix:semicolon
 multiline_comment|/* render them all */
@@ -1139,6 +1165,11 @@ suffix:semicolon
 id|pid_t
 id|ppid
 suffix:semicolon
+r_int
+id|num_threads
+op_assign
+l_int|0
+suffix:semicolon
 r_struct
 id|mm_struct
 op_star
@@ -1189,22 +1220,12 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|process_tty
-c_func
-(paren
-id|task
-)paren
+id|task-&gt;tty
 )paren
 (brace
 id|tty_pgrp
 op_assign
-id|process_tty
-c_func
-(paren
-id|task
-)paren
-op_member_access_from_pointer
-id|pgrp
+id|task-&gt;tty-&gt;pgrp
 suffix:semicolon
 id|tty_nr
 op_assign
@@ -1214,11 +1235,7 @@ c_func
 id|tty_devnum
 c_func
 (paren
-id|process_tty
-c_func
-(paren
-id|task
-)paren
+id|task-&gt;tty
 )paren
 )paren
 suffix:semicolon
@@ -1316,6 +1333,15 @@ op_amp
 id|task-&gt;sighand-&gt;siglock
 )paren
 suffix:semicolon
+id|num_threads
+op_assign
+id|atomic_read
+c_func
+(paren
+op_amp
+id|task-&gt;signal-&gt;count
+)paren
+suffix:semicolon
 id|collect_sigign_sigcatch
 c_func
 (paren
@@ -1391,7 +1417,7 @@ c_func
 (paren
 id|buffer
 comma
-l_string|&quot;%d (%s) %c %d %d %d %d %d %lu %lu &bslash;&n;%lu %lu %lu %lu %lu %ld %ld %ld %ld %ld %ld %llu %lu %ld %lu %lu %lu %lu %lu &bslash;&n;%lu %lu %lu %lu %lu %lu %lu %lu %d %d %lu %lu&bslash;n&quot;
+l_string|&quot;%d (%s) %c %d %d %d %d %d %lu %lu &bslash;&n;%lu %lu %lu %lu %lu %ld %ld %ld %ld %d %ld %llu %lu %ld %lu %lu %lu %lu %lu &bslash;&n;%lu %lu %lu %lu %lu %lu %lu %lu %d %d %lu %lu&bslash;n&quot;
 comma
 id|task-&gt;pid
 comma
@@ -1407,11 +1433,7 @@ c_func
 id|task
 )paren
 comma
-id|process_session
-c_func
-(paren
-id|task
-)paren
+id|task-&gt;session
 comma
 id|tty_nr
 comma
@@ -1455,8 +1477,7 @@ id|priority
 comma
 id|nice
 comma
-l_int|0UL
-multiline_comment|/* removed */
+id|num_threads
 comma
 id|jiffies_to_clock_t
 c_func

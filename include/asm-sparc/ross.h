@@ -37,8 +37,8 @@ DECL|macro|HYPERSPARC_ICCR_ICE
 mdefine_line|#define HYPERSPARC_ICCR_ICE     0x00000001
 macro_line|#ifndef __ASSEMBLY__
 DECL|function|get_ross_icr
-r_extern
-id|__inline__
+r_static
+r_inline
 r_int
 r_int
 id|get_ross_icr
@@ -64,6 +64,7 @@ l_string|&quot;=r&quot;
 id|icreg
 )paren
 suffix:colon
+multiline_comment|/* no inputs */
 suffix:colon
 l_string|&quot;g1&quot;
 comma
@@ -75,8 +76,8 @@ id|icreg
 suffix:semicolon
 )brace
 DECL|function|put_ross_icr
-r_extern
-id|__inline__
+r_static
+r_inline
 r_void
 id|put_ross_icr
 c_func
@@ -97,6 +98,7 @@ l_string|&quot;nop&bslash;n&bslash;t&quot;
 l_string|&quot;nop&bslash;n&bslash;t&quot;
 l_string|&quot;nop&bslash;n&bslash;t&quot;
 suffix:colon
+multiline_comment|/* no outputs */
 suffix:colon
 l_string|&quot;r&quot;
 (paren
@@ -114,8 +116,8 @@ suffix:semicolon
 multiline_comment|/* HyperSparc specific cache flushing. */
 multiline_comment|/* This is for the on-chip instruction cache. */
 DECL|function|hyper_flush_whole_icache
-r_extern
-id|__inline__
+r_static
+r_inline
 r_void
 id|hyper_flush_whole_icache
 c_func
@@ -129,11 +131,14 @@ c_func
 (paren
 l_string|&quot;sta %%g0, [%%g0] %0&bslash;n&bslash;t&quot;
 suffix:colon
+multiline_comment|/* no outputs */
 suffix:colon
 l_string|&quot;i&quot;
 (paren
 id|ASI_M_FLUSH_IWHOLE
 )paren
+suffix:colon
+l_string|&quot;memory&quot;
 )paren
 suffix:semicolon
 r_return
@@ -148,8 +153,8 @@ r_int
 id|vac_line_size
 suffix:semicolon
 DECL|function|hyper_clear_all_tags
-r_extern
-id|__inline__
+r_static
+r_inline
 r_void
 id|hyper_clear_all_tags
 c_func
@@ -183,6 +188,7 @@ c_func
 (paren
 l_string|&quot;sta %%g0, [%0] %1&bslash;n&bslash;t&quot;
 suffix:colon
+multiline_comment|/* no outputs */
 suffix:colon
 l_string|&quot;r&quot;
 (paren
@@ -193,13 +199,15 @@ l_string|&quot;i&quot;
 (paren
 id|ASI_M_DATAC_TAG
 )paren
+suffix:colon
+l_string|&quot;memory&quot;
 )paren
 suffix:semicolon
 )brace
 )brace
 DECL|function|hyper_flush_unconditional_combined
-r_extern
-id|__inline__
+r_static
+r_inline
 r_void
 id|hyper_flush_unconditional_combined
 c_func
@@ -226,13 +234,13 @@ id|addr
 op_add_assign
 id|vac_line_size
 )paren
-(brace
 id|__asm__
 id|__volatile__
 c_func
 (paren
 l_string|&quot;sta %%g0, [%0] %1&bslash;n&bslash;t&quot;
 suffix:colon
+multiline_comment|/* no outputs */
 suffix:colon
 l_string|&quot;r&quot;
 (paren
@@ -243,13 +251,14 @@ l_string|&quot;i&quot;
 (paren
 id|ASI_M_FLUSH_CTX
 )paren
+suffix:colon
+l_string|&quot;memory&quot;
 )paren
 suffix:semicolon
 )brace
-)brace
 DECL|function|hyper_flush_cache_user
-r_extern
-id|__inline__
+r_static
+r_inline
 r_void
 id|hyper_flush_cache_user
 c_func
@@ -276,13 +285,13 @@ id|addr
 op_add_assign
 id|vac_line_size
 )paren
-(brace
 id|__asm__
 id|__volatile__
 c_func
 (paren
 l_string|&quot;sta %%g0, [%0] %1&bslash;n&bslash;t&quot;
 suffix:colon
+multiline_comment|/* no outputs */
 suffix:colon
 l_string|&quot;r&quot;
 (paren
@@ -293,13 +302,14 @@ l_string|&quot;i&quot;
 (paren
 id|ASI_M_FLUSH_USER
 )paren
+suffix:colon
+l_string|&quot;memory&quot;
 )paren
 suffix:semicolon
 )brace
-)brace
 DECL|function|hyper_flush_cache_page
-r_extern
-id|__inline__
+r_static
+r_inline
 r_void
 id|hyper_flush_cache_page
 c_func
@@ -337,6 +347,7 @@ c_func
 (paren
 l_string|&quot;sta %%g0, [%0] %1&bslash;n&bslash;t&quot;
 suffix:colon
+multiline_comment|/* no outputs */
 suffix:colon
 l_string|&quot;r&quot;
 (paren
@@ -347,6 +358,8 @@ l_string|&quot;i&quot;
 (paren
 id|ASI_M_FLUSH_PAGE
 )paren
+suffix:colon
+l_string|&quot;memory&quot;
 )paren
 suffix:semicolon
 id|page

@@ -1422,6 +1422,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+op_logical_neg
 id|atomic_read
 c_func
 (paren

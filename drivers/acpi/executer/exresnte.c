@@ -4,6 +4,8 @@ macro_line|#include &lt;acpi/acpi.h&gt;
 macro_line|#include &lt;acpi/acdispat.h&gt;
 macro_line|#include &lt;acpi/acinterp.h&gt;
 macro_line|#include &lt;acpi/acnamesp.h&gt;
+macro_line|#include &lt;acpi/acparser.h&gt;
+macro_line|#include &lt;acpi/amlcode.h&gt;
 DECL|macro|_COMPONENT
 mdefine_line|#define _COMPONENT          ACPI_EXECUTER
 id|ACPI_MODULE_NAME
@@ -512,15 +514,44 @@ multiline_comment|/* Cannot be AE_TYPE */
 r_case
 id|ACPI_TYPE_LOCAL_REFERENCE
 suffix:colon
+r_switch
+c_cond
+(paren
+id|source_desc-&gt;reference.opcode
+)paren
+(brace
+r_case
+id|AML_LOAD_OP
+suffix:colon
+multiline_comment|/* This is a ddb_handle */
+multiline_comment|/* Return an additional reference to the object */
+id|obj_desc
+op_assign
+id|source_desc
+suffix:semicolon
+id|acpi_ut_add_reference
+(paren
+id|obj_desc
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
+r_default
+suffix:colon
 multiline_comment|/* No named references are allowed here */
 id|ACPI_DEBUG_PRINT
 (paren
 (paren
 id|ACPI_DB_ERROR
 comma
-l_string|&quot;Unsupported Reference opcode %X&bslash;n&quot;
+l_string|&quot;Unsupported Reference opcode %X (%s)&bslash;n&quot;
 comma
 id|source_desc-&gt;reference.opcode
+comma
+id|acpi_ps_get_opcode_name
+(paren
+id|source_desc-&gt;reference.opcode
+)paren
 )paren
 )paren
 suffix:semicolon
@@ -528,6 +559,9 @@ id|return_ACPI_STATUS
 (paren
 id|AE_AML_OPERAND_TYPE
 )paren
+suffix:semicolon
+)brace
+r_break
 suffix:semicolon
 multiline_comment|/* Default case is for unknown types */
 r_default

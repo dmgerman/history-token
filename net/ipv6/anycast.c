@@ -1380,6 +1380,13 @@ id|aca-&gt;aca_users
 op_assign
 l_int|1
 suffix:semicolon
+multiline_comment|/* aca_tstamp should be updated upon changes */
+id|aca-&gt;aca_cstamp
+op_assign
+id|aca-&gt;aca_tstamp
+op_assign
+id|jiffies
+suffix:semicolon
 id|atomic_set
 c_func
 (paren

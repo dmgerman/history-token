@@ -47,8 +47,6 @@ DECL|macro|PFM_FL_NOTIFY_BLOCK
 mdefine_line|#define PFM_FL_NOTIFY_BLOCK    &t; 0x01&t;/* block task on user level notifications */
 DECL|macro|PFM_FL_SYSTEM_WIDE
 mdefine_line|#define PFM_FL_SYSTEM_WIDE&t; 0x02&t;/* create a system wide context */
-DECL|macro|PFM_FL_UNSECURE
-mdefine_line|#define PFM_FL_UNSECURE&t;&t; 0x04   /* allow unsecure monitoring for non self-monitoring task */
 DECL|macro|PFM_FL_OVFL_NO_MSG
 mdefine_line|#define PFM_FL_OVFL_NO_MSG&t; 0x80   /* do not post overflow/end messages for notification */
 multiline_comment|/*&n; * event set flags&n; */
@@ -461,10 +459,6 @@ DECL|macro|PFM_VERSION_MAJ
 mdefine_line|#define PFM_VERSION_MAJ&t;&t; 2U
 DECL|macro|PFM_VERSION_MIN
 mdefine_line|#define PFM_VERSION_MIN&t;&t; 0U
-DECL|macro|PFM_SMPL_HDR_VERSION_MAJ
-mdefine_line|#define PFM_SMPL_HDR_VERSION_MAJ 2U
-DECL|macro|PFM_SMPL_HDR_VERSION_MIN
-mdefine_line|#define PFM_SMPL_HDR_VERSION_MIN 0U
 DECL|macro|PFM_VERSION
 mdefine_line|#define PFM_VERSION&t;&t; (((PFM_VERSION_MAJ&amp;0xffff)&lt;&lt;16)|(PFM_VERSION_MIN &amp; 0xffff))
 DECL|macro|PFM_VERSION_MAJOR
@@ -596,12 +590,10 @@ r_void
 )paren
 suffix:semicolon
 multiline_comment|/*&n; * Reset PMD register flags&n; */
-DECL|macro|PFM_PMD_NO_RESET
-mdefine_line|#define PFM_PMD_NO_RESET&t;0
+DECL|macro|PFM_PMD_SHORT_RESET
+mdefine_line|#define PFM_PMD_SHORT_RESET&t;0
 DECL|macro|PFM_PMD_LONG_RESET
 mdefine_line|#define PFM_PMD_LONG_RESET&t;1
-DECL|macro|PFM_PMD_SHORT_RESET
-mdefine_line|#define PFM_PMD_SHORT_RESET&t;2
 r_typedef
 r_union
 (brace
@@ -726,10 +718,8 @@ DECL|typedef|pfm_ovfl_arg_t
 )brace
 id|pfm_ovfl_arg_t
 suffix:semicolon
-DECL|struct|_pfm_buffer_fmt_t
 r_typedef
 r_struct
-id|_pfm_buffer_fmt_t
 (brace
 DECL|member|fmt_name
 r_char
@@ -934,17 +924,10 @@ op_star
 id|regs
 )paren
 suffix:semicolon
-DECL|member|fmt_next
+DECL|member|fmt_list
 r_struct
-id|_pfm_buffer_fmt_t
-op_star
-id|fmt_next
-suffix:semicolon
-DECL|member|fmt_prev
-r_struct
-id|_pfm_buffer_fmt_t
-op_star
-id|fmt_prev
+id|list_head
+id|fmt_list
 suffix:semicolon
 DECL|typedef|pfm_buffer_fmt_t
 )brace

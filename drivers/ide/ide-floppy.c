@@ -7369,15 +7369,16 @@ multiline_comment|/*&n;&t; *&t;We used to check revisions here. At this point ho
 r_if
 c_cond
 (paren
-id|strcmp
+op_logical_neg
+id|strncmp
 c_func
 (paren
 id|drive-&gt;id-&gt;model
 comma
 l_string|&quot;IOMEGA ZIP 100 ATAPI&quot;
+comma
+l_int|20
 )paren
-op_eq
-l_int|0
 )paren
 (brace
 id|set_bit

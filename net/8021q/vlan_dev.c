@@ -164,7 +164,7 @@ comma
 id|GFP_ATOMIC
 )paren
 suffix:semicolon
-id|kfree
+id|kfree_skb
 c_func
 (paren
 id|skb

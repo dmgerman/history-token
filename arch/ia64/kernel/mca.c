@@ -129,25 +129,6 @@ DECL|variable|ia64_os_mca_recovery_successful
 id|u64
 id|ia64_os_mca_recovery_successful
 suffix:semicolon
-multiline_comment|/* TODO: need to assign min-state structure to UC memory */
-DECL|variable|ia64_mca_min_state_save_info
-id|u64
-id|ia64_mca_min_state_save_info
-(braket
-id|MIN_STATE_AREA_SIZE
-)braket
-id|__attribute__
-c_func
-(paren
-(paren
-id|aligned
-c_func
-(paren
-l_int|512
-)paren
-)paren
-)paren
-suffix:semicolon
 r_static
 r_void
 id|ia64_mca_wakeup_ipi_wait
@@ -1844,68 +1825,6 @@ suffix:semicolon
 )brace
 macro_line|#endif /* CONFIG_ACPI */
 macro_line|#endif /* PLATFORM_MCA_HANDLERS */
-multiline_comment|/*&n; * routine to process and prepare to dump min_state_save&n; * information for debugging purposes.&n; */
-r_void
-DECL|function|ia64_process_min_state_save
-id|ia64_process_min_state_save
-(paren
-id|pal_min_state_area_t
-op_star
-id|pmss
-)paren
-(brace
-r_int
-id|i
-comma
-id|max
-op_assign
-id|MIN_STATE_AREA_SIZE
-suffix:semicolon
-id|u64
-op_star
-id|tpmss_ptr
-op_assign
-(paren
-id|u64
-op_star
-)paren
-id|pmss
-suffix:semicolon
-id|u64
-op_star
-id|return_min_state_ptr
-op_assign
-id|ia64_mca_min_state_save_info
-suffix:semicolon
-r_for
-c_loop
-(paren
-id|i
-op_assign
-l_int|0
-suffix:semicolon
-id|i
-OL
-id|max
-suffix:semicolon
-id|i
-op_increment
-)paren
-(brace
-multiline_comment|/* copy min-state register info for eventual return to PAL */
-op_star
-id|return_min_state_ptr
-op_increment
-op_assign
-op_star
-id|tpmss_ptr
-suffix:semicolon
-id|tpmss_ptr
-op_increment
-suffix:semicolon
-multiline_comment|/* skip to next entry */
-)brace
-)brace
 multiline_comment|/*&n; * ia64_mca_cmc_vector_setup&n; *&n; *  Setup the corrected machine check vector register in the processor and&n; *  unmask interrupt.  This function is invoked on a per-processor basis.&n; *&n; * Inputs&n; *      None&n; *&n; * Outputs&n; *&t;None&n; */
 r_void
 DECL|function|ia64_mca_cmc_vector_setup
@@ -2808,7 +2727,7 @@ op_logical_neg
 id|irr
 op_amp
 (paren
-l_int|1
+l_int|1UL
 op_lshift
 id|irr_bit
 )paren
@@ -3023,10 +2942,13 @@ id|ia64_os_to_sal_handoff_state.imots_context
 op_assign
 id|IA64_MCA_SAME_CONTEXT
 suffix:semicolon
-multiline_comment|/* Register pointer to new min state values */
 id|ia64_os_to_sal_handoff_state.imots_new_min_state
 op_assign
-id|ia64_mca_min_state_save_info
+(paren
+id|u64
+op_star
+)paren
+id|ia64_sal_to_os_handoff_state.pal_min_state
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * ia64_mca_ucmc_handler&n; *&n; *&t;This is uncorrectable machine check handler called from OS_MCA&n; *&t;dispatch code which is in turn called from SAL_CHECK().&n; *&t;This is the place where the core of OS MCA handling is done.&n; *&t;Right now the logs are extracted and displayed in a well-defined&n; *&t;format. This handler code is supposed to be run only on the&n; *&t;monarch processor. Once the monarch is done with MCA handling&n; *&t;further MCA logging is enabled by clearing logs.&n; *&t;Monarch also has the duty of sending wakeup-IPIs to pull the&n; *&t;slave processors out of rendezvous spinloop.&n; *&n; *  Inputs  :   None&n; *  Outputs :   None&n; */
@@ -7095,14 +7017,6 @@ id|sal_processor_static_info_t
 op_star
 )paren
 id|p_data
-suffix:semicolon
-multiline_comment|/* copy interrupted context PAL min-state info */
-id|ia64_process_min_state_save
-c_func
-(paren
-op_amp
-id|spsi-&gt;min_state_area
-)paren
 suffix:semicolon
 multiline_comment|/* Print branch register contents if valid */
 r_if

@@ -35,8 +35,8 @@ mdefine_line|#define TURBOSPARC_SNENABLE 0x40000000&t; /* DVMA snoop enable */
 macro_line|#ifndef __ASSEMBLY__
 multiline_comment|/* Bits [13:5] select one of 512 instruction cache tags */
 DECL|function|turbosparc_inv_insn_tag
-r_extern
-id|__inline__
+r_static
+r_inline
 r_void
 id|turbosparc_inv_insn_tag
 c_func
@@ -52,6 +52,7 @@ c_func
 (paren
 l_string|&quot;sta %%g0, [%0] %1&bslash;n&bslash;t&quot;
 suffix:colon
+multiline_comment|/* no outputs */
 suffix:colon
 l_string|&quot;r&quot;
 (paren
@@ -62,13 +63,15 @@ l_string|&quot;i&quot;
 (paren
 id|ASI_M_TXTC_TAG
 )paren
+suffix:colon
+l_string|&quot;memory&quot;
 )paren
 suffix:semicolon
 )brace
 multiline_comment|/* Bits [13:5] select one of 512 data cache tags */
 DECL|function|turbosparc_inv_data_tag
-r_extern
-id|__inline__
+r_static
+r_inline
 r_void
 id|turbosparc_inv_data_tag
 c_func
@@ -84,6 +87,7 @@ c_func
 (paren
 l_string|&quot;sta %%g0, [%0] %1&bslash;n&bslash;t&quot;
 suffix:colon
+multiline_comment|/* no outputs */
 suffix:colon
 l_string|&quot;r&quot;
 (paren
@@ -94,12 +98,14 @@ l_string|&quot;i&quot;
 (paren
 id|ASI_M_DATAC_TAG
 )paren
+suffix:colon
+l_string|&quot;memory&quot;
 )paren
 suffix:semicolon
 )brace
 DECL|function|turbosparc_flush_icache
-r_extern
-id|__inline__
+r_static
+r_inline
 r_void
 id|turbosparc_flush_icache
 c_func
@@ -126,7 +132,6 @@ id|addr
 op_add_assign
 l_int|0x20
 )paren
-(brace
 id|turbosparc_inv_insn_tag
 c_func
 (paren
@@ -134,10 +139,9 @@ id|addr
 )paren
 suffix:semicolon
 )brace
-)brace
 DECL|function|turbosparc_flush_dcache
-r_extern
-id|__inline__
+r_static
+r_inline
 r_void
 id|turbosparc_flush_dcache
 c_func
@@ -164,7 +168,6 @@ id|addr
 op_add_assign
 l_int|0x20
 )paren
-(brace
 id|turbosparc_inv_data_tag
 c_func
 (paren
@@ -172,10 +175,9 @@ id|addr
 )paren
 suffix:semicolon
 )brace
-)brace
 DECL|function|turbosparc_idflash_clear
-r_extern
-id|__inline__
+r_static
+r_inline
 r_void
 id|turbosparc_idflash_clear
 c_func
@@ -218,8 +220,8 @@ suffix:semicolon
 )brace
 )brace
 DECL|function|turbosparc_set_ccreg
-r_extern
-id|__inline__
+r_static
+r_inline
 r_void
 id|turbosparc_set_ccreg
 c_func
@@ -235,6 +237,7 @@ c_func
 (paren
 l_string|&quot;sta %0, [%1] %2&bslash;n&bslash;t&quot;
 suffix:colon
+multiline_comment|/* no outputs */
 suffix:colon
 l_string|&quot;r&quot;
 (paren
@@ -250,12 +253,14 @@ l_string|&quot;i&quot;
 (paren
 id|ASI_M_MMUREGS
 )paren
+suffix:colon
+l_string|&quot;memory&quot;
 )paren
 suffix:semicolon
 )brace
 DECL|function|turbosparc_get_ccreg
-r_extern
-id|__inline__
+r_static
+r_inline
 r_int
 r_int
 id|turbosparc_get_ccreg

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * JFFS2 -- Journalling Flash File System, Version 2.&n; *&n; * Copyright (C) 2001, 2002 Red Hat, Inc.&n; *&n; * Created by David Woodhouse &lt;dwmw2@cambridge.redhat.com&gt;&n; *&n; * For licensing information, see the file &squot;LICENCE&squot; in this directory.&n; *&n; * $Id: build.c,v 1.46 2003/04/29 17:12:26 gleixner Exp $&n; *&n; */
+multiline_comment|/*&n; * JFFS2 -- Journalling Flash File System, Version 2.&n; *&n; * Copyright (C) 2001-2003 Red Hat, Inc.&n; *&n; * Created by David Woodhouse &lt;dwmw2@redhat.com&gt;&n; *&n; * For licensing information, see the file &squot;LICENCE&squot; in this directory.&n; *&n; * $Id: build.c,v 1.52 2003/10/09 00:38:38 dwmw2 Exp $&n; *&n; */
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
@@ -939,6 +939,219 @@ r_return
 id|ret
 suffix:semicolon
 )brace
+DECL|function|jffs2_calc_trigger_levels
+r_static
+r_void
+id|jffs2_calc_trigger_levels
+c_func
+(paren
+r_struct
+id|jffs2_sb_info
+op_star
+id|c
+)paren
+(brace
+r_uint32
+id|size
+suffix:semicolon
+multiline_comment|/* Deletion should almost _always_ be allowed. We&squot;re fairly&n;&t;   buggered once we stop allowing people to delete stuff&n;&t;   because there&squot;s not enough free space... */
+id|c-&gt;resv_blocks_deletion
+op_assign
+l_int|2
+suffix:semicolon
+multiline_comment|/* Be conservative about how much space we need before we allow writes. &n;&t;   On top of that which is required for deletia, require an extra 2%&n;&t;   of the medium to be available, for overhead caused by nodes being&n;&t;   split across blocks, etc. */
+id|size
+op_assign
+id|c-&gt;flash_size
+op_div
+l_int|50
+suffix:semicolon
+multiline_comment|/* 2% of flash size */
+id|size
+op_add_assign
+id|c-&gt;nr_blocks
+op_star
+l_int|100
+suffix:semicolon
+multiline_comment|/* And 100 bytes per eraseblock */
+id|size
+op_add_assign
+id|c-&gt;sector_size
+op_minus
+l_int|1
+suffix:semicolon
+multiline_comment|/* ... and round up */
+id|c-&gt;resv_blocks_write
+op_assign
+id|c-&gt;resv_blocks_deletion
+op_plus
+(paren
+id|size
+op_div
+id|c-&gt;sector_size
+)paren
+suffix:semicolon
+multiline_comment|/* When do we let the GC thread run in the background */
+id|c-&gt;resv_blocks_gctrigger
+op_assign
+id|c-&gt;resv_blocks_write
+op_plus
+l_int|1
+suffix:semicolon
+multiline_comment|/* When do we allow garbage collection to merge nodes to make &n;&t;   long-term progress at the expense of short-term space exhaustion? */
+id|c-&gt;resv_blocks_gcmerge
+op_assign
+id|c-&gt;resv_blocks_deletion
+op_plus
+l_int|1
+suffix:semicolon
+multiline_comment|/* When do we allow garbage collection to eat from bad blocks rather&n;&t;   than actually making progress? */
+id|c-&gt;resv_blocks_gcbad
+op_assign
+l_int|0
+suffix:semicolon
+singleline_comment|//c-&gt;resv_blocks_deletion + 2;
+multiline_comment|/* If there&squot;s less than this amount of dirty space, don&squot;t bother&n;&t;   trying to GC to make more space. It&squot;ll be a fruitless task */
+id|c-&gt;nospc_dirty_size
+op_assign
+id|c-&gt;sector_size
+op_plus
+(paren
+id|c-&gt;flash_size
+op_div
+l_int|100
+)paren
+suffix:semicolon
+id|D1
+c_func
+(paren
+id|printk
+c_func
+(paren
+id|KERN_DEBUG
+l_string|&quot;JFFS2 trigger levels (size %d KiB, block size %d KiB, %d blocks)&bslash;n&quot;
+comma
+id|c-&gt;flash_size
+op_div
+l_int|1024
+comma
+id|c-&gt;sector_size
+op_div
+l_int|1024
+comma
+id|c-&gt;nr_blocks
+)paren
+)paren
+suffix:semicolon
+id|D1
+c_func
+(paren
+id|printk
+c_func
+(paren
+id|KERN_DEBUG
+l_string|&quot;Blocks required to allow deletion:    %d (%d KiB)&bslash;n&quot;
+comma
+id|c-&gt;resv_blocks_deletion
+comma
+id|c-&gt;resv_blocks_deletion
+op_star
+id|c-&gt;sector_size
+op_div
+l_int|1024
+)paren
+)paren
+suffix:semicolon
+id|D1
+c_func
+(paren
+id|printk
+c_func
+(paren
+id|KERN_DEBUG
+l_string|&quot;Blocks required to allow writes:      %d (%d KiB)&bslash;n&quot;
+comma
+id|c-&gt;resv_blocks_write
+comma
+id|c-&gt;resv_blocks_write
+op_star
+id|c-&gt;sector_size
+op_div
+l_int|1024
+)paren
+)paren
+suffix:semicolon
+id|D1
+c_func
+(paren
+id|printk
+c_func
+(paren
+id|KERN_DEBUG
+l_string|&quot;Blocks required to quiesce GC thread: %d (%d KiB)&bslash;n&quot;
+comma
+id|c-&gt;resv_blocks_gctrigger
+comma
+id|c-&gt;resv_blocks_gctrigger
+op_star
+id|c-&gt;sector_size
+op_div
+l_int|1024
+)paren
+)paren
+suffix:semicolon
+id|D1
+c_func
+(paren
+id|printk
+c_func
+(paren
+id|KERN_DEBUG
+l_string|&quot;Blocks required to allow GC merges:   %d (%d KiB)&bslash;n&quot;
+comma
+id|c-&gt;resv_blocks_gcmerge
+comma
+id|c-&gt;resv_blocks_gcmerge
+op_star
+id|c-&gt;sector_size
+op_div
+l_int|1024
+)paren
+)paren
+suffix:semicolon
+id|D1
+c_func
+(paren
+id|printk
+c_func
+(paren
+id|KERN_DEBUG
+l_string|&quot;Blocks required to GC bad blocks:     %d (%d KiB)&bslash;n&quot;
+comma
+id|c-&gt;resv_blocks_gcbad
+comma
+id|c-&gt;resv_blocks_gcbad
+op_star
+id|c-&gt;sector_size
+op_div
+l_int|1024
+)paren
+)paren
+suffix:semicolon
+id|D1
+c_func
+(paren
+id|printk
+c_func
+(paren
+id|KERN_DEBUG
+l_string|&quot;Amount of dirty space required to GC: %d bytes&bslash;n&quot;
+comma
+id|c-&gt;nospc_dirty_size
+)paren
+)paren
+suffix:semicolon
+)brace
 DECL|function|jffs2_do_mount_fs
 r_int
 id|jffs2_do_mount_fs
@@ -1258,6 +1471,12 @@ op_minus
 id|EIO
 suffix:semicolon
 )brace
+id|jffs2_calc_trigger_levels
+c_func
+(paren
+id|c
+)paren
+suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon

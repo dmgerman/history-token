@@ -4115,9 +4115,6 @@ id|hlist_node
 op_star
 id|node
 suffix:semicolon
-r_int
-id|i
-suffix:semicolon
 id|read_lock
 c_func
 (paren

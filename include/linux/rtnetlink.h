@@ -646,13 +646,23 @@ r_struct
 id|ifa_cacheinfo
 (brace
 DECL|member|ifa_prefered
-id|__s32
+id|__u32
 id|ifa_prefered
 suffix:semicolon
 DECL|member|ifa_valid
-id|__s32
+id|__u32
 id|ifa_valid
 suffix:semicolon
+DECL|member|cstamp
+id|__u32
+id|cstamp
+suffix:semicolon
+multiline_comment|/* created timestamp, hundredths of seconds */
+DECL|member|tstamp
+id|__u32
+id|tstamp
+suffix:semicolon
+multiline_comment|/* updated timestamp, hundredths of seconds */
 )brace
 suffix:semicolon
 DECL|macro|IFA_RTA

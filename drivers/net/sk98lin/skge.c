@@ -833,11 +833,9 @@ c_cond
 (paren
 id|dev
 op_assign
-id|init_etherdev
+id|alloc_etherdev
 c_func
 (paren
-id|dev
-comma
 r_sizeof
 (paren
 id|DEV_NET
@@ -853,25 +851,6 @@ c_func
 (paren
 id|KERN_ERR
 l_string|&quot;Unable to allocate etherdev &quot;
-l_string|&quot;structure!&bslash;n&quot;
-)paren
-suffix:semicolon
-r_break
-suffix:semicolon
-)brace
-r_if
-c_cond
-(paren
-id|dev-&gt;priv
-op_eq
-l_int|NULL
-)paren
-(brace
-id|printk
-c_func
-(paren
-id|KERN_ERR
-l_string|&quot;Unable to allocate adapter &quot;
 l_string|&quot;structure!&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -903,20 +882,10 @@ op_eq
 l_int|NULL
 )paren
 (brace
-id|dev-&gt;get_stats
-op_assign
-l_int|NULL
-suffix:semicolon
-id|unregister_netdev
+id|free_netdev
 c_func
 (paren
 id|dev
-)paren
-suffix:semicolon
-id|kfree
-c_func
-(paren
-id|dev-&gt;priv
 )paren
 suffix:semicolon
 id|printk
@@ -1038,17 +1007,7 @@ comma
 id|retval
 )paren
 suffix:semicolon
-id|dev-&gt;get_stats
-op_assign
-l_int|NULL
-suffix:semicolon
-id|unregister_netdev
-c_func
-(paren
-id|dev
-)paren
-suffix:semicolon
-id|kfree
+id|free_netdev
 c_func
 (paren
 id|dev
@@ -1149,7 +1108,7 @@ c_func
 id|dev
 )paren
 suffix:semicolon
-id|kfree
+id|free_netdev
 c_func
 (paren
 id|dev
@@ -1181,6 +1140,38 @@ comma
 l_int|6
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|register_netdev
+c_func
+(paren
+id|dev
+)paren
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;SKGE: Could not register device.&bslash;n&quot;
+)paren
+suffix:semicolon
+id|FreeResources
+c_func
+(paren
+id|dev
+)paren
+suffix:semicolon
+id|free_netdev
+c_func
+(paren
+id|dev
+)paren
+suffix:semicolon
+r_continue
+suffix:semicolon
+)brace
 multiline_comment|/* First adapter... Create proc and print message */
 macro_line|#ifdef CONFIG_PROC_FS
 r_if
@@ -1292,24 +1283,6 @@ id|pNet-&gt;NetNr
 op_assign
 l_int|0
 suffix:semicolon
-macro_line|#ifdef SK_ZEROCOPY
-macro_line|#ifdef USE_SK_TX_CHECKSUM
-r_if
-c_cond
-(paren
-id|pAC-&gt;ChipsetType
-)paren
-(brace
-multiline_comment|/* SG and ZEROCOPY - fly baby... */
-id|dev-&gt;features
-op_or_assign
-id|NETIF_F_SG
-op_or
-id|NETIF_F_IP_CSUM
-suffix:semicolon
-)brace
-macro_line|#endif
-macro_line|#endif
 id|boards_found
 op_increment
 suffix:semicolon
@@ -1336,11 +1309,9 @@ c_cond
 (paren
 id|dev
 op_assign
-id|init_etherdev
+id|alloc_etherdev
 c_func
 (paren
-l_int|NULL
-comma
 r_sizeof
 (paren
 id|DEV_NET
@@ -1456,6 +1427,43 @@ suffix:semicolon
 )brace
 macro_line|#endif
 macro_line|#endif
+r_if
+c_cond
+(paren
+id|register_netdev
+c_func
+(paren
+id|dev
+)paren
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;SKGE: Could not register &quot;
+l_string|&quot;second port.&bslash;n&quot;
+)paren
+suffix:semicolon
+id|free_netdev
+c_func
+(paren
+id|dev
+)paren
+suffix:semicolon
+id|pAC-&gt;dev
+(braket
+l_int|1
+)braket
+op_assign
+id|pAC-&gt;dev
+(braket
+l_int|0
+)braket
+suffix:semicolon
+)brace
+r_else
+(brace
 macro_line|#ifdef CONFIG_PROC_FS
 r_if
 c_cond
@@ -1527,6 +1535,7 @@ c_func
 l_string|&quot;      PrefPort:B  RlmtMode:Dual Check Link State&bslash;n&quot;
 )paren
 suffix:semicolon
+)brace
 )brace
 multiline_comment|/* Save the hardware revision */
 id|pAC-&gt;HWRevision

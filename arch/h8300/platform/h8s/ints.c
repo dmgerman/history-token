@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * linux/arch/h8300/platform/h8sh/ints.c&n; *&n; * Yoshinori Sato &lt;ysato@users.sourceforge.jp&gt;&n; *&n; * Based on linux/arch/$(ARCH)/platform/$(PLATFORM)/ints.c&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file COPYING in the main directory of this archive&n; * for more details.&n; *&n; * Copyright 1996 Roman Zippel&n; * Copyright 1999 D. Jeff Dionne &lt;jeff@rt-control.com&gt;&n; */
+multiline_comment|/*&n; * linux/arch/h8300/platform/h8s/ints.c&n; *&n; * Yoshinori Sato &lt;ysato@users.sourceforge.jp&gt;&n; *&n; * Based on linux/arch/$(ARCH)/platform/$(PLATFORM)/ints.c&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file COPYING in the main directory of this archive&n; * for more details.&n; *&n; * Copyright 1996 Roman Zippel&n; * Copyright 1999 D. Jeff Dionne &lt;jeff@rt-control.com&gt;&n; */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -6,7 +6,6 @@ macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/kernel_stat.h&gt;
 macro_line|#include &lt;linux/seq_file.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
-macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/bootmem.h&gt;
 macro_line|#include &lt;linux/random.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
@@ -120,6 +119,8 @@ DECL|variable|use_kmalloc
 r_static
 r_int
 id|use_kmalloc
+op_assign
+l_int|0
 suffix:semicolon
 r_extern
 r_int

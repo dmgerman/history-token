@@ -1,6 +1,6 @@
 multiline_comment|/*******************************************************************************&n;&n;  &n;  Copyright(c) 1999 - 2003 Intel Corporation. All rights reserved.&n;  &n;  This program is free software; you can redistribute it and/or modify it &n;  under the terms of the GNU General Public License as published by the Free &n;  Software Foundation; either version 2 of the License, or (at your option) &n;  any later version.&n;  &n;  This program is distributed in the hope that it will be useful, but WITHOUT &n;  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or &n;  FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for &n;  more details.&n;  &n;  You should have received a copy of the GNU General Public License along with&n;  this program; if not, write to the Free Software Foundation, Inc., 59 &n;  Temple Place - Suite 330, Boston, MA  02111-1307, USA.&n;  &n;  The full GNU General Public License is included in this distribution in the&n;  file called LICENSE.&n;  &n;  Contact Information:&n;  Linux NICS &lt;linux.nics@intel.com&gt;&n;  Intel Corporation, 5200 N.E. Elam Young Parkway, Hillsboro, OR 97124-6497&n;&n;*******************************************************************************/
 macro_line|#include &quot;e1000.h&quot;
-multiline_comment|/* Change Log&n; *&n; * 5.2.18&t;9/13/03&n; *   o Bug fix: SERDES devices might be connected to a back-plane&n; *     switch that doesn&squot;t support auto-neg, so add the capability&n; *     to force 1000/Full.&n; *   o Bug fix: Flow control settings for hi/lo watermark didn&squot;t&n; *     consider changes in the Rx FIFO size, which could occur with&n; *     Jumbo Frames or with the reduced FIFO in 82547.&n; *   o Better propagation of error codes. [Janice Girouard &n; *     (janiceg@us.ibm.com)].&n; *&n; * 5.2.16&t;8/8/03&n; *   o Added support for new controllers: 82545GM, 82546GB, 82541/7_B1&n; *   o Bug fix: reset h/w before first EEPROM read because we don&squot;t know&n; *     who may have been messing with the device before we got there.&n; *     [Dave Johnson (ddj -a-t- cascv.brown.edu)]&n; *   o Bug fix: read the correct work from EEPROM to detect programmed&n; *     WoL settings.&n; *   o Bug fix: TSO would hang if space left in FIFO was being miscalculated&n; *     when mss dropped without a correspoding drop in the DMA buffer size.&n; *   o ASF for Fiber nics isn&squot;t supported.&n; *   o Bug fix: Workaround added for potential hang with 82544 running in&n; *     PCI-X if send buffer terminates within an evenly-aligned dword.&n; *   o Feature: Add support for ethtool flow control setting.&n; *   o Feature: Add support for ethtool TSO setting.&n; *   o Feature: Increase default Tx Descriptor count to 1024 for &gt;= 82544.&n; *   &n; * 5.1.13&t;5/28/03&n; */
+multiline_comment|/* Change Log&n; *&n; * 5.2.20&t;9/30/03&n; *   o Bug fix: SERDES devices might be connected to a back-plane&n; *     switch that doesn&squot;t support auto-neg, so add the capability&n; *     to force 1000/Full.&n; *   o Bug fix: Flow control settings for hi/lo watermark didn&squot;t&n; *     consider changes in the Rx FIFO size, which could occur with&n; *     Jumbo Frames or with the reduced FIFO in 82547.&n; *   o Better propagation of error codes. [Janice Girouard &n; *     (janiceg@us.ibm.com)].&n; *   o Bug fix: hang under heavy Tx stress when running out of Tx&n; *     descriptors; wasn&squot;t clearing context descriptor when backing&n; *     out of send because of no-resource condition.&n; *&n; * 5.2.16&t;8/8/03&n; *   o Added support for new controllers: 82545GM, 82546GB, 82541/7_B1&n; *   o Bug fix: reset h/w before first EEPROM read because we don&squot;t know&n; *     who may have been messing with the device before we got there.&n; *     [Dave Johnson (ddj -a-t- cascv.brown.edu)]&n; *   o Bug fix: read the correct work from EEPROM to detect programmed&n; *     WoL settings.&n; *   o Bug fix: TSO would hang if space left in FIFO was being miscalculated&n; *     when mss dropped without a correspoding drop in the DMA buffer size.&n; *   o ASF for Fiber nics isn&squot;t supported.&n; *   o Bug fix: Workaround added for potential hang with 82544 running in&n; *     PCI-X if send buffer terminates within an evenly-aligned dword.&n; *   o Feature: Add support for ethtool flow control setting.&n; *   o Feature: Add support for ethtool TSO setting.&n; *   o Feature: Increase default Tx Descriptor count to 1024 for &gt;= 82544.&n; *   &n; * 5.1.13&t;5/28/03&n; */
 DECL|variable|e1000_driver_name
 r_char
 id|e1000_driver_name
@@ -23,7 +23,7 @@ id|e1000_driver_version
 (braket
 )braket
 op_assign
-l_string|&quot;5.2.19-k1&quot;
+l_string|&quot;5.2.20-k1&quot;
 suffix:semicolon
 DECL|variable|e1000_copyright
 r_char
@@ -6504,6 +6504,11 @@ op_amp
 id|adapter-&gt;tx_ring
 suffix:semicolon
 r_struct
+id|e1000_tx_desc
+op_star
+id|tx_desc
+suffix:semicolon
+r_struct
 id|e1000_buffer
 op_star
 id|buffer_info
@@ -6923,13 +6928,48 @@ id|adapter-&gt;tx_ring
 )paren
 OL
 id|count
+op_plus
+l_int|2
 )paren
 (brace
-multiline_comment|/* There aren&squot;t enough descriptors available to queue up&n;&t;&t; * this send, so undo the mapping and abort the send. &n;&t;&t; * We could have done the check before we mapped the skb,&n;&t;&t; * but because of all the workarounds (above), it&squot;s too&n;&t;&t; * difficult to predict how many we&squot;re going to need.*/
+multiline_comment|/* There aren&squot;t enough descriptors available to queue up&n;&t;&t; * this send (need: count + 1 context desc + 1 desc gap&n;&t;&t; * to keep tail from touching head), so undo the mapping&n;&t;&t; * and abort the send.  We could have done the check before&n;&t;&t; * we mapped the skb, but because of all the workarounds&n;&t;&t; * (above), it&squot;s too difficult to predict how many we&squot;re&n;&t;&t; * going to need.*/
 id|i
 op_assign
-id|first
+id|adapter-&gt;tx_ring.next_to_use
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|i
+op_eq
+id|first
+)paren
+(brace
+multiline_comment|/* Cleanup after e1000_tx_[csum|tso] scribbling&n;&t;&t;&t; * on descriptors. */
+id|tx_desc
+op_assign
+id|E1000_TX_DESC
+c_func
+(paren
+op_star
+id|tx_ring
+comma
+id|first
+)paren
+suffix:semicolon
+id|tx_desc-&gt;buffer_addr
+op_assign
+l_int|0
+suffix:semicolon
+id|tx_desc-&gt;lower.data
+op_assign
+l_int|0
+suffix:semicolon
+id|tx_desc-&gt;upper.data
+op_assign
+l_int|0
+suffix:semicolon
+)brace
 r_while
 c_loop
 (paren
@@ -6983,6 +7023,10 @@ l_int|0
 suffix:semicolon
 )brace
 )brace
+id|adapter-&gt;tx_ring.next_to_use
+op_assign
+id|first
+suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon

@@ -41,8 +41,8 @@ r_char
 op_star
 )paren
 suffix:semicolon
-r_extern
-id|__inline__
+r_static
+r_inline
 r_int
 r_int
 DECL|function|csum_partial_copy_nocheck
@@ -114,11 +114,21 @@ c_func
 id|__csum_partial_copy_sparc_generic
 )paren
 l_string|&quot;&bslash;n&bslash;t&quot;
-l_string|&quot; mov %4, %%g7&bslash;n&quot;
+l_string|&quot; mov %6, %%g7&bslash;n&quot;
 suffix:colon
-l_string|&quot;=r&quot;
+l_string|&quot;=&amp;r&quot;
 (paren
 id|ret
+)paren
+comma
+l_string|&quot;=&amp;r&quot;
+(paren
+id|d
+)paren
+comma
+l_string|&quot;=&amp;r&quot;
+(paren
+id|l
 )paren
 suffix:colon
 l_string|&quot;0&quot;
@@ -126,12 +136,12 @@ l_string|&quot;0&quot;
 id|ret
 )paren
 comma
-l_string|&quot;r&quot;
+l_string|&quot;1&quot;
 (paren
 id|d
 )paren
 comma
-l_string|&quot;r&quot;
+l_string|&quot;2&quot;
 (paren
 id|l
 )paren
@@ -141,8 +151,6 @@ l_string|&quot;r&quot;
 id|sum
 )paren
 suffix:colon
-l_string|&quot;o1&quot;
-comma
 l_string|&quot;o2&quot;
 comma
 l_string|&quot;o3&quot;
@@ -153,8 +161,6 @@ l_string|&quot;o5&quot;
 comma
 l_string|&quot;o7&quot;
 comma
-l_string|&quot;g1&quot;
-comma
 l_string|&quot;g2&quot;
 comma
 l_string|&quot;g3&quot;
@@ -164,14 +170,18 @@ comma
 l_string|&quot;g5&quot;
 comma
 l_string|&quot;g7&quot;
+comma
+l_string|&quot;memory&quot;
+comma
+l_string|&quot;cc&quot;
 )paren
 suffix:semicolon
 r_return
 id|ret
 suffix:semicolon
 )brace
-r_extern
-id|__inline__
+r_static
+r_inline
 r_int
 r_int
 DECL|function|csum_partial_copy_from_user
@@ -300,11 +310,26 @@ c_func
 id|__csum_partial_copy_sparc_generic
 )paren
 l_string|&quot;&bslash;n&bslash;t&quot;
-l_string|&quot; st %5, [%%sp + 64]&bslash;n&quot;
+l_string|&quot; st %8, [%%sp + 64]&bslash;n&quot;
 suffix:colon
-l_string|&quot;=r&quot;
+l_string|&quot;=&amp;r&quot;
 (paren
 id|ret
+)paren
+comma
+l_string|&quot;=&amp;r&quot;
+(paren
+id|d
+)paren
+comma
+l_string|&quot;=&amp;r&quot;
+(paren
+id|l
+)paren
+comma
+l_string|&quot;=&amp;r&quot;
+(paren
+id|s
 )paren
 suffix:colon
 l_string|&quot;0&quot;
@@ -312,17 +337,17 @@ l_string|&quot;0&quot;
 id|ret
 )paren
 comma
-l_string|&quot;r&quot;
+l_string|&quot;1&quot;
 (paren
 id|d
 )paren
 comma
-l_string|&quot;r&quot;
+l_string|&quot;2&quot;
 (paren
 id|l
 )paren
 comma
-l_string|&quot;r&quot;
+l_string|&quot;3&quot;
 (paren
 id|s
 )paren
@@ -332,8 +357,6 @@ l_string|&quot;r&quot;
 id|err
 )paren
 suffix:colon
-l_string|&quot;o1&quot;
-comma
 l_string|&quot;o2&quot;
 comma
 l_string|&quot;o3&quot;
@@ -344,8 +367,6 @@ l_string|&quot;o5&quot;
 comma
 l_string|&quot;o7&quot;
 comma
-l_string|&quot;g1&quot;
-comma
 l_string|&quot;g2&quot;
 comma
 l_string|&quot;g3&quot;
@@ -354,7 +375,9 @@ l_string|&quot;g4&quot;
 comma
 l_string|&quot;g5&quot;
 comma
-l_string|&quot;g7&quot;
+l_string|&quot;cc&quot;
+comma
+l_string|&quot;memory&quot;
 )paren
 suffix:semicolon
 r_return
@@ -362,8 +385,8 @@ id|ret
 suffix:semicolon
 )brace
 )brace
-r_extern
-id|__inline__
+r_static
+r_inline
 r_int
 r_int
 DECL|function|csum_partial_copy_to_user
@@ -483,11 +506,26 @@ c_func
 id|__csum_partial_copy_sparc_generic
 )paren
 l_string|&quot;&bslash;n&bslash;t&quot;
-l_string|&quot; st %5, [%%sp + 64]&bslash;n&quot;
+l_string|&quot; st %8, [%%sp + 64]&bslash;n&quot;
 suffix:colon
-l_string|&quot;=r&quot;
+l_string|&quot;=&amp;r&quot;
 (paren
 id|ret
+)paren
+comma
+l_string|&quot;=&amp;r&quot;
+(paren
+id|d
+)paren
+comma
+l_string|&quot;=&amp;r&quot;
+(paren
+id|l
+)paren
+comma
+l_string|&quot;=&amp;r&quot;
+(paren
+id|s
 )paren
 suffix:colon
 l_string|&quot;0&quot;
@@ -495,17 +533,17 @@ l_string|&quot;0&quot;
 id|ret
 )paren
 comma
-l_string|&quot;r&quot;
+l_string|&quot;1&quot;
 (paren
 id|d
 )paren
 comma
-l_string|&quot;r&quot;
+l_string|&quot;2&quot;
 (paren
 id|l
 )paren
 comma
-l_string|&quot;r&quot;
+l_string|&quot;3&quot;
 (paren
 id|s
 )paren
@@ -515,8 +553,6 @@ l_string|&quot;r&quot;
 id|err
 )paren
 suffix:colon
-l_string|&quot;o1&quot;
-comma
 l_string|&quot;o2&quot;
 comma
 l_string|&quot;o3&quot;
@@ -527,8 +563,6 @@ l_string|&quot;o5&quot;
 comma
 l_string|&quot;o7&quot;
 comma
-l_string|&quot;g1&quot;
-comma
 l_string|&quot;g2&quot;
 comma
 l_string|&quot;g3&quot;
@@ -537,7 +571,9 @@ l_string|&quot;g4&quot;
 comma
 l_string|&quot;g5&quot;
 comma
-l_string|&quot;g7&quot;
+l_string|&quot;cc&quot;
+comma
+l_string|&quot;memory&quot;
 )paren
 suffix:semicolon
 r_return
@@ -551,14 +587,14 @@ DECL|macro|csum_and_copy_to_user
 mdefine_line|#define csum_and_copy_to_user csum_partial_copy_to_user
 multiline_comment|/* ihl is always 5 or greater, almost always is 5, and iph is word aligned&n; * the majority of the time.&n; */
 DECL|function|ip_fast_csum
-r_extern
-id|__inline__
+r_static
+r_inline
 r_int
 r_int
 id|ip_fast_csum
 c_func
 (paren
-id|__const__
+r_const
 r_int
 r_char
 op_star
@@ -636,8 +672,8 @@ suffix:semicolon
 )brace
 multiline_comment|/* Fold a partial checksum without adding pseudo headers. */
 DECL|function|csum_fold
-r_extern
-id|__inline__
+r_static
+r_inline
 r_int
 r_int
 id|csum_fold
@@ -691,8 +727,8 @@ id|sum
 suffix:semicolon
 )brace
 DECL|function|csum_tcpudp_nofold
-r_extern
-id|__inline__
+r_static
+r_inline
 r_int
 r_int
 id|csum_tcpudp_nofold
@@ -826,7 +862,7 @@ DECL|macro|_HAVE_ARCH_IPV6_CSUM
 mdefine_line|#define _HAVE_ARCH_IPV6_CSUM
 DECL|function|csum_ipv6_magic
 r_static
-id|__inline__
+r_inline
 r_int
 r_int
 r_int
@@ -935,8 +971,8 @@ suffix:semicolon
 )brace
 multiline_comment|/* this routine is used for miscellaneous IP-like checksums, mainly in icmp.c */
 DECL|function|ip_compute_csum
-r_extern
-id|__inline__
+r_static
+r_inline
 r_int
 r_int
 id|ip_compute_csum

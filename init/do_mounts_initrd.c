@@ -6,6 +6,18 @@ macro_line|#include &lt;linux/romfs_fs.h&gt;
 macro_line|#include &lt;linux/initrd.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &quot;do_mounts.h&quot;
+DECL|variable|initrd_start
+DECL|variable|initrd_end
+r_int
+r_int
+id|initrd_start
+comma
+id|initrd_end
+suffix:semicolon
+DECL|variable|initrd_below_start_ok
+r_int
+id|initrd_below_start_ok
+suffix:semicolon
 DECL|variable|real_root_dev
 r_int
 r_int
@@ -546,45 +558,20 @@ r_void
 r_if
 c_cond
 (paren
-op_logical_neg
 id|mount_initrd
 )paren
-r_return
-l_int|0
-suffix:semicolon
+(brace
 id|create_dev
 c_func
 (paren
 l_string|&quot;/dev/ram&quot;
 comma
-id|MKDEV
-c_func
-(paren
-id|RAMDISK_MAJOR
-comma
-l_int|0
-)paren
+id|Root_RAM0
 comma
 l_int|NULL
 )paren
 suffix:semicolon
-id|create_dev
-c_func
-(paren
-l_string|&quot;/dev/initrd&quot;
-comma
-id|MKDEV
-c_func
-(paren
-id|RAMDISK_MAJOR
-comma
-id|INITRD_MINOR
-)paren
-comma
-l_int|NULL
-)paren
-suffix:semicolon
-multiline_comment|/* Load the initrd data into /dev/ram0. Execute it as initrd unless&n;&t; * /dev/ram0 is supposed to be our actual root device, in&n;&t; * that case the ram disk is just set up here, and gets&n;&t; * mounted in the normal path. */
+multiline_comment|/*&n;&t;&t; * Load the initrd data into /dev/ram0. Execute it as initrd&n;&t;&t; * unless /dev/ram0 is supposed to be our actual root device,&n;&t;&t; * in that case the ram disk is just set up here, and gets&n;&t;&t; * mounted in the normal path.&n;&t;&t; */
 r_if
 c_cond
 (paren
@@ -599,6 +586,12 @@ op_ne
 id|Root_RAM0
 )paren
 (brace
+id|sys_unlink
+c_func
+(paren
+l_string|&quot;/dev/initrd&quot;
+)paren
+suffix:semicolon
 id|handle_initrd
 c_func
 (paren
@@ -608,6 +601,13 @@ r_return
 l_int|1
 suffix:semicolon
 )brace
+)brace
+id|sys_unlink
+c_func
+(paren
+l_string|&quot;/dev/initrd&quot;
+)paren
+suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon

@@ -59,10 +59,10 @@ l_string|&quot;a&quot;
 dot
 id|previous
 multiline_comment|/* workaround for Itanium 2 Errata 9: */
-DECL|macro|MCKINLEY_E9_WORKAROUND
-macro_line|# define MCKINLEY_E9_WORKAROUND&t;&t;&t;&bslash;&n;&t;.xdata4 &quot;.data.patch.mckinley_e9&quot;, 1f-.;&bslash;&n;1:{ .mib;&t;&t;&t;&t;&t;&bslash;&n;&t;nop.m 0;&t;&t;&t;&t;&bslash;&n;&t;nop.i 0;&t;&t;&t;&t;&bslash;&n;&t;br.call.sptk.many b7=1f;;&t;&t;&bslash;&n;  };&t;&t;&t;&t;&t;&t;&bslash;&n;1:
+DECL|macro|FSYS_RETURN
+macro_line|# define FSYS_RETURN&t;&t;&t;&t;&t;&bslash;&n;&t;.xdata4 &quot;.data.patch.mckinley_e9&quot;, 1f-.;&t;&bslash;&n;1:{ .mib;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;nop.m 0;&t;&t;&t;&t;&t;&bslash;&n;&t;mov r16=ar.pfs;&t;&t;&t;&t;&t;&bslash;&n;&t;br.call.sptk.many b7=2f;;&t;&t;&t;&bslash;&n;  };&t;&t;&t;&t;&t;&t;&t;&bslash;&n;2:{ .mib;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;nop.m 0;&t;&t;&t;&t;&t;&bslash;&n;&t;mov ar.pfs=r16;&t;&t;&t;&t;&t;&bslash;&n;&t;br.ret.sptk.many b6;;&t;&t;&t;&t;&bslash;&n;  }
 macro_line|#else
-macro_line|# define MCKINLEY_E9_WORKAROUND
+macro_line|# define FSYS_RETURN&t;br.ret.sptk.many b6
 macro_line|#endif
 macro_line|#endif /* _ASM_IA64_ASMMACRO_H */
 eof

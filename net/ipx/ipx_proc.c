@@ -1,7 +1,7 @@
 multiline_comment|/*&n; *&t;IPX proc routines&n; *&n; * &t;Copyright(C) Arnaldo Carvalho de Melo &lt;acme@conectiva.com.br&gt;, 2002&n; */
 macro_line|#include &lt;linux/config.h&gt;
-macro_line|#ifdef CONFIG_PROC_FS
 macro_line|#include &lt;linux/init.h&gt;
+macro_line|#ifdef CONFIG_PROC_FS
 macro_line|#include &lt;linux/proc_fs.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;linux/seq_file.h&gt;

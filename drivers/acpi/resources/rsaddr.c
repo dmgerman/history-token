@@ -89,6 +89,21 @@ comma
 id|buffer
 )paren
 suffix:semicolon
+multiline_comment|/* Validate minimum descriptor length */
+r_if
+c_cond
+(paren
+id|temp16
+OL
+l_int|13
+)paren
+(brace
+id|return_ACPI_STATUS
+(paren
+id|AE_AML_BAD_RESOURCE_LENGTH
+)paren
+suffix:semicolon
+)brace
 op_star
 id|bytes_consumed
 op_assign
@@ -339,14 +354,18 @@ id|buffer
 op_add_assign
 l_int|2
 suffix:semicolon
-multiline_comment|/*&n;&t; * This will leave us pointing to the Resource Source Index&n;&t; * If it is present, then save it off and calculate the&n;&t; * pointer to where the null terminated string goes:&n;&t; * Each Interrupt takes 32-bits + the 5 bytes of the&n;&t; * stream that are default.&n;&t; */
+multiline_comment|/*&n;&t; * This will leave us pointing to the Resource Source Index&n;&t; * If it is present, then save it off and calculate the&n;&t; * pointer to where the null terminated string goes:&n;&t; * Each Interrupt takes 32-bits + the 5 bytes of the&n;&t; * stream that are default.&n;&t; *&n;&t; * Note: Some resource descriptors will have an additional null, so&n;&t; * we add 1 to the length.&n;&t; */
 r_if
 c_cond
 (paren
 op_star
 id|bytes_consumed
 OG
+(paren
 l_int|16
+op_plus
+l_int|1
+)paren
 )paren
 (brace
 multiline_comment|/* Dereference the Index */
@@ -812,7 +831,7 @@ comma
 id|linked_list-&gt;data.address16.resource_source.string_ptr
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t;&t; * Buffer needs to be set to the length of the sting + one for the&n;&t;&t; *  terminating null&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * Buffer needs to be set to the length of the sting + one for the&n;&t;&t; * terminating null&n;&t;&t; */
 id|buffer
 op_add_assign
 (paren
@@ -948,6 +967,21 @@ comma
 id|buffer
 )paren
 suffix:semicolon
+multiline_comment|/* Validate minimum descriptor length */
+r_if
+c_cond
+(paren
+id|temp16
+OL
+l_int|23
+)paren
+(brace
+id|return_ACPI_STATUS
+(paren
+id|AE_AML_BAD_RESOURCE_LENGTH
+)paren
+suffix:semicolon
+)brace
 op_star
 id|bytes_consumed
 op_assign
@@ -1198,14 +1232,18 @@ id|buffer
 op_add_assign
 l_int|4
 suffix:semicolon
-multiline_comment|/*&n;&t; * This will leave us pointing to the Resource Source Index&n;&t; * If it is present, then save it off and calculate the&n;&t; * pointer to where the null terminated string goes:&n;&t; */
+multiline_comment|/*&n;&t; * This will leave us pointing to the Resource Source Index&n;&t; * If it is present, then save it off and calculate the&n;&t; * pointer to where the null terminated string goes:&n;&t; *&n;&t; * Note: Some resource descriptors will have an additional null, so&n;&t; * we add 1 to the length.&n;&t; */
 r_if
 c_cond
 (paren
 op_star
 id|bytes_consumed
 OG
+(paren
 l_int|26
+op_plus
+l_int|1
+)paren
 )paren
 (brace
 multiline_comment|/* Dereference the Index */
@@ -1296,7 +1334,7 @@ id|index
 op_plus
 l_int|1
 suffix:semicolon
-multiline_comment|/*&n;&t;&t; * In order for the struct_size to fall on a 32-bit boundary,&n;&t;&t; *  calculate the length of the string and expand the&n;&t;&t; *  struct_size to the next 32-bit boundary.&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * In order for the struct_size to fall on a 32-bit boundary,&n;&t;&t; * calculate the length of the string and expand the&n;&t;&t; * struct_size to the next 32-bit boundary.&n;&t;&t; */
 id|temp8
 op_assign
 (paren
@@ -1806,6 +1844,21 @@ comma
 id|buffer
 )paren
 suffix:semicolon
+multiline_comment|/* Validate minimum descriptor length */
+r_if
+c_cond
+(paren
+id|temp16
+OL
+l_int|43
+)paren
+(brace
+id|return_ACPI_STATUS
+(paren
+id|AE_AML_BAD_RESOURCE_LENGTH
+)paren
+suffix:semicolon
+)brace
 op_star
 id|bytes_consumed
 op_assign
@@ -2056,14 +2109,18 @@ id|buffer
 op_add_assign
 l_int|8
 suffix:semicolon
-multiline_comment|/*&n;&t; * This will leave us pointing to the Resource Source Index&n;&t; * If it is present, then save it off and calculate the&n;&t; * pointer to where the null terminated string goes:&n;&t; * Each Interrupt takes 32-bits + the 5 bytes of the&n;&t; * stream that are default.&n;&t; */
+multiline_comment|/*&n;&t; * This will leave us pointing to the Resource Source Index&n;&t; * If it is present, then save it off and calculate the&n;&t; * pointer to where the null terminated string goes:&n;&t; * Each Interrupt takes 32-bits + the 5 bytes of the&n;&t; * stream that are default.&n;&t; *&n;&t; * Note: Some resource descriptors will have an additional null, so&n;&t; * we add 1 to the length.&n;&t; */
 r_if
 c_cond
 (paren
 op_star
 id|bytes_consumed
 OG
+(paren
 l_int|46
+op_plus
+l_int|1
+)paren
 )paren
 (brace
 multiline_comment|/* Dereference the Index */
@@ -2531,7 +2588,7 @@ comma
 id|linked_list-&gt;data.address64.resource_source.string_ptr
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t;&t; * Buffer needs to be set to the length of the sting + one for the&n;&t;&t; *  terminating null&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * Buffer needs to be set to the length of the sting + one for the&n;&t;&t; * terminating null&n;&t;&t; */
 id|buffer
 op_add_assign
 (paren

@@ -2378,8 +2378,11 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|likely
+(paren
 op_logical_neg
 id|p.ptr
+)paren
 )paren
 r_continue
 suffix:semicolon
@@ -2517,6 +2520,8 @@ c_cond
 id|temp
 op_eq
 id|seen_count
+op_logical_and
+id|p.ptr
 )paren
 (brace
 id|u32
@@ -2660,6 +2665,12 @@ id|temp
 op_assign
 l_int|0
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|p.qh
+)paren
+(brace
 id|tag
 op_assign
 id|Q_NEXT_TYPE
@@ -2671,6 +2682,7 @@ id|p
 op_assign
 id|p.qh-&gt;qh_next
 suffix:semicolon
+)brace
 r_break
 suffix:semicolon
 r_case

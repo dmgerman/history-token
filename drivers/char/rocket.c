@@ -3903,11 +3903,7 @@ macro_line|#endif
 multiline_comment|/*&n;&t; * Info-&gt;count is now 1; so it&squot;s safe to sleep now.&n;&t; */
 id|info-&gt;session
 op_assign
-id|process_session
-c_func
-(paren
-id|current
-)paren
+id|current-&gt;session
 suffix:semicolon
 id|info-&gt;pgrp
 op_assign

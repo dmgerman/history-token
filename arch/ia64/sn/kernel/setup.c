@@ -230,7 +230,6 @@ l_int|16
 suffix:semicolon
 macro_line|#endif
 multiline_comment|/**&n; * early_sn_setup - early setup routine for SN platforms&n; *&n; * Sets up an initial console to aid debugging.  Intended primarily&n; * for bringup.  See start_kernel() in init/main.c.&n; */
-macro_line|#if defined(CONFIG_IA64_EARLY_PRINTK_SGI_SN) || defined(CONFIG_IA64_SGI_SN_SIM)
 r_void
 id|__init
 DECL|function|early_sn_setup
@@ -457,7 +456,6 @@ id|master_node_bedrock_address
 suffix:semicolon
 )brace
 )brace
-macro_line|#endif /* CONFIG_IA64_EARLY_PRINTK_SGI_SN */
 macro_line|#ifdef CONFIG_IA64_MCA
 r_extern
 r_int

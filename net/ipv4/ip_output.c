@@ -1647,6 +1647,10 @@ id|to-&gt;nfmark
 op_assign
 id|from-&gt;nfmark
 suffix:semicolon
+id|to-&gt;nfcache
+op_assign
+id|from-&gt;nfcache
+suffix:semicolon
 multiline_comment|/* Connection association is same as pre-frag packet */
 id|to-&gt;nfct
 op_assign
@@ -1961,6 +1965,8 @@ c_cond
 id|frag-&gt;sk
 op_eq
 l_int|NULL
+op_logical_and
+id|skb-&gt;sk
 )paren
 r_goto
 id|slow_path

@@ -3775,9 +3775,7 @@ id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;RPC: %4d call_verify: program %u is unsupported by server %s&bslash;n&quot;
-comma
-id|task-&gt;tk_pid
+l_string|&quot;RPC: call_verify: program %u is unsupported by server %s&bslash;n&quot;
 comma
 (paren
 r_int
@@ -3798,9 +3796,7 @@ id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;RPC: %4d call_verify: program %u, version %u unsupported by server %s&bslash;n&quot;
-comma
-id|task-&gt;tk_pid
+l_string|&quot;RPC: call_verify: program %u, version %u unsupported by server %s&bslash;n&quot;
 comma
 (paren
 r_int
@@ -3827,9 +3823,7 @@ id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;RPC: %4d call_verify: proc %p unsupported by program %u, version %u on server %s&bslash;n&quot;
-comma
-id|task-&gt;tk_pid
+l_string|&quot;RPC: call_verify: proc %p unsupported by program %u, version %u on server %s&bslash;n&quot;
 comma
 id|task-&gt;tk_msg.rpc_proc
 comma

@@ -19,6 +19,7 @@ DECL|macro|ZORAN_VID_TYPE
 mdefine_line|#define     ZORAN_VID_TYPE  ( &bslash;&n;&t;&t;&t;&t;VID_TYPE_CAPTURE | &bslash;&n;&t;&t;&t;&t;VID_TYPE_OVERLAY | &bslash;&n;&t;&t;&t;&t;VID_TYPE_CLIPPING | &bslash;&n;&t;&t;&t;&t;VID_TYPE_FRAMERAM | &bslash;&n;&t;&t;&t;&t;VID_TYPE_SCALES | &bslash;&n;&t;&t;&t;&t;VID_TYPE_MJPEG_DECODER | &bslash;&n;&t;&t;&t;&t;VID_TYPE_MJPEG_ENCODER &bslash;&n;&t;&t;&t;     )
 macro_line|#include &lt;linux/videodev.h&gt;
 macro_line|#include &quot;videocodec.h&quot;
+macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;linux/proc_fs.h&gt;
 macro_line|#include &lt;linux/video_decoder.h&gt;

@@ -310,6 +310,11 @@ macro_line|#else
 macro_line|#error unknown ACPI_MACHINE_WIDTH
 macro_line|#endif
 multiline_comment|/*&n; * Miscellaneous common types&n; */
+DECL|typedef|UINT16_BIT
+r_typedef
+id|u16
+id|UINT16_BIT
+suffix:semicolon
 DECL|typedef|UINT32_BIT
 r_typedef
 id|u32

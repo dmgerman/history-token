@@ -648,8 +648,6 @@ id|fp
 suffix:semicolon
 DECL|macro|PERM_SYMTAB_SIZE
 mdefine_line|#define PERM_SYMTAB_SIZE 32
-DECL|macro|POLICYDB_VERSION
-mdefine_line|#define POLICYDB_VERSION 15
 DECL|macro|POLICYDB_CONFIG_MLS
 mdefine_line|#define POLICYDB_CONFIG_MLS    1
 DECL|macro|OBJECT_R

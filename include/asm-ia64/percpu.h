@@ -72,11 +72,22 @@ id|setup_per_cpu_areas
 r_void
 )paren
 suffix:semicolon
+r_extern
+r_void
+op_star
+id|per_cpu_init
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
 macro_line|#else /* ! SMP */
 DECL|macro|per_cpu
 mdefine_line|#define per_cpu(var, cpu)&t;&t;&t;((void)cpu, per_cpu__##var)
 DECL|macro|__get_cpu_var
 mdefine_line|#define __get_cpu_var(var)&t;&t;&t;per_cpu__##var
+DECL|macro|per_cpu_init
+mdefine_line|#define per_cpu_init()&t;&t;&t;&t;(__phys_per_cpu_start)
 macro_line|#endif&t;/* SMP */
 DECL|macro|EXPORT_PER_CPU_SYMBOL
 mdefine_line|#define EXPORT_PER_CPU_SYMBOL(var)&t;&t;EXPORT_SYMBOL(per_cpu__##var)

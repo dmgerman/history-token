@@ -91,7 +91,7 @@ id|delta_nsec
 )paren
 (brace
 )brace
-multiline_comment|/*&n; * Return the number of nano-seconds that elapsed since the last update to jiffy.  The&n; * xtime_lock must be at least read-locked when calling this routine.&n; */
+multiline_comment|/*&n; * Return the number of nano-seconds that elapsed since the last&n; * update to jiffy.  It is quite possible that the timer interrupt&n; * will interrupt this and result in a race for any of jiffies,&n; * wall_jiffies or itm_next.  Thus, the xtime_lock must be at least&n; * read synchronised when calling this routine (see do_gettimeofday()&n; * below for an example).&n; */
 r_int
 r_int
 DECL|function|itc_get_offset
@@ -147,45 +147,6 @@ op_member_access_from_pointer
 id|itm_delta
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|unlikely
-c_func
-(paren
-(paren
-r_int
-)paren
-(paren
-id|now
-op_minus
-id|last_tick
-)paren
-OL
-l_int|0
-)paren
-)paren
-(brace
-id|printk
-c_func
-(paren
-id|KERN_ERR
-l_string|&quot;CPU %d: now &lt; last_tick (now=0x%lx,last_tick=0x%lx)!&bslash;n&quot;
-comma
-id|smp_processor_id
-c_func
-(paren
-)paren
-comma
-id|now
-comma
-id|last_tick
-)paren
-suffix:semicolon
-r_return
-id|last_nsec_offset
-suffix:semicolon
-)brace
 id|elapsed_cycles
 op_assign
 id|now

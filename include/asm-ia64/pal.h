@@ -763,12 +763,24 @@ suffix:colon
 l_int|1
 comma
 multiline_comment|/* 1 =&gt; MC occurred&n;&t;&t;&t;&t;&t;&t; * after an instr was&n;&t;&t;&t;&t;&t;&t; * executed but before&n;&t;&t;&t;&t;&t;&t; * the trap that&n;&t;&t;&t;&t;&t;&t; * resulted from instr&n;&t;&t;&t;&t;&t;&t; * execution was&n;&t;&t;&t;&t;&t;&t; * generated.&n;&t;&t;&t;&t;&t;&t; * (Trap Lost )&n;&t;&t;&t;&t;&t;&t; */
-DECL|member|op
-id|op
+DECL|member|mi
+id|mi
 suffix:colon
-l_int|3
+l_int|1
 comma
-multiline_comment|/* Operation that&n;&t;&t;&t;&t;&t;&t; * caused the machine&n;&t;&t;&t;&t;&t;&t; * check&n;&t;&t;&t;&t;&t;&t; */
+multiline_comment|/* More information available&n;&t;&t;&t;&t;&t;&t; * call PAL_MC_ERROR_INFO&n;&t;&t;&t;&t;&t;&t; */
+DECL|member|pi
+id|pi
+suffix:colon
+l_int|1
+comma
+multiline_comment|/* Precise instruction pointer */
+DECL|member|pm
+id|pm
+suffix:colon
+l_int|1
+comma
+multiline_comment|/* Precise min-state save area */
 DECL|member|dy
 id|dy
 suffix:colon
@@ -880,7 +892,7 @@ multiline_comment|/* size of dynamic&n;&t;&t;&t;&t;&t;&t; * state returned&n;&t;
 DECL|member|reserved2
 id|reserved2
 suffix:colon
-l_int|12
+l_int|11
 comma
 DECL|member|cc
 id|cc
@@ -900,12 +912,18 @@ suffix:colon
 l_int|1
 comma
 multiline_comment|/* Bus check */
+DECL|member|rc
+id|rc
+suffix:colon
+l_int|1
+comma
+multiline_comment|/* Register file check */
 DECL|member|uc
 id|uc
 suffix:colon
 l_int|1
 suffix:semicolon
-multiline_comment|/* Unknown check */
+multiline_comment|/* Uarch check */
 DECL|typedef|pal_processor_state_info_t
 )brace
 id|pal_processor_state_info_t

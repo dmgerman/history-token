@@ -28,6 +28,7 @@ macro_line|#include &lt;net/udp.h&gt;
 macro_line|#include &lt;net/icmp.h&gt;
 macro_line|#include &lt;net/ipip.h&gt;
 macro_line|#include &lt;net/inet_ecn.h&gt;
+macro_line|#include &lt;net/xfrm.h&gt;
 multiline_comment|/*&n;   This version of net/ipv6/sit.c is cloned of net/ipv4/ip_gre.c&n;&n;   For comments look at net/ipv4/ip_gre.c --ANK&n; */
 DECL|macro|HASH_SIZE
 mdefine_line|#define HASH_SIZE  16
@@ -1541,6 +1542,16 @@ op_ne
 l_int|NULL
 )paren
 (brace
+id|secpath_put
+c_func
+(paren
+id|skb-&gt;sp
+)paren
+suffix:semicolon
+id|skb-&gt;sp
+op_assign
+l_int|NULL
+suffix:semicolon
 id|skb-&gt;mac.raw
 op_assign
 id|skb-&gt;nh.raw

@@ -17525,9 +17525,6 @@ c_func
 (paren
 id|d
 )paren
-op_eq
-op_minus
-l_int|1
 )paren
 (brace
 id|printk

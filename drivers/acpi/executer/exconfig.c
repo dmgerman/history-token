@@ -73,6 +73,24 @@ id|AE_NO_MEMORY
 suffix:semicolon
 )brace
 multiline_comment|/* Install the new table into the local data structures */
+id|ACPI_MEMSET
+(paren
+op_amp
+id|table_info
+comma
+l_int|0
+comma
+r_sizeof
+(paren
+r_struct
+id|acpi_table_desc
+)paren
+)paren
+suffix:semicolon
+id|table_info.type
+op_assign
+l_int|5
+suffix:semicolon
 id|table_info.pointer
 op_assign
 id|table
@@ -322,7 +340,7 @@ id|status
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* Not found, return an Integer=0 and AE_OK */
+multiline_comment|/* Table not found, return an Integer=0 and AE_OK */
 id|ddb_handle
 op_assign
 id|acpi_ut_create_internal_object
@@ -578,8 +596,18 @@ id|acpi_ex_unload_table
 id|ddb_handle
 )paren
 suffix:semicolon
+id|return_ACPI_STATUS
+(paren
+id|status
+)paren
+suffix:semicolon
 )brace
 )brace
+op_star
+id|return_desc
+op_assign
+id|ddb_handle
+suffix:semicolon
 id|return_ACPI_STATUS
 (paren
 id|status
@@ -1092,7 +1120,7 @@ id|ddb_handle
 id|acpi_status
 id|status
 op_assign
-id|AE_NOT_IMPLEMENTED
+id|AE_OK
 suffix:semicolon
 r_union
 id|acpi_operand_object

@@ -3610,7 +3610,19 @@ comma
 l_int|0x24
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * We now know that the netdevice is no longer in use, and all&n;&t; * references to our driver have been removed.  The only structure&n;&t; * which may still be present is the netdevice, which will get&n;&t; * cleaned up by net/core/dev.c&n;&t; */
+r_if
+c_cond
+(paren
+id|dev
+)paren
+(brace
+id|free_netdev
+c_func
+(paren
+id|dev
+)paren
+suffix:semicolon
+)brace
 )brace
 DECL|function|sa1100ir_setup
 r_static

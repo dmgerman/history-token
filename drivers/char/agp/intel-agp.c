@@ -5639,7 +5639,7 @@ suffix:semicolon
 DECL|function|agp_intel_probe
 r_static
 r_int
-id|__init
+id|__devinit
 id|agp_intel_probe
 c_func
 (paren

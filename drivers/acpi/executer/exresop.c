@@ -425,6 +425,10 @@ suffix:colon
 r_case
 id|AML_LOCAL_OP
 suffix:colon
+r_case
+id|AML_LOAD_OP
+suffix:colon
+multiline_comment|/* ddb_handle from LOAD_OP or LOAD_TABLE_OP */
 id|ACPI_DEBUG_ONLY_MEMBERS
 (paren
 id|ACPI_DEBUG_PRINT
@@ -448,9 +452,18 @@ id|ACPI_DEBUG_PRINT
 (paren
 id|ACPI_DB_ERROR
 comma
-l_string|&quot;Unknown Reference Opcode %X&bslash;n&quot;
+l_string|&quot;Unknown Reference Opcode %X [%s]&bslash;n&quot;
 comma
 id|obj_desc-&gt;reference.opcode
+comma
+(paren
+id|acpi_ps_get_opcode_info
+(paren
+id|obj_desc-&gt;reference.opcode
+)paren
+)paren
+op_member_access_from_pointer
+id|name
 )paren
 )paren
 suffix:semicolon
@@ -762,6 +775,16 @@ multiline_comment|/* Any operand type will do */
 id|type_needed
 op_assign
 id|ACPI_TYPE_ANY
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+id|ARGI_DDBHANDLE
+suffix:colon
+multiline_comment|/* Need an operand of type ACPI_TYPE_DDB_HANDLE */
+id|type_needed
+op_assign
+id|ACPI_TYPE_LOCAL_REFERENCE
 suffix:semicolon
 r_break
 suffix:semicolon

@@ -1442,10 +1442,6 @@ op_amp
 id|timer-&gt;entry
 )paren
 suffix:semicolon
-id|timer-&gt;base
-op_assign
-l_int|NULL
-suffix:semicolon
 id|set_running_timer
 c_func
 (paren
@@ -1453,6 +1449,15 @@ id|base
 comma
 id|timer
 )paren
+suffix:semicolon
+id|smp_wmb
+c_func
+(paren
+)paren
+suffix:semicolon
+id|timer-&gt;base
+op_assign
+l_int|NULL
 suffix:semicolon
 id|spin_unlock_irq
 c_func

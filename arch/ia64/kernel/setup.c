@@ -12,6 +12,8 @@ macro_line|#include &lt;linux/seq_file.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/threads.h&gt;
 macro_line|#include &lt;linux/tty.h&gt;
+macro_line|#include &lt;linux/serial.h&gt;
+macro_line|#include &lt;linux/serial_core.h&gt;
 macro_line|#include &lt;linux/efi.h&gt;
 macro_line|#include &lt;linux/initrd.h&gt;
 macro_line|#include &lt;asm/ia32.h&gt;
@@ -24,6 +26,7 @@ macro_line|#include &lt;asm/pgtable.h&gt;
 macro_line|#include &lt;asm/processor.h&gt;
 macro_line|#include &lt;asm/sal.h&gt;
 macro_line|#include &lt;asm/sections.h&gt;
+macro_line|#include &lt;asm/serial.h&gt;
 macro_line|#include &lt;asm/smp.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/unistd.h&gt;
@@ -186,6 +189,8 @@ r_int
 comma
 r_int
 r_int
+comma
+r_int
 )paren
 suffix:semicolon
 r_int
@@ -279,30 +284,8 @@ id|range_start
 OL
 id|range_end
 )paren
-macro_line|#ifdef CONFIG_DISCONTIGMEM
 id|call_pernode_memory
 c_func
-(paren
-id|__pa
-c_func
-(paren
-id|range_start
-)paren
-comma
-id|__pa
-c_func
-(paren
-id|range_end
-)paren
-comma
-id|func
-)paren
-suffix:semicolon
-macro_line|#else
-(paren
-op_star
-id|func
-)paren
 (paren
 id|__pa
 c_func
@@ -313,9 +296,10 @@ comma
 id|range_end
 op_minus
 id|range_start
+comma
+id|func
 )paren
 suffix:semicolon
-macro_line|#endif
 multiline_comment|/* nothing more available in this segment */
 r_if
 c_cond
@@ -742,6 +726,105 @@ suffix:semicolon
 )brace
 macro_line|#endif
 )brace
+macro_line|#ifdef CONFIG_SERIAL_8250_CONSOLE
+r_static
+r_void
+id|__init
+DECL|function|setup_serial_legacy
+id|setup_serial_legacy
+(paren
+r_void
+)paren
+(brace
+r_struct
+id|uart_port
+id|port
+suffix:semicolon
+r_int
+r_int
+id|i
+comma
+id|iobase
+(braket
+)braket
+op_assign
+(brace
+l_int|0x3f8
+comma
+l_int|0x2f8
+)brace
+suffix:semicolon
+id|printk
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;Registering legacy COM ports for serial console&bslash;n&quot;
+)paren
+suffix:semicolon
+id|memset
+c_func
+(paren
+op_amp
+id|port
+comma
+l_int|0
+comma
+r_sizeof
+(paren
+id|port
+)paren
+)paren
+suffix:semicolon
+id|port.iotype
+op_assign
+id|SERIAL_IO_PORT
+suffix:semicolon
+id|port.uartclk
+op_assign
+id|BASE_BAUD
+op_star
+l_int|16
+suffix:semicolon
+r_for
+c_loop
+(paren
+id|i
+op_assign
+l_int|0
+suffix:semicolon
+id|i
+OL
+id|ARRAY_SIZE
+c_func
+(paren
+id|iobase
+)paren
+suffix:semicolon
+id|i
+op_increment
+)paren
+(brace
+id|port.line
+op_assign
+id|i
+suffix:semicolon
+id|port.iobase
+op_assign
+id|iobase
+(braket
+id|i
+)braket
+suffix:semicolon
+id|early_serial_setup
+c_func
+(paren
+op_amp
+id|port
+)paren
+suffix:semicolon
+)brace
+)brace
+macro_line|#endif
 r_void
 id|__init
 DECL|function|setup_arch
@@ -809,11 +892,6 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|find_memory
-c_func
-(paren
-)paren
-suffix:semicolon
 macro_line|#ifdef CONFIG_ACPI_BOOT
 multiline_comment|/* Initialize the ACPI boot-time table parser */
 id|acpi_table_init
@@ -838,6 +916,11 @@ suffix:semicolon
 multiline_comment|/* happens, e.g., with the Ski simulator */
 macro_line|# endif
 macro_line|#endif /* CONFIG_APCI_BOOT */
+id|find_memory
+c_func
+(paren
+)paren
+suffix:semicolon
 multiline_comment|/* process SAL system table: */
 id|ia64_sal_init
 c_func
@@ -984,7 +1067,6 @@ r_void
 op_star
 )paren
 suffix:semicolon
-multiline_comment|/* Setup the serial ports described by HCDP */
 id|setup_serial_hcdp
 c_func
 (paren
@@ -992,6 +1074,27 @@ id|efi.hcdp
 )paren
 suffix:semicolon
 )brace
+macro_line|#endif
+macro_line|#ifdef CONFIG_SERIAL_8250_CONSOLE
+multiline_comment|/*&n;&t; * Without HCDP, we won&squot;t discover any serial ports until the serial driver looks&n;&t; * in the ACPI namespace.  If ACPI claims there are some legacy devices, register&n;&t; * the legacy COM ports so serial console works earlier.  This is slightly dangerous&n;&t; * because we don&squot;t *really* know whether there&squot;s anything there, but we hope that&n;&t; * all new boxes will implement HCDP.&n;&t; */
+r_extern
+r_int
+r_char
+id|acpi_legacy_devices
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|efi.hcdp
+op_logical_and
+id|acpi_legacy_devices
+)paren
+id|setup_serial_legacy
+c_func
+(paren
+)paren
+suffix:semicolon
 macro_line|#endif
 macro_line|#ifdef CONFIG_VT
 macro_line|# if defined(CONFIG_DUMMY_CONSOLE)
@@ -2009,117 +2112,13 @@ r_void
 op_star
 id|cpu_data
 suffix:semicolon
-macro_line|#ifdef CONFIG_SMP
-r_int
-id|cpu
-suffix:semicolon
-multiline_comment|/*&n;&t; * get_free_pages() cannot be used before cpu_init() done.  BSP allocates&n;&t; * &quot;NR_CPUS&quot; pages for all CPUs to avoid that AP calls get_zeroed_page().&n;&t; */
-r_if
-c_cond
-(paren
-id|smp_processor_id
+id|cpu_data
+op_assign
+id|per_cpu_init
 c_func
 (paren
 )paren
-op_eq
-l_int|0
-)paren
-(brace
-id|cpu_data
-op_assign
-id|__alloc_bootmem
-c_func
-(paren
-id|PERCPU_PAGE_SIZE
-op_star
-id|NR_CPUS
-comma
-id|PERCPU_PAGE_SIZE
-comma
-id|__pa
-c_func
-(paren
-id|MAX_DMA_ADDRESS
-)paren
-)paren
 suffix:semicolon
-r_for
-c_loop
-(paren
-id|cpu
-op_assign
-l_int|0
-suffix:semicolon
-id|cpu
-OL
-id|NR_CPUS
-suffix:semicolon
-id|cpu
-op_increment
-)paren
-(brace
-id|memcpy
-c_func
-(paren
-id|cpu_data
-comma
-id|__phys_per_cpu_start
-comma
-id|__per_cpu_end
-op_minus
-id|__per_cpu_start
-)paren
-suffix:semicolon
-id|__per_cpu_offset
-(braket
-id|cpu
-)braket
-op_assign
-(paren
-r_char
-op_star
-)paren
-id|cpu_data
-op_minus
-id|__per_cpu_start
-suffix:semicolon
-id|cpu_data
-op_add_assign
-id|PERCPU_PAGE_SIZE
-suffix:semicolon
-id|per_cpu
-c_func
-(paren
-id|local_per_cpu_offset
-comma
-id|cpu
-)paren
-op_assign
-id|__per_cpu_offset
-(braket
-id|cpu
-)braket
-suffix:semicolon
-)brace
-)brace
-id|cpu_data
-op_assign
-id|__per_cpu_start
-op_plus
-id|__per_cpu_offset
-(braket
-id|smp_processor_id
-c_func
-(paren
-)paren
-)braket
-suffix:semicolon
-macro_line|#else /* !CONFIG_SMP */
-id|cpu_data
-op_assign
-id|__phys_per_cpu_start
-suffix:semicolon
-macro_line|#endif /* !CONFIG_SMP */
 id|get_max_cacheline_size
 c_func
 (paren
@@ -2145,15 +2144,6 @@ op_minus
 id|__per_cpu_start
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_NUMA
-id|cpu_info-&gt;node_data
-op_assign
-id|get_node_data_ptr
-c_func
-(paren
-)paren
-suffix:semicolon
-macro_line|#endif
 id|identify_cpu
 c_func
 (paren
