@@ -3098,11 +3098,6 @@ r_int
 id|access
 )paren
 (brace
-r_int
-id|rc
-op_assign
-l_int|1
-suffix:semicolon
 r_void
 op_star
 id|pgdir
@@ -3378,6 +3373,38 @@ r_return
 l_int|1
 suffix:semicolon
 )brace
+multiline_comment|/*&n;&t; * Check the user&squot;s access rights to the page.  If access should be&n;&t; * prevented then send the problem up to do_page_fault.&n;&t; */
+id|access
+op_or_assign
+id|_PAGE_PRESENT
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|access
+op_amp
+op_complement
+(paren
+id|pte_val
+c_func
+(paren
+op_star
+id|ptep
+)paren
+)paren
+)paren
+(brace
+id|spin_unlock
+c_func
+(paren
+op_amp
+id|mm-&gt;page_table_lock
+)paren
+suffix:semicolon
+r_return
+l_int|1
+suffix:semicolon
+)brace
 multiline_comment|/*&n;&t; * Acquire the hash table lock to guarantee that the linux&n;&t; * pte we fetch will not change&n;&t; */
 id|spin_lock
 c_func
@@ -3392,31 +3419,8 @@ op_star
 id|ptep
 suffix:semicolon
 multiline_comment|/* At this point we have found a pte (which was present).&n;&t; * The spinlocks prevent this status from changing&n;&t; * The hash_table_lock prevents the _PAGE_HASHPTE status&n;&t; * from changing (RPN, DIRTY and ACCESSED too)&n;&t; * The page_table_lock prevents the pte from being &n;&t; * invalidated or modified&n;&t; */
-multiline_comment|/* At this point, we have a pte (old_pte) which can be used to build or update&n; * an HPTE.   There are 5 cases:&n; *&n; * 1. There is a valid (present) pte with no associated HPTE (this is &n; *&t;the most common case)&n; * 2. There is a valid (present) pte with an associated HPTE.  The&n; *&t;current values of the pp bits in the HPTE prevent access because the&n; *&t;user doesn&squot;t have appropriate access rights.&n; * 3. There is a valid (present) pte with an associated HPTE.  The&n; *&t;current values of the pp bits in the HPTE prevent access because we are&n; *&t;doing software DIRTY bit management and the page is currently not DIRTY. &n; * 4. This is a Kernel address (0xC---) for which there is no page directory.&n; *&t;There is an HPTE for this page, but the pp bits prevent access.&n; *      Since we always set up kernel pages with R/W access for the kernel&n; *&t;this case only comes about for users trying to access the kernel.&n; *&t;This case is always an error and is not dealt with further here.&n; * 5. This is a Kernel address (0xC---) for which there is no page directory.&n; *&t;There is no HPTE for this page.&n;&n; * Check the user&squot;s access rights to the page.  If access should be prevented&n; * then send the problem up to do_page_fault.&n; */
-id|access
-op_or_assign
-id|_PAGE_PRESENT
-suffix:semicolon
-r_if
-c_cond
-(paren
-l_int|0
-op_eq
-(paren
-id|access
-op_amp
-op_complement
-(paren
-id|pte_val
-c_func
-(paren
-id|old_pte
-)paren
-)paren
-)paren
-)paren
-(brace
-multiline_comment|/*&n;&t;&t; * Check if pte might have an hpte, but we have&n;&t;&t; * no slot information&n;&t;&t; */
+multiline_comment|/* At this point, we have a pte (old_pte) which can be used to build or update&n; * an HPTE.   There are 5 cases:&n; *&n; * 1. There is a valid (present) pte with no associated HPTE (this is &n; *&t;the most common case)&n; * 2. There is a valid (present) pte with an associated HPTE.  The&n; *&t;current values of the pp bits in the HPTE prevent access because the&n; *&t;user doesn&squot;t have appropriate access rights.&n; * 3. There is a valid (present) pte with an associated HPTE.  The&n; *&t;current values of the pp bits in the HPTE prevent access because we are&n; *&t;doing software DIRTY bit management and the page is currently not DIRTY. &n; * 4. This is a Kernel address (0xC---) for which there is no page directory.&n; *&t;There is an HPTE for this page, but the pp bits prevent access.&n; *      Since we always set up kernel pages with R/W access for the kernel&n; *&t;this case only comes about for users trying to access the kernel.&n; *&t;This case is always an error and is not dealt with further here.&n; * 5. This is a Kernel address (0xC---) for which there is no page directory.&n; *&t;There is no HPTE for this page.&n; */
+multiline_comment|/*&n;&t; * Check if pte might have an hpte, but we have&n;&t; * no slot information&n;&t; */
 r_if
 c_cond
 (paren
@@ -3737,7 +3741,7 @@ id|_PAGE_HASHPTE
 )paren
 (brace
 multiline_comment|/* Cases 1 and 5 */
-multiline_comment|/* For these cases we need to create a new&n;&t;&t;&t; * HPTE and update the linux pte (for&n;&t;&t;&t; * case 1).  For case 5 there is no linux pte.&n;&t;&t;&t; *&n;&t;&t;&t; * Find an available HPTE slot&n; &t;&t;&t; */
+multiline_comment|/* For these cases we need to create a new&n;&t;&t; * HPTE and update the linux pte (for&n;&t;&t; * case 1).  For case 5 there is no linux pte.&n;&t;&t; *&n;&t;&t; * Find an available HPTE slot&n;&t;&t; */
 id|slot
 op_assign
 id|ppc_md
@@ -3823,7 +3827,7 @@ id|new_pte
 op_or_assign
 id|_PAGE_HASHPTE
 suffix:semicolon
-multiline_comment|/* No need to use ldarx/stdcx here because all&n;&t;&t;&t; * who might be updating the pte will hold the page_table_lock&n;&t;&t;&t; * or the hash_table_lock (we hold both)&n;&t;&t;&t; */
+multiline_comment|/* No need to use ldarx/stdcx here because all&n;&t;&t; * who might be updating the pte will hold the page_table_lock&n;&t;&t; * or the hash_table_lock (we hold both)&n;&t;&t; */
 op_star
 id|ptep
 op_assign
@@ -3866,12 +3870,6 @@ l_int|0
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* Indicate success */
-id|rc
-op_assign
-l_int|0
-suffix:semicolon
-)brace
 id|spin_unlock
 c_func
 (paren
@@ -3887,7 +3885,7 @@ id|mm-&gt;page_table_lock
 )paren
 suffix:semicolon
 r_return
-id|rc
+l_int|0
 suffix:semicolon
 )brace
 DECL|function|flush_hash_page
