@@ -1607,10 +1607,6 @@ id|device
 op_assign
 id|cmd-&gt;device
 suffix:semicolon
-r_int
-r_int
-id|flags
-suffix:semicolon
 id|SCSI_LOG_MLQUEUE
 c_func
 (paren
