@@ -3131,6 +3131,41 @@ c_func
 id|bh
 )paren
 suffix:semicolon
+multiline_comment|/*&n;&t; * fastpath, to avoid expensive locking.  If this buffer is already&n;&t; * on the running transaction&squot;s metadata list there is nothing to do.&n;&t; * Nobody can take it off again because there is a handle open.&n;&t; * I _think_ we&squot;re OK here with SMP barriers - a mistaken decision will&n;&t; * result in this test being false, so we go in and take the locks.&n;&t; */
+r_if
+c_cond
+(paren
+id|jh-&gt;b_transaction
+op_eq
+id|handle-&gt;h_transaction
+op_logical_and
+id|jh-&gt;b_jlist
+op_eq
+id|BJ_Metadata
+)paren
+(brace
+id|JBUFFER_TRACE
+c_func
+(paren
+id|jh
+comma
+l_string|&quot;fastpath&quot;
+)paren
+suffix:semicolon
+id|J_ASSERT_JH
+c_func
+(paren
+id|jh
+comma
+id|jh-&gt;b_transaction
+op_eq
+id|journal-&gt;j_running_transaction
+)paren
+suffix:semicolon
+r_goto
+id|out_unlock_bh
+suffix:semicolon
+)brace
 id|spin_lock
 c_func
 (paren
@@ -3194,7 +3229,7 @@ suffix:semicolon
 multiline_comment|/* And this case is illegal: we can&squot;t reuse another&n;&t;&t; * transaction&squot;s data buffer, ever. */
 multiline_comment|/* FIXME: writepage() should be journalled */
 r_goto
-id|done_locked
+id|out_unlock_list
 suffix:semicolon
 )brace
 multiline_comment|/* That test should have eliminated the following case: */
@@ -3226,7 +3261,7 @@ comma
 id|BJ_Metadata
 )paren
 suffix:semicolon
-id|done_locked
+id|out_unlock_list
 suffix:colon
 id|spin_unlock
 c_func
@@ -3235,6 +3270,8 @@ op_amp
 id|journal-&gt;j_list_lock
 )paren
 suffix:semicolon
+id|out_unlock_bh
+suffix:colon
 id|jbd_unlock_bh_state
 c_func
 (paren
