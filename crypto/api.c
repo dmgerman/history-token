@@ -203,7 +203,7 @@ id|flags
 )paren
 suffix:semicolon
 r_case
-id|CRYPTO_ALG_TYPE_COMP
+id|CRYPTO_ALG_TYPE_COMPRESS
 suffix:colon
 r_return
 id|crypto_init_compress_flags
@@ -272,7 +272,7 @@ id|tfm
 )paren
 suffix:semicolon
 r_case
-id|CRYPTO_ALG_TYPE_COMP
+id|CRYPTO_ALG_TYPE_COMPRESS
 suffix:colon
 r_return
 id|crypto_init_compress_ops
