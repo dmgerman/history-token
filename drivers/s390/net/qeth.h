@@ -1,188 +1,39 @@
-multiline_comment|/*&n; * linux/drivers/s390/net/qeth.h&n; *&n; * Linux on zSeries OSA Express and HiperSockets support&n; *&n; * Copyright 2000,2003 IBM Corporation&n; * Author(s): Utz Bacher &lt;utz.bacher@de.ibm.com&gt;&n; *&n; */
 macro_line|#ifndef __QETH_H__
 DECL|macro|__QETH_H__
 mdefine_line|#define __QETH_H__
+macro_line|#include &lt;linux/if.h&gt;
+macro_line|#include &lt;linux/if_arp.h&gt;
+macro_line|#include &lt;linux/if_tr.h&gt;
+macro_line|#include &lt;linux/trdevice.h&gt;
+macro_line|#include &lt;linux/etherdevice.h&gt;
+macro_line|#include &lt;linux/if_vlan.h&gt;
+macro_line|#include &lt;net/ipv6.h&gt;
+macro_line|#include &lt;linux/in6.h&gt;
+macro_line|#include &lt;net/if_inet6.h&gt;
+macro_line|#include &lt;net/addrconf.h&gt;
+macro_line|#include &lt;asm/bitops.h&gt;
+macro_line|#include &lt;asm/debug.h&gt;
 macro_line|#include &lt;asm/qdio.h&gt;
-DECL|macro|QETH_NAME
-mdefine_line|#define QETH_NAME &quot; qeth&quot;
+macro_line|#include &lt;asm/ccwdev.h&gt;
+macro_line|#include &lt;asm/ccwgroup.h&gt;
+macro_line|#include &quot;qeth_mpc.h&quot;
 DECL|macro|VERSION_QETH_H
-mdefine_line|#define VERSION_QETH_H &quot;$Revision: 1.60 $&quot;
-multiline_comment|/******************** CONFIG STUFF ***********************/
-singleline_comment|//#define QETH_DBF_LIKE_HELL
+mdefine_line|#define VERSION_QETH_H &t;&t;&quot;$Revision: 1.98 $&quot;
 macro_line|#ifdef CONFIG_QETH_IPV6
-DECL|macro|QETH_IPV6
-mdefine_line|#define QETH_IPV6
 DECL|macro|QETH_VERSION_IPV6
-mdefine_line|#define QETH_VERSION_IPV6 &quot;:IPv6&quot;
+mdefine_line|#define QETH_VERSION_IPV6 &t;&quot;:IPv6&quot;
 macro_line|#else
 DECL|macro|QETH_VERSION_IPV6
-mdefine_line|#define QETH_VERSION_IPV6 &quot;&quot;
-macro_line|#endif&t;/* CONFIG_QETH_IPV6 */
+mdefine_line|#define QETH_VERSION_IPV6 &t;&quot;&quot;
+macro_line|#endif
 macro_line|#ifdef CONFIG_QETH_VLAN
-DECL|macro|QETH_VLAN
-mdefine_line|#define QETH_VLAN
 DECL|macro|QETH_VERSION_VLAN
-mdefine_line|#define QETH_VERSION_VLAN &quot;:VLAN&quot;
+mdefine_line|#define QETH_VERSION_VLAN &t;&quot;:VLAN&quot;
 macro_line|#else
 DECL|macro|QETH_VERSION_VLAN
-mdefine_line|#define QETH_VERSION_VLAN &quot;&quot;
-macro_line|#endif&t;/* CONFIG_QETH_VLAN */
-multiline_comment|/* these values match CHECKSUM_* in include/linux/skbuff.h */
-DECL|macro|SW_CHECKSUMMING
-mdefine_line|#define SW_CHECKSUMMING 0
-DECL|macro|HW_CHECKSUMMING
-mdefine_line|#define HW_CHECKSUMMING 1
-DECL|macro|NO_CHECKSUMMING
-mdefine_line|#define NO_CHECKSUMMING 2
-DECL|macro|QETH_CHECKSUM_DEFAULT
-mdefine_line|#define QETH_CHECKSUM_DEFAULT NO_CHECKSUMMING
-DECL|macro|QETH_PRIOQ_DEFAULT
-mdefine_line|#define QETH_PRIOQ_DEFAULT NO_PRIO_QUEUEING
-DECL|macro|QETH_DEFAULT_QUEUE
-mdefine_line|#define QETH_DEFAULT_QUEUE 2
-multiline_comment|/******************** CONFIG STUFF END ***********************/
-multiline_comment|/********************* TUNING STUFF **************************/
-DECL|macro|HIGH_WATERMARK_PACK
-mdefine_line|#define HIGH_WATERMARK_PACK&t;&t;5
-DECL|macro|LOW_WATERMARK_PACK
-mdefine_line|#define LOW_WATERMARK_PACK&t;&t;2
-DECL|macro|WATERMARK_FUZZ
-mdefine_line|#define WATERMARK_FUZZ&t;&t;&t;2
-DECL|macro|QETH_MAX_INPUT_THRESHOLD
-mdefine_line|#define QETH_MAX_INPUT_THRESHOLD 500
-DECL|macro|QETH_MAX_OUTPUT_THRESHOLD
-mdefine_line|#define QETH_MAX_OUTPUT_THRESHOLD 300&t;/* ? */
-multiline_comment|/* only the MAX values are used */
-DECL|macro|QETH_MIN_INPUT_THRESHOLD
-mdefine_line|#define QETH_MIN_INPUT_THRESHOLD 1
-DECL|macro|QETH_MIN_OUTPUT_THRESHOLD
-mdefine_line|#define QETH_MIN_OUTPUT_THRESHOLD 1
-DECL|macro|QETH_REQUEUE_THRESHOLD
-mdefine_line|#define QETH_REQUEUE_THRESHOLD (card-&gt;options.inbound_buffer_count/4)
-macro_line|#ifdef CONFIG_QETH_PERF_STATS
-DECL|macro|QETH_PERFORMANCE_STATS
-mdefine_line|#define QETH_PERFORMANCE_STATS
-macro_line|#endif&t;/* CONFIG_QETH_PERF_STATS */
-macro_line|#ifdef QETH_DBF_LIKE_HELL
-DECL|macro|QETH_VERBOSE_LEVEL
-mdefine_line|#define QETH_VERBOSE_LEVEL 8
-macro_line|#else /* QETH_DBF_LIKE_HELL */
-DECL|macro|QETH_VERBOSE_LEVEL
-mdefine_line|#define QETH_VERBOSE_LEVEL 5
-macro_line|#endif /* QETH_DBF_LIKE_HELL */
-DECL|macro|PCI_THRESHOLD_A
-mdefine_line|#define PCI_THRESHOLD_A (card-&gt;options.inbound_buffer_count+1)&t;
-multiline_comment|/* buffers we have to be behind before we get a PCI */
-DECL|macro|PCI_THRESHOLD_B
-mdefine_line|#define PCI_THRESHOLD_B 0&t;/* enqueued free buffers left before we get a PCI */
-DECL|macro|PCI_TIMER_VALUE
-mdefine_line|#define PCI_TIMER_VALUE 3&t;/* not used, unless the microcode gets patched */
-DECL|macro|DEFAULT_SPARE_BUFFERS
-mdefine_line|#define DEFAULT_SPARE_BUFFERS 0
-DECL|macro|MAX_SPARE_BUFFERS
-mdefine_line|#define MAX_SPARE_BUFFERS 1024
-DECL|macro|SPAREBUF_MASK
-mdefine_line|#define SPAREBUF_MASK 65536
-DECL|macro|MAX_PORTNO
-mdefine_line|#define MAX_PORTNO 15
-DECL|macro|QETH_PROCFILE_NAME
-mdefine_line|#define QETH_PROCFILE_NAME &quot;qeth&quot;
-DECL|macro|QETH_PERF_PROCFILE_NAME
-mdefine_line|#define QETH_PERF_PROCFILE_NAME &quot;qeth_perf&quot;
-DECL|macro|QETH_IPA_PROCFILE_NAME
-mdefine_line|#define QETH_IPA_PROCFILE_NAME &quot;qeth_ipa_takeover&quot;
-DECL|macro|SEND_RETRIES_ALLOWED
-mdefine_line|#define SEND_RETRIES_ALLOWED 5
-DECL|macro|QETH_ROUTING_ATTEMPTS
-mdefine_line|#define QETH_ROUTING_ATTEMPTS 2
-DECL|macro|QETH_HARDSETUP_LAPS
-mdefine_line|#define QETH_HARDSETUP_LAPS 5
-DECL|macro|QETH_HARDSETUP_CLEAR_LAPS
-mdefine_line|#define QETH_HARDSETUP_CLEAR_LAPS 3
-DECL|macro|QETH_RECOVERY_HARDSETUP_RETRY
-mdefine_line|#define QETH_RECOVERY_HARDSETUP_RETRY 2
-multiline_comment|/************************* DEBUG FACILITY STUFF *********************/
-DECL|macro|QETH_DBF_HEX
-mdefine_line|#define QETH_DBF_HEX(ex,name,level,addr,len) &bslash;&n;        do { &bslash;&n;        if (ex) &bslash;&n;                debug_exception(qeth_dbf_##name,level,(void*)addr,len); &bslash;&n;        else &bslash;&n;                debug_event(qeth_dbf_##name,level,(void*)addr,len); &bslash;&n;        } while (0)
-DECL|macro|QETH_DBF_TEXT
-mdefine_line|#define QETH_DBF_TEXT(ex,name,level,text) &bslash;&n;        do { &bslash;&n;        if (ex) &bslash;&n;                debug_text_exception(qeth_dbf_##name,level,text); &bslash;&n;        else &bslash;&n;                debug_text_event(qeth_dbf_##name,level,text); &bslash;&n;        } while (0)
-DECL|macro|QETH_DBF_CARD
-mdefine_line|#define QETH_DBF_CARD(ex,name,level,text,card) &bslash;&n;&t;do { &bslash;&n;&t;&t;QETH_DBF_TEXT(ex,name,level,text); &bslash;&n;&t;&t;QETH_DBF_TEXT(ex,name,level,card-&gt;gdev-&gt;dev.bus_id); &bslash;&n;&t;} while (0)
-DECL|macro|QETH_DBF_HEX0
-mdefine_line|#define QETH_DBF_HEX0(ex,name,addr,len) QETH_DBF_HEX(ex,name,0,addr,len)
-DECL|macro|QETH_DBF_HEX1
-mdefine_line|#define QETH_DBF_HEX1(ex,name,addr,len) QETH_DBF_HEX(ex,name,1,addr,len)
-DECL|macro|QETH_DBF_HEX2
-mdefine_line|#define QETH_DBF_HEX2(ex,name,addr,len) QETH_DBF_HEX(ex,name,2,addr,len)
-macro_line|#ifdef QETH_DBF_LIKE_HELL
-DECL|macro|QETH_DBF_HEX3
-mdefine_line|#define QETH_DBF_HEX3(ex,name,addr,len) QETH_DBF_HEX(ex,name,3,addr,len)
-DECL|macro|QETH_DBF_HEX4
-mdefine_line|#define QETH_DBF_HEX4(ex,name,addr,len) QETH_DBF_HEX(ex,name,4,addr,len)
-DECL|macro|QETH_DBF_HEX5
-mdefine_line|#define QETH_DBF_HEX5(ex,name,addr,len) QETH_DBF_HEX(ex,name,5,addr,len)
-DECL|macro|QETH_DBF_HEX6
-mdefine_line|#define QETH_DBF_HEX6(ex,name,addr,len) QETH_DBF_HEX(ex,name,6,addr,len)
-macro_line|#else /* QETH_DBF_LIKE_HELL */
-DECL|macro|QETH_DBF_HEX3
-mdefine_line|#define QETH_DBF_HEX3(ex,name,addr,len) do {} while (0)
-DECL|macro|QETH_DBF_HEX4
-mdefine_line|#define QETH_DBF_HEX4(ex,name,addr,len) do {} while (0)
-DECL|macro|QETH_DBF_HEX5
-mdefine_line|#define QETH_DBF_HEX5(ex,name,addr,len) do {} while (0)
-DECL|macro|QETH_DBF_HEX6
-mdefine_line|#define QETH_DBF_HEX6(ex,name,addr,len) do {} while (0)
-macro_line|#endif /* QETH_DBF_LIKE_HELL */
-DECL|macro|QETH_DBF_TEXT0
-mdefine_line|#define QETH_DBF_TEXT0(ex,name,text) QETH_DBF_TEXT(ex,name,0,text)
-DECL|macro|QETH_DBF_TEXT1
-mdefine_line|#define QETH_DBF_TEXT1(ex,name,text) QETH_DBF_TEXT(ex,name,1,text)
-DECL|macro|QETH_DBF_TEXT2
-mdefine_line|#define QETH_DBF_TEXT2(ex,name,text) QETH_DBF_TEXT(ex,name,2,text)
-macro_line|#ifdef QETH_DBF_LIKE_HELL
-DECL|macro|QETH_DBF_TEXT3
-mdefine_line|#define QETH_DBF_TEXT3(ex,name,text) QETH_DBF_TEXT(ex,name,3,text)
-DECL|macro|QETH_DBF_TEXT4
-mdefine_line|#define QETH_DBF_TEXT4(ex,name,text) QETH_DBF_TEXT(ex,name,4,text)
-DECL|macro|QETH_DBF_TEXT5
-mdefine_line|#define QETH_DBF_TEXT5(ex,name,text) QETH_DBF_TEXT(ex,name,5,text)
-DECL|macro|QETH_DBF_TEXT6
-mdefine_line|#define QETH_DBF_TEXT6(ex,name,text) QETH_DBF_TEXT(ex,name,6,text)
-macro_line|#else /* QETH_DBF_LIKE_HELL */
-DECL|macro|QETH_DBF_TEXT3
-mdefine_line|#define QETH_DBF_TEXT3(ex,name,text) do {} while (0)
-DECL|macro|QETH_DBF_TEXT4
-mdefine_line|#define QETH_DBF_TEXT4(ex,name,text) do {} while (0)
-DECL|macro|QETH_DBF_TEXT5
-mdefine_line|#define QETH_DBF_TEXT5(ex,name,text) do {} while (0)
-DECL|macro|QETH_DBF_TEXT6
-mdefine_line|#define QETH_DBF_TEXT6(ex,name,text) do {} while (0)
-macro_line|#endif /* QETH_DBF_LIKE_HELL */
-DECL|macro|QETH_DBF_CARD0
-mdefine_line|#define QETH_DBF_CARD0(ex,name,text,card) QETH_DBF_CARD(ex,name,0,text,card)
-DECL|macro|QETH_DBF_CARD1
-mdefine_line|#define QETH_DBF_CARD1(ex,name,text,card) QETH_DBF_CARD(ex,name,1,text,card)
-DECL|macro|QETH_DBF_CARD2
-mdefine_line|#define QETH_DBF_CARD2(ex,name,text,card) QETH_DBF_CARD(ex,name,2,text,card)
-macro_line|#ifdef QETH_DBF_LIKE_HELL
-DECL|macro|QETH_DBF_CARD3
-mdefine_line|#define QETH_DBF_CARD3(ex,name,text,card) QETH_DBF_CARD(ex,name,3,text,card)
-DECL|macro|QETH_DBF_CARD4
-mdefine_line|#define QETH_DBF_CARD4(ex,name,text,card) QETH_DBF_CARD(ex,name,4,text,card)
-DECL|macro|QETH_DBF_CARD5
-mdefine_line|#define QETH_DBF_CARD5(ex,name,text,card) QETH_DBF_CARD(ex,name,5,text,card)
-DECL|macro|QETH_DBF_CARD6
-mdefine_line|#define QETH_DBF_CARD6(ex,name,text,card) QETH_DBF_CARD(ex,name,6,text,card)
-macro_line|#else /* QETH_DBF_LIKE_HELL */
-DECL|macro|QETH_DBF_CARD3
-mdefine_line|#define QETH_DBF_CARD3(ex,name,text,card) do {} while (0)
-DECL|macro|QETH_DBF_CARD4
-mdefine_line|#define QETH_DBF_CARD4(ex,name,text,card) do {} while (0)
-DECL|macro|QETH_DBF_CARD5
-mdefine_line|#define QETH_DBF_CARD5(ex,name,text,card) do {} while (0)
-DECL|macro|QETH_DBF_CARD6
-mdefine_line|#define QETH_DBF_CARD6(ex,name,text,card) do {} while (0)
-macro_line|#endif /* QETH_DBF_LIKE_HELL */
+mdefine_line|#define QETH_VERSION_VLAN &t;&quot;&quot;
+macro_line|#endif
+multiline_comment|/**&n; * Debug Facility stuff&n; */
 DECL|macro|QETH_DBF_SETUP_NAME
 mdefine_line|#define QETH_DBF_SETUP_NAME &quot;qeth_setup&quot;
 DECL|macro|QETH_DBF_SETUP_LEN
@@ -191,13 +42,8 @@ DECL|macro|QETH_DBF_SETUP_INDEX
 mdefine_line|#define QETH_DBF_SETUP_INDEX 3
 DECL|macro|QETH_DBF_SETUP_NR_AREAS
 mdefine_line|#define QETH_DBF_SETUP_NR_AREAS 1
-macro_line|#ifdef QETH_DBF_LIKE_HELL
-DECL|macro|QETH_DBF_SETUP_LEVEL
-mdefine_line|#define QETH_DBF_SETUP_LEVEL 6
-macro_line|#else /* QETH_DBF_LIKE_HELL */
 DECL|macro|QETH_DBF_SETUP_LEVEL
 mdefine_line|#define QETH_DBF_SETUP_LEVEL 3
-macro_line|#endif /* QETH_DBF_LIKE_HELL */
 DECL|macro|QETH_DBF_MISC_NAME
 mdefine_line|#define QETH_DBF_MISC_NAME &quot;qeth_misc&quot;
 DECL|macro|QETH_DBF_MISC_LEN
@@ -206,13 +52,8 @@ DECL|macro|QETH_DBF_MISC_INDEX
 mdefine_line|#define QETH_DBF_MISC_INDEX 1
 DECL|macro|QETH_DBF_MISC_NR_AREAS
 mdefine_line|#define QETH_DBF_MISC_NR_AREAS 1
-macro_line|#ifdef QETH_DBF_LIKE_HELL
-DECL|macro|QETH_DBF_MISC_LEVEL
-mdefine_line|#define QETH_DBF_MISC_LEVEL 6
-macro_line|#else /* QETH_DBF_LIKE_HELL */
 DECL|macro|QETH_DBF_MISC_LEVEL
 mdefine_line|#define QETH_DBF_MISC_LEVEL 2
-macro_line|#endif /* QETH_DBF_LIKE_HELL */
 DECL|macro|QETH_DBF_DATA_NAME
 mdefine_line|#define QETH_DBF_DATA_NAME &quot;qeth_data&quot;
 DECL|macro|QETH_DBF_DATA_LEN
@@ -221,49 +62,28 @@ DECL|macro|QETH_DBF_DATA_INDEX
 mdefine_line|#define QETH_DBF_DATA_INDEX 3
 DECL|macro|QETH_DBF_DATA_NR_AREAS
 mdefine_line|#define QETH_DBF_DATA_NR_AREAS 1
-macro_line|#ifdef QETH_DBF_LIKE_HELL
-DECL|macro|QETH_DBF_DATA_LEVEL
-mdefine_line|#define QETH_DBF_DATA_LEVEL 6
-macro_line|#else /* QETH_DBF_LIKE_HELL */
 DECL|macro|QETH_DBF_DATA_LEVEL
 mdefine_line|#define QETH_DBF_DATA_LEVEL 2
-macro_line|#endif /* QETH_DBF_LIKE_HELL */
 DECL|macro|QETH_DBF_CONTROL_NAME
 mdefine_line|#define QETH_DBF_CONTROL_NAME &quot;qeth_control&quot;
-multiline_comment|/* buffers are 255 bytes long, but no prob */
 DECL|macro|QETH_DBF_CONTROL_LEN
 mdefine_line|#define QETH_DBF_CONTROL_LEN 256
 DECL|macro|QETH_DBF_CONTROL_INDEX
 mdefine_line|#define QETH_DBF_CONTROL_INDEX 3
 DECL|macro|QETH_DBF_CONTROL_NR_AREAS
 mdefine_line|#define QETH_DBF_CONTROL_NR_AREAS 2
-macro_line|#ifdef QETH_DBF_LIKE_HELL
-DECL|macro|QETH_DBF_CONTROL_LEVEL
-mdefine_line|#define QETH_DBF_CONTROL_LEVEL 6
-macro_line|#else /* QETH_DBF_LIKE_HELL */
 DECL|macro|QETH_DBF_CONTROL_LEVEL
 mdefine_line|#define QETH_DBF_CONTROL_LEVEL 2
-macro_line|#endif /* QETH_DBF_LIKE_HELL */
 DECL|macro|QETH_DBF_TRACE_NAME
 mdefine_line|#define QETH_DBF_TRACE_NAME &quot;qeth_trace&quot;
 DECL|macro|QETH_DBF_TRACE_LEN
 mdefine_line|#define QETH_DBF_TRACE_LEN 8
-macro_line|#ifdef QETH_DBF_LIKE_HELL
-DECL|macro|QETH_DBF_TRACE_INDEX
-mdefine_line|#define QETH_DBF_TRACE_INDEX 3
-macro_line|#else /* QETH_DBF_LIKE_HELL */
 DECL|macro|QETH_DBF_TRACE_INDEX
 mdefine_line|#define QETH_DBF_TRACE_INDEX 2
-macro_line|#endif /* QETH_DBF_LIKE_HELL */
 DECL|macro|QETH_DBF_TRACE_NR_AREAS
 mdefine_line|#define QETH_DBF_TRACE_NR_AREAS 2
-macro_line|#ifdef QETH_DBF_LIKE_HELL
 DECL|macro|QETH_DBF_TRACE_LEVEL
-mdefine_line|#define QETH_DBF_TRACE_LEVEL 6
-macro_line|#else /* QETH_DBF_LIKE_HELL */
-DECL|macro|QETH_DBF_TRACE_LEVEL
-mdefine_line|#define QETH_DBF_TRACE_LEVEL 2
-macro_line|#endif /* QETH_DBF_LIKE_HELL */
+mdefine_line|#define QETH_DBF_TRACE_LEVEL 3
 DECL|macro|QETH_DBF_SENSE_NAME
 mdefine_line|#define QETH_DBF_SENSE_NAME &quot;qeth_sense&quot;
 DECL|macro|QETH_DBF_SENSE_LEN
@@ -272,13 +92,8 @@ DECL|macro|QETH_DBF_SENSE_INDEX
 mdefine_line|#define QETH_DBF_SENSE_INDEX 1
 DECL|macro|QETH_DBF_SENSE_NR_AREAS
 mdefine_line|#define QETH_DBF_SENSE_NR_AREAS 1
-macro_line|#ifdef QETH_DBF_LIKE_HELL
-DECL|macro|QETH_DBF_SENSE_LEVEL
-mdefine_line|#define QETH_DBF_SENSE_LEVEL 6
-macro_line|#else /* QETH_DBF_LIKE_HELL */
 DECL|macro|QETH_DBF_SENSE_LEVEL
 mdefine_line|#define QETH_DBF_SENSE_LEVEL 2
-macro_line|#endif /* QETH_DBF_LIKE_HELL */
 DECL|macro|QETH_DBF_QERR_NAME
 mdefine_line|#define QETH_DBF_QERR_NAME &quot;qeth_qerr&quot;
 DECL|macro|QETH_DBF_QERR_LEN
@@ -287,1209 +102,94 @@ DECL|macro|QETH_DBF_QERR_INDEX
 mdefine_line|#define QETH_DBF_QERR_INDEX 1
 DECL|macro|QETH_DBF_QERR_NR_AREAS
 mdefine_line|#define QETH_DBF_QERR_NR_AREAS 2
-macro_line|#ifdef QETH_DBF_LIKE_HELL
-DECL|macro|QETH_DBF_QERR_LEVEL
-mdefine_line|#define QETH_DBF_QERR_LEVEL 6
-macro_line|#else /* QETH_DBF_LIKE_HELL */
 DECL|macro|QETH_DBF_QERR_LEVEL
 mdefine_line|#define QETH_DBF_QERR_LEVEL 2
-macro_line|#endif /* QETH_DBF_LIKE_HELL */
-multiline_comment|/****************** END OF DEBUG FACILITY STUFF *********************/
-multiline_comment|/********************* CARD DATA STUFF **************************/
-DECL|macro|QETH_MAX_PARAMS
-mdefine_line|#define QETH_MAX_PARAMS 150
-DECL|macro|QETH_CARD_TYPE_UNKNOWN
-mdefine_line|#define QETH_CARD_TYPE_UNKNOWN&t;0
-DECL|macro|QETH_CARD_TYPE_OSAE
-mdefine_line|#define QETH_CARD_TYPE_OSAE&t;10
-DECL|macro|QETH_CARD_TYPE_IQD
-mdefine_line|#define QETH_CARD_TYPE_IQD&t;1234
-DECL|macro|QETH_IDX_FUNC_LEVEL_OSAE_ENA_IPAT
-mdefine_line|#define QETH_IDX_FUNC_LEVEL_OSAE_ENA_IPAT 0x0101
-DECL|macro|QETH_IDX_FUNC_LEVEL_OSAE_DIS_IPAT
-mdefine_line|#define QETH_IDX_FUNC_LEVEL_OSAE_DIS_IPAT 0x0101
-DECL|macro|QETH_IDX_FUNC_LEVEL_IQD_ENA_IPAT
-mdefine_line|#define QETH_IDX_FUNC_LEVEL_IQD_ENA_IPAT 0x4108
-DECL|macro|QETH_IDX_FUNC_LEVEL_IQD_DIS_IPAT
-mdefine_line|#define QETH_IDX_FUNC_LEVEL_IQD_DIS_IPAT 0x5108
-DECL|macro|QETH_MAX_QUEUES
-mdefine_line|#define QETH_MAX_QUEUES 4
-DECL|macro|UNIQUE_ID_IF_CREATE_ADDR_FAILED
-mdefine_line|#define UNIQUE_ID_IF_CREATE_ADDR_FAILED 0xfffe
-DECL|macro|UNIQUE_ID_NOT_BY_CARD
-mdefine_line|#define UNIQUE_ID_NOT_BY_CARD 0x10000
-multiline_comment|/* &n; * CU type &amp; model, Dev type &amp; model, card_type, odd_even_restriction,&n; * func level, no of queues, multicast is different (multicast-queue_no + 0x100)&n; */
-DECL|macro|QETH_MODELLIST_ARRAY
-mdefine_line|#define QETH_MODELLIST_ARRAY &bslash;&n;&t;{{0x1731,0x01,0x1732,0x01,QETH_CARD_TYPE_OSAE,1, &bslash;&n;&t;  QETH_IDX_FUNC_LEVEL_OSAE_ENA_IPAT, &bslash;&n;&t;  QETH_IDX_FUNC_LEVEL_OSAE_DIS_IPAT, &bslash;&n;&t;  QETH_MAX_QUEUES,0}, &bslash;&n;&t; {0x1731,0x05,0x1732,0x05,QETH_CARD_TYPE_IQD,0, &bslash;&n;&t;  QETH_IDX_FUNC_LEVEL_IQD_ENA_IPAT, &bslash;&n;&t;  QETH_IDX_FUNC_LEVEL_IQD_DIS_IPAT, &bslash;&n;&t;  QETH_MAX_QUEUES,0x103}, &bslash;&n;&t; {0,0,0,0,0,0,0,0,0}}
-DECL|macro|QETH_MPC_DIFINFO_LEN_INDICATES_LINK_TYPE
-mdefine_line|#define QETH_MPC_DIFINFO_LEN_INDICATES_LINK_TYPE 0x18
-multiline_comment|/* only the first two bytes are looked at in qeth_get_cardname_short */
-DECL|macro|QETH_MPC_LINK_TYPE_FAST_ETHERNET
-mdefine_line|#define QETH_MPC_LINK_TYPE_FAST_ETHERNET 0x01
-DECL|macro|QETH_MPC_LINK_TYPE_HSTR
-mdefine_line|#define QETH_MPC_LINK_TYPE_HSTR 0x02
-DECL|macro|QETH_MPC_LINK_TYPE_GIGABIT_ETHERNET
-mdefine_line|#define QETH_MPC_LINK_TYPE_GIGABIT_ETHERNET 0x03
-DECL|macro|QETH_MPC_LINK_TYPE_10GIGABIT_ETHERNET
-mdefine_line|#define QETH_MPC_LINK_TYPE_10GIGABIT_ETHERNET 0x10
-DECL|macro|QETH_MPC_LINK_TYPE_LANE_ETH100
-mdefine_line|#define QETH_MPC_LINK_TYPE_LANE_ETH100 0x81
-DECL|macro|QETH_MPC_LINK_TYPE_LANE_TR
-mdefine_line|#define QETH_MPC_LINK_TYPE_LANE_TR 0x82
-DECL|macro|QETH_MPC_LINK_TYPE_LANE_ETH1000
-mdefine_line|#define QETH_MPC_LINK_TYPE_LANE_ETH1000 0x83
-DECL|macro|QETH_MPC_LINK_TYPE_LANE
-mdefine_line|#define QETH_MPC_LINK_TYPE_LANE 0x88
-DECL|macro|QETH_MPC_LINK_TYPE_ATM_NATIVE
-mdefine_line|#define QETH_MPC_LINK_TYPE_ATM_NATIVE 0x90
-DECL|macro|DEFAULT_ADD_HHLEN
-mdefine_line|#define DEFAULT_ADD_HHLEN 0
-DECL|macro|MAX_ADD_HHLEN
-mdefine_line|#define MAX_ADD_HHLEN 1024
-DECL|macro|QETH_HEADER_SIZE
-mdefine_line|#define QETH_HEADER_SIZE&t;32
-DECL|macro|QETH_IP_HEADER_SIZE
-mdefine_line|#define QETH_IP_HEADER_SIZE&t;40
-DECL|macro|QETH_HEADER_LEN_POS
-mdefine_line|#define QETH_HEADER_LEN_POS&t;8
-multiline_comment|/* flags for the header: */
-DECL|macro|QETH_HEADER_PASSTHRU
-mdefine_line|#define QETH_HEADER_PASSTHRU&t;0x10
-DECL|macro|QETH_HEADER_IPV6
-mdefine_line|#define QETH_HEADER_IPV6&t;0x80
-DECL|macro|QETH_ETH_MAC_V4
-mdefine_line|#define QETH_ETH_MAC_V4      0x0100 /* like v4 */
-DECL|macro|QETH_ETH_MAC_V6
-mdefine_line|#define QETH_ETH_MAC_V6      0x3333 /* like v6 */
-multiline_comment|/* tr mc mac is longer, but that will be enough to detect mc frames */
-DECL|macro|QETH_TR_MAC_NC
-mdefine_line|#define QETH_TR_MAC_NC       0xc000 /* non-canonical */
-DECL|macro|QETH_TR_MAC_C
-mdefine_line|#define QETH_TR_MAC_C        0x0300 /* canonical */
-DECL|macro|QETH_CAST_FLAGS
-mdefine_line|#define QETH_CAST_FLAGS&t;&t;0x07
-DECL|macro|QETH_CAST_UNICAST
-mdefine_line|#define QETH_CAST_UNICAST&t;6
-DECL|macro|QETH_CAST_MULTICAST
-mdefine_line|#define QETH_CAST_MULTICAST&t;4
-DECL|macro|QETH_CAST_BROADCAST
-mdefine_line|#define QETH_CAST_BROADCAST&t;5
-DECL|macro|QETH_CAST_ANYCAST
-mdefine_line|#define QETH_CAST_ANYCAST&t;7
-DECL|macro|QETH_CAST_NOCAST
-mdefine_line|#define QETH_CAST_NOCAST&t;0
-multiline_comment|/* VLAN defines */
-DECL|macro|QETH_EXT_HEADER_VLAN_FRAME
-mdefine_line|#define QETH_EXT_HEADER_VLAN_FRAME&t;  0x01
-DECL|macro|QETH_EXT_HEADER_TOKEN_ID
-mdefine_line|#define QETH_EXT_HEADER_TOKEN_ID&t;  0x02
-DECL|macro|QETH_EXT_HEADER_INCLUDE_VLAN_TAG
-mdefine_line|#define QETH_EXT_HEADER_INCLUDE_VLAN_TAG  0x04
-DECL|macro|QETH_EXT_HEADER_SRC_MAC_ADDRESS
-mdefine_line|#define QETH_EXT_HEADER_SRC_MAC_ADDRESS   0x08
-DECL|macro|QETH_EXT_HEADER_CSUM_HDR_REQ
-mdefine_line|#define QETH_EXT_HEADER_CSUM_HDR_REQ      0x10
-DECL|macro|QETH_EXT_HEADER_CSUM_TRANSP_REQ
-mdefine_line|#define QETH_EXT_HEADER_CSUM_TRANSP_REQ   0x20
-DECL|macro|QETH_EXT_HEADER_CSUM_TRANSP_FRAME_TYPE
-mdefine_line|#define QETH_EXT_HEADER_CSUM_TRANSP_FRAME_TYPE   0x40
-DECL|macro|QETH_UDP_CSUM_OFFSET
-mdefine_line|#define QETH_UDP_CSUM_OFFSET&t;6
-DECL|macro|QETH_TCP_CSUM_OFFSET
-mdefine_line|#define QETH_TCP_CSUM_OFFSET&t;16
-DECL|macro|QETH_VERIFY_IS_REAL_DEV
-mdefine_line|#define QETH_VERIFY_IS_REAL_DEV               1
-DECL|macro|QETH_VERIFY_IS_VLAN_DEV
-mdefine_line|#define QETH_VERIFY_IS_VLAN_DEV               2
+DECL|macro|QETH_DBF_TEXT
+mdefine_line|#define QETH_DBF_TEXT(name,level,text) &bslash;&n;&t;do { &bslash;&n;&t;&t;debug_text_event(qeth_dbf_##name,level,text); &bslash;&n;&t;} while (0)
+DECL|macro|QETH_DBF_HEX
+mdefine_line|#define QETH_DBF_HEX(name,level,addr,len) &bslash;&n;&t;do { &bslash;&n;&t;&t;debug_event(qeth_dbf_##name,level,(void*)(addr),len); &bslash;&n;&t;} while (0)
+DECL|macro|QETH_DBF_TEXT_
+mdefine_line|#define QETH_DBF_TEXT_(name,level,text...)&t;&t;&t;&t;  &bslash;&n;&t;do {&t;&t;&t;&t;&t;&t;&t;&t;  &bslash;&n;&t;&t;sprintf(qeth_dbf_text_buf, text);&t;&t;&t;  &bslash;&n;&t;&t;debug_text_event(qeth_dbf_##name,level,qeth_dbf_text_buf);&bslash;&n;&t;} while (0)
+DECL|macro|QETH_DBF_SPRINTF
+mdefine_line|#define QETH_DBF_SPRINTF(name,level,text...) &bslash;&n;&t;do { &bslash;&n;&t;&t;debug_sprintf_event(qeth_dbf_trace, level, ##text ); &bslash;&n;&t;&t;debug_sprintf_event(qeth_dbf_trace, level, text ); &bslash;&n;&t;} while (0)
+multiline_comment|/**&n; * some more debug stuff&n; */
+DECL|macro|PRINTK_HEADER
+mdefine_line|#define PRINTK_HEADER &t;&quot;qeth: &quot;
+DECL|macro|HEXDUMP16
+mdefine_line|#define HEXDUMP16(importance,header,ptr) &bslash;&n;PRINT_##importance(header &quot;%02x %02x %02x %02x  %02x %02x %02x %02x  &quot; &bslash;&n;&t;&t;   &quot;%02x %02x %02x %02x  %02x %02x %02x %02x&bslash;n&quot;, &bslash;&n;&t;&t;   *(((char*)ptr)),*(((char*)ptr)+1),*(((char*)ptr)+2), &bslash;&n;&t;&t;   *(((char*)ptr)+3),*(((char*)ptr)+4),*(((char*)ptr)+5), &bslash;&n;&t;&t;   *(((char*)ptr)+6),*(((char*)ptr)+7),*(((char*)ptr)+8), &bslash;&n;&t;&t;   *(((char*)ptr)+9),*(((char*)ptr)+10),*(((char*)ptr)+11), &bslash;&n;&t;&t;   *(((char*)ptr)+12),*(((char*)ptr)+13), &bslash;&n;&t;&t;   *(((char*)ptr)+14),*(((char*)ptr)+15)); &bslash;&n;PRINT_##importance(header &quot;%02x %02x %02x %02x  %02x %02x %02x %02x  &quot; &bslash;&n;&t;&t;   &quot;%02x %02x %02x %02x  %02x %02x %02x %02x&bslash;n&quot;, &bslash;&n;&t;&t;   *(((char*)ptr)+16),*(((char*)ptr)+17), &bslash;&n;&t;&t;   *(((char*)ptr)+18),*(((char*)ptr)+19), &bslash;&n;&t;&t;   *(((char*)ptr)+20),*(((char*)ptr)+21), &bslash;&n;&t;&t;   *(((char*)ptr)+22),*(((char*)ptr)+23), &bslash;&n;&t;&t;   *(((char*)ptr)+24),*(((char*)ptr)+25), &bslash;&n;&t;&t;   *(((char*)ptr)+26),*(((char*)ptr)+27), &bslash;&n;&t;&t;   *(((char*)ptr)+28),*(((char*)ptr)+29), &bslash;&n;&t;&t;   *(((char*)ptr)+30),*(((char*)ptr)+31));
+r_static
 r_inline
-r_static
-r_int
-r_int
-DECL|function|qeth_get_ipa_timeout
-id|qeth_get_ipa_timeout
-c_func
-(paren
-r_int
-id|cardtype
-)paren
-(brace
-r_switch
-c_cond
-(paren
-id|cardtype
-)paren
-(brace
-r_case
-id|QETH_CARD_TYPE_IQD
-suffix:colon
-r_return
-l_int|2000
-suffix:semicolon
-r_default
-suffix:colon
-r_return
-l_int|20000
-suffix:semicolon
-)brace
-)brace
-r_inline
-r_static
-r_int
-r_int
-DECL|function|qeth_get_additional_dev_flags
-id|qeth_get_additional_dev_flags
-c_func
-(paren
-r_int
-id|cardtype
-)paren
-(brace
-r_switch
-c_cond
-(paren
-id|cardtype
-)paren
-(brace
-r_case
-id|QETH_CARD_TYPE_IQD
-suffix:colon
-r_return
-id|IFF_NOARP
-suffix:semicolon
-macro_line|#ifdef QETH_IPV6
-r_default
-suffix:colon
-r_return
-l_int|0
-suffix:semicolon
-macro_line|#else /* QETH_IPV6 */
-r_default
-suffix:colon
-r_return
-id|IFF_NOARP
-suffix:semicolon
-macro_line|#endif /* QETH_IPV6 */
-)brace
-)brace
-r_inline
-r_static
-r_int
-DECL|function|qeth_get_hlen
-id|qeth_get_hlen
-c_func
-(paren
-id|__u8
-id|link_type
-)paren
-(brace
-macro_line|#ifdef QETH_IPV6
-r_switch
-c_cond
-(paren
-id|link_type
-)paren
-(brace
-r_case
-id|QETH_MPC_LINK_TYPE_HSTR
-suffix:colon
-r_case
-id|QETH_MPC_LINK_TYPE_LANE_TR
-suffix:colon
-r_return
-id|QETH_HEADER_SIZE
-op_plus
-id|TR_HLEN
-suffix:semicolon
-r_default
-suffix:colon
-macro_line|#ifdef QETH_VLAN
-r_return
-id|QETH_HEADER_SIZE
-op_plus
-id|VLAN_ETH_HLEN
-suffix:semicolon
-macro_line|#else
-r_return
-id|QETH_HEADER_SIZE
-op_plus
-id|ETH_HLEN
-suffix:semicolon
-macro_line|#endif
-)brace
-macro_line|#else /* QETH_IPV6 */
-macro_line|#ifdef QETH_VLAN
-r_return
-id|QETH_HEADER_SIZE
-op_plus
-id|VLAN_HLEN
-suffix:semicolon
-macro_line|#else
-r_return
-id|QETH_HEADER_SIZE
-suffix:semicolon
-macro_line|#endif
-macro_line|#endif /* QETH_IPV6 */
-)brace
-DECL|variable|qeth_my_eth_header
-r_static
-r_int
-(paren
-op_star
-id|qeth_my_eth_header
-)paren
-(paren
-r_struct
-id|sk_buff
-op_star
-comma
-r_struct
-id|net_device
-op_star
-comma
-r_int
-r_int
-comma
 r_void
-op_star
-comma
-r_void
-op_star
-comma
-r_int
-)paren
-suffix:semicolon
-macro_line|#ifdef CONFIG_TR
-DECL|variable|qeth_my_tr_header
-r_static
-r_int
-(paren
-op_star
-id|qeth_my_tr_header
-)paren
-(paren
-r_struct
-id|sk_buff
-op_star
-comma
-r_struct
-id|net_device
-op_star
-comma
-r_int
-r_int
-comma
-r_void
-op_star
-comma
-r_void
-op_star
-comma
-r_int
-)paren
-suffix:semicolon
-macro_line|#endif /* CONFIG_TR */
-DECL|variable|qeth_my_eth_rebuild_header
-r_static
-r_int
-(paren
-op_star
-id|qeth_my_eth_rebuild_header
-)paren
-(paren
-r_struct
-id|sk_buff
-op_star
-)paren
-suffix:semicolon
-macro_line|#ifdef CONFIG_TR
-DECL|variable|qeth_my_tr_rebuild_header
-r_static
-r_int
-(paren
-op_star
-id|qeth_my_tr_rebuild_header
-)paren
-(paren
-r_struct
-id|sk_buff
-op_star
-)paren
-suffix:semicolon
-macro_line|#endif /* CONFIG_TR */
-DECL|variable|qeth_my_eth_header_cache
-r_static
-r_int
-(paren
-op_star
-id|qeth_my_eth_header_cache
-)paren
-(paren
-r_struct
-id|neighbour
-op_star
-comma
-r_struct
-id|hh_cache
-op_star
-)paren
-suffix:semicolon
-DECL|variable|qeth_my_eth_header_cache_update
-r_static
-r_void
-(paren
-op_star
-id|qeth_my_eth_header_cache_update
-)paren
-(paren
-r_struct
-id|hh_cache
-op_star
-comma
-r_struct
-id|net_device
-op_star
-comma
-r_int
-r_char
-op_star
-)paren
-suffix:semicolon
-macro_line|#ifdef QETH_IPV6
-DECL|typedef|__qeth_temp1
-r_typedef
-r_int
-(paren
-op_star
-id|__qeth_temp1
-)paren
-(paren
-r_struct
-id|sk_buff
-op_star
-comma
-r_struct
-id|net_device
-op_star
-comma
-r_int
-r_int
-comma
-r_void
-op_star
-comma
-r_void
-op_star
-comma
-r_int
-)paren
-suffix:semicolon
-r_inline
-r_static
-id|__qeth_temp1
-DECL|function|qeth_get_hard_header
-id|qeth_get_hard_header
-c_func
-(paren
-id|__u8
-id|link_type
-)paren
-(brace
-r_switch
-c_cond
-(paren
-id|link_type
-)paren
-(brace
-macro_line|#ifdef CONFIG_TR
-r_case
-id|QETH_MPC_LINK_TYPE_HSTR
-suffix:colon
-r_case
-id|QETH_MPC_LINK_TYPE_LANE_TR
-suffix:colon
-r_return
-id|qeth_my_tr_header
-suffix:semicolon
-macro_line|#endif /* CONFIG_TR */
-r_default
-suffix:colon
-r_return
-id|qeth_my_eth_header
-suffix:semicolon
-)brace
-)brace
-DECL|typedef|__qeth_temp2
-r_typedef
-r_int
-(paren
-op_star
-id|__qeth_temp2
-)paren
-(paren
-r_struct
-id|sk_buff
-op_star
-)paren
-suffix:semicolon
-r_inline
-r_static
-id|__qeth_temp2
-DECL|function|qeth_get_rebuild_header
-id|qeth_get_rebuild_header
-c_func
-(paren
-id|__u8
-id|link_type
-)paren
-(brace
-r_switch
-c_cond
-(paren
-id|link_type
-)paren
-(brace
-macro_line|#ifdef CONFIG_TR
-r_case
-id|QETH_MPC_LINK_TYPE_HSTR
-suffix:colon
-r_case
-id|QETH_MPC_LINK_TYPE_LANE_TR
-suffix:colon
-r_return
-id|qeth_my_tr_rebuild_header
-suffix:semicolon
-macro_line|#endif /* CONFIG_TR */
-r_default
-suffix:colon
-r_return
-id|qeth_my_eth_rebuild_header
-suffix:semicolon
-)brace
-)brace
-DECL|typedef|__qeth_temp3
-r_typedef
-r_int
-(paren
-op_star
-id|__qeth_temp3
-)paren
-(paren
-r_struct
-id|neighbour
-op_star
-comma
-r_struct
-id|hh_cache
-op_star
-)paren
-suffix:semicolon
-r_inline
-r_static
-id|__qeth_temp3
-DECL|function|qeth_get_hard_header_cache
-id|qeth_get_hard_header_cache
-c_func
-(paren
-id|__u8
-id|link_type
-)paren
-(brace
-r_switch
-c_cond
-(paren
-id|link_type
-)paren
-(brace
-r_case
-id|QETH_MPC_LINK_TYPE_HSTR
-suffix:colon
-r_case
-id|QETH_MPC_LINK_TYPE_LANE_TR
-suffix:colon
-r_return
-l_int|NULL
-suffix:semicolon
-r_default
-suffix:colon
-r_return
-id|qeth_my_eth_header_cache
-suffix:semicolon
-)brace
-)brace
-DECL|typedef|__qeth_temp4
-r_typedef
-r_void
-(paren
-op_star
-id|__qeth_temp4
-)paren
-(paren
-r_struct
-id|hh_cache
-op_star
-comma
-r_struct
-id|net_device
-op_star
-comma
-r_int
-r_char
-op_star
-)paren
-suffix:semicolon
-r_inline
-r_static
-id|__qeth_temp4
-DECL|function|qeth_get_header_cache_update
-id|qeth_get_header_cache_update
-c_func
-(paren
-id|__u8
-id|link_type
-)paren
-(brace
-r_switch
-c_cond
-(paren
-id|link_type
-)paren
-(brace
-r_case
-id|QETH_MPC_LINK_TYPE_HSTR
-suffix:colon
-r_case
-id|QETH_MPC_LINK_TYPE_LANE_TR
-suffix:colon
-r_return
-l_int|NULL
-suffix:semicolon
-r_default
-suffix:colon
-r_return
-id|qeth_my_eth_header_cache_update
-suffix:semicolon
-)brace
-)brace
-r_static
-r_int
-r_int
-DECL|function|qeth_eth_type_trans
-id|qeth_eth_type_trans
-c_func
-(paren
-r_struct
-id|sk_buff
-op_star
-id|skb
-comma
-r_struct
-id|net_device
-op_star
-id|dev
-)paren
-(brace
-r_struct
-id|ethhdr
-op_star
-id|eth
-suffix:semicolon
-id|skb-&gt;mac.raw
-op_assign
-id|skb-&gt;data
-suffix:semicolon
-id|skb_pull
-c_func
-(paren
-id|skb
-comma
-id|ETH_ALEN
-op_star
-l_int|2
-op_plus
-r_sizeof
-(paren
-r_int
-)paren
-)paren
-suffix:semicolon
-id|eth
-op_assign
-id|skb-&gt;mac.ethernet
-suffix:semicolon
-r_if
-c_cond
-(paren
-op_star
-id|eth-&gt;h_dest
-op_amp
-l_int|1
-)paren
-(brace
-r_if
-c_cond
-(paren
-id|memcmp
-c_func
-(paren
-id|eth-&gt;h_dest
-comma
-id|dev-&gt;broadcast
-comma
-id|ETH_ALEN
-)paren
-op_eq
-l_int|0
-)paren
-id|skb-&gt;pkt_type
-op_assign
-id|PACKET_BROADCAST
-suffix:semicolon
-r_else
-id|skb-&gt;pkt_type
-op_assign
-id|PACKET_MULTICAST
-suffix:semicolon
-)brace
-r_else
-(brace
-id|skb-&gt;pkt_type
-op_assign
-id|PACKET_OTHERHOST
-suffix:semicolon
-)brace
-r_if
-c_cond
-(paren
-id|ntohs
-c_func
-(paren
-id|eth-&gt;h_proto
-)paren
-op_ge
-l_int|1536
-)paren
-r_return
-id|eth-&gt;h_proto
-suffix:semicolon
-r_if
-c_cond
-(paren
-op_star
-(paren
-r_int
-r_int
-op_star
-)paren
-(paren
-id|skb-&gt;data
-)paren
-op_eq
-l_int|0xFFFF
-)paren
-r_return
-id|htons
-c_func
-(paren
-id|ETH_P_802_3
-)paren
-suffix:semicolon
-r_return
-id|htons
-c_func
-(paren
-id|ETH_P_802_2
-)paren
-suffix:semicolon
-)brace
-DECL|typedef|__qeth_temp5
-r_typedef
-r_int
-r_int
-(paren
-op_star
-id|__qeth_temp5
-)paren
-(paren
-r_struct
-id|sk_buff
-op_star
-comma
-r_struct
-id|net_device
-op_star
-)paren
-suffix:semicolon
-r_inline
-r_static
-id|__qeth_temp5
-DECL|function|qeth_get_type_trans
-id|qeth_get_type_trans
-c_func
-(paren
-id|__u8
-id|link_type
-)paren
-(brace
-r_switch
-c_cond
-(paren
-id|link_type
-)paren
-(brace
-macro_line|#ifdef CONFIG_TR
-r_case
-id|QETH_MPC_LINK_TYPE_HSTR
-suffix:colon
-r_case
-id|QETH_MPC_LINK_TYPE_LANE_TR
-suffix:colon
-r_return
-id|tr_type_trans
-suffix:semicolon
-macro_line|#endif
-r_default
-suffix:colon
-r_return
-id|qeth_eth_type_trans
-suffix:semicolon
-)brace
-)brace
-macro_line|#endif /* QETH_IPV6 */
-r_inline
-r_static
-r_const
-r_char
-op_star
-DECL|function|qeth_get_link_type_name
-id|qeth_get_link_type_name
+DECL|function|qeth_hex_dump
+id|qeth_hex_dump
 c_func
 (paren
 r_int
-id|cardtype
-comma
-id|__u8
-id|linktype
-)paren
-(brace
-r_switch
-c_cond
-(paren
-id|cardtype
-)paren
-(brace
-r_case
-id|QETH_CARD_TYPE_UNKNOWN
-suffix:colon
-r_return
-l_string|&quot;unknown&quot;
-suffix:semicolon
-r_case
-id|QETH_CARD_TYPE_OSAE
-suffix:colon
-r_switch
-c_cond
-(paren
-id|linktype
-)paren
-(brace
-r_case
-id|QETH_MPC_LINK_TYPE_FAST_ETHERNET
-suffix:colon
-r_return
-l_string|&quot;Fast Eth&quot;
-suffix:semicolon
-r_case
-id|QETH_MPC_LINK_TYPE_HSTR
-suffix:colon
-r_return
-l_string|&quot;HSTR&quot;
-suffix:semicolon
-r_case
-id|QETH_MPC_LINK_TYPE_GIGABIT_ETHERNET
-suffix:colon
-r_return
-l_string|&quot;Gigabit Eth&quot;
-suffix:semicolon
-r_case
-id|QETH_MPC_LINK_TYPE_LANE_ETH100
-suffix:colon
-r_return
-l_string|&quot;LANE Eth100&quot;
-suffix:semicolon
-r_case
-id|QETH_MPC_LINK_TYPE_LANE_TR
-suffix:colon
-r_return
-l_string|&quot;LANE TR&quot;
-suffix:semicolon
-r_case
-id|QETH_MPC_LINK_TYPE_LANE_ETH1000
-suffix:colon
-r_return
-l_string|&quot;LANE Eth1000&quot;
-suffix:semicolon
-r_default
-suffix:colon
-r_return
-l_string|&quot;unknown&quot;
-suffix:semicolon
-)brace
-r_case
-id|QETH_CARD_TYPE_IQD
-suffix:colon
-r_return
-l_string|&quot;magic&quot;
-suffix:semicolon
-r_default
-suffix:colon
-r_return
-l_string|&quot;unknown&quot;
-suffix:semicolon
-)brace
-)brace
-r_inline
-r_static
-r_const
-r_char
-op_star
-DECL|function|qeth_get_dev_basename
-id|qeth_get_dev_basename
-c_func
-(paren
-r_int
-id|cardtype
-comma
-id|__u8
-id|link_type
-)paren
-(brace
-r_switch
-c_cond
-(paren
-id|cardtype
-)paren
-(brace
-r_case
-id|QETH_CARD_TYPE_UNKNOWN
-suffix:colon
-r_return
-l_string|&quot;eth&quot;
-suffix:semicolon
-r_case
-id|QETH_CARD_TYPE_OSAE
-suffix:colon
-r_switch
-c_cond
-(paren
-id|link_type
-)paren
-(brace
-r_case
-id|QETH_MPC_LINK_TYPE_LANE_TR
-suffix:colon
-multiline_comment|/* fallthrough */
-r_case
-id|QETH_MPC_LINK_TYPE_HSTR
-suffix:colon
-r_return
-l_string|&quot;tr&quot;
-suffix:semicolon
-r_default
-suffix:colon
-r_return
-l_string|&quot;eth&quot;
-suffix:semicolon
-)brace
-r_case
-id|QETH_CARD_TYPE_IQD
-suffix:colon
-r_return
-l_string|&quot;hsi&quot;
-suffix:semicolon
-r_default
-suffix:colon
-r_return
-l_string|&quot;eth&quot;
-suffix:semicolon
-)brace
-)brace
-multiline_comment|/* inbound: */
-DECL|macro|DEFAULT_BUFFER_SIZE
-mdefine_line|#define DEFAULT_BUFFER_SIZE 65536
-DECL|macro|DEFAULT_BUFFER_COUNT
-mdefine_line|#define DEFAULT_BUFFER_COUNT 128
-DECL|macro|BUFCNT_MIN
-mdefine_line|#define BUFCNT_MIN 8
-DECL|macro|BUFCNT_MAX
-mdefine_line|#define BUFCNT_MAX 128
-DECL|macro|BUFFER_SIZE
-mdefine_line|#define BUFFER_SIZE (card-&gt;inbound_buffer_size)
-DECL|macro|BUFFER_MAX_ELEMENTS
-mdefine_line|#define BUFFER_MAX_ELEMENTS (BUFFER_SIZE&gt;&gt;12)
-multiline_comment|/* 8k for each pair header-buffer: */
-r_inline
-r_static
-r_int
-DECL|function|qeth_sbal_packing_on_card
-id|qeth_sbal_packing_on_card
-c_func
-(paren
-r_int
-id|cardtype
-)paren
-(brace
-r_switch
-c_cond
-(paren
-id|cardtype
-)paren
-(brace
-r_case
-id|QETH_CARD_TYPE_IQD
-suffix:colon
-r_return
-l_int|0
-suffix:semicolon
-r_default
-suffix:colon
-r_return
-l_int|1
-suffix:semicolon
-)brace
-)brace
-multiline_comment|/* &n; * do it this way round -&gt; __MODULE_STRING needs with&n; * QETH_PRIO_NICE_LEVELS a single number&n; */
-DECL|macro|QETH_MAX_PRIO_QUEUES
-mdefine_line|#define QETH_MAX_PRIO_QUEUES QETH_PRIO_NICE_LEVELS+1
-r_static
-r_inline
-r_int
-DECL|function|qeth_sbalf15_in_retrieable_range
-id|qeth_sbalf15_in_retrieable_range
-c_func
-(paren
-r_int
-id|sbalf15
-)paren
-(brace
-r_return
-(paren
-(paren
-id|sbalf15
-op_ge
-l_int|15
-)paren
-op_logical_and
-(paren
-id|sbalf15
-op_le
-l_int|31
-)paren
-)paren
-suffix:semicolon
-)brace
-DECL|macro|INBOUND_BUFFER_POS
-mdefine_line|#define INBOUND_BUFFER_POS(card,bufno,sbale) &bslash;&n;&t;( (bufno&amp;SPAREBUF_MASK)? &bslash;&n;&t;  ( &bslash;&n;&t;    (sparebufs[bufno&amp;(~SPAREBUF_MASK)].buf+ &bslash;&n;&t;     PAGE_SIZE*sbale) &bslash;&n;&t;  ):( &bslash;&n;&t;      (card-&gt;inbound_buffer_pool_entry[card-&gt; &bslash;&n;&t;       inbound_buffer_entry_no[bufno]][sbale]) &bslash;&n;&t;    ) )
-DECL|macro|SPAREBUF_UNAVAIL
-mdefine_line|#define SPAREBUF_UNAVAIL 0
-DECL|macro|SPAREBUF_FREE
-mdefine_line|#define SPAREBUF_FREE 1
-DECL|macro|SPAREBUF_USED
-mdefine_line|#define SPAREBUF_USED 2
-DECL|struct|sparebufs
-r_struct
-id|sparebufs
-(brace
-DECL|member|buf
 r_char
 op_star
 id|buf
+comma
+r_int
+id|len
+)paren
+(brace
+r_int
+id|i
 suffix:semicolon
-DECL|member|status
-id|atomic_t
-id|status
+r_for
+c_loop
+(paren
+id|i
+op_assign
+l_int|0
+suffix:semicolon
+id|i
+OL
+id|len
+suffix:semicolon
+id|i
+op_increment
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|i
+op_logical_and
+op_logical_neg
+(paren
+id|i
+op_mod
+l_int|16
+)paren
+)paren
+id|printk
+c_func
+(paren
+l_string|&quot;&bslash;n&quot;
+)paren
+suffix:semicolon
+id|printk
+c_func
+(paren
+l_string|&quot;%02x &quot;
+comma
+op_star
+(paren
+id|buf
+op_plus
+id|i
+)paren
+)paren
 suffix:semicolon
 )brace
+id|printk
+c_func
+(paren
+l_string|&quot;&bslash;n&quot;
+)paren
 suffix:semicolon
-DECL|macro|SEND_STATE_INACTIVE
-mdefine_line|#define SEND_STATE_INACTIVE&t;&t;0
-DECL|macro|SEND_STATE_DONT_PACK
-mdefine_line|#define SEND_STATE_DONT_PACK&t;&t;1
-DECL|macro|SEND_STATE_PACK
-mdefine_line|#define SEND_STATE_PACK&t;&t;&t;2
-DECL|macro|QETH_LOCK_UNLOCKED
-mdefine_line|#define QETH_LOCK_UNLOCKED 0
-DECL|macro|QETH_LOCK_NORMAL
-mdefine_line|#define QETH_LOCK_NORMAL 1
-DECL|macro|QETH_LOCK_FLUSH
-mdefine_line|#define QETH_LOCK_FLUSH 2
-DECL|macro|QETH_TX_TIMEOUT
-mdefine_line|#define QETH_TX_TIMEOUT 100*HZ&t;/* 100 seconds */
-DECL|macro|QETH_REMOVE_WAIT_TIME
-mdefine_line|#define QETH_REMOVE_WAIT_TIME 200
-DECL|macro|QETH_WAIT_FOR_THREAD_TIME
-mdefine_line|#define QETH_WAIT_FOR_THREAD_TIME 20
-DECL|macro|QETH_IDLE_WAIT_TIME
-mdefine_line|#define QETH_IDLE_WAIT_TIME 10
-DECL|macro|QETH_WAIT_BEFORE_2ND_DOIO
-mdefine_line|#define QETH_WAIT_BEFORE_2ND_DOIO 1000
-DECL|macro|QETH_FAKE_LL_LEN
-mdefine_line|#define QETH_FAKE_LL_LEN ETH_HLEN&t;/* 14 */
-DECL|macro|QETH_FAKE_LL_PROT_LEN
-mdefine_line|#define QETH_FAKE_LL_PROT_LEN 2
-DECL|macro|QETH_FAKE_LL_ADDR_LEN
-mdefine_line|#define QETH_FAKE_LL_ADDR_LEN ETH_ALEN&t;/* 6 */
-DECL|macro|QETH_FAKE_LL_DEST_MAC_POS
-mdefine_line|#define QETH_FAKE_LL_DEST_MAC_POS 0
-DECL|macro|QETH_FAKE_LL_SRC_MAC_POS
-mdefine_line|#define QETH_FAKE_LL_SRC_MAC_POS 6
-DECL|macro|QETH_FAKE_LL_SRC_MAC_POS_IN_QDIO_HDR
-mdefine_line|#define QETH_FAKE_LL_SRC_MAC_POS_IN_QDIO_HDR 6
-DECL|macro|QETH_FAKE_LL_PROT_POS
-mdefine_line|#define QETH_FAKE_LL_PROT_POS 12
-DECL|macro|QETH_FAKE_LL_V4_ADDR_POS
-mdefine_line|#define QETH_FAKE_LL_V4_ADDR_POS 16
-DECL|macro|QETH_FAKE_LL_V6_ADDR_POS
-mdefine_line|#define QETH_FAKE_LL_V6_ADDR_POS 24
-DECL|macro|DEV_NAME_LEN
-mdefine_line|#define DEV_NAME_LEN 16
-DECL|macro|IOCTL_MAX_TRANSFER_SIZE
-mdefine_line|#define IOCTL_MAX_TRANSFER_SIZE 65535
-DECL|macro|IP_TOS_LOWDELAY
-mdefine_line|#define IP_TOS_LOWDELAY 0x10
-DECL|macro|IP_TOS_HIGHTHROUGHPUT
-mdefine_line|#define IP_TOS_HIGHTHROUGHPUT 0x08
-DECL|macro|IP_TOS_HIGHRELIABILITY
-mdefine_line|#define IP_TOS_HIGHRELIABILITY 0x04
-DECL|macro|IP_TOS_NOTIMPORTANT
-mdefine_line|#define IP_TOS_NOTIMPORTANT 0x02
-DECL|macro|QETH_RCD_LENGTH
-mdefine_line|#define QETH_RCD_LENGTH 128
-DECL|macro|__max
-mdefine_line|#define __max(a,b) ( ((a)&gt;(b))?(a):(b) )
-DECL|macro|__min
-mdefine_line|#define __min(a,b) ( ((a)&lt;(b))?(a):(b) )
-DECL|macro|QETH_BUFSIZE
-mdefine_line|#define QETH_BUFSIZE __max(__max(IPA_PDU_HEADER_SIZE+sizeof(struct arp_cmd), &bslash;&n;&t;&t;&t;&t; IPA_PDU_HEADER_SIZE+sizeof(struct ipa_cmd)), &bslash;&n;&t;&t;&t;   QETH_RCD_LENGTH)
-DECL|macro|QETH_NOP_TIMEOUT
-mdefine_line|#define QETH_NOP_TIMEOUT 1500
-DECL|macro|QETH_QUIESCE_NETDEV_TIME
-mdefine_line|#define QETH_QUIESCE_NETDEV_TIME 300
-DECL|macro|QETH_QUIESCE_WAIT_BEFORE_CLEAR
-mdefine_line|#define QETH_QUIESCE_WAIT_BEFORE_CLEAR 4000
-DECL|macro|QETH_QUIESCE_WAIT_AFTER_CLEAR
-mdefine_line|#define QETH_QUIESCE_WAIT_AFTER_CLEAR 4000
-DECL|macro|NOP_STATE
-mdefine_line|#define NOP_STATE 0x1001
-DECL|macro|IDX_ACTIVATE_READ_STATE
-mdefine_line|#define IDX_ACTIVATE_READ_STATE 0x1003
-DECL|macro|IDX_ACTIVATE_WRITE_STATE
-mdefine_line|#define IDX_ACTIVATE_WRITE_STATE 0x1004
-DECL|macro|MPC_SETUP_STATE
-mdefine_line|#define MPC_SETUP_STATE 0x1005
-DECL|macro|CLEAR_STATE
-mdefine_line|#define CLEAR_STATE 0x1006
-DECL|macro|IPA_CMD_STATE
-mdefine_line|#define IPA_CMD_STATE 0x1007
-DECL|macro|IPA_IOCTL_STATE
-mdefine_line|#define IPA_IOCTL_STATE 0x1009
-DECL|macro|IPA_SETIP_FLAG
-mdefine_line|#define IPA_SETIP_FLAG 0x100000
-DECL|macro|QETH_REMOVE_CARD_PROPER
-mdefine_line|#define QETH_REMOVE_CARD_PROPER 1
-DECL|macro|QETH_REMOVE_CARD_QUICK
-mdefine_line|#define QETH_REMOVE_CARD_QUICK 2
-DECL|macro|NO_PRIO_QUEUEING
-mdefine_line|#define NO_PRIO_QUEUEING 0
-DECL|macro|PRIO_QUEUEING_PREC
-mdefine_line|#define PRIO_QUEUEING_PREC 1
-DECL|macro|PRIO_QUEUEING_TOS
-mdefine_line|#define PRIO_QUEUEING_TOS 2
-DECL|macro|NO_ROUTER
-mdefine_line|#define NO_ROUTER 0
-DECL|macro|PRIMARY_ROUTER
-mdefine_line|#define PRIMARY_ROUTER 1
-DECL|macro|SECONDARY_ROUTER
-mdefine_line|#define SECONDARY_ROUTER 2
-DECL|macro|MULTICAST_ROUTER
-mdefine_line|#define MULTICAST_ROUTER 3
-DECL|macro|PRIMARY_CONNECTOR
-mdefine_line|#define PRIMARY_CONNECTOR 4
-DECL|macro|SECONDARY_CONNECTOR
-mdefine_line|#define SECONDARY_CONNECTOR 5
-DECL|macro|ROUTER_MASK
-mdefine_line|#define ROUTER_MASK 0xf&t;&t;/* used to remove SET_ROUTING_FLAG&n;&t;&t;&t;&t;   from routing_type */
-DECL|macro|RESET_ROUTING_FLAG
-mdefine_line|#define RESET_ROUTING_FLAG 0x10&t;/* used to indicate, that setting&n;&t;&t;&t;&t;   the routing type is desired */
-DECL|macro|BROADCAST_ALLRINGS
-mdefine_line|#define BROADCAST_ALLRINGS 0
-DECL|macro|BROADCAST_LOCAL
-mdefine_line|#define BROADCAST_LOCAL 1
-DECL|macro|MACADDR_NONCANONICAL
-mdefine_line|#define MACADDR_NONCANONICAL 0
-DECL|macro|MACADDR_CANONICAL
-mdefine_line|#define MACADDR_CANONICAL 1
-DECL|macro|ENABLE_TAKEOVER
-mdefine_line|#define ENABLE_TAKEOVER 0
-DECL|macro|DISABLE_TAKEOVER
-mdefine_line|#define DISABLE_TAKEOVER 1
-DECL|macro|FAKE_BROADCAST
-mdefine_line|#define FAKE_BROADCAST 0
-DECL|macro|DONT_FAKE_BROADCAST
-mdefine_line|#define DONT_FAKE_BROADCAST 1
-DECL|macro|FAKE_LL
-mdefine_line|#define FAKE_LL 0
-DECL|macro|DONT_FAKE_LL
-mdefine_line|#define DONT_FAKE_LL 1
-DECL|macro|QETH_BREAKOUT_LEAVE
-mdefine_line|#define QETH_BREAKOUT_LEAVE 1
-DECL|macro|QETH_BREAKOUT_AGAIN
-mdefine_line|#define QETH_BREAKOUT_AGAIN 2
-DECL|macro|QETH_WAIT_FOR_LOCK
-mdefine_line|#define QETH_WAIT_FOR_LOCK 0
-DECL|macro|QETH_DONT_WAIT_FOR_LOCK
-mdefine_line|#define QETH_DONT_WAIT_FOR_LOCK 1
-DECL|macro|QETH_LOCK_ALREADY_HELD
-mdefine_line|#define QETH_LOCK_ALREADY_HELD 2
-DECL|macro|PROBLEM_CARD_HAS_STARTLANED
-mdefine_line|#define PROBLEM_CARD_HAS_STARTLANED 1
-DECL|macro|PROBLEM_RECEIVED_IDX_TERMINATE
-mdefine_line|#define PROBLEM_RECEIVED_IDX_TERMINATE 2
-DECL|macro|PROBLEM_ACTIVATE_CHECK_CONDITION
-mdefine_line|#define PROBLEM_ACTIVATE_CHECK_CONDITION 3
-DECL|macro|PROBLEM_RESETTING_EVENT_INDICATOR
-mdefine_line|#define PROBLEM_RESETTING_EVENT_INDICATOR 4
-DECL|macro|PROBLEM_COMMAND_REJECT
-mdefine_line|#define PROBLEM_COMMAND_REJECT 5
-DECL|macro|PROBLEM_ZERO_SENSE_DATA
-mdefine_line|#define PROBLEM_ZERO_SENSE_DATA 6
-DECL|macro|PROBLEM_GENERAL_CHECK
-mdefine_line|#define PROBLEM_GENERAL_CHECK 7
-DECL|macro|PROBLEM_BAD_SIGA_RESULT
-mdefine_line|#define PROBLEM_BAD_SIGA_RESULT 8
-DECL|macro|PROBLEM_USER_TRIGGERED_RECOVERY
-mdefine_line|#define PROBLEM_USER_TRIGGERED_RECOVERY 9
-DECL|macro|PROBLEM_AFFE
-mdefine_line|#define PROBLEM_AFFE 10
-DECL|macro|PROBLEM_MACHINE_CHECK
-mdefine_line|#define PROBLEM_MACHINE_CHECK 11
-DECL|macro|PROBLEM_TX_TIMEOUT
-mdefine_line|#define PROBLEM_TX_TIMEOUT 12
-DECL|macro|CARD_RDEV
-mdefine_line|#define CARD_RDEV(card) card-&gt;gdev-&gt;cdev[0]
-DECL|macro|CARD_WDEV
-mdefine_line|#define CARD_WDEV(card) card-&gt;gdev-&gt;cdev[1]
-DECL|macro|CARD_DDEV
-mdefine_line|#define CARD_DDEV(card) card-&gt;gdev-&gt;cdev[2]
-DECL|macro|CARD_BUS_ID
-mdefine_line|#define CARD_BUS_ID(card) card-&gt;gdev-&gt;dev.bus_id
-DECL|macro|CARD_RDEV_ID
-mdefine_line|#define CARD_RDEV_ID(card) card-&gt;gdev-&gt;cdev[0]-&gt;dev.bus_id
-DECL|macro|CARD_WDEV_ID
-mdefine_line|#define CARD_WDEV_ID(card) card-&gt;gdev-&gt;cdev[1]-&gt;dev.bus_id
-DECL|macro|CARD_DDEV_ID
-mdefine_line|#define CARD_DDEV_ID(card) card-&gt;gdev-&gt;cdev[2]-&gt;dev.bus_id
-DECL|macro|CARD_FROM_CDEV
-mdefine_line|#define CARD_FROM_CDEV(cdev) (struct qeth_card *) &bslash;&n;&t;((struct ccwgroup_device *) cdev-&gt;dev.driver_data)-&gt;dev.driver_data
+)brace
 DECL|macro|SENSE_COMMAND_REJECT_BYTE
 mdefine_line|#define SENSE_COMMAND_REJECT_BYTE 0
 DECL|macro|SENSE_COMMAND_REJECT_FLAG
@@ -1498,262 +198,313 @@ DECL|macro|SENSE_RESETTING_EVENT_BYTE
 mdefine_line|#define SENSE_RESETTING_EVENT_BYTE 1
 DECL|macro|SENSE_RESETTING_EVENT_FLAG
 mdefine_line|#define SENSE_RESETTING_EVENT_FLAG 0x80
-DECL|macro|BUFFER_USED
-mdefine_line|#define BUFFER_USED 1
-DECL|macro|BUFFER_UNUSED
-mdefine_line|#define BUFFER_UNUSED -1
-DECL|typedef|reg_notifier_t
-r_typedef
+multiline_comment|/*&n; * Common IO related definitions&n; */
+r_extern
+r_struct
+id|device
+op_star
+id|qeth_root_dev
+suffix:semicolon
+r_extern
+r_struct
+id|ccw_driver
+id|qeth_ccw_driver
+suffix:semicolon
+r_extern
+r_struct
+id|ccwgroup_driver
+id|qeth_ccwgroup_driver
+suffix:semicolon
+DECL|macro|CARD_RDEV
+mdefine_line|#define CARD_RDEV(card) card-&gt;read.ccwdev
+DECL|macro|CARD_WDEV
+mdefine_line|#define CARD_WDEV(card) card-&gt;write.ccwdev
+DECL|macro|CARD_DDEV
+mdefine_line|#define CARD_DDEV(card) card-&gt;data.ccwdev
+DECL|macro|CARD_BUS_ID
+mdefine_line|#define CARD_BUS_ID(card) card-&gt;gdev-&gt;dev.bus_id
+DECL|macro|CARD_RDEV_ID
+mdefine_line|#define CARD_RDEV_ID(card) card-&gt;read.ccwdev-&gt;dev.bus_id
+DECL|macro|CARD_WDEV_ID
+mdefine_line|#define CARD_WDEV_ID(card) card-&gt;write.ccwdev-&gt;dev.bus_id
+DECL|macro|CARD_DDEV_ID
+mdefine_line|#define CARD_DDEV_ID(card) card-&gt;data.ccwdev-&gt;dev.bus_id
+DECL|macro|CHANNEL_ID
+mdefine_line|#define CHANNEL_ID(channel) channel-&gt;ccwdev-&gt;dev.bus_id
+DECL|macro|CARD_FROM_CDEV
+mdefine_line|#define CARD_FROM_CDEV(cdev) (struct qeth_card *) &bslash;&n;&t;&t;((struct ccwgroup_device *)cdev-&gt;dev.driver_data)&bslash;&n;&t;&t;-&gt;dev.driver_data;
+multiline_comment|/**&n; * card stuff&n; */
+macro_line|#ifdef CONFIG_QETH_PERF_STATS
+DECL|struct|qeth_perf_stats
+r_struct
+id|qeth_perf_stats
+(brace
+DECL|member|bufs_rec
 r_int
+r_int
+id|bufs_rec
+suffix:semicolon
+DECL|member|bufs_sent
+r_int
+r_int
+id|bufs_sent
+suffix:semicolon
+DECL|member|skbs_sent_pack
+r_int
+r_int
+id|skbs_sent_pack
+suffix:semicolon
+DECL|member|bufs_sent_pack
+r_int
+r_int
+id|bufs_sent_pack
+suffix:semicolon
+DECL|member|sc_dp_p
+r_int
+r_int
+id|sc_dp_p
+suffix:semicolon
+DECL|member|sc_p_dp
+r_int
+r_int
+id|sc_p_dp
+suffix:semicolon
+DECL|member|inbound_start_time
+id|__u64
+id|inbound_start_time
+suffix:semicolon
+DECL|member|inbound_cnt
+r_int
+r_int
+id|inbound_cnt
+suffix:semicolon
+DECL|member|inbound_time
+r_int
+r_int
+id|inbound_time
+suffix:semicolon
+DECL|member|outbound_start_time
+id|__u64
+id|outbound_start_time
+suffix:semicolon
+DECL|member|outbound_cnt
+r_int
+r_int
+id|outbound_cnt
+suffix:semicolon
+DECL|member|outbound_time
+r_int
+r_int
+id|outbound_time
+suffix:semicolon
+)brace
+suffix:semicolon
+macro_line|#endif /* CONFIG_QETH_PERF_STATS */
+multiline_comment|/* Routing stuff */
+DECL|struct|qeth_routing_info
+r_struct
+id|qeth_routing_info
+(brace
+DECL|member|type
+r_enum
+id|qeth_routing_types
+id|type
+suffix:semicolon
+)brace
+suffix:semicolon
+multiline_comment|/* IPA stuff */
+DECL|struct|qeth_ipa_info
+r_struct
+id|qeth_ipa_info
+(brace
+DECL|member|supported_funcs
+id|__u32
+id|supported_funcs
+suffix:semicolon
+DECL|member|enabled_funcs
+id|__u32
+id|enabled_funcs
+suffix:semicolon
+)brace
+suffix:semicolon
+r_static
+r_inline
+r_int
+DECL|function|qeth_is_ipa_supported
+id|qeth_is_ipa_supported
+c_func
 (paren
+r_struct
+id|qeth_ipa_info
 op_star
-id|reg_notifier_t
+id|ipa
+comma
+r_enum
+id|qeth_ipa_funcs
+id|func
 )paren
+(brace
+r_return
+(paren
+id|ipa-&gt;supported_funcs
+op_amp
+id|func
+)paren
+suffix:semicolon
+)brace
+r_static
+r_inline
+r_int
+DECL|function|qeth_is_ipa_enabled
+id|qeth_is_ipa_enabled
+c_func
 (paren
 r_struct
-id|notifier_block
+id|qeth_ipa_info
 op_star
+id|ipa
+comma
+r_enum
+id|qeth_ipa_funcs
+id|func
+)paren
+(brace
+r_return
+(paren
+id|ipa-&gt;supported_funcs
+op_amp
+id|ipa-&gt;enabled_funcs
+op_amp
+id|func
 )paren
 suffix:semicolon
-DECL|struct|ipato_entry
-r_struct
-id|ipato_entry
-(brace
-DECL|member|version
-r_int
-id|version
-suffix:semicolon
-DECL|member|addr
-id|__u8
-id|addr
-(braket
-l_int|16
-)braket
-suffix:semicolon
-DECL|member|mask_bits
-r_int
-id|mask_bits
-suffix:semicolon
-DECL|member|dev_name
-r_char
-id|dev_name
-(braket
-id|DEV_NAME_LEN
-)braket
-suffix:semicolon
-DECL|member|next
-r_struct
-id|ipato_entry
-op_star
-id|next
-suffix:semicolon
 )brace
-suffix:semicolon
-DECL|struct|qeth_vipa_entry
-r_struct
-id|qeth_vipa_entry
-(brace
-DECL|member|version
-r_int
-id|version
-suffix:semicolon
-DECL|member|ip
-id|__u8
-id|ip
-(braket
-l_int|16
-)braket
-suffix:semicolon
-DECL|member|flag
-r_int
-id|flag
-suffix:semicolon
-DECL|member|state
-r_volatile
-r_int
-id|state
-suffix:semicolon
-DECL|member|next
-r_struct
-id|qeth_vipa_entry
-op_star
-id|next
-suffix:semicolon
-)brace
-suffix:semicolon
-DECL|struct|ip_state
-r_struct
-id|ip_state
-(brace
-DECL|member|ip_ifa
-r_struct
-id|in_ifaddr
-op_star
-id|ip_ifa
-suffix:semicolon
-multiline_comment|/* pointer to IPv4 adresses */
-DECL|member|ip6_ifa
-r_struct
-id|inet6_ifaddr
-op_star
-id|ip6_ifa
-suffix:semicolon
-)brace
-suffix:semicolon
-DECL|struct|qeth_ipm_mac
-r_struct
-id|qeth_ipm_mac
-(brace
-DECL|member|mac
-id|__u8
-id|mac
-(braket
-id|ETH_ALEN
-)braket
-suffix:semicolon
-DECL|member|ip
-id|__u8
-id|ip
-(braket
-l_int|16
-)braket
-suffix:semicolon
-DECL|member|next
-r_struct
-id|qeth_ipm_mac
-op_star
-id|next
-suffix:semicolon
-)brace
-suffix:semicolon
-DECL|struct|ip_mc_state
-r_struct
-id|ip_mc_state
-(brace
-DECL|member|ipm_ifa
-r_struct
-id|qeth_ipm_mac
-op_star
-id|ipm_ifa
-suffix:semicolon
-DECL|member|ipm6_ifa
-r_struct
-id|qeth_ipm_mac
-op_star
-id|ipm6_ifa
-suffix:semicolon
-)brace
-suffix:semicolon
-DECL|struct|addr_request
-r_struct
-id|addr_request
-(brace
-DECL|member|next
-r_struct
-id|addr_request
-op_star
-id|next
-suffix:semicolon
-DECL|member|request_type
-r_int
-id|request_type
-suffix:semicolon
-DECL|member|mac
-id|__u8
-id|mac
-(braket
-id|ETH_ALEN
-)braket
-suffix:semicolon
-DECL|member|ip
-id|__u8
-id|ip
-(braket
-l_int|16
-)braket
-suffix:semicolon
-)brace
-suffix:semicolon
-DECL|struct|qeth_card_options
-r_struct
-id|qeth_card_options
-(brace
-DECL|member|devname
-r_char
-id|devname
-(braket
-id|DEV_NAME_LEN
-)braket
-suffix:semicolon
-DECL|member|routing_type4
-r_volatile
-r_int
-id|routing_type4
-suffix:semicolon
-macro_line|#ifdef QETH_IPV6
-DECL|member|routing_type6
-r_volatile
-r_int
-id|routing_type6
-suffix:semicolon
-macro_line|#endif /* QETH_IPV6 */
-DECL|member|checksum_type
-r_int
-id|checksum_type
-suffix:semicolon
-DECL|member|do_prio_queueing
-r_int
-id|do_prio_queueing
-suffix:semicolon
-DECL|member|default_queue
-r_int
-id|default_queue
-suffix:semicolon
-DECL|member|inbound_buffer_count
-r_int
-id|inbound_buffer_count
-suffix:semicolon
-DECL|member|polltime
-r_int
-id|polltime
-suffix:semicolon
-DECL|member|portname
-r_char
-id|portname
-(braket
-l_int|9
-)braket
-suffix:semicolon
-DECL|member|portno
-r_int
-id|portno
-suffix:semicolon
-DECL|member|broadcast_mode
-r_int
-id|broadcast_mode
-suffix:semicolon
-DECL|member|macaddr_mode
-r_int
-id|macaddr_mode
-suffix:semicolon
-DECL|member|ena_ipat
-r_int
-id|ena_ipat
-suffix:semicolon
-DECL|member|fake_broadcast
-r_int
-id|fake_broadcast
-suffix:semicolon
-DECL|member|add_hhlen
-r_int
-id|add_hhlen
-suffix:semicolon
-DECL|member|fake_ll
-r_int
-id|fake_ll
-suffix:semicolon
-)brace
-suffix:semicolon
+DECL|macro|qeth_adp_supported
+mdefine_line|#define qeth_adp_supported(c,f) &bslash;&n;&t;qeth_is_ipa_supported(&amp;c-&gt;options.adp, f)
+DECL|macro|qeth_adp_enabled
+mdefine_line|#define qeth_adp_enabled(c,f) &bslash;&n;&t;qeth_is_ipa_enabled(&amp;c-&gt;options.adp, f)
+DECL|macro|qeth_is_supported
+mdefine_line|#define qeth_is_supported(c,f) &bslash;&n;&t;qeth_is_ipa_supported(&amp;c-&gt;options.ipa4, f)
+DECL|macro|qeth_is_enabled
+mdefine_line|#define qeth_is_enabled(c,f) &bslash;&n;&t;qeth_is_ipa_enabled(&amp;c-&gt;options.ipa4, f)
+macro_line|#ifdef CONFIG_QETH_IPV6
+DECL|macro|qeth_is_supported6
+mdefine_line|#define qeth_is_supported6(c,f) &bslash;&n;&t;qeth_is_ipa_supported(&amp;c-&gt;options.ipa6, f)
+DECL|macro|qeth_is_enabled6
+mdefine_line|#define qeth_is_enabled6(c,f) &bslash;&n;&t;qeth_is_ipa_enabled(&amp;c-&gt;options.ipa6, f)
+macro_line|#else /* CONFIG_QETH_IPV6 */
+DECL|macro|qeth_is_supported6
+mdefine_line|#define qeth_is_supported6(c,f) 0
+DECL|macro|qeth_is_enabled6
+mdefine_line|#define qeth_is_enabled6(c,f) 0
+macro_line|#endif /* CONFIG_QETH_IPV6 */
+DECL|macro|qeth_is_ipafunc_supported
+mdefine_line|#define qeth_is_ipafunc_supported(c,prot,f) &bslash;&n;&t; (prot==QETH_PROT_IPV6)? qeth_is_supported6(c,f):qeth_is_supported(c,f)
+DECL|macro|qeth_is_ipafunc_enabled
+mdefine_line|#define qeth_is_ipafunc_enabled(c,prot,f) &bslash;&n;&t; (prot==QETH_PROT_IPV6)? qeth_is_enabled6(c,f):qeth_is_enabled(c,f)
+DECL|macro|QETH_IDX_FUNC_LEVEL_OSAE_ENA_IPAT
+mdefine_line|#define QETH_IDX_FUNC_LEVEL_OSAE_ENA_IPAT 0x0101
+DECL|macro|QETH_IDX_FUNC_LEVEL_OSAE_DIS_IPAT
+mdefine_line|#define QETH_IDX_FUNC_LEVEL_OSAE_DIS_IPAT 0x0101
+DECL|macro|QETH_IDX_FUNC_LEVEL_IQD_ENA_IPAT
+mdefine_line|#define QETH_IDX_FUNC_LEVEL_IQD_ENA_IPAT 0x4108
+DECL|macro|QETH_IDX_FUNC_LEVEL_IQD_DIS_IPAT
+mdefine_line|#define QETH_IDX_FUNC_LEVEL_IQD_DIS_IPAT 0x5108
+DECL|macro|QETH_MODELLIST_ARRAY
+mdefine_line|#define QETH_MODELLIST_ARRAY &bslash;&n;&t;{{0x1731,0x01,0x1732,0x01,QETH_CARD_TYPE_OSAE,1, &bslash;&n;&t;QETH_IDX_FUNC_LEVEL_OSAE_ENA_IPAT, &bslash;&n;&t;QETH_IDX_FUNC_LEVEL_OSAE_DIS_IPAT, &bslash;&n;&t;QETH_MAX_QUEUES,0}, &bslash;&n;&t;{0x1731,0x05,0x1732,0x05,QETH_CARD_TYPE_IQD,0, &bslash;&n;&t;QETH_IDX_FUNC_LEVEL_IQD_ENA_IPAT, &bslash;&n;&t;QETH_IDX_FUNC_LEVEL_IQD_DIS_IPAT, &bslash;&n;&t;QETH_MAX_QUEUES,0x103}, &bslash;&n;&t;{0,0,0,0,0,0,0,0,0}}
+DECL|macro|QETH_REAL_CARD
+mdefine_line|#define QETH_REAL_CARD&t;&t;1
+DECL|macro|QETH_VLAN_CARD
+mdefine_line|#define QETH_VLAN_CARD&t;&t;2
+DECL|macro|QETH_BUFSIZE
+mdefine_line|#define QETH_BUFSIZE&t; &t;4096
+multiline_comment|/**&n; * some more defs&n; */
+DECL|macro|IF_NAME_LEN
+mdefine_line|#define IF_NAME_LEN&t; &t;16
+DECL|macro|QETH_TX_TIMEOUT
+mdefine_line|#define QETH_TX_TIMEOUT&t;&t;100 * HZ
+DECL|macro|QETH_HEADER_SIZE
+mdefine_line|#define QETH_HEADER_SIZE&t;32
+DECL|macro|MAX_PORTNO
+mdefine_line|#define MAX_PORTNO &t;&t;15
+DECL|macro|QETH_FAKE_LL_LEN
+mdefine_line|#define QETH_FAKE_LL_LEN &t;ETH_HLEN
+DECL|macro|QETH_FAKE_LL_V6_ADDR_POS
+mdefine_line|#define QETH_FAKE_LL_V6_ADDR_POS 24
+multiline_comment|/*IPv6 address autoconfiguration stuff*/
+DECL|macro|UNIQUE_ID_IF_CREATE_ADDR_FAILED
+mdefine_line|#define UNIQUE_ID_IF_CREATE_ADDR_FAILED 0xfffe
+DECL|macro|UNIQUE_ID_NOT_BY_CARD
+mdefine_line|#define UNIQUE_ID_NOT_BY_CARD &t;&t;0x10000
+multiline_comment|/*****************************************************************************/
+multiline_comment|/* QDIO queue and buffer handling                                            */
+multiline_comment|/*****************************************************************************/
+DECL|macro|QETH_MAX_QUEUES
+mdefine_line|#define QETH_MAX_QUEUES 4
+DECL|macro|QETH_IN_BUF_SIZE_DEFAULT
+mdefine_line|#define QETH_IN_BUF_SIZE_DEFAULT 65536
+DECL|macro|QETH_IN_BUF_COUNT_DEFAULT
+mdefine_line|#define QETH_IN_BUF_COUNT_DEFAULT 16
+DECL|macro|QETH_IN_BUF_COUNT_MIN
+mdefine_line|#define QETH_IN_BUF_COUNT_MIN 8
+DECL|macro|QETH_IN_BUF_COUNT_MAX
+mdefine_line|#define QETH_IN_BUF_COUNT_MAX 128
+DECL|macro|QETH_MAX_BUFFER_ELEMENTS
+mdefine_line|#define QETH_MAX_BUFFER_ELEMENTS(card) ((card)-&gt;qdio.in_buf_size &gt;&gt; 12)
+DECL|macro|QETH_IN_BUF_REQUEUE_THRESHOLD
+mdefine_line|#define QETH_IN_BUF_REQUEUE_THRESHOLD(card) &bslash;&n;&t;&t;((card)-&gt;qdio.in_buf_pool.buf_count / 4)
+multiline_comment|/* buffers we have to be behind before we get a PCI */
+DECL|macro|QETH_PCI_THRESHOLD_A
+mdefine_line|#define QETH_PCI_THRESHOLD_A(card) ((card)-&gt;qdio.in_buf_pool.buf_count+1)
+multiline_comment|/*enqueued free buffers left before we get a PCI*/
+DECL|macro|QETH_PCI_THRESHOLD_B
+mdefine_line|#define QETH_PCI_THRESHOLD_B(card) 0
+multiline_comment|/*not used unless the microcode gets patched*/
+DECL|macro|QETH_PCI_TIMER_VALUE
+mdefine_line|#define QETH_PCI_TIMER_VALUE(card) 3
+DECL|macro|QETH_MIN_INPUT_THRESHOLD
+mdefine_line|#define QETH_MIN_INPUT_THRESHOLD 1
+DECL|macro|QETH_MAX_INPUT_THRESHOLD
+mdefine_line|#define QETH_MAX_INPUT_THRESHOLD 500
+DECL|macro|QETH_MIN_OUTPUT_THRESHOLD
+mdefine_line|#define QETH_MIN_OUTPUT_THRESHOLD 1
+DECL|macro|QETH_MAX_OUTPUT_THRESHOLD
+mdefine_line|#define QETH_MAX_OUTPUT_THRESHOLD 300
+multiline_comment|/* priority queing */
+DECL|macro|QETH_PRIOQ_DEFAULT
+mdefine_line|#define QETH_PRIOQ_DEFAULT QETH_NO_PRIO_QUEUEING
+DECL|macro|QETH_DEFAULT_QUEUE
+mdefine_line|#define QETH_DEFAULT_QUEUE    2
+DECL|macro|QETH_NO_PRIO_QUEUEING
+mdefine_line|#define QETH_NO_PRIO_QUEUEING 0
+DECL|macro|QETH_PRIO_Q_ING_PREC
+mdefine_line|#define QETH_PRIO_Q_ING_PREC  1
+DECL|macro|QETH_PRIO_Q_ING_TOS
+mdefine_line|#define QETH_PRIO_Q_ING_TOS   2
+DECL|macro|IP_TOS_LOWDELAY
+mdefine_line|#define IP_TOS_LOWDELAY 0x10
+DECL|macro|IP_TOS_HIGHTHROUGHPUT
+mdefine_line|#define IP_TOS_HIGHTHROUGHPUT 0x08
+DECL|macro|IP_TOS_HIGHRELIABILITY
+mdefine_line|#define IP_TOS_HIGHRELIABILITY 0x04
+DECL|macro|IP_TOS_NOTIMPORTANT
+mdefine_line|#define IP_TOS_NOTIMPORTANT 0x02
+multiline_comment|/* Packing */
+DECL|macro|QETH_LOW_WATERMARK_PACK
+mdefine_line|#define QETH_LOW_WATERMARK_PACK  2
+DECL|macro|QETH_HIGH_WATERMARK_PACK
+mdefine_line|#define QETH_HIGH_WATERMARK_PACK 5
+DECL|macro|QETH_WATERMARK_PACK_FUZZ
+mdefine_line|#define QETH_WATERMARK_PACK_FUZZ 1
+DECL|macro|QETH_IP_HEADER_SIZE
+mdefine_line|#define QETH_IP_HEADER_SIZE 40
+multiline_comment|/* VLAN defines */
+DECL|macro|QETH_EXT_HDR_VLAN_FRAME
+mdefine_line|#define QETH_EXT_HDR_VLAN_FRAME        0x01
+DECL|macro|QETH_EXT_HDR_TOKEN_ID
+mdefine_line|#define QETH_EXT_HDR_TOKEN_ID          0x02
+DECL|macro|QETH_EXT_HDR_INCLUDE_VLAN_TAG
+mdefine_line|#define QETH_EXT_HDR_INCLUDE_VLAN_TAG  0x04
 DECL|struct|qeth_hdr
 r_struct
 id|qeth_hdr
@@ -1802,595 +553,768 @@ l_int|16
 )braket
 suffix:semicolon
 )brace
+id|__attribute__
+(paren
+(paren
+id|packed
+)paren
+)paren
 suffix:semicolon
-DECL|struct|qeth_ringbuffer_element
-r_struct
-id|qeth_ringbuffer_element
+multiline_comment|/* flags for qeth_hdr.flags */
+DECL|macro|QETH_HDR_PASSTHRU
+mdefine_line|#define QETH_HDR_PASSTHRU 0x10
+DECL|macro|QETH_HDR_IPV6
+mdefine_line|#define QETH_HDR_IPV6     0x80
+DECL|macro|QETH_HDR_CAST_MASK
+mdefine_line|#define QETH_HDR_CAST_MASK 0x07
+DECL|enum|qeth_cast_flags
+r_enum
+id|qeth_cast_flags
 (brace
+DECL|enumerator|QETH_CAST_UNICAST
+id|QETH_CAST_UNICAST
+op_assign
+l_int|0x06
+comma
+DECL|enumerator|QETH_CAST_MULTICAST
+id|QETH_CAST_MULTICAST
+op_assign
+l_int|0x04
+comma
+DECL|enumerator|QETH_CAST_BROADCAST
+id|QETH_CAST_BROADCAST
+op_assign
+l_int|0x05
+comma
+DECL|enumerator|QETH_CAST_ANYCAST
+id|QETH_CAST_ANYCAST
+op_assign
+l_int|0x07
+comma
+DECL|enumerator|QETH_CAST_NOCAST
+id|QETH_CAST_NOCAST
+op_assign
+l_int|0x00
+comma
+)brace
+suffix:semicolon
+multiline_comment|/* flags for qeth_hdr.ext_flags */
+DECL|macro|QETH_HDR_EXT_VLAN_FRAME
+mdefine_line|#define QETH_HDR_EXT_VLAN_FRAME      0x01
+DECL|macro|QETH_HDR_EXT_CSUM_HDR_REQ
+mdefine_line|#define QETH_HDR_EXT_CSUM_HDR_REQ    0x10
+DECL|macro|QETH_HDR_EXT_CSUM_TRANSP_REQ
+mdefine_line|#define QETH_HDR_EXT_CSUM_TRANSP_REQ 0x20
+DECL|macro|QETH_HDR_EXT_SRC_MAC_ADDR
+mdefine_line|#define QETH_HDR_EXT_SRC_MAC_ADDR    0x08
+r_static
+r_inline
+r_int
+DECL|function|qeth_is_last_sbale
+id|qeth_is_last_sbale
+c_func
+(paren
+r_struct
+id|qdio_buffer_element
+op_star
+id|sbale
+)paren
+(brace
+r_return
+(paren
+id|sbale-&gt;flags
+op_amp
+id|SBAL_FLAGS_LAST_ENTRY
+)paren
+suffix:semicolon
+)brace
+DECL|enum|qeth_qdio_buffer_states
+r_enum
+id|qeth_qdio_buffer_states
+(brace
+multiline_comment|/*&n;&t; * inbound: read out by driver; owned by hardware in order to be filled&n;&t; * outbound: owned by driver in order to be filled&n;&t; */
+DECL|enumerator|QETH_QDIO_BUF_EMPTY
+id|QETH_QDIO_BUF_EMPTY
+comma
+multiline_comment|/*&n;&t; * inbound: filled by hardware; owned by driver in order to be read out&n;&t; * outbound: filled by driver; owned by hardware in order to be sent&n;&t; */
+DECL|enumerator|QETH_QDIO_BUF_PRIMED
+id|QETH_QDIO_BUF_PRIMED
+comma
+multiline_comment|/*&n;&t; * inbound only: an error condition has been detected for a buffer&n;&t; *     the buffer will be discarded (not read out)&n;&t; */
+DECL|enumerator|QETH_QDIO_BUF_ERROR
+id|QETH_QDIO_BUF_ERROR
+comma
+)brace
+suffix:semicolon
+DECL|enum|qeth_qdio_info_states
+r_enum
+id|qeth_qdio_info_states
+(brace
+DECL|enumerator|QETH_QDIO_UNINITIALIZED
+id|QETH_QDIO_UNINITIALIZED
+comma
+DECL|enumerator|QETH_QDIO_ALLOCATED
+id|QETH_QDIO_ALLOCATED
+comma
+DECL|enumerator|QETH_QDIO_ESTABLISHED
+id|QETH_QDIO_ESTABLISHED
+comma
+)brace
+suffix:semicolon
+DECL|struct|qeth_buffer_pool_entry
+r_struct
+id|qeth_buffer_pool_entry
+(brace
+DECL|member|list
+r_struct
+id|list_head
+id|list
+suffix:semicolon
+DECL|member|init_list
+r_struct
+id|list_head
+id|init_list
+suffix:semicolon
+DECL|member|elements
+r_void
+op_star
+id|elements
+(braket
+id|QDIO_MAX_ELEMENTS_PER_BUFFER
+)braket
+suffix:semicolon
+)brace
+suffix:semicolon
+DECL|struct|qeth_qdio_buffer_pool
+r_struct
+id|qeth_qdio_buffer_pool
+(brace
+DECL|member|entry_list
+r_struct
+id|list_head
+id|entry_list
+suffix:semicolon
+DECL|member|buf_count
+r_int
+id|buf_count
+suffix:semicolon
+)brace
+suffix:semicolon
+DECL|struct|qeth_qdio_buffer
+r_struct
+id|qeth_qdio_buffer
+(brace
+DECL|member|buffer
+r_struct
+id|qdio_buffer
+op_star
+id|buffer
+suffix:semicolon
+DECL|member|state
+r_volatile
+r_enum
+id|qeth_qdio_buffer_states
+id|state
+suffix:semicolon
+multiline_comment|/* the buffer pool entry currently associated to this buffer */
+DECL|member|pool_entry
+r_struct
+id|qeth_buffer_pool_entry
+op_star
+id|pool_entry
+suffix:semicolon
+)brace
+suffix:semicolon
+DECL|struct|qeth_qdio_q
+r_struct
+id|qeth_qdio_q
+(brace
+DECL|member|qdio_bufs
+r_struct
+id|qdio_buffer
+id|qdio_bufs
+(braket
+id|QDIO_MAX_BUFFERS_PER_Q
+)braket
+suffix:semicolon
+DECL|member|bufs
+r_struct
+id|qeth_qdio_buffer
+id|bufs
+(braket
+id|QDIO_MAX_BUFFERS_PER_Q
+)braket
+suffix:semicolon
+multiline_comment|/*&n;&t; * buf_to_process means &quot;buffer primed by hardware,&n;&t; * has to be read in by driver&quot;; current state PRIMED&n;&t; */
+DECL|member|next_buf_to_process
+r_volatile
+r_int
+id|next_buf_to_process
+suffix:semicolon
+multiline_comment|/*&n;&t; * buf_to_init means &quot;buffer must be initialized by driver and must&n;&t; * be made available for hardware&quot; -&gt; state is set to EMPTY&n;&t; */
+DECL|member|next_buf_to_init
+r_volatile
+r_int
+id|next_buf_to_init
+suffix:semicolon
+)brace
+id|__attribute__
+(paren
+(paren
+id|aligned
+c_func
+(paren
+l_int|256
+)paren
+)paren
+)paren
+suffix:semicolon
+DECL|struct|qeth_qdio_out_buffer
+r_struct
+id|qeth_qdio_out_buffer
+(brace
+DECL|member|buffer
+r_struct
+id|qdio_buffer
+op_star
+id|buffer
+suffix:semicolon
+DECL|member|state
+r_volatile
+r_enum
+id|qeth_qdio_buffer_states
+id|state
+suffix:semicolon
+DECL|member|next_element_to_fill
+r_volatile
+r_int
+id|next_element_to_fill
+suffix:semicolon
 DECL|member|skb_list
 r_struct
 id|sk_buff_head
 id|skb_list
 suffix:semicolon
-DECL|member|next_element_to_fill
-r_int
-id|next_element_to_fill
-suffix:semicolon
-)brace
-id|__attribute__
-(paren
-(paren
-id|packed
-)paren
-)paren
-suffix:semicolon
-DECL|struct|qeth_ringbuffer
-r_struct
-id|qeth_ringbuffer
-(brace
-DECL|member|buffer
-r_struct
-id|qdio_buffer
-id|buffer
-(braket
-id|QDIO_MAX_BUFFERS_PER_Q
-)braket
-suffix:semicolon
-DECL|member|ringbuf_element
-r_struct
-id|qeth_ringbuffer_element
-id|ringbuf_element
-(braket
-id|QDIO_MAX_BUFFERS_PER_Q
-)braket
-suffix:semicolon
-)brace
-id|__attribute__
-(paren
-(paren
-id|packed
-comma
-id|aligned
-c_func
-(paren
-id|PAGE_SIZE
-)paren
-)paren
-)paren
-suffix:semicolon
-DECL|struct|qeth_dma_stuff
-r_struct
-id|qeth_dma_stuff
-(brace
-DECL|member|sendbuf
-r_int
-r_char
-op_star
-id|sendbuf
-suffix:semicolon
-DECL|member|recbuf
-r_int
-r_char
-op_star
-id|recbuf
-suffix:semicolon
-DECL|member|read_ccw
-r_struct
-id|ccw1
-id|read_ccw
-suffix:semicolon
-DECL|member|write_ccw
-r_struct
-id|ccw1
-id|write_ccw
-suffix:semicolon
-)brace
-id|__attribute__
-(paren
-(paren
-id|packed
-comma
-id|aligned
-c_func
-(paren
-id|PAGE_SIZE
-)paren
-)paren
-)paren
-suffix:semicolon
-DECL|struct|qeth_perf_stats
-r_struct
-id|qeth_perf_stats
-(brace
-DECL|member|skbs_rec
-r_int
-r_int
-id|skbs_rec
-suffix:semicolon
-DECL|member|bufs_rec
-r_int
-r_int
-id|bufs_rec
-suffix:semicolon
-DECL|member|skbs_sent
-r_int
-r_int
-id|skbs_sent
-suffix:semicolon
-DECL|member|bufs_sent
-r_int
-r_int
-id|bufs_sent
-suffix:semicolon
-DECL|member|skbs_sent_dont_pack
-r_int
-r_int
-id|skbs_sent_dont_pack
-suffix:semicolon
-DECL|member|bufs_sent_dont_pack
-r_int
-r_int
-id|bufs_sent_dont_pack
-suffix:semicolon
-DECL|member|skbs_sent_pack
-r_int
-r_int
-id|skbs_sent_pack
-suffix:semicolon
-DECL|member|bufs_sent_pack
-r_int
-r_int
-id|bufs_sent_pack
-suffix:semicolon
-DECL|member|skbs_sent_pack_better
-r_int
-r_int
-id|skbs_sent_pack_better
-suffix:semicolon
-DECL|member|bufs_sent_pack_better
-r_int
-r_int
-id|bufs_sent_pack_better
-suffix:semicolon
-DECL|member|sc_dp_p
-r_int
-r_int
-id|sc_dp_p
-suffix:semicolon
-DECL|member|sc_p_dp
-r_int
-r_int
-id|sc_p_dp
-suffix:semicolon
-DECL|member|inbound_start_time
-id|__u64
-id|inbound_start_time
-suffix:semicolon
-DECL|member|inbound_cnt
-r_int
-r_int
-id|inbound_cnt
-suffix:semicolon
-DECL|member|inbound_time
-r_int
-r_int
-id|inbound_time
-suffix:semicolon
-DECL|member|outbound_start_time
-id|__u64
-id|outbound_start_time
-suffix:semicolon
-DECL|member|outbound_cnt
-r_int
-r_int
-id|outbound_cnt
-suffix:semicolon
-DECL|member|outbound_time
-r_int
-r_int
-id|outbound_time
-suffix:semicolon
 )brace
 suffix:semicolon
-multiline_comment|/* ugly. I know. */
-DECL|struct|qeth_card
 r_struct
 id|qeth_card
-(brace
-multiline_comment|/* pointed to by dev-&gt;priv */
-multiline_comment|/* pointer to options (defaults + parameters) */
-DECL|member|options
+suffix:semicolon
+DECL|struct|qeth_qdio_out_q
 r_struct
-id|qeth_card_options
-id|options
-suffix:semicolon
-DECL|member|is_startlaned
-id|atomic_t
-id|is_startlaned
-suffix:semicolon
-multiline_comment|/* card did not get a stoplan */
-multiline_comment|/* also 0 when card is gone after a&n;&t;                         * machine check */
-DECL|member|link_type
-id|__u8
-id|link_type
-suffix:semicolon
-DECL|member|is_guest_lan
-r_int
-id|is_guest_lan
-suffix:semicolon
-multiline_comment|/* inbound buffer management */
-DECL|member|inbound_buffer_refcnt
-id|atomic_t
-id|inbound_buffer_refcnt
-(braket
-id|QDIO_MAX_BUFFERS_PER_Q
-)braket
-suffix:semicolon
-DECL|member|inbound_qdio_buffers
+id|qeth_qdio_out_q
+(brace
+DECL|member|qdio_bufs
 r_struct
 id|qdio_buffer
-id|inbound_qdio_buffers
+id|qdio_bufs
 (braket
 id|QDIO_MAX_BUFFERS_PER_Q
 )braket
 suffix:semicolon
-multiline_comment|/* inbound data area */
-DECL|member|inbound_buffer_pool_entry
-r_void
+DECL|member|bufs
+r_struct
+id|qeth_qdio_out_buffer
+id|bufs
+(braket
+id|QDIO_MAX_BUFFERS_PER_Q
+)braket
+suffix:semicolon
+DECL|member|queue_no
+r_int
+id|queue_no
+suffix:semicolon
+DECL|member|card
+r_struct
+id|qeth_card
 op_star
-id|inbound_buffer_pool_entry
-(braket
-id|QDIO_MAX_BUFFERS_PER_Q
-)braket
-(braket
-id|QDIO_MAX_ELEMENTS_PER_BUFFER
-)braket
+id|card
 suffix:semicolon
-DECL|member|inbound_buffer_pool_entry_used
-r_volatile
-r_int
-id|inbound_buffer_pool_entry_used
-(braket
-id|QDIO_MAX_BUFFERS_PER_Q
-)braket
+DECL|member|tasklet
+r_struct
+id|tasklet_struct
+id|tasklet
 suffix:semicolon
-DECL|member|inbound_buffer_entry_no
-r_int
-id|inbound_buffer_entry_no
-(braket
-id|QDIO_MAX_BUFFERS_PER_Q
-)braket
-suffix:semicolon
-multiline_comment|/* for requeueing of buffers */
-DECL|member|requeue_input_lock
+DECL|member|lock
 id|spinlock_t
-id|requeue_input_lock
+id|lock
 suffix:semicolon
-DECL|member|requeue_position
-id|atomic_t
-id|requeue_position
-suffix:semicolon
-DECL|member|requeue_counter
-id|atomic_t
-id|requeue_counter
-suffix:semicolon
-multiline_comment|/* outbound QDIO stuff */
-DECL|member|send_state
+DECL|member|do_pack
 r_volatile
 r_int
-id|send_state
-(braket
-id|QETH_MAX_QUEUES
-)braket
+id|do_pack
 suffix:semicolon
-DECL|member|outbound_first_free_buffer
+multiline_comment|/*&n;&t; * index of buffer to be filled by driver; state EMPTY or PACKING&n;&t; */
+DECL|member|next_buf_to_fill
 r_volatile
 r_int
-id|outbound_first_free_buffer
-(braket
-id|QETH_MAX_QUEUES
-)braket
+id|next_buf_to_fill
 suffix:semicolon
-DECL|member|outbound_used_buffers
-id|atomic_t
-id|outbound_used_buffers
-(braket
-id|QETH_MAX_QUEUES
-)braket
-suffix:semicolon
-DECL|member|outbound_buffer_send_state
-r_int
-id|outbound_buffer_send_state
-(braket
-id|QETH_MAX_QUEUES
-)braket
-(braket
-id|QDIO_MAX_BUFFERS_PER_Q
-)braket
-suffix:semicolon
-DECL|member|send_retries
-r_int
-id|send_retries
-(braket
-id|QETH_MAX_QUEUES
-)braket
-(braket
-id|QDIO_MAX_BUFFERS_PER_Q
-)braket
-suffix:semicolon
-DECL|member|outbound_bytes_in_buffer
+DECL|member|next_buf_to_flush
 r_volatile
 r_int
-id|outbound_bytes_in_buffer
-(braket
-id|QETH_MAX_QUEUES
-)braket
+id|next_buf_to_flush
 suffix:semicolon
-DECL|member|outbound_ringbuffer
-r_struct
-id|qeth_ringbuffer
-op_star
-id|outbound_ringbuffer
-(braket
-id|QETH_MAX_QUEUES
-)braket
-suffix:semicolon
-DECL|member|outbound_ringbuffer_lock
+multiline_comment|/*&n;&t; * number of buffers that are currently filled (PRIMED)&n;&t; * -&gt; these buffers are hardware-owned&n;&t; */
+DECL|member|used_buffers
 id|atomic_t
-id|outbound_ringbuffer_lock
-(braket
-id|QETH_MAX_QUEUES
-)braket
+id|used_buffers
 suffix:semicolon
-DECL|member|last_pci_pos
+multiline_comment|/* indicates whether PCI flag must be set (or if one is outstanding) */
+DECL|member|set_pci_flags_count
 id|atomic_t
-id|last_pci_pos
-(braket
-id|QETH_MAX_QUEUES
-)braket
+id|set_pci_flags_count
 suffix:semicolon
-macro_line|#ifdef QETH_IPV6
-DECL|member|hard_header
-r_int
+)brace
+id|__attribute__
 (paren
-op_star
-id|hard_header
+(paren
+id|aligned
+c_func
+(paren
+l_int|256
 )paren
-(paren
-r_struct
-id|sk_buff
-op_star
-comma
-r_struct
-id|net_device
-op_star
-comma
-r_int
-r_int
-comma
-r_void
-op_star
-comma
-r_void
-op_star
-comma
-r_int
+)paren
 )paren
 suffix:semicolon
-DECL|member|rebuild_header
-r_int
-(paren
-op_star
-id|rebuild_header
-)paren
-(paren
+DECL|struct|qeth_qdio_info
 r_struct
-id|sk_buff
-op_star
-)paren
+id|qeth_qdio_info
+(brace
+DECL|member|state
+r_volatile
+r_enum
+id|qeth_qdio_info_states
+id|state
 suffix:semicolon
-DECL|member|hard_header_cache
-r_int
-(paren
-op_star
-id|hard_header_cache
-)paren
-(paren
+multiline_comment|/* input */
+DECL|member|in_q
 r_struct
-id|neighbour
+id|qeth_qdio_q
 op_star
-comma
-r_struct
-id|hh_cache
-op_star
-)paren
+id|in_q
 suffix:semicolon
-DECL|member|header_cache_update
-r_void
-(paren
-op_star
-id|header_cache_update
-)paren
-(paren
+DECL|member|in_buf_pool
 r_struct
-id|hh_cache
-op_star
-comma
+id|qeth_qdio_buffer_pool
+id|in_buf_pool
+suffix:semicolon
+DECL|member|init_pool
 r_struct
-id|net_device
+id|qeth_qdio_buffer_pool
+id|init_pool
+suffix:semicolon
+DECL|member|in_buf_size
+r_int
+id|in_buf_size
+suffix:semicolon
+DECL|member|in_tasklet
+r_struct
+id|tasklet_struct
+id|in_tasklet
+suffix:semicolon
+multiline_comment|/* output */
+DECL|member|no_out_queues
+r_int
+id|no_out_queues
+suffix:semicolon
+DECL|member|out_qs
+r_struct
+id|qeth_qdio_out_q
 op_star
+op_star
+id|out_qs
+suffix:semicolon
+multiline_comment|/* priority queueing */
+DECL|member|do_prio_queueing
+r_int
+id|do_prio_queueing
+suffix:semicolon
+DECL|member|default_out_queue
+r_int
+id|default_out_queue
+suffix:semicolon
+)brace
+suffix:semicolon
+DECL|enum|qeth_send_errors
+r_enum
+id|qeth_send_errors
+(brace
+DECL|enumerator|QETH_SEND_ERROR_NONE
+id|QETH_SEND_ERROR_NONE
 comma
+DECL|enumerator|QETH_SEND_ERROR_LINK_FAILURE
+id|QETH_SEND_ERROR_LINK_FAILURE
+comma
+DECL|enumerator|QETH_SEND_ERROR_RETRY
+id|QETH_SEND_ERROR_RETRY
+comma
+DECL|enumerator|QETH_SEND_ERROR_KICK_IT
+id|QETH_SEND_ERROR_KICK_IT
+comma
+)brace
+suffix:semicolon
+DECL|macro|QETH_ETH_MAC_V4
+mdefine_line|#define QETH_ETH_MAC_V4      0x0100 /* like v4 */
+DECL|macro|QETH_ETH_MAC_V6
+mdefine_line|#define QETH_ETH_MAC_V6      0x3333 /* like v6 */
+multiline_comment|/* tr mc mac is longer, but that will be enough to detect mc frames */
+DECL|macro|QETH_TR_MAC_NC
+mdefine_line|#define QETH_TR_MAC_NC       0xc000 /* non-canonical */
+DECL|macro|QETH_TR_MAC_C
+mdefine_line|#define QETH_TR_MAC_C        0x0300 /* canonical */
+DECL|macro|DEFAULT_ADD_HHLEN
+mdefine_line|#define DEFAULT_ADD_HHLEN 0
+DECL|macro|MAX_ADD_HHLEN
+mdefine_line|#define MAX_ADD_HHLEN 1024
+multiline_comment|/**&n; * buffer stuff for read channel&n; */
+DECL|macro|QETH_CMD_BUFFER_NO
+mdefine_line|#define QETH_CMD_BUFFER_NO&t;8
+multiline_comment|/**&n; *  channel state machine&n; */
+DECL|enum|qeth_channel_states
+r_enum
+id|qeth_channel_states
+(brace
+DECL|enumerator|CH_STATE_UP
+id|CH_STATE_UP
+comma
+DECL|enumerator|CH_STATE_DOWN
+id|CH_STATE_DOWN
+comma
+DECL|enumerator|CH_STATE_ACTIVATING
+id|CH_STATE_ACTIVATING
+comma
+DECL|enumerator|CH_STATE_HALTED
+id|CH_STATE_HALTED
+comma
+DECL|enumerator|CH_STATE_STOPPED
+id|CH_STATE_STOPPED
+comma
+)brace
+suffix:semicolon
+multiline_comment|/**&n; * card state machine&n; */
+DECL|enum|qeth_card_states
+r_enum
+id|qeth_card_states
+(brace
+DECL|enumerator|CARD_STATE_DOWN
+id|CARD_STATE_DOWN
+comma
+DECL|enumerator|CARD_STATE_HARDSETUP
+id|CARD_STATE_HARDSETUP
+comma
+DECL|enumerator|CARD_STATE_SOFTSETUP
+id|CARD_STATE_SOFTSETUP
+comma
+DECL|enumerator|CARD_STATE_UP_LAN_OFFLINE
+id|CARD_STATE_UP_LAN_OFFLINE
+comma
+DECL|enumerator|CARD_STATE_UP_LAN_ONLINE
+id|CARD_STATE_UP_LAN_ONLINE
+comma
+DECL|enumerator|CARD_STATE_RECOVER
+id|CARD_STATE_RECOVER
+comma
+)brace
+suffix:semicolon
+multiline_comment|/**&n; * Protocol versions&n; */
+DECL|enum|qeth_prot_versions
+r_enum
+id|qeth_prot_versions
+(brace
+DECL|enumerator|QETH_PROT_SNA
+id|QETH_PROT_SNA
+op_assign
+l_int|0x0001
+comma
+DECL|enumerator|QETH_PROT_IPV4
+id|QETH_PROT_IPV4
+op_assign
+l_int|0x0004
+comma
+DECL|enumerator|QETH_PROT_IPV6
+id|QETH_PROT_IPV6
+op_assign
+l_int|0x0006
+comma
+)brace
+suffix:semicolon
+DECL|enum|qeth_ip_types
+r_enum
+id|qeth_ip_types
+(brace
+DECL|enumerator|QETH_IP_TYPE_NORMAL
+id|QETH_IP_TYPE_NORMAL
+comma
+DECL|enumerator|QETH_IP_TYPE_VIPA
+id|QETH_IP_TYPE_VIPA
+comma
+DECL|enumerator|QETH_IP_TYPE_RXIP
+id|QETH_IP_TYPE_RXIP
+comma
+)brace
+suffix:semicolon
+DECL|enum|qeth_cmd_buffer_state
+r_enum
+id|qeth_cmd_buffer_state
+(brace
+DECL|enumerator|BUF_STATE_FREE
+id|BUF_STATE_FREE
+comma
+DECL|enumerator|BUF_STATE_LOCKED
+id|BUF_STATE_LOCKED
+comma
+DECL|enumerator|BUF_STATE_PROCESSED
+id|BUF_STATE_PROCESSED
+comma
+)brace
+suffix:semicolon
+multiline_comment|/**&n; * IP address and multicast list&n; */
+DECL|struct|qeth_ipaddr
+r_struct
+id|qeth_ipaddr
+(brace
+DECL|member|entry
+r_struct
+id|list_head
+id|entry
+suffix:semicolon
+DECL|member|type
+r_enum
+id|qeth_ip_types
+id|type
+suffix:semicolon
+DECL|member|set_flags
+r_enum
+id|qeth_ipa_setdelip_flags
+id|set_flags
+suffix:semicolon
+DECL|member|del_flags
+r_enum
+id|qeth_ipa_setdelip_flags
+id|del_flags
+suffix:semicolon
+DECL|member|is_multicast
+r_int
+id|is_multicast
+suffix:semicolon
+DECL|member|users
+r_volatile
+r_int
+id|users
+suffix:semicolon
+DECL|member|proto
+r_enum
+id|qeth_prot_versions
+id|proto
+suffix:semicolon
+DECL|member|mac
 r_int
 r_char
-op_star
-)paren
-suffix:semicolon
-DECL|member|type_trans
-r_int
-r_int
-(paren
-op_star
-id|type_trans
-)paren
-(paren
-r_struct
-id|sk_buff
-op_star
-comma
-r_struct
-id|net_device
-op_star
-)paren
-suffix:semicolon
-macro_line|#endif /* QETH_IPV6 */
-macro_line|#ifdef QETH_VLAN
-DECL|member|vlangrp
-r_struct
-id|vlan_group
-op_star
-id|vlangrp
-suffix:semicolon
-DECL|member|vlan_lock
-id|spinlock_t
-id|vlan_lock
-suffix:semicolon
-macro_line|#endif
-DECL|member|dev_name
-r_char
-id|dev_name
+id|mac
 (braket
-id|DEV_NAME_LEN
+id|OSA_ADDR_LEN
 )braket
 suffix:semicolon
-multiline_comment|/* pointed to by dev-&gt;name */
-DECL|member|dev
+r_union
+(brace
 r_struct
-id|net_device
-op_star
-id|dev
-suffix:semicolon
-DECL|member|stats
-r_struct
-id|net_device_stats
-op_star
-id|stats
-suffix:semicolon
-DECL|member|no_queues
+(brace
+DECL|member|addr
 r_int
-id|no_queues
+r_int
+id|addr
 suffix:semicolon
-macro_line|#ifdef QETH_PERFORMANCE_STATS
-DECL|member|perf_stats
-r_struct
-id|qeth_perf_stats
-id|perf_stats
+DECL|member|mask
+r_int
+r_int
+id|mask
 suffix:semicolon
-macro_line|#endif /* QETH_PERFORMANCE_STATS */
-multiline_comment|/* our state */
-DECL|member|is_registered
-id|atomic_t
-id|is_registered
-suffix:semicolon
-multiline_comment|/* card registered as netdev? */
-DECL|member|is_hardsetup
-id|atomic_t
-id|is_hardsetup
-suffix:semicolon
-multiline_comment|/* card has gone through hardsetup */
-DECL|member|is_softsetup
-id|atomic_t
-id|is_softsetup
-suffix:semicolon
-multiline_comment|/* card is setup by softsetup */
-DECL|member|is_open
-id|atomic_t
-id|is_open
-suffix:semicolon
-multiline_comment|/* card is in use */
-multiline_comment|/* prevents deadlocks :-O */
-DECL|member|softsetup_sema
-r_struct
-id|semaphore
-id|softsetup_sema
-suffix:semicolon
-DECL|member|hardsetup_sema
-r_struct
-id|semaphore
-id|hardsetup_sema
-suffix:semicolon
-DECL|member|ioctl_lock
-id|spinlock_t
-id|ioctl_lock
-suffix:semicolon
-DECL|member|softsetup_thread_is_running
-id|atomic_t
-id|softsetup_thread_is_running
-suffix:semicolon
-DECL|member|softsetup_thread_sem
-r_struct
-id|semaphore
-id|softsetup_thread_sem
-suffix:semicolon
-DECL|member|tqueue_sst
-r_struct
-id|work_struct
-id|tqueue_sst
-suffix:semicolon
-DECL|member|escape_softsetup
-id|atomic_t
-id|escape_softsetup
-suffix:semicolon
-multiline_comment|/* active, when recovery has to&n;&t;&t;&t;&t;&t;   wait for softsetup */
-DECL|member|reinit_thread_sem
-r_struct
-id|semaphore
-id|reinit_thread_sem
-suffix:semicolon
-DECL|member|in_recovery
-id|atomic_t
-id|in_recovery
-suffix:semicolon
-DECL|member|reinit_counter
-id|atomic_t
-id|reinit_counter
-suffix:semicolon
-multiline_comment|/* problem management */
-DECL|member|break_out
-id|atomic_t
-id|break_out
-suffix:semicolon
-DECL|member|problem
-id|atomic_t
-id|problem
-suffix:semicolon
-DECL|member|tqueue
-r_struct
-id|work_struct
-id|tqueue
+DECL|member|a4
+)brace
+id|a4
 suffix:semicolon
 r_struct
 (brace
-DECL|member|trans_hdr
-id|__u32
-id|trans_hdr
+DECL|member|addr
+r_struct
+id|in6_addr
+id|addr
 suffix:semicolon
-DECL|member|pdu_hdr
-id|__u32
-id|pdu_hdr
+DECL|member|pfxlen
+r_int
+r_int
+id|pfxlen
 suffix:semicolon
-DECL|member|pdu_hdr_ack
-id|__u32
-id|pdu_hdr_ack
-suffix:semicolon
-DECL|member|ipa
-id|__u32
-id|ipa
-suffix:semicolon
-DECL|member|seqno
+DECL|member|a6
 )brace
-id|seqno
+id|a6
+suffix:semicolon
+DECL|member|u
+)brace
+id|u
+suffix:semicolon
+)brace
+suffix:semicolon
+DECL|struct|qeth_ipato_entry
+r_struct
+id|qeth_ipato_entry
+(brace
+DECL|member|entry
+r_struct
+id|list_head
+id|entry
+suffix:semicolon
+DECL|member|proto
+r_enum
+id|qeth_prot_versions
+id|proto
+suffix:semicolon
+DECL|member|addr
+r_char
+id|addr
+(braket
+l_int|16
+)braket
+suffix:semicolon
+DECL|member|mask_bits
+r_int
+id|mask_bits
+suffix:semicolon
+)brace
+suffix:semicolon
+DECL|struct|qeth_ipato
+r_struct
+id|qeth_ipato
+(brace
+DECL|member|enabled
+r_int
+id|enabled
+suffix:semicolon
+DECL|member|invert4
+r_int
+id|invert4
+suffix:semicolon
+DECL|member|invert6
+r_int
+id|invert6
+suffix:semicolon
+DECL|member|entries
+r_struct
+id|list_head
+id|entries
+suffix:semicolon
+)brace
 suffix:semicolon
 r_struct
+id|qeth_channel
+suffix:semicolon
+DECL|struct|qeth_cmd_buffer
+r_struct
+id|qeth_cmd_buffer
+(brace
+DECL|member|state
+r_enum
+id|qeth_cmd_buffer_state
+id|state
+suffix:semicolon
+DECL|member|channel
+r_struct
+id|qeth_channel
+op_star
+id|channel
+suffix:semicolon
+DECL|member|data
+r_int
+r_char
+op_star
+id|data
+suffix:semicolon
+DECL|member|rc
+r_int
+id|rc
+suffix:semicolon
+DECL|member|callback
+r_void
+(paren
+op_star
+id|callback
+)paren
+(paren
+r_struct
+id|qeth_channel
+op_star
+comma
+r_struct
+id|qeth_cmd_buffer
+op_star
+)paren
+suffix:semicolon
+)brace
+suffix:semicolon
+multiline_comment|/**&n; * definition of a qeth channel, used for read and write&n; */
+DECL|struct|qeth_channel
+r_struct
+id|qeth_channel
+(brace
+DECL|member|state
+r_enum
+id|qeth_channel_states
+id|state
+suffix:semicolon
+DECL|member|ccw
+r_struct
+id|ccw1
+id|ccw
+suffix:semicolon
+DECL|member|iob_lock
+id|spinlock_t
+id|iob_lock
+suffix:semicolon
+DECL|member|wait_q
+id|wait_queue_head_t
+id|wait_q
+suffix:semicolon
+DECL|member|irq_tasklet
+r_struct
+id|tasklet_struct
+id|irq_tasklet
+suffix:semicolon
+DECL|member|ccwdev
+r_struct
+id|ccw_device
+op_star
+id|ccwdev
+suffix:semicolon
+multiline_comment|/*command buffer for control data*/
+DECL|member|iob
+r_struct
+id|qeth_cmd_buffer
+id|iob
+(braket
+id|QETH_CMD_BUFFER_NO
+)braket
+suffix:semicolon
+DECL|member|irq_pending
+id|atomic_t
+id|irq_pending
+suffix:semicolon
+DECL|member|io_buf_no
+r_volatile
+r_int
+id|io_buf_no
+suffix:semicolon
+DECL|member|buf_no
+r_volatile
+r_int
+id|buf_no
+suffix:semicolon
+)brace
+suffix:semicolon
+multiline_comment|/**&n; *  OSA card related definitions&n; */
+DECL|struct|qeth_token
+r_struct
+id|qeth_token
 (brace
 DECL|member|issuer_rm_w
 id|__u32
@@ -2432,92 +1356,101 @@ DECL|member|ulp_connection_r
 id|__u32
 id|ulp_connection_r
 suffix:semicolon
-DECL|member|token
 )brace
-id|token
 suffix:semicolon
-multiline_comment|/* this is card-related */
-DECL|member|type
-r_int
-id|type
-suffix:semicolon
-DECL|member|func_level
-id|__u16
-id|func_level
-suffix:semicolon
-DECL|member|initial_mtu
-r_int
-id|initial_mtu
-suffix:semicolon
-DECL|member|max_mtu
-r_int
-id|max_mtu
-suffix:semicolon
-DECL|member|inbound_buffer_size
-r_int
-id|inbound_buffer_size
-suffix:semicolon
-DECL|member|is_multicast_different
-r_int
-id|is_multicast_different
-suffix:semicolon
-multiline_comment|/* if multicast traffic is to be sent&n;&t;&t;&t;&t;&t;   on a different queue, this is the&n;&t;&t;&t;&t;&t;   queue+no_queues */
-DECL|member|ipa_supported
-id|__u32
-id|ipa_supported
-suffix:semicolon
-DECL|member|ipa_enabled
-id|__u32
-id|ipa_enabled
-suffix:semicolon
-DECL|member|ipa6_supported
-id|__u32
-id|ipa6_supported
-suffix:semicolon
-DECL|member|ipa6_enabled
-id|__u32
-id|ipa6_enabled
-suffix:semicolon
-DECL|member|adp_supported
-id|__u32
-id|adp_supported
-suffix:semicolon
-DECL|member|csum_enable_mask
-id|__u32
-id|csum_enable_mask
-suffix:semicolon
-DECL|member|startlan_attempts
-id|atomic_t
-id|startlan_attempts
-suffix:semicolon
-DECL|member|enable_routing_attempts4
-id|atomic_t
-id|enable_routing_attempts4
-suffix:semicolon
-DECL|member|rt4fld
-id|atomic_t
-id|rt4fld
-suffix:semicolon
-macro_line|#ifdef QETH_IPV6
-DECL|member|enable_routing_attempts6
-id|atomic_t
-id|enable_routing_attempts6
-suffix:semicolon
-DECL|member|rt6fld
-id|atomic_t
-id|rt6fld
-suffix:semicolon
-macro_line|#endif /* QETH_IPV6 */
-DECL|member|unique_id
-r_int
-id|unique_id
-suffix:semicolon
-multiline_comment|/* device and I/O data */
-DECL|member|gdev
+DECL|struct|qeth_seqno
 r_struct
-id|ccwgroup_device
+id|qeth_seqno
+(brace
+DECL|member|trans_hdr
+id|__u32
+id|trans_hdr
+suffix:semicolon
+DECL|member|pdu_hdr
+id|__u32
+id|pdu_hdr
+suffix:semicolon
+DECL|member|pdu_hdr_ack
+id|__u32
+id|pdu_hdr_ack
+suffix:semicolon
+DECL|member|ipa
+id|__u32
+id|ipa
+suffix:semicolon
+)brace
+suffix:semicolon
+DECL|struct|qeth_reply
+r_struct
+id|qeth_reply
+(brace
+DECL|member|list
+r_struct
+id|list_head
+id|list
+suffix:semicolon
+DECL|member|wait_q
+id|wait_queue_head_t
+id|wait_q
+suffix:semicolon
+DECL|member|callback
+r_int
+(paren
 op_star
-id|gdev
+id|callback
+)paren
+(paren
+r_struct
+id|qeth_card
+op_star
+comma
+r_struct
+id|qeth_reply
+op_star
+comma
+r_int
+r_int
+)paren
+suffix:semicolon
+DECL|member|seqno
+r_int
+id|seqno
+suffix:semicolon
+DECL|member|received
+r_int
+id|received
+suffix:semicolon
+DECL|member|rc
+r_int
+id|rc
+suffix:semicolon
+DECL|member|param
+r_void
+op_star
+id|param
+suffix:semicolon
+DECL|member|card
+r_struct
+id|qeth_card
+op_star
+id|card
+suffix:semicolon
+DECL|member|refcnt
+id|atomic_t
+id|refcnt
+suffix:semicolon
+)brace
+suffix:semicolon
+DECL|struct|qeth_card_info
+r_struct
+id|qeth_card_info
+(brace
+DECL|member|if_name
+r_char
+id|if_name
+(braket
+id|IF_NAME_LEN
+)braket
 suffix:semicolon
 DECL|member|unit_addr2
 r_int
@@ -2534,229 +1467,350 @@ r_int
 r_int
 id|chpid
 suffix:semicolon
-DECL|member|ipa_buf
-r_int
+DECL|member|func_level
+id|__u16
+id|func_level
+suffix:semicolon
+DECL|member|mcl_level
 r_char
-id|ipa_buf
-(braket
-id|QETH_BUFSIZE
-)braket
-suffix:semicolon
-DECL|member|send_buf
-r_int
-r_char
-id|send_buf
-(braket
-id|QETH_BUFSIZE
-)braket
-suffix:semicolon
-multiline_comment|/* IOCTL Stuff */
-DECL|member|ioctl_data_buffer
-r_int
-r_char
-op_star
-id|ioctl_data_buffer
-suffix:semicolon
-DECL|member|ioctl_buffer_pointer
-r_int
-r_char
-op_star
-id|ioctl_buffer_pointer
-suffix:semicolon
-DECL|member|ioctl_returncode
-r_int
-id|ioctl_returncode
-suffix:semicolon
-DECL|member|ioctl_buffersize
-r_int
-id|ioctl_buffersize
-suffix:semicolon
-DECL|member|number_of_entries
-r_int
-id|number_of_entries
-suffix:semicolon
-DECL|member|ioctl_data_has_arrived
-id|atomic_t
-id|ioctl_data_has_arrived
-suffix:semicolon
-DECL|member|ioctl_wait_q
-id|wait_queue_head_t
-id|ioctl_wait_q
-suffix:semicolon
-multiline_comment|/* stuff under 2 gb */
-DECL|member|dma_stuff
-r_struct
-id|qeth_dma_stuff
-op_star
-id|dma_stuff
-suffix:semicolon
-DECL|member|ipa_timeout
-r_int
-r_int
-id|ipa_timeout
-suffix:semicolon
-DECL|member|write_busy
-id|atomic_t
-id|write_busy
-suffix:semicolon
-multiline_comment|/* vipa stuff */
-DECL|member|vipa_list_lock
-id|rwlock_t
-id|vipa_list_lock
-suffix:semicolon
-DECL|member|vipa_list
-r_struct
-id|qeth_vipa_entry
-op_star
-id|vipa_list
-suffix:semicolon
-multiline_comment|/* state information when doing I/O */
-DECL|member|shutdown_phase
-id|atomic_t
-id|shutdown_phase
-suffix:semicolon
-DECL|member|data_has_arrived
-id|atomic_t
-id|data_has_arrived
-suffix:semicolon
-DECL|member|wait_q
-id|wait_queue_head_t
-id|wait_q
-suffix:semicolon
-DECL|member|clear_succeeded0
-id|atomic_t
-id|clear_succeeded0
-suffix:semicolon
-DECL|member|clear_succeeded1
-id|atomic_t
-id|clear_succeeded1
-suffix:semicolon
-DECL|member|clear_succeeded2
-id|atomic_t
-id|clear_succeeded2
-suffix:semicolon
-multiline_comment|/* bookkeeping of IP and multicast addresses */
-DECL|member|ip_current_state
-r_struct
-id|ip_state
-id|ip_current_state
-suffix:semicolon
-DECL|member|ip_new_state
-r_struct
-id|ip_state
-id|ip_new_state
-suffix:semicolon
-DECL|member|ip_mc_current_state
-r_struct
-id|ip_mc_state
-id|ip_mc_current_state
-suffix:semicolon
-DECL|member|ip_mc_new_state
-r_struct
-id|ip_mc_state
-id|ip_mc_new_state
-suffix:semicolon
-DECL|member|broadcast_capable
-r_int
-id|broadcast_capable
-suffix:semicolon
-DECL|member|portname_required
-r_int
-id|portname_required
-suffix:semicolon
-DECL|member|realloc_message
-r_int
-id|realloc_message
-suffix:semicolon
-DECL|member|level
-r_char
-id|level
+id|mcl_level
 (braket
 id|QETH_MCL_LENGTH
 op_plus
 l_int|1
 )braket
 suffix:semicolon
-DECL|member|saved_dev_flags
-r_volatile
+DECL|member|guestlan
 r_int
-id|saved_dev_flags
+id|guestlan
 suffix:semicolon
-multiline_comment|/* for our linked list */
-DECL|member|next
+DECL|member|portname_required
+r_int
+id|portname_required
+suffix:semicolon
+DECL|member|portno
+r_int
+id|portno
+suffix:semicolon
+DECL|member|portname
+r_char
+id|portname
+(braket
+l_int|9
+)braket
+suffix:semicolon
+DECL|member|type
+r_enum
+id|qeth_card_types
+id|type
+suffix:semicolon
+DECL|member|link_type
+r_enum
+id|qeth_link_types
+id|link_type
+suffix:semicolon
+DECL|member|is_multicast_different
+r_int
+id|is_multicast_different
+suffix:semicolon
+DECL|member|initial_mtu
+r_int
+id|initial_mtu
+suffix:semicolon
+DECL|member|max_mtu
+r_int
+id|max_mtu
+suffix:semicolon
+DECL|member|broadcast_capable
+r_int
+id|broadcast_capable
+suffix:semicolon
+DECL|member|unique_id
+r_int
+id|unique_id
+suffix:semicolon
+DECL|member|csum_mask
+id|__u32
+id|csum_mask
+suffix:semicolon
+)brace
+suffix:semicolon
+DECL|struct|qeth_card_options
+r_struct
+id|qeth_card_options
+(brace
+DECL|member|route4
+r_struct
+id|qeth_routing_info
+id|route4
+suffix:semicolon
+DECL|member|ipa4
+r_struct
+id|qeth_ipa_info
+id|ipa4
+suffix:semicolon
+DECL|member|adp
+r_struct
+id|qeth_ipa_info
+id|adp
+suffix:semicolon
+multiline_comment|/*Adapter parameters*/
+macro_line|#ifdef CONFIG_QETH_IPV6
+DECL|member|route6
+r_struct
+id|qeth_routing_info
+id|route6
+suffix:semicolon
+DECL|member|ipa6
+r_struct
+id|qeth_ipa_info
+id|ipa6
+suffix:semicolon
+macro_line|#endif /* QETH_IPV6 */
+DECL|member|checksum_type
+r_enum
+id|qeth_checksum_types
+id|checksum_type
+suffix:semicolon
+DECL|member|broadcast_mode
+r_int
+id|broadcast_mode
+suffix:semicolon
+DECL|member|macaddr_mode
+r_int
+id|macaddr_mode
+suffix:semicolon
+DECL|member|enable_takeover
+r_int
+id|enable_takeover
+suffix:semicolon
+DECL|member|fake_broadcast
+r_int
+id|fake_broadcast
+suffix:semicolon
+DECL|member|add_hhlen
+r_int
+id|add_hhlen
+suffix:semicolon
+DECL|member|fake_ll
+r_int
+id|fake_ll
+suffix:semicolon
+)brace
+suffix:semicolon
+multiline_comment|/*&n; * thread bits for qeth_card thread masks&n; */
+DECL|enum|qeth_threads
+r_enum
+id|qeth_threads
+(brace
+DECL|enumerator|QETH_SET_IP_THREAD
+id|QETH_SET_IP_THREAD
+op_assign
+l_int|1
+comma
+DECL|enumerator|QETH_SET_MC_THREAD
+id|QETH_SET_MC_THREAD
+op_assign
+l_int|2
+comma
+DECL|enumerator|QETH_RECOVER_THREAD
+id|QETH_RECOVER_THREAD
+op_assign
+l_int|4
+comma
+)brace
+suffix:semicolon
+DECL|struct|qeth_card
 r_struct
 id|qeth_card
+(brace
+DECL|member|list
+r_struct
+id|list_head
+id|list
+suffix:semicolon
+DECL|member|state
+r_enum
+id|qeth_card_states
+id|state
+suffix:semicolon
+DECL|member|lan_online
+r_int
+id|lan_online
+suffix:semicolon
+DECL|member|lock
+id|spinlock_t
+id|lock
+suffix:semicolon
+multiline_comment|/*hardware and sysfs stuff*/
+DECL|member|gdev
+r_struct
+id|ccwgroup_device
 op_star
-id|next
+id|gdev
 suffix:semicolon
-)brace
+DECL|member|read
+r_struct
+id|qeth_channel
+id|read
 suffix:semicolon
-r_inline
-r_static
+DECL|member|write
+r_struct
+id|qeth_channel
+id|write
+suffix:semicolon
+DECL|member|data
+r_struct
+id|qeth_channel
+id|data
+suffix:semicolon
+DECL|member|dev
+r_struct
+id|net_device
+op_star
+id|dev
+suffix:semicolon
+DECL|member|stats
+r_struct
+id|net_device_stats
+id|stats
+suffix:semicolon
+DECL|member|info
+r_struct
+id|qeth_card_info
+id|info
+suffix:semicolon
+DECL|member|token
+r_struct
+id|qeth_token
+id|token
+suffix:semicolon
+DECL|member|seqno
+r_struct
+id|qeth_seqno
+id|seqno
+suffix:semicolon
+DECL|member|options
+r_struct
+id|qeth_card_options
+id|options
+suffix:semicolon
+DECL|member|wait_q
+id|wait_queue_head_t
+id|wait_q
+suffix:semicolon
+macro_line|#ifdef CONFIG_QETH_VLAN
+DECL|member|vlanlock
+id|spinlock_t
+id|vlanlock
+suffix:semicolon
+DECL|member|vlangrp
+r_struct
+id|vlan_group
+op_star
+id|vlangrp
+suffix:semicolon
+macro_line|#endif
+DECL|member|kernel_thread_starter
+r_struct
+id|work_struct
+id|kernel_thread_starter
+suffix:semicolon
+DECL|member|thread_mask_lock
+id|spinlock_t
+id|thread_mask_lock
+suffix:semicolon
+DECL|member|thread_start_mask
+r_volatile
 r_int
-DECL|function|qeth_get_arphrd_type
-id|qeth_get_arphrd_type
-c_func
-(paren
 r_int
-id|cardtype
-comma
+id|thread_start_mask
+suffix:semicolon
+DECL|member|thread_allowed_mask
+r_volatile
 r_int
-id|linktype
-)paren
-(brace
-r_switch
-c_cond
-(paren
-id|cardtype
-)paren
-(brace
-r_case
-id|QETH_CARD_TYPE_OSAE
-suffix:colon
-r_switch
-c_cond
-(paren
-id|linktype
-)paren
-(brace
-r_case
-id|QETH_MPC_LINK_TYPE_LANE_TR
-suffix:colon
-multiline_comment|/* fallthrough */
-r_case
-id|QETH_MPC_LINK_TYPE_HSTR
-suffix:colon
-r_return
-id|ARPHRD_IEEE802_TR
+r_int
+id|thread_allowed_mask
 suffix:semicolon
-r_default
-suffix:colon
-r_return
-id|ARPHRD_ETHER
+DECL|member|thread_running_mask
+r_volatile
+r_int
+r_int
+id|thread_running_mask
+suffix:semicolon
+DECL|member|ip_lock
+id|spinlock_t
+id|ip_lock
+suffix:semicolon
+DECL|member|ip_list
+r_struct
+id|list_head
+id|ip_list
+suffix:semicolon
+DECL|member|ip_tbd_list
+r_struct
+id|list_head
+id|ip_tbd_list
+suffix:semicolon
+DECL|member|ipato
+r_struct
+id|qeth_ipato
+id|ipato
+suffix:semicolon
+DECL|member|cmd_waiter_list
+r_struct
+id|list_head
+id|cmd_waiter_list
+suffix:semicolon
+multiline_comment|/* QDIO buffer handling */
+DECL|member|qdio
+r_struct
+id|qeth_qdio_info
+id|qdio
+suffix:semicolon
+macro_line|#ifdef CONFIG_QETH_PERF_STATS
+DECL|member|perf_stats
+r_struct
+id|qeth_perf_stats
+id|perf_stats
+suffix:semicolon
+macro_line|#endif /* CONFIG_QETH_PERF_STATS */
+DECL|member|use_hard_stop
+r_int
+id|use_hard_stop
 suffix:semicolon
 )brace
-r_case
-id|QETH_CARD_TYPE_IQD
-suffix:colon
-r_return
-id|ARPHRD_ETHER
 suffix:semicolon
-r_default
-suffix:colon
-r_return
-id|ARPHRD_ETHER
+DECL|struct|qeth_card_list_struct
+r_struct
+id|qeth_card_list_struct
+(brace
+DECL|member|list
+r_struct
+id|list_head
+id|list
+suffix:semicolon
+DECL|member|rwlock
+id|rwlock_t
+id|rwlock
 suffix:semicolon
 )brace
-)brace
+suffix:semicolon
+r_extern
+r_struct
+id|qeth_card_list_struct
+id|qeth_card_list
+suffix:semicolon
+multiline_comment|/*some helper functions*/
 r_inline
 r_static
 id|__u8
-DECL|function|qeth_get_adapter_type_for_ipa
-id|qeth_get_adapter_type_for_ipa
+DECL|function|qeth_get_ipa_adp_type
+id|qeth_get_ipa_adp_type
 c_func
 (paren
-r_int
+r_enum
+id|qeth_link_types
 id|link_type
 )paren
 (brace
@@ -2767,7 +1821,7 @@ id|link_type
 )paren
 (brace
 r_case
-id|QETH_MPC_LINK_TYPE_HSTR
+id|QETH_LINK_TYPE_HSTR
 suffix:colon
 r_return
 l_int|2
@@ -2781,109 +1835,93 @@ suffix:semicolon
 )brace
 r_inline
 r_static
-r_const
-r_char
-op_star
-DECL|function|qeth_get_cardname
-id|qeth_get_cardname
+r_int
+DECL|function|qeth_get_hlen
+id|qeth_get_hlen
 c_func
 (paren
-r_int
-id|cardtype
-comma
-r_int
-id|is_guest_lan
-)paren
-(brace
-r_if
-c_cond
-(paren
-id|is_guest_lan
-)paren
-(brace
-r_switch
-c_cond
-(paren
-id|cardtype
-)paren
-(brace
-r_case
-id|QETH_CARD_TYPE_UNKNOWN
-suffix:colon
-r_return
-l_string|&quot;n unknown&quot;
-suffix:semicolon
-r_case
-id|QETH_CARD_TYPE_OSAE
-suffix:colon
-r_return
-l_string|&quot; Guest LAN QDIO&quot;
-suffix:semicolon
-r_case
-id|QETH_CARD_TYPE_IQD
-suffix:colon
-r_return
-l_string|&quot; Guest LAN Hiper&quot;
-suffix:semicolon
-r_default
-suffix:colon
-r_return
-l_string|&quot; strange&quot;
-suffix:semicolon
-)brace
-)brace
-r_else
-(brace
-r_switch
-c_cond
-(paren
-id|cardtype
-)paren
-(brace
-r_case
-id|QETH_CARD_TYPE_UNKNOWN
-suffix:colon
-r_return
-l_string|&quot;n unknown&quot;
-suffix:semicolon
-r_case
-id|QETH_CARD_TYPE_OSAE
-suffix:colon
-r_return
-l_string|&quot;n OSD Express&quot;
-suffix:semicolon
-r_case
-id|QETH_CARD_TYPE_IQD
-suffix:colon
-r_return
-l_string|&quot; HiperSockets&quot;
-suffix:semicolon
-r_default
-suffix:colon
-r_return
-l_string|&quot; strange&quot;
-suffix:semicolon
-)brace
-)brace
-)brace
-multiline_comment|/* max length to be returned: 14 */
-r_inline
-r_static
-r_const
-r_char
-op_star
-DECL|function|qeth_get_cardname_short
-id|qeth_get_cardname_short
-c_func
-(paren
-r_int
-id|cardtype
-comma
 id|__u8
 id|link_type
-comma
+)paren
+(brace
+macro_line|#ifdef CONFIG_QETH_IPV6
+r_switch
+c_cond
+(paren
+id|link_type
+)paren
+(brace
+r_case
+id|QETH_LINK_TYPE_HSTR
+suffix:colon
+r_case
+id|QETH_LINK_TYPE_LANE_TR
+suffix:colon
+r_return
+r_sizeof
+(paren
+r_struct
+id|qeth_hdr
+)paren
+op_plus
+id|TR_HLEN
+suffix:semicolon
+r_default
+suffix:colon
+macro_line|#ifdef CONFIG_QETH_VLAN
+r_return
+r_sizeof
+(paren
+r_struct
+id|qeth_hdr
+)paren
+op_plus
+id|VLAN_ETH_HLEN
+suffix:semicolon
+macro_line|#else
+r_return
+r_sizeof
+(paren
+r_struct
+id|qeth_hdr
+)paren
+op_plus
+id|ETH_HLEN
+suffix:semicolon
+macro_line|#endif
+)brace
+macro_line|#else  /* CONFIG_QETH_IPV6 */
+macro_line|#ifdef CONFIG_QETH_VLAN
+r_return
+r_sizeof
+(paren
+r_struct
+id|qeth_hdr
+)paren
+op_plus
+id|VLAN_HLEN
+suffix:semicolon
+macro_line|#else
+r_return
+r_sizeof
+(paren
+r_struct
+id|qeth_hdr
+)paren
+suffix:semicolon
+macro_line|#endif
+macro_line|#endif /* CONFIG_QETH_IPV6 */
+)brace
+r_inline
+r_static
 r_int
-id|is_guest_lan
+r_int
+DECL|function|qeth_get_netdev_flags
+id|qeth_get_netdev_flags
+c_func
+(paren
+r_int
+id|cardtype
 )paren
 (brace
 r_switch
@@ -2893,167 +1931,24 @@ id|cardtype
 )paren
 (brace
 r_case
-id|QETH_CARD_TYPE_UNKNOWN
-suffix:colon
-r_return
-l_string|&quot;unknown&quot;
-suffix:semicolon
-r_case
-id|QETH_CARD_TYPE_OSAE
-suffix:colon
-r_if
-c_cond
-(paren
-id|is_guest_lan
-)paren
-r_return
-l_string|&quot;GuestLAN QDIO&quot;
-suffix:semicolon
-r_switch
-c_cond
-(paren
-id|link_type
-)paren
-(brace
-r_case
-id|QETH_MPC_LINK_TYPE_FAST_ETHERNET
-suffix:colon
-r_return
-l_string|&quot;OSD_100&quot;
-suffix:semicolon
-r_case
-id|QETH_MPC_LINK_TYPE_HSTR
-suffix:colon
-r_return
-l_string|&quot;HSTR&quot;
-suffix:semicolon
-r_case
-id|QETH_MPC_LINK_TYPE_GIGABIT_ETHERNET
-suffix:colon
-r_return
-l_string|&quot;OSD_1000&quot;
-suffix:semicolon
-r_case
-id|QETH_MPC_LINK_TYPE_LANE_ETH100
-suffix:colon
-r_return
-l_string|&quot;OSD_FE_LANE&quot;
-suffix:semicolon
-r_case
-id|QETH_MPC_LINK_TYPE_LANE_TR
-suffix:colon
-r_return
-l_string|&quot;OSD_TR_LANE&quot;
-suffix:semicolon
-r_case
-id|QETH_MPC_LINK_TYPE_LANE_ETH1000
-suffix:colon
-r_return
-l_string|&quot;OSD_GbE_LANE&quot;
-suffix:semicolon
-r_case
-id|QETH_MPC_LINK_TYPE_LANE
-suffix:colon
-r_return
-l_string|&quot;OSD_ATM_LANE&quot;
-suffix:semicolon
-r_default
-suffix:colon
-r_return
-l_string|&quot;OSD_Express&quot;
-suffix:semicolon
-)brace
-r_case
 id|QETH_CARD_TYPE_IQD
 suffix:colon
 r_return
-id|is_guest_lan
-ques
-c_cond
-l_string|&quot;GuestLAN Hiper&quot;
-suffix:colon
-l_string|&quot;HiperSockets&quot;
+id|IFF_NOARP
 suffix:semicolon
+macro_line|#ifdef CONFIG_QETH_IPV6
 r_default
 suffix:colon
 r_return
-l_string|&quot; strange&quot;
+l_int|0
 suffix:semicolon
-)brace
-)brace
-r_inline
-r_static
-r_int
-DECL|function|qeth_mtu_is_valid
-id|qeth_mtu_is_valid
-c_func
-(paren
-r_struct
-id|qeth_card
-op_star
-id|card
-comma
-r_int
-id|mtu
-)paren
-(brace
-r_switch
-c_cond
-(paren
-id|card-&gt;type
-)paren
-(brace
-r_case
-id|QETH_CARD_TYPE_UNKNOWN
-suffix:colon
-r_return
-l_int|1
-suffix:semicolon
-r_case
-id|QETH_CARD_TYPE_OSAE
-suffix:colon
-r_return
-(paren
-(paren
-id|mtu
-op_ge
-l_int|576
-)paren
-op_logical_and
-(paren
-id|mtu
-op_le
-l_int|61440
-)paren
-)paren
-suffix:semicolon
-r_case
-id|QETH_CARD_TYPE_IQD
-suffix:colon
-r_return
-(paren
-(paren
-id|mtu
-op_ge
-l_int|576
-)paren
-op_logical_and
-(paren
-id|mtu
-op_le
-id|card-&gt;max_mtu
-op_plus
-l_int|4096
-op_minus
-l_int|32
-)paren
-)paren
-suffix:semicolon
+macro_line|#else
 r_default
 suffix:colon
 r_return
-l_int|1
+id|IFF_NOARP
 suffix:semicolon
+macro_line|#endif
 )brace
 )brace
 r_inline
@@ -3072,7 +1967,7 @@ id|card
 r_switch
 c_cond
 (paren
-id|card-&gt;type
+id|card-&gt;info.type
 )paren
 (brace
 r_case
@@ -3085,7 +1980,7 @@ r_case
 id|QETH_CARD_TYPE_IQD
 suffix:colon
 r_return
-id|card-&gt;max_mtu
+id|card-&gt;info.max_mtu
 suffix:semicolon
 r_case
 id|QETH_CARD_TYPE_OSAE
@@ -3093,14 +1988,14 @@ suffix:colon
 r_switch
 c_cond
 (paren
-id|card-&gt;link_type
+id|card-&gt;info.link_type
 )paren
 (brace
 r_case
-id|QETH_MPC_LINK_TYPE_HSTR
+id|QETH_LINK_TYPE_HSTR
 suffix:colon
 r_case
-id|QETH_MPC_LINK_TYPE_LANE_TR
+id|QETH_LINK_TYPE_LANE_TR
 suffix:colon
 r_return
 l_int|2000
@@ -3241,54 +2136,87 @@ suffix:semicolon
 r_inline
 r_static
 r_int
-DECL|function|qeth_get_buffersize_for_card
-id|qeth_get_buffersize_for_card
+DECL|function|qeth_mtu_is_valid
+id|qeth_mtu_is_valid
 c_func
 (paren
+r_struct
+id|qeth_card
+op_star
+id|card
+comma
 r_int
-id|cardtype
+id|mtu
 )paren
 (brace
 r_switch
 c_cond
 (paren
-id|cardtype
+id|card-&gt;info.type
 )paren
 (brace
-r_case
-id|QETH_CARD_TYPE_UNKNOWN
-suffix:colon
-r_return
-l_int|65536
-suffix:semicolon
 r_case
 id|QETH_CARD_TYPE_OSAE
 suffix:colon
 r_return
-l_int|65536
+(paren
+(paren
+id|mtu
+op_ge
+l_int|576
+)paren
+op_logical_and
+(paren
+id|mtu
+op_le
+l_int|61440
+)paren
+)paren
 suffix:semicolon
 r_case
 id|QETH_CARD_TYPE_IQD
 suffix:colon
 r_return
-l_int|16384
+(paren
+(paren
+id|mtu
+op_ge
+l_int|576
+)paren
+op_logical_and
+(paren
+id|mtu
+op_le
+id|card-&gt;info.max_mtu
+op_plus
+l_int|4096
+op_minus
+l_int|32
+)paren
+)paren
 suffix:semicolon
+r_case
+id|QETH_CARD_TYPE_UNKNOWN
+suffix:colon
 r_default
 suffix:colon
 r_return
-l_int|65536
+l_int|1
 suffix:semicolon
 )brace
 )brace
 r_inline
 r_static
 r_int
-DECL|function|qeth_get_min_number_of_buffers
-id|qeth_get_min_number_of_buffers
+DECL|function|qeth_get_arphdr_type
+id|qeth_get_arphdr_type
 c_func
 (paren
 r_int
 id|cardtype
+comma
+r_int
+id|linktype
 )paren
 (brace
 r_switch
@@ -3298,45 +2226,82 @@ id|cardtype
 )paren
 (brace
 r_case
-id|QETH_CARD_TYPE_UNKNOWN
-suffix:colon
-r_return
-l_int|32
-suffix:semicolon
-r_case
 id|QETH_CARD_TYPE_OSAE
 suffix:colon
-r_return
-l_int|32
-suffix:semicolon
+r_switch
+c_cond
+(paren
+id|linktype
+)paren
+(brace
 r_case
-id|QETH_CARD_TYPE_IQD
+id|QETH_LINK_TYPE_LANE_TR
+suffix:colon
+r_case
+id|QETH_LINK_TYPE_HSTR
 suffix:colon
 r_return
-l_int|64
+id|ARPHRD_IEEE802_TR
 suffix:semicolon
 r_default
 suffix:colon
 r_return
-l_int|64
+id|ARPHRD_ETHER
+suffix:semicolon
+)brace
+r_case
+id|QETH_CARD_TYPE_IQD
+suffix:colon
+r_default
+suffix:colon
+r_return
+id|ARPHRD_ETHER
 suffix:semicolon
 )brace
 )brace
+macro_line|#ifdef CONFIG_QETH_PERF_STATS
 r_inline
 r_static
 r_int
-DECL|function|qeth_get_q_format
-id|qeth_get_q_format
+DECL|function|qeth_get_micros
+id|qeth_get_micros
 c_func
 (paren
+r_void
+)paren
+(brace
+r_return
+(paren
 r_int
-id|cardtype
+)paren
+(paren
+id|get_clock
+c_func
+(paren
+)paren
+op_rshift
+l_int|12
+)paren
+suffix:semicolon
+)brace
+macro_line|#endif
+r_static
+r_inline
+r_int
+DECL|function|qeth_get_qdio_q_format
+id|qeth_get_qdio_q_format
+c_func
+(paren
+r_struct
+id|qeth_card
+op_star
+id|card
 )paren
 (brace
 r_switch
 c_cond
 (paren
-id|cardtype
+id|card-&gt;info.type
 )paren
 (brace
 r_case
@@ -3352,116 +2317,742 @@ l_int|0
 suffix:semicolon
 )brace
 )brace
-r_inline
 r_static
-r_int
-DECL|function|qeth_get_device_tx_q_len
-id|qeth_get_device_tx_q_len
+r_inline
+r_void
+DECL|function|qeth_ipaddr4_to_string
+id|qeth_ipaddr4_to_string
 c_func
 (paren
-r_int
-id|cardtype
+r_const
+id|__u8
+op_star
+id|addr
+comma
+r_char
+op_star
+id|buf
 )paren
 (brace
-r_return
-l_int|100
-suffix:semicolon
-)brace
-r_inline
-r_static
-r_int
-DECL|function|qeth_get_max_number_of_buffers
-id|qeth_get_max_number_of_buffers
+id|sprintf
 c_func
 (paren
-r_int
-id|cardtype
+id|buf
+comma
+l_string|&quot;%i.%i.%i.%i&quot;
+comma
+id|addr
+(braket
+l_int|0
+)braket
+comma
+id|addr
+(braket
+l_int|1
+)braket
+comma
+id|addr
+(braket
+l_int|2
+)braket
+comma
+id|addr
+(braket
+l_int|3
+)braket
 )paren
-(brace
-r_return
-l_int|127
 suffix:semicolon
 )brace
-multiline_comment|/******************** OUTPUT FACILITIES **************************/
-macro_line|#ifdef PRINT_INFO
-DECL|macro|PRINTK_HEADER
-macro_line|#undef PRINTK_HEADER
-DECL|macro|PRINT_STUPID
-macro_line|#undef PRINT_STUPID
-DECL|macro|PRINT_ALL
-macro_line|#undef PRINT_ALL
-DECL|macro|PRINT_INFO
-macro_line|#undef PRINT_INFO
-DECL|macro|PRINT_WARN
-macro_line|#undef PRINT_WARN
-DECL|macro|PRINT_ERR
-macro_line|#undef PRINT_ERR
-DECL|macro|PRINT_CRIT
-macro_line|#undef PRINT_CRIT
-DECL|macro|PRINT_ALERT
-macro_line|#undef PRINT_ALERT
-DECL|macro|PRINT_EMERG
-macro_line|#undef PRINT_EMERG
-macro_line|#endif&t;&t;&t;&t;/* PRINT_INFO */
-DECL|macro|PRINTK_HEADER
-mdefine_line|#define PRINTK_HEADER QETH_NAME &quot;: &quot;
-macro_line|#if QETH_VERBOSE_LEVEL&gt;8
-DECL|macro|PRINT_STUPID
-mdefine_line|#define PRINT_STUPID(x...) printk( KERN_DEBUG PRINTK_HEADER x)
-macro_line|#else
-DECL|macro|PRINT_STUPID
-mdefine_line|#define PRINT_STUPID(x...)
-macro_line|#endif
-macro_line|#if QETH_VERBOSE_LEVEL&gt;7
-DECL|macro|PRINT_ALL
-mdefine_line|#define PRINT_ALL(x...) printk( KERN_DEBUG PRINTK_HEADER x)
-macro_line|#else
-DECL|macro|PRINT_ALL
-mdefine_line|#define PRINT_ALL(x...)
-macro_line|#endif
-macro_line|#if QETH_VERBOSE_LEVEL&gt;6
-DECL|macro|PRINT_INFO
-mdefine_line|#define PRINT_INFO(x...) printk( KERN_INFO PRINTK_HEADER x)
-macro_line|#else
-DECL|macro|PRINT_INFO
-mdefine_line|#define PRINT_INFO(x...)
-macro_line|#endif
-macro_line|#if QETH_VERBOSE_LEVEL&gt;5
-DECL|macro|PRINT_WARN
-mdefine_line|#define PRINT_WARN(x...) printk( KERN_WARNING PRINTK_HEADER x)
-macro_line|#else
-DECL|macro|PRINT_WARN
-mdefine_line|#define PRINT_WARN(x...)
-macro_line|#endif
-macro_line|#if QETH_VERBOSE_LEVEL&gt;4
-DECL|macro|PRINT_ERR
-mdefine_line|#define PRINT_ERR(x...) printk( KERN_ERR PRINTK_HEADER x)
-macro_line|#else
-DECL|macro|PRINT_ERR
-mdefine_line|#define PRINT_ERR(x...)
-macro_line|#endif
-macro_line|#if QETH_VERBOSE_LEVEL&gt;3
-DECL|macro|PRINT_CRIT
-mdefine_line|#define PRINT_CRIT(x...) printk( KERN_CRIT PRINTK_HEADER x)
-macro_line|#else
-DECL|macro|PRINT_CRIT
-mdefine_line|#define PRINT_CRIT(x...)
-macro_line|#endif
-macro_line|#if QETH_VERBOSE_LEVEL&gt;2
-DECL|macro|PRINT_ALERT
-mdefine_line|#define PRINT_ALERT(x...) printk( KERN_ALERT PRINTK_HEADER x)
-macro_line|#else
-DECL|macro|PRINT_ALERT
-mdefine_line|#define PRINT_ALERT(x...)
-macro_line|#endif
-macro_line|#if QETH_VERBOSE_LEVEL&gt;1
-DECL|macro|PRINT_EMERG
-mdefine_line|#define PRINT_EMERG(x...) printk( KERN_EMERG PRINTK_HEADER x)
-macro_line|#else
-DECL|macro|PRINT_EMERG
-mdefine_line|#define PRINT_EMERG(x...)
-macro_line|#endif
-DECL|macro|HEXDUMP16
-mdefine_line|#define HEXDUMP16(importance,header,ptr) &bslash;&n;PRINT_##importance(header &quot;%02x %02x %02x %02x  %02x %02x %02x %02x  &quot; &bslash;&n;&t;&t;   &quot;%02x %02x %02x %02x  %02x %02x %02x %02x&bslash;n&quot;, &bslash;&n;&t;&t;   *(((char*)ptr)),*(((char*)ptr)+1),*(((char*)ptr)+2), &bslash;&n;&t;&t;   *(((char*)ptr)+3),*(((char*)ptr)+4),*(((char*)ptr)+5), &bslash;&n;&t;&t;   *(((char*)ptr)+6),*(((char*)ptr)+7),*(((char*)ptr)+8), &bslash;&n;&t;&t;   *(((char*)ptr)+9),*(((char*)ptr)+10),*(((char*)ptr)+11), &bslash;&n;&t;&t;   *(((char*)ptr)+12),*(((char*)ptr)+13), &bslash;&n;&t;&t;   *(((char*)ptr)+14),*(((char*)ptr)+15)); &bslash;&n;PRINT_##importance(header &quot;%02x %02x %02x %02x  %02x %02x %02x %02x  &quot; &bslash;&n;&t;&t;   &quot;%02x %02x %02x %02x  %02x %02x %02x %02x&bslash;n&quot;, &bslash;&n;&t;&t;   *(((char*)ptr)+16),*(((char*)ptr)+17), &bslash;&n;&t;&t;   *(((char*)ptr)+18),*(((char*)ptr)+19), &bslash;&n;&t;&t;   *(((char*)ptr)+20),*(((char*)ptr)+21), &bslash;&n;&t;&t;   *(((char*)ptr)+22),*(((char*)ptr)+23), &bslash;&n;&t;&t;   *(((char*)ptr)+24),*(((char*)ptr)+25), &bslash;&n;&t;&t;   *(((char*)ptr)+26),*(((char*)ptr)+27), &bslash;&n;&t;&t;   *(((char*)ptr)+28),*(((char*)ptr)+29), &bslash;&n;&t;&t;   *(((char*)ptr)+30),*(((char*)ptr)+31));
+r_static
+r_inline
+r_int
+DECL|function|qeth_string_to_ipaddr4
+id|qeth_string_to_ipaddr4
+c_func
+(paren
+r_const
+r_char
+op_star
+id|buf
+comma
+id|__u8
+op_star
+id|addr
+)paren
+(brace
+r_const
+r_char
+op_star
+id|start
+comma
+op_star
+id|end
+suffix:semicolon
+r_char
+id|abuf
+(braket
+l_int|4
+)braket
+suffix:semicolon
+r_char
+op_star
+id|tmp
+suffix:semicolon
+r_int
+id|len
+suffix:semicolon
+r_int
+id|i
+suffix:semicolon
+id|start
+op_assign
+id|buf
+suffix:semicolon
+r_for
+c_loop
+(paren
+id|i
+op_assign
+l_int|0
+suffix:semicolon
+id|i
+OL
+l_int|3
+suffix:semicolon
+id|i
+op_increment
+)paren
+(brace
+r_if
+c_cond
+(paren
+op_logical_neg
+(paren
+id|end
+op_assign
+id|strchr
+c_func
+(paren
+id|start
+comma
+l_char|&squot;.&squot;
+)paren
+)paren
+)paren
+r_return
+op_minus
+id|EINVAL
+suffix:semicolon
+id|len
+op_assign
+id|end
+op_minus
+id|start
+suffix:semicolon
+id|memset
+c_func
+(paren
+id|abuf
+comma
+l_int|0
+comma
+l_int|4
+)paren
+suffix:semicolon
+id|strncpy
+c_func
+(paren
+id|abuf
+comma
+id|start
+comma
+id|len
+)paren
+suffix:semicolon
+id|addr
+(braket
+id|i
+)braket
+op_assign
+id|simple_strtoul
+c_func
+(paren
+id|abuf
+comma
+op_amp
+id|tmp
+comma
+l_int|10
+)paren
+suffix:semicolon
+id|start
+op_assign
+id|end
+op_plus
+l_int|1
+suffix:semicolon
+)brace
+id|memset
+c_func
+(paren
+id|abuf
+comma
+l_int|0
+comma
+l_int|4
+)paren
+suffix:semicolon
+id|strcpy
+c_func
+(paren
+id|abuf
+comma
+id|start
+)paren
+suffix:semicolon
+id|addr
+(braket
+l_int|3
+)braket
+op_assign
+id|simple_strtoul
+c_func
+(paren
+id|abuf
+comma
+op_amp
+id|tmp
+comma
+l_int|10
+)paren
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+)brace
+r_static
+r_inline
+r_void
+DECL|function|qeth_ipaddr6_to_string
+id|qeth_ipaddr6_to_string
+c_func
+(paren
+r_const
+id|__u8
+op_star
+id|addr
+comma
+r_char
+op_star
+id|buf
+)paren
+(brace
+id|sprintf
+c_func
+(paren
+id|buf
+comma
+l_string|&quot;%02x%02x:%02x%02x:%02x%02x:%02x%02x&quot;
+l_string|&quot;:%02x%02x:%02x%02x:%02x%02x:%02x%02x&quot;
+comma
+id|addr
+(braket
+l_int|0
+)braket
+comma
+id|addr
+(braket
+l_int|1
+)braket
+comma
+id|addr
+(braket
+l_int|2
+)braket
+comma
+id|addr
+(braket
+l_int|3
+)braket
+comma
+id|addr
+(braket
+l_int|4
+)braket
+comma
+id|addr
+(braket
+l_int|5
+)braket
+comma
+id|addr
+(braket
+l_int|6
+)braket
+comma
+id|addr
+(braket
+l_int|7
+)braket
+comma
+id|addr
+(braket
+l_int|8
+)braket
+comma
+id|addr
+(braket
+l_int|9
+)braket
+comma
+id|addr
+(braket
+l_int|10
+)braket
+comma
+id|addr
+(braket
+l_int|11
+)braket
+comma
+id|addr
+(braket
+l_int|12
+)braket
+comma
+id|addr
+(braket
+l_int|13
+)braket
+comma
+id|addr
+(braket
+l_int|14
+)braket
+comma
+id|addr
+(braket
+l_int|15
+)braket
+)paren
+suffix:semicolon
+)brace
+r_static
+r_inline
+r_int
+DECL|function|qeth_string_to_ipaddr6
+id|qeth_string_to_ipaddr6
+c_func
+(paren
+r_const
+r_char
+op_star
+id|buf
+comma
+id|__u8
+op_star
+id|addr
+)paren
+(brace
+r_const
+r_char
+op_star
+id|start
+comma
+op_star
+id|end
+suffix:semicolon
+id|u16
+op_star
+id|tmp_addr
+suffix:semicolon
+r_char
+id|abuf
+(braket
+l_int|5
+)braket
+suffix:semicolon
+r_char
+op_star
+id|tmp
+suffix:semicolon
+r_int
+id|len
+suffix:semicolon
+r_int
+id|i
+suffix:semicolon
+id|tmp_addr
+op_assign
+(paren
+id|u16
+op_star
+)paren
+id|addr
+suffix:semicolon
+id|start
+op_assign
+id|buf
+suffix:semicolon
+r_for
+c_loop
+(paren
+id|i
+op_assign
+l_int|0
+suffix:semicolon
+id|i
+OL
+l_int|7
+suffix:semicolon
+id|i
+op_increment
+)paren
+(brace
+r_if
+c_cond
+(paren
+op_logical_neg
+(paren
+id|end
+op_assign
+id|strchr
+c_func
+(paren
+id|start
+comma
+l_char|&squot;:&squot;
+)paren
+)paren
+)paren
+r_return
+op_minus
+id|EINVAL
+suffix:semicolon
+id|len
+op_assign
+id|end
+op_minus
+id|start
+suffix:semicolon
+id|memset
+c_func
+(paren
+id|abuf
+comma
+l_int|0
+comma
+l_int|5
+)paren
+suffix:semicolon
+id|strncpy
+c_func
+(paren
+id|abuf
+comma
+id|start
+comma
+id|len
+)paren
+suffix:semicolon
+id|tmp_addr
+(braket
+id|i
+)braket
+op_assign
+id|simple_strtoul
+c_func
+(paren
+id|abuf
+comma
+op_amp
+id|tmp
+comma
+l_int|16
+)paren
+suffix:semicolon
+id|start
+op_assign
+id|end
+op_plus
+l_int|1
+suffix:semicolon
+)brace
+id|memset
+c_func
+(paren
+id|abuf
+comma
+l_int|0
+comma
+l_int|5
+)paren
+suffix:semicolon
+id|strcpy
+c_func
+(paren
+id|abuf
+comma
+id|start
+)paren
+suffix:semicolon
+id|tmp_addr
+(braket
+l_int|7
+)braket
+op_assign
+id|simple_strtoul
+c_func
+(paren
+id|abuf
+comma
+op_amp
+id|tmp
+comma
+l_int|16
+)paren
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+)brace
+r_static
+r_inline
+r_void
+DECL|function|qeth_ipaddr_to_string
+id|qeth_ipaddr_to_string
+c_func
+(paren
+r_enum
+id|qeth_prot_versions
+id|proto
+comma
+r_const
+id|__u8
+op_star
+id|addr
+comma
+r_char
+op_star
+id|buf
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|proto
+op_eq
+id|QETH_PROT_IPV4
+)paren
+r_return
+id|qeth_ipaddr4_to_string
+c_func
+(paren
+id|addr
+comma
+id|buf
+)paren
+suffix:semicolon
+r_else
+r_if
+c_cond
+(paren
+id|proto
+op_eq
+id|QETH_PROT_IPV6
+)paren
+r_return
+id|qeth_ipaddr6_to_string
+c_func
+(paren
+id|addr
+comma
+id|buf
+)paren
+suffix:semicolon
+)brace
+r_static
+r_inline
+r_int
+DECL|function|qeth_string_to_ipaddr
+id|qeth_string_to_ipaddr
+c_func
+(paren
+r_const
+r_char
+op_star
+id|buf
+comma
+r_enum
+id|qeth_prot_versions
+id|proto
+comma
+id|__u8
+op_star
+id|addr
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|proto
+op_eq
+id|QETH_PROT_IPV4
+)paren
+r_return
+id|qeth_string_to_ipaddr4
+c_func
+(paren
+id|buf
+comma
+id|addr
+)paren
+suffix:semicolon
+r_else
+r_if
+c_cond
+(paren
+id|proto
+op_eq
+id|QETH_PROT_IPV6
+)paren
+r_return
+id|qeth_string_to_ipaddr6
+c_func
+(paren
+id|buf
+comma
+id|addr
+)paren
+suffix:semicolon
+r_else
+r_return
+op_minus
+id|EINVAL
+suffix:semicolon
+)brace
+r_extern
+r_int
+id|qeth_setrouting_v4
+c_func
+(paren
+r_struct
+id|qeth_card
+op_star
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|qeth_setrouting_v6
+c_func
+(paren
+r_struct
+id|qeth_card
+op_star
+)paren
+suffix:semicolon
+r_int
+id|qeth_add_ipato_entry
+c_func
+(paren
+r_struct
+id|qeth_card
+op_star
+comma
+r_struct
+id|qeth_ipato_entry
+op_star
+)paren
+suffix:semicolon
+r_void
+id|qeth_del_ipato_entry
+c_func
+(paren
+r_struct
+id|qeth_card
+op_star
+comma
+r_enum
+id|qeth_prot_versions
+comma
+id|u8
+op_star
+comma
+r_int
+)paren
+suffix:semicolon
+r_int
+id|qeth_add_vipa
+c_func
+(paren
+r_struct
+id|qeth_card
+op_star
+comma
+r_enum
+id|qeth_prot_versions
+comma
+r_const
+id|u8
+op_star
+)paren
+suffix:semicolon
+r_void
+id|qeth_del_vipa
+c_func
+(paren
+r_struct
+id|qeth_card
+op_star
+comma
+r_enum
+id|qeth_prot_versions
+comma
+r_const
+id|u8
+op_star
+)paren
+suffix:semicolon
+r_int
+id|qeth_add_rxip
+c_func
+(paren
+r_struct
+id|qeth_card
+op_star
+comma
+r_enum
+id|qeth_prot_versions
+comma
+r_const
+id|u8
+op_star
+)paren
+suffix:semicolon
+r_void
+id|qeth_del_rxip
+c_func
+(paren
+r_struct
+id|qeth_card
+op_star
+comma
+r_enum
+id|qeth_prot_versions
+comma
+r_const
+id|u8
+op_star
+)paren
+suffix:semicolon
+r_void
+id|qeth_schedule_recovery
+c_func
+(paren
+r_struct
+id|qeth_card
+op_star
+)paren
+suffix:semicolon
 macro_line|#endif /* __QETH_H__ */
 eof

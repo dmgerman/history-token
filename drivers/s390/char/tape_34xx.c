@@ -319,6 +319,8 @@ c_func
 id|p-&gt;device
 )paren
 suffix:semicolon
+r_break
+suffix:semicolon
 r_default
 suffix:colon
 id|DBF_EVENT
@@ -5042,7 +5044,7 @@ c_func
 (paren
 l_int|3
 comma
-l_string|&quot;34xx init: $Revision: 1.19 $&bslash;n&quot;
+l_string|&quot;34xx init: $Revision: 1.20 $&bslash;n&quot;
 )paren
 suffix:semicolon
 multiline_comment|/* Register driver for 3480/3490 tapes. */
@@ -5116,7 +5118,7 @@ id|MODULE_DESCRIPTION
 c_func
 (paren
 l_string|&quot;Linux on zSeries channel attached 3480 tape &quot;
-l_string|&quot;device driver ($Revision: 1.19 $)&quot;
+l_string|&quot;device driver ($Revision: 1.20 $)&quot;
 )paren
 suffix:semicolon
 id|MODULE_LICENSE

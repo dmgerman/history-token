@@ -2498,10 +2498,6 @@ comma
 id|jbegin_count
 )paren
 suffix:semicolon
-id|th.t_caller
-op_assign
-l_string|&quot;create&quot;
-suffix:semicolon
 id|retval
 op_assign
 id|reiserfs_new_inode
@@ -3254,9 +3250,6 @@ id|inode
 op_star
 id|inode
 suffix:semicolon
-r_int
-id|windex
-suffix:semicolon
 r_struct
 id|reiserfs_transaction_handle
 id|th
@@ -3297,14 +3290,6 @@ comma
 id|dir-&gt;i_sb
 comma
 id|jbegin_count
-)paren
-suffix:semicolon
-id|windex
-op_assign
-id|push_journal_writer
-c_func
-(paren
-l_string|&quot;reiserfs_rmdir&quot;
 )paren
 suffix:semicolon
 id|de.de_gen_number_bit_string
@@ -3536,12 +3521,6 @@ l_int|0
 multiline_comment|/* not truncate */
 )paren
 suffix:semicolon
-id|pop_journal_writer
-c_func
-(paren
-id|windex
-)paren
-suffix:semicolon
 id|journal_end
 c_func
 (paren
@@ -3576,12 +3555,6 @@ id|pathrelse
 (paren
 op_amp
 id|path
-)paren
-suffix:semicolon
-id|pop_journal_writer
-c_func
-(paren
-id|windex
 )paren
 suffix:semicolon
 id|journal_end
@@ -3638,9 +3611,6 @@ id|INITIALIZE_PATH
 id|path
 )paren
 suffix:semicolon
-r_int
-id|windex
-suffix:semicolon
 r_struct
 id|reiserfs_transaction_handle
 id|th
@@ -3680,14 +3650,6 @@ comma
 id|dir-&gt;i_sb
 comma
 id|jbegin_count
-)paren
-suffix:semicolon
-id|windex
-op_assign
-id|push_journal_writer
-c_func
-(paren
-l_string|&quot;reiserfs_unlink&quot;
 )paren
 suffix:semicolon
 id|de.de_gen_number_bit_string
@@ -3913,12 +3875,6 @@ l_int|0
 multiline_comment|/* not truncate */
 )paren
 suffix:semicolon
-id|pop_journal_writer
-c_func
-(paren
-id|windex
-)paren
-suffix:semicolon
 id|journal_end
 c_func
 (paren
@@ -3952,12 +3908,6 @@ id|pathrelse
 (paren
 op_amp
 id|path
-)paren
-suffix:semicolon
-id|pop_journal_writer
-c_func
-(paren
-id|windex
 )paren
 suffix:semicolon
 id|journal_end
@@ -4380,9 +4330,6 @@ id|inode
 op_assign
 id|old_dentry-&gt;d_inode
 suffix:semicolon
-r_int
-id|windex
-suffix:semicolon
 r_struct
 id|reiserfs_transaction_handle
 id|th
@@ -4448,14 +4395,6 @@ comma
 id|jbegin_count
 )paren
 suffix:semicolon
-id|windex
-op_assign
-id|push_journal_writer
-c_func
-(paren
-l_string|&quot;reiserfs_link&quot;
-)paren
-suffix:semicolon
 multiline_comment|/* create new entry */
 id|retval
 op_assign
@@ -4496,12 +4435,6 @@ id|retval
 (brace
 id|inode-&gt;i_nlink
 op_decrement
-suffix:semicolon
-id|pop_journal_writer
-c_func
-(paren
-id|windex
-)paren
 suffix:semicolon
 id|journal_end
 c_func
@@ -4549,12 +4482,6 @@ c_func
 id|dentry
 comma
 id|inode
-)paren
-suffix:semicolon
-id|pop_journal_writer
-c_func
-(paren
-id|windex
 )paren
 suffix:semicolon
 id|journal_end
@@ -4841,9 +4768,6 @@ comma
 op_star
 id|new_dentry_inode
 suffix:semicolon
-r_int
-id|windex
-suffix:semicolon
 r_struct
 id|reiserfs_transaction_handle
 id|th
@@ -5083,14 +5007,6 @@ comma
 id|jbegin_count
 )paren
 suffix:semicolon
-id|windex
-op_assign
-id|push_journal_writer
-c_func
-(paren
-l_string|&quot;reiserfs_rename&quot;
-)paren
-suffix:semicolon
 multiline_comment|/* add new entry (or find the existing one) */
 id|retval
 op_assign
@@ -5142,12 +5058,6 @@ c_cond
 id|retval
 )paren
 (brace
-id|pop_journal_writer
-c_func
-(paren
-id|windex
-)paren
-suffix:semicolon
 id|journal_end
 c_func
 (paren
@@ -5824,12 +5734,6 @@ id|new_dentry_inode
 )paren
 suffix:semicolon
 )brace
-id|pop_journal_writer
-c_func
-(paren
-id|windex
-)paren
-suffix:semicolon
 id|journal_end
 c_func
 (paren

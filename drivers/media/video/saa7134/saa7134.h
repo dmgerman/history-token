@@ -1,7 +1,7 @@
 multiline_comment|/*&n; * v4l2 device driver for philips saa7134 based TV cards&n; *&n; * (c) 2001,02 Gerd Knorr &lt;kraxel@bytesex.org&gt;&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; */
 macro_line|#include &lt;linux/version.h&gt;
 DECL|macro|SAA7134_VERSION_CODE
-mdefine_line|#define SAA7134_VERSION_CODE KERNEL_VERSION(0,2,9)
+mdefine_line|#define SAA7134_VERSION_CODE KERNEL_VERSION(0,2,11)
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/i2c.h&gt;
 macro_line|#include &lt;linux/videodev.h&gt;
@@ -108,16 +108,6 @@ suffix:semicolon
 DECL|member|id
 id|v4l2_std_id
 id|id
-suffix:semicolon
-DECL|member|width
-r_int
-r_int
-id|width
-suffix:semicolon
-DECL|member|height
-r_int
-r_int
-id|height
 suffix:semicolon
 multiline_comment|/* video decoder */
 DECL|member|sync_control
@@ -821,10 +811,15 @@ r_int
 r_int
 id|channels
 suffix:semicolon
-DECL|member|recording
+DECL|member|recording_on
 r_int
 r_int
-id|recording
+id|recording_on
+suffix:semicolon
+DECL|member|dma_running
+r_int
+r_int
+id|dma_running
 suffix:semicolon
 DECL|member|blocks
 r_int
@@ -1184,6 +1179,22 @@ suffix:semicolon
 DECL|member|ctl_y_even
 r_int
 id|ctl_y_even
+suffix:semicolon
+multiline_comment|/* crop */
+DECL|member|crop_bounds
+r_struct
+id|v4l2_rect
+id|crop_bounds
+suffix:semicolon
+DECL|member|crop_defrect
+r_struct
+id|v4l2_rect
+id|crop_defrect
+suffix:semicolon
+DECL|member|crop_current
+r_struct
+id|v4l2_rect
+id|crop_current
 suffix:semicolon
 multiline_comment|/* other global state info */
 DECL|member|automute

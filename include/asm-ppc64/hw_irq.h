@@ -215,11 +215,11 @@ DECL|macro|irqs_disabled
 mdefine_line|#define irqs_disabled()&t;&t;&t;&t;&bslash;&n;({&t;&t;&t;&t;&t;&t;&bslash;&n;&t;unsigned long flags;&t;&t;&t;&bslash;&n;&t;local_save_flags(flags);&t;&t;&bslash;&n;&t;!(flags &amp; MSR_EE);&t;&t;&t;&bslash;&n;})
 macro_line|#endif /* CONFIG_PPC_ISERIES */
 DECL|macro|mask_irq
-mdefine_line|#define mask_irq(irq) ({if (irq_desc[irq].handler &amp;&amp; irq_desc[irq].handler-&gt;disable) irq_desc[irq].handler-&gt;disable(irq);})
+mdefine_line|#define mask_irq(irq)&t;&t;&t;&t;&t;&t;&bslash;&n;&t;({&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t; &t;irq_desc_t *desc = get_irq_desc(irq);&t;&t;&bslash;&n;&t;&t;if (desc-&gt;handler &amp;&amp; desc-&gt;handler-&gt;disable)&t;&bslash;&n;&t;&t;&t;desc-&gt;handler-&gt;disable(irq);&t;&t;&bslash;&n;&t;})
 DECL|macro|unmask_irq
-mdefine_line|#define unmask_irq(irq) ({if (irq_desc[irq].handler &amp;&amp; irq_desc[irq].handler-&gt;enable) irq_desc[irq].handler-&gt;enable(irq);})
+mdefine_line|#define unmask_irq(irq)&t;&t;&t;&t;&t;&t;&bslash;&n;&t;({&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t; &t;irq_desc_t *desc = get_irq_desc(irq);&t;&t;&bslash;&n;&t;&t;if (desc-&gt;handler &amp;&amp; desc-&gt;handler-&gt;enable)&t;&bslash;&n;&t;&t;&t;desc-&gt;handler-&gt;enable(irq);&t;&t;&bslash;&n;&t;})
 DECL|macro|ack_irq
-mdefine_line|#define ack_irq(irq) ({if (irq_desc[irq].handler &amp;&amp; irq_desc[irq].handler-&gt;ack) irq_desc[irq].handler-&gt;ack(irq);})
+mdefine_line|#define ack_irq(irq)&t;&t;&t;&t;&t;&t;&bslash;&n;&t;({&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t; &t;irq_desc_t *desc = get_irq_desc(irq);&t;&t;&bslash;&n;&t;&t;if (desc-&gt;handler &amp;&amp; desc-&gt;handler-&gt;ack)&t;&bslash;&n;&t;&t;&t;desc-&gt;handler-&gt;ack(irq);&t;&t;&bslash;&n;&t;})
 multiline_comment|/* Should we handle this via lost interrupts and IPIs or should we don&squot;t care like&n; * we do now ? --BenH.&n; */
 r_struct
 id|hw_interrupt_type

@@ -33,7 +33,6 @@ macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/ioport.h&gt;
-macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/dma-mapping.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/netdevice.h&gt;
@@ -798,7 +797,7 @@ id|skb-&gt;data
 comma
 id|pool-&gt;buff_size
 comma
-id|PCI_DMA_FROMDEVICE
+id|DMA_FROM_DEVICE
 )paren
 suffix:semicolon
 id|pool-&gt;dma_addr
@@ -893,7 +892,7 @@ id|index
 comma
 id|pool-&gt;buff_size
 comma
-id|PCI_DMA_FROMDEVICE
+id|DMA_FROM_DEVICE
 )paren
 suffix:semicolon
 id|dev_kfree_skb_any
@@ -1250,7 +1249,7 @@ id|i
 comma
 id|pool-&gt;buff_size
 comma
-id|PCI_DMA_FROMDEVICE
+id|DMA_FROM_DEVICE
 )paren
 suffix:semicolon
 id|dev_kfree_skb_any
@@ -1420,7 +1419,7 @@ id|pool
 dot
 id|buff_size
 comma
-id|PCI_DMA_FROMDEVICE
+id|DMA_FROM_DEVICE
 )paren
 suffix:semicolon
 id|free_index
@@ -1779,7 +1778,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|vio_dma_mapping_error
+id|dma_mapping_error
 c_func
 (paren
 id|adapter-&gt;buffer_list_dma
@@ -1795,7 +1794,7 @@ id|adapter-&gt;buffer_list_dma
 comma
 l_int|4096
 comma
-id|PCI_DMA_BIDIRECTIONAL
+id|DMA_BIDIRECTIONAL
 )paren
 suffix:semicolon
 id|adapter-&gt;buffer_list_dma
@@ -1830,7 +1829,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|vio_dma_mapping_error
+id|dma_mapping_error
 c_func
 (paren
 id|adapter-&gt;filter_list_dma
@@ -1846,7 +1845,7 @@ id|adapter-&gt;filter_list_dma
 comma
 l_int|4096
 comma
-id|PCI_DMA_BIDIRECTIONAL
+id|DMA_BIDIRECTIONAL
 )paren
 suffix:semicolon
 id|adapter-&gt;filter_list_dma
@@ -1881,7 +1880,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|vio_dma_mapping_error
+id|dma_mapping_error
 c_func
 (paren
 id|adapter-&gt;rx_queue.queue_dma
@@ -1897,7 +1896,7 @@ id|adapter-&gt;rx_queue.queue_dma
 comma
 id|adapter-&gt;rx_queue.queue_len
 comma
-id|PCI_DMA_BIDIRECTIONAL
+id|DMA_BIDIRECTIONAL
 )paren
 suffix:semicolon
 id|adapter-&gt;rx_queue.queue_dma
@@ -2128,7 +2127,7 @@ id|adapter-&gt;buffer_list_addr
 comma
 l_int|4096
 comma
-id|PCI_DMA_BIDIRECTIONAL
+id|DMA_BIDIRECTIONAL
 )paren
 suffix:semicolon
 id|adapter-&gt;filter_list_dma
@@ -2142,7 +2141,7 @@ id|adapter-&gt;filter_list_addr
 comma
 l_int|4096
 comma
-id|PCI_DMA_BIDIRECTIONAL
+id|DMA_BIDIRECTIONAL
 )paren
 suffix:semicolon
 id|adapter-&gt;rx_queue.queue_dma
@@ -2156,14 +2155,14 @@ id|adapter-&gt;rx_queue.queue_addr
 comma
 id|adapter-&gt;rx_queue.queue_len
 comma
-id|PCI_DMA_BIDIRECTIONAL
+id|DMA_BIDIRECTIONAL
 )paren
 suffix:semicolon
 r_if
 c_cond
 (paren
 (paren
-id|vio_dma_mapping_error
+id|dma_mapping_error
 c_func
 (paren
 id|adapter-&gt;buffer_list_dma
@@ -2171,7 +2170,7 @@ id|adapter-&gt;buffer_list_dma
 )paren
 op_logical_or
 (paren
-id|vio_dma_mapping_error
+id|dma_mapping_error
 c_func
 (paren
 id|adapter-&gt;filter_list_dma
@@ -2179,7 +2178,7 @@ id|adapter-&gt;filter_list_dma
 )paren
 op_logical_or
 (paren
-id|vio_dma_mapping_error
+id|dma_mapping_error
 c_func
 (paren
 id|adapter-&gt;rx_queue.queue_dma
@@ -2974,7 +2973,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|vio_dma_mapping_error
+id|dma_mapping_error
 c_func
 (paren
 id|desc
@@ -3088,7 +3087,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|vio_dma_mapping_error
+id|dma_mapping_error
 c_func
 (paren
 id|desc
@@ -3148,7 +3147,7 @@ l_int|1
 dot
 id|fields.length
 comma
-id|PCI_DMA_TODEVICE
+id|DMA_TO_DEVICE
 )paren
 suffix:semicolon
 id|curfrag
@@ -3351,7 +3350,7 @@ id|nfrags
 dot
 id|fields.length
 comma
-id|PCI_DMA_TODEVICE
+id|DMA_TO_DEVICE
 )paren
 suffix:semicolon
 )brace

@@ -5009,7 +5009,7 @@ c_cond
 (paren
 id|sl-&gt;tty
 op_ne
-id|current-&gt;tty
+id|current-&gt;signal-&gt;tty
 op_logical_and
 id|sl-&gt;pid
 op_ne

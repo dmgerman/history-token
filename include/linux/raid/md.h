@@ -195,6 +195,16 @@ id|rdev
 suffix:semicolon
 r_extern
 r_void
+id|md_unplug_mddev
+c_func
+(paren
+id|mddev_t
+op_star
+id|mddev
+)paren
+suffix:semicolon
+r_extern
+r_void
 id|md_print_devices
 (paren
 r_void

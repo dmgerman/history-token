@@ -1633,13 +1633,6 @@ id|mapping
 op_assign
 id|inode-&gt;i_mapping
 suffix:semicolon
-id|spin_lock
-c_func
-(paren
-op_amp
-id|mapping-&gt;page_lock
-)paren
-suffix:semicolon
 op_star
 id|rss
 op_add_assign
@@ -1650,13 +1643,6 @@ id|PAGE_SIZE
 )paren
 op_star
 id|mapping-&gt;nrpages
-suffix:semicolon
-id|spin_unlock
-c_func
-(paren
-op_amp
-id|mapping-&gt;page_lock
-)paren
 suffix:semicolon
 )brace
 r_else

@@ -4282,7 +4282,6 @@ c_cond
 id|copy_from_user
 c_func
 (paren
-op_amp
 id|cursor.image.data
 comma
 id|sprite-&gt;image.data
@@ -5001,7 +5000,7 @@ comma
 op_amp
 id|cmap
 comma
-l_int|0
+l_int|2
 )paren
 )paren
 suffix:semicolon

@@ -8634,10 +8634,6 @@ id|brdp
 suffix:semicolon
 r_int
 r_int
-id|lval
-suffix:semicolon
-r_int
-r_int
 id|ival
 suffix:semicolon
 r_int

@@ -21,6 +21,8 @@ DECL|macro|IA64_MAX_VECTORED_IRQ
 mdefine_line|#define IA64_MAX_VECTORED_IRQ&t;&t;255
 DECL|macro|IA64_NUM_VECTORS
 mdefine_line|#define IA64_NUM_VECTORS&t;&t;256
+DECL|macro|AUTO_ASSIGN
+mdefine_line|#define AUTO_ASSIGN&t;&t;&t;-1
 DECL|macro|IA64_SPURIOUS_INT_VECTOR
 mdefine_line|#define IA64_SPURIOUS_INT_VECTOR&t;0x0f
 multiline_comment|/*&n; * Vectors 0x10-0x1f are used for low priority interrupts, e.g. CMCI.&n; */
@@ -112,9 +114,10 @@ suffix:semicolon
 multiline_comment|/* CPU-internal interrupt controller */
 r_extern
 r_int
-id|ia64_alloc_vector
+id|assign_irq_vector
 (paren
-r_void
+r_int
+id|irq
 )paren
 suffix:semicolon
 multiline_comment|/* allocate a free vector */

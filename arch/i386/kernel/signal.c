@@ -12,6 +12,7 @@ macro_line|#include &lt;linux/stddef.h&gt;
 macro_line|#include &lt;linux/personality.h&gt;
 macro_line|#include &lt;linux/suspend.h&gt;
 macro_line|#include &lt;linux/elf.h&gt;
+macro_line|#include &lt;asm/processor.h&gt;
 macro_line|#include &lt;asm/ucontext.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/i387.h&gt;
@@ -567,6 +568,8 @@ DECL|macro|COPY_SEG_STRICT
 mdefine_line|#define COPY_SEG_STRICT(seg)&t;&t;&t;&t;&t;&t;&bslash;&n;&t;{ unsigned short tmp;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;  err |= __get_user(tmp, &amp;sc-&gt;seg);&t;&t;&t;&t;&bslash;&n;&t;  regs-&gt;x##seg = tmp|3; }
 DECL|macro|GET_SEG
 mdefine_line|#define GET_SEG(seg)&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;{ unsigned short tmp;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;  err |= __get_user(tmp, &amp;sc-&gt;seg);&t;&t;&t;&t;&bslash;&n;&t;  loadsegment(seg,tmp); }
+DECL|macro|FIX_EFLAGS
+mdefine_line|#define&t;FIX_EFLAGS&t;(X86_EFLAGS_AC | X86_EFLAGS_OF | X86_EFLAGS_DF | &bslash;&n;&t;&t;&t; X86_EFLAGS_TF | X86_EFLAGS_SF | X86_EFLAGS_ZF | &bslash;&n;&t;&t;&t; X86_EFLAGS_AF | X86_EFLAGS_PF | X86_EFLAGS_CF)
 id|GET_SEG
 c_func
 (paren
@@ -673,13 +676,13 @@ op_assign
 id|regs-&gt;eflags
 op_amp
 op_complement
-l_int|0x40DD5
+id|FIX_EFLAGS
 )paren
 op_or
 (paren
 id|tmpflags
 op_amp
-l_int|0x40DD5
+id|FIX_EFLAGS
 )paren
 suffix:semicolon
 id|regs-&gt;orig_eax

@@ -293,6 +293,7 @@ c_func
 (paren
 id|KERN_ERR
 l_string|&quot;%s(): CompactFlash socket does not support VPP %uV&bslash;n&quot;
+comma
 id|__FUNCTION__
 comma
 id|state-&gt;Vpp

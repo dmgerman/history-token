@@ -181,6 +181,8 @@ DECL|macro|TIF_SINGLESTEP
 mdefine_line|#define TIF_SINGLESTEP&t;&t;4&t;/* reenable singlestep on user return*/
 DECL|macro|TIF_IRET
 mdefine_line|#define TIF_IRET&t;&t;5&t;/* force IRET */
+DECL|macro|TIF_SYSCALL_AUDIT
+mdefine_line|#define TIF_SYSCALL_AUDIT&t;7&t;/* syscall auditing active */
 DECL|macro|TIF_POLLING_NRFLAG
 mdefine_line|#define TIF_POLLING_NRFLAG&t;16&t;/* true if poll_idle() is polling TIF_NEED_RESCHED */
 DECL|macro|TIF_IA32
@@ -201,6 +203,8 @@ DECL|macro|_TIF_NEED_RESCHED
 mdefine_line|#define _TIF_NEED_RESCHED&t;(1&lt;&lt;TIF_NEED_RESCHED)
 DECL|macro|_TIF_IRET
 mdefine_line|#define _TIF_IRET&t;&t;(1&lt;&lt;TIF_IRET)
+DECL|macro|_TIF_SYSCALL_AUDIT
+mdefine_line|#define _TIF_SYSCALL_AUDIT&t;(1&lt;&lt;TIF_SYSCALL_AUDIT)
 DECL|macro|_TIF_POLLING_NRFLAG
 mdefine_line|#define _TIF_POLLING_NRFLAG&t;(1&lt;&lt;TIF_POLLING_NRFLAG)
 DECL|macro|_TIF_IA32
@@ -211,7 +215,7 @@ DECL|macro|_TIF_ABI_PENDING
 mdefine_line|#define _TIF_ABI_PENDING&t;(1&lt;&lt;TIF_ABI_PENDING)
 multiline_comment|/* work to do on interrupt/exception return */
 DECL|macro|_TIF_WORK_MASK
-mdefine_line|#define _TIF_WORK_MASK    (0x0000FFFF &amp; ~(_TIF_SYSCALL_TRACE|_TIF_SINGLESTEP))
+mdefine_line|#define _TIF_WORK_MASK &bslash;&n;  (0x0000FFFF &amp; ~(_TIF_SYSCALL_TRACE|_TIF_SYSCALL_AUDIT|_TIF_SINGLESTEP))
 multiline_comment|/* work to do on any return to user space */
 DECL|macro|_TIF_ALLWORK_MASK
 mdefine_line|#define _TIF_ALLWORK_MASK 0x0000FFFF&t;

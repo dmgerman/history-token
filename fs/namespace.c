@@ -22,6 +22,7 @@ c_func
 r_void
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_SYSFS
 r_extern
 r_int
 id|__init
@@ -31,6 +32,22 @@ c_func
 r_void
 )paren
 suffix:semicolon
+macro_line|#else
+DECL|function|sysfs_init
+r_static
+r_inline
+r_int
+id|sysfs_init
+c_func
+(paren
+r_void
+)paren
+(brace
+r_return
+l_int|0
+suffix:semicolon
+)brace
+macro_line|#endif
 multiline_comment|/* spinlock for vfsmount related operations, inplace of dcache_lock */
 DECL|variable|__cacheline_aligned_in_smp
 id|spinlock_t

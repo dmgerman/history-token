@@ -35,29 +35,7 @@ multiline_comment|/*&n; * 16 8259A IRQ&squot;s, 208 potential APIC interrupt sou
 multiline_comment|/*&n; * The maximum number of vectors supported by i386 processors&n; * is limited to 256. For processors other than i386, NR_VECTORS&n; * should be changed accordingly.&n; */
 DECL|macro|NR_VECTORS
 mdefine_line|#define NR_VECTORS 256
-macro_line|#ifdef CONFIG_PCI_USE_VECTOR
-DECL|macro|NR_IRQS
-mdefine_line|#define NR_IRQS FIRST_SYSTEM_VECTOR
-DECL|macro|NR_IRQ_VECTORS
-mdefine_line|#define NR_IRQ_VECTORS NR_IRQS
-macro_line|#else
-macro_line|#ifdef CONFIG_X86_IO_APIC
-DECL|macro|NR_IRQS
-mdefine_line|#define NR_IRQS 224
-macro_line|# if (224 &gt;= 32 * NR_CPUS)
-DECL|macro|NR_IRQ_VECTORS
-macro_line|# define NR_IRQ_VECTORS NR_IRQS
-macro_line|# else
-DECL|macro|NR_IRQ_VECTORS
-macro_line|# define NR_IRQ_VECTORS (32 * NR_CPUS)
-macro_line|# endif
-macro_line|#else
-DECL|macro|NR_IRQS
-mdefine_line|#define NR_IRQS 16
-DECL|macro|NR_IRQ_VECTORS
-mdefine_line|#define NR_IRQ_VECTORS NR_IRQS
-macro_line|#endif
-macro_line|#endif
+macro_line|#include &quot;irq_vectors_limits.h&quot;
 DECL|macro|FPU_IRQ
 mdefine_line|#define FPU_IRQ&t;&t;&t;13
 DECL|macro|FIRST_VM86_IRQ

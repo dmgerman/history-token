@@ -2713,7 +2713,7 @@ id|page
 )paren
 )paren
 suffix:semicolon
-id|SetPageWriteback
+id|set_page_writeback
 c_func
 (paren
 id|page
@@ -3169,7 +3169,7 @@ singleline_comment|// unlock_page() calls further below with end_page_writeback(
 singleline_comment|// FIXME: Make sure it is ok to SetPageError() on unlocked page under
 singleline_comment|// writeback before doing the change!
 macro_line|#if 0
-id|SetPageWriteback
+id|set_page_writeback
 c_func
 (paren
 id|page

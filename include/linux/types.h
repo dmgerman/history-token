@@ -7,8 +7,6 @@ DECL|macro|BITS_TO_LONGS
 mdefine_line|#define BITS_TO_LONGS(bits) &bslash;&n;&t;(((bits)+BITS_PER_LONG-1)/BITS_PER_LONG)
 DECL|macro|DECLARE_BITMAP
 mdefine_line|#define DECLARE_BITMAP(name,bits) &bslash;&n;&t;unsigned long name[BITS_TO_LONGS(bits)]
-DECL|macro|CLEAR_BITMAP
-mdefine_line|#define CLEAR_BITMAP(name,bits) &bslash;&n;&t;memset(name, 0, BITS_TO_LONGS(bits)*sizeof(unsigned long))
 macro_line|#endif
 macro_line|#include &lt;linux/posix_types.h&gt;
 macro_line|#include &lt;asm/types.h&gt;
@@ -77,6 +75,11 @@ DECL|typedef|clockid_t
 r_typedef
 id|__kernel_clockid_t
 id|clockid_t
+suffix:semicolon
+DECL|typedef|mqd_t
+r_typedef
+id|__kernel_mqd_t
+id|mqd_t
 suffix:semicolon
 macro_line|#ifdef __KERNEL__
 DECL|typedef|uid_t

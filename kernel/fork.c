@@ -10,6 +10,7 @@ macro_line|#include &lt;linux/vmalloc.h&gt;
 macro_line|#include &lt;linux/completion.h&gt;
 macro_line|#include &lt;linux/namespace.h&gt;
 macro_line|#include &lt;linux/personality.h&gt;
+macro_line|#include &lt;linux/sem.h&gt;
 macro_line|#include &lt;linux/file.h&gt;
 macro_line|#include &lt;linux/binfmts.h&gt;
 macro_line|#include &lt;linux/mman.h&gt;
@@ -20,38 +21,13 @@ macro_line|#include &lt;linux/jiffies.h&gt;
 macro_line|#include &lt;linux/futex.h&gt;
 macro_line|#include &lt;linux/ptrace.h&gt;
 macro_line|#include &lt;linux/mount.h&gt;
+macro_line|#include &lt;linux/audit.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
 macro_line|#include &lt;asm/pgalloc.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/mmu_context.h&gt;
 macro_line|#include &lt;asm/cacheflush.h&gt;
 macro_line|#include &lt;asm/tlbflush.h&gt;
-r_extern
-r_int
-id|copy_semundo
-c_func
-(paren
-r_int
-r_int
-id|clone_flags
-comma
-r_struct
-id|task_struct
-op_star
-id|tsk
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|exit_sem
-c_func
-(paren
-r_struct
-id|task_struct
-op_star
-id|tsk
-)paren
-suffix:semicolon
 multiline_comment|/* The idle threads do not count..&n; * Protected by write_lock_irq(&amp;tasklist_lock)&n; */
 DECL|variable|nr_threads
 r_int
@@ -208,6 +184,21 @@ c_func
 id|tsk
 op_eq
 id|current
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|unlikely
+c_func
+(paren
+id|tsk-&gt;audit_context
+)paren
+)paren
+id|audit_free
+c_func
+(paren
+id|tsk
 )paren
 suffix:semicolon
 id|security_task_free
@@ -693,6 +684,10 @@ id|mempages
 )paren
 (brace
 macro_line|#ifndef __HAVE_ARCH_TASK_STRUCT_ALLOCATOR
+macro_line|#ifndef ARCH_MIN_TASKALIGN
+DECL|macro|ARCH_MIN_TASKALIGN
+mdefine_line|#define ARCH_MIN_TASKALIGN&t;0
+macro_line|#endif
 multiline_comment|/* create a slab on which task_structs can be allocated */
 id|task_struct_cachep
 op_assign
@@ -707,9 +702,9 @@ r_struct
 id|task_struct
 )paren
 comma
-l_int|0
+id|ARCH_MIN_TASKALIGN
 comma
-id|SLAB_MUST_HWCACHE_ALIGN
+l_int|0
 comma
 l_int|NULL
 comma
@@ -1179,7 +1174,7 @@ op_amp
 id|file-&gt;f_mapping-&gt;i_shared_sem
 )paren
 suffix:semicolon
-id|list_add_tail
+id|list_add
 c_func
 (paren
 op_amp
@@ -1866,12 +1861,6 @@ suffix:semicolon
 id|tsk-&gt;cmin_flt
 op_assign
 id|tsk-&gt;cmaj_flt
-op_assign
-l_int|0
-suffix:semicolon
-id|tsk-&gt;nswap
-op_assign
-id|tsk-&gt;cnswap
 op_assign
 l_int|0
 suffix:semicolon
@@ -3154,6 +3143,38 @@ op_amp
 id|sig-&gt;shared_pending
 )paren
 suffix:semicolon
+id|INIT_LIST_HEAD
+c_func
+(paren
+op_amp
+id|sig-&gt;posix_timers
+)paren
+suffix:semicolon
+id|sig-&gt;tty
+op_assign
+id|current-&gt;signal-&gt;tty
+suffix:semicolon
+id|sig-&gt;pgrp
+op_assign
+id|process_group
+c_func
+(paren
+id|current
+)paren
+suffix:semicolon
+id|sig-&gt;session
+op_assign
+id|current-&gt;signal-&gt;session
+suffix:semicolon
+id|sig-&gt;leader
+op_assign
+l_int|0
+suffix:semicolon
+multiline_comment|/* session leadership doesn&squot;t inherit */
+id|sig-&gt;tty_old_pgrp
+op_assign
+l_int|0
+suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
@@ -3586,13 +3607,6 @@ op_amp
 id|p-&gt;sibling
 )paren
 suffix:semicolon
-id|INIT_LIST_HEAD
-c_func
-(paren
-op_amp
-id|p-&gt;posix_timers
-)paren
-suffix:semicolon
 id|init_waitqueue_head
 c_func
 (paren
@@ -3664,15 +3678,6 @@ r_int
 )paren
 id|p
 suffix:semicolon
-id|p-&gt;leader
-op_assign
-l_int|0
-suffix:semicolon
-multiline_comment|/* session leadership doesn&squot;t inherit */
-id|p-&gt;tty_old_pgrp
-op_assign
-l_int|0
-suffix:semicolon
 id|p-&gt;utime
 op_assign
 id|p-&gt;stime
@@ -3706,6 +3711,10 @@ id|p-&gt;io_context
 op_assign
 l_int|NULL
 suffix:semicolon
+id|p-&gt;audit_context
+op_assign
+l_int|NULL
+suffix:semicolon
 id|retval
 op_assign
 op_minus
@@ -3727,6 +3736,22 @@ id|p
 r_goto
 id|bad_fork_cleanup
 suffix:semicolon
+r_if
+c_cond
+(paren
+(paren
+id|retval
+op_assign
+id|audit_alloc
+c_func
+(paren
+id|p
+)paren
+)paren
+)paren
+r_goto
+id|bad_fork_cleanup_security
+suffix:semicolon
 multiline_comment|/* copy all the process information */
 r_if
 c_cond
@@ -3744,7 +3769,7 @@ id|p
 )paren
 )paren
 r_goto
-id|bad_fork_cleanup_security
+id|bad_fork_cleanup_audit
 suffix:semicolon
 r_if
 c_cond
@@ -4187,7 +4212,7 @@ id|p
 comma
 id|PIDTYPE_SID
 comma
-id|p-&gt;session
+id|p-&gt;signal-&gt;session
 )paren
 suffix:semicolon
 r_if
@@ -4269,6 +4294,17 @@ c_func
 id|p
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|p-&gt;active_mm
+)paren
+id|mmdrop
+c_func
+(paren
+id|p-&gt;active_mm
+)paren
+suffix:semicolon
 id|bad_fork_cleanup_signal
 suffix:colon
 id|exit_signal
@@ -4306,6 +4342,14 @@ multiline_comment|/* blocking */
 id|bad_fork_cleanup_semundo
 suffix:colon
 id|exit_sem
+c_func
+(paren
+id|p
+)paren
+suffix:semicolon
+id|bad_fork_cleanup_audit
+suffix:colon
+id|audit_free
 c_func
 (paren
 id|p

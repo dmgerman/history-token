@@ -457,6 +457,19 @@ op_star
 id|rq
 )paren
 (brace
+multiline_comment|/*&n;&t; * it already went through dequeue, we need to decrement the&n;&t; * in_flight count again&n;&t; */
+r_if
+c_cond
+(paren
+id|blk_account_rq
+c_func
+(paren
+id|rq
+)paren
+)paren
+id|q-&gt;in_flight
+op_decrement
+suffix:semicolon
 multiline_comment|/*&n;&t; * if iosched has an explicit requeue hook, then use that. otherwise&n;&t; * just put the request at the front of the queue&n;&t; */
 r_if
 c_cond
@@ -811,6 +824,19 @@ id|e
 op_assign
 op_amp
 id|q-&gt;elevator
+suffix:semicolon
+multiline_comment|/*&n;&t; * the time frame between a request being removed from the lists&n;&t; * and to it is freed is accounted as io that is in progress at&n;&t; * the driver side. note that we only account requests that the&n;&t; * driver has seen (REQ_STARTED set), to avoid false accounting&n;&t; * for request-request merges&n;&t; */
+r_if
+c_cond
+(paren
+id|blk_account_rq
+c_func
+(paren
+id|rq
+)paren
+)paren
+id|q-&gt;in_flight
+op_increment
 suffix:semicolon
 multiline_comment|/*&n;&t; * the main clearing point for q-&gt;last_merge is on retrieval of&n;&t; * request by driver (it calls elv_next_request()), but it _can_&n;&t; * also happen here if a request is added to the queue but later&n;&t; * deleted without ever being given to driver (merged with another&n;&t; * request).&n;&t; */
 r_if
@@ -1176,6 +1202,19 @@ id|e
 op_assign
 op_amp
 id|q-&gt;elevator
+suffix:semicolon
+multiline_comment|/*&n;&t; * request is released from the driver, io must be done&n;&t; */
+r_if
+c_cond
+(paren
+id|blk_account_rq
+c_func
+(paren
+id|rq
+)paren
+)paren
+id|q-&gt;in_flight
+op_decrement
 suffix:semicolon
 r_if
 c_cond

@@ -21,21 +21,6 @@ macro_line|#include &lt;asm/machdep.h&gt;
 macro_line|#ifdef CONFIG_BLK_DEV_INITRD
 macro_line|#include &lt;asm/pgtable.h&gt;
 macro_line|#endif
-macro_line|#ifdef CONFIG_CONSOLE
-r_extern
-r_struct
-id|consw
-op_star
-id|conswitchp
-suffix:semicolon
-macro_line|#ifdef CONFIG_FRAMEBUFFER
-r_extern
-r_struct
-id|consw
-id|fb_con
-suffix:semicolon
-macro_line|#endif
-macro_line|#endif
 DECL|variable|rom_length
 r_int
 r_int
@@ -83,7 +68,7 @@ op_star
 id|mach_sched_init
 )paren
 (paren
-r_void
+id|irqreturn_t
 (paren
 op_star
 id|handler
@@ -168,7 +153,7 @@ op_assign
 l_int|NULL
 suffix:semicolon
 DECL|variable|mach_default_handler
-r_void
+id|irqreturn_t
 (paren
 op_star
 (paren
@@ -187,60 +172,6 @@ comma
 r_struct
 id|pt_regs
 op_star
-)paren
-op_assign
-l_int|NULL
-suffix:semicolon
-DECL|variable|mach_request_irq
-r_int
-(paren
-op_star
-id|mach_request_irq
-)paren
-(paren
-r_int
-r_int
-comma
-r_void
-(paren
-op_star
-)paren
-(paren
-r_int
-comma
-r_void
-op_star
-comma
-r_struct
-id|pt_regs
-op_star
-)paren
-comma
-r_int
-r_int
-comma
-r_const
-r_char
-op_star
-comma
-r_void
-op_star
-)paren
-suffix:semicolon
-DECL|variable|mach_free_irq
-r_void
-(paren
-op_star
-id|mach_free_irq
-)paren
-(paren
-r_int
-r_int
-id|irq
-comma
-r_void
-op_star
-id|dev_id
 )paren
 op_assign
 l_int|NULL
@@ -668,6 +599,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;&bslash;x0F&bslash;r&bslash;n&bslash;nuClinux/&quot;
 id|CPU
 l_string|&quot;&bslash;n&quot;
@@ -677,6 +609,7 @@ macro_line|#ifdef CONFIG_UCDIMM
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;uCdimm by Lineo, Inc. &lt;www.lineo.com&gt;&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -685,6 +618,7 @@ macro_line|#ifdef CONFIG_M68VZ328
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;M68VZ328 support by Evan Stawnyczy &lt;e@lineo.ca&gt;&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -693,6 +627,7 @@ macro_line|#ifdef CONFIG_COLDFIRE
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;COLDFIRE port done by Greg Ungerer, gerg@snapgear.com&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -700,6 +635,7 @@ macro_line|#ifdef CONFIG_M5307
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;Modified for M5307 by Dave Miller, dmiller@intellistor.com&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -708,6 +644,7 @@ macro_line|#ifdef CONFIG_ELITE
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;Modified for M5206eLITE by Rob Scott, rscott@mtrob.fdns.net&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -716,6 +653,7 @@ macro_line|#ifdef CONFIG_TELOS
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;Modified for Omnia ToolVox by James D. Schettine, james@telos-systems.com&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -724,6 +662,7 @@ macro_line|#endif
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;Flat model support (C) 1998,1999 Kenneth Albanowski, D. Jeff Dionne&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -731,6 +670,7 @@ macro_line|#if defined( CONFIG_PILOT ) &amp;&amp; defined( CONFIG_M68328 )
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;TRG SuperPilot FLASH card support &lt;info@trgnet.com&gt;&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -739,6 +679,7 @@ macro_line|#if defined( CONFIG_PILOT ) &amp;&amp; defined( CONFIG_M68EZ328 )
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;PalmV support by Lineo Inc. &lt;jeff@uclinux.com&gt;&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -747,6 +688,7 @@ macro_line|#ifdef CONFIG_M68EZ328ADS
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;M68EZ328ADS board support (C) 1999 Vladimir Gurevich &lt;vgurevic@cisco.com&gt;&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -755,6 +697,7 @@ macro_line|#ifdef CONFIG_ALMA_ANS
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;Alma Electronics board support (C) 1999 Vladimir Gurevich &lt;vgurevic@cisco.com&gt;&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -763,12 +706,14 @@ macro_line|#if defined (CONFIG_M68360)
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;QUICC port done by SED Systems &lt;hamilton@sedsystems.ca&gt;,&bslash;n&quot;
 )paren
 suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;based on 2.0.38 port by Lineo Inc. &lt;mleslie@lineo.com&gt;.&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -777,6 +722,7 @@ macro_line|#ifdef CONFIG_DRAGEN2
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;DragonEngine II board support by Georges Menie&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -785,6 +731,7 @@ macro_line|#ifdef DEBUG
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;KERNEL -&gt; TEXT=0x%06x-0x%06x DATA=0x%06x-0x%06x &quot;
 l_string|&quot;BSS=0x%06x-0x%06x&bslash;n&quot;
 comma
@@ -828,6 +775,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;KERNEL -&gt; ROMFS=0x%06x-0x%06x MEM=0x%06x-0x%06x &quot;
 l_string|&quot;STACK=0x%06x-0x%06x&bslash;n&quot;
 comma
@@ -933,6 +881,7 @@ id|cmdline_p
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;Command line: &squot;%s&squot;&bslash;n&quot;
 comma
 op_star
@@ -940,19 +889,12 @@ id|cmdline_p
 )paren
 suffix:semicolon
 macro_line|#endif
-macro_line|#ifdef CONFIG_CONSOLE
-macro_line|#ifdef CONFIG_FRAMEBUFFER
+macro_line|#if defined(CONFIG_FRAMEBUFFER_CONSOLE) &amp;&amp; defined(CONFIG_DUMMY_CONSOLE)
 id|conswitchp
 op_assign
 op_amp
-id|fb_con
+id|dummy_con
 suffix:semicolon
-macro_line|#else
-id|conswitchp
-op_assign
-l_int|0
-suffix:semicolon
-macro_line|#endif
 macro_line|#endif
 multiline_comment|/*&n;&t; * Give all the memory to the bootmap allocator, tell it to put the&n;&t; * boot mem_map at the start of memory.&n;&t; */
 id|bootmap_size

@@ -1,7 +1,7 @@
-multiline_comment|/*&n; *  include/asm-i386/mach-pc9800/mach_resources.h&n; *&n; *  Machine specific resource allocation for PC-9800.&n; *  Written by Osamu Tomita &lt;tomita@cinet.co.jp&gt;&n; */
-macro_line|#ifndef _MACH_RESOURCES_H
-DECL|macro|_MACH_RESOURCES_H
-mdefine_line|#define _MACH_RESOURCES_H
+multiline_comment|/*&n; *  Machine specific resource allocation for PC-9800.&n; *  Written by Osamu Tomita &lt;tomita@cinet.co.jp&gt;&n; */
+macro_line|#include &lt;linux/ioport.h&gt;
+macro_line|#include &lt;asm/io.h&gt;
+macro_line|#include &lt;asm/std_resources.h&gt;
 DECL|variable|str_pic1
 r_static
 r_char
@@ -1042,28 +1042,13 @@ id|IORESOURCE_BUSY
 )brace
 )brace
 suffix:semicolon
-DECL|function|probe_video_rom
-r_static
-r_inline
+DECL|function|probe_roms
 r_void
-id|probe_video_rom
+id|__init
+id|probe_roms
 c_func
 (paren
-r_int
-id|roms
-)paren
-(brace
-multiline_comment|/* PC-9800 has no video ROM */
-)brace
-DECL|function|probe_extension_roms
-r_static
-r_inline
 r_void
-id|probe_extension_roms
-c_func
-(paren
-r_int
-id|roms
 )paren
 (brace
 r_int
@@ -1072,6 +1057,22 @@ suffix:semicolon
 id|__u8
 op_star
 id|xrom_id
+suffix:semicolon
+r_int
+id|roms
+op_assign
+l_int|1
+suffix:semicolon
+id|request_resource
+c_func
+(paren
+op_amp
+id|iomem_resource
+comma
+id|rom_resources
+op_plus
+l_int|0
+)paren
 suffix:semicolon
 id|xrom_id
 op_assign
@@ -1213,9 +1214,8 @@ suffix:semicolon
 )brace
 )brace
 DECL|function|request_graphics_resource
-r_static
-r_inline
 r_void
+id|__init
 id|request_graphics_resource
 c_func
 (paren
@@ -1435,5 +1435,42 @@ id|i
 suffix:semicolon
 )brace
 )brace
-macro_line|#endif /* !_MACH_RESOURCES_H */
+DECL|function|request_standard_io_resources
+r_void
+id|__init
+id|request_standard_io_resources
+c_func
+(paren
+r_void
+)paren
+(brace
+r_int
+id|i
+suffix:semicolon
+r_for
+c_loop
+(paren
+id|i
+op_assign
+l_int|0
+suffix:semicolon
+id|i
+OL
+id|STANDARD_IO_RESOURCES
+suffix:semicolon
+id|i
+op_increment
+)paren
+id|request_resource
+c_func
+(paren
+op_amp
+id|ioport_resource
+comma
+id|standard_io_resources
+op_plus
+id|i
+)paren
+suffix:semicolon
+)brace
 eof

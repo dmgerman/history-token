@@ -439,11 +439,6 @@ r_struct
 id|fwinfo
 )paren
 suffix:semicolon
-DECL|variable|errno
-r_static
-r_int
-id|errno
-suffix:semicolon
 DECL|function|tda1004x_write_byte
 r_static
 r_int

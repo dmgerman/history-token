@@ -2,6 +2,7 @@ multiline_comment|/*&n; * Semaphore implementation Copyright (c) 2001 Matthew Wi
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
+macro_line|#include &lt;linux/init.h&gt;
 multiline_comment|/*&n; * Semaphores are complex as we wish to avoid using two variables.&n; * `count&squot; has multiple roles, depending on its value.  If it is positive&n; * or zero, there are no waiters.  The functions here will never be&n; * called; see &lt;asm/semaphore.h&gt;&n; *&n; * When count is -1 it indicates there is at least one task waiting&n; * for the semaphore.&n; *&n; * When count is less than that, there are &squot;- count - 1&squot; wakeups&n; * pending.  ie if it has value -3, there are 2 wakeups pending.&n; *&n; * Note that these functions are only called when there is contention&n; * on the lock, and as such all this is the &quot;non-critical&quot; part of the&n; * whole semaphore business. The critical part is the inline stuff in&n; * &lt;asm/semaphore.h&gt; where we want to avoid any extra jumps and calls.&n; */
 DECL|function|__up
 r_void
@@ -35,6 +36,7 @@ DECL|macro|UPDATE_COUNT
 mdefine_line|#define UPDATE_COUNT&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;sem-&gt;count += (sem-&gt;count &lt; 0) ? 1 : - 1;
 DECL|function|__down
 r_void
+id|__sched
 id|__down
 c_func
 (paren
@@ -82,6 +84,7 @@ id|UPDATE_COUNT
 )brace
 DECL|function|__down_interruptible
 r_int
+id|__sched
 id|__down_interruptible
 c_func
 (paren

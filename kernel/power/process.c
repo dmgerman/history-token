@@ -54,6 +54,12 @@ id|p-&gt;state
 op_eq
 id|TASK_DEAD
 )paren
+op_logical_or
+(paren
+id|p-&gt;state
+op_eq
+id|TASK_STOPPED
+)paren
 )paren
 r_return
 l_int|0
@@ -73,7 +79,7 @@ r_int
 id|flag
 )paren
 (brace
-multiline_comment|/* You need correct to work with real-time processes.&n;&t;   OTOH, this way one process may see (via /proc/) some other&n;&t;   process in stopped state (and thereby discovered we were&n;&t;   suspended. We probably do not care. &n;&t; */
+multiline_comment|/* Hmm, should we be allowed to suspend when there are realtime&n;&t;   processes around? */
 r_int
 id|save
 suffix:semicolon
@@ -83,7 +89,7 @@ id|current-&gt;state
 suffix:semicolon
 id|current-&gt;state
 op_assign
-id|TASK_STOPPED
+id|TASK_UNINTERRUPTIBLE
 suffix:semicolon
 id|pr_debug
 c_func
@@ -104,18 +110,26 @@ op_and_assign
 op_complement
 id|PF_FREEZE
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|flag
-)paren
-id|flush_signals
+id|spin_lock_irq
 c_func
 (paren
-id|current
+op_amp
+id|current-&gt;sighand-&gt;siglock
 )paren
 suffix:semicolon
-multiline_comment|/* We have signaled a kernel thread, which isn&squot;t normal behaviour&n;&t;&t;&t;&t;&t;   and that may lead to 100%CPU sucking because those threads&n;&t;&t;&t;&t;&t;   just don&squot;t manage signals. */
+id|recalc_sigpending
+c_func
+(paren
+)paren
+suffix:semicolon
+multiline_comment|/* We sent fake signal, clean it up */
+id|spin_unlock_irq
+c_func
+(paren
+op_amp
+id|current-&gt;sighand-&gt;siglock
+)paren
+suffix:semicolon
 id|current-&gt;flags
 op_or_assign
 id|PF_FROZEN

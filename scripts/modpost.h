@@ -229,6 +229,10 @@ DECL|member|seen
 r_int
 id|seen
 suffix:semicolon
+DECL|member|skip
+r_int
+id|skip
+suffix:semicolon
 DECL|member|dev_table_buf
 r_struct
 id|buffer

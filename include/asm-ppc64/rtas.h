@@ -415,30 +415,6 @@ dot
 suffix:semicolon
 r_extern
 r_void
-id|phys_call_rtas
-c_func
-(paren
-r_int
-comma
-r_int
-comma
-r_int
-comma
-dot
-dot
-dot
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|phys_call_rtas_display_status
-c_func
-(paren
-r_char
-)paren
-suffix:semicolon
-r_extern
-r_void
 id|call_rtas_display_status
 c_func
 (paren
@@ -469,6 +445,16 @@ id|rtas_halt
 c_func
 (paren
 r_void
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|rtas_os_term
+c_func
+(paren
+r_char
+op_star
+id|str
 )paren
 suffix:semicolon
 r_extern
@@ -591,8 +577,8 @@ mdefine_line|#define ERR_TYPE_KERNEL_PANIC&t;0x4&t;/* from panic() */
 multiline_comment|/* All the types and not flags */
 DECL|macro|ERR_TYPE_MASK
 mdefine_line|#define ERR_TYPE_MASK&t;(ERR_TYPE_RTAS_LOG | ERR_TYPE_KERNEL_PANIC)
-DECL|macro|RTAS_ERR
-mdefine_line|#define RTAS_ERR KERN_ERR &quot;RTAS: &quot;
+DECL|macro|RTAS_DEBUG
+mdefine_line|#define RTAS_DEBUG KERN_DEBUG &quot;RTAS: &quot;
 DECL|macro|RTAS_ERROR_LOG_MAX
 mdefine_line|#define RTAS_ERROR_LOG_MAX 2048
 multiline_comment|/* Event Scan Parameters */
@@ -617,6 +603,14 @@ id|rtas_data_buf
 (braket
 id|RTAS_DATA_BUF_SIZE
 )braket
+suffix:semicolon
+r_extern
+r_void
+id|rtas_stop_self
+c_func
+(paren
+r_void
+)paren
 suffix:semicolon
 multiline_comment|/* RMO buffer reserved for user-space RTAS use */
 r_extern

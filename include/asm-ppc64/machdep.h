@@ -5,6 +5,7 @@ mdefine_line|#define _PPC64_MACHDEP_H
 multiline_comment|/*&n; * This program is free software; you can redistribute it and/or&n; * modify it under the terms of the GNU General Public License&n; * as published by the Free Software Foundation; either version&n; * 2 of the License, or (at your option) any later version.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/seq_file.h&gt;
+macro_line|#include &lt;linux/dma-mapping.h&gt;
 r_struct
 id|pt_regs
 suffix:semicolon
@@ -248,7 +249,8 @@ r_int
 r_int
 id|uaddr
 comma
-r_int
+r_enum
+id|dma_data_direction
 id|direction
 )paren
 suffix:semicolon
@@ -382,6 +384,18 @@ id|halt
 )paren
 (paren
 r_void
+)paren
+suffix:semicolon
+DECL|member|panic
+r_void
+(paren
+op_star
+id|panic
+)paren
+(paren
+r_char
+op_star
+id|str
 )paren
 suffix:semicolon
 DECL|member|set_rtc_time

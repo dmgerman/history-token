@@ -158,7 +158,7 @@ id|target
 id|lun
 )braket
 suffix:semicolon
-id|CLEAR_BITMAP
+id|bitmap_zero
 c_func
 (paren
 id|ta-&gt;allocated
@@ -599,7 +599,7 @@ id|target
 id|lun
 )braket
 suffix:semicolon
-id|CLEAR_BITMAP
+id|bitmap_zero
 c_func
 (paren
 id|ta-&gt;allocated

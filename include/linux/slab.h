@@ -28,7 +28,7 @@ mdefine_line|#define&t;SLAB_KERNEL&t;&t;GFP_KERNEL
 DECL|macro|SLAB_DMA
 mdefine_line|#define&t;SLAB_DMA&t;&t;GFP_DMA
 DECL|macro|SLAB_LEVEL_MASK
-mdefine_line|#define SLAB_LEVEL_MASK&t;&t;(__GFP_WAIT|__GFP_HIGH|__GFP_IO|__GFP_FS|&bslash;&n;&t;&t;&t;&t;__GFP_COLD|__GFP_NOWARN|__GFP_REPEAT|&bslash;&n;&t;&t;&t;&t;__GFP_NOFAIL|__GFP_NORETRY)
+mdefine_line|#define SLAB_LEVEL_MASK&t;&t;GFP_LEVEL_MASK
 DECL|macro|SLAB_NO_GROW
 mdefine_line|#define&t;SLAB_NO_GROW&t;&t;__GFP_NO_GROW&t;/* don&squot;t grow a cache */
 multiline_comment|/* flags to pass to kmem_cache_create().&n; * The first 3 are only valid when the allocator as been build&n; * SLAB_DEBUG_SUPPORT.&n; */

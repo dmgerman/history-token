@@ -1,6 +1,7 @@
 multiline_comment|/*&n; *  linux/arch/s390/kernel/semaphore.c&n; *&n; *  S390 version&n; *    Copyright (C) 1998-2000 IBM Corporation&n; *    Author(s): Martin Schwidefsky&n; *&n; *  Derived from &quot;linux/arch/i386/kernel/semaphore.c&n; *    Copyright (C) 1999, Linus Torvalds&n; *&n; */
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
+macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;asm/semaphore.h&gt;
 multiline_comment|/*&n; * Atomically update sem-&gt;count. Equivalent to:&n; *   old_val = sem-&gt;count.counter;&n; *   new_val = ((old_val &gt;= 0) ? old_val : 0) + incr;&n; *   sem-&gt;count.counter = new_val;&n; *   return old_val;&n; */
 DECL|function|__sem_update_count
@@ -105,6 +106,7 @@ suffix:semicolon
 multiline_comment|/*&n; * The inline function down() decremented count and the result&n; * was &lt; 0. The wait loop will atomically test and update the&n; * semaphore counter following the rules:&n; *   count &gt; 0: decrement count, wake up queue and exit.&n; *   count &lt;= 0: set count to -1, go to sleep.&n; */
 DECL|function|__down
 r_void
+id|__sched
 id|__down
 c_func
 (paren
@@ -205,6 +207,7 @@ suffix:semicolon
 multiline_comment|/*&n; * Same as __down() with an additional test for signals.&n; * If a signal is pending the count is updated as follows:&n; *   count &gt; 0: wake up queue and exit.&n; *   count &lt;= 0: set count to 0, wake up queue and exit.&n; */
 DECL|function|__down_interruptible
 r_int
+id|__sched
 id|__down_interruptible
 c_func
 (paren

@@ -107,6 +107,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;&bslash;nMem-info:&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -193,6 +194,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;%d pages of RAM&bslash;n&quot;
 comma
 id|total
@@ -201,6 +203,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;%d free pages&bslash;n&quot;
 comma
 id|free
@@ -209,6 +212,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;%d reserved pages&bslash;n&quot;
 comma
 id|reserved
@@ -217,6 +221,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;%d pages shared&bslash;n&quot;
 comma
 id|shared
@@ -225,6 +230,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;%d pages swap cached&bslash;n&quot;
 comma
 id|cached
@@ -274,6 +280,7 @@ suffix:semicolon
 macro_line|#ifdef DEBUG
 id|printk
 (paren
+id|KERN_DEBUG
 l_string|&quot;start_mem is %#lx&bslash;nvirtual_end is %#lx&bslash;n&quot;
 comma
 id|start_mem
@@ -342,11 +349,13 @@ suffix:semicolon
 macro_line|#ifdef DEBUG
 id|printk
 (paren
+id|KERN_DEBUG
 l_string|&quot;before free_area_init&bslash;n&quot;
 )paren
 suffix:semicolon
 id|printk
 (paren
+id|KERN_DEBUG
 l_string|&quot;free_area_init -&gt; start_mem is %#lx&bslash;nvirtual_end is %#lx&bslash;n&quot;
 comma
 id|start_mem
@@ -482,6 +491,7 @@ macro_line|#ifdef DEBUG
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;Mem_init: start=%lx, end=%lx&bslash;n&quot;
 comma
 id|start_mem
@@ -576,6 +586,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;Memory available: %luk/%luk RAM, %luk/%luk ROM (%dk kernel code, %dk data)&bslash;n&quot;
 comma
 id|tmp
@@ -685,6 +696,7 @@ suffix:semicolon
 )brace
 id|printk
 (paren
+id|KERN_NOTICE
 l_string|&quot;Freeing initrd memory: %dk freed&bslash;n&quot;
 comma
 id|pages
@@ -784,6 +796,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_NOTICE
 l_string|&quot;Freeing unused kernel memory: %ldk freed (0x%x - 0x%x)&bslash;n&quot;
 comma
 (paren

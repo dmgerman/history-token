@@ -1296,7 +1296,9 @@ id|dev
 )brace
 macro_line|#endif /* __KERNEL__ */
 multiline_comment|/* generic pci stuff */
+macro_line|#ifdef CONFIG_PCI
 macro_line|#include &lt;asm-generic/pci.h&gt;
 macro_line|#include &lt;linux/dma-mapping.h&gt;
+macro_line|#endif
 macro_line|#endif /* __x8664_PCI_H */
 eof

@@ -1442,8 +1442,9 @@ suffix:colon
 id|printk
 c_func
 (paren
+l_string|&quot;%s: error - should not be called&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;: error - should not be called&bslash;n&quot;
 )paren
 suffix:semicolon
 r_break
@@ -1577,8 +1578,9 @@ suffix:semicolon
 id|printk
 c_func
 (paren
+l_string|&quot;%s %d&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot; %d&bslash;n&quot;
 comma
 id|req
 )paren
@@ -1682,8 +1684,9 @@ suffix:colon
 id|printk
 c_func
 (paren
+l_string|&quot;%s: unrecognized PM callback&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;: unrecognized PM callback&bslash;n&quot;
 )paren
 suffix:semicolon
 r_break
@@ -1804,8 +1807,9 @@ l_int|0
 id|printk
 c_func
 (paren
+l_string|&quot;%s: interrupt received&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;: interrupt received&bslash;n&quot;
 )paren
 suffix:semicolon
 id|desc-&gt;chip
@@ -1856,8 +1860,9 @@ l_int|0
 id|printk
 c_func
 (paren
+l_string|&quot;%s KPIO 0x%08X&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot; KPIO 0x%08X&bslash;n&quot;
 comma
 id|irq
 )paren
@@ -1915,8 +1920,9 @@ l_int|0
 id|printk
 c_func
 (paren
+l_string|&quot;%s GPIO 0x%08X&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot; GPIO 0x%08X&bslash;n&quot;
 comma
 id|irq
 )paren
@@ -1972,8 +1978,9 @@ id|MAX_ASIC_ISR_LOOPS
 id|printk
 c_func
 (paren
+l_string|&quot;%s: interrupt processing overrun&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;: interrupt processing overrun&bslash;n&quot;
 )paren
 suffix:semicolon
 multiline_comment|/* For level-based interrupts */

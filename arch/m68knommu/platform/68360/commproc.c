@@ -435,7 +435,7 @@ id|dev_id
 )paren
 suffix:semicolon
 multiline_comment|/* &t;if (cpm_vecs[vec].handler != 0) */
-multiline_comment|/* &t;&t;printk(&quot;CPM interrupt %x replacing %x&bslash;n&quot;, */
+multiline_comment|/* &t;&t;printk(KERN_INFO &quot;CPM interrupt %x replacing %x&bslash;n&quot;, */
 multiline_comment|/* &t;&t;&t;(uint)handler, (uint)cpm_vecs[vec].handler); */
 multiline_comment|/* &t;cpm_vecs[vec].handler = handler; */
 multiline_comment|/* &t;cpm_vecs[vec].dev_id = dev_id; */

@@ -91,11 +91,6 @@ r_int
 id|sk_count
 suffix:semicolon
 multiline_comment|/* number of buffers currently in ring */
-DECL|member|is_open
-r_int
-id|is_open
-suffix:semicolon
-multiline_comment|/* flag controlling module locking */
 )brace
 suffix:semicolon
 multiline_comment|/* net_local */
@@ -167,38 +162,6 @@ suffix:semicolon
 r_int
 id|i
 suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-(paren
-(paren
-r_struct
-id|net_local
-op_star
-)paren
-id|dev
-)paren
-op_member_access_from_pointer
-id|is_open
-)paren
-id|MOD_INC_USE_COUNT
-suffix:semicolon
-multiline_comment|/* increment only if interface is actually down */
-(paren
-(paren
-r_struct
-id|net_local
-op_star
-)paren
-id|dev
-)paren
-op_member_access_from_pointer
-id|is_open
-op_assign
-l_int|1
-suffix:semicolon
-multiline_comment|/* device actually open */
 id|netif_start_queue
 c_func
 (paren
@@ -386,36 +349,6 @@ id|dev
 )paren
 suffix:semicolon
 multiline_comment|/* disable queueing */
-r_if
-c_cond
-(paren
-(paren
-(paren
-r_struct
-id|net_local
-op_star
-)paren
-id|dev
-)paren
-op_member_access_from_pointer
-id|is_open
-)paren
-id|MOD_DEC_USE_COUNT
-suffix:semicolon
-multiline_comment|/* adjust module counter */
-(paren
-(paren
-r_struct
-id|net_local
-op_star
-)paren
-id|dev
-)paren
-op_member_access_from_pointer
-id|is_open
-op_assign
-l_int|0
-suffix:semicolon
 id|flush_tx_buffers
 c_func
 (paren

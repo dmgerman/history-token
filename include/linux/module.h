@@ -137,6 +137,11 @@ DECL|macro|__MODULE_INFO
 mdefine_line|#define __MODULE_INFO(tag, name, info)&t;&t;&t;&t;&t;  &bslash;&n;static const char __module_cat(name,__LINE__)[]&t;&t;&t;&t;  &bslash;&n;  __attribute_used__&t;&t;&t;&t;&t;&t;&t;  &bslash;&n;  __attribute__((section(&quot;.modinfo&quot;),unused)) = __stringify(tag) &quot;=&quot; info
 DECL|macro|MODULE_GENERIC_TABLE
 mdefine_line|#define MODULE_GENERIC_TABLE(gtype,name)&t;&t;&t;&bslash;&n;extern const struct gtype##_id __mod_##gtype##_table&t;&t;&bslash;&n;  __attribute__ ((unused, alias(__stringify(name))))
+r_extern
+r_struct
+id|module
+id|__this_module
+suffix:semicolon
 DECL|macro|THIS_MODULE
 mdefine_line|#define THIS_MODULE (&amp;__this_module)
 macro_line|#else  /* !MODULE */
@@ -1168,56 +1173,6 @@ suffix:semicolon
 DECL|macro|module_put_and_exit
 mdefine_line|#define module_put_and_exit(code) do_exit(code)
 macro_line|#endif /* CONFIG_MODULES */
-macro_line|#ifdef MODULE
-r_extern
-r_struct
-id|module
-id|__this_module
-suffix:semicolon
-macro_line|#ifdef KBUILD_MODNAME
-multiline_comment|/* We make the linker do some of the work. */
-DECL|variable|__this_module
-r_struct
-id|module
-id|__this_module
-id|__attribute__
-c_func
-(paren
-(paren
-id|section
-c_func
-(paren
-l_string|&quot;.gnu.linkonce.this_module&quot;
-)paren
-)paren
-)paren
-op_assign
-(brace
-dot
-id|name
-op_assign
-id|__stringify
-c_func
-(paren
-id|KBUILD_MODNAME
-)paren
-comma
-dot
-id|init
-op_assign
-id|init_module
-comma
-macro_line|#ifdef CONFIG_MODULE_UNLOAD
-dot
-m_exit
-op_assign
-id|cleanup_module
-comma
-macro_line|#endif
-)brace
-suffix:semicolon
-macro_line|#endif /* KBUILD_MODNAME */
-macro_line|#endif /* MODULE */
 DECL|macro|symbol_request
 mdefine_line|#define symbol_request(x) try_then_request_module(symbol_get(x), &quot;symbol:&quot; #x)
 multiline_comment|/* BELOW HERE ALL THESE ARE OBSOLETE AND WILL VANISH */

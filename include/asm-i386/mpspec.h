@@ -226,7 +226,7 @@ mdefine_line|#define physids_and(dst, src1, src2)&t;&t;bitmap_and((dst).mask, (s
 DECL|macro|physids_or
 mdefine_line|#define physids_or(dst, src1, src2)&t;&t;bitmap_or((dst).mask, (src1).mask, (src2).mask, MAX_APICS)
 DECL|macro|physids_clear
-mdefine_line|#define physids_clear(map)&t;&t;&t;bitmap_clear((map).mask, MAX_APICS)
+mdefine_line|#define physids_clear(map)&t;&t;&t;bitmap_zero((map).mask, MAX_APICS)
 DECL|macro|physids_complement
 mdefine_line|#define physids_complement(map)&t;&t;&t;bitmap_complement((map).mask, MAX_APICS)
 DECL|macro|physids_empty

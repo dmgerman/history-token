@@ -2586,7 +2586,7 @@ id|HPAGE_SHIFT
 suffix:semicolon
 id|size
 op_mul_assign
-id|htlbpage_max
+id|max_huge_pages
 suffix:semicolon
 id|do_div
 c_func

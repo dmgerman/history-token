@@ -8089,8 +8089,9 @@ id|info-&gt;hook
 id|printk
 c_func
 (paren
+l_string|&quot;%s: line %d has already a hook registered&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;: line %d has already a hook registered&bslash;n&quot;
 comma
 id|channel
 )paren
@@ -8187,9 +8188,10 @@ r_else
 id|printk
 c_func
 (paren
-id|__FUNCTION__
-l_string|&quot;: trying to unregister hook on line %d,&quot;
+l_string|&quot;%s: trying to unregister hook on line %d,&quot;
 l_string|&quot; but none is registered&bslash;n&quot;
+comma
+id|__FUNCTION__
 comma
 id|channel
 )paren

@@ -202,6 +202,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_EMERG
 l_string|&quot;%s: %08x&bslash;n&quot;
 comma
 id|str
@@ -212,6 +213,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_EMERG
 l_string|&quot;PC: [&lt;%08lx&gt;]&bslash;nSR: %04x  SP: %p  a2: %08lx&bslash;n&quot;
 comma
 id|fp-&gt;pc
@@ -226,6 +228,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_EMERG
 l_string|&quot;d0: %08lx    d1: %08lx    d2: %08lx    d3: %08lx&bslash;n&quot;
 comma
 id|fp-&gt;d0
@@ -240,6 +243,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_EMERG
 l_string|&quot;d4: %08lx    d5: %08lx    a0: %08lx    a1: %08lx&bslash;n&quot;
 comma
 id|fp-&gt;d4
@@ -254,6 +258,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_EMERG
 l_string|&quot;Process %s (pid: %d, stackpage=%08lx)&bslash;n&quot;
 comma
 id|current-&gt;comm
@@ -323,6 +328,7 @@ suffix:semicolon
 macro_line|#if DEBUG
 id|printk
 (paren
+id|KERN_DEBUG
 l_string|&quot;*** Bus Error *** Format is %x&bslash;n&quot;
 comma
 id|fp-&gt;ptregs.format
@@ -344,6 +350,7 @@ macro_line|#if DEBUG
 id|printk
 c_func
 (paren
+id|KERN_DEBUG
 l_string|&quot;Unknown SIGSEGV - 4&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -443,6 +450,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_EMERG
 l_string|&quot;Stack from %08lx:&quot;
 comma
 (paren
@@ -490,12 +498,14 @@ l_int|0
 id|printk
 c_func
 (paren
+id|KERN_EMERG
 l_string|&quot;&bslash;n       &quot;
 )paren
 suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_EMERG
 l_string|&quot; %08lx&quot;
 comma
 op_star
@@ -507,6 +517,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_EMERG
 l_string|&quot;&bslash;nCall Trace:&quot;
 )paren
 suffix:semicolon
@@ -571,12 +582,14 @@ l_int|0
 id|printk
 c_func
 (paren
+id|KERN_EMERG
 l_string|&quot;&bslash;n       &quot;
 )paren
 suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_EMERG
 l_string|&quot; [&lt;%08lx&gt;]&quot;
 comma
 id|addr
@@ -590,6 +603,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_EMERG
 l_string|&quot;&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -632,6 +646,7 @@ l_int|0
 )paren
 id|printk
 (paren
+id|KERN_WARNING
 l_string|&quot;*** %s ***   FORMAT=%X&bslash;n&quot;
 comma
 id|vec_names
@@ -649,6 +664,7 @@ suffix:semicolon
 r_else
 id|printk
 (paren
+id|KERN_WARNING
 l_string|&quot;*** Exception %d ***   FORMAT=%X&bslash;n&quot;
 comma
 (paren
@@ -662,6 +678,7 @@ id|fp-&gt;ptregs.format
 suffix:semicolon
 id|printk
 (paren
+id|KERN_WARNING
 l_string|&quot;Current process id is %d&bslash;n&quot;
 comma
 id|current-&gt;pid
@@ -1129,25 +1146,26 @@ op_assign
 id|ssp
 suffix:semicolon
 )brace
-DECL|function|show_trace_task
+multiline_comment|/*&n; * The architecture-independent backtrace generator&n; */
+DECL|function|dump_stack
 r_void
-id|show_trace_task
+id|dump_stack
 c_func
 (paren
-r_struct
-id|task_struct
-op_star
-id|tsk
+r_void
 )paren
 (brace
-id|printk
+r_int
+r_int
+id|stack
+suffix:semicolon
+id|show_stack
 c_func
 (paren
-l_string|&quot;STACK ksp=0x%lx, usp=0x%lx&bslash;n&quot;
+id|current
 comma
-id|tsk-&gt;thread.ksp
-comma
-id|tsk-&gt;thread.usp
+op_amp
+id|stack
 )paren
 suffix:semicolon
 )brace

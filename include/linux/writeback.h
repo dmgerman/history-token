@@ -84,6 +84,11 @@ r_int
 id|nr_to_write
 suffix:semicolon
 multiline_comment|/* Write this many pages, and decrement&n;&t;&t;&t;&t;&t;   this for each page written */
+DECL|member|pages_skipped
+r_int
+id|pages_skipped
+suffix:semicolon
+multiline_comment|/* Pages which were not written */
 DECL|member|nonblocking
 r_int
 id|nonblocking
@@ -197,7 +202,21 @@ r_int
 id|nr_pages
 )paren
 suffix:semicolon
-multiline_comment|/* These 5 are exported to sysctl. */
+r_void
+id|laptop_io_completion
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+r_void
+id|laptop_sync_completion
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+multiline_comment|/* These are exported to sysctl. */
 r_extern
 r_int
 id|dirty_background_ratio
@@ -213,6 +232,14 @@ suffix:semicolon
 r_extern
 r_int
 id|dirty_expire_centisecs
+suffix:semicolon
+r_extern
+r_int
+id|block_dump
+suffix:semicolon
+r_extern
+r_int
+id|laptop_mode
 suffix:semicolon
 r_struct
 id|ctl_table

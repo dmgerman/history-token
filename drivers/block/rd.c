@@ -903,6 +903,11 @@ op_assign
 l_int|1
 comma
 multiline_comment|/* Does not contribute to dirty memory */
+dot
+id|unplug_io_fn
+op_assign
+id|default_unplug_io_fn
+comma
 )brace
 suffix:semicolon
 DECL|function|rd_open

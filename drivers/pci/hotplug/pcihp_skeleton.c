@@ -712,8 +712,9 @@ suffix:semicolon
 id|dbg
 c_func
 (paren
+l_string|&quot;%s - physical_slot = %s&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot; - physical_slot = %s&bslash;n&quot;
 comma
 id|hotplug_slot-&gt;name
 )paren
@@ -769,8 +770,9 @@ suffix:semicolon
 id|dbg
 c_func
 (paren
+l_string|&quot;%s - physical_slot = %s&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot; - physical_slot = %s&bslash;n&quot;
 comma
 id|hotplug_slot-&gt;name
 )paren
@@ -826,8 +828,9 @@ suffix:semicolon
 id|dbg
 c_func
 (paren
+l_string|&quot;%s - physical_slot = %s&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot; - physical_slot = %s&bslash;n&quot;
 comma
 id|hotplug_slot-&gt;name
 )paren
@@ -883,8 +886,9 @@ suffix:semicolon
 id|dbg
 c_func
 (paren
+l_string|&quot;%s - physical_slot = %s&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot; - physical_slot = %s&bslash;n&quot;
 comma
 id|hotplug_slot-&gt;name
 )paren
@@ -938,8 +942,9 @@ suffix:semicolon
 id|dbg
 c_func
 (paren
+l_string|&quot;%s - physical_slot = %s&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot; - physical_slot = %s&bslash;n&quot;
 comma
 id|hotplug_slot-&gt;name
 )paren

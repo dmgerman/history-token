@@ -719,6 +719,21 @@ c_func
 id|flags
 )paren
 suffix:semicolon
+multiline_comment|/* Suspend on halt power saving and enable #SUSP pin */
+id|setCx86
+c_func
+(paren
+id|CX86_CCR2
+comma
+id|getCx86
+c_func
+(paren
+id|CX86_CCR2
+)paren
+op_or
+l_int|0x88
+)paren
+suffix:semicolon
 id|ccr3
 op_assign
 id|getCx86

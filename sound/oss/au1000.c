@@ -1243,8 +1243,9 @@ macro_line|#ifdef AU1000_VERBOSE_DEBUG
 id|dbg
 c_func
 (paren
+l_string|&quot;%s: set to %d Hz&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;: set to %d Hz&quot;
 comma
 id|adc_rate
 )paren
@@ -1484,8 +1485,9 @@ macro_line|#ifdef AU1000_VERBOSE_DEBUG
 id|dbg
 c_func
 (paren
+l_string|&quot;%s: set to %d Hz&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;: set to %d Hz&quot;
 comma
 id|dac_rate
 )paren
@@ -4067,8 +4069,9 @@ id|db-&gt;user_bytes_per_sample
 id|dbg
 c_func
 (paren
+l_string|&quot;%s: fault&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;: fault&quot;
 )paren
 suffix:semicolon
 r_return
@@ -4407,8 +4410,9 @@ id|db-&gt;user_bytes_per_sample
 id|dbg
 c_func
 (paren
+l_string|&quot;%s: fault&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;: fault&quot;
 )paren
 suffix:semicolon
 r_return
@@ -8562,16 +8566,18 @@ id|O_NONBLOCK
 id|dbg
 c_func
 (paren
+l_string|&quot;%s: non-blocking&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;: non-blocking&quot;
 )paren
 suffix:semicolon
 r_else
 id|dbg
 c_func
 (paren
+l_string|&quot;%s: blocking&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;: blocking&quot;
 )paren
 suffix:semicolon
 macro_line|#endif

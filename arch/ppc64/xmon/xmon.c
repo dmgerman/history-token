@@ -1659,12 +1659,6 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-(paren
-id|cur_cpu_spec-&gt;cpu_features
-op_amp
-id|CPU_FTR_DABR
-)paren
-op_logical_and
 id|dabr.enabled
 )paren
 id|set_dabr
@@ -1710,15 +1704,6 @@ suffix:semicolon
 r_int
 id|instr
 suffix:semicolon
-r_if
-c_cond
-(paren
-(paren
-id|cur_cpu_spec-&gt;cpu_features
-op_amp
-id|CPU_FTR_DABR
-)paren
-)paren
 id|set_dabr
 c_func
 (paren
@@ -2050,13 +2035,6 @@ suffix:semicolon
 r_case
 l_char|&squot;r&squot;
 suffix:colon
-r_if
-c_cond
-(paren
-id|excp
-op_ne
-l_int|NULL
-)paren
 id|prregs
 c_func
 (paren
@@ -3281,26 +3259,6 @@ r_case
 l_char|&squot;d&squot;
 suffix:colon
 multiline_comment|/* bd - hardware data breakpoint */
-r_if
-c_cond
-(paren
-op_logical_neg
-(paren
-id|cur_cpu_spec-&gt;cpu_features
-op_amp
-id|CPU_FTR_DABR
-)paren
-)paren
-(brace
-id|printf
-c_func
-(paren
-l_string|&quot;Not implemented on this cpu&bslash;n&quot;
-)paren
-suffix:semicolon
-r_break
-suffix:semicolon
-)brace
 id|mode
 op_assign
 l_int|7
@@ -4400,8 +4358,8 @@ id|exception_print_lock
 op_assign
 id|SPIN_LOCK_UNLOCKED
 suffix:semicolon
-r_void
 DECL|function|excprint
+r_void
 id|excprint
 c_func
 (paren
@@ -4583,8 +4541,8 @@ id|flags
 )paren
 suffix:semicolon
 )brace
-r_void
 DECL|function|prregs
+r_void
 id|prregs
 c_func
 (paren
@@ -4623,6 +4581,26 @@ id|pt_regs
 op_star
 )paren
 id|base
+suffix:semicolon
+r_if
+c_cond
+(paren
+m_setjmp
+(paren
+id|bus_error_jmp
+)paren
+op_eq
+l_int|0
+)paren
+(brace
+id|__debugger_fault_handler
+op_assign
+id|handle_fault
+suffix:semicolon
+id|sync
+c_func
+(paren
+)paren
 suffix:semicolon
 r_for
 c_loop
@@ -4665,7 +4643,8 @@ suffix:semicolon
 id|printf
 c_func
 (paren
-l_string|&quot;pc  = %.16lx   msr = %.16lx&bslash;nlr  = %.16lx   cr  = %.16lx&bslash;n&quot;
+l_string|&quot;pc  = %.16lx   msr = %.16lx&bslash;nlr  = %.16lx   &quot;
+l_string|&quot;cr  = %.16lx&bslash;n&quot;
 comma
 id|fp-&gt;nip
 comma
@@ -4688,6 +4667,28 @@ comma
 id|fp-&gt;trap
 )paren
 suffix:semicolon
+id|sync
+c_func
+(paren
+)paren
+suffix:semicolon
+multiline_comment|/* wait a little while to see if we get a machine check */
+id|__delay
+c_func
+(paren
+l_int|200
+)paren
+suffix:semicolon
+)brace
+r_else
+(brace
+id|printf
+c_func
+(paren
+l_string|&quot;*** Error reading regs&bslash;n&quot;
+)paren
+suffix:semicolon
+)brace
 )brace
 r_void
 DECL|function|cacheflush

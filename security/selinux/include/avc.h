@@ -8,6 +8,7 @@ macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/kdev_t.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
+macro_line|#include &lt;linux/in6.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &quot;flask.h&quot;
 macro_line|#include &quot;av_permissions.h&quot;
@@ -137,6 +138,10 @@ id|sock
 op_star
 id|sk
 suffix:semicolon
+DECL|member|family
+id|u16
+id|family
+suffix:semicolon
 DECL|member|dport
 id|u16
 id|dport
@@ -145,6 +150,10 @@ DECL|member|sport
 id|u16
 id|sport
 suffix:semicolon
+r_union
+(brace
+r_struct
+(brace
 DECL|member|daddr
 id|u32
 id|daddr
@@ -152,6 +161,30 @@ suffix:semicolon
 DECL|member|saddr
 id|u32
 id|saddr
+suffix:semicolon
+DECL|member|v4
+)brace
+id|v4
+suffix:semicolon
+r_struct
+(brace
+DECL|member|daddr
+r_struct
+id|in6_addr
+id|daddr
+suffix:semicolon
+DECL|member|saddr
+r_struct
+id|in6_addr
+id|saddr
+suffix:semicolon
+DECL|member|v6
+)brace
+id|v6
+suffix:semicolon
+DECL|member|fam
+)brace
+id|fam
 suffix:semicolon
 DECL|member|net
 )brace
@@ -171,6 +204,10 @@ id|u
 suffix:semicolon
 )brace
 suffix:semicolon
+DECL|macro|v4info
+mdefine_line|#define v4info fam.v4
+DECL|macro|v6info
+mdefine_line|#define v6info fam.v6
 multiline_comment|/* Initialize an AVC audit data structure. */
 DECL|macro|AVC_AUDIT_DATA_INIT
 mdefine_line|#define AVC_AUDIT_DATA_INIT(_d,_t) &bslash;&n;        { memset((_d), 0, sizeof(struct avc_audit_data)); (_d)-&gt;type = AVC_AUDIT_DATA_##_t; }
@@ -271,10 +308,18 @@ id|val
 )brace
 macro_line|#endif
 multiline_comment|/*&n; * AVC display support&n; */
+r_struct
+id|audit_buffer
+suffix:semicolon
 r_void
 id|avc_dump_av
 c_func
 (paren
+r_struct
+id|audit_buffer
+op_star
+id|ab
+comma
 id|u16
 id|tclass
 comma
@@ -286,6 +331,11 @@ r_void
 id|avc_dump_query
 c_func
 (paren
+r_struct
+id|audit_buffer
+op_star
+id|ab
+comma
 id|u32
 id|ssid
 comma
@@ -300,6 +350,11 @@ r_void
 id|avc_dump_cache
 c_func
 (paren
+r_struct
+id|audit_buffer
+op_star
+id|ab
+comma
 r_char
 op_star
 id|tag

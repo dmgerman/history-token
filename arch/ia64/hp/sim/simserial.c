@@ -3966,9 +3966,10 @@ id|state-&gt;irq
 (brace
 id|state-&gt;irq
 op_assign
-id|ia64_alloc_vector
+id|assign_irq_vector
 c_func
 (paren
+id|AUTO_ASSIGN
 )paren
 suffix:semicolon
 id|ia64_ssc_connect_irq

@@ -29,9 +29,9 @@ id|ptable_list
 )paren
 suffix:semicolon
 DECL|macro|PD_PTABLE
-mdefine_line|#define PD_PTABLE(page) ((ptable_desc *)&amp;(virt_to_page(page)-&gt;list))
+mdefine_line|#define PD_PTABLE(page) ((ptable_desc *)&amp;(virt_to_page(page)-&gt;lru))
 DECL|macro|PD_PAGE
-mdefine_line|#define PD_PAGE(ptable) (list_entry(ptable, struct page, list))
+mdefine_line|#define PD_PAGE(ptable) (list_entry(ptable, struct page, lru))
 DECL|macro|PD_MARKBITS
 mdefine_line|#define PD_MARKBITS(dp) (*(unsigned char *)&amp;PD_PAGE(dp)-&gt;index)
 DECL|macro|PTABLE_SIZE

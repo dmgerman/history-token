@@ -267,20 +267,17 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|page-&gt;mapping
-op_logical_and
-id|list_empty
+id|page_mapping
 c_func
 (paren
-op_amp
-id|page-&gt;mapping-&gt;i_mmap
+id|page
 )paren
 op_logical_and
-id|list_empty
+op_logical_neg
+id|mapping_mapped
 c_func
 (paren
-op_amp
-id|page-&gt;mapping-&gt;i_mmap_shared
+id|page-&gt;mapping
 )paren
 )paren
 (brace
@@ -293,7 +290,7 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t; * We could delay the flush for the !page-&gt;mapping case too.  But that&n;&t; * case is for exec env/arg pages and those are %99 certainly going to&n;&t; * get faulted into the tlb (and thus flushed) anyways.&n;&t; */
+multiline_comment|/*&n;&t; * We could delay the flush for the !page_mapping case too.  But that&n;&t; * case is for exec env/arg pages and those are %99 certainly going to&n;&t; * get faulted into the tlb (and thus flushed) anyways.&n;&t; */
 id|addr
 op_assign
 (paren
@@ -368,7 +365,11 @@ c_func
 id|pfn
 )paren
 comma
-id|page-&gt;mapping
+id|page_mapping
+c_func
+(paren
+id|page
+)paren
 )paren
 op_logical_and
 id|Page_dcache_dirty

@@ -1640,8 +1640,7 @@ id|cpu_2_node
 id|cpu
 )braket
 op_assign
-op_minus
-l_int|1
+l_int|0
 suffix:semicolon
 )brace
 macro_line|#else /* !CONFIG_NUMA */
@@ -2780,6 +2779,12 @@ r_void
 op_star
 )paren
 id|idle-&gt;thread.esp
+suffix:semicolon
+id|irq_ctx_init
+c_func
+(paren
+id|cpu
+)paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * This grunge runs the startup process for&n;&t; * the targeted processor.&n;&t; */
 id|atomic_set

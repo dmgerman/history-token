@@ -832,7 +832,7 @@ r_return
 id|retval
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * test_and_change_bit - Change a bit and return its new value&n; * @nr: Bit to change&n; * @addr: Address to count from&n; *&n; * This operation is atomic and cannot be reordered.&n; * It also implies a memory barrier.&n; */
+multiline_comment|/*&n; * test_and_change_bit - Change a bit and return its old value&n; * @nr: Bit to change&n; * @addr: Address to count from&n; *&n; * This operation is atomic and cannot be reordered.&n; * It also implies a memory barrier.&n; */
 DECL|function|test_and_change_bit
 r_static
 r_inline
@@ -1685,7 +1685,7 @@ r_return
 id|retval
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * test_and_change_bit - Change a bit and return its new value&n; * @nr: Bit to change&n; * @addr: Address to count from&n; *&n; * This operation is atomic and cannot be reordered.&n; * It also implies a memory barrier.&n; */
+multiline_comment|/*&n; * test_and_change_bit - Change a bit and return its old value&n; * @nr: Bit to change&n; * @addr: Address to count from&n; *&n; * This operation is atomic and cannot be reordered.&n; * It also implies a memory barrier.&n; */
 DECL|function|test_and_change_bit
 r_static
 r_inline

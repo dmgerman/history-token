@@ -56,6 +56,9 @@ mdefine_line|#define&t;MCF_CLK&t;&t;54000000
 macro_line|#elif defined(CONFIG_CLOCK_60MHz)
 DECL|macro|MCF_CLK
 mdefine_line|#define&t;MCF_CLK&t;&t;60000000
+macro_line|#elif defined(CONFIG_CLOCK_64MHz)
+DECL|macro|MCF_CLK
+mdefine_line|#define&t;MCF_CLK&t;&t;64000000
 macro_line|#elif defined(CONFIG_CLOCK_66MHz)
 DECL|macro|MCF_CLK
 mdefine_line|#define&t;MCF_CLK&t;&t;66000000

@@ -57,6 +57,11 @@ r_typedef
 r_int
 id|__kernel_key_t
 suffix:semicolon
+DECL|typedef|__kernel_mqd_t
+r_typedef
+r_int
+id|__kernel_mqd_t
+suffix:semicolon
 macro_line|#include &lt;asm/posix_types.h&gt;
 macro_line|#endif /* _LINUX_POSIX_TYPES_H */
 eof

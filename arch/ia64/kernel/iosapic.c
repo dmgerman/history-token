@@ -1414,9 +1414,10 @@ id|trigger
 (brace
 id|new_vector
 op_assign
-id|ia64_alloc_vector
+id|assign_irq_vector
 c_func
 (paren
+id|AUTO_ASSIGN
 )paren
 suffix:semicolon
 id|printk
@@ -1759,9 +1760,10 @@ l_int|0
 )paren
 id|vector
 op_assign
-id|ia64_alloc_vector
+id|assign_irq_vector
 c_func
 (paren
+id|AUTO_ASSIGN
 )paren
 suffix:semicolon
 id|register_intr
@@ -1913,9 +1915,10 @@ id|ACPI_INTERRUPT_INIT
 suffix:colon
 id|vector
 op_assign
-id|ia64_alloc_vector
+id|assign_irq_vector
 c_func
 (paren
+id|AUTO_ASSIGN
 )paren
 suffix:semicolon
 id|delivery
@@ -2587,9 +2590,10 @@ r_else
 multiline_comment|/* new GSI; allocate a vector for it */
 id|vector
 op_assign
-id|ia64_alloc_vector
+id|assign_irq_vector
 c_func
 (paren
+id|AUTO_ASSIGN
 )paren
 suffix:semicolon
 id|register_intr

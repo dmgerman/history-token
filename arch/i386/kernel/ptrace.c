@@ -10,6 +10,7 @@ macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/ptrace.h&gt;
 macro_line|#include &lt;linux/user.h&gt;
 macro_line|#include &lt;linux/security.h&gt;
+macro_line|#include &lt;linux/audit.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
@@ -2289,6 +2290,48 @@ r_int
 id|entryexit
 )paren
 (brace
+r_if
+c_cond
+(paren
+id|unlikely
+c_func
+(paren
+id|current-&gt;audit_context
+)paren
+)paren
+(brace
+r_if
+c_cond
+(paren
+op_logical_neg
+id|entryexit
+)paren
+id|audit_syscall_entry
+c_func
+(paren
+id|current
+comma
+id|regs-&gt;orig_eax
+comma
+id|regs-&gt;ebx
+comma
+id|regs-&gt;ecx
+comma
+id|regs-&gt;edx
+comma
+id|regs-&gt;esi
+)paren
+suffix:semicolon
+r_else
+id|audit_syscall_exit
+c_func
+(paren
+id|current
+comma
+id|regs-&gt;eax
+)paren
+suffix:semicolon
+)brace
 r_if
 c_cond
 (paren

@@ -7,6 +7,7 @@ macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/tty.h&gt;
 macro_line|#include &lt;linux/console.h&gt;
+macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;asm/current.h&gt;
 macro_line|#include &lt;asm/setup.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
@@ -19,7 +20,7 @@ r_void
 id|BSP_sched_init
 c_func
 (paren
-r_void
+id|irqreturn_t
 (paren
 op_star
 id|timer_routine
@@ -255,38 +256,11 @@ suffix:semicolon
 id|asm
 r_volatile
 (paren
-"&quot;"
-id|moveal
-macro_line|#0x10c00000, %a0;
-id|moveb
-macro_line|#0, 0xFFFFF300;
-id|moveal
-l_int|0
-(paren
-op_mod
-id|a0
-)paren
-comma
-op_mod
-id|sp
-suffix:semicolon
-id|moveal
-l_int|4
-(paren
-op_mod
-id|a0
-)paren
-comma
-op_mod
-id|a0
-suffix:semicolon
-id|jmp
-(paren
-op_mod
-id|a0
-)paren
-suffix:semicolon
-"&quot;"
+l_string|&quot;moveal #0x10c00000, %a0;&bslash;n&bslash;t&quot;
+l_string|&quot;moveb #0, 0xFFFFF300;&bslash;n&bslash;t&quot;
+l_string|&quot;moveal 0(%a0), %sp;&bslash;n&bslash;t&quot;
+l_string|&quot;moveal 4(%a0), %a0;&bslash;n&bslash;t&quot;
+l_string|&quot;jmp (%a0);&quot;
 )paren
 suffix:semicolon
 )brace
@@ -306,18 +280,21 @@ id|len
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;&bslash;n68328 support D. Jeff Dionne &lt;jeff@uclinux.org&gt;&bslash;n&quot;
 )paren
 suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;68328 support Kenneth Albanowski &lt;kjahds@kjshds.com&gt;&bslash;n&quot;
 )paren
 suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;68328/Pilot support Bernhard Kuhn &lt;kuhn@lpr.e-technik.tu-muenchen.de&gt;&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -348,6 +325,11 @@ suffix:semicolon
 id|mach_reset
 op_assign
 id|BSP_reset
+suffix:semicolon
+op_star
+id|command
+op_assign
+l_char|&squot;&bslash;0&squot;
 suffix:semicolon
 )brace
 eof

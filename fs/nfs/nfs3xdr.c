@@ -2567,6 +2567,8 @@ r_if
 c_cond
 (paren
 id|p
+op_plus
+l_int|2
 OG
 id|end
 )paren
@@ -2589,6 +2591,8 @@ r_if
 c_cond
 (paren
 id|p
+op_plus
+l_int|1
 OG
 id|end
 )paren
@@ -2609,6 +2613,8 @@ r_if
 c_cond
 (paren
 id|p
+op_plus
+l_int|1
 OG
 id|end
 )paren

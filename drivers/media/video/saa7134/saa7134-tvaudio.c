@@ -127,9 +127,11 @@ mdefine_line|#define d2printk(fmt, arg...)&t;if (audio_debug &gt; 1) &bslash;&n;
 DECL|macro|print_regb
 mdefine_line|#define print_regb(reg) printk(&quot;%s:   reg 0x%03x [%-16s]: 0x%02x&bslash;n&quot;, &bslash;&n;&t;&t;dev-&gt;name,(SAA7134_##reg),(#reg),saa_readb((SAA7134_##reg)))
 DECL|macro|SCAN_INITIAL_DELAY
-mdefine_line|#define SCAN_INITIAL_DELAY  (HZ)
+mdefine_line|#define SCAN_INITIAL_DELAY     (HZ)
 DECL|macro|SCAN_SAMPLE_DELAY
-mdefine_line|#define SCAN_SAMPLE_DELAY   (HZ/5)
+mdefine_line|#define SCAN_SAMPLE_DELAY      (HZ/5)
+DECL|macro|SCAN_SUBCARRIER_DELAY
+mdefine_line|#define SCAN_SUBCARRIER_DELAY  (HZ*2)
 multiline_comment|/* ------------------------------------------------------------------ */
 multiline_comment|/* saa7134 code                                                       */
 DECL|variable|tvaudio
@@ -2873,9 +2875,7 @@ c_func
 (paren
 id|dev
 comma
-id|HZ
-op_star
-l_int|2
+id|SCAN_SUBCARRIER_DELAY
 )paren
 )paren
 r_goto
