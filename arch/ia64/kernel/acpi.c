@@ -2754,9 +2754,7 @@ id|__init
 DECL|function|acpi_boot_init
 id|acpi_boot_init
 (paren
-r_char
-op_star
-id|cmdline
+r_void
 )paren
 (brace
 multiline_comment|/*&n;&t; * MADT&n;&t; * ----&n;&t; * Parse the Multiple APIC Description Table (MADT), if exists.&n;&t; * Note that this table provides platform SMP configuration&n;&t; * information -- the successor to MPS tables.&n;&t; */
