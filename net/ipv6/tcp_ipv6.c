@@ -27,6 +27,8 @@ macro_line|#include &lt;net/ip6_checksum.h&gt;
 macro_line|#include &lt;net/inet_ecn.h&gt;
 macro_line|#include &lt;net/protocol.h&gt;
 macro_line|#include &lt;net/xfrm.h&gt;
+macro_line|#include &lt;net/addrconf.h&gt;
+macro_line|#include &lt;net/snmp.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;linux/proc_fs.h&gt;
 macro_line|#include &lt;linux/seq_file.h&gt;
@@ -2299,7 +2301,7 @@ suffix:semicolon
 id|NET_INC_STATS_BH
 c_func
 (paren
-id|TimeWaitRecycled
+id|LINUX_MIB_TIMEWAITRECYCLED
 )paren
 suffix:semicolon
 id|local_bh_enable
@@ -3418,7 +3420,7 @@ c_func
 id|skb-&gt;dev
 )paren
 comma
-id|Icmp6InErrors
+id|ICMP6_MIB_INERRORS
 )paren
 suffix:semicolon
 r_return
@@ -3464,7 +3466,7 @@ id|sk
 id|NET_INC_STATS_BH
 c_func
 (paren
-id|LockDroppedIcmps
+id|LINUX_MIB_LOCKDROPPEDICMPS
 )paren
 suffix:semicolon
 r_if
@@ -3515,7 +3517,7 @@ id|tp-&gt;snd_nxt
 id|NET_INC_STATS_BH
 c_func
 (paren
-id|OutOfWindowIcmps
+id|LINUX_MIB_OUTOFWINDOWICMPS
 )paren
 suffix:semicolon
 r_goto
@@ -3835,7 +3837,7 @@ id|req-&gt;snt_isn
 id|NET_INC_STATS_BH
 c_func
 (paren
-id|OutOfWindowIcmps
+id|LINUX_MIB_OUTOFWINDOWICMPS
 )paren
 suffix:semicolon
 r_goto
@@ -3876,7 +3878,7 @@ id|sk
 id|TCP_INC_STATS_BH
 c_func
 (paren
-id|TcpAttemptFails
+id|TCP_MIB_ATTEMPTFAILS
 )paren
 suffix:semicolon
 id|sk-&gt;sk_err
@@ -4896,13 +4898,13 @@ suffix:semicolon
 id|TCP_INC_STATS_BH
 c_func
 (paren
-id|TcpOutSegs
+id|TCP_MIB_OUTSEGS
 )paren
 suffix:semicolon
 id|TCP_INC_STATS_BH
 c_func
 (paren
-id|TcpOutRsts
+id|TCP_MIB_OUTRSTS
 )paren
 suffix:semicolon
 r_return
@@ -5280,7 +5282,7 @@ suffix:semicolon
 id|TCP_INC_STATS_BH
 c_func
 (paren
-id|TcpOutSegs
+id|TCP_MIB_OUTSEGS
 )paren
 suffix:semicolon
 r_return
@@ -6052,7 +6054,7 @@ suffix:semicolon
 id|TCP_INC_STATS_BH
 c_func
 (paren
-id|TcpAttemptFails
+id|TCP_MIB_ATTEMPTFAILS
 )paren
 suffix:semicolon
 r_return
@@ -6822,7 +6824,7 @@ suffix:colon
 id|NET_INC_STATS_BH
 c_func
 (paren
-id|ListenOverflows
+id|LINUX_MIB_LISTENOVERFLOWS
 )paren
 suffix:semicolon
 id|out
@@ -6830,7 +6832,7 @@ suffix:colon
 id|NET_INC_STATS_BH
 c_func
 (paren
-id|ListenDrops
+id|LINUX_MIB_LISTENDROPS
 )paren
 suffix:semicolon
 r_if
@@ -7306,7 +7308,7 @@ suffix:colon
 id|TCP_INC_STATS_BH
 c_func
 (paren
-id|TcpInErrs
+id|TCP_MIB_INERRS
 )paren
 suffix:semicolon
 r_goto
@@ -7495,7 +7497,7 @@ multiline_comment|/*&n;&t; *&t;Count it even if it&squot;s bad.&n;&t; */
 id|TCP_INC_STATS_BH
 c_func
 (paren
-id|TcpInSegs
+id|TCP_MIB_INSEGS
 )paren
 suffix:semicolon
 r_if
@@ -7868,7 +7870,7 @@ suffix:colon
 id|TCP_INC_STATS_BH
 c_func
 (paren
-id|TcpInErrs
+id|TCP_MIB_INERRS
 )paren
 suffix:semicolon
 )brace
@@ -7957,7 +7959,7 @@ id|skb
 id|TCP_INC_STATS_BH
 c_func
 (paren
-id|TcpInErrs
+id|TCP_MIB_INERRS
 )paren
 suffix:semicolon
 id|tcp_tw_put
@@ -9621,7 +9623,7 @@ op_eq
 id|SEQ_START_TOKEN
 )paren
 (brace
-id|seq_printf
+id|seq_puts
 c_func
 (paren
 id|seq

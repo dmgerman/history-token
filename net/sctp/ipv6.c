@@ -199,7 +199,7 @@ c_func
 (paren
 id|idev
 comma
-id|Icmp6InErrors
+id|ICMP6_MIB_INERRORS
 )paren
 suffix:semicolon
 r_goto
@@ -513,7 +513,7 @@ suffix:semicolon
 id|SCTP_INC_STATS
 c_func
 (paren
-id|SctpOutSCTPPacks
+id|SCTP_MIB_OUTSCTPPACKS
 )paren
 suffix:semicolon
 r_return

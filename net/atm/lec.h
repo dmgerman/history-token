@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *&n; * Lan Emulation client header file&n; *&n; * Marko Kiiskila carnil@cs.tut.fi&n; *&n; */
+multiline_comment|/*&n; *&n; * Lan Emulation client header file&n; *&n; * Marko Kiiskila mkiiskila@yahoo.com&n; *&n; */
 macro_line|#ifndef _LEC_H_
 DECL|macro|_LEC_H_
 mdefine_line|#define _LEC_H_

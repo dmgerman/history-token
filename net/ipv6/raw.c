@@ -1746,6 +1746,17 @@ id|err
 op_assign
 id|copied
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|flags
+op_amp
+id|MSG_TRUNC
+)paren
+id|err
+op_assign
+id|skb-&gt;len
+suffix:semicolon
 id|out_free
 suffix:colon
 id|skb_free_datagram
@@ -2281,7 +2292,7 @@ suffix:semicolon
 id|IP6_INC_STATS
 c_func
 (paren
-id|OutRequests
+id|IPSTATS_MIB_OUTREQUESTS
 )paren
 suffix:semicolon
 id|err
@@ -2353,7 +2364,7 @@ suffix:colon
 id|IP6_INC_STATS
 c_func
 (paren
-id|OutDiscards
+id|IPSTATS_MIB_OUTDISCARDS
 )paren
 suffix:semicolon
 r_return
@@ -4178,7 +4189,7 @@ comma
 dot
 id|connect
 op_assign
-id|udpv6_connect
+id|ip6_datagram_connect
 comma
 dot
 id|disconnect

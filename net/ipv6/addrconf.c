@@ -6958,6 +6958,7 @@ id|ifr.ifr_ifru.ifru_data
 op_assign
 (paren
 r_void
+id|__user
 op_star
 )paren
 op_amp

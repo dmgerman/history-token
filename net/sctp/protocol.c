@@ -2907,7 +2907,7 @@ suffix:semicolon
 id|SCTP_INC_STATS
 c_func
 (paren
-id|SctpOutSCTPPacks
+id|SCTP_MIB_OUTSCTPPACKS
 )paren
 suffix:semicolon
 r_return

@@ -1,6 +1,7 @@
 multiline_comment|/*  $Id: process.c,v 1.131 2002/02/09 19:49:30 davem Exp $&n; *  arch/sparc64/kernel/process.c&n; *&n; *  Copyright (C) 1995, 1996 David S. Miller (davem@caip.rutgers.edu)&n; *  Copyright (C) 1996       Eddie C. Dost   (ecd@skynet.be)&n; *  Copyright (C) 1997, 1998 Jakub Jelinek   (jj@sunsite.mff.cuni.cz)&n; */
 multiline_comment|/*&n; * This file handles the architecture-dependent parts of process handling..&n; */
 macro_line|#include &lt;stdarg.h&gt;
+macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
@@ -17,6 +18,7 @@ macro_line|#include &lt;linux/a.out.h&gt;
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/reboot.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
+macro_line|#include &lt;linux/compat.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;asm/oplib.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
@@ -3064,6 +3066,7 @@ op_and_assign
 op_complement
 id|CLONE_IDLETASK
 suffix:semicolon
+macro_line|#ifdef CONFIG_COMPAT
 r_if
 c_cond
 (paren
@@ -3098,6 +3101,7 @@ id|UREG_I4
 suffix:semicolon
 )brace
 r_else
+macro_line|#endif
 (brace
 id|parent_tid_ptr
 op_assign
