@@ -10156,14 +10156,17 @@ id|lock
 op_assign
 id|SPIN_LOCK_UNLOCKED
 suffix:semicolon
+id|INIT_HLIST_HEAD
+c_func
+(paren
+op_amp
 id|tcp_bhash
 (braket
 id|i
 )braket
 dot
 id|chain
-op_assign
-l_int|NULL
+)paren
 suffix:semicolon
 )brace
 multiline_comment|/* Try to be a bit smarter and adjust defaults depending&n;&t; * on available memory.&n;&t; */
