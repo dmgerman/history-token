@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * Sony Programmable I/O Control Device driver for VAIO&n; *&n; * Copyright (C) 2001-2004 Stelian Pop &lt;stelian@popies.net&gt;&n; *&n; * Copyright (C) 2001-2002 Alc&#xfffd;ve &lt;www.alcove.com&gt;&n; *&n; * Copyright (C) 2001 Michael Ashley &lt;m.ashley@unsw.edu.au&gt;&n; *&n; * Copyright (C) 2001 Junichi Morita &lt;jun1m@mars.dti.ne.jp&gt;&n; *&n; * Copyright (C) 2000 Takaya Kinjo &lt;t-kinjo@tc4.so-net.ne.jp&gt;&n; *&n; * Copyright (C) 2000 Andrew Tridgell &lt;tridge@valinux.com&gt;&n; *&n; * Earlier work by Werner Almesberger, Paul `Rusty&squot; Russell and Paul Mackerras.&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; *&n; */
+multiline_comment|/*&n; * Sony Programmable I/O Control Device driver for VAIO&n; *&n; * Copyright (C) 2001-2005 Stelian Pop &lt;stelian@popies.net&gt;&n; *&n; * Copyright (C) 2001-2002 Alc&#xfffd;ve &lt;www.alcove.com&gt;&n; *&n; * Copyright (C) 2001 Michael Ashley &lt;m.ashley@unsw.edu.au&gt;&n; *&n; * Copyright (C) 2001 Junichi Morita &lt;jun1m@mars.dti.ne.jp&gt;&n; *&n; * Copyright (C) 2000 Takaya Kinjo &lt;t-kinjo@tc4.so-net.ne.jp&gt;&n; *&n; * Copyright (C) 2000 Andrew Tridgell &lt;tridge@valinux.com&gt;&n; *&n; * Earlier work by Werner Almesberger, Paul `Rusty&squot; Russell and Paul Mackerras.&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; *&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/input.h&gt;
@@ -1354,20 +1354,12 @@ comma
 l_int|0x1
 )paren
 )paren
-(brace
-id|set_current_state
+id|msleep
 c_func
 (paren
-id|TASK_UNINTERRUPTIBLE
+l_int|10
 )paren
 suffix:semicolon
-id|schedule_timeout
-c_func
-(paren
-l_int|1
-)paren
-suffix:semicolon
-)brace
 id|sonypi_call1
 c_func
 (paren
@@ -1399,16 +1391,10 @@ c_func
 )paren
 r_break
 suffix:semicolon
-id|set_current_state
+id|msleep
 c_func
 (paren
-id|TASK_UNINTERRUPTIBLE
-)paren
-suffix:semicolon
-id|schedule_timeout
-c_func
-(paren
-l_int|1
+l_int|10
 )paren
 suffix:semicolon
 )brace
