@@ -3208,9 +3208,9 @@ r_void
 id|DivasDoDpc
 c_func
 (paren
-r_void
-op_star
-id|pData
+r_int
+r_int
+id|dummy
 )paren
 (brace
 id|card_t
@@ -3248,23 +3248,6 @@ id|card
 op_increment
 suffix:semicolon
 )brace
-)brace
-DECL|function|DivasDoRequestDpc
-r_void
-id|DivasDoRequestDpc
-c_func
-(paren
-r_void
-op_star
-id|pData
-)paren
-(brace
-id|DivasDoDpc
-c_func
-(paren
-id|pData
-)paren
-suffix:semicolon
 )brace
 multiline_comment|/*&n; * DivasGetNum&n; * Returns the number of active adapters&n; */
 DECL|function|DivasGetNum

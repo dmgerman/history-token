@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: eicon_idi.h,v 1.11.6.1 2001/09/23 22:24:37 kai Exp $&n; *&n; * ISDN lowlevel-module for the Eicon active cards.&n; * IDI-Interface&n; *&n; * Copyright 1998-2000  by Armin Schindler (mac@melware.de)&n; * Copyright 1999,2000  Cytronics &amp; Melware (info@melware.de)&n; *&n; * This software may be used and distributed according to the terms&n; * of the GNU General Public License, incorporated herein by reference.&n; *&n; */
+multiline_comment|/* $Id: eicon_idi.h,v 1.1.4.1.2.2 2002/10/01 11:29:13 armin Exp $&n; *&n; * ISDN lowlevel-module for the Eicon active cards.&n; * IDI-Interface&n; *&n; * Copyright 1998-2000  by Armin Schindler (mac@melware.de)&n; * Copyright 1999,2000  Cytronics &amp; Melware (info@melware.de)&n; *&n; * This software may be used and distributed according to the terms&n; * of the GNU General Public License, incorporated herein by reference.&n; *&n; */
 macro_line|#ifndef E_IDI_H
 DECL|macro|E_IDI_H
 mdefine_line|#define E_IDI_H

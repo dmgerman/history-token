@@ -1,6 +1,10 @@
 multiline_comment|/*&n; * Copyright (C) Eicon Technology Corporation, 2000.&n; *&n; * Eicon File Revision :    1.16  &n; *&n; * This software may be used and distributed according to the terms&n; * of the GNU General Public License, incorporated herein by reference.&n; *&n; */
 DECL|macro|N_DATA
 mdefine_line|#define N_DATA
+macro_line|#include &lt;linux/config.h&gt;
+macro_line|#include &lt;linux/init.h&gt;
+macro_line|#include &lt;linux/kernel.h&gt;
+macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
@@ -22,7 +26,12 @@ id|Divasdevflag
 op_assign
 l_int|0
 suffix:semicolon
-singleline_comment|//spinlock_t diva_lock = SPIN_LOCK_UNLOCKED;
+DECL|variable|diva_lock
+id|spinlock_t
+id|diva_lock
+op_assign
+id|SPIN_LOCK_UNLOCKED
+suffix:semicolon
 r_static
 DECL|variable|card_pool
 id|ux_diva_card_t
@@ -2955,16 +2964,13 @@ r_int
 r_int
 id|flags
 suffix:semicolon
-singleline_comment|//spin_lock_irqsave(&amp;diva_lock, flags);
-id|save_flags
+id|spin_lock_irqsave
 c_func
 (paren
+op_amp
+id|diva_lock
+comma
 id|flags
-)paren
-suffix:semicolon
-id|cli
-c_func
-(paren
 )paren
 suffix:semicolon
 r_return
@@ -2984,10 +2990,12 @@ r_int
 id|ipl
 )paren
 (brace
-singleline_comment|//spin_unlock_irqrestore(&amp;diva_lock, ipl);
-id|restore_flags
+id|spin_unlock_irqrestore
 c_func
 (paren
+op_amp
+id|diva_lock
+comma
 id|ipl
 )paren
 suffix:semicolon
