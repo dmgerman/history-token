@@ -2580,7 +2580,14 @@ id|current
 r_goto
 id|no_thread_group
 suffix:semicolon
-multiline_comment|/*&n;&t; * Kill all other threads in the thread group:&n;&t; */
+multiline_comment|/*&n;&t; * Kill all other threads in the thread group.&n;&t; * We must hold tasklist_lock to call zap_other_threads.&n;&t; */
+id|read_lock
+c_func
+(paren
+op_amp
+id|tasklist_lock
+)paren
+suffix:semicolon
 id|spin_lock_irq
 c_func
 (paren
@@ -2598,6 +2605,13 @@ id|spin_unlock_irq
 c_func
 (paren
 id|lock
+)paren
+suffix:semicolon
+id|read_unlock
+c_func
+(paren
+op_amp
+id|tasklist_lock
 )paren
 suffix:semicolon
 id|kmem_cache_free
@@ -2634,6 +2648,13 @@ id|zap_other_threads
 c_func
 (paren
 id|current
+)paren
+suffix:semicolon
+id|read_unlock
+c_func
+(paren
+op_amp
+id|tasklist_lock
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * Account for the thread group leader hanging around:&n;&t; */
