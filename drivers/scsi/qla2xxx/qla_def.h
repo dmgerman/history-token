@@ -5809,14 +5809,6 @@ DECL|member|nvram_version
 r_uint8
 id|nvram_version
 suffix:semicolon
-DECL|member|optrom_major
-r_uint8
-id|optrom_major
-suffix:semicolon
-DECL|member|optrom_minor
-r_uint8
-id|optrom_minor
-suffix:semicolon
 DECL|member|isp_abort_cnt
 r_uint32
 id|isp_abort_cnt

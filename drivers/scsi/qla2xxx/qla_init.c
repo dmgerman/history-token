@@ -603,13 +603,6 @@ c_func
 id|ha
 )paren
 suffix:semicolon
-multiline_comment|/* Get Flash Version */
-id|qla2x00_get_flash_version
-c_func
-(paren
-id|ha
-)paren
-suffix:semicolon
 id|qla_printk
 c_func
 (paren
