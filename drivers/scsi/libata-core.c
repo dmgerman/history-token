@@ -3592,7 +3592,7 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;ata%u: dev %u ATA, max %s, %Lu sectors: %s&bslash;n&quot;
+l_string|&quot;ata%u: dev %u ATA, max %s, %Lu sectors:%s&bslash;n&quot;
 comma
 id|ap-&gt;id
 comma
@@ -9049,6 +9049,9 @@ id|qc-&gt;tf.protocol
 (brace
 r_case
 id|ATA_PROT_DMA
+suffix:colon
+r_case
+id|ATA_PROT_ATAPI_DMA
 suffix:colon
 r_if
 c_cond
