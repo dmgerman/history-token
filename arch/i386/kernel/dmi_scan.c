@@ -2465,34 +2465,4 @@ c_func
 id|is_unsafe_smbus
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_MOUNT_ROOT_FAILED_MSG
-multiline_comment|/*&n; * mount_root_failed_msg()&n; *&n; * Called from mount_block_root() upon failure to mount root.&n; * architecture dependent to give different platforms&n; * the opportunity to print different handy messages&n; * On x86 this lives here b/c it dumps out some DMI info.&n; */
-r_void
-DECL|function|mount_root_failed_msg
-id|mount_root_failed_msg
-c_func
-(paren
-r_void
-)paren
-(brace
-macro_line|#ifdef&t;CONFIG_ACPI_BOOT
-id|printk
-(paren
-l_string|&quot;Try booting with pci=noacpi, acpi=ht, &quot;
-l_string|&quot;or acpi=off on the command line.&bslash;n&quot;
-)paren
-suffix:semicolon
-id|printk
-(paren
-l_string|&quot;If one helps, please report the following lines:&bslash;n&quot;
-)paren
-suffix:semicolon
-id|dmi_dump_system
-c_func
-(paren
-)paren
-suffix:semicolon
-macro_line|#endif
-)brace
-macro_line|#endif&t;/* CONFIG_MOUNT_ROOT_FAILED_MSG */
 eof
