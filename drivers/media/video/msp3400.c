@@ -6930,6 +6930,13 @@ id|simple
 suffix:semicolon
 )brace
 multiline_comment|/* timer for stereo checking */
+id|init_timer
+c_func
+(paren
+op_amp
+id|msp-&gt;wake_stereo
+)paren
+suffix:semicolon
 id|msp-&gt;wake_stereo.function
 op_assign
 id|msp3400c_stereo_wake

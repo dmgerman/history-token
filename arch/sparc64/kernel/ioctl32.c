@@ -46,6 +46,7 @@ macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#if defined(CONFIG_BLK_DEV_LVM) || defined(CONFIG_BLK_DEV_LVM_MODULE)
 macro_line|#include &lt;linux/lvm.h&gt;
 macro_line|#endif /* LVM */
+macro_line|#include &lt;linux/dm-ioctl.h&gt;
 macro_line|#include &lt;scsi/scsi.h&gt;
 multiline_comment|/* Ugly hack. */
 DECL|macro|__KERNEL__
@@ -28733,6 +28734,62 @@ id|COMPATIBLE_IOCTL
 c_func
 (paren
 id|NBD_DISCONNECT
+)paren
+multiline_comment|/* device-mapper */
+id|COMPATIBLE_IOCTL
+c_func
+(paren
+id|DM_VERSION
+)paren
+id|COMPATIBLE_IOCTL
+c_func
+(paren
+id|DM_REMOVE_ALL
+)paren
+id|COMPATIBLE_IOCTL
+c_func
+(paren
+id|DM_DEV_CREATE
+)paren
+id|COMPATIBLE_IOCTL
+c_func
+(paren
+id|DM_DEV_REMOVE
+)paren
+id|COMPATIBLE_IOCTL
+c_func
+(paren
+id|DM_DEV_RELOAD
+)paren
+id|COMPATIBLE_IOCTL
+c_func
+(paren
+id|DM_DEV_SUSPEND
+)paren
+id|COMPATIBLE_IOCTL
+c_func
+(paren
+id|DM_DEV_RENAME
+)paren
+id|COMPATIBLE_IOCTL
+c_func
+(paren
+id|DM_DEV_DEPS
+)paren
+id|COMPATIBLE_IOCTL
+c_func
+(paren
+id|DM_DEV_STATUS
+)paren
+id|COMPATIBLE_IOCTL
+c_func
+(paren
+id|DM_TARGET_STATUS
+)paren
+id|COMPATIBLE_IOCTL
+c_func
+(paren
+id|DM_TARGET_WAIT
 )paren
 multiline_comment|/* And these ioctls need translation */
 id|HANDLE_IOCTL

@@ -2429,6 +2429,13 @@ id|tripped
 )paren
 (brace
 multiline_comment|/* there is at least one timer brokenstopped-- reschedule */
+id|init_timer
+c_func
+(paren
+op_amp
+id|wd_timer
+)paren
+suffix:semicolon
 id|wd_timer.expires
 op_assign
 id|WD_BTIMEOUT

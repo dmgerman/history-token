@@ -1173,6 +1173,13 @@ id|s-&gt;state
 op_or_assign
 id|SOCKET_REMOVAL_PENDING
 suffix:semicolon
+id|init_timer
+c_func
+(paren
+op_amp
+id|s-&gt;removal
+)paren
+suffix:semicolon
 id|s-&gt;removal.expires
 op_assign
 id|jiffies

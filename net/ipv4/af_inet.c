@@ -3603,6 +3603,11 @@ id|err_handler
 op_assign
 id|tcp_v4_err
 comma
+dot
+id|no_policy
+op_assign
+l_int|1
+comma
 )brace
 suffix:semicolon
 DECL|variable|udp_protocol
@@ -3621,6 +3626,11 @@ dot
 id|err_handler
 op_assign
 id|udp_err
+comma
+dot
+id|no_policy
+op_assign
+l_int|1
 comma
 )brace
 suffix:semicolon

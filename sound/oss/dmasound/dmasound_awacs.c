@@ -5292,14 +5292,19 @@ r_struct
 id|timer_list
 id|beep_timer
 op_assign
-(brace
-id|function
-suffix:colon
+id|TIMER_INITIALIZER
+c_func
+(paren
 id|awacs_nosound
+comma
+l_int|0
+comma
+l_int|0
+)paren
+suffix:semicolon
 )brace
 suffix:semicolon
 multiline_comment|/* we generate the beep with a single dbdma command that loops a buffer&n;   forever - without generating interrupts.&n;   So, to stop it you have to stop dma output as per awacs_nosound.&n;*/
-DECL|function|awacs_mksound
 r_static
 r_void
 id|awacs_mksound
@@ -5871,7 +5876,6 @@ suffix:semicolon
 multiline_comment|/* used in init and for wake-up */
 r_static
 r_void
-DECL|function|load_awacs
 id|load_awacs
 c_func
 (paren
@@ -6021,7 +6025,6 @@ suffix:semicolon
 macro_line|#ifdef CONFIG_PMAC_PBOOK
 multiline_comment|/*&n; * Save state when going to sleep, restore it afterwards.&n; */
 multiline_comment|/* FIXME: sort out disabling/re-enabling of read stuff as well */
-DECL|function|awacs_sleep_notify
 r_static
 r_int
 id|awacs_sleep_notify
@@ -6556,7 +6559,6 @@ multiline_comment|/* Waits for busy flag to clear */
 r_inline
 r_static
 r_void
-DECL|function|awacs_burgundy_busy_wait
 id|awacs_burgundy_busy_wait
 c_func
 (paren
@@ -6596,7 +6598,6 @@ suffix:semicolon
 r_inline
 r_static
 r_void
-DECL|function|awacs_burgundy_extend_wait
 id|awacs_burgundy_extend_wait
 c_func
 (paren
@@ -6665,7 +6666,6 @@ suffix:semicolon
 )brace
 r_static
 r_void
-DECL|function|awacs_burgundy_wcw
 id|awacs_burgundy_wcw
 c_func
 (paren
@@ -6779,7 +6779,6 @@ suffix:semicolon
 )brace
 r_static
 r_int
-DECL|function|awacs_burgundy_rcw
 id|awacs_burgundy_rcw
 c_func
 (paren
@@ -6977,7 +6976,6 @@ suffix:semicolon
 )brace
 r_static
 r_void
-DECL|function|awacs_burgundy_wcb
 id|awacs_burgundy_wcb
 c_func
 (paren
@@ -7013,7 +7011,6 @@ suffix:semicolon
 )brace
 r_static
 r_int
-DECL|function|awacs_burgundy_rcb
 id|awacs_burgundy_rcb
 c_func
 (paren
@@ -7091,7 +7088,6 @@ suffix:semicolon
 )brace
 r_static
 r_int
-DECL|function|awacs_burgundy_check
 id|awacs_burgundy_check
 c_func
 (paren
@@ -7119,7 +7115,6 @@ suffix:semicolon
 )brace
 r_static
 r_int
-DECL|function|awacs_burgundy_init
 id|awacs_burgundy_init
 c_func
 (paren
@@ -7280,7 +7275,6 @@ suffix:semicolon
 )brace
 r_static
 r_void
-DECL|function|awacs_burgundy_write_volume
 id|awacs_burgundy_write_volume
 c_func
 (paren
@@ -7365,7 +7359,6 @@ suffix:semicolon
 )brace
 r_static
 r_int
-DECL|function|awacs_burgundy_read_volume
 id|awacs_burgundy_read_volume
 c_func
 (paren
@@ -7427,7 +7420,6 @@ suffix:semicolon
 )brace
 r_static
 r_int
-DECL|function|awacs_burgundy_read_mvolume
 id|awacs_burgundy_read_mvolume
 c_func
 (paren
@@ -7490,7 +7482,6 @@ suffix:semicolon
 )brace
 r_static
 r_void
-DECL|function|awacs_burgundy_write_mvolume
 id|awacs_burgundy_write_mvolume
 c_func
 (paren
@@ -7581,7 +7572,6 @@ multiline_comment|/* End burgundy functions */
 multiline_comment|/* Set up output volumes on machines with the &squot;perch/whisper&squot; extension card.&n; * this has an SGS i2c chip (7433) which is accessed using the cuda.&n; *&n; * TODO: split this out and make use of the other parts of the SGS chip to&n; * do Bass, Treble etc.&n; */
 r_static
 r_void
-DECL|function|awacs_enable_amp
 id|awacs_enable_amp
 c_func
 (paren
@@ -7801,7 +7791,6 @@ macro_line|#endif /* CONFIG_ADB_CUDA */
 )brace
 multiline_comment|/*** Mid level stuff *********************************************************/
 multiline_comment|/*&n; * /dev/mixer abstraction&n; */
-DECL|function|do_line_lev
 r_static
 r_void
 id|do_line_lev
@@ -7853,7 +7842,6 @@ l_int|0
 )paren
 suffix:semicolon
 )brace
-DECL|function|do_ip_gain
 r_static
 r_void
 id|do_ip_gain
@@ -7968,7 +7956,6 @@ l_int|0
 )paren
 suffix:semicolon
 )brace
-DECL|function|do_mic_lev
 r_static
 r_void
 id|do_mic_lev
@@ -8020,7 +8007,6 @@ l_int|0
 )paren
 suffix:semicolon
 )brace
-DECL|function|do_cd_lev
 r_static
 r_void
 id|do_cd_lev
@@ -8072,7 +8058,6 @@ l_int|0
 )paren
 suffix:semicolon
 )brace
-DECL|function|do_rec_lev
 r_static
 r_void
 id|do_rec_lev
@@ -8165,7 +8150,6 @@ l_int|4
 )paren
 suffix:semicolon
 )brace
-DECL|function|do_passthru_vol
 r_static
 r_void
 id|do_passthru_vol
@@ -8285,7 +8269,6 @@ l_int|0
 suffix:semicolon
 )brace
 )brace
-DECL|function|awacs_mixer_ioctl
 r_static
 r_int
 id|awacs_mixer_ioctl
@@ -8929,7 +8912,6 @@ r_return
 id|rc
 suffix:semicolon
 )brace
-DECL|function|awacs_mixer_init
 r_static
 r_void
 id|awacs_mixer_init
@@ -9014,7 +8996,6 @@ id|passthru_vol
 )paren
 suffix:semicolon
 )brace
-DECL|function|burgundy_mixer_ioctl
 r_static
 r_int
 id|burgundy_mixer_ioctl
@@ -9844,7 +9825,6 @@ r_return
 id|rc
 suffix:semicolon
 )brace
-DECL|function|tumbler_mixer_ioctl
 r_static
 r_int
 id|tumbler_mixer_ioctl
@@ -10214,7 +10194,6 @@ r_return
 id|rc
 suffix:semicolon
 )brace
-DECL|function|daca_mixer_ioctl
 r_static
 r_int
 id|daca_mixer_ioctl
@@ -10421,7 +10400,6 @@ r_return
 id|rc
 suffix:semicolon
 )brace
-DECL|function|PMacMixerIoctl
 r_static
 r_int
 id|PMacMixerIoctl
@@ -10517,7 +10495,6 @@ r_return
 id|rc
 suffix:semicolon
 )brace
-DECL|function|PMacMixerInit
 r_static
 r_void
 id|PMacMixerInit
@@ -10570,7 +10547,6 @@ suffix:semicolon
 )brace
 )brace
 multiline_comment|/* Write/Read sq setup functions:&n;   Check to see if we have enough (or any) dbdma cmd buffers for the&n;   user&squot;s fragment settings.  If not, allocate some. If this fails we will&n;   point at the beep buffer - as an emergency provision - to stop dma tromping&n;   on some random bit of memory (if someone lets it go anyway).&n;   The command buffers are then set up to point to the fragment buffers&n;   (allocated elsewhere).  We need n+1 commands the last of which holds&n;   a NOP + loop to start.&n;*/
-DECL|function|PMacWriteSqSetup
 r_static
 r_int
 id|PMacWriteSqSetup
@@ -10875,7 +10851,6 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-DECL|function|PMacReadSqSetup
 r_static
 r_int
 id|PMacReadSqSetup
@@ -11212,7 +11187,6 @@ l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/* TODO: this needs work to guarantee that when it returns DMA has stopped&n;   but in a more elegant way than is done here....&n;*/
-DECL|function|PMacAbortRead
 r_static
 r_void
 id|PMacAbortRead
@@ -11326,7 +11300,6 @@ c_func
 r_int
 )paren
 suffix:semicolon
-DECL|function|PMacStateInfo
 r_static
 r_int
 id|PMacStateInfo
@@ -11573,7 +11546,6 @@ id|len
 suffix:semicolon
 )brace
 multiline_comment|/*** Machine definitions *****************************************************/
-DECL|variable|def_hard
 r_static
 id|SETTINGS
 id|def_hard
@@ -11596,7 +11568,6 @@ suffix:colon
 l_int|44100
 )brace
 suffix:semicolon
-DECL|variable|def_soft
 r_static
 id|SETTINGS
 id|def_soft
@@ -11619,7 +11590,6 @@ suffix:colon
 l_int|44100
 )brace
 suffix:semicolon
-DECL|variable|machPMac
 r_static
 id|MACHINE
 id|machPMac
@@ -11733,7 +11703,6 @@ multiline_comment|/*** Config &amp; Setup **************************************
 multiline_comment|/* Check for pmac models that we care about in terms of special actions.&n;*/
 r_void
 id|__init
-DECL|function|set_model
 id|set_model
 c_func
 (paren
@@ -11792,7 +11761,6 @@ multiline_comment|/* Get the OF node that tells us about the registers, interrup
 r_static
 r_struct
 id|device_node
-DECL|function|get_snd_io_node
 id|__init
 op_star
 id|get_snd_io_node
@@ -11874,7 +11842,6 @@ multiline_comment|/* Get the OF node that contains the info about the sound chip
 r_static
 r_struct
 id|device_node
-DECL|function|get_snd_info_node
 id|__init
 op_star
 id|get_snd_info_node
@@ -11921,7 +11888,6 @@ suffix:semicolon
 multiline_comment|/* Find out what type of codec we have.&n;*/
 r_static
 r_int
-DECL|function|get_codec_type
 id|__init
 id|get_codec_type
 c_func
@@ -12028,7 +11994,6 @@ suffix:semicolon
 multiline_comment|/* find out what type, if any, of expansion card we have&n;*/
 r_static
 r_void
-DECL|function|get_expansion_type
 id|__init
 id|get_expansion_type
 c_func
@@ -12071,7 +12036,6 @@ multiline_comment|/* need to work out how we deal with iMac SRS module */
 multiline_comment|/* set up frame rates.&n; * I suspect that these routines don&squot;t quite go about it the right way:&n; * - where there is more than one rate - I think that the first property&n; * value is the number of rates.&n; * TODO: check some more device trees and modify accordingly&n; *       Set dmasound.mach.max_dsp_rate on the basis of these routines.&n;*/
 r_static
 r_void
-DECL|function|init_awacs_frame_rates
 id|__init
 id|init_awacs_frame_rates
 c_func
@@ -12197,7 +12161,6 @@ multiline_comment|/* else we assume that all the rates are available */
 )brace
 r_static
 r_void
-DECL|function|init_tumbler_frame_rates
 id|__init
 id|init_tumbler_frame_rates
 c_func
@@ -12323,7 +12286,6 @@ multiline_comment|/* else we assume that all the rates are available */
 )brace
 r_static
 r_void
-DECL|function|init_burgundy_frame_rates
 id|__init
 id|init_burgundy_frame_rates
 c_func
@@ -12474,7 +12436,6 @@ macro_line|#endif
 )brace
 r_static
 r_void
-DECL|function|init_daca_frame_rates
 id|__init
 id|init_daca_frame_rates
 c_func
@@ -12625,7 +12586,6 @@ macro_line|#endif
 )brace
 r_static
 r_void
-DECL|function|init_frame_rates
 id|__init
 id|init_frame_rates
 c_func
@@ -12703,7 +12663,6 @@ suffix:semicolon
 multiline_comment|/* find things/machines that can&squot;t do mac-io byteswap&n;*/
 r_static
 r_void
-DECL|function|set_hw_byteswap
 id|__init
 id|set_hw_byteswap
 c_func
@@ -12784,7 +12743,6 @@ suffix:semicolon
 )brace
 multiline_comment|/* Allocate the resources necessary for beep generation.  This cannot be (quite)&n;   done statically (yet) because we cannot do virt_to_bus() on static vars when&n;   the code is loaded as a module.&n;&n;   for the sake of saving the possibility that two allocations will incur the&n;   overhead of two pull-ups in DBDMA_ALIGN() we allocate the &squot;emergency&squot; dmdma&n;   command here as well... even tho&squot; it is not part of the beep process.&n;*/
 r_int32
-DECL|function|setup_beep
 id|__init
 id|setup_beep
 c_func
@@ -12917,7 +12875,6 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-DECL|function|dmasound_awacs_init
 r_int
 id|__init
 id|dmasound_awacs_init
@@ -14154,7 +14111,6 @@ c_func
 )paren
 suffix:semicolon
 )brace
-DECL|function|dmasound_awacs_cleanup
 r_static
 r_void
 id|__exit
@@ -14214,14 +14170,12 @@ c_func
 l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
-DECL|variable|dmasound_awacs_init
 id|module_init
 c_func
 (paren
 id|dmasound_awacs_init
 )paren
 suffix:semicolon
-DECL|variable|dmasound_awacs_cleanup
 id|module_exit
 c_func
 (paren

@@ -5,6 +5,7 @@ mdefine_line|#define _NET_DST_H
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/rtnetlink.h&gt;
 macro_line|#include &lt;net/neighbour.h&gt;
+macro_line|#include &lt;asm/processor.h&gt;
 multiline_comment|/*&n; * 0 - no debugging messages&n; * 1 - rare events and bugs (default)&n; * 2 - trace mode.&n; */
 DECL|macro|RT_CACHE_DEBUG
 mdefine_line|#define RT_CACHE_DEBUG&t;&t;0
@@ -63,6 +64,8 @@ DECL|macro|DST_NOXFRM
 mdefine_line|#define DST_NOXFRM&t;&t;2
 DECL|macro|DST_NOPOLICY
 mdefine_line|#define DST_NOPOLICY&t;&t;4
+DECL|macro|DST_NOHASH
+mdefine_line|#define DST_NOHASH&t;&t;8
 DECL|member|lastuse
 r_int
 r_int
@@ -486,6 +489,39 @@ c_cond
 (paren
 id|dst
 )paren
+(brace
+r_if
+c_cond
+(paren
+id|atomic_read
+c_func
+(paren
+op_amp
+id|dst-&gt;__refcnt
+)paren
+OL
+l_int|1
+)paren
+(brace
+id|printk
+c_func
+(paren
+l_string|&quot;BUG: dst underflow %d: %p&bslash;n&quot;
+comma
+id|atomic_read
+c_func
+(paren
+op_amp
+id|dst-&gt;__refcnt
+)paren
+comma
+id|current_text_addr
+c_func
+(paren
+)paren
+)paren
+suffix:semicolon
+)brace
 id|atomic_dec
 c_func
 (paren
@@ -493,6 +529,7 @@ op_amp
 id|dst-&gt;__refcnt
 )paren
 suffix:semicolon
+)brace
 )brace
 multiline_comment|/* Children define the path of the packet through the&n; * Linux networking.  Thus, destinations are stackable.&n; */
 DECL|function|dst_pop
@@ -950,6 +987,14 @@ id|sk
 comma
 r_int
 id|flags
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|xfrm_init
+c_func
+(paren
+r_void
 )paren
 suffix:semicolon
 macro_line|#endif

@@ -60,17 +60,17 @@ r_int
 id|do_hwflushes
 suffix:semicolon
 multiline_comment|/* Hardware flushing available? */
-DECL|enumerator|NONE
-DECL|enumerator|WRITE_THROUGH
+DECL|enumerator|VAC_NONE
+DECL|enumerator|VAC_WRITE_THROUGH
 r_enum
 (brace
-id|NONE
+id|VAC_NONE
 comma
-id|WRITE_THROUGH
+id|VAC_WRITE_THROUGH
 comma
-DECL|enumerator|WRITE_BACK
+DECL|enumerator|VAC_WRITE_BACK
 DECL|member|type
-id|WRITE_BACK
+id|VAC_WRITE_BACK
 )brace
 id|type
 suffix:semicolon

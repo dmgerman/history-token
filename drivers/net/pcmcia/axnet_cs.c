@@ -1,4 +1,4 @@
-multiline_comment|/*======================================================================&n;&n;    A PCMCIA ethernet driver for Asix AX88190-based cards&n;&n;    The Asix AX88190 is a NS8390-derived chipset with a few nasty&n;    idiosyncracies that make it very inconvenient to support with a&n;    standard 8390 driver.  This driver is based on pcnet_cs, with the&n;    tweaked 8390 code grafted on the end.  Much of what I did was to&n;    clean up and update a similar driver supplied by Asix, which was&n;    adapted by William Lee, william@asix.com.tw.&n;&n;    Copyright (C) 2001 David A. Hinds -- dahinds@users.sourceforge.net&n;&n;    axnet_cs.c 1.11 2001/06/12 12:42:40&n;    &n;    The network driver code is based on Donald Becker&squot;s NE2000 code:&n;&n;    Written 1992,1993 by Donald Becker.&n;    Copyright 1993 United States Government as represented by the&n;    Director, National Security Agency.  This software may be used and&n;    distributed according to the terms of the GNU General Public License,&n;    incorporated herein by reference.&n;    Donald Becker may be reached at becker@cesdis1.gsfc.nasa.gov&n;&n;======================================================================*/
+multiline_comment|/*======================================================================&n;&n;    A PCMCIA ethernet driver for Asix AX88190-based cards&n;&n;    The Asix AX88190 is a NS8390-derived chipset with a few nasty&n;    idiosyncracies that make it very inconvenient to support with a&n;    standard 8390 driver.  This driver is based on pcnet_cs, with the&n;    tweaked 8390 code grafted on the end.  Much of what I did was to&n;    clean up and update a similar driver supplied by Asix, which was&n;    adapted by William Lee, william@asix.com.tw.&n;&n;    Copyright (C) 2001 David A. Hinds -- dahinds@users.sourceforge.net&n;&n;    axnet_cs.c 1.28 2002/06/29 06:27:37&n;&n;    The network driver code is based on Donald Becker&squot;s NE2000 code:&n;&n;    Written 1992,1993 by Donald Becker.&n;    Copyright 1993 United States Government as represented by the&n;    Director, National Security Agency.  This software may be used and&n;    distributed according to the terms of the GNU General Public License,&n;    incorporated herein by reference.&n;    Donald Becker may be reached at becker@scyld.com&n;&n;======================================================================*/
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
@@ -8,13 +8,14 @@ macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/timer.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
+macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;linux/ethtool.h&gt;
-macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/byteorder.h&gt;
+macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;linux/netdevice.h&gt;
-macro_line|#include &quot;ax8390.h&quot;
+macro_line|#include &quot;../8390.h&quot;
 macro_line|#include &lt;pcmcia/version.h&gt;
 macro_line|#include &lt;pcmcia/cs_types.h&gt;
 macro_line|#include &lt;pcmcia/cs.h&gt;
@@ -28,60 +29,42 @@ DECL|macro|AXNET_DATAPORT
 mdefine_line|#define AXNET_DATAPORT&t;0x10&t;/* NatSemi-defined port window offset. */
 DECL|macro|AXNET_RESET
 mdefine_line|#define AXNET_RESET&t;0x1f&t;/* Issue a read to reset, a write to clear. */
-DECL|macro|AXNET_MISC
-mdefine_line|#define AXNET_MISC&t;0x18&t;/* For IBM CCAE and Socket EA cards */
 DECL|macro|AXNET_MII_EEP
 mdefine_line|#define AXNET_MII_EEP&t;0x14&t;/* Offset of MII access port */
+DECL|macro|AXNET_TEST
+mdefine_line|#define AXNET_TEST&t;0x15&t;/* Offset of TEST Register port */
+DECL|macro|AXNET_GPIO
+mdefine_line|#define AXNET_GPIO&t;0x17&t;/* Offset of General Purpose Register Port */
 DECL|macro|AXNET_START_PG
 mdefine_line|#define AXNET_START_PG&t;0x40&t;/* First page of TX buffer */
 DECL|macro|AXNET_STOP_PG
 mdefine_line|#define AXNET_STOP_PG&t;0x80&t;/* Last page +1 of RX ring */
 DECL|macro|AXNET_RDC_TIMEOUT
 mdefine_line|#define AXNET_RDC_TIMEOUT 0x02&t;/* Max wait in jiffies for Tx RDC */
-macro_line|#ifdef PCMCIA_DEBUG
-DECL|variable|pc_debug
-r_static
-r_int
-id|pc_debug
-op_assign
-id|PCMCIA_DEBUG
-suffix:semicolon
-id|MODULE_PARM
+DECL|macro|IS_AX88190
+mdefine_line|#define IS_AX88190&t;0x0001
+DECL|macro|IS_AX88790
+mdefine_line|#define IS_AX88790&t;0x0002
+multiline_comment|/*====================================================================*/
+multiline_comment|/* Module parameters */
+id|MODULE_AUTHOR
 c_func
 (paren
-id|pc_debug
-comma
-l_string|&quot;i&quot;
+l_string|&quot;David Hinds &lt;dahinds@users.sourceforge.net&gt;&quot;
 )paren
 suffix:semicolon
-DECL|macro|DEBUG
-mdefine_line|#define DEBUG(n, args...) if (pc_debug&gt;(n)) printk(KERN_DEBUG args)
-DECL|variable|version
-r_static
-r_char
-op_star
-id|version
-op_assign
-l_string|&quot;axnet_cs.c 1.11 2001/06/12 12:42:40 (David Hinds)&quot;
+id|MODULE_DESCRIPTION
+c_func
+(paren
+l_string|&quot;Asix AX88190 PCMCIA ethernet driver&quot;
+)paren
 suffix:semicolon
-macro_line|#else
-DECL|macro|DEBUG
-mdefine_line|#define DEBUG(n, args...)
-macro_line|#endif
-DECL|macro|DEV_KFREE_SKB
-mdefine_line|#define DEV_KFREE_SKB(skb) dev_kfree_skb(skb);
-DECL|macro|skb_tx_check
-mdefine_line|#define skb_tx_check(dev, skb)
-DECL|macro|add_rx_bytes
-mdefine_line|#define add_rx_bytes(stats, n) (stats)-&gt;rx_bytes += n;
-DECL|macro|add_tx_bytes
-mdefine_line|#define add_tx_bytes(stats, n) (stats)-&gt;tx_bytes += n;
-DECL|macro|netif_mark_up
-mdefine_line|#define netif_mark_up(dev)&t;do { } while (0)
-DECL|macro|netif_mark_down
-mdefine_line|#define netif_mark_down(dev)&t;do { } while (0)
-multiline_comment|/*====================================================================*/
-multiline_comment|/* Parameters that can be set with &squot;insmod&squot; */
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
+)paren
+suffix:semicolon
 DECL|macro|INT_MODULE_PARM
 mdefine_line|#define INT_MODULE_PARM(n, v) static int n = v; MODULE_PARM(n, &quot;i&quot;)
 multiline_comment|/* Bit map of interrupts to choose from */
@@ -114,29 +97,29 @@ comma
 l_string|&quot;1-4i&quot;
 )paren
 suffix:semicolon
-multiline_comment|/* Ugh!  Let the user hardwire the hardware address for queer cards */
-DECL|variable|hw_addr
-r_static
-r_int
-id|hw_addr
-(braket
-l_int|6
-)braket
-op_assign
-(brace
-l_int|0
-comma
-multiline_comment|/* ... */
-)brace
-suffix:semicolon
-id|MODULE_PARM
+macro_line|#ifdef PCMCIA_DEBUG
+id|INT_MODULE_PARM
 c_func
 (paren
-id|hw_addr
+id|pc_debug
 comma
-l_string|&quot;6i&quot;
+id|PCMCIA_DEBUG
 )paren
 suffix:semicolon
+DECL|macro|DEBUG
+mdefine_line|#define DEBUG(n, args...) if (pc_debug&gt;(n)) printk(KERN_DEBUG args)
+DECL|variable|version
+r_static
+r_char
+op_star
+id|version
+op_assign
+l_string|&quot;axnet_cs.c 1.28 2002/06/29 06:27:37 (David Hinds)&quot;
+suffix:semicolon
+macro_line|#else
+DECL|macro|DEBUG
+mdefine_line|#define DEBUG(n, args...)
+macro_line|#endif
 multiline_comment|/*====================================================================*/
 r_static
 r_void
@@ -377,6 +360,71 @@ id|dev_link_t
 op_star
 id|dev_list
 suffix:semicolon
+r_static
+r_int
+id|axdev_init
+c_func
+(paren
+r_struct
+id|net_device
+op_star
+id|dev
+)paren
+suffix:semicolon
+r_static
+r_void
+id|AX88190_init
+c_func
+(paren
+r_struct
+id|net_device
+op_star
+id|dev
+comma
+r_int
+id|startp
+)paren
+suffix:semicolon
+r_static
+r_int
+id|ax_open
+c_func
+(paren
+r_struct
+id|net_device
+op_star
+id|dev
+)paren
+suffix:semicolon
+r_static
+r_int
+id|ax_close
+c_func
+(paren
+r_struct
+id|net_device
+op_star
+id|dev
+)paren
+suffix:semicolon
+r_static
+r_void
+id|ax_interrupt
+c_func
+(paren
+r_int
+id|irq
+comma
+r_void
+op_star
+id|dev_id
+comma
+r_struct
+id|pt_regs
+op_star
+id|regs
+)paren
+suffix:semicolon
 multiline_comment|/*====================================================================*/
 DECL|struct|axnet_dev_t
 r_typedef
@@ -424,6 +472,10 @@ suffix:semicolon
 DECL|member|phy_id
 r_int
 id|phy_id
+suffix:semicolon
+DECL|member|flags
+r_int
+id|flags
 suffix:semicolon
 DECL|typedef|axnet_dev_t
 )brace
@@ -700,7 +752,7 @@ id|link-&gt;conf.IntType
 op_assign
 id|INT_MEMORY_AND_IO
 suffix:semicolon
-id|ethdev_init
+id|axdev_init
 c_func
 (paren
 id|dev
@@ -1063,11 +1115,13 @@ id|EN0_ISR
 comma
 (brace
 id|E8390_RXOFF
+op_or
+l_int|0x40
 comma
 id|EN0_RXCR
 )brace
 comma
-multiline_comment|/* 0x20  Set to monitor */
+multiline_comment|/* 0x60  Set to monitor */
 (brace
 id|E8390_TXOFF
 comma
@@ -1230,93 +1284,6 @@ l_int|1
 suffix:semicolon
 )brace
 multiline_comment|/* get_prom */
-multiline_comment|/*======================================================================&n;&n;    This should be totally unnecessary... but when we can&squot;t figure&n;    out the hardware address any other way, we&squot;ll let the user hard&n;    wire it when the module is initialized.&n;&n;======================================================================*/
-DECL|function|get_hwired
-r_static
-r_int
-id|get_hwired
-c_func
-(paren
-id|dev_link_t
-op_star
-id|link
-)paren
-(brace
-r_struct
-id|net_device
-op_star
-id|dev
-op_assign
-id|link-&gt;priv
-suffix:semicolon
-r_int
-id|i
-suffix:semicolon
-r_for
-c_loop
-(paren
-id|i
-op_assign
-l_int|0
-suffix:semicolon
-id|i
-OL
-l_int|6
-suffix:semicolon
-id|i
-op_increment
-)paren
-r_if
-c_cond
-(paren
-id|hw_addr
-(braket
-id|i
-)braket
-op_ne
-l_int|0
-)paren
-r_break
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|i
-op_eq
-l_int|6
-)paren
-r_return
-l_int|0
-suffix:semicolon
-r_for
-c_loop
-(paren
-id|i
-op_assign
-l_int|0
-suffix:semicolon
-id|i
-OL
-l_int|6
-suffix:semicolon
-id|i
-op_increment
-)paren
-id|dev-&gt;dev_addr
-(braket
-id|i
-)braket
-op_assign
-id|hw_addr
-(braket
-id|i
-)braket
-suffix:semicolon
-r_return
-l_int|1
-suffix:semicolon
-)brace
-multiline_comment|/* get_hwired */
 multiline_comment|/*======================================================================&n;&n;    axnet_config() is scheduled to run after a CARD_INSERTION event&n;    is received, to configure the PCMCIA socket, and to make the&n;    ethernet device available to the system.&n;&n;======================================================================*/
 DECL|macro|CS_CHECK
 mdefine_line|#define CS_CHECK(fn, args...) &bslash;&n;while ((last_ret=CardServices(last_fn=(fn), args))!=0) goto cs_failed
@@ -1602,12 +1569,10 @@ id|link-&gt;conf.ConfigBase
 op_assign
 id|parse.config.base
 suffix:semicolon
+multiline_comment|/* don&squot;t trust the CIS on this; Linksys got it wrong */
 id|link-&gt;conf.Present
 op_assign
-id|parse.config.rmask
-(braket
-l_int|0
-)braket
+l_int|0x63
 suffix:semicolon
 multiline_comment|/* Configure card */
 id|link-&gt;state
@@ -1720,7 +1685,7 @@ id|next_entry
 suffix:semicolon
 id|link-&gt;conf.ConfigIndex
 op_assign
-id|cfg-&gt;index
+l_int|0x05
 suffix:semicolon
 multiline_comment|/* For multifunction cards, by convention, we configure the&n;&t;   network function with window 0, and serial with window 1 */
 r_if
@@ -1950,23 +1915,20 @@ c_func
 (paren
 id|link
 )paren
-op_logical_and
-op_logical_neg
-id|get_hwired
-c_func
-(paren
-id|link
-)paren
 )paren
 (brace
 id|printk
 c_func
 (paren
 id|KERN_NOTICE
-l_string|&quot;axnet_cs: unable to read hardware net&quot;
-l_string|&quot; address for io base %#3lx&bslash;n&quot;
-comma
-id|dev-&gt;base_addr
+l_string|&quot;axnet_cs: this is not an AX88190 card!&bslash;n&quot;
+)paren
+suffix:semicolon
+id|printk
+c_func
+(paren
+id|KERN_NOTICE
+l_string|&quot;axnet_cs: use pcnet_cs instead.&bslash;n&quot;
 )paren
 suffix:semicolon
 id|unregister_netdev
@@ -2034,18 +1996,48 @@ op_assign
 op_amp
 id|info-&gt;node
 suffix:semicolon
-id|link-&gt;state
-op_and_assign
-op_complement
-id|DEV_CONFIG_PENDING
+r_if
+c_cond
+(paren
+id|inb
+c_func
+(paren
+id|dev-&gt;base_addr
+op_plus
+id|AXNET_TEST
+)paren
+op_ne
+l_int|0
+)paren
+id|info-&gt;flags
+op_or_assign
+id|IS_AX88790
+suffix:semicolon
+r_else
+id|info-&gt;flags
+op_or_assign
+id|IS_AX88190
 suffix:semicolon
 id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;%s: Asix AX88190: io %#3lx, irq %d, hw_addr &quot;
+l_string|&quot;%s: Asix AX88%d90: io %#3lx, irq %d, hw_addr &quot;
 comma
 id|dev-&gt;name
+comma
+(paren
+(paren
+id|info-&gt;flags
+op_amp
+id|IS_AX88790
+)paren
+ques
+c_cond
+l_int|7
+suffix:colon
+l_int|1
+)paren
 comma
 id|dev-&gt;base_addr
 comma
@@ -2088,6 +2080,104 @@ l_string|&quot;:&quot;
 suffix:colon
 l_string|&quot;&bslash;n&quot;
 )paren
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|info-&gt;flags
+op_amp
+id|IS_AX88790
+)paren
+id|outb
+c_func
+(paren
+l_int|0x10
+comma
+id|dev-&gt;base_addr
+op_plus
+id|AXNET_GPIO
+)paren
+suffix:semicolon
+multiline_comment|/* select Internal PHY */
+r_for
+c_loop
+(paren
+id|i
+op_assign
+l_int|0
+suffix:semicolon
+id|i
+OL
+l_int|32
+suffix:semicolon
+id|i
+op_increment
+)paren
+(brace
+id|j
+op_assign
+id|mdio_read
+c_func
+(paren
+id|dev-&gt;base_addr
+op_plus
+id|AXNET_MII_EEP
+comma
+id|i
+comma
+l_int|1
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+(paren
+id|j
+op_ne
+l_int|0
+)paren
+op_logical_and
+(paren
+id|j
+op_ne
+l_int|0xffff
+)paren
+)paren
+r_break
+suffix:semicolon
+)brace
+multiline_comment|/* Maybe PHY is in power down mode. (PPD_SET = 1) &n;       Bit 2 of CCSR is active low. */
+r_if
+c_cond
+(paren
+id|i
+op_eq
+l_int|32
+)paren
+(brace
+id|conf_reg_t
+id|reg
+op_assign
+(brace
+l_int|0
+comma
+id|CS_WRITE
+comma
+id|CISREG_CCSR
+comma
+l_int|0x04
+)brace
+suffix:semicolon
+id|CardServices
+c_func
+(paren
+id|AccessConfigurationRegister
+comma
+id|link-&gt;handle
+comma
+op_amp
+id|reg
 )paren
 suffix:semicolon
 r_for
@@ -2137,6 +2227,7 @@ l_int|0xffff
 r_break
 suffix:semicolon
 )brace
+)brace
 id|info-&gt;phy_id
 op_assign
 (paren
@@ -2182,6 +2273,11 @@ l_string|&quot;  No MII transceivers found!&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
+id|link-&gt;state
+op_and_assign
+op_complement
+id|DEV_CONFIG_PENDING
+suffix:semicolon
 r_return
 suffix:semicolon
 id|cs_failed
@@ -2206,6 +2302,11 @@ id|u_long
 )paren
 id|link
 )paren
+suffix:semicolon
+id|link-&gt;state
+op_and_assign
+op_complement
+id|DEV_CONFIG_PENDING
 suffix:semicolon
 r_return
 suffix:semicolon
@@ -2255,7 +2356,17 @@ l_int|1
 comma
 l_string|&quot;axnet_cs: release postponed, &squot;%s&squot; still open&bslash;n&quot;
 comma
-id|info-&gt;node.dev_name
+(paren
+(paren
+id|axnet_dev_t
+op_star
+)paren
+(paren
+id|link-&gt;priv
+)paren
+)paren
+op_member_access_from_pointer
+id|node.dev_name
 )paren
 suffix:semicolon
 id|link-&gt;state
@@ -2393,6 +2504,8 @@ suffix:colon
 id|link-&gt;state
 op_or_assign
 id|DEV_PRESENT
+op_or
+id|DEV_CONFIG_PENDING
 suffix:semicolon
 id|axnet_config
 c_func
@@ -2488,7 +2601,7 @@ op_amp
 id|info-&gt;dev
 )paren
 suffix:semicolon
-id|NS8390_init
+id|AX88190_init
 c_func
 (paren
 op_amp
@@ -2960,6 +3073,13 @@ id|info-&gt;link_status
 op_assign
 l_int|0x00
 suffix:semicolon
+id|init_timer
+c_func
+(paren
+op_amp
+id|info-&gt;watchdog
+)paren
+suffix:semicolon
 id|info-&gt;watchdog.function
 op_assign
 op_amp
@@ -2986,7 +3106,7 @@ id|info-&gt;watchdog
 )paren
 suffix:semicolon
 r_return
-id|ei_open
+id|ax_open
 c_func
 (paren
 id|dev
@@ -3034,6 +3154,12 @@ comma
 id|dev-&gt;name
 )paren
 suffix:semicolon
+id|ax_close
+c_func
+(paren
+id|dev
+)paren
+suffix:semicolon
 id|free_irq
 c_func
 (paren
@@ -3046,12 +3172,6 @@ id|link-&gt;open
 op_decrement
 suffix:semicolon
 id|netif_stop_queue
-c_func
-(paren
-id|dev
-)paren
-suffix:semicolon
-id|netif_mark_down
 c_func
 (paren
 id|dev
@@ -3248,7 +3368,7 @@ id|info-&gt;stale
 op_assign
 l_int|0
 suffix:semicolon
-id|ei_interrupt
+id|ax_interrupt
 c_func
 (paren
 id|irq
@@ -3558,7 +3678,7 @@ comma
 id|dev-&gt;name
 )paren
 suffix:semicolon
-id|NS8390_init
+id|AX88190_init
 c_func
 (paren
 id|dev
@@ -4247,7 +4367,7 @@ l_string|&quot;does not match!&bslash;n&quot;
 suffix:semicolon
 r_return
 op_minus
-l_int|1
+id|EINVAL
 suffix:semicolon
 )brace
 id|register_pccard_driver
@@ -4322,15 +4442,15 @@ id|exit_axnet_cs
 suffix:semicolon
 multiline_comment|/*====================================================================*/
 multiline_comment|/* 8390.c: A general NS8390 ethernet driver core for linux. */
-multiline_comment|/*&n;&t;Written 1992-94 by Donald Becker.&n;  &n;&t;Copyright 1993 United States Government as represented by the&n;&t;Director, National Security Agency.&n;&n;&t;This software may be used and distributed according to the terms&n;&t;of the GNU General Public License, incorporated herein by reference.&n;&n;&t;The author may be reached as becker@CESDIS.gsfc.nasa.gov, or C/O&n;&t;Center of Excellence in Space Data and Information Sciences&n;&t;   Code 930.5, Goddard Space Flight Center, Greenbelt MD 20771&n;  &n;  This is the chip-specific code for many 8390-based ethernet adaptors.&n;  This is not a complete driver, it must be combined with board-specific&n;  code such as ne.c, wd.c, 3c503.c, etc.&n;&n;  Seeing how at least eight drivers use this code, (not counting the&n;  PCMCIA ones either) it is easy to break some card by what seems like&n;  a simple innocent change. Please contact me or Donald if you think&n;  you have found something that needs changing. -- PG&n;&n;&n;  Changelog:&n;&n;  Paul Gortmaker&t;: remove set_bit lock, other cleanups.&n;  Paul Gortmaker&t;: add ei_get_8390_hdr() so we can pass skb&squot;s to &n;&t;&t;&t;  ei_block_input() for eth_io_copy_and_sum().&n;  Paul Gortmaker&t;: exchange static int ei_pingpong for a #define,&n;&t;&t;&t;  also add better Tx error handling.&n;  Paul Gortmaker&t;: rewrite Rx overrun handling as per NS specs.&n;  Alexey Kuznetsov&t;: use the 8390&squot;s six bit hash multicast filter.&n;  Paul Gortmaker&t;: tweak ANK&squot;s above multicast changes a bit.&n;  Paul Gortmaker&t;: update packet statistics for v2.1.x&n;  Alan Cox&t;&t;: support arbitary stupid port mappings on the&n;  &t;&t;&t;  68K Macintosh. Support &gt;16bit I/O spaces&n;  Paul Gortmaker&t;: add kmod support for auto-loading of the 8390&n;&t;&t;&t;  module by all drivers that require it.&n;  Alan Cox&t;&t;: Spinlocking work, added &squot;BUG_83C690&squot;&n;  Paul Gortmaker&t;: Separate out Tx timeout code from Tx path.&n;&n;  Sources:&n;  The National Semiconductor LAN Databook, and the 3Com 3c503 databook.&n;&n;  */
-DECL|variable|version
+multiline_comment|/*&n;&t;Written 1992-94 by Donald Becker.&n;  &n;&t;Copyright 1993 United States Government as represented by the&n;&t;Director, National Security Agency.&n;&n;&t;This software may be used and distributed according to the terms&n;&t;of the GNU General Public License, incorporated herein by reference.&n;&n;&t;The author may be reached as becker@scyld.com, or C/O&n;&t;Scyld Computing Corporation&n;&t;410 Severn Ave., Suite 210&n;&t;Annapolis MD 21403&n;&n;  This is the chip-specific code for many 8390-based ethernet adaptors.&n;  This is not a complete driver, it must be combined with board-specific&n;  code such as ne.c, wd.c, 3c503.c, etc.&n;&n;  Seeing how at least eight drivers use this code, (not counting the&n;  PCMCIA ones either) it is easy to break some card by what seems like&n;  a simple innocent change. Please contact me or Donald if you think&n;  you have found something that needs changing. -- PG&n;&n;  Changelog:&n;&n;  Paul Gortmaker&t;: remove set_bit lock, other cleanups.&n;  Paul Gortmaker&t;: add ei_get_8390_hdr() so we can pass skb&squot;s to &n;&t;&t;&t;  ei_block_input() for eth_io_copy_and_sum().&n;  Paul Gortmaker&t;: exchange static int ei_pingpong for a #define,&n;&t;&t;&t;  also add better Tx error handling.&n;  Paul Gortmaker&t;: rewrite Rx overrun handling as per NS specs.&n;  Alexey Kuznetsov&t;: use the 8390&squot;s six bit hash multicast filter.&n;  Paul Gortmaker&t;: tweak ANK&squot;s above multicast changes a bit.&n;  Paul Gortmaker&t;: update packet statistics for v2.1.x&n;  Alan Cox&t;&t;: support arbitary stupid port mappings on the&n;  &t;&t;&t;  68K Macintosh. Support &gt;16bit I/O spaces&n;  Paul Gortmaker&t;: add kmod support for auto-loading of the 8390&n;&t;&t;&t;  module by all drivers that require it.&n;  Alan Cox&t;&t;: Spinlocking work, added &squot;BUG_83C690&squot;&n;  Paul Gortmaker&t;: Separate out Tx timeout code from Tx path.&n;&n;  Sources:&n;  The National Semiconductor LAN Databook, and the 3Com 3c503 databook.&n;&n;  */
+DECL|variable|version_8390
 r_static
 r_const
 r_char
 op_star
-id|version
+id|version_8390
 op_assign
-l_string|&quot;8390.c:v1.10cvs 9/23/94 Donald Becker (becker@cesdis.gsfc.nasa.gov)&bslash;n&quot;
+l_string|&quot;8390.c:v1.10cvs 9/23/94 Donald Becker (becker@scyld.com)&bslash;n&quot;
 suffix:semicolon
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/bitops.h&gt;
@@ -4457,12 +4577,11 @@ id|dev
 )paren
 suffix:semicolon
 multiline_comment|/*&n; *&t;SMP and the 8390 setup.&n; *&n; *&t;The 8390 isnt exactly designed to be multithreaded on RX/TX. There is&n; *&t;a page register that controls bank and packet buffer access. We guard&n; *&t;this with ei_local-&gt;page_lock. Nobody should assume or set the page other&n; *&t;than zero when the lock is not held. Lock holders must restore page 0&n; *&t;before unlocking. Even pure readers must take the lock to protect in &n; *&t;page 0.&n; *&n; *&t;To make life difficult the chip can also be very slow. We therefore can&squot;t&n; *&t;just use spinlocks. For the longer lockups we disable the irq the device&n; *&t;sits on and hold the lock. We must hold the lock because there is a dual&n; *&t;processor case other than interrupts (get stats/set multicast list in&n; *&t;parallel with each other and transmit).&n; *&n; *&t;Note: in theory we can just disable the irq on the card _but_ there is&n; *&t;a latency on SMP irq delivery. So we can easily go &quot;disable irq&quot; &quot;sync irqs&quot;&n; *&t;enter lock, take the queued irq. So we waddle instead of flying.&n; *&n; *&t;Finally by special arrangement for the purpose of being generally &n; *&t;annoying the transmit function is called bh atomic. That places&n; *&t;restrictions on the user context callers as disable_irq won&squot;t save&n; *&t;them.&n; */
-"&f;"
-multiline_comment|/**&n; * ei_open - Open/initialize the board.&n; * @dev: network device to initialize&n; *&n; * This routine goes all-out, setting everything&n; * up anew at each open, even though many of these registers should only&n; * need to be set once at boot.&n; */
-DECL|function|ei_open
+multiline_comment|/**&n; * ax_open - Open/initialize the board.&n; * @dev: network device to initialize&n; *&n; * This routine goes all-out, setting everything&n; * up anew at each open, even though many of these registers should only&n; * need to be set once at boot.&n; */
+DECL|function|ax_open
 r_static
 r_int
-id|ei_open
+id|ax_open
 c_func
 (paren
 r_struct
@@ -4487,7 +4606,7 @@ op_star
 )paren
 id|dev-&gt;priv
 suffix:semicolon
-multiline_comment|/* This can&squot;t happen unless somebody forgot to call ethdev_init(). */
+multiline_comment|/* This can&squot;t happen unless somebody forgot to call axdev_init(). */
 r_if
 c_cond
 (paren
@@ -4500,7 +4619,7 @@ id|printk
 c_func
 (paren
 id|KERN_EMERG
-l_string|&quot;%s: ei_open passed a non-existent device!&bslash;n&quot;
+l_string|&quot;%s: ax_open passed a non-existent device!&bslash;n&quot;
 comma
 id|dev-&gt;name
 )paren
@@ -4545,7 +4664,7 @@ comma
 id|flags
 )paren
 suffix:semicolon
-id|NS8390_init
+id|AX88190_init
 c_func
 (paren
 id|dev
@@ -4554,12 +4673,6 @@ l_int|1
 )paren
 suffix:semicolon
 multiline_comment|/* Set the flag before we drop the lock, That way the IRQ arrives&n;&t;   after its set and we get no silly warnings */
-id|netif_mark_up
-c_func
-(paren
-id|dev
-)paren
-suffix:semicolon
 id|netif_start_queue
 c_func
 (paren
@@ -4578,6 +4691,69 @@ suffix:semicolon
 id|ei_local-&gt;irqlock
 op_assign
 l_int|0
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+)brace
+DECL|macro|dev_lock
+mdefine_line|#define dev_lock(dev) (((struct ei_device *)(dev)-&gt;priv)-&gt;page_lock)
+multiline_comment|/**&n; * ax_close - shut down network device&n; * @dev: network device to close&n; *&n; * Opposite of ax_open(). Only used when &quot;ifconfig &lt;devname&gt; down&quot; is done.&n; */
+DECL|function|ax_close
+r_int
+id|ax_close
+c_func
+(paren
+r_struct
+id|net_device
+op_star
+id|dev
+)paren
+(brace
+r_int
+r_int
+id|flags
+suffix:semicolon
+multiline_comment|/*&n;&t; *      Hold the page lock during close&n;&t; */
+id|spin_lock_irqsave
+c_func
+(paren
+op_amp
+id|dev_lock
+c_func
+(paren
+id|dev
+)paren
+comma
+id|flags
+)paren
+suffix:semicolon
+id|AX88190_init
+c_func
+(paren
+id|dev
+comma
+l_int|0
+)paren
+suffix:semicolon
+id|spin_unlock_irqrestore
+c_func
+(paren
+op_amp
+id|dev_lock
+c_func
+(paren
+id|dev
+)paren
+comma
+id|flags
+)paren
+suffix:semicolon
+id|netif_stop_queue
+c_func
+(paren
+id|dev
+)paren
 suffix:semicolon
 r_return
 l_int|0
@@ -4739,7 +4915,7 @@ c_func
 id|dev
 )paren
 suffix:semicolon
-id|NS8390_init
+id|AX88190_init
 c_func
 (paren
 id|dev
@@ -4819,14 +4995,6 @@ c_func
 id|dev
 )paren
 suffix:semicolon
-id|skb_tx_check
-c_func
-(paren
-id|dev
-comma
-id|skb
-)paren
-suffix:semicolon
 id|length
 op_assign
 id|skb-&gt;len
@@ -4889,7 +5057,6 @@ id|length
 suffix:colon
 id|ETH_ZLEN
 suffix:semicolon
-macro_line|#ifdef EI_PINGPONG
 multiline_comment|/*&n;&t; * We have two Tx slots available for use. Find the first free&n;&t; * slot, and then perform some sanity checks. With two Tx bufs,&n;&t; * you get very close to transmitting back-to-back packets. With&n;&t; * only one Tx buf, the transmitter sits idle while you reload the&n;&t; * card, leaving a substantial gap between each transmitted packet.&n;&t; */
 r_if
 c_cond
@@ -5134,45 +5301,6 @@ c_func
 id|dev
 )paren
 suffix:semicolon
-macro_line|#else&t;/* EI_PINGPONG */
-multiline_comment|/*&n;&t; * Only one Tx buffer in use. You need two Tx bufs to come close to&n;&t; * back-to-back transmits. Expect a 20 -&gt; 25% performance hit on&n;&t; * reasonable hardware if you only use one Tx buffer.&n;&t; */
-id|ei_block_output
-c_func
-(paren
-id|dev
-comma
-id|length
-comma
-id|skb-&gt;data
-comma
-id|ei_local-&gt;tx_start_page
-)paren
-suffix:semicolon
-id|ei_local-&gt;txing
-op_assign
-l_int|1
-suffix:semicolon
-id|NS8390_trigger_send
-c_func
-(paren
-id|dev
-comma
-id|send_length
-comma
-id|ei_local-&gt;tx_start_page
-)paren
-suffix:semicolon
-id|dev-&gt;trans_start
-op_assign
-id|jiffies
-suffix:semicolon
-id|netif_stop_queue
-c_func
-(paren
-id|dev
-)paren
-suffix:semicolon
-macro_line|#endif&t;/* EI_PINGPONG */
 multiline_comment|/* Turn 8390 interrupts back on. */
 id|ei_local-&gt;irqlock
 op_assign
@@ -5201,30 +5329,24 @@ c_func
 id|dev-&gt;irq
 )paren
 suffix:semicolon
-id|DEV_KFREE_SKB
+id|dev_kfree_skb
 (paren
 id|skb
 )paren
 suffix:semicolon
-id|add_tx_bytes
-c_func
-(paren
-op_amp
-id|ei_local-&gt;stat
-comma
+id|ei_local-&gt;stat.tx_bytes
+op_add_assign
 id|send_length
-)paren
 suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
 )brace
-"&f;"
-multiline_comment|/**&n; * ei_interrupt - handle the interrupts from an 8390&n; * @irq: interrupt number&n; * @dev_id: a pointer to the net_device&n; * @regs: unused&n; *&n; * Handle the ether interface interrupts. We pull packets from&n; * the 8390 via the card specific functions and fire them at the networking&n; * stack. We also handle transmit completions and wake the transmit path if&n; * neccessary. We also update the counters and do other housekeeping as&n; * needed.&n; */
-DECL|function|ei_interrupt
+multiline_comment|/**&n; * ax_interrupt - handle the interrupts from an 8390&n; * @irq: interrupt number&n; * @dev_id: a pointer to the net_device&n; * @regs: unused&n; *&n; * Handle the ether interface interrupts. We pull packets from&n; * the 8390 via the card specific functions and fire them at the networking&n; * stack. We also handle transmit completions and wake the transmit path if&n; * neccessary. We also update the counters and do other housekeeping as&n; * needed.&n; */
+DECL|function|ax_interrupt
 r_static
 r_void
-id|ei_interrupt
+id|ax_interrupt
 c_func
 (paren
 r_int
@@ -5957,7 +6079,6 @@ op_plus
 id|EN0_TSR
 )paren
 suffix:semicolon
-macro_line|#ifdef EI_PINGPONG
 multiline_comment|/*&n;&t; * There are two Tx buffers, see which one finished, and trigger&n;&t; * the send of another one if it exists.&n;&t; */
 id|ei_local-&gt;txqueue
 op_decrement
@@ -6132,13 +6253,6 @@ suffix:semicolon
 )brace
 singleline_comment|//&t;else printk(KERN_WARNING &quot;%s: unexpected TX-done interrupt, lasttx=%d.&bslash;n&quot;,
 singleline_comment|//&t;&t;&t;dev-&gt;name, ei_local-&gt;lasttx);
-macro_line|#else&t;/* EI_PINGPONG */
-multiline_comment|/*&n;&t; *  Single Tx buffer: mark it free so another packet can be loaded.&n;&t; */
-id|ei_local-&gt;txing
-op_assign
-l_int|0
-suffix:semicolon
-macro_line|#endif
 multiline_comment|/* Minimize Tx latency: update the statistics after we restart TXing. */
 r_if
 c_cond
@@ -6583,14 +6697,9 @@ suffix:semicolon
 id|ei_local-&gt;stat.rx_packets
 op_increment
 suffix:semicolon
-id|add_rx_bytes
-c_func
-(paren
-op_amp
-id|ei_local-&gt;stat
-comma
+id|ei_local-&gt;stat.rx_bytes
+op_add_assign
 id|pkt_len
-)paren
 suffix:semicolon
 r_if
 c_cond
@@ -7050,7 +7159,7 @@ c_func
 (paren
 id|E8390_RXCONFIG
 op_or
-l_int|0x18
+l_int|0x58
 comma
 id|e8390_base
 op_plus
@@ -7074,7 +7183,7 @@ c_func
 (paren
 id|E8390_RXCONFIG
 op_or
-l_int|0x08
+l_int|0x48
 comma
 id|e8390_base
 op_plus
@@ -7087,6 +7196,8 @@ id|outb_p
 c_func
 (paren
 id|E8390_RXCONFIG
+op_or
+l_int|0x40
 comma
 id|e8390_base
 op_plus
@@ -7115,16 +7226,11 @@ id|spin_lock_irqsave
 c_func
 (paren
 op_amp
+id|dev_lock
+c_func
 (paren
-(paren
-r_struct
-id|ei_device
-op_star
+id|dev
 )paren
-id|dev-&gt;priv
-)paren
-op_member_access_from_pointer
-id|page_lock
 comma
 id|flags
 )paren
@@ -7139,26 +7245,21 @@ id|spin_unlock_irqrestore
 c_func
 (paren
 op_amp
+id|dev_lock
+c_func
 (paren
-(paren
-r_struct
-id|ei_device
-op_star
+id|dev
 )paren
-id|dev-&gt;priv
-)paren
-op_member_access_from_pointer
-id|page_lock
 comma
 id|flags
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * ethdev_init - init rest of 8390 device struct&n; * @dev: network device structure to init&n; *&n; * Initialize the rest of the 8390 device structure.  Do NOT __init&n; * this, as it is used by 8390 based modular drivers too.&n; */
-DECL|function|ethdev_init
+multiline_comment|/**&n; * axdev_init - init rest of 8390 device struct&n; * @dev: network device structure to init&n; *&n; * Initialize the rest of the 8390 device structure.  Do NOT __init&n; * this, as it is used by 8390 based modular drivers too.&n; */
+DECL|function|axdev_init
 r_static
 r_int
-id|ethdev_init
+id|axdev_init
 c_func
 (paren
 r_struct
@@ -7177,7 +7278,7 @@ l_int|1
 id|printk
 c_func
 (paren
-id|version
+id|version_8390
 )paren
 suffix:semicolon
 r_if
@@ -7273,14 +7374,13 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-"&f;"
 multiline_comment|/* This page of functions should be 8390 generic */
 multiline_comment|/* Follow National Semi&squot;s recommendations for initializing the &quot;NIC&quot;. */
-multiline_comment|/**&n; * NS8390_init - initialize 8390 hardware&n; * @dev: network device to initialize&n; * @startp: boolean.  non-zero value to initiate chip processing&n; *&n; *&t;Must be called with lock held.&n; */
-DECL|function|NS8390_init
+multiline_comment|/**&n; * AX88190_init - initialize 8390 hardware&n; * @dev: network device to initialize&n; * @startp: boolean.  non-zero value to initiate chip processing&n; *&n; *&t;Must be called with lock held.&n; */
+DECL|function|AX88190_init
 r_static
 r_void
-id|NS8390_init
+id|AX88190_init
 c_func
 (paren
 r_struct
@@ -7408,13 +7508,15 @@ id|outb_p
 c_func
 (paren
 id|E8390_RXOFF
+op_or
+l_int|0x40
 comma
 id|e8390_base
 op_plus
 id|EN0_RXCR
 )paren
 suffix:semicolon
-multiline_comment|/* 0x20 */
+multiline_comment|/* 0x60 */
 id|outb_p
 c_func
 (paren
@@ -7707,13 +7809,15 @@ id|outb_p
 c_func
 (paren
 id|E8390_RXCONFIG
+op_or
+l_int|0x40
 comma
 id|e8390_base
 op_plus
 id|EN0_RXCR
 )paren
 suffix:semicolon
-multiline_comment|/* rx on,  */
+multiline_comment|/* rx on, */
 id|do_set_multicast_list
 c_func
 (paren

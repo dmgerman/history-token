@@ -601,6 +601,7 @@ l_int|0x7a
 )brace
 )brace
 suffix:semicolon
+macro_line|#ifdef CONFIG_CRYPTO_HMAC
 multiline_comment|/*&n; * HMAC-MD5 test vectors from RFC2202&n; * (These need to be fixed to not use strlen).&n; */
 DECL|macro|HMAC_MD5_TEST_VECTORS
 mdefine_line|#define HMAC_MD5_TEST_VECTORS&t;7
@@ -1611,6 +1612,58 @@ comma
 l_int|0x3e
 )brace
 )brace
+comma
+multiline_comment|/* cross page test, need to retain key */
+(brace
+(brace
+l_char|&squot;J&squot;
+comma
+l_char|&squot;e&squot;
+comma
+l_char|&squot;f&squot;
+comma
+l_char|&squot;e&squot;
+comma
+l_int|0
+)brace
+comma
+l_string|&quot;what do ya want for nothing?&quot;
+comma
+(brace
+l_int|0x75
+comma
+l_int|0x0c
+comma
+l_int|0x78
+comma
+l_int|0x3e
+comma
+l_int|0x6a
+comma
+l_int|0xb0
+comma
+l_int|0xb5
+comma
+l_int|0x03
+comma
+l_int|0xea
+comma
+l_int|0xa8
+comma
+l_int|0x6e
+comma
+l_int|0x31
+comma
+l_int|0x0a
+comma
+l_int|0x5d
+comma
+l_int|0xb7
+comma
+l_int|0x38
+)brace
+)brace
+comma
 )brace
 suffix:semicolon
 multiline_comment|/*&n; * HMAC-SHA1 test vectors from RFC2202&n; */
@@ -2700,8 +2753,69 @@ comma
 l_int|0x91
 )brace
 )brace
+comma
+multiline_comment|/* cross page test */
+(brace
+(brace
+l_char|&squot;J&squot;
+comma
+l_char|&squot;e&squot;
+comma
+l_char|&squot;f&squot;
+comma
+l_char|&squot;e&squot;
+comma
+l_int|0
+)brace
+comma
+l_string|&quot;what do ya want for nothing?&quot;
+comma
+(brace
+l_int|0xef
+comma
+l_int|0xfc
+comma
+l_int|0xdf
+comma
+l_int|0x6a
+comma
+l_int|0xe5
+comma
+l_int|0xeb
+comma
+l_int|0x2f
+comma
+l_int|0xa2
+comma
+l_int|0xd2
+comma
+l_int|0x74
+comma
+l_int|0x16
+comma
+l_int|0xd5
+comma
+l_int|0xf1
+comma
+l_int|0x84
+comma
+l_int|0xdf
+comma
+l_int|0x9c
+comma
+l_int|0x25
+comma
+l_int|0x9a
+comma
+l_int|0x7c
+comma
+l_int|0x79
+)brace
+)brace
+comma
 )brace
 suffix:semicolon
+macro_line|#endif&t;/* CONFIG_CRYPTO_HMAC */
 multiline_comment|/*&n; * SHA1 test vectors  from from FIPS PUB 180-1&n; */
 DECL|macro|SHA1_TEST_VECTORS
 mdefine_line|#define SHA1_TEST_VECTORS&t;2

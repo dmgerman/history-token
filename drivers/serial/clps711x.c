@@ -568,6 +568,8 @@ id|clps711xuart_stop_tx
 c_func
 (paren
 id|port
+comma
+l_int|0
 )paren
 suffix:semicolon
 r_return
@@ -664,6 +666,8 @@ id|clps711xuart_stop_tx
 c_func
 (paren
 id|port
+comma
+l_int|0
 )paren
 suffix:semicolon
 )brace
@@ -1562,6 +1566,11 @@ op_amp
 id|clps711x_pops
 comma
 dot
+id|line
+op_assign
+l_int|0
+comma
+dot
 id|flags
 op_assign
 id|ASYNC_BOOT_AUTOCONF
@@ -1595,6 +1604,11 @@ id|ops
 op_assign
 op_amp
 id|clps711x_pops
+comma
+dot
+id|line
+op_assign
+l_int|1
 comma
 dot
 id|flags

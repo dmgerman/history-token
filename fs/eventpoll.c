@@ -13,6 +13,7 @@ macro_line|#include &lt;linux/poll.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/list.h&gt;
+macro_line|#include &lt;linux/hash.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;linux/wait.h&gt;
 macro_line|#include &lt;asm/bitops.h&gt;
@@ -46,12 +47,12 @@ macro_line|#else /* #if DEBUG_DPI != 0 */
 DECL|macro|DPI_SLAB_DEBUG
 mdefine_line|#define DPI_SLAB_DEBUG 0
 macro_line|#endif /* #if DEBUG_DPI != 0 */
-multiline_comment|/* Maximum storage for the eventpoll interest set */
-DECL|macro|EP_MAX_FDS_SIZE
-mdefine_line|#define EP_MAX_FDS_SIZE (1024 * 128)
-multiline_comment|/* We don&squot;t want the hash to be smaller than this */
-DECL|macro|EP_MIN_HASH_SIZE
-mdefine_line|#define EP_MIN_HASH_SIZE 101
+multiline_comment|/* Maximum size of the hash in bits ( 2^N ) */
+DECL|macro|EP_MAX_HASH_BITS
+mdefine_line|#define EP_MAX_HASH_BITS 17
+multiline_comment|/* Minimum size of the hash in bits ( 2^N ) */
+DECL|macro|EP_MIN_HASH_BITS
+mdefine_line|#define EP_MIN_HASH_BITS 9
 multiline_comment|/*&n; * Event buffer dimension used to cache events before sending them in&n; * userspace with a __copy_to_user(). The event buffer is in stack,&n; * so keep this size fairly small.&n; */
 DECL|macro|EP_EVENT_BUFF_SIZE
 mdefine_line|#define EP_EVENT_BUFF_SIZE 32
@@ -63,7 +64,7 @@ DECL|macro|EP_HENTRY_X_PAGE
 mdefine_line|#define EP_HENTRY_X_PAGE (PAGE_SIZE / sizeof(struct list_head))
 multiline_comment|/* Maximum size of the hash in pages */
 DECL|macro|EP_MAX_HPAGES
-mdefine_line|#define EP_MAX_HPAGES (EP_MAX_FDS_SIZE / EP_HENTRY_X_PAGE + 1)
+mdefine_line|#define EP_MAX_HPAGES ((1 &lt;&lt; EP_MAX_HASH_BITS) / EP_HENTRY_X_PAGE + 1)
 multiline_comment|/* Macro to allocate a &quot;struct epitem&quot; from the slab cache */
 DECL|macro|DPI_MEM_ALLOC
 mdefine_line|#define DPI_MEM_ALLOC()&t;(struct epitem *) kmem_cache_alloc(dpi_cache, SLAB_KERNEL)
@@ -115,9 +116,10 @@ id|list_head
 id|rdllist
 suffix:semicolon
 multiline_comment|/* Size of the hash */
-DECL|member|hsize
+DECL|member|hashbits
 r_int
-id|hsize
+r_int
+id|hashbits
 suffix:semicolon
 multiline_comment|/* Number of pages currently allocated for the hash */
 DECL|member|nhpages
@@ -219,11 +221,13 @@ suffix:semicolon
 suffix:semicolon
 r_static
 r_int
-id|ep_is_prime
+r_int
+id|ep_get_hash_bits
 c_func
 (paren
 r_int
-id|n
+r_int
+id|hintsize
 )paren
 suffix:semicolon
 r_static
@@ -287,10 +291,12 @@ op_star
 id|file
 comma
 r_int
-id|hsize
+r_int
+id|hashbits
 )paren
 suffix:semicolon
 r_static
+r_int
 r_int
 id|ep_hash_index
 c_func
@@ -319,6 +325,7 @@ op_star
 id|ep
 comma
 r_int
+r_int
 id|index
 )paren
 suffix:semicolon
@@ -333,7 +340,8 @@ op_star
 id|ep
 comma
 r_int
-id|hsize
+r_int
+id|hashbits
 )paren
 suffix:semicolon
 r_static
@@ -420,18 +428,6 @@ r_struct
 id|file
 op_star
 id|tfile
-)paren
-suffix:semicolon
-r_static
-r_int
-r_int
-id|ep_get_file_events
-c_func
-(paren
-r_struct
-id|file
-op_star
-id|file
 )paren
 suffix:semicolon
 r_static
@@ -707,78 +703,75 @@ id|eventpollfs_delete_dentry
 comma
 )brace
 suffix:semicolon
-multiline_comment|/* Report if the number is prime. Needed to correctly size the hash  */
-DECL|function|ep_is_prime
+multiline_comment|/*&n; * Calculate the size of the hash in bits. The returned size will be&n; * bounded between EP_MIN_HASH_BITS and EP_MAX_HASH_BITS.&n; */
+DECL|function|ep_get_hash_bits
 r_static
 r_int
-id|ep_is_prime
+r_int
+id|ep_get_hash_bits
 c_func
 (paren
 r_int
-id|n
-)paren
-(brace
-r_if
-c_cond
-(paren
-id|n
-OG
-l_int|3
-)paren
-(brace
-r_if
-c_cond
-(paren
-id|n
-op_amp
-l_int|1
+r_int
+id|hintsize
 )paren
 (brace
 r_int
+r_int
 id|i
 comma
-id|hn
-op_assign
-id|n
-op_div
-l_int|2
+id|val
 suffix:semicolon
 r_for
 c_loop
 (paren
 id|i
 op_assign
-l_int|3
+l_int|0
+comma
+id|val
+op_assign
+l_int|1
 suffix:semicolon
+id|val
+OL
+id|hintsize
+op_logical_and
 id|i
 OL
-id|hn
+l_int|8
+op_star
+r_sizeof
+(paren
+r_int
+)paren
 suffix:semicolon
 id|i
-op_add_assign
-l_int|2
-)paren
-r_if
-c_cond
-(paren
-op_logical_neg
-(paren
-id|n
-op_mod
-id|i
-)paren
-)paren
-r_return
-l_int|0
-suffix:semicolon
-)brace
-r_else
-r_return
-l_int|0
-suffix:semicolon
-)brace
-r_return
+op_increment
+comma
+id|val
+op_lshift_assign
 l_int|1
+)paren
+suffix:semicolon
+r_return
+id|i
+OL
+id|EP_MIN_HASH_BITS
+ques
+c_cond
+id|EP_MIN_HASH_BITS
+suffix:colon
+(paren
+id|i
+OG
+id|EP_MAX_HASH_BITS
+ques
+c_cond
+id|EP_MAX_HASH_BITS
+suffix:colon
+id|i
+)paren
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * This is called from inside fs/file_table.c:__fput() to unlink files&n; * from the eventpoll interface. We need to have this facility to cleanup&n; * correctly files that are closed without being removed from the eventpoll&n; * interface.&n; */
@@ -885,7 +878,7 @@ id|flags
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * It opens an eventpoll file descriptor by suggesting a storage of &quot;size&quot;&n; * file descriptors. It is the kernel part of the userspace epoll_create(2).&n; */
+multiline_comment|/*&n; * It opens an eventpoll file descriptor by suggesting a storage of &quot;size&quot;&n; * file descriptors. The size parameter is just an hint about how to size&n; * data structures. It won&squot;t prevent the user to store more than &quot;size&quot;&n; * file descriptors inside the epoll interface. It is the kernel part of&n; * the userspace epoll_create(2).&n; */
 DECL|function|sys_epoll_create
 id|asmlinkage
 r_int
@@ -900,6 +893,10 @@ r_int
 id|error
 comma
 id|fd
+suffix:semicolon
+r_int
+r_int
+id|hashbits
 suffix:semicolon
 r_struct
 id|inode
@@ -926,32 +923,18 @@ id|size
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/* Search the nearest prime number higher than &quot;size&quot; */
-r_for
-c_loop
-(paren
-suffix:semicolon
-op_logical_neg
-id|ep_is_prime
+multiline_comment|/* Correctly size the hash */
+id|hashbits
+op_assign
+id|ep_get_hash_bits
 c_func
 (paren
-id|size
-)paren
-suffix:semicolon
-id|size
-op_increment
-)paren
-suffix:semicolon
-r_if
-c_cond
 (paren
-id|size
-OL
-id|EP_MIN_HASH_SIZE
+r_int
+r_int
 )paren
 id|size
-op_assign
-id|EP_MIN_HASH_SIZE
+)paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * Creates all the items needed to setup an eventpoll file. That is,&n;&t; * a file structure, and inode and a free file descriptor.&n;&t; */
 id|error
@@ -985,7 +968,7 @@ c_func
 (paren
 id|file
 comma
-id|size
+id|hashbits
 )paren
 suffix:semicolon
 r_if
@@ -1438,6 +1421,18 @@ comma
 id|timeout
 )paren
 )paren
+suffix:semicolon
+multiline_comment|/* The maximum number of event must be greater than zero */
+r_if
+c_cond
+(paren
+id|maxevents
+op_le
+l_int|0
+)paren
+r_return
+op_minus
+id|EINVAL
 suffix:semicolon
 multiline_comment|/* Verify that the area passed by the user is writeable */
 r_if
@@ -2059,7 +2054,8 @@ op_star
 id|file
 comma
 r_int
-id|hsize
+r_int
+id|hashbits
 )paren
 (brace
 r_int
@@ -2119,7 +2115,7 @@ c_func
 (paren
 id|ep
 comma
-id|hsize
+id|hashbits
 )paren
 suffix:semicolon
 r_if
@@ -2194,6 +2190,7 @@ multiline_comment|/*&n; * Calculate the index of the hash relative to &quot;file
 DECL|function|ep_hash_index
 r_static
 r_int
+r_int
 id|ep_hash_index
 c_func
 (paren
@@ -2211,25 +2208,14 @@ id|file
 r_return
 (paren
 r_int
-)paren
-(paren
-(paren
-(paren
-(paren
-r_int
 r_int
 )paren
-id|file
-)paren
-op_div
-r_sizeof
+id|hash_ptr
+c_func
 (paren
-r_struct
 id|file
-)paren
-)paren
-op_mod
-id|ep-&gt;hsize
+comma
+id|ep-&gt;hashbits
 )paren
 suffix:semicolon
 )brace
@@ -2247,6 +2233,7 @@ id|eventpoll
 op_star
 id|ep
 comma
+r_int
 r_int
 id|index
 )paren
@@ -2291,13 +2278,18 @@ op_star
 id|ep
 comma
 r_int
-id|hsize
+r_int
+id|hashbits
 )paren
 (brace
 r_int
 id|error
-comma
+suffix:semicolon
+r_int
+r_int
 id|i
+comma
+id|hsize
 suffix:semicolon
 id|INIT_LIST_HEAD
 c_func
@@ -2335,12 +2327,22 @@ id|ep-&gt;rdllist
 )paren
 suffix:semicolon
 multiline_comment|/* Hash allocation and setup */
-id|ep-&gt;hsize
-op_assign
 id|hsize
+op_assign
+l_int|1
+op_lshift
+id|hashbits
+suffix:semicolon
+id|ep-&gt;hashbits
+op_assign
+id|hashbits
 suffix:semicolon
 id|ep-&gt;nhpages
 op_assign
+(paren
+r_int
+)paren
+(paren
 id|hsize
 op_div
 id|EP_HENTRY_X_PAGE
@@ -2354,6 +2356,7 @@ c_cond
 l_int|1
 suffix:colon
 l_int|0
+)paren
 )paren
 suffix:semicolon
 id|error
@@ -2384,7 +2387,7 @@ l_int|0
 suffix:semicolon
 id|i
 OL
-id|ep-&gt;hsize
+id|hsize
 suffix:semicolon
 id|i
 op_increment
@@ -2423,7 +2426,10 @@ id|ep
 )paren
 (brace
 r_int
+r_int
 id|i
+comma
+id|hsize
 suffix:semicolon
 r_int
 r_int
@@ -2441,10 +2447,16 @@ c_loop
 id|i
 op_assign
 l_int|0
+comma
+id|hsize
+op_assign
+l_int|1
+op_lshift
+id|ep-&gt;hashbits
 suffix:semicolon
 id|i
 OL
-id|ep-&gt;hsize
+id|hsize
 suffix:semicolon
 id|i
 op_increment
@@ -2570,13 +2582,6 @@ id|flags
 )paren
 suffix:semicolon
 multiline_comment|/* Free hash pages */
-r_if
-c_cond
-(paren
-id|ep-&gt;nhpages
-OG
-l_int|0
-)paren
 id|ep_free_pages
 c_func
 (paren
@@ -2985,7 +2990,7 @@ op_assign
 id|dpi
 suffix:semicolon
 )brace
-multiline_comment|/* Attach the item to the poll hooks */
+multiline_comment|/* Initialize the poll table using the queue callback */
 id|poll_initwait_ex
 c_func
 (paren
@@ -2999,26 +3004,6 @@ comma
 id|dpi
 )paren
 suffix:semicolon
-id|revents
-op_assign
-id|tfile-&gt;f_op
-op_member_access_from_pointer
-id|poll
-c_func
-(paren
-id|tfile
-comma
-op_amp
-id|pt
-)paren
-suffix:semicolon
-id|poll_freewait
-c_func
-(paren
-op_amp
-id|pt
-)paren
-suffix:semicolon
 multiline_comment|/* We have to drop the new item inside our item list to keep track of it */
 id|write_lock_irqsave
 c_func
@@ -3029,6 +3014,7 @@ comma
 id|flags
 )paren
 suffix:semicolon
+multiline_comment|/* Add the current item to the hash table */
 id|list_add
 c_func
 (paren
@@ -3048,6 +3034,20 @@ comma
 id|tfile
 )paren
 )paren
+)paren
+suffix:semicolon
+multiline_comment|/* Attach the item to the poll hooks and get current event bits */
+id|revents
+op_assign
+id|tfile-&gt;f_op
+op_member_access_from_pointer
+id|poll
+c_func
+(paren
+id|tfile
+comma
+op_amp
+id|pt
 )paren
 suffix:semicolon
 multiline_comment|/* If the file is already &quot;ready&quot; we drop it inside the ready list */
@@ -3087,6 +3087,13 @@ comma
 id|flags
 )paren
 suffix:semicolon
+id|poll_freewait
+c_func
+(paren
+op_amp
+id|pt
+)paren
+suffix:semicolon
 id|DNPRINTK
 c_func
 (paren
@@ -3111,65 +3118,6 @@ id|eexit_1
 suffix:colon
 r_return
 id|error
-suffix:semicolon
-)brace
-multiline_comment|/*&n; * Returns the current events of the given file. It uses the special&n; * poll table initialization to avoid any poll queue insertion.&n; */
-DECL|function|ep_get_file_events
-r_static
-r_int
-r_int
-id|ep_get_file_events
-c_func
-(paren
-r_struct
-id|file
-op_star
-id|file
-)paren
-(brace
-r_int
-r_int
-id|revents
-suffix:semicolon
-id|poll_table
-id|pt
-suffix:semicolon
-multiline_comment|/*&n;&t; * This is a special poll table initialization that will&n;&t; * make poll_wait() to not perform any wait queue insertion when&n;&t; * called by file-&gt;f_op-&gt;poll(). This is a fast way to retrieve&n;&t; * file events with perform any queue insertion, hence saving CPU cycles.&n;&t; */
-id|poll_initwait_ex
-c_func
-(paren
-op_amp
-id|pt
-comma
-l_int|0
-comma
-l_int|NULL
-comma
-l_int|NULL
-)paren
-suffix:semicolon
-id|revents
-op_assign
-id|file-&gt;f_op
-op_member_access_from_pointer
-id|poll
-c_func
-(paren
-id|file
-comma
-op_amp
-id|pt
-)paren
-suffix:semicolon
-id|poll_freewait
-c_func
-(paren
-op_amp
-id|pt
-)paren
-suffix:semicolon
-r_return
-id|revents
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Modify the interest event mask by dropping an event if the new mask&n; * has a match in the current file status.&n; */
@@ -3202,12 +3150,21 @@ r_int
 r_int
 id|flags
 suffix:semicolon
-id|revents
-op_assign
-id|ep_get_file_events
+id|poll_table
+id|pt
+suffix:semicolon
+multiline_comment|/*&n;&t; * This is a special poll table initialization that will&n;&t; * make poll_wait() to not perform any wait queue insertion when&n;&t; * called by file-&gt;f_op-&gt;poll(). This is a fast way to retrieve&n;&t; * file events with perform any queue insertion, hence saving CPU cycles.&n;&t; */
+id|poll_initwait_ex
 c_func
 (paren
-id|dpi-&gt;file
+op_amp
+id|pt
+comma
+l_int|0
+comma
+l_int|NULL
+comma
+l_int|NULL
 )paren
 suffix:semicolon
 id|write_lock_irqsave
@@ -3219,6 +3176,21 @@ comma
 id|flags
 )paren
 suffix:semicolon
+multiline_comment|/* Get current event bits */
+id|revents
+op_assign
+id|dpi-&gt;file-&gt;f_op
+op_member_access_from_pointer
+id|poll
+c_func
+(paren
+id|dpi-&gt;file
+comma
+op_amp
+id|pt
+)paren
+suffix:semicolon
+multiline_comment|/* Set the new event interest mask */
 id|dpi-&gt;pfd.events
 op_assign
 id|events
@@ -3265,6 +3237,13 @@ op_amp
 id|ep-&gt;lock
 comma
 id|flags
+)paren
+suffix:semicolon
+id|poll_freewait
+c_func
+(paren
+op_amp
+id|pt
 )paren
 suffix:semicolon
 r_return
@@ -3861,7 +3840,11 @@ id|ebufcnt
 op_assign
 l_int|0
 suffix:semicolon
+(paren
 id|eventcnt
+op_plus
+id|ebufcnt
+)paren
 OL
 id|maxevents
 op_logical_and
@@ -3897,6 +3880,20 @@ c_func
 op_amp
 id|dpi-&gt;rdllink
 )paren
+suffix:semicolon
+multiline_comment|/*&n;&t;&t; * If the item is not linked to the main has table this means that&n;&t;&t; * it&squot;s on the way to be removed and we don&squot;t want to send events&n;&t;&t; * to such file descriptor.&n;&t;&t; */
+r_if
+c_cond
+(paren
+op_logical_neg
+id|EP_IS_LINKED
+c_func
+(paren
+op_amp
+id|dpi-&gt;llink
+)paren
+)paren
+r_continue
 suffix:semicolon
 multiline_comment|/* Fetch event bits from the signaled file */
 id|revents
@@ -4122,19 +4119,13 @@ suffix:semicolon
 id|wait_queue_t
 id|wait
 suffix:semicolon
-multiline_comment|/*&n;&t; * Calculate the timeout by checking for the &quot;infinite&quot; value ( -1 )&n;&t; * and the overflow condition ( &gt; MAX_SCHEDULE_TIMEOUT / HZ ). The&n;&t; * passed timeout is in milliseconds, that why (t * HZ) / 1000.&n;&t; */
+multiline_comment|/*&n;&t; * Calculate the timeout by checking for the &quot;infinite&quot; value ( -1 ).&n;&t; * The passed timeout is in milliseconds, that why (t * HZ) / 1000.&n;&t; */
 id|jtimeout
 op_assign
 id|timeout
 op_eq
 op_minus
 l_int|1
-op_logical_or
-id|timeout
-OG
-id|MAX_SCHEDULE_TIMEOUT
-op_div
-id|HZ
 ques
 c_cond
 id|MAX_SCHEDULE_TIMEOUT

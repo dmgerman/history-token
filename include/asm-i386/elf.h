@@ -4,6 +4,7 @@ mdefine_line|#define __ASMi386_ELF_H
 multiline_comment|/*&n; * ELF register definitions..&n; */
 macro_line|#include &lt;asm/ptrace.h&gt;
 macro_line|#include &lt;asm/user.h&gt;
+macro_line|#include &lt;asm/processor.h&gt;
 macro_line|#include &lt;linux/utsname.h&gt;
 DECL|typedef|elf_greg_t
 r_typedef
@@ -54,9 +55,11 @@ multiline_comment|/* This is the location that an ET_DYN program is loaded if ex
 DECL|macro|ELF_ET_DYN_BASE
 mdefine_line|#define ELF_ET_DYN_BASE         (TASK_SIZE / 3 * 2)
 multiline_comment|/* Wow, the &quot;main&quot; arch needs arch dependent functions too.. :) */
+DECL|macro|savesegment
+mdefine_line|#define savesegment(seg,value) &bslash;&n;&t;asm volatile(&quot;movl %%&quot; #seg &quot;,%0&quot;:&quot;=m&quot; (*(int *)&amp;(value)))
 multiline_comment|/* regs is struct pt_regs, pr_reg is elf_gregset_t (which is&n;   now struct_user_regs, they are different) */
 DECL|macro|ELF_CORE_COPY_REGS
-mdefine_line|#define ELF_CORE_COPY_REGS(pr_reg, regs)&t;&t;&bslash;&n;&t;pr_reg[0] = regs-&gt;ebx;&t;&t;&t;&t;&bslash;&n;&t;pr_reg[1] = regs-&gt;ecx;&t;&t;&t;&t;&bslash;&n;&t;pr_reg[2] = regs-&gt;edx;&t;&t;&t;&t;&bslash;&n;&t;pr_reg[3] = regs-&gt;esi;&t;&t;&t;&t;&bslash;&n;&t;pr_reg[4] = regs-&gt;edi;&t;&t;&t;&t;&bslash;&n;&t;pr_reg[5] = regs-&gt;ebp;&t;&t;&t;&t;&bslash;&n;&t;pr_reg[6] = regs-&gt;eax;&t;&t;&t;&t;&bslash;&n;&t;pr_reg[7] = regs-&gt;xds;&t;&t;&t;&t;&bslash;&n;&t;pr_reg[8] = regs-&gt;xes;&t;&t;&t;&t;&bslash;&n;&t;/* fake once used fs and gs selectors? */&t;&bslash;&n;&t;pr_reg[9] = regs-&gt;xds;&t;/* was fs and __fs */&t;&bslash;&n;&t;pr_reg[10] = regs-&gt;xds;&t;/* was gs and __gs */&t;&bslash;&n;&t;pr_reg[11] = regs-&gt;orig_eax;&t;&t;&t;&bslash;&n;&t;pr_reg[12] = regs-&gt;eip;&t;&t;&t;&t;&bslash;&n;&t;pr_reg[13] = regs-&gt;xcs;&t;&t;&t;&t;&bslash;&n;&t;pr_reg[14] = regs-&gt;eflags;&t;&t;&t;&bslash;&n;&t;pr_reg[15] = regs-&gt;esp;&t;&t;&t;&t;&bslash;&n;&t;pr_reg[16] = regs-&gt;xss;
+mdefine_line|#define ELF_CORE_COPY_REGS(pr_reg, regs)&t;&t;&bslash;&n;&t;pr_reg[0] = regs-&gt;ebx;&t;&t;&t;&t;&bslash;&n;&t;pr_reg[1] = regs-&gt;ecx;&t;&t;&t;&t;&bslash;&n;&t;pr_reg[2] = regs-&gt;edx;&t;&t;&t;&t;&bslash;&n;&t;pr_reg[3] = regs-&gt;esi;&t;&t;&t;&t;&bslash;&n;&t;pr_reg[4] = regs-&gt;edi;&t;&t;&t;&t;&bslash;&n;&t;pr_reg[5] = regs-&gt;ebp;&t;&t;&t;&t;&bslash;&n;&t;pr_reg[6] = regs-&gt;eax;&t;&t;&t;&t;&bslash;&n;&t;pr_reg[7] = regs-&gt;xds;&t;&t;&t;&t;&bslash;&n;&t;pr_reg[8] = regs-&gt;xes;&t;&t;&t;&t;&bslash;&n;&t;savesegment(fs,pr_reg[9]);&t;&t;&t;&bslash;&n;&t;savesegment(gs,pr_reg[10]);&t;&t;&t;&bslash;&n;&t;pr_reg[11] = regs-&gt;orig_eax;&t;&t;&t;&bslash;&n;&t;pr_reg[12] = regs-&gt;eip;&t;&t;&t;&t;&bslash;&n;&t;pr_reg[13] = regs-&gt;xcs;&t;&t;&t;&t;&bslash;&n;&t;pr_reg[14] = regs-&gt;eflags;&t;&t;&t;&bslash;&n;&t;pr_reg[15] = regs-&gt;esp;&t;&t;&t;&t;&bslash;&n;&t;pr_reg[16] = regs-&gt;xss;
 multiline_comment|/* This yields a mask that user programs can use to figure out what&n;   instruction set this CPU supports.  This could be done in user space,&n;   but it&squot;s not easy, and we&squot;ve already done it here.  */
 DECL|macro|ELF_HWCAP
 mdefine_line|#define ELF_HWCAP&t;(boot_cpu_data.x86_capability[0])
@@ -66,6 +69,61 @@ mdefine_line|#define ELF_PLATFORM  (system_utsname.machine)
 macro_line|#ifdef __KERNEL__
 DECL|macro|SET_PERSONALITY
 mdefine_line|#define SET_PERSONALITY(ex, ibcs2) set_personality((ibcs2)?PER_SVR4:PER_LINUX)
+r_extern
+r_int
+id|dump_task_regs
+(paren
+r_struct
+id|task_struct
+op_star
+comma
+id|elf_gregset_t
+op_star
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|dump_task_fpu
+(paren
+r_struct
+id|task_struct
+op_star
+comma
+id|elf_fpregset_t
+op_star
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|dump_task_extended_fpu
+(paren
+r_struct
+id|task_struct
+op_star
+comma
+r_struct
+id|user_fxsr_struct
+op_star
+)paren
+suffix:semicolon
+DECL|macro|ELF_CORE_COPY_TASK_REGS
+mdefine_line|#define ELF_CORE_COPY_TASK_REGS(tsk, elf_regs) dump_task_regs(tsk, elf_regs)
+DECL|macro|ELF_CORE_COPY_FPREGS
+mdefine_line|#define ELF_CORE_COPY_FPREGS(tsk, elf_fpregs) dump_task_fpu(tsk, elf_fpregs)
+DECL|macro|ELF_CORE_COPY_XFPREGS
+mdefine_line|#define ELF_CORE_COPY_XFPREGS(tsk, elf_xfpregs) dump_task_extended_fpu(tsk, elf_xfpregs)
+macro_line|#ifdef CONFIG_SMP
+r_extern
+r_void
+id|dump_smp_unlazy_fpu
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+DECL|macro|ELF_CORE_SYNC
+mdefine_line|#define ELF_CORE_SYNC dump_smp_unlazy_fpu
+macro_line|#endif
 macro_line|#endif
 macro_line|#endif
 eof

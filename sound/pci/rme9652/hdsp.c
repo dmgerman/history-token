@@ -3566,6 +3566,13 @@ op_logical_neg
 id|hmidi-&gt;istimer
 )paren
 (brace
+id|init_timer
+c_func
+(paren
+op_amp
+id|hmidi-&gt;timer
+)paren
+suffix:semicolon
 id|hmidi-&gt;timer.function
 op_assign
 id|snd_hdsp_midi_output_timer

@@ -1,6 +1,5 @@
-multiline_comment|/*======================================================================&n;&n;    A driver for PCMCIA parallel port adapters&n;&n;    (specifically, for the Quatech SPP-100 EPP card: other cards will&n;    probably require driver tweaks)&n;    &n;    parport_cs.c 1.20 2000/11/02 23:15:05&n;&n;    The contents of this file are subject to the Mozilla Public&n;    License Version 1.1 (the &quot;License&quot;); you may not use this file&n;    except in compliance with the License. You may obtain a copy of&n;    the License at http://www.mozilla.org/MPL/&n;&n;    Software distributed under the License is distributed on an &quot;AS&n;    IS&quot; basis, WITHOUT WARRANTY OF ANY KIND, either express or&n;    implied. See the License for the specific language governing&n;    rights and limitations under the License.&n;&n;    The initial developer of the original code is David A. Hinds&n;    &lt;dahinds@users.sourceforge.net&gt;.  Portions created by David A. Hinds&n;    are Copyright (C) 1999 David A. Hinds.  All Rights Reserved.&n;&n;    Alternatively, the contents of this file may be used under the&n;    terms of the GNU General Public License version 2 (the &quot;GPL&quot;), in&n;    which case the provisions of the GPL are applicable instead of the&n;    above.  If you wish to allow the use of your version of this file&n;    only under the terms of the GPL and not to allow others to use&n;    your version of this file under the MPL, indicate your decision&n;    by deleting the provisions above and replace them with the notice&n;    and other provisions required by the GPL.  If you do not delete&n;    the provisions above, a recipient may use your version of this&n;    file under either the MPL or the GPL.&n;    &n;======================================================================*/
+multiline_comment|/*======================================================================&n;&n;    A driver for PCMCIA parallel port adapters&n;&n;    (specifically, for the Quatech SPP-100 EPP card: other cards will&n;    probably require driver tweaks)&n;    &n;    parport_cs.c 1.29 2002/10/11 06:57:41&n;&n;    The contents of this file are subject to the Mozilla Public&n;    License Version 1.1 (the &quot;License&quot;); you may not use this file&n;    except in compliance with the License. You may obtain a copy of&n;    the License at http://www.mozilla.org/MPL/&n;&n;    Software distributed under the License is distributed on an &quot;AS&n;    IS&quot; basis, WITHOUT WARRANTY OF ANY KIND, either express or&n;    implied. See the License for the specific language governing&n;    rights and limitations under the License.&n;&n;    The initial developer of the original code is David A. Hinds&n;    &lt;dahinds@users.sourceforge.net&gt;.  Portions created by David A. Hinds&n;    are Copyright (C) 1999 David A. Hinds.  All Rights Reserved.&n;&n;    Alternatively, the contents of this file may be used under the&n;    terms of the GNU General Public License version 2 (the &quot;GPL&quot;), in&n;    which case the provisions of the GPL are applicable instead of the&n;    above.  If you wish to allow the use of your version of this file&n;    only under the terms of the GPL and not to allow others to use&n;    your version of this file under the MPL, indicate your decision&n;    by deleting the provisions above and replace them with the notice&n;    and other provisions required by the GPL.  If you do not delete&n;    the provisions above, a recipient may use your version of this&n;    file under either the MPL or the GPL.&n;    &n;======================================================================*/
 macro_line|#include &lt;linux/kernel.h&gt;
-macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
@@ -9,7 +8,6 @@ macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/timer.h&gt;
 macro_line|#include &lt;linux/ioport.h&gt;
-macro_line|#include &lt;linux/major.h&gt;
 macro_line|#include &lt;linux/parport.h&gt;
 macro_line|#include &lt;linux/parport_pc.h&gt;
 macro_line|#include &lt;pcmcia/version.h&gt;
@@ -19,49 +17,36 @@ macro_line|#include &lt;pcmcia/cistpl.h&gt;
 macro_line|#include &lt;pcmcia/ds.h&gt;
 macro_line|#include &lt;pcmcia/cisreg.h&gt;
 macro_line|#include &lt;pcmcia/ciscode.h&gt;
-macro_line|#ifdef PCMCIA_DEBUG
-DECL|variable|pc_debug
-r_static
-r_int
-id|pc_debug
-op_assign
-id|PCMCIA_DEBUG
-suffix:semicolon
-id|MODULE_PARM
+multiline_comment|/*====================================================================*/
+multiline_comment|/* Module parameters */
+id|MODULE_AUTHOR
 c_func
 (paren
-id|pc_debug
-comma
-l_string|&quot;i&quot;
+l_string|&quot;David Hinds &lt;dahinds@users.sourceforge.net&gt;&quot;
 )paren
 suffix:semicolon
-DECL|macro|DEBUG
-mdefine_line|#define DEBUG(n, args...) if (pc_debug&gt;(n)) printk(KERN_DEBUG args)
-DECL|variable|version
-r_static
-r_char
-op_star
-id|version
-op_assign
-l_string|&quot;parport_cs.c 1.20 2000/11/02 23:15:05 (David Hinds)&quot;
+id|MODULE_DESCRIPTION
+c_func
+(paren
+l_string|&quot;PCMCIA parallel port card driver&quot;
+)paren
 suffix:semicolon
-macro_line|#else
-DECL|macro|DEBUG
-mdefine_line|#define DEBUG(n, args...)
-macro_line|#endif
-macro_line|#ifndef VERSION
-DECL|macro|VERSION
-mdefine_line|#define VERSION(a,b,c) (((a) &lt;&lt; 16) + ((b) &lt;&lt; 8) + (c))
-macro_line|#endif
-multiline_comment|/*====================================================================*/
-multiline_comment|/* Parameters that can be set with &squot;insmod&squot; */
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;Dual MPL/GPL&quot;
+)paren
+suffix:semicolon
+DECL|macro|INT_MODULE_PARM
+mdefine_line|#define INT_MODULE_PARM(n, v) static int n = v; MODULE_PARM(n, &quot;i&quot;)
 multiline_comment|/* Bit map of interrupts to choose from */
-DECL|variable|irq_mask
-r_static
-id|u_int
+id|INT_MODULE_PARM
+c_func
+(paren
 id|irq_mask
-op_assign
+comma
 l_int|0xdeb8
+)paren
 suffix:semicolon
 DECL|variable|irq_list
 r_static
@@ -76,21 +61,6 @@ op_minus
 l_int|1
 )brace
 suffix:semicolon
-DECL|variable|epp_mode
-r_static
-r_int
-id|epp_mode
-op_assign
-l_int|1
-suffix:semicolon
-id|MODULE_PARM
-c_func
-(paren
-id|irq_mask
-comma
-l_string|&quot;i&quot;
-)paren
-suffix:semicolon
 id|MODULE_PARM
 c_func
 (paren
@@ -99,14 +69,37 @@ comma
 l_string|&quot;1-4i&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM
+id|INT_MODULE_PARM
 c_func
 (paren
 id|epp_mode
 comma
-l_string|&quot;i&quot;
+l_int|1
 )paren
 suffix:semicolon
+macro_line|#ifdef PCMCIA_DEBUG
+id|INT_MODULE_PARM
+c_func
+(paren
+id|pc_debug
+comma
+id|PCMCIA_DEBUG
+)paren
+suffix:semicolon
+DECL|macro|DEBUG
+mdefine_line|#define DEBUG(n, args...) if (pc_debug&gt;(n)) printk(KERN_DEBUG args)
+DECL|variable|version
+r_static
+r_char
+op_star
+id|version
+op_assign
+l_string|&quot;parport_cs.c 1.29 2002/10/11 06:57:41 (David Hinds)&quot;
+suffix:semicolon
+macro_line|#else
+DECL|macro|DEBUG
+mdefine_line|#define DEBUG(n, args...)
+macro_line|#endif
 multiline_comment|/*====================================================================*/
 DECL|macro|FORCE_EPP_MODE
 mdefine_line|#define FORCE_EPP_MODE&t;0x08
@@ -204,11 +197,6 @@ op_star
 id|dev_list
 op_assign
 l_int|NULL
-suffix:semicolon
-r_extern
-r_struct
-id|parport_operations
-id|parport_pc_ops
 suffix:semicolon
 multiline_comment|/*====================================================================*/
 DECL|function|cs_error
@@ -653,45 +641,6 @@ DECL|macro|CS_CHECK
 mdefine_line|#define CS_CHECK(fn, args...) &bslash;&n;while ((last_ret=CardServices(last_fn=(fn), args))!=0) goto cs_failed
 DECL|macro|CFG_CHECK
 mdefine_line|#define CFG_CHECK(fn, args...) &bslash;&n;if (CardServices(fn, args) != 0) goto next_entry
-DECL|member|flag
-DECL|member|name
-DECL|variable|mode
-r_static
-r_struct
-(brace
-id|u_int
-id|flag
-suffix:semicolon
-r_char
-op_star
-id|name
-suffix:semicolon
-)brace
-id|mode
-(braket
-)braket
-op_assign
-(brace
-(brace
-id|PARPORT_MODE_TRISTATE
-comma
-l_string|&quot;PS2&quot;
-)brace
-comma
-(brace
-id|PARPORT_MODE_EPP
-comma
-l_string|&quot;EPP&quot;
-)brace
-comma
-(brace
-id|PARPORT_MODE_ECP
-comma
-l_string|&quot;ECP&quot;
-)brace
-comma
-)brace
-suffix:semicolon
 DECL|function|parport_config
 r_void
 id|parport_config
@@ -748,8 +697,6 @@ op_star
 id|p
 suffix:semicolon
 r_int
-id|i
-comma
 id|last_ret
 comma
 id|last_fn
@@ -1060,6 +1007,27 @@ op_amp
 id|link-&gt;conf
 )paren
 suffix:semicolon
+id|release_region
+c_func
+(paren
+id|link-&gt;io.BasePort1
+comma
+id|link-&gt;io.NumPorts1
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|link-&gt;io.NumPorts2
+)paren
+id|release_region
+c_func
+(paren
+id|link-&gt;io.BasePort2
+comma
+id|link-&gt;io.NumPorts2
+)paren
+suffix:semicolon
 id|p
 op_assign
 id|parport_pc_probe_port
@@ -1100,73 +1068,6 @@ r_goto
 id|failed
 suffix:semicolon
 )brace
-macro_line|#if (LINUX_VERSION_CODE &lt; VERSION(2,3,6))
-macro_line|#if (LINUX_VERSION_CODE &gt;= VERSION(2,2,8))
-id|p-&gt;private_data
-op_assign
-id|kmalloc
-c_func
-(paren
-r_sizeof
-(paren
-r_struct
-id|parport_pc_private
-)paren
-comma
-id|GFP_KERNEL
-)paren
-suffix:semicolon
-(paren
-(paren
-r_struct
-id|parport_pc_private
-op_star
-)paren
-(paren
-id|p-&gt;private_data
-)paren
-)paren
-op_member_access_from_pointer
-id|ctr
-op_assign
-l_int|0x0c
-suffix:semicolon
-macro_line|#endif
-id|parport_proc_register
-c_func
-(paren
-id|p
-)paren
-suffix:semicolon
-id|p-&gt;flags
-op_or_assign
-id|PARPORT_FLAG_COMA
-suffix:semicolon
-id|parport_pc_write_econtrol
-c_func
-(paren
-id|p
-comma
-l_int|0x00
-)paren
-suffix:semicolon
-id|parport_pc_write_control
-c_func
-(paren
-id|p
-comma
-l_int|0x0c
-)paren
-suffix:semicolon
-id|parport_pc_write_data
-c_func
-(paren
-id|p
-comma
-l_int|0x00
-)paren
-suffix:semicolon
-macro_line|#endif
 id|p-&gt;modes
 op_or_assign
 id|PARPORT_MODE_PCSPP
@@ -1211,83 +1112,6 @@ op_assign
 op_amp
 id|info-&gt;node
 suffix:semicolon
-id|printk
-c_func
-(paren
-id|KERN_INFO
-l_string|&quot;%s: PC-style PCMCIA at %#x&quot;
-comma
-id|p-&gt;name
-comma
-id|link-&gt;io.BasePort1
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|link-&gt;io.NumPorts2
-)paren
-id|printk
-c_func
-(paren
-l_string|&quot; &amp; %#x&quot;
-comma
-id|link-&gt;io.BasePort2
-)paren
-suffix:semicolon
-id|printk
-c_func
-(paren
-l_string|&quot;, irq %u [SPP&quot;
-comma
-id|link-&gt;irq.AssignedIRQ
-)paren
-suffix:semicolon
-r_for
-c_loop
-(paren
-id|i
-op_assign
-l_int|0
-suffix:semicolon
-id|i
-OL
-l_int|5
-suffix:semicolon
-id|i
-op_increment
-)paren
-r_if
-c_cond
-(paren
-id|p-&gt;modes
-op_amp
-id|mode
-(braket
-id|i
-)braket
-dot
-id|flag
-)paren
-id|printk
-c_func
-(paren
-l_string|&quot;,%s&quot;
-comma
-id|mode
-(braket
-id|i
-)braket
-dot
-id|name
-)paren
-suffix:semicolon
-id|printk
-c_func
-(paren
-l_string|&quot;]&bslash;n&quot;
-)paren
-suffix:semicolon
 id|link-&gt;state
 op_and_assign
 op_complement
@@ -1317,6 +1141,11 @@ id|u_long
 )paren
 id|link
 )paren
+suffix:semicolon
+id|link-&gt;state
+op_and_assign
+op_complement
+id|DEV_CONFIG_PENDING
 suffix:semicolon
 )brace
 multiline_comment|/* parport_config */
@@ -1369,42 +1198,35 @@ id|p
 op_assign
 id|info-&gt;port
 suffix:semicolon
-macro_line|#if (LINUX_VERSION_CODE &lt; VERSION(2,3,6))
+id|parport_pc_unregister_port
+c_func
+(paren
+id|p
+)paren
+suffix:semicolon
+id|request_region
+c_func
+(paren
+id|link-&gt;io.BasePort1
+comma
+id|link-&gt;io.NumPorts1
+comma
+id|info-&gt;node.dev_name
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
-op_logical_neg
-(paren
-id|p-&gt;flags
-op_amp
-id|PARPORT_FLAG_COMA
+id|link-&gt;io.NumPorts2
 )paren
-)paren
-id|parport_quiesce
+id|request_region
 c_func
 (paren
-id|p
-)paren
-suffix:semicolon
-macro_line|#endif
-id|parport_proc_unregister
-c_func
-(paren
-id|p
-)paren
-suffix:semicolon
-macro_line|#if (LINUX_VERSION_CODE &gt;= VERSION(2,2,8))
-id|kfree
-c_func
-(paren
-id|p-&gt;private_data
-)paren
-suffix:semicolon
-macro_line|#endif
-id|parport_unregister_port
-c_func
-(paren
-id|p
+id|link-&gt;io.BasePort2
+comma
+id|link-&gt;io.NumPorts2
+comma
+id|info-&gt;node.dev_name
 )paren
 suffix:semicolon
 )brace
@@ -1608,47 +1430,6 @@ suffix:semicolon
 )brace
 multiline_comment|/* parport_event */
 multiline_comment|/*====================================================================*/
-macro_line|#if (LINUX_VERSION_CODE &lt; VERSION(2,3,6))
-DECL|function|inc_use_count
-r_static
-r_void
-id|inc_use_count
-c_func
-(paren
-r_void
-)paren
-(brace
-id|MOD_INC_USE_COUNT
-suffix:semicolon
-id|parport_pc_ops
-dot
-id|inc_use_count
-c_func
-(paren
-)paren
-suffix:semicolon
-)brace
-DECL|function|dec_use_count
-r_static
-r_void
-id|dec_use_count
-c_func
-(paren
-r_void
-)paren
-(brace
-id|MOD_DEC_USE_COUNT
-suffix:semicolon
-id|parport_pc_ops
-dot
-id|dec_use_count
-c_func
-(paren
-)paren
-suffix:semicolon
-)brace
-macro_line|#endif
-multiline_comment|/*====================================================================*/
 DECL|function|init_parport_cs
 r_static
 r_int
@@ -1699,7 +1480,7 @@ l_string|&quot;does not match!&bslash;n&quot;
 suffix:semicolon
 r_return
 op_minus
-l_int|1
+id|EINVAL
 suffix:semicolon
 )brace
 id|register_pccard_driver
@@ -1770,12 +1551,6 @@ id|module_exit
 c_func
 (paren
 id|exit_parport_cs
-)paren
-suffix:semicolon
-id|MODULE_LICENSE
-c_func
-(paren
-l_string|&quot;Dual MPL/GPL&quot;
 )paren
 suffix:semicolon
 eof

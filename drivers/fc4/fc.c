@@ -2944,6 +2944,13 @@ op_amp
 id|l-&gt;sem
 )paren
 suffix:semicolon
+id|init_timer
+c_func
+(paren
+op_amp
+id|l-&gt;timer
+)paren
+suffix:semicolon
 id|l-&gt;timer.function
 op_assign
 id|fcp_login_timeout

@@ -133,7 +133,8 @@ r_int
 id|generic_NCR5380_biosparam
 c_func
 (paren
-id|Disk
+r_struct
+id|scsi_device
 op_star
 comma
 r_struct

@@ -10,10 +10,10 @@ macro_line|#include &lt;net/icmp.h&gt;
 macro_line|#include &lt;net/tcp.h&gt;
 macro_line|#include &lt;net/ipv6.h&gt;
 macro_line|#include &lt;net/inet_common.h&gt;
+macro_line|#include &lt;net/xfrm.h&gt;
 macro_line|#include &lt;linux/inet.h&gt;
 macro_line|#include &lt;linux/ipv6.h&gt;
 macro_line|#include &lt;linux/stddef.h&gt;
-macro_line|#include &lt;linux/ipsec.h&gt;
 r_extern
 r_int
 id|sysctl_ip_dynaddr
@@ -5497,7 +5497,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|ip_route_output_key
+id|ip_route_output_flow
 c_func
 (paren
 op_amp
@@ -5505,6 +5505,10 @@ id|rt
 comma
 op_amp
 id|fl
+comma
+id|sk
+comma
+l_int|0
 )paren
 )paren
 (brace
@@ -7546,27 +7550,29 @@ suffix:colon
 r_if
 c_cond
 (paren
-op_logical_neg
-id|ipsec_sk_policy
-c_func
-(paren
-id|sk
-comma
-id|skb
-)paren
-)paren
-r_goto
-id|discard_and_relse
-suffix:semicolon
-r_if
-c_cond
-(paren
 id|sk-&gt;state
 op_eq
 id|TCP_TIME_WAIT
 )paren
 r_goto
 id|do_time_wait
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|xfrm_policy_check
+c_func
+(paren
+id|sk
+comma
+id|XFRM_POLICY_IN
+comma
+id|skb
+)paren
+)paren
+r_goto
+id|discard_and_relse
 suffix:semicolon
 id|skb-&gt;dev
 op_assign
@@ -7645,6 +7651,23 @@ suffix:colon
 r_if
 c_cond
 (paren
+op_logical_neg
+id|xfrm_policy_check
+c_func
+(paren
+l_int|NULL
+comma
+id|XFRM_POLICY_IN
+comma
+id|skb
+)paren
+)paren
+r_goto
+id|discard_it
+suffix:semicolon
+r_if
+c_cond
+(paren
 id|skb-&gt;len
 OL
 (paren
@@ -7703,6 +7726,23 @@ id|discard_it
 suffix:semicolon
 id|do_time_wait
 suffix:colon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|xfrm_policy_check
+c_func
+(paren
+l_int|NULL
+comma
+id|XFRM_POLICY_IN
+comma
+id|skb
+)paren
+)paren
+r_goto
+id|discard_and_relse
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -8198,7 +8238,7 @@ id|inet-&gt;dport
 suffix:semicolon
 id|err
 op_assign
-id|ip_route_output_key
+id|ip_route_output_flow
 c_func
 (paren
 op_amp
@@ -8206,6 +8246,10 @@ id|rt
 comma
 op_amp
 id|fl
+comma
+id|sk
+comma
+l_int|0
 )paren
 suffix:semicolon
 )brace

@@ -708,8 +708,8 @@ multiline_comment|/* length of range&t;&t;*/
 id|page_buf_flags_t
 )paren
 suffix:semicolon
-multiline_comment|/* PBF_LOCK, PBF_READ, PBF_ALLOCATE, */
-multiline_comment|/* PBF_ASYNC,&t;&t;&t;*/
+multiline_comment|/* PBF_LOCK, PBF_READ,&t;&t;*/
+multiline_comment|/* PBF_ASYNC&t;&t;&t;*/
 r_extern
 id|page_buf_t
 op_star
@@ -730,10 +730,11 @@ multiline_comment|/* starting offset of range&t;*/
 r_int
 comma
 multiline_comment|/* length of range&t;&t;*/
-r_int
+id|page_buf_flags_t
 )paren
 suffix:semicolon
-multiline_comment|/* PBF_ENTER_PAGES&t;&t;*/
+multiline_comment|/* PBF_READ, PBF_WRITE,&t;&t;*/
+multiline_comment|/* PBF_FORCEIO, _PBF_LOCKABLE&t;*/
 r_extern
 id|page_buf_t
 op_star
@@ -807,7 +808,7 @@ multiline_comment|/* starting offset of range&t;*/
 r_int
 comma
 multiline_comment|/* length of range&t;&t;*/
-r_int
+id|page_buf_flags_t
 )paren
 suffix:semicolon
 multiline_comment|/* additional read flags&t;*/
@@ -953,10 +954,9 @@ multiline_comment|/* buffer to start&t;&t;*/
 id|page_buf_flags_t
 )paren
 suffix:semicolon
-multiline_comment|/* PBF_LOCK, PBF_ASYNC, PBF_READ, */
-multiline_comment|/* PBF_WRITE, PBF_ALLOCATE,&t;*/
-multiline_comment|/* PBF_DELWRI, &t;&t;&t;*/
-multiline_comment|/* PBF_SYNC&t;&t;&t;*/
+multiline_comment|/* PBF_LOCK, PBF_ASYNC,&t;&t;*/
+multiline_comment|/* PBF_READ, PBF_WRITE,&t;&t;*/
+multiline_comment|/* PBF_DELWRI, PBF_SYNC&t;&t;*/
 r_extern
 r_int
 id|pagebuf_iorequest

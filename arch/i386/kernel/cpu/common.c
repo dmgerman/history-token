@@ -1484,12 +1484,14 @@ l_int|3
 )paren
 suffix:semicolon
 multiline_comment|/* Init Machine Check Exception if available. */
+macro_line|#ifdef CONFIG_X86_MCE
 id|mcheck_init
 c_func
 (paren
 id|c
 )paren
 suffix:semicolon
+macro_line|#endif
 )brace
 multiline_comment|/*&n; *&t;Perform early boot up checks for a valid TSC. See arch/i386/kernel/time.c&n; */
 DECL|function|dodgy_tsc

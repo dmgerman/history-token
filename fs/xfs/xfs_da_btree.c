@@ -1572,14 +1572,19 @@ comma
 l_int|2
 )paren
 suffix:semicolon
+macro_line|#ifdef DEBUG
 r_if
 c_cond
 (paren
-id|XFS_DIR_IS_V2
+id|INT_GET
 c_func
 (paren
-id|mp
+id|oldroot-&gt;hdr.info.magic
+comma
+id|ARCH_CONVERT
 )paren
+op_eq
+id|XFS_DIR2_LEAFN_MAGIC
 )paren
 (brace
 id|ASSERT
@@ -1607,6 +1612,7 @@ id|mp-&gt;m_dirfreeblk
 )paren
 suffix:semicolon
 )brace
+macro_line|#endif
 multiline_comment|/* Header is already logged by xfs_da_node_create */
 id|xfs_da_log_buf
 c_func
@@ -1739,11 +1745,7 @@ op_plus
 id|newcount
 )paren
 OG
-id|XFS_DA_NODE_ENTRIES
-c_func
-(paren
-id|state-&gt;mp
-)paren
+id|state-&gt;node_ents
 )paren
 (brace
 multiline_comment|/*&n;&t;&t; * Allocate a new node, add to the doubly linked chain of&n;&t;&t; * nodes, then move some of our excess entries into it.&n;&t;&t; */
@@ -3733,11 +3735,7 @@ c_cond
 id|count
 OG
 (paren
-id|XFS_DA_NODE_ENTRIES
-c_func
-(paren
-id|state-&gt;mp
-)paren
+id|state-&gt;node_ents
 op_rshift
 l_int|1
 )paren
@@ -3965,19 +3963,11 @@ id|info
 suffix:semicolon
 id|count
 op_assign
-id|XFS_DA_NODE_ENTRIES
-c_func
-(paren
-id|state-&gt;mp
-)paren
+id|state-&gt;node_ents
 suffix:semicolon
 id|count
 op_sub_assign
-id|XFS_DA_NODE_ENTRIES
-c_func
-(paren
-id|state-&gt;mp
-)paren
+id|state-&gt;node_ents
 op_rshift
 l_int|2
 suffix:semicolon

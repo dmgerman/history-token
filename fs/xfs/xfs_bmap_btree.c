@@ -11186,7 +11186,7 @@ l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Convert a compressed bmap extent record to an uncompressed form.&n; * This code must be in sync with the routines xfs_bmbt_get_startoff,&n; * xfs_bmbt_get_startblock, xfs_bmbt_get_blockcount and xfs_bmbt_get_state.&n; */
-r_static
+id|STATIC
 id|__inline__
 r_void
 DECL|function|__xfs_bmbt_get_all
@@ -14436,7 +14436,6 @@ id|b
 op_rshift
 l_int|43
 )paren
-)paren
 suffix:semicolon
 id|r-&gt;l1
 op_assign
@@ -14462,7 +14461,6 @@ id|XFS_MASK64LO
 c_func
 (paren
 l_int|21
-)paren
 )paren
 )paren
 suffix:semicolon

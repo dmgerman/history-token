@@ -2384,23 +2384,7 @@ suffix:semicolon
 )brace
 macro_line|#endif
 macro_line|#ifdef PCMCIA
-multiline_comment|/*&n; *&t;Allow PCMCIA code to preset the port */
-op_star
-id|port
-id|should
-id|be
-l_int|0
-op_logical_and
-id|irq
-id|to
-op_minus
-l_int|1
-id|respectively
-r_for
-c_loop
-id|autoprobing
-op_star
-op_div
+multiline_comment|/*&n; *&t;Allow PCMCIA code to preset the port&n; *&t;port should be 0 and irq to -1 respectively for autoprobing &n; */
 DECL|function|qlogicfas_preset
 r_void
 id|qlogicfas_preset

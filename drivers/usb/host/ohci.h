@@ -876,4 +876,15 @@ suffix:semicolon
 suffix:semicolon
 DECL|macro|hcd_to_ohci
 mdefine_line|#define hcd_to_ohci(hcd_ptr) container_of(hcd_ptr, struct ohci_hcd, hcd)
+r_struct
+id|ohci_hcd
+op_star
+id|dev_to_ohci
+c_func
+(paren
+r_struct
+id|device
+op_star
+)paren
+suffix:semicolon
 eof
