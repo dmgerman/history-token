@@ -190,6 +190,7 @@ mdefine_line|#define   FF0&t;0000000
 DECL|macro|FF1
 mdefine_line|#define   FF1&t;0100000
 multiline_comment|/* c_cflag bit meaning */
+multiline_comment|/*&n; *     3             2            1&n; *    10 987 654 321 098 765 432 109 876 543 210&n; *                             |           | ||| CBAUD&n; *                                         obaud    &n; *&n; *                                       ||CSIZE&n; *&n; *                                     |CSTOP&n; *                                    |CREAD&n; *                                   |CPARENB&n; *&n; *                                 |CPARODD &n; *                                |HUPCL&n; *                               |CLOCAL&n; *                             |CBAUDEX&n; *    10 987 654 321 098 765 432 109 876 543 210&n; *        |           || ||   CIBAUD, IBSHIFT=16&n; *                    ibaud&n; *     |CMSPAR&n; *    | CRTSCTS&n; *       x x xxx xxx x     x xx Free bits&n; */
 DECL|macro|CBAUD
 mdefine_line|#define CBAUD&t;0010017
 DECL|macro|B0
@@ -260,15 +261,23 @@ DECL|macro|B230400
 mdefine_line|#define  B230400 0010003
 DECL|macro|B460800
 mdefine_line|#define  B460800 0010004
-multiline_comment|/* etrax100 supports these additional three baud rates */
+multiline_comment|/* etrax supports these additional three baud rates */
 DECL|macro|B921600
-mdefine_line|#define  B921600 0010005
+mdefine_line|#define  B921600   0010005
 DECL|macro|B1843200
-mdefine_line|#define  B1843200 0010006
+mdefine_line|#define  B1843200  0010006
 DECL|macro|B6250000
-mdefine_line|#define  B6250000 0010007
+mdefine_line|#define  B6250000  0010007
+multiline_comment|/* etrax 200 supports this as well */
+DECL|macro|B12500000
+mdefine_line|#define  B12500000 0010010
 DECL|macro|CIBAUD
-mdefine_line|#define CIBAUD&t;  002003600000&t;/* input baud rate (not used) */
+mdefine_line|#define CIBAUD&t;  002003600000&t;/* input baud rate */
+multiline_comment|/* The values for CIBAUD bits are the same as the values for CBAUD and CBAUDEX&n; * shifted left IBSHIFT bits.&n; */
+DECL|macro|IBSHIFT
+mdefine_line|#define IBSHIFT   16
+DECL|macro|CMSPAR
+mdefine_line|#define CMSPAR    010000000000 /* mark or space (stick) parity - PARODD=space*/
 DECL|macro|CRTSCTS
 mdefine_line|#define CRTSCTS&t;  020000000000&t;&t;/* flow control */
 multiline_comment|/* c_lflag bits */

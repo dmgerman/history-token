@@ -76,7 +76,7 @@ id|current_pgd
 suffix:semicolon
 multiline_comment|/* defined in arch/cris/mm/fault.c */
 DECL|function|enter_lazy_tlb
-r_static
+r_extern
 r_inline
 r_void
 id|enter_lazy_tlb

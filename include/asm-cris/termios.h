@@ -3,6 +3,7 @@ DECL|macro|_CRIS_TERMIOS_H
 mdefine_line|#define _CRIS_TERMIOS_H
 macro_line|#include &lt;asm/termbits.h&gt;
 macro_line|#include &lt;asm/ioctls.h&gt;
+macro_line|#include &lt;asm/rs485.h&gt;
 DECL|struct|winsize
 r_struct
 id|winsize

@@ -2,6 +2,7 @@ multiline_comment|/* TODO: csum_tcpudp_magic could be speeded up, and csum_fold 
 macro_line|#ifndef _CRIS_CHECKSUM_H
 DECL|macro|_CRIS_CHECKSUM_H
 mdefine_line|#define _CRIS_CHECKSUM_H
+macro_line|#include &lt;asm/arch/checksum.h&gt;
 multiline_comment|/*&n; * computes the checksum of a memory block at buff, length len,&n; * and adds in &quot;sum&quot; (32-bit)&n; *&n; * returns a 32-bit number suitable for feeding into itself&n; * or csum_tcpudp_magic&n; *&n; * this function must be called with even lengths, except&n; * for the last fragment, which may be odd&n; *&n; * it&squot;s best to have buff aligned on a 32-bit boundary&n; */
 r_int
 r_int
@@ -47,7 +48,7 @@ id|sum
 suffix:semicolon
 multiline_comment|/*&n; *&t;Fold a partial checksum into a word&n; */
 DECL|function|csum_fold
-r_static
+r_extern
 r_inline
 r_int
 r_int
@@ -89,93 +90,6 @@ op_complement
 id|sum
 suffix:semicolon
 )brace
-multiline_comment|/* Checksum some values used in TCP/UDP headers.&n; *&n; * The gain by doing this in asm is that C will not generate carry-additions&n; * for the 32-bit components of the checksum, so otherwise we would have had&n; * to split all of those into 16-bit components, then add.&n; */
-r_static
-r_inline
-r_int
-r_int
-DECL|function|csum_tcpudp_nofold
-id|csum_tcpudp_nofold
-c_func
-(paren
-r_int
-r_int
-id|saddr
-comma
-r_int
-r_int
-id|daddr
-comma
-r_int
-r_int
-id|len
-comma
-r_int
-r_int
-id|proto
-comma
-r_int
-r_int
-id|sum
-)paren
-(brace
-r_int
-id|res
-suffix:semicolon
-id|__asm__
-(paren
-l_string|&quot;add.d %2, %0&bslash;n&bslash;t&quot;
-l_string|&quot;ax&bslash;n&bslash;t&quot;
-l_string|&quot;add.d %3, %0&bslash;n&bslash;t&quot;
-l_string|&quot;ax&bslash;n&bslash;t&quot;
-l_string|&quot;add.d %4, %0&bslash;n&bslash;t&quot;
-l_string|&quot;ax&bslash;n&bslash;t&quot;
-l_string|&quot;addq 0, %0&bslash;n&quot;
-suffix:colon
-l_string|&quot;=r&quot;
-(paren
-id|res
-)paren
-suffix:colon
-l_string|&quot;0&quot;
-(paren
-id|sum
-)paren
-comma
-l_string|&quot;r&quot;
-(paren
-id|daddr
-)paren
-comma
-l_string|&quot;r&quot;
-(paren
-id|saddr
-)paren
-comma
-l_string|&quot;r&quot;
-(paren
-(paren
-id|ntohs
-c_func
-(paren
-id|len
-)paren
-op_lshift
-l_int|16
-)paren
-op_plus
-(paren
-id|proto
-op_lshift
-l_int|8
-)paren
-)paren
-)paren
-suffix:semicolon
-r_return
-id|res
-suffix:semicolon
-)brace
 r_extern
 r_int
 r_int
@@ -205,7 +119,7 @@ id|errptr
 suffix:semicolon
 multiline_comment|/*&n; *&t;This is a version of ip_compute_csum() optimized for IP headers,&n; *&t;which always checksum on 4 octet boundaries.&n; *&n; */
 DECL|function|ip_fast_csum
-r_static
+r_extern
 r_inline
 r_int
 r_int
@@ -242,7 +156,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * computes the checksum of the TCP/UDP pseudo-header&n; * returns a 16-bit checksum, already complemented&n; */
 DECL|function|csum_tcpudp_magic
-r_static
+r_extern
 r_inline
 r_int
 r_int
@@ -293,7 +207,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * this routine is used for miscellaneous IP-like checksums, mainly&n; * in icmp.c&n; */
 DECL|function|ip_compute_csum
-r_static
+r_extern
 r_inline
 r_int
 r_int

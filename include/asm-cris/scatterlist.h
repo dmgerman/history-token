@@ -32,6 +32,10 @@ suffix:semicolon
 multiline_comment|/* for highmem, page offset */
 )brace
 suffix:semicolon
+DECL|macro|sg_dma_address
+mdefine_line|#define sg_dma_address(sg)&t;((sg)-&gt;address)
+DECL|macro|sg_dma_len
+mdefine_line|#define sg_dma_len(sg)&t;&t;((sg)-&gt;length)
 multiline_comment|/* i386 junk */
 DECL|macro|ISA_DMA_THRESHOLD
 mdefine_line|#define ISA_DMA_THRESHOLD (0x1fffffff)
