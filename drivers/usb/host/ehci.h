@@ -376,21 +376,15 @@ DECL|struct|ehci_caps
 r_struct
 id|ehci_caps
 (brace
-DECL|member|length
-id|u8
-id|length
+multiline_comment|/* these fields are specified as 8 and 16 bit registers,&n;&t; * but some hosts can&squot;t perform 8 or 16 bit PCI accesses.&n;&t; */
+DECL|member|hc_capbase
+id|u32
+id|hc_capbase
 suffix:semicolon
-multiline_comment|/* CAPLENGTH - size of this struct */
-DECL|member|reserved
-id|u8
-id|reserved
-suffix:semicolon
-multiline_comment|/* offset 0x1 */
-DECL|member|hci_version
-id|u16
-id|hci_version
-suffix:semicolon
-multiline_comment|/* HCIVERSION - offset 0x2 */
+DECL|macro|HC_LENGTH
+mdefine_line|#define HC_LENGTH(p)&t;&t;(((p)&gt;&gt;00)&amp;0x00ff)&t;/* bits 7:0 */
+DECL|macro|HC_VERSION
+mdefine_line|#define HC_VERSION(p)&t;&t;(((p)&gt;&gt;16)&amp;0xffff)&t;/* bits 31:16 */
 DECL|member|hcs_params
 id|u32
 id|hcs_params

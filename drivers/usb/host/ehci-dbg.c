@@ -157,6 +157,7 @@ id|i
 op_increment
 )paren
 (brace
+singleline_comment|// FIXME MIPS won&squot;t readb() ...
 id|byte
 op_assign
 id|readb
@@ -2947,10 +2948,14 @@ suffix:semicolon
 multiline_comment|/* Capability Registers */
 id|i
 op_assign
-id|readw
+id|HC_VERSION
+c_func
+(paren
+id|readl
 (paren
 op_amp
-id|ehci-&gt;caps-&gt;hci_version
+id|ehci-&gt;caps-&gt;hc_capbase
+)paren
 )paren
 suffix:semicolon
 id|temp
