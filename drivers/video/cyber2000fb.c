@@ -4885,10 +4885,6 @@ id|fb_set_var
 suffix:colon
 id|cyber2000fb_set_var
 comma
-id|fb_set_cmap
-suffix:colon
-id|gen_set_cmap
-comma
 id|fb_setcolreg
 suffix:colon
 id|cyber2000fb_setcolreg
@@ -4912,6 +4908,10 @@ comma
 id|fb_get_cmap
 suffix:colon
 id|gen_get_cmap
+comma
+id|fb_set_cmap
+suffix:colon
+id|gen_set_cmap
 comma
 )brace
 suffix:semicolon

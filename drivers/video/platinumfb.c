@@ -1507,7 +1507,7 @@ c_cond
 (paren
 id|fb_display
 (braket
-id|info-&gt;currcon
+id|fb-&gt;currcon
 )braket
 dot
 id|cmap.len
@@ -1518,7 +1518,7 @@ c_func
 op_amp
 id|fb_display
 (braket
-id|info-&gt;currcon
+id|fb-&gt;currcon
 )braket
 dot
 id|cmap
@@ -1530,7 +1530,7 @@ comma
 id|fb
 )paren
 suffix:semicolon
-id|info-&gt;currcon
+id|fb-&gt;currcon
 op_assign
 id|con
 suffix:semicolon

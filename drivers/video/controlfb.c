@@ -1027,7 +1027,7 @@ id|gen_set_cmap
 comma
 id|fb_setcolreg
 suffix:colon
-id|control_setcolreg
+id|controlfb_setcolreg
 comma
 id|fb_pan_display
 suffix:colon
@@ -5978,7 +5978,7 @@ id|rows
 suffix:semicolon
 id|dest
 op_assign
-id|p-&gt;info.screen_base
+id|p-&gt;fb_info-&gt;screen_base
 op_plus
 id|yy
 op_star
@@ -6182,7 +6182,7 @@ id|rows
 suffix:semicolon
 id|dest
 op_assign
-id|p-&gt;info.screen_base
+id|p-&gt;fb_info-&gt;screen_base
 op_plus
 id|yy
 op_star
