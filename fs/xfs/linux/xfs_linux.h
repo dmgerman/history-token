@@ -153,8 +153,6 @@ DECL|macro|EFSCORRUPTED
 mdefine_line|#define EFSCORRUPTED&t;990&t;&t;/* Filesystem is corrupted */
 DECL|macro|SYNCHRONIZE
 mdefine_line|#define SYNCHRONIZE()&t;barrier()
-DECL|macro|lbolt
-mdefine_line|#define lbolt&t;&t;jiffies
 DECL|macro|rootdev
 mdefine_line|#define rootdev&t;&t;ROOT_DEV
 DECL|macro|__return_address
