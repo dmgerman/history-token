@@ -1400,6 +1400,12 @@ c_func
 (paren
 )paren
 suffix:semicolon
+multiline_comment|/*&n;&t; * Set up the scheduler prior starting any interrupts (such as the&n;&t; * timer interrupt). Full topology setup happens at smp_init()&n;&t; * time - but meanwhile we still have a functioning scheduler.&n;&t; */
+id|sched_init
+c_func
+(paren
+)paren
+suffix:semicolon
 id|build_all_zonelists
 c_func
 (paren
@@ -1460,7 +1466,7 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|sched_init
+id|init_timers
 c_func
 (paren
 )paren

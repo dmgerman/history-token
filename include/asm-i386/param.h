@@ -7,7 +7,11 @@ macro_line|# define HZ&t;&t;1000&t;&t;/* Internal kernel timer frequency */
 DECL|macro|USER_HZ
 macro_line|# define USER_HZ&t;100&t;&t;/* .. some user interfaces are in &quot;ticks&quot; */
 DECL|macro|CLOCKS_PER_SEC
-macro_line|# define CLOCKS_PER_SEC&t;(USER_HZ)&t;/* like times() */
+macro_line|# define CLOCKS_PER_SEC&t;&t;(USER_HZ)&t;/* like times() */
+DECL|macro|JIFFIES_TO_MSEC
+macro_line|# define JIFFIES_TO_MSEC(x)&t;(x)
+DECL|macro|MSEC_TO_JIFFIES
+macro_line|# define MSEC_TO_JIFFIES(x)&t;(x)
 macro_line|#endif
 macro_line|#ifndef HZ
 DECL|macro|HZ

@@ -1864,8 +1864,8 @@ suffix:semicolon
 macro_line|#ifdef CONFIG_SCHED_SMT
 DECL|macro|ARCH_HAS_SCHED_DOMAIN
 mdefine_line|#define ARCH_HAS_SCHED_DOMAIN
-DECL|macro|ARCH_HAS_SCHED_WAKE_BALANCE
-mdefine_line|#define ARCH_HAS_SCHED_WAKE_BALANCE
+DECL|macro|ARCH_HAS_SCHED_WAKE_IDLE
+mdefine_line|#define ARCH_HAS_SCHED_WAKE_IDLE
 macro_line|#endif
 macro_line|#endif /* __ASM_I386_PROCESSOR_H */
 eof

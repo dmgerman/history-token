@@ -4148,7 +4148,7 @@ id|i
 op_member_access_from_pointer
 id|flags
 op_or_assign
-id|SD_FLAG_SHARE_CPUPOWER
+id|SD_SHARE_CPUPOWER
 suffix:semicolon
 id|cpu_sched_domain
 c_func
@@ -4162,7 +4162,7 @@ id|cpu_domain-&gt;span
 op_member_access_from_pointer
 id|flags
 op_or_assign
-id|SD_FLAG_SHARE_CPUPOWER
+id|SD_SHARE_CPUPOWER
 suffix:semicolon
 r_continue
 suffix:semicolon
@@ -4606,7 +4606,7 @@ id|cpu_group
 suffix:semicolon
 )brace
 )brace
-macro_line|#else /* CONFIG_NUMA */
+macro_line|#else /* !CONFIG_NUMA */
 DECL|variable|sched_group_cpus
 r_static
 r_struct
@@ -4760,7 +4760,7 @@ id|i
 op_member_access_from_pointer
 id|flags
 op_or_assign
-id|SD_FLAG_SHARE_CPUPOWER
+id|SD_SHARE_CPUPOWER
 suffix:semicolon
 id|cpu_sched_domain
 c_func
@@ -4774,7 +4774,7 @@ id|cpu_domain-&gt;span
 op_member_access_from_pointer
 id|flags
 op_or_assign
-id|SD_FLAG_SHARE_CPUPOWER
+id|SD_SHARE_CPUPOWER
 suffix:semicolon
 r_continue
 suffix:semicolon
