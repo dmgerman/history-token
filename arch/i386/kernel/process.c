@@ -1188,13 +1188,11 @@ id|p-&gt;thread_info
 op_minus
 l_int|1
 suffix:semicolon
-id|struct_cpy
-c_func
-(paren
+op_star
 id|childregs
-comma
+op_assign
+op_star
 id|regs
-)paren
 suffix:semicolon
 id|childregs-&gt;eax
 op_assign

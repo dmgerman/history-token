@@ -3431,14 +3431,10 @@ op_eq
 id|vldb-&gt;rtime
 )paren
 (brace
-id|struct_cpy
-c_func
-(paren
-op_amp
 id|vlocation-&gt;vldb
-comma
+op_assign
+op_star
 id|vldb
-)paren
 suffix:semicolon
 id|vlocation-&gt;valid
 op_assign
@@ -3582,14 +3578,10 @@ c_func
 l_string|&quot;&quot;
 )paren
 suffix:semicolon
-id|struct_cpy
-c_func
-(paren
+op_star
 id|vldb
-comma
-op_amp
+op_assign
 id|vlocation-&gt;vldb
-)paren
 suffix:semicolon
 )brace
 multiline_comment|/* end afs_vlocation_cache_update() */
