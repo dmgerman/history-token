@@ -4338,6 +4338,23 @@ op_star
 id|data
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|ptr
+op_ge
+(paren
+r_char
+op_star
+)paren
+id|data
+op_plus
+id|mp-&gt;m_dirblksize
+)paren
+(brace
+r_continue
+suffix:semicolon
+)brace
 )brace
 )brace
 multiline_comment|/*&n;&t;&t; * We have a pointer to an entry.&n;&t;&t; * Is it a live one?&n;&t;&t; */
