@@ -3155,7 +3155,7 @@ comma
 r_int
 id|priority
 )paren
-multiline_comment|/* &n; * @priority: 0 = put it on the timer queue, 1 = put it on the immediate queue&n; */
+multiline_comment|/*&n; * @priority: 0 = put it on the timer queue, 1 = put it on the immediate queue&n; */
 (brace
 r_struct
 id|mpt_lan_priv
@@ -3193,14 +3193,6 @@ op_amp
 id|priv-&gt;post_buckets_task
 )paren
 suffix:semicolon
-macro_line|#elif LINUX_VERSION_CODE &gt;= KERNEL_VERSION(2,5,40)
-id|schedule_task
-c_func
-(paren
-op_amp
-id|priv-&gt;post_buckets_task
-)paren
-suffix:semicolon
 macro_line|#else
 id|queue_task
 c_func
@@ -3230,14 +3222,6 @@ op_amp
 id|priv-&gt;post_buckets_task
 comma
 l_int|1
-)paren
-suffix:semicolon
-macro_line|#elif LINUX_VERSION_CODE &gt;= KERNEL_VERSION(2,5,40)
-id|schedule_task
-c_func
-(paren
-op_amp
-id|priv-&gt;post_buckets_task
 )paren
 suffix:semicolon
 macro_line|#else
@@ -6160,8 +6144,8 @@ suffix:semicolon
 )brace
 multiline_comment|/*=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=*/
 DECL|function|mpt_lan_exit
+r_static
 r_void
-id|__init
 id|mpt_lan_exit
 c_func
 (paren
@@ -6208,7 +6192,6 @@ suffix:semicolon
 id|printk
 (paren
 id|KERN_INFO
-id|MYNAM
 l_string|&quot;: %s/%s: Fusion MPT LAN device unregistered&bslash;n&quot;
 comma
 id|IOC_AND_NETDEV_NAMES_s_s
@@ -6224,19 +6207,14 @@ c_func
 id|dev
 )paren
 suffix:semicolon
+singleline_comment|//mpt_landev[i] = (struct net_device *) 0xdeadbeef; /* Debug */
 id|mpt_landev
 (braket
 id|i
 )braket
 op_assign
-(paren
-r_struct
-id|net_device
-op_star
-)paren
-l_int|0xdeadbeef
+l_int|NULL
 suffix:semicolon
-multiline_comment|/* Debug */
 )brace
 r_if
 c_cond
@@ -6265,6 +6243,7 @@ suffix:semicolon
 multiline_comment|/* deregister any send/receive handler structs. I2Oism? */
 )brace
 multiline_comment|/*=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=*/
+macro_line|#if LINUX_VERSION_CODE &lt; KERNEL_VERSION(2,5,59)
 id|MODULE_PARM
 c_func
 (paren
@@ -6282,6 +6261,7 @@ l_string|&quot;i&quot;
 )paren
 suffix:semicolon
 singleline_comment|// Debug stuff. FIXME!
+macro_line|#endif
 DECL|variable|mpt_lan_init
 id|module_init
 c_func

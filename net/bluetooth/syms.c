@@ -102,11 +102,11 @@ c_func
 id|hci_send_sco
 )paren
 suffix:semicolon
-DECL|variable|hci_send_raw
+DECL|variable|hci_send_cmd
 id|EXPORT_SYMBOL
 c_func
 (paren
-id|hci_send_raw
+id|hci_send_cmd
 )paren
 suffix:semicolon
 DECL|variable|hci_si_event

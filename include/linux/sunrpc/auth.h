@@ -170,6 +170,12 @@ DECL|struct|rpc_authops
 r_struct
 id|rpc_authops
 (brace
+DECL|member|owner
+r_struct
+id|module
+op_star
+id|owner
+suffix:semicolon
 DECL|member|au_flavor
 id|rpc_authflavor_t
 id|au_flavor

@@ -1010,7 +1010,7 @@ id|rfcomm_session
 op_star
 id|s
 comma
-r_int
+id|u8
 id|dlci
 )paren
 (brace
@@ -1089,11 +1089,7 @@ id|rfcomm_session
 op_star
 id|s
 suffix:semicolon
-r_int
-id|err
-op_assign
-l_int|0
-comma
+id|u8
 id|dlci
 op_assign
 id|__dlci
@@ -1103,6 +1099,11 @@ l_int|0
 comma
 id|channel
 )paren
+suffix:semicolon
+r_int
+id|err
+op_assign
+l_int|0
 suffix:semicolon
 id|BT_DBG
 c_func
@@ -4802,7 +4803,7 @@ id|rfcomm_session
 op_star
 id|s
 comma
-r_int
+id|u8
 id|dlci
 )paren
 (brace
@@ -4972,7 +4973,7 @@ id|rfcomm_session
 op_star
 id|s
 comma
-r_int
+id|u8
 id|dlci
 )paren
 (brace
@@ -5099,7 +5100,7 @@ id|rfcomm_session
 op_star
 id|s
 comma
-r_int
+id|u8
 id|dlci
 )paren
 (brace
@@ -5250,7 +5251,7 @@ id|rfcomm_session
 op_star
 id|s
 comma
-r_int
+id|u8
 id|dlci
 )paren
 (brace
@@ -5259,7 +5260,7 @@ id|rfcomm_dlc
 op_star
 id|d
 suffix:semicolon
-r_int
+id|u8
 id|channel
 suffix:semicolon
 id|BT_DBG
@@ -5647,7 +5648,7 @@ id|rfcomm_dlc
 op_star
 id|d
 suffix:semicolon
-r_int
+id|u8
 id|dlci
 op_assign
 id|pn-&gt;dlci
@@ -5758,7 +5759,7 @@ suffix:semicolon
 )brace
 r_else
 (brace
-r_int
+id|u8
 id|channel
 op_assign
 id|__srv_channel
@@ -5889,7 +5890,7 @@ op_star
 )paren
 id|skb-&gt;data
 suffix:semicolon
-r_int
+id|u8
 id|dlci
 op_assign
 id|__get_dlci
@@ -6309,7 +6310,7 @@ id|rfcomm_dlc
 op_star
 id|d
 suffix:semicolon
-r_int
+id|u8
 id|dlci
 op_assign
 id|__get_dlci
@@ -6582,6 +6583,11 @@ id|skb-&gt;len
 suffix:semicolon
 r_break
 suffix:semicolon
+r_case
+id|RFCOMM_NSC
+suffix:colon
+r_break
+suffix:semicolon
 r_default
 suffix:colon
 id|BT_ERR
@@ -6620,7 +6626,7 @@ id|rfcomm_session
 op_star
 id|s
 comma
-r_int
+id|u8
 id|dlci
 comma
 r_int
@@ -7184,9 +7190,9 @@ c_func
 (paren
 id|d-&gt;session
 comma
-id|d-&gt;dlci
-comma
 l_int|1
+comma
+id|d-&gt;dlci
 comma
 id|d-&gt;v24_sig
 )paren
@@ -8834,6 +8840,16 @@ comma
 id|proc_bt
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|proc_bt_rfcomm
+)paren
+(brace
+id|proc_bt_rfcomm-&gt;owner
+op_assign
+id|THIS_MODULE
+suffix:semicolon
 id|p
 op_assign
 id|create_proc_entry
@@ -8856,6 +8872,7 @@ op_assign
 op_amp
 id|rfcomm_seq_fops
 suffix:semicolon
+)brace
 r_return
 l_int|0
 suffix:semicolon
@@ -8863,7 +8880,7 @@ suffix:semicolon
 DECL|function|rfcomm_proc_cleanup
 r_static
 r_void
-id|__init
+id|__exit
 id|rfcomm_proc_cleanup
 c_func
 (paren
@@ -8905,7 +8922,7 @@ suffix:semicolon
 DECL|function|rfcomm_proc_cleanup
 r_static
 r_void
-id|__init
+id|__exit
 id|rfcomm_proc_cleanup
 c_func
 (paren
@@ -8913,7 +8930,6 @@ r_void
 )paren
 (brace
 r_return
-l_int|0
 suffix:semicolon
 )brace
 macro_line|#endif /* CONFIG_PROC_FS */
@@ -8972,6 +8988,7 @@ suffix:semicolon
 )brace
 DECL|function|rfcomm_cleanup
 r_void
+id|__exit
 id|rfcomm_cleanup
 c_func
 (paren

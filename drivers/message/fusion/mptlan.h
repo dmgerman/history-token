@@ -19,11 +19,7 @@ macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/miscdevice.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;linux/version.h&gt;
-macro_line|#if LINUX_VERSION_CODE &lt; KERNEL_VERSION(2,5,41)
-macro_line|#include &lt;linux/tqueue.h&gt;
-macro_line|#else
 macro_line|#include &lt;linux/workqueue.h&gt;
-macro_line|#endif
 macro_line|#include &lt;linux/delay.h&gt;
 singleline_comment|// #include &lt;linux/trdevice.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;

@@ -1839,6 +1839,10 @@ id|hdev-&gt;ioctl
 op_assign
 id|dtl1_hci_ioctl
 suffix:semicolon
+id|hdev-&gt;owner
+op_assign
+id|THIS_MODULE
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -2872,8 +2876,6 @@ r_goto
 id|failed
 suffix:semicolon
 )brace
-id|MOD_INC_USE_COUNT
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -2969,8 +2971,6 @@ c_func
 (paren
 id|info
 )paren
-suffix:semicolon
-id|MOD_DEC_USE_COUNT
 suffix:semicolon
 id|link-&gt;dev
 op_assign

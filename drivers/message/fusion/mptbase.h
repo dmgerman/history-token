@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *  linux/drivers/message/fusion/mptbase.h&n; *      High performance SCSI + LAN / Fibre Channel device drivers.&n; *      For use with PCI chip/adapter(s):&n; *          LSIFC9xx/LSI409xx Fibre Channel&n; *      running LSI Logic Fusion MPT (Message Passing Technology) firmware.&n; *&n; *  Credits:&n; *     (see mptbase.c)&n; *&n; *  Copyright (c) 1999-2002 LSI Logic Corporation&n; *  Originally By: Steven J. Ralston&n; *  (mailto:sjralston1@netscape.net)&n; *  (mailto:Pam.Delaney@lsil.com)&n; *&n; *  $Id: mptbase.h,v 1.141 2002/12/03 21:26:32 pdelaney Exp $&n; */
+multiline_comment|/*&n; *  linux/drivers/message/fusion/mptbase.h&n; *      High performance SCSI + LAN / Fibre Channel device drivers.&n; *      For use with PCI chip/adapter(s):&n; *          LSIFC9xx/LSI409xx Fibre Channel&n; *      running LSI Logic Fusion MPT (Message Passing Technology) firmware.&n; *&n; *  Credits:&n; *     (see mptbase.c)&n; *&n; *  Copyright (c) 1999-2002 LSI Logic Corporation&n; *  Originally By: Steven J. Ralston&n; *  (mailto:sjralston1@netscape.net)&n; *  (mailto:Pam.Delaney@lsil.com)&n; *&n; *  $Id: mptbase.h,v 1.144 2003/01/28 21:31:56 pdelaney Exp $&n; */
 multiline_comment|/*=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=*/
 multiline_comment|/*&n;    This program is free software; you can redistribute it and/or modify&n;    it under the terms of the GNU General Public License as published by&n;    the Free Software Foundation; version 2 of the License.&n;&n;    This program is distributed in the hope that it will be useful,&n;    but WITHOUT ANY WARRANTY; without even the implied warranty of&n;    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n;    GNU General Public License for more details.&n;&n;    NO WARRANTY&n;    THE PROGRAM IS PROVIDED ON AN &quot;AS IS&quot; BASIS, WITHOUT WARRANTIES OR&n;    CONDITIONS OF ANY KIND, EITHER EXPRESS OR IMPLIED INCLUDING, WITHOUT&n;    LIMITATION, ANY WARRANTIES OR CONDITIONS OF TITLE, NON-INFRINGEMENT,&n;    MERCHANTABILITY OR FITNESS FOR A PARTICULAR PURPOSE. Each Recipient is&n;    solely responsible for determining the appropriateness of using and&n;    distributing the Program and assumes all risks associated with its&n;    exercise of rights under this Agreement, including but not limited to&n;    the risks and costs of program errors, damage to or loss of data,&n;    programs or equipment, and unavailability or interruption of operations.&n;&n;    DISCLAIMER OF LIABILITY&n;    NEITHER RECIPIENT NOR ANY CONTRIBUTORS SHALL HAVE ANY LIABILITY FOR ANY&n;    DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL&n;    DAMAGES (INCLUDING WITHOUT LIMITATION LOST PROFITS), HOWEVER CAUSED AND&n;    ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR&n;    TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE&n;    USE OR DISTRIBUTION OF THE PROGRAM OR THE EXERCISE OF ANY RIGHTS GRANTED&n;    HEREUNDER, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGES&n;&n;    You should have received a copy of the GNU General Public License&n;    along with this program; if not, write to the Free Software&n;    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n;*/
 macro_line|#ifndef MPTBASE_H_INCLUDED
@@ -27,9 +27,9 @@ DECL|macro|COPYRIGHT
 mdefine_line|#define COPYRIGHT&t;&quot;Copyright (c) 1999-2002 &quot; MODULEAUTHOR
 macro_line|#endif
 DECL|macro|MPT_LINUX_VERSION_COMMON
-mdefine_line|#define MPT_LINUX_VERSION_COMMON&t;&quot;2.03.01.01&quot;
+mdefine_line|#define MPT_LINUX_VERSION_COMMON&t;&quot;2.05.00.03&quot;
 DECL|macro|MPT_LINUX_PACKAGE_NAME
-mdefine_line|#define MPT_LINUX_PACKAGE_NAME&t;&t;&quot;@(#)mptlinux-2.03.01.01&quot;
+mdefine_line|#define MPT_LINUX_PACKAGE_NAME&t;&t;&quot;@(#)mptlinux-2.05.00.03&quot;
 DECL|macro|WHAT_MAGIC_STRING
 mdefine_line|#define WHAT_MAGIC_STRING&t;&t;&quot;@&quot; &quot;(&quot; &quot;#&quot; &quot;)&quot;
 DECL|macro|show_mptmod_ver
@@ -731,19 +731,18 @@ id|u8
 id|raidVolume
 suffix:semicolon
 multiline_comment|/* set, if RAID Volume */
-macro_line|#ifdef ABORT_FIX
-DECL|member|numAborts
+DECL|member|type
 id|u8
-id|numAborts
+id|type
 suffix:semicolon
-macro_line|#else
-DECL|member|rsvd
+multiline_comment|/* byte 0 of Inquiry data */
+DECL|member|cflags
 id|u8
-id|rsvd
+id|cflags
 suffix:semicolon
-macro_line|#endif
+multiline_comment|/* controller flags */
 DECL|member|rsvd1raid
-id|u16
+id|u8
 id|rsvd1raid
 suffix:semicolon
 DECL|member|npaths
@@ -796,25 +795,11 @@ DECL|member|DoneQ
 id|ScsiCmndTracker
 id|DoneQ
 suffix:semicolon
+DECL|member|num_luns
+id|u32
+id|num_luns
+suffix:semicolon
 singleline_comment|//--- LUN split here?
-macro_line|#ifdef MPT_SAVE_AUTOSENSE
-DECL|member|sense
-id|u8
-id|sense
-(braket
-id|SCSI_STD_SENSE_BYTES
-)braket
-suffix:semicolon
-multiline_comment|/* 18 */
-DECL|member|rsvd2
-id|u8
-id|rsvd2
-(braket
-l_int|2
-)braket
-suffix:semicolon
-multiline_comment|/* alignment */
-macro_line|#endif
 DECL|member|luns
 id|u32
 id|luns
@@ -914,18 +899,21 @@ suffix:semicolon
 multiline_comment|/*&n; *  Fibre Channel (SCSI) target device and associated defines...&n; */
 DECL|macro|MPT_TARGET_DEFAULT_DV_STATUS
 mdefine_line|#define MPT_TARGET_DEFAULT_DV_STATUS&t;0
+macro_line|#if LINUX_VERSION_CODE &gt;= KERNEL_VERSION(2,5,55)
+DECL|macro|MPT_TARGET_FLAGS_CONFIGURED
+mdefine_line|#define MPT_TARGET_FLAGS_CONFIGURED&t;0x02
+DECL|macro|MPT_TARGET_FLAGS_Q_YES
+mdefine_line|#define MPT_TARGET_FLAGS_Q_YES&t;&t;0x08
+macro_line|#else
 DECL|macro|MPT_TARGET_FLAGS_VALID_NEGO
 mdefine_line|#define MPT_TARGET_FLAGS_VALID_NEGO&t;0x01
 DECL|macro|MPT_TARGET_FLAGS_VALID_INQUIRY
 mdefine_line|#define MPT_TARGET_FLAGS_VALID_INQUIRY&t;0x02
-macro_line|#ifdef MPT_SAVE_AUTOSENSE
-DECL|macro|MPT_TARGET_FLAGS_VALID_SENSE
-mdefine_line|#define MPT_TARGET_FLAGS_VALID_SENSE&t;0x04
-macro_line|#endif
 DECL|macro|MPT_TARGET_FLAGS_Q_YES
 mdefine_line|#define MPT_TARGET_FLAGS_Q_YES&t;&t;0x08
 DECL|macro|MPT_TARGET_FLAGS_VALID_56
 mdefine_line|#define MPT_TARGET_FLAGS_VALID_56&t;0x10
+macro_line|#endif
 DECL|macro|MPT_TARGET_NO_NEGO_WIDE
 mdefine_line|#define MPT_TARGET_NO_NEGO_WIDE&t;&t;0x01
 DECL|macro|MPT_TARGET_NO_NEGO_SYNC
@@ -1447,6 +1435,7 @@ id|pci_dev
 op_star
 id|pcidev
 suffix:semicolon
+multiline_comment|/* struct pci_dev pointer */
 DECL|member|memmap
 id|u8
 op_star
@@ -1845,6 +1834,13 @@ mdefine_line|#define dcprintk(x) printk x
 macro_line|#else
 DECL|macro|dcprintk
 mdefine_line|#define dcprintk(x)
+macro_line|#endif
+macro_line|#if defined(MPT_DEBUG_SCSI) || defined(MPT_DEBUG) || defined(MPT_DEBUG_MSG_FRAME)
+DECL|macro|dsprintk
+mdefine_line|#define dsprintk(x) printk x
+macro_line|#else
+DECL|macro|dsprintk
+mdefine_line|#define dsprintk(x)
 macro_line|#endif
 DECL|macro|MPT_INDEX_2_MFPTR
 mdefine_line|#define MPT_INDEX_2_MFPTR(ioc,idx) &bslash;&n;&t;(MPT_FRAME_HDR*)( (u8*)(ioc)-&gt;req_frames + (ioc)-&gt;req_sz * (idx) )
@@ -2822,7 +2818,7 @@ macro_line|#ifndef offsetof
 DECL|macro|offsetof
 mdefine_line|#define offsetof(t, m)&t;((size_t) (&amp;((t *)0)-&gt;m))
 macro_line|#endif
-macro_line|#if defined(__alpha__) || defined(__sparc_v9__) || defined(__ia64__)
+macro_line|#if defined(__alpha__) || defined(__sparc_v9__) || defined(__ia64__) || defined(__x86_64__)
 DECL|macro|CAST_U32_TO_PTR
 mdefine_line|#define CAST_U32_TO_PTR(x)&t;((void *)(u64)x)
 DECL|macro|CAST_PTR_TO_U32

@@ -80,6 +80,12 @@ DECL|struct|ipmi_smi_handlers
 r_struct
 id|ipmi_smi_handlers
 (brace
+DECL|member|owner
+r_struct
+id|module
+op_star
+id|owner
+suffix:semicolon
 multiline_comment|/* Called to enqueue an SMI message to be sent.  This&n;&t;   operation is not allowed to fail.  If an error occurs, it&n;&t;   should report back the error in a received message.  It may&n;&t;   do this in the current call context, since no write locks&n;&t;   are held when this is run.  If the priority is &gt; 0, the&n;&t;   message will go into a high-priority queue and be sent&n;&t;   first.  Otherwise, it goes into a normal-priority queue. */
 DECL|member|sender
 r_void
@@ -107,32 +113,6 @@ r_void
 (paren
 op_star
 id|request_events
-)paren
-(paren
-r_void
-op_star
-id|send_info
-)paren
-suffix:semicolon
-multiline_comment|/* Called when someone is using the interface, so the module can&n;&t;   adjust it&squot;s use count.  Return zero if successful, or an&n;&t;   errno if not. */
-DECL|member|new_user
-r_int
-(paren
-op_star
-id|new_user
-)paren
-(paren
-r_void
-op_star
-id|send_info
-)paren
-suffix:semicolon
-multiline_comment|/* Called when someone is no longer using the interface, so the&n;&t;   module can adjust it&squot;s use count. */
-DECL|member|user_left
-r_void
-(paren
-op_star
-id|user_left
 )paren
 (paren
 r_void

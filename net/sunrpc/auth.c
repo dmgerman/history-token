@@ -1,6 +1,7 @@
 multiline_comment|/*&n; * linux/net/sunrpc/auth.c&n; *&n; * Generic RPC client authentication API.&n; *&n; * Copyright (C) 1996, Olaf Kirch &lt;okir@monad.swb.de&gt;&n; */
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
+macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/socket.h&gt;
@@ -217,6 +218,19 @@ id|flavor
 r_return
 l_int|NULL
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|try_module_get
+c_func
+(paren
+id|ops-&gt;owner
+)paren
+)paren
+r_return
+l_int|NULL
+suffix:semicolon
 id|clnt-&gt;cl_auth
 op_assign
 id|ops
@@ -247,6 +261,18 @@ id|auth
 id|auth-&gt;au_ops
 op_member_access_from_pointer
 id|destroy
+c_func
+(paren
+id|auth
+)paren
+suffix:semicolon
+id|module_put
+c_func
+(paren
+id|auth-&gt;au_ops-&gt;owner
+)paren
+suffix:semicolon
+id|kfree
 c_func
 (paren
 id|auth

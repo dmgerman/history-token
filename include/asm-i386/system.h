@@ -11,7 +11,9 @@ id|task_struct
 suffix:semicolon
 multiline_comment|/* one of the stranger aspects of C forward declarations.. */
 r_extern
-r_void
+r_struct
+id|task_struct
+op_star
 id|FASTCALL
 c_func
 (paren
@@ -31,7 +33,7 @@ id|next
 )paren
 suffix:semicolon
 DECL|macro|switch_to
-mdefine_line|#define switch_to(prev,next,last) do {&t;&t;&t;&t;&t;&bslash;&n;&t;asm volatile(&quot;pushfl&bslash;n&bslash;t&quot;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;     &quot;pushl %%esi&bslash;n&bslash;t&quot;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;     &quot;pushl %%edi&bslash;n&bslash;t&quot;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;     &quot;pushl %%ebp&bslash;n&bslash;t&quot;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;     &quot;movl %%esp,%0&bslash;n&bslash;t&quot;&t;/* save ESP */&t;&t;&bslash;&n;&t;&t;     &quot;movl %2,%%esp&bslash;n&bslash;t&quot;&t;/* restore ESP */&t;&bslash;&n;&t;&t;     &quot;movl $1f,%1&bslash;n&bslash;t&quot;&t;&t;/* save EIP */&t;&t;&bslash;&n;&t;&t;     &quot;pushl %3&bslash;n&bslash;t&quot;&t;&t;/* restore EIP */&t;&bslash;&n;&t;&t;     &quot;jmp __switch_to&bslash;n&quot;&t;&t;&t;&t;&bslash;&n;&t;&t;     &quot;1:&bslash;t&quot;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;     &quot;popl %%ebp&bslash;n&bslash;t&quot;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;     &quot;popl %%edi&bslash;n&bslash;t&quot;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;     &quot;popl %%esi&bslash;n&bslash;t&quot;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;     &quot;popfl&bslash;n&bslash;t&quot;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;     :&quot;=m&quot; (prev-&gt;thread.esp),&quot;=m&quot; (prev-&gt;thread.eip)&t;&bslash;&n;&t;&t;     :&quot;m&quot; (next-&gt;thread.esp),&quot;m&quot; (next-&gt;thread.eip),&t;&bslash;&n;&t;&t;      &quot;a&quot; (prev), &quot;d&quot; (next));&t;&t;&t;&t;&bslash;&n;} while (0)
+mdefine_line|#define switch_to(prev,next,last) do {&t;&t;&t;&t;&t;&bslash;&n;&t;unsigned long esi,edi;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;asm volatile(&quot;pushfl&bslash;n&bslash;t&quot;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;     &quot;pushl %%ebp&bslash;n&bslash;t&quot;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;     &quot;movl %%esp,%0&bslash;n&bslash;t&quot;&t;/* save ESP */&t;&t;&bslash;&n;&t;&t;     &quot;movl %5,%%esp&bslash;n&bslash;t&quot;&t;/* restore ESP */&t;&bslash;&n;&t;&t;     &quot;movl $1f,%1&bslash;n&bslash;t&quot;&t;&t;/* save EIP */&t;&t;&bslash;&n;&t;&t;     &quot;pushl %6&bslash;n&bslash;t&quot;&t;&t;/* restore EIP */&t;&bslash;&n;&t;&t;     &quot;jmp __switch_to&bslash;n&quot;&t;&t;&t;&t;&bslash;&n;&t;&t;     &quot;1:&bslash;t&quot;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;     &quot;popl %%ebp&bslash;n&bslash;t&quot;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;     &quot;popfl&quot;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;     :&quot;=m&quot; (prev-&gt;thread.esp),&quot;=m&quot; (prev-&gt;thread.eip),&t;&bslash;&n;&t;&t;      &quot;=a&quot; (last),&quot;=S&quot; (esi),&quot;=D&quot; (edi)&t;&t;&t;&bslash;&n;&t;&t;     :&quot;m&quot; (next-&gt;thread.esp),&quot;m&quot; (next-&gt;thread.eip),&t;&bslash;&n;&t;&t;      &quot;2&quot; (prev), &quot;d&quot; (next));&t;&t;&t;&t;&bslash;&n;} while (0)
 DECL|macro|_set_base
 mdefine_line|#define _set_base(addr,base) do { unsigned long __pr; &bslash;&n;__asm__ __volatile__ (&quot;movw %%dx,%1&bslash;n&bslash;t&quot; &bslash;&n;&t;&quot;rorl $16,%%edx&bslash;n&bslash;t&quot; &bslash;&n;&t;&quot;movb %%dl,%2&bslash;n&bslash;t&quot; &bslash;&n;&t;&quot;movb %%dh,%3&quot; &bslash;&n;&t;:&quot;=&amp;d&quot; (__pr) &bslash;&n;&t;:&quot;m&quot; (*((addr)+2)), &bslash;&n;&t; &quot;m&quot; (*((addr)+4)), &bslash;&n;&t; &quot;m&quot; (*((addr)+7)), &bslash;&n;         &quot;0&quot; (base) &bslash;&n;        ); } while(0)
 DECL|macro|_set_limit

@@ -1104,13 +1104,9 @@ id|skt-&gt;handler
 op_assign
 l_int|NULL
 suffix:semicolon
-id|MOD_DEC_USE_COUNT
-suffix:semicolon
 )brace
 r_else
 (brace
-id|MOD_INC_USE_COUNT
-suffix:semicolon
 id|skt-&gt;handler_info
 op_assign
 id|info
@@ -3067,6 +3063,11 @@ id|pccard_operations
 id|sa1100_pcmcia_operations
 op_assign
 (brace
+dot
+id|owner
+op_assign
+id|THIS_MODULE
+comma
 dot
 id|init
 op_assign

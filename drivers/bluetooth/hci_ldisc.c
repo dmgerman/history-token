@@ -811,8 +811,6 @@ c_func
 id|hu
 )paren
 suffix:semicolon
-id|MOD_DEC_USE_COUNT
-suffix:semicolon
 )brace
 multiline_comment|/* ------ LDISC part ------ */
 multiline_comment|/* hci_uart_tty_open&n; * &n; *     Called when line discipline changed to HCI_UART.&n; *&n; * Arguments:&n; *     tty    pointer to tty info structure&n; * Return Value:    &n; *     0 if success, otherwise error code&n; */
@@ -944,8 +942,6 @@ c_func
 id|tty
 )paren
 suffix:semicolon
-id|MOD_INC_USE_COUNT
-suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
@@ -1035,8 +1031,6 @@ id|hdev
 )paren
 suffix:semicolon
 )brace
-id|MOD_DEC_USE_COUNT
-suffix:semicolon
 )brace
 )brace
 multiline_comment|/* hci_uart_tty_wakeup()&n; *&n; *    Callback for transmit wakeup. Called when low level&n; *    device driver can accept more send data.&n; *&n; * Arguments:        tty    pointer to associated tty instance data&n; * Return Value:    None&n; */
@@ -1307,6 +1301,10 @@ id|hdev-&gt;destruct
 op_assign
 id|hci_uart_destruct
 suffix:semicolon
+id|hdev-&gt;owner
+op_assign
+id|THIS_MODULE
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1332,8 +1330,6 @@ op_minus
 id|ENODEV
 suffix:semicolon
 )brace
-id|MOD_INC_USE_COUNT
-suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon

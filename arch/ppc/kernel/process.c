@@ -714,7 +714,9 @@ l_int|1
 suffix:semicolon
 )brace
 DECL|function|__switch_to
-r_void
+r_struct
+id|task_struct
+op_star
 id|__switch_to
 c_func
 (paren
@@ -740,6 +742,11 @@ suffix:semicolon
 r_int
 r_int
 id|s
+suffix:semicolon
+r_struct
+id|task_struct
+op_star
+id|last
 suffix:semicolon
 id|local_irq_save
 c_func
@@ -833,6 +840,8 @@ op_assign
 op_amp
 id|current-&gt;thread
 suffix:semicolon
+id|last
+op_assign
 id|_switch
 c_func
 (paren
@@ -846,6 +855,9 @@ c_func
 (paren
 id|s
 )paren
+suffix:semicolon
+r_return
+id|last
 suffix:semicolon
 )brace
 DECL|function|show_regs

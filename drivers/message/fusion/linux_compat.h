@@ -327,6 +327,17 @@ macro_line|#else
 DECL|macro|mptscsih_sync_irq
 mdefine_line|#define mptscsih_sync_irq(_irq) synchronize_irq()
 macro_line|#endif
+macro_line|#if LINUX_VERSION_CODE &gt;= KERNEL_VERSION(2,5,58)
+DECL|macro|mpt_inc_use_count
+mdefine_line|#define mpt_inc_use_count()
+DECL|macro|mpt_dec_use_count
+mdefine_line|#define mpt_dec_use_count()
+macro_line|#else
+DECL|macro|mpt_inc_use_count
+mdefine_line|#define mpt_inc_use_count() MOD_INC_USE_COUNT
+DECL|macro|mpt_dec_use_count
+mdefine_line|#define mpt_dec_use_count() MOD_DEC_USE_COUNT
+macro_line|#endif
 multiline_comment|/*}-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=*/
 macro_line|#endif /* _LINUX_COMPAT_H */
 eof

@@ -49,7 +49,7 @@ r_char
 op_star
 id|name
 op_assign
-id|dev-&gt;name
+id|dev-&gt;dev.name
 suffix:semicolon
 r_for
 c_loop
@@ -92,10 +92,12 @@ id|i
 )paren
 )paren
 (brace
-id|sprintf
+id|snprintf
 c_func
 (paren
 id|name
+comma
+id|DEVICE_NAME_SIZE
 comma
 l_string|&quot;%s&quot;
 comma

@@ -1,6 +1,7 @@
 multiline_comment|/*&n; * linux/net/sunrpc/auth_unix.c&n; *&n; * UNIX-style authentication; no AUTH_SHORT support&n; *&n; * Copyright (C) 1996, Olaf Kirch &lt;okir@monad.swb.de&gt;&n; */
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
+macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/socket.h&gt;
 macro_line|#include &lt;linux/in.h&gt;
 macro_line|#include &lt;linux/sunrpc/clnt.h&gt;
@@ -168,12 +169,6 @@ id|auth
 )paren
 suffix:semicolon
 id|rpcauth_free_credcache
-c_func
-(paren
-id|auth
-)paren
-suffix:semicolon
-id|kfree
 c_func
 (paren
 id|auth
@@ -981,6 +976,11 @@ id|rpc_authops
 id|authunix_ops
 op_assign
 (brace
+dot
+id|owner
+op_assign
+id|THIS_MODULE
+comma
 dot
 id|au_flavor
 op_assign

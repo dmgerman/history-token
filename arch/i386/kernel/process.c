@@ -1468,9 +1468,11 @@ suffix:semicolon
 multiline_comment|/*&n; * This special macro can be used to load a debugging register&n; */
 DECL|macro|loaddebug
 mdefine_line|#define loaddebug(thread,register) &bslash;&n;&t;&t;__asm__(&quot;movl %0,%%db&quot; #register  &bslash;&n;&t;&t;&t;: /* no output */ &bslash;&n;&t;&t;&t;:&quot;r&quot; (thread-&gt;debugreg[register]))
-multiline_comment|/*&n; *&t;switch_to(x,yn) should switch tasks from x to y.&n; *&n; * We fsave/fwait so that an exception goes off at the right time&n; * (as a call from the fsave or fwait in effect) rather than to&n; * the wrong process. Lazy FP saving no longer makes any sense&n; * with modern CPU&squot;s, and this simplifies a lot of things (SMP&n; * and UP become the same).&n; *&n; * NOTE! We used to use the x86 hardware context switching. The&n; * reason for not using it any more becomes apparent when you&n; * try to recover gracefully from saved state that is no longer&n; * valid (stale segment register values in particular). With the&n; * hardware task-switch, there is no way to fix up bad state in&n; * a reasonable manner.&n; *&n; * The fact that Intel documents the hardware task-switching to&n; * be slow is a fairly red herring - this code is not noticeably&n; * faster. However, there _is_ some room for improvement here,&n; * so the performance issues may eventually be a valid point.&n; * More important, however, is the fact that this allows us much&n; * more flexibility.&n; */
+multiline_comment|/*&n; *&t;switch_to(x,yn) should switch tasks from x to y.&n; *&n; * We fsave/fwait so that an exception goes off at the right time&n; * (as a call from the fsave or fwait in effect) rather than to&n; * the wrong process. Lazy FP saving no longer makes any sense&n; * with modern CPU&squot;s, and this simplifies a lot of things (SMP&n; * and UP become the same).&n; *&n; * NOTE! We used to use the x86 hardware context switching. The&n; * reason for not using it any more becomes apparent when you&n; * try to recover gracefully from saved state that is no longer&n; * valid (stale segment register values in particular). With the&n; * hardware task-switch, there is no way to fix up bad state in&n; * a reasonable manner.&n; *&n; * The fact that Intel documents the hardware task-switching to&n; * be slow is a fairly red herring - this code is not noticeably&n; * faster. However, there _is_ some room for improvement here,&n; * so the performance issues may eventually be a valid point.&n; * More important, however, is the fact that this allows us much&n; * more flexibility.&n; *&n; * The return value (in %eax) will be the &quot;prev&quot; task after&n; * the task-switch, and shows up in ret_from_fork in entry.S,&n; * for example.&n; */
 DECL|function|__switch_to
-r_void
+r_struct
+id|task_struct
+op_star
 id|__switch_to
 c_func
 (paren
@@ -1715,6 +1717,9 @@ op_assign
 id|INVALID_IO_BITMAP_OFFSET
 suffix:semicolon
 )brace
+r_return
+id|prev_p
+suffix:semicolon
 )brace
 DECL|function|sys_fork
 id|asmlinkage

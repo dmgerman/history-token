@@ -31,6 +31,8 @@ mdefine_line|#define MPTCOMMAND32&t;&t;_IOWR(MPT_MAGIC_NUMBER,20,struct mpt_ioct
 macro_line|#endif&t;/*}*/
 DECL|macro|MPTIOCINFO
 mdefine_line|#define MPTIOCINFO&t;&t;_IOWR(MPT_MAGIC_NUMBER,17,struct mpt_ioctl_iocinfo)
+DECL|macro|MPTIOCINFO1
+mdefine_line|#define MPTIOCINFO1&t;&t;_IOWR(MPT_MAGIC_NUMBER,17,struct mpt_ioctl_iocinfo_rev0)
 DECL|macro|MPTTARGETINFO
 mdefine_line|#define MPTTARGETINFO&t;&t;_IOWR(MPT_MAGIC_NUMBER,18,struct mpt_ioctl_targetinfo)
 DECL|macro|MPTTEST
@@ -45,7 +47,7 @@ DECL|macro|MPTHARDRESET
 mdefine_line|#define MPTHARDRESET&t;&t;_IOWR(MPT_MAGIC_NUMBER,24,struct mpt_ioctl_diag_reset)
 DECL|macro|MPTFWREPLACE
 mdefine_line|#define MPTFWREPLACE&t;&t;_IOWR(MPT_MAGIC_NUMBER,25,struct mpt_ioctl_replace_fw)
-multiline_comment|/*&n; * SPARC PLATFORM REMARK:&n; * IOCTL data structures that contain pointers&n; * will have different sizes in the driver and applications&n; * (as the app. will not use 8-byte pointers).&n; * Apps should use MPTFWDOWNLOAD and MPTCOMMAND.&n; * The driver will convert data from&n; * mpt_fw_xfer32 (mpt_ioctl_command32) to mpt_fw_xfer (mpt_ioctl_command)&n; * internally.&n; */
+multiline_comment|/*&n; * SPARC PLATFORM REMARKS:&n; * IOCTL data structures that contain pointers&n; * will have different sizes in the driver and applications&n; * (as the app. will not use 8-byte pointers).&n; * Apps should use MPTFWDOWNLOAD and MPTCOMMAND.&n; * The driver will convert data from&n; * mpt_fw_xfer32 (mpt_ioctl_command32) to mpt_fw_xfer (mpt_ioctl_command)&n; * internally.&n; *&n; * If data structures change size, must handle as in IOCGETINFO.&n; */
 DECL|struct|mpt_fw_xfer
 r_struct
 id|mpt_fw_xfer
@@ -263,6 +265,85 @@ id|mpt_ioctl_pci_info
 id|pciInfo
 suffix:semicolon
 multiline_comment|/* Added Rev 1 */
+)brace
+suffix:semicolon
+multiline_comment|/* Original structure, must always accept these&n; * IOCTLs. 4 byte pads can occur based on arch with&n; * above structure. Wish to re-align, but cannot.&n; */
+DECL|struct|mpt_ioctl_iocinfo_rev0
+r_struct
+id|mpt_ioctl_iocinfo_rev0
+(brace
+DECL|member|hdr
+id|mpt_ioctl_header
+id|hdr
+suffix:semicolon
+DECL|member|adapterType
+r_int
+id|adapterType
+suffix:semicolon
+multiline_comment|/* SCSI or FCP */
+DECL|member|port
+r_int
+id|port
+suffix:semicolon
+multiline_comment|/* port number */
+DECL|member|pciId
+r_int
+id|pciId
+suffix:semicolon
+multiline_comment|/* PCI Id. */
+DECL|member|hwRev
+r_int
+id|hwRev
+suffix:semicolon
+multiline_comment|/* hardware revision */
+DECL|member|subSystemDevice
+r_int
+id|subSystemDevice
+suffix:semicolon
+multiline_comment|/* PCI subsystem Device ID */
+DECL|member|subSystemVendor
+r_int
+id|subSystemVendor
+suffix:semicolon
+multiline_comment|/* PCI subsystem Vendor ID */
+DECL|member|numDevices
+r_int
+id|numDevices
+suffix:semicolon
+multiline_comment|/* number of devices */
+DECL|member|FWVersion
+r_int
+id|FWVersion
+suffix:semicolon
+multiline_comment|/* FW Version (integer) */
+DECL|member|BIOSVersion
+r_int
+id|BIOSVersion
+suffix:semicolon
+multiline_comment|/* BIOS Version (integer) */
+DECL|member|driverVersion
+r_char
+id|driverVersion
+(braket
+id|MPT_IOCTL_VERSION_LENGTH
+)braket
+suffix:semicolon
+multiline_comment|/* Driver Version (string) */
+DECL|member|busChangeEvent
+r_char
+id|busChangeEvent
+suffix:semicolon
+DECL|member|hostId
+r_char
+id|hostId
+suffix:semicolon
+DECL|member|rsvd
+r_char
+id|rsvd
+(braket
+l_int|2
+)braket
+suffix:semicolon
 )brace
 suffix:semicolon
 multiline_comment|/*&n; * Device Information Page&n; * Report the number of, and ids of, all targets&n; * on this IOC.  The ids array is a packed structure&n; * of the known targetInfo.&n; * bits 31-24: reserved&n; *      23-16: LUN&n; *      15- 8: Bus Number&n; *       7- 0: Target ID&n; */
@@ -593,7 +674,7 @@ DECL|typedef|hp_header_t
 )brace
 id|hp_header_t
 suffix:semicolon
-multiline_comment|/*  &n; *  Header:&n; *  iocnum &t;required (input)&n; *  host &t;ignored&t;&n; *  channe&t;ignored&n; *  id&t;&t;ignored&n; *  lun&t;&t;ignored&n; */
+multiline_comment|/*&n; *  Header:&n; *  iocnum &t;required (input)&n; *  host &t;ignored&t;&n; *  channe&t;ignored&n; *  id&t;&t;ignored&n; *  lun&t;&t;ignored&n; */
 DECL|struct|_hp_host_info
 r_typedef
 r_struct
@@ -686,7 +767,7 @@ DECL|typedef|hp_host_info_t
 )brace
 id|hp_host_info_t
 suffix:semicolon
-multiline_comment|/*  &n; *  Header:&n; *  iocnum &t;required (input)&n; *  host &t;required&t;&n; *  channel&t;required&t;(bus number)&n; *  id&t;&t;required&n; *  lun&t;&t;ignored&n; *&n; *  All error values between 0 and 0xFFFF in size.&n; */
+multiline_comment|/*&n; *  Header:&n; *  iocnum &t;required (input)&n; *  host &t;required&t;&n; *  channel&t;required&t;(bus number)&n; *  id&t;&t;required&n; *  lun&t;&t;ignored&n; *&n; *  All error values between 0 and 0xFFFF in size.&n; */
 DECL|struct|_hp_target_info
 r_typedef
 r_struct

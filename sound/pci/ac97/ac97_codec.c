@@ -15510,11 +15510,6 @@ id|vendor
 comma
 id|device
 suffix:semicolon
-r_struct
-id|ac97_quirk
-op_star
-id|q
-suffix:semicolon
 id|pci_read_config_word
 c_func
 (paren

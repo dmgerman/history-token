@@ -35,6 +35,8 @@ DECL|macro|HCI_UART
 mdefine_line|#define HCI_UART &t;3
 DECL|macro|HCI_RS232
 mdefine_line|#define HCI_RS232 &t;4
+DECL|macro|HCI_PCI
+mdefine_line|#define HCI_PCI&t;&t;5
 multiline_comment|/* HCI device flags */
 r_enum
 (brace
@@ -68,41 +70,43 @@ id|HCI_RAW
 suffix:semicolon
 multiline_comment|/* HCI ioctl defines */
 DECL|macro|HCIDEVUP
-mdefine_line|#define HCIDEVUP        _IOW(&squot;H&squot;, 201, int)
+mdefine_line|#define HCIDEVUP&t;_IOW(&squot;H&squot;, 201, int)
 DECL|macro|HCIDEVDOWN
-mdefine_line|#define HCIDEVDOWN      _IOW(&squot;H&squot;, 202, int)
+mdefine_line|#define HCIDEVDOWN&t;_IOW(&squot;H&squot;, 202, int)
 DECL|macro|HCIDEVRESET
-mdefine_line|#define HCIDEVRESET     _IOW(&squot;H&squot;, 203, int)
+mdefine_line|#define HCIDEVRESET&t;_IOW(&squot;H&squot;, 203, int)
 DECL|macro|HCIDEVRESTAT
-mdefine_line|#define HCIDEVRESTAT    _IOW(&squot;H&squot;, 204, int)
+mdefine_line|#define HCIDEVRESTAT&t;_IOW(&squot;H&squot;, 204, int)
 DECL|macro|HCIGETDEVLIST
-mdefine_line|#define HCIGETDEVLIST   _IOR(&squot;H&squot;, 210, int)
+mdefine_line|#define HCIGETDEVLIST&t;_IOR(&squot;H&squot;, 210, int)
 DECL|macro|HCIGETDEVINFO
-mdefine_line|#define HCIGETDEVINFO   _IOR(&squot;H&squot;, 211, int)
+mdefine_line|#define HCIGETDEVINFO&t;_IOR(&squot;H&squot;, 211, int)
 DECL|macro|HCIGETCONNLIST
-mdefine_line|#define HCIGETCONNLIST  _IOR(&squot;H&squot;, 212, int)
+mdefine_line|#define HCIGETCONNLIST&t;_IOR(&squot;H&squot;, 212, int)
 DECL|macro|HCIGETCONNINFO
-mdefine_line|#define HCIGETCONNINFO  _IOR(&squot;H&squot;, 213, int)
+mdefine_line|#define HCIGETCONNINFO&t;_IOR(&squot;H&squot;, 213, int)
 DECL|macro|HCISETRAW
-mdefine_line|#define HCISETRAW       _IOW(&squot;H&squot;, 220, int)
+mdefine_line|#define HCISETRAW&t;_IOW(&squot;H&squot;, 220, int)
 DECL|macro|HCISETSCAN
-mdefine_line|#define HCISETSCAN      _IOW(&squot;H&squot;, 221, int)
+mdefine_line|#define HCISETSCAN&t;_IOW(&squot;H&squot;, 221, int)
 DECL|macro|HCISETAUTH
-mdefine_line|#define HCISETAUTH      _IOW(&squot;H&squot;, 222, int)
+mdefine_line|#define HCISETAUTH&t;_IOW(&squot;H&squot;, 222, int)
 DECL|macro|HCISETENCRYPT
-mdefine_line|#define HCISETENCRYPT   _IOW(&squot;H&squot;, 223, int)
+mdefine_line|#define HCISETENCRYPT&t;_IOW(&squot;H&squot;, 223, int)
 DECL|macro|HCISETPTYPE
-mdefine_line|#define HCISETPTYPE     _IOW(&squot;H&squot;, 224, int)
+mdefine_line|#define HCISETPTYPE&t;_IOW(&squot;H&squot;, 224, int)
 DECL|macro|HCISETLINKPOL
-mdefine_line|#define HCISETLINKPOL   _IOW(&squot;H&squot;, 225, int)
+mdefine_line|#define HCISETLINKPOL&t;_IOW(&squot;H&squot;, 225, int)
 DECL|macro|HCISETLINKMODE
-mdefine_line|#define HCISETLINKMODE  _IOW(&squot;H&squot;, 226, int)
+mdefine_line|#define HCISETLINKMODE&t;_IOW(&squot;H&squot;, 226, int)
 DECL|macro|HCISETACLMTU
-mdefine_line|#define HCISETACLMTU    _IOW(&squot;H&squot;, 227, int)
+mdefine_line|#define HCISETACLMTU&t;_IOW(&squot;H&squot;, 227, int)
 DECL|macro|HCISETSCOMTU
-mdefine_line|#define HCISETSCOMTU    _IOW(&squot;H&squot;, 228, int)
+mdefine_line|#define HCISETSCOMTU&t;_IOW(&squot;H&squot;, 228, int)
+DECL|macro|HCISETRAWVND
+mdefine_line|#define HCISETRAWVND&t;_IOW(&squot;H&squot;, 229, int)
 DECL|macro|HCIINQUIRY
-mdefine_line|#define HCIINQUIRY      _IOR(&squot;H&squot;, 240, int)
+mdefine_line|#define HCIINQUIRY&t;_IOR(&squot;H&squot;, 240, int)
 multiline_comment|/* HCI timeouts */
 DECL|macro|HCI_CONN_TIMEOUT
 mdefine_line|#define HCI_CONN_TIMEOUT &t;(HZ * 40)
@@ -967,7 +971,13 @@ id|packed
 suffix:semicolon
 multiline_comment|/* Status params */
 DECL|macro|OGF_STATUS_PARAM
-mdefine_line|#define OGF_STATUS_PARAM &t;0x05
+mdefine_line|#define OGF_STATUS_PARAM&t;0x05
+multiline_comment|/* Testing commands */
+DECL|macro|OGF_TESTING_CMD
+mdefine_line|#define OGF_TESTING_CMD&t;&t;0x3E
+multiline_comment|/* Vendor specific commands */
+DECL|macro|OGF_VENDOR_CMD
+mdefine_line|#define OGF_VENDOR_CMD&t;&t;0x3F
 multiline_comment|/* ---- HCI Events ---- */
 DECL|macro|HCI_EV_INQUIRY_COMPLETE
 mdefine_line|#define HCI_EV_INQUIRY_COMPLETE&t;0x01

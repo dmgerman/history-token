@@ -180,7 +180,7 @@ l_int|0
 suffix:semicolon
 id|i
 OL
-id|DEVICE_COUNT_IO
+id|PNP_MAX_PORT
 suffix:semicolon
 id|i
 op_increment
@@ -321,6 +321,11 @@ dot
 id|name
 op_assign
 l_string|&quot;system&quot;
+comma
+dot
+id|flags
+op_assign
+id|PNP_DRIVER_DO_NOT_ACTIVATE
 comma
 dot
 id|id_table

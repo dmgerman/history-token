@@ -291,7 +291,7 @@ op_star
 id|__rfcomm_get_sock_by_addr
 c_func
 (paren
-r_int
+id|u8
 id|channel
 comma
 id|bdaddr_t
@@ -366,7 +366,7 @@ c_func
 r_int
 id|state
 comma
-id|__u16
+id|u8
 id|channel
 comma
 id|bdaddr_t
@@ -493,7 +493,7 @@ c_func
 r_int
 id|state
 comma
-id|__u16
+id|u8
 id|channel
 comma
 id|bdaddr_t
@@ -3673,7 +3673,7 @@ suffix:semicolon
 DECL|function|rfcomm_sock_proc_cleanup
 r_static
 r_void
-id|__init
+id|__exit
 id|rfcomm_sock_proc_cleanup
 c_func
 (paren
@@ -3707,7 +3707,7 @@ suffix:semicolon
 DECL|function|rfcomm_sock_proc_cleanup
 r_static
 r_void
-id|__init
+id|__exit
 id|rfcomm_sock_proc_cleanup
 c_func
 (paren
@@ -3715,7 +3715,6 @@ r_void
 )paren
 (brace
 r_return
-l_int|0
 suffix:semicolon
 )brace
 macro_line|#endif /* CONFIG_PROC_FS */
@@ -3827,6 +3826,7 @@ id|rfcomm_sock_create
 suffix:semicolon
 DECL|function|rfcomm_init_sockets
 r_int
+id|__init
 id|rfcomm_init_sockets
 c_func
 (paren
@@ -3882,6 +3882,7 @@ suffix:semicolon
 )brace
 DECL|function|rfcomm_cleanup_sockets
 r_void
+id|__exit
 id|rfcomm_cleanup_sockets
 c_func
 (paren

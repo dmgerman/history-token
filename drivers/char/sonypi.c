@@ -1,6 +1,7 @@
-multiline_comment|/*&n; * Sony Programmable I/O Control Device driver for VAIO&n; *&n; * Copyright (C) 2001-2002 Stelian Pop &lt;stelian@popies.net&gt;&n; *&n; * Copyright (C) 2001-2002 Alc&#xfffd;ve &lt;www.alcove.com&gt;&n; *&n; * Copyright (C) 2001 Michael Ashley &lt;m.ashley@unsw.edu.au&gt;&n; *&n; * Copyright (C) 2001 Junichi Morita &lt;jun1m@mars.dti.ne.jp&gt;&n; *&n; * Copyright (C) 2000 Takaya Kinjo &lt;t-kinjo@tc4.so-net.ne.jp&gt;&n; *&n; * Copyright (C) 2000 Andrew Tridgell &lt;tridge@valinux.com&gt;&n; *&n; * Earlier work by Werner Almesberger, Paul `Rusty&squot; Russell and Paul Mackerras.&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; * &n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; * &n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; *&n; */
+multiline_comment|/*&n; * Sony Programmable I/O Control Device driver for VAIO&n; *&n; * Copyright (C) 2001-2003 Stelian Pop &lt;stelian@popies.net&gt;&n; *&n; * Copyright (C) 2001-2002 Alc&#xfffd;ve &lt;www.alcove.com&gt;&n; *&n; * Copyright (C) 2001 Michael Ashley &lt;m.ashley@unsw.edu.au&gt;&n; *&n; * Copyright (C) 2001 Junichi Morita &lt;jun1m@mars.dti.ne.jp&gt;&n; *&n; * Copyright (C) 2000 Takaya Kinjo &lt;t-kinjo@tc4.so-net.ne.jp&gt;&n; *&n; * Copyright (C) 2000 Andrew Tridgell &lt;tridge@valinux.com&gt;&n; *&n; * Earlier work by Werner Almesberger, Paul `Rusty&squot; Russell and Paul Mackerras.&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; * &n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; * &n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; *&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
+macro_line|#include &lt;linux/input.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
@@ -53,6 +54,13 @@ r_int
 id|compat
 suffix:semicolon
 multiline_comment|/* = 0 */
+DECL|variable|useinput
+r_static
+r_int
+id|useinput
+op_assign
+l_int|1
+suffix:semicolon
 DECL|variable|mask
 r_static
 r_int
@@ -1612,6 +1620,117 @@ r_return
 suffix:semicolon
 id|found
 suffix:colon
+macro_line|#if defined(CONFIG_INPUT) || defined(CONFIG_INPUT_MODULE)
+r_if
+c_cond
+(paren
+id|useinput
+)paren
+(brace
+r_struct
+id|input_dev
+op_star
+id|jog_dev
+op_assign
+op_amp
+id|sonypi_device.jog_dev
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|event
+op_eq
+id|SONYPI_EVENT_JOGDIAL_PRESSED
+)paren
+id|input_report_key
+c_func
+(paren
+id|jog_dev
+comma
+id|BTN_MIDDLE
+comma
+l_int|1
+)paren
+suffix:semicolon
+r_else
+r_if
+c_cond
+(paren
+id|event
+op_eq
+id|SONYPI_EVENT_ANYBUTTON_RELEASED
+)paren
+id|input_report_key
+c_func
+(paren
+id|jog_dev
+comma
+id|BTN_MIDDLE
+comma
+l_int|0
+)paren
+suffix:semicolon
+r_else
+r_if
+c_cond
+(paren
+(paren
+id|event
+op_eq
+id|SONYPI_EVENT_JOGDIAL_UP
+)paren
+op_logical_or
+(paren
+id|event
+op_eq
+id|SONYPI_EVENT_JOGDIAL_UP_PRESSED
+)paren
+)paren
+id|input_report_rel
+c_func
+(paren
+id|jog_dev
+comma
+id|REL_WHEEL
+comma
+l_int|1
+)paren
+suffix:semicolon
+r_else
+r_if
+c_cond
+(paren
+(paren
+id|event
+op_eq
+id|SONYPI_EVENT_JOGDIAL_DOWN
+)paren
+op_logical_or
+(paren
+id|event
+op_eq
+id|SONYPI_EVENT_JOGDIAL_DOWN_PRESSED
+)paren
+)paren
+id|input_report_rel
+c_func
+(paren
+id|jog_dev
+comma
+id|REL_WHEEL
+comma
+op_minus
+l_int|1
+)paren
+suffix:semicolon
+id|input_sync
+c_func
+(paren
+id|jog_dev
+)paren
+suffix:semicolon
+)brace
+macro_line|#endif /* CONFIG_INPUT || CONFIG_INPUT_MODULE */
 id|sonypi_pushq
 c_func
 (paren
@@ -2881,7 +3000,7 @@ op_amp
 id|sonypi_misc_fops
 )brace
 suffix:semicolon
-macro_line|#if CONFIG_PM
+macro_line|#ifdef CONFIG_PM
 DECL|function|sonypi_pm_callback
 r_static
 r_int
@@ -2957,7 +3076,7 @@ c_func
 (paren
 )paren
 suffix:semicolon
-macro_line|#if !defined(CONFIG_ACPI)
+macro_line|#ifndef CONFIG_ACPI
 multiline_comment|/* disable ACPI mode */
 r_if
 c_cond
@@ -2978,7 +3097,7 @@ suffix:semicolon
 r_case
 id|PM_RESUME
 suffix:colon
-macro_line|#if !defined(CONFIG_ACPI)
+macro_line|#ifndef CONFIG_ACPI
 multiline_comment|/* Enable ACPI mode to get Fn key events */
 r_if
 c_cond
@@ -3400,7 +3519,7 @@ r_goto
 id|out3
 suffix:semicolon
 )brace
-macro_line|#if !defined(CONFIG_ACPI)
+macro_line|#ifndef CONFIG_ACPI
 multiline_comment|/* Enable ACPI mode to get Fn key events */
 r_if
 c_cond
@@ -3483,7 +3602,7 @@ c_func
 id|KERN_INFO
 l_string|&quot;sonypi: detected %s model, &quot;
 l_string|&quot;verbose = %d, fnkeyinit = %s, camera = %s, &quot;
-l_string|&quot;compat = %s, mask = 0x%08lx&bslash;n&quot;
+l_string|&quot;compat = %s, mask = 0x%08lx, useinput = %s&bslash;n&quot;
 comma
 (paren
 id|sonypi_device.model
@@ -3520,6 +3639,13 @@ suffix:colon
 l_string|&quot;off&quot;
 comma
 id|mask
+comma
+id|useinput
+ques
+c_cond
+l_string|&quot;on&quot;
+suffix:colon
+l_string|&quot;off&quot;
 )paren
 suffix:semicolon
 id|printk
@@ -3552,7 +3678,109 @@ comma
 id|sonypi_misc_device.minor
 )paren
 suffix:semicolon
-macro_line|#if CONFIG_PM
+macro_line|#if defined(CONFIG_INPUT) || defined(CONFIG_INPUT_MODULE)
+r_if
+c_cond
+(paren
+id|useinput
+)paren
+(brace
+multiline_comment|/* Initialize the Input Drivers: */
+id|sonypi_device.jog_dev.evbit
+(braket
+l_int|0
+)braket
+op_assign
+id|BIT
+c_func
+(paren
+id|EV_KEY
+)paren
+op_or
+id|BIT
+c_func
+(paren
+id|EV_REL
+)paren
+suffix:semicolon
+id|sonypi_device.jog_dev.keybit
+(braket
+id|LONG
+c_func
+(paren
+id|BTN_MOUSE
+)paren
+)braket
+op_assign
+id|BIT
+c_func
+(paren
+id|BTN_MIDDLE
+)paren
+suffix:semicolon
+id|sonypi_device.jog_dev.relbit
+(braket
+l_int|0
+)braket
+op_assign
+id|BIT
+c_func
+(paren
+id|REL_WHEEL
+)paren
+suffix:semicolon
+id|sonypi_device.jog_dev.name
+op_assign
+(paren
+r_char
+op_star
+)paren
+id|kmalloc
+c_func
+(paren
+r_sizeof
+(paren
+id|SONYPI_INPUTNAME
+)paren
+comma
+id|GFP_KERNEL
+)paren
+suffix:semicolon
+id|sprintf
+c_func
+(paren
+id|sonypi_device.jog_dev.name
+comma
+id|SONYPI_INPUTNAME
+)paren
+suffix:semicolon
+id|sonypi_device.jog_dev.id.bustype
+op_assign
+id|BUS_ISA
+suffix:semicolon
+id|sonypi_device.jog_dev.id.vendor
+op_assign
+id|PCI_VENDOR_ID_SONY
+suffix:semicolon
+id|input_register_device
+c_func
+(paren
+op_amp
+id|sonypi_device.jog_dev
+)paren
+suffix:semicolon
+id|printk
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;%s installed.&bslash;n&quot;
+comma
+id|sonypi_device.jog_dev.name
+)paren
+suffix:semicolon
+)brace
+macro_line|#endif /* CONFIG_INPUT || CONFIG_INPUT_MODULE */
+macro_line|#ifdef CONFIG_PM
 id|sonypi_device.pm
 op_assign
 id|pm_register
@@ -3604,7 +3832,7 @@ c_func
 r_void
 )paren
 (brace
-macro_line|#if CONFIG_PM
+macro_line|#ifdef CONFIG_PM
 id|pm_unregister
 c_func
 (paren
@@ -3621,6 +3849,28 @@ l_int|0
 )paren
 suffix:semicolon
 multiline_comment|/* make sure we don&squot;t get any more events */
+macro_line|#if defined(CONFIG_INPUT) || defined(CONFIG_INPUT_MODULE)
+r_if
+c_cond
+(paren
+id|useinput
+)paren
+(brace
+id|input_unregister_device
+c_func
+(paren
+op_amp
+id|sonypi_device.jog_dev
+)paren
+suffix:semicolon
+id|kfree
+c_func
+(paren
+id|sonypi_device.jog_dev.name
+)paren
+suffix:semicolon
+)brace
+macro_line|#endif /* CONFIG_INPUT || CONFIG_INPUT_MODULE */
 r_if
 c_cond
 (paren
@@ -3649,7 +3899,7 @@ c_func
 (paren
 )paren
 suffix:semicolon
-macro_line|#if !defined(CONFIG_ACPI)
+macro_line|#ifndef CONFIG_ACPI
 multiline_comment|/* disable ACPI mode */
 r_if
 c_cond
@@ -3777,7 +4027,7 @@ id|str
 r_int
 id|ints
 (braket
-l_int|7
+l_int|8
 )braket
 suffix:semicolon
 id|str
@@ -3914,6 +4164,26 @@ op_assign
 id|ints
 (braket
 l_int|6
+)braket
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|ints
+(braket
+l_int|0
+)braket
+op_eq
+l_int|6
+)paren
+r_goto
+id|out
+suffix:semicolon
+id|useinput
+op_assign
+id|ints
+(braket
+l_int|7
 )braket
 suffix:semicolon
 id|out
@@ -4058,6 +4328,22 @@ c_func
 id|mask
 comma
 l_string|&quot;set this to the mask of event you want to enable (see doc)&quot;
+)paren
+suffix:semicolon
+id|MODULE_PARM
+c_func
+(paren
+id|useinput
+comma
+l_string|&quot;i&quot;
+)paren
+suffix:semicolon
+id|MODULE_PARM_DESC
+c_func
+(paren
+id|useinput
+comma
+l_string|&quot;if you have a jogdial, set this if you would like it to use the modern Linux Input Driver system&quot;
 )paren
 suffix:semicolon
 DECL|variable|sonypi_camera_command
