@@ -14704,7 +14704,7 @@ id|mod_data.release
 op_assign
 id|__constant_cpu_to_le16
 (paren
-l_int|0x030a
+l_int|0x0310
 )paren
 suffix:semicolon
 r_else

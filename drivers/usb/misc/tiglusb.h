@@ -5,11 +5,6 @@ mdefine_line|#define _TIGLUSB_H
 multiline_comment|/*&n; * Max. number of devices supported&n; */
 DECL|macro|MAXTIGL
 mdefine_line|#define MAXTIGL&t;&t;16
-multiline_comment|/*&n; * Max. packetsize for IN and OUT pipes&n; */
-DECL|macro|BULK_RCV_MAX
-mdefine_line|#define BULK_RCV_MAX&t;32
-DECL|macro|BULK_SND_MAX
-mdefine_line|#define BULK_SND_MAX&t;32
 multiline_comment|/*&n; * The driver context...&n; */
 DECL|enumerator|_stopped
 DECL|enumerator|_started
@@ -69,6 +64,11 @@ DECL|member|remove_pending
 r_int
 id|remove_pending
 suffix:semicolon
+DECL|member|max_ps
+r_int
+id|max_ps
+suffix:semicolon
+multiline_comment|/* max packet size */
 DECL|typedef|tiglusb_t
 DECL|typedef|ptiglusb_t
 )brace

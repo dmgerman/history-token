@@ -224,6 +224,16 @@ id|SAMSUNG_PRODUCT_ID
 )brace
 comma
 (brace
+id|USB_DEVICE
+c_func
+(paren
+id|PHAROS_VENDOR_ID
+comma
+id|PHAROS_PRODUCT_ID
+)paren
+)brace
+comma
+(brace
 )brace
 multiline_comment|/* Terminating entry */
 )brace
@@ -5532,6 +5542,13 @@ id|MODULE_DESCRIPTION
 c_func
 (paren
 id|DRIVER_DESC
+)paren
+suffix:semicolon
+DECL|variable|DRIVER_VERSION
+id|MODULE_VERSION
+c_func
+(paren
+id|DRIVER_VERSION
 )paren
 suffix:semicolon
 id|MODULE_LICENSE
