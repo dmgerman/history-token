@@ -401,7 +401,7 @@ id|dst-&gt;error
 id|IP6_INC_STATS
 c_func
 (paren
-id|OutNoRoutes
+id|IPSTATS_MIB_OUTNOROUTES
 )paren
 suffix:semicolon
 )brace
@@ -1502,7 +1502,7 @@ c_func
 (paren
 id|idev
 comma
-id|Icmp6OutDestUnreachs
+id|ICMP6_MIB_OUTDESTUNREACHS
 comma
 id|type
 op_minus
@@ -1514,7 +1514,7 @@ c_func
 (paren
 id|idev
 comma
-id|Icmp6OutMsgs
+id|ICMP6_MIB_OUTMSGS
 )paren
 suffix:semicolon
 id|out_put
@@ -1917,7 +1917,7 @@ c_func
 (paren
 id|idev
 comma
-id|Icmp6OutEchoReplies
+id|ICMP6_MIB_OUTECHOREPLIES
 )paren
 suffix:semicolon
 id|ICMP6_INC_STATS_BH
@@ -1925,7 +1925,7 @@ c_func
 (paren
 id|idev
 comma
-id|Icmp6OutMsgs
+id|ICMP6_MIB_OUTMSGS
 )paren
 suffix:semicolon
 id|out_put
@@ -2336,7 +2336,7 @@ c_func
 (paren
 id|idev
 comma
-id|Icmp6InMsgs
+id|ICMP6_MIB_INMSGS
 )paren
 suffix:semicolon
 id|saddr
@@ -2511,7 +2511,7 @@ c_func
 (paren
 id|idev
 comma
-id|Icmp6InDestUnreachs
+id|ICMP6_MIB_INDESTUNREACHS
 comma
 id|type
 op_minus
@@ -2535,7 +2535,7 @@ c_func
 (paren
 id|idev
 comma
-id|Icmp6InEchos
+id|ICMP6_MIB_INECHOS
 comma
 id|type
 op_minus
@@ -2759,7 +2759,7 @@ c_func
 (paren
 id|idev
 comma
-id|Icmp6InErrors
+id|ICMP6_MIB_INERRORS
 )paren
 suffix:semicolon
 id|kfree_skb

@@ -337,9 +337,9 @@ c_func
 (paren
 l_int|0
 comma
-l_int|0
+l_int|NULL
 comma
-l_int|0
+l_int|NULL
 )paren
 suffix:semicolon
 id|pc110pad_interrupt
@@ -347,9 +347,9 @@ c_func
 (paren
 l_int|0
 comma
-l_int|0
+l_int|NULL
 comma
-l_int|0
+l_int|NULL
 )paren
 suffix:semicolon
 id|pc110pad_interrupt
@@ -357,9 +357,9 @@ c_func
 (paren
 l_int|0
 comma
-l_int|0
+l_int|NULL
 comma
-l_int|0
+l_int|NULL
 )paren
 suffix:semicolon
 id|outb
@@ -446,7 +446,7 @@ l_int|0
 comma
 l_string|&quot;pc110pad&quot;
 comma
-l_int|0
+l_int|NULL
 )paren
 )paren
 (brace
@@ -623,7 +623,7 @@ c_func
 (paren
 id|pc110pad_irq
 comma
-l_int|0
+l_int|NULL
 )paren
 suffix:semicolon
 id|release_region

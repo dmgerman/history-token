@@ -12775,7 +12775,7 @@ id|snd_ice1712_delta_cards
 comma
 id|snd_ice1712_ews_cards
 comma
-l_int|0
+l_int|NULL
 comma
 )brace
 suffix:semicolon

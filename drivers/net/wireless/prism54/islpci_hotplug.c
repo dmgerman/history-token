@@ -964,7 +964,7 @@ c_func
 (paren
 id|pdev
 comma
-l_int|0
+l_int|NULL
 )paren
 suffix:semicolon
 id|free_netdev
@@ -975,7 +975,7 @@ id|ndev
 suffix:semicolon
 id|priv
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|do_pci_release_regions
 suffix:colon
@@ -1043,7 +1043,7 @@ c_func
 id|ndev
 )paren
 suffix:colon
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|BUG_ON
 c_func
@@ -1143,7 +1143,7 @@ c_func
 (paren
 id|pdev
 comma
-l_int|0
+l_int|NULL
 )paren
 suffix:semicolon
 id|free_netdev
@@ -1154,7 +1154,7 @@ id|ndev
 suffix:semicolon
 id|priv
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|pci_release_regions
 c_func
@@ -1207,7 +1207,7 @@ c_func
 id|ndev
 )paren
 suffix:colon
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|BUG_ON
 c_func
@@ -1302,7 +1302,7 @@ c_func
 id|ndev
 )paren
 suffix:colon
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|BUG_ON
 c_func

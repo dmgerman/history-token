@@ -920,7 +920,7 @@ op_le
 id|SNDRV_PCM_STREAM_LAST
 comma
 r_return
-l_int|0
+l_int|NULL
 )paren
 suffix:semicolon
 r_return
@@ -949,7 +949,7 @@ op_le
 id|SNDRV_PCM_ACCESS_LAST
 comma
 r_return
-l_int|0
+l_int|NULL
 )paren
 suffix:semicolon
 r_return
@@ -978,7 +978,7 @@ op_le
 id|SNDRV_PCM_FORMAT_LAST
 comma
 r_return
-l_int|0
+l_int|NULL
 )paren
 suffix:semicolon
 r_return
@@ -1007,7 +1007,7 @@ op_le
 id|SNDRV_PCM_SUBFORMAT_LAST
 comma
 r_return
-l_int|0
+l_int|NULL
 )paren
 suffix:semicolon
 r_return
@@ -1036,7 +1036,7 @@ op_le
 id|SNDRV_PCM_TSTAMP_LAST
 comma
 r_return
-l_int|0
+l_int|NULL
 )paren
 suffix:semicolon
 r_return
@@ -1065,7 +1065,7 @@ op_le
 id|SNDRV_PCM_STATE_LAST
 comma
 r_return
-l_int|0
+l_int|NULL
 )paren
 suffix:semicolon
 r_return

@@ -3217,7 +3217,7 @@ id|cmd
 op_member_access_from_pointer
 id|eh_wait
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|cmd-&gt;scsi_done
 op_assign
@@ -3617,7 +3617,7 @@ id|cmd
 op_member_access_from_pointer
 id|eh_wait
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|cmd-&gt;scsi_done
 op_assign
@@ -6280,7 +6280,7 @@ id|sym_hcb
 op_star
 id|np
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 r_int
 id|retv
@@ -7401,8 +7401,6 @@ DECL|variable|sym53c8xx
 r_char
 op_star
 id|sym53c8xx
-op_assign
-l_int|0
 suffix:semicolon
 multiline_comment|/* command line passed by insmod */
 id|MODULE_PARM

@@ -97,7 +97,7 @@ suffix:semicolon
 id|IP6_INC_STATS_BH
 c_func
 (paren
-id|InReceives
+id|IPSTATS_MIB_INRECEIVES
 )paren
 suffix:semicolon
 r_if
@@ -121,7 +121,7 @@ l_int|NULL
 id|IP6_INC_STATS_BH
 c_func
 (paren
-id|InDiscards
+id|IPSTATS_MIB_INDISCARDS
 )paren
 suffix:semicolon
 r_goto
@@ -173,7 +173,7 @@ id|ipv6hdr
 id|IP6_INC_STATS_BH
 c_func
 (paren
-id|InHdrErrors
+id|IPSTATS_MIB_INHDRERRORS
 )paren
 suffix:semicolon
 r_goto
@@ -264,7 +264,7 @@ id|ipv6hdr
 id|IP6_INC_STATS_BH
 c_func
 (paren
-id|InHdrErrors
+id|IPSTATS_MIB_INHDRERRORS
 )paren
 suffix:semicolon
 r_goto
@@ -331,7 +331,7 @@ l_int|0
 id|IP6_INC_STATS_BH
 c_func
 (paren
-id|InHdrErrors
+id|IPSTATS_MIB_INHDRERRORS
 )paren
 suffix:semicolon
 r_return
@@ -365,7 +365,7 @@ suffix:colon
 id|IP6_INC_STATS_BH
 c_func
 (paren
-id|InTruncatedPkts
+id|IPSTATS_MIB_INTRUNCATEDPKTS
 )paren
 suffix:semicolon
 id|err
@@ -373,7 +373,7 @@ suffix:colon
 id|IP6_INC_STATS_BH
 c_func
 (paren
-id|InHdrErrors
+id|IPSTATS_MIB_INHDRERRORS
 )paren
 suffix:semicolon
 id|drop
@@ -734,7 +734,7 @@ l_int|0
 id|IP6_INC_STATS_BH
 c_func
 (paren
-id|InDelivers
+id|IPSTATS_MIB_INDELIVERS
 )paren
 suffix:semicolon
 )brace
@@ -764,7 +764,7 @@ id|skb
 id|IP6_INC_STATS_BH
 c_func
 (paren
-id|InUnknownProtos
+id|IPSTATS_MIB_INUNKNOWNPROTOS
 )paren
 suffix:semicolon
 id|icmpv6_param_prob
@@ -784,7 +784,7 @@ r_else
 id|IP6_INC_STATS_BH
 c_func
 (paren
-id|InDelivers
+id|IPSTATS_MIB_INDELIVERS
 )paren
 suffix:semicolon
 id|kfree_skb
@@ -808,7 +808,7 @@ suffix:colon
 id|IP6_INC_STATS_BH
 c_func
 (paren
-id|InDiscards
+id|IPSTATS_MIB_INDISCARDS
 )paren
 suffix:semicolon
 id|rcu_read_unlock
@@ -877,7 +877,7 @@ suffix:semicolon
 id|IP6_INC_STATS_BH
 c_func
 (paren
-id|InMcastPkts
+id|IPSTATS_MIB_INMCASTPKTS
 )paren
 suffix:semicolon
 id|hdr

@@ -2268,6 +2268,7 @@ l_char|&squot;&bslash;n&squot;
 comma
 (paren
 r_char
+id|__user
 op_star
 )paren
 id|buffer
@@ -2292,10 +2293,14 @@ c_cond
 id|write
 )paren
 (brace
-id|p
+r_char
+id|__user
+op_star
+id|s
 op_assign
 (paren
 r_char
+id|__user
 op_star
 )paren
 id|buffer
@@ -2317,7 +2322,7 @@ c_func
 (paren
 id|c
 comma
-id|p
+id|s
 op_increment
 )paren
 )paren

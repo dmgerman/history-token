@@ -5013,21 +5013,6 @@ suffix:semicolon
 )brace
 r_else
 (brace
-multiline_comment|/*&n;&t;&t; * If a nonlinear mapping then store the file page offset&n;&t;&t; * in the pte.&n;&t;&t; */
-r_if
-c_cond
-(paren
-id|pgoff
-op_ne
-id|linear_page_index
-c_func
-(paren
-id|vma
-comma
-id|addr
-)paren
-)paren
-(brace
 id|err
 op_assign
 id|install_file_pte
@@ -5052,7 +5037,6 @@ id|err
 r_return
 id|err
 suffix:semicolon
-)brace
 )brace
 id|len
 op_sub_assign

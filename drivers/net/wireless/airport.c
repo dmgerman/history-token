@@ -458,7 +458,7 @@ id|card-&gt;vaddr
 suffix:semicolon
 id|card-&gt;vaddr
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|macio_release_resource
 c_func

@@ -3192,7 +3192,7 @@ op_star
 id|smi_msg
 comma
 r_struct
-id|ipmi_msg
+id|kernel_ipmi_msg
 op_star
 id|msg
 comma
@@ -3430,7 +3430,7 @@ op_star
 id|smi_msg
 comma
 r_struct
-id|ipmi_msg
+id|kernel_ipmi_msg
 op_star
 id|msg
 comma
@@ -3639,7 +3639,7 @@ r_int
 id|msgid
 comma
 r_struct
-id|ipmi_msg
+id|kernel_ipmi_msg
 op_star
 id|msg
 comma
@@ -4993,7 +4993,7 @@ r_goto
 id|out_err
 suffix:semicolon
 )brace
-macro_line|#if DEBUG_MSGING
+macro_line|#ifdef DEBUG_MSGING
 (brace
 r_int
 id|m
@@ -5081,7 +5081,7 @@ r_int
 id|msgid
 comma
 r_struct
-id|ipmi_msg
+id|kernel_ipmi_msg
 op_star
 id|msg
 comma
@@ -5143,7 +5143,7 @@ r_int
 id|msgid
 comma
 r_struct
-id|ipmi_msg
+id|kernel_ipmi_msg
 op_star
 id|msg
 comma
@@ -5211,7 +5211,7 @@ r_int
 id|msgid
 comma
 r_struct
-id|ipmi_msg
+id|kernel_ipmi_msg
 op_star
 id|msg
 comma
@@ -5282,7 +5282,7 @@ r_int
 id|msgid
 comma
 r_struct
-id|ipmi_msg
+id|kernel_ipmi_msg
 op_star
 id|msg
 comma
@@ -6215,7 +6215,7 @@ id|chan
 )paren
 (brace
 r_struct
-id|ipmi_msg
+id|kernel_ipmi_msg
 id|msg
 suffix:semicolon
 r_int
@@ -8168,7 +8168,7 @@ id|msg-&gt;data_size
 op_assign
 l_int|11
 suffix:semicolon
-macro_line|#if DEBUG_MSGING
+macro_line|#ifdef DEBUG_MSGING
 (brace
 r_int
 id|m
@@ -9814,7 +9814,7 @@ suffix:semicolon
 r_int
 id|chan
 suffix:semicolon
-macro_line|#if DEBUG_MSGING
+macro_line|#ifdef DEBUG_MSGING
 r_int
 id|m
 suffix:semicolon
@@ -10745,7 +10745,7 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-macro_line|#if DEBUG_MSGING
+macro_line|#ifdef DEBUG_MSGING
 (brace
 r_int
 id|m
@@ -11732,7 +11732,7 @@ id|str
 )paren
 (brace
 r_struct
-id|ipmi_msg
+id|kernel_ipmi_msg
 id|msg
 suffix:semicolon
 id|ipmi_smi_t

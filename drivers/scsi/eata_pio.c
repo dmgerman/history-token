@@ -4587,7 +4587,7 @@ suffix:semicolon
 r_int
 id|i
 suffix:semicolon
-macro_line|#if CHECKPAL
+macro_line|#ifdef CHECKPAL
 id|u8
 id|pal1
 comma
@@ -4631,7 +4631,7 @@ op_star
 l_int|0x1000
 )paren
 suffix:semicolon
-macro_line|#if CHECKPAL
+macro_line|#ifdef CHECKPAL
 id|pal1
 op_assign
 id|inb
@@ -4840,7 +4840,7 @@ id|i
 op_assign
 l_int|0
 suffix:semicolon
-macro_line|#if CHECKPAL
+macro_line|#ifdef CHECKPAL
 )brace
 macro_line|#endif
 )brace
@@ -5157,7 +5157,7 @@ l_int|0
 suffix:semicolon
 )brace
 )brace
-macro_line|#if CHECK_BLINK
+macro_line|#ifdef CHECK_BLINK
 r_else
 r_if
 c_cond

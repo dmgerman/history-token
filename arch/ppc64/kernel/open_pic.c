@@ -465,7 +465,7 @@ r_char
 op_star
 id|chrp_int_ack_special
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 r_int
 r_char
@@ -2477,7 +2477,7 @@ id|SA_INTERRUPT
 comma
 l_string|&quot;IPI0 (call function)&quot;
 comma
-l_int|0
+l_int|NULL
 )paren
 suffix:semicolon
 id|request_irq
@@ -2493,7 +2493,7 @@ id|SA_INTERRUPT
 comma
 l_string|&quot;IPI1 (reschedule)&quot;
 comma
-l_int|0
+l_int|NULL
 )paren
 suffix:semicolon
 id|request_irq
@@ -2509,7 +2509,7 @@ id|SA_INTERRUPT
 comma
 l_string|&quot;IPI2 (unused)&quot;
 comma
-l_int|0
+l_int|NULL
 )paren
 suffix:semicolon
 id|request_irq
@@ -2525,7 +2525,7 @@ id|SA_INTERRUPT
 comma
 l_string|&quot;IPI3 (debugger break)&quot;
 comma
-l_int|0
+l_int|NULL
 )paren
 suffix:semicolon
 r_for

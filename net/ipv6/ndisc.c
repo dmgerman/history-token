@@ -1996,7 +1996,7 @@ suffix:semicolon
 id|IP6_INC_STATS
 c_func
 (paren
-id|OutRequests
+id|IPSTATS_MIB_OUTREQUESTS
 )paren
 suffix:semicolon
 id|err
@@ -2029,7 +2029,7 @@ c_func
 (paren
 id|idev
 comma
-id|Icmp6OutNeighborAdvertisements
+id|ICMP6_MIB_OUTNEIGHBORADVERTISEMENTS
 )paren
 suffix:semicolon
 id|ICMP6_INC_STATS
@@ -2037,7 +2037,7 @@ c_func
 (paren
 id|idev
 comma
-id|Icmp6OutMsgs
+id|ICMP6_MIB_OUTMSGS
 )paren
 suffix:semicolon
 )brace
@@ -2460,7 +2460,7 @@ suffix:semicolon
 id|IP6_INC_STATS
 c_func
 (paren
-id|OutRequests
+id|IPSTATS_MIB_OUTREQUESTS
 )paren
 suffix:semicolon
 id|err
@@ -2493,7 +2493,7 @@ c_func
 (paren
 id|idev
 comma
-id|Icmp6OutNeighborSolicits
+id|ICMP6_MIB_OUTNEIGHBORSOLICITS
 )paren
 suffix:semicolon
 id|ICMP6_INC_STATS
@@ -2501,7 +2501,7 @@ c_func
 (paren
 id|idev
 comma
-id|Icmp6OutMsgs
+id|ICMP6_MIB_OUTMSGS
 )paren
 suffix:semicolon
 )brace
@@ -2868,7 +2868,7 @@ suffix:semicolon
 id|IP6_INC_STATS
 c_func
 (paren
-id|OutRequests
+id|IPSTATS_MIB_OUTREQUESTS
 )paren
 suffix:semicolon
 id|err
@@ -2901,7 +2901,7 @@ c_func
 (paren
 id|idev
 comma
-id|Icmp6OutRouterSolicits
+id|ICMP6_MIB_OUTROUTERSOLICITS
 )paren
 suffix:semicolon
 id|ICMP6_INC_STATS
@@ -2909,7 +2909,7 @@ c_func
 (paren
 id|idev
 comma
-id|Icmp6OutMsgs
+id|ICMP6_MIB_OUTMSGS
 )paren
 suffix:semicolon
 )brace
@@ -6107,7 +6107,7 @@ suffix:semicolon
 id|IP6_INC_STATS
 c_func
 (paren
-id|OutRequests
+id|IPSTATS_MIB_OUTREQUESTS
 )paren
 suffix:semicolon
 id|err
@@ -6140,7 +6140,7 @@ c_func
 (paren
 id|idev
 comma
-id|Icmp6OutRedirects
+id|ICMP6_MIB_OUTREDIRECTS
 )paren
 suffix:semicolon
 id|ICMP6_INC_STATS
@@ -6148,7 +6148,7 @@ c_func
 (paren
 id|idev
 comma
-id|Icmp6OutMsgs
+id|ICMP6_MIB_OUTMSGS
 )paren
 suffix:semicolon
 )brace

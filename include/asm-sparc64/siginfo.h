@@ -15,7 +15,9 @@ DECL|macro|__ARCH_SI_BAND_T
 mdefine_line|#define __ARCH_SI_BAND_T int
 macro_line|#include &lt;asm-generic/siginfo.h&gt;
 macro_line|#ifdef __KERNEL__
+macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/compat.h&gt;
+macro_line|#ifdef CONFIG_COMPAT
 DECL|union|sigval32
 r_typedef
 r_union
@@ -197,6 +199,7 @@ DECL|typedef|siginfo_t32
 )brace
 id|siginfo_t32
 suffix:semicolon
+macro_line|#endif /* CONFIG_COMPAT */
 macro_line|#endif /* __KERNEL__ */
 DECL|macro|SI_NOINFO
 mdefine_line|#define SI_NOINFO&t;32767&t;&t;/* no information in siginfo_t */
@@ -206,6 +209,7 @@ mdefine_line|#define EMT_TAGOVF&t;(__SI_FAULT|1)&t;/* tag overflow */
 DECL|macro|NSIGEMT
 mdefine_line|#define NSIGEMT&t;&t;1
 macro_line|#ifdef __KERNEL__
+macro_line|#ifdef CONFIG_COMPAT
 DECL|struct|sigevent32
 r_typedef
 r_struct
@@ -270,6 +274,7 @@ op_star
 id|from
 )paren
 suffix:semicolon
+macro_line|#endif /* CONFIG_COMPAT */
 macro_line|#endif /* __KERNEL__ */
 macro_line|#endif
 eof

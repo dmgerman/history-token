@@ -53,7 +53,7 @@ r_struct
 id|e1000_adapter
 suffix:semicolon
 macro_line|#include &quot;e1000_hw.h&quot;
-macro_line|#if DBG
+macro_line|#ifdef DBG
 DECL|macro|E1000_DBG
 mdefine_line|#define E1000_DBG(args...) printk(KERN_DEBUG &quot;e1000: &quot; args)
 macro_line|#else

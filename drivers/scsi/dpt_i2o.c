@@ -7252,7 +7252,8 @@ id|user_reply
 op_assign
 l_int|NULL
 suffix:semicolon
-id|ulong
+r_void
+op_star
 id|sg_list
 (braket
 id|pHba-&gt;sg_tablesize
@@ -7283,10 +7284,11 @@ id|rcode
 op_assign
 l_int|0
 suffix:semicolon
-id|ulong
+r_void
+op_star
 id|p
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|ulong
 id|flags
@@ -7654,9 +7656,6 @@ suffix:semicolon
 multiline_comment|/* Allocate memory for the transfer */
 id|p
 op_assign
-(paren
-id|ulong
-)paren
 id|kmalloc
 c_func
 (paren
@@ -7670,9 +7669,8 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+op_logical_neg
 id|p
-op_eq
-l_int|0
 )paren
 (brace
 id|printk
@@ -7730,14 +7728,11 @@ c_cond
 id|copy_from_user
 c_func
 (paren
-(paren
-r_void
-op_star
-)paren
 id|p
 comma
 (paren
 r_void
+id|__user
 op_star
 )paren
 id|sg
@@ -7786,10 +7781,6 @@ id|u32
 id|virt_to_bus
 c_func
 (paren
-(paren
-r_void
-op_star
-)paren
 id|p
 )paren
 suffix:semicolon
@@ -8061,6 +8052,7 @@ c_func
 (paren
 (paren
 r_void
+id|__user
 op_star
 )paren
 id|sg
@@ -8070,10 +8062,6 @@ id|j
 dot
 id|addr_bus
 comma
-(paren
-r_void
-op_star
-)paren
 id|sg_list
 (braket
 id|j
@@ -8087,7 +8075,7 @@ id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;%s: Could not copy %lx TO user %x&bslash;n&quot;
+l_string|&quot;%s: Could not copy %p TO user %x&bslash;n&quot;
 comma
 id|pHba-&gt;name
 comma
@@ -8244,16 +8232,10 @@ id|EINTR
 id|kfree
 c_func
 (paren
-(paren
-r_void
-op_star
-)paren
-(paren
 id|sg_list
 (braket
 id|sg_index
 )braket
-)paren
 )paren
 suffix:semicolon
 )brace

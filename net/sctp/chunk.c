@@ -645,7 +645,7 @@ id|over
 id|SCTP_INC_STATS_USER
 c_func
 (paren
-id|SctpFragUsrMsgs
+id|SCTP_MIB_FRAGUSRMSGS
 )paren
 suffix:semicolon
 multiline_comment|/* Create chunks for all the full sized DATA chunks. */

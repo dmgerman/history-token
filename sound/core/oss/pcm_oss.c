@@ -3415,7 +3415,7 @@ id|substream
 comma
 id|SNDRV_PCM_IOCTL_DRAIN
 comma
-l_int|0
+l_int|NULL
 )paren
 suffix:semicolon
 r_if
@@ -3551,7 +3551,7 @@ id|substream
 comma
 id|SNDRV_PCM_IOCTL_DROP
 comma
-l_int|0
+l_int|NULL
 )paren
 suffix:semicolon
 r_if
@@ -3832,7 +3832,7 @@ id|substream
 comma
 id|SNDRV_PCM_IOCTL_DRAIN
 comma
-l_int|0
+l_int|NULL
 )paren
 suffix:semicolon
 r_if

@@ -428,7 +428,7 @@ l_int|0x37
 comma
 multiline_comment|/* ShinyNet (SET) */
 (brace
-l_int|0
+l_int|NULL
 comma
 )brace
 )brace

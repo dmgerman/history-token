@@ -2179,7 +2179,7 @@ id|save_framebuffer
 suffix:semicolon
 id|save_framebuffer
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 )brace
 r_break
@@ -2239,7 +2239,7 @@ id|save_framebuffer
 suffix:semicolon
 id|save_framebuffer
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 )brace
 id|chipsfb_blank

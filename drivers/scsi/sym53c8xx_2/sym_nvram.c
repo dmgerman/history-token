@@ -1402,7 +1402,7 @@ c_func
 (paren
 id|np
 comma
-l_int|0
+l_int|NULL
 comma
 id|write_bit
 comma
@@ -1524,7 +1524,7 @@ c_func
 (paren
 id|np
 comma
-l_int|0
+l_int|NULL
 comma
 (paren
 id|write_data

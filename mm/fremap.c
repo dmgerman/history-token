@@ -238,18 +238,6 @@ suffix:semicolon
 id|pte_t
 id|pte_val
 suffix:semicolon
-multiline_comment|/*&n;&t; * We use page_add_file_rmap below: if install_page is&n;&t; * ever extended to anonymous pages, this will warn us.&n;&t; */
-id|BUG_ON
-c_func
-(paren
-op_logical_neg
-id|page_mapping
-c_func
-(paren
-id|page
-)paren
-)paren
-suffix:semicolon
 id|pgd
 op_assign
 id|pgd_offset
@@ -305,6 +293,25 @@ c_cond
 (paren
 op_logical_neg
 id|pte
+)paren
+r_goto
+id|err_unlock
+suffix:semicolon
+multiline_comment|/*&n;&t; * This page may have been truncated. Tell the&n;&t; * caller about it.&n;&t; */
+id|err
+op_assign
+op_minus
+id|EAGAIN
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|page_mapping
+c_func
+(paren
+id|page
+)paren
 )paren
 r_goto
 id|err_unlock
