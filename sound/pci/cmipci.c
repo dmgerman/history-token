@@ -13,6 +13,7 @@ macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
+macro_line|#include &lt;linux/gameport.h&gt;
 macro_line|#include &lt;sound/core.h&gt;
 macro_line|#include &lt;sound/info.h&gt;
 macro_line|#include &lt;sound/control.h&gt;
@@ -58,6 +59,10 @@ l_string|&quot;{C-Media,CMI8338A},&quot;
 l_string|&quot;{C-Media,CMI8338B}}&quot;
 )paren
 suffix:semicolon
+macro_line|#if defined(CONFIG_GAMEPORT) || (defined(MODULE) &amp;&amp; defined(CONFIG_GAMEPORT_MODULE))
+DECL|macro|SUPPORT_JOYSTICK
+mdefine_line|#define SUPPORT_JOYSTICK 1
+macro_line|#endif
 DECL|variable|index
 r_static
 r_int
@@ -170,6 +175,16 @@ l_int|1
 op_assign
 l_int|1
 )brace
+suffix:semicolon
+macro_line|#endif
+macro_line|#ifdef SUPPORT_JOYSTICK
+DECL|variable|joystick
+r_static
+r_int
+id|joystick
+(braket
+id|SNDRV_CARDS
+)braket
 suffix:semicolon
 macro_line|#endif
 id|MODULE_PARM
@@ -355,6 +370,40 @@ comma
 id|SNDRV_ENABLED
 l_string|&quot;,&quot;
 id|SNDRV_BOOLEAN_TRUE_DESC
+)paren
+suffix:semicolon
+macro_line|#endif
+macro_line|#ifdef SUPPORT_JOYSTICK
+id|MODULE_PARM
+c_func
+(paren
+id|joystick
+comma
+l_string|&quot;1-&quot;
+id|__MODULE_STRING
+c_func
+(paren
+id|SNDRV_CARDS
+)paren
+l_string|&quot;i&quot;
+)paren
+suffix:semicolon
+id|MODULE_PARM_DESC
+c_func
+(paren
+id|joystick
+comma
+l_string|&quot;Enable joystick.&quot;
+)paren
+suffix:semicolon
+id|MODULE_PARM_SYNTAX
+c_func
+(paren
+id|joystick
+comma
+id|SNDRV_ENABLED
+l_string|&quot;,&quot;
+id|SNDRV_BOOLEAN_FALSE_DESC
 )paren
 suffix:semicolon
 macro_line|#endif
@@ -758,6 +807,9 @@ DECL|macro|CM_EXTENT_MIDI
 mdefine_line|#define CM_EXTENT_MIDI&t;  0x2
 DECL|macro|CM_EXTENT_SYNTH
 mdefine_line|#define CM_EXTENT_SYNTH&t;  0x4
+multiline_comment|/* fixed legacy joystick address */
+DECL|macro|CM_JOYSTICK_ADDR
+mdefine_line|#define CM_JOYSTICK_ADDR&t;0x200
 multiline_comment|/*&n; * pci ids&n; */
 macro_line|#ifndef PCI_VENDOR_ID_CMEDIA
 DECL|macro|PCI_VENDOR_ID_CMEDIA
@@ -1174,6 +1226,19 @@ id|snd_rawmidi_t
 op_star
 id|rmidi
 suffix:semicolon
+macro_line|#ifdef SUPPORT_JOYSTICK
+DECL|member|gameport
+r_struct
+id|gameport
+id|gameport
+suffix:semicolon
+DECL|member|res_joystick
+r_struct
+id|resource
+op_star
+id|res_joystick
+suffix:semicolon
+macro_line|#endif
 DECL|member|reg_lock
 id|spinlock_t
 id|reg_lock
@@ -11529,20 +11594,7 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-id|DEFINE_BIT_SWITCH_ARG
-c_func
-(paren
-id|joystick
-comma
-id|CM_REG_FUNCTRL1
-comma
-id|CM_JYSTK_EN
-comma
-l_int|0
-comma
-l_int|0
-)paren
-suffix:semicolon
+singleline_comment|// DEFINE_BIT_SWITCH_ARG(joystick, CM_REG_FUNCTRL1, CM_JYSTK_EN, 0, 0); /* now module option */
 id|DEFINE_SWITCH_ARG
 c_func
 (paren
@@ -11966,14 +12018,7 @@ id|snd_cmipci_control_switches
 id|__devinitdata
 op_assign
 (brace
-id|DEFINE_CARD_SWITCH
-c_func
-(paren
-l_string|&quot;Joystick&quot;
-comma
-id|joystick
-)paren
-comma
+singleline_comment|// DEFINE_CARD_SWITCH(&quot;Joystick&quot;, joystick), /* now module option */
 id|DEFINE_CARD_SWITCH
 c_func
 (paren
@@ -13206,6 +13251,44 @@ id|cm
 )paren
 suffix:semicolon
 )brace
+macro_line|#ifdef SUPPORT_JOYSTICK
+r_if
+c_cond
+(paren
+id|cm-&gt;res_joystick
+)paren
+(brace
+id|gameport_unregister_port
+c_func
+(paren
+op_amp
+id|cm-&gt;gameport
+)paren
+suffix:semicolon
+id|snd_cmipci_clear_bit
+c_func
+(paren
+id|cm
+comma
+id|CM_REG_FUNCTRL1
+comma
+id|CM_JYSTK_EN
+)paren
+suffix:semicolon
+id|release_resource
+c_func
+(paren
+id|cm-&gt;res_joystick
+)paren
+suffix:semicolon
+id|kfree_nocheck
+c_func
+(paren
+id|cm-&gt;res_joystick
+)paren
+suffix:semicolon
+)brace
+macro_line|#endif
 r_if
 c_cond
 (paren
@@ -14299,6 +14382,66 @@ id|CM_SPDF_AC97
 )paren
 suffix:semicolon
 macro_line|#endif /* USE_VAR48KRATE */
+macro_line|#ifdef SUPPORT_JOYSTICK
+r_if
+c_cond
+(paren
+id|joystick
+(braket
+id|dev
+)braket
+op_logical_and
+(paren
+id|cm-&gt;res_joystick
+op_assign
+id|request_region
+c_func
+(paren
+id|CM_JOYSTICK_ADDR
+comma
+l_int|8
+comma
+l_string|&quot;CMIPCI gameport&quot;
+)paren
+)paren
+op_ne
+l_int|NULL
+)paren
+(brace
+id|cm-&gt;gameport.io
+op_assign
+id|CM_JOYSTICK_ADDR
+suffix:semicolon
+id|snd_cmipci_set_bit
+c_func
+(paren
+id|cm
+comma
+id|CM_REG_FUNCTRL1
+comma
+id|CM_JYSTK_EN
+)paren
+suffix:semicolon
+id|gameport_register_port
+c_func
+(paren
+op_amp
+id|cm-&gt;gameport
+)paren
+suffix:semicolon
+)brace
+r_else
+id|snd_cmipci_clear_bit
+c_func
+(paren
+id|cm
+comma
+id|CM_REG_FUNCTRL1
+comma
+id|CM_JYSTK_EN
+)paren
+suffix:semicolon
+macro_line|#endif
 op_star
 id|rcmipci
 op_assign
@@ -14715,7 +14858,7 @@ c_func
 id|alsa_card_cmipci_exit
 )paren
 macro_line|#ifndef MODULE
-multiline_comment|/* format is: snd-cmipci=enable,index,id,&n;&t;&t;&t; mpu_port,fm_port */
+multiline_comment|/* format is: snd-cmipci=enable,index,id,&n;&t;&t;&t; mpu_port,fm_port,soft_ac3,joystick */
 DECL|function|alsa_card_cmipci_setup
 r_static
 r_int
@@ -14823,6 +14966,40 @@ id|nr_dev
 )paren
 op_eq
 l_int|2
+macro_line|#ifdef DO_SOFT_AC3
+op_logical_and
+id|get_option
+c_func
+(paren
+op_amp
+id|str
+comma
+op_amp
+id|soft_ac3
+(braket
+id|nr_dev
+)braket
+)paren
+op_eq
+l_int|2
+macro_line|#endif
+macro_line|#ifdef SUPPORT_JOYSTICK
+op_logical_and
+id|get_option
+c_func
+(paren
+op_amp
+id|str
+comma
+op_amp
+id|joystick
+(braket
+id|nr_dev
+)braket
+)paren
+op_eq
+l_int|2
+macro_line|#endif
 )paren
 suffix:semicolon
 id|nr_dev

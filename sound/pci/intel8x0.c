@@ -6,6 +6,7 @@ macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
+macro_line|#include &lt;linux/gameport.h&gt;
 macro_line|#include &lt;sound/core.h&gt;
 macro_line|#include &lt;sound/pcm.h&gt;
 macro_line|#include &lt;sound/ac97_codec.h&gt;
@@ -56,8 +57,10 @@ l_string|&quot;{AMD,AMD8111},&quot;
 l_string|&quot;{ALI,M5455}}&quot;
 )paren
 suffix:semicolon
+macro_line|#if defined(CONFIG_GAMEPORT) || (defined(MODULE) &amp;&amp; defined(CONFIG_GAMEPORT_MODULE))
 DECL|macro|SUPPORT_JOYSTICK
 mdefine_line|#define SUPPORT_JOYSTICK 1
+macro_line|#endif
 DECL|macro|SUPPORT_MIDI
 mdefine_line|#define SUPPORT_MIDI 1
 DECL|variable|index
@@ -119,27 +122,14 @@ l_int|0
 )brace
 suffix:semicolon
 macro_line|#ifdef SUPPORT_JOYSTICK
-DECL|variable|joystick_port
+DECL|variable|joystick
 r_static
 r_int
-id|joystick_port
+id|joystick
 (braket
 id|SNDRV_CARDS
 )braket
-op_assign
-macro_line|#ifdef CONFIG_ISA
-(brace
-l_int|0x200
-)brace
 suffix:semicolon
-multiline_comment|/* enable as default */
-macro_line|#else
-(brace
-l_int|0
-)brace
-suffix:semicolon
-multiline_comment|/* disabled */
-macro_line|#endif
 macro_line|#endif
 macro_line|#ifdef SUPPORT_MIDI
 DECL|variable|mpu_port
@@ -277,7 +267,7 @@ macro_line|#ifdef SUPPORT_JOYSTICK
 id|MODULE_PARM
 c_func
 (paren
-id|joystick_port
+id|joystick
 comma
 l_string|&quot;1-&quot;
 id|__MODULE_STRING
@@ -291,18 +281,19 @@ suffix:semicolon
 id|MODULE_PARM_DESC
 c_func
 (paren
-id|joystick_port
+id|joystick
 comma
-l_string|&quot;Joystick port address for Intel i8x0 soundcard. (0 = disabled)&quot;
+l_string|&quot;Enable joystick for Intel i8x0 soundcard.&quot;
 )paren
 suffix:semicolon
 id|MODULE_PARM_SYNTAX
 c_func
 (paren
-id|joystick_port
+id|joystick
 comma
 id|SNDRV_ENABLED
-l_string|&quot;,allows:{{0},{0x200}},dialog:list&quot;
+l_string|&quot;,&quot;
+id|SNDRV_BOOLEAN_FALSE_DESC
 )paren
 suffix:semicolon
 macro_line|#endif
@@ -13616,6 +13607,29 @@ macro_line|#endif
 suffix:semicolon
 macro_line|#if defined(SUPPORT_JOYSTICK) || defined(SUPPORT_MIDI)
 multiline_comment|/*&n; * initialize joystick/midi addresses&n; */
+macro_line|#ifdef SUPPORT_JOYSTICK
+multiline_comment|/* there is only one available device, so we keep it here */
+DECL|variable|ich_gameport_pci
+r_static
+r_struct
+id|pci_dev
+op_star
+id|ich_gameport_pci
+suffix:semicolon
+DECL|variable|ich_gameport
+r_static
+r_struct
+id|gameport
+id|ich_gameport
+op_assign
+(brace
+dot
+id|io
+op_assign
+l_int|0x200
+)brace
+suffix:semicolon
+macro_line|#endif
 DECL|function|snd_intel8x0_joystick_probe
 r_static
 r_int
@@ -13635,6 +13649,9 @@ op_star
 id|id
 )paren
 (brace
+id|u16
+id|val
+suffix:semicolon
 r_static
 r_int
 id|dev
@@ -13668,27 +13685,6 @@ op_minus
 id|ENOENT
 suffix:semicolon
 )brace
-r_if
-c_cond
-(paren
-id|joystick_port
-(braket
-id|dev
-)braket
-OG
-l_int|0
-op_logical_or
-id|mpu_port
-(braket
-id|dev
-)braket
-OG
-l_int|0
-)paren
-(brace
-id|u16
-id|val
-suffix:semicolon
 id|pci_read_config_word
 c_func
 (paren
@@ -13700,53 +13696,80 @@ op_amp
 id|val
 )paren
 suffix:semicolon
+macro_line|#ifdef SUPPORT_JOYSTICK
 r_if
 c_cond
 (paren
-id|joystick_port
+id|joystick
+(braket
+id|dev
+)braket
+)paren
+(brace
+r_if
+c_cond
+(paren
+op_logical_neg
+id|request_region
+c_func
+(paren
+id|ich_gameport.io
+comma
+l_int|8
+comma
+l_string|&quot;ICH gameport&quot;
+)paren
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_WARNING
+l_string|&quot;intel8x0: cannot grab gameport 0x%x&bslash;n&quot;
+comma
+id|ich_gameport.io
+)paren
+suffix:semicolon
+id|joystick
+(braket
+id|dev
+)braket
+op_assign
+l_int|0
+suffix:semicolon
+)brace
+r_else
+(brace
+id|ich_gameport_pci
+op_assign
+id|pci
+suffix:semicolon
+id|gameport_register_port
+c_func
+(paren
+op_amp
+id|ich_gameport
+)paren
+suffix:semicolon
+id|val
+op_or_assign
+l_int|0x100
+suffix:semicolon
+)brace
+)brace
+macro_line|#endif
+macro_line|#ifdef SUPPORT_MIDI
+r_if
+c_cond
+(paren
+id|mpu_port
 (braket
 id|dev
 )braket
 OG
 l_int|0
 )paren
-id|val
-op_or_assign
-l_int|0x100
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|mpu_port
-(braket
-id|dev
-)braket
-op_eq
-l_int|0x300
-op_logical_or
-id|mpu_port
-(braket
-id|dev
-)braket
-op_eq
-l_int|0x330
-)paren
-id|val
-op_or_assign
-l_int|0x20
-suffix:semicolon
-id|pci_write_config_word
-c_func
-(paren
-id|pci
-comma
-l_int|0xe6
-comma
-id|val
-op_or
-l_int|0x100
-)paren
-suffix:semicolon
+(brace
 r_if
 c_cond
 (paren
@@ -13767,6 +13790,10 @@ l_int|0x330
 (brace
 id|u8
 id|b
+suffix:semicolon
+id|val
+op_or_assign
+l_int|0x20
 suffix:semicolon
 id|pci_read_config_byte
 c_func
@@ -13811,8 +13838,93 @@ id|b
 suffix:semicolon
 )brace
 )brace
+macro_line|#endif
+id|pci_write_config_word
+c_func
+(paren
+id|pci
+comma
+l_int|0xe6
+comma
+id|val
+)paren
+suffix:semicolon
 r_return
 l_int|0
+suffix:semicolon
+)brace
+DECL|function|snd_intel8x0_joystick_remove
+r_static
+r_void
+id|__devexit
+id|snd_intel8x0_joystick_remove
+c_func
+(paren
+r_struct
+id|pci_dev
+op_star
+id|pci
+)paren
+(brace
+id|u16
+id|val
+suffix:semicolon
+macro_line|#ifdef SUPPORT_JOYSTICK
+r_if
+c_cond
+(paren
+id|ich_gameport_pci
+op_eq
+id|pci
+)paren
+(brace
+id|gameport_unregister_port
+c_func
+(paren
+op_amp
+id|ich_gameport
+)paren
+suffix:semicolon
+id|release_region
+c_func
+(paren
+id|ich_gameport.io
+comma
+l_int|8
+)paren
+suffix:semicolon
+id|ich_gameport_pci
+op_assign
+l_int|NULL
+suffix:semicolon
+)brace
+macro_line|#endif
+multiline_comment|/* disable joystick and MIDI */
+id|pci_read_config_word
+c_func
+(paren
+id|pci
+comma
+l_int|0xe6
+comma
+op_amp
+id|val
+)paren
+suffix:semicolon
+id|val
+op_and_assign
+op_complement
+l_int|0x120
+suffix:semicolon
+id|pci_write_config_word
+c_func
+(paren
+id|pci
+comma
+l_int|0xe6
+comma
+id|val
+)paren
 suffix:semicolon
 )brace
 DECL|variable|snd_intel8x0_joystick_ids
@@ -13990,6 +14102,15 @@ id|probe
 op_assign
 id|snd_intel8x0_joystick_probe
 comma
+dot
+id|remove
+op_assign
+id|__devexit_p
+c_func
+(paren
+id|snd_intel8x0_joystick_remove
+)paren
+comma
 )brace
 suffix:semicolon
 DECL|variable|have_joystick
@@ -14129,7 +14250,7 @@ c_func
 id|alsa_card_intel8x0_exit
 )paren
 macro_line|#ifndef MODULE
-multiline_comment|/* format is: snd-intel8x0=enable,index,id,ac97_clock,mpu_port */
+multiline_comment|/* format is: snd-intel8x0=enable,index,id,ac97_clock,mpu_port,joystick */
 DECL|function|alsa_card_intel8x0_setup
 r_static
 r_int
@@ -14232,6 +14353,23 @@ id|str
 comma
 op_amp
 id|mpu_port
+(braket
+id|nr_dev
+)braket
+)paren
+op_eq
+l_int|2
+macro_line|#endif
+macro_line|#ifdef SUPPORT_JOYSTICK
+op_logical_and
+id|get_option
+c_func
+(paren
+op_amp
+id|str
+comma
+op_amp
+id|joystick
 (braket
 id|nr_dev
 )braket

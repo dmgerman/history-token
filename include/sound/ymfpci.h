@@ -752,16 +752,6 @@ r_int
 id|old_legacy_ctrl
 suffix:semicolon
 macro_line|#if defined(CONFIG_GAMEPORT) || defined(CONFIG_GAMEPORT_MODULE)
-DECL|member|joystick_port
-r_int
-r_int
-id|joystick_port
-suffix:semicolon
-DECL|member|joystick_mutex
-r_struct
-id|semaphore
-id|joystick_mutex
-suffix:semicolon
 DECL|member|joystick_res
 r_struct
 id|resource
@@ -1140,17 +1130,6 @@ r_int
 id|rear_switch
 )paren
 suffix:semicolon
-macro_line|#if defined(CONFIG_GAMEPORT) || defined(CONFIG_GAMEPORT_MODULE)
-r_int
-id|snd_ymfpci_joystick
-c_func
-(paren
-id|ymfpci_t
-op_star
-id|chip
-)paren
-suffix:semicolon
-macro_line|#endif
 r_int
 id|snd_ymfpci_voice_alloc
 c_func
@@ -1203,6 +1182,10 @@ op_star
 id|chip
 )paren
 suffix:semicolon
+macro_line|#endif
+macro_line|#if defined(CONFIG_GAMEPORT) || (defined(MODULE) &amp;&amp; defined(CONFIG_GAMEPORT_MODULE))
+DECL|macro|SUPPORT_JOYSTICK
+mdefine_line|#define SUPPORT_JOYSTICK
 macro_line|#endif
 macro_line|#endif /* __SOUND_YMFPCI_H */
 eof

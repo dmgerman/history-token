@@ -4,6 +4,7 @@ macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
+macro_line|#include &lt;linux/gameport.h&gt;
 macro_line|#include &lt;sound/core.h&gt;
 macro_line|#include &lt;sound/pcm.h&gt;
 macro_line|#include &lt;sound/rawmidi.h&gt;
@@ -43,6 +44,10 @@ c_func
 l_string|&quot;{{Avance Logic,ALS4000}}&quot;
 )paren
 suffix:semicolon
+macro_line|#if defined(CONFIG_GAMEPORT) || (defined(MODULE) &amp;&amp; defined(CONFIG_GAMEPORT_MODULE))
+DECL|macro|SUPPORT_JOYSTICK
+mdefine_line|#define SUPPORT_JOYSTICK 1
+macro_line|#endif
 DECL|variable|index
 r_static
 r_int
@@ -77,6 +82,7 @@ op_assign
 id|SNDRV_DEFAULT_ENABLE_PNP
 suffix:semicolon
 multiline_comment|/* Enable this card */
+macro_line|#ifdef SUPPORT_JOYSTICK
 DECL|variable|joystick_port
 r_static
 r_int
@@ -84,19 +90,7 @@ id|joystick_port
 (braket
 id|SNDRV_CARDS
 )braket
-op_assign
-macro_line|#ifdef CONFIG_ISA
-(brace
-l_int|0x200
-)brace
 suffix:semicolon
-multiline_comment|/* enable as default */
-macro_line|#else
-(brace
-l_int|0
-)brace
-suffix:semicolon
-multiline_comment|/* disabled */
 macro_line|#endif
 id|MODULE_PARM
 c_func
@@ -228,6 +222,25 @@ r_int
 r_int
 id|gcr
 suffix:semicolon
+DECL|member|res_gcr
+r_struct
+id|resource
+op_star
+id|res_gcr
+suffix:semicolon
+macro_line|#ifdef SUPPORT_JOYSTICK
+DECL|member|gameport
+r_struct
+id|gameport
+id|gameport
+suffix:semicolon
+DECL|member|res_joystick
+r_struct
+id|resource
+op_star
+id|res_joystick
+suffix:semicolon
+macro_line|#endif
 DECL|typedef|snd_card_als4000_t
 )brace
 id|snd_card_als4000_t
@@ -2257,7 +2270,6 @@ multiline_comment|/*************************************************************
 DECL|function|snd_als4000_set_addr
 r_static
 r_void
-id|__devinit
 id|snd_als4000_set_addr
 c_func
 (paren
@@ -2567,6 +2579,67 @@ comma
 l_int|0
 )paren
 suffix:semicolon
+multiline_comment|/* free resources */
+macro_line|#ifdef SUPPORT_JOYSTICK
+r_if
+c_cond
+(paren
+id|acard-&gt;res_joystick
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|acard-&gt;gameport.io
+)paren
+id|gameport_unregister_port
+c_func
+(paren
+op_amp
+id|acard-&gt;gameport
+)paren
+suffix:semicolon
+id|snd_als4000_set_addr
+c_func
+(paren
+id|acard-&gt;gcr
+comma
+l_int|0
+comma
+l_int|0
+comma
+l_int|0
+comma
+l_int|0
+)paren
+suffix:semicolon
+multiline_comment|/* disable joystick */
+id|release_resource
+c_func
+(paren
+id|acard-&gt;res_joystick
+)paren
+suffix:semicolon
+id|kfree_nocheck
+c_func
+(paren
+id|acard-&gt;res_joystick
+)paren
+suffix:semicolon
+)brace
+macro_line|#endif
+id|release_resource
+c_func
+(paren
+id|acard-&gt;res_gcr
+)paren
+suffix:semicolon
+id|kfree_nocheck
+c_func
+(paren
+id|acard-&gt;res_gcr
+)paren
+suffix:semicolon
 )brace
 DECL|function|snd_card_als4000_probe
 r_static
@@ -2622,6 +2695,11 @@ id|word
 suffix:semicolon
 r_int
 id|err
+suffix:semicolon
+r_int
+id|joystick
+op_assign
+l_int|0
 suffix:semicolon
 r_if
 c_cond
@@ -2784,24 +2862,6 @@ c_func
 id|pci
 )paren
 suffix:semicolon
-multiline_comment|/* disable all legacy ISA stuff except for joystick */
-id|snd_als4000_set_addr
-c_func
-(paren
-id|gcr
-comma
-l_int|0
-comma
-l_int|0
-comma
-l_int|0
-comma
-id|joystick_port
-(braket
-id|dev
-)braket
-)paren
-suffix:semicolon
 id|card
 op_assign
 id|snd_card_new
@@ -2862,9 +2922,66 @@ id|acard-&gt;gcr
 op_assign
 id|gcr
 suffix:semicolon
+id|acard-&gt;res_gcr
+op_assign
+id|res_gcr_port
+suffix:semicolon
 id|card-&gt;private_free
 op_assign
 id|snd_card_als4000_free
+suffix:semicolon
+multiline_comment|/* disable all legacy ISA stuff except for joystick */
+macro_line|#ifdef SUPPORT_JOYSTICK
+r_if
+c_cond
+(paren
+id|joystick_port
+(braket
+id|dev
+)braket
+OG
+l_int|0
+op_logical_and
+(paren
+id|acard-&gt;res_joystick
+op_assign
+id|request_region
+c_func
+(paren
+id|joystick_port
+(braket
+id|dev
+)braket
+comma
+l_int|8
+comma
+l_string|&quot;ALS4000 gameport&quot;
+)paren
+)paren
+op_ne
+l_int|NULL
+)paren
+id|joystick
+op_assign
+id|joystick_port
+(braket
+id|dev
+)braket
+suffix:semicolon
+macro_line|#endif
+id|snd_als4000_set_addr
+c_func
+(paren
+id|gcr
+comma
+l_int|0
+comma
+l_int|0
+comma
+l_int|0
+comma
+id|joystick
+)paren
 suffix:semicolon
 r_if
 c_cond
@@ -2901,18 +3018,6 @@ OL
 l_int|0
 )paren
 (brace
-id|release_resource
-c_func
-(paren
-id|res_gcr_port
-)paren
-suffix:semicolon
-id|kfree_nocheck
-c_func
-(paren
-id|res_gcr_port
-)paren
-suffix:semicolon
 id|snd_card_free
 c_func
 (paren
@@ -2930,10 +3035,6 @@ suffix:semicolon
 id|chip-&gt;alt_port
 op_assign
 id|gcr
-suffix:semicolon
-id|chip-&gt;res_alt_port
-op_assign
-id|res_gcr_port
 suffix:semicolon
 id|snd_als4000_configure
 c_func
@@ -3127,6 +3228,26 @@ id|err
 suffix:semicolon
 )brace
 )brace
+macro_line|#ifdef SUPPORT_JOYSTICK
+r_if
+c_cond
+(paren
+id|acard-&gt;res_joystick
+)paren
+(brace
+id|acard-&gt;gameport.io
+op_assign
+id|joystick
+suffix:semicolon
+id|gameport_register_port
+c_func
+(paren
+op_amp
+id|acard-&gt;gameport
+)paren
+suffix:semicolon
+)brace
+macro_line|#endif
 id|strcpy
 c_func
 (paren
@@ -3339,7 +3460,7 @@ c_func
 id|alsa_card_als4000_exit
 )paren
 macro_line|#ifndef MODULE
-multiline_comment|/* format is: snd-als4000=enable,index,id */
+multiline_comment|/* format is: snd-als4000=enable,index,id,joystick_port */
 DECL|function|alsa_card_als4000_setup
 r_static
 r_int
@@ -3417,6 +3538,23 @@ id|nr_dev
 )paren
 op_eq
 l_int|2
+macro_line|#ifdef SUPPORT_JOYSTICK
+op_logical_and
+id|get_option
+c_func
+(paren
+op_amp
+id|str
+comma
+op_amp
+id|joystick_port
+(braket
+id|nr_dev
+)braket
+)paren
+op_eq
+l_int|2
+macro_line|#endif
 )paren
 suffix:semicolon
 id|nr_dev

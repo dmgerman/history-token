@@ -5,6 +5,7 @@ macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
+macro_line|#include &lt;linux/gameport.h&gt;
 macro_line|#include &lt;sound/core.h&gt;
 macro_line|#include &lt;sound/control.h&gt;
 macro_line|#include &lt;sound/pcm.h&gt;
@@ -45,6 +46,10 @@ c_func
 l_string|&quot;{{Aztech,AZF3328}}&quot;
 )paren
 suffix:semicolon
+macro_line|#if defined(CONFIG_GAMEPORT) || (defined(MODULE) &amp;&amp; defined(CONFIG_GAMEPORT_MODULE))
+DECL|macro|SUPPORT_JOYSTICK
+mdefine_line|#define SUPPORT_JOYSTICK 1
+macro_line|#endif
 DECL|macro|DEBUG_MISC
 mdefine_line|#define DEBUG_MISC&t;0
 DECL|macro|DEBUG_CALLS
@@ -134,6 +139,7 @@ op_assign
 id|SNDRV_DEFAULT_ENABLE_PNP
 suffix:semicolon
 multiline_comment|/* Enable this card */
+macro_line|#ifdef SUPPORT_JOYSTICK
 DECL|variable|joystick
 r_static
 r_int
@@ -148,6 +154,7 @@ l_int|1
 )brace
 suffix:semicolon
 multiline_comment|/* &quot;unset&quot; as default */
+macro_line|#endif
 id|MODULE_PARM
 c_func
 (paren
@@ -238,6 +245,7 @@ comma
 id|SNDRV_INDEX_DESC
 )paren
 suffix:semicolon
+macro_line|#ifdef SUPPORT_JOYSTICK
 id|MODULE_PARM
 c_func
 (paren
@@ -268,6 +276,7 @@ comma
 id|SNDRV_ENABLED
 )paren
 suffix:semicolon
+macro_line|#endif
 DECL|typedef|azf3328_t
 r_typedef
 r_struct
@@ -339,11 +348,19 @@ id|resource
 op_star
 id|res_mixer_port
 suffix:semicolon
-DECL|member|game_port
-r_int
-r_int
-id|game_port
+macro_line|#ifdef SUPPORT_JOYSTICK
+DECL|member|gameport
+r_struct
+id|gameport
+id|gameport
 suffix:semicolon
+DECL|member|res_joystick
+r_struct
+id|resource
+op_star
+id|res_joystick
+suffix:semicolon
+macro_line|#endif
 DECL|member|pci
 r_struct
 id|pci_dev
@@ -5987,6 +6004,54 @@ id|chip-&gt;irq
 suffix:semicolon
 id|__end_hw
 suffix:colon
+macro_line|#ifdef SUPPORT_JOYSTICK
+r_if
+c_cond
+(paren
+id|chip-&gt;res_joystick
+)paren
+(brace
+id|gameport_unregister_port
+c_func
+(paren
+op_amp
+id|chip-&gt;gameport
+)paren
+suffix:semicolon
+multiline_comment|/* disable gameport */
+id|snd_azf3328_io2_write
+c_func
+(paren
+id|chip
+comma
+id|IDX_IO2_LEGACY_ADDR
+comma
+id|snd_azf3328_io2_read
+c_func
+(paren
+id|chip
+comma
+id|IDX_IO2_LEGACY_ADDR
+)paren
+op_amp
+op_complement
+id|LEGACY_JOY
+)paren
+suffix:semicolon
+id|release_resource
+c_func
+(paren
+id|chip-&gt;res_joystick
+)paren
+suffix:semicolon
+id|kfree_nocheck
+c_func
+(paren
+id|chip-&gt;res_joystick
+)paren
+suffix:semicolon
+)brace
+macro_line|#endif
 r_if
 c_cond
 (paren
@@ -7018,6 +7083,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+macro_line|#ifdef SUPPORT_JOYSTICK
 DECL|function|snd_azf3328_config_joystick
 r_static
 r_void
@@ -7035,10 +7101,6 @@ id|joystick
 (brace
 r_int
 id|i
-comma
-id|detected
-op_assign
-l_int|0
 comma
 id|activate
 op_assign
@@ -7064,6 +7126,10 @@ l_int|1
 )paren
 multiline_comment|/* auto detection/activation */
 (brace
+id|activate
+op_assign
+l_int|1
+suffix:semicolon
 r_for
 c_loop
 (paren
@@ -7089,66 +7155,60 @@ id|i
 op_ne
 l_int|0xff
 )paren
-id|detected
-op_assign
-l_int|1
-suffix:semicolon
-multiline_comment|/* other joy found, don&squot;t activate */
-)brace
-r_if
-c_cond
-(paren
-(paren
-id|joystick
-op_eq
-op_minus
-l_int|1
-)paren
-op_logical_and
-(paren
-id|detected
-op_eq
-l_int|1
-)paren
-)paren
 (brace
 id|activate
 op_assign
 l_int|0
 suffix:semicolon
-id|msg
-op_assign
-l_string|&quot;DISABLED (address occupied by another joystick port)&quot;
+r_break
 suffix:semicolon
 )brace
-r_else
+)brace
+r_if
+c_cond
+(paren
+id|activate
+op_logical_or
+id|joystick
+op_eq
+l_int|1
+)paren
+(brace
 r_if
 c_cond
 (paren
 (paren
-id|joystick
-op_eq
-op_minus
-l_int|1
-)paren
-op_logical_and
+id|chip-&gt;res_joystick
+op_assign
+id|request_region
+c_func
 (paren
-id|detected
-op_eq
-l_int|0
+l_int|0x200
+comma
+l_int|8
+comma
+l_string|&quot;AZF3328 gameport&quot;
 )paren
+)paren
+op_ne
+l_int|NULL
 )paren
 (brace
+id|chip-&gt;gameport.io
+op_assign
+l_int|0x200
+suffix:semicolon
 id|activate
 op_assign
 l_int|1
-suffix:semicolon
-id|msg
-op_assign
-l_string|&quot;ENABLED (via autodetect)&quot;
 suffix:semicolon
 )brace
 r_else
+id|activate
+op_assign
+l_int|0
+suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
@@ -7156,16 +7216,10 @@ id|joystick
 op_eq
 l_int|0
 )paren
-(brace
-id|activate
-op_assign
-l_int|0
-suffix:semicolon
 id|msg
 op_assign
 l_string|&quot;DISABLED (forced)&quot;
 suffix:semicolon
-)brace
 r_else
 r_if
 c_cond
@@ -7173,17 +7227,28 @@ c_cond
 id|joystick
 op_eq
 l_int|1
-)paren
-(brace
+op_logical_and
 id|activate
-op_assign
-l_int|1
-suffix:semicolon
+)paren
 id|msg
 op_assign
 l_string|&quot;ENABLED (Warning: forced!)&quot;
 suffix:semicolon
-)brace
+r_else
+r_if
+c_cond
+(paren
+id|activate
+)paren
+id|msg
+op_assign
+l_string|&quot;ENABLED (via autodetect)&quot;
+suffix:semicolon
+r_else
+id|msg
+op_assign
+l_string|&quot;DISABLED (address occupied by another joystick port)&quot;
+suffix:semicolon
 id|val
 op_assign
 id|inb
@@ -7229,7 +7294,20 @@ id|msg
 )paren
 suffix:semicolon
 macro_line|#endif
+r_if
+c_cond
+(paren
+id|activate
+)paren
+id|gameport_register_port
+c_func
+(paren
+op_amp
+id|chip-&gt;gameport
+)paren
+suffix:semicolon
 )brace
+macro_line|#endif
 DECL|function|snd_azf3328_probe
 r_static
 r_int
@@ -7590,6 +7668,7 @@ l_string|&quot;azt3328: Feel free to contact hw7oshyuv3001@sneakemail.com for bu
 )paren
 suffix:semicolon
 macro_line|#endif
+macro_line|#ifdef SUPPORT_JOYSTICK
 id|snd_azf3328_config_joystick
 c_func
 (paren
@@ -7601,6 +7680,7 @@ id|dev
 )braket
 )paren
 suffix:semicolon
+macro_line|#endif
 id|pci_set_drvdata
 c_func
 (paren
@@ -7835,7 +7915,7 @@ c_func
 id|alsa_card_azf3328_exit
 )paren
 macro_line|#ifndef MODULE
-multiline_comment|/* format is: snd-azf3328=enable,index,id */
+multiline_comment|/* format is: snd-azf3328=enable,index,id,joystick */
 DECL|function|alsa_card_azf3328_setup
 r_static
 r_int
@@ -7918,6 +7998,23 @@ id|nr_dev
 )paren
 op_eq
 l_int|2
+macro_line|#ifdef SUPPORT_JOYSTICK
+op_logical_and
+id|get_option
+c_func
+(paren
+op_amp
+id|str
+comma
+op_amp
+id|joystick
+(braket
+id|nr_dev
+)braket
+)paren
+op_eq
+l_int|2
+macro_line|#endif
 )paren
 suffix:semicolon
 id|nr_dev
@@ -7935,7 +8032,7 @@ suffix:semicolon
 id|__setup
 c_func
 (paren
-l_string|&quot;snd-azf3328=&quot;
+l_string|&quot;snd-azt3328=&quot;
 comma
 id|alsa_card_azf3328_setup
 )paren
