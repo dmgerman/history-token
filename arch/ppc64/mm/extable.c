@@ -18,7 +18,9 @@ id|__stop___ex_table
 )braket
 suffix:semicolon
 multiline_comment|/*&n; * The exception table needs to be sorted because we use the macros&n; * which put things into the exception table in a variety of segments&n; * as well as the init segment and the main kernel text segment.&n; *&n; * Also used for modules.&n; */
+DECL|function|sort_ex_table
 r_void
+id|__init_or_module
 id|sort_ex_table
 c_func
 (paren
@@ -32,7 +34,6 @@ id|exception_table_entry
 op_star
 id|finish
 )paren
-id|__init_or_module
 (brace
 r_struct
 id|exception_table_entry
