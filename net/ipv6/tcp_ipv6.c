@@ -7175,12 +7175,6 @@ id|discard
 suffix:semicolon
 macro_line|#endif /* CONFIG_FILTER */
 multiline_comment|/*&n;&t; *&t;socket locking is here for SMP purposes as backlog rcv&n;&t; *&t;is currently called with bh processing disabled.&n;&t; */
-id|IP6_INC_STATS_BH
-c_func
-(paren
-id|Ip6InDelivers
-)paren
-suffix:semicolon
 multiline_comment|/* Do Stevens&squot; IPV6_PKTOPTIONS.&n;&n;&t;   Yes, guys, it is the only place in our code, where we&n;&t;   may make it not affecting IPv4.&n;&t;   The rest of code is protocol independent,&n;&t;   and I do not like idea to uglify IPv4.&n;&n;&t;   Actually, all the idea behind IPV6_PKTOPTIONS&n;&t;   looks not very well thought. For now we latch&n;&t;   options, received in the last packet, enqueued&n;&t;   by tcp. Feel free to propose better solution.&n;&t;                                       --ANK (980728)&n;&t; */
 r_if
 c_cond

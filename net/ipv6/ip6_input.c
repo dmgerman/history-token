@@ -117,9 +117,17 @@ id|GFP_ATOMIC
 op_eq
 l_int|NULL
 )paren
+(brace
+id|IP6_INC_STATS_BH
+c_func
+(paren
+id|Ip6InDiscards
+)paren
+suffix:semicolon
 r_goto
 id|out
 suffix:semicolon
+)brace
 multiline_comment|/* Store incoming device index. When the packet will&n;&t;   be queued, we cannot refer to skb-&gt;dev anymore.&n;&t; */
 (paren
 (paren
@@ -643,6 +651,12 @@ r_goto
 id|resubmit
 suffix:semicolon
 )brace
+id|IP6_INC_STATS_BH
+c_func
+(paren
+id|Ip6InDelivers
+)paren
+suffix:semicolon
 )brace
 r_else
 (brace
@@ -670,6 +684,13 @@ id|nhoff
 )paren
 suffix:semicolon
 )brace
+r_else
+id|IP6_INC_STATS_BH
+c_func
+(paren
+id|Ip6InDelivers
+)paren
+suffix:semicolon
 id|kfree_skb
 c_func
 (paren

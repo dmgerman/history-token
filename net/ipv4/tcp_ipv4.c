@@ -7112,12 +7112,6 @@ r_goto
 id|discard
 suffix:semicolon
 macro_line|#endif /* CONFIG_FILTER */
-id|IP_INC_STATS_BH
-c_func
-(paren
-id|IpInDelivers
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren

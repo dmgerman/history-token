@@ -768,12 +768,7 @@ OL
 l_int|0
 )paren
 (brace
-id|IP_INC_STATS
-c_func
-(paren
-id|IpInDiscards
-)paren
-suffix:semicolon
+multiline_comment|/* FIXME: increment a raw drops counter here */
 id|kfree_skb
 c_func
 (paren
@@ -784,12 +779,6 @@ r_return
 id|NET_RX_DROP
 suffix:semicolon
 )brace
-id|IP_INC_STATS
-c_func
-(paren
-id|IpInDelivers
-)paren
-suffix:semicolon
 r_return
 id|NET_RX_SUCCESS
 suffix:semicolon
