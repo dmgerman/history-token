@@ -608,6 +608,7 @@ c_func
 r_const
 r_int
 r_int
+id|__user
 op_star
 id|src
 comma
@@ -1675,11 +1676,11 @@ op_logical_neg
 id|access_ok
 c_func
 (paren
+id|VERIFY_READ
+comma
 id|src
 comma
 id|len
-comma
-id|VERIFY_READ
 )paren
 )paren
 (brace
