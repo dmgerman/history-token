@@ -394,6 +394,7 @@ l_int|0x80000007
 )paren
 (brace
 multiline_comment|/* Any powernow info ? */
+macro_line|#ifdef MODULE
 id|printk
 (paren
 id|KERN_INFO
@@ -401,6 +402,7 @@ id|PFX
 l_string|&quot;No powernow capabilities detected&bslash;n&quot;
 )paren
 suffix:semicolon
+macro_line|#endif
 r_return
 l_int|0
 suffix:semicolon
