@@ -1978,7 +1978,7 @@ op_minus
 id|ENOMEM
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * e1000_remove - Device Removal Routine&n; * @pdev: PCI device information struct&n; *&n; * e1000_remove is called by the PCI subsystem to alert the driver&n; * that it should release a PCI device.  The could be caused by a&n; * Hot-Plug event, or because the driver is going to be removed from&n; * memory.&n; *&n; * This routine is also called to clean up from a failure in&n; * e1000_probe.  The Adapter struct and netdev will always exist,&n; * all other pointers must be checked for NULL before freeing.&n; **/
+multiline_comment|/**&n; * e1000_remove - Device Removal Routine&n; * @pdev: PCI device information struct&n; *&n; * e1000_remove is called by the PCI subsystem to alert the driver&n; * that it should release a PCI device.  The could be caused by a&n; * Hot-Plug event, or because the driver is going to be removed from&n; * memory.&n; **/
 r_static
 r_void
 id|__devexit
@@ -2553,7 +2553,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * e1000_setup_tx_resources - allocate Tx resources (Descriptors)&n; * @adapter: board private structure&n; *&n; * Return 0 on success, negative on failure&n; *&n; * e1000_setup_tx_resources allocates all software transmit resources&n; * and enabled the Tx unit of the MAC.&n; **/
+multiline_comment|/**&n; * e1000_setup_tx_resources - allocate Tx resources (Descriptors)&n; * @adapter: board private structure&n; *&n; * Return 0 on success, negative on failure&n; **/
 r_static
 r_int
 DECL|function|e1000_setup_tx_resources
@@ -2960,7 +2960,7 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * e1000_setup_rx_resources - allocate Rx resources (Descriptors, receive SKBs)&n; * @adapter: board private structure&n; *&n; * Returns 0 on success, negative on failure&n; *&n; * e1000_setup_rx_resources allocates all software receive resources&n; * and network buffers, and enables the Rx unit of the MAC.&n; **/
+multiline_comment|/**&n; * e1000_setup_rx_resources - allocate Rx resources (Descriptors)&n; * @adapter: board private structure&n; *&n; * Returns 0 on success, negative on failure&n; **/
 r_static
 r_int
 DECL|function|e1000_setup_rx_resources
@@ -6800,7 +6800,6 @@ id|E1000_ICR_LSC
 )paren
 )paren
 (brace
-multiline_comment|/* run the watchdog ASAP */
 id|adapter-&gt;hw.get_link_status
 op_assign
 l_int|1

@@ -51,7 +51,7 @@ comma
 l_string|&quot;Duplex setting&quot;
 )paren
 suffix:semicolon
-multiline_comment|/* Auto-negotiation Advertisement Override&n; *&n; * Valid Range: 0x00-0x0F, 0x20-0x2F&n; *&n; * The AutoNeg value is a bit mask describing which speed and duplex&n; * combinations should be advertised during auto-negotiation.&n; * The supported speed and duplex modes are listed below&n; *&n; * Bit           7     6     5      4      3     2     1      0&n; * Speed (Mbps)  N/A   N/A   1000   N/A    100   100   10     10&n; * Duplex                    Full          Full  Half  Full   Half&n; *&n; * Default Value: 0x2F&n; */
+multiline_comment|/* Auto-negotiation Advertisement Override&n; *&n; * Valid Range: 0x01-0x0F, 0x20-0x2F&n; *&n; * The AutoNeg value is a bit mask describing which speed and duplex&n; * combinations should be advertised during auto-negotiation.&n; * The supported speed and duplex modes are listed below&n; *&n; * Bit           7     6     5      4      3     2     1      0&n; * Speed (Mbps)  N/A   N/A   1000   N/A    100   100   10     10&n; * Duplex                    Full          Full  Half  Full   Half&n; *&n; * Default Value: 0x2F&n; */
 id|E1000_PARAM
 c_func
 (paren
