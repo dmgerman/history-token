@@ -29,7 +29,6 @@ multiline_comment|/*&n; * a small number of entries is fine, not going to be per
 DECL|macro|BIO_SPLIT_ENTRIES
 mdefine_line|#define BIO_SPLIT_ENTRIES 8&t;
 DECL|variable|bio_split_pool
-r_static
 id|mempool_t
 op_star
 id|bio_split_pool
@@ -3279,6 +3278,13 @@ id|EXPORT_SYMBOL
 c_func
 (paren
 id|bio_split
+)paren
+suffix:semicolon
+DECL|variable|bio_split_pool
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|bio_split_pool
 )paren
 suffix:semicolon
 eof

@@ -7013,7 +7013,7 @@ c_func
 (paren
 id|KERN_INFO
 l_string|&quot;%s: link status definitely down &quot;
-l_string|&quot;for interface %s, disabling it&bslash;n&quot;
+l_string|&quot;for interface %s, disabling it&quot;
 comma
 id|master-&gt;name
 comma
@@ -9905,6 +9905,11 @@ op_assign
 l_int|NULL
 suffix:semicolon
 r_int
+id|prev_abi_ver
+op_assign
+id|orig_app_abi_ver
+suffix:semicolon
+r_int
 id|ret
 op_assign
 l_int|0
@@ -10420,6 +10425,20 @@ c_func
 (paren
 id|slave_dev
 )paren
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+id|ret
+OL
+l_int|0
+)paren
+(brace
+multiline_comment|/* The ioctl failed, so there&squot;s no point in changing the&n;&t;&t; * orig_app_abi_ver. We&squot;ll restore it&squot;s value just in case&n;&t;&t; * we&squot;ve changed it earlier in this function.&n;&t;&t; */
+id|orig_app_abi_ver
+op_assign
+id|prev_abi_ver
 suffix:semicolon
 )brace
 r_return

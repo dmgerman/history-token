@@ -1101,14 +1101,6 @@ DECL|member|xmit_cnt
 r_int
 id|xmit_cnt
 suffix:semicolon
-DECL|member|session
-r_int
-id|session
-suffix:semicolon
-DECL|member|pgrp
-r_int
-id|pgrp
-suffix:semicolon
 DECL|member|cd_status
 r_int
 id|cd_status
@@ -1129,11 +1121,6 @@ DECL|member|normal_termios
 r_struct
 id|termios
 id|normal_termios
-suffix:semicolon
-DECL|member|callout_termios
-r_struct
-id|termios
-id|callout_termios
 suffix:semicolon
 DECL|member|open_wait
 id|wait_queue_head_t
@@ -1169,8 +1156,6 @@ mdefine_line|#define ROCKET_CALLOUT_ACTIVE&t;0x10000000 /* Callout port is activ
 multiline_comment|/*&n; * tty subtypes&n; *&n; */
 DECL|macro|SERIAL_TYPE_NORMAL
 mdefine_line|#define SERIAL_TYPE_NORMAL 1
-DECL|macro|SERIAL_TYPE_CALLOUT
-mdefine_line|#define SERIAL_TYPE_CALLOUT 2
 multiline_comment|/*&n; * Assigned major numbers for the Comtrol Rocketport&n; */
 DECL|macro|TTY_ROCKET_MAJOR
 mdefine_line|#define TTY_ROCKET_MAJOR&t;46

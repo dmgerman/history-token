@@ -37,8 +37,6 @@ DECL|macro|CTC_TTY_XMIT_SIZE
 mdefine_line|#define CTC_TTY_XMIT_SIZE              1024 /* Default bufsize for write    */
 DECL|macro|CTC_SERIAL_XMIT_MAX
 mdefine_line|#define CTC_SERIAL_XMIT_MAX            4000 /* Maximum bufsize for write    */
-DECL|macro|CTC_SERIAL_TYPE_NORMAL
-mdefine_line|#define CTC_SERIAL_TYPE_NORMAL            1
 multiline_comment|/* Private data (similar to async_struct in &lt;linux/serial.h&gt;) */
 r_typedef
 r_struct
@@ -5050,7 +5048,7 @@ id|TTY_DRIVER_TYPE_SERIAL
 suffix:semicolon
 id|device-&gt;subtype
 op_assign
-id|CTC_SERIAL_TYPE_NORMAL
+id|SERIAL_TYPE_NORMAL
 suffix:semicolon
 id|device-&gt;init_termios
 op_assign

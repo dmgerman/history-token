@@ -23,4 +23,6 @@ DECL|macro|BLIST_INQUIRY_36
 mdefine_line|#define BLIST_INQUIRY_36&t;0x400&t;/* override additional length field */
 DECL|macro|BLIST_INQUIRY_58
 mdefine_line|#define BLIST_INQUIRY_58&t;0x800&t;/* ... for broken inquiry responses */
+DECL|macro|BLIST_NOSTARTONADD
+mdefine_line|#define BLIST_NOSTARTONADD      0x1000  /* do not do automatic start on add */
 eof

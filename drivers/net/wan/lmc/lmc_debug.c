@@ -1,8 +1,6 @@
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/netdevice.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
-macro_line|#include &lt;linux/version.h&gt;
-macro_line|#include &quot;lmc_ver.h&quot;
 macro_line|#include &quot;lmc_debug.h&quot;
 multiline_comment|/*&n; * Prints out len, max to 80 octets using printk, 20 per line&n; */
 DECL|function|lmcConsoleLog

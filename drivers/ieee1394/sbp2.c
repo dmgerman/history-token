@@ -45,7 +45,7 @@ id|version
 )braket
 id|__devinitdata
 op_assign
-l_string|&quot;$Rev: 931 $ Ben Collins &lt;bcollins@debian.org&gt;&quot;
+l_string|&quot;$Rev: 938 $ Ben Collins &lt;bcollins@debian.org&gt;&quot;
 suffix:semicolon
 multiline_comment|/*&n; * Module load parameter definitions&n; */
 multiline_comment|/*&n; * Change max_speed on module load if you have a bad IEEE-1394&n; * controller that has trouble running 2KB packets at 400mb.&n; *&n; * NOTE: On certain OHCI parts I have seen short packets on async transmit&n; * (probably due to PCI latency/throughput issues with the part). You can&n; * bump down the speed if you are running into problems.&n; */
@@ -9958,6 +9958,11 @@ r_int
 id|sbp2scsi_proc_info
 c_func
 (paren
+r_struct
+id|Scsi_Host
+op_star
+id|scsi_host
+comma
 r_char
 op_star
 id|buffer
@@ -9974,20 +9979,12 @@ r_int
 id|length
 comma
 r_int
-id|hostno
-comma
-r_int
 id|inout
 )paren
 (brace
 id|Scsi_Device
 op_star
 id|scd
-suffix:semicolon
-r_struct
-id|Scsi_Host
-op_star
-id|scsi_host
 suffix:semicolon
 r_struct
 id|hpsb_host
@@ -10008,25 +10005,6 @@ id|inout
 )paren
 r_return
 id|length
-suffix:semicolon
-id|scsi_host
-op_assign
-id|scsi_host_hn_get
-c_func
-(paren
-id|hostno
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|scsi_host
-)paren
-multiline_comment|/* if we couldn&squot;t find it, we return an error */
-r_return
-op_minus
-id|ESRCH
 suffix:semicolon
 id|host
 op_assign
@@ -10059,7 +10037,7 @@ c_func
 (paren
 l_string|&quot;Host scsi%d             : SBP-2 IEEE-1394 (%s)&bslash;n&quot;
 comma
-id|hostno
+id|scsi_host-&gt;host_no
 comma
 id|host-&gt;driver-&gt;name
 )paren
@@ -10279,13 +10257,6 @@ id|SPRINTF
 c_func
 (paren
 l_string|&quot;&bslash;n&quot;
-)paren
-suffix:semicolon
-multiline_comment|/* release the reference count on this host */
-id|scsi_host_put
-c_func
-(paren
-id|scsi_host
 )paren
 suffix:semicolon
 multiline_comment|/* Calculate start of next buffer, and return value. */

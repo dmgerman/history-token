@@ -2295,7 +2295,7 @@ c_func
 l_int|0
 comma
 l_string|&quot;%s(), LM_CONNECT_RESPONSE, &quot;
-l_string|&quot;error, LSAP allready connected&bslash;n&quot;
+l_string|&quot;error, LSAP already connected&bslash;n&quot;
 comma
 id|__FUNCTION__
 )paren

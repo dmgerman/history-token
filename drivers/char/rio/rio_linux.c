@@ -65,21 +65,12 @@ macro_line|#include &quot;protsts.h&quot;
 macro_line|#include &quot;rioboard.h&quot;
 macro_line|#include &quot;rio_linux.h&quot;
 multiline_comment|/* I don&squot;t think that this driver can handle more than 512 ports on&n;one machine.  Specialix specifies max 4 boards in one machine. I don&squot;t&n;know why. If you want to try anyway you&squot;ll have to increase the number&n;of boards in rio.h.  You&squot;ll have to allocate more majors if you need&n;more than 512 ports.... */
-multiline_comment|/* Why the hell am I defining these here? */
-DECL|macro|RIO_TYPE_NORMAL
-mdefine_line|#define RIO_TYPE_NORMAL 1
-DECL|macro|RIO_TYPE_CALLOUT
-mdefine_line|#define RIO_TYPE_CALLOUT 2
 macro_line|#ifndef RIO_NORMAL_MAJOR0
 multiline_comment|/* This allows overriding on the compiler commandline, or in a &quot;major.h&quot; &n;   include or something like that */
 DECL|macro|RIO_NORMAL_MAJOR0
 mdefine_line|#define RIO_NORMAL_MAJOR0  154
-DECL|macro|RIO_CALLOUT_MAJOR0
-mdefine_line|#define RIO_CALLOUT_MAJOR0 155
 DECL|macro|RIO_NORMAL_MAJOR1
 mdefine_line|#define RIO_NORMAL_MAJOR1  156
-DECL|macro|RIO_CALLOUT_MAJOR1
-mdefine_line|#define RIO_CALLOUT_MAJOR1 157
 macro_line|#endif
 macro_line|#ifndef PCI_DEVICE_ID_SPECIALIX_SX_XIO_IO8
 DECL|macro|PCI_DEVICE_ID_SPECIALIX_SX_XIO_IO8
@@ -329,22 +320,13 @@ id|len
 )paren
 suffix:semicolon
 DECL|variable|rio_driver
-DECL|variable|rio_callout_driver
+DECL|variable|rio_driver2
 r_static
 r_struct
 id|tty_driver
 id|rio_driver
 comma
-id|rio_callout_driver
-suffix:semicolon
-DECL|variable|rio_driver2
-DECL|variable|rio_callout_driver2
-r_static
-r_struct
-id|tty_driver
 id|rio_driver2
-comma
-id|rio_callout_driver2
 suffix:semicolon
 DECL|variable|rio_table
 r_static
@@ -2858,7 +2840,7 @@ id|TTY_DRIVER_TYPE_SERIAL
 suffix:semicolon
 id|rio_driver.subtype
 op_assign
-id|RIO_TYPE_NORMAL
+id|SERIAL_TYPE_NORMAL
 suffix:semicolon
 id|rio_driver.init_termios
 op_assign
@@ -2973,38 +2955,6 @@ id|rio_driver2.termios_locked
 op_add_assign
 l_int|256
 suffix:semicolon
-id|rio_callout_driver
-op_assign
-id|rio_driver
-suffix:semicolon
-id|rio_callout_driver.name
-op_assign
-l_string|&quot;cusr&quot;
-suffix:semicolon
-id|rio_callout_driver.major
-op_assign
-id|RIO_CALLOUT_MAJOR0
-suffix:semicolon
-id|rio_callout_driver.subtype
-op_assign
-id|RIO_TYPE_CALLOUT
-suffix:semicolon
-id|rio_callout_driver2
-op_assign
-id|rio_callout_driver
-suffix:semicolon
-id|rio_callout_driver2.major
-op_assign
-id|RIO_CALLOUT_MAJOR1
-suffix:semicolon
-id|rio_callout_driver2.termios
-op_add_assign
-l_int|256
-suffix:semicolon
-id|rio_callout_driver2.termios_locked
-op_add_assign
-l_int|256
-suffix:semicolon
 id|rio_dprintk
 (paren
 id|RIO_DEBUG_INIT
@@ -3048,40 +2998,6 @@ id|rio_driver2
 r_goto
 id|bad2
 suffix:semicolon
-r_if
-c_cond
-(paren
-(paren
-id|error
-op_assign
-id|tty_register_driver
-c_func
-(paren
-op_amp
-id|rio_callout_driver
-)paren
-)paren
-)paren
-r_goto
-id|bad3
-suffix:semicolon
-r_if
-c_cond
-(paren
-(paren
-id|error
-op_assign
-id|tty_register_driver
-c_func
-(paren
-op_amp
-id|rio_callout_driver2
-)paren
-)paren
-)paren
-r_goto
-id|bad4
-suffix:semicolon
 id|func_exit
 c_func
 (paren
@@ -3090,111 +3006,7 @@ suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
-multiline_comment|/* &n; bad5:tty_unregister_driver (&amp;rio_callout_driver2); */
-id|bad4
-suffix:colon
-id|tty_unregister_driver
-(paren
-op_amp
-id|rio_callout_driver
-)paren
-suffix:semicolon
-id|bad3
-suffix:colon
-id|tty_unregister_driver
-(paren
-op_amp
-id|rio_driver2
-)paren
-suffix:semicolon
-id|bad2
-suffix:colon
-id|tty_unregister_driver
-(paren
-op_amp
-id|rio_driver
-)paren
-suffix:semicolon
-id|bad1
-suffix:colon
-id|printk
-c_func
-(paren
-id|KERN_ERR
-l_string|&quot;rio: Couldn&squot;t register a rio driver, error = %d&bslash;n&quot;
-comma
-id|error
-)paren
-suffix:semicolon
-r_return
-l_int|1
-suffix:semicolon
-)brace
-DECL|function|ckmalloc
-r_static
-r_void
-op_star
-id|ckmalloc
-(paren
-r_int
-id|size
-)paren
-(brace
-r_void
-op_star
-id|p
-suffix:semicolon
-id|p
-op_assign
-id|kmalloc
-c_func
-(paren
-id|size
-comma
-id|GFP_KERNEL
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|p
-)paren
-id|memset
-c_func
-(paren
-id|p
-comma
-l_int|0
-comma
-id|size
-)paren
-suffix:semicolon
-r_return
-id|p
-suffix:semicolon
-)brace
-DECL|function|rio_init_datastructures
-r_static
-r_int
-id|rio_init_datastructures
-(paren
-r_void
-)paren
-(brace
-r_int
-id|i
-suffix:semicolon
-r_struct
-id|Port
-op_star
-id|port
-suffix:semicolon
-id|func_enter
-c_func
-(paren
-)paren
-suffix:semicolon
-multiline_comment|/* Many drivers statically allocate the maximum number of ports&n;     There is no reason not to allocate them dynamically. Is there? -- REW */
+multiline_comment|/* &n; bad3:tty_unregister_driver (&amp;rio_driver2);&n; bad2:tty_unregister_driver (&amp;rio_driver);&n; bad1:printk(KERN_ERR &quot;rio: Couldn&squot;t register a rio driver, error = %d&bslash;n&quot;,&n;             error);&n;  return 1;&n;}&n;&n;&n;static void * ckmalloc (int size)&n;{&n;  void *p;&n;&n;  p = kmalloc(size, GFP_KERNEL);&n;  if (p) &n;    memset(p, 0, size);&n;  return p;&n;}&n;&n;&n;&n;static int rio_init_datastructures (void)&n;{&n;  int i;&n;  struct Port *port;&n;  func_enter();&n;&n;  /* Many drivers statically allocate the maximum number of ports&n;     There is no reason not to allocate them dynamically. Is there? -- REW */
 multiline_comment|/* However, the RIO driver allows users to configure their first&n;     RTA as the ports numbered 504-511. We therefore need to allocate &n;     the whole range. :-(   -- REW */
 DECL|macro|RI_SZ
 mdefine_line|#define RI_SZ   sizeof(struct rio_info)
@@ -3405,10 +3217,6 @@ id|port-&gt;PortNum
 op_assign
 id|i
 suffix:semicolon
-id|port-&gt;gs.callout_termios
-op_assign
-id|tty_std_termios
-suffix:semicolon
 id|port-&gt;gs.normal_termios
 op_assign
 id|tty_std_termios
@@ -3580,18 +3388,6 @@ r_void
 id|func_enter
 c_func
 (paren
-)paren
-suffix:semicolon
-id|tty_unregister_driver
-(paren
-op_amp
-id|rio_callout_driver2
-)paren
-suffix:semicolon
-id|tty_unregister_driver
-(paren
-op_amp
-id|rio_callout_driver
 )paren
 suffix:semicolon
 id|tty_unregister_driver

@@ -18,6 +18,14 @@ macro_line|#include &lt;asm/desc.h&gt;
 macro_line|#include &lt;asm/arch_hooks.h&gt;
 macro_line|#include &lt;mach_apic.h&gt;
 macro_line|#include &quot;io_ports.h&quot;
+r_static
+r_void
+id|apic_pm_activate
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
 DECL|function|apic_intr_init
 r_void
 id|__init
@@ -1446,6 +1454,11 @@ c_func
 (paren
 )paren
 suffix:semicolon
+id|apic_pm_activate
+c_func
+(paren
+)paren
+suffix:semicolon
 )brace
 macro_line|#ifdef CONFIG_PM
 macro_line|#include &lt;linux/device.h&gt;
@@ -2101,7 +2114,6 @@ suffix:semicolon
 macro_line|#else&t;/* CONFIG_PM */
 DECL|function|apic_pm_activate
 r_static
-r_inline
 r_void
 id|apic_pm_activate
 c_func

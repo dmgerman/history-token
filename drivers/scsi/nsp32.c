@@ -1012,6 +1012,10 @@ r_int
 id|nsp32_proc_info
 c_func
 (paren
+r_struct
+id|Scsi_Host
+op_star
+comma
 r_char
 op_star
 comma
@@ -1020,8 +1024,6 @@ op_star
 op_star
 comma
 id|off_t
-comma
-r_int
 comma
 r_int
 comma
@@ -6160,6 +6162,11 @@ r_int
 id|nsp32_proc_info
 c_func
 (paren
+r_struct
+id|Scsi_Host
+op_star
+id|host
+comma
 r_char
 op_star
 id|buffer
@@ -6174,9 +6181,6 @@ id|offset
 comma
 r_int
 id|length
-comma
-r_int
-id|hostno
 comma
 r_int
 id|inout
@@ -6199,13 +6203,6 @@ id|nsp32_hw_data
 op_star
 id|data
 suffix:semicolon
-r_struct
-id|Scsi_Host
-op_star
-id|host
-op_assign
-l_int|NULL
-suffix:semicolon
 r_int
 r_int
 id|base
@@ -6226,28 +6223,6 @@ id|TRUE
 r_return
 op_minus
 id|EINVAL
-suffix:semicolon
-)brace
-multiline_comment|/* search this HBA host */
-id|host
-op_assign
-id|scsi_host_hn_get
-c_func
-(paren
-id|hostno
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|host
-op_eq
-l_int|NULL
-)paren
-(brace
-r_return
-op_minus
-id|ESRCH
 suffix:semicolon
 )brace
 id|data
@@ -6281,7 +6256,7 @@ c_func
 (paren
 l_string|&quot;SCSI host No.:         %d&bslash;n&quot;
 comma
-id|hostno
+id|host-&gt;host_no
 )paren
 suffix:semicolon
 id|SPRINTF
