@@ -4352,6 +4352,13 @@ c_func
 id|usb_find_interface
 )paren
 suffix:semicolon
+DECL|variable|usb_ifnum_to_if
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|usb_ifnum_to_if
+)paren
+suffix:semicolon
 DECL|variable|usb_new_device
 id|EXPORT_SYMBOL
 c_func

@@ -1016,8 +1016,6 @@ id|acm-&gt;tty
 op_assign
 id|tty
 suffix:semicolon
-id|MOD_INC_USE_COUNT
-suffix:semicolon
 id|lock_kernel
 c_func
 (paren
@@ -1229,8 +1227,6 @@ id|acm
 suffix:semicolon
 )brace
 )brace
-id|MOD_DEC_USE_COUNT
-suffix:semicolon
 )brace
 DECL|function|acm_tty_write
 r_static
@@ -3264,6 +3260,11 @@ dot
 id|magic
 op_assign
 id|TTY_DRIVER_MAGIC
+comma
+dot
+id|owner
+op_assign
+id|THIS_MODULE
 comma
 dot
 id|driver_name
