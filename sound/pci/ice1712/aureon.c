@@ -3511,9 +3511,9 @@ multiline_comment|/* RUN */
 l_int|0x0100
 comma
 multiline_comment|/* no mute */
-l_int|0x0200
+l_int|0x0201
 comma
-multiline_comment|/* */
+multiline_comment|/* S/PDIF source on RXP1 */
 l_int|0x0600
 comma
 multiline_comment|/* slave, 24bit */
@@ -3618,7 +3618,7 @@ c_func
 (paren
 id|ice
 comma
-l_int|0xbfffff
+l_int|0x5fffff
 )paren
 suffix:semicolon
 multiline_comment|/* fix this for the time being */
@@ -3845,7 +3845,7 @@ multiline_comment|/* GPIO_DIR */
 l_int|0xff
 comma
 multiline_comment|/* GPIO_DIR1 */
-l_int|0xbf
+l_int|0x5f
 comma
 multiline_comment|/* GPIO_DIR2 */
 l_int|0xff
@@ -3896,7 +3896,7 @@ multiline_comment|/* GPIO_DIR */
 l_int|0xff
 comma
 multiline_comment|/* GPIO_DIR1 */
-l_int|0xbf
+l_int|0x5f
 comma
 multiline_comment|/* GPIO_DIR2 */
 l_int|0x00
@@ -3947,7 +3947,7 @@ multiline_comment|/* GPIO_DIR */
 l_int|0xff
 comma
 multiline_comment|/* GPIO_DIR1 */
-l_int|0xbf
+l_int|0x5f
 comma
 multiline_comment|/* GPIO_DIR2 */
 l_int|0x00
