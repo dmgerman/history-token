@@ -1709,13 +1709,6 @@ c_func
 id|svr4_setcontext
 )paren
 suffix:semicolon
-DECL|variable|prom_cpu_nodes
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|prom_cpu_nodes
-)paren
-suffix:semicolon
 DECL|variable|sys_ioctl
 id|EXPORT_SYMBOL
 c_func
