@@ -6030,12 +6030,6 @@ comma
 id|bp-&gt;bblock_dvma
 )paren
 suffix:semicolon
-id|unregister_netdev
-c_func
-(paren
-id|dev
-)paren
-suffix:semicolon
 multiline_comment|/* This also frees the co-located &squot;dev-&gt;priv&squot; */
 id|free_netdev
 c_func
