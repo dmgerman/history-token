@@ -15495,7 +15495,7 @@ c_func
 id|KERN_INFO
 l_string|&quot;fb%d: %s frame buffer device, Version %d.%d.%02d&bslash;n&quot;
 comma
-id|GET_FB_IDX
+id|minor
 c_func
 (paren
 id|fb_info.node

@@ -15,7 +15,6 @@ macro_line|#include &lt;asm/bootinfo.h&gt;
 macro_line|#include &lt;asm/dec/machtype.h&gt;
 macro_line|#include &lt;asm/dec/tc.h&gt;
 macro_line|#include &quot;pmag-ba-fb.h&quot;
-macro_line|#include &lt;video/fbcon.h&gt;
 DECL|struct|pmag_ba_ramdac_regs
 r_struct
 id|pmag_ba_ramdac_regs
@@ -76,15 +75,6 @@ id|pmagba_fb_info
 l_int|3
 )braket
 suffix:semicolon
-DECL|variable|pmagba_disp
-r_static
-r_struct
-id|display
-id|pmagba_disp
-(braket
-l_int|3
-)braket
-suffix:semicolon
 DECL|variable|pmagbafb_defined
 r_static
 r_struct
@@ -118,6 +108,21 @@ op_assign
 l_int|8
 comma
 dot
+id|red.length
+op_assign
+l_int|8
+comma
+dot
+id|green.length
+op_assign
+l_int|8
+comma
+dot
+id|blue.length
+op_assign
+l_int|8
+comma
+dot
 id|activate
 op_assign
 id|FB_ACTIVATE_NOW
@@ -143,6 +148,8 @@ op_assign
 id|FB_VMODE_NONINTERLACED
 comma
 )brace
+suffix:semicolon
+DECL|variable|pmagbafb_fix
 r_static
 r_struct
 id|fb_fix_screeninfo
@@ -179,7 +186,9 @@ op_assign
 l_int|1024
 comma
 )brace
+suffix:semicolon
 multiline_comment|/*&n; * Turn hardware cursor off&n; */
+DECL|function|pmagbafb_erase_cursor
 r_void
 id|pmagbafb_erase_cursor
 c_func
@@ -204,6 +213,7 @@ l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Set the palette. &n; */
+DECL|function|pmagbafb_setcolreg
 r_static
 r_int
 id|pmagbafb_setcolreg
@@ -294,6 +304,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+DECL|variable|pmagbafb_ops
 r_static
 r_struct
 id|fb_ops
@@ -304,21 +315,6 @@ dot
 id|owner
 op_assign
 id|THIS_MODULE
-comma
-dot
-id|fb_set_var
-op_assign
-id|gen_set_var
-comma
-dot
-id|fb_get_cmap
-op_assign
-id|gen_get_cmap
-comma
-dot
-id|fb_set_cmap
-op_assign
-id|gen_set_cmap
 comma
 dot
 id|fb_setcolreg
@@ -340,7 +336,14 @@ id|fb_imageblit
 op_assign
 id|cfb_imageblit
 comma
+dot
+id|fb_cursor
+op_assign
+id|soft_cursor
+comma
 )brace
+suffix:semicolon
+DECL|function|pmagbafb_init_one
 r_int
 id|__init
 id|pmagbafb_init_one
@@ -367,17 +370,6 @@ id|info
 op_assign
 op_amp
 id|pmagba_fb_info
-(braket
-id|slot
-)braket
-suffix:semicolon
-r_struct
-id|display
-op_star
-id|disp
-op_assign
-op_amp
-id|pmagba_disp
 (braket
 id|slot
 )braket
@@ -418,18 +410,6 @@ id|info-&gt;par
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; *      Let there be consoles..&n;&t; */
-id|strcpy
-c_func
-(paren
-id|info-&gt;modename
-comma
-id|pmagbafb_fix.id
-)paren
-suffix:semicolon
-id|info-&gt;changevar
-op_assign
-l_int|NULL
-suffix:semicolon
 id|info-&gt;node
 op_assign
 id|NODEV
@@ -451,24 +431,6 @@ id|info-&gt;screen_base
 op_assign
 id|pmagbafb_fix.smem_start
 suffix:semicolon
-id|info-&gt;disp
-op_assign
-op_amp
-id|disp
-suffix:semicolon
-id|info-&gt;currcon
-op_assign
-op_minus
-l_int|1
-suffix:semicolon
-id|info-&gt;switch_con
-op_assign
-id|gen_switch
-suffix:semicolon
-id|info-&gt;updatevar
-op_assign
-id|gen_update_var
-suffix:semicolon
 id|info-&gt;flags
 op_assign
 id|FBINFO_FLAG_DEFAULT
@@ -482,15 +444,6 @@ comma
 l_int|256
 comma
 l_int|0
-)paren
-suffix:semicolon
-id|gen_set_disp
-c_func
-(paren
-op_minus
-l_int|1
-comma
-id|info
 )paren
 suffix:semicolon
 r_if
@@ -512,6 +465,7 @@ l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/* &n; * Initialise the framebuffer&n; */
+DECL|function|pmagbafb_init
 r_int
 id|__init
 id|pmagbafb_init
@@ -584,20 +538,6 @@ op_minus
 id|ENODEV
 suffix:semicolon
 )brace
-)brace
-r_int
-id|__init
-id|pmagbafb_setup
-c_func
-(paren
-r_char
-op_star
-id|options
-)paren
-(brace
-r_return
-l_int|0
-suffix:semicolon
 )brace
 id|MODULE_LICENSE
 c_func
