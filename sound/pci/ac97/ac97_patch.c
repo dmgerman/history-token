@@ -5107,6 +5107,18 @@ id|ac97-&gt;flags
 op_or_assign
 id|AC97_STEREO_MUTES
 suffix:semicolon
+multiline_comment|/* on AD1985 rev. 3, AC&squot;97 revision bits are zero */
+id|ac97-&gt;ext_id
+op_assign
+(paren
+id|ac97-&gt;ext_id
+op_amp
+op_complement
+id|AC97_EI_REV_MASK
+)paren
+op_or
+id|AC97_EI_REV_23
+suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
