@@ -241,7 +241,7 @@ id|AE_NOT_FOUND
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ns_search_parent_tree&n; *&n; * PARAMETERS:  *target_name        - Ascii ACPI name to search for&n; *              *Node               - Starting node where search will begin&n; *              Type                - Object type to match&n; *              **return_node       - Where the matched Named Obj is returned&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Called when a name has not been found in the current namespace&n; *              level.  Before adding it or giving up, ACPI scope rules require&n; *              searching enclosing scopes in cases identified by acpi_ns_local().&n; *&n; *              &quot;A name is located by finding the matching name in the current&n; *              name space, and then in the parent name space. If the parent&n; *              name space does not contain the name, the search continues&n; *              recursively until either the name is found or the name space&n; *              does not have a parent (the root of the name space).  This&n; *              indicates that the name is not found&quot; (From ACPI Specification,&n; *              section 5.3)&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ns_search_parent_tree&n; *&n; * PARAMETERS:  *target_name        - Ascii ACPI name to search for&n; *              *Node               - Starting node where search will begin&n; *              Type                - Object type to match&n; *              **return_node       - Where the matched Node is returned&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Called when a name has not been found in the current namespace&n; *              level.  Before adding it or giving up, ACPI scope rules require&n; *              searching enclosing scopes in cases identified by acpi_ns_local().&n; *&n; *              &quot;A name is located by finding the matching name in the current&n; *              name space, and then in the parent name space. If the parent&n; *              name space does not contain the name, the search continues&n; *              recursively until either the name is found or the name space&n; *              does not have a parent (the root of the name space).  This&n; *              indicates that the name is not found&quot; (From ACPI Specification,&n; *              section 5.3)&n; *&n; ******************************************************************************/
 r_static
 id|acpi_status
 DECL|function|acpi_ns_search_parent_tree
@@ -285,7 +285,7 @@ id|acpi_ns_get_parent_node
 id|node
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * If there is no parent (i.e., we are at the root) or&n;&t; * type is &quot;local&quot;, we won&squot;t be searching the parent tree.&n;&t; */
+multiline_comment|/*&n;&t; * If there is no parent (i.e., we are at the root) or type is &quot;local&quot;,&n;&t; * we won&squot;t be searching the parent tree.&n;&t; */
 r_if
 c_cond
 (paren
@@ -357,7 +357,12 @@ id|ACPI_DEBUG_PRINT
 (paren
 id|ACPI_DB_NAMES
 comma
-l_string|&quot;Searching parent for %4.4s&bslash;n&quot;
+l_string|&quot;Searching parent [%4.4s] for [%4.4s]&bslash;n&quot;
+comma
+id|acpi_ut_get_node_name
+(paren
+id|parent_node
+)paren
 comma
 (paren
 r_char
@@ -368,7 +373,7 @@ id|target_name
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * Search parents until found the target or we have backed up to&n;&t; * the root&n;&t; */
+multiline_comment|/*&n;&t; * Search parents until target is found or we have backed up to the root&n;&t; */
 r_while
 c_loop
 (paren
@@ -591,7 +596,7 @@ id|status
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t; * The name was not found.  If we are NOT performing the&n;&t; * first pass (name entry) of loading the namespace, search&n;&t; * the parent tree (all the way to the root if necessary.)&n;&t; * We don&squot;t want to perform the parent search when the&n;&t; * namespace is actually being loaded.  We want to perform&n;&t; * the search when namespace references are being resolved&n;&t; * (load pass 2) and during the execution phase.&n;&t; */
+multiline_comment|/*&n;&t; * The name was not found.  If we are NOT performing the first pass&n;&t; * (name entry) of loading the namespace, search the parent tree (all the&n;&t; * way to the root if necessary.) We don&squot;t want to perform the parent&n;&t; * search when the namespace is actually being loaded.  We want to perform&n;&t; * the search when namespace references are being resolved (load pass 2)&n;&t; * and during the execution phase.&n;&t; */
 r_if
 c_cond
 (paren
@@ -608,7 +613,7 @@ id|ACPI_NS_SEARCH_PARENT
 )paren
 )paren
 (brace
-multiline_comment|/*&n;&t;&t; * Not found at this level - search parent tree according&n;&t;&t; * to ACPI specification&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * Not found at this level - search parent tree according to the&n;&t;&t; * ACPI specification&n;&t;&t; */
 id|status
 op_assign
 id|acpi_ns_search_parent_tree

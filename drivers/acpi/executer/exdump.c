@@ -781,7 +781,7 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
-multiline_comment|/*****************************************************************************&n; *&n; * FUNCTION:    acpi_ex_dump_operands&n; *&n; * PARAMETERS:  interpreter_mode     - Load or Exec&n; *              *Ident              - Identification&n; *              num_levels          - # of stack entries to dump above line&n; *              *Note               - Output notation&n; *&n; * DESCRIPTION: Dump the object stack&n; *&n; ****************************************************************************/
+multiline_comment|/*****************************************************************************&n; *&n; * FUNCTION:    acpi_ex_dump_operands&n; *&n; * PARAMETERS:  Operands            - Operand list&n; *              interpreter_mode    - Load or Exec&n; *              Ident               - Identification&n; *              num_levels          - # of stack entries to dump above line&n; *              Note                - Output notation&n; *              module_name         - Caller&squot;s module name&n; *              line_number         - Caller&squot;s invocation line number&n; *&n; * DESCRIPTION: Dump the object stack&n; *&n; ****************************************************************************/
 r_void
 DECL|function|acpi_ex_dump_operands
 id|acpi_ex_dump_operands
@@ -1269,7 +1269,7 @@ comma
 id|flags
 )paren
 suffix:semicolon
-r_return
+id|return_VOID
 suffix:semicolon
 )brace
 r_if
@@ -1610,7 +1610,7 @@ id|obj_desc-&gt;mutex.owner_thread
 suffix:semicolon
 id|acpi_ex_out_integer
 (paren
-l_string|&quot;acquisition_depth&quot;
+l_string|&quot;acquire_depth&quot;
 comma
 id|obj_desc-&gt;mutex.acquisition_depth
 )paren

@@ -476,7 +476,7 @@ id|status
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t; * Each of these types can contain executable AML code within&n;&t; * the declaration.&n;&t; */
+multiline_comment|/*&n;&t; * Each of these types can contain executable AML code within the&n;&t; * declaration.&n;&t; */
 r_switch
 c_cond
 (paren
@@ -592,7 +592,7 @@ id|status
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* Print a dot for each object unless we are going to print the entire pathname */
+multiline_comment|/*&n;&t; * Print a dot for each object unless we are going to print the entire&n;&t; * pathname&n;&t; */
 r_if
 c_cond
 (paren
@@ -614,7 +614,7 @@ l_string|&quot;.&quot;
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t; * We ignore errors from above, and always return OK, since&n;&t; * we don&squot;t want to abort the walk on any single error.&n;&t; */
+multiline_comment|/*&n;&t; * We ignore errors from above, and always return OK, since we don&squot;t want&n;&t; * to abort the walk on any single error.&n;&t; */
 id|acpi_ex_exit_interpreter
 (paren
 )paren

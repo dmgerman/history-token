@@ -12,7 +12,137 @@ id|ACPI_MODULE_NAME
 (paren
 l_string|&quot;exoparg1&quot;
 )paren
-multiline_comment|/*!&n; * Naming convention for AML interpreter execution routines.&n; *&n; * The routines that begin execution of AML opcodes are named with a common&n; * convention based upon the number of arguments, the number of target operands,&n; * and whether or not a value is returned:&n; *&n; *      AcpiExOpcode_xA_yT_zR&n; *&n; * Where:&n; *&n; * xA - ARGUMENTS:    The number of arguments (input operands) that are&n; *                    required for this opcode type (1 through 6 args).&n; * yT - TARGETS:      The number of targets (output operands) that are required&n; *                    for this opcode type (0, 1, or 2 targets).&n; * zR - RETURN VALUE: Indicates whether this opcode type returns a value&n; *                    as the function return (0 or 1).&n; *&n; * The AcpiExOpcode* functions are called via the Dispatcher component with&n; * fully resolved operands.&n;!*/
+multiline_comment|/*!&n; * Naming convention for AML interpreter execution routines.&n; *&n; * The routines that begin execution of AML opcodes are named with a common&n; * convention based upon the number of arguments, the number of target operands,&n; * and whether or not a value is returned:&n; *&n; *      AcpiExOpcode_xA_yT_zR&n; *&n; * Where:&n; *&n; * xA - ARGUMENTS:    The number of arguments (input operands) that are&n; *                    required for this opcode type (0 through 6 args).&n; * yT - TARGETS:      The number of targets (output operands) that are required&n; *                    for this opcode type (0, 1, or 2 targets).&n; * zR - RETURN VALUE: Indicates whether this opcode type returns a value&n; *                    as the function return (0 or 1).&n; *&n; * The AcpiExOpcode* functions are called via the Dispatcher component with&n; * fully resolved operands.&n;!*/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ex_opcode_0A_0T_1R&n; *&n; * PARAMETERS:  walk_state          - Current state (contains AML opcode)&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Execute operator with no operands, one return value&n; *&n; ******************************************************************************/
+id|acpi_status
+DECL|function|acpi_ex_opcode_0A_0T_1R
+id|acpi_ex_opcode_0A_0T_1R
+(paren
+r_struct
+id|acpi_walk_state
+op_star
+id|walk_state
+)paren
+(brace
+id|acpi_status
+id|status
+op_assign
+id|AE_OK
+suffix:semicolon
+r_union
+id|acpi_operand_object
+op_star
+id|return_desc
+op_assign
+l_int|NULL
+suffix:semicolon
+id|ACPI_FUNCTION_TRACE_STR
+(paren
+l_string|&quot;ex_opcode_0A_0T_1R&quot;
+comma
+id|acpi_ps_get_opcode_name
+(paren
+id|walk_state-&gt;opcode
+)paren
+)paren
+suffix:semicolon
+multiline_comment|/* Examine the AML opcode */
+r_switch
+c_cond
+(paren
+id|walk_state-&gt;opcode
+)paren
+(brace
+r_case
+id|AML_TIMER_OP
+suffix:colon
+multiline_comment|/*  Timer () */
+multiline_comment|/* Create a return object of type Integer */
+id|return_desc
+op_assign
+id|acpi_ut_create_internal_object
+(paren
+id|ACPI_TYPE_INTEGER
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|return_desc
+)paren
+(brace
+id|status
+op_assign
+id|AE_NO_MEMORY
+suffix:semicolon
+r_goto
+id|cleanup
+suffix:semicolon
+)brace
+id|return_desc-&gt;integer.value
+op_assign
+id|acpi_os_get_timer
+(paren
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
+r_default
+suffix:colon
+multiline_comment|/*  Unknown opcode  */
+id|ACPI_REPORT_ERROR
+(paren
+(paren
+l_string|&quot;acpi_ex_opcode_0A_0T_1R: Unknown opcode %X&bslash;n&quot;
+comma
+id|walk_state-&gt;opcode
+)paren
+)paren
+suffix:semicolon
+id|status
+op_assign
+id|AE_AML_BAD_OPCODE
+suffix:semicolon
+r_break
+suffix:semicolon
+)brace
+id|cleanup
+suffix:colon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|walk_state-&gt;result_obj
+)paren
+(brace
+id|walk_state-&gt;result_obj
+op_assign
+id|return_desc
+suffix:semicolon
+)brace
+multiline_comment|/* Delete return object on error */
+r_if
+c_cond
+(paren
+id|ACPI_FAILURE
+(paren
+id|status
+)paren
+)paren
+(brace
+id|acpi_ut_remove_reference
+(paren
+id|return_desc
+)paren
+suffix:semicolon
+)brace
+id|return_ACPI_STATUS
+(paren
+id|status
+)paren
+suffix:semicolon
+)brace
 multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ex_opcode_1A_0T_0R&n; *&n; * PARAMETERS:  walk_state          - Current state (contains AML opcode)&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Execute Type 1 monadic operator with numeric operand on&n; *              object stack&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_ex_opcode_1A_0T_0R
@@ -116,9 +246,6 @@ id|status
 op_assign
 id|acpi_ex_system_do_suspend
 (paren
-(paren
-id|u32
-)paren
 id|operand
 (braket
 l_int|0
@@ -334,7 +461,7 @@ suffix:semicolon
 id|u32
 id|i
 suffix:semicolon
-id|u32
+id|acpi_integer
 id|power_of_ten
 suffix:semicolon
 id|acpi_integer
@@ -677,7 +804,6 @@ r_void
 )paren
 id|acpi_ut_short_divide
 (paren
-op_amp
 id|digit
 comma
 l_int|10
@@ -700,10 +826,9 @@ id|acpi_integer
 id|temp32
 )paren
 op_lshift
+id|ACPI_MUL_4
 (paren
 id|i
-op_star
-l_int|4
 )paren
 )paren
 suffix:semicolon
@@ -945,11 +1070,7 @@ comma
 op_amp
 id|return_desc
 comma
-l_int|10
-comma
-id|ACPI_UINT32_MAX
-comma
-id|walk_state
+id|ACPI_EXPLICIT_CONVERT_DECIMAL
 )paren
 suffix:semicolon
 r_break
@@ -970,11 +1091,7 @@ comma
 op_amp
 id|return_desc
 comma
-l_int|16
-comma
-id|ACPI_UINT32_MAX
-comma
-id|walk_state
+id|ACPI_EXPLICIT_CONVERT_HEX
 )paren
 suffix:semicolon
 r_break
@@ -994,8 +1111,6 @@ l_int|0
 comma
 op_amp
 id|return_desc
-comma
-id|walk_state
 )paren
 suffix:semicolon
 r_break
@@ -1016,7 +1131,7 @@ comma
 op_amp
 id|return_desc
 comma
-id|walk_state
+id|ACPI_ANY_BASE
 )paren
 suffix:semicolon
 r_break
@@ -1024,11 +1139,11 @@ suffix:semicolon
 r_case
 id|AML_SHIFT_LEFT_BIT_OP
 suffix:colon
-multiline_comment|/*  shift_left_bit (Source, bit_num) */
+multiline_comment|/* shift_left_bit (Source, bit_num) */
 r_case
 id|AML_SHIFT_RIGHT_BIT_OP
 suffix:colon
-multiline_comment|/*  shift_right_bit (Source, bit_num) */
+multiline_comment|/* shift_right_bit (Source, bit_num) */
 multiline_comment|/*&n;&t;&t; * These are two obsolete opcodes&n;&t;&t; */
 id|ACPI_DEBUG_PRINT
 (paren
@@ -1211,8 +1326,10 @@ r_goto
 id|cleanup
 suffix:semicolon
 )brace
-id|return_desc-&gt;integer.value
-op_assign
+multiline_comment|/*&n;&t;&t; * Set result to ONES (TRUE) if Value == 0.  Note:&n;&t;&t; * return_desc-&gt;Integer.Value is initially == 0 (FALSE) from above.&n;&t;&t; */
+r_if
+c_cond
+(paren
 op_logical_neg
 id|operand
 (braket
@@ -1220,7 +1337,13 @@ l_int|0
 )braket
 op_member_access_from_pointer
 id|integer.value
+)paren
+(brace
+id|return_desc-&gt;integer.value
+op_assign
+id|ACPI_INTEGER_MAX
 suffix:semicolon
+)brace
 r_break
 suffix:semicolon
 r_case
@@ -1231,8 +1354,31 @@ r_case
 id|AML_INCREMENT_OP
 suffix:colon
 multiline_comment|/* Increment (Operand)  */
-multiline_comment|/*&n;&t;&t; * Since we are expecting a Reference operand, it&n;&t;&t; * can be either a NS Node or an internal object.&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * Create a new integer.  Can&squot;t just get the base integer and&n;&t;&t; * increment it because it may be an Arg or Field.&n;&t;&t; */
 id|return_desc
+op_assign
+id|acpi_ut_create_internal_object
+(paren
+id|ACPI_TYPE_INTEGER
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|return_desc
+)paren
+(brace
+id|status
+op_assign
+id|AE_NO_MEMORY
+suffix:semicolon
+r_goto
+id|cleanup
+suffix:semicolon
+)brace
+multiline_comment|/*&n;&t;&t; * Since we are expecting a Reference operand, it can be either a&n;&t;&t; * NS Node or an internal object.&n;&t;&t; */
+id|temp_desc
 op_assign
 id|operand
 (braket
@@ -1244,10 +1390,7 @@ c_cond
 (paren
 id|ACPI_GET_DESCRIPTOR_TYPE
 (paren
-id|operand
-(braket
-l_int|0
-)braket
+id|temp_desc
 )paren
 op_eq
 id|ACPI_DESC_TYPE_OPERAND
@@ -1256,11 +1399,11 @@ id|ACPI_DESC_TYPE_OPERAND
 multiline_comment|/* Internal reference object - prevent deletion */
 id|acpi_ut_add_reference
 (paren
-id|return_desc
+id|temp_desc
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t;&t; * Convert the return_desc Reference to a Number&n;&t;&t; * (This removes a reference on the return_desc object)&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * Convert the Reference operand to an Integer (This removes a&n;&t;&t; * reference on the Operand[0] object)&n;&t;&t; *&n;&t;&t; * NOTE:  We use LNOT_OP here in order to force resolution of the&n;&t;&t; * reference operand to an actual integer.&n;&t;&t; */
 id|status
 op_assign
 id|acpi_ex_resolve_operands
@@ -1268,7 +1411,7 @@ id|acpi_ex_resolve_operands
 id|AML_LNOT_OP
 comma
 op_amp
-id|return_desc
+id|temp_desc
 comma
 id|walk_state
 )paren
@@ -1306,26 +1449,38 @@ r_goto
 id|cleanup
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t;&t; * return_desc is now guaranteed to be an Integer object&n;&t;&t; * Do the actual increment or decrement&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * temp_desc is now guaranteed to be an Integer object --&n;&t;&t; * Perform the actual increment or decrement&n;&t;&t; */
 r_if
 c_cond
 (paren
-id|AML_INCREMENT_OP
-op_eq
 id|walk_state-&gt;opcode
+op_eq
+id|AML_INCREMENT_OP
 )paren
 (brace
 id|return_desc-&gt;integer.value
-op_increment
+op_assign
+id|temp_desc-&gt;integer.value
+op_plus
+l_int|1
 suffix:semicolon
 )brace
 r_else
 (brace
 id|return_desc-&gt;integer.value
-op_decrement
+op_assign
+id|temp_desc-&gt;integer.value
+op_minus
+l_int|1
 suffix:semicolon
 )brace
-multiline_comment|/* Store the result back in the original descriptor */
+multiline_comment|/* Finished with this Integer object */
+id|acpi_ut_remove_reference
+(paren
+id|temp_desc
+)paren
+suffix:semicolon
+multiline_comment|/*&n;&t;&t; * Store the result back (indirectly) through the original&n;&t;&t; * Reference object&n;&t;&t; */
 id|status
 op_assign
 id|acpi_ex_store

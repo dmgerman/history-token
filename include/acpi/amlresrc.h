@@ -95,7 +95,7 @@ id|next
 suffix:semicolon
 )brace
 suffix:semicolon
-multiline_comment|/*&n; * Resource descriptors defined in the ACPI specification.&n; *&n; * Alignment must be BYTE because these descriptors&n; * are used to overlay the AML byte stream.&n; */
+multiline_comment|/*&n; * Resource descriptors defined in the ACPI specification.&n; *&n; * Packing/alignment must be BYTE because these descriptors&n; * are used to overlay the AML byte stream.&n; */
 macro_line|#pragma pack(1)
 DECL|struct|asl_irq_format_desc
 r_struct
@@ -601,7 +601,7 @@ suffix:semicolon
 suffix:semicolon
 multiline_comment|/* restore default alignment */
 macro_line|#pragma pack()
-multiline_comment|/* Union of all resource descriptors, sow we can allocate the worst case */
+multiline_comment|/* Union of all resource descriptors, so we can allocate the worst case */
 DECL|union|asl_resource_desc
 r_union
 id|asl_resource_desc

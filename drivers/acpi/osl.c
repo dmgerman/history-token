@@ -676,7 +676,7 @@ c_func
 (paren
 id|KERN_INFO
 id|PREFIX
-l_string|&quot;Overriding _OS definition %s&bslash;n&quot;
+l_string|&quot;Overriding _OS definition to &squot;%s&squot;&bslash;n&quot;
 comma
 id|acpi_os_name
 )paren
@@ -943,10 +943,7 @@ DECL|function|acpi_os_sleep
 id|acpi_os_sleep
 c_func
 (paren
-id|u32
-id|sec
-comma
-id|u32
+id|acpi_integer
 id|ms
 )paren
 (brace
@@ -957,11 +954,11 @@ suffix:semicolon
 id|schedule_timeout
 c_func
 (paren
-id|HZ
-op_star
-id|sec
-op_plus
 (paren
+(paren
+r_int
+r_int
+)paren
 id|ms
 op_star
 id|HZ
@@ -1018,6 +1015,43 @@ op_sub_assign
 id|delay
 suffix:semicolon
 )brace
+)brace
+multiline_comment|/*&n; * Support ACPI 3.0 AML Timer operand&n; * Returns 64-bit free-running, monotonically increasing timer&n; * with 100ns granularity&n; */
+id|u64
+DECL|function|acpi_os_get_timer
+id|acpi_os_get_timer
+(paren
+r_void
+)paren
+(brace
+r_static
+id|u64
+id|t
+suffix:semicolon
+macro_line|#ifdef&t;CONFIG_HPET
+multiline_comment|/* TBD: use HPET if available */
+macro_line|#endif
+macro_line|#ifdef&t;CONFIG_X86_PM_TIMER
+multiline_comment|/* TBD: default to PM timer if HPET was not available */
+macro_line|#endif
+r_if
+c_cond
+(paren
+op_logical_neg
+id|t
+)paren
+id|printk
+c_func
+(paren
+id|KERN_ERR
+id|PREFIX
+l_string|&quot;acpi_os_get_timer() TBD&bslash;n&quot;
+)paren
+suffix:semicolon
+r_return
+op_increment
+id|t
+suffix:semicolon
 )brace
 id|acpi_status
 DECL|function|acpi_os_read_port
@@ -3378,27 +3412,9 @@ suffix:semicolon
 r_case
 id|ACPI_SIGNAL_BREAKPOINT
 suffix:colon
-(brace
-r_char
-op_star
-id|bp_info
-op_assign
-(paren
-r_char
-op_star
-)paren
-id|info
+multiline_comment|/*&n;&t;&t; * AML Breakpoint&n;&t;&t; * ACPI spec. says to treat it as a NOP unless&n;&t;&t; * you are debugging.  So if/when we integrate&n;&t;&t; * AML debugger into the kernel debugger its&n;&t;&t; * hook will go here.  But until then it is&n;&t;&t; * not useful to print anything on breakpoints.&n;&t;&t; */
+r_break
 suffix:semicolon
-id|printk
-c_func
-(paren
-id|KERN_ERR
-l_string|&quot;ACPI breakpoint: %s&bslash;n&quot;
-comma
-id|bp_info
-)paren
-suffix:semicolon
-)brace
 r_default
 suffix:colon
 r_break

@@ -200,6 +200,11 @@ r_struct
 id|acpi_object_notify_handler
 id|acpi_gbl_system_notify
 suffix:semicolon
+DECL|variable|acpi_gbl_exception_handler
+id|ACPI_EXTERN
+id|acpi_exception_handler
+id|acpi_gbl_exception_handler
+suffix:semicolon
 DECL|variable|acpi_gbl_init_handler
 id|ACPI_EXTERN
 id|acpi_init_handler

@@ -287,7 +287,7 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
-multiline_comment|/* Convert handle to a full pathname and print it (with supplied message) */
+multiline_comment|/* Convert handle to full pathname and print it (with supplied message) */
 id|buffer.length
 op_assign
 id|ACPI_ALLOCATE_LOCAL_BUFFER
@@ -524,7 +524,7 @@ id|info-&gt;fully_qualified
 op_assign
 id|FALSE
 suffix:semicolon
-multiline_comment|/*&n;&t; * For the internal name, the required length is 4 bytes&n;&t; * per segment, plus 1 each for root_prefix, multi_name_prefix_op,&n;&t; * segment count, trailing null (which is not really needed,&n;&t; * but no there&squot;s harm in putting it there)&n;&t; *&n;&t; * strlen() + 1 covers the first name_seg, which has no&n;&t; * path separator&n;&t; */
+multiline_comment|/*&n;&t; * For the internal name, the required length is 4 bytes per segment, plus&n;&t; * 1 each for root_prefix, multi_name_prefix_op, segment count, trailing null&n;&t; * (which is not really needed, but no there&squot;s harm in putting it there)&n;&t; *&n;&t; * strlen() + 1 covers the first name_seg, which has no path separator&n;&t; */
 r_if
 c_cond
 (paren
@@ -565,7 +565,7 @@ op_increment
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/*&n;&t; * Determine the number of ACPI name &quot;segments&quot; by counting&n;&t; * the number of path separators within the string.  Start&n;&t; * with one segment since the segment count is (# separators)&n;&t; * + 1, and zero separators is ok.&n;&t; */
+multiline_comment|/*&n;&t; * Determine the number of ACPI name &quot;segments&quot; by counting the number of&n;&t; * path separators within the string. Start with one segment since the&n;&t; * segment count is [(# separators) + 1], and zero separators is ok.&n;&t; */
 r_if
 c_cond
 (paren
@@ -1479,7 +1479,7 @@ id|AE_BAD_PATHNAME
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t; * Build converted_name...&n;&t; */
+multiline_comment|/*&n;&t; * Build converted_name&n;&t; */
 op_star
 id|converted_name
 op_assign
@@ -1736,7 +1736,7 @@ id|handle
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ns_convert_entry_to_handle&n; *&n; * PARAMETERS:  Node          - Node to be converted to a Handle&n; *&n; * RETURN:      An USER acpi_handle&n; *&n; * DESCRIPTION: Convert a real Node to a namespace handle&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ns_convert_entry_to_handle&n; *&n; * PARAMETERS:  Node          - Node to be converted to a Handle&n; *&n; * RETURN:      A user handle&n; *&n; * DESCRIPTION: Convert a real Node to a namespace handle&n; *&n; ******************************************************************************/
 id|acpi_handle
 DECL|function|acpi_ns_convert_entry_to_handle
 id|acpi_ns_convert_entry_to_handle
@@ -2157,7 +2157,7 @@ id|ACPI_DEBUG_PRINT
 (paren
 id|ACPI_DB_EXEC
 comma
-l_string|&quot;unable to find parent of %p (%4.4s)&bslash;n&quot;
+l_string|&quot;Unable to find parent of %p (%4.4s)&bslash;n&quot;
 comma
 id|child_node
 comma
@@ -2205,7 +2205,7 @@ l_int|NULL
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t; * Walk to the end of this peer list.&n;&t; * The last entry is marked with a flag and the peer&n;&t; * pointer is really a pointer back to the parent.&n;&t; * This saves putting a parent back pointer in each and&n;&t; * every named object!&n;&t; */
+multiline_comment|/*&n;&t; * Walk to the end of this peer list. The last entry is marked with a flag&n;&t; * and the peer pointer is really a pointer back to the parent. This saves&n;&t; * putting a parent back pointer in each and every named object!&n;&t; */
 r_while
 c_loop
 (paren
@@ -2228,7 +2228,7 @@ id|node-&gt;peer
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ns_get_next_valid_node&n; *&n; * PARAMETERS:  Node       - Current table entry&n; *&n; * RETURN:      Next valid Node in the linked node list.  NULL if no more valid&n; *              nodess&n; *&n; * DESCRIPTION: Find the next valid node within a name table.&n; *              Useful for implementing NULL-end-of-list loops.&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ns_get_next_valid_node&n; *&n; * PARAMETERS:  Node       - Current table entry&n; *&n; * RETURN:      Next valid Node in the linked node list. NULL if no more valid&n; *              nodes.&n; *&n; * DESCRIPTION: Find the next valid node within a name table.&n; *              Useful for implementing NULL-end-of-list loops.&n; *&n; ******************************************************************************/
 r_struct
 id|acpi_namespace_node
 op_star

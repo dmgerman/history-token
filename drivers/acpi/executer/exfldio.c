@@ -198,6 +198,9 @@ op_ge
 (paren
 id|obj_desc-&gt;common_field.base_byte_offset
 op_plus
+(paren
+id|acpi_native_uint
+)paren
 id|obj_desc-&gt;common_field.access_byte_width
 op_plus
 id|field_datum_byte_offset

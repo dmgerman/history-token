@@ -119,20 +119,17 @@ r_union
 id|acpi_parse_object
 op_star
 id|op
-op_assign
-l_int|NULL
-suffix:semicolon
-id|u32
-id|size
-suffix:semicolon
-id|u8
-id|flags
 suffix:semicolon
 r_const
 r_struct
 id|acpi_opcode_info
 op_star
 id|op_info
+suffix:semicolon
+id|u8
+id|flags
+op_assign
+id|ACPI_PARSEOP_GENERIC
 suffix:semicolon
 id|ACPI_FUNCTION_ENTRY
 (paren
@@ -145,7 +142,7 @@ id|acpi_ps_get_opcode_info
 id|opcode
 )paren
 suffix:semicolon
-multiline_comment|/* Allocate the minimum required size object */
+multiline_comment|/* Determine type of parse_op required */
 r_if
 c_cond
 (paren
@@ -154,14 +151,6 @@ op_amp
 id|AML_DEFER
 )paren
 (brace
-id|size
-op_assign
-r_sizeof
-(paren
-r_struct
-id|acpi_parse_obj_named
-)paren
-suffix:semicolon
 id|flags
 op_assign
 id|ACPI_PARSEOP_DEFERRED
@@ -176,14 +165,6 @@ op_amp
 id|AML_NAMED
 )paren
 (brace
-id|size
-op_assign
-r_sizeof
-(paren
-r_struct
-id|acpi_parse_obj_named
-)paren
-suffix:semicolon
 id|flags
 op_assign
 id|ACPI_PARSEOP_NAMED
@@ -198,47 +179,21 @@ op_eq
 id|AML_INT_BYTELIST_OP
 )paren
 (brace
-id|size
-op_assign
-r_sizeof
-(paren
-r_struct
-id|acpi_parse_obj_named
-)paren
-suffix:semicolon
 id|flags
 op_assign
 id|ACPI_PARSEOP_BYTELIST
 suffix:semicolon
 )brace
-r_else
-(brace
-id|size
-op_assign
-r_sizeof
-(paren
-r_struct
-id|acpi_parse_obj_common
-)paren
-suffix:semicolon
-id|flags
-op_assign
-id|ACPI_PARSEOP_GENERIC
-suffix:semicolon
-)brace
+multiline_comment|/* Allocate the minimum required size object */
 r_if
 c_cond
 (paren
-id|size
+id|flags
 op_eq
-r_sizeof
-(paren
-r_struct
-id|acpi_parse_obj_common
-)paren
+id|ACPI_PARSEOP_GENERIC
 )paren
 (brace
-multiline_comment|/*&n;&t;&t; * The generic op is by far the most common (16 to 1)&n;&t;&t; */
+multiline_comment|/* The generic op (default) is by far the most common (16 to 1) */
 id|op
 op_assign
 id|acpi_ut_acquire_from_cache
@@ -249,6 +204,7 @@ suffix:semicolon
 )brace
 r_else
 (brace
+multiline_comment|/* Extended parseop */
 id|op
 op_assign
 id|acpi_ut_acquire_from_cache

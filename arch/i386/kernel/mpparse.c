@@ -4109,6 +4109,14 @@ comma
 id|MP_ISA_BUS
 )paren
 suffix:semicolon
+multiline_comment|/*&n;&t; * ES7000 has no legacy identity mappings&n;&t; */
+r_if
+c_cond
+(paren
+id|es7000_plat
+)paren
+r_return
+suffix:semicolon
 multiline_comment|/* &n;&t; * Locate the IOAPIC that manages the ISA IRQs (0-15). &n;&t; */
 id|ioapic
 op_assign
