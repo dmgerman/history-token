@@ -24,7 +24,5 @@ DECL|macro|DRIVER_MINOR
 mdefine_line|#define DRIVER_MINOR&t;&t;0
 DECL|macro|DRIVER_PATCHLEVEL
 mdefine_line|#define DRIVER_PATCHLEVEL&t;0
-DECL|macro|DRIVER_PCI_IDS
-mdefine_line|#define DRIVER_PCI_IDS&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;{0x121a, 0x0003, 0},&t;&t;&t;&t;&t;&t;&bslash;&n;&t;{0x121a, 0x0004, 0},&t;&t;&t;&t;&t;&t;&bslash;&n;&t;{0x121a, 0x0005, 0},&t;&t;&t;&t;&t;&t;&bslash;&n;&t;{0x121a, 0x0007, 0},&t;&t;&t;&t;&t;&t;&bslash;&n;&t;{0x121a, 0x0009, 0},&t;&t;&t;&t;&t;&t;&bslash;&n;&t;{0, 0, 0}
 macro_line|#endif
 eof

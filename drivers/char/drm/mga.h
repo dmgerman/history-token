@@ -30,8 +30,6 @@ DECL|macro|DRIVER_PATCHLEVEL
 mdefine_line|#define DRIVER_PATCHLEVEL&t;0
 DECL|macro|DRIVER_IOCTLS
 mdefine_line|#define DRIVER_IOCTLS&t;&t;&t;&t;&t;&t;&t;   &bslash;&n;&t;[DRM_IOCTL_NR(DRM_IOCTL_DMA)]&t;      = { mga_dma_buffers, 1, 0 }, &bslash;&n;&t;[DRM_IOCTL_NR(DRM_IOCTL_MGA_INIT)]    = { mga_dma_init,    1, 1 }, &bslash;&n;&t;[DRM_IOCTL_NR(DRM_IOCTL_MGA_FLUSH)]   = { mga_dma_flush,   1, 0 }, &bslash;&n;&t;[DRM_IOCTL_NR(DRM_IOCTL_MGA_RESET)]   = { mga_dma_reset,   1, 0 }, &bslash;&n;&t;[DRM_IOCTL_NR(DRM_IOCTL_MGA_SWAP)]    = { mga_dma_swap,    1, 0 }, &bslash;&n;&t;[DRM_IOCTL_NR(DRM_IOCTL_MGA_CLEAR)]   = { mga_dma_clear,   1, 0 }, &bslash;&n;&t;[DRM_IOCTL_NR(DRM_IOCTL_MGA_VERTEX)]  = { mga_dma_vertex,  1, 0 }, &bslash;&n;&t;[DRM_IOCTL_NR(DRM_IOCTL_MGA_INDICES)] = { mga_dma_indices, 1, 0 }, &bslash;&n;&t;[DRM_IOCTL_NR(DRM_IOCTL_MGA_ILOAD)]   = { mga_dma_iload,   1, 0 }, &bslash;&n;&t;[DRM_IOCTL_NR(DRM_IOCTL_MGA_BLIT)]    = { mga_dma_blit,    1, 0 }, &bslash;&n;&t;[DRM_IOCTL_NR(DRM_IOCTL_MGA_GETPARAM)]= { mga_getparam,    1, 0 },
-DECL|macro|DRIVER_PCI_IDS
-mdefine_line|#define DRIVER_PCI_IDS&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;{0x102b, 0x0521, 0},&t;&t;&t;&t;&t;&t;&bslash;&n;&t;{0x102b, 0x0525, 0},&t;&t;&t;&t;&t;&t;&bslash;&n;&t;{0x102b, 0x2527, 0},&t;&t;&t;&t;&t;&t;&bslash;&n;&t;{0, 0, 0}
 DECL|macro|__HAVE_COUNTERS
 mdefine_line|#define __HAVE_COUNTERS         3
 DECL|macro|__HAVE_COUNTER6

@@ -24,8 +24,6 @@ DECL|macro|DRIVER_PATCHLEVEL
 mdefine_line|#define DRIVER_PATCHLEVEL&t;0
 DECL|macro|DRIVER_IOCTLS
 mdefine_line|#define DRIVER_IOCTLS&t;&t;&t;&t;&t;&t;&t;  &bslash;&n;&t;[DRM_IOCTL_NR(DRM_IOCTL_DMA)]&t;     = { gamma_dma,&t;  1, 0 }, &bslash;&n;&t;[DRM_IOCTL_NR(DRM_IOCTL_GAMMA_INIT)] = { gamma_dma_init,  1, 1 }, &bslash;&n;&t;[DRM_IOCTL_NR(DRM_IOCTL_GAMMA_COPY)] = { gamma_dma_copy,  1, 1 }
-DECL|macro|DRIVER_PCI_IDS
-mdefine_line|#define DRIVER_PCI_IDS&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;{0x3d3d, 0x0008, 0},&t;&t;&t;&bslash;&n;&t;{0, 0, 0}
 DECL|macro|IOCTL_TABLE_NAME
 mdefine_line|#define IOCTL_TABLE_NAME&t;DRM(ioctls)
 DECL|macro|IOCTL_FUNC_NAME

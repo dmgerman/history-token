@@ -2416,8 +2416,10 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+macro_line|#include &quot;drm_pciids.h&quot;
 r_static
-id|drm_pci_id_list_t
+r_struct
+id|pci_device_id
 id|DRM
 c_func
 (paren
@@ -2427,7 +2429,11 @@ id|pciidlist
 )braket
 op_assign
 (brace
-id|DRIVER_PCI_IDS
+id|DRM
+c_func
+(paren
+id|PCI_IDS
+)paren
 )brace
 suffix:semicolon
 DECL|function|probe
@@ -2850,7 +2856,7 @@ multiline_comment|/* no errors, mark it reserved */
 id|DRM_INFO
 c_func
 (paren
-l_string|&quot;Initialized %s %d.%d.%d %s on minor %d&bslash;n&quot;
+l_string|&quot;Initialized %s %d.%d.%d %s on minor %d: %s&bslash;n&quot;
 comma
 id|DRIVER_NAME
 comma
@@ -2863,6 +2869,12 @@ comma
 id|DRIVER_DATE
 comma
 id|dev-&gt;minor
+comma
+id|pci_pretty_name
+c_func
+(paren
+id|pdev
+)paren
 )paren
 suffix:semicolon
 id|DRIVER_POSTINIT
