@@ -1381,6 +1381,8 @@ comma
 id|eblock
 comma
 id|off
+comma
+id|eoff
 suffix:semicolon
 r_int
 id|i
@@ -1435,6 +1437,12 @@ id|dir
 )paren
 op_member_access_from_pointer
 id|i_eblock
+suffix:semicolon
+id|eoff
+op_assign
+id|dir-&gt;i_size
+op_mod
+id|BFS_BSIZE
 suffix:semicolon
 r_for
 c_loop
@@ -1502,6 +1510,24 @@ op_plus
 id|off
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|block
+op_eq
+id|eblock
+op_logical_and
+id|off
+op_ge
+id|eoff
+)paren
+(brace
+multiline_comment|/* Do not read/interpret the garbage in the end of eblock. */
+id|de-&gt;ino
+op_assign
+l_int|0
+suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
