@@ -2924,9 +2924,11 @@ id|pirqs_enabled
 op_assign
 l_int|1
 suffix:semicolon
-id|printk
+id|apic_printk
 c_func
 (paren
+id|APIC_VERBOSE
+comma
 id|KERN_INFO
 l_string|&quot;PIRQ redirection, working around broken MP-BIOS.&bslash;n&quot;
 )paren
@@ -2967,9 +2969,11 @@ id|i
 op_increment
 )paren
 (brace
-id|printk
+id|apic_printk
 c_func
 (paren
+id|APIC_VERBOSE
+comma
 id|KERN_DEBUG
 l_string|&quot;... PIRQ%d -&gt; IRQ %d&bslash;n&quot;
 comma
@@ -3255,10 +3259,13 @@ op_assign
 op_minus
 l_int|1
 suffix:semicolon
-id|Dprintk
+id|apic_printk
 c_func
 (paren
-l_string|&quot;querying PCI -&gt; IRQ mapping bus:%d, slot:%d, pin:%d.&bslash;n&quot;
+id|APIC_DEBUG
+comma
+l_string|&quot;querying PCI -&gt; IRQ mapping bus:%d, &quot;
+l_string|&quot;slot:%d, pin:%d.&bslash;n&quot;
 comma
 id|bus
 comma
@@ -3634,9 +3641,11 @@ op_amp
 l_int|1
 suffix:semicolon
 )brace
-id|printk
+id|apic_printk
 c_func
 (paren
+id|APIC_VERBOSE
+comma
 id|KERN_INFO
 l_string|&quot;Broken MPtable reports ISA irq %d&bslash;n&quot;
 comma
@@ -4363,9 +4372,11 @@ l_int|16
 )braket
 )paren
 (brace
-id|printk
+id|apic_printk
 c_func
 (paren
+id|APIC_VERBOSE
+comma
 id|KERN_DEBUG
 l_string|&quot;disabling PIRQ%d&bslash;n&quot;
 comma
@@ -4386,9 +4397,11 @@ op_minus
 l_int|16
 )braket
 suffix:semicolon
-id|printk
+id|apic_printk
 c_func
 (paren
+id|APIC_VERBOSE
+comma
 id|KERN_DEBUG
 l_string|&quot;using PIRQ%d -&gt; IRQ %d&bslash;n&quot;
 comma
@@ -4846,9 +4859,11 @@ r_int
 r_int
 id|flags
 suffix:semicolon
-id|printk
+id|apic_printk
 c_func
 (paren
+id|APIC_VERBOSE
+comma
 id|KERN_DEBUG
 l_string|&quot;init IO_APIC IRQs&bslash;n&quot;
 )paren
@@ -4949,9 +4964,11 @@ c_cond
 id|first_notcon
 )paren
 (brace
-id|printk
+id|apic_printk
 c_func
 (paren
+id|APIC_VERBOSE
+comma
 id|KERN_DEBUG
 l_string|&quot; IO-APIC (apicid-pin) %d-%d&quot;
 comma
@@ -4971,9 +4988,11 @@ l_int|0
 suffix:semicolon
 )brace
 r_else
-id|printk
+id|apic_printk
 c_func
 (paren
+id|APIC_VERBOSE
+comma
 l_string|&quot;, %d-%d&quot;
 comma
 id|mp_ioapics
@@ -5205,9 +5224,11 @@ c_cond
 op_logical_neg
 id|first_notcon
 )paren
-id|printk
+id|apic_printk
 c_func
 (paren
+id|APIC_VERBOSE
+comma
 l_string|&quot; not connected.&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -5433,6 +5454,15 @@ suffix:semicolon
 r_int
 r_int
 id|flags
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|apic_verbosity
+op_eq
+id|APIC_QUIET
+)paren
+r_return
 suffix:semicolon
 id|printk
 c_func
@@ -6185,6 +6215,15 @@ id|i
 comma
 id|j
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|apic_verbosity
+op_eq
+id|APIC_QUIET
+)paren
+r_return
+suffix:semicolon
 id|printk
 c_func
 (paren
@@ -6286,6 +6325,15 @@ comma
 id|ver
 comma
 id|maxlvt
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|apic_verbosity
+op_eq
+id|APIC_QUIET
+)paren
+r_return
 suffix:semicolon
 id|printk
 c_func
@@ -6837,6 +6885,15 @@ suffix:semicolon
 r_int
 r_int
 id|flags
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|apic_verbosity
+op_eq
+id|APIC_QUIET
+)paren
+r_return
 suffix:semicolon
 id|printk
 c_func
@@ -7443,10 +7500,13 @@ dot
 id|mpc_apicid
 )paren
 suffix:semicolon
-id|printk
+id|apic_printk
 c_func
 (paren
-l_string|&quot;Setting %d in the phys_id_present_map&bslash;n&quot;
+id|APIC_VERBOSE
+comma
+l_string|&quot;Setting %d in the &quot;
+l_string|&quot;phys_id_present_map&bslash;n&quot;
 comma
 id|mp_ioapics
 (braket
@@ -7521,9 +7581,11 @@ dot
 id|mpc_apicid
 suffix:semicolon
 multiline_comment|/*&n;&t;&t; * Read the right value from the MPC table and&n;&t;&t; * write it into the ID register.&n;&t; &t; */
-id|printk
+id|apic_printk
 c_func
 (paren
+id|APIC_VERBOSE
+comma
 id|KERN_INFO
 l_string|&quot;...changing IO-APIC physical APIC ID to %d ...&quot;
 comma
@@ -7620,9 +7682,11 @@ l_string|&quot;could not set ID!&bslash;n&quot;
 )paren
 suffix:semicolon
 r_else
-id|printk
+id|apic_printk
 c_func
 (paren
+id|APIC_VERBOSE
+comma
 l_string|&quot; ok.&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -8522,9 +8586,11 @@ r_void
 )paren
 (brace
 multiline_comment|/*&n; &t; * Dirty trick to enable the NMI watchdog ...&n;&t; * We put the 8259A master into AEOI mode and&n;&t; * unmask on all local APICs LVT0 as NMI.&n;&t; *&n;&t; * The idea to use the 8259A in AEOI mode (&squot;8259A Virtual Wire&squot;)&n;&t; * is from Maciej W. Rozycki - so we do not have to EOI from&n;&t; * the NMI handler or the timer interrupt.&n;&t; */
-id|printk
+id|apic_printk
 c_func
 (paren
+id|APIC_VERBOSE
+comma
 id|KERN_INFO
 l_string|&quot;activating NMI Watchdog ...&quot;
 )paren
@@ -8541,9 +8607,11 @@ comma
 l_int|1
 )paren
 suffix:semicolon
-id|printk
+id|apic_printk
 c_func
 (paren
+id|APIC_VERBOSE
+comma
 l_string|&quot; done.&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -9428,7 +9496,8 @@ suffix:semicolon
 id|panic
 c_func
 (paren
-l_string|&quot;IO-APIC + timer doesn&squot;t work! Try using the &squot;noapic&squot; kernel parameter&bslash;n&quot;
+l_string|&quot;IO-APIC + timer doesn&squot;t work!  Boot with apic=debug and send a &quot;
+l_string|&quot;report.  Then try booting with the &squot;noapic&squot; option&quot;
 )paren
 suffix:semicolon
 )brace
@@ -10410,9 +10479,11 @@ id|ioapic
 )paren
 suffix:semicolon
 )brace
-id|printk
+id|apic_printk
 c_func
 (paren
+id|APIC_VERBOSE
+comma
 id|KERN_INFO
 l_string|&quot;IOAPIC[%d]: Assigned apic_id %d&bslash;n&quot;
 comma
@@ -10645,12 +10716,14 @@ c_func
 id|irq
 )paren
 suffix:semicolon
-id|Dprintk
+id|apic_printk
 c_func
 (paren
+id|APIC_DEBUG
+comma
 id|KERN_DEBUG
-l_string|&quot;IOAPIC[%d]: Set PCI routing entry (%d-%d -&gt; 0x%x -&gt; &quot;
-l_string|&quot;IRQ %d Mode:%i Active:%i)&bslash;n&quot;
+l_string|&quot;IOAPIC[%d]: Set PCI routing entry &quot;
+l_string|&quot;(%d-%d -&gt; 0x%x -&gt; IRQ %d Mode:%i Active:%i)&bslash;n&quot;
 comma
 id|ioapic
 comma
