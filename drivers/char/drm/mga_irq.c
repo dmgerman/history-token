@@ -4,9 +4,9 @@ macro_line|#include &quot;drmP.h&quot;
 macro_line|#include &quot;drm.h&quot;
 macro_line|#include &quot;mga_drm.h&quot;
 macro_line|#include &quot;mga_drv.h&quot;
-DECL|function|mga_dma_service
+DECL|function|mga_irq_handler
 id|irqreturn_t
-id|mga_dma_service
+id|mga_irq_handler
 c_func
 (paren
 id|DRM_IRQ_ARGS

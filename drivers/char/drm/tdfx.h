@@ -10,5 +10,19 @@ DECL|macro|__HAVE_MTRR
 mdefine_line|#define __HAVE_MTRR&t;&t;1
 DECL|macro|__HAVE_CTX_BITMAP
 mdefine_line|#define __HAVE_CTX_BITMAP&t;1
+DECL|macro|DRIVER_AUTHOR
+mdefine_line|#define DRIVER_AUTHOR&t;&t;&quot;VA Linux Systems Inc.&quot;
+DECL|macro|DRIVER_NAME
+mdefine_line|#define DRIVER_NAME&t;&t;&quot;tdfx&quot;
+DECL|macro|DRIVER_DESC
+mdefine_line|#define DRIVER_DESC&t;&t;&quot;3dfx Banshee/Voodoo3+&quot;
+DECL|macro|DRIVER_DATE
+mdefine_line|#define DRIVER_DATE&t;&t;&quot;20010216&quot;
+DECL|macro|DRIVER_MAJOR
+mdefine_line|#define DRIVER_MAJOR&t;&t;1
+DECL|macro|DRIVER_MINOR
+mdefine_line|#define DRIVER_MINOR&t;&t;0
+DECL|macro|DRIVER_PATCHLEVEL
+mdefine_line|#define DRIVER_PATCHLEVEL&t;0
 macro_line|#endif
 eof

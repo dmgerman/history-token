@@ -106,6 +106,8 @@ DECL|macro|MGA_NR_TEX_REGIONS
 mdefine_line|#define MGA_NR_TEX_REGIONS&t;&t;16
 DECL|macro|MGA_LOG_MIN_TEX_REGION_SIZE
 mdefine_line|#define MGA_LOG_MIN_TEX_REGION_SIZE&t;16
+DECL|macro|DRM_MGA_IDLE_RETRY
+mdefine_line|#define  DRM_MGA_IDLE_RETRY          2048
 macro_line|#endif /* __MGA_SAREA_DEFINES__ */
 multiline_comment|/* Setup registers for 3D context&n; */
 r_typedef
@@ -458,26 +460,46 @@ id|drm_mga_sarea_t
 suffix:semicolon
 multiline_comment|/* WARNING: If you change any of these defines, make sure to change the&n; * defines in the Xserver file (xf86drmMga.h)&n; */
 multiline_comment|/* MGA specific ioctls&n; * The device specific ioctl range is 0x40 to 0x79.&n; */
+DECL|macro|DRM_MGA_INIT
+mdefine_line|#define DRM_MGA_INIT     0x00
+DECL|macro|DRM_MGA_FLUSH
+mdefine_line|#define DRM_MGA_FLUSH    0x01
+DECL|macro|DRM_MGA_RESET
+mdefine_line|#define DRM_MGA_RESET    0x02
+DECL|macro|DRM_MGA_SWAP
+mdefine_line|#define DRM_MGA_SWAP     0x03
+DECL|macro|DRM_MGA_CLEAR
+mdefine_line|#define DRM_MGA_CLEAR    0x04
+DECL|macro|DRM_MGA_VERTEX
+mdefine_line|#define DRM_MGA_VERTEX   0x05
+DECL|macro|DRM_MGA_INDICES
+mdefine_line|#define DRM_MGA_INDICES  0x06
+DECL|macro|DRM_MGA_ILOAD
+mdefine_line|#define DRM_MGA_ILOAD    0x07
+DECL|macro|DRM_MGA_BLIT
+mdefine_line|#define DRM_MGA_BLIT     0x08
+DECL|macro|DRM_MGA_GETPARAM
+mdefine_line|#define DRM_MGA_GETPARAM 0x09
 DECL|macro|DRM_IOCTL_MGA_INIT
-mdefine_line|#define DRM_IOCTL_MGA_INIT&t;&t;DRM_IOW( 0x40, drm_mga_init_t)
+mdefine_line|#define DRM_IOCTL_MGA_INIT     DRM_IOW( DRM_COMMAND_BASE + DRM_MGA_INIT, drm_mga_init_t)
 DECL|macro|DRM_IOCTL_MGA_FLUSH
-mdefine_line|#define DRM_IOCTL_MGA_FLUSH&t;&t;DRM_IOW( 0x41, drm_lock_t)
+mdefine_line|#define DRM_IOCTL_MGA_FLUSH    DRM_IOW( DRM_COMMAND_BASE + DRM_MGA_FLUSH, drm_lock_t)
 DECL|macro|DRM_IOCTL_MGA_RESET
-mdefine_line|#define DRM_IOCTL_MGA_RESET&t;&t;DRM_IO(  0x42)
+mdefine_line|#define DRM_IOCTL_MGA_RESET    DRM_IO(  DRM_COMMAND_BASE + DRM_MGA_RESET)
 DECL|macro|DRM_IOCTL_MGA_SWAP
-mdefine_line|#define DRM_IOCTL_MGA_SWAP&t;&t;DRM_IO(  0x43)
+mdefine_line|#define DRM_IOCTL_MGA_SWAP     DRM_IO(  DRM_COMMAND_BASE + DRM_MGA_SWAP)
 DECL|macro|DRM_IOCTL_MGA_CLEAR
-mdefine_line|#define DRM_IOCTL_MGA_CLEAR&t;&t;DRM_IOW( 0x44, drm_mga_clear_t)
+mdefine_line|#define DRM_IOCTL_MGA_CLEAR    DRM_IOW( DRM_COMMAND_BASE + DRM_MGA_CLEAR, drm_mga_clear_t)
 DECL|macro|DRM_IOCTL_MGA_VERTEX
-mdefine_line|#define DRM_IOCTL_MGA_VERTEX&t;&t;DRM_IOW( 0x45, drm_mga_vertex_t)
+mdefine_line|#define DRM_IOCTL_MGA_VERTEX   DRM_IOW( DRM_COMMAND_BASE + DRM_MGA_VERTEX, drm_mga_vertex_t)
 DECL|macro|DRM_IOCTL_MGA_INDICES
-mdefine_line|#define DRM_IOCTL_MGA_INDICES&t;&t;DRM_IOW( 0x46, drm_mga_indices_t)
+mdefine_line|#define DRM_IOCTL_MGA_INDICES  DRM_IOW( DRM_COMMAND_BASE + DRM_MGA_INDICES, drm_mga_indices_t)
 DECL|macro|DRM_IOCTL_MGA_ILOAD
-mdefine_line|#define DRM_IOCTL_MGA_ILOAD&t;&t;DRM_IOW( 0x47, drm_mga_iload_t)
+mdefine_line|#define DRM_IOCTL_MGA_ILOAD    DRM_IOW( DRM_COMMAND_BASE + DRM_MGA_ILOAD, drm_mga_iload_t)
 DECL|macro|DRM_IOCTL_MGA_BLIT
-mdefine_line|#define DRM_IOCTL_MGA_BLIT&t;&t;DRM_IOW( 0x48, drm_mga_blit_t)
+mdefine_line|#define DRM_IOCTL_MGA_BLIT     DRM_IOW( DRM_COMMAND_BASE + DRM_MGA_BLIT, drm_mga_blit_t)
 DECL|macro|DRM_IOCTL_MGA_GETPARAM
-mdefine_line|#define DRM_IOCTL_MGA_GETPARAM&t;&t;DRM_IOWR(0x49, drm_mga_getparam_t)
+mdefine_line|#define DRM_IOCTL_MGA_GETPARAM DRM_IOWR(DRM_COMMAND_BASE + DRM_MGA_GETPARAM, drm_mga_getparam_t)
 DECL|struct|_drm_mga_warp_index
 r_typedef
 r_struct
@@ -829,7 +851,7 @@ r_int
 id|param
 suffix:semicolon
 DECL|member|value
-r_int
+r_void
 op_star
 id|value
 suffix:semicolon

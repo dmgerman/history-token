@@ -3,9 +3,24 @@ multiline_comment|/*&n; * Copyright 2002 Tungsten Graphics, Inc., Cedar Park, Te
 macro_line|#ifndef _DRM_SAREA_H_
 DECL|macro|_DRM_SAREA_H_
 mdefine_line|#define _DRM_SAREA_H_
+macro_line|#include &quot;drm.h&quot;
+multiline_comment|/* SAREA area needs to be at least a page */
+macro_line|#if defined(__alpha__)
+DECL|macro|SAREA_MAX
+mdefine_line|#define SAREA_MAX                       0x2000
+macro_line|#elif defined(__ia64__)
+DECL|macro|SAREA_MAX
+mdefine_line|#define SAREA_MAX                       0x10000         /* 64kB */
+macro_line|#else
+multiline_comment|/* Intel 830M driver needs at least 8k SAREA */
+DECL|macro|SAREA_MAX
+mdefine_line|#define SAREA_MAX                       0x2000
+macro_line|#endif
 multiline_comment|/** Maximum number of drawables in the SAREA */
 DECL|macro|SAREA_MAX_DRAWABLES
 mdefine_line|#define SAREA_MAX_DRAWABLES &t;&t;256
+DECL|macro|SAREA_DRAWABLE_CLAIMED_ENTRY
+mdefine_line|#define SAREA_DRAWABLE_CLAIMED_ENTRY    0x80000000
 multiline_comment|/** SAREA drawable */
 DECL|struct|drm_sarea_drawable
 r_typedef

@@ -78,10 +78,10 @@ DECL|macro|__HAVE_DMA_QUIESCENT
 mdefine_line|#define __HAVE_DMA_QUIESCENT&t;&t;1
 DECL|macro|DRIVER_DMA_QUIESCENT
 mdefine_line|#define DRIVER_DMA_QUIESCENT() do {&t;&t;&t;&t;&t;&bslash;&n;&t;drm_gamma_private_t *dev_priv =&t;&t;&t;&t;&t;&bslash;&n;&t;&t;(drm_gamma_private_t *)dev-&gt;dev_private;&t;&t;&bslash;&n;&t;if (dev_priv-&gt;num_rast == 2)&t;&t;&t;&t;&t;&bslash;&n;&t;&t;gamma_dma_quiescent_dual(dev);&t;&t;&t;&t;&bslash;&n;&t;else gamma_dma_quiescent_single(dev);&t;&t;&t;&t;&bslash;&n;&t;return 0;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;} while (0)
-DECL|macro|__HAVE_DMA_IRQ
-mdefine_line|#define __HAVE_DMA_IRQ&t;&t;&t;1
-DECL|macro|__HAVE_DMA_IRQ_BH
-mdefine_line|#define __HAVE_DMA_IRQ_BH&t;&t;1
+DECL|macro|__HAVE_IRQ
+mdefine_line|#define __HAVE_IRQ&t;&t;&t;1
+DECL|macro|__HAVE_IRQ_BH
+mdefine_line|#define __HAVE_IRQ_BH&t;&t;&t;1
 DECL|macro|DRIVER_AGP_BUFFERS_MAP
 mdefine_line|#define DRIVER_AGP_BUFFERS_MAP( dev )&t;&t;&t;&t;&t;&bslash;&n;&t;((drm_gamma_private_t *)((dev)-&gt;dev_private))-&gt;buffers
 macro_line|#endif /* __GAMMA_H__ */
