@@ -153,6 +153,7 @@ r_int
 id|viking_mxcc_present
 suffix:semicolon
 DECL|variable|srmmu_context_spinlock
+r_static
 id|spinlock_t
 id|srmmu_context_spinlock
 op_assign
@@ -330,8 +331,11 @@ r_int
 id|srmmu_nocache_used
 suffix:semicolon
 DECL|variable|srmmu_nocache_spinlock
+r_static
 id|spinlock_t
 id|srmmu_nocache_spinlock
+op_assign
+id|SPIN_LOCK_UNLOCKED
 suffix:semicolon
 multiline_comment|/* This makes sense. Honest it does - Anton */
 DECL|macro|__nocache_pa
