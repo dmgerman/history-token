@@ -10,6 +10,7 @@ macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/namei.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
+macro_line|#include &lt;linux/dnotify.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &quot;pci_hotplug.h&quot;
 macro_line|#if !defined(CONFIG_HOTPLUG_PCI_MODULE)
@@ -4175,31 +4176,44 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-DECL|function|update_inode_time
+DECL|function|update_dentry_inode_time
 r_static
 r_inline
 r_void
-id|update_inode_time
+id|update_dentry_inode_time
 (paren
+r_struct
+id|dentry
+op_star
+id|dentry
+)paren
+(brace
 r_struct
 id|inode
 op_star
 id|inode
-)paren
-(brace
+op_assign
+id|dentry-&gt;d_inode
+suffix:semicolon
 r_if
 c_cond
 (paren
 id|inode
 )paren
-id|inode-&gt;i_atime
-op_assign
+(brace
 id|inode-&gt;i_mtime
-op_assign
-id|inode-&gt;i_ctime
 op_assign
 id|CURRENT_TIME
 suffix:semicolon
+id|dnotify_parent
+c_func
+(paren
+id|dentry
+comma
+id|DN_MODIFY
+)paren
+suffix:semicolon
+)brace
 )brace
 multiline_comment|/**&n; * pci_hp_change_slot_info - changes the slot&squot;s information structure in the core&n; * @name: the name of the slot whose info has changed&n; * @info: pointer to the info copy into the slot&squot;s info structure&n; *&n; * A slot with @name must have been registered with the pci &n; * hotplug subsystem previously with a call to pci_hp_register().&n; *&n; * Returns 0 if successful, anything else for an error.&n; */
 DECL|function|pci_hp_change_slot_info
@@ -4288,9 +4302,9 @@ op_ne
 id|info-&gt;power_status
 )paren
 )paren
-id|update_inode_time
+id|update_dentry_inode_time
 (paren
-id|core-&gt;power_dentry-&gt;d_inode
+id|core-&gt;power_dentry
 )paren
 suffix:semicolon
 r_if
@@ -4306,9 +4320,9 @@ op_ne
 id|info-&gt;attention_status
 )paren
 )paren
-id|update_inode_time
+id|update_dentry_inode_time
 (paren
-id|core-&gt;attention_dentry-&gt;d_inode
+id|core-&gt;attention_dentry
 )paren
 suffix:semicolon
 r_if
@@ -4324,9 +4338,9 @@ op_ne
 id|info-&gt;latch_status
 )paren
 )paren
-id|update_inode_time
+id|update_dentry_inode_time
 (paren
-id|core-&gt;latch_dentry-&gt;d_inode
+id|core-&gt;latch_dentry
 )paren
 suffix:semicolon
 r_if
@@ -4342,9 +4356,9 @@ op_ne
 id|info-&gt;adapter_status
 )paren
 )paren
-id|update_inode_time
+id|update_dentry_inode_time
 (paren
-id|core-&gt;adapter_dentry-&gt;d_inode
+id|core-&gt;adapter_dentry
 )paren
 suffix:semicolon
 id|memcpy
