@@ -946,13 +946,13 @@ DECL|macro|readq
 macro_line|# define readq(a)&t;_readq(a)
 macro_line|#endif
 DECL|macro|readb_relaxed
-mdefine_line|#define readb_relaxed(addr) readb(addr)
+mdefine_line|#define readb_relaxed(addr) __raw_readb(addr)
 DECL|macro|readw_relaxed
-mdefine_line|#define readw_relaxed(addr) readw(addr)
+mdefine_line|#define readw_relaxed(addr) __raw_readw(addr)
 DECL|macro|readl_relaxed
-mdefine_line|#define readl_relaxed(addr) readl(addr)
+mdefine_line|#define readl_relaxed(addr) __raw_readl(addr)
 DECL|macro|readq_relaxed
-mdefine_line|#define readq_relaxed(addr) readq(addr)
+mdefine_line|#define readq_relaxed(addr) __raw_readq(addr)
 macro_line|#ifndef writeb
 DECL|macro|writeb
 macro_line|# define writeb(v,a)&t;_writeb(v,a)
