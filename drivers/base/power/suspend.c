@@ -39,6 +39,10 @@ comma
 l_string|&quot;suspending&bslash;n&quot;
 )paren
 suffix:semicolon
+id|dev-&gt;power.prev_state
+op_assign
+id|dev-&gt;power.power_state
+suffix:semicolon
 r_if
 c_cond
 (paren
