@@ -4779,13 +4779,9 @@ c_func
 (paren
 id|tlb
 comma
-id|FIRST_USER_PGD_NR
-op_star
-id|PGDIR_SIZE
+l_int|0
 comma
-id|USER_PTRS_PER_PGD
-op_star
-id|PGDIR_SIZE
+id|TASK_SIZE
 )paren
 suffix:semicolon
 id|mpnt
