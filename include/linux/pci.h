@@ -1147,8 +1147,6 @@ id|list_head
 id|pci_devices
 suffix:semicolon
 multiline_comment|/* list of all devices */
-DECL|macro|pci_for_each_bus
-mdefine_line|#define pci_for_each_bus(bus) &bslash;&n;&t;for(bus = pci_bus_b(pci_root_buses.next); bus != pci_bus_b(&amp;pci_root_buses); bus = pci_bus_b(bus-&gt;node.next))
 r_int
 id|pci_present
 c_func
