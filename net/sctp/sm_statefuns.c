@@ -448,7 +448,7 @@ id|sctp_chunkhdr_t
 )paren
 )paren
 suffix:semicolon
-id|sctp_free_chunk
+id|sctp_chunk_free
 c_func
 (paren
 id|err_chunk
@@ -701,7 +701,7 @@ comma
 id|unk_param
 )paren
 suffix:semicolon
-id|sctp_free_chunk
+id|sctp_chunk_free
 c_func
 (paren
 id|err_chunk
@@ -746,7 +746,7 @@ c_cond
 (paren
 id|err_chunk
 )paren
-id|sctp_free_chunk
+id|sctp_chunk_free
 c_func
 (paren
 id|err_chunk
@@ -1012,7 +1012,7 @@ id|sctp_chunkhdr_t
 )paren
 )paren
 suffix:semicolon
-id|sctp_free_chunk
+id|sctp_chunk_free
 c_func
 (paren
 id|err_chunk
@@ -1703,7 +1703,7 @@ id|SCTP_DISPOSITION_CONSUME
 suffix:semicolon
 id|nomem_ev
 suffix:colon
-id|sctp_free_chunk
+id|sctp_chunk_free
 c_func
 (paren
 id|repl
@@ -3554,7 +3554,7 @@ comma
 id|unk_param
 )paren
 suffix:semicolon
-id|sctp_free_chunk
+id|sctp_chunk_free
 c_func
 (paren
 id|err_chunk
@@ -3614,7 +3614,7 @@ c_cond
 (paren
 id|err_chunk
 )paren
-id|sctp_free_chunk
+id|sctp_chunk_free
 c_func
 (paren
 id|err_chunk
@@ -3957,7 +3957,7 @@ id|SCTP_DISPOSITION_CONSUME
 suffix:semicolon
 id|nomem_ev
 suffix:colon
-id|sctp_free_chunk
+id|sctp_chunk_free
 c_func
 (paren
 id|repl
@@ -4195,7 +4195,7 @@ id|SCTP_DISPOSITION_CONSUME
 suffix:semicolon
 id|nomem_ev
 suffix:colon
-id|sctp_free_chunk
+id|sctp_chunk_free
 c_func
 (paren
 id|repl
@@ -12030,7 +12030,7 @@ id|SctpOutCtrlChunks
 suffix:semicolon
 )brace
 r_else
-id|sctp_free_chunk
+id|sctp_chunk_free
 (paren
 id|err_chunk
 )paren

@@ -2661,7 +2661,7 @@ c_cond
 (paren
 id|cmd-&gt;obj.ptr
 )paren
-id|sctp_free_chunk
+id|sctp_chunk_free
 c_func
 (paren
 id|cmd-&gt;obj.ptr

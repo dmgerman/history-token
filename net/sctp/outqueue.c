@@ -490,7 +490,7 @@ comma
 id|ev
 )paren
 suffix:semicolon
-id|sctp_free_chunk
+id|sctp_chunk_free
 c_func
 (paren
 id|chunk
@@ -529,7 +529,7 @@ comma
 id|transmitted_list
 )paren
 suffix:semicolon
-id|sctp_free_chunk
+id|sctp_chunk_free
 c_func
 (paren
 id|chunk
@@ -567,7 +567,7 @@ comma
 id|transmitted_list
 )paren
 suffix:semicolon
-id|sctp_free_chunk
+id|sctp_chunk_free
 c_func
 (paren
 id|chunk
@@ -620,7 +620,7 @@ comma
 id|ev
 )paren
 suffix:semicolon
-id|sctp_free_chunk
+id|sctp_chunk_free
 c_func
 (paren
 id|chunk
@@ -651,7 +651,7 @@ id|q-&gt;control
 )paren
 )paren
 )paren
-id|sctp_free_chunk
+id|sctp_chunk_free
 c_func
 (paren
 id|chunk
@@ -2179,6 +2179,14 @@ id|first_frag
 r_goto
 id|err
 suffix:semicolon
+id|sctp_datamsg_assign
+c_func
+(paren
+id|chunk-&gt;msg
+comma
+id|first_frag
+)paren
+suffix:semicolon
 id|first_frag-&gt;has_ssn
 op_assign
 l_int|1
@@ -2232,6 +2240,14 @@ id|frag
 )paren
 r_goto
 id|err
+suffix:semicolon
+id|sctp_datamsg_assign
+c_func
+(paren
+id|chunk-&gt;msg
+comma
+id|frag
+)paren
 suffix:semicolon
 id|frag-&gt;has_ssn
 op_assign
@@ -2300,6 +2316,14 @@ id|frag
 r_goto
 id|err
 suffix:semicolon
+id|sctp_datamsg_assign
+c_func
+(paren
+id|chunk-&gt;msg
+comma
+id|frag
+)paren
+suffix:semicolon
 id|frag-&gt;has_ssn
 op_assign
 l_int|1
@@ -2315,7 +2339,7 @@ id|frag_list
 )paren
 suffix:semicolon
 multiline_comment|/* Free the original chunk. */
-id|sctp_free_chunk
+id|sctp_chunk_free
 c_func
 (paren
 id|chunk
@@ -2376,7 +2400,7 @@ comma
 id|frag_list
 )paren
 suffix:semicolon
-id|sctp_free_chunk
+id|sctp_chunk_free
 c_func
 (paren
 id|frag
@@ -2384,7 +2408,7 @@ id|frag
 suffix:semicolon
 )brace
 multiline_comment|/* Free the first fragment. */
-id|sctp_free_chunk
+id|sctp_chunk_free
 c_func
 (paren
 id|first_frag
@@ -3037,7 +3061,7 @@ id|ev
 )paren
 suffix:semicolon
 multiline_comment|/* Free the chunk. */
-id|sctp_free_chunk
+id|sctp_chunk_free
 c_func
 (paren
 id|chunk
@@ -3272,7 +3296,7 @@ id|frag
 )paren
 (brace
 multiline_comment|/* We could not fragment due to out of&n;&t;&t;&t;&t;&t; * memory condition. Free the original&n;&t;&t;&t;&t;&t; * chunk and return ENOMEM.&n;&t;&t;&t;&t;&t; */
-id|sctp_free_chunk
+id|sctp_chunk_free
 c_func
 (paren
 id|chunk
@@ -4004,7 +4028,7 @@ id|lchunk
 op_assign
 id|lchunk-&gt;prev
 suffix:semicolon
-id|sctp_free_chunk
+id|sctp_chunk_free
 c_func
 (paren
 id|tchunk
@@ -4829,20 +4853,15 @@ multiline_comment|/* RFC 2960 6.1, sctpimpguide-06 2.15.2&n;&t;&t;&t; * When a s
 r_if
 c_cond
 (paren
-(paren
-l_int|0
-op_eq
+op_logical_neg
 id|q-&gt;asoc-&gt;peer.rwnd
-)paren
 op_logical_and
-(paren
 op_logical_neg
 id|list_empty
 c_func
 (paren
 op_amp
 id|tlist
-)paren
 )paren
 op_logical_and
 (paren

@@ -234,7 +234,7 @@ id|packet-&gt;chunks
 )paren
 )paren
 )paren
-id|sctp_free_chunk
+id|sctp_chunk_free
 c_func
 (paren
 id|chunk
@@ -1037,6 +1037,12 @@ op_assign
 l_int|1
 suffix:semicolon
 )brace
+id|sctp_datamsg_track
+c_func
+(paren
+id|chunk
+)paren
+suffix:semicolon
 )brace
 r_else
 id|chunk-&gt;resent
@@ -1168,7 +1174,7 @@ c_func
 id|chunk
 )paren
 )paren
-id|sctp_free_chunk
+id|sctp_chunk_free
 c_func
 (paren
 id|chunk

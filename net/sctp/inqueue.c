@@ -127,7 +127,7 @@ id|queue-&gt;in
 )paren
 )paren
 )paren
-id|sctp_free_chunk
+id|sctp_chunk_free
 c_func
 (paren
 id|chunk
@@ -139,7 +139,7 @@ c_cond
 (paren
 id|queue-&gt;in_progress
 )paren
-id|sctp_free_chunk
+id|sctp_chunk_free
 c_func
 (paren
 id|queue-&gt;in_progress
@@ -251,7 +251,7 @@ op_logical_or
 id|chunk-&gt;pdiscard
 )paren
 (brace
-id|sctp_free_chunk
+id|sctp_chunk_free
 c_func
 (paren
 id|chunk
