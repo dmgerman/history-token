@@ -2567,7 +2567,7 @@ id|page
 comma
 l_string|&quot;CPU Saver Maximum Bundle&quot;
 comma
-l_string|&quot;Sets the value for CPU saver&squot;s maximum value&quot;
+l_string|&quot;Sets CPU saver&squot;s maximum value&quot;
 comma
 id|E100_DEFAULT_CPUSAVER_BUNDLE_MAX
 comma

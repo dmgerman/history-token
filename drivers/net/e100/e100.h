@@ -649,6 +649,8 @@ DECL|macro|IS_ICH
 mdefine_line|#define IS_ICH             0x00000020
 DECL|macro|DF_SPEED_FORCED
 mdefine_line|#define DF_SPEED_FORCED    0x00000040&t;/* set if speed is forced */
+DECL|macro|LED_IS_ON
+mdefine_line|#define LED_IS_ON&t;   0x00000080&t;/* LED is turned ON by the driver */
 DECL|typedef|net_dev_stats_t
 r_typedef
 r_struct
@@ -2372,12 +2374,20 @@ id|u16
 id|ip_lbytes
 suffix:semicolon
 macro_line|#endif
-macro_line|#ifdef ETHTOOL_TEST
+macro_line|#ifdef ETHTOOL_TEST 
 DECL|member|loopback
 r_struct
 id|ethtool_lpbk_data
 id|loopback
 suffix:semicolon
+macro_line|#endif
+macro_line|#ifdef ETHTOOL_PHYS_ID
+DECL|member|blink_timer
+r_struct
+id|timer_list
+id|blink_timer
+suffix:semicolon
+multiline_comment|/* led blink timer id */
 macro_line|#endif
 macro_line|#ifdef CONFIG_PM
 DECL|member|pci_state
