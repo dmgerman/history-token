@@ -519,9 +519,8 @@ id|retval
 id|ZFCP_LOG_INFO
 c_func
 (paren
-l_string|&quot;error: out of resources. &quot;
-l_string|&quot;error recovery thread for adapter %s &quot;
-l_string|&quot;could not be started&bslash;n&quot;
+l_string|&quot;error: start of error recovery thread for &quot;
+l_string|&quot;adapter %s failed&bslash;n&quot;
 comma
 id|zfcp_get_busid_by_adapter
 c_func
@@ -732,7 +731,7 @@ suffix:colon
 id|ZFCP_LOG_NORMAL
 c_func
 (paren
-l_string|&quot;Adapter %s: device gone.&bslash;n&quot;
+l_string|&quot;adapter %s: device gone&bslash;n&quot;
 comma
 id|zfcp_get_busid_by_adapter
 c_func
@@ -749,7 +748,7 @@ suffix:colon
 id|ZFCP_LOG_NORMAL
 c_func
 (paren
-l_string|&quot;Adapter %s: no path.&bslash;n&quot;
+l_string|&quot;adapter %s: no path&bslash;n&quot;
 comma
 id|zfcp_get_busid_by_adapter
 c_func
@@ -766,7 +765,7 @@ suffix:colon
 id|ZFCP_LOG_NORMAL
 c_func
 (paren
-l_string|&quot;Adapter %s: operational again.&bslash;n&quot;
+l_string|&quot;adapter %s: operational again&bslash;n&quot;
 comma
 id|zfcp_get_busid_by_adapter
 c_func

@@ -2789,11 +2789,6 @@ id|atomic_t
 id|status
 suffix:semicolon
 multiline_comment|/* status of this logical unit */
-DECL|member|lun_access
-id|u32
-id|lun_access
-suffix:semicolon
-multiline_comment|/* access flags for this unit */
 DECL|member|scsi_lun
 id|scsi_lun_t
 id|scsi_lun

@@ -998,15 +998,6 @@ op_star
 )paren
 suffix:semicolon
 r_extern
-r_void
-id|zfcp_erp_scsi_low_mem_buffer_timeout_handler
-c_func
-(paren
-r_int
-r_int
-)paren
-suffix:semicolon
-r_extern
 r_int
 id|zfcp_erp_thread_setup
 c_func
