@@ -113,11 +113,6 @@ suffix:semicolon
 id|xwidget_info_t
 id|xwidget_info
 suffix:semicolon
-id|ilvl_t
-id|intr_swlevel
-op_assign
-l_int|0
-suffix:semicolon
 id|cpu
 op_assign
 id|intr_heuristic
@@ -312,10 +307,6 @@ id|xwidget_info
 )paren
 suffix:semicolon
 )brace
-id|intr_hdl-&gt;i_swlevel
-op_assign
-id|intr_swlevel
-suffix:semicolon
 id|intr_hdl-&gt;i_cpuid
 op_assign
 id|cpu

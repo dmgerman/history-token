@@ -94,10 +94,6 @@ multiline_comment|/* device&squot;s setfunc routine */
 )brace
 suffix:semicolon
 multiline_comment|/*&n; * Xtalk interrupt handler structure access functions&n; */
-DECL|macro|xtalk_intr_arg
-mdefine_line|#define&t;xtalk_intr_arg(xt)&t;((xt)-&gt;xi_sfarg)
-DECL|macro|xwidget_hwid_is_sn0_xswitch
-mdefine_line|#define&t;xwidget_hwid_is_sn0_xswitch(_hwid)&t;&bslash;&n;&t;&t;(((_hwid)-&gt;part_num == XBOW_WIDGET_PART_NUM ) &amp;&amp;  &t;&bslash;&n;&t;&t; ((_hwid)-&gt;mfg_num == XBOW_WIDGET_MFGR_NUM ))
 DECL|macro|xwidget_hwid_is_sn1_xswitch
 mdefine_line|#define&t;xwidget_hwid_is_sn1_xswitch(_hwid)&t;&bslash;&n;&t;&t;(((_hwid)-&gt;part_num == XXBOW_WIDGET_PART_NUM ||&t;&t;&bslash;&n;&t;&t;  (_hwid)-&gt;part_num == PXBOW_WIDGET_PART_NUM) &amp;&amp;  &t;&bslash;&n;&t;&t; ((_hwid)-&gt;mfg_num == XXBOW_WIDGET_MFGR_NUM ))
 DECL|macro|xwidget_hwid_is_xswitch

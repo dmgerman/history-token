@@ -22,6 +22,14 @@ macro_line|#else
 DECL|macro|DBG
 mdefine_line|#define DBG(x...)
 macro_line|#endif /* DEBUG_KLGRAPH */
+DECL|variable|root_lboard
+id|lboard_t
+op_star
+id|root_lboard
+(braket
+id|MAX_COMPACT_NODES
+)braket
+suffix:semicolon
 DECL|variable|klgraph_addr
 id|u64
 id|klgraph_addr

@@ -376,17 +376,6 @@ DECL|macro|CFG1_DEVICE_SHIFT
 mdefine_line|#define CFG1_DEVICE_SHIFT&t;&t;11
 DECL|macro|CFG1_BUS_SHIFT
 mdefine_line|#define CFG1_BUS_SHIFT&t;&t;&t;16
-macro_line|#ifdef CONFIG_SGI_IP32
-multiline_comment|/* Definitions related to IP32 PCI Bridge policy&n;  * XXX- should probaly be moved to a mace-specific header&n;  */
-DECL|macro|PCI_CONFIG_BITS
-mdefine_line|#define PCI_CONFIG_BITS&t;&t;&t;0xfe0085ff
-DECL|macro|PCI_CONTROL_MRMRA_ENABLE
-mdefine_line|#define&t;PCI_CONTROL_MRMRA_ENABLE&t;0x00000800
-DECL|macro|PCI_FIRST_IO_ADDR
-mdefine_line|#define PCI_FIRST_IO_ADDR&t;&t;0x1000
-DECL|macro|PCI_IO_MAP_INCR
-mdefine_line|#define PCI_IO_MAP_INCR&t;&t;&t;0x1000
-macro_line|#endif /* CONFIG_SGI_IP32 */
 multiline_comment|/*&n; * Class codes&n; */
 DECL|macro|PCI_CFG_CLASS_PRE20
 mdefine_line|#define PCI_CFG_CLASS_PRE20&t;0x00

@@ -63,12 +63,6 @@ DECL|macro|KLINFO_INSTALL
 mdefine_line|#define KLINFO_INSTALL   &t;0x20  &t;/* Install a driver */
 DECL|macro|KLINFO_HEADLESS
 mdefine_line|#define&t;KLINFO_HEADLESS&t;&t;0x40&t;/* Headless (or hubless) component */
-DECL|macro|IS_CONSOLE_IOC3
-mdefine_line|#define IS_CONSOLE_IOC3(i)&t;((((klinfo_t *)i)-&gt;flags) &amp; KLINFO_INSTALL)
-DECL|macro|GB2
-mdefine_line|#define GB2&t;&t;0x80000000
-DECL|macro|MAX_RSV_PTRS
-mdefine_line|#define MAX_RSV_PTRS&t;32
 multiline_comment|/* Structures to manage various data storage areas */
 multiline_comment|/* The numbers must be contiguous since the array index i&n;   is used in the code to allocate various areas. &n;*/
 DECL|macro|BOARD_STRUCT
@@ -210,41 +204,16 @@ id|kl_config_hdr_t
 suffix:semicolon
 DECL|macro|KL_CONFIG_HDR
 mdefine_line|#define KL_CONFIG_HDR(_nasid) &t;((kl_config_hdr_t *)(KLCONFIG_ADDR(_nasid)))
-DECL|macro|KL_CONFIG_INFO_OFFSET
-mdefine_line|#define KL_CONFIG_INFO_OFFSET(_nasid)&t;&t;&t;&t;&t;&bslash;&n;        (KL_CONFIG_HDR(_nasid)-&gt;ch_board_info)
-DECL|macro|KL_CONFIG_INFO_SET_OFFSET
-mdefine_line|#define KL_CONFIG_INFO_SET_OFFSET(_nasid, _off)&t;&t;&t;&t;&bslash;&n;        (KL_CONFIG_HDR(_nasid)-&gt;ch_board_info = (_off))
-macro_line|#ifndef __ia64
-DECL|macro|KL_CONFIG_INFO
-mdefine_line|#define KL_CONFIG_INFO(_nasid) &t;&t;&t;&t;&t;&t;&bslash;&n;        (lboard_t *)((KL_CONFIG_HDR(_nasid)-&gt;ch_board_info) ?&t;&t;&bslash;&n;&t; NODE_OFFSET_TO_K0((_nasid), KL_CONFIG_HDR(_nasid)-&gt;ch_board_info) : &bslash;&n;&t; 0)
-macro_line|#else
 DECL|macro|NODE_OFFSET_TO_LBOARD
 mdefine_line|#define NODE_OFFSET_TO_LBOARD(nasid,off)        (lboard_t*)(NODE_CAC_BASE(nasid) + (off))
 DECL|macro|KL_CONFIG_INFO
-mdefine_line|#define KL_CONFIG_INFO(_nasid)                                          &bslash;&n;&t;(lboard_t *)((KL_CONFIG_HDR(_nasid)-&gt;ch_board_info) ?           &bslash;&n;&t; NODE_OFFSET_TO_LBOARD((_nasid), KL_CONFIG_HDR(_nasid)-&gt;ch_board_info) : &bslash;&n;&t; NULL)
-macro_line|#endif&t;/* __ia64 */
-DECL|macro|KL_CONFIG_MAGIC
-mdefine_line|#define KL_CONFIG_MAGIC(_nasid)&t;&t;(KL_CONFIG_HDR(_nasid)-&gt;ch_magic)
-DECL|macro|KL_CONFIG_CHECK_MAGIC
-mdefine_line|#define KL_CONFIG_CHECK_MAGIC(_nasid)&t;&t;&t;&t;&t;&bslash;&n;        (KL_CONFIG_HDR(_nasid)-&gt;ch_magic == KLCFGINFO_MAGIC)
-DECL|macro|KL_CONFIG_HDR_INIT_MAGIC
-mdefine_line|#define KL_CONFIG_HDR_INIT_MAGIC(_nasid)&t;&bslash;&n;                  (KL_CONFIG_HDR(_nasid)-&gt;ch_magic = KLCFGINFO_MAGIC)
+mdefine_line|#define KL_CONFIG_INFO(_nasid) root_lboard[nasid_to_cnodeid(_nasid)]
 multiline_comment|/* --- New Macros for the changed kl_config_hdr_t structure --- */
-DECL|macro|PTR_CH_MALLOC_HDR
-mdefine_line|#define PTR_CH_MALLOC_HDR(_k)   ((klc_malloc_hdr_t *)&bslash;&n;&t;&t;&t;((__psunsigned_t)_k + (_k-&gt;ch_malloc_hdr_off)))
-DECL|macro|KL_CONFIG_CH_MALLOC_HDR
-mdefine_line|#define KL_CONFIG_CH_MALLOC_HDR(_n)   PTR_CH_MALLOC_HDR(KL_CONFIG_HDR(_n))
 DECL|macro|PTR_CH_CONS_INFO
 mdefine_line|#define PTR_CH_CONS_INFO(_k)&t;((console_t *)&bslash;&n;&t;&t;&t;((__psunsigned_t)_k + (_k-&gt;ch_cons_off)))
 DECL|macro|KL_CONFIG_CH_CONS_INFO
 mdefine_line|#define KL_CONFIG_CH_CONS_INFO(_n)   PTR_CH_CONS_INFO(KL_CONFIG_HDR(_n))
 multiline_comment|/* ------------------------------------------------------------- */
-DECL|macro|KL_CONFIG_INFO_START
-mdefine_line|#define KL_CONFIG_INFO_START(_nasid)&t;&bslash;&n;        (klconf_off_t)(KLCONFIG_OFFSET(_nasid) + sizeof(kl_config_hdr_t))
-DECL|macro|KL_CONFIG_BOARD_NASID
-mdefine_line|#define KL_CONFIG_BOARD_NASID(_brd)&t;((_brd)-&gt;brd_nasid)
-DECL|macro|KL_CONFIG_BOARD_SET_NEXT
-mdefine_line|#define KL_CONFIG_BOARD_SET_NEXT(_brd, _off)&t;((_brd)-&gt;brd_next = (_off))
 DECL|macro|KL_CONFIG_DUPLICATE_BOARD
 mdefine_line|#define KL_CONFIG_DUPLICATE_BOARD(_brd)&t;((_brd)-&gt;brd_flags &amp; DUPLICATE_BOARD)
 DECL|macro|XBOW_PORT_TYPE_HUB
@@ -261,21 +230,8 @@ DECL|macro|XBOW_PORT_HUB
 mdefine_line|#define XBOW_PORT_HUB    0x2
 DECL|macro|XBOW_PORT_ENABLE
 mdefine_line|#define XBOW_PORT_ENABLE 0x4
-DECL|macro|SN0_PORT_FENCE_SHFT
-mdefine_line|#define&t;SN0_PORT_FENCE_SHFT&t;0
-DECL|macro|SN0_PORT_FENCE_MASK
-mdefine_line|#define&t;SN0_PORT_FENCE_MASK&t;(1 &lt;&lt; SN0_PORT_FENCE_SHFT)
 multiline_comment|/*&n; * The KLCONFIG area is organized as a LINKED LIST of BOARDs. A BOARD&n; * can be either &squot;LOCAL&squot; or &squot;REMOTE&squot;. LOCAL means it is attached to &n; * the LOCAL/current NODE. REMOTE means it is attached to a different&n; * node.(TBD - Need a way to treat ROUTER boards.)&n; *&n; * There are 2 different structures to represent these boards -&n; * lboard - Local board, rboard - remote board. These 2 structures&n; * can be arbitrarily mixed in the LINKED LIST of BOARDs. (Refer&n; * Figure below). The first byte of the rboard or lboard structure&n; * is used to find out its type - no unions are used.&n; * If it is a lboard, then the config info of this board will be found&n; * on the local node. (LOCAL NODE BASE + offset value gives pointer to &n; * the structure.&n; * If it is a rboard, the local structure contains the node number&n; * and the offset of the beginning of the LINKED LIST on the remote node.&n; * The details of the hardware on a remote node can be built locally,&n; * if required, by reading the LINKED LIST on the remote node and &n; * ignoring all the rboards on that node.&n; *&n; * The local node uses the REMOTE NODE NUMBER + OFFSET to point to the &n; * First board info on the remote node. The remote node list is &n; * traversed as the local list, using the REMOTE BASE ADDRESS and not&n; * the local base address and ignoring all rboard values.&n; *&n; * &n; KLCONFIG&n;&n; +------------+      +------------+      +------------+      +------------+&n; |  lboard    |  +--&gt;|   lboard   |  +--&gt;|   rboard   |  +--&gt;|   lboard   |&n; +------------+  |   +------------+  |   +------------+  |   +------------+&n; | board info |  |   | board info |  |   |errinfo,bptr|  |   | board info |&n; +------------+  |   +------------+  |   +------------+  |   +------------+&n; | offset     |--+   |  offset    |--+   |  offset    |--+   |offset=NULL |&n; +------------+      +------------+      +------------+      +------------+&n;&n;&n; +------------+&n; | board info |&n; +------------+       +--------------------------------+&n; | compt 1    |------&gt;| type, rev, diaginfo, size ...  |  (CPU)&n; +------------+       +--------------------------------+&n; | compt 2    |--+&n; +------------+  |    +--------------------------------+&n; |  ...       |  +---&gt;| type, rev, diaginfo, size ...  |  (MEM_BANK)&n; +------------+       +--------------------------------+&n; | errinfo    |--+&n; +------------+  |    +--------------------------------+&n;                 +---&gt;|r/l brd errinfo,compt err flags |&n;                      +--------------------------------+&n;&n; *&n; * Each BOARD consists of COMPONENTs and the BOARD structure has &n; * pointers (offsets) to its COMPONENT structure.&n; * The COMPONENT structure has version info, size and speed info, revision,&n; * error info and the NIC info. This structure can accommodate any&n; * BOARD with arbitrary COMPONENT composition.&n; *&n; * The ERRORINFO part of each BOARD has error information&n; * that describes errors about the BOARD itself. It also has flags to&n; * indicate the COMPONENT(s) on the board that have errors. The error &n; * information specific to the COMPONENT is present in the respective &n; * COMPONENT structure.&n; *&n; * The ERRORINFO structure is also treated like a COMPONENT, ie. the &n; * BOARD has pointers(offset) to the ERRORINFO structure. The rboard&n; * structure also has a pointer to the ERRORINFO structure. This is &n; * the place to store ERRORINFO about a REMOTE NODE, if the HUB on&n; * that NODE is not working or if the REMOTE MEMORY is BAD. In cases where &n; * only the CPU of the REMOTE NODE is disabled, the ERRORINFO pointer can&n; * be a NODE NUMBER, REMOTE OFFSET combination, pointing to error info &n; * which is present on the REMOTE NODE.(TBD)&n; * REMOTE ERRINFO can be stored on any of the nearest nodes &n; * or on all the nearest nodes.(TBD)&n; * Like BOARD structures, REMOTE ERRINFO structures can be built locally&n; * using the rboard errinfo pointer.&n; *&n; * In order to get useful information from this Data organization, a set of&n; * interface routines are provided (TBD). The important thing to remember while&n; * manipulating the structures, is that, the NODE number information should&n; * be used. If the NODE is non-zero (remote) then each offset should&n; * be added to the REMOTE BASE ADDR else it should be added to the LOCAL BASE ADDR. &n; * This includes offsets for BOARDS, COMPONENTS and ERRORINFO.&n; * &n; * Note that these structures do not provide much info about connectivity.&n; * That info will be part of HWGRAPH, which is an extension of the cfg_t&n; * data structure. (ref IP27prom/cfg.h) It has to be extended to include&n; * the IO part of the Network(TBD).&n; *&n; * The data structures below define the above concepts.&n; */
-multiline_comment|/*&n; * Values for CPU types&n; */
-DECL|macro|KL_CPU_R4000
-mdefine_line|#define KL_CPU_R4000&t;&t;0x1&t;/* Standard R4000 */
-DECL|macro|KL_CPU_TFP
-mdefine_line|#define KL_CPU_TFP&t;&t;0x2&t;/* TFP processor */
-DECL|macro|KL_CPU_R10000
-mdefine_line|#define&t;KL_CPU_R10000&t;&t;0x3&t;/* R10000 (T5) */
-DECL|macro|KL_CPU_NONE
-mdefine_line|#define KL_CPU_NONE&t;&t;(-1)&t;/* no cpu present in slot */
-multiline_comment|/*&n; * IP27 BOARD classes&n; */
+multiline_comment|/*&n; * BOARD classes&n; */
 DECL|macro|KLCLASS_MASK
 mdefine_line|#define KLCLASS_MASK&t;0xf0   
 DECL|macro|KLCLASS_NONE
@@ -315,20 +271,6 @@ DECL|macro|KLTYPE_WEIRDCPU
 mdefine_line|#define KLTYPE_WEIRDCPU (KLCLASS_CPU | 0x0)
 DECL|macro|KLTYPE_SNIA
 mdefine_line|#define KLTYPE_SNIA&t;(KLCLASS_CPU | 0x1)
-DECL|macro|KLTYPE_WEIRDIO
-mdefine_line|#define KLTYPE_WEIRDIO&t;(KLCLASS_IOBRICK  | 0x0)
-DECL|macro|KLTYPE_BASEIO
-mdefine_line|#define KLTYPE_BASEIO&t;(KLCLASS_IO  | 0x1) /* IOC3, SuperIO, Bridge, SCSI */
-DECL|macro|KLTYPE_ETHERNET
-mdefine_line|#define KLTYPE_ETHERNET&t;(KLCLASS_IO  | 0x3)
-DECL|macro|KLTYPE_FDDI
-mdefine_line|#define KLTYPE_FDDI  &t;(KLCLASS_IO  | 0x4)
-DECL|macro|KLTYPE_FC
-mdefine_line|#define KLTYPE_FC    &t;(KLCLASS_IO  | 0x9)
-DECL|macro|KLTYPE_GSN_A
-mdefine_line|#define KLTYPE_GSN_A   &t;(KLCLASS_IO  | 0xC) /* Main GSN board */
-DECL|macro|KLTYPE_GSN_B
-mdefine_line|#define KLTYPE_GSN_B   &t;(KLCLASS_IO  | 0xD) /* Auxiliary GSN board */
 DECL|macro|KLTYPE_ROUTER
 mdefine_line|#define KLTYPE_ROUTER     (KLCLASS_ROUTER | 0x1)
 DECL|macro|KLTYPE_META_ROUTER
@@ -347,11 +289,7 @@ DECL|macro|KLTYPE_CGBRICK
 mdefine_line|#define KLTYPE_CGBRICK&t;&t;(KLCLASS_IOBRICK | 0x8)
 DECL|macro|KLTYPE_OPUSBRICK
 mdefine_line|#define KLTYPE_OPUSBRICK&t;(KLCLASS_IOBRICK | 0x9)
-DECL|macro|KLTYPE_PBRICK_BRIDGE
-mdefine_line|#define KLTYPE_PBRICK_BRIDGE&t;KLTYPE_PBRICK
 multiline_comment|/* The value of type should be more than 8 so that hinv prints&n; * out the board name from the NIC string. For values less than&n; * 8 the name of the board needs to be hard coded in a few places.&n; * When bringup started nic names had not standardized and so we&n; * had to hard code. (For people interested in history.) &n; */
-DECL|macro|KLTYPE_XTHD
-mdefine_line|#define KLTYPE_XTHD   &t;(KLCLASS_PSEUDO_GFX | 0x9)
 DECL|macro|KLTYPE_UNKNOWN
 mdefine_line|#define KLTYPE_UNKNOWN&t;(KLCLASS_UNKNOWN | 0xf)
 DECL|macro|KLTYPE
@@ -359,20 +297,14 @@ mdefine_line|#define KLTYPE(_x) &t;((_x) &amp; KLTYPE_MASK)
 multiline_comment|/* &n; * board structures&n; */
 DECL|macro|MAX_COMPTS_PER_BRD
 mdefine_line|#define MAX_COMPTS_PER_BRD 24
-DECL|macro|LOCAL_BOARD
-mdefine_line|#define LOCAL_BOARD 1
-DECL|macro|REMOTE_BOARD
-mdefine_line|#define REMOTE_BOARD 2
-DECL|macro|LBOARD_STRUCT_VERSION
-mdefine_line|#define LBOARD_STRUCT_VERSION &t;2
 DECL|struct|lboard_s
 r_typedef
 r_struct
 id|lboard_s
 (brace
-DECL|member|brd_next
+DECL|member|brd_next_any
 id|klconf_off_t
-id|brd_next
+id|brd_next_any
 suffix:semicolon
 multiline_comment|/* Next BOARD */
 DECL|member|struct_type
@@ -487,11 +419,13 @@ op_star
 id|brd_parent
 suffix:semicolon
 multiline_comment|/* Logical parent for this brd */
-DECL|member|brd_graph_link
-id|vertex_hdl_t
-id|brd_graph_link
+DECL|member|pad0
+r_char
+id|pad0
+(braket
+l_int|4
+)braket
 suffix:semicolon
-multiline_comment|/* vertex hdl to connect extern compts */
 DECL|member|brd_confidence
 id|confidence_t
 id|brd_confidence
@@ -508,11 +442,11 @@ r_char
 id|brd_nic_flags
 suffix:semicolon
 multiline_comment|/* To handle 8 more NICs */
-DECL|member|pad
+DECL|member|pad1
 r_char
-id|pad
+id|pad1
 (braket
-l_int|32
+l_int|24
 )braket
 suffix:semicolon
 multiline_comment|/* future expansion */
@@ -523,6 +457,16 @@ id|brd_name
 l_int|32
 )braket
 suffix:semicolon
+DECL|member|brd_next_same_host
+id|nasid_t
+id|brd_next_same_host
+suffix:semicolon
+multiline_comment|/* host of next brd w/same nasid */
+DECL|member|brd_next_same
+id|klconf_off_t
+id|brd_next_same
+suffix:semicolon
+multiline_comment|/* Next BOARD with same nasid */
 DECL|typedef|lboard_t
 )brace
 id|lboard_t
@@ -534,29 +478,18 @@ DECL|macro|KLCF_CLASS
 mdefine_line|#define KLCF_CLASS(_brd)&t;KLCLASS((_brd)-&gt;brd_type)
 DECL|macro|KLCF_TYPE
 mdefine_line|#define KLCF_TYPE(_brd)&t;&t;KLTYPE((_brd)-&gt;brd_type)
-DECL|macro|KLCF_REMOTE
-mdefine_line|#define KLCF_REMOTE(_brd)  &t;(((_brd)-&gt;struct_type &amp; LOCAL_BOARD) ? 0 : 1)
 DECL|macro|KLCF_NUM_COMPS
 mdefine_line|#define KLCF_NUM_COMPS(_brd)&t;((_brd)-&gt;brd_numcompts)
 DECL|macro|KLCF_MODULE_ID
 mdefine_line|#define KLCF_MODULE_ID(_brd)&t;((_brd)-&gt;brd_module)
-macro_line|#ifndef __ia64
-DECL|macro|KLCF_NEXT
-mdefine_line|#define KLCF_NEXT(_brd) &t;&t;((_brd)-&gt;brd_next ? (lboard_t *)((_brd)-&gt;brd_next):  NULL)
-DECL|macro|KLCF_COMP
-mdefine_line|#define KLCF_COMP(_brd, _ndx)   &bslash;&n;&t;&t;(klinfo_t *)(NODE_OFFSET_TO_K0(NASID_GET(_brd), &bslash;&n;&t;&t;&t;&t;&t;&t;(_brd)-&gt;brd_compts[(_ndx)]))
-DECL|macro|KLCF_COMP_ERROR
-mdefine_line|#define KLCF_COMP_ERROR(_brd, _comp)    &bslash;&n;&t;&t;(NODE_OFFSET_TO_K0(NASID_GET(_brd), (_comp)-&gt;errinfo))
-macro_line|#else
 DECL|macro|NODE_OFFSET_TO_KLINFO
 mdefine_line|#define NODE_OFFSET_TO_KLINFO(n,off)    ((klinfo_t*) TO_NODE_CAC(n,off))
 DECL|macro|KLCF_NEXT
-mdefine_line|#define KLCF_NEXT(_brd)         &bslash;&n;        ((_brd)-&gt;brd_next ?     &bslash;&n;         (NODE_OFFSET_TO_LBOARD(NASID_GET(_brd), (_brd)-&gt;brd_next)): NULL)
+mdefine_line|#define KLCF_NEXT(_brd)         &bslash;&n;        ((_brd)-&gt;brd_next_same ?     &bslash;&n;         (NODE_OFFSET_TO_LBOARD((_brd)-&gt;brd_next_same_host, (_brd)-&gt;brd_next_same)): NULL)
+DECL|macro|KLCF_NEXT_ANY
+mdefine_line|#define KLCF_NEXT_ANY(_brd)         &bslash;&n;        ((_brd)-&gt;brd_next_any ?     &bslash;&n;         (NODE_OFFSET_TO_LBOARD(NASID_GET(_brd), (_brd)-&gt;brd_next_any)): NULL)
 DECL|macro|KLCF_COMP
 mdefine_line|#define KLCF_COMP(_brd, _ndx)   &bslash;&n;                ((((_brd)-&gt;brd_compts[(_ndx)]) == 0) ? 0 : &bslash;&n;&t;&t;&t;(NODE_OFFSET_TO_KLINFO(NASID_GET(_brd), (_brd)-&gt;brd_compts[(_ndx)])))
-DECL|macro|KLCF_COMP_ERROR
-mdefine_line|#define KLCF_COMP_ERROR(_brd, _comp)    &bslash;&n;                (NODE_OFFSET_TO_K0(NASID_GET(_brd), (_comp)-&gt;errinfo))
-macro_line|#endif /* __ia64 */
 DECL|macro|KLCF_COMP_TYPE
 mdefine_line|#define KLCF_COMP_TYPE(_comp)&t;((_comp)-&gt;struct_type)
 DECL|macro|KLCF_BRIDGE_W_ID
@@ -695,59 +628,20 @@ DECL|macro|KLSTRUCT_XBOW
 mdefine_line|#define KLSTRUCT_XBOW &t;&t;4
 DECL|macro|KLSTRUCT_BRI
 mdefine_line|#define KLSTRUCT_BRI &t;&t;5
-DECL|macro|KLSTRUCT_IOC3
-mdefine_line|#define KLSTRUCT_IOC3 &t;&t;6
-DECL|macro|KLSTRUCT_PCI
-mdefine_line|#define KLSTRUCT_PCI &t;&t;7
-DECL|macro|KLSTRUCT_VME
-mdefine_line|#define KLSTRUCT_VME &t;&t;8
 DECL|macro|KLSTRUCT_ROU
 mdefine_line|#define KLSTRUCT_ROU&t;&t;9
 DECL|macro|KLSTRUCT_GFX
 mdefine_line|#define KLSTRUCT_GFX &t;&t;10
 DECL|macro|KLSTRUCT_SCSI
 mdefine_line|#define KLSTRUCT_SCSI &t;&t;11
-DECL|macro|KLSTRUCT_FDDI
-mdefine_line|#define KLSTRUCT_FDDI &t;&t;12
-DECL|macro|KLSTRUCT_MIO
-mdefine_line|#define KLSTRUCT_MIO &t;&t;13
 DECL|macro|KLSTRUCT_DISK
 mdefine_line|#define KLSTRUCT_DISK &t;&t;14
-DECL|macro|KLSTRUCT_TAPE
-mdefine_line|#define KLSTRUCT_TAPE &t;&t;15
 DECL|macro|KLSTRUCT_CDROM
 mdefine_line|#define KLSTRUCT_CDROM &t;&t;16
-DECL|macro|KLSTRUCT_HUB_UART
-mdefine_line|#define KLSTRUCT_HUB_UART &t;17
-DECL|macro|KLSTRUCT_IOC3ENET
-mdefine_line|#define KLSTRUCT_IOC3ENET &t;18
-DECL|macro|KLSTRUCT_IOC3UART
-mdefine_line|#define KLSTRUCT_IOC3UART &t;19
-DECL|macro|KLSTRUCT_UNUSED
-mdefine_line|#define KLSTRUCT_UNUSED&t;&t;20 /* XXX UNUSED */
-DECL|macro|KLSTRUCT_IOC3PCKM
-mdefine_line|#define KLSTRUCT_IOC3PCKM       21
-DECL|macro|KLSTRUCT_RAD
-mdefine_line|#define KLSTRUCT_RAD        &t;22
-DECL|macro|KLSTRUCT_HUB_TTY
-mdefine_line|#define KLSTRUCT_HUB_TTY        23
-DECL|macro|KLSTRUCT_IOC3_TTY
-mdefine_line|#define KLSTRUCT_IOC3_TTY &t;24
-multiline_comment|/* Early Access IO proms are compatible&n;   only with KLSTRUCT values upto 24. */
 DECL|macro|KLSTRUCT_FIBERCHANNEL
 mdefine_line|#define KLSTRUCT_FIBERCHANNEL &t;25
 DECL|macro|KLSTRUCT_MOD_SERIAL_NUM
 mdefine_line|#define KLSTRUCT_MOD_SERIAL_NUM 26
-DECL|macro|KLSTRUCT_IOC3MS
-mdefine_line|#define KLSTRUCT_IOC3MS         27
-DECL|macro|KLSTRUCT_TPU
-mdefine_line|#define KLSTRUCT_TPU            28
-DECL|macro|KLSTRUCT_GSN_A
-mdefine_line|#define KLSTRUCT_GSN_A          29
-DECL|macro|KLSTRUCT_GSN_B
-mdefine_line|#define KLSTRUCT_GSN_B          30
-DECL|macro|KLSTRUCT_XTHD
-mdefine_line|#define KLSTRUCT_XTHD           31
 DECL|macro|KLSTRUCT_QLFIBRE
 mdefine_line|#define KLSTRUCT_QLFIBRE        32
 DECL|macro|KLSTRUCT_1394
@@ -766,78 +660,20 @@ DECL|macro|KLSTRUCT_GIGE
 mdefine_line|#define KLSTRUCT_GIGE           39
 DECL|macro|KLSTRUCT_IDE
 mdefine_line|#define KLSTRUCT_IDE&t;&t;40
-multiline_comment|/*&n; * These are the indices of various components within a lboard structure.&n; */
-DECL|macro|IP27_CPU0_INDEX
-mdefine_line|#define IP27_CPU0_INDEX 0
-DECL|macro|IP27_CPU1_INDEX
-mdefine_line|#define IP27_CPU1_INDEX 1
-DECL|macro|IP27_HUB_INDEX
-mdefine_line|#define IP27_HUB_INDEX 2
-DECL|macro|IP27_MEM_INDEX
-mdefine_line|#define IP27_MEM_INDEX 3
-DECL|macro|BASEIO_BRIDGE_INDEX
-mdefine_line|#define BASEIO_BRIDGE_INDEX 0
-DECL|macro|BASEIO_IOC3_INDEX
-mdefine_line|#define BASEIO_IOC3_INDEX 1
-DECL|macro|BASEIO_SCSI1_INDEX
-mdefine_line|#define BASEIO_SCSI1_INDEX 2
-DECL|macro|BASEIO_SCSI2_INDEX
-mdefine_line|#define BASEIO_SCSI2_INDEX 3
-DECL|macro|MIDPLANE_XBOW_INDEX
-mdefine_line|#define MIDPLANE_XBOW_INDEX 0
-DECL|macro|ROUTER_COMPONENT_INDEX
-mdefine_line|#define ROUTER_COMPONENT_INDEX 0
-DECL|macro|CH4SCSI_BRIDGE_INDEX
-mdefine_line|#define CH4SCSI_BRIDGE_INDEX 0
-multiline_comment|/* Info holders for various hardware components */
-DECL|typedef|pci_t
-r_typedef
-id|u64
-op_star
-id|pci_t
-suffix:semicolon
-DECL|typedef|vmeb_t
-r_typedef
-id|u64
-op_star
-id|vmeb_t
-suffix:semicolon
-DECL|typedef|vmed_t
-r_typedef
-id|u64
-op_star
-id|vmed_t
-suffix:semicolon
-DECL|typedef|fddi_t
-r_typedef
-id|u64
-op_star
-id|fddi_t
-suffix:semicolon
-DECL|typedef|scsi_t
-r_typedef
-id|u64
-op_star
-id|scsi_t
-suffix:semicolon
-DECL|typedef|mio_t
-r_typedef
-id|u64
-op_star
-id|mio_t
-suffix:semicolon
-DECL|typedef|graphics_t
-r_typedef
-id|u64
-op_star
-id|graphics_t
-suffix:semicolon
-DECL|typedef|router_t
-r_typedef
-id|u64
-op_star
-id|router_t
-suffix:semicolon
+DECL|macro|KLSTRUCT_IOC4
+mdefine_line|#define KLSTRUCT_IOC4&t;&t;41
+DECL|macro|KLSTRUCT_IOC4UART
+mdefine_line|#define KLSTRUCT_IOC4UART&t;42
+DECL|macro|KLSTRUCT_IOC4_TTY
+mdefine_line|#define KLSTRUCT_IOC4_TTY&t;43
+DECL|macro|KLSTRUCT_IOC4PCKM
+mdefine_line|#define KLSTRUCT_IOC4PCKM&t;44
+DECL|macro|KLSTRUCT_IOC4MS
+mdefine_line|#define KLSTRUCT_IOC4MS&t;&t;45
+DECL|macro|KLSTRUCT_IOC4_ATA
+mdefine_line|#define KLSTRUCT_IOC4_ATA&t;46
+DECL|macro|KLSTRUCT_PCIGFX
+mdefine_line|#define KLSTRUCT_PCIGFX&t;&t;47
 multiline_comment|/*&n; * The port info in ip27_cfg area translates to a lboart_t in the &n; * KLCONFIG area. But since KLCONFIG does not use pointers, lboart_t&n; * is stored in terms of a nasid and a offset from start of KLCONFIG &n; * area  on that nasid.&n; */
 DECL|struct|klport_s
 r_typedef
@@ -1046,12 +882,6 @@ DECL|typedef|klmembnk_t
 )brace
 id|klmembnk_t
 suffix:semicolon
-DECL|macro|KLCONFIG_MEMBNK_SIZE
-mdefine_line|#define KLCONFIG_MEMBNK_SIZE(_info, _bank)&t;&bslash;&n;                            ((_info)-&gt;membnk_bnksz[(_bank)])
-DECL|macro|MEMBNK_PREMIUM
-mdefine_line|#define MEMBNK_PREMIUM 1
-DECL|macro|KLCONFIG_MEMBNK_PREMIUM
-mdefine_line|#define KLCONFIG_MEMBNK_PREMIUM(_info, _bank)&t;&bslash;&n;                            ((_info)-&gt;membnk_attr &amp; (MEMBNK_PREMIUM &lt;&lt; (_bank)))
 DECL|macro|MAX_SERIAL_NUM_SIZE
 mdefine_line|#define MAX_SERIAL_NUM_SIZE 10
 DECL|struct|klmod_serial_num_s
@@ -1174,7 +1004,8 @@ id|bri_bustype
 suffix:semicolon
 multiline_comment|/* PCI/VME BUS bridge/GIO */
 DECL|member|pci_specific
-id|pci_t
+id|u64
+op_star
 id|pci_specific
 suffix:semicolon
 multiline_comment|/* PCI Board config info */
@@ -1198,124 +1029,6 @@ suffix:semicolon
 DECL|typedef|klbri_t
 )brace
 id|klbri_t
-suffix:semicolon
-DECL|macro|MAX_IOC3_TTY
-mdefine_line|#define MAX_IOC3_TTY&t;2
-DECL|struct|klioc3_s
-r_typedef
-r_struct
-id|klioc3_s
-(brace
-multiline_comment|/* IOC3 */
-DECL|member|ioc3_info
-id|klinfo_t
-id|ioc3_info
-suffix:semicolon
-DECL|member|ioc3_ssram
-r_int
-r_char
-id|ioc3_ssram
-suffix:semicolon
-multiline_comment|/* Info about ssram */
-DECL|member|ioc3_nvram
-r_int
-r_char
-id|ioc3_nvram
-suffix:semicolon
-multiline_comment|/* Info about nvram */
-DECL|member|ioc3_superio
-id|klinfo_t
-id|ioc3_superio
-suffix:semicolon
-multiline_comment|/* Info about superio */
-DECL|member|ioc3_tty_off
-id|klconf_off_t
-id|ioc3_tty_off
-suffix:semicolon
-DECL|member|ioc3_enet
-id|klinfo_t
-id|ioc3_enet
-suffix:semicolon
-DECL|member|ioc3_enet_off
-id|klconf_off_t
-id|ioc3_enet_off
-suffix:semicolon
-DECL|member|ioc3_kbd_off
-id|klconf_off_t
-id|ioc3_kbd_off
-suffix:semicolon
-DECL|member|pad
-r_int
-r_int
-id|pad
-suffix:semicolon
-DECL|typedef|klioc3_t
-)brace
-id|klioc3_t
-suffix:semicolon
-DECL|macro|MAX_VME_SLOTS
-mdefine_line|#define MAX_VME_SLOTS 8
-DECL|struct|klvmeb_s
-r_typedef
-r_struct
-id|klvmeb_s
-(brace
-multiline_comment|/* VME BRIDGE - PCI CTLR */
-DECL|member|vmeb_info
-id|klinfo_t
-id|vmeb_info
-suffix:semicolon
-DECL|member|vmeb_specific
-id|vmeb_t
-id|vmeb_specific
-suffix:semicolon
-DECL|member|vmeb_brdinfo
-id|klconf_off_t
-id|vmeb_brdinfo
-(braket
-id|MAX_VME_SLOTS
-)braket
-suffix:semicolon
-multiline_comment|/* VME Board config info */
-DECL|member|pad
-r_int
-r_int
-id|pad
-suffix:semicolon
-DECL|typedef|klvmeb_t
-)brace
-id|klvmeb_t
-suffix:semicolon
-DECL|struct|klvmed_s
-r_typedef
-r_struct
-id|klvmed_s
-(brace
-multiline_comment|/* VME DEVICE - VME BOARD */
-DECL|member|vmed_info
-id|klinfo_t
-id|vmed_info
-suffix:semicolon
-DECL|member|vmed_specific
-id|vmed_t
-id|vmed_specific
-suffix:semicolon
-DECL|member|vmed_brdinfo
-id|klconf_off_t
-id|vmed_brdinfo
-(braket
-id|MAX_VME_SLOTS
-)braket
-suffix:semicolon
-multiline_comment|/* VME Board config info */
-DECL|member|pad
-r_int
-r_int
-id|pad
-suffix:semicolon
-DECL|typedef|klvmed_t
-)brace
-id|klvmed_t
 suffix:semicolon
 DECL|macro|ROUTER_VECTOR_VERS
 mdefine_line|#define ROUTER_VECTOR_VERS&t;2
@@ -1432,72 +1145,6 @@ suffix:semicolon
 DECL|typedef|klgfx_t
 )brace
 id|klgfx_t
-suffix:semicolon
-DECL|struct|klxthd_s
-r_typedef
-r_struct
-id|klxthd_s
-(brace
-DECL|member|xthd_info
-id|klinfo_t
-id|xthd_info
-suffix:semicolon
-DECL|member|xthd_mfg_nic
-id|klconf_off_t
-id|xthd_mfg_nic
-suffix:semicolon
-multiline_comment|/* MFG NIC string */
-DECL|member|pad
-r_int
-r_int
-id|pad
-suffix:semicolon
-DECL|typedef|klxthd_t
-)brace
-id|klxthd_t
-suffix:semicolon
-DECL|struct|kltpu_s
-r_typedef
-r_struct
-id|kltpu_s
-(brace
-multiline_comment|/* TPU board */
-DECL|member|tpu_info
-id|klinfo_t
-id|tpu_info
-suffix:semicolon
-DECL|member|tpu_mfg_nic
-id|klconf_off_t
-id|tpu_mfg_nic
-suffix:semicolon
-multiline_comment|/* MFG NIC string */
-DECL|member|pad
-r_int
-r_int
-id|pad
-suffix:semicolon
-DECL|typedef|kltpu_t
-)brace
-id|kltpu_t
-suffix:semicolon
-DECL|struct|klgsn_s
-r_typedef
-r_struct
-id|klgsn_s
-(brace
-multiline_comment|/* GSN board */
-DECL|member|gsn_info
-id|klinfo_t
-id|gsn_info
-suffix:semicolon
-DECL|member|gsn_mfg_nic
-id|klconf_off_t
-id|gsn_mfg_nic
-suffix:semicolon
-multiline_comment|/* MFG NIC string */
-DECL|typedef|klgsn_t
-)brace
-id|klgsn_t
 suffix:semicolon
 DECL|macro|MAX_SCSI_DEVS
 mdefine_line|#define MAX_SCSI_DEVS 16
@@ -1629,31 +1276,19 @@ DECL|typedef|klttydev_t
 )brace
 id|klttydev_t
 suffix:semicolon
-DECL|struct|klenetdev_s
+DECL|struct|klpcigfx_s
 r_typedef
 r_struct
-id|klenetdev_s
+id|klpcigfx_s
 (brace
-multiline_comment|/* ENET device */
-DECL|member|enetdev_info
+multiline_comment|/* PCI GFX */
+DECL|member|gfx_info
 id|klinfo_t
-id|enetdev_info
+id|gfx_info
 suffix:semicolon
-DECL|member|enetdev_cfg
-r_struct
-id|net_data
-op_star
-id|enetdev_cfg
-suffix:semicolon
-multiline_comment|/* driver fills up this */
-DECL|member|pad
-r_int
-r_int
-id|pad
-suffix:semicolon
-DECL|typedef|klenetdev_t
+DECL|typedef|klpcigfx_t
 )brace
-id|klenetdev_t
+id|klpcigfx_t
 suffix:semicolon
 DECL|struct|klkbddev_s
 r_typedef
@@ -1704,61 +1339,6 @@ suffix:semicolon
 DECL|typedef|klmsdev_t
 )brace
 id|klmsdev_t
-suffix:semicolon
-DECL|macro|MAX_FDDI_DEVS
-mdefine_line|#define MAX_FDDI_DEVS 10 /* XXX Is this true */
-DECL|struct|klfddi_s
-r_typedef
-r_struct
-id|klfddi_s
-(brace
-multiline_comment|/* FDDI */
-DECL|member|fddi_info
-id|klinfo_t
-id|fddi_info
-suffix:semicolon
-DECL|member|fddi_specific
-id|fddi_t
-id|fddi_specific
-suffix:semicolon
-DECL|member|fddi_devinfo
-id|klconf_off_t
-id|fddi_devinfo
-(braket
-id|MAX_FDDI_DEVS
-)braket
-suffix:semicolon
-DECL|member|pad
-r_int
-r_int
-id|pad
-suffix:semicolon
-DECL|typedef|klfddi_t
-)brace
-id|klfddi_t
-suffix:semicolon
-DECL|struct|klmio_s
-r_typedef
-r_struct
-id|klmio_s
-(brace
-multiline_comment|/* MIO */
-DECL|member|mio_info
-id|klinfo_t
-id|mio_info
-suffix:semicolon
-DECL|member|mio_specific
-id|mio_t
-id|mio_specific
-suffix:semicolon
-DECL|member|pad
-r_int
-r_int
-id|pad
-suffix:semicolon
-DECL|typedef|klmio_t
-)brace
-id|klmio_t
 suffix:semicolon
 multiline_comment|/*&n; * USB info&n; */
 DECL|struct|klusb_s
@@ -1870,50 +1450,14 @@ DECL|typedef|kldev_t
 )brace
 id|kldev_t
 suffix:semicolon
-multiline_comment|/* Data structure interface routines. TBD */
-multiline_comment|/* Include launch info in this file itself? TBD */
-multiline_comment|/*&n; * TBD - Can the ARCS and device driver related info also be included in the&n; * KLCONFIG area. On the IO4PROM, prom device driver info is part of cfgnode_t &n; * structure, viz private to the IO4prom.&n; */
-multiline_comment|/* &n; * TBD - Allocation issues. &n; *&n; * Do we need to Mark off sepatate heaps for lboard_t, rboard_t, component, &n; * errinfo and allocate from them, or have a single heap and allocate all &n; * structures from it. Debug is easier in the former method since we can&n; * dump all similar structs in one command, but there will be lots of holes, &n; * in memory and max limits are needed for number of structures.&n; * Another way to make it organized, is to have a union of all components&n; * and allocate a aligned chunk of memory greater than the biggest&n; * component.&n; */
-r_typedef
-r_union
-(brace
-DECL|member|lbinfo
+multiline_comment|/* external declarations of Linux kernel functions. */
+r_extern
 id|lboard_t
 op_star
-id|lbinfo
+id|root_lboard
+(braket
+)braket
 suffix:semicolon
-DECL|typedef|biptr_t
-)brace
-id|biptr_t
-suffix:semicolon
-DECL|macro|BRI_PER_XBOW
-mdefine_line|#define BRI_PER_XBOW 6
-DECL|macro|PCI_PER_BRI
-mdefine_line|#define PCI_PER_BRI  8
-DECL|macro|DEV_PER_PCI
-mdefine_line|#define DEV_PER_PCI  16
-multiline_comment|/* Virtual dipswitch values (starting from switch &quot;7&quot;): */
-DECL|macro|VDS_NOGFX
-mdefine_line|#define VDS_NOGFX&t;&t;0x8000&t;/* Don&squot;t enable gfx and autoboot */
-DECL|macro|VDS_NOMP
-mdefine_line|#define VDS_NOMP&t;&t;0x100&t;/* Don&squot;t start slave processors */
-DECL|macro|VDS_MANUMODE
-mdefine_line|#define VDS_MANUMODE&t;&t;0x80&t;/* Manufacturing mode */
-DECL|macro|VDS_NOARB
-mdefine_line|#define VDS_NOARB&t;&t;0x40&t;/* No bootmaster arbitration */
-DECL|macro|VDS_PODMODE
-mdefine_line|#define VDS_PODMODE&t;&t;0x20&t;/* Go straight to POD mode */
-DECL|macro|VDS_NO_DIAGS
-mdefine_line|#define VDS_NO_DIAGS&t;&t;0x10&t;/* Don&squot;t run any diags after BM arb */
-DECL|macro|VDS_DEFAULTS
-mdefine_line|#define VDS_DEFAULTS&t;&t;0x08&t;/* Use default environment values */
-DECL|macro|VDS_NOMEMCLEAR
-mdefine_line|#define VDS_NOMEMCLEAR&t;&t;0x04&t;/* Don&squot;t run mem cfg code */
-DECL|macro|VDS_2ND_IO4
-mdefine_line|#define VDS_2ND_IO4&t;&t;0x02&t;/* Boot from the second IO4 */
-DECL|macro|VDS_DEBUG_PROM
-mdefine_line|#define VDS_DEBUG_PROM&t;&t;0x01&t;/* Print PROM debugging messages */
-multiline_comment|/* external declarations of Linux kernel functions. */
 r_extern
 id|lboard_t
 op_star

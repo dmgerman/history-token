@@ -751,11 +751,6 @@ id|xtalk_intr_s
 id|i_xtalk_info
 suffix:semicolon
 multiline_comment|/* standard crosstalk intr info */
-DECL|member|i_swlevel
-id|ilvl_t
-id|i_swlevel
-suffix:semicolon
-multiline_comment|/* software level for blocking intr */
 DECL|member|i_cpuid
 id|cpuid_t
 id|i_cpuid
