@@ -10298,7 +10298,8 @@ suffix:semicolon
 macro_line|#endif
 multiline_comment|/*&n; * Ok, now we can initialize the rest of the tty devices and can count&n; * on memory allocations, interrupts etc..&n; */
 DECL|function|tty_init
-r_void
+r_static
+r_int
 id|__init
 id|tty_init
 c_func
@@ -10824,5 +10825,15 @@ c_func
 )paren
 suffix:semicolon
 macro_line|#endif
+r_return
+l_int|0
+suffix:semicolon
 )brace
+DECL|variable|tty_init
+id|module_init
+c_func
+(paren
+id|tty_init
+)paren
+suffix:semicolon
 eof
