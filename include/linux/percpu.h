@@ -3,8 +3,14 @@ DECL|macro|__LINUX_PERCPU_H
 mdefine_line|#define __LINUX_PERCPU_H
 macro_line|#include &lt;linux/spinlock.h&gt; /* For preempt_disable() */
 macro_line|#include &lt;linux/slab.h&gt; /* For kmalloc() */
+macro_line|#include &lt;linux/smp.h&gt;
 macro_line|#include &lt;linux/string.h&gt; /* For memset() */
 macro_line|#include &lt;asm/percpu.h&gt;
+multiline_comment|/* Enough to cover all DEFINE_PER_CPUs in kernel, including modules. */
+macro_line|#ifndef PERCPU_ENOUGH_ROOM
+DECL|macro|PERCPU_ENOUGH_ROOM
+mdefine_line|#define PERCPU_ENOUGH_ROOM 32768
+macro_line|#endif
 multiline_comment|/* Must be an lvalue. */
 DECL|macro|get_cpu_var
 mdefine_line|#define get_cpu_var(var) (*({ preempt_disable(); &amp;__get_cpu_var(var); }))
