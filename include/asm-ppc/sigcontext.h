@@ -2,9 +2,9 @@ macro_line|#ifndef _ASM_PPC_SIGCONTEXT_H
 DECL|macro|_ASM_PPC_SIGCONTEXT_H
 mdefine_line|#define _ASM_PPC_SIGCONTEXT_H
 macro_line|#include &lt;asm/ptrace.h&gt;
-DECL|struct|sigcontext_struct
+DECL|struct|sigcontext
 r_struct
-id|sigcontext_struct
+id|sigcontext
 (brace
 DECL|member|_unused
 r_int

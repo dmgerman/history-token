@@ -23,7 +23,7 @@ id|uc_stack
 suffix:semicolon
 DECL|member|uc_mcontext
 r_struct
-id|sigcontext_struct
+id|sigcontext
 id|uc_mcontext
 suffix:semicolon
 DECL|member|uc_sigmask
