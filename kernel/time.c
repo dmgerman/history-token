@@ -593,6 +593,24 @@ id|timeval
 op_star
 )paren
 suffix:semicolon
+multiline_comment|/* we call this to notify the arch when the clock is being&n; * controlled.  If no such arch routine, do nothing.&n; */
+DECL|function|notify_arch_cmos_timer
+r_void
+id|__attribute__
+(paren
+(paren
+id|weak
+)paren
+)paren
+id|notify_arch_cmos_timer
+c_func
+(paren
+r_void
+)paren
+(brace
+r_return
+suffix:semicolon
+)brace
 multiline_comment|/* adjtimex mainly allows reading (and writing, if superuser) of&n; * kernel time-keeping variables. used by xntpd.&n; */
 DECL|function|do_adjtimex
 r_int
@@ -1419,6 +1437,11 @@ c_func
 (paren
 op_amp
 id|txc-&gt;time
+)paren
+suffix:semicolon
+id|notify_arch_cmos_timer
+c_func
+(paren
 )paren
 suffix:semicolon
 r_return
