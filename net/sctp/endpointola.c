@@ -282,6 +282,13 @@ id|SCTP_EVENT_TIMEOUT_T3_RTX
 op_assign
 l_int|0
 suffix:semicolon
+id|ep-&gt;timeouts
+(braket
+id|SCTP_EVENT_TIMEOUT_T4_RTO
+)braket
+op_assign
+l_int|0
+suffix:semicolon
 multiline_comment|/* sctpimpguide-05 Section 2.12.2&n;&t; * If the &squot;T5-shutdown-guard&squot; timer is used, it SHOULD be set to the&n;&t; * recommended value of 5 times &squot;RTO.Max&squot;.&n;&t; */
 id|ep-&gt;timeouts
 (braket
