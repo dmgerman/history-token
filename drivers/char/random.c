@@ -28,6 +28,8 @@ DECL|macro|OUTPUT_POOL_WORDS
 mdefine_line|#define OUTPUT_POOL_WORDS 32
 DECL|macro|BATCH_ENTROPY_SIZE
 mdefine_line|#define BATCH_ENTROPY_SIZE 256
+DECL|macro|SEC_XFER_SIZE
+mdefine_line|#define SEC_XFER_SIZE 512
 multiline_comment|/*&n; * The minimum number of bits of entropy before we wake up a read on&n; * /dev/random.  Should be enough to do a significant reseed.&n; */
 DECL|variable|random_read_wakeup_thresh
 r_static
@@ -1976,6 +1978,8 @@ multiline_comment|/*************************************************************
 multiline_comment|/*&n; * This chunk of code defines a function&n; * void sha_transform(__u32 digest[HASH_BUFFER_SIZE + HASH_EXTRA_SIZE],&n; * &t;&t;__u32 const data[16])&n; *&n; * The function hashes the input data to produce a digest in the first&n; * HASH_BUFFER_SIZE words of the digest[] array, and uses HASH_EXTRA_SIZE&n; * more words for internal purposes.  (This buffer is exported so the&n; * caller can wipe it once rather than this code doing it each call,&n; * and tacking it onto the end of the digest[] array is the quick and&n; * dirty way of doing it.)&n; *&n; * For /dev/random purposes, the length of the data being hashed is&n; * fixed in length, so appending a bit count in the usual way is not&n; * cryptographically necessary.&n; */
 DECL|macro|HASH_BUFFER_SIZE
 mdefine_line|#define HASH_BUFFER_SIZE 5
+DECL|macro|EXTRACT_SIZE
+mdefine_line|#define EXTRACT_SIZE 10
 DECL|macro|HASH_EXTRA_SIZE
 mdefine_line|#define HASH_EXTRA_SIZE 80
 multiline_comment|/* Various size/speed tradeoffs are available.  Choose 0..3. */
@@ -5030,10 +5034,6 @@ macro_line|#undef K4
 DECL|macro|subRound
 macro_line|#undef subRound
 multiline_comment|/*********************************************************************&n; *&n; * Entropy extraction routines&n; *&n; *********************************************************************/
-DECL|macro|TMP_BUF_SIZE
-mdefine_line|#define TMP_BUF_SIZE&t;&t;&t;(HASH_BUFFER_SIZE + HASH_EXTRA_SIZE)
-DECL|macro|SEC_XFER_SIZE
-mdefine_line|#define SEC_XFER_SIZE&t;&t;&t;(TMP_BUF_SIZE*4)
 r_static
 id|ssize_t
 id|extract_entropy
@@ -5072,12 +5072,14 @@ id|r
 comma
 r_int
 id|nbytes
-comma
-id|__u32
-op_star
-id|tmp
 )paren
 (brace
+id|__u32
+id|tmp
+(braket
+id|OUTPUT_POOL_WORDS
+)braket
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -5113,7 +5115,10 @@ r_int
 comma
 id|nbytes
 comma
-id|TMP_BUF_SIZE
+r_sizeof
+(paren
+id|tmp
+)paren
 )paren
 )paren
 suffix:semicolon
@@ -5374,9 +5379,9 @@ id|entropy_store
 op_star
 id|r
 comma
-id|__u32
+id|__u8
 op_star
-id|buf
+id|out
 )paren
 (brace
 r_int
@@ -5388,6 +5393,11 @@ id|__u32
 id|data
 (braket
 l_int|16
+)braket
+comma
+id|buf
+(braket
+l_int|85
 )braket
 suffix:semicolon
 multiline_comment|/* Hash the pool to get the output */
@@ -5471,7 +5481,7 @@ id|buf
 (braket
 id|x
 op_mod
-id|HASH_BUFFER_SIZE
+l_int|5
 )braket
 comma
 l_int|1
@@ -5489,7 +5499,7 @@ id|buf
 (braket
 id|x
 op_mod
-id|HASH_BUFFER_SIZE
+l_int|5
 )braket
 comma
 l_int|1
@@ -5542,6 +5552,29 @@ comma
 l_int|16
 )paren
 suffix:semicolon
+id|memcpy
+c_func
+(paren
+id|out
+comma
+id|buf
+comma
+id|EXTRACT_SIZE
+)paren
+suffix:semicolon
+id|memset
+c_func
+(paren
+id|buf
+comma
+l_int|0
+comma
+r_sizeof
+(paren
+id|buf
+)paren
+)paren
+suffix:semicolon
 )brace
 DECL|function|extract_entropy
 r_static
@@ -5575,10 +5608,10 @@ l_int|0
 comma
 id|i
 suffix:semicolon
-id|__u32
+id|__u8
 id|tmp
 (braket
-id|TMP_BUF_SIZE
+id|EXTRACT_SIZE
 )braket
 suffix:semicolon
 id|xfer_secondary_pool
@@ -5587,8 +5620,6 @@ c_func
 id|r
 comma
 id|nbytes
-comma
-id|tmp
 )paren
 suffix:semicolon
 id|nbytes
@@ -5621,19 +5652,14 @@ id|tmp
 suffix:semicolon
 id|i
 op_assign
-id|min
+id|min_t
 c_func
 (paren
+r_int
+comma
 id|nbytes
 comma
-id|HASH_BUFFER_SIZE
-op_star
-r_sizeof
-(paren
-id|__u32
-)paren
-op_div
-l_int|2
+id|EXTRACT_SIZE
 )paren
 suffix:semicolon
 id|memcpy
@@ -5641,11 +5667,6 @@ c_func
 (paren
 id|buf
 comma
-(paren
-id|__u8
-r_const
-op_star
-)paren
 id|tmp
 comma
 id|i
@@ -5709,10 +5730,10 @@ l_int|0
 comma
 id|i
 suffix:semicolon
-id|__u32
+id|__u8
 id|tmp
 (braket
-id|TMP_BUF_SIZE
+id|EXTRACT_SIZE
 )braket
 suffix:semicolon
 id|xfer_secondary_pool
@@ -5721,8 +5742,6 @@ c_func
 id|r
 comma
 id|nbytes
-comma
-id|tmp
 )paren
 suffix:semicolon
 id|nbytes
@@ -5795,19 +5814,14 @@ id|tmp
 suffix:semicolon
 id|i
 op_assign
-id|min
+id|min_t
 c_func
 (paren
+r_int
+comma
 id|nbytes
 comma
-id|HASH_BUFFER_SIZE
-op_star
-r_sizeof
-(paren
-id|__u32
-)paren
-op_div
-l_int|2
+id|EXTRACT_SIZE
 )paren
 suffix:semicolon
 r_if
