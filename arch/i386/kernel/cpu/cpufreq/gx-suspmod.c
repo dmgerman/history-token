@@ -2,7 +2,6 @@ multiline_comment|/*&n; *&t;Cyrix MediaGX and NatSemi Geode Suspend Modulation&n
 multiline_comment|/************************************************************************&n; *&t;&t;&t;Suspend Modulation - Definitions&t;&t;*&n; ************************************************************************/
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/module.h&gt; 
-macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/smp.h&gt;
 macro_line|#include &lt;linux/cpufreq.h&gt;

@@ -1,6 +1,7 @@
 multiline_comment|/*&n; *  (C) 2001-2004  Dave Jones. &lt;davej@codemonkey.org.uk&gt;&n; *  (C) 2002  Padraig Brady. &lt;padraig@antefacto.com&gt;&n; *&n; *  Licensed under the terms of the GNU GPL License version 2.&n; *  Based upon datasheets &amp; sample CPUs kindly provided by VIA.&n; *&n; *  VIA have currently 2 different versions of Longhaul.&n; *  Version 1 (Longhaul) uses the BCR2 MSR at 0x1147.&n; *   It is present only in Samuel 1, Samuel 2 and Ezra.&n; *  Version 2 (Powersaver) uses the POWERSAVER MSR at 0x110a.&n; *   It is present in Ezra-T, Nehemiah and above.&n; *   In addition to scaling multiplier, it can also scale voltage.&n; *   There is provision for scaling FSB too, but this doesn&squot;t work&n; *   too well in practice.&n; *&n; *  BIG FAT DISCLAIMER: Work in progress code. Possibly *dangerous*&n; */
 macro_line|#include &lt;linux/kernel.h&gt;
-macro_line|#include &lt;linux/module.h&gt; 
+macro_line|#include &lt;linux/module.h&gt;
+macro_line|#include &lt;linux/moduleparam.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/cpufreq.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
@@ -9,15 +10,6 @@ macro_line|#include &lt;asm/msr.h&gt;
 macro_line|#include &lt;asm/timex.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &quot;longhaul.h&quot;
-DECL|macro|DEBUG
-mdefine_line|#define DEBUG
-macro_line|#ifdef DEBUG
-DECL|macro|dprintk
-mdefine_line|#define dprintk(msg...) printk(msg)
-macro_line|#else
-DECL|macro|dprintk
-mdefine_line|#define dprintk(msg...) do { } while(0)
-macro_line|#endif
 DECL|macro|PFX
 mdefine_line|#define PFX &quot;longhaul: &quot;
 DECL|variable|numscales
@@ -30,6 +22,12 @@ op_assign
 l_int|16
 comma
 id|numvscales
+suffix:semicolon
+DECL|variable|fsb
+r_static
+r_int
+r_int
+id|fsb
 suffix:semicolon
 DECL|variable|minvid
 DECL|variable|maxvid
@@ -55,12 +53,46 @@ r_static
 r_int
 id|dont_scale_voltage
 suffix:semicolon
-DECL|variable|fsb
+DECL|variable|debug
 r_static
 r_int
-r_int
-id|fsb
+id|debug
 suffix:semicolon
+DECL|variable|debug
+r_static
+r_int
+id|debug
+suffix:semicolon
+DECL|function|dprintk
+r_static
+r_void
+id|dprintk
+c_func
+(paren
+r_const
+r_char
+op_star
+id|msg
+comma
+dot
+dot
+dot
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|debug
+op_eq
+l_int|1
+)paren
+id|printk
+c_func
+(paren
+id|msg
+)paren
+suffix:semicolon
+)brace
 DECL|macro|__hlt
 mdefine_line|#define __hlt()     __asm__ __volatile__(&quot;hlt&quot;: : :&quot;memory&quot;)
 multiline_comment|/* Clock ratios multiplied by 10 */
@@ -216,27 +248,7 @@ c_cond
 id|longhaul_version
 op_eq
 l_int|2
-)paren
-(brace
-r_if
-c_cond
-(paren
-id|lo
-op_amp
-(paren
-l_int|1
-op_lshift
-l_int|27
-)paren
-)paren
-id|invalue
-op_add_assign
-l_int|16
-suffix:semicolon
-)brace
-r_if
-c_cond
-(paren
+op_logical_or
 id|longhaul_version
 op_eq
 l_int|4
@@ -2269,7 +2281,7 @@ suffix:semicolon
 DECL|function|longhaul_cpu_exit
 r_static
 r_int
-id|__exit
+id|__devexit
 id|longhaul_cpu_exit
 c_func
 (paren
@@ -2336,7 +2348,11 @@ comma
 dot
 m_exit
 op_assign
+id|__devexit_p
+c_func
+(paren
 id|longhaul_cpu_exit
+)paren
 comma
 dot
 id|name
@@ -2397,7 +2413,7 @@ l_int|6
 dot
 dot
 dot
-l_int|8
+l_int|9
 suffix:colon
 r_return
 id|cpufreq_register_driver
@@ -2406,19 +2422,6 @@ c_func
 op_amp
 id|longhaul_driver
 )paren
-suffix:semicolon
-r_case
-l_int|9
-suffix:colon
-id|printk
-(paren
-id|KERN_INFO
-id|PFX
-l_string|&quot;Nehemiah unsupported: Waiting on working silicon &quot;
-l_string|&quot;from VIA before this is usable.&bslash;n&quot;
-)paren
-suffix:semicolon
-r_break
 suffix:semicolon
 r_default
 suffix:colon
@@ -2458,11 +2461,38 @@ id|longhaul_table
 )paren
 suffix:semicolon
 )brace
-id|MODULE_PARM
+id|module_param
 (paren
 id|dont_scale_voltage
 comma
-l_string|&quot;i&quot;
+r_int
+comma
+l_int|0644
+)paren
+suffix:semicolon
+id|MODULE_PARM_DESC
+c_func
+(paren
+id|dont_scale_voltage
+comma
+l_string|&quot;Don&squot;t scale voltage of processor&quot;
+)paren
+suffix:semicolon
+id|module_param
+(paren
+id|debug
+comma
+r_int
+comma
+l_int|0644
+)paren
+suffix:semicolon
+id|MODULE_PARM_DESC
+c_func
+(paren
+id|debug
+comma
+l_string|&quot;Dump debugging information.&quot;
 )paren
 suffix:semicolon
 id|MODULE_AUTHOR
