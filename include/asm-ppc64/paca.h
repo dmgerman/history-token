@@ -83,33 +83,33 @@ id|ItLpQueue
 op_star
 id|lpQueuePtr
 suffix:semicolon
-multiline_comment|/* LpQueue handled by this processor    0x30 */
+multiline_comment|/* LpQueue handled by this processor    0x28 */
 DECL|member|xTOC
 id|u64
 id|xTOC
 suffix:semicolon
-multiline_comment|/* Kernel TOC address&t;&t;&t;0x38 */
+multiline_comment|/* Kernel TOC address&t;&t;&t;0x30 */
 DECL|member|xStab_data
 id|STAB
 id|xStab_data
 suffix:semicolon
-multiline_comment|/* Segment table information&t;&t;0x40,0x48,0x50 */
+multiline_comment|/* Segment table information&t;&t;0x38,0x40,0x48 */
 DECL|member|exception_sp
 id|u8
 op_star
 id|exception_sp
 suffix:semicolon
-multiline_comment|/*                                      0x58 */
+multiline_comment|/*                                      0x50 */
 DECL|member|xProcEnabled
 id|u8
 id|xProcEnabled
 suffix:semicolon
-multiline_comment|/*                                      0x59 */
+multiline_comment|/*                                      0x58 */
 DECL|member|prof_enabled
 id|u8
 id|prof_enabled
 suffix:semicolon
-multiline_comment|/* 1=iSeries profiling enabled          0x60 */
+multiline_comment|/* 1=iSeries profiling enabled          0x59 */
 DECL|member|resv1
 id|u8
 id|resv1
@@ -117,7 +117,7 @@ id|resv1
 l_int|38
 )braket
 suffix:semicolon
-multiline_comment|/*&t;&t;&t;&t;&t;0x61-0x7F */
+multiline_comment|/*&t;&t;&t;&t;&t;0x5a-0x7f*/
 multiline_comment|/*=====================================================================================&n; * CACHE_LINE_2 0x0080 - 0x00FF&n; *=====================================================================================&n; */
 DECL|member|spare1
 id|u64
