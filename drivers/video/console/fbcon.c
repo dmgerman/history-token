@@ -11624,7 +11624,7 @@ id|con
 )braket
 suffix:semicolon
 r_struct
-id|console_font_op
+id|console_font
 op_star
 id|f
 op_assign

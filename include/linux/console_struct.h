@@ -167,7 +167,7 @@ suffix:semicolon
 multiline_comment|/* [#] Attribute set for upper 256 chars of font or 0 if not supported */
 DECL|member|vc_font
 r_struct
-id|console_font_op
+id|console_font
 id|vc_font
 suffix:semicolon
 multiline_comment|/* Current VC font set */
