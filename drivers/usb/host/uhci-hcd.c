@@ -78,7 +78,7 @@ op_star
 id|errbuf
 suffix:semicolon
 DECL|macro|ERRBUF_LEN
-mdefine_line|#define ERRBUF_LEN    (PAGE_SIZE * 8)
+mdefine_line|#define ERRBUF_LEN    (32 * 1024)
 macro_line|#include &quot;uhci-hub.c&quot;
 macro_line|#include &quot;uhci-debug.c&quot;
 DECL|variable|uhci_up_cachep
@@ -3566,7 +3566,7 @@ comma
 id|UHCI_PTR_BREADTH
 )paren
 suffix:semicolon
-multiline_comment|/* Low speed transfers get a different queue, and won&squot;t hog the bus */
+multiline_comment|/* Low-speed transfers get a different queue, and won&squot;t hog the bus */
 r_if
 c_cond
 (paren
@@ -3783,7 +3783,7 @@ comma
 id|UHCI_PTR_DEPTH
 )paren
 suffix:semicolon
-multiline_comment|/* Low speed transfers get a different queue */
+multiline_comment|/* Low-speed transfers get a different queue */
 r_if
 c_cond
 (paren
@@ -5036,7 +5036,7 @@ id|eurb
 r_int
 id|ret
 suffix:semicolon
-multiline_comment|/* Can&squot;t have low speed bulk transfers */
+multiline_comment|/* Can&squot;t have low-speed bulk transfers */
 r_if
 c_cond
 (paren
@@ -9181,7 +9181,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Allocate a frame list, and then setup the skeleton&n; *&n; * The hardware doesn&squot;t really know any difference&n; * in the queues, but the order does matter for the&n; * protocols higher up. The order is:&n; *&n; *  - any isochronous events handled before any&n; *    of the queues. We don&squot;t do that here, because&n; *    we&squot;ll create the actual TD entries on demand.&n; *  - The first queue is the interrupt queue.&n; *  - The second queue is the control queue, split into low and high speed&n; *  - The third queue is bulk queue.&n; *  - The fourth queue is the bandwidth reclamation queue, which loops back&n; *    to the high speed control queue.&n; */
+multiline_comment|/*&n; * Allocate a frame list, and then setup the skeleton&n; *&n; * The hardware doesn&squot;t really know any difference&n; * in the queues, but the order does matter for the&n; * protocols higher up. The order is:&n; *&n; *  - any isochronous events handled before any&n; *    of the queues. We don&squot;t do that here, because&n; *    we&squot;ll create the actual TD entries on demand.&n; *  - The first queue is the interrupt queue.&n; *  - The second queue is the control queue, split into low- and full-speed&n; *  - The third queue is bulk queue.&n; *  - The fourth queue is the bandwidth reclamation queue, which loops back&n; *    to the full-speed control queue.&n; */
 DECL|function|uhci_start
 r_static
 r_int
