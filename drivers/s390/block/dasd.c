@@ -1165,33 +1165,6 @@ id|device-&gt;state
 op_assign
 id|DASD_STATE_NEW
 suffix:semicolon
-multiline_comment|/* Forget the block device */
-id|bdev
-op_assign
-id|bdget
-c_func
-(paren
-id|MKDEV
-c_func
-(paren
-id|device-&gt;gdp-&gt;major
-comma
-id|device-&gt;gdp-&gt;first_minor
-)paren
-)paren
-suffix:semicolon
-id|bdput
-c_func
-(paren
-id|bdev
-)paren
-suffix:semicolon
-id|bdput
-c_func
-(paren
-id|bdev
-)paren
-suffix:semicolon
 )brace
 multiline_comment|/*&n; * Request the irq line for the device.&n; */
 r_static
