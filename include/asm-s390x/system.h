@@ -737,7 +737,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * Force strict CPU ordering.&n; * And yes, this is required on UP too when we&squot;re talking&n; * to devices.&n; *&n; * This is very similar to the ppc eieio/sync instruction in that is&n; * does a checkpoint syncronisation &amp; makes sure that &n; * all memory ops have completed wrt other CPU&squot;s ( see 7-15 POP  DJB ).&n; */
 DECL|macro|eieio
-mdefine_line|#define eieio()  __asm__ __volatile__ (&quot;BCR 15,0&quot;) 
+mdefine_line|#define eieio()  __asm__ __volatile__ ( &quot;bcr 15,0&quot; : : : &quot;memory&quot; ) 
 DECL|macro|SYNC_OTHER_CORES
 macro_line|# define SYNC_OTHER_CORES(x)   eieio() 
 DECL|macro|mb

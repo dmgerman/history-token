@@ -397,6 +397,8 @@ DECL|macro|__NR_epoll_wait
 mdefine_line|#define __NR_epoll_wait&t;&t;251
 DECL|macro|__NR_set_tid_address
 mdefine_line|#define __NR_set_tid_address&t;252
+DECL|macro|__NR_fadvise64
+mdefine_line|#define __NR_fadvise64&t;&t;253
 multiline_comment|/* user-visible error numbers are in the range -1 - -122: see &lt;asm-s390/errno.h&gt; */
 DECL|macro|__syscall_return
 mdefine_line|#define __syscall_return(type, res)                          &bslash;&n;do {                                                         &bslash;&n;        if ((unsigned long)(res) &gt;= (unsigned long)(-125)) { &bslash;&n;                errno = -(res);                              &bslash;&n;                res = -1;                                    &bslash;&n;        }                                                    &bslash;&n;        return (type) (res);                                 &bslash;&n;} while (0)

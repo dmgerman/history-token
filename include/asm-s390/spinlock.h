@@ -200,5 +200,61 @@ DECL|macro|_raw_write_lock
 mdefine_line|#define _raw_write_lock(rw) &bslash;&n;        asm volatile(&quot;   lhi   3,1&bslash;n&quot;    &bslash;&n;                     &quot;   sll   3,31&bslash;n&quot;    /* new lock value = 0x80000000 */ &bslash;&n;                     &quot;   j     1f&bslash;n&quot;     &bslash;&n;                     &quot;0: diag  0,0,68&bslash;n&quot; &bslash;&n;                     &quot;1: slr   2,2&bslash;n&quot;     /* old lock value must be 0 */ &bslash;&n;                     &quot;   cs    2,3,0(%1)&bslash;n&quot; &bslash;&n;                     &quot;   jl    0b&quot;       &bslash;&n;                     : &quot;+m&quot; ((rw)-&gt;lock) : &quot;a&quot; (&amp;(rw)-&gt;lock) &bslash;&n;&t;&t;     : &quot;2&quot;, &quot;3&quot;, &quot;cc&quot; )
 DECL|macro|_raw_write_unlock
 mdefine_line|#define _raw_write_unlock(rw) &bslash;&n;        asm volatile(&quot;   slr   3,3&bslash;n&quot;     /* new lock value = 0 */ &bslash;&n;                     &quot;   j     1f&bslash;n&quot;     &bslash;&n;                     &quot;0: diag  0,0,68&bslash;n&quot; &bslash;&n;                     &quot;1: lhi   2,1&bslash;n&quot;    &bslash;&n;                     &quot;   sll   2,31&bslash;n&quot;    /* old lock value must be 0x80000000 */ &bslash;&n;                     &quot;   cs    2,3,0(%1)&bslash;n&quot; &bslash;&n;                     &quot;   jl    0b&quot;       &bslash;&n;                     : &quot;+m&quot; ((rw)-&gt;lock) : &quot;a&quot; (&amp;(rw)-&gt;lock) &bslash;&n;&t;&t;     : &quot;2&quot;, &quot;3&quot;, &quot;cc&quot; )
+DECL|function|_raw_write_trylock
+r_extern
+r_inline
+r_int
+id|_raw_write_trylock
+c_func
+(paren
+id|rwlock_t
+op_star
+id|rw
+)paren
+(brace
+r_int
+r_int
+id|result
+comma
+id|reg
+suffix:semicolon
+id|__asm__
+id|__volatile__
+c_func
+(paren
+l_string|&quot;   lhi  %0,1&bslash;n&quot;
+l_string|&quot;   sll  %0,31&bslash;n&quot;
+l_string|&quot;   basr %1,0&bslash;n&quot;
+l_string|&quot;0: cs   %0,%1,0(%3)&bslash;n&quot;
+suffix:colon
+l_string|&quot;=&amp;d&quot;
+(paren
+id|result
+)paren
+comma
+l_string|&quot;=&amp;d&quot;
+(paren
+id|reg
+)paren
+comma
+l_string|&quot;+m&quot;
+(paren
+id|rw-&gt;lock
+)paren
+suffix:colon
+l_string|&quot;a&quot;
+(paren
+op_amp
+id|rw-&gt;lock
+)paren
+suffix:colon
+l_string|&quot;cc&quot;
+)paren
+suffix:semicolon
+r_return
+op_logical_neg
+id|result
+suffix:semicolon
+)brace
 macro_line|#endif /* __ASM_SPINLOCK_H */
 eof

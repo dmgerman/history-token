@@ -665,12 +665,6 @@ r_int
 )paren
 id|ret_from_fork
 suffix:semicolon
-multiline_comment|/* start disabled because of schedule_tick and rq-&gt;lock being held */
-id|frame-&gt;childregs.psw.mask
-op_and_assign
-op_complement
-l_int|0x03000000
-suffix:semicolon
 multiline_comment|/* fake return stack for resume(), don&squot;t go back to schedule */
 id|frame-&gt;gprs
 (braket
@@ -744,6 +738,24 @@ r_sizeof
 id|p-&gt;thread.per_info
 )paren
 )paren
+suffix:semicolon
+multiline_comment|/* Set a new TLS ?  */
+r_if
+c_cond
+(paren
+id|clone_flags
+op_amp
+id|CLONE_SETTLS
+)paren
+id|frame-&gt;childregs.acrs
+(braket
+l_int|0
+)braket
+op_assign
+id|regs-&gt;gprs
+(braket
+l_int|6
+)braket
 suffix:semicolon
 r_return
 l_int|0
@@ -1333,7 +1345,7 @@ op_assign
 r_int
 r_int
 )paren
-id|p
+id|p-&gt;thread_info
 suffix:semicolon
 id|r15
 op_assign

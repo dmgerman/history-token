@@ -1837,7 +1837,7 @@ op_star
 id|ka
 op_assign
 op_amp
-id|current-&gt;sig-&gt;action
+id|current-&gt;sighand-&gt;action
 (braket
 id|sig
 op_minus
