@@ -863,6 +863,7 @@ comma
 )brace
 suffix:semicolon
 DECL|variable|noqueue_qdisc_ops
+r_static
 r_struct
 id|Qdisc_ops
 id|noqueue_qdisc_ops
@@ -911,6 +912,7 @@ comma
 )brace
 suffix:semicolon
 DECL|variable|noqueue_qdisc
+r_static
 r_struct
 id|Qdisc
 id|noqueue_qdisc

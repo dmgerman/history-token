@@ -1483,14 +1483,6 @@ id|u32
 id|info
 )paren
 suffix:semicolon
-r_extern
-r_int
-id|ipv4_proc_init
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
 multiline_comment|/* sysctl helpers - any sysctl which holds a value that ends up being&n; * fed into the routing cache should use these handlers.&n; */
 r_int
 id|ipv4_doint_and_flush

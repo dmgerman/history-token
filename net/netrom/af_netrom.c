@@ -34,6 +34,7 @@ macro_line|#include &lt;net/tcp.h&gt;
 macro_line|#include &lt;net/arp.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 DECL|variable|nr_ndevs
+r_static
 r_int
 id|nr_ndevs
 op_assign

@@ -854,6 +854,7 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|variable|llc_seq_socket_ops
+r_static
 r_struct
 id|seq_operations
 id|llc_seq_socket_ops
@@ -882,6 +883,7 @@ comma
 )brace
 suffix:semicolon
 DECL|variable|llc_seq_core_ops
+r_static
 r_struct
 id|seq_operations
 id|llc_seq_core_ops

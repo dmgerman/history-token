@@ -135,10 +135,10 @@ DECL|macro|DEXIT
 mdefine_line|#define DEXIT(dbg, format, args...) &bslash;&n;&t;{if(DEBUG_##dbg) &bslash;&n;&t;&t;printk(KERN_DEBUG &quot;irnet: &lt;-%s()&quot; format, __FUNCTION__ , ##args);}
 multiline_comment|/* Exit a function with debug */
 DECL|macro|DRETURN
-mdefine_line|#define DRETURN(ret, dbg, args...) &bslash;&n;&t;{DEXIT(dbg, &quot;: &quot; args);&bslash;&n;&t;return(ret); }
+mdefine_line|#define DRETURN(ret, dbg, args...) &bslash;&n;&t;{DEXIT(dbg, &quot;: &quot; args);&bslash;&n;&t;return ret; }
 multiline_comment|/* Exit a function on failed condition */
 DECL|macro|DABORT
-mdefine_line|#define DABORT(cond, ret, dbg, args...) &bslash;&n;&t;{if(cond) {&bslash;&n;&t;&t;DERROR(dbg, args);&bslash;&n;&t;&t;return(ret); }}
+mdefine_line|#define DABORT(cond, ret, dbg, args...) &bslash;&n;&t;{if(cond) {&bslash;&n;&t;&t;DERROR(dbg, args);&bslash;&n;&t;&t;return ret; }}
 multiline_comment|/* Invalid assertion, print out an error and exit... */
 DECL|macro|DASSERT
 mdefine_line|#define DASSERT(cond, ret, dbg, args...) &bslash;&n;&t;{if((DEBUG_ASSERT) &amp;&amp; !(cond)) {&bslash;&n;&t;&t;DERROR(dbg, &quot;Invalid assertion: &quot; args);&bslash;&n;&t;&t;return ret; }}
@@ -549,15 +549,6 @@ r_void
 )paren
 suffix:semicolon
 multiline_comment|/* Initialise IrNET module */
-r_extern
-r_void
-id|irnet_cleanup
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-multiline_comment|/* Teardown IrNET module */
 multiline_comment|/**************************** VARIABLES ****************************/
 multiline_comment|/* Control channel stuff - allocated in irnet_irda.h */
 r_extern

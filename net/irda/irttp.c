@@ -238,6 +238,39 @@ r_int
 id|get
 )paren
 suffix:semicolon
+r_static
+r_void
+id|irttp_flow_indication
+c_func
+(paren
+r_void
+op_star
+id|instance
+comma
+r_void
+op_star
+id|sap
+comma
+id|LOCAL_FLOW
+id|flow
+)paren
+suffix:semicolon
+r_static
+r_void
+id|irttp_status_indication
+c_func
+(paren
+r_void
+op_star
+id|instance
+comma
+id|LINK_STATUS
+id|link
+comma
+id|LOCK_STATUS
+id|lock
+)paren
+suffix:semicolon
 multiline_comment|/* Information for parsing parameters in IrTTP */
 DECL|variable|pi_minor_call_table
 r_static
@@ -3083,6 +3116,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * Function irttp_status_indication (self, reason)&n; *&n; *    Status_indication, just pass to the higher layer...&n; *&n; */
 DECL|function|irttp_status_indication
+r_static
 r_void
 id|irttp_status_indication
 c_func
@@ -3186,6 +3220,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * Function irttp_flow_indication (self, reason)&n; *&n; *    Flow_indication : IrLAP tells us to send more data.&n; *&n; */
 DECL|function|irttp_flow_indication
+r_static
 r_void
 id|irttp_flow_indication
 c_func
@@ -5495,6 +5530,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * Function irttp_do_data_indication (self, skb)&n; *&n; *    Try to deliver reassembled skb to layer above, and requeue it if that&n; *    for some reason should fail. We mark rx sdu as busy to apply back&n; *    pressure is necessary.&n; */
 DECL|function|irttp_do_data_indication
+r_static
 r_void
 id|irttp_do_data_indication
 c_func

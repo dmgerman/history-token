@@ -290,6 +290,7 @@ id|irias_new_object
 suffix:semicolon
 multiline_comment|/*&n; * Function irias_delete_attrib (attrib)&n; *&n; *    Delete given attribute and deallocate all its memory&n; *&n; */
 DECL|function|__irias_delete_attrib
+r_static
 r_void
 id|__irias_delete_attrib
 c_func
@@ -836,6 +837,7 @@ id|irias_find_attrib
 suffix:semicolon
 multiline_comment|/*&n; * Function irias_add_attribute (obj, attrib)&n; *&n; *    Add attribute to object&n; *&n; */
 DECL|function|irias_add_attrib
+r_static
 r_void
 id|irias_add_attrib
 c_func

@@ -248,6 +248,7 @@ l_int|1
 suffix:semicolon
 )brace
 DECL|function|ip_cmsg_recv_retopts
+r_static
 r_void
 id|ip_cmsg_recv_retopts
 c_func

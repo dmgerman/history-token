@@ -41,13 +41,6 @@ c_func
 id|rxrpc_call_write_data
 )paren
 suffix:semicolon
-DECL|variable|rxrpc_call_flush
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|rxrpc_call_flush
-)paren
-suffix:semicolon
 multiline_comment|/* connection.c */
 DECL|variable|rxrpc_create_connection
 id|EXPORT_SYMBOL

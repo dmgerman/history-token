@@ -34,6 +34,7 @@ op_assign
 l_string|&quot;ICMP&quot;
 )brace
 suffix:semicolon
+r_static
 r_struct
 id|ip_vs_conn
 op_star
@@ -128,6 +129,7 @@ l_int|NULL
 suffix:semicolon
 macro_line|#endif
 )brace
+r_static
 r_struct
 id|ip_vs_conn
 op_star

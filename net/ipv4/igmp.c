@@ -129,6 +129,7 @@ op_star
 id|pmc
 )paren
 suffix:semicolon
+r_static
 r_int
 id|ip_mc_add_src
 c_func
@@ -6107,6 +6108,7 @@ DECL|macro|igmp_ifc_event
 mdefine_line|#define igmp_ifc_event(x)&t;do { } while (0)
 macro_line|#endif
 DECL|function|ip_mc_del_src
+r_static
 r_int
 id|ip_mc_del_src
 c_func
@@ -6776,6 +6778,7 @@ suffix:semicolon
 macro_line|#endif
 multiline_comment|/*&n; * Add multicast source filter list to the interface list&n; */
 DECL|function|ip_mc_add_src
+r_static
 r_int
 id|ip_mc_add_src
 c_func
@@ -7520,6 +7523,7 @@ id|err
 suffix:semicolon
 )brace
 DECL|function|ip_mc_leave_src
+r_static
 r_int
 id|ip_mc_leave_src
 c_func

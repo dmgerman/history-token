@@ -109,6 +109,7 @@ id|rose_list
 )paren
 suffix:semicolon
 DECL|variable|rose_list_lock
+r_static
 id|spinlock_t
 id|rose_list_lock
 op_assign

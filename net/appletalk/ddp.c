@@ -2201,6 +2201,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * Called when a device is downed. Just throw away any routes&n; * via it.&n; */
 DECL|function|atrtr_device_down
+r_static
 r_void
 id|atrtr_device_down
 c_func
@@ -7303,6 +7304,7 @@ comma
 )brace
 suffix:semicolon
 DECL|variable|ltalk_packet_type
+r_static
 r_struct
 id|packet_type
 id|ltalk_packet_type
@@ -7325,6 +7327,7 @@ comma
 )brace
 suffix:semicolon
 DECL|variable|ppptalk_packet_type
+r_static
 r_struct
 id|packet_type
 id|ppptalk_packet_type

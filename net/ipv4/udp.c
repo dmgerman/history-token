@@ -608,6 +608,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* UDP is nearly always wildcards out the wazoo, it makes no sense to try&n; * harder than this. -DaveM&n; */
 DECL|function|udp_v4_lookup_longway
+r_static
 r_struct
 id|sock
 op_star
@@ -841,6 +842,7 @@ id|result
 suffix:semicolon
 )brace
 DECL|function|udp_v4_lookup
+r_static
 id|__inline__
 r_struct
 id|sock
@@ -2677,6 +2679,7 @@ id|out
 suffix:semicolon
 )brace
 DECL|function|udp_sendpage
+r_static
 r_int
 id|udp_sendpage
 c_func
@@ -3125,6 +3128,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * &t;This should be easy, if there is something there we&n; * &t;return it, otherwise we block.&n; */
 DECL|function|udp_recvmsg
+r_static
 r_int
 id|udp_recvmsg
 c_func

@@ -51,6 +51,7 @@ op_assign
 id|SPIN_LOCK_UNLOCKED
 suffix:semicolon
 DECL|variable|rose_neigh_list
+r_static
 r_struct
 id|rose_neigh
 op_star
@@ -2102,6 +2103,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; *&t;Check that the device given is a valid AX.25 interface that is &quot;up&quot;.&n; */
 DECL|function|rose_ax25_dev_get
+r_static
 r_struct
 id|net_device
 op_star

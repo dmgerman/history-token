@@ -773,14 +773,6 @@ r_void
 )paren
 suffix:semicolon
 r_extern
-r_void
-id|fib_flush
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-r_extern
 r_int
 id|inet_rtm_delroute
 c_func
@@ -1055,20 +1047,6 @@ r_struct
 id|netlink_callback
 op_star
 id|cb
-)paren
-suffix:semicolon
-r_extern
-id|u32
-id|fib_rules_map_destination
-c_func
-(paren
-id|u32
-id|daddr
-comma
-r_struct
-id|fib_result
-op_star
-id|res
 )paren
 suffix:semicolon
 macro_line|#ifdef CONFIG_NET_CLS_ROUTE

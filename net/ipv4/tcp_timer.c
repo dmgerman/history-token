@@ -2538,13 +2538,4 @@ c_func
 id|tcp_reset_keepalive_timer
 )paren
 suffix:semicolon
-macro_line|#ifdef TCP_DEBUG
-DECL|variable|tcp_timer_bug_msg
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|tcp_timer_bug_msg
-)paren
-suffix:semicolon
-macro_line|#endif
 eof

@@ -35,6 +35,7 @@ comma
 multiline_comment|/* others can be loadable modules */
 )brace
 suffix:semicolon
+r_static
 id|u32
 DECL|function|pseudoflavor_to_flavor
 id|pseudoflavor_to_flavor

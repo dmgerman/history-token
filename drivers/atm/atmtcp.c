@@ -2078,6 +2078,7 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|function|atmtcp_attach
+r_static
 r_int
 id|atmtcp_attach
 c_func
@@ -2248,6 +2249,7 @@ id|dev-&gt;number
 suffix:semicolon
 )brace
 DECL|function|atmtcp_create_persistent
+r_static
 r_int
 id|atmtcp_create_persistent
 c_func
@@ -2269,6 +2271,7 @@ l_int|NULL
 suffix:semicolon
 )brace
 DECL|function|atmtcp_remove_persistent
+r_static
 r_int
 id|atmtcp_remove_persistent
 c_func

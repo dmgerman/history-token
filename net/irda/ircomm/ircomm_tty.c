@@ -183,6 +183,17 @@ id|self
 )paren
 suffix:semicolon
 r_static
+r_void
+id|ircomm_tty_stop
+c_func
+(paren
+r_struct
+id|tty_struct
+op_star
+id|tty
+)paren
+suffix:semicolon
+r_static
 r_int
 id|ircomm_tty_data_indication
 c_func
@@ -388,6 +399,7 @@ macro_line|#endif /* CONFIG_PROC_FS */
 suffix:semicolon
 multiline_comment|/*&n; * Function ircomm_tty_init()&n; *&n; *    Init IrCOMM TTY layer/driver&n; *&n; */
 DECL|function|ircomm_tty_init
+r_static
 r_int
 id|__init
 id|ircomm_tty_init
@@ -607,6 +619,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * Function ircomm_tty_cleanup ()&n; *&n; *    Remove IrCOMM TTY layer/driver&n; *&n; */
 DECL|function|ircomm_tty_cleanup
+r_static
 r_void
 id|__exit
 id|ircomm_tty_cleanup
@@ -3721,6 +3734,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * Function ircomm_tty_stop (tty)&n; *&n; *     This routine notifies the tty driver that it should stop outputting&n; *     characters to the tty device. &n; */
 DECL|function|ircomm_tty_stop
+r_static
 r_void
 id|ircomm_tty_stop
 c_func
