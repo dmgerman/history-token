@@ -1314,6 +1314,13 @@ r_int
 r_int
 id|spdif_status
 suffix:semicolon
+multiline_comment|/* IEC958 status bits */
+DECL|member|spdif_ctls
+r_int
+r_int
+id|spdif_ctls
+suffix:semicolon
+multiline_comment|/* SPDIF control bits */
 )brace
 suffix:semicolon
 multiline_comment|/* direction */
