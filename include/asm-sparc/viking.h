@@ -44,8 +44,8 @@ DECL|macro|VIKING_PTAG_SHARED
 mdefine_line|#define VIKING_PTAG_SHARED  0x00000100   /* Shared with some other cache */
 macro_line|#ifndef __ASSEMBLY__
 DECL|function|viking_flush_icache
-r_extern
-id|__inline__
+r_static
+r_inline
 r_void
 id|viking_flush_icache
 c_func
@@ -59,17 +59,20 @@ c_func
 (paren
 l_string|&quot;sta %%g0, [%%g0] %0&bslash;n&bslash;t&quot;
 suffix:colon
+multiline_comment|/* no outputs */
 suffix:colon
 l_string|&quot;i&quot;
 (paren
 id|ASI_M_IC_FLCLEAR
 )paren
+suffix:colon
+l_string|&quot;memory&quot;
 )paren
 suffix:semicolon
 )brace
 DECL|function|viking_flush_dcache
-r_extern
-id|__inline__
+r_static
+r_inline
 r_void
 id|viking_flush_dcache
 c_func
@@ -83,17 +86,20 @@ c_func
 (paren
 l_string|&quot;sta %%g0, [%%g0] %0&bslash;n&bslash;t&quot;
 suffix:colon
+multiline_comment|/* no outputs */
 suffix:colon
 l_string|&quot;i&quot;
 (paren
 id|ASI_M_DC_FLCLEAR
 )paren
+suffix:colon
+l_string|&quot;memory&quot;
 )paren
 suffix:semicolon
 )brace
 DECL|function|viking_unlock_icache
-r_extern
-id|__inline__
+r_static
+r_inline
 r_void
 id|viking_unlock_icache
 c_func
@@ -107,6 +113,7 @@ c_func
 (paren
 l_string|&quot;sta %%g0, [%0] %1&bslash;n&bslash;t&quot;
 suffix:colon
+multiline_comment|/* no outputs */
 suffix:colon
 l_string|&quot;r&quot;
 (paren
@@ -117,12 +124,14 @@ l_string|&quot;i&quot;
 (paren
 id|ASI_M_IC_FLCLEAR
 )paren
+suffix:colon
+l_string|&quot;memory&quot;
 )paren
 suffix:semicolon
 )brace
 DECL|function|viking_unlock_dcache
-r_extern
-id|__inline__
+r_static
+r_inline
 r_void
 id|viking_unlock_dcache
 c_func
@@ -136,6 +145,7 @@ c_func
 (paren
 l_string|&quot;sta %%g0, [%0] %1&bslash;n&bslash;t&quot;
 suffix:colon
+multiline_comment|/* no outputs */
 suffix:colon
 l_string|&quot;r&quot;
 (paren
@@ -146,12 +156,14 @@ l_string|&quot;i&quot;
 (paren
 id|ASI_M_DC_FLCLEAR
 )paren
+suffix:colon
+l_string|&quot;memory&quot;
 )paren
 suffix:semicolon
 )brace
 DECL|function|viking_set_bpreg
-r_extern
-id|__inline__
+r_static
+r_inline
 r_void
 id|viking_set_bpreg
 c_func
@@ -167,6 +179,7 @@ c_func
 (paren
 l_string|&quot;sta %0, [%%g0] %1&bslash;n&bslash;t&quot;
 suffix:colon
+multiline_comment|/* no outputs */
 suffix:colon
 l_string|&quot;r&quot;
 (paren
@@ -177,12 +190,14 @@ l_string|&quot;i&quot;
 (paren
 id|ASI_M_ACTION
 )paren
+suffix:colon
+l_string|&quot;memory&quot;
 )paren
 suffix:semicolon
 )brace
 DECL|function|viking_get_bpreg
-r_extern
-id|__inline__
+r_static
+r_inline
 r_int
 r_int
 id|viking_get_bpreg
@@ -217,8 +232,8 @@ id|regval
 suffix:semicolon
 )brace
 DECL|function|viking_get_dcache_ptag
-r_extern
-id|__inline__
+r_static
+r_inline
 r_void
 id|viking_get_dcache_ptag
 c_func
@@ -315,8 +330,8 @@ id|page
 suffix:semicolon
 )brace
 DECL|function|viking_mxcc_turn_off_parity
-r_extern
-id|__inline__
+r_static
+r_inline
 r_void
 id|viking_mxcc_turn_off_parity
 c_func
@@ -378,6 +393,7 @@ l_string|&quot;sta %0, [%%g0] %3&bslash;n&bslash;t&quot;
 l_string|&quot;sta %1, [%2] %4&bslash;n&quot;
 l_string|&quot;1:&bslash;n&bslash;t&quot;
 suffix:colon
+multiline_comment|/* no output */
 suffix:colon
 l_string|&quot;r&quot;
 (paren
@@ -406,6 +422,8 @@ id|ASI_M_MXCC
 suffix:colon
 l_string|&quot;g2&quot;
 comma
+l_string|&quot;memory&quot;
+comma
 l_string|&quot;cc&quot;
 )paren
 suffix:semicolon
@@ -421,8 +439,8 @@ id|mxcc_creg
 suffix:semicolon
 )brace
 DECL|function|viking_hwprobe
-r_extern
-id|__inline__
+r_static
+r_inline
 r_int
 r_int
 id|viking_hwprobe
