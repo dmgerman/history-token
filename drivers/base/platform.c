@@ -3,7 +3,6 @@ macro_line|#include &lt;linux/device.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 DECL|variable|legacy_bus
-r_static
 r_struct
 id|device
 id|legacy_bus
@@ -209,6 +208,13 @@ id|platform_bus_type
 )paren
 suffix:semicolon
 )brace
+DECL|variable|legacy_bus
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|legacy_bus
+)paren
+suffix:semicolon
 DECL|variable|platform_device_register
 id|EXPORT_SYMBOL
 c_func
