@@ -156,6 +156,40 @@ r_int
 id|from
 )paren
 (brace
+macro_line|#ifdef CONFIG_KALLSYMS
+id|printk
+c_func
+(paren
+l_string|&quot;[&lt;%08lx&gt;] &quot;
+comma
+id|where
+)paren
+suffix:semicolon
+id|print_symbol
+c_func
+(paren
+l_string|&quot;(%s) &quot;
+comma
+id|where
+)paren
+suffix:semicolon
+id|printk
+c_func
+(paren
+l_string|&quot;from [&lt;%08lx&gt;] &quot;
+comma
+id|from
+)paren
+suffix:semicolon
+id|print_symbol
+c_func
+(paren
+l_string|&quot;(%s)&bslash;n&quot;
+comma
+id|from
+)paren
+suffix:semicolon
+macro_line|#else
 id|printk
 c_func
 (paren
@@ -166,20 +200,7 @@ comma
 id|from
 )paren
 suffix:semicolon
-id|print_symbol
-c_func
-(paren
-l_string|&quot;  %s&quot;
-comma
-id|where
-)paren
-suffix:semicolon
-id|printk
-c_func
-(paren
-l_string|&quot;&bslash;n&quot;
-)paren
-suffix:semicolon
+macro_line|#endif
 )brace
 multiline_comment|/*&n; * Stack pointers should always be within the kernels view of&n; * physical memory.  If it is not there, then we can&squot;t dump&n; * out any information relating to the stack.&n; */
 DECL|function|verify_stack
@@ -2055,6 +2076,7 @@ id|instr
 suffix:semicolon
 )brace
 DECL|function|__bug
+r_volatile
 r_void
 id|__bug
 c_func
@@ -2091,7 +2113,6 @@ id|data
 id|printk
 c_func
 (paren
-id|KERN_CRIT
 l_string|&quot; - extra data = %p&quot;
 comma
 id|data
