@@ -32,18 +32,6 @@ macro_line|#endif
 multiline_comment|/*====================================================================*/
 DECL|macro|FIND_FIRST_BIT
 mdefine_line|#define FIND_FIRST_BIT(n)&t;((n) - ((n) &amp; ((n)-1)))
-DECL|macro|pci_readb
-mdefine_line|#define pci_readb&t;&t;pci_read_config_byte
-DECL|macro|pci_writeb
-mdefine_line|#define pci_writeb&t;&t;pci_write_config_byte
-DECL|macro|pci_readw
-mdefine_line|#define pci_readw&t;&t;pci_read_config_word
-DECL|macro|pci_writew
-mdefine_line|#define pci_writew&t;&t;pci_write_config_word
-DECL|macro|pci_readl
-mdefine_line|#define pci_readl&t;&t;pci_read_config_dword
-DECL|macro|pci_writel
-mdefine_line|#define pci_writel&t;&t;pci_write_config_dword
 multiline_comment|/* Offsets in the Expansion ROM Image Header */
 DECL|macro|ROM_SIGNATURE
 mdefine_line|#define ROM_SIGNATURE&t;&t;0x0000&t;/* 2 bytes */
@@ -304,11 +292,6 @@ op_star
 id|s
 comma
 r_struct
-id|pci_dev
-op_star
-id|dev
-comma
-r_struct
 id|resource
 op_star
 id|res
@@ -391,9 +374,6 @@ id|socket_info_t
 op_star
 id|s
 comma
-id|u_char
-id|fn
-comma
 r_int
 id|space
 comma
@@ -446,7 +426,7 @@ op_assign
 op_amp
 id|s-&gt;cb_config
 (braket
-id|fn
+l_int|0
 )braket
 dot
 id|dev
@@ -487,17 +467,13 @@ comma
 id|len
 op_decrement
 )paren
-id|pci_readb
+id|pci_read_config_byte
 c_func
 (paren
 id|dev
 comma
 id|addr
 comma
-(paren
-id|u_char
-op_star
-)paren
 id|ptr
 )paren
 suffix:semicolon
@@ -529,8 +505,6 @@ id|cb_setup_cis_mem
 c_func
 (paren
 id|s
-comma
-id|dev
 comma
 id|res
 )paren
@@ -631,10 +605,6 @@ id|pci_bus
 op_star
 id|bus
 suffix:semicolon
-r_struct
-id|pci_dev
-id|tmp
-suffix:semicolon
 id|u_short
 id|vend
 comma
@@ -660,37 +630,12 @@ id|bus
 op_assign
 id|s-&gt;cap.cb_dev-&gt;subordinate
 suffix:semicolon
-id|memset
+id|pci_bus_read_config_word
 c_func
 (paren
-op_amp
-id|tmp
-comma
-l_int|0
-comma
-r_sizeof
-(paren
-id|tmp
-)paren
-)paren
-suffix:semicolon
-id|tmp.bus
-op_assign
 id|bus
-suffix:semicolon
-id|tmp.sysdata
-op_assign
-id|bus-&gt;sysdata
-suffix:semicolon
-id|tmp.devfn
-op_assign
+comma
 l_int|0
-suffix:semicolon
-id|pci_readw
-c_func
-(paren
-op_amp
-id|tmp
 comma
 id|PCI_VENDOR_ID
 comma
@@ -698,11 +643,12 @@ op_amp
 id|vend
 )paren
 suffix:semicolon
-id|pci_readw
+id|pci_bus_read_config_word
 c_func
 (paren
-op_amp
-id|tmp
+id|bus
+comma
+l_int|0
 comma
 id|PCI_DEVICE_ID
 comma
@@ -724,11 +670,12 @@ comma
 id|dev
 )paren
 suffix:semicolon
-id|pci_readb
+id|pci_bus_read_config_byte
 c_func
 (paren
-op_amp
-id|tmp
+id|bus
+comma
+l_int|0
 comma
 id|PCI_HEADER_TYPE
 comma
@@ -750,18 +697,15 @@ l_int|0x80
 (brace
 r_do
 (brace
-id|tmp.devfn
-op_assign
-id|fn
-suffix:semicolon
 r_if
 c_cond
 (paren
-id|pci_readw
+id|pci_bus_read_config_word
 c_func
 (paren
-op_amp
-id|tmp
+id|bus
+comma
+id|fn
 comma
 id|PCI_VENDOR_ID
 comma
@@ -895,11 +839,18 @@ id|dev-&gt;devfn
 op_assign
 id|i
 suffix:semicolon
+id|pci_read_config_word
+c_func
+(paren
+id|dev
+comma
+id|PCI_VENDOR_ID
+comma
+op_amp
 id|dev-&gt;vendor
-op_assign
-id|vend
+)paren
 suffix:semicolon
-id|pci_readw
+id|pci_read_config_word
 c_func
 (paren
 id|dev
@@ -979,7 +930,7 @@ id|r
 suffix:semicolon
 )brace
 multiline_comment|/* Does this function have an interrupt at all? */
-id|pci_readb
+id|pci_read_config_byte
 c_func
 (paren
 id|dev
@@ -1017,7 +968,7 @@ c_cond
 (paren
 id|irq_pin
 )paren
-id|pci_writeb
+id|pci_write_config_byte
 c_func
 (paren
 id|dev
@@ -1127,43 +1078,6 @@ id|s-&gt;cap.cb_dev-&gt;subordinate-&gt;number
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/*=====================================================================&n;&n;    cb_config() has the job of allocating all system resources that&n;    a Cardbus card requires.  Rather than using the CIS (which seems&n;    to not always be present), it treats the card as an ordinary PCI&n;    device, and probes the base address registers to determine each&n;    function&squot;s IO and memory space needs.&n;&n;    It is called from the RequestIO card service.&n;    &n;======================================================================*/
-DECL|function|cb_config
-r_int
-id|cb_config
-c_func
-(paren
-id|socket_info_t
-op_star
-id|s
-)paren
-(brace
-r_return
-id|CS_SUCCESS
-suffix:semicolon
-)brace
-multiline_comment|/*======================================================================&n;&n;    cb_release() releases all the system resources (IO and memory&n;    space, and interrupt) committed for a Cardbus card by a prior call&n;    to cb_config().&n;&n;    It is called from the ReleaseIO() service.&n;    &n;======================================================================*/
-DECL|function|cb_release
-r_void
-id|cb_release
-c_func
-(paren
-id|socket_info_t
-op_star
-id|s
-)paren
-(brace
-id|DEBUG
-c_func
-(paren
-l_int|0
-comma
-l_string|&quot;cs: cb_release(bus %d)&bslash;n&quot;
-comma
-id|s-&gt;cap.cb_dev-&gt;subordinate-&gt;number
-)paren
-suffix:semicolon
-)brace
 multiline_comment|/*=====================================================================&n;&n;    cb_enable() has the job of configuring a socket for a Cardbus&n;    card, and initializing the card&squot;s PCI configuration registers.&n;&n;    It first sets up the Cardbus bridge windows, for IO and memory&n;    accesses.  Then, it initializes each card function&squot;s base address&n;    registers, interrupt line register, and command register.&n;&n;    It is called as part of the RequestConfiguration card service.&n;    It should be called after a previous call to cb_config() (via the&n;    RequestIO service).&n;    &n;======================================================================*/
 DECL|function|cb_enable
 r_void
@@ -1226,7 +1140,7 @@ id|i
 dot
 id|dev
 suffix:semicolon
-id|pci_writeb
+id|pci_write_config_byte
 c_func
 (paren
 id|dev
@@ -1240,7 +1154,7 @@ op_or
 id|PCI_COMMAND_MEMORY
 )paren
 suffix:semicolon
-id|pci_writeb
+id|pci_write_config_byte
 c_func
 (paren
 id|dev
@@ -1284,7 +1198,7 @@ id|i
 dot
 id|dev
 suffix:semicolon
-id|pci_writeb
+id|pci_write_config_byte
 c_func
 (paren
 id|dev

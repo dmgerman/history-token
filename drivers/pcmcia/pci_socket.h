@@ -69,12 +69,6 @@ r_int
 r_int
 id|events
 suffix:semicolon
-DECL|member|pcmcia_socket
-r_struct
-id|socket_info_t
-op_star
-id|pcmcia_socket
-suffix:semicolon
 DECL|member|tq_task
 r_struct
 id|work_struct

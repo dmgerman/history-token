@@ -1710,8 +1710,6 @@ c_func
 (paren
 id|s
 comma
-l_int|0
-comma
 id|attr
 comma
 id|addr
@@ -1862,8 +1860,6 @@ id|read_cb_mem
 c_func
 (paren
 id|s
-comma
-l_int|0
 comma
 id|s-&gt;cis_table
 (braket
