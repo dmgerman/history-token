@@ -1,8 +1,7 @@
 multiline_comment|/*&n; *  linux/fs/sysv/itree.c&n; *&n; *  Handling of indirect blocks&squot; trees.&n; *  AV, Sep--Dec 2000&n; */
-macro_line|#include &lt;linux/fs.h&gt;
-macro_line|#include &lt;linux/sysv_fs.h&gt;
 macro_line|#include &lt;linux/locks.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
+macro_line|#include &quot;sysv.h&quot;
 DECL|enumerator|DIRECT
 DECL|enumerator|DEPTH
 r_enum

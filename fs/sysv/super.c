@@ -1,9 +1,8 @@
 multiline_comment|/*&n; *  linux/fs/sysv/inode.c&n; *&n; *  minix/inode.c&n; *  Copyright (C) 1991, 1992  Linus Torvalds&n; *&n; *  xenix/inode.c&n; *  Copyright (C) 1992  Doug Evans&n; *&n; *  coh/inode.c&n; *  Copyright (C) 1993  Pascal Haible, Bruno Haible&n; *&n; *  sysv/inode.c&n; *  Copyright (C) 1993  Paul B. Monday&n; *&n; *  sysv/inode.c&n; *  Copyright (C) 1993  Bruno Haible&n; *  Copyright (C) 1997, 1998  Krzysztof G. Baranowski&n; *&n; *  This file contains code for read/parsing the superblock.&n; */
 macro_line|#include &lt;linux/module.h&gt;
-macro_line|#include &lt;linux/fs.h&gt;
-macro_line|#include &lt;linux/sysv_fs.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
+macro_line|#include &quot;sysv.h&quot;
 multiline_comment|/*&n; * The following functions try to recognize specific filesystems.&n; *&n; * We recognize:&n; * - Xenix FS by its magic number.&n; * - SystemV FS by its magic number.&n; * - Coherent FS by its funny fname/fpack field.&n; * - SCO AFS by s_nfree == 0xffff&n; * - V7 FS has no distinguishing features.&n; *&n; * We discriminate among SystemV4 and SystemV2 FS by the assumption that&n; * the time stamp is not &lt; 01-01-1980.&n; */
 r_enum
 (brace

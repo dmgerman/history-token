@@ -1,8 +1,7 @@
 multiline_comment|/*&n; *  linux/fs/sysv/namei.c&n; *&n; *  minix/namei.c&n; *  Copyright (C) 1991, 1992  Linus Torvalds&n; *&n; *  coh/namei.c&n; *  Copyright (C) 1993  Pascal Haible, Bruno Haible&n; *&n; *  sysv/namei.c&n; *  Copyright (C) 1993  Bruno Haible&n; *  Copyright (C) 1997, 1998  Krzysztof G. Baranowski&n; */
-macro_line|#include &lt;linux/fs.h&gt;
-macro_line|#include &lt;linux/sysv_fs.h&gt;
 macro_line|#include &lt;linux/pagemap.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
+macro_line|#include &quot;sysv.h&quot;
 DECL|function|inc_count
 r_static
 r_inline

@@ -1,7 +1,6 @@
 multiline_comment|/*&n; *  linux/fs/sysv/dir.c&n; *&n; *  minix/dir.c&n; *  Copyright (C) 1991, 1992  Linus Torvalds&n; *&n; *  coh/dir.c&n; *  Copyright (C) 1993  Pascal Haible, Bruno Haible&n; *&n; *  sysv/dir.c&n; *  Copyright (C) 1993  Bruno Haible&n; *&n; *  SystemV/Coherent directory handling functions&n; */
-macro_line|#include &lt;linux/fs.h&gt;
-macro_line|#include &lt;linux/sysv_fs.h&gt;
 macro_line|#include &lt;linux/pagemap.h&gt;
+macro_line|#include &quot;sysv.h&quot;
 r_static
 r_int
 id|sysv_readdir
