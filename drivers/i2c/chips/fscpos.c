@@ -1098,7 +1098,7 @@ id|data-&gt;volt
 l_int|0
 )braket
 comma
-l_int|1420
+l_int|14200
 )paren
 )paren
 suffix:semicolon
@@ -1146,7 +1146,7 @@ id|data-&gt;volt
 l_int|1
 )braket
 comma
-l_int|660
+l_int|6600
 )paren
 )paren
 suffix:semicolon
@@ -1194,7 +1194,7 @@ id|data-&gt;volt
 l_int|2
 )braket
 comma
-l_int|330
+l_int|3300
 )paren
 )paren
 suffix:semicolon
