@@ -608,6 +608,26 @@ r_void
 )paren
 suffix:semicolon
 macro_line|#endif
+multiline_comment|/* the proc_intf.c needs this */
+r_int
+id|cpufreq_parse_governor
+(paren
+r_char
+op_star
+id|str_governor
+comma
+r_int
+r_int
+op_star
+id|policy
+comma
+r_struct
+id|cpufreq_governor
+op_star
+op_star
+id|governor
+)paren
+suffix:semicolon
 macro_line|#ifdef CONFIG_CPU_FREQ_24_API
 multiline_comment|/*********************************************************************&n; *                        CPUFREQ 2.4. INTERFACE                     *&n; *********************************************************************/
 r_int
