@@ -123,11 +123,6 @@ id|pci_controller
 op_star
 id|hose
 suffix:semicolon
-r_struct
-id|pci_dev
-op_star
-id|dev
-suffix:semicolon
 multiline_comment|/* from hose or from bus.devfn */
 r_if
 c_cond
@@ -359,6 +354,9 @@ op_star
 id|dma_addrp
 )paren
 (brace
+r_return
+l_int|NULL
+suffix:semicolon
 )brace
 r_void
 DECL|function|pci_free_consistent
@@ -403,6 +401,12 @@ r_int
 id|direction
 )paren
 (brace
+r_return
+(paren
+id|dma_addr_t
+)paren
+l_int|0
+suffix:semicolon
 )brace
 r_void
 DECL|function|pci_unmap_single
