@@ -135,15 +135,17 @@ id|__devinitdata
 op_assign
 id|KERN_INFO
 id|DRV_NAME
-l_string|&quot;.c:v1.07 1/9/2001  Written by Donald Becker &lt;becker@scyld.com&gt;&bslash;n&quot;
-id|KERN_INFO
-l_string|&quot;  http://www.scyld.com/network/natsemi.html&bslash;n&quot;
-id|KERN_INFO
-l_string|&quot;  (unofficial 2.4.x kernel port, version &quot;
+l_string|&quot; dp8381x driver, version &quot;
 id|DRV_VERSION
 l_string|&quot;, &quot;
 id|DRV_RELDATE
-l_string|&quot;  Jeff Garzik, Tjeerd Mulder)&bslash;n&quot;
+l_string|&quot;&bslash;n&quot;
+id|KERN_INFO
+l_string|&quot;  originally by Donald Becker &lt;becker@scyld.com&gt;&bslash;n&quot;
+id|KERN_INFO
+l_string|&quot;  http://www.scyld.com/network/natsemi.html&bslash;n&quot;
+id|KERN_INFO
+l_string|&quot;  2.4.x kernel port by Jeff Garzik, Tjeerd Mulder&bslash;n&quot;
 suffix:semicolon
 id|MODULE_AUTHOR
 c_func
@@ -4263,6 +4265,13 @@ op_star
 id|dev
 )paren
 (brace
+r_struct
+id|netdev_private
+op_star
+id|np
+op_assign
+id|dev-&gt;priv
+suffix:semicolon
 r_if
 c_cond
 (paren
