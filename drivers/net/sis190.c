@@ -18,7 +18,7 @@ DECL|macro|PFX
 mdefine_line|#define PFX MODULENAME &quot;: &quot;
 macro_line|#ifdef SiS190_DEBUG
 DECL|macro|assert
-mdefine_line|#define assert(expr) &bslash;&n;        if(!(expr)) {&t;&t;&t;&t;&t;&bslash;&n;&t;        printk( &quot;Assertion failed! %s,%s,%s,line=%d&bslash;n&quot;,&t;&bslash;&n;        &t;#expr,__FILE__,__FUNCTION__,__LINE__);&t;&t;&bslash;&n;        }
+mdefine_line|#define assert(expr) &bslash;&n;        if(unlikely(!(expr))) {&t;&t;&t;&t;&t;&bslash;&n;&t;        printk( &quot;Assertion failed! %s,%s,%s,line=%d&bslash;n&quot;,&t;&bslash;&n;        &t;#expr,__FILE__,__FUNCTION__,__LINE__);&t;&t;&bslash;&n;        }
 macro_line|#else
 DECL|macro|assert
 mdefine_line|#define assert(expr) do {} while (0)
@@ -91,69 +91,69 @@ singleline_comment|//-----------------------------------------------------------
 singleline_comment|// Bit Mask definitions
 singleline_comment|//-------------------------------------------------------------------------
 DECL|macro|BIT_0
-mdefine_line|#define BIT_0       0x0001
+mdefine_line|#define BIT_0&t;0x0001
 DECL|macro|BIT_1
-mdefine_line|#define BIT_1       0x0002
+mdefine_line|#define BIT_1&t;0x0002
 DECL|macro|BIT_2
-mdefine_line|#define BIT_2       0x0004
+mdefine_line|#define BIT_2&t;0x0004
 DECL|macro|BIT_3
-mdefine_line|#define BIT_3       0x0008
+mdefine_line|#define BIT_3&t;0x0008
 DECL|macro|BIT_4
-mdefine_line|#define BIT_4       0x0010
+mdefine_line|#define BIT_4&t;0x0010
 DECL|macro|BIT_5
-mdefine_line|#define BIT_5       0x0020
+mdefine_line|#define BIT_5&t;0x0020
 DECL|macro|BIT_6
-mdefine_line|#define BIT_6       0x0040
+mdefine_line|#define BIT_6&t;0x0040
 DECL|macro|BIT_7
-mdefine_line|#define BIT_7       0x0080
+mdefine_line|#define BIT_7&t;0x0080
 DECL|macro|BIT_8
-mdefine_line|#define BIT_8       0x0100
+mdefine_line|#define BIT_8&t;0x0100
 DECL|macro|BIT_9
-mdefine_line|#define BIT_9       0x0200
+mdefine_line|#define BIT_9&t;0x0200
 DECL|macro|BIT_10
-mdefine_line|#define BIT_10      0x0400
+mdefine_line|#define BIT_10&t;0x0400
 DECL|macro|BIT_11
-mdefine_line|#define BIT_11      0x0800
+mdefine_line|#define BIT_11&t;0x0800
 DECL|macro|BIT_12
-mdefine_line|#define BIT_12      0x1000
+mdefine_line|#define BIT_12&t;0x1000
 DECL|macro|BIT_13
-mdefine_line|#define BIT_13      0x2000
+mdefine_line|#define BIT_13&t;0x2000
 DECL|macro|BIT_14
-mdefine_line|#define BIT_14      0x4000
+mdefine_line|#define BIT_14&t;0x4000
 DECL|macro|BIT_15
-mdefine_line|#define BIT_15      0x8000
+mdefine_line|#define BIT_15&t;0x8000
 DECL|macro|BIT_16
-mdefine_line|#define BIT_16       0x10000
+mdefine_line|#define BIT_16&t;0x10000
 DECL|macro|BIT_17
-mdefine_line|#define BIT_17       0x20000
+mdefine_line|#define BIT_17&t;0x20000
 DECL|macro|BIT_18
-mdefine_line|#define BIT_18       0x40000
+mdefine_line|#define BIT_18&t;0x40000
 DECL|macro|BIT_19
-mdefine_line|#define BIT_19       0x80000
+mdefine_line|#define BIT_19&t;0x80000
 DECL|macro|BIT_20
-mdefine_line|#define BIT_20      0x100000
+mdefine_line|#define BIT_20&t;0x100000
 DECL|macro|BIT_21
-mdefine_line|#define BIT_21       0x200000
+mdefine_line|#define BIT_21&t;0x200000
 DECL|macro|BIT_22
-mdefine_line|#define BIT_22       0x400000
+mdefine_line|#define BIT_22&t;0x400000
 DECL|macro|BIT_23
-mdefine_line|#define BIT_23       0x800000
+mdefine_line|#define BIT_23&t;0x800000
 DECL|macro|BIT_24
-mdefine_line|#define BIT_24       0x1000000
+mdefine_line|#define BIT_24&t;0x1000000
 DECL|macro|BIT_25
-mdefine_line|#define BIT_25       0x2000000
+mdefine_line|#define BIT_25&t;0x2000000
 DECL|macro|BIT_26
-mdefine_line|#define BIT_26      0x04000000
+mdefine_line|#define BIT_26&t;0x04000000
 DECL|macro|BIT_27
-mdefine_line|#define BIT_27      0x08000000
+mdefine_line|#define BIT_27&t;0x08000000
 DECL|macro|BIT_28
-mdefine_line|#define BIT_28      0x10000000
+mdefine_line|#define BIT_28&t;0x10000000
 DECL|macro|BIT_29
-mdefine_line|#define BIT_29      0x20000000
+mdefine_line|#define BIT_29&t;0x20000000
 DECL|macro|BIT_30
-mdefine_line|#define BIT_30      0x40000000
+mdefine_line|#define BIT_30&t;0x40000000
 DECL|macro|BIT_31
-mdefine_line|#define BIT_31      0x80000000
+mdefine_line|#define BIT_31&t;0x80000000
 multiline_comment|/* write/read MMIO register */
 DECL|macro|SiS_W8
 mdefine_line|#define SiS_W8(reg, val8)&t;writeb ((val8), ioaddr + (reg))
@@ -911,7 +911,7 @@ suffix:semicolon
 id|MODULE_AUTHOR
 c_func
 (paren
-l_string|&quot;K.M. Liu&lt;kmliu@sis.com&quot;
+l_string|&quot;K.M. Liu &lt;kmliu@sis.com&gt;&quot;
 )paren
 suffix:semicolon
 id|MODULE_DESCRIPTION
@@ -4998,16 +4998,6 @@ dot
 id|remove
 op_assign
 id|SiS190_remove_one
-comma
-dot
-id|suspend
-op_assign
-l_int|NULL
-comma
-dot
-id|resume
-op_assign
-l_int|NULL
 comma
 )brace
 suffix:semicolon
