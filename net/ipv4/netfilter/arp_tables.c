@@ -55,12 +55,6 @@ mdefine_line|#define ARP_NF_ASSERT(x)
 macro_line|#endif
 DECL|macro|SMP_ALIGN
 mdefine_line|#define SMP_ALIGN(x) (((x) + SMP_CACHE_BYTES-1) &amp; ~(SMP_CACHE_BYTES-1))
-DECL|macro|ASSERT_READ_LOCK
-mdefine_line|#define ASSERT_READ_LOCK(x) ARP_NF_ASSERT(down_trylock(&amp;arpt_mutex) != 0)
-DECL|macro|ASSERT_WRITE_LOCK
-mdefine_line|#define ASSERT_WRITE_LOCK(x) ARP_NF_ASSERT(down_trylock(&amp;arpt_mutex) != 0)
-macro_line|#include &lt;linux/netfilter_ipv4/lockhelp.h&gt;
-macro_line|#include &lt;linux/netfilter_ipv4/listhelp.h&gt;
 r_static
 id|DECLARE_MUTEX
 c_func
@@ -68,6 +62,12 @@ c_func
 id|arpt_mutex
 )paren
 suffix:semicolon
+DECL|macro|ASSERT_READ_LOCK
+mdefine_line|#define ASSERT_READ_LOCK(x) ARP_NF_ASSERT(down_trylock(&amp;arpt_mutex) != 0)
+DECL|macro|ASSERT_WRITE_LOCK
+mdefine_line|#define ASSERT_WRITE_LOCK(x) ARP_NF_ASSERT(down_trylock(&amp;arpt_mutex) != 0)
+macro_line|#include &lt;linux/netfilter_ipv4/lockhelp.h&gt;
+macro_line|#include &lt;linux/netfilter_ipv4/listhelp.h&gt;
 DECL|struct|arpt_table_info
 r_struct
 id|arpt_table_info
