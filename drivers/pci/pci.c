@@ -1702,7 +1702,11 @@ comma
 id|bar
 )paren
 comma
-id|pdev-&gt;slot_name
+id|pci_name
+c_func
+(paren
+id|pdev
+)paren
 )paren
 suffix:semicolon
 r_return
@@ -1845,7 +1849,11 @@ comma
 id|i
 )paren
 comma
-id|pdev-&gt;slot_name
+id|pci_name
+c_func
+(paren
+id|pdev
+)paren
 )paren
 suffix:semicolon
 r_while
@@ -1913,7 +1921,11 @@ c_func
 (paren
 l_string|&quot;PCI: Enabling bus mastering for device %s&bslash;n&quot;
 comma
-id|dev-&gt;slot_name
+id|pci_name
+c_func
+(paren
+id|dev
+)paren
 )paren
 suffix:semicolon
 id|cmd
@@ -2049,7 +2061,11 @@ id|pci_cache_line_size
 op_lshift
 l_int|2
 comma
-id|dev-&gt;slot_name
+id|pci_name
+c_func
+(paren
+id|dev
+)paren
 )paren
 suffix:semicolon
 r_return
@@ -2130,7 +2146,11 @@ c_func
 (paren
 l_string|&quot;PCI: Enabling Mem-Wr-Inval for device %s&bslash;n&quot;
 comma
-id|dev-&gt;slot_name
+id|pci_name
+c_func
+(paren
+id|dev
+)paren
 )paren
 suffix:semicolon
 id|cmd
