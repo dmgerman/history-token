@@ -5408,6 +5408,8 @@ suffix:semicolon
 multiline_comment|/* # pages / 2 */
 id|pteg_count
 op_assign
+id|max
+c_func
 (paren
 id|rnd_mem_size
 op_rshift
@@ -5416,6 +5418,10 @@ l_int|12
 op_plus
 l_int|1
 )paren
+comma
+l_int|1UL
+op_lshift
+l_int|11
 )paren
 suffix:semicolon
 id|ppc64_pft_size
