@@ -1673,6 +1673,13 @@ c_func
 id|simple_empty
 )paren
 suffix:semicolon
+DECL|variable|simple_fill_super
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|simple_fill_super
+)paren
+suffix:semicolon
 DECL|variable|fd_install
 id|EXPORT_SYMBOL
 c_func
