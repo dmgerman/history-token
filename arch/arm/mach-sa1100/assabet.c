@@ -215,10 +215,6 @@ id|BCR_value
 op_assign
 id|ASSABET_BCR_DB1111
 suffix:semicolon
-id|NCR_0
-op_assign
-l_int|0
-suffix:semicolon
 macro_line|#ifndef CONFIG_ASSABET_NEPONSET
 id|printk
 c_func
@@ -386,20 +382,6 @@ op_assign
 id|scr
 suffix:semicolon
 )brace
-r_extern
-r_void
-id|convert_to_tag_list
-c_func
-(paren
-r_struct
-id|param_struct
-op_star
-id|params
-comma
-r_int
-id|mem_init
-)paren
-suffix:semicolon
 r_static
 r_void
 id|__init
@@ -413,9 +395,9 @@ op_star
 id|desc
 comma
 r_struct
-id|param_struct
+id|tag
 op_star
-id|params
+id|tags
 comma
 r_char
 op_star
@@ -433,12 +415,7 @@ id|tag
 op_star
 id|t
 op_assign
-(paren
-r_struct
-id|tag
-op_star
-)paren
-id|params
+id|tags
 suffix:semicolon
 multiline_comment|/* This must be done before any call to machine_has_neponset() */
 id|map_sa1100_gpio_regs
@@ -463,22 +440,6 @@ id|printk
 c_func
 (paren
 l_string|&quot;Neponset expansion board detected&bslash;n&quot;
-)paren
-suffix:semicolon
-multiline_comment|/*&n;&t; * Apparantly bootldr uses a param_struct.  Groan.&n;&t; */
-r_if
-c_cond
-(paren
-id|t-&gt;hdr.tag
-op_ne
-id|ATAG_CORE
-)paren
-id|convert_to_tag_list
-c_func
-(paren
-id|params
-comma
-l_int|1
 )paren
 suffix:semicolon
 r_if
@@ -1052,14 +1013,6 @@ c_func
 id|assabet_io_desc
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_ASSABET_NEPONSET
-multiline_comment|/*&n;&t; * We map Neponset registers even if it isn&squot;t present since&n;&t; * many drivers will try to probe their stuff (and fail).&n;&t; * This is still more friendly than a kernel paging request&n;&t; * crash.&n;&t; */
-id|neponset_map_io
-c_func
-(paren
-)paren
-suffix:semicolon
-macro_line|#endif
 r_if
 c_cond
 (paren
@@ -1069,6 +1022,14 @@ c_func
 )paren
 )paren
 (brace
+macro_line|#ifdef CONFIG_ASSABET_NEPONSET
+multiline_comment|/*&n;&t;&t; * We map Neponset registers even if it isn&squot;t present since&n;&t;&t; * many drivers will try to probe their stuff (and fail).&n;&t;&t; * This is still more friendly than a kernel paging request&n;&t;&t; * crash.&n;&t;&t; */
+id|neponset_map_io
+c_func
+(paren
+)paren
+suffix:semicolon
+macro_line|#endif
 multiline_comment|/*&n;&t;&t; * When Neponset is attached, the first UART should be&n;&t;&t; * UART3.  That&squot;s what Angel is doing and many documents&n;&t;&t; * are stating this.&n;&t;&t; * We do the Neponset mapping even if Neponset support&n;&t;&t; * isn&squot;t compiled in so the user will still get something on&n;&t;&t; * the expected physical serial port.&n;&t;&t; */
 id|sa1100_register_uart
 c_func
