@@ -414,9 +414,11 @@ r_int
 id|protocol
 )paren
 suffix:semicolon
-multiline_comment|/*&n; *&t;skb should fit one page. This choice is good for headerless malloc.&n; *&n; *      FIXME: What is the best size for SLAB???? --ANK&n; */
+multiline_comment|/*&n; *&t;skb should fit one page. This choice is good for headerless malloc.&n; */
+DECL|macro|NLMSG_GOODORDER
+mdefine_line|#define NLMSG_GOODORDER 0
 DECL|macro|NLMSG_GOODSIZE
-mdefine_line|#define NLMSG_GOODSIZE (PAGE_SIZE - ((sizeof(struct sk_buff)+0xF)&amp;~0xF))
+mdefine_line|#define NLMSG_GOODSIZE (SKB_MAX_ORDER(0, NLMSG_GOODORDER))
 DECL|struct|netlink_callback
 r_struct
 id|netlink_callback
