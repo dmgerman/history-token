@@ -819,6 +819,41 @@ mdefine_line|#define ZERO_PAGE(vaddr) (zero_page_memmap_ptr)
 multiline_comment|/* We provide our own get_unmapped_area to cope with VA holes for userland */
 DECL|macro|HAVE_ARCH_UNMAPPED_AREA
 mdefine_line|#define HAVE_ARCH_UNMAPPED_AREA
+macro_line|#ifdef CONFIG_HUGETLB_PAGE
+DECL|macro|HUGETLB_PGDIR_SHIFT
+mdefine_line|#define HUGETLB_PGDIR_SHIFT&t;(HPAGE_SHIFT + 2*(PAGE_SHIFT-3))
+DECL|macro|HUGETLB_PGDIR_SIZE
+mdefine_line|#define HUGETLB_PGDIR_SIZE&t;(__IA64_UL(1) &lt;&lt; HUGETLB_PGDIR_SHIFT)
+DECL|macro|HUGETLB_PGDIR_MASK
+mdefine_line|#define HUGETLB_PGDIR_MASK&t;(~(HUGETLB_PGDIR_SIZE-1))
+r_struct
+id|mmu_gather
+suffix:semicolon
+r_extern
+r_void
+id|hugetlb_free_pgtables
+c_func
+(paren
+r_struct
+id|mmu_gather
+op_star
+id|tlb
+comma
+r_struct
+id|vm_area_struct
+op_star
+id|prev
+comma
+r_int
+r_int
+id|start
+comma
+r_int
+r_int
+id|end
+)paren
+suffix:semicolon
+macro_line|#endif
 DECL|typedef|pte_addr_t
 r_typedef
 id|pte_t

@@ -71,8 +71,8 @@ DECL|macro|HPAGE_MASK
 macro_line|# define HPAGE_MASK&t;(~(HPAGE_SIZE - 1))
 DECL|macro|HAVE_ARCH_HUGETLB_UNMAPPED_AREA
 macro_line|# define HAVE_ARCH_HUGETLB_UNMAPPED_AREA
-DECL|macro|ARCH_HAS_VALID_HUGEPAGE_RANGE
-macro_line|# define ARCH_HAS_VALID_HUGEPAGE_RANGE
+DECL|macro|ARCH_HAS_HUGEPAGE_ONLY_RANGE
+macro_line|# define ARCH_HAS_HUGEPAGE_ONLY_RANGE
 macro_line|#endif /* CONFIG_HUGETLB_PAGE */
 macro_line|#ifdef __ASSEMBLY__
 DECL|macro|__pa
@@ -197,20 +197,8 @@ DECL|macro|htlbpage_to_page
 macro_line|# define htlbpage_to_page(x)&t;((REGION_NUMBER(x) &lt;&lt; 61)&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&t; | (REGION_OFFSET(x) &gt;&gt; (HPAGE_SHIFT-PAGE_SHIFT)))
 DECL|macro|HUGETLB_PAGE_ORDER
 macro_line|# define HUGETLB_PAGE_ORDER&t;(HPAGE_SHIFT - PAGE_SHIFT)
-r_extern
-r_int
-id|check_valid_hugepage_range
-c_func
-(paren
-r_int
-r_int
-id|addr
-comma
-r_int
-r_int
-id|len
-)paren
-suffix:semicolon
+DECL|macro|is_hugepage_only_range
+macro_line|# define is_hugepage_only_range(addr, len)&t;&t;&bslash;&n;&t; (REGION_NUMBER(addr) == REGION_HPAGE &amp;&amp;&t;&bslash;&n;&t;  REGION_NUMBER((addr)+(len)) == REGION_HPAGE)
 macro_line|#endif
 r_static
 id|__inline__
