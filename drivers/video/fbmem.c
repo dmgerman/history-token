@@ -2216,7 +2216,7 @@ op_assign
 l_int|NULL
 comma
 op_star
-id|saved_palette
+id|saved_pseudo_palette
 op_assign
 l_int|NULL
 suffix:semicolon
@@ -2517,7 +2517,7 @@ comma
 id|palette
 )paren
 suffix:semicolon
-id|saved_palette
+id|saved_pseudo_palette
 op_assign
 id|info-&gt;pseudo_palette
 suffix:semicolon
@@ -2566,11 +2566,11 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|saved_palette
+id|saved_pseudo_palette
 )paren
 id|info-&gt;pseudo_palette
 op_assign
-id|saved_palette
+id|saved_pseudo_palette
 suffix:semicolon
 r_return
 l_int|1
@@ -2678,13 +2678,13 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|saved_palette
+id|saved_pseudo_palette
 op_ne
 l_int|NULL
 )paren
 id|info-&gt;pseudo_palette
 op_assign
-id|saved_palette
+id|saved_pseudo_palette
 suffix:semicolon
 r_if
 c_cond
