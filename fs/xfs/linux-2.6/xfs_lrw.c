@@ -1385,6 +1385,10 @@ comma
 op_amp
 id|ip-&gt;i_iocore
 comma
+(paren
+r_void
+op_star
+)paren
 id|iovp
 comma
 id|segs
@@ -1689,6 +1693,14 @@ comma
 op_amp
 id|ip-&gt;i_iocore
 comma
+(paren
+r_void
+op_star
+)paren
+(paren
+r_int
+r_int
+)paren
 id|target
 comma
 id|count
@@ -3244,6 +3256,10 @@ id|XFS_DIOWR_ENTER
 comma
 id|io
 comma
+(paren
+r_void
+op_star
+)paren
 id|iovp
 comma
 id|segs
@@ -3264,6 +3280,10 @@ id|XFS_WRITE_ENTER
 comma
 id|io
 comma
+(paren
+r_void
+op_star
+)paren
 id|iovp
 comma
 id|segs
