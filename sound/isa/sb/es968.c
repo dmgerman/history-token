@@ -1210,7 +1210,6 @@ op_amp
 id|es968_pnpc_driver
 )paren
 suffix:semicolon
-macro_line|#ifdef MODULE
 r_if
 c_cond
 (paren
@@ -1218,6 +1217,15 @@ id|res
 op_eq
 l_int|0
 )paren
+(brace
+id|pnp_unregister_card_driver
+c_func
+(paren
+op_amp
+id|es968_pnpc_driver
+)paren
+suffix:semicolon
+macro_line|#ifdef MODULE
 id|snd_printk
 c_func
 (paren
@@ -1226,6 +1234,7 @@ l_string|&quot;no ES968 based soundcards found&bslash;n&quot;
 )paren
 suffix:semicolon
 macro_line|#endif
+)brace
 r_return
 id|res
 OL
