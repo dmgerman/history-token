@@ -1,6 +1,7 @@
 macro_line|#ifndef _M68K_CACHEFLUSH_H
 DECL|macro|_M68K_CACHEFLUSH_H
 mdefine_line|#define _M68K_CACHEFLUSH_H
+macro_line|#include &lt;linux/mm.h&gt;
 multiline_comment|/*&n; * Cache handling functions&n; */
 DECL|macro|flush_icache
 mdefine_line|#define flush_icache()&t;&t;&t;&t;&t;&t;&bslash;&n;({&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;if (CPU_IS_040_OR_060)&t;&t;&t;&t;&t;&bslash;&n;&t;&t;__asm__ __volatile__(&quot;nop&bslash;n&bslash;t&quot;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;     &quot;.chip 68040&bslash;n&bslash;t&quot;&t;&t;&bslash;&n;&t;&t;&t;&t;     &quot;cinva %%ic&bslash;n&bslash;t&quot;&t;&t;&bslash;&n;&t;&t;&t;&t;     &quot;.chip 68k&quot; : );&t;&t;&bslash;&n;&t;else {&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;unsigned long _tmp;&t;&t;&t;&t;&bslash;&n;&t;&t;__asm__ __volatile__(&quot;movec %%cacr,%0&bslash;n&bslash;t&quot;&t;&bslash;&n;&t;&t;&t;&t;     &quot;orw %1,%0&bslash;n&bslash;t&quot;&t;&t;&bslash;&n;&t;&t;&t;&t;     &quot;movec %0,%%cacr&quot;&t;&t;&bslash;&n;&t;&t;&t;&t;     : &quot;=&amp;d&quot; (_tmp)&t;&t;&bslash;&n;&t;&t;&t;&t;     : &quot;id&quot; (FLUSH_I));&t;&bslash;&n;&t;}&t;&t;&t;&t;&t;&t;&t;&bslash;&n;})
@@ -152,7 +153,7 @@ suffix:semicolon
 multiline_comment|/* Push the page at kernel virtual address and clear the icache */
 multiline_comment|/* RZ: use cpush %bc instead of cpush %dc, cinv %ic */
 DECL|macro|flush_page_to_ram
-mdefine_line|#define flush_page_to_ram(page) __flush_page_to_ram((unsigned long) page_address(page))
+mdefine_line|#define flush_page_to_ram(page) __flush_page_to_ram(page_address(page))
 DECL|function|__flush_page_to_ram
 r_extern
 r_inline
@@ -160,9 +161,9 @@ r_void
 id|__flush_page_to_ram
 c_func
 (paren
-r_int
-r_int
-id|address
+r_void
+op_star
+id|vaddr
 )paren
 (brace
 r_if
@@ -186,11 +187,7 @@ l_string|&quot;a&quot;
 id|__pa
 c_func
 (paren
-(paren
-r_void
-op_star
-)paren
-id|address
+id|vaddr
 )paren
 )paren
 )paren
