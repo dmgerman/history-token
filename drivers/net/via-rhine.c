@@ -1,11 +1,11 @@
 multiline_comment|/* via-rhine.c: A Linux Ethernet device driver for VIA Rhine family chips. */
-multiline_comment|/*&n;&t;Written 1998-2001 by Donald Becker.&n;&n;&t;This software may be used and distributed according to the terms of&n;&t;the GNU General Public License (GPL), incorporated herein by reference.&n;&t;Drivers based on or derived from this code fall under the GPL and must&n;&t;retain the authorship, copyright and license notice.  This file is not&n;&t;a complete program and may only be used when the entire operating&n;&t;system is licensed under the GPL.&n;&n;&t;This driver is designed for the VIA VT86C100A Rhine-I. &n;&t;It also works with the 6102 Rhine-II, and 6105/6105M Rhine-III.   &n;&n;&t;The author may be reached as becker@scyld.com, or C/O&n;&t;Scyld Computing Corporation&n;&t;410 Severn Ave., Suite 210&n;&t;Annapolis MD 21403&n;&n;&n;&t;This driver contains some changes from the original Donald Becker&n;&t;version. He may or may not be interested in bug reports on this&n;&t;code. You can find his versions at:&n;&t;http://www.scyld.com/network/via-rhine.html&n;&n;&n;&t;Linux kernel version history:&n;&t;&n;&t;LK1.1.0:&n;&t;- Jeff Garzik: softnet &squot;n stuff&n;&t;&n;&t;LK1.1.1:&n;&t;- Justin Guyett: softnet and locking fixes&n;&t;- Jeff Garzik: use PCI interface&n;&n;&t;LK1.1.2:&n;&t;- Urban Widmark: minor cleanups, merges from Becker 1.03a/1.04 versions&n;&n;&t;LK1.1.3:&n;&t;- Urban Widmark: use PCI DMA interface (with thanks to the eepro100.c&n;&t;&t;&t; code) update &quot;Theory of Operation&quot; with&n;&t;&t;&t; softnet/locking changes&n;&t;- Dave Miller: PCI DMA and endian fixups&n;&t;- Jeff Garzik: MOD_xxx race fixes, updated PCI resource allocation&n;&n;&t;LK1.1.4:&n;&t;- Urban Widmark: fix gcc 2.95.2 problem and&n;&t;                 remove writel&squot;s to fixed address 0x7c&n;&n;&t;LK1.1.5:&n;&t;- Urban Widmark: mdio locking, bounce buffer changes&n;&t;                 merges from Beckers 1.05 version&n;&t;                 added netif_running_on/off support&n;&n;&t;LK1.1.6:&n;&t;- Urban Widmark: merges from Beckers 1.08b version (VT6102 + mdio)&n;&t;                 set netif_running_on/off on startup, del_timer_sync&n;&t;&n;&t;LK1.1.7:&n;&t;- Manfred Spraul: added reset into tx_timeout&n;&n;&t;LK1.1.9:&n;&t;- Urban Widmark: merges from Beckers 1.10 version&n;&t;                 (media selection + eeprom reload)&n;&t;- David Vrabel:  merges from D-Link &quot;1.11&quot; version&n;&t;                 (disable WOL and PME on startup)&n;&n;&t;LK1.1.10:&n;&t;- Manfred Spraul: use &quot;singlecopy&quot; for unaligned buffers&n;&t;                  don&squot;t allocate bounce buffers for !ReqTxAlign cards&n;&n;&t;LK1.1.11:&n;&t;- David Woodhouse: Set dev-&gt;base_addr before the first time we call&n;&t;&t;&t;&t;&t;   wait_for_reset(). It&squot;s a lot happier that way.&n;&t;&t;&t;&t;&t;   Free np-&gt;tx_bufs only if we actually allocated it.&n;&n;&t;LK1.1.12:&n;&t;- Martin Eriksson: Allow Memory-Mapped IO to be enabled.&n;&n;&t;LK1.1.13 (jgarzik):&n;&t;- Add ethtool support&n;&t;- Replace some MII-related magic numbers with constants&n;&t;&n;&t;LK1.1.14 (Ivan G.):&n; &t;- fixes comments for Rhine-III&n;&t;- removes W_MAX_TIMEOUT (unused)&n;&t;- adds HasDavicomPhy for Rhine-I (basis: linuxfet driver; my card&n;&t;  is R-I and has Davicom chip, flag is referenced in kernel driver)&n;&t;- sends chip_id as a parameter to wait_for_reset since np is not&n;&t;  initialized on first call&n;&t;- changes mmio &quot;else if (chip_id==VT6102)&quot; to &quot;else&quot; so it will work&n;&t;  for Rhine-III&squot;s (documentation says same bit is correct)&t;&t;&n;&t;- transmit frame queue message is off by one - fixed&n;&t;- adds IntrNormalSummary to &quot;Something Wicked&quot; exclusion list&n;&t;  so normal interrupts will not trigger the message (src: Donald Becker)&n;&t;(Roger Lahti)&n;&t;- cosmetic cleanups, remove 3 unused members of struct netdev_private&n;&n;*/
+multiline_comment|/*&n;&t;Written 1998-2001 by Donald Becker.&n;&n;&t;This software may be used and distributed according to the terms of&n;&t;the GNU General Public License (GPL), incorporated herein by reference.&n;&t;Drivers based on or derived from this code fall under the GPL and must&n;&t;retain the authorship, copyright and license notice.  This file is not&n;&t;a complete program and may only be used when the entire operating&n;&t;system is licensed under the GPL.&n;&n;&t;This driver is designed for the VIA VT86C100A Rhine-I. &n;&t;It also works with the 6102 Rhine-II, and 6105/6105M Rhine-III.   &n;&n;&t;The author may be reached as becker@scyld.com, or C/O&n;&t;Scyld Computing Corporation&n;&t;410 Severn Ave., Suite 210&n;&t;Annapolis MD 21403&n;&n;&n;&t;This driver contains some changes from the original Donald Becker&n;&t;version. He may or may not be interested in bug reports on this&n;&t;code. You can find his versions at:&n;&t;http://www.scyld.com/network/via-rhine.html&n;&n;&n;&t;Linux kernel version history:&n;&t;&n;&t;LK1.1.0:&n;&t;- Jeff Garzik: softnet &squot;n stuff&n;&t;&n;&t;LK1.1.1:&n;&t;- Justin Guyett: softnet and locking fixes&n;&t;- Jeff Garzik: use PCI interface&n;&n;&t;LK1.1.2:&n;&t;- Urban Widmark: minor cleanups, merges from Becker 1.03a/1.04 versions&n;&n;&t;LK1.1.3:&n;&t;- Urban Widmark: use PCI DMA interface (with thanks to the eepro100.c&n;&t;&t;&t; code) update &quot;Theory of Operation&quot; with&n;&t;&t;&t; softnet/locking changes&n;&t;- Dave Miller: PCI DMA and endian fixups&n;&t;- Jeff Garzik: MOD_xxx race fixes, updated PCI resource allocation&n;&n;&t;LK1.1.4:&n;&t;- Urban Widmark: fix gcc 2.95.2 problem and&n;&t;                 remove writel&squot;s to fixed address 0x7c&n;&n;&t;LK1.1.5:&n;&t;- Urban Widmark: mdio locking, bounce buffer changes&n;&t;                 merges from Beckers 1.05 version&n;&t;                 added netif_running_on/off support&n;&n;&t;LK1.1.6:&n;&t;- Urban Widmark: merges from Beckers 1.08b version (VT6102 + mdio)&n;&t;                 set netif_running_on/off on startup, del_timer_sync&n;&t;&n;&t;LK1.1.7:&n;&t;- Manfred Spraul: added reset into tx_timeout&n;&n;&t;LK1.1.9:&n;&t;- Urban Widmark: merges from Beckers 1.10 version&n;&t;                 (media selection + eeprom reload)&n;&t;- David Vrabel:  merges from D-Link &quot;1.11&quot; version&n;&t;                 (disable WOL and PME on startup)&n;&n;&t;LK1.1.10:&n;&t;- Manfred Spraul: use &quot;singlecopy&quot; for unaligned buffers&n;&t;                  don&squot;t allocate bounce buffers for !ReqTxAlign cards&n;&n;&t;LK1.1.11:&n;&t;- David Woodhouse: Set dev-&gt;base_addr before the first time we call&n;&t;&t;&t;&t;&t;   wait_for_reset(). It&squot;s a lot happier that way.&n;&t;&t;&t;&t;&t;   Free np-&gt;tx_bufs only if we actually allocated it.&n;&n;&t;LK1.1.12:&n;&t;- Martin Eriksson: Allow Memory-Mapped IO to be enabled.&n;&n;&t;LK1.1.13 (jgarzik):&n;&t;- Add ethtool support&n;&t;- Replace some MII-related magic numbers with constants&n;&t;&n;&t;LK1.1.14 (Ivan G.):&n; &t;- fixes comments for Rhine-III&n;&t;- removes W_MAX_TIMEOUT (unused)&n;&t;- adds HasDavicomPhy for Rhine-I (basis: linuxfet driver; my card&n;&t;  is R-I and has Davicom chip, flag is referenced in kernel driver)&n;&t;- sends chip_id as a parameter to wait_for_reset since np is not&n;&t;  initialized on first call&n;&t;- changes mmio &quot;else if (chip_id==VT6102)&quot; to &quot;else&quot; so it will work&n;&t;  for Rhine-III&squot;s (documentation says same bit is correct)&t;&t;&n;&t;- transmit frame queue message is off by one - fixed&n;&t;- adds IntrNormalSummary to &quot;Something Wicked&quot; exclusion list&n;&t;  so normal interrupts will not trigger the message (src: Donald Becker)&n; &t;(Roger Luethi)&n; &t;- show confused chip where to continue after Tx error&n; &t;- location of collision counter is chip specific&n; &t;- allow selecting backoff algorithm (module parameter)&n;&n;&t;LK1.1.15 (jgarzik):&n;&t;- Use new MII lib helper generic_mii_ioctl&n;&n;*/
 DECL|macro|DRV_NAME
 mdefine_line|#define DRV_NAME&t;&quot;via-rhine&quot;
 DECL|macro|DRV_VERSION
-mdefine_line|#define DRV_VERSION&t;&quot;1.1.14&quot;
+mdefine_line|#define DRV_VERSION&t;&quot;1.1.15&quot;
 DECL|macro|DRV_RELDATE
-mdefine_line|#define DRV_RELDATE&t;&quot;May-3-2002&quot;
+mdefine_line|#define DRV_RELDATE&t;&quot;November-22-2002&quot;
 multiline_comment|/* A few user-configurable values.&n;   These may be modified when a driver module is loaded. */
 DECL|variable|debug
 r_static
@@ -27,6 +27,12 @@ DECL|variable|rx_copybreak
 r_static
 r_int
 id|rx_copybreak
+suffix:semicolon
+multiline_comment|/* Select a backoff algorithm (Ethernet capture effect) */
+DECL|variable|backoff
+r_static
+r_int
+id|backoff
 suffix:semicolon
 multiline_comment|/* Used to pass the media type, etc.&n;   Both &squot;options[]&squot; and &squot;full_duplex[]&squot; should exist for driver&n;   interoperability.&n;   The media type is usually passed in &squot;options[]&squot;.&n;   The default is autonegotation for speed and duplex.&n;     This should rarely be overridden.&n;   Use option values 0x10/0x20 for 10Mbps, 0x100,0x200 for 100Mbps.&n;   Use option values 0x10 and 0x100 for forcing half duplex fixed speed.&n;   Use option values 0x20 and 0x200 for forcing full duplex operation.&n;*/
 DECL|macro|MAX_UNITS
@@ -254,6 +260,14 @@ suffix:semicolon
 id|MODULE_PARM
 c_func
 (paren
+id|backoff
+comma
+l_string|&quot;i&quot;
+)paren
+suffix:semicolon
+id|MODULE_PARM
+c_func
+(paren
 id|options
 comma
 l_string|&quot;1-&quot;
@@ -306,6 +320,14 @@ suffix:semicolon
 id|MODULE_PARM_DESC
 c_func
 (paren
+id|backoff
+comma
+l_string|&quot;VIA Rhine: Bits 0-3: backoff algorithm&quot;
+)paren
+suffix:semicolon
+id|MODULE_PARM_DESC
+c_func
+(paren
 id|options
 comma
 l_string|&quot;VIA Rhine: Bits 0-3: media type, bit 17: full duplex&quot;
@@ -319,7 +341,7 @@ comma
 l_string|&quot;VIA Rhine full duplex setting(s) (1)&quot;
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t;&t;&t;&t;Theory of Operation&n;&n;I. Board Compatibility&n;&n;This driver is designed for the VIA 86c100A Rhine-II PCI Fast Ethernet&n;controller.&n;&n;II. Board-specific settings&n;&n;Boards with this chip are functional only in a bus-master PCI slot.&n;&n;Many operational settings are loaded from the EEPROM to the Config word at&n;offset 0x78.  This driver assumes that they are correct.&n;If this driver is compiled to use PCI memory space operations the EEPROM&n;must be configured to enable memory ops.&n;&n;III. Driver operation&n;&n;IIIa. Ring buffers&n;&n;This driver uses two statically allocated fixed-size descriptor lists&n;formed into rings by a branch from the final descriptor to the beginning of&n;the list.  The ring sizes are set at compile time by RX/TX_RING_SIZE.&n;&n;IIIb/c. Transmit/Receive Structure&n;&n;This driver attempts to use a zero-copy receive and transmit scheme.&n;&n;Alas, all data buffers are required to start on a 32 bit boundary, so&n;the driver must often copy transmit packets into bounce buffers.&n;&n;The driver allocates full frame size skbuffs for the Rx ring buffers at&n;open() time and passes the skb-&gt;data field to the chip as receive data&n;buffers.  When an incoming frame is less than RX_COPYBREAK bytes long,&n;a fresh skbuff is allocated and the frame is copied to the new skbuff.&n;When the incoming frame is larger, the skbuff is passed directly up the&n;protocol stack.  Buffers consumed this way are replaced by newly allocated&n;skbuffs in the last phase of via_rhine_rx().&n;&n;The RX_COPYBREAK value is chosen to trade-off the memory wasted by&n;using a full-sized skbuff for small frames vs. the copying costs of larger&n;frames.  New boards are typically used in generously configured machines&n;and the underfilled buffers have negligible impact compared to the benefit of&n;a single allocation size, so the default value of zero results in never&n;copying packets.  When copying is done, the cost is usually mitigated by using&n;a combined copy/checksum routine.  Copying also preloads the cache, which is&n;most useful with small frames.&n;&n;Since the VIA chips are only able to transfer data to buffers on 32 bit&n;boundaries, the IP header at offset 14 in an ethernet frame isn&squot;t&n;longword aligned for further processing.  Copying these unaligned buffers&n;has the beneficial effect of 16-byte aligning the IP header.&n;&n;IIId. Synchronization&n;&n;The driver runs as two independent, single-threaded flows of control.  One&n;is the send-packet routine, which enforces single-threaded use by the&n;dev-&gt;priv-&gt;lock spinlock. The other thread is the interrupt handler, which &n;is single threaded by the hardware and interrupt handling software.&n;&n;The send packet thread has partial control over the Tx ring. It locks the &n;dev-&gt;priv-&gt;lock whenever it&squot;s queuing a Tx packet. If the next slot in the ring&n;is not available it stops the transmit queue by calling netif_stop_queue.&n;&n;The interrupt handler has exclusive control over the Rx ring and records stats&n;from the Tx ring.  After reaping the stats, it marks the Tx queue entry as&n;empty by incrementing the dirty_tx mark. If at least half of the entries in&n;the Rx ring are available the transmit queue is woken up if it was stopped.&n;&n;IV. Notes&n;&n;IVb. References&n;&n;Preliminary VT86C100A manual from http://www.via.com.tw/&n;http://www.scyld.com/expert/100mbps.html&n;http://www.scyld.com/expert/NWay.html&n;ftp://ftp.via.com.tw/public/lan/Products/NIC/VT86C100A/Datasheet/VT86C100A03.pdf&n;ftp://ftp.via.com.tw/public/lan/Products/NIC/VT6102/Datasheet/VT6102_021.PDF&n;&n;&n;IVc. Errata&n;&n;The VT86C100A manual is not reliable information.&n;The 3043 chip does not handle unaligned transmit or receive buffers, resulting&n;in significant performance degradation for bounce buffer copies on transmit&n;and unaligned IP headers on receive.&n;The chip does not pad to minimum transmit length.&n;&n;*/
+multiline_comment|/*&n;&t;&t;&t;&t;Theory of Operation&n;&n;I. Board Compatibility&n;&n;This driver is designed for the VIA 86c100A Rhine-II PCI Fast Ethernet&n;controller.&n;&n;II. Board-specific settings&n;&n;Boards with this chip are functional only in a bus-master PCI slot.&n;&n;Many operational settings are loaded from the EEPROM to the Config word at&n;offset 0x78. For most of these settings, this driver assumes that they are&n;correct.&n;If this driver is compiled to use PCI memory space operations the EEPROM&n;must be configured to enable memory ops.&n;&n;III. Driver operation&n;&n;IIIa. Ring buffers&n;&n;This driver uses two statically allocated fixed-size descriptor lists&n;formed into rings by a branch from the final descriptor to the beginning of&n;the list.  The ring sizes are set at compile time by RX/TX_RING_SIZE.&n;&n;IIIb/c. Transmit/Receive Structure&n;&n;This driver attempts to use a zero-copy receive and transmit scheme.&n;&n;Alas, all data buffers are required to start on a 32 bit boundary, so&n;the driver must often copy transmit packets into bounce buffers.&n;&n;The driver allocates full frame size skbuffs for the Rx ring buffers at&n;open() time and passes the skb-&gt;data field to the chip as receive data&n;buffers.  When an incoming frame is less than RX_COPYBREAK bytes long,&n;a fresh skbuff is allocated and the frame is copied to the new skbuff.&n;When the incoming frame is larger, the skbuff is passed directly up the&n;protocol stack.  Buffers consumed this way are replaced by newly allocated&n;skbuffs in the last phase of via_rhine_rx().&n;&n;The RX_COPYBREAK value is chosen to trade-off the memory wasted by&n;using a full-sized skbuff for small frames vs. the copying costs of larger&n;frames.  New boards are typically used in generously configured machines&n;and the underfilled buffers have negligible impact compared to the benefit of&n;a single allocation size, so the default value of zero results in never&n;copying packets.  When copying is done, the cost is usually mitigated by using&n;a combined copy/checksum routine.  Copying also preloads the cache, which is&n;most useful with small frames.&n;&n;Since the VIA chips are only able to transfer data to buffers on 32 bit&n;boundaries, the IP header at offset 14 in an ethernet frame isn&squot;t&n;longword aligned for further processing.  Copying these unaligned buffers&n;has the beneficial effect of 16-byte aligning the IP header.&n;&n;IIId. Synchronization&n;&n;The driver runs as two independent, single-threaded flows of control.  One&n;is the send-packet routine, which enforces single-threaded use by the&n;dev-&gt;priv-&gt;lock spinlock. The other thread is the interrupt handler, which &n;is single threaded by the hardware and interrupt handling software.&n;&n;The send packet thread has partial control over the Tx ring. It locks the &n;dev-&gt;priv-&gt;lock whenever it&squot;s queuing a Tx packet. If the next slot in the ring&n;is not available it stops the transmit queue by calling netif_stop_queue.&n;&n;The interrupt handler has exclusive control over the Rx ring and records stats&n;from the Tx ring.  After reaping the stats, it marks the Tx queue entry as&n;empty by incrementing the dirty_tx mark. If at least half of the entries in&n;the Rx ring are available the transmit queue is woken up if it was stopped.&n;&n;IV. Notes&n;&n;IVb. References&n;&n;Preliminary VT86C100A manual from http://www.via.com.tw/&n;http://www.scyld.com/expert/100mbps.html&n;http://www.scyld.com/expert/NWay.html&n;ftp://ftp.via.com.tw/public/lan/Products/NIC/VT86C100A/Datasheet/VT86C100A03.pdf&n;ftp://ftp.via.com.tw/public/lan/Products/NIC/VT6102/Datasheet/VT6102_021.PDF&n;&n;&n;IVc. Errata&n;&n;The VT86C100A manual is not reliable information.&n;The 3043 chip does not handle unaligned transmit or receive buffers, resulting&n;in significant performance degradation for bounce buffer copies on transmit&n;and unaligned IP headers on receive.&n;The chip does not pad to minimum transmit length.&n;&n;*/
 multiline_comment|/* This table drives the PCI probe routines.  It&squot;s mostly boilerplate in all&n;   of the drivers, and will likely be provided by some future kernel.&n;   Note the matching code -- the first table entry matchs all 56** cards but&n;   second only the 1234 card.&n;*/
 DECL|enum|pci_flags_bit
 r_enum
@@ -750,24 +772,24 @@ l_int|0xAC
 comma
 )brace
 suffix:semicolon
-multiline_comment|/* Bits in ConfigD (select backoff algorithm (Ethernet capture effect)) */
+multiline_comment|/* Bits in ConfigD */
 DECL|enum|backoff_bits
 r_enum
 id|backoff_bits
 (brace
-DECL|enumerator|BackOpt
-DECL|enumerator|BackAMD
-DECL|enumerator|BackDEC
-DECL|enumerator|BackRandom
-id|BackOpt
+DECL|enumerator|BackOptional
+DECL|enumerator|BackModify
+id|BackOptional
 op_assign
 l_int|0x01
 comma
-id|BackAMD
+id|BackModify
 op_assign
 l_int|0x02
 comma
-id|BackDEC
+DECL|enumerator|BackCaptureEffect
+DECL|enumerator|BackRandom
+id|BackCaptureEffect
 op_assign
 l_int|0x04
 comma
@@ -824,13 +846,13 @@ op_assign
 l_int|0x0020
 comma
 DECL|enumerator|IntrTxDone
-DECL|enumerator|IntrTxAbort
+DECL|enumerator|IntrTxError
 DECL|enumerator|IntrTxUnderrun
 id|IntrTxDone
 op_assign
 l_int|0x0002
 comma
-id|IntrTxAbort
+id|IntrTxError
 op_assign
 l_int|0x0008
 comma
@@ -964,6 +986,7 @@ DECL|member|desc_length
 id|u32
 id|desc_length
 suffix:semicolon
+multiline_comment|/* Chain flag, Buffer/frame length */
 DECL|member|addr
 id|u32
 id|addr
@@ -986,6 +1009,7 @@ DECL|member|desc_length
 id|u32
 id|desc_length
 suffix:semicolon
+multiline_comment|/* Chain flag, Tx Config, Frame length */
 DECL|member|addr
 id|u32
 id|addr
@@ -996,6 +1020,9 @@ id|next_desc
 suffix:semicolon
 )brace
 suffix:semicolon
+multiline_comment|/* Initial value for tx_desc.desc_length, Buffer size goes to bits 0-10 */
+DECL|macro|TXDESC
+mdefine_line|#define TXDESC 0x00e08000
 DECL|enum|rx_status_bits
 r_enum
 id|rx_status_bits
@@ -1016,26 +1043,15 @@ op_assign
 l_int|0x008F
 )brace
 suffix:semicolon
-multiline_comment|/* Bits in *_desc.status */
+multiline_comment|/* Bits in *_desc.*_status */
 DECL|enum|desc_status_bits
 r_enum
 id|desc_status_bits
 (brace
 DECL|enumerator|DescOwn
-DECL|enumerator|DescEndPacket
-DECL|enumerator|DescIntr
 id|DescOwn
 op_assign
 l_int|0x80000000
-comma
-id|DescEndPacket
-op_assign
-l_int|0x4000
-comma
-id|DescIntr
-op_assign
-l_int|0x1000
-comma
 )brace
 suffix:semicolon
 multiline_comment|/* Bits in ChipCmd. */
@@ -1505,6 +1521,18 @@ c_func
 (paren
 r_int
 id|ioaddr
+)paren
+suffix:semicolon
+r_static
+r_inline
+r_void
+id|via_restart_tx
+c_func
+(paren
+r_struct
+id|net_device
+op_star
+id|dev
 )paren
 suffix:semicolon
 DECL|function|wait_for_reset
@@ -2362,6 +2390,34 @@ id|ConfigA
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/* Select backoff algorithm */
+r_if
+c_cond
+(paren
+id|backoff
+)paren
+id|writeb
+c_func
+(paren
+id|readb
+c_func
+(paren
+id|ioaddr
+op_plus
+id|ConfigD
+)paren
+op_amp
+(paren
+l_int|0xF0
+op_or
+id|backoff
+)paren
+comma
+id|ioaddr
+op_plus
+id|ConfigD
+)paren
+suffix:semicolon
 id|dev-&gt;irq
 op_assign
 id|pdev-&gt;irq
@@ -3588,7 +3644,7 @@ op_assign
 id|cpu_to_le32
 c_func
 (paren
-l_int|0x00e08000
+id|TXDESC
 )paren
 suffix:semicolon
 id|next
@@ -3698,7 +3754,7 @@ op_assign
 id|cpu_to_le32
 c_func
 (paren
-l_int|0x00e08000
+id|TXDESC
 )paren
 suffix:semicolon
 id|np-&gt;tx_ring
@@ -3847,7 +3903,7 @@ op_plus
 id|PCIBusConfig
 )paren
 suffix:semicolon
-multiline_comment|/* Store &amp; forward */
+multiline_comment|/* Tune configuration??? */
 multiline_comment|/* Configure initial FIFO thresholds. */
 id|writeb
 c_func
@@ -3919,9 +3975,13 @@ id|IntrRxOverflow
 op_or
 id|IntrRxDropped
 op_or
+id|IntrRxNoBuf
+op_or
+id|IntrTxAborted
+op_or
 id|IntrTxDone
 op_or
-id|IntrTxAbort
+id|IntrTxError
 op_or
 id|IntrTxUnderrun
 op_or
@@ -5169,7 +5229,7 @@ op_assign
 id|cpu_to_le32
 c_func
 (paren
-l_int|0x00E08000
+id|TXDESC
 op_or
 (paren
 id|skb-&gt;len
@@ -5405,7 +5465,7 @@ op_amp
 (paren
 id|IntrTxDone
 op_or
-id|IntrTxAbort
+id|IntrTxError
 op_or
 id|IntrTxUnderrun
 op_or
@@ -5433,7 +5493,9 @@ id|IntrMIIChange
 op_or
 id|IntrStatsMax
 op_or
-id|IntrTxAbort
+id|IntrTxError
+op_or
+id|IntrTxAborted
 op_or
 id|IntrTxUnderrun
 )paren
@@ -5482,7 +5544,7 @@ id|printk
 c_func
 (paren
 id|KERN_DEBUG
-l_string|&quot;%s: exiting interrupt, status=%#4.4x.&bslash;n&quot;
+l_string|&quot;%s: exiting interrupt, status=%4.4x.&bslash;n&quot;
 comma
 id|dev-&gt;name
 comma
@@ -5558,15 +5620,6 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|txstatus
-op_amp
-id|DescOwn
-)paren
-r_break
-suffix:semicolon
-r_if
-c_cond
-(paren
 id|debug
 OG
 l_int|6
@@ -5581,6 +5634,15 @@ id|entry
 comma
 id|txstatus
 )paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|txstatus
+op_amp
+id|DescOwn
+)paren
+r_break
 suffix:semicolon
 r_if
 c_cond
@@ -5654,17 +5716,62 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+(paren
+(paren
+id|np-&gt;chip_id
+op_eq
+id|VT86C100A
+)paren
+op_logical_and
 id|txstatus
 op_amp
 l_int|0x0002
 )paren
+op_logical_or
+(paren
+id|txstatus
+op_amp
+l_int|0x0800
+)paren
+op_logical_or
+(paren
+id|txstatus
+op_amp
+l_int|0x1000
+)paren
+)paren
+(brace
 id|np-&gt;stats.tx_fifo_errors
 op_increment
 suffix:semicolon
+id|np-&gt;tx_ring
+(braket
+id|entry
+)braket
+dot
+id|tx_status
+op_assign
+id|cpu_to_le32
+c_func
+(paren
+id|DescOwn
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
+multiline_comment|/* Keep the skb - we try again */
+)brace
 multiline_comment|/* Transmitter restarted in &squot;abnormal&squot; handler. */
 )brace
 r_else
 (brace
+r_if
+c_cond
+(paren
+id|np-&gt;chip_id
+op_eq
+id|VT86C100A
+)paren
 id|np-&gt;stats.collisions
 op_add_assign
 (paren
@@ -5673,7 +5780,40 @@ op_rshift
 l_int|3
 )paren
 op_amp
-l_int|15
+l_int|0x0F
+suffix:semicolon
+r_else
+id|np-&gt;stats.collisions
+op_add_assign
+id|txstatus
+op_amp
+l_int|0x0F
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|debug
+OG
+l_int|6
+)paren
+id|printk
+c_func
+(paren
+id|KERN_DEBUG
+l_string|&quot;collisions: %1.1x:%1.1x&bslash;n&quot;
+comma
+(paren
+id|txstatus
+op_rshift
+l_int|3
+)paren
+op_amp
+l_int|0xF
+comma
+id|txstatus
+op_amp
+l_int|0xF
+)paren
 suffix:semicolon
 id|np-&gt;stats.tx_bytes
 op_add_assign
@@ -6398,6 +6538,65 @@ id|ChipCmd
 )paren
 suffix:semicolon
 )brace
+DECL|function|via_restart_tx
+r_static
+r_inline
+r_void
+id|via_restart_tx
+c_func
+(paren
+r_struct
+id|net_device
+op_star
+id|dev
+)paren
+(brace
+r_struct
+id|netdev_private
+op_star
+id|np
+op_assign
+id|dev-&gt;priv
+suffix:semicolon
+r_int
+id|entry
+op_assign
+id|np-&gt;dirty_tx
+op_mod
+id|TX_RING_SIZE
+suffix:semicolon
+multiline_comment|/* We know better than the chip where it should continue */
+id|writel
+c_func
+(paren
+id|np-&gt;tx_ring_dma
+op_plus
+id|entry
+op_star
+r_sizeof
+(paren
+r_struct
+id|tx_desc
+)paren
+comma
+id|dev-&gt;base_addr
+op_plus
+id|TxRingPtr
+)paren
+suffix:semicolon
+id|writew
+c_func
+(paren
+id|CmdTxDemand
+op_or
+id|np-&gt;chip_cmd
+comma
+id|dev-&gt;base_addr
+op_plus
+id|ChipCmd
+)paren
+suffix:semicolon
+)brace
 DECL|function|via_rhine_error
 r_static
 r_void
@@ -6570,20 +6769,31 @@ c_cond
 (paren
 id|intr_status
 op_amp
-id|IntrTxAbort
+id|IntrTxError
 )paren
 (brace
-multiline_comment|/* Stats counted in Tx-done handler, just restart Tx. */
-id|writew
+r_if
+c_cond
+(paren
+id|debug
+OG
+l_int|1
+)paren
+id|printk
 c_func
 (paren
-id|CmdTxDemand
-op_or
-id|np-&gt;chip_cmd
+id|KERN_INFO
+l_string|&quot;%s: Abort %4.4x, frame dropped.&bslash;n&quot;
 comma
-id|dev-&gt;base_addr
-op_plus
-id|ChipCmd
+id|dev-&gt;name
+comma
+id|intr_status
+)paren
+suffix:semicolon
+id|via_restart_tx
+c_func
+(paren
+id|dev
 )paren
 suffix:semicolon
 )brace
@@ -6625,12 +6835,18 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;%s: Transmitter underrun, increasing Tx &quot;
-l_string|&quot;threshold setting to %2.2x.&bslash;n&quot;
+l_string|&quot;%s: Transmitter underrun, Tx &quot;
+l_string|&quot;threshold now %2.2x.&bslash;n&quot;
 comma
 id|dev-&gt;name
 comma
 id|np-&gt;tx_thresh
+)paren
+suffix:semicolon
+id|via_restart_tx
+c_func
+(paren
+id|dev
 )paren
 suffix:semicolon
 )brace
@@ -6645,7 +6861,7 @@ id|IntrLinkChange
 op_or
 id|IntrStatsMax
 op_or
-id|IntrTxAbort
+id|IntrTxError
 op_or
 id|IntrTxAborted
 op_or
