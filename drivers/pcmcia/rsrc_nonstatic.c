@@ -3823,6 +3823,13 @@ comma
 op_star
 id|q
 suffix:semicolon
+id|down
+c_func
+(paren
+op_amp
+id|rsrc_sem
+)paren
+suffix:semicolon
 r_for
 c_loop
 (paren
@@ -3879,6 +3886,13 @@ id|p
 )paren
 suffix:semicolon
 )brace
+id|up
+c_func
+(paren
+op_amp
+id|rsrc_sem
+)paren
+suffix:semicolon
 )brace
 DECL|variable|pccard_nonstatic_ops
 r_struct
