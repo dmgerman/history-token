@@ -20,6 +20,18 @@ r_uint32
 id|rxrpc_serial_t
 suffix:semicolon
 multiline_comment|/* Rx message serial number */
+DECL|typedef|rxrpc_seq_net_t
+r_typedef
+id|__be32
+id|rxrpc_seq_net_t
+suffix:semicolon
+multiline_comment|/* on-the-wire Rx message sequence number */
+DECL|typedef|rxrpc_serial_net_t
+r_typedef
+id|__be32
+id|rxrpc_serial_net_t
+suffix:semicolon
+multiline_comment|/* on-the-wire Rx message serial number */
 r_struct
 id|rxrpc_call
 suffix:semicolon

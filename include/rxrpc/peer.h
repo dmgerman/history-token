@@ -203,7 +203,7 @@ id|rxrpc_transport
 op_star
 id|trans
 comma
-id|u32
+id|__be32
 id|addr
 comma
 r_struct
