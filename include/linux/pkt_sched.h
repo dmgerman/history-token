@@ -55,6 +55,11 @@ DECL|member|qlen
 id|__u32
 id|qlen
 suffix:semicolon
+DECL|member|reqs
+id|__u32
+id|reqs
+suffix:semicolon
+multiline_comment|/* number of requeues happened */
 DECL|member|backlog
 id|__u32
 id|backlog

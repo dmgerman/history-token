@@ -806,6 +806,11 @@ r_int
 id|tx_queue_len
 suffix:semicolon
 multiline_comment|/* Max frames per queue allowed */
+multiline_comment|/* ingress path synchronizer */
+DECL|member|ingress_lock
+id|spinlock_t
+id|ingress_lock
+suffix:semicolon
 multiline_comment|/* hard_start_xmit synchronizer */
 DECL|member|xmit_lock
 id|spinlock_t

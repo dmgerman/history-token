@@ -11,6 +11,9 @@ macro_line|#include &lt;linux/in.h&gt;
 macro_line|#include &lt;linux/inet.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/netdevice.h&gt;
+macro_line|#ifdef CONFIG_NET_CLS_ACT
+macro_line|#include &lt;net/pkt_sched.h&gt;
+macro_line|#endif
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/skbuff.h&gt;
 macro_line|#include &lt;linux/cache.h&gt;
@@ -685,6 +688,23 @@ id|skb-&gt;nf_bridge
 suffix:semicolon
 macro_line|#endif
 macro_line|#endif
+multiline_comment|/* XXX: IS this still necessary? - JHS */
+macro_line|#ifdef CONFIG_NET_SCHED
+id|skb-&gt;tc_index
+op_assign
+l_int|0
+suffix:semicolon
+macro_line|#ifdef CONFIG_NET_CLS_ACT
+id|skb-&gt;tc_verd
+op_assign
+l_int|0
+suffix:semicolon
+id|skb-&gt;tc_classid
+op_assign
+l_int|0
+suffix:semicolon
+macro_line|#endif
+macro_line|#endif
 id|kfree_skbmem
 c_func
 (paren
@@ -947,6 +967,46 @@ c_func
 id|tc_index
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_NET_CLS_ACT
+id|n-&gt;tc_verd
+op_assign
+id|SET_TC_VERD
+c_func
+(paren
+id|skb-&gt;tc_verd
+comma
+l_int|0
+)paren
+suffix:semicolon
+id|n-&gt;tc_verd
+op_assign
+id|CLR_TC_OK2MUNGE
+c_func
+(paren
+id|skb-&gt;tc_verd
+)paren
+suffix:semicolon
+id|n-&gt;tc_verd
+op_assign
+id|CLR_TC_MUNGED
+c_func
+(paren
+id|skb-&gt;tc_verd
+)paren
+suffix:semicolon
+id|C
+c_func
+(paren
+id|input_dev
+)paren
+suffix:semicolon
+id|C
+c_func
+(paren
+id|tc_classid
+)paren
+suffix:semicolon
+macro_line|#endif
 macro_line|#endif
 id|C
 c_func
@@ -1215,6 +1275,14 @@ suffix:semicolon
 macro_line|#endif
 macro_line|#endif
 macro_line|#ifdef CONFIG_NET_SCHED
+macro_line|#ifdef CONFIG_NET_CLS_ACT
+r_new
+op_member_access_from_pointer
+id|tc_verd
+op_assign
+id|old-&gt;tc_verd
+suffix:semicolon
+macro_line|#endif
 r_new
 op_member_access_from_pointer
 id|tc_index
