@@ -640,6 +640,22 @@ r_int
 id|string_langid
 suffix:semicolon
 multiline_comment|/* language ID for strings */
+DECL|member|product
+r_char
+op_star
+id|product
+suffix:semicolon
+DECL|member|manufacturer
+r_char
+op_star
+id|manufacturer
+suffix:semicolon
+DECL|member|serial
+r_char
+op_star
+id|serial
+suffix:semicolon
+multiline_comment|/* static strings from the device */
 DECL|member|filelist
 r_struct
 id|list_head

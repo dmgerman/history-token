@@ -168,29 +168,26 @@ id|set_bConfigurationValue
 suffix:semicolon
 multiline_comment|/* String fields */
 DECL|macro|usb_string_attr
-mdefine_line|#define usb_string_attr(name, field)&t;&t;&bslash;&n;static ssize_t  show_##name(struct device *dev, char *buf)&t;&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;struct usb_device *udev;&t;&t;&t;&t;&t;&bslash;&n;&t;int len;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;udev = to_usb_device (dev);&t;&t;&t;&t;&t;&bslash;&n;&t;len = usb_string(udev, udev-&gt;descriptor.field, buf, PAGE_SIZE);&t;&bslash;&n;&t;if (len &lt; 0)&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;return 0;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;buf[len] = &squot;&bslash;n&squot;;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;buf[len+1] = 0;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;return len+1;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;}&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;static DEVICE_ATTR(name, S_IRUGO, show_##name, NULL);
+mdefine_line|#define usb_string_attr(name)&t;&t;&t;&t;&t;&t;&bslash;&n;static ssize_t  show_##name(struct device *dev, char *buf)&t;&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;struct usb_device *udev;&t;&t;&t;&t;&t;&bslash;&n;&t;int len;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;udev = to_usb_device (dev);&t;&t;&t;&t;&t;&bslash;&n;&t;len = snprintf(buf, 256, &quot;%s&quot;, udev-&gt;name);&t;&t;&t;&bslash;&n;&t;if (len &lt; 0)&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;return 0;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;buf[len] = &squot;&bslash;n&squot;;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;buf[len+1] = 0;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;return len+1;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;}&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;static DEVICE_ATTR(name, S_IRUGO, show_##name, NULL);
+DECL|variable|product
 id|usb_string_attr
 c_func
 (paren
 id|product
-comma
-id|iProduct
 )paren
 suffix:semicolon
+DECL|variable|manufacturer
 id|usb_string_attr
 c_func
 (paren
 id|manufacturer
-comma
-id|iManufacturer
 )paren
 suffix:semicolon
+DECL|variable|serial
 id|usb_string_attr
 c_func
 (paren
 id|serial
-comma
-id|iSerialNumber
 )paren
 suffix:semicolon
 r_static
@@ -619,7 +616,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|udev-&gt;descriptor.iManufacturer
+id|udev-&gt;manufacturer
 )paren
 id|device_create_file
 (paren
@@ -632,7 +629,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|udev-&gt;descriptor.iProduct
+id|udev-&gt;product
 )paren
 id|device_create_file
 (paren
@@ -645,7 +642,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|udev-&gt;descriptor.iSerialNumber
+id|udev-&gt;serial
 )paren
 id|device_create_file
 (paren
