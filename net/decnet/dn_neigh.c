@@ -433,8 +433,6 @@ l_int|3
 suffix:semicolon
 r_return
 id|hash_val
-op_amp
-id|NEIGH_HASHMASK
 suffix:semicolon
 )brace
 DECL|function|dn_neigh_construct

@@ -1078,8 +1078,6 @@ id|hash_val
 op_xor
 id|dev-&gt;ifindex
 )paren
-op_amp
-id|NEIGH_HASHMASK
 suffix:semicolon
 r_return
 id|hash_val

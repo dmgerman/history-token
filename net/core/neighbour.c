@@ -999,6 +999,8 @@ id|pkey
 comma
 id|dev
 )paren
+op_amp
+id|NEIGH_HASHMASK
 suffix:semicolon
 id|read_lock_bh
 c_func
@@ -1242,6 +1244,8 @@ id|pkey
 comma
 id|dev
 )paren
+op_amp
+id|NEIGH_HASHMASK
 suffix:semicolon
 id|write_lock_bh
 c_func
