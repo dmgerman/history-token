@@ -2645,9 +2645,9 @@ op_star
 id|gameport
 comma
 r_struct
-id|gameport_dev
+id|gameport_driver
 op_star
-id|dev
+id|drv
 )paren
 (brace
 r_struct
@@ -2730,7 +2730,7 @@ c_func
 (paren
 id|gameport
 comma
-id|dev
+id|drv
 comma
 id|GAMEPORT_MODE_RAW
 )paren
@@ -3033,11 +3033,11 @@ id|port
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * The gameport device structure.&n; */
-DECL|variable|adi_dev
+DECL|variable|adi_drv
 r_static
 r_struct
-id|gameport_dev
-id|adi_dev
+id|gameport_driver
+id|adi_drv
 op_assign
 (brace
 dot
@@ -3062,11 +3062,11 @@ c_func
 r_void
 )paren
 (brace
-id|gameport_register_device
+id|gameport_register_driver
 c_func
 (paren
 op_amp
-id|adi_dev
+id|adi_drv
 )paren
 suffix:semicolon
 r_return
@@ -3083,11 +3083,11 @@ c_func
 r_void
 )paren
 (brace
-id|gameport_unregister_device
+id|gameport_unregister_driver
 c_func
 (paren
 op_amp
-id|adi_dev
+id|adi_drv
 )paren
 suffix:semicolon
 )brace
