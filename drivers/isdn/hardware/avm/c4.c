@@ -6963,7 +6963,7 @@ l_string|&quot;1.0&quot;
 suffix:semicolon
 id|err
 op_assign
-id|pci_module_init
+id|pci_register_driver
 c_func
 (paren
 op_amp
