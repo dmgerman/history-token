@@ -697,6 +697,9 @@ op_eq
 id|EICON_BUS_PCI
 )paren
 (brace
+r_if
+c_cond
+(paren
 id|copy_to_user
 c_func
 (paren
@@ -714,6 +717,10 @@ r_sizeof
 r_int
 )paren
 )paren
+)paren
+r_return
+op_minus
+id|EFAULT
 suffix:semicolon
 )brace
 r_return
@@ -1272,9 +1279,6 @@ suffix:colon
 r_if
 c_cond
 (paren
-(paren
-id|ret
-op_assign
 id|copy_from_user
 c_func
 (paren
@@ -1290,7 +1294,6 @@ comma
 r_sizeof
 (paren
 id|cdef
-)paren
 )paren
 )paren
 )paren
@@ -1443,7 +1446,7 @@ id|dstart
 )paren
 r_return
 op_minus
-l_int|1
+id|EFAULT
 suffix:semicolon
 r_if
 c_cond
@@ -3041,6 +3044,9 @@ comma
 id|flags
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
 id|copy_to_user
 c_func
 (paren
@@ -3050,6 +3056,10 @@ id|skb-&gt;data
 comma
 id|cnt
 )paren
+)paren
+r_return
+op_minus
+id|EFAULT
 suffix:semicolon
 id|spin_lock_irqsave
 c_func
