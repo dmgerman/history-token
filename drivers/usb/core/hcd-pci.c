@@ -607,11 +607,6 @@ id|hcd-&gt;state
 op_assign
 id|USB_STATE_HALT
 suffix:semicolon
-id|pci_set_master
-(paren
-id|dev
-)paren
-suffix:semicolon
 macro_line|#ifndef __sparc__
 id|sprintf
 (paren
