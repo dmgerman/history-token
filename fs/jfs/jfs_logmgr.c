@@ -2951,9 +2951,6 @@ op_assign
 id|bdget
 c_func
 (paren
-id|kdev_t_to_nr
-c_func
-(paren
 id|JFS_SBI
 c_func
 (paren
@@ -2961,7 +2958,6 @@ id|sb
 )paren
 op_member_access_from_pointer
 id|logdev
-)paren
 )paren
 )paren
 )paren

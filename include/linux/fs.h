@@ -897,7 +897,7 @@ id|atomic_t
 id|i_count
 suffix:semicolon
 DECL|member|i_dev
-id|kdev_t
+id|dev_t
 id|i_dev
 suffix:semicolon
 DECL|member|i_mode
@@ -5636,14 +5636,6 @@ comma
 r_struct
 id|bio
 op_star
-)paren
-suffix:semicolon
-r_extern
-r_int
-id|is_read_only
-c_func
-(paren
-id|kdev_t
 )paren
 suffix:semicolon
 r_extern

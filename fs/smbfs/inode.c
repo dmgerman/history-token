@@ -556,10 +556,6 @@ id|fattr-&gt;f_gid
 op_assign
 id|inode-&gt;i_gid
 suffix:semicolon
-id|fattr-&gt;f_rdev
-op_assign
-id|inode-&gt;i_rdev
-suffix:semicolon
 id|fattr-&gt;f_size
 op_assign
 id|inode-&gt;i_size
@@ -667,10 +663,6 @@ suffix:semicolon
 id|inode-&gt;i_gid
 op_assign
 id|fattr-&gt;f_gid
-suffix:semicolon
-id|inode-&gt;i_rdev
-op_assign
-id|fattr-&gt;f_rdev
 suffix:semicolon
 id|inode-&gt;i_ctime
 op_assign

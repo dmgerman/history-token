@@ -5376,7 +5376,7 @@ id|driver-&gt;other-&gt;name_base
 op_plus
 id|minor
 comma
-id|mk_kdev
+id|MKDEV
 c_func
 (paren
 id|driver-&gt;other-&gt;major
