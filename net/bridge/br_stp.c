@@ -6,66 +6,6 @@ macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &quot;br_private.h&quot;
 macro_line|#include &quot;br_private_stp.h&quot;
 multiline_comment|/* called under bridge lock */
-DECL|function|br_is_root_bridge
-r_int
-id|br_is_root_bridge
-c_func
-(paren
-r_struct
-id|net_bridge
-op_star
-id|br
-)paren
-(brace
-r_return
-op_logical_neg
-id|memcmp
-c_func
-(paren
-op_amp
-id|br-&gt;bridge_id
-comma
-op_amp
-id|br-&gt;designated_root
-comma
-l_int|8
-)paren
-suffix:semicolon
-)brace
-multiline_comment|/* called under bridge lock */
-DECL|function|br_is_designated_port
-r_int
-id|br_is_designated_port
-c_func
-(paren
-r_struct
-id|net_bridge_port
-op_star
-id|p
-)paren
-(brace
-r_return
-op_logical_neg
-id|memcmp
-c_func
-(paren
-op_amp
-id|p-&gt;designated_bridge
-comma
-op_amp
-id|p-&gt;br-&gt;bridge_id
-comma
-l_int|8
-)paren
-op_logical_and
-(paren
-id|p-&gt;designated_port
-op_eq
-id|p-&gt;port_id
-)paren
-suffix:semicolon
-)brace
-multiline_comment|/* called under bridge lock */
 DECL|function|br_get_port
 r_struct
 id|net_bridge_port
@@ -87,7 +27,7 @@ id|net_bridge_port
 op_star
 id|p
 suffix:semicolon
-id|list_for_each_entry
+id|list_for_each_entry_rcu
 c_func
 (paren
 id|p

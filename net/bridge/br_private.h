@@ -358,6 +358,36 @@ id|bridge_ula
 l_int|6
 )braket
 suffix:semicolon
+multiline_comment|/* called under bridge lock */
+DECL|function|br_is_root_bridge
+r_static
+r_inline
+r_int
+id|br_is_root_bridge
+c_func
+(paren
+r_const
+r_struct
+id|net_bridge
+op_star
+id|br
+)paren
+(brace
+r_return
+op_logical_neg
+id|memcmp
+c_func
+(paren
+op_amp
+id|br-&gt;bridge_id
+comma
+op_amp
+id|br-&gt;designated_root
+comma
+l_int|8
+)paren
+suffix:semicolon
+)brace
 multiline_comment|/* br_device.c */
 r_extern
 r_void
@@ -770,17 +800,6 @@ r_void
 )paren
 suffix:semicolon
 multiline_comment|/* br_stp.c */
-r_extern
-r_int
-id|br_is_root_bridge
-c_func
-(paren
-r_struct
-id|net_bridge
-op_star
-id|br
-)paren
-suffix:semicolon
 r_extern
 r_struct
 id|net_bridge_port
