@@ -2578,7 +2578,7 @@ id|FS_DQSTATS
 op_assign
 l_int|16
 comma
-multiline_comment|/* disc quota usage statistics */
+multiline_comment|/* disc quota usage statistics and control */
 DECL|enumerator|FS_XFS
 id|FS_XFS
 op_assign
@@ -2641,6 +2641,11 @@ DECL|enumerator|FS_DQ_SYNCS
 id|FS_DQ_SYNCS
 op_assign
 l_int|8
+comma
+DECL|enumerator|FS_DQ_WARNINGS
+id|FS_DQ_WARNINGS
+op_assign
+l_int|9
 comma
 )brace
 suffix:semicolon
