@@ -4,6 +4,7 @@ macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/file.h&gt;
 macro_line|#include &lt;linux/sunrpc/clnt.h&gt;
 macro_line|#include &lt;linux/nfs3.h&gt;
+macro_line|#include &lt;linux/nfs4.h&gt;
 macro_line|#include &lt;linux/nfs_page.h&gt;
 macro_line|#include &lt;linux/nfs_fs.h&gt;
 macro_line|#include &lt;linux/nfs_flushd.h&gt;

@@ -15,6 +15,7 @@ macro_line|#include &lt;linux/sunrpc/clnt.h&gt;
 macro_line|#include &lt;linux/nfs.h&gt;
 macro_line|#include &lt;linux/nfs2.h&gt;
 macro_line|#include &lt;linux/nfs3.h&gt;
+macro_line|#include &lt;linux/nfs4.h&gt;
 macro_line|#include &lt;linux/nfs_page.h&gt;
 macro_line|#include &lt;linux/nfs_xdr.h&gt;
 multiline_comment|/*&n; * Enable debugging support for nfs client.&n; * Requires RPC_DEBUG.&n; */

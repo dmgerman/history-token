@@ -5,6 +5,7 @@ mdefine_line|#define _LINUX_NFSD_CONST_H
 macro_line|#include &lt;linux/nfs.h&gt;
 macro_line|#include &lt;linux/nfs2.h&gt;
 macro_line|#include &lt;linux/nfs3.h&gt;
+macro_line|#include &lt;linux/nfs4.h&gt;
 multiline_comment|/*&n; * Maximum protocol version supported by knfsd&n; */
 DECL|macro|NFSSVC_MAXVERS
 mdefine_line|#define NFSSVC_MAXVERS&t;&t;3
