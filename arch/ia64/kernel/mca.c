@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * File:&t;mca.c&n; * Purpose:&t;Generic MCA handling layer&n; *&n; * Updated for latest kernel&n; * Copyright (C) 2003 Hewlett-Packard Co&n; *&t;David Mosberger-Tang &lt;davidm@hpl.hp.com&gt;&n; *&n; * Copyright (C) 2002 Dell Inc.&n; * Copyright (C) Matt Domsch (Matt_Domsch@dell.com)&n; *&n; * Copyright (C) 2002 Intel&n; * Copyright (C) Jenna Hall (jenna.s.hall@intel.com)&n; *&n; * Copyright (C) 2001 Intel&n; * Copyright (C) Fred Lewis (frederick.v.lewis@intel.com)&n; *&n; * Copyright (C) 2000 Intel&n; * Copyright (C) Chuck Fleckenstein (cfleck@co.intel.com)&n; *&n; * Copyright (C) 1999 Silicon Graphics, Inc.&n; * Copyright (C) Vijay Chander(vijay@engr.sgi.com)&n; *&n; * 03/04/15 D. Mosberger Added INIT backtrace support.&n; * 02/03/25 M. Domsch&t;GUID cleanups&n; *&n; * 02/01/04 J. Hall&t;Aligned MCA stack to 16 bytes, added platform vs. CPU&n; *&t;&t;&t;error flag, set SAL default return values, changed&n; *&t;&t;&t;error record structure to linked list, added init call&n; *&t;&t;&t;to sal_get_state_info_size().&n; *&n; * 01/01/03 F. Lewis    Added setup of CMCI and CPEI IRQs, logging of corrected&n; *                      platform errors, completed code for logging of&n; *                      corrected &amp; uncorrected machine check errors, and&n; *                      updated for conformance with Nov. 2000 revision of the&n; *                      SAL 3.0 spec.&n; * 00/03/29 C. Fleckenstein  Fixed PAL/SAL update issues, began MCA bug fixes, logging issues,&n; *                           added min save state dump, added INIT handler.&n; */
+multiline_comment|/*&n; * File:&t;mca.c&n; * Purpose:&t;Generic MCA handling layer&n; *&n; * Updated for latest kernel&n; * Copyright (C) 2003 Hewlett-Packard Co&n; *&t;David Mosberger-Tang &lt;davidm@hpl.hp.com&gt;&n; *&n; * Copyright (C) 2002 Dell Inc.&n; * Copyright (C) Matt Domsch (Matt_Domsch@dell.com)&n; *&n; * Copyright (C) 2002 Intel&n; * Copyright (C) Jenna Hall (jenna.s.hall@intel.com)&n; *&n; * Copyright (C) 2001 Intel&n; * Copyright (C) Fred Lewis (frederick.v.lewis@intel.com)&n; *&n; * Copyright (C) 2000 Intel&n; * Copyright (C) Chuck Fleckenstein (cfleck@co.intel.com)&n; *&n; * Copyright (C) 1999 Silicon Graphics, Inc.&n; * Copyright (C) Vijay Chander(vijay@engr.sgi.com)&n; *&n; * 03/04/15 D. Mosberger Added INIT backtrace support.&n; * 02/03/25 M. Domsch&t;GUID cleanups&n; *&n; * 02/01/04 J. Hall&t;Aligned MCA stack to 16 bytes, added platform vs. CPU&n; *&t;&t;&t;error flag, set SAL default return values, changed&n; *&t;&t;&t;error record structure to linked list, added init call&n; *&t;&t;&t;to sal_get_state_info_size().&n; *&n; * 01/01/03 F. Lewis    Added setup of CMCI and CPEI IRQs, logging of corrected&n; *                      platform errors, completed code for logging of&n; *                      corrected &amp; uncorrected machine check errors, and&n; *                      updated for conformance with Nov. 2000 revision of the&n; *                      SAL 3.0 spec.&n; * 00/03/29 C. Fleckenstein  Fixed PAL/SAL update issues, began MCA bug fixes, logging issues,&n; *                           added min save state dump, added INIT handler.&n; *&n; * 2003-12-08 Keith Owens &lt;kaos@sgi.com&gt;&n; *            smp_call_function() must not be called from interrupt context (can&n; *            deadlock on tasklist_lock).  Use keventd to call smp_call_function().&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
@@ -13,6 +13,7 @@ macro_line|#include &lt;linux/timer.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/smp.h&gt;
+macro_line|#include &lt;linux/tqueue.h&gt;
 macro_line|#include &lt;asm/delay.h&gt;
 macro_line|#include &lt;asm/machvec.h&gt;
 macro_line|#include &lt;asm/page.h&gt;
@@ -386,6 +387,15 @@ comma
 id|u64
 id|size
 )paren
+suffix:semicolon
+DECL|variable|cmc_disable_tq
+DECL|variable|cmc_enable_tq
+r_static
+r_struct
+id|tq_struct
+id|cmc_disable_tq
+comma
+id|cmc_enable_tq
 suffix:semicolon
 multiline_comment|/*&n; *  ia64_mca_log_sal_error_record&n; *&n; *  This function retrieves a specified error record type from SAL,&n; *  wakes up any processes waiting for error records, and sends it to&n; *  the system log.&n; *&n; *  Inputs  :   sal_info_type   (Type of error record MCA/CMC/CPE/INIT)&n; *  Outputs :   platform error status&n; */
 r_int
@@ -2166,6 +2176,68 @@ r_return
 id|rc
 suffix:semicolon
 )brace
+multiline_comment|/*&n; * ia64_mca_cmc_vector_disable_keventd&n; *&n; * Called via keventd (smp_call_function() is not safe in interrupt context) to&n; * disable the cmc interrupt vector.&n; *&n; * Note: needs preempt_disable() if you apply the preempt patch to 2.4.&n; */
+r_static
+r_void
+DECL|function|ia64_mca_cmc_vector_disable_keventd
+id|ia64_mca_cmc_vector_disable_keventd
+c_func
+(paren
+r_void
+op_star
+id|unused
+)paren
+(brace
+id|ia64_mca_cmc_vector_disable
+c_func
+(paren
+l_int|NULL
+)paren
+suffix:semicolon
+id|smp_call_function
+c_func
+(paren
+id|ia64_mca_cmc_vector_disable
+comma
+l_int|NULL
+comma
+l_int|1
+comma
+l_int|0
+)paren
+suffix:semicolon
+)brace
+multiline_comment|/*&n; * ia64_mca_cmc_vector_enable_keventd&n; *&n; * Called via keventd (smp_call_function() is not safe in interrupt context) to&n; * enable the cmc interrupt vector.&n; *&n; * Note: needs preempt_disable() if you apply the preempt patch to 2.4.&n; */
+r_static
+r_void
+DECL|function|ia64_mca_cmc_vector_enable_keventd
+id|ia64_mca_cmc_vector_enable_keventd
+c_func
+(paren
+r_void
+op_star
+id|unused
+)paren
+(brace
+id|smp_call_function
+c_func
+(paren
+id|ia64_mca_cmc_vector_enable
+comma
+l_int|NULL
+comma
+l_int|1
+comma
+l_int|0
+)paren
+suffix:semicolon
+id|ia64_mca_cmc_vector_enable
+c_func
+(paren
+l_int|NULL
+)paren
+suffix:semicolon
+)brace
 multiline_comment|/*&n; * ia64_mca_init&n; *&n; *  Do all the system level mca specific initialization.&n; *&n; *&t;1. Register spinloop and wakeup request interrupt vectors&n; *&n; *&t;2. Register OS_MCA handler entry point&n; *&n; *&t;3. Register OS_INIT handler entry point&n; *&n; *  4. Initialize MCA/CMC/INIT related log buffers maintained by the OS.&n; *&n; *  Note that this initialization is done very early before some kernel&n; *  services are available.&n; *&n; *  Inputs  :   None&n; *&n; *  Outputs :   None&n; */
 r_void
 id|__init
@@ -2226,6 +2298,28 @@ id|IA64_MCA_DEBUG
 c_func
 (paren
 l_string|&quot;ia64_mca_init: begin&bslash;n&quot;
+)paren
+suffix:semicolon
+id|INIT_TQUEUE
+c_func
+(paren
+op_amp
+id|cmc_disable_tq
+comma
+id|ia64_mca_cmc_vector_disable_keventd
+comma
+l_int|NULL
+)paren
+suffix:semicolon
+id|INIT_TQUEUE
+c_func
+(paren
+op_amp
+id|cmc_enable_tq
+comma
+id|ia64_mca_cmc_vector_enable_keventd
+comma
+l_int|NULL
 )paren
 suffix:semicolon
 multiline_comment|/* initialize recovery success indicator */
@@ -3260,23 +3354,11 @@ op_amp
 id|cmc_history_lock
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t;&t;&t; * We rely on the local_irq_enable() above so&n;&t;&t;&t; * that this can&squot;t deadlock.&n;&t;&t;&t; */
-id|ia64_mca_cmc_vector_disable
+id|schedule_task
 c_func
 (paren
-l_int|NULL
-)paren
-suffix:semicolon
-id|smp_call_function
-c_func
-(paren
-id|ia64_mca_cmc_vector_disable
-comma
-l_int|NULL
-comma
-l_int|1
-comma
-l_int|0
+op_amp
+id|cmc_disable_tq
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t;&t;&t; * Corrected errors will still be corrected, but&n;&t;&t;&t; * make sure there&squot;s a log somewhere that indicates&n;&t;&t;&t; * something is generating more than we can handle.&n;&t;&t;&t; */
@@ -3535,29 +3617,11 @@ comma
 id|__FUNCTION__
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t;&t;&t; * The cmc interrupt handler enabled irqs, so&n;&t;&t;&t; * this can&squot;t deadlock.&n;&t;&t;&t; */
-id|smp_call_function
+id|schedule_task
 c_func
 (paren
-id|ia64_mca_cmc_vector_enable
-comma
-l_int|NULL
-comma
-l_int|1
-comma
-l_int|0
-)paren
-suffix:semicolon
-multiline_comment|/*&n;&t;&t;&t; * Turn off interrupts before re-enabling the&n;&t;&t;&t; * cmc vector locally.  Make sure we get out.&n;&t;&t;&t; */
-id|local_irq_disable
-c_func
-(paren
-)paren
-suffix:semicolon
-id|ia64_mca_cmc_vector_enable
-c_func
-(paren
-l_int|NULL
+op_amp
+id|cmc_enable_tq
 )paren
 suffix:semicolon
 id|cmc_polling_enabled
