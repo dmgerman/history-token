@@ -2533,6 +2533,12 @@ op_logical_neg
 id|done
 op_logical_and
 (paren
+id|index
+op_le
+id|end
+)paren
+op_logical_and
+(paren
 id|nr_pages
 op_assign
 id|pagevec_lookup_tag
