@@ -8,11 +8,12 @@ r_int
 id|scratch_unat
 suffix:semicolon
 multiline_comment|/* ar.unat for the general registers saved in pt */
-DECL|member|pad
+DECL|member|ar_pfs
 r_int
 r_int
-id|pad
+id|ar_pfs
 suffix:semicolon
+multiline_comment|/* for syscalls, the user-level function-state  */
 DECL|member|pt
 r_struct
 id|pt_regs
