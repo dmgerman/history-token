@@ -2144,13 +2144,8 @@ suffix:semicolon
 r_while
 c_loop
 (paren
-id|INT_ISZERO
-c_func
-(paren
+op_logical_neg
 id|agi-&gt;agi_freecount
-comma
-id|ARCH_CONVERT
-)paren
 )paren
 (brace
 multiline_comment|/*&n;&t;&t; * Don&squot;t do anything if we&squot;re not supposed to allocate&n;&t;&t; * any blocks, just go on to the next ag.&n;&t;&t; */
@@ -2511,8 +2506,6 @@ id|rec.ir_free
 comma
 op_amp
 id|i
-comma
-id|ARCH_NOCONVERT
 )paren
 )paren
 )paren
@@ -2645,8 +2638,6 @@ id|rec.ir_free
 comma
 op_amp
 id|j
-comma
-id|ARCH_NOCONVERT
 )paren
 )paren
 op_eq
@@ -2774,8 +2765,6 @@ id|trec.ir_free
 comma
 op_amp
 id|i
-comma
-id|ARCH_NOCONVERT
 )paren
 )paren
 )paren
@@ -2849,8 +2838,6 @@ id|rec.ir_free
 comma
 op_amp
 id|i
-comma
-id|ARCH_NOCONVERT
 )paren
 )paren
 )paren
@@ -3028,8 +3015,6 @@ id|trec.ir_free
 comma
 op_amp
 id|i
-comma
-id|ARCH_NOCONVERT
 )paren
 )paren
 )paren
@@ -3106,8 +3091,6 @@ id|rec.ir_free
 comma
 op_amp
 id|i
-comma
-id|ARCH_NOCONVERT
 )paren
 )paren
 )paren
@@ -3212,8 +3195,6 @@ id|rec.ir_free
 comma
 op_amp
 id|j
-comma
-id|ARCH_NOCONVERT
 )paren
 )paren
 op_eq
@@ -3303,8 +3284,6 @@ id|rec.ir_free
 comma
 op_amp
 id|i
-comma
-id|ARCH_NOCONVERT
 )paren
 )paren
 )paren
@@ -3428,8 +3407,6 @@ op_amp
 id|rec
 comma
 id|offset
-comma
-id|ARCH_NOCONVERT
 )paren
 suffix:semicolon
 id|rec.ir_freecount
@@ -3563,8 +3540,6 @@ id|rec.ir_free
 comma
 op_amp
 id|i
-comma
-id|ARCH_NOCONVERT
 )paren
 )paren
 )paren
@@ -4107,8 +4082,6 @@ id|rec.ir_free
 comma
 op_amp
 id|i
-comma
-id|ARCH_NOCONVERT
 )paren
 )paren
 )paren
@@ -4250,8 +4223,6 @@ id|rec.ir_free
 comma
 op_amp
 id|i
-comma
-id|ARCH_NOCONVERT
 )paren
 )paren
 )paren
@@ -4312,8 +4283,6 @@ op_amp
 id|rec
 comma
 id|off
-comma
-id|ARCH_NOCONVERT
 )paren
 )paren
 suffix:semicolon
@@ -4325,8 +4294,6 @@ op_amp
 id|rec
 comma
 id|off
-comma
-id|ARCH_NOCONVERT
 )paren
 suffix:semicolon
 id|rec.ir_freecount
@@ -4693,8 +4660,6 @@ id|rec.ir_free
 comma
 op_amp
 id|i
-comma
-id|ARCH_NOCONVERT
 )paren
 )paren
 )paren
@@ -5365,8 +5330,6 @@ id|chunk_free
 comma
 op_amp
 id|i
-comma
-id|ARCH_NOCONVERT
 )paren
 )paren
 )paren
@@ -6104,17 +6067,10 @@ op_increment
 id|ASSERT
 c_func
 (paren
-op_logical_neg
-id|INT_ISZERO
-c_func
-(paren
 id|agi-&gt;agi_unlinked
 (braket
 id|i
 )braket
-comma
-id|ARCH_CONVERT
-)paren
 )paren
 suffix:semicolon
 )brace

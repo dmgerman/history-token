@@ -6822,15 +6822,8 @@ c_cond
 (paren
 id|error
 op_logical_or
-(paren
-id|INT_ISZERO
-c_func
-(paren
+op_logical_neg
 id|leaf-&gt;hdr.info.forw
-comma
-id|ARCH_CONVERT
-)paren
-)paren
 )paren
 r_break
 suffix:semicolon

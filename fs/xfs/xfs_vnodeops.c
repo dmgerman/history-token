@@ -528,13 +528,10 @@ suffix:semicolon
 multiline_comment|/*&n;&t; * Convert di_flags to xflags.&n;&t; */
 id|vap-&gt;va_xflags
 op_assign
-id|xfs_dic2xflags
+id|xfs_ip2xflags
 c_func
 (paren
-op_amp
-id|ip-&gt;i_d
-comma
-id|ARCH_NOCONVERT
+id|ip
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * Exit for inode revalidate.  See if any of the rest of&n;&t; * the fields to be filled in are needed.&n;&t; */

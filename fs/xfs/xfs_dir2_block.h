@@ -110,22 +110,19 @@ macro_line|#if XFS_WANT_FUNCS || (XFS_WANT_SPACE &amp;&amp; XFSSO_XFS_DIR2_BLOCK
 r_struct
 id|xfs_dir2_leaf_entry
 op_star
-id|xfs_dir2_block_leaf_p_arch
+id|xfs_dir2_block_leaf_p
 c_func
 (paren
 id|xfs_dir2_block_tail_t
 op_star
 id|btp
-comma
-id|xfs_arch_t
-id|arch
 )paren
 suffix:semicolon
-DECL|macro|XFS_DIR2_BLOCK_LEAF_P_ARCH
-mdefine_line|#define&t;XFS_DIR2_BLOCK_LEAF_P_ARCH(btp,arch) &bslash;&n;&t;xfs_dir2_block_leaf_p_arch(btp,arch)
+DECL|macro|XFS_DIR2_BLOCK_LEAF_P
+mdefine_line|#define&t;XFS_DIR2_BLOCK_LEAF_P(btp) &bslash;&n;&t;xfs_dir2_block_leaf_p(btp)
 macro_line|#else
-DECL|macro|XFS_DIR2_BLOCK_LEAF_P_ARCH
-mdefine_line|#define&t;XFS_DIR2_BLOCK_LEAF_P_ARCH(btp,arch)&t;&bslash;&n;&t;(((struct xfs_dir2_leaf_entry *)(btp)) - INT_GET((btp)-&gt;count, arch))
+DECL|macro|XFS_DIR2_BLOCK_LEAF_P
+mdefine_line|#define&t;XFS_DIR2_BLOCK_LEAF_P(btp)&t;&bslash;&n;&t;(((struct xfs_dir2_leaf_entry *)(btp)) - INT_GET((btp)-&gt;count, ARCH_CONVERT))
 macro_line|#endif
 multiline_comment|/*&n; * Function declarations.&n; */
 r_extern
