@@ -3,7 +3,6 @@ macro_line|#ifndef _HOSTS_H
 DECL|macro|_HOSTS_H
 mdefine_line|#define _HOSTS_H
 macro_line|#include &lt;linux/config.h&gt;
-macro_line|#include &lt;linux/proc_fs.h&gt;
 macro_line|#include &lt;scsi/scsi_host.h&gt;
 multiline_comment|/**&n; * scsi_find_device - find a device given the host&n; * @shost:&t;SCSI host pointer&n; * @channel:&t;SCSI channel (zero if only one channel)&n; * @pun:&t;SCSI target number (physical unit number)&n; * @lun:&t;SCSI Logical Unit Number&n; **/
 DECL|function|scsi_find_device
