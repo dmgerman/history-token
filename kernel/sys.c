@@ -486,9 +486,9 @@ id|p-&gt;uid
 op_ne
 id|current-&gt;euid
 op_logical_and
-id|p-&gt;uid
+id|p-&gt;euid
 op_ne
-id|current-&gt;uid
+id|current-&gt;euid
 op_logical_and
 op_logical_neg
 id|capable
