@@ -603,6 +603,18 @@ id|cpu
 )paren
 suffix:semicolon
 )brace
+macro_line|#else
+DECL|function|rcu_offline_cpu
+r_static
+r_void
+id|rcu_offline_cpu
+c_func
+(paren
+r_int
+id|cpu
+)paren
+(brace
+)brace
 macro_line|#endif
 DECL|function|rcu_restart_cpu
 r_void
@@ -1056,7 +1068,6 @@ id|cpu
 suffix:semicolon
 r_break
 suffix:semicolon
-macro_line|#ifdef CONFIG_HOTPLUG_CPU
 r_case
 id|CPU_DEAD
 suffix:colon
@@ -1068,7 +1079,6 @@ id|cpu
 suffix:semicolon
 r_break
 suffix:semicolon
-macro_line|#endif
 r_default
 suffix:colon
 r_break
