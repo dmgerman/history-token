@@ -1,3 +1,4 @@
+multiline_comment|/*&n; * Generic routines for AGP 3.0 compliant bridges.&n; */
 macro_line|#include &lt;linux/list.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/agp_backend.h&gt;
