@@ -235,7 +235,8 @@ r_void
 id|scsi_unlock_floptical
 c_func
 (paren
-id|Scsi_Request
+r_struct
+id|scsi_request
 op_star
 id|sreq
 comma
@@ -315,16 +316,8 @@ c_func
 (paren
 id|sreq
 comma
-(paren
-r_void
-op_star
-)paren
 id|scsi_cmd
 comma
-(paren
-r_void
-op_star
-)paren
 id|result
 comma
 l_int|0x2a
@@ -1036,7 +1029,8 @@ r_void
 id|scsi_probe_lun
 c_func
 (paren
-id|Scsi_Request
+r_struct
+id|scsi_request
 op_star
 id|sreq
 comma
@@ -1049,7 +1043,8 @@ op_star
 id|bflags
 )paren
 (brace
-id|Scsi_Device
+r_struct
+id|scsi_device
 op_star
 id|sdev
 op_assign
@@ -1649,7 +1644,8 @@ r_int
 id|scsi_add_lun
 c_func
 (paren
-id|Scsi_Device
+r_struct
+id|scsi_device
 op_star
 id|sdev
 comma
