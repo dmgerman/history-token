@@ -912,9 +912,11 @@ id|tclass
 op_eq
 id|SECCLASS_PROCESS
 op_logical_and
+(paren
 id|avd-&gt;allowed
-op_logical_and
+op_amp
 id|PROCESS__TRANSITION
+)paren
 op_logical_and
 id|scontext-&gt;role
 op_ne
