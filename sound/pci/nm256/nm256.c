@@ -1180,6 +1180,10 @@ macro_line|#endif
 id|memcpy_toio
 c_func
 (paren
+(paren
+r_void
+op_star
+)paren
 id|chip-&gt;buffer
 op_plus
 id|offset
