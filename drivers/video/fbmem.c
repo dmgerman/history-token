@@ -3545,6 +3545,7 @@ op_star
 id|fb_info
 )paren
 (brace
+macro_line|#ifdef CONFIG_FRAMEBUFFER_CONSOLE
 r_static
 r_int
 id|fb_ever_opened
@@ -3552,7 +3553,6 @@ id|fb_ever_opened
 id|FB_MAX
 )braket
 suffix:semicolon
-macro_line|#ifdef CONFIG_FRAMEBUFFER_CONSOLE
 r_static
 r_int
 id|first
@@ -3633,6 +3633,7 @@ id|i
 op_assign
 id|fb_info
 suffix:semicolon
+macro_line|#ifdef CONFIG_FRAMEBUFFER_CONSOLE
 r_if
 c_cond
 (paren
@@ -3650,7 +3651,6 @@ id|owner
 op_assign
 id|fb_info-&gt;fbops-&gt;owner
 suffix:semicolon
-macro_line|#ifdef CONFIG_FRAMEBUFFER_CONSOLE
 multiline_comment|/*&n;&t;&t; *  We assume initial frame buffer devices can be opened this&n;&t;&t; *  many times&n;&t;&t; */
 r_for
 c_loop
@@ -3754,49 +3754,6 @@ id|last_fb_vc
 comma
 id|fbcon_is_default
 )paren
-suffix:semicolon
-)brace
-macro_line|#else
-r_if
-c_cond
-(paren
-id|owner
-)paren
-(brace
-id|__MOD_INC_USE_COUNT
-c_func
-(paren
-id|owner
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|fb_info-&gt;fbops-&gt;fb_open
-op_logical_and
-id|fb_info-&gt;fbops
-op_member_access_from_pointer
-id|fb_open
-c_func
-(paren
-id|fb_info
-comma
-l_int|0
-)paren
-)paren
-id|__MOD_DEC_USE_COUNT
-c_func
-(paren
-id|owner
-)paren
-suffix:semicolon
-)brace
-id|fb_ever_opened
-(braket
-id|i
-)braket
-op_assign
-l_int|1
 suffix:semicolon
 )brace
 macro_line|#endif
