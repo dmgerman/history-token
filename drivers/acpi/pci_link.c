@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *  pci_link.c - ACPI PCI Interrupt Link Device Driver ($Revision: 33 $)&n; *&n; *  Copyright (C) 2001, 2002 Andy Grover &lt;andrew.grover@intel.com&gt;&n; *  Copyright (C) 2001, 2002 Paul Diefenbaugh &lt;paul.s.diefenbaugh@intel.com&gt;&n; *  Copyright (C) 2002       Dominik Brodowski &lt;devel@brodo.de&gt;&n; *&n; * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or (at&n; *  your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful, but&n; *  WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU&n; *  General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License along&n; *  with this program; if not, write to the Free Software Foundation, Inc.,&n; *  59 Temple Place, Suite 330, Boston, MA 02111-1307 USA.&n; *&n; * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~&n; *&n; * TBD: &n; *      1. Support more than one IRQ resource entry per link device (index).&n; *&t;2. Implement start/stop mechanism and use ACPI Bus Driver facilities&n; *&t;   for IRQ management (e.g. start()-&gt;_SRS).&n; */
+multiline_comment|/*&n; *  pci_link.c - ACPI PCI Interrupt Link Device Driver ($Revision: 34 $)&n; *&n; *  Copyright (C) 2001, 2002 Andy Grover &lt;andrew.grover@intel.com&gt;&n; *  Copyright (C) 2001, 2002 Paul Diefenbaugh &lt;paul.s.diefenbaugh@intel.com&gt;&n; *  Copyright (C) 2002       Dominik Brodowski &lt;devel@brodo.de&gt;&n; *&n; * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or (at&n; *  your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful, but&n; *  WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU&n; *  General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License along&n; *  with this program; if not, write to the Free Software Foundation, Inc.,&n; *  59 Temple Place, Suite 330, Boston, MA 02111-1307 USA.&n; *&n; * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~&n; *&n; * TBD: &n; *      1. Support more than one IRQ resource entry per link device (index).&n; *&t;2. Implement start/stop mechanism and use ACPI Bus Driver facilities&n; *&t;   for IRQ management (e.g. start()-&gt;_SRS).&n; */
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
@@ -49,27 +49,33 @@ id|acpi_driver
 id|acpi_pci_link_driver
 op_assign
 (brace
+dot
 id|name
-suffix:colon
+op_assign
 id|ACPI_PCI_LINK_DRIVER_NAME
 comma
+dot
 r_class
-suffix:colon
+op_assign
 id|ACPI_PCI_LINK_CLASS
 comma
+dot
 id|ids
-suffix:colon
+op_assign
 id|ACPI_PCI_LINK_HID
 comma
+dot
 id|ops
-suffix:colon
+op_assign
 (brace
+dot
 id|add
-suffix:colon
+op_assign
 id|acpi_pci_link_add
 comma
+dot
 id|remove
-suffix:colon
+op_assign
 id|acpi_pci_link_remove
 comma
 )brace
