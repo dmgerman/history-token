@@ -4,9 +4,9 @@ macro_line|#include &quot;drmP.h&quot;
 macro_line|#include &quot;drm.h&quot;
 macro_line|#include &quot;r128_drm.h&quot;
 macro_line|#include &quot;r128_drv.h&quot;
-DECL|function|r128_dma_service
+DECL|function|r128_irq_handler
 id|irqreturn_t
-id|r128_dma_service
+id|r128_irq_handler
 c_func
 (paren
 id|DRM_IRQ_ARGS
