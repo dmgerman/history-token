@@ -10,7 +10,7 @@ id|ACPI_MODULE_NAME
 (paren
 l_string|&quot;dswstate&quot;
 )paren
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ds_result_insert&n; *&n; * PARAMETERS:  Object              - Object to push&n; *              walk_state          - Current Walk state&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Push an object onto this walk&squot;s result stack&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ds_result_insert&n; *&n; * PARAMETERS:  Object              - Object to push&n; *              Index               - Where to insert the object&n; *              walk_state          - Current Walk state&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Insert an object onto this walk&squot;s result stack&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_ds_result_insert
 id|acpi_ds_result_insert
@@ -175,7 +175,7 @@ id|AE_OK
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ds_result_remove&n; *&n; * PARAMETERS:  Object              - Where to return the popped object&n; *              walk_state          - Current Walk state&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Pop an object off the bottom of this walk&squot;s result stack.  In&n; *              other words, this is a FIFO.&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ds_result_remove&n; *&n; * PARAMETERS:  Object              - Where to return the popped object&n; *              Index               - Where to extract the object&n; *              walk_state          - Current Walk state&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Pop an object off the bottom of this walk&squot;s result stack.  In&n; *              other words, this is a FIFO.&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_ds_result_remove
 id|acpi_ds_result_remove
@@ -875,7 +875,7 @@ id|AE_OK
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ds_result_stack_push&n; *&n; * PARAMETERS:  Object              - Object to push&n; *              walk_state          - Current Walk state&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Push an object onto the walk_state result stack.&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ds_result_stack_push&n; *&n; * PARAMETERS:  walk_state          - Current Walk state&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Push an object onto the walk_state result stack.&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_ds_result_stack_push
 id|acpi_ds_result_stack_push
@@ -1892,7 +1892,7 @@ id|walk_state
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ds_init_aml_walk&n; *&n; * PARAMETERS:  walk_state      - New state to be initialized&n; *&n; * RETURN:      None&n; *&n; * DESCRIPTION: Initialize a walk state for a pass 1 or 2 parse tree walk&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ds_init_aml_walk&n; *&n; * PARAMETERS:  walk_state      - New state to be initialized&n; *              Op              - Current parse op&n; *              method_node     - Control method NS node, if any&n; *              aml_start       - Start of AML&n; *              aml_length      - Length of AML&n; *              Params          - Method args, if any&n; *              return_obj_desc - Where to store a return object, if any&n; *              pass_number     - 1, 2, or 3&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Initialize a walk state for a pass 1 or 2 parse tree walk&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_ds_init_aml_walk
 id|acpi_ds_init_aml_walk

@@ -136,7 +136,9 @@ id|type
 id|ACPI_REPORT_WARNING
 (paren
 (paren
-l_string|&quot;ds_scope_stack_push: type code out of range&bslash;n&quot;
+l_string|&quot;ds_scope_stack_push: Invalid object type: 0x%X&bslash;n&quot;
+comma
+id|type
 )paren
 )paren
 suffix:semicolon
@@ -209,7 +211,7 @@ id|ACPI_DEBUG_PRINT_RAW
 (paren
 id|ACPI_DB_EXEC
 comma
-l_string|&quot;[%4.4s] (%10s)&quot;
+l_string|&quot;[%4.4s] (%s)&quot;
 comma
 id|old_scope_info-&gt;scope.node-&gt;name.ascii
 comma
@@ -228,7 +230,7 @@ id|ACPI_DEBUG_PRINT_RAW
 (paren
 id|ACPI_DB_EXEC
 comma
-l_string|&quot;[&bslash;&bslash;___] (%10s)&quot;
+l_string|&quot;[&bslash;&bslash;___] (%s)&quot;
 comma
 l_string|&quot;ROOT&quot;
 )paren
@@ -322,7 +324,7 @@ id|ACPI_DEBUG_PRINT
 (paren
 id|ACPI_DB_EXEC
 comma
-l_string|&quot;[%.2d] Popped scope [%4.4s] (%10s), New scope -&gt; &quot;
+l_string|&quot;[%.2d] Popped scope [%4.4s] (%s), New scope -&gt; &quot;
 comma
 (paren
 id|u32

@@ -430,7 +430,27 @@ r_break
 suffix:semicolon
 r_default
 suffix:colon
+(brace
+)brace
 multiline_comment|/*&n;&t;&t; * For all other named opcodes, we will enter the name into the namespace.&n;&t;&t; *&n;&t;&t; * Setup the search flags.&n;&t;&t; * Since we are entering a name into the namespace, we do not want to&n;&t;&t; * enable the search-to-root upsearch.&n;&t;&t; *&n;&t;&t; * There are only two conditions where it is acceptable that the name&n;&t;&t; * already exists:&n;&t;&t; *    1) the Scope() operator can reopen a scoping object that was&n;&t;&t; *       previously defined (Scope, Method, Device, etc.)&n;&t;&t; *    2) Whenever we are parsing a deferred opcode (op_region, Buffer,&n;&t;&t; *       buffer_field, or Package), the name of the object is already&n;&t;&t; *       in the namespace.&n;&t;&t; */
+r_if
+c_cond
+(paren
+id|walk_state-&gt;deferred_node
+)paren
+(brace
+multiline_comment|/* This name is already in the namespace, get the node */
+id|node
+op_assign
+id|walk_state-&gt;deferred_node
+suffix:semicolon
+id|status
+op_assign
+id|AE_OK
+suffix:semicolon
+r_break
+suffix:semicolon
+)brace
 id|flags
 op_assign
 id|ACPI_NS_NO_UPSEARCH
@@ -1368,7 +1388,25 @@ id|AE_OK
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t;&t; * Enter the named type into the internal namespace.  We enter the name&n;&t;&t; * as we go downward in the parse tree.  Any necessary subobjects that involve&n;&t;&t; * arguments to the opcode must be created as we go back up the parse tree later.&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * Enter the named type into the internal namespace.  We enter the name&n;&t;&t; * as we go downward in the parse tree.  Any necessary subobjects that involve&n;&t;&t; * arguments to the opcode must be created as we go back up the parse tree later.&n;&t;&t; *&n;&t;&t; * Note: Name may already exist if we are executing a deferred opcode.&n;&t;&t; */
+r_if
+c_cond
+(paren
+id|walk_state-&gt;deferred_node
+)paren
+(brace
+multiline_comment|/* This name is already in the namespace, get the node */
+id|node
+op_assign
+id|walk_state-&gt;deferred_node
+suffix:semicolon
+id|status
+op_assign
+id|AE_OK
+suffix:semicolon
+r_break
+suffix:semicolon
+)brace
 id|status
 op_assign
 id|acpi_ns_lookup

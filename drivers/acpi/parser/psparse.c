@@ -1605,7 +1605,7 @@ r_default
 suffix:colon
 (brace
 )brace
-multiline_comment|/* Op is not a constant or string, append each argument */
+multiline_comment|/* Op is not a constant or string, append each argument to the Op */
 r_while
 c_loop
 (paren
@@ -1681,6 +1681,7 @@ id|walk_state-&gt;arg_types
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/* Special processing for certain opcodes */
 r_switch
 c_cond
 (paren
@@ -1690,8 +1691,7 @@ id|op-&gt;common.aml_opcode
 r_case
 id|AML_METHOD_OP
 suffix:colon
-multiline_comment|/* For a method, save the length and address of the body */
-multiline_comment|/*&n;&t;&t;&t;&t;&t; * Skip parsing of control method or opregion body,&n;&t;&t;&t;&t;&t; * because we don&squot;t have enough info in the first pass&n;&t;&t;&t;&t;&t; * to parse them correctly.&n;&t;&t;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t;&t;&t; * Skip parsing of control method&n;&t;&t;&t;&t;&t; * because we don&squot;t have enough info in the first pass&n;&t;&t;&t;&t;&t; * to parse it correctly.&n;&t;&t;&t;&t;&t; *&n;&t;&t;&t;&t;&t; * Save the length and address of the body&n;&t;&t;&t;&t;&t; */
 id|op-&gt;named.data
 op_assign
 id|parser_state-&gt;aml
@@ -1707,7 +1707,7 @@ op_minus
 id|parser_state-&gt;aml
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t;&t;&t;&t;&t; * Skip body of method.  For op_regions, we must continue&n;&t;&t;&t;&t;&t; * parsing because the opregion is not a standalone&n;&t;&t;&t;&t;&t; * package (We don&squot;t know where the end is).&n;&t;&t;&t;&t;&t; */
+multiline_comment|/* Skip body of method */
 id|parser_state-&gt;aml
 op_assign
 id|parser_state-&gt;pkg_end
@@ -1747,7 +1747,7 @@ id|acpi_ds_exec_begin_op
 )paren
 )paren
 (brace
-multiline_comment|/*&n;&t;&t;&t;&t;&t;&t; * Skip parsing of&n;&t;&t;&t;&t;&t;&t; * because we don&squot;t have enough info in the first pass&n;&t;&t;&t;&t;&t;&t; * to parse them correctly.&n;&t;&t;&t;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t;&t;&t;&t; * Skip parsing of Buffers and Packages&n;&t;&t;&t;&t;&t;&t; * because we don&squot;t have enough info in the first pass&n;&t;&t;&t;&t;&t;&t; * to parse them correctly.&n;&t;&t;&t;&t;&t;&t; */
 id|op-&gt;named.data
 op_assign
 id|aml_op_start
@@ -1763,7 +1763,7 @@ op_minus
 id|aml_op_start
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t;&t;&t;&t;&t;&t; * Skip body&n;&t;&t;&t;&t;&t;&t; */
+multiline_comment|/* Skip body */
 id|parser_state-&gt;aml
 op_assign
 id|parser_state-&gt;pkg_end
