@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * smc91x.c&n; * This is a driver for SMSC&squot;s 91C9x/91C1xx single-chip Ethernet devices.&n; *&n; * Copyright (C) 1996 by Erik Stahlman&n; * Copyright (C) 2001 Standard Microsystems Corporation&n; *&t;Developed by Simple Network Magic Corporation&n; * Copyright (C) 2003 Monta Vista Software, Inc.&n; *&t;Unified SMC91x driver by Nicolas Pitre&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; *&n; * Arguments:&n; * &t;io&t;= for the base address&n; *&t;irq&t;= for the IRQ&n; *&t;nowait&t;= 0 for normal wait states, 1 eliminates additional wait states&n; *&n; * original author:&n; * &t;Erik Stahlman &lt;erik@vt.edu&gt;&n; *&n; * hardware multicast code:&n; *    Peter Cammaert &lt;pc@denkart.be&gt;&n; *&n; * contributors:&n; * &t;Daris A Nevil &lt;dnevil@snmc.com&gt;&n; *      Nicolas Pitre &lt;nico@cam.org&gt;&n; *&t;Russell King &lt;rmk@arm.linux.org.uk&gt;&n; *&n; * History:&n; *   08/20/00  Arnaldo Melo       fix kfree(skb) in smc_hardware_send_packet&n; *   12/15/00  Christian Jullien  fix &quot;Warning: kfree_skb on hard IRQ&quot;&n; *   03/16/01  Daris A Nevil      modified smc9194.c for use with LAN91C111&n; *   08/22/01  Scott Anderson     merge changes from smc9194 to smc91111&n; *   08/21/01  Pramod B Bhardwaj  added support for RevB of LAN91C111&n; *   12/20/01  Jeff Sutherland    initial port to Xscale PXA with DMA support&n; *   04/07/03  Nicolas Pitre      unified SMC91x driver, killed irq races,&n; *                                more bus abstraction, big cleanup, etc.&n; *   29/09/03  Russell King       - add driver model support&n; *                                - ethtool support&n; *                                - convert to use generic MII interface&n; *                                - add link up/down notification&n; *                                - don&squot;t try to handle full negotiation in&n; *                                  smc_phy_configure&n; *                                - clean up (and fix stack overrun) in PHY&n; *                                  MII read/write functions&n; *   09/15/04  Hayato Fujiwara    - Add m32r support.&n; *                                - Modify for SMP kernel; Change spin-locked&n; *                                  regions.&n; */
+multiline_comment|/*&n; * smc91x.c&n; * This is a driver for SMSC&squot;s 91C9x/91C1xx single-chip Ethernet devices.&n; *&n; * Copyright (C) 1996 by Erik Stahlman&n; * Copyright (C) 2001 Standard Microsystems Corporation&n; *&t;Developed by Simple Network Magic Corporation&n; * Copyright (C) 2003 Monta Vista Software, Inc.&n; *&t;Unified SMC91x driver by Nicolas Pitre&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; *&n; * Arguments:&n; * &t;io&t;= for the base address&n; *&t;irq&t;= for the IRQ&n; *&t;nowait&t;= 0 for normal wait states, 1 eliminates additional wait states&n; *&n; * original author:&n; * &t;Erik Stahlman &lt;erik@vt.edu&gt;&n; *&n; * hardware multicast code:&n; *    Peter Cammaert &lt;pc@denkart.be&gt;&n; *&n; * contributors:&n; * &t;Daris A Nevil &lt;dnevil@snmc.com&gt;&n; *      Nicolas Pitre &lt;nico@cam.org&gt;&n; *&t;Russell King &lt;rmk@arm.linux.org.uk&gt;&n; *&n; * History:&n; *   08/20/00  Arnaldo Melo       fix kfree(skb) in smc_hardware_send_packet&n; *   12/15/00  Christian Jullien  fix &quot;Warning: kfree_skb on hard IRQ&quot;&n; *   03/16/01  Daris A Nevil      modified smc9194.c for use with LAN91C111&n; *   08/22/01  Scott Anderson     merge changes from smc9194 to smc91111&n; *   08/21/01  Pramod B Bhardwaj  added support for RevB of LAN91C111&n; *   12/20/01  Jeff Sutherland    initial port to Xscale PXA with DMA support&n; *   04/07/03  Nicolas Pitre      unified SMC91x driver, killed irq races,&n; *                                more bus abstraction, big cleanup, etc.&n; *   29/09/03  Russell King       - add driver model support&n; *                                - ethtool support&n; *                                - convert to use generic MII interface&n; *                                - add link up/down notification&n; *                                - don&squot;t try to handle full negotiation in&n; *                                  smc_phy_configure&n; *                                - clean up (and fix stack overrun) in PHY&n; *                                  MII read/write functions&n; */
 DECL|variable|version
 r_static
 r_const
@@ -463,10 +463,10 @@ mdefine_line|#define PRINT_PKT(x...)  do { } while(0)
 macro_line|#endif
 multiline_comment|/* this enables an interrupt in the interrupt mask register */
 DECL|macro|SMC_ENABLE_INT
-mdefine_line|#define SMC_ENABLE_INT(x) do {&t;&t;&t;&t;&t;&t;&bslash;&n;&t;unsigned char mask;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;mask = SMC_GET_INT_MASK();&t;&t;&t;&t;&t;&bslash;&n;&t;mask |= (x);&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;SMC_SET_INT_MASK(mask);&t;&t;&t;&t;&t;&t;&bslash;&n;} while (0)
+mdefine_line|#define SMC_ENABLE_INT(x) do {&t;&t;&t;&t;&t;&t;&bslash;&n;&t;unsigned long flags;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;unsigned char mask;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;spin_lock_irqsave(&amp;lp-&gt;lock, flags);&t;&t;&t;&t;&bslash;&n;&t;mask = SMC_GET_INT_MASK();&t;&t;&t;&t;&t;&bslash;&n;&t;mask |= (x);&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;SMC_SET_INT_MASK(mask);&t;&t;&t;&t;&t;&t;&bslash;&n;&t;spin_unlock_irqrestore(&amp;lp-&gt;lock, flags);&t;&t;&t;&bslash;&n;} while (0)
 multiline_comment|/* this disables an interrupt from the interrupt mask register */
 DECL|macro|SMC_DISABLE_INT
-mdefine_line|#define SMC_DISABLE_INT(x) do {&t;&t;&t;&t;&t;&t;&bslash;&n;&t;unsigned char mask;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;mask = SMC_GET_INT_MASK();&t;&t;&t;&t;&t;&bslash;&n;&t;mask &amp;= ~(x);&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;SMC_SET_INT_MASK(mask);&t;&t;&t;&t;&t;&t;&bslash;&n;} while (0)
+mdefine_line|#define SMC_DISABLE_INT(x) do {&t;&t;&t;&t;&t;&t;&bslash;&n;&t;unsigned long flags;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;unsigned char mask;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;spin_lock_irqsave(&amp;lp-&gt;lock, flags);&t;&t;&t;&t;&bslash;&n;&t;mask = SMC_GET_INT_MASK();&t;&t;&t;&t;&t;&bslash;&n;&t;mask &amp;= ~(x);&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;SMC_SET_INT_MASK(mask);&t;&t;&t;&t;&t;&t;&bslash;&n;&t;spin_unlock_irqrestore(&amp;lp-&gt;lock, flags);&t;&t;&t;&bslash;&n;} while (0)
 multiline_comment|/*&n; * Wait while MMU is busy.  This is usually in the order of a few nanosecs&n; * if at all, but let&squot;s avoid deadlocking the system if the hardware&n; * decides to go south.&n; */
 DECL|macro|SMC_WAIT_MMU_BUSY
 mdefine_line|#define SMC_WAIT_MMU_BUSY() do {&t;&t;&t;&t;&t;&bslash;&n;&t;if (unlikely(SMC_GET_MMU_CMD() &amp; MC_BUSY)) {&t;&t;&t;&bslash;&n;&t;&t;unsigned long timeout = jiffies + 2;&t;&t;&t;&bslash;&n;&t;&t;while (SMC_GET_MMU_CMD() &amp; MC_BUSY) {&t;&t;&t;&bslash;&n;&t;&t;&t;if (time_after(jiffies, timeout)) {&t;&t;&bslash;&n;&t;&t;&t;&t;printk(&quot;%s: timeout %s line %d&bslash;n&quot;,&t;&bslash;&n;&t;&t;&t;&t;&t;dev-&gt;name, __FILE__, __LINE__);&t;&bslash;&n;&t;&t;&t;&t;break;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;}&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;cpu_relax();&t;&t;&t;&t;&t;&bslash;&n;&t;&t;}&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;}&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;} while (0)
@@ -1458,10 +1458,6 @@ id|status
 comma
 id|saved_bank
 suffix:semicolon
-r_int
-r_int
-id|flags
-suffix:semicolon
 id|DBG
 c_func
 (paren
@@ -1472,15 +1468,6 @@ comma
 id|dev-&gt;name
 comma
 id|__FUNCTION__
-)paren
-suffix:semicolon
-id|spin_lock_irqsave
-c_func
-(paren
-op_amp
-id|lp-&gt;lock
-comma
-id|flags
 )paren
 suffix:semicolon
 id|BUG_ON
@@ -1549,15 +1536,6 @@ id|dev_kfree_skb
 c_func
 (paren
 id|skb
-)paren
-suffix:semicolon
-id|spin_unlock_irqrestore
-c_func
-(paren
-op_amp
-id|lp-&gt;lock
-comma
-id|flags
 )paren
 suffix:semicolon
 r_return
@@ -1686,15 +1664,6 @@ id|SMC_SELECT_BANK
 c_func
 (paren
 id|saved_bank
-)paren
-suffix:semicolon
-id|spin_unlock_irqrestore
-c_func
-(paren
-op_amp
-id|lp-&gt;lock
-comma
-id|flags
 )paren
 suffix:semicolon
 r_return
@@ -3782,13 +3751,6 @@ comma
 id|__FUNCTION__
 )paren
 suffix:semicolon
-id|spin_lock
-c_func
-(paren
-op_amp
-id|lp-&gt;lock
-)paren
-suffix:semicolon
 id|saved_bank
 op_assign
 id|SMC_CURRENT_BANK
@@ -3895,6 +3857,13 @@ op_logical_neg
 id|status
 )paren
 r_break
+suffix:semicolon
+id|spin_lock
+c_func
+(paren
+op_amp
+id|lp-&gt;lock
+)paren
 suffix:semicolon
 r_if
 c_cond
@@ -4165,6 +4134,13 @@ id|dev-&gt;name
 )paren
 suffix:semicolon
 )brace
+id|spin_unlock
+c_func
+(paren
+op_amp
+id|lp-&gt;lock
+)paren
+suffix:semicolon
 )brace
 r_while
 c_loop
@@ -4206,13 +4182,6 @@ op_minus
 id|timeout
 )paren
 suffix:semicolon
-id|spin_unlock
-c_func
-(paren
-op_amp
-id|lp-&gt;lock
-)paren
-suffix:semicolon
 multiline_comment|/*&n;&t; * We return IRQ_HANDLED unconditionally here even if there was&n;&t; * nothing to do.  There is a possibility that a packet might&n;&t; * get enqueued into the chip right after TX_EMPTY_INT is raised&n;&t; * but just before the CPU acknowledges the IRQ.&n;&t; * Better take an unneeded IRQ in some occasions than complexifying&n;&t; * the code for all cases.&n;&t; */
 r_return
 id|IRQ_HANDLED
@@ -4240,19 +4209,6 @@ id|netdev_priv
 c_func
 (paren
 id|dev
-)paren
-suffix:semicolon
-r_int
-r_int
-id|flags
-suffix:semicolon
-id|spin_lock_irqsave
-c_func
-(paren
-op_amp
-id|lp-&gt;lock
-comma
-id|flags
 )paren
 suffix:semicolon
 id|DBG
@@ -4324,15 +4280,6 @@ multiline_comment|/* We can accept TX packets again */
 id|dev-&gt;trans_start
 op_assign
 id|jiffies
-suffix:semicolon
-id|spin_unlock_irqrestore
-c_func
-(paren
-op_amp
-id|lp-&gt;lock
-comma
-id|flags
-)paren
 suffix:semicolon
 id|netif_wake_queue
 c_func
@@ -4772,7 +4719,10 @@ c_func
 (paren
 l_int|2
 comma
+(paren
+id|KERN_DEBUG
 l_string|&quot;smc_open: no valid ethernet hw addr&bslash;n&quot;
+)paren
 )paren
 suffix:semicolon
 r_return
@@ -6195,7 +6145,6 @@ id|retval
 r_goto
 id|err_out
 suffix:semicolon
-macro_line|#if !defined(__m32r__)
 id|set_irq_type
 c_func
 (paren
@@ -6204,7 +6153,6 @@ comma
 id|IRQT_RISING
 )paren
 suffix:semicolon
-macro_line|#endif
 macro_line|#ifdef SMC_USE_PXA_DMA
 (brace
 r_int
