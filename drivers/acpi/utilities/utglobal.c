@@ -1446,6 +1446,7 @@ op_star
 )paren
 id|object
 suffix:semicolon
+multiline_comment|/* Must return a string of exactly 4 characters == ACPI_NAME_SIZE */
 r_if
 c_cond
 (paren
@@ -1455,23 +1456,34 @@ id|object
 (brace
 r_return
 (paren
-l_string|&quot;NULL NODE&quot;
+l_string|&quot;NULL&quot;
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/* Check for Root node */
 r_if
 c_cond
+(paren
 (paren
 id|object
 op_eq
 id|ACPI_ROOT_OBJECT
 )paren
-(brace
-id|node
-op_assign
+op_logical_or
+(paren
+id|object
+op_eq
 id|acpi_gbl_root_node
+)paren
+)paren
+(brace
+r_return
+(paren
+l_string|&quot;&bslash;&quot;&bslash;&bslash;&bslash;&quot; &quot;
+)paren
 suffix:semicolon
 )brace
+multiline_comment|/* Descriptor must be a namespace node */
 r_if
 c_cond
 (paren
@@ -1482,10 +1494,11 @@ id|ACPI_DESC_TYPE_NAMED
 (brace
 r_return
 (paren
-l_string|&quot;****&quot;
+l_string|&quot;####&quot;
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/* Name must be a valid ACPI name */
 r_if
 c_cond
 (paren
@@ -1503,10 +1516,11 @@ id|node-&gt;name.ascii
 (brace
 r_return
 (paren
-l_string|&quot;----&quot;
+l_string|&quot;????&quot;
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/* Return the name */
 r_return
 (paren
 id|node-&gt;name.ascii
@@ -1836,19 +1850,6 @@ id|ACPI_FUNCTION_TRACE
 (paren
 l_string|&quot;ut_init_globals&quot;
 )paren
-suffix:semicolon
-multiline_comment|/* Runtime configuration */
-id|acpi_gbl_create_osi_method
-op_assign
-id|TRUE
-suffix:semicolon
-id|acpi_gbl_all_methods_serialized
-op_assign
-id|FALSE
-suffix:semicolon
-id|acpi_gbl_leave_wake_gpes_disabled
-op_assign
-id|TRUE
 suffix:semicolon
 multiline_comment|/* Memory allocation and cache lists */
 id|ACPI_MEMSET

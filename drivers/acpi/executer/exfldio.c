@@ -537,11 +537,9 @@ op_eq
 id|AE_NOT_EXIST
 )paren
 (brace
-id|ACPI_DEBUG_PRINT
+id|ACPI_REPORT_ERROR
 (paren
 (paren
-id|ACPI_DB_ERROR
-comma
 l_string|&quot;Region %s(%X) has no handler&bslash;n&quot;
 comma
 id|acpi_ut_get_region_name

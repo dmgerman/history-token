@@ -1228,8 +1228,15 @@ r_struct
 id|acpi_walk_state
 op_star
 id|walk_state
+comma
+id|u8
+id|implicit_conversion
 )paren
 suffix:semicolon
+DECL|macro|ACPI_IMPLICIT_CONVERSION
+mdefine_line|#define ACPI_IMPLICIT_CONVERSION        TRUE
+DECL|macro|ACPI_NO_IMPLICIT_CONVERSION
+mdefine_line|#define ACPI_NO_IMPLICIT_CONVERSION     FALSE
 multiline_comment|/*&n; * exstoren&n; */
 id|acpi_status
 id|acpi_ex_resolve_object
