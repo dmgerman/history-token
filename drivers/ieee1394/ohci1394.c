@@ -12884,7 +12884,7 @@ id|quadlet_t
 op_star
 )paren
 comma
-id|GFP_KERNEL
+id|GFP_ATOMIC
 )paren
 suffix:semicolon
 id|d-&gt;buf_bus
@@ -12899,7 +12899,7 @@ r_sizeof
 id|dma_addr_t
 )paren
 comma
-id|GFP_KERNEL
+id|GFP_ATOMIC
 )paren
 suffix:semicolon
 r_if
@@ -12978,7 +12978,7 @@ id|dma_cmd
 op_star
 )paren
 comma
-id|GFP_KERNEL
+id|GFP_ATOMIC
 )paren
 suffix:semicolon
 id|d-&gt;prg_bus
@@ -12993,7 +12993,7 @@ r_sizeof
 id|dma_addr_t
 )paren
 comma
-id|GFP_KERNEL
+id|GFP_ATOMIC
 )paren
 suffix:semicolon
 r_if
@@ -13066,7 +13066,7 @@ c_func
 (paren
 id|d-&gt;split_buf_size
 comma
-id|GFP_KERNEL
+id|GFP_ATOMIC
 )paren
 suffix:semicolon
 r_if
