@@ -1066,28 +1066,12 @@ id|shost-&gt;hostt-&gt;present
 op_decrement
 suffix:semicolon
 multiline_comment|/* Cleanup proc and driverfs */
-macro_line|#ifdef CONFIG_PROC_FS
 id|scsi_proc_host_rm
 c_func
 (paren
 id|shost
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|shost-&gt;hostt-&gt;present
-)paren
-id|remove_proc_entry
-c_func
-(paren
-id|shost-&gt;hostt-&gt;proc_name
-comma
-id|proc_scsi
-)paren
-suffix:semicolon
-macro_line|#endif
 id|device_unregister
 c_func
 (paren
@@ -1475,27 +1459,12 @@ op_amp
 id|scsi_host_list_lock
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_PROC_FS
-multiline_comment|/* Add the new driver to /proc/scsi if not already there */
-r_if
-c_cond
-(paren
-op_logical_neg
-id|shost_tp-&gt;proc_dir
-)paren
-id|scsi_proc_host_mkdir
-c_func
-(paren
-id|shost_tp
-)paren
-suffix:semicolon
 id|scsi_proc_host_add
 c_func
 (paren
 id|shost
 )paren
 suffix:semicolon
-macro_line|#endif
 id|strncpy
 c_func
 (paren

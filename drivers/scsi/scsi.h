@@ -417,6 +417,10 @@ DECL|macro|SYNC_RESET
 mdefine_line|#define SYNC_RESET      0x40
 multiline_comment|/*&n; * This is the crap from the old error handling code.  We have it in a special&n; * place so that we can more easily delete it later on.&n; */
 macro_line|#include &quot;scsi_obsolete.h&quot;
+multiline_comment|/*&n; * Forward-declaration of structs for prototypes.&n; */
+r_struct
+id|Scsi_Host
+suffix:semicolon
 multiline_comment|/*&n; * Add some typedefs so that we can prototyope a bunch of the functions.&n; */
 DECL|typedef|Scsi_Device
 r_typedef
@@ -1068,21 +1072,41 @@ op_star
 )paren
 suffix:semicolon
 multiline_comment|/*&n; * Prototypes for functions in scsi_proc.c&n; */
+macro_line|#ifdef CONFIG_PROC_FS
 r_extern
-r_void
-id|proc_print_scsidevice
+r_int
+id|scsi_init_procfs
 c_func
 (paren
-id|Scsi_Device
+r_void
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|scsi_exit_procfs
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|scsi_proc_host_add
+c_func
+(paren
+r_struct
+id|Scsi_Host
 op_star
-comma
-r_char
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|scsi_proc_host_rm
+c_func
+(paren
+r_struct
+id|Scsi_Host
 op_star
-comma
-r_int
-op_star
-comma
-r_int
 )paren
 suffix:semicolon
 r_extern
@@ -1091,6 +1115,57 @@ id|proc_dir_entry
 op_star
 id|proc_scsi
 suffix:semicolon
+macro_line|#else
+DECL|function|scsi_init_procfs
+r_static
+r_inline
+r_int
+id|scsi_init_procfs
+c_func
+(paren
+r_void
+)paren
+(brace
+r_return
+l_int|0
+suffix:semicolon
+)brace
+suffix:semicolon
+DECL|function|scsi_exit_procfs
+r_static
+r_inline
+r_void
+id|scsi_exit_procfs
+c_func
+(paren
+r_void
+)paren
+(brace
+)brace
+suffix:semicolon
+r_static
+r_inline
+r_void
+id|scsi_proc_host_add
+c_func
+(paren
+r_struct
+id|Scsi_Host
+op_star
+)paren
+suffix:semicolon
+r_static
+r_inline
+r_void
+id|scsi_proc_host_rm
+c_func
+(paren
+r_struct
+id|Scsi_Host
+op_star
+)paren
+suffix:semicolon
+macro_line|#endif /* CONFIG_PROC_FS */
 multiline_comment|/*&n; * Prototypes for functions in constants.c&n; * Some of these used to live in constants.h&n; */
 r_extern
 r_void
@@ -1269,6 +1344,20 @@ id|compatible
 suffix:semicolon
 multiline_comment|/* for use with scsi_static_device_list entries */
 )brace
+suffix:semicolon
+r_extern
+r_struct
+id|list_head
+id|scsi_dev_info_list
+suffix:semicolon
+r_extern
+r_int
+id|scsi_dev_info_list_add_str
+c_func
+(paren
+r_char
+op_star
+)paren
 suffix:semicolon
 multiline_comment|/*&n; *  The scsi_device struct contains what we know about each given scsi&n; *  device.&n; *&n; * FIXME(eric) - One of the great regrets that I have is that I failed to&n; * define these structure elements as something like sdev_foo instead of foo.&n; * This would make it so much easier to grep through sources and so forth.&n; * I propose that all new elements that get added to these structures follow&n; * this convention.  As time goes on and as people have the stomach for it,&n; * it should be possible to go back and retrofit at least some of the elements&n; * here with with the prefix.&n; */
 DECL|struct|scsi_device
