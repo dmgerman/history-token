@@ -2808,7 +2808,7 @@ op_logical_neg
 id|irr
 op_amp
 (paren
-l_int|1
+l_int|1UL
 op_lshift
 id|irr_bit
 )paren
