@@ -56,9 +56,9 @@ multiline_comment|/* Version block */
 DECL|macro|PWC_MAJOR
 mdefine_line|#define PWC_MAJOR&t;8
 DECL|macro|PWC_MINOR
-mdefine_line|#define PWC_MINOR&t;7
+mdefine_line|#define PWC_MINOR&t;9
 DECL|macro|PWC_VERSION
-mdefine_line|#define PWC_VERSION &t;&quot;8.7&quot;
+mdefine_line|#define PWC_VERSION &t;&quot;8.9&quot;
 DECL|macro|PWC_NAME
 mdefine_line|#define PWC_NAME &t;&quot;pwc&quot;
 multiline_comment|/* Turn certain features on/off */
@@ -238,7 +238,7 @@ DECL|member|vpalette
 r_int
 id|vpalette
 suffix:semicolon
-multiline_comment|/* YUV, RGB24, RGB32, etc */
+multiline_comment|/* YUV */
 DECL|member|vframe_count
 r_int
 id|vframe_count
@@ -284,6 +284,11 @@ r_char
 id|vsync
 suffix:semicolon
 multiline_comment|/* used by isoc handler */
+DECL|member|vmirror
+r_char
+id|vmirror
+suffix:semicolon
+multiline_comment|/* for ToUCaM series */
 multiline_comment|/* The image acquisition requires 3 to 4 steps:&n;      1. data is gathered in short packets from the USB controller&n;      2. data is synchronized and packed into a frame buffer&n;      3a. in case data is compressed, decompress it directly into image buffer&n;      3b. in case data is uncompressed, copy into image buffer with viewport&n;      4. data is transfered to the user process&n;&n;      Note that MAX_ISO_BUFS != MAX_FRAMES != MAX_IMAGES.... &n;      We have in effect a back-to-back-double-buffer system.&n;    */
 multiline_comment|/* 1: isoc */
 DECL|member|sbuf

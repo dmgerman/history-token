@@ -1,22 +1,18 @@
-multiline_comment|/* Linux driver for Philips webcam &n;   USB and Video4Linux interface part.&n;   (C) 1999-2001 Nemosoft Unv.&n;&n;   This program is free software; you can redistribute it and/or modify&n;   it under the terms of the GNU General Public License as published by&n;   the Free Software Foundation; either version 2 of the License, or&n;   (at your option) any later version.&n;&n;   This program is distributed in the hope that it will be useful,&n;   but WITHOUT ANY WARRANTY; without even the implied warranty of&n;   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n;   GNU General Public License for more details.&n;&n;   You should have received a copy of the GNU General Public License&n;   along with this program; if not, write to the Free Software&n;   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n;&n;*/
+multiline_comment|/* Linux driver for Philips webcam &n;   USB and Video4Linux interface part.&n;   (C) 1999-2002 Nemosoft Unv.&n;&n;   This program is free software; you can redistribute it and/or modify&n;   it under the terms of the GNU General Public License as published by&n;   the Free Software Foundation; either version 2 of the License, or&n;   (at your option) any later version.&n;&n;   This program is distributed in the hope that it will be useful,&n;   but WITHOUT ANY WARRANTY; without even the implied warranty of&n;   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n;   GNU General Public License for more details.&n;&n;   You should have received a copy of the GNU General Public License&n;   along with this program; if not, write to the Free Software&n;   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n;&n;*/
 multiline_comment|/*  &n;   This code forms the interface between the USB layers and the Philips&n;   specific stuff. Some adanved stuff of the driver falls under an&n;   NDA, signed between me and Philips B.V., Eindhoven, the Netherlands, and&n;   is thus not distributed in source form. The binary pwcx.o module &n;   contains the code that falls under the NDA.&n;   &n;   In case you&squot;re wondering: &squot;pwc&squot; stands for &quot;Philips WebCam&quot;, but &n;   I really didn&squot;t want to type &squot;philips_web_cam&squot; every time (I&squot;m lazy as&n;   any Linux kernel hacker, but I don&squot;t like uncomprehensible abbreviations&n;   without explanation).&n;   &n;   Oh yes, convention: to disctinguish between all the various pointers to&n;   device-structures, I use these names for the pointer variables:&n;   udev: struct usb_device *&n;   vdev: struct video_device *&n;   pdev: struct pwc_devive *&n;*/
-multiline_comment|/* Contributors:&n;   - Alvarado: adding whitebalance code&n;   - Alistar Moire: QuickCam 3000 Pro device/product ID&n;   - Tony Hoyle: Creative Labs Webcam 5 device/product ID&n;   - Mark Burazin: solving hang in VIDIOCSYNC when camera gets unplugged&n;   - Jk Fang: SOTEC device/product ID&n;*/
+multiline_comment|/* Contributors:&n;   - Alvarado: adding whitebalance code&n;   - Alistar Moire: QuickCam 3000 Pro device/product ID&n;   - Tony Hoyle: Creative Labs Webcam 5 device/product ID&n;   - Mark Burazin: solving hang in VIDIOCSYNC when camera gets unplugged&n;   - Jk Fang: SOTEC Afina Eye ID&n;   - Xavier Roche: QuickCam Pro 4000 ID&n;   - Jens Knudsen: QuickCam Zoom ID&n;   - J. Debert: QuickCam for Notebooks ID&n;*/
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
+macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/poll.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/vmalloc.h&gt;
 macro_line|#include &lt;linux/wrapper.h&gt;
-macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &quot;pwc.h&quot;
 macro_line|#include &quot;pwc-ioctl.h&quot;
 macro_line|#include &quot;pwc-uncompress.h&quot;
-macro_line|#if !defined(MAP_NR)
-DECL|macro|MAP_NR
-mdefine_line|#define MAP_NR(a) virt_to_page(a)
-macro_line|#endif
 multiline_comment|/* Function prototypes and driver templates */
 multiline_comment|/* hotplug device table support */
 DECL|variable|pwc_device_table
@@ -38,6 +34,7 @@ l_int|0x0302
 )paren
 )brace
 comma
+multiline_comment|/* Philips models */
 (brace
 id|USB_DEVICE
 c_func
@@ -128,6 +125,7 @@ l_int|0x0001
 )paren
 )brace
 comma
+multiline_comment|/* Askey */
 (brace
 id|USB_DEVICE
 c_func
@@ -138,6 +136,40 @@ l_int|0x08b0
 )paren
 )brace
 comma
+multiline_comment|/* Logitech QuickCam Pro 3000 */
+(brace
+id|USB_DEVICE
+c_func
+(paren
+l_int|0x046D
+comma
+l_int|0x08b1
+)paren
+)brace
+comma
+multiline_comment|/* Logitech QuickCam for Notebooks */
+(brace
+id|USB_DEVICE
+c_func
+(paren
+l_int|0x046D
+comma
+l_int|0x08b2
+)paren
+)brace
+comma
+multiline_comment|/* Logitech QuickCam Pro 4000 */
+(brace
+id|USB_DEVICE
+c_func
+(paren
+l_int|0x046D
+comma
+l_int|0x08b3
+)paren
+)brace
+comma
+multiline_comment|/* Logitech QuickCam Zoom */
 (brace
 id|USB_DEVICE
 c_func
@@ -148,6 +180,7 @@ l_int|0x9000
 )paren
 )brace
 comma
+multiline_comment|/* Samsung */
 (brace
 id|USB_DEVICE
 c_func
@@ -168,6 +201,7 @@ l_int|0x400C
 )paren
 )brace
 comma
+multiline_comment|/* Creative Webcam 5 */
 (brace
 id|USB_DEVICE
 c_func
@@ -175,6 +209,28 @@ c_func
 l_int|0x04CC
 comma
 l_int|0x8116
+)paren
+)brace
+comma
+multiline_comment|/* Afina Eye */
+(brace
+id|USB_DEVICE
+c_func
+(paren
+l_int|0x0d81
+comma
+l_int|0x1910
+)paren
+)brace
+comma
+multiline_comment|/* Visionite */
+(brace
+id|USB_DEVICE
+c_func
+(paren
+l_int|0x0d81
+comma
+l_int|0x1900
 )paren
 )brace
 comma
@@ -313,7 +369,7 @@ r_static
 r_int
 id|led_on
 op_assign
-l_int|1
+l_int|100
 comma
 id|led_off
 op_assign
@@ -570,7 +626,7 @@ comma
 )brace
 suffix:semicolon
 multiline_comment|/***************************************************************************/
-multiline_comment|/* Okay, this is some magic that I worked out and the reasoning behind it...&n;&n;   The biggest problem with any USB device is of course: &quot;what to do &n;   when the user unplugs the device while it is in use by an application?&quot;&n;   We have several options:&n;   1) Curse them with the 7 plagues when they do (requires divine intervention)&n;   2) Tell them not to (won&squot;t work: they&squot;ll do it anyway)&n;   3) Oops the kernel (this will have a negative effect on a user&squot;s uptime)&n;   4) Do something sensible.&n;   &n;   Of course, we go for option 4.&n;&n;   It happens that this device will be linked to two times, once from&n;   usb_device and once from the video_device in their respective &squot;private&squot;&n;   pointers. This is done when the device is probed() and all initialization&n;   succeeded. The pwc_device struct links back to both structures.&n;&n;   When a device is unplugged while in use it will be removed from the &n;   list of known USB devices; I also de-register as a V4L device, but &n;   unfortunately I can&squot;t free the memory since the struct is still in use&n;   by the file descriptor. This free-ing is then deferend until the first&n;   opportunity. Crude, but it works.&n;   &n;   A small &squot;advantage&squot; is that if a user unplugs the cam and plugs it back&n;   in, it should get assigned the same video device minor, but unfortunately&n;   it&squot;s non-trivial to re-link the cam back to the video device... (that &n;   would surely be magic! :))&n;*/
+multiline_comment|/* Okay, this is some magic that I worked out and the reasoning behind it...&n;&n;   The biggest problem with any USB device is of course: &quot;what to do &n;   when the user unplugs the device while it is in use by an application?&quot;&n;   We have several options:&n;   1) Curse them with the 7 plagues when they do (requires divine intervention)&n;   2) Tell them not to (won&squot;t work: they&squot;ll do it anyway)&n;   3) Oops the kernel (this will have a negative effect on a user&squot;s uptime)&n;   4) Do something sensible.&n;   &n;   Of course, we go for option 4.&n;&n;   It happens that this device will be linked to two times, once from&n;   usb_device and once from the video_device in their respective &squot;private&squot;&n;   pointers. This is done when the device is probed() and all initialization&n;   succeeded. The pwc_device struct links back to both structures.&n;&n;   When a device is unplugged while in use it will be removed from the &n;   list of known USB devices; I also de-register it as a V4L device, but &n;   unfortunately I can&squot;t free the memory since the struct is still in use&n;   by the file descriptor. This free-ing is then deferend until the first&n;   opportunity. Crude, but it works.&n;   &n;   A small &squot;advantage&squot; is that if a user unplugs the cam and plugs it back&n;   in, it should get assigned the same video device minor, but unfortunately&n;   it&squot;s non-trivial to re-link the cam back to the video device... (that &n;   would surely be magic! :))&n;*/
 multiline_comment|/***************************************************************************/
 multiline_comment|/* Private functions */
 multiline_comment|/* Here we want the physical address of the memory.&n; * This is used when initializing the contents of the area.&n; */
@@ -832,7 +888,7 @@ c_func
 (paren
 id|TRACE_MEMORY
 comma
-l_string|&quot;Entering allocate_buffers(%p).&bslash;n&quot;
+l_string|&quot;&gt;&gt; pwc_allocate_buffers(pdev = 0x%p)&bslash;n&quot;
 comma
 id|pdev
 )paren
@@ -1271,12 +1327,16 @@ id|i
 op_assign
 l_int|NULL
 suffix:semicolon
+id|kbuf
+op_assign
+l_int|NULL
+suffix:semicolon
 id|Trace
 c_func
 (paren
 id|TRACE_MEMORY
 comma
-l_string|&quot;Leaving pwc_allocate_buffers().&bslash;n&quot;
+l_string|&quot;&lt;&lt; pwc_allocate_buffers()&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -2076,7 +2136,7 @@ op_mod
 id|default_mbufs
 suffix:semicolon
 )brace
-multiline_comment|/* 2001-10-14: The YUV420 is still there, but you can only set it from within &n;   a program (YUV420P being the default) */
+multiline_comment|/* 2002-10-11: YUV420P is the only palette remaining. */
 DECL|function|pwc_set_palette
 r_static
 r_int
@@ -2095,10 +2155,6 @@ id|pal
 r_if
 c_cond
 (paren
-id|pal
-op_eq
-id|VIDEO_PALETTE_YUV420
-op_logical_or
 id|pal
 op_eq
 id|VIDEO_PALETTE_YUV420P
@@ -2244,7 +2300,19 @@ c_func
 (paren
 id|TRACE_OPEN
 comma
-l_string|&quot;pwc_isoc_handler(): URB unlinked.&bslash;n&quot;
+l_string|&quot;pwc_isoc_handler(): URB (%p) unlinked %ssynchronuously.&bslash;n&quot;
+comma
+id|urb
+comma
+id|urb-&gt;status
+op_eq
+op_minus
+id|ENOENT
+ques
+c_cond
+l_string|&quot;&quot;
+suffix:colon
+l_string|&quot;a&quot;
 )paren
 suffix:semicolon
 r_return
@@ -2590,13 +2658,100 @@ id|fbuf-&gt;sequence
 suffix:semicolon
 macro_line|#endif
 id|pdev-&gt;drop_frames
-op_assign
+op_add_assign
 l_int|2
 suffix:semicolon
 id|pdev-&gt;vframes_error
 op_increment
 suffix:semicolon
 )brace
+r_if
+c_cond
+(paren
+(paren
+id|ptr
+(braket
+l_int|0
+)braket
+op_xor
+id|pdev-&gt;vmirror
+)paren
+op_amp
+l_int|0x01
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|ptr
+(braket
+l_int|0
+)braket
+op_amp
+l_int|0x01
+)paren
+id|Info
+c_func
+(paren
+l_string|&quot;Snapshot button pressed.&bslash;n&quot;
+)paren
+suffix:semicolon
+r_else
+id|Info
+c_func
+(paren
+l_string|&quot;Snapshot button released.&bslash;n&quot;
+)paren
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+(paren
+id|ptr
+(braket
+l_int|0
+)braket
+op_xor
+id|pdev-&gt;vmirror
+)paren
+op_amp
+l_int|0x02
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|ptr
+(braket
+l_int|0
+)braket
+op_amp
+l_int|0x02
+)paren
+id|Info
+c_func
+(paren
+l_string|&quot;Image is mirrored.&bslash;n&quot;
+)paren
+suffix:semicolon
+r_else
+id|Info
+c_func
+(paren
+l_string|&quot;Image is normal.&bslash;n&quot;
+)paren
+suffix:semicolon
+)brace
+id|pdev-&gt;vmirror
+op_assign
+id|ptr
+(braket
+l_int|0
+)braket
+op_amp
+l_int|0x03
+suffix:semicolon
 multiline_comment|/* Sometimes the trailer of the 730 is still sent as a 4 byte packet &n;&t;&t;&t;&t;&t;&t;   after a short frame; this condition is filtered out specifically. A 4 byte&n;&t;&t;&t;&t;&t;&t;   frame doesn&squot;t make sense anyway.&n;&t;&t;&t;&t;&t;&t;   So we get either this sequence: &n;&t;&t;&t;&t;&t;&t;   &t;drop_bit set -&gt; 4 byte frame -&gt; short frame -&gt; good frame&n;&t;&t;&t;&t;&t;&t;   Or this one:&n;&t;&t;&t;&t;&t;&t;   &t;drop_bit set -&gt; short frame -&gt; good frame&n;&t;&t;&t;&t;&t;&t;   So we drop either 3 or 2 frames in all!&n;&t;&t;&t;&t;&t;&t; */
 r_if
 c_cond
@@ -2614,6 +2769,8 @@ r_if
 c_cond
 (paren
 id|pdev-&gt;drop_frames
+OG
+l_int|0
 )paren
 id|pdev-&gt;drop_frames
 op_decrement
@@ -2748,9 +2905,26 @@ id|flen
 suffix:semicolon
 )brace
 multiline_comment|/* ..status == 0 */
-macro_line|#ifdef PWC_DEBUG
+macro_line|#if PWC_DEBUG
 multiline_comment|/* This is normally not interesting to the user, unless you are really debugging something */
 r_else
+(brace
+r_static
+r_int
+id|iso_error
+op_assign
+l_int|0
+suffix:semicolon
+id|iso_error
+op_increment
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|iso_error
+OL
+l_int|20
+)paren
 id|Trace
 c_func
 (paren
@@ -2763,6 +2937,7 @@ comma
 id|fst
 )paren
 suffix:semicolon
+)brace
 macro_line|#endif&t;&t;&t;
 )brace
 r_if
@@ -2781,12 +2956,29 @@ id|urb-&gt;dev
 op_assign
 id|pdev-&gt;udev
 suffix:semicolon
+id|i
+op_assign
 id|usb_submit_urb
 c_func
 (paren
 id|urb
 comma
 id|GFP_ATOMIC
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|i
+op_ne
+l_int|0
+)paren
+id|Err
+c_func
+(paren
+l_string|&quot;Error (%d) re-submitting urb in pwc_isoc_handler.&bslash;n&quot;
+comma
+id|i
 )paren
 suffix:semicolon
 )brace
@@ -2823,9 +3015,6 @@ r_struct
 id|usb_host_interface
 op_star
 id|idesc
-suffix:semicolon
-r_int
-id|cur_alt
 suffix:semicolon
 r_if
 c_cond
@@ -2865,15 +3054,6 @@ r_return
 op_minus
 id|EFAULT
 suffix:semicolon
-id|cur_alt
-op_assign
-id|udev-&gt;actconfig-&gt;interface
-(braket
-l_int|0
-)braket
-dot
-id|act_altsetting
-suffix:semicolon
 id|idesc
 op_assign
 op_amp
@@ -2884,7 +3064,7 @@ l_int|0
 dot
 id|altsetting
 (braket
-id|cur_alt
+id|pdev-&gt;valternate
 )braket
 suffix:semicolon
 r_if
@@ -2966,9 +3146,42 @@ id|ENFILE
 suffix:semicolon
 multiline_comment|/* Odd error, that should be noticable */
 )brace
+multiline_comment|/* Set alternate interface */
 id|ret
 op_assign
 l_int|0
+suffix:semicolon
+id|Trace
+c_func
+(paren
+id|TRACE_OPEN
+comma
+l_string|&quot;Setting alternate interface %d&bslash;n&quot;
+comma
+id|pdev-&gt;valternate
+)paren
+suffix:semicolon
+id|ret
+op_assign
+id|usb_set_interface
+c_func
+(paren
+id|pdev-&gt;udev
+comma
+l_int|0
+comma
+id|pdev-&gt;valternate
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|ret
+OL
+l_int|0
+)paren
+r_return
+id|ret
 suffix:semicolon
 r_for
 c_loop
@@ -3027,6 +3240,16 @@ dot
 id|urb
 op_assign
 id|urb
+suffix:semicolon
+id|Trace
+c_func
+(paren
+id|TRACE_MEMORY
+comma
+l_string|&quot;Allocated URB at 0x%p&bslash;n&quot;
+comma
+id|urb
+)paren
 suffix:semicolon
 )brace
 r_if
@@ -3185,7 +3408,7 @@ id|offset
 op_assign
 id|j
 op_star
-id|pdev-&gt;vmax_packet_size
+id|ISO_MAX_FRAME_SIZE
 suffix:semicolon
 id|urb-&gt;iso_frame_desc
 (braket
@@ -3250,14 +3473,29 @@ c_func
 (paren
 id|TRACE_OPEN
 comma
-l_string|&quot;pwc_isoc_init(): URB submitted.&bslash;n&quot;
+l_string|&quot;URB 0x%p submitted.&bslash;n&quot;
+comma
+id|pdev-&gt;sbuf
+(braket
+id|i
+)braket
+dot
+id|urb
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* data should stream in now */
+multiline_comment|/* All is done... */
 id|pdev-&gt;iso_init
 op_assign
 l_int|1
+suffix:semicolon
+id|Trace
+c_func
+(paren
+id|TRACE_OPEN
+comma
+l_string|&quot;&lt;&lt; pwc_isoc_init()&bslash;n&quot;
+)paren
 suffix:semicolon
 r_return
 l_int|0
@@ -3278,6 +3516,14 @@ id|pdev
 r_int
 id|i
 suffix:semicolon
+id|Trace
+c_func
+(paren
+id|TRACE_OPEN
+comma
+l_string|&quot;&gt;&gt; pwc_isoc_cleanup()&bslash;n&quot;
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -3287,69 +3533,78 @@ l_int|NULL
 )paren
 r_return
 suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|pdev-&gt;iso_init
-)paren
-r_return
-suffix:semicolon
-multiline_comment|/* Stop camera, but only if we are sure the camera is still there */
-r_if
-c_cond
-(paren
-op_logical_neg
-id|pdev-&gt;unplugged
-)paren
-id|usb_set_interface
-c_func
-(paren
-id|pdev-&gt;udev
-comma
-l_int|0
-comma
-l_int|0
-)paren
-suffix:semicolon
 multiline_comment|/* Unlinking ISOC buffers one by one */
 r_for
 c_loop
 (paren
 id|i
 op_assign
-id|MAX_ISO_BUFS
-op_minus
-l_int|1
-suffix:semicolon
-id|i
-op_ge
 l_int|0
 suffix:semicolon
 id|i
-op_decrement
+OL
+id|MAX_ISO_BUFS
+suffix:semicolon
+id|i
+op_increment
 )paren
 (brace
-singleline_comment|//pdev-&gt;sbuf[i].urb-&gt;next = NULL;
-id|usb_unlink_urb
-c_func
-(paren
+r_struct
+id|urb
+op_star
+id|urb
+suffix:semicolon
+id|urb
+op_assign
 id|pdev-&gt;sbuf
 (braket
 id|i
 )braket
 dot
 id|urb
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|urb
+op_ne
+l_int|0
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|pdev-&gt;iso_init
+)paren
+(brace
+id|Trace
+c_func
+(paren
+id|TRACE_MEMORY
+comma
+l_string|&quot;Unlinking URB %p&bslash;n&quot;
+comma
+id|urb
+)paren
+suffix:semicolon
+id|usb_unlink_urb
+c_func
+(paren
+id|urb
+)paren
+suffix:semicolon
+)brace
+id|Trace
+c_func
+(paren
+id|TRACE_MEMORY
+comma
+l_string|&quot;Freeing URB&bslash;n&quot;
 )paren
 suffix:semicolon
 id|usb_free_urb
 c_func
 (paren
-id|pdev-&gt;sbuf
-(braket
-id|i
-)braket
-dot
 id|urb
 )paren
 suffix:semicolon
@@ -3363,9 +3618,45 @@ op_assign
 l_int|NULL
 suffix:semicolon
 )brace
+)brace
+multiline_comment|/* Stop camera, but only if we are sure the camera is still there */
+r_if
+c_cond
+(paren
+op_logical_neg
+id|pdev-&gt;unplugged
+)paren
+(brace
+id|Trace
+c_func
+(paren
+id|TRACE_OPEN
+comma
+l_string|&quot;Setting alternate interface 0.&bslash;n&quot;
+)paren
+suffix:semicolon
+id|usb_set_interface
+c_func
+(paren
+id|pdev-&gt;udev
+comma
+l_int|0
+comma
+l_int|0
+)paren
+suffix:semicolon
+)brace
 id|pdev-&gt;iso_init
 op_assign
 l_int|0
+suffix:semicolon
+id|Trace
+c_func
+(paren
+id|TRACE_OPEN
+comma
+l_string|&quot;&lt;&lt; pwc_isoc_cleanup()&bslash;n&quot;
+)paren
 suffix:semicolon
 )brace
 DECL|function|pwc_try_video_mode
@@ -3454,37 +3745,31 @@ comma
 id|pdev-&gt;vsnapshot
 )paren
 suffix:semicolon
-r_else
-multiline_comment|/* Set (new) alternate interface */
-id|ret
-op_assign
-id|usb_set_interface
-c_func
-(paren
-id|pdev-&gt;udev
-comma
-l_int|0
-comma
-id|pdev-&gt;valternate
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
 op_logical_neg
 id|ret
 )paren
-id|ret
-op_assign
+r_if
+c_cond
+(paren
 id|pwc_isoc_init
 c_func
 (paren
 id|pdev
 )paren
+OL
+l_int|0
+)paren
+id|Info
+c_func
+(paren
+l_string|&quot;Failed to restart ISOC transfer in pwc_try_video_mode.&bslash;n&quot;
+)paren
 suffix:semicolon
 id|pdev-&gt;drop_frames
-op_assign
-l_int|1
+op_increment
 suffix:semicolon
 multiline_comment|/* try to avoid garbage during switch */
 r_return
@@ -3642,7 +3927,7 @@ c_func
 (paren
 id|TRACE_OPEN
 comma
-l_string|&quot;video_open called(0x%p).&bslash;n&quot;
+l_string|&quot;&gt;&gt; video_open called(vdev = 0x%p).&bslash;n&quot;
 comma
 id|vdev
 )paren
@@ -3699,30 +3984,167 @@ comma
 l_string|&quot;Doing first time initialization.&bslash;n&quot;
 )paren
 suffix:semicolon
-multiline_comment|/* Reset camera */
-r_if
-c_cond
-(paren
-id|usb_set_interface
-c_func
-(paren
-id|pdev-&gt;udev
-comma
-l_int|0
-comma
-l_int|0
-)paren
-)paren
-id|Info
-c_func
-(paren
-l_string|&quot;Failed to set alternate interface to 0.&bslash;n&quot;
-)paren
-suffix:semicolon
 id|pdev-&gt;usb_init
 op_assign
 l_int|1
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|pwc_trace
+op_amp
+id|TRACE_OPEN
+)paren
+(brace
+multiline_comment|/* Query CMOS sensor type */
+r_const
+r_char
+op_star
+id|sensor_type
+op_assign
+l_int|NULL
+suffix:semicolon
+id|i
+op_assign
+id|pwc_get_cmos_sensor
+c_func
+(paren
+id|pdev
+)paren
+suffix:semicolon
+r_switch
+c_cond
+(paren
+id|i
+)paren
+(brace
+r_case
+op_minus
+l_int|1
+suffix:colon
+multiline_comment|/* Unknown, show nothing */
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+l_int|0x00
+suffix:colon
+id|sensor_type
+op_assign
+l_string|&quot;Hyundai CMOS sensor&quot;
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+l_int|0x20
+suffix:colon
+id|sensor_type
+op_assign
+l_string|&quot;Sony CCD sensor + TDA8787&quot;
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+l_int|0x2E
+suffix:colon
+id|sensor_type
+op_assign
+l_string|&quot;Sony CCD sensor + Exas 98L59&quot;
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+l_int|0x2F
+suffix:colon
+id|sensor_type
+op_assign
+l_string|&quot;Sony CCD sensor + ADI 9804&quot;
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+l_int|0x30
+suffix:colon
+id|sensor_type
+op_assign
+l_string|&quot;Sharp CCD sensor + TDA8787&quot;
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+l_int|0x3E
+suffix:colon
+id|sensor_type
+op_assign
+l_string|&quot;Sharp CCD sensor + Exas 98L59&quot;
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+l_int|0x3F
+suffix:colon
+id|sensor_type
+op_assign
+l_string|&quot;Sharp CCD sensor + ADI 9804&quot;
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+l_int|0x40
+suffix:colon
+id|sensor_type
+op_assign
+l_string|&quot;UPA 1021 sensor&quot;
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+l_int|0x100
+suffix:colon
+id|sensor_type
+op_assign
+l_string|&quot;VGA sensor&quot;
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+l_int|0x101
+suffix:colon
+id|sensor_type
+op_assign
+l_string|&quot;PAL MR sensor&quot;
+suffix:semicolon
+r_break
+suffix:semicolon
+r_default
+suffix:colon
+id|sensor_type
+op_assign
+l_string|&quot;unknown type of sensor&quot;
+suffix:semicolon
+r_break
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+id|sensor_type
+op_ne
+l_int|NULL
+)paren
+id|Info
+c_func
+(paren
+l_string|&quot;This %s camera is equipped with a %s (%d).&bslash;n&quot;
+comma
+id|pdev-&gt;vdev-&gt;name
+comma
+id|sensor_type
+comma
+id|i
+)paren
+suffix:semicolon
+)brace
 )brace
 multiline_comment|/* Turn on camera */
 r_if
@@ -4062,46 +4484,6 @@ suffix:semicolon
 )brace
 id|i
 op_assign
-id|usb_set_interface
-c_func
-(paren
-id|pdev-&gt;udev
-comma
-l_int|0
-comma
-id|pdev-&gt;valternate
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|i
-)paren
-(brace
-id|Trace
-c_func
-(paren
-id|TRACE_OPEN
-comma
-l_string|&quot;Failed to set alternate interface = %d.&bslash;n&quot;
-comma
-id|i
-)paren
-suffix:semicolon
-id|up
-c_func
-(paren
-op_amp
-id|pdev-&gt;modlock
-)paren
-suffix:semicolon
-r_return
-op_minus
-id|EINVAL
-suffix:semicolon
-)brace
-id|i
-op_assign
 id|pwc_isoc_init
 c_func
 (paren
@@ -4171,7 +4553,7 @@ c_func
 (paren
 id|TRACE_OPEN
 comma
-l_string|&quot;video_open() returning 0.&bslash;n&quot;
+l_string|&quot;&lt;&lt; video_open() returns 0.&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -4216,7 +4598,7 @@ c_func
 (paren
 id|TRACE_OPEN
 comma
-l_string|&quot;video_close called(0x%p).&bslash;n&quot;
+l_string|&quot;&gt;&gt; video_close called(vdev = 0x%p).&bslash;n&quot;
 comma
 id|vdev
 )paren
@@ -4243,13 +4625,6 @@ c_func
 l_string|&quot;video_close() called on closed device?&bslash;n&quot;
 )paren
 suffix:semicolon
-multiline_comment|/* Free isoc URBs */
-id|pwc_isoc_cleanup
-c_func
-(paren
-id|pdev
-)paren
-suffix:semicolon
 multiline_comment|/* Dump statistics, but only if a reasonable amount of frames were&n;&t;   processed (to prevent endless log-entries in case of snap-shot&n;&t;   programs) &n;&t; */
 r_if
 c_cond
@@ -4270,6 +4645,13 @@ comma
 id|pdev-&gt;vframes_error
 )paren
 suffix:semicolon
+multiline_comment|/* Free isoc URBs, stop camera */
+id|pwc_isoc_cleanup
+c_func
+(paren
+id|pdev
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -4277,25 +4659,6 @@ op_logical_neg
 id|pdev-&gt;unplugged
 )paren
 (brace
-multiline_comment|/* Normal close: stop isochronuous and interrupt endpoint */
-id|Trace
-c_func
-(paren
-id|TRACE_OPEN
-comma
-l_string|&quot;Normal close(): setting interface to 0.&bslash;n&quot;
-)paren
-suffix:semicolon
-id|usb_set_interface
-c_func
-(paren
-id|pdev-&gt;udev
-comma
-l_int|0
-comma
-l_int|0
-)paren
-suffix:semicolon
 multiline_comment|/* Turn LEDs off */
 r_if
 c_cond
@@ -4315,10 +4678,10 @@ l_int|0
 id|Info
 c_func
 (paren
-l_string|&quot;Failed to set LED on/off time..&bslash;n&quot;
+l_string|&quot;Failed to set LED on/off time.&bslash;n&quot;
 )paren
 suffix:semicolon
-multiline_comment|/* Power down camere to save energy */
+multiline_comment|/* Power down camera to save energy */
 r_if
 c_cond
 (paren
@@ -4400,6 +4763,14 @@ suffix:semicolon
 id|file-&gt;private_data
 op_assign
 l_int|NULL
+suffix:semicolon
+id|Trace
+c_func
+(paren
+id|TRACE_OPEN
+comma
+l_string|&quot;&lt;&lt; video_close()&bslash;n&quot;
+)paren
 suffix:semicolon
 r_return
 l_int|0
@@ -6079,7 +6450,6 @@ id|pdev
 op_assign
 id|vdev-&gt;priv
 suffix:semicolon
-multiline_comment|/* FIXME - audit mmap during a read */
 id|pos
 op_assign
 (paren
@@ -6222,6 +6592,9 @@ id|serial_number
 (braket
 l_int|30
 )braket
+comma
+op_star
+id|name
 suffix:semicolon
 id|free_mem_leak
 c_func
@@ -6286,6 +6659,10 @@ c_func
 l_string|&quot;Philips PCA645VC USB webcam detected.&bslash;n&quot;
 )paren
 suffix:semicolon
+id|name
+op_assign
+l_string|&quot;Philips 645 webcam&quot;
+suffix:semicolon
 id|type_id
 op_assign
 l_int|645
@@ -6300,6 +6677,10 @@ c_func
 (paren
 l_string|&quot;Philips PCA646VC USB webcam detected.&bslash;n&quot;
 )paren
+suffix:semicolon
+id|name
+op_assign
+l_string|&quot;Philips 646 webcam&quot;
 suffix:semicolon
 id|type_id
 op_assign
@@ -6316,6 +6697,10 @@ c_func
 l_string|&quot;Askey VC010 type 2 USB webcam detected.&bslash;n&quot;
 )paren
 suffix:semicolon
+id|name
+op_assign
+l_string|&quot;Askey VC010 webcam&quot;
+suffix:semicolon
 id|type_id
 op_assign
 l_int|646
@@ -6330,6 +6715,10 @@ c_func
 (paren
 l_string|&quot;Philips PCVC675K (Vesta) USB webcam detected.&bslash;n&quot;
 )paren
+suffix:semicolon
+id|name
+op_assign
+l_string|&quot;Philips 675 webcam&quot;
 suffix:semicolon
 id|type_id
 op_assign
@@ -6346,6 +6735,10 @@ c_func
 l_string|&quot;Philips PCVC680K (Vesta Pro) USB webcam detected.&bslash;n&quot;
 )paren
 suffix:semicolon
+id|name
+op_assign
+l_string|&quot;Philips 680 webcam&quot;
+suffix:semicolon
 id|type_id
 op_assign
 l_int|680
@@ -6360,6 +6753,10 @@ c_func
 (paren
 l_string|&quot;Philips PCVC690K (Vesta Pro Scan) USB webcam detected.&bslash;n&quot;
 )paren
+suffix:semicolon
+id|name
+op_assign
+l_string|&quot;Philips 690 webcam&quot;
 suffix:semicolon
 id|type_id
 op_assign
@@ -6376,6 +6773,10 @@ c_func
 l_string|&quot;Philips PCVC730K (ToUCam Fun) USB webcam detected.&bslash;n&quot;
 )paren
 suffix:semicolon
+id|name
+op_assign
+l_string|&quot;Philips 730 webcam&quot;
+suffix:semicolon
 id|type_id
 op_assign
 l_int|730
@@ -6391,6 +6792,10 @@ c_func
 l_string|&quot;Philips PCVC740K (ToUCam Pro) USB webcam detected.&bslash;n&quot;
 )paren
 suffix:semicolon
+id|name
+op_assign
+l_string|&quot;Philips 740 webcam&quot;
+suffix:semicolon
 id|type_id
 op_assign
 l_int|740
@@ -6405,6 +6810,10 @@ c_func
 (paren
 l_string|&quot;Philips PCVC750K (ToUCam Pro Scan) USB webcam detected.&bslash;n&quot;
 )paren
+suffix:semicolon
+id|name
+op_assign
+l_string|&quot;Philips 750 webcam&quot;
 suffix:semicolon
 id|type_id
 op_assign
@@ -6446,6 +6855,10 @@ c_func
 l_string|&quot;Askey VC010 type 1 USB webcam detected.&bslash;n&quot;
 )paren
 suffix:semicolon
+id|name
+op_assign
+l_string|&quot;Askey VC010 webcam&quot;
+suffix:semicolon
 id|type_id
 op_assign
 l_int|645
@@ -6483,13 +6896,77 @@ suffix:colon
 id|Info
 c_func
 (paren
-l_string|&quot;Logitech QuickCam 3000 Pro detected.&bslash;n&quot;
+l_string|&quot;Logitech QuickCam Pro 3000 USB webcam detected.&bslash;n&quot;
 )paren
+suffix:semicolon
+id|name
+op_assign
+l_string|&quot;Logitech QuickCam Pro 3000&quot;
 suffix:semicolon
 id|type_id
 op_assign
 l_int|730
 suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+l_int|0x08b1
+suffix:colon
+id|Info
+c_func
+(paren
+l_string|&quot;Logitech QuickCam for Noteboos USB webcam detected.&bslash;n&quot;
+)paren
+suffix:semicolon
+id|name
+op_assign
+l_string|&quot;Logitech QuickCam Notebook&quot;
+suffix:semicolon
+id|type_id
+op_assign
+l_int|740
+suffix:semicolon
+multiline_comment|/* ?? unknown sensor */
+r_break
+suffix:semicolon
+r_case
+l_int|0x08b2
+suffix:colon
+id|Info
+c_func
+(paren
+l_string|&quot;Logitech QuickCam 4000 Pro USB webcam detected.&bslash;n&quot;
+)paren
+suffix:semicolon
+id|name
+op_assign
+l_string|&quot;Logitech QuickCam Pro 4000&quot;
+suffix:semicolon
+id|type_id
+op_assign
+l_int|740
+suffix:semicolon
+multiline_comment|/* CCD sensor */
+r_break
+suffix:semicolon
+r_case
+l_int|0x08b3
+suffix:colon
+id|Info
+c_func
+(paren
+l_string|&quot;Logitech QuickCam Zoom USB webcam detected.&bslash;n&quot;
+)paren
+suffix:semicolon
+id|name
+op_assign
+l_string|&quot;Logitech QuickCam Zoom&quot;
+suffix:semicolon
+id|type_id
+op_assign
+l_int|740
+suffix:semicolon
+multiline_comment|/* ?? unknown sensor */
 r_break
 suffix:semicolon
 r_default
@@ -6527,6 +7004,10 @@ c_func
 l_string|&quot;Samsung MPC-C10 USB webcam detected.&bslash;n&quot;
 )paren
 suffix:semicolon
+id|name
+op_assign
+l_string|&quot;Samsung MPC-C10&quot;
+suffix:semicolon
 id|type_id
 op_assign
 l_int|675
@@ -6541,6 +7022,10 @@ c_func
 (paren
 l_string|&quot;Samsung MPC-C30 USB webcam detected.&bslash;n&quot;
 )paren
+suffix:semicolon
+id|name
+op_assign
+l_string|&quot;Samsung MPC-C30&quot;
 suffix:semicolon
 id|type_id
 op_assign
@@ -6582,6 +7067,10 @@ c_func
 l_string|&quot;Creative Labs Webcam 5 detected.&bslash;n&quot;
 )paren
 suffix:semicolon
+id|name
+op_assign
+l_string|&quot;Creative Labs Webcam 5&quot;
+suffix:semicolon
 id|type_id
 op_assign
 l_int|730
@@ -6619,8 +7108,12 @@ suffix:colon
 id|Info
 c_func
 (paren
-l_string|&quot;SOTEC CMS-001 USB webcam detected.&bslash;n&quot;
+l_string|&quot;Sotec Afina Eye USB webcam detected.&bslash;n&quot;
 )paren
+suffix:semicolon
+id|name
+op_assign
+l_string|&quot;Sotec Afina Eye&quot;
 suffix:semicolon
 id|type_id
 op_assign
@@ -6639,11 +7132,76 @@ suffix:semicolon
 )brace
 )brace
 r_else
+r_if
+c_cond
+(paren
+id|vendor_id
+op_eq
+l_int|0x0d81
+)paren
+(brace
+r_switch
+c_cond
+(paren
+id|product_id
+)paren
+(brace
+r_case
+l_int|0x1900
+suffix:colon
+id|Info
+c_func
+(paren
+l_string|&quot;Visionite VCS-UC300 USB webcam detected.&bslash;n&quot;
+)paren
+suffix:semicolon
+id|name
+op_assign
+l_string|&quot;Visionite VCS-UC300&quot;
+suffix:semicolon
+id|type_id
+op_assign
+l_int|740
+suffix:semicolon
+multiline_comment|/* CCD sensor */
+r_break
+suffix:semicolon
+r_case
+l_int|0x1910
+suffix:colon
+id|Info
+c_func
+(paren
+l_string|&quot;Visionite VCS-UM100 USB webcam detected.&bslash;n&quot;
+)paren
+suffix:semicolon
+id|name
+op_assign
+l_string|&quot;Visionite VCS-UM100&quot;
+suffix:semicolon
+id|type_id
+op_assign
+l_int|730
+suffix:semicolon
+multiline_comment|/* CMOS sensor */
+r_break
+suffix:semicolon
+r_default
+suffix:colon
 r_return
 op_minus
 id|ENODEV
 suffix:semicolon
-multiline_comment|/* Not Philips, Askey, Logitech, Samsung, Creative or SOTEC, for sure. */
+r_break
+suffix:semicolon
+)brace
+)brace
+r_else
+r_return
+op_minus
+id|ENODEV
+suffix:semicolon
+multiline_comment|/* Not any of the know types; but the list keeps growing. */
 id|memset
 c_func
 (paren
@@ -6828,14 +7386,12 @@ id|pwc_template
 )paren
 )paren
 suffix:semicolon
-id|sprintf
+id|strcpy
 c_func
 (paren
 id|vdev-&gt;name
 comma
-l_string|&quot;Philips %d webcam&quot;
-comma
-id|pdev-&gt;type
+id|name
 )paren
 suffix:semicolon
 id|SET_MODULE_OWNER
@@ -7145,7 +7701,7 @@ l_string|&quot;pwc_disconnect() Called without private pointer.&bslash;n&quot;
 )paren
 suffix:semicolon
 r_goto
-id|out_err
+id|disconnect_out
 suffix:semicolon
 )brace
 r_if
@@ -7165,7 +7721,7 @@ id|pdev
 )paren
 suffix:semicolon
 r_goto
-id|out_err
+id|disconnect_out
 suffix:semicolon
 )brace
 r_if
@@ -7187,7 +7743,7 @@ l_string|&quot;pwc_disconnect() Woops: pointer mismatch udev/pdev.&bslash;n&quot
 )paren
 suffix:semicolon
 r_goto
-id|out_err
+id|disconnect_out
 suffix:semicolon
 )brace
 macro_line|#ifdef PWC_MAGIC&t;
@@ -7206,10 +7762,10 @@ l_string|&quot;pwc_disconnect() Magic number failed. Consult your scrolls and tr
 )paren
 suffix:semicolon
 r_goto
-id|out_err
+id|disconnect_out
 suffix:semicolon
 )brace
-macro_line|#endif
+macro_line|#endif&t;
 id|pdev-&gt;unplugged
 op_assign
 l_int|1
@@ -7222,6 +7778,14 @@ op_ne
 l_int|NULL
 )paren
 (brace
+id|Trace
+c_func
+(paren
+id|TRACE_PROBE
+comma
+l_string|&quot;Unregistering video device.&bslash;n&quot;
+)paren
+suffix:semicolon
 id|video_unregister_device
 c_func
 (paren
@@ -7248,7 +7812,7 @@ op_amp
 id|pdev-&gt;frameq
 )paren
 suffix:semicolon
-multiline_comment|/* Wait until we get a &squot;go&squot; from _close(). This used&n;&t;&t;&t;   to have a gigantic race condition, since we kfree()&n;&t;&t;&t;   stuff here, but we have to wait until close()&n;&t;&t;&t;   is finished.&n;&t;&t;&t; */
+multiline_comment|/* Wait until we get a &squot;go&squot; from _close(). This used&n;&t;&t;&t;   to have a gigantic race condition, since we kfree()&n;&t;&t;&t;   stuff here, but we have to wait until close() &n;&t;&t;&t;   is finished. &n;&t;&t;&t; */
 id|Trace
 c_func
 (paren
@@ -7317,14 +7881,6 @@ suffix:semicolon
 r_else
 (brace
 multiline_comment|/* Normal disconnect; remove from available devices */
-id|Trace
-c_func
-(paren
-id|TRACE_PROBE
-comma
-l_string|&quot;Unregistering video device normally.&bslash;n&quot;
-)paren
-suffix:semicolon
 id|kfree
 c_func
 (paren
@@ -7337,6 +7893,8 @@ l_int|NULL
 suffix:semicolon
 )brace
 )brace
+id|disconnect_out
+suffix:colon
 multiline_comment|/* search device_hint[] table if we occupy a slot, by any chance */
 r_for
 c_loop
@@ -7377,8 +7935,6 @@ id|pdev-&gt;udev
 op_assign
 l_int|NULL
 suffix:semicolon
-id|out_err
-suffix:colon
 id|unlock_kernel
 c_func
 (paren
@@ -7398,6 +7954,7 @@ r_int
 id|pwc_atoi
 c_func
 (paren
+r_const
 r_char
 op_star
 id|s
@@ -7673,7 +8230,7 @@ suffix:semicolon
 id|MODULE_DESCRIPTION
 c_func
 (paren
-l_string|&quot;Philips USB webcam driver&quot;
+l_string|&quot;Philips &amp; OEM USB webcam driver&quot;
 )paren
 suffix:semicolon
 id|MODULE_AUTHOR
@@ -7735,7 +8292,13 @@ suffix:semicolon
 id|Info
 c_func
 (paren
-l_string|&quot;Also supports the Askey VC010, Logitech Quickcam 3000 Pro, Samsung MPC-C10 and MPC-C30, the Creative WebCam 5 and the SOTEC CMS-001.&bslash;n&quot;
+l_string|&quot;Also supports the Askey VC010, various Logitech QuickCams, Samsung MPC-C10 and MPC-C30,&bslash;n&quot;
+)paren
+suffix:semicolon
+id|Info
+c_func
+(paren
+l_string|&quot;the Creative WebCam 5, SOTEC Afina Eye and Visionite VCS-UC300 and VCS-UM100.&bslash;n&quot;
 )paren
 suffix:semicolon
 r_if
@@ -7755,7 +8318,7 @@ l_int|30
 id|Err
 c_func
 (paren
-l_string|&quot;Framerate out of bounds (5-30).&bslash;n&quot;
+l_string|&quot;Framerate out of bounds (4-30).&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -8036,8 +8599,6 @@ id|leds
 (braket
 l_int|0
 )braket
-op_div
-l_int|100
 suffix:semicolon
 r_if
 c_cond
@@ -8055,8 +8616,6 @@ id|leds
 (braket
 l_int|1
 )braket
-op_div
-l_int|100
 suffix:semicolon
 multiline_comment|/* Big device node whoopla. Basicly, it allows you to assign a &n;&t;   device node (/dev/videoX) to a camera, based on its type &n;&t;   &amp; serial number. The format is [type[.serialnumber]:]node.&n;&n;           Any camera that isn&squot;t matched by these rules gets the next &n;           available free device node.&n;&t; */
 r_for
@@ -8346,7 +8905,7 @@ l_char|&squot;&bslash;0&squot;
 suffix:semicolon
 )brace
 )brace
-macro_line|#ifdef PWC_DEBUG&t;&t;
+macro_line|#if PWC_DEBUG&t;&t;
 id|Debug
 c_func
 (paren
