@@ -6004,10 +6004,6 @@ op_assign
 op_amp
 id|intel_generic_bridge
 suffix:semicolon
-id|bridge-&gt;type
-op_assign
-id|INTEL_GENERIC
-suffix:semicolon
 id|name
 op_assign
 l_string|&quot;440LX&quot;
@@ -6022,10 +6018,6 @@ op_assign
 op_amp
 id|intel_generic_bridge
 suffix:semicolon
-id|bridge-&gt;type
-op_assign
-id|INTEL_GENERIC
-suffix:semicolon
 id|name
 op_assign
 l_string|&quot;440BX&quot;
@@ -6039,10 +6031,6 @@ id|bridge
 op_assign
 op_amp
 id|intel_generic_bridge
-suffix:semicolon
-id|bridge-&gt;type
-op_assign
-id|INTEL_GENERIC
 suffix:semicolon
 id|name
 op_assign
@@ -6276,10 +6264,6 @@ op_assign
 op_amp
 id|intel_845_bridge
 suffix:semicolon
-id|bridge-&gt;type
-op_assign
-id|INTEL_GENERIC
-suffix:semicolon
 )brace
 id|name
 op_assign
@@ -6331,10 +6315,6 @@ op_assign
 op_amp
 id|intel_845_bridge
 suffix:semicolon
-id|bridge-&gt;type
-op_assign
-id|INTEL_GENERIC
-suffix:semicolon
 id|name
 op_assign
 l_string|&quot;855PM&quot;
@@ -6381,10 +6361,6 @@ id|bridge
 op_assign
 op_amp
 id|intel_845_bridge
-suffix:semicolon
-id|bridge-&gt;type
-op_assign
-id|INTEL_GENERIC
 suffix:semicolon
 )brace
 id|name
