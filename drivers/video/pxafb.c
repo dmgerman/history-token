@@ -18,7 +18,6 @@ macro_line|#include &lt;linux/dma-mapping.h&gt;
 macro_line|#include &lt;asm/hardware.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
-macro_line|#include &lt;asm/mach-types.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/arch/bitfield.h&gt;
 macro_line|#include &lt;asm/arch/pxafb.h&gt;
