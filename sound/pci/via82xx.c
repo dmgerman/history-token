@@ -10083,6 +10083,24 @@ comma
 dot
 id|vendor
 op_assign
+l_int|0x1019
+comma
+dot
+id|device
+op_assign
+l_int|0x0a81
+comma
+dot
+id|action
+op_assign
+id|VIA_DXS_NO_VRA
+)brace
+comma
+multiline_comment|/* ECS K7VTA3 v8.0 */
+(brace
+dot
+id|vendor
+op_assign
 l_int|0x1043
 comma
 dot
@@ -10093,10 +10111,10 @@ comma
 dot
 id|action
 op_assign
-id|VIA_DXS_ENABLE
+id|VIA_DXS_NO_VRA
 )brace
 comma
-multiline_comment|/* ASUS A7V8X */
+multiline_comment|/* ASUS A7V8X (FIXME: possibly VIA_DXS_ENABLE?)*/
 (brace
 dot
 id|vendor
