@@ -3,11 +3,12 @@ macro_line|#ifndef __V850_BYTEORDER_H__
 DECL|macro|__V850_BYTEORDER_H__
 mdefine_line|#define __V850_BYTEORDER_H__
 macro_line|#include &lt;asm/types.h&gt;
+macro_line|#include &lt;linux/compiler.h&gt;
 macro_line|#ifdef __GNUC__
 DECL|function|___arch__swab32
 r_static
 id|__inline__
-id|__const__
+id|__attribute_const__
 id|__u32
 id|___arch__swab32
 (paren
@@ -40,7 +41,7 @@ suffix:semicolon
 DECL|function|___arch__swab16
 r_static
 id|__inline__
-id|__const__
+id|__attribute_const__
 id|__u16
 id|___arch__swab16
 (paren
