@@ -7212,7 +7212,7 @@ c_func
 (paren
 id|pci_dev
 comma
-l_int|0xffffffffffffffff
+l_int|0xffffffffffffffffULL
 )paren
 )paren
 (brace
