@@ -30,6 +30,11 @@ r_int
 id|size
 )paren
 (brace
+r_if
+c_cond
+(paren
+id|type
+)paren
 id|RTA_PUT
 c_func
 (paren
@@ -98,6 +103,11 @@ id|d-&gt;lock
 op_assign
 id|lock
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|type
+)paren
 id|d-&gt;tail
 op_assign
 (paren
@@ -415,6 +425,11 @@ op_star
 id|d
 )paren
 (brace
+r_if
+c_cond
+(paren
+id|d-&gt;tail
+)paren
 id|d-&gt;tail-&gt;rta_len
 op_assign
 id|d-&gt;skb-&gt;tail
