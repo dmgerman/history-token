@@ -8845,7 +8845,7 @@ suffix:semicolon
 r_int
 id|nfserr
 op_assign
-l_int|0
+id|nfserr_toosmall
 suffix:semicolon
 multiline_comment|/* In nfsv4, &quot;.&quot; and &quot;..&quot; never make it onto the wire.. */
 r_if
@@ -8906,7 +8906,7 @@ OL
 l_int|0
 )paren
 r_goto
-id|nospc
+id|fail
 suffix:semicolon
 op_star
 id|p
@@ -8984,9 +8984,15 @@ id|nfserr
 op_eq
 id|nfserr_resource
 )paren
-r_goto
-id|nospc
+(brace
+id|nfserr
+op_assign
+id|nfserr_toosmall
 suffix:semicolon
+r_goto
+id|fail
+suffix:semicolon
+)brace
 multiline_comment|/*&n;&t; * If we get here, we experienced a miscellaneous&n;&t; * failure while writing the attributes.  If the&n;&t; * client requested the RDATTR_ERROR attribute,&n;&t; * we stuff the error code into this attribute&n;&t; * and continue.  If this attribute was not requested,&n;&t; * then in accordance with the spec, we fail the&n;&t; * entire READDIR operation(!)&n;&t; */
 r_if
 c_cond
@@ -9001,16 +9007,13 @@ op_amp
 id|FATTR4_WORD0_RDATTR_ERROR
 )paren
 )paren
-(brace
-id|cd-&gt;common.err
-op_assign
+r_goto
+id|fail
+suffix:semicolon
 id|nfserr
+op_assign
+id|nfserr_toosmall
 suffix:semicolon
-r_return
-op_minus
-id|EINVAL
-suffix:semicolon
-)brace
 id|p
 op_assign
 id|nfsd4_encode_rdattr_error
@@ -9031,7 +9034,7 @@ op_eq
 l_int|NULL
 )paren
 r_goto
-id|out_nospc
+id|fail
 suffix:semicolon
 id|out
 suffix:colon
@@ -9054,11 +9057,11 @@ suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
-id|nospc
+id|fail
 suffix:colon
 id|cd-&gt;common.err
 op_assign
-id|nfserr_toosmall
+id|nfserr
 suffix:semicolon
 r_return
 op_minus
