@@ -16,18 +16,10 @@ macro_line|#include &quot;user_util.h&quot;
 macro_line|#include &quot;mem_user.h&quot;
 macro_line|#include &quot;init.h&quot;
 macro_line|#include &quot;os.h&quot;
-DECL|variable|physmem_region
+macro_line|#include &quot;tempfile.h&quot;
+r_extern
 r_struct
 id|mem_region
-id|physmem_region
-suffix:semicolon
-DECL|variable|mem_list
-r_struct
-id|mem_region
-op_star
-id|mem_list
-op_assign
-op_amp
 id|physmem_region
 suffix:semicolon
 DECL|macro|TEMPNAME_TEMPLATE

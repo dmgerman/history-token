@@ -21,15 +21,18 @@ macro_line|#include &quot;mem_user.h&quot;
 macro_line|#include &quot;mem.h&quot;
 macro_line|#include &quot;kern.h&quot;
 macro_line|#include &quot;init.h&quot;
+multiline_comment|/* Changed during early boot */
+DECL|variable|swapper_pg_dir
+id|pgd_t
+id|swapper_pg_dir
+(braket
+l_int|1024
+)braket
+suffix:semicolon
 DECL|variable|high_physmem
 r_int
 r_int
 id|high_physmem
-suffix:semicolon
-DECL|variable|low_physmem
-r_int
-r_int
-id|low_physmem
 suffix:semicolon
 DECL|variable|vm_start
 r_int
@@ -45,13 +48,6 @@ DECL|variable|highmem
 r_int
 r_int
 id|highmem
-suffix:semicolon
-DECL|variable|swapper_pg_dir
-id|pgd_t
-id|swapper_pg_dir
-(braket
-l_int|1024
-)braket
 suffix:semicolon
 DECL|variable|empty_zero_page
 r_int
@@ -69,6 +65,7 @@ id|empty_bad_page
 op_assign
 l_int|NULL
 suffix:semicolon
+multiline_comment|/* Not modified */
 DECL|variable|bad_pmd_string
 r_const
 r_char
@@ -88,6 +85,7 @@ r_extern
 r_int
 id|physmem_size
 suffix:semicolon
+multiline_comment|/* Not changed by UML */
 DECL|variable|mmu_gathers
 id|mmu_gather_t
 id|mmu_gathers
@@ -95,6 +93,7 @@ id|mmu_gathers
 id|NR_CPUS
 )braket
 suffix:semicolon
+multiline_comment|/* Changed during early boot */
 DECL|variable|kmalloc_ok
 r_int
 id|kmalloc_ok
@@ -128,6 +127,7 @@ l_int|NULL
 suffix:semicolon
 DECL|macro|REGION_SIZE
 mdefine_line|#define REGION_SIZE ((0xffffffff &amp; ~REGION_MASK) + 1)
+multiline_comment|/* Changed during early boot */
 DECL|variable|brk_end
 r_static
 r_int
@@ -394,6 +394,7 @@ l_int|1
 suffix:semicolon
 )brace
 macro_line|#if CONFIG_HIGHMEM
+multiline_comment|/* Changed during early boot */
 DECL|variable|kmap_pte
 id|pte_t
 op_star
@@ -818,6 +819,13 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+DECL|variable|regions_sem
+id|DECLARE_MUTEX
+c_func
+(paren
+id|regions_sem
+)paren
+suffix:semicolon
 DECL|function|setup_one_range
 r_static
 r_int
@@ -850,6 +858,13 @@ id|region
 (brace
 r_int
 id|i
+suffix:semicolon
+id|down
+c_func
+(paren
+op_amp
+id|regions_sem
+)paren
 suffix:semicolon
 r_for
 c_loop
@@ -895,9 +910,13 @@ c_func
 l_string|&quot;setup_range : no free regions&bslash;n&quot;
 )paren
 suffix:semicolon
-r_return
+id|i
+op_assign
 op_minus
 l_int|1
+suffix:semicolon
+r_goto
+id|out
 suffix:semicolon
 )brace
 r_if
@@ -991,6 +1010,15 @@ id|i
 )braket
 op_assign
 id|region
+suffix:semicolon
+id|out
+suffix:colon
+id|up
+c_func
+(paren
+op_amp
+id|regions_sem
+)paren
 suffix:semicolon
 r_return
 id|i
@@ -1846,7 +1874,9 @@ id|cached
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/* Changed during early boot */
 DECL|variable|kmem_top
+r_static
 r_int
 r_int
 id|kmem_top
@@ -2126,6 +2156,13 @@ r_goto
 id|again
 suffix:semicolon
 )brace
+DECL|variable|vm_reserved_sem
+id|DECLARE_MUTEX
+c_func
+(paren
+id|vm_reserved_sem
+)paren
+suffix:semicolon
 DECL|variable|vm_reserved
 r_static
 r_struct
@@ -2138,6 +2175,7 @@ c_func
 id|vm_reserved
 )paren
 suffix:semicolon
+multiline_comment|/* Static structures, linked in to the list in early boot */
 DECL|variable|head
 r_static
 r_struct
@@ -2265,6 +2303,16 @@ id|list_head
 op_star
 id|ele
 suffix:semicolon
+r_int
+id|err
+suffix:semicolon
+id|down
+c_func
+(paren
+op_amp
+id|vm_reserved_sem
+)paren
+suffix:semicolon
 (def_block
 id|list_for_each
 c_func
@@ -2375,9 +2423,13 @@ c_func
 l_string|&quot;reserve_vm : Failed to allocate entry&bslash;n&quot;
 )paren
 suffix:semicolon
-r_return
+id|err
+op_assign
 op_minus
 id|ENOMEM
+suffix:semicolon
+r_goto
+id|out
 suffix:semicolon
 )brace
 op_star
@@ -2417,6 +2469,19 @@ op_amp
 id|prev-&gt;list
 )paren
 suffix:semicolon
+id|err
+op_assign
+l_int|0
+suffix:semicolon
+id|out
+suffix:colon
+id|up
+c_func
+(paren
+op_amp
+id|vm_reserved_sem
+)paren
+suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
@@ -2451,6 +2516,13 @@ id|start
 suffix:semicolon
 r_int
 id|err
+suffix:semicolon
+id|down
+c_func
+(paren
+op_amp
+id|vm_reserved_sem
+)paren
 suffix:semicolon
 (def_block
 id|list_for_each
@@ -2514,11 +2586,25 @@ suffix:semicolon
 )brace
 )brace
 )def_block
+id|up
+c_func
+(paren
+op_amp
+id|vm_reserved_sem
+)paren
+suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
 id|found
 suffix:colon
+id|up
+c_func
+(paren
+op_amp
+id|vm_reserved_sem
+)paren
+suffix:semicolon
 id|start
 op_assign
 (paren
@@ -2740,6 +2826,7 @@ id|size
 suffix:semicolon
 )brace
 suffix:semicolon
+multiline_comment|/* iomem regions can only be added on the command line at the moment.  &n; * Locking will be needed when they can be added via mconsole.&n; */
 DECL|variable|iomem_regions
 r_struct
 id|iomem
@@ -2935,6 +3022,7 @@ DECL|macro|PFN_UP
 mdefine_line|#define PFN_UP(x)&t;(((x) + PAGE_SIZE-1) &gt;&gt; PAGE_SHIFT)
 DECL|macro|PFN_DOWN
 mdefine_line|#define PFN_DOWN(x)&t;((x) &gt;&gt; PAGE_SHIFT)
+multiline_comment|/* Changed during early boot */
 DECL|variable|physmem_region
 r_static
 r_struct

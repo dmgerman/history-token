@@ -27,11 +27,19 @@ macro_line|#include &quot;init.h&quot;
 macro_line|#include &quot;2_5compat.h&quot;
 DECL|macro|MAX_TTYS
 mdefine_line|#define MAX_TTYS (8)
+multiline_comment|/* Referenced only by tty_driver below - presumably it&squot;s locked correctly&n; * by the tty driver.&n; */
 DECL|variable|console_driver
 r_static
 r_struct
 id|tty_driver
 id|console_driver
+suffix:semicolon
+DECL|variable|console_refcount
+r_static
+r_int
+id|console_refcount
+op_assign
+l_int|0
 suffix:semicolon
 DECL|variable|init_console_ops
 r_static
@@ -243,6 +251,7 @@ c_func
 id|MAX_TTYS
 )paren
 suffix:semicolon
+multiline_comment|/* The array is initialized by line_init, which is an initcall.  The &n; * individual elements are protected by individual semaphores.&n; */
 DECL|variable|vts
 r_struct
 id|line

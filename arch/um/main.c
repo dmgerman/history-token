@@ -13,11 +13,13 @@ macro_line|#include &quot;kern_util.h&quot;
 macro_line|#include &quot;mem_user.h&quot;
 macro_line|#include &quot;user.h&quot;
 macro_line|#include &quot;init.h&quot;
+multiline_comment|/* Set in set_stklim, which is called from main and __wrap_malloc.  &n; * __wrap_malloc only calls it if main hasn&squot;t started.&n; */
 DECL|variable|stacksizelim
 r_int
 r_int
 id|stacksizelim
 suffix:semicolon
+multiline_comment|/* Set in main */
 DECL|variable|linux_prog
 r_char
 op_star
@@ -29,7 +31,9 @@ DECL|macro|STACKSIZE
 mdefine_line|#define STACKSIZE (8 * 1024 * 1024)
 DECL|macro|THREAD_NAME_LEN
 mdefine_line|#define THREAD_NAME_LEN (256)
+multiline_comment|/* Never changed */
 DECL|variable|padding
+r_static
 r_char
 id|padding
 (braket
@@ -588,7 +592,9 @@ r_return
 id|uml_exitcode
 suffix:semicolon
 )brace
+multiline_comment|/* Changed in  __wrap___monstartup and __wrap_malloc very early */
 DECL|variable|allocating_monbuf
+r_static
 r_int
 id|allocating_monbuf
 op_assign
@@ -656,6 +662,7 @@ r_int
 r_int
 id|host_task_size
 suffix:semicolon
+multiline_comment|/* Set in __wrap_malloc early */
 DECL|variable|gmon_buf
 r_static
 r_void

@@ -762,6 +762,7 @@ id|errno
 suffix:semicolon
 )brace
 )brace
+multiline_comment|/* Called only by the tracing thread during initialization */
 DECL|function|setup_tracer_winch
 r_void
 id|setup_tracer_winch

@@ -66,6 +66,7 @@ l_int|0
 comma
 )brace
 suffix:semicolon
+multiline_comment|/* Safe without explicit locking for now.  Tasklets provide their own &n; * locking, and the interrupt handler is safe because it can&squot;t interrupt&n; * itself and it can only happen on CPU 0.&n; */
 DECL|variable|mc_requests
 id|LIST_HEAD
 c_func
@@ -97,7 +98,7 @@ id|done
 suffix:semicolon
 r_do
 (brace
-id|save_flags
+id|local_save_flags
 c_func
 (paren
 id|flags
@@ -132,7 +133,7 @@ op_amp
 id|mc_requests
 )paren
 suffix:semicolon
-id|restore_flags
+id|local_irq_restore
 c_func
 (paren
 id|flags
@@ -689,6 +690,7 @@ l_int|0
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/* This list is populated by __initcall routines. */
 DECL|variable|mconsole_devices
 id|LIST_HEAD
 c_func
@@ -1107,6 +1109,7 @@ l_int|0
 suffix:semicolon
 )brace
 macro_line|#endif
+multiline_comment|/* Changed by mconsole_setup, which is __setup, and called before SMP is&n; * active.&n; */
 DECL|variable|notify_socket
 r_static
 r_char
@@ -1491,6 +1494,45 @@ id|write_proc_mconsole
 suffix:semicolon
 r_return
 l_int|0
+suffix:semicolon
+)brace
+DECL|variable|notify_spinlock
+r_static
+id|spinlock_t
+id|notify_spinlock
+op_assign
+id|SPIN_LOCK_UNLOCKED
+suffix:semicolon
+DECL|function|lock_notify
+r_void
+id|lock_notify
+c_func
+(paren
+r_void
+)paren
+(brace
+id|spin_lock
+c_func
+(paren
+op_amp
+id|notify_spinlock
+)paren
+suffix:semicolon
+)brace
+DECL|function|unlock_notify
+r_void
+id|unlock_notify
+c_func
+(paren
+r_void
+)paren
+(brace
+id|spin_unlock
+c_func
+(paren
+op_amp
+id|notify_spinlock
+)paren
 suffix:semicolon
 )brace
 DECL|variable|create_proc_mconsole

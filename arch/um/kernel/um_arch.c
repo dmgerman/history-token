@@ -32,6 +32,29 @@ macro_line|#include &quot;init.h&quot;
 macro_line|#include &quot;os.h&quot;
 DECL|macro|DEFAULT_COMMAND_LINE
 mdefine_line|#define DEFAULT_COMMAND_LINE &quot;root=6200&quot;
+DECL|variable|boot_cpu_data
+r_struct
+id|cpuinfo_um
+id|boot_cpu_data
+op_assign
+(brace
+dot
+id|loops_per_jiffy
+op_assign
+l_int|0
+comma
+dot
+id|ipi_pipe
+op_assign
+(brace
+op_minus
+l_int|1
+comma
+op_minus
+l_int|1
+)brace
+)brace
+suffix:semicolon
 DECL|function|thread_saved_pc
 r_int
 r_int
@@ -369,6 +392,7 @@ DECL|macro|SIZE
 mdefine_line|#define SIZE ((CONFIG_NEST_LEVEL + CONFIG_KERNEL_HALF_GIGS) * 0x20000000)
 DECL|macro|START
 mdefine_line|#define START (TOP - SIZE)
+multiline_comment|/* Set in main */
 DECL|variable|host_task_size
 r_int
 r_int
@@ -407,6 +431,7 @@ op_assign
 id|START
 suffix:semicolon
 )brace
+multiline_comment|/* Set in early boot */
 DECL|variable|uml_physmem
 r_int
 r_int
@@ -433,6 +458,7 @@ id|ncpus
 op_assign
 l_int|1
 suffix:semicolon
+multiline_comment|/* Pointer set in linux_main, the array itself is private to each thread,&n; * and changed at address space creation time so this poses no concurrency&n; * problems.&n; */
 DECL|variable|argv1_begin
 r_static
 r_char
@@ -449,6 +475,7 @@ id|argv1_end
 op_assign
 l_int|NULL
 suffix:semicolon
+multiline_comment|/* Set in early boot */
 DECL|variable|__initdata
 r_static
 r_int
@@ -956,6 +983,7 @@ r_extern
 r_int
 id|debug_trace
 suffix:semicolon
+multiline_comment|/* Set during early boot */
 DECL|variable|brk_start
 r_int
 r_int
@@ -1565,44 +1593,6 @@ suffix:semicolon
 id|check_sigio
 c_func
 (paren
-)paren
-suffix:semicolon
-)brace
-DECL|variable|pid_lock
-id|spinlock_t
-id|pid_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
-suffix:semicolon
-DECL|function|lock_pid
-r_void
-id|lock_pid
-c_func
-(paren
-r_void
-)paren
-(brace
-id|spin_lock
-c_func
-(paren
-op_amp
-id|pid_lock
-)paren
-suffix:semicolon
-)brace
-DECL|function|unlock_pid
-r_void
-id|unlock_pid
-c_func
-(paren
-r_void
-)paren
-(brace
-id|spin_unlock
-c_func
-(paren
-op_amp
-id|pid_lock
 )paren
 suffix:semicolon
 )brace
