@@ -789,12 +789,19 @@ c_cond
 (paren
 id|temp_panic
 )paren
-id|panic
-c_func
+(brace
+id|printk
 (paren
+id|KERN_INFO
 l_string|&quot;pcwd: Temperature overheat trip!&bslash;n&quot;
 )paren
 suffix:semicolon
+id|machine_power_off
+c_func
+(paren
+)paren
+suffix:semicolon
+)brace
 )brace
 )brace
 r_else
@@ -827,12 +834,19 @@ c_cond
 (paren
 id|temp_panic
 )paren
-id|panic
-c_func
+(brace
+id|printk
 (paren
+id|KERN_INFO
 l_string|&quot;pcwd: Temperature overheat trip!&bslash;n&quot;
 )paren
 suffix:semicolon
+id|machine_power_off
+c_func
+(paren
+)paren
+suffix:semicolon
+)brace
 )brace
 )brace
 r_if
