@@ -1,6 +1,6 @@
 multiline_comment|/*&n; * class.c - basic device class management&n; */
 DECL|macro|DEBUG
-mdefine_line|#define DEBUG
+macro_line|#undef DEBUG
 macro_line|#include &lt;linux/device.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
@@ -29,12 +29,6 @@ comma
 r_char
 op_star
 id|buf
-comma
-r_int
-id|count
-comma
-id|loff_t
-id|off
 )paren
 (brace
 r_struct
@@ -79,10 +73,6 @@ c_func
 id|dc
 comma
 id|buf
-comma
-id|count
-comma
-id|off
 )paren
 suffix:semicolon
 r_return
@@ -109,12 +99,6 @@ r_const
 r_char
 op_star
 id|buf
-comma
-r_int
-id|count
-comma
-id|loff_t
-id|off
 )paren
 (brace
 r_struct
@@ -159,10 +143,6 @@ c_func
 id|dc
 comma
 id|buf
-comma
-id|count
-comma
-id|off
 )paren
 suffix:semicolon
 r_return
@@ -507,6 +487,11 @@ c_func
 id|drv-&gt;devclass
 )paren
 suffix:semicolon
+r_int
+id|error
+op_assign
+l_int|0
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -532,6 +517,20 @@ comma
 id|drv-&gt;name
 )paren
 suffix:semicolon
+id|error
+op_assign
+id|devclass_drv_link
+c_func
+(paren
+id|drv
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|error
+)paren
 id|list_add_tail
 c_func
 (paren
@@ -540,12 +539,6 @@ id|drv-&gt;class_list
 comma
 op_amp
 id|cls-&gt;drivers.list
-)paren
-suffix:semicolon
-id|devclass_drv_link
-c_func
-(paren
-id|drv
 )paren
 suffix:semicolon
 id|up_write
@@ -557,7 +550,7 @@ id|cls-&gt;subsys.rwsem
 suffix:semicolon
 )brace
 r_return
-l_int|0
+id|error
 suffix:semicolon
 )brace
 DECL|function|devclass_remove_driver

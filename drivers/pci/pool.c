@@ -108,12 +108,6 @@ comma
 r_char
 op_star
 id|buf
-comma
-r_int
-id|count
-comma
-id|loff_t
-id|off
 )paren
 (brace
 r_struct
@@ -138,16 +132,6 @@ comma
 op_star
 id|j
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|off
-op_ne
-l_int|0
-)paren
-r_return
-l_int|0
-suffix:semicolon
 id|pdev
 op_assign
 id|container_of
@@ -166,7 +150,7 @@ id|buf
 suffix:semicolon
 id|size
 op_assign
-id|count
+id|PAGE_SIZE
 suffix:semicolon
 id|temp
 op_assign
@@ -300,7 +284,7 @@ id|pools_lock
 )paren
 suffix:semicolon
 r_return
-id|count
+id|PAGE_SIZE
 op_minus
 id|size
 suffix:semicolon

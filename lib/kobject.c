@@ -989,7 +989,7 @@ c_func
 (paren
 l_string|&quot;subsystem %s: registering&bslash;n&quot;
 comma
-id|s-&gt;kobj.name
+id|s-&gt;kset.kobj.name
 )paren
 suffix:semicolon
 r_if
@@ -1039,7 +1039,7 @@ c_func
 (paren
 l_string|&quot;subsystem %s: unregistering&bslash;n&quot;
 comma
-id|s-&gt;kobj.name
+id|s-&gt;kset.kobj.name
 )paren
 suffix:semicolon
 id|kset_unregister
