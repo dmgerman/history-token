@@ -1279,7 +1279,6 @@ op_eq
 id|SWAPFILE_IGNORED
 )paren
 (brace
-singleline_comment|//&t;&t;&t;PRINTS( &quot;device %s locked&bslash;n&quot;, swap_info[i].swap_file-&gt;d_name.name );
 id|swap_info
 (braket
 id|i
@@ -1297,10 +1296,6 @@ c_func
 )paren
 suffix:semicolon
 )brace
-DECL|variable|suspend_device
-id|kdev_t
-id|suspend_device
-suffix:semicolon
 DECL|function|write_suspend_image
 r_static
 r_int
@@ -1353,6 +1348,9 @@ suffix:semicolon
 r_int
 r_int
 id|address
+suffix:semicolon
+id|kdev_t
+id|suspend_device
 suffix:semicolon
 id|PRINTS
 c_func
@@ -3407,19 +3405,12 @@ c_func
 (paren
 )paren
 )paren
-(brace
-macro_line|#if 1
 id|suspend_power_down
+c_func
 (paren
 )paren
 suffix:semicolon
 multiline_comment|/* FIXME: if suspend_power_down is commented out, console is lost after few suspends ?! */
-macro_line|#endif
-)brace
-id|suspend_device
-op_assign
-id|NODEV
-suffix:semicolon
 id|printk
 c_func
 (paren
@@ -3574,11 +3565,6 @@ l_string|&quot;Syncing disks before copy&bslash;n&quot;
 )paren
 suffix:semicolon
 id|do_suspend_sync
-c_func
-(paren
-)paren
-suffix:semicolon
-id|drivers_suspend
 c_func
 (paren
 )paren
