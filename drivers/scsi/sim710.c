@@ -575,7 +575,7 @@ id|Scsi_Host
 op_star
 id|host
 op_assign
-id|to_scsi_host
+id|dev_to_shost
 c_func
 (paren
 id|dev
