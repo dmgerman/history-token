@@ -6809,17 +6809,14 @@ suffix:semicolon
 macro_line|#ifdef CONFIG_LOGO_LINUX_CLUT224
 id|clut
 op_assign
-id|RELOC
+id|PTRRELOC
 c_func
 (paren
 id|RELOC
 c_func
 (paren
-op_amp
-id|logo_linux_clut224
+id|logo_linux_clut224.clut
 )paren
-op_member_access_from_pointer
-id|clut
 )paren
 suffix:semicolon
 r_for
@@ -6831,7 +6828,11 @@ l_int|0
 suffix:semicolon
 id|i
 OL
+id|RELOC
+c_func
+(paren
 id|logo_linux_clut224.clutsize
+)paren
 suffix:semicolon
 id|i
 op_increment
