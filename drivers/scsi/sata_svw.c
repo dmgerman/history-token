@@ -8,7 +8,7 @@ macro_line|#include &lt;linux/blkdev.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &quot;scsi.h&quot;
-macro_line|#include &quot;hosts.h&quot;
+macro_line|#include &lt;scsi/scsi_host.h&gt;
 macro_line|#include &lt;linux/libata.h&gt;
 macro_line|#ifdef CONFIG_PPC_OF
 macro_line|#include &lt;asm/prom.h&gt;
