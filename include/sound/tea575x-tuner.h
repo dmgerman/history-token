@@ -59,6 +59,13 @@ id|video_device
 id|vd
 suffix:semicolon
 multiline_comment|/* video device */
+macro_line|#if LINUX_VERSION_CODE &gt;= KERNEL_VERSION(2, 5, 0)
+DECL|member|fops
+r_struct
+id|file_operations
+id|fops
+suffix:semicolon
+macro_line|#endif
 DECL|member|dev_nr
 r_int
 id|dev_nr
