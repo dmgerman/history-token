@@ -228,6 +228,19 @@ id|write
 )paren
 suffix:semicolon
 r_int
+id|is_aligned_hugepage_range
+c_func
+(paren
+r_int
+r_int
+id|addr
+comma
+r_int
+r_int
+id|len
+)paren
+suffix:semicolon
+r_int
 id|pmd_huge
 c_func
 (paren
@@ -313,6 +326,8 @@ DECL|macro|mark_mm_hugetlb
 mdefine_line|#define mark_mm_hugetlb(mm, vma)&t;&t;do { } while (0)
 DECL|macro|follow_huge_pmd
 mdefine_line|#define follow_huge_pmd(mm, addr, pmd, write)&t;0
+DECL|macro|is_aligned_hugepage_range
+mdefine_line|#define is_aligned_hugepage_range(addr, len)&t;0
 DECL|macro|pmd_huge
 mdefine_line|#define pmd_huge(x)&t;0
 macro_line|#ifndef HPAGE_MASK
