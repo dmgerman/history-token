@@ -1340,6 +1340,13 @@ c_func
 id|vfs_lstat
 )paren
 suffix:semicolon
+DECL|variable|vfs_getattr
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|vfs_getattr
+)paren
+suffix:semicolon
 DECL|variable|lock_rename
 id|EXPORT_SYMBOL
 c_func
