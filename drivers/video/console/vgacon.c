@@ -18,12 +18,12 @@ macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;video/vga.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
-DECL|variable|vga_lock
 r_static
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|vga_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 DECL|variable|cursor_size_lastfrom
 r_static

@@ -143,12 +143,12 @@ mdefine_line|#define HGA_GFX_MODE_EN&t;&t;0x01
 DECL|macro|HGA_GFX_PAGE_EN
 mdefine_line|#define HGA_GFX_PAGE_EN&t;&t;0x02
 multiline_comment|/* Global locks */
-DECL|variable|hga_reg_lock
 r_static
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|hga_reg_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 multiline_comment|/* Framebuffer driver structures */
 DECL|variable|hga_default_var
