@@ -7968,6 +7968,9 @@ id|MFT_RECORD
 op_star
 id|m
 suffix:semicolon
+r_int
+id|err
+suffix:semicolon
 id|m
 op_assign
 id|map_mft_record
@@ -8061,6 +8064,88 @@ c_func
 id|ni
 )paren
 suffix:semicolon
+r_return
+suffix:semicolon
+)brace
+id|err
+op_assign
+id|ntfs_attr_lookup
+c_func
+(paren
+id|ni-&gt;type
+comma
+id|ni-&gt;name
+comma
+id|ni-&gt;name_len
+comma
+id|CASE_SENSITIVE
+comma
+l_int|0
+comma
+l_int|NULL
+comma
+l_int|0
+comma
+id|ctx
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|unlikely
+c_func
+(paren
+id|err
+)paren
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|err
+op_eq
+op_minus
+id|ENOENT
+)paren
+(brace
+id|ntfs_error
+c_func
+(paren
+id|vi-&gt;i_sb
+comma
+l_string|&quot;Open attribute is missing from &quot;
+l_string|&quot;mft record.  Inode 0x%lx is corrupt.  &quot;
+l_string|&quot;Run chkdsk.&quot;
+comma
+id|vi-&gt;i_ino
+)paren
+suffix:semicolon
+id|make_bad_inode
+c_func
+(paren
+id|vi
+)paren
+suffix:semicolon
+)brace
+r_else
+(brace
+id|ntfs_error
+c_func
+(paren
+id|vi-&gt;i_sb
+comma
+l_string|&quot;Failed to lookup attribute in &quot;
+l_string|&quot;inode 0x%lx (error code %d).&quot;
+comma
+id|vi-&gt;i_ino
+comma
+id|err
+)paren
+suffix:semicolon
+singleline_comment|// FIXME: We can&squot;t report an error code upstream.  So
+singleline_comment|// what do we do?!?  make_bad_inode() seems a bit
+singleline_comment|// harsh...
+)brace
 r_goto
 id|out
 suffix:semicolon
