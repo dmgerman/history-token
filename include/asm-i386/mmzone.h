@@ -121,7 +121,7 @@ suffix:semicolon
 )brace
 macro_line|#ifdef CONFIG_X86_NUMAQ
 macro_line|#include &lt;asm/numaq.h&gt;
-macro_line|#elif CONFIG_NUMA&t;/* summit or generic arch */
+macro_line|#elif CONFIG_ACPI_SRAT
 macro_line|#include &lt;asm/srat.h&gt;
 macro_line|#elif CONFIG_X86_PC
 DECL|macro|get_memcfg_numa
