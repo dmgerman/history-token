@@ -174,7 +174,7 @@ op_amp
 id|msg-&gt;chunks
 )paren
 (brace
-id|list_del
+id|list_del_init
 c_func
 (paren
 id|pos
@@ -1004,7 +1004,7 @@ op_amp
 id|msg-&gt;chunks
 )paren
 (brace
-id|list_del
+id|list_del_init
 c_func
 (paren
 id|pos

@@ -1631,6 +1631,8 @@ suffix:semicolon
 macro_line|#endif /* CONFIG_IPV6 */
 DECL|macro|sctp_sk
 mdefine_line|#define sctp_sk(__sk) (&amp;((struct sctp_sock *)__sk)-&gt;sctp)
+DECL|macro|sctp_opt2sk
+mdefine_line|#define sctp_opt2sk(__sp) &amp;container_of(__sp, struct sctp_sock, sctp)-&gt;sk
 multiline_comment|/* Is a socket of this style? */
 DECL|macro|sctp_style
 mdefine_line|#define sctp_style(sk, style) __sctp_style((sk), (SCTP_SOCKET_##style))
@@ -1713,6 +1715,91 @@ r_return
 id|sk-&gt;sk_state
 op_eq
 id|state
+suffix:semicolon
+)brace
+multiline_comment|/* Map v4-mapped v6 address back to v4 address */
+DECL|function|sctp_v6_map_v4
+r_static
+r_inline
+r_void
+id|sctp_v6_map_v4
+c_func
+(paren
+r_union
+id|sctp_addr
+op_star
+id|addr
+)paren
+(brace
+id|addr-&gt;v4.sin_family
+op_assign
+id|AF_INET
+suffix:semicolon
+id|addr-&gt;v4.sin_port
+op_assign
+id|addr-&gt;v6.sin6_port
+suffix:semicolon
+id|addr-&gt;v4.sin_addr.s_addr
+op_assign
+id|addr-&gt;v6.sin6_addr.s6_addr32
+(braket
+l_int|3
+)braket
+suffix:semicolon
+)brace
+multiline_comment|/* Map v4 address to v4-mapped v6 address */
+DECL|function|sctp_v4_map_v6
+r_static
+r_inline
+r_void
+id|sctp_v4_map_v6
+c_func
+(paren
+r_union
+id|sctp_addr
+op_star
+id|addr
+)paren
+(brace
+id|addr-&gt;v6.sin6_family
+op_assign
+id|AF_INET6
+suffix:semicolon
+id|addr-&gt;v6.sin6_port
+op_assign
+id|addr-&gt;v4.sin_port
+suffix:semicolon
+id|addr-&gt;v6.sin6_addr.s6_addr32
+(braket
+l_int|3
+)braket
+op_assign
+id|addr-&gt;v4.sin_addr.s_addr
+suffix:semicolon
+id|addr-&gt;v6.sin6_addr.s6_addr32
+(braket
+l_int|0
+)braket
+op_assign
+l_int|0
+suffix:semicolon
+id|addr-&gt;v6.sin6_addr.s6_addr32
+(braket
+l_int|1
+)braket
+op_assign
+l_int|0
+suffix:semicolon
+id|addr-&gt;v6.sin6_addr.s6_addr32
+(braket
+l_int|2
+)braket
+op_assign
+id|htonl
+c_func
+(paren
+l_int|0x0000ffff
+)paren
 suffix:semicolon
 )brace
 macro_line|#endif /* __net_sctp_h__ */

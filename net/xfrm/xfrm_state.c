@@ -2562,7 +2562,7 @@ c_func
 id|u8
 id|mode
 comma
-id|u16
+id|u32
 id|reqid
 comma
 id|u8

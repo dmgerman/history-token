@@ -1706,6 +1706,12 @@ r_struct
 id|sctp_association
 op_star
 id|asoc
+comma
+r_const
+r_struct
+id|sctp_chunk
+op_star
+id|chunk
 )paren
 (brace
 r_struct
@@ -1777,6 +1783,15 @@ comma
 op_amp
 id|shut
 )paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|chunk
+)paren
+id|retval-&gt;transport
+op_assign
+id|chunk-&gt;transport
 suffix:semicolon
 id|nodata
 suffix:colon
@@ -3150,7 +3165,7 @@ op_star
 id|chunk
 )paren
 suffix:semicolon
-id|list_del
+id|list_del_init
 c_func
 (paren
 op_amp
@@ -5809,7 +5824,7 @@ comma
 id|transports
 )paren
 suffix:semicolon
-id|list_del
+id|list_del_init
 c_func
 (paren
 id|pos

@@ -3298,13 +3298,20 @@ id|priv-&gt;lecid
 op_logical_or
 op_logical_neg
 id|priv-&gt;lecd
+op_logical_or
+op_logical_neg
+(paren
+id|dev-&gt;flags
+op_amp
+id|IFF_UP
+)paren
 )paren
 (brace
 multiline_comment|/* Probably looping back, or if lecd is missing,&n;                           lecd has gone down */
 id|DPRINTK
 c_func
 (paren
-l_string|&quot;Ignoring loopback frame...&bslash;n&quot;
+l_string|&quot;Ignoring frame...&bslash;n&quot;
 )paren
 suffix:semicolon
 id|dev_kfree_skb

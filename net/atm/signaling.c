@@ -28,6 +28,7 @@ id|sigd
 op_assign
 l_int|NULL
 suffix:semicolon
+macro_line|#ifdef WAIT_FOR_DEMON
 r_static
 id|DECLARE_WAIT_QUEUE_HEAD
 c_func
@@ -35,6 +36,7 @@ c_func
 id|sigd_sleep
 )paren
 suffix:semicolon
+macro_line|#endif
 DECL|function|sigd_put_skb
 r_static
 r_void
@@ -1289,6 +1291,7 @@ op_amp
 id|vcc-&gt;flags
 )paren
 suffix:semicolon
+macro_line|#ifdef WAIT_FOR_DEMON
 id|wake_up
 c_func
 (paren
@@ -1296,6 +1299,7 @@ op_amp
 id|sigd_sleep
 )paren
 suffix:semicolon
+macro_line|#endif
 r_return
 l_int|0
 suffix:semicolon

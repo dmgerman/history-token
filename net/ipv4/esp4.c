@@ -2123,7 +2123,7 @@ id|printk
 c_func
 (paren
 id|KERN_DEBUG
-l_string|&quot;pmtu discvovery on SA ESP/%08x/%08x&bslash;n&quot;
+l_string|&quot;pmtu discovery on SA ESP/%08x/%08x&bslash;n&quot;
 comma
 id|ntohl
 c_func
