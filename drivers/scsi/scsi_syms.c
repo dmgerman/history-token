@@ -12,12 +12,12 @@ macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;asm/dma.h&gt;
-macro_line|#include &quot;scsi.h&quot;
 macro_line|#include &lt;scsi/scsi_driver.h&gt;
+macro_line|#include &lt;scsi/scsi_host.h&gt;
 macro_line|#include &lt;scsi/scsi_ioctl.h&gt;
-macro_line|#include &quot;hosts.h&quot;
-macro_line|#include &quot;scsi_logging.h&quot;
 macro_line|#include &lt;scsi/scsicam.h&gt;
+macro_line|#include &quot;scsi.h&quot;
+macro_line|#include &quot;scsi_logging.h&quot;
 multiline_comment|/*&n; * This source file contains the symbol table used by scsi loadable&n; * modules.&n; */
 DECL|variable|scsi_register_driver
 id|EXPORT_SYMBOL
@@ -327,20 +327,6 @@ id|EXPORT_SYMBOL
 c_func
 (paren
 id|scsi_io_completion
-)paren
-suffix:semicolon
-DECL|variable|scsi_device_get
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|scsi_device_get
-)paren
-suffix:semicolon
-DECL|variable|scsi_device_put
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|scsi_device_put
 )paren
 suffix:semicolon
 DECL|variable|scsi_add_device

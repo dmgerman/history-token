@@ -7,9 +7,9 @@ macro_line|#include &lt;linux/mempool.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
-macro_line|#include &quot;scsi.h&quot;
-macro_line|#include &quot;hosts.h&quot;
 macro_line|#include &lt;scsi/scsi_driver.h&gt;
+macro_line|#include &lt;scsi/scsi_host.h&gt;
+macro_line|#include &quot;scsi.h&quot;
 macro_line|#include &quot;scsi_priv.h&quot;
 macro_line|#include &quot;scsi_logging.h&quot;
 DECL|macro|SG_MEMPOOL_NR
@@ -764,9 +764,19 @@ id|current_sdev
 )paren
 (brace
 r_struct
+id|Scsi_Host
+op_star
+id|shost
+op_assign
+id|current_sdev-&gt;host
+suffix:semicolon
+r_struct
 id|scsi_device
 op_star
 id|sdev
+comma
+op_star
+id|tmp
 suffix:semicolon
 r_int
 r_int
@@ -775,7 +785,7 @@ suffix:semicolon
 id|spin_lock_irqsave
 c_func
 (paren
-id|current_sdev-&gt;host-&gt;host_lock
+id|shost-&gt;host_lock
 comma
 id|flags
 )paren
@@ -794,7 +804,7 @@ suffix:semicolon
 id|spin_unlock_irqrestore
 c_func
 (paren
-id|current_sdev-&gt;host-&gt;host_lock
+id|shost-&gt;host_lock
 comma
 id|flags
 )paren
@@ -806,10 +816,11 @@ c_func
 id|current_sdev-&gt;request_queue
 )paren
 suffix:semicolon
+multiline_comment|/*&n;&t; * After unlock, this races with anyone clearing starget_sdev_user,&n;&t; * but we always enter this function again, avoiding any problems.&n;&t; */
 id|spin_lock_irqsave
 c_func
 (paren
-id|current_sdev-&gt;host-&gt;host_lock
+id|shost-&gt;host_lock
 comma
 id|flags
 )paren
@@ -819,41 +830,70 @@ c_cond
 (paren
 id|current_sdev-&gt;sdev_target-&gt;starget_sdev_user
 )paren
-(brace
-multiline_comment|/*&n;&t;&t; * After unlock, this races with anyone clearing&n;&t;&t; * starget_sdev_user, but we (should) always enter this&n;&t;&t; * function again, avoiding any problems.&n;&t;&t; */
-id|spin_unlock_irqrestore
-c_func
-(paren
-id|current_sdev-&gt;host-&gt;host_lock
-comma
-id|flags
-)paren
+r_goto
+id|out
 suffix:semicolon
-r_return
-suffix:semicolon
-)brace
-id|spin_unlock_irqrestore
-c_func
-(paren
-id|current_sdev-&gt;host-&gt;host_lock
-comma
-id|flags
-)paren
-suffix:semicolon
-id|list_for_each_entry
+id|list_for_each_entry_safe
 c_func
 (paren
 id|sdev
+comma
+id|tmp
 comma
 op_amp
 id|current_sdev-&gt;same_target_siblings
 comma
 id|same_target_siblings
 )paren
+(brace
+r_if
+c_cond
+(paren
+id|scsi_device_get
+c_func
+(paren
+id|sdev
+)paren
+)paren
+r_continue
+suffix:semicolon
+id|spin_unlock_irqrestore
+c_func
+(paren
+id|shost-&gt;host_lock
+comma
+id|flags
+)paren
+suffix:semicolon
 id|blk_run_queue
 c_func
 (paren
 id|sdev-&gt;request_queue
+)paren
+suffix:semicolon
+id|spin_lock_irqsave
+c_func
+(paren
+id|shost-&gt;host_lock
+comma
+id|flags
+)paren
+suffix:semicolon
+id|scsi_device_put
+c_func
+(paren
+id|sdev
+)paren
+suffix:semicolon
+)brace
+id|out
+suffix:colon
+id|spin_unlock_irqrestore
+c_func
+(paren
+id|shost-&gt;host_lock
+comma
+id|flags
 )paren
 suffix:semicolon
 )brace
