@@ -175,7 +175,7 @@ l_int|0
 )paren
 suffix:semicolon
 macro_line|#if RTC_BIT_INVERTED != 0
-multiline_comment|/* Work around to avoid reading correct value. */
+multiline_comment|/* Work around to avoid reading incorrect value. */
 r_if
 c_cond
 (paren
@@ -363,6 +363,20 @@ r_goto
 id|again
 suffix:semicolon
 )brace
+macro_line|#if RTC_BIT_INVERTED != 0
+r_if
+c_cond
+(paren
+(paren
+id|sec128
+op_amp
+id|RTC_BIT_INVERTED
+)paren
+)paren
+id|sec
+op_decrement
+suffix:semicolon
+macro_line|#endif
 id|tv-&gt;tv_sec
 op_assign
 id|mktime
@@ -388,11 +402,7 @@ suffix:semicolon
 id|tv-&gt;tv_usec
 op_assign
 (paren
-(paren
 id|sec128
-op_xor
-id|RTC_BIT_INVERTED
-)paren
 op_star
 l_int|1000000
 )paren
@@ -400,17 +410,24 @@ op_div
 l_int|128
 suffix:semicolon
 )brace
-DECL|function|set_rtc_time
-r_static
+DECL|function|sh_rtc_settimeofday
 r_int
-id|set_rtc_time
+id|sh_rtc_settimeofday
 c_func
 (paren
+r_const
+r_struct
+id|timeval
+op_star
+id|tv
+)paren
+(brace
 r_int
 r_int
 id|nowtime
-)paren
-(brace
+op_assign
+id|tv-&gt;tv_sec
+suffix:semicolon
 r_int
 id|retval
 op_assign
@@ -564,37 +581,6 @@ suffix:semicolon
 multiline_comment|/* Start RTC */
 r_return
 id|retval
-suffix:semicolon
-)brace
-DECL|function|sh_rtc_settimeofday
-r_int
-id|sh_rtc_settimeofday
-c_func
-(paren
-r_const
-r_struct
-id|timeval
-op_star
-id|tv
-)paren
-(brace
-macro_line|#if RTC_BIT_INVERTED != 0
-multiline_comment|/* This is not accurate, but better than nothing. */
-id|schedule_timeout
-c_func
-(paren
-id|HZ
-op_div
-l_int|2
-)paren
-suffix:semicolon
-macro_line|#endif
-r_return
-id|set_rtc_time
-c_func
-(paren
-id|tv-&gt;tv_sec
-)paren
 suffix:semicolon
 )brace
 eof

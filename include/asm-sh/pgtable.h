@@ -848,6 +848,43 @@ r_return
 id|pte
 suffix:semicolon
 )brace
+multiline_comment|/*&n; * Macro and implementation to make a page protection as uncachable.&n; */
+DECL|macro|pgprot_noncached
+mdefine_line|#define pgprot_noncached pgprot_noncached
+DECL|function|pgprot_noncached
+r_static
+r_inline
+id|pgprot_t
+id|pgprot_noncached
+c_func
+(paren
+id|pgprot_t
+id|_prot
+)paren
+(brace
+r_int
+r_int
+id|prot
+op_assign
+id|pgprot_val
+c_func
+(paren
+id|_prot
+)paren
+suffix:semicolon
+id|prot
+op_and_assign
+op_complement
+id|_PAGE_CACHABLE
+suffix:semicolon
+r_return
+id|__pgprot
+c_func
+(paren
+id|prot
+)paren
+suffix:semicolon
+)brace
 multiline_comment|/*&n; * Conversion functions: convert a page and protection to a page entry,&n; * and a page entry and page directory to the page they refer to.&n; *&n; * extern pte_t mk_pte(struct page *page, pgprot_t pgprot)&n; */
 DECL|macro|mk_pte
 mdefine_line|#define mk_pte(page,pgprot)&t;&t;&t;&t;&t;&t;&bslash;&n;({&t;pte_t __pte;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;set_pte(&amp;__pte, __pte(PHYSADDR(page_address(page))&t;&t;&bslash;&n;&t;&t;&t;&t;+pgprot_val(pgprot)));&t;&t;&t;&bslash;&n;&t;__pte;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;})

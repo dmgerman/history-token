@@ -372,12 +372,16 @@ id|__tsk
 )paren
 suffix:semicolon
 DECL|macro|unlazy_fpu
-mdefine_line|#define unlazy_fpu(tsk) do { &t;&t;&t;&bslash;&n;&t;if ((tsk)-&gt;flags &amp; PF_USEDFPU) {&t;&bslash;&n;&t;&t;grab_fpu();&t;&t;&t;&bslash;&n;&t;&t;save_fpu(tsk); &t;&t;&t;&bslash;&n;&t;}&t;&t;&t;&t;&t;&bslash;&n;} while (0)
+mdefine_line|#define unlazy_fpu(tsk) do { &t;&t;&t;&bslash;&n;&t;if ((tsk)-&gt;flags &amp; PF_USEDFPU) {&t;&bslash;&n;&t;&t;save_fpu(tsk); &t;&t;&t;&bslash;&n;&t;}&t;&t;&t;&t;&t;&bslash;&n;} while (0)
 DECL|macro|clear_fpu
-mdefine_line|#define clear_fpu(tsk) do { &t;&t;&t;&bslash;&n;&t;if ((tsk)-&gt;flags &amp; PF_USEDFPU)&t; &t;&bslash;&n;&t;&t;(tsk)-&gt;flags &amp;= ~PF_USEDFPU; &t;&bslash;&n;} while (0)
+mdefine_line|#define clear_fpu(tsk) do { &t;&t;&t;&bslash;&n;&t;if ((tsk)-&gt;flags &amp; PF_USEDFPU) { &t;&bslash;&n;&t;&t;(tsk)-&gt;flags &amp;= ~PF_USEDFPU; &t;&bslash;&n;&t;&t;release_fpu();&t;&t;&t;&bslash;&n;&t;}&t;&t;&t;&t;&t;&bslash;&n;} while (0)
 multiline_comment|/* Double presision, NANS as NANS, rounding to nearest, no exceptions */
 DECL|macro|FPSCR_INIT
 mdefine_line|#define FPSCR_INIT  0x00080000
+DECL|macro|FPSCR_CAUSE_MASK
+mdefine_line|#define&t;FPSCR_CAUSE_MASK&t;0x0001f000&t;/* Cause bits */
+DECL|macro|FPSCR_FLAG_MASK
+mdefine_line|#define&t;FPSCR_FLAG_MASK&t;&t;0x0000007c&t;/* Flag bits */
 multiline_comment|/*&n; * Return saved PC of a blocked thread.&n; */
 DECL|function|thread_saved_pc
 r_static

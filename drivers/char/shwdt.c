@@ -8,7 +8,6 @@ macro_line|#include &lt;linux/miscdevice.h&gt;
 macro_line|#include &lt;linux/watchdog.h&gt;
 macro_line|#include &lt;linux/reboot.h&gt;
 macro_line|#include &lt;linux/notifier.h&gt;
-macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;linux/ioport.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
@@ -45,26 +44,40 @@ DECL|macro|WTCSR_CKS1
 mdefine_line|#define WTCSR_CKS1&t;0x02
 DECL|macro|WTCSR_CKS0
 mdefine_line|#define WTCSR_CKS0&t;0x01
-DECL|macro|WTCSR_CKS
-mdefine_line|#define WTCSR_CKS&t;0x07
-DECL|macro|WTCSR_CKS_1
-mdefine_line|#define WTCSR_CKS_1&t;0x00
-DECL|macro|WTCSR_CKS_4
-mdefine_line|#define WTCSR_CKS_4&t;0x01
-DECL|macro|WTCSR_CKS_16
-mdefine_line|#define WTCSR_CKS_16&t;0x02
+multiline_comment|/*&n; * CKS0-2 supports a number of clock division ratios. At the time the watchdog&n; * is enabled, it defaults to a 41 usec overflow period .. we overload this to&n; * something a little more reasonable, and really can&squot;t deal with anything&n; * lower than WTCSR_CKS_1024, else we drop back into the usec range.&n; *&n; * Clock Division Ratio         Overflow Period&n; * --------------------------------------------&n; *     1/32 (initial value)       41 usecs&n; *     1/64                       82 usecs&n; *     1/128                     164 usecs&n; *     1/256                     328 usecs&n; *     1/512                     656 usecs&n; *     1/1024                   1.31 msecs&n; *     1/2048                   2.62 msecs&n; *     1/4096                   5.25 msecs&n; */
 DECL|macro|WTCSR_CKS_32
-mdefine_line|#define WTCSR_CKS_32&t;0x03
+mdefine_line|#define WTCSR_CKS_32&t;0x00
 DECL|macro|WTCSR_CKS_64
-mdefine_line|#define WTCSR_CKS_64&t;0x04
+mdefine_line|#define WTCSR_CKS_64&t;0x01
+DECL|macro|WTCSR_CKS_128
+mdefine_line|#define WTCSR_CKS_128&t;0x02
 DECL|macro|WTCSR_CKS_256
-mdefine_line|#define WTCSR_CKS_256&t;0x05
+mdefine_line|#define WTCSR_CKS_256&t;0x03
+DECL|macro|WTCSR_CKS_512
+mdefine_line|#define WTCSR_CKS_512&t;0x04
 DECL|macro|WTCSR_CKS_1024
-mdefine_line|#define WTCSR_CKS_1024&t;0x06
+mdefine_line|#define WTCSR_CKS_1024&t;0x05
+DECL|macro|WTCSR_CKS_2048
+mdefine_line|#define WTCSR_CKS_2048&t;0x06
 DECL|macro|WTCSR_CKS_4096
 mdefine_line|#define WTCSR_CKS_4096&t;0x07
+multiline_comment|/*&n; * Default clock division ratio is 5.25 msecs. Overload this at module load&n; * time. Any value not in the msec range will default to a timeout of one&n; * jiffy, which exceeds the usec overflow periods.&n; */
+DECL|variable|clock_division_ratio
+r_static
+r_int
+id|clock_division_ratio
+op_assign
+id|WTCSR_CKS_4096
+suffix:semicolon
+DECL|macro|msecs_to_jiffies
+mdefine_line|#define msecs_to_jiffies(msecs)&t;(jiffies + ((HZ * msecs + 999) / 1000))
+DECL|macro|next_ping_period
+mdefine_line|#define next_ping_period(cks)&t;msecs_to_jiffies(cks - 4)
+DECL|macro|user_ping_period
+mdefine_line|#define user_ping_period(cks)&t;(next_ping_period(cks) * 10)
 DECL|variable|sh_is_open
 r_static
+r_int
 r_int
 id|sh_is_open
 op_assign
@@ -75,6 +88,18 @@ r_static
 r_struct
 id|watchdog_info
 id|sh_wdt_info
+suffix:semicolon
+DECL|variable|timer
+r_static
+r_struct
+id|timer_list
+id|timer
+suffix:semicolon
+DECL|variable|next_heartbeat
+r_static
+r_int
+r_int
+id|next_heartbeat
 suffix:semicolon
 multiline_comment|/**&n; *&t;sh_wdt_write_cnt - Write to Counter&n; *&n; *&t;@val: Value to write&n; *&n; *&t;Writes the given value @val to the lower byte of the timer counter.&n; *&t;The upper byte is set manually on each write.&n; */
 DECL|function|sh_wdt_write_cnt
@@ -136,6 +161,29 @@ c_func
 r_void
 )paren
 (brace
+id|timer.expires
+op_assign
+id|next_ping_period
+c_func
+(paren
+id|clock_division_ratio
+)paren
+suffix:semicolon
+id|next_heartbeat
+op_assign
+id|user_ping_period
+c_func
+(paren
+id|clock_division_ratio
+)paren
+suffix:semicolon
+id|add_timer
+c_func
+(paren
+op_amp
+id|timer
+)paren
+suffix:semicolon
 id|sh_wdt_write_csr
 c_func
 (paren
@@ -175,6 +223,13 @@ c_func
 r_void
 )paren
 (brace
+id|del_timer
+c_func
+(paren
+op_amp
+id|timer
+)paren
+suffix:semicolon
 id|sh_wdt_write_csr
 c_func
 (paren
@@ -203,6 +258,18 @@ r_int
 id|data
 )paren
 (brace
+r_if
+c_cond
+(paren
+id|time_before
+c_func
+(paren
+id|jiffies
+comma
+id|next_heartbeat
+)paren
+)paren
+(brace
 id|sh_wdt_write_csr
 c_func
 (paren
@@ -224,6 +291,22 @@ c_func
 l_int|0
 )paren
 suffix:semicolon
+id|timer.expires
+op_assign
+id|next_ping_period
+c_func
+(paren
+id|clock_division_ratio
+)paren
+suffix:semicolon
+id|add_timer
+c_func
+(paren
+op_amp
+id|timer
+)paren
+suffix:semicolon
+)brace
 )brace
 multiline_comment|/**&n; * &t;sh_wdt_open - Open the Device&n; *&n; * &t;@inode: inode of device&n; * &t;@file: file handle of device&n; *&n; * &t;Watchdog device is opened and started.&n; */
 DECL|function|sh_wdt_open
@@ -259,25 +342,25 @@ suffix:colon
 r_if
 c_cond
 (paren
+id|test_and_set_bit
+c_func
+(paren
+l_int|0
+comma
+op_amp
 id|sh_is_open
 )paren
-(brace
+)paren
 r_return
 op_minus
 id|EBUSY
-suffix:semicolon
-)brace
-id|sh_is_open
-op_assign
-l_int|1
 suffix:semicolon
 id|sh_wdt_start
 c_func
 (paren
 )paren
 suffix:semicolon
-r_return
-l_int|0
+r_break
 suffix:semicolon
 r_default
 suffix:colon
@@ -308,11 +391,6 @@ op_star
 id|file
 )paren
 (brace
-id|lock_kernel
-c_func
-(paren
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -332,16 +410,16 @@ c_func
 )paren
 suffix:semicolon
 macro_line|#endif
-id|sh_is_open
-op_assign
-l_int|0
-suffix:semicolon
-)brace
-id|unlock_kernel
+id|clear_bit
 c_func
 (paren
+l_int|0
+comma
+op_amp
+id|sh_is_open
 )paren
 suffix:semicolon
+)brace
 r_return
 l_int|0
 suffix:semicolon
@@ -419,10 +497,12 @@ c_cond
 id|count
 )paren
 (brace
-id|sh_wdt_ping
+id|next_heartbeat
+op_assign
+id|user_ping_period
 c_func
 (paren
-l_int|0
+id|clock_division_ratio
 )paren
 suffix:semicolon
 r_return
@@ -533,10 +613,12 @@ suffix:semicolon
 r_case
 id|WDIOC_KEEPALIVE
 suffix:colon
-id|sh_wdt_ping
+id|next_heartbeat
+op_assign
+id|user_ping_period
 c_func
 (paren
-l_int|0
+id|clock_division_ratio
 )paren
 suffix:semicolon
 r_break
@@ -829,6 +911,21 @@ op_minus
 id|EINVAL
 suffix:semicolon
 )brace
+id|init_timer
+c_func
+(paren
+op_amp
+id|timer
+)paren
+suffix:semicolon
+id|timer.function
+op_assign
+id|sh_wdt_ping
+suffix:semicolon
+id|timer.data
+op_assign
+l_int|0
+suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
@@ -893,6 +990,22 @@ id|MODULE_LICENSE
 c_func
 (paren
 l_string|&quot;GPL&quot;
+)paren
+suffix:semicolon
+id|MODULE_PARM
+c_func
+(paren
+id|clock_division_ratio
+comma
+l_string|&quot;i&quot;
+)paren
+suffix:semicolon
+id|MODULE_PARM_DESC
+c_func
+(paren
+id|clock_division_ratio
+comma
+l_string|&quot;Clock division ratio. Valid ranges are from 0x5 (1.31ms) to 0x7 (5.25ms). Defaults to 0x7.&quot;
 )paren
 suffix:semicolon
 DECL|variable|sh_wdt_init

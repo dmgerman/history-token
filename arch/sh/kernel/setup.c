@@ -378,10 +378,15 @@ op_star
 id|c
 )paren
 (brace
-multiline_comment|/* TODO: this is totally bogus */
-multiline_comment|/* return MKDEV(SCI_MAJOR, SCI_MINOR_START + c-&gt;index); */
+multiline_comment|/* /dev/null */
 r_return
-l_int|0
+id|mk_kdev
+c_func
+(paren
+id|MEM_MAJOR
+comma
+l_int|3
+)paren
 suffix:semicolon
 )brace
 multiline_comment|/*&n; *&t;Setup initial baud/bits/parity. We do two things here:&n; *&t;- construct a cflag setting for the first rs_open()&n; *&t;- initialize the serial port&n; *&t;Return non-zero if we didn&squot;t find a serial port.&n; */

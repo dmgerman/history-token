@@ -2063,7 +2063,7 @@ id|printk
 c_func
 (paren
 id|KERN_DEBUG
-l_string|&quot;%s: new adapter_cnf: 0%x&bslash;n&quot;
+l_string|&quot;%s: new adapter_cnf: 0x%x&bslash;n&quot;
 comma
 id|dev-&gt;name
 comma
@@ -2315,7 +2315,7 @@ r_if
 c_cond
 (paren
 id|i
-OG
+op_ge
 r_sizeof
 (paren
 id|cs8900_irq_map
@@ -2332,7 +2332,7 @@ l_int|0
 id|printk
 c_func
 (paren
-l_string|&quot;&bslash;ncs89x0: bug: isa_config is %d&bslash;n&quot;
+l_string|&quot;&bslash;ncs89x0: invalid ISA interrupt number %d&bslash;n&quot;
 comma
 id|i
 )paren

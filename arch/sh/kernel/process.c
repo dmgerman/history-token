@@ -1,7 +1,9 @@
 multiline_comment|/* $Id: process.c,v 1.35 2001/10/11 09:18:17 gniibe Exp $&n; *&n; *  linux/arch/sh/kernel/process.c&n; *&n; *  Copyright (C) 1995  Linus Torvalds&n; *&n; *  SuperH version:  Copyright (C) 1999, 2000  Niibe Yutaka &amp; Kaz Kojima&n; */
 multiline_comment|/*&n; * This file handles the architecture-dependent parts of process handling..&n; */
 macro_line|#include &lt;linux/unistd.h&gt;
+macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
+macro_line|#include &lt;linux/a.out.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/mmu_context.h&gt;
@@ -51,15 +53,6 @@ id|unused
 )paren
 (brace
 multiline_comment|/* endless idle loop with no priority at all */
-id|init_idle
-c_func
-(paren
-)paren
-suffix:semicolon
-id|current-&gt;nice
-op_assign
-l_int|20
-suffix:semicolon
 r_while
 c_loop
 (paren

@@ -1180,7 +1180,13 @@ id|regs
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * handle an instruction that does an unaligned memory access&n; * - have to be careful of branch delay-slot instructions that fault&n; *   - if the branch would be taken PC points to the branch&n; *   - if the branch would not be taken, PC points to delay-slot&n; * - return 0 if handled, -EFAULT if failed (may not return if in kernel)&n; */
+multiline_comment|/*&n; * handle an instruction that does an unaligned memory access&n; * - have to be careful of branch delay-slot instructions that fault&n; *  SH3:&n; *   - if the branch would be taken PC points to the branch&n; *   - if the branch would not be taken, PC points to delay-slot&n; *  SH4:&n; *   - PC always points to delayed branch&n; * - return 0 if handled, -EFAULT if failed (may not return if in kernel)&n; */
+multiline_comment|/* Macros to determine offset from current PC for branch instructions */
+multiline_comment|/* Explicit type coercion is used to force sign extension where needed */
+DECL|macro|SH_PC_8BIT_OFFSET
+mdefine_line|#define SH_PC_8BIT_OFFSET(instr) ((((signed char)(instr))*2) + 4)
+DECL|macro|SH_PC_12BIT_OFFSET
+mdefine_line|#define SH_PC_12BIT_OFFSET(instr) ((((signed short)(instr&lt;&lt;4))&gt;&gt;3) + 4)
 DECL|function|handle_unaligned_access
 r_static
 r_int
@@ -1559,18 +1565,35 @@ id|ret
 op_eq
 l_int|0
 )paren
+(brace
+macro_line|#if defined(__SH4__)
+r_if
+c_cond
+(paren
+(paren
+id|regs-&gt;sr
+op_amp
+l_int|0x00000001
+)paren
+op_ne
+l_int|0
+)paren
 id|regs-&gt;pc
 op_add_assign
-(paren
-id|instruction
-op_amp
-l_int|0x00FF
-)paren
-op_star
-l_int|2
-op_plus
 l_int|4
 suffix:semicolon
+multiline_comment|/* next after slot */
+r_else
+macro_line|#endif
+id|regs-&gt;pc
+op_add_assign
+id|SH_PC_8BIT_OFFSET
+c_func
+(paren
+id|instruction
+)paren
+suffix:semicolon
+)brace
 r_break
 suffix:semicolon
 r_case
@@ -1598,18 +1621,35 @@ id|ret
 op_eq
 l_int|0
 )paren
+(brace
+macro_line|#if defined(__SH4__)
+r_if
+c_cond
+(paren
+(paren
+id|regs-&gt;sr
+op_amp
+l_int|0x00000001
+)paren
+op_eq
+l_int|0
+)paren
 id|regs-&gt;pc
 op_add_assign
-(paren
-id|instruction
-op_amp
-l_int|0x00FF
-)paren
-op_star
-l_int|2
-op_plus
 l_int|4
 suffix:semicolon
+multiline_comment|/* next after slot */
+r_else
+macro_line|#endif
+id|regs-&gt;pc
+op_add_assign
+id|SH_PC_8BIT_OFFSET
+c_func
+(paren
+id|instruction
+)paren
+suffix:semicolon
+)brace
 r_break
 suffix:semicolon
 )brace
@@ -1636,15 +1676,11 @@ l_int|0
 )paren
 id|regs-&gt;pc
 op_add_assign
+id|SH_PC_12BIT_OFFSET
+c_func
 (paren
 id|instruction
-op_amp
-l_int|0x0FFF
 )paren
-op_star
-l_int|2
-op_plus
-l_int|4
 suffix:semicolon
 r_break
 suffix:semicolon
@@ -1676,15 +1712,11 @@ l_int|4
 suffix:semicolon
 id|regs-&gt;pc
 op_add_assign
+id|SH_PC_12BIT_OFFSET
+c_func
 (paren
 id|instruction
-op_amp
-l_int|0x0FFF
 )paren
-op_star
-l_int|2
-op_plus
-l_int|4
 suffix:semicolon
 )brace
 r_break

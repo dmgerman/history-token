@@ -1,11 +1,11 @@
 multiline_comment|/* sundance.c: A Linux device driver for the Sundance ST201 &quot;Alta&quot;. */
-multiline_comment|/*&n;&t;Written 1999-2000 by Donald Becker.&n;&n;&t;This software may be used and distributed according to the terms of&n;&t;the GNU General Public License (GPL), incorporated herein by reference.&n;&t;Drivers based on or derived from this code fall under the GPL and must&n;&t;retain the authorship, copyright and license notice.  This file is not&n;&t;a complete program and may only be used when the entire operating&n;&t;system is licensed under the GPL.&n;&n;&t;The author may be reached as becker@scyld.com, or C/O&n;&t;Scyld Computing Corporation&n;&t;410 Severn Ave., Suite 210&n;&t;Annapolis MD 21403&n;&n;&t;Support and updates available at&n;&t;http://www.scyld.com/network/sundance.html&n;*/
+multiline_comment|/*&n;&t;Written 1999-2000 by Donald Becker.&n;&n;&t;This software may be used and distributed according to the terms of&n;&t;the GNU General Public License (GPL), incorporated herein by reference.&n;&t;Drivers based on or derived from this code fall under the GPL and must&n;&t;retain the authorship, copyright and license notice.  This file is not&n;&t;a complete program and may only be used when the entire operating&n;&t;system is licensed under the GPL.&n;&n;&t;The author may be reached as becker@scyld.com, or C/O&n;&t;Scyld Computing Corporation&n;&t;410 Severn Ave., Suite 210&n;&t;Annapolis MD 21403&n;&n;&t;Support and updates available at&n;&t;http://www.scyld.com/network/sundance.html&n;&n;&n;&t;Version 1.01a (jgarzik):&n;&t;- Replace some MII-related magic numbers with constants&n;&n;*/
 DECL|macro|DRV_NAME
 mdefine_line|#define DRV_NAME&t;&quot;sundance&quot;
 DECL|macro|DRV_VERSION
-mdefine_line|#define DRV_VERSION&t;&quot;1.01&quot;
+mdefine_line|#define DRV_VERSION&t;&quot;1.01a&quot;
 DECL|macro|DRV_RELDATE
-mdefine_line|#define DRV_RELDATE&t;&quot;4/09/00&quot;
+mdefine_line|#define DRV_RELDATE&t;&quot;11-Nov-2001&quot;
 multiline_comment|/* The user-configurable values.&n;   These may be modified when a driver module is loaded.*/
 DECL|variable|debug
 r_static
@@ -1563,7 +1563,7 @@ r_int
 id|ioaddr
 suffix:semicolon
 id|u16
-id|mii_reg0
+id|mii_ctl
 suffix:semicolon
 r_void
 op_star
@@ -2345,9 +2345,9 @@ id|np-&gt;phys
 l_int|0
 )braket
 comma
-l_int|0
+id|MII_BMCR
 comma
-l_int|0x8000
+id|BMCR_RESET
 )paren
 suffix:semicolon
 id|mdelay
@@ -2364,9 +2364,11 @@ id|np-&gt;phys
 l_int|0
 )braket
 comma
-l_int|0
+id|MII_BMCR
 comma
-l_int|0x1200
+id|BMCR_ANENABLE
+op_or
+id|BMCR_ANRESTART
 )paren
 suffix:semicolon
 multiline_comment|/* Force media type */
@@ -2377,11 +2379,11 @@ op_logical_neg
 id|np-&gt;an_enable
 )paren
 (brace
-id|mii_reg0
+id|mii_ctl
 op_assign
 l_int|0
 suffix:semicolon
-id|mii_reg0
+id|mii_ctl
 op_or_assign
 (paren
 id|np-&gt;speed
@@ -2390,18 +2392,18 @@ l_int|100
 )paren
 ques
 c_cond
-l_int|0x2000
+id|BMCR_SPEED100
 suffix:colon
 l_int|0
 suffix:semicolon
-id|mii_reg0
+id|mii_ctl
 op_or_assign
 (paren
 id|np-&gt;full_duplex
 )paren
 ques
 c_cond
-l_int|0x0100
+id|BMCR_FULLDPLX
 suffix:colon
 l_int|0
 suffix:semicolon
@@ -2414,9 +2416,9 @@ id|np-&gt;phys
 l_int|0
 )braket
 comma
-l_int|0
+id|MII_BMCR
 comma
-id|mii_reg0
+id|mii_ctl
 )paren
 suffix:semicolon
 id|printk
@@ -3472,7 +3474,7 @@ op_assign
 id|dev-&gt;base_addr
 suffix:semicolon
 r_int
-id|mii_reg5
+id|mii_lpa
 op_assign
 id|mdio_read
 c_func
@@ -3484,13 +3486,13 @@ id|np-&gt;phys
 l_int|0
 )braket
 comma
-l_int|5
+id|MII_LPA
 )paren
 suffix:semicolon
 r_int
 id|negotiated
 op_assign
-id|mii_reg5
+id|mii_lpa
 op_amp
 id|np-&gt;advertising
 suffix:semicolon
@@ -3504,7 +3506,7 @@ c_cond
 op_logical_neg
 id|np-&gt;an_enable
 op_logical_or
-id|mii_reg5
+id|mii_lpa
 op_eq
 l_int|0xffff
 )paren
@@ -5592,11 +5594,11 @@ op_assign
 id|dev-&gt;priv
 suffix:semicolon
 id|u16
-id|mii_reg0
+id|mii_ctl
 comma
-id|mii_reg4
+id|mii_advertise
 comma
-id|mii_reg5
+id|mii_lpa
 suffix:semicolon
 r_int
 id|speed
@@ -5692,7 +5694,7 @@ c_cond
 id|np-&gt;an_enable
 )paren
 (brace
-id|mii_reg4
+id|mii_advertise
 op_assign
 id|mdio_read
 (paren
@@ -5703,10 +5705,10 @@ id|np-&gt;phys
 l_int|0
 )braket
 comma
-l_int|4
+id|MII_ADVERTISE
 )paren
 suffix:semicolon
-id|mii_reg5
+id|mii_lpa
 op_assign
 id|mdio_read
 (paren
@@ -5717,12 +5719,12 @@ id|np-&gt;phys
 l_int|0
 )braket
 comma
-l_int|5
+id|MII_LPA
 )paren
 suffix:semicolon
-id|mii_reg4
+id|mii_advertise
 op_and_assign
-id|mii_reg5
+id|mii_lpa
 suffix:semicolon
 id|printk
 (paren
@@ -5735,9 +5737,9 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|mii_reg4
+id|mii_advertise
 op_amp
-l_int|0x0100
+id|ADVERTISE_100FULL
 )paren
 id|printk
 (paren
@@ -5748,9 +5750,9 @@ r_else
 r_if
 c_cond
 (paren
-id|mii_reg4
+id|mii_advertise
 op_amp
-l_int|0x0080
+id|ADVERTISE_100HALF
 )paren
 id|printk
 (paren
@@ -5761,9 +5763,9 @@ r_else
 r_if
 c_cond
 (paren
-id|mii_reg4
+id|mii_advertise
 op_amp
-l_int|0x0040
+id|ADVERTISE_10FULL
 )paren
 id|printk
 (paren
@@ -5774,9 +5776,9 @@ r_else
 r_if
 c_cond
 (paren
-id|mii_reg4
+id|mii_advertise
 op_amp
-l_int|0x0020
+id|ADVERTISE_10HALF
 )paren
 id|printk
 (paren
@@ -5792,7 +5794,7 @@ suffix:semicolon
 )brace
 r_else
 (brace
-id|mii_reg0
+id|mii_ctl
 op_assign
 id|mdio_read
 (paren
@@ -5803,15 +5805,15 @@ id|np-&gt;phys
 l_int|0
 )braket
 comma
-l_int|0
+id|MII_BMCR
 )paren
 suffix:semicolon
 id|speed
 op_assign
 (paren
-id|mii_reg0
+id|mii_ctl
 op_amp
-l_int|0x2000
+id|BMCR_SPEED100
 )paren
 ques
 c_cond
@@ -5834,9 +5836,9 @@ id|printk
 l_string|&quot;%s duplex.&bslash;n&quot;
 comma
 (paren
-id|mii_reg0
+id|mii_ctl
 op_amp
-l_int|0x0100
+id|BMCR_FULLDPLX
 )paren
 ques
 c_cond

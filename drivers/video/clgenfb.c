@@ -915,6 +915,13 @@ id|clgen_def_mode
 op_assign
 l_int|1
 suffix:semicolon
+DECL|variable|noaccel
+r_static
+r_int
+id|noaccel
+op_assign
+l_int|0
+suffix:semicolon
 DECL|variable|release_io_ports
 r_static
 r_int
@@ -5537,6 +5544,7 @@ suffix:semicolon
 r_case
 id|BT_PICASSO4
 suffix:colon
+macro_line|#ifdef CONFIG_ZORRO
 id|vga_wseq
 (paren
 id|fb_info-&gt;regs
@@ -5547,6 +5555,7 @@ l_int|0xb8
 )paren
 suffix:semicolon
 multiline_comment|/* ### INCOMPLETE!! */
+macro_line|#endif
 multiline_comment|/*          vga_wseq (fb_info-&gt;regs, CL_SEQR1F, 0x1c); */
 r_break
 suffix:semicolon
@@ -11768,6 +11777,49 @@ comma
 id|fb_info-&gt;fbmem
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|noaccel
+)paren
+(brace
+id|printk
+c_func
+(paren
+l_string|&quot;clgen: disabling text acceleration support&bslash;n&quot;
+)paren
+suffix:semicolon
+macro_line|#ifdef FBCON_HAS_CFB8
+id|fbcon_clgen_8.bmove
+op_assign
+id|fbcon_cfb8_bmove
+suffix:semicolon
+id|fbcon_clgen_8.clear
+op_assign
+id|fbcon_cfb8_clear
+suffix:semicolon
+macro_line|#endif
+macro_line|#ifdef FBCON_HAS_CFB16
+id|fbcon_clgen_16.bmove
+op_assign
+id|fbcon_cfb16_bmove
+suffix:semicolon
+id|fbcon_clgen_16.clear
+op_assign
+id|fbcon_cfb16_clear
+suffix:semicolon
+macro_line|#endif
+macro_line|#ifdef FBCON_HAS_CFB32
+id|fbcon_clgen_32.bmove
+op_assign
+id|fbcon_cfb32_bmove
+suffix:semicolon
+id|fbcon_clgen_32.clear
+op_assign
+id|fbcon_cfb32_clear
+suffix:semicolon
+macro_line|#endif
+)brace
 id|init_vgachip
 (paren
 id|fb_info
@@ -12250,6 +12302,22 @@ op_assign
 id|i
 suffix:semicolon
 )brace
+r_if
+c_cond
+(paren
+op_logical_neg
+id|strcmp
+c_func
+(paren
+id|this_opt
+comma
+l_string|&quot;noaccel&quot;
+)paren
+)paren
+id|noaccel
+op_assign
+l_int|1
+suffix:semicolon
 )brace
 r_return
 l_int|0

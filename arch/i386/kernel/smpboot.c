@@ -3438,7 +3438,7 @@ id|boot_cpu_apicid
 suffix:semicolon
 id|global_irq_holder
 op_assign
-l_int|0
+id|NO_PROC_ID
 suffix:semicolon
 id|current-&gt;cpu
 op_assign
