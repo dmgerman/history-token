@@ -2635,11 +2635,9 @@ id|in_dev
 r_goto
 id|out
 suffix:semicolon
-id|read_lock
+id|rcu_read_lock
 c_func
 (paren
-op_amp
-id|in_dev-&gt;lock
 )paren
 suffix:semicolon
 r_if
@@ -2749,11 +2747,9 @@ id|rt-&gt;rt_src
 suffix:semicolon
 )brace
 )brace
-id|read_unlock
+id|rcu_read_unlock
 c_func
 (paren
-op_amp
-id|in_dev-&gt;lock
 )paren
 suffix:semicolon
 id|in_dev_put

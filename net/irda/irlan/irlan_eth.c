@@ -735,11 +735,9 @@ l_int|NULL
 )paren
 r_return
 suffix:semicolon
-id|read_lock
+id|rcu_read_lock
 c_func
 (paren
-op_amp
-id|in_dev-&gt;lock
 )paren
 suffix:semicolon
 r_if
@@ -767,11 +765,9 @@ comma
 l_int|NULL
 )paren
 suffix:semicolon
-id|read_unlock
+id|rcu_read_unlock
 c_func
 (paren
-op_amp
-id|in_dev-&gt;lock
 )paren
 suffix:semicolon
 id|in_dev_put

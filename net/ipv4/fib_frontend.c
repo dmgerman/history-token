@@ -530,11 +530,9 @@ id|rpf
 op_assign
 l_int|0
 suffix:semicolon
-id|read_lock
+id|rcu_read_lock
 c_func
 (paren
-op_amp
-id|inetdev_lock
 )paren
 suffix:semicolon
 id|in_dev
@@ -566,11 +564,9 @@ id|in_dev
 )paren
 suffix:semicolon
 )brace
-id|read_unlock
+id|rcu_read_unlock
 c_func
 (paren
-op_amp
-id|inetdev_lock
 )paren
 suffix:semicolon
 r_if

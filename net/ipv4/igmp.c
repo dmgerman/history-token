@@ -2001,7 +2001,7 @@ id|read_lock
 c_func
 (paren
 op_amp
-id|in_dev-&gt;lock
+id|in_dev-&gt;mc_list_lock
 )paren
 suffix:semicolon
 r_for
@@ -2079,7 +2079,7 @@ id|read_unlock
 c_func
 (paren
 op_amp
-id|in_dev-&gt;lock
+id|in_dev-&gt;mc_list_lock
 )paren
 suffix:semicolon
 )brace
@@ -2274,14 +2274,14 @@ id|read_lock
 c_func
 (paren
 op_amp
-id|in_dev-&gt;lock
+id|in_dev-&gt;mc_list_lock
 )paren
 suffix:semicolon
-id|write_lock_bh
+id|spin_lock_bh
 c_func
 (paren
 op_amp
-id|in_dev-&gt;mc_lock
+id|in_dev-&gt;mc_tomb_lock
 )paren
 suffix:semicolon
 multiline_comment|/* deleted MCA&squot;s */
@@ -2465,11 +2465,11 @@ op_assign
 id|pmc
 suffix:semicolon
 )brace
-id|write_unlock_bh
+id|spin_unlock_bh
 c_func
 (paren
 op_amp
-id|in_dev-&gt;mc_lock
+id|in_dev-&gt;mc_tomb_lock
 )paren
 suffix:semicolon
 multiline_comment|/* change recs */
@@ -2611,7 +2611,7 @@ id|read_unlock
 c_func
 (paren
 op_amp
-id|in_dev-&gt;lock
+id|in_dev-&gt;mc_list_lock
 )paren
 suffix:semicolon
 r_if
@@ -3476,7 +3476,7 @@ id|read_lock
 c_func
 (paren
 op_amp
-id|in_dev-&gt;lock
+id|in_dev-&gt;mc_list_lock
 )paren
 suffix:semicolon
 r_for
@@ -3517,7 +3517,7 @@ id|read_unlock
 c_func
 (paren
 op_amp
-id|in_dev-&gt;lock
+id|in_dev-&gt;mc_list_lock
 )paren
 suffix:semicolon
 )brace
@@ -3823,7 +3823,7 @@ id|read_lock
 c_func
 (paren
 op_amp
-id|in_dev-&gt;lock
+id|in_dev-&gt;mc_list_lock
 )paren
 suffix:semicolon
 r_for
@@ -3924,7 +3924,7 @@ id|read_unlock
 c_func
 (paren
 op_amp
-id|in_dev-&gt;lock
+id|in_dev-&gt;mc_list_lock
 )paren
 suffix:semicolon
 )brace
@@ -4433,11 +4433,11 @@ op_amp
 id|im-&gt;lock
 )paren
 suffix:semicolon
-id|write_lock_bh
+id|spin_lock_bh
 c_func
 (paren
 op_amp
-id|in_dev-&gt;mc_lock
+id|in_dev-&gt;mc_tomb_lock
 )paren
 suffix:semicolon
 id|pmc-&gt;next
@@ -4448,11 +4448,11 @@ id|in_dev-&gt;mc_tomb
 op_assign
 id|pmc
 suffix:semicolon
-id|write_unlock_bh
+id|spin_unlock_bh
 c_func
 (paren
 op_amp
-id|in_dev-&gt;mc_lock
+id|in_dev-&gt;mc_tomb_lock
 )paren
 suffix:semicolon
 )brace
@@ -4487,11 +4487,11 @@ comma
 op_star
 id|psf_next
 suffix:semicolon
-id|write_lock_bh
+id|spin_lock_bh
 c_func
 (paren
 op_amp
-id|in_dev-&gt;mc_lock
+id|in_dev-&gt;mc_tomb_lock
 )paren
 suffix:semicolon
 id|pmc_prev
@@ -4547,11 +4547,11 @@ op_assign
 id|pmc-&gt;next
 suffix:semicolon
 )brace
-id|write_unlock_bh
+id|spin_unlock_bh
 c_func
 (paren
 op_amp
-id|in_dev-&gt;mc_lock
+id|in_dev-&gt;mc_tomb_lock
 )paren
 suffix:semicolon
 r_if
@@ -4619,11 +4619,11 @@ comma
 op_star
 id|nextpmc
 suffix:semicolon
-id|write_lock_bh
+id|spin_lock_bh
 c_func
 (paren
 op_amp
-id|in_dev-&gt;mc_lock
+id|in_dev-&gt;mc_tomb_lock
 )paren
 suffix:semicolon
 id|pmc
@@ -4634,11 +4634,11 @@ id|in_dev-&gt;mc_tomb
 op_assign
 l_int|NULL
 suffix:semicolon
-id|write_unlock_bh
+id|spin_unlock_bh
 c_func
 (paren
 op_amp
-id|in_dev-&gt;mc_lock
+id|in_dev-&gt;mc_tomb_lock
 )paren
 suffix:semicolon
 r_for
@@ -4680,7 +4680,7 @@ id|read_lock
 c_func
 (paren
 op_amp
-id|in_dev-&gt;lock
+id|in_dev-&gt;mc_list_lock
 )paren
 suffix:semicolon
 r_for
@@ -4754,7 +4754,7 @@ id|read_unlock
 c_func
 (paren
 op_amp
-id|in_dev-&gt;lock
+id|in_dev-&gt;mc_list_lock
 )paren
 suffix:semicolon
 )brace
@@ -5224,7 +5224,7 @@ id|write_lock_bh
 c_func
 (paren
 op_amp
-id|in_dev-&gt;lock
+id|in_dev-&gt;mc_list_lock
 )paren
 suffix:semicolon
 id|im-&gt;next
@@ -5239,7 +5239,7 @@ id|write_unlock_bh
 c_func
 (paren
 op_amp
-id|in_dev-&gt;lock
+id|in_dev-&gt;mc_list_lock
 )paren
 suffix:semicolon
 macro_line|#ifdef CONFIG_IP_MULTICAST
@@ -5348,7 +5348,7 @@ id|write_lock_bh
 c_func
 (paren
 op_amp
-id|in_dev-&gt;lock
+id|in_dev-&gt;mc_list_lock
 )paren
 suffix:semicolon
 op_star
@@ -5360,7 +5360,7 @@ id|write_unlock_bh
 c_func
 (paren
 op_amp
-id|in_dev-&gt;lock
+id|in_dev-&gt;mc_list_lock
 )paren
 suffix:semicolon
 id|igmp_group_dropped
@@ -5567,9 +5567,13 @@ op_assign
 id|IGMP_Unsolicited_Report_Count
 suffix:semicolon
 macro_line|#endif
-id|in_dev-&gt;mc_lock
+id|in_dev-&gt;mc_list_lock
 op_assign
 id|RW_LOCK_UNLOCKED
+suffix:semicolon
+id|in_dev-&gt;mc_tomb_lock
+op_assign
+id|SPIN_LOCK_UNLOCKED
 suffix:semicolon
 )brace
 multiline_comment|/* Device going up */
@@ -5655,7 +5659,7 @@ id|write_lock_bh
 c_func
 (paren
 op_amp
-id|in_dev-&gt;lock
+id|in_dev-&gt;mc_list_lock
 )paren
 suffix:semicolon
 r_while
@@ -5678,7 +5682,7 @@ id|write_unlock_bh
 c_func
 (paren
 op_amp
-id|in_dev-&gt;lock
+id|in_dev-&gt;mc_list_lock
 )paren
 suffix:semicolon
 id|igmp_group_dropped
@@ -5697,7 +5701,7 @@ id|write_lock_bh
 c_func
 (paren
 op_amp
-id|in_dev-&gt;lock
+id|in_dev-&gt;mc_list_lock
 )paren
 suffix:semicolon
 )brace
@@ -5705,7 +5709,7 @@ id|write_unlock_bh
 c_func
 (paren
 op_amp
-id|in_dev-&gt;lock
+id|in_dev-&gt;mc_list_lock
 )paren
 suffix:semicolon
 )brace
@@ -6153,7 +6157,7 @@ id|read_lock
 c_func
 (paren
 op_amp
-id|in_dev-&gt;lock
+id|in_dev-&gt;mc_list_lock
 )paren
 suffix:semicolon
 r_for
@@ -6193,7 +6197,7 @@ id|read_unlock
 c_func
 (paren
 op_amp
-id|in_dev-&gt;lock
+id|in_dev-&gt;mc_list_lock
 )paren
 suffix:semicolon
 r_return
@@ -6212,7 +6216,7 @@ id|read_unlock
 c_func
 (paren
 op_amp
-id|in_dev-&gt;lock
+id|in_dev-&gt;mc_list_lock
 )paren
 suffix:semicolon
 macro_line|#ifdef CONFIG_IP_MULTICAST
@@ -6820,7 +6824,7 @@ id|read_lock
 c_func
 (paren
 op_amp
-id|in_dev-&gt;lock
+id|in_dev-&gt;mc_list_lock
 )paren
 suffix:semicolon
 r_for
@@ -6860,7 +6864,7 @@ id|read_unlock
 c_func
 (paren
 op_amp
-id|in_dev-&gt;lock
+id|in_dev-&gt;mc_list_lock
 )paren
 suffix:semicolon
 r_return
@@ -6879,7 +6883,7 @@ id|read_unlock
 c_func
 (paren
 op_amp
-id|in_dev-&gt;lock
+id|in_dev-&gt;mc_list_lock
 )paren
 suffix:semicolon
 macro_line|#ifdef CONFIG_IP_MULTICAST
@@ -9808,7 +9812,7 @@ id|read_lock
 c_func
 (paren
 op_amp
-id|in_dev-&gt;lock
+id|in_dev-&gt;mc_list_lock
 )paren
 suffix:semicolon
 r_for
@@ -9931,7 +9935,7 @@ id|read_unlock
 c_func
 (paren
 op_amp
-id|in_dev-&gt;lock
+id|in_dev-&gt;mc_list_lock
 )paren
 suffix:semicolon
 r_return
@@ -10035,7 +10039,7 @@ id|read_lock
 c_func
 (paren
 op_amp
-id|in_dev-&gt;lock
+id|in_dev-&gt;mc_list_lock
 )paren
 suffix:semicolon
 id|im
@@ -10059,7 +10063,7 @@ id|read_unlock
 c_func
 (paren
 op_amp
-id|in_dev-&gt;lock
+id|in_dev-&gt;mc_list_lock
 )paren
 suffix:semicolon
 id|in_dev_put
@@ -10130,7 +10134,7 @@ id|read_unlock
 c_func
 (paren
 op_amp
-id|state-&gt;in_dev-&gt;lock
+id|state-&gt;in_dev-&gt;mc_list_lock
 )paren
 suffix:semicolon
 id|in_dev_put
@@ -10178,7 +10182,7 @@ id|read_lock
 c_func
 (paren
 op_amp
-id|state-&gt;in_dev-&gt;lock
+id|state-&gt;in_dev-&gt;mc_list_lock
 )paren
 suffix:semicolon
 id|im
@@ -10400,7 +10404,7 @@ id|read_unlock
 c_func
 (paren
 op_amp
-id|state-&gt;in_dev-&gt;lock
+id|state-&gt;in_dev-&gt;mc_list_lock
 )paren
 suffix:semicolon
 id|in_dev_put
@@ -10865,11 +10869,11 @@ l_int|NULL
 )paren
 r_continue
 suffix:semicolon
-id|read_lock_bh
+id|read_lock
 c_func
 (paren
 op_amp
-id|idev-&gt;lock
+id|idev-&gt;mc_list_lock
 )paren
 suffix:semicolon
 id|im
@@ -10930,11 +10934,11 @@ id|im-&gt;lock
 )paren
 suffix:semicolon
 )brace
-id|read_unlock_bh
+id|read_unlock
 c_func
 (paren
 op_amp
-id|idev-&gt;lock
+id|idev-&gt;mc_list_lock
 )paren
 suffix:semicolon
 id|in_dev_put
@@ -11019,11 +11023,11 @@ l_int|NULL
 )paren
 )paren
 (brace
-id|read_unlock_bh
+id|read_unlock
 c_func
 (paren
 op_amp
-id|state-&gt;idev-&gt;lock
+id|state-&gt;idev-&gt;mc_list_lock
 )paren
 suffix:semicolon
 id|in_dev_put
@@ -11068,11 +11072,11 @@ id|state-&gt;idev
 )paren
 r_continue
 suffix:semicolon
-id|read_lock_bh
+id|read_lock
 c_func
 (paren
 op_amp
-id|state-&gt;idev-&gt;lock
+id|state-&gt;idev-&gt;mc_list_lock
 )paren
 suffix:semicolon
 id|state-&gt;im
@@ -11336,11 +11340,11 @@ l_int|NULL
 )paren
 )paren
 (brace
-id|read_unlock_bh
+id|read_unlock
 c_func
 (paren
 op_amp
-id|state-&gt;idev-&gt;lock
+id|state-&gt;idev-&gt;mc_list_lock
 )paren
 suffix:semicolon
 id|in_dev_put

@@ -2,6 +2,7 @@ macro_line|#ifndef _LINUX_INETDEVICE_H
 DECL|macro|_LINUX_INETDEVICE_H
 mdefine_line|#define _LINUX_INETDEVICE_H
 macro_line|#ifdef __KERNEL__
+macro_line|#include &lt;linux/rcupdate.h&gt;
 DECL|struct|ipv4_devconf
 r_struct
 id|ipv4_devconf
@@ -108,10 +109,6 @@ DECL|member|refcnt
 id|atomic_t
 id|refcnt
 suffix:semicolon
-DECL|member|lock
-id|rwlock_t
-id|lock
-suffix:semicolon
 DECL|member|dead
 r_int
 id|dead
@@ -123,6 +120,10 @@ op_star
 id|ifa_list
 suffix:semicolon
 multiline_comment|/* IP ifaddr chain&t;&t;*/
+DECL|member|mc_list_lock
+id|rwlock_t
+id|mc_list_lock
+suffix:semicolon
 DECL|member|mc_list
 r_struct
 id|ip_mc_list
@@ -130,11 +131,10 @@ op_star
 id|mc_list
 suffix:semicolon
 multiline_comment|/* IP multicast filter chain    */
-DECL|member|mc_lock
-id|rwlock_t
-id|mc_lock
+DECL|member|mc_tomb_lock
+id|spinlock_t
+id|mc_tomb_lock
 suffix:semicolon
-multiline_comment|/* for mc_tomb */
 DECL|member|mc_tomb
 r_struct
 id|ip_mc_list
@@ -194,6 +194,11 @@ r_struct
 id|ipv4_devconf
 id|cnf
 suffix:semicolon
+DECL|member|rcu_head
+r_struct
+id|rcu_head
+id|rcu_head
+suffix:semicolon
 )brace
 suffix:semicolon
 DECL|macro|IN_DEV_FORWARD
@@ -243,6 +248,11 @@ r_struct
 id|in_device
 op_star
 id|ifa_dev
+suffix:semicolon
+DECL|member|rcu_head
+r_struct
+id|rcu_head
+id|rcu_head
 suffix:semicolon
 DECL|member|ifa_local
 id|u32
@@ -540,10 +550,6 @@ DECL|macro|for_ifa
 mdefine_line|#define for_ifa(in_dev)&t;{ struct in_ifaddr *ifa; &bslash;&n;  for (ifa = (in_dev)-&gt;ifa_list; ifa; ifa = ifa-&gt;ifa_next)
 DECL|macro|endfor_ifa
 mdefine_line|#define endfor_ifa(in_dev) }
-r_extern
-id|rwlock_t
-id|inetdev_lock
-suffix:semicolon
 r_static
 id|__inline__
 r_struct
@@ -565,11 +571,9 @@ id|in_device
 op_star
 id|in_dev
 suffix:semicolon
-id|read_lock
+id|rcu_read_lock
 c_func
 (paren
-op_amp
-id|inetdev_lock
 )paren
 suffix:semicolon
 id|in_dev
@@ -588,11 +592,9 @@ op_amp
 id|in_dev-&gt;refcnt
 )paren
 suffix:semicolon
-id|read_unlock
+id|rcu_read_unlock
 c_func
 (paren
-op_amp
-id|inetdev_lock
 )paren
 suffix:semicolon
 r_return
@@ -635,10 +637,46 @@ op_star
 id|idev
 )paren
 suffix:semicolon
+DECL|function|in_dev_rcu_destroy
 r_static
-id|__inline__
+r_inline
 r_void
+id|in_dev_rcu_destroy
+c_func
+(paren
+r_struct
+id|rcu_head
+op_star
+id|head
+)paren
+(brace
+r_struct
+id|in_device
+op_star
+id|idev
+op_assign
+id|container_of
+c_func
+(paren
+id|head
+comma
+r_struct
+id|in_device
+comma
+id|rcu_head
+)paren
+suffix:semicolon
+id|in_dev_finish_destroy
+c_func
+(paren
+id|idev
+)paren
+suffix:semicolon
+)brace
 DECL|function|in_dev_put
+r_static
+r_inline
+r_void
 id|in_dev_put
 c_func
 (paren
@@ -658,10 +696,13 @@ op_amp
 id|idev-&gt;refcnt
 )paren
 )paren
-id|in_dev_finish_destroy
+id|call_rcu
 c_func
 (paren
-id|idev
+op_amp
+id|idev-&gt;rcu_head
+comma
+id|in_dev_rcu_destroy
 )paren
 suffix:semicolon
 )brace
