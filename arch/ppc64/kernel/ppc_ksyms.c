@@ -38,9 +38,6 @@ macro_line|#include &lt;asm/iSeries/mf.h&gt;
 macro_line|#include &lt;asm/iSeries/HvLpEvent.h&gt;
 macro_line|#include &lt;asm/iSeries/HvLpConfig.h&gt;
 macro_line|#endif
-multiline_comment|/* Tell string.h we don&squot;t want memcpy etc. as cpp defines */
-DECL|macro|EXPORT_SYMTAB_STROPS
-mdefine_line|#define EXPORT_SYMTAB_STROPS
 r_extern
 r_int
 id|sys_ioctl
@@ -259,6 +256,13 @@ id|EXPORT_SYMBOL
 c_func
 (paren
 id|find_next_zero_bit
+)paren
+suffix:semicolon
+DECL|variable|find_next_zero_le_bit
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|find_next_zero_le_bit
 )paren
 suffix:semicolon
 DECL|variable|strcpy
@@ -839,13 +843,6 @@ c_func
 id|flush_icache_user_range
 )paren
 suffix:semicolon
-DECL|variable|flush_icache_page
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|flush_icache_page
-)paren
-suffix:semicolon
 DECL|variable|flush_dcache_page
 id|EXPORT_SYMBOL
 c_func
@@ -946,27 +943,6 @@ id|EXPORT_SYMBOL
 c_func
 (paren
 id|get_property
-)paren
-suffix:semicolon
-DECL|variable|__ashrdi3
-id|EXPORT_SYMBOL_NOVERS
-c_func
-(paren
-id|__ashrdi3
-)paren
-suffix:semicolon
-DECL|variable|__ashldi3
-id|EXPORT_SYMBOL_NOVERS
-c_func
-(paren
-id|__ashldi3
-)paren
-suffix:semicolon
-DECL|variable|__lshrdi3
-id|EXPORT_SYMBOL_NOVERS
-c_func
-(paren
-id|__lshrdi3
 )paren
 suffix:semicolon
 DECL|variable|memcpy
