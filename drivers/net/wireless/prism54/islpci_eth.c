@@ -1020,7 +1020,7 @@ c_cond
 id|newskb
 )paren
 (brace
-id|kfree_skb
+id|dev_kfree_skb_irq
 c_func
 (paren
 op_star
@@ -1744,7 +1744,7 @@ id|discard
 )paren
 )paren
 (brace
-id|dev_kfree_skb
+id|dev_kfree_skb_irq
 c_func
 (paren
 id|skb
@@ -1928,7 +1928,7 @@ l_string|&quot;Error mapping DMA address&bslash;n&quot;
 )paren
 suffix:semicolon
 multiline_comment|/* free the skbuf structure before aborting */
-id|dev_kfree_skb
+id|dev_kfree_skb_irq
 c_func
 (paren
 (paren

@@ -11,7 +11,7 @@ macro_line|#include &quot;isl_oid.h&quot;
 DECL|macro|DRV_NAME
 mdefine_line|#define DRV_NAME&t;&quot;prism54&quot;
 DECL|macro|DRV_VERSION
-mdefine_line|#define DRV_VERSION&t;&quot;1.1&quot;
+mdefine_line|#define DRV_VERSION&t;&quot;1.2&quot;
 id|MODULE_AUTHOR
 c_func
 (paren
