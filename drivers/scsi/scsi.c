@@ -129,18 +129,6 @@ c_func
 id|scsi_dev_info_list
 )paren
 suffix:semicolon
-multiline_comment|/* &n; * Function prototypes.&n; */
-r_extern
-r_void
-id|scsi_times_out
-c_func
-(paren
-r_struct
-id|scsi_cmnd
-op_star
-id|cmd
-)paren
-suffix:semicolon
 id|MODULE_PARM
 c_func
 (paren
