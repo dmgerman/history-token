@@ -2039,7 +2039,7 @@ op_logical_neg
 id|clnt
 )paren
 r_goto
-id|out_free
+id|out_fail
 suffix:semicolon
 id|msg.rpc_argp
 op_assign
@@ -2116,14 +2116,6 @@ id|nfserrno
 c_func
 (paren
 id|status
-)paren
-suffix:semicolon
-id|out_free
-suffix:colon
-id|kfree
-c_func
-(paren
-id|cbr
 )paren
 suffix:semicolon
 r_goto
