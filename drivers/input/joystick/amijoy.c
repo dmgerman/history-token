@@ -9,6 +9,7 @@ macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/input.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/amigahw.h&gt;
+macro_line|#include &lt;asm/amigaints.h&gt;
 id|MODULE_AUTHOR
 c_func
 (paren
@@ -338,7 +339,7 @@ l_int|0
 comma
 l_string|&quot;amijoy&quot;
 comma
-l_int|NULL
+id|amijoy_interrupt
 )paren
 )paren
 (brace
@@ -354,7 +355,7 @@ c_func
 id|KERN_ERR
 l_string|&quot;amijoy.c: Can&squot;t allocate irq %d&bslash;n&quot;
 comma
-id|amijoy_irq
+id|IRQ_AMIGA_VERTB
 )paren
 suffix:semicolon
 r_return
@@ -425,6 +426,7 @@ id|ints
 (braket
 l_int|4
 )braket
+suffix:semicolon
 id|str
 op_assign
 id|get_options
@@ -500,16 +502,6 @@ r_int
 id|i
 comma
 id|j
-suffix:semicolon
-id|init_timer
-c_func
-(paren
-id|amijoy_timer
-)paren
-suffix:semicolon
-id|port-&gt;timer.function
-op_assign
-id|amijoy_timer
 suffix:semicolon
 r_for
 c_loop
@@ -729,7 +721,7 @@ op_assign
 l_int|1
 suffix:semicolon
 )brace
-id|amijoy-&gt;dev
+id|amijoy_dev
 (braket
 id|i
 )braket
@@ -738,7 +730,7 @@ id|name
 op_assign
 id|amijoy_name
 suffix:semicolon
-id|amijoy-&gt;dev
+id|amijoy_dev
 (braket
 id|i
 )braket
@@ -750,7 +742,7 @@ id|amijoy_phys
 id|i
 )braket
 suffix:semicolon
-id|amijoy-&gt;dev
+id|amijoy_dev
 (braket
 id|i
 )braket
@@ -759,7 +751,7 @@ id|id.bustype
 op_assign
 id|BUS_AMIGA
 suffix:semicolon
-id|amijoy-&gt;dev
+id|amijoy_dev
 (braket
 id|i
 )braket
@@ -768,7 +760,7 @@ id|id.vendor
 op_assign
 l_int|0x0001
 suffix:semicolon
-id|amijoy-&gt;dev
+id|amijoy_dev
 (braket
 id|i
 )braket
@@ -777,7 +769,7 @@ id|id.product
 op_assign
 l_int|0x0003
 suffix:semicolon
-id|amijoy-&gt;dev
+id|amijoy_dev
 (braket
 id|i
 )braket
@@ -824,7 +816,7 @@ suffix:semicolon
 DECL|function|amijoy_exit
 r_static
 r_void
-id|_exit
+id|__exit
 id|amijoy_exit
 c_func
 (paren
