@@ -74,7 +74,7 @@ r_else
 id|lapb_data_received
 c_func
 (paren
-id|dev-&gt;priv
+id|dev
 comma
 id|skb
 )paren
@@ -246,7 +246,7 @@ op_assign
 id|lapb_connect_request
 c_func
 (paren
-id|ch
+id|dev
 )paren
 suffix:semicolon
 r_if
@@ -345,7 +345,7 @@ suffix:semicolon
 id|lapb_disconnect_request
 c_func
 (paren
-id|ch
+id|dev
 )paren
 suffix:semicolon
 id|ch-&gt;init_status
@@ -453,7 +453,7 @@ suffix:colon
 id|lapb_connect_request
 c_func
 (paren
-id|ch
+id|dev
 )paren
 suffix:semicolon
 id|kfree_skb
@@ -471,7 +471,7 @@ suffix:colon
 id|lapb_disconnect_request
 c_func
 (paren
-id|ch
+id|dev
 )paren
 suffix:semicolon
 r_default
@@ -522,7 +522,7 @@ l_int|NULL
 id|lapb_data_request
 c_func
 (paren
-id|ch
+id|dev
 comma
 id|skb2
 )paren
@@ -575,7 +575,7 @@ c_cond
 id|lapb_getparms
 c_func
 (paren
-id|dev-&gt;priv
+id|dev
 comma
 op_amp
 id|parms
@@ -713,7 +713,7 @@ c_cond
 id|lapb_getparms
 c_func
 (paren
-id|dev-&gt;priv
+id|dev
 comma
 op_amp
 id|parms
@@ -1027,7 +1027,7 @@ c_cond
 id|lapb_getparms
 c_func
 (paren
-id|dev-&gt;priv
+id|dev
 comma
 op_amp
 id|parms
@@ -1164,7 +1164,7 @@ suffix:semicolon
 id|lapb_setparms
 c_func
 (paren
-id|dev-&gt;priv
+id|dev
 comma
 op_amp
 id|parms
@@ -1218,7 +1218,7 @@ suffix:semicolon
 id|lapb_setparms
 c_func
 (paren
-id|dev-&gt;priv
+id|dev
 comma
 op_amp
 id|parms
@@ -1272,7 +1272,7 @@ suffix:semicolon
 id|lapb_setparms
 c_func
 (paren
-id|dev-&gt;priv
+id|dev
 comma
 op_amp
 id|parms
@@ -1310,7 +1310,7 @@ suffix:semicolon
 id|lapb_setparms
 c_func
 (paren
-id|dev-&gt;priv
+id|dev
 comma
 op_amp
 id|parms
@@ -1462,7 +1462,7 @@ suffix:semicolon
 id|lapb_setparms
 c_func
 (paren
-id|dev-&gt;priv
+id|dev
 comma
 op_amp
 id|parms
@@ -1505,9 +1505,10 @@ r_void
 id|comxlapb_connected
 c_func
 (paren
-r_void
+r_struct
+id|net_device
 op_star
-id|token
+id|dev
 comma
 r_int
 id|reason
@@ -1518,7 +1519,7 @@ id|comx_channel
 op_star
 id|ch
 op_assign
-id|token
+id|dev-&gt;priv
 suffix:semicolon
 r_struct
 id|proc_dir_entry
@@ -1691,9 +1692,10 @@ r_void
 id|comxlapb_disconnected
 c_func
 (paren
-r_void
+r_struct
+id|net_device
 op_star
-id|token
+id|dev
 comma
 r_int
 id|reason
@@ -1704,7 +1706,7 @@ id|comx_channel
 op_star
 id|ch
 op_assign
-id|token
+id|dev-&gt;priv
 suffix:semicolon
 r_struct
 id|proc_dir_entry
@@ -1878,9 +1880,10 @@ r_int
 id|comxlapb_data_indication
 c_func
 (paren
-r_void
+r_struct
+id|net_device
 op_star
-id|token
+id|dev
 comma
 r_struct
 id|sk_buff
@@ -1893,7 +1896,7 @@ id|comx_channel
 op_star
 id|ch
 op_assign
-id|token
+id|dev-&gt;priv
 suffix:semicolon
 r_if
 c_cond
@@ -1977,9 +1980,10 @@ r_void
 id|comxlapb_data_transmit
 c_func
 (paren
-r_void
+r_struct
+id|net_device
 op_star
-id|token
+id|dev
 comma
 r_struct
 id|sk_buff
@@ -1992,7 +1996,7 @@ id|comx_channel
 op_star
 id|ch
 op_assign
-id|token
+id|dev-&gt;priv
 suffix:semicolon
 r_if
 c_cond
@@ -2101,7 +2105,7 @@ suffix:semicolon
 id|lapb_unregister
 c_func
 (paren
-id|dev-&gt;priv
+id|dev
 )paren
 suffix:semicolon
 id|remove_proc_entry
@@ -2247,7 +2251,7 @@ c_cond
 id|lapb_register
 c_func
 (paren
-id|dev-&gt;priv
+id|dev
 comma
 op_amp
 id|lapbreg

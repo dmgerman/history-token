@@ -307,7 +307,7 @@ c_func
 id|KERN_DEBUG
 l_string|&quot;lapb: (%p) S%d RX %02X %02X %02X&bslash;n&quot;
 comma
-id|lapb-&gt;token
+id|lapb-&gt;dev
 comma
 id|lapb-&gt;state
 comma
@@ -1288,7 +1288,7 @@ c_func
 id|KERN_DEBUG
 l_string|&quot;lapb: (%p) S%d TX FRMR %02X %02X %02X %02X %02X&bslash;n&quot;
 comma
-id|lapb-&gt;token
+id|lapb-&gt;dev
 comma
 id|lapb-&gt;state
 comma
@@ -1397,7 +1397,7 @@ c_func
 id|KERN_DEBUG
 l_string|&quot;lapb: (%p) S%d TX FRMR %02X %02X %02X&bslash;n&quot;
 comma
-id|lapb-&gt;token
+id|lapb-&gt;dev
 comma
 id|lapb-&gt;state
 comma
