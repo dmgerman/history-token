@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: pgtable.h,v 1.143 2001/08/22 22:16:56 kanoj Exp $&n; * pgtable.h: SpitFire page table operations.&n; *&n; * Copyright 1996,1997 David S. Miller (davem@caip.rutgers.edu)&n; * Copyright 1997,1998 Jakub Jelinek (jj@sunsite.mff.cuni.cz)&n; */
+multiline_comment|/* $Id: pgtable.h,v 1.145 2001/08/30 03:22:00 kanoj Exp $&n; * pgtable.h: SpitFire page table operations.&n; *&n; * Copyright 1996,1997 David S. Miller (davem@caip.rutgers.edu)&n; * Copyright 1997,1998 Jakub Jelinek (jj@sunsite.mff.cuni.cz)&n; */
 macro_line|#ifndef _SPARC64_PGTABLE_H
 DECL|macro|_SPARC64_PGTABLE_H
 mdefine_line|#define _SPARC64_PGTABLE_H
@@ -114,6 +114,21 @@ DECL|macro|_PAGE_WRITE
 mdefine_line|#define _PAGE_WRITE&t;0x0000000000000100&t;/* Writable SW Bit                    */
 DECL|macro|_PAGE_PRESENT
 mdefine_line|#define _PAGE_PRESENT&t;0x0000000000000080&t;/* Present Page (ie. not swapped out) */
+macro_line|#if PAGE_SHIFT == 13
+DECL|macro|_PAGE_SZBITS
+mdefine_line|#define _PAGE_SZBITS&t;_PAGE_SZ8K
+macro_line|#elif PAGE_SHIFT == 16
+DECL|macro|_PAGE_SZBITS
+mdefine_line|#define _PAGE_SZBITS&t;_PAGE_SZ64K
+macro_line|#elif PAGE_SHIFT == 19
+DECL|macro|_PAGE_SZBITS
+mdefine_line|#define _PAGE_SZBITS&t;_PAGE_SZ512K
+macro_line|#elif PAGE_SHIFT == 22
+DECL|macro|_PAGE_SZBITS
+mdefine_line|#define _PAGE_SZBITS&t;_PAGE_SZ4M
+macro_line|#else
+macro_line|#error Wrong PAGE_SHIFT specified
+macro_line|#endif
 DECL|macro|_PAGE_CACHE
 mdefine_line|#define _PAGE_CACHE&t;(_PAGE_CP | _PAGE_CV)
 DECL|macro|__DIRTY_BITS
@@ -138,7 +153,7 @@ mdefine_line|#define PAGE_INVALID&t;__pgprot (0)
 DECL|macro|_PFN_MASK
 mdefine_line|#define _PFN_MASK&t;_PAGE_PADDR
 DECL|macro|_PAGE_CHG_MASK
-mdefine_line|#define _PAGE_CHG_MASK&t;(_PFN_MASK | _PAGE_MODIFIED | _PAGE_ACCESSED | _PAGE_PRESENT)
+mdefine_line|#define _PAGE_CHG_MASK&t;(_PFN_MASK | _PAGE_MODIFIED | _PAGE_ACCESSED | _PAGE_PRESENT | _PAGE_SZBITS)
 DECL|macro|pg_iobits
 mdefine_line|#define pg_iobits (_PAGE_VALID | _PAGE_PRESENT | __DIRTY_BITS | __ACCESS_BITS | _PAGE_E)
 DECL|macro|__P000
@@ -175,31 +190,27 @@ DECL|macro|__S111
 mdefine_line|#define __S111&t;PAGE_SHARED
 macro_line|#ifndef __ASSEMBLY__
 r_extern
-id|pte_t
-id|__bad_page
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-DECL|macro|BAD_PAGE
-mdefine_line|#define BAD_PAGE&t;__bad_page()
-r_extern
 r_int
 r_int
 id|phys_base
 suffix:semicolon
+r_extern
+r_struct
+id|page
+op_star
+id|mem_map_zero
+suffix:semicolon
 DECL|macro|ZERO_PAGE
-mdefine_line|#define ZERO_PAGE(vaddr)&t;(mem_map)
+mdefine_line|#define ZERO_PAGE(vaddr)&t;(mem_map_zero)
 multiline_comment|/* Warning: These take pointers to page structs now... */
 DECL|macro|mk_pte
-mdefine_line|#define mk_pte(page, pgprot)&t;&t;&bslash;&n;&t;__pte((((page - mem_map) &lt;&lt; PAGE_SHIFT)+phys_base) | pgprot_val(pgprot))
+mdefine_line|#define mk_pte(page, pgprot)&t;&t;&bslash;&n;&t;__pte((((page - mem_map) &lt;&lt; PAGE_SHIFT)+phys_base) | pgprot_val(pgprot) | _PAGE_SZBITS)
 DECL|macro|page_pte_prot
 mdefine_line|#define page_pte_prot(page, prot)&t;mk_pte(page, prot)
 DECL|macro|page_pte
 mdefine_line|#define page_pte(page)&t;&t;&t;page_pte_prot(page, __pgprot(0))
 DECL|macro|mk_pte_phys
-mdefine_line|#define mk_pte_phys(physpage, pgprot)&t;(__pte((physpage) | pgprot_val(pgprot)))
+mdefine_line|#define mk_pte_phys(physpage, pgprot)&t;(__pte((physpage) | pgprot_val(pgprot) | _PAGE_SZBITS))
 DECL|function|pte_modify
 r_extern
 r_inline

@@ -13240,6 +13240,11 @@ id|pci_dev
 op_star
 id|pdev
 suffix:semicolon
+r_int
+id|ret
+op_assign
+l_int|0
+suffix:semicolon
 id|pci_for_each_dev
 c_func
 (paren
@@ -13268,7 +13273,9 @@ id|last_sio
 )paren
 r_continue
 suffix:semicolon
-r_return
+r_if
+c_cond
+(paren
 id|parport_pc_superio_info
 (braket
 id|id-&gt;driver_data
@@ -13282,12 +13289,17 @@ id|autoirq
 comma
 id|autodma
 )paren
+)paren
+(brace
+id|ret
+op_increment
 suffix:semicolon
 )brace
+)brace
 r_return
-l_int|0
+id|ret
 suffix:semicolon
-multiline_comment|/* zero devices found */
+multiline_comment|/* number of devices found */
 )brace
 macro_line|#else
 DECL|variable|parport_pc_pci_driver

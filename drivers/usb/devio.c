@@ -3547,7 +3547,9 @@ id|ps-&gt;dev-&gt;devnum
 suffix:semicolon
 id|ci.slow
 op_assign
-id|ps-&gt;dev-&gt;slow
+id|ps-&gt;dev-&gt;speed
+op_eq
+id|USB_SPEED_LOW
 suffix:semicolon
 r_if
 c_cond

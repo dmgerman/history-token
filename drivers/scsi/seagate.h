@@ -38,6 +38,7 @@ op_star
 )paren
 )paren
 suffix:semicolon
+r_static
 r_int
 id|seagate_st0x_abort
 c_func
@@ -57,6 +58,7 @@ id|Scsi_Host
 op_star
 )paren
 suffix:semicolon
+r_static
 r_int
 id|seagate_st0x_reset
 c_func

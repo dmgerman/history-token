@@ -27,6 +27,8 @@ DECL|macro|USB_PORT_FEAT_POWER
 mdefine_line|#define USB_PORT_FEAT_POWER&t;&t;8
 DECL|macro|USB_PORT_FEAT_LOWSPEED
 mdefine_line|#define USB_PORT_FEAT_LOWSPEED&t;&t;9
+DECL|macro|USB_PORT_FEAT_HIGHSPEED
+mdefine_line|#define USB_PORT_FEAT_HIGHSPEED&t;&t;10
 DECL|macro|USB_PORT_FEAT_C_CONNECTION
 mdefine_line|#define USB_PORT_FEAT_C_CONNECTION&t;16
 DECL|macro|USB_PORT_FEAT_C_ENABLE
@@ -37,6 +39,11 @@ DECL|macro|USB_PORT_FEAT_C_OVER_CURRENT
 mdefine_line|#define USB_PORT_FEAT_C_OVER_CURRENT&t;19
 DECL|macro|USB_PORT_FEAT_C_RESET
 mdefine_line|#define USB_PORT_FEAT_C_RESET&t;&t;20
+DECL|macro|USB_PORT_FEAT_TEST
+mdefine_line|#define USB_PORT_FEAT_TEST              21
+DECL|macro|USB_PORT_FEAT_INDICATOR
+mdefine_line|#define USB_PORT_FEAT_INDICATOR         22
+multiline_comment|/* &n; * Hub Status and Hub Change results&n; * See USB 2.0 spec Table 11-19 and Table 11-20&n; */
 DECL|struct|usb_port_status
 r_struct
 id|usb_port_status
@@ -57,7 +64,7 @@ id|packed
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/* wPortStatus bits */
+multiline_comment|/* &n; * wPortStatus bit field&n; * See USB 2.0 spec Table 11-21&n; */
 DECL|macro|USB_PORT_STAT_CONNECTION
 mdefine_line|#define USB_PORT_STAT_CONNECTION&t;0x0001
 DECL|macro|USB_PORT_STAT_ENABLE
@@ -68,11 +75,19 @@ DECL|macro|USB_PORT_STAT_OVERCURRENT
 mdefine_line|#define USB_PORT_STAT_OVERCURRENT&t;0x0008
 DECL|macro|USB_PORT_STAT_RESET
 mdefine_line|#define USB_PORT_STAT_RESET&t;&t;0x0010
+multiline_comment|/* bits 5 for 7 are reserved */
 DECL|macro|USB_PORT_STAT_POWER
 mdefine_line|#define USB_PORT_STAT_POWER&t;&t;0x0100
 DECL|macro|USB_PORT_STAT_LOW_SPEED
 mdefine_line|#define USB_PORT_STAT_LOW_SPEED&t;&t;0x0200
-multiline_comment|/* wPortChange bits */
+DECL|macro|USB_PORT_STAT_HIGH_SPEED
+mdefine_line|#define USB_PORT_STAT_HIGH_SPEED        0x0400
+DECL|macro|USB_PORT_STAT_TEST
+mdefine_line|#define USB_PORT_STAT_TEST              0x0800
+DECL|macro|USB_PORT_STAT_INDICATOR
+mdefine_line|#define USB_PORT_STAT_INDICATOR         0x1000
+multiline_comment|/* bits 13 to 15 are reserved */
+multiline_comment|/* &n; * wPortChange bit field&n; * See USB 2.0 spec Table 11-22&n; * Bits 0 to 4 shown, bits 5 to 15 are reserved&n; */
 DECL|macro|USB_PORT_STAT_C_CONNECTION
 mdefine_line|#define USB_PORT_STAT_C_CONNECTION&t;0x0001
 DECL|macro|USB_PORT_STAT_C_ENABLE
@@ -83,13 +98,17 @@ DECL|macro|USB_PORT_STAT_C_OVERCURRENT
 mdefine_line|#define USB_PORT_STAT_C_OVERCURRENT&t;0x0008
 DECL|macro|USB_PORT_STAT_C_RESET
 mdefine_line|#define USB_PORT_STAT_C_RESET&t;&t;0x0010
-multiline_comment|/* wHubCharacteristics (masks) */
+multiline_comment|/*&n; * wHubCharacteristics (masks) &n; * See USB 2.0 spec Table 11-13, offset 3&n; */
 DECL|macro|HUB_CHAR_LPSM
-mdefine_line|#define HUB_CHAR_LPSM&t;&t;0x0003
+mdefine_line|#define HUB_CHAR_LPSM&t;&t;0x0003 /* D1 .. D0 */
 DECL|macro|HUB_CHAR_COMPOUND
-mdefine_line|#define HUB_CHAR_COMPOUND&t;0x0004
+mdefine_line|#define HUB_CHAR_COMPOUND&t;0x0004 /* D2       */
 DECL|macro|HUB_CHAR_OCPM
-mdefine_line|#define HUB_CHAR_OCPM&t;&t;0x0018
+mdefine_line|#define HUB_CHAR_OCPM&t;&t;0x0018 /* D4 .. D3 */
+DECL|macro|HUB_CHAR_TTTT
+mdefine_line|#define HUB_CHAR_TTTT           0x0060 /* D6 .. D5 */
+DECL|macro|HUB_CHAR_PORTIND
+mdefine_line|#define HUB_CHAR_PORTIND        0x0080 /* D7       */
 DECL|struct|usb_hub_status
 r_struct
 id|usb_hub_status
@@ -110,7 +129,7 @@ id|packed
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/*&n; *Hub Status &amp; Hub Change bit masks&n; */
+multiline_comment|/*&n; * Hub Status &amp; Hub Change bit masks&n; * See USB 2.0 spec Table 11-19 and Table 11-20&n; * Bits 0 and 1 for wHubStatus and wHubChange&n; * Bits 2 to 15 are reserved for both&n; */
 DECL|macro|HUB_STATUS_LOCAL_POWER
 mdefine_line|#define HUB_STATUS_LOCAL_POWER&t;0x0001
 DECL|macro|HUB_STATUS_OVERCURRENT
@@ -119,16 +138,14 @@ DECL|macro|HUB_CHANGE_LOCAL_POWER
 mdefine_line|#define HUB_CHANGE_LOCAL_POWER&t;0x0001
 DECL|macro|HUB_CHANGE_OVERCURRENT
 mdefine_line|#define HUB_CHANGE_OVERCURRENT&t;0x0002
-DECL|macro|HUB_DESCRIPTOR_MAX_SIZE
-mdefine_line|#define HUB_DESCRIPTOR_MAX_SIZE&t;39&t;/* enough for 127 ports on a hub */
 multiline_comment|/* Hub descriptor */
 DECL|struct|usb_hub_descriptor
 r_struct
 id|usb_hub_descriptor
 (brace
-DECL|member|bLength
+DECL|member|bDescLength
 id|__u8
-id|bLength
+id|bDescLength
 suffix:semicolon
 DECL|member|bDescriptorType
 id|__u8
@@ -155,7 +172,19 @@ DECL|member|bitmap
 id|__u8
 id|bitmap
 (braket
-l_int|0
+l_int|2
+op_star
+(paren
+(paren
+id|USB_MAXCHILDREN
+op_plus
+l_int|1
+op_plus
+l_int|7
+)paren
+op_div
+l_int|8
+)paren
 )braket
 suffix:semicolon
 )brace
@@ -220,11 +249,6 @@ DECL|member|event_list
 r_struct
 id|list_head
 id|event_list
-suffix:semicolon
-multiline_comment|/* Number of ports on the hub */
-DECL|member|nports
-r_int
-id|nports
 suffix:semicolon
 DECL|member|descriptor
 r_struct

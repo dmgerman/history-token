@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *&t;IPv6 output functions&n; *&t;Linux INET6 implementation &n; *&n; *&t;Authors:&n; *&t;Pedro Roque&t;&t;&lt;roque@di.fc.ul.pt&gt;&t;&n; *&n; *&t;$Id: ip6_output.c,v 1.31 2001/04/17 20:39:51 davem Exp $&n; *&n; *&t;Based on linux/net/ipv4/ip_output.c&n; *&n; *&t;This program is free software; you can redistribute it and/or&n; *      modify it under the terms of the GNU General Public License&n; *      as published by the Free Software Foundation; either version&n; *      2 of the License, or (at your option) any later version.&n; *&n; *&t;Changes:&n; *&t;A.N.Kuznetsov&t;:&t;airthmetics in fragmentation.&n; *&t;&t;&t;&t;extension headers are implemented.&n; *&t;&t;&t;&t;route changes now work.&n; *&t;&t;&t;&t;ip6_forward does not confuse sniffers.&n; *&t;&t;&t;&t;etc.&n; *&n; *      H. von Brand    :       Added missing #include &lt;linux/string.h&gt;&n; *&t;Imran Patel&t;: &t;frag id should be in NBO&n; */
+multiline_comment|/*&n; *&t;IPv6 output functions&n; *&t;Linux INET6 implementation &n; *&n; *&t;Authors:&n; *&t;Pedro Roque&t;&t;&lt;roque@di.fc.ul.pt&gt;&t;&n; *&n; *&t;$Id: ip6_output.c,v 1.32 2001/09/01 00:31:50 davem Exp $&n; *&n; *&t;Based on linux/net/ipv4/ip_output.c&n; *&n; *&t;This program is free software; you can redistribute it and/or&n; *      modify it under the terms of the GNU General Public License&n; *      as published by the Free Software Foundation; either version&n; *      2 of the License, or (at your option) any later version.&n; *&n; *&t;Changes:&n; *&t;A.N.Kuznetsov&t;:&t;airthmetics in fragmentation.&n; *&t;&t;&t;&t;extension headers are implemented.&n; *&t;&t;&t;&t;route changes now work.&n; *&t;&t;&t;&t;ip6_forward does not confuse sniffers.&n; *&t;&t;&t;&t;etc.&n; *&n; *      H. von Brand    :       Added missing #include &lt;linux/string.h&gt;&n; *&t;Imran Patel&t;: &t;frag id should be in NBO&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
@@ -475,6 +475,14 @@ c_cond
 id|dst-&gt;error
 )paren
 (brace
+r_if
+c_cond
+(paren
+id|net_ratelimit
+c_func
+(paren
+)paren
+)paren
 id|printk
 c_func
 (paren
@@ -904,6 +912,14 @@ id|ip6_maybe_reroute
 )paren
 suffix:semicolon
 )brace
+r_if
+c_cond
+(paren
+id|net_ratelimit
+c_func
+(paren
+)paren
+)paren
 id|printk
 c_func
 (paren

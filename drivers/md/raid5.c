@@ -2414,10 +2414,6 @@ c_func
 l_string|&quot;raid5_error called&bslash;n&quot;
 )paren
 suffix:semicolon
-id|conf-&gt;resync_parity
-op_assign
-l_int|0
-suffix:semicolon
 r_for
 c_loop
 (paren
@@ -2559,11 +2555,7 @@ op_logical_neg
 id|conf-&gt;spare-&gt;operational
 )paren
 (brace
-id|MD_BUG
-c_func
-(paren
-)paren
-suffix:semicolon
+multiline_comment|/* probably a SET_DISK_FAULTY ioctl */
 r_return
 op_minus
 id|EIO
@@ -2613,6 +2605,16 @@ op_decrement
 suffix:semicolon
 id|sb-&gt;failed_disks
 op_increment
+suffix:semicolon
+id|mddev-&gt;sb_dirty
+op_assign
+l_int|1
+suffix:semicolon
+id|md_wakeup_thread
+c_func
+(paren
+id|conf-&gt;thread
+)paren
 suffix:semicolon
 r_return
 l_int|0
@@ -4517,9 +4519,14 @@ id|conf-&gt;device_lock
 suffix:semicolon
 )brace
 )brace
+)brace
 r_if
 c_cond
 (paren
+id|failed
+OG
+l_int|1
+op_logical_and
 id|syncing
 )paren
 (brace
@@ -4552,7 +4559,6 @@ id|syncing
 op_assign
 l_int|0
 suffix:semicolon
-)brace
 )brace
 multiline_comment|/* might be able to return some write requests if the parity block&n;&t; * is safe, or on a failed drive&n;&t; */
 id|bh
@@ -5696,6 +5702,11 @@ id|sh-&gt;state
 )paren
 )paren
 (brace
+r_struct
+id|disk_info
+op_star
+id|spare
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -5826,12 +5837,16 @@ r_else
 r_if
 c_cond
 (paren
+(paren
+id|spare
+op_assign
 id|conf-&gt;spare
+)paren
 )paren
 id|md_sync_acct
 c_func
 (paren
-id|conf-&gt;spare-&gt;dev
+id|spare-&gt;dev
 comma
 id|bh-&gt;b_size
 op_rshift
@@ -5980,6 +5995,13 @@ id|sh-&gt;bh_cache
 id|i
 )braket
 suffix:semicolon
+r_struct
+id|disk_info
+op_star
+id|spare
+op_assign
+id|conf-&gt;spare
+suffix:semicolon
 r_int
 id|skip
 op_assign
@@ -6029,7 +6051,7 @@ r_else
 r_if
 c_cond
 (paren
-id|conf-&gt;spare
+id|spare
 op_logical_and
 id|action
 (braket
@@ -6042,7 +6064,7 @@ l_int|1
 )paren
 id|bh-&gt;b_dev
 op_assign
-id|conf-&gt;spare-&gt;dev
+id|spare-&gt;dev
 suffix:semicolon
 r_else
 id|skip

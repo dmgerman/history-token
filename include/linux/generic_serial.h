@@ -464,6 +464,16 @@ op_star
 id|sp
 )paren
 suffix:semicolon
+r_void
+id|gs_got_break
+c_func
+(paren
+r_struct
+id|gs_port
+op_star
+id|port
+)paren
+suffix:semicolon
 r_extern
 r_int
 id|gs_debug

@@ -22,7 +22,7 @@ DECL|macro|MAJOR_NR
 mdefine_line|#define MAJOR_NR MITSUMI_CDROM_MAJOR
 macro_line|#include &lt;linux/blk.h&gt;
 DECL|macro|mcd_port
-mdefine_line|#define mcd_port mcd    /* for compatible parameter passing with &quot;insmod&quot; */
+mdefine_line|#define mcd_port mcd&t;&t;/* for compatible parameter passing with &quot;insmod&quot; */
 macro_line|#include &quot;mcd.h&quot;
 DECL|variable|mcd_blocksizes
 r_static
@@ -51,22 +51,22 @@ r_int
 id|mcdPresent
 suffix:semicolon
 macro_line|#if 0
-mdefine_line|#define TEST1 /* &lt;int-..&gt; */
-mdefine_line|#define TEST2 /* do_mcd_req */
-mdefine_line|#define TEST3 */ /* MCD_S_state */
-mdefine_line|#define TEST4 /* QUICK_LOOP-counter */
-mdefine_line|#define TEST5 */ /* port(1) state */
+mdefine_line|#define TEST1&t;&t;&t;/* &lt;int-..&gt; */
+mdefine_line|#define TEST2&t;&t;&t;/* do_mcd_req */
+mdefine_line|#define TEST3 */&t;&t;/* MCD_S_state */
+mdefine_line|#define TEST4&t;&t;&t;/* QUICK_LOOP-counter */
+mdefine_line|#define TEST5 */&t;&t;/* port(1) state */
 macro_line|#endif
 macro_line|#if 1
 DECL|macro|QUICK_LOOP_DELAY
-mdefine_line|#define QUICK_LOOP_DELAY udelay(45)  /* use udelay */
+mdefine_line|#define QUICK_LOOP_DELAY udelay(45)&t;/* use udelay */
 DECL|macro|QUICK_LOOP_COUNT
 mdefine_line|#define QUICK_LOOP_COUNT 20
 macro_line|#else
 DECL|macro|QUICK_LOOP_DELAY
 mdefine_line|#define QUICK_LOOP_DELAY
 DECL|macro|QUICK_LOOP_COUNT
-mdefine_line|#define QUICK_LOOP_COUNT 140 /* better wait constant time */
+mdefine_line|#define QUICK_LOOP_COUNT 140&t;/* better wait constant time */
 macro_line|#endif
 multiline_comment|/* #define DOUBLE_QUICK_ONLY */
 DECL|macro|CURRENT_VALID
@@ -195,7 +195,7 @@ DECL|variable|mitsumi_bug_93_wait
 r_int
 id|mitsumi_bug_93_wait
 suffix:semicolon
-macro_line|#endif /* WORK_AROUND_MITSUMI_BUG_93 */
+macro_line|#endif&t;&t;&t;&t;/* WORK_AROUND_MITSUMI_BUG_93 */
 DECL|variable|mcd_port
 r_static
 r_int
@@ -661,7 +661,7 @@ id|ints
 l_int|3
 )braket
 suffix:semicolon
-macro_line|#endif /* WORK_AROUND_MITSUMI_BUG_93 */
+macro_line|#endif&t;&t;&t;&t;/* WORK_AROUND_MITSUMI_BUG_93 */
 r_return
 l_int|1
 suffix:semicolon
@@ -674,7 +674,7 @@ comma
 id|mcd_setup
 )paren
 suffix:semicolon
-macro_line|#endif /* MODULE */ 
+macro_line|#endif&t;&t;&t;&t;/* MODULE */
 DECL|function|mcd_media_changed
 r_static
 r_int
@@ -693,11 +693,11 @@ id|disc_nr
 r_int
 id|retval
 suffix:semicolon
-macro_line|#if 1&t; /* the below is not reliable */
+macro_line|#if 1&t;&t;&t;&t;/* the below is not reliable */
 r_return
 l_int|0
 suffix:semicolon
-macro_line|#endif  
+macro_line|#endif
 r_if
 c_cond
 (paren
@@ -705,7 +705,6 @@ id|cdi-&gt;dev
 )paren
 (brace
 id|printk
-c_func
 (paren
 l_string|&quot;mcd: Mitsumi CD-ROM request error: invalid device.&bslash;n&quot;
 )paren
@@ -727,9 +726,9 @@ id|retval
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Do a &squot;get status&squot; command and get the result.  Only use from the top half&n; * because it calls &squot;getMcdStatus&squot; which sleeps.&n; */
+DECL|function|statusCmd
 r_static
 r_int
-DECL|function|statusCmd
 id|statusCmd
 c_func
 (paren
@@ -796,9 +795,9 @@ id|st
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Send a &squot;Play&squot; command and get the status.  Use only from the top half.&n; */
+DECL|function|mcdPlay
 r_static
 r_int
-DECL|function|mcdPlay
 id|mcdPlay
 c_func
 (paren
@@ -864,9 +863,9 @@ r_return
 id|st
 suffix:semicolon
 )brace
+DECL|function|mcd_tray_move
 r_static
 r_int
-DECL|function|mcd_tray_move
 id|mcd_tray_move
 c_func
 (paren
@@ -935,7 +934,7 @@ l_int|0
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/*&n;                 * the status (i) shows failure on all but the FX drives.&n;                 * But nothing we can do about that in software!&n;                 * So just read the status and forget it. - Jon.&n;                 */
+multiline_comment|/*&n;&t;&t; * the status (i) shows failure on all but the FX drives.&n;&t;&t; * But nothing we can do about that in software!&n;&t;&t; * So just read the status and forget it. - Jon.&n;&t;&t; */
 id|i
 op_assign
 id|getMcdStatus
@@ -954,8 +953,8 @@ op_minus
 id|EINVAL
 suffix:semicolon
 )brace
-r_int
 DECL|function|msf2hsg
+r_int
 id|msf2hsg
 c_func
 (paren
@@ -969,17 +968,13 @@ r_return
 id|bcd2bin
 c_func
 (paren
-id|mp
-op_member_access_from_pointer
-id|frame
+id|mp-&gt;frame
 )paren
 op_plus
 id|bcd2bin
 c_func
 (paren
-id|mp
-op_member_access_from_pointer
-id|sec
+id|mp-&gt;sec
 )paren
 op_star
 l_int|75
@@ -987,9 +982,7 @@ op_plus
 id|bcd2bin
 c_func
 (paren
-id|mp
-op_member_access_from_pointer
-id|min
+id|mp-&gt;min
 )paren
 op_star
 l_int|4500
@@ -1114,7 +1107,7 @@ r_case
 id|CDROMSTART
 suffix:colon
 multiline_comment|/* Spin up the drive */
-multiline_comment|/* Don&squot;t think we can do this.  Even if we could,&n; &t;&t; * I think the drive times out and stops after a while&n;&t;&t; * anyway.  For now, ignore it.&n;&t;&t; */
+multiline_comment|/* Don&squot;t think we can do this.  Even if we could,&n;&t;&t; * I think the drive times out and stops after a while&n;&t;&t; * anyway.  For now, ignore it.&n;&t;&t; */
 r_return
 l_int|0
 suffix:semicolon
@@ -1631,15 +1624,11 @@ id|entry-&gt;cdte_track
 suffix:semicolon
 id|entry-&gt;cdte_adr
 op_assign
-id|tocPtr
-op_member_access_from_pointer
-id|ctrl_addr
+id|tocPtr-&gt;ctrl_addr
 suffix:semicolon
 id|entry-&gt;cdte_ctrl
 op_assign
-id|tocPtr
-op_member_access_from_pointer
-id|ctrl_addr
+id|tocPtr-&gt;ctrl_addr
 op_rshift
 l_int|4
 suffix:semicolon
@@ -1656,9 +1645,7 @@ id|msf2hsg
 c_func
 (paren
 op_amp
-id|tocPtr
-op_member_access_from_pointer
-id|diskTime
+id|tocPtr-&gt;diskTime
 )paren
 suffix:semicolon
 r_else
@@ -1675,9 +1662,7 @@ op_assign
 id|bcd2bin
 c_func
 (paren
-id|tocPtr
-op_member_access_from_pointer
-id|diskTime.min
+id|tocPtr-&gt;diskTime.min
 )paren
 suffix:semicolon
 id|entry-&gt;cdte_addr.msf.second
@@ -1685,9 +1670,7 @@ op_assign
 id|bcd2bin
 c_func
 (paren
-id|tocPtr
-op_member_access_from_pointer
-id|diskTime.sec
+id|tocPtr-&gt;diskTime.sec
 )paren
 suffix:semicolon
 id|entry-&gt;cdte_addr.msf.frame
@@ -1695,9 +1678,7 @@ op_assign
 id|bcd2bin
 c_func
 (paren
-id|tocPtr
-op_member_access_from_pointer
-id|diskTime.frame
+id|tocPtr-&gt;diskTime.frame
 )paren
 suffix:semicolon
 )brace
@@ -1817,7 +1798,9 @@ id|qInfo.trackTime.frame
 )paren
 suffix:semicolon
 r_return
+(paren
 l_int|0
+)paren
 suffix:semicolon
 r_case
 id|CDROMVOLCTRL
@@ -1962,9 +1945,9 @@ suffix:semicolon
 )brace
 )brace
 multiline_comment|/*&n; * Take care of the different block sizes between cdrom and Linux.&n; * When Linux gets variable block sizes this will probably go away.&n; */
+DECL|function|mcd_transfer
 r_static
 r_void
-DECL|function|mcd_transfer
 id|mcd_transfer
 c_func
 (paren
@@ -1980,17 +1963,13 @@ id|CURRENT_VALID
 r_while
 c_loop
 (paren
-id|CURRENT
-op_member_access_from_pointer
-id|nr_sectors
+id|CURRENT-&gt;nr_sectors
 )paren
 (brace
 r_int
 id|bn
 op_assign
-id|CURRENT
-op_member_access_from_pointer
-id|sector
+id|CURRENT-&gt;sector
 op_div
 l_int|4
 suffix:semicolon
@@ -2036,9 +2015,7 @@ op_star
 l_int|4
 op_plus
 (paren
-id|CURRENT
-op_member_access_from_pointer
-id|sector
+id|CURRENT-&gt;sector
 op_amp
 l_int|3
 )paren
@@ -2052,9 +2029,7 @@ op_assign
 l_int|4
 op_minus
 (paren
-id|CURRENT
-op_member_access_from_pointer
-id|sector
+id|CURRENT-&gt;sector
 op_amp
 l_int|3
 )paren
@@ -2096,22 +2071,16 @@ c_cond
 (paren
 id|nr_sectors
 OG
-id|CURRENT
-op_member_access_from_pointer
-id|nr_sectors
+id|CURRENT-&gt;nr_sectors
 )paren
 id|nr_sectors
 op_assign
-id|CURRENT
-op_member_access_from_pointer
-id|nr_sectors
+id|CURRENT-&gt;nr_sectors
 suffix:semicolon
 id|memcpy
 c_func
 (paren
-id|CURRENT
-op_member_access_from_pointer
-id|buffer
+id|CURRENT-&gt;buffer
 comma
 id|mcd_buf
 op_plus
@@ -2122,21 +2091,15 @@ op_star
 l_int|512
 )paren
 suffix:semicolon
-id|CURRENT
-op_member_access_from_pointer
-id|nr_sectors
+id|CURRENT-&gt;nr_sectors
 op_sub_assign
 id|nr_sectors
 suffix:semicolon
-id|CURRENT
-op_member_access_from_pointer
-id|sector
+id|CURRENT-&gt;sector
 op_add_assign
 id|nr_sectors
 suffix:semicolon
-id|CURRENT
-op_member_access_from_pointer
-id|buffer
+id|CURRENT-&gt;buffer
 op_add_assign
 id|nr_sectors
 op_star
@@ -2157,9 +2120,9 @@ suffix:semicolon
 )brace
 )brace
 multiline_comment|/*&n; * We only seem to get interrupts after an error.&n; * Just take the interrupt and clear out the status reg.&n; */
+DECL|function|mcd_interrupt
 r_static
 r_void
-DECL|function|mcd_interrupt
 id|mcd_interrupt
 c_func
 (paren
@@ -2263,9 +2226,9 @@ l_int|1
 suffix:semicolon
 )brace
 )brace
+DECL|function|do_mcd_request
 r_static
 r_void
-DECL|function|do_mcd_request
 id|do_mcd_request
 c_func
 (paren
@@ -2280,13 +2243,9 @@ c_func
 (paren
 l_string|&quot; do_mcd_request(%ld+%ld)&bslash;n&quot;
 comma
-id|CURRENT
-op_member_access_from_pointer
-id|sector
+id|CURRENT-&gt;sector
 comma
-id|CURRENT
-op_member_access_from_pointer
-id|nr_sectors
+id|CURRENT-&gt;nr_sectors
 )paren
 suffix:semicolon
 macro_line|#endif
@@ -2332,9 +2291,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|CURRENT
-op_member_access_from_pointer
-id|nr_sectors
+id|CURRENT-&gt;nr_sectors
 op_eq
 l_int|0
 )paren
@@ -2429,9 +2386,9 @@ l_string|&quot; do_mcd_request ends&bslash;n&quot;
 suffix:semicolon
 macro_line|#endif
 )brace
+DECL|function|mcd_poll
 r_static
 r_void
-DECL|function|mcd_poll
 id|mcd_poll
 c_func
 (paren
@@ -2586,7 +2543,6 @@ op_decrement
 multiline_comment|/* Nuts! This cd is ready for recycling! */
 multiline_comment|/* When WAS the last time YOU cleaned it CORRECTLY?! */
 id|printk
-c_func
 (paren
 l_string|&quot;mcd: read of block %d failed, giving up&bslash;n&quot;
 comma
@@ -2659,8 +2615,8 @@ id|mcd1xhold
 op_eq
 l_int|0
 )paren
-multiline_comment|/* Okay, Like are we STILL at single speed? */
 (brace
+multiline_comment|/* Okay, Like are we STILL at single speed? */
 multiline_comment|/* We need to switch back to double speed now... */
 id|MCMD_DATA_READ
 op_assign
@@ -3043,9 +2999,7 @@ id|msf
 suffix:semicolon
 id|mcd_next_bn
 op_assign
-id|CURRENT
-op_member_access_from_pointer
-id|sector
+id|CURRENT-&gt;sector
 op_div
 l_int|4
 suffix:semicolon
@@ -3178,7 +3132,6 @@ op_decrement
 )paren
 (brace
 id|printk
-c_func
 (paren
 l_string|&quot;mcd: read of block %d failed, giving up&bslash;n&quot;
 comma
@@ -3337,9 +3290,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|CURRENT
-op_member_access_from_pointer
-id|nr_sectors
+id|CURRENT-&gt;nr_sectors
 op_eq
 l_int|0
 )paren
@@ -3360,9 +3311,7 @@ c_cond
 id|CURRENT_VALID
 op_logical_and
 (paren
-id|CURRENT
-op_member_access_from_pointer
-id|sector
+id|CURRENT-&gt;sector
 op_div
 l_int|4
 template_param
@@ -3520,7 +3469,7 @@ r_break
 suffix:semicolon
 id|do_not_work_around_mitsumi_bug_93_1
 suffix:colon
-macro_line|#endif /* WORK_AROUND_MITSUMI_BUG_93 */
+macro_line|#endif&t;&t;&t;&t;/* WORK_AROUND_MITSUMI_BUG_93 */
 id|outb
 c_func
 (paren
@@ -3681,7 +3630,7 @@ l_int|0
 suffix:semicolon
 )brace
 )brace
-macro_line|#endif /* WORK_AROUND_MITSUMI_BUG_92 */
+macro_line|#endif&t;&t;&t;&t;/* WORK_AROUND_MITSUMI_BUG_92 */
 id|mcd_state
 op_assign
 id|MCD_S_STOPPING
@@ -3798,7 +3747,7 @@ l_int|1
 suffix:semicolon
 id|do_not_work_around_mitsumi_bug_93_2
 suffix:colon
-macro_line|#endif /* WORK_AROUND_MITSUMI_BUG_93 */
+macro_line|#endif&t;&t;&t;&t;/* WORK_AROUND_MITSUMI_BUG_93 */
 macro_line|#ifdef TEST3
 id|printk
 c_func
@@ -3915,9 +3864,9 @@ suffix:colon
 r_return
 suffix:semicolon
 )brace
+DECL|function|mcd_invalidate_buffers
 r_static
 r_void
-DECL|function|mcd_invalidate_buffers
 id|mcd_invalidate_buffers
 c_func
 (paren
@@ -4626,7 +4575,6 @@ r_if
 c_cond
 (paren
 id|request_irq
-c_func
 (paren
 id|mcd_irq
 comma
@@ -4860,9 +4808,9 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+DECL|function|hsg2msf
 r_static
 r_void
-DECL|function|hsg2msf
 id|hsg2msf
 c_func
 (paren
@@ -4879,9 +4827,7 @@ id|hsg
 op_add_assign
 l_int|150
 suffix:semicolon
-id|msf
-op_member_access_from_pointer
-id|min
+id|msf-&gt;min
 op_assign
 id|hsg
 op_div
@@ -4891,17 +4837,13 @@ id|hsg
 op_mod_assign
 l_int|4500
 suffix:semicolon
-id|msf
-op_member_access_from_pointer
-id|sec
+id|msf-&gt;sec
 op_assign
 id|hsg
 op_div
 l_int|75
 suffix:semicolon
-id|msf
-op_member_access_from_pointer
-id|frame
+id|msf-&gt;frame
 op_assign
 id|hsg
 op_mod
@@ -4911,9 +4853,7 @@ id|bin2bcd
 c_func
 (paren
 op_amp
-id|msf
-op_member_access_from_pointer
-id|min
+id|msf-&gt;min
 )paren
 suffix:semicolon
 multiline_comment|/* convert to BCD */
@@ -4921,24 +4861,20 @@ id|bin2bcd
 c_func
 (paren
 op_amp
-id|msf
-op_member_access_from_pointer
-id|sec
+id|msf-&gt;sec
 )paren
 suffix:semicolon
 id|bin2bcd
 c_func
 (paren
 op_amp
-id|msf
-op_member_access_from_pointer
-id|frame
+id|msf-&gt;frame
 )paren
 suffix:semicolon
 )brace
+DECL|function|bin2bcd
 r_static
 r_void
-DECL|function|bin2bcd
 id|bin2bcd
 c_func
 (paren
@@ -4979,9 +4915,9 @@ l_int|4
 )paren
 suffix:semicolon
 )brace
+DECL|function|bcd2bin
 r_static
 r_int
-DECL|function|bcd2bin
 id|bcd2bin
 c_func
 (paren
@@ -5007,9 +4943,9 @@ l_int|0xF
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * See if a status is ready from the drive and return it&n; * if it is ready.&n; */
+DECL|function|mcdStatus
 r_static
 r_int
-DECL|function|mcdStatus
 id|mcdStatus
 c_func
 (paren
@@ -5068,9 +5004,9 @@ l_int|1
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Send a play or read command to the drive&n; */
+DECL|function|sendMcdCmd
 r_static
 r_void
-DECL|function|sendMcdCmd
 id|sendMcdCmd
 c_func
 (paren
@@ -5098,9 +5034,7 @@ suffix:semicolon
 id|outb
 c_func
 (paren
-id|params
-op_member_access_from_pointer
-id|start.min
+id|params-&gt;start.min
 comma
 id|MCDPORT
 c_func
@@ -5112,9 +5046,7 @@ suffix:semicolon
 id|outb
 c_func
 (paren
-id|params
-op_member_access_from_pointer
-id|start.sec
+id|params-&gt;start.sec
 comma
 id|MCDPORT
 c_func
@@ -5126,9 +5058,7 @@ suffix:semicolon
 id|outb
 c_func
 (paren
-id|params
-op_member_access_from_pointer
-id|start.frame
+id|params-&gt;start.frame
 comma
 id|MCDPORT
 c_func
@@ -5140,9 +5070,7 @@ suffix:semicolon
 id|outb
 c_func
 (paren
-id|params
-op_member_access_from_pointer
-id|end.min
+id|params-&gt;end.min
 comma
 id|MCDPORT
 c_func
@@ -5154,9 +5082,7 @@ suffix:semicolon
 id|outb
 c_func
 (paren
-id|params
-op_member_access_from_pointer
-id|end.sec
+id|params-&gt;end.sec
 comma
 id|MCDPORT
 c_func
@@ -5168,9 +5094,7 @@ suffix:semicolon
 id|outb
 c_func
 (paren
-id|params
-op_member_access_from_pointer
-id|end.frame
+id|params-&gt;end.frame
 comma
 id|MCDPORT
 c_func
@@ -5181,9 +5105,9 @@ l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Timer interrupt routine to test for status ready from the drive.&n; * (see the next routine)&n; */
+DECL|function|mcdStatTimer
 r_static
 r_void
-DECL|function|mcdStatTimer
 id|mcdStatTimer
 c_func
 (paren
@@ -5252,9 +5176,9 @@ l_int|1
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Wait for a status to be returned from the drive.  The actual test&n; * (see routine above) is done by the timer interrupt to avoid&n; * excessive rescheduling.&n; */
+DECL|function|getMcdStatus
 r_static
 r_int
-DECL|function|getMcdStatus
 id|getMcdStatus
 c_func
 (paren
@@ -5458,9 +5382,9 @@ id|EIO
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Read a value from the drive.&n; */
+DECL|function|getValue
 r_static
 r_int
-DECL|function|getValue
 id|getValue
 c_func
 (paren
@@ -5557,8 +5481,8 @@ l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Read the current Q-channel info.  Also used for reading the&n; * table of contents.&n; */
-r_int
 DECL|function|GetQChannelInfo
+r_int
 id|GetQChannelInfo
 c_func
 (paren
@@ -5635,9 +5559,7 @@ id|getValue
 c_func
 (paren
 op_amp
-id|qp
-op_member_access_from_pointer
-id|ctrl_addr
+id|qp-&gt;ctrl_addr
 )paren
 OL
 l_int|0
@@ -5653,9 +5575,7 @@ id|getValue
 c_func
 (paren
 op_amp
-id|qp
-op_member_access_from_pointer
-id|track
+id|qp-&gt;track
 )paren
 OL
 l_int|0
@@ -5671,9 +5591,7 @@ id|getValue
 c_func
 (paren
 op_amp
-id|qp
-op_member_access_from_pointer
-id|pointIndex
+id|qp-&gt;pointIndex
 )paren
 OL
 l_int|0
@@ -5689,9 +5607,7 @@ id|getValue
 c_func
 (paren
 op_amp
-id|qp
-op_member_access_from_pointer
-id|trackTime.min
+id|qp-&gt;trackTime.min
 )paren
 OL
 l_int|0
@@ -5707,9 +5623,7 @@ id|getValue
 c_func
 (paren
 op_amp
-id|qp
-op_member_access_from_pointer
-id|trackTime.sec
+id|qp-&gt;trackTime.sec
 )paren
 OL
 l_int|0
@@ -5725,9 +5639,7 @@ id|getValue
 c_func
 (paren
 op_amp
-id|qp
-op_member_access_from_pointer
-id|trackTime.frame
+id|qp-&gt;trackTime.frame
 )paren
 OL
 l_int|0
@@ -5759,9 +5671,7 @@ id|getValue
 c_func
 (paren
 op_amp
-id|qp
-op_member_access_from_pointer
-id|diskTime.min
+id|qp-&gt;diskTime.min
 )paren
 OL
 l_int|0
@@ -5777,9 +5687,7 @@ id|getValue
 c_func
 (paren
 op_amp
-id|qp
-op_member_access_from_pointer
-id|diskTime.sec
+id|qp-&gt;diskTime.sec
 )paren
 OL
 l_int|0
@@ -5795,9 +5703,7 @@ id|getValue
 c_func
 (paren
 op_amp
-id|qp
-op_member_access_from_pointer
-id|diskTime.frame
+id|qp-&gt;diskTime.frame
 )paren
 OL
 l_int|0
@@ -5811,9 +5717,9 @@ l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Read the table of contents (TOC) and TOC header if necessary&n; */
+DECL|function|updateToc
 r_static
 r_int
-DECL|function|updateToc
 id|updateToc
 c_func
 (paren
@@ -5864,9 +5770,9 @@ l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Read the table of contents header&n; */
+DECL|function|GetDiskInfo
 r_static
 r_int
-DECL|function|GetDiskInfo
 id|GetDiskInfo
 c_func
 (paren
@@ -5978,7 +5884,6 @@ id|DiskInfo.last
 suffix:semicolon
 macro_line|#ifdef MCD_DEBUG
 id|printk
-c_func
 (paren
 l_string|&quot;Disk Info: first %d last %d length %02x:%02x.%02x first %02x:%02x.%02x&bslash;n&quot;
 comma
@@ -6101,9 +6006,9 @@ l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Read the table of contents (TOC)&n; */
+DECL|function|GetToc
 r_static
 r_int
-DECL|function|GetToc
 id|GetToc
 c_func
 (paren
@@ -6447,7 +6352,6 @@ id|i
 op_increment
 )paren
 id|printk
-c_func
 (paren
 l_string|&quot;i = %2d ctl-adr = %02X track %2d px %02X %02X:%02X.%02X    %02X:%02X.%02X&bslash;n&quot;
 comma
@@ -6532,7 +6436,6 @@ id|i
 op_increment
 )paren
 id|printk
-c_func
 (paren
 l_string|&quot;i = %2d ctl-adr = %02X track %2d px %02X %02X:%02X.%02X    %02X:%02X.%02X&bslash;n&quot;
 comma
@@ -6646,12 +6549,24 @@ c_func
 id|mcd_init
 )paren
 suffix:semicolon
-macro_line|#endif 
+macro_line|#endif
 DECL|variable|mcd_exit
 id|module_exit
 c_func
 (paren
 id|mcd_exit
+)paren
+suffix:semicolon
+id|MODULE_AUTHOR
+c_func
+(paren
+l_string|&quot;Martin Harriss&quot;
+)paren
+suffix:semicolon
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
 eof

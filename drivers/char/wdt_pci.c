@@ -1735,4 +1735,24 @@ c_func
 id|wdtpci_cleanup
 )paren
 suffix:semicolon
+id|MODULE_AUTHOR
+c_func
+(paren
+l_string|&quot;JP Nollmann, Alan Cox&quot;
+)paren
+suffix:semicolon
+id|MODULE_DESCRIPTION
+c_func
+(paren
+l_string|&quot;Driver for the ICS PCI watchdog cards&quot;
+)paren
+suffix:semicolon
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
+)paren
+suffix:semicolon
+id|EXPORT_NO_SYMBOLS
+suffix:semicolon
 eof

@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: icn.c,v 1.65.6.6 2001/07/13 09:20:12 kai Exp $&n;&n; * ISDN low-level module for the ICN active ISDN-Card.&n; *&n; * Copyright 1994,95,96 by Fritz Elfert (fritz@isdn4linux.de)&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2, or (at your option)&n; * any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; *&n; */
+multiline_comment|/* $Id: icn.c,v 1.65.6.7 2001/08/17 12:34:27 kai Exp $&n;&n; * ISDN low-level module for the ICN active ISDN-Card.&n; *&n; * Copyright 1994,95,96 by Fritz Elfert (fritz@isdn4linux.de)&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2, or (at your option)&n; * any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; *&n; */
 macro_line|#include &quot;icn.h&quot;
 macro_line|#include &lt;linux/init.h&gt;
 multiline_comment|/*&n; * Verbose bootcode- and protocol-downloading.&n; */
@@ -13,7 +13,7 @@ DECL|variable|revision
 op_star
 id|revision
 op_assign
-l_string|&quot;$Revision: 1.65.6.6 $&quot;
+l_string|&quot;$Revision: 1.65.6.7 $&quot;
 suffix:semicolon
 r_static
 r_int
@@ -4211,13 +4211,18 @@ id|sbfree
 multiline_comment|/* If there is a free buffer...  */
 id|cnt
 op_assign
-id|MIN
-c_func
-(paren
-l_int|256
-comma
 id|left
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|cnt
+OG
+l_int|256
 )paren
+id|cnt
+op_assign
+l_int|256
 suffix:semicolon
 r_if
 c_cond
@@ -4696,9 +4701,6 @@ suffix:colon
 l_int|0
 suffix:semicolon
 r_int
-id|avail
-suffix:semicolon
-r_int
 id|pp
 suffix:semicolon
 r_int
@@ -4757,19 +4759,20 @@ c_loop
 id|len
 )paren
 (brace
-id|avail
+id|count
 op_assign
 id|cmd_free
 suffix:semicolon
-id|count
-op_assign
-id|MIN
-c_func
+r_if
+c_cond
 (paren
-id|avail
-comma
+id|count
+OG
 id|len
 )paren
+id|count
+op_assign
+id|len
 suffix:semicolon
 r_if
 c_cond

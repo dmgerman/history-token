@@ -160,8 +160,6 @@ id|next
 suffix:semicolon
 )brace
 suffix:semicolon
-DECL|macro|MIN
-mdefine_line|#define MIN(a,b) ((a&lt;b)?a:b)
 r_extern
 r_int
 id|pcbit_l2_write

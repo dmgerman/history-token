@@ -11,6 +11,7 @@ macro_line|#include &lt;linux/mman.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/proc_fs.h&gt;
+macro_line|#include &lt;linux/bitops.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
@@ -866,29 +867,18 @@ op_add_assign
 l_int|1
 suffix:semicolon
 multiline_comment|/* count the number of registers in the mask to be transferred */
-r_for
-c_loop
-(paren
-id|regbits
+id|nr_regs
 op_assign
+id|hweight16
+c_func
+(paren
 id|REGMASK_BITS
 c_func
 (paren
 id|instr
 )paren
-comma
-id|nr_regs
-op_assign
-l_int|0
-suffix:semicolon
-id|regbits
-suffix:semicolon
-id|regbits
-op_rshift_assign
-l_int|1
 )paren
-id|nr_regs
-op_add_assign
+op_star
 l_int|4
 suffix:semicolon
 id|rn
@@ -963,6 +953,7 @@ id|addr
 op_ne
 id|eaddr
 )paren
+(brace
 id|printk
 c_func
 (paren
@@ -983,6 +974,13 @@ comma
 id|eaddr
 )paren
 suffix:semicolon
+id|show_regs
+c_func
+(paren
+id|regs
+)paren
+suffix:semicolon
+)brace
 r_for
 c_loop
 (paren

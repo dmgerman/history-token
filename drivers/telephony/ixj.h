@@ -1,4 +1,4 @@
-multiline_comment|/******************************************************************************&n; *    ixj.h&n; *&n; *    Device Driver for the Internet PhoneJACK and&n; *    Internet LineJACK Telephony Cards.&n; *&n; *    (c) Copyright 1999 Quicknet Technologies, Inc.&n; *&n; *    This program is free software; you can redistribute it and/or&n; *    modify it under the terms of the GNU General Public License&n; *    as published by the Free Software Foundation; either version&n; *    2 of the License, or (at your option) any later version.&n; *&n; * Author:          Ed Okerson, &lt;eokerson@quicknet.net&gt;&n; *    &n; * Contributors:    Greg Herlein, &lt;gherlein@quicknet.net&gt;&n; *                  David W. Erhart, &lt;derhart@quicknet.net&gt;&n; *                  John Sellers, &lt;jsellers@quicknet.net&gt;&n; *                  Mike Preston, &lt;mpreston@quicknet.net&gt;&n; *&n; * More information about the hardware related to this driver can be found&n; * at our website:    http://www.quicknet.net&n; *&n; * Fixes:&n; *&n; * IN NO EVENT SHALL QUICKNET TECHNOLOGIES, INC. BE LIABLE TO ANY PARTY FOR&n; * DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES ARISING OUT&n; * OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF QUICKNET&n; * TECHNOLOGIES, INC.HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.&n; *&n; * QUICKNET TECHNOLOGIES, INC. SPECIFICALLY DISCLAIMS ANY WARRANTIES,&n; * INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY&n; * AND FITNESS FOR A PARTICULAR PURPOSE.  THE SOFTWARE PROVIDED HEREUNDER IS&n; * ON AN &quot;AS IS&quot; BASIS, AND QUICKNET TECHNOLOGIES, INC. HAS NO OBLIGATION &n; * TO PROVIDE MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *    ixj.h&n; *&n; *&n; * Device Driver for Quicknet Technologies, Inc.&squot;s Telephony cards&n; * including the Internet PhoneJACK, Internet PhoneJACK Lite,&n; * Internet PhoneJACK PCI, Internet LineJACK, Internet PhoneCARD and&n; * SmartCABLE&n; *&n; *    (c) Copyright 1999-2001  Quicknet Technologies, Inc.&n; *&n; *    This program is free software; you can redistribute it and/or&n; *    modify it under the terms of the GNU General Public License&n; *    as published by the Free Software Foundation; either version&n; *    2 of the License, or (at your option) any later version.&n; *&n; * Author:          Ed Okerson, &lt;eokerson@quicknet.net&gt;&n; *    &n; * Contributors:    Greg Herlein, &lt;gherlein@quicknet.net&gt;&n; *                  David W. Erhart, &lt;derhart@quicknet.net&gt;&n; *                  John Sellers, &lt;jsellers@quicknet.net&gt;&n; *                  Mike Preston, &lt;mpreston@quicknet.net&gt;&n; *&n; * More information about the hardware related to this driver can be found&n; * at our website:    http://www.quicknet.net&n; *&n; * Fixes:&n; *&n; * IN NO EVENT SHALL QUICKNET TECHNOLOGIES, INC. BE LIABLE TO ANY PARTY FOR&n; * DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES ARISING OUT&n; * OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF QUICKNET&n; * TECHNOLOGIES, INC.HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.&n; *&n; * QUICKNET TECHNOLOGIES, INC. SPECIFICALLY DISCLAIMS ANY WARRANTIES,&n; * INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY&n; * AND FITNESS FOR A PARTICULAR PURPOSE.  THE SOFTWARE PROVIDED HEREUNDER IS&n; * ON AN &quot;AS IS&quot; BASIS, AND QUICKNET TECHNOLOGIES, INC. HAS NO OBLIGATION &n; * TO PROVIDE MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.&n; *&n; *****************************************************************************/
 DECL|variable|ixj_h_rcsid
 r_static
 r_char
@@ -6,11 +6,11 @@ id|ixj_h_rcsid
 (braket
 )braket
 op_assign
-l_string|&quot;$Id: ixj.h,v 3.14 2000/03/30 22:06:48 eokerson Exp $&quot;
+l_string|&quot;$Id: ixj.h,v 4.1 2001/08/04 14:49:27 craigs Exp $&quot;
 suffix:semicolon
-macro_line|#ifndef _I386_TYPES_H
-macro_line|#include &lt;asm/types.h&gt;
-macro_line|#endif
+DECL|macro|IXJ_VERSION
+mdefine_line|#define IXJ_VERSION 3031
+macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/ixjuser.h&gt;
 macro_line|#include &lt;linux/phonedev.h&gt;
 DECL|typedef|WORD
@@ -33,12 +33,22 @@ r_typedef
 id|__u8
 id|BOOL
 suffix:semicolon
+macro_line|#ifndef IXJMAX
 DECL|macro|IXJMAX
 mdefine_line|#define IXJMAX 16
+macro_line|#endif
 DECL|macro|TRUE
 mdefine_line|#define TRUE 1
 DECL|macro|FALSE
 mdefine_line|#define FALSE 0
+macro_line|#ifndef min
+DECL|macro|min
+mdefine_line|#define min(a,b) (((a)&lt;(b))?(a):(b))
+macro_line|#endif
+macro_line|#ifndef max
+DECL|macro|max
+mdefine_line|#define max(a,b) (((a)&gt;(b))?(a):(b))
+macro_line|#endif
 multiline_comment|/******************************************************************************&n;*&n;*  This structure when unioned with the structures below makes simple byte&n;*  access to the registers easier.&n;*&n;******************************************************************************/
 r_typedef
 r_struct
@@ -736,7 +746,7 @@ DECL|typedef|PSCRWI
 )brace
 id|PSCRWI
 suffix:semicolon
-singleline_comment|// Internet LineJACK and Internet PhoneJACK Lite
+multiline_comment|/* Internet LineJACK and Internet PhoneJACK Lite */
 r_typedef
 r_struct
 (brace
@@ -765,7 +775,7 @@ DECL|typedef|PSCRWP
 )brace
 id|PSCRWP
 suffix:semicolon
-singleline_comment|// Internet PhoneJACK PCI
+multiline_comment|/* Internet PhoneJACK PCI */
 r_typedef
 r_union
 (brace
@@ -1248,7 +1258,7 @@ id|x0
 suffix:colon
 l_int|4
 suffix:semicolon
-singleline_comment|// unused bits
+multiline_comment|/* unused bits */
 DECL|member|ed
 r_int
 r_int
@@ -1256,7 +1266,7 @@ id|ed
 suffix:colon
 l_int|1
 suffix:semicolon
-singleline_comment|// Event Detect
+multiline_comment|/* Event Detect */
 DECL|member|drf
 r_int
 r_int
@@ -1264,7 +1274,7 @@ id|drf
 suffix:colon
 l_int|1
 suffix:semicolon
-singleline_comment|// Smart Cable Removal Flag 1=no cable
+multiline_comment|/* SmartCABLE Removal Flag 1=no cable */
 DECL|member|dspf
 r_int
 r_int
@@ -1272,7 +1282,7 @@ id|dspf
 suffix:colon
 l_int|1
 suffix:semicolon
-singleline_comment|// DSP Flag 1=DSP Ready
+multiline_comment|/* DSP Flag 1=DSP Ready */
 DECL|member|crr
 r_int
 r_int
@@ -1280,7 +1290,7 @@ id|crr
 suffix:colon
 l_int|1
 suffix:semicolon
-singleline_comment|// Control Register Ready
+multiline_comment|/* Control Register Ready */
 DECL|typedef|COMMAND_REG1
 )brace
 id|COMMAND_REG1
@@ -1311,7 +1321,7 @@ id|x0
 suffix:colon
 l_int|4
 suffix:semicolon
-singleline_comment|// unused bits
+multiline_comment|/* unused bits */
 DECL|member|rstc
 r_int
 r_int
@@ -1319,7 +1329,7 @@ id|rstc
 suffix:colon
 l_int|1
 suffix:semicolon
-singleline_comment|// Smart Cable Reset
+multiline_comment|/* SmartCABLE Reset */
 DECL|member|pwr
 r_int
 r_int
@@ -1327,7 +1337,7 @@ id|pwr
 suffix:colon
 l_int|1
 suffix:semicolon
-singleline_comment|// Smart Cable Power
+multiline_comment|/* SmartCABLE Power */
 DECL|member|x1
 r_int
 r_int
@@ -1335,7 +1345,7 @@ id|x1
 suffix:colon
 l_int|2
 suffix:semicolon
-singleline_comment|// unused bits
+multiline_comment|/* unused bits */
 DECL|typedef|COMMAND_REG2
 )brace
 id|COMMAND_REG2
@@ -1366,7 +1376,7 @@ id|addr
 suffix:colon
 l_int|5
 suffix:semicolon
-singleline_comment|// R/W Smart Cable Register Address
+multiline_comment|/* R/W SmartCABLE Register Address */
 DECL|member|rw
 r_int
 r_int
@@ -1374,7 +1384,7 @@ id|rw
 suffix:colon
 l_int|1
 suffix:semicolon
-singleline_comment|// Read / Write flag
+multiline_comment|/* Read / Write flag */
 DECL|member|dev
 r_int
 r_int
@@ -1382,7 +1392,7 @@ id|dev
 suffix:colon
 l_int|2
 suffix:semicolon
-singleline_comment|// 2 bit Smart Cable Device Address
+multiline_comment|/* 2 bit SmartCABLE Device Address */
 DECL|typedef|CONTROL_REG
 )brace
 id|CONTROL_REG
@@ -1492,7 +1502,7 @@ id|cpd
 suffix:colon
 l_int|1
 suffix:semicolon
-singleline_comment|// Chip Power Down
+multiline_comment|/* Chip Power Down */
 DECL|member|mpd
 r_int
 r_int
@@ -1500,7 +1510,7 @@ id|mpd
 suffix:colon
 l_int|1
 suffix:semicolon
-singleline_comment|// MIC Bias Power Down
+multiline_comment|/* MIC Bias Power Down */
 DECL|member|hpd
 r_int
 r_int
@@ -1508,7 +1518,7 @@ id|hpd
 suffix:colon
 l_int|1
 suffix:semicolon
-singleline_comment|// Handset Drive Power Down
+multiline_comment|/* Handset Drive Power Down */
 DECL|member|lpd
 r_int
 r_int
@@ -1516,7 +1526,7 @@ id|lpd
 suffix:colon
 l_int|1
 suffix:semicolon
-singleline_comment|// Line Drive Power Down
+multiline_comment|/* Line Drive Power Down */
 DECL|member|spd
 r_int
 r_int
@@ -1524,7 +1534,7 @@ id|spd
 suffix:colon
 l_int|1
 suffix:semicolon
-singleline_comment|// Speaker Drive Power Down
+multiline_comment|/* Speaker Drive Power Down */
 DECL|member|x
 r_int
 r_int
@@ -1532,7 +1542,7 @@ id|x
 suffix:colon
 l_int|2
 suffix:semicolon
-singleline_comment|// unused bits
+multiline_comment|/* unused bits */
 DECL|member|sr
 r_int
 r_int
@@ -1540,7 +1550,7 @@ id|sr
 suffix:colon
 l_int|1
 suffix:semicolon
-singleline_comment|// Software Reset
+multiline_comment|/* Software Reset */
 DECL|typedef|Si3CONTROL1
 )brace
 id|Si3CONTROL1
@@ -1571,7 +1581,7 @@ id|al
 suffix:colon
 l_int|1
 suffix:semicolon
-singleline_comment|// Analog Loopback DAC analog -&gt; ADC analog
+multiline_comment|/* Analog Loopback DAC analog -&gt; ADC analog */
 DECL|member|dl2
 r_int
 r_int
@@ -1579,7 +1589,7 @@ id|dl2
 suffix:colon
 l_int|1
 suffix:semicolon
-singleline_comment|// Digital Loopback DAC -&gt; ADC one bit
+multiline_comment|/* Digital Loopback DAC -&gt; ADC one bit */
 DECL|member|dl1
 r_int
 r_int
@@ -1587,7 +1597,7 @@ id|dl1
 suffix:colon
 l_int|1
 suffix:semicolon
-singleline_comment|// Digital Loopback ADC -&gt; DAC one bit
+multiline_comment|/* Digital Loopback ADC -&gt; DAC one bit */
 DECL|member|pll
 r_int
 r_int
@@ -1595,7 +1605,7 @@ id|pll
 suffix:colon
 l_int|1
 suffix:semicolon
-singleline_comment|// 1 = div 10, 0 = div 5
+multiline_comment|/* 1 = div 10, 0 = div 5 */
 DECL|member|hpd
 r_int
 r_int
@@ -1603,7 +1613,7 @@ id|hpd
 suffix:colon
 l_int|1
 suffix:semicolon
-singleline_comment|// HPF disable
+multiline_comment|/* HPF disable */
 DECL|member|x
 r_int
 r_int
@@ -1611,7 +1621,7 @@ id|x
 suffix:colon
 l_int|3
 suffix:semicolon
-singleline_comment|// unused bits
+multiline_comment|/* unused bits */
 DECL|typedef|Si3CONTROL2
 )brace
 id|Si3CONTROL2
@@ -1642,7 +1652,7 @@ id|iir
 suffix:colon
 l_int|1
 suffix:semicolon
-singleline_comment|// 1 enables IIR, 0 enables FIR
+multiline_comment|/* 1 enables IIR, 0 enables FIR */
 DECL|member|him
 r_int
 r_int
@@ -1650,7 +1660,7 @@ id|him
 suffix:colon
 l_int|1
 suffix:semicolon
-singleline_comment|// Handset Input Mute
+multiline_comment|/* Handset Input Mute */
 DECL|member|mcm
 r_int
 r_int
@@ -1658,7 +1668,7 @@ id|mcm
 suffix:colon
 l_int|1
 suffix:semicolon
-singleline_comment|// MIC In Mute
+multiline_comment|/* MIC In Mute */
 DECL|member|mcg
 r_int
 r_int
@@ -1666,7 +1676,7 @@ id|mcg
 suffix:colon
 l_int|2
 suffix:semicolon
-singleline_comment|// MIC In Gain
+multiline_comment|/* MIC In Gain */
 DECL|member|lim
 r_int
 r_int
@@ -1674,7 +1684,7 @@ id|lim
 suffix:colon
 l_int|1
 suffix:semicolon
-singleline_comment|// Line In Mute
+multiline_comment|/* Line In Mute */
 DECL|member|lig
 r_int
 r_int
@@ -1682,7 +1692,7 @@ id|lig
 suffix:colon
 l_int|2
 suffix:semicolon
-singleline_comment|// Line In Gain
+multiline_comment|/* Line In Gain */
 DECL|typedef|Si3RXGAIN
 )brace
 id|Si3RXGAIN
@@ -1713,7 +1723,7 @@ id|hom
 suffix:colon
 l_int|1
 suffix:semicolon
-singleline_comment|// Handset Out Mute
+multiline_comment|/* Handset Out Mute */
 DECL|member|lom
 r_int
 r_int
@@ -1721,7 +1731,7 @@ id|lom
 suffix:colon
 l_int|1
 suffix:semicolon
-singleline_comment|// Line Out Mute
+multiline_comment|/* Line Out Mute */
 DECL|member|rxg
 r_int
 r_int
@@ -1729,7 +1739,7 @@ id|rxg
 suffix:colon
 l_int|5
 suffix:semicolon
-singleline_comment|// RX PGA Gain
+multiline_comment|/* RX PGA Gain */
 DECL|member|x
 r_int
 r_int
@@ -1737,7 +1747,7 @@ id|x
 suffix:colon
 l_int|1
 suffix:semicolon
-singleline_comment|// unused bit
+multiline_comment|/* unused bit */
 DECL|typedef|Si3ADCVOLUME
 )brace
 id|Si3ADCVOLUME
@@ -1768,7 +1778,7 @@ id|srm
 suffix:colon
 l_int|1
 suffix:semicolon
-singleline_comment|// Speaker Right Mute
+multiline_comment|/* Speaker Right Mute */
 DECL|member|slm
 r_int
 r_int
@@ -1776,7 +1786,7 @@ id|slm
 suffix:colon
 l_int|1
 suffix:semicolon
-singleline_comment|// Speaker Left Mute
+multiline_comment|/* Speaker Left Mute */
 DECL|member|txg
 r_int
 r_int
@@ -1784,7 +1794,7 @@ id|txg
 suffix:colon
 l_int|5
 suffix:semicolon
-singleline_comment|// TX PGA Gain
+multiline_comment|/* TX PGA Gain */
 DECL|member|x
 r_int
 r_int
@@ -1792,7 +1802,7 @@ id|x
 suffix:colon
 l_int|1
 suffix:semicolon
-singleline_comment|// unused bit
+multiline_comment|/* unused bit */
 DECL|typedef|Si3DACVOLUME
 )brace
 id|Si3DACVOLUME
@@ -1823,7 +1833,7 @@ id|x
 suffix:colon
 l_int|5
 suffix:semicolon
-singleline_comment|// unused bit
+multiline_comment|/* unused bit */
 DECL|member|losc
 r_int
 r_int
@@ -1831,7 +1841,7 @@ id|losc
 suffix:colon
 l_int|1
 suffix:semicolon
-singleline_comment|// Line Out Short Circuit
+multiline_comment|/* Line Out Short Circuit */
 DECL|member|srsc
 r_int
 r_int
@@ -1839,7 +1849,7 @@ id|srsc
 suffix:colon
 l_int|1
 suffix:semicolon
-singleline_comment|// Speaker Right Short Circuit
+multiline_comment|/* Speaker Right Short Circuit */
 DECL|member|slsc
 r_int
 r_int
@@ -1847,7 +1857,7 @@ id|slsc
 suffix:colon
 l_int|1
 suffix:semicolon
-singleline_comment|// Speaker Left Short Circuit
+multiline_comment|/* Speaker Left Short Circuit */
 DECL|typedef|Si3STATUSREPORT
 )brace
 id|Si3STATUSREPORT
@@ -1878,7 +1888,7 @@ id|sot
 suffix:colon
 l_int|2
 suffix:semicolon
-singleline_comment|// Speaker Out Attenuation
+multiline_comment|/* Speaker Out Attenuation */
 DECL|member|lot
 r_int
 r_int
@@ -1886,7 +1896,7 @@ id|lot
 suffix:colon
 l_int|2
 suffix:semicolon
-singleline_comment|// Line Out Attenuation
+multiline_comment|/* Line Out Attenuation */
 DECL|member|x
 r_int
 r_int
@@ -1894,7 +1904,7 @@ id|x
 suffix:colon
 l_int|4
 suffix:semicolon
-singleline_comment|// unused bits
+multiline_comment|/* unused bits */
 DECL|typedef|Si3ANALOGATTN
 )brace
 id|Si3ANALOGATTN
@@ -1921,9 +1931,9 @@ r_typedef
 r_struct
 id|_DAA_REGS
 (brace
-singleline_comment|//-----------------------------------------------
-singleline_comment|// SOP Registers
-singleline_comment|//
+multiline_comment|/*----------------------------------------------- */
+multiline_comment|/* SOP Registers */
+multiline_comment|/* */
 DECL|member|bySOP
 id|BYTE
 id|bySOP
@@ -1937,7 +1947,7 @@ r_struct
 id|_SOP
 (brace
 r_union
-singleline_comment|// SOP - CR0 Register
+multiline_comment|/* SOP - CR0 Register */
 (brace
 DECL|member|reg
 id|BYTE
@@ -1953,56 +1963,56 @@ id|CLK_EXT
 suffix:colon
 l_int|1
 suffix:semicolon
-singleline_comment|// cr0[0:0]
+multiline_comment|/* cr0[0:0] */
 DECL|member|RIP
 id|BYTE
 id|RIP
 suffix:colon
 l_int|1
 suffix:semicolon
-singleline_comment|// cr0[1:1]
+multiline_comment|/* cr0[1:1] */
 DECL|member|AR
 id|BYTE
 id|AR
 suffix:colon
 l_int|1
 suffix:semicolon
-singleline_comment|// cr0[2:2]
+multiline_comment|/* cr0[2:2] */
 DECL|member|AX
 id|BYTE
 id|AX
 suffix:colon
 l_int|1
 suffix:semicolon
-singleline_comment|// cr0[3:3]
+multiline_comment|/* cr0[3:3] */
 DECL|member|FRR
 id|BYTE
 id|FRR
 suffix:colon
 l_int|1
 suffix:semicolon
-singleline_comment|// cr0[4:4]
+multiline_comment|/* cr0[4:4] */
 DECL|member|FRX
 id|BYTE
 id|FRX
 suffix:colon
 l_int|1
 suffix:semicolon
-singleline_comment|// cr0[5:5]
+multiline_comment|/* cr0[5:5] */
 DECL|member|IM
 id|BYTE
 id|IM
 suffix:colon
 l_int|1
 suffix:semicolon
-singleline_comment|// cr0[6:6]
+multiline_comment|/* cr0[6:6] */
 DECL|member|TH
 id|BYTE
 id|TH
 suffix:colon
 l_int|1
 suffix:semicolon
-singleline_comment|// cr0[7:7]
+multiline_comment|/* cr0[7:7] */
 DECL|member|bitreg
 )brace
 id|bitreg
@@ -2012,7 +2022,7 @@ DECL|member|cr0
 id|cr0
 suffix:semicolon
 r_union
-singleline_comment|// SOP - CR1 Register
+multiline_comment|/* SOP - CR1 Register */
 (brace
 DECL|member|reg
 id|BYTE
@@ -2028,56 +2038,56 @@ id|RM
 suffix:colon
 l_int|1
 suffix:semicolon
-singleline_comment|// cr1[0:0]
+multiline_comment|/* cr1[0:0] */
 DECL|member|RMR
 id|BYTE
 id|RMR
 suffix:colon
 l_int|1
 suffix:semicolon
-singleline_comment|// cr1[1:1]
+multiline_comment|/* cr1[1:1] */
 DECL|member|No_auto
 id|BYTE
 id|No_auto
 suffix:colon
 l_int|1
 suffix:semicolon
-singleline_comment|// cr1[2:2]
+multiline_comment|/* cr1[2:2] */
 DECL|member|Pulse
 id|BYTE
 id|Pulse
 suffix:colon
 l_int|1
 suffix:semicolon
-singleline_comment|// cr1[3:3]
+multiline_comment|/* cr1[3:3] */
 DECL|member|P_Tone1
 id|BYTE
 id|P_Tone1
 suffix:colon
 l_int|1
 suffix:semicolon
-singleline_comment|// cr1[4:4]
+multiline_comment|/* cr1[4:4] */
 DECL|member|P_Tone2
 id|BYTE
 id|P_Tone2
 suffix:colon
 l_int|1
 suffix:semicolon
-singleline_comment|// cr1[5:5]
+multiline_comment|/* cr1[5:5] */
 DECL|member|E_Tone1
 id|BYTE
 id|E_Tone1
 suffix:colon
 l_int|1
 suffix:semicolon
-singleline_comment|// cr1[6:6]
+multiline_comment|/* cr1[6:6] */
 DECL|member|E_Tone2
 id|BYTE
 id|E_Tone2
 suffix:colon
 l_int|1
 suffix:semicolon
-singleline_comment|// cr1[7:7]
+multiline_comment|/* cr1[7:7] */
 DECL|member|bitreg
 )brace
 id|bitreg
@@ -2087,7 +2097,7 @@ DECL|member|cr1
 id|cr1
 suffix:semicolon
 r_union
-singleline_comment|// SOP - CR2 Register
+multiline_comment|/* SOP - CR2 Register */
 (brace
 DECL|member|reg
 id|BYTE
@@ -2103,42 +2113,42 @@ id|Call_II
 suffix:colon
 l_int|1
 suffix:semicolon
-singleline_comment|// CR2[0:0]
+multiline_comment|/* CR2[0:0] */
 DECL|member|Call_I
 id|BYTE
 id|Call_I
 suffix:colon
 l_int|1
 suffix:semicolon
-singleline_comment|// CR2[1:1]
+multiline_comment|/* CR2[1:1] */
 DECL|member|Call_en
 id|BYTE
 id|Call_en
 suffix:colon
 l_int|1
 suffix:semicolon
-singleline_comment|// CR2[2:2]
+multiline_comment|/* CR2[2:2] */
 DECL|member|Call_pon
 id|BYTE
 id|Call_pon
 suffix:colon
 l_int|1
 suffix:semicolon
-singleline_comment|// CR2[3:3]
+multiline_comment|/* CR2[3:3] */
 DECL|member|IDR
 id|BYTE
 id|IDR
 suffix:colon
 l_int|1
 suffix:semicolon
-singleline_comment|// CR2[4:4]
+multiline_comment|/* CR2[4:4] */
 DECL|member|COT_R
 id|BYTE
 id|COT_R
 suffix:colon
 l_int|3
 suffix:semicolon
-singleline_comment|// CR2[5:7]
+multiline_comment|/* CR2[5:7] */
 DECL|member|bitreg
 )brace
 id|bitreg
@@ -2148,7 +2158,7 @@ DECL|member|cr2
 id|cr2
 suffix:semicolon
 r_union
-singleline_comment|// SOP - CR3 Register
+multiline_comment|/* SOP - CR3 Register */
 (brace
 DECL|member|reg
 id|BYTE
@@ -2164,35 +2174,35 @@ id|DHP_X
 suffix:colon
 l_int|1
 suffix:semicolon
-singleline_comment|// CR3[0:0]
+multiline_comment|/* CR3[0:0] */
 DECL|member|DHP_R
 id|BYTE
 id|DHP_R
 suffix:colon
 l_int|1
 suffix:semicolon
-singleline_comment|// CR3[1:1]
+multiline_comment|/* CR3[1:1] */
 DECL|member|Cal_pctl
 id|BYTE
 id|Cal_pctl
 suffix:colon
 l_int|1
 suffix:semicolon
-singleline_comment|// CR3[2:2]
+multiline_comment|/* CR3[2:2] */
 DECL|member|SEL
 id|BYTE
 id|SEL
 suffix:colon
 l_int|1
 suffix:semicolon
-singleline_comment|// CR3[3:3]
+multiline_comment|/* CR3[3:3] */
 DECL|member|TestLoops
 id|BYTE
 id|TestLoops
 suffix:colon
 l_int|4
 suffix:semicolon
-singleline_comment|// CR3[4:7]
+multiline_comment|/* CR3[4:7] */
 DECL|member|bitreg
 )brace
 id|bitreg
@@ -2202,7 +2212,7 @@ DECL|member|cr3
 id|cr3
 suffix:semicolon
 r_union
-singleline_comment|// SOP - CR4 Register
+multiline_comment|/* SOP - CR4 Register */
 (brace
 DECL|member|reg
 id|BYTE
@@ -2218,35 +2228,35 @@ id|Fsc_en
 suffix:colon
 l_int|1
 suffix:semicolon
-singleline_comment|// CR4[0:0]
+multiline_comment|/* CR4[0:0] */
 DECL|member|Int_en
 id|BYTE
 id|Int_en
 suffix:colon
 l_int|1
 suffix:semicolon
-singleline_comment|// CR4[1:1]
+multiline_comment|/* CR4[1:1] */
 DECL|member|AGX
 id|BYTE
 id|AGX
 suffix:colon
 l_int|2
 suffix:semicolon
-singleline_comment|// CR4[2:3]
+multiline_comment|/* CR4[2:3] */
 DECL|member|AGR_R
 id|BYTE
 id|AGR_R
 suffix:colon
 l_int|2
 suffix:semicolon
-singleline_comment|// CR4[4:5]
+multiline_comment|/* CR4[4:5] */
 DECL|member|AGR_Z
 id|BYTE
 id|AGR_Z
 suffix:colon
 l_int|2
 suffix:semicolon
-singleline_comment|// CR4[6:7]
+multiline_comment|/* CR4[6:7] */
 DECL|member|bitreg
 )brace
 id|bitreg
@@ -2256,7 +2266,7 @@ DECL|member|cr4
 id|cr4
 suffix:semicolon
 r_union
-singleline_comment|// SOP - CR5 Register
+multiline_comment|/* SOP - CR5 Register */
 (brace
 DECL|member|reg
 id|BYTE
@@ -2272,56 +2282,56 @@ id|V_0
 suffix:colon
 l_int|1
 suffix:semicolon
-singleline_comment|// CR5[0:0]
+multiline_comment|/* CR5[0:0] */
 DECL|member|V_1
 id|BYTE
 id|V_1
 suffix:colon
 l_int|1
 suffix:semicolon
-singleline_comment|// CR5[1:1]
+multiline_comment|/* CR5[1:1] */
 DECL|member|V_2
 id|BYTE
 id|V_2
 suffix:colon
 l_int|1
 suffix:semicolon
-singleline_comment|// CR5[2:2]
+multiline_comment|/* CR5[2:2] */
 DECL|member|V_3
 id|BYTE
 id|V_3
 suffix:colon
 l_int|1
 suffix:semicolon
-singleline_comment|// CR5[3:3]
+multiline_comment|/* CR5[3:3] */
 DECL|member|V_4
 id|BYTE
 id|V_4
 suffix:colon
 l_int|1
 suffix:semicolon
-singleline_comment|// CR5[4:4]
+multiline_comment|/* CR5[4:4] */
 DECL|member|V_5
 id|BYTE
 id|V_5
 suffix:colon
 l_int|1
 suffix:semicolon
-singleline_comment|// CR5[5:5]
+multiline_comment|/* CR5[5:5] */
 DECL|member|V_6
 id|BYTE
 id|V_6
 suffix:colon
 l_int|1
 suffix:semicolon
-singleline_comment|// CR5[6:6]
+multiline_comment|/* CR5[6:6] */
 DECL|member|V_7
 id|BYTE
 id|V_7
 suffix:colon
 l_int|1
 suffix:semicolon
-singleline_comment|// CR5[7:7]
+multiline_comment|/* CR5[7:7] */
 DECL|member|bitreg
 )brace
 id|bitreg
@@ -2331,7 +2341,7 @@ DECL|member|cr5
 id|cr5
 suffix:semicolon
 r_union
-singleline_comment|// SOP - CR6 Register
+multiline_comment|/* SOP - CR6 Register */
 (brace
 DECL|member|reg
 id|BYTE
@@ -2347,7 +2357,7 @@ id|reserved
 suffix:colon
 l_int|8
 suffix:semicolon
-singleline_comment|// CR6[0:7]
+multiline_comment|/* CR6[0:7] */
 DECL|member|bitreg
 )brace
 id|bitreg
@@ -2357,7 +2367,7 @@ DECL|member|cr6
 id|cr6
 suffix:semicolon
 r_union
-singleline_comment|// SOP - CR7 Register
+multiline_comment|/* SOP - CR7 Register */
 (brace
 DECL|member|reg
 id|BYTE
@@ -2373,7 +2383,7 @@ id|reserved
 suffix:colon
 l_int|8
 suffix:semicolon
-singleline_comment|// CR7[0:7]
+multiline_comment|/* CR7[0:7] */
 DECL|member|bitreg
 )brace
 id|bitreg
@@ -2401,13 +2411,13 @@ DECL|member|SOP_REGS
 )brace
 id|SOP_REGS
 suffix:semicolon
-singleline_comment|// DAA_REGS.SOP_REGS.SOP.CR5.reg
-singleline_comment|// DAA_REGS.SOP_REGS.SOP.CR5.bitreg
-singleline_comment|// DAA_REGS.SOP_REGS.SOP.CR5.bitreg.V_2
-singleline_comment|// DAA_REGS.SOP_REGS.ByteRegs[5]
-singleline_comment|//-----------------------------------------------
-singleline_comment|// XOP Registers
-singleline_comment|//
+multiline_comment|/* DAA_REGS.SOP_REGS.SOP.CR5.reg */
+multiline_comment|/* DAA_REGS.SOP_REGS.SOP.CR5.bitreg */
+multiline_comment|/* DAA_REGS.SOP_REGS.SOP.CR5.bitreg.V_2 */
+multiline_comment|/* DAA_REGS.SOP_REGS.ByteRegs[5] */
+multiline_comment|/*----------------------------------------------- */
+multiline_comment|/* XOP Registers */
+multiline_comment|/* */
 DECL|member|byXOP
 id|BYTE
 id|byXOP
@@ -2420,8 +2430,10 @@ DECL|struct|_XOP
 r_struct
 id|_XOP
 (brace
+DECL|union|XOPXR0
 r_union
-singleline_comment|// XOP - XR0 Register - Read values
+id|XOPXR0
+multiline_comment|/* XOP - XR0 Register - Read values */
 (brace
 DECL|member|reg
 id|BYTE
@@ -2437,56 +2449,56 @@ id|SI_0
 suffix:colon
 l_int|1
 suffix:semicolon
-singleline_comment|// XR0[0:0] - Read
+multiline_comment|/* XR0[0:0] - Read */
 DECL|member|SI_1
 id|BYTE
 id|SI_1
 suffix:colon
 l_int|1
 suffix:semicolon
-singleline_comment|// XR0[1:1] - Read
+multiline_comment|/* XR0[1:1] - Read */
 DECL|member|VDD_OK
 id|BYTE
 id|VDD_OK
 suffix:colon
 l_int|1
 suffix:semicolon
-singleline_comment|// XR0[2:2] - Read
+multiline_comment|/* XR0[2:2] - Read */
 DECL|member|Caller_ID
 id|BYTE
 id|Caller_ID
 suffix:colon
 l_int|1
 suffix:semicolon
-singleline_comment|// XR0[3:3] - Read
+multiline_comment|/* XR0[3:3] - Read */
 DECL|member|RING
 id|BYTE
 id|RING
 suffix:colon
 l_int|1
 suffix:semicolon
-singleline_comment|// XR0[4:4] - Read
+multiline_comment|/* XR0[4:4] - Read */
 DECL|member|Cadence
 id|BYTE
 id|Cadence
 suffix:colon
 l_int|1
 suffix:semicolon
-singleline_comment|// XR0[5:5] - Read
+multiline_comment|/* XR0[5:5] - Read */
 DECL|member|Wake_up
 id|BYTE
 id|Wake_up
 suffix:colon
 l_int|1
 suffix:semicolon
-singleline_comment|// XR0[6:6] - Read
-DECL|member|unused
+multiline_comment|/* XR0[6:6] - Read */
+DECL|member|RMR
 id|BYTE
-id|unused
+id|RMR
 suffix:colon
 l_int|1
 suffix:semicolon
-singleline_comment|// XR0[7:7] - Read
+multiline_comment|/* XR0[7:7] - Read */
 DECL|member|bitreg
 )brace
 id|bitreg
@@ -2496,7 +2508,7 @@ DECL|member|xr0
 id|xr0
 suffix:semicolon
 r_union
-singleline_comment|// XOP - XR1 Register
+multiline_comment|/* XOP - XR1 Register */
 (brace
 DECL|member|reg
 id|BYTE
@@ -2512,56 +2524,56 @@ id|M_SI_0
 suffix:colon
 l_int|1
 suffix:semicolon
-singleline_comment|// XR1[0:0]
+multiline_comment|/* XR1[0:0] */
 DECL|member|M_SI_1
 id|BYTE
 id|M_SI_1
 suffix:colon
 l_int|1
 suffix:semicolon
-singleline_comment|// XR1[1:1]
+multiline_comment|/* XR1[1:1] */
 DECL|member|M_VDD_OK
 id|BYTE
 id|M_VDD_OK
 suffix:colon
 l_int|1
 suffix:semicolon
-singleline_comment|// XR1[2:2]
+multiline_comment|/* XR1[2:2] */
 DECL|member|M_Caller_ID
 id|BYTE
 id|M_Caller_ID
 suffix:colon
 l_int|1
 suffix:semicolon
-singleline_comment|// XR1[3:3]
+multiline_comment|/* XR1[3:3] */
 DECL|member|M_RING
 id|BYTE
 id|M_RING
 suffix:colon
 l_int|1
 suffix:semicolon
-singleline_comment|// XR1[4:4]
+multiline_comment|/* XR1[4:4] */
 DECL|member|M_Cadence
 id|BYTE
 id|M_Cadence
 suffix:colon
 l_int|1
 suffix:semicolon
-singleline_comment|// XR1[5:5]
+multiline_comment|/* XR1[5:5] */
 DECL|member|M_Wake_up
 id|BYTE
 id|M_Wake_up
 suffix:colon
 l_int|1
 suffix:semicolon
-singleline_comment|// XR1[6:6]
+multiline_comment|/* XR1[6:6] */
 DECL|member|unused
 id|BYTE
 id|unused
 suffix:colon
 l_int|1
 suffix:semicolon
-singleline_comment|// XR1[7:7]
+multiline_comment|/* XR1[7:7] */
 DECL|member|bitreg
 )brace
 id|bitreg
@@ -2571,7 +2583,7 @@ DECL|member|xr1
 id|xr1
 suffix:semicolon
 r_union
-singleline_comment|// XOP - XR2 Register
+multiline_comment|/* XOP - XR2 Register */
 (brace
 DECL|member|reg
 id|BYTE
@@ -2587,56 +2599,56 @@ id|CTO0
 suffix:colon
 l_int|1
 suffix:semicolon
-singleline_comment|// XR2[0:0]
+multiline_comment|/* XR2[0:0] */
 DECL|member|CTO1
 id|BYTE
 id|CTO1
 suffix:colon
 l_int|1
 suffix:semicolon
-singleline_comment|// XR2[1:1]
+multiline_comment|/* XR2[1:1] */
 DECL|member|CTO2
 id|BYTE
 id|CTO2
 suffix:colon
 l_int|1
 suffix:semicolon
-singleline_comment|// XR2[2:2]
+multiline_comment|/* XR2[2:2] */
 DECL|member|CTO3
 id|BYTE
 id|CTO3
 suffix:colon
 l_int|1
 suffix:semicolon
-singleline_comment|// XR2[3:3]
+multiline_comment|/* XR2[3:3] */
 DECL|member|CTO4
 id|BYTE
 id|CTO4
 suffix:colon
 l_int|1
 suffix:semicolon
-singleline_comment|// XR2[4:4]
+multiline_comment|/* XR2[4:4] */
 DECL|member|CTO5
 id|BYTE
 id|CTO5
 suffix:colon
 l_int|1
 suffix:semicolon
-singleline_comment|// XR2[5:5]
+multiline_comment|/* XR2[5:5] */
 DECL|member|CTO6
 id|BYTE
 id|CTO6
 suffix:colon
 l_int|1
 suffix:semicolon
-singleline_comment|// XR2[6:6]
+multiline_comment|/* XR2[6:6] */
 DECL|member|CTO7
 id|BYTE
 id|CTO7
 suffix:colon
 l_int|1
 suffix:semicolon
-singleline_comment|// XR2[7:7]
+multiline_comment|/* XR2[7:7] */
 DECL|member|bitreg
 )brace
 id|bitreg
@@ -2646,7 +2658,7 @@ DECL|member|xr2
 id|xr2
 suffix:semicolon
 r_union
-singleline_comment|// XOP - XR3 Register
+multiline_comment|/* XOP - XR3 Register */
 (brace
 DECL|member|reg
 id|BYTE
@@ -2662,56 +2674,56 @@ id|DCR0
 suffix:colon
 l_int|1
 suffix:semicolon
-singleline_comment|// XR3[0:0]
+multiline_comment|/* XR3[0:0] */
 DECL|member|DCR1
 id|BYTE
 id|DCR1
 suffix:colon
 l_int|1
 suffix:semicolon
-singleline_comment|// XR3[1:1]
+multiline_comment|/* XR3[1:1] */
 DECL|member|DCI
 id|BYTE
 id|DCI
 suffix:colon
 l_int|1
 suffix:semicolon
-singleline_comment|// XR3[2:2]
+multiline_comment|/* XR3[2:2] */
 DECL|member|DCU0
 id|BYTE
 id|DCU0
 suffix:colon
 l_int|1
 suffix:semicolon
-singleline_comment|// XR3[3:3]
+multiline_comment|/* XR3[3:3] */
 DECL|member|DCU1
 id|BYTE
 id|DCU1
 suffix:colon
 l_int|1
 suffix:semicolon
-singleline_comment|// XR3[4:4]
+multiline_comment|/* XR3[4:4] */
 DECL|member|B_off
 id|BYTE
 id|B_off
 suffix:colon
 l_int|1
 suffix:semicolon
-singleline_comment|// XR3[5:5]
+multiline_comment|/* XR3[5:5] */
 DECL|member|AGB0
 id|BYTE
 id|AGB0
 suffix:colon
 l_int|1
 suffix:semicolon
-singleline_comment|// XR3[6:6]
+multiline_comment|/* XR3[6:6] */
 DECL|member|AGB1
 id|BYTE
 id|AGB1
 suffix:colon
 l_int|1
 suffix:semicolon
-singleline_comment|// XR3[7:7]
+multiline_comment|/* XR3[7:7] */
 DECL|member|bitreg
 )brace
 id|bitreg
@@ -2721,7 +2733,7 @@ DECL|member|xr3
 id|xr3
 suffix:semicolon
 r_union
-singleline_comment|// XOP - XR4 Register
+multiline_comment|/* XOP - XR4 Register */
 (brace
 DECL|member|reg
 id|BYTE
@@ -2737,56 +2749,56 @@ id|C_0
 suffix:colon
 l_int|1
 suffix:semicolon
-singleline_comment|// XR4[0:0]
+multiline_comment|/* XR4[0:0] */
 DECL|member|C_1
 id|BYTE
 id|C_1
 suffix:colon
 l_int|1
 suffix:semicolon
-singleline_comment|// XR4[1:1]
+multiline_comment|/* XR4[1:1] */
 DECL|member|C_2
 id|BYTE
 id|C_2
 suffix:colon
 l_int|1
 suffix:semicolon
-singleline_comment|// XR4[2:2]
+multiline_comment|/* XR4[2:2] */
 DECL|member|C_3
 id|BYTE
 id|C_3
 suffix:colon
 l_int|1
 suffix:semicolon
-singleline_comment|// XR4[3:3]
+multiline_comment|/* XR4[3:3] */
 DECL|member|C_4
 id|BYTE
 id|C_4
 suffix:colon
 l_int|1
 suffix:semicolon
-singleline_comment|// XR4[4:4]
+multiline_comment|/* XR4[4:4] */
 DECL|member|C_5
 id|BYTE
 id|C_5
 suffix:colon
 l_int|1
 suffix:semicolon
-singleline_comment|// XR4[5:5]
+multiline_comment|/* XR4[5:5] */
 DECL|member|C_6
 id|BYTE
 id|C_6
 suffix:colon
 l_int|1
 suffix:semicolon
-singleline_comment|// XR4[6:6]
+multiline_comment|/* XR4[6:6] */
 DECL|member|C_7
 id|BYTE
 id|C_7
 suffix:colon
 l_int|1
 suffix:semicolon
-singleline_comment|// XR4[7:7]
+multiline_comment|/* XR4[7:7] */
 DECL|member|bitreg
 )brace
 id|bitreg
@@ -2796,7 +2808,7 @@ DECL|member|xr4
 id|xr4
 suffix:semicolon
 r_union
-singleline_comment|// XOP - XR5 Register
+multiline_comment|/* XOP - XR5 Register */
 (brace
 DECL|member|reg
 id|BYTE
@@ -2812,56 +2824,56 @@ id|T_0
 suffix:colon
 l_int|1
 suffix:semicolon
-singleline_comment|// XR5[0:0]
+multiline_comment|/* XR5[0:0] */
 DECL|member|T_1
 id|BYTE
 id|T_1
 suffix:colon
 l_int|1
 suffix:semicolon
-singleline_comment|// XR5[1:1]
+multiline_comment|/* XR5[1:1] */
 DECL|member|T_2
 id|BYTE
 id|T_2
 suffix:colon
 l_int|1
 suffix:semicolon
-singleline_comment|// XR5[2:2]
+multiline_comment|/* XR5[2:2] */
 DECL|member|T_3
 id|BYTE
 id|T_3
 suffix:colon
 l_int|1
 suffix:semicolon
-singleline_comment|// XR5[3:3]
+multiline_comment|/* XR5[3:3] */
 DECL|member|T_4
 id|BYTE
 id|T_4
 suffix:colon
 l_int|1
 suffix:semicolon
-singleline_comment|// XR5[4:4]
+multiline_comment|/* XR5[4:4] */
 DECL|member|T_5
 id|BYTE
 id|T_5
 suffix:colon
 l_int|1
 suffix:semicolon
-singleline_comment|// XR5[5:5]
+multiline_comment|/* XR5[5:5] */
 DECL|member|T_6
 id|BYTE
 id|T_6
 suffix:colon
 l_int|1
 suffix:semicolon
-singleline_comment|// XR5[6:6]
+multiline_comment|/* XR5[6:6] */
 DECL|member|T_7
 id|BYTE
 id|T_7
 suffix:colon
 l_int|1
 suffix:semicolon
-singleline_comment|// XR5[7:7]
+multiline_comment|/* XR5[7:7] */
 DECL|member|bitreg
 )brace
 id|bitreg
@@ -2871,7 +2883,7 @@ DECL|member|xr5
 id|xr5
 suffix:semicolon
 r_union
-singleline_comment|// XOP - XR6 Register - Read Values
+multiline_comment|/* XOP - XR6 Register - Read Values */
 (brace
 DECL|member|reg
 id|BYTE
@@ -2887,35 +2899,35 @@ id|CPS0
 suffix:colon
 l_int|1
 suffix:semicolon
-singleline_comment|// XR6[0:0]
+multiline_comment|/* XR6[0:0] */
 DECL|member|CPS1
 id|BYTE
 id|CPS1
 suffix:colon
 l_int|1
 suffix:semicolon
-singleline_comment|// XR6[1:1]
+multiline_comment|/* XR6[1:1] */
 DECL|member|unused1
 id|BYTE
 id|unused1
 suffix:colon
 l_int|2
 suffix:semicolon
-singleline_comment|// XR6[2:3]
+multiline_comment|/* XR6[2:3] */
 DECL|member|CLK_OFF
 id|BYTE
 id|CLK_OFF
 suffix:colon
 l_int|1
 suffix:semicolon
-singleline_comment|// XR6[4:4]
+multiline_comment|/* XR6[4:4] */
 DECL|member|unused2
 id|BYTE
 id|unused2
 suffix:colon
 l_int|3
 suffix:semicolon
-singleline_comment|// XR6[5:7]
+multiline_comment|/* XR6[5:7] */
 DECL|member|bitreg
 )brace
 id|bitreg
@@ -2925,7 +2937,7 @@ DECL|member|xr6
 id|xr6
 suffix:semicolon
 r_union
-singleline_comment|// XOP - XR7 Register
+multiline_comment|/* XOP - XR7 Register */
 (brace
 DECL|member|reg
 id|BYTE
@@ -2941,28 +2953,28 @@ id|unused1
 suffix:colon
 l_int|1
 suffix:semicolon
-singleline_comment|// XR7[0:0]
+multiline_comment|/* XR7[0:0] */
 DECL|member|Vdd0
 id|BYTE
 id|Vdd0
 suffix:colon
 l_int|1
 suffix:semicolon
-singleline_comment|// XR7[1:1]
+multiline_comment|/* XR7[1:1] */
 DECL|member|Vdd1
 id|BYTE
 id|Vdd1
 suffix:colon
 l_int|1
 suffix:semicolon
-singleline_comment|// XR7[2:2]
+multiline_comment|/* XR7[2:2] */
 DECL|member|unused2
 id|BYTE
 id|unused2
 suffix:colon
 l_int|5
 suffix:semicolon
-singleline_comment|// XR7[3:7]
+multiline_comment|/* XR7[3:7] */
 DECL|member|bitreg
 )brace
 id|bitreg
@@ -2990,13 +3002,13 @@ DECL|member|XOP_REGS
 )brace
 id|XOP_REGS
 suffix:semicolon
-singleline_comment|// DAA_REGS.XOP_REGS.XOP.XR7.reg
-singleline_comment|// DAA_REGS.XOP_REGS.XOP.XR7.bitreg
-singleline_comment|// DAA_REGS.XOP_REGS.XOP.XR7.bitreg.Vdd0
-singleline_comment|// DAA_REGS.XOP_REGS.ByteRegs[7]
-singleline_comment|//-----------------------------------------------
-singleline_comment|// COP Registers
-singleline_comment|//
+multiline_comment|/* DAA_REGS.XOP_REGS.XOP.XR7.reg */
+multiline_comment|/* DAA_REGS.XOP_REGS.XOP.XR7.bitreg */
+multiline_comment|/* DAA_REGS.XOP_REGS.XOP.XR7.bitreg.Vdd0 */
+multiline_comment|/* DAA_REGS.XOP_REGS.ByteRegs[7] */
+multiline_comment|/*----------------------------------------------- */
+multiline_comment|/* COP Registers */
+multiline_comment|/* */
 DECL|member|byCOP
 id|BYTE
 id|byCOP
@@ -3016,7 +3028,7 @@ id|THFilterCoeff_1
 l_int|8
 )braket
 suffix:semicolon
-singleline_comment|// COP - TH Filter Coefficients,      CODE=0, Part 1
+multiline_comment|/* COP - TH Filter Coefficients,      CODE=0, Part 1 */
 DECL|member|THFilterCoeff_2
 id|BYTE
 id|THFilterCoeff_2
@@ -3024,7 +3036,7 @@ id|THFilterCoeff_2
 l_int|8
 )braket
 suffix:semicolon
-singleline_comment|// COP - TH Filter Coefficients,      CODE=1, Part 2
+multiline_comment|/* COP - TH Filter Coefficients,      CODE=1, Part 2 */
 DECL|member|THFilterCoeff_3
 id|BYTE
 id|THFilterCoeff_3
@@ -3032,7 +3044,7 @@ id|THFilterCoeff_3
 l_int|8
 )braket
 suffix:semicolon
-singleline_comment|// COP - TH Filter Coefficients,      CODE=2, Part 3
+multiline_comment|/* COP - TH Filter Coefficients,      CODE=2, Part 3 */
 DECL|member|RingerImpendance_1
 id|BYTE
 id|RingerImpendance_1
@@ -3040,7 +3052,7 @@ id|RingerImpendance_1
 l_int|8
 )braket
 suffix:semicolon
-singleline_comment|// COP - Ringer Impendance Coefficients,  CODE=3, Part 1
+multiline_comment|/* COP - Ringer Impendance Coefficients,  CODE=3, Part 1 */
 DECL|member|IMFilterCoeff_1
 id|BYTE
 id|IMFilterCoeff_1
@@ -3048,7 +3060,7 @@ id|IMFilterCoeff_1
 l_int|8
 )braket
 suffix:semicolon
-singleline_comment|// COP - IM Filter Coefficients,      CODE=4, Part 1
+multiline_comment|/* COP - IM Filter Coefficients,      CODE=4, Part 1 */
 DECL|member|IMFilterCoeff_2
 id|BYTE
 id|IMFilterCoeff_2
@@ -3056,7 +3068,7 @@ id|IMFilterCoeff_2
 l_int|8
 )braket
 suffix:semicolon
-singleline_comment|// COP - IM Filter Coefficients,      CODE=5, Part 2
+multiline_comment|/* COP - IM Filter Coefficients,      CODE=5, Part 2 */
 DECL|member|RingerImpendance_2
 id|BYTE
 id|RingerImpendance_2
@@ -3064,7 +3076,7 @@ id|RingerImpendance_2
 l_int|8
 )braket
 suffix:semicolon
-singleline_comment|// COP - Ringer Impendance Coefficients,  CODE=6, Part 2
+multiline_comment|/* COP - Ringer Impendance Coefficients,  CODE=6, Part 2 */
 DECL|member|FRRFilterCoeff
 id|BYTE
 id|FRRFilterCoeff
@@ -3072,7 +3084,7 @@ id|FRRFilterCoeff
 l_int|8
 )braket
 suffix:semicolon
-singleline_comment|// COP - FRR Filter Coefficients,      CODE=7
+multiline_comment|/* COP - FRR Filter Coefficients,      CODE=7 */
 DECL|member|FRXFilterCoeff
 id|BYTE
 id|FRXFilterCoeff
@@ -3080,7 +3092,7 @@ id|FRXFilterCoeff
 l_int|8
 )braket
 suffix:semicolon
-singleline_comment|// COP - FRX Filter Coefficients,      CODE=8
+multiline_comment|/* COP - FRX Filter Coefficients,      CODE=8 */
 DECL|member|ARFilterCoeff
 id|BYTE
 id|ARFilterCoeff
@@ -3088,7 +3100,7 @@ id|ARFilterCoeff
 l_int|4
 )braket
 suffix:semicolon
-singleline_comment|// COP - AR Filter Coefficients,      CODE=9
+multiline_comment|/* COP - AR Filter Coefficients,      CODE=9 */
 DECL|member|AXFilterCoeff
 id|BYTE
 id|AXFilterCoeff
@@ -3096,7 +3108,7 @@ id|AXFilterCoeff
 l_int|4
 )braket
 suffix:semicolon
-singleline_comment|// COP - AX Filter Coefficients,      CODE=10 
+multiline_comment|/* COP - AX Filter Coefficients,      CODE=10  */
 DECL|member|Tone1Coeff
 id|BYTE
 id|Tone1Coeff
@@ -3104,7 +3116,7 @@ id|Tone1Coeff
 l_int|4
 )braket
 suffix:semicolon
-singleline_comment|// COP - Tone1 Coefficients,        CODE=11
+multiline_comment|/* COP - Tone1 Coefficients,        CODE=11 */
 DECL|member|Tone2Coeff
 id|BYTE
 id|Tone2Coeff
@@ -3112,7 +3124,7 @@ id|Tone2Coeff
 l_int|4
 )braket
 suffix:semicolon
-singleline_comment|// COP - Tone2 Coefficients,        CODE=12
+multiline_comment|/* COP - Tone2 Coefficients,        CODE=12 */
 DECL|member|LevelmeteringRinging
 id|BYTE
 id|LevelmeteringRinging
@@ -3120,7 +3132,7 @@ id|LevelmeteringRinging
 l_int|4
 )braket
 suffix:semicolon
-singleline_comment|// COP - Levelmetering Ringing,        CODE=13
+multiline_comment|/* COP - Levelmetering Ringing,        CODE=13 */
 DECL|member|CallerID1stTone
 id|BYTE
 id|CallerID1stTone
@@ -3128,7 +3140,7 @@ id|CallerID1stTone
 l_int|8
 )braket
 suffix:semicolon
-singleline_comment|// COP - Caller ID 1st Tone,        CODE=14
+multiline_comment|/* COP - Caller ID 1st Tone,        CODE=14 */
 DECL|member|CallerID2ndTone
 id|BYTE
 id|CallerID2ndTone
@@ -3136,7 +3148,7 @@ id|CallerID2ndTone
 l_int|8
 )braket
 suffix:semicolon
-singleline_comment|// COP - Caller ID 2nd Tone,        CODE=15
+multiline_comment|/* COP - Caller ID 2nd Tone,        CODE=15 */
 DECL|member|COP
 )brace
 id|COP
@@ -3156,13 +3168,13 @@ DECL|member|COP_REGS
 )brace
 id|COP_REGS
 suffix:semicolon
-singleline_comment|// DAA_REGS.COP_REGS.COP.XR7.Tone1Coeff[3]
-singleline_comment|// DAA_REGS.COP_REGS.COP.XR7.bitreg
-singleline_comment|// DAA_REGS.COP_REGS.COP.XR7.bitreg.Vdd0
-singleline_comment|// DAA_REGS.COP_REGS.ByteRegs[57]
-singleline_comment|//-----------------------------------------------
-singleline_comment|// CAO Registers
-singleline_comment|//
+multiline_comment|/* DAA_REGS.COP_REGS.COP.XR7.Tone1Coeff[3] */
+multiline_comment|/* DAA_REGS.COP_REGS.COP.XR7.bitreg */
+multiline_comment|/* DAA_REGS.COP_REGS.COP.XR7.bitreg.Vdd0 */
+multiline_comment|/* DAA_REGS.COP_REGS.ByteRegs[57] */
+multiline_comment|/*----------------------------------------------- */
+multiline_comment|/* CAO Registers */
+multiline_comment|/* */
 DECL|member|byCAO
 id|BYTE
 id|byCAO
@@ -3182,7 +3194,7 @@ id|CallerID
 l_int|512
 )braket
 suffix:semicolon
-singleline_comment|// CAO - Caller ID Bytes
+multiline_comment|/* CAO - Caller ID Bytes */
 DECL|member|CAO
 )brace
 id|CAO
@@ -3203,7 +3215,7 @@ DECL|member|CAO_REGS
 id|CAO_REGS
 suffix:semicolon
 r_union
-singleline_comment|// XOP - XR0 Register - Write values
+multiline_comment|/* XOP - XR0 Register - Write values */
 (brace
 DECL|member|reg
 id|BYTE
@@ -3219,28 +3231,28 @@ id|SO_0
 suffix:colon
 l_int|1
 suffix:semicolon
-singleline_comment|// XR1[0:0] - Write
+multiline_comment|/* XR1[0:0] - Write */
 DECL|member|SO_1
 id|BYTE
 id|SO_1
 suffix:colon
 l_int|1
 suffix:semicolon
-singleline_comment|// XR1[1:1] - Write
+multiline_comment|/* XR1[1:1] - Write */
 DECL|member|SO_2
 id|BYTE
 id|SO_2
 suffix:colon
 l_int|1
 suffix:semicolon
-singleline_comment|// XR1[2:2] - Write
+multiline_comment|/* XR1[2:2] - Write */
 DECL|member|unused
 id|BYTE
 id|unused
 suffix:colon
 l_int|5
 suffix:semicolon
-singleline_comment|// XR1[3:7] - Write
+multiline_comment|/* XR1[3:7] - Write */
 DECL|member|bitreg
 )brace
 id|bitreg
@@ -3250,7 +3262,7 @@ DECL|member|XOP_xr0_W
 id|XOP_xr0_W
 suffix:semicolon
 r_union
-singleline_comment|// XOP - XR6 Register - Write values
+multiline_comment|/* XOP - XR6 Register - Write values */
 (brace
 DECL|member|reg
 id|BYTE
@@ -3266,21 +3278,21 @@ id|unused1
 suffix:colon
 l_int|4
 suffix:semicolon
-singleline_comment|// XR6[0:3]
+multiline_comment|/* XR6[0:3] */
 DECL|member|CLK_OFF
 id|BYTE
 id|CLK_OFF
 suffix:colon
 l_int|1
 suffix:semicolon
-singleline_comment|// XR6[4:4]
+multiline_comment|/* XR6[4:4] */
 DECL|member|unused2
 id|BYTE
 id|unused2
 suffix:colon
 l_int|3
 suffix:semicolon
-singleline_comment|// XR6[5:7]
+multiline_comment|/* XR6[5:7] */
 DECL|member|bitreg
 )brace
 id|bitreg
@@ -3297,11 +3309,11 @@ DECL|macro|ALISDAA_ID_BYTE
 mdefine_line|#define ALISDAA_ID_BYTE      0x81
 DECL|macro|ALISDAA_CALLERID_SIZE
 mdefine_line|#define ALISDAA_CALLERID_SIZE  512
-singleline_comment|//------------------------------
-singleline_comment|//
-singleline_comment|//  Misc definitions
-singleline_comment|//
-singleline_comment|// Power Up Operation
+multiline_comment|/*------------------------------ */
+multiline_comment|/* */
+multiline_comment|/*  Misc definitions */
+multiline_comment|/* */
+multiline_comment|/* Power Up Operation */
 DECL|macro|SOP_PU_SLEEP
 mdefine_line|#define SOP_PU_SLEEP    0
 DECL|macro|SOP_PU_RINGING
@@ -3310,53 +3322,40 @@ DECL|macro|SOP_PU_CONVERSATION
 mdefine_line|#define SOP_PU_CONVERSATION  2
 DECL|macro|SOP_PU_PULSEDIALING
 mdefine_line|#define SOP_PU_PULSEDIALING  3
+DECL|macro|SOP_PU_RESET
+mdefine_line|#define SOP_PU_RESET    4
 DECL|macro|ALISDAA_CALLERID_SIZE
 mdefine_line|#define ALISDAA_CALLERID_SIZE 512
 DECL|macro|PLAYBACK_MODE_COMPRESSED
-mdefine_line|#define PLAYBACK_MODE_COMPRESSED&t;0&t;
-singleline_comment|//        Selects: Compressed modes, TrueSpeech 8.5-4.1, G.723.1, G.722, G.728, G.729
+mdefine_line|#define PLAYBACK_MODE_COMPRESSED&t;0&t;/*        Selects: Compressed modes, TrueSpeech 8.5-4.1, G.723.1, G.722, G.728, G.729 */
 DECL|macro|PLAYBACK_MODE_TRUESPEECH_V40
-mdefine_line|#define PLAYBACK_MODE_TRUESPEECH_V40&t;0&t;
-singleline_comment|//        Selects: TrueSpeech 8.5, 6.3, 5.3, 4.8 or 4.1 Kbps
+mdefine_line|#define PLAYBACK_MODE_TRUESPEECH_V40&t;0&t;/*        Selects: TrueSpeech 8.5, 6.3, 5.3, 4.8 or 4.1 Kbps */
 DECL|macro|PLAYBACK_MODE_TRUESPEECH
-mdefine_line|#define PLAYBACK_MODE_TRUESPEECH&t;8&t;
-singleline_comment|//        Selects: TrueSpeech 8.5, 6.3, 5.3, 4.8 or 4.1 Kbps Version 5.1
+mdefine_line|#define PLAYBACK_MODE_TRUESPEECH&t;8&t;/*        Selects: TrueSpeech 8.5, 6.3, 5.3, 4.8 or 4.1 Kbps Version 5.1 */
 DECL|macro|PLAYBACK_MODE_ULAW
-mdefine_line|#define PLAYBACK_MODE_ULAW&t;&t;2&t;
-singleline_comment|//        Selects: 64 Kbit/sec MuA-law PCM
+mdefine_line|#define PLAYBACK_MODE_ULAW&t;&t;2&t;/*        Selects: 64 Kbit/sec MuA-law PCM */
 DECL|macro|PLAYBACK_MODE_ALAW
-mdefine_line|#define PLAYBACK_MODE_ALAW&t;&t;10&t;
-singleline_comment|//        Selects: 64 Kbit/sec A-law PCM
+mdefine_line|#define PLAYBACK_MODE_ALAW&t;&t;10&t;/*        Selects: 64 Kbit/sec A-law PCM */
 DECL|macro|PLAYBACK_MODE_16LINEAR
-mdefine_line|#define PLAYBACK_MODE_16LINEAR&t;&t;6&t;
-singleline_comment|//        Selects: 128 Kbit/sec 16-bit linear
+mdefine_line|#define PLAYBACK_MODE_16LINEAR&t;&t;6&t;/*        Selects: 128 Kbit/sec 16-bit linear */
 DECL|macro|PLAYBACK_MODE_8LINEAR
-mdefine_line|#define PLAYBACK_MODE_8LINEAR&t;&t;4&t;
-singleline_comment|//        Selects: 64 Kbit/sec 8-bit signed linear
+mdefine_line|#define PLAYBACK_MODE_8LINEAR&t;&t;4&t;/*        Selects: 64 Kbit/sec 8-bit signed linear */
 DECL|macro|PLAYBACK_MODE_8LINEAR_WSS
-mdefine_line|#define PLAYBACK_MODE_8LINEAR_WSS&t;5&t;
-singleline_comment|//        Selects: 64 Kbit/sec WSS 8-bit unsigned linear
+mdefine_line|#define PLAYBACK_MODE_8LINEAR_WSS&t;5&t;/*        Selects: 64 Kbit/sec WSS 8-bit unsigned linear */
 DECL|macro|RECORD_MODE_COMPRESSED
-mdefine_line|#define RECORD_MODE_COMPRESSED&t;&t;0&t;
-singleline_comment|//        Selects: Compressed modes, TrueSpeech 8.5-4.1, G.723.1, G.722, G.728, G.729
+mdefine_line|#define RECORD_MODE_COMPRESSED&t;&t;0&t;/*        Selects: Compressed modes, TrueSpeech 8.5-4.1, G.723.1, G.722, G.728, G.729 */
 DECL|macro|RECORD_MODE_TRUESPEECH
-mdefine_line|#define RECORD_MODE_TRUESPEECH&t;&t;0&t;
-singleline_comment|//        Selects: TrueSpeech 8.5, 6.3, 5.3, 4.8 or 4.1 Kbps
+mdefine_line|#define RECORD_MODE_TRUESPEECH&t;&t;0&t;/*        Selects: TrueSpeech 8.5, 6.3, 5.3, 4.8 or 4.1 Kbps */
 DECL|macro|RECORD_MODE_ULAW
-mdefine_line|#define RECORD_MODE_ULAW&t;&t;4&t;
-singleline_comment|//        Selects: 64 Kbit/sec Mu-law PCM
+mdefine_line|#define RECORD_MODE_ULAW&t;&t;4&t;/*        Selects: 64 Kbit/sec Mu-law PCM */
 DECL|macro|RECORD_MODE_ALAW
-mdefine_line|#define RECORD_MODE_ALAW&t;&t;12&t;
-singleline_comment|//        Selects: 64 Kbit/sec A-law PCM
+mdefine_line|#define RECORD_MODE_ALAW&t;&t;12&t;/*        Selects: 64 Kbit/sec A-law PCM */
 DECL|macro|RECORD_MODE_16LINEAR
-mdefine_line|#define RECORD_MODE_16LINEAR&t;&t;5&t;
-singleline_comment|//        Selects: 128 Kbit/sec 16-bit linear
+mdefine_line|#define RECORD_MODE_16LINEAR&t;&t;5&t;/*        Selects: 128 Kbit/sec 16-bit linear */
 DECL|macro|RECORD_MODE_8LINEAR
-mdefine_line|#define RECORD_MODE_8LINEAR&t;&t;6&t;
-singleline_comment|//        Selects: 64 Kbit/sec 8-bit signed linear
+mdefine_line|#define RECORD_MODE_8LINEAR&t;&t;6&t;/*        Selects: 64 Kbit/sec 8-bit signed linear */
 DECL|macro|RECORD_MODE_8LINEAR_WSS
-mdefine_line|#define RECORD_MODE_8LINEAR_WSS&t;&t;7&t;
-singleline_comment|//        Selects: 64 Kbit/sec WSS 8-bit unsigned linear
+mdefine_line|#define RECORD_MODE_8LINEAR_WSS&t;&t;7&t;/*        Selects: 64 Kbit/sec WSS 8-bit unsigned linear */
 DECL|enum|SLIC_STATES
 r_enum
 id|SLIC_STATES
@@ -3539,42 +3538,48 @@ r_int
 r_int
 id|state
 suffix:semicolon
-singleline_comment|// State 0 when cadence has not started.
+multiline_comment|/* State 0 when cadence has not started. */
 DECL|member|on1
 r_int
 r_int
 id|on1
 suffix:semicolon
-singleline_comment|// State 1
+multiline_comment|/* State 1 */
 DECL|member|on1min
 r_int
 r_int
 id|on1min
 suffix:semicolon
-singleline_comment|// State 1 - 10% + jiffies
+multiline_comment|/* State 1 - 10% + jiffies */
 DECL|member|on1dot
 r_int
 r_int
 id|on1dot
 suffix:semicolon
-singleline_comment|// State 1 + jiffies
+multiline_comment|/* State 1 + jiffies */
 DECL|member|on1max
 r_int
 r_int
 id|on1max
 suffix:semicolon
-singleline_comment|// State 1 + 10% + jiffies
+multiline_comment|/* State 1 + 10% + jiffies */
 DECL|member|off1
 r_int
 r_int
 id|off1
 suffix:semicolon
-singleline_comment|// State 2
+multiline_comment|/* State 2 */
 DECL|member|off1min
 r_int
 r_int
 id|off1min
 suffix:semicolon
+DECL|member|off1dot
+r_int
+r_int
+id|off1dot
+suffix:semicolon
+multiline_comment|/* State 2 + jiffies */
 DECL|member|off1max
 r_int
 r_int
@@ -3585,7 +3590,7 @@ r_int
 r_int
 id|on2
 suffix:semicolon
-singleline_comment|// State 3
+multiline_comment|/* State 3 */
 DECL|member|on2min
 r_int
 r_int
@@ -3606,12 +3611,18 @@ r_int
 r_int
 id|off2
 suffix:semicolon
-singleline_comment|// State 4
+multiline_comment|/* State 4 */
 DECL|member|off2min
 r_int
 r_int
 id|off2min
 suffix:semicolon
+DECL|member|off2dot
+r_int
+r_int
+id|off2dot
+suffix:semicolon
+multiline_comment|/* State 4 + jiffies */
 DECL|member|off2max
 r_int
 r_int
@@ -3622,7 +3633,7 @@ r_int
 r_int
 id|on3
 suffix:semicolon
-singleline_comment|// State 5
+multiline_comment|/* State 5 */
 DECL|member|on3min
 r_int
 r_int
@@ -3643,12 +3654,18 @@ r_int
 r_int
 id|off3
 suffix:semicolon
-singleline_comment|// State 6
+multiline_comment|/* State 6 */
 DECL|member|off3min
 r_int
 r_int
 id|off3min
 suffix:semicolon
+DECL|member|off3dot
+r_int
+r_int
+id|off3dot
+suffix:semicolon
+multiline_comment|/* State 6 + jiffies */
 DECL|member|off3max
 r_int
 r_int
@@ -3766,7 +3783,7 @@ id|dtmf_oob
 suffix:colon
 l_int|1
 suffix:semicolon
-singleline_comment|// DTMF Out-Of-Band
+multiline_comment|/* DTMF Out-Of-Band */
 DECL|member|pcmciascp
 r_int
 r_int
@@ -3774,7 +3791,7 @@ id|pcmciascp
 suffix:colon
 l_int|1
 suffix:semicolon
-singleline_comment|// Smart Cable Present
+multiline_comment|/* SmartCABLE Present */
 DECL|member|pcmciasct
 r_int
 r_int
@@ -3782,7 +3799,7 @@ id|pcmciasct
 suffix:colon
 l_int|2
 suffix:semicolon
-singleline_comment|// Smart Cable Type
+multiline_comment|/* SmartCABLE Type */
 DECL|member|pcmciastate
 r_int
 r_int
@@ -3790,7 +3807,7 @@ id|pcmciastate
 suffix:colon
 l_int|3
 suffix:semicolon
-singleline_comment|// Smart Cable Init State
+multiline_comment|/* SmartCABLE Init State */
 DECL|member|inwrite
 r_int
 r_int
@@ -3798,7 +3815,7 @@ id|inwrite
 suffix:colon
 l_int|1
 suffix:semicolon
-singleline_comment|// Currently writing
+multiline_comment|/* Currently writing */
 DECL|member|inread
 r_int
 r_int
@@ -3806,7 +3823,7 @@ id|inread
 suffix:colon
 l_int|1
 suffix:semicolon
-singleline_comment|// Currently reading
+multiline_comment|/* Currently reading */
 DECL|member|incheck
 r_int
 r_int
@@ -3814,7 +3831,7 @@ id|incheck
 suffix:colon
 l_int|1
 suffix:semicolon
-singleline_comment|// Currently checking the smart cable
+multiline_comment|/* Currently checking the SmartCABLE */
 DECL|member|cidplay
 r_int
 r_int
@@ -3822,7 +3839,7 @@ id|cidplay
 suffix:colon
 l_int|1
 suffix:semicolon
-singleline_comment|// Currently playing Caller ID
+multiline_comment|/* Currently playing Caller ID */
 DECL|member|cidring
 r_int
 r_int
@@ -3830,7 +3847,7 @@ id|cidring
 suffix:colon
 l_int|1
 suffix:semicolon
-singleline_comment|// This is the ring for Caller ID
+multiline_comment|/* This is the ring for Caller ID */
 DECL|member|cidsent
 r_int
 r_int
@@ -3838,7 +3855,7 @@ id|cidsent
 suffix:colon
 l_int|1
 suffix:semicolon
-singleline_comment|// Caller ID has been sent
+multiline_comment|/* Caller ID has been sent */
 DECL|member|cidcw_ack
 r_int
 r_int
@@ -3846,20 +3863,43 @@ id|cidcw_ack
 suffix:colon
 l_int|1
 suffix:semicolon
-singleline_comment|// Caller ID CW ACK (from CPE)
+multiline_comment|/* Caller ID CW ACK (from CPE) */
+DECL|member|firstring
+r_int
+r_int
+id|firstring
+suffix:colon
+l_int|1
+suffix:semicolon
+multiline_comment|/* First ring cadence is complete */
+DECL|member|pstncheck
+r_int
+r_int
+id|pstncheck
+suffix:colon
+l_int|1
+suffix:semicolon
+multiline_comment|/* Currently checking the PSTN Line */
+DECL|member|pstn_rmr
+r_int
+r_int
+id|pstn_rmr
+suffix:colon
+l_int|1
+suffix:semicolon
 DECL|member|x
 r_int
 r_int
 id|x
 suffix:colon
-l_int|6
+l_int|3
 suffix:semicolon
-singleline_comment|// unsed bits
+multiline_comment|/* unsed bits */
 DECL|typedef|IXJ_FLAGS
 )brace
 id|IXJ_FLAGS
 suffix:semicolon
-multiline_comment|/******************************************************************************&n;*&n;*  This structure represents the Internet PhoneJACK and Internet LineJACK&n;*&n;******************************************************************************/
+multiline_comment|/******************************************************************************&n;*&n;*  This structure holds the state of all of the Quicknet cards&n;*&n;******************************************************************************/
 r_typedef
 r_struct
 (brace
@@ -3867,6 +3907,11 @@ DECL|member|p
 r_struct
 id|phone_device
 id|p
+suffix:semicolon
+DECL|member|timer
+r_struct
+id|timer_list
+id|timer
 suffix:semicolon
 DECL|member|board
 r_int
@@ -3888,6 +3933,10 @@ r_int
 r_int
 id|serial
 suffix:semicolon
+DECL|member|DSPWrite
+id|atomic_t
+id|DSPWrite
+suffix:semicolon
 DECL|member|caplist
 r_struct
 id|phone_capability
@@ -3901,17 +3950,21 @@ r_int
 r_int
 id|caps
 suffix:semicolon
-DECL|member|country
-r_int
-r_int
-id|country
+macro_line|#if LINUX_VERSION_CODE &lt; 0x020400
+DECL|member|dev
+r_struct
+id|pnp_dev
+op_star
+id|dev
 suffix:semicolon
+macro_line|#else
 DECL|member|dev
 r_struct
 id|pci_dev
 op_star
 id|dev
 suffix:semicolon
+macro_line|#endif
 DECL|member|cardtype
 r_int
 r_int
@@ -3921,6 +3974,21 @@ DECL|member|rec_codec
 r_int
 r_int
 id|rec_codec
+suffix:semicolon
+DECL|member|cid_rec_codec
+r_int
+r_int
+id|cid_rec_codec
+suffix:semicolon
+DECL|member|cid_rec_volume
+r_int
+r_int
+id|cid_rec_volume
+suffix:semicolon
+DECL|member|cid_rec_flag
+r_int
+r_char
+id|cid_rec_flag
 suffix:semicolon
 DECL|member|rec_mode
 r_char
@@ -3936,6 +4004,16 @@ r_int
 r_int
 id|cid_play_codec
 suffix:semicolon
+DECL|member|cid_play_volume
+r_int
+r_int
+id|cid_play_volume
+suffix:semicolon
+DECL|member|cid_play_flag
+r_int
+r_char
+id|cid_play_flag
+suffix:semicolon
 DECL|member|play_mode
 r_char
 id|play_mode
@@ -3943,6 +4021,11 @@ suffix:semicolon
 DECL|member|flags
 id|IXJ_FLAGS
 id|flags
+suffix:semicolon
+DECL|member|busyflags
+r_int
+r_int
+id|busyflags
 suffix:semicolon
 DECL|member|rec_frame_size
 r_int
@@ -3953,6 +4036,11 @@ DECL|member|play_frame_size
 r_int
 r_int
 id|play_frame_size
+suffix:semicolon
+DECL|member|cid_play_frame_size
+r_int
+r_int
+id|cid_play_frame_size
 suffix:semicolon
 DECL|member|cid_base_frame_size
 r_int
@@ -3968,6 +4056,10 @@ DECL|member|aec_level
 r_int
 id|aec_level
 suffix:semicolon
+DECL|member|cid_play_aec_level
+r_int
+id|cid_play_aec_level
+suffix:semicolon
 DECL|member|readers
 DECL|member|writers
 r_int
@@ -3975,6 +4067,20 @@ id|readers
 comma
 id|writers
 suffix:semicolon
+macro_line|#if LINUX_VERSION_CODE &lt; 0x020400
+DECL|member|poll_q
+r_struct
+id|wait_queue
+op_star
+id|poll_q
+suffix:semicolon
+DECL|member|read_q
+r_struct
+id|wait_queue
+op_star
+id|read_q
+suffix:semicolon
+macro_line|#else
 DECL|member|poll_q
 id|wait_queue_head_t
 id|poll_q
@@ -3983,6 +4089,7 @@ DECL|member|read_q
 id|wait_queue_head_t
 id|read_q
 suffix:semicolon
+macro_line|#endif
 DECL|member|read_buffer
 DECL|member|read_buffer_end
 r_char
@@ -4007,10 +4114,19 @@ r_int
 r_int
 id|read_buffer_ready
 suffix:semicolon
+macro_line|#if LINUX_VERSION_CODE &lt; 0x020400
+DECL|member|write_q
+r_struct
+id|wait_queue
+op_star
+id|write_q
+suffix:semicolon
+macro_line|#else
 DECL|member|write_q
 id|wait_queue_head_t
 id|write_q
 suffix:semicolon
+macro_line|#endif
 DECL|member|write_buffer
 DECL|member|write_buffer_end
 r_char
@@ -4108,6 +4224,11 @@ id|IXJ_CADENCE
 op_star
 id|cadence_t
 suffix:semicolon
+DECL|member|cadence_r
+id|IXJ_CADENCE
+op_star
+id|cadence_r
+suffix:semicolon
 DECL|member|tone_cadence_state
 r_int
 id|tone_cadence_state
@@ -4116,7 +4237,7 @@ DECL|member|cadence_f
 id|IXJ_CADENCE_F
 id|cadence_f
 (braket
-l_int|4
+l_int|6
 )braket
 suffix:semicolon
 DECL|member|dtmf
@@ -4258,6 +4379,10 @@ DECL|member|r_hook
 r_int
 id|r_hook
 suffix:semicolon
+DECL|member|p_hook
+r_int
+id|p_hook
+suffix:semicolon
 DECL|member|pstn_envelope
 r_char
 id|pstn_envelope
@@ -4281,6 +4406,16 @@ r_int
 r_char
 id|fskcnt
 suffix:semicolon
+DECL|member|cidsize
+r_int
+r_int
+id|cidsize
+suffix:semicolon
+DECL|member|cidcnt
+r_int
+r_int
+id|cidcnt
+suffix:semicolon
 DECL|member|pstn_cid_received
 r_int
 id|pstn_cid_received
@@ -4292,6 +4427,11 @@ suffix:semicolon
 DECL|member|cid_send
 id|PHONE_CID
 id|cid_send
+suffix:semicolon
+DECL|member|pstn_ring_int
+r_int
+r_int
+id|pstn_ring_int
 suffix:semicolon
 DECL|member|pstn_ring_start
 r_int
@@ -4308,6 +4448,21 @@ r_int
 r_int
 id|pstn_winkstart
 suffix:semicolon
+DECL|member|pstn_last_rmr
+r_int
+r_int
+id|pstn_last_rmr
+suffix:semicolon
+DECL|member|pstn_prev_rmr
+r_int
+r_int
+id|pstn_prev_rmr
+suffix:semicolon
+DECL|member|pots_winkstart
+r_int
+r_int
+id|pots_winkstart
+suffix:semicolon
 DECL|member|winktime
 r_int
 r_int
@@ -4322,10 +4477,30 @@ DECL|member|port
 r_char
 id|port
 suffix:semicolon
+DECL|member|hookstate
+r_char
+id|hookstate
+suffix:semicolon
 DECL|member|ex
 r_union
 id|telephony_exception
 id|ex
+suffix:semicolon
+DECL|member|ex_sig
+r_union
+id|telephony_exception
+id|ex_sig
+suffix:semicolon
+DECL|member|ixj_signals
+r_int
+id|ixj_signals
+(braket
+l_int|35
+)braket
+suffix:semicolon
+DECL|member|sigdef
+id|IXJ_SIGDEF
+id|sigdef
 suffix:semicolon
 DECL|member|daa_mode
 r_char
@@ -4413,12 +4588,59 @@ r_int
 r_int
 id|rxreadycheck
 suffix:semicolon
+DECL|member|statuswait
+r_int
+r_int
+id|statuswait
+suffix:semicolon
+DECL|member|statuswaitfail
+r_int
+r_int
+id|statuswaitfail
+suffix:semicolon
+DECL|member|pcontrolwait
+r_int
+r_int
+id|pcontrolwait
+suffix:semicolon
+DECL|member|pcontrolwaitfail
+r_int
+r_int
+id|pcontrolwaitfail
+suffix:semicolon
+DECL|member|iscontrolready
+r_int
+r_int
+id|iscontrolready
+suffix:semicolon
+DECL|member|iscontrolreadyfail
+r_int
+r_int
+id|iscontrolreadyfail
+suffix:semicolon
+DECL|member|pstnstatecheck
+r_int
+r_int
+id|pstnstatecheck
+suffix:semicolon
+macro_line|#ifdef IXJ_DYN_ALLOC
+DECL|member|fskdata
+r_int
+op_star
+id|fskdata
+suffix:semicolon
+macro_line|#else
 DECL|member|fskdata
 r_int
 id|fskdata
 (braket
 l_int|8000
 )braket
+suffix:semicolon
+macro_line|#endif
+DECL|member|fsksize
+r_int
+id|fsksize
 suffix:semicolon
 DECL|member|fskdcnt
 r_int
@@ -4427,17 +4649,6 @@ suffix:semicolon
 DECL|typedef|IXJ
 )brace
 id|IXJ
-suffix:semicolon
-r_int
-id|ixj_WriteDSPCommand
-c_func
-(paren
-r_int
-r_int
-comma
-id|IXJ
-op_star
-)paren
 suffix:semicolon
 DECL|typedef|IXJ_REGFUNC
 r_typedef
@@ -4456,23 +4667,17 @@ r_int
 id|arg
 )paren
 suffix:semicolon
-r_int
-id|ixj_register
+r_extern
+id|IXJ
+op_star
+id|ixj_pcmcia_probe
 c_func
 (paren
 r_int
-id|index
+r_int
 comma
-id|IXJ_REGFUNC
-id|regfunc
-)paren
-suffix:semicolon
 r_int
-id|ixj_unregister
-c_func
-(paren
 r_int
-id|index
 )paren
 suffix:semicolon
 eof

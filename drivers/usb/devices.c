@@ -1519,6 +1519,9 @@ id|pages_start
 comma
 op_star
 id|data_end
+comma
+op_star
+id|speed
 suffix:semicolon
 r_int
 r_int
@@ -1591,6 +1594,50 @@ op_assign
 id|usbdev-&gt;parent-&gt;devnum
 suffix:semicolon
 multiline_comment|/*&n;&t; * So the root hub&squot;s parent is 0 and any device that is&n;&t; * plugged into the root hub has a parent of 0.&n;&t; */
+r_switch
+c_cond
+(paren
+id|usbdev-&gt;speed
+)paren
+(brace
+r_case
+id|USB_SPEED_LOW
+suffix:colon
+id|speed
+op_assign
+l_string|&quot;1.5&quot;
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+id|USB_SPEED_UNKNOWN
+suffix:colon
+multiline_comment|/* usb 1.1 root hub code */
+r_case
+id|USB_SPEED_FULL
+suffix:colon
+id|speed
+op_assign
+l_string|&quot;12 &quot;
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+id|USB_SPEED_HIGH
+suffix:colon
+id|speed
+op_assign
+l_string|&quot;480&quot;
+suffix:semicolon
+r_break
+suffix:semicolon
+r_default
+suffix:colon
+id|speed
+op_assign
+l_string|&quot;?? &quot;
+suffix:semicolon
+)brace
 id|data_end
 op_assign
 id|pages_start
@@ -1614,12 +1661,7 @@ id|count
 comma
 id|usbdev-&gt;devnum
 comma
-id|usbdev-&gt;slow
-ques
-c_cond
-l_string|&quot;1.5&quot;
-suffix:colon
-l_string|&quot;12 &quot;
+id|speed
 comma
 id|usbdev-&gt;maxchild
 )paren

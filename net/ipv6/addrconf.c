@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *&t;IPv6 Address [auto]configuration&n; *&t;Linux INET6 implementation&n; *&n; *&t;Authors:&n; *&t;Pedro Roque&t;&t;&lt;roque@di.fc.ul.pt&gt;&t;&n; *&t;Alexey Kuznetsov&t;&lt;kuznet@ms2.inr.ac.ru&gt;&n; *&n; *&t;$Id: addrconf.c,v 1.67 2001/08/03 09:32:17 davem Exp $&n; *&n; *&t;This program is free software; you can redistribute it and/or&n; *      modify it under the terms of the GNU General Public License&n; *      as published by the Free Software Foundation; either version&n; *      2 of the License, or (at your option) any later version.&n; */
+multiline_comment|/*&n; *&t;IPv6 Address [auto]configuration&n; *&t;Linux INET6 implementation&n; *&n; *&t;Authors:&n; *&t;Pedro Roque&t;&t;&lt;roque@di.fc.ul.pt&gt;&t;&n; *&t;Alexey Kuznetsov&t;&lt;kuznet@ms2.inr.ac.ru&gt;&n; *&n; *&t;$Id: addrconf.c,v 1.68 2001/09/01 00:31:50 davem Exp $&n; *&n; *&t;This program is free software; you can redistribute it and/or&n; *      modify it under the terms of the GNU General Public License&n; *      as published by the Free Software Foundation; either version&n; *      2 of the License, or (at your option) any later version.&n; */
 multiline_comment|/*&n; *&t;Changes:&n; *&n; *&t;Janos Farkas&t;&t;&t;:&t;delete timer on ifdown&n; *&t;&lt;chexum@bankinf.banki.hu&gt;&n; *&t;Andi Kleen&t;&t;&t;:&t;kill doube kfree on module&n; *&t;&t;&t;&t;&t;&t;unload.&n; *&t;Maciej W. Rozycki&t;&t;:&t;FDDI support&n; *&t;sekiya@USAGI&t;&t;&t;:&t;Don&squot;t send too many RS&n; *&t;&t;&t;&t;&t;&t;packets.&n; *&t;yoshfuji@USAGI&t;&t;&t;:       Fixed interval between DAD&n; *&t;&t;&t;&t;&t;&t;packets.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
@@ -2558,6 +2558,14 @@ op_star
 id|ifp
 )paren
 (brace
+r_if
+c_cond
+(paren
+id|net_ratelimit
+c_func
+(paren
+)paren
+)paren
 id|printk
 c_func
 (paren
@@ -3401,6 +3409,14 @@ OG
 id|valid_lft
 )paren
 (brace
+r_if
+c_cond
+(paren
+id|net_ratelimit
+c_func
+(paren
+)paren
+)paren
 id|printk
 c_func
 (paren
@@ -3427,6 +3443,14 @@ op_eq
 l_int|NULL
 )paren
 (brace
+r_if
+c_cond
+(paren
+id|net_ratelimit
+c_func
+(paren
+)paren
+)paren
 id|printk
 c_func
 (paren
@@ -3661,6 +3685,14 @@ r_goto
 id|ok
 suffix:semicolon
 )brace
+r_if
+c_cond
+(paren
+id|net_ratelimit
+c_func
+(paren
+)paren
+)paren
 id|printk
 c_func
 (paren

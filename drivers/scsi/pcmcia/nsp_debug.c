@@ -1,4 +1,4 @@
-multiline_comment|/*========================================================================&n;    Debug routines for nsp_cs&n;      By: YOKOTA Hiroshi &lt;yokota@netlab.is.tsukuba.ac.jp&gt;&n;&n;    This software may be used and distributed according to the terms of&n;    the GNU Public License.&n;=========================================================================*/
+multiline_comment|/*========================================================================&n;    Debug routines for nsp_cs&n;      By: YOKOTA Hiroshi &lt;yokota@netlab.is.tsukuba.ac.jp&gt;&n;&n;    This software may be used and distributed according to the terms of&n;    the GNU General Public License.&n;=========================================================================*/
 multiline_comment|/* $Id: nsp_debug.c,v 1.6 2001/07/04 14:43:53 elca Exp $ */
 multiline_comment|/*&n; * Show the command data of a command&n; */
 DECL|variable|unknown

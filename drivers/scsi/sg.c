@@ -8,7 +8,7 @@ id|sg_version_str
 (braket
 )braket
 op_assign
-l_string|&quot;Version: 3.1.19 (20010623)&quot;
+l_string|&quot;Version: 3.1.20 (20010814)&quot;
 suffix:semicolon
 macro_line|#endif
 DECL|variable|sg_version_num
@@ -16,7 +16,7 @@ r_static
 r_int
 id|sg_version_num
 op_assign
-l_int|30119
+l_int|30120
 suffix:semicolon
 multiline_comment|/* 2 digits for each component */
 multiline_comment|/*&n; *  D. P. Gilbert (dgilbert@interlog.com, dougg@triode.net.au), notes:&n; *      - scsi logging is available via SCSI_LOG_TIMEOUT macros. First&n; *        the kernel/module needs to be built with CONFIG_SCSI_LOGGING&n; *        (otherwise the macros compile to empty statements).&n; *        Then before running the program to be debugged enter:&n; *          # echo &quot;scsi log timeout 7&quot; &gt; /proc/scsi/scsi&n; *        This will send copious output to the console and the log which&n; *        is usually /var/log/messages. To turn off debugging enter:&n; *          # echo &quot;scsi log timeout 0&quot; &gt; /proc/scsi/scsi&n; *        The &squot;timeout&squot; token was chosen because it is relatively unused.&n; *        The token &squot;hlcomplete&squot; should be used but that triggers too&n; *        much output from the sd device driver. To dump the current&n; *        state of the SCSI mid level data structures enter:&n; *          # echo &quot;scsi dump 1&quot; &gt; /proc/scsi/scsi&n; *        To dump the state of sg&squot;s data structures use:&n; *          # cat /proc/scsi/sg/debug&n; *&n; */
@@ -1194,6 +1194,9 @@ c_func
 id|sdp-&gt;device-&gt;host-&gt;hostt-&gt;module
 )paren
 suffix:semicolon
+id|sdp-&gt;device-&gt;access_count
+op_increment
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1442,6 +1445,9 @@ l_int|0
 suffix:semicolon
 id|error_out
 suffix:colon
+id|sdp-&gt;device-&gt;access_count
+op_decrement
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1577,11 +1583,16 @@ multiline_comment|/* Returns 1 when sdp gone */
 r_if
 c_cond
 (paren
-(paren
 op_logical_neg
 id|sdp-&gt;detached
 )paren
-op_logical_and
+(brace
+id|sdp-&gt;device-&gt;access_count
+op_decrement
+suffix:semicolon
+r_if
+c_cond
+(paren
 id|sdp-&gt;device-&gt;host-&gt;hostt-&gt;module
 )paren
 id|__MOD_DEC_USE_COUNT
@@ -1590,6 +1601,7 @@ c_func
 id|sdp-&gt;device-&gt;host-&gt;hostt-&gt;module
 )paren
 suffix:semicolon
+)brace
 id|sdp-&gt;exclude
 op_assign
 l_int|0
@@ -4887,6 +4899,33 @@ id|arg
 )paren
 suffix:semicolon
 r_case
+id|SG_GET_ACCESS_COUNT
+suffix:colon
+id|val
+op_assign
+(paren
+id|sdp-&gt;device
+ques
+c_cond
+id|sdp-&gt;device-&gt;access_count
+suffix:colon
+l_int|0
+)paren
+suffix:semicolon
+r_return
+id|put_user
+c_func
+(paren
+id|val
+comma
+(paren
+r_int
+op_star
+)paren
+id|arg
+)paren
+suffix:semicolon
+r_case
 id|SG_GET_REQUEST_TABLE
 suffix:colon
 id|result
@@ -6311,6 +6350,9 @@ op_assign
 l_int|NULL
 suffix:semicolon
 )brace
+id|sdp-&gt;device-&gt;access_count
+op_decrement
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -6904,6 +6946,49 @@ r_if
 c_cond
 (paren
 id|k
+OG
+id|MINORMASK
+)paren
+(brace
+id|scsidp-&gt;attached
+op_decrement
+suffix:semicolon
+id|write_unlock_irqrestore
+c_func
+(paren
+op_amp
+id|sg_dev_arr_lock
+comma
+id|iflags
+)paren
+suffix:semicolon
+id|printk
+c_func
+(paren
+l_string|&quot;Unable to attach sg device &lt;%d, %d, %d, %d&gt;&quot;
+l_string|&quot; type=%d, minor number exceed %d&bslash;n&quot;
+comma
+id|scsidp-&gt;host-&gt;host_no
+comma
+id|scsidp-&gt;channel
+comma
+id|scsidp-&gt;id
+comma
+id|scsidp-&gt;lun
+comma
+id|scsidp-&gt;type
+comma
+id|MINORMASK
+)paren
+suffix:semicolon
+r_return
+l_int|1
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+id|k
 OL
 id|sg_template.dev_max
 )paren
@@ -7046,7 +7131,7 @@ comma
 op_amp
 id|sg_fops
 comma
-l_int|NULL
+id|sdp
 )paren
 suffix:semicolon
 id|sg_template.nr_dev
@@ -7300,6 +7385,9 @@ c_cond
 id|sfp-&gt;closed
 )paren
 (brace
+id|sdp-&gt;device-&gt;access_count
+op_decrement
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -12395,6 +12483,9 @@ op_assign
 l_int|1
 suffix:semicolon
 multiline_comment|/* flag dirty state on this fd */
+id|sdp-&gt;device-&gt;access_count
+op_increment
+suffix:semicolon
 multiline_comment|/* MOD_INC&squot;s to inhibit unloading sg and associated adapter driver */
 r_if
 c_cond
@@ -15840,7 +15931,7 @@ id|size
 id|PRINT_PROC
 c_func
 (paren
-l_string|&quot;host&bslash;tchan&bslash;tid&bslash;tlun&bslash;ttype&bslash;tbopens&bslash;tqdepth&bslash;tbusy&bslash;tonline&bslash;n&quot;
+l_string|&quot;host&bslash;tchan&bslash;tid&bslash;tlun&bslash;ttype&bslash;topens&bslash;tqdepth&bslash;tbusy&bslash;tonline&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return

@@ -3,7 +3,7 @@ mdefine_line|#define GSCD_VERSION &quot;0.4a Oliver Raupach &lt;raupach@nwfs1.rz
 multiline_comment|/*&n;&t;linux/drivers/block/gscd.c - GoldStar R420 CDROM driver&n;&n;        Copyright (C) 1995  Oliver Raupach &lt;raupach@nwfs1.rz.fh-hannover.de&gt;&n;        based upon pre-works by   Eberhard Moenkeberg &lt;emoenke@gwdg.de&gt;&n;        &n;&n;        For all kind of other information about the GoldStar CDROM&n;        and this Linux device driver I installed a WWW-URL:&n;        http://linux.rz.fh-hannover.de/~raupach        &n;&n;&n;             If you are the editor of a Linux CD, you should&n;             enable gscd.c within your boot floppy kernel and&n;             send me one of your CDs for free.&n;&n;&n;        --------------------------------------------------------------------&n;&t;This program is free software; you can redistribute it and/or modify&n;&t;it under the terms of the GNU General Public License as published by&n;&t;the Free Software Foundation; either version 2, or (at your option)&n;&t;any later version.&n;&n;&t;This program is distributed in the hope that it will be useful,&n;&t;but WITHOUT ANY WARRANTY; without even the implied warranty of&n;&t;MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n;&t;GNU General Public License for more details.&n;&n;&t;You should have received a copy of the GNU General Public License&n;&t;along with this program; if not, write to the Free Software&n;&t;Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n;&t;&n;&t;--------------------------------------------------------------------&n;&t;&n;&t;9 November 1999 -- Make kernel-parameter implementation work with 2.3.x &n;&t;                   Removed init_module &amp; cleanup_module in favor of &n;&t;&t;   &t;   module_init &amp; module_exit.&n;&t;&t;&t;   Torben Mathiasen &lt;tmm@image.dk&gt;&n;&n;*/
 multiline_comment|/* These settings are for various debug-level. Leave they untouched ... */
 DECL|macro|NO_GSCD_DEBUG
-mdefine_line|#define  NO_GSCD_DEBUG 
+mdefine_line|#define  NO_GSCD_DEBUG
 DECL|macro|NO_IOCTL_DEBUG
 mdefine_line|#define  NO_IOCTL_DEBUG
 DECL|macro|NO_MODULE_DEBUG
@@ -33,7 +33,7 @@ DECL|macro|MAJOR_NR
 mdefine_line|#define MAJOR_NR GOLDSTAR_CDROM_MAJOR
 macro_line|#include &lt;linux/blk.h&gt;
 DECL|macro|gscd_port
-mdefine_line|#define gscd_port gscd /* for compatible parameter passing with &quot;insmod&quot; */
+mdefine_line|#define gscd_port gscd&t;&t;/* for compatible parameter passing with &quot;insmod&quot; */
 macro_line|#include &quot;gscd.h&quot;
 DECL|variable|gscd_blocksizes
 r_static
@@ -91,6 +91,7 @@ multiline_comment|/* Kommt spaeter vielleicht noch mal dran ...&n; *    static D
 r_static
 r_void
 id|gscd_transfer
+c_func
 (paren
 r_void
 )paren
@@ -98,6 +99,7 @@ suffix:semicolon
 r_static
 r_void
 id|gscd_read_cmd
+c_func
 (paren
 r_void
 )paren
@@ -105,6 +107,7 @@ suffix:semicolon
 r_static
 r_void
 id|gscd_hsg2msf
+c_func
 (paren
 r_int
 id|hsg
@@ -118,6 +121,7 @@ suffix:semicolon
 r_static
 r_void
 id|gscd_bin2bcd
+c_func
 (paren
 r_int
 r_char
@@ -129,6 +133,7 @@ multiline_comment|/* Schnittstellen zum Kern/FS */
 r_static
 r_void
 id|do_gscd_request
+c_func
 (paren
 id|request_queue_t
 op_star
@@ -137,6 +142,7 @@ suffix:semicolon
 r_static
 r_void
 id|__do_gscd_request
+c_func
 (paren
 r_int
 r_int
@@ -146,6 +152,7 @@ suffix:semicolon
 r_static
 r_int
 id|gscd_ioctl
+c_func
 (paren
 r_struct
 id|inode
@@ -165,6 +172,7 @@ suffix:semicolon
 r_static
 r_int
 id|gscd_open
+c_func
 (paren
 r_struct
 id|inode
@@ -178,6 +186,7 @@ suffix:semicolon
 r_static
 r_int
 id|gscd_release
+c_func
 (paren
 r_struct
 id|inode
@@ -191,6 +200,7 @@ suffix:semicolon
 r_static
 r_int
 id|check_gscd_med_chg
+c_func
 (paren
 id|kdev_t
 )paren
@@ -199,6 +209,7 @@ multiline_comment|/*      GoldStar Funktionen    */
 r_static
 r_void
 id|cc_Reset
+c_func
 (paren
 r_void
 )paren
@@ -206,6 +217,7 @@ suffix:semicolon
 r_static
 r_int
 id|wait_drv_ready
+c_func
 (paren
 r_void
 )paren
@@ -213,6 +225,7 @@ suffix:semicolon
 r_static
 r_int
 id|find_drives
+c_func
 (paren
 r_void
 )paren
@@ -220,6 +233,7 @@ suffix:semicolon
 r_static
 r_void
 id|cmd_out
+c_func
 (paren
 r_int
 comma
@@ -235,6 +249,7 @@ suffix:semicolon
 r_static
 r_void
 id|cmd_status
+c_func
 (paren
 r_void
 )paren
@@ -242,6 +257,7 @@ suffix:semicolon
 r_static
 r_void
 id|cc_Ident
+c_func
 (paren
 r_char
 op_star
@@ -250,6 +266,7 @@ suffix:semicolon
 r_static
 r_void
 id|cc_SetSpeed
+c_func
 (paren
 r_void
 )paren
@@ -257,6 +274,7 @@ suffix:semicolon
 r_static
 r_void
 id|init_cd_drive
+c_func
 (paren
 r_int
 )paren
@@ -264,6 +282,7 @@ suffix:semicolon
 r_static
 r_int
 id|get_status
+c_func
 (paren
 r_void
 )paren
@@ -271,6 +290,7 @@ suffix:semicolon
 r_static
 r_void
 id|clear_Audio
+c_func
 (paren
 r_void
 )paren
@@ -278,6 +298,7 @@ suffix:semicolon
 r_static
 r_void
 id|cc_invalidate
+c_func
 (paren
 r_void
 )paren
@@ -287,6 +308,7 @@ macro_line|#ifdef FUTURE_WORK
 r_static
 r_void
 id|update_state
+c_func
 (paren
 r_void
 )paren
@@ -294,6 +316,7 @@ suffix:semicolon
 r_static
 r_int
 id|gscd_msf2hsg
+c_func
 (paren
 r_struct
 id|msf
@@ -304,6 +327,7 @@ suffix:semicolon
 r_static
 r_int
 id|gscd_bcd2bin
+c_func
 (paren
 r_int
 r_char
@@ -315,6 +339,7 @@ multiline_comment|/*    common GoldStar Initialization    */
 r_static
 r_int
 id|my_gscd_init
+c_func
 (paren
 r_void
 )paren
@@ -323,6 +348,7 @@ multiline_comment|/*      lo-level cmd-Funktionen    */
 r_static
 r_void
 id|cmd_info_in
+c_func
 (paren
 r_char
 op_star
@@ -333,6 +359,7 @@ suffix:semicolon
 r_static
 r_void
 id|cmd_end
+c_func
 (paren
 r_void
 )paren
@@ -340,6 +367,7 @@ suffix:semicolon
 r_static
 r_void
 id|cmd_read_b
+c_func
 (paren
 r_char
 op_star
@@ -352,6 +380,7 @@ suffix:semicolon
 r_static
 r_void
 id|cmd_read_w
+c_func
 (paren
 r_char
 op_star
@@ -364,6 +393,7 @@ suffix:semicolon
 r_static
 r_int
 id|cmd_unit_alive
+c_func
 (paren
 r_void
 )paren
@@ -371,6 +401,7 @@ suffix:semicolon
 r_static
 r_void
 id|cmd_write_cmd
+c_func
 (paren
 r_char
 op_star
@@ -517,6 +548,7 @@ DECL|function|check_gscd_med_chg
 r_static
 r_int
 id|check_gscd_med_chg
+c_func
 (paren
 id|kdev_t
 id|full_dev
@@ -542,7 +574,6 @@ l_int|0
 )paren
 (brace
 id|printk
-c_func
 (paren
 l_string|&quot;GSCD: GoldStar CD-ROM request error: invalid device.&bslash;n&quot;
 )paren
@@ -553,6 +584,7 @@ suffix:semicolon
 )brace
 macro_line|#ifdef GSCD_DEBUG
 id|printk
+c_func
 (paren
 l_string|&quot;gscd: check_med_change&bslash;n&quot;
 )paren
@@ -569,6 +601,7 @@ r_static
 r_int
 id|__init
 id|gscd_setup
+c_func
 (paren
 r_char
 op_star
@@ -634,6 +667,7 @@ DECL|function|gscd_ioctl
 r_static
 r_int
 id|gscd_ioctl
+c_func
 (paren
 r_struct
 id|inode
@@ -675,7 +709,7 @@ r_case
 id|CDROMSTART
 suffix:colon
 multiline_comment|/* Spin up the drive */
-multiline_comment|/* Don&squot;t think we can do this.  Even if we could,&n; &t;&t; * I think the drive times out and stops after a while&n;&t;&t; * anyway.  For now, ignore it.&n;&t;&t; */
+multiline_comment|/* Don&squot;t think we can do this.  Even if we could,&n;&t;&t; * I think the drive times out and stops after a while&n;&t;&t; * anyway.  For now, ignore it.&n;&t;&t; */
 r_return
 l_int|0
 suffix:semicolon
@@ -690,6 +724,7 @@ r_case
 id|CDROMEJECT
 suffix:colon
 id|cmd_status
+c_func
 (paren
 )paren
 suffix:semicolon
@@ -701,6 +736,7 @@ op_assign
 id|CMD_TRAY_CTL
 suffix:semicolon
 id|cmd_out
+c_func
 (paren
 id|TYPE_INFO
 comma
@@ -737,6 +773,7 @@ DECL|function|gscd_transfer
 r_static
 r_void
 id|gscd_transfer
+c_func
 (paren
 r_void
 )paren
@@ -747,17 +784,13 @@ suffix:semicolon
 r_while
 c_loop
 (paren
-id|CURRENT
-op_member_access_from_pointer
-id|nr_sectors
+id|CURRENT-&gt;nr_sectors
 OG
 l_int|0
 op_logical_and
 id|gscd_bn
 op_eq
-id|CURRENT
-op_member_access_from_pointer
-id|sector
+id|CURRENT-&gt;sector
 op_div
 l_int|4
 )paren
@@ -765,9 +798,7 @@ l_int|4
 id|offs
 op_assign
 (paren
-id|CURRENT
-op_member_access_from_pointer
-id|sector
+id|CURRENT-&gt;sector
 op_amp
 l_int|3
 )paren
@@ -777,9 +808,7 @@ suffix:semicolon
 id|memcpy
 c_func
 (paren
-id|CURRENT
-op_member_access_from_pointer
-id|buffer
+id|CURRENT-&gt;buffer
 comma
 id|gscd_buf
 op_plus
@@ -788,19 +817,13 @@ comma
 l_int|512
 )paren
 suffix:semicolon
-id|CURRENT
-op_member_access_from_pointer
-id|nr_sectors
+id|CURRENT-&gt;nr_sectors
 op_decrement
 suffix:semicolon
-id|CURRENT
-op_member_access_from_pointer
-id|sector
+id|CURRENT-&gt;sector
 op_increment
 suffix:semicolon
-id|CURRENT
-op_member_access_from_pointer
-id|buffer
+id|CURRENT-&gt;buffer
 op_add_assign
 l_int|512
 suffix:semicolon
@@ -811,6 +834,7 @@ DECL|function|do_gscd_request
 r_static
 r_void
 id|do_gscd_request
+c_func
 (paren
 id|request_queue_t
 op_star
@@ -828,6 +852,7 @@ DECL|function|__do_gscd_request
 r_static
 r_void
 id|__do_gscd_request
+c_func
 (paren
 r_int
 r_int
@@ -881,9 +906,7 @@ c_cond
 (paren
 id|QUEUE_EMPTY
 op_logical_or
-id|CURRENT
-op_member_access_from_pointer
-id|sector
+id|CURRENT-&gt;sector
 op_eq
 op_minus
 l_int|1
@@ -894,9 +917,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|CURRENT
-op_member_access_from_pointer
-id|cmd
+id|CURRENT-&gt;cmd
 op_ne
 id|READ
 )paren
@@ -906,9 +927,7 @@ c_func
 (paren
 l_string|&quot;GSCD: bad cmd %d&bslash;n&quot;
 comma
-id|CURRENT
-op_member_access_from_pointer
-id|cmd
+id|CURRENT-&gt;cmd
 )paren
 suffix:semicolon
 id|end_request
@@ -927,9 +946,7 @@ c_cond
 id|MINOR
 c_func
 (paren
-id|CURRENT
-op_member_access_from_pointer
-id|rq_dev
+id|CURRENT-&gt;rq_dev
 )paren
 op_ne
 l_int|0
@@ -960,9 +977,7 @@ multiline_comment|/* if we satisfied the request from the buffer, we&squot;re do
 r_if
 c_cond
 (paren
-id|CURRENT
-op_member_access_from_pointer
-id|nr_sectors
+id|CURRENT-&gt;nr_sectors
 op_eq
 l_int|0
 )paren
@@ -979,6 +994,7 @@ suffix:semicolon
 )brace
 macro_line|#ifdef GSCD_DEBUG
 id|printk
+c_func
 (paren
 l_string|&quot;GSCD: dev %d, block %d, nsect %d&bslash;n&quot;
 comma
@@ -991,6 +1007,7 @@ id|nsect
 suffix:semicolon
 macro_line|#endif
 id|gscd_read_cmd
+c_func
 (paren
 )paren
 suffix:semicolon
@@ -1000,10 +1017,11 @@ r_return
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Check the result of the set-mode command.  On success, send the&n; * read-data command.&n; */
+DECL|function|gscd_read_cmd
 r_static
 r_void
-DECL|function|gscd_read_cmd
 id|gscd_read_cmd
+c_func
 (paren
 r_void
 )paren
@@ -1038,6 +1056,7 @@ l_int|1
 suffix:semicolon
 multiline_comment|/* cmd mode M-S-F secth sectl */
 id|cmd_status
+c_func
 (paren
 )paren
 suffix:semicolon
@@ -1054,11 +1073,13 @@ id|ST_DOOR_OPEN
 )paren
 (brace
 id|printk
+c_func
 (paren
 l_string|&quot;GSCD: no disk or door open&bslash;n&quot;
 )paren
 suffix:semicolon
 id|end_request
+c_func
 (paren
 l_int|0
 )paren
@@ -1075,11 +1096,13 @@ id|ST_INVALID
 )paren
 (brace
 id|printk
+c_func
 (paren
 l_string|&quot;GSCD: disk invalid&bslash;n&quot;
 )paren
 suffix:semicolon
 id|end_request
+c_func
 (paren
 l_int|0
 )paren
@@ -1095,9 +1118,7 @@ suffix:semicolon
 multiline_comment|/* purge our buffer */
 id|block
 op_assign
-id|CURRENT
-op_member_access_from_pointer
-id|sector
+id|CURRENT-&gt;sector
 op_div
 l_int|4
 suffix:semicolon
@@ -1134,6 +1155,7 @@ id|gscdcmd.start.frame
 suffix:semicolon
 macro_line|#ifdef GSCD_DEBUG
 id|printk
+c_func
 (paren
 l_string|&quot;GSCD: read msf %d:%d:%d&bslash;n&quot;
 comma
@@ -1153,8 +1175,9 @@ l_int|4
 )braket
 )paren
 suffix:semicolon
-macro_line|#endif 
+macro_line|#endif
 id|cmd_out
+c_func
 (paren
 id|TYPE_DATA
 comma
@@ -1180,9 +1203,7 @@ l_int|1
 suffix:semicolon
 id|gscd_bn
 op_assign
-id|CURRENT
-op_member_access_from_pointer
-id|sector
+id|CURRENT-&gt;sector
 op_div
 l_int|4
 suffix:semicolon
@@ -1213,6 +1234,7 @@ DECL|function|gscd_open
 r_static
 r_int
 id|gscd_open
+c_func
 (paren
 r_struct
 id|inode
@@ -1230,6 +1252,7 @@ id|st
 suffix:semicolon
 macro_line|#ifdef GSCD_DEBUG
 id|printk
+c_func
 (paren
 l_string|&quot;GSCD: open&bslash;n&quot;
 )paren
@@ -1250,6 +1273,7 @@ multiline_comment|/* no hardware */
 id|MOD_INC_USE_COUNT
 suffix:semicolon
 id|get_status
+c_func
 (paren
 )paren
 suffix:semicolon
@@ -1270,6 +1294,7 @@ id|st
 )paren
 (brace
 id|printk
+c_func
 (paren
 l_string|&quot;GSCD: no disk or door open&bslash;n&quot;
 )paren
@@ -1291,6 +1316,7 @@ DECL|function|gscd_release
 r_static
 r_int
 id|gscd_release
+c_func
 (paren
 r_struct
 id|inode
@@ -1305,6 +1331,7 @@ id|file
 (brace
 macro_line|#ifdef GSCD_DEBUG
 id|printk
+c_func
 (paren
 l_string|&quot;GSCD: release&bslash;n&quot;
 )paren
@@ -1324,6 +1351,7 @@ suffix:semicolon
 DECL|function|get_status
 r_int
 id|get_status
+c_func
 (paren
 r_void
 )paren
@@ -1332,6 +1360,7 @@ r_int
 id|status
 suffix:semicolon
 id|cmd_status
+c_func
 (paren
 )paren
 suffix:semicolon
@@ -1366,6 +1395,7 @@ id|ST_x01
 )paren
 (brace
 id|cc_invalidate
+c_func
 (paren
 )paren
 suffix:semicolon
@@ -1383,6 +1413,7 @@ suffix:semicolon
 DECL|function|cc_invalidate
 r_void
 id|cc_invalidate
+c_func
 (paren
 r_void
 )paren
@@ -1404,6 +1435,7 @@ op_assign
 l_int|0xFF
 suffix:semicolon
 id|clear_Audio
+c_func
 (paren
 )paren
 suffix:semicolon
@@ -1411,6 +1443,7 @@ suffix:semicolon
 DECL|function|clear_Audio
 r_void
 id|clear_Audio
+c_func
 (paren
 r_void
 )paren
@@ -1444,6 +1477,7 @@ multiline_comment|/*&n; *   waiting ?  &n; */
 DECL|function|wait_drv_ready
 r_int
 id|wait_drv_ready
+c_func
 (paren
 r_void
 )paren
@@ -1458,6 +1492,7 @@ r_do
 id|found
 op_assign
 id|inb
+c_func
 (paren
 id|GSCDPORT
 c_func
@@ -1473,6 +1508,7 @@ suffix:semicolon
 id|read
 op_assign
 id|inb
+c_func
 (paren
 id|GSCDPORT
 c_func
@@ -1496,13 +1532,14 @@ id|found
 suffix:semicolon
 macro_line|#ifdef GSCD_DEBUG
 id|printk
+c_func
 (paren
 l_string|&quot;Wait for: %d&bslash;n&quot;
 comma
 id|read
 )paren
 suffix:semicolon
-macro_line|#endif   
+macro_line|#endif
 r_return
 id|read
 suffix:semicolon
@@ -1510,6 +1547,7 @@ suffix:semicolon
 DECL|function|cc_Ident
 r_void
 id|cc_Ident
+c_func
 (paren
 r_char
 op_star
@@ -1530,6 +1568,7 @@ l_int|0
 )brace
 suffix:semicolon
 id|cmd_out
+c_func
 (paren
 id|TYPE_INFO
 comma
@@ -1556,6 +1595,7 @@ suffix:semicolon
 DECL|function|cc_SetSpeed
 r_void
 id|cc_SetSpeed
+c_func
 (paren
 r_void
 )paren
@@ -1594,6 +1634,7 @@ op_amp
 l_int|0x0F
 suffix:semicolon
 id|cmd_out
+c_func
 (paren
 id|TYPE_INFO
 comma
@@ -1619,6 +1660,7 @@ suffix:semicolon
 DECL|function|cc_Reset
 r_void
 id|cc_Reset
+c_func
 (paren
 r_void
 )paren
@@ -1638,6 +1680,7 @@ r_char
 id|dummy
 suffix:semicolon
 id|cmd_out
+c_func
 (paren
 id|TYPE_INFO
 comma
@@ -1662,6 +1705,7 @@ suffix:semicolon
 DECL|function|cmd_status
 r_void
 id|cmd_status
+c_func
 (paren
 r_void
 )paren
@@ -1681,6 +1725,7 @@ r_char
 id|dummy
 suffix:semicolon
 id|cmd_out
+c_func
 (paren
 id|TYPE_INFO
 comma
@@ -1703,6 +1748,7 @@ l_int|0
 suffix:semicolon
 macro_line|#ifdef GSCD_DEBUG
 id|printk
+c_func
 (paren
 l_string|&quot;GSCD: Status: %d&bslash;n&quot;
 comma
@@ -1714,6 +1760,7 @@ macro_line|#endif
 DECL|function|cmd_out
 r_void
 id|cmd_out
+c_func
 (paren
 r_int
 id|cmd_type
@@ -1736,6 +1783,7 @@ suffix:semicolon
 id|result
 op_assign
 id|wait_drv_ready
+c_func
 (paren
 )paren
 suffix:semicolon
@@ -1759,6 +1807,7 @@ comma
 id|dummy
 suffix:semicolon
 id|outb
+c_func
 (paren
 id|curr_drv_state
 comma
@@ -1775,6 +1824,7 @@ r_do
 id|result
 op_assign
 id|wait_drv_ready
+c_func
 (paren
 )paren
 suffix:semicolon
@@ -1850,6 +1900,7 @@ r_if
 c_cond
 (paren
 id|cmd_unit_alive
+c_func
 (paren
 )paren
 op_ne
@@ -1872,11 +1923,12 @@ suffix:semicolon
 multiline_comment|/* LOC_176 */
 macro_line|#ifdef GSCD_DEBUG
 id|printk
+c_func
 (paren
 l_string|&quot;LOC_176 &quot;
 )paren
 suffix:semicolon
-macro_line|#endif       
+macro_line|#endif
 r_if
 c_cond
 (paren
@@ -1887,11 +1939,13 @@ l_int|0x09
 (brace
 multiline_comment|/* magic... */
 id|printk
+c_func
 (paren
 l_string|&quot;GSCD: magic ...&bslash;n&quot;
 )paren
 suffix:semicolon
 id|outb
+c_func
 (paren
 id|result
 comma
@@ -1905,6 +1959,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* write the command to the drive */
 id|cmd_write_cmd
+c_func
 (paren
 id|cmd
 )paren
@@ -1920,6 +1975,7 @@ suffix:semicolon
 id|result
 op_assign
 id|wait_drv_ready
+c_func
 (paren
 )paren
 suffix:semicolon
@@ -1939,11 +1995,12 @@ id|result
 op_eq
 l_int|0x04
 )paren
-multiline_comment|/* Mode 4 */
 (brace
+multiline_comment|/* Mode 4 */
 multiline_comment|/* LOC_205 */
 macro_line|#ifdef GSCD_DEBUG
 id|printk
+c_func
 (paren
 l_string|&quot;LOC_205 &quot;
 )paren
@@ -1952,8 +2009,10 @@ macro_line|#endif
 id|disk_state
 op_assign
 id|inb
+c_func
 (paren
 id|GSCDPORT
+c_func
 (paren
 l_int|2
 )paren
@@ -1964,6 +2023,7 @@ r_do
 id|result
 op_assign
 id|wait_drv_ready
+c_func
 (paren
 )paren
 suffix:semicolon
@@ -1988,11 +2048,12 @@ id|result
 op_eq
 l_int|0x06
 )paren
-multiline_comment|/* Mode 6 */
 (brace
+multiline_comment|/* Mode 6 */
 multiline_comment|/* LOC_181 */
 macro_line|#ifdef GSCD_DEBUG
 id|printk
+c_func
 (paren
 l_string|&quot;LOC_181 &quot;
 )paren
@@ -2053,6 +2114,7 @@ r_else
 (brace
 multiline_comment|/* read the info to the buffer */
 id|cmd_info_in
+c_func
 (paren
 id|respo_buf
 comma
@@ -2084,16 +2146,18 @@ suffix:semicolon
 multiline_comment|/* for (;;) */
 macro_line|#ifdef GSCD_DEBUG
 id|printk
+c_func
 (paren
 l_string|&quot;&bslash;n&quot;
 )paren
 suffix:semicolon
-macro_line|#endif    
+macro_line|#endif
 )brace
 DECL|function|cmd_write_cmd
 r_static
 r_void
 id|cmd_write_cmd
+c_func
 (paren
 r_char
 op_star
@@ -2108,6 +2172,7 @@ suffix:semicolon
 multiline_comment|/* LOC_177 */
 macro_line|#ifdef GSCD_DEBUG
 id|printk
+c_func
 (paren
 l_string|&quot;LOC_177 &quot;
 )paren
@@ -2138,6 +2203,7 @@ op_increment
 )paren
 (brace
 id|outb
+c_func
 (paren
 op_star
 id|pstr
@@ -2158,6 +2224,7 @@ DECL|function|cmd_unit_alive
 r_static
 r_int
 id|cmd_unit_alive
+c_func
 (paren
 r_void
 )paren
@@ -2172,12 +2239,14 @@ suffix:semicolon
 multiline_comment|/* LOC_172 */
 macro_line|#ifdef GSCD_DEBUG
 id|printk
+c_func
 (paren
 l_string|&quot;LOC_172 &quot;
 )paren
 suffix:semicolon
 macro_line|#endif
 id|outb
+c_func
 (paren
 id|curr_drv_state
 comma
@@ -2197,6 +2266,7 @@ r_do
 id|result
 op_assign
 id|wait_drv_ready
+c_func
 (paren
 )paren
 suffix:semicolon
@@ -2228,6 +2298,7 @@ DECL|function|cmd_info_in
 r_static
 r_void
 id|cmd_info_in
+c_func
 (paren
 r_char
 op_star
@@ -2247,6 +2318,7 @@ multiline_comment|/* read info */
 multiline_comment|/* LOC_182 */
 macro_line|#ifdef GSCD_DEBUG
 id|printk
+c_func
 (paren
 l_string|&quot;LOC_182 &quot;
 )paren
@@ -2257,6 +2329,7 @@ r_do
 id|read
 op_assign
 id|inb
+c_func
 (paren
 id|GSCDPORT
 c_func
@@ -2291,6 +2364,7 @@ r_do
 id|result
 op_assign
 id|wait_drv_ready
+c_func
 (paren
 )paren
 suffix:semicolon
@@ -2313,6 +2387,7 @@ l_int|6
 )paren
 suffix:semicolon
 id|cmd_end
+c_func
 (paren
 )paren
 suffix:semicolon
@@ -2323,6 +2398,7 @@ DECL|function|cmd_read_b
 r_static
 r_void
 id|cmd_read_b
+c_func
 (paren
 r_char
 op_star
@@ -2345,6 +2421,7 @@ multiline_comment|/* LOC_188 */
 multiline_comment|/* LOC_189 */
 macro_line|#ifdef GSCD_DEBUG
 id|printk
+c_func
 (paren
 l_string|&quot;LOC_189 &quot;
 )paren
@@ -2357,6 +2434,7 @@ r_do
 id|result
 op_assign
 id|wait_drv_ready
+c_func
 (paren
 )paren
 suffix:semicolon
@@ -2382,6 +2460,7 @@ l_int|6
 )paren
 (brace
 id|cmd_end
+c_func
 (paren
 )paren
 suffix:semicolon
@@ -2390,6 +2469,7 @@ suffix:semicolon
 )brace
 macro_line|#ifdef GSCD_DEBUG
 id|printk
+c_func
 (paren
 l_string|&quot;LOC_191 &quot;
 )paren
@@ -2414,6 +2494,7 @@ op_star
 id|pb
 op_assign
 id|inb
+c_func
 (paren
 id|GSCDPORT
 c_func
@@ -2439,6 +2520,7 @@ l_int|0
 )paren
 suffix:semicolon
 id|cmd_end
+c_func
 (paren
 )paren
 suffix:semicolon
@@ -2449,6 +2531,7 @@ DECL|function|cmd_end
 r_static
 r_void
 id|cmd_end
+c_func
 (paren
 r_void
 )paren
@@ -2459,6 +2542,7 @@ suffix:semicolon
 multiline_comment|/* LOC_204 */
 macro_line|#ifdef GSCD_DEBUG
 id|printk
+c_func
 (paren
 l_string|&quot;LOC_204 &quot;
 )paren
@@ -2469,6 +2553,7 @@ r_do
 id|result
 op_assign
 id|wait_drv_ready
+c_func
 (paren
 )paren
 suffix:semicolon
@@ -2495,6 +2580,7 @@ suffix:semicolon
 multiline_comment|/* LOC_205 */
 macro_line|#ifdef GSCD_DEBUG
 id|printk
+c_func
 (paren
 l_string|&quot;LOC_205 &quot;
 )paren
@@ -2503,8 +2589,10 @@ macro_line|#endif
 id|disk_state
 op_assign
 id|inb
+c_func
 (paren
 id|GSCDPORT
+c_func
 (paren
 l_int|2
 )paren
@@ -2515,6 +2603,7 @@ r_do
 id|result
 op_assign
 id|wait_drv_ready
+c_func
 (paren
 )paren
 suffix:semicolon
@@ -2534,6 +2623,7 @@ DECL|function|cmd_read_w
 r_static
 r_void
 id|cmd_read_w
+c_func
 (paren
 r_char
 op_star
@@ -2554,6 +2644,7 @@ id|i
 suffix:semicolon
 macro_line|#ifdef GSCD_DEBUG
 id|printk
+c_func
 (paren
 l_string|&quot;LOC_185 &quot;
 )paren
@@ -2567,6 +2658,7 @@ r_do
 id|result
 op_assign
 id|wait_drv_ready
+c_func
 (paren
 )paren
 suffix:semicolon
@@ -2592,6 +2684,7 @@ l_int|6
 )paren
 (brace
 id|cmd_end
+c_func
 (paren
 )paren
 suffix:semicolon
@@ -2644,6 +2737,7 @@ l_int|0
 )paren
 suffix:semicolon
 id|cmd_end
+c_func
 (paren
 )paren
 suffix:semicolon
@@ -2654,6 +2748,7 @@ DECL|function|find_drives
 r_int
 id|__init
 id|find_drives
+c_func
 (paren
 r_void
 )paren
@@ -2715,6 +2810,7 @@ id|subdrv
 op_increment
 suffix:semicolon
 id|cmd_status
+c_func
 (paren
 )paren
 suffix:semicolon
@@ -2749,6 +2845,7 @@ op_assign
 id|curr_drv_state
 suffix:semicolon
 id|init_cd_drive
+c_func
 (paren
 id|drvnum
 )paren
@@ -2793,6 +2890,7 @@ l_int|1
 suffix:semicolon
 macro_line|#ifdef GSCD_DEBUG
 id|printk
+c_func
 (paren
 l_string|&quot;DriveState: %d&bslash;n&quot;
 comma
@@ -2813,6 +2911,7 @@ DECL|function|init_cd_drive
 r_void
 id|__init
 id|init_cd_drive
+c_func
 (paren
 r_int
 id|num
@@ -2828,6 +2927,7 @@ r_int
 id|i
 suffix:semicolon
 id|printk
+c_func
 (paren
 l_string|&quot;GSCD: init unit %d&bslash;n&quot;
 comma
@@ -2835,6 +2935,7 @@ id|num
 )paren
 suffix:semicolon
 id|cc_Ident
+c_func
 (paren
 (paren
 r_char
@@ -2845,6 +2946,7 @@ id|resp
 )paren
 suffix:semicolon
 id|printk
+c_func
 (paren
 l_string|&quot;GSCD: identification: &quot;
 )paren
@@ -2865,6 +2967,7 @@ op_increment
 )paren
 (brace
 id|printk
+c_func
 (paren
 l_string|&quot;%c&quot;
 comma
@@ -2876,11 +2979,13 @@ id|i
 suffix:semicolon
 )brace
 id|printk
+c_func
 (paren
 l_string|&quot;&bslash;n&quot;
 )paren
 suffix:semicolon
 id|cc_SetSpeed
+c_func
 (paren
 )paren
 suffix:semicolon
@@ -2891,6 +2996,7 @@ DECL|function|update_state
 r_static
 r_void
 id|update_state
+c_func
 (paren
 r_void
 )paren
@@ -2959,6 +3065,7 @@ l_int|0
 )paren
 (brace
 id|invalidate
+c_func
 (paren
 )paren
 suffix:semicolon
@@ -3012,6 +3119,7 @@ multiline_comment|/* call the GoldStar-init */
 id|err
 op_assign
 id|my_gscd_init
+c_func
 (paren
 )paren
 suffix:semicolon
@@ -3030,6 +3138,7 @@ suffix:semicolon
 r_else
 (brace
 id|printk
+c_func
 (paren
 id|KERN_INFO
 l_string|&quot;Happy GoldStar !&bslash;n&quot;
@@ -3055,7 +3164,6 @@ id|devfs_unregister
 c_func
 (paren
 id|devfs_find_handle
-c_func
 (paren
 l_int|NULL
 comma
@@ -3108,6 +3216,7 @@ id|MAJOR_NR
 )paren
 suffix:semicolon
 id|release_region
+c_func
 (paren
 id|gscd_port
 comma
@@ -3130,7 +3239,7 @@ c_func
 id|init_gscd
 )paren
 suffix:semicolon
-macro_line|#endif 
+macro_line|#endif
 DECL|variable|exit_gscd
 id|module_exit
 c_func
@@ -3143,12 +3252,14 @@ DECL|function|gscd_init
 r_int
 id|__init
 id|gscd_init
+c_func
 (paren
 r_void
 )paren
 (brace
 r_return
 id|my_gscd_init
+c_func
 (paren
 )paren
 suffix:semicolon
@@ -3159,6 +3270,7 @@ DECL|function|my_gscd_init
 r_int
 id|__init
 id|my_gscd_init
+c_func
 (paren
 r_void
 )paren
@@ -3170,6 +3282,7 @@ r_int
 id|result
 suffix:semicolon
 id|printk
+c_func
 (paren
 id|KERN_INFO
 l_string|&quot;GSCD: version %s&bslash;n&quot;
@@ -3178,6 +3291,7 @@ id|GSCD_VERSION
 )paren
 suffix:semicolon
 id|printk
+c_func
 (paren
 id|KERN_INFO
 l_string|&quot;GSCD: Trying to detect a Goldstar R420 CD-ROM drive at 0x%X.&bslash;n&quot;
@@ -3198,7 +3312,6 @@ l_int|4
 )paren
 (brace
 id|printk
-c_func
 (paren
 l_string|&quot;GSCD: Init failed, I/O port (%X) already in use.&bslash;n&quot;
 comma
@@ -3214,6 +3327,7 @@ multiline_comment|/* check for card */
 id|result
 op_assign
 id|wait_drv_ready
+c_func
 (paren
 )paren
 suffix:semicolon
@@ -3226,6 +3340,7 @@ l_int|0x09
 )paren
 (brace
 id|printk
+c_func
 (paren
 l_string|&quot;GSCD: DMA kann ich noch nicht!&bslash;n&quot;
 )paren
@@ -3250,6 +3365,7 @@ suffix:semicolon
 id|i
 op_assign
 id|find_drives
+c_func
 (paren
 )paren
 suffix:semicolon
@@ -3322,6 +3438,7 @@ id|i
 )braket
 suffix:semicolon
 id|printk
+c_func
 (paren
 id|KERN_INFO
 l_string|&quot;GSCD: Reset unit %d ... &quot;
@@ -3330,10 +3447,12 @@ id|i
 )paren
 suffix:semicolon
 id|cc_Reset
+c_func
 (paren
 )paren
 suffix:semicolon
 id|printk
+c_func
 (paren
 l_string|&quot;done&bslash;n&quot;
 )paren
@@ -3360,7 +3479,6 @@ l_int|0
 )paren
 (brace
 id|printk
-c_func
 (paren
 l_string|&quot;GSCD: Unable to get major %d for GoldStar CD-ROM&bslash;n&quot;
 comma
@@ -3373,6 +3491,7 @@ id|EIO
 suffix:semicolon
 )brace
 id|devfs_register
+c_func
 (paren
 l_int|NULL
 comma
@@ -3462,6 +3581,7 @@ l_int|0
 )paren
 suffix:semicolon
 id|printk
+c_func
 (paren
 id|KERN_INFO
 l_string|&quot;GSCD: GoldStar CD-ROM Drive found.&bslash;n&quot;
@@ -3475,6 +3595,7 @@ DECL|function|gscd_hsg2msf
 r_static
 r_void
 id|gscd_hsg2msf
+c_func
 (paren
 r_int
 id|hsg
@@ -3489,9 +3610,7 @@ id|hsg
 op_add_assign
 id|CD_MSF_OFFSET
 suffix:semicolon
-id|msf
-op_member_access_from_pointer
-id|min
+id|msf-&gt;min
 op_assign
 id|hsg
 op_div
@@ -3507,17 +3626,13 @@ id|CD_FRAMES
 op_star
 id|CD_SECS
 suffix:semicolon
-id|msf
-op_member_access_from_pointer
-id|sec
+id|msf-&gt;sec
 op_assign
 id|hsg
 op_div
 id|CD_FRAMES
 suffix:semicolon
-id|msf
-op_member_access_from_pointer
-id|frame
+id|msf-&gt;frame
 op_assign
 id|hsg
 op_mod
@@ -3527,9 +3642,7 @@ id|gscd_bin2bcd
 c_func
 (paren
 op_amp
-id|msf
-op_member_access_from_pointer
-id|min
+id|msf-&gt;min
 )paren
 suffix:semicolon
 multiline_comment|/* convert to BCD */
@@ -3537,18 +3650,14 @@ id|gscd_bin2bcd
 c_func
 (paren
 op_amp
-id|msf
-op_member_access_from_pointer
-id|sec
+id|msf-&gt;sec
 )paren
 suffix:semicolon
 id|gscd_bin2bcd
 c_func
 (paren
 op_amp
-id|msf
-op_member_access_from_pointer
-id|frame
+id|msf-&gt;frame
 )paren
 suffix:semicolon
 )brace
@@ -3556,6 +3665,7 @@ DECL|function|gscd_bin2bcd
 r_static
 r_void
 id|gscd_bin2bcd
+c_func
 (paren
 r_int
 r_char
@@ -3599,6 +3709,7 @@ DECL|function|gscd_msf2hsg
 r_static
 r_int
 id|gscd_msf2hsg
+c_func
 (paren
 r_struct
 id|msf
@@ -3610,17 +3721,13 @@ r_return
 id|gscd_bcd2bin
 c_func
 (paren
-id|mp
-op_member_access_from_pointer
-id|frame
+id|mp-&gt;frame
 )paren
 op_plus
 id|gscd_bcd2bin
 c_func
 (paren
-id|mp
-op_member_access_from_pointer
-id|sec
+id|mp-&gt;sec
 )paren
 op_star
 id|CD_FRAMES
@@ -3628,9 +3735,7 @@ op_plus
 id|gscd_bcd2bin
 c_func
 (paren
-id|mp
-op_member_access_from_pointer
-id|min
+id|mp-&gt;min
 )paren
 op_star
 id|CD_FRAMES
@@ -3644,6 +3749,7 @@ DECL|function|gscd_bcd2bin
 r_static
 r_int
 id|gscd_bcd2bin
+c_func
 (paren
 r_int
 r_char
@@ -3667,4 +3773,18 @@ l_int|0xF
 suffix:semicolon
 )brace
 macro_line|#endif
+id|MODULE_AUTHOR
+c_func
+(paren
+l_string|&quot;Oliver Raupach &lt;raupach@nwfs1.rz.fh-hannover.de&gt;&quot;
+)paren
+suffix:semicolon
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
+)paren
+suffix:semicolon
+id|EXPORT_NO_SYMBOLS
+suffix:semicolon
 eof

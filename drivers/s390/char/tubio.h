@@ -677,6 +677,8 @@ DECL|macro|TUB_OPEN_STET
 mdefine_line|#define&t;TUB_OPEN_STET&t;0x0400&t;&t;/* No screen clear on open */
 DECL|macro|TUB_UE_BUSY
 mdefine_line|#define&t;TUB_UE_BUSY&t;0x0800
+DECL|macro|TUB_INPUT_HACK
+mdefine_line|#define&t;TUB_INPUT_HACK&t;0x1000&t;&t;/* Early init of command line */
 macro_line|#ifdef CONFIG_TN3270_CONSOLE
 multiline_comment|/*&n; * Extra stuff for 3270 console support&n; */
 macro_line|#if (LINUX_VERSION_CODE &lt; KERNEL_VERSION(2,3,0))
@@ -945,7 +947,7 @@ r_if
 c_cond
 (paren
 id|minor
-op_ge
+op_le
 id|tubnummins
 op_logical_and
 id|minor

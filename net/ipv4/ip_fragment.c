@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * INET&t;&t;An implementation of the TCP/IP protocol suite for the LINUX&n; *&t;&t;operating system.  INET is implemented using the  BSD Socket&n; *&t;&t;interface as the means of communication with the user level.&n; *&n; *&t;&t;The IP fragmentation functionality.&n; *&t;&t;&n; * Version:&t;$Id: ip_fragment.c,v 1.57 2001/03/07 22:00:57 davem Exp $&n; *&n; * Authors:&t;Fred N. van Kempen &lt;waltje@uWalt.NL.Mugnet.ORG&gt;&n; *&t;&t;Alan Cox &lt;Alan.Cox@linux.org&gt;&n; *&n; * Fixes:&n; *&t;&t;Alan Cox&t;:&t;Split from ip.c , see ip_input.c for history.&n; *&t;&t;David S. Miller :&t;Begin massive cleanup...&n; *&t;&t;Andi Kleen&t;:&t;Add sysctls.&n; *&t;&t;xxxx&t;&t;:&t;Overlapfrag bug.&n; *&t;&t;Ultima          :       ip_expire() kernel panic.&n; *&t;&t;Bill Hawes&t;:&t;Frag accounting and evictor fixes.&n; *&t;&t;John McDonald&t;:&t;0 length frag bug.&n; *&t;&t;Alexey Kuznetsov:&t;SMP races, threading, cleanup.&n; */
+multiline_comment|/*&n; * INET&t;&t;An implementation of the TCP/IP protocol suite for the LINUX&n; *&t;&t;operating system.  INET is implemented using the  BSD Socket&n; *&t;&t;interface as the means of communication with the user level.&n; *&n; *&t;&t;The IP fragmentation functionality.&n; *&t;&t;&n; * Version:&t;$Id: ip_fragment.c,v 1.58 2001/09/01 00:31:50 davem Exp $&n; *&n; * Authors:&t;Fred N. van Kempen &lt;waltje@uWalt.NL.Mugnet.ORG&gt;&n; *&t;&t;Alan Cox &lt;Alan.Cox@linux.org&gt;&n; *&n; * Fixes:&n; *&t;&t;Alan Cox&t;:&t;Split from ip.c , see ip_input.c for history.&n; *&t;&t;David S. Miller :&t;Begin massive cleanup...&n; *&t;&t;Andi Kleen&t;:&t;Add sysctls.&n; *&t;&t;xxxx&t;&t;:&t;Overlapfrag bug.&n; *&t;&t;Ultima          :       ip_expire() kernel panic.&n; *&t;&t;Bill Hawes&t;:&t;Frag accounting and evictor fixes.&n; *&t;&t;John McDonald&t;:&t;0 length frag bug.&n; *&t;&t;Alexey Kuznetsov:&t;SMP races, threading, cleanup.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
@@ -1216,6 +1216,13 @@ suffix:colon
 id|NETDEBUG
 c_func
 (paren
+r_if
+(paren
+id|net_ratelimit
+c_func
+(paren
+)paren
+)paren
 id|printk
 c_func
 (paren
@@ -2315,6 +2322,13 @@ suffix:colon
 id|NETDEBUG
 c_func
 (paren
+r_if
+(paren
+id|net_ratelimit
+c_func
+(paren
+)paren
+)paren
 id|printk
 c_func
 (paren

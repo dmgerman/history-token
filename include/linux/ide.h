@@ -1093,10 +1093,10 @@ id|ide_dtc2278
 comma
 id|ide_ali14xx
 comma
-DECL|enumerator|ide_qd6580
+DECL|enumerator|ide_qd65xx
 DECL|enumerator|ide_umc8672
 DECL|enumerator|ide_ht6560b
-id|ide_qd6580
+id|ide_qd65xx
 comma
 id|ide_umc8672
 comma

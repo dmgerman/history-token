@@ -28,6 +28,8 @@ DECL|macro|TW_CONTROL_DISABLE_INTERRUPTS
 mdefine_line|#define TW_CONTROL_DISABLE_INTERRUPTS&t;       0x00000040
 DECL|macro|TW_CONTROL_ISSUE_HOST_INTERRUPT
 mdefine_line|#define TW_CONTROL_ISSUE_HOST_INTERRUPT&t;       0x00000020
+DECL|macro|TW_CONTROL_CLEAR_PARITY_ERROR
+mdefine_line|#define TW_CONTROL_CLEAR_PARITY_ERROR          0x00800000
 multiline_comment|/* Status register bit definitions */
 DECL|macro|TW_STATUS_MAJOR_VERSION_MASK
 mdefine_line|#define TW_STATUS_MAJOR_VERSION_MASK&t;       0xF0000000
@@ -81,6 +83,8 @@ DECL|macro|TW_DEVICE_ID2
 mdefine_line|#define TW_DEVICE_ID2 (0x1001)  /* 7000 series controller */
 DECL|macro|TW_NUMDEVICES
 mdefine_line|#define TW_NUMDEVICES 2
+DECL|macro|TW_PCI_CLEAR_PARITY_ERRORS
+mdefine_line|#define TW_PCI_CLEAR_PARITY_ERRORS 0xc100
 multiline_comment|/* Command packet opcodes */
 DECL|macro|TW_OP_NOP
 mdefine_line|#define TW_OP_NOP&t;      0x0
@@ -119,6 +123,14 @@ DECL|macro|TW_AEN_QUEUE_FULL
 mdefine_line|#define TW_AEN_QUEUE_FULL        0x00ff
 DECL|macro|TW_AEN_TABLE_UNDEFINED
 mdefine_line|#define TW_AEN_TABLE_UNDEFINED   0x15
+DECL|macro|TW_AEN_APORT_TIMEOUT
+mdefine_line|#define TW_AEN_APORT_TIMEOUT     0x0009
+DECL|macro|TW_AEN_DRIVE_ERROR
+mdefine_line|#define TW_AEN_DRIVE_ERROR       0x000A
+DECL|macro|TW_AEN_SMART_FAIL
+mdefine_line|#define TW_AEN_SMART_FAIL        0x000F
+DECL|macro|TW_AEN_SBUF_FAIL
+mdefine_line|#define TW_AEN_SBUF_FAIL         0x0024
 multiline_comment|/* Misc defines */
 DECL|macro|TW_ALIGNMENT
 mdefine_line|#define TW_ALIGNMENT&t;&t;&t;      0x200 /* 16 D-WORDS */
@@ -158,6 +170,15 @@ DECL|macro|TW_UNIT_ONLINE
 mdefine_line|#define TW_UNIT_ONLINE                        1
 DECL|macro|TW_IN_INTR
 mdefine_line|#define TW_IN_INTR                            1
+macro_line|#if LINUX_VERSION_CODE &lt; KERNEL_VERSION(2,4,7)
+DECL|macro|TW_MAX_SECTORS
+mdefine_line|#define TW_MAX_SECTORS                        256
+macro_line|#else
+DECL|macro|TW_MAX_SECTORS
+mdefine_line|#define TW_MAX_SECTORS                        128
+macro_line|#endif 
+DECL|macro|TW_AEN_WAIT_TIME
+mdefine_line|#define TW_AEN_WAIT_TIME                      1000
 multiline_comment|/* Macros */
 DECL|macro|TW_STATUS_ERRORS
 mdefine_line|#define TW_STATUS_ERRORS(x) &bslash;&n;&t;(((x &amp; TW_STATUS_PCI_ABORT) || &bslash;&n;&t;(x &amp; TW_STATUS_PCI_PARITY_ERROR) || &bslash;&n;&t;(x &amp; TW_STATUS_QUEUE_ERROR) || &bslash;&n;&t;(x &amp; TW_STATUS_MICROCONTROLLER_ERROR)) &amp;&amp; &bslash;&n;&t;(x &amp; TW_STATUS_MICROCONTROLLER_READY))
@@ -879,6 +900,39 @@ c_func
 id|TW_Device_Extension
 op_star
 id|tw_dev
+)paren
+suffix:semicolon
+r_void
+id|tw_decode_bits
+c_func
+(paren
+id|TW_Device_Extension
+op_star
+id|tw_dev
+comma
+id|u32
+id|status_reg_value
+)paren
+suffix:semicolon
+r_void
+id|tw_decode_error
+c_func
+(paren
+id|TW_Device_Extension
+op_star
+id|tw_dev
+comma
+r_int
+r_char
+id|status
+comma
+r_int
+r_char
+id|flags
+comma
+r_int
+r_char
+id|unit
 )paren
 suffix:semicolon
 r_void

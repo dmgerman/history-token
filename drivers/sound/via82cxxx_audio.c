@@ -74,10 +74,6 @@ DECL|macro|VIA_MIN_FRAG_SIZE
 mdefine_line|#define VIA_MIN_FRAG_SIZE&t;&t;64
 DECL|macro|VIA_MIN_FRAG_NUMBER
 mdefine_line|#define VIA_MIN_FRAG_NUMBER&t;&t;2&t;
-macro_line|#ifndef AC97_PCM_LR_ADC_RATE
-DECL|macro|AC97_PCM_LR_ADC_RATE
-macro_line|#  define AC97_PCM_LR_ADC_RATE AC97_PCM_LR_DAC_RATE
-macro_line|#endif
 multiline_comment|/* 82C686 function 5 (audio codec) PCI configuration registers */
 DECL|macro|VIA_ACLINK_CTRL
 mdefine_line|#define VIA_ACLINK_CTRL&t;&t;0x41

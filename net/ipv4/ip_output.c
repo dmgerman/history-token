@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * INET&t;&t;An implementation of the TCP/IP protocol suite for the LINUX&n; *&t;&t;operating system.  INET is implemented using the  BSD Socket&n; *&t;&t;interface as the means of communication with the user level.&n; *&n; *&t;&t;The Internet Protocol (IP) output module.&n; *&n; * Version:&t;$Id: ip_output.c,v 1.97 2001/08/09 17:53:40 davem Exp $&n; *&n; * Authors:&t;Ross Biro, &lt;bir7@leland.Stanford.Edu&gt;&n; *&t;&t;Fred N. van Kempen, &lt;waltje@uWalt.NL.Mugnet.ORG&gt;&n; *&t;&t;Donald Becker, &lt;becker@super.org&gt;&n; *&t;&t;Alan Cox, &lt;Alan.Cox@linux.org&gt;&n; *&t;&t;Richard Underwood&n; *&t;&t;Stefan Becker, &lt;stefanb@yello.ping.de&gt;&n; *&t;&t;Jorge Cwik, &lt;jorge@laser.satlink.net&gt;&n; *&t;&t;Arnt Gulbrandsen, &lt;agulbra@nvg.unit.no&gt;&n; *&n; *&t;See ip_input.c for original log&n; *&n; *&t;Fixes:&n; *&t;&t;Alan Cox&t;:&t;Missing nonblock feature in ip_build_xmit.&n; *&t;&t;Mike Kilburn&t;:&t;htons() missing in ip_build_xmit.&n; *&t;&t;Bradford Johnson:&t;Fix faulty handling of some frames when &n; *&t;&t;&t;&t;&t;no route is found.&n; *&t;&t;Alexander Demenshin:&t;Missing sk/skb free in ip_queue_xmit&n; *&t;&t;&t;&t;&t;(in case if packet not accepted by&n; *&t;&t;&t;&t;&t;output firewall rules)&n; *&t;&t;Mike McLagan&t;:&t;Routing by source&n; *&t;&t;Alexey Kuznetsov:&t;use new route cache&n; *&t;&t;Andi Kleen:&t;&t;Fix broken PMTU recovery and remove&n; *&t;&t;&t;&t;&t;some redundant tests.&n; *&t;Vitaly E. Lavrov&t;:&t;Transparent proxy revived after year coma.&n; *&t;&t;Andi Kleen&t;: &t;Replace ip_reply with ip_send_reply.&n; *&t;&t;Andi Kleen&t;:&t;Split fast and slow ip_build_xmit path &n; *&t;&t;&t;&t;&t;for decreased register pressure on x86 &n; *&t;&t;&t;&t;&t;and more readibility. &n; *&t;&t;Marc Boucher&t;:&t;When call_out_firewall returns FW_QUEUE,&n; *&t;&t;&t;&t;&t;silently drop skb instead of failing with -EPERM.&n; *&t;&t;Detlev Wengorz&t;:&t;Copy protocol for fragments.&n; */
+multiline_comment|/*&n; * INET&t;&t;An implementation of the TCP/IP protocol suite for the LINUX&n; *&t;&t;operating system.  INET is implemented using the  BSD Socket&n; *&t;&t;interface as the means of communication with the user level.&n; *&n; *&t;&t;The Internet Protocol (IP) output module.&n; *&n; * Version:&t;$Id: ip_output.c,v 1.98 2001/09/01 00:31:50 davem Exp $&n; *&n; * Authors:&t;Ross Biro, &lt;bir7@leland.Stanford.Edu&gt;&n; *&t;&t;Fred N. van Kempen, &lt;waltje@uWalt.NL.Mugnet.ORG&gt;&n; *&t;&t;Donald Becker, &lt;becker@super.org&gt;&n; *&t;&t;Alan Cox, &lt;Alan.Cox@linux.org&gt;&n; *&t;&t;Richard Underwood&n; *&t;&t;Stefan Becker, &lt;stefanb@yello.ping.de&gt;&n; *&t;&t;Jorge Cwik, &lt;jorge@laser.satlink.net&gt;&n; *&t;&t;Arnt Gulbrandsen, &lt;agulbra@nvg.unit.no&gt;&n; *&n; *&t;See ip_input.c for original log&n; *&n; *&t;Fixes:&n; *&t;&t;Alan Cox&t;:&t;Missing nonblock feature in ip_build_xmit.&n; *&t;&t;Mike Kilburn&t;:&t;htons() missing in ip_build_xmit.&n; *&t;&t;Bradford Johnson:&t;Fix faulty handling of some frames when &n; *&t;&t;&t;&t;&t;no route is found.&n; *&t;&t;Alexander Demenshin:&t;Missing sk/skb free in ip_queue_xmit&n; *&t;&t;&t;&t;&t;(in case if packet not accepted by&n; *&t;&t;&t;&t;&t;output firewall rules)&n; *&t;&t;Mike McLagan&t;:&t;Routing by source&n; *&t;&t;Alexey Kuznetsov:&t;use new route cache&n; *&t;&t;Andi Kleen:&t;&t;Fix broken PMTU recovery and remove&n; *&t;&t;&t;&t;&t;some redundant tests.&n; *&t;Vitaly E. Lavrov&t;:&t;Transparent proxy revived after year coma.&n; *&t;&t;Andi Kleen&t;: &t;Replace ip_reply with ip_send_reply.&n; *&t;&t;Andi Kleen&t;:&t;Split fast and slow ip_build_xmit path &n; *&t;&t;&t;&t;&t;for decreased register pressure on x86 &n; *&t;&t;&t;&t;&t;and more readibility. &n; *&t;&t;Marc Boucher&t;:&t;When call_out_firewall returns FW_QUEUE,&n; *&t;&t;&t;&t;&t;silently drop skb instead of failing with -EPERM.&n; *&t;&t;Detlev Wengorz&t;:&t;Copy protocol for fragments.&n; */
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
@@ -484,11 +484,19 @@ c_func
 id|skb
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|net_ratelimit
+c_func
+(paren
+)paren
+)paren
 id|printk
 c_func
 (paren
 id|KERN_DEBUG
-l_string|&quot;khm&bslash;n&quot;
+l_string|&quot;ip_finish_output2: No header cache and no neighbour!&bslash;n&quot;
 )paren
 suffix:semicolon
 id|kfree_skb

@@ -18,14 +18,9 @@ macro_line|#include &lt;linux/ioport.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/major.h&gt;
 macro_line|#include &lt;linux/devfs_fs_kernel.h&gt;
-macro_line|#ifndef AZT_KERNEL_PRIOR_2_1
 macro_line|#include &lt;linux/init.h&gt;
-macro_line|#endif
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
-macro_line|#ifdef AZT_KERNEL_PRIOR_2_1
-macro_line|#include &lt;asm/segment.h&gt;
-macro_line|#else
 macro_line|#include &lt;asm/uaccess.h&gt;
 DECL|variable|aztcd_blocksizes
 r_static
@@ -39,7 +34,6 @@ op_assign
 l_int|2048
 )brace
 suffix:semicolon
-macro_line|#endif
 multiline_comment|/*###########################################################################&n;  Defines&n;  ###########################################################################&n;*/
 DECL|macro|SET_TIMER
 mdefine_line|#define SET_TIMER(func, jifs)   delay_timer.expires = jiffies + (jifs); &bslash;&n;                                delay_timer.function = (void *) (func); &bslash;&n;                                add_timer(&amp;delay_timer); 
@@ -74,12 +68,6 @@ DECL|macro|READ_TIMEOUT
 mdefine_line|#define READ_TIMEOUT 3000
 DECL|macro|azt_port
 mdefine_line|#define azt_port aztcd  /*needed for the modutils*/
-macro_line|#ifndef AZT_KERNEL_PRIOR_2_1 
-DECL|macro|memcpy_fromfs
-mdefine_line|#define  memcpy_fromfs copy_from_user
-DECL|macro|memcpy_tofs
-mdefine_line|#define  memcpy_tofs   copy_to_user
-macro_line|#endif
 multiline_comment|/*##########################################################################&n;  Type Definitions&n;  ##########################################################################&n;*/
 DECL|enum|azt_state_e
 r_enum
@@ -268,7 +256,6 @@ id|azt_port
 op_assign
 id|AZT_BASE_ADDR
 suffix:semicolon
-macro_line|#ifndef AZT_KERNEL_PRIOR_2_1
 id|MODULE_PARM
 c_func
 (paren
@@ -277,7 +264,6 @@ comma
 l_string|&quot;i&quot;
 )paren
 suffix:semicolon
-macro_line|#endif
 DECL|variable|azt_port_auto
 r_static
 r_int
@@ -662,24 +648,6 @@ op_star
 id|fp
 )paren
 suffix:semicolon
-macro_line|#ifdef AZT_KERNEL_PRIOR_2_1
-r_static
-r_void
-id|aztcd_release
-c_func
-(paren
-r_struct
-id|inode
-op_star
-id|inode
-comma
-r_struct
-id|file
-op_star
-id|file
-)paren
-suffix:semicolon
-macro_line|#else
 r_static
 r_int
 id|aztcd_release
@@ -696,7 +664,6 @@ op_star
 id|file
 )paren
 suffix:semicolon
-macro_line|#endif
 r_int
 id|aztcd_init
 c_func
@@ -4281,8 +4248,6 @@ id|arg
 (brace
 r_int
 id|i
-comma
-id|st
 suffix:semicolon
 r_struct
 id|azt_Toc
@@ -4614,35 +4579,10 @@ l_string|&quot;aztcd ioctl MULTISESSION&bslash;n&quot;
 )paren
 suffix:semicolon
 macro_line|#endif
-id|st
-op_assign
-id|verify_area
-c_func
-(paren
-id|VERIFY_WRITE
-comma
-(paren
-r_void
-op_star
-)paren
-id|arg
-comma
-r_sizeof
-(paren
-r_struct
-id|cdrom_multisession
-)paren
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
-id|st
-)paren
-r_return
-id|st
-suffix:semicolon
-id|memcpy_fromfs
+id|copy_from_user
 c_func
 (paren
 op_amp
@@ -4660,7 +4600,13 @@ r_struct
 id|cdrom_multisession
 )paren
 )paren
+)paren
+(brace
+r_return
+op_minus
+id|EFAULT
 suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
@@ -4720,7 +4666,10 @@ id|ms.xa_flag
 op_assign
 id|DiskInfo.xa
 suffix:semicolon
-id|memcpy_tofs
+r_if
+c_cond
+(paren
+id|copy_to_user
 c_func
 (paren
 (paren
@@ -4738,7 +4687,13 @@ r_struct
 id|cdrom_multisession
 )paren
 )paren
+)paren
+(brace
+r_return
+op_minus
+id|EFAULT
 suffix:semicolon
+)brace
 macro_line|#ifdef AZT_DEBUG 
 r_if
 c_cond
@@ -4793,32 +4748,10 @@ r_case
 id|CDROMPLAYTRKIND
 suffix:colon
 multiline_comment|/* Play a track.  This currently ignores index. */
-id|st
-op_assign
-id|verify_area
-c_func
-(paren
-id|VERIFY_READ
-comma
-(paren
-r_void
-op_star
-)paren
-id|arg
-comma
-r_sizeof
-id|ti
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
-id|st
-)paren
-r_return
-id|st
-suffix:semicolon
-id|memcpy_fromfs
+id|copy_from_user
 c_func
 (paren
 op_amp
@@ -4833,7 +4766,13 @@ comma
 r_sizeof
 id|ti
 )paren
+)paren
+(brace
+r_return
+op_minus
+id|EFAULT
 suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
@@ -4939,32 +4878,10 @@ id|CDROMPLAYMSF
 suffix:colon
 multiline_comment|/* Play starting at the given MSF address. */
 multiline_comment|/*              if (aztAudioStatus == CDROM_AUDIO_PLAY) &n;&t;&t;{ if (aztSendCmd(ACMD_STOP)) RETURNM(&quot;aztcd_ioctl 9&quot;,-1);&n;&t;&t;  STEN_LOW;&n;&t;&t;  aztAudioStatus = CDROM_AUDIO_NO_STATUS;&n;&t;&t;}&n;*/
-id|st
-op_assign
-id|verify_area
-c_func
-(paren
-id|VERIFY_READ
-comma
-(paren
-r_void
-op_star
-)paren
-id|arg
-comma
-r_sizeof
-id|msf
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
-id|st
-)paren
-r_return
-id|st
-suffix:semicolon
-id|memcpy_fromfs
+id|copy_from_user
 c_func
 (paren
 op_amp
@@ -4979,7 +4896,13 @@ comma
 r_sizeof
 id|msf
 )paren
+)paren
+(brace
+r_return
+op_minus
+id|EFAULT
 suffix:semicolon
+)brace
 multiline_comment|/* convert to bcd */
 id|azt_bin2bcd
 c_func
@@ -5103,31 +5026,6 @@ r_case
 id|CDROMREADTOCHDR
 suffix:colon
 multiline_comment|/* Read the table of contents header */
-id|st
-op_assign
-id|verify_area
-c_func
-(paren
-id|VERIFY_WRITE
-comma
-(paren
-r_void
-op_star
-)paren
-id|arg
-comma
-r_sizeof
-id|tocHdr
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|st
-)paren
-r_return
-id|st
-suffix:semicolon
 id|tocHdr.cdth_trk0
 op_assign
 id|DiskInfo.first
@@ -5136,7 +5034,10 @@ id|tocHdr.cdth_trk1
 op_assign
 id|DiskInfo.last
 suffix:semicolon
-id|memcpy_tofs
+r_if
+c_cond
+(paren
+id|copy_to_user
 c_func
 (paren
 (paren
@@ -5151,39 +5052,23 @@ comma
 r_sizeof
 id|tocHdr
 )paren
+)paren
+(brace
+r_return
+op_minus
+id|EFAULT
 suffix:semicolon
+)brace
 r_break
 suffix:semicolon
 r_case
 id|CDROMREADTOCENTRY
 suffix:colon
 multiline_comment|/* Read an entry in the table of contents */
-id|st
-op_assign
-id|verify_area
-c_func
-(paren
-id|VERIFY_WRITE
-comma
-(paren
-r_void
-op_star
-)paren
-id|arg
-comma
-r_sizeof
-id|entry
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
-id|st
-)paren
-r_return
-id|st
-suffix:semicolon
-id|memcpy_fromfs
+id|copy_from_user
 c_func
 (paren
 op_amp
@@ -5198,7 +5083,13 @@ comma
 r_sizeof
 id|entry
 )paren
+)paren
+(brace
+r_return
+op_minus
+id|EFAULT
 suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
@@ -5337,7 +5228,10 @@ op_minus
 id|EINVAL
 suffix:semicolon
 )brace
-id|memcpy_tofs
+r_if
+c_cond
+(paren
+id|copy_to_user
 c_func
 (paren
 (paren
@@ -5352,54 +5246,23 @@ comma
 r_sizeof
 id|entry
 )paren
+)paren
+(brace
+r_return
+op_minus
+id|EFAULT
 suffix:semicolon
+)brace
 r_break
 suffix:semicolon
 r_case
 id|CDROMSUBCHNL
 suffix:colon
 multiline_comment|/* Get subchannel info */
-id|st
-op_assign
-id|verify_area
-c_func
-(paren
-id|VERIFY_WRITE
-comma
-(paren
-r_void
-op_star
-)paren
-id|arg
-comma
-r_sizeof
-(paren
-r_struct
-id|cdrom_subchnl
-)paren
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
-id|st
-)paren
-(brace
-macro_line|#ifdef AZT_DEBUG
-id|printk
-c_func
-(paren
-l_string|&quot;aztcd: exiting aztcd_ioctl - Error 1 - Command:%x&bslash;n&quot;
-comma
-id|cmd
-)paren
-suffix:semicolon
-macro_line|#endif
-r_return
-id|st
-suffix:semicolon
-)brace
-id|memcpy_fromfs
+id|copy_from_user
 c_func
 (paren
 op_amp
@@ -5417,7 +5280,13 @@ r_struct
 id|cdrom_subchnl
 )paren
 )paren
+)paren
+(brace
+r_return
+op_minus
+id|EFAULT
 suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
@@ -5429,11 +5298,6 @@ id|qInfo
 )paren
 OL
 l_int|0
-)paren
-r_if
-c_cond
-(paren
-id|st
 )paren
 (brace
 macro_line|#ifdef AZT_DEBUG
@@ -5564,7 +5428,10 @@ id|qInfo.trackTime.frame
 )paren
 suffix:semicolon
 )brace
-id|memcpy_tofs
+r_if
+c_cond
+(paren
+id|copy_to_user
 c_func
 (paren
 (paren
@@ -5582,43 +5449,23 @@ r_struct
 id|cdrom_subchnl
 )paren
 )paren
+)paren
+(brace
+r_return
+op_minus
+id|EFAULT
 suffix:semicolon
+)brace
 r_break
 suffix:semicolon
 r_case
 id|CDROMVOLCTRL
 suffix:colon
 multiline_comment|/* Volume control &n;&t; * With my Aztech CD268-01A volume control does not work, I can only&n;&t;   turn the channels on (any value !=0) or off (value==0). Maybe it&n;           works better with your drive */
-id|st
-op_assign
-id|verify_area
-c_func
-(paren
-id|VERIFY_READ
-comma
-(paren
-r_void
-op_star
-)paren
-id|arg
-comma
-r_sizeof
-(paren
-id|volctrl
-)paren
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
-id|st
-)paren
-r_return
-(paren
-id|st
-)paren
-suffix:semicolon
-id|memcpy_fromfs
+id|copy_from_user
 c_func
 (paren
 op_amp
@@ -5635,7 +5482,13 @@ r_sizeof
 id|volctrl
 )paren
 )paren
+)paren
+(brace
+r_return
+op_minus
+id|EFAULT
 suffix:semicolon
+)brace
 id|azt_Play.start.min
 op_assign
 l_int|0x21
@@ -5797,32 +5650,10 @@ id|CDROMREADRAW
 suffix:colon
 multiline_comment|/*read data in mode 2 (2336 Bytes)*/
 (brace
-id|st
-op_assign
-id|verify_area
-c_func
-(paren
-id|VERIFY_WRITE
-comma
-(paren
-r_void
-op_star
-)paren
-id|arg
-comma
-r_sizeof
-id|buf
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
-id|st
-)paren
-r_return
-id|st
-suffix:semicolon
-id|memcpy_fromfs
+id|copy_from_user
 c_func
 (paren
 op_amp
@@ -5837,7 +5668,13 @@ comma
 r_sizeof
 id|msf
 )paren
+)paren
+(brace
+r_return
+op_minus
+id|EFAULT
 suffix:semicolon
+)brace
 multiline_comment|/* convert to bcd */
 id|azt_bin2bcd
 c_func
@@ -5947,7 +5784,10 @@ comma
 id|CD_FRAMESIZE_RAW
 )paren
 suffix:semicolon
-id|memcpy_tofs
+r_if
+c_cond
+(paren
+id|copy_to_user
 c_func
 (paren
 (paren
@@ -5961,7 +5801,13 @@ id|buf
 comma
 id|CD_FRAMESIZE_RAW
 )paren
+)paren
+(brace
+r_return
+op_minus
+id|EFAULT
 suffix:semicolon
+)brace
 )brace
 )brace
 r_else
@@ -5995,7 +5841,10 @@ comma
 id|CD_FRAMESIZE
 )paren
 suffix:semicolon
-id|memcpy_tofs
+r_if
+c_cond
+(paren
+id|copy_to_user
 c_func
 (paren
 (paren
@@ -6009,7 +5858,13 @@ id|buf
 comma
 id|CD_FRAMESIZE
 )paren
+)paren
+(brace
+r_return
+op_minus
+id|EFAULT
 suffix:semicolon
+)brace
 )brace
 )brace
 r_break
@@ -6018,32 +5873,10 @@ r_case
 id|CDROMSEEK
 suffix:colon
 multiline_comment|/*seek msf address*/
-id|st
-op_assign
-id|verify_area
-c_func
-(paren
-id|VERIFY_READ
-comma
-(paren
-r_void
-op_star
-)paren
-id|arg
-comma
-r_sizeof
-id|msf
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
-id|st
-)paren
-r_return
-id|st
-suffix:semicolon
-id|memcpy_fromfs
+id|copy_from_user
 c_func
 (paren
 op_amp
@@ -6058,7 +5891,13 @@ comma
 r_sizeof
 id|msf
 )paren
+)paren
+(brace
+r_return
+op_minus
+id|EFAULT
 suffix:semicolon
+)brace
 multiline_comment|/* convert to bcd */
 id|azt_bin2bcd
 c_func
@@ -6798,24 +6637,7 @@ id|EIO
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * On close, we flush all azt blocks from the buffer cache.&n; */
-macro_line|#ifdef AZT_KERNEL_PRIOR_2_1
 DECL|function|aztcd_release
-r_static
-r_void
-id|aztcd_release
-c_func
-(paren
-r_struct
-id|inode
-op_star
-id|inode
-comma
-r_struct
-id|file
-op_star
-id|file
-)paren
-macro_line|#else
 r_static
 r_int
 id|aztcd_release
@@ -6831,7 +6653,6 @@ id|file
 op_star
 id|file
 )paren
-macro_line|#endif
 (brace
 macro_line|#ifdef AZT_DEBUG
 id|printk
@@ -6887,14 +6708,9 @@ suffix:semicolon
 id|CLEAR_TIMER
 suffix:semicolon
 )brace
-macro_line|#ifdef AZT_KERNEL_PRIOR_2_1
-r_return
-suffix:semicolon
-macro_line|#else
 r_return
 l_int|0
 suffix:semicolon
-macro_line|#endif
 )brace
 multiline_comment|/*&n; * Test for presence of drive and initialize it.  Called at boot time.&n; */
 DECL|function|aztcd_init
@@ -8034,7 +7850,6 @@ comma
 id|DEVICE_REQUEST
 )paren
 suffix:semicolon
-macro_line|#ifndef AZT_KERNEL_PRIOR_2_1
 id|blksize_size
 (braket
 id|MAJOR_NR
@@ -8042,7 +7857,6 @@ id|MAJOR_NR
 op_assign
 id|aztcd_blocksizes
 suffix:semicolon
-macro_line|#endif
 id|read_ahead
 (braket
 id|MAJOR_NR
@@ -10276,4 +10090,12 @@ l_int|0xF
 )paren
 suffix:semicolon
 )brace
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
+)paren
+suffix:semicolon
+id|EXPORT_NO_SYMBOLS
+suffix:semicolon
 eof

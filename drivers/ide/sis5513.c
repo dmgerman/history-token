@@ -397,7 +397,7 @@ comma
 (brace
 l_int|0
 comma
-l_string|&quot;Undefined&quot;
+l_string|&quot;Mode 5&quot;
 )brace
 )brace
 suffix:semicolon
@@ -538,9 +538,9 @@ id|cycle_time
 )braket
 op_assign
 (brace
-l_string|&quot;Undefined&quot;
+l_string|&quot;2 CLK&quot;
 comma
-l_string|&quot;2 CLCK&quot;
+l_string|&quot;2 CLK&quot;
 comma
 l_string|&quot;3 CLK&quot;
 comma
@@ -2789,7 +2789,7 @@ op_rshift
 l_int|11
 )paren
 op_amp
-l_int|3
+l_int|7
 )paren
 ques
 c_cond
@@ -2918,7 +2918,7 @@ c_cond
 (paren
 id|id-&gt;dma_ultra
 op_amp
-l_int|0x001F
+l_int|0x003F
 )paren
 (brace
 multiline_comment|/* Force if Capable UltraDMA */

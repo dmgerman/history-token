@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *  Copyright (c) 2000-2001 LSI Logic Corporation.&n; *&n; *&n; *           Name:  MPI_LAN.H&n; *          Title:  MPI LAN messages and structures&n; *  Creation Date:  June 30, 2000&n; *&n; *    MPI Version:  01.01.02&n; *&n; *  Version History&n; *  ---------------&n; *&n; *  Date      Version   Description&n; *  --------  --------  ------------------------------------------------------&n; *  05-08-00  00.10.01  Original release for 0.10 spec dated 4/26/2000.&n; *  05-24-00  00.10.02  Added LANStatus field to _MSG_LAN_SEND_REPLY.&n; *                      Added LANStatus field to _MSG_LAN_RECEIVE_POST_REPLY.&n; *                      Moved ListCount field in _MSG_LAN_RECEIVE_POST_REPLY.&n; *  06-06-00  01.00.01  Update version number for 1.0 release.&n; *  06-12-00  01.00.02  Added MPI_ to BUCKETSTATUS_ definitions.&n; *  06-22-00  01.00.03  Major changes to match new LAN definition in 1.0 spec.&n; *  06-30-00  01.00.04  Added Context Reply definitions per revised proposal.&n; *                      Changed transaction context usage to bucket/buffer.&n; *  07-05-00  01.00.05  Removed LAN_RECEIVE_POST_BUCKET_CONTEXT_MASK definition&n; *                      to lan private header file&n; *  11-02-00  01.01.01  Original release for post 1.0 work&n; *  02-20-01  01.01.02  Started using MPI_POINTER.&n; *  --------------------------------------------------------------------------&n; */
+multiline_comment|/*&n; *  Copyright (c) 2000-2001 LSI Logic Corporation.&n; *&n; *&n; *           Name:  MPI_LAN.H&n; *          Title:  MPI LAN messages and structures&n; *  Creation Date:  June 30, 2000&n; *&n; *    MPI Version:  01.01.03&n; *&n; *  Version History&n; *  ---------------&n; *&n; *  Date      Version   Description&n; *  --------  --------  ------------------------------------------------------&n; *  05-08-00  00.10.01  Original release for 0.10 spec dated 4/26/2000.&n; *  05-24-00  00.10.02  Added LANStatus field to _MSG_LAN_SEND_REPLY.&n; *                      Added LANStatus field to _MSG_LAN_RECEIVE_POST_REPLY.&n; *                      Moved ListCount field in _MSG_LAN_RECEIVE_POST_REPLY.&n; *  06-06-00  01.00.01  Update version number for 1.0 release.&n; *  06-12-00  01.00.02  Added MPI_ to BUCKETSTATUS_ definitions.&n; *  06-22-00  01.00.03  Major changes to match new LAN definition in 1.0 spec.&n; *  06-30-00  01.00.04  Added Context Reply definitions per revised proposal.&n; *                      Changed transaction context usage to bucket/buffer.&n; *  07-05-00  01.00.05  Removed LAN_RECEIVE_POST_BUCKET_CONTEXT_MASK definition&n; *                      to lan private header file&n; *  11-02-00  01.01.01  Original release for post 1.0 work&n; *  02-20-01  01.01.02  Started using MPI_POINTER.&n; *  03-27-01  01.01.03  Added structure offset comments.&n; *  --------------------------------------------------------------------------&n; */
 macro_line|#ifndef MPI_LAN_H
 DECL|macro|MPI_LAN_H
 mdefine_line|#define MPI_LAN_H
@@ -13,30 +13,37 @@ DECL|member|Reserved
 id|U16
 id|Reserved
 suffix:semicolon
+multiline_comment|/* 00h */
 DECL|member|ChainOffset
 id|U8
 id|ChainOffset
 suffix:semicolon
+multiline_comment|/* 02h */
 DECL|member|Function
 id|U8
 id|Function
 suffix:semicolon
+multiline_comment|/* 03h */
 DECL|member|Reserved2
 id|U16
 id|Reserved2
 suffix:semicolon
+multiline_comment|/* 04h */
 DECL|member|PortNumber
 id|U8
 id|PortNumber
 suffix:semicolon
+multiline_comment|/* 06h */
 DECL|member|MsgFlags
 id|U8
 id|MsgFlags
 suffix:semicolon
+multiline_comment|/* 07h */
 DECL|member|MsgContext
 id|U32
 id|MsgContext
 suffix:semicolon
+multiline_comment|/* 08h */
 DECL|member|SG_List
 id|SGE_MPI_UNION
 id|SG_List
@@ -44,6 +51,7 @@ id|SG_List
 l_int|1
 )braket
 suffix:semicolon
+multiline_comment|/* 0Ch */
 DECL|typedef|MSG_LAN_SEND_REQUEST
 DECL|typedef|PTR_MSG_LAN_SEND_REQUEST
 )brace
@@ -68,50 +76,62 @@ DECL|member|Reserved
 id|U16
 id|Reserved
 suffix:semicolon
+multiline_comment|/* 00h */
 DECL|member|MsgLength
 id|U8
 id|MsgLength
 suffix:semicolon
+multiline_comment|/* 02h */
 DECL|member|Function
 id|U8
 id|Function
 suffix:semicolon
+multiline_comment|/* 03h */
 DECL|member|Reserved2
 id|U8
 id|Reserved2
 suffix:semicolon
+multiline_comment|/* 04h */
 DECL|member|NumberOfContexts
 id|U8
 id|NumberOfContexts
 suffix:semicolon
+multiline_comment|/* 05h */
 DECL|member|PortNumber
 id|U8
 id|PortNumber
 suffix:semicolon
+multiline_comment|/* 06h */
 DECL|member|MsgFlags
 id|U8
 id|MsgFlags
 suffix:semicolon
+multiline_comment|/* 07h */
 DECL|member|MsgContext
 id|U32
 id|MsgContext
 suffix:semicolon
+multiline_comment|/* 08h */
 DECL|member|Reserved3
 id|U16
 id|Reserved3
 suffix:semicolon
+multiline_comment|/* 0Ch */
 DECL|member|IOCStatus
 id|U16
 id|IOCStatus
 suffix:semicolon
+multiline_comment|/* 0Eh */
 DECL|member|IOCLogInfo
 id|U32
 id|IOCLogInfo
 suffix:semicolon
+multiline_comment|/* 10h */
 DECL|member|BufferContext
 id|U32
 id|BufferContext
 suffix:semicolon
+multiline_comment|/* 14h */
 DECL|typedef|MSG_LAN_SEND_REPLY
 DECL|typedef|PTR_MSG_LAN_SEND_REPLY
 )brace
@@ -137,34 +157,42 @@ DECL|member|Reserved
 id|U16
 id|Reserved
 suffix:semicolon
+multiline_comment|/* 00h */
 DECL|member|ChainOffset
 id|U8
 id|ChainOffset
 suffix:semicolon
+multiline_comment|/* 02h */
 DECL|member|Function
 id|U8
 id|Function
 suffix:semicolon
+multiline_comment|/* 03h */
 DECL|member|Reserved2
 id|U16
 id|Reserved2
 suffix:semicolon
+multiline_comment|/* 04h */
 DECL|member|PortNumber
 id|U8
 id|PortNumber
 suffix:semicolon
+multiline_comment|/* 06h */
 DECL|member|MsgFlags
 id|U8
 id|MsgFlags
 suffix:semicolon
+multiline_comment|/* 07h */
 DECL|member|MsgContext
 id|U32
 id|MsgContext
 suffix:semicolon
+multiline_comment|/* 08h */
 DECL|member|BucketCount
 id|U32
 id|BucketCount
 suffix:semicolon
+multiline_comment|/* 0Ch */
 DECL|member|SG_List
 id|SGE_MPI_UNION
 id|SG_List
@@ -172,6 +200,7 @@ id|SG_List
 l_int|1
 )braket
 suffix:semicolon
+multiline_comment|/* 10h */
 DECL|typedef|MSG_LAN_RECEIVE_POST_REQUEST
 DECL|typedef|PTR_MSG_LAN_RECEIVE_POST_REQUEST
 )brace
@@ -196,58 +225,72 @@ DECL|member|Reserved
 id|U16
 id|Reserved
 suffix:semicolon
+multiline_comment|/* 00h */
 DECL|member|MsgLength
 id|U8
 id|MsgLength
 suffix:semicolon
+multiline_comment|/* 02h */
 DECL|member|Function
 id|U8
 id|Function
 suffix:semicolon
+multiline_comment|/* 03h */
 DECL|member|Reserved2
 id|U8
 id|Reserved2
 suffix:semicolon
+multiline_comment|/* 04h */
 DECL|member|NumberOfContexts
 id|U8
 id|NumberOfContexts
 suffix:semicolon
+multiline_comment|/* 05h */
 DECL|member|PortNumber
 id|U8
 id|PortNumber
 suffix:semicolon
+multiline_comment|/* 06h */
 DECL|member|MsgFlags
 id|U8
 id|MsgFlags
 suffix:semicolon
+multiline_comment|/* 07h */
 DECL|member|MsgContext
 id|U32
 id|MsgContext
 suffix:semicolon
+multiline_comment|/* 08h */
 DECL|member|Reserved3
 id|U16
 id|Reserved3
 suffix:semicolon
+multiline_comment|/* 0Ch */
 DECL|member|IOCStatus
 id|U16
 id|IOCStatus
 suffix:semicolon
+multiline_comment|/* 0Eh */
 DECL|member|IOCLogInfo
 id|U32
 id|IOCLogInfo
 suffix:semicolon
+multiline_comment|/* 10h */
 DECL|member|BucketsRemaining
 id|U32
 id|BucketsRemaining
 suffix:semicolon
+multiline_comment|/* 14h */
 DECL|member|PacketOffset
 id|U32
 id|PacketOffset
 suffix:semicolon
+multiline_comment|/* 18h */
 DECL|member|PacketLength
 id|U32
 id|PacketLength
 suffix:semicolon
+multiline_comment|/* 1Ch */
 DECL|member|BucketContext
 id|U32
 id|BucketContext
@@ -255,6 +298,7 @@ id|BucketContext
 l_int|1
 )braket
 suffix:semicolon
+multiline_comment|/* 20h */
 DECL|typedef|MSG_LAN_RECEIVE_POST_REPLY
 DECL|typedef|PTR_MSG_LAN_RECEIVE_POST_REPLY
 )brace
@@ -280,30 +324,37 @@ DECL|member|Reserved
 id|U16
 id|Reserved
 suffix:semicolon
+multiline_comment|/* 00h */
 DECL|member|ChainOffset
 id|U8
 id|ChainOffset
 suffix:semicolon
+multiline_comment|/* 02h */
 DECL|member|Function
 id|U8
 id|Function
 suffix:semicolon
+multiline_comment|/* 03h */
 DECL|member|Reserved2
 id|U16
 id|Reserved2
 suffix:semicolon
+multiline_comment|/* 04h */
 DECL|member|PortNumber
 id|U8
 id|PortNumber
 suffix:semicolon
+multiline_comment|/* 05h */
 DECL|member|MsgFlags
 id|U8
 id|MsgFlags
 suffix:semicolon
+multiline_comment|/* 07h */
 DECL|member|MsgContext
 id|U32
 id|MsgContext
 suffix:semicolon
+multiline_comment|/* 08h */
 DECL|typedef|MSG_LAN_RESET_REQUEST
 DECL|typedef|PTR_MSG_LAN_RESET_REQUEST
 )brace
@@ -328,42 +379,52 @@ DECL|member|Reserved
 id|U16
 id|Reserved
 suffix:semicolon
+multiline_comment|/* 00h */
 DECL|member|MsgLength
 id|U8
 id|MsgLength
 suffix:semicolon
+multiline_comment|/* 02h */
 DECL|member|Function
 id|U8
 id|Function
 suffix:semicolon
+multiline_comment|/* 03h */
 DECL|member|Reserved2
 id|U16
 id|Reserved2
 suffix:semicolon
+multiline_comment|/* 04h */
 DECL|member|PortNumber
 id|U8
 id|PortNumber
 suffix:semicolon
+multiline_comment|/* 06h */
 DECL|member|MsgFlags
 id|U8
 id|MsgFlags
 suffix:semicolon
+multiline_comment|/* 07h */
 DECL|member|MsgContext
 id|U32
 id|MsgContext
 suffix:semicolon
+multiline_comment|/* 08h */
 DECL|member|Reserved3
 id|U16
 id|Reserved3
 suffix:semicolon
+multiline_comment|/* 0Ch */
 DECL|member|IOCStatus
 id|U16
 id|IOCStatus
 suffix:semicolon
+multiline_comment|/* 0Eh */
 DECL|member|IOCLogInfo
 id|U32
 id|IOCLogInfo
 suffix:semicolon
+multiline_comment|/* 10h */
 DECL|typedef|MSG_LAN_RESET_REPLY
 DECL|typedef|PTR_MSG_LAN_RESET_REPLY
 )brace
@@ -429,5 +490,10 @@ DECL|macro|MPI_LAN_DEVICE_STATE_RESET
 mdefine_line|#define MPI_LAN_DEVICE_STATE_RESET                     (0x00)
 DECL|macro|MPI_LAN_DEVICE_STATE_OPERATIONAL
 mdefine_line|#define MPI_LAN_DEVICE_STATE_OPERATIONAL               (0x01)
+multiline_comment|/****************************************************************************/
+multiline_comment|/* LAN Loopback defines                                                     */
+multiline_comment|/****************************************************************************/
+DECL|macro|MPI_LAN_TX_MODES_ENABLE_LOOPBACK_SUPPRESSION
+mdefine_line|#define MPI_LAN_TX_MODES_ENABLE_LOOPBACK_SUPPRESSION   (0x01)
 macro_line|#endif
 eof

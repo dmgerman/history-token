@@ -8732,6 +8732,7 @@ id|card-&gt;midi.open_sem
 suffix:semicolon
 id|MOD_INC_USE_COUNT
 suffix:semicolon
+multiline_comment|/* for 2.2 */
 r_return
 l_int|0
 suffix:semicolon
@@ -8967,6 +8968,7 @@ id|card-&gt;midi.open_wait
 suffix:semicolon
 id|MOD_DEC_USE_COUNT
 suffix:semicolon
+multiline_comment|/* for 2.2 */
 r_return
 l_int|0
 suffix:semicolon
@@ -15700,8 +15702,6 @@ op_amp
 id|state-&gt;open_sem
 )paren
 suffix:semicolon
-id|MOD_INC_USE_COUNT
-suffix:semicolon
 )brace
 r_if
 c_cond
@@ -16051,8 +16051,6 @@ op_amp
 id|state-&gt;open_sem
 )paren
 suffix:semicolon
-id|MOD_INC_USE_COUNT
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -16072,6 +16070,9 @@ id|ret
 suffix:semicolon
 )brace
 )brace
+id|MOD_INC_USE_COUNT
+suffix:semicolon
+multiline_comment|/* for 2.2 */
 id|CS_DBGOUT
 c_func
 (paren
@@ -16392,8 +16393,6 @@ id|state
 )paren
 suffix:semicolon
 )brace
-id|MOD_DEC_USE_COUNT
-suffix:semicolon
 )brace
 id|state
 op_assign
@@ -16576,8 +16575,6 @@ id|state
 )paren
 suffix:semicolon
 )brace
-id|MOD_DEC_USE_COUNT
-suffix:semicolon
 )brace
 id|CS_DBGOUT
 c_func
@@ -16595,6 +16592,9 @@ l_string|&quot;cs46xx: cs_release()- 0&bslash;n&quot;
 )paren
 )paren
 suffix:semicolon
+id|MOD_DEC_USE_COUNT
+suffix:semicolon
+multiline_comment|/* For 2.2 */
 r_return
 l_int|0
 suffix:semicolon
@@ -19282,6 +19282,7 @@ id|card-&gt;mixer_use_cnt
 suffix:semicolon
 id|MOD_INC_USE_COUNT
 suffix:semicolon
+multiline_comment|/* for 2.2 */
 id|CS_DBGOUT
 c_func
 (paren
@@ -19459,6 +19460,7 @@ id|match
 suffix:colon
 id|MOD_DEC_USE_COUNT
 suffix:semicolon
+multiline_comment|/* for 2.2 */
 r_if
 c_cond
 (paren

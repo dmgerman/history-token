@@ -1,7 +1,9 @@
-multiline_comment|/******************************************************************************&n; *&n; *&t;&t;telephony.h&n; *&n; *&t;&t;Basic Linux Telephony Interface&n; *&n; *&t;&t;(c) Copyright 1999 Quicknet Technologies, Inc.&n; *&n; *&t;&t;This program is free software; you can redistribute it and/or&n; *&t;&t;modify it under the terms of the GNU General Public License&n; *&t;&t;as published by the Free Software Foundation; either version&n; *&t;&t;2 of the License, or (at your option) any later version.&n; *&n; *    Authors:       Ed Okerson, &lt;eokerson@quicknet.net&gt;&n; *                   Greg Herlein, &lt;gherlein@quicknet.net&gt;&n; *&n; *    Contributors:  Alan Cox, &lt;alan@redhat.com&gt;&n; *                   David W. Erhart, &lt;derhart@quicknet.net&gt;&n; *&n; * Version:       0.1.0 - December 19, 1999&n; *&n; * Fixes:&n; * &n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; *&t;&t;telephony.h&n; *&n; *&t;&t;Basic Linux Telephony Interface&n; *&n; *&t;&t;(c) Copyright 1999-2001 Quicknet Technologies, Inc.&n; *&n; *&t;&t;This program is free software; you can redistribute it and/or&n; *&t;&t;modify it under the terms of the GNU General Public License&n; *&t;&t;as published by the Free Software Foundation; either version&n; *&t;&t;2 of the License, or (at your option) any later version.&n; *&n; *    Authors:       Ed Okerson, &lt;eokerson@quicknet.net&gt;&n; *                   Greg Herlein, &lt;gherlein@quicknet.net&gt;&n; *&n; *    Contributors:  Alan Cox, &lt;alan@redhat.com&gt;&n; *                   David W. Erhart, &lt;derhart@quicknet.net&gt;&n; *&n; * IN NO EVENT SHALL QUICKNET TECHNOLOGIES, INC. BE LIABLE TO ANY PARTY FOR&n; * DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES ARISING OUT&n; * OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF QUICKNET&n; * TECHNOLOGIES, INC. HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.&n; *&n; * QUICKNET TECHNOLOGIES, INC. SPECIFICALLY DISCLAIMS ANY WARRANTIES,&n; * INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY&n; * AND FITNESS FOR A PARTICULAR PURPOSE.  THE SOFTWARE PROVIDED HEREUNDER IS&n; * ON AN &quot;AS IS&quot; BASIS, AND QUICKNET TECHNOLOGIES, INC. HAS NO OBLIGATION&n; * TO PROVIDE MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.&n; *&n; * Version:       $Revision: 4.2 $&n; *&n; * $Id: telephony.h,v 4.2 2001/08/06 07:09:43 craigs Exp $&n; *&n; *****************************************************************************/
 macro_line|#ifndef TELEPHONY_H
 DECL|macro|TELEPHONY_H
 mdefine_line|#define TELEPHONY_H
+DECL|macro|TELEPHONY_VERSION
+mdefine_line|#define TELEPHONY_VERSION 3013
 DECL|macro|PHONE_VENDOR_IXJ
 mdefine_line|#define PHONE_VENDOR_IXJ          1
 DECL|macro|PHONE_VENDOR_QUICKNET
@@ -166,7 +168,7 @@ mdefine_line|#define PHONE_MAXRINGS&t;&t;&t;_IOW (&squot;q&squot;, 0x85, char)
 DECL|macro|PHONE_RING_CADENCE
 mdefine_line|#define PHONE_RING_CADENCE&t;&t;_IOW (&squot;q&squot;, 0x86, short)
 DECL|macro|OLD_PHONE_RING_START
-mdefine_line|#define OLD_PHONE_RING_START&t;&t;_IO  (&squot;q&squot;, 0x87)
+mdefine_line|#define OLD_PHONE_RING_START            _IO  (&squot;q&squot;, 0x87)
 DECL|macro|PHONE_RING_START
 mdefine_line|#define PHONE_RING_START&t;&t;_IOW (&squot;q&squot;, 0x87, PHONE_CID *)
 DECL|macro|PHONE_RING_STOP
@@ -185,6 +187,8 @@ DECL|macro|PHONE_FRAME
 mdefine_line|#define PHONE_FRAME&t;&t;&t;_IOW (&squot;q&squot;, 0x8D, int)
 DECL|macro|PHONE_REC_VOLUME
 mdefine_line|#define PHONE_REC_VOLUME&t;&t;_IOW (&squot;q&squot;, 0x8E, int)
+DECL|macro|PHONE_REC_VOLUME_LINEAR
+mdefine_line|#define PHONE_REC_VOLUME_LINEAR&t;&t;_IOW (&squot;q&squot;, 0xDB, int)
 DECL|macro|PHONE_REC_LEVEL
 mdefine_line|#define PHONE_REC_LEVEL&t;&t;&t;_IO  (&squot;q&squot;, 0x8F)
 DECL|macro|PHONE_PLAY_CODEC
@@ -197,6 +201,8 @@ DECL|macro|PHONE_PLAY_DEPTH
 mdefine_line|#define PHONE_PLAY_DEPTH&t;&t;_IOW (&squot;q&squot;, 0x93, int)
 DECL|macro|PHONE_PLAY_VOLUME
 mdefine_line|#define PHONE_PLAY_VOLUME&t;&t;_IOW (&squot;q&squot;, 0x94, int)
+DECL|macro|PHONE_PLAY_VOLUME_LINEAR
+mdefine_line|#define PHONE_PLAY_VOLUME_LINEAR&t;_IOW (&squot;q&squot;, 0xDC, int)
 DECL|macro|PHONE_PLAY_LEVEL
 mdefine_line|#define PHONE_PLAY_LEVEL&t;&t;_IO  (&squot;q&squot;, 0x95)
 DECL|macro|PHONE_DTMF_READY
@@ -244,6 +250,8 @@ mdefine_line|#define PSTN_PULSE_DIAL&t;&t;3
 multiline_comment|/******************************************************************************&n;* &n;* The wink duration is tunable with this ioctl.  The default wink duration  &n;* is 320ms.  You do not need to use this ioctl if you do not require a&n;* different wink duration.&n;* &n;******************************************************************************/
 DECL|macro|PHONE_WINK_DURATION
 mdefine_line|#define PHONE_WINK_DURATION&t;&t;_IOW (&squot;q&squot;, 0xA6, int)
+DECL|macro|PHONE_WINK
+mdefine_line|#define PHONE_WINK&t;&t;&t;_IOW (&squot;q&squot;, 0xAA, int)
 multiline_comment|/******************************************************************************&n;* &n;*  Codec Definitions&n;* &n;******************************************************************************/
 r_typedef
 r_enum
@@ -307,6 +315,11 @@ DECL|enumerator|WSS
 id|WSS
 op_assign
 l_int|12
+comma
+DECL|enumerator|G729B
+id|G729B
+op_assign
+l_int|13
 DECL|typedef|phone_codec
 )brace
 id|phone_codec
@@ -333,13 +346,13 @@ suffix:semicolon
 )brace
 suffix:semicolon
 DECL|macro|PHONE_QUERY_CODEC
-mdefine_line|#define PHONE_QUERY_CODEC&t;&t;_IOWR (&squot;q&squot;, 0xA7, struct phone_codec_data *)
+mdefine_line|#define PHONE_QUERY_CODEC               _IOWR (&squot;q&squot;, 0xA7, struct phone_codec_data *)
 DECL|macro|PHONE_PSTN_LINETEST
-mdefine_line|#define PHONE_PSTN_LINETEST&t;&t;_IO (&squot;q&squot;, 0xA8)
+mdefine_line|#define PHONE_PSTN_LINETEST             _IO (&squot;q&squot;, 0xA8)
 multiline_comment|/******************************************************************************&n;* &n;* This controls the VAD/CNG functionality of G.723.1.  The driver will&n;* always pass full size frames, any unused bytes will be padded with zeros,&n;* and frames passed to the driver should also be padded with zeros.  The&n;* frame type is encoded in the least significant two bits of the first&n;* WORD of the frame as follows:&n;*&n;* bits 1-0&t;Frame Type&t;Data Rate&t;&t;Significant Words&n;* 00&t;&t;0&t;&t;G.723.1 6.3&t;&t;12&n;* 01&t;&t;1&t;&t;G.723.1 5.3&t;&t;10&n;* 10&t;&t;2&t;&t;VAD/CNG&t;&t;&t; 2&n;* 11&t;&t;3&t;&t;Repeat last CNG&t;&t; 2 bits&n;* &n;******************************************************************************/
 DECL|macro|PHONE_VAD
 mdefine_line|#define PHONE_VAD&t;&t;&t;_IOW (&squot;q&squot;, 0xA9, int)
-multiline_comment|/******************************************************************************&n;*&n;* The exception structure allows us to multiplex multiple events onto the&n;* select() exception set.  If any of these flags are set select() will&n;* return with a positive indication on the exception set.  The dtmf_ready&n;* bit indicates if there is data waiting in the DTMF buffer.  The&n;* hookstate bit is set if there is a change in hookstate status, it does not&n;* indicate the current state of the hookswitch.  The pstn_ring bit&n;* indicates that the DAA on a LineJACK card has detected ring voltage on&n;* the PSTN port.  The caller_id bit indicates that caller_id data has been&n;* received and is available.  The pstn_wink bit indicates that the DAA on&n;* the LineJACK has received a wink from the telco switch.  The f0, f1, f2&n;* and f3 bits indicate that the filter has been triggered by detecting the&n;* frequency programmed into that filter.&n;*&n;* The remaining bits should be set to zero. They will become defined over time&n;* for other interface cards and their needs.&n;*&n;******************************************************************************/
+multiline_comment|/******************************************************************************&n;*&n;* The exception structure allows us to multiplex multiple events onto the&n;* select() exception set.  If any of these flags are set select() will&n;* return with a positive indication on the exception set.  The dtmf_ready&n;* bit indicates if there is data waiting in the DTMF buffer.  The&n;* hookstate bit is set if there is a change in hookstate status, it does not&n;* indicate the current state of the hookswitch.  The pstn_ring bit&n;* indicates that the DAA on a LineJACK card has detected ring voltage on&n;* the PSTN port.  The caller_id bit indicates that caller_id data has been&n;* recieved and is available.  The pstn_wink bit indicates that the DAA on&n;* the LineJACK has recieved a wink from the telco switch.  The f0, f1, f2&n;* and f3 bits indicate that the filter has been triggered by detecting the&n;* frequency programmed into that filter.&n;*&n;* The remaining bits should be set to zero. They will become defined over time&n;* for other interface cards and their needs.&n;*&n;******************************************************************************/
 DECL|struct|phone_except
 r_struct
 id|phone_except
@@ -467,5 +480,5 @@ id|bytes
 suffix:semicolon
 )brace
 suffix:semicolon
-macro_line|#endif&t;&t;&t;&t;/* TELEPHONY_H */
+macro_line|#endif&t;&t;/* TELEPHONY_H */
 eof

@@ -696,4 +696,10 @@ c_func
 id|zorro_unused_z2ram
 )paren
 suffix:semicolon
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
+)paren
+suffix:semicolon
 eof

@@ -1880,6 +1880,8 @@ suffix:semicolon
 id|tubp-&gt;flags
 op_or_assign
 id|TUB_OPEN_STET
+op_or
+id|TUB_INPUT_HACK
 suffix:semicolon
 id|tty3270_size
 c_func

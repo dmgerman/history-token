@@ -161,13 +161,6 @@ suffix:semicolon
 multiline_comment|/*&n; * Contents of statd callback when monitored host rebooted&n; */
 DECL|macro|NLMSVC_XDRSIZE
 mdefine_line|#define NLMSVC_XDRSIZE&t;&t;sizeof(struct nlm_args)
-r_void
-id|nlmxdr_init
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
 r_int
 id|nlmsvc_decode_testargs
 c_func

@@ -2733,6 +2733,13 @@ id|inode
 op_star
 id|inode
 suffix:semicolon
+r_static
+id|LIST_HEAD
+c_func
+(paren
+id|kill_list
+)paren
+suffix:semicolon
 r_int
 id|error
 suffix:semicolon
@@ -2824,11 +2831,6 @@ c_func
 id|inode-&gt;i_fop
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|inode-&gt;i_sb
-)paren
 id|file_move
 c_func
 (paren
@@ -2904,6 +2906,16 @@ c_func
 id|inode
 )paren
 suffix:semicolon
+id|file_move
+c_func
+(paren
+id|f
+comma
+op_amp
+id|kill_list
+)paren
+suffix:semicolon
+multiline_comment|/* out of the way.. */
 id|f-&gt;f_dentry
 op_assign
 l_int|NULL

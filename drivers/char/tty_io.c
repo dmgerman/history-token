@@ -1675,14 +1675,6 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-op_logical_neg
-id|filp-&gt;f_dentry
-)paren
-r_continue
-suffix:semicolon
-r_if
-c_cond
-(paren
 id|filp-&gt;f_dentry-&gt;d_inode-&gt;i_rdev
 op_eq
 id|CONSOLE_DEV

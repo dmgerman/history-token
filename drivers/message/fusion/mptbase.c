@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *  linux/drivers/message/fusion/mptbase.c&n; *      High performance SCSI + LAN / Fibre Channel device drivers.&n; *      This is the Fusion MPT base driver which supports multiple&n; *      (SCSI + LAN) specialized protocol drivers.&n; *      For use with PCI chip/adapter(s):&n; *          LSIFC9xx/LSI409xx Fibre Channel&n; *      running LSI Logic Fusion MPT (Message Passing Technology) firmware.&n; *&n; *  Credits:&n; *      There are lots of people not mentioned below that deserve credit&n; *      and thanks but won&squot;t get it here - sorry in advance that you&n; *      got overlooked.&n; *&n; *      This driver would not exist if not for Alan Cox&squot;s development&n; *      of the linux i2o driver.&n; *&n; *      A special thanks to Noah Romer (LSI Logic) for tons of work&n; *      and tough debugging on the LAN driver, especially early on;-)&n; *      And to Roger Hickerson (LSI Logic) for tirelessly supporting&n; *      this driver project.&n; *&n; *      All manner of help from Stephen Shirron (LSI Logic):&n; *      low-level FC analysis, debug + various fixes in FCxx firmware,&n; *      initial port to alpha platform, various driver code optimizations,&n; *      being a faithful sounding board on all sorts of issues &amp; ideas,&n; *      etc.&n; *&n; *      A huge debt of gratitude is owed to David S. Miller (DaveM)&n; *      for fixing much of the stupid and broken stuff in the early&n; *      driver while porting to sparc64 platform.  THANK YOU!&n; *&n; *      Special thanks goes to the I2O LAN driver people at the&n; *      University of Helsinki, who, unbeknownst to them, provided&n; *      the inspiration and initial structure for this driver.&n; *&n; *      A really huge debt of gratitude is owed to Eddie C. Dost&n; *      for gobs of hard work fixing and optimizing LAN code.&n; *      THANK YOU!&n; *&n; *  Copyright (c) 1999-2001 LSI Logic Corporation&n; *  Originally By: Steven J. Ralston&n; *  (mailto:Steve.Ralston@lsil.com)&n; *&n; *  $Id: mptbase.c,v 1.47 2001/03/22 10:32:23 sralston Exp $&n; */
+multiline_comment|/*&n; *  linux/drivers/message/fusion/mptbase.c&n; *      High performance SCSI + LAN / Fibre Channel device drivers.&n; *      This is the Fusion MPT base driver which supports multiple&n; *      (SCSI + LAN) specialized protocol drivers.&n; *      For use with PCI chip/adapter(s):&n; *          LSIFC9xx/LSI409xx Fibre Channel&n; *      running LSI Logic Fusion MPT (Message Passing Technology) firmware.&n; *&n; *  Credits:&n; *      There are lots of people not mentioned below that deserve credit&n; *      and thanks but won&squot;t get it here - sorry in advance that you&n; *      got overlooked.&n; *&n; *      This driver would not exist if not for Alan Cox&squot;s development&n; *      of the linux i2o driver.&n; *&n; *      A special thanks to Noah Romer (LSI Logic) for tons of work&n; *      and tough debugging on the LAN driver, especially early on;-)&n; *      And to Roger Hickerson (LSI Logic) for tirelessly supporting&n; *      this driver project.&n; *&n; *      All manner of help from Stephen Shirron (LSI Logic):&n; *      low-level FC analysis, debug + various fixes in FCxx firmware,&n; *      initial port to alpha platform, various driver code optimizations,&n; *      being a faithful sounding board on all sorts of issues &amp; ideas,&n; *      etc.&n; *&n; *      A huge debt of gratitude is owed to David S. Miller (DaveM)&n; *      for fixing much of the stupid and broken stuff in the early&n; *      driver while porting to sparc64 platform.  THANK YOU!&n; *&n; *      Special thanks goes to the I2O LAN driver people at the&n; *      University of Helsinki, who, unbeknownst to them, provided&n; *      the inspiration and initial structure for this driver.&n; *&n; *      A really huge debt of gratitude is owed to Eddie C. Dost&n; *      for gobs of hard work fixing and optimizing LAN code.&n; *      THANK YOU!&n; *&n; *  Copyright (c) 1999-2001 LSI Logic Corporation&n; *  Originally By: Steven J. Ralston&n; *  (mailto:Steve.Ralston@lsil.com)&n; *&n; *  $Id: mptbase.c,v 1.53.4.1 2001/08/24 20:07:05 sralston Exp $&n; */
 multiline_comment|/*=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=*/
 multiline_comment|/*&n;    This program is free software; you can redistribute it and/or modify&n;    it under the terms of the GNU General Public License as published by&n;    the Free Software Foundation; version 2 of the License.&n;&n;    This program is distributed in the hope that it will be useful,&n;    but WITHOUT ANY WARRANTY; without even the implied warranty of&n;    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n;    GNU General Public License for more details.&n;&n;    NO WARRANTY&n;    THE PROGRAM IS PROVIDED ON AN &quot;AS IS&quot; BASIS, WITHOUT WARRANTIES OR&n;    CONDITIONS OF ANY KIND, EITHER EXPRESS OR IMPLIED INCLUDING, WITHOUT&n;    LIMITATION, ANY WARRANTIES OR CONDITIONS OF TITLE, NON-INFRINGEMENT,&n;    MERCHANTABILITY OR FITNESS FOR A PARTICULAR PURPOSE. Each Recipient is&n;    solely responsible for determining the appropriateness of using and&n;    distributing the Program and assumes all risks associated with its&n;    exercise of rights under this Agreement, including but not limited to&n;    the risks and costs of program errors, damage to or loss of data,&n;    programs or equipment, and unavailability or interruption of operations.&n;&n;    DISCLAIMER OF LIABILITY&n;    NEITHER RECIPIENT NOR ANY CONTRIBUTORS SHALL HAVE ANY LIABILITY FOR ANY&n;    DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL&n;    DAMAGES (INCLUDING WITHOUT LIMITATION LOST PROFITS), HOWEVER CAUSED AND&n;    ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR&n;    TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE&n;    USE OR DISTRIBUTION OF THE PROGRAM OR THE EXERCISE OF ANY RIGHTS GRANTED&n;    HEREUNDER, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGES&n;&n;    You should have received a copy of the GNU General Public License&n;    along with this program; if not, write to the Free Software&n;    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n;*/
 multiline_comment|/*=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=*/
@@ -124,6 +124,8 @@ id|mpt_ASCQ_TableSz
 op_assign
 l_int|0
 suffix:semicolon
+DECL|macro|WHOINIT_UNKNOWN
+mdefine_line|#define WHOINIT_UNKNOWN&t;&t;0xAA
 multiline_comment|/*=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=*/
 multiline_comment|/*&n; *  Private data...&n; */
 multiline_comment|/* Adapter lookup table */
@@ -168,6 +170,15 @@ DECL|variable|MptEvHandlers
 r_static
 id|MPT_EVHANDLER
 id|MptEvHandlers
+(braket
+id|MPT_MAX_PROTOCOL_DRIVERS
+)braket
+suffix:semicolon
+multiline_comment|/* Reset handler lookup table */
+DECL|variable|MptResetHandlers
+r_static
+id|MPT_RESETHANDLER
+id|MptResetHandlers
 (braket
 id|MPT_MAX_PROTOCOL_DRIVERS
 )braket
@@ -227,6 +238,19 @@ id|reply
 suffix:semicolon
 r_static
 r_int
+id|mpt_do_ioc_recovery
+c_func
+(paren
+id|MPT_ADAPTER
+op_star
+id|ioc
+comma
+id|u32
+id|reason
+)paren
+suffix:semicolon
+r_static
+r_int
 id|mpt_adapter_install
 c_func
 (paren
@@ -259,6 +283,9 @@ c_func
 id|MPT_ADAPTER
 op_star
 id|ioc
+comma
+r_int
+id|freeup
 )paren
 suffix:semicolon
 r_static
@@ -279,6 +306,19 @@ c_func
 id|MPT_ADAPTER
 op_star
 id|ioc
+)paren
+suffix:semicolon
+r_static
+r_int
+id|MakeIocReady
+c_func
+(paren
+id|MPT_ADAPTER
+op_star
+id|ioc
+comma
+r_int
+id|force
 )paren
 suffix:semicolon
 r_static
@@ -312,6 +352,9 @@ c_func
 id|MPT_ADAPTER
 op_star
 id|ioc
+comma
+r_int
+id|portnum
 )paren
 suffix:semicolon
 r_static
@@ -345,6 +388,9 @@ c_func
 id|MPT_ADAPTER
 op_star
 id|ioc
+comma
+r_int
+id|ignore
 )paren
 suffix:semicolon
 r_static
@@ -355,6 +401,9 @@ c_func
 id|MPT_ADAPTER
 op_star
 id|ioc
+comma
+r_int
+id|ignore
 )paren
 suffix:semicolon
 r_static
@@ -402,6 +451,9 @@ comma
 id|u16
 op_star
 id|u16reply
+comma
+r_int
+id|maxwait
 )paren
 suffix:semicolon
 r_static
@@ -412,6 +464,9 @@ c_func
 id|MPT_ADAPTER
 op_star
 id|ioc
+comma
+r_int
+id|howlong
 )paren
 suffix:semicolon
 r_static
@@ -422,6 +477,9 @@ c_func
 id|MPT_ADAPTER
 op_star
 id|ioc
+comma
+r_int
+id|howlong
 )paren
 suffix:semicolon
 r_static
@@ -432,6 +490,9 @@ c_func
 id|MPT_ADAPTER
 op_star
 id|ioc
+comma
+r_int
+id|howlong
 )paren
 suffix:semicolon
 r_static
@@ -603,6 +664,14 @@ l_int|NULL
 suffix:semicolon
 r_int
 id|fusion_init
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+r_static
+r_void
+id|fusion_exit
 c_func
 (paren
 r_void
@@ -1778,6 +1847,78 @@ l_int|NULL
 suffix:semicolon
 )brace
 multiline_comment|/*=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=*/
+multiline_comment|/**&n; *&t;mpt_reset_register - Register protocol-specific IOC reset handler.&n; *&t;@cb_idx: previously registered (via mpt_register) callback handle&n; *&t;@reset_func: reset function&n; *&n; *&t;This routine can be called by one or more protocol-specific drivers&n; *&t;if/when they choose to be notified of IOC resets.&n; *&n; *&t;Returns 0 for success.&n; */
+r_int
+DECL|function|mpt_reset_register
+id|mpt_reset_register
+c_func
+(paren
+r_int
+id|cb_idx
+comma
+id|MPT_RESETHANDLER
+id|reset_func
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|cb_idx
+OL
+l_int|1
+op_logical_or
+id|cb_idx
+op_ge
+id|MPT_MAX_PROTOCOL_DRIVERS
+)paren
+r_return
+op_minus
+l_int|1
+suffix:semicolon
+id|MptResetHandlers
+(braket
+id|cb_idx
+)braket
+op_assign
+id|reset_func
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+)brace
+multiline_comment|/*=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=*/
+multiline_comment|/**&n; *&t;mpt_reset_deregister - Deregister protocol-specific IOC reset handler.&n; *&t;@cb_idx: previously registered callback handle&n; *&n; *&t;Each protocol-specific driver should call this routine&n; *&t;when it does not (or can no longer) handle IOC reset handling,&n; *&t;or when it&squot;s module is unloaded.&n; */
+r_void
+DECL|function|mpt_reset_deregister
+id|mpt_reset_deregister
+c_func
+(paren
+r_int
+id|cb_idx
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|cb_idx
+OL
+l_int|1
+op_logical_or
+id|cb_idx
+op_ge
+id|MPT_MAX_PROTOCOL_DRIVERS
+)paren
+r_return
+suffix:semicolon
+id|MptResetHandlers
+(braket
+id|cb_idx
+)braket
+op_assign
+l_int|NULL
+suffix:semicolon
+)brace
+multiline_comment|/*=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=*/
 multiline_comment|/**&n; *&t;mpt_get_msg_frame - Obtain a MPT request frame from the pool (of 1024)&n; *&t;allocated per MPT adapter.&n; *&t;@handle: Handle of registered MPT protocol driver&n; *&t;@iocid: IOC unique identifier (integer)&n; *&n; *&t;Returns pointer to a MPT request frame or %NULL if none are available.&n; */
 id|MPT_FRAME_HDR
 op_star
@@ -2243,10 +2384,91 @@ id|u8
 op_star
 id|req_as_bytes
 suffix:semicolon
+id|u32
+id|ioc_raw_state
+suffix:semicolon
 r_int
 id|i
 suffix:semicolon
-multiline_comment|/*&n;&t;&t; *  Emulate what mpt_put_msg_frame() does /wrt to sanity&n;&t;&t; *  setting cb_idx/req_idx.  But ONLY if this request&n;&t;&t; *  is in proper (pre-alloc&squot;d) request buffer range...&n;&t;&t; */
+multiline_comment|/* YIKES!  We already know something is amiss.&n;&t;&t; * Do upfront check on IOC state.&n;&t;&t; */
+id|ioc_raw_state
+op_assign
+id|GetIocState
+c_func
+(paren
+id|iocp
+comma
+l_int|0
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+(paren
+id|ioc_raw_state
+op_amp
+id|MPI_DOORBELL_ACTIVE
+)paren
+op_logical_or
+(paren
+(paren
+id|ioc_raw_state
+op_amp
+id|MPI_IOC_STATE_MASK
+)paren
+op_ne
+id|MPI_IOC_STATE_OPERATIONAL
+)paren
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_WARNING
+id|MYNAM
+l_string|&quot;: %s: Bad IOC state (%08x) WARNING!&bslash;n&quot;
+comma
+id|iocp-&gt;name
+comma
+id|ioc_raw_state
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+(paren
+id|r
+op_assign
+id|mpt_do_ioc_recovery
+c_func
+(paren
+id|iocp
+comma
+id|MPT_HOSTEVENT_IOC_RECOVER
+)paren
+)paren
+op_ne
+l_int|0
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_WARNING
+id|MYNAM
+l_string|&quot;: WARNING - (%d) Cannot recover %s&bslash;n&quot;
+comma
+id|r
+comma
+id|iocp-&gt;name
+)paren
+suffix:semicolon
+r_return
+id|r
+suffix:semicolon
+)brace
+)brace
+multiline_comment|/*&n;&t;&t; * Emulate what mpt_put_msg_frame() does /wrt to sanity&n;&t;&t; * setting cb_idx/req_idx.  But ONLY if this request&n;&t;&t; * is in proper (pre-alloc&squot;d) request buffer range...&n;&t;&t; */
 id|i
 op_assign
 id|MFPTR_2_MPT_INDEX
@@ -2300,7 +2522,7 @@ op_assign
 id|handle
 suffix:semicolon
 )brace
-multiline_comment|/*  Make sure there are no doorbells  */
+multiline_comment|/* Make sure there are no doorbells */
 id|CHIPREG_WRITE32
 c_func
 (paren
@@ -2335,7 +2557,7 @@ id|MPI_DOORBELL_ADD_DWORDS_SHIFT
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/*  Wait for IOC doorbell int  */
+multiline_comment|/* Wait for IOC doorbell int */
 r_if
 c_cond
 (paren
@@ -2346,14 +2568,14 @@ id|WaitForDoorbellInt
 c_func
 (paren
 id|iocp
+comma
+l_int|2
 )paren
 )paren
 OL
 l_int|0
 )paren
 (brace
-multiline_comment|/* FIXME! Recovery action(s)? */
-multiline_comment|/*i = unresponsive_ioc(i);*/
 r_return
 id|i
 suffix:semicolon
@@ -2391,16 +2613,20 @@ id|WaitForDoorbellAck
 c_func
 (paren
 id|iocp
+comma
+l_int|1
 )paren
 )paren
 OL
 l_int|0
 )paren
+(brace
 r_return
 op_minus
 l_int|2
 suffix:semicolon
-multiline_comment|/*  Send request via doorbell handshake  */
+)brace
+multiline_comment|/* Send request via doorbell handshake */
 id|req_as_bytes
 op_assign
 (paren
@@ -2512,6 +2738,8 @@ id|WaitForDoorbellAck
 c_func
 (paren
 id|iocp
+comma
+l_int|1
 )paren
 )paren
 OL
@@ -2527,7 +2755,34 @@ r_break
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/*  Make sure there are no doorbells  */
+r_if
+c_cond
+(paren
+(paren
+id|r
+op_assign
+id|WaitForDoorbellInt
+c_func
+(paren
+id|iocp
+comma
+l_int|2
+)paren
+)paren
+op_ge
+l_int|0
+)paren
+id|r
+op_assign
+l_int|0
+suffix:semicolon
+r_else
+id|r
+op_assign
+op_minus
+l_int|4
+suffix:semicolon
+multiline_comment|/* Make sure there are no doorbells */
 id|CHIPREG_WRITE32
 c_func
 (paren
@@ -2700,14 +2955,13 @@ op_ne
 id|MPI_MANUFACTPAGE_DEVICEID_FC929
 )paren
 op_logical_and
-macro_line|#if 0
-multiline_comment|/* FIXME! FC919 */
 (paren
 id|pdev-&gt;device
 op_ne
 id|MPI_MANUFACTPAGE_DEVICEID_FC919
 )paren
 op_logical_and
+macro_line|#if 0
 multiline_comment|/* FIXME! C103x family */
 (paren
 id|pdev-&gt;device
@@ -2935,14 +3189,23 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+op_logical_neg
+id|found
+op_logical_or
+op_logical_neg
 id|count
-op_eq
-l_int|0
 )paren
+(brace
+id|fusion_exit
+c_func
+(paren
+)paren
+suffix:semicolon
 r_return
 op_minus
 id|ENODEV
 suffix:semicolon
+)brace
 macro_line|#ifdef CONFIG_PROC_FS
 r_if
 c_cond
@@ -3073,9 +3336,6 @@ suffix:semicolon
 id|u32
 id|psize
 suffix:semicolon
-id|u32
-id|ioc_state
-suffix:semicolon
 r_int
 id|i
 suffix:semicolon
@@ -3086,15 +3346,7 @@ op_minus
 id|ENODEV
 suffix:semicolon
 r_int
-id|cntdn
-suffix:semicolon
-r_int
 id|len
-suffix:semicolon
-r_int
-id|statefault
-op_assign
-l_int|0
 suffix:semicolon
 id|ioc
 op_assign
@@ -3160,7 +3412,7 @@ id|ioc-&gt;pcidev
 op_assign
 id|pdev
 suffix:semicolon
-multiline_comment|/*  Find lookup slot.  GRRRR...  */
+multiline_comment|/* Find lookup slot. */
 r_for
 c_loop
 (paren
@@ -3266,7 +3518,7 @@ op_amp
 id|PCI_BASE_ADDRESS_SPACE_IO
 )paren
 (brace
-multiline_comment|/*  Get I/O space!  */
+multiline_comment|/* Get I/O space! */
 id|port
 op_assign
 id|pdev
@@ -3290,7 +3542,7 @@ suffix:semicolon
 )brace
 r_else
 (brace
-multiline_comment|/*  Get memmap  */
+multiline_comment|/* Get memmap */
 id|mem_phys
 op_assign
 id|pdev
@@ -3402,7 +3654,7 @@ op_logical_neg
 id|PortIo
 )paren
 (brace
-multiline_comment|/*  Get logical ptr for PciMem0 space  */
+multiline_comment|/* Get logical ptr for PciMem0 space */
 multiline_comment|/*mem = ioremap(mem_phys, msize);*/
 id|mem
 op_assign
@@ -3543,7 +3795,6 @@ op_assign
 l_string|&quot;LSIFC929&quot;
 suffix:semicolon
 )brace
-macro_line|#if 0
 r_else
 r_if
 c_cond
@@ -3555,13 +3806,14 @@ id|MPI_MANUFACTPAGE_DEVICEID_FC919
 (brace
 id|ioc-&gt;chip_type
 op_assign
-id|C1030
+id|FC919
 suffix:semicolon
 id|ioc-&gt;prod_name
 op_assign
 l_string|&quot;LSIFC919&quot;
 suffix:semicolon
 )brace
+macro_line|#if 0
 r_else
 r_if
 c_cond
@@ -3632,7 +3884,7 @@ op_amp
 id|ioc-&gt;FreeQlock
 )paren
 suffix:semicolon
-multiline_comment|/*  Disable all!  */
+multiline_comment|/* Disable all! */
 id|CHIPREG_WRITE32
 c_func
 (paren
@@ -3642,6 +3894,10 @@ comma
 l_int|0xFFFFFFFF
 )paren
 suffix:semicolon
+id|ioc-&gt;active
+op_assign
+l_int|0
+suffix:semicolon
 id|CHIPREG_WRITE32
 c_func
 (paren
@@ -3650,10 +3906,6 @@ id|ioc-&gt;chip-&gt;IntStatus
 comma
 l_int|0
 )paren
-suffix:semicolon
-id|ioc-&gt;active
-op_assign
-l_int|0
 suffix:semicolon
 id|ioc-&gt;pci_irq
 op_assign
@@ -3745,7 +3997,7 @@ id|pdev-&gt;irq
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*  tack onto tail of our MPT adapter list  */
+multiline_comment|/* tack onto tail of our MPT adapter list */
 id|Q_ADD_TAIL
 c_func
 (paren
@@ -3781,371 +4033,256 @@ comma
 id|pdev
 )paren
 suffix:semicolon
-multiline_comment|/*  Get current [raw] IOC state  */
-id|ioc_state
+r_if
+c_cond
+(paren
+(paren
+id|r
 op_assign
-id|GetIocState
+id|mpt_do_ioc_recovery
 c_func
 (paren
 id|ioc
 comma
+id|MPT_HOSTEVENT_IOC_BRINGUP
+)paren
+)paren
+op_ne
 l_int|0
 )paren
-suffix:semicolon
-id|dhsprintk
+(brace
+id|printk
 c_func
 (paren
+id|KERN_WARNING
+id|MYNAM
+l_string|&quot;: WARNING - %s did not initialize properly! (%d)&bslash;n&quot;
+comma
+id|ioc-&gt;name
+comma
+id|r
+)paren
+suffix:semicolon
+)brace
+r_return
+id|r
+suffix:semicolon
+)brace
+multiline_comment|/*=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=*/
+multiline_comment|/**&n; *&t;mpt_do_ioc_recovery - Initialize or recover MPT adapter.&n; *&t;@ioc: Pointer to MPT adapter structure&n; *&t;@reason: Event word / reason&n; *&n; *&t;This routine performs all the steps necessary to bring the IOC&n; *&t;to a OPERATIONAL state.&n; *&n; *&t;This routine also pre-fetches the LAN MAC address of a Fibre Channel&n; *&t;MPT adapter.&n; *&n; *&t;Returns 0 for success.&n; */
+r_static
+r_int
+DECL|function|mpt_do_ioc_recovery
+id|mpt_do_ioc_recovery
+c_func
+(paren
+id|MPT_ADAPTER
+op_star
+id|ioc
+comma
+id|u32
+id|reason
+)paren
+(brace
+r_int
+id|hard_reset_done
+op_assign
+l_int|0
+suffix:semicolon
+r_int
+id|alt_ioc_ready
+op_assign
+l_int|0
+suffix:semicolon
+r_int
+id|hard
+suffix:semicolon
+r_int
+id|r
+suffix:semicolon
+r_int
+id|i
+suffix:semicolon
+r_int
+id|handlers
+suffix:semicolon
+id|printk
+c_func
 (paren
 id|KERN_INFO
 id|MYNAM
-l_string|&quot;: %s initial [raw] state=%08x&bslash;n&quot;
+l_string|&quot;: Initiating %s %s&bslash;n&quot;
 comma
 id|ioc-&gt;name
 comma
-id|ioc_state
-)paren
-)paren
-suffix:semicolon
-multiline_comment|/*&n;&t; *  Check to see if IOC got left/stuck in doorbell handshake&n;&t; *  grip of death.  If so, hard reset the IOC.&n;&t; */
-r_if
-c_cond
-(paren
-id|ioc_state
-op_amp
-id|MPI_DOORBELL_ACTIVE
-)paren
-(brace
-id|statefault
-op_assign
-l_int|1
-suffix:semicolon
-id|printk
-c_func
-(paren
-id|KERN_WARNING
-id|MYNAM
-l_string|&quot;: %s: Uh-oh, unexpected doorbell active!&bslash;n&quot;
-comma
-id|ioc-&gt;name
-)paren
-suffix:semicolon
-)brace
-multiline_comment|/*&n;&t; *  Check to see if IOC is in FAULT state.&n;&t; *  If so, hard reset the IOC.&n;&t; */
-r_if
-c_cond
-(paren
-(paren
-id|ioc_state
-op_amp
-id|MPI_IOC_STATE_MASK
-)paren
+id|reason
 op_eq
-id|MPI_IOC_STATE_FAULT
-)paren
-(brace
-id|statefault
-op_assign
-l_int|2
-suffix:semicolon
-id|printk
-c_func
-(paren
-id|KERN_WARNING
-id|MYNAM
-l_string|&quot;: %s: Uh-oh, IOC is in FAULT state!!!&bslash;n&quot;
-comma
-id|ioc-&gt;name
-)paren
-suffix:semicolon
-id|printk
-c_func
-(paren
-id|KERN_WARNING
-l_string|&quot;           FAULT code = %04xh&bslash;n&quot;
-comma
-id|ioc_state
-op_amp
-id|MPI_DOORBELL_DATA_MASK
-)paren
-suffix:semicolon
-)brace
-r_if
-c_cond
-(paren
-id|HardReset
-op_logical_or
-id|statefault
-)paren
-(brace
-r_if
-c_cond
-(paren
-(paren
-id|r
-op_assign
-id|KickStart
-c_func
-(paren
-id|ioc
-)paren
-)paren
-op_ne
-l_int|0
-)paren
-(brace
-id|r
-op_assign
-op_minus
-id|ENODEV
-suffix:semicolon
-r_goto
-id|ioc_up_fail
-suffix:semicolon
-)brace
-)brace
-multiline_comment|/*&n;&t; *  Loop here waiting for IOC to come READY.&n;&t; */
-id|i
-op_assign
-l_int|0
-suffix:semicolon
-id|cntdn
-op_assign
-id|HZ
-op_star
-l_int|10
-suffix:semicolon
-r_while
-c_loop
-(paren
-(paren
-id|ioc_state
-op_assign
-id|GetIocState
-c_func
-(paren
-id|ioc
-comma
-l_int|1
-)paren
-)paren
-op_ne
-id|MPI_IOC_STATE_READY
-)paren
-(brace
-r_if
-c_cond
-(paren
-id|ioc_state
-op_eq
-id|MPI_IOC_STATE_OPERATIONAL
-)paren
-(brace
-multiline_comment|/*&n;&t;&t;&t; *  BIOS or previous driver load left IOC in OP state.&n;&t;&t;&t; *  Reset messaging FIFOs.&n;&t;&t;&t; */
-id|dprintk
-c_func
-(paren
-(paren
-id|KERN_WARNING
-id|MYNAM
-l_string|&quot;: %s: Sending IOC msg unit reset!&bslash;n&quot;
-comma
-id|ioc-&gt;name
-)paren
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-(paren
-id|r
-op_assign
-id|SendIocReset
-c_func
-(paren
-id|ioc
-comma
-id|MPI_FUNCTION_IOC_MESSAGE_UNIT_RESET
-)paren
-)paren
-op_ne
-l_int|0
-)paren
-(brace
-id|printk
-c_func
-(paren
-id|KERN_ERR
-id|MYNAM
-l_string|&quot;: %s: ERROR - IOC msg unit reset failed!&bslash;n&quot;
-comma
-id|ioc-&gt;name
-)paren
-suffix:semicolon
-id|r
-op_assign
-op_minus
-id|ENODEV
-suffix:semicolon
-r_goto
-id|ioc_up_fail
-suffix:semicolon
-)brace
-)brace
-r_else
-r_if
-c_cond
-(paren
-id|ioc_state
-op_eq
-id|MPI_IOC_STATE_RESET
-)paren
-(brace
-multiline_comment|/*&n;&t;&t;&t; *  Something is wrong.  Try to get IOC back&n;&t;&t;&t; *  to a known state.&n;&t;&t;&t; */
-id|dprintk
-c_func
-(paren
-(paren
-id|KERN_WARNING
-id|MYNAM
-l_string|&quot;: %s: Sending IO unit reset!&bslash;n&quot;
-comma
-id|ioc-&gt;name
-)paren
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-(paren
-id|r
-op_assign
-id|SendIocReset
-c_func
-(paren
-id|ioc
-comma
-id|MPI_FUNCTION_IO_UNIT_RESET
-)paren
-)paren
-op_ne
-l_int|0
-)paren
-(brace
-id|printk
-c_func
-(paren
-id|KERN_ERR
-id|MYNAM
-l_string|&quot;: %s: ERROR - IO unit reset failed!&bslash;n&quot;
-comma
-id|ioc-&gt;name
-)paren
-suffix:semicolon
-id|r
-op_assign
-op_minus
-id|ENODEV
-suffix:semicolon
-r_goto
-id|ioc_up_fail
-suffix:semicolon
-)brace
-)brace
-id|i
-op_increment
-suffix:semicolon
-id|cntdn
-op_decrement
-suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|cntdn
-)paren
-(brace
-id|printk
-c_func
-(paren
-id|KERN_ERR
-id|MYNAM
-l_string|&quot;: %s: ERROR - Wait IOC_READY state timeout(%d)!&bslash;n&quot;
-comma
-id|ioc-&gt;name
-comma
-(paren
-id|i
-op_plus
-l_int|5
-)paren
-op_div
-id|HZ
-)paren
-suffix:semicolon
-id|r
-op_assign
-op_minus
-id|ETIME
-suffix:semicolon
-r_goto
-id|ioc_up_fail
-suffix:semicolon
-)brace
-id|current-&gt;state
-op_assign
-id|TASK_INTERRUPTIBLE
-suffix:semicolon
-id|schedule_timeout
-c_func
-(paren
-l_int|1
-)paren
-suffix:semicolon
-)brace
-r_if
-c_cond
-(paren
-id|statefault
-)paren
-(brace
-id|printk
-c_func
-(paren
-id|KERN_WARNING
-id|MYNAM
-l_string|&quot;: %s: Whew!  Recovered from %s&bslash;n&quot;
-comma
-id|ioc-&gt;name
-comma
-id|statefault
-op_eq
-l_int|1
+id|MPT_HOSTEVENT_IOC_BRINGUP
 ques
 c_cond
-l_string|&quot;stuck handshake&quot;
+l_string|&quot;bringup&quot;
 suffix:colon
-l_string|&quot;IOC FAULT&quot;
+l_string|&quot;recovery&quot;
 )paren
 suffix:semicolon
-)brace
-multiline_comment|/*  Enable! (reply interrupt)  */
+multiline_comment|/* Disable reply interrupts */
 id|CHIPREG_WRITE32
 c_func
 (paren
 op_amp
 id|ioc-&gt;chip-&gt;IntMask
 comma
-op_complement
-(paren
-id|MPI_HIM_RIM
-)paren
+l_int|0xFFFFFFFF
 )paren
 suffix:semicolon
 id|ioc-&gt;active
 op_assign
+l_int|0
+suffix:semicolon
+multiline_comment|/* NOTE: Access to IOC&squot;s request FreeQ is now blocked! */
+singleline_comment|// FIXME? Cleanup all IOC requests here! (or below?)
+singleline_comment|// But watch out for event associated request?
+id|hard
+op_assign
+id|HardReset
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|ioc-&gt;alt_ioc
+op_logical_and
+(paren
+id|reason
+op_eq
+id|MPT_HOSTEVENT_IOC_BRINGUP
+)paren
+)paren
+id|hard
+op_assign
+l_int|0
+suffix:semicolon
+r_if
+c_cond
+(paren
+(paren
+id|hard_reset_done
+op_assign
+id|MakeIocReady
+c_func
+(paren
+id|ioc
+comma
+id|hard
+)paren
+)paren
+OL
+l_int|0
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_WARNING
+id|MYNAM
+l_string|&quot;: %s NOT READY WARNING!&bslash;n&quot;
+comma
+id|ioc-&gt;name
+)paren
+suffix:semicolon
+r_return
+op_minus
 l_int|1
 suffix:semicolon
-multiline_comment|/*  Get IOC facts! (first time, ioc-&gt;facts0 and ioc-&gt;pfacts0)  */
+)brace
+singleline_comment|// NEW!
+macro_line|#if 0&t;&t;&t;&t;&t;&t;
+singleline_comment|// Kiss-of-death!?!
+r_if
+c_cond
+(paren
+id|ioc-&gt;alt_ioc
+)paren
+(brace
+singleline_comment|// Grrr... Hold off any alt-IOC interrupts (and events) while
+singleline_comment|// handshaking to &lt;this&gt; IOC, needed because?
+multiline_comment|/* Disable alt-IOC&squot;s reply interrupts for a bit ... */
+id|alt_ioc_intmask
+op_assign
+id|CHIPREG_READ32
+c_func
+(paren
+op_amp
+id|ioc-&gt;alt_ioc-&gt;chip-&gt;IntMask
+)paren
+suffix:semicolon
+id|CHIPREG_WRITE32
+c_func
+(paren
+op_amp
+id|ioc-&gt;alt_ioc-&gt;chip-&gt;IntMask
+comma
+l_int|0xFFFFFFFF
+)paren
+suffix:semicolon
+id|ioc-&gt;alt_ioc-&gt;active
+op_assign
+l_int|0
+suffix:semicolon
+multiline_comment|/* NOTE: Access to alt-IOC&squot;s request FreeQ is now blocked! */
+)brace
+macro_line|#endif
+r_if
+c_cond
+(paren
+id|hard_reset_done
+op_logical_and
+id|ioc-&gt;alt_ioc
+)paren
+(brace
+r_if
+c_cond
+(paren
+(paren
+id|r
+op_assign
+id|MakeIocReady
+c_func
+(paren
+id|ioc-&gt;alt_ioc
+comma
+l_int|0
+)paren
+)paren
+op_eq
+l_int|0
+)paren
+id|alt_ioc_ready
+op_assign
+l_int|1
+suffix:semicolon
+r_else
+id|printk
+c_func
+(paren
+id|KERN_WARNING
+id|MYNAM
+l_string|&quot;: alt-%s: (%d) Not ready WARNING!&bslash;n&quot;
+comma
+id|ioc-&gt;alt_ioc-&gt;name
+comma
+id|r
+)paren
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+id|reason
+op_eq
+id|MPT_HOSTEVENT_IOC_BRINGUP
+)paren
+(brace
+multiline_comment|/* Get IOC facts! */
 r_if
 c_cond
 (paren
@@ -4161,10 +4298,134 @@ id|ioc
 op_ne
 l_int|0
 )paren
-r_goto
-id|ioc_up_fail
+r_return
+op_minus
+l_int|2
 suffix:semicolon
-multiline_comment|/* Does IocFacts.EventState need any looking at / attention here? */
+id|MptDisplayIocCapabilities
+c_func
+(paren
+id|ioc
+)paren
+suffix:semicolon
+)brace
+multiline_comment|/*&n;&t; * Call each currently registered protocol IOC reset handler&n;&t; * with pre-reset indication.&n;&t; * NOTE: If we&squot;re doing _IOC_BRINGUP, there can be no&n;&t; * MptResetHandlers[] registered yet.&n;&t; */
+r_if
+c_cond
+(paren
+id|hard_reset_done
+)paren
+(brace
+id|r
+op_assign
+id|handlers
+op_assign
+l_int|0
+suffix:semicolon
+r_for
+c_loop
+(paren
+id|i
+op_assign
+id|MPT_MAX_PROTOCOL_DRIVERS
+op_minus
+l_int|1
+suffix:semicolon
+id|i
+suffix:semicolon
+id|i
+op_decrement
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|MptResetHandlers
+(braket
+id|i
+)braket
+)paren
+(brace
+id|dprintk
+c_func
+(paren
+(paren
+id|KERN_INFO
+id|MYNAM
+l_string|&quot;: %s: Calling IOC pre_reset handler #%d&bslash;n&quot;
+comma
+id|ioc-&gt;name
+comma
+id|i
+)paren
+)paren
+suffix:semicolon
+id|r
+op_add_assign
+(paren
+op_star
+(paren
+id|MptResetHandlers
+(braket
+id|i
+)braket
+)paren
+)paren
+(paren
+id|ioc
+comma
+id|MPT_IOC_PRE_RESET
+)paren
+suffix:semicolon
+id|handlers
+op_increment
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|alt_ioc_ready
+)paren
+(brace
+id|dprintk
+c_func
+(paren
+(paren
+id|KERN_INFO
+id|MYNAM
+l_string|&quot;: %s: Calling alt-IOC pre_reset handler #%d&bslash;n&quot;
+comma
+id|ioc-&gt;alt_ioc-&gt;name
+comma
+id|i
+)paren
+)paren
+suffix:semicolon
+id|r
+op_add_assign
+(paren
+op_star
+(paren
+id|MptResetHandlers
+(braket
+id|i
+)braket
+)paren
+)paren
+(paren
+id|ioc-&gt;alt_ioc
+comma
+id|MPT_IOC_PRE_RESET
+)paren
+suffix:semicolon
+id|handlers
+op_increment
+suffix:semicolon
+)brace
+)brace
+)brace
+multiline_comment|/* FIXME?  Examine results here? */
+)brace
+singleline_comment|// May need to check/upload firmware &amp; data here!
 r_if
 c_cond
 (paren
@@ -4180,10 +4441,168 @@ id|ioc
 op_ne
 l_int|0
 )paren
-r_goto
-id|ioc_up_fail
+r_return
+op_minus
+l_int|3
 suffix:semicolon
-multiline_comment|/*&n;&t; *  Prime reply &amp; request queues!&n;&t; *  (mucho alloc&squot;s)&n;&t; */
+singleline_comment|// NEW!
+r_if
+c_cond
+(paren
+id|alt_ioc_ready
+)paren
+(brace
+r_if
+c_cond
+(paren
+(paren
+id|r
+op_assign
+id|SendIocInit
+c_func
+(paren
+id|ioc-&gt;alt_ioc
+)paren
+)paren
+op_ne
+l_int|0
+)paren
+(brace
+id|alt_ioc_ready
+op_assign
+l_int|0
+suffix:semicolon
+id|printk
+c_func
+(paren
+id|KERN_WARNING
+id|MYNAM
+l_string|&quot;: alt-%s: (%d) init failure WARNING!&bslash;n&quot;
+comma
+id|ioc-&gt;alt_ioc-&gt;name
+comma
+id|r
+)paren
+suffix:semicolon
+)brace
+)brace
+multiline_comment|/*&n;&t; * Call each currently registered protocol IOC reset handler&n;&t; * with post-reset indication.&n;&t; * NOTE: If we&squot;re doing _IOC_BRINGUP, there can be no&n;&t; * MptResetHandlers[] registered yet.&n;&t; */
+r_if
+c_cond
+(paren
+id|hard_reset_done
+)paren
+(brace
+id|r
+op_assign
+id|handlers
+op_assign
+l_int|0
+suffix:semicolon
+r_for
+c_loop
+(paren
+id|i
+op_assign
+id|MPT_MAX_PROTOCOL_DRIVERS
+op_minus
+l_int|1
+suffix:semicolon
+id|i
+suffix:semicolon
+id|i
+op_decrement
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|MptResetHandlers
+(braket
+id|i
+)braket
+)paren
+(brace
+id|dprintk
+c_func
+(paren
+(paren
+id|KERN_INFO
+id|MYNAM
+l_string|&quot;: %s: Calling IOC post_reset handler #%d&bslash;n&quot;
+comma
+id|ioc-&gt;name
+comma
+id|i
+)paren
+)paren
+suffix:semicolon
+id|r
+op_add_assign
+(paren
+op_star
+(paren
+id|MptResetHandlers
+(braket
+id|i
+)braket
+)paren
+)paren
+(paren
+id|ioc
+comma
+id|MPT_IOC_POST_RESET
+)paren
+suffix:semicolon
+id|handlers
+op_increment
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|alt_ioc_ready
+)paren
+(brace
+id|dprintk
+c_func
+(paren
+(paren
+id|KERN_INFO
+id|MYNAM
+l_string|&quot;: %s: Calling alt-IOC post_reset handler #%d&bslash;n&quot;
+comma
+id|ioc-&gt;alt_ioc-&gt;name
+comma
+id|i
+)paren
+)paren
+suffix:semicolon
+id|r
+op_add_assign
+(paren
+op_star
+(paren
+id|MptResetHandlers
+(braket
+id|i
+)braket
+)paren
+)paren
+(paren
+id|ioc-&gt;alt_ioc
+comma
+id|MPT_IOC_POST_RESET
+)paren
+suffix:semicolon
+id|handlers
+op_increment
+suffix:semicolon
+)brace
+)brace
+)brace
+multiline_comment|/* FIXME?  Examine results here? */
+)brace
+multiline_comment|/*&n;&t; * Prime reply &amp; request queues!&n;&t; * (mucho alloc&squot;s)&n;&t; */
 r_if
 c_cond
 (paren
@@ -4199,41 +4618,64 @@ id|ioc
 op_ne
 l_int|0
 )paren
-r_goto
-id|ioc_up_fail
+r_return
+op_minus
+l_int|4
 suffix:semicolon
-multiline_comment|/*  Get IOC facts again! (2nd time, ioc-&gt;factsN and ioc-&gt;pfactsN)  */
+singleline_comment|// NEW!
 r_if
 c_cond
+(paren
+id|alt_ioc_ready
+op_logical_and
 (paren
 (paren
 id|r
 op_assign
-id|GetIocFacts
+id|PrimeIocFifos
 c_func
 (paren
-id|ioc
+id|ioc-&gt;alt_ioc
 )paren
 )paren
 op_ne
 l_int|0
 )paren
-r_goto
-id|ioc_up_fail
-suffix:semicolon
-multiline_comment|/* Does IocFacts.EventState need any looking at / attention here? */
-id|MptDisplayIocCapabilities
+)paren
+(brace
+id|printk
 c_func
 (paren
-id|ioc
+id|KERN_WARNING
+id|MYNAM
+l_string|&quot;: alt-%s: (%d) FIFO mgmt alloc WARNING!&bslash;n&quot;
+comma
+id|ioc-&gt;alt_ioc-&gt;name
+comma
+id|r
 )paren
 suffix:semicolon
+)brace
+singleline_comment|// FIXME! Cleanup all IOC (and alt-IOC?) requests here!
 r_if
 c_cond
 (paren
-id|ioc-&gt;pfacts0.ProtocolFlags
+(paren
+id|ioc-&gt;pfacts
+(braket
+l_int|0
+)braket
+dot
+id|ProtocolFlags
 op_amp
 id|MPI_PORTFACTS_PROTOCOL_LAN
+)paren
+op_logical_and
+(paren
+id|ioc-&gt;lan_cnfg_page0.Header.PageLength
+op_eq
+l_int|0
+)paren
 )paren
 (brace
 multiline_comment|/*&n;&t;&t; *  Pre-fetch the ports LAN MAC address!&n;&t;&t; *  (LANPage1_t stuff)&n;&t;&t; */
@@ -4304,7 +4746,76 @@ suffix:semicolon
 )brace
 macro_line|#endif
 )brace
+multiline_comment|/* Enable! (reply interrupt) */
+id|CHIPREG_WRITE32
+c_func
+(paren
+op_amp
+id|ioc-&gt;chip-&gt;IntMask
+comma
+op_complement
+(paren
+id|MPI_HIM_RIM
+)paren
+)paren
+suffix:semicolon
+id|ioc-&gt;active
+op_assign
+l_int|1
+suffix:semicolon
+singleline_comment|// NEW!
+macro_line|#if 0&t;&t;&t;&t;&t;&t;
+singleline_comment|// Kiss-of-death!?!
+r_if
+c_cond
+(paren
+id|alt_ioc_ready
+op_logical_and
+(paren
+id|r
+op_eq
+l_int|0
+)paren
+)paren
+(brace
+multiline_comment|/* (re)Enable alt-IOC! (reply interrupt) */
+id|dprintk
+c_func
+(paren
+(paren
+id|KERN_INFO
+id|MYNAM
+l_string|&quot;: alt-%s reply irq re-enabled&bslash;n&quot;
+comma
+id|ioc-&gt;alt_ioc-&gt;name
+)paren
+)paren
+suffix:semicolon
+id|CHIPREG_WRITE32
+c_func
+(paren
+op_amp
+id|ioc-&gt;alt_ioc-&gt;chip-&gt;IntMask
+comma
+op_complement
+(paren
+id|MPI_HIM_RIM
+)paren
+)paren
+suffix:semicolon
+id|ioc-&gt;alt_ioc-&gt;active
+op_assign
+l_int|1
+suffix:semicolon
+)brace
+macro_line|#endif
 multiline_comment|/* NEW!  20010120 -sralston&n;&t; *  Enable MPT base driver management of EventNotification&n;&t; *  and EventAck handling.&n;&t; */
+r_if
+c_cond
+(paren
+op_logical_neg
+id|ioc-&gt;facts.EventState
+)paren
 (paren
 r_void
 )paren
@@ -4317,21 +4828,13 @@ l_int|1
 )paren
 suffix:semicolon
 multiline_comment|/* 1=Enable EventNotification */
+singleline_comment|// NEW!
+singleline_comment|// FIXME!?!
+singleline_comment|//&t;if (ioc-&gt;alt_ioc &amp;&amp; alt_ioc_ready &amp;&amp; !ioc-&gt;alt_ioc-&gt;facts.EventState) {
+singleline_comment|//&t;&t;(void) SendEventNotification(ioc-&gt;alt_ioc, 1);&t;/* 1=Enable EventNotification */
+singleline_comment|//&t;}
 r_return
 l_int|0
-suffix:semicolon
-id|ioc_up_fail
-suffix:colon
-singleline_comment|//Q_DEL_ITEM(ioc);
-singleline_comment|//mpt_adapter_dispose(ioc);
-id|mpt_adapter_disable
-c_func
-(paren
-id|ioc
-)paren
-suffix:semicolon
-r_return
-id|r
 suffix:semicolon
 )brace
 multiline_comment|/*=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=*/
@@ -4532,7 +5035,7 @@ suffix:semicolon
 )brace
 )brace
 multiline_comment|/*=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=*/
-multiline_comment|/*&n; *&t;mpt_adapter_disable - Disable misbehaving MPT adapter.&n; *&t;@this: Pointer to MPT adapter structure&n; */
+multiline_comment|/*&n; *&t;mpt_adapter_disable - Disable misbehaving MPT adapter.&n; *&t;@this: Pointer to MPT adapter structure&n; *&t;@free: Free up alloc&squot;d reply, request, etc.&n; */
 r_static
 r_void
 DECL|function|mpt_adapter_disable
@@ -4542,6 +5045,9 @@ c_func
 id|MPT_ADAPTER
 op_star
 id|this
+comma
+r_int
+id|freeup
 )paren
 (brace
 r_if
@@ -4555,6 +5061,31 @@ l_int|NULL
 r_int
 id|sz
 suffix:semicolon
+multiline_comment|/* Disable the FW */
+r_if
+c_cond
+(paren
+id|SendIocReset
+c_func
+(paren
+id|this
+comma
+id|MPI_FUNCTION_IOC_MESSAGE_UNIT_RESET
+)paren
+op_ne
+l_int|0
+)paren
+(paren
+r_void
+)paren
+id|KickStart
+c_func
+(paren
+id|this
+comma
+l_int|1
+)paren
+suffix:semicolon
 multiline_comment|/* Disable adapter interrupts! */
 id|CHIPREG_WRITE32
 c_func
@@ -4564,6 +5095,10 @@ id|this-&gt;chip-&gt;IntMask
 comma
 l_int|0xFFFFFFFF
 )paren
+suffix:semicolon
+id|this-&gt;active
+op_assign
+l_int|0
 suffix:semicolon
 multiline_comment|/* Clear any lingering interrupt */
 id|CHIPREG_WRITE32
@@ -4575,13 +5110,11 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-id|this-&gt;active
-op_assign
-l_int|0
-suffix:semicolon
 r_if
 c_cond
 (paren
+id|freeup
+op_logical_and
 id|this-&gt;reply_alloc
 op_ne
 l_int|NULL
@@ -4625,6 +5158,8 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|freeup
+op_logical_and
 id|this-&gt;req_alloc
 op_ne
 l_int|NULL
@@ -4685,6 +5220,8 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|freeup
+op_logical_and
 id|this-&gt;sense_buf_pool
 op_ne
 l_int|NULL
@@ -4755,6 +5292,8 @@ id|mpt_adapter_disable
 c_func
 (paren
 id|this
+comma
+l_int|1
 )paren
 suffix:semicolon
 r_if
@@ -4936,7 +5475,12 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|ioc-&gt;pfacts0.ProtocolFlags
+id|ioc-&gt;pfacts
+(braket
+l_int|0
+)braket
+dot
+id|ProtocolFlags
 op_amp
 id|MPI_PORTFACTS_PROTOCOL_INITIATOR
 )paren
@@ -4954,7 +5498,12 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|ioc-&gt;pfacts0.ProtocolFlags
+id|ioc-&gt;pfacts
+(braket
+l_int|0
+)braket
+dot
+id|ProtocolFlags
 op_amp
 id|MPI_PORTFACTS_PROTOCOL_TARGET
 )paren
@@ -4979,7 +5528,12 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|ioc-&gt;pfacts0.ProtocolFlags
+id|ioc-&gt;pfacts
+(braket
+l_int|0
+)braket
+dot
+id|ProtocolFlags
 op_amp
 id|MPI_PORTFACTS_PROTOCOL_LAN
 )paren
@@ -5006,7 +5560,12 @@ multiline_comment|/*&n;&t; *  This would probably evoke more questions than it&s
 r_if
 c_cond
 (paren
-id|ioc-&gt;pfacts0.ProtocolFlags
+id|ioc-&gt;pfacts
+(braket
+l_int|0
+)braket
+dot
+id|ProtocolFlags
 op_amp
 id|MPI_PORTFACTS_PROTOCOL_TARGET
 )paren
@@ -5034,6 +5593,398 @@ c_func
 (paren
 l_string|&quot;}&bslash;n&quot;
 )paren
+suffix:semicolon
+)brace
+multiline_comment|/*=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=*/
+multiline_comment|/*&n; *&t;MakeIocReady - Get IOC to a READY state, using KickStart if needed.&n; *&t;@ioc: Pointer to MPT_ADAPTER structure&n; *&t;@kick: Force hard KickStart of IOC&n; *&n; *&t;Returns 0 for already-READY, 1 for hard reset success,&n; *&t;else negative for failure.&n; */
+r_static
+r_int
+DECL|function|MakeIocReady
+id|MakeIocReady
+c_func
+(paren
+id|MPT_ADAPTER
+op_star
+id|ioc
+comma
+r_int
+id|force
+)paren
+(brace
+id|u32
+id|ioc_state
+suffix:semicolon
+r_int
+id|statefault
+op_assign
+l_int|0
+suffix:semicolon
+r_int
+id|cntdn
+suffix:semicolon
+r_int
+id|hard_reset_done
+op_assign
+l_int|0
+suffix:semicolon
+r_int
+id|r
+suffix:semicolon
+r_int
+id|i
+suffix:semicolon
+multiline_comment|/* Get current [raw] IOC state  */
+id|ioc_state
+op_assign
+id|GetIocState
+c_func
+(paren
+id|ioc
+comma
+l_int|0
+)paren
+suffix:semicolon
+id|dhsprintk
+c_func
+(paren
+(paren
+id|KERN_INFO
+id|MYNAM
+l_string|&quot;::MakeIocReady, %s [raw] state=%08x&bslash;n&quot;
+comma
+id|ioc-&gt;name
+comma
+id|ioc_state
+)paren
+)paren
+suffix:semicolon
+multiline_comment|/*&n;&t; *&t;Check to see if IOC got left/stuck in doorbell handshake&n;&t; *&t;grip of death.  If so, hard reset the IOC.&n;&t; */
+r_if
+c_cond
+(paren
+id|ioc_state
+op_amp
+id|MPI_DOORBELL_ACTIVE
+)paren
+(brace
+id|statefault
+op_assign
+l_int|1
+suffix:semicolon
+id|printk
+c_func
+(paren
+id|KERN_WARNING
+id|MYNAM
+l_string|&quot;: %s: Uh-oh, unexpected doorbell active!&bslash;n&quot;
+comma
+id|ioc-&gt;name
+)paren
+suffix:semicolon
+)brace
+multiline_comment|/* Is it already READY? */
+r_if
+c_cond
+(paren
+op_logical_neg
+id|statefault
+op_logical_and
+(paren
+id|ioc_state
+op_amp
+id|MPI_IOC_STATE_MASK
+)paren
+op_eq
+id|MPI_IOC_STATE_READY
+)paren
+r_return
+l_int|0
+suffix:semicolon
+multiline_comment|/*&n;&t; *&t;Check to see if IOC is in FAULT state.&n;&t; */
+r_if
+c_cond
+(paren
+(paren
+id|ioc_state
+op_amp
+id|MPI_IOC_STATE_MASK
+)paren
+op_eq
+id|MPI_IOC_STATE_FAULT
+)paren
+(brace
+id|statefault
+op_assign
+l_int|2
+suffix:semicolon
+id|printk
+c_func
+(paren
+id|KERN_WARNING
+id|MYNAM
+l_string|&quot;: %s: Uh-oh, IOC is in FAULT state!!!&bslash;n&quot;
+comma
+id|ioc-&gt;name
+)paren
+suffix:semicolon
+id|printk
+c_func
+(paren
+id|KERN_WARNING
+l_string|&quot;           FAULT code = %04xh&bslash;n&quot;
+comma
+id|ioc_state
+op_amp
+id|MPI_DOORBELL_DATA_MASK
+)paren
+suffix:semicolon
+)brace
+multiline_comment|/*&n;&t; *&t;Hmmm...  Did it get left operational?&n;&t; */
+r_if
+c_cond
+(paren
+(paren
+id|ioc_state
+op_amp
+id|MPI_IOC_STATE_MASK
+)paren
+op_eq
+id|MPI_IOC_STATE_OPERATIONAL
+)paren
+(brace
+id|statefault
+op_assign
+l_int|3
+suffix:semicolon
+id|dprintk
+c_func
+(paren
+(paren
+id|KERN_WARNING
+id|MYNAM
+l_string|&quot;: %s: Hmmm... IOC operational unexpected&bslash;n&quot;
+comma
+id|ioc-&gt;name
+)paren
+)paren
+suffix:semicolon
+)brace
+id|hard_reset_done
+op_assign
+id|KickStart
+c_func
+(paren
+id|ioc
+comma
+id|statefault
+op_logical_or
+id|force
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|hard_reset_done
+OL
+l_int|0
+)paren
+r_return
+op_minus
+l_int|1
+suffix:semicolon
+multiline_comment|/*&n;&t; *  Loop here waiting for IOC to come READY.&n;&t; */
+id|i
+op_assign
+l_int|0
+suffix:semicolon
+id|cntdn
+op_assign
+id|HZ
+op_star
+l_int|15
+suffix:semicolon
+r_while
+c_loop
+(paren
+(paren
+id|ioc_state
+op_assign
+id|GetIocState
+c_func
+(paren
+id|ioc
+comma
+l_int|1
+)paren
+)paren
+op_ne
+id|MPI_IOC_STATE_READY
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|ioc_state
+op_eq
+id|MPI_IOC_STATE_OPERATIONAL
+)paren
+(brace
+multiline_comment|/*&n;&t;&t;&t; *  BIOS or previous driver load left IOC in OP state.&n;&t;&t;&t; *  Reset messaging FIFOs.&n;&t;&t;&t; */
+r_if
+c_cond
+(paren
+(paren
+id|r
+op_assign
+id|SendIocReset
+c_func
+(paren
+id|ioc
+comma
+id|MPI_FUNCTION_IOC_MESSAGE_UNIT_RESET
+)paren
+)paren
+op_ne
+l_int|0
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_ERR
+id|MYNAM
+l_string|&quot;: %s: ERROR - IOC msg unit reset failed!&bslash;n&quot;
+comma
+id|ioc-&gt;name
+)paren
+suffix:semicolon
+r_return
+op_minus
+l_int|2
+suffix:semicolon
+)brace
+)brace
+r_else
+r_if
+c_cond
+(paren
+id|ioc_state
+op_eq
+id|MPI_IOC_STATE_RESET
+)paren
+(brace
+multiline_comment|/*&n;&t;&t;&t; *  Something is wrong.  Try to get IOC back&n;&t;&t;&t; *  to a known state.&n;&t;&t;&t; */
+r_if
+c_cond
+(paren
+(paren
+id|r
+op_assign
+id|SendIocReset
+c_func
+(paren
+id|ioc
+comma
+id|MPI_FUNCTION_IO_UNIT_RESET
+)paren
+)paren
+op_ne
+l_int|0
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_ERR
+id|MYNAM
+l_string|&quot;: %s: ERROR - IO unit reset failed!&bslash;n&quot;
+comma
+id|ioc-&gt;name
+)paren
+suffix:semicolon
+r_return
+op_minus
+l_int|3
+suffix:semicolon
+)brace
+)brace
+id|i
+op_increment
+suffix:semicolon
+id|cntdn
+op_decrement
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|cntdn
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_ERR
+id|MYNAM
+l_string|&quot;: %s: ERROR - Wait IOC_READY state timeout(%d)!&bslash;n&quot;
+comma
+id|ioc-&gt;name
+comma
+(paren
+id|i
+op_plus
+l_int|5
+)paren
+op_div
+id|HZ
+)paren
+suffix:semicolon
+r_return
+op_minus
+id|ETIME
+suffix:semicolon
+)brace
+id|current-&gt;state
+op_assign
+id|TASK_INTERRUPTIBLE
+suffix:semicolon
+id|schedule_timeout
+c_func
+(paren
+l_int|1
+)paren
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+id|statefault
+OL
+l_int|3
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_WARNING
+id|MYNAM
+l_string|&quot;: %s: Whew!  Recovered from %s&bslash;n&quot;
+comma
+id|ioc-&gt;name
+comma
+id|statefault
+op_eq
+l_int|1
+ques
+c_cond
+l_string|&quot;stuck handshake&quot;
+suffix:colon
+l_string|&quot;IOC FAULT&quot;
+)paren
+suffix:semicolon
+)brace
+r_return
+id|hard_reset_done
 suffix:semicolon
 )brace
 multiline_comment|/*=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=*/
@@ -5133,7 +6084,7 @@ suffix:semicolon
 id|u32
 id|status
 suffix:semicolon
-multiline_comment|/*  IOC *must* NOT be in RESET state!  */
+multiline_comment|/* IOC *must* NOT be in RESET state! */
 r_if
 c_cond
 (paren
@@ -5162,24 +6113,9 @@ suffix:semicolon
 id|facts
 op_assign
 op_amp
-id|ioc-&gt;facts0
+id|ioc-&gt;facts
 suffix:semicolon
-multiline_comment|/*  Nth (2,3,...) time thru? (been here, done that?)  */
-r_if
-c_cond
-(paren
-id|ioc-&gt;facts0.Function
-op_eq
-id|MPI_FUNCTION_IOC_FACTS
-)paren
-(brace
-id|facts
-op_assign
-op_amp
-id|ioc-&gt;factsN
-suffix:semicolon
-)brace
-multiline_comment|/*  Destination (reply area)...  */
+multiline_comment|/* Destination (reply area)... */
 id|reply_sz
 op_assign
 r_sizeof
@@ -5198,7 +6134,7 @@ comma
 id|reply_sz
 )paren
 suffix:semicolon
-multiline_comment|/*  Request area (get_facts on the stack right now!)  */
+multiline_comment|/* Request area (get_facts on the stack right now!) */
 id|req_sz
 op_assign
 r_sizeof
@@ -5221,26 +6157,16 @@ id|get_facts.Function
 op_assign
 id|MPI_FUNCTION_IOC_FACTS
 suffix:semicolon
-multiline_comment|/*  Assert: All other get_facts fields are zero!  */
+multiline_comment|/* Assert: All other get_facts fields are zero! */
 id|dprintk
 c_func
 (paren
 (paren
 id|KERN_INFO
 id|MYNAM
-l_string|&quot;: %s: Sending IocFacts%s request&bslash;n&quot;
+l_string|&quot;: %s: Sending get IocFacts request&bslash;n&quot;
 comma
 id|ioc-&gt;name
-comma
-id|facts
-op_eq
-op_amp
-id|ioc-&gt;facts0
-ques
-c_cond
-l_string|&quot;0&quot;
-suffix:colon
-l_string|&quot;N&quot;
 )paren
 )paren
 suffix:semicolon
@@ -5268,6 +6194,8 @@ id|u16
 op_star
 )paren
 id|facts
+comma
+l_int|3
 )paren
 suffix:semicolon
 r_if
@@ -5280,7 +6208,7 @@ l_int|0
 r_return
 id|r
 suffix:semicolon
-multiline_comment|/*&n;&t; *  Now byte swap the necessary fields before any further&n;&t; *  inspection of reply contents.&n;&t; *&n;&t; *  But need to do some sanity checks on MsgLength (byte) field&n;&t; *  to make sure we don&squot;t zero IOC&squot;s req_sz!&n;&t; */
+multiline_comment|/*&n;&t; * Now byte swap (GRRR) the necessary fields before any further&n;&t; * inspection of reply contents.&n;&t; *&n;&t; * But need to do some sanity checks on MsgLength (byte) field&n;&t; * to make sure we don&squot;t zero IOC&squot;s req_sz!&n;&t; */
 multiline_comment|/* Did we get a valid reply? */
 r_if
 c_cond
@@ -5300,6 +6228,18 @@ id|u32
 )paren
 )paren
 (brace
+multiline_comment|/*&n;&t;&t; * If not been here, done that, save off first WhoInit value&n;&t;&t; */
+r_if
+c_cond
+(paren
+id|ioc-&gt;FirstWhoInit
+op_eq
+id|WHOINIT_UNKNOWN
+)paren
+id|ioc-&gt;FirstWhoInit
+op_assign
+id|facts-&gt;WhoInit
+suffix:semicolon
 id|facts-&gt;MsgVersion
 op_assign
 id|le16_to_cpu
@@ -5403,7 +6343,7 @@ c_func
 id|facts-&gt;CurReplyFrameSize
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t;&t; *  Handle NEW (!) IOCFactsReply fields in MPI-1.01.xx&n;&t;&t; *  Older MPI-1.00.xx struct had 13 dwords, and enlarged&n;&t;&t; *  to 14 in MPI-1.01.0x.&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * Handle NEW (!) IOCFactsReply fields in MPI-1.01.xx&n;&t;&t; * Older MPI-1.00.xx struct had 13 dwords, and enlarged&n;&t;&t; * to 14 in MPI-1.01.0x.&n;&t;&t; */
 r_if
 c_cond
 (paren
@@ -5447,7 +6387,7 @@ c_cond
 id|facts-&gt;RequestFrameSize
 )paren
 (brace
-multiline_comment|/*&n;&t;&t;&t; *  Set values for this IOC&squot;s REQUEST queue size &amp; depth...&n;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t; * Set values for this IOC&squot;s REQUEST queue size &amp; depth...&n;&t;&t;&t; */
 id|ioc-&gt;req_sz
 op_assign
 id|MIN
@@ -5544,7 +6484,7 @@ id|ioc-&gt;req_depth
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/*  Get port facts!  */
+multiline_comment|/* Get port facts! */
 r_if
 c_cond
 (paren
@@ -5555,6 +6495,8 @@ id|GetPortFacts
 c_func
 (paren
 id|ioc
+comma
+l_int|0
 )paren
 )paren
 op_ne
@@ -5586,7 +6528,7 @@ l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/*=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=*/
-multiline_comment|/*&n; *&t;GetPortFacts - Send PortFacts request to MPT adapter.&n; *&t;@ioc: Pointer to MPT_ADAPTER structure&n; *&n; *&t;Returns 0 for success, non-zero for failure.&n; */
+multiline_comment|/*&n; *&t;GetPortFacts - Send PortFacts request to MPT adapter.&n; *&t;@ioc: Pointer to MPT_ADAPTER structure&n; *&t;@portnum: Port number&n; *&n; *&t;Returns 0 for success, non-zero for failure.&n; */
 r_static
 r_int
 DECL|function|GetPortFacts
@@ -5596,6 +6538,9 @@ c_func
 id|MPT_ADAPTER
 op_star
 id|ioc
+comma
+r_int
+id|portnum
 )paren
 (brace
 id|PortFacts_t
@@ -5614,7 +6559,7 @@ suffix:semicolon
 r_int
 id|reply_sz
 suffix:semicolon
-multiline_comment|/*  IOC *must* NOT be in RESET state!  */
+multiline_comment|/* IOC *must* NOT be in RESET state! */
 r_if
 c_cond
 (paren
@@ -5643,24 +6588,12 @@ suffix:semicolon
 id|pfacts
 op_assign
 op_amp
-id|ioc-&gt;pfacts0
+id|ioc-&gt;pfacts
+(braket
+id|portnum
+)braket
 suffix:semicolon
-multiline_comment|/*  Nth (2,3,...) time thru? (been here, done that?)  */
-r_if
-c_cond
-(paren
-id|ioc-&gt;pfacts0.Function
-op_eq
-id|MPI_FUNCTION_PORT_FACTS
-)paren
-(brace
-id|pfacts
-op_assign
-op_amp
-id|ioc-&gt;pfactsN
-suffix:semicolon
-)brace
-multiline_comment|/*  Destination (reply area)...  */
+multiline_comment|/* Destination (reply area)...  */
 id|reply_sz
 op_assign
 r_sizeof
@@ -5679,7 +6612,7 @@ comma
 id|reply_sz
 )paren
 suffix:semicolon
-multiline_comment|/*  Request area (get_pfacts on the stack right now!)  */
+multiline_comment|/* Request area (get_pfacts on the stack right now!) */
 id|req_sz
 op_assign
 r_sizeof
@@ -5702,26 +6635,22 @@ id|get_pfacts.Function
 op_assign
 id|MPI_FUNCTION_PORT_FACTS
 suffix:semicolon
-multiline_comment|/*  Assert: All other get_pfacts fields are zero!  */
+id|get_pfacts.PortNumber
+op_assign
+id|portnum
+suffix:semicolon
+multiline_comment|/* Assert: All other get_pfacts fields are zero! */
 id|dprintk
 c_func
 (paren
 (paren
 id|KERN_INFO
 id|MYNAM
-l_string|&quot;: %s: Sending PortFacts%s request&bslash;n&quot;
+l_string|&quot;: %s: Sending get PortFacts(%d) request&bslash;n&quot;
 comma
 id|ioc-&gt;name
 comma
-id|pfacts
-op_eq
-op_amp
-id|ioc-&gt;pfacts0
-ques
-c_cond
-l_string|&quot;0&quot;
-suffix:colon
-l_string|&quot;N&quot;
+id|portnum
 )paren
 )paren
 suffix:semicolon
@@ -5749,6 +6678,8 @@ id|u16
 op_star
 )paren
 id|pfacts
+comma
+l_int|3
 )paren
 suffix:semicolon
 r_if
@@ -5983,6 +6914,8 @@ op_star
 )paren
 op_amp
 id|init_reply
+comma
+l_int|10
 )paren
 suffix:semicolon
 r_if
@@ -6241,6 +7174,8 @@ op_star
 )paren
 op_amp
 id|reply_buf
+comma
+l_int|65
 )paren
 suffix:semicolon
 r_if
@@ -6259,7 +7194,7 @@ l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/*=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=*/
-multiline_comment|/*&n; *&t;KickStart - Perform hard reset of MPT adapter.&n; *&t;@ioc: Pointer to MPT_ADAPTER structure&n; *&n; *&t;This routine places MPT adapter in diagnostic mode via the&n; *&t;WriteSequence register, and then performs a hard reset of adapter&n; *&t;via the Diagnostic register.&n; *&n; *&t;Returns 0 for success, non-zero for failure.&n; */
+multiline_comment|/*&n; *&t;KickStart - Perform hard reset of MPT adapter.&n; *&t;@ioc: Pointer to MPT_ADAPTER structure&n; *&t;@force: Force hard reset&n; *&n; *&t;This routine places MPT adapter in diagnostic mode via the&n; *&t;WriteSequence register, and then performs a hard reset of adapter&n; *&t;via the Diagnostic register.&n; *&n; *&t;Returns 0 for soft reset success, 1 for hard reset success,&n; *&t;else a negative value for failure.&n; */
 r_static
 r_int
 DECL|function|KickStart
@@ -6269,10 +7204,15 @@ c_func
 id|MPT_ADAPTER
 op_star
 id|ioc
+comma
+r_int
+id|force
 )paren
 (brace
 r_int
-id|r
+id|hard_reset_done
+op_assign
+l_int|0
 suffix:semicolon
 id|u32
 id|ioc_state
@@ -6294,20 +7234,39 @@ id|ioc-&gt;name
 )paren
 )paren
 suffix:semicolon
+id|hard_reset_done
+op_assign
+id|mpt_fc9x9_reset
+c_func
+(paren
+id|ioc
+comma
+id|force
+)paren
+suffix:semicolon
+macro_line|#if 0
 r_if
 c_cond
 (paren
 id|ioc-&gt;chip_type
 op_eq
 id|FC909
+op_logical_or
+id|ioc-&gt;chip
+op_minus
+id|type
+op_eq
+id|FC919
 )paren
 (brace
-id|r
+id|hard_reset_done
 op_assign
 id|mpt_fc9x9_reset
 c_func
 (paren
 id|ioc
+comma
+id|force
 )paren
 suffix:semicolon
 )brace
@@ -6363,12 +7322,14 @@ op_star
 id|HZ
 )paren
 )paren
-id|r
+id|hard_reset_done
 op_assign
 id|mpt_fc9x9_reset
 c_func
 (paren
 id|ioc
+comma
+id|ignore
 )paren
 suffix:semicolon
 r_else
@@ -6391,7 +7352,6 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/* TODO! Add FC919!&n;&t;} else if (ioc-&gt;chip_type == FC919) {&n;&t; */
 multiline_comment|/* TODO! Add C1030!&n;&t;} else if (ioc-&gt;chip_type == C1030) {&n;&t; */
 )brace
 r_else
@@ -6413,16 +7373,16 @@ op_minus
 l_int|5
 suffix:semicolon
 )brace
+macro_line|#endif
 r_if
 c_cond
 (paren
-id|r
-op_ne
+id|hard_reset_done
+OL
 l_int|0
 )paren
 r_return
-op_minus
-id|r
+id|hard_reset_done
 suffix:semicolon
 id|dprintk
 c_func
@@ -6486,7 +7446,7 @@ id|cnt
 )paren
 suffix:semicolon
 r_return
-l_int|0
+id|hard_reset_done
 suffix:semicolon
 )brace
 multiline_comment|/* udelay(10000) ? */
@@ -6527,34 +7487,92 @@ c_func
 id|MPT_ADAPTER
 op_star
 id|ioc
+comma
+r_int
+id|ignore
 )paren
 (brace
 id|u32
-id|diagval
+id|diag0val
+suffix:semicolon
+r_int
+id|hard_reset_done
+op_assign
+l_int|0
 suffix:semicolon
 multiline_comment|/* Use &quot;Diagnostic reset&quot; method! (only thing available!) */
-multiline_comment|/*&n;&t; * Extra read to handle 909 B.0 chip problem with reset&n;&t; * logic not finishing the RAM access before hard reset hits.&n;&t; * (? comment taken from NT SYMMPI source)&n;&t; */
-(paren
-r_void
-)paren
+id|diag0val
+op_assign
 id|CHIPREG_READ32
 c_func
 (paren
 op_amp
-id|ioc-&gt;chip-&gt;Fubar
+id|ioc-&gt;chip-&gt;Diagnostic
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * Write magic sequence to WriteSequence register.&n;&t; * But, send 0x0F first to insure a reset to the beginning of the sequence.&n;&t; */
-id|CHIPREG_WRITE32
+macro_line|#ifdef MPT_DEBUG
+(brace
+id|u32
+id|diag1val
+op_assign
+l_int|0
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|ioc-&gt;alt_ioc
+)paren
+id|diag1val
+op_assign
+id|CHIPREG_READ32
 c_func
 (paren
 op_amp
-id|ioc-&gt;chip-&gt;WriteSequence
-comma
-id|MPI_WRSEQ_KEY_VALUE_MASK
+id|ioc-&gt;alt_ioc-&gt;chip-&gt;Diagnostic
 )paren
 suffix:semicolon
-multiline_comment|/* Now write magic sequence */
+id|dprintk
+c_func
+(paren
+(paren
+id|KERN_INFO
+id|MYNAM
+l_string|&quot;: %s: DBG1: diag0=%08x, diag1=%08x&bslash;n&quot;
+comma
+id|ioc-&gt;name
+comma
+id|diag0val
+comma
+id|diag1val
+)paren
+)paren
+suffix:semicolon
+)brace
+macro_line|#endif
+r_if
+c_cond
+(paren
+id|diag0val
+op_amp
+id|MPI_DIAG_DRWE
+)paren
+(brace
+id|dprintk
+c_func
+(paren
+(paren
+id|KERN_INFO
+id|MYNAM
+l_string|&quot;: %s: DiagWriteEn bit already set&bslash;n&quot;
+comma
+id|ioc-&gt;name
+)paren
+)paren
+suffix:semicolon
+)brace
+r_else
+(brace
+multiline_comment|/* Write magic sequence to WriteSequence register */
 id|CHIPREG_WRITE32
 c_func
 (paren
@@ -6606,13 +7624,90 @@ c_func
 (paren
 id|KERN_INFO
 id|MYNAM
-l_string|&quot;: %s: Wrote magic DiagWriteEn sequence&bslash;n&quot;
+l_string|&quot;: %s: Wrote magic DiagWriteEn sequence [spot#1]&bslash;n&quot;
 comma
 id|ioc-&gt;name
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/* Now hit the reset bit in the Diagnostic register */
+)brace
+id|diag0val
+op_assign
+id|CHIPREG_READ32
+c_func
+(paren
+op_amp
+id|ioc-&gt;chip-&gt;Diagnostic
+)paren
+suffix:semicolon
+macro_line|#ifdef MPT_DEBUG
+(brace
+id|u32
+id|diag1val
+op_assign
+l_int|0
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|ioc-&gt;alt_ioc
+)paren
+id|diag1val
+op_assign
+id|CHIPREG_READ32
+c_func
+(paren
+op_amp
+id|ioc-&gt;alt_ioc-&gt;chip-&gt;Diagnostic
+)paren
+suffix:semicolon
+id|dprintk
+c_func
+(paren
+(paren
+id|KERN_INFO
+id|MYNAM
+l_string|&quot;: %s: DbG2: diag0=%08x, diag1=%08x&bslash;n&quot;
+comma
+id|ioc-&gt;name
+comma
+id|diag0val
+comma
+id|diag1val
+)paren
+)paren
+suffix:semicolon
+)brace
+macro_line|#endif
+r_if
+c_cond
+(paren
+op_logical_neg
+id|ignore
+op_logical_and
+(paren
+id|diag0val
+op_amp
+id|MPI_DIAG_RESET_HISTORY
+)paren
+)paren
+(brace
+id|dprintk
+c_func
+(paren
+(paren
+id|KERN_INFO
+id|MYNAM
+l_string|&quot;: %s: Skipping due to ResetHistory bit set!&bslash;n&quot;
+comma
+id|ioc-&gt;name
+)paren
+)paren
+suffix:semicolon
+)brace
+r_else
+(brace
+multiline_comment|/*&n;&t;&t; * Now hit the reset bit in the Diagnostic register&n;&t;&t; * (THE BIG HAMMER!)&n;&t;&t; */
 id|CHIPREG_WRITE32
 c_func
 (paren
@@ -6622,17 +7717,103 @@ comma
 id|MPI_DIAG_RESET_ADAPTER
 )paren
 suffix:semicolon
-id|udelay
+id|hard_reset_done
+op_assign
+l_int|1
+suffix:semicolon
+id|dprintk
 c_func
 (paren
-l_int|100
+(paren
+id|KERN_INFO
+id|MYNAM
+l_string|&quot;: %s: Diagnostic reset performed&bslash;n&quot;
+comma
+id|ioc-&gt;name
+)paren
 )paren
 suffix:semicolon
-r_if
-c_cond
+multiline_comment|/* want udelay(100) */
+id|current-&gt;state
+op_assign
+id|TASK_INTERRUPTIBLE
+suffix:semicolon
+id|schedule_timeout
+c_func
+(paren
+l_int|1
+)paren
+suffix:semicolon
+multiline_comment|/* Write magic sequence to WriteSequence register */
+id|CHIPREG_WRITE32
+c_func
+(paren
+op_amp
+id|ioc-&gt;chip-&gt;WriteSequence
+comma
+id|MPI_WRSEQ_1ST_KEY_VALUE
+)paren
+suffix:semicolon
+id|CHIPREG_WRITE32
+c_func
+(paren
+op_amp
+id|ioc-&gt;chip-&gt;WriteSequence
+comma
+id|MPI_WRSEQ_2ND_KEY_VALUE
+)paren
+suffix:semicolon
+id|CHIPREG_WRITE32
+c_func
+(paren
+op_amp
+id|ioc-&gt;chip-&gt;WriteSequence
+comma
+id|MPI_WRSEQ_3RD_KEY_VALUE
+)paren
+suffix:semicolon
+id|CHIPREG_WRITE32
+c_func
+(paren
+op_amp
+id|ioc-&gt;chip-&gt;WriteSequence
+comma
+id|MPI_WRSEQ_4TH_KEY_VALUE
+)paren
+suffix:semicolon
+id|CHIPREG_WRITE32
+c_func
+(paren
+op_amp
+id|ioc-&gt;chip-&gt;WriteSequence
+comma
+id|MPI_WRSEQ_5TH_KEY_VALUE
+)paren
+suffix:semicolon
+id|dprintk
+c_func
 (paren
 (paren
-id|diagval
+id|KERN_INFO
+id|MYNAM
+l_string|&quot;: %s: Wrote magic DiagWriteEn sequence [spot#2]&bslash;n&quot;
+comma
+id|ioc-&gt;name
+)paren
+)paren
+suffix:semicolon
+)brace
+multiline_comment|/* Clear RESET_HISTORY bit! */
+id|CHIPREG_WRITE32
+c_func
+(paren
+op_amp
+id|ioc-&gt;chip-&gt;Diagnostic
+comma
+l_int|0x0
+)paren
+suffix:semicolon
+id|diag0val
 op_assign
 id|CHIPREG_READ32
 c_func
@@ -6640,10 +7821,122 @@ c_func
 op_amp
 id|ioc-&gt;chip-&gt;Diagnostic
 )paren
+suffix:semicolon
+macro_line|#ifdef MPT_DEBUG
+(brace
+id|u32
+id|diag1val
+op_assign
+l_int|0
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|ioc-&gt;alt_ioc
 )paren
+id|diag1val
+op_assign
+id|CHIPREG_READ32
+c_func
+(paren
+op_amp
+id|ioc-&gt;alt_ioc-&gt;chip-&gt;Diagnostic
+)paren
+suffix:semicolon
+id|dprintk
+c_func
+(paren
+(paren
+id|KERN_INFO
+id|MYNAM
+l_string|&quot;: %s: DbG3: diag0=%08x, diag1=%08x&bslash;n&quot;
+comma
+id|ioc-&gt;name
+comma
+id|diag0val
+comma
+id|diag1val
+)paren
+)paren
+suffix:semicolon
+)brace
+macro_line|#endif
+r_if
+c_cond
+(paren
+id|diag0val
+op_amp
+id|MPI_DIAG_RESET_HISTORY
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_WARNING
+id|MYNAM
+l_string|&quot;: %s: WARNING - ResetHistory bit failed to clear!&bslash;n&quot;
+comma
+id|ioc-&gt;name
+)paren
+suffix:semicolon
+)brace
+id|diag0val
+op_assign
+id|CHIPREG_READ32
+c_func
+(paren
+op_amp
+id|ioc-&gt;chip-&gt;Diagnostic
+)paren
+suffix:semicolon
+macro_line|#ifdef MPT_DEBUG
+(brace
+id|u32
+id|diag1val
+op_assign
+l_int|0
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|ioc-&gt;alt_ioc
+)paren
+id|diag1val
+op_assign
+id|CHIPREG_READ32
+c_func
+(paren
+op_amp
+id|ioc-&gt;alt_ioc-&gt;chip-&gt;Diagnostic
+)paren
+suffix:semicolon
+id|dprintk
+c_func
+(paren
+(paren
+id|KERN_INFO
+id|MYNAM
+l_string|&quot;: %s: DbG4: diag0=%08x, diag1=%08x&bslash;n&quot;
+comma
+id|ioc-&gt;name
+comma
+id|diag0val
+comma
+id|diag1val
+)paren
+)paren
+suffix:semicolon
+)brace
+macro_line|#endif
+r_if
+c_cond
+(paren
+id|diag0val
 op_amp
 (paren
 id|MPI_DIAG_FLASH_BAD_SIG
+op_or
+id|MPI_DIAG_RESET_ADAPTER
 op_or
 id|MPI_DIAG_DISABLE_ARM
 )paren
@@ -6654,23 +7947,20 @@ c_func
 (paren
 id|KERN_ERR
 id|MYNAM
-l_string|&quot;: %s: ERROR - Diagnostic reset FAILED!&bslash;n&quot;
+l_string|&quot;: %s: ERROR - Diagnostic reset FAILED! (%02xh)&bslash;n&quot;
 comma
 id|ioc-&gt;name
+comma
+id|diag0val
 )paren
 suffix:semicolon
 r_return
 op_minus
-l_int|9
+l_int|3
 suffix:semicolon
 )brace
-multiline_comment|/* TODO!&n;&t; * Cleanup all event stuff for this IOC;&n;&t; * re-issue EventNotification request if needed.&n;&t; */
-r_if
-c_cond
-(paren
-id|ioc-&gt;factsN.Function
-)paren
-id|ioc-&gt;factsN.EventState
+multiline_comment|/*&n;&t; * Reset flag that says we&squot;ve enabled event notification&n;&t; */
+id|ioc-&gt;facts.EventState
 op_assign
 l_int|0
 suffix:semicolon
@@ -6698,7 +7988,7 @@ id|ioc-&gt;last_kickstart
 suffix:semicolon
 )brace
 r_return
-l_int|0
+id|hard_reset_done
 suffix:semicolon
 )brace
 multiline_comment|/*=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=*/
@@ -6720,8 +8010,9 @@ id|reset_type
 r_int
 id|r
 suffix:semicolon
-id|printk
+id|dprintk
 c_func
+(paren
 (paren
 id|KERN_WARNING
 id|MYNAM
@@ -6730,6 +8021,7 @@ comma
 id|ioc-&gt;name
 comma
 id|reset_type
+)paren
 )paren
 suffix:semicolon
 id|CHIPREG_WRITE32
@@ -6753,6 +8045,8 @@ id|WaitForDoorbellAck
 c_func
 (paren
 id|ioc
+comma
+l_int|2
 )paren
 )paren
 OL
@@ -6765,9 +8059,9 @@ multiline_comment|/* TODO!&n;&t; *  Cleanup all event stuff for this IOC; re-iss
 r_if
 c_cond
 (paren
-id|ioc-&gt;factsN.Function
+id|ioc-&gt;facts.Function
 )paren
-id|ioc-&gt;factsN.EventState
+id|ioc-&gt;facts.EventState
 op_assign
 l_int|0
 suffix:semicolon
@@ -7466,7 +8760,7 @@ l_int|1
 suffix:semicolon
 )brace
 multiline_comment|/*=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=*/
-multiline_comment|/*&n; *&t;HandShakeReqAndReply - Send MPT request to and receive reply from&n; *&t;IOC via doorbell handshake method.&n; *&t;@ioc: Pointer to MPT_ADAPTER structure&n; *&t;@reqBytes: Size of the request in bytes&n; *&t;@req: Pointer to MPT request frame&n; *&t;@replyBytes: Expected size of the reply in bytes&n; *&t;@u16reply: Pointer to area where reply should be written&n; *&n; *&t;NOTES: It is the callers responsibility to byte-swap fields in the&n; *&t;request which are greater than 1 byte in size.  It is also the&n; *&t;callers responsibility to byte-swap response fields which are&n; *&t;greater than 1 byte in size.&n; *&n; *&t;Returns 0 for success, non-zero for failure.&n; */
+multiline_comment|/*&n; *&t;HandShakeReqAndReply - Send MPT request to and receive reply from&n; *&t;IOC via doorbell handshake method.&n; *&t;@ioc: Pointer to MPT_ADAPTER structure&n; *&t;@reqBytes: Size of the request in bytes&n; *&t;@req: Pointer to MPT request frame&n; *&t;@replyBytes: Expected size of the reply in bytes&n; *&t;@u16reply: Pointer to area where reply should be written&n; *&t;@maxwait: Max wait time for a reply (in seconds)&n; *&n; *&t;NOTES: It is the callers responsibility to byte-swap fields in the&n; *&t;request which are greater than 1 byte in size.  It is also the&n; *&t;callers responsibility to byte-swap response fields which are&n; *&t;greater than 1 byte in size.&n; *&n; *&t;Returns 0 for success, non-zero for failure.&n; */
 r_static
 r_int
 DECL|function|HandShakeReqAndReply
@@ -7490,6 +8784,9 @@ comma
 id|u16
 op_star
 id|u16reply
+comma
+r_int
+id|maxwait
 )paren
 (brace
 id|MPIDefaultReply_t
@@ -7567,6 +8864,8 @@ id|WaitForDoorbellInt
 c_func
 (paren
 id|ioc
+comma
+l_int|2
 )paren
 )paren
 OL
@@ -7619,6 +8918,8 @@ id|WaitForDoorbellAck
 c_func
 (paren
 id|ioc
+comma
+l_int|2
 )paren
 )paren
 OL
@@ -7752,6 +9053,8 @@ id|WaitForDoorbellAck
 c_func
 (paren
 id|ioc
+comma
+l_int|2
 )paren
 )paren
 OL
@@ -7813,6 +9116,8 @@ id|WaitForDoorbellReply
 c_func
 (paren
 id|ioc
+comma
+id|maxwait
 )paren
 )paren
 OL
@@ -7872,7 +9177,7 @@ id|failcnt
 suffix:semicolon
 )brace
 multiline_comment|/*=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=*/
-multiline_comment|/*&n; *&t;WaitForDoorbellAck - Wait for IOC to clear the IOP_DOORBELL_STATUS bit&n; *&t;in it&squot;s IntStatus register.&n; *&t;@ioc: Pointer to MPT_ADAPTER structure&n; *&n; *&t;This routine waits (up to ~30 seconds max) for IOC doorbell&n; *&t;handshake ACKnowledge.&n; *&n; *&t;Returns a negative value on failure, else wait loop count.&n; */
+multiline_comment|/*&n; *&t;WaitForDoorbellAck - Wait for IOC to clear the IOP_DOORBELL_STATUS bit&n; *&t;in it&squot;s IntStatus register.&n; *&t;@ioc: Pointer to MPT_ADAPTER structure&n; *&t;@howlong: How long to wait (in seconds)&n; *&n; *&t;This routine waits (up to ~2 seconds max) for IOC doorbell&n; *&t;handshake ACKnowledge.&n; *&n; *&t;Returns a negative value on failure, else wait loop count.&n; */
 r_static
 r_int
 DECL|function|WaitForDoorbellAck
@@ -7882,6 +9187,9 @@ c_func
 id|MPT_ADAPTER
 op_star
 id|ioc
+comma
+r_int
+id|howlong
 )paren
 (brace
 r_int
@@ -7889,9 +9197,8 @@ id|cntdn
 op_assign
 id|HZ
 op_star
-l_int|30
+id|howlong
 suffix:semicolon
-multiline_comment|/* ~30 seconds */
 r_int
 id|count
 op_assign
@@ -7990,7 +9297,7 @@ l_int|1
 suffix:semicolon
 )brace
 multiline_comment|/*=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=*/
-multiline_comment|/*&n; *&t;WaitForDoorbellInt - Wait for IOC to set the HIS_DOORBELL_INTERRUPT bit&n; *&t;in it&squot;s IntStatus register.&n; *&t;@ioc: Pointer to MPT_ADAPTER structure&n; *&n; *&t;This routine waits (up to ~30 seconds max) for IOC doorbell interrupt.&n; *&n; *&t;Returns a negative value on failure, else wait loop count.&n; */
+multiline_comment|/*&n; *&t;WaitForDoorbellInt - Wait for IOC to set the HIS_DOORBELL_INTERRUPT bit&n; *&t;in it&squot;s IntStatus register.&n; *&t;@ioc: Pointer to MPT_ADAPTER structure&n; *&t;@howlong: How long to wait (in seconds)&n; *&n; *&t;This routine waits (up to ~2 seconds max) for IOC doorbell interrupt.&n; *&n; *&t;Returns a negative value on failure, else wait loop count.&n; */
 r_static
 r_int
 DECL|function|WaitForDoorbellInt
@@ -8000,6 +9307,9 @@ c_func
 id|MPT_ADAPTER
 op_star
 id|ioc
+comma
+r_int
+id|howlong
 )paren
 (brace
 r_int
@@ -8007,9 +9317,8 @@ id|cntdn
 op_assign
 id|HZ
 op_star
-l_int|30
+id|howlong
 suffix:semicolon
-multiline_comment|/* ~30 seconds */
 r_int
 id|count
 op_assign
@@ -8105,7 +9414,7 @@ l_int|1
 suffix:semicolon
 )brace
 multiline_comment|/*=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=*/
-multiline_comment|/*&n; *&t;WaitForDoorbellReply - Wait for and capture a IOC handshake reply.&n; *&t;@ioc: Pointer to MPT_ADAPTER structure&n; *&n; *&t;This routine polls the IOC for a handshake reply, 16 bits at a time.&n; *&t;Reply is cached to IOC private area large enough to hold a maximum&n; *&t;of 128 bytes of reply data.&n; *&n; *&t;Returns a negative value on failure, else size of reply in WORDS.&n; */
+multiline_comment|/*&n; *&t;WaitForDoorbellReply - Wait for and capture a IOC handshake reply.&n; *&t;@ioc: Pointer to MPT_ADAPTER structure&n; *&t;@howlong: How long to wait (in seconds)&n; *&n; *&t;This routine polls the IOC for a handshake reply, 16 bits at a time.&n; *&t;Reply is cached to IOC private area large enough to hold a maximum&n; *&t;of 128 bytes of reply data.&n; *&n; *&t;Returns a negative value on failure, else size of reply in WORDS.&n; */
 r_static
 r_int
 DECL|function|WaitForDoorbellReply
@@ -8115,6 +9424,9 @@ c_func
 id|MPT_ADAPTER
 op_star
 id|ioc
+comma
+r_int
+id|howlong
 )paren
 (brace
 r_int
@@ -8168,24 +9480,10 @@ op_assign
 l_int|0
 suffix:semicolon
 multiline_comment|/*&n;&t; * Get first two u16&squot;s so we can look at IOC&squot;s intended reply MsgLength&n;&t; */
-r_for
-c_loop
-(paren
 id|u16cnt
 op_assign
 l_int|0
 suffix:semicolon
-op_logical_neg
-id|failcnt
-op_logical_and
-id|u16cnt
-OL
-l_int|2
-suffix:semicolon
-id|u16cnt
-op_increment
-)paren
-(brace
 r_if
 c_cond
 (paren
@@ -8196,17 +9494,24 @@ id|WaitForDoorbellInt
 c_func
 (paren
 id|ioc
+comma
+id|howlong
 )paren
 )paren
 OL
 l_int|0
 )paren
+(brace
 id|failcnt
 op_increment
 suffix:semicolon
+)brace
+r_else
+(brace
 id|hs_reply
 (braket
 id|u16cnt
+op_increment
 )braket
 op_assign
 id|le16_to_cpu
@@ -8231,6 +9536,57 @@ comma
 l_int|0
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+(paren
+id|t
+op_assign
+id|WaitForDoorbellInt
+c_func
+(paren
+id|ioc
+comma
+l_int|2
+)paren
+)paren
+OL
+l_int|0
+)paren
+id|failcnt
+op_increment
+suffix:semicolon
+r_else
+(brace
+id|hs_reply
+(braket
+id|u16cnt
+op_increment
+)braket
+op_assign
+id|le16_to_cpu
+c_func
+(paren
+id|CHIPREG_READ32
+c_func
+(paren
+op_amp
+id|ioc-&gt;chip-&gt;Doorbell
+)paren
+op_amp
+l_int|0x0000FFFF
+)paren
+suffix:semicolon
+id|CHIPREG_WRITE32
+c_func
+(paren
+op_amp
+id|ioc-&gt;chip-&gt;IntStatus
+comma
+l_int|0
+)paren
+suffix:semicolon
+)brace
 )brace
 id|dhsprintk
 c_func
@@ -8295,6 +9651,8 @@ id|WaitForDoorbellInt
 c_func
 (paren
 id|ioc
+comma
+l_int|2
 )paren
 )paren
 OL
@@ -8367,6 +9725,8 @@ id|WaitForDoorbellInt
 c_func
 (paren
 id|ioc
+comma
+l_int|2
 )paren
 )paren
 OL
@@ -8698,6 +10058,8 @@ op_star
 )paren
 op_amp
 id|config_reply
+comma
+l_int|3
 )paren
 suffix:semicolon
 id|pci_unmap_single
@@ -8894,6 +10256,8 @@ op_star
 )paren
 op_amp
 id|config_reply
+comma
+l_int|3
 )paren
 suffix:semicolon
 id|pci_unmap_single
@@ -9489,6 +10853,15 @@ id|MPT_ADAPTER
 op_star
 id|ioc
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|procmpt_root_dir
+)paren
+r_return
+l_int|0
+suffix:semicolon
 multiline_comment|/*&n;&t; * &t;BEWARE: If/when MPT_PROCFS_MPTBASEDIR changes from &quot;mpt&quot;&n;&t; * &t;(single level) to multi level (e.g. &quot;driver/message/fusion&quot;)&n;&t; * &t;something here needs to change.  -sralston&n;&t; */
 id|ioc
 op_assign
@@ -9645,6 +11018,10 @@ comma
 l_int|0
 )paren
 suffix:semicolon
+id|procmpt_root_dir
+op_assign
+l_int|NULL
+suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
@@ -9744,6 +11121,8 @@ op_amp
 id|more
 comma
 l_int|0
+comma
+l_int|1
 )paren
 suffix:semicolon
 id|out
@@ -9952,7 +11331,7 @@ r_if
 c_cond
 (paren
 (paren
-id|ioc-&gt;facts0.FWVersion
+id|ioc-&gt;facts.FWVersion
 op_amp
 l_int|0xF000
 )paren
@@ -9967,7 +11346,7 @@ comma
 l_string|&quot; (Exp %02d%02d)&quot;
 comma
 (paren
-id|ioc-&gt;facts0.FWVersion
+id|ioc-&gt;facts.FWVersion
 op_amp
 l_int|0x0F00
 )paren
@@ -9975,7 +11354,7 @@ op_rshift
 l_int|8
 comma
 multiline_comment|/* Month */
-id|ioc-&gt;facts0.FWVersion
+id|ioc-&gt;facts.FWVersion
 op_amp
 l_int|0x001F
 )paren
@@ -9993,7 +11372,7 @@ multiline_comment|/* insider hack! */
 r_if
 c_cond
 (paren
-id|ioc-&gt;facts0.FWVersion
+id|ioc-&gt;facts.FWVersion
 op_amp
 l_int|0x0080
 )paren
@@ -10009,7 +11388,7 @@ suffix:semicolon
 )brace
 )brace
 multiline_comment|/*=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=*/
-multiline_comment|/**&n; *&t;mpt_print_ioc_summary - Write ASCII summary of IOC to a buffer.&n; *&t;@ioc: Pointer to MPT_ADAPTER structure&n; *&t;@buffer: Pointer to buffer where IOC summary info should be written&n; *&t;@size: Pointer to number of bytes we wrote (set by this routine)&n; *&t;@len: Offset at which to start writing in buffer&n; *&n; * &t;This routine writes (english readable) ASCII text, which represents&n; * &t;a summary of IOC information, to a buffer.&n; */
+multiline_comment|/**&n; *&t;mpt_print_ioc_summary - Write ASCII summary of IOC to a buffer.&n; *&t;@ioc: Pointer to MPT_ADAPTER structure&n; *&t;@buffer: Pointer to buffer where IOC summary info should be written&n; *&t;@size: Pointer to number of bytes we wrote (set by this routine)&n; *&t;@len: Offset at which to start writing in buffer&n; *&t;@showlan: Display LAN stuff?&n; *&n; * &t;This routine writes (english readable) ASCII text, which represents&n; * &t;a summary of IOC information, to a buffer.&n; */
 r_void
 DECL|function|mpt_print_ioc_summary
 id|mpt_print_ioc_summary
@@ -10029,6 +11408,9 @@ id|size
 comma
 r_int
 id|len
+comma
+r_int
+id|showlan
 )paren
 (brace
 r_char
@@ -10067,11 +11449,11 @@ comma
 id|MPT_FW_REV_MAGIC_ID_STRING
 comma
 multiline_comment|/* &quot;FwRev=&quot; or somesuch */
-id|ioc-&gt;facts0.FWVersion
+id|ioc-&gt;facts.FWVersion
 comma
 id|expVer
 comma
-id|ioc-&gt;facts0.NumberOfPorts
+id|ioc-&gt;facts.NumberOfPorts
 comma
 id|ioc-&gt;req_depth
 )paren
@@ -10079,9 +11461,18 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|ioc-&gt;pfacts0.ProtocolFlags
+id|showlan
+op_logical_and
+(paren
+id|ioc-&gt;pfacts
+(braket
+l_int|0
+)braket
+dot
+id|ProtocolFlags
 op_amp
 id|MPI_PORTFACTS_PROTOCOL_LAN
+)paren
 )paren
 (brace
 id|u8
@@ -10140,6 +11531,29 @@ l_int|0
 )paren
 suffix:semicolon
 )brace
+r_if
+c_cond
+(paren
+id|ioc-&gt;pci_irq
+OL
+l_int|100
+)paren
+id|y
+op_add_assign
+id|sprintf
+c_func
+(paren
+id|buffer
+op_plus
+id|len
+op_plus
+id|y
+comma
+l_string|&quot;, IRQ=%d&quot;
+comma
+id|ioc-&gt;pci_irq
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -10221,6 +11635,9 @@ suffix:semicolon
 r_int
 id|y
 suffix:semicolon
+r_int
+id|p
+suffix:semicolon
 id|mpt_get_fw_exp_ver
 c_func
 (paren
@@ -10264,9 +11681,24 @@ id|y
 comma
 l_string|&quot;  ProductID = 0x%04x&bslash;n&quot;
 comma
-id|ioc-&gt;facts0.ProductID
+id|ioc-&gt;facts.ProductID
 )paren
 suffix:semicolon
+r_for
+c_loop
+(paren
+id|p
+op_assign
+l_int|0
+suffix:semicolon
+id|p
+OL
+id|ioc-&gt;facts.NumberOfPorts
+suffix:semicolon
+id|p
+op_increment
+)paren
+(brace
 id|y
 op_add_assign
 id|sprintf
@@ -10280,17 +11712,22 @@ id|y
 comma
 l_string|&quot;  PortNumber = %d (of %d)&bslash;n&quot;
 comma
-id|ioc-&gt;pfacts0.PortNumber
+id|p
 op_plus
 l_int|1
 comma
-id|ioc-&gt;facts0.NumberOfPorts
+id|ioc-&gt;facts.NumberOfPorts
 )paren
 suffix:semicolon
 r_if
 c_cond
 (paren
-id|ioc-&gt;pfacts0.ProtocolFlags
+id|ioc-&gt;pfacts
+(braket
+id|p
+)braket
+dot
+id|ProtocolFlags
 op_amp
 id|MPI_PORTFACTS_PROTOCOL_LAN
 )paren
@@ -10351,6 +11788,7 @@ l_int|0
 )paren
 suffix:semicolon
 )brace
+)brace
 id|y
 op_add_assign
 id|sprintf
@@ -10364,7 +11802,7 @@ id|y
 comma
 l_string|&quot;  FWVersion = 0x%04x%s&bslash;n&quot;
 comma
-id|ioc-&gt;facts0.FWVersion
+id|ioc-&gt;facts.FWVersion
 comma
 id|expVer
 )paren
@@ -10382,7 +11820,7 @@ id|y
 comma
 l_string|&quot;  MsgVersion = 0x%04x&bslash;n&quot;
 comma
-id|ioc-&gt;facts0.MsgVersion
+id|ioc-&gt;facts.MsgVersion
 )paren
 suffix:semicolon
 id|y
@@ -10396,9 +11834,9 @@ id|len
 op_plus
 id|y
 comma
-l_string|&quot;  WhoInit = 0x%02x&bslash;n&quot;
+l_string|&quot;  FirstWhoInit = 0x%02x&bslash;n&quot;
 comma
-id|ioc-&gt;facts0.WhoInit
+id|ioc-&gt;FirstWhoInit
 )paren
 suffix:semicolon
 id|y
@@ -10414,7 +11852,7 @@ id|y
 comma
 l_string|&quot;  EventState = 0x%02x&bslash;n&quot;
 comma
-id|ioc-&gt;facts0.EventState
+id|ioc-&gt;facts.EventState
 )paren
 suffix:semicolon
 id|y
@@ -10430,7 +11868,7 @@ id|y
 comma
 l_string|&quot;  CurrentHostMfaHighAddr = 0x%08x&bslash;n&quot;
 comma
-id|ioc-&gt;facts0.CurrentHostMfaHighAddr
+id|ioc-&gt;facts.CurrentHostMfaHighAddr
 )paren
 suffix:semicolon
 id|y
@@ -10446,7 +11884,7 @@ id|y
 comma
 l_string|&quot;  CurrentSenseBufferHighAddr = 0x%08x&bslash;n&quot;
 comma
-id|ioc-&gt;facts0.CurrentSenseBufferHighAddr
+id|ioc-&gt;facts.CurrentSenseBufferHighAddr
 )paren
 suffix:semicolon
 id|y
@@ -10462,7 +11900,7 @@ id|y
 comma
 l_string|&quot;  MaxChainDepth = 0x%02x frames&bslash;n&quot;
 comma
-id|ioc-&gt;facts0.MaxChainDepth
+id|ioc-&gt;facts.MaxChainDepth
 )paren
 suffix:semicolon
 id|y
@@ -10480,7 +11918,7 @@ l_string|&quot;  MinBlockSize = 0x%02x bytes&bslash;n&quot;
 comma
 l_int|4
 op_star
-id|ioc-&gt;facts0.BlockSize
+id|ioc-&gt;facts.BlockSize
 )paren
 suffix:semicolon
 id|y
@@ -10567,9 +12005,9 @@ l_string|&quot;    {MaxReqSz=%d}   {MaxReqDepth=%d}&bslash;n&quot;
 comma
 l_int|4
 op_star
-id|ioc-&gt;facts0.RequestFrameSize
+id|ioc-&gt;facts.RequestFrameSize
 comma
-id|ioc-&gt;facts0.GlobalCredits
+id|ioc-&gt;facts.GlobalCredits
 )paren
 suffix:semicolon
 id|y
@@ -10637,9 +12075,9 @@ id|y
 comma
 l_string|&quot;    {MaxRepSz=%d}   {MaxRepDepth=%d}&bslash;n&quot;
 comma
-id|ioc-&gt;factsN.CurReplyFrameSize
+id|ioc-&gt;facts.CurReplyFrameSize
 comma
-id|ioc-&gt;facts0.ReplyQueueDepth
+id|ioc-&gt;facts.ReplyQueueDepth
 )paren
 suffix:semicolon
 op_star
@@ -11070,10 +12508,10 @@ multiline_comment|/* Update EventState field in cached IocFacts */
 r_if
 c_cond
 (paren
-id|ioc-&gt;factsN.Function
+id|ioc-&gt;facts.Function
 )paren
 (brace
-id|ioc-&gt;factsN.EventState
+id|ioc-&gt;facts.EventState
 op_assign
 id|evState
 suffix:semicolon
@@ -11501,6 +12939,15 @@ l_string|&quot;Not synchronized to signal or still negotiating (possible cable p
 suffix:semicolon
 r_break
 suffix:semicolon
+r_case
+id|MPI_IOCLOGINFO_FC_LINK_CRC_ERROR
+suffix:colon
+id|desc
+op_assign
+l_string|&quot;CRC check detected error on received frame&quot;
+suffix:semicolon
+r_break
+suffix:semicolon
 )brace
 id|printk
 c_func
@@ -11723,6 +13170,20 @@ c_func
 id|mpt_event_deregister
 )paren
 suffix:semicolon
+DECL|variable|mpt_reset_register
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|mpt_reset_register
+)paren
+suffix:semicolon
+DECL|variable|mpt_reset_deregister
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|mpt_reset_deregister
+)paren
+suffix:semicolon
 DECL|variable|mpt_get_msg_frame
 id|EXPORT_SYMBOL
 c_func
@@ -11925,6 +13386,13 @@ id|i
 op_assign
 l_int|NULL
 suffix:semicolon
+id|MptResetHandlers
+(braket
+id|i
+)braket
+op_assign
+l_int|NULL
+suffix:semicolon
 )brace
 multiline_comment|/* NEW!  20010120 -sralston&n;&t; *  Register ourselves (mptbase) in order to facilitate&n;&t; *  EventNotification handling.&n;&t; */
 id|mpt_base_index
@@ -11973,9 +13441,6 @@ id|MPT_ADAPTER
 op_star
 id|this
 suffix:semicolon
-r_int
-id|i
-suffix:semicolon
 id|dprintk
 c_func
 (paren
@@ -11986,63 +13451,6 @@ l_string|&quot;: fusion_exit() called!&bslash;n&quot;
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; *  Paranoia; disable interrupts on all MPT adapters.&n;&t; */
-r_for
-c_loop
-(paren
-id|i
-op_assign
-l_int|0
-suffix:semicolon
-id|i
-OL
-id|MPT_MAX_ADAPTERS
-suffix:semicolon
-id|i
-op_increment
-)paren
-(brace
-r_if
-c_cond
-(paren
-(paren
-id|this
-op_assign
-id|mpt_adapters
-(braket
-id|i
-)braket
-)paren
-op_ne
-l_int|NULL
-)paren
-(brace
-multiline_comment|/* Disable adapter interrupts! */
-id|CHIPREG_WRITE32
-c_func
-(paren
-op_amp
-id|this-&gt;chip-&gt;IntMask
-comma
-l_int|0xFFFFFFFF
-)paren
-suffix:semicolon
-multiline_comment|/* Clear any lingering interrupt */
-id|CHIPREG_WRITE32
-c_func
-(paren
-op_amp
-id|this-&gt;chip-&gt;IntStatus
-comma
-l_int|0
-)paren
-suffix:semicolon
-id|this-&gt;active
-op_assign
-l_int|0
-suffix:semicolon
-)brace
-)brace
 multiline_comment|/* Whups?  20010120 -sralston&n;&t; *  Moved this *above* removal of all MptAdapters!&n;&t; */
 macro_line|#ifdef CONFIG_PROC_FS
 id|procmpt_destroy

@@ -2423,7 +2423,6 @@ id|devfs_handle
 suffix:semicolon
 DECL|variable|__initdata
 r_static
-r_const
 r_char
 id|banner
 (braket
@@ -2568,6 +2567,12 @@ id|module_exit
 c_func
 (paren
 id|dsp56k_cleanup_driver
+)paren
+suffix:semicolon
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
 eof

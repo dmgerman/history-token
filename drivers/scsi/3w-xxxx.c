@@ -1,4 +1,4 @@
-multiline_comment|/* &n;   3w-xxxx.c -- 3ware Storage Controller device driver for Linux.&n;&n;   Written By: Adam Radford &lt;linux@3ware.com&gt;&n;   Modifications By: Joel Jacobson &lt;linux@3ware.com&gt;&n;   &t;&t;     Arnaldo Carvalho de Melo &lt;acme@conectiva.com.br&gt;&n;&n;   Copyright (C) 1999-2001 3ware Inc.&n;&n;   Kernel compatablity By: &t;Andre Hedrick &lt;andre@suse.com&gt;&n;   Non-Copyright (C) 2000&t;Andre Hedrick &lt;andre@suse.com&gt;&n;   &n;   Further tiny build fixes and trivial hoovering    Alan Cox&n;&n;   This program is free software; you can redistribute it and/or modify&n;   it under the terms of the GNU General Public License as published by&n;   the Free Software Foundation; version 2 of the License.&n;&n;   This program is distributed in the hope that it will be useful,           &n;   but WITHOUT ANY WARRANTY; without even the implied warranty of            &n;   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the             &n;   GNU General Public License for more details.                              &n;&n;   NO WARRANTY                                                               &n;   THE PROGRAM IS PROVIDED ON AN &quot;AS IS&quot; BASIS, WITHOUT WARRANTIES OR        &n;   CONDITIONS OF ANY KIND, EITHER EXPRESS OR IMPLIED INCLUDING, WITHOUT      &n;   LIMITATION, ANY WARRANTIES OR CONDITIONS OF TITLE, NON-INFRINGEMENT,      &n;   MERCHANTABILITY OR FITNESS FOR A PARTICULAR PURPOSE. Each Recipient is    &n;   solely responsible for determining the appropriateness of using and       &n;   distributing the Program and assumes all risks associated with its        &n;   exercise of rights under this Agreement, including but not limited to     &n;   the risks and costs of program errors, damage to or loss of data,         &n;   programs or equipment, and unavailability or interruption of operations.  &n;&n;   DISCLAIMER OF LIABILITY                                                   &n;   NEITHER RECIPIENT NOR ANY CONTRIBUTORS SHALL HAVE ANY LIABILITY FOR ANY   &n;   DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL        &n;   DAMAGES (INCLUDING WITHOUT LIMITATION LOST PROFITS), HOWEVER CAUSED AND   &n;   ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR     &n;   TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE    &n;   USE OR DISTRIBUTION OF THE PROGRAM OR THE EXERCISE OF ANY RIGHTS GRANTED  &n;   HEREUNDER, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGES             &n;&n;   You should have received a copy of the GNU General Public License         &n;   along with this program; if not, write to the Free Software               &n;   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA &n;&n;   Bugs/Comments/Suggestions should be mailed to:                            &n;   linux@3ware.com&n;&n;   For more information, goto:&n;   http://www.3ware.com&n;&n;   History&n;   -------&n;   0.1.000 -     Initial release.&n;   0.4.000 -     Added support for Asynchronous Event Notification through&n;                 ioctls for 3DM.&n;   1.0.000 -     Added DPO &amp; FUA bit support for WRITE_10 &amp; WRITE_6 cdb&n;                 to disable drive write-cache before writes.&n;   1.1.000 -     Fixed performance bug with DPO &amp; FUA not existing for WRITE_6.&n;   1.2.000 -     Added support for clean shutdown notification/feature table.&n;   1.02.00.001 - Added support for full command packet posts through ioctls&n;                 for 3DM.&n;                 Bug fix so hot spare drives don&squot;t show up.&n;   1.02.00.002 - Fix bug with tw_setfeature() call that caused oops on some&n;                 systems.&n;   08/21/00    - release previously allocated resources on failure at&n;                 tw_allocate_memory (acme)&n;   1.02.00.003 - Fix tw_interrupt() to report error to scsi layer when&n;                 controller status is non-zero.&n;                 Added handling of request_sense opcode.&n;                 Fix possible null pointer dereference in &n;                 tw_reset_device_extension()&n;   1.02.00.004 - Add support for device id of 3ware 7000 series controllers.&n;                 Make tw_setfeature() call with interrupts disabled.&n;                 Register interrupt handler before enabling interrupts.&n;                 Clear attention interrupt before draining aen queue.&n;   1.02.00.005 - Allocate bounce buffers and custom queue depth for raid5 for&n;                 6000 and 5000 series controllers.&n;                 Reduce polling mdelays causing problems on some systems.&n;                 Fix use_sg = 1 calculation bug.&n;                 Check for scsi_register returning NULL.&n;                 Add aen count to /proc/scsi/3w-xxxx.&n;                 Remove aen code unit masking in tw_aen_complete().&n;   1.02.00.006 - Remove unit from printk in tw_scsi_eh_abort(), causing&n;                 possible oops.&n;                 Fix possible null pointer dereference in tw_scsi_queue()&n;                 if done function pointer was invalid.&n;   1.02.00.007 - Fix possible null pointer dereferences in tw_ioctl().&n;                 Remove check for invalid done function pointer from&n;                 tw_scsi_queue().&n;*/
+multiline_comment|/* &n;   3w-xxxx.c -- 3ware Storage Controller device driver for Linux.&n;&n;   Written By: Adam Radford &lt;linux@3ware.com&gt;&n;   Modifications By: Joel Jacobson &lt;linux@3ware.com&gt;&n;   &t;&t;     Arnaldo Carvalho de Melo &lt;acme@conectiva.com.br&gt;&n;&n;   Copyright (C) 1999-2001 3ware Inc.&n;&n;   Kernel compatablity By: &t;Andre Hedrick &lt;andre@suse.com&gt;&n;   Non-Copyright (C) 2000&t;Andre Hedrick &lt;andre@suse.com&gt;&n;   &n;   Further tiny build fixes and trivial hoovering    Alan Cox&n;&n;   This program is free software; you can redistribute it and/or modify&n;   it under the terms of the GNU General Public License as published by&n;   the Free Software Foundation; version 2 of the License.&n;&n;   This program is distributed in the hope that it will be useful,           &n;   but WITHOUT ANY WARRANTY; without even the implied warranty of            &n;   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the             &n;   GNU General Public License for more details.                              &n;&n;   NO WARRANTY                                                               &n;   THE PROGRAM IS PROVIDED ON AN &quot;AS IS&quot; BASIS, WITHOUT WARRANTIES OR        &n;   CONDITIONS OF ANY KIND, EITHER EXPRESS OR IMPLIED INCLUDING, WITHOUT      &n;   LIMITATION, ANY WARRANTIES OR CONDITIONS OF TITLE, NON-INFRINGEMENT,      &n;   MERCHANTABILITY OR FITNESS FOR A PARTICULAR PURPOSE. Each Recipient is    &n;   solely responsible for determining the appropriateness of using and       &n;   distributing the Program and assumes all risks associated with its        &n;   exercise of rights under this Agreement, including but not limited to     &n;   the risks and costs of program errors, damage to or loss of data,         &n;   programs or equipment, and unavailability or interruption of operations.  &n;&n;   DISCLAIMER OF LIABILITY                                                   &n;   NEITHER RECIPIENT NOR ANY CONTRIBUTORS SHALL HAVE ANY LIABILITY FOR ANY   &n;   DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL        &n;   DAMAGES (INCLUDING WITHOUT LIMITATION LOST PROFITS), HOWEVER CAUSED AND   &n;   ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR     &n;   TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE    &n;   USE OR DISTRIBUTION OF THE PROGRAM OR THE EXERCISE OF ANY RIGHTS GRANTED  &n;   HEREUNDER, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGES             &n;&n;   You should have received a copy of the GNU General Public License         &n;   along with this program; if not, write to the Free Software               &n;   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA &n;&n;   Bugs/Comments/Suggestions should be mailed to:                            &n;   linux@3ware.com&n;&n;   For more information, goto:&n;   http://www.3ware.com&n;&n;   History&n;   -------&n;   0.1.000 -     Initial release.&n;   0.4.000 -     Added support for Asynchronous Event Notification through&n;                 ioctls for 3DM.&n;   1.0.000 -     Added DPO &amp; FUA bit support for WRITE_10 &amp; WRITE_6 cdb&n;                 to disable drive write-cache before writes.&n;   1.1.000 -     Fixed performance bug with DPO &amp; FUA not existing for WRITE_6.&n;   1.2.000 -     Added support for clean shutdown notification/feature table.&n;   1.02.00.001 - Added support for full command packet posts through ioctls&n;                 for 3DM.&n;                 Bug fix so hot spare drives don&squot;t show up.&n;   1.02.00.002 - Fix bug with tw_setfeature() call that caused oops on some&n;                 systems.&n;   08/21/00    - release previously allocated resources on failure at&n;                 tw_allocate_memory (acme)&n;   1.02.00.003 - Fix tw_interrupt() to report error to scsi layer when&n;                 controller status is non-zero.&n;                 Added handling of request_sense opcode.&n;                 Fix possible null pointer dereference in &n;                 tw_reset_device_extension()&n;   1.02.00.004 - Add support for device id of 3ware 7000 series controllers.&n;                 Make tw_setfeature() call with interrupts disabled.&n;                 Register interrupt handler before enabling interrupts.&n;                 Clear attention interrupt before draining aen queue.&n;   1.02.00.005 - Allocate bounce buffers and custom queue depth for raid5 for&n;                 6000 and 5000 series controllers.&n;                 Reduce polling mdelays causing problems on some systems.&n;                 Fix use_sg = 1 calculation bug.&n;                 Check for scsi_register returning NULL.&n;                 Add aen count to /proc/scsi/3w-xxxx.&n;                 Remove aen code unit masking in tw_aen_complete().&n;   1.02.00.006 - Remove unit from printk in tw_scsi_eh_abort(), causing&n;                 possible oops.&n;                 Fix possible null pointer dereference in tw_scsi_queue()&n;                 if done function pointer was invalid.&n;   1.02.00.007 - Fix possible null pointer dereferences in tw_ioctl().&n;                 Remove check for invalid done function pointer from&n;                 tw_scsi_queue().&n;   1.02.00.008 - Set max sectors per io to TW_MAX_SECTORS in tw_findcards().&n;                 Add tw_decode_error() for printing readable error messages.&n;                 Print some useful information on certain aen codes.&n;                 Add tw_decode_bits() for interpreting status register output.&n;                 Make scsi_set_pci_device() for kernels &gt;= 2.4.4&n;                 Fix bug where aen&squot;s could be lost before a reset.&n;                 Re-add spinlocks in tw_scsi_detect().&n;                 Fix possible null pointer dereference in tw_aen_drain_queue()&n;                 during initialization.&n;                 Clear pci parity errors during initialization and during io.&n;*/
 macro_line|#include &lt;linux/module.h&gt;
 id|MODULE_AUTHOR
 (paren
@@ -125,7 +125,7 @@ r_char
 op_star
 id|tw_driver_version
 op_assign
-l_string|&quot;1.02.00.007&quot;
+l_string|&quot;1.02.00.008&quot;
 suffix:semicolon
 DECL|variable|tw_device_extension_list
 id|TW_Device_Extension
@@ -163,6 +163,13 @@ suffix:semicolon
 r_int
 r_int
 id|aen
+suffix:semicolon
+id|dprintk
+c_func
+(paren
+id|KERN_WARNING
+l_string|&quot;3w-xxxx: tw_aen_complete()&bslash;n&quot;
+)paren
 suffix:semicolon
 r_if
 c_cond
@@ -217,6 +224,98 @@ l_string|&quot;3w-xxxx: tw_aen_complete(): Queue&squot;d code 0x%x&bslash;n&quot
 comma
 id|aen
 )paren
+suffix:semicolon
+multiline_comment|/* Print some useful info when certain aen codes come out */
+r_switch
+c_cond
+(paren
+id|aen
+op_amp
+l_int|0x0ff
+)paren
+(brace
+r_case
+id|TW_AEN_APORT_TIMEOUT
+suffix:colon
+id|printk
+c_func
+(paren
+id|KERN_WARNING
+l_string|&quot;3w-xxxx: scsi%d: Received drive timeout AEN on port %d, check drive and drive cables.&bslash;n&quot;
+comma
+id|tw_dev-&gt;host-&gt;host_no
+comma
+id|aen
+op_rshift
+l_int|8
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+id|TW_AEN_DRIVE_ERROR
+suffix:colon
+id|printk
+c_func
+(paren
+id|KERN_WARNING
+l_string|&quot;3w-xxxx: scsi%d: Received drive error AEN on port %d, check/replace cabling, or possible bad drive.&bslash;n&quot;
+comma
+id|tw_dev-&gt;host-&gt;host_no
+comma
+id|aen
+op_rshift
+l_int|8
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+id|TW_AEN_SMART_FAIL
+suffix:colon
+id|printk
+c_func
+(paren
+id|KERN_WARNING
+l_string|&quot;3w-xxxx: scsi%d: Received S.M.A.R.T. threshold AEN on port %d, check drive/cooling, or possible bad drive.&bslash;n&quot;
+comma
+id|tw_dev-&gt;host-&gt;host_no
+comma
+id|aen
+op_rshift
+l_int|8
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+id|TW_AEN_SBUF_FAIL
+suffix:colon
+id|printk
+c_func
+(paren
+id|KERN_WARNING
+l_string|&quot;3w-xxxx: scsi%d: Received SBUF integrity check failure AEN, reseat card or bad card.&bslash;n&quot;
+comma
+id|tw_dev-&gt;host-&gt;host_no
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
+r_default
+suffix:colon
+id|printk
+c_func
+(paren
+id|KERN_WARNING
+l_string|&quot;3w-xxxx: Received AEN 0x%x&bslash;n&quot;
+comma
+id|aen
+)paren
+suffix:semicolon
+)brace
+id|tw_dev-&gt;aen_count
+op_increment
 suffix:semicolon
 multiline_comment|/* Now queue the code */
 id|tw_dev-&gt;aen_queue
@@ -425,9 +524,9 @@ id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;3w-xxxx: tw_aen_drain_queue(): No attention interrupt for card %d&bslash;n&quot;
+l_string|&quot;3w-xxxx: tw_aen_drain_queue(): No attention interrupt for card %d.&bslash;n&quot;
 comma
-id|tw_dev-&gt;host-&gt;host_no
+id|tw_device_extension_count
 )paren
 suffix:semicolon
 r_return
@@ -714,6 +813,14 @@ id|KERN_WARNING
 l_string|&quot;3w-xxxx: tw_aen_drain_queue(): Unexpected bits.&bslash;n&quot;
 )paren
 suffix:semicolon
+id|tw_decode_bits
+c_func
+(paren
+id|tw_dev
+comma
+id|status_reg_value
+)paren
+suffix:semicolon
 r_return
 l_int|1
 suffix:semicolon
@@ -979,6 +1086,82 @@ l_int|1
 suffix:semicolon
 r_break
 suffix:semicolon
+r_case
+id|TW_AEN_APORT_TIMEOUT
+suffix:colon
+id|printk
+c_func
+(paren
+id|KERN_WARNING
+l_string|&quot;3w-xxxx: Received drive timeout AEN on port %d, check drive and drive cables.&bslash;n&quot;
+comma
+id|aen
+op_rshift
+l_int|8
+)paren
+suffix:semicolon
+id|queue
+op_assign
+l_int|1
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+id|TW_AEN_DRIVE_ERROR
+suffix:colon
+id|printk
+c_func
+(paren
+id|KERN_WARNING
+l_string|&quot;3w-xxxx: Received drive error AEN on port %d, check/replace cabling, or possible bad drive.&bslash;n&quot;
+comma
+id|aen
+op_rshift
+l_int|8
+)paren
+suffix:semicolon
+id|queue
+op_assign
+l_int|1
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+id|TW_AEN_SMART_FAIL
+suffix:colon
+id|printk
+c_func
+(paren
+id|KERN_WARNING
+l_string|&quot;3w-xxxx: Received S.M.A.R.T. threshold AEN on port %d, check drive/cooling, or possible bad drive.&bslash;n&quot;
+comma
+id|aen
+op_rshift
+l_int|8
+)paren
+suffix:semicolon
+id|queue
+op_assign
+l_int|1
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+id|TW_AEN_SBUF_FAIL
+suffix:colon
+id|printk
+c_func
+(paren
+id|KERN_WARNING
+l_string|&quot;3w-xxxx: Received SBUF integrity check failure AEN, reseat card or bad card.&bslash;n&quot;
+)paren
+suffix:semicolon
+id|queue
+op_assign
+l_int|1
+suffix:semicolon
+r_break
+suffix:semicolon
 r_default
 suffix:colon
 id|dprintk
@@ -1219,6 +1402,14 @@ c_func
 (paren
 id|KERN_WARNING
 l_string|&quot;3w-xxxx: tw_aen_read_queue(): Unexpected bits.&bslash;n&quot;
+)paren
+suffix:semicolon
+id|tw_decode_bits
+c_func
+(paren
+id|tw_dev
+comma
+id|status_reg_value
 )paren
 suffix:semicolon
 r_return
@@ -2030,6 +2221,163 @@ suffix:semicolon
 )brace
 )brace
 multiline_comment|/* End tw_copy_mem_info() */
+multiline_comment|/* This function will print readable messages from statsu register errors */
+DECL|function|tw_decode_bits
+r_void
+id|tw_decode_bits
+c_func
+(paren
+id|TW_Device_Extension
+op_star
+id|tw_dev
+comma
+id|u32
+id|status_reg_value
+)paren
+(brace
+id|dprintk
+c_func
+(paren
+id|KERN_WARNING
+l_string|&quot;3w-xxxx: tw_decode_bits()&bslash;n&quot;
+)paren
+suffix:semicolon
+r_switch
+c_cond
+(paren
+id|status_reg_value
+op_amp
+id|TW_STATUS_UNEXPECTED_BITS
+)paren
+(brace
+r_case
+id|TW_STATUS_PCI_PARITY_ERROR
+suffix:colon
+id|printk
+c_func
+(paren
+id|KERN_WARNING
+l_string|&quot;3w-xxxx: PCI Parity Error: Reseat card, move card, or buggy device on the bus.&bslash;n&quot;
+)paren
+suffix:semicolon
+id|outl
+c_func
+(paren
+id|TW_CONTROL_CLEAR_PARITY_ERROR
+comma
+id|tw_dev-&gt;registers.control_reg_addr
+)paren
+suffix:semicolon
+id|pci_write_config_word
+c_func
+(paren
+id|tw_dev-&gt;tw_pci_dev
+comma
+id|PCI_STATUS
+comma
+id|TW_PCI_CLEAR_PARITY_ERRORS
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+id|TW_STATUS_MICROCONTROLLER_ERROR
+suffix:colon
+id|printk
+c_func
+(paren
+id|KERN_WARNING
+l_string|&quot;3w-xxxx: Microcontroller Error.&bslash;n&quot;
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
+)brace
+)brace
+multiline_comment|/* End tw_decode_bits() */
+multiline_comment|/* This function will print readable messages from flags and status values */
+DECL|function|tw_decode_error
+r_void
+id|tw_decode_error
+c_func
+(paren
+id|TW_Device_Extension
+op_star
+id|tw_dev
+comma
+r_int
+r_char
+id|status
+comma
+r_int
+r_char
+id|flags
+comma
+r_int
+r_char
+id|unit
+)paren
+(brace
+id|dprintk
+c_func
+(paren
+id|KERN_WARNING
+l_string|&quot;3w-xxxx: tw_decode_error()&bslash;n&quot;
+)paren
+suffix:semicolon
+r_switch
+c_cond
+(paren
+id|status
+)paren
+(brace
+r_case
+l_int|0xc7
+suffix:colon
+r_switch
+c_cond
+(paren
+id|flags
+)paren
+(brace
+r_case
+l_int|0x1b
+suffix:colon
+id|printk
+c_func
+(paren
+id|KERN_WARNING
+l_string|&quot;3w-xxxx: scsi%d: Drive timeout on unit %d, check drive and drive cables.&bslash;n&quot;
+comma
+id|tw_dev-&gt;host-&gt;host_no
+comma
+id|unit
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+l_int|0x51
+suffix:colon
+id|printk
+c_func
+(paren
+id|KERN_WARNING
+l_string|&quot;3w-xxxx: scsi%d: Unrecoverable drive error on unit %d, check/replace cabling, or possible bad drive.&bslash;n&quot;
+comma
+id|tw_dev-&gt;host-&gt;host_no
+comma
+id|unit
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
+)brace
+r_break
+suffix:semicolon
+)brace
+)brace
+multiline_comment|/* End tw_decode_error() */
 multiline_comment|/* This function will disable interrupts on the controller */
 DECL|function|tw_disable_interrupts
 r_void
@@ -2118,6 +2466,14 @@ id|KERN_WARNING
 l_string|&quot;3w-xxxx: tw_empty_response_queue(): Unexpected bits 1.&bslash;n&quot;
 )paren
 suffix:semicolon
+id|tw_decode_bits
+c_func
+(paren
+id|tw_dev
+comma
+id|status_reg_value
+)paren
+suffix:semicolon
 r_return
 l_int|1
 suffix:semicolon
@@ -2165,6 +2521,14 @@ c_func
 (paren
 id|KERN_WARNING
 l_string|&quot;3w-xxxx: tw_empty_response_queue(): Unexpected bits 2.&bslash;n&quot;
+)paren
+suffix:semicolon
+id|tw_decode_bits
+c_func
+(paren
+id|tw_dev
+comma
+id|status_reg_value
 )paren
 suffix:semicolon
 r_return
@@ -2489,6 +2853,32 @@ multiline_comment|/* Save pci_dev struct to device extension */
 id|tw_dev-&gt;tw_pci_dev
 op_assign
 id|tw_pci_dev
+suffix:semicolon
+multiline_comment|/* Check for errors and clear them */
+id|status_reg_value
+op_assign
+id|inl
+c_func
+(paren
+id|tw_dev-&gt;registers.status_reg_addr
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|TW_STATUS_ERRORS
+c_func
+(paren
+id|status_reg_value
+)paren
+)paren
+id|tw_decode_bits
+c_func
+(paren
+id|tw_dev
+comma
+id|status_reg_value
+)paren
 suffix:semicolon
 multiline_comment|/* Poll status register for 60 secs for &squot;Controller Ready&squot; flag */
 r_if
@@ -2943,6 +3333,14 @@ suffix:semicolon
 r_continue
 suffix:semicolon
 )brace
+multiline_comment|/* Set max sectors per io */
+macro_line|#if LINUX_VERSION_CODE &gt;= KERNEL_VERSION(2,4,7)
+id|host-&gt;max_sectors
+op_assign
+id|TW_MAX_SECTORS
+suffix:semicolon
+macro_line|#endif
+macro_line|#if LINUX_VERSION_CODE &gt;= KERNEL_VERSION(2,4,4)
 id|scsi_set_pci_device
 c_func
 (paren
@@ -2951,6 +3349,7 @@ comma
 id|tw_pci_dev
 )paren
 suffix:semicolon
+macro_line|#endif
 id|status_reg_value
 op_assign
 id|inl
@@ -2959,11 +3358,11 @@ c_func
 id|tw_dev-&gt;registers.status_reg_addr
 )paren
 suffix:semicolon
-id|dprintk
+id|printk
 c_func
 (paren
 id|KERN_NOTICE
-l_string|&quot;scsi%d : Found a 3ware Storage Controller at 0x%x, IRQ: %d P-chip: %d.%d&bslash;n&quot;
+l_string|&quot;scsi%d : Found a 3ware Storage Controller at 0x%x, IRQ: %d, P-chip: %d.%d&bslash;n&quot;
 comma
 id|host-&gt;host_no
 comma
@@ -3625,6 +4024,14 @@ c_func
 (paren
 id|KERN_WARNING
 l_string|&quot;3w-xxxx: tw_initconnection(): Unexpected bits.&bslash;n&quot;
+)paren
+suffix:semicolon
+id|tw_decode_bits
+c_func
+(paren
+id|tw_dev
+comma
+id|status_reg_value
 )paren
 suffix:semicolon
 r_return
@@ -4379,6 +4786,14 @@ id|KERN_WARNING
 l_string|&quot;3w-xxxx: tw_initialize_units(): Unexpected bits.&bslash;n&quot;
 )paren
 suffix:semicolon
+id|tw_decode_bits
+c_func
+(paren
+id|tw_dev
+comma
+id|status_reg_value
+)paren
+suffix:semicolon
 r_return
 l_int|1
 suffix:semicolon
@@ -4909,6 +5324,14 @@ id|KERN_WARNING
 l_string|&quot;3w-xxxx: tw_initialize_units(): Unexpected bits.&bslash;n&quot;
 )paren
 suffix:semicolon
+id|tw_decode_bits
+c_func
+(paren
+id|tw_dev
+comma
+id|status_reg_value
+)paren
+suffix:semicolon
 r_return
 l_int|1
 suffix:semicolon
@@ -4954,25 +5377,7 @@ id|printk
 c_func
 (paren
 id|KERN_WARNING
-"&quot;"
-l_int|3
-id|w
-op_minus
-id|xxxx
-suffix:colon
-id|tw_initia
-id|lize_units
-c_func
-(paren
-)paren
-suffix:colon
-id|Unexpected
-id|request
-id|id
-dot
-"&bslash;"
-id|n
-"&quot;"
+l_string|&quot;3w-xxxx: tw_initialize_units(): Unexpected request id.&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -4992,38 +5397,7 @@ id|printk
 c_func
 (paren
 id|KERN_WARNING
-"&quot;"
-l_int|3
-id|w
-op_minus
-id|xxxx
-suffix:colon
-id|tw_initia
-id|lize_units
-c_func
-(paren
-)paren
-suffix:colon
-id|Bad
-id|response
-comma
-id|status
-op_assign
-l_int|0
-id|x
-op_mod
-id|x
-comma
-id|flags
-op_assign
-l_int|0
-id|x
-op_mod
-id|x
-dot
-"&bslash;"
-id|n
-"&quot;"
+l_string|&quot;3w-xxxx: tw_initialize_units(): Bad response, status = 0x%x, flags = 0x%x.&bslash;n&quot;
 comma
 id|command_packet-&gt;status
 comma
@@ -5055,23 +5429,7 @@ id|printk
 c_func
 (paren
 id|KERN_WARNING
-"&quot;"
-l_int|3
-id|w
-op_minus
-id|xxxx
-suffix:colon
-id|tw_initialize_units
-c_func
-(paren
-)paren
-suffix:colon
-id|No
-id|response
-dot
-"&bslash;"
-id|n
-"&quot;"
+l_string|&quot;3w-xxxx: tw_initialize_units(): No response.&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -5182,7 +5540,7 @@ r_sizeof
 id|TW_Sector
 )paren
 op_star
-l_int|256
+id|TW_MAX_SECTORS
 comma
 l_int|2
 )paren
@@ -5224,7 +5582,7 @@ r_sizeof
 id|TW_Sector
 )paren
 op_star
-l_int|256
+id|TW_MAX_SECTORS
 )paren
 suffix:semicolon
 )brace
@@ -5692,6 +6050,18 @@ comma
 id|command_packet-&gt;byte3.unit
 )paren
 suffix:semicolon
+id|tw_decode_error
+c_func
+(paren
+id|tw_dev
+comma
+id|command_packet-&gt;status
+comma
+id|command_packet-&gt;flags
+comma
+id|command_packet-&gt;byte3.unit
+)paren
+suffix:semicolon
 id|error
 op_assign
 l_int|1
@@ -5717,6 +6087,29 @@ comma
 id|request_id
 comma
 id|command_packet-&gt;byte0.opcode
+)paren
+suffix:semicolon
+id|error
+op_assign
+l_int|1
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+id|TW_STATUS_ERRORS
+c_func
+(paren
+id|status_reg_value
+)paren
+)paren
+(brace
+id|tw_decode_bits
+c_func
+(paren
+id|tw_dev
+comma
+id|status_reg_value
 )paren
 suffix:semicolon
 id|error
@@ -5799,6 +6192,14 @@ c_func
 (paren
 id|KERN_WARNING
 l_string|&quot;3w-xxxx: tw_interrupt(): Unexpected bits.&bslash;n&quot;
+)paren
+suffix:semicolon
+id|tw_decode_bits
+c_func
+(paren
+id|tw_dev
+comma
+id|status_reg_value
 )paren
 suffix:semicolon
 )brace
@@ -6076,6 +6477,14 @@ c_func
 (paren
 id|KERN_WARNING
 l_string|&quot;3w-xxxx: tw_interrupt(): Unexpected bits.&bslash;n&quot;
+)paren
+suffix:semicolon
+id|tw_decode_bits
+c_func
+(paren
+id|tw_dev
+comma
+id|status_reg_value
 )paren
 suffix:semicolon
 )brace
@@ -6420,7 +6829,6 @@ comma
 id|ioctl-&gt;table_id
 comma
 id|ioctl-&gt;parameter_id
-comma
 comma
 id|ioctl-&gt;parameter_size_bytes
 )paren
@@ -7318,6 +7726,7 @@ c_func
 id|status_reg_value
 )paren
 )paren
+(brace
 id|printk
 c_func
 (paren
@@ -7325,6 +7734,15 @@ id|KERN_WARNING
 l_string|&quot;3w-xxxx: tw_post_command_packet(): Unexpected bits.&bslash;n&quot;
 )paren
 suffix:semicolon
+id|tw_decode_bits
+c_func
+(paren
+id|tw_dev
+comma
+id|status_reg_value
+)paren
+suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
@@ -8013,6 +8431,15 @@ id|KERN_NOTICE
 l_string|&quot;3w-xxxx: tw_scsi_detect()&bslash;n&quot;
 )paren
 suffix:semicolon
+id|printk
+c_func
+(paren
+id|KERN_WARNING
+l_string|&quot;3ware Storage Controller device driver for Linux v%s.&bslash;n&quot;
+comma
+id|tw_driver_version
+)paren
+suffix:semicolon
 multiline_comment|/* Check if the kernel has PCI interface compiled in */
 r_if
 c_cond
@@ -8035,12 +8462,26 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+id|spin_unlock_irq
+c_func
+(paren
+op_amp
+id|io_request_lock
+)paren
+suffix:semicolon
 id|ret
 op_assign
 id|tw_findcards
 c_func
 (paren
 id|tw_host
+)paren
+suffix:semicolon
+id|spin_lock_irq
+c_func
+(paren
+op_amp
+id|io_request_lock
 )paren
 suffix:semicolon
 r_return
@@ -8126,6 +8567,27 @@ id|FAILED
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/* We have to let AEN requests through before the reset */
+id|spin_unlock_irq
+c_func
+(paren
+op_amp
+id|io_request_lock
+)paren
+suffix:semicolon
+id|mdelay
+c_func
+(paren
+id|TW_AEN_WAIT_TIME
+)paren
+suffix:semicolon
+id|spin_lock_irq
+c_func
+(paren
+op_amp
+id|io_request_lock
+)paren
+suffix:semicolon
 id|spin_lock
 c_func
 (paren
@@ -8434,6 +8896,27 @@ id|FAILED
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/* We have to let AEN requests through before the reset */
+id|spin_unlock_irq
+c_func
+(paren
+op_amp
+id|io_request_lock
+)paren
+suffix:semicolon
+id|mdelay
+c_func
+(paren
+id|TW_AEN_WAIT_TIME
+)paren
+suffix:semicolon
+id|spin_lock_irq
+c_func
+(paren
+op_amp
+id|io_request_lock
+)paren
+suffix:semicolon
 id|spin_lock
 c_func
 (paren
@@ -11931,6 +12414,14 @@ c_func
 (paren
 id|KERN_WARNING
 l_string|&quot;3w-xxxx: tw_setfeature(): Unexpected bits.&bslash;n&quot;
+)paren
+suffix:semicolon
+id|tw_decode_bits
+c_func
+(paren
+id|tw_dev
+comma
+id|status_reg_value
 )paren
 suffix:semicolon
 r_return

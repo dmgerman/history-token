@@ -7,8 +7,13 @@ macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;linux/list.h&gt;
 multiline_comment|/*&n; * Free memory management - zoned buddy allocator.&n; */
+macro_line|#ifndef CONFIG_FORCE_MAX_ZONEORDER
 DECL|macro|MAX_ORDER
 mdefine_line|#define MAX_ORDER 10
+macro_line|#else
+DECL|macro|MAX_ORDER
+mdefine_line|#define MAX_ORDER CONFIG_FORCE_MAX_ZONEORDER
+macro_line|#endif
 DECL|struct|free_area_struct
 r_typedef
 r_struct

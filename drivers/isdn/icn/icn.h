@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: icn.h,v 1.30.6.3 2001/04/20 02:42:01 keil Exp $&n;&n; * ISDN lowlevel-module for the ICN active ISDN-Card.&n; *&n; * Copyright 1994 by Fritz Elfert (fritz@isdn4linux.de)&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2, or (at your option)&n; * any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; *&n; */
+multiline_comment|/* $Id: icn.h,v 1.30.6.4 2001/08/17 12:34:27 kai Exp $&n;&n; * ISDN lowlevel-module for the ICN active ISDN-Card.&n; *&n; * Copyright 1994 by Fritz Elfert (fritz@isdn4linux.de)&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2, or (at your option)&n; * any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; *&n; */
 macro_line|#ifndef icn_h
 DECL|macro|icn_h
 mdefine_line|#define icn_h
@@ -768,10 +768,6 @@ DECL|macro|msg_avail
 mdefine_line|#define msg_avail ((readb(&amp;msg_o)&gt;readb(&amp;msg_i))? &bslash;&n;&t;&t;   0x100-readb(&amp;msg_o)+readb(&amp;msg_i): &bslash;&n;&t;&t;   readb(&amp;msg_i)-readb(&amp;msg_o))
 DECL|macro|CID
 mdefine_line|#define CID (card-&gt;interface.id)
-DECL|macro|MIN
-mdefine_line|#define MIN(a,b) ((a&lt;b)?a:b)
-DECL|macro|MAX
-mdefine_line|#define MAX(a,b) ((a&gt;b)?a:b)
 macro_line|#endif                          /* defined(__KERNEL__) || defined(__DEBUGVAR__) */
 macro_line|#endif                          /* icn_h */
 eof

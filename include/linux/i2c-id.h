@@ -118,6 +118,8 @@ DECL|macro|I2C_ALGO_SAA7146
 mdefine_line|#define I2C_ALGO_SAA7146 0x060000&t;/* SAA 7146 video decoder bus&t;*/
 DECL|macro|I2C_ALGO_ACB
 mdefine_line|#define I2C_ALGO_ACB &t;0x070000&t;/* ACCESS.bus algorithm         */
+DECL|macro|I2C_ALGO_IIC
+mdefine_line|#define I2C_ALGO_IIC    0x080000 &t;/* ITE IIC bus */
 DECL|macro|I2C_ALGO_EC
 mdefine_line|#define I2C_ALGO_EC     0x100000        /* ACPI embedded controller     */
 DECL|macro|I2C_ALGO_MPC8XX
@@ -175,6 +177,9 @@ mdefine_line|#define I2C_HW_ACPI_EC          0x00
 multiline_comment|/* --- MPC8xx PowerPC adapters&t;&t;&t;&t;&t;&t;*/
 DECL|macro|I2C_HW_MPC8XX_EPON
 mdefine_line|#define I2C_HW_MPC8XX_EPON 0x00&t;/* Eponymous MPC8xx I2C adapter &t;*/
+multiline_comment|/* --- ITE based algorithms&t;&t;&t;&t;&t;&t;*/
+DECL|macro|I2C_HW_I_IIC
+mdefine_line|#define I2C_HW_I_IIC&t;0x00&t;/* controller on the ITE */
 multiline_comment|/* --- SMBus only adapters&t;&t;&t;&t;&t;&t;*/
 DECL|macro|I2C_HW_SMBUS_PIIX4
 mdefine_line|#define I2C_HW_SMBUS_PIIX4&t;0x00

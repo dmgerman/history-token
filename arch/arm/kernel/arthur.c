@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *  linux/arch/arm/kernel/arthur.c&n; *&n; *  Copyright (C) 1998, 1999, 2000 Philip Blundell&n; *&n; * Arthur personality&n; */
+multiline_comment|/*&n; *  linux/arch/arm/kernel/arthur.c&n; *&n; *  Copyright (C) 1998, 1999, 2000, 2001 Philip Blundell&n; *&n; * Arthur personality&n; */
 multiline_comment|/*&n; * This program is free software; you can redistribute it and/or&n; * modify it under the terms of the GNU General Public License&n; * as published by the Free Software Foundation; either version&n; * 2 of the License, or (at your option) any later version.&n; */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/personality.h&gt;
@@ -203,7 +203,7 @@ id|info.si_signo
 op_assign
 id|SIGSWI
 suffix:semicolon
-id|info.si_code
+id|info.si_errno
 op_assign
 id|nr
 suffix:semicolon

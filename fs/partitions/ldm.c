@@ -1,5 +1,5 @@
 multiline_comment|/*&n; * $Id: ldm.c,v 1.25 2001/07/25 23:32:02 flatcap Exp $&n; *&n; * ldm - Part of the Linux-NTFS project.&n; *&n; * Copyright (C) 2001 Richard Russon &lt;ntfs@flatcap.org&gt;&n; * Copyright (C) 2001 Anton Altaparmakov &lt;antona@users.sf.net&gt;&n; *&n; * Documentation is available at http://linux-ntfs.sf.net/ldm&n; *&n; * This program is free software; you can redistribute it and/or modify it&n; * under the terms of the GNU General Public License as published by the Free&n; * Software Foundation; either version 2 of the License, or (at your option)&n; * any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program (in the main directory of the Linux-NTFS source&n; * in the file COPYING); if not, write to the Free Software Foundation,&n; * Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
-macro_line|#include &lt;asm/types.h&gt;
+macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;asm/unaligned.h&gt;
 macro_line|#include &lt;asm/byteorder.h&gt;
 macro_line|#include &lt;linux/genhd.h&gt;
@@ -484,6 +484,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+(paren
 id|BE16
 c_func
 (paren
@@ -494,7 +495,21 @@ l_int|0x0E
 op_eq
 l_int|0
 )paren
+op_logical_or
 multiline_comment|/* Record is not in use. */
+(paren
+id|BE16
+c_func
+(paren
+id|buffer
+op_plus
+l_int|0x0C
+)paren
+op_ne
+l_int|0
+)paren
+)paren
+multiline_comment|/* Part 2 of an ext. record */
 r_return
 l_int|0
 suffix:semicolon

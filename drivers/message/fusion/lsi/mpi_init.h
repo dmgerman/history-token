@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *  Copyright (c) 2000-2001 LSI Logic Corporation.&n; *&n; *&n; *           Name:  MPI_INIT.H&n; *          Title:  MPI initiator mode messages and structures&n; *  Creation Date:  June 8, 2000&n; *&n; *    MPI Version:  01.01.03&n; *&n; *  Version History&n; *  ---------------&n; *&n; *  Date      Version   Description&n; *  --------  --------  ------------------------------------------------------&n; *  05-08-00  00.10.01  Original release for 0.10 spec dated 4/26/2000.&n; *  05-24-00  00.10.02  Added SenseBufferLength to _MSG_SCSI_IO_REPLY.&n; *  06-06-00  01.00.01  Update version number for 1.0 release.&n; *  06-08-00  01.00.02  Added MPI_SCSI_RSP_INFO_ definitions.&n; *  11-02-00  01.01.01  Original release for post 1.0 work.&n; *  12-04-00  01.01.02  Added MPI_SCSIIO_CONTROL_NO_DISCONNECT.&n; *  02-20-01  01.01.03  Started using MPI_POINTER.&n; *  --------------------------------------------------------------------------&n; */
+multiline_comment|/*&n; *  Copyright (c) 2000-2001 LSI Logic Corporation.&n; *&n; *&n; *           Name:  MPI_INIT.H&n; *          Title:  MPI initiator mode messages and structures&n; *  Creation Date:  June 8, 2000&n; *&n; *    MPI Version:  01.01.05&n; *&n; *  Version History&n; *  ---------------&n; *&n; *  Date      Version   Description&n; *  --------  --------  ------------------------------------------------------&n; *  05-08-00  00.10.01  Original release for 0.10 spec dated 4/26/2000.&n; *  05-24-00  00.10.02  Added SenseBufferLength to _MSG_SCSI_IO_REPLY.&n; *  06-06-00  01.00.01  Update version number for 1.0 release.&n; *  06-08-00  01.00.02  Added MPI_SCSI_RSP_INFO_ definitions.&n; *  11-02-00  01.01.01  Original release for post 1.0 work.&n; *  12-04-00  01.01.02  Added MPI_SCSIIO_CONTROL_NO_DISCONNECT.&n; *  02-20-01  01.01.03  Started using MPI_POINTER.&n; *  03-27-01  01.01.04  Added structure offset comments.&n; *  04-10-01  01.01.05  Added new MsgFlag for MSG_SCSI_TASK_MGMT.&n; *  --------------------------------------------------------------------------&n; */
 macro_line|#ifndef MPI_INIT_H
 DECL|macro|MPI_INIT_H
 mdefine_line|#define MPI_INIT_H
@@ -15,38 +15,47 @@ DECL|member|TargetID
 id|U8
 id|TargetID
 suffix:semicolon
+multiline_comment|/* 00h */
 DECL|member|Bus
 id|U8
 id|Bus
 suffix:semicolon
+multiline_comment|/* 01h */
 DECL|member|ChainOffset
 id|U8
 id|ChainOffset
 suffix:semicolon
+multiline_comment|/* 02h */
 DECL|member|Function
 id|U8
 id|Function
 suffix:semicolon
+multiline_comment|/* 03h */
 DECL|member|CDBLength
 id|U8
 id|CDBLength
 suffix:semicolon
+multiline_comment|/* 04h */
 DECL|member|SenseBufferLength
 id|U8
 id|SenseBufferLength
 suffix:semicolon
+multiline_comment|/* 05h */
 DECL|member|Reserved
 id|U8
 id|Reserved
 suffix:semicolon
+multiline_comment|/* 06h */
 DECL|member|MsgFlags
 id|U8
 id|MsgFlags
 suffix:semicolon
+multiline_comment|/* 07h */
 DECL|member|MsgContext
 id|U32
 id|MsgContext
 suffix:semicolon
+multiline_comment|/* 08h */
 DECL|member|LUN
 id|U8
 id|LUN
@@ -54,10 +63,12 @@ id|LUN
 l_int|8
 )braket
 suffix:semicolon
+multiline_comment|/* 0Ch */
 DECL|member|Control
 id|U32
 id|Control
 suffix:semicolon
+multiline_comment|/* 14h */
 DECL|member|CDB
 id|U8
 id|CDB
@@ -65,18 +76,22 @@ id|CDB
 l_int|16
 )braket
 suffix:semicolon
+multiline_comment|/* 18h */
 DECL|member|DataLength
 id|U32
 id|DataLength
 suffix:semicolon
+multiline_comment|/* 28h */
 DECL|member|SenseBufferLowAddr
 id|U32
 id|SenseBufferLowAddr
 suffix:semicolon
+multiline_comment|/* 2Ch */
 DECL|member|SGL
 id|SGE_IO_UNION
 id|SGL
 suffix:semicolon
+multiline_comment|/* 30h */
 DECL|typedef|MSG_SCSI_IO_REQUEST
 DECL|typedef|PTR_MSG_SCSI_IO_REQUEST
 )brace
@@ -173,66 +188,82 @@ DECL|member|TargetID
 id|U8
 id|TargetID
 suffix:semicolon
+multiline_comment|/* 00h */
 DECL|member|Bus
 id|U8
 id|Bus
 suffix:semicolon
+multiline_comment|/* 01h */
 DECL|member|MsgLength
 id|U8
 id|MsgLength
 suffix:semicolon
+multiline_comment|/* 02h */
 DECL|member|Function
 id|U8
 id|Function
 suffix:semicolon
+multiline_comment|/* 03h */
 DECL|member|CDBLength
 id|U8
 id|CDBLength
 suffix:semicolon
+multiline_comment|/* 04h */
 DECL|member|SenseBufferLength
 id|U8
 id|SenseBufferLength
 suffix:semicolon
+multiline_comment|/* 05h */
 DECL|member|Reserved
 id|U8
 id|Reserved
 suffix:semicolon
+multiline_comment|/* 06h */
 DECL|member|MsgFlags
 id|U8
 id|MsgFlags
 suffix:semicolon
+multiline_comment|/* 07h */
 DECL|member|MsgContext
 id|U32
 id|MsgContext
 suffix:semicolon
+multiline_comment|/* 08h */
 DECL|member|SCSIStatus
 id|U8
 id|SCSIStatus
 suffix:semicolon
+multiline_comment|/* 0Ch */
 DECL|member|SCSIState
 id|U8
 id|SCSIState
 suffix:semicolon
+multiline_comment|/* 0Dh */
 DECL|member|IOCStatus
 id|U16
 id|IOCStatus
 suffix:semicolon
+multiline_comment|/* 0Eh */
 DECL|member|IOCLogInfo
 id|U32
 id|IOCLogInfo
 suffix:semicolon
+multiline_comment|/* 10h */
 DECL|member|TransferCount
 id|U32
 id|TransferCount
 suffix:semicolon
+multiline_comment|/* 14h */
 DECL|member|SenseCount
 id|U32
 id|SenseCount
 suffix:semicolon
+multiline_comment|/* 18h */
 DECL|member|ResponseInfo
 id|U32
 id|ResponseInfo
 suffix:semicolon
+multiline_comment|/* 1Ch */
 DECL|typedef|MSG_SCSI_IO_REPLY
 DECL|typedef|PTR_MSG_SCSI_IO_REPLY
 )brace
@@ -308,38 +339,47 @@ DECL|member|TargetID
 id|U8
 id|TargetID
 suffix:semicolon
+multiline_comment|/* 00h */
 DECL|member|Bus
 id|U8
 id|Bus
 suffix:semicolon
+multiline_comment|/* 01h */
 DECL|member|ChainOffset
 id|U8
 id|ChainOffset
 suffix:semicolon
+multiline_comment|/* 02h */
 DECL|member|Function
 id|U8
 id|Function
 suffix:semicolon
+multiline_comment|/* 03h */
 DECL|member|Reserved
 id|U8
 id|Reserved
 suffix:semicolon
+multiline_comment|/* 04h */
 DECL|member|TaskType
 id|U8
 id|TaskType
 suffix:semicolon
+multiline_comment|/* 05h */
 DECL|member|Reserved1
 id|U8
 id|Reserved1
 suffix:semicolon
+multiline_comment|/* 06h */
 DECL|member|MsgFlags
 id|U8
 id|MsgFlags
 suffix:semicolon
+multiline_comment|/* 07h */
 DECL|member|MsgContext
 id|U32
 id|MsgContext
 suffix:semicolon
+multiline_comment|/* 08h */
 DECL|member|LUN
 id|U8
 id|LUN
@@ -347,6 +387,7 @@ id|LUN
 l_int|8
 )braket
 suffix:semicolon
+multiline_comment|/* 0Ch */
 DECL|member|Reserved2
 id|U32
 id|Reserved2
@@ -354,10 +395,12 @@ id|Reserved2
 l_int|7
 )braket
 suffix:semicolon
+multiline_comment|/* 14h */
 DECL|member|TaskMsgContext
 id|U32
 id|TaskMsgContext
 suffix:semicolon
+multiline_comment|/* 30h */
 DECL|typedef|MSG_SCSI_TASK_MGMT
 DECL|typedef|PTR_SCSI_TASK_MGMT
 )brace
@@ -375,16 +418,20 @@ id|pSCSITaskMgmt_t
 suffix:semicolon
 multiline_comment|/* TaskType values */
 DECL|macro|MPI_SCSITASKMGMT_TASKTYPE_ABORT_TASK
-mdefine_line|#define MPI_SCSITASKMGMT_TASKTYPE_ABORT_TASK        (0x00000001)
+mdefine_line|#define MPI_SCSITASKMGMT_TASKTYPE_ABORT_TASK            (0x01)
 DECL|macro|MPI_SCSITASKMGMT_TASKTYPE_ABRT_TASK_SET
-mdefine_line|#define MPI_SCSITASKMGMT_TASKTYPE_ABRT_TASK_SET     (0x00000002)
+mdefine_line|#define MPI_SCSITASKMGMT_TASKTYPE_ABRT_TASK_SET         (0x02)
 DECL|macro|MPI_SCSITASKMGMT_TASKTYPE_TARGET_RESET
-mdefine_line|#define MPI_SCSITASKMGMT_TASKTYPE_TARGET_RESET      (0x00000003)
+mdefine_line|#define MPI_SCSITASKMGMT_TASKTYPE_TARGET_RESET          (0x03)
 DECL|macro|MPI_SCSITASKMGMT_TASKTYPE_RESET_BUS
-mdefine_line|#define MPI_SCSITASKMGMT_TASKTYPE_RESET_BUS         (0x00000004)
+mdefine_line|#define MPI_SCSITASKMGMT_TASKTYPE_RESET_BUS             (0x04)
 multiline_comment|/* MsgFlags bits */
+DECL|macro|MPI_SCSITASKMGMT_MSGFLAGS_TARGET_RESET_OPTION
+mdefine_line|#define MPI_SCSITASKMGMT_MSGFLAGS_TARGET_RESET_OPTION   (0x00)
 DECL|macro|MPI_SCSITASKMGMT_MSGFLAGS_LIP_RESET_OPTION
-mdefine_line|#define MPI_SCSITASKMGMT_MSGFLAGS_LIP_RESET_OPTION  (0x00000002)
+mdefine_line|#define MPI_SCSITASKMGMT_MSGFLAGS_LIP_RESET_OPTION      (0x02)
+DECL|macro|MPI_SCSITASKMGMT_MSGFLAGS_LIPRESET_RESET_OPTION
+mdefine_line|#define MPI_SCSITASKMGMT_MSGFLAGS_LIPRESET_RESET_OPTION (0x04)
 multiline_comment|/* SCSI Task Management Reply */
 DECL|struct|_MSG_SCSI_TASK_MGMT_REPLY
 r_typedef
@@ -395,38 +442,47 @@ DECL|member|TargetID
 id|U8
 id|TargetID
 suffix:semicolon
+multiline_comment|/* 00h */
 DECL|member|Bus
 id|U8
 id|Bus
 suffix:semicolon
+multiline_comment|/* 01h */
 DECL|member|MsgLength
 id|U8
 id|MsgLength
 suffix:semicolon
+multiline_comment|/* 02h */
 DECL|member|Function
 id|U8
 id|Function
 suffix:semicolon
+multiline_comment|/* 03h */
 DECL|member|Reserved
 id|U8
 id|Reserved
 suffix:semicolon
+multiline_comment|/* 04h */
 DECL|member|TaskType
 id|U8
 id|TaskType
 suffix:semicolon
+multiline_comment|/* 05h */
 DECL|member|Reserved1
 id|U8
 id|Reserved1
 suffix:semicolon
+multiline_comment|/* 06h */
 DECL|member|MsgFlags
 id|U8
 id|MsgFlags
 suffix:semicolon
+multiline_comment|/* 07h */
 DECL|member|MsgContext
 id|U32
 id|MsgContext
 suffix:semicolon
+multiline_comment|/* 08h */
 DECL|member|Reserved2
 id|U8
 id|Reserved2
@@ -434,18 +490,22 @@ id|Reserved2
 l_int|2
 )braket
 suffix:semicolon
+multiline_comment|/* 0Ch */
 DECL|member|IOCStatus
 id|U16
 id|IOCStatus
 suffix:semicolon
+multiline_comment|/* 0Eh */
 DECL|member|IOCLogInfo
 id|U32
 id|IOCLogInfo
 suffix:semicolon
+multiline_comment|/* 10h */
 DECL|member|TerminationCount
 id|U32
 id|TerminationCount
 suffix:semicolon
+multiline_comment|/* 14h */
 DECL|typedef|MSG_SCSI_TASK_MGMT_REPLY
 DECL|typedef|PTR_MSG_SCSI_TASK_MGMT_REPLY
 )brace

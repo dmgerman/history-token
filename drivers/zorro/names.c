@@ -55,11 +55,11 @@ suffix:semicolon
 suffix:semicolon
 multiline_comment|/*&n; * This is ridiculous, but we want the strings in&n; * the .init section so that they don&squot;t take up&n; * real memory.. Parse the same file multiple times&n; * to get all the info.&n; */
 DECL|macro|MANUF
-mdefine_line|#define MANUF( manuf, name )&t;&t;static const char __manufstr_##manuf[] __initdata = name;
+mdefine_line|#define MANUF( manuf, name )&t;&t;static char __manufstr_##manuf[] __initdata = name;
 DECL|macro|ENDMANUF
 mdefine_line|#define ENDMANUF()
 DECL|macro|PRODUCT
-mdefine_line|#define PRODUCT( manuf, prod, name ) &t;static const char __prodstr_##manuf##prod[] __initdata = name;
+mdefine_line|#define PRODUCT( manuf, prod, name ) &t;static char __prodstr_##manuf##prod[] __initdata = name;
 macro_line|#include &quot;devlist.h&quot;
 DECL|macro|MANUF
 mdefine_line|#define MANUF( manuf, name )&t;&t;static struct zorro_prod_info __prods_##manuf[] __initdata = {
@@ -70,7 +70,6 @@ mdefine_line|#define PRODUCT( manuf, prod, name )&t;{ 0x##prod, 0, __prodstr_##m
 macro_line|#include &quot;devlist.h&quot;
 DECL|variable|zorro_manuf_list
 r_static
-r_const
 r_struct
 id|zorro_manuf_info
 id|__initdata

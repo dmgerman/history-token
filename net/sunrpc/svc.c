@@ -43,11 +43,6 @@ id|svc_serv
 op_star
 id|serv
 suffix:semicolon
-id|xdr_init
-c_func
-(paren
-)paren
-suffix:semicolon
 macro_line|#ifdef RPC_DEBUG
 id|rpc_register_sysctl
 c_func

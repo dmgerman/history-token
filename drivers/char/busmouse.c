@@ -15,7 +15,7 @@ macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &quot;busmouse.h&quot;
-multiline_comment|/* Uncomment this if your mouse drivers expect the kernel to&n; * return with EAGAIN if the mouse does not have any events&n; * available, even if the mouse is opened in nonblocking mode.&n; * Please report use of this &quot;feature&quot; to the author using the&n; * above address.&n; */
+multiline_comment|/* Uncomment this if your mouse drivers expect the kernel to&n; * return with EAGAIN if the mouse does not have any events&n; * available, even if the mouse is opened in blocking mode.&n; * Please report use of this &quot;feature&quot; to the author using the&n; * above address.&n; */
 multiline_comment|/*#define BROKEN_MOUSE*/
 DECL|struct|busmouse_data
 r_struct
@@ -1569,6 +1569,12 @@ id|EXPORT_SYMBOL
 c_func
 (paren
 id|unregister_busmouse
+)paren
+suffix:semicolon
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
 eof

@@ -3,9 +3,7 @@ DECL|macro|ISP16_VERSION_MAJOR
 mdefine_line|#define ISP16_VERSION_MAJOR 0
 DECL|macro|ISP16_VERSION_MINOR
 mdefine_line|#define ISP16_VERSION_MINOR 6
-macro_line|#ifdef MODULE
 macro_line|#include &lt;linux/module.h&gt;
-macro_line|#endif  /* MODULE */
 macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
@@ -100,7 +98,6 @@ id|isp16_cdrom_type
 op_assign
 id|ISP16_CDROM_TYPE
 suffix:semicolon
-macro_line|#ifdef MODULE
 id|MODULE_PARM
 c_func
 (paren
@@ -133,6 +130,7 @@ comma
 l_string|&quot;s&quot;
 )paren
 suffix:semicolon
+macro_line|#ifdef MODULE
 r_void
 id|isp16_exit
 c_func
@@ -253,11 +251,11 @@ comma
 id|isp16_setup
 )paren
 suffix:semicolon
-macro_line|#endif /* MODULE */
+macro_line|#endif&t;&t;&t;&t;/* MODULE */
 multiline_comment|/*&n; *  ISP16 initialisation.&n; *&n; */
+DECL|function|isp16_init
 r_int
 id|__init
-DECL|function|isp16_init
 id|isp16_init
 c_func
 (paren
@@ -298,7 +296,9 @@ l_string|&quot;ISP16: no cdrom interface configured.&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
+(paren
 l_int|0
+)paren
 suffix:semicolon
 )brace
 r_if
@@ -320,8 +320,10 @@ l_string|&quot;ISP16: i/o ports already in use.&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
+(paren
 op_minus
 id|EIO
+)paren
 suffix:semicolon
 )brace
 r_if
@@ -346,8 +348,10 @@ l_string|&quot;ISP16: no cdrom interface found.&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
+(paren
 op_minus
 id|EIO
+)paren
 suffix:semicolon
 )brace
 id|printk
@@ -460,8 +464,10 @@ id|isp16_cdrom_type
 )paren
 suffix:semicolon
 r_return
+(paren
 op_minus
 id|EIO
+)paren
 suffix:semicolon
 )brace
 r_if
@@ -483,14 +489,15 @@ l_int|0
 )paren
 (brace
 id|printk
-c_func
 (paren
 l_string|&quot;ISP16: cdrom interface has not been properly configured.&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
+(paren
 op_minus
 id|EIO
+)paren
 suffix:semicolon
 )brace
 id|printk
@@ -510,13 +517,15 @@ id|isp16_cdrom_type
 )paren
 suffix:semicolon
 r_return
+(paren
 l_int|0
+)paren
 suffix:semicolon
 )brace
+DECL|function|isp16_detect
 r_static
 r_int
 id|__init
-DECL|function|isp16_detect
 id|isp16_detect
 c_func
 (paren
@@ -534,20 +543,24 @@ op_ge
 l_int|0
 )paren
 r_return
+(paren
 l_int|2
+)paren
 suffix:semicolon
 r_else
 r_return
+(paren
 id|isp16_c928__detect
 c_func
 (paren
 )paren
+)paren
 suffix:semicolon
 )brace
+DECL|function|isp16_c928__detect
 r_static
 r_int
 id|__init
-DECL|function|isp16_c928__detect
 id|isp16_c928__detect
 c_func
 (paren
@@ -704,7 +717,9 @@ id|ctrl
 )paren
 suffix:semicolon
 r_return
+(paren
 id|i
+)paren
 suffix:semicolon
 multiline_comment|/* -&gt; not detected: possibly incorrect conclusion */
 )brace
@@ -743,13 +758,15 @@ id|ctrl
 )paren
 suffix:semicolon
 r_return
+(paren
 id|i
+)paren
 suffix:semicolon
 )brace
+DECL|function|isp16_c929__detect
 r_static
 r_int
 id|__init
-DECL|function|isp16_c929__detect
 id|isp16_c929__detect
 c_func
 (paren
@@ -806,8 +823,10 @@ l_int|2
 )paren
 multiline_comment|/* isp16 with 82C929 not detected */
 r_return
+(paren
 op_minus
 l_int|1
+)paren
 suffix:semicolon
 multiline_comment|/* restore ctrl port value */
 id|ISP16_OUT
@@ -819,7 +838,9 @@ id|ctrl
 )paren
 suffix:semicolon
 r_return
+(paren
 l_int|2
+)paren
 suffix:semicolon
 )brace
 r_static
@@ -920,7 +941,6 @@ suffix:semicolon
 r_default
 suffix:colon
 id|printk
-c_func
 (paren
 l_string|&quot;ISP16: base address 0x%03X not supported by cdrom interface.&bslash;n&quot;
 comma
@@ -928,8 +948,10 @@ id|base
 )paren
 suffix:semicolon
 r_return
+(paren
 op_minus
 l_int|1
+)paren
 suffix:semicolon
 )brace
 r_switch
@@ -1027,8 +1049,10 @@ id|irq
 )paren
 suffix:semicolon
 r_return
+(paren
 op_minus
 l_int|1
+)paren
 suffix:semicolon
 )brace
 r_switch
@@ -1058,8 +1082,10 @@ l_string|&quot; due to conflict with the sound card.&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
+(paren
 op_minus
 l_int|1
+)paren
 suffix:semicolon
 r_break
 suffix:semicolon
@@ -1110,8 +1136,10 @@ id|dma
 )paren
 suffix:semicolon
 r_return
+(paren
 op_minus
 l_int|1
+)paren
 suffix:semicolon
 )brace
 r_if
@@ -1147,7 +1175,6 @@ id|ISP16_DRIVE_X
 )paren
 (brace
 id|printk
-c_func
 (paren
 l_string|&quot;ISP16: drive type (code 0x%02X) not supported by cdrom&quot;
 l_string|&quot; interface.&bslash;n&quot;
@@ -1156,8 +1183,10 @@ id|drive_type
 )paren
 suffix:semicolon
 r_return
+(paren
 op_minus
 l_int|1
+)paren
 suffix:semicolon
 )brace
 multiline_comment|/* set type of interface */
@@ -1225,7 +1254,9 @@ id|dma_code
 )paren
 suffix:semicolon
 r_return
+(paren
 l_int|0
+)paren
 suffix:semicolon
 )brace
 DECL|function|isp16_exit
@@ -1267,6 +1298,14 @@ id|module_exit
 c_func
 (paren
 id|isp16_exit
+)paren
+suffix:semicolon
+id|EXPORT_NO_SYMBOLS
+suffix:semicolon
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
 eof

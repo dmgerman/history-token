@@ -1216,8 +1216,20 @@ l_int|0x01000000
 suffix:semicolon
 DECL|macro|TRID_REG
 mdefine_line|#define TRID_REG( trident, x ) ( (trident) -&gt; iobase + (x) )
+DECL|macro|CYBER_PORT_AUDIO
+mdefine_line|#define&t;&t;CYBER_PORT_AUDIO&t;&t;0x3CE
+DECL|macro|CYBER_IDX_AUDIO_ENABLE
+mdefine_line|#define&t;&t;CYBER_IDX_AUDIO_ENABLE          0x7B
+DECL|macro|CYBER_BMSK_AUDIO_INT_ENABLE
+mdefine_line|#define&t;&t;CYBER_BMSK_AUDIO_INT_ENABLE&t;0x09
+DECL|macro|CYBER_BMSK_AUENZ
+mdefine_line|#define&t;&t;CYBER_BMSK_AUENZ&t;&t;0x01
+DECL|macro|CYBER_BMSK_AUENZ_ENABLE
+mdefine_line|#define&t;&t;CYBER_BMSK_AUENZ_ENABLE&t;&t;0x00
+DECL|macro|CYBER_IDX_IRQ_ENABLE
+mdefine_line|#define&t;&t;CYBER_IDX_IRQ_ENABLE&t;&t;0x12
 DECL|macro|VALIDATE_MAGIC
-mdefine_line|#define VALIDATE_MAGIC(FOO,MAG)&t;&t;&t;&t;&bslash;&n;({&t;&t;&t;&t;&t;&t;  &bslash;&n;&t;if (!(FOO) || (FOO)-&gt;magic != MAG) { &bslash;&n;&t;&t;printk(invalid_magic,__FUNCTION__);&t;       &bslash;&n;&t;&t;return -ENXIO;&t;&t;&t;  &bslash;&n;&t;}&t;&t;&t;&t;&t;  &bslash;&n;})
+mdefine_line|#define VALIDATE_MAGIC(FOO,MAG)&t;&t;&t;&t;&bslash;&n;({&t;&t;&t;&t;&t;&t;  &t;&bslash;&n;&t;if (!(FOO) || (FOO)-&gt;magic != MAG) { &t;&t;&bslash;&n;&t;&t;printk(invalid_magic,__FUNCTION__);&t;&bslash;&n;&t;&t;return -ENXIO;&t;&t;&t;  &t;&bslash;&n;&t;}&t;&t;&t;&t;&t;  &t;&bslash;&n;})
 DECL|macro|VALIDATE_STATE
 mdefine_line|#define VALIDATE_STATE(a) VALIDATE_MAGIC(a,TRIDENT_STATE_MAGIC)
 DECL|macro|VALIDATE_CARD

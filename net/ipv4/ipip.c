@@ -3666,7 +3666,6 @@ l_string|&quot;IPIP&quot;
 suffix:semicolon
 DECL|variable|__initdata
 r_static
-r_const
 r_char
 id|banner
 (braket

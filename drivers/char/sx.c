@@ -415,6 +415,12 @@ comma
 l_string|&quot;i&quot;
 )paren
 suffix:semicolon
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
+)paren
+suffix:semicolon
 DECL|variable|sx_real_driver
 r_static
 r_struct
@@ -3802,7 +3808,8 @@ id|hi_state
 suffix:semicolon
 id|gs_got_break
 (paren
-id|port
+op_amp
+id|port-&gt;gs
 )paren
 suffix:semicolon
 )brace
@@ -5423,8 +5430,8 @@ DECL|macro|R0
 mdefine_line|#define R0         if (read_sx_word (board, i) != 0x55aa) return 1
 DECL|macro|R1
 mdefine_line|#define R1         if (read_sx_word (board, i) != 0xaa55) return 1
+macro_line|#if 0
 multiline_comment|/* This memtest takes a human-noticable time. You normally only do it&n;   once a boot, so I guess that it is worth it. */
-DECL|function|do_memtest_w
 r_static
 r_int
 id|do_memtest_w
@@ -5497,6 +5504,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+macro_line|#endif
 DECL|function|sx_fw_ioctl
 r_static
 r_int

@@ -4158,7 +4158,7 @@ id|cmd
 l_int|4
 )braket
 op_assign
-l_int|8
+l_int|255
 suffix:semicolon
 multiline_comment|/* But we only want the 8 byte header */
 id|SRpnt-&gt;sr_cmd_len

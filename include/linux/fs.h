@@ -161,6 +161,8 @@ DECL|macro|MS_NODIRATIME
 mdefine_line|#define MS_NODIRATIME&t;2048&t;/* Do not update directory access times */
 DECL|macro|MS_BIND
 mdefine_line|#define MS_BIND&t;&t;4096
+DECL|macro|MS_NOUSER
+mdefine_line|#define MS_NOUSER&t;(1&lt;&lt;31)
 multiline_comment|/*&n; * Flags that can be altered by MS_REMOUNT&n; */
 DECL|macro|MS_RMT_MASK
 mdefine_line|#define MS_RMT_MASK&t;(MS_RDONLY|MS_NOSUID|MS_NODEV|MS_NOEXEC|&bslash;&n;&t;&t;&t;MS_SYNCHRONOUS|MS_MANDLOCK|MS_NOATIME|MS_NODIRATIME)
@@ -5680,22 +5682,6 @@ r_struct
 id|list_head
 op_star
 id|list
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|file_moveto
-c_func
-(paren
-r_struct
-id|file
-op_star
-r_new
-comma
-r_struct
-id|file
-op_star
-id|old
 )paren
 suffix:semicolon
 r_extern

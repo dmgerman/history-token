@@ -1268,7 +1268,6 @@ suffix:semicolon
 )brace
 DECL|variable|__initdata
 r_static
-r_const
 r_char
 id|msg_banner
 (braket
@@ -1280,7 +1279,6 @@ l_string|&quot;82C710 type pointing device detected -- driver installed.&bslash;
 suffix:semicolon
 DECL|variable|__initdata
 r_static
-r_const
 r_char
 id|msg_nomem
 (braket
@@ -1437,5 +1435,13 @@ c_func
 (paren
 id|qpmouse_exit_driver
 )paren
+suffix:semicolon
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
+)paren
+suffix:semicolon
+id|EXPORT_NO_SYMBOLS
 suffix:semicolon
 eof

@@ -1516,8 +1516,9 @@ id|refcnt
 suffix:semicolon
 )brace
 suffix:semicolon
+multiline_comment|/* This is arbitrary.&n; * From USB 2.0 spec Table 11-13, offset 7, a hub can&n; * have up to 255 ports. The most yet reported is 10.&n; */
 DECL|macro|USB_MAXCHILDREN
-mdefine_line|#define USB_MAXCHILDREN&t;&t;(16)&t;/* This is arbitrary */
+mdefine_line|#define USB_MAXCHILDREN&t;&t;(16)
 DECL|struct|usb_device
 r_struct
 id|usb_device
@@ -1527,11 +1528,40 @@ r_int
 id|devnum
 suffix:semicolon
 multiline_comment|/* Device number on USB bus */
-DECL|member|slow
-r_int
-id|slow
+r_enum
+(brace
+DECL|enumerator|USB_SPEED_UNKNOWN
+id|USB_SPEED_UNKNOWN
+op_assign
+l_int|0
+comma
+multiline_comment|/* enumerating */
+DECL|enumerator|USB_SPEED_LOW
+DECL|enumerator|USB_SPEED_FULL
+id|USB_SPEED_LOW
+comma
+id|USB_SPEED_FULL
+comma
+multiline_comment|/* usb 1.1 */
+DECL|enumerator|USB_SPEED_HIGH
+id|USB_SPEED_HIGH
+multiline_comment|/* usb 2.0 */
+DECL|member|speed
+)brace
+id|speed
 suffix:semicolon
-multiline_comment|/* Slow device? */
+DECL|member|tt
+r_struct
+id|usb_device
+op_star
+id|tt
+suffix:semicolon
+multiline_comment|/* usb1.1 device on usb2.0 bus */
+DECL|member|ttport
+r_int
+id|ttport
+suffix:semicolon
+multiline_comment|/* device/hub port on that tt */
 DECL|member|refcnt
 id|atomic_t
 id|refcnt
@@ -2031,7 +2061,7 @@ op_star
 id|usb_dev
 )paren
 suffix:semicolon
-multiline_comment|/*&n; * Calling this entity a &quot;pipe&quot; is glorifying it. A USB pipe&n; * is something embarrassingly simple: it basically consists&n; * of the following information:&n; *  - device number (7 bits)&n; *  - endpoint number (4 bits)&n; *  - current Data0/1 state (1 bit)&n; *  - direction (1 bit)&n; *  - speed (1 bit)&n; *  - max packet size (2 bits: 8, 16, 32 or 64) [Historical; now gone.]&n; *  - pipe type (2 bits: control, interrupt, bulk, isochronous)&n; *&n; * That&squot;s 18 bits. Really. Nothing more. And the USB people have&n; * documented these eighteen bits as some kind of glorious&n; * virtual data structure.&n; *&n; * Let&squot;s not fall in that trap. We&squot;ll just encode it as a simple&n; * unsigned int. The encoding is:&n; *&n; *  - max size:&t;&t;bits 0-1&t;(00 = 8, 01 = 16, 10 = 32, 11 = 64) [Historical; now gone.]&n; *  - direction:&t;bit 7&t;&t;(0 = Host-to-Device [Out], 1 = Device-to-Host [In])&n; *  - device:&t;&t;bits 8-14&n; *  - endpoint:&t;&t;bits 15-18&n; *  - Data0/1:&t;&t;bit 19&n; *  - speed:&t;&t;bit 26&t;&t;(0 = Full, 1 = Low Speed)&n; *  - pipe type:&t;bits 30-31&t;(00 = isochronous, 01 = interrupt, 10 = control, 11 = bulk)&n; *&n; * Why? Because it&squot;s arbitrary, and whatever encoding we select is really&n; * up to us. This one happens to share a lot of bit positions with the UHCI&n; * specification, so that much of the uhci driver can just mask the bits&n; * appropriately.&n; */
+multiline_comment|/*&n; * Calling this entity a &quot;pipe&quot; is glorifying it. A USB pipe&n; * is something embarrassingly simple: it basically consists&n; * of the following information:&n; *  - device number (7 bits)&n; *  - endpoint number (4 bits)&n; *  - current Data0/1 state (1 bit)&n; *  - direction (1 bit)&n; *  - speed (1 bit)&n; *  - max packet size (2 bits: 8, 16, 32 or 64) [Historical; now gone.]&n; *  - pipe type (2 bits: control, interrupt, bulk, isochronous)&n; *&n; * That&squot;s 18 bits. Really. Nothing more. And the USB people have&n; * documented these eighteen bits as some kind of glorious&n; * virtual data structure.&n; *&n; * Let&squot;s not fall in that trap. We&squot;ll just encode it as a simple&n; * unsigned int. The encoding is:&n; *&n; *  - max size:&t;&t;bits 0-1&t;(00 = 8, 01 = 16, 10 = 32, 11 = 64) [Historical; now gone.]&n; *  - direction:&t;bit 7&t;&t;(0 = Host-to-Device [Out], 1 = Device-to-Host [In])&n; *  - device:&t;&t;bits 8-14&n; *  - endpoint:&t;&t;bits 15-18&n; *  - Data0/1:&t;&t;bit 19&n; *  - speed:&t;&t;bit 26&t;&t;(0 = Full, 1 = Low Speed)&n; *  - pipe type:&t;bits 30-31&t;(00 = isochronous, 01 = interrupt, 10 = control, 11 = bulk)&n; *&n; * Why? Because it&squot;s arbitrary, and whatever encoding we select is really&n; * up to us. This one happens to share a lot of bit positions with the UHCI&n; * specification, so that much of the uhci driver can just mask the bits&n; * appropriately.&n; *&n; * NOTE:  there&squot;s no encoding (yet?) for a &quot;high speed&quot; endpoint; treat them&n; * like full speed devices.&n; */
 DECL|macro|PIPE_ISOCHRONOUS
 mdefine_line|#define PIPE_ISOCHRONOUS&t;&t;0
 DECL|macro|PIPE_INTERRUPT
@@ -2118,7 +2148,11 @@ l_int|15
 )paren
 op_or
 (paren
-id|dev-&gt;slow
+(paren
+id|dev-&gt;speed
+op_eq
+id|USB_SPEED_LOW
+)paren
 op_lshift
 l_int|26
 )paren
@@ -2140,7 +2174,11 @@ id|dev
 (brace
 r_return
 (paren
-id|dev-&gt;slow
+(paren
+id|dev-&gt;speed
+op_eq
+id|USB_SPEED_LOW
+)paren
 op_lshift
 l_int|26
 )paren

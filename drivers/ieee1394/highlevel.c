@@ -666,7 +666,7 @@ suffix:semicolon
 )brace
 )brace
 DECL|macro|DEFINE_MULTIPLEXER
-mdefine_line|#define DEFINE_MULTIPLEXER(Function) &bslash;&n;void highlevel_##Function(struct hpsb_host *host) &bslash;&n;{ &bslash;&n;        struct list_head *entry; &bslash;&n;        void (*funcptr)(struct hpsb_host*); &bslash;&n;        read_lock(&amp;hl_drivers_lock); &bslash;&n;        entry = hl_drivers.next; &bslash;&n;        while (entry != &amp;hl_drivers) { &bslash;&n;                funcptr = list_entry(entry, struct hpsb_highlevel, hl_list) &bslash;&n;                          -&gt;op-&gt;Function; &bslash;&n;                if (funcptr) funcptr(host); &bslash;&n;                entry = entry-&gt;next; &bslash;&n;        } &bslash;&n;        read_unlock(&amp;hl_drivers_lock); &bslash;&n;}
+mdefine_line|#define DEFINE_MULTIPLEXER(Function) &bslash;&n;void highlevel_##Function(struct hpsb_host *host) &bslash;&n;{ &bslash;&n;        struct list_head *entry,*next; &bslash;&n;        void (*funcptr)(struct hpsb_host*); &bslash;&n;        read_lock(&amp;hl_drivers_lock); &bslash;&n;        entry = hl_drivers.next; &bslash;&n;        while (entry != &amp;hl_drivers) { &bslash;&n;        &t;next = entry-&gt;next; &bslash;&n;                funcptr = list_entry(entry, struct hpsb_highlevel, hl_list) &bslash;&n;                          -&gt;op-&gt;Function; &bslash;&n;                if (funcptr) funcptr(host); &bslash;&n;                entry = next; &bslash;&n;        } &bslash;&n;        read_unlock(&amp;hl_drivers_lock); &bslash;&n;}
 DECL|function|DEFINE_MULTIPLEXER
 id|DEFINE_MULTIPLEXER
 c_func

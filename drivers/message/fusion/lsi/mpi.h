@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *  Copyright (c) 2000-2001 LSI Logic Corporation.&n; *&n; *&n; *           Name:  MPI.H&n; *          Title:  MPI Message independent structures and definitions&n; *  Creation Date:  July 27, 2000&n; *&n; *    MPI Version:  01.01.06&n; *&n; *  Version History&n; *  ---------------&n; *&n; *  Date      Version   Description&n; *  --------  --------  ------------------------------------------------------&n; *  05-08-00  00.10.01  Original release for 0.10 spec dated 4/26/2000.&n; *  05-24-00  00.10.02  Added MPI_IOCSTATUS_SCSI_RESIDUAL_MISMATCH definition.&n; *  06-06-00  01.00.01  Update MPI_VERSION_MAJOR and MPI_VERSION_MINOR.&n; *  06-22-00  01.00.02  Added MPI_IOCSTATUS_LAN_ definitions.&n; *                      Removed LAN_SUSPEND function definition.&n; *                      Added MPI_MSGFLAGS_CONTINUATION_REPLY definition.&n; *  06-30-00  01.00.03  Added MPI_CONTEXT_REPLY_TYPE_LAN definition.&n; *                      Added MPI_GET/SET_CONTEXT_REPLY_TYPE macros.&n; *  07-27-00  01.00.04  Added MPI_FAULT_ definitions.&n; *                      Removed MPI_IOCSTATUS_MSG/DATA_XFER_ERROR definitions.&n; *                      Added MPI_IOCSTATUS_INTERNAL_ERROR definition.&n; *                      Added MPI_IOCSTATUS_TARGET_XFER_COUNT_MISMATCH.&n; *  11-02-00  01.01.01  Original release for post 1.0 work.&n; *  12-04-00  01.01.02  Added new function codes.&n; *  01-09-01  01.01.03  Added more definitions to the system interface section&n; *                      Added MPI_IOCSTATUS_TARGET_STS_DATA_NOT_SENT.&n; *  01-25-01  01.01.04  Changed MPI_VERSION_MINOR from 0x00 to 0x01.&n; *  02-20-01  01.01.05  Started using MPI_POINTER.&n; *                      Fixed value for MPI_DIAG_RW_ENABLE.&n; *                      Added defines for MPI_DIAG_PREVENT_IOC_BOOT and&n; *                      MPI_DIAG_CLEAR_FLASH_BAD_SIG.&n; *                      Obsoleted MPI_IOCSTATUS_TARGET_FC_ defines.&n; *  02-27-01  01.01.06  Removed MPI_HOST_INDEX_REGISTER define.&n; *                      Added function codes for RAID.&n; *  --------------------------------------------------------------------------&n; */
+multiline_comment|/*&n; *  Copyright (c) 2000-2001 LSI Logic Corporation.&n; *&n; *&n; *           Name:  MPI.H&n; *          Title:  MPI Message independent structures and definitions&n; *  Creation Date:  July 27, 2000&n; *&n; *    MPI Version:  01.01.07&n; *&n; *  Version History&n; *  ---------------&n; *&n; *  Date      Version   Description&n; *  --------  --------  ------------------------------------------------------&n; *  05-08-00  00.10.01  Original release for 0.10 spec dated 4/26/2000.&n; *  05-24-00  00.10.02  Added MPI_IOCSTATUS_SCSI_RESIDUAL_MISMATCH definition.&n; *  06-06-00  01.00.01  Update MPI_VERSION_MAJOR and MPI_VERSION_MINOR.&n; *  06-22-00  01.00.02  Added MPI_IOCSTATUS_LAN_ definitions.&n; *                      Removed LAN_SUSPEND function definition.&n; *                      Added MPI_MSGFLAGS_CONTINUATION_REPLY definition.&n; *  06-30-00  01.00.03  Added MPI_CONTEXT_REPLY_TYPE_LAN definition.&n; *                      Added MPI_GET/SET_CONTEXT_REPLY_TYPE macros.&n; *  07-27-00  01.00.04  Added MPI_FAULT_ definitions.&n; *                      Removed MPI_IOCSTATUS_MSG/DATA_XFER_ERROR definitions.&n; *                      Added MPI_IOCSTATUS_INTERNAL_ERROR definition.&n; *                      Added MPI_IOCSTATUS_TARGET_XFER_COUNT_MISMATCH.&n; *  11-02-00  01.01.01  Original release for post 1.0 work.&n; *  12-04-00  01.01.02  Added new function codes.&n; *  01-09-01  01.01.03  Added more definitions to the system interface section&n; *                      Added MPI_IOCSTATUS_TARGET_STS_DATA_NOT_SENT.&n; *  01-25-01  01.01.04  Changed MPI_VERSION_MINOR from 0x00 to 0x01.&n; *  02-20-01  01.01.05  Started using MPI_POINTER.&n; *                      Fixed value for MPI_DIAG_RW_ENABLE.&n; *                      Added defines for MPI_DIAG_PREVENT_IOC_BOOT and&n; *                      MPI_DIAG_CLEAR_FLASH_BAD_SIG.&n; *                      Obsoleted MPI_IOCSTATUS_TARGET_FC_ defines.&n; *  02-27-01  01.01.06  Removed MPI_HOST_INDEX_REGISTER define.&n; *                      Added function codes for RAID.&n; *  04-09-01  01.01.07  Added alternate define for MPI_DOORBELL_ACTIVE,&n; *                      MPI_DOORBELL_USED, to better match the spec.&n; *  --------------------------------------------------------------------------&n; */
 macro_line|#ifndef MPI_H
 DECL|macro|MPI_H
 mdefine_line|#define MPI_H
@@ -45,7 +45,9 @@ multiline_comment|/* S y s t e m    D o o r b e l l */
 DECL|macro|MPI_DOORBELL_OFFSET
 mdefine_line|#define MPI_DOORBELL_OFFSET                 (0x00000000)
 DECL|macro|MPI_DOORBELL_ACTIVE
-mdefine_line|#define MPI_DOORBELL_ACTIVE                 (0x08000000)
+mdefine_line|#define MPI_DOORBELL_ACTIVE                 (0x08000000) /* DoorbellUsed */
+DECL|macro|MPI_DOORBELL_USED
+mdefine_line|#define MPI_DOORBELL_USED                   (MPI_DOORBELL_ACTIVE)
 DECL|macro|MPI_DOORBELL_ACTIVE_SHIFT
 mdefine_line|#define MPI_DOORBELL_ACTIVE_SHIFT           (27)
 DECL|macro|MPI_DOORBELL_WHO_INIT_MASK
@@ -1203,11 +1205,11 @@ multiline_comment|/*************************************************************
 DECL|macro|MPI_IOCLOGINFO_TYPE_MASK
 mdefine_line|#define MPI_IOCLOGINFO_TYPE_MASK                (0xF0000000)
 DECL|macro|MPI_IOCLOGINFO_TYPE_NONE
-mdefine_line|#define MPI_IOCLOGINFO_TYPE_NONE                (0x00)
+mdefine_line|#define MPI_IOCLOGINFO_TYPE_NONE                (0x0)
 DECL|macro|MPI_IOCLOGINFO_TYPE_SCSI
-mdefine_line|#define MPI_IOCLOGINFO_TYPE_SCSI                (0x01)
+mdefine_line|#define MPI_IOCLOGINFO_TYPE_SCSI                (0x1)
 DECL|macro|MPI_IOCLOGINFO_TYPE_FC
-mdefine_line|#define MPI_IOCLOGINFO_TYPE_FC                  (0x02)
+mdefine_line|#define MPI_IOCLOGINFO_TYPE_FC                  (0x2)
 DECL|macro|MPI_IOCLOGINFO_LOG_DATA_MASK
 mdefine_line|#define MPI_IOCLOGINFO_LOG_DATA_MASK            (0x0FFFFFFF)
 macro_line|#endif

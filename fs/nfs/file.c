@@ -536,12 +536,6 @@ r_int
 id|to
 )paren
 (brace
-id|kmap
-c_func
-(paren
-id|page
-)paren
-suffix:semicolon
 r_return
 id|nfs_flush_incompatible
 c_func
@@ -598,12 +592,6 @@ op_star
 id|inode
 op_assign
 id|page-&gt;mapping-&gt;host
-suffix:semicolon
-id|kunmap
-c_func
-(paren
-id|page
-)paren
 suffix:semicolon
 id|lock_kernel
 c_func

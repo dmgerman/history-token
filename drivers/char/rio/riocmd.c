@@ -1807,7 +1807,8 @@ multiline_comment|/* Call tmgr HANGUP HERE */
 multiline_comment|/* Fix this later when every thing works !!!! RAMRAJ */
 id|gs_got_break
 (paren
-id|PortP
+op_amp
+id|PortP-&gt;gs
 )paren
 suffix:semicolon
 r_break

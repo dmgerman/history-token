@@ -204,7 +204,7 @@ c_func
 (paren
 id|name
 comma
-l_string|&quot;tub%x&quot;
+l_string|&quot;tub%.3x&quot;
 comma
 id|tubp-&gt;devno
 )paren
@@ -239,7 +239,7 @@ c_func
 (paren
 id|name
 comma
-l_string|&quot;tty%x&quot;
+l_string|&quot;tty%.3x&quot;
 comma
 id|tubp-&gt;devno
 )paren
@@ -284,7 +284,7 @@ c_func
 (paren
 id|name
 comma
-l_string|&quot;tub%x&quot;
+l_string|&quot;tub%.3x&quot;
 comma
 id|tubp-&gt;devno
 )paren
@@ -316,7 +316,7 @@ c_func
 (paren
 id|name
 comma
-l_string|&quot;tty%x&quot;
+l_string|&quot;tty%.3x&quot;
 comma
 id|tubp-&gt;devno
 )paren
@@ -422,9 +422,9 @@ l_int|0
 comma
 id|S_IFCHR
 op_or
-id|S_IRUSR
+id|S_IRUGO
 op_or
-id|S_IWUSR
+id|S_IWUGO
 comma
 op_amp
 id|fs3270_fops

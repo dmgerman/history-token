@@ -15,8 +15,7 @@ DECL|macro|NVRAM_SIZE
 mdefine_line|#define NVRAM_SIZE&t;8192
 DECL|function|nvram_llseek
 r_static
-r_int
-r_int
+id|loff_t
 id|nvram_llseek
 c_func
 (paren

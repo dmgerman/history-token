@@ -1264,7 +1264,7 @@ op_assign
 id|vmalloc
 c_func
 (paren
-id|FRAME_SIZE
+id|PWC_FRAME_SIZE
 )paren
 suffix:semicolon
 multiline_comment|/* need vmalloc since frame buffer &gt; 128K */
@@ -1305,7 +1305,7 @@ id|kbuf
 comma
 l_int|0
 comma
-id|FRAME_SIZE
+id|PWC_FRAME_SIZE
 )paren
 suffix:semicolon
 )brace
@@ -7360,6 +7360,12 @@ id|MODULE_AUTHOR
 c_func
 (paren
 l_string|&quot;Nemosoft Unv. &lt;nemosoft@smcc.demon.nl&gt;&quot;
+)paren
+suffix:semicolon
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
 DECL|function|usb_pwc_init

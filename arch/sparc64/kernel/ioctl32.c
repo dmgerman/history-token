@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: ioctl32.c,v 1.121 2001/08/03 14:27:21 davem Exp $&n; * ioctl32.c: Conversion between 32bit and 64bit native ioctls.&n; *&n; * Copyright (C) 1997-2000  Jakub Jelinek  (jakub@redhat.com)&n; * Copyright (C) 1998  Eddie C. Dost  (ecd@skynet.be)&n; *&n; * These routines maintain argument size conversion between 32bit and 64bit&n; * ioctls.&n; */
+multiline_comment|/* $Id: ioctl32.c,v 1.123 2001/09/02 03:52:07 davem Exp $&n; * ioctl32.c: Conversion between 32bit and 64bit native ioctls.&n; *&n; * Copyright (C) 1997-2000  Jakub Jelinek  (jakub@redhat.com)&n; * Copyright (C) 1998  Eddie C. Dost  (ecd@skynet.be)&n; *&n; * These routines maintain argument size conversion between 32bit and 64bit&n; * ioctls.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -22663,6 +22663,11 @@ id|COMPATIBLE_IOCTL
 c_func
 (paren
 id|KDGKBDIACR
+)paren
+id|COMPATIBLE_IOCTL
+c_func
+(paren
+id|KDKBDREP
 )paren
 id|COMPATIBLE_IOCTL
 c_func

@@ -1,10 +1,16 @@
 multiline_comment|/* &n;   BlueZ - Bluetooth protocol stack for Linux&n;   Copyright (C) 2000-2001 Qualcomm Incorporated&n;&n;   Written 2000,2001 by Maxim Krasnyansky &lt;maxk@qualcomm.com&gt;&n;&n;   This program is free software; you can redistribute it and/or modify&n;   it under the terms of the GNU General Public License version 2 as&n;   published by the Free Software Foundation;&n;&n;   THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRESS&n;   OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,&n;   FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT OF THIRD PARTY RIGHTS.&n;   IN NO EVENT SHALL THE COPYRIGHT HOLDER(S) AND AUTHOR(S) BE LIABLE FOR ANY&n;   CLAIM, OR ANY SPECIAL INDIRECT OR CONSEQUENTIAL DAMAGES, OR ANY DAMAGES &n;   WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN &n;   ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF &n;   OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.&n;&n;   ALL LIABILITY, INCLUDING LIABILITY FOR INFRINGEMENT OF ANY PATENTS, &n;   COPYRIGHTS, TRADEMARKS OR OTHER RIGHTS, RELATING TO USE OF THIS &n;   SOFTWARE IS DISCLAIMED.&n;*/
-multiline_comment|/*&n; *  $Id: bluetooth.h,v 1.1 2001/06/01 08:12:11 davem Exp $&n; */
-macro_line|#ifndef __IF_BLUETOOTH_H
-DECL|macro|__IF_BLUETOOTH_H
-mdefine_line|#define __IF_BLUETOOTH_H
+multiline_comment|/*&n; *  $Id: bluetooth.h,v 1.6 2001/08/03 04:19:49 maxk Exp $&n; */
+macro_line|#ifndef __BLUETOOTH_H
+DECL|macro|__BLUETOOTH_H
+mdefine_line|#define __BLUETOOTH_H
 macro_line|#include &lt;asm/types.h&gt;
 macro_line|#include &lt;asm/byteorder.h&gt;
+macro_line|#ifndef AF_BLUETOOTH
+DECL|macro|AF_BLUETOOTH
+mdefine_line|#define AF_BLUETOOTH&t;31
+DECL|macro|PF_BLUETOOTH
+mdefine_line|#define PF_BLUETOOTH&t;AF_BLUETOOTH
+macro_line|#endif
 DECL|macro|BTPROTO_L2CAP
 mdefine_line|#define BTPROTO_L2CAP   0
 DECL|macro|BTPROTO_HCI
@@ -13,34 +19,6 @@ DECL|macro|SOL_HCI
 mdefine_line|#define SOL_HCI     0
 DECL|macro|SOL_L2CAP
 mdefine_line|#define SOL_L2CAP   6
-r_typedef
-r_struct
-(brace
-DECL|member|b0
-DECL|member|b1
-DECL|member|b2
-DECL|member|b3
-DECL|member|b4
-DECL|member|b5
-id|__u8
-id|b0
-comma
-id|b1
-comma
-id|b2
-comma
-id|b3
-comma
-id|b4
-comma
-id|b5
-suffix:semicolon
-DECL|typedef|bdaddr_t
-)brace
-id|bdaddr_t
-suffix:semicolon
-DECL|macro|BDADDR_ANY
-mdefine_line|#define BDADDR_ANY ((bdaddr_t *)&quot;&bslash;000&bslash;000&bslash;000&bslash;000&bslash;000&quot;)
 multiline_comment|/* Connection and socket states */
 r_enum
 (brace
@@ -72,10 +50,43 @@ DECL|enumerator|BT_CLOSED
 id|BT_CLOSED
 )brace
 suffix:semicolon
+multiline_comment|/* Endianness conversions */
+DECL|macro|htobs
+mdefine_line|#define htobs(a)&t;__cpu_to_le16(a)
+DECL|macro|htobl
+mdefine_line|#define htobl(a)&t;__cpu_to_le32(a)
+DECL|macro|btohs
+mdefine_line|#define btohs(a)&t;__le16_to_cpu(a)
+DECL|macro|btohl
+mdefine_line|#define btohl(a)&t;__le32_to_cpu(a)
+multiline_comment|/* BD Address */
+r_typedef
+r_struct
+(brace
+DECL|member|b
+id|__u8
+id|b
+(braket
+l_int|6
+)braket
+suffix:semicolon
+DECL|typedef|bdaddr_t
+)brace
+id|__attribute__
+c_func
+(paren
+(paren
+id|packed
+)paren
+)paren
+id|bdaddr_t
+suffix:semicolon
+DECL|macro|BDADDR_ANY
+mdefine_line|#define BDADDR_ANY ((bdaddr_t *)&quot;&bslash;000&bslash;000&bslash;000&bslash;000&bslash;000&quot;)
 multiline_comment|/* Copy, swap, convert BD Address */
 DECL|function|bacmp
 r_static
-id|__inline__
+r_inline
 r_int
 id|bacmp
 c_func
@@ -106,7 +117,7 @@ suffix:semicolon
 )brace
 DECL|function|bacpy
 r_static
-id|__inline__
+r_inline
 r_void
 id|bacpy
 c_func
@@ -134,7 +145,6 @@ id|bdaddr_t
 )paren
 suffix:semicolon
 )brace
-r_extern
 r_void
 id|baswap
 c_func
@@ -148,7 +158,6 @@ op_star
 id|src
 )paren
 suffix:semicolon
-r_extern
 r_char
 op_star
 id|batostr
@@ -159,7 +168,6 @@ op_star
 id|ba
 )paren
 suffix:semicolon
-r_extern
 id|bdaddr_t
 op_star
 id|strtoba
@@ -170,15 +178,6 @@ op_star
 id|str
 )paren
 suffix:semicolon
-multiline_comment|/* Endianness conversions */
-DECL|macro|htobs
-mdefine_line|#define htobs(a)&t;__cpu_to_le16(a)
-DECL|macro|htobl
-mdefine_line|#define htobl(a)&t;__cpu_to_le32(a)
-DECL|macro|btohs
-mdefine_line|#define btohs(a)&t;__le16_to_cpu(a)
-DECL|macro|btohl
-mdefine_line|#define btohl(a)&t;__le32_to_cpu(a)
 r_int
 id|bterr
 c_func
@@ -187,5 +186,5 @@ id|__u16
 id|code
 )paren
 suffix:semicolon
-macro_line|#endif /* __IF_BLUETOOTH_H */
+macro_line|#endif /* __BLUETOOTH_H */
 eof

@@ -20,7 +20,7 @@ macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
-macro_line|#include &lt;linux/devfs_fs_kernel.h&gt; 
+macro_line|#include &lt;linux/devfs_fs_kernel.h&gt;
 macro_line|#include &lt;asm/dma.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
@@ -74,7 +74,7 @@ suffix:semicolon
 macro_line|# if ((QIC02_TAPE_IFC!=WANGTEK) &amp;&amp; (QIC02_TAPE_IFC!=ARCHIVE) &amp;&amp; (QIC02_TAPE_IFC!=MOUNTAIN))
 macro_line|#  error No valid interface card specified
 macro_line|# endif
-macro_line|#endif /* CONFIG_QIC02_DYNCONF */
+macro_line|#endif&t;&t;&t;&t;/* CONFIG_QIC02_DYNCONF */
 DECL|variable|ctlbits
 r_static
 r_volatile
@@ -450,7 +450,7 @@ id|TP_ST0
 op_or
 id|TP_CNI
 comma
-multiline_comment|/* My Wangtek 5150EQ sometimes reports a status code&n;&t;&t; * of 0x00e0, which is not a valid exception code, but&n;&t;&t; * I think it should be recognized as &quot;NO CARTRIDGE&quot;.&n;&t;&t; */
+multiline_comment|/* My Wangtek 5150EQ sometimes reports a status code&n;&t;&t;     * of 0x00e0, which is not a valid exception code, but&n;&t;&t;     * I think it should be recognized as &quot;NO CARTRIDGE&quot;.&n;&t;&t;     */
 l_string|&quot;Cartridge not in place&quot;
 multiline_comment|/* 2 */
 )brace
@@ -619,7 +619,7 @@ id|TP_ST0
 op_or
 id|TP_FIL
 comma
-multiline_comment|/* Status 0x0089 (EOM &amp; FM) is viewed as an FM,&n;&t;&t; * because it can only happen during a read.&n;&t;&t; * EOM is checked separately for an FM condition.&n;&t;&t; */
+multiline_comment|/* Status 0x0089 (EOM &amp; FM) is viewed as an FM,&n;&t;&t;     * because it can only happen during a read.&n;&t;&t;     * EOM is checked separately for an FM condition.&n;&t;&t;     */
 l_string|&quot;File mark detected&quot;
 multiline_comment|/* 11 */
 )brace
@@ -833,8 +833,8 @@ id|QIC02_TAPE_IFC
 op_eq
 id|WANGTEK
 )paren
-multiline_comment|/* || (QIC02_TAPE_IFC == EVEREX) */
 (brace
+multiline_comment|/* || (QIC02_TAPE_IFC == EVEREX) */
 id|ctlbits
 op_assign
 id|WT_CTL_ONLINE
@@ -882,8 +882,8 @@ suffix:semicolon
 multiline_comment|/* dummy write to reset DMA */
 )brace
 r_else
-multiline_comment|/* MOUNTAIN */
 (brace
+multiline_comment|/* MOUNTAIN */
 id|ctlbits
 op_assign
 id|MTN_CTL_ONLINE
@@ -1054,7 +1054,7 @@ op_eq
 id|EXC_NCART
 )paren
 (brace
-multiline_comment|/* Cartridge was changed. Redo sense().&n;&t; * EXC_NCART should be handled in open().&n;&t; * It is not permitted to remove the tape while&n;&t; * the tape driver has open files. &n;&t; */
+multiline_comment|/* Cartridge was changed. Redo sense().&n;&t;&t; * EXC_NCART should be handled in open().&n;&t;&t; * It is not permitted to remove the tape while&n;&t;&t; * the tape driver has open files. &n;&t;&t; */
 id|need_rewind
 op_assign
 id|YES
@@ -1113,7 +1113,7 @@ op_eq
 id|EXC_MARGINAL
 )paren
 (brace
-multiline_comment|/* A marginal block behaves much like a FM.&n;&t; * User may continue reading, if desired.&n;&t; */
+multiline_comment|/* A marginal block behaves much like a FM.&n;&t;&t; * User may continue reading, if desired.&n;&t;&t; */
 id|tpqputs
 c_func
 (paren
@@ -1207,8 +1207,8 @@ id|QIC02_CTL_PORT
 suffix:semicolon
 )brace
 r_else
-multiline_comment|/* WANGTEK, ARCHIVE */
 (brace
+multiline_comment|/* WANGTEK, ARCHIVE */
 id|outb_p
 c_func
 (paren
@@ -1493,7 +1493,7 @@ OG
 l_int|0
 )paren
 )paren
-multiline_comment|/*skip*/
+multiline_comment|/*skip */
 suffix:semicolon
 multiline_comment|/* wait for ready */
 r_if
@@ -1561,7 +1561,7 @@ OG
 l_int|0
 )paren
 )paren
-multiline_comment|/*skip*/
+multiline_comment|/*skip */
 suffix:semicolon
 multiline_comment|/* wait for not ready */
 r_if
@@ -1684,6 +1684,7 @@ id|spin_t
 op_add_assign
 id|jiffies
 suffix:semicolon
+multiline_comment|/* FIXME...*/
 r_while
 c_loop
 (paren
@@ -2154,6 +2155,7 @@ l_int|0
 )paren
 (brace
 multiline_comment|/* n (above) should be chosen such that on your machine&n;&t;&t; * you rarely ever see the message below, and it should&n;&t;&t; * be small enough to give reasonable response time.]&n;&t;&t; */
+multiline_comment|/* FIXME */
 id|tpqputs
 c_func
 (paren
@@ -2389,7 +2391,7 @@ id|QIC02_STAT_PORT
 op_amp
 id|QIC02_STAT_READY
 )paren
-multiline_comment|/*skip*/
+multiline_comment|/*skip */
 suffix:semicolon
 multiline_comment|/* wait for ready */
 r_if
@@ -3646,7 +3648,6 @@ r_if
 c_cond
 (paren
 id|tp_sense
-c_func
 (paren
 id|TP_ILL
 op_or
@@ -4260,7 +4261,7 @@ comma
 l_string|&quot;MTOFFL rewinding &amp; going offline&quot;
 )paren
 suffix:semicolon
-multiline_comment|/* Doing a drive select will clear (unlock) the current drive.&n;&t;&t;&t; * But that requires support for multiple drives and locking.&n;&t;&t;&t; */
+multiline_comment|/* Doing a drive select will clear (unlock) the current drive.&n;&t;&t; * But that requires support for multiple drives and locking.&n;&t;&t; */
 r_if
 c_cond
 (paren
@@ -4371,7 +4372,7 @@ suffix:semicolon
 r_case
 id|MTBSFM
 suffix:colon
-multiline_comment|/* Think think is like MTBSF, except that&n;&t;&t;&t; * we shouldn&squot;t skip the FM. Tricky.&n;&t;&t;&t; * Maybe use RD_FM_BCK, then do a SPACE_FWD?&n;&t;&t;&t; */
+multiline_comment|/* Think think is like MTBSF, except that&n;&t;&t; * we shouldn&squot;t skip the FM. Tricky.&n;&t;&t; * Maybe use RD_FM_BCK, then do a SPACE_FWD?&n;&t;&t; */
 id|tpqputs
 c_func
 (paren
@@ -4402,7 +4403,7 @@ suffix:semicolon
 r_case
 id|MTFSFM
 suffix:colon
-multiline_comment|/* I think this is like MTFSF, except that&n;&t;&t;&t; * we shouldn&squot;t skip the FM. Tricky.&n;&t;&t;&t; * Maybe use QCMD_RD_DATA until we get a TP_FIL exception?&n;&t;&t;&t; * But then the FM will have been skipped...&n;&t;&t;&t; * Maybe use RD_FM, then RD_FM_BCK, but not all&n;&t;&t;&t; * drives will support that!&n;&t;&t;&t; */
+multiline_comment|/* I think this is like MTFSF, except that&n;&t;&t; * we shouldn&squot;t skip the FM. Tricky.&n;&t;&t; * Maybe use QCMD_RD_DATA until we get a TP_FIL exception?&n;&t;&t; * But then the FM will have been skipped...&n;&t;&t; * Maybe use RD_FM, then RD_FM_BCK, but not all&n;&t;&t; * drives will support that!&n;&t;&t; */
 id|tpqputs
 c_func
 (paren
@@ -4433,7 +4434,7 @@ suffix:semicolon
 r_case
 id|MTEOM
 suffix:colon
-multiline_comment|/* This should leave the tape ready for appending&n;&t;&t;&t; * another file to the end, such that it would append&n;&t;&t;&t; * after the last FM on tape.&n;&t;&t;&t; */
+multiline_comment|/* This should leave the tape ready for appending&n;&t;&t; * another file to the end, such that it would append&n;&t;&t; * after the last FM on tape.&n;&t;&t; */
 id|tpqputs
 c_func
 (paren
@@ -4463,7 +4464,7 @@ c_cond
 id|TP_HAVE_EOD
 )paren
 (brace
-multiline_comment|/* Use faster seeking when possible.&n;&t;&t;&t;&t; * This requires the absence of data beyond the EOM.&n;&t;&t;&t;&t; * It seems that my drive does not always perform the&n;&t;&t;&t;&t; * SEEK_EOD correctly, unless it is preceded by a&n;&t;&t;&t;&t; * rewind command.&n;&t;&t;&t;&t; */
+multiline_comment|/* Use faster seeking when possible.&n;&t;&t;&t; * This requires the absence of data beyond the EOM.&n;&t;&t;&t; * It seems that my drive does not always perform the&n;&t;&t;&t; * SEEK_EOD correctly, unless it is preceded by a&n;&t;&t;&t; * rewind command.&n;&t;&t;&t; */
 macro_line|# if 0
 id|status_eom_detected
 op_assign
@@ -4609,6 +4610,7 @@ r_return
 op_minus
 id|EACCES
 suffix:semicolon
+multiline_comment|/* FIXME */
 multiline_comment|/* give user a few seconds to pull out tape */
 r_while
 c_loop
@@ -5015,8 +5017,8 @@ multiline_comment|/* start DMA transfer */
 multiline_comment|/* In dma_end() AR_RESET_DMA_PORT is written too. */
 )brace
 r_else
-multiline_comment|/* QIC02_TAPE_IFC == MOUNTAIN */
 (brace
+multiline_comment|/* QIC02_TAPE_IFC == MOUNTAIN */
 id|inb
 c_func
 (paren
@@ -5172,7 +5174,7 @@ id|NO
 (brace
 multiline_comment|/* First, we have to clear the status -- maybe remove TP_FIL???&n;&t;&t; */
 macro_line|#if 0
-multiline_comment|/* Next dummy get status is to make sure CNI is valid,&n;                   since we&squot;re only just starting a read/write it doesn&squot;t&n;                   matter some exceptions are cleared by reading the status;&n;                   we&squot;re only interested in CNI and WRP. -Eddy */
+multiline_comment|/* Next dummy get status is to make sure CNI is valid,&n;&t;&t;   since we&squot;re only just starting a read/write it doesn&squot;t&n;&t;&t;   matter some exceptions are cleared by reading the status;&n;&t;&t;   we&squot;re only interested in CNI and WRP. -Eddy */
 id|get_status
 c_func
 (paren
@@ -5544,8 +5546,8 @@ id|AR_RESET_DMA_PORT
 )paren
 suffix:semicolon
 r_else
-multiline_comment|/* QIC02_TAPE_IFC == MOUNTAIN */
 (brace
+multiline_comment|/* QIC02_TAPE_IFC == MOUNTAIN */
 multiline_comment|/* Clear control bits, de-select ONLINE during tp_sense */
 id|ctlbits
 op_and_assign
@@ -5601,8 +5603,8 @@ suffix:semicolon
 multiline_comment|/* no return here -- got to clean up first! */
 )brace
 r_else
-multiline_comment|/* if (QIC02_TAPE_IFC == MOUNTAIN) */
 (brace
+multiline_comment|/* if (QIC02_TAPE_IFC == MOUNTAIN) */
 id|outb_p
 c_func
 (paren
@@ -5857,7 +5859,7 @@ l_int|0
 )paren
 (brace
 multiline_comment|/* exception occurred */
-multiline_comment|/* Possible causes for an exception during a transfer:&n;&t;&t;&t; * &t;- during a write-cycle: end of tape (EW) hole detected.&n;&t;&t;&t; *&t;- during a read-cycle: filemark or EOD detected.&n;&t;&t;&t; *&t;- something went wrong&n;&t;&t;&t; * So don&squot;t continue with the next block.&n;&t;&t;&t; */
+multiline_comment|/* Possible causes for an exception during a transfer:&n;&t;&t;&t; *      - during a write-cycle: end of tape (EW) hole detected.&n;&t;&t;&t; *      - during a read-cycle: filemark or EOD detected.&n;&t;&t;&t; *      - something went wrong&n;&t;&t;&t; * So don&squot;t continue with the next block.&n;&t;&t;&t; */
 id|tpqputs
 c_func
 (paren
@@ -5906,7 +5908,7 @@ id|r
 op_assign
 l_int|0
 suffix:semicolon
-multiline_comment|/* Skip next ready check for Archive controller because&n;&t;     * it may be busy reading ahead. Weird. --hhb&n;&t;     */
+multiline_comment|/* Skip next ready check for Archive controller because&n;&t;&t; * it may be busy reading ahead. Weird. --hhb&n;&t;&t; */
 r_if
 c_cond
 (paren
@@ -6185,8 +6187,8 @@ id|count
 op_mod
 id|TAPE_BLKSIZE
 )paren
-multiline_comment|/* Only allow mod 512 bytes at a time. */
 (brace
+multiline_comment|/* Only allow mod 512 bytes at a time. */
 id|tpqputs
 c_func
 (paren
@@ -6206,14 +6208,14 @@ c_cond
 (paren
 id|status_bytes_wr
 )paren
-multiline_comment|/* Once written, no more reads, &squot;till after WFM. */
 (brace
+multiline_comment|/* Once written, no more reads, &squot;till after WFM. */
 r_return
 op_minus
 id|EACCES
 suffix:semicolon
 )brace
-multiline_comment|/* This is rather ugly because it has to implement a finite state&n;     * machine in order to handle the EOF situations properly.&n;     */
+multiline_comment|/* This is rather ugly because it has to implement a finite state&n;&t; * machine in order to handle the EOF situations properly.&n;&t; */
 r_while
 c_loop
 (paren
@@ -6267,7 +6269,6 @@ id|DEBUG
 )paren
 (brace
 id|printk
-c_func
 (paren
 l_string|&quot;read: return_read_eof==%d, reported_read_eof==%d, total_bytes_done==%lu&bslash;n&quot;
 comma
@@ -6316,7 +6317,7 @@ multiline_comment|/* return EOF */
 )brace
 r_else
 (brace
-multiline_comment|/* Application program has already received EOF&n;&t;&t; * (above), now continue with next file on tape,&n;&t;&t; * if possible.&n;&t;&t; * When the FM is reached, EXCEPTION is set,&n;&t;&t; * causing a sense(). Subsequent read/writes will&n;&t;&t; * continue after the FM.&n;&t;&t; */
+multiline_comment|/* Application program has already received EOF&n;&t;&t;&t;&t; * (above), now continue with next file on tape,&n;&t;&t;&t;&t; * if possible.&n;&t;&t;&t;&t; * When the FM is reached, EXCEPTION is set,&n;&t;&t;&t;&t; * causing a sense(). Subsequent read/writes will&n;&t;&t;&t;&t; * continue after the FM.&n;&t;&t;&t;&t; */
 multiline_comment|/*********** ?????????? this should check for (EOD|NDT), not EOM, &squot;cause we can read past EW: ************/
 r_if
 c_cond
@@ -6324,7 +6325,7 @@ c_cond
 id|status_eom_detected
 )paren
 (brace
-multiline_comment|/* If EOM, nothing left to read, so keep returning EOFs.&n;&t;&t;     *** should probably set some flag to avoid clearing&n;&t;&t;     *** status_eom_detected through ioctls or something&n;&t;&t;     */
+multiline_comment|/* If EOM, nothing left to read, so keep returning EOFs.&n;&t;&t;&t;&t;&t; *** should probably set some flag to avoid clearing&n;&t;&t;&t;&t;&t; *** status_eom_detected through ioctls or something&n;&t;&t;&t;&t;&t; */
 r_return
 l_int|0
 suffix:semicolon
@@ -6345,7 +6346,7 @@ op_assign
 id|NO
 suffix:semicolon
 multiline_comment|/* reset this too */
-multiline_comment|/*fall through*/
+multiline_comment|/*fall through */
 )brace
 )brace
 )brace
@@ -6379,8 +6380,8 @@ c_func
 (paren
 )paren
 )paren
-multiline_comment|/****************************************/
 (brace
+multiline_comment|/****************************************/
 id|tpqputs
 c_func
 (paren
@@ -6746,8 +6747,8 @@ id|count
 op_mod
 id|TAPE_BLKSIZE
 )paren
-multiline_comment|/* only allow mod 512 bytes at a time */
 (brace
+multiline_comment|/* only allow mod 512 bytes at a time */
 id|tpqputs
 c_func
 (paren
@@ -6782,7 +6783,7 @@ op_minus
 id|EACCES
 suffix:semicolon
 )brace
-multiline_comment|/* open() does a sense() and we can assume the tape isn&squot;t changed&n;     * between open() and release(), so the tperror.exs bits will still&n;     * be valid.&n;     */
+multiline_comment|/* open() does a sense() and we can assume the tape isn&squot;t changed&n;&t; * between open() and release(), so the tperror.exs bits will still&n;&t; * be valid.&n;&t; */
 r_if
 c_cond
 (paren
@@ -7042,7 +7043,7 @@ op_minus
 id|EIO
 suffix:semicolon
 )brace
-multiline_comment|/* If the dma-transfer was aborted because of an exception,&n;&t;     * status_error will have been set in the interrupt handler.&n;&t;     * Then end_dma() will do a sense().&n;&t;     * If the exception was EXC_EOM, the EW-hole was encountered&n;&t;     * and two more blocks could be written. For the time being we&squot;ll&n;&t;     * just consider this to be the EOT.&n;&t;     * Otherwise, something Bad happened, such as the maximum number&n;&t;     * of block-rewrites was exceeded. [e.g. A very bad spot on tape was&n;&t;     * encountered. Normally short dropouts are compensated for by&n;&t;     * rewriting the block in error, up to 16 times. I&squot;m not sure&n;&t;     * QIC-24 drives can do this.]&n;&t;     */
+multiline_comment|/* If the dma-transfer was aborted because of an exception,&n;&t;&t;&t; * status_error will have been set in the interrupt handler.&n;&t;&t;&t; * Then end_dma() will do a sense().&n;&t;&t;&t; * If the exception was EXC_EOM, the EW-hole was encountered&n;&t;&t;&t; * and two more blocks could be written. For the time being we&squot;ll&n;&t;&t;&t; * just consider this to be the EOT.&n;&t;&t;&t; * Otherwise, something Bad happened, such as the maximum number&n;&t;&t;&t; * of block-rewrites was exceeded. [e.g. A very bad spot on tape was&n;&t;&t;&t; * encountered. Normally short dropouts are compensated for by&n;&t;&t;&t; * rewriting the block in error, up to 16 times. I&squot;m not sure&n;&t;&t;&t; * QIC-24 drives can do this.]&n;&t;&t;&t; */
 r_if
 c_cond
 (paren
@@ -7300,8 +7301,8 @@ id|dev
 op_eq
 l_int|255
 )paren
-multiline_comment|/* special case for resetting */
 (brace
+multiline_comment|/* special case for resetting */
 r_if
 c_cond
 (paren
@@ -7364,8 +7365,8 @@ id|filp
 OG
 l_int|1
 )paren
-multiline_comment|/* filp-&gt;f_count==1 for the first open() */
 (brace
+multiline_comment|/* filp-&gt;f_count==1 for the first open() */
 r_return
 op_minus
 id|EBUSY
@@ -7379,7 +7380,7 @@ op_eq
 id|YES
 )paren
 (brace
-multiline_comment|/* no irq/dma/port stuff allocated yet, no reset done&n;&t; * yet, so return until MTSETCONFIG has been done.&n;&t; */
+multiline_comment|/* no irq/dma/port stuff allocated yet, no reset done&n;&t;&t; * yet, so return until MTSETCONFIG has been done.&n;&t;&t; */
 r_return
 l_int|0
 suffix:semicolon
@@ -7453,7 +7454,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 )brace
-multiline_comment|/* This is to avoid tape-changed problems (TP_CNI exception).&n;     *&n;     * Since removing the cartridge will not raise an exception,&n;     * we always do a tp_sense() to make sure we have the proper&n;     * CNI status, the 2150L may need an additional sense.... - Eddy&n;     */
+multiline_comment|/* This is to avoid tape-changed problems (TP_CNI exception).&n;&t; *&n;&t; * Since removing the cartridge will not raise an exception,&n;&t; * we always do a tp_sense() to make sure we have the proper&n;&t; * CNI status, the 2150L may need an additional sense.... - Eddy&n;&t; */
 id|s
 op_assign
 id|tp_sense
@@ -7534,7 +7535,7 @@ op_minus
 id|EIO
 suffix:semicolon
 )brace
-multiline_comment|/* exception bits should be up-to-date now, so check for&n;     * tape presence and exit if absent.&n;     * Even `mt stat&squot; will fail without a tape.&n;     */
+multiline_comment|/* exception bits should be up-to-date now, so check for&n;&t; * tape presence and exit if absent.&n;&t; * Even `mt stat&squot; will fail without a tape.&n;&t; */
 r_if
 c_cond
 (paren
@@ -7564,7 +7565,7 @@ op_minus
 id|EIO
 suffix:semicolon
 )brace
-multiline_comment|/* At this point we can assume that a tape is present and&n;     * that it will remain present until release() is called.&n;     */
+multiline_comment|/* At this point we can assume that a tape is present and&n;&t; * that it will remain present until release() is called.&n;&t; */
 multiline_comment|/* not allowed to do QCMD_DENS_* unless tape is rewound */
 r_if
 c_cond
@@ -7594,7 +7595,7 @@ id|dev
 )paren
 )paren
 (brace
-multiline_comment|/* force rewind if minor bits have changed,&n;&t; * i.e. user wants to use tape in different format.&n;&t; * [assuming single drive operation]&n;&t; */
+multiline_comment|/* force rewind if minor bits have changed,&n;&t;&t; * i.e. user wants to use tape in different format.&n;&t;&t; * [assuming single drive operation]&n;&t;&t; */
 r_if
 c_cond
 (paren
@@ -7617,7 +7618,7 @@ suffix:semicolon
 )brace
 r_else
 (brace
-multiline_comment|/* density bits still the same, but TP_DIAGS bit &n;&t; * may have changed.&n;&t; */
+multiline_comment|/* density bits still the same, but TP_DIAGS bit &n;&t;&t; * may have changed.&n;&t;&t; */
 id|current_tape_dev
 op_assign
 id|dev
@@ -7630,8 +7631,8 @@ id|need_rewind
 op_eq
 id|YES
 )paren
-multiline_comment|/***************** CHECK THIS!!!!!!!! **********/
 (brace
+multiline_comment|/***************** CHECK THIS!!!!!!!! **********/
 id|s
 op_assign
 id|do_qic_cmd
@@ -7742,7 +7743,7 @@ suffix:semicolon
 )brace
 )brace
 multiline_comment|/* things should be ok, once we get here */
-multiline_comment|/* set density: only allowed when TP_BOM status bit is set,&n;     * so we must have done a rewind by now. If not, just skip over.&n;     * Only give set density command when minor bits have changed.&n;     */
+multiline_comment|/* set density: only allowed when TP_BOM status bit is set,&n;&t; * so we must have done a rewind by now. If not, just skip over.&n;&t; * Only give set density command when minor bits have changed.&n;&t; */
 r_if
 c_cond
 (paren
@@ -8047,9 +8048,9 @@ id|status_zombie
 op_eq
 id|NO
 )paren
-multiline_comment|/* don&squot;t rewind in zombie mode */
 (brace
-multiline_comment|/* Terminate any pending write cycle. Terminating the read-cycle&n;&t; * is delayed until it is required to do so for a new command.&n;&t; */
+multiline_comment|/* don&squot;t rewind in zombie mode */
+multiline_comment|/* Terminate any pending write cycle. Terminating the read-cycle&n;&t;&t; * is delayed until it is required to do so for a new command.&n;&t;&t; */
 id|terminate_write
 c_func
 (paren
@@ -8074,7 +8075,7 @@ l_string|&quot;release: device dead!?&quot;
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* Rewind only if minor number requires it AND &n;&t; * read/writes have been done. ************* IS THIS CORRECT??????????&n;&t; */
+multiline_comment|/* Rewind only if minor number requires it AND &n;&t;&t; * read/writes have been done. ************* IS THIS CORRECT??????????&n;&t;&t; */
 r_if
 c_cond
 (paren
@@ -8254,7 +8255,7 @@ op_eq
 id|EVEREX
 )paren
 (brace
-multiline_comment|/* Everex is a special case for Wangtek (actually&n;&t;     * it&squot;s the other way &squot;round, but I saw Wangtek first)&n;&t;     */
+multiline_comment|/* Everex is a special case for Wangtek (actually&n;&t;&t;&t; * it&squot;s the other way &squot;round, but I saw Wangtek first)&n;&t;&t;&t; */
 r_if
 c_cond
 (paren
@@ -8268,7 +8269,7 @@ op_assign
 id|WT_CTL_DMA1
 suffix:semicolon
 )brace
-multiline_comment|/* Fixup the kernel copy of the IFC type to that&n;&t;     * we don&squot;t have to distinguish between Wangtek and&n;&t;     * and Everex at runtime.&n;&t;     */
+multiline_comment|/* Fixup the kernel copy of the IFC type to that&n;&t;&t;&t; * we don&squot;t have to distinguish between Wangtek and&n;&t;&t;&t; * and Everex at runtime.&n;&t;&t;&t; */
 id|QIC02_TAPE_IFC
 op_assign
 id|WANGTEK
@@ -8605,7 +8606,6 @@ r_if
 c_cond
 (paren
 id|copy_to_user
-c_func
 (paren
 (paren
 r_char
@@ -8649,7 +8649,7 @@ id|MTIOCSETCONFIG
 )paren
 )paren
 (brace
-multiline_comment|/* One should always do a MTIOCGETCONFIG first, then update&n;&t; * user-settings, then write back with MTIOCSETCONFIG.&n;&t; * The qic02conf program should re-open() the device before actual&n;&t; * use, to make sure everything is initialized.&n;&t; */
+multiline_comment|/* One should always do a MTIOCGETCONFIG first, then update&n;&t;&t; * user-settings, then write back with MTIOCSETCONFIG.&n;&t;&t; * The qic02conf program should re-open() the device before actual&n;&t;&t; * use, to make sure everything is initialized.&n;&t;&t; */
 id|CHECK_IOC_SIZE
 c_func
 (paren
@@ -8713,7 +8713,6 @@ r_if
 c_cond
 (paren
 id|copy_from_user
-c_func
 (paren
 (paren
 r_char
@@ -8793,7 +8792,6 @@ r_if
 c_cond
 (paren
 id|copy_from_user
-c_func
 (paren
 (paren
 r_char
@@ -8820,8 +8818,8 @@ op_minus
 id|EFAULT
 suffix:semicolon
 )brace
-multiline_comment|/* ---note: mt_count is signed, negative seeks must be&n;&t; * ---&t;    translated to seeks in opposite direction!&n;&t; * (only needed for Sun-programs, I think.)&n;&t; */
-multiline_comment|/* ---note: MTFSF with count 0 should position the&n;&t; * ---&t;    tape at the beginning of the current file.&n;&t; */
+multiline_comment|/* ---note: mt_count is signed, negative seeks must be&n;&t;&t; * ---      translated to seeks in opposite direction!&n;&t;&t; * (only needed for Sun-programs, I think.)&n;&t;&t; */
+multiline_comment|/* ---note: MTFSF with count 0 should position the&n;&t;&t; * ---      tape at the beginning of the current file.&n;&t;&t; */
 r_if
 c_cond
 (paren
@@ -9038,13 +9036,12 @@ c_func
 id|mtget
 )paren
 suffix:semicolon
-multiline_comment|/* It appears (gmt(1)) that it is normal behaviour to&n;&t; * first set the status with MTNOP, and then to read&n;&t; * it out with MTIOCGET&n;&t; */
+multiline_comment|/* It appears (gmt(1)) that it is normal behaviour to&n;&t;&t; * first set the status with MTNOP, and then to read&n;&t;&t; * it out with MTIOCGET&n;&t;&t; */
 multiline_comment|/* copy results to user space */
 r_if
 c_cond
 (paren
 id|copy_to_user
-c_func
 (paren
 (paren
 r_char
@@ -9208,7 +9205,6 @@ r_if
 c_cond
 (paren
 id|copy_to_user
-c_func
 (paren
 (paren
 r_char
@@ -9361,7 +9357,7 @@ c_func
 r_void
 )paren
 (brace
-multiline_comment|/* First perform some checks. If one of them fails,&n;     * the tape driver will not be registered to the system.&n;     */
+multiline_comment|/* First perform some checks. If one of them fails,&n;&t; * the tape driver will not be registered to the system.&n;&t; */
 r_if
 c_cond
 (paren
@@ -9383,7 +9379,7 @@ op_minus
 id|ENXIO
 suffix:semicolon
 )brace
-multiline_comment|/* for DYNCONF, allocating IO, DMA and IRQ should not be done until &n;     * the config parameters have been set using MTSETCONFIG.&n;     */
+multiline_comment|/* for DYNCONF, allocating IO, DMA and IRQ should not be done until &n;&t; * the config parameters have been set using MTSETCONFIG.&n;&t; */
 r_if
 c_cond
 (paren
@@ -9417,7 +9413,6 @@ r_if
 c_cond
 (paren
 id|request_irq
-c_func
 (paren
 id|QIC02_TAPE_IRQ
 comma
@@ -9789,7 +9784,6 @@ r_if
 c_cond
 (paren
 id|devfs_register_chrdev
-c_func
 (paren
 id|QIC02_TAPE_MAJOR
 comma
@@ -9822,6 +9816,7 @@ id|ENODEV
 suffix:semicolon
 )brace
 id|devfs_register
+c_func
 (paren
 l_int|NULL
 comma
@@ -9850,6 +9845,7 @@ l_int|NULL
 )paren
 suffix:semicolon
 id|devfs_register
+c_func
 (paren
 l_int|NULL
 comma
@@ -9878,6 +9874,7 @@ l_int|NULL
 )paren
 suffix:semicolon
 id|devfs_register
+c_func
 (paren
 l_int|NULL
 comma
@@ -9906,6 +9903,7 @@ l_int|NULL
 )paren
 suffix:semicolon
 id|devfs_register
+c_func
 (paren
 l_int|NULL
 comma
@@ -9934,6 +9932,7 @@ l_int|NULL
 )paren
 suffix:semicolon
 id|devfs_register
+c_func
 (paren
 l_int|NULL
 comma
@@ -9962,6 +9961,7 @@ l_int|NULL
 )paren
 suffix:semicolon
 id|devfs_register
+c_func
 (paren
 l_int|NULL
 comma
@@ -9990,6 +9990,7 @@ l_int|NULL
 )paren
 suffix:semicolon
 id|devfs_register
+c_func
 (paren
 l_int|NULL
 comma
@@ -10018,6 +10019,7 @@ l_int|NULL
 )paren
 suffix:semicolon
 id|devfs_register
+c_func
 (paren
 l_int|NULL
 comma
@@ -10220,7 +10222,6 @@ id|devfs_unregister
 c_func
 (paren
 id|devfs_find_handle
-c_func
 (paren
 l_int|NULL
 comma
@@ -10240,7 +10241,6 @@ id|devfs_unregister
 c_func
 (paren
 id|devfs_find_handle
-c_func
 (paren
 l_int|NULL
 comma
@@ -10260,7 +10260,6 @@ id|devfs_unregister
 c_func
 (paren
 id|devfs_find_handle
-c_func
 (paren
 l_int|NULL
 comma
@@ -10280,7 +10279,6 @@ id|devfs_unregister
 c_func
 (paren
 id|devfs_find_handle
-c_func
 (paren
 l_int|NULL
 comma
@@ -10300,7 +10298,6 @@ id|devfs_unregister
 c_func
 (paren
 id|devfs_find_handle
-c_func
 (paren
 l_int|NULL
 comma
@@ -10320,7 +10317,6 @@ id|devfs_unregister
 c_func
 (paren
 id|devfs_find_handle
-c_func
 (paren
 l_int|NULL
 comma
@@ -10340,7 +10336,6 @@ id|devfs_unregister
 c_func
 (paren
 id|devfs_find_handle
-c_func
 (paren
 l_int|NULL
 comma
@@ -10360,7 +10355,6 @@ id|devfs_unregister
 c_func
 (paren
 id|devfs_find_handle
-c_func
 (paren
 l_int|NULL
 comma
@@ -10396,7 +10390,7 @@ c_func
 )paren
 suffix:semicolon
 macro_line|# ifdef CONFIG_QIC02_DYNCONF
-multiline_comment|/* This allows the dynamic config program to setup the card&n;     * by presetting qic02_tape_dynconf via insmod&n;     */
+multiline_comment|/* This allows the dynamic config program to setup the card&n;&t; * by presetting qic02_tape_dynconf via insmod&n;&t; */
 r_if
 c_cond
 (paren
@@ -10433,4 +10427,12 @@ id|retval
 suffix:semicolon
 )brace
 macro_line|#endif
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
+)paren
+suffix:semicolon
+id|EXPORT_NO_SYMBOLS
+suffix:semicolon
 eof

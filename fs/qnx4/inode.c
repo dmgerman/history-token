@@ -1891,10 +1891,6 @@ c_func
 id|bh
 )paren
 suffix:semicolon
-id|s-&gt;s_dirt
-op_assign
-l_int|1
-suffix:semicolon
 r_return
 id|s
 suffix:semicolon

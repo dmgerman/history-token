@@ -2101,7 +2101,6 @@ suffix:semicolon
 multiline_comment|/**&n; *&t;pc110pad_init_driver:&n; *&n; *&t;We configure the pad with the default parameters (that is PS/2 &n; *&t;emulation mode. We then claim the needed I/O and interrupt resources.&n; *&t;Finally as a matter of paranoia we turn the pad off until we are&n; *&t;asked to open it by an application.&n; */
 DECL|variable|__initdata
 r_static
-r_const
 r_char
 id|banner
 (braket
@@ -2304,5 +2303,25 @@ c_func
 (paren
 id|pc110pad_exit_driver
 )paren
+suffix:semicolon
+id|MODULE_AUTHOR
+c_func
+(paren
+l_string|&quot;Alan Cox, Robin O&squot;Leary&quot;
+)paren
+suffix:semicolon
+id|MODULE_DESCRIPTION
+c_func
+(paren
+l_string|&quot;Driver for the touchpad on the IBM PC110 palmtop&quot;
+)paren
+suffix:semicolon
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
+)paren
+suffix:semicolon
+id|EXPORT_NO_SYMBOLS
 suffix:semicolon
 eof

@@ -1,7 +1,7 @@
 macro_line|#ifndef _GDTH_H
 DECL|macro|_GDTH_H
 mdefine_line|#define _GDTH_H
-multiline_comment|/*&n; * Header file for the GDT ISA/EISA/PCI Disk Array Controller driver for Linux&n; * &n; * gdth.h Copyright (C) 1995-01 ICP vortex Computersysteme GmbH, Achim Leubner&n; * See gdth.c for further informations and &n; * below for supported controller types&n; *&n; * &lt;achim@vortex.de&gt;&n; *&n; * $Id: gdth.h,v 1.38 2001/03/15 15:06:23 achim Exp $&n; */
+multiline_comment|/*&n; * Header file for the GDT ISA/EISA/PCI Disk Array Controller driver for Linux&n; * &n; * gdth.h Copyright (C) 1995-01 ICP vortex Computersysteme GmbH, Achim Leubner&n; * See gdth.c for further informations and &n; * below for supported controller types&n; *&n; * &lt;achim@vortex.de&gt;&n; *&n; * $Id: gdth.h,v 1.44 2001/08/21 11:19:05 achim Exp $&n; */
 macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#ifndef NULL
@@ -19,14 +19,19 @@ macro_line|#endif
 multiline_comment|/* defines, macros */
 multiline_comment|/* driver version */
 DECL|macro|GDTH_VERSION_STR
-mdefine_line|#define GDTH_VERSION_STR        &quot;1.28&quot;
+mdefine_line|#define GDTH_VERSION_STR        &quot;2.03&quot;
 DECL|macro|GDTH_VERSION
-mdefine_line|#define GDTH_VERSION            1
+mdefine_line|#define GDTH_VERSION            2
 DECL|macro|GDTH_SUBVERSION
-mdefine_line|#define GDTH_SUBVERSION         28
+mdefine_line|#define GDTH_SUBVERSION         3
 multiline_comment|/* protocol version */
 DECL|macro|PROTOCOL_VERSION
 mdefine_line|#define PROTOCOL_VERSION        1
+multiline_comment|/* OEM IDs */
+DECL|macro|OEM_ID_ICP
+mdefine_line|#define OEM_ID_ICP&t;0x941c
+DECL|macro|OEM_ID_INTEL
+mdefine_line|#define OEM_ID_INTEL&t;0x8000
 multiline_comment|/* controller classes */
 DECL|macro|GDT_ISA
 mdefine_line|#define GDT_ISA         0x01                    /* ISA controller */
@@ -53,6 +58,10 @@ multiline_comment|/* these defines should already exist in &lt;linux/pci.h&gt; *
 macro_line|#ifndef PCI_VENDOR_ID_VORTEX
 DECL|macro|PCI_VENDOR_ID_VORTEX
 mdefine_line|#define PCI_VENDOR_ID_VORTEX            0x1119  /* PCI controller vendor ID */
+macro_line|#endif
+macro_line|#ifndef PCI_VENDOR_ID_INTEL
+DECL|macro|PCI_VENDOR_ID_INTEL
+mdefine_line|#define PCI_VENDOR_ID_INTEL             0x8086  
 macro_line|#endif
 macro_line|#ifndef PCI_DEVICE_ID_VORTEX_GDT60x0
 multiline_comment|/* GDT_PCI */
@@ -154,6 +163,16 @@ macro_line|#ifndef PCI_DEVICE_ID_VORTEX_GDTMAXRP
 multiline_comment|/* GDT_MPR, last device ID */
 DECL|macro|PCI_DEVICE_ID_VORTEX_GDTMAXRP
 mdefine_line|#define PCI_DEVICE_ID_VORTEX_GDTMAXRP   0x2ff   
+macro_line|#endif
+macro_line|#ifndef PCI_DEVICE_ID_VORTEX_GDTNEWRX
+multiline_comment|/* new GDT Rx Controller */
+DECL|macro|PCI_DEVICE_ID_VORTEX_GDTNEWRX
+mdefine_line|#define PCI_DEVICE_ID_VORTEX_GDTNEWRX&t;0x300
+macro_line|#endif
+macro_line|#ifndef PCI_DEVICE_ID_INTEL_SRC
+multiline_comment|/* Intel Storage RAID Controller */
+DECL|macro|PCI_DEVICE_ID_INTEL_SRC
+mdefine_line|#define PCI_DEVICE_ID_INTEL_SRC&t;&t;0x600
 macro_line|#endif
 multiline_comment|/* limits */
 DECL|macro|GDTH_SCRATCH
@@ -285,6 +304,10 @@ DECL|macro|GDT_RW_ATTRIBS
 mdefine_line|#define GDT_RW_ATTRIBS  23                      /* R/W attribs (write thru,..)*/
 DECL|macro|GDT_CLUST_RESET
 mdefine_line|#define GDT_CLUST_RESET 24                      /* releases the cluster drives*/
+DECL|macro|GDT_FREEZE_IO
+mdefine_line|#define GDT_FREEZE_IO   25                      /* freezes all IOs */
+DECL|macro|GDT_UNFREEZE_IO
+mdefine_line|#define GDT_UNFREEZE_IO 26                      /* unfreezes all IOs */
 multiline_comment|/* raw service commands */
 DECL|macro|GDT_RESERVE
 mdefine_line|#define GDT_RESERVE     14                      /* reserve dev. to raw serv. */
@@ -2898,11 +2921,21 @@ op_star
 id|pdev
 suffix:semicolon
 macro_line|#endif
+DECL|member|vendor_id
+id|ushort
+id|vendor_id
+suffix:semicolon
+multiline_comment|/* vendor (ICP, Intel, ..) */
 DECL|member|device_id
 id|ushort
 id|device_id
 suffix:semicolon
 multiline_comment|/* device ID (0,..,9) */
+DECL|member|subdevice_id
+id|ushort
+id|subdevice_id
+suffix:semicolon
+multiline_comment|/* sub device ID */
 DECL|member|bus
 id|unchar
 id|bus
@@ -2941,6 +2974,11 @@ multiline_comment|/* controller information structure */
 r_typedef
 r_struct
 (brace
+DECL|member|oem_id
+id|ushort
+id|oem_id
+suffix:semicolon
+multiline_comment|/* OEM */
 DECL|member|type
 id|ushort
 id|type
@@ -2955,7 +2993,12 @@ DECL|member|stype
 id|ulong32
 id|stype
 suffix:semicolon
-multiline_comment|/* controller subtype */
+multiline_comment|/* subtype (PCI: device ID) */
+DECL|member|subdevice_id
+id|ushort
+id|subdevice_id
+suffix:semicolon
+multiline_comment|/* sub device ID (PCI) */
 DECL|member|fw_vers
 id|ushort
 id|fw_vers

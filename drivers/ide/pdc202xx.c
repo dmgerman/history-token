@@ -651,6 +651,9 @@ id|dev-&gt;device
 r_case
 id|PCI_DEVICE_ID_PROMISE_20268
 suffix:colon
+r_case
+id|PCI_DEVICE_ID_PROMISE_20268R
+suffix:colon
 id|p
 op_add_assign
 id|sprintf

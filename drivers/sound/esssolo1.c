@@ -13326,6 +13326,7 @@ op_logical_neg
 id|s
 )paren
 r_return
+l_int|1
 suffix:semicolon
 id|outb
 c_func

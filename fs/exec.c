@@ -22,6 +22,10 @@ macro_line|#include &lt;asm/mmu_context.h&gt;
 macro_line|#ifdef CONFIG_KMOD
 macro_line|#include &lt;linux/kmod.h&gt;
 macro_line|#endif
+DECL|variable|core_uses_pid
+r_int
+id|core_uses_pid
+suffix:semicolon
 DECL|variable|formats
 r_static
 r_struct
@@ -533,11 +537,9 @@ r_char
 op_star
 id|p
 suffix:semicolon
-r_int
-id|error
-suffix:semicolon
-id|error
-op_assign
+r_if
+c_cond
+(paren
 id|get_user
 c_func
 (paren
@@ -545,14 +547,10 @@ id|p
 comma
 id|argv
 )paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|error
 )paren
 r_return
-id|error
+op_minus
+id|EFAULT
 suffix:semicolon
 r_if
 c_cond
@@ -987,6 +985,7 @@ l_int|1
 id|printk
 c_func
 (paren
+id|KERN_ERR
 l_string|&quot;mem_map disagrees with %p at %08lx&bslash;n&quot;
 comma
 id|page
@@ -2397,6 +2396,7 @@ id|current-&gt;sig
 op_ne
 id|oldsig
 )paren
+(brace
 id|kfree
 c_func
 (paren
@@ -2407,6 +2407,7 @@ id|current-&gt;sig
 op_assign
 id|oldsig
 suffix:semicolon
+)brace
 id|spin_unlock_irq
 c_func
 (paren
@@ -3899,6 +3900,8 @@ r_sizeof
 (paren
 id|current-&gt;comm
 )paren
+op_plus
+l_int|10
 )braket
 suffix:semicolon
 r_struct
@@ -3975,23 +3978,6 @@ comma
 l_int|5
 )paren
 suffix:semicolon
-macro_line|#if 0
-id|memcpy
-c_func
-(paren
-id|corename
-op_plus
-l_int|5
-comma
-id|current-&gt;comm
-comma
-r_sizeof
-(paren
-id|current-&gt;comm
-)paren
-)paren
-suffix:semicolon
-macro_line|#else
 id|corename
 (braket
 l_int|4
@@ -3999,7 +3985,34 @@ l_int|4
 op_assign
 l_char|&squot;&bslash;0&squot;
 suffix:semicolon
-macro_line|#endif
+r_if
+c_cond
+(paren
+id|core_uses_pid
+op_logical_or
+id|atomic_read
+c_func
+(paren
+op_amp
+id|current-&gt;mm-&gt;mm_users
+)paren
+op_ne
+l_int|1
+)paren
+id|sprintf
+c_func
+(paren
+op_amp
+id|corename
+(braket
+l_int|4
+)braket
+comma
+l_string|&quot;.%d&quot;
+comma
+id|current-&gt;pid
+)paren
+suffix:semicolon
 id|file
 op_assign
 id|filp_open

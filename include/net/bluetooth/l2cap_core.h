@@ -1,5 +1,5 @@
 multiline_comment|/* &n;   BlueZ - Bluetooth protocol stack for Linux&n;   Copyright (C) 2000-2001 Qualcomm Incorporated&n;&n;   Written 2000,2001 by Maxim Krasnyansky &lt;maxk@qualcomm.com&gt;&n;&n;   This program is free software; you can redistribute it and/or modify&n;   it under the terms of the GNU General Public License version 2 as&n;   published by the Free Software Foundation;&n;&n;   THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRESS&n;   OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,&n;   FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT OF THIRD PARTY RIGHTS.&n;   IN NO EVENT SHALL THE COPYRIGHT HOLDER(S) AND AUTHOR(S) BE LIABLE FOR ANY&n;   CLAIM, OR ANY SPECIAL INDIRECT OR CONSEQUENTIAL DAMAGES, OR ANY DAMAGES &n;   WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN &n;   ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF &n;   OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.&n;&n;   ALL LIABILITY, INCLUDING LIABILITY FOR INFRINGEMENT OF ANY PATENTS, &n;   COPYRIGHTS, TRADEMARKS OR OTHER RIGHTS, RELATING TO USE OF THIS &n;   SOFTWARE IS DISCLAIMED.&n;*/
-multiline_comment|/*&n; *  $Id: l2cap_core.h,v 1.1 2001/06/01 08:12:11 davem Exp $&n; */
+multiline_comment|/*&n; *  $Id: l2cap_core.h,v 1.6 2001/08/03 04:19:49 maxk Exp $&n; */
 macro_line|#ifndef __L2CAP_CORE_H
 DECL|macro|__L2CAP_CORE_H
 mdefine_line|#define __L2CAP_CORE_H
@@ -42,7 +42,7 @@ suffix:semicolon
 suffix:semicolon
 DECL|function|l2cap_iff_lock
 r_static
-id|__inline__
+r_inline
 r_void
 id|l2cap_iff_lock
 c_func
@@ -63,7 +63,7 @@ suffix:semicolon
 )brace
 DECL|function|l2cap_iff_unlock
 r_static
-id|__inline__
+r_inline
 r_void
 id|l2cap_iff_unlock
 c_func
@@ -171,11 +171,16 @@ r_struct
 id|l2cap_chan_list
 id|chan_list
 suffix:semicolon
+DECL|member|timer
+r_struct
+id|timer_list
+id|timer
+suffix:semicolon
 )brace
 suffix:semicolon
 DECL|function|__l2cap_conn_link
 r_static
-id|__inline__
+r_inline
 r_void
 id|__l2cap_conn_link
 c_func
@@ -204,7 +209,7 @@ suffix:semicolon
 )brace
 DECL|function|__l2cap_conn_unlink
 r_static
-id|__inline__
+r_inline
 r_void
 id|__l2cap_conn_unlink
 c_func
@@ -344,12 +349,12 @@ id|accept_q
 suffix:semicolon
 )brace
 suffix:semicolon
-DECL|macro|CONF_INPUT
-mdefine_line|#define CONF_INPUT  0x01
-DECL|macro|CONF_OUTPUT
-mdefine_line|#define CONF_OUTPUT 0x02
-DECL|macro|CONF_DONE
-mdefine_line|#define CONF_DONE&t;(CONF_INPUT | CONF_OUTPUT)
+DECL|macro|CONF_REQ_SENT
+mdefine_line|#define CONF_REQ_SENT    0x01
+DECL|macro|CONF_INPUT_DONE
+mdefine_line|#define CONF_INPUT_DONE  0x02
+DECL|macro|CONF_OUTPUT_DONE
+mdefine_line|#define CONF_OUTPUT_DONE 0x04
 r_extern
 r_struct
 id|bluez_sock_list

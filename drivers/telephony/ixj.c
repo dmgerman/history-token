@@ -1,4 +1,4 @@
-multiline_comment|/****************************************************************************&n; *    ixj.c&n; *&n; *    Device Driver for the Internet PhoneJACK and&n; *    Internet LineJACK Telephony Cards.&n; *&n; *    (c) Copyright 1999-2000  Quicknet Technologies, Inc.&n; *&n; *    This program is free software; you can redistribute it and/or&n; *    modify it under the terms of the GNU General Public License&n; *    as published by the Free Software Foundation; either version&n; *    2 of the License, or (at your option) any later version.&n; *&n; * Author:          Ed Okerson, &lt;eokerson@quicknet.net&gt;&n; *&n; * Contributors:    Greg Herlein, &lt;gherlein@quicknet.net&gt;&n; *                  David W. Erhart, &lt;derhart@quicknet.net&gt;&n; *                  John Sellers, &lt;jsellers@quicknet.net&gt;&n; *                  Mike Preston, &lt;mpreston@quicknet.net&gt;&n; *    &n; * Fixes:&n; *                  Marc Boucher, &lt;marc@mbsi.ca&gt;&n; *&t;&t;    David Huggins-Daines &lt;dhd@cepstral.com&gt;&n; * &n; * More information about the hardware related to this driver can be found  &n; * at our website:    http://www.quicknet.net&n; *&n; * IN NO EVENT SHALL QUICKNET TECHNOLOGIES, INC. BE LIABLE TO ANY PARTY FOR&n; * DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES ARISING OUT&n; * OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF QUICKNET&n; * TECHNOLOGIES, INC.HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.&n; *    &n; * QUICKNET TECHNOLOGIES, INC. SPECIFICALLY DISCLAIMS ANY WARRANTIES,&n; * INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY&n; * AND FITNESS FOR A PARTICULAR PURPOSE.  THE SOFTWARE PROVIDED HEREUNDER IS&n; * ON AN &quot;AS IS&quot; BASIS, AND QUICKNET TECHNOLOGIES, INC. HAS NO OBLIGATION&n; * TO PROVIDE MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.&n; *&n; ***************************************************************************/
+multiline_comment|/****************************************************************************&n; *    ixj.c&n; *&n; * Device Driver for Quicknet Technologies, Inc.&squot;s Telephony cards&n; * including the Internet PhoneJACK, Internet PhoneJACK Lite,&n; * Internet PhoneJACK PCI, Internet LineJACK, Internet PhoneCARD and&n; * SmartCABLE&n; *&n; *    (c) Copyright 1999-2001  Quicknet Technologies, Inc.&n; *&n; *    This program is free software; you can redistribute it and/or&n; *    modify it under the terms of the GNU General Public License&n; *    as published by the Free Software Foundation; either version&n; *    2 of the License, or (at your option) any later version.&n; *&n; * Author:          Ed Okerson, &lt;eokerson@quicknet.net&gt;&n; *&n; * Contributors:    Greg Herlein, &lt;gherlein@quicknet.net&gt;&n; *                  David W. Erhart, &lt;derhart@quicknet.net&gt;&n; *                  John Sellers, &lt;jsellers@quicknet.net&gt;&n; *                  Mike Preston, &lt;mpreston@quicknet.net&gt;&n; *    &n; * Fixes:           David Huggins-Daines, &lt;dhd@cepstral.com&gt;&n; *                  Fabio Ferrari, &lt;fabio.ferrari@digitro.com.br&gt;&n; *                  Artis Kugevics, &lt;artis@mt.lv&gt;&n; *&n; * More information about the hardware related to this driver can be found  &n; * at our website:    http://www.quicknet.net&n; *&n; * IN NO EVENT SHALL QUICKNET TECHNOLOGIES, INC. BE LIABLE TO ANY PARTY FOR&n; * DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES ARISING OUT&n; * OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF QUICKNET&n; * TECHNOLOGIES, INC. HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.&n; *    &n; * QUICKNET TECHNOLOGIES, INC. SPECIFICALLY DISCLAIMS ANY WARRANTIES,&n; * INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY&n; * AND FITNESS FOR A PARTICULAR PURPOSE.  THE SOFTWARE PROVIDED HEREUNDER IS&n; * ON AN &quot;AS IS&quot; BASIS, AND QUICKNET TECHNOLOGIES, INC. HAS NO OBLIGATION&n; * TO PROVIDE MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.&n; *&n; ***************************************************************************/
 DECL|variable|ixj_c_rcsid
 r_static
 r_char
@@ -6,7 +6,7 @@ id|ixj_c_rcsid
 (braket
 )braket
 op_assign
-l_string|&quot;$Id: ixj.c,v 3.31 2000/04/14 19:24:47 jaugenst Exp $&quot;
+l_string|&quot;$Id: ixj.c,v 4.7 2001/08/13 06:19:33 craigs Exp $&quot;
 suffix:semicolon
 DECL|variable|ixj_c_revision
 r_static
@@ -15,14 +15,16 @@ id|ixj_c_revision
 (braket
 )braket
 op_assign
-l_string|&quot;$Revision: 3.31 $&quot;
+l_string|&quot;$Revision: 4.7 $&quot;
 suffix:semicolon
-singleline_comment|//#define PERFMON_STATS
+multiline_comment|/*&n; * $Log: ixj.c,v $&n; * Revision 4.7  2001/08/13 06:19:33  craigs&n; * Added additional changes from Alan Cox and John Anderson for&n; * 2.2 to 2.4 cleanup and bounds checking&n; *&n; * Revision 4.6  2001/08/13 01:05:05  craigs&n; * Really fixed PHONE_QUERY_CODEC problem this time&n; *&n; * Revision 4.5  2001/08/13 00:11:03  craigs&n; * Fixed problem in handling of PHONE_QUERY_CODEC, thanks to Shane Anderson&n; *&n; * Revision 4.4  2001/08/07 07:58:12  craigs&n; * Changed back to three digit version numbers&n; * Added tagbuild target to allow automatic and easy tagging of versions&n; *&n; * Revision 4.3  2001/08/07 07:24:47  craigs&n; * Added ixj-ver.h to allow easy configuration management of driver&n; * Added display of version number in /prox/ixj&n; *&n; * Revision 4.2  2001/08/06 07:07:19  craigs&n; * Reverted IXJCTL_DSP_TYPE and IXJCTL_DSP_VERSION files to original&n; * behaviour of returning int rather than short *&n; *&n; * Revision 4.1  2001/08/05 00:17:37  craigs&n; * More changes for correct PCMCIA installation&n; * Start of changes for backward Linux compatibility&n; *&n; * Revision 4.0  2001/08/04 12:33:12  craigs&n; * New version using GNU autoconf&n; *&n; * Revision 3.105  2001/07/20 23:14:32  eokerson&n; * More work on CallerID generation when using ring cadences.&n; *&n; * Revision 3.104  2001/07/06 01:33:55  eokerson&n; * Some bugfixes from Robert Vojta &lt;vojta@ipex.cz&gt; and a few mods to the Makefile.&n; *&n; * Revision 3.103  2001/07/05 19:20:16  eokerson&n; * Updated HOWTO&n; * Changed mic gain to 30dB on Internet LineJACK mic/speaker port.&n; *&n; * Revision 3.102  2001/07/03 23:51:21  eokerson&n; * Un-mute mic on Internet LineJACK when in speakerphone mode.&n; *&n; * Revision 3.101  2001/07/02 19:26:56  eokerson&n; * Removed initialiazation of ixjdebug and ixj_convert_loaded so they will go in the .bss instead of the .data&n; *&n; * Revision 3.100  2001/07/02 19:18:27  eokerson&n; * Changed driver to make dynamic allocation possible.  We now pass IXJ * between functions instead of array indexes.&n; * Fixed the way the POTS and PSTN ports interact during a PSTN call to allow local answering.&n; * Fixed speaker mode on Internet LineJACK.&n; *&n; * Revision 3.99  2001/05/09 14:11:16  eokerson&n; * Fixed kmalloc error in ixj_build_filter_cadence.  Thanks David Chan &lt;cat@waulogy.stanford.edu&gt;.&n; *&n; * Revision 3.98  2001/05/08 19:55:33  eokerson&n; * Fixed POTS hookstate detection while it is connected to PSTN port.&n; *&n; * Revision 3.97  2001/05/08 00:01:04  eokerson&n; * Fixed kernel oops when sending caller ID data.&n; *&n; * Revision 3.96  2001/05/04 23:09:30  eokerson&n; * Now uses one kernel timer for each card, instead of one for the entire driver.&n; *&n; * Revision 3.95  2001/04/25 22:06:47  eokerson&n; * Fixed squawking at beginning of some G.723.1 calls.&n; *&n; * Revision 3.94  2001/04/03 23:42:00  eokerson&n; * Added linear volume ioctls&n; * Added raw filter load ioctl&n; *&n; * Revision 3.93  2001/02/27 01:00:06  eokerson&n; * Fixed blocking in CallerID.&n; * Reduced size of ixj structure for smaller driver footprint.&n; *&n; * Revision 3.92  2001/02/20 22:02:59  eokerson&n; * Fixed isapnp and pcmcia module compatibility for 2.4.x kernels.&n; * Improved PSTN ring detection.&n; * Fixed wink generation on POTS ports.&n; *&n; * Revision 3.91  2001/02/13 00:55:44  eokerson&n; * Turn AEC back on after changing frame sizes.&n; *&n; * Revision 3.90  2001/02/12 16:42:00  eokerson&n; * Added ALAW codec, thanks to Fabio Ferrari for the table based converters to make ALAW from ULAW.&n; *&n; * Revision 3.89  2001/02/12 15:41:16  eokerson&n; * Fix from Artis Kugevics - Tone gains were not being set correctly.&n; *&n; * Revision 3.88  2001/02/05 23:25:42  eokerson&n; * Fixed lockup bugs with deregister.&n; *&n; * Revision 3.87  2001/01/29 21:00:39  eokerson&n; * Fix from Fabio Ferrari &lt;fabio.ferrari@digitro.com.br&gt; to properly handle EAGAIN and EINTR during non-blocking write.&n; * Updated copyright date.&n; *&n; * Revision 3.86  2001/01/23 23:53:46  eokerson&n; * Fixes to G.729 compatibility.&n; *&n; * Revision 3.85  2001/01/23 21:30:36  eokerson&n; * Added verbage about cards supported.&n; * Removed commands that put the card in low power mode at some times that it should not be in low power mode.&n; *&n; * Revision 3.84  2001/01/22 23:32:10  eokerson&n; * Some bugfixes from David Huggins-Daines, &lt;dhd@cepstral.com&gt; and other cleanups.&n; *&n; * Revision 3.83  2001/01/19 14:51:41  eokerson&n; * Fixed ixj_WriteDSPCommand to decrement usage counter when command fails.&n; *&n; * Revision 3.82  2001/01/19 00:34:49  eokerson&n; * Added verbosity to write overlap errors.&n; *&n; * Revision 3.81  2001/01/18 23:56:54  eokerson&n; * Fixed PSTN line test functions.&n; *&n; * Revision 3.80  2001/01/18 22:29:27  eokerson&n; * Updated AEC/AGC values for different cards.&n; *&n; * Revision 3.79  2001/01/17 02:58:54  eokerson&n; * Fixed AEC reset after Caller ID.&n; * Fixed Codec lockup after Caller ID on Call Waiting when not using 30ms frames.&n; *&n; * Revision 3.78  2001/01/16 19:43:09  eokerson&n; * Added support for Linux 2.4.x kernels.&n; *&n; * Revision 3.77  2001/01/09 04:00:52  eokerson&n; * Linetest will now test the line, even if it has previously succeded.&n; *&n; * Revision 3.76  2001/01/08 19:27:00  eokerson&n; * Fixed problem with standard cable on Internet PhoneCARD.&n; *&n; * Revision 3.75  2000/12/22 16:52:14  eokerson&n; * Modified to allow hookstate detection on the POTS port when the PSTN port is selected.&n; *&n; * Revision 3.74  2000/12/08 22:41:50  eokerson&n; * Added capability for G729B.&n; *&n; * Revision 3.73  2000/12/07 23:35:16  eokerson&n; * Added capability to have different ring pattern before CallerID data.&n; * Added hookstate checks in CallerID routines to stop FSK.&n; *&n; * Revision 3.72  2000/12/06 19:31:31  eokerson&n; * Modified signal behavior to only send one signal per event.&n; *&n; * Revision 3.71  2000/12/06 03:23:08  eokerson&n; * Fixed CallerID on Call Waiting.&n; *&n; * Revision 3.70  2000/12/04 21:29:37  eokerson&n; * Added checking to Smart Cable gain functions.&n; *&n; * Revision 3.69  2000/12/04 21:05:20  eokerson&n; * Changed ixjdebug levels.&n; * Added ioctls to change gains in Internet Phone CARD Smart Cable.&n; *&n; * Revision 3.68  2000/12/04 00:17:21  craigs&n; * Changed mixer voice gain to +6dB rather than 0dB&n; *&n; * Revision 3.67  2000/11/30 21:25:51  eokerson&n; * Fixed write signal errors.&n; *&n; * Revision 3.66  2000/11/29 22:42:44  eokerson&n; * Fixed PSTN ring detect problems.&n; *&n; * Revision 3.65  2000/11/29 07:31:55  craigs&n; * Added new 425Hz filter co-efficients&n; * Added card-specific DTMF prescaler initialisation&n; *&n; * Revision 3.64  2000/11/28 14:03:32  craigs&n; * Changed certain mixer initialisations to be 0dB rather than 12dB&n; * Added additional information to /proc/ixj&n; *&n; * Revision 3.63  2000/11/28 11:38:41  craigs&n; * Added display of AEC modes in AUTO and AGC mode&n; *&n; * Revision 3.62  2000/11/28 04:05:44  eokerson&n; * Improved PSTN ring detection routine.&n; *&n; * Revision 3.61  2000/11/27 21:53:12  eokerson&n; * Fixed flash detection.&n; *&n; * Revision 3.60  2000/11/27 15:57:29  eokerson&n; * More work on G.729 load routines.&n; *&n; * Revision 3.59  2000/11/25 21:55:12  eokerson&n; * Fixed errors in G.729 load routine.&n; *&n; * Revision 3.58  2000/11/25 04:08:29  eokerson&n; * Added board locks around G.729 and TS85 load routines.&n; *&n; * Revision 3.57  2000/11/24 05:35:17  craigs&n; * Added ability to retrieve mixer values on LineJACK&n; * Added complete initialisation of all mixer values at startup&n; * Fixed spelling mistake&n; *&n; * Revision 3.56  2000/11/23 02:52:11  robertj&n; * Added cvs change log keyword.&n; * Fixed bug in capabilities list when using G.729 module.&n; *&n; */
+macro_line|#include &quot;ixj-ver.h&quot;
+DECL|macro|PERFMON_STATS
+mdefine_line|#define PERFMON_STATS
 DECL|macro|IXJDEBUG
 mdefine_line|#define IXJDEBUG 0
 DECL|macro|MAXRINGS
 mdefine_line|#define MAXRINGS 5
-macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
@@ -42,16 +44,7 @@ macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/segment.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
-macro_line|#if defined(CONFIG_PCMCIA) || defined(CONFIG_PCMCIA_MODULE)
-macro_line|#include &lt;pcmcia/version.h&gt;
-macro_line|#include &lt;pcmcia/cs_types.h&gt;
-macro_line|#include &lt;pcmcia/cs.h&gt;
-macro_line|#include &lt;pcmcia/cistpl.h&gt;
-macro_line|#include &lt;pcmcia/ds.h&gt;
-macro_line|#endif
-macro_line|#ifdef CONFIG_ISAPNP
 macro_line|#include &lt;linux/isapnp.h&gt;
-macro_line|#endif
 macro_line|#include &quot;ixj.h&quot;
 DECL|macro|TYPE
 mdefine_line|#define TYPE(dev) (MINOR(dev) &gt;&gt; 4)
@@ -61,8 +54,6 @@ DECL|variable|ixjdebug
 r_static
 r_int
 id|ixjdebug
-op_assign
-l_int|0
 suffix:semicolon
 DECL|variable|hertz
 r_static
@@ -86,6 +77,8 @@ comma
 l_string|&quot;i&quot;
 )paren
 suffix:semicolon
+multiline_comment|/************************************************************************&n;*&n;* ixjdebug meanings are now bit mapped instead of level based&n;* Values can be or&squot;ed together to turn on multiple messages&n;*&n;* bit  0 (0x0001) = any failure&n;* bit  1 (0x0002) = general messages&n;* bit  2 (0x0004) = POTS ringing related&n;* bit  3 (0x0008) = PSTN events&n;* bit  4 (0x0010) = PSTN Cadence state details&n;* bit  5 (0x0020) = Tone detection triggers&n;* bit  6 (0x0040) = Tone detection cadence details&n;* bit  7 (0x0080) = ioctl tracking&n;* bit  8 (0x0100) = signal tracking&n;* bit  9 (0x0200) = CallerID generation details&n;*&n;************************************************************************/
+macro_line|#ifdef IXJ_DYN_ALLOC
 DECL|variable|ixj
 r_static
 id|IXJ
@@ -95,17 +88,323 @@ id|ixj
 id|IXJMAX
 )braket
 suffix:semicolon
-DECL|variable|ixj_timer
+DECL|macro|get_ixj
+mdefine_line|#define&t;get_ixj(b)&t;ixj[(b)]
+multiline_comment|/*&n; *&t;Allocate a free IXJ device&n; */
+DECL|function|ixj_alloc
 r_static
-r_struct
-id|timer_list
-id|ixj_timer
-suffix:semicolon
-DECL|variable|ixj_convert_loaded
-r_int
-id|ixj_convert_loaded
+id|IXJ
+op_star
+id|ixj_alloc
+c_func
+(paren
+)paren
+(brace
+r_for
+c_loop
+(paren
+id|cnt
 op_assign
 l_int|0
+suffix:semicolon
+id|cnt
+OL
+id|IXJMAX
+suffix:semicolon
+id|cnt
+op_increment
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|ixj
+(braket
+id|cnt
+)braket
+op_eq
+l_int|NULL
+op_logical_or
+op_logical_neg
+id|ixj
+(braket
+id|cnt
+)braket
+op_member_access_from_pointer
+id|DSPbase
+)paren
+(brace
+id|j
+op_assign
+id|kmalloc
+c_func
+(paren
+r_sizeof
+(paren
+id|IXJ
+)paren
+comma
+id|GFP_KERNEL
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|j
+op_eq
+l_int|NULL
+)paren
+r_return
+l_int|NULL
+suffix:semicolon
+id|ixj
+(braket
+id|cnt
+)braket
+op_assign
+id|j
+suffix:semicolon
+r_return
+id|j
+suffix:semicolon
+)brace
+)brace
+r_return
+l_int|NULL
+suffix:semicolon
+)brace
+DECL|function|ixj_fsk_free
+r_static
+r_void
+id|ixj_fsk_free
+c_func
+(paren
+id|IXJ
+op_star
+id|j
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|j-&gt;fskdata
+op_ne
+l_int|NULL
+)paren
+(brace
+id|kfree
+c_func
+(paren
+id|j-&gt;fskdata
+)paren
+suffix:semicolon
+id|j-&gt;fskdata
+op_assign
+l_int|NULL
+suffix:semicolon
+)brace
+)brace
+DECL|function|ixj_fsk_alloc
+r_static
+r_void
+id|ixj_fsk_alloc
+c_func
+(paren
+id|IXJ
+op_star
+id|j
+)paren
+(brace
+r_if
+c_cond
+(paren
+op_logical_neg
+id|j-&gt;fskdata
+)paren
+(brace
+id|j-&gt;fskdata
+op_assign
+id|kmalloc
+c_func
+(paren
+l_int|8000
+comma
+id|GFP_KERNEL
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|j-&gt;fskdata
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|ixjdebug
+op_amp
+l_int|0x0200
+)paren
+(brace
+id|printk
+c_func
+(paren
+l_string|&quot;IXJ phone%d - allocate failed&bslash;n&quot;
+comma
+id|j-&gt;board
+)paren
+suffix:semicolon
+)brace
+r_return
+suffix:semicolon
+)brace
+r_else
+(brace
+id|j-&gt;fsksize
+op_assign
+l_int|8000
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|ixjdebug
+op_amp
+l_int|0x0200
+)paren
+(brace
+id|printk
+c_func
+(paren
+l_string|&quot;IXJ phone%d - allocate succeded&bslash;n&quot;
+comma
+id|j-&gt;board
+)paren
+suffix:semicolon
+)brace
+)brace
+)brace
+)brace
+macro_line|#else
+DECL|variable|ixj
+r_static
+id|IXJ
+id|ixj
+(braket
+id|IXJMAX
+)braket
+suffix:semicolon
+DECL|macro|get_ixj
+mdefine_line|#define&t;get_ixj(b)&t;(&amp;ixj[(b)])
+multiline_comment|/*&n; *&t;Allocate a free IXJ device&n; */
+DECL|function|ixj_alloc
+r_static
+id|IXJ
+op_star
+id|ixj_alloc
+c_func
+(paren
+r_void
+)paren
+(brace
+r_int
+id|cnt
+suffix:semicolon
+r_for
+c_loop
+(paren
+id|cnt
+op_assign
+l_int|0
+suffix:semicolon
+id|cnt
+OL
+id|IXJMAX
+suffix:semicolon
+id|cnt
+op_increment
+)paren
+(brace
+r_if
+c_cond
+(paren
+op_logical_neg
+id|ixj
+(braket
+id|cnt
+)braket
+dot
+id|DSPbase
+)paren
+(brace
+r_return
+op_amp
+id|ixj
+(braket
+id|cnt
+)braket
+suffix:semicolon
+)brace
+)brace
+r_return
+l_int|NULL
+suffix:semicolon
+)brace
+DECL|function|ixj_fsk_free
+r_static
+r_inline
+r_void
+id|ixj_fsk_free
+c_func
+(paren
+id|IXJ
+op_star
+id|j
+)paren
+(brace
+suffix:semicolon
+)brace
+DECL|function|ixj_fsk_alloc
+r_static
+r_inline
+r_void
+id|ixj_fsk_alloc
+c_func
+(paren
+id|IXJ
+op_star
+id|j
+)paren
+(brace
+id|j-&gt;fsksize
+op_assign
+l_int|8000
+suffix:semicolon
+)brace
+macro_line|#endif
+macro_line|#ifdef PERFMON_STATS
+DECL|macro|ixj_perfmon
+mdefine_line|#define ixj_perfmon(x)&t;((x)++)
+macro_line|#else
+macro_line|#deifne ixj_perfmon(x)&t;do {} while(0);
+macro_line|#endif
+DECL|variable|ixj_convert_loaded
+r_static
+r_int
+id|ixj_convert_loaded
+suffix:semicolon
+r_static
+r_int
+id|ixj_WriteDSPCommand
+c_func
+(paren
+r_int
+r_int
+comma
+id|IXJ
+op_star
+id|j
+)paren
 suffix:semicolon
 multiline_comment|/************************************************************************&n;*&n;* These are function definitions to allow external modules to register&n;* enhanced functionality call backs.&n;*&n;************************************************************************/
 DECL|function|Stub
@@ -116,7 +415,7 @@ c_func
 (paren
 id|IXJ
 op_star
-id|j
+id|J
 comma
 r_int
 r_int
@@ -216,7 +515,9 @@ r_void
 id|ixj_init_timer
 c_func
 (paren
-r_void
+id|IXJ
+op_star
+id|j
 )paren
 suffix:semicolon
 r_static
@@ -224,7 +525,9 @@ r_void
 id|ixj_add_timer
 c_func
 (paren
-r_void
+id|IXJ
+op_star
+id|j
 )paren
 suffix:semicolon
 r_static
@@ -343,6 +646,29 @@ id|volume
 )paren
 suffix:semicolon
 r_static
+r_int
+id|get_rec_volume
+c_func
+(paren
+id|IXJ
+op_star
+id|j
+)paren
+suffix:semicolon
+r_static
+r_int
+id|set_rec_codec
+c_func
+(paren
+id|IXJ
+op_star
+id|j
+comma
+r_int
+id|rate
+)paren
+suffix:semicolon
+r_static
 r_void
 id|ixj_vad
 c_func
@@ -413,6 +739,19 @@ id|j
 comma
 r_char
 id|tone
+)paren
+suffix:semicolon
+r_static
+r_void
+id|ixj_aec_start
+c_func
+(paren
+id|IXJ
+op_star
+id|j
+comma
+r_int
+id|level
 )paren
 suffix:semicolon
 r_static
@@ -503,6 +842,19 @@ c_func
 id|IXJ
 op_star
 id|j
+)paren
+suffix:semicolon
+r_static
+r_char
+id|daa_CR_read
+c_func
+(paren
+id|IXJ
+op_star
+id|j
+comma
+r_int
+id|cr
 )paren
 suffix:semicolon
 r_static
@@ -624,6 +976,20 @@ id|jf
 suffix:semicolon
 r_static
 r_int
+id|ixj_init_filter_raw
+c_func
+(paren
+id|IXJ
+op_star
+id|j
+comma
+id|IXJ_FILTER_RAW
+op_star
+id|jfr
+)paren
+suffix:semicolon
+r_static
+r_int
 id|ixj_init_tone
 c_func
 (paren
@@ -664,7 +1030,7 @@ op_star
 id|cp
 )paren
 suffix:semicolon
-singleline_comment|// Serial Control Interface funtions
+multiline_comment|/* Serial Control Interface funtions */
 r_static
 r_int
 id|SCI_Control
@@ -720,6 +1086,16 @@ suffix:semicolon
 r_static
 r_int
 id|ixj_PCcontrol_wait
+c_func
+(paren
+id|IXJ
+op_star
+id|j
+)paren
+suffix:semicolon
+r_static
+r_void
+id|ixj_pre_cid
 c_func
 (paren
 id|IXJ
@@ -790,22 +1166,22 @@ id|depth
 )paren
 suffix:semicolon
 r_static
-r_void
-id|set_play_depth
+r_int
+id|ixj_mixer
 c_func
 (paren
+r_int
+id|val
+comma
 id|IXJ
 op_star
 id|j
-comma
-r_int
-id|depth
 )paren
 suffix:semicolon
-multiline_comment|/************************************************************************&n;CT8020/CT8021 Host Programmers Model&n;Host address&t;Function&t;&t;&t;&t;&t;Access&n;DSPbase +&n;0-1&t;&t;Aux Software Status Register (reserved)&t;&t;Read Only&n;2-3&t;&t;Software Status Register&t;&t;&t;Read Only&n;4-5&t;&t;Aux Software Control Register (reserved)&t;Read Write&n;6-7&t;&t;Software Control Register&t;&t;&t;Read Write&n;8-9&t;&t;Hardware Status Register&t;&t;&t;Read Only&n;A-B&t;&t;Hardware Control Register&t;&t;&t;Read Write&n;C-D Host Transmit (Write) Data Buffer Access Port (buffer input)Write Only&n;E-F Host Receive (Read) Data Buffer Access Port (buffer input)&t;Read Only&n;************************************************************************/
+multiline_comment|/************************************************************************&n;CT8020/CT8021 Host Programmers Model&n;Host address&t;Function&t;&t;&t;&t;&t;Access&n;DSPbase +&n;0-1&t;&t;Aux Software Status Register (reserved)&t;&t;Read Only&n;2-3&t;&t;Software Status Register&t;&t;&t;Read Only&n;4-5&t;&t;Aux Software Control Register (reserved)&t;Read Write&n;6-7&t;&t;Software Control Register&t;&t;&t;Read Write&n;8-9&t;&t;Hardware Status Register&t;&t;&t;Read Only&n;A-B&t;&t;Hardware Control Register&t;&t;&t;Read Write&n;C-D Host Transmit (Write) Data Buffer Access Port (buffer input)Write Only&n;E-F Host Recieve (Read) Data Buffer Access Port (buffer input)&t;Read Only&n;************************************************************************/
 DECL|function|ixj_read_HSR
-r_extern
-id|__inline__
+r_static
+r_inline
 r_void
 id|ixj_read_HSR
 c_func
@@ -837,8 +1213,8 @@ l_int|9
 suffix:semicolon
 )brace
 DECL|function|IsControlReady
-r_extern
-id|__inline__
+r_static
+r_inline
 r_int
 id|IsControlReady
 c_func
@@ -864,8 +1240,8 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|function|IsPCControlReady
-r_extern
-id|__inline__
+r_static
+r_inline
 r_int
 id|IsPCControlReady
 c_func
@@ -895,8 +1271,8 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|function|IsStatusReady
-r_extern
-id|__inline__
+r_static
+r_inline
 r_int
 id|IsStatusReady
 c_func
@@ -922,8 +1298,8 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|function|IsRxReady
-r_extern
-id|__inline__
+r_static
+r_inline
 r_int
 id|IsRxReady
 c_func
@@ -939,11 +1315,12 @@ c_func
 id|j
 )paren
 suffix:semicolon
-macro_line|#ifdef PERFMON_STATS
-op_increment
+id|ixj_perfmon
+c_func
+(paren
 id|j-&gt;rxreadycheck
+)paren
 suffix:semicolon
-macro_line|#endif
 r_return
 id|j-&gt;hsr.bits.rxrdy
 ques
@@ -954,8 +1331,8 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|function|IsTxReady
-r_extern
-id|__inline__
+r_static
+r_inline
 r_int
 id|IsTxReady
 c_func
@@ -971,11 +1348,12 @@ c_func
 id|j
 )paren
 suffix:semicolon
-macro_line|#ifdef PERFMON_STATS
-op_increment
+id|ixj_perfmon
+c_func
+(paren
 id|j-&gt;txreadycheck
+)paren
 suffix:semicolon
-macro_line|#endif
 r_return
 id|j-&gt;hsr.bits.txrdy
 ques
@@ -986,8 +1364,8 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|function|set_play_volume
-r_extern
-id|__inline__
+r_static
+r_inline
 r_void
 id|set_play_volume
 c_func
@@ -1000,6 +1378,24 @@ r_int
 id|volume
 )paren
 (brace
+r_if
+c_cond
+(paren
+id|ixjdebug
+op_amp
+l_int|0x0002
+)paren
+id|printk
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;IXJ: /dev/phone%d Setting Play Volume to 0x%4.4x&bslash;n&quot;
+comma
+id|j-&gt;board
+comma
+id|volume
+)paren
+suffix:semicolon
 id|ixj_WriteDSPCommand
 c_func
 (paren
@@ -1017,9 +1413,160 @@ id|j
 )paren
 suffix:semicolon
 )brace
+DECL|function|set_play_volume_linear
+r_static
+r_int
+id|set_play_volume_linear
+c_func
+(paren
+id|IXJ
+op_star
+id|j
+comma
+r_int
+id|volume
+)paren
+(brace
+r_int
+id|newvolume
+comma
+id|dspplaymax
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|ixjdebug
+op_amp
+l_int|0x0002
+)paren
+id|printk
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;IXJ: /dev/phone %d Setting Linear Play Volume to 0x%4.4x&bslash;n&quot;
+comma
+id|j-&gt;board
+comma
+id|volume
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|volume
+OG
+l_int|100
+op_logical_or
+id|volume
+OL
+l_int|0
+)paren
+(brace
+r_return
+op_minus
+l_int|1
+suffix:semicolon
+)brace
+multiline_comment|/* This should normalize the perceived volumes between the different cards caused by differences in the hardware */
+r_switch
+c_cond
+(paren
+id|j-&gt;cardtype
+)paren
+(brace
+r_case
+id|QTI_PHONEJACK
+suffix:colon
+id|dspplaymax
+op_assign
+l_int|0x380
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+id|QTI_LINEJACK
+suffix:colon
+r_if
+c_cond
+(paren
+id|j-&gt;port
+op_eq
+id|PORT_PSTN
+)paren
+(brace
+id|dspplaymax
+op_assign
+l_int|0x48
+suffix:semicolon
+)brace
+r_else
+(brace
+id|dspplaymax
+op_assign
+l_int|0x100
+suffix:semicolon
+)brace
+r_break
+suffix:semicolon
+r_case
+id|QTI_PHONEJACK_LITE
+suffix:colon
+id|dspplaymax
+op_assign
+l_int|0x380
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+id|QTI_PHONEJACK_PCI
+suffix:colon
+id|dspplaymax
+op_assign
+l_int|0x6C
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+id|QTI_PHONECARD
+suffix:colon
+id|dspplaymax
+op_assign
+l_int|0x50
+suffix:semicolon
+r_break
+suffix:semicolon
+r_default
+suffix:colon
+r_return
+op_minus
+l_int|1
+suffix:semicolon
+)brace
+id|newvolume
+op_assign
+(paren
+id|dspplaymax
+op_star
+id|volume
+)paren
+op_div
+l_int|100
+suffix:semicolon
+id|set_play_volume
+c_func
+(paren
+id|j
+comma
+id|newvolume
+)paren
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+)brace
 DECL|function|set_play_depth
-r_extern
-id|__inline__
+r_static
+r_inline
 r_void
 id|set_play_depth
 c_func
@@ -1066,8 +1613,8 @@ id|j
 suffix:semicolon
 )brace
 DECL|function|get_play_volume
-r_extern
-id|__inline__
+r_static
+r_inline
 r_int
 id|get_play_volume
 c_func
@@ -1093,9 +1640,137 @@ op_or
 id|j-&gt;ssr.low
 suffix:semicolon
 )brace
+DECL|function|get_play_volume_linear
+r_static
+r_int
+id|get_play_volume_linear
+c_func
+(paren
+id|IXJ
+op_star
+id|j
+)paren
+(brace
+r_int
+id|volume
+comma
+id|newvolume
+comma
+id|dspplaymax
+suffix:semicolon
+multiline_comment|/* This should normalize the perceived volumes between the different cards caused by differences in the hardware */
+r_switch
+c_cond
+(paren
+id|j-&gt;cardtype
+)paren
+(brace
+r_case
+id|QTI_PHONEJACK
+suffix:colon
+id|dspplaymax
+op_assign
+l_int|0x380
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+id|QTI_LINEJACK
+suffix:colon
+r_if
+c_cond
+(paren
+id|j-&gt;port
+op_eq
+id|PORT_PSTN
+)paren
+(brace
+id|dspplaymax
+op_assign
+l_int|0x48
+suffix:semicolon
+)brace
+r_else
+(brace
+id|dspplaymax
+op_assign
+l_int|0x100
+suffix:semicolon
+)brace
+r_break
+suffix:semicolon
+r_case
+id|QTI_PHONEJACK_LITE
+suffix:colon
+id|dspplaymax
+op_assign
+l_int|0x380
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+id|QTI_PHONEJACK_PCI
+suffix:colon
+id|dspplaymax
+op_assign
+l_int|0x6C
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+id|QTI_PHONECARD
+suffix:colon
+id|dspplaymax
+op_assign
+l_int|100
+suffix:semicolon
+r_break
+suffix:semicolon
+r_default
+suffix:colon
+r_return
+op_minus
+l_int|1
+suffix:semicolon
+)brace
+id|volume
+op_assign
+id|get_play_volume
+c_func
+(paren
+id|j
+)paren
+suffix:semicolon
+id|newvolume
+op_assign
+(paren
+id|volume
+op_star
+l_int|100
+)paren
+op_div
+id|dspplaymax
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|newvolume
+OG
+l_int|100
+)paren
+(brace
+id|newvolume
+op_assign
+l_int|100
+suffix:semicolon
+)brace
+r_return
+id|newvolume
+suffix:semicolon
+)brace
 DECL|function|SLIC_GetState
-r_extern
-id|__inline__
+r_static
+r_inline
 id|BYTE
 id|SLIC_GetState
 c_func
@@ -1298,7 +1973,7 @@ suffix:semicolon
 r_case
 id|PLD_SLIC_STATE_OHT
 suffix:colon
-singleline_comment|// On-hook transmit
+multiline_comment|/* On-hook transmit */
 r_case
 id|PLD_SLIC_STATE_STANDBY
 suffix:colon
@@ -1340,11 +2015,11 @@ suffix:semicolon
 r_case
 id|PLD_SLIC_STATE_APR
 suffix:colon
-singleline_comment|// Active polarity reversal
+multiline_comment|/* Active polarity reversal */
 r_case
 id|PLD_SLIC_STATE_OHTPR
 suffix:colon
-singleline_comment|// OHT polarity reversal
+multiline_comment|/* OHT polarity reversal */
 r_default
 suffix:colon
 id|fRetVal
@@ -1386,7 +2061,7 @@ suffix:semicolon
 )brace
 r_else
 (brace
-singleline_comment|// Set the C1, C2, C3 &amp; B2EN signals.
+multiline_comment|/* Set the C1, C2, C3 &amp; B2EN signals. */
 r_switch
 c_cond
 (paren
@@ -1501,7 +2176,7 @@ suffix:semicolon
 r_case
 id|PLD_SLIC_STATE_OHT
 suffix:colon
-singleline_comment|// On-hook transmit
+multiline_comment|/* On-hook transmit */
 id|j-&gt;pld_slicw.bits.c1
 op_assign
 l_int|1
@@ -1607,7 +2282,7 @@ suffix:semicolon
 r_case
 id|PLD_SLIC_STATE_APR
 suffix:colon
-singleline_comment|// Active polarity reversal
+multiline_comment|/* Active polarity reversal */
 id|j-&gt;pld_slicw.bits.c1
 op_assign
 l_int|0
@@ -1643,7 +2318,7 @@ suffix:semicolon
 r_case
 id|PLD_SLIC_STATE_OHTPR
 suffix:colon
-singleline_comment|// OHT polarity reversal
+multiline_comment|/* OHT polarity reversal */
 id|j-&gt;pld_slicw.bits.c1
 op_assign
 l_int|1
@@ -1690,7 +2365,81 @@ r_return
 id|fRetVal
 suffix:semicolon
 )brace
+DECL|function|ixj_wink
+r_static
+r_int
+id|ixj_wink
+c_func
+(paren
+id|IXJ
+op_star
+id|j
+)paren
+(brace
+id|BYTE
+id|slicnow
+suffix:semicolon
+id|slicnow
+op_assign
+id|SLIC_GetState
+c_func
+(paren
+id|j
+)paren
+suffix:semicolon
+id|j-&gt;pots_winkstart
+op_assign
+id|jiffies
+suffix:semicolon
+id|SLIC_SetState
+c_func
+(paren
+id|PLD_SLIC_STATE_OC
+comma
+id|j
+)paren
+suffix:semicolon
+r_while
+c_loop
+(paren
+id|time_before
+c_func
+(paren
+id|jiffies
+comma
+id|j-&gt;pots_winkstart
+op_plus
+id|j-&gt;winktime
+)paren
+)paren
+(brace
+id|set_current_state
+c_func
+(paren
+id|TASK_INTERRUPTIBLE
+)paren
+suffix:semicolon
+id|schedule_timeout
+c_func
+(paren
+l_int|1
+)paren
+suffix:semicolon
+)brace
+id|SLIC_SetState
+c_func
+(paren
+id|slicnow
+comma
+id|j
+)paren
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+)brace
 DECL|function|ixj_register
+r_static
 r_int
 id|ixj_register
 c_func
@@ -1737,27 +2486,67 @@ suffix:semicolon
 id|cnt
 op_increment
 )paren
-r_if
-c_cond
+(brace
+id|IXJ
+op_star
+id|j
+op_assign
+id|get_ixj
+c_func
 (paren
-id|ixj
-(braket
 id|cnt
-)braket
-op_ne
-l_int|NULL
 )paren
+suffix:semicolon
+r_while
+c_loop
+(paren
+id|test_and_set_bit
+c_func
+(paren
+id|cnt
+comma
+(paren
+r_void
+op_star
+)paren
+op_amp
+id|j-&gt;busyflags
+)paren
+op_ne
+l_int|0
+)paren
+(brace
+id|set_current_state
+c_func
+(paren
+id|TASK_INTERRUPTIBLE
+)paren
+suffix:semicolon
+id|schedule_timeout
+c_func
+(paren
+l_int|1
+)paren
+suffix:semicolon
+)brace
 id|ixj_DownloadG729
 c_func
 (paren
-id|ixj
-(braket
-id|cnt
-)braket
+id|j
 comma
 l_int|0L
 )paren
 suffix:semicolon
+id|clear_bit
+c_func
+(paren
+id|cnt
+comma
+op_amp
+id|j-&gt;busyflags
+)paren
+suffix:semicolon
+)brace
 r_break
 suffix:semicolon
 r_case
@@ -1781,27 +2570,67 @@ suffix:semicolon
 id|cnt
 op_increment
 )paren
-r_if
-c_cond
+(brace
+id|IXJ
+op_star
+id|j
+op_assign
+id|get_ixj
+c_func
 (paren
-id|ixj
-(braket
 id|cnt
-)braket
-op_ne
-l_int|NULL
 )paren
+suffix:semicolon
+r_while
+c_loop
+(paren
+id|test_and_set_bit
+c_func
+(paren
+id|cnt
+comma
+(paren
+r_void
+op_star
+)paren
+op_amp
+id|j-&gt;busyflags
+)paren
+op_ne
+l_int|0
+)paren
+(brace
+id|set_current_state
+c_func
+(paren
+id|TASK_INTERRUPTIBLE
+)paren
+suffix:semicolon
+id|schedule_timeout
+c_func
+(paren
+l_int|1
+)paren
+suffix:semicolon
+)brace
 id|ixj_DownloadTS85
 c_func
 (paren
-id|ixj
-(braket
-id|cnt
-)braket
+id|j
 comma
 l_int|0L
 )paren
 suffix:semicolon
+id|clear_bit
+c_func
+(paren
+id|cnt
+comma
+op_amp
+id|j-&gt;busyflags
+)paren
+suffix:semicolon
+)brace
 r_break
 suffix:semicolon
 r_case
@@ -1869,7 +2698,15 @@ r_return
 id|retval
 suffix:semicolon
 )brace
+DECL|variable|ixj_register
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|ixj_register
+)paren
+suffix:semicolon
 DECL|function|ixj_unregister
+r_static
 r_int
 id|ixj_unregister
 c_func
@@ -1980,32 +2817,42 @@ r_return
 id|retval
 suffix:semicolon
 )brace
+DECL|variable|ixj_unregister
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|ixj_unregister
+)paren
+suffix:semicolon
 DECL|function|ixj_init_timer
 r_static
 r_void
 id|ixj_init_timer
 c_func
 (paren
-r_void
+id|IXJ
+op_star
+id|j
 )paren
 (brace
 id|init_timer
 c_func
 (paren
 op_amp
-id|ixj_timer
+id|j-&gt;timer
 )paren
 suffix:semicolon
-id|ixj_timer.function
+id|j-&gt;timer.function
 op_assign
 id|ixj_timeout
 suffix:semicolon
-id|ixj_timer.data
+id|j-&gt;timer.data
 op_assign
 (paren
 r_int
+r_int
 )paren
-l_int|NULL
+id|j
 suffix:semicolon
 )brace
 DECL|function|ixj_add_timer
@@ -2014,10 +2861,12 @@ r_void
 id|ixj_add_timer
 c_func
 (paren
-r_void
+id|IXJ
+op_star
+id|j
 )paren
 (brace
-id|ixj_timer.expires
+id|j-&gt;timer.expires
 op_assign
 id|jiffies
 op_plus
@@ -2031,7 +2880,7 @@ id|add_timer
 c_func
 (paren
 op_amp
-id|ixj_timer
+id|j-&gt;timer
 )paren
 suffix:semicolon
 )brace
@@ -2347,8 +3196,8 @@ suffix:semicolon
 )brace
 )brace
 DECL|function|ixj_kill_fasync
-r_extern
-id|__inline__
+r_static
+r_inline
 r_void
 id|ixj_kill_fasync
 c_func
@@ -2357,21 +3206,2597 @@ id|IXJ
 op_star
 id|j
 comma
+id|IXJ_SIGEVENT
+id|event
+comma
 r_int
-id|band
+id|dir
 )paren
 (brace
+r_if
+c_cond
+(paren
+id|j-&gt;ixj_signals
+(braket
+id|event
+)braket
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|ixjdebug
+op_amp
+l_int|0x0100
+)paren
+(brace
+id|printk
+c_func
+(paren
+l_string|&quot;Sending signal for event %d&bslash;n&quot;
+comma
+id|event
+)paren
+suffix:semicolon
+)brace
+multiline_comment|/* Send apps notice of change */
+multiline_comment|/* see config.h for macro definition */
 id|kill_fasync
 c_func
 (paren
 op_amp
+(paren
 id|j-&gt;async_queue
+)paren
 comma
-id|SIGIO
+id|j-&gt;ixj_signals
+(braket
+id|event
+)braket
 comma
-id|band
+id|dir
 )paren
 suffix:semicolon
+)brace
+)brace
+DECL|function|ixj_pstn_state
+r_static
+r_void
+id|ixj_pstn_state
+c_func
+(paren
+id|IXJ
+op_star
+id|j
+)paren
+(brace
+r_int
+id|var
+suffix:semicolon
+r_union
+id|XOPXR0
+id|XR0
+comma
+id|daaint
+suffix:semicolon
+id|var
+op_assign
+l_int|10
+suffix:semicolon
+id|XR0.reg
+op_assign
+id|j-&gt;m_DAAShadowRegs.XOP_REGS.XOP.xr0.reg
+suffix:semicolon
+id|daaint.reg
+op_assign
+l_int|0
+suffix:semicolon
+id|XR0.bitreg.RMR
+op_assign
+id|j-&gt;m_DAAShadowRegs.SOP_REGS.SOP.cr1.bitreg.RMR
+suffix:semicolon
+id|j-&gt;pld_scrr.byte
+op_assign
+id|inb_p
+c_func
+(paren
+id|j-&gt;XILINXbase
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|j-&gt;pld_scrr.bits.daaflag
+)paren
+(brace
+id|daa_int_read
+c_func
+(paren
+id|j
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|j-&gt;m_DAAShadowRegs.XOP_REGS.XOP.xr0.bitreg.RING
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|time_after
+c_func
+(paren
+id|jiffies
+comma
+id|j-&gt;pstn_sleeptil
+)paren
+op_logical_and
+op_logical_neg
+(paren
+id|j-&gt;flags.pots_pstn
+op_logical_and
+id|j-&gt;hookstate
+)paren
+)paren
+(brace
+id|daaint.bitreg.RING
+op_assign
+l_int|1
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|ixjdebug
+op_amp
+l_int|0x0008
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;IXJ DAA Ring Interrupt /dev/phone%d at %ld&bslash;n&quot;
+comma
+id|j-&gt;board
+comma
+id|jiffies
+)paren
+suffix:semicolon
+)brace
+)brace
+r_else
+(brace
+id|daa_set_mode
+c_func
+(paren
+id|j
+comma
+id|SOP_PU_RESET
+)paren
+suffix:semicolon
+)brace
+)brace
+r_if
+c_cond
+(paren
+id|j-&gt;m_DAAShadowRegs.XOP_REGS.XOP.xr0.bitreg.Caller_ID
+)paren
+(brace
+id|daaint.bitreg.Caller_ID
+op_assign
+l_int|1
+suffix:semicolon
+id|j-&gt;pstn_cid_intr
+op_assign
+l_int|1
+suffix:semicolon
+id|j-&gt;pstn_cid_received
+op_assign
+id|jiffies
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|ixjdebug
+op_amp
+l_int|0x0008
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;IXJ DAA Caller_ID Interrupt /dev/phone%d at %ld&bslash;n&quot;
+comma
+id|j-&gt;board
+comma
+id|jiffies
+)paren
+suffix:semicolon
+)brace
+)brace
+r_if
+c_cond
+(paren
+id|j-&gt;m_DAAShadowRegs.XOP_REGS.XOP.xr0.bitreg.Cadence
+)paren
+(brace
+id|daaint.bitreg.Cadence
+op_assign
+l_int|1
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|ixjdebug
+op_amp
+l_int|0x0008
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;IXJ DAA Cadence Interrupt /dev/phone%d at %ld&bslash;n&quot;
+comma
+id|j-&gt;board
+comma
+id|jiffies
+)paren
+suffix:semicolon
+)brace
+)brace
+r_if
+c_cond
+(paren
+id|j-&gt;m_DAAShadowRegs.XOP_REGS.XOP.xr0.bitreg.VDD_OK
+op_ne
+id|XR0.bitreg.VDD_OK
+)paren
+(brace
+id|daaint.bitreg.VDD_OK
+op_assign
+l_int|1
+suffix:semicolon
+id|daaint.bitreg.SI_0
+op_assign
+id|j-&gt;m_DAAShadowRegs.XOP_REGS.XOP.xr0.bitreg.VDD_OK
+suffix:semicolon
+)brace
+)brace
+id|daa_CR_read
+c_func
+(paren
+id|j
+comma
+l_int|1
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|j-&gt;m_DAAShadowRegs.SOP_REGS.SOP.cr1.bitreg.RMR
+op_ne
+id|XR0.bitreg.RMR
+op_logical_and
+id|time_after
+c_func
+(paren
+id|jiffies
+comma
+id|j-&gt;pstn_sleeptil
+)paren
+op_logical_and
+op_logical_neg
+(paren
+id|j-&gt;flags.pots_pstn
+op_logical_and
+id|j-&gt;hookstate
+)paren
+)paren
+(brace
+id|daaint.bitreg.RMR
+op_assign
+l_int|1
+suffix:semicolon
+id|daaint.bitreg.SI_1
+op_assign
+id|j-&gt;m_DAAShadowRegs.SOP_REGS.SOP.cr1.bitreg.RMR
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|ixjdebug
+op_amp
+l_int|0x0008
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;IXJ DAA RMR /dev/phone%d was %s for %ld&bslash;n&quot;
+comma
+id|j-&gt;board
+comma
+id|XR0.bitreg.RMR
+ques
+c_cond
+l_string|&quot;on&quot;
+suffix:colon
+l_string|&quot;off&quot;
+comma
+id|jiffies
+op_minus
+id|j-&gt;pstn_last_rmr
+)paren
+suffix:semicolon
+)brace
+id|j-&gt;pstn_prev_rmr
+op_assign
+id|j-&gt;pstn_last_rmr
+suffix:semicolon
+id|j-&gt;pstn_last_rmr
+op_assign
+id|jiffies
+suffix:semicolon
+)brace
+r_switch
+c_cond
+(paren
+id|j-&gt;daa_mode
+)paren
+(brace
+r_case
+id|SOP_PU_SLEEP
+suffix:colon
+r_if
+c_cond
+(paren
+id|daaint.bitreg.RING
+)paren
+(brace
+r_if
+c_cond
+(paren
+op_logical_neg
+id|j-&gt;flags.pstn_ringing
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|j-&gt;daa_mode
+op_ne
+id|SOP_PU_RINGING
+)paren
+(brace
+id|j-&gt;pstn_ring_int
+op_assign
+id|jiffies
+suffix:semicolon
+id|daa_set_mode
+c_func
+(paren
+id|j
+comma
+id|SOP_PU_RINGING
+)paren
+suffix:semicolon
+)brace
+)brace
+)brace
+r_break
+suffix:semicolon
+r_case
+id|SOP_PU_RINGING
+suffix:colon
+r_if
+c_cond
+(paren
+id|daaint.bitreg.RMR
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|ixjdebug
+op_amp
+l_int|0x0008
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;IXJ Ring Cadence a state = %d /dev/phone%d at %ld&bslash;n&quot;
+comma
+id|j-&gt;cadence_f
+(braket
+l_int|4
+)braket
+dot
+id|state
+comma
+id|j-&gt;board
+comma
+id|jiffies
+)paren
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+id|daaint.bitreg.SI_1
+)paren
+(brace
+multiline_comment|/* Rising edge of RMR */
+id|j-&gt;flags.pstn_rmr
+op_assign
+l_int|1
+suffix:semicolon
+id|j-&gt;pstn_ring_start
+op_assign
+id|jiffies
+suffix:semicolon
+id|j-&gt;pstn_ring_stop
+op_assign
+l_int|0
+suffix:semicolon
+id|j-&gt;ex.bits.pstn_ring
+op_assign
+l_int|0
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|j-&gt;cadence_f
+(braket
+l_int|4
+)braket
+dot
+id|state
+op_eq
+l_int|0
+)paren
+(brace
+id|j-&gt;cadence_f
+(braket
+l_int|4
+)braket
+dot
+id|state
+op_assign
+l_int|1
+suffix:semicolon
+id|j-&gt;cadence_f
+(braket
+l_int|4
+)braket
+dot
+id|on1min
+op_assign
+id|jiffies
+op_plus
+(paren
+r_int
+)paren
+(paren
+(paren
+id|j-&gt;cadence_f
+(braket
+l_int|4
+)braket
+dot
+id|on1
+op_star
+id|hertz
+op_star
+(paren
+l_int|100
+op_minus
+id|var
+)paren
+)paren
+op_div
+l_int|10000
+)paren
+suffix:semicolon
+id|j-&gt;cadence_f
+(braket
+l_int|4
+)braket
+dot
+id|on1dot
+op_assign
+id|jiffies
+op_plus
+(paren
+r_int
+)paren
+(paren
+(paren
+id|j-&gt;cadence_f
+(braket
+l_int|4
+)braket
+dot
+id|on1
+op_star
+id|hertz
+op_star
+(paren
+l_int|100
+)paren
+)paren
+op_div
+l_int|10000
+)paren
+suffix:semicolon
+id|j-&gt;cadence_f
+(braket
+l_int|4
+)braket
+dot
+id|on1max
+op_assign
+id|jiffies
+op_plus
+(paren
+r_int
+)paren
+(paren
+(paren
+id|j-&gt;cadence_f
+(braket
+l_int|4
+)braket
+dot
+id|on1
+op_star
+id|hertz
+op_star
+(paren
+l_int|100
+op_plus
+id|var
+)paren
+)paren
+op_div
+l_int|10000
+)paren
+suffix:semicolon
+)brace
+r_else
+r_if
+c_cond
+(paren
+id|j-&gt;cadence_f
+(braket
+l_int|4
+)braket
+dot
+id|state
+op_eq
+l_int|2
+)paren
+(brace
+r_if
+c_cond
+(paren
+(paren
+id|time_after
+c_func
+(paren
+id|jiffies
+comma
+id|j-&gt;cadence_f
+(braket
+l_int|4
+)braket
+dot
+id|off1min
+)paren
+op_logical_and
+id|time_before
+c_func
+(paren
+id|jiffies
+comma
+id|j-&gt;cadence_f
+(braket
+l_int|4
+)braket
+dot
+id|off1max
+)paren
+)paren
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|j-&gt;cadence_f
+(braket
+l_int|4
+)braket
+dot
+id|on2
+)paren
+(brace
+id|j-&gt;cadence_f
+(braket
+l_int|4
+)braket
+dot
+id|state
+op_assign
+l_int|3
+suffix:semicolon
+id|j-&gt;cadence_f
+(braket
+l_int|4
+)braket
+dot
+id|on2min
+op_assign
+id|jiffies
+op_plus
+(paren
+r_int
+)paren
+(paren
+(paren
+id|j-&gt;cadence_f
+(braket
+l_int|4
+)braket
+dot
+id|on2
+op_star
+(paren
+id|hertz
+op_star
+(paren
+l_int|100
+op_minus
+id|var
+)paren
+)paren
+op_div
+l_int|10000
+)paren
+)paren
+suffix:semicolon
+id|j-&gt;cadence_f
+(braket
+l_int|4
+)braket
+dot
+id|on2dot
+op_assign
+id|jiffies
+op_plus
+(paren
+r_int
+)paren
+(paren
+(paren
+id|j-&gt;cadence_f
+(braket
+l_int|4
+)braket
+dot
+id|on2
+op_star
+(paren
+id|hertz
+op_star
+(paren
+l_int|100
+)paren
+)paren
+op_div
+l_int|10000
+)paren
+)paren
+suffix:semicolon
+id|j-&gt;cadence_f
+(braket
+l_int|4
+)braket
+dot
+id|on2max
+op_assign
+id|jiffies
+op_plus
+(paren
+r_int
+)paren
+(paren
+(paren
+id|j-&gt;cadence_f
+(braket
+l_int|4
+)braket
+dot
+id|on2
+op_star
+(paren
+id|hertz
+op_star
+(paren
+l_int|100
+op_plus
+id|var
+)paren
+)paren
+op_div
+l_int|10000
+)paren
+)paren
+suffix:semicolon
+)brace
+r_else
+(brace
+id|j-&gt;cadence_f
+(braket
+l_int|4
+)braket
+dot
+id|state
+op_assign
+l_int|7
+suffix:semicolon
+)brace
+)brace
+r_else
+(brace
+r_if
+c_cond
+(paren
+id|ixjdebug
+op_amp
+l_int|0x0008
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;IXJ Ring Cadence fail state = %d /dev/phone%d at %ld should be %d&bslash;n&quot;
+comma
+id|j-&gt;cadence_f
+(braket
+l_int|4
+)braket
+dot
+id|state
+comma
+id|j-&gt;board
+comma
+id|jiffies
+op_minus
+id|j-&gt;pstn_prev_rmr
+comma
+id|j-&gt;cadence_f
+(braket
+l_int|4
+)braket
+dot
+id|off1
+)paren
+suffix:semicolon
+)brace
+id|j-&gt;cadence_f
+(braket
+l_int|4
+)braket
+dot
+id|state
+op_assign
+l_int|0
+suffix:semicolon
+)brace
+)brace
+r_else
+r_if
+c_cond
+(paren
+id|j-&gt;cadence_f
+(braket
+l_int|4
+)braket
+dot
+id|state
+op_eq
+l_int|4
+)paren
+(brace
+r_if
+c_cond
+(paren
+(paren
+id|time_after
+c_func
+(paren
+id|jiffies
+comma
+id|j-&gt;cadence_f
+(braket
+l_int|4
+)braket
+dot
+id|off2min
+)paren
+op_logical_and
+id|time_before
+c_func
+(paren
+id|jiffies
+comma
+id|j-&gt;cadence_f
+(braket
+l_int|4
+)braket
+dot
+id|off2max
+)paren
+)paren
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|j-&gt;cadence_f
+(braket
+l_int|4
+)braket
+dot
+id|on3
+)paren
+(brace
+id|j-&gt;cadence_f
+(braket
+l_int|4
+)braket
+dot
+id|state
+op_assign
+l_int|5
+suffix:semicolon
+id|j-&gt;cadence_f
+(braket
+l_int|4
+)braket
+dot
+id|on3min
+op_assign
+id|jiffies
+op_plus
+(paren
+r_int
+)paren
+(paren
+(paren
+id|j-&gt;cadence_f
+(braket
+l_int|4
+)braket
+dot
+id|on3
+op_star
+(paren
+id|hertz
+op_star
+(paren
+l_int|100
+op_minus
+id|var
+)paren
+)paren
+op_div
+l_int|10000
+)paren
+)paren
+suffix:semicolon
+id|j-&gt;cadence_f
+(braket
+l_int|4
+)braket
+dot
+id|on3dot
+op_assign
+id|jiffies
+op_plus
+(paren
+r_int
+)paren
+(paren
+(paren
+id|j-&gt;cadence_f
+(braket
+l_int|4
+)braket
+dot
+id|on3
+op_star
+(paren
+id|hertz
+op_star
+(paren
+l_int|100
+)paren
+)paren
+op_div
+l_int|10000
+)paren
+)paren
+suffix:semicolon
+id|j-&gt;cadence_f
+(braket
+l_int|4
+)braket
+dot
+id|on3max
+op_assign
+id|jiffies
+op_plus
+(paren
+r_int
+)paren
+(paren
+(paren
+id|j-&gt;cadence_f
+(braket
+l_int|4
+)braket
+dot
+id|on3
+op_star
+(paren
+id|hertz
+op_star
+(paren
+l_int|100
+op_plus
+id|var
+)paren
+)paren
+op_div
+l_int|10000
+)paren
+)paren
+suffix:semicolon
+)brace
+r_else
+(brace
+id|j-&gt;cadence_f
+(braket
+l_int|4
+)braket
+dot
+id|state
+op_assign
+l_int|7
+suffix:semicolon
+)brace
+)brace
+r_else
+(brace
+r_if
+c_cond
+(paren
+id|ixjdebug
+op_amp
+l_int|0x0008
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;IXJ Ring Cadence fail state = %d /dev/phone%d at %ld should be %d&bslash;n&quot;
+comma
+id|j-&gt;cadence_f
+(braket
+l_int|4
+)braket
+dot
+id|state
+comma
+id|j-&gt;board
+comma
+id|jiffies
+op_minus
+id|j-&gt;pstn_prev_rmr
+comma
+id|j-&gt;cadence_f
+(braket
+l_int|4
+)braket
+dot
+id|off2
+)paren
+suffix:semicolon
+)brace
+id|j-&gt;cadence_f
+(braket
+l_int|4
+)braket
+dot
+id|state
+op_assign
+l_int|0
+suffix:semicolon
+)brace
+)brace
+r_else
+r_if
+c_cond
+(paren
+id|j-&gt;cadence_f
+(braket
+l_int|4
+)braket
+dot
+id|state
+op_eq
+l_int|6
+)paren
+(brace
+r_if
+c_cond
+(paren
+(paren
+id|time_after
+c_func
+(paren
+id|jiffies
+comma
+id|j-&gt;cadence_f
+(braket
+l_int|4
+)braket
+dot
+id|off3min
+)paren
+op_logical_and
+id|time_before
+c_func
+(paren
+id|jiffies
+comma
+id|j-&gt;cadence_f
+(braket
+l_int|4
+)braket
+dot
+id|off3max
+)paren
+)paren
+)paren
+(brace
+id|j-&gt;cadence_f
+(braket
+l_int|4
+)braket
+dot
+id|state
+op_assign
+l_int|7
+suffix:semicolon
+)brace
+r_else
+(brace
+r_if
+c_cond
+(paren
+id|ixjdebug
+op_amp
+l_int|0x0008
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;IXJ Ring Cadence fail state = %d /dev/phone%d at %ld should be %d&bslash;n&quot;
+comma
+id|j-&gt;cadence_f
+(braket
+l_int|4
+)braket
+dot
+id|state
+comma
+id|j-&gt;board
+comma
+id|jiffies
+op_minus
+id|j-&gt;pstn_prev_rmr
+comma
+id|j-&gt;cadence_f
+(braket
+l_int|4
+)braket
+dot
+id|off3
+)paren
+suffix:semicolon
+)brace
+id|j-&gt;cadence_f
+(braket
+l_int|4
+)braket
+dot
+id|state
+op_assign
+l_int|0
+suffix:semicolon
+)brace
+)brace
+r_else
+(brace
+id|j-&gt;cadence_f
+(braket
+l_int|4
+)braket
+dot
+id|state
+op_assign
+l_int|0
+suffix:semicolon
+)brace
+)brace
+r_else
+(brace
+multiline_comment|/* Falling edge of RMR */
+id|j-&gt;pstn_ring_start
+op_assign
+l_int|0
+suffix:semicolon
+id|j-&gt;pstn_ring_stop
+op_assign
+id|jiffies
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|j-&gt;cadence_f
+(braket
+l_int|4
+)braket
+dot
+id|state
+op_eq
+l_int|1
+)paren
+(brace
+r_if
+c_cond
+(paren
+op_logical_neg
+id|j-&gt;cadence_f
+(braket
+l_int|4
+)braket
+dot
+id|on1
+)paren
+(brace
+id|j-&gt;cadence_f
+(braket
+l_int|4
+)braket
+dot
+id|state
+op_assign
+l_int|7
+suffix:semicolon
+)brace
+r_else
+r_if
+c_cond
+(paren
+(paren
+id|time_after
+c_func
+(paren
+id|jiffies
+comma
+id|j-&gt;cadence_f
+(braket
+l_int|4
+)braket
+dot
+id|on1min
+)paren
+op_logical_and
+id|time_before
+c_func
+(paren
+id|jiffies
+comma
+id|j-&gt;cadence_f
+(braket
+l_int|4
+)braket
+dot
+id|on1max
+)paren
+)paren
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|j-&gt;cadence_f
+(braket
+l_int|4
+)braket
+dot
+id|off1
+)paren
+(brace
+id|j-&gt;cadence_f
+(braket
+l_int|4
+)braket
+dot
+id|state
+op_assign
+l_int|2
+suffix:semicolon
+id|j-&gt;cadence_f
+(braket
+l_int|4
+)braket
+dot
+id|off1min
+op_assign
+id|jiffies
+op_plus
+(paren
+r_int
+)paren
+(paren
+(paren
+id|j-&gt;cadence_f
+(braket
+l_int|4
+)braket
+dot
+id|off1
+op_star
+(paren
+id|hertz
+op_star
+(paren
+l_int|100
+op_minus
+id|var
+)paren
+)paren
+op_div
+l_int|10000
+)paren
+)paren
+suffix:semicolon
+id|j-&gt;cadence_f
+(braket
+l_int|4
+)braket
+dot
+id|off1dot
+op_assign
+id|jiffies
+op_plus
+(paren
+r_int
+)paren
+(paren
+(paren
+id|j-&gt;cadence_f
+(braket
+l_int|4
+)braket
+dot
+id|off1
+op_star
+(paren
+id|hertz
+op_star
+(paren
+l_int|100
+)paren
+)paren
+op_div
+l_int|10000
+)paren
+)paren
+suffix:semicolon
+id|j-&gt;cadence_f
+(braket
+l_int|4
+)braket
+dot
+id|off1max
+op_assign
+id|jiffies
+op_plus
+(paren
+r_int
+)paren
+(paren
+(paren
+id|j-&gt;cadence_f
+(braket
+l_int|4
+)braket
+dot
+id|off1
+op_star
+(paren
+id|hertz
+op_star
+(paren
+l_int|100
+op_plus
+id|var
+)paren
+)paren
+op_div
+l_int|10000
+)paren
+)paren
+suffix:semicolon
+)brace
+r_else
+(brace
+id|j-&gt;cadence_f
+(braket
+l_int|4
+)braket
+dot
+id|state
+op_assign
+l_int|7
+suffix:semicolon
+)brace
+)brace
+r_else
+(brace
+r_if
+c_cond
+(paren
+id|ixjdebug
+op_amp
+l_int|0x0008
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;IXJ Ring Cadence fail state = %d /dev/phone%d at %ld should be %d&bslash;n&quot;
+comma
+id|j-&gt;cadence_f
+(braket
+l_int|4
+)braket
+dot
+id|state
+comma
+id|j-&gt;board
+comma
+id|jiffies
+op_minus
+id|j-&gt;pstn_prev_rmr
+comma
+id|j-&gt;cadence_f
+(braket
+l_int|4
+)braket
+dot
+id|on1
+)paren
+suffix:semicolon
+)brace
+id|j-&gt;cadence_f
+(braket
+l_int|4
+)braket
+dot
+id|state
+op_assign
+l_int|0
+suffix:semicolon
+)brace
+)brace
+r_else
+r_if
+c_cond
+(paren
+id|j-&gt;cadence_f
+(braket
+l_int|4
+)braket
+dot
+id|state
+op_eq
+l_int|3
+)paren
+(brace
+r_if
+c_cond
+(paren
+(paren
+id|time_after
+c_func
+(paren
+id|jiffies
+comma
+id|j-&gt;cadence_f
+(braket
+l_int|4
+)braket
+dot
+id|on2min
+)paren
+op_logical_and
+id|time_before
+c_func
+(paren
+id|jiffies
+comma
+id|j-&gt;cadence_f
+(braket
+l_int|4
+)braket
+dot
+id|on2max
+)paren
+)paren
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|j-&gt;cadence_f
+(braket
+l_int|4
+)braket
+dot
+id|off2
+)paren
+(brace
+id|j-&gt;cadence_f
+(braket
+l_int|4
+)braket
+dot
+id|state
+op_assign
+l_int|4
+suffix:semicolon
+id|j-&gt;cadence_f
+(braket
+l_int|4
+)braket
+dot
+id|off2min
+op_assign
+id|jiffies
+op_plus
+(paren
+r_int
+)paren
+(paren
+(paren
+id|j-&gt;cadence_f
+(braket
+l_int|4
+)braket
+dot
+id|off2
+op_star
+(paren
+id|hertz
+op_star
+(paren
+l_int|100
+op_minus
+id|var
+)paren
+)paren
+op_div
+l_int|10000
+)paren
+)paren
+suffix:semicolon
+id|j-&gt;cadence_f
+(braket
+l_int|4
+)braket
+dot
+id|off2dot
+op_assign
+id|jiffies
+op_plus
+(paren
+r_int
+)paren
+(paren
+(paren
+id|j-&gt;cadence_f
+(braket
+l_int|4
+)braket
+dot
+id|off2
+op_star
+(paren
+id|hertz
+op_star
+(paren
+l_int|100
+)paren
+)paren
+op_div
+l_int|10000
+)paren
+)paren
+suffix:semicolon
+id|j-&gt;cadence_f
+(braket
+l_int|4
+)braket
+dot
+id|off2max
+op_assign
+id|jiffies
+op_plus
+(paren
+r_int
+)paren
+(paren
+(paren
+id|j-&gt;cadence_f
+(braket
+l_int|4
+)braket
+dot
+id|off2
+op_star
+(paren
+id|hertz
+op_star
+(paren
+l_int|100
+op_plus
+id|var
+)paren
+)paren
+op_div
+l_int|10000
+)paren
+)paren
+suffix:semicolon
+)brace
+r_else
+(brace
+id|j-&gt;cadence_f
+(braket
+l_int|4
+)braket
+dot
+id|state
+op_assign
+l_int|7
+suffix:semicolon
+)brace
+)brace
+r_else
+(brace
+r_if
+c_cond
+(paren
+id|ixjdebug
+op_amp
+l_int|0x0008
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;IXJ Ring Cadence fail state = %d /dev/phone%d at %ld should be %d&bslash;n&quot;
+comma
+id|j-&gt;cadence_f
+(braket
+l_int|4
+)braket
+dot
+id|state
+comma
+id|j-&gt;board
+comma
+id|jiffies
+op_minus
+id|j-&gt;pstn_prev_rmr
+comma
+id|j-&gt;cadence_f
+(braket
+l_int|4
+)braket
+dot
+id|on2
+)paren
+suffix:semicolon
+)brace
+id|j-&gt;cadence_f
+(braket
+l_int|4
+)braket
+dot
+id|state
+op_assign
+l_int|0
+suffix:semicolon
+)brace
+)brace
+r_else
+r_if
+c_cond
+(paren
+id|j-&gt;cadence_f
+(braket
+l_int|4
+)braket
+dot
+id|state
+op_eq
+l_int|5
+)paren
+(brace
+r_if
+c_cond
+(paren
+(paren
+id|time_after
+c_func
+(paren
+id|jiffies
+comma
+id|j-&gt;cadence_f
+(braket
+l_int|4
+)braket
+dot
+id|on3min
+)paren
+op_logical_and
+id|time_before
+c_func
+(paren
+id|jiffies
+comma
+id|j-&gt;cadence_f
+(braket
+l_int|4
+)braket
+dot
+id|on3max
+)paren
+)paren
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|j-&gt;cadence_f
+(braket
+l_int|4
+)braket
+dot
+id|off3
+)paren
+(brace
+id|j-&gt;cadence_f
+(braket
+l_int|4
+)braket
+dot
+id|state
+op_assign
+l_int|6
+suffix:semicolon
+id|j-&gt;cadence_f
+(braket
+l_int|4
+)braket
+dot
+id|off3min
+op_assign
+id|jiffies
+op_plus
+(paren
+r_int
+)paren
+(paren
+(paren
+id|j-&gt;cadence_f
+(braket
+l_int|4
+)braket
+dot
+id|off3
+op_star
+(paren
+id|hertz
+op_star
+(paren
+l_int|100
+op_minus
+id|var
+)paren
+)paren
+op_div
+l_int|10000
+)paren
+)paren
+suffix:semicolon
+id|j-&gt;cadence_f
+(braket
+l_int|4
+)braket
+dot
+id|off3dot
+op_assign
+id|jiffies
+op_plus
+(paren
+r_int
+)paren
+(paren
+(paren
+id|j-&gt;cadence_f
+(braket
+l_int|4
+)braket
+dot
+id|off3
+op_star
+(paren
+id|hertz
+op_star
+(paren
+l_int|100
+)paren
+)paren
+op_div
+l_int|10000
+)paren
+)paren
+suffix:semicolon
+id|j-&gt;cadence_f
+(braket
+l_int|4
+)braket
+dot
+id|off3max
+op_assign
+id|jiffies
+op_plus
+(paren
+r_int
+)paren
+(paren
+(paren
+id|j-&gt;cadence_f
+(braket
+l_int|4
+)braket
+dot
+id|off3
+op_star
+(paren
+id|hertz
+op_star
+(paren
+l_int|100
+op_plus
+id|var
+)paren
+)paren
+op_div
+l_int|10000
+)paren
+)paren
+suffix:semicolon
+)brace
+r_else
+(brace
+id|j-&gt;cadence_f
+(braket
+l_int|4
+)braket
+dot
+id|state
+op_assign
+l_int|7
+suffix:semicolon
+)brace
+)brace
+r_else
+(brace
+id|j-&gt;cadence_f
+(braket
+l_int|4
+)braket
+dot
+id|state
+op_assign
+l_int|0
+suffix:semicolon
+)brace
+)brace
+r_else
+(brace
+r_if
+c_cond
+(paren
+id|ixjdebug
+op_amp
+l_int|0x0008
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;IXJ Ring Cadence fail state = %d /dev/phone%d at %ld should be %d&bslash;n&quot;
+comma
+id|j-&gt;cadence_f
+(braket
+l_int|4
+)braket
+dot
+id|state
+comma
+id|j-&gt;board
+comma
+id|jiffies
+op_minus
+id|j-&gt;pstn_prev_rmr
+comma
+id|j-&gt;cadence_f
+(braket
+l_int|4
+)braket
+dot
+id|on3
+)paren
+suffix:semicolon
+)brace
+id|j-&gt;cadence_f
+(braket
+l_int|4
+)braket
+dot
+id|state
+op_assign
+l_int|0
+suffix:semicolon
+)brace
+)brace
+r_if
+c_cond
+(paren
+id|ixjdebug
+op_amp
+l_int|0x0010
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;IXJ Ring Cadence b state = %d /dev/phone%d at %ld&bslash;n&quot;
+comma
+id|j-&gt;cadence_f
+(braket
+l_int|4
+)braket
+dot
+id|state
+comma
+id|j-&gt;board
+comma
+id|jiffies
+)paren
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+id|ixjdebug
+op_amp
+l_int|0x0010
+)paren
+(brace
+r_switch
+c_cond
+(paren
+id|j-&gt;cadence_f
+(braket
+l_int|4
+)braket
+dot
+id|state
+)paren
+(brace
+r_case
+l_int|1
+suffix:colon
+id|printk
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;IXJ /dev/phone%d Next Ring Cadence state at %u min %ld - %ld - max %ld&bslash;n&quot;
+comma
+id|j-&gt;board
+comma
+id|j-&gt;cadence_f
+(braket
+l_int|4
+)braket
+dot
+id|on1
+comma
+id|j-&gt;cadence_f
+(braket
+l_int|4
+)braket
+dot
+id|on1min
+comma
+id|j-&gt;cadence_f
+(braket
+l_int|4
+)braket
+dot
+id|on1dot
+comma
+id|j-&gt;cadence_f
+(braket
+l_int|4
+)braket
+dot
+id|on1max
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+l_int|2
+suffix:colon
+id|printk
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;IXJ /dev/phone%d Next Ring Cadence state at %u min %ld - %ld - max %ld&bslash;n&quot;
+comma
+id|j-&gt;board
+comma
+id|j-&gt;cadence_f
+(braket
+l_int|4
+)braket
+dot
+id|off1
+comma
+id|j-&gt;cadence_f
+(braket
+l_int|4
+)braket
+dot
+id|off1min
+comma
+id|j-&gt;cadence_f
+(braket
+l_int|4
+)braket
+dot
+id|off1dot
+comma
+id|j-&gt;cadence_f
+(braket
+l_int|4
+)braket
+dot
+id|off1max
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+l_int|3
+suffix:colon
+id|printk
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;IXJ /dev/phone%d Next Ring Cadence state at %u min %ld - %ld - max %ld&bslash;n&quot;
+comma
+id|j-&gt;board
+comma
+id|j-&gt;cadence_f
+(braket
+l_int|4
+)braket
+dot
+id|on2
+comma
+id|j-&gt;cadence_f
+(braket
+l_int|4
+)braket
+dot
+id|on2min
+comma
+id|j-&gt;cadence_f
+(braket
+l_int|4
+)braket
+dot
+id|on2dot
+comma
+id|j-&gt;cadence_f
+(braket
+l_int|4
+)braket
+dot
+id|on2max
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+l_int|4
+suffix:colon
+id|printk
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;IXJ /dev/phone%d Next Ring Cadence state at %u min %ld - %ld - max %ld&bslash;n&quot;
+comma
+id|j-&gt;board
+comma
+id|j-&gt;cadence_f
+(braket
+l_int|4
+)braket
+dot
+id|off2
+comma
+id|j-&gt;cadence_f
+(braket
+l_int|4
+)braket
+dot
+id|off2min
+comma
+id|j-&gt;cadence_f
+(braket
+l_int|4
+)braket
+dot
+id|off2dot
+comma
+id|j-&gt;cadence_f
+(braket
+l_int|4
+)braket
+dot
+id|off2max
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+l_int|5
+suffix:colon
+id|printk
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;IXJ /dev/phone%d Next Ring Cadence state at %u min %ld - %ld - max %ld&bslash;n&quot;
+comma
+id|j-&gt;board
+comma
+id|j-&gt;cadence_f
+(braket
+l_int|4
+)braket
+dot
+id|on3
+comma
+id|j-&gt;cadence_f
+(braket
+l_int|4
+)braket
+dot
+id|on3min
+comma
+id|j-&gt;cadence_f
+(braket
+l_int|4
+)braket
+dot
+id|on3dot
+comma
+id|j-&gt;cadence_f
+(braket
+l_int|4
+)braket
+dot
+id|on3max
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+l_int|6
+suffix:colon
+id|printk
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;IXJ /dev/phone%d Next Ring Cadence state at %u min %ld - %ld - max %ld&bslash;n&quot;
+comma
+id|j-&gt;board
+comma
+id|j-&gt;cadence_f
+(braket
+l_int|4
+)braket
+dot
+id|off3
+comma
+id|j-&gt;cadence_f
+(braket
+l_int|4
+)braket
+dot
+id|off3min
+comma
+id|j-&gt;cadence_f
+(braket
+l_int|4
+)braket
+dot
+id|off3dot
+comma
+id|j-&gt;cadence_f
+(braket
+l_int|4
+)braket
+dot
+id|off3max
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
+)brace
+)brace
+)brace
+r_if
+c_cond
+(paren
+id|j-&gt;cadence_f
+(braket
+l_int|4
+)braket
+dot
+id|state
+op_eq
+l_int|7
+)paren
+(brace
+id|j-&gt;cadence_f
+(braket
+l_int|4
+)braket
+dot
+id|state
+op_assign
+l_int|0
+suffix:semicolon
+id|j-&gt;pstn_ring_stop
+op_assign
+id|jiffies
+suffix:semicolon
+id|j-&gt;ex.bits.pstn_ring
+op_assign
+l_int|1
+suffix:semicolon
+id|ixj_kill_fasync
+c_func
+(paren
+id|j
+comma
+id|SIG_PSTN_RING
+comma
+id|POLL_IN
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|ixjdebug
+op_amp
+l_int|0x0008
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;IXJ Ring int set /dev/phone%d at %ld&bslash;n&quot;
+comma
+id|j-&gt;board
+comma
+id|jiffies
+)paren
+suffix:semicolon
+)brace
+)brace
+r_if
+c_cond
+(paren
+(paren
+id|j-&gt;pstn_ring_int
+op_ne
+l_int|0
+op_logical_and
+id|time_after
+c_func
+(paren
+id|jiffies
+comma
+id|j-&gt;pstn_ring_int
+op_plus
+(paren
+id|hertz
+op_star
+l_int|5
+)paren
+)paren
+op_logical_and
+op_logical_neg
+id|j-&gt;flags.pstn_rmr
+)paren
+op_logical_or
+(paren
+id|j-&gt;pstn_ring_stop
+op_ne
+l_int|0
+op_logical_and
+id|time_after
+c_func
+(paren
+id|jiffies
+comma
+id|j-&gt;pstn_ring_stop
+op_plus
+(paren
+id|hertz
+op_star
+l_int|5
+)paren
+)paren
+)paren
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|ixjdebug
+op_amp
+l_int|0x0008
+)paren
+(brace
+id|printk
+c_func
+(paren
+l_string|&quot;IXJ DAA no ring in 5 seconds /dev/phone%d at %ld&bslash;n&quot;
+comma
+id|j-&gt;board
+comma
+id|jiffies
+)paren
+suffix:semicolon
+id|printk
+c_func
+(paren
+l_string|&quot;IXJ DAA pstn ring int /dev/phone%d at %ld&bslash;n&quot;
+comma
+id|j-&gt;board
+comma
+id|j-&gt;pstn_ring_int
+)paren
+suffix:semicolon
+id|printk
+c_func
+(paren
+l_string|&quot;IXJ DAA pstn ring stop /dev/phone%d at %ld&bslash;n&quot;
+comma
+id|j-&gt;board
+comma
+id|j-&gt;pstn_ring_stop
+)paren
+suffix:semicolon
+)brace
+id|j-&gt;pstn_ring_stop
+op_assign
+id|j-&gt;pstn_ring_int
+op_assign
+l_int|0
+suffix:semicolon
+id|daa_set_mode
+c_func
+(paren
+id|j
+comma
+id|SOP_PU_SLEEP
+)paren
+suffix:semicolon
+)brace
+id|outb_p
+c_func
+(paren
+id|j-&gt;pld_scrw.byte
+comma
+id|j-&gt;XILINXbase
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|j-&gt;pstn_cid_intr
+op_logical_and
+id|time_after
+c_func
+(paren
+id|jiffies
+comma
+id|j-&gt;pstn_cid_received
+op_plus
+id|hertz
+)paren
+)paren
+(brace
+id|ixj_daa_cid_read
+c_func
+(paren
+id|j
+)paren
+suffix:semicolon
+id|j-&gt;ex.bits.caller_id
+op_assign
+l_int|1
+suffix:semicolon
+id|ixj_kill_fasync
+c_func
+(paren
+id|j
+comma
+id|SIG_CALLER_ID
+comma
+id|POLL_IN
+)paren
+suffix:semicolon
+id|j-&gt;pstn_cid_intr
+op_assign
+l_int|0
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+id|daaint.bitreg.Cadence
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|ixjdebug
+op_amp
+l_int|0x0008
+)paren
+(brace
+id|printk
+c_func
+(paren
+l_string|&quot;IXJ DAA Cadence interrupt going to sleep /dev/phone%d&bslash;n&quot;
+comma
+id|j-&gt;board
+)paren
+suffix:semicolon
+)brace
+id|daa_set_mode
+c_func
+(paren
+id|j
+comma
+id|SOP_PU_SLEEP
+)paren
+suffix:semicolon
+id|j-&gt;ex.bits.pstn_ring
+op_assign
+l_int|0
+suffix:semicolon
+)brace
+r_break
+suffix:semicolon
+r_case
+id|SOP_PU_CONVERSATION
+suffix:colon
+r_if
+c_cond
+(paren
+id|daaint.bitreg.VDD_OK
+)paren
+(brace
+r_if
+c_cond
+(paren
+op_logical_neg
+id|daaint.bitreg.SI_0
+)paren
+(brace
+r_if
+c_cond
+(paren
+op_logical_neg
+id|j-&gt;pstn_winkstart
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|ixjdebug
+op_amp
+l_int|0x0008
+)paren
+(brace
+id|printk
+c_func
+(paren
+l_string|&quot;IXJ DAA possible wink /dev/phone%d %ld&bslash;n&quot;
+comma
+id|j-&gt;board
+comma
+id|jiffies
+)paren
+suffix:semicolon
+)brace
+id|j-&gt;pstn_winkstart
+op_assign
+id|jiffies
+suffix:semicolon
+)brace
+)brace
+r_else
+(brace
+r_if
+c_cond
+(paren
+id|j-&gt;pstn_winkstart
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|ixjdebug
+op_amp
+l_int|0x0008
+)paren
+(brace
+id|printk
+c_func
+(paren
+l_string|&quot;IXJ DAA possible wink end /dev/phone%d %ld&bslash;n&quot;
+comma
+id|j-&gt;board
+comma
+id|jiffies
+)paren
+suffix:semicolon
+)brace
+id|j-&gt;pstn_winkstart
+op_assign
+l_int|0
+suffix:semicolon
+)brace
+)brace
+)brace
+r_if
+c_cond
+(paren
+id|j-&gt;pstn_winkstart
+op_logical_and
+id|time_after
+c_func
+(paren
+id|jiffies
+comma
+id|j-&gt;pstn_winkstart
+op_plus
+(paren
+(paren
+id|hertz
+op_star
+id|j-&gt;winktime
+)paren
+op_div
+l_int|1000
+)paren
+)paren
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|ixjdebug
+op_amp
+l_int|0x0008
+)paren
+(brace
+id|printk
+c_func
+(paren
+l_string|&quot;IXJ DAA wink detected going to sleep /dev/phone%d %ld&bslash;n&quot;
+comma
+id|j-&gt;board
+comma
+id|jiffies
+)paren
+suffix:semicolon
+)brace
+id|daa_set_mode
+c_func
+(paren
+id|j
+comma
+id|SOP_PU_SLEEP
+)paren
+suffix:semicolon
+id|j-&gt;pstn_winkstart
+op_assign
+l_int|0
+suffix:semicolon
+id|j-&gt;ex.bits.pstn_wink
+op_assign
+l_int|1
+suffix:semicolon
+id|ixj_kill_fasync
+c_func
+(paren
+id|j
+comma
+id|SIG_PSTN_WINK
+comma
+id|POLL_IN
+)paren
+suffix:semicolon
+)brace
+r_break
+suffix:semicolon
+)brace
 )brace
 DECL|function|ixj_timeout
 r_static
@@ -2391,50 +5816,64 @@ r_int
 r_int
 id|jifon
 suffix:semicolon
-r_for
-c_loop
-(paren
-id|board
-op_assign
-l_int|0
-suffix:semicolon
-id|board
-OL
-id|IXJMAX
-suffix:semicolon
-id|board
-op_increment
-)paren
-(brace
 id|IXJ
 op_star
 id|j
 op_assign
-id|ixj
-(braket
-id|board
-)braket
-suffix:semicolon
-r_if
-c_cond
 (paren
-id|j
-op_eq
-l_int|NULL
+id|IXJ
+op_star
 )paren
-r_continue
+id|ptr
+suffix:semicolon
+id|board
+op_assign
+id|j-&gt;board
 suffix:semicolon
 r_if
 c_cond
 (paren
 id|j-&gt;DSPbase
+op_logical_and
+id|atomic_read
+c_func
+(paren
+op_amp
+id|j-&gt;DSPWrite
+)paren
+op_eq
+l_int|0
+op_logical_and
+id|test_and_set_bit
+c_func
+(paren
+id|board
+comma
+(paren
+r_void
+op_star
+)paren
+op_amp
+id|j-&gt;busyflags
+)paren
+op_eq
+l_int|0
 )paren
 (brace
-macro_line|#ifdef PERFMON_STATS
+id|ixj_perfmon
+c_func
+(paren
 id|j-&gt;timerchecks
-op_increment
+)paren
 suffix:semicolon
-macro_line|#endif
+id|j-&gt;hookstate
+op_assign
+id|ixj_hookstate
+c_func
+(paren
+id|j
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -2445,10 +5884,8 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|ixj_hookstate
-c_func
 (paren
-id|j
+id|j-&gt;hookstate
 )paren
 )paren
 (brace
@@ -2477,11 +5914,28 @@ c_func
 (paren
 id|j
 comma
-id|POLL_PRI
+id|SIG_HOOKSTATE
+comma
+id|POLL_IN
 )paren
 suffix:semicolon
 )brace
-r_continue
+id|clear_bit
+c_func
+(paren
+id|board
+comma
+op_amp
+id|j-&gt;busyflags
+)paren
+suffix:semicolon
+id|ixj_add_timer
+c_func
+(paren
+id|j
+)paren
+suffix:semicolon
+r_return
 suffix:semicolon
 )brace
 r_if
@@ -2494,9 +5948,11 @@ l_int|1
 id|jifon
 op_assign
 (paren
+(paren
 id|hertz
 op_star
 id|j-&gt;tone_on_time
+)paren
 op_star
 l_int|25
 op_div
@@ -2507,9 +5963,11 @@ r_else
 id|jifon
 op_assign
 (paren
+(paren
 id|hertz
 op_star
 id|j-&gt;tone_on_time
+)paren
 op_star
 l_int|25
 op_div
@@ -2517,9 +5975,11 @@ l_int|100000
 )paren
 op_plus
 (paren
+(paren
 id|hertz
 op_star
 id|j-&gt;tone_off_time
+)paren
 op_star
 l_int|25
 op_div
@@ -2564,7 +6024,22 @@ op_eq
 l_int|0x20
 )paren
 (brace
-r_continue
+id|clear_bit
+c_func
+(paren
+id|board
+comma
+op_amp
+id|j-&gt;busyflags
+)paren
+suffix:semicolon
+id|ixj_add_timer
+c_func
+(paren
+id|j
+)paren
+suffix:semicolon
+r_return
 suffix:semicolon
 )brace
 )brace
@@ -2586,7 +6061,22 @@ op_eq
 l_int|0x20
 )paren
 (brace
-r_continue
+id|clear_bit
+c_func
+(paren
+id|board
+comma
+op_amp
+id|j-&gt;busyflags
+)paren
+suffix:semicolon
+id|ixj_add_timer
+c_func
+(paren
+id|j
+)paren
+suffix:semicolon
+r_return
 suffix:semicolon
 )brace
 )brace
@@ -2632,7 +6122,22 @@ op_eq
 l_int|0x20
 )paren
 (brace
-r_continue
+id|clear_bit
+c_func
+(paren
+id|board
+comma
+op_amp
+id|j-&gt;busyflags
+)paren
+suffix:semicolon
+id|ixj_add_timer
+c_func
+(paren
+id|j
+)paren
+suffix:semicolon
+r_return
 suffix:semicolon
 )brace
 )brace
@@ -2656,7 +6161,22 @@ op_eq
 l_int|0x20
 )paren
 (brace
-r_continue
+id|clear_bit
+c_func
+(paren
+id|board
+comma
+op_amp
+id|j-&gt;busyflags
+)paren
+suffix:semicolon
+id|ixj_add_timer
+c_func
+(paren
+id|j
+)paren
+suffix:semicolon
+r_return
 suffix:semicolon
 )brace
 )brace
@@ -2667,62 +6187,7 @@ op_logical_neg
 id|j-&gt;tone_state
 )paren
 (brace
-r_if
-c_cond
-(paren
-id|j-&gt;dsp.low
-op_eq
-l_int|0x20
-op_logical_or
-(paren
-id|j-&gt;play_mode
-op_eq
-op_minus
-l_int|1
-op_logical_and
-id|j-&gt;rec_mode
-op_eq
-op_minus
-l_int|1
-)paren
-)paren
-id|idle
-c_func
-(paren
-id|j
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|j-&gt;dsp.low
-op_eq
-l_int|0x20
-op_logical_and
-id|j-&gt;play_mode
-op_ne
-op_minus
-l_int|1
-)paren
-id|ixj_play_start
-c_func
-(paren
-id|j
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|j-&gt;dsp.low
-op_eq
-l_int|0x20
-op_logical_and
-id|j-&gt;rec_mode
-op_ne
-op_minus
-l_int|1
-)paren
-id|ixj_record_start
+id|ixj_cpt_stop
 c_func
 (paren
 id|j
@@ -2769,9 +6234,6 @@ c_func
 (paren
 id|j
 )paren
-op_logical_and
-op_logical_neg
-id|j-&gt;flags.cidplay
 )paren
 (brace
 id|ixj_write_frame
@@ -2791,11 +6253,7 @@ id|j-&gt;flags.cringing
 r_if
 c_cond
 (paren
-id|ixj_hookstate
-c_func
-(paren
-id|j
-)paren
+id|j-&gt;hookstate
 op_amp
 l_int|1
 )paren
@@ -2812,18 +6270,878 @@ id|j
 suffix:semicolon
 )brace
 r_else
+r_if
+c_cond
+(paren
+id|j-&gt;cadence_f
+(braket
+l_int|5
+)braket
+dot
+id|enable
+op_logical_and
+(paren
+(paren
+op_logical_neg
+id|j-&gt;cadence_f
+(braket
+l_int|5
+)braket
+dot
+id|en_filter
+)paren
+op_logical_or
+(paren
+id|j-&gt;cadence_f
+(braket
+l_int|5
+)braket
+dot
+id|en_filter
+op_logical_and
+id|j-&gt;flags.firstring
+)paren
+)paren
+)paren
+(brace
+r_switch
+c_cond
+(paren
+id|j-&gt;cadence_f
+(braket
+l_int|5
+)braket
+dot
+id|state
+)paren
+(brace
+r_case
+l_int|0
+suffix:colon
+id|j-&gt;cadence_f
+(braket
+l_int|5
+)braket
+dot
+id|on1dot
+op_assign
+id|jiffies
+op_plus
+(paren
+r_int
+)paren
+(paren
+(paren
+id|j-&gt;cadence_f
+(braket
+l_int|5
+)braket
+dot
+id|on1
+op_star
+(paren
+id|hertz
+op_star
+l_int|100
+)paren
+op_div
+l_int|10000
+)paren
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|time_before
+c_func
+(paren
+id|jiffies
+comma
+id|j-&gt;cadence_f
+(braket
+l_int|5
+)braket
+dot
+id|on1dot
+)paren
+)paren
 (brace
 r_if
 c_cond
 (paren
+id|ixjdebug
+op_amp
+l_int|0x0004
+)paren
+(brace
+id|printk
+c_func
+(paren
+l_string|&quot;Ringing cadence state = %d - %ld&bslash;n&quot;
+comma
+id|j-&gt;cadence_f
+(braket
+l_int|5
+)braket
+dot
+id|state
+comma
 id|jiffies
-op_minus
+)paren
+suffix:semicolon
+)brace
+id|ixj_ring_on
+c_func
+(paren
+id|j
+)paren
+suffix:semicolon
+)brace
+id|j-&gt;cadence_f
+(braket
+l_int|5
+)braket
+dot
+id|state
+op_assign
+l_int|1
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+l_int|1
+suffix:colon
+r_if
+c_cond
+(paren
+id|time_after
+c_func
+(paren
+id|jiffies
+comma
+id|j-&gt;cadence_f
+(braket
+l_int|5
+)braket
+dot
+id|on1dot
+)paren
+)paren
+(brace
+id|j-&gt;cadence_f
+(braket
+l_int|5
+)braket
+dot
+id|off1dot
+op_assign
+id|jiffies
+op_plus
+(paren
+r_int
+)paren
+(paren
+(paren
+id|j-&gt;cadence_f
+(braket
+l_int|5
+)braket
+dot
+id|off1
+op_star
+(paren
+id|hertz
+op_star
+l_int|100
+)paren
+op_div
+l_int|10000
+)paren
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|ixjdebug
+op_amp
+l_int|0x0004
+)paren
+(brace
+id|printk
+c_func
+(paren
+l_string|&quot;Ringing cadence state = %d - %ld&bslash;n&quot;
+comma
+id|j-&gt;cadence_f
+(braket
+l_int|5
+)braket
+dot
+id|state
+comma
+id|jiffies
+)paren
+suffix:semicolon
+)brace
+id|ixj_ring_off
+c_func
+(paren
+id|j
+)paren
+suffix:semicolon
+id|j-&gt;cadence_f
+(braket
+l_int|5
+)braket
+dot
+id|state
+op_assign
+l_int|2
+suffix:semicolon
+)brace
+r_break
+suffix:semicolon
+r_case
+l_int|2
+suffix:colon
+r_if
+c_cond
+(paren
+id|time_after
+c_func
+(paren
+id|jiffies
+comma
+id|j-&gt;cadence_f
+(braket
+l_int|5
+)braket
+dot
+id|off1dot
+)paren
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|ixjdebug
+op_amp
+l_int|0x0004
+)paren
+(brace
+id|printk
+c_func
+(paren
+l_string|&quot;Ringing cadence state = %d - %ld&bslash;n&quot;
+comma
+id|j-&gt;cadence_f
+(braket
+l_int|5
+)braket
+dot
+id|state
+comma
+id|jiffies
+)paren
+suffix:semicolon
+)brace
+id|ixj_ring_on
+c_func
+(paren
+id|j
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|j-&gt;cadence_f
+(braket
+l_int|5
+)braket
+dot
+id|on2
+)paren
+(brace
+id|j-&gt;cadence_f
+(braket
+l_int|5
+)braket
+dot
+id|on2dot
+op_assign
+id|jiffies
+op_plus
+(paren
+r_int
+)paren
+(paren
+(paren
+id|j-&gt;cadence_f
+(braket
+l_int|5
+)braket
+dot
+id|on2
+op_star
+(paren
+id|hertz
+op_star
+l_int|100
+)paren
+op_div
+l_int|10000
+)paren
+)paren
+suffix:semicolon
+id|j-&gt;cadence_f
+(braket
+l_int|5
+)braket
+dot
+id|state
+op_assign
+l_int|3
+suffix:semicolon
+)brace
+r_else
+(brace
+id|j-&gt;cadence_f
+(braket
+l_int|5
+)braket
+dot
+id|state
+op_assign
+l_int|7
+suffix:semicolon
+)brace
+)brace
+r_break
+suffix:semicolon
+r_case
+l_int|3
+suffix:colon
+r_if
+c_cond
+(paren
+id|time_after
+c_func
+(paren
+id|jiffies
+comma
+id|j-&gt;cadence_f
+(braket
+l_int|5
+)braket
+dot
+id|on2dot
+)paren
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|ixjdebug
+op_amp
+l_int|0x0004
+)paren
+(brace
+id|printk
+c_func
+(paren
+l_string|&quot;Ringing cadence state = %d - %ld&bslash;n&quot;
+comma
+id|j-&gt;cadence_f
+(braket
+l_int|5
+)braket
+dot
+id|state
+comma
+id|jiffies
+)paren
+suffix:semicolon
+)brace
+id|ixj_ring_off
+c_func
+(paren
+id|j
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|j-&gt;cadence_f
+(braket
+l_int|5
+)braket
+dot
+id|off2
+)paren
+(brace
+id|j-&gt;cadence_f
+(braket
+l_int|5
+)braket
+dot
+id|off2dot
+op_assign
+id|jiffies
+op_plus
+(paren
+r_int
+)paren
+(paren
+(paren
+id|j-&gt;cadence_f
+(braket
+l_int|5
+)braket
+dot
+id|off2
+op_star
+(paren
+id|hertz
+op_star
+l_int|100
+)paren
+op_div
+l_int|10000
+)paren
+)paren
+suffix:semicolon
+id|j-&gt;cadence_f
+(braket
+l_int|5
+)braket
+dot
+id|state
+op_assign
+l_int|4
+suffix:semicolon
+)brace
+r_else
+(brace
+id|j-&gt;cadence_f
+(braket
+l_int|5
+)braket
+dot
+id|state
+op_assign
+l_int|7
+suffix:semicolon
+)brace
+)brace
+r_break
+suffix:semicolon
+r_case
+l_int|4
+suffix:colon
+r_if
+c_cond
+(paren
+id|time_after
+c_func
+(paren
+id|jiffies
+comma
+id|j-&gt;cadence_f
+(braket
+l_int|5
+)braket
+dot
+id|off2dot
+)paren
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|ixjdebug
+op_amp
+l_int|0x0004
+)paren
+(brace
+id|printk
+c_func
+(paren
+l_string|&quot;Ringing cadence state = %d - %ld&bslash;n&quot;
+comma
+id|j-&gt;cadence_f
+(braket
+l_int|5
+)braket
+dot
+id|state
+comma
+id|jiffies
+)paren
+suffix:semicolon
+)brace
+id|ixj_ring_on
+c_func
+(paren
+id|j
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|j-&gt;cadence_f
+(braket
+l_int|5
+)braket
+dot
+id|on3
+)paren
+(brace
+id|j-&gt;cadence_f
+(braket
+l_int|5
+)braket
+dot
+id|on3dot
+op_assign
+id|jiffies
+op_plus
+(paren
+r_int
+)paren
+(paren
+(paren
+id|j-&gt;cadence_f
+(braket
+l_int|5
+)braket
+dot
+id|on3
+op_star
+(paren
+id|hertz
+op_star
+l_int|100
+)paren
+op_div
+l_int|10000
+)paren
+)paren
+suffix:semicolon
+id|j-&gt;cadence_f
+(braket
+l_int|5
+)braket
+dot
+id|state
+op_assign
+l_int|5
+suffix:semicolon
+)brace
+r_else
+(brace
+id|j-&gt;cadence_f
+(braket
+l_int|5
+)braket
+dot
+id|state
+op_assign
+l_int|7
+suffix:semicolon
+)brace
+)brace
+r_break
+suffix:semicolon
+r_case
+l_int|5
+suffix:colon
+r_if
+c_cond
+(paren
+id|time_after
+c_func
+(paren
+id|jiffies
+comma
+id|j-&gt;cadence_f
+(braket
+l_int|5
+)braket
+dot
+id|on3dot
+)paren
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|ixjdebug
+op_amp
+l_int|0x0004
+)paren
+(brace
+id|printk
+c_func
+(paren
+l_string|&quot;Ringing cadence state = %d - %ld&bslash;n&quot;
+comma
+id|j-&gt;cadence_f
+(braket
+l_int|5
+)braket
+dot
+id|state
+comma
+id|jiffies
+)paren
+suffix:semicolon
+)brace
+id|ixj_ring_off
+c_func
+(paren
+id|j
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|j-&gt;cadence_f
+(braket
+l_int|5
+)braket
+dot
+id|off3
+)paren
+(brace
+id|j-&gt;cadence_f
+(braket
+l_int|5
+)braket
+dot
+id|off3dot
+op_assign
+id|jiffies
+op_plus
+(paren
+r_int
+)paren
+(paren
+(paren
+id|j-&gt;cadence_f
+(braket
+l_int|5
+)braket
+dot
+id|off3
+op_star
+(paren
+id|hertz
+op_star
+l_int|100
+)paren
+op_div
+l_int|10000
+)paren
+)paren
+suffix:semicolon
+id|j-&gt;cadence_f
+(braket
+l_int|5
+)braket
+dot
+id|state
+op_assign
+l_int|6
+suffix:semicolon
+)brace
+r_else
+(brace
+id|j-&gt;cadence_f
+(braket
+l_int|5
+)braket
+dot
+id|state
+op_assign
+l_int|7
+suffix:semicolon
+)brace
+)brace
+r_break
+suffix:semicolon
+r_case
+l_int|6
+suffix:colon
+r_if
+c_cond
+(paren
+id|time_after
+c_func
+(paren
+id|jiffies
+comma
+id|j-&gt;cadence_f
+(braket
+l_int|5
+)braket
+dot
+id|off3dot
+)paren
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|ixjdebug
+op_amp
+l_int|0x0004
+)paren
+(brace
+id|printk
+c_func
+(paren
+l_string|&quot;Ringing cadence state = %d - %ld&bslash;n&quot;
+comma
+id|j-&gt;cadence_f
+(braket
+l_int|5
+)braket
+dot
+id|state
+comma
+id|jiffies
+)paren
+suffix:semicolon
+)brace
+id|j-&gt;cadence_f
+(braket
+l_int|5
+)braket
+dot
+id|state
+op_assign
+l_int|7
+suffix:semicolon
+)brace
+r_break
+suffix:semicolon
+r_case
+l_int|7
+suffix:colon
+r_if
+c_cond
+(paren
+id|ixjdebug
+op_amp
+l_int|0x0004
+)paren
+(brace
+id|printk
+c_func
+(paren
+l_string|&quot;Ringing cadence state = %d - %ld&bslash;n&quot;
+comma
+id|j-&gt;cadence_f
+(braket
+l_int|5
+)braket
+dot
+id|state
+comma
+id|jiffies
+)paren
+suffix:semicolon
+)brace
+id|j-&gt;flags.cidring
+op_assign
+l_int|1
+suffix:semicolon
+id|j-&gt;cadence_f
+(braket
+l_int|5
+)braket
+dot
+id|state
+op_assign
+l_int|0
+suffix:semicolon
+r_break
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+id|j-&gt;flags.cidring
+op_logical_and
+op_logical_neg
+id|j-&gt;flags.cidsent
+)paren
+(brace
+id|j-&gt;flags.cidsent
+op_assign
+l_int|1
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|j-&gt;fskdcnt
+)paren
+(brace
+id|SLIC_SetState
+c_func
+(paren
+id|PLD_SLIC_STATE_OHT
+comma
+id|j
+)paren
+suffix:semicolon
+id|ixj_pre_cid
+c_func
+(paren
+id|j
+)paren
+suffix:semicolon
+)brace
+id|j-&gt;flags.cidring
+op_assign
+l_int|0
+suffix:semicolon
+)brace
+id|clear_bit
+c_func
+(paren
+id|board
+comma
+op_amp
+id|j-&gt;busyflags
+)paren
+suffix:semicolon
+id|ixj_add_timer
+c_func
+(paren
+id|j
+)paren
+suffix:semicolon
+r_return
+suffix:semicolon
+)brace
+r_else
+(brace
+r_if
+c_cond
+(paren
+id|time_after
+c_func
+(paren
+id|jiffies
+comma
 id|j-&gt;ring_cadence_jif
-op_ge
+op_plus
 (paren
 id|hertz
 op_div
 l_int|2
+)paren
 )paren
 )paren
 (brace
@@ -2840,12 +7158,27 @@ id|j-&gt;flags.cidsent
 op_assign
 l_int|1
 suffix:semicolon
-id|ixj_write_cid
+r_if
+c_cond
+(paren
+id|j-&gt;fskdcnt
+)paren
+(brace
+id|SLIC_SetState
+c_func
+(paren
+id|PLD_SLIC_STATE_OHT
+comma
+id|j
+)paren
+suffix:semicolon
+id|ixj_pre_cid
 c_func
 (paren
 id|j
 )paren
 suffix:semicolon
+)brace
 id|j-&gt;flags.cidring
 op_assign
 l_int|0
@@ -2870,7 +7203,6 @@ id|j-&gt;ring_cadence_jif
 op_assign
 id|jiffies
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -2881,6 +7213,25 @@ op_lshift
 id|j-&gt;ring_cadence_t
 )paren
 (brace
+r_if
+c_cond
+(paren
+id|j-&gt;flags.cidsent
+op_logical_and
+id|j-&gt;cadence_f
+(braket
+l_int|5
+)braket
+dot
+id|en_filter
+)paren
+(brace
+id|j-&gt;flags.firstring
+op_assign
+l_int|1
+suffix:semicolon
+)brace
+r_else
 id|ixj_ring_on
 c_func
 (paren
@@ -2896,12 +7247,36 @@ c_func
 id|j
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|j-&gt;flags.cidsent
+)paren
+(brace
 id|j-&gt;flags.cidring
 op_assign
 l_int|1
 suffix:semicolon
 )brace
-r_continue
+)brace
+)brace
+id|clear_bit
+c_func
+(paren
+id|board
+comma
+op_amp
+id|j-&gt;busyflags
+)paren
+suffix:semicolon
+id|ixj_add_timer
+c_func
+(paren
+id|j
+)paren
+suffix:semicolon
+r_return
 suffix:semicolon
 )brace
 )brace
@@ -2915,13 +7290,10 @@ id|j-&gt;flags.ringing
 r_if
 c_cond
 (paren
-id|ixj_hookstate
-c_func
-(paren
-id|j
-)paren
+id|j-&gt;hookstate
 )paren
 (brace
+multiline_comment|/* &amp; 1) { */
 r_if
 c_cond
 (paren
@@ -2980,6 +7352,12 @@ c_cond
 (paren
 op_logical_neg
 id|j-&gt;m_hook
+op_logical_and
+(paren
+id|j-&gt;hookstate
+op_amp
+l_int|1
+)paren
 )paren
 (brace
 id|j-&gt;m_hook
@@ -2993,39 +7371,15 @@ c_func
 (paren
 id|j
 comma
-id|POLL_PRI
+id|SIG_HOOKSTATE
+comma
+id|POLL_IN
 )paren
 suffix:semicolon
 )brace
 )brace
 r_else
 (brace
-r_if
-c_cond
-(paren
-id|j-&gt;dsp.low
-op_ne
-l_int|0x20
-op_logical_and
-id|SLIC_GetState
-c_func
-(paren
-id|j
-)paren
-op_eq
-id|PLD_SLIC_STATE_ACTIVE
-)paren
-singleline_comment|// Internet LineJACK
-(brace
-id|SLIC_SetState
-c_func
-(paren
-id|PLD_SLIC_STATE_STANDBY
-comma
-id|j
-)paren
-suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -3060,7 +7414,9 @@ c_func
 (paren
 id|j
 comma
-id|POLL_PRI
+id|SIG_HOOKSTATE
+comma
+id|POLL_IN
 )paren
 suffix:semicolon
 )brace
@@ -3071,576 +7427,20 @@ c_cond
 (paren
 id|j-&gt;cardtype
 op_eq
-l_int|300
+id|QTI_LINEJACK
 op_logical_and
 op_logical_neg
-id|j-&gt;flags.incheck
-)paren
-(brace
-r_if
-c_cond
-(paren
+id|j-&gt;flags.pstncheck
+op_logical_and
 id|j-&gt;flags.pstn_present
 )paren
 (brace
-id|j-&gt;pld_scrr.byte
-op_assign
-id|inb_p
-c_func
-(paren
-id|j-&gt;XILINXbase
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|j-&gt;pld_scrr.bits.daaflag
-)paren
-(brace
-id|daa_int_read
+id|ixj_pstn_state
 c_func
 (paren
 id|j
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|j-&gt;m_DAAShadowRegs.XOP_REGS.XOP.xr0.bitreg.RING
-)paren
-(brace
-r_if
-c_cond
-(paren
-op_logical_neg
-id|j-&gt;flags.pstn_ringing
-)paren
-(brace
-id|j-&gt;flags.pstn_ringing
-op_assign
-l_int|1
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|j-&gt;daa_mode
-op_ne
-id|SOP_PU_RINGING
-)paren
-id|daa_set_mode
-c_func
-(paren
-id|j
-comma
-id|SOP_PU_RINGING
-)paren
-suffix:semicolon
-)brace
-)brace
-r_if
-c_cond
-(paren
-id|time_after
-c_func
-(paren
-id|jiffies
-comma
-id|j-&gt;pstn_sleeptil
-)paren
-op_logical_and
-id|j-&gt;m_DAAShadowRegs.XOP_REGS.XOP.xr0.bitreg.VDD_OK
-)paren
-(brace
-id|j-&gt;pstn_winkstart
-op_assign
-l_int|0
-suffix:semicolon
-id|j-&gt;pstn_ring_stop
-op_assign
-l_int|0
-suffix:semicolon
-id|j-&gt;pld_scrw.bits.led1
-op_assign
-l_int|1
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|j-&gt;flags.pstn_ringing
-op_logical_and
-op_logical_neg
-id|j-&gt;pstn_envelope
-)paren
-(brace
-r_if
-c_cond
-(paren
-id|j-&gt;daa_mode
-op_ne
-id|SOP_PU_RINGING
-)paren
-(brace
-id|j-&gt;flags.pstn_ringing
-op_assign
-l_int|0
-suffix:semicolon
-)brace
-r_else
-(brace
-id|j-&gt;pld_scrw.bits.led2
-op_assign
-l_int|0
-suffix:semicolon
-id|j-&gt;pstn_envelope
-op_assign
-l_int|1
-suffix:semicolon
-id|j-&gt;pstn_ring_start
-op_assign
-id|jiffies
-suffix:semicolon
-id|j-&gt;pstn_ring_stop
-op_assign
-l_int|0
-suffix:semicolon
-)brace
-id|j-&gt;ex.bits.pstn_ring
-op_assign
-l_int|0
-suffix:semicolon
-)brace
-id|outb_p
-c_func
-(paren
-id|j-&gt;pld_scrw.byte
-comma
-id|j-&gt;XILINXbase
-)paren
-suffix:semicolon
-)brace
-r_else
-(brace
-id|j-&gt;pld_scrw.bits.led1
-op_assign
-l_int|0
-suffix:semicolon
-id|j-&gt;pld_scrw.bits.led2
-op_assign
-l_int|1
-suffix:semicolon
-id|outb_p
-c_func
-(paren
-id|j-&gt;pld_scrw.byte
-comma
-id|j-&gt;XILINXbase
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|j-&gt;flags.pstn_ringing
-op_logical_and
-id|j-&gt;pstn_envelope
-)paren
-(brace
-r_if
-c_cond
-(paren
-op_logical_neg
-id|j-&gt;pstn_ring_stop
-)paren
-(brace
-id|j-&gt;pstn_ring_stop
-op_assign
-id|jiffies
-suffix:semicolon
-)brace
-r_else
-r_if
-c_cond
-(paren
-id|time_after
-c_func
-(paren
-id|jiffies
-comma
-id|j-&gt;pstn_ring_stop
-op_plus
-(paren
-(paren
-id|hertz
-op_star
-l_int|5
-)paren
-op_div
-l_int|100
-)paren
-)paren
-)paren
-(brace
-id|j-&gt;pstn_ring_stop
-op_assign
-l_int|0
-suffix:semicolon
-id|j-&gt;ex.bits.pstn_ring
-op_assign
-l_int|1
-suffix:semicolon
-id|j-&gt;pstn_envelope
-op_assign
-l_int|0
-suffix:semicolon
-)brace
-)brace
-r_else
-r_if
-c_cond
-(paren
-id|j-&gt;daa_mode
-op_eq
-id|SOP_PU_CONVERSATION
-)paren
-(brace
-r_if
-c_cond
-(paren
-op_logical_neg
-id|j-&gt;pstn_winkstart
-)paren
-(brace
-id|j-&gt;pstn_winkstart
-op_assign
-id|jiffies
-suffix:semicolon
-)brace
-r_else
-r_if
-c_cond
-(paren
-id|time_after
-c_func
-(paren
-id|jiffies
-comma
-id|j-&gt;pstn_winkstart
-op_plus
-(paren
-id|hertz
-op_star
-id|j-&gt;winktime
-op_div
-l_int|1000
-)paren
-)paren
-)paren
-(brace
-id|daa_set_mode
-c_func
-(paren
-id|j
-comma
-id|SOP_PU_SLEEP
-)paren
-suffix:semicolon
-id|j-&gt;pstn_winkstart
-op_assign
-l_int|0
-suffix:semicolon
-id|j-&gt;ex.bits.pstn_wink
-op_assign
-l_int|1
-suffix:semicolon
-)brace
-)brace
-r_else
-(brace
-id|j-&gt;ex.bits.pstn_ring
-op_assign
-l_int|0
-suffix:semicolon
-)brace
-)brace
-r_if
-c_cond
-(paren
-id|j-&gt;m_DAAShadowRegs.XOP_REGS.XOP.xr0.bitreg.Cadence
-)paren
-(brace
-r_if
-c_cond
-(paren
-id|j-&gt;daa_mode
-op_eq
-id|SOP_PU_RINGING
-)paren
-(brace
-id|daa_set_mode
-c_func
-(paren
-id|j
-comma
-id|SOP_PU_SLEEP
-)paren
-suffix:semicolon
-id|j-&gt;flags.pstn_ringing
-op_assign
-l_int|0
-suffix:semicolon
-id|j-&gt;ex.bits.pstn_ring
-op_assign
-l_int|0
-suffix:semicolon
-)brace
-)brace
-r_if
-c_cond
-(paren
-id|j-&gt;m_DAAShadowRegs.XOP_REGS.XOP.xr0.bitreg.Caller_ID
-)paren
-(brace
-r_if
-c_cond
-(paren
-id|j-&gt;daa_mode
-op_eq
-id|SOP_PU_RINGING
-op_logical_and
-id|j-&gt;flags.pstn_ringing
-)paren
-(brace
-id|j-&gt;pstn_cid_intr
-op_assign
-l_int|1
-suffix:semicolon
-id|j-&gt;pstn_cid_received
-op_assign
-id|jiffies
-suffix:semicolon
-)brace
-)brace
-)brace
-r_else
-(brace
-r_if
-c_cond
-(paren
-id|j-&gt;pld_scrr.bits.daaflag
-)paren
-(brace
-id|daa_int_read
-c_func
-(paren
-id|j
-)paren
-suffix:semicolon
-)brace
-id|j-&gt;ex.bits.pstn_ring
-op_assign
-l_int|0
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|j-&gt;pstn_cid_intr
-op_logical_and
-id|jiffies
-OG
-id|j-&gt;pstn_cid_received
-op_plus
-(paren
-id|hertz
-op_star
-l_int|3
-)paren
-)paren
-(brace
-r_if
-c_cond
-(paren
-id|j-&gt;daa_mode
-op_eq
-id|SOP_PU_RINGING
-)paren
-(brace
-id|ixj_daa_cid_read
-c_func
-(paren
-id|j
-)paren
-suffix:semicolon
-id|j-&gt;ex.bits.caller_id
-op_assign
-l_int|1
-suffix:semicolon
-)brace
-id|j-&gt;pstn_cid_intr
-op_assign
-l_int|0
-suffix:semicolon
-)brace
-r_else
-(brace
-id|j-&gt;ex.bits.caller_id
-op_assign
-l_int|0
-suffix:semicolon
-)brace
-r_if
-c_cond
-(paren
-op_logical_neg
-id|j-&gt;m_DAAShadowRegs.XOP_REGS.XOP.xr0.bitreg.VDD_OK
-)paren
-(brace
-id|j-&gt;pld_scrw.bits.led1
-op_assign
-l_int|0
-suffix:semicolon
-id|j-&gt;pld_scrw.bits.led2
-op_assign
-l_int|1
-suffix:semicolon
-id|outb_p
-c_func
-(paren
-id|j-&gt;pld_scrw.byte
-comma
-id|j-&gt;XILINXbase
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|j-&gt;flags.pstn_ringing
-op_logical_and
-id|j-&gt;pstn_envelope
-)paren
-(brace
-r_if
-c_cond
-(paren
-op_logical_neg
-id|j-&gt;pstn_ring_stop
-)paren
-(brace
-id|j-&gt;pstn_ring_stop
-op_assign
-id|jiffies
-suffix:semicolon
-)brace
-r_else
-r_if
-c_cond
-(paren
-id|time_after
-c_func
-(paren
-id|jiffies
-comma
-id|j-&gt;pstn_ring_stop
-op_plus
-(paren
-(paren
-id|hertz
-op_star
-l_int|5
-)paren
-op_div
-l_int|100
-)paren
-)paren
-)paren
-(brace
-id|j-&gt;pstn_ring_stop
-op_assign
-l_int|0
-suffix:semicolon
-id|j-&gt;ex.bits.pstn_ring
-op_assign
-l_int|1
-suffix:semicolon
-id|j-&gt;pstn_envelope
-op_assign
-l_int|0
-suffix:semicolon
-)brace
-id|j-&gt;pld_scrw.bits.led1
-op_assign
-l_int|0
-suffix:semicolon
-id|outb_p
-c_func
-(paren
-id|j-&gt;pld_scrw.byte
-comma
-id|j-&gt;XILINXbase
-)paren
-suffix:semicolon
-)brace
-r_else
-r_if
-c_cond
-(paren
-id|j-&gt;daa_mode
-op_eq
-id|SOP_PU_CONVERSATION
-)paren
-(brace
-r_if
-c_cond
-(paren
-op_logical_neg
-id|j-&gt;pstn_winkstart
-)paren
-(brace
-id|j-&gt;pstn_winkstart
-op_assign
-id|jiffies
-suffix:semicolon
-)brace
-r_else
-r_if
-c_cond
-(paren
-id|time_after
-c_func
-(paren
-id|jiffies
-comma
-id|j-&gt;pstn_winkstart
-op_plus
-(paren
-id|hertz
-op_star
-id|j-&gt;winktime
-op_div
-l_int|1000
-)paren
-)paren
-)paren
-(brace
-id|daa_set_mode
-c_func
-(paren
-id|j
-comma
-id|SOP_PU_SLEEP
-)paren
-suffix:semicolon
-id|j-&gt;pstn_winkstart
-op_assign
-l_int|0
-suffix:semicolon
-id|j-&gt;ex.bits.pstn_wink
-op_assign
-l_int|1
-suffix:semicolon
-)brace
-)brace
-)brace
-)brace
-)brace
 )brace
 r_if
 c_cond
@@ -3655,26 +7455,22 @@ op_amp
 id|j-&gt;poll_q
 )paren
 suffix:semicolon
-singleline_comment|// Wake any blocked selects
-id|ixj_kill_fasync
+multiline_comment|/* Wake any blocked selects */
+)brace
+id|clear_bit
 c_func
 (paren
-id|j
+id|board
 comma
-id|POLL_PRI
+op_amp
+id|j-&gt;busyflags
 )paren
 suffix:semicolon
-)brace
-)brace
-r_else
-(brace
-r_break
-suffix:semicolon
-)brace
 )brace
 id|ixj_add_timer
 c_func
 (paren
+id|j
 )paren
 suffix:semicolon
 )brace
@@ -3696,6 +7492,16 @@ suffix:semicolon
 id|jif
 op_assign
 id|jiffies
+op_plus
+(paren
+(paren
+l_int|60
+op_star
+id|hertz
+)paren
+op_div
+l_int|100
+)paren
 suffix:semicolon
 r_while
 c_loop
@@ -3708,24 +7514,30 @@ id|j
 )paren
 )paren
 (brace
+id|ixj_perfmon
+c_func
+(paren
+id|j-&gt;statuswait
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
+id|time_after
+c_func
+(paren
 id|jiffies
-op_minus
+comma
 id|jif
-OG
-(paren
-l_int|60
-op_star
-(paren
-id|hertz
-op_div
-l_int|100
-)paren
 )paren
 )paren
 (brace
+id|ixj_perfmon
+c_func
+(paren
+id|j-&gt;statuswaitfail
+)paren
+suffix:semicolon
 r_return
 op_minus
 l_int|1
@@ -3754,6 +7566,16 @@ suffix:semicolon
 id|jif
 op_assign
 id|jiffies
+op_plus
+(paren
+(paren
+l_int|60
+op_star
+id|hertz
+)paren
+op_div
+l_int|100
+)paren
 suffix:semicolon
 r_while
 c_loop
@@ -3766,24 +7588,30 @@ id|j
 )paren
 )paren
 (brace
+id|ixj_perfmon
+c_func
+(paren
+id|j-&gt;pcontrolwait
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
+id|time_after
+c_func
+(paren
 id|jiffies
-op_minus
+comma
 id|jif
-OG
-(paren
-l_int|60
-op_star
-(paren
-id|hertz
-op_div
-l_int|100
-)paren
 )paren
 )paren
 (brace
+id|ixj_perfmon
+c_func
+(paren
+id|j-&gt;pcontrolwaitfail
+)paren
+suffix:semicolon
 r_return
 op_minus
 l_int|1
@@ -3795,6 +7623,7 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|function|ixj_WriteDSPCommand
+r_static
 r_int
 id|ixj_WriteDSPCommand
 c_func
@@ -3815,6 +7644,41 @@ r_int
 r_int
 id|jif
 suffix:semicolon
+id|atomic_inc
+c_func
+(paren
+op_amp
+id|j-&gt;DSPWrite
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|atomic_read
+c_func
+(paren
+op_amp
+id|j-&gt;DSPWrite
+)paren
+OG
+l_int|1
+)paren
+(brace
+id|printk
+c_func
+(paren
+l_string|&quot;IXJ %d DSP write overlap attempting command 0x%4.4x&bslash;n&quot;
+comma
+id|j-&gt;board
+comma
+id|cmd
+)paren
+suffix:semicolon
+r_return
+op_minus
+l_int|1
+suffix:semicolon
+)brace
 id|bytes.high
 op_assign
 (paren
@@ -3834,6 +7698,16 @@ suffix:semicolon
 id|jif
 op_assign
 id|jiffies
+op_plus
+(paren
+(paren
+l_int|60
+op_star
+id|hertz
+)paren
+op_div
+l_int|100
+)paren
 suffix:semicolon
 r_while
 c_loop
@@ -3846,31 +7720,89 @@ id|j
 )paren
 )paren
 (brace
+id|ixj_perfmon
+c_func
+(paren
+id|j-&gt;iscontrolready
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
+id|time_after
+c_func
+(paren
 id|jiffies
-op_minus
+comma
 id|jif
-OG
-(paren
-l_int|60
-op_star
-(paren
-id|hertz
-op_div
-l_int|100
-)paren
 )paren
 )paren
 (brace
+id|ixj_perfmon
+c_func
+(paren
+id|j-&gt;iscontrolreadyfail
+)paren
+suffix:semicolon
+id|atomic_dec
+c_func
+(paren
+op_amp
+id|j-&gt;DSPWrite
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|atomic_read
+c_func
+(paren
+op_amp
+id|j-&gt;DSPWrite
+)paren
+OG
+l_int|0
+)paren
+(brace
+id|printk
+c_func
+(paren
+l_string|&quot;IXJ %d DSP overlaped command 0x%4.4x during control ready failure.&bslash;n&quot;
+comma
+id|j-&gt;board
+comma
+id|cmd
+)paren
+suffix:semicolon
+r_while
+c_loop
+(paren
+id|atomic_read
+c_func
+(paren
+op_amp
+id|j-&gt;DSPWrite
+)paren
+OG
+l_int|0
+)paren
+(brace
+id|atomic_dec
+c_func
+(paren
+op_amp
+id|j-&gt;DSPWrite
+)paren
+suffix:semicolon
+)brace
+)brace
 r_return
 op_minus
 l_int|1
 suffix:semicolon
 )brace
 )brace
-id|outb_p
+id|outb
 c_func
 (paren
 id|bytes.low
@@ -3880,7 +7812,7 @@ op_plus
 l_int|6
 )paren
 suffix:semicolon
-id|outb_p
+id|outb
 c_func
 (paren
 id|bytes.high
@@ -3908,6 +7840,58 @@ id|j-&gt;ssr.high
 op_assign
 l_int|0xFF
 suffix:semicolon
+id|atomic_dec
+c_func
+(paren
+op_amp
+id|j-&gt;DSPWrite
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|atomic_read
+c_func
+(paren
+op_amp
+id|j-&gt;DSPWrite
+)paren
+OG
+l_int|0
+)paren
+(brace
+id|printk
+c_func
+(paren
+l_string|&quot;IXJ %d DSP overlaped command 0x%4.4x during status wait failure.&bslash;n&quot;
+comma
+id|j-&gt;board
+comma
+id|cmd
+)paren
+suffix:semicolon
+r_while
+c_loop
+(paren
+id|atomic_read
+c_func
+(paren
+op_amp
+id|j-&gt;DSPWrite
+)paren
+OG
+l_int|0
+)paren
+(brace
+id|atomic_dec
+c_func
+(paren
+op_amp
+id|j-&gt;DSPWrite
+)paren
+suffix:semicolon
+)brace
+)brace
 r_return
 op_minus
 l_int|1
@@ -3934,14 +7918,66 @@ op_plus
 l_int|3
 )paren
 suffix:semicolon
+id|atomic_dec
+c_func
+(paren
+op_amp
+id|j-&gt;DSPWrite
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|atomic_read
+c_func
+(paren
+op_amp
+id|j-&gt;DSPWrite
+)paren
+OG
+l_int|0
+)paren
+(brace
+id|printk
+c_func
+(paren
+l_string|&quot;IXJ %d DSP overlaped command 0x%4.4x&bslash;n&quot;
+comma
+id|j-&gt;board
+comma
+id|cmd
+)paren
+suffix:semicolon
+r_while
+c_loop
+(paren
+id|atomic_read
+c_func
+(paren
+op_amp
+id|j-&gt;DSPWrite
+)paren
+OG
+l_int|0
+)paren
+(brace
+id|atomic_dec
+c_func
+(paren
+op_amp
+id|j-&gt;DSPWrite
+)paren
+suffix:semicolon
+)brace
+)brace
 r_return
 l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/***************************************************************************&n;*&n;*  General Purpose IO Register read routine&n;*&n;***************************************************************************/
 DECL|function|ixj_gpio_read
-r_extern
-id|__inline__
+r_static
+r_inline
 r_int
 id|ixj_gpio_read
 c_func
@@ -3979,8 +8015,8 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|function|LED_SetState
-r_extern
-id|__inline__
+r_static
+r_inline
 r_void
 id|LED_SetState
 c_func
@@ -4045,7 +8081,7 @@ l_int|1
 suffix:colon
 l_int|0
 suffix:semicolon
-id|outb_p
+id|outb
 c_func
 (paren
 id|j-&gt;pld_scrw.byte
@@ -4147,7 +8183,7 @@ id|j-&gt;pld_slicw.pcib.spk
 op_assign
 l_int|0
 suffix:semicolon
-id|outb_p
+id|outb
 c_func
 (paren
 id|j-&gt;pld_slicw.byte
@@ -4170,6 +8206,7 @@ comma
 l_int|0
 )paren
 suffix:semicolon
+multiline_comment|/* Disconnect POTS/PSTN relay */
 r_if
 c_cond
 (paren
@@ -4189,8 +8226,8 @@ id|j-&gt;pld_scrw.bits.daafsyncen
 op_assign
 l_int|0
 suffix:semicolon
-singleline_comment|// Turn off DAA Frame Sync
-id|outb_p
+multiline_comment|/* Turn off DAA Frame Sync */
+id|outb
 c_func
 (paren
 id|j-&gt;pld_scrw.byte
@@ -4202,7 +8239,7 @@ id|j-&gt;pld_clock.byte
 op_assign
 l_int|0
 suffix:semicolon
-id|outb_p
+id|outb
 c_func
 (paren
 id|j-&gt;pld_clock.byte
@@ -4220,7 +8257,7 @@ id|j-&gt;pld_slicw.bits.spken
 op_assign
 l_int|0
 suffix:semicolon
-id|outb_p
+id|outb
 c_func
 (paren
 id|j-&gt;pld_slicw.byte
@@ -4230,6 +8267,78 @@ op_plus
 l_int|0x01
 )paren
 suffix:semicolon
+id|ixj_mixer
+c_func
+(paren
+l_int|0x1200
+comma
+id|j
+)paren
+suffix:semicolon
+multiline_comment|/* Turn Off MIC switch on mixer left */
+id|ixj_mixer
+c_func
+(paren
+l_int|0x1401
+comma
+id|j
+)paren
+suffix:semicolon
+multiline_comment|/* Turn On Mono1 switch on mixer left */
+id|ixj_mixer
+c_func
+(paren
+l_int|0x1300
+comma
+id|j
+)paren
+suffix:semicolon
+multiline_comment|/* Turn Off MIC switch on mixer right */
+id|ixj_mixer
+c_func
+(paren
+l_int|0x1501
+comma
+id|j
+)paren
+suffix:semicolon
+multiline_comment|/* Turn On Mono1 switch on mixer right */
+id|ixj_mixer
+c_func
+(paren
+l_int|0x0E80
+comma
+id|j
+)paren
+suffix:semicolon
+multiline_comment|/*Mic mute */
+id|ixj_mixer
+c_func
+(paren
+l_int|0x0F00
+comma
+id|j
+)paren
+suffix:semicolon
+multiline_comment|/* Set mono out (SLIC) to 0dB */
+id|ixj_mixer
+c_func
+(paren
+l_int|0x0080
+comma
+id|j
+)paren
+suffix:semicolon
+multiline_comment|/* Mute Master Left volume */
+id|ixj_mixer
+c_func
+(paren
+l_int|0x0180
+comma
+id|j
+)paren
+suffix:semicolon
+multiline_comment|/* Mute Master Right volume */
 id|SLIC_SetState
 c_func
 (paren
@@ -4238,6 +8347,7 @@ comma
 id|j
 )paren
 suffix:semicolon
+multiline_comment|/*&t;&t;&t;SLIC_SetState(PLD_SLIC_STATE_ACTIVE, j); */
 r_break
 suffix:semicolon
 r_case
@@ -4300,7 +8410,7 @@ id|j-&gt;pld_slicw.bits.spken
 op_assign
 l_int|0
 suffix:semicolon
-id|outb_p
+id|outb
 c_func
 (paren
 id|j-&gt;pld_slicw.byte
@@ -4367,7 +8477,7 @@ id|j-&gt;pld_slicw.pcib.spk
 op_assign
 l_int|1
 suffix:semicolon
-id|outb_p
+id|outb
 c_func
 (paren
 id|j-&gt;pld_slicw.byte
@@ -4390,6 +8500,139 @@ comma
 l_int|0
 )paren
 suffix:semicolon
+multiline_comment|/* Disconnect POTS/PSTN relay */
+r_if
+c_cond
+(paren
+id|ixj_WriteDSPCommand
+c_func
+(paren
+l_int|0xC528
+comma
+id|j
+)paren
+)paren
+multiline_comment|/* Write CODEC config to&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;   Software Control Register */
+r_return
+l_int|2
+suffix:semicolon
+id|j-&gt;pld_scrw.bits.daafsyncen
+op_assign
+l_int|0
+suffix:semicolon
+multiline_comment|/* Turn off DAA Frame Sync */
+id|outb
+c_func
+(paren
+id|j-&gt;pld_scrw.byte
+comma
+id|j-&gt;XILINXbase
+)paren
+suffix:semicolon
+id|j-&gt;pld_clock.byte
+op_assign
+l_int|0
+suffix:semicolon
+id|outb
+c_func
+(paren
+id|j-&gt;pld_clock.byte
+comma
+id|j-&gt;XILINXbase
+op_plus
+l_int|0x04
+)paren
+suffix:semicolon
+id|j-&gt;pld_slicw.bits.rly1
+op_assign
+l_int|1
+suffix:semicolon
+id|j-&gt;pld_slicw.bits.spken
+op_assign
+l_int|1
+suffix:semicolon
+id|outb
+c_func
+(paren
+id|j-&gt;pld_slicw.byte
+comma
+id|j-&gt;XILINXbase
+op_plus
+l_int|0x01
+)paren
+suffix:semicolon
+id|ixj_mixer
+c_func
+(paren
+l_int|0x1201
+comma
+id|j
+)paren
+suffix:semicolon
+multiline_comment|/* Turn On MIC switch on mixer left */
+id|ixj_mixer
+c_func
+(paren
+l_int|0x1400
+comma
+id|j
+)paren
+suffix:semicolon
+multiline_comment|/* Turn Off Mono1 switch on mixer left */
+id|ixj_mixer
+c_func
+(paren
+l_int|0x1301
+comma
+id|j
+)paren
+suffix:semicolon
+multiline_comment|/* Turn On MIC switch on mixer right */
+id|ixj_mixer
+c_func
+(paren
+l_int|0x1500
+comma
+id|j
+)paren
+suffix:semicolon
+multiline_comment|/* Turn Off Mono1 switch on mixer right */
+id|ixj_mixer
+c_func
+(paren
+l_int|0x0E06
+comma
+id|j
+)paren
+suffix:semicolon
+multiline_comment|/*Mic un-mute 0dB */
+id|ixj_mixer
+c_func
+(paren
+l_int|0x0F80
+comma
+id|j
+)paren
+suffix:semicolon
+multiline_comment|/* Mute mono out (SLIC) */
+id|ixj_mixer
+c_func
+(paren
+l_int|0x0000
+comma
+id|j
+)paren
+suffix:semicolon
+multiline_comment|/* Set Master Left volume to 0dB */
+id|ixj_mixer
+c_func
+(paren
+l_int|0x0100
+comma
+id|j
+)paren
+suffix:semicolon
+multiline_comment|/* Set Master Right volume to 0dB */
 r_break
 suffix:semicolon
 r_case
@@ -4427,12 +8670,8 @@ r_if
 c_cond
 (paren
 id|j-&gt;cardtype
-op_eq
-id|QTI_LINEJACK
-op_logical_or
-id|j-&gt;cardtype
-op_eq
-id|QTI_PHONEJACK_PCI
+op_ne
+id|QTI_PHONEJACK
 )paren
 (brace
 r_return
@@ -4520,7 +8759,7 @@ id|j-&gt;pld_slicw.bits.rly1
 op_assign
 l_int|0
 suffix:semicolon
-id|outb_p
+id|outb
 c_func
 (paren
 id|j-&gt;pld_slicw.byte
@@ -4530,12 +8769,20 @@ op_plus
 l_int|0x01
 )paren
 suffix:semicolon
+id|j-&gt;flags.pots_pstn
+op_assign
+l_int|1
+suffix:semicolon
 r_return
 l_int|1
 suffix:semicolon
 )brace
 r_else
 (brace
+id|j-&gt;flags.pots_pstn
+op_assign
+l_int|0
+suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
@@ -4547,7 +8794,7 @@ id|j-&gt;pld_slicw.bits.rly1
 op_assign
 l_int|1
 suffix:semicolon
-id|outb_p
+id|outb
 c_func
 (paren
 id|j-&gt;pld_slicw.byte
@@ -4556,6 +8803,10 @@ id|j-&gt;XILINXbase
 op_plus
 l_int|0x01
 )paren
+suffix:semicolon
+id|j-&gt;flags.pots_pstn
+op_assign
+l_int|0
 suffix:semicolon
 r_return
 l_int|1
@@ -4587,8 +8838,24 @@ id|j-&gt;dsp.low
 op_eq
 l_int|0x20
 )paren
+multiline_comment|/* Internet PhoneJACK */
 (brace
-singleline_comment|// Internet PhoneJACK
+r_if
+c_cond
+(paren
+id|ixjdebug
+op_amp
+l_int|0x0004
+)paren
+id|printk
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;IXJ Ring On /dev/phone%d&bslash;n&quot;
+comma
+id|j-&gt;board
+)paren
+suffix:semicolon
 id|j-&gt;gpio.bytes.high
 op_assign
 l_int|0x0B
@@ -4620,8 +8887,24 @@ suffix:semicolon
 multiline_comment|/* send the ring signal */
 )brace
 r_else
+multiline_comment|/* Internet LineJACK, Internet PhoneJACK Lite or Internet PhoneJACK PCI */
 (brace
-singleline_comment|// Internet LineJACK, Internet PhoneJACK Lite or Internet PhoneJACK PCI
+r_if
+c_cond
+(paren
+id|ixjdebug
+op_amp
+l_int|0x0004
+)paren
+id|printk
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;IXJ Ring On /dev/phone%d&bslash;n&quot;
+comma
+id|j-&gt;board
+)paren
+suffix:semicolon
 id|SLIC_SetState
 c_func
 (paren
@@ -4631,6 +8914,244 @@ id|j
 )paren
 suffix:semicolon
 )brace
+)brace
+DECL|function|ixj_siadc
+r_static
+r_int
+id|ixj_siadc
+c_func
+(paren
+id|IXJ
+op_star
+id|j
+comma
+r_int
+id|val
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|j-&gt;cardtype
+op_eq
+id|QTI_PHONECARD
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|j-&gt;flags.pcmciascp
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|val
+op_eq
+op_minus
+l_int|1
+)paren
+(brace
+r_return
+id|j-&gt;siadc.bits.rxg
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+id|val
+template_param
+l_int|0x1F
+)paren
+(brace
+r_return
+op_minus
+l_int|1
+suffix:semicolon
+)brace
+id|j-&gt;siadc.bits.hom
+op_assign
+l_int|0
+suffix:semicolon
+multiline_comment|/* Handset Out Mute */
+id|j-&gt;siadc.bits.lom
+op_assign
+l_int|0
+suffix:semicolon
+multiline_comment|/* Line Out Mute */
+id|j-&gt;siadc.bits.rxg
+op_assign
+id|val
+suffix:semicolon
+multiline_comment|/*(0xC000 - 0x41C8) / 0x4EF;    RX PGA Gain */
+id|j-&gt;psccr.bits.addr
+op_assign
+l_int|6
+suffix:semicolon
+multiline_comment|/* R/W Smart Cable Register Address */
+id|j-&gt;psccr.bits.rw
+op_assign
+l_int|0
+suffix:semicolon
+multiline_comment|/* Read / Write flag */
+id|j-&gt;psccr.bits.dev
+op_assign
+l_int|0
+suffix:semicolon
+id|outb
+c_func
+(paren
+id|j-&gt;siadc.byte
+comma
+id|j-&gt;XILINXbase
+op_plus
+l_int|0x00
+)paren
+suffix:semicolon
+id|outb
+c_func
+(paren
+id|j-&gt;psccr.byte
+comma
+id|j-&gt;XILINXbase
+op_plus
+l_int|0x01
+)paren
+suffix:semicolon
+id|ixj_PCcontrol_wait
+c_func
+(paren
+id|j
+)paren
+suffix:semicolon
+r_return
+id|j-&gt;siadc.bits.rxg
+suffix:semicolon
+)brace
+)brace
+r_return
+op_minus
+l_int|1
+suffix:semicolon
+)brace
+DECL|function|ixj_sidac
+r_static
+r_int
+id|ixj_sidac
+c_func
+(paren
+id|IXJ
+op_star
+id|j
+comma
+r_int
+id|val
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|j-&gt;cardtype
+op_eq
+id|QTI_PHONECARD
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|j-&gt;flags.pcmciascp
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|val
+op_eq
+op_minus
+l_int|1
+)paren
+(brace
+r_return
+id|j-&gt;sidac.bits.txg
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+id|val
+template_param
+l_int|0x1F
+)paren
+(brace
+r_return
+op_minus
+l_int|1
+suffix:semicolon
+)brace
+id|j-&gt;sidac.bits.srm
+op_assign
+l_int|1
+suffix:semicolon
+multiline_comment|/* Speaker Right Mute */
+id|j-&gt;sidac.bits.slm
+op_assign
+l_int|1
+suffix:semicolon
+multiline_comment|/* Speaker Left Mute */
+id|j-&gt;sidac.bits.txg
+op_assign
+id|val
+suffix:semicolon
+multiline_comment|/* (0xC000 - 0x45E4) / 0x5D3;&t; TX PGA Gain */
+id|j-&gt;psccr.bits.addr
+op_assign
+l_int|7
+suffix:semicolon
+multiline_comment|/* R/W Smart Cable Register Address */
+id|j-&gt;psccr.bits.rw
+op_assign
+l_int|0
+suffix:semicolon
+multiline_comment|/* Read / Write flag */
+id|j-&gt;psccr.bits.dev
+op_assign
+l_int|0
+suffix:semicolon
+id|outb
+c_func
+(paren
+id|j-&gt;sidac.byte
+comma
+id|j-&gt;XILINXbase
+op_plus
+l_int|0x00
+)paren
+suffix:semicolon
+id|outb
+c_func
+(paren
+id|j-&gt;psccr.byte
+comma
+id|j-&gt;XILINXbase
+op_plus
+l_int|0x01
+)paren
+suffix:semicolon
+id|ixj_PCcontrol_wait
+c_func
+(paren
+id|j
+)paren
+suffix:semicolon
+r_return
+id|j-&gt;sidac.bits.txg
+suffix:semicolon
+)brace
+)brace
+r_return
+op_minus
+l_int|1
+suffix:semicolon
 )brace
 DECL|function|ixj_pcmcia_cable_check
 r_static
@@ -4840,7 +9361,7 @@ id|j-&gt;pccr2.bits.rstc
 op_assign
 l_int|1
 suffix:semicolon
-id|outb_p
+id|outb
 c_func
 (paren
 id|j-&gt;pccr2.byte
@@ -4854,9 +9375,11 @@ id|j-&gt;checkwait
 op_assign
 id|jiffies
 op_plus
+(paren
 id|hertz
 op_star
 l_int|2
+)paren
 suffix:semicolon
 id|j-&gt;flags.incheck
 op_assign
@@ -4983,7 +9506,7 @@ id|j-&gt;flags.pcmciascp
 op_assign
 l_int|1
 suffix:semicolon
-singleline_comment|// Set Cable Present Flag
+multiline_comment|/* Set Cable Present Flag */
 id|j-&gt;flags.pcmciasct
 op_assign
 (paren
@@ -5000,7 +9523,7 @@ l_int|8
 op_amp
 l_int|0x03
 suffix:semicolon
-singleline_comment|// Get Cable Type
+multiline_comment|/* Get Cable Type */
 r_if
 c_cond
 (paren
@@ -5060,37 +9583,37 @@ id|j-&gt;sic1.bits.cpd
 op_assign
 l_int|0
 suffix:semicolon
-singleline_comment|// Chip Power Down
+multiline_comment|/* Chip Power Down */
 id|j-&gt;sic1.bits.mpd
 op_assign
 l_int|0
 suffix:semicolon
-singleline_comment|// MIC Bias Power Down
+multiline_comment|/* MIC Bias Power Down */
 id|j-&gt;sic1.bits.hpd
 op_assign
 l_int|0
 suffix:semicolon
-singleline_comment|// Handset Bias Power Down
+multiline_comment|/* Handset Bias Power Down */
 id|j-&gt;sic1.bits.lpd
 op_assign
 l_int|0
 suffix:semicolon
-singleline_comment|// Line Bias Power Down
+multiline_comment|/* Line Bias Power Down */
 id|j-&gt;sic1.bits.spd
 op_assign
 l_int|1
 suffix:semicolon
-singleline_comment|// Speaker Drive Power Down
+multiline_comment|/* Speaker Drive Power Down */
 id|j-&gt;psccr.bits.addr
 op_assign
 l_int|1
 suffix:semicolon
-singleline_comment|// R/W Smart Cable Register Address
+multiline_comment|/* R/W Smart Cable Register Address */
 id|j-&gt;psccr.bits.rw
 op_assign
 l_int|0
 suffix:semicolon
-singleline_comment|// Read / Write flag
+multiline_comment|/* Read / Write flag */
 id|j-&gt;psccr.bits.dev
 op_assign
 l_int|0
@@ -5125,37 +9648,37 @@ id|j-&gt;sic2.bits.al
 op_assign
 l_int|0
 suffix:semicolon
-singleline_comment|// Analog Loopback DAC analog -&gt; ADC analog
+multiline_comment|/* Analog Loopback DAC analog -&gt; ADC analog */
 id|j-&gt;sic2.bits.dl2
 op_assign
 l_int|0
 suffix:semicolon
-singleline_comment|// Digital Loopback DAC -&gt; ADC one bit
+multiline_comment|/* Digital Loopback DAC -&gt; ADC one bit */
 id|j-&gt;sic2.bits.dl1
 op_assign
 l_int|0
 suffix:semicolon
-singleline_comment|// Digital Loopback ADC -&gt; DAC one bit
+multiline_comment|/* Digital Loopback ADC -&gt; DAC one bit */
 id|j-&gt;sic2.bits.pll
 op_assign
 l_int|0
 suffix:semicolon
-singleline_comment|// 1 = div 10, 0 = div 5
+multiline_comment|/* 1 = div 10, 0 = div 5 */
 id|j-&gt;sic2.bits.hpd
 op_assign
 l_int|0
 suffix:semicolon
-singleline_comment|// HPF disable
+multiline_comment|/* HPF disable */
 id|j-&gt;psccr.bits.addr
 op_assign
 l_int|2
 suffix:semicolon
-singleline_comment|// R/W Smart Cable Register Address
+multiline_comment|/* R/W Smart Cable Register Address */
 id|j-&gt;psccr.bits.rw
 op_assign
 l_int|0
 suffix:semicolon
-singleline_comment|// Read / Write flag
+multiline_comment|/* Read / Write flag */
 id|j-&gt;psccr.bits.dev
 op_assign
 l_int|0
@@ -5190,12 +9713,12 @@ id|j-&gt;psccr.bits.addr
 op_assign
 l_int|3
 suffix:semicolon
-singleline_comment|// R/W Smart Cable Register Address
+multiline_comment|/* R/W Smart Cable Register Address */
 id|j-&gt;psccr.bits.rw
 op_assign
 l_int|0
 suffix:semicolon
-singleline_comment|// Read / Write flag
+multiline_comment|/* Read / Write flag */
 id|j-&gt;psccr.bits.dev
 op_assign
 l_int|0
@@ -5210,7 +9733,7 @@ op_plus
 l_int|0x00
 )paren
 suffix:semicolon
-singleline_comment|// PLL Divide N1
+multiline_comment|/* PLL Divide N1 */
 id|outb
 c_func
 (paren
@@ -5231,12 +9754,12 @@ id|j-&gt;psccr.bits.addr
 op_assign
 l_int|4
 suffix:semicolon
-singleline_comment|// R/W Smart Cable Register Address
+multiline_comment|/* R/W Smart Cable Register Address */
 id|j-&gt;psccr.bits.rw
 op_assign
 l_int|0
 suffix:semicolon
-singleline_comment|// Read / Write flag
+multiline_comment|/* Read / Write flag */
 id|j-&gt;psccr.bits.dev
 op_assign
 l_int|0
@@ -5251,7 +9774,7 @@ op_plus
 l_int|0x00
 )paren
 suffix:semicolon
-singleline_comment|// PLL Multiply M1
+multiline_comment|/* PLL Multiply M1 */
 id|outb
 c_func
 (paren
@@ -5272,42 +9795,42 @@ id|j-&gt;sirxg.bits.lig
 op_assign
 l_int|1
 suffix:semicolon
-singleline_comment|// Line In Gain
+multiline_comment|/* Line In Gain */
 id|j-&gt;sirxg.bits.lim
 op_assign
 l_int|1
 suffix:semicolon
-singleline_comment|// Line In Mute
+multiline_comment|/* Line In Mute */
 id|j-&gt;sirxg.bits.mcg
 op_assign
 l_int|0
 suffix:semicolon
-singleline_comment|// MIC In Gain // was 3
+multiline_comment|/* MIC In Gain was 3 */
 id|j-&gt;sirxg.bits.mcm
 op_assign
 l_int|0
 suffix:semicolon
-singleline_comment|// MIC In Mute
+multiline_comment|/* MIC In Mute */
 id|j-&gt;sirxg.bits.him
 op_assign
 l_int|0
 suffix:semicolon
-singleline_comment|// Handset In Mute
+multiline_comment|/* Handset In Mute */
 id|j-&gt;sirxg.bits.iir
 op_assign
 l_int|1
 suffix:semicolon
-singleline_comment|// IIR
+multiline_comment|/* IIR */
 id|j-&gt;psccr.bits.addr
 op_assign
 l_int|5
 suffix:semicolon
-singleline_comment|// R/W Smart Cable Register Address
+multiline_comment|/* R/W Smart Cable Register Address */
 id|j-&gt;psccr.bits.rw
 op_assign
 l_int|0
 suffix:semicolon
-singleline_comment|// Read / Write flag
+multiline_comment|/* Read / Write flag */
 id|j-&gt;psccr.bits.dev
 op_assign
 l_int|0
@@ -5338,120 +9861,20 @@ c_func
 id|j
 )paren
 suffix:semicolon
-id|j-&gt;siadc.bits.hom
-op_assign
-l_int|0
-suffix:semicolon
-singleline_comment|// Handset Out Mute
-id|j-&gt;siadc.bits.lom
-op_assign
-l_int|0
-suffix:semicolon
-singleline_comment|// Line Out Mute
-id|j-&gt;siadc.bits.rxg
-op_assign
-l_int|23
-suffix:semicolon
-singleline_comment|//(0xC000 - 0x41C8) / 0x4EF;    // RX PGA Gain
-id|j-&gt;psccr.bits.addr
-op_assign
-l_int|6
-suffix:semicolon
-singleline_comment|// R/W Smart Cable Register Address
-id|j-&gt;psccr.bits.rw
-op_assign
-l_int|0
-suffix:semicolon
-singleline_comment|// Read / Write flag
-id|j-&gt;psccr.bits.dev
-op_assign
-l_int|0
-suffix:semicolon
-id|outb
-c_func
-(paren
-id|j-&gt;siadc.byte
-comma
-id|j-&gt;XILINXbase
-op_plus
-l_int|0x00
-)paren
-suffix:semicolon
-id|outb
-c_func
-(paren
-id|j-&gt;psccr.byte
-comma
-id|j-&gt;XILINXbase
-op_plus
-l_int|0x01
-)paren
-suffix:semicolon
-id|ixj_PCcontrol_wait
+id|ixj_siadc
 c_func
 (paren
 id|j
-)paren
-suffix:semicolon
-id|j-&gt;sidac.bits.srm
-op_assign
-l_int|1
-suffix:semicolon
-singleline_comment|// Speaker Right Mute
-id|j-&gt;sidac.bits.slm
-op_assign
-l_int|1
-suffix:semicolon
-singleline_comment|// Speaker Left Mute
-id|j-&gt;sidac.bits.txg
-op_assign
-(paren
-l_int|0xC000
-op_minus
-l_int|0x45E4
-)paren
-op_div
-l_int|0x5D3
-suffix:semicolon
-singleline_comment|// TX PGA Gain
-id|j-&gt;psccr.bits.addr
-op_assign
-l_int|7
-suffix:semicolon
-singleline_comment|// R/W Smart Cable Register Address
-id|j-&gt;psccr.bits.rw
-op_assign
-l_int|0
-suffix:semicolon
-singleline_comment|// Read / Write flag
-id|j-&gt;psccr.bits.dev
-op_assign
-l_int|0
-suffix:semicolon
-id|outb
-c_func
-(paren
-id|j-&gt;sidac.byte
 comma
-id|j-&gt;XILINXbase
-op_plus
-l_int|0x00
+l_int|0x17
 )paren
 suffix:semicolon
-id|outb
-c_func
-(paren
-id|j-&gt;psccr.byte
-comma
-id|j-&gt;XILINXbase
-op_plus
-l_int|0x01
-)paren
-suffix:semicolon
-id|ixj_PCcontrol_wait
+id|ixj_sidac
 c_func
 (paren
 id|j
+comma
+l_int|0x1D
 )paren
 suffix:semicolon
 id|j-&gt;siaatt.bits.sot
@@ -5462,12 +9885,12 @@ id|j-&gt;psccr.bits.addr
 op_assign
 l_int|9
 suffix:semicolon
-singleline_comment|// R/W Smart Cable Register Address
+multiline_comment|/* R/W Smart Cable Register Address */
 id|j-&gt;psccr.bits.rw
 op_assign
 l_int|0
 suffix:semicolon
-singleline_comment|// Read / Write flag
+multiline_comment|/* Read / Write flag */
 id|j-&gt;psccr.bits.dev
 op_assign
 l_int|0
@@ -5634,6 +10057,99 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|j-&gt;cardtype
+op_eq
+id|QTI_LINEJACK
+op_logical_and
+id|j-&gt;flags.pots_pstn
+op_eq
+l_int|1
+op_logical_and
+(paren
+id|j-&gt;readers
+op_logical_or
+id|j-&gt;writers
+)paren
+)paren
+(brace
+id|fOffHook
+op_assign
+id|j-&gt;pld_slicr.bits.potspstn
+ques
+c_cond
+l_int|1
+suffix:colon
+l_int|0
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|fOffHook
+op_ne
+id|j-&gt;p_hook
+)paren
+(brace
+r_if
+c_cond
+(paren
+op_logical_neg
+id|j-&gt;checkwait
+)paren
+(brace
+id|j-&gt;checkwait
+op_assign
+id|jiffies
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+id|time_before
+c_func
+(paren
+id|jiffies
+comma
+id|j-&gt;checkwait
+op_plus
+l_int|2
+)paren
+)paren
+(brace
+id|fOffHook
+op_xor_assign
+l_int|1
+suffix:semicolon
+)brace
+r_else
+(brace
+id|j-&gt;checkwait
+op_assign
+l_int|0
+suffix:semicolon
+)brace
+id|j-&gt;p_hook
+op_assign
+id|fOffHook
+suffix:semicolon
+id|printk
+c_func
+(paren
+l_string|&quot;IXJ : /dev/phone%d pots-pstn hookstate check %d at %ld&bslash;n&quot;
+comma
+id|j-&gt;board
+comma
+id|fOffHook
+comma
+id|jiffies
+)paren
+suffix:semicolon
+)brace
+)brace
+r_else
+(brace
+r_if
+c_cond
+(paren
 id|j-&gt;pld_slicr.bits.state
 op_eq
 id|PLD_SLIC_STATE_ACTIVE
@@ -5647,6 +10163,8 @@ r_if
 c_cond
 (paren
 id|j-&gt;flags.ringing
+op_logical_or
+id|j-&gt;flags.cringing
 )paren
 (brace
 r_if
@@ -5754,6 +10272,7 @@ suffix:colon
 l_int|0
 suffix:semicolon
 )brace
+)brace
 r_break
 suffix:semicolon
 r_case
@@ -5786,10 +10305,15 @@ r_if
 c_cond
 (paren
 id|j-&gt;port
-op_ne
-id|PORT_POTS
+op_eq
+id|PORT_SPEAKER
+op_logical_or
+id|j-&gt;port
+op_eq
+id|PORT_HANDSET
 )paren
 (brace
+singleline_comment|// || (j-&gt;port == PORT_PSTN &amp;&amp; j-&gt;flags.pots_pstn == 0)) {
 id|j-&gt;ex.bits.hookstate
 op_assign
 l_int|1
@@ -5799,7 +10323,9 @@ c_func
 (paren
 id|j
 comma
-id|POLL_PRI
+id|SIG_HOOKSTATE
+comma
+id|POLL_IN
 )paren
 suffix:semicolon
 )brace
@@ -5816,12 +10342,72 @@ op_assign
 id|jiffies
 op_plus
 (paren
-id|hertz
-op_div
-l_int|10
+(paren
+l_int|60
 op_star
-l_int|6
+id|hertz
 )paren
+op_div
+l_int|100
+)paren
+suffix:semicolon
+)brace
+)brace
+r_if
+c_cond
+(paren
+id|fOffHook
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|time_before
+c_func
+(paren
+id|jiffies
+comma
+id|j-&gt;flash_end
+)paren
+)paren
+(brace
+id|j-&gt;ex.bits.flash
+op_assign
+l_int|1
+suffix:semicolon
+id|j-&gt;flash_end
+op_assign
+l_int|0
+suffix:semicolon
+id|ixj_kill_fasync
+c_func
+(paren
+id|j
+comma
+id|SIG_FLASH
+comma
+id|POLL_IN
+)paren
+suffix:semicolon
+)brace
+)brace
+r_else
+(brace
+r_if
+c_cond
+(paren
+id|time_before
+c_func
+(paren
+id|jiffies
+comma
+id|j-&gt;flash_end
+)paren
+)paren
+(brace
+id|fOffHook
+op_assign
+l_int|1
 suffix:semicolon
 )brace
 )brace
@@ -5847,10 +10433,37 @@ id|j-&gt;port
 op_eq
 id|PORT_SPEAKER
 )paren
+(brace
+r_if
+c_cond
+(paren
+id|j-&gt;cardtype
+op_eq
+id|QTI_PHONECARD
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|j-&gt;flags.pcmciascp
+op_logical_and
+id|j-&gt;flags.pcmciasct
+)paren
+(brace
 id|fOffHook
 op_or_assign
 l_int|2
 suffix:semicolon
+)brace
+)brace
+r_else
+(brace
+id|fOffHook
+op_or_assign
+l_int|2
+suffix:semicolon
+)brace
+)brace
 r_if
 c_cond
 (paren
@@ -5862,23 +10475,6 @@ id|fOffHook
 op_or_assign
 l_int|2
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|fOffHook
-op_logical_and
-id|time_before
-c_func
-(paren
-id|jiffies
-comma
-id|j-&gt;flash_end
-)paren
-)paren
-r_return
-l_int|0
-suffix:semicolon
-r_else
 r_return
 id|fOffHook
 suffix:semicolon
@@ -5901,14 +10497,14 @@ id|j-&gt;dsp.low
 op_eq
 l_int|0x20
 )paren
-singleline_comment|// Internet PhoneJACK
+multiline_comment|/* Internet PhoneJACK */
 (brace
 r_if
 c_cond
 (paren
 id|ixjdebug
-OG
-l_int|0
+op_amp
+l_int|0x0004
 )paren
 id|printk
 c_func
@@ -5947,14 +10543,14 @@ id|j
 suffix:semicolon
 )brace
 r_else
-singleline_comment|// Internet LineJACK
+multiline_comment|/* Internet LineJACK */
 (brace
 r_if
 c_cond
 (paren
 id|ixjdebug
-OG
-l_int|0
+op_amp
+l_int|0x0004
 )paren
 id|printk
 c_func
@@ -5963,6 +10559,13 @@ id|KERN_INFO
 l_string|&quot;IXJ Ring Off&bslash;n&quot;
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|j-&gt;flags.cidplay
+)paren
+(brace
 id|SLIC_SetState
 c_func
 (paren
@@ -5971,6 +10574,7 @@ comma
 id|j
 )paren
 suffix:semicolon
+)brace
 id|SLIC_GetState
 c_func
 (paren
@@ -5993,6 +10597,22 @@ id|j
 id|j-&gt;flags.cringing
 op_assign
 l_int|1
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|ixjdebug
+op_amp
+l_int|0x0004
+)paren
+id|printk
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;IXJ Cadence Ringing Start /dev/phone%d&bslash;n&quot;
+comma
+id|j-&gt;board
+)paren
 suffix:semicolon
 r_if
 c_cond
@@ -6023,6 +10643,82 @@ id|j-&gt;flags.cringing
 op_assign
 l_int|0
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|ixjdebug
+op_amp
+l_int|0x0004
+)paren
+id|printk
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;IXJ Cadence Ringing Stopped /dev/phone%d off hook&bslash;n&quot;
+comma
+id|j-&gt;board
+)paren
+suffix:semicolon
+)brace
+r_else
+r_if
+c_cond
+(paren
+id|j-&gt;cadence_f
+(braket
+l_int|5
+)braket
+dot
+id|enable
+op_logical_and
+(paren
+op_logical_neg
+id|j-&gt;cadence_f
+(braket
+l_int|5
+)braket
+dot
+id|en_filter
+)paren
+)paren
+(brace
+id|j-&gt;ring_cadence_jif
+op_assign
+id|jiffies
+suffix:semicolon
+id|j-&gt;flags.cidsent
+op_assign
+id|j-&gt;flags.cidring
+op_assign
+l_int|0
+suffix:semicolon
+id|j-&gt;cadence_f
+(braket
+l_int|5
+)braket
+dot
+id|state
+op_assign
+l_int|0
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|j-&gt;cadence_f
+(braket
+l_int|5
+)braket
+dot
+id|on1
+)paren
+(brace
+id|ixj_ring_on
+c_func
+(paren
+id|j
+)paren
+suffix:semicolon
+)brace
 )brace
 r_else
 (brace
@@ -6060,6 +10756,14 @@ id|j
 )paren
 suffix:semicolon
 )brace
+id|j-&gt;flags.cidsent
+op_assign
+id|j-&gt;flags.cidring
+op_assign
+id|j-&gt;flags.firstring
+op_assign
+l_int|0
+suffix:semicolon
 )brace
 )brace
 DECL|function|ixj_ring
@@ -6356,6 +11060,7 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|function|ixj_open
+r_static
 r_int
 id|ixj_open
 c_func
@@ -6375,23 +11080,15 @@ id|IXJ
 op_star
 id|j
 op_assign
+id|get_ixj
+c_func
+(paren
+id|p-&gt;board
+)paren
+suffix:semicolon
 id|file_p-&gt;private_data
 op_assign
-id|ixj
-(braket
-id|p-&gt;board
-)braket
-suffix:semicolon
-r_if
-c_cond
-(paren
 id|j
-op_eq
-l_int|NULL
-)paren
-r_return
-op_minus
-id|ENODEV
 suffix:semicolon
 r_if
 c_cond
@@ -6510,12 +11207,22 @@ id|j
 )paren
 suffix:semicolon
 )brace
+id|j-&gt;flags.cidplay
+op_assign
+l_int|0
+suffix:semicolon
+id|j-&gt;flags.cidcw_ack
+op_assign
+l_int|0
+suffix:semicolon
+id|MOD_INC_USE_COUNT
+suffix:semicolon
 r_if
 c_cond
 (paren
 id|ixjdebug
-OG
-l_int|0
+op_amp
+l_int|0x0002
 )paren
 id|printk
 c_func
@@ -6564,12 +11271,50 @@ id|j
 op_assign
 id|file_p-&gt;private_data
 suffix:semicolon
+r_int
+id|board
+op_assign
+id|j-&gt;p.board
+suffix:semicolon
+multiline_comment|/*&n;&t; *    Set up locks to ensure that only one process is talking to the DSP at a time.&n;&t; *    This is necessary to keep the DSP from locking up.&n;&t; */
+r_while
+c_loop
+(paren
+id|test_and_set_bit
+c_func
+(paren
+id|board
+comma
+(paren
+r_void
+op_star
+)paren
+op_amp
+id|j-&gt;busyflags
+)paren
+op_ne
+l_int|0
+)paren
+(brace
+id|set_current_state
+c_func
+(paren
+id|TASK_INTERRUPTIBLE
+)paren
+suffix:semicolon
+id|schedule_timeout
+c_func
+(paren
+l_int|1
+)paren
+suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
 id|ixjdebug
-OG
-l_int|0
+op_amp
+l_int|0x0002
 )paren
 id|printk
 c_func
@@ -6648,7 +11393,7 @@ c_func
 id|j
 )paren
 suffix:semicolon
-singleline_comment|// Restore the tone table to default settings.
+multiline_comment|/* Restore the tone table to default settings. */
 id|ti.tone_index
 op_assign
 l_int|10
@@ -6668,6 +11413,15 @@ suffix:semicolon
 id|ti.freq1
 op_assign
 id|hz1209
+suffix:semicolon
+id|ixj_init_tone
+c_func
+(paren
+id|j
+comma
+op_amp
+id|ti
+)paren
 suffix:semicolon
 id|ti.tone_index
 op_assign
@@ -6689,6 +11443,15 @@ id|ti.freq1
 op_assign
 id|hz1336
 suffix:semicolon
+id|ixj_init_tone
+c_func
+(paren
+id|j
+comma
+op_amp
+id|ti
+)paren
+suffix:semicolon
 id|ti.tone_index
 op_assign
 l_int|12
@@ -6708,6 +11471,15 @@ suffix:semicolon
 id|ti.freq1
 op_assign
 id|hz1477
+suffix:semicolon
+id|ixj_init_tone
+c_func
+(paren
+id|j
+comma
+op_amp
+id|ti
+)paren
 suffix:semicolon
 id|ti.tone_index
 op_assign
@@ -7152,7 +11924,7 @@ comma
 l_int|2
 )paren
 suffix:semicolon
-singleline_comment|// Set Record Channel Limit to 2 frames
+multiline_comment|/* Set Record Channel Limit to 2 frames */
 id|set_play_depth
 c_func
 (paren
@@ -7161,7 +11933,7 @@ comma
 l_int|2
 )paren
 suffix:semicolon
-singleline_comment|// Set Playback Channel Limit to 2 frames
+multiline_comment|/* Set Playback Channel Limit to 2 frames */
 id|j-&gt;ex.bits.dtmf_ready
 op_assign
 l_int|0
@@ -7195,6 +11967,41 @@ id|j-&gt;ring_cadence
 op_assign
 id|USA_RING_CADENCE
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|j-&gt;cadence_f
+(braket
+l_int|5
+)braket
+dot
+id|enable
+)paren
+(brace
+id|j-&gt;cadence_f
+(braket
+l_int|5
+)braket
+dot
+id|enable
+op_assign
+id|j-&gt;cadence_f
+(braket
+l_int|5
+)braket
+dot
+id|en_filter
+op_assign
+id|j-&gt;cadence_f
+(braket
+l_int|5
+)braket
+dot
+id|state
+op_assign
+l_int|0
+suffix:semicolon
+)brace
 id|j-&gt;drybuffer
 op_assign
 l_int|0
@@ -7350,7 +12157,7 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-singleline_comment|// remove from list of async notification
+multiline_comment|/* remove from list of async notification */
 r_if
 c_cond
 (paren
@@ -7398,10 +12205,74 @@ comma
 id|j
 )paren
 suffix:semicolon
-singleline_comment|// Put the DSP in 1/5 power mode.
+multiline_comment|/* Put the DSP in 1/5 power mode. */
+multiline_comment|/* Set up the default signals for events */
+r_for
+c_loop
+(paren
+id|cnt
+op_assign
+l_int|0
+suffix:semicolon
+id|cnt
+OL
+l_int|35
+suffix:semicolon
+id|cnt
+op_increment
+)paren
+id|j-&gt;ixj_signals
+(braket
+id|cnt
+)braket
+op_assign
+id|SIGIO
+suffix:semicolon
+multiline_comment|/* Set the excetion signal enable flags */
+id|j-&gt;ex_sig.bits.dtmf_ready
+op_assign
+id|j-&gt;ex_sig.bits.hookstate
+op_assign
+id|j-&gt;ex_sig.bits.flash
+op_assign
+id|j-&gt;ex_sig.bits.pstn_ring
+op_assign
+id|j-&gt;ex_sig.bits.caller_id
+op_assign
+id|j-&gt;ex_sig.bits.pstn_wink
+op_assign
+id|j-&gt;ex_sig.bits.f0
+op_assign
+id|j-&gt;ex_sig.bits.f1
+op_assign
+id|j-&gt;ex_sig.bits.f2
+op_assign
+id|j-&gt;ex_sig.bits.f3
+op_assign
+id|j-&gt;ex_sig.bits.fc0
+op_assign
+id|j-&gt;ex_sig.bits.fc1
+op_assign
+id|j-&gt;ex_sig.bits.fc2
+op_assign
+id|j-&gt;ex_sig.bits.fc3
+op_assign
+l_int|1
+suffix:semicolon
 id|file_p-&gt;private_data
 op_assign
 l_int|NULL
+suffix:semicolon
+id|clear_bit
+c_func
+(paren
+id|board
+comma
+op_amp
+id|j-&gt;busyflags
+)paren
+suffix:semicolon
+id|MOD_DEC_USE_COUNT
 suffix:semicolon
 r_return
 l_int|0
@@ -7423,9 +12294,15 @@ r_int
 id|fc
 comma
 id|cnt
+comma
+id|trg
 suffix:semicolon
 r_int
 id|var
+suffix:semicolon
+id|trg
+op_assign
+l_int|0
 suffix:semicolon
 r_if
 c_cond
@@ -7438,10 +12315,28 @@ comma
 id|j
 )paren
 )paren
+(brace
+r_if
+c_cond
+(paren
+id|ixjdebug
+op_amp
+l_int|0x0001
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;Read Frame Counter failed!&bslash;n&quot;
+)paren
+suffix:semicolon
+)brace
 r_return
 op_minus
 l_int|1
 suffix:semicolon
+)brace
 id|fc
 op_assign
 id|j-&gt;ssr.high
@@ -7504,10 +12399,30 @@ comma
 id|j
 )paren
 )paren
+(brace
+r_if
+c_cond
+(paren
+id|ixjdebug
+op_amp
+l_int|0x0001
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;Select Filter %d failed!&bslash;n&quot;
+comma
+id|cnt
+)paren
+suffix:semicolon
+)brace
 r_return
 op_minus
 l_int|1
 suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
@@ -7519,10 +12434,30 @@ comma
 id|j
 )paren
 )paren
+(brace
+r_if
+c_cond
+(paren
+id|ixjdebug
+op_amp
+l_int|0x0001
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;Read Filter History %d failed!&bslash;n&quot;
+comma
+id|cnt
+)paren
+suffix:semicolon
+)brace
 r_return
 op_minus
 l_int|1
 suffix:semicolon
+)brace
 id|j-&gt;filter_hist
 (braket
 id|cnt
@@ -7598,6 +12533,10 @@ op_assign
 id|jiffies
 op_plus
 (paren
+r_int
+)paren
+(paren
+(paren
 id|j-&gt;cadence_f
 (braket
 id|cnt
@@ -7605,6 +12544,7 @@ id|cnt
 dot
 id|on1
 op_star
+(paren
 id|hertz
 op_star
 (paren
@@ -7612,8 +12552,10 @@ l_int|100
 op_minus
 id|var
 )paren
+)paren
 op_div
 l_int|10000
+)paren
 )paren
 suffix:semicolon
 id|j-&gt;cadence_f
@@ -7626,6 +12568,10 @@ op_assign
 id|jiffies
 op_plus
 (paren
+r_int
+)paren
+(paren
+(paren
 id|j-&gt;cadence_f
 (braket
 id|cnt
@@ -7633,13 +12579,16 @@ id|cnt
 dot
 id|on1
 op_star
+(paren
 id|hertz
 op_star
 (paren
 l_int|100
 )paren
+)paren
 op_div
 l_int|10000
+)paren
 )paren
 suffix:semicolon
 id|j-&gt;cadence_f
@@ -7652,6 +12601,10 @@ op_assign
 id|jiffies
 op_plus
 (paren
+r_int
+)paren
+(paren
+(paren
 id|j-&gt;cadence_f
 (braket
 id|cnt
@@ -7659,6 +12612,7 @@ id|cnt
 dot
 id|on1
 op_star
+(paren
 id|hertz
 op_star
 (paren
@@ -7666,8 +12620,10 @@ l_int|100
 op_plus
 id|var
 )paren
+)paren
 op_div
 l_int|10000
+)paren
 )paren
 suffix:semicolon
 )brace
@@ -7743,6 +12699,10 @@ op_assign
 id|jiffies
 op_plus
 (paren
+r_int
+)paren
+(paren
+(paren
 id|j-&gt;cadence_f
 (braket
 id|cnt
@@ -7750,6 +12710,7 @@ id|cnt
 dot
 id|on2
 op_star
+(paren
 id|hertz
 op_star
 (paren
@@ -7757,8 +12718,10 @@ l_int|100
 op_minus
 id|var
 )paren
+)paren
 op_div
 l_int|10000
+)paren
 )paren
 suffix:semicolon
 id|j-&gt;cadence_f
@@ -7771,6 +12734,10 @@ op_assign
 id|jiffies
 op_plus
 (paren
+r_int
+)paren
+(paren
+(paren
 id|j-&gt;cadence_f
 (braket
 id|cnt
@@ -7778,13 +12745,16 @@ id|cnt
 dot
 id|on2
 op_star
+(paren
 id|hertz
 op_star
 (paren
 l_int|100
 )paren
+)paren
 op_div
 l_int|10000
+)paren
 )paren
 suffix:semicolon
 id|j-&gt;cadence_f
@@ -7797,6 +12767,10 @@ op_assign
 id|jiffies
 op_plus
 (paren
+r_int
+)paren
+(paren
+(paren
 id|j-&gt;cadence_f
 (braket
 id|cnt
@@ -7804,6 +12778,7 @@ id|cnt
 dot
 id|on2
 op_star
+(paren
 id|hertz
 op_star
 (paren
@@ -7811,8 +12786,10 @@ l_int|100
 op_plus
 id|var
 )paren
+)paren
 op_div
 l_int|10000
+)paren
 )paren
 suffix:semicolon
 )brace
@@ -7825,7 +12802,7 @@ id|cnt
 dot
 id|state
 op_assign
-l_int|6
+l_int|7
 suffix:semicolon
 )brace
 )brace
@@ -7879,7 +12856,7 @@ id|j-&gt;cadence_f
 id|cnt
 )braket
 dot
-id|on2
+id|on3
 )paren
 (brace
 id|j-&gt;cadence_f
@@ -7901,6 +12878,10 @@ op_assign
 id|jiffies
 op_plus
 (paren
+r_int
+)paren
+(paren
+(paren
 id|j-&gt;cadence_f
 (braket
 id|cnt
@@ -7908,6 +12889,7 @@ id|cnt
 dot
 id|on3
 op_star
+(paren
 id|hertz
 op_star
 (paren
@@ -7915,8 +12897,10 @@ l_int|100
 op_minus
 id|var
 )paren
+)paren
 op_div
 l_int|10000
+)paren
 )paren
 suffix:semicolon
 id|j-&gt;cadence_f
@@ -7929,6 +12913,10 @@ op_assign
 id|jiffies
 op_plus
 (paren
+r_int
+)paren
+(paren
+(paren
 id|j-&gt;cadence_f
 (braket
 id|cnt
@@ -7936,13 +12924,16 @@ id|cnt
 dot
 id|on3
 op_star
+(paren
 id|hertz
 op_star
 (paren
 l_int|100
 )paren
+)paren
 op_div
 l_int|10000
+)paren
 )paren
 suffix:semicolon
 id|j-&gt;cadence_f
@@ -7955,6 +12946,10 @@ op_assign
 id|jiffies
 op_plus
 (paren
+r_int
+)paren
+(paren
+(paren
 id|j-&gt;cadence_f
 (braket
 id|cnt
@@ -7962,6 +12957,7 @@ id|cnt
 dot
 id|on3
 op_star
+(paren
 id|hertz
 op_star
 (paren
@@ -7969,8 +12965,10 @@ l_int|100
 op_plus
 id|var
 )paren
+)paren
 op_div
 l_int|10000
+)paren
 )paren
 suffix:semicolon
 )brace
@@ -7983,7 +12981,7 @@ id|cnt
 dot
 id|state
 op_assign
-l_int|6
+l_int|7
 suffix:semicolon
 )brace
 )brace
@@ -8033,7 +13031,34 @@ dot
 id|state
 op_eq
 l_int|1
-op_logical_and
+)paren
+(brace
+r_if
+c_cond
+(paren
+op_logical_neg
+id|j-&gt;cadence_f
+(braket
+id|cnt
+)braket
+dot
+id|on1
+)paren
+(brace
+id|j-&gt;cadence_f
+(braket
+id|cnt
+)braket
+dot
+id|state
+op_assign
+l_int|7
+suffix:semicolon
+)brace
+r_else
+r_if
+c_cond
+(paren
 (paren
 id|time_after
 c_func
@@ -8063,6 +13088,17 @@ id|on1max
 )paren
 )paren
 (brace
+r_if
+c_cond
+(paren
+id|j-&gt;cadence_f
+(braket
+id|cnt
+)braket
+dot
+id|off1
+)paren
+(brace
 id|j-&gt;cadence_f
 (braket
 id|cnt
@@ -8082,6 +13118,10 @@ op_assign
 id|jiffies
 op_plus
 (paren
+r_int
+)paren
+(paren
+(paren
 id|j-&gt;cadence_f
 (braket
 id|cnt
@@ -8089,6 +13129,7 @@ id|cnt
 dot
 id|off1
 op_star
+(paren
 id|hertz
 op_star
 (paren
@@ -8096,8 +13137,43 @@ l_int|100
 op_minus
 id|var
 )paren
+)paren
 op_div
 l_int|10000
+)paren
+)paren
+suffix:semicolon
+id|j-&gt;cadence_f
+(braket
+id|cnt
+)braket
+dot
+id|off1dot
+op_assign
+id|jiffies
+op_plus
+(paren
+r_int
+)paren
+(paren
+(paren
+id|j-&gt;cadence_f
+(braket
+id|cnt
+)braket
+dot
+id|off1
+op_star
+(paren
+id|hertz
+op_star
+(paren
+l_int|100
+)paren
+)paren
+op_div
+l_int|10000
+)paren
 )paren
 suffix:semicolon
 id|j-&gt;cadence_f
@@ -8110,6 +13186,10 @@ op_assign
 id|jiffies
 op_plus
 (paren
+r_int
+)paren
+(paren
+(paren
 id|j-&gt;cadence_f
 (braket
 id|cnt
@@ -8117,6 +13197,7 @@ id|cnt
 dot
 id|off1
 op_star
+(paren
 id|hertz
 op_star
 (paren
@@ -8124,10 +13205,38 @@ l_int|100
 op_plus
 id|var
 )paren
+)paren
 op_div
 l_int|10000
 )paren
+)paren
 suffix:semicolon
+)brace
+r_else
+(brace
+id|j-&gt;cadence_f
+(braket
+id|cnt
+)braket
+dot
+id|state
+op_assign
+l_int|7
+suffix:semicolon
+)brace
+)brace
+r_else
+(brace
+id|j-&gt;cadence_f
+(braket
+id|cnt
+)braket
+dot
+id|state
+op_assign
+l_int|0
+suffix:semicolon
+)brace
 )brace
 r_else
 r_if
@@ -8141,7 +13250,11 @@ dot
 id|state
 op_eq
 l_int|3
-op_logical_and
+)paren
+(brace
+r_if
+c_cond
+(paren
 (paren
 id|time_after
 c_func
@@ -8171,6 +13284,17 @@ id|on2max
 )paren
 )paren
 (brace
+r_if
+c_cond
+(paren
+id|j-&gt;cadence_f
+(braket
+id|cnt
+)braket
+dot
+id|off2
+)paren
+(brace
 id|j-&gt;cadence_f
 (braket
 id|cnt
@@ -8190,6 +13314,10 @@ op_assign
 id|jiffies
 op_plus
 (paren
+r_int
+)paren
+(paren
+(paren
 id|j-&gt;cadence_f
 (braket
 id|cnt
@@ -8197,6 +13325,7 @@ id|cnt
 dot
 id|off2
 op_star
+(paren
 id|hertz
 op_star
 (paren
@@ -8204,8 +13333,43 @@ l_int|100
 op_minus
 id|var
 )paren
+)paren
 op_div
 l_int|10000
+)paren
+)paren
+suffix:semicolon
+id|j-&gt;cadence_f
+(braket
+id|cnt
+)braket
+dot
+id|off2dot
+op_assign
+id|jiffies
+op_plus
+(paren
+r_int
+)paren
+(paren
+(paren
+id|j-&gt;cadence_f
+(braket
+id|cnt
+)braket
+dot
+id|off2
+op_star
+(paren
+id|hertz
+op_star
+(paren
+l_int|100
+)paren
+)paren
+op_div
+l_int|10000
+)paren
 )paren
 suffix:semicolon
 id|j-&gt;cadence_f
@@ -8218,6 +13382,10 @@ op_assign
 id|jiffies
 op_plus
 (paren
+r_int
+)paren
+(paren
+(paren
 id|j-&gt;cadence_f
 (braket
 id|cnt
@@ -8225,6 +13393,7 @@ id|cnt
 dot
 id|off2
 op_star
+(paren
 id|hertz
 op_star
 (paren
@@ -8232,10 +13401,38 @@ l_int|100
 op_plus
 id|var
 )paren
+)paren
 op_div
 l_int|10000
 )paren
+)paren
 suffix:semicolon
+)brace
+r_else
+(brace
+id|j-&gt;cadence_f
+(braket
+id|cnt
+)braket
+dot
+id|state
+op_assign
+l_int|7
+suffix:semicolon
+)brace
+)brace
+r_else
+(brace
+id|j-&gt;cadence_f
+(braket
+id|cnt
+)braket
+dot
+id|state
+op_assign
+l_int|0
+suffix:semicolon
+)brace
 )brace
 r_else
 r_if
@@ -8249,7 +13446,11 @@ dot
 id|state
 op_eq
 l_int|5
-op_logical_and
+)paren
+(brace
+r_if
+c_cond
+(paren
 (paren
 id|time_after
 c_func
@@ -8279,6 +13480,17 @@ id|on3max
 )paren
 )paren
 (brace
+r_if
+c_cond
+(paren
+id|j-&gt;cadence_f
+(braket
+id|cnt
+)braket
+dot
+id|off3
+)paren
+(brace
 id|j-&gt;cadence_f
 (braket
 id|cnt
@@ -8298,6 +13510,10 @@ op_assign
 id|jiffies
 op_plus
 (paren
+r_int
+)paren
+(paren
+(paren
 id|j-&gt;cadence_f
 (braket
 id|cnt
@@ -8305,6 +13521,7 @@ id|cnt
 dot
 id|off3
 op_star
+(paren
 id|hertz
 op_star
 (paren
@@ -8312,8 +13529,43 @@ l_int|100
 op_minus
 id|var
 )paren
+)paren
 op_div
 l_int|10000
+)paren
+)paren
+suffix:semicolon
+id|j-&gt;cadence_f
+(braket
+id|cnt
+)braket
+dot
+id|off3dot
+op_assign
+id|jiffies
+op_plus
+(paren
+r_int
+)paren
+(paren
+(paren
+id|j-&gt;cadence_f
+(braket
+id|cnt
+)braket
+dot
+id|off3
+op_star
+(paren
+id|hertz
+op_star
+(paren
+l_int|100
+)paren
+)paren
+op_div
+l_int|10000
+)paren
 )paren
 suffix:semicolon
 id|j-&gt;cadence_f
@@ -8326,6 +13578,10 @@ op_assign
 id|jiffies
 op_plus
 (paren
+r_int
+)paren
+(paren
+(paren
 id|j-&gt;cadence_f
 (braket
 id|cnt
@@ -8333,6 +13589,7 @@ id|cnt
 dot
 id|off3
 op_star
+(paren
 id|hertz
 op_star
 (paren
@@ -8340,10 +13597,38 @@ l_int|100
 op_plus
 id|var
 )paren
+)paren
 op_div
 l_int|10000
 )paren
+)paren
 suffix:semicolon
+)brace
+r_else
+(brace
+id|j-&gt;cadence_f
+(braket
+id|cnt
+)braket
+dot
+id|state
+op_assign
+l_int|7
+suffix:semicolon
+)brace
+)brace
+r_else
+(brace
+id|j-&gt;cadence_f
+(braket
+id|cnt
+)braket
+dot
+id|state
+op_assign
+l_int|0
+suffix:semicolon
+)brace
 )brace
 r_else
 (brace
@@ -8438,7 +13723,7 @@ id|cnt
 dot
 id|state
 op_assign
-l_int|6
+l_int|7
 suffix:semicolon
 )brace
 r_break
@@ -8494,7 +13779,7 @@ id|cnt
 dot
 id|state
 op_assign
-l_int|6
+l_int|7
 suffix:semicolon
 )brace
 r_break
@@ -8534,9 +13819,244 @@ id|cnt
 dot
 id|state
 op_assign
-l_int|6
+l_int|7
 suffix:semicolon
 )brace
+r_break
+suffix:semicolon
+)brace
+)brace
+r_if
+c_cond
+(paren
+id|ixjdebug
+op_amp
+l_int|0x0040
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;IXJ Tone Cadence state = %d /dev/phone%d at %ld&bslash;n&quot;
+comma
+id|j-&gt;cadence_f
+(braket
+id|cnt
+)braket
+dot
+id|state
+comma
+id|j-&gt;board
+comma
+id|jiffies
+)paren
+suffix:semicolon
+r_switch
+c_cond
+(paren
+id|j-&gt;cadence_f
+(braket
+id|cnt
+)braket
+dot
+id|state
+)paren
+(brace
+r_case
+l_int|0
+suffix:colon
+id|printk
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;IXJ /dev/phone%d No Tone detected&bslash;n&quot;
+comma
+id|j-&gt;board
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+l_int|1
+suffix:colon
+id|printk
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;IXJ /dev/phone%d Next Tone Cadence state at %u %ld - %ld - %ld&bslash;n&quot;
+comma
+id|j-&gt;board
+comma
+id|j-&gt;cadence_f
+(braket
+id|cnt
+)braket
+dot
+id|on1
+comma
+id|j-&gt;cadence_f
+(braket
+id|cnt
+)braket
+dot
+id|on1min
+comma
+id|j-&gt;cadence_f
+(braket
+id|cnt
+)braket
+dot
+id|on1dot
+comma
+id|j-&gt;cadence_f
+(braket
+id|cnt
+)braket
+dot
+id|on1max
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+l_int|2
+suffix:colon
+id|printk
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;IXJ /dev/phone%d Next Tone Cadence state at %ld - %ld&bslash;n&quot;
+comma
+id|j-&gt;board
+comma
+id|j-&gt;cadence_f
+(braket
+id|cnt
+)braket
+dot
+id|off1min
+comma
+id|j-&gt;cadence_f
+(braket
+id|cnt
+)braket
+dot
+id|off1max
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+l_int|3
+suffix:colon
+id|printk
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;IXJ /dev/phone%d Next Tone Cadence state at %ld - %ld&bslash;n&quot;
+comma
+id|j-&gt;board
+comma
+id|j-&gt;cadence_f
+(braket
+id|cnt
+)braket
+dot
+id|on2min
+comma
+id|j-&gt;cadence_f
+(braket
+id|cnt
+)braket
+dot
+id|on2max
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+l_int|4
+suffix:colon
+id|printk
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;IXJ /dev/phone%d Next Tone Cadence state at %ld - %ld&bslash;n&quot;
+comma
+id|j-&gt;board
+comma
+id|j-&gt;cadence_f
+(braket
+id|cnt
+)braket
+dot
+id|off2min
+comma
+id|j-&gt;cadence_f
+(braket
+id|cnt
+)braket
+dot
+id|off2max
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+l_int|5
+suffix:colon
+id|printk
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;IXJ /dev/phone%d Next Tone Cadence state at %ld - %ld&bslash;n&quot;
+comma
+id|j-&gt;board
+comma
+id|j-&gt;cadence_f
+(braket
+id|cnt
+)braket
+dot
+id|on3min
+comma
+id|j-&gt;cadence_f
+(braket
+id|cnt
+)braket
+dot
+id|on3max
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+l_int|6
+suffix:colon
+id|printk
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;IXJ /dev/phone%d Next Tone Cadence state at %ld - %ld&bslash;n&quot;
+comma
+id|j-&gt;board
+comma
+id|j-&gt;cadence_f
+(braket
+id|cnt
+)braket
+dot
+id|off3min
+comma
+id|j-&gt;cadence_f
+(braket
+id|cnt
+)braket
+dot
+id|off3max
+)paren
+suffix:semicolon
 r_break
 suffix:semicolon
 )brace
@@ -8552,7 +14072,7 @@ id|cnt
 dot
 id|state
 op_eq
-l_int|6
+l_int|7
 )paren
 (brace
 id|j-&gt;cadence_f
@@ -8594,36 +14114,148 @@ id|cnt
 r_case
 l_int|0
 suffix:colon
+r_if
+c_cond
+(paren
+id|ixjdebug
+op_amp
+l_int|0x0020
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;Filter Cadence 0 triggered %ld&bslash;n&quot;
+comma
+id|jiffies
+)paren
+suffix:semicolon
+)brace
 id|j-&gt;ex.bits.fc0
 op_assign
 l_int|1
+suffix:semicolon
+id|ixj_kill_fasync
+c_func
+(paren
+id|j
+comma
+id|SIG_FC0
+comma
+id|POLL_IN
+)paren
 suffix:semicolon
 r_break
 suffix:semicolon
 r_case
 l_int|1
 suffix:colon
+r_if
+c_cond
+(paren
+id|ixjdebug
+op_amp
+l_int|0x0020
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;Filter Cadence 1 triggered %ld&bslash;n&quot;
+comma
+id|jiffies
+)paren
+suffix:semicolon
+)brace
 id|j-&gt;ex.bits.fc1
 op_assign
 l_int|1
+suffix:semicolon
+id|ixj_kill_fasync
+c_func
+(paren
+id|j
+comma
+id|SIG_FC1
+comma
+id|POLL_IN
+)paren
 suffix:semicolon
 r_break
 suffix:semicolon
 r_case
 l_int|2
 suffix:colon
+r_if
+c_cond
+(paren
+id|ixjdebug
+op_amp
+l_int|0x0020
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;Filter Cadence 2 triggered %ld&bslash;n&quot;
+comma
+id|jiffies
+)paren
+suffix:semicolon
+)brace
 id|j-&gt;ex.bits.fc2
 op_assign
 l_int|1
+suffix:semicolon
+id|ixj_kill_fasync
+c_func
+(paren
+id|j
+comma
+id|SIG_FC2
+comma
+id|POLL_IN
+)paren
 suffix:semicolon
 r_break
 suffix:semicolon
 r_case
 l_int|3
 suffix:colon
+r_if
+c_cond
+(paren
+id|ixjdebug
+op_amp
+l_int|0x0020
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;Filter Cadence 3 triggered %ld&bslash;n&quot;
+comma
+id|jiffies
+)paren
+suffix:semicolon
+)brace
 id|j-&gt;ex.bits.fc3
 op_assign
 l_int|1
+suffix:semicolon
+id|ixj_kill_fasync
+c_func
+(paren
+id|j
+comma
+id|SIG_FC3
+comma
+id|POLL_IN
+)paren
 suffix:semicolon
 r_break
 suffix:semicolon
@@ -8678,6 +14310,63 @@ l_int|3
 )paren
 )paren
 (brace
+r_if
+c_cond
+(paren
+(paren
+id|j-&gt;filter_hist
+(braket
+id|cnt
+)braket
+op_amp
+l_int|3
+op_logical_and
+op_logical_neg
+(paren
+id|j-&gt;filter_hist
+(braket
+id|cnt
+)braket
+op_amp
+l_int|12
+)paren
+)paren
+)paren
+(brace
+id|trg
+op_assign
+l_int|1
+suffix:semicolon
+)brace
+r_else
+r_if
+c_cond
+(paren
+(paren
+id|j-&gt;filter_hist
+(braket
+id|cnt
+)braket
+op_amp
+l_int|12
+op_logical_and
+op_logical_neg
+(paren
+id|j-&gt;filter_hist
+(braket
+id|cnt
+)braket
+op_amp
+l_int|3
+)paren
+)paren
+)paren
+(brace
+id|trg
+op_assign
+l_int|0
+suffix:semicolon
+)brace
 r_switch
 c_cond
 (paren
@@ -8687,36 +14376,156 @@ id|cnt
 r_case
 l_int|0
 suffix:colon
+r_if
+c_cond
+(paren
+id|ixjdebug
+op_amp
+l_int|0x0020
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;Filter 0 triggered %d at %ld&bslash;n&quot;
+comma
+id|trg
+comma
+id|jiffies
+)paren
+suffix:semicolon
+)brace
 id|j-&gt;ex.bits.f0
 op_assign
 l_int|1
+suffix:semicolon
+id|ixj_kill_fasync
+c_func
+(paren
+id|j
+comma
+id|SIG_F0
+comma
+id|POLL_IN
+)paren
 suffix:semicolon
 r_break
 suffix:semicolon
 r_case
 l_int|1
 suffix:colon
+r_if
+c_cond
+(paren
+id|ixjdebug
+op_amp
+l_int|0x0020
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;Filter 1 triggered %d at %ld&bslash;n&quot;
+comma
+id|trg
+comma
+id|jiffies
+)paren
+suffix:semicolon
+)brace
 id|j-&gt;ex.bits.f1
 op_assign
 l_int|1
+suffix:semicolon
+id|ixj_kill_fasync
+c_func
+(paren
+id|j
+comma
+id|SIG_F1
+comma
+id|POLL_IN
+)paren
 suffix:semicolon
 r_break
 suffix:semicolon
 r_case
 l_int|2
 suffix:colon
+r_if
+c_cond
+(paren
+id|ixjdebug
+op_amp
+l_int|0x0020
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;Filter 2 triggered %d at %ld&bslash;n&quot;
+comma
+id|trg
+comma
+id|jiffies
+)paren
+suffix:semicolon
+)brace
 id|j-&gt;ex.bits.f2
 op_assign
 l_int|1
+suffix:semicolon
+id|ixj_kill_fasync
+c_func
+(paren
+id|j
+comma
+id|SIG_F2
+comma
+id|POLL_IN
+)paren
 suffix:semicolon
 r_break
 suffix:semicolon
 r_case
 l_int|3
 suffix:colon
+r_if
+c_cond
+(paren
+id|ixjdebug
+op_amp
+l_int|0x0020
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;Filter 3 triggered %d at %ld&bslash;n&quot;
+comma
+id|trg
+comma
+id|jiffies
+)paren
+suffix:semicolon
+)brace
 id|j-&gt;ex.bits.f3
 op_assign
 l_int|1
+suffix:semicolon
+id|ixj_kill_fasync
+c_func
+(paren
+id|j
+comma
+id|SIG_F3
+comma
+id|POLL_IN
+)paren
 suffix:semicolon
 r_break
 suffix:semicolon
@@ -8764,7 +14573,7 @@ comma
 id|j
 )paren
 )paren
-singleline_comment|// Line Monitor
+multiline_comment|/* Line Monitor */
 r_return
 op_minus
 l_int|1
@@ -8803,13 +14612,13 @@ op_logical_and
 op_logical_neg
 id|j-&gt;dtmf.bits.dtmf_valid
 )paren
-singleline_comment|// &amp;&amp; j-&gt;dtmf_wp != j-&gt;dtmf_rp)
+multiline_comment|/* &amp;&amp; j-&gt;dtmf_wp != j-&gt;dtmf_rp) */
 (brace
 r_if
 c_cond
 (paren
 op_logical_neg
-id|j-&gt;flags.cidplay
+id|j-&gt;cidcw_wait
 )paren
 (brace
 id|j-&gt;dtmfbuffer
@@ -8837,6 +14646,23 @@ id|j-&gt;ex.bits.dtmf_ready
 op_assign
 l_int|1
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|j-&gt;ex_sig.bits.dtmf_ready
+)paren
+(brace
+id|ixj_kill_fasync
+c_func
+(paren
+id|j
+comma
+id|SIG_DTMF_READY
+comma
+id|POLL_IN
+)paren
+suffix:semicolon
+)brace
 )brace
 r_else
 r_if
@@ -8844,13 +14670,34 @@ c_cond
 (paren
 id|j-&gt;dtmf_current
 op_eq
-l_int|25
+l_int|0x00
 op_logical_or
 id|j-&gt;dtmf_current
 op_eq
-l_int|31
+l_int|0x0D
 )paren
 (brace
+r_if
+c_cond
+(paren
+id|ixjdebug
+op_amp
+l_int|0x0020
+)paren
+(brace
+id|printk
+c_func
+(paren
+l_string|&quot;IXJ phone%d saw CIDCW Ack DTMF %d from display at %ld&bslash;n&quot;
+comma
+id|j-&gt;board
+comma
+id|j-&gt;dtmf_current
+comma
+id|jiffies
+)paren
+suffix:semicolon
+)brace
 id|j-&gt;flags.cidcw_ack
 op_assign
 l_int|1
@@ -8869,7 +14716,1127 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+multiline_comment|/************************************************************************&n;*&n;* Functions to allow alaw &lt;-&gt; ulaw conversions.&n;*&n;************************************************************************/
+DECL|function|ulaw2alaw
+r_static
+r_void
+id|ulaw2alaw
+c_func
+(paren
+r_int
+r_char
+op_star
+id|buff
+comma
+r_int
+r_int
+id|len
+)paren
+(brace
+r_static
+r_int
+r_char
+id|table_ulaw2alaw
+(braket
+)braket
+op_assign
+(brace
+l_int|0x2A
+comma
+l_int|0x2B
+comma
+l_int|0x28
+comma
+l_int|0x29
+comma
+l_int|0x2E
+comma
+l_int|0x2F
+comma
+l_int|0x2C
+comma
+l_int|0x2D
+comma
+l_int|0x22
+comma
+l_int|0x23
+comma
+l_int|0x20
+comma
+l_int|0x21
+comma
+l_int|0x26
+comma
+l_int|0x27
+comma
+l_int|0x24
+comma
+l_int|0x25
+comma
+l_int|0x3A
+comma
+l_int|0x3B
+comma
+l_int|0x38
+comma
+l_int|0x39
+comma
+l_int|0x3E
+comma
+l_int|0x3F
+comma
+l_int|0x3C
+comma
+l_int|0x3D
+comma
+l_int|0x32
+comma
+l_int|0x33
+comma
+l_int|0x30
+comma
+l_int|0x31
+comma
+l_int|0x36
+comma
+l_int|0x37
+comma
+l_int|0x34
+comma
+l_int|0x35
+comma
+l_int|0x0B
+comma
+l_int|0x08
+comma
+l_int|0x09
+comma
+l_int|0x0E
+comma
+l_int|0x0F
+comma
+l_int|0x0C
+comma
+l_int|0x0D
+comma
+l_int|0x02
+comma
+l_int|0x03
+comma
+l_int|0x00
+comma
+l_int|0x01
+comma
+l_int|0x06
+comma
+l_int|0x07
+comma
+l_int|0x04
+comma
+l_int|0x05
+comma
+l_int|0x1A
+comma
+l_int|0x1B
+comma
+l_int|0x18
+comma
+l_int|0x19
+comma
+l_int|0x1E
+comma
+l_int|0x1F
+comma
+l_int|0x1C
+comma
+l_int|0x1D
+comma
+l_int|0x12
+comma
+l_int|0x13
+comma
+l_int|0x10
+comma
+l_int|0x11
+comma
+l_int|0x16
+comma
+l_int|0x17
+comma
+l_int|0x14
+comma
+l_int|0x15
+comma
+l_int|0x6B
+comma
+l_int|0x68
+comma
+l_int|0x69
+comma
+l_int|0x6E
+comma
+l_int|0x6F
+comma
+l_int|0x6C
+comma
+l_int|0x6D
+comma
+l_int|0x62
+comma
+l_int|0x63
+comma
+l_int|0x60
+comma
+l_int|0x61
+comma
+l_int|0x66
+comma
+l_int|0x67
+comma
+l_int|0x64
+comma
+l_int|0x65
+comma
+l_int|0x7B
+comma
+l_int|0x79
+comma
+l_int|0x7E
+comma
+l_int|0x7F
+comma
+l_int|0x7C
+comma
+l_int|0x7D
+comma
+l_int|0x72
+comma
+l_int|0x73
+comma
+l_int|0x70
+comma
+l_int|0x71
+comma
+l_int|0x76
+comma
+l_int|0x77
+comma
+l_int|0x74
+comma
+l_int|0x75
+comma
+l_int|0x4B
+comma
+l_int|0x49
+comma
+l_int|0x4F
+comma
+l_int|0x4D
+comma
+l_int|0x42
+comma
+l_int|0x43
+comma
+l_int|0x40
+comma
+l_int|0x41
+comma
+l_int|0x46
+comma
+l_int|0x47
+comma
+l_int|0x44
+comma
+l_int|0x45
+comma
+l_int|0x5A
+comma
+l_int|0x5B
+comma
+l_int|0x58
+comma
+l_int|0x59
+comma
+l_int|0x5E
+comma
+l_int|0x5F
+comma
+l_int|0x5C
+comma
+l_int|0x5D
+comma
+l_int|0x52
+comma
+l_int|0x52
+comma
+l_int|0x53
+comma
+l_int|0x53
+comma
+l_int|0x50
+comma
+l_int|0x50
+comma
+l_int|0x51
+comma
+l_int|0x51
+comma
+l_int|0x56
+comma
+l_int|0x56
+comma
+l_int|0x57
+comma
+l_int|0x57
+comma
+l_int|0x54
+comma
+l_int|0x54
+comma
+l_int|0x55
+comma
+l_int|0xD5
+comma
+l_int|0xAA
+comma
+l_int|0xAB
+comma
+l_int|0xA8
+comma
+l_int|0xA9
+comma
+l_int|0xAE
+comma
+l_int|0xAF
+comma
+l_int|0xAC
+comma
+l_int|0xAD
+comma
+l_int|0xA2
+comma
+l_int|0xA3
+comma
+l_int|0xA0
+comma
+l_int|0xA1
+comma
+l_int|0xA6
+comma
+l_int|0xA7
+comma
+l_int|0xA4
+comma
+l_int|0xA5
+comma
+l_int|0xBA
+comma
+l_int|0xBB
+comma
+l_int|0xB8
+comma
+l_int|0xB9
+comma
+l_int|0xBE
+comma
+l_int|0xBF
+comma
+l_int|0xBC
+comma
+l_int|0xBD
+comma
+l_int|0xB2
+comma
+l_int|0xB3
+comma
+l_int|0xB0
+comma
+l_int|0xB1
+comma
+l_int|0xB6
+comma
+l_int|0xB7
+comma
+l_int|0xB4
+comma
+l_int|0xB5
+comma
+l_int|0x8B
+comma
+l_int|0x88
+comma
+l_int|0x89
+comma
+l_int|0x8E
+comma
+l_int|0x8F
+comma
+l_int|0x8C
+comma
+l_int|0x8D
+comma
+l_int|0x82
+comma
+l_int|0x83
+comma
+l_int|0x80
+comma
+l_int|0x81
+comma
+l_int|0x86
+comma
+l_int|0x87
+comma
+l_int|0x84
+comma
+l_int|0x85
+comma
+l_int|0x9A
+comma
+l_int|0x9B
+comma
+l_int|0x98
+comma
+l_int|0x99
+comma
+l_int|0x9E
+comma
+l_int|0x9F
+comma
+l_int|0x9C
+comma
+l_int|0x9D
+comma
+l_int|0x92
+comma
+l_int|0x93
+comma
+l_int|0x90
+comma
+l_int|0x91
+comma
+l_int|0x96
+comma
+l_int|0x97
+comma
+l_int|0x94
+comma
+l_int|0x95
+comma
+l_int|0xEB
+comma
+l_int|0xE8
+comma
+l_int|0xE9
+comma
+l_int|0xEE
+comma
+l_int|0xEF
+comma
+l_int|0xEC
+comma
+l_int|0xED
+comma
+l_int|0xE2
+comma
+l_int|0xE3
+comma
+l_int|0xE0
+comma
+l_int|0xE1
+comma
+l_int|0xE6
+comma
+l_int|0xE7
+comma
+l_int|0xE4
+comma
+l_int|0xE5
+comma
+l_int|0xFB
+comma
+l_int|0xF9
+comma
+l_int|0xFE
+comma
+l_int|0xFF
+comma
+l_int|0xFC
+comma
+l_int|0xFD
+comma
+l_int|0xF2
+comma
+l_int|0xF3
+comma
+l_int|0xF0
+comma
+l_int|0xF1
+comma
+l_int|0xF6
+comma
+l_int|0xF7
+comma
+l_int|0xF4
+comma
+l_int|0xF5
+comma
+l_int|0xCB
+comma
+l_int|0xC9
+comma
+l_int|0xCF
+comma
+l_int|0xCD
+comma
+l_int|0xC2
+comma
+l_int|0xC3
+comma
+l_int|0xC0
+comma
+l_int|0xC1
+comma
+l_int|0xC6
+comma
+l_int|0xC7
+comma
+l_int|0xC4
+comma
+l_int|0xC5
+comma
+l_int|0xDA
+comma
+l_int|0xDB
+comma
+l_int|0xD8
+comma
+l_int|0xD9
+comma
+l_int|0xDE
+comma
+l_int|0xDF
+comma
+l_int|0xDC
+comma
+l_int|0xDD
+comma
+l_int|0xD2
+comma
+l_int|0xD2
+comma
+l_int|0xD3
+comma
+l_int|0xD3
+comma
+l_int|0xD0
+comma
+l_int|0xD0
+comma
+l_int|0xD1
+comma
+l_int|0xD1
+comma
+l_int|0xD6
+comma
+l_int|0xD6
+comma
+l_int|0xD7
+comma
+l_int|0xD7
+comma
+l_int|0xD4
+comma
+l_int|0xD4
+comma
+l_int|0xD5
+comma
+l_int|0xD5
+)brace
+suffix:semicolon
+r_while
+c_loop
+(paren
+id|len
+op_decrement
+)paren
+op_star
+id|buff
+op_increment
+op_assign
+id|table_ulaw2alaw
+(braket
+op_star
+(paren
+r_int
+r_char
+op_star
+)paren
+id|buff
+)braket
+suffix:semicolon
+)brace
+DECL|function|alaw2ulaw
+r_static
+r_void
+id|alaw2ulaw
+c_func
+(paren
+r_int
+r_char
+op_star
+id|buff
+comma
+r_int
+r_int
+id|len
+)paren
+(brace
+r_static
+r_int
+r_char
+id|table_alaw2ulaw
+(braket
+)braket
+op_assign
+(brace
+l_int|0x29
+comma
+l_int|0x2A
+comma
+l_int|0x27
+comma
+l_int|0x28
+comma
+l_int|0x2D
+comma
+l_int|0x2E
+comma
+l_int|0x2B
+comma
+l_int|0x2C
+comma
+l_int|0x21
+comma
+l_int|0x22
+comma
+l_int|0x1F
+comma
+l_int|0x20
+comma
+l_int|0x25
+comma
+l_int|0x26
+comma
+l_int|0x23
+comma
+l_int|0x24
+comma
+l_int|0x39
+comma
+l_int|0x3A
+comma
+l_int|0x37
+comma
+l_int|0x38
+comma
+l_int|0x3D
+comma
+l_int|0x3E
+comma
+l_int|0x3B
+comma
+l_int|0x3C
+comma
+l_int|0x31
+comma
+l_int|0x32
+comma
+l_int|0x2F
+comma
+l_int|0x30
+comma
+l_int|0x35
+comma
+l_int|0x36
+comma
+l_int|0x33
+comma
+l_int|0x34
+comma
+l_int|0x0A
+comma
+l_int|0x0B
+comma
+l_int|0x08
+comma
+l_int|0x09
+comma
+l_int|0x0E
+comma
+l_int|0x0F
+comma
+l_int|0x0C
+comma
+l_int|0x0D
+comma
+l_int|0x02
+comma
+l_int|0x03
+comma
+l_int|0x00
+comma
+l_int|0x01
+comma
+l_int|0x06
+comma
+l_int|0x07
+comma
+l_int|0x04
+comma
+l_int|0x05
+comma
+l_int|0x1A
+comma
+l_int|0x1B
+comma
+l_int|0x18
+comma
+l_int|0x19
+comma
+l_int|0x1E
+comma
+l_int|0x1F
+comma
+l_int|0x1C
+comma
+l_int|0x1D
+comma
+l_int|0x12
+comma
+l_int|0x13
+comma
+l_int|0x10
+comma
+l_int|0x11
+comma
+l_int|0x16
+comma
+l_int|0x17
+comma
+l_int|0x14
+comma
+l_int|0x15
+comma
+l_int|0x62
+comma
+l_int|0x63
+comma
+l_int|0x60
+comma
+l_int|0x61
+comma
+l_int|0x66
+comma
+l_int|0x67
+comma
+l_int|0x64
+comma
+l_int|0x65
+comma
+l_int|0x5D
+comma
+l_int|0x5D
+comma
+l_int|0x5C
+comma
+l_int|0x5C
+comma
+l_int|0x5F
+comma
+l_int|0x5F
+comma
+l_int|0x5E
+comma
+l_int|0x5E
+comma
+l_int|0x74
+comma
+l_int|0x76
+comma
+l_int|0x70
+comma
+l_int|0x72
+comma
+l_int|0x7C
+comma
+l_int|0x7E
+comma
+l_int|0x78
+comma
+l_int|0x7A
+comma
+l_int|0x6A
+comma
+l_int|0x6B
+comma
+l_int|0x68
+comma
+l_int|0x69
+comma
+l_int|0x6E
+comma
+l_int|0x6F
+comma
+l_int|0x6C
+comma
+l_int|0x6D
+comma
+l_int|0x48
+comma
+l_int|0x49
+comma
+l_int|0x46
+comma
+l_int|0x47
+comma
+l_int|0x4C
+comma
+l_int|0x4D
+comma
+l_int|0x4A
+comma
+l_int|0x4B
+comma
+l_int|0x40
+comma
+l_int|0x41
+comma
+l_int|0x3F
+comma
+l_int|0x3F
+comma
+l_int|0x44
+comma
+l_int|0x45
+comma
+l_int|0x42
+comma
+l_int|0x43
+comma
+l_int|0x56
+comma
+l_int|0x57
+comma
+l_int|0x54
+comma
+l_int|0x55
+comma
+l_int|0x5A
+comma
+l_int|0x5B
+comma
+l_int|0x58
+comma
+l_int|0x59
+comma
+l_int|0x4F
+comma
+l_int|0x4F
+comma
+l_int|0x4E
+comma
+l_int|0x4E
+comma
+l_int|0x52
+comma
+l_int|0x53
+comma
+l_int|0x50
+comma
+l_int|0x51
+comma
+l_int|0xA9
+comma
+l_int|0xAA
+comma
+l_int|0xA7
+comma
+l_int|0xA8
+comma
+l_int|0xAD
+comma
+l_int|0xAE
+comma
+l_int|0xAB
+comma
+l_int|0xAC
+comma
+l_int|0xA1
+comma
+l_int|0xA2
+comma
+l_int|0x9F
+comma
+l_int|0xA0
+comma
+l_int|0xA5
+comma
+l_int|0xA6
+comma
+l_int|0xA3
+comma
+l_int|0xA4
+comma
+l_int|0xB9
+comma
+l_int|0xBA
+comma
+l_int|0xB7
+comma
+l_int|0xB8
+comma
+l_int|0xBD
+comma
+l_int|0xBE
+comma
+l_int|0xBB
+comma
+l_int|0xBC
+comma
+l_int|0xB1
+comma
+l_int|0xB2
+comma
+l_int|0xAF
+comma
+l_int|0xB0
+comma
+l_int|0xB5
+comma
+l_int|0xB6
+comma
+l_int|0xB3
+comma
+l_int|0xB4
+comma
+l_int|0x8A
+comma
+l_int|0x8B
+comma
+l_int|0x88
+comma
+l_int|0x89
+comma
+l_int|0x8E
+comma
+l_int|0x8F
+comma
+l_int|0x8C
+comma
+l_int|0x8D
+comma
+l_int|0x82
+comma
+l_int|0x83
+comma
+l_int|0x80
+comma
+l_int|0x81
+comma
+l_int|0x86
+comma
+l_int|0x87
+comma
+l_int|0x84
+comma
+l_int|0x85
+comma
+l_int|0x9A
+comma
+l_int|0x9B
+comma
+l_int|0x98
+comma
+l_int|0x99
+comma
+l_int|0x9E
+comma
+l_int|0x9F
+comma
+l_int|0x9C
+comma
+l_int|0x9D
+comma
+l_int|0x92
+comma
+l_int|0x93
+comma
+l_int|0x90
+comma
+l_int|0x91
+comma
+l_int|0x96
+comma
+l_int|0x97
+comma
+l_int|0x94
+comma
+l_int|0x95
+comma
+l_int|0xE2
+comma
+l_int|0xE3
+comma
+l_int|0xE0
+comma
+l_int|0xE1
+comma
+l_int|0xE6
+comma
+l_int|0xE7
+comma
+l_int|0xE4
+comma
+l_int|0xE5
+comma
+l_int|0xDD
+comma
+l_int|0xDD
+comma
+l_int|0xDC
+comma
+l_int|0xDC
+comma
+l_int|0xDF
+comma
+l_int|0xDF
+comma
+l_int|0xDE
+comma
+l_int|0xDE
+comma
+l_int|0xF4
+comma
+l_int|0xF6
+comma
+l_int|0xF0
+comma
+l_int|0xF2
+comma
+l_int|0xFC
+comma
+l_int|0xFE
+comma
+l_int|0xF8
+comma
+l_int|0xFA
+comma
+l_int|0xEA
+comma
+l_int|0xEB
+comma
+l_int|0xE8
+comma
+l_int|0xE9
+comma
+l_int|0xEE
+comma
+l_int|0xEF
+comma
+l_int|0xEC
+comma
+l_int|0xED
+comma
+l_int|0xC8
+comma
+l_int|0xC9
+comma
+l_int|0xC6
+comma
+l_int|0xC7
+comma
+l_int|0xCC
+comma
+l_int|0xCD
+comma
+l_int|0xCA
+comma
+l_int|0xCB
+comma
+l_int|0xC0
+comma
+l_int|0xC1
+comma
+l_int|0xBF
+comma
+l_int|0xBF
+comma
+l_int|0xC4
+comma
+l_int|0xC5
+comma
+l_int|0xC2
+comma
+l_int|0xC3
+comma
+l_int|0xD6
+comma
+l_int|0xD7
+comma
+l_int|0xD4
+comma
+l_int|0xD5
+comma
+l_int|0xDA
+comma
+l_int|0xDB
+comma
+l_int|0xD8
+comma
+l_int|0xD9
+comma
+l_int|0xCF
+comma
+l_int|0xCF
+comma
+l_int|0xCE
+comma
+l_int|0xCE
+comma
+l_int|0xD2
+comma
+l_int|0xD3
+comma
+l_int|0xD0
+comma
+l_int|0xD1
+)brace
+suffix:semicolon
+r_while
+c_loop
+(paren
+id|len
+op_decrement
+)paren
+op_star
+id|buff
+op_increment
+op_assign
+id|table_alaw2ulaw
+(braket
+op_star
+(paren
+r_int
+r_char
+op_star
+)paren
+id|buff
+)braket
+suffix:semicolon
+)brace
 DECL|function|ixj_read
+r_static
 id|ssize_t
 id|ixj_read
 c_func
@@ -8902,14 +15869,15 @@ id|IXJ
 op_star
 id|j
 op_assign
-id|ixj
-(braket
+id|get_ixj
+c_func
+(paren
 id|NUM
 c_func
 (paren
 id|file_p-&gt;f_dentry-&gt;d_inode-&gt;i_rdev
 )paren
-)braket
+)paren
 suffix:semicolon
 id|DECLARE_WAITQUEUE
 c_func
@@ -8918,18 +15886,6 @@ id|wait
 comma
 id|current
 )paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|j
-op_eq
-l_int|NULL
-)paren
-multiline_comment|/* shouldn&squot;t happen! */
-r_return
-op_minus
-id|ENODEV
 suffix:semicolon
 r_if
 c_cond
@@ -8981,37 +15937,6 @@ id|j-&gt;flags.dtmf_oob
 op_increment
 id|j-&gt;read_wait
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|j-&gt;tone_state
-)paren
-(brace
-id|set_current_state
-c_func
-(paren
-id|TASK_RUNNING
-)paren
-suffix:semicolon
-id|remove_wait_queue
-c_func
-(paren
-op_amp
-id|j-&gt;read_q
-comma
-op_amp
-id|wait
-)paren
-suffix:semicolon
-id|j-&gt;flags.inread
-op_assign
-l_int|0
-suffix:semicolon
-r_return
-op_minus
-id|EAGAIN
-suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -9140,6 +16065,29 @@ id|TASK_RUNNING
 )paren
 suffix:semicolon
 multiline_comment|/* Don&squot;t ever copy more than the user asks */
+r_if
+c_cond
+(paren
+id|j-&gt;rec_codec
+op_eq
+id|ALAW
+)paren
+(brace
+id|ulaw2alaw
+c_func
+(paren
+id|j-&gt;read_buffer
+comma
+id|min
+c_func
+(paren
+id|length
+comma
+id|j-&gt;read_buffer_size
+)paren
+)paren
+suffix:semicolon
+)brace
 id|i
 op_assign
 id|copy_to_user
@@ -9152,9 +16100,6 @@ comma
 id|min
 c_func
 (paren
-r_int
-r_int
-comma
 id|length
 comma
 id|j-&gt;read_buffer_size
@@ -9190,9 +16135,6 @@ r_return
 id|min
 c_func
 (paren
-r_int
-r_int
-comma
 id|length
 comma
 id|j-&gt;read_buffer_size
@@ -9201,6 +16143,7 @@ suffix:semicolon
 )brace
 )brace
 DECL|function|ixj_enhanced_read
+r_static
 id|ssize_t
 id|ixj_enhanced_read
 c_func
@@ -9234,26 +16177,15 @@ id|IXJ
 op_star
 id|j
 op_assign
-id|ixj
-(braket
+id|get_ixj
+c_func
+(paren
 id|NUM
 c_func
 (paren
 id|file_p-&gt;f_dentry-&gt;d_inode-&gt;i_rdev
 )paren
-)braket
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|j
-op_eq
-l_int|NULL
 )paren
-multiline_comment|/* shouldn&squot;t happen! */
-r_return
-op_minus
-id|ENODEV
 suffix:semicolon
 id|pre_retval
 op_assign
@@ -9342,6 +16274,7 @@ id|read_retval
 suffix:semicolon
 )brace
 DECL|function|ixj_write
+r_static
 id|ssize_t
 id|ixj_write
 c_func
@@ -9388,18 +16321,6 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|j
-op_eq
-l_int|NULL
-)paren
-multiline_comment|/* shouldn&squot;t happen! */
-r_return
-op_minus
-id|ENODEV
-suffix:semicolon
-r_if
-c_cond
-(paren
 id|j-&gt;flags.inwrite
 )paren
 r_return
@@ -9441,37 +16362,6 @@ id|j-&gt;write_buffers_empty
 op_increment
 id|j-&gt;write_wait
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|j-&gt;tone_state
-)paren
-(brace
-id|set_current_state
-c_func
-(paren
-id|TASK_RUNNING
-)paren
-suffix:semicolon
-id|remove_wait_queue
-c_func
-(paren
-op_amp
-id|j-&gt;write_q
-comma
-op_amp
-id|wait
-)paren
-suffix:semicolon
-id|j-&gt;flags.inwrite
-op_assign
-l_int|0
-suffix:semicolon
-r_return
-op_minus
-id|EAGAIN
-suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -9624,9 +16514,6 @@ comma
 id|min
 c_func
 (paren
-r_int
-r_int
-comma
 id|count
 comma
 id|j-&gt;write_buffer_size
@@ -9648,6 +16535,29 @@ op_minus
 id|EFAULT
 suffix:semicolon
 )brace
+r_if
+c_cond
+(paren
+id|j-&gt;play_codec
+op_eq
+id|ALAW
+)paren
+(brace
+id|alaw2ulaw
+c_func
+(paren
+id|j-&gt;write_buffer_wp
+comma
+id|min
+c_func
+(paren
+id|count
+comma
+id|j-&gt;write_buffer_size
+)paren
+)paren
+suffix:semicolon
+)brace
 id|j-&gt;flags.inwrite
 op_assign
 l_int|0
@@ -9656,9 +16566,6 @@ r_return
 id|min
 c_func
 (paren
-r_int
-r_int
-comma
 id|count
 comma
 id|j-&gt;write_buffer_size
@@ -9666,6 +16573,7 @@ id|j-&gt;write_buffer_size
 suffix:semicolon
 )brace
 DECL|function|ixj_enhanced_write
+r_static
 id|ssize_t
 id|ixj_enhanced_write
 c_func
@@ -9700,26 +16608,15 @@ id|IXJ
 op_star
 id|j
 op_assign
-id|ixj
-(braket
+id|get_ixj
+c_func
+(paren
 id|NUM
 c_func
 (paren
 id|file_p-&gt;f_dentry-&gt;d_inode-&gt;i_rdev
 )paren
-)braket
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|j
-op_eq
-l_int|NULL
 )paren
-multiline_comment|/* shouldn&squot;t happen! */
-r_return
-op_minus
-id|ENODEV
 suffix:semicolon
 id|pre_retval
 op_assign
@@ -9758,9 +16655,8 @@ r_if
 c_cond
 (paren
 id|write_retval
-op_ne
-op_minus
-id|EFAULT
+OG
+l_int|0
 )paren
 (brace
 id|ixj_PostWrite
@@ -9802,9 +16698,8 @@ r_if
 c_cond
 (paren
 id|write_retval
-op_ne
-op_minus
-id|EFAULT
+OG
+l_int|0
 )paren
 (brace
 id|j-&gt;write_buffer_wp
@@ -9938,7 +16833,7 @@ l_int|10
 suffix:semicolon
 )brace
 )brace
-singleline_comment|// Throw away word 0 of the 8021 compressed format to get standard G.729.
+multiline_comment|/* Throw away word 0 of the 8021 compressed format to get standard G.729. */
 r_if
 c_cond
 (paren
@@ -9953,11 +16848,11 @@ l_int|0
 op_logical_or
 id|cnt
 op_eq
-l_int|5
+l_int|10
 op_logical_or
 id|cnt
 op_eq
-l_int|10
+l_int|20
 )paren
 )paren
 (brace
@@ -10023,43 +16918,17 @@ op_minus
 l_int|1
 )paren
 (brace
-id|IXJ
-op_star
-id|icom
-op_assign
-id|ixj
-(braket
-id|j-&gt;intercom
-)braket
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|icom
-op_eq
-l_int|NULL
-)paren
-(brace
-multiline_comment|/* shouldn&squot;t happen! */
-id|printk
-c_func
-(paren
-id|KERN_ERR
-l_string|&quot;ixj_read_frame(): j-&gt;intercom = %d = NULL!&quot;
-comma
-id|j-&gt;intercom
-)paren
-suffix:semicolon
-r_return
-suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
 id|IsTxReady
 c_func
 (paren
-id|icom
+id|get_ixj
+c_func
+(paren
+id|j-&gt;intercom
+)paren
 )paren
 )paren
 (brace
@@ -10148,7 +17017,13 @@ op_plus
 id|cnt
 )paren
 comma
-id|icom-&gt;DSPbase
+id|get_ixj
+c_func
+(paren
+id|j-&gt;intercom
+)paren
+op_member_access_from_pointer
+id|DSPbase
 op_plus
 l_int|0x0C
 )paren
@@ -10165,14 +17040,26 @@ op_plus
 l_int|1
 )paren
 comma
-id|icom-&gt;DSPbase
+id|get_ixj
+c_func
+(paren
+id|j-&gt;intercom
+)paren
+op_member_access_from_pointer
+id|DSPbase
 op_plus
 l_int|0x0D
 )paren
 suffix:semicolon
 )brace
+id|get_ixj
+c_func
+(paren
+id|j-&gt;intercom
+)paren
+op_member_access_from_pointer
+id|frameswritten
 op_increment
-id|icom-&gt;frameswritten
 suffix:semicolon
 )brace
 )brace
@@ -10189,7 +17076,7 @@ op_amp
 id|j-&gt;read_q
 )paren
 suffix:semicolon
-singleline_comment|// Wake any blocked readers
+multiline_comment|/* Wake any blocked readers */
 id|wake_up_interruptible
 c_func
 (paren
@@ -10197,15 +17084,27 @@ op_amp
 id|j-&gt;poll_q
 )paren
 suffix:semicolon
-singleline_comment|// Wake any blocked selects
+multiline_comment|/* Wake any blocked selects */
+r_if
+c_cond
+(paren
+id|j-&gt;ixj_signals
+(braket
+id|SIG_READ_READY
+)braket
+)paren
+(brace
 id|ixj_kill_fasync
 c_func
 (paren
 id|j
 comma
-id|POLL_IN
+id|SIG_READ_READY
+comma
+id|POLL_OUT
 )paren
 suffix:semicolon
+)brace
 )brace
 )brace
 )brace
@@ -10863,12 +17762,6 @@ r_int
 id|bit
 )paren
 (brace
-r_int
-id|dly
-suffix:semicolon
-id|IXJ_WORD
-id|dat
-suffix:semicolon
 r_while
 c_loop
 (paren
@@ -10880,55 +17773,15 @@ l_int|20
 r_if
 c_cond
 (paren
-op_logical_neg
-id|IsTxReady
-c_func
+id|j-&gt;fskdcnt
+OL
 (paren
-id|j
+id|j-&gt;fsksize
+op_minus
+l_int|1
 )paren
 )paren
 (brace
-id|dly
-op_assign
-l_int|0
-suffix:semicolon
-r_while
-c_loop
-(paren
-op_logical_neg
-id|IsTxReady
-c_func
-(paren
-id|j
-)paren
-)paren
-(brace
-r_if
-c_cond
-(paren
-id|dly
-op_increment
-OG
-l_int|5
-)paren
-(brace
-id|dly
-op_assign
-l_int|0
-suffix:semicolon
-singleline_comment|//      break;
-singleline_comment|//      printk(&quot;CID delay&bslash;n&quot;);
-)brace
-id|udelay
-c_func
-(paren
-l_int|10
-)paren
-suffix:semicolon
-)brace
-)brace
-id|dat.word
-op_assign
 id|j-&gt;fskdata
 (braket
 id|j-&gt;fskdcnt
@@ -10946,26 +17799,7 @@ id|j-&gt;fskz
 id|j-&gt;fskcnt
 )braket
 suffix:semicolon
-id|outb_p
-c_func
-(paren
-id|dat.bytes.low
-comma
-id|j-&gt;DSPbase
-op_plus
-l_int|0x0C
-)paren
-suffix:semicolon
-id|outb_p
-c_func
-(paren
-id|dat.bytes.high
-comma
-id|j-&gt;DSPbase
-op_plus
-l_int|0x0D
-)paren
-suffix:semicolon
+)brace
 id|j-&gt;fskcnt
 op_add_assign
 l_int|3
@@ -11004,7 +17838,7 @@ c_func
 (paren
 id|IXJ
 op_star
-id|board
+id|j
 comma
 r_char
 id|byte
@@ -11013,7 +17847,6 @@ id|byte
 id|IXJ_CBYTE
 id|cb
 suffix:semicolon
-singleline_comment|//  printk(&quot;Writing CID data %x - %c&bslash;n&quot;, byte, byte);
 id|cb.cbyte
 op_assign
 id|byte
@@ -11021,7 +17854,7 @@ suffix:semicolon
 id|ixj_write_cid_bit
 c_func
 (paren
-id|board
+id|j
 comma
 l_int|0
 )paren
@@ -11029,7 +17862,7 @@ suffix:semicolon
 id|ixj_write_cid_bit
 c_func
 (paren
-id|board
+id|j
 comma
 id|cb.cbits.b0
 ques
@@ -11042,7 +17875,7 @@ suffix:semicolon
 id|ixj_write_cid_bit
 c_func
 (paren
-id|board
+id|j
 comma
 id|cb.cbits.b1
 ques
@@ -11055,7 +17888,7 @@ suffix:semicolon
 id|ixj_write_cid_bit
 c_func
 (paren
-id|board
+id|j
 comma
 id|cb.cbits.b2
 ques
@@ -11068,7 +17901,7 @@ suffix:semicolon
 id|ixj_write_cid_bit
 c_func
 (paren
-id|board
+id|j
 comma
 id|cb.cbits.b3
 ques
@@ -11081,7 +17914,7 @@ suffix:semicolon
 id|ixj_write_cid_bit
 c_func
 (paren
-id|board
+id|j
 comma
 id|cb.cbits.b4
 ques
@@ -11094,7 +17927,7 @@ suffix:semicolon
 id|ixj_write_cid_bit
 c_func
 (paren
-id|board
+id|j
 comma
 id|cb.cbits.b5
 ques
@@ -11107,7 +17940,7 @@ suffix:semicolon
 id|ixj_write_cid_bit
 c_func
 (paren
-id|board
+id|j
 comma
 id|cb.cbits.b6
 ques
@@ -11120,7 +17953,7 @@ suffix:semicolon
 id|ixj_write_cid_bit
 c_func
 (paren
-id|board
+id|j
 comma
 id|cb.cbits.b7
 ques
@@ -11133,7 +17966,7 @@ suffix:semicolon
 id|ixj_write_cid_bit
 c_func
 (paren
-id|board
+id|j
 comma
 l_int|1
 )paren
@@ -11147,7 +17980,7 @@ c_func
 (paren
 id|IXJ
 op_star
-id|board
+id|j
 )paren
 (brace
 r_int
@@ -11171,7 +18004,7 @@ op_increment
 id|ixj_write_cid_bit
 c_func
 (paren
-id|board
+id|j
 comma
 l_int|0
 )paren
@@ -11179,7 +18012,7 @@ suffix:semicolon
 id|ixj_write_cid_bit
 c_func
 (paren
-id|board
+id|j
 comma
 l_int|1
 )paren
@@ -11203,7 +18036,7 @@ op_increment
 id|ixj_write_cid_bit
 c_func
 (paren
-id|board
+id|j
 comma
 l_int|1
 )paren
@@ -11218,7 +18051,7 @@ c_func
 (paren
 id|IXJ
 op_star
-id|board
+id|j
 )paren
 (brace
 r_int
@@ -11242,7 +18075,7 @@ op_increment
 id|ixj_write_cid_bit
 c_func
 (paren
-id|board
+id|j
 comma
 l_int|1
 )paren
@@ -11257,7 +18090,7 @@ c_func
 (paren
 id|IXJ
 op_star
-id|board
+id|j
 comma
 r_char
 op_star
@@ -11292,7 +18125,7 @@ op_increment
 id|ixj_write_cid_byte
 c_func
 (paren
-id|board
+id|j
 comma
 id|s
 (braket
@@ -11332,8 +18165,6 @@ id|pad
 (brace
 r_int
 id|cnt
-comma
-id|dly
 suffix:semicolon
 r_for
 c_loop
@@ -11353,71 +18184,24 @@ op_increment
 r_if
 c_cond
 (paren
-op_logical_neg
-id|IsTxReady
-c_func
+id|j-&gt;fskdcnt
+OL
 (paren
-id|j
+id|j-&gt;fsksize
+op_minus
+l_int|1
 )paren
 )paren
 (brace
-id|dly
-op_assign
-l_int|0
-suffix:semicolon
-r_while
-c_loop
-(paren
-op_logical_neg
-id|IsTxReady
-c_func
-(paren
-id|j
-)paren
-)paren
-(brace
-r_if
-c_cond
-(paren
-id|dly
+id|j-&gt;fskdata
+(braket
+id|j-&gt;fskdcnt
 op_increment
-OG
-l_int|5
-)paren
-(brace
-id|dly
+)braket
 op_assign
-l_int|0
+l_int|0x0000
 suffix:semicolon
 )brace
-id|udelay
-c_func
-(paren
-l_int|10
-)paren
-suffix:semicolon
-)brace
-)brace
-id|outb_p
-c_func
-(paren
-l_int|0x00
-comma
-id|j-&gt;DSPbase
-op_plus
-l_int|0x0C
-)paren
-suffix:semicolon
-id|outb_p
-c_func
-(paren
-l_int|0x00
-comma
-id|j-&gt;DSPbase
-op_plus
-l_int|0x0D
-)paren
-suffix:semicolon
 )brace
 r_for
 c_loop
@@ -11437,71 +18221,313 @@ op_increment
 r_if
 c_cond
 (paren
-op_logical_neg
-id|IsTxReady
-c_func
+id|j-&gt;fskdcnt
+OL
 (paren
-id|j
+id|j-&gt;fsksize
+op_minus
+l_int|1
 )paren
 )paren
 (brace
-id|dly
+id|j-&gt;fskdata
+(braket
+id|j-&gt;fskdcnt
+op_increment
+)braket
 op_assign
-l_int|0
+l_int|0x0000
 suffix:semicolon
-r_while
-c_loop
+)brace
+)brace
+)brace
+DECL|function|ixj_pre_cid
+r_static
+r_void
+id|ixj_pre_cid
+c_func
 (paren
-op_logical_neg
-id|IsTxReady
+id|IXJ
+op_star
+id|j
+)paren
+(brace
+id|j-&gt;cid_play_codec
+op_assign
+id|j-&gt;play_codec
+suffix:semicolon
+id|j-&gt;cid_play_frame_size
+op_assign
+id|j-&gt;play_frame_size
+suffix:semicolon
+id|j-&gt;cid_play_volume
+op_assign
+id|get_play_volume
 c_func
 (paren
 id|j
 )paren
+suffix:semicolon
+id|j-&gt;cid_play_flag
+op_assign
+id|j-&gt;flags.playing
+suffix:semicolon
+id|j-&gt;cid_rec_codec
+op_assign
+id|j-&gt;rec_codec
+suffix:semicolon
+id|j-&gt;cid_rec_volume
+op_assign
+id|get_rec_volume
+c_func
+(paren
+id|j
+)paren
+suffix:semicolon
+id|j-&gt;cid_rec_flag
+op_assign
+id|j-&gt;flags.recording
+suffix:semicolon
+id|j-&gt;cid_play_aec_level
+op_assign
+id|j-&gt;aec_level
+suffix:semicolon
+r_switch
+c_cond
+(paren
+id|j-&gt;baseframe.low
 )paren
 (brace
+r_case
+l_int|0xA0
+suffix:colon
+id|j-&gt;cid_base_frame_size
+op_assign
+l_int|20
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+l_int|0x50
+suffix:colon
+id|j-&gt;cid_base_frame_size
+op_assign
+l_int|10
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+l_int|0xF0
+suffix:colon
+id|j-&gt;cid_base_frame_size
+op_assign
+l_int|30
+suffix:semicolon
+r_break
+suffix:semicolon
+)brace
+id|ixj_play_stop
+c_func
+(paren
+id|j
+)paren
+suffix:semicolon
+id|ixj_cpt_stop
+c_func
+(paren
+id|j
+)paren
+suffix:semicolon
+id|j-&gt;flags.cidplay
+op_assign
+l_int|1
+suffix:semicolon
+id|set_base_frame
+c_func
+(paren
+id|j
+comma
+l_int|30
+)paren
+suffix:semicolon
+id|set_play_codec
+c_func
+(paren
+id|j
+comma
+id|LINEAR16
+)paren
+suffix:semicolon
+id|set_play_volume
+c_func
+(paren
+id|j
+comma
+l_int|0x1B
+)paren
+suffix:semicolon
+id|ixj_play_start
+c_func
+(paren
+id|j
+)paren
+suffix:semicolon
+)brace
+DECL|function|ixj_post_cid
+r_static
+r_void
+id|ixj_post_cid
+c_func
+(paren
+id|IXJ
+op_star
+id|j
+)paren
+(brace
+id|ixj_play_stop
+c_func
+(paren
+id|j
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
-id|dly
-op_increment
+id|j-&gt;cidsize
 OG
-l_int|5
+l_int|5000
 )paren
 (brace
-id|dly
+id|SLIC_SetState
+c_func
+(paren
+id|PLD_SLIC_STATE_STANDBY
+comma
+id|j
+)paren
+suffix:semicolon
+)brace
+id|j-&gt;flags.cidplay
 op_assign
 l_int|0
 suffix:semicolon
-)brace
-id|udelay
-c_func
+r_if
+c_cond
 (paren
-l_int|10
+id|ixjdebug
+op_amp
+l_int|0x0200
 )paren
-suffix:semicolon
-)brace
-)brace
-id|outb_p
+(brace
+id|printk
 c_func
 (paren
-l_int|0x00
+l_string|&quot;IXJ phone%d Finished Playing CallerID data %ld&bslash;n&quot;
 comma
-id|j-&gt;DSPbase
-op_plus
-l_int|0x0C
+id|j-&gt;board
+comma
+id|jiffies
 )paren
 suffix:semicolon
-id|outb_p
+)brace
+id|ixj_fsk_free
 c_func
 (paren
-l_int|0x00
-comma
-id|j-&gt;DSPbase
-op_plus
-l_int|0x0D
+id|j
 )paren
 suffix:semicolon
+id|j-&gt;fskdcnt
+op_assign
+l_int|0
+suffix:semicolon
+id|set_base_frame
+c_func
+(paren
+id|j
+comma
+id|j-&gt;cid_base_frame_size
+)paren
+suffix:semicolon
+id|set_play_codec
+c_func
+(paren
+id|j
+comma
+id|j-&gt;cid_play_codec
+)paren
+suffix:semicolon
+id|ixj_aec_start
+c_func
+(paren
+id|j
+comma
+id|j-&gt;cid_play_aec_level
+)paren
+suffix:semicolon
+id|set_play_volume
+c_func
+(paren
+id|j
+comma
+id|j-&gt;cid_play_volume
+)paren
+suffix:semicolon
+id|set_rec_codec
+c_func
+(paren
+id|j
+comma
+id|j-&gt;cid_rec_codec
+)paren
+suffix:semicolon
+id|set_rec_volume
+c_func
+(paren
+id|j
+comma
+id|j-&gt;cid_rec_volume
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|j-&gt;cid_rec_flag
+)paren
+(brace
+id|ixj_record_start
+c_func
+(paren
+id|j
+)paren
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+id|j-&gt;cid_play_flag
+)paren
+(brace
+id|ixj_play_start
+c_func
+(paren
+id|j
+)paren
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+id|j-&gt;cid_play_flag
+)paren
+(brace
+id|wake_up_interruptible
+c_func
+(paren
+op_amp
+id|j-&gt;write_q
+)paren
+suffix:semicolon
+multiline_comment|/* Wake any blocked writers */
 )brace
 )brace
 DECL|function|ixj_write_cid
@@ -11556,6 +18582,8 @@ c_cond
 id|j-&gt;dsp.low
 op_eq
 l_int|0x20
+op_logical_or
+id|j-&gt;flags.cidplay
 )paren
 r_return
 suffix:semicolon
@@ -11569,9 +18597,17 @@ id|j-&gt;fskdcnt
 op_assign
 l_int|0
 suffix:semicolon
-id|j-&gt;flags.cidplay
+id|j-&gt;cidsize
 op_assign
-l_int|1
+id|j-&gt;cidcnt
+op_assign
+l_int|0
+suffix:semicolon
+id|ixj_fsk_alloc
+c_func
+(paren
+id|j
+)paren
 suffix:semicolon
 id|strcpy
 c_func
@@ -11655,59 +18691,12 @@ id|len3
 op_plus
 l_int|6
 suffix:semicolon
-id|set_base_frame
-c_func
+r_while
+c_loop
 (paren
-id|j
-comma
-l_int|30
-)paren
-suffix:semicolon
-id|set_play_codec
-c_func
-(paren
-id|j
-comma
-id|LINEAR16
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|j-&gt;port
-op_eq
-id|PORT_POTS
-)paren
-r_if
-c_cond
-(paren
-op_logical_neg
-id|j-&gt;r_hook
+l_int|1
 )paren
 (brace
-id|SLIC_SetState
-c_func
-(paren
-id|PLD_SLIC_STATE_OHT
-comma
-id|j
-)paren
-suffix:semicolon
-)brace
-id|set_play_volume
-c_func
-(paren
-id|j
-comma
-l_int|0x1B
-)paren
-suffix:semicolon
-id|ixj_play_start
-c_func
-(paren
-id|j
-)paren
-suffix:semicolon
 id|ixj_write_cid_seize
 c_func
 (paren
@@ -11780,6 +18769,21 @@ comma
 id|checksum
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|ixj_hookstate
+c_func
+(paren
+id|j
+)paren
+op_amp
+l_int|1
+)paren
+(brace
+r_break
+suffix:semicolon
+)brace
 id|ixj_write_cid_byte
 c_func
 (paren
@@ -11820,6 +18824,21 @@ comma
 id|checksum
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|ixj_hookstate
+c_func
+(paren
+id|j
+)paren
+op_amp
+l_int|1
+)paren
+(brace
+r_break
+suffix:semicolon
+)brace
 id|ixj_write_cid_byte
 c_func
 (paren
@@ -11860,6 +18879,21 @@ comma
 id|checksum
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|ixj_hookstate
+c_func
+(paren
+id|j
+)paren
+op_amp
+l_int|1
+)paren
+(brace
+r_break
+suffix:semicolon
+)brace
 id|checksum
 op_mod_assign
 l_int|256
@@ -11910,19 +18944,10 @@ comma
 id|pad
 )paren
 suffix:semicolon
-id|SLIC_SetState
-c_func
-(paren
-id|PLD_SLIC_STATE_STANDBY
-comma
-id|j
-)paren
+r_break
 suffix:semicolon
-id|j-&gt;flags.cidplay
-op_assign
-l_int|0
-suffix:semicolon
-id|ixj_play_stop
+)brace
+id|ixj_write_frame
 c_func
 (paren
 id|j
@@ -11984,6 +19009,8 @@ c_cond
 id|j-&gt;dsp.low
 op_eq
 l_int|0x20
+op_logical_or
+id|j-&gt;flags.cidplay
 )paren
 r_return
 suffix:semicolon
@@ -11997,9 +19024,21 @@ id|j-&gt;fskdcnt
 op_assign
 l_int|0
 suffix:semicolon
-id|j-&gt;flags.cidplay
+id|j-&gt;cidsize
 op_assign
-l_int|1
+id|j-&gt;cidcnt
+op_assign
+l_int|0
+suffix:semicolon
+id|ixj_fsk_alloc
+c_func
+(paren
+id|j
+)paren
+suffix:semicolon
+id|j-&gt;flags.cidcw_ack
+op_assign
+l_int|0
 suffix:semicolon
 id|ti.tone_index
 op_assign
@@ -12030,6 +19069,128 @@ op_amp
 id|ti
 )paren
 suffix:semicolon
+id|ixj_set_tone_on
+c_func
+(paren
+l_int|1500
+comma
+id|j
+)paren
+suffix:semicolon
+id|ixj_set_tone_off
+c_func
+(paren
+l_int|32
+comma
+id|j
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|ixjdebug
+op_amp
+l_int|0x0200
+)paren
+(brace
+id|printk
+c_func
+(paren
+l_string|&quot;IXJ cidcw phone%d first tone start at %ld&bslash;n&quot;
+comma
+id|j-&gt;board
+comma
+id|jiffies
+)paren
+suffix:semicolon
+)brace
+id|ixj_play_tone
+c_func
+(paren
+id|j
+comma
+l_int|23
+)paren
+suffix:semicolon
+id|clear_bit
+c_func
+(paren
+id|j-&gt;board
+comma
+op_amp
+id|j-&gt;busyflags
+)paren
+suffix:semicolon
+r_while
+c_loop
+(paren
+id|j-&gt;tone_state
+)paren
+(brace
+id|set_current_state
+c_func
+(paren
+id|TASK_INTERRUPTIBLE
+)paren
+suffix:semicolon
+id|schedule_timeout
+c_func
+(paren
+l_int|1
+)paren
+suffix:semicolon
+)brace
+r_while
+c_loop
+(paren
+id|test_and_set_bit
+c_func
+(paren
+id|j-&gt;board
+comma
+(paren
+r_void
+op_star
+)paren
+op_amp
+id|j-&gt;busyflags
+)paren
+op_ne
+l_int|0
+)paren
+(brace
+id|set_current_state
+c_func
+(paren
+id|TASK_INTERRUPTIBLE
+)paren
+suffix:semicolon
+id|schedule_timeout
+c_func
+(paren
+l_int|1
+)paren
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+id|ixjdebug
+op_amp
+l_int|0x0200
+)paren
+(brace
+id|printk
+c_func
+(paren
+l_string|&quot;IXJ cidcw phone%d first tone end at %ld&bslash;n&quot;
+comma
+id|j-&gt;board
+comma
+id|jiffies
+)paren
+suffix:semicolon
+)brace
 id|ti.tone_index
 op_assign
 l_int|24
@@ -12059,49 +19220,41 @@ op_amp
 id|ti
 )paren
 suffix:semicolon
+id|ixj_set_tone_off
+c_func
+(paren
+l_int|10
+comma
+id|j
+)paren
+suffix:semicolon
 id|ixj_set_tone_on
 c_func
 (paren
-l_int|1200
+l_int|600
 comma
 id|j
 )paren
 suffix:semicolon
-id|ixj_play_tone
-c_func
+r_if
+c_cond
 (paren
-id|j
-comma
-l_int|23
-)paren
-suffix:semicolon
-r_while
-c_loop
-(paren
-id|j-&gt;tone_state
+id|ixjdebug
+op_amp
+l_int|0x0200
 )paren
 (brace
-id|set_current_state
+id|printk
 c_func
 (paren
-id|TASK_INTERRUPTIBLE
-)paren
-suffix:semicolon
-id|schedule_timeout
-c_func
-(paren
-l_int|1
+l_string|&quot;IXJ cidcw phone%d second tone start at %ld&bslash;n&quot;
+comma
+id|j-&gt;board
+comma
+id|jiffies
 )paren
 suffix:semicolon
 )brace
-id|ixj_set_tone_on
-c_func
-(paren
-l_int|320
-comma
-id|j
-)paren
-suffix:semicolon
 id|ixj_play_tone
 c_func
 (paren
@@ -12110,6 +19263,15 @@ comma
 l_int|24
 )paren
 suffix:semicolon
+id|clear_bit
+c_func
+(paren
+id|j-&gt;board
+comma
+op_amp
+id|j-&gt;busyflags
+)paren
+suffix:semicolon
 r_while
 c_loop
 (paren
@@ -12129,16 +19291,78 @@ l_int|1
 )paren
 suffix:semicolon
 )brace
+r_while
+c_loop
+(paren
+id|test_and_set_bit
+c_func
+(paren
+id|j-&gt;board
+comma
+(paren
+r_void
+op_star
+)paren
+op_amp
+id|j-&gt;busyflags
+)paren
+op_ne
+l_int|0
+)paren
+(brace
+id|set_current_state
+c_func
+(paren
+id|TASK_INTERRUPTIBLE
+)paren
+suffix:semicolon
+id|schedule_timeout
+c_func
+(paren
+l_int|1
+)paren
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+id|ixjdebug
+op_amp
+l_int|0x0200
+)paren
+(brace
+id|printk
+c_func
+(paren
+l_string|&quot;IXJ cidcw phone%d sent second tone at %ld&bslash;n&quot;
+comma
+id|j-&gt;board
+comma
+id|jiffies
+)paren
+suffix:semicolon
+)brace
 id|j-&gt;cidcw_wait
 op_assign
 id|jiffies
 op_plus
 (paren
-l_int|200
+(paren
+l_int|50
 op_star
 id|hertz
+)paren
 op_div
-l_int|100000
+l_int|100
+)paren
+suffix:semicolon
+id|clear_bit
+c_func
+(paren
+id|j-&gt;board
+comma
+op_amp
+id|j-&gt;busyflags
 )paren
 suffix:semicolon
 r_while
@@ -12169,6 +19393,42 @@ l_int|1
 )paren
 suffix:semicolon
 )brace
+r_while
+c_loop
+(paren
+id|test_and_set_bit
+c_func
+(paren
+id|j-&gt;board
+comma
+(paren
+r_void
+op_star
+)paren
+op_amp
+id|j-&gt;busyflags
+)paren
+op_ne
+l_int|0
+)paren
+(brace
+id|set_current_state
+c_func
+(paren
+id|TASK_INTERRUPTIBLE
+)paren
+suffix:semicolon
+id|schedule_timeout
+c_func
+(paren
+l_int|1
+)paren
+suffix:semicolon
+)brace
+id|j-&gt;cidcw_wait
+op_assign
+l_int|0
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -12176,9 +19436,62 @@ op_logical_neg
 id|j-&gt;flags.cidcw_ack
 )paren
 (brace
+r_if
+c_cond
+(paren
+id|ixjdebug
+op_amp
+l_int|0x0200
+)paren
+(brace
+id|printk
+c_func
+(paren
+l_string|&quot;IXJ cidcw phone%d did not recieve ACK from display %ld&bslash;n&quot;
+comma
+id|j-&gt;board
+comma
+id|jiffies
+)paren
+suffix:semicolon
+)brace
+id|ixj_post_cid
+c_func
+(paren
+id|j
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|j-&gt;cid_play_flag
+)paren
+(brace
+id|wake_up_interruptible
+c_func
+(paren
+op_amp
+id|j-&gt;write_q
+)paren
+suffix:semicolon
+multiline_comment|/* Wake any blocked readers */
+)brace
 r_return
 suffix:semicolon
 )brace
+r_else
+(brace
+id|ixj_pre_cid
+c_func
+(paren
+id|j
+)paren
+suffix:semicolon
+)brace
+id|j-&gt;flags.cidcw_ack
+op_assign
+l_int|0
+suffix:semicolon
 id|strcpy
 c_func
 (paren
@@ -12260,79 +19573,6 @@ op_plus
 id|len3
 op_plus
 l_int|6
-suffix:semicolon
-id|j-&gt;cid_play_codec
-op_assign
-id|j-&gt;play_codec
-suffix:semicolon
-id|ixj_play_stop
-c_func
-(paren
-id|j
-)paren
-suffix:semicolon
-r_switch
-c_cond
-(paren
-id|j-&gt;baseframe.low
-)paren
-(brace
-r_case
-l_int|0xA0
-suffix:colon
-id|j-&gt;cid_base_frame_size
-op_assign
-l_int|20
-suffix:semicolon
-r_break
-suffix:semicolon
-r_case
-l_int|0x50
-suffix:colon
-id|j-&gt;cid_base_frame_size
-op_assign
-l_int|10
-suffix:semicolon
-r_break
-suffix:semicolon
-r_default
-suffix:colon
-id|j-&gt;cid_base_frame_size
-op_assign
-l_int|30
-suffix:semicolon
-r_break
-suffix:semicolon
-)brace
-id|set_base_frame
-c_func
-(paren
-id|j
-comma
-l_int|30
-)paren
-suffix:semicolon
-id|set_play_codec
-c_func
-(paren
-id|j
-comma
-id|LINEAR16
-)paren
-suffix:semicolon
-id|set_play_volume
-c_func
-(paren
-id|j
-comma
-l_int|0x1B
-)paren
-suffix:semicolon
-id|ixj_play_start
-c_func
-(paren
-id|j
-)paren
 suffix:semicolon
 id|ixj_write_cidcw_seize
 c_func
@@ -12536,32 +19776,25 @@ comma
 id|pad
 )paren
 suffix:semicolon
-id|j-&gt;flags.cidplay
-op_assign
-l_int|0
-suffix:semicolon
-id|ixj_play_stop
-c_func
+r_if
+c_cond
 (paren
-id|j
+id|ixjdebug
+op_amp
+l_int|0x0200
 )paren
-suffix:semicolon
-id|set_base_frame
+(brace
+id|printk
 c_func
 (paren
-id|j
+l_string|&quot;IXJ cidcw phone%d sent FSK data at %ld&bslash;n&quot;
 comma
-id|j-&gt;cid_base_frame_size
-)paren
-suffix:semicolon
-id|set_play_codec
-c_func
-(paren
-id|j
+id|j-&gt;board
 comma
-id|j-&gt;cid_play_codec
+id|jiffies
 )paren
 suffix:semicolon
+)brace
 )brace
 DECL|function|ixj_write_vmwi
 r_static
@@ -12594,6 +19827,8 @@ c_cond
 id|j-&gt;dsp.low
 op_eq
 l_int|0x20
+op_logical_or
+id|j-&gt;flags.cidplay
 )paren
 r_return
 suffix:semicolon
@@ -12607,29 +19842,21 @@ id|j-&gt;fskdcnt
 op_assign
 l_int|0
 suffix:semicolon
-id|j-&gt;flags.cidplay
+id|j-&gt;cidsize
 op_assign
-l_int|1
+id|j-&gt;cidcnt
+op_assign
+l_int|0
+suffix:semicolon
+id|ixj_fsk_alloc
+c_func
+(paren
+id|j
+)paren
 suffix:semicolon
 id|mdmflen
 op_assign
 l_int|3
-suffix:semicolon
-id|set_base_frame
-c_func
-(paren
-id|j
-comma
-l_int|30
-)paren
-suffix:semicolon
-id|set_play_codec
-c_func
-(paren
-id|j
-comma
-id|LINEAR16
-)paren
 suffix:semicolon
 r_if
 c_cond
@@ -12643,20 +19870,6 @@ c_func
 (paren
 id|PLD_SLIC_STATE_OHT
 comma
-id|j
-)paren
-suffix:semicolon
-id|set_play_volume
-c_func
-(paren
-id|j
-comma
-l_int|0x1B
-)paren
-suffix:semicolon
-id|ixj_play_start
-c_func
-(paren
 id|j
 )paren
 suffix:semicolon
@@ -12808,24 +20021,6 @@ comma
 id|pad
 )paren
 suffix:semicolon
-id|SLIC_SetState
-c_func
-(paren
-id|PLD_SLIC_STATE_STANDBY
-comma
-id|j
-)paren
-suffix:semicolon
-id|j-&gt;flags.cidplay
-op_assign
-l_int|0
-suffix:semicolon
-id|ixj_play_stop
-c_func
-(paren
-id|j
-)paren
-suffix:semicolon
 )brace
 DECL|function|ixj_write_frame
 r_static
@@ -12845,6 +20040,9 @@ id|frame_count
 comma
 id|dly
 suffix:semicolon
+id|IXJ_WORD
+id|dat
+suffix:semicolon
 id|BYTES
 id|blankword
 suffix:semicolon
@@ -12855,11 +20053,186 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|j-&gt;flags.cidplay
+)paren
+(brace
+r_for
+c_loop
+(paren
+id|cnt
+op_assign
+l_int|0
+suffix:semicolon
+id|cnt
+OL
+l_int|480
+suffix:semicolon
+id|cnt
+op_increment
+)paren
+(brace
+r_if
+c_cond
+(paren
+op_logical_neg
+(paren
+id|cnt
+op_mod
+l_int|16
+)paren
+op_logical_and
+op_logical_neg
+id|IsTxReady
+c_func
+(paren
+id|j
+)paren
+)paren
+(brace
+id|dly
+op_assign
+l_int|0
+suffix:semicolon
+r_while
+c_loop
+(paren
+op_logical_neg
+id|IsTxReady
+c_func
+(paren
+id|j
+)paren
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|dly
+op_increment
+OG
+l_int|5
+)paren
+(brace
+id|dly
+op_assign
+l_int|0
+suffix:semicolon
+r_break
+suffix:semicolon
+)brace
+id|udelay
+c_func
+(paren
+l_int|10
+)paren
+suffix:semicolon
+)brace
+)brace
+id|dat.word
+op_assign
+id|j-&gt;fskdata
+(braket
+id|j-&gt;cidcnt
+op_increment
+)braket
+suffix:semicolon
+id|outb_p
+c_func
+(paren
+id|dat.bytes.low
+comma
+id|j-&gt;DSPbase
+op_plus
+l_int|0x0C
+)paren
+suffix:semicolon
+id|outb_p
+c_func
+(paren
+id|dat.bytes.high
+comma
+id|j-&gt;DSPbase
+op_plus
+l_int|0x0D
+)paren
+suffix:semicolon
+id|cnt
+op_increment
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+id|j-&gt;cidcnt
+op_ge
+id|j-&gt;fskdcnt
+)paren
+(brace
+id|ixj_post_cid
+c_func
+(paren
+id|j
+)paren
+suffix:semicolon
+)brace
+multiline_comment|/* This may seem rude, but if we just played one frame of FSK data for CallerID&n;&t;&t;   and there is real audio data in the buffer, we need to throw it away because &n;&t;&t;   we just used it&squot;s time slot */
+r_if
+c_cond
+(paren
+id|j-&gt;write_buffer_rp
+OG
+id|j-&gt;write_buffer_wp
+)paren
+(brace
+id|j-&gt;write_buffer_rp
+op_add_assign
+id|j-&gt;cid_play_frame_size
+op_star
+l_int|2
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|j-&gt;write_buffer_rp
+op_ge
+id|j-&gt;write_buffer_end
+)paren
+(brace
+id|j-&gt;write_buffer_rp
+op_assign
+id|j-&gt;write_buffer
+suffix:semicolon
+)brace
+id|j-&gt;write_buffers_empty
+op_increment
+suffix:semicolon
+id|wake_up_interruptible
+c_func
+(paren
+op_amp
+id|j-&gt;write_q
+)paren
+suffix:semicolon
+multiline_comment|/* Wake any blocked writers */
+id|wake_up_interruptible
+c_func
+(paren
+op_amp
+id|j-&gt;poll_q
+)paren
+suffix:semicolon
+multiline_comment|/* Wake any blocked selects */
+)brace
+)brace
+r_else
+r_if
+c_cond
+(paren
 id|j-&gt;write_buffer
 op_logical_and
 id|j-&gt;write_buffers_empty
 OL
-l_int|2
+l_int|1
 )paren
 (brace
 r_if
@@ -13088,6 +20461,145 @@ op_assign
 l_int|0
 suffix:semicolon
 )brace
+r_else
+r_if
+c_cond
+(paren
+id|j-&gt;play_codec
+op_eq
+id|G723_63
+op_logical_and
+id|j-&gt;flags.play_first_frame
+)paren
+(brace
+r_for
+c_loop
+(paren
+id|cnt
+op_assign
+l_int|0
+suffix:semicolon
+id|cnt
+OL
+l_int|24
+suffix:semicolon
+id|cnt
+op_increment
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|cnt
+op_eq
+l_int|12
+)paren
+(brace
+id|blankword.low
+op_assign
+l_int|0x02
+suffix:semicolon
+id|blankword.high
+op_assign
+l_int|0x00
+suffix:semicolon
+)brace
+r_else
+(brace
+id|blankword.low
+op_assign
+id|blankword.high
+op_assign
+l_int|0x00
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+op_logical_neg
+(paren
+id|cnt
+op_mod
+l_int|16
+)paren
+op_logical_and
+op_logical_neg
+id|IsTxReady
+c_func
+(paren
+id|j
+)paren
+)paren
+(brace
+id|dly
+op_assign
+l_int|0
+suffix:semicolon
+r_while
+c_loop
+(paren
+op_logical_neg
+id|IsTxReady
+c_func
+(paren
+id|j
+)paren
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|dly
+op_increment
+OG
+l_int|5
+)paren
+(brace
+id|dly
+op_assign
+l_int|0
+suffix:semicolon
+r_break
+suffix:semicolon
+)brace
+id|udelay
+c_func
+(paren
+l_int|10
+)paren
+suffix:semicolon
+)brace
+)brace
+id|outb_p
+c_func
+(paren
+(paren
+id|blankword.low
+)paren
+comma
+id|j-&gt;DSPbase
+op_plus
+l_int|0x0C
+)paren
+suffix:semicolon
+id|outb_p
+c_func
+(paren
+(paren
+id|blankword.high
+)paren
+comma
+id|j-&gt;DSPbase
+op_plus
+l_int|0x0D
+)paren
+suffix:semicolon
+)brace
+id|j-&gt;flags.play_first_frame
+op_assign
+l_int|0
+suffix:semicolon
+)brace
 r_for
 c_loop
 (paren
@@ -13163,8 +20675,7 @@ l_int|10
 suffix:semicolon
 )brace
 )brace
-singleline_comment|// Add word 0 to G.729 frames for the 8021.  Right now we don&squot;t do VAD/CNG 
-singleline_comment|// so all frames are type 1.
+multiline_comment|/* Add word 0 to G.729 frames for the 8021.  Right now we don&squot;t do VAD/CNG  */
 r_if
 c_cond
 (paren
@@ -13179,14 +20690,121 @@ l_int|0
 op_logical_or
 id|cnt
 op_eq
-l_int|5
+l_int|10
 op_logical_or
 id|cnt
 op_eq
-l_int|10
+l_int|20
 )paren
 )paren
 (brace
+r_if
+c_cond
+(paren
+id|j-&gt;write_buffer_rp
+op_plus
+id|cnt
+op_eq
+l_int|0
+op_logical_and
+id|j-&gt;write_buffer_rp
+op_plus
+id|cnt
+op_plus
+l_int|1
+op_eq
+l_int|0
+op_logical_and
+id|j-&gt;write_buffer_rp
+op_plus
+id|cnt
+op_plus
+l_int|2
+op_eq
+l_int|0
+op_logical_and
+id|j-&gt;write_buffer_rp
+op_plus
+id|cnt
+op_plus
+l_int|3
+op_eq
+l_int|0
+op_logical_and
+id|j-&gt;write_buffer_rp
+op_plus
+id|cnt
+op_plus
+l_int|4
+op_eq
+l_int|0
+op_logical_and
+id|j-&gt;write_buffer_rp
+op_plus
+id|cnt
+op_plus
+l_int|5
+op_eq
+l_int|0
+op_logical_and
+id|j-&gt;write_buffer_rp
+op_plus
+id|cnt
+op_plus
+l_int|6
+op_eq
+l_int|0
+op_logical_and
+id|j-&gt;write_buffer_rp
+op_plus
+id|cnt
+op_plus
+l_int|7
+op_eq
+l_int|0
+op_logical_and
+id|j-&gt;write_buffer_rp
+op_plus
+id|cnt
+op_plus
+l_int|8
+op_eq
+l_int|0
+op_logical_and
+id|j-&gt;write_buffer_rp
+op_plus
+id|cnt
+op_plus
+l_int|9
+op_eq
+l_int|0
+)paren
+(brace
+multiline_comment|/* someone is trying to write silence lets make this a type 0 frame. */
+id|outb_p
+c_func
+(paren
+l_int|0x00
+comma
+id|j-&gt;DSPbase
+op_plus
+l_int|0x0C
+)paren
+suffix:semicolon
+id|outb_p
+c_func
+(paren
+l_int|0x00
+comma
+id|j-&gt;DSPbase
+op_plus
+l_int|0x0D
+)paren
+suffix:semicolon
+)brace
+r_else
+(brace
+multiline_comment|/* so all other frames are type 1. */
 id|outb_p
 c_func
 (paren
@@ -13207,6 +20825,7 @@ op_plus
 l_int|0x0D
 )paren
 suffix:semicolon
+)brace
 )brace
 id|outb_p
 c_func
@@ -13290,7 +20909,7 @@ op_amp
 id|j-&gt;write_q
 )paren
 suffix:semicolon
-singleline_comment|// Wake any blocked writers
+multiline_comment|/* Wake any blocked writers */
 id|wake_up_interruptible
 c_func
 (paren
@@ -13298,15 +20917,7 @@ op_amp
 id|j-&gt;poll_q
 )paren
 suffix:semicolon
-singleline_comment|// Wake any blocked selects
-id|ixj_kill_fasync
-c_func
-(paren
-id|j
-comma
-id|POLL_OUT
-)paren
-suffix:semicolon
+multiline_comment|/* Wake any blocked selects */
 op_increment
 id|j-&gt;frameswritten
 suffix:semicolon
@@ -13316,6 +20927,26 @@ r_else
 (brace
 id|j-&gt;drybuffer
 op_increment
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+id|j-&gt;ixj_signals
+(braket
+id|SIG_WRITE_READY
+)braket
+)paren
+(brace
+id|ixj_kill_fasync
+c_func
+(paren
+id|j
+comma
+id|SIG_WRITE_READY
+comma
+id|POLL_OUT
+)paren
 suffix:semicolon
 )brace
 )brace
@@ -13341,7 +20972,7 @@ comma
 id|j
 )paren
 )paren
-singleline_comment|// DSP Idle
+multiline_comment|/* DSP Idle */
 r_return
 l_int|0
 suffix:semicolon
@@ -13352,13 +20983,35 @@ id|j-&gt;ssr.high
 op_logical_or
 id|j-&gt;ssr.low
 )paren
+(brace
 r_return
 l_int|0
 suffix:semicolon
+)brace
 r_else
+(brace
+id|j-&gt;play_mode
+op_assign
+op_minus
+l_int|1
+suffix:semicolon
+id|j-&gt;flags.playing
+op_assign
+l_int|0
+suffix:semicolon
+id|j-&gt;rec_mode
+op_assign
+op_minus
+l_int|1
+suffix:semicolon
+id|j-&gt;flags.recording
+op_assign
+l_int|0
+suffix:semicolon
 r_return
 l_int|1
 suffix:semicolon
+)brace
 )brace
 DECL|function|set_base_frame
 r_static
@@ -13380,6 +21033,16 @@ id|cmd
 suffix:semicolon
 r_int
 id|cnt
+suffix:semicolon
+id|idle
+c_func
+(paren
+id|j
+)paren
+suffix:semicolon
+id|j-&gt;cid_play_aec_level
+op_assign
+id|j-&gt;aec_level
 suffix:semicolon
 id|aec_stop
 c_func
@@ -13528,7 +21191,33 @@ id|j-&gt;baseframe.low
 op_assign
 id|j-&gt;ssr.low
 suffix:semicolon
+multiline_comment|/* If the status returned is 0x0000 (pg9-9 8021) the call failed */
+r_if
+c_cond
+(paren
+id|j-&gt;baseframe.high
+op_eq
+l_int|0x00
+op_logical_and
+id|j-&gt;baseframe.low
+op_eq
+l_int|0x00
+)paren
+(brace
+r_return
+op_minus
+l_int|1
+suffix:semicolon
 )brace
+)brace
+id|ixj_aec_start
+c_func
+(paren
+id|j
+comma
+id|j-&gt;cid_play_aec_level
+)paren
+suffix:semicolon
 r_return
 id|size
 suffix:semicolon
@@ -13800,6 +21489,78 @@ suffix:colon
 id|j-&gt;rec_frame_size
 op_assign
 l_int|15
+suffix:semicolon
+r_break
+suffix:semicolon
+)brace
+id|j-&gt;rec_mode
+op_assign
+l_int|0
+suffix:semicolon
+)brace
+r_else
+(brace
+id|retval
+op_assign
+l_int|1
+suffix:semicolon
+)brace
+r_break
+suffix:semicolon
+r_case
+id|G729B
+suffix:colon
+r_if
+c_cond
+(paren
+id|j-&gt;dsp.low
+op_ne
+l_int|0x20
+)paren
+(brace
+r_if
+c_cond
+(paren
+op_logical_neg
+id|j-&gt;flags.g729_loaded
+)paren
+(brace
+id|retval
+op_assign
+l_int|1
+suffix:semicolon
+r_break
+suffix:semicolon
+)brace
+r_switch
+c_cond
+(paren
+id|j-&gt;baseframe.low
+)paren
+(brace
+r_case
+l_int|0xA0
+suffix:colon
+id|j-&gt;rec_frame_size
+op_assign
+l_int|12
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+l_int|0x50
+suffix:colon
+id|j-&gt;rec_frame_size
+op_assign
+l_int|6
+suffix:semicolon
+r_break
+suffix:semicolon
+r_default
+suffix:colon
+id|j-&gt;rec_frame_size
+op_assign
+l_int|18
 suffix:semicolon
 r_break
 suffix:semicolon
@@ -14113,7 +21874,28 @@ comma
 id|j
 )paren
 suffix:semicolon
-singleline_comment|// Put the DSP in full power mode.
+multiline_comment|/* Put the DSP in full power mode. */
+r_if
+c_cond
+(paren
+id|ixjdebug
+op_amp
+l_int|0x0002
+)paren
+(brace
+id|printk
+c_func
+(paren
+l_string|&quot;IXJ %d Starting Record Codec %d at %ld&bslash;n&quot;
+comma
+id|j-&gt;board
+comma
+id|j-&gt;rec_codec
+comma
+id|jiffies
+)paren
+suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
@@ -14152,7 +21934,7 @@ id|cmd
 op_assign
 l_int|0x5130
 suffix:semicolon
-singleline_comment|// TrueSpeech 8.5
+multiline_comment|/* TrueSpeech 8.5 */
 r_break
 suffix:semicolon
 r_case
@@ -14162,7 +21944,7 @@ id|cmd
 op_assign
 l_int|0x5133
 suffix:semicolon
-singleline_comment|// TrueSpeech 4.8
+multiline_comment|/* TrueSpeech 4.8 */
 r_break
 suffix:semicolon
 r_case
@@ -14172,7 +21954,7 @@ id|cmd
 op_assign
 l_int|0x5134
 suffix:semicolon
-singleline_comment|// TrueSpeech 4.1
+multiline_comment|/* TrueSpeech 4.1 */
 r_break
 suffix:semicolon
 r_case
@@ -14186,6 +21968,9 @@ r_break
 suffix:semicolon
 r_case
 id|G729
+suffix:colon
+r_case
+id|G729B
 suffix:colon
 id|cmd
 op_assign
@@ -14252,7 +22037,7 @@ c_func
 (paren
 l_string|&quot;Read buffer allocation for ixj board %d failed!&bslash;n&quot;
 comma
-id|j-&gt;p.board
+id|j-&gt;board
 )paren
 suffix:semicolon
 r_return
@@ -14278,7 +22063,7 @@ comma
 id|j
 )paren
 )paren
-singleline_comment|// Set Poll sync mode
+multiline_comment|/* Set Poll sync mode */
 r_return
 op_minus
 l_int|1
@@ -14296,7 +22081,7 @@ id|cmd
 op_assign
 l_int|0x1C03
 suffix:semicolon
-singleline_comment|// Record C1
+multiline_comment|/* Record C1 */
 r_break
 suffix:semicolon
 r_case
@@ -14314,7 +22099,7 @@ id|cmd
 op_assign
 l_int|0x1E03
 suffix:semicolon
-singleline_comment|// Record C1
+multiline_comment|/* Record C1 */
 )brace
 r_else
 (brace
@@ -14322,7 +22107,7 @@ id|cmd
 op_assign
 l_int|0x1E01
 suffix:semicolon
-singleline_comment|// Record C1
+multiline_comment|/* Record C1 */
 )brace
 r_break
 suffix:semicolon
@@ -14341,7 +22126,7 @@ id|cmd
 op_assign
 l_int|0x1E83
 suffix:semicolon
-singleline_comment|// Record C1
+multiline_comment|/* Record C1 */
 )brace
 r_else
 (brace
@@ -14349,7 +22134,7 @@ id|cmd
 op_assign
 l_int|0x1E81
 suffix:semicolon
-singleline_comment|// Record C1
+multiline_comment|/* Record C1 */
 )brace
 r_break
 suffix:semicolon
@@ -14368,7 +22153,7 @@ id|cmd
 op_assign
 l_int|0x1F03
 suffix:semicolon
-singleline_comment|// Record C1
+multiline_comment|/* Record C1 */
 )brace
 r_else
 (brace
@@ -14376,7 +22161,7 @@ id|cmd
 op_assign
 l_int|0x1F01
 suffix:semicolon
-singleline_comment|// Record C1
+multiline_comment|/* Record C1 */
 )brace
 r_break
 suffix:semicolon
@@ -14395,7 +22180,7 @@ id|cmd
 op_assign
 l_int|0x1F83
 suffix:semicolon
-singleline_comment|// Record C1
+multiline_comment|/* Record C1 */
 )brace
 r_else
 (brace
@@ -14403,7 +22188,7 @@ id|cmd
 op_assign
 l_int|0x1F81
 suffix:semicolon
-singleline_comment|// Record C1
+multiline_comment|/* Record C1 */
 )brace
 r_break
 suffix:semicolon
@@ -14423,6 +22208,21 @@ r_return
 op_minus
 l_int|1
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|j-&gt;flags.playing
+)paren
+(brace
+id|ixj_aec_start
+c_func
+(paren
+id|j
+comma
+id|j-&gt;aec_level
+)paren
+suffix:semicolon
+)brace
 r_return
 l_int|0
 suffix:semicolon
@@ -14438,6 +22238,27 @@ op_star
 id|j
 )paren
 (brace
+r_if
+c_cond
+(paren
+id|ixjdebug
+op_amp
+l_int|0x0002
+)paren
+(brace
+id|printk
+c_func
+(paren
+l_string|&quot;IXJ %d Stopping Record Codec %d at %ld&bslash;n&quot;
+comma
+id|j-&gt;board
+comma
+id|j-&gt;rec_codec
+comma
+id|jiffies
+)paren
+suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
@@ -14486,21 +22307,6 @@ id|j-&gt;flags.recording
 op_assign
 l_int|0
 suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|j-&gt;flags.playing
-)paren
-id|ixj_WriteDSPCommand
-c_func
-(paren
-l_int|0x0FE3
-comma
-id|j
-)paren
-suffix:semicolon
-singleline_comment|// Put the DSP in 1/5 power mode.
 )brace
 DECL|function|ixj_vad
 r_static
@@ -14586,6 +22392,64 @@ id|j
 )paren
 suffix:semicolon
 )brace
+DECL|function|set_dtmf_prescale
+r_static
+r_void
+id|set_dtmf_prescale
+c_func
+(paren
+id|IXJ
+op_star
+id|j
+comma
+r_int
+id|volume
+)paren
+(brace
+id|ixj_WriteDSPCommand
+c_func
+(paren
+l_int|0xCF07
+comma
+id|j
+)paren
+suffix:semicolon
+id|ixj_WriteDSPCommand
+c_func
+(paren
+id|volume
+comma
+id|j
+)paren
+suffix:semicolon
+)brace
+DECL|function|get_dtmf_prescale
+r_static
+r_int
+id|get_dtmf_prescale
+c_func
+(paren
+id|IXJ
+op_star
+id|j
+)paren
+(brace
+id|ixj_WriteDSPCommand
+c_func
+(paren
+l_int|0xCF05
+comma
+id|j
+)paren
+suffix:semicolon
+r_return
+id|j-&gt;ssr.high
+op_lshift
+l_int|8
+op_or
+id|j-&gt;ssr.low
+suffix:semicolon
+)brace
 DECL|function|set_rec_volume
 r_static
 r_void
@@ -14600,6 +22464,69 @@ r_int
 id|volume
 )paren
 (brace
+r_if
+c_cond
+(paren
+id|j-&gt;aec_level
+op_eq
+id|AEC_AGC
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|ixjdebug
+op_amp
+l_int|0x0002
+)paren
+id|printk
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;IXJ: /dev/phone%d Setting AGC Threshold to 0x%4.4x&bslash;n&quot;
+comma
+id|j-&gt;board
+comma
+id|volume
+)paren
+suffix:semicolon
+id|ixj_WriteDSPCommand
+c_func
+(paren
+l_int|0xCF96
+comma
+id|j
+)paren
+suffix:semicolon
+id|ixj_WriteDSPCommand
+c_func
+(paren
+id|volume
+comma
+id|j
+)paren
+suffix:semicolon
+)brace
+r_else
+(brace
+r_if
+c_cond
+(paren
+id|ixjdebug
+op_amp
+l_int|0x0002
+)paren
+id|printk
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;IXJ: /dev/phone %d Setting Record Volume to 0x%4.4x&bslash;n&quot;
+comma
+id|j-&gt;board
+comma
+id|volume
+)paren
+suffix:semicolon
 id|ixj_WriteDSPCommand
 c_func
 (paren
@@ -14617,6 +22544,169 @@ id|j
 )paren
 suffix:semicolon
 )brace
+)brace
+DECL|function|set_rec_volume_linear
+r_static
+r_int
+id|set_rec_volume_linear
+c_func
+(paren
+id|IXJ
+op_star
+id|j
+comma
+r_int
+id|volume
+)paren
+(brace
+r_int
+id|newvolume
+comma
+id|dsprecmax
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|ixjdebug
+op_amp
+l_int|0x0002
+)paren
+id|printk
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;IXJ: /dev/phone %d Setting Linear Record Volume to 0x%4.4x&bslash;n&quot;
+comma
+id|j-&gt;board
+comma
+id|volume
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|volume
+OG
+l_int|100
+op_logical_or
+id|volume
+OL
+l_int|0
+)paren
+(brace
+r_return
+op_minus
+l_int|1
+suffix:semicolon
+)brace
+multiline_comment|/* This should normalize the perceived volumes between the different cards caused by differences in the hardware */
+r_switch
+c_cond
+(paren
+id|j-&gt;cardtype
+)paren
+(brace
+r_case
+id|QTI_PHONEJACK
+suffix:colon
+id|dsprecmax
+op_assign
+l_int|0x440
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+id|QTI_LINEJACK
+suffix:colon
+id|dsprecmax
+op_assign
+l_int|0x180
+suffix:semicolon
+id|ixj_mixer
+c_func
+(paren
+l_int|0x0203
+comma
+id|j
+)paren
+suffix:semicolon
+multiline_comment|/*Voice Left Volume unmute 6db */
+id|ixj_mixer
+c_func
+(paren
+l_int|0x0303
+comma
+id|j
+)paren
+suffix:semicolon
+multiline_comment|/*Voice Right Volume unmute 6db */
+id|ixj_mixer
+c_func
+(paren
+l_int|0x0C00
+comma
+id|j
+)paren
+suffix:semicolon
+multiline_comment|/*Mono1 unmute 12db */
+r_break
+suffix:semicolon
+r_case
+id|QTI_PHONEJACK_LITE
+suffix:colon
+id|dsprecmax
+op_assign
+l_int|0x4C0
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+id|QTI_PHONEJACK_PCI
+suffix:colon
+id|dsprecmax
+op_assign
+l_int|0x100
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+id|QTI_PHONECARD
+suffix:colon
+id|dsprecmax
+op_assign
+l_int|0x400
+suffix:semicolon
+r_break
+suffix:semicolon
+r_default
+suffix:colon
+r_return
+op_minus
+l_int|1
+suffix:semicolon
+)brace
+id|newvolume
+op_assign
+(paren
+id|dsprecmax
+op_star
+id|volume
+)paren
+op_div
+l_int|100
+suffix:semicolon
+id|set_rec_volume
+c_func
+(paren
+id|j
+comma
+id|newvolume
+)paren
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+)brace
 DECL|function|get_rec_volume
 r_static
 r_int
@@ -14628,6 +22718,78 @@ op_star
 id|j
 )paren
 (brace
+r_if
+c_cond
+(paren
+id|j-&gt;aec_level
+op_eq
+id|AEC_AGC
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|ixjdebug
+op_amp
+l_int|0x0002
+)paren
+id|printk
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;Getting AGC Threshold&bslash;n&quot;
+)paren
+suffix:semicolon
+id|ixj_WriteDSPCommand
+c_func
+(paren
+l_int|0xCF86
+comma
+id|j
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|ixjdebug
+op_amp
+l_int|0x0002
+)paren
+id|printk
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;AGC Threshold is 0x%2.2x%2.2x&bslash;n&quot;
+comma
+id|j-&gt;ssr.high
+comma
+id|j-&gt;ssr.low
+)paren
+suffix:semicolon
+r_return
+id|j-&gt;ssr.high
+op_lshift
+l_int|8
+op_or
+id|j-&gt;ssr.low
+suffix:semicolon
+)brace
+r_else
+(brace
+r_if
+c_cond
+(paren
+id|ixjdebug
+op_amp
+l_int|0x0002
+)paren
+id|printk
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;Getting Record Volume&bslash;n&quot;
+)paren
+suffix:semicolon
 id|ixj_WriteDSPCommand
 c_func
 (paren
@@ -14642,6 +22804,118 @@ op_lshift
 l_int|8
 op_or
 id|j-&gt;ssr.low
+suffix:semicolon
+)brace
+)brace
+DECL|function|get_rec_volume_linear
+r_static
+r_int
+id|get_rec_volume_linear
+c_func
+(paren
+id|IXJ
+op_star
+id|j
+)paren
+(brace
+r_int
+id|volume
+comma
+id|newvolume
+comma
+id|dsprecmax
+suffix:semicolon
+r_switch
+c_cond
+(paren
+id|j-&gt;cardtype
+)paren
+(brace
+r_case
+id|QTI_PHONEJACK
+suffix:colon
+id|dsprecmax
+op_assign
+l_int|0x440
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+id|QTI_LINEJACK
+suffix:colon
+id|dsprecmax
+op_assign
+l_int|0x180
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+id|QTI_PHONEJACK_LITE
+suffix:colon
+id|dsprecmax
+op_assign
+l_int|0x4C0
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+id|QTI_PHONEJACK_PCI
+suffix:colon
+id|dsprecmax
+op_assign
+l_int|0x100
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+id|QTI_PHONECARD
+suffix:colon
+id|dsprecmax
+op_assign
+l_int|0x400
+suffix:semicolon
+r_break
+suffix:semicolon
+r_default
+suffix:colon
+r_return
+op_minus
+l_int|1
+suffix:semicolon
+)brace
+id|volume
+op_assign
+id|get_rec_volume
+c_func
+(paren
+id|j
+)paren
+suffix:semicolon
+id|newvolume
+op_assign
+(paren
+id|volume
+op_star
+l_int|100
+)paren
+op_div
+id|dsprecmax
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|newvolume
+OG
+l_int|100
+)paren
+(brace
+id|newvolume
+op_assign
+l_int|100
+suffix:semicolon
+)brace
+r_return
+id|newvolume
 suffix:semicolon
 )brace
 DECL|function|get_rec_level
@@ -14709,6 +22983,22 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|ixjdebug
+op_amp
+l_int|0x0002
+)paren
+id|printk
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;AGC set = 0x%2.2x&bslash;n&quot;
+comma
+id|j-&gt;aec_level
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
 op_logical_neg
 id|level
 )paren
@@ -14732,6 +23022,14 @@ op_logical_or
 id|j-&gt;play_codec
 op_eq
 id|G729
+op_logical_or
+id|j-&gt;rec_codec
+op_eq
+id|G729B
+op_logical_or
+id|j-&gt;play_codec
+op_eq
+id|G729B
 )paren
 (brace
 id|ixj_WriteDSPCommand
@@ -14742,7 +23040,7 @@ comma
 id|j
 )paren
 suffix:semicolon
-singleline_comment|// Move AEC filter buffer
+multiline_comment|/* Move AEC filter buffer */
 id|ixj_WriteDSPCommand
 c_func
 (paren
@@ -14760,7 +23058,7 @@ comma
 id|j
 )paren
 suffix:semicolon
-singleline_comment|// AEC On
+multiline_comment|/* AEC On */
 id|ixj_WriteDSPCommand
 c_func
 (paren
@@ -14769,7 +23067,7 @@ comma
 id|j
 )paren
 suffix:semicolon
-singleline_comment|// Advanced AEC C1
+multiline_comment|/* Advanced AEC C1 */
 r_switch
 c_cond
 (paren
@@ -14787,7 +23085,7 @@ comma
 id|j
 )paren
 suffix:semicolon
-singleline_comment|// Advanced AEC C2 = off
+multiline_comment|/* Advanced AEC C2 = off */
 id|ixj_WriteDSPCommand
 c_func
 (paren
@@ -14804,6 +23102,24 @@ comma
 id|j
 )paren
 suffix:semicolon
+id|ixj_WriteDSPCommand
+c_func
+(paren
+l_int|0xCF97
+comma
+id|j
+)paren
+suffix:semicolon
+multiline_comment|/* Set AGC Enable */
+id|ixj_WriteDSPCommand
+c_func
+(paren
+l_int|0x0000
+comma
+id|j
+)paren
+suffix:semicolon
+multiline_comment|/* to off */
 r_break
 suffix:semicolon
 r_case
@@ -14817,7 +23133,7 @@ comma
 id|j
 )paren
 suffix:semicolon
-singleline_comment|// Advanced AEC C2 = on medium
+multiline_comment|/* Advanced AEC C2 = on medium */
 id|ixj_WriteDSPCommand
 c_func
 (paren
@@ -14834,6 +23150,24 @@ comma
 id|j
 )paren
 suffix:semicolon
+id|ixj_WriteDSPCommand
+c_func
+(paren
+l_int|0xCF97
+comma
+id|j
+)paren
+suffix:semicolon
+multiline_comment|/* Set AGC Enable */
+id|ixj_WriteDSPCommand
+c_func
+(paren
+l_int|0x0000
+comma
+id|j
+)paren
+suffix:semicolon
+multiline_comment|/* to off */
 r_break
 suffix:semicolon
 r_case
@@ -14847,7 +23181,7 @@ comma
 id|j
 )paren
 suffix:semicolon
-singleline_comment|// Advanced AEC C2 = on high
+multiline_comment|/* Advanced AEC C2 = on high */
 id|ixj_WriteDSPCommand
 c_func
 (paren
@@ -14864,11 +23198,30 @@ comma
 id|j
 )paren
 suffix:semicolon
+id|ixj_WriteDSPCommand
+c_func
+(paren
+l_int|0xCF97
+comma
+id|j
+)paren
+suffix:semicolon
+multiline_comment|/* Set AGC Enable */
+id|ixj_WriteDSPCommand
+c_func
+(paren
+l_int|0x0000
+comma
+id|j
+)paren
+suffix:semicolon
+multiline_comment|/* to off */
 r_break
 suffix:semicolon
 r_case
-id|AEC_AUTO
+id|AEC_AGC
 suffix:colon
+multiline_comment|/* First we have to put the AEC into advance auto mode so that AGC will not conflict with it */
 id|ixj_WriteDSPCommand
 c_func
 (paren
@@ -14877,7 +23230,7 @@ comma
 id|j
 )paren
 suffix:semicolon
-singleline_comment|// Attenuation scaling factor of 2
+multiline_comment|/* Attenuation scaling factor of 2 */
 id|ixj_WriteDSPCommand
 c_func
 (paren
@@ -14894,7 +23247,7 @@ comma
 id|j
 )paren
 suffix:semicolon
-singleline_comment|// Higher Threshold Floor
+multiline_comment|/* Higher Threshold Floor */
 id|ixj_WriteDSPCommand
 c_func
 (paren
@@ -14903,11 +23256,33 @@ comma
 id|j
 )paren
 suffix:semicolon
-singleline_comment|// Set Train and Lock
+multiline_comment|/* Set Train and Lock */
+r_if
+c_cond
+(paren
+id|j-&gt;cardtype
+op_eq
+id|QTI_LINEJACK
+op_logical_or
+id|j-&gt;cardtype
+op_eq
+id|QTI_PHONECARD
+)paren
+(brace
 id|ixj_WriteDSPCommand
 c_func
 (paren
-l_int|0x0023
+l_int|0x0224
+comma
+id|j
+)paren
+suffix:semicolon
+)brace
+r_else
+id|ixj_WriteDSPCommand
+c_func
+(paren
+l_int|0x1224
 comma
 id|j
 )paren
@@ -14928,7 +23303,257 @@ comma
 id|j
 )paren
 suffix:semicolon
-singleline_comment|// Lock threashold at 3dB
+multiline_comment|/* Lock threashold at 3dB */
+id|ixj_WriteDSPCommand
+c_func
+(paren
+l_int|0xE338
+comma
+id|j
+)paren
+suffix:semicolon
+multiline_comment|/* Set Echo Suppresser Attenuation to 0dB */
+multiline_comment|/* Now we can set the AGC initial parameters and turn it on */
+id|ixj_WriteDSPCommand
+c_func
+(paren
+l_int|0xCF90
+comma
+id|j
+)paren
+suffix:semicolon
+multiline_comment|/* Set AGC Minumum gain */
+id|ixj_WriteDSPCommand
+c_func
+(paren
+l_int|0x0020
+comma
+id|j
+)paren
+suffix:semicolon
+multiline_comment|/* to 0.125 (-18dB) */
+id|ixj_WriteDSPCommand
+c_func
+(paren
+l_int|0xCF91
+comma
+id|j
+)paren
+suffix:semicolon
+multiline_comment|/* Set AGC Maximum gain */
+id|ixj_WriteDSPCommand
+c_func
+(paren
+l_int|0x1000
+comma
+id|j
+)paren
+suffix:semicolon
+multiline_comment|/* to 16 (24dB) */
+id|ixj_WriteDSPCommand
+c_func
+(paren
+l_int|0xCF92
+comma
+id|j
+)paren
+suffix:semicolon
+multiline_comment|/* Set AGC start gain */
+id|ixj_WriteDSPCommand
+c_func
+(paren
+l_int|0x0800
+comma
+id|j
+)paren
+suffix:semicolon
+multiline_comment|/* to 8 (+18dB) */
+id|ixj_WriteDSPCommand
+c_func
+(paren
+l_int|0xCF93
+comma
+id|j
+)paren
+suffix:semicolon
+multiline_comment|/* Set AGC hold time */
+id|ixj_WriteDSPCommand
+c_func
+(paren
+l_int|0x1F40
+comma
+id|j
+)paren
+suffix:semicolon
+multiline_comment|/* to 2 seconds (units are 250us) */
+id|ixj_WriteDSPCommand
+c_func
+(paren
+l_int|0xCF94
+comma
+id|j
+)paren
+suffix:semicolon
+multiline_comment|/* Set AGC Attack Time Constant */
+id|ixj_WriteDSPCommand
+c_func
+(paren
+l_int|0x0005
+comma
+id|j
+)paren
+suffix:semicolon
+multiline_comment|/* to 8ms */
+id|ixj_WriteDSPCommand
+c_func
+(paren
+l_int|0xCF95
+comma
+id|j
+)paren
+suffix:semicolon
+multiline_comment|/* Set AGC Decay Time Constant */
+id|ixj_WriteDSPCommand
+c_func
+(paren
+l_int|0x000D
+comma
+id|j
+)paren
+suffix:semicolon
+multiline_comment|/* to 4096ms */
+id|ixj_WriteDSPCommand
+c_func
+(paren
+l_int|0xCF96
+comma
+id|j
+)paren
+suffix:semicolon
+multiline_comment|/* Set AGC Attack Threshold */
+id|ixj_WriteDSPCommand
+c_func
+(paren
+l_int|0x1200
+comma
+id|j
+)paren
+suffix:semicolon
+multiline_comment|/* to 25% */
+id|ixj_WriteDSPCommand
+c_func
+(paren
+l_int|0xCF97
+comma
+id|j
+)paren
+suffix:semicolon
+multiline_comment|/* Set AGC Enable */
+id|ixj_WriteDSPCommand
+c_func
+(paren
+l_int|0x0001
+comma
+id|j
+)paren
+suffix:semicolon
+multiline_comment|/* to on */
+r_break
+suffix:semicolon
+r_case
+id|AEC_AUTO
+suffix:colon
+id|ixj_WriteDSPCommand
+c_func
+(paren
+l_int|0x0002
+comma
+id|j
+)paren
+suffix:semicolon
+multiline_comment|/* Attenuation scaling factor of 2 */
+id|ixj_WriteDSPCommand
+c_func
+(paren
+l_int|0xE011
+comma
+id|j
+)paren
+suffix:semicolon
+id|ixj_WriteDSPCommand
+c_func
+(paren
+l_int|0x0100
+comma
+id|j
+)paren
+suffix:semicolon
+multiline_comment|/* Higher Threshold Floor */
+id|ixj_WriteDSPCommand
+c_func
+(paren
+l_int|0xE012
+comma
+id|j
+)paren
+suffix:semicolon
+multiline_comment|/* Set Train and Lock */
+r_if
+c_cond
+(paren
+id|j-&gt;cardtype
+op_eq
+id|QTI_LINEJACK
+op_logical_or
+id|j-&gt;cardtype
+op_eq
+id|QTI_PHONECARD
+)paren
+(brace
+id|ixj_WriteDSPCommand
+c_func
+(paren
+l_int|0x0224
+comma
+id|j
+)paren
+suffix:semicolon
+)brace
+r_else
+id|ixj_WriteDSPCommand
+c_func
+(paren
+l_int|0x1224
+comma
+id|j
+)paren
+suffix:semicolon
+id|ixj_WriteDSPCommand
+c_func
+(paren
+l_int|0xE014
+comma
+id|j
+)paren
+suffix:semicolon
+id|ixj_WriteDSPCommand
+c_func
+(paren
+l_int|0x0003
+comma
+id|j
+)paren
+suffix:semicolon
+multiline_comment|/* Lock threashold at 3dB */
+id|ixj_WriteDSPCommand
+c_func
+(paren
+l_int|0xE338
+comma
+id|j
+)paren
+suffix:semicolon
+multiline_comment|/* Set Echo Suppresser Attenuation to 0dB */
 r_break
 suffix:semicolon
 )brace
@@ -14945,6 +23570,10 @@ op_star
 id|j
 )paren
 (brace
+id|j-&gt;aec_level
+op_assign
+id|AEC_OFF
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -14955,6 +23584,14 @@ op_logical_or
 id|j-&gt;play_codec
 op_eq
 id|G729
+op_logical_or
+id|j-&gt;rec_codec
+op_eq
+id|G729B
+op_logical_or
+id|j-&gt;play_codec
+op_eq
+id|G729B
 )paren
 (brace
 id|ixj_WriteDSPCommand
@@ -14965,7 +23602,7 @@ comma
 id|j
 )paren
 suffix:semicolon
-singleline_comment|// Move AEC filter buffer back
+multiline_comment|/* Move AEC filter buffer back */
 id|ixj_WriteDSPCommand
 c_func
 (paren
@@ -14997,7 +23634,7 @@ comma
 id|j
 )paren
 suffix:semicolon
-singleline_comment|// AEC Stop
+multiline_comment|/* AEC Stop */
 )brace
 )brace
 DECL|function|set_play_codec
@@ -15267,6 +23904,78 @@ suffix:colon
 id|j-&gt;play_frame_size
 op_assign
 l_int|15
+suffix:semicolon
+r_break
+suffix:semicolon
+)brace
+id|j-&gt;play_mode
+op_assign
+l_int|0
+suffix:semicolon
+)brace
+r_else
+(brace
+id|retval
+op_assign
+l_int|1
+suffix:semicolon
+)brace
+r_break
+suffix:semicolon
+r_case
+id|G729B
+suffix:colon
+r_if
+c_cond
+(paren
+id|j-&gt;dsp.low
+op_ne
+l_int|0x20
+)paren
+(brace
+r_if
+c_cond
+(paren
+op_logical_neg
+id|j-&gt;flags.g729_loaded
+)paren
+(brace
+id|retval
+op_assign
+l_int|1
+suffix:semicolon
+r_break
+suffix:semicolon
+)brace
+r_switch
+c_cond
+(paren
+id|j-&gt;baseframe.low
+)paren
+(brace
+r_case
+l_int|0xA0
+suffix:colon
+id|j-&gt;play_frame_size
+op_assign
+l_int|12
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+l_int|0x50
+suffix:colon
+id|j-&gt;play_frame_size
+op_assign
+l_int|6
+suffix:semicolon
+r_break
+suffix:semicolon
+r_default
+suffix:colon
+id|j-&gt;play_frame_size
+op_assign
+l_int|18
 suffix:semicolon
 r_break
 suffix:semicolon
@@ -15568,6 +24277,27 @@ id|j
 )paren
 suffix:semicolon
 )brace
+r_if
+c_cond
+(paren
+id|ixjdebug
+op_amp
+l_int|0x0002
+)paren
+(brace
+id|printk
+c_func
+(paren
+l_string|&quot;IXJ %d Starting Play Codec %d at %ld&bslash;n&quot;
+comma
+id|j-&gt;board
+comma
+id|j-&gt;play_codec
+comma
+id|jiffies
+)paren
+suffix:semicolon
+)brace
 id|j-&gt;flags.playing
 op_assign
 l_int|1
@@ -15580,7 +24310,7 @@ comma
 id|j
 )paren
 suffix:semicolon
-singleline_comment|// Put the DSP in full power mode.
+multiline_comment|/* Put the DSP in full power mode. */
 id|j-&gt;flags.play_first_frame
 op_assign
 l_int|1
@@ -15627,7 +24357,7 @@ id|cmd
 op_assign
 l_int|0x5230
 suffix:semicolon
-singleline_comment|// TrueSpeech 8.5
+multiline_comment|/* TrueSpeech 8.5 */
 r_break
 suffix:semicolon
 r_case
@@ -15637,7 +24367,7 @@ id|cmd
 op_assign
 l_int|0x5233
 suffix:semicolon
-singleline_comment|// TrueSpeech 4.8
+multiline_comment|/* TrueSpeech 4.8 */
 r_break
 suffix:semicolon
 r_case
@@ -15647,7 +24377,7 @@ id|cmd
 op_assign
 l_int|0x5234
 suffix:semicolon
-singleline_comment|// TrueSpeech 4.1
+multiline_comment|/* TrueSpeech 4.1 */
 r_break
 suffix:semicolon
 r_case
@@ -15661,6 +24391,9 @@ r_break
 suffix:semicolon
 r_case
 id|G729
+suffix:colon
+r_case
+id|G729B
 suffix:colon
 id|cmd
 op_assign
@@ -15714,7 +24447,7 @@ c_func
 (paren
 l_string|&quot;Write buffer allocation for ixj board %d failed!&bslash;n&quot;
 comma
-id|j-&gt;p.board
+id|j-&gt;board
 )paren
 suffix:semicolon
 r_return
@@ -15722,9 +24455,10 @@ op_minus
 id|ENOMEM
 suffix:semicolon
 )brace
+multiline_comment|/*&t;j-&gt;write_buffers_empty = 2; */
 id|j-&gt;write_buffers_empty
 op_assign
-l_int|2
+l_int|1
 suffix:semicolon
 id|j-&gt;write_buffer_size
 op_assign
@@ -15757,7 +24491,7 @@ comma
 id|j
 )paren
 )paren
-singleline_comment|// Set Poll sync mode
+multiline_comment|/* Set Poll sync mode */
 r_return
 op_minus
 l_int|1
@@ -15904,7 +24638,7 @@ comma
 id|j
 )paren
 )paren
-singleline_comment|// Playback C2
+multiline_comment|/* Playback C2 */
 r_return
 op_minus
 l_int|1
@@ -15922,19 +24656,26 @@ comma
 id|j
 )paren
 )paren
-singleline_comment|// Playback C3
+multiline_comment|/* Playback C3 */
 r_return
 op_minus
 l_int|1
 suffix:semicolon
-id|ixj_kill_fasync
+r_if
+c_cond
+(paren
+id|j-&gt;flags.recording
+)paren
+(brace
+id|ixj_aec_start
 c_func
 (paren
 id|j
 comma
-id|POLL_OUT
+id|j-&gt;aec_level
 )paren
 suffix:semicolon
+)brace
 r_return
 l_int|0
 suffix:semicolon
@@ -15950,6 +24691,27 @@ op_star
 id|j
 )paren
 (brace
+r_if
+c_cond
+(paren
+id|ixjdebug
+op_amp
+l_int|0x0002
+)paren
+(brace
+id|printk
+c_func
+(paren
+l_string|&quot;IXJ %d Stopping Play Codec %d at %ld&bslash;n&quot;
+comma
+id|j-&gt;board
+comma
+id|j-&gt;play_codec
+comma
+id|jiffies
+)paren
+suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
@@ -15988,7 +24750,7 @@ comma
 id|j
 )paren
 suffix:semicolon
-singleline_comment|// Stop playback and flush buffers.  8022 reference page 9-40
+multiline_comment|/* Stop playback and flush buffers.  8022 reference page 9-40 */
 id|j-&gt;play_mode
 op_assign
 op_minus
@@ -15999,25 +24761,10 @@ id|j-&gt;flags.playing
 op_assign
 l_int|0
 suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|j-&gt;flags.recording
-)paren
-id|ixj_WriteDSPCommand
-c_func
-(paren
-l_int|0x0FE3
-comma
-id|j
-)paren
-suffix:semicolon
-singleline_comment|// Put the DSP in 1/5 power mode.
 )brace
 DECL|function|get_play_level
-r_extern
-id|__inline__
+r_static
+r_inline
 r_int
 id|get_play_level
 c_func
@@ -16038,7 +24785,7 @@ comma
 id|j
 )paren
 suffix:semicolon
-singleline_comment|// 8022 Reference page 9-38
+multiline_comment|/* 8022 Reference page 9-38 */
 r_return
 id|j-&gt;ssr.high
 op_lshift
@@ -16095,26 +24842,15 @@ id|IXJ
 op_star
 id|j
 op_assign
-id|ixj
-(braket
+id|get_ixj
+c_func
+(paren
 id|NUM
 c_func
 (paren
 id|file_p-&gt;f_dentry-&gt;d_inode-&gt;i_rdev
 )paren
-)braket
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|j
-op_eq
-l_int|NULL
 )paren
-multiline_comment|/* shouldn&squot;t happen! */
-r_return
-op_minus
-id|ENODEV
 suffix:semicolon
 id|poll_wait
 c_func
@@ -16189,17 +24925,53 @@ c_cond
 (paren
 op_logical_neg
 id|j-&gt;tone_state
-op_logical_and
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|ixjdebug
+op_amp
+l_int|0x0002
+)paren
+(brace
+id|printk
+c_func
+(paren
+l_string|&quot;IXJ %d starting tone %d at %ld&bslash;n&quot;
+comma
+id|j-&gt;board
+comma
+id|tone
+comma
+id|jiffies
+)paren
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
 id|j-&gt;dsp.low
 op_eq
 l_int|0x20
 )paren
+(brace
 id|idle
 c_func
 (paren
 id|j
 )paren
 suffix:semicolon
+)brace
+id|j-&gt;tone_start_jif
+op_assign
+id|jiffies
+suffix:semicolon
+id|j-&gt;tone_state
+op_assign
+l_int|1
+suffix:semicolon
+)brace
 id|j-&gt;tone_index
 op_assign
 id|tone
@@ -16221,22 +24993,6 @@ r_return
 op_minus
 l_int|1
 suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|j-&gt;tone_state
-)paren
-(brace
-id|j-&gt;tone_start_jif
-op_assign
-id|jiffies
-suffix:semicolon
-id|j-&gt;tone_state
-op_assign
-l_int|1
-suffix:semicolon
-)brace
 r_return
 l_int|0
 suffix:semicolon
@@ -16271,7 +25027,7 @@ comma
 id|j
 )paren
 )paren
-singleline_comment|// Set Tone On Period
+multiline_comment|/* Set Tone On Period */
 r_return
 op_minus
 l_int|1
@@ -16368,8 +25124,8 @@ r_if
 c_cond
 (paren
 id|ixjdebug
-OG
-l_int|1
+op_amp
+l_int|0x0001
 )paren
 id|printk
 c_func
@@ -16462,8 +25218,8 @@ r_if
 c_cond
 (paren
 id|ixjdebug
-OG
-l_int|1
+op_amp
+l_int|0x0001
 )paren
 id|printk
 c_func
@@ -16510,12 +25266,12 @@ id|j-&gt;pld_scrw.bits.c0
 op_assign
 l_int|0
 suffix:semicolon
-singleline_comment|// Set PLD Serial control interface
+multiline_comment|/* Set PLD Serial control interface */
 id|j-&gt;pld_scrw.bits.c1
 op_assign
 l_int|0
 suffix:semicolon
-singleline_comment|// to no selection 
+multiline_comment|/* to no selection */
 r_break
 suffix:semicolon
 r_case
@@ -16525,12 +25281,12 @@ id|j-&gt;pld_scrw.bits.c0
 op_assign
 l_int|1
 suffix:semicolon
-singleline_comment|// Set PLD Serial control interface
+multiline_comment|/* Set PLD Serial control interface */
 id|j-&gt;pld_scrw.bits.c1
 op_assign
 l_int|0
 suffix:semicolon
-singleline_comment|// to write to DAA
+multiline_comment|/* to write to DAA */
 r_break
 suffix:semicolon
 r_case
@@ -16540,12 +25296,12 @@ id|j-&gt;pld_scrw.bits.c0
 op_assign
 l_int|0
 suffix:semicolon
-singleline_comment|// Set PLD Serial control interface
+multiline_comment|/* Set PLD Serial control interface */
 id|j-&gt;pld_scrw.bits.c1
 op_assign
 l_int|1
 suffix:semicolon
-singleline_comment|// to write to mixer 
+multiline_comment|/* to write to mixer */
 r_break
 suffix:semicolon
 r_case
@@ -16555,12 +25311,12 @@ id|j-&gt;pld_scrw.bits.c0
 op_assign
 l_int|1
 suffix:semicolon
-singleline_comment|// Set PLD Serial control interface
+multiline_comment|/* Set PLD Serial control interface */
 id|j-&gt;pld_scrw.bits.c1
 op_assign
 l_int|1
 suffix:semicolon
-singleline_comment|// to write to EEPROM 
+multiline_comment|/* to write to EEPROM */
 r_break
 suffix:semicolon
 r_default
@@ -16672,6 +25428,38 @@ r_return
 l_int|1
 suffix:semicolon
 )brace
+DECL|function|ixj_get_mixer
+r_static
+r_int
+id|ixj_get_mixer
+c_func
+(paren
+r_int
+id|val
+comma
+id|IXJ
+op_star
+id|j
+)paren
+(brace
+r_int
+id|reg
+op_assign
+(paren
+id|val
+op_amp
+l_int|0x1F00
+)paren
+op_rshift
+l_int|8
+suffix:semicolon
+r_return
+id|j-&gt;mix.vol
+(braket
+id|reg
+)braket
+suffix:semicolon
+)brace
 DECL|function|ixj_mixer
 r_static
 r_int
@@ -16694,7 +25482,7 @@ op_assign
 (paren
 id|val
 op_amp
-l_int|0xFF00
+l_int|0x1F00
 )paren
 op_rshift
 l_int|8
@@ -16704,6 +25492,14 @@ op_assign
 id|val
 op_amp
 l_int|0x00FF
+suffix:semicolon
+multiline_comment|/* save mixer value so we can get back later on */
+id|j-&gt;mix.vol
+(braket
+id|bytes.high
+)braket
+op_assign
+id|bytes.low
 suffix:semicolon
 id|outb_p
 c_func
@@ -16717,7 +25513,7 @@ op_plus
 l_int|0x03
 )paren
 suffix:semicolon
-singleline_comment|// Load Mixer Address
+multiline_comment|/* Load Mixer Address */
 id|outb_p
 c_func
 (paren
@@ -16728,7 +25524,7 @@ op_plus
 l_int|0x02
 )paren
 suffix:semicolon
-singleline_comment|// Load Mixer Data
+multiline_comment|/* Load Mixer Data */
 id|SCI_Control
 c_func
 (paren
@@ -17050,8 +25846,8 @@ r_if
 c_cond
 (paren
 id|ixjdebug
-OG
-l_int|0
+op_amp
+l_int|0x0001
 )paren
 id|printk
 c_func
@@ -17125,6 +25921,288 @@ r_return
 l_int|1
 suffix:semicolon
 )brace
+DECL|function|daa_CR_read
+r_static
+r_char
+id|daa_CR_read
+c_func
+(paren
+id|IXJ
+op_star
+id|j
+comma
+r_int
+id|cr
+)paren
+(brace
+id|IXJ_WORD
+id|wdata
+suffix:semicolon
+id|BYTES
+id|bytes
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|SCI_Prepare
+c_func
+(paren
+id|j
+)paren
+)paren
+r_return
+l_int|0
+suffix:semicolon
+r_switch
+c_cond
+(paren
+id|j-&gt;daa_mode
+)paren
+(brace
+r_case
+id|SOP_PU_SLEEP
+suffix:colon
+id|bytes.high
+op_assign
+l_int|0x30
+op_plus
+id|cr
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+id|SOP_PU_RINGING
+suffix:colon
+id|bytes.high
+op_assign
+l_int|0x70
+op_plus
+id|cr
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+id|SOP_PU_CONVERSATION
+suffix:colon
+id|bytes.high
+op_assign
+l_int|0xB0
+op_plus
+id|cr
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+id|SOP_PU_PULSEDIALING
+suffix:colon
+id|bytes.high
+op_assign
+l_int|0xF0
+op_plus
+id|cr
+suffix:semicolon
+r_break
+suffix:semicolon
+)brace
+id|bytes.low
+op_assign
+l_int|0x00
+suffix:semicolon
+id|outb_p
+c_func
+(paren
+id|bytes.high
+comma
+id|j-&gt;XILINXbase
+op_plus
+l_int|0x03
+)paren
+suffix:semicolon
+id|outb_p
+c_func
+(paren
+id|bytes.low
+comma
+id|j-&gt;XILINXbase
+op_plus
+l_int|0x02
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|SCI_Control
+c_func
+(paren
+id|j
+comma
+id|SCI_Enable_DAA
+)paren
+)paren
+r_return
+l_int|0
+suffix:semicolon
+id|bytes.high
+op_assign
+id|inb_p
+c_func
+(paren
+id|j-&gt;XILINXbase
+op_plus
+l_int|0x03
+)paren
+suffix:semicolon
+id|bytes.low
+op_assign
+id|inb_p
+c_func
+(paren
+id|j-&gt;XILINXbase
+op_plus
+l_int|0x02
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|bytes.low
+op_ne
+id|ALISDAA_ID_BYTE
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|ixjdebug
+op_amp
+l_int|0x0001
+)paren
+id|printk
+c_func
+(paren
+l_string|&quot;Cannot read DAA ID Byte high = %d low = %d&bslash;n&quot;
+comma
+id|bytes.high
+comma
+id|bytes.low
+)paren
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+op_logical_neg
+id|SCI_Control
+c_func
+(paren
+id|j
+comma
+id|SCI_Enable_DAA
+)paren
+)paren
+r_return
+l_int|0
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|SCI_Control
+c_func
+(paren
+id|j
+comma
+id|SCI_End
+)paren
+)paren
+r_return
+l_int|0
+suffix:semicolon
+id|wdata.word
+op_assign
+id|inw_p
+c_func
+(paren
+id|j-&gt;XILINXbase
+op_plus
+l_int|0x02
+)paren
+suffix:semicolon
+r_switch
+c_cond
+(paren
+id|cr
+)paren
+(brace
+r_case
+l_int|5
+suffix:colon
+id|j-&gt;m_DAAShadowRegs.SOP_REGS.SOP.cr5.reg
+op_assign
+id|wdata.bytes.high
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+l_int|4
+suffix:colon
+id|j-&gt;m_DAAShadowRegs.SOP_REGS.SOP.cr4.reg
+op_assign
+id|wdata.bytes.high
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+l_int|3
+suffix:colon
+id|j-&gt;m_DAAShadowRegs.SOP_REGS.SOP.cr3.reg
+op_assign
+id|wdata.bytes.high
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+l_int|2
+suffix:colon
+id|j-&gt;m_DAAShadowRegs.SOP_REGS.SOP.cr2.reg
+op_assign
+id|wdata.bytes.high
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+l_int|1
+suffix:colon
+id|j-&gt;m_DAAShadowRegs.SOP_REGS.SOP.cr1.reg
+op_assign
+id|wdata.bytes.high
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+l_int|0
+suffix:colon
+id|j-&gt;m_DAAShadowRegs.SOP_REGS.SOP.cr0.reg
+op_assign
+id|wdata.bytes.high
+suffix:semicolon
+r_break
+suffix:semicolon
+r_default
+suffix:colon
+r_return
+l_int|0
+suffix:semicolon
+)brace
+r_return
+l_int|1
+suffix:semicolon
+)brace
 DECL|function|ixj_daa_cid_reset
 r_static
 r_int
@@ -17141,6 +26219,19 @@ id|i
 suffix:semicolon
 id|BYTES
 id|bytes
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|ixjdebug
+op_amp
+l_int|0x0002
+)paren
+id|printk
+c_func
+(paren
+l_string|&quot;DAA Clearing CID ram&bslash;n&quot;
+)paren
 suffix:semicolon
 r_if
 c_cond
@@ -17308,6 +26399,19 @@ id|SCI_End
 r_return
 l_int|0
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|ixjdebug
+op_amp
+l_int|0x0002
+)paren
+id|printk
+c_func
+(paren
+l_string|&quot;DAA CID ram cleared&bslash;n&quot;
+)paren
+suffix:semicolon
 r_return
 l_int|1
 suffix:semicolon
@@ -17445,8 +26549,8 @@ r_if
 c_cond
 (paren
 id|ixjdebug
-OG
-l_int|0
+op_amp
+l_int|0x0001
 )paren
 id|printk
 c_func
@@ -18013,8 +27117,8 @@ r_if
 c_cond
 (paren
 id|ixjdebug
-OG
-l_int|0
+op_amp
+l_int|0x0001
 )paren
 id|printk
 c_func
@@ -18084,8 +27188,8 @@ r_if
 c_cond
 (paren
 id|ixjdebug
-OG
-l_int|0
+op_amp
+l_int|0x0002
 )paren
 id|printk
 c_func
@@ -18119,20 +27223,13 @@ r_int
 id|mode
 )paren
 (brace
-singleline_comment|// NOTE:
-singleline_comment|//      The DAA *MUST* be in the conversation mode if the
-singleline_comment|//      PSTN line is to be seized (PSTN line off-hook).
-singleline_comment|//      Taking the PSTN line off-hook while the DAA is in
-singleline_comment|//      a mode other than conversation mode will cause a
-singleline_comment|//      hardware failure of the ALIS-A part.
-singleline_comment|// NOTE:
-singleline_comment|//      The DAA can only go to SLEEP, RINGING or PULSEDIALING modes
-singleline_comment|//      if the PSTN line is on-hook.  Failure to have the PSTN line
-singleline_comment|//      in the on-hook state WILL CAUSE A HARDWARE FAILURE OF THE
-singleline_comment|//      ALIS-A part.
-singleline_comment|//
+multiline_comment|/* NOTE:&n;&t;      The DAA *MUST* be in the conversation mode if the&n;&t;      PSTN line is to be seized (PSTN line off-hook).&n;&t;      Taking the PSTN line off-hook while the DAA is in&n;&t;      a mode other than conversation mode will cause a&n;&t;      hardware failure of the ALIS-A part.&n;&n;&t;   NOTE:&n;&t;      The DAA can only go to SLEEP, RINGING or PULSEDIALING modes&n;&t;      if the PSTN line is on-hook.  Failure to have the PSTN line&n;&t;      in the on-hook state WILL CAUSE A HARDWARE FAILURE OF THE&n;&t;      ALIS-A part.&n;&t;*/
 id|BYTES
 id|bytes
+suffix:semicolon
+id|j-&gt;flags.pstn_rmr
+op_assign
+l_int|0
 suffix:semicolon
 r_if
 c_cond
@@ -18154,6 +27251,72 @@ id|mode
 )paren
 (brace
 r_case
+id|SOP_PU_RESET
+suffix:colon
+id|j-&gt;pld_scrw.bits.daafsyncen
+op_assign
+l_int|0
+suffix:semicolon
+multiline_comment|/* Turn off DAA Frame Sync */
+id|outb_p
+c_func
+(paren
+id|j-&gt;pld_scrw.byte
+comma
+id|j-&gt;XILINXbase
+)paren
+suffix:semicolon
+id|j-&gt;pld_slicw.bits.rly2
+op_assign
+l_int|0
+suffix:semicolon
+id|outb_p
+c_func
+(paren
+id|j-&gt;pld_slicw.byte
+comma
+id|j-&gt;XILINXbase
+op_plus
+l_int|0x01
+)paren
+suffix:semicolon
+id|bytes.high
+op_assign
+l_int|0x10
+suffix:semicolon
+id|bytes.low
+op_assign
+id|j-&gt;m_DAAShadowRegs.SOP_REGS.SOP.cr0.reg
+suffix:semicolon
+id|daa_load
+c_func
+(paren
+op_amp
+id|bytes
+comma
+id|j
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|SCI_Prepare
+c_func
+(paren
+id|j
+)paren
+)paren
+r_return
+l_int|0
+suffix:semicolon
+id|j-&gt;daa_mode
+op_assign
+id|SOP_PU_SLEEP
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
 id|SOP_PU_SLEEP
 suffix:colon
 r_if
@@ -18161,14 +27324,35 @@ c_cond
 (paren
 id|j-&gt;daa_mode
 op_eq
-id|SOP_PU_CONVERSATION
+id|SOP_PU_SLEEP
 )paren
+(brace
+r_break
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+id|ixjdebug
+op_amp
+l_int|0x0008
+)paren
+id|printk
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;phone DAA: SOP_PU_SLEEP at %ld&bslash;n&quot;
+comma
+id|jiffies
+)paren
+suffix:semicolon
+multiline_comment|/*&t;&t;if(j-&gt;daa_mode == SOP_PU_CONVERSATION) */
 (brace
 id|j-&gt;pld_scrw.bits.daafsyncen
 op_assign
 l_int|0
 suffix:semicolon
-singleline_comment|// Turn off DAA Frame Sync
+multiline_comment|/* Turn off DAA Frame Sync */
 id|outb_p
 c_func
 (paren
@@ -18226,7 +27410,7 @@ id|j-&gt;pld_scrw.bits.daafsyncen
 op_assign
 l_int|0
 suffix:semicolon
-singleline_comment|// Turn off DAA Frame Sync
+multiline_comment|/* Turn off DAA Frame Sync */
 id|outb_p
 c_func
 (paren
@@ -18298,7 +27482,7 @@ op_plus
 (paren
 id|hertz
 op_div
-l_int|2
+l_int|4
 )paren
 suffix:semicolon
 id|wake_up_interruptible
@@ -18308,7 +27492,7 @@ op_amp
 id|j-&gt;read_q
 )paren
 suffix:semicolon
-singleline_comment|// Wake any blocked readers
+multiline_comment|/* Wake any blocked readers */
 id|wake_up_interruptible
 c_func
 (paren
@@ -18316,7 +27500,7 @@ op_amp
 id|j-&gt;write_q
 )paren
 suffix:semicolon
-singleline_comment|// Wake any blocked writers
+multiline_comment|/* Wake any blocked writers */
 id|wake_up_interruptible
 c_func
 (paren
@@ -18324,17 +27508,33 @@ op_amp
 id|j-&gt;poll_q
 )paren
 suffix:semicolon
-singleline_comment|// Wake any blocked selects
+multiline_comment|/* Wake any blocked selects */
 r_break
 suffix:semicolon
 r_case
 id|SOP_PU_RINGING
 suffix:colon
+r_if
+c_cond
+(paren
+id|ixjdebug
+op_amp
+l_int|0x0008
+)paren
+id|printk
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;phone DAA: SOP_PU_RINGING at %ld&bslash;n&quot;
+comma
+id|jiffies
+)paren
+suffix:semicolon
 id|j-&gt;pld_scrw.bits.daafsyncen
 op_assign
 l_int|0
 suffix:semicolon
-singleline_comment|// Turn off DAA Frame Sync
+multiline_comment|/* Turn off DAA Frame Sync */
 id|outb_p
 c_func
 (paren
@@ -18396,6 +27596,22 @@ suffix:semicolon
 r_case
 id|SOP_PU_CONVERSATION
 suffix:colon
+r_if
+c_cond
+(paren
+id|ixjdebug
+op_amp
+l_int|0x0008
+)paren
+id|printk
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;phone DAA: SOP_PU_CONVERSATION at %ld&bslash;n&quot;
+comma
+id|jiffies
+)paren
+suffix:semicolon
 id|bytes.high
 op_assign
 l_int|0x90
@@ -18440,19 +27656,11 @@ op_plus
 l_int|0x01
 )paren
 suffix:semicolon
-id|j-&gt;pld_scrw.bits.led1
-op_assign
-l_int|0
-suffix:semicolon
-id|j-&gt;pld_scrw.bits.led2
-op_assign
-l_int|1
-suffix:semicolon
 id|j-&gt;pld_scrw.bits.daafsyncen
 op_assign
 l_int|1
 suffix:semicolon
-singleline_comment|// Turn on DAA Frame Sync
+multiline_comment|/* Turn on DAA Frame Sync */
 id|outb_p
 c_func
 (paren
@@ -18473,16 +27681,44 @@ id|j-&gt;ex.bits.pstn_ring
 op_assign
 l_int|0
 suffix:semicolon
+id|j-&gt;pstn_sleeptil
+op_assign
+id|jiffies
+suffix:semicolon
+id|j-&gt;pstn_ring_start
+op_assign
+id|j-&gt;pstn_ring_stop
+op_assign
+id|j-&gt;pstn_ring_int
+op_assign
+l_int|0
+suffix:semicolon
 r_break
 suffix:semicolon
 r_case
 id|SOP_PU_PULSEDIALING
 suffix:colon
+r_if
+c_cond
+(paren
+id|ixjdebug
+op_amp
+l_int|0x0008
+)paren
+id|printk
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;phone DAA: SOP_PU_PULSEDIALING at %ld&bslash;n&quot;
+comma
+id|jiffies
+)paren
+suffix:semicolon
 id|j-&gt;pld_scrw.bits.daafsyncen
 op_assign
 l_int|0
 suffix:semicolon
-singleline_comment|// Turn off DAA Frame Sync
+multiline_comment|/* Turn off DAA Frame Sync */
 id|outb_p
 c_func
 (paren
@@ -18564,6 +27800,18 @@ id|j
 id|BYTES
 id|bytes
 suffix:semicolon
+id|j-&gt;flags.pstncheck
+op_assign
+l_int|1
+suffix:semicolon
+id|daa_set_mode
+c_func
+(paren
+id|j
+comma
+id|SOP_PU_SLEEP
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -18576,6 +27824,14 @@ id|j
 )paren
 r_return
 l_int|0
+suffix:semicolon
+id|outb_p
+c_func
+(paren
+id|j-&gt;pld_scrw.byte
+comma
+id|j-&gt;XILINXbase
+)paren
 suffix:semicolon
 id|bytes.high
 op_assign
@@ -21248,6 +30504,31 @@ id|SCI_End
 r_return
 l_int|0
 suffix:semicolon
+id|outb_p
+c_func
+(paren
+id|j-&gt;pld_scrw.byte
+comma
+id|j-&gt;XILINXbase
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|ixjdebug
+op_amp
+l_int|0x0002
+)paren
+id|printk
+c_func
+(paren
+l_string|&quot;DAA Coefficients Loaded&bslash;n&quot;
+)paren
+suffix:semicolon
+id|j-&gt;flags.pstncheck
+op_assign
+l_int|0
+suffix:semicolon
 r_return
 l_int|1
 suffix:semicolon
@@ -21281,7 +30562,7 @@ comma
 id|j
 )paren
 )paren
-singleline_comment|// Set Tone Off Period
+multiline_comment|/* Set Tone Off Period */
 r_return
 op_minus
 l_int|1
@@ -21327,7 +30608,7 @@ comma
 id|j
 )paren
 )paren
-singleline_comment|// Get Tone On Period
+multiline_comment|/* Get Tone On Period */
 r_return
 op_minus
 l_int|1
@@ -21358,7 +30639,7 @@ comma
 id|j
 )paren
 )paren
-singleline_comment|// Get Tone Off Period
+multiline_comment|/* Get Tone Off Period */
 r_return
 op_minus
 l_int|1
@@ -21492,6 +30773,8 @@ r_if
 c_cond
 (paren
 id|j-&gt;tone_state
+op_logical_or
+id|j-&gt;tone_cadence_state
 )paren
 (brace
 id|j-&gt;flags.dialtone
@@ -21531,6 +30814,8 @@ l_int|0
 )paren
 suffix:semicolon
 id|j-&gt;tone_state
+op_assign
+id|j-&gt;tone_cadence_state
 op_assign
 l_int|0
 suffix:semicolon
@@ -22038,10 +31323,28 @@ id|lcp
 op_eq
 l_int|NULL
 )paren
+(brace
+r_if
+c_cond
+(paren
+id|ixjdebug
+op_amp
+l_int|0x0001
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;Could not allocate memory for cadence&bslash;n&quot;
+)paren
+suffix:semicolon
+)brace
 r_return
 op_minus
 id|ENOMEM
 suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
@@ -22063,12 +31366,22 @@ id|IXJ_FILTER_CADENCE
 )paren
 )paren
 (brace
-id|kfree
+r_if
+c_cond
+(paren
+id|ixjdebug
+op_amp
+l_int|0x0001
+)paren
+(brace
+id|printk
 c_func
 (paren
-id|lcp
+id|KERN_INFO
+l_string|&quot;Could not copy cadence to kernel&bslash;n&quot;
 )paren
 suffix:semicolon
+)brace
 r_return
 op_minus
 id|EFAULT
@@ -22078,16 +31391,26 @@ r_if
 c_cond
 (paren
 id|lcp-&gt;filter
-op_ge
-l_int|4
+OG
+l_int|5
 )paren
 (brace
-id|kfree
+r_if
+c_cond
+(paren
+id|ixjdebug
+op_amp
+l_int|0x0001
+)paren
+(brace
+id|printk
 c_func
 (paren
-id|lcp
+id|KERN_INFO
+l_string|&quot;Cadence out of range&bslash;n&quot;
 )paren
 suffix:semicolon
+)brace
 r_return
 op_minus
 l_int|1
@@ -22293,6 +31616,24 @@ c_func
 id|lcp
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|ixjdebug
+op_amp
+l_int|0x0002
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;Cadence %d loaded&bslash;n&quot;
+comma
+id|lcp-&gt;filter
+)paren
+suffix:semicolon
+)brace
 r_return
 l_int|0
 suffix:semicolon
@@ -22519,7 +31860,7 @@ op_assign
 id|j-&gt;caps
 op_increment
 suffix:semicolon
-singleline_comment|// add devices that can do speaker/mic
+multiline_comment|/* add devices that can do speaker/mic */
 r_switch
 c_cond
 (paren
@@ -22584,7 +31925,7 @@ suffix:colon
 r_break
 suffix:semicolon
 )brace
-singleline_comment|// add devices that can do handset
+multiline_comment|/* add devices that can do handset */
 r_switch
 c_cond
 (paren
@@ -22642,7 +31983,7 @@ suffix:colon
 r_break
 suffix:semicolon
 )brace
-singleline_comment|// add devices that can do PSTN
+multiline_comment|/* add devices that can do PSTN */
 r_switch
 c_cond
 (paren
@@ -22700,7 +32041,7 @@ suffix:colon
 r_break
 suffix:semicolon
 )brace
-singleline_comment|// add codecs - all cards can do uLaw, linear 8/16, and Windows sound system
+multiline_comment|/* add codecs - all cards can do uLaw, linear 8/16, and Windows sound system */
 id|strcpy
 c_func
 (paren
@@ -22865,7 +32206,49 @@ op_assign
 id|j-&gt;caps
 op_increment
 suffix:semicolon
-singleline_comment|// version 12 of the 8020 does the following codecs in a broken way
+multiline_comment|/* software ALAW codec, made from ULAW */
+id|strcpy
+c_func
+(paren
+id|j-&gt;caplist
+(braket
+id|j-&gt;caps
+)braket
+dot
+id|desc
+comma
+l_string|&quot;ALAW&quot;
+)paren
+suffix:semicolon
+id|j-&gt;caplist
+(braket
+id|j-&gt;caps
+)braket
+dot
+id|captype
+op_assign
+id|codec
+suffix:semicolon
+id|j-&gt;caplist
+(braket
+id|j-&gt;caps
+)braket
+dot
+id|cap
+op_assign
+id|ALAW
+suffix:semicolon
+id|j-&gt;caplist
+(braket
+id|j-&gt;caps
+)braket
+dot
+id|handle
+op_assign
+id|j-&gt;caps
+op_increment
+suffix:semicolon
+multiline_comment|/* version 12 of the 8020 does the following codecs in a broken way */
 r_if
 c_cond
 (paren
@@ -22888,7 +32271,7 @@ id|j-&gt;caps
 dot
 id|desc
 comma
-l_string|&quot;G.723.1 6.3Kbps&quot;
+l_string|&quot;G.723.1 6.3kbps&quot;
 )paren
 suffix:semicolon
 id|j-&gt;caplist
@@ -22929,7 +32312,7 @@ id|j-&gt;caps
 dot
 id|desc
 comma
-l_string|&quot;G.723.1 5.3Kbps&quot;
+l_string|&quot;G.723.1 5.3kbps&quot;
 )paren
 suffix:semicolon
 id|j-&gt;caplist
@@ -22970,7 +32353,7 @@ id|j-&gt;caps
 dot
 id|desc
 comma
-l_string|&quot;TrueSpeech 4.8Kbps&quot;
+l_string|&quot;TrueSpeech 4.8kbps&quot;
 )paren
 suffix:semicolon
 id|j-&gt;caplist
@@ -23011,7 +32394,7 @@ id|j-&gt;caps
 dot
 id|desc
 comma
-l_string|&quot;TrueSpeech 4.1Kbps&quot;
+l_string|&quot;TrueSpeech 4.1kbps&quot;
 )paren
 suffix:semicolon
 id|j-&gt;caplist
@@ -23043,7 +32426,7 @@ id|j-&gt;caps
 op_increment
 suffix:semicolon
 )brace
-singleline_comment|// 8020 chips can do TS8.5 native, and 8021/8022 can load it
+multiline_comment|/* 8020 chips can do TS8.5 native, and 8021/8022 can load it */
 r_if
 c_cond
 (paren
@@ -23064,7 +32447,7 @@ id|j-&gt;caps
 dot
 id|desc
 comma
-l_string|&quot;TrueSpeech 8.5Kbps&quot;
+l_string|&quot;TrueSpeech 8.5kbps&quot;
 )paren
 suffix:semicolon
 id|j-&gt;caplist
@@ -23096,7 +32479,7 @@ id|j-&gt;caps
 op_increment
 suffix:semicolon
 )brace
-singleline_comment|// 8021 chips can do G728
+multiline_comment|/* 8021 chips can do G728 */
 r_if
 c_cond
 (paren
@@ -23115,7 +32498,7 @@ id|j-&gt;caps
 dot
 id|desc
 comma
-l_string|&quot;G.728 16Kbps&quot;
+l_string|&quot;G.728 16kbps&quot;
 )paren
 suffix:semicolon
 id|j-&gt;caplist
@@ -23147,7 +32530,7 @@ id|j-&gt;caps
 op_increment
 suffix:semicolon
 )brace
-singleline_comment|// 8021/8022 chips can do G729 if loaded
+multiline_comment|/* 8021/8022 chips can do G729 if loaded */
 r_if
 c_cond
 (paren
@@ -23168,7 +32551,7 @@ id|j-&gt;caps
 dot
 id|desc
 comma
-l_string|&quot;G.729A/B&quot;
+l_string|&quot;G.729A 8kbps&quot;
 )paren
 suffix:semicolon
 id|j-&gt;caplist
@@ -23187,7 +32570,59 @@ id|j-&gt;caps
 dot
 id|cap
 op_assign
-id|G728
+id|G729
+suffix:semicolon
+id|j-&gt;caplist
+(braket
+id|j-&gt;caps
+)braket
+dot
+id|handle
+op_assign
+id|j-&gt;caps
+op_increment
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+id|j-&gt;dsp.low
+op_ne
+l_int|0x20
+op_logical_and
+id|j-&gt;flags.g729_loaded
+)paren
+(brace
+id|strcpy
+c_func
+(paren
+id|j-&gt;caplist
+(braket
+id|j-&gt;caps
+)braket
+dot
+id|desc
+comma
+l_string|&quot;G.729B 8kbps&quot;
+)paren
+suffix:semicolon
+id|j-&gt;caplist
+(braket
+id|j-&gt;caps
+)braket
+dot
+id|captype
+op_assign
+id|codec
+suffix:semicolon
+id|j-&gt;caplist
+(braket
+id|j-&gt;caps
+)braket
+dot
+id|cap
+op_assign
+id|G729B
 suffix:semicolon
 id|j-&gt;caplist
 (braket
@@ -23214,7 +32649,7 @@ comma
 r_struct
 id|phone_capability
 op_star
-id|u_pcreq
+id|pcreq
 )paren
 (brace
 r_int
@@ -23225,34 +32660,6 @@ id|retval
 op_assign
 l_int|0
 suffix:semicolon
-r_struct
-id|phone_capability
-id|pcreq
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|copy_from_user
-c_func
-(paren
-op_amp
-id|pcreq
-comma
-id|u_pcreq
-comma
-r_sizeof
-(paren
-r_struct
-id|phone_capability
-)paren
-)paren
-)paren
-(brace
-r_return
-op_minus
-id|EFAULT
-suffix:semicolon
-)brace
 r_for
 c_loop
 (paren
@@ -23271,7 +32678,7 @@ op_increment
 r_if
 c_cond
 (paren
-id|pcreq.captype
+id|pcreq-&gt;captype
 op_eq
 id|j-&gt;caplist
 (braket
@@ -23280,7 +32687,7 @@ id|cnt
 dot
 id|captype
 op_logical_and
-id|pcreq.cap
+id|pcreq-&gt;cap
 op_eq
 id|j-&gt;caplist
 (braket
@@ -23303,6 +32710,7 @@ id|retval
 suffix:semicolon
 )brace
 DECL|function|ixj_ioctl
+r_static
 r_int
 id|ixj_ioctl
 c_func
@@ -23332,6 +32740,15 @@ suffix:semicolon
 id|IXJ_FILTER
 id|jf
 suffix:semicolon
+id|IXJ_FILTER_RAW
+id|jfr
+suffix:semicolon
+r_int
+r_int
+id|raise
+comma
+id|mant
+suffix:semicolon
 r_int
 r_int
 id|minor
@@ -23342,7 +32759,6 @@ c_func
 id|inode-&gt;i_rdev
 )paren
 suffix:semicolon
-r_int
 r_int
 id|board
 op_assign
@@ -23356,27 +32772,64 @@ id|IXJ
 op_star
 id|j
 op_assign
-id|ixj
-(braket
-id|board
-)braket
+id|get_ixj
+c_func
+(paren
+id|NUM
+c_func
+(paren
+id|inode-&gt;i_rdev
+)paren
+)paren
 suffix:semicolon
 r_int
 id|retval
 op_assign
 l_int|0
 suffix:semicolon
+multiline_comment|/*&n;&t; *    Set up locks to ensure that only one process is talking to the DSP at a time.&n;&t; *    This is necessary to keep the DSP from locking up.&n;&t; */
+r_while
+c_loop
+(paren
+id|test_and_set_bit
+c_func
+(paren
+id|board
+comma
+(paren
+r_void
+op_star
+)paren
+op_amp
+id|j-&gt;busyflags
+)paren
+op_ne
+l_int|0
+)paren
+(brace
+id|set_current_state
+c_func
+(paren
+id|TASK_INTERRUPTIBLE
+)paren
+suffix:semicolon
+id|schedule_timeout
+c_func
+(paren
+l_int|1
+)paren
+suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
 id|ixjdebug
-OG
-l_int|1
+op_amp
+l_int|0x0040
 )paren
 id|printk
 c_func
 (paren
-id|KERN_DEBUG
 l_string|&quot;phone%d ioctl, cmd: 0x%x, arg: 0x%lx&bslash;n&quot;
 comma
 id|minor
@@ -23393,22 +32846,21 @@ id|minor
 op_ge
 id|IXJMAX
 )paren
-r_return
-op_minus
-id|ENODEV
-suffix:semicolon
-r_if
-c_cond
+(brace
+id|clear_bit
+c_func
 (paren
-id|j
-op_eq
-l_int|NULL
+id|board
+comma
+op_amp
+id|j-&gt;busyflags
 )paren
-multiline_comment|/* shouldn&squot;t happen! */
+suffix:semicolon
 r_return
 op_minus
 id|ENODEV
 suffix:semicolon
+)brace
 multiline_comment|/*&n;&t; *    Check ioctls only root can use.&n;&t; */
 r_if
 c_cond
@@ -23433,7 +32885,8 @@ suffix:colon
 r_case
 id|IXJCTL_HZ
 suffix:colon
-r_return
+id|retval
+op_assign
 op_minus
 id|EPERM
 suffix:semicolon
@@ -23508,7 +32961,8 @@ id|ixj_c_revision
 )paren
 )paren
 )paren
-r_return
+id|retval
+op_assign
 op_minus
 id|EFAULT
 suffix:semicolon
@@ -23517,27 +32971,10 @@ suffix:semicolon
 r_case
 id|PHONE_RING_CADENCE
 suffix:colon
-r_if
-c_cond
-(paren
-id|get_user
-c_func
-(paren
 id|j-&gt;ring_cadence
-comma
-(paren
-r_int
-op_star
-)paren
+op_assign
 id|arg
-)paren
-)paren
-(brace
-r_return
-op_minus
-id|EFAULT
 suffix:semicolon
-)brace
 r_break
 suffix:semicolon
 r_case
@@ -23611,6 +33048,9 @@ c_cond
 id|arg
 )paren
 (brace
+r_if
+c_cond
+(paren
 id|copy_from_user
 c_func
 (paren
@@ -23627,6 +33067,21 @@ r_sizeof
 (paren
 id|PHONE_CID
 )paren
+)paren
+)paren
+(brace
+id|retval
+op_assign
+op_minus
+id|EFAULT
+suffix:semicolon
+r_break
+suffix:semicolon
+)brace
+id|ixj_write_cid
+c_func
+(paren
+id|j
 )paren
 suffix:semicolon
 )brace
@@ -23662,6 +33117,27 @@ id|j-&gt;flags.cringing
 op_assign
 l_int|0
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|j-&gt;cadence_f
+(braket
+l_int|5
+)braket
+dot
+id|enable
+)paren
+(brace
+id|j-&gt;cadence_f
+(braket
+l_int|5
+)braket
+dot
+id|state
+op_assign
+l_int|0
+suffix:semicolon
+)brace
 id|ixj_ring_off
 c_func
 (paren
@@ -23690,10 +33166,21 @@ id|retval
 op_assign
 id|j-&gt;ex.bytes
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|j-&gt;ex.bits.flash
+)paren
+(brace
+id|j-&gt;flash_end
+op_assign
+l_int|0
+suffix:semicolon
 id|j-&gt;ex.bits.flash
 op_assign
 l_int|0
 suffix:semicolon
+)brace
 id|j-&gt;ex.bits.pstn_ring
 op_assign
 l_int|0
@@ -23753,8 +33240,9 @@ l_int|0
 suffix:semicolon
 id|retval
 op_assign
-id|j-&gt;r_hook
+id|j-&gt;hookstate
 suffix:semicolon
+singleline_comment|//j-&gt;r_hook;
 r_break
 suffix:semicolon
 r_case
@@ -23887,6 +33375,82 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
+id|PHONE_REC_VOLUME_LINEAR
+suffix:colon
+r_if
+c_cond
+(paren
+id|arg
+op_eq
+op_minus
+l_int|1
+)paren
+(brace
+id|retval
+op_assign
+id|get_rec_volume_linear
+c_func
+(paren
+id|j
+)paren
+suffix:semicolon
+)brace
+r_else
+(brace
+id|set_rec_volume_linear
+c_func
+(paren
+id|j
+comma
+id|arg
+)paren
+suffix:semicolon
+id|retval
+op_assign
+id|arg
+suffix:semicolon
+)brace
+r_break
+suffix:semicolon
+r_case
+id|IXJCTL_DTMF_PRESCALE
+suffix:colon
+r_if
+c_cond
+(paren
+id|arg
+op_eq
+op_minus
+l_int|1
+)paren
+(brace
+id|retval
+op_assign
+id|get_dtmf_prescale
+c_func
+(paren
+id|j
+)paren
+suffix:semicolon
+)brace
+r_else
+(brace
+id|set_dtmf_prescale
+c_func
+(paren
+id|j
+comma
+id|arg
+)paren
+suffix:semicolon
+id|retval
+op_assign
+id|arg
+suffix:semicolon
+)brace
+r_break
+suffix:semicolon
+r_case
 id|PHONE_REC_LEVEL
 suffix:colon
 id|retval
@@ -23895,6 +33459,36 @@ id|get_rec_level
 c_func
 (paren
 id|j
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+id|IXJCTL_SC_RXG
+suffix:colon
+id|retval
+op_assign
+id|ixj_siadc
+c_func
+(paren
+id|j
+comma
+id|arg
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+id|IXJCTL_SC_TXG
+suffix:colon
+id|retval
+op_assign
+id|ixj_sidac
+c_func
+(paren
+id|j
+comma
+id|arg
 )paren
 suffix:semicolon
 r_break
@@ -24008,6 +33602,44 @@ suffix:semicolon
 r_else
 (brace
 id|set_play_volume
+c_func
+(paren
+id|j
+comma
+id|arg
+)paren
+suffix:semicolon
+id|retval
+op_assign
+id|arg
+suffix:semicolon
+)brace
+r_break
+suffix:semicolon
+r_case
+id|PHONE_PLAY_VOLUME_LINEAR
+suffix:colon
+r_if
+c_cond
+(paren
+id|arg
+op_eq
+op_minus
+l_int|1
+)paren
+(brace
+id|retval
+op_assign
+id|get_play_volume_linear
+c_func
+(paren
+id|j
+)paren
+suffix:semicolon
+)brace
+r_else
+(brace
+id|set_play_volume_linear
 c_func
 (paren
 id|j
@@ -24443,7 +34075,7 @@ id|retval
 op_assign
 l_int|42
 suffix:semicolon
-singleline_comment|//&squot;*&squot;;
+multiline_comment|/* &squot;*&squot;; */
 r_break
 suffix:semicolon
 r_case
@@ -24453,7 +34085,7 @@ id|retval
 op_assign
 l_int|48
 suffix:semicolon
-singleline_comment|//&squot;0&squot;;
+multiline_comment|/*&squot;0&squot;; */
 r_break
 suffix:semicolon
 r_case
@@ -24463,7 +34095,7 @@ id|retval
 op_assign
 l_int|35
 suffix:semicolon
-singleline_comment|//&squot;#&squot;;
+multiline_comment|/*&squot;#&squot;; */
 r_break
 suffix:semicolon
 r_case
@@ -24473,7 +34105,7 @@ id|retval
 op_assign
 l_int|65
 suffix:semicolon
-singleline_comment|//&squot;A&squot;;
+multiline_comment|/*&squot;A&squot;; */
 r_break
 suffix:semicolon
 r_case
@@ -24483,7 +34115,7 @@ id|retval
 op_assign
 l_int|66
 suffix:semicolon
-singleline_comment|//&squot;B&squot;;
+multiline_comment|/*&squot;B&squot;; */
 r_break
 suffix:semicolon
 r_case
@@ -24493,7 +34125,7 @@ id|retval
 op_assign
 l_int|67
 suffix:semicolon
-singleline_comment|//&squot;C&squot;;
+multiline_comment|/*&squot;C&squot;; */
 r_break
 suffix:semicolon
 r_case
@@ -24503,7 +34135,7 @@ id|retval
 op_assign
 l_int|68
 suffix:semicolon
-singleline_comment|//&squot;D&squot;;
+multiline_comment|/*&squot;D&squot;; */
 r_break
 suffix:semicolon
 r_default
@@ -24534,7 +34166,13 @@ id|j-&gt;dtmf_rp
 op_assign
 l_int|0
 suffix:semicolon
-singleline_comment|//          if(j-&gt;dtmf_rp == j-&gt;dtmf_wp)
+r_if
+c_cond
+(paren
+id|j-&gt;dtmf_rp
+op_eq
+id|j-&gt;dtmf_wp
+)paren
 (brace
 id|j-&gt;ex.bits.dtmf_ready
 op_assign
@@ -24584,6 +34222,34 @@ r_case
 id|PHONE_RINGBACK
 suffix:colon
 id|ixj_ringback
+c_func
+(paren
+id|j
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+id|PHONE_WINK
+suffix:colon
+r_if
+c_cond
+(paren
+id|j-&gt;cardtype
+op_eq
+id|QTI_PHONEJACK
+)paren
+(brace
+id|retval
+op_assign
+op_minus
+l_int|1
+suffix:semicolon
+)brace
+r_else
+id|retval
+op_assign
+id|ixj_wink
 c_func
 (paren
 id|j
@@ -24645,6 +34311,8 @@ comma
 l_int|40
 comma
 l_int|40
+comma
+l_int|6
 )brace
 suffix:semicolon
 r_if
@@ -24669,21 +34337,27 @@ id|pd
 )paren
 )paren
 (brace
-r_return
+id|retval
+op_assign
 op_minus
 id|EFAULT
+suffix:semicolon
+r_break
 suffix:semicolon
 )brace
 r_if
 c_cond
 (paren
 id|pd.type
-l_int|12
+l_int|13
 )paren
 (brace
-r_return
+id|retval
+op_assign
 op_minus
 id|EPROTONOSUPPORT
+suffix:semicolon
+r_break
 suffix:semicolon
 )brace
 r_if
@@ -24779,13 +34453,13 @@ id|pd
 )paren
 )paren
 (brace
-r_return
+id|retval
+op_assign
 op_minus
 id|EFAULT
 suffix:semicolon
 )brace
-r_return
-l_int|0
+r_break
 suffix:semicolon
 )brace
 r_case
@@ -24802,6 +34476,28 @@ suffix:semicolon
 r_case
 id|IXJCTL_MIXER
 suffix:colon
+r_if
+c_cond
+(paren
+(paren
+id|arg
+op_amp
+l_int|0xff
+)paren
+op_eq
+l_int|0xff
+)paren
+id|retval
+op_assign
+id|ixj_get_mixer
+c_func
+(paren
+id|arg
+comma
+id|j
+)paren
+suffix:semicolon
+r_else
 id|ixj_mixer
 c_func
 (paren
@@ -24944,10 +34640,6 @@ suffix:semicolon
 r_break
 suffix:semicolon
 )brace
-id|j-&gt;country
-op_assign
-id|arg
-suffix:semicolon
 r_break
 suffix:semicolon
 r_case
@@ -25015,7 +34707,8 @@ id|PHONE_CID
 )paren
 )paren
 )paren
-r_return
+id|retval
+op_assign
 op_minus
 id|EFAULT
 suffix:semicolon
@@ -25077,6 +34770,12 @@ suffix:semicolon
 r_case
 id|PHONE_CAPABILITIES
 suffix:colon
+id|add_caps
+c_func
+(paren
+id|j
+)paren
+suffix:semicolon
 id|retval
 op_assign
 id|j-&gt;caps
@@ -25086,6 +34785,12 @@ suffix:semicolon
 r_case
 id|PHONE_CAPABILITIES_LIST
 suffix:colon
+id|add_caps
+c_func
+(paren
+id|j
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -25109,7 +34814,8 @@ op_star
 id|j-&gt;caps
 )paren
 )paren
-r_return
+id|retval
+op_assign
 op_minus
 id|EFAULT
 suffix:semicolon
@@ -25118,6 +34824,45 @@ suffix:semicolon
 r_case
 id|PHONE_CAPABILITIES_CHECK
 suffix:colon
+(brace
+r_struct
+id|phone_capability
+id|cap
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|copy_from_user
+c_func
+(paren
+op_amp
+id|cap
+comma
+(paren
+r_char
+op_star
+)paren
+id|arg
+comma
+r_sizeof
+(paren
+id|cap
+)paren
+)paren
+)paren
+id|retval
+op_assign
+op_minus
+id|EFAULT
+suffix:semicolon
+r_else
+(brace
+id|add_caps
+c_func
+(paren
+id|j
+)paren
+suffix:semicolon
 id|retval
 op_assign
 id|capabilities_check
@@ -25125,14 +34870,12 @@ c_func
 (paren
 id|j
 comma
-(paren
-r_struct
-id|phone_capability
-op_star
-)paren
-id|arg
+op_amp
+id|cap
 )paren
 suffix:semicolon
+)brace
+)brace
 r_break
 suffix:semicolon
 r_case
@@ -25185,7 +34928,8 @@ id|jf
 )paren
 )paren
 )paren
-r_return
+id|retval
+op_assign
 op_minus
 id|EFAULT
 suffix:semicolon
@@ -25198,6 +34942,48 @@ id|j
 comma
 op_amp
 id|jf
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+id|IXJCTL_SET_FILTER_RAW
+suffix:colon
+r_if
+c_cond
+(paren
+id|copy_from_user
+c_func
+(paren
+op_amp
+id|jfr
+comma
+(paren
+r_char
+op_star
+)paren
+id|arg
+comma
+r_sizeof
+(paren
+id|jfr
+)paren
+)paren
+)paren
+id|retval
+op_assign
+op_minus
+id|EFAULT
+suffix:semicolon
+id|retval
+op_assign
+id|ixj_init_filter_raw
+c_func
+(paren
+id|j
+comma
+op_amp
+id|jfr
 )paren
 suffix:semicolon
 r_break
@@ -25287,37 +35073,144 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
+id|IXJCTL_SIGCTL
+suffix:colon
+r_if
+c_cond
+(paren
+id|copy_from_user
+c_func
+(paren
+op_amp
+id|j-&gt;sigdef
+comma
+(paren
+r_char
+op_star
+)paren
+id|arg
+comma
+r_sizeof
+(paren
+id|IXJ_SIGDEF
+)paren
+)paren
+)paren
+id|retval
+op_assign
+op_minus
+id|EFAULT
+suffix:semicolon
+id|j-&gt;ixj_signals
+(braket
+id|j-&gt;sigdef.event
+)braket
+op_assign
+id|j-&gt;sigdef.signal
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|j-&gt;sigdef.event
+OL
+l_int|33
+)paren
+(brace
+id|raise
+op_assign
+l_int|1
+suffix:semicolon
+r_for
+c_loop
+(paren
+id|mant
+op_assign
+l_int|0
+suffix:semicolon
+id|mant
+OL
+id|j-&gt;sigdef.event
+suffix:semicolon
+id|mant
+op_increment
+)paren
+(brace
+id|raise
+op_mul_assign
+l_int|2
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+id|j-&gt;sigdef.signal
+)paren
+(brace
+id|j-&gt;ex_sig.bytes
+op_or_assign
+id|raise
+suffix:semicolon
+)brace
+r_else
+id|j-&gt;ex_sig.bytes
+op_and_assign
+(paren
+id|raise
+op_xor
+l_int|0xffff
+)paren
+suffix:semicolon
+)brace
+r_break
+suffix:semicolon
+r_case
 id|IXJCTL_INTERCOM_STOP
 suffix:colon
 r_if
 c_cond
 (paren
 id|arg
-op_ne
-id|j-&gt;intercom
+OL
+l_int|0
 op_logical_or
-id|ixj
-(braket
 id|arg
-)braket
-op_member_access_from_pointer
-id|intercom
-op_ne
-id|board
+op_ge
+id|IXJMAX
 )paren
+(brace
 r_return
 op_minus
 id|EINVAL
 suffix:semicolon
+)brace
 id|j-&gt;intercom
 op_assign
 op_minus
 l_int|1
 suffix:semicolon
-id|ixj
-(braket
+id|ixj_record_stop
+c_func
+(paren
+id|j
+)paren
+suffix:semicolon
+id|ixj_play_stop
+c_func
+(paren
+id|j
+)paren
+suffix:semicolon
+id|idle
+c_func
+(paren
+id|j
+)paren
+suffix:semicolon
+id|get_ixj
+c_func
+(paren
 id|arg
-)braket
+)paren
 op_member_access_from_pointer
 id|intercom
 op_assign
@@ -25327,46 +35220,31 @@ suffix:semicolon
 id|ixj_record_stop
 c_func
 (paren
-id|j
-)paren
-suffix:semicolon
-id|ixj_record_stop
+id|get_ixj
 c_func
 (paren
-id|ixj
-(braket
 id|arg
-)braket
+)paren
 )paren
 suffix:semicolon
 id|ixj_play_stop
 c_func
 (paren
-id|j
-)paren
-suffix:semicolon
-id|ixj_play_stop
+id|get_ixj
 c_func
 (paren
-id|ixj
-(braket
 id|arg
-)braket
+)paren
 )paren
 suffix:semicolon
 id|idle
 c_func
 (paren
-id|j
-)paren
-suffix:semicolon
-id|idle
+id|get_ixj
 c_func
 (paren
-id|ixj
-(braket
 id|arg
-)braket
+)paren
 )paren
 suffix:semicolon
 r_break
@@ -25377,25 +35255,41 @@ suffix:colon
 r_if
 c_cond
 (paren
-id|ixj
-(braket
 id|arg
-)braket
-op_eq
-l_int|NULL
+OL
+l_int|0
+op_logical_or
+id|arg
+op_ge
+id|IXJMAX
 )paren
+(brace
 r_return
 op_minus
-id|ENODEV
+id|EINVAL
 suffix:semicolon
+)brace
 id|j-&gt;intercom
 op_assign
 id|arg
 suffix:semicolon
-id|ixj
-(braket
+id|ixj_record_start
+c_func
+(paren
+id|j
+)paren
+suffix:semicolon
+id|ixj_play_start
+c_func
+(paren
+id|j
+)paren
+suffix:semicolon
+id|get_ixj
+c_func
+(paren
 id|arg
-)braket
+)paren
 op_member_access_from_pointer
 id|intercom
 op_assign
@@ -25404,51 +35298,54 @@ suffix:semicolon
 id|ixj_play_start
 c_func
 (paren
-id|ixj
-(braket
+id|get_ixj
+c_func
+(paren
 id|arg
-)braket
+)paren
 )paren
 suffix:semicolon
 id|ixj_record_start
 c_func
 (paren
-id|j
-)paren
-suffix:semicolon
-id|ixj_play_start
+id|get_ixj
 c_func
 (paren
-id|j
-)paren
-suffix:semicolon
-id|ixj_record_start
-c_func
-(paren
-id|ixj
-(braket
 id|arg
-)braket
 )paren
-suffix:semicolon
-id|idle
-c_func
-(paren
-id|j
-)paren
-suffix:semicolon
-id|idle
-c_func
-(paren
-id|ixj
-(braket
-id|arg
-)braket
 )paren
 suffix:semicolon
 r_break
 suffix:semicolon
 )brace
+r_if
+c_cond
+(paren
+id|ixjdebug
+op_amp
+l_int|0x0040
+)paren
+id|printk
+c_func
+(paren
+l_string|&quot;phone%d ioctl end, cmd: 0x%x, arg: 0x%lx&bslash;n&quot;
+comma
+id|minor
+comma
+id|cmd
+comma
+id|arg
+)paren
+suffix:semicolon
+id|clear_bit
+c_func
+(paren
+id|board
+comma
+op_amp
+id|j-&gt;busyflags
+)paren
+suffix:semicolon
 r_return
 id|retval
 suffix:semicolon
@@ -25475,26 +35372,15 @@ id|IXJ
 op_star
 id|j
 op_assign
-id|ixj
-(braket
+id|get_ixj
+c_func
+(paren
 id|NUM
 c_func
 (paren
 id|file_p-&gt;f_dentry-&gt;d_inode-&gt;i_rdev
 )paren
-)braket
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|j
-op_eq
-l_int|NULL
 )paren
-multiline_comment|/* shouldn&squot;t happen! */
-r_return
-op_minus
-id|ENODEV
 suffix:semicolon
 r_return
 id|fasync_helper
@@ -25561,32 +35447,26 @@ r_int
 r_int
 id|jifwait
 suffix:semicolon
-id|j-&gt;flags.incheck
+id|j-&gt;flags.pstncheck
 op_assign
 l_int|1
 suffix:semicolon
-singleline_comment|// Testing
-r_if
-c_cond
-(paren
-op_logical_neg
-id|j-&gt;flags.pots_correct
-)paren
-(brace
-id|j-&gt;flags.pots_correct
+multiline_comment|/* Testing */
+id|j-&gt;flags.pstn_present
 op_assign
-l_int|1
+l_int|0
 suffix:semicolon
+multiline_comment|/* Assume the line is not there */
 id|daa_int_read
 c_func
 (paren
 id|j
 )paren
 suffix:semicolon
-singleline_comment|//Clear DAA Interrupt flags
-singleline_comment|//
-singleline_comment|// Hold all relays in the normally de-energized position.
-singleline_comment|//
+multiline_comment|/*Clear DAA Interrupt flags */
+multiline_comment|/* */
+multiline_comment|/* Hold all relays in the normally de-energized position. */
+multiline_comment|/* */
 id|j-&gt;pld_slicw.bits.rly1
 op_assign
 l_int|0
@@ -25613,7 +35493,7 @@ id|j-&gt;pld_scrw.bits.daafsyncen
 op_assign
 l_int|0
 suffix:semicolon
-singleline_comment|// Turn off DAA Frame Sync
+multiline_comment|/* Turn off DAA Frame Sync */
 id|outb_p
 c_func
 (paren
@@ -25687,7 +35567,7 @@ id|j-&gt;pld_scrw.bits.daafsyncen
 op_assign
 l_int|0
 suffix:semicolon
-singleline_comment|// Turn off DAA Frame Sync
+multiline_comment|/* Turn off DAA Frame Sync */
 id|outb_p
 c_func
 (paren
@@ -25746,7 +35626,7 @@ c_func
 (paren
 id|j
 comma
-id|SOP_PU_SLEEP
+id|SOP_PU_RESET
 )paren
 suffix:semicolon
 r_if
@@ -25759,7 +35639,7 @@ id|j-&gt;flags.pots_correct
 op_assign
 l_int|0
 suffix:semicolon
-singleline_comment|// Should not be line voltage on POTS port.
+multiline_comment|/* Should not be line voltage on POTS port. */
 id|LED_SetState
 c_func
 (paren
@@ -25821,8 +35701,6 @@ l_int|0x01
 suffix:semicolon
 )brace
 )brace
-)brace
-singleline_comment|//      if (!j-&gt;flags.pstn_present) {
 id|j-&gt;pld_slicw.bits.rly3
 op_assign
 l_int|0
@@ -25887,7 +35765,7 @@ c_func
 (paren
 id|j
 comma
-id|SOP_PU_SLEEP
+id|SOP_PU_RESET
 )paren
 suffix:semicolon
 r_if
@@ -25896,6 +35774,16 @@ c_cond
 id|j-&gt;m_DAAShadowRegs.XOP_REGS.XOP.xr0.bitreg.VDD_OK
 )paren
 (brace
+id|j-&gt;pstn_sleeptil
+op_assign
+id|jiffies
+op_plus
+(paren
+id|hertz
+op_div
+l_int|4
+)paren
+suffix:semicolon
 id|j-&gt;flags.pstn_present
 op_assign
 l_int|1
@@ -25908,7 +35796,6 @@ op_assign
 l_int|0
 suffix:semicolon
 )brace
-singleline_comment|//      }
 r_if
 c_cond
 (paren
@@ -25971,11 +35858,11 @@ id|j
 suffix:semicolon
 )brace
 )brace
-id|j-&gt;flags.incheck
+id|j-&gt;flags.pstncheck
 op_assign
 l_int|0
 suffix:semicolon
-singleline_comment|// Testing
+multiline_comment|/* Testing */
 r_return
 id|j-&gt;flags.pstn_present
 suffix:semicolon
@@ -25989,9 +35876,6 @@ c_func
 id|IXJ
 op_star
 id|j
-comma
-r_int
-id|cnt
 )paren
 (brace
 r_int
@@ -26003,7 +35887,7 @@ r_int
 id|jif
 suffix:semicolon
 r_int
-id|i
+id|cnt
 suffix:semicolon
 id|BYTES
 id|bytes
@@ -26029,12 +35913,33 @@ op_amp
 id|j-&gt;write_q
 )paren
 suffix:semicolon
+r_while
+c_loop
+(paren
+id|atomic_read
+c_func
+(paren
+op_amp
+id|j-&gt;DSPWrite
+)paren
+OG
+l_int|0
+)paren
+(brace
+id|atomic_dec
+c_func
+(paren
+op_amp
+id|j-&gt;DSPWrite
+)paren
+suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
 id|ixjdebug
-OG
-l_int|0
+op_amp
+l_int|0x0002
 )paren
 id|printk
 c_func
@@ -26051,7 +35956,7 @@ comma
 id|j
 )paren
 suffix:semicolon
-singleline_comment|// Put the DSP in full power mode.
+multiline_comment|/* Put the DSP in full power mode. */
 r_if
 c_cond
 (paren
@@ -26068,7 +35973,7 @@ r_return
 op_minus
 l_int|1
 suffix:semicolon
-singleline_comment|// The read values of the SSR should be 0x00 for the IDLE command
+multiline_comment|/* The read values of the SSR should be 0x00 for the IDLE command */
 r_if
 c_cond
 (paren
@@ -26084,8 +35989,8 @@ r_if
 c_cond
 (paren
 id|ixjdebug
-OG
-l_int|0
+op_amp
+l_int|0x0002
 )paren
 id|printk
 c_func
@@ -26122,8 +36027,8 @@ r_if
 c_cond
 (paren
 id|ixjdebug
-OG
-l_int|0
+op_amp
+l_int|0x0002
 )paren
 id|printk
 c_func
@@ -26171,7 +36076,6 @@ op_eq
 l_int|0x21
 )paren
 (brace
-singleline_comment|//      j-&gt;XILINXbase = j-&gt;DSPbase + 0x10;
 id|bytes.high
 op_assign
 id|bytes.low
@@ -26196,7 +36100,7 @@ op_plus
 l_int|0x02
 )paren
 suffix:semicolon
-singleline_comment|// Test for Internet LineJACK or Internet PhoneJACK Lite
+multiline_comment|/* Test for Internet LineJACK or Internet PhoneJACK Lite */
 id|bytes.low
 op_assign
 id|inb_p
@@ -26214,8 +36118,8 @@ id|bytes.low
 op_eq
 id|bytes.high
 )paren
-singleline_comment|//  Register is read only on
-singleline_comment|//  Internet PhoneJack Lite
+multiline_comment|/*  Register is read only on */
+multiline_comment|/*  Internet PhoneJack Lite */
 (brace
 id|j-&gt;cardtype
 op_assign
@@ -26527,8 +36431,8 @@ r_if
 c_cond
 (paren
 id|ixjdebug
-OG
-l_int|0
+op_amp
+l_int|0x0002
 )paren
 id|printk
 c_func
@@ -26557,8 +36461,8 @@ r_if
 c_cond
 (paren
 id|ixjdebug
-OG
-l_int|0
+op_amp
+l_int|0x0002
 )paren
 id|printk
 c_func
@@ -26627,8 +36531,8 @@ r_if
 c_cond
 (paren
 id|ixjdebug
-OG
-l_int|0
+op_amp
+l_int|0x0002
 )paren
 id|printk
 c_func
@@ -26690,8 +36594,8 @@ r_if
 c_cond
 (paren
 id|ixjdebug
-OG
-l_int|0
+op_amp
+l_int|0x0002
 )paren
 id|printk
 c_func
@@ -26728,8 +36632,8 @@ r_if
 c_cond
 (paren
 id|ixjdebug
-OG
-l_int|0
+op_amp
+l_int|0x0002
 )paren
 id|printk
 c_func
@@ -26784,8 +36688,8 @@ r_if
 c_cond
 (paren
 id|ixjdebug
-OG
-l_int|0
+op_amp
+l_int|0x0002
 )paren
 id|printk
 c_func
@@ -27028,8 +36932,8 @@ r_if
 c_cond
 (paren
 id|ixjdebug
-OG
-l_int|0
+op_amp
+l_int|0x0002
 )paren
 id|printk
 c_func
@@ -27053,20 +36957,44 @@ c_func
 id|j
 )paren
 )paren
+(brace
 id|printk
 c_func
 (paren
 l_string|&quot;DAA write failed on board %d&bslash;n&quot;
 comma
-id|j-&gt;p.board
+id|j-&gt;board
 )paren
 suffix:semicolon
+r_return
+op_minus
+l_int|1
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+op_logical_neg
 id|ixj_daa_cid_reset
 c_func
 (paren
 id|j
 )paren
+)paren
+(brace
+id|printk
+c_func
+(paren
+l_string|&quot;DAA CID reset failed on board %d&bslash;n&quot;
+comma
+id|j-&gt;board
+)paren
 suffix:semicolon
+r_return
+op_minus
+l_int|1
+suffix:semicolon
+)brace
 id|j-&gt;flags.pots_correct
 op_assign
 l_int|0
@@ -27091,7 +37019,7 @@ id|j-&gt;pld_scrw.bits.daafsyncen
 op_assign
 l_int|0
 suffix:semicolon
-singleline_comment|// Turn off DAA Frame Sync
+multiline_comment|/* Turn off DAA Frame Sync */
 id|outb_p
 c_func
 (paren
@@ -27126,6 +37054,7 @@ comma
 id|j
 )paren
 suffix:semicolon
+multiline_comment|/*&t;&t;&t;&t;SLIC_SetState(PLD_SLIC_STATE_ACTIVE, j); */
 id|j-&gt;port
 op_assign
 id|PORT_POTS
@@ -27151,8 +37080,8 @@ r_if
 c_cond
 (paren
 id|ixjdebug
-OG
-l_int|0
+op_amp
+l_int|0x0002
 )paren
 id|printk
 c_func
@@ -27169,7 +37098,7 @@ comma
 id|j
 )paren
 suffix:semicolon
-singleline_comment|//Master Volume Left unmute 0db
+multiline_comment|/*Master Volume Left unmute 0db */
 id|ixj_mixer
 c_func
 (paren
@@ -27178,16 +37107,97 @@ comma
 id|j
 )paren
 suffix:semicolon
-singleline_comment|//Master Volume Right unmute 0db
+multiline_comment|/*Master Volume Right unmute 0db */
 id|ixj_mixer
 c_func
 (paren
-l_int|0x0F00
+l_int|0x0203
 comma
 id|j
 )paren
 suffix:semicolon
-singleline_comment|//Mono Out Volume unmute 0db
+multiline_comment|/*Voice Left Volume unmute 6db */
+id|ixj_mixer
+c_func
+(paren
+l_int|0x0303
+comma
+id|j
+)paren
+suffix:semicolon
+multiline_comment|/*Voice Right Volume unmute 6db */
+id|ixj_mixer
+c_func
+(paren
+l_int|0x0480
+comma
+id|j
+)paren
+suffix:semicolon
+multiline_comment|/*FM Left mute */
+id|ixj_mixer
+c_func
+(paren
+l_int|0x0580
+comma
+id|j
+)paren
+suffix:semicolon
+multiline_comment|/*FM Right mute */
+id|ixj_mixer
+c_func
+(paren
+l_int|0x0680
+comma
+id|j
+)paren
+suffix:semicolon
+multiline_comment|/*CD Left mute */
+id|ixj_mixer
+c_func
+(paren
+l_int|0x0780
+comma
+id|j
+)paren
+suffix:semicolon
+multiline_comment|/*CD Right mute */
+id|ixj_mixer
+c_func
+(paren
+l_int|0x0880
+comma
+id|j
+)paren
+suffix:semicolon
+multiline_comment|/*Line Left mute */
+id|ixj_mixer
+c_func
+(paren
+l_int|0x0980
+comma
+id|j
+)paren
+suffix:semicolon
+multiline_comment|/*Line Right mute */
+id|ixj_mixer
+c_func
+(paren
+l_int|0x0A80
+comma
+id|j
+)paren
+suffix:semicolon
+multiline_comment|/*Aux left mute  */
+id|ixj_mixer
+c_func
+(paren
+l_int|0x0B80
+comma
+id|j
+)paren
+suffix:semicolon
+multiline_comment|/*Aux right mute */
 id|ixj_mixer
 c_func
 (paren
@@ -27196,25 +37206,43 @@ comma
 id|j
 )paren
 suffix:semicolon
-singleline_comment|//Mono1 Volume unmute 0db
+multiline_comment|/*Mono1 unmute 12db */
 id|ixj_mixer
 c_func
 (paren
-l_int|0x0200
+l_int|0x0D80
 comma
 id|j
 )paren
 suffix:semicolon
-singleline_comment|//Voice Left Volume unmute 0db
+multiline_comment|/*Mono2 mute */
 id|ixj_mixer
 c_func
 (paren
-l_int|0x0300
+l_int|0x0E80
 comma
 id|j
 )paren
 suffix:semicolon
-singleline_comment|//Voice Right Volume unmute 0db
+multiline_comment|/*Mic mute */
+id|ixj_mixer
+c_func
+(paren
+l_int|0x0F00
+comma
+id|j
+)paren
+suffix:semicolon
+multiline_comment|/*Mono Out Volume unmute 0db */
+id|ixj_mixer
+c_func
+(paren
+l_int|0x1000
+comma
+id|j
+)paren
+suffix:semicolon
+multiline_comment|/*Voice Left and Right out only */
 id|ixj_mixer
 c_func
 (paren
@@ -27223,7 +37251,15 @@ comma
 id|j
 )paren
 suffix:semicolon
-singleline_comment|//Voice Left and Right out
+id|ixj_mixer
+c_func
+(paren
+l_int|0x1200
+comma
+id|j
+)paren
+suffix:semicolon
+multiline_comment|/*Mono1 switch on mixer left */
 id|ixj_mixer
 c_func
 (paren
@@ -27232,7 +37268,15 @@ comma
 id|j
 )paren
 suffix:semicolon
-singleline_comment|//Mono1 switch on mixer left
+id|ixj_mixer
+c_func
+(paren
+l_int|0x1300
+comma
+id|j
+)paren
+suffix:semicolon
+multiline_comment|/*Mono1 switch on mixer right */
 id|ixj_mixer
 c_func
 (paren
@@ -27241,7 +37285,6 @@ comma
 id|j
 )paren
 suffix:semicolon
-singleline_comment|//Mono1 switch on mixer right
 id|ixj_mixer
 c_func
 (paren
@@ -27250,7 +37293,7 @@ comma
 id|j
 )paren
 suffix:semicolon
-singleline_comment|//Clock select
+multiline_comment|/*Clock select */
 id|ixj_mixer
 c_func
 (paren
@@ -27259,7 +37302,99 @@ comma
 id|j
 )paren
 suffix:semicolon
-singleline_comment|//ADC Source select
+multiline_comment|/*ADC input from mixer */
+id|ixj_mixer
+c_func
+(paren
+l_int|0x1901
+comma
+id|j
+)paren
+suffix:semicolon
+multiline_comment|/*Mic gain 30db */
+r_if
+c_cond
+(paren
+id|ixjdebug
+op_amp
+l_int|0x0002
+)paren
+id|printk
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;Setting Default US Ring Cadence Detection&bslash;n&quot;
+)paren
+suffix:semicolon
+id|j-&gt;cadence_f
+(braket
+l_int|4
+)braket
+dot
+id|state
+op_assign
+l_int|0
+suffix:semicolon
+id|j-&gt;cadence_f
+(braket
+l_int|4
+)braket
+dot
+id|on1
+op_assign
+l_int|0
+suffix:semicolon
+multiline_comment|/*Cadence Filter 4 is used for PSTN ring cadence */
+id|j-&gt;cadence_f
+(braket
+l_int|4
+)braket
+dot
+id|off1
+op_assign
+l_int|0
+suffix:semicolon
+id|j-&gt;cadence_f
+(braket
+l_int|4
+)braket
+dot
+id|on2
+op_assign
+l_int|0
+suffix:semicolon
+id|j-&gt;cadence_f
+(braket
+l_int|4
+)braket
+dot
+id|off2
+op_assign
+l_int|0
+suffix:semicolon
+id|j-&gt;cadence_f
+(braket
+l_int|4
+)braket
+dot
+id|on3
+op_assign
+l_int|0
+suffix:semicolon
+id|j-&gt;cadence_f
+(braket
+l_int|4
+)braket
+dot
+id|off3
+op_assign
+l_int|0
+suffix:semicolon
+multiline_comment|/* These should represent standard US ring pulse. */
+id|j-&gt;pstn_last_rmr
+op_assign
+id|jiffies
+suffix:semicolon
 )brace
 r_else
 (brace
@@ -27314,6 +37449,7 @@ comma
 id|j
 )paren
 suffix:semicolon
+multiline_comment|/*&t;&t;&t;&t;SLIC_SetState(PLD_SLIC_STATE_ACTIVE, j); */
 )brace
 )brace
 )brace
@@ -27340,6 +37476,35 @@ id|j-&gt;txreadycheck
 op_assign
 l_int|0
 suffix:semicolon
+multiline_comment|/* initialise the DTMF prescale to a sensible value */
+r_if
+c_cond
+(paren
+id|j-&gt;cardtype
+op_eq
+id|QTI_LINEJACK
+)paren
+(brace
+id|set_dtmf_prescale
+c_func
+(paren
+id|j
+comma
+l_int|0x10
+)paren
+suffix:semicolon
+)brace
+r_else
+(brace
+id|set_dtmf_prescale
+c_func
+(paren
+id|j
+comma
+l_int|0x40
+)paren
+suffix:semicolon
+)brace
 id|set_play_volume
 c_func
 (paren
@@ -27372,7 +37537,7 @@ r_return
 op_minus
 l_int|1
 suffix:semicolon
-singleline_comment|// The read values of the SSR should be 0x00 for the IDLE command
+multiline_comment|/* The read values of the SSR should be 0x00 for the IDLE command */
 r_if
 c_cond
 (paren
@@ -27388,8 +37553,8 @@ r_if
 c_cond
 (paren
 id|ixjdebug
-OG
-l_int|0
+op_amp
+l_int|0x0002
 )paren
 id|printk
 c_func
@@ -27402,8 +37567,8 @@ r_if
 c_cond
 (paren
 id|ixjdebug
-OG
-l_int|0
+op_amp
+l_int|0x0002
 )paren
 id|printk
 c_func
@@ -27423,7 +37588,7 @@ comma
 id|j
 )paren
 )paren
-singleline_comment|// Asynchronous Line Monitor
+multiline_comment|/* Asynchronous Line Monitor */
 r_return
 op_minus
 l_int|1
@@ -27432,8 +37597,8 @@ r_if
 c_cond
 (paren
 id|ixjdebug
-OG
-l_int|0
+op_amp
+l_int|0x002
 )paren
 id|printk
 c_func
@@ -27453,7 +37618,7 @@ comma
 id|j
 )paren
 )paren
-singleline_comment|// Enable DTMF detection
+multiline_comment|/* Enable DTMF detection */
 r_return
 op_minus
 l_int|1
@@ -27469,7 +37634,7 @@ comma
 id|j
 )paren
 )paren
-singleline_comment|// Set Asyncronous Tone Generation
+multiline_comment|/* Set Asyncronous Tone Generation */
 r_return
 op_minus
 l_int|1
@@ -27482,7 +37647,7 @@ comma
 l_int|2
 )paren
 suffix:semicolon
-singleline_comment|// Set Record Channel Limit to 2 frames
+multiline_comment|/* Set Record Channel Limit to 2 frames */
 id|set_play_depth
 c_func
 (paren
@@ -27491,7 +37656,7 @@ comma
 l_int|2
 )paren
 suffix:semicolon
-singleline_comment|// Set Playback Channel Limit to 2 frames
+multiline_comment|/* Set Playback Channel Limit to 2 frames */
 id|j-&gt;ex.bits.dtmf_ready
 op_assign
 l_int|0
@@ -27540,20 +37705,20 @@ suffix:semicolon
 r_for
 c_loop
 (paren
-id|i
+id|cnt
 op_assign
 l_int|0
 suffix:semicolon
-id|i
+id|cnt
 OL
 l_int|4
 suffix:semicolon
-id|i
+id|cnt
 op_increment
 )paren
 id|j-&gt;cadence_f
 (braket
-id|i
+id|cnt
 )braket
 dot
 id|enable
@@ -27569,7 +37734,74 @@ comma
 id|j
 )paren
 suffix:semicolon
-singleline_comment|// Put the DSP in 1/5 power mode.
+multiline_comment|/* Put the DSP in 1/5 power mode. */
+multiline_comment|/* Set up the default signals for events */
+r_for
+c_loop
+(paren
+id|cnt
+op_assign
+l_int|0
+suffix:semicolon
+id|cnt
+OL
+l_int|35
+suffix:semicolon
+id|cnt
+op_increment
+)paren
+id|j-&gt;ixj_signals
+(braket
+id|cnt
+)braket
+op_assign
+id|SIGIO
+suffix:semicolon
+multiline_comment|/* Set the excetion signal enable flags */
+id|j-&gt;ex_sig.bits.dtmf_ready
+op_assign
+id|j-&gt;ex_sig.bits.hookstate
+op_assign
+id|j-&gt;ex_sig.bits.flash
+op_assign
+id|j-&gt;ex_sig.bits.pstn_ring
+op_assign
+id|j-&gt;ex_sig.bits.caller_id
+op_assign
+id|j-&gt;ex_sig.bits.pstn_wink
+op_assign
+id|j-&gt;ex_sig.bits.f0
+op_assign
+id|j-&gt;ex_sig.bits.f1
+op_assign
+id|j-&gt;ex_sig.bits.f2
+op_assign
+id|j-&gt;ex_sig.bits.f3
+op_assign
+id|j-&gt;ex_sig.bits.fc0
+op_assign
+id|j-&gt;ex_sig.bits.fc1
+op_assign
+id|j-&gt;ex_sig.bits.fc2
+op_assign
+id|j-&gt;ex_sig.bits.fc3
+op_assign
+l_int|1
+suffix:semicolon
+macro_line|#ifdef IXJ_DYN_ALLOC
+id|j-&gt;fskdata
+op_assign
+l_int|NULL
+suffix:semicolon
+macro_line|#endif
+id|j-&gt;fskdcnt
+op_assign
+l_int|0
+suffix:semicolon
+id|j-&gt;cidcw_wait
+op_assign
+l_int|0
+suffix:semicolon
 multiline_comment|/* Register with the Telephony for Linux subsystem */
 id|j-&gt;p.f_op
 op_assign
@@ -27582,7 +37814,7 @@ id|ixj_open
 suffix:semicolon
 id|j-&gt;p.board
 op_assign
-id|cnt
+id|j-&gt;board
 suffix:semicolon
 id|phone_register_device
 c_func
@@ -27593,7 +37825,13 @@ comma
 id|PHONE_UNIT_ANY
 )paren
 suffix:semicolon
-id|add_caps
+id|ixj_init_timer
+c_func
+(paren
+id|j
+)paren
+suffix:semicolon
+id|ixj_add_timer
 c_func
 (paren
 id|j
@@ -27603,7 +37841,67 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+multiline_comment|/*&n; *&t;Exported service for pcmcia card handling&n; */
+DECL|function|ixj_pcmcia_probe
+id|IXJ
+op_star
+id|ixj_pcmcia_probe
+c_func
+(paren
+r_int
+r_int
+id|dsp
+comma
+r_int
+r_int
+id|xilinx
+)paren
+(brace
+id|IXJ
+op_star
+id|j
+op_assign
+id|ixj_alloc
+c_func
+(paren
+)paren
+suffix:semicolon
+id|j-&gt;board
+op_assign
+l_int|0
+suffix:semicolon
+id|j-&gt;DSPbase
+op_assign
+id|dsp
+suffix:semicolon
+id|j-&gt;XILINXbase
+op_assign
+id|xilinx
+suffix:semicolon
+id|j-&gt;cardtype
+op_assign
+id|QTI_PHONECARD
+suffix:semicolon
+id|ixj_selfprobe
+c_func
+(paren
+id|j
+)paren
+suffix:semicolon
+r_return
+id|j
+suffix:semicolon
+)brace
+DECL|variable|ixj_pcmcia_probe
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|ixj_pcmcia_probe
+)paren
+suffix:semicolon
+multiline_comment|/* Fpr PCMCIA */
 DECL|function|ixj_get_status_proc
+r_static
 r_int
 id|ixj_get_status_proc
 c_func
@@ -27636,7 +37934,7 @@ id|buf
 op_plus
 id|len
 comma
-l_string|&quot;&bslash;n%s&quot;
+l_string|&quot;%s&quot;
 comma
 id|ixj_c_rcsid
 )paren
@@ -27669,6 +37967,84 @@ comma
 id|ixjuser_h_rcsid
 )paren
 suffix:semicolon
+id|len
+op_add_assign
+id|sprintf
+c_func
+(paren
+id|buf
+op_plus
+id|len
+comma
+l_string|&quot;&bslash;nDriver version %i.%i.%i&quot;
+comma
+id|IXJ_VER_MAJOR
+comma
+id|IXJ_VER_MINOR
+comma
+id|IXJ_BLD_VER
+)paren
+suffix:semicolon
+id|len
+op_add_assign
+id|sprintf
+c_func
+(paren
+id|buf
+op_plus
+id|len
+comma
+l_string|&quot;&bslash;nsizeof IXJ struct %d bytes&quot;
+comma
+r_sizeof
+(paren
+id|IXJ
+)paren
+)paren
+suffix:semicolon
+id|len
+op_add_assign
+id|sprintf
+c_func
+(paren
+id|buf
+op_plus
+id|len
+comma
+l_string|&quot;&bslash;nsizeof DAA struct %d bytes&quot;
+comma
+r_sizeof
+(paren
+id|DAA_REGS
+)paren
+)paren
+suffix:semicolon
+id|len
+op_add_assign
+id|sprintf
+c_func
+(paren
+id|buf
+op_plus
+id|len
+comma
+l_string|&quot;&bslash;nUsing old telephony API&quot;
+)paren
+suffix:semicolon
+id|len
+op_add_assign
+id|sprintf
+c_func
+(paren
+id|buf
+op_plus
+id|len
+comma
+l_string|&quot;&bslash;nDebug Level %d&bslash;n&quot;
+comma
+id|ixjdebug
+)paren
+suffix:semicolon
 r_for
 c_loop
 (paren
@@ -27686,10 +38062,11 @@ op_increment
 (brace
 id|j
 op_assign
-id|ixj
-(braket
+id|get_ixj
+c_func
+(paren
 id|cnt
-)braket
+)paren
 suffix:semicolon
 r_if
 c_cond
@@ -27698,8 +38075,10 @@ id|j
 op_eq
 l_int|NULL
 )paren
+(brace
 r_continue
 suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
@@ -27871,7 +38250,7 @@ id|len
 comma
 l_string|&quot; Country = %d&quot;
 comma
-id|j-&gt;country
+id|j-&gt;daa_country
 )paren
 suffix:semicolon
 r_break
@@ -28084,32 +38463,10 @@ comma
 id|j-&gt;writers
 )paren
 suffix:semicolon
-multiline_comment|/* FIXME: This makes no sense! */
-id|len
-op_add_assign
-id|sprintf
+id|add_caps
 c_func
 (paren
-id|buf
-op_plus
-id|len
-comma
-l_string|&quot;&bslash;nFSK words %d&quot;
-comma
-id|ixj
-(braket
-l_int|2
-)braket
-ques
-c_cond
-id|ixj
-(braket
-l_int|2
-)braket
-op_member_access_from_pointer
-id|fskdcnt
-suffix:colon
-l_int|0
+id|j
 )paren
 suffix:semicolon
 id|len
@@ -28175,66 +38532,6 @@ op_plus
 id|len
 comma
 l_string|&quot;&bslash;nCaller ID data not sent&quot;
-)paren
-suffix:semicolon
-id|len
-op_add_assign
-id|sprintf
-c_func
-(paren
-id|buf
-op_plus
-id|len
-comma
-l_string|&quot;&bslash;nCaller ID Date %s%s&quot;
-comma
-id|j-&gt;cid_send.month
-comma
-id|j-&gt;cid_send.day
-)paren
-suffix:semicolon
-id|len
-op_add_assign
-id|sprintf
-c_func
-(paren
-id|buf
-op_plus
-id|len
-comma
-l_string|&quot;&bslash;nCaller ID Time %s%s&quot;
-comma
-id|j-&gt;cid_send.hour
-comma
-id|j-&gt;cid_send.min
-)paren
-suffix:semicolon
-id|len
-op_add_assign
-id|sprintf
-c_func
-(paren
-id|buf
-op_plus
-id|len
-comma
-l_string|&quot;&bslash;nCaller ID Name %s&quot;
-comma
-id|j-&gt;cid_send.name
-)paren
-suffix:semicolon
-id|len
-op_add_assign
-id|sprintf
-c_func
-(paren
-id|buf
-op_plus
-id|len
-comma
-l_string|&quot;&bslash;nCaller ID Number %s&quot;
-comma
-id|j-&gt;cid_send.number
 )paren
 suffix:semicolon
 id|len
@@ -28370,6 +38667,23 @@ op_plus
 id|len
 comma
 l_string|&quot;G.729&quot;
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+id|G729B
+suffix:colon
+id|len
+op_add_assign
+id|sprintf
+c_func
+(paren
+id|buf
+op_plus
+id|len
+comma
+l_string|&quot;G.729B&quot;
 )paren
 suffix:semicolon
 r_break
@@ -28614,6 +38928,23 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
+id|G729B
+suffix:colon
+id|len
+op_add_assign
+id|sprintf
+c_func
+(paren
+id|buf
+op_plus
+id|len
+comma
+l_string|&quot;G.729B&quot;
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
 id|ULAW
 suffix:colon
 id|len
@@ -28715,6 +39046,18 @@ suffix:semicolon
 r_break
 suffix:semicolon
 )brace
+id|len
+op_add_assign
+id|sprintf
+c_func
+(paren
+id|buf
+op_plus
+id|len
+comma
+l_string|&quot;&bslash;nAEC &quot;
+)paren
+suffix:semicolon
 r_switch
 c_cond
 (paren
@@ -28733,7 +39076,7 @@ id|buf
 op_plus
 id|len
 comma
-l_string|&quot;&bslash;n AEC OFF&quot;
+l_string|&quot;Off&quot;
 )paren
 suffix:semicolon
 r_break
@@ -28750,7 +39093,7 @@ id|buf
 op_plus
 id|len
 comma
-l_string|&quot;&bslash;n AEC LOW&quot;
+l_string|&quot;Low&quot;
 )paren
 suffix:semicolon
 r_break
@@ -28767,7 +39110,7 @@ id|buf
 op_plus
 id|len
 comma
-l_string|&quot;&bslash;n AEC MED&quot;
+l_string|&quot;Med&quot;
 )paren
 suffix:semicolon
 r_break
@@ -28784,7 +39127,59 @@ id|buf
 op_plus
 id|len
 comma
-l_string|&quot;&bslash;n AEC HIGH&quot;
+l_string|&quot;High&quot;
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+id|AEC_AUTO
+suffix:colon
+id|len
+op_add_assign
+id|sprintf
+c_func
+(paren
+id|buf
+op_plus
+id|len
+comma
+l_string|&quot;Auto&quot;
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+id|AEC_AGC
+suffix:colon
+id|len
+op_add_assign
+id|sprintf
+c_func
+(paren
+id|buf
+op_plus
+id|len
+comma
+l_string|&quot;AEC/AGC&quot;
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
+r_default
+suffix:colon
+id|len
+op_add_assign
+id|sprintf
+c_func
+(paren
+id|buf
+op_plus
+id|len
+comma
+l_string|&quot;unknown(%i)&quot;
+comma
+id|j-&gt;aec_level
 )paren
 suffix:semicolon
 r_break
@@ -28799,12 +39194,66 @@ id|buf
 op_plus
 id|len
 comma
-l_string|&quot;&bslash;nHook state %d&quot;
+l_string|&quot;&bslash;nRec volume 0x%x&quot;
 comma
-id|j-&gt;r_hook
+id|get_rec_volume
+c_func
+(paren
+id|j
+)paren
 )paren
 suffix:semicolon
-singleline_comment|// ixj_hookstate(cnt));
+id|len
+op_add_assign
+id|sprintf
+c_func
+(paren
+id|buf
+op_plus
+id|len
+comma
+l_string|&quot;&bslash;nPlay volume 0x%x&quot;
+comma
+id|get_play_volume
+c_func
+(paren
+id|j
+)paren
+)paren
+suffix:semicolon
+id|len
+op_add_assign
+id|sprintf
+c_func
+(paren
+id|buf
+op_plus
+id|len
+comma
+l_string|&quot;&bslash;nDTMF prescale 0x%x&quot;
+comma
+id|get_dtmf_prescale
+c_func
+(paren
+id|j
+)paren
+)paren
+suffix:semicolon
+id|len
+op_add_assign
+id|sprintf
+c_func
+(paren
+id|buf
+op_plus
+id|len
+comma
+l_string|&quot;&bslash;nHook state %d&quot;
+comma
+id|j-&gt;hookstate
+)paren
+suffix:semicolon
+multiline_comment|/* j-&gt;r_hook);&t;*/
 r_if
 c_cond
 (paren
@@ -28850,9 +39299,9 @@ id|buf
 op_plus
 id|len
 comma
-l_string|&quot;&bslash;nPOTS to PSTN %d&quot;
+l_string|&quot;&bslash;nPSTN Check %d&quot;
 comma
-id|j-&gt;flags.pots_pstn
+id|j-&gt;flags.pstncheck
 )paren
 suffix:semicolon
 id|len
@@ -28864,11 +39313,9 @@ id|buf
 op_plus
 id|len
 comma
-l_string|&quot;&bslash;nPSTN sleeptil %ld - jiffies %ld&quot;
+l_string|&quot;&bslash;nPOTS to PSTN %d&quot;
 comma
-id|j-&gt;pstn_sleeptil
-comma
-id|jiffies
+id|j-&gt;flags.pots_pstn
 )paren
 suffix:semicolon
 r_switch
@@ -28909,6 +39356,25 @@ comma
 l_string|&quot;&bslash;nDAA PSTN Ringing&quot;
 )paren
 suffix:semicolon
+id|len
+op_add_assign
+id|sprintf
+c_func
+(paren
+id|buf
+op_plus
+id|len
+comma
+l_string|&quot;&bslash;nRinging state = %d&quot;
+comma
+id|j-&gt;cadence_f
+(braket
+l_int|4
+)braket
+dot
+id|state
+)paren
+suffix:semicolon
 r_break
 suffix:semicolon
 r_case
@@ -28946,6 +39412,148 @@ suffix:semicolon
 r_break
 suffix:semicolon
 )brace
+id|len
+op_add_assign
+id|sprintf
+c_func
+(paren
+id|buf
+op_plus
+id|len
+comma
+l_string|&quot;&bslash;nDAA RMR = %d&quot;
+comma
+id|j-&gt;m_DAAShadowRegs.SOP_REGS.SOP.cr1.bitreg.RMR
+)paren
+suffix:semicolon
+id|len
+op_add_assign
+id|sprintf
+c_func
+(paren
+id|buf
+op_plus
+id|len
+comma
+l_string|&quot;&bslash;nDAA VDD OK = %d&quot;
+comma
+id|j-&gt;m_DAAShadowRegs.XOP_REGS.XOP.xr0.bitreg.VDD_OK
+)paren
+suffix:semicolon
+id|len
+op_add_assign
+id|sprintf
+c_func
+(paren
+id|buf
+op_plus
+id|len
+comma
+l_string|&quot;&bslash;nDAA CR0 = 0x%02x&quot;
+comma
+id|j-&gt;m_DAAShadowRegs.SOP_REGS.SOP.cr0.reg
+)paren
+suffix:semicolon
+id|len
+op_add_assign
+id|sprintf
+c_func
+(paren
+id|buf
+op_plus
+id|len
+comma
+l_string|&quot;&bslash;nDAA CR1 = 0x%02x&quot;
+comma
+id|j-&gt;m_DAAShadowRegs.SOP_REGS.SOP.cr1.reg
+)paren
+suffix:semicolon
+id|len
+op_add_assign
+id|sprintf
+c_func
+(paren
+id|buf
+op_plus
+id|len
+comma
+l_string|&quot;&bslash;nDAA CR2 = 0x%02x&quot;
+comma
+id|j-&gt;m_DAAShadowRegs.SOP_REGS.SOP.cr2.reg
+)paren
+suffix:semicolon
+id|len
+op_add_assign
+id|sprintf
+c_func
+(paren
+id|buf
+op_plus
+id|len
+comma
+l_string|&quot;&bslash;nDAA CR3 = 0x%02x&quot;
+comma
+id|j-&gt;m_DAAShadowRegs.SOP_REGS.SOP.cr3.reg
+)paren
+suffix:semicolon
+id|len
+op_add_assign
+id|sprintf
+c_func
+(paren
+id|buf
+op_plus
+id|len
+comma
+l_string|&quot;&bslash;nDAA CR4 = 0x%02x&quot;
+comma
+id|j-&gt;m_DAAShadowRegs.SOP_REGS.SOP.cr4.reg
+)paren
+suffix:semicolon
+id|len
+op_add_assign
+id|sprintf
+c_func
+(paren
+id|buf
+op_plus
+id|len
+comma
+l_string|&quot;&bslash;nDAA CR5 = 0x%02x&quot;
+comma
+id|j-&gt;m_DAAShadowRegs.SOP_REGS.SOP.cr5.reg
+)paren
+suffix:semicolon
+id|len
+op_add_assign
+id|sprintf
+c_func
+(paren
+id|buf
+op_plus
+id|len
+comma
+l_string|&quot;&bslash;nDAA XR0 = 0x%02x&quot;
+comma
+id|j-&gt;m_DAAShadowRegs.XOP_REGS.XOP.xr0.reg
+)paren
+suffix:semicolon
+id|len
+op_add_assign
+id|sprintf
+c_func
+(paren
+id|buf
+op_plus
+id|len
+comma
+l_string|&quot;&bslash;nDAA ringstop %ld - jiffies %ld&quot;
+comma
+id|j-&gt;pstn_ring_stop
+comma
+id|jiffies
+)paren
+suffix:semicolon
 )brace
 r_switch
 c_cond
@@ -29110,7 +39718,7 @@ suffix:semicolon
 r_case
 id|PLD_SLIC_STATE_OHT
 suffix:colon
-singleline_comment|// On-hook transmit
+multiline_comment|/* On-hook transmit */
 id|len
 op_add_assign
 id|sprintf
@@ -29162,7 +39770,7 @@ suffix:semicolon
 r_case
 id|PLD_SLIC_STATE_APR
 suffix:colon
-singleline_comment|// Active polarity reversal
+multiline_comment|/* Active polarity reversal */
 id|len
 op_add_assign
 id|sprintf
@@ -29180,7 +39788,7 @@ suffix:semicolon
 r_case
 id|PLD_SLIC_STATE_OHTPR
 suffix:colon
-singleline_comment|// OHT polarity reversal
+multiline_comment|/* OHT polarity reversal */
 id|len
 op_add_assign
 id|sprintf
@@ -29219,6 +39827,36 @@ r_break
 suffix:semicolon
 )brace
 )brace
+id|len
+op_add_assign
+id|sprintf
+c_func
+(paren
+id|buf
+op_plus
+id|len
+comma
+l_string|&quot;&bslash;nBase Frame %2.2x.%2.2x&quot;
+comma
+id|j-&gt;baseframe.high
+comma
+id|j-&gt;baseframe.low
+)paren
+suffix:semicolon
+id|len
+op_add_assign
+id|sprintf
+c_func
+(paren
+id|buf
+op_plus
+id|len
+comma
+l_string|&quot;&bslash;nCID Base Frame %2d&quot;
+comma
+id|j-&gt;cid_base_frame_size
+)paren
+suffix:semicolon
 macro_line|#ifdef PERFMON_STATS
 id|len
 op_add_assign
@@ -29260,22 +39898,6 @@ comma
 l_string|&quot;&bslash;nTX Ready Checks %ld&quot;
 comma
 id|j-&gt;txreadycheck
-)paren
-suffix:semicolon
-id|len
-op_add_assign
-id|sprintf
-c_func
-(paren
-id|buf
-op_plus
-id|len
-comma
-l_string|&quot;&bslash;nBase Frame %2.2x.%2.2x&quot;
-comma
-id|j-&gt;baseframe.high
-comma
-id|j-&gt;baseframe.low
 )paren
 suffix:semicolon
 id|len
@@ -29348,6 +39970,90 @@ comma
 id|j-&gt;write_wait
 )paren
 suffix:semicolon
+id|len
+op_add_assign
+id|sprintf
+c_func
+(paren
+id|buf
+op_plus
+id|len
+comma
+l_string|&quot;&bslash;nStatus Waits %ld&quot;
+comma
+id|j-&gt;statuswait
+)paren
+suffix:semicolon
+id|len
+op_add_assign
+id|sprintf
+c_func
+(paren
+id|buf
+op_plus
+id|len
+comma
+l_string|&quot;&bslash;nStatus Wait Fails %ld&quot;
+comma
+id|j-&gt;statuswaitfail
+)paren
+suffix:semicolon
+id|len
+op_add_assign
+id|sprintf
+c_func
+(paren
+id|buf
+op_plus
+id|len
+comma
+l_string|&quot;&bslash;nPControl Waits %ld&quot;
+comma
+id|j-&gt;pcontrolwait
+)paren
+suffix:semicolon
+id|len
+op_add_assign
+id|sprintf
+c_func
+(paren
+id|buf
+op_plus
+id|len
+comma
+l_string|&quot;&bslash;nPControl Wait Fails %ld&quot;
+comma
+id|j-&gt;pcontrolwaitfail
+)paren
+suffix:semicolon
+id|len
+op_add_assign
+id|sprintf
+c_func
+(paren
+id|buf
+op_plus
+id|len
+comma
+l_string|&quot;&bslash;nIs Control Ready Checks %ld&quot;
+comma
+id|j-&gt;iscontrolready
+)paren
+suffix:semicolon
+id|len
+op_add_assign
+id|sprintf
+c_func
+(paren
+id|buf
+op_plus
+id|len
+comma
+l_string|&quot;&bslash;nIs Control Ready Check failures %ld&quot;
+comma
+id|j-&gt;iscontrolreadyfail
+)paren
+suffix:semicolon
 macro_line|#endif
 id|len
 op_add_assign
@@ -29362,83 +40068,6 @@ l_string|&quot;&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
-)brace
-r_return
-id|len
-suffix:semicolon
-)brace
-DECL|function|ixj_get_status_proc_fsk
-r_int
-id|ixj_get_status_proc_fsk
-c_func
-(paren
-r_char
-op_star
-id|buf
-)paren
-(brace
-r_int
-id|len
-suffix:semicolon
-id|len
-op_assign
-l_int|0
-suffix:semicolon
-multiline_comment|/* This makes no sense - why is ixj[2] special? */
-r_if
-c_cond
-(paren
-id|ixj
-(braket
-l_int|2
-)braket
-op_ne
-l_int|NULL
-op_logical_and
-id|ixj
-(braket
-l_int|2
-)braket
-op_member_access_from_pointer
-id|fskdcnt
-)paren
-(brace
-id|memcpy
-c_func
-(paren
-id|buf
-comma
-op_amp
-id|ixj
-(braket
-l_int|2
-)braket
-op_member_access_from_pointer
-id|fskdata
-comma
-(paren
-id|ixj
-(braket
-l_int|2
-)braket
-op_member_access_from_pointer
-id|fskdcnt
-)paren
-op_star
-l_int|2
-)paren
-suffix:semicolon
-id|len
-op_add_assign
-id|ixj
-(braket
-l_int|2
-)braket
-op_member_access_from_pointer
-id|fskdcnt
-op_star
-l_int|2
-suffix:semicolon
 )brace
 r_return
 id|len
@@ -29534,1707 +40163,6 @@ r_return
 id|len
 suffix:semicolon
 )brace
-DECL|function|ixj_read_proc_fsk
-r_static
-r_int
-id|ixj_read_proc_fsk
-c_func
-(paren
-r_char
-op_star
-id|page
-comma
-r_char
-op_star
-op_star
-id|start
-comma
-id|off_t
-id|off
-comma
-r_int
-id|count
-comma
-r_int
-op_star
-id|eof
-comma
-r_void
-op_star
-id|data
-)paren
-(brace
-r_int
-id|len
-op_assign
-id|ixj_get_status_proc_fsk
-c_func
-(paren
-id|page
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|len
-op_le
-id|off
-op_plus
-id|count
-)paren
-op_star
-id|eof
-op_assign
-l_int|1
-suffix:semicolon
-op_star
-id|start
-op_assign
-id|page
-op_plus
-id|off
-suffix:semicolon
-id|len
-op_sub_assign
-id|off
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|len
-OG
-id|count
-)paren
-id|len
-op_assign
-id|count
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|len
-OL
-l_int|0
-)paren
-id|len
-op_assign
-l_int|0
-suffix:semicolon
-r_return
-id|len
-suffix:semicolon
-)brace
-id|MODULE_DESCRIPTION
-c_func
-(paren
-l_string|&quot;Internet Phone/Internet LineJack module - www.quicknet.net&quot;
-)paren
-suffix:semicolon
-id|MODULE_AUTHOR
-c_func
-(paren
-l_string|&quot;Ed Okerson &lt;eokerson@quicknet.net&gt;&quot;
-)paren
-suffix:semicolon
-macro_line|#if defined(CONFIG_PCMCIA) || defined(CONFIG_PCMCIA_MODULE)
-macro_line|#ifdef PCMCIA_DEBUG
-DECL|variable|pc_debug
-r_static
-r_int
-id|pc_debug
-op_assign
-id|PCMCIA_DEBUG
-suffix:semicolon
-id|MODULE_PARM
-c_func
-(paren
-id|pc_debug
-comma
-l_string|&quot;i&quot;
-)paren
-suffix:semicolon
-DECL|macro|DEBUG
-mdefine_line|#define DEBUG(n, args...) if (pc_debug&gt;(n)) printk(KERN_DEBUG args)
-macro_line|#else
-DECL|macro|DEBUG
-mdefine_line|#define DEBUG(n, args...)
-macro_line|#endif /* PCMCIA_DEBUG */
-DECL|struct|ixj_info_t
-r_typedef
-r_struct
-id|ixj_info_t
-(brace
-DECL|member|ndev
-r_int
-id|ndev
-suffix:semicolon
-DECL|member|node
-id|dev_node_t
-id|node
-suffix:semicolon
-DECL|member|port
-r_struct
-id|ixj
-op_star
-id|port
-suffix:semicolon
-DECL|typedef|ixj_info_t
-)brace
-id|ixj_info_t
-suffix:semicolon
-r_static
-id|dev_link_t
-op_star
-id|ixj_attach
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-r_static
-r_void
-id|ixj_detach
-c_func
-(paren
-id|dev_link_t
-op_star
-)paren
-suffix:semicolon
-r_static
-r_void
-id|ixj_config
-c_func
-(paren
-id|dev_link_t
-op_star
-id|link
-)paren
-suffix:semicolon
-r_static
-r_void
-id|ixj_cs_release
-c_func
-(paren
-id|u_long
-id|arg
-)paren
-suffix:semicolon
-r_static
-r_int
-id|ixj_event
-c_func
-(paren
-id|event_t
-id|event
-comma
-r_int
-id|priority
-comma
-id|event_callback_args_t
-op_star
-id|args
-)paren
-suffix:semicolon
-DECL|variable|dev_info
-r_static
-id|dev_info_t
-id|dev_info
-op_assign
-l_string|&quot;ixj_cs&quot;
-suffix:semicolon
-DECL|variable|dev_list
-r_static
-id|dev_link_t
-op_star
-id|dev_list
-op_assign
-l_int|NULL
-suffix:semicolon
-DECL|function|cs_error
-r_static
-r_void
-id|cs_error
-c_func
-(paren
-id|client_handle_t
-id|handle
-comma
-r_int
-id|func
-comma
-r_int
-id|ret
-)paren
-(brace
-id|error_info_t
-id|err
-op_assign
-(brace
-id|func
-comma
-id|ret
-)brace
-suffix:semicolon
-id|CardServices
-c_func
-(paren
-id|ReportError
-comma
-id|handle
-comma
-op_amp
-id|err
-)paren
-suffix:semicolon
-)brace
-DECL|function|ixj_attach
-r_static
-id|dev_link_t
-op_star
-id|ixj_attach
-c_func
-(paren
-r_void
-)paren
-(brace
-id|client_reg_t
-id|client_reg
-suffix:semicolon
-id|dev_link_t
-op_star
-id|link
-suffix:semicolon
-r_int
-id|ret
-suffix:semicolon
-id|DEBUG
-c_func
-(paren
-l_int|0
-comma
-l_string|&quot;ixj_attach()&bslash;n&quot;
-)paren
-suffix:semicolon
-multiline_comment|/* Create new ixj device */
-id|link
-op_assign
-id|kmalloc
-c_func
-(paren
-r_sizeof
-(paren
-r_struct
-id|dev_link_t
-)paren
-comma
-id|GFP_KERNEL
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|link
-)paren
-r_return
-l_int|NULL
-suffix:semicolon
-id|memset
-c_func
-(paren
-id|link
-comma
-l_int|0
-comma
-r_sizeof
-(paren
-r_struct
-id|dev_link_t
-)paren
-)paren
-suffix:semicolon
-id|link-&gt;release.function
-op_assign
-op_amp
-id|ixj_cs_release
-suffix:semicolon
-id|link-&gt;release.data
-op_assign
-(paren
-id|u_long
-)paren
-id|link
-suffix:semicolon
-id|link-&gt;io.Attributes1
-op_assign
-id|IO_DATA_PATH_WIDTH_8
-suffix:semicolon
-id|link-&gt;io.Attributes2
-op_assign
-id|IO_DATA_PATH_WIDTH_8
-suffix:semicolon
-id|link-&gt;io.IOAddrLines
-op_assign
-l_int|3
-suffix:semicolon
-id|link-&gt;conf.Vcc
-op_assign
-l_int|50
-suffix:semicolon
-id|link-&gt;conf.IntType
-op_assign
-id|INT_MEMORY_AND_IO
-suffix:semicolon
-id|link-&gt;priv
-op_assign
-id|kmalloc
-c_func
-(paren
-r_sizeof
-(paren
-r_struct
-id|ixj_info_t
-)paren
-comma
-id|GFP_KERNEL
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|link-&gt;priv
-)paren
-r_return
-l_int|NULL
-suffix:semicolon
-id|memset
-c_func
-(paren
-id|link-&gt;priv
-comma
-l_int|0
-comma
-r_sizeof
-(paren
-r_struct
-id|ixj_info_t
-)paren
-)paren
-suffix:semicolon
-multiline_comment|/* Register with Card Services */
-id|link-&gt;next
-op_assign
-id|dev_list
-suffix:semicolon
-id|dev_list
-op_assign
-id|link
-suffix:semicolon
-id|client_reg.dev_info
-op_assign
-op_amp
-id|dev_info
-suffix:semicolon
-id|client_reg.Attributes
-op_assign
-id|INFO_IO_CLIENT
-op_or
-id|INFO_CARD_SHARE
-suffix:semicolon
-id|client_reg.EventMask
-op_assign
-id|CS_EVENT_CARD_INSERTION
-op_or
-id|CS_EVENT_CARD_REMOVAL
-op_or
-id|CS_EVENT_RESET_PHYSICAL
-op_or
-id|CS_EVENT_CARD_RESET
-op_or
-id|CS_EVENT_PM_SUSPEND
-op_or
-id|CS_EVENT_PM_RESUME
-suffix:semicolon
-id|client_reg.event_handler
-op_assign
-op_amp
-id|ixj_event
-suffix:semicolon
-id|client_reg.Version
-op_assign
-l_int|0x0210
-suffix:semicolon
-id|client_reg.event_callback_args.client_data
-op_assign
-id|link
-suffix:semicolon
-id|ret
-op_assign
-id|CardServices
-c_func
-(paren
-id|RegisterClient
-comma
-op_amp
-id|link-&gt;handle
-comma
-op_amp
-id|client_reg
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|ret
-op_ne
-id|CS_SUCCESS
-)paren
-(brace
-id|cs_error
-c_func
-(paren
-id|link-&gt;handle
-comma
-id|RegisterClient
-comma
-id|ret
-)paren
-suffix:semicolon
-id|ixj_detach
-c_func
-(paren
-id|link
-)paren
-suffix:semicolon
-r_return
-l_int|NULL
-suffix:semicolon
-)brace
-r_return
-id|link
-suffix:semicolon
-)brace
-DECL|function|ixj_detach
-r_static
-r_void
-id|ixj_detach
-c_func
-(paren
-id|dev_link_t
-op_star
-id|link
-)paren
-(brace
-id|dev_link_t
-op_star
-op_star
-id|linkp
-suffix:semicolon
-r_int
-id|flags
-suffix:semicolon
-r_int
-id|ret
-suffix:semicolon
-id|DEBUG
-c_func
-(paren
-l_int|0
-comma
-l_string|&quot;ixj_detach(0x%p)&bslash;n&quot;
-comma
-id|link
-)paren
-suffix:semicolon
-r_for
-c_loop
-(paren
-id|linkp
-op_assign
-op_amp
-id|dev_list
-suffix:semicolon
-op_star
-id|linkp
-suffix:semicolon
-id|linkp
-op_assign
-op_amp
-(paren
-op_star
-id|linkp
-)paren
-op_member_access_from_pointer
-id|next
-)paren
-r_if
-c_cond
-(paren
-op_star
-id|linkp
-op_eq
-id|link
-)paren
-r_break
-suffix:semicolon
-r_if
-c_cond
-(paren
-op_star
-id|linkp
-op_eq
-l_int|NULL
-)paren
-r_return
-suffix:semicolon
-id|save_flags
-c_func
-(paren
-id|flags
-)paren
-suffix:semicolon
-id|cli
-c_func
-(paren
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|link-&gt;state
-op_amp
-id|DEV_RELEASE_PENDING
-)paren
-(brace
-id|del_timer
-c_func
-(paren
-op_amp
-id|link-&gt;release
-)paren
-suffix:semicolon
-id|link-&gt;state
-op_and_assign
-op_complement
-id|DEV_RELEASE_PENDING
-suffix:semicolon
-)brace
-id|restore_flags
-c_func
-(paren
-id|flags
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|link-&gt;state
-op_amp
-id|DEV_CONFIG
-)paren
-id|ixj_cs_release
-c_func
-(paren
-(paren
-id|u_long
-)paren
-id|link
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|link-&gt;handle
-)paren
-(brace
-id|ret
-op_assign
-id|CardServices
-c_func
-(paren
-id|DeregisterClient
-comma
-id|link-&gt;handle
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|ret
-op_ne
-id|CS_SUCCESS
-)paren
-id|cs_error
-c_func
-(paren
-id|link-&gt;handle
-comma
-id|DeregisterClient
-comma
-id|ret
-)paren
-suffix:semicolon
-)brace
-multiline_comment|/* Unlink device structure, free bits */
-op_star
-id|linkp
-op_assign
-id|link-&gt;next
-suffix:semicolon
-id|kfree
-c_func
-(paren
-id|link-&gt;priv
-)paren
-suffix:semicolon
-id|kfree
-c_func
-(paren
-id|link
-)paren
-suffix:semicolon
-)brace
-DECL|macro|CS_CHECK
-mdefine_line|#define CS_CHECK(fn, args...) &bslash;&n;while ((last_ret=CardServices(last_fn=(fn), args))!=0) goto cs_failed
-DECL|macro|CFG_CHECK
-mdefine_line|#define CFG_CHECK(fn, args...) &bslash;&n;if (CardServices(fn, args) != 0) goto next_entry
-DECL|function|ixj_get_serial
-r_void
-id|ixj_get_serial
-c_func
-(paren
-id|dev_link_t
-op_star
-id|link
-comma
-id|IXJ
-op_star
-id|j
-)paren
-(brace
-id|client_handle_t
-id|handle
-suffix:semicolon
-id|tuple_t
-id|tuple
-suffix:semicolon
-id|u_short
-id|buf
-(braket
-l_int|128
-)braket
-suffix:semicolon
-r_char
-op_star
-id|str
-suffix:semicolon
-r_int
-id|last_ret
-comma
-id|last_fn
-comma
-id|i
-comma
-id|place
-suffix:semicolon
-id|handle
-op_assign
-id|link-&gt;handle
-suffix:semicolon
-id|DEBUG
-c_func
-(paren
-l_int|0
-comma
-l_string|&quot;ixj_get_serial(0x%p)&bslash;n&quot;
-comma
-id|link
-)paren
-suffix:semicolon
-id|tuple.TupleData
-op_assign
-(paren
-id|cisdata_t
-op_star
-)paren
-id|buf
-suffix:semicolon
-id|tuple.TupleOffset
-op_assign
-l_int|0
-suffix:semicolon
-id|tuple.TupleDataMax
-op_assign
-l_int|80
-suffix:semicolon
-id|tuple.Attributes
-op_assign
-l_int|0
-suffix:semicolon
-id|tuple.DesiredTuple
-op_assign
-id|CISTPL_VERS_1
-suffix:semicolon
-id|CS_CHECK
-c_func
-(paren
-id|GetFirstTuple
-comma
-id|handle
-comma
-op_amp
-id|tuple
-)paren
-suffix:semicolon
-id|CS_CHECK
-c_func
-(paren
-id|GetTupleData
-comma
-id|handle
-comma
-op_amp
-id|tuple
-)paren
-suffix:semicolon
-id|str
-op_assign
-(paren
-r_char
-op_star
-)paren
-id|buf
-suffix:semicolon
-id|printk
-c_func
-(paren
-l_string|&quot;PCMCIA Version %d.%d&bslash;n&quot;
-comma
-id|str
-(braket
-l_int|0
-)braket
-comma
-id|str
-(braket
-l_int|1
-)braket
-)paren
-suffix:semicolon
-id|str
-op_add_assign
-l_int|2
-suffix:semicolon
-id|printk
-c_func
-(paren
-l_string|&quot;%s&quot;
-comma
-id|str
-)paren
-suffix:semicolon
-id|str
-op_assign
-id|str
-op_plus
-id|strlen
-c_func
-(paren
-id|str
-)paren
-op_plus
-l_int|1
-suffix:semicolon
-id|printk
-c_func
-(paren
-l_string|&quot; %s&quot;
-comma
-id|str
-)paren
-suffix:semicolon
-id|str
-op_assign
-id|str
-op_plus
-id|strlen
-c_func
-(paren
-id|str
-)paren
-op_plus
-l_int|1
-suffix:semicolon
-id|place
-op_assign
-l_int|1
-suffix:semicolon
-r_for
-c_loop
-(paren
-id|i
-op_assign
-id|strlen
-c_func
-(paren
-id|str
-)paren
-op_minus
-l_int|1
-suffix:semicolon
-id|i
-op_ge
-l_int|0
-suffix:semicolon
-id|i
-op_decrement
-)paren
-(brace
-r_switch
-c_cond
-(paren
-id|str
-(braket
-id|i
-)braket
-)paren
-(brace
-r_case
-l_char|&squot;0&squot;
-suffix:colon
-r_case
-l_char|&squot;1&squot;
-suffix:colon
-r_case
-l_char|&squot;2&squot;
-suffix:colon
-r_case
-l_char|&squot;3&squot;
-suffix:colon
-r_case
-l_char|&squot;4&squot;
-suffix:colon
-r_case
-l_char|&squot;5&squot;
-suffix:colon
-r_case
-l_char|&squot;6&squot;
-suffix:colon
-r_case
-l_char|&squot;7&squot;
-suffix:colon
-r_case
-l_char|&squot;8&squot;
-suffix:colon
-r_case
-l_char|&squot;9&squot;
-suffix:colon
-id|j-&gt;serial
-op_add_assign
-(paren
-id|str
-(braket
-id|i
-)braket
-op_minus
-l_int|48
-)paren
-op_star
-id|place
-suffix:semicolon
-r_break
-suffix:semicolon
-r_case
-l_char|&squot;A&squot;
-suffix:colon
-r_case
-l_char|&squot;B&squot;
-suffix:colon
-r_case
-l_char|&squot;C&squot;
-suffix:colon
-r_case
-l_char|&squot;D&squot;
-suffix:colon
-r_case
-l_char|&squot;E&squot;
-suffix:colon
-r_case
-l_char|&squot;F&squot;
-suffix:colon
-id|j-&gt;serial
-op_add_assign
-(paren
-id|str
-(braket
-id|i
-)braket
-op_minus
-l_int|55
-)paren
-op_star
-id|place
-suffix:semicolon
-r_break
-suffix:semicolon
-r_case
-l_char|&squot;a&squot;
-suffix:colon
-r_case
-l_char|&squot;b&squot;
-suffix:colon
-r_case
-l_char|&squot;c&squot;
-suffix:colon
-r_case
-l_char|&squot;d&squot;
-suffix:colon
-r_case
-l_char|&squot;e&squot;
-suffix:colon
-r_case
-l_char|&squot;f&squot;
-suffix:colon
-id|j-&gt;serial
-op_add_assign
-(paren
-id|str
-(braket
-id|i
-)braket
-op_minus
-l_int|87
-)paren
-op_star
-id|place
-suffix:semicolon
-r_break
-suffix:semicolon
-)brace
-id|place
-op_assign
-id|place
-op_star
-l_int|0x10
-suffix:semicolon
-)brace
-id|str
-op_assign
-id|str
-op_plus
-id|strlen
-c_func
-(paren
-id|str
-)paren
-op_plus
-l_int|1
-suffix:semicolon
-id|printk
-c_func
-(paren
-l_string|&quot; version %s&bslash;n&quot;
-comma
-id|str
-)paren
-suffix:semicolon
-id|cs_failed
-suffix:colon
-r_return
-suffix:semicolon
-)brace
-DECL|function|ixj_config
-r_void
-id|ixj_config
-c_func
-(paren
-id|dev_link_t
-op_star
-id|link
-)paren
-(brace
-id|IXJ
-op_star
-id|j
-suffix:semicolon
-id|client_handle_t
-id|handle
-suffix:semicolon
-id|ixj_info_t
-op_star
-id|info
-suffix:semicolon
-id|tuple_t
-id|tuple
-suffix:semicolon
-id|u_short
-id|buf
-(braket
-l_int|128
-)braket
-suffix:semicolon
-id|cisparse_t
-id|parse
-suffix:semicolon
-id|config_info_t
-id|conf
-suffix:semicolon
-id|cistpl_cftable_entry_t
-op_star
-id|cfg
-op_assign
-op_amp
-id|parse.cftable_entry
-suffix:semicolon
-id|cistpl_cftable_entry_t
-id|dflt
-op_assign
-(brace
-l_int|0
-)brace
-suffix:semicolon
-r_int
-id|last_ret
-comma
-id|last_fn
-suffix:semicolon
-id|handle
-op_assign
-id|link-&gt;handle
-suffix:semicolon
-id|info
-op_assign
-id|link-&gt;priv
-suffix:semicolon
-id|DEBUG
-c_func
-(paren
-l_int|0
-comma
-l_string|&quot;ixj_config(0x%p)&bslash;n&quot;
-comma
-id|link
-)paren
-suffix:semicolon
-id|tuple.TupleData
-op_assign
-(paren
-id|cisdata_t
-op_star
-)paren
-id|buf
-suffix:semicolon
-id|tuple.TupleOffset
-op_assign
-l_int|0
-suffix:semicolon
-id|tuple.TupleDataMax
-op_assign
-l_int|255
-suffix:semicolon
-id|tuple.Attributes
-op_assign
-l_int|0
-suffix:semicolon
-id|tuple.DesiredTuple
-op_assign
-id|CISTPL_CONFIG
-suffix:semicolon
-id|CS_CHECK
-c_func
-(paren
-id|GetFirstTuple
-comma
-id|handle
-comma
-op_amp
-id|tuple
-)paren
-suffix:semicolon
-id|CS_CHECK
-c_func
-(paren
-id|GetTupleData
-comma
-id|handle
-comma
-op_amp
-id|tuple
-)paren
-suffix:semicolon
-id|CS_CHECK
-c_func
-(paren
-id|ParseTuple
-comma
-id|handle
-comma
-op_amp
-id|tuple
-comma
-op_amp
-id|parse
-)paren
-suffix:semicolon
-id|link-&gt;conf.ConfigBase
-op_assign
-id|parse.config.base
-suffix:semicolon
-id|link-&gt;conf.Present
-op_assign
-id|parse.config.rmask
-(braket
-l_int|0
-)braket
-suffix:semicolon
-id|link-&gt;state
-op_or_assign
-id|DEV_CONFIG
-suffix:semicolon
-id|CS_CHECK
-c_func
-(paren
-id|GetConfigurationInfo
-comma
-id|handle
-comma
-op_amp
-id|conf
-)paren
-suffix:semicolon
-id|tuple.DesiredTuple
-op_assign
-id|CISTPL_CFTABLE_ENTRY
-suffix:semicolon
-id|tuple.Attributes
-op_assign
-l_int|0
-suffix:semicolon
-id|CS_CHECK
-c_func
-(paren
-id|GetFirstTuple
-comma
-id|handle
-comma
-op_amp
-id|tuple
-)paren
-suffix:semicolon
-r_while
-c_loop
-(paren
-l_int|1
-)paren
-(brace
-id|CFG_CHECK
-c_func
-(paren
-id|GetTupleData
-comma
-id|handle
-comma
-op_amp
-id|tuple
-)paren
-suffix:semicolon
-id|CFG_CHECK
-c_func
-(paren
-id|ParseTuple
-comma
-id|handle
-comma
-op_amp
-id|tuple
-comma
-op_amp
-id|parse
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-(paren
-id|cfg-&gt;io.nwin
-OG
-l_int|0
-)paren
-op_logical_or
-(paren
-id|dflt.io.nwin
-OG
-l_int|0
-)paren
-)paren
-(brace
-id|cistpl_io_t
-op_star
-id|io
-op_assign
-(paren
-id|cfg-&gt;io.nwin
-)paren
-ques
-c_cond
-op_amp
-id|cfg-&gt;io
-suffix:colon
-op_amp
-id|dflt.io
-suffix:semicolon
-id|link-&gt;conf.ConfigIndex
-op_assign
-id|cfg-&gt;index
-suffix:semicolon
-id|link-&gt;io.BasePort1
-op_assign
-id|io-&gt;win
-(braket
-l_int|0
-)braket
-dot
-id|base
-suffix:semicolon
-id|link-&gt;io.NumPorts1
-op_assign
-id|io-&gt;win
-(braket
-l_int|0
-)braket
-dot
-id|len
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|io-&gt;nwin
-op_eq
-l_int|2
-)paren
-(brace
-id|link-&gt;io.BasePort2
-op_assign
-id|io-&gt;win
-(braket
-l_int|1
-)braket
-dot
-id|base
-suffix:semicolon
-id|link-&gt;io.NumPorts2
-op_assign
-id|io-&gt;win
-(braket
-l_int|1
-)braket
-dot
-id|len
-suffix:semicolon
-)brace
-id|CFG_CHECK
-c_func
-(paren
-id|RequestIO
-comma
-id|link-&gt;handle
-comma
-op_amp
-id|link-&gt;io
-)paren
-suffix:semicolon
-multiline_comment|/* If we&squot;ve got this far, we&squot;re done */
-r_break
-suffix:semicolon
-)brace
-id|next_entry
-suffix:colon
-r_if
-c_cond
-(paren
-id|cfg-&gt;flags
-op_amp
-id|CISTPL_CFTABLE_DEFAULT
-)paren
-id|dflt
-op_assign
-op_star
-id|cfg
-suffix:semicolon
-id|CS_CHECK
-c_func
-(paren
-id|GetNextTuple
-comma
-id|handle
-comma
-op_amp
-id|tuple
-)paren
-suffix:semicolon
-)brace
-id|CS_CHECK
-c_func
-(paren
-id|RequestConfiguration
-comma
-id|handle
-comma
-op_amp
-id|link-&gt;conf
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-(paren
-id|j
-op_assign
-id|kmalloc
-c_func
-(paren
-r_sizeof
-(paren
-op_star
-id|j
-)paren
-comma
-id|GFP_KERNEL
-)paren
-)paren
-op_eq
-l_int|NULL
-)paren
-r_goto
-id|cs_failed
-suffix:semicolon
-id|ixj
-(braket
-l_int|0
-)braket
-op_assign
-id|j
-suffix:semicolon
-id|j-&gt;DSPbase
-op_assign
-id|link-&gt;io.BasePort1
-suffix:semicolon
-id|j-&gt;XILINXbase
-op_assign
-id|link-&gt;io.BasePort1
-op_plus
-l_int|0x10
-suffix:semicolon
-id|j-&gt;cardtype
-op_assign
-id|QTI_PHONECARD
-suffix:semicolon
-id|ixj_selfprobe
-c_func
-(paren
-id|j
-comma
-l_int|0
-)paren
-suffix:semicolon
-id|info-&gt;ndev
-op_assign
-l_int|1
-suffix:semicolon
-id|info-&gt;node.major
-op_assign
-id|PHONE_MAJOR
-suffix:semicolon
-id|link-&gt;dev
-op_assign
-op_amp
-id|info-&gt;node
-suffix:semicolon
-id|ixj_get_serial
-c_func
-(paren
-id|link
-comma
-id|j
-)paren
-suffix:semicolon
-id|link-&gt;state
-op_and_assign
-op_complement
-id|DEV_CONFIG_PENDING
-suffix:semicolon
-r_return
-suffix:semicolon
-id|cs_failed
-suffix:colon
-id|cs_error
-c_func
-(paren
-id|link-&gt;handle
-comma
-id|last_fn
-comma
-id|last_ret
-)paren
-suffix:semicolon
-id|ixj_cs_release
-c_func
-(paren
-(paren
-id|u_long
-)paren
-id|link
-)paren
-suffix:semicolon
-)brace
-DECL|function|ixj_cs_release
-r_void
-id|ixj_cs_release
-c_func
-(paren
-id|u_long
-id|arg
-)paren
-(brace
-id|dev_link_t
-op_star
-id|link
-op_assign
-(paren
-id|dev_link_t
-op_star
-)paren
-id|arg
-suffix:semicolon
-id|ixj_info_t
-op_star
-id|info
-op_assign
-id|link-&gt;priv
-suffix:semicolon
-id|DEBUG
-c_func
-(paren
-l_int|0
-comma
-l_string|&quot;ixj_cs_release(0x%p)&bslash;n&quot;
-comma
-id|link
-)paren
-suffix:semicolon
-id|info-&gt;ndev
-op_assign
-l_int|0
-suffix:semicolon
-id|link-&gt;dev
-op_assign
-l_int|NULL
-suffix:semicolon
-id|CardServices
-c_func
-(paren
-id|ReleaseConfiguration
-comma
-id|link-&gt;handle
-)paren
-suffix:semicolon
-id|CardServices
-c_func
-(paren
-id|ReleaseIO
-comma
-id|link-&gt;handle
-comma
-op_amp
-id|link-&gt;io
-)paren
-suffix:semicolon
-id|link-&gt;state
-op_and_assign
-op_complement
-id|DEV_CONFIG
-suffix:semicolon
-id|kfree
-c_func
-(paren
-id|ixj
-(braket
-l_int|0
-)braket
-)paren
-suffix:semicolon
-id|ixj
-(braket
-l_int|0
-)braket
-op_assign
-l_int|NULL
-suffix:semicolon
-)brace
-DECL|function|ixj_event
-r_int
-id|ixj_event
-c_func
-(paren
-id|event_t
-id|event
-comma
-r_int
-id|priority
-comma
-id|event_callback_args_t
-op_star
-id|args
-)paren
-(brace
-id|dev_link_t
-op_star
-id|link
-op_assign
-id|args-&gt;client_data
-suffix:semicolon
-id|DEBUG
-c_func
-(paren
-l_int|1
-comma
-l_string|&quot;ixj_event(0x%06x)&bslash;n&quot;
-comma
-id|event
-)paren
-suffix:semicolon
-r_switch
-c_cond
-(paren
-id|event
-)paren
-(brace
-r_case
-id|CS_EVENT_CARD_REMOVAL
-suffix:colon
-id|link-&gt;state
-op_and_assign
-op_complement
-id|DEV_PRESENT
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|link-&gt;state
-op_amp
-id|DEV_CONFIG
-)paren
-(brace
-id|link-&gt;release.expires
-op_assign
-id|jiffies
-op_plus
-(paren
-id|HZ
-op_div
-l_int|20
-)paren
-suffix:semicolon
-id|link-&gt;state
-op_or_assign
-id|DEV_RELEASE_PENDING
-suffix:semicolon
-id|add_timer
-c_func
-(paren
-op_amp
-id|link-&gt;release
-)paren
-suffix:semicolon
-)brace
-r_break
-suffix:semicolon
-r_case
-id|CS_EVENT_CARD_INSERTION
-suffix:colon
-id|link-&gt;state
-op_or_assign
-id|DEV_PRESENT
-op_or
-id|DEV_CONFIG_PENDING
-suffix:semicolon
-id|ixj_config
-c_func
-(paren
-id|link
-)paren
-suffix:semicolon
-r_break
-suffix:semicolon
-r_case
-id|CS_EVENT_PM_SUSPEND
-suffix:colon
-id|link-&gt;state
-op_or_assign
-id|DEV_SUSPEND
-suffix:semicolon
-multiline_comment|/* Fall through... */
-r_case
-id|CS_EVENT_RESET_PHYSICAL
-suffix:colon
-r_if
-c_cond
-(paren
-id|link-&gt;state
-op_amp
-id|DEV_CONFIG
-)paren
-id|CardServices
-c_func
-(paren
-id|ReleaseConfiguration
-comma
-id|link-&gt;handle
-)paren
-suffix:semicolon
-r_break
-suffix:semicolon
-r_case
-id|CS_EVENT_PM_RESUME
-suffix:colon
-id|link-&gt;state
-op_and_assign
-op_complement
-id|DEV_SUSPEND
-suffix:semicolon
-multiline_comment|/* Fall through... */
-r_case
-id|CS_EVENT_CARD_RESET
-suffix:colon
-r_if
-c_cond
-(paren
-id|DEV_OK
-c_func
-(paren
-id|link
-)paren
-)paren
-id|CardServices
-c_func
-(paren
-id|RequestConfiguration
-comma
-id|link-&gt;handle
-comma
-op_amp
-id|link-&gt;conf
-)paren
-suffix:semicolon
-r_break
-suffix:semicolon
-)brace
-r_return
-l_int|0
-suffix:semicolon
-)brace
-macro_line|#endif /* CONFIG_PCMCIA */
 DECL|function|cleanup
 r_static
 r_void
@@ -31247,12 +40175,9 @@ r_void
 r_int
 id|cnt
 suffix:semicolon
-id|del_timer
-c_func
-(paren
-op_amp
-id|ixj_timer
-)paren
+id|IXJ
+op_star
+id|j
 suffix:semicolon
 r_for
 c_loop
@@ -31269,23 +40194,46 @@ id|cnt
 op_increment
 )paren
 (brace
-id|IXJ
-op_star
 id|j
 op_assign
-id|ixj
-(braket
+id|get_ixj
+c_func
+(paren
 id|cnt
-)braket
+)paren
 suffix:semicolon
 r_if
 c_cond
 (paren
 id|j
-op_eq
+op_ne
 l_int|NULL
+op_logical_and
+id|j-&gt;DSPbase
 )paren
-r_continue
+(brace
+r_if
+c_cond
+(paren
+id|ixjdebug
+op_amp
+l_int|0x0002
+)paren
+id|printk
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;IXJ: Deleting timer for /dev/phone%d&bslash;n&quot;
+comma
+id|cnt
+)paren
+suffix:semicolon
+id|del_timer
+c_func
+(paren
+op_amp
+id|j-&gt;timer
+)paren
 suffix:semicolon
 r_if
 c_cond
@@ -31299,7 +40247,7 @@ id|j-&gt;pld_scrw.bits.daafsyncen
 op_assign
 l_int|0
 suffix:semicolon
-singleline_comment|// Turn off DAA Frame Sync
+multiline_comment|/* Turn off DAA Frame Sync */
 id|outb_p
 c_func
 (paren
@@ -31338,6 +40286,22 @@ comma
 id|j
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|ixjdebug
+op_amp
+l_int|0x0002
+)paren
+id|printk
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;IXJ: Releasing XILINX address for /dev/phone%d&bslash;n&quot;
+comma
+id|cnt
+)paren
+suffix:semicolon
 id|release_region
 c_func
 (paren
@@ -31347,6 +40311,7 @@ l_int|8
 )paren
 suffix:semicolon
 )brace
+r_else
 r_if
 c_cond
 (paren
@@ -31359,6 +40324,22 @@ op_eq
 id|QTI_PHONEJACK_PCI
 )paren
 (brace
+r_if
+c_cond
+(paren
+id|ixjdebug
+op_amp
+l_int|0x0002
+)paren
+id|printk
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;IXJ: Releasing XILINX address for /dev/phone%d&bslash;n&quot;
+comma
+id|cnt
+)paren
+suffix:semicolon
 id|release_region
 c_func
 (paren
@@ -31371,28 +40352,6 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|j-&gt;DSPbase
-)paren
-(brace
-id|release_region
-c_func
-(paren
-id|j-&gt;DSPbase
-comma
-l_int|16
-)paren
-suffix:semicolon
-id|phone_unregister_device
-c_func
-(paren
-op_amp
-id|j-&gt;p
-)paren
-suffix:semicolon
-)brace
-r_if
-c_cond
-(paren
 id|j-&gt;read_buffer
 )paren
 id|kfree
@@ -31412,11 +40371,12 @@ c_func
 id|j-&gt;write_buffer
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_ISAPNP
 r_if
 c_cond
 (paren
 id|j-&gt;dev
+op_logical_and
+id|j-&gt;dev-&gt;deactivate
 )paren
 id|j-&gt;dev
 op_member_access_from_pointer
@@ -31426,37 +40386,70 @@ c_func
 id|j-&gt;dev
 )paren
 suffix:semicolon
-macro_line|#endif
-macro_line|#ifdef CONFIG_PCMCIA
-id|DEBUG
+r_if
+c_cond
+(paren
+id|ixjdebug
+op_amp
+l_int|0x0002
+)paren
+id|printk
 c_func
 (paren
-l_int|0
+id|KERN_INFO
+l_string|&quot;IXJ: Unregistering /dev/phone%d from LTAPI&bslash;n&quot;
 comma
-l_string|&quot;ixj_cs: unloading&bslash;n&quot;
+id|cnt
 )paren
 suffix:semicolon
-id|unregister_pcmcia_driver
+id|phone_unregister_device
 c_func
 (paren
 op_amp
-id|dev_info
+id|j-&gt;p
 )paren
 suffix:semicolon
-r_while
-c_loop
+r_if
+c_cond
 (paren
-id|dev_list
-op_ne
-l_int|NULL
+id|ixjdebug
+op_amp
+l_int|0x0002
 )paren
-id|ixj_detach
+id|printk
 c_func
 (paren
-id|dev_list
+id|KERN_INFO
+l_string|&quot;IXJ: Releasing DSP address for /dev/phone%d&bslash;n&quot;
+comma
+id|cnt
 )paren
 suffix:semicolon
-macro_line|#endif
+id|release_region
+c_func
+(paren
+id|j-&gt;DSPbase
+comma
+l_int|16
+)paren
+suffix:semicolon
+macro_line|#ifdef IXJ_DYN_ALLOC
+r_if
+c_cond
+(paren
+id|ixjdebug
+op_amp
+l_int|0x0002
+)paren
+id|printk
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;IXJ: Freeing memory for /dev/phone%d&bslash;n&quot;
+comma
+id|cnt
+)paren
+suffix:semicolon
 id|kfree
 c_func
 (paren
@@ -31470,7 +40463,23 @@ id|cnt
 op_assign
 l_int|NULL
 suffix:semicolon
+macro_line|#endif
 )brace
+)brace
+r_if
+c_cond
+(paren
+id|ixjdebug
+op_amp
+l_int|0x0002
+)paren
+id|printk
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;IXJ: Removing /proc/ixj&bslash;n&quot;
+)paren
+suffix:semicolon
 id|remove_proc_entry
 (paren
 l_string|&quot;ixj&quot;
@@ -31478,15 +40487,8 @@ comma
 l_int|NULL
 )paren
 suffix:semicolon
-id|remove_proc_entry
-(paren
-l_string|&quot;ixjfsk&quot;
-comma
-l_int|NULL
-)paren
-suffix:semicolon
 )brace
-singleline_comment|// Typedefs
+multiline_comment|/* Typedefs */
 r_typedef
 r_struct
 (brace
@@ -31545,11 +40547,11 @@ comma
 id|wEEPROMAddress
 )paren
 suffix:semicolon
-singleline_comment|//set data out bit as appropriate
-id|udelay
+multiline_comment|/*set data out bit as appropriate */
+id|mdelay
 c_func
 (paren
-l_int|1000
+l_int|1
 )paren
 suffix:semicolon
 id|lastLCC
@@ -31566,7 +40568,7 @@ comma
 id|wEEPROMAddress
 )paren
 suffix:semicolon
-singleline_comment|//SK rising edge
+multiline_comment|/*SK rising edge */
 id|byData
 op_assign
 id|byData
@@ -31579,10 +40581,10 @@ id|lastLCC
 op_amp
 l_int|0xfe
 suffix:semicolon
-id|udelay
+id|mdelay
 c_func
 (paren
-l_int|1000
+l_int|1
 )paren
 suffix:semicolon
 id|outb
@@ -31593,7 +40595,7 @@ comma
 id|wEEPROMAddress
 )paren
 suffix:semicolon
-singleline_comment|//after delay, SK falling edge
+multiline_comment|/*after delay, SK falling edge */
 )brace
 DECL|function|PCIEE_ReadBit
 r_static
@@ -31608,10 +40610,10 @@ id|BYTE
 id|lastLCC
 )paren
 (brace
-id|udelay
+id|mdelay
 c_func
 (paren
-l_int|1000
+l_int|1
 )paren
 suffix:semicolon
 id|lastLCC
@@ -31628,17 +40630,17 @@ comma
 id|wEEPROMAddress
 )paren
 suffix:semicolon
-singleline_comment|//SK rising edge
+multiline_comment|/*SK rising edge */
 id|lastLCC
 op_assign
 id|lastLCC
 op_amp
 l_int|0xfe
 suffix:semicolon
-id|udelay
+id|mdelay
 c_func
 (paren
-l_int|1000
+l_int|1
 )paren
 suffix:semicolon
 id|outb
@@ -31649,7 +40651,7 @@ comma
 id|wEEPROMAddress
 )paren
 suffix:semicolon
-singleline_comment|//after delay, SK falling edge
+multiline_comment|/*after delay, SK falling edge */
 r_return
 (paren
 (paren
@@ -31732,14 +40734,14 @@ comma
 id|wEEPROMAddress
 )paren
 suffix:semicolon
-singleline_comment|// CS hi, SK lo
-id|udelay
+multiline_comment|/* CS hi, SK lo */
+id|mdelay
 c_func
 (paren
-l_int|1000
+l_int|1
 )paren
 suffix:semicolon
-singleline_comment|// delay
+multiline_comment|/* delay */
 id|PCIEE_WriteBit
 c_func
 (paren
@@ -31845,13 +40847,13 @@ op_or
 id|byResult
 suffix:semicolon
 )brace
-id|udelay
+id|mdelay
 c_func
 (paren
-l_int|1000
+l_int|1
 )paren
 suffix:semicolon
-singleline_comment|// another delay
+multiline_comment|/* another delay */
 id|lastLCC
 op_assign
 id|lastLCC
@@ -31866,7 +40868,7 @@ comma
 id|wEEPROMAddress
 )paren
 suffix:semicolon
-singleline_comment|// negate CS
+multiline_comment|/* negate CS */
 r_return
 l_int|0
 suffix:semicolon
@@ -31935,7 +40937,6 @@ id|wLo
 )paren
 suffix:semicolon
 )brace
-macro_line|#ifndef CONFIG_ISAPNP
 DECL|variable|dspio
 r_static
 r_int
@@ -31945,6 +40946,11 @@ id|IXJMAX
 op_plus
 l_int|1
 )braket
+op_assign
+(brace
+l_int|0
+comma
+)brace
 suffix:semicolon
 DECL|variable|xio
 r_static
@@ -31955,6 +40961,11 @@ id|IXJMAX
 op_plus
 l_int|1
 )braket
+op_assign
+(brace
+l_int|0
+comma
+)brace
 suffix:semicolon
 id|MODULE_PARM
 c_func
@@ -31984,7 +40995,24 @@ id|IXJMAX
 l_string|&quot;i&quot;
 )paren
 suffix:semicolon
-macro_line|#endif
+id|MODULE_DESCRIPTION
+c_func
+(paren
+l_string|&quot;Quicknet VoIP Telephony card module - www.quicknet.net&quot;
+)paren
+suffix:semicolon
+id|MODULE_AUTHOR
+c_func
+(paren
+l_string|&quot;Ed Okerson &lt;eokerson@quicknet.net&gt;&quot;
+)paren
+suffix:semicolon
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
+)paren
+suffix:semicolon
 DECL|function|ixj_exit
 r_void
 id|ixj_exit
@@ -31997,108 +41025,6 @@ id|cleanup
 c_func
 (paren
 )paren
-suffix:semicolon
-)brace
-macro_line|#if defined(CONFIG_PCMCIA)
-DECL|function|ixj_register_pcmcia
-r_int
-id|__init
-id|ixj_register_pcmcia
-c_func
-(paren
-r_void
-)paren
-(brace
-id|servinfo_t
-id|serv
-suffix:semicolon
-id|DEBUG
-c_func
-(paren
-l_int|0
-comma
-l_string|&quot;%s&bslash;n&quot;
-comma
-id|version
-)paren
-suffix:semicolon
-id|CardServices
-c_func
-(paren
-id|GetCardServicesInfo
-comma
-op_amp
-id|serv
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|serv.Revision
-op_ne
-id|CS_RELEASE_CODE
-)paren
-(brace
-id|printk
-c_func
-(paren
-id|KERN_NOTICE
-l_string|&quot;ixj_cs: Card Services release does not match!&bslash;n&quot;
-)paren
-suffix:semicolon
-r_return
-op_minus
-id|EINVAL
-suffix:semicolon
-)brace
-id|register_pcmcia_driver
-c_func
-(paren
-op_amp
-id|dev_info
-comma
-op_amp
-id|ixj_attach
-comma
-op_amp
-id|ixj_detach
-)paren
-suffix:semicolon
-r_return
-l_int|0
-suffix:semicolon
-)brace
-macro_line|#else
-DECL|function|ixj_register_pcmcia
-r_extern
-id|__inline__
-r_int
-id|ixj_register_pcmcia
-c_func
-(paren
-r_void
-)paren
-(brace
-r_return
-l_int|0
-suffix:semicolon
-)brace
-macro_line|#endif /* CONFIG_PCMCIA */
-macro_line|#if defined(CONFIG_ISAPNP)
-DECL|function|ixj_probe_isa
-r_extern
-id|__inline__
-r_int
-id|ixj_probe_isa
-c_func
-(paren
-r_int
-op_star
-id|cnt
-)paren
-(brace
-r_return
-l_int|0
 suffix:semicolon
 )brace
 DECL|function|ixj_probe_isapnp
@@ -32285,11 +41211,6 @@ op_minus
 id|ENOMEM
 suffix:semicolon
 )brace
-multiline_comment|/* DSP base */
-r_if
-c_cond
-(paren
-(paren
 id|result
 op_assign
 id|check_region
@@ -32304,9 +41225,11 @@ id|start
 comma
 l_int|16
 )paren
-)paren
-OL
-l_int|0
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|result
 )paren
 (brace
 id|printk
@@ -32323,65 +41246,16 @@ dot
 id|start
 )paren
 suffix:semicolon
-id|cleanup
-c_func
-(paren
-)paren
-suffix:semicolon
-r_return
-id|result
+r_break
 suffix:semicolon
 )brace
-r_if
-c_cond
-(paren
-(paren
 id|j
 op_assign
-id|kmalloc
-c_func
-(paren
-r_sizeof
-(paren
-op_star
-id|j
-)paren
-comma
-id|GFP_KERNEL
-)paren
-)paren
-op_eq
-l_int|NULL
-)paren
-(brace
-id|cleanup
+id|ixj_alloc
 c_func
 (paren
 )paren
 suffix:semicolon
-r_return
-op_minus
-id|ENOMEM
-suffix:semicolon
-)brace
-id|ixj
-(braket
-op_star
-id|cnt
-)braket
-op_assign
-id|j
-suffix:semicolon
-id|j-&gt;DSPbase
-op_assign
-id|dev-&gt;resource
-(braket
-l_int|0
-)braket
-dot
-id|start
-suffix:semicolon
-multiline_comment|/* XXX is this racy? */
 id|request_region
 c_func
 (paren
@@ -32408,6 +41282,7 @@ l_int|1
 dot
 id|start
 suffix:semicolon
+multiline_comment|/* get real port */
 r_switch
 c_cond
 (paren
@@ -32448,17 +41323,26 @@ suffix:semicolon
 r_break
 suffix:semicolon
 )brace
+id|j-&gt;board
+op_assign
+op_star
+id|cnt
+suffix:semicolon
 id|probe
 op_assign
 id|ixj_selfprobe
 c_func
 (paren
 id|j
-comma
-op_star
-id|cnt
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|probe
+)paren
+(brace
 id|j-&gt;serial
 op_assign
 id|dev-&gt;bus-&gt;serial
@@ -32516,6 +41400,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 )brace
+)brace
 op_increment
 op_star
 id|cnt
@@ -32565,23 +41450,6 @@ suffix:semicolon
 )brace
 r_return
 id|probe
-suffix:semicolon
-)brace
-macro_line|#else
-DECL|function|ixj_probe_isapnp
-r_extern
-id|__inline__
-r_int
-id|ixj_probe_isapnp
-c_func
-(paren
-r_int
-op_star
-id|cnt
-)paren
-(brace
-r_return
-l_int|0
 suffix:semicolon
 )brace
 DECL|function|ixj_probe_isa
@@ -32640,10 +41508,13 @@ op_assign
 id|check_region
 c_func
 (paren
-id|dspio
+id|ixj
 (braket
-id|i
+op_star
+id|cnt
 )braket
+dot
+id|DSPbase
 comma
 l_int|16
 )paren
@@ -32658,60 +41529,24 @@ c_func
 id|KERN_INFO
 l_string|&quot;ixj: can&squot;t get I/O address 0x%x&bslash;n&quot;
 comma
-id|dspio
-(braket
-id|i
-)braket
-)paren
-suffix:semicolon
-id|cleanup
-c_func
-(paren
-)paren
-suffix:semicolon
-r_return
-id|result
-suffix:semicolon
-)brace
-r_if
-c_cond
-(paren
-(paren
-id|j
-op_assign
-id|kmalloc
-c_func
-(paren
-r_sizeof
-(paren
-op_star
-id|j
-)paren
-comma
-id|GFP_KERNEL
-)paren
-)paren
-op_eq
-l_int|NULL
-)paren
-(brace
-id|cleanup
-c_func
-(paren
-)paren
-suffix:semicolon
-r_return
-op_minus
-id|ENOMEM
-suffix:semicolon
-)brace
 id|ixj
 (braket
 op_star
 id|cnt
 )braket
-op_assign
+dot
+id|DSPbase
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
+)brace
 id|j
+op_assign
+id|ixj_alloc
+c_func
+(paren
+)paren
 suffix:semicolon
 id|j-&gt;DSPbase
 op_assign
@@ -32741,15 +41576,17 @@ id|j-&gt;cardtype
 op_assign
 l_int|0
 suffix:semicolon
+id|j-&gt;board
+op_assign
+op_star
+id|cnt
+suffix:semicolon
 id|probe
 op_assign
 id|ixj_selfprobe
 c_func
 (paren
 id|j
-comma
-op_star
-id|cnt
 )paren
 suffix:semicolon
 id|j-&gt;dev
@@ -32766,8 +41603,6 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-macro_line|#endif /* CONFIG_ISAPNP */
-macro_line|#if defined(CONFIG_PCI)
 DECL|function|ixj_probe_pci
 r_int
 id|__init
@@ -32793,6 +41628,29 @@ id|probe
 op_assign
 l_int|0
 suffix:semicolon
+id|IXJ
+op_star
+id|j
+op_assign
+l_int|NULL
+suffix:semicolon
+r_int
+id|result
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|pci_present
+c_func
+(paren
+)paren
+)paren
+(brace
+r_return
+l_int|0
+suffix:semicolon
+)brace
 r_for
 c_loop
 (paren
@@ -32842,14 +41700,6 @@ id|pci
 )paren
 r_break
 suffix:semicolon
-(brace
-id|IXJ
-op_star
-id|j
-suffix:semicolon
-r_int
-id|result
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -32878,66 +41728,31 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;ixj: can&squot;t get I/O address 0x%lx&bslash;n&quot;
-comma
-id|pci_resource_start
-c_func
-(paren
-id|pci
-comma
-l_int|0
-)paren
+l_string|&quot;ixj: can&squot;t get I/O address&bslash;n&quot;
 )paren
 suffix:semicolon
-id|cleanup
-c_func
-(paren
-)paren
-suffix:semicolon
-r_return
-id|result
+r_break
 suffix:semicolon
 )brace
+multiline_comment|/* Grab a device slot */
+id|j
+op_assign
+id|ixj_alloc
+c_func
+(paren
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
-(paren
 id|j
-op_assign
-id|kmalloc
-c_func
-(paren
-r_sizeof
-(paren
-op_star
-id|j
-)paren
-comma
-id|GFP_KERNEL
-)paren
-)paren
 op_eq
 l_int|NULL
 )paren
 (brace
-id|cleanup
-c_func
-(paren
-)paren
-suffix:semicolon
-r_return
-op_minus
-id|ENOMEM
+r_break
 suffix:semicolon
 )brace
-id|ixj
-(braket
-op_star
-id|cnt
-)braket
-op_assign
-id|j
-suffix:semicolon
 id|j-&gt;DSPbase
 op_assign
 id|pci_resource_start
@@ -32947,22 +41762,6 @@ id|pci
 comma
 l_int|0
 )paren
-suffix:semicolon
-id|request_region
-c_func
-(paren
-id|j-&gt;DSPbase
-comma
-l_int|16
-comma
-l_string|&quot;ixj DSP&quot;
-)paren
-suffix:semicolon
-id|j-&gt;XILINXbase
-op_assign
-id|j-&gt;DSPbase
-op_plus
-l_int|0x10
 suffix:semicolon
 id|j-&gt;serial
 op_assign
@@ -32977,9 +41776,30 @@ comma
 l_int|2
 )paren
 suffix:semicolon
+id|j-&gt;XILINXbase
+op_assign
+id|j-&gt;DSPbase
+op_plus
+l_int|0x10
+suffix:semicolon
+id|request_region
+c_func
+(paren
+id|j-&gt;DSPbase
+comma
+l_int|16
+comma
+l_string|&quot;ixj DSP&quot;
+)paren
+suffix:semicolon
 id|j-&gt;cardtype
 op_assign
 id|QTI_PHONEJACK_PCI
+suffix:semicolon
+id|j-&gt;board
+op_assign
+op_star
+id|cnt
 suffix:semicolon
 id|probe
 op_assign
@@ -32987,14 +41807,12 @@ id|ixj_selfprobe
 c_func
 (paren
 id|j
-comma
-op_star
-id|cnt
 )paren
 suffix:semicolon
 r_if
 c_cond
 (paren
+op_logical_neg
 id|probe
 )paren
 id|printk
@@ -33011,29 +41829,10 @@ op_star
 id|cnt
 suffix:semicolon
 )brace
-)brace
 r_return
 id|probe
 suffix:semicolon
 )brace
-macro_line|#else
-DECL|function|ixj_probe_pci
-r_extern
-id|__inline__
-r_int
-id|ixj_probe_pci
-c_func
-(paren
-r_int
-op_star
-id|cnt
-)paren
-(brace
-r_return
-l_int|0
-suffix:semicolon
-)brace
-macro_line|#endif /* CONFIG_PCI */
 DECL|function|ixj_init
 r_int
 id|__init
@@ -33053,26 +41852,11 @@ id|probe
 op_assign
 l_int|0
 suffix:semicolon
-multiline_comment|/* These might be no-ops, see above. */
-r_if
-c_cond
-(paren
-(paren
-id|probe
+id|cnt
 op_assign
-id|ixj_register_pcmcia
-c_func
-(paren
-)paren
-)paren
-OL
 l_int|0
-)paren
-(brace
-r_return
-id|probe
 suffix:semicolon
-)brace
+multiline_comment|/* These might be no-ops, see above. */
 r_if
 c_cond
 (paren
@@ -33167,29 +41951,6 @@ comma
 l_int|NULL
 )paren
 suffix:semicolon
-id|create_proc_read_entry
-(paren
-l_string|&quot;ixjfsk&quot;
-comma
-l_int|0
-comma
-l_int|NULL
-comma
-id|ixj_read_proc_fsk
-comma
-l_int|NULL
-)paren
-suffix:semicolon
-id|ixj_init_timer
-c_func
-(paren
-)paren
-suffix:semicolon
-id|ixj_add_timer
-c_func
-(paren
-)paren
-suffix:semicolon
 r_return
 id|probe
 suffix:semicolon
@@ -33226,8 +41987,8 @@ id|j-&gt;daa_country
 op_assign
 id|DAA_US
 suffix:semicolon
-singleline_comment|//-----------------------------------------------
-singleline_comment|// CAO
+multiline_comment|/*----------------------------------------------- */
+multiline_comment|/* CAO */
 r_for
 c_loop
 (paren
@@ -33251,169 +42012,169 @@ op_assign
 l_int|0
 suffix:semicolon
 )brace
-singleline_comment|// Bytes for IM-filter part 1 (04): 0E,32,E2,2F,C2,5A,C0,00
+multiline_comment|/* Bytes for IM-filter part 1 (04): 0E,32,E2,2F,C2,5A,C0,00 */
 id|j-&gt;m_DAAShadowRegs.COP_REGS.COP.IMFilterCoeff_1
-(braket
-l_int|7
-)braket
-op_assign
-l_int|0x0E
-suffix:semicolon
-id|j-&gt;m_DAAShadowRegs.COP_REGS.COP.IMFilterCoeff_1
-(braket
-l_int|6
-)braket
-op_assign
-l_int|0x32
-suffix:semicolon
-id|j-&gt;m_DAAShadowRegs.COP_REGS.COP.IMFilterCoeff_1
-(braket
-l_int|5
-)braket
-op_assign
-l_int|0xE2
-suffix:semicolon
-id|j-&gt;m_DAAShadowRegs.COP_REGS.COP.IMFilterCoeff_1
-(braket
-l_int|4
-)braket
-op_assign
-l_int|0x2F
-suffix:semicolon
-id|j-&gt;m_DAAShadowRegs.COP_REGS.COP.IMFilterCoeff_1
-(braket
-l_int|3
-)braket
-op_assign
-l_int|0xC2
-suffix:semicolon
-id|j-&gt;m_DAAShadowRegs.COP_REGS.COP.IMFilterCoeff_1
-(braket
-l_int|2
-)braket
-op_assign
-l_int|0x5A
-suffix:semicolon
-id|j-&gt;m_DAAShadowRegs.COP_REGS.COP.IMFilterCoeff_1
-(braket
-l_int|1
-)braket
-op_assign
-l_int|0xC0
-suffix:semicolon
-id|j-&gt;m_DAAShadowRegs.COP_REGS.COP.IMFilterCoeff_1
-(braket
-l_int|0
-)braket
-op_assign
-l_int|0x00
-suffix:semicolon
-singleline_comment|// Bytes for IM-filter part 2 (05): 72,85,00,0E,2B,3A,D0,08
-id|j-&gt;m_DAAShadowRegs.COP_REGS.COP.IMFilterCoeff_2
-(braket
-l_int|7
-)braket
-op_assign
-l_int|0x72
-suffix:semicolon
-id|j-&gt;m_DAAShadowRegs.COP_REGS.COP.IMFilterCoeff_2
-(braket
-l_int|6
-)braket
-op_assign
-l_int|0x85
-suffix:semicolon
-id|j-&gt;m_DAAShadowRegs.COP_REGS.COP.IMFilterCoeff_2
-(braket
-l_int|5
-)braket
-op_assign
-l_int|0x00
-suffix:semicolon
-id|j-&gt;m_DAAShadowRegs.COP_REGS.COP.IMFilterCoeff_2
-(braket
-l_int|4
-)braket
-op_assign
-l_int|0x0E
-suffix:semicolon
-id|j-&gt;m_DAAShadowRegs.COP_REGS.COP.IMFilterCoeff_2
-(braket
-l_int|3
-)braket
-op_assign
-l_int|0x2B
-suffix:semicolon
-id|j-&gt;m_DAAShadowRegs.COP_REGS.COP.IMFilterCoeff_2
-(braket
-l_int|2
-)braket
-op_assign
-l_int|0x3A
-suffix:semicolon
-id|j-&gt;m_DAAShadowRegs.COP_REGS.COP.IMFilterCoeff_2
-(braket
-l_int|1
-)braket
-op_assign
-l_int|0xD0
-suffix:semicolon
-id|j-&gt;m_DAAShadowRegs.COP_REGS.COP.IMFilterCoeff_2
-(braket
-l_int|0
-)braket
-op_assign
-l_int|0x08
-suffix:semicolon
-singleline_comment|// Bytes for FRX-filter       (08): 03,8F,48,F2,8F,48,70,08
-id|j-&gt;m_DAAShadowRegs.COP_REGS.COP.FRXFilterCoeff
 (braket
 l_int|7
 )braket
 op_assign
 l_int|0x03
 suffix:semicolon
+id|j-&gt;m_DAAShadowRegs.COP_REGS.COP.IMFilterCoeff_1
+(braket
+l_int|6
+)braket
+op_assign
+l_int|0x4B
+suffix:semicolon
+id|j-&gt;m_DAAShadowRegs.COP_REGS.COP.IMFilterCoeff_1
+(braket
+l_int|5
+)braket
+op_assign
+l_int|0x5D
+suffix:semicolon
+id|j-&gt;m_DAAShadowRegs.COP_REGS.COP.IMFilterCoeff_1
+(braket
+l_int|4
+)braket
+op_assign
+l_int|0xCD
+suffix:semicolon
+id|j-&gt;m_DAAShadowRegs.COP_REGS.COP.IMFilterCoeff_1
+(braket
+l_int|3
+)braket
+op_assign
+l_int|0x24
+suffix:semicolon
+id|j-&gt;m_DAAShadowRegs.COP_REGS.COP.IMFilterCoeff_1
+(braket
+l_int|2
+)braket
+op_assign
+l_int|0xC5
+suffix:semicolon
+id|j-&gt;m_DAAShadowRegs.COP_REGS.COP.IMFilterCoeff_1
+(braket
+l_int|1
+)braket
+op_assign
+l_int|0xA0
+suffix:semicolon
+id|j-&gt;m_DAAShadowRegs.COP_REGS.COP.IMFilterCoeff_1
+(braket
+l_int|0
+)braket
+op_assign
+l_int|0x00
+suffix:semicolon
+multiline_comment|/* Bytes for IM-filter part 2 (05): 72,85,00,0E,2B,3A,D0,08 */
+id|j-&gt;m_DAAShadowRegs.COP_REGS.COP.IMFilterCoeff_2
+(braket
+l_int|7
+)braket
+op_assign
+l_int|0x71
+suffix:semicolon
+id|j-&gt;m_DAAShadowRegs.COP_REGS.COP.IMFilterCoeff_2
+(braket
+l_int|6
+)braket
+op_assign
+l_int|0x1A
+suffix:semicolon
+id|j-&gt;m_DAAShadowRegs.COP_REGS.COP.IMFilterCoeff_2
+(braket
+l_int|5
+)braket
+op_assign
+l_int|0x00
+suffix:semicolon
+id|j-&gt;m_DAAShadowRegs.COP_REGS.COP.IMFilterCoeff_2
+(braket
+l_int|4
+)braket
+op_assign
+l_int|0x0A
+suffix:semicolon
+id|j-&gt;m_DAAShadowRegs.COP_REGS.COP.IMFilterCoeff_2
+(braket
+l_int|3
+)braket
+op_assign
+l_int|0xB5
+suffix:semicolon
+id|j-&gt;m_DAAShadowRegs.COP_REGS.COP.IMFilterCoeff_2
+(braket
+l_int|2
+)braket
+op_assign
+l_int|0x33
+suffix:semicolon
+id|j-&gt;m_DAAShadowRegs.COP_REGS.COP.IMFilterCoeff_2
+(braket
+l_int|1
+)braket
+op_assign
+l_int|0xE0
+suffix:semicolon
+id|j-&gt;m_DAAShadowRegs.COP_REGS.COP.IMFilterCoeff_2
+(braket
+l_int|0
+)braket
+op_assign
+l_int|0x08
+suffix:semicolon
+multiline_comment|/* Bytes for FRX-filter       (08): 03,8F,48,F2,8F,48,70,08 */
+id|j-&gt;m_DAAShadowRegs.COP_REGS.COP.FRXFilterCoeff
+(braket
+l_int|7
+)braket
+op_assign
+l_int|0x05
+suffix:semicolon
 id|j-&gt;m_DAAShadowRegs.COP_REGS.COP.FRXFilterCoeff
 (braket
 l_int|6
 )braket
 op_assign
-l_int|0x8F
+l_int|0xA3
 suffix:semicolon
 id|j-&gt;m_DAAShadowRegs.COP_REGS.COP.FRXFilterCoeff
 (braket
 l_int|5
 )braket
 op_assign
-l_int|0x48
+l_int|0x72
 suffix:semicolon
 id|j-&gt;m_DAAShadowRegs.COP_REGS.COP.FRXFilterCoeff
 (braket
 l_int|4
 )braket
 op_assign
-l_int|0xF2
+l_int|0x34
 suffix:semicolon
 id|j-&gt;m_DAAShadowRegs.COP_REGS.COP.FRXFilterCoeff
 (braket
 l_int|3
 )braket
 op_assign
-l_int|0x8F
+l_int|0x3F
 suffix:semicolon
 id|j-&gt;m_DAAShadowRegs.COP_REGS.COP.FRXFilterCoeff
 (braket
 l_int|2
 )braket
 op_assign
-l_int|0x48
+l_int|0x3B
 suffix:semicolon
 id|j-&gt;m_DAAShadowRegs.COP_REGS.COP.FRXFilterCoeff
 (braket
 l_int|1
 )braket
 op_assign
-l_int|0x70
+l_int|0x30
 suffix:semicolon
 id|j-&gt;m_DAAShadowRegs.COP_REGS.COP.FRXFilterCoeff
 (braket
@@ -33422,48 +42183,48 @@ l_int|0
 op_assign
 l_int|0x08
 suffix:semicolon
-singleline_comment|// Bytes for FRR-filter       (07): 04,8F,38,7F,9B,EA,B0,08
+multiline_comment|/* Bytes for FRR-filter       (07): 04,8F,38,7F,9B,EA,B0,08 */
 id|j-&gt;m_DAAShadowRegs.COP_REGS.COP.FRRFilterCoeff
 (braket
 l_int|7
 )braket
 op_assign
-l_int|0x04
+l_int|0x05
 suffix:semicolon
 id|j-&gt;m_DAAShadowRegs.COP_REGS.COP.FRRFilterCoeff
 (braket
 l_int|6
 )braket
 op_assign
-l_int|0x8F
+l_int|0x87
 suffix:semicolon
 id|j-&gt;m_DAAShadowRegs.COP_REGS.COP.FRRFilterCoeff
 (braket
 l_int|5
 )braket
 op_assign
-l_int|0x38
+l_int|0xF9
 suffix:semicolon
 id|j-&gt;m_DAAShadowRegs.COP_REGS.COP.FRRFilterCoeff
 (braket
 l_int|4
 )braket
 op_assign
-l_int|0x7F
+l_int|0x3E
 suffix:semicolon
 id|j-&gt;m_DAAShadowRegs.COP_REGS.COP.FRRFilterCoeff
 (braket
 l_int|3
 )braket
 op_assign
-l_int|0x9B
+l_int|0x32
 suffix:semicolon
 id|j-&gt;m_DAAShadowRegs.COP_REGS.COP.FRRFilterCoeff
 (braket
 l_int|2
 )braket
 op_assign
-l_int|0xEA
+l_int|0xDA
 suffix:semicolon
 id|j-&gt;m_DAAShadowRegs.COP_REGS.COP.FRRFilterCoeff
 (braket
@@ -33479,20 +42240,20 @@ l_int|0
 op_assign
 l_int|0x08
 suffix:semicolon
-singleline_comment|// Bytes for AX-filter        (0A): 16,55,DD,CA
+multiline_comment|/* Bytes for AX-filter        (0A): 16,55,DD,CA */
 id|j-&gt;m_DAAShadowRegs.COP_REGS.COP.AXFilterCoeff
 (braket
 l_int|3
 )braket
 op_assign
-l_int|0x16
+l_int|0x41
 suffix:semicolon
 id|j-&gt;m_DAAShadowRegs.COP_REGS.COP.AXFilterCoeff
 (braket
 l_int|2
 )braket
 op_assign
-l_int|0x55
+l_int|0xB5
 suffix:semicolon
 id|j-&gt;m_DAAShadowRegs.COP_REGS.COP.AXFilterCoeff
 (braket
@@ -33508,36 +42269,36 @@ l_int|0
 op_assign
 l_int|0xCA
 suffix:semicolon
-singleline_comment|// Bytes for AR-filter        (09): 52,D3,11,42
+multiline_comment|/* Bytes for AR-filter        (09): 52,D3,11,42 */
 id|j-&gt;m_DAAShadowRegs.COP_REGS.COP.ARFilterCoeff
 (braket
 l_int|3
 )braket
 op_assign
-l_int|0x52
+l_int|0x25
 suffix:semicolon
 id|j-&gt;m_DAAShadowRegs.COP_REGS.COP.ARFilterCoeff
 (braket
 l_int|2
 )braket
 op_assign
-l_int|0xD3
+l_int|0xC7
 suffix:semicolon
 id|j-&gt;m_DAAShadowRegs.COP_REGS.COP.ARFilterCoeff
 (braket
 l_int|1
 )braket
 op_assign
-l_int|0x11
+l_int|0x10
 suffix:semicolon
 id|j-&gt;m_DAAShadowRegs.COP_REGS.COP.ARFilterCoeff
 (braket
 l_int|0
 )braket
 op_assign
-l_int|0x42
+l_int|0xD6
 suffix:semicolon
-singleline_comment|// Bytes for TH-filter part 1 (00): 00,42,48,81,B3,80,00,98
+multiline_comment|/* Bytes for TH-filter part 1 (00): 00,42,48,81,B3,80,00,98 */
 id|j-&gt;m_DAAShadowRegs.COP_REGS.COP.THFilterCoeff_1
 (braket
 l_int|7
@@ -33571,7 +42332,7 @@ id|j-&gt;m_DAAShadowRegs.COP_REGS.COP.THFilterCoeff_1
 l_int|3
 )braket
 op_assign
-l_int|0xB3
+l_int|0xA5
 suffix:semicolon
 id|j-&gt;m_DAAShadowRegs.COP_REGS.COP.THFilterCoeff_1
 (braket
@@ -33594,7 +42355,7 @@ l_int|0
 op_assign
 l_int|0x98
 suffix:semicolon
-singleline_comment|// Bytes for TH-filter part 2 (01): 02,F2,33,A0,68,AB,8A,AD
+multiline_comment|/* Bytes for TH-filter part 2 (01): 02,F2,33,A0,68,AB,8A,AD */
 id|j-&gt;m_DAAShadowRegs.COP_REGS.COP.THFilterCoeff_2
 (braket
 l_int|7
@@ -33607,28 +42368,28 @@ id|j-&gt;m_DAAShadowRegs.COP_REGS.COP.THFilterCoeff_2
 l_int|6
 )braket
 op_assign
-l_int|0xF2
+l_int|0xA2
 suffix:semicolon
 id|j-&gt;m_DAAShadowRegs.COP_REGS.COP.THFilterCoeff_2
 (braket
 l_int|5
 )braket
 op_assign
-l_int|0x33
+l_int|0x2B
 suffix:semicolon
 id|j-&gt;m_DAAShadowRegs.COP_REGS.COP.THFilterCoeff_2
 (braket
 l_int|4
 )braket
 op_assign
-l_int|0xA0
+l_int|0xB0
 suffix:semicolon
 id|j-&gt;m_DAAShadowRegs.COP_REGS.COP.THFilterCoeff_2
 (braket
 l_int|3
 )braket
 op_assign
-l_int|0x68
+l_int|0xE8
 suffix:semicolon
 id|j-&gt;m_DAAShadowRegs.COP_REGS.COP.THFilterCoeff_2
 (braket
@@ -33642,16 +42403,16 @@ id|j-&gt;m_DAAShadowRegs.COP_REGS.COP.THFilterCoeff_2
 l_int|1
 )braket
 op_assign
-l_int|0x8A
+l_int|0x81
 suffix:semicolon
 id|j-&gt;m_DAAShadowRegs.COP_REGS.COP.THFilterCoeff_2
 (braket
 l_int|0
 )braket
 op_assign
-l_int|0xAD
+l_int|0xCC
 suffix:semicolon
-singleline_comment|// Bytes for TH-filter part 3 (02): 00,88,DA,54,A4,BA,2D,BB
+multiline_comment|/* Bytes for TH-filter part 3 (02): 00,88,DA,54,A4,BA,2D,BB */
 id|j-&gt;m_DAAShadowRegs.COP_REGS.COP.THFilterCoeff_3
 (braket
 l_int|7
@@ -33671,46 +42432,46 @@ id|j-&gt;m_DAAShadowRegs.COP_REGS.COP.THFilterCoeff_3
 l_int|5
 )braket
 op_assign
-l_int|0xDA
+l_int|0xD2
 suffix:semicolon
 id|j-&gt;m_DAAShadowRegs.COP_REGS.COP.THFilterCoeff_3
 (braket
 l_int|4
 )braket
 op_assign
-l_int|0x54
+l_int|0x24
 suffix:semicolon
 id|j-&gt;m_DAAShadowRegs.COP_REGS.COP.THFilterCoeff_3
 (braket
 l_int|3
 )braket
 op_assign
-l_int|0xA4
+l_int|0xBA
 suffix:semicolon
 id|j-&gt;m_DAAShadowRegs.COP_REGS.COP.THFilterCoeff_3
 (braket
 l_int|2
 )braket
 op_assign
-l_int|0xBA
+l_int|0xA9
 suffix:semicolon
 id|j-&gt;m_DAAShadowRegs.COP_REGS.COP.THFilterCoeff_3
 (braket
 l_int|1
 )braket
 op_assign
-l_int|0x2D
+l_int|0x3B
 suffix:semicolon
 id|j-&gt;m_DAAShadowRegs.COP_REGS.COP.THFilterCoeff_3
 (braket
 l_int|0
 )braket
 op_assign
-l_int|0xBB
+l_int|0xA6
 suffix:semicolon
-singleline_comment|// ;  (10K, 0.68uF)
-singleline_comment|// 
-singleline_comment|// Bytes for Ringing part 1 (03):1B,3B,9B,BA,D4,1C,B3,23
+multiline_comment|/* ;  (10K, 0.68uF) */
+multiline_comment|/*  */
+multiline_comment|/* Bytes for Ringing part 1 (03):1B,3B,9B,BA,D4,1C,B3,23 */
 id|j-&gt;m_DAAShadowRegs.COP_REGS.COP.RingerImpendance_1
 (braket
 l_int|7
@@ -33723,42 +42484,42 @@ id|j-&gt;m_DAAShadowRegs.COP_REGS.COP.RingerImpendance_1
 l_int|6
 )braket
 op_assign
-l_int|0x3B
+l_int|0x3C
 suffix:semicolon
 id|j-&gt;m_DAAShadowRegs.COP_REGS.COP.RingerImpendance_1
 (braket
 l_int|5
 )braket
 op_assign
-l_int|0x9B
+l_int|0x93
 suffix:semicolon
 id|j-&gt;m_DAAShadowRegs.COP_REGS.COP.RingerImpendance_1
 (braket
 l_int|4
 )braket
 op_assign
-l_int|0xBA
+l_int|0x3A
 suffix:semicolon
 id|j-&gt;m_DAAShadowRegs.COP_REGS.COP.RingerImpendance_1
 (braket
 l_int|3
 )braket
 op_assign
-l_int|0xD4
+l_int|0x22
 suffix:semicolon
 id|j-&gt;m_DAAShadowRegs.COP_REGS.COP.RingerImpendance_1
 (braket
 l_int|2
 )braket
 op_assign
-l_int|0x1C
+l_int|0x12
 suffix:semicolon
 id|j-&gt;m_DAAShadowRegs.COP_REGS.COP.RingerImpendance_1
 (braket
 l_int|1
 )braket
 op_assign
-l_int|0xB3
+l_int|0xA3
 suffix:semicolon
 id|j-&gt;m_DAAShadowRegs.COP_REGS.COP.RingerImpendance_1
 (braket
@@ -33767,20 +42528,20 @@ l_int|0
 op_assign
 l_int|0x23
 suffix:semicolon
-singleline_comment|// Bytes for Ringing part 2 (06):13,42,A6,BA,D4,73,CA,D5
+multiline_comment|/* Bytes for Ringing part 2 (06):13,42,A6,BA,D4,73,CA,D5 */
 id|j-&gt;m_DAAShadowRegs.COP_REGS.COP.RingerImpendance_2
 (braket
 l_int|7
 )braket
 op_assign
-l_int|0x13
+l_int|0x12
 suffix:semicolon
 id|j-&gt;m_DAAShadowRegs.COP_REGS.COP.RingerImpendance_2
 (braket
 l_int|6
 )braket
 op_assign
-l_int|0x42
+l_int|0xA2
 suffix:semicolon
 id|j-&gt;m_DAAShadowRegs.COP_REGS.COP.RingerImpendance_2
 (braket
@@ -33801,21 +42562,21 @@ id|j-&gt;m_DAAShadowRegs.COP_REGS.COP.RingerImpendance_2
 l_int|3
 )braket
 op_assign
-l_int|0xD4
+l_int|0x22
 suffix:semicolon
 id|j-&gt;m_DAAShadowRegs.COP_REGS.COP.RingerImpendance_2
 (braket
 l_int|2
 )braket
 op_assign
-l_int|0x73
+l_int|0x7A
 suffix:semicolon
 id|j-&gt;m_DAAShadowRegs.COP_REGS.COP.RingerImpendance_2
 (braket
 l_int|1
 )braket
 op_assign
-l_int|0xCA
+l_int|0x0A
 suffix:semicolon
 id|j-&gt;m_DAAShadowRegs.COP_REGS.COP.RingerImpendance_2
 (braket
@@ -33824,21 +42585,20 @@ l_int|0
 op_assign
 l_int|0xD5
 suffix:semicolon
-singleline_comment|// 
-singleline_comment|// Levelmetering Ringing        (0D):B2,45,0F,8E      
+multiline_comment|/* Levelmetering Ringing        (0D):B2,45,0F,8E       */
 id|j-&gt;m_DAAShadowRegs.COP_REGS.COP.LevelmeteringRinging
 (braket
 l_int|3
 )braket
 op_assign
-l_int|0xB2
+l_int|0xAA
 suffix:semicolon
 id|j-&gt;m_DAAShadowRegs.COP_REGS.COP.LevelmeteringRinging
 (braket
 l_int|2
 )braket
 op_assign
-l_int|0x45
+l_int|0x35
 suffix:semicolon
 id|j-&gt;m_DAAShadowRegs.COP_REGS.COP.LevelmeteringRinging
 (braket
@@ -33854,7 +42614,31 @@ l_int|0
 op_assign
 l_int|0x8E
 suffix:semicolon
-singleline_comment|// Caller ID 1st Tone           (0E):CA,0E,CA,09,99,99,99,99
+multiline_comment|/* Bytes for Ringing part 1 (03):1B,3B,9B,BA,D4,1C,B3,23 */
+multiline_comment|/*&t;j-&gt;m_DAAShadowRegs.COP_REGS.COP.RingerImpendance_1[7] = 0x1C; */
+multiline_comment|/*&t;j-&gt;m_DAAShadowRegs.COP_REGS.COP.RingerImpendance_1[6] = 0xB3; */
+multiline_comment|/*&t;j-&gt;m_DAAShadowRegs.COP_REGS.COP.RingerImpendance_1[5] = 0xAB; */
+multiline_comment|/*&t;j-&gt;m_DAAShadowRegs.COP_REGS.COP.RingerImpendance_1[4] = 0xAB; */
+multiline_comment|/*&t;j-&gt;m_DAAShadowRegs.COP_REGS.COP.RingerImpendance_1[3] = 0x54; */
+multiline_comment|/*&t;j-&gt;m_DAAShadowRegs.COP_REGS.COP.RingerImpendance_1[2] = 0x2D; */
+multiline_comment|/*&t;j-&gt;m_DAAShadowRegs.COP_REGS.COP.RingerImpendance_1[1] = 0x62; */
+multiline_comment|/*&t;j-&gt;m_DAAShadowRegs.COP_REGS.COP.RingerImpendance_1[0] = 0x2D; */
+multiline_comment|/* Bytes for Ringing part 2 (06):13,42,A6,BA,D4,73,CA,D5 */
+multiline_comment|/*&t;j-&gt;m_DAAShadowRegs.COP_REGS.COP.RingerImpendance_2[7] = 0x2D; */
+multiline_comment|/*&t;j-&gt;m_DAAShadowRegs.COP_REGS.COP.RingerImpendance_2[6] = 0x62; */
+multiline_comment|/*&t;j-&gt;m_DAAShadowRegs.COP_REGS.COP.RingerImpendance_2[5] = 0xA6; */
+multiline_comment|/*&t;j-&gt;m_DAAShadowRegs.COP_REGS.COP.RingerImpendance_2[4] = 0xBB; */
+multiline_comment|/*&t;j-&gt;m_DAAShadowRegs.COP_REGS.COP.RingerImpendance_2[3] = 0x2A; */
+multiline_comment|/*&t;j-&gt;m_DAAShadowRegs.COP_REGS.COP.RingerImpendance_2[2] = 0x7D; */
+multiline_comment|/*&t;j-&gt;m_DAAShadowRegs.COP_REGS.COP.RingerImpendance_2[1] = 0x0A; */
+multiline_comment|/*&t;j-&gt;m_DAAShadowRegs.COP_REGS.COP.RingerImpendance_2[0] = 0xD4; */
+multiline_comment|/* */
+multiline_comment|/* Levelmetering Ringing        (0D):B2,45,0F,8E       */
+multiline_comment|/*&t;j-&gt;m_DAAShadowRegs.COP_REGS.COP.LevelmeteringRinging[3] = 0xAA; */
+multiline_comment|/*&t;j-&gt;m_DAAShadowRegs.COP_REGS.COP.LevelmeteringRinging[2] = 0x05; */
+multiline_comment|/*&t;j-&gt;m_DAAShadowRegs.COP_REGS.COP.LevelmeteringRinging[1] = 0x0F; */
+multiline_comment|/*&t;j-&gt;m_DAAShadowRegs.COP_REGS.COP.LevelmeteringRinging[0] = 0x8E; */
+multiline_comment|/* Caller ID 1st Tone           (0E):CA,0E,CA,09,99,99,99,99 */
 id|j-&gt;m_DAAShadowRegs.COP_REGS.COP.CallerID1stTone
 (braket
 l_int|7
@@ -33911,7 +42695,7 @@ l_int|0
 op_assign
 l_int|0x99
 suffix:semicolon
-singleline_comment|// Caller ID 2nd Tone           (0F):FD,B5,BA,07,DA,00,00,00
+multiline_comment|/* Caller ID 2nd Tone           (0F):FD,B5,BA,07,DA,00,00,00 */
 id|j-&gt;m_DAAShadowRegs.COP_REGS.COP.CallerID2ndTone
 (braket
 l_int|7
@@ -33968,87 +42752,86 @@ l_int|0
 op_assign
 l_int|0x00
 suffix:semicolon
-singleline_comment|// 
-singleline_comment|// ;CR Registers
-singleline_comment|// Config. Reg. 0 (filters)       (cr0):FE ; CLK gen. by crystal
+multiline_comment|/*  */
+multiline_comment|/* ;CR Registers */
+multiline_comment|/* Config. Reg. 0 (filters)       (cr0):FE ; CLK gen. by crystal */
 id|j-&gt;m_DAAShadowRegs.SOP_REGS.SOP.cr0.reg
 op_assign
 l_int|0xFF
 suffix:semicolon
-singleline_comment|// Config. Reg. 1 (dialing)       (cr1):05
+multiline_comment|/* Config. Reg. 1 (dialing)       (cr1):05 */
 id|j-&gt;m_DAAShadowRegs.SOP_REGS.SOP.cr1.reg
 op_assign
 l_int|0x05
 suffix:semicolon
-singleline_comment|// Config. Reg. 2 (caller ID)     (cr2):04
+multiline_comment|/* Config. Reg. 2 (caller ID)     (cr2):04 */
 id|j-&gt;m_DAAShadowRegs.SOP_REGS.SOP.cr2.reg
 op_assign
 l_int|0x04
 suffix:semicolon
-singleline_comment|// Config. Reg. 3 (testloops)     (cr3):03 ; SEL Bit==0, HP-disabled
+multiline_comment|/* Config. Reg. 3 (testloops)     (cr3):03 ; SEL Bit==0, HP-disabled */
 id|j-&gt;m_DAAShadowRegs.SOP_REGS.SOP.cr3.reg
 op_assign
-l_int|0x03
+l_int|0x00
 suffix:semicolon
-singleline_comment|// Config. Reg. 4 (analog gain)   (cr4):01
+multiline_comment|/* Config. Reg. 4 (analog gain)   (cr4):02 */
 id|j-&gt;m_DAAShadowRegs.SOP_REGS.SOP.cr4.reg
 op_assign
 l_int|0x02
 suffix:semicolon
-singleline_comment|//0x01;
-singleline_comment|// Config. Reg. 5 (Version)       (cr5):02
-singleline_comment|// Config. Reg. 6 (Reserved)      (cr6):00
-singleline_comment|// Config. Reg. 7 (Reserved)      (cr7):00
-singleline_comment|// 
-singleline_comment|// ;xr Registers
-singleline_comment|// Ext. Reg. 0 (Interrupt Reg.)   (xr0):02
+multiline_comment|/* Config. Reg. 5 (Version)       (cr5):02 */
+multiline_comment|/* Config. Reg. 6 (Reserved)      (cr6):00 */
+multiline_comment|/* Config. Reg. 7 (Reserved)      (cr7):00 */
+multiline_comment|/*  */
+multiline_comment|/* ;xr Registers */
+multiline_comment|/* Ext. Reg. 0 (Interrupt Reg.)   (xr0):02 */
 id|j-&gt;m_DAAShadowRegs.XOP_xr0_W.reg
 op_assign
 l_int|0x02
 suffix:semicolon
-singleline_comment|// SO_1 set to &squot;1&squot; because it is inverted.
-singleline_comment|// Ext. Reg. 1 (Interrupt enable) (xr1):1C // Cadence, RING, Caller ID, VDD_OK
+multiline_comment|/* SO_1 set to &squot;1&squot; because it is inverted. */
+multiline_comment|/* Ext. Reg. 1 (Interrupt enable) (xr1):3C Cadence, RING, Caller ID, VDD_OK */
 id|j-&gt;m_DAAShadowRegs.XOP_REGS.XOP.xr1.reg
 op_assign
 l_int|0x3C
 suffix:semicolon
-singleline_comment|// Ext. Reg. 2 (Cadence Time Out) (xr2):7D
+multiline_comment|/* Ext. Reg. 2 (Cadence Time Out) (xr2):7D */
 id|j-&gt;m_DAAShadowRegs.XOP_REGS.XOP.xr2.reg
 op_assign
 l_int|0x7D
 suffix:semicolon
-singleline_comment|// Ext. Reg. 3 (DC Char)          (xr3):32 ; B-Filter Off == 1
+multiline_comment|/* Ext. Reg. 3 (DC Char)          (xr3):32 ; B-Filter Off == 1 */
 id|j-&gt;m_DAAShadowRegs.XOP_REGS.XOP.xr3.reg
 op_assign
-l_int|0x12
+l_int|0x3B
 suffix:semicolon
-singleline_comment|//0x32;
-singleline_comment|// Ext. Reg. 4 (Cadence)          (xr4):00
+multiline_comment|/*0x32; */
+multiline_comment|/* Ext. Reg. 4 (Cadence)          (xr4):00 */
 id|j-&gt;m_DAAShadowRegs.XOP_REGS.XOP.xr4.reg
 op_assign
 l_int|0x00
 suffix:semicolon
-singleline_comment|// Ext. Reg. 5 (Ring timer)       (xr5):22
+multiline_comment|/* Ext. Reg. 5 (Ring timer)       (xr5):22 */
 id|j-&gt;m_DAAShadowRegs.XOP_REGS.XOP.xr5.reg
 op_assign
 l_int|0x22
 suffix:semicolon
-singleline_comment|// Ext. Reg. 6 (Power State)      (xr6):00
+multiline_comment|/* Ext. Reg. 6 (Power State)      (xr6):00 */
 id|j-&gt;m_DAAShadowRegs.XOP_xr6_W.reg
 op_assign
 l_int|0x00
 suffix:semicolon
-singleline_comment|// Ext. Reg. 7 (Vdd)              (xr7):40
+multiline_comment|/* Ext. Reg. 7 (Vdd)              (xr7):40 */
 id|j-&gt;m_DAAShadowRegs.XOP_REGS.XOP.xr7.reg
 op_assign
 l_int|0x40
 suffix:semicolon
-singleline_comment|// 0x40 ??? Should it be 0x00?
-singleline_comment|// 
-singleline_comment|// DTMF Tone 1                     (0B): 11,B3,5A,2C ;   697 Hz  
-singleline_comment|//                                       12,33,5A,C3 ;  770 Hz  
-singleline_comment|//                                       13,3C,5B,32 ;  852 Hz  
-singleline_comment|//                                       1D,1B,5C,CC ;  941 Hz  
+multiline_comment|/* 0x40 ??? Should it be 0x00? */
+multiline_comment|/*  */
+multiline_comment|/* DTMF Tone 1                     (0B): 11,B3,5A,2C ;   697 Hz   */
+multiline_comment|/*                                       12,33,5A,C3 ;  770 Hz   */
+multiline_comment|/*                                       13,3C,5B,32 ;  852 Hz   */
+multiline_comment|/*                                       1D,1B,5C,CC ;  941 Hz   */
 id|j-&gt;m_DAAShadowRegs.COP_REGS.COP.Tone1Coeff
 (braket
 l_int|3
@@ -34077,10 +42860,10 @@ l_int|0
 op_assign
 l_int|0x2C
 suffix:semicolon
-singleline_comment|// DTMF Tone 2                     (0C): 32,32,52,B3 ;  1209 Hz  
-singleline_comment|//                                       EC,1D,52,22 ;  1336 Hz  
-singleline_comment|//                                       AA,AC,51,D2 ;  1477 Hz  
-singleline_comment|//                                       9B,3B,51,25 ;  1633 Hz  
+multiline_comment|/* DTMF Tone 2                     (0C): 32,32,52,B3 ;  1209 Hz   */
+multiline_comment|/*                                       EC,1D,52,22 ;  1336 Hz   */
+multiline_comment|/*                                       AA,AC,51,D2 ;  1477 Hz   */
+multiline_comment|/*                                       9B,3B,51,25 ;  1633 Hz   */
 id|j-&gt;m_DAAShadowRegs.COP_REGS.COP.Tone2Coeff
 (braket
 l_int|3
@@ -34128,8 +42911,8 @@ id|j-&gt;daa_country
 op_assign
 id|DAA_UK
 suffix:semicolon
-singleline_comment|//-----------------------------------------------
-singleline_comment|// CAO
+multiline_comment|/*----------------------------------------------- */
+multiline_comment|/* CAO */
 r_for
 c_loop
 (paren
@@ -34153,7 +42936,7 @@ op_assign
 l_int|0
 suffix:semicolon
 )brace
-singleline_comment|//  Bytes for IM-filter part 1 (04): 00,C2,BB,A8,CB,81,A0,00
+multiline_comment|/*  Bytes for IM-filter part 1 (04): 00,C2,BB,A8,CB,81,A0,00 */
 id|j-&gt;m_DAAShadowRegs.COP_REGS.COP.IMFilterCoeff_1
 (braket
 l_int|7
@@ -34210,7 +42993,7 @@ l_int|0
 op_assign
 l_int|0x00
 suffix:semicolon
-singleline_comment|// Bytes for IM-filter part 2 (05): 40,00,00,0A,A4,33,E0,08
+multiline_comment|/* Bytes for IM-filter part 2 (05): 40,00,00,0A,A4,33,E0,08 */
 id|j-&gt;m_DAAShadowRegs.COP_REGS.COP.IMFilterCoeff_2
 (braket
 l_int|7
@@ -34267,7 +43050,7 @@ l_int|0
 op_assign
 l_int|0x08
 suffix:semicolon
-singleline_comment|// Bytes for FRX-filter       (08): 07,9B,ED,24,B2,A2,A0,08
+multiline_comment|/* Bytes for FRX-filter       (08): 07,9B,ED,24,B2,A2,A0,08 */
 id|j-&gt;m_DAAShadowRegs.COP_REGS.COP.FRXFilterCoeff
 (braket
 l_int|7
@@ -34324,7 +43107,7 @@ l_int|0
 op_assign
 l_int|0x08
 suffix:semicolon
-singleline_comment|// Bytes for FRR-filter       (07): 0F,92,F2,B2,87,D2,30,08
+multiline_comment|/* Bytes for FRR-filter       (07): 0F,92,F2,B2,87,D2,30,08 */
 id|j-&gt;m_DAAShadowRegs.COP_REGS.COP.FRRFilterCoeff
 (braket
 l_int|7
@@ -34381,7 +43164,7 @@ l_int|0
 op_assign
 l_int|0x08
 suffix:semicolon
-singleline_comment|// Bytes for AX-filter        (0A): 1B,A5,DD,CA
+multiline_comment|/* Bytes for AX-filter        (0A): 1B,A5,DD,CA */
 id|j-&gt;m_DAAShadowRegs.COP_REGS.COP.AXFilterCoeff
 (braket
 l_int|3
@@ -34410,7 +43193,7 @@ l_int|0
 op_assign
 l_int|0xCA
 suffix:semicolon
-singleline_comment|// Bytes for AR-filter        (09): E2,27,10,D6
+multiline_comment|/* Bytes for AR-filter        (09): E2,27,10,D6 */
 id|j-&gt;m_DAAShadowRegs.COP_REGS.COP.ARFilterCoeff
 (braket
 l_int|3
@@ -34439,7 +43222,7 @@ l_int|0
 op_assign
 l_int|0xD6
 suffix:semicolon
-singleline_comment|// Bytes for TH-filter part 1 (00): 80,2D,38,8B,D0,00,00,98
+multiline_comment|/* Bytes for TH-filter part 1 (00): 80,2D,38,8B,D0,00,00,98 */
 id|j-&gt;m_DAAShadowRegs.COP_REGS.COP.THFilterCoeff_1
 (braket
 l_int|7
@@ -34496,7 +43279,7 @@ l_int|0
 op_assign
 l_int|0x98
 suffix:semicolon
-singleline_comment|// Bytes for TH-filter part 2 (01): 02,5A,53,F0,0B,5F,84,D4
+multiline_comment|/* Bytes for TH-filter part 2 (01): 02,5A,53,F0,0B,5F,84,D4 */
 id|j-&gt;m_DAAShadowRegs.COP_REGS.COP.THFilterCoeff_2
 (braket
 l_int|7
@@ -34553,7 +43336,7 @@ l_int|0
 op_assign
 l_int|0xD4
 suffix:semicolon
-singleline_comment|// Bytes for TH-filter part 3 (02): 00,88,6A,A4,8F,52,F5,32
+multiline_comment|/* Bytes for TH-filter part 3 (02): 00,88,6A,A4,8F,52,F5,32 */
 id|j-&gt;m_DAAShadowRegs.COP_REGS.COP.THFilterCoeff_3
 (braket
 l_int|7
@@ -34610,8 +43393,8 @@ l_int|0
 op_assign
 l_int|0x32
 suffix:semicolon
-singleline_comment|// ; idle
-singleline_comment|// Bytes for Ringing part 1 (03):1B,3C,93,3A,22,12,A3,23
+multiline_comment|/* ; idle */
+multiline_comment|/* Bytes for Ringing part 1 (03):1B,3C,93,3A,22,12,A3,23 */
 id|j-&gt;m_DAAShadowRegs.COP_REGS.COP.RingerImpendance_1
 (braket
 l_int|7
@@ -34668,7 +43451,7 @@ l_int|0
 op_assign
 l_int|0x23
 suffix:semicolon
-singleline_comment|// Bytes for Ringing part 2 (06):12,A2,A6,BA,22,7A,0A,D5
+multiline_comment|/* Bytes for Ringing part 2 (06):12,A2,A6,BA,22,7A,0A,D5 */
 id|j-&gt;m_DAAShadowRegs.COP_REGS.COP.RingerImpendance_2
 (braket
 l_int|7
@@ -34725,7 +43508,7 @@ l_int|0
 op_assign
 l_int|0xD5
 suffix:semicolon
-singleline_comment|// Levelmetering Ringing           (0D):AA,35,0F,8E     ; 25Hz 30V less possible?
+multiline_comment|/* Levelmetering Ringing           (0D):AA,35,0F,8E     ; 25Hz 30V less possible? */
 id|j-&gt;m_DAAShadowRegs.COP_REGS.COP.LevelmeteringRinging
 (braket
 l_int|3
@@ -34754,7 +43537,7 @@ l_int|0
 op_assign
 l_int|0x8E
 suffix:semicolon
-singleline_comment|// Caller ID 1st Tone              (0E):CA,0E,CA,09,99,99,99,99
+multiline_comment|/* Caller ID 1st Tone              (0E):CA,0E,CA,09,99,99,99,99 */
 id|j-&gt;m_DAAShadowRegs.COP_REGS.COP.CallerID1stTone
 (braket
 l_int|7
@@ -34811,7 +43594,7 @@ l_int|0
 op_assign
 l_int|0x99
 suffix:semicolon
-singleline_comment|// Caller ID 2nd Tone              (0F):FD,B5,BA,07,DA,00,00,00
+multiline_comment|/* Caller ID 2nd Tone              (0F):FD,B5,BA,07,DA,00,00,00 */
 id|j-&gt;m_DAAShadowRegs.COP_REGS.COP.CallerID2ndTone
 (braket
 l_int|7
@@ -34868,84 +43651,83 @@ l_int|0
 op_assign
 l_int|0x00
 suffix:semicolon
-singleline_comment|// ;CR Registers
-singleline_comment|// Config. Reg. 0 (filters)        (cr0):FF
+multiline_comment|/* ;CR Registers */
+multiline_comment|/* Config. Reg. 0 (filters)        (cr0):FF */
 id|j-&gt;m_DAAShadowRegs.SOP_REGS.SOP.cr0.reg
 op_assign
-l_int|0xFE
+l_int|0xFF
 suffix:semicolon
-singleline_comment|// Config. Reg. 1 (dialing)        (cr1):05
+multiline_comment|/* Config. Reg. 1 (dialing)        (cr1):05 */
 id|j-&gt;m_DAAShadowRegs.SOP_REGS.SOP.cr1.reg
 op_assign
 l_int|0x05
 suffix:semicolon
-singleline_comment|// Config. Reg. 2 (caller ID)      (cr2):04
+multiline_comment|/* Config. Reg. 2 (caller ID)      (cr2):04 */
 id|j-&gt;m_DAAShadowRegs.SOP_REGS.SOP.cr2.reg
 op_assign
 l_int|0x04
 suffix:semicolon
-singleline_comment|// Config. Reg. 3 (testloops)      (cr3):00        ; 
+multiline_comment|/* Config. Reg. 3 (testloops)      (cr3):00        ;  */
 id|j-&gt;m_DAAShadowRegs.SOP_REGS.SOP.cr3.reg
 op_assign
 l_int|0x00
 suffix:semicolon
-singleline_comment|// Config. Reg. 4 (analog gain)    (cr4):01
+multiline_comment|/* Config. Reg. 4 (analog gain)    (cr4):02 */
 id|j-&gt;m_DAAShadowRegs.SOP_REGS.SOP.cr4.reg
 op_assign
 l_int|0x02
 suffix:semicolon
-singleline_comment|//0x01;
-singleline_comment|// Config. Reg. 5 (Version)        (cr5):02
-singleline_comment|// Config. Reg. 6 (Reserved)       (cr6):00
-singleline_comment|// Config. Reg. 7 (Reserved)       (cr7):00
-singleline_comment|// ;xr Registers
-singleline_comment|// Ext. Reg. 0 (Interrupt Reg.)    (xr0):02
+multiline_comment|/* Config. Reg. 5 (Version)        (cr5):02 */
+multiline_comment|/* Config. Reg. 6 (Reserved)       (cr6):00 */
+multiline_comment|/* Config. Reg. 7 (Reserved)       (cr7):00 */
+multiline_comment|/* ;xr Registers */
+multiline_comment|/* Ext. Reg. 0 (Interrupt Reg.)    (xr0):02 */
 id|j-&gt;m_DAAShadowRegs.XOP_xr0_W.reg
 op_assign
 l_int|0x02
 suffix:semicolon
-singleline_comment|// SO_1 set to &squot;1&squot; because it is inverted.
-singleline_comment|// Ext. Reg. 1 (Interrupt enable)  (xr1):1C
+multiline_comment|/* SO_1 set to &squot;1&squot; because it is inverted. */
+multiline_comment|/* Ext. Reg. 1 (Interrupt enable)  (xr1):1C */
 id|j-&gt;m_DAAShadowRegs.XOP_REGS.XOP.xr1.reg
 op_assign
 l_int|0x1C
 suffix:semicolon
-singleline_comment|// RING, Caller ID, VDD_OK
-singleline_comment|// Ext. Reg. 2 (Cadence Time Out)  (xr2):7D
+multiline_comment|/* RING, Caller ID, VDD_OK */
+multiline_comment|/* Ext. Reg. 2 (Cadence Time Out)  (xr2):7D */
 id|j-&gt;m_DAAShadowRegs.XOP_REGS.XOP.xr2.reg
 op_assign
 l_int|0x7D
 suffix:semicolon
-singleline_comment|// Ext. Reg. 3 (DC Char)           (xr3):36        ; 
+multiline_comment|/* Ext. Reg. 3 (DC Char)           (xr3):36        ;  */
 id|j-&gt;m_DAAShadowRegs.XOP_REGS.XOP.xr3.reg
 op_assign
 l_int|0x36
 suffix:semicolon
-singleline_comment|// Ext. Reg. 4 (Cadence)           (xr4):00
+multiline_comment|/* Ext. Reg. 4 (Cadence)           (xr4):00 */
 id|j-&gt;m_DAAShadowRegs.XOP_REGS.XOP.xr4.reg
 op_assign
 l_int|0x00
 suffix:semicolon
-singleline_comment|// Ext. Reg. 5 (Ring timer)        (xr5):22
+multiline_comment|/* Ext. Reg. 5 (Ring timer)        (xr5):22 */
 id|j-&gt;m_DAAShadowRegs.XOP_REGS.XOP.xr5.reg
 op_assign
 l_int|0x22
 suffix:semicolon
-singleline_comment|// Ext. Reg. 6 (Power State)       (xr6):00
+multiline_comment|/* Ext. Reg. 6 (Power State)       (xr6):00 */
 id|j-&gt;m_DAAShadowRegs.XOP_xr6_W.reg
 op_assign
 l_int|0x00
 suffix:semicolon
-singleline_comment|// Ext. Reg. 7 (Vdd)               (xr7):46
+multiline_comment|/* Ext. Reg. 7 (Vdd)               (xr7):46 */
 id|j-&gt;m_DAAShadowRegs.XOP_REGS.XOP.xr7.reg
 op_assign
 l_int|0x46
 suffix:semicolon
-singleline_comment|// 0x46 ??? Should it be 0x00?
-singleline_comment|// DTMF Tone 1                     (0B): 11,B3,5A,2C    ;   697 Hz  
-singleline_comment|//                                       12,33,5A,C3    ;  770 Hz  
-singleline_comment|//                                       13,3C,5B,32    ;  852 Hz  
-singleline_comment|//                                       1D,1B,5C,CC    ;  941 Hz  
+multiline_comment|/* 0x46 ??? Should it be 0x00? */
+multiline_comment|/* DTMF Tone 1                     (0B): 11,B3,5A,2C    ;   697 Hz   */
+multiline_comment|/*                                       12,33,5A,C3    ;  770 Hz   */
+multiline_comment|/*                                       13,3C,5B,32    ;  852 Hz   */
+multiline_comment|/*                                       1D,1B,5C,CC    ;  941 Hz   */
 id|j-&gt;m_DAAShadowRegs.COP_REGS.COP.Tone1Coeff
 (braket
 l_int|3
@@ -34974,10 +43756,10 @@ l_int|0
 op_assign
 l_int|0x2C
 suffix:semicolon
-singleline_comment|// DTMF Tone 2                     (0C): 32,32,52,B3    ;  1209 Hz  
-singleline_comment|//                                       EC,1D,52,22    ;  1336 Hz  
-singleline_comment|//                                       AA,AC,51,D2    ;  1477 Hz  
-singleline_comment|//                                       9B,3B,51,25    ;  1633 Hz  
+multiline_comment|/* DTMF Tone 2                     (0C): 32,32,52,B3    ;  1209 Hz   */
+multiline_comment|/*                                       EC,1D,52,22    ;  1336 Hz   */
+multiline_comment|/*                                       AA,AC,51,D2    ;  1477 Hz   */
+multiline_comment|/*                                       9B,3B,51,25    ;  1633 Hz   */
 id|j-&gt;m_DAAShadowRegs.COP_REGS.COP.Tone2Coeff
 (braket
 l_int|3
@@ -35025,8 +43807,8 @@ id|j-&gt;daa_country
 op_assign
 id|DAA_FRANCE
 suffix:semicolon
-singleline_comment|//-----------------------------------------------
-singleline_comment|// CAO
+multiline_comment|/*----------------------------------------------- */
+multiline_comment|/* CAO */
 r_for
 c_loop
 (paren
@@ -35050,7 +43832,7 @@ op_assign
 l_int|0
 suffix:semicolon
 )brace
-singleline_comment|// Bytes for IM-filter part 1 (04): 02,A2,43,2C,22,AF,A0,00
+multiline_comment|/* Bytes for IM-filter part 1 (04): 02,A2,43,2C,22,AF,A0,00 */
 id|j-&gt;m_DAAShadowRegs.COP_REGS.COP.IMFilterCoeff_1
 (braket
 l_int|7
@@ -35107,7 +43889,7 @@ l_int|0
 op_assign
 l_int|0x00
 suffix:semicolon
-singleline_comment|// Bytes for IM-filter part 2 (05): 67,CE,00,0C,22,33,E0,08
+multiline_comment|/* Bytes for IM-filter part 2 (05): 67,CE,00,0C,22,33,E0,08 */
 id|j-&gt;m_DAAShadowRegs.COP_REGS.COP.IMFilterCoeff_2
 (braket
 l_int|7
@@ -35164,7 +43946,7 @@ l_int|0
 op_assign
 l_int|0x08
 suffix:semicolon
-singleline_comment|// Bytes for FRX-filter       (08): 07,9A,28,F6,23,4A,B0,08
+multiline_comment|/* Bytes for FRX-filter       (08): 07,9A,28,F6,23,4A,B0,08 */
 id|j-&gt;m_DAAShadowRegs.COP_REGS.COP.FRXFilterCoeff
 (braket
 l_int|7
@@ -35221,7 +44003,7 @@ l_int|0
 op_assign
 l_int|0x08
 suffix:semicolon
-singleline_comment|// Bytes for FRR-filter       (07): 03,8F,F9,2F,9E,FA,20,08
+multiline_comment|/* Bytes for FRR-filter       (07): 03,8F,F9,2F,9E,FA,20,08 */
 id|j-&gt;m_DAAShadowRegs.COP_REGS.COP.FRRFilterCoeff
 (braket
 l_int|7
@@ -35278,7 +44060,7 @@ l_int|0
 op_assign
 l_int|0x08
 suffix:semicolon
-singleline_comment|// Bytes for AX-filter        (0A): 16,B5,DD,CA
+multiline_comment|/* Bytes for AX-filter        (0A): 16,B5,DD,CA */
 id|j-&gt;m_DAAShadowRegs.COP_REGS.COP.AXFilterCoeff
 (braket
 l_int|3
@@ -35307,7 +44089,7 @@ l_int|0
 op_assign
 l_int|0xCA
 suffix:semicolon
-singleline_comment|// Bytes for AR-filter        (09): 52,C7,10,D6
+multiline_comment|/* Bytes for AR-filter        (09): 52,C7,10,D6 */
 id|j-&gt;m_DAAShadowRegs.COP_REGS.COP.ARFilterCoeff
 (braket
 l_int|3
@@ -35336,7 +44118,7 @@ l_int|0
 op_assign
 l_int|0xD6
 suffix:semicolon
-singleline_comment|// Bytes for TH-filter part 1 (00): 00,42,48,81,A6,80,00,98
+multiline_comment|/* Bytes for TH-filter part 1 (00): 00,42,48,81,A6,80,00,98 */
 id|j-&gt;m_DAAShadowRegs.COP_REGS.COP.THFilterCoeff_1
 (braket
 l_int|7
@@ -35393,7 +44175,7 @@ l_int|0
 op_assign
 l_int|0x98
 suffix:semicolon
-singleline_comment|// Bytes for TH-filter part 2 (01): 02,AC,2A,30,78,AC,8A,2C
+multiline_comment|/* Bytes for TH-filter part 2 (01): 02,AC,2A,30,78,AC,8A,2C */
 id|j-&gt;m_DAAShadowRegs.COP_REGS.COP.THFilterCoeff_2
 (braket
 l_int|7
@@ -35450,7 +44232,7 @@ l_int|0
 op_assign
 l_int|0x2C
 suffix:semicolon
-singleline_comment|// Bytes for TH-filter part 3 (02): 00,88,DA,A5,22,BA,2C,45
+multiline_comment|/* Bytes for TH-filter part 3 (02): 00,88,DA,A5,22,BA,2C,45 */
 id|j-&gt;m_DAAShadowRegs.COP_REGS.COP.THFilterCoeff_3
 (braket
 l_int|7
@@ -35507,8 +44289,8 @@ l_int|0
 op_assign
 l_int|0x45
 suffix:semicolon
-singleline_comment|// ; idle
-singleline_comment|// Bytes for Ringing part 1 (03):1B,3C,93,3A,22,12,A3,23
+multiline_comment|/* ; idle */
+multiline_comment|/* Bytes for Ringing part 1 (03):1B,3C,93,3A,22,12,A3,23 */
 id|j-&gt;m_DAAShadowRegs.COP_REGS.COP.RingerImpendance_1
 (braket
 l_int|7
@@ -35565,7 +44347,7 @@ l_int|0
 op_assign
 l_int|0x23
 suffix:semicolon
-singleline_comment|// Bytes for Ringing part 2 (06):12,A2,A6,BA,22,7A,0A,D5
+multiline_comment|/* Bytes for Ringing part 2 (06):12,A2,A6,BA,22,7A,0A,D5 */
 id|j-&gt;m_DAAShadowRegs.COP_REGS.COP.RingerImpendance_2
 (braket
 l_int|7
@@ -35622,7 +44404,7 @@ l_int|0
 op_assign
 l_int|0xD5
 suffix:semicolon
-singleline_comment|// Levelmetering Ringing           (0D):32,45,B5,84     ; 50Hz 20V
+multiline_comment|/* Levelmetering Ringing           (0D):32,45,B5,84     ; 50Hz 20V */
 id|j-&gt;m_DAAShadowRegs.COP_REGS.COP.LevelmeteringRinging
 (braket
 l_int|3
@@ -35651,7 +44433,7 @@ l_int|0
 op_assign
 l_int|0x84
 suffix:semicolon
-singleline_comment|// Caller ID 1st Tone              (0E):CA,0E,CA,09,99,99,99,99
+multiline_comment|/* Caller ID 1st Tone              (0E):CA,0E,CA,09,99,99,99,99 */
 id|j-&gt;m_DAAShadowRegs.COP_REGS.COP.CallerID1stTone
 (braket
 l_int|7
@@ -35708,7 +44490,7 @@ l_int|0
 op_assign
 l_int|0x99
 suffix:semicolon
-singleline_comment|// Caller ID 2nd Tone              (0F):FD,B5,BA,07,DA,00,00,00
+multiline_comment|/* Caller ID 2nd Tone              (0F):FD,B5,BA,07,DA,00,00,00 */
 id|j-&gt;m_DAAShadowRegs.COP_REGS.COP.CallerID2ndTone
 (braket
 l_int|7
@@ -35765,84 +44547,83 @@ l_int|0
 op_assign
 l_int|0x00
 suffix:semicolon
-singleline_comment|// ;CR Registers
-singleline_comment|// Config. Reg. 0 (filters)        (cr0):FF
+multiline_comment|/* ;CR Registers */
+multiline_comment|/* Config. Reg. 0 (filters)        (cr0):FF */
 id|j-&gt;m_DAAShadowRegs.SOP_REGS.SOP.cr0.reg
 op_assign
-l_int|0xFE
+l_int|0xFF
 suffix:semicolon
-singleline_comment|// Config. Reg. 1 (dialing)        (cr1):05
+multiline_comment|/* Config. Reg. 1 (dialing)        (cr1):05 */
 id|j-&gt;m_DAAShadowRegs.SOP_REGS.SOP.cr1.reg
 op_assign
 l_int|0x05
 suffix:semicolon
-singleline_comment|// Config. Reg. 2 (caller ID)      (cr2):04
+multiline_comment|/* Config. Reg. 2 (caller ID)      (cr2):04 */
 id|j-&gt;m_DAAShadowRegs.SOP_REGS.SOP.cr2.reg
 op_assign
 l_int|0x04
 suffix:semicolon
-singleline_comment|// Config. Reg. 3 (testloops)      (cr3):00        ; 
+multiline_comment|/* Config. Reg. 3 (testloops)      (cr3):00        ;  */
 id|j-&gt;m_DAAShadowRegs.SOP_REGS.SOP.cr3.reg
 op_assign
 l_int|0x00
 suffix:semicolon
-singleline_comment|// Config. Reg. 4 (analog gain)    (cr4):01
+multiline_comment|/* Config. Reg. 4 (analog gain)    (cr4):02 */
 id|j-&gt;m_DAAShadowRegs.SOP_REGS.SOP.cr4.reg
 op_assign
 l_int|0x02
 suffix:semicolon
-singleline_comment|//0x01;
-singleline_comment|// Config. Reg. 5 (Version)        (cr5):02
-singleline_comment|// Config. Reg. 6 (Reserved)       (cr6):00
-singleline_comment|// Config. Reg. 7 (Reserved)       (cr7):00
-singleline_comment|// ;xr Registers
-singleline_comment|// Ext. Reg. 0 (Interrupt Reg.)    (xr0):02
+multiline_comment|/* Config. Reg. 5 (Version)        (cr5):02 */
+multiline_comment|/* Config. Reg. 6 (Reserved)       (cr6):00 */
+multiline_comment|/* Config. Reg. 7 (Reserved)       (cr7):00 */
+multiline_comment|/* ;xr Registers */
+multiline_comment|/* Ext. Reg. 0 (Interrupt Reg.)    (xr0):02 */
 id|j-&gt;m_DAAShadowRegs.XOP_xr0_W.reg
 op_assign
 l_int|0x02
 suffix:semicolon
-singleline_comment|// SO_1 set to &squot;1&squot; because it is inverted.
-singleline_comment|// Ext. Reg. 1 (Interrupt enable)  (xr1):1C
+multiline_comment|/* SO_1 set to &squot;1&squot; because it is inverted. */
+multiline_comment|/* Ext. Reg. 1 (Interrupt enable)  (xr1):1C */
 id|j-&gt;m_DAAShadowRegs.XOP_REGS.XOP.xr1.reg
 op_assign
 l_int|0x1C
 suffix:semicolon
-singleline_comment|// RING, Caller ID, VDD_OK
-singleline_comment|// Ext. Reg. 2 (Cadence Time Out)  (xr2):7D
+multiline_comment|/* RING, Caller ID, VDD_OK */
+multiline_comment|/* Ext. Reg. 2 (Cadence Time Out)  (xr2):7D */
 id|j-&gt;m_DAAShadowRegs.XOP_REGS.XOP.xr2.reg
 op_assign
 l_int|0x7D
 suffix:semicolon
-singleline_comment|// Ext. Reg. 3 (DC Char)           (xr3):36        ; 
+multiline_comment|/* Ext. Reg. 3 (DC Char)           (xr3):36        ;  */
 id|j-&gt;m_DAAShadowRegs.XOP_REGS.XOP.xr3.reg
 op_assign
 l_int|0x36
 suffix:semicolon
-singleline_comment|// Ext. Reg. 4 (Cadence)           (xr4):00
+multiline_comment|/* Ext. Reg. 4 (Cadence)           (xr4):00 */
 id|j-&gt;m_DAAShadowRegs.XOP_REGS.XOP.xr4.reg
 op_assign
 l_int|0x00
 suffix:semicolon
-singleline_comment|// Ext. Reg. 5 (Ring timer)        (xr5):22
+multiline_comment|/* Ext. Reg. 5 (Ring timer)        (xr5):22 */
 id|j-&gt;m_DAAShadowRegs.XOP_REGS.XOP.xr5.reg
 op_assign
 l_int|0x22
 suffix:semicolon
-singleline_comment|// Ext. Reg. 6 (Power State)       (xr6):00
+multiline_comment|/* Ext. Reg. 6 (Power State)       (xr6):00 */
 id|j-&gt;m_DAAShadowRegs.XOP_xr6_W.reg
 op_assign
 l_int|0x00
 suffix:semicolon
-singleline_comment|// Ext. Reg. 7 (Vdd)               (xr7):46
+multiline_comment|/* Ext. Reg. 7 (Vdd)               (xr7):46 */
 id|j-&gt;m_DAAShadowRegs.XOP_REGS.XOP.xr7.reg
 op_assign
 l_int|0x46
 suffix:semicolon
-singleline_comment|// 0x46 ??? Should it be 0x00?
-singleline_comment|// DTMF Tone 1                     (0B): 11,B3,5A,2C    ;   697 Hz  
-singleline_comment|//                                       12,33,5A,C3    ;  770 Hz  
-singleline_comment|//                                       13,3C,5B,32    ;  852 Hz  
-singleline_comment|//                                       1D,1B,5C,CC    ;  941 Hz  
+multiline_comment|/* 0x46 ??? Should it be 0x00? */
+multiline_comment|/* DTMF Tone 1                     (0B): 11,B3,5A,2C    ;   697 Hz   */
+multiline_comment|/*                                       12,33,5A,C3    ;  770 Hz   */
+multiline_comment|/*                                       13,3C,5B,32    ;  852 Hz   */
+multiline_comment|/*                                       1D,1B,5C,CC    ;  941 Hz   */
 id|j-&gt;m_DAAShadowRegs.COP_REGS.COP.Tone1Coeff
 (braket
 l_int|3
@@ -35871,10 +44652,10 @@ l_int|0
 op_assign
 l_int|0x2C
 suffix:semicolon
-singleline_comment|// DTMF Tone 2                     (0C): 32,32,52,B3    ;  1209 Hz  
-singleline_comment|//                                       EC,1D,52,22    ;  1336 Hz  
-singleline_comment|//                                       AA,AC,51,D2    ;  1477 Hz  
-singleline_comment|//                                       9B,3B,51,25    ;  1633 Hz  
+multiline_comment|/* DTMF Tone 2                     (0C): 32,32,52,B3    ;  1209 Hz   */
+multiline_comment|/*                                       EC,1D,52,22    ;  1336 Hz   */
+multiline_comment|/*                                       AA,AC,51,D2    ;  1477 Hz   */
+multiline_comment|/*                                       9B,3B,51,25    ;  1633 Hz   */
 id|j-&gt;m_DAAShadowRegs.COP_REGS.COP.Tone2Coeff
 (braket
 l_int|3
@@ -35922,8 +44703,8 @@ id|j-&gt;daa_country
 op_assign
 id|DAA_GERMANY
 suffix:semicolon
-singleline_comment|//-----------------------------------------------
-singleline_comment|// CAO
+multiline_comment|/*----------------------------------------------- */
+multiline_comment|/* CAO */
 r_for
 c_loop
 (paren
@@ -35947,7 +44728,7 @@ op_assign
 l_int|0
 suffix:semicolon
 )brace
-singleline_comment|// Bytes for IM-filter part 1 (04): 00,CE,BB,B8,D2,81,B0,00
+multiline_comment|/* Bytes for IM-filter part 1 (04): 00,CE,BB,B8,D2,81,B0,00 */
 id|j-&gt;m_DAAShadowRegs.COP_REGS.COP.IMFilterCoeff_1
 (braket
 l_int|7
@@ -36004,7 +44785,7 @@ l_int|0
 op_assign
 l_int|0x00
 suffix:semicolon
-singleline_comment|// Bytes for IM-filter part 2 (05): 45,8F,00,0C,D2,3A,D0,08
+multiline_comment|/* Bytes for IM-filter part 2 (05): 45,8F,00,0C,D2,3A,D0,08 */
 id|j-&gt;m_DAAShadowRegs.COP_REGS.COP.IMFilterCoeff_2
 (braket
 l_int|7
@@ -36061,7 +44842,7 @@ l_int|0
 op_assign
 l_int|0x08
 suffix:semicolon
-singleline_comment|// Bytes for FRX-filter       (08): 07,AA,E2,34,24,89,20,08
+multiline_comment|/* Bytes for FRX-filter       (08): 07,AA,E2,34,24,89,20,08 */
 id|j-&gt;m_DAAShadowRegs.COP_REGS.COP.FRXFilterCoeff
 (braket
 l_int|7
@@ -36118,7 +44899,7 @@ l_int|0
 op_assign
 l_int|0x08
 suffix:semicolon
-singleline_comment|// Bytes for FRR-filter       (07): 02,87,FA,37,9A,CA,B0,08
+multiline_comment|/* Bytes for FRR-filter       (07): 02,87,FA,37,9A,CA,B0,08 */
 id|j-&gt;m_DAAShadowRegs.COP_REGS.COP.FRRFilterCoeff
 (braket
 l_int|7
@@ -36175,7 +44956,7 @@ l_int|0
 op_assign
 l_int|0x08
 suffix:semicolon
-singleline_comment|// Bytes for AX-filter        (0A): 72,D5,DD,CA
+multiline_comment|/* Bytes for AX-filter        (0A): 72,D5,DD,CA */
 id|j-&gt;m_DAAShadowRegs.COP_REGS.COP.AXFilterCoeff
 (braket
 l_int|3
@@ -36204,7 +44985,7 @@ l_int|0
 op_assign
 l_int|0xCA
 suffix:semicolon
-singleline_comment|// Bytes for AR-filter        (09): 72,42,13,4B
+multiline_comment|/* Bytes for AR-filter        (09): 72,42,13,4B */
 id|j-&gt;m_DAAShadowRegs.COP_REGS.COP.ARFilterCoeff
 (braket
 l_int|3
@@ -36233,7 +45014,7 @@ l_int|0
 op_assign
 l_int|0x4B
 suffix:semicolon
-singleline_comment|// Bytes for TH-filter part 1 (00): 80,52,48,81,AD,80,00,98
+multiline_comment|/* Bytes for TH-filter part 1 (00): 80,52,48,81,AD,80,00,98 */
 id|j-&gt;m_DAAShadowRegs.COP_REGS.COP.THFilterCoeff_1
 (braket
 l_int|7
@@ -36290,7 +45071,7 @@ l_int|0
 op_assign
 l_int|0x98
 suffix:semicolon
-singleline_comment|// Bytes for TH-filter part 2 (01): 02,42,5A,20,E8,1A,81,27
+multiline_comment|/* Bytes for TH-filter part 2 (01): 02,42,5A,20,E8,1A,81,27 */
 id|j-&gt;m_DAAShadowRegs.COP_REGS.COP.THFilterCoeff_2
 (braket
 l_int|7
@@ -36347,7 +45128,7 @@ l_int|0
 op_assign
 l_int|0x27
 suffix:semicolon
-singleline_comment|// Bytes for TH-filter part 3 (02): 00,88,63,26,BD,4B,A3,C2
+multiline_comment|/* Bytes for TH-filter part 3 (02): 00,88,63,26,BD,4B,A3,C2 */
 id|j-&gt;m_DAAShadowRegs.COP_REGS.COP.THFilterCoeff_3
 (braket
 l_int|7
@@ -36404,8 +45185,8 @@ l_int|0
 op_assign
 l_int|0xC2
 suffix:semicolon
-singleline_comment|// ;  (10K, 0.68uF)
-singleline_comment|// Bytes for Ringing part 1 (03):1B,3B,9B,BA,D4,1C,B3,23
+multiline_comment|/* ;  (10K, 0.68uF) */
+multiline_comment|/* Bytes for Ringing part 1 (03):1B,3B,9B,BA,D4,1C,B3,23 */
 id|j-&gt;m_DAAShadowRegs.COP_REGS.COP.RingerImpendance_1
 (braket
 l_int|7
@@ -36462,7 +45243,7 @@ l_int|0
 op_assign
 l_int|0x23
 suffix:semicolon
-singleline_comment|// Bytes for Ringing part 2 (06):13,42,A6,BA,D4,73,CA,D5
+multiline_comment|/* Bytes for Ringing part 2 (06):13,42,A6,BA,D4,73,CA,D5 */
 id|j-&gt;m_DAAShadowRegs.COP_REGS.COP.RingerImpendance_2
 (braket
 l_int|7
@@ -36519,7 +45300,7 @@ l_int|0
 op_assign
 l_int|0xD5
 suffix:semicolon
-singleline_comment|// Levelmetering Ringing        (0D):B2,45,0F,8E      
+multiline_comment|/* Levelmetering Ringing        (0D):B2,45,0F,8E       */
 id|j-&gt;m_DAAShadowRegs.COP_REGS.COP.LevelmeteringRinging
 (braket
 l_int|3
@@ -36548,7 +45329,7 @@ l_int|0
 op_assign
 l_int|0x8E
 suffix:semicolon
-singleline_comment|// Caller ID 1st Tone           (0E):CA,0E,CA,09,99,99,99,99
+multiline_comment|/* Caller ID 1st Tone           (0E):CA,0E,CA,09,99,99,99,99 */
 id|j-&gt;m_DAAShadowRegs.COP_REGS.COP.CallerID1stTone
 (braket
 l_int|7
@@ -36605,7 +45386,7 @@ l_int|0
 op_assign
 l_int|0x99
 suffix:semicolon
-singleline_comment|// Caller ID 2nd Tone           (0F):FD,B5,BA,07,DA,00,00,00
+multiline_comment|/* Caller ID 2nd Tone           (0F):FD,B5,BA,07,DA,00,00,00 */
 id|j-&gt;m_DAAShadowRegs.COP_REGS.COP.CallerID2ndTone
 (braket
 l_int|7
@@ -36662,84 +45443,83 @@ l_int|0
 op_assign
 l_int|0x00
 suffix:semicolon
-singleline_comment|// ;CR Registers
-singleline_comment|// Config. Reg. 0 (filters)        (cr0):FF ; all Filters enabled, CLK from ext. source
+multiline_comment|/* ;CR Registers */
+multiline_comment|/* Config. Reg. 0 (filters)        (cr0):FF ; all Filters enabled, CLK from ext. source */
 id|j-&gt;m_DAAShadowRegs.SOP_REGS.SOP.cr0.reg
 op_assign
-l_int|0xFE
+l_int|0xFF
 suffix:semicolon
-singleline_comment|// Config. Reg. 1 (dialing)        (cr1):05 ; Manual Ring, Ring metering enabled
+multiline_comment|/* Config. Reg. 1 (dialing)        (cr1):05 ; Manual Ring, Ring metering enabled */
 id|j-&gt;m_DAAShadowRegs.SOP_REGS.SOP.cr1.reg
 op_assign
 l_int|0x05
 suffix:semicolon
-singleline_comment|// Config. Reg. 2 (caller ID)      (cr2):04 ; Analog Gain 0dB, FSC internal
+multiline_comment|/* Config. Reg. 2 (caller ID)      (cr2):04 ; Analog Gain 0dB, FSC internal */
 id|j-&gt;m_DAAShadowRegs.SOP_REGS.SOP.cr2.reg
 op_assign
 l_int|0x04
 suffix:semicolon
-singleline_comment|// Config. Reg. 3 (testloops)      (cr3):00 ; SEL Bit==0, HP-enabled
+multiline_comment|/* Config. Reg. 3 (testloops)      (cr3):00 ; SEL Bit==0, HP-enabled */
 id|j-&gt;m_DAAShadowRegs.SOP_REGS.SOP.cr3.reg
 op_assign
 l_int|0x00
 suffix:semicolon
-singleline_comment|// Config. Reg. 4 (analog gain)    (cr4):01
+multiline_comment|/* Config. Reg. 4 (analog gain)    (cr4):02 */
 id|j-&gt;m_DAAShadowRegs.SOP_REGS.SOP.cr4.reg
 op_assign
 l_int|0x02
 suffix:semicolon
-singleline_comment|//0x01;
-singleline_comment|// Config. Reg. 5 (Version)        (cr5):02
-singleline_comment|// Config. Reg. 6 (Reserved)       (cr6):00
-singleline_comment|// Config. Reg. 7 (Reserved)       (cr7):00
-singleline_comment|// ;xr Registers
-singleline_comment|// Ext. Reg. 0 (Interrupt Reg.)    (xr0):02
+multiline_comment|/* Config. Reg. 5 (Version)        (cr5):02 */
+multiline_comment|/* Config. Reg. 6 (Reserved)       (cr6):00 */
+multiline_comment|/* Config. Reg. 7 (Reserved)       (cr7):00 */
+multiline_comment|/* ;xr Registers */
+multiline_comment|/* Ext. Reg. 0 (Interrupt Reg.)    (xr0):02 */
 id|j-&gt;m_DAAShadowRegs.XOP_xr0_W.reg
 op_assign
 l_int|0x02
 suffix:semicolon
-singleline_comment|// SO_1 set to &squot;1&squot; because it is inverted.
-singleline_comment|// Ext. Reg. 1 (Interrupt enable)  (xr1):1C ; Ring, CID, VDDOK Interrupts enabled
+multiline_comment|/* SO_1 set to &squot;1&squot; because it is inverted. */
+multiline_comment|/* Ext. Reg. 1 (Interrupt enable)  (xr1):1C ; Ring, CID, VDDOK Interrupts enabled */
 id|j-&gt;m_DAAShadowRegs.XOP_REGS.XOP.xr1.reg
 op_assign
 l_int|0x1C
 suffix:semicolon
-singleline_comment|// RING, Caller ID, VDD_OK
-singleline_comment|// Ext. Reg. 2 (Cadence Time Out)  (xr2):7D
+multiline_comment|/* RING, Caller ID, VDD_OK */
+multiline_comment|/* Ext. Reg. 2 (Cadence Time Out)  (xr2):7D */
 id|j-&gt;m_DAAShadowRegs.XOP_REGS.XOP.xr2.reg
 op_assign
 l_int|0x7D
 suffix:semicolon
-singleline_comment|// Ext. Reg. 3 (DC Char)           (xr3):32 ; B-Filter Off==1, U0=3.5V, R=200Ohm
+multiline_comment|/* Ext. Reg. 3 (DC Char)           (xr3):32 ; B-Filter Off==1, U0=3.5V, R=200Ohm */
 id|j-&gt;m_DAAShadowRegs.XOP_REGS.XOP.xr3.reg
 op_assign
 l_int|0x32
 suffix:semicolon
-singleline_comment|// Ext. Reg. 4 (Cadence)           (xr4):00
+multiline_comment|/* Ext. Reg. 4 (Cadence)           (xr4):00 */
 id|j-&gt;m_DAAShadowRegs.XOP_REGS.XOP.xr4.reg
 op_assign
 l_int|0x00
 suffix:semicolon
-singleline_comment|// Ext. Reg. 5 (Ring timer)        (xr5):22
+multiline_comment|/* Ext. Reg. 5 (Ring timer)        (xr5):22 */
 id|j-&gt;m_DAAShadowRegs.XOP_REGS.XOP.xr5.reg
 op_assign
 l_int|0x22
 suffix:semicolon
-singleline_comment|// Ext. Reg. 6 (Power State)       (xr6):00
+multiline_comment|/* Ext. Reg. 6 (Power State)       (xr6):00 */
 id|j-&gt;m_DAAShadowRegs.XOP_xr6_W.reg
 op_assign
 l_int|0x00
 suffix:semicolon
-singleline_comment|// Ext. Reg. 7 (Vdd)               (xr7):40 ; VDD=4.25 V
+multiline_comment|/* Ext. Reg. 7 (Vdd)               (xr7):40 ; VDD=4.25 V */
 id|j-&gt;m_DAAShadowRegs.XOP_REGS.XOP.xr7.reg
 op_assign
 l_int|0x40
 suffix:semicolon
-singleline_comment|// 0x40 ??? Should it be 0x00?
-singleline_comment|// DTMF Tone 1                     (0B): 11,B3,5A,2C    ;   697 Hz  
-singleline_comment|//                                       12,33,5A,C3    ;  770 Hz  
-singleline_comment|//                                       13,3C,5B,32    ;  852 Hz  
-singleline_comment|//                                       1D,1B,5C,CC    ;  941 Hz  
+multiline_comment|/* 0x40 ??? Should it be 0x00? */
+multiline_comment|/* DTMF Tone 1                     (0B): 11,B3,5A,2C    ;   697 Hz   */
+multiline_comment|/*                                       12,33,5A,C3    ;  770 Hz   */
+multiline_comment|/*                                       13,3C,5B,32    ;  852 Hz   */
+multiline_comment|/*                                       1D,1B,5C,CC    ;  941 Hz   */
 id|j-&gt;m_DAAShadowRegs.COP_REGS.COP.Tone1Coeff
 (braket
 l_int|3
@@ -36768,10 +45548,10 @@ l_int|0
 op_assign
 l_int|0x2C
 suffix:semicolon
-singleline_comment|// DTMF Tone 2                     (0C): 32,32,52,B3    ;  1209 Hz  
-singleline_comment|//                                       EC,1D,52,22    ;  1336 Hz  
-singleline_comment|//                                       AA,AC,51,D2    ;  1477 Hz  
-singleline_comment|//                                       9B,3B,51,25    ;  1633 Hz  
+multiline_comment|/* DTMF Tone 2                     (0C): 32,32,52,B3    ;  1209 Hz   */
+multiline_comment|/*                                       EC,1D,52,22    ;  1336 Hz   */
+multiline_comment|/*                                       AA,AC,51,D2    ;  1477 Hz   */
+multiline_comment|/*                                       9B,3B,51,25    ;  1633 Hz   */
 id|j-&gt;m_DAAShadowRegs.COP_REGS.COP.Tone2Coeff
 (braket
 l_int|3
@@ -36819,8 +45599,8 @@ id|j-&gt;daa_country
 op_assign
 id|DAA_AUSTRALIA
 suffix:semicolon
-singleline_comment|//-----------------------------------------------
-singleline_comment|// CAO
+multiline_comment|/*----------------------------------------------- */
+multiline_comment|/* CAO */
 r_for
 c_loop
 (paren
@@ -36844,7 +45624,7 @@ op_assign
 l_int|0
 suffix:semicolon
 )brace
-singleline_comment|// Bytes for IM-filter part 1 (04): 00,A3,AA,28,B3,82,D0,00
+multiline_comment|/* Bytes for IM-filter part 1 (04): 00,A3,AA,28,B3,82,D0,00 */
 id|j-&gt;m_DAAShadowRegs.COP_REGS.COP.IMFilterCoeff_1
 (braket
 l_int|7
@@ -36901,7 +45681,7 @@ l_int|0
 op_assign
 l_int|0x00
 suffix:semicolon
-singleline_comment|// Bytes for IM-filter part 2 (05): 70,96,00,09,32,6B,C0,08
+multiline_comment|/* Bytes for IM-filter part 2 (05): 70,96,00,09,32,6B,C0,08 */
 id|j-&gt;m_DAAShadowRegs.COP_REGS.COP.IMFilterCoeff_2
 (braket
 l_int|7
@@ -36958,7 +45738,7 @@ l_int|0
 op_assign
 l_int|0x08
 suffix:semicolon
-singleline_comment|// Bytes for FRX-filter       (08): 07,96,E2,34,32,9B,30,08
+multiline_comment|/* Bytes for FRX-filter       (08): 07,96,E2,34,32,9B,30,08 */
 id|j-&gt;m_DAAShadowRegs.COP_REGS.COP.FRXFilterCoeff
 (braket
 l_int|7
@@ -37015,7 +45795,7 @@ l_int|0
 op_assign
 l_int|0x08
 suffix:semicolon
-singleline_comment|// Bytes for FRR-filter       (07): 0F,9A,E9,2F,22,CC,A0,08
+multiline_comment|/* Bytes for FRR-filter       (07): 0F,9A,E9,2F,22,CC,A0,08 */
 id|j-&gt;m_DAAShadowRegs.COP_REGS.COP.FRRFilterCoeff
 (braket
 l_int|7
@@ -37072,7 +45852,7 @@ l_int|0
 op_assign
 l_int|0x08
 suffix:semicolon
-singleline_comment|// Bytes for AX-filter        (0A): CB,45,DD,CA
+multiline_comment|/* Bytes for AX-filter        (0A): CB,45,DD,CA */
 id|j-&gt;m_DAAShadowRegs.COP_REGS.COP.AXFilterCoeff
 (braket
 l_int|3
@@ -37101,7 +45881,7 @@ l_int|0
 op_assign
 l_int|0xCA
 suffix:semicolon
-singleline_comment|// Bytes for AR-filter        (09): 1B,67,10,D6
+multiline_comment|/* Bytes for AR-filter        (09): 1B,67,10,D6 */
 id|j-&gt;m_DAAShadowRegs.COP_REGS.COP.ARFilterCoeff
 (braket
 l_int|3
@@ -37130,7 +45910,7 @@ l_int|0
 op_assign
 l_int|0xD6
 suffix:semicolon
-singleline_comment|// Bytes for TH-filter part 1 (00): 80,52,48,81,AF,80,00,98
+multiline_comment|/* Bytes for TH-filter part 1 (00): 80,52,48,81,AF,80,00,98 */
 id|j-&gt;m_DAAShadowRegs.COP_REGS.COP.THFilterCoeff_1
 (braket
 l_int|7
@@ -37187,7 +45967,7 @@ l_int|0
 op_assign
 l_int|0x98
 suffix:semicolon
-singleline_comment|// Bytes for TH-filter part 2 (01): 02,DB,52,B0,38,01,82,AC
+multiline_comment|/* Bytes for TH-filter part 2 (01): 02,DB,52,B0,38,01,82,AC */
 id|j-&gt;m_DAAShadowRegs.COP_REGS.COP.THFilterCoeff_2
 (braket
 l_int|7
@@ -37244,7 +46024,7 @@ l_int|0
 op_assign
 l_int|0xAC
 suffix:semicolon
-singleline_comment|// Bytes for TH-filter part 3 (02): 00,88,4A,3E,2C,3B,24,46
+multiline_comment|/* Bytes for TH-filter part 3 (02): 00,88,4A,3E,2C,3B,24,46 */
 id|j-&gt;m_DAAShadowRegs.COP_REGS.COP.THFilterCoeff_3
 (braket
 l_int|7
@@ -37301,8 +46081,8 @@ l_int|0
 op_assign
 l_int|0x46
 suffix:semicolon
-singleline_comment|// ;  idle
-singleline_comment|// Bytes for Ringing part 1 (03):1B,3C,93,3A,22,12,A3,23
+multiline_comment|/* ;  idle */
+multiline_comment|/* Bytes for Ringing part 1 (03):1B,3C,93,3A,22,12,A3,23 */
 id|j-&gt;m_DAAShadowRegs.COP_REGS.COP.RingerImpendance_1
 (braket
 l_int|7
@@ -37359,7 +46139,7 @@ l_int|0
 op_assign
 l_int|0x23
 suffix:semicolon
-singleline_comment|// Bytes for Ringing part 2 (06):12,A2,A6,BA,22,7A,0A,D5
+multiline_comment|/* Bytes for Ringing part 2 (06):12,A2,A6,BA,22,7A,0A,D5 */
 id|j-&gt;m_DAAShadowRegs.COP_REGS.COP.RingerImpendance_2
 (braket
 l_int|7
@@ -37416,7 +46196,7 @@ l_int|0
 op_assign
 l_int|0xD5
 suffix:semicolon
-singleline_comment|// Levelmetering Ringing           (0D):32,45,B5,84   ; 50Hz 20V
+multiline_comment|/* Levelmetering Ringing           (0D):32,45,B5,84   ; 50Hz 20V */
 id|j-&gt;m_DAAShadowRegs.COP_REGS.COP.LevelmeteringRinging
 (braket
 l_int|3
@@ -37445,7 +46225,7 @@ l_int|0
 op_assign
 l_int|0x84
 suffix:semicolon
-singleline_comment|// Caller ID 1st Tone              (0E):CA,0E,CA,09,99,99,99,99
+multiline_comment|/* Caller ID 1st Tone              (0E):CA,0E,CA,09,99,99,99,99 */
 id|j-&gt;m_DAAShadowRegs.COP_REGS.COP.CallerID1stTone
 (braket
 l_int|7
@@ -37502,7 +46282,7 @@ l_int|0
 op_assign
 l_int|0x99
 suffix:semicolon
-singleline_comment|// Caller ID 2nd Tone              (0F):FD,B5,BA,07,DA,00,00,00
+multiline_comment|/* Caller ID 2nd Tone              (0F):FD,B5,BA,07,DA,00,00,00 */
 id|j-&gt;m_DAAShadowRegs.COP_REGS.COP.CallerID2ndTone
 (braket
 l_int|7
@@ -37559,84 +46339,83 @@ l_int|0
 op_assign
 l_int|0x00
 suffix:semicolon
-singleline_comment|// ;CR Registers
-singleline_comment|// Config. Reg. 0 (filters)        (cr0):FF
+multiline_comment|/* ;CR Registers */
+multiline_comment|/* Config. Reg. 0 (filters)        (cr0):FF */
 id|j-&gt;m_DAAShadowRegs.SOP_REGS.SOP.cr0.reg
 op_assign
 l_int|0xFF
 suffix:semicolon
-singleline_comment|// Config. Reg. 1 (dialing)        (cr1):05
+multiline_comment|/* Config. Reg. 1 (dialing)        (cr1):05 */
 id|j-&gt;m_DAAShadowRegs.SOP_REGS.SOP.cr1.reg
 op_assign
 l_int|0x05
 suffix:semicolon
-singleline_comment|// Config. Reg. 2 (caller ID)      (cr2):04
+multiline_comment|/* Config. Reg. 2 (caller ID)      (cr2):04 */
 id|j-&gt;m_DAAShadowRegs.SOP_REGS.SOP.cr2.reg
 op_assign
 l_int|0x04
 suffix:semicolon
-singleline_comment|// Config. Reg. 3 (testloops)      (cr3):00        ; 
+multiline_comment|/* Config. Reg. 3 (testloops)      (cr3):00        ;  */
 id|j-&gt;m_DAAShadowRegs.SOP_REGS.SOP.cr3.reg
 op_assign
 l_int|0x00
 suffix:semicolon
-singleline_comment|// Config. Reg. 4 (analog gain)    (cr4):01
+multiline_comment|/* Config. Reg. 4 (analog gain)    (cr4):02 */
 id|j-&gt;m_DAAShadowRegs.SOP_REGS.SOP.cr4.reg
 op_assign
 l_int|0x02
 suffix:semicolon
-singleline_comment|//0x01;
-singleline_comment|// Config. Reg. 5 (Version)        (cr5):02
-singleline_comment|// Config. Reg. 6 (Reserved)       (cr6):00
-singleline_comment|// Config. Reg. 7 (Reserved)       (cr7):00
-singleline_comment|// ;xr Registers
-singleline_comment|// Ext. Reg. 0 (Interrupt Reg.)    (xr0):02
+multiline_comment|/* Config. Reg. 5 (Version)        (cr5):02 */
+multiline_comment|/* Config. Reg. 6 (Reserved)       (cr6):00 */
+multiline_comment|/* Config. Reg. 7 (Reserved)       (cr7):00 */
+multiline_comment|/* ;xr Registers */
+multiline_comment|/* Ext. Reg. 0 (Interrupt Reg.)    (xr0):02 */
 id|j-&gt;m_DAAShadowRegs.XOP_xr0_W.reg
 op_assign
 l_int|0x02
 suffix:semicolon
-singleline_comment|// SO_1 set to &squot;1&squot; because it is inverted.
-singleline_comment|// Ext. Reg. 1 (Interrupt enable)  (xr1):1C
+multiline_comment|/* SO_1 set to &squot;1&squot; because it is inverted. */
+multiline_comment|/* Ext. Reg. 1 (Interrupt enable)  (xr1):1C */
 id|j-&gt;m_DAAShadowRegs.XOP_REGS.XOP.xr1.reg
 op_assign
 l_int|0x1C
 suffix:semicolon
-singleline_comment|// RING, Caller ID, VDD_OK
-singleline_comment|// Ext. Reg. 2 (Cadence Time Out)  (xr2):7D
+multiline_comment|/* RING, Caller ID, VDD_OK */
+multiline_comment|/* Ext. Reg. 2 (Cadence Time Out)  (xr2):7D */
 id|j-&gt;m_DAAShadowRegs.XOP_REGS.XOP.xr2.reg
 op_assign
 l_int|0x7D
 suffix:semicolon
-singleline_comment|// Ext. Reg. 3 (DC Char)           (xr3):2B      ; 
+multiline_comment|/* Ext. Reg. 3 (DC Char)           (xr3):2B      ;  */
 id|j-&gt;m_DAAShadowRegs.XOP_REGS.XOP.xr3.reg
 op_assign
 l_int|0x2B
 suffix:semicolon
-singleline_comment|// Ext. Reg. 4 (Cadence)           (xr4):00
+multiline_comment|/* Ext. Reg. 4 (Cadence)           (xr4):00 */
 id|j-&gt;m_DAAShadowRegs.XOP_REGS.XOP.xr4.reg
 op_assign
 l_int|0x00
 suffix:semicolon
-singleline_comment|// Ext. Reg. 5 (Ring timer)        (xr5):22
+multiline_comment|/* Ext. Reg. 5 (Ring timer)        (xr5):22 */
 id|j-&gt;m_DAAShadowRegs.XOP_REGS.XOP.xr5.reg
 op_assign
 l_int|0x22
 suffix:semicolon
-singleline_comment|// Ext. Reg. 6 (Power State)       (xr6):00
+multiline_comment|/* Ext. Reg. 6 (Power State)       (xr6):00 */
 id|j-&gt;m_DAAShadowRegs.XOP_xr6_W.reg
 op_assign
 l_int|0x00
 suffix:semicolon
-singleline_comment|// Ext. Reg. 7 (Vdd)               (xr7):40
+multiline_comment|/* Ext. Reg. 7 (Vdd)               (xr7):40 */
 id|j-&gt;m_DAAShadowRegs.XOP_REGS.XOP.xr7.reg
 op_assign
 l_int|0x40
 suffix:semicolon
-singleline_comment|// 0x40 ??? Should it be 0x00?
-singleline_comment|// DTMF Tone 1                     (0B): 11,B3,5A,2C    ;   697 Hz  
-singleline_comment|//                                       12,33,5A,C3    ;  770 Hz  
-singleline_comment|//                                       13,3C,5B,32    ;  852 Hz  
-singleline_comment|//                                       1D,1B,5C,CC    ;  941 Hz  
+multiline_comment|/* 0x40 ??? Should it be 0x00? */
+multiline_comment|/* DTMF Tone 1                     (0B): 11,B3,5A,2C    ;  697 Hz   */
+multiline_comment|/*                                       12,33,5A,C3    ;  770 Hz   */
+multiline_comment|/*                                       13,3C,5B,32    ;  852 Hz   */
+multiline_comment|/*                                       1D,1B,5C,CC    ;  941 Hz   */
 id|j-&gt;m_DAAShadowRegs.COP_REGS.COP.Tone1Coeff
 (braket
 l_int|3
@@ -37665,10 +46444,10 @@ l_int|0
 op_assign
 l_int|0x2C
 suffix:semicolon
-singleline_comment|// DTMF Tone 2                     (0C): 32,32,52,B3    ;  1209 Hz  
-singleline_comment|//                                       EC,1D,52,22    ;  1336 Hz  
-singleline_comment|//                                       AA,AC,51,D2    ;  1477 Hz  
-singleline_comment|//                                       9B,3B,51,25    ;  1633 Hz  
+multiline_comment|/* DTMF Tone 2                     (0C): 32,32,52,B3    ;  1209 Hz   */
+multiline_comment|/*                                       EC,1D,52,22    ;  1336 Hz   */
+multiline_comment|/*                                       AA,AC,51,D2    ;  1477 Hz   */
+multiline_comment|/*                                       9B,3B,51,25    ;  1633 Hz   */
 id|j-&gt;m_DAAShadowRegs.COP_REGS.COP.Tone2Coeff
 (braket
 l_int|3
@@ -37716,8 +46495,8 @@ id|j-&gt;daa_country
 op_assign
 id|DAA_JAPAN
 suffix:semicolon
-singleline_comment|//-----------------------------------------------
-singleline_comment|// CAO
+multiline_comment|/*----------------------------------------------- */
+multiline_comment|/* CAO */
 r_for
 c_loop
 (paren
@@ -37741,7 +46520,7 @@ op_assign
 l_int|0
 suffix:semicolon
 )brace
-singleline_comment|// Bytes for IM-filter part 1 (04): 06,BD,E2,2D,BA,F9,A0,00
+multiline_comment|/* Bytes for IM-filter part 1 (04): 06,BD,E2,2D,BA,F9,A0,00 */
 id|j-&gt;m_DAAShadowRegs.COP_REGS.COP.IMFilterCoeff_1
 (braket
 l_int|7
@@ -37798,7 +46577,7 @@ l_int|0
 op_assign
 l_int|0x00
 suffix:semicolon
-singleline_comment|// Bytes for IM-filter part 2 (05): 6F,F7,00,0E,34,33,E0,08
+multiline_comment|/* Bytes for IM-filter part 2 (05): 6F,F7,00,0E,34,33,E0,08 */
 id|j-&gt;m_DAAShadowRegs.COP_REGS.COP.IMFilterCoeff_2
 (braket
 l_int|7
@@ -37855,7 +46634,7 @@ l_int|0
 op_assign
 l_int|0x08
 suffix:semicolon
-singleline_comment|// Bytes for FRX-filter       (08): 02,8F,68,77,9C,58,F0,08
+multiline_comment|/* Bytes for FRX-filter       (08): 02,8F,68,77,9C,58,F0,08 */
 id|j-&gt;m_DAAShadowRegs.COP_REGS.COP.FRXFilterCoeff
 (braket
 l_int|7
@@ -37912,7 +46691,7 @@ l_int|0
 op_assign
 l_int|0x08
 suffix:semicolon
-singleline_comment|// Bytes for FRR-filter       (07): 03,8F,38,73,87,EA,20,08
+multiline_comment|/* Bytes for FRR-filter       (07): 03,8F,38,73,87,EA,20,08 */
 id|j-&gt;m_DAAShadowRegs.COP_REGS.COP.FRRFilterCoeff
 (braket
 l_int|7
@@ -37969,7 +46748,7 @@ l_int|0
 op_assign
 l_int|0x08
 suffix:semicolon
-singleline_comment|// Bytes for AX-filter        (0A): 51,C5,DD,CA
+multiline_comment|/* Bytes for AX-filter        (0A): 51,C5,DD,CA */
 id|j-&gt;m_DAAShadowRegs.COP_REGS.COP.AXFilterCoeff
 (braket
 l_int|3
@@ -37998,7 +46777,7 @@ l_int|0
 op_assign
 l_int|0xCA
 suffix:semicolon
-singleline_comment|// Bytes for AR-filter        (09): 25,A7,10,D6
+multiline_comment|/* Bytes for AR-filter        (09): 25,A7,10,D6 */
 id|j-&gt;m_DAAShadowRegs.COP_REGS.COP.ARFilterCoeff
 (braket
 l_int|3
@@ -38027,7 +46806,7 @@ l_int|0
 op_assign
 l_int|0xD6
 suffix:semicolon
-singleline_comment|// Bytes for TH-filter part 1 (00): 00,42,48,81,AE,80,00,98
+multiline_comment|/* Bytes for TH-filter part 1 (00): 00,42,48,81,AE,80,00,98 */
 id|j-&gt;m_DAAShadowRegs.COP_REGS.COP.THFilterCoeff_1
 (braket
 l_int|7
@@ -38084,7 +46863,7 @@ l_int|0
 op_assign
 l_int|0x98
 suffix:semicolon
-singleline_comment|// Bytes for TH-filter part 2 (01): 02,AB,2A,20,99,5B,89,28
+multiline_comment|/* Bytes for TH-filter part 2 (01): 02,AB,2A,20,99,5B,89,28 */
 id|j-&gt;m_DAAShadowRegs.COP_REGS.COP.THFilterCoeff_2
 (braket
 l_int|7
@@ -38141,7 +46920,7 @@ l_int|0
 op_assign
 l_int|0x28
 suffix:semicolon
-singleline_comment|// Bytes for TH-filter part 3 (02): 00,88,DA,25,34,C5,4C,BA
+multiline_comment|/* Bytes for TH-filter part 3 (02): 00,88,DA,25,34,C5,4C,BA */
 id|j-&gt;m_DAAShadowRegs.COP_REGS.COP.THFilterCoeff_3
 (braket
 l_int|7
@@ -38198,8 +46977,8 @@ l_int|0
 op_assign
 l_int|0xBA
 suffix:semicolon
-singleline_comment|// ;  idle
-singleline_comment|// Bytes for Ringing part 1 (03):1B,3C,93,3A,22,12,A3,23
+multiline_comment|/* ;  idle */
+multiline_comment|/* Bytes for Ringing part 1 (03):1B,3C,93,3A,22,12,A3,23 */
 id|j-&gt;m_DAAShadowRegs.COP_REGS.COP.RingerImpendance_1
 (braket
 l_int|7
@@ -38256,7 +47035,7 @@ l_int|0
 op_assign
 l_int|0x23
 suffix:semicolon
-singleline_comment|// Bytes for Ringing part 2 (06):12,A2,A6,BA,22,7A,0A,D5
+multiline_comment|/* Bytes for Ringing part 2 (06):12,A2,A6,BA,22,7A,0A,D5 */
 id|j-&gt;m_DAAShadowRegs.COP_REGS.COP.RingerImpendance_2
 (braket
 l_int|7
@@ -38313,7 +47092,7 @@ l_int|0
 op_assign
 l_int|0xD5
 suffix:semicolon
-singleline_comment|// Levelmetering Ringing           (0D):AA,35,0F,8E    ; 25Hz 30V ?????????
+multiline_comment|/* Levelmetering Ringing           (0D):AA,35,0F,8E    ; 25Hz 30V ????????? */
 id|j-&gt;m_DAAShadowRegs.COP_REGS.COP.LevelmeteringRinging
 (braket
 l_int|3
@@ -38342,7 +47121,7 @@ l_int|0
 op_assign
 l_int|0x8E
 suffix:semicolon
-singleline_comment|// Caller ID 1st Tone              (0E):CA,0E,CA,09,99,99,99,99
+multiline_comment|/* Caller ID 1st Tone              (0E):CA,0E,CA,09,99,99,99,99 */
 id|j-&gt;m_DAAShadowRegs.COP_REGS.COP.CallerID1stTone
 (braket
 l_int|7
@@ -38399,7 +47178,7 @@ l_int|0
 op_assign
 l_int|0x99
 suffix:semicolon
-singleline_comment|// Caller ID 2nd Tone              (0F):FD,B5,BA,07,DA,00,00,00
+multiline_comment|/* Caller ID 2nd Tone              (0F):FD,B5,BA,07,DA,00,00,00 */
 id|j-&gt;m_DAAShadowRegs.COP_REGS.COP.CallerID2ndTone
 (braket
 l_int|7
@@ -38456,84 +47235,83 @@ l_int|0
 op_assign
 l_int|0x00
 suffix:semicolon
-singleline_comment|// ;CR Registers
-singleline_comment|// Config. Reg. 0 (filters)        (cr0):FF
+multiline_comment|/* ;CR Registers */
+multiline_comment|/* Config. Reg. 0 (filters)        (cr0):FF */
 id|j-&gt;m_DAAShadowRegs.SOP_REGS.SOP.cr0.reg
 op_assign
-l_int|0xFE
+l_int|0xFF
 suffix:semicolon
-singleline_comment|// Config. Reg. 1 (dialing)        (cr1):05
+multiline_comment|/* Config. Reg. 1 (dialing)        (cr1):05 */
 id|j-&gt;m_DAAShadowRegs.SOP_REGS.SOP.cr1.reg
 op_assign
 l_int|0x05
 suffix:semicolon
-singleline_comment|// Config. Reg. 2 (caller ID)      (cr2):04
+multiline_comment|/* Config. Reg. 2 (caller ID)      (cr2):04 */
 id|j-&gt;m_DAAShadowRegs.SOP_REGS.SOP.cr2.reg
 op_assign
 l_int|0x04
 suffix:semicolon
-singleline_comment|// Config. Reg. 3 (testloops)      (cr3):00        ; 
+multiline_comment|/* Config. Reg. 3 (testloops)      (cr3):00        ;  */
 id|j-&gt;m_DAAShadowRegs.SOP_REGS.SOP.cr3.reg
 op_assign
 l_int|0x00
 suffix:semicolon
-singleline_comment|// Config. Reg. 4 (analog gain)    (cr4):01
+multiline_comment|/* Config. Reg. 4 (analog gain)    (cr4):02 */
 id|j-&gt;m_DAAShadowRegs.SOP_REGS.SOP.cr4.reg
 op_assign
 l_int|0x02
 suffix:semicolon
-singleline_comment|//0x01;
-singleline_comment|// Config. Reg. 5 (Version)        (cr5):02
-singleline_comment|// Config. Reg. 6 (Reserved)       (cr6):00
-singleline_comment|// Config. Reg. 7 (Reserved)       (cr7):00
-singleline_comment|// ;xr Registers
-singleline_comment|// Ext. Reg. 0 (Interrupt Reg.)    (xr0):02
+multiline_comment|/* Config. Reg. 5 (Version)        (cr5):02 */
+multiline_comment|/* Config. Reg. 6 (Reserved)       (cr6):00 */
+multiline_comment|/* Config. Reg. 7 (Reserved)       (cr7):00 */
+multiline_comment|/* ;xr Registers */
+multiline_comment|/* Ext. Reg. 0 (Interrupt Reg.)    (xr0):02 */
 id|j-&gt;m_DAAShadowRegs.XOP_xr0_W.reg
 op_assign
 l_int|0x02
 suffix:semicolon
-singleline_comment|// SO_1 set to &squot;1&squot; because it is inverted.
-singleline_comment|// Ext. Reg. 1 (Interrupt enable)  (xr1):1C
+multiline_comment|/* SO_1 set to &squot;1&squot; because it is inverted. */
+multiline_comment|/* Ext. Reg. 1 (Interrupt enable)  (xr1):1C */
 id|j-&gt;m_DAAShadowRegs.XOP_REGS.XOP.xr1.reg
 op_assign
 l_int|0x1C
 suffix:semicolon
-singleline_comment|// RING, Caller ID, VDD_OK
-singleline_comment|// Ext. Reg. 2 (Cadence Time Out)  (xr2):7D
+multiline_comment|/* RING, Caller ID, VDD_OK */
+multiline_comment|/* Ext. Reg. 2 (Cadence Time Out)  (xr2):7D */
 id|j-&gt;m_DAAShadowRegs.XOP_REGS.XOP.xr2.reg
 op_assign
 l_int|0x7D
 suffix:semicolon
-singleline_comment|// Ext. Reg. 3 (DC Char)           (xr3):22        ; 
+multiline_comment|/* Ext. Reg. 3 (DC Char)           (xr3):22        ;  */
 id|j-&gt;m_DAAShadowRegs.XOP_REGS.XOP.xr3.reg
 op_assign
 l_int|0x22
 suffix:semicolon
-singleline_comment|// Ext. Reg. 4 (Cadence)           (xr4):00
+multiline_comment|/* Ext. Reg. 4 (Cadence)           (xr4):00 */
 id|j-&gt;m_DAAShadowRegs.XOP_REGS.XOP.xr4.reg
 op_assign
 l_int|0x00
 suffix:semicolon
-singleline_comment|// Ext. Reg. 5 (Ring timer)        (xr5):22
+multiline_comment|/* Ext. Reg. 5 (Ring timer)        (xr5):22 */
 id|j-&gt;m_DAAShadowRegs.XOP_REGS.XOP.xr5.reg
 op_assign
 l_int|0x22
 suffix:semicolon
-singleline_comment|// Ext. Reg. 6 (Power State)       (xr6):00
+multiline_comment|/* Ext. Reg. 6 (Power State)       (xr6):00 */
 id|j-&gt;m_DAAShadowRegs.XOP_xr6_W.reg
 op_assign
 l_int|0x00
 suffix:semicolon
-singleline_comment|// Ext. Reg. 7 (Vdd)               (xr7):40
+multiline_comment|/* Ext. Reg. 7 (Vdd)               (xr7):40 */
 id|j-&gt;m_DAAShadowRegs.XOP_REGS.XOP.xr7.reg
 op_assign
 l_int|0x40
 suffix:semicolon
-singleline_comment|// 0x40 ??? Should it be 0x00?
-singleline_comment|// DTMF Tone 1                     (0B): 11,B3,5A,2C    ;   697 Hz  
-singleline_comment|//                                       12,33,5A,C3    ;  770 Hz  
-singleline_comment|//                                       13,3C,5B,32    ;  852 Hz  
-singleline_comment|//                                       1D,1B,5C,CC    ;  941 Hz  
+multiline_comment|/* 0x40 ??? Should it be 0x00? */
+multiline_comment|/* DTMF Tone 1                     (0B): 11,B3,5A,2C    ;   697 Hz   */
+multiline_comment|/*                                       12,33,5A,C3    ;  770 Hz   */
+multiline_comment|/*                                       13,3C,5B,32    ;  852 Hz   */
+multiline_comment|/*                                       1D,1B,5C,CC    ;  941 Hz   */
 id|j-&gt;m_DAAShadowRegs.COP_REGS.COP.Tone1Coeff
 (braket
 l_int|3
@@ -38562,10 +47340,10 @@ l_int|0
 op_assign
 l_int|0x2C
 suffix:semicolon
-singleline_comment|// DTMF Tone 2                     (0C): 32,32,52,B3    ;  1209 Hz  
-singleline_comment|//                                       EC,1D,52,22    ;  1336 Hz  
-singleline_comment|//                                       AA,AC,51,D2    ;  1477 Hz  
-singleline_comment|//                                       9B,3B,51,25    ;  1633 Hz  
+multiline_comment|/* DTMF Tone 2                     (0C): 32,32,52,B3    ;  1209 Hz   */
+multiline_comment|/*                                       EC,1D,52,22    ;  1336 Hz   */
+multiline_comment|/*                                       AA,AC,51,D2    ;  1477 Hz   */
+multiline_comment|/*                                       9B,3B,51,25    ;  1633 Hz   */
 id|j-&gt;m_DAAShadowRegs.COP_REGS.COP.Tone2Coeff
 (braket
 l_int|3
@@ -38607,4818 +47385,4867 @@ l_int|19
 op_assign
 (brace
 (brace
-singleline_comment|// f20_50[] 11
+multiline_comment|/* f20_50[] 11 */
 l_int|32538
 comma
-singleline_comment|// A1 = 1.985962
+multiline_comment|/* A1 = 1.985962 */
 op_minus
 l_int|32325
 comma
-singleline_comment|// A2 = -0.986511
+multiline_comment|/* A2 = -0.986511 */
 op_minus
 l_int|343
 comma
-singleline_comment|// B2 = -0.010493
+multiline_comment|/* B2 = -0.010493 */
 l_int|0
 comma
-singleline_comment|// B1 = 0
+multiline_comment|/* B1 = 0 */
 l_int|343
 comma
-singleline_comment|// B0 = 0.010493
+multiline_comment|/* B0 = 0.010493 */
 l_int|32619
 comma
-singleline_comment|// A1 = 1.990906
+multiline_comment|/* A1 = 1.990906 */
 op_minus
 l_int|32520
 comma
-singleline_comment|// A2 = -0.992462
+multiline_comment|/* A2 = -0.992462 */
 l_int|19179
 comma
-singleline_comment|// B2 = 0.585327
+multiline_comment|/* B2 = 0.585327 */
 op_minus
 l_int|19178
 comma
-singleline_comment|// B1 = -1.170593
+multiline_comment|/* B1 = -1.170593 */
 l_int|19179
 comma
-singleline_comment|// B0 = 0.585327
+multiline_comment|/* B0 = 0.585327 */
 l_int|32723
 comma
-singleline_comment|// A1 = 1.997314
+multiline_comment|/* A1 = 1.997314 */
 op_minus
 l_int|32686
 comma
-singleline_comment|// A2 = -0.997528
+multiline_comment|/* A2 = -0.997528 */
 l_int|9973
 comma
-singleline_comment|// B2 = 0.304352
+multiline_comment|/* B2 = 0.304352 */
 op_minus
 l_int|9955
 comma
-singleline_comment|// B1 = -0.607605
+multiline_comment|/* B1 = -0.607605 */
 l_int|9973
 comma
-singleline_comment|// B0 = 0.304352
+multiline_comment|/* B0 = 0.304352 */
 l_int|7
 comma
-singleline_comment|// Internal filter scaling
+multiline_comment|/* Internal filter scaling */
 l_int|159
 comma
-singleline_comment|// Minimum in-band energy threshold
+multiline_comment|/* Minimum in-band energy threshold */
 l_int|21
 comma
-singleline_comment|// 21/32 in-band to broad-band ratio
+multiline_comment|/* 21/32 in-band to broad-band ratio */
 l_int|0x0FF5
-singleline_comment|// shift-mask 0x0FF (look at 16 half-frames) bit count = 5
+multiline_comment|/* shift-mask 0x0FF (look at 16 half-frames) bit count = 5 */
 )brace
 comma
 (brace
-singleline_comment|// f133_200[] 12
+multiline_comment|/* f133_200[] 12 */
 l_int|32072
 comma
-singleline_comment|// A1 = 1.95752
+multiline_comment|/* A1 = 1.95752 */
 op_minus
 l_int|31896
 comma
-singleline_comment|// A2 = -0.973419
+multiline_comment|/* A2 = -0.973419 */
 op_minus
 l_int|435
 comma
-singleline_comment|// B2 = -0.013294
+multiline_comment|/* B2 = -0.013294 */
 l_int|0
 comma
-singleline_comment|// B1 = 0
+multiline_comment|/* B1 = 0 */
 l_int|435
 comma
-singleline_comment|// B0 = 0.013294
+multiline_comment|/* B0 = 0.013294 */
 l_int|32188
 comma
-singleline_comment|// A1 = 1.9646
+multiline_comment|/* A1 = 1.9646 */
 op_minus
 l_int|32400
 comma
-singleline_comment|// A2 = -0.98877
+multiline_comment|/* A2 = -0.98877 */
 l_int|15139
 comma
-singleline_comment|// B2 = 0.462036
+multiline_comment|/* B2 = 0.462036 */
 op_minus
 l_int|14882
 comma
-singleline_comment|// B1 = -0.908356
+multiline_comment|/* B1 = -0.908356 */
 l_int|15139
 comma
-singleline_comment|// B0 = 0.462036
+multiline_comment|/* B0 = 0.462036 */
 l_int|32473
 comma
-singleline_comment|// A1 = 1.981995
+multiline_comment|/* A1 = 1.981995 */
 op_minus
 l_int|32524
 comma
-singleline_comment|// A2 = -0.992584
+multiline_comment|/* A2 = -0.992584 */
 l_int|23200
 comma
-singleline_comment|// B2 = 0.708008
+multiline_comment|/* B2 = 0.708008 */
 op_minus
 l_int|23113
 comma
-singleline_comment|// B1 = -1.410706
+multiline_comment|/* B1 = -1.410706 */
 l_int|23200
 comma
-singleline_comment|// B0 = 0.708008
+multiline_comment|/* B0 = 0.708008 */
 l_int|7
 comma
-singleline_comment|// Internal filter scaling
+multiline_comment|/* Internal filter scaling */
 l_int|159
 comma
-singleline_comment|// Minimum in-band energy threshold
+multiline_comment|/* Minimum in-band energy threshold */
 l_int|21
 comma
-singleline_comment|// 21/32 in-band to broad-band ratio
+multiline_comment|/* 21/32 in-band to broad-band ratio */
 l_int|0x0FF5
-singleline_comment|// shift-mask 0x0FF (look at 16 half-frames) bit count = 5
+multiline_comment|/* shift-mask 0x0FF (look at 16 half-frames) bit count = 5 */
 )brace
 comma
 (brace
-singleline_comment|// 300.txt 13
+multiline_comment|/* f300 13 */
 l_int|31769
 comma
-singleline_comment|// A1 = -1.939026
+multiline_comment|/* A1 = -1.939026 */
 op_minus
 l_int|32584
 comma
-singleline_comment|// A2 = 0.994385
+multiline_comment|/* A2 = 0.994385 */
 op_minus
 l_int|475
 comma
-singleline_comment|// B2 = -0.014522
+multiline_comment|/* B2 = -0.014522 */
 l_int|0
 comma
-singleline_comment|// B1 = 0.000000
+multiline_comment|/* B1 = 0.000000 */
 l_int|475
 comma
-singleline_comment|// B0 = 0.014522
+multiline_comment|/* B0 = 0.014522 */
 l_int|31789
 comma
-singleline_comment|// A1 = -1.940247
+multiline_comment|/* A1 = -1.940247 */
 op_minus
 l_int|32679
 comma
-singleline_comment|// A2 = 0.997284
+multiline_comment|/* A2 = 0.997284 */
 l_int|17280
 comma
-singleline_comment|// B2 = 0.527344
+multiline_comment|/* B2 = 0.527344 */
 op_minus
 l_int|16865
 comma
-singleline_comment|// B1 = -1.029358
+multiline_comment|/* B1 = -1.029358 */
 l_int|17280
 comma
-singleline_comment|// B0 = 0.527344
+multiline_comment|/* B0 = 0.527344 */
 l_int|31841
 comma
-singleline_comment|// A1 = -1.943481
+multiline_comment|/* A1 = -1.943481 */
 op_minus
 l_int|32681
 comma
-singleline_comment|// A2 = 0.997345
+multiline_comment|/* A2 = 0.997345 */
 l_int|543
 comma
-singleline_comment|// B2 = 0.016579
+multiline_comment|/* B2 = 0.016579 */
 op_minus
 l_int|525
 comma
-singleline_comment|// B1 = -0.032097
+multiline_comment|/* B1 = -0.032097 */
 l_int|543
 comma
-singleline_comment|// B0 = 0.016579
+multiline_comment|/* B0 = 0.016579 */
 l_int|5
 comma
-singleline_comment|// Internal filter scaling
+multiline_comment|/* Internal filter scaling */
 l_int|159
 comma
-singleline_comment|// Minimum in-band energy threshold
+multiline_comment|/* Minimum in-band energy threshold */
 l_int|21
 comma
-singleline_comment|// 21/32 in-band to broad-band ratio
+multiline_comment|/* 21/32 in-band to broad-band ratio */
 l_int|0x0FF5
-singleline_comment|// shift-mask 0x0FF (look at 16 half-frames) bit count = 5
+multiline_comment|/* shift-mask 0x0FF (look at 16 half-frames) bit count = 5 */
 )brace
 comma
 (brace
-singleline_comment|// f300_420[] 14
+multiline_comment|/* f300_420[] 14 */
 l_int|30750
 comma
-singleline_comment|// A1 = 1.876892
+multiline_comment|/* A1 = 1.876892 */
 op_minus
 l_int|31212
 comma
-singleline_comment|// A2 = -0.952515
+multiline_comment|/* A2 = -0.952515 */
 op_minus
 l_int|804
 comma
-singleline_comment|// B2 = -0.024541
+multiline_comment|/* B2 = -0.024541 */
 l_int|0
 comma
-singleline_comment|// B1 = 0
+multiline_comment|/* B1 = 0 */
 l_int|804
 comma
-singleline_comment|// B0 = 0.024541
+multiline_comment|/* B0 = 0.024541 */
 l_int|30686
 comma
-singleline_comment|// A1 = 1.872925
+multiline_comment|/* A1 = 1.872925 */
 op_minus
 l_int|32145
 comma
-singleline_comment|// A2 = -0.980988
+multiline_comment|/* A2 = -0.980988 */
 l_int|14747
 comma
-singleline_comment|// B2 = 0.450043
+multiline_comment|/* B2 = 0.450043 */
 op_minus
 l_int|13703
 comma
-singleline_comment|// B1 = -0.836395
+multiline_comment|/* B1 = -0.836395 */
 l_int|14747
 comma
-singleline_comment|// B0 = 0.450043
+multiline_comment|/* B0 = 0.450043 */
 l_int|31651
 comma
-singleline_comment|// A1 = 1.931824
+multiline_comment|/* A1 = 1.931824 */
 op_minus
 l_int|32321
 comma
-singleline_comment|// A2 = -0.986389
+multiline_comment|/* A2 = -0.986389 */
 l_int|24425
 comma
-singleline_comment|// B2 = 0.745422
+multiline_comment|/* B2 = 0.745422 */
 op_minus
 l_int|23914
 comma
-singleline_comment|// B1 = -1.459595
+multiline_comment|/* B1 = -1.459595 */
 l_int|24427
 comma
-singleline_comment|// B0 = 0.745483
+multiline_comment|/* B0 = 0.745483 */
 l_int|7
 comma
-singleline_comment|// Internal filter scaling
+multiline_comment|/* Internal filter scaling */
 l_int|159
 comma
-singleline_comment|// Minimum in-band energy threshold
+multiline_comment|/* Minimum in-band energy threshold */
 l_int|21
 comma
-singleline_comment|// 21/32 in-band to broad-band ratio
+multiline_comment|/* 21/32 in-band to broad-band ratio */
 l_int|0x0FF5
-singleline_comment|// shift-mask 0x0FF (look at 16 half-frames) bit count = 5
+multiline_comment|/* shift-mask 0x0FF (look at 16 half-frames) bit count = 5 */
 )brace
 comma
 (brace
-singleline_comment|// 330.txt 15
+multiline_comment|/* f330 15 */
 l_int|31613
 comma
-singleline_comment|// A1 = -1.929565
+multiline_comment|/* A1 = -1.929565 */
 op_minus
 l_int|32646
 comma
-singleline_comment|// A2 = 0.996277
+multiline_comment|/* A2 = 0.996277 */
 op_minus
 l_int|185
 comma
-singleline_comment|// B2 = -0.005657
+multiline_comment|/* B2 = -0.005657 */
 l_int|0
 comma
-singleline_comment|// B1 = 0.000000
+multiline_comment|/* B1 = 0.000000 */
 l_int|185
 comma
-singleline_comment|// B0 = 0.005657
+multiline_comment|/* B0 = 0.005657 */
 l_int|31620
 comma
-singleline_comment|// A1 = -1.929932
+multiline_comment|/* A1 = -1.929932 */
 op_minus
 l_int|32713
 comma
-singleline_comment|// A2 = 0.998352
+multiline_comment|/* A2 = 0.998352 */
 l_int|19253
 comma
-singleline_comment|// B2 = 0.587585
+multiline_comment|/* B2 = 0.587585 */
 op_minus
 l_int|18566
 comma
-singleline_comment|// B1 = -1.133179
+multiline_comment|/* B1 = -1.133179 */
 l_int|19253
 comma
-singleline_comment|// B0 = 0.587585
+multiline_comment|/* B0 = 0.587585 */
 l_int|31674
 comma
-singleline_comment|// A1 = -1.933228
+multiline_comment|/* A1 = -1.933228 */
 op_minus
 l_int|32715
 comma
-singleline_comment|// A2 = 0.998413
+multiline_comment|/* A2 = 0.998413 */
 l_int|2575
 comma
-singleline_comment|// B2 = 0.078590
+multiline_comment|/* B2 = 0.078590 */
 op_minus
 l_int|2495
 comma
-singleline_comment|// B1 = -0.152283
+multiline_comment|/* B1 = -0.152283 */
 l_int|2575
 comma
-singleline_comment|// B0 = 0.078590
+multiline_comment|/* B0 = 0.078590 */
 l_int|5
 comma
-singleline_comment|// Internal filter scaling
+multiline_comment|/* Internal filter scaling */
 l_int|159
 comma
-singleline_comment|// Minimum in-band energy threshold
+multiline_comment|/* Minimum in-band energy threshold */
 l_int|21
 comma
-singleline_comment|// 21/32 in-band to broad-band ratio
+multiline_comment|/* 21/32 in-band to broad-band ratio */
 l_int|0x0FF5
-singleline_comment|// shift-mask 0x0FF (look at 16 half-frames) bit count = 5
+multiline_comment|/* shift-mask 0x0FF (look at 16 half-frames) bit count = 5 */
 )brace
 comma
 (brace
-singleline_comment|// f300_425[] 16
+multiline_comment|/* f300_425[] 16 */
 l_int|30741
 comma
-singleline_comment|// A1 = 1.876282
+multiline_comment|/* A1 = 1.876282 */
 op_minus
 l_int|31475
 comma
-singleline_comment|// A2 = -0.960541
+multiline_comment|/* A2 = -0.960541 */
 op_minus
 l_int|703
 comma
-singleline_comment|// B2 = -0.021484
+multiline_comment|/* B2 = -0.021484 */
 l_int|0
 comma
-singleline_comment|// B1 = 0
+multiline_comment|/* B1 = 0 */
 l_int|703
 comma
-singleline_comment|// B0 = 0.021484
+multiline_comment|/* B0 = 0.021484 */
 l_int|30688
 comma
-singleline_comment|// A1 = 1.873047
+multiline_comment|/* A1 = 1.873047 */
 op_minus
 l_int|32248
 comma
-singleline_comment|// A2 = -0.984161
+multiline_comment|/* A2 = -0.984161 */
 l_int|14542
 comma
-singleline_comment|// B2 = 0.443787
+multiline_comment|/* B2 = 0.443787 */
 op_minus
 l_int|13523
 comma
-singleline_comment|// B1 = -0.825439
+multiline_comment|/* B1 = -0.825439 */
 l_int|14542
 comma
-singleline_comment|// B0 = 0.443817
+multiline_comment|/* B0 = 0.443817 */
 l_int|31494
 comma
-singleline_comment|// A1 = 1.922302
+multiline_comment|/* A1 = 1.922302 */
 op_minus
 l_int|32366
 comma
-singleline_comment|// A2 = -0.987762
+multiline_comment|/* A2 = -0.987762 */
 l_int|21577
 comma
-singleline_comment|// B2 = 0.658508
+multiline_comment|/* B2 = 0.658508 */
 op_minus
 l_int|21013
 comma
-singleline_comment|// B1 = -1.282532
+multiline_comment|/* B1 = -1.282532 */
 l_int|21577
 comma
-singleline_comment|// B0 = 0.658508
+multiline_comment|/* B0 = 0.658508 */
 l_int|7
 comma
-singleline_comment|// Internal filter scaling
+multiline_comment|/* Internal filter scaling */
 l_int|159
 comma
-singleline_comment|// Minimum in-band energy threshold
+multiline_comment|/* Minimum in-band energy threshold */
 l_int|21
 comma
-singleline_comment|// 21/32 in-band to broad-band ratio
+multiline_comment|/* 21/32 in-band to broad-band ratio */
 l_int|0x0FF5
-singleline_comment|// shift-mask 0x0FF (look at 16 half-frames) bit count = 5
+multiline_comment|/* shift-mask 0x0FF (look at 16 half-frames) bit count = 5 */
 )brace
 comma
 (brace
-singleline_comment|// f330_440[] 17
+multiline_comment|/* f330_440[] 17 */
 l_int|30627
 comma
-singleline_comment|// A1 = 1.869324
+multiline_comment|/* A1 = 1.869324 */
 op_minus
 l_int|31338
 comma
-singleline_comment|// A2 = -0.95636
+multiline_comment|/* A2 = -0.95636 */
 op_minus
 l_int|843
 comma
-singleline_comment|// B2 = -0.025749
+multiline_comment|/* B2 = -0.025749 */
 l_int|0
 comma
-singleline_comment|// B1 = 0
+multiline_comment|/* B1 = 0 */
 l_int|843
 comma
-singleline_comment|// B0 = 0.025749
+multiline_comment|/* B0 = 0.025749 */
 l_int|30550
 comma
-singleline_comment|// A1 = 1.864685
+multiline_comment|/* A1 = 1.864685 */
 op_minus
 l_int|32221
 comma
-singleline_comment|// A2 = -0.983337
+multiline_comment|/* A2 = -0.983337 */
 l_int|13594
 comma
-singleline_comment|// B2 = 0.414886
+multiline_comment|/* B2 = 0.414886 */
 op_minus
 l_int|12589
 comma
-singleline_comment|// B1 = -0.768402
+multiline_comment|/* B1 = -0.768402 */
 l_int|13594
 comma
-singleline_comment|// B0 = 0.414886
+multiline_comment|/* B0 = 0.414886 */
 l_int|31488
 comma
-singleline_comment|// A1 = 1.921936
+multiline_comment|/* A1 = 1.921936 */
 op_minus
 l_int|32358
 comma
-singleline_comment|// A2 = -0.987518
+multiline_comment|/* A2 = -0.987518 */
 l_int|24684
 comma
-singleline_comment|// B2 = 0.753296
+multiline_comment|/* B2 = 0.753296 */
 op_minus
 l_int|24029
 comma
-singleline_comment|// B1 = -1.466614
+multiline_comment|/* B1 = -1.466614 */
 l_int|24684
 comma
-singleline_comment|// B0 = 0.753296
+multiline_comment|/* B0 = 0.753296 */
 l_int|7
 comma
-singleline_comment|// Internal filter scaling
+multiline_comment|/* Internal filter scaling */
 l_int|159
 comma
-singleline_comment|// Minimum in-band energy threshold
+multiline_comment|/* Minimum in-band energy threshold */
 l_int|21
 comma
-singleline_comment|// 21/32 in-band to broad-band ratio
+multiline_comment|/* 21/32 in-band to broad-band ratio */
 l_int|0x0FF5
-singleline_comment|// shift-mask 0x0FF (look at 16 half-frames) bit count = 5
+multiline_comment|/* shift-mask 0x0FF (look at 16 half-frames) bit count = 5 */
 )brace
 comma
 (brace
-singleline_comment|// 340.txt 18
+multiline_comment|/* f340 18 */
 l_int|31546
 comma
-singleline_comment|// A1 = -1.925476
+multiline_comment|/* A1 = -1.925476 */
 op_minus
 l_int|32646
 comma
-singleline_comment|// A2 = 0.996277
+multiline_comment|/* A2 = 0.996277 */
 op_minus
 l_int|445
 comma
-singleline_comment|// B2 = -0.013588
+multiline_comment|/* B2 = -0.013588 */
 l_int|0
 comma
-singleline_comment|// B1 = 0.000000
+multiline_comment|/* B1 = 0.000000 */
 l_int|445
 comma
-singleline_comment|// B0 = 0.013588
+multiline_comment|/* B0 = 0.013588 */
 l_int|31551
 comma
-singleline_comment|// A1 = -1.925781
+multiline_comment|/* A1 = -1.925781 */
 op_minus
 l_int|32713
 comma
-singleline_comment|// A2 = 0.998352
+multiline_comment|/* A2 = 0.998352 */
 l_int|23884
 comma
-singleline_comment|// B2 = 0.728882
+multiline_comment|/* B2 = 0.728882 */
 op_minus
 l_int|22979
 comma
-singleline_comment|// B1 = -1.402527
+multiline_comment|/* B1 = -1.402527 */
 l_int|23884
 comma
-singleline_comment|// B0 = 0.728882
+multiline_comment|/* B0 = 0.728882 */
 l_int|31606
 comma
-singleline_comment|// A1 = -1.929138
+multiline_comment|/* A1 = -1.929138 */
 op_minus
 l_int|32715
 comma
-singleline_comment|// A2 = 0.998413
+multiline_comment|/* A2 = 0.998413 */
 l_int|863
 comma
-singleline_comment|// B2 = 0.026367
+multiline_comment|/* B2 = 0.026367 */
 op_minus
 l_int|835
 comma
-singleline_comment|// B1 = -0.050985
+multiline_comment|/* B1 = -0.050985 */
 l_int|863
 comma
-singleline_comment|// B0 = 0.026367
+multiline_comment|/* B0 = 0.026367 */
 l_int|5
 comma
-singleline_comment|// Internal filter scaling
+multiline_comment|/* Internal filter scaling */
 l_int|159
 comma
-singleline_comment|// Minimum in-band energy threshold
+multiline_comment|/* Minimum in-band energy threshold */
 l_int|21
 comma
-singleline_comment|// 21/32 in-band to broad-band ratio
+multiline_comment|/* 21/32 in-band to broad-band ratio */
 l_int|0x0FF5
-singleline_comment|// shift-mask 0x0FF (look at 16 half-frames) bit count = 5
+multiline_comment|/* shift-mask 0x0FF (look at 16 half-frames) bit count = 5 */
 )brace
 comma
 (brace
-singleline_comment|// f350_400[] 19
+multiline_comment|/* f350_400[] 19 */
 l_int|31006
 comma
-singleline_comment|// A1 = 1.892517
+multiline_comment|/* A1 = 1.892517 */
 op_minus
 l_int|32029
 comma
-singleline_comment|// A2 = -0.977448
+multiline_comment|/* A2 = -0.977448 */
 op_minus
 l_int|461
 comma
-singleline_comment|// B2 = -0.014096
+multiline_comment|/* B2 = -0.014096 */
 l_int|0
 comma
-singleline_comment|// B1 = 0
+multiline_comment|/* B1 = 0 */
 l_int|461
 comma
-singleline_comment|// B0 = 0.014096
+multiline_comment|/* B0 = 0.014096 */
 l_int|30999
 comma
-singleline_comment|// A1 = 1.892029
+multiline_comment|/* A1 = 1.892029 */
 op_minus
 l_int|32487
 comma
-singleline_comment|// A2 = -0.991455
+multiline_comment|/* A2 = -0.991455 */
 l_int|11325
 comma
-singleline_comment|// B2 = 0.345612
+multiline_comment|/* B2 = 0.345612 */
 op_minus
 l_int|10682
 comma
-singleline_comment|// B1 = -0.651978
+multiline_comment|/* B1 = -0.651978 */
 l_int|11325
 comma
-singleline_comment|// B0 = 0.345612
+multiline_comment|/* B0 = 0.345612 */
 l_int|31441
 comma
-singleline_comment|// A1 = 1.919067
+multiline_comment|/* A1 = 1.919067 */
 op_minus
 l_int|32526
 comma
-singleline_comment|// A2 = -0.992615
+multiline_comment|/* A2 = -0.992615 */
 l_int|24324
 comma
-singleline_comment|// B2 = 0.74231
+multiline_comment|/* B2 = 0.74231 */
 op_minus
 l_int|23535
 comma
-singleline_comment|// B1 = -1.436523
+multiline_comment|/* B1 = -1.436523 */
 l_int|24324
 comma
-singleline_comment|// B0 = 0.74231
+multiline_comment|/* B0 = 0.74231 */
 l_int|7
 comma
-singleline_comment|// Internal filter scaling
+multiline_comment|/* Internal filter scaling */
 l_int|159
 comma
-singleline_comment|// Minimum in-band energy threshold
+multiline_comment|/* Minimum in-band energy threshold */
 l_int|21
 comma
-singleline_comment|// 21/32 in-band to broad-band ratio
+multiline_comment|/* 21/32 in-band to broad-band ratio */
 l_int|0x0FF5
-singleline_comment|// shift-mask 0x0FF (look at 16 half-frames) bit count = 5
+multiline_comment|/* shift-mask 0x0FF (look at 16 half-frames) bit count = 5 */
 )brace
 comma
 (brace
-singleline_comment|// f350_440[]
+multiline_comment|/* f350_440[] */
 l_int|30634
 comma
-singleline_comment|// A1 = 1.869751
+multiline_comment|/* A1 = 1.869751 */
 op_minus
 l_int|31533
 comma
-singleline_comment|// A2 = -0.962341
+multiline_comment|/* A2 = -0.962341 */
 op_minus
 l_int|680
 comma
-singleline_comment|// B2 = -0.020782
+multiline_comment|/* B2 = -0.020782 */
 l_int|0
 comma
-singleline_comment|// B1 = 0
+multiline_comment|/* B1 = 0 */
 l_int|680
 comma
-singleline_comment|// B0 = 0.020782
+multiline_comment|/* B0 = 0.020782 */
 l_int|30571
 comma
-singleline_comment|// A1 = 1.865906
+multiline_comment|/* A1 = 1.865906 */
 op_minus
 l_int|32277
 comma
-singleline_comment|// A2 = -0.985016
+multiline_comment|/* A2 = -0.985016 */
 l_int|12894
 comma
-singleline_comment|// B2 = 0.393524
+multiline_comment|/* B2 = 0.393524 */
 op_minus
 l_int|11945
 comma
-singleline_comment|// B1 = -0.729065
+multiline_comment|/* B1 = -0.729065 */
 l_int|12894
 comma
-singleline_comment|// B0 = 0.393524
+multiline_comment|/* B0 = 0.393524 */
 l_int|31367
 comma
-singleline_comment|// A1 = 1.91449
+multiline_comment|/* A1 = 1.91449 */
 op_minus
 l_int|32379
 comma
-singleline_comment|// A2 = -0.988129
+multiline_comment|/* A2 = -0.988129 */
 l_int|23820
 comma
-singleline_comment|// B2 = 0.726929
+multiline_comment|/* B2 = 0.726929 */
 op_minus
 l_int|23104
 comma
-singleline_comment|// B1 = -1.410217
+multiline_comment|/* B1 = -1.410217 */
 l_int|23820
 comma
-singleline_comment|// B0 = 0.726929
+multiline_comment|/* B0 = 0.726929 */
 l_int|7
 comma
-singleline_comment|// Internal filter scaling
+multiline_comment|/* Internal filter scaling */
 l_int|159
 comma
-singleline_comment|// Minimum in-band energy threshold
+multiline_comment|/* Minimum in-band energy threshold */
 l_int|21
 comma
-singleline_comment|// 21/32 in-band to broad-band ratio
+multiline_comment|/* 21/32 in-band to broad-band ratio */
 l_int|0x0FF5
-singleline_comment|// shift-mask 0x0FF (look at 16 half-frames) bit count = 5
+multiline_comment|/* shift-mask 0x0FF (look at 16 half-frames) bit count = 5 */
 )brace
 comma
 (brace
-singleline_comment|// f350_450[]
+multiline_comment|/* f350_450[] */
 l_int|30552
 comma
-singleline_comment|// A1 = 1.864807
+multiline_comment|/* A1 = 1.864807 */
 op_minus
 l_int|31434
 comma
-singleline_comment|// A2 = -0.95929
+multiline_comment|/* A2 = -0.95929 */
 op_minus
 l_int|690
 comma
-singleline_comment|// B2 = -0.021066
+multiline_comment|/* B2 = -0.021066 */
 l_int|0
 comma
-singleline_comment|// B1 = 0
+multiline_comment|/* B1 = 0 */
 l_int|690
 comma
-singleline_comment|// B0 = 0.021066
+multiline_comment|/* B0 = 0.021066 */
 l_int|30472
 comma
-singleline_comment|// A1 = 1.859924
+multiline_comment|/* A1 = 1.859924 */
 op_minus
 l_int|32248
 comma
-singleline_comment|// A2 = -0.984161
+multiline_comment|/* A2 = -0.984161 */
 l_int|13385
 comma
-singleline_comment|// B2 = 0.408478
+multiline_comment|/* B2 = 0.408478 */
 op_minus
 l_int|12357
 comma
-singleline_comment|// B1 = -0.754242
+multiline_comment|/* B1 = -0.754242 */
 l_int|13385
 comma
-singleline_comment|// B0 = 0.408478
+multiline_comment|/* B0 = 0.408478 */
 l_int|31358
 comma
-singleline_comment|// A1 = 1.914001
+multiline_comment|/* A1 = 1.914001 */
 op_minus
 l_int|32366
 comma
-singleline_comment|// A2 = -0.987732
+multiline_comment|/* A2 = -0.987732 */
 l_int|26488
 comma
-singleline_comment|// B2 = 0.80835
+multiline_comment|/* B2 = 0.80835 */
 op_minus
 l_int|25692
 comma
-singleline_comment|// B1 = -1.568176
+multiline_comment|/* B1 = -1.568176 */
 l_int|26490
 comma
-singleline_comment|// B0 = 0.808411
+multiline_comment|/* B0 = 0.808411 */
 l_int|7
 comma
-singleline_comment|// Internal filter scaling
+multiline_comment|/* Internal filter scaling */
 l_int|159
 comma
-singleline_comment|// Minimum in-band energy threshold
+multiline_comment|/* Minimum in-band energy threshold */
 l_int|21
 comma
-singleline_comment|// 21/32 in-band to broad-band ratio
+multiline_comment|/* 21/32 in-band to broad-band ratio */
 l_int|0x0FF5
-singleline_comment|// shift-mask 0x0FF (look at 16 half-frames) bit count = 5
+multiline_comment|/* shift-mask 0x0FF (look at 16 half-frames) bit count = 5 */
 )brace
 comma
 (brace
-singleline_comment|// 360.txt
+multiline_comment|/* f360 */
 l_int|31397
 comma
-singleline_comment|// A1 = -1.916321
+multiline_comment|/* A1 = -1.916321 */
 op_minus
 l_int|32623
 comma
-singleline_comment|// A2 = 0.995605
+multiline_comment|/* A2 = 0.995605 */
 op_minus
 l_int|117
 comma
-singleline_comment|// B2 = -0.003598
+multiline_comment|/* B2 = -0.003598 */
 l_int|0
 comma
-singleline_comment|// B1 = 0.000000
+multiline_comment|/* B1 = 0.000000 */
 l_int|117
 comma
-singleline_comment|// B0 = 0.003598
+multiline_comment|/* B0 = 0.003598 */
 l_int|31403
 comma
-singleline_comment|// A1 = -1.916687
+multiline_comment|/* A1 = -1.916687 */
 op_minus
 l_int|32700
 comma
-singleline_comment|// A2 = 0.997925
+multiline_comment|/* A2 = 0.997925 */
 l_int|3388
 comma
-singleline_comment|// B2 = 0.103401
+multiline_comment|/* B2 = 0.103401 */
 op_minus
 l_int|3240
 comma
-singleline_comment|// B1 = -0.197784
+multiline_comment|/* B1 = -0.197784 */
 l_int|3388
 comma
-singleline_comment|// B0 = 0.103401
+multiline_comment|/* B0 = 0.103401 */
 l_int|31463
 comma
-singleline_comment|// A1 = -1.920410
+multiline_comment|/* A1 = -1.920410 */
 op_minus
 l_int|32702
 comma
-singleline_comment|// A2 = 0.997986
+multiline_comment|/* A2 = 0.997986 */
 l_int|13346
 comma
-singleline_comment|// B2 = 0.407288
+multiline_comment|/* B2 = 0.407288 */
 op_minus
 l_int|12863
 comma
-singleline_comment|// B1 = -0.785126
+multiline_comment|/* B1 = -0.785126 */
 l_int|13346
 comma
-singleline_comment|// B0 = 0.407288
+multiline_comment|/* B0 = 0.407288 */
 l_int|5
 comma
-singleline_comment|// Internal filter scaling
+multiline_comment|/* Internal filter scaling */
 l_int|159
 comma
-singleline_comment|// Minimum in-band energy threshold
+multiline_comment|/* Minimum in-band energy threshold */
 l_int|21
 comma
-singleline_comment|// 21/32 in-band to broad-band ratio
+multiline_comment|/* 21/32 in-band to broad-band ratio */
 l_int|0x0FF5
-singleline_comment|// shift-mask 0x0FF (look at 16 half-frames) bit count = 5
+multiline_comment|/* shift-mask 0x0FF (look at 16 half-frames) bit count = 5 */
 )brace
 comma
 (brace
-singleline_comment|// f380_420[]
+multiline_comment|/* f380_420[] */
 l_int|30831
 comma
-singleline_comment|// A1 = 1.881775
+multiline_comment|/* A1 = 1.881775 */
 op_minus
 l_int|32064
 comma
-singleline_comment|// A2 = -0.978546
+multiline_comment|/* A2 = -0.978546 */
 op_minus
 l_int|367
 comma
-singleline_comment|// B2 = -0.01122
+multiline_comment|/* B2 = -0.01122 */
 l_int|0
 comma
-singleline_comment|// B1 = 0
+multiline_comment|/* B1 = 0 */
 l_int|367
 comma
-singleline_comment|// B0 = 0.01122
+multiline_comment|/* B0 = 0.01122 */
 l_int|30813
 comma
-singleline_comment|// A1 = 1.880737
+multiline_comment|/* A1 = 1.880737 */
 op_minus
 l_int|32456
 comma
-singleline_comment|// A2 = -0.990509
+multiline_comment|/* A2 = -0.990509 */
 l_int|11068
 comma
-singleline_comment|// B2 = 0.337769
+multiline_comment|/* B2 = 0.337769 */
 op_minus
 l_int|10338
 comma
-singleline_comment|// B1 = -0.631042
+multiline_comment|/* B1 = -0.631042 */
 l_int|11068
 comma
-singleline_comment|// B0 = 0.337769
+multiline_comment|/* B0 = 0.337769 */
 l_int|31214
 comma
-singleline_comment|// A1 = 1.905212
+multiline_comment|/* A1 = 1.905212 */
 op_minus
 l_int|32491
 comma
-singleline_comment|// A2 = -0.991577
+multiline_comment|/* A2 = -0.991577 */
 l_int|16374
 comma
-singleline_comment|// B2 = 0.499695
+multiline_comment|/* B2 = 0.499695 */
 op_minus
 l_int|15781
 comma
-singleline_comment|// B1 = -0.963196
+multiline_comment|/* B1 = -0.963196 */
 l_int|16374
 comma
-singleline_comment|// B0 = 0.499695
+multiline_comment|/* B0 = 0.499695 */
 l_int|7
 comma
-singleline_comment|// Internal filter scaling
+multiline_comment|/* Internal filter scaling */
 l_int|159
 comma
-singleline_comment|// Minimum in-band energy threshold
+multiline_comment|/* Minimum in-band energy threshold */
 l_int|21
 comma
-singleline_comment|// 21/32 in-band to broad-band ratio
+multiline_comment|/* 21/32 in-band to broad-band ratio */
 l_int|0x0FF5
-singleline_comment|// shift-mask 0x0FF (look at 16 half-frames) bit count = 5
+multiline_comment|/* shift-mask 0x0FF (look at 16 half-frames) bit count = 5 */
 )brace
 comma
 (brace
-singleline_comment|// 392.txt
+multiline_comment|/* f392 */
 l_int|31152
 comma
-singleline_comment|// A1 = -1.901428
+multiline_comment|/* A1 = -1.901428 */
 op_minus
 l_int|32613
 comma
-singleline_comment|// A2 = 0.995300
+multiline_comment|/* A2 = 0.995300 */
 op_minus
 l_int|314
 comma
-singleline_comment|// B2 = -0.009605
+multiline_comment|/* B2 = -0.009605 */
 l_int|0
 comma
-singleline_comment|// B1 = 0.000000
+multiline_comment|/* B1 = 0.000000 */
 l_int|314
 comma
-singleline_comment|// B0 = 0.009605
+multiline_comment|/* B0 = 0.009605 */
 l_int|31156
 comma
-singleline_comment|// A1 = -1.901672
+multiline_comment|/* A1 = -1.901672 */
 op_minus
 l_int|32694
 comma
-singleline_comment|// A2 = 0.997742
+multiline_comment|/* A2 = 0.997742 */
 l_int|28847
 comma
-singleline_comment|// B2 = 0.880371
+multiline_comment|/* B2 = 0.880371 */
 op_minus
 l_int|2734
 comma
-singleline_comment|// B1 = -0.166901
+multiline_comment|/* B1 = -0.166901 */
 l_int|28847
 comma
-singleline_comment|// B0 = 0.880371
+multiline_comment|/* B0 = 0.880371 */
 l_int|31225
 comma
-singleline_comment|// A1 = -1.905823
+multiline_comment|/* A1 = -1.905823 */
 op_minus
 l_int|32696
 comma
-singleline_comment|// A2 = 0.997803
+multiline_comment|/* A2 = 0.997803 */
 l_int|462
 comma
-singleline_comment|// B2 = 0.014108
+multiline_comment|/* B2 = 0.014108 */
 op_minus
 l_int|442
 comma
-singleline_comment|// B1 = -0.027019
+multiline_comment|/* B1 = -0.027019 */
 l_int|462
 comma
-singleline_comment|// B0 = 0.014108
+multiline_comment|/* B0 = 0.014108 */
 l_int|5
 comma
-singleline_comment|// Internal filter scaling
+multiline_comment|/* Internal filter scaling */
 l_int|159
 comma
-singleline_comment|// Minimum in-band energy threshold
+multiline_comment|/* Minimum in-band energy threshold */
 l_int|21
 comma
-singleline_comment|// 21/32 in-band to broad-band ratio
+multiline_comment|/* 21/32 in-band to broad-band ratio */
 l_int|0x0FF5
-singleline_comment|// shift-mask 0x0FF (look at 16 half-frames) bit count = 5
+multiline_comment|/* shift-mask 0x0FF (look at 16 half-frames) bit count = 5 */
 )brace
 comma
 (brace
-singleline_comment|// f400_425[]
+multiline_comment|/* f400_425[] */
 l_int|30836
 comma
-singleline_comment|// A1 = 1.882141
+multiline_comment|/* A1 = 1.882141 */
 op_minus
 l_int|32296
 comma
-singleline_comment|// A2 = -0.985596
+multiline_comment|/* A2 = -0.985596 */
 op_minus
 l_int|324
 comma
-singleline_comment|// B2 = -0.009903
+multiline_comment|/* B2 = -0.009903 */
 l_int|0
 comma
-singleline_comment|// B1 = 0
+multiline_comment|/* B1 = 0 */
 l_int|324
 comma
-singleline_comment|// B0 = 0.009903
+multiline_comment|/* B0 = 0.009903 */
 l_int|30825
 comma
-singleline_comment|// A1 = 1.881409
+multiline_comment|/* A1 = 1.881409 */
 op_minus
 l_int|32570
 comma
-singleline_comment|// A2 = -0.993958
+multiline_comment|/* A2 = -0.993958 */
 l_int|16847
 comma
-singleline_comment|// B2 = 0.51416
+multiline_comment|/* B2 = 0.51416 */
 op_minus
 l_int|15792
 comma
-singleline_comment|// B1 = -0.963898
+multiline_comment|/* B1 = -0.963898 */
 l_int|16847
 comma
-singleline_comment|// B0 = 0.51416
+multiline_comment|/* B0 = 0.51416 */
 l_int|31106
 comma
-singleline_comment|// A1 = 1.89856
+multiline_comment|/* A1 = 1.89856 */
 op_minus
 l_int|32584
 comma
-singleline_comment|// A2 = -0.994415
+multiline_comment|/* A2 = -0.994415 */
 l_int|9579
 comma
-singleline_comment|// B2 = 0.292328
+multiline_comment|/* B2 = 0.292328 */
 op_minus
 l_int|9164
 comma
-singleline_comment|// B1 = -0.559357
+multiline_comment|/* B1 = -0.559357 */
 l_int|9579
 comma
-singleline_comment|// B0 = 0.292328
+multiline_comment|/* B0 = 0.292328 */
 l_int|7
 comma
-singleline_comment|// Internal filter scaling
+multiline_comment|/* Internal filter scaling */
 l_int|159
 comma
-singleline_comment|// Minimum in-band energy threshold
+multiline_comment|/* Minimum in-band energy threshold */
 l_int|21
 comma
-singleline_comment|// 21/32 in-band to broad-band ratio
+multiline_comment|/* 21/32 in-band to broad-band ratio */
 l_int|0x0FF5
-singleline_comment|// shift-mask 0x0FF (look at 16 half-frames) bit count = 5
+multiline_comment|/* shift-mask 0x0FF (look at 16 half-frames) bit count = 5 */
 )brace
 comma
 (brace
-singleline_comment|// f400_440[]
+multiline_comment|/* f400_440[] */
 l_int|30702
 comma
-singleline_comment|// A1 = 1.873962
+multiline_comment|/* A1 = 1.873962 */
 op_minus
 l_int|32134
 comma
-singleline_comment|// A2 = -0.980682
+multiline_comment|/* A2 = -0.980682 */
 op_minus
 l_int|517
 comma
-singleline_comment|// B2 = -0.015793
+multiline_comment|/* B2 = -0.015793 */
 l_int|0
 comma
-singleline_comment|// B1 = 0
+multiline_comment|/* B1 = 0 */
 l_int|517
 comma
-singleline_comment|// B0 = 0.015793
+multiline_comment|/* B0 = 0.015793 */
 l_int|30676
 comma
-singleline_comment|// A1 = 1.872375
+multiline_comment|/* A1 = 1.872375 */
 op_minus
 l_int|32520
 comma
-singleline_comment|// A2 = -0.992462
+multiline_comment|/* A2 = -0.992462 */
 l_int|8144
 comma
-singleline_comment|// B2 = 0.24855
+multiline_comment|/* B2 = 0.24855 */
 op_minus
 l_int|7596
 comma
-singleline_comment|// B1 = -0.463684
+multiline_comment|/* B1 = -0.463684 */
 l_int|8144
 comma
-singleline_comment|// B0 = 0.24855
+multiline_comment|/* B0 = 0.24855 */
 l_int|31084
 comma
-singleline_comment|// A1 = 1.897217
+multiline_comment|/* A1 = 1.897217 */
 op_minus
 l_int|32547
 comma
-singleline_comment|// A2 = -0.993256
+multiline_comment|/* A2 = -0.993256 */
 l_int|22713
 comma
-singleline_comment|// B2 = 0.693176
+multiline_comment|/* B2 = 0.693176 */
 op_minus
 l_int|21734
 comma
-singleline_comment|// B1 = -1.326599
+multiline_comment|/* B1 = -1.326599 */
 l_int|22713
 comma
-singleline_comment|// B0 = 0.693176
+multiline_comment|/* B0 = 0.693176 */
 l_int|7
 comma
-singleline_comment|// Internal filter scaling
+multiline_comment|/* Internal filter scaling */
 l_int|159
 comma
-singleline_comment|// Minimum in-band energy threshold
+multiline_comment|/* Minimum in-band energy threshold */
 l_int|21
 comma
-singleline_comment|// 21/32 in-band to broad-band ratio
+multiline_comment|/* 21/32 in-band to broad-band ratio */
 l_int|0x0FF5
-singleline_comment|// shift-mask 0x0FF (look at 16 half-frames) bit count = 5
+multiline_comment|/* shift-mask 0x0FF (look at 16 half-frames) bit count = 5 */
 )brace
 comma
 (brace
-singleline_comment|// f400_450[]
+multiline_comment|/* f400_450[] */
 l_int|30613
 comma
-singleline_comment|// A1 = 1.86853
+multiline_comment|/* A1 = 1.86853 */
 op_minus
 l_int|32031
 comma
-singleline_comment|// A2 = -0.977509
+multiline_comment|/* A2 = -0.977509 */
 op_minus
 l_int|618
 comma
-singleline_comment|// B2 = -0.018866
+multiline_comment|/* B2 = -0.018866 */
 l_int|0
 comma
-singleline_comment|// B1 = 0
+multiline_comment|/* B1 = 0 */
 l_int|618
 comma
-singleline_comment|// B0 = 0.018866
+multiline_comment|/* B0 = 0.018866 */
 l_int|30577
 comma
-singleline_comment|// A1 = 1.866272
+multiline_comment|/* A1 = 1.866272 */
 op_minus
 l_int|32491
 comma
-singleline_comment|// A2 = -0.991577
+multiline_comment|/* A2 = -0.991577 */
 l_int|9612
 comma
-singleline_comment|// B2 = 0.293335
+multiline_comment|/* B2 = 0.293335 */
 op_minus
 l_int|8935
 comma
-singleline_comment|// B1 = -0.54541
+multiline_comment|/* B1 = -0.54541 */
 l_int|9612
 comma
-singleline_comment|// B0 = 0.293335
+multiline_comment|/* B0 = 0.293335 */
 l_int|31071
 comma
-singleline_comment|// A1 = 1.896484
+multiline_comment|/* A1 = 1.896484 */
 op_minus
 l_int|32524
 comma
-singleline_comment|// A2 = -0.992584
+multiline_comment|/* A2 = -0.992584 */
 l_int|21596
 comma
-singleline_comment|// B2 = 0.659058
+multiline_comment|/* B2 = 0.659058 */
 op_minus
 l_int|20667
 comma
-singleline_comment|// B1 = -1.261414
+multiline_comment|/* B1 = -1.261414 */
 l_int|21596
 comma
-singleline_comment|// B0 = 0.659058
+multiline_comment|/* B0 = 0.659058 */
 l_int|7
 comma
-singleline_comment|// Internal filter scaling
+multiline_comment|/* Internal filter scaling */
 l_int|159
 comma
-singleline_comment|// Minimum in-band energy threshold
+multiline_comment|/* Minimum in-band energy threshold */
 l_int|21
 comma
-singleline_comment|// 21/32 in-band to broad-band ratio
+multiline_comment|/* 21/32 in-band to broad-band ratio */
 l_int|0x0FF5
-singleline_comment|// shift-mask 0x0FF (look at 16 half-frames) bit count = 5
+multiline_comment|/* shift-mask 0x0FF (look at 16 half-frames) bit count = 5 */
 )brace
 comma
 (brace
-singleline_comment|// 420.txt
+multiline_comment|/* f420 */
 l_int|30914
 comma
-singleline_comment|// A1 = -1.886841
+multiline_comment|/* A1 = -1.886841 */
 op_minus
 l_int|32584
 comma
-singleline_comment|// A2 = 0.994385
+multiline_comment|/* A2 = 0.994385 */
 op_minus
 l_int|426
 comma
-singleline_comment|// B2 = -0.013020
+multiline_comment|/* B2 = -0.013020 */
 l_int|0
 comma
-singleline_comment|// B1 = 0.000000
+multiline_comment|/* B1 = 0.000000 */
 l_int|426
 comma
-singleline_comment|// B0 = 0.013020
+multiline_comment|/* B0 = 0.013020 */
 l_int|30914
 comma
-singleline_comment|// A1 = -1.886841
+multiline_comment|/* A1 = -1.886841 */
 op_minus
 l_int|32679
 comma
-singleline_comment|// A2 = 0.997314
+multiline_comment|/* A2 = 0.997314 */
 l_int|17520
 comma
-singleline_comment|// B2 = 0.534668
+multiline_comment|/* B2 = 0.534668 */
 op_minus
 l_int|16471
 comma
-singleline_comment|// B1 = -1.005310
+multiline_comment|/* B1 = -1.005310 */
 l_int|17520
 comma
-singleline_comment|// B0 = 0.534668
+multiline_comment|/* B0 = 0.534668 */
 l_int|31004
 comma
-singleline_comment|// A1 = -1.892334
+multiline_comment|/* A1 = -1.892334 */
 op_minus
 l_int|32683
 comma
-singleline_comment|// A2 = 0.997406
+multiline_comment|/* A2 = 0.997406 */
 l_int|819
 comma
-singleline_comment|// B2 = 0.025023
+multiline_comment|/* B2 = 0.025023 */
 op_minus
 l_int|780
 comma
-singleline_comment|// B1 = -0.047619
+multiline_comment|/* B1 = -0.047619 */
 l_int|819
 comma
-singleline_comment|// B0 = 0.025023
+multiline_comment|/* B0 = 0.025023 */
 l_int|5
 comma
-singleline_comment|// Internal filter scaling
+multiline_comment|/* Internal filter scaling */
 l_int|159
 comma
-singleline_comment|// Minimum in-band energy threshold
+multiline_comment|/* Minimum in-band energy threshold */
 l_int|21
 comma
-singleline_comment|// 21/32 in-band to broad-band ratio
+multiline_comment|/* 21/32 in-band to broad-band ratio */
 l_int|0x0FF5
-singleline_comment|// shift-mask 0x0FF (look at 16 half-frames) bit count = 5
+multiline_comment|/* shift-mask 0x0FF (look at 16 half-frames) bit count = 5 */
 )brace
 comma
+macro_line|#if 0
 (brace
-singleline_comment|// 425.txt
+multiline_comment|/* f425 */
 l_int|30881
 comma
-singleline_comment|// A1 = -1.884827
+multiline_comment|/* A1 = -1.884827 */
 op_minus
 l_int|32603
 comma
-singleline_comment|// A2 = 0.994965
+multiline_comment|/* A2 = 0.994965 */
 op_minus
 l_int|496
 comma
-singleline_comment|// B2 = -0.015144
+multiline_comment|/* B2 = -0.015144 */
 l_int|0
 comma
-singleline_comment|// B1 = 0.000000
+multiline_comment|/* B1 = 0.000000 */
 l_int|496
 comma
-singleline_comment|// B0 = 0.015144
+multiline_comment|/* B0 = 0.015144 */
 l_int|30880
 comma
-singleline_comment|// A1 = -1.884766
+multiline_comment|/* A1 = -1.884766 */
 op_minus
 l_int|32692
 comma
-singleline_comment|// A2 = 0.997711
+multiline_comment|/* A2 = 0.997711 */
 l_int|24767
 comma
-singleline_comment|// B2 = 0.755859
+multiline_comment|/* B2 = 0.755859 */
 op_minus
 l_int|23290
 comma
-singleline_comment|// B1 = -1.421509
+multiline_comment|/* B1 = -1.421509 */
 l_int|24767
 comma
-singleline_comment|// B0 = 0.755859
+multiline_comment|/* B0 = 0.755859 */
 l_int|30967
 comma
-singleline_comment|// A1 = -1.890076
+multiline_comment|/* A1 = -1.890076 */
 op_minus
 l_int|32694
 comma
-singleline_comment|// A2 = 0.997772
+multiline_comment|/* A2 = 0.997772 */
 l_int|728
 comma
-singleline_comment|// B2 = 0.022232
+multiline_comment|/* B2 = 0.022232 */
 op_minus
 l_int|691
 comma
-singleline_comment|// B1 = -0.042194
+multiline_comment|/* B1 = -0.042194 */
 l_int|728
 comma
-singleline_comment|// B0 = 0.022232
+multiline_comment|/* B0 = 0.022232 */
 l_int|5
 comma
-singleline_comment|// Internal filter scaling
+multiline_comment|/* Internal filter scaling */
 l_int|159
 comma
-singleline_comment|// Minimum in-band energy threshold
+multiline_comment|/* Minimum in-band energy threshold */
 l_int|21
 comma
-singleline_comment|// 21/32 in-band to broad-band ratio
+multiline_comment|/* 21/32 in-band to broad-band ratio */
 l_int|0x0FF5
-singleline_comment|// shift-mask 0x0FF (look at 16 half-frames) bit count = 5
+multiline_comment|/* shift-mask 0x0FF (look at 16 half-frames) bit count = 5 */
 )brace
 comma
+macro_line|#else
 (brace
-singleline_comment|// f425_450[]
+l_int|30850
+comma
+op_minus
+l_int|32534
+comma
+op_minus
+l_int|504
+comma
+l_int|0
+comma
+l_int|504
+comma
+l_int|30831
+comma
+op_minus
+l_int|32669
+comma
+l_int|24303
+comma
+op_minus
+l_int|22080
+comma
+l_int|24303
+comma
+l_int|30994
+comma
+op_minus
+l_int|32673
+comma
+l_int|1905
+comma
+op_minus
+l_int|1811
+comma
+l_int|1905
+comma
+l_int|5
+comma
+l_int|129
+comma
+l_int|17
+comma
+l_int|0xff5
+)brace
+comma
+macro_line|#endif
+(brace
+multiline_comment|/* f425_450[] */
 l_int|30646
 comma
-singleline_comment|// A1 = 1.870544
+multiline_comment|/* A1 = 1.870544 */
 op_minus
 l_int|32327
 comma
-singleline_comment|// A2 = -0.986572
+multiline_comment|/* A2 = -0.986572 */
 op_minus
 l_int|287
 comma
-singleline_comment|// B2 = -0.008769
+multiline_comment|/* B2 = -0.008769 */
 l_int|0
 comma
-singleline_comment|// B1 = 0
+multiline_comment|/* B1 = 0 */
 l_int|287
 comma
-singleline_comment|// B0 = 0.008769
+multiline_comment|/* B0 = 0.008769 */
 l_int|30627
 comma
-singleline_comment|// A1 = 1.869324
+multiline_comment|/* A1 = 1.869324 */
 op_minus
 l_int|32607
 comma
-singleline_comment|// A2 = -0.995087
+multiline_comment|/* A2 = -0.995087 */
 l_int|13269
 comma
-singleline_comment|// B2 = 0.404968
+multiline_comment|/* B2 = 0.404968 */
 op_minus
 l_int|12376
 comma
-singleline_comment|// B1 = -0.755432
+multiline_comment|/* B1 = -0.755432 */
 l_int|13269
 comma
-singleline_comment|// B0 = 0.404968
+multiline_comment|/* B0 = 0.404968 */
 l_int|30924
 comma
-singleline_comment|// A1 = 1.887512
+multiline_comment|/* A1 = 1.887512 */
 op_minus
 l_int|32619
 comma
-singleline_comment|// A2 = -0.995453
+multiline_comment|/* A2 = -0.995453 */
 l_int|19950
 comma
-singleline_comment|// B2 = 0.608826
+multiline_comment|/* B2 = 0.608826 */
 op_minus
 l_int|18940
 comma
-singleline_comment|// B1 = -1.156006
+multiline_comment|/* B1 = -1.156006 */
 l_int|19950
 comma
-singleline_comment|// B0 = 0.608826
+multiline_comment|/* B0 = 0.608826 */
 l_int|7
 comma
-singleline_comment|// Internal filter scaling
+multiline_comment|/* Internal filter scaling */
 l_int|159
 comma
-singleline_comment|// Minimum in-band energy threshold
+multiline_comment|/* Minimum in-band energy threshold */
 l_int|21
 comma
-singleline_comment|// 21/32 in-band to broad-band ratio
+multiline_comment|/* 21/32 in-band to broad-band ratio */
 l_int|0x0FF5
-singleline_comment|// shift-mask 0x0FF (look at 16 half-frames) bit count = 5
+multiline_comment|/* shift-mask 0x0FF (look at 16 half-frames) bit count = 5 */
 )brace
 comma
 (brace
-singleline_comment|// f425_475[]
+multiline_comment|/* f425_475[] */
 l_int|30396
 comma
-singleline_comment|// A1 = 1.855225
+multiline_comment|/* A1 = 1.855225 */
 op_minus
 l_int|32014
 comma
-singleline_comment|// A2 = -0.97699
+multiline_comment|/* A2 = -0.97699 */
 op_minus
 l_int|395
 comma
-singleline_comment|// B2 = -0.012055
+multiline_comment|/* B2 = -0.012055 */
 l_int|0
 comma
-singleline_comment|// B1 = 0
+multiline_comment|/* B1 = 0 */
 l_int|395
 comma
-singleline_comment|// B0 = 0.012055
+multiline_comment|/* B0 = 0.012055 */
 l_int|30343
 comma
-singleline_comment|// A1 = 1.85199
+multiline_comment|/* A1 = 1.85199 */
 op_minus
 l_int|32482
 comma
-singleline_comment|// A2 = -0.991302
+multiline_comment|/* A2 = -0.991302 */
 l_int|17823
 comma
-singleline_comment|// B2 = 0.543945
+multiline_comment|/* B2 = 0.543945 */
 op_minus
 l_int|16431
 comma
-singleline_comment|// B1 = -1.002869
+multiline_comment|/* B1 = -1.002869 */
 l_int|17823
 comma
-singleline_comment|// B0 = 0.543945
+multiline_comment|/* B0 = 0.543945 */
 l_int|30872
 comma
-singleline_comment|// A1 = 1.884338
+multiline_comment|/* A1 = 1.884338 */
 op_minus
 l_int|32516
 comma
-singleline_comment|// A2 = -0.99231
+multiline_comment|/* A2 = -0.99231 */
 l_int|18124
 comma
-singleline_comment|// B2 = 0.553101
+multiline_comment|/* B2 = 0.553101 */
 op_minus
 l_int|17246
 comma
-singleline_comment|// B1 = -1.052673
+multiline_comment|/* B1 = -1.052673 */
 l_int|18124
 comma
-singleline_comment|// B0 = 0.553101
+multiline_comment|/* B0 = 0.553101 */
 l_int|7
 comma
-singleline_comment|// Internal filter scaling
+multiline_comment|/* Internal filter scaling */
 l_int|159
 comma
-singleline_comment|// Minimum in-band energy threshold
+multiline_comment|/* Minimum in-band energy threshold */
 l_int|21
 comma
-singleline_comment|// 21/32 in-band to broad-band ratio
+multiline_comment|/* 21/32 in-band to broad-band ratio */
 l_int|0x0FF5
-singleline_comment|// shift-mask 0x0FF (look at 16 half-frames) bit count = 5
+multiline_comment|/* shift-mask 0x0FF (look at 16 half-frames) bit count = 5 */
 )brace
 comma
 (brace
-singleline_comment|// 435.txt
+multiline_comment|/* f435 */
 l_int|30796
 comma
-singleline_comment|// A1 = -1.879639
+multiline_comment|/* A1 = -1.879639 */
 op_minus
 l_int|32603
 comma
-singleline_comment|// A2 = 0.994965
+multiline_comment|/* A2 = 0.994965 */
 op_minus
 l_int|254
 comma
-singleline_comment|// B2 = -0.007762
+multiline_comment|/* B2 = -0.007762 */
 l_int|0
 comma
-singleline_comment|// B1 = 0.000000
+multiline_comment|/* B1 = 0.000000 */
 l_int|254
 comma
-singleline_comment|// B0 = 0.007762
+multiline_comment|/* B0 = 0.007762 */
 l_int|30793
 comma
-singleline_comment|// A1 = -1.879456
+multiline_comment|/* A1 = -1.879456 */
 op_minus
 l_int|32692
 comma
-singleline_comment|// A2 = 0.997711
+multiline_comment|/* A2 = 0.997711 */
 l_int|18934
 comma
-singleline_comment|// B2 = 0.577820
+multiline_comment|/* B2 = 0.577820 */
 op_minus
 l_int|17751
 comma
-singleline_comment|// B1 = -1.083496
+multiline_comment|/* B1 = -1.083496 */
 l_int|18934
 comma
-singleline_comment|// B0 = 0.577820
+multiline_comment|/* B0 = 0.577820 */
 l_int|30882
 comma
-singleline_comment|// A1 = -1.884888
+multiline_comment|/* A1 = -1.884888 */
 op_minus
 l_int|32694
 comma
-singleline_comment|// A2 = 0.997772
+multiline_comment|/* A2 = 0.997772 */
 l_int|1858
 comma
-singleline_comment|// B2 = 0.056713
+multiline_comment|/* B2 = 0.056713 */
 op_minus
 l_int|1758
 comma
-singleline_comment|// B1 = -0.107357
+multiline_comment|/* B1 = -0.107357 */
 l_int|1858
 comma
-singleline_comment|// B0 = 0.056713
+multiline_comment|/* B0 = 0.056713 */
 l_int|5
 comma
-singleline_comment|// Internal filter scaling
+multiline_comment|/* Internal filter scaling */
 l_int|159
 comma
-singleline_comment|// Minimum in-band energy threshold
+multiline_comment|/* Minimum in-band energy threshold */
 l_int|21
 comma
-singleline_comment|// 21/32 in-band to broad-band ratio
+multiline_comment|/* 21/32 in-band to broad-band ratio */
 l_int|0x0FF5
-singleline_comment|// shift-mask 0x0FF (look at 16 half-frames) bit count = 5
+multiline_comment|/* shift-mask 0x0FF (look at 16 half-frames) bit count = 5 */
 )brace
 comma
 (brace
-singleline_comment|// f440_450[]
+multiline_comment|/* f440_450[] */
 l_int|30641
 comma
-singleline_comment|// A1 = 1.870239
+multiline_comment|/* A1 = 1.870239 */
 op_minus
 l_int|32458
 comma
-singleline_comment|// A2 = -0.99057
+multiline_comment|/* A2 = -0.99057 */
 op_minus
 l_int|155
 comma
-singleline_comment|// B2 = -0.004735
+multiline_comment|/* B2 = -0.004735 */
 l_int|0
 comma
-singleline_comment|// B1 = 0
+multiline_comment|/* B1 = 0 */
 l_int|155
 comma
-singleline_comment|// B0 = 0.004735
+multiline_comment|/* B0 = 0.004735 */
 l_int|30631
 comma
-singleline_comment|// A1 = 1.869568
+multiline_comment|/* A1 = 1.869568 */
 op_minus
 l_int|32630
 comma
-singleline_comment|// A2 = -0.995789
+multiline_comment|/* A2 = -0.995789 */
 l_int|11453
 comma
-singleline_comment|// B2 = 0.349548
+multiline_comment|/* B2 = 0.349548 */
 op_minus
 l_int|10666
 comma
-singleline_comment|// B1 = -0.651001
+multiline_comment|/* B1 = -0.651001 */
 l_int|11453
 comma
-singleline_comment|// B0 = 0.349548
+multiline_comment|/* B0 = 0.349548 */
 l_int|30810
 comma
-singleline_comment|// A1 = 1.880554
+multiline_comment|/* A1 = 1.880554 */
 op_minus
 l_int|32634
 comma
-singleline_comment|// A2 = -0.995941
+multiline_comment|/* A2 = -0.995941 */
 l_int|12237
 comma
-singleline_comment|// B2 = 0.373474
+multiline_comment|/* B2 = 0.373474 */
 op_minus
 l_int|11588
 comma
-singleline_comment|// B1 = -0.707336
+multiline_comment|/* B1 = -0.707336 */
 l_int|12237
 comma
-singleline_comment|// B0 = 0.373474
+multiline_comment|/* B0 = 0.373474 */
 l_int|7
 comma
-singleline_comment|// Internal filter scaling
+multiline_comment|/* Internal filter scaling */
 l_int|159
 comma
-singleline_comment|// Minimum in-band energy threshold
+multiline_comment|/* Minimum in-band energy threshold */
 l_int|21
 comma
-singleline_comment|// 21/32 in-band to broad-band ratio
+multiline_comment|/* 21/32 in-band to broad-band ratio */
 l_int|0x0FF5
-singleline_comment|// shift-mask 0x0FF (look at 16 half-frames) bit count = 5
+multiline_comment|/* shift-mask 0x0FF (look at 16 half-frames) bit count = 5 */
 )brace
 comma
 (brace
-singleline_comment|// f440_480[]
+multiline_comment|/* f440_480[] */
 l_int|30367
 comma
-singleline_comment|// A1 = 1.853455
+multiline_comment|/* A1 = 1.853455 */
 op_minus
 l_int|32147
 comma
-singleline_comment|// A2 = -0.981079
+multiline_comment|/* A2 = -0.981079 */
 op_minus
 l_int|495
 comma
-singleline_comment|// B2 = -0.015113
+multiline_comment|/* B2 = -0.015113 */
 l_int|0
 comma
-singleline_comment|// B1 = 0
+multiline_comment|/* B1 = 0 */
 l_int|495
 comma
-singleline_comment|// B0 = 0.015113
+multiline_comment|/* B0 = 0.015113 */
 l_int|30322
 comma
-singleline_comment|// A1 = 1.850769
+multiline_comment|/* A1 = 1.850769 */
 op_minus
 l_int|32543
 comma
-singleline_comment|// A2 = -0.993134
+multiline_comment|/* A2 = -0.993134 */
 l_int|10031
 comma
-singleline_comment|// B2 = 0.306152
+multiline_comment|/* B2 = 0.306152 */
 op_minus
 l_int|9252
 comma
-singleline_comment|// B1 = -0.564728
+multiline_comment|/* B1 = -0.564728 */
 l_int|10031
 comma
-singleline_comment|// B0 = 0.306152
+multiline_comment|/* B0 = 0.306152 */
 l_int|30770
 comma
-singleline_comment|// A1 = 1.878052
+multiline_comment|/* A1 = 1.878052 */
 op_minus
 l_int|32563
 comma
-singleline_comment|// A2 = -0.993774
+multiline_comment|/* A2 = -0.993774 */
 l_int|22674
 comma
-singleline_comment|// B2 = 0.691956
+multiline_comment|/* B2 = 0.691956 */
 op_minus
 l_int|21465
 comma
-singleline_comment|// B1 = -1.31012
+multiline_comment|/* B1 = -1.31012 */
 l_int|22674
 comma
-singleline_comment|// B0 = 0.691956
+multiline_comment|/* B0 = 0.691956 */
 l_int|7
 comma
-singleline_comment|// Internal filter scaling
+multiline_comment|/* Internal filter scaling */
 l_int|159
 comma
-singleline_comment|// Minimum in-band energy threshold
+multiline_comment|/* Minimum in-band energy threshold */
 l_int|21
 comma
-singleline_comment|// 21/32 in-band to broad-band ratio
+multiline_comment|/* 21/32 in-band to broad-band ratio */
 l_int|0x0FF5
-singleline_comment|// shift-mask 0x0FF (look at 16 half-frames) bit count = 5
+multiline_comment|/* shift-mask 0x0FF (look at 16 half-frames) bit count = 5 */
 )brace
 comma
 (brace
-singleline_comment|// 445.txt
+multiline_comment|/* f445 */
 l_int|30709
 comma
-singleline_comment|// A1 = -1.874329
+multiline_comment|/* A1 = -1.874329 */
 op_minus
 l_int|32603
 comma
-singleline_comment|// A2 = 0.994965
+multiline_comment|/* A2 = 0.994965 */
 op_minus
 l_int|83
 comma
-singleline_comment|// B2 = -0.002545
+multiline_comment|/* B2 = -0.002545 */
 l_int|0
 comma
-singleline_comment|// B1 = 0.000000
+multiline_comment|/* B1 = 0.000000 */
 l_int|83
 comma
-singleline_comment|// B0 = 0.002545
+multiline_comment|/* B0 = 0.002545 */
 l_int|30704
 comma
-singleline_comment|// A1 = -1.874084
+multiline_comment|/* A1 = -1.874084 */
 op_minus
 l_int|32692
 comma
-singleline_comment|// A2 = 0.997711
+multiline_comment|/* A2 = 0.997711 */
 l_int|10641
 comma
-singleline_comment|// B2 = 0.324738
+multiline_comment|/* B2 = 0.324738 */
 op_minus
 l_int|9947
 comma
-singleline_comment|// B1 = -0.607147
+multiline_comment|/* B1 = -0.607147 */
 l_int|10641
 comma
-singleline_comment|// B0 = 0.324738
+multiline_comment|/* B0 = 0.324738 */
 l_int|30796
 comma
-singleline_comment|// A1 = -1.879639
+multiline_comment|/* A1 = -1.879639 */
 op_minus
 l_int|32694
 comma
-singleline_comment|// A2 = 0.997772
+multiline_comment|/* A2 = 0.997772 */
 l_int|10079
 comma
-singleline_comment|// B2 = 0.307587
+multiline_comment|/* B2 = 0.307587 */
 l_int|9513
 comma
-singleline_comment|// B1 = 0.580688
+multiline_comment|/* B1 = 0.580688 */
 l_int|10079
 comma
-singleline_comment|// B0 = 0.307587
+multiline_comment|/* B0 = 0.307587 */
 l_int|5
 comma
-singleline_comment|// Internal filter scaling
+multiline_comment|/* Internal filter scaling */
 l_int|159
 comma
-singleline_comment|// Minimum in-band energy threshold
+multiline_comment|/* Minimum in-band energy threshold */
 l_int|21
 comma
-singleline_comment|// 21/32 in-band to broad-band ratio
+multiline_comment|/* 21/32 in-band to broad-band ratio */
 l_int|0x0FF5
-singleline_comment|// shift-mask 0x0FF (look at 16 half-frames) bit count = 5
+multiline_comment|/* shift-mask 0x0FF (look at 16 half-frames) bit count = 5 */
 )brace
 comma
 (brace
-singleline_comment|// 450.txt
+multiline_comment|/* f450 */
 l_int|30664
 comma
-singleline_comment|// A1 = -1.871643
+multiline_comment|/* A1 = -1.871643 */
 op_minus
 l_int|32603
 comma
-singleline_comment|// A2 = 0.994965
+multiline_comment|/* A2 = 0.994965 */
 op_minus
 l_int|164
 comma
-singleline_comment|// B2 = -0.005029
+multiline_comment|/* B2 = -0.005029 */
 l_int|0
 comma
-singleline_comment|// B1 = 0.000000
+multiline_comment|/* B1 = 0.000000 */
 l_int|164
 comma
-singleline_comment|// B0 = 0.005029
+multiline_comment|/* B0 = 0.005029 */
 l_int|30661
 comma
-singleline_comment|// A1 = -1.871399
+multiline_comment|/* A1 = -1.871399 */
 op_minus
 l_int|32692
 comma
-singleline_comment|// A2 = 0.997711
+multiline_comment|/* A2 = 0.997711 */
 l_int|15294
 comma
-singleline_comment|// B2 = 0.466736
+multiline_comment|/* B2 = 0.466736 */
 op_minus
 l_int|14275
 comma
-singleline_comment|// B1 = -0.871307
+multiline_comment|/* B1 = -0.871307 */
 l_int|15294
 comma
-singleline_comment|// B0 = 0.466736
+multiline_comment|/* B0 = 0.466736 */
 l_int|30751
 comma
-singleline_comment|// A1 = -1.876953
+multiline_comment|/* A1 = -1.876953 */
 op_minus
 l_int|32694
 comma
-singleline_comment|// A2 = 0.997772
+multiline_comment|/* A2 = 0.997772 */
 l_int|3548
 comma
-singleline_comment|// B2 = 0.108284
+multiline_comment|/* B2 = 0.108284 */
 op_minus
 l_int|3344
 comma
-singleline_comment|// B1 = -0.204155
+multiline_comment|/* B1 = -0.204155 */
 l_int|3548
 comma
-singleline_comment|// B0 = 0.108284
+multiline_comment|/* B0 = 0.108284 */
 l_int|5
 comma
-singleline_comment|// Internal filter scaling
+multiline_comment|/* Internal filter scaling */
 l_int|159
 comma
-singleline_comment|// Minimum in-band energy threshold
+multiline_comment|/* Minimum in-band energy threshold */
 l_int|21
 comma
-singleline_comment|// 21/32 in-band to broad-band ratio
+multiline_comment|/* 21/32 in-band to broad-band ratio */
 l_int|0x0FF5
-singleline_comment|// shift-mask 0x0FF (look at 16 half-frames) bit count = 5
+multiline_comment|/* shift-mask 0x0FF (look at 16 half-frames) bit count = 5 */
 )brace
 comma
 (brace
-singleline_comment|// 452.txt
+multiline_comment|/* f452 */
 l_int|30653
 comma
-singleline_comment|// A1 = -1.870911
+multiline_comment|/* A1 = -1.870911 */
 op_minus
 l_int|32615
 comma
-singleline_comment|// A2 = 0.995361
+multiline_comment|/* A2 = 0.995361 */
 op_minus
 l_int|209
 comma
-singleline_comment|// B2 = -0.006382
+multiline_comment|/* B2 = -0.006382 */
 l_int|0
 comma
-singleline_comment|// B1 = 0.000000
+multiline_comment|/* B1 = 0.000000 */
 l_int|209
 comma
-singleline_comment|// B0 = 0.006382
+multiline_comment|/* B0 = 0.006382 */
 l_int|30647
 comma
-singleline_comment|// A1 = -1.870605
+multiline_comment|/* A1 = -1.870605 */
 op_minus
 l_int|32702
 comma
-singleline_comment|// A2 = 0.997986
+multiline_comment|/* A2 = 0.997986 */
 l_int|18971
 comma
-singleline_comment|// B2 = 0.578979
+multiline_comment|/* B2 = 0.578979 */
 op_minus
 l_int|17716
 comma
-singleline_comment|// B1 = -1.081299
+multiline_comment|/* B1 = -1.081299 */
 l_int|18971
 comma
-singleline_comment|// B0 = 0.578979
+multiline_comment|/* B0 = 0.578979 */
 l_int|30738
 comma
-singleline_comment|// A1 = -1.876099
+multiline_comment|/* A1 = -1.876099 */
 op_minus
 l_int|32702
 comma
-singleline_comment|// A2 = 0.998016
+multiline_comment|/* A2 = 0.998016 */
 l_int|2967
 comma
-singleline_comment|// B2 = 0.090561
+multiline_comment|/* B2 = 0.090561 */
 op_minus
 l_int|2793
 comma
-singleline_comment|// B1 = -0.170502
+multiline_comment|/* B1 = -0.170502 */
 l_int|2967
 comma
-singleline_comment|// B0 = 0.090561
+multiline_comment|/* B0 = 0.090561 */
 l_int|5
 comma
-singleline_comment|// Internal filter scaling
+multiline_comment|/* Internal filter scaling */
 l_int|159
 comma
-singleline_comment|// Minimum in-band energy threshold
+multiline_comment|/* Minimum in-band energy threshold */
 l_int|21
 comma
-singleline_comment|// 21/32 in-band to broad-band ratio
+multiline_comment|/* 21/32 in-band to broad-band ratio */
 l_int|0x0FF5
-singleline_comment|// shift-mask 0x0FF (look at 16 half-frames) bit count = 5
+multiline_comment|/* shift-mask 0x0FF (look at 16 half-frames) bit count = 5 */
 )brace
 comma
 (brace
-singleline_comment|// 475.txt
+multiline_comment|/* f475 */
 l_int|30437
 comma
-singleline_comment|// A1 = -1.857727
+multiline_comment|/* A1 = -1.857727 */
 op_minus
 l_int|32603
 comma
-singleline_comment|// A2 = 0.994965
+multiline_comment|/* A2 = 0.994965 */
 op_minus
 l_int|264
 comma
-singleline_comment|// B2 = -0.008062
+multiline_comment|/* B2 = -0.008062 */
 l_int|0
 comma
-singleline_comment|// B1 = 0.000000
+multiline_comment|/* B1 = 0.000000 */
 l_int|264
 comma
-singleline_comment|// B0 = 0.008062
+multiline_comment|/* B0 = 0.008062 */
 l_int|30430
 comma
-singleline_comment|// A1 = -1.857300
+multiline_comment|/* A1 = -1.857300 */
 op_minus
 l_int|32692
 comma
-singleline_comment|// A2 = 0.997711
+multiline_comment|/* A2 = 0.997711 */
 l_int|21681
 comma
-singleline_comment|// B2 = 0.661682
+multiline_comment|/* B2 = 0.661682 */
 op_minus
 l_int|20082
 comma
-singleline_comment|// B1 = -1.225708
+multiline_comment|/* B1 = -1.225708 */
 l_int|21681
 comma
-singleline_comment|// B0 = 0.661682
+multiline_comment|/* B0 = 0.661682 */
 l_int|30526
 comma
-singleline_comment|// A1 = -1.863220
+multiline_comment|/* A1 = -1.863220 */
 op_minus
 l_int|32694
 comma
-singleline_comment|// A2 = 0.997742
+multiline_comment|/* A2 = 0.997742 */
 l_int|1559
 comma
-singleline_comment|// B2 = 0.047600
+multiline_comment|/* B2 = 0.047600 */
 op_minus
 l_int|1459
 comma
-singleline_comment|// B1 = -0.089096
+multiline_comment|/* B1 = -0.089096 */
 l_int|1559
 comma
-singleline_comment|// B0 = 0.047600
+multiline_comment|/* B0 = 0.047600 */
 l_int|5
 comma
-singleline_comment|// Internal filter scaling
+multiline_comment|/* Internal filter scaling */
 l_int|159
 comma
-singleline_comment|// Minimum in-band energy threshold
+multiline_comment|/* Minimum in-band energy threshold */
 l_int|21
 comma
-singleline_comment|// 21/32 in-band to broad-band ratio
+multiline_comment|/* 21/32 in-band to broad-band ratio */
 l_int|0x0FF5
-singleline_comment|// shift-mask 0x0FF (look at 16 half-frames) bit count = 5
+multiline_comment|/* shift-mask 0x0FF (look at 16 half-frames) bit count = 5 */
 )brace
 comma
 (brace
-singleline_comment|// f480_620[]
+multiline_comment|/* f480_620[] */
 l_int|28975
 comma
-singleline_comment|// A1 = 1.768494
+multiline_comment|/* A1 = 1.768494 */
 op_minus
 l_int|30955
 comma
-singleline_comment|// A2 = -0.944672
+multiline_comment|/* A2 = -0.944672 */
 op_minus
 l_int|1026
 comma
-singleline_comment|// B2 = -0.03133
+multiline_comment|/* B2 = -0.03133 */
 l_int|0
 comma
-singleline_comment|// B1 = 0
+multiline_comment|/* B1 = 0 */
 l_int|1026
 comma
-singleline_comment|// B0 = 0.03133
+multiline_comment|/* B0 = 0.03133 */
 l_int|28613
 comma
-singleline_comment|// A1 = 1.746399
+multiline_comment|/* A1 = 1.746399 */
 op_minus
 l_int|32089
 comma
-singleline_comment|// A2 = -0.979309
+multiline_comment|/* A2 = -0.979309 */
 l_int|14214
 comma
-singleline_comment|// B2 = 0.433807
+multiline_comment|/* B2 = 0.433807 */
 op_minus
 l_int|12202
 comma
-singleline_comment|// B1 = -0.744812
+multiline_comment|/* B1 = -0.744812 */
 l_int|14214
 comma
-singleline_comment|// B0 = 0.433807
+multiline_comment|/* B0 = 0.433807 */
 l_int|30243
 comma
-singleline_comment|// A1 = 1.845947
+multiline_comment|/* A1 = 1.845947 */
 op_minus
 l_int|32238
 comma
-singleline_comment|// A2 = -0.983856
+multiline_comment|/* A2 = -0.983856 */
 l_int|24825
 comma
-singleline_comment|// B2 = 0.757629
+multiline_comment|/* B2 = 0.757629 */
 op_minus
 l_int|23402
 comma
-singleline_comment|// B1 = -1.428345
+multiline_comment|/* B1 = -1.428345 */
 l_int|24825
 comma
-singleline_comment|// B0 = 0.757629
+multiline_comment|/* B0 = 0.757629 */
 l_int|7
 comma
-singleline_comment|// Internal filter scaling
+multiline_comment|/* Internal filter scaling */
 l_int|159
 comma
-singleline_comment|// Minimum in-band energy threshold
+multiline_comment|/* Minimum in-band energy threshold */
 l_int|21
 comma
-singleline_comment|// 21/32 in-band to broad-band ratio
+multiline_comment|/* 21/32 in-band to broad-band ratio */
 l_int|0x0FF5
-singleline_comment|// shift-mask 0x0FF (look at 16 half-frames) bit count = 5
+multiline_comment|/* shift-mask 0x0FF (look at 16 half-frames) bit count = 5 */
 )brace
 comma
 (brace
-singleline_comment|// 494.txt
+multiline_comment|/* f494 */
 l_int|30257
 comma
-singleline_comment|// A1 = -1.846741
+multiline_comment|/* A1 = -1.846741 */
 op_minus
 l_int|32605
 comma
-singleline_comment|// A2 = 0.995056
+multiline_comment|/* A2 = 0.995056 */
 op_minus
 l_int|249
 comma
-singleline_comment|// B2 = -0.007625
+multiline_comment|/* B2 = -0.007625 */
 l_int|0
 comma
-singleline_comment|// B1 = 0.000000
+multiline_comment|/* B1 = 0.000000 */
 l_int|249
 comma
-singleline_comment|// B0 = 0.007625
+multiline_comment|/* B0 = 0.007625 */
 l_int|30247
 comma
-singleline_comment|// A1 = -1.846191
+multiline_comment|/* A1 = -1.846191 */
 op_minus
 l_int|32694
 comma
-singleline_comment|// A2 = 0.997772
+multiline_comment|/* A2 = 0.997772 */
 l_int|18088
 comma
-singleline_comment|// B2 = 0.552002
+multiline_comment|/* B2 = 0.552002 */
 op_minus
 l_int|16652
 comma
-singleline_comment|// B1 = -1.016418
+multiline_comment|/* B1 = -1.016418 */
 l_int|18088
 comma
-singleline_comment|// B0 = 0.552002
+multiline_comment|/* B0 = 0.552002 */
 l_int|30348
 comma
-singleline_comment|// A1 = -1.852295
+multiline_comment|/* A1 = -1.852295 */
 op_minus
 l_int|32696
 comma
-singleline_comment|// A2 = 0.997803
+multiline_comment|/* A2 = 0.997803 */
 l_int|2099
 comma
-singleline_comment|// B2 = 0.064064
+multiline_comment|/* B2 = 0.064064 */
 op_minus
 l_int|1953
 comma
-singleline_comment|// B1 = -0.119202
+multiline_comment|/* B1 = -0.119202 */
 l_int|2099
 comma
-singleline_comment|// B0 = 0.064064
+multiline_comment|/* B0 = 0.064064 */
 l_int|5
 comma
-singleline_comment|// Internal filter scaling
+multiline_comment|/* Internal filter scaling */
 l_int|159
 comma
-singleline_comment|// Minimum in-band energy threshold
+multiline_comment|/* Minimum in-band energy threshold */
 l_int|21
 comma
-singleline_comment|// 21/32 in-band to broad-band ratio
+multiline_comment|/* 21/32 in-band to broad-band ratio */
 l_int|0x0FF5
-singleline_comment|// shift-mask 0x0FF (look at 16 half-frames) bit count = 5
+multiline_comment|/* shift-mask 0x0FF (look at 16 half-frames) bit count = 5 */
 )brace
 comma
 (brace
-singleline_comment|// 500.txt
+multiline_comment|/* f500 */
 l_int|30202
 comma
-singleline_comment|// A1 = -1.843431
+multiline_comment|/* A1 = -1.843431 */
 op_minus
 l_int|32624
 comma
-singleline_comment|// A2 = 0.995622
+multiline_comment|/* A2 = 0.995622 */
 op_minus
 l_int|413
 comma
-singleline_comment|// B2 = -0.012622
+multiline_comment|/* B2 = -0.012622 */
 l_int|0
 comma
-singleline_comment|// B1 = 0.000000
+multiline_comment|/* B1 = 0.000000 */
 l_int|413
 comma
-singleline_comment|// B0 = 0.012622
+multiline_comment|/* B0 = 0.012622 */
 l_int|30191
 comma
-singleline_comment|// A1 = -1.842721
+multiline_comment|/* A1 = -1.842721 */
 op_minus
 l_int|32714
 comma
-singleline_comment|// A2 = 0.998364
+multiline_comment|/* A2 = 0.998364 */
 l_int|25954
 comma
-singleline_comment|// B2 = 0.792057
+multiline_comment|/* B2 = 0.792057 */
 op_minus
 l_int|23890
 comma
-singleline_comment|// B1 = -1.458131
+multiline_comment|/* B1 = -1.458131 */
 l_int|25954
 comma
-singleline_comment|// B0 = 0.792057
+multiline_comment|/* B0 = 0.792057 */
 l_int|30296
 comma
-singleline_comment|// A1 = -1.849172
+multiline_comment|/* A1 = -1.849172 */
 op_minus
 l_int|32715
 comma
-singleline_comment|// A2 = 0.998397
+multiline_comment|/* A2 = 0.998397 */
 l_int|2007
 comma
-singleline_comment|// B2 = 0.061264
+multiline_comment|/* B2 = 0.061264 */
 op_minus
 l_int|1860
 comma
-singleline_comment|// B1 = -0.113568
+multiline_comment|/* B1 = -0.113568 */
 l_int|2007
 comma
-singleline_comment|// B0 = 0.061264
+multiline_comment|/* B0 = 0.061264 */
 l_int|5
 comma
-singleline_comment|// Internal filter scaling
+multiline_comment|/* Internal filter scaling */
 l_int|159
 comma
-singleline_comment|// Minimum in-band energy threshold
+multiline_comment|/* Minimum in-band energy threshold */
 l_int|21
 comma
-singleline_comment|// 21/32 in-band to broad-band ratio
+multiline_comment|/* 21/32 in-band to broad-band ratio */
 l_int|0x0FF5
-singleline_comment|// shift-mask 0x0FF (look at 16 half-frames) bit count = 5
+multiline_comment|/* shift-mask 0x0FF (look at 16 half-frames) bit count = 5 */
 )brace
 comma
 (brace
-singleline_comment|// 520.txt
+multiline_comment|/* f520 */
 l_int|30001
 comma
-singleline_comment|// A1 = -1.831116
+multiline_comment|/* A1 = -1.831116 */
 op_minus
 l_int|32613
 comma
-singleline_comment|// A2 = 0.995270
+multiline_comment|/* A2 = 0.995270 */
 op_minus
 l_int|155
 comma
-singleline_comment|// B2 = -0.004750
+multiline_comment|/* B2 = -0.004750 */
 l_int|0
 comma
-singleline_comment|// B1 = 0.000000
+multiline_comment|/* B1 = 0.000000 */
 l_int|155
 comma
-singleline_comment|// B0 = 0.004750
+multiline_comment|/* B0 = 0.004750 */
 l_int|29985
 comma
-singleline_comment|// A1 = -1.830200
+multiline_comment|/* A1 = -1.830200 */
 op_minus
 l_int|32710
 comma
-singleline_comment|// A2 = 0.998260
+multiline_comment|/* A2 = 0.998260 */
 l_int|6584
 comma
-singleline_comment|// B2 = 0.200928
+multiline_comment|/* B2 = 0.200928 */
 op_minus
 l_int|6018
 comma
-singleline_comment|// B1 = -0.367355
+multiline_comment|/* B1 = -0.367355 */
 l_int|6584
 comma
-singleline_comment|// B0 = 0.200928
+multiline_comment|/* B0 = 0.200928 */
 l_int|30105
 comma
-singleline_comment|// A1 = -1.837524
+multiline_comment|/* A1 = -1.837524 */
 op_minus
 l_int|32712
 comma
-singleline_comment|// A2 = 0.998291
+multiline_comment|/* A2 = 0.998291 */
 l_int|23812
 comma
-singleline_comment|// B2 = 0.726685
+multiline_comment|/* B2 = 0.726685 */
 op_minus
 l_int|21936
 comma
-singleline_comment|// B1 = -1.338928
+multiline_comment|/* B1 = -1.338928 */
 l_int|23812
 comma
-singleline_comment|// B0 = 0.726685
+multiline_comment|/* B0 = 0.726685 */
 l_int|5
 comma
-singleline_comment|// Internal filter scaling
+multiline_comment|/* Internal filter scaling */
 l_int|159
 comma
-singleline_comment|// Minimum in-band energy threshold
+multiline_comment|/* Minimum in-band energy threshold */
 l_int|21
 comma
-singleline_comment|// 21/32 in-band to broad-band ratio
+multiline_comment|/* 21/32 in-band to broad-band ratio */
 l_int|0x0FF5
-singleline_comment|// shift-mask 0x0FF (look at 16 half-frames) bit count = 5
+multiline_comment|/* shift-mask 0x0FF (look at 16 half-frames) bit count = 5 */
 )brace
 comma
 (brace
-singleline_comment|// 523.txt
+multiline_comment|/* f523 */
 l_int|29964
 comma
-singleline_comment|// A1 = -1.828918
+multiline_comment|/* A1 = -1.828918 */
 op_minus
 l_int|32601
 comma
-singleline_comment|// A2 = 0.994904
+multiline_comment|/* A2 = 0.994904 */
 op_minus
 l_int|101
 comma
-singleline_comment|// B2 = -0.003110
+multiline_comment|/* B2 = -0.003110 */
 l_int|0
 comma
-singleline_comment|// B1 = 0.000000
+multiline_comment|/* B1 = 0.000000 */
 l_int|101
 comma
-singleline_comment|// B0 = 0.003110
+multiline_comment|/* B0 = 0.003110 */
 l_int|29949
 comma
-singleline_comment|// A1 = -1.827942
+multiline_comment|/* A1 = -1.827942 */
 op_minus
 l_int|32700
 comma
-singleline_comment|// A2 = 0.997925
+multiline_comment|/* A2 = 0.997925 */
 l_int|11041
 comma
-singleline_comment|// B2 = 0.336975
+multiline_comment|/* B2 = 0.336975 */
 op_minus
 l_int|10075
 comma
-singleline_comment|// B1 = -0.614960
+multiline_comment|/* B1 = -0.614960 */
 l_int|11041
 comma
-singleline_comment|// B0 = 0.336975
+multiline_comment|/* B0 = 0.336975 */
 l_int|30070
 comma
-singleline_comment|// A1 = -1.835388
+multiline_comment|/* A1 = -1.835388 */
 op_minus
 l_int|32702
 comma
-singleline_comment|// A2 = 0.997986
+multiline_comment|/* A2 = 0.997986 */
 l_int|16762
 comma
-singleline_comment|// B2 = 0.511536
+multiline_comment|/* B2 = 0.511536 */
 op_minus
 l_int|15437
 comma
-singleline_comment|// B1 = -0.942230
+multiline_comment|/* B1 = -0.942230 */
 l_int|16762
 comma
-singleline_comment|// B0 = 0.511536
+multiline_comment|/* B0 = 0.511536 */
 l_int|5
 comma
-singleline_comment|// Internal filter scaling
+multiline_comment|/* Internal filter scaling */
 l_int|159
 comma
-singleline_comment|// Minimum in-band energy threshold
+multiline_comment|/* Minimum in-band energy threshold */
 l_int|21
 comma
-singleline_comment|// 21/32 in-band to broad-band ratio
+multiline_comment|/* 21/32 in-band to broad-band ratio */
 l_int|0x0FF5
-singleline_comment|// shift-mask 0x0FF (look at 16 half-frames) bit count = 5
+multiline_comment|/* shift-mask 0x0FF (look at 16 half-frames) bit count = 5 */
 )brace
 comma
 (brace
-singleline_comment|// 525.txt
+multiline_comment|/* f525 */
 l_int|29936
 comma
-singleline_comment|// A1 = -1.827209
+multiline_comment|/* A1 = -1.827209 */
 op_minus
 l_int|32584
 comma
-singleline_comment|// A2 = 0.994415
+multiline_comment|/* A2 = 0.994415 */
 op_minus
 l_int|91
 comma
-singleline_comment|// B2 = -0.002806
+multiline_comment|/* B2 = -0.002806 */
 l_int|0
 comma
-singleline_comment|// B1 = 0.000000
+multiline_comment|/* B1 = 0.000000 */
 l_int|91
 comma
-singleline_comment|// B0 = 0.002806
+multiline_comment|/* B0 = 0.002806 */
 l_int|29921
 comma
-singleline_comment|// A1 = -1.826233
+multiline_comment|/* A1 = -1.826233 */
 op_minus
 l_int|32688
 comma
-singleline_comment|// A2 = 0.997559
+multiline_comment|/* A2 = 0.997559 */
 l_int|11449
 comma
-singleline_comment|// B2 = 0.349396
+multiline_comment|/* B2 = 0.349396 */
 op_minus
 l_int|10426
 comma
-singleline_comment|// B1 = -0.636383
+multiline_comment|/* B1 = -0.636383 */
 l_int|11449
 comma
-singleline_comment|// B0 = 0.349396
+multiline_comment|/* B0 = 0.349396 */
 l_int|30045
 comma
-singleline_comment|// A1 = -1.833862
+multiline_comment|/* A1 = -1.833862 */
 op_minus
 l_int|32688
 comma
-singleline_comment|// A2 = 0.997589
+multiline_comment|/* A2 = 0.997589 */
 l_int|13055
 comma
-singleline_comment|// B2 = 0.398407
+multiline_comment|/* B2 = 0.398407 */
 op_minus
 l_int|12028
 comma
-singleline_comment|// B1 = -0.734161
+multiline_comment|/* B1 = -0.734161 */
 l_int|13055
 comma
-singleline_comment|// B0 = 0.398407
+multiline_comment|/* B0 = 0.398407 */
 l_int|5
 comma
-singleline_comment|// Internal filter scaling
+multiline_comment|/* Internal filter scaling */
 l_int|159
 comma
-singleline_comment|// Minimum in-band energy threshold
+multiline_comment|/* Minimum in-band energy threshold */
 l_int|21
 comma
-singleline_comment|// 21/32 in-band to broad-band ratio
+multiline_comment|/* 21/32 in-band to broad-band ratio */
 l_int|0x0FF5
-singleline_comment|// shift-mask 0x0FF (look at 16 half-frames) bit count = 5
+multiline_comment|/* shift-mask 0x0FF (look at 16 half-frames) bit count = 5 */
 )brace
 comma
 (brace
-singleline_comment|// f540_660[]
+multiline_comment|/* f540_660[] */
 l_int|28499
 comma
-singleline_comment|// A1 = 1.739441
+multiline_comment|/* A1 = 1.739441 */
 op_minus
 l_int|31129
 comma
-singleline_comment|// A2 = -0.949982
+multiline_comment|/* A2 = -0.949982 */
 op_minus
 l_int|849
 comma
-singleline_comment|// B2 = -0.025922
+multiline_comment|/* B2 = -0.025922 */
 l_int|0
 comma
-singleline_comment|// B1 = 0
+multiline_comment|/* B1 = 0 */
 l_int|849
 comma
-singleline_comment|// B0 = 0.025922
+multiline_comment|/* B0 = 0.025922 */
 l_int|28128
 comma
-singleline_comment|// A1 = 1.716797
+multiline_comment|/* A1 = 1.716797 */
 op_minus
 l_int|32130
 comma
-singleline_comment|// A2 = -0.98056
+multiline_comment|/* A2 = -0.98056 */
 l_int|14556
 comma
-singleline_comment|// B2 = 0.444214
+multiline_comment|/* B2 = 0.444214 */
 op_minus
 l_int|12251
 comma
-singleline_comment|// B1 = -0.747772
+multiline_comment|/* B1 = -0.747772 */
 l_int|14556
 comma
-singleline_comment|// B0 = 0.444244
+multiline_comment|/* B0 = 0.444244 */
 l_int|29667
 comma
-singleline_comment|// A1 = 1.81073
+multiline_comment|/* A1 = 1.81073 */
 op_minus
 l_int|32244
 comma
-singleline_comment|// A2 = -0.984039
+multiline_comment|/* A2 = -0.984039 */
 l_int|23038
 comma
-singleline_comment|// B2 = 0.703064
+multiline_comment|/* B2 = 0.703064 */
 op_minus
 l_int|21358
 comma
-singleline_comment|// B1 = -1.303589
+multiline_comment|/* B1 = -1.303589 */
 l_int|23040
 comma
-singleline_comment|// B0 = 0.703125
+multiline_comment|/* B0 = 0.703125 */
 l_int|7
 comma
-singleline_comment|// Internal filter scaling
+multiline_comment|/* Internal filter scaling */
 l_int|159
 comma
-singleline_comment|// Minimum in-band energy threshold
+multiline_comment|/* Minimum in-band energy threshold */
 l_int|21
 comma
-singleline_comment|// 21/32 in-band to broad-band ratio
+multiline_comment|/* 21/32 in-band to broad-band ratio */
 l_int|0x0FF5
-singleline_comment|// shift-mask 0x0FF (look at 16 half-frames) bit count = 5
+multiline_comment|/* shift-mask 0x0FF (look at 16 half-frames) bit count = 5 */
 )brace
 comma
 (brace
-singleline_comment|// 587.txt
+multiline_comment|/* f587 */
 l_int|29271
 comma
-singleline_comment|// A1 = -1.786560
+multiline_comment|/* A1 = -1.786560 */
 op_minus
 l_int|32599
 comma
-singleline_comment|// A2 = 0.994873
+multiline_comment|/* A2 = 0.994873 */
 op_minus
 l_int|490
 comma
-singleline_comment|// B2 = -0.014957
+multiline_comment|/* B2 = -0.014957 */
 l_int|0
 comma
-singleline_comment|// B1 = 0.000000
+multiline_comment|/* B1 = 0.000000 */
 l_int|490
 comma
-singleline_comment|// B0 = 0.014957
+multiline_comment|/* B0 = 0.014957 */
 l_int|29246
 comma
-singleline_comment|// A1 = -1.785095
+multiline_comment|/* A1 = -1.785095 */
 op_minus
 l_int|32700
 comma
-singleline_comment|// A2 = 0.997925
+multiline_comment|/* A2 = 0.997925 */
 l_int|28961
 comma
-singleline_comment|// B2 = 0.883850
+multiline_comment|/* B2 = 0.883850 */
 op_minus
 l_int|25796
 comma
-singleline_comment|// B1 = -1.574463
+multiline_comment|/* B1 = -1.574463 */
 l_int|28961
 comma
-singleline_comment|// B0 = 0.883850
+multiline_comment|/* B0 = 0.883850 */
 l_int|29383
 comma
-singleline_comment|// A1 = -1.793396
+multiline_comment|/* A1 = -1.793396 */
 op_minus
 l_int|32700
 comma
-singleline_comment|// A2 = 0.997955
+multiline_comment|/* A2 = 0.997955 */
 l_int|1299
 comma
-singleline_comment|// B2 = 0.039650
+multiline_comment|/* B2 = 0.039650 */
 op_minus
 l_int|1169
 comma
-singleline_comment|// B1 = -0.071396
+multiline_comment|/* B1 = -0.071396 */
 l_int|1299
 comma
-singleline_comment|// B0 = 0.039650
+multiline_comment|/* B0 = 0.039650 */
 l_int|5
 comma
-singleline_comment|// Internal filter scaling
+multiline_comment|/* Internal filter scaling */
 l_int|159
 comma
-singleline_comment|// Minimum in-band energy threshold
+multiline_comment|/* Minimum in-band energy threshold */
 l_int|21
 comma
-singleline_comment|// 21/32 in-band to broad-band ratio
+multiline_comment|/* 21/32 in-band to broad-band ratio */
 l_int|0x0FF5
-singleline_comment|// shift-mask 0x0FF (look at 16 half-frames) bit count = 5
+multiline_comment|/* shift-mask 0x0FF (look at 16 half-frames) bit count = 5 */
 )brace
 comma
 (brace
-singleline_comment|// 590.txt
+multiline_comment|/* f590 */
 l_int|29230
 comma
-singleline_comment|// A1 = -1.784058
+multiline_comment|/* A1 = -1.784058 */
 op_minus
 l_int|32584
 comma
-singleline_comment|// A2 = 0.994415
+multiline_comment|/* A2 = 0.994415 */
 op_minus
 l_int|418
 comma
-singleline_comment|// B2 = -0.012757
+multiline_comment|/* B2 = -0.012757 */
 l_int|0
 comma
-singleline_comment|// B1 = 0.000000
+multiline_comment|/* B1 = 0.000000 */
 l_int|418
 comma
-singleline_comment|// B0 = 0.012757
+multiline_comment|/* B0 = 0.012757 */
 l_int|29206
 comma
-singleline_comment|// A1 = -1.782593
+multiline_comment|/* A1 = -1.782593 */
 op_minus
 l_int|32688
 comma
-singleline_comment|// A2 = 0.997559
+multiline_comment|/* A2 = 0.997559 */
 l_int|36556
 comma
-singleline_comment|// B2 = 1.115601
+multiline_comment|/* B2 = 1.115601 */
 op_minus
 l_int|32478
 comma
-singleline_comment|// B1 = -1.982300
+multiline_comment|/* B1 = -1.982300 */
 l_int|36556
 comma
-singleline_comment|// B0 = 1.115601
+multiline_comment|/* B0 = 1.115601 */
 l_int|29345
 comma
-singleline_comment|// A1 = -1.791077
+multiline_comment|/* A1 = -1.791077 */
 op_minus
 l_int|32688
 comma
-singleline_comment|// A2 = 0.997589
+multiline_comment|/* A2 = 0.997589 */
 l_int|897
 comma
-singleline_comment|// B2 = 0.027397
+multiline_comment|/* B2 = 0.027397 */
 op_minus
 l_int|808
 comma
-singleline_comment|// B1 = -0.049334
+multiline_comment|/* B1 = -0.049334 */
 l_int|897
 comma
-singleline_comment|// B0 = 0.027397
+multiline_comment|/* B0 = 0.027397 */
 l_int|5
 comma
-singleline_comment|// Internal filter scaling
+multiline_comment|/* Internal filter scaling */
 l_int|159
 comma
-singleline_comment|// Minimum in-band energy threshold
+multiline_comment|/* Minimum in-band energy threshold */
 l_int|21
 comma
-singleline_comment|// 21/32 in-band to broad-band ratio
+multiline_comment|/* 21/32 in-band to broad-band ratio */
 l_int|0x0FF5
-singleline_comment|// shift-mask 0x0FF (look at 16 half-frames) bit count = 5
+multiline_comment|/* shift-mask 0x0FF (look at 16 half-frames) bit count = 5 */
 )brace
 comma
 (brace
-singleline_comment|// 600.txt
+multiline_comment|/* f600 */
 l_int|29116
 comma
-singleline_comment|// A1 = -1.777100
+multiline_comment|/* A1 = -1.777100 */
 op_minus
 l_int|32603
 comma
-singleline_comment|// A2 = 0.994965
+multiline_comment|/* A2 = 0.994965 */
 op_minus
 l_int|165
 comma
-singleline_comment|// B2 = -0.005039
+multiline_comment|/* B2 = -0.005039 */
 l_int|0
 comma
-singleline_comment|// B1 = 0.000000
+multiline_comment|/* B1 = 0.000000 */
 l_int|165
 comma
-singleline_comment|// B0 = 0.005039
+multiline_comment|/* B0 = 0.005039 */
 l_int|29089
 comma
-singleline_comment|// A1 = -1.775452
+multiline_comment|/* A1 = -1.775452 */
 op_minus
 l_int|32708
 comma
-singleline_comment|// A2 = 0.998199
+multiline_comment|/* A2 = 0.998199 */
 l_int|6963
 comma
-singleline_comment|// B2 = 0.212494
+multiline_comment|/* B2 = 0.212494 */
 op_minus
 l_int|6172
 comma
-singleline_comment|// B1 = -0.376770
+multiline_comment|/* B1 = -0.376770 */
 l_int|6963
 comma
-singleline_comment|// B0 = 0.212494
+multiline_comment|/* B0 = 0.212494 */
 l_int|29237
 comma
-singleline_comment|// A1 = -1.784485
+multiline_comment|/* A1 = -1.784485 */
 op_minus
 l_int|32710
 comma
-singleline_comment|// A2 = 0.998230
+multiline_comment|/* A2 = 0.998230 */
 l_int|24197
 comma
-singleline_comment|// B2 = 0.738464
+multiline_comment|/* B2 = 0.738464 */
 op_minus
 l_int|21657
 comma
-singleline_comment|// B1 = -1.321899
+multiline_comment|/* B1 = -1.321899 */
 l_int|24197
 comma
-singleline_comment|// B0 = 0.738464
+multiline_comment|/* B0 = 0.738464 */
 l_int|5
 comma
-singleline_comment|// Internal filter scaling
+multiline_comment|/* Internal filter scaling */
 l_int|159
 comma
-singleline_comment|// Minimum in-band energy threshold
+multiline_comment|/* Minimum in-band energy threshold */
 l_int|21
 comma
-singleline_comment|// 21/32 in-band to broad-band ratio
+multiline_comment|/* 21/32 in-band to broad-band ratio */
 l_int|0x0FF5
-singleline_comment|// shift-mask 0x0FF (look at 16 half-frames) bit count = 5
+multiline_comment|/* shift-mask 0x0FF (look at 16 half-frames) bit count = 5 */
 )brace
 comma
 (brace
-singleline_comment|// 660.txt
+multiline_comment|/* f660 */
 l_int|28376
 comma
-singleline_comment|// A1 = -1.731934
+multiline_comment|/* A1 = -1.731934 */
 op_minus
 l_int|32567
 comma
-singleline_comment|// A2 = 0.993896
+multiline_comment|/* A2 = 0.993896 */
 op_minus
 l_int|363
 comma
-singleline_comment|// B2 = -0.011102
+multiline_comment|/* B2 = -0.011102 */
 l_int|0
 comma
-singleline_comment|// B1 = 0.000000
+multiline_comment|/* B1 = 0.000000 */
 l_int|363
 comma
-singleline_comment|// B0 = 0.011102
+multiline_comment|/* B0 = 0.011102 */
 l_int|28337
 comma
-singleline_comment|// A1 = -1.729614
+multiline_comment|/* A1 = -1.729614 */
 op_minus
 l_int|32683
 comma
-singleline_comment|// A2 = 0.997434
+multiline_comment|/* A2 = 0.997434 */
 l_int|21766
 comma
-singleline_comment|// B2 = 0.664246
+multiline_comment|/* B2 = 0.664246 */
 op_minus
 l_int|18761
 comma
-singleline_comment|// B1 = -1.145081
+multiline_comment|/* B1 = -1.145081 */
 l_int|21766
 comma
-singleline_comment|// B0 = 0.664246
+multiline_comment|/* B0 = 0.664246 */
 l_int|28513
 comma
-singleline_comment|// A1 = -1.740356
+multiline_comment|/* A1 = -1.740356 */
 op_minus
 l_int|32686
 comma
-singleline_comment|// A2 = 0.997498
+multiline_comment|/* A2 = 0.997498 */
 l_int|2509
 comma
-singleline_comment|// B2 = 0.076584
+multiline_comment|/* B2 = 0.076584 */
 op_minus
 l_int|2196
 comma
-singleline_comment|// B1 = -0.134041
+multiline_comment|/* B1 = -0.134041 */
 l_int|2509
 comma
-singleline_comment|// B0 = 0.076584
+multiline_comment|/* B0 = 0.076584 */
 l_int|5
 comma
-singleline_comment|// Internal filter scaling
+multiline_comment|/* Internal filter scaling */
 l_int|159
 comma
-singleline_comment|// Minimum in-band energy threshold
+multiline_comment|/* Minimum in-band energy threshold */
 l_int|21
 comma
-singleline_comment|// 21/32 in-band to broad-band ratio
+multiline_comment|/* 21/32 in-band to broad-band ratio */
 l_int|0x0FF5
-singleline_comment|// shift-mask 0x0FF (look at 16 half-frames) bit count = 5
+multiline_comment|/* shift-mask 0x0FF (look at 16 half-frames) bit count = 5 */
 )brace
 comma
 (brace
-singleline_comment|// 700.txt
+multiline_comment|/* f700 */
 l_int|27844
 comma
-singleline_comment|// A1 = -1.699463
+multiline_comment|/* A1 = -1.699463 */
 op_minus
 l_int|32563
 comma
-singleline_comment|// A2 = 0.993744
+multiline_comment|/* A2 = 0.993744 */
 op_minus
 l_int|366
 comma
-singleline_comment|// B2 = -0.011187
+multiline_comment|/* B2 = -0.011187 */
 l_int|0
 comma
-singleline_comment|// B1 = 0.000000
+multiline_comment|/* B1 = 0.000000 */
 l_int|366
 comma
-singleline_comment|// B0 = 0.011187
+multiline_comment|/* B0 = 0.011187 */
 l_int|27797
 comma
-singleline_comment|// A1 = -1.696655
+multiline_comment|/* A1 = -1.696655 */
 op_minus
 l_int|32686
 comma
-singleline_comment|// A2 = 0.997498
+multiline_comment|/* A2 = 0.997498 */
 l_int|22748
 comma
-singleline_comment|// B2 = 0.694214
+multiline_comment|/* B2 = 0.694214 */
 op_minus
 l_int|19235
 comma
-singleline_comment|// B1 = -1.174072
+multiline_comment|/* B1 = -1.174072 */
 l_int|22748
 comma
-singleline_comment|// B0 = 0.694214
+multiline_comment|/* B0 = 0.694214 */
 l_int|27995
 comma
-singleline_comment|// A1 = -1.708740
+multiline_comment|/* A1 = -1.708740 */
 op_minus
 l_int|32688
 comma
-singleline_comment|// A2 = 0.997559
+multiline_comment|/* A2 = 0.997559 */
 l_int|2964
 comma
-singleline_comment|// B2 = 0.090477
+multiline_comment|/* B2 = 0.090477 */
 op_minus
 l_int|2546
 comma
-singleline_comment|// B1 = -0.155449
+multiline_comment|/* B1 = -0.155449 */
 l_int|2964
 comma
-singleline_comment|// B0 = 0.090477
+multiline_comment|/* B0 = 0.090477 */
 l_int|5
 comma
-singleline_comment|// Internal filter scaling
+multiline_comment|/* Internal filter scaling */
 l_int|159
 comma
-singleline_comment|// Minimum in-band energy threshold
+multiline_comment|/* Minimum in-band energy threshold */
 l_int|21
 comma
-singleline_comment|// 21/32 in-band to broad-band ratio
+multiline_comment|/* 21/32 in-band to broad-band ratio */
 l_int|0x0FF5
-singleline_comment|// shift-mask 0x0FF (look at 16 half-frames) bit count = 5
+multiline_comment|/* shift-mask 0x0FF (look at 16 half-frames) bit count = 5 */
 )brace
 comma
 (brace
-singleline_comment|// 740.txt
+multiline_comment|/* f740 */
 l_int|27297
 comma
-singleline_comment|// A1 = -1.666077
+multiline_comment|/* A1 = -1.666077 */
 op_minus
 l_int|32551
 comma
-singleline_comment|// A2 = 0.993408
+multiline_comment|/* A2 = 0.993408 */
 op_minus
 l_int|345
 comma
-singleline_comment|// B2 = -0.010540
+multiline_comment|/* B2 = -0.010540 */
 l_int|0
 comma
-singleline_comment|// B1 = 0.000000
+multiline_comment|/* B1 = 0.000000 */
 l_int|345
 comma
-singleline_comment|// B0 = 0.010540
+multiline_comment|/* B0 = 0.010540 */
 l_int|27240
 comma
-singleline_comment|// A1 = -1.662598
+multiline_comment|/* A1 = -1.662598 */
 op_minus
 l_int|32683
 comma
-singleline_comment|// A2 = 0.997406
+multiline_comment|/* A2 = 0.997406 */
 l_int|22560
 comma
-singleline_comment|// B2 = 0.688477
+multiline_comment|/* B2 = 0.688477 */
 op_minus
 l_int|18688
 comma
-singleline_comment|// B1 = -1.140625
+multiline_comment|/* B1 = -1.140625 */
 l_int|22560
 comma
-singleline_comment|// B0 = 0.688477
+multiline_comment|/* B0 = 0.688477 */
 l_int|27461
 comma
-singleline_comment|// A1 = -1.676147
+multiline_comment|/* A1 = -1.676147 */
 op_minus
 l_int|32684
 comma
-singleline_comment|// A2 = 0.997467
+multiline_comment|/* A2 = 0.997467 */
 l_int|3541
 comma
-singleline_comment|// B2 = 0.108086
+multiline_comment|/* B2 = 0.108086 */
 op_minus
 l_int|2985
 comma
-singleline_comment|// B1 = -0.182220
+multiline_comment|/* B1 = -0.182220 */
 l_int|3541
 comma
-singleline_comment|// B0 = 0.108086
+multiline_comment|/* B0 = 0.108086 */
 l_int|5
 comma
-singleline_comment|// Internal filter scaling
+multiline_comment|/* Internal filter scaling */
 l_int|159
 comma
-singleline_comment|// Minimum in-band energy threshold
+multiline_comment|/* Minimum in-band energy threshold */
 l_int|21
 comma
-singleline_comment|// 21/32 in-band to broad-band ratio
+multiline_comment|/* 21/32 in-band to broad-band ratio */
 l_int|0x0FF5
-singleline_comment|// shift-mask 0x0FF (look at 16 half-frames) bit count = 5
+multiline_comment|/* shift-mask 0x0FF (look at 16 half-frames) bit count = 5 */
 )brace
 comma
 (brace
-singleline_comment|// 750.txt
+multiline_comment|/* f750 */
 l_int|27155
 comma
-singleline_comment|// A1 = -1.657410
+multiline_comment|/* A1 = -1.657410 */
 op_minus
 l_int|32551
 comma
-singleline_comment|// A2 = 0.993408
+multiline_comment|/* A2 = 0.993408 */
 op_minus
 l_int|462
 comma
-singleline_comment|// B2 = -0.014117
+multiline_comment|/* B2 = -0.014117 */
 l_int|0
 comma
-singleline_comment|// B1 = 0.000000
+multiline_comment|/* B1 = 0.000000 */
 l_int|462
 comma
-singleline_comment|// B0 = 0.014117
+multiline_comment|/* B0 = 0.014117 */
 l_int|27097
 comma
-singleline_comment|// A1 = -1.653870
+multiline_comment|/* A1 = -1.653870 */
 op_minus
 l_int|32683
 comma
-singleline_comment|// A2 = 0.997406
+multiline_comment|/* A2 = 0.997406 */
 l_int|32495
 comma
-singleline_comment|// B2 = 0.991699
+multiline_comment|/* B2 = 0.991699 */
 op_minus
 l_int|26776
 comma
-singleline_comment|// B1 = -1.634338
+multiline_comment|/* B1 = -1.634338 */
 l_int|32495
 comma
-singleline_comment|// B0 = 0.991699
+multiline_comment|/* B0 = 0.991699 */
 l_int|27321
 comma
-singleline_comment|// A1 = -1.667542
+multiline_comment|/* A1 = -1.667542 */
 op_minus
 l_int|32684
 comma
-singleline_comment|// A2 = 0.997467
+multiline_comment|/* A2 = 0.997467 */
 l_int|1835
 comma
-singleline_comment|// B2 = 0.056007
+multiline_comment|/* B2 = 0.056007 */
 op_minus
 l_int|1539
 comma
-singleline_comment|// B1 = -0.093948
+multiline_comment|/* B1 = -0.093948 */
 l_int|1835
 comma
-singleline_comment|// B0 = 0.056007
+multiline_comment|/* B0 = 0.056007 */
 l_int|5
 comma
-singleline_comment|// Internal filter scaling
+multiline_comment|/* Internal filter scaling */
 l_int|159
 comma
-singleline_comment|// Minimum in-band energy threshold
+multiline_comment|/* Minimum in-band energy threshold */
 l_int|21
 comma
-singleline_comment|// 21/32 in-band to broad-band ratio
+multiline_comment|/* 21/32 in-band to broad-band ratio */
 l_int|0x0FF5
-singleline_comment|// shift-mask 0x0FF (look at 16 half-frames) bit count = 5
+multiline_comment|/* shift-mask 0x0FF (look at 16 half-frames) bit count = 5 */
 )brace
 comma
 (brace
-singleline_comment|// f750_1450[]
+multiline_comment|/* f750_1450[] */
 l_int|19298
 comma
-singleline_comment|// A1 = 1.177917
+multiline_comment|/* A1 = 1.177917 */
 op_minus
 l_int|24471
 comma
-singleline_comment|// A2 = -0.746796
+multiline_comment|/* A2 = -0.746796 */
 op_minus
 l_int|4152
 comma
-singleline_comment|// B2 = -0.126709
+multiline_comment|/* B2 = -0.126709 */
 l_int|0
 comma
-singleline_comment|// B1 = 0
+multiline_comment|/* B1 = 0 */
 l_int|4152
 comma
-singleline_comment|// B0 = 0.126709
+multiline_comment|/* B0 = 0.126709 */
 l_int|12902
 comma
-singleline_comment|// A1 = 0.787476
+multiline_comment|/* A1 = 0.787476 */
 op_minus
 l_int|29091
 comma
-singleline_comment|// A2 = -0.887817
+multiline_comment|/* A2 = -0.887817 */
 l_int|12491
 comma
-singleline_comment|// B2 = 0.38121
+multiline_comment|/* B2 = 0.38121 */
 op_minus
 l_int|1794
 comma
-singleline_comment|// B1 = -0.109528
+multiline_comment|/* B1 = -0.109528 */
 l_int|12494
 comma
-singleline_comment|// B0 = 0.381317
+multiline_comment|/* B0 = 0.381317 */
 l_int|26291
 comma
-singleline_comment|// A1 = 1.604736
+multiline_comment|/* A1 = 1.604736 */
 op_minus
 l_int|30470
 comma
-singleline_comment|// A2 = -0.929901
+multiline_comment|/* A2 = -0.929901 */
 l_int|28859
 comma
-singleline_comment|// B2 = 0.880737
+multiline_comment|/* B2 = 0.880737 */
 op_minus
 l_int|26084
 comma
-singleline_comment|// B1 = -1.592102
+multiline_comment|/* B1 = -1.592102 */
 l_int|28861
 comma
-singleline_comment|// B0 = 0.880798
+multiline_comment|/* B0 = 0.880798 */
 l_int|7
 comma
-singleline_comment|// Internal filter scaling
+multiline_comment|/* Internal filter scaling */
 l_int|159
 comma
-singleline_comment|// Minimum in-band energy threshold
+multiline_comment|/* Minimum in-band energy threshold */
 l_int|21
 comma
-singleline_comment|// 21/32 in-band to broad-band ratio
+multiline_comment|/* 21/32 in-band to broad-band ratio */
 l_int|0x0FF5
-singleline_comment|// shift-mask 0x0FF (look at 16 half-frames) bit count = 5
+multiline_comment|/* shift-mask 0x0FF (look at 16 half-frames) bit count = 5 */
 )brace
 comma
 (brace
-singleline_comment|// 770.txt
+multiline_comment|/* f770 */
 l_int|26867
 comma
-singleline_comment|// A1 = -1.639832
+multiline_comment|/* A1 = -1.639832 */
 op_minus
 l_int|32551
 comma
-singleline_comment|// A2 = 0.993408
+multiline_comment|/* A2 = 0.993408 */
 op_minus
 l_int|123
 comma
-singleline_comment|// B2 = -0.003755
+multiline_comment|/* B2 = -0.003755 */
 l_int|0
 comma
-singleline_comment|// B1 = 0.000000
+multiline_comment|/* B1 = 0.000000 */
 l_int|123
 comma
-singleline_comment|// B0 = 0.003755
+multiline_comment|/* B0 = 0.003755 */
 l_int|26805
 comma
-singleline_comment|// A1 = -1.636108
+multiline_comment|/* A1 = -1.636108 */
 op_minus
 l_int|32683
 comma
-singleline_comment|// A2 = 0.997406
+multiline_comment|/* A2 = 0.997406 */
 l_int|17297
 comma
-singleline_comment|// B2 = 0.527863
+multiline_comment|/* B2 = 0.527863 */
 op_minus
 l_int|14096
 comma
-singleline_comment|// B1 = -0.860382
+multiline_comment|/* B1 = -0.860382 */
 l_int|17297
 comma
-singleline_comment|// B0 = 0.527863
+multiline_comment|/* B0 = 0.527863 */
 l_int|27034
 comma
-singleline_comment|// A1 = -1.650085
+multiline_comment|/* A1 = -1.650085 */
 op_minus
 l_int|32684
 comma
-singleline_comment|// A2 = 0.997467
+multiline_comment|/* A2 = 0.997467 */
 l_int|12958
 comma
-singleline_comment|// B2 = 0.395477
+multiline_comment|/* B2 = 0.395477 */
 op_minus
 l_int|10756
 comma
-singleline_comment|// B1 = -0.656525
+multiline_comment|/* B1 = -0.656525 */
 l_int|12958
 comma
-singleline_comment|// B0 = 0.395477
+multiline_comment|/* B0 = 0.395477 */
 l_int|5
 comma
-singleline_comment|// Internal filter scaling
+multiline_comment|/* Internal filter scaling */
 l_int|159
 comma
-singleline_comment|// Minimum in-band energy threshold
+multiline_comment|/* Minimum in-band energy threshold */
 l_int|21
 comma
-singleline_comment|// 21/32 in-band to broad-band ratio
+multiline_comment|/* 21/32 in-band to broad-band ratio */
 l_int|0x0FF5
-singleline_comment|// shift-mask 0x0FF (look at 16 half-frames) bit count = 5
+multiline_comment|/* shift-mask 0x0FF (look at 16 half-frames) bit count = 5 */
 )brace
 comma
 (brace
-singleline_comment|// 800.txt
+multiline_comment|/* f800 */
 l_int|26413
 comma
-singleline_comment|// A1 = -1.612122
+multiline_comment|/* A1 = -1.612122 */
 op_minus
 l_int|32547
 comma
-singleline_comment|// A2 = 0.993286
+multiline_comment|/* A2 = 0.993286 */
 op_minus
 l_int|223
 comma
-singleline_comment|// B2 = -0.006825
+multiline_comment|/* B2 = -0.006825 */
 l_int|0
 comma
-singleline_comment|// B1 = 0.000000
+multiline_comment|/* B1 = 0.000000 */
 l_int|223
 comma
-singleline_comment|// B0 = 0.006825
+multiline_comment|/* B0 = 0.006825 */
 l_int|26342
 comma
-singleline_comment|// A1 = -1.607849
+multiline_comment|/* A1 = -1.607849 */
 op_minus
 l_int|32686
 comma
-singleline_comment|// A2 = 0.997498
+multiline_comment|/* A2 = 0.997498 */
 l_int|6391
 comma
-singleline_comment|// B2 = 0.195053
+multiline_comment|/* B2 = 0.195053 */
 op_minus
 l_int|5120
 comma
-singleline_comment|// B1 = -0.312531
+multiline_comment|/* B1 = -0.312531 */
 l_int|6391
 comma
-singleline_comment|// B0 = 0.195053
+multiline_comment|/* B0 = 0.195053 */
 l_int|26593
 comma
-singleline_comment|// A1 = -1.623108
+multiline_comment|/* A1 = -1.623108 */
 op_minus
 l_int|32688
 comma
-singleline_comment|// A2 = 0.997559
+multiline_comment|/* A2 = 0.997559 */
 l_int|23681
 comma
-singleline_comment|// B2 = 0.722717
+multiline_comment|/* B2 = 0.722717 */
 op_minus
 l_int|19328
 comma
-singleline_comment|// B1 = -1.179688
+multiline_comment|/* B1 = -1.179688 */
 l_int|23681
 comma
-singleline_comment|// B0 = 0.722717
+multiline_comment|/* B0 = 0.722717 */
 l_int|5
 comma
-singleline_comment|// Internal filter scaling
+multiline_comment|/* Internal filter scaling */
 l_int|159
 comma
-singleline_comment|// Minimum in-band energy threshold
+multiline_comment|/* Minimum in-band energy threshold */
 l_int|21
 comma
-singleline_comment|// 21/32 in-band to broad-band ratio
+multiline_comment|/* 21/32 in-band to broad-band ratio */
 l_int|0x0FF5
-singleline_comment|// shift-mask 0x0FF (look at 16 half-frames) bit count = 5
+multiline_comment|/* shift-mask 0x0FF (look at 16 half-frames) bit count = 5 */
 )brace
 comma
 (brace
-singleline_comment|// 816.txt
+multiline_comment|/* f816 */
 l_int|26168
 comma
-singleline_comment|// A1 = -1.597209
+multiline_comment|/* A1 = -1.597209 */
 op_minus
 l_int|32528
 comma
-singleline_comment|// A2 = 0.992706
+multiline_comment|/* A2 = 0.992706 */
 op_minus
 l_int|235
 comma
-singleline_comment|// B2 = -0.007182
+multiline_comment|/* B2 = -0.007182 */
 l_int|0
 comma
-singleline_comment|// B1 = 0.000000
+multiline_comment|/* B1 = 0.000000 */
 l_int|235
 comma
-singleline_comment|// B0 = 0.007182
+multiline_comment|/* B0 = 0.007182 */
 l_int|26092
 comma
-singleline_comment|// A1 = -1.592590
+multiline_comment|/* A1 = -1.592590 */
 op_minus
 l_int|32675
 comma
-singleline_comment|// A2 = 0.997192
+multiline_comment|/* A2 = 0.997192 */
 l_int|20823
 comma
-singleline_comment|// B2 = 0.635498
+multiline_comment|/* B2 = 0.635498 */
 op_minus
 l_int|16510
 comma
-singleline_comment|// B1 = -1.007751
+multiline_comment|/* B1 = -1.007751 */
 l_int|20823
 comma
-singleline_comment|// B0 = 0.635498
+multiline_comment|/* B0 = 0.635498 */
 l_int|26363
 comma
-singleline_comment|// A1 = -1.609070
+multiline_comment|/* A1 = -1.609070 */
 op_minus
 l_int|32677
 comma
-singleline_comment|// A2 = 0.997253
+multiline_comment|/* A2 = 0.997253 */
 l_int|6739
 comma
-singleline_comment|// B2 = 0.205688
+multiline_comment|/* B2 = 0.205688 */
 op_minus
 l_int|5459
 comma
-singleline_comment|// B1 = -0.333206
+multiline_comment|/* B1 = -0.333206 */
 l_int|6739
 comma
-singleline_comment|// B0 = 0.205688
+multiline_comment|/* B0 = 0.205688 */
 l_int|5
 comma
-singleline_comment|// Internal filter scaling
+multiline_comment|/* Internal filter scaling */
 l_int|159
 comma
-singleline_comment|// Minimum in-band energy threshold
+multiline_comment|/* Minimum in-band energy threshold */
 l_int|21
 comma
-singleline_comment|// 21/32 in-band to broad-band ratio
+multiline_comment|/* 21/32 in-band to broad-band ratio */
 l_int|0x0FF5
-singleline_comment|// shift-mask 0x0FF (look at 16 half-frames) bit count = 5
+multiline_comment|/* shift-mask 0x0FF (look at 16 half-frames) bit count = 5 */
 )brace
 comma
 (brace
-singleline_comment|// 850.txt
+multiline_comment|/* f850 */
 l_int|25641
 comma
-singleline_comment|// A1 = -1.565063
+multiline_comment|/* A1 = -1.565063 */
 op_minus
 l_int|32536
 comma
-singleline_comment|// A2 = 0.992950
+multiline_comment|/* A2 = 0.992950 */
 op_minus
 l_int|121
 comma
-singleline_comment|// B2 = -0.003707
+multiline_comment|/* B2 = -0.003707 */
 l_int|0
 comma
-singleline_comment|// B1 = 0.000000
+multiline_comment|/* B1 = 0.000000 */
 l_int|121
 comma
-singleline_comment|// B0 = 0.003707
+multiline_comment|/* B0 = 0.003707 */
 l_int|25560
 comma
-singleline_comment|// A1 = -1.560059
+multiline_comment|/* A1 = -1.560059 */
 op_minus
 l_int|32684
 comma
-singleline_comment|// A2 = 0.997437
+multiline_comment|/* A2 = 0.997437 */
 l_int|18341
 comma
-singleline_comment|// B2 = 0.559753
+multiline_comment|/* B2 = 0.559753 */
 op_minus
 l_int|14252
 comma
-singleline_comment|// B1 = -0.869904
+multiline_comment|/* B1 = -0.869904 */
 l_int|18341
 comma
-singleline_comment|// B0 = 0.559753
+multiline_comment|/* B0 = 0.559753 */
 l_int|25837
 comma
-singleline_comment|// A1 = -1.577026
+multiline_comment|/* A1 = -1.577026 */
 op_minus
 l_int|32684
 comma
-singleline_comment|// A2 = 0.997467
+multiline_comment|/* A2 = 0.997467 */
 l_int|16679
 comma
-singleline_comment|// B2 = 0.509003
+multiline_comment|/* B2 = 0.509003 */
 op_minus
 l_int|13232
 comma
-singleline_comment|// B1 = -0.807648
+multiline_comment|/* B1 = -0.807648 */
 l_int|16679
 comma
-singleline_comment|// B0 = 0.509003
+multiline_comment|/* B0 = 0.509003 */
 l_int|5
 comma
-singleline_comment|// Internal filter scaling
+multiline_comment|/* Internal filter scaling */
 l_int|159
 comma
-singleline_comment|// Minimum in-band energy threshold
+multiline_comment|/* Minimum in-band energy threshold */
 l_int|21
 comma
-singleline_comment|// 21/32 in-band to broad-band ratio
+multiline_comment|/* 21/32 in-band to broad-band ratio */
 l_int|0x0FF5
-singleline_comment|// shift-mask 0x0FF (look at 16 half-frames) bit count = 5
+multiline_comment|/* shift-mask 0x0FF (look at 16 half-frames) bit count = 5 */
 )brace
 comma
 (brace
-singleline_comment|// f857_1645[]
+multiline_comment|/* f857_1645[] */
 l_int|16415
 comma
-singleline_comment|// A1 = 1.001953
+multiline_comment|/* A1 = 1.001953 */
 op_minus
 l_int|23669
 comma
-singleline_comment|// A2 = -0.722321
+multiline_comment|/* A2 = -0.722321 */
 op_minus
 l_int|4549
 comma
-singleline_comment|// B2 = -0.138847
+multiline_comment|/* B2 = -0.138847 */
 l_int|0
 comma
-singleline_comment|// B1 = 0
+multiline_comment|/* B1 = 0 */
 l_int|4549
 comma
-singleline_comment|// B0 = 0.138847
+multiline_comment|/* B0 = 0.138847 */
 l_int|8456
 comma
-singleline_comment|// A1 = 0.516174
+multiline_comment|/* A1 = 0.516174 */
 op_minus
 l_int|28996
 comma
-singleline_comment|// A2 = -0.884918
+multiline_comment|/* A2 = -0.884918 */
 l_int|13753
 comma
-singleline_comment|// B2 = 0.419724
+multiline_comment|/* B2 = 0.419724 */
 op_minus
 l_int|12
 comma
-singleline_comment|// B1 = -0.000763
+multiline_comment|/* B1 = -0.000763 */
 l_int|13757
 comma
-singleline_comment|// B0 = 0.419846
+multiline_comment|/* B0 = 0.419846 */
 l_int|24632
 comma
-singleline_comment|// A1 = 1.503418
+multiline_comment|/* A1 = 1.503418 */
 op_minus
 l_int|30271
 comma
-singleline_comment|// A2 = -0.923828
+multiline_comment|/* A2 = -0.923828 */
 l_int|29070
 comma
-singleline_comment|// B2 = 0.887146
+multiline_comment|/* B2 = 0.887146 */
 op_minus
 l_int|25265
 comma
-singleline_comment|// B1 = -1.542114
+multiline_comment|/* B1 = -1.542114 */
 l_int|29073
 comma
-singleline_comment|// B0 = 0.887268
+multiline_comment|/* B0 = 0.887268 */
 l_int|7
 comma
-singleline_comment|// Internal filter scaling
+multiline_comment|/* Internal filter scaling */
 l_int|159
 comma
-singleline_comment|// Minimum in-band energy threshold
+multiline_comment|/* Minimum in-band energy threshold */
 l_int|21
 comma
-singleline_comment|// 21/32 in-band to broad-band ratio
+multiline_comment|/* 21/32 in-band to broad-band ratio */
 l_int|0x0FF5
-singleline_comment|// shift-mask 0x0FF (look at 16 half-frames) bit count = 5
+multiline_comment|/* shift-mask 0x0FF (look at 16 half-frames) bit count = 5 */
 )brace
 comma
 (brace
-singleline_comment|// 900.txt
+multiline_comment|/* f900 */
 l_int|24806
 comma
-singleline_comment|// A1 = -1.514099
+multiline_comment|/* A1 = -1.514099 */
 op_minus
 l_int|32501
 comma
-singleline_comment|// A2 = 0.991852
+multiline_comment|/* A2 = 0.991852 */
 op_minus
 l_int|326
 comma
-singleline_comment|// B2 = -0.009969
+multiline_comment|/* B2 = -0.009969 */
 l_int|0
 comma
-singleline_comment|// B1 = 0.000000
+multiline_comment|/* B1 = 0.000000 */
 l_int|326
 comma
-singleline_comment|// B0 = 0.009969
+multiline_comment|/* B0 = 0.009969 */
 l_int|24709
 comma
-singleline_comment|// A1 = -1.508118
+multiline_comment|/* A1 = -1.508118 */
 op_minus
 l_int|32659
 comma
-singleline_comment|// A2 = 0.996674
+multiline_comment|/* A2 = 0.996674 */
 l_int|20277
 comma
-singleline_comment|// B2 = 0.618835
+multiline_comment|/* B2 = 0.618835 */
 op_minus
 l_int|15182
 comma
-singleline_comment|// B1 = -0.926636
+multiline_comment|/* B1 = -0.926636 */
 l_int|20277
 comma
-singleline_comment|// B0 = 0.618835
+multiline_comment|/* B0 = 0.618835 */
 l_int|25022
 comma
-singleline_comment|// A1 = -1.527222
+multiline_comment|/* A1 = -1.527222 */
 op_minus
 l_int|32661
 comma
-singleline_comment|// A2 = 0.996735
+multiline_comment|/* A2 = 0.996735 */
 l_int|4320
 comma
-singleline_comment|// B2 = 0.131836
+multiline_comment|/* B2 = 0.131836 */
 op_minus
 l_int|3331
 comma
-singleline_comment|// B1 = -0.203339
+multiline_comment|/* B1 = -0.203339 */
 l_int|4320
 comma
-singleline_comment|// B0 = 0.131836
+multiline_comment|/* B0 = 0.131836 */
 l_int|5
 comma
-singleline_comment|// Internal filter scaling
+multiline_comment|/* Internal filter scaling */
 l_int|159
 comma
-singleline_comment|// Minimum in-band energy threshold
+multiline_comment|/* Minimum in-band energy threshold */
 l_int|21
 comma
-singleline_comment|// 21/32 in-band to broad-band ratio
+multiline_comment|/* 21/32 in-band to broad-band ratio */
 l_int|0x0FF5
-singleline_comment|// shift-mask 0x0FF (look at 16 half-frames) bit count = 5
+multiline_comment|/* shift-mask 0x0FF (look at 16 half-frames) bit count = 5 */
 )brace
 comma
 (brace
-singleline_comment|// f900_1300[]
+multiline_comment|/* f900_1300[] */
 l_int|19776
 comma
-singleline_comment|// A1 = 1.207092
+multiline_comment|/* A1 = 1.207092 */
 op_minus
 l_int|27437
 comma
-singleline_comment|// A2 = -0.837341
+multiline_comment|/* A2 = -0.837341 */
 op_minus
 l_int|2666
 comma
-singleline_comment|// B2 = -0.081371
+multiline_comment|/* B2 = -0.081371 */
 l_int|0
 comma
-singleline_comment|// B1 = 0
+multiline_comment|/* B1 = 0 */
 l_int|2666
 comma
-singleline_comment|// B0 = 0.081371
+multiline_comment|/* B0 = 0.081371 */
 l_int|16302
 comma
-singleline_comment|// A1 = 0.995026
+multiline_comment|/* A1 = 0.995026 */
 op_minus
 l_int|30354
 comma
-singleline_comment|// A2 = -0.926361
+multiline_comment|/* A2 = -0.926361 */
 l_int|10389
 comma
-singleline_comment|// B2 = 0.317062
+multiline_comment|/* B2 = 0.317062 */
 op_minus
 l_int|3327
 comma
-singleline_comment|// B1 = -0.203064
+multiline_comment|/* B1 = -0.203064 */
 l_int|10389
 comma
-singleline_comment|// B0 = 0.317062
+multiline_comment|/* B0 = 0.317062 */
 l_int|24299
 comma
-singleline_comment|// A1 = 1.483154
+multiline_comment|/* A1 = 1.483154 */
 op_minus
 l_int|30930
 comma
-singleline_comment|// A2 = -0.943909
+multiline_comment|/* A2 = -0.943909 */
 l_int|25016
 comma
-singleline_comment|// B2 = 0.763428
+multiline_comment|/* B2 = 0.763428 */
 op_minus
 l_int|21171
 comma
-singleline_comment|// B1 = -1.292236
+multiline_comment|/* B1 = -1.292236 */
 l_int|25016
 comma
-singleline_comment|// B0 = 0.763428
+multiline_comment|/* B0 = 0.763428 */
 l_int|7
 comma
-singleline_comment|// Internal filter scaling
+multiline_comment|/* Internal filter scaling */
 l_int|159
 comma
-singleline_comment|// Minimum in-band energy threshold
+multiline_comment|/* Minimum in-band energy threshold */
 l_int|21
 comma
-singleline_comment|// 21/32 in-band to broad-band ratio
+multiline_comment|/* 21/32 in-band to broad-band ratio */
 l_int|0x0FF5
-singleline_comment|// shift-mask 0x0FF (look at 16 half-frames) bit count = 5
+multiline_comment|/* shift-mask 0x0FF (look at 16 half-frames) bit count = 5 */
 )brace
 comma
 (brace
-singleline_comment|// f935_1215[]
+multiline_comment|/* f935_1215[] */
 l_int|20554
 comma
-singleline_comment|// A1 = 1.254517
+multiline_comment|/* A1 = 1.254517 */
 op_minus
 l_int|28764
 comma
-singleline_comment|// A2 = -0.877838
+multiline_comment|/* A2 = -0.877838 */
 op_minus
 l_int|2048
 comma
-singleline_comment|// B2 = -0.062515
+multiline_comment|/* B2 = -0.062515 */
 l_int|0
 comma
-singleline_comment|// B1 = 0
+multiline_comment|/* B1 = 0 */
 l_int|2048
 comma
-singleline_comment|// B0 = 0.062515
+multiline_comment|/* B0 = 0.062515 */
 l_int|18209
 comma
-singleline_comment|// A1 = 1.11145
+multiline_comment|/* A1 = 1.11145 */
 op_minus
 l_int|30951
 comma
-singleline_comment|// A2 = -0.94458
+multiline_comment|/* A2 = -0.94458 */
 l_int|9390
 comma
-singleline_comment|// B2 = 0.286575
+multiline_comment|/* B2 = 0.286575 */
 op_minus
 l_int|3955
 comma
-singleline_comment|// B1 = -0.241455
+multiline_comment|/* B1 = -0.241455 */
 l_int|9390
 comma
-singleline_comment|// B0 = 0.286575
+multiline_comment|/* B0 = 0.286575 */
 l_int|23902
 comma
-singleline_comment|// A1 = 1.458923
+multiline_comment|/* A1 = 1.458923 */
 op_minus
 l_int|31286
 comma
-singleline_comment|// A2 = -0.954803
+multiline_comment|/* A2 = -0.954803 */
 l_int|23252
 comma
-singleline_comment|// B2 = 0.709595
+multiline_comment|/* B2 = 0.709595 */
 op_minus
 l_int|19132
 comma
-singleline_comment|// B1 = -1.167725
+multiline_comment|/* B1 = -1.167725 */
 l_int|23252
 comma
-singleline_comment|// B0 = 0.709595
+multiline_comment|/* B0 = 0.709595 */
 l_int|7
 comma
-singleline_comment|// Internal filter scaling
+multiline_comment|/* Internal filter scaling */
 l_int|159
 comma
-singleline_comment|// Minimum in-band energy threshold
+multiline_comment|/* Minimum in-band energy threshold */
 l_int|21
 comma
-singleline_comment|// 21/32 in-band to broad-band ratio
+multiline_comment|/* 21/32 in-band to broad-band ratio */
 l_int|0x0FF5
-singleline_comment|// shift-mask 0x0FF (look at 16 half-frames) bit count = 5
+multiline_comment|/* shift-mask 0x0FF (look at 16 half-frames) bit count = 5 */
 )brace
 comma
 (brace
-singleline_comment|// f941_1477[]
+multiline_comment|/* f941_1477[] */
 l_int|17543
 comma
-singleline_comment|// A1 = 1.07074
+multiline_comment|/* A1 = 1.07074 */
 op_minus
 l_int|26220
 comma
-singleline_comment|// A2 = -0.800201
+multiline_comment|/* A2 = -0.800201 */
 op_minus
 l_int|3298
 comma
-singleline_comment|// B2 = -0.100647
+multiline_comment|/* B2 = -0.100647 */
 l_int|0
 comma
-singleline_comment|// B1 = 0
+multiline_comment|/* B1 = 0 */
 l_int|3298
 comma
-singleline_comment|// B0 = 0.100647
+multiline_comment|/* B0 = 0.100647 */
 l_int|12423
 comma
-singleline_comment|// A1 = 0.75827
+multiline_comment|/* A1 = 0.75827 */
 op_minus
 l_int|30036
 comma
-singleline_comment|// A2 = -0.916626
+multiline_comment|/* A2 = -0.916626 */
 l_int|12651
 comma
-singleline_comment|// B2 = 0.386078
+multiline_comment|/* B2 = 0.386078 */
 op_minus
 l_int|2444
 comma
-singleline_comment|// B1 = -0.14917
+multiline_comment|/* B1 = -0.14917 */
 l_int|12653
 comma
-singleline_comment|// B0 = 0.386154
+multiline_comment|/* B0 = 0.386154 */
 l_int|23518
 comma
-singleline_comment|// A1 = 1.435425
+multiline_comment|/* A1 = 1.435425 */
 op_minus
 l_int|30745
 comma
-singleline_comment|// A2 = -0.938293
+multiline_comment|/* A2 = -0.938293 */
 l_int|27282
 comma
-singleline_comment|// B2 = 0.832581
+multiline_comment|/* B2 = 0.832581 */
 op_minus
 l_int|22529
 comma
-singleline_comment|// B1 = -1.375122
+multiline_comment|/* B1 = -1.375122 */
 l_int|27286
 comma
-singleline_comment|// B0 = 0.832703
+multiline_comment|/* B0 = 0.832703 */
 l_int|7
 comma
-singleline_comment|// Internal filter scaling
+multiline_comment|/* Internal filter scaling */
 l_int|159
 comma
-singleline_comment|// Minimum in-band energy threshold
+multiline_comment|/* Minimum in-band energy threshold */
 l_int|21
 comma
-singleline_comment|// 21/32 in-band to broad-band ratio
+multiline_comment|/* 21/32 in-band to broad-band ratio */
 l_int|0x0FF5
-singleline_comment|// shift-mask 0x0FF (look at 16 half-frames) bit count = 5
+multiline_comment|/* shift-mask 0x0FF (look at 16 half-frames) bit count = 5 */
 )brace
 comma
 (brace
-singleline_comment|// 942.txt
+multiline_comment|/* f942 */
 l_int|24104
 comma
-singleline_comment|// A1 = -1.471252
+multiline_comment|/* A1 = -1.471252 */
 op_minus
 l_int|32507
 comma
-singleline_comment|// A2 = 0.992065
+multiline_comment|/* A2 = 0.992065 */
 op_minus
 l_int|351
 comma
-singleline_comment|// B2 = -0.010722
+multiline_comment|/* B2 = -0.010722 */
 l_int|0
 comma
-singleline_comment|// B1 = 0.000000
+multiline_comment|/* B1 = 0.000000 */
 l_int|351
 comma
-singleline_comment|// B0 = 0.010722
+multiline_comment|/* B0 = 0.010722 */
 l_int|23996
 comma
-singleline_comment|// A1 = -1.464600
+multiline_comment|/* A1 = -1.464600 */
 op_minus
 l_int|32671
 comma
-singleline_comment|// A2 = 0.997040
+multiline_comment|/* A2 = 0.997040 */
 l_int|22848
 comma
-singleline_comment|// B2 = 0.697266
+multiline_comment|/* B2 = 0.697266 */
 op_minus
 l_int|16639
 comma
-singleline_comment|// B1 = -1.015564
+multiline_comment|/* B1 = -1.015564 */
 l_int|22848
 comma
-singleline_comment|// B0 = 0.697266
+multiline_comment|/* B0 = 0.697266 */
 l_int|24332
 comma
-singleline_comment|// A1 = -1.485168
+multiline_comment|/* A1 = -1.485168 */
 op_minus
 l_int|32673
 comma
-singleline_comment|// A2 = 0.997101
+multiline_comment|/* A2 = 0.997101 */
 l_int|4906
 comma
-singleline_comment|// B2 = 0.149727
+multiline_comment|/* B2 = 0.149727 */
 op_minus
 l_int|3672
 comma
-singleline_comment|// B1 = -0.224174
+multiline_comment|/* B1 = -0.224174 */
 l_int|4906
 comma
-singleline_comment|// B0 = 0.149727
+multiline_comment|/* B0 = 0.149727 */
 l_int|5
 comma
-singleline_comment|// Internal filter scaling
+multiline_comment|/* Internal filter scaling */
 l_int|159
 comma
-singleline_comment|// Minimum in-band energy threshold
+multiline_comment|/* Minimum in-band energy threshold */
 l_int|21
 comma
-singleline_comment|// 21/32 in-band to broad-band ratio
+multiline_comment|/* 21/32 in-band to broad-band ratio */
 l_int|0x0FF5
-singleline_comment|// shift-mask 0x0FF (look at 16 half-frames) bit count = 5
+multiline_comment|/* shift-mask 0x0FF (look at 16 half-frames) bit count = 5 */
 )brace
 comma
 (brace
-singleline_comment|// 950.txt
+multiline_comment|/* f950 */
 l_int|23967
 comma
-singleline_comment|// A1 = -1.462830
+multiline_comment|/* A1 = -1.462830 */
 op_minus
 l_int|32507
 comma
-singleline_comment|// A2 = 0.992065
+multiline_comment|/* A2 = 0.992065 */
 op_minus
 l_int|518
 comma
-singleline_comment|// B2 = -0.015821
+multiline_comment|/* B2 = -0.015821 */
 l_int|0
 comma
-singleline_comment|// B1 = 0.000000
+multiline_comment|/* B1 = 0.000000 */
 l_int|518
 comma
-singleline_comment|// B0 = 0.015821
+multiline_comment|/* B0 = 0.015821 */
 l_int|23856
 comma
-singleline_comment|// A1 = -1.456055
+multiline_comment|/* A1 = -1.456055 */
 op_minus
 l_int|32671
 comma
-singleline_comment|// A2 = 0.997040
+multiline_comment|/* A2 = 0.997040 */
 l_int|26287
 comma
-singleline_comment|// B2 = 0.802246
+multiline_comment|/* B2 = 0.802246 */
 op_minus
 l_int|19031
 comma
-singleline_comment|// B1 = -1.161560
+multiline_comment|/* B1 = -1.161560 */
 l_int|26287
 comma
-singleline_comment|// B0 = 0.802246
+multiline_comment|/* B0 = 0.802246 */
 l_int|24195
 comma
-singleline_comment|// A1 = -1.476746
+multiline_comment|/* A1 = -1.476746 */
 op_minus
 l_int|32673
 comma
-singleline_comment|// A2 = 0.997101
+multiline_comment|/* A2 = 0.997101 */
 l_int|2890
 comma
-singleline_comment|// B2 = 0.088196
+multiline_comment|/* B2 = 0.088196 */
 op_minus
 l_int|2151
 comma
-singleline_comment|// B1 = -0.131317
+multiline_comment|/* B1 = -0.131317 */
 l_int|2890
 comma
-singleline_comment|// B0 = 0.088196
+multiline_comment|/* B0 = 0.088196 */
 l_int|5
 comma
-singleline_comment|// Internal filter scaling
+multiline_comment|/* Internal filter scaling */
 l_int|159
 comma
-singleline_comment|// Minimum in-band energy threshold
+multiline_comment|/* Minimum in-band energy threshold */
 l_int|21
 comma
-singleline_comment|// 21/32 in-band to broad-band ratio
+multiline_comment|/* 21/32 in-band to broad-band ratio */
 l_int|0x0FF5
-singleline_comment|// shift-mask 0x0FF (look at 16 half-frames) bit count = 5
+multiline_comment|/* shift-mask 0x0FF (look at 16 half-frames) bit count = 5 */
 )brace
 comma
 (brace
-singleline_comment|// f950_1400[]
+multiline_comment|/* f950_1400[] */
 l_int|18294
 comma
-singleline_comment|// A1 = 1.116638
+multiline_comment|/* A1 = 1.116638 */
 op_minus
 l_int|26962
 comma
-singleline_comment|// A2 = -0.822845
+multiline_comment|/* A2 = -0.822845 */
 op_minus
 l_int|2914
 comma
-singleline_comment|// B2 = -0.088936
+multiline_comment|/* B2 = -0.088936 */
 l_int|0
 comma
-singleline_comment|// B1 = 0
+multiline_comment|/* B1 = 0 */
 l_int|2914
 comma
-singleline_comment|// B0 = 0.088936
+multiline_comment|/* B0 = 0.088936 */
 l_int|14119
 comma
-singleline_comment|// A1 = 0.861786
+multiline_comment|/* A1 = 0.861786 */
 op_minus
 l_int|30227
 comma
-singleline_comment|// A2 = -0.922455
+multiline_comment|/* A2 = -0.922455 */
 l_int|11466
 comma
-singleline_comment|// B2 = 0.349945
+multiline_comment|/* B2 = 0.349945 */
 op_minus
 l_int|2833
 comma
-singleline_comment|// B1 = -0.172943
+multiline_comment|/* B1 = -0.172943 */
 l_int|11466
 comma
-singleline_comment|// B0 = 0.349945
+multiline_comment|/* B0 = 0.349945 */
 l_int|23431
 comma
-singleline_comment|// A1 = 1.430115
+multiline_comment|/* A1 = 1.430115 */
 op_minus
 l_int|30828
 comma
-singleline_comment|// A2 = -0.940796
+multiline_comment|/* A2 = -0.940796 */
 l_int|25331
 comma
-singleline_comment|// B2 = 0.773071
+multiline_comment|/* B2 = 0.773071 */
 op_minus
 l_int|20911
 comma
-singleline_comment|// B1 = -1.276367
+multiline_comment|/* B1 = -1.276367 */
 l_int|25331
 comma
-singleline_comment|// B0 = 0.773071
+multiline_comment|/* B0 = 0.773071 */
 l_int|7
 comma
-singleline_comment|// Internal filter scaling
+multiline_comment|/* Internal filter scaling */
 l_int|159
 comma
-singleline_comment|// Minimum in-band energy threshold
+multiline_comment|/* Minimum in-band energy threshold */
 l_int|21
 comma
-singleline_comment|// 21/32 in-band to broad-band ratio
+multiline_comment|/* 21/32 in-band to broad-band ratio */
 l_int|0x0FF5
-singleline_comment|// shift-mask 0x0FF (look at 16 half-frames) bit count = 5
+multiline_comment|/* shift-mask 0x0FF (look at 16 half-frames) bit count = 5 */
 )brace
 comma
 (brace
-singleline_comment|// 975.txt
+multiline_comment|/* f975 */
 l_int|23521
 comma
-singleline_comment|// A1 = -1.435608
+multiline_comment|/* A1 = -1.435608 */
 op_minus
 l_int|32489
 comma
-singleline_comment|// A2 = 0.991516
+multiline_comment|/* A2 = 0.991516 */
 op_minus
 l_int|193
 comma
-singleline_comment|// B2 = -0.005915
+multiline_comment|/* B2 = -0.005915 */
 l_int|0
 comma
-singleline_comment|// B1 = 0.000000
+multiline_comment|/* B1 = 0.000000 */
 l_int|193
 comma
-singleline_comment|// B0 = 0.005915
+multiline_comment|/* B0 = 0.005915 */
 l_int|23404
 comma
-singleline_comment|// A1 = -1.428467
+multiline_comment|/* A1 = -1.428467 */
 op_minus
 l_int|32655
 comma
-singleline_comment|// A2 = 0.996582
+multiline_comment|/* A2 = 0.996582 */
 l_int|17740
 comma
-singleline_comment|// B2 = 0.541412
+multiline_comment|/* B2 = 0.541412 */
 op_minus
 l_int|12567
 comma
-singleline_comment|// B1 = -0.767029
+multiline_comment|/* B1 = -0.767029 */
 l_int|17740
 comma
-singleline_comment|// B0 = 0.541412
+multiline_comment|/* B0 = 0.541412 */
 l_int|23753
 comma
-singleline_comment|// A1 = -1.449829
+multiline_comment|/* A1 = -1.449829 */
 op_minus
 l_int|32657
 comma
-singleline_comment|// A2 = 0.996613
+multiline_comment|/* A2 = 0.996613 */
 l_int|9090
 comma
-singleline_comment|// B2 = 0.277405
+multiline_comment|/* B2 = 0.277405 */
 op_minus
 l_int|6662
 comma
-singleline_comment|// B1 = -0.406647
+multiline_comment|/* B1 = -0.406647 */
 l_int|9090
 comma
-singleline_comment|// B0 = 0.277405
+multiline_comment|/* B0 = 0.277405 */
 l_int|5
 comma
-singleline_comment|// Internal filter scaling
+multiline_comment|/* Internal filter scaling */
 l_int|159
 comma
-singleline_comment|// Minimum in-band energy threshold
+multiline_comment|/* Minimum in-band energy threshold */
 l_int|21
 comma
-singleline_comment|// 21/32 in-band to broad-band ratio
+multiline_comment|/* 21/32 in-band to broad-band ratio */
 l_int|0x0FF5
-singleline_comment|// shift-mask 0x0FF (look at 16 half-frames) bit count = 5
+multiline_comment|/* shift-mask 0x0FF (look at 16 half-frames) bit count = 5 */
 )brace
 comma
 (brace
-singleline_comment|// 1000.txt
+multiline_comment|/* f1000 */
 l_int|23071
 comma
-singleline_comment|// A1 = -1.408203
+multiline_comment|/* A1 = -1.408203 */
 op_minus
 l_int|32489
 comma
-singleline_comment|// A2 = 0.991516
+multiline_comment|/* A2 = 0.991516 */
 op_minus
 l_int|293
 comma
-singleline_comment|// B2 = -0.008965
+multiline_comment|/* B2 = -0.008965 */
 l_int|0
 comma
-singleline_comment|// B1 = 0.000000
+multiline_comment|/* B1 = 0.000000 */
 l_int|293
 comma
-singleline_comment|// B0 = 0.008965
+multiline_comment|/* B0 = 0.008965 */
 l_int|22951
 comma
-singleline_comment|// A1 = -1.400818
+multiline_comment|/* A1 = -1.400818 */
 op_minus
 l_int|32655
 comma
-singleline_comment|// A2 = 0.996582
+multiline_comment|/* A2 = 0.996582 */
 l_int|5689
 comma
-singleline_comment|// B2 = 0.173645
+multiline_comment|/* B2 = 0.173645 */
 op_minus
 l_int|3951
 comma
-singleline_comment|// B1 = -0.241150
+multiline_comment|/* B1 = -0.241150 */
 l_int|5689
 comma
-singleline_comment|// B0 = 0.173645
+multiline_comment|/* B0 = 0.173645 */
 l_int|23307
 comma
-singleline_comment|// A1 = -1.422607
+multiline_comment|/* A1 = -1.422607 */
 op_minus
 l_int|32657
 comma
-singleline_comment|// A2 = 0.996613
+multiline_comment|/* A2 = 0.996613 */
 l_int|18692
 comma
-singleline_comment|// B2 = 0.570435
+multiline_comment|/* B2 = 0.570435 */
 op_minus
 l_int|13447
 comma
-singleline_comment|// B1 = -0.820770
+multiline_comment|/* B1 = -0.820770 */
 l_int|18692
 comma
-singleline_comment|// B0 = 0.570435
+multiline_comment|/* B0 = 0.570435 */
 l_int|5
 comma
-singleline_comment|// Internal filter scaling
+multiline_comment|/* Internal filter scaling */
 l_int|159
 comma
-singleline_comment|// Minimum in-band energy threshold
+multiline_comment|/* Minimum in-band energy threshold */
 l_int|21
 comma
-singleline_comment|// 21/32 in-band to broad-band ratio
+multiline_comment|/* 21/32 in-band to broad-band ratio */
 l_int|0x0FF5
-singleline_comment|// shift-mask 0x0FF (look at 16 half-frames) bit count = 5
+multiline_comment|/* shift-mask 0x0FF (look at 16 half-frames) bit count = 5 */
 )brace
 comma
 (brace
-singleline_comment|// 1020.txt
+multiline_comment|/* f1020 */
 l_int|22701
 comma
-singleline_comment|// A1 = -1.385620
+multiline_comment|/* A1 = -1.385620 */
 op_minus
 l_int|32474
 comma
-singleline_comment|// A2 = 0.991058
+multiline_comment|/* A2 = 0.991058 */
 op_minus
 l_int|292
 comma
-singleline_comment|// B2 = -0.008933
+multiline_comment|/* B2 = -0.008933 */
 l_int|0
 comma
-singleline_comment|//163840      , // B1 = 10.000000
+multiline_comment|/*163840      , B1 = 10.000000 */
 l_int|292
 comma
-singleline_comment|// B0 = 0.008933
+multiline_comment|/* B0 = 0.008933 */
 l_int|22564
 comma
-singleline_comment|// A1 = -1.377258
+multiline_comment|/* A1 = -1.377258 */
 op_minus
 l_int|32655
 comma
-singleline_comment|// A2 = 0.996552
+multiline_comment|/* A2 = 0.996552 */
 l_int|20756
 comma
-singleline_comment|// B2 = 0.633423
+multiline_comment|/* B2 = 0.633423 */
 op_minus
 l_int|14176
 comma
-singleline_comment|// B1 = -0.865295
+multiline_comment|/* B1 = -0.865295 */
 l_int|20756
 comma
-singleline_comment|// B0 = 0.633423
+multiline_comment|/* B0 = 0.633423 */
 l_int|22960
 comma
-singleline_comment|// A1 = -1.401428
+multiline_comment|/* A1 = -1.401428 */
 op_minus
 l_int|32657
 comma
-singleline_comment|// A2 = 0.996613
+multiline_comment|/* A2 = 0.996613 */
 l_int|6520
 comma
-singleline_comment|// B2 = 0.198990
+multiline_comment|/* B2 = 0.198990 */
 op_minus
 l_int|4619
 comma
-singleline_comment|// B1 = -0.281937
+multiline_comment|/* B1 = -0.281937 */
 l_int|6520
 comma
-singleline_comment|// B0 = 0.198990
+multiline_comment|/* B0 = 0.198990 */
 l_int|5
 comma
-singleline_comment|// Internal filter scaling
+multiline_comment|/* Internal filter scaling */
 l_int|159
 comma
-singleline_comment|// Minimum in-band energy threshold
+multiline_comment|/* Minimum in-band energy threshold */
 l_int|21
 comma
-singleline_comment|// 21/32 in-band to broad-band ratio
+multiline_comment|/* 21/32 in-band to broad-band ratio */
 l_int|0x0FF5
-singleline_comment|// shift-mask 0x0FF (look at 16 half-frames) bit count = 5
+multiline_comment|/* shift-mask 0x0FF (look at 16 half-frames) bit count = 5 */
 )brace
 comma
 (brace
-singleline_comment|// 1050.txt
+multiline_comment|/* f1050 */
 l_int|22142
 comma
-singleline_comment|// A1 = -1.351501
+multiline_comment|/* A1 = -1.351501 */
 op_minus
 l_int|32474
 comma
-singleline_comment|// A2 = 0.991058
+multiline_comment|/* A2 = 0.991058 */
 op_minus
 l_int|147
 comma
-singleline_comment|// B2 = -0.004493
+multiline_comment|/* B2 = -0.004493 */
 l_int|0
 comma
-singleline_comment|// B1 = 0.000000
+multiline_comment|/* B1 = 0.000000 */
 l_int|147
 comma
-singleline_comment|// B0 = 0.004493
+multiline_comment|/* B0 = 0.004493 */
 l_int|22000
 comma
-singleline_comment|// A1 = -1.342834
+multiline_comment|/* A1 = -1.342834 */
 op_minus
 l_int|32655
 comma
-singleline_comment|// A2 = 0.996552
+multiline_comment|/* A2 = 0.996552 */
 l_int|15379
 comma
-singleline_comment|// B2 = 0.469360
+multiline_comment|/* B2 = 0.469360 */
 op_minus
 l_int|10237
 comma
-singleline_comment|// B1 = -0.624847
+multiline_comment|/* B1 = -0.624847 */
 l_int|15379
 comma
-singleline_comment|// B0 = 0.469360
+multiline_comment|/* B0 = 0.469360 */
 l_int|22406
 comma
-singleline_comment|// A1 = -1.367554
+multiline_comment|/* A1 = -1.367554 */
 op_minus
 l_int|32657
 comma
-singleline_comment|// A2 = 0.996613
+multiline_comment|/* A2 = 0.996613 */
 l_int|17491
 comma
-singleline_comment|// B2 = 0.533783
+multiline_comment|/* B2 = 0.533783 */
 op_minus
 l_int|12096
 comma
-singleline_comment|// B1 = -0.738312
+multiline_comment|/* B1 = -0.738312 */
 l_int|17491
 comma
-singleline_comment|// B0 = 0.533783
+multiline_comment|/* B0 = 0.533783 */
 l_int|5
 comma
-singleline_comment|// Internal filter scaling
+multiline_comment|/* Internal filter scaling */
 l_int|159
 comma
-singleline_comment|// Minimum in-band energy threshold
+multiline_comment|/* Minimum in-band energy threshold */
 l_int|21
 comma
-singleline_comment|// 21/32 in-band to broad-band ratio
+multiline_comment|/* 21/32 in-band to broad-band ratio */
 l_int|0x0FF5
-singleline_comment|// shift-mask 0x0FF (look at 16 half-frames) bit count = 5
+multiline_comment|/* shift-mask 0x0FF (look at 16 half-frames) bit count = 5 */
 )brace
 comma
 (brace
-singleline_comment|// f1100_1750[]
+multiline_comment|/* f1100_1750[] */
 l_int|12973
 comma
-singleline_comment|// A1 = 0.79184
+multiline_comment|/* A1 = 0.79184 */
 op_minus
 l_int|24916
 comma
-singleline_comment|// A2 = -0.760376
+multiline_comment|/* A2 = -0.760376 */
 l_int|6655
 comma
-singleline_comment|// B2 = 0.203102
+multiline_comment|/* B2 = 0.203102 */
 l_int|367
 comma
-singleline_comment|// B1 = 0.0224
+multiline_comment|/* B1 = 0.0224 */
 l_int|6657
 comma
-singleline_comment|// B0 = 0.203171
+multiline_comment|/* B0 = 0.203171 */
 l_int|5915
 comma
-singleline_comment|// A1 = 0.361053
+multiline_comment|/* A1 = 0.361053 */
 op_minus
 l_int|29560
 comma
-singleline_comment|// A2 = -0.90213
+multiline_comment|/* A2 = -0.90213 */
 op_minus
 l_int|7777
 comma
-singleline_comment|// B2 = -0.23735
+multiline_comment|/* B2 = -0.23735 */
 l_int|0
 comma
-singleline_comment|// B1 = 0
+multiline_comment|/* B1 = 0 */
 l_int|7777
 comma
-singleline_comment|// B0 = 0.23735
+multiline_comment|/* B0 = 0.23735 */
 l_int|20510
 comma
-singleline_comment|// A1 = 1.251892
+multiline_comment|/* A1 = 1.251892 */
 op_minus
 l_int|30260
 comma
-singleline_comment|// A2 = -0.923462
+multiline_comment|/* A2 = -0.923462 */
 l_int|26662
 comma
-singleline_comment|// B2 = 0.81366
+multiline_comment|/* B2 = 0.81366 */
 op_minus
 l_int|20573
 comma
-singleline_comment|// B1 = -1.255737
+multiline_comment|/* B1 = -1.255737 */
 l_int|26668
 comma
-singleline_comment|// B0 = 0.813843
+multiline_comment|/* B0 = 0.813843 */
 l_int|7
 comma
-singleline_comment|// Internal filter scaling
+multiline_comment|/* Internal filter scaling */
 l_int|159
 comma
-singleline_comment|// Minimum in-band energy threshold
+multiline_comment|/* Minimum in-band energy threshold */
 l_int|21
 comma
-singleline_comment|// 21/32 in-band to broad-band ratio
+multiline_comment|/* 21/32 in-band to broad-band ratio */
 l_int|0x0FF5
-singleline_comment|// shift-mask 0x0FF (look at 16 half-frames) bit count = 5
+multiline_comment|/* shift-mask 0x0FF (look at 16 half-frames) bit count = 5 */
 )brace
 comma
 (brace
-singleline_comment|// 1140.txt
+multiline_comment|/* f1140 */
 l_int|20392
 comma
-singleline_comment|// A1 = -1.244629
+multiline_comment|/* A1 = -1.244629 */
 op_minus
 l_int|32460
 comma
-singleline_comment|// A2 = 0.990601
+multiline_comment|/* A2 = 0.990601 */
 op_minus
 l_int|270
 comma
-singleline_comment|// B2 = -0.008240
+multiline_comment|/* B2 = -0.008240 */
 l_int|0
 comma
-singleline_comment|// B1 = 0.000000
+multiline_comment|/* B1 = 0.000000 */
 l_int|270
 comma
-singleline_comment|// B0 = 0.008240
+multiline_comment|/* B0 = 0.008240 */
 l_int|20218
 comma
-singleline_comment|// A1 = -1.234009
+multiline_comment|/* A1 = -1.234009 */
 op_minus
 l_int|32655
 comma
-singleline_comment|// A2 = 0.996582
+multiline_comment|/* A2 = 0.996582 */
 l_int|21337
 comma
-singleline_comment|// B2 = 0.651154
+multiline_comment|/* B2 = 0.651154 */
 op_minus
 l_int|13044
 comma
-singleline_comment|// B1 = -0.796143
+multiline_comment|/* B1 = -0.796143 */
 l_int|21337
 comma
-singleline_comment|// B0 = 0.651154
+multiline_comment|/* B0 = 0.651154 */
 l_int|20684
 comma
-singleline_comment|// A1 = -1.262512
+multiline_comment|/* A1 = -1.262512 */
 op_minus
 l_int|32657
 comma
-singleline_comment|// A2 = 0.996643
+multiline_comment|/* A2 = 0.996643 */
 l_int|8572
 comma
-singleline_comment|// B2 = 0.261612
+multiline_comment|/* B2 = 0.261612 */
 op_minus
 l_int|5476
 comma
-singleline_comment|// B1 = -0.334244
+multiline_comment|/* B1 = -0.334244 */
 l_int|8572
 comma
-singleline_comment|// B0 = 0.261612
+multiline_comment|/* B0 = 0.261612 */
 l_int|5
 comma
-singleline_comment|// Internal filter scaling
+multiline_comment|/* Internal filter scaling */
 l_int|159
 comma
-singleline_comment|// Minimum in-band energy threshold
+multiline_comment|/* Minimum in-band energy threshold */
 l_int|21
 comma
-singleline_comment|// 21/32 in-band to broad-band ratio
+multiline_comment|/* 21/32 in-band to broad-band ratio */
 l_int|0x0FF5
-singleline_comment|// shift-mask 0x0FF (look at 16 half-frames) bit count = 5
+multiline_comment|/* shift-mask 0x0FF (look at 16 half-frames) bit count = 5 */
 )brace
 comma
 (brace
-singleline_comment|// 1200.txt
+multiline_comment|/* f1200 */
 l_int|19159
 comma
-singleline_comment|// A1 = -1.169373
+multiline_comment|/* A1 = -1.169373 */
 op_minus
 l_int|32456
 comma
-singleline_comment|// A2 = 0.990509
+multiline_comment|/* A2 = 0.990509 */
 op_minus
 l_int|335
 comma
-singleline_comment|// B2 = -0.010252
+multiline_comment|/* B2 = -0.010252 */
 l_int|0
 comma
-singleline_comment|// B1 = 0.000000
+multiline_comment|/* B1 = 0.000000 */
 l_int|335
 comma
-singleline_comment|// B0 = 0.010252
+multiline_comment|/* B0 = 0.010252 */
 l_int|18966
 comma
-singleline_comment|// A1 = -1.157593
+multiline_comment|/* A1 = -1.157593 */
 op_minus
 l_int|32661
 comma
-singleline_comment|// A2 = 0.996735
+multiline_comment|/* A2 = 0.996735 */
 l_int|6802
 comma
-singleline_comment|// B2 = 0.207588
+multiline_comment|/* B2 = 0.207588 */
 op_minus
 l_int|3900
 comma
-singleline_comment|// B1 = -0.238098
+multiline_comment|/* B1 = -0.238098 */
 l_int|6802
 comma
-singleline_comment|// B0 = 0.207588
+multiline_comment|/* B0 = 0.207588 */
 l_int|19467
 comma
-singleline_comment|// A1 = -1.188232
+multiline_comment|/* A1 = -1.188232 */
 op_minus
 l_int|32661
 comma
-singleline_comment|// A2 = 0.996765
+multiline_comment|/* A2 = 0.996765 */
 l_int|25035
 comma
-singleline_comment|// B2 = 0.764008
+multiline_comment|/* B2 = 0.764008 */
 op_minus
 l_int|15049
 comma
-singleline_comment|// B1 = -0.918579
+multiline_comment|/* B1 = -0.918579 */
 l_int|25035
 comma
-singleline_comment|// B0 = 0.764008
+multiline_comment|/* B0 = 0.764008 */
 l_int|5
 comma
-singleline_comment|// Internal filter scaling
+multiline_comment|/* Internal filter scaling */
 l_int|159
 comma
-singleline_comment|// Minimum in-band energy threshold
+multiline_comment|/* Minimum in-band energy threshold */
 l_int|21
 comma
-singleline_comment|// 21/32 in-band to broad-band ratio
+multiline_comment|/* 21/32 in-band to broad-band ratio */
 l_int|0x0FF5
-singleline_comment|// shift-mask 0x0FF (look at 16 half-frames) bit count = 5
+multiline_comment|/* shift-mask 0x0FF (look at 16 half-frames) bit count = 5 */
 )brace
 comma
 (brace
-singleline_comment|// 1209.txt
+multiline_comment|/* f1209 */
 l_int|18976
 comma
-singleline_comment|// A1 = -1.158264
+multiline_comment|/* A1 = -1.158264 */
 op_minus
 l_int|32439
 comma
-singleline_comment|// A2 = 0.989990
+multiline_comment|/* A2 = 0.989990 */
 op_minus
 l_int|183
 comma
-singleline_comment|// B2 = -0.005588
+multiline_comment|/* B2 = -0.005588 */
 l_int|0
 comma
-singleline_comment|// B1 = 0.000000
+multiline_comment|/* B1 = 0.000000 */
 l_int|183
 comma
-singleline_comment|// B0 = 0.005588
+multiline_comment|/* B0 = 0.005588 */
 l_int|18774
 comma
-singleline_comment|// A1 = -1.145874
+multiline_comment|/* A1 = -1.145874 */
 op_minus
 l_int|32650
 comma
-singleline_comment|// A2 = 0.996429
+multiline_comment|/* A2 = 0.996429 */
 l_int|15468
 comma
-singleline_comment|// B2 = 0.472076
+multiline_comment|/* B2 = 0.472076 */
 op_minus
 l_int|8768
 comma
-singleline_comment|// B1 = -0.535217
+multiline_comment|/* B1 = -0.535217 */
 l_int|15468
 comma
-singleline_comment|// B0 = 0.472076
+multiline_comment|/* B0 = 0.472076 */
 l_int|19300
 comma
-singleline_comment|// A1 = -1.177979
+multiline_comment|/* A1 = -1.177979 */
 op_minus
 l_int|32652
 comma
-singleline_comment|// A2 = 0.996490
+multiline_comment|/* A2 = 0.996490 */
 l_int|19840
 comma
-singleline_comment|// B2 = 0.605499
+multiline_comment|/* B2 = 0.605499 */
 op_minus
 l_int|11842
 comma
-singleline_comment|// B1 = -0.722809
+multiline_comment|/* B1 = -0.722809 */
 l_int|19840
 comma
-singleline_comment|// B0 = 0.605499
+multiline_comment|/* B0 = 0.605499 */
 l_int|5
 comma
-singleline_comment|// Internal filter scaling
+multiline_comment|/* Internal filter scaling */
 l_int|159
 comma
-singleline_comment|// Minimum in-band energy threshold
+multiline_comment|/* Minimum in-band energy threshold */
 l_int|21
 comma
-singleline_comment|// 21/32 in-band to broad-band ratio
+multiline_comment|/* 21/32 in-band to broad-band ratio */
 l_int|0x0FF5
-singleline_comment|// shift-mask 0x0FF (look at 16 half-frames) bit count = 5
+multiline_comment|/* shift-mask 0x0FF (look at 16 half-frames) bit count = 5 */
 )brace
 comma
 (brace
-singleline_comment|// 1330.txt
+multiline_comment|/* f1330 */
 l_int|16357
 comma
-singleline_comment|// A1 = -0.998413
+multiline_comment|/* A1 = -0.998413 */
 op_minus
 l_int|32368
 comma
-singleline_comment|// A2 = 0.987793
+multiline_comment|/* A2 = 0.987793 */
 op_minus
 l_int|217
 comma
-singleline_comment|// B2 = -0.006652
+multiline_comment|/* B2 = -0.006652 */
 l_int|0
 comma
-singleline_comment|// B1 = 0.000000
+multiline_comment|/* B1 = 0.000000 */
 l_int|217
 comma
-singleline_comment|// B0 = 0.006652
+multiline_comment|/* B0 = 0.006652 */
 l_int|16107
 comma
-singleline_comment|// A1 = -0.983126
+multiline_comment|/* A1 = -0.983126 */
 op_minus
 l_int|32601
 comma
-singleline_comment|// A2 = 0.994904
+multiline_comment|/* A2 = 0.994904 */
 l_int|11602
 comma
-singleline_comment|// B2 = 0.354065
+multiline_comment|/* B2 = 0.354065 */
 op_minus
 l_int|5555
 comma
-singleline_comment|// B1 = -0.339111
+multiline_comment|/* B1 = -0.339111 */
 l_int|11602
 comma
-singleline_comment|// B0 = 0.354065
+multiline_comment|/* B0 = 0.354065 */
 l_int|16722
 comma
-singleline_comment|// A1 = -1.020630
+multiline_comment|/* A1 = -1.020630 */
 op_minus
 l_int|32603
 comma
-singleline_comment|// A2 = 0.994965
+multiline_comment|/* A2 = 0.994965 */
 l_int|15574
 comma
-singleline_comment|// B2 = 0.475311
+multiline_comment|/* B2 = 0.475311 */
 op_minus
 l_int|8176
 comma
-singleline_comment|// B1 = -0.499069
+multiline_comment|/* B1 = -0.499069 */
 l_int|15574
 comma
-singleline_comment|// B0 = 0.475311
+multiline_comment|/* B0 = 0.475311 */
 l_int|5
 comma
-singleline_comment|// Internal filter scaling
+multiline_comment|/* Internal filter scaling */
 l_int|159
 comma
-singleline_comment|// Minimum in-band energy threshold
+multiline_comment|/* Minimum in-band energy threshold */
 l_int|21
 comma
-singleline_comment|// 21/32 in-band to broad-band ratio
+multiline_comment|/* 21/32 in-band to broad-band ratio */
 l_int|0x0FF5
-singleline_comment|// shift-mask 0x0FF (look at 16 half-frames) bit count = 5
+multiline_comment|/* shift-mask 0x0FF (look at 16 half-frames) bit count = 5 */
 )brace
 comma
 (brace
-singleline_comment|// 1336.txt
+multiline_comment|/* f1336 */
 l_int|16234
 comma
-singleline_comment|// A1 = -0.990875
+multiline_comment|/* A1 = -0.990875 */
 l_int|32404
 comma
-singleline_comment|// A2 = -0.988922
+multiline_comment|/* A2 = -0.988922 */
 op_minus
 l_int|193
 comma
-singleline_comment|// B2 = -0.005908
+multiline_comment|/* B2 = -0.005908 */
 l_int|0
 comma
-singleline_comment|// B1 = 0.000000
+multiline_comment|/* B1 = 0.000000 */
 l_int|193
 comma
-singleline_comment|// B0 = 0.005908
+multiline_comment|/* B0 = 0.005908 */
 l_int|15986
 comma
-singleline_comment|// A1 = -0.975769
+multiline_comment|/* A1 = -0.975769 */
 op_minus
 l_int|32632
 comma
-singleline_comment|// A2 = 0.995880
+multiline_comment|/* A2 = 0.995880 */
 l_int|18051
 comma
-singleline_comment|// B2 = 0.550903
+multiline_comment|/* B2 = 0.550903 */
 op_minus
 l_int|8658
 comma
-singleline_comment|// B1 = -0.528473
+multiline_comment|/* B1 = -0.528473 */
 l_int|18051
 comma
-singleline_comment|// B0 = 0.550903
+multiline_comment|/* B0 = 0.550903 */
 l_int|16591
 comma
-singleline_comment|// A1 = -1.012695
+multiline_comment|/* A1 = -1.012695 */
 op_minus
 l_int|32634
 comma
-singleline_comment|// A2 = 0.995941
+multiline_comment|/* A2 = 0.995941 */
 l_int|15736
 comma
-singleline_comment|// B2 = 0.480240
+multiline_comment|/* B2 = 0.480240 */
 op_minus
 l_int|8125
 comma
-singleline_comment|// B1 = -0.495926
+multiline_comment|/* B1 = -0.495926 */
 l_int|15736
 comma
-singleline_comment|// B0 = 0.480240
+multiline_comment|/* B0 = 0.480240 */
 l_int|5
 comma
-singleline_comment|// Internal filter scaling
+multiline_comment|/* Internal filter scaling */
 l_int|159
 comma
-singleline_comment|// Minimum in-band energy threshold
+multiline_comment|/* Minimum in-band energy threshold */
 l_int|21
 comma
-singleline_comment|// 21/32 in-band to broad-band ratio
+multiline_comment|/* 21/32 in-band to broad-band ratio */
 l_int|0x0FF5
-singleline_comment|// shift-mask 0x0FF (look at 16 half-frames) bit count = 5
+multiline_comment|/* shift-mask 0x0FF (look at 16 half-frames) bit count = 5 */
 )brace
 comma
 (brace
-singleline_comment|// 1366.txt
+multiline_comment|/* f1366 */
 l_int|15564
 comma
-singleline_comment|// A1 = -0.949982
+multiline_comment|/* A1 = -0.949982 */
 op_minus
 l_int|32404
 comma
-singleline_comment|// A2 = 0.988922
+multiline_comment|/* A2 = 0.988922 */
 op_minus
 l_int|269
 comma
-singleline_comment|// B2 = -0.008216
+multiline_comment|/* B2 = -0.008216 */
 l_int|0
 comma
-singleline_comment|// B1 = 0.000000
+multiline_comment|/* B1 = 0.000000 */
 l_int|269
 comma
-singleline_comment|// B0 = 0.008216
+multiline_comment|/* B0 = 0.008216 */
 l_int|15310
 comma
-singleline_comment|// A1 = -0.934479
+multiline_comment|/* A1 = -0.934479 */
 op_minus
 l_int|32632
 comma
-singleline_comment|// A2 = 0.995880
+multiline_comment|/* A2 = 0.995880 */
 l_int|10815
 comma
-singleline_comment|// B2 = 0.330063
+multiline_comment|/* B2 = 0.330063 */
 op_minus
 l_int|4962
 comma
-singleline_comment|// B1 = -0.302887
+multiline_comment|/* B1 = -0.302887 */
 l_int|10815
 comma
-singleline_comment|// B0 = 0.330063
+multiline_comment|/* B0 = 0.330063 */
 l_int|15924
 comma
-singleline_comment|// A1 = -0.971924
+multiline_comment|/* A1 = -0.971924 */
 op_minus
 l_int|32634
 comma
-singleline_comment|// A2 = 0.995941
+multiline_comment|/* A2 = 0.995941 */
 l_int|18880
 comma
-singleline_comment|// B2 = 0.576172
+multiline_comment|/* B2 = 0.576172 */
 op_minus
 l_int|9364
 comma
-singleline_comment|// B1 = -0.571594
+multiline_comment|/* B1 = -0.571594 */
 l_int|18880
 comma
-singleline_comment|// B0 = 0.576172
+multiline_comment|/* B0 = 0.576172 */
 l_int|5
 comma
-singleline_comment|// Internal filter scaling
+multiline_comment|/* Internal filter scaling */
 l_int|159
 comma
-singleline_comment|// Minimum in-band energy threshold
+multiline_comment|/* Minimum in-band energy threshold */
 l_int|21
 comma
-singleline_comment|// 21/32 in-band to broad-band ratio
+multiline_comment|/* 21/32 in-band to broad-band ratio */
 l_int|0x0FF5
-singleline_comment|// shift-mask 0x0FF (look at 16 half-frames) bit count = 5
+multiline_comment|/* shift-mask 0x0FF (look at 16 half-frames) bit count = 5 */
 )brace
 comma
 (brace
-singleline_comment|// 1380.txt
+multiline_comment|/* f1380 */
 l_int|15247
 comma
-singleline_comment|// A1 = -0.930603
+multiline_comment|/* A1 = -0.930603 */
 op_minus
 l_int|32397
 comma
-singleline_comment|// A2 = 0.988708
+multiline_comment|/* A2 = 0.988708 */
 op_minus
 l_int|244
 comma
-singleline_comment|// B2 = -0.007451
+multiline_comment|/* B2 = -0.007451 */
 l_int|0
 comma
-singleline_comment|// B1 = 0.000000
+multiline_comment|/* B1 = 0.000000 */
 l_int|244
 comma
-singleline_comment|// B0 = 0.007451
+multiline_comment|/* B0 = 0.007451 */
 l_int|14989
 comma
-singleline_comment|// A1 = -0.914886
+multiline_comment|/* A1 = -0.914886 */
 op_minus
 l_int|32627
 comma
-singleline_comment|// A2 = 0.995697
+multiline_comment|/* A2 = 0.995697 */
 l_int|18961
 comma
-singleline_comment|// B2 = 0.578644
+multiline_comment|/* B2 = 0.578644 */
 op_minus
 l_int|8498
 comma
-singleline_comment|// B1 = -0.518707
+multiline_comment|/* B1 = -0.518707 */
 l_int|18961
 comma
-singleline_comment|// B0 = 0.578644
+multiline_comment|/* B0 = 0.578644 */
 l_int|15608
 comma
-singleline_comment|// A1 = -0.952667
+multiline_comment|/* A1 = -0.952667 */
 op_minus
 l_int|32628
 comma
-singleline_comment|// A2 = 0.995758
+multiline_comment|/* A2 = 0.995758 */
 l_int|11145
 comma
-singleline_comment|// B2 = 0.340134
+multiline_comment|/* B2 = 0.340134 */
 op_minus
 l_int|5430
 comma
-singleline_comment|// B1 = -0.331467
+multiline_comment|/* B1 = -0.331467 */
 l_int|11145
 comma
-singleline_comment|// B0 = 0.340134
+multiline_comment|/* B0 = 0.340134 */
 l_int|5
 comma
-singleline_comment|// Internal filter scaling
+multiline_comment|/* Internal filter scaling */
 l_int|159
 comma
-singleline_comment|// Minimum in-band energy threshold
+multiline_comment|/* Minimum in-band energy threshold */
 l_int|21
 comma
-singleline_comment|// 21/32 in-band to broad-band ratio
+multiline_comment|/* 21/32 in-band to broad-band ratio */
 l_int|0x0FF5
-singleline_comment|// shift-mask 0x0FF (look at 16 half-frames) bit count = 5
+multiline_comment|/* shift-mask 0x0FF (look at 16 half-frames) bit count = 5 */
 )brace
 comma
 (brace
-singleline_comment|// 1400.txt
+multiline_comment|/* f1400 */
 l_int|14780
 comma
-singleline_comment|// A1 = -0.902130
+multiline_comment|/* A1 = -0.902130 */
 op_minus
 l_int|32393
 comma
-singleline_comment|// A2 = 0.988586
+multiline_comment|/* A2 = 0.988586 */
 op_minus
 l_int|396
 comma
-singleline_comment|// B2 = -0.012086
+multiline_comment|/* B2 = -0.012086 */
 l_int|0
 comma
-singleline_comment|// B1 = 0.000000
+multiline_comment|/* B1 = 0.000000 */
 l_int|396
 comma
-singleline_comment|// B0 = 0.012086
+multiline_comment|/* B0 = 0.012086 */
 l_int|14510
 comma
-singleline_comment|// A1 = -0.885651
+multiline_comment|/* A1 = -0.885651 */
 op_minus
 l_int|32630
 comma
-singleline_comment|// A2 = 0.995819
+multiline_comment|/* A2 = 0.995819 */
 l_int|6326
 comma
-singleline_comment|// B2 = 0.193069
+multiline_comment|/* B2 = 0.193069 */
 op_minus
 l_int|2747
 comma
-singleline_comment|// B1 = -0.167671
+multiline_comment|/* B1 = -0.167671 */
 l_int|6326
 comma
-singleline_comment|// B0 = 0.193069
+multiline_comment|/* B0 = 0.193069 */
 l_int|15154
 comma
-singleline_comment|// A1 = -0.924957
+multiline_comment|/* A1 = -0.924957 */
 op_minus
 l_int|32632
 comma
-singleline_comment|// A2 = 0.995850
+multiline_comment|/* A2 = 0.995850 */
 l_int|23235
 comma
-singleline_comment|// B2 = 0.709076
+multiline_comment|/* B2 = 0.709076 */
 op_minus
 l_int|10983
 comma
-singleline_comment|// B1 = -0.670380
+multiline_comment|/* B1 = -0.670380 */
 l_int|23235
 comma
-singleline_comment|// B0 = 0.709076
+multiline_comment|/* B0 = 0.709076 */
 l_int|5
 comma
-singleline_comment|// Internal filter scaling
+multiline_comment|/* Internal filter scaling */
 l_int|159
 comma
-singleline_comment|// Minimum in-band energy threshold
+multiline_comment|/* Minimum in-band energy threshold */
 l_int|21
 comma
-singleline_comment|// 21/32 in-band to broad-band ratio
+multiline_comment|/* 21/32 in-band to broad-band ratio */
 l_int|0x0FF5
-singleline_comment|// shift-mask 0x0FF (look at 16 half-frames) bit count = 5
+multiline_comment|/* shift-mask 0x0FF (look at 16 half-frames) bit count = 5 */
 )brace
 comma
 (brace
-singleline_comment|// 1477.txt
+multiline_comment|/* f1477 */
 l_int|13005
 comma
-singleline_comment|// A1 = -0.793793
+multiline_comment|/* A1 = -0.793793 */
 op_minus
 l_int|32368
 comma
-singleline_comment|// A2 = 0.987823
+multiline_comment|/* A2 = 0.987823 */
 op_minus
 l_int|500
 comma
-singleline_comment|// B2 = -0.015265
+multiline_comment|/* B2 = -0.015265 */
 l_int|0
 comma
-singleline_comment|// B1 = 0.000000
+multiline_comment|/* B1 = 0.000000 */
 l_int|500
 comma
-singleline_comment|// B0 = 0.015265
+multiline_comment|/* B0 = 0.015265 */
 l_int|12708
 comma
-singleline_comment|// A1 = -0.775665
+multiline_comment|/* A1 = -0.775665 */
 op_minus
 l_int|32615
 comma
-singleline_comment|// A2 = 0.995331
+multiline_comment|/* A2 = 0.995331 */
 l_int|11420
 comma
-singleline_comment|// B2 = 0.348526
+multiline_comment|/* B2 = 0.348526 */
 op_minus
 l_int|4306
 comma
-singleline_comment|// B1 = -0.262833
+multiline_comment|/* B1 = -0.262833 */
 l_int|11420
 comma
-singleline_comment|// B0 = 0.348526
+multiline_comment|/* B0 = 0.348526 */
 l_int|13397
 comma
-singleline_comment|// A1 = -0.817688
+multiline_comment|/* A1 = -0.817688 */
 op_minus
 l_int|32615
 comma
-singleline_comment|// A2 = 0.995361
+multiline_comment|/* A2 = 0.995361 */
 l_int|9454
 comma
-singleline_comment|// B2 = 0.288528
+multiline_comment|/* B2 = 0.288528 */
 op_minus
 l_int|3981
 comma
-singleline_comment|// B1 = -0.243027
+multiline_comment|/* B1 = -0.243027 */
 l_int|9454
 comma
-singleline_comment|// B0 = 0.288528
+multiline_comment|/* B0 = 0.288528 */
 l_int|5
 comma
-singleline_comment|// Internal filter scaling
+multiline_comment|/* Internal filter scaling */
 l_int|159
 comma
-singleline_comment|// Minimum in-band energy threshold
+multiline_comment|/* Minimum in-band energy threshold */
 l_int|21
 comma
-singleline_comment|// 21/32 in-band to broad-band ratio
+multiline_comment|/* 21/32 in-band to broad-band ratio */
 l_int|0x0FF5
-singleline_comment|// shift-mask 0x0FF (look at 16 half-frames) bit count = 5
+multiline_comment|/* shift-mask 0x0FF (look at 16 half-frames) bit count = 5 */
 )brace
 comma
 (brace
-singleline_comment|// 1600.txt
+multiline_comment|/* f1600 */
 l_int|10046
 comma
-singleline_comment|// A1 = -0.613190
+multiline_comment|/* A1 = -0.613190 */
 op_minus
 l_int|32331
 comma
-singleline_comment|// A2 = 0.986694
+multiline_comment|/* A2 = 0.986694 */
 op_minus
 l_int|455
 comma
-singleline_comment|// B2 = -0.013915
+multiline_comment|/* B2 = -0.013915 */
 l_int|0
 comma
-singleline_comment|// B1 = 0.000000
+multiline_comment|/* B1 = 0.000000 */
 l_int|455
 comma
-singleline_comment|// B0 = 0.013915
+multiline_comment|/* B0 = 0.013915 */
 l_int|9694
 comma
-singleline_comment|// A1 = -0.591705
+multiline_comment|/* A1 = -0.591705 */
 op_minus
 l_int|32601
 comma
-singleline_comment|// A2 = 0.994934
+multiline_comment|/* A2 = 0.994934 */
 l_int|6023
 comma
-singleline_comment|// B2 = 0.183815
+multiline_comment|/* B2 = 0.183815 */
 op_minus
 l_int|1708
 comma
-singleline_comment|// B1 = -0.104279
+multiline_comment|/* B1 = -0.104279 */
 l_int|6023
 comma
-singleline_comment|// B0 = 0.183815
+multiline_comment|/* B0 = 0.183815 */
 l_int|10478
 comma
-singleline_comment|// A1 = -0.639587
+multiline_comment|/* A1 = -0.639587 */
 op_minus
 l_int|32603
 comma
-singleline_comment|// A2 = 0.994965
+multiline_comment|/* A2 = 0.994965 */
 l_int|22031
 comma
-singleline_comment|// B2 = 0.672333
+multiline_comment|/* B2 = 0.672333 */
 op_minus
 l_int|7342
 comma
-singleline_comment|// B1 = -0.448151
+multiline_comment|/* B1 = -0.448151 */
 l_int|22031
 comma
-singleline_comment|// B0 = 0.672333
+multiline_comment|/* B0 = 0.672333 */
 l_int|5
 comma
-singleline_comment|// Internal filter scaling
+multiline_comment|/* Internal filter scaling */
 l_int|159
 comma
-singleline_comment|// Minimum in-band energy threshold
+multiline_comment|/* Minimum in-band energy threshold */
 l_int|21
 comma
-singleline_comment|// 21/32 in-band to broad-band ratio
+multiline_comment|/* 21/32 in-band to broad-band ratio */
 l_int|0x0FF5
-singleline_comment|// shift-mask 0x0FF (look at 16 half-frames) bit count = 5
+multiline_comment|/* shift-mask 0x0FF (look at 16 half-frames) bit count = 5 */
 )brace
 comma
 (brace
-singleline_comment|// f1633_1638[]
+multiline_comment|/* f1633_1638[] */
 l_int|9181
 comma
-singleline_comment|// A1 = 0.560394
+multiline_comment|/* A1 = 0.560394 */
 op_minus
 l_int|32256
 comma
-singleline_comment|// A2 = -0.984375
+multiline_comment|/* A2 = -0.984375 */
 op_minus
 l_int|556
 comma
-singleline_comment|// B2 = -0.016975
+multiline_comment|/* B2 = -0.016975 */
 l_int|0
 comma
-singleline_comment|// B1 = 0
+multiline_comment|/* B1 = 0 */
 l_int|556
 comma
-singleline_comment|// B0 = 0.016975
+multiline_comment|/* B0 = 0.016975 */
 l_int|8757
 comma
-singleline_comment|// A1 = 0.534515
+multiline_comment|/* A1 = 0.534515 */
 op_minus
 l_int|32574
 comma
-singleline_comment|// A2 = -0.99408
+multiline_comment|/* A2 = -0.99408 */
 l_int|8443
 comma
-singleline_comment|// B2 = 0.25769
+multiline_comment|/* B2 = 0.25769 */
 op_minus
 l_int|2135
 comma
-singleline_comment|// B1 = -0.130341
+multiline_comment|/* B1 = -0.130341 */
 l_int|8443
 comma
-singleline_comment|// B0 = 0.25769
+multiline_comment|/* B0 = 0.25769 */
 l_int|9691
 comma
-singleline_comment|// A1 = 0.591522
+multiline_comment|/* A1 = 0.591522 */
 op_minus
 l_int|32574
 comma
-singleline_comment|// A2 = -0.99411
+multiline_comment|/* A2 = -0.99411 */
 l_int|15446
 comma
-singleline_comment|// B2 = 0.471375
+multiline_comment|/* B2 = 0.471375 */
 op_minus
 l_int|4809
 comma
-singleline_comment|// B1 = -0.293579
+multiline_comment|/* B1 = -0.293579 */
 l_int|15446
 comma
-singleline_comment|// B0 = 0.471375
+multiline_comment|/* B0 = 0.471375 */
 l_int|7
 comma
-singleline_comment|// Internal filter scaling
+multiline_comment|/* Internal filter scaling */
 l_int|159
 comma
-singleline_comment|// Minimum in-band energy threshold
+multiline_comment|/* Minimum in-band energy threshold */
 l_int|21
 comma
-singleline_comment|// 21/32 in-band to broad-band ratio
+multiline_comment|/* 21/32 in-band to broad-band ratio */
 l_int|0x0FF5
-singleline_comment|// shift-mask 0x0FF (look at 16 half-frames) bit count = 5
+multiline_comment|/* shift-mask 0x0FF (look at 16 half-frames) bit count = 5 */
 )brace
 comma
 (brace
-singleline_comment|// 1800.txt
+multiline_comment|/* f1800 */
 l_int|5076
 comma
-singleline_comment|// A1 = -0.309875
+multiline_comment|/* A1 = -0.309875 */
 op_minus
 l_int|32304
 comma
-singleline_comment|// A2 = 0.985840
+multiline_comment|/* A2 = 0.985840 */
 op_minus
 l_int|508
 comma
-singleline_comment|// B2 = -0.015503
+multiline_comment|/* B2 = -0.015503 */
 l_int|0
 comma
-singleline_comment|// B1 = 0.000000
+multiline_comment|/* B1 = 0.000000 */
 l_int|508
 comma
-singleline_comment|// B0 = 0.015503
+multiline_comment|/* B0 = 0.015503 */
 l_int|4646
 comma
-singleline_comment|// A1 = -0.283600
+multiline_comment|/* A1 = -0.283600 */
 op_minus
 l_int|32605
 comma
-singleline_comment|// A2 = 0.995026
+multiline_comment|/* A2 = 0.995026 */
 l_int|6742
 comma
-singleline_comment|// B2 = 0.205780
+multiline_comment|/* B2 = 0.205780 */
 op_minus
 l_int|878
 comma
-singleline_comment|// B1 = -0.053635
+multiline_comment|/* B1 = -0.053635 */
 l_int|6742
 comma
-singleline_comment|// B0 = 0.205780
+multiline_comment|/* B0 = 0.205780 */
 l_int|5552
 comma
-singleline_comment|// A1 = -0.338928
+multiline_comment|/* A1 = -0.338928 */
 op_minus
 l_int|32605
 comma
-singleline_comment|// A2 = 0.995056
+multiline_comment|/* A2 = 0.995056 */
 l_int|23667
 comma
-singleline_comment|// B2 = 0.722260
+multiline_comment|/* B2 = 0.722260 */
 op_minus
 l_int|4297
 comma
-singleline_comment|// B1 = -0.262329
+multiline_comment|/* B1 = -0.262329 */
 l_int|23667
 comma
-singleline_comment|// B0 = 0.722260
+multiline_comment|/* B0 = 0.722260 */
 l_int|5
 comma
-singleline_comment|// Internal filter scaling
+multiline_comment|/* Internal filter scaling */
 l_int|159
 comma
-singleline_comment|// Minimum in-band energy threshold
+multiline_comment|/* Minimum in-band energy threshold */
 l_int|21
 comma
-singleline_comment|// 21/32 in-band to broad-band ratio
+multiline_comment|/* 21/32 in-band to broad-band ratio */
 l_int|0x0FF5
-singleline_comment|// shift-mask 0x0FF (look at 16 half-frames) bit count = 5
+multiline_comment|/* shift-mask 0x0FF (look at 16 half-frames) bit count = 5 */
 )brace
 comma
 (brace
-singleline_comment|// 1860.txt
+multiline_comment|/* f1860 */
 l_int|3569
 comma
-singleline_comment|// A1 = -0.217865
+multiline_comment|/* A1 = -0.217865 */
 op_minus
 l_int|32292
 comma
-singleline_comment|// A2 = 0.985504
+multiline_comment|/* A2 = 0.985504 */
 op_minus
 l_int|239
 comma
-singleline_comment|// B2 = -0.007322
+multiline_comment|/* B2 = -0.007322 */
 l_int|0
 comma
-singleline_comment|// B1 = 0.000000
+multiline_comment|/* B1 = 0.000000 */
 l_int|239
 comma
-singleline_comment|// B0 = 0.007322
+multiline_comment|/* B0 = 0.007322 */
 l_int|3117
 comma
-singleline_comment|// A1 = -0.190277
+multiline_comment|/* A1 = -0.190277 */
 op_minus
 l_int|32603
 comma
-singleline_comment|// A2 = 0.994965
+multiline_comment|/* A2 = 0.994965 */
 l_int|18658
 comma
-singleline_comment|// B2 = 0.569427
+multiline_comment|/* B2 = 0.569427 */
 op_minus
 l_int|1557
 comma
-singleline_comment|// B1 = -0.095032
+multiline_comment|/* B1 = -0.095032 */
 l_int|18658
 comma
-singleline_comment|// B0 = 0.569427
+multiline_comment|/* B0 = 0.569427 */
 l_int|4054
 comma
-singleline_comment|// A1 = -0.247437
+multiline_comment|/* A1 = -0.247437 */
 op_minus
 l_int|32603
 comma
-singleline_comment|// A2 = 0.994965
+multiline_comment|/* A2 = 0.994965 */
 l_int|18886
 comma
-singleline_comment|// B2 = 0.576385
+multiline_comment|/* B2 = 0.576385 */
 op_minus
 l_int|2566
 comma
-singleline_comment|// B1 = -0.156647
+multiline_comment|/* B1 = -0.156647 */
 l_int|18886
 comma
-singleline_comment|// B0 = 0.576385
+multiline_comment|/* B0 = 0.576385 */
 l_int|5
 comma
-singleline_comment|// Internal filter scaling
+multiline_comment|/* Internal filter scaling */
 l_int|159
 comma
-singleline_comment|// Minimum in-band energy threshold
+multiline_comment|/* Minimum in-band energy threshold */
 l_int|21
 comma
-singleline_comment|// 21/32 in-band to broad-band ratio
+multiline_comment|/* 21/32 in-band to broad-band ratio */
 l_int|0x0FF5
-singleline_comment|// shift-mask 0x0FF (look at 16 half-frames) bit count = 5
+multiline_comment|/* shift-mask 0x0FF (look at 16 half-frames) bit count = 5 */
 )brace
 comma
 )brace
@@ -43473,7 +52300,7 @@ comma
 id|j
 )paren
 )paren
-singleline_comment|// Select Filter
+multiline_comment|/* Select Filter */
 r_return
 op_minus
 l_int|1
@@ -43496,7 +52323,7 @@ comma
 id|j
 )paren
 )paren
-singleline_comment|// Disable Filter
+multiline_comment|/* Disable Filter */
 r_return
 op_minus
 l_int|1
@@ -43519,12 +52346,12 @@ comma
 id|j
 )paren
 )paren
-singleline_comment|// Enable Filter
+multiline_comment|/* Enable Filter */
 r_return
 op_minus
 l_int|1
 suffix:semicolon
-singleline_comment|// Select the filter (f0 - f3) to use.
+multiline_comment|/* Select the filter (f0 - f3) to use. */
 r_if
 c_cond
 (paren
@@ -43551,7 +52378,7 @@ template_param
 l_int|3
 )paren
 (brace
-singleline_comment|// Select the frequency for the selected filter.
+multiline_comment|/* Select the frequency for the selected filter. */
 r_if
 c_cond
 (paren
@@ -43579,11 +52406,11 @@ OG
 l_int|11
 )paren
 (brace
-singleline_comment|// We need to load a programmable filter set for undefined
-singleline_comment|// frequencies.  So we will point the filter to a programmable set.
-singleline_comment|// Since there are only 4 filters and 4 programmable sets, we will
-singleline_comment|// just point the filter to the same number set and program it for the
-singleline_comment|// frequency we want.
+multiline_comment|/* We need to load a programmable filter set for undefined */
+multiline_comment|/* frequencies.  So we will point the filter to a programmable set. */
+multiline_comment|/* Since there are only 4 filters and 4 programmable sets, we will */
+multiline_comment|/* just point the filter to the same number set and program it for the */
+multiline_comment|/* frequency we want. */
 r_if
 c_cond
 (paren
@@ -43695,6 +52522,236 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+DECL|function|ixj_init_filter_raw
+r_static
+r_int
+id|ixj_init_filter_raw
+c_func
+(paren
+id|IXJ
+op_star
+id|j
+comma
+id|IXJ_FILTER_RAW
+op_star
+id|jfr
+)paren
+(brace
+r_int
+r_int
+id|cmd
+suffix:semicolon
+r_int
+id|cnt
+comma
+id|max
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|jfr-&gt;filter
+OG
+l_int|3
+)paren
+(brace
+r_return
+op_minus
+l_int|1
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+id|ixj_WriteDSPCommand
+c_func
+(paren
+l_int|0x5154
+op_plus
+id|jfr-&gt;filter
+comma
+id|j
+)paren
+)paren
+multiline_comment|/* Select Filter */
+r_return
+op_minus
+l_int|1
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|jfr-&gt;enable
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|ixj_WriteDSPCommand
+c_func
+(paren
+l_int|0x5152
+comma
+id|j
+)paren
+)paren
+multiline_comment|/* Disable Filter */
+r_return
+op_minus
+l_int|1
+suffix:semicolon
+r_else
+r_return
+l_int|0
+suffix:semicolon
+)brace
+r_else
+(brace
+r_if
+c_cond
+(paren
+id|ixj_WriteDSPCommand
+c_func
+(paren
+l_int|0x5153
+comma
+id|j
+)paren
+)paren
+multiline_comment|/* Enable Filter */
+r_return
+op_minus
+l_int|1
+suffix:semicolon
+multiline_comment|/* Select the filter (f0 - f3) to use. */
+r_if
+c_cond
+(paren
+id|ixj_WriteDSPCommand
+c_func
+(paren
+l_int|0x5154
+op_plus
+id|jfr-&gt;filter
+comma
+id|j
+)paren
+)paren
+r_return
+op_minus
+l_int|1
+suffix:semicolon
+)brace
+multiline_comment|/* We need to load a programmable filter set for undefined */
+multiline_comment|/* frequencies.  So we will point the filter to a programmable set. */
+multiline_comment|/* Since there are only 4 filters and 4 programmable sets, we will */
+multiline_comment|/* just point the filter to the same number set and program it for the */
+multiline_comment|/* frequency we want. */
+r_if
+c_cond
+(paren
+id|ixj_WriteDSPCommand
+c_func
+(paren
+l_int|0x5170
+op_plus
+id|jfr-&gt;filter
+comma
+id|j
+)paren
+)paren
+r_return
+op_minus
+l_int|1
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|j-&gt;ver.low
+op_ne
+l_int|0x12
+)paren
+(brace
+id|cmd
+op_assign
+l_int|0x515B
+suffix:semicolon
+id|max
+op_assign
+l_int|19
+suffix:semicolon
+)brace
+r_else
+(brace
+id|cmd
+op_assign
+l_int|0x515E
+suffix:semicolon
+id|max
+op_assign
+l_int|15
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+id|ixj_WriteDSPCommand
+c_func
+(paren
+id|cmd
+comma
+id|j
+)paren
+)paren
+r_return
+op_minus
+l_int|1
+suffix:semicolon
+r_for
+c_loop
+(paren
+id|cnt
+op_assign
+l_int|0
+suffix:semicolon
+id|cnt
+OL
+id|max
+suffix:semicolon
+id|cnt
+op_increment
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|ixj_WriteDSPCommand
+c_func
+(paren
+id|jfr-&gt;coeff
+(braket
+id|cnt
+)braket
+comma
+id|j
+)paren
+)paren
+r_return
+op_minus
+l_int|1
+suffix:semicolon
+)brace
+id|j-&gt;filter_en
+(braket
+id|jfr-&gt;filter
+)braket
+op_assign
+id|jfr-&gt;enable
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+)brace
 DECL|function|ixj_init_tone
 r_static
 r_int
@@ -43793,12 +52850,12 @@ c_func
 l_int|0x6000
 op_plus
 (paren
-id|ti-&gt;gain0
+id|ti-&gt;gain1
 op_lshift
 l_int|4
 )paren
 op_plus
-id|ti-&gt;gain1
+id|ti-&gt;gain0
 comma
 id|j
 )paren

@@ -739,7 +739,6 @@ macro_line|#endif
 macro_line|#ifndef MODULE
 DECL|variable|__initdata
 r_static
-r_const
 r_char
 op_star
 id|mode_option
@@ -4296,6 +4295,14 @@ suffix:semicolon
 macro_line|#endif
 macro_line|#ifdef FBCON_HAS_CFB16
 r_case
+l_int|15
+suffix:colon
+id|rc
+op_assign
+l_int|15
+suffix:semicolon
+multiline_comment|/* fix for 15 bpp depths on Riva 128 based cards */
+r_case
 l_int|16
 suffix:colon
 id|rc
@@ -4322,11 +4329,6 @@ multiline_comment|/* Mystique: truecolor, 16 entries SW palette, HW palette hard
 macro_line|#endif
 r_default
 suffix:colon
-m_assert
-(paren
-l_int|0
-)paren
-suffix:semicolon
 multiline_comment|/* should not occur */
 r_break
 suffix:semicolon

@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: system.h,v 1.63 2001/04/24 01:09:12 davem Exp $ */
+multiline_comment|/* $Id: system.h,v 1.64 2001/08/30 03:22:00 kanoj Exp $ */
 macro_line|#ifndef __SPARC64_SYSTEM_H
 DECL|macro|__SPARC64_SYSTEM_H
 mdefine_line|#define __SPARC64_SYSTEM_H
@@ -64,16 +64,6 @@ DECL|macro|ARCH_SUN4C_SUN4
 mdefine_line|#define ARCH_SUN4C_SUN4 0
 DECL|macro|ARCH_SUN4
 mdefine_line|#define ARCH_SUN4 0
-r_extern
-r_int
-r_int
-id|empty_bad_page
-suffix:semicolon
-r_extern
-r_int
-r_int
-id|empty_zero_page
-suffix:semicolon
 macro_line|#endif
 DECL|macro|setipl
 mdefine_line|#define setipl(__new_ipl) &bslash;&n;&t;__asm__ __volatile__(&quot;wrpr&t;%0, %%pil&quot;  : : &quot;r&quot; (__new_ipl) : &quot;memory&quot;)

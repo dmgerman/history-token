@@ -1,5 +1,5 @@
 multiline_comment|/* &n;   BlueZ - Bluetooth protocol stack for Linux&n;   Copyright (C) 2000-2001 Qualcomm Incorporated&n;&n;   Written 2000,2001 by Maxim Krasnyansky &lt;maxk@qualcomm.com&gt;&n;&n;   This program is free software; you can redistribute it and/or modify&n;   it under the terms of the GNU General Public License version 2 as&n;   published by the Free Software Foundation;&n;&n;   THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRESS&n;   OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,&n;   FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT OF THIRD PARTY RIGHTS.&n;   IN NO EVENT SHALL THE COPYRIGHT HOLDER(S) AND AUTHOR(S) BE LIABLE FOR ANY&n;   CLAIM, OR ANY SPECIAL INDIRECT OR CONSEQUENTIAL DAMAGES, OR ANY DAMAGES &n;   WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN &n;   ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF &n;   OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.&n;&n;   ALL LIABILITY, INCLUDING LIABILITY FOR INFRINGEMENT OF ANY PATENTS, &n;   COPYRIGHTS, TRADEMARKS OR OTHER RIGHTS, RELATING TO USE OF THIS &n;   SOFTWARE IS DISCLAIMED.&n;*/
-multiline_comment|/*&n; * BlueZ kernel library.&n; *&n; * $Id: lib.c,v 1.1 2001/06/01 08:12:11 davem Exp $&n; */
+multiline_comment|/*&n; * BlueZ kernel library.&n; *&n; * $Id: lib.c,v 1.3 2001/06/22 23:14:23 maxk Exp $&n; */
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/stddef.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
@@ -253,17 +253,35 @@ id|i
 comma
 l_string|&quot;%2.2X:%2.2X:%2.2X:%2.2X:%2.2X:%2.2X&quot;
 comma
-id|ba-&gt;b0
+id|ba-&gt;b
+(braket
+l_int|0
+)braket
 comma
-id|ba-&gt;b1
+id|ba-&gt;b
+(braket
+l_int|1
+)braket
 comma
-id|ba-&gt;b2
+id|ba-&gt;b
+(braket
+l_int|2
+)braket
 comma
-id|ba-&gt;b3
+id|ba-&gt;b
+(braket
+l_int|3
+)braket
 comma
-id|ba-&gt;b4
+id|ba-&gt;b
+(braket
+l_int|4
+)braket
 comma
-id|ba-&gt;b5
+id|ba-&gt;b
+(braket
+l_int|5
+)braket
 )paren
 suffix:semicolon
 r_return

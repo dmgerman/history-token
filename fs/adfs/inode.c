@@ -754,7 +754,7 @@ l_int|100
 op_plus
 (paren
 id|low
-op_lshift
+op_rshift
 l_int|8
 )paren
 op_plus

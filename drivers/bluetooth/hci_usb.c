@@ -1,5 +1,7 @@
 multiline_comment|/* &n;   BlueZ - Bluetooth protocol stack for Linux&n;   Copyright (C) 2000-2001 Qualcomm Incorporated&n;&n;   Written 2000,2001 by Maxim Krasnyansky &lt;maxk@qualcomm.com&gt;&n;&n;   This program is free software; you can redistribute it and/or modify&n;   it under the terms of the GNU General Public License version 2 as&n;   published by the Free Software Foundation;&n;&n;   THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRESS&n;   OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,&n;   FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT OF THIRD PARTY RIGHTS.&n;   IN NO EVENT SHALL THE COPYRIGHT HOLDER(S) AND AUTHOR(S) BE LIABLE FOR ANY&n;   CLAIM, OR ANY SPECIAL INDIRECT OR CONSEQUENTIAL DAMAGES, OR ANY DAMAGES &n;   WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN &n;   ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF &n;   OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.&n;&n;   ALL LIABILITY, INCLUDING LIABILITY FOR INFRINGEMENT OF ANY PATENTS, &n;   COPYRIGHTS, TRADEMARKS OR OTHER RIGHTS, RELATING TO USE OF THIS &n;   SOFTWARE IS DISCLAIMED.&n;*/
-multiline_comment|/*&n; * BlueZ HCI USB driver.&n; * Based on original USB Bluetooth driver for Linux kernel&n; *    Copyright (c) 2000 Greg Kroah-Hartman        &lt;greg@kroah.com&gt;&n; *    Copyright (c) 2000 Mark Douglas Corner       &lt;mcorner@umich.edu&gt;&n; *&n; * $Id: hci_usb.c,v 1.1 2001/06/01 08:12:10 davem Exp $    &n; */
+multiline_comment|/*&n; * BlueZ HCI USB driver.&n; * Based on original USB Bluetooth driver for Linux kernel&n; *    Copyright (c) 2000 Greg Kroah-Hartman        &lt;greg@kroah.com&gt;&n; *    Copyright (c) 2000 Mark Douglas Corner       &lt;mcorner@umich.edu&gt;&n; *&n; * $Id: hci_usb.c,v 1.5 2001/07/05 18:42:44 maxk Exp $    &n; */
+DECL|macro|VERSION
+mdefine_line|#define VERSION &quot;1.0&quot;
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/version.h&gt;
@@ -223,7 +225,7 @@ c_cond
 (paren
 id|husb-&gt;intr_skb
 )paren
-id|bluez_skb_free
+id|kfree_skb
 c_func
 (paren
 id|husb-&gt;intr_skb
@@ -357,14 +359,14 @@ id|hdev-&gt;name
 )paren
 suffix:semicolon
 multiline_comment|/* Drop TX queues */
-id|bluez_skb_queue_purge
+id|skb_queue_purge
 c_func
 (paren
 op_amp
 id|husb-&gt;tx_ctrl_q
 )paren
 suffix:semicolon
-id|bluez_skb_queue_purge
+id|skb_queue_purge
 c_func
 (paren
 op_amp
@@ -496,7 +498,7 @@ id|skb
 )paren
 )paren
 (brace
-id|bluez_skb_free
+id|kfree_skb
 c_func
 (paren
 id|skb
@@ -884,7 +886,7 @@ op_amp
 id|husb-&gt;tx_state
 )paren
 suffix:semicolon
-id|bluez_skb_free
+id|kfree_skb
 c_func
 (paren
 id|skb
@@ -990,7 +992,7 @@ op_amp
 id|husb-&gt;tx_state
 )paren
 suffix:semicolon
-id|bluez_skb_free
+id|kfree_skb
 c_func
 (paren
 id|skb
@@ -1238,7 +1240,7 @@ comma
 id|husb-&gt;intr_count
 )paren
 suffix:semicolon
-id|bluez_skb_free
+id|kfree_skb
 c_func
 (paren
 id|skb
@@ -2201,7 +2203,7 @@ id|ep-&gt;bEndpointAddress
 suffix:semicolon
 id|size
 op_assign
-id|HCI_USB_MAX_READ
+id|HCI_MAX_FRAME_SIZE
 suffix:semicolon
 r_if
 c_cond
@@ -2580,7 +2582,7 @@ c_func
 (paren
 l_string|&quot;BlueZ HCI USB driver ver %s Copyright (C) 2000,2001 Qualcomm Inc&quot;
 comma
-id|BLUEZ_VER
+id|VERSION
 )paren
 suffix:semicolon
 id|INF
@@ -2643,6 +2645,25 @@ id|module_exit
 c_func
 (paren
 id|hci_usb_cleanup
+)paren
+suffix:semicolon
+id|MODULE_AUTHOR
+c_func
+(paren
+l_string|&quot;Maxim Krasnyansky &lt;maxk@qualcomm.com&gt;&quot;
+)paren
+suffix:semicolon
+id|MODULE_DESCRIPTION
+c_func
+(paren
+l_string|&quot;BlueZ HCI USB driver ver &quot;
+id|VERSION
+)paren
+suffix:semicolon
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
 eof

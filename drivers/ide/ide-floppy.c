@@ -1,7 +1,7 @@
-multiline_comment|/*&n; * linux/drivers/ide/ide-floppy.c&t;Version 0.9.sv&t;Jan 6 2001&n; *&n; * Copyright (C) 1996 - 1999 Gadi Oxman &lt;gadio@netvision.net.il&gt;&n; */
-multiline_comment|/*&n; * IDE ATAPI floppy driver.&n; *&n; * The driver currently doesn&squot;t have any fancy features, just the bare&n; * minimum read/write support.&n; *&n; * Many thanks to Lode Leroy &lt;Lode.Leroy@www.ibase.be&gt;, who tested so many&n; * ALPHA patches to this driver on an EASYSTOR LS-120 ATAPI floppy drive.&n; *&n; * Ver 0.1   Oct 17 96   Initial test version, mostly based on ide-tape.c.&n; * Ver 0.2   Oct 31 96   Minor changes.&n; * Ver 0.3   Dec  2 96   Fixed error recovery bug.&n; * Ver 0.4   Jan 26 97   Add support for the HDIO_GETGEO ioctl.&n; * Ver 0.5   Feb 21 97   Add partitions support.&n; *                       Use the minimum of the LBA and CHS capacities.&n; *                       Avoid hwgroup-&gt;rq == NULL on the last irq.&n; *                       Fix potential null dereferencing with DEBUG_LOG.&n; * Ver 0.8   Dec  7 97   Increase irq timeout from 10 to 50 seconds.&n; *                       Add media write-protect detection.&n; *                       Issue START command only if TEST UNIT READY fails.&n; *                       Add work-around for IOMEGA ZIP revision 21.D.&n; *                       Remove idefloppy_get_capabilities().&n; * Ver 0.9   Jul  4 99   Fix a bug which might have caused the number of&n; *                        bytes requested on each interrupt to be zero.&n; *                        Thanks to &lt;shanos@es.co.nz&gt; for pointing this out.&n; * Ver 0.9.sv Jan 6 01   Sam Varshavchik &lt;mrsam@courier-mta.com&gt;&n; *                       Implement low level formatting.  Reimplemented&n; *                       IDEFLOPPY_CAPABILITIES_PAGE, since we need the srfp&n; *                       bit.  My LS-120 drive barfs on&n; *                       IDEFLOPPY_CAPABILITIES_PAGE, but maybe it&squot;s just me.&n; *                       Compromise by not reporting a failure to get this&n; *                       mode page.  Implemented four IOCTLs in order to&n; *                       implement formatting.  IOCTls begin with 0x4600,&n; *                       0x46 is &squot;F&squot; as in Format.&n; * Ver 0.91  Dec 11 99   Added IOMEGA Clik! drive support by &n; *     &t;&t;   &lt;paul@paulbristow.net&gt;&n; * Ver 0.92  Oct 22 00   Paul Bristow became official maintainer for this &n; *           &t;&t;   driver.  Included Powerbook internal zip kludge.&n; * Ver 0.93  Oct 24 00   Fixed bugs for Clik! drive&n; *                        no disk on insert and disk change now works&n; * Ver 0.94  Oct 27 00   Tidied up to remove strstr(Clik) everywhere&n; * Ver 0.95  Nov  7 00   Brought across to kernel 2.4&n; * Ver 0.96  Jan  7 01   Actually in line with release version of 2.4.0&n; *                       including set_bit patch from Rusty Russel&n; * Ver 0.97  Jul 22 01   Merge 0.91-0.96 onto 0.9.sv for ac series&n; */
+multiline_comment|/*&n; * linux/drivers/ide/ide-floppy.c&t;Version 0.97.sv&t;Jan 14 2001&n; *&n; * Copyright (C) 1996 - 1999 Gadi Oxman &lt;gadio@netvision.net.il&gt;&n; * Copyright (C) 2000 - 2001 Paul Bristow &lt;paul@paulbristow.net&gt;&n; */
+multiline_comment|/*&n; * IDE ATAPI floppy driver.&n; *&n; * The driver currently doesn&squot;t have any fancy features, just the bare&n; * minimum read/write support.&n; *&n; * This driver supports the following IDE floppy drives:&n; *&n; * LS-120 SuperDisk&n; * Iomega Zip 100/250&n; * Iomega PC Card Clik!/PocketZip&n; *&n; * Many thanks to Lode Leroy &lt;Lode.Leroy@www.ibase.be&gt;, who tested so many&n; * ALPHA patches to this driver on an EASYSTOR LS-120 ATAPI floppy drive.&n; *&n; * Ver 0.1   Oct 17 96   Initial test version, mostly based on ide-tape.c.&n; * Ver 0.2   Oct 31 96   Minor changes.&n; * Ver 0.3   Dec  2 96   Fixed error recovery bug.&n; * Ver 0.4   Jan 26 97   Add support for the HDIO_GETGEO ioctl.&n; * Ver 0.5   Feb 21 97   Add partitions support.&n; *                       Use the minimum of the LBA and CHS capacities.&n; *                       Avoid hwgroup-&gt;rq == NULL on the last irq.&n; *                       Fix potential null dereferencing with DEBUG_LOG.&n; * Ver 0.8   Dec  7 97   Increase irq timeout from 10 to 50 seconds.&n; *                       Add media write-protect detection.&n; *                       Issue START command only if TEST UNIT READY fails.&n; *                       Add work-around for IOMEGA ZIP revision 21.D.&n; *                       Remove idefloppy_get_capabilities().&n; * Ver 0.9   Jul  4 99   Fix a bug which might have caused the number of&n; *                        bytes requested on each interrupt to be zero.&n; *                        Thanks to &lt;shanos@es.co.nz&gt; for pointing this out.&n; * Ver 0.9.sv Jan 6 01   Sam Varshavchik &lt;mrsam@courier-mta.com&gt;&n; *                       Implement low level formatting.  Reimplemented&n; *                       IDEFLOPPY_CAPABILITIES_PAGE, since we need the srfp&n; *                       bit.  My LS-120 drive barfs on&n; *                       IDEFLOPPY_CAPABILITIES_PAGE, but maybe it&squot;s just me.&n; *                       Compromise by not reporting a failure to get this&n; *                       mode page.  Implemented four IOCTLs in order to&n; *                       implement formatting.  IOCTls begin with 0x4600,&n; *                       0x46 is &squot;F&squot; as in Format.&n; *            Jan 9 01   Userland option to select format verify.&n; *                       Added PC_SUPPRESS_ERROR flag - some idefloppy drives&n; *                       do not implement IDEFLOPPY_CAPABILITIES_PAGE, and&n; *                       return a sense error.  Suppress error reporting in&n; *                       this particular case in order to avoid spurious&n; *                       errors in syslog.  The culprit is&n; *                       idefloppy_get_capability_page(), so move it to&n; *                       idefloppy_begin_format() so that it&squot;s not used&n; *                       unless absolutely necessary.&n; *                       If drive does not support format progress indication&n; *                       monitor the dsc bit in the status register.&n; *                       Also, O_NDELAY on open will allow the device to be&n; *                       opened without a disk available.  This can be used to&n; *                       open an unformatted disk, or get the device capacity.&n; * Ver 0.91  Dec 11 99   Added IOMEGA Clik! drive support by &n; *     &t;&t;   &lt;paul@paulbristow.net&gt;&n; * Ver 0.92  Oct 22 00   Paul Bristow became official maintainer for this &n; *           &t;&t;   driver.  Included Powerbook internal zip kludge.&n; * Ver 0.93  Oct 24 00   Fixed bugs for Clik! drive&n; *                        no disk on insert and disk change now works&n; * Ver 0.94  Oct 27 00   Tidied up to remove strstr(Clik) everywhere&n; * Ver 0.95  Nov  7 00   Brought across to kernel 2.4&n; * Ver 0.96  Jan  7 01   Actually in line with release version of 2.4.0&n; *                       including set_bit patch from Rusty Russel&n; * Ver 0.97  Jul 22 01   Merge 0.91-0.96 onto 0.9.sv for ac series&n; * Ver 0.97.sv Aug 3 01  Backported from 2.4.7-ac3&n; */
 DECL|macro|IDEFLOPPY_VERSION
-mdefine_line|#define IDEFLOPPY_VERSION &quot;0.97&quot;
+mdefine_line|#define IDEFLOPPY_VERSION &quot;0.97.sv&quot;
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
@@ -155,6 +155,8 @@ DECL|macro|PC_DMA_ERROR
 mdefine_line|#define&t;PC_DMA_ERROR&t;&t;&t;4&t;/* 1 when encountered problem during DMA */
 DECL|macro|PC_WRITING
 mdefine_line|#define&t;PC_WRITING&t;&t;&t;5&t;/* Data direction */
+DECL|macro|PC_SUPPRESS_ERROR
+mdefine_line|#define&t;PC_SUPPRESS_ERROR&t;&t;6&t;/* Suppress error reporting */
 multiline_comment|/*&n; *&t;Removable Block Access Capabilities Page&n; */
 r_typedef
 r_struct
@@ -3609,7 +3611,22 @@ id|pc-&gt;flags
 )paren
 )paren
 (brace
+r_if
+c_cond
+(paren
+op_logical_neg
+id|test_bit
+(paren
+id|PC_SUPPRESS_ERROR
+comma
+op_amp
+id|pc-&gt;flags
+)paren
+)paren
+(brace
+suffix:semicolon
 id|printk
+c_func
 (paren
 id|KERN_ERR
 l_string|&quot;ide-floppy: %s: I/O error, pc = %2x, key = %2x, asc = %2x, ascq = %2x&bslash;n&quot;
@@ -3628,6 +3645,7 @@ comma
 id|floppy-&gt;ascq
 )paren
 suffix:semicolon
+)brace
 id|pc-&gt;error
 op_assign
 id|IDEFLOPPY_ERROR_GENERAL
@@ -4024,6 +4042,9 @@ id|b
 comma
 r_int
 id|l
+comma
+r_int
+id|flags
 )paren
 (brace
 id|idefloppy_init_pc
@@ -4062,7 +4083,23 @@ l_int|1
 op_assign
 l_int|0xA2
 suffix:semicolon
-multiline_comment|/* Format list header, byte 1: FOV/DCRT/IMM */
+multiline_comment|/* Default format list header, byte 1: FOV/DCRT/IMM bits set */
+r_if
+c_cond
+(paren
+id|flags
+op_amp
+l_int|1
+)paren
+multiline_comment|/* Verify bit on... */
+id|pc-&gt;buffer
+(braket
+l_int|1
+)braket
+op_xor_assign
+l_int|0x20
+suffix:semicolon
+multiline_comment|/* ... turn off DCRT bit */
 id|pc-&gt;buffer
 (braket
 l_int|3
@@ -5083,6 +5120,15 @@ comma
 id|MODE_SENSE_CURRENT
 )paren
 suffix:semicolon
+id|set_bit
+c_func
+(paren
+id|PC_SUPPRESS_ERROR
+comma
+op_amp
+id|pc.flags
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -5509,14 +5555,6 @@ id|idefloppy_get_flexible_disk_page
 id|drive
 )paren
 suffix:semicolon
-(paren
-r_void
-)paren
-id|idefloppy_get_capability_page
-(paren
-id|drive
-)paren
-suffix:semicolon
 )brace
 id|drive-&gt;part
 (braket
@@ -5809,7 +5847,7 @@ l_int|0
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n;** Send ATAPI_FORMAT_UNIT to the drive.&n;**&n;** Userland gives us the following structure:&n;**&n;** struct idefloppy_format_command {&n;**        int nblocks;&n;**        int blocksize;&n;**        } ;&n;*/
+multiline_comment|/*&n;** Send ATAPI_FORMAT_UNIT to the drive.&n;**&n;** Userland gives us the following structure:&n;**&n;** struct idefloppy_format_command {&n;**        int nblocks;&n;**        int blocksize;&n;**        int flags;&n;**        } ;&n;**&n;** flags is a bitmask, currently, the only defined flag is:&n;**&n;**        0x01 - verify media after format.&n;*/
 DECL|function|idefloppy_begin_format
 r_static
 r_int
@@ -5841,6 +5879,9 @@ suffix:semicolon
 r_int
 id|length
 suffix:semicolon
+r_int
+id|flags
+suffix:semicolon
 id|idefloppy_pc_t
 id|pc
 suffix:semicolon
@@ -5864,6 +5905,16 @@ id|arg
 op_plus
 l_int|1
 )paren
+op_logical_or
+id|get_user
+c_func
+(paren
+id|flags
+comma
+id|arg
+op_plus
+l_int|2
+)paren
 )paren
 (brace
 r_return
@@ -5873,6 +5924,15 @@ id|EFAULT
 )paren
 suffix:semicolon
 )brace
+(paren
+r_void
+)paren
+id|idefloppy_get_capability_page
+(paren
+id|drive
+)paren
+suffix:semicolon
+multiline_comment|/* Get the SFRP bit */
 id|idefloppy_create_format_unit_cmd
 c_func
 (paren
@@ -5882,6 +5942,8 @@ comma
 id|blocks
 comma
 id|length
+comma
+id|flags
 )paren
 suffix:semicolon
 r_if
@@ -5909,7 +5971,7 @@ l_int|0
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n;** Get ATAPI_FORMAT_UNIT progress indication.&n;**&n;** Userland gives a pointer to an int.  The int is set to a progresss&n;** indicator 0-65536, with 65536=100%.&n;**&n;** If the drive does not support format progress indication, we just return&n;** a 65536, screw it.&n;*/
+multiline_comment|/*&n;** Get ATAPI_FORMAT_UNIT progress indication.&n;**&n;** Userland gives a pointer to an int.  The int is set to a progresss&n;** indicator 0-65536, with 65536=100%.&n;**&n;** If the drive does not support format progress indication, we just check&n;** the dsc bit, and return either 0 or 65536.&n;*/
 DECL|function|idefloppy_get_format_progress
 r_static
 r_int
@@ -6002,6 +6064,51 @@ op_assign
 id|floppy-&gt;progress_indication
 suffix:semicolon
 )brace
+multiline_comment|/* Else assume format_unit has finished, and we&squot;re&n;&t;&t;** at 0x10000 */
+)brace
+r_else
+(brace
+id|idefloppy_status_reg_t
+id|status
+suffix:semicolon
+r_int
+r_int
+id|flags
+suffix:semicolon
+id|__save_flags
+c_func
+(paren
+id|flags
+)paren
+suffix:semicolon
+id|__cli
+c_func
+(paren
+)paren
+suffix:semicolon
+id|status.all
+op_assign
+id|GET_STAT
+c_func
+(paren
+)paren
+suffix:semicolon
+id|__restore_flags
+c_func
+(paren
+id|flags
+)paren
+suffix:semicolon
+id|progress_indication
+op_assign
+op_logical_neg
+id|status.b.dsc
+ques
+c_cond
+l_int|0
+suffix:colon
+l_int|0x10000
+suffix:semicolon
 )brace
 r_if
 c_cond
@@ -6226,15 +6333,6 @@ id|floppy
 op_assign
 id|drive-&gt;driver_data
 suffix:semicolon
-id|set_bit
-c_func
-(paren
-id|IDEFLOPPY_FORMAT_IN_PROGRESS
-comma
-op_amp
-id|floppy-&gt;flags
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -6261,6 +6359,17 @@ suffix:semicolon
 r_else
 (brace
 r_int
+id|rc
+suffix:semicolon
+id|set_bit
+c_func
+(paren
+id|IDEFLOPPY_FORMAT_IN_PROGRESS
+comma
+op_amp
+id|floppy-&gt;flags
+)paren
+suffix:semicolon
 id|rc
 op_assign
 id|idefloppy_begin_format
@@ -6434,6 +6543,15 @@ id|idefloppy_get_capacity
 (paren
 id|drive
 )paren
+op_logical_and
+(paren
+id|filp-&gt;f_flags
+op_amp
+id|O_NDELAY
+)paren
+op_eq
+l_int|0
+multiline_comment|/*&n;&t;&t;    ** Allow O_NDELAY to open a drive without a disk, or with&n;&t;&t;    ** an unreadable disk, so that we can get the format&n;&t;&t;    ** capacity of the drive or begin the format - Sam&n;&t;&t;    */
 )paren
 (brace
 id|drive-&gt;usage
@@ -7970,6 +8088,59 @@ id|i
 )braket
 op_assign
 l_int|64
+suffix:semicolon
+)brace
+multiline_comment|/*&n;   *      Guess what?  The IOMEGA Clik! drive also needs the&n;   *      above fix.  It makes nasty clicking noises without&n;   *      it, so please don&squot;t remove this.&n;   */
+r_if
+c_cond
+(paren
+id|strcmp
+c_func
+(paren
+id|drive-&gt;id-&gt;model
+comma
+l_string|&quot;IOMEGA Clik! 40 CZ ATAPI&quot;
+)paren
+op_eq
+l_int|0
+)paren
+(brace
+r_for
+c_loop
+(paren
+id|i
+op_assign
+l_int|0
+suffix:semicolon
+id|i
+OL
+l_int|1
+op_lshift
+id|PARTN_BITS
+suffix:semicolon
+id|i
+op_increment
+)paren
+id|max_sectors
+(braket
+id|major
+)braket
+(braket
+id|minor
+op_plus
+id|i
+)braket
+op_assign
+l_int|64
+suffix:semicolon
+id|set_bit
+c_func
+(paren
+id|IDEFLOPPY_CLIK_DRIVE
+comma
+op_amp
+id|floppy-&gt;flags
+)paren
 suffix:semicolon
 )brace
 multiline_comment|/*&n;&t;*      Guess what?  The IOMEGA Clik! drive also needs the&n;&t;*      above fix.  It makes nasty clicking noises without&n;&t;*      it, so please don&squot;t remove this.&n;&t;*/

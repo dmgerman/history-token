@@ -479,6 +479,9 @@ DECL|macro|MODULE_GENERIC_TABLE
 mdefine_line|#define MODULE_GENERIC_TABLE(gtype,name)&t;&bslash;&n;static const unsigned long __module_##gtype##_size &bslash;&n;  __attribute__ ((unused)) = sizeof(struct gtype##_id); &bslash;&n;static const struct gtype##_id * __module_##gtype##_table &bslash;&n;  __attribute__ ((unused)) = name
 DECL|macro|MODULE_DEVICE_TABLE
 mdefine_line|#define MODULE_DEVICE_TABLE(type,name)&t;&t;&bslash;&n;  MODULE_GENERIC_TABLE(type##_device,name)
+multiline_comment|/*&n; * The following license idents are currently accepted as indicating free&n; * software modules&n; *&n; *&t;&quot;GPL&quot;&t;&t;&t;&t;[GNU Public License v2 or later]&n; *&t;&quot;GPL and additional rights&quot;&t;[GNU Public License v2 rights and more]&n; *&t;&quot;Dual BSD/GPL&quot;&t;&t;&t;[GNU Public License v2 or BSD license choice]&n; *&n; * The following other idents are available&n; *&n; *&t;&quot;Proprietary&quot;&t;&t;&t;[Non free products]&n; *&n; * There are dual licensed components, but when running with Linux it is the&n; * GPL that is relevant so this is a non issue. Similarly LGPL linked with GPL&n; * is a GPL combined work.&n; *&n; * This exists for several reasons&n; * 1.&t;So modinfo can show license info for users wanting to vet their setup &n; *&t;is free&n; * 2.&t;So the community can ignore bug reports including proprietary modules&n; * 3.&t;So vendors can do likewise based on their own policies&n; */
+DECL|macro|MODULE_LICENSE
+mdefine_line|#define MODULE_LICENSE(license) &t;&bslash;&n;static const char __module_license[] __attribute__((section(&quot;.modinfo&quot;))) =   &bslash;&n;&quot;license=&quot; license
 multiline_comment|/* Define the module variable, and usage macros.  */
 r_extern
 r_struct
@@ -542,6 +545,8 @@ macro_line|#endif
 macro_line|#else /* MODULE */
 DECL|macro|MODULE_AUTHOR
 mdefine_line|#define MODULE_AUTHOR(name)
+DECL|macro|MODULE_LICENSE
+mdefine_line|#define MODULE_LICENSE(license)
 DECL|macro|MODULE_DESCRIPTION
 mdefine_line|#define MODULE_DESCRIPTION(desc)
 DECL|macro|MODULE_SUPPORTED_DEVICE

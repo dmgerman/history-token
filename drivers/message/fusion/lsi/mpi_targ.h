@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *  Copyright (c) 2000-2001 LSI Logic Corporation.&n; *&n; *&n; *           Name:  MPI_TARG.H&n; *          Title:  MPI Target mode messages and structures&n; *  Creation Date:  June 22, 2000&n; *&n; *    MPI Version:  01.01.03&n; *&n; *  Version History&n; *  ---------------&n; *&n; *  Date      Version   Description&n; *  --------  --------  ------------------------------------------------------&n; *  05-08-00  00.10.01  Original release for 0.10 spec dated 4/26/2000.&n; *  06-06-00  01.00.01  Update version number for 1.0 release.&n; *  06-22-00  01.00.02  Added _MSG_TARGET_CMD_BUFFER_POST_REPLY structure.&n; *                      Corrected DECSRIPTOR typo to DESCRIPTOR.&n; *  11-02-00  01.01.01  Original release for post 1.0 work&n; *                      Modified target mode to use IoIndex instead of&n; *                      HostIndex and IocIndex. Added Alias.&n; *  01-09-01  01.01.02  Added defines for TARGET_ASSIST_FLAGS_REPOST_CMD_BUFFER&n; *                      and TARGET_STATUS_SEND_FLAGS_REPOST_CMD_BUFFER.&n; *  02-20-01  01.01.03  Started using MPI_POINTER.&n; *                      Added structures for MPI_TARGET_SCSI_SPI_CMD_BUFFER and&n; *                      MPI_TARGET_FCP_CMD_BUFFER.&n; *  --------------------------------------------------------------------------&n; */
+multiline_comment|/*&n; *  Copyright (c) 2000-2001 LSI Logic Corporation.&n; *&n; *&n; *           Name:  MPI_TARG.H&n; *          Title:  MPI Target mode messages and structures&n; *  Creation Date:  June 22, 2000&n; *&n; *    MPI Version:  01.01.04&n; *&n; *  Version History&n; *  ---------------&n; *&n; *  Date      Version   Description&n; *  --------  --------  ------------------------------------------------------&n; *  05-08-00  00.10.01  Original release for 0.10 spec dated 4/26/2000.&n; *  06-06-00  01.00.01  Update version number for 1.0 release.&n; *  06-22-00  01.00.02  Added _MSG_TARGET_CMD_BUFFER_POST_REPLY structure.&n; *                      Corrected DECSRIPTOR typo to DESCRIPTOR.&n; *  11-02-00  01.01.01  Original release for post 1.0 work&n; *                      Modified target mode to use IoIndex instead of&n; *                      HostIndex and IocIndex. Added Alias.&n; *  01-09-01  01.01.02  Added defines for TARGET_ASSIST_FLAGS_REPOST_CMD_BUFFER&n; *                      and TARGET_STATUS_SEND_FLAGS_REPOST_CMD_BUFFER.&n; *  02-20-01  01.01.03  Started using MPI_POINTER.&n; *                      Added structures for MPI_TARGET_SCSI_SPI_CMD_BUFFER and&n; *                      MPI_TARGET_FCP_CMD_BUFFER.&n; *  03-27-01  01.01.04  Added structure offset comments.&n; *  --------------------------------------------------------------------------&n; */
 macro_line|#ifndef MPI_TARG_H
 DECL|macro|MPI_TARG_H
 mdefine_line|#define MPI_TARG_H
@@ -12,11 +12,14 @@ DECL|member|IoIndex
 id|U16
 id|IoIndex
 suffix:semicolon
+multiline_comment|/* 00h */
 DECL|member|Reserved
 id|U16
 id|Reserved
 suffix:semicolon
+multiline_comment|/* 02h */
 r_union
+multiline_comment|/* 04h */
 (brace
 DECL|member|PhysicalAddress32
 id|U32
@@ -57,38 +60,47 @@ DECL|member|BufferPostFlags
 id|U8
 id|BufferPostFlags
 suffix:semicolon
+multiline_comment|/* 00h */
 DECL|member|BufferCount
 id|U8
 id|BufferCount
 suffix:semicolon
+multiline_comment|/* 01h */
 DECL|member|ChainOffset
 id|U8
 id|ChainOffset
 suffix:semicolon
+multiline_comment|/* 02h */
 DECL|member|Function
 id|U8
 id|Function
 suffix:semicolon
+multiline_comment|/* 03h */
 DECL|member|BufferLength
 id|U8
 id|BufferLength
 suffix:semicolon
+multiline_comment|/* 04h */
 DECL|member|Reserved
 id|U8
 id|Reserved
 suffix:semicolon
+multiline_comment|/* 05h */
 DECL|member|Reserved1
 id|U8
 id|Reserved1
 suffix:semicolon
+multiline_comment|/* 06h */
 DECL|member|MsgFlags
 id|U8
 id|MsgFlags
 suffix:semicolon
+multiline_comment|/* 07h */
 DECL|member|MsgContext
 id|U32
 id|MsgContext
 suffix:semicolon
+multiline_comment|/* 08h */
 DECL|member|Buffer
 id|CMD_BUFFER_DESCRIPTOR
 id|Buffer
@@ -96,6 +108,7 @@ id|Buffer
 l_int|1
 )braket
 suffix:semicolon
+multiline_comment|/* 0Ch */
 DECL|typedef|MSG_TARGET_CMD_BUFFER_POST_REQUEST
 DECL|typedef|PTR_MSG_TARGET_CMD_BUFFER_POST_REQUEST
 )brace
@@ -132,50 +145,62 @@ DECL|member|BufferPostFlags
 id|U8
 id|BufferPostFlags
 suffix:semicolon
+multiline_comment|/* 00h */
 DECL|member|BufferCount
 id|U8
 id|BufferCount
 suffix:semicolon
+multiline_comment|/* 01h */
 DECL|member|MsgLength
 id|U8
 id|MsgLength
 suffix:semicolon
+multiline_comment|/* 02h */
 DECL|member|Function
 id|U8
 id|Function
 suffix:semicolon
+multiline_comment|/* 03h */
 DECL|member|BufferLength
 id|U8
 id|BufferLength
 suffix:semicolon
+multiline_comment|/* 04h */
 DECL|member|Reserved
 id|U8
 id|Reserved
 suffix:semicolon
+multiline_comment|/* 05h */
 DECL|member|Reserved1
 id|U8
 id|Reserved1
 suffix:semicolon
+multiline_comment|/* 06h */
 DECL|member|MsgFlags
 id|U8
 id|MsgFlags
 suffix:semicolon
+multiline_comment|/* 07h */
 DECL|member|MsgContext
 id|U32
 id|MsgContext
 suffix:semicolon
+multiline_comment|/* 08h */
 DECL|member|Reserved2
 id|U16
 id|Reserved2
 suffix:semicolon
+multiline_comment|/* 0Ch */
 DECL|member|IOCStatus
 id|U16
 id|IOCStatus
 suffix:semicolon
+multiline_comment|/* 0Eh */
 DECL|member|IOCLogInfo
 id|U32
 id|IOCLogInfo
 suffix:semicolon
+multiline_comment|/* 10h */
 DECL|typedef|MSG_TARGET_CMD_BUFFER_POST_REPLY
 DECL|typedef|PTR_MSG_TARGET_CMD_BUFFER_POST_REPLY
 )brace
@@ -200,50 +225,62 @@ DECL|member|Reserved
 id|U16
 id|Reserved
 suffix:semicolon
+multiline_comment|/* 00h */
 DECL|member|MsgLength
 id|U8
 id|MsgLength
 suffix:semicolon
+multiline_comment|/* 02h */
 DECL|member|Function
 id|U8
 id|Function
 suffix:semicolon
+multiline_comment|/* 03h */
 DECL|member|Reserved1
 id|U16
 id|Reserved1
 suffix:semicolon
+multiline_comment|/* 04h */
 DECL|member|Reserved2
 id|U8
 id|Reserved2
 suffix:semicolon
+multiline_comment|/* 06h */
 DECL|member|MsgFlags
 id|U8
 id|MsgFlags
 suffix:semicolon
+multiline_comment|/* 07h */
 DECL|member|MsgContext
 id|U32
 id|MsgContext
 suffix:semicolon
+multiline_comment|/* 08h */
 DECL|member|PriorityReason
 id|U8
 id|PriorityReason
 suffix:semicolon
+multiline_comment|/* 0Ch */
 DECL|member|Reserved3
 id|U8
 id|Reserved3
 suffix:semicolon
+multiline_comment|/* 0Dh */
 DECL|member|IOCStatus
 id|U16
 id|IOCStatus
 suffix:semicolon
+multiline_comment|/* 0Eh */
 DECL|member|IOCLogInfo
 id|U32
 id|IOCLogInfo
 suffix:semicolon
+multiline_comment|/* 10h */
 DECL|member|ReplyWord
 id|U32
 id|ReplyWord
 suffix:semicolon
+multiline_comment|/* 14h */
 DECL|typedef|MSG_PRIORITY_CMD_RECEIVED_REPLY
 DECL|typedef|PTR_MSG_PRIORITY_CMD_RECEIVED_REPLY
 )brace
@@ -274,46 +311,57 @@ DECL|member|Reserved
 id|U16
 id|Reserved
 suffix:semicolon
+multiline_comment|/* 00h */
 DECL|member|MsgLength
 id|U8
 id|MsgLength
 suffix:semicolon
+multiline_comment|/* 02h */
 DECL|member|Function
 id|U8
 id|Function
 suffix:semicolon
+multiline_comment|/* 03h */
 DECL|member|Reserved1
 id|U16
 id|Reserved1
 suffix:semicolon
+multiline_comment|/* 04h */
 DECL|member|Reserved2
 id|U8
 id|Reserved2
 suffix:semicolon
+multiline_comment|/* 06h */
 DECL|member|MsgFlags
 id|U8
 id|MsgFlags
 suffix:semicolon
+multiline_comment|/* 07h */
 DECL|member|MsgContext
 id|U32
 id|MsgContext
 suffix:semicolon
+multiline_comment|/* 08h */
 DECL|member|Reserved3
 id|U16
 id|Reserved3
 suffix:semicolon
+multiline_comment|/* 0Ch */
 DECL|member|IOCStatus
 id|U16
 id|IOCStatus
 suffix:semicolon
+multiline_comment|/* 0Eh */
 DECL|member|IOCLogInfo
 id|U32
 id|IOCLogInfo
 suffix:semicolon
+multiline_comment|/* 10h */
 DECL|member|ReplyWord
 id|U32
 id|ReplyWord
 suffix:semicolon
+multiline_comment|/* 14h */
 DECL|typedef|MSG_TARGET_CMD_BUFFER_POST_ERROR_REPLY
 )brace
 id|MSG_TARGET_CMD_BUFFER_POST_ERROR_REPLY
@@ -341,6 +389,7 @@ id|FcpLun
 l_int|8
 )braket
 suffix:semicolon
+multiline_comment|/* 00h */
 DECL|member|FcpCntl
 id|U8
 id|FcpCntl
@@ -348,6 +397,7 @@ id|FcpCntl
 l_int|4
 )braket
 suffix:semicolon
+multiline_comment|/* 08h */
 DECL|member|FcpCdb
 id|U8
 id|FcpCdb
@@ -355,10 +405,12 @@ id|FcpCdb
 l_int|16
 )braket
 suffix:semicolon
+multiline_comment|/* 0Ch */
 DECL|member|FcpDl
 id|U32
 id|FcpDl
 suffix:semicolon
+multiline_comment|/* 1Ch */
 DECL|typedef|MPI_TARGET_FCP_CMD_BUFFER
 DECL|typedef|PTR_MPI_TARGET_FCP_CMD_BUFFER
 )brace
@@ -384,14 +436,17 @@ DECL|member|L_QType
 id|U8
 id|L_QType
 suffix:semicolon
+multiline_comment|/* 00h */
 DECL|member|Reserved
 id|U8
 id|Reserved
 suffix:semicolon
+multiline_comment|/* 01h */
 DECL|member|Tag
 id|U16
 id|Tag
 suffix:semicolon
+multiline_comment|/* 02h */
 DECL|member|LogicalUnitNumber
 id|U8
 id|LogicalUnitNumber
@@ -399,27 +454,33 @@ id|LogicalUnitNumber
 l_int|8
 )braket
 suffix:semicolon
+multiline_comment|/* 04h */
 DECL|member|DataLength
 id|U32
 id|DataLength
 suffix:semicolon
+multiline_comment|/* 0Ch */
 multiline_comment|/* SPI command information unit */
 DECL|member|ReservedFirstByteOfCommandIU
 id|U8
 id|ReservedFirstByteOfCommandIU
 suffix:semicolon
+multiline_comment|/* 10h */
 DECL|member|TaskAttribute
 id|U8
 id|TaskAttribute
 suffix:semicolon
+multiline_comment|/* 11h */
 DECL|member|TaskManagementFlags
 id|U8
 id|TaskManagementFlags
 suffix:semicolon
+multiline_comment|/* 12h */
 DECL|member|AdditionalCDBLength
 id|U8
 id|AdditionalCDBLength
 suffix:semicolon
+multiline_comment|/* 13h */
 DECL|member|CDB
 id|U8
 id|CDB
@@ -427,6 +488,7 @@ id|CDB
 l_int|16
 )braket
 suffix:semicolon
+multiline_comment|/* 14h */
 DECL|typedef|MPI_TARGET_SCSI_SPI_CMD_BUFFER
 )brace
 id|MPI_TARGET_SCSI_SPI_CMD_BUFFER
@@ -454,38 +516,47 @@ DECL|member|StatusCode
 id|U8
 id|StatusCode
 suffix:semicolon
+multiline_comment|/* 00h */
 DECL|member|TargetAssistFlags
 id|U8
 id|TargetAssistFlags
 suffix:semicolon
+multiline_comment|/* 01h */
 DECL|member|ChainOffset
 id|U8
 id|ChainOffset
 suffix:semicolon
+multiline_comment|/* 02h */
 DECL|member|Function
 id|U8
 id|Function
 suffix:semicolon
+multiline_comment|/* 03h */
 DECL|member|QueueTag
 id|U16
 id|QueueTag
 suffix:semicolon
+multiline_comment|/* 04h */
 DECL|member|Reserved
 id|U8
 id|Reserved
 suffix:semicolon
+multiline_comment|/* 06h */
 DECL|member|MsgFlags
 id|U8
 id|MsgFlags
 suffix:semicolon
+multiline_comment|/* 07h */
 DECL|member|MsgContext
 id|U32
 id|MsgContext
 suffix:semicolon
+multiline_comment|/* 08h */
 DECL|member|ReplyWord
 id|U32
 id|ReplyWord
 suffix:semicolon
+multiline_comment|/* 0Ch */
 DECL|member|LUN
 id|U8
 id|LUN
@@ -493,14 +564,17 @@ id|LUN
 l_int|8
 )braket
 suffix:semicolon
+multiline_comment|/* 10h */
 DECL|member|RelativeOffset
 id|U32
 id|RelativeOffset
 suffix:semicolon
+multiline_comment|/* 18h */
 DECL|member|DataLength
 id|U32
 id|DataLength
 suffix:semicolon
+multiline_comment|/* 1Ch */
 DECL|member|SGL
 id|SGE_IO_UNION
 id|SGL
@@ -508,6 +582,7 @@ id|SGL
 l_int|1
 )braket
 suffix:semicolon
+multiline_comment|/* 20h */
 DECL|typedef|MSG_TARGET_ASSIST_REQUEST
 DECL|typedef|PTR_MSG_TARGET_ASSIST_REQUEST
 )brace
@@ -540,50 +615,62 @@ DECL|member|Reserved
 id|U16
 id|Reserved
 suffix:semicolon
+multiline_comment|/* 00h */
 DECL|member|MsgLength
 id|U8
 id|MsgLength
 suffix:semicolon
+multiline_comment|/* 02h */
 DECL|member|Function
 id|U8
 id|Function
 suffix:semicolon
+multiline_comment|/* 03h */
 DECL|member|Reserved1
 id|U16
 id|Reserved1
 suffix:semicolon
+multiline_comment|/* 04h */
 DECL|member|Reserved2
 id|U8
 id|Reserved2
 suffix:semicolon
+multiline_comment|/* 06h */
 DECL|member|MsgFlags
 id|U8
 id|MsgFlags
 suffix:semicolon
+multiline_comment|/* 07h */
 DECL|member|MsgContext
 id|U32
 id|MsgContext
 suffix:semicolon
+multiline_comment|/* 08h */
 DECL|member|Reserved3
 id|U16
 id|Reserved3
 suffix:semicolon
+multiline_comment|/* 0Ch */
 DECL|member|IOCStatus
 id|U16
 id|IOCStatus
 suffix:semicolon
+multiline_comment|/* 0Eh */
 DECL|member|IOCLogInfo
 id|U32
 id|IOCLogInfo
 suffix:semicolon
+multiline_comment|/* 10h */
 DECL|member|ReplyWord
 id|U32
 id|ReplyWord
 suffix:semicolon
+multiline_comment|/* 14h */
 DECL|member|TransferCount
 id|U32
 id|TransferCount
 suffix:semicolon
+multiline_comment|/* 18h */
 DECL|typedef|MSG_TARGET_ERROR_REPLY
 DECL|typedef|PTR_MSG_TARGET_ERROR_REPLY
 )brace
@@ -611,38 +698,47 @@ DECL|member|StatusCode
 id|U8
 id|StatusCode
 suffix:semicolon
+multiline_comment|/* 00h */
 DECL|member|StatusFlags
 id|U8
 id|StatusFlags
 suffix:semicolon
+multiline_comment|/* 01h */
 DECL|member|ChainOffset
 id|U8
 id|ChainOffset
 suffix:semicolon
+multiline_comment|/* 02h */
 DECL|member|Function
 id|U8
 id|Function
 suffix:semicolon
+multiline_comment|/* 03h */
 DECL|member|QueueTag
 id|U16
 id|QueueTag
 suffix:semicolon
+multiline_comment|/* 04h */
 DECL|member|Reserved
 id|U8
 id|Reserved
 suffix:semicolon
+multiline_comment|/* 06h */
 DECL|member|MsgFlags
 id|U8
 id|MsgFlags
 suffix:semicolon
+multiline_comment|/* 07h */
 DECL|member|MsgContext
 id|U32
 id|MsgContext
 suffix:semicolon
+multiline_comment|/* 08h */
 DECL|member|ReplyWord
 id|U32
 id|ReplyWord
 suffix:semicolon
+multiline_comment|/* 0Ch */
 DECL|member|LUN
 id|U8
 id|LUN
@@ -650,10 +746,12 @@ id|LUN
 l_int|8
 )braket
 suffix:semicolon
+multiline_comment|/* 10h */
 DECL|member|StatusDataSGE
 id|SGE_SIMPLE_UNION
 id|StatusDataSGE
 suffix:semicolon
+multiline_comment|/* 18h */
 DECL|typedef|MSG_TARGET_STATUS_SEND_REQUEST
 DECL|typedef|PTR_MSG_TARGET_STATUS_SEND_REQUEST
 )brace
@@ -685,42 +783,52 @@ DECL|member|AbortType
 id|U8
 id|AbortType
 suffix:semicolon
+multiline_comment|/* 00h */
 DECL|member|Reserved
 id|U8
 id|Reserved
 suffix:semicolon
+multiline_comment|/* 01h */
 DECL|member|ChainOffset
 id|U8
 id|ChainOffset
 suffix:semicolon
+multiline_comment|/* 02h */
 DECL|member|Function
 id|U8
 id|Function
 suffix:semicolon
+multiline_comment|/* 03h */
 DECL|member|Reserved1
 id|U16
 id|Reserved1
 suffix:semicolon
+multiline_comment|/* 04h */
 DECL|member|Reserved2
 id|U8
 id|Reserved2
 suffix:semicolon
+multiline_comment|/* 06h */
 DECL|member|MsgFlags
 id|U8
 id|MsgFlags
 suffix:semicolon
+multiline_comment|/* 07h */
 DECL|member|MsgContext
 id|U32
 id|MsgContext
 suffix:semicolon
+multiline_comment|/* 08h */
 DECL|member|ReplyWord
 id|U32
 id|ReplyWord
 suffix:semicolon
+multiline_comment|/* 0Ch */
 DECL|member|MsgContextToAbort
 id|U32
 id|MsgContextToAbort
 suffix:semicolon
+multiline_comment|/* 10h */
 DECL|typedef|MSG_TARGET_MODE_ABORT
 DECL|typedef|PTR_MSG_TARGET_MODE_ABORT
 )brace
@@ -754,46 +862,57 @@ DECL|member|Reserved
 id|U16
 id|Reserved
 suffix:semicolon
+multiline_comment|/* 00h */
 DECL|member|MsgLength
 id|U8
 id|MsgLength
 suffix:semicolon
+multiline_comment|/* 02h */
 DECL|member|Function
 id|U8
 id|Function
 suffix:semicolon
+multiline_comment|/* 03h */
 DECL|member|Reserved1
 id|U16
 id|Reserved1
 suffix:semicolon
+multiline_comment|/* 04h */
 DECL|member|Reserved2
 id|U8
 id|Reserved2
 suffix:semicolon
+multiline_comment|/* 06h */
 DECL|member|MsgFlags
 id|U8
 id|MsgFlags
 suffix:semicolon
+multiline_comment|/* 07h */
 DECL|member|MsgContext
 id|U32
 id|MsgContext
 suffix:semicolon
+multiline_comment|/* 08h */
 DECL|member|Reserved3
 id|U16
 id|Reserved3
 suffix:semicolon
+multiline_comment|/* 0Ch */
 DECL|member|IOCStatus
 id|U16
 id|IOCStatus
 suffix:semicolon
+multiline_comment|/* 0Eh */
 DECL|member|IOCLogInfo
 id|U32
 id|IOCLogInfo
 suffix:semicolon
+multiline_comment|/* 10h */
 DECL|member|AbortCount
 id|U32
 id|AbortCount
 suffix:semicolon
+multiline_comment|/* 14h */
 DECL|typedef|MSG_TARGET_MODE_ABORT_REPLY
 DECL|typedef|PTR_MSG_TARGET_MODE_ABORT_REPLY
 )brace

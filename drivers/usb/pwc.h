@@ -78,8 +78,8 @@ multiline_comment|/* Frame buffers: contains compressed or uncompressed video da
 DECL|macro|MAX_FRAMES
 mdefine_line|#define MAX_FRAMES&t;&t;5
 multiline_comment|/* Maximum size after decompression is 640x480 YUV data, 1.5 * 640 * 480 */
-DECL|macro|FRAME_SIZE
-mdefine_line|#define FRAME_SIZE &t;&t;(460800 + TOUCAM_HEADER_SIZE + TOUCAM_TRAILER_SIZE)
+DECL|macro|PWC_FRAME_SIZE
+mdefine_line|#define PWC_FRAME_SIZE &t;&t;(460800 + TOUCAM_HEADER_SIZE + TOUCAM_TRAILER_SIZE)
 multiline_comment|/* Absolute maximum number of buffers available for mmap() */
 DECL|macro|MAX_IMAGES
 mdefine_line|#define MAX_IMAGES &t;&t;4

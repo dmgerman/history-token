@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *  linux/drivers/message/fusion/scsi3.h&n; *      SCSI-3 definitions and macros.&n; *      (Ultimately) SCSI-3 definitions; for now, inheriting&n; *      SCSI-2 definitions.&n; *&n; *  Copyright (c) 1996-2001 Steven J. Ralston&n; *  Written By: Steven J. Ralston (19960517)&n; *  (mailto:Steve.Ralston@lsil.com)&n; *&n; *  $Id: scsi3.h,v 1.4 2001/01/06 15:54:25 sralston Exp $&n; */
+multiline_comment|/*&n; *  linux/drivers/message/fusion/scsi3.h&n; *      SCSI-3 definitions and macros.&n; *      (Ultimately) SCSI-3 definitions; for now, inheriting&n; *      SCSI-2 definitions.&n; *&n; *  Copyright (c) 1996-2001 Steven J. Ralston&n; *  Written By: Steven J. Ralston (19960517)&n; *  (mailto:Steve.Ralston@lsil.com)&n; *&n; *  $Id: scsi3.h,v 1.5 2001/04/06 14:31:32 sralston Exp $&n; */
 macro_line|#ifndef SCSI3_H_INCLUDED
 DECL|macro|SCSI3_H_INCLUDED
 mdefine_line|#define SCSI3_H_INCLUDED
@@ -84,6 +84,8 @@ DECL|macro|CMD_Verify
 mdefine_line|#define CMD_Verify             0x2F
 DECL|macro|CMD_ReadDefectData
 mdefine_line|#define CMD_ReadDefectData     0x37
+DECL|macro|CMD_ReadLong
+mdefine_line|#define CMD_ReadLong           0x3E
 DECL|macro|CMD_LogSelect
 mdefine_line|#define CMD_LogSelect          0x4C
 DECL|macro|CMD_LogSense
@@ -96,6 +98,10 @@ DECL|macro|CMD_Release10
 mdefine_line|#define CMD_Release10          0x57
 DECL|macro|CMD_ModeSense10
 mdefine_line|#define CMD_ModeSense10        0x5A
+DECL|macro|CMD_PersistReserveIn
+mdefine_line|#define CMD_PersistReserveIn   0x5E
+DECL|macro|CMD_PersistReserveOut
+mdefine_line|#define CMD_PersistReserveOut  0x5F
 DECL|macro|CMD_ReportLuns
 mdefine_line|#define CMD_ReportLuns         0xA0
 multiline_comment|/*&n; *    Control byte field&n; */

@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: isdn_audio.c,v 1.21 2000/06/20 18:01:55 keil Exp $&n;&n; * Linux ISDN subsystem, audio conversion and compression (linklevel).&n; *&n; * Copyright 1994-1999 by Fritz Elfert (fritz@isdn4linux.de)&n; * DTMF code (c) 1996 by Christian Mock (cm@kukuruz.ping.at)&n; * Silence detection (c) 1998 by Armin Schindler (mac@gismo.telekom.de)&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2, or (at your option)&n; * any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; *&n; */
+multiline_comment|/* $Id: isdn_audio.c,v 1.21.6.1 2001/08/17 12:34:25 kai Exp $&n;&n; * Linux ISDN subsystem, audio conversion and compression (linklevel).&n; *&n; * Copyright 1994-1999 by Fritz Elfert (fritz@isdn4linux.de)&n; * DTMF code (c) 1996 by Christian Mock (cm@kukuruz.ping.at)&n; * Silence detection (c) 1998 by Armin Schindler (mac@gismo.telekom.de)&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2, or (at your option)&n; * any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; *&n; */
 DECL|macro|__NO_VERSION__
 mdefine_line|#define __NO_VERSION__
 macro_line|#include &lt;linux/module.h&gt;
@@ -10,7 +10,7 @@ r_char
 op_star
 id|isdn_audio_revision
 op_assign
-l_string|&quot;$Revision: 1.21 $&quot;
+l_string|&quot;$Revision: 1.21.6.1 $&quot;
 suffix:semicolon
 multiline_comment|/*&n; * Misc. lookup-tables.&n; */
 multiline_comment|/* ulaw -&gt; signed 16-bit */
@@ -4842,17 +4842,20 @@ id|len
 (brace
 id|c
 op_assign
-id|MIN
-c_func
-(paren
-id|len
-comma
-(paren
 id|DTMF_NPOINTS
 op_minus
 id|s-&gt;idx
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|c
+OG
+id|len
 )paren
-)paren
+id|c
+op_assign
+id|len
 suffix:semicolon
 r_if
 c_cond

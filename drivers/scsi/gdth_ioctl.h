@@ -1,7 +1,7 @@
 macro_line|#ifndef _GDTH_IOCTL_H
 DECL|macro|_GDTH_IOCTL_H
 mdefine_line|#define _GDTH_IOCTL_H
-multiline_comment|/* gdth_ioctl.h&n; * $Id: gdth_ioctl.h,v 1.9 2001/01/10 14:39:37 achim Exp $&n; */
+multiline_comment|/* gdth_ioctl.h&n; * $Id: gdth_ioctl.h,v 1.10 2001/05/22 06:28:59 achim Exp $&n; */
 multiline_comment|/* IOCTLs */
 DECL|macro|GDTIOCTL_MASK
 mdefine_line|#define GDTIOCTL_MASK       (&squot;J&squot;&lt;&lt;8)
@@ -284,6 +284,16 @@ id|ushort
 id|ext_type
 suffix:semicolon
 multiline_comment|/* extended type */
+DECL|member|device_id
+id|ushort
+id|device_id
+suffix:semicolon
+multiline_comment|/* device ID */
+DECL|member|sub_device_id
+id|ushort
+id|sub_device_id
+suffix:semicolon
+multiline_comment|/* sub device ID */
 DECL|member|ctrtype
 )brace
 id|ctrtype

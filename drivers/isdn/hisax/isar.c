@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: isar.c,v 1.17.6.3 2001/06/09 15:14:17 kai Exp $&n; *&n; * isar.c   ISAR (Siemens PSB 7110) specific routines&n; *&n; * Author       Karsten Keil (keil@isdn4linux.de)&n; *&n; * This file is (c) under GNU General Public License&n; *&n; */
+multiline_comment|/* $Id: isar.c,v 1.17.6.4 2001/08/17 12:34:26 kai Exp $&n; *&n; * isar.c   ISAR (Siemens PSB 7110) specific routines&n; *&n; * Author       Karsten Keil (keil@isdn4linux.de)&n; *&n; * This file is (c) under GNU General Public License&n; *&n; */
 DECL|macro|__NO_VERSION__
 mdefine_line|#define __NO_VERSION__
 macro_line|#include &lt;linux/init.h&gt;
@@ -10,8 +10,6 @@ DECL|macro|DBG_LOADFIRM
 mdefine_line|#define DBG_LOADFIRM&t;0
 DECL|macro|DUMP_MBOXFRAME
 mdefine_line|#define DUMP_MBOXFRAME&t;2
-DECL|macro|MIN
-mdefine_line|#define MIN(a,b) ((a&lt;b)?a:b)
 DECL|macro|DLE
 mdefine_line|#define DLE&t;0x10
 DECL|macro|ETX
@@ -1666,13 +1664,18 @@ l_int|0
 (brace
 id|noc
 op_assign
-id|MIN
-c_func
-(paren
-l_int|126
-comma
 id|left
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|noc
+OG
+l_int|126
 )paren
+id|noc
+op_assign
+l_int|126
 suffix:semicolon
 id|nom
 op_assign

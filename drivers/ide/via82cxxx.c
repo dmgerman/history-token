@@ -1,5 +1,5 @@
-multiline_comment|/*&n; * $Id: via82cxxx.c,v 3.26 2001/08/17 12:03:00 vojtech Exp $&n; *&n; *  Copyright (c) 2000-2001 Vojtech Pavlik&n; *&n; *  Based on the work of:&n; *&t;Michel Aubry&n; *&t;Jeff Garzik&n; *&t;Andre Hedrick&n; *&n; *  Sponsored by SuSE&n; */
-multiline_comment|/*&n; * VIA IDE driver for Linux. Supports&n; *&n; *   vt82c586, vt82c586a, vt82c586b, vt82c596a, vt82c596b,&n; *   vt82c686, vt82c686a, vt82c686b, vt8231, vt8233&n; *&n; * southbridges, which can be found in&n; *&n; *  VIA Apollo VP, VPX, VPX/97, VP2, VP2/97, VP3, MVP3, MVP4, P6, Pro,&n; *  Pro Plus, Pro 133, Pro 133A, ProMedia PM601, ProSavage PM133, PLE133,&n; *  Pro 266, KX133, KT133, ProSavage KM133, KT133A, KT266&n; *  PC-Chips VXPro, VXPro+, TXPro-III, TXPro-AGP, ViaGra, BXToo, BXTel&n; *  AMD 640, 640 AGP, 750 IronGate&n; *  ETEQ 6618, 6628, 6638&n; *  Micron Samurai&n; *&n; * chipsets. Supports&n; *&n; *   PIO 0-5, MWDMA 0-2, SWDMA 0-2 and UDMA 0-5&n; *&n; * (this includes UDMA33, 66 and 100) modes. UDMA66 and higher modes are&n; * autoenabled only in case the BIOS has detected a 80 wire cable. To ignore&n; * the BIOS data and assume the cable is present, use &squot;ide0=ata66&squot; or&n; * &squot;ide1=ata66&squot; on the kernel command line.&n; */
+multiline_comment|/*&n; * $Id: via82cxxx.c,v 3.28 2001/09/01 21:10:00 vojtech Exp $&n; *&n; *  Copyright (c) 2000-2001 Vojtech Pavlik&n; *&n; *  Based on the work of:&n; *&t;Michel Aubry&n; *&t;Jeff Garzik&n; *&t;Andre Hedrick&n; *&n; *  Sponsored by SuSE&n; */
+multiline_comment|/*&n; * VIA IDE driver for Linux. Supports&n; *&n; *   vt82c576, vt82c586, vt82c586a, vt82c586b, vt82c596a, vt82c596b,&n; *   vt82c686, vt82c686a, vt82c686b, vt8231, vt8233&n; *&n; * southbridges, which can be found in&n; *&n; *  VIA Apollo Master, VP, VP2, VP2/97, VP3, VPX, VPX/97, MVP3, MVP4, P6, Pro,&n; *    ProII, ProPlus, Pro133, Pro133+, Pro133A, Pro133A Dual, Pro133T, Pro133Z,&n; *    PLE133, PLE133T, Pro266, Pro266T, ProP4X266, PM601, PM133, PN133, PL133T,&n; *    PX266, PM266, KX133, KT133, KT133A, KLE133, KT266, KX266, KM133, KM133A,&n; *    KL133, KN133, KM266&n; *  PC-Chips VXPro, VXPro+, VXTwo, TXPro-III, TXPro-AGP, AGPPro, ViaGra, BXToo,&n; *    BXTel, BXpert&n; *  AMD 640, 640 AGP, 750 IronGate, 760, 760MP&n; *  ETEQ 6618, 6628, 6629, 6638&n; *  Micron Samurai&n; *&n; * chipsets. Supports&n; *&n; *   PIO 0-5, MWDMA 0-2, SWDMA 0-2 and UDMA 0-5&n; *&n; * (this includes UDMA33, 66 and 100) modes. UDMA66 and higher modes are&n; * autoenabled only in case the BIOS has detected a 80 wire cable. To ignore&n; * the BIOS data and assume the cable is present, use &squot;ide0=ata66&squot; or&n; * &squot;ide1=ata66&squot; on the kernel command line.&n; */
 multiline_comment|/*&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA&n; *&n; * Should you need to contact me, the author, you can do so either by&n; * e-mail - mail your message to &lt;vojtech@suse.cz&gt;, or by paper mail:&n; * Vojtech Pavlik, Ucitelska 1576, Prague 8, 182 00 Czech Republic&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -86,6 +86,44 @@ id|via_isa_bridges
 )braket
 op_assign
 (brace
+macro_line|#ifdef FUTURE_BRIDGES
+(brace
+l_string|&quot;vt8237&quot;
+comma
+id|PCI_DEVICE_ID_VIA_8237
+comma
+l_int|0x00
+comma
+l_int|0x2f
+comma
+id|VIA_UDMA_100
+)brace
+comma
+(brace
+l_string|&quot;vt8235&quot;
+comma
+id|PCI_DEVICE_ID_VIA_8235
+comma
+l_int|0x00
+comma
+l_int|0x2f
+comma
+id|VIA_UDMA_100
+)brace
+comma
+(brace
+l_string|&quot;vt8233c&quot;
+comma
+id|PCI_DEVICE_ID_VIA_8233C
+comma
+l_int|0x30
+comma
+l_int|0x4f
+comma
+id|VIA_UDMA_100
+)brace
+comma
+macro_line|#endif
 (brace
 l_string|&quot;vt8233&quot;
 comma
@@ -179,9 +217,23 @@ l_string|&quot;vt82c586b&quot;
 comma
 id|PCI_DEVICE_ID_VIA_82C586_0
 comma
-l_int|0x40
+l_int|0x47
 comma
 l_int|0x4f
+comma
+id|VIA_UDMA_33
+op_or
+id|VIA_SET_FIFO
+)brace
+comma
+(brace
+l_string|&quot;vt82c586b&quot;
+comma
+id|PCI_DEVICE_ID_VIA_82C586_0
+comma
+l_int|0x40
+comma
+l_int|0x46
 comma
 id|VIA_UDMA_33
 op_or
@@ -226,6 +278,20 @@ comma
 l_int|0x00
 comma
 l_int|0x0f
+comma
+id|VIA_UDMA_NONE
+op_or
+id|VIA_SET_FIFO
+)brace
+comma
+(brace
+l_string|&quot;vt82c576&quot;
+comma
+id|PCI_DEVICE_ID_VIA_82C576
+comma
+l_int|0x00
+comma
+l_int|0x2f
 comma
 id|VIA_UDMA_NONE
 op_or
@@ -464,7 +530,7 @@ suffix:semicolon
 id|via_print
 c_func
 (paren
-l_string|&quot;Driver Version:                     3.26&quot;
+l_string|&quot;Driver Version:                     3.27&quot;
 )paren
 suffix:semicolon
 id|via_print

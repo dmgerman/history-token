@@ -1,11 +1,22 @@
 multiline_comment|/* starfire.c: Linux device driver for the Adaptec Starfire network adapter. */
-multiline_comment|/*&n;&t;Written 1998-2000 by Donald Becker.&n;&n;&t;Current maintainer is Ion Badulescu &lt;ionut@cs.columbia.edu&gt;. Please&n;&t;send all bug reports to me, and not to Donald Becker, as this code&n;&t;has been modified quite a bit from Donald&squot;s original version.&n;&n;&t;This software may be used and distributed according to the terms of&n;&t;the GNU General Public License (GPL), incorporated herein by reference.&n;&t;Drivers based on or derived from this code fall under the GPL and must&n;&t;retain the authorship, copyright and license notice.  This file is not&n;&t;a complete program and may only be used when the entire operating&n;&t;system is licensed under the GPL.&n;&n;&t;The author may be reached as becker@scyld.com, or C/O&n;&t;Scyld Computing Corporation&n;&t;410 Severn Ave., Suite 210&n;&t;Annapolis MD 21403&n;&n;&t;Support and updates available at&n;&t;http://www.scyld.com/network/starfire.html&n;&n;&t;-----------------------------------------------------------&n;&n;&t;Linux kernel-specific changes:&n;&n;&t;LK1.1.1 (jgarzik):&n;&t;- Use PCI driver interface&n;&t;- Fix MOD_xxx races&n;&t;- softnet fixups&n;&n;&t;LK1.1.2 (jgarzik):&n;&t;- Merge Becker version 0.15&n;&n;&t;LK1.1.3 (Andrew Morton)&n;&t;- Timer cleanups&n;&n;&t;LK1.1.4 (jgarzik):&n;&t;- Merge Becker version 1.03&n;&n;&t;LK1.2.1 (Ion Badulescu &lt;ionut@cs.columbia.edu&gt;)&n;&t;- Support hardware Rx/Tx checksumming&n;&t;- Use the GFP firmware taken from Adaptec&squot;s Netware driver&n;&n;&t;LK1.2.2 (Ion Badulescu)&n;&t;- Backported to 2.2.x&n;&n;&t;LK1.2.3 (Ion Badulescu)&n;&t;- Fix the flaky mdio interface&n;&t;- More compat clean-ups&n;&n;&t;LK1.2.4 (Ion Badulescu)&n;&t;- More 2.2.x initialization fixes&n;&n;&t;LK1.2.5 (Ion Badulescu)&n;&t;- Several fixes from Manfred Spraul&n;&n;&t;LK1.2.6 (Ion Badulescu)&n;&t;- Fixed ifup/ifdown/ifup problem in 2.4.x&n;&n;&t;LK1.2.7 (Ion Badulescu)&n;&t;- Removed unused code&n;&t;- Made more functions static and __init&n;&n;&t;LK1.2.8 (Ion Badulescu)&n;&t;- Quell bogus error messages, inform about the Tx threshold&n;&t;- Removed #ifdef CONFIG_PCI, this driver is PCI only&n;&n;&t;LK1.2.9 (Ion Badulescu)&n;&t;- Merged Jeff Garzik&squot;s changes from 2.4.4-pre5&n;&t;- Added 2.2.x compatibility stuff required by the above changes&n;&n;&t;LK1.2.9a (Ion Badulescu)&n;&t;- More updates from Jeff Garzik&n;&n;&t;LK1.3.0 (Ion Badulescu)&n;&t;- Merged zerocopy support&n;&n;&t;LK1.3.1 (Ion Badulescu)&n;&t;- Added ethtool support&n;&t;- Added GPIO (media change) interrupt support&n;&n;&t;LK1.3.2 (Ion Badulescu)&n;&t;- Fixed 2.2.x compatibility issues introduced in 1.3.1&n;&t;- Fixed ethtool ioctl returning uninitialized memory&n;&n;&t;LK1.3.3 (Ion Badulescu)&n;&t;- Initialize the TxMode register properly&n;&t;- Don&squot;t dereference dev-&gt;priv after freeing it&n;&n;TODO:&n;&t;- implement tx_timeout() properly&n;*/
+multiline_comment|/*&n;&t;Written 1998-2000 by Donald Becker.&n;&n;&t;Current maintainer is Ion Badulescu &lt;ionut@cs.columbia.edu&gt;. Please&n;&t;send all bug reports to me, and not to Donald Becker, as this code&n;&t;has been modified quite a bit from Donald&squot;s original version.&n;&n;&t;This software may be used and distributed according to the terms of&n;&t;the GNU General Public License (GPL), incorporated herein by reference.&n;&t;Drivers based on or derived from this code fall under the GPL and must&n;&t;retain the authorship, copyright and license notice.  This file is not&n;&t;a complete program and may only be used when the entire operating&n;&t;system is licensed under the GPL.&n;&n;&t;The author may be reached as becker@scyld.com, or C/O&n;&t;Scyld Computing Corporation&n;&t;410 Severn Ave., Suite 210&n;&t;Annapolis MD 21403&n;&n;&t;Support and updates available at&n;&t;http://www.scyld.com/network/starfire.html&n;&n;&t;-----------------------------------------------------------&n;&n;&t;Linux kernel-specific changes:&n;&n;&t;LK1.1.1 (jgarzik):&n;&t;- Use PCI driver interface&n;&t;- Fix MOD_xxx races&n;&t;- softnet fixups&n;&n;&t;LK1.1.2 (jgarzik):&n;&t;- Merge Becker version 0.15&n;&n;&t;LK1.1.3 (Andrew Morton)&n;&t;- Timer cleanups&n;&n;&t;LK1.1.4 (jgarzik):&n;&t;- Merge Becker version 1.03&n;&n;&t;LK1.2.1 (Ion Badulescu &lt;ionut@cs.columbia.edu&gt;)&n;&t;- Support hardware Rx/Tx checksumming&n;&t;- Use the GFP firmware taken from Adaptec&squot;s Netware driver&n;&n;&t;LK1.2.2 (Ion Badulescu)&n;&t;- Backported to 2.2.x&n;&n;&t;LK1.2.3 (Ion Badulescu)&n;&t;- Fix the flaky mdio interface&n;&t;- More compat clean-ups&n;&n;&t;LK1.2.4 (Ion Badulescu)&n;&t;- More 2.2.x initialization fixes&n;&n;&t;LK1.2.5 (Ion Badulescu)&n;&t;- Several fixes from Manfred Spraul&n;&n;&t;LK1.2.6 (Ion Badulescu)&n;&t;- Fixed ifup/ifdown/ifup problem in 2.4.x&n;&n;&t;LK1.2.7 (Ion Badulescu)&n;&t;- Removed unused code&n;&t;- Made more functions static and __init&n;&n;&t;LK1.2.8 (Ion Badulescu)&n;&t;- Quell bogus error messages, inform about the Tx threshold&n;&t;- Removed #ifdef CONFIG_PCI, this driver is PCI only&n;&n;&t;LK1.2.9 (Ion Badulescu)&n;&t;- Merged Jeff Garzik&squot;s changes from 2.4.4-pre5&n;&t;- Added 2.2.x compatibility stuff required by the above changes&n;&n;&t;LK1.2.9a (Ion Badulescu)&n;&t;- More updates from Jeff Garzik&n;&n;&t;LK1.3.0 (Ion Badulescu)&n;&t;- Merged zerocopy support&n;&n;&t;LK1.3.1 (Ion Badulescu)&n;&t;- Added ethtool support&n;&t;- Added GPIO (media change) interrupt support&n;&n;&t;LK1.3.2 (Ion Badulescu)&n;&t;- Fixed 2.2.x compatibility issues introduced in 1.3.1&n;&t;- Fixed ethtool ioctl returning uninitialized memory&n;&n;&t;LK1.3.3 (Ion Badulescu)&n;&t;- Initialize the TxMode register properly&n;&t;- Don&squot;t dereference dev-&gt;priv after freeing it&n;&n;&t;LK1.3.4 (Ion Badulescu)&n;&t;- Fixed initialization timing problems&n;&t;- Fixed interrupt mask definitions&n;&n;TODO:&n;&t;- implement tx_timeout() properly&n;*/
 DECL|macro|DRV_NAME
 mdefine_line|#define DRV_NAME&t;&quot;starfire&quot;
 DECL|macro|DRV_VERSION
-mdefine_line|#define DRV_VERSION&t;&quot;1.03+LK1.3.3&quot;
+mdefine_line|#define DRV_VERSION&t;&quot;1.03+LK1.3.4&quot;
 DECL|macro|DRV_RELDATE
-mdefine_line|#define DRV_RELDATE&t;&quot;July 05, 2001&quot;
+mdefine_line|#define DRV_RELDATE&t;&quot;August 14, 2001&quot;
+macro_line|#include &lt;linux/version.h&gt;
+macro_line|#include &lt;linux/module.h&gt;
+macro_line|#include &lt;linux/kernel.h&gt;
+macro_line|#include &lt;linux/pci.h&gt;
+macro_line|#include &lt;linux/netdevice.h&gt;
+macro_line|#include &lt;linux/etherdevice.h&gt;
+macro_line|#include &lt;linux/init.h&gt;
+macro_line|#include &lt;linux/delay.h&gt;
+macro_line|#include &lt;asm/processor.h&gt;&t;&t;/* Processor type for cache alignment. */
+macro_line|#include &lt;asm/uaccess.h&gt;
+macro_line|#include &lt;asm/io.h&gt;
 multiline_comment|/*&n; * Adaptec&squot;s license for their Novell drivers (which is where I got the&n; * firmware files) does not allow one to redistribute them. Thus, we can&squot;t&n; * include the firmware with this driver.&n; *&n; * However, an end-user is allowed to download and use it, after&n; * converting it to C header files using starfire_firmware.pl.&n; * Once that&squot;s done, the #undef below must be changed into a #define&n; * for this driver to really use the firmware. Note that Rx/Tx&n; * hardware TCP checksumming is not possible without the firmware.&n; *&n; * I&squot;m currently [Feb 2001] talking to Adaptec about this redistribution&n; * issue. Stay tuned...&n; */
 DECL|macro|HAS_FIRMWARE
 macro_line|#undef HAS_FIRMWARE
@@ -17,6 +28,9 @@ macro_line|#if defined(HAS_FIRMWARE) &amp;&amp; defined(MAX_SKB_FRAGS)
 DECL|macro|ZEROCOPY
 mdefine_line|#define ZEROCOPY
 macro_line|#endif
+macro_line|#ifdef HAS_FIRMWARE
+macro_line|#include &quot;starfire_firmware.h&quot;
+macro_line|#endif /* HAS_FIRMWARE */
 multiline_comment|/* The user-configurable values.&n;   These may be modified when a driver module is loaded.*/
 multiline_comment|/* Used for tuning interrupt latency vs. overhead. */
 DECL|variable|interrupt_mitigation
@@ -131,20 +145,6 @@ macro_line|#else  /* not ZEROCOPY */
 DECL|macro|skb_first_frag_len
 mdefine_line|#define skb_first_frag_len(skb)&t;(skb-&gt;len)
 macro_line|#endif /* not ZEROCOPY */
-macro_line|#include &lt;linux/version.h&gt;
-macro_line|#include &lt;linux/module.h&gt;
-macro_line|#include &lt;linux/kernel.h&gt;
-macro_line|#include &lt;linux/pci.h&gt;
-macro_line|#include &lt;linux/netdevice.h&gt;
-macro_line|#include &lt;linux/etherdevice.h&gt;
-macro_line|#include &lt;linux/init.h&gt;
-macro_line|#include &lt;linux/delay.h&gt;
-macro_line|#include &lt;asm/processor.h&gt;&t;&t;/* Processor type for cache alignment. */
-macro_line|#include &lt;asm/uaccess.h&gt;
-macro_line|#include &lt;asm/io.h&gt;
-macro_line|#ifdef HAS_FIRMWARE
-macro_line|#include &quot;starfire_firmware.h&quot;
-macro_line|#endif /* HAS_FIRMWARE */
 multiline_comment|/* 2.2.x compatibility code */
 macro_line|#if LINUX_VERSION_CODE &lt; 0x20300
 macro_line|#include &quot;starfire-kcomp22.h&quot;
@@ -178,8 +178,6 @@ id|__devinitdata
 op_assign
 id|KERN_INFO
 l_string|&quot;starfire.c:v1.03 7/26/2000  Written by Donald Becker &lt;becker@scyld.com&gt;&bslash;n&quot;
-id|KERN_INFO
-l_string|&quot; Updates and info at http://www.scyld.com/network/starfire.html&bslash;n&quot;
 id|KERN_INFO
 l_string|&quot; (unofficial 2.2/2.4 kernel port, version &quot;
 id|DRV_VERSION
@@ -761,11 +759,11 @@ DECL|enumerator|IntrNormalMask
 DECL|enumerator|IntrAbnormalMask
 id|IntrNormalMask
 op_assign
-l_int|0xf0
+l_int|0xff00
 comma
 id|IntrAbnormalMask
 op_assign
-l_int|0x3f0e
+l_int|0x3ff00fe
 comma
 )brace
 suffix:semicolon
@@ -1956,13 +1954,9 @@ multiline_comment|/* Starfire can do SG and TCP/UDP checksumming */
 id|dev-&gt;features
 op_or_assign
 id|NETIF_F_SG
-suffix:semicolon
-macro_line|#ifdef HAS_FIRMWARE
-id|dev-&gt;features
-op_or_assign
+op_or
 id|NETIF_F_IP_CSUM
 suffix:semicolon
-macro_line|#endif /* HAS_FIRMWARE */
 macro_line|#endif /* ZEROCOPY */
 multiline_comment|/* Serial EEPROM reads are hidden by the hardware. */
 r_for
@@ -2417,10 +2411,10 @@ comma
 id|BMCR_RESET
 )paren
 suffix:semicolon
-id|udelay
+id|mdelay
 c_func
 (paren
-l_int|500
+l_int|100
 )paren
 suffix:semicolon
 id|boguscnt
@@ -2541,6 +2535,25 @@ op_assign
 id|phy_idx
 suffix:semicolon
 )brace
+macro_line|#ifdef ZEROCOPY
+id|printk
+(paren
+id|KERN_INFO
+l_string|&quot;%s: scatter-gather and hardware TCP cksumming enabled.&bslash;n&quot;
+comma
+id|dev-&gt;name
+comma
+macro_line|#else  /* not ZEROCOPY */
+id|printk
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;%s: scatter-gather and hardware TCP cksumming disabled.&bslash;n&quot;
+comma
+id|dev-&gt;name
+)paren
+suffix:semicolon
+macro_line|#endif /* not ZEROCOPY */
 r_return
 l_int|0
 suffix:semicolon
@@ -3437,6 +3450,12 @@ comma
 id|ioaddr
 op_plus
 id|TxMode
+)paren
+suffix:semicolon
+id|udelay
+c_func
+(paren
+l_int|1000
 )paren
 suffix:semicolon
 id|writel
@@ -6795,6 +6814,12 @@ comma
 id|ioaddr
 op_plus
 id|TxMode
+)paren
+suffix:semicolon
+id|udelay
+c_func
+(paren
+l_int|1000
 )paren
 suffix:semicolon
 id|writel

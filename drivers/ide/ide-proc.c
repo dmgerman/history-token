@@ -1892,11 +1892,11 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
-id|ide_qd6580
+id|ide_qd65xx
 suffix:colon
 id|name
 op_assign
-l_string|&quot;qd6580&quot;
+l_string|&quot;qd65xx&quot;
 suffix:semicolon
 r_break
 suffix:semicolon

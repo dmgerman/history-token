@@ -1,6 +1,6 @@
-macro_line|#include &lt;linux/sched.h&gt;
-macro_line|#include &lt;linux/locks.h&gt;
+macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;linux/minix_fs.h&gt;
+macro_line|#include &lt;linux/locks.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
 DECL|enumerator|DIRECT
 DECL|enumerator|DEPTH
@@ -333,25 +333,6 @@ id|inode
 )paren
 (brace
 id|truncate
-c_func
-(paren
-id|inode
-)paren
-suffix:semicolon
-)brace
-DECL|function|V2_minix_sync_file
-r_int
-id|V2_minix_sync_file
-c_func
-(paren
-r_struct
-id|inode
-op_star
-id|inode
-)paren
-(brace
-r_return
-id|sync_file
 c_func
 (paren
 id|inode

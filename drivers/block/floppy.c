@@ -19,6 +19,7 @@ multiline_comment|/*&n; * 1998/06/07 -- Alan Cox -- Merged the 2.0.34 fixes for 
 multiline_comment|/*&n; * 1998/09/20 -- David Weinehall -- Added slow-down code for buggy PS/2-drives.&n; */
 multiline_comment|/*&n; * 1999/08/13 -- Paul Slootman -- floppy stopped working on Alpha after 24&n; * days, 6 hours, 32 minutes and 32 seconds (i.e. MAXINT jiffies; ints were&n; * being used to store jiffies, which are unsigned longs).&n; */
 multiline_comment|/*&n; * 2000/08/28 -- Arnaldo Carvalho de Melo &lt;acme@conectiva.com.br&gt;&n; * - get rid of check_region&n; * - s/suser/capable/&n; */
+multiline_comment|/*&n; * 2001/08/26 -- Paul Gortmaker - fix insmod oops on machines with no&n; * floppy controller (lingering task on list after module is gone... boom.)&n; */
 DECL|macro|FLOPPY_SANITY_CHECK
 mdefine_line|#define FLOPPY_SANITY_CHECK
 DECL|macro|FLOPPY_SILENT_DCL_CLEAR
@@ -18173,7 +18174,7 @@ r_int
 id|have_no_fdc
 op_assign
 op_minus
-id|EIO
+id|ENODEV
 suffix:semicolon
 DECL|function|floppy_init
 r_int
@@ -18479,13 +18480,6 @@ comma
 l_string|&quot;fd&quot;
 )paren
 suffix:semicolon
-id|del_timer
-c_func
-(paren
-op_amp
-id|fd_timeout
-)paren
-suffix:semicolon
 r_return
 op_minus
 id|EBUSY
@@ -18766,27 +18760,11 @@ c_func
 l_string|&quot;no floppy controllers found&bslash;n&quot;
 )paren
 suffix:semicolon
-id|floppy_tq.routine
-op_assign
-(paren
-r_void
-op_star
-)paren
-(paren
-r_void
-op_star
-)paren
-id|empty
-suffix:semicolon
-id|mark_bh
+id|run_task_queue
 c_func
 (paren
-id|IMMEDIATE_BH
-)paren
-suffix:semicolon
-id|schedule
-c_func
-(paren
+op_amp
+id|tq_immediate
 )paren
 suffix:semicolon
 r_if
@@ -19838,6 +19816,12 @@ id|MODULE_SUPPORTED_DEVICE
 c_func
 (paren
 l_string|&quot;fd&quot;
+)paren
+suffix:semicolon
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
 macro_line|#else

@@ -25,7 +25,7 @@ DECL|macro|MAJOR_NR
 mdefine_line|#define MAJOR_NR CDU31A_CDROM_MAJOR
 macro_line|#include &lt;linux/blk.h&gt;
 DECL|macro|CDU31A_READAHEAD
-mdefine_line|#define CDU31A_READAHEAD 4  /* 128 sector, 64kB, 32 reads read-ahead */
+mdefine_line|#define CDU31A_READAHEAD 4&t;/* 128 sector, 64kB, 32 reads read-ahead */
 DECL|macro|CDU31A_MAX_CONSECUTIVE_ATTENTIONS
 mdefine_line|#define CDU31A_MAX_CONSECUTIVE_ATTENTIONS 10
 DECL|macro|DEBUG
@@ -47,7 +47,7 @@ DECL|member|int_num
 r_int
 id|int_num
 suffix:semicolon
-multiline_comment|/* Interrupt Number (-1 means scan for it,&n;                                   0 means don&squot;t use) */
+multiline_comment|/* Interrupt Number (-1 means scan for it,&n;&t;&t;&t;&t;   0 means don&squot;t use) */
 DECL|variable|__initdata
 )brace
 id|cdu31a_addresses
@@ -56,64 +56,6 @@ id|cdu31a_addresses
 id|__initdata
 op_assign
 (brace
-macro_line|#if 0&t;/* No autoconfig any more. See Note at beginning&n;&t;   of this file. */
-(brace
-l_int|0x340
-comma
-l_int|0
-)brace
-comma
-multiline_comment|/* Standard configuration Sony Interface */
-(brace
-l_int|0x1f88
-comma
-l_int|0
-)brace
-comma
-multiline_comment|/* Fusion CD-16 */
-(brace
-l_int|0x230
-comma
-l_int|0
-)brace
-comma
-multiline_comment|/* SoundBlaster 16 card */
-(brace
-l_int|0x360
-comma
-l_int|0
-)brace
-comma
-multiline_comment|/* Secondary standard Sony Interface */
-(brace
-l_int|0x320
-comma
-l_int|0
-)brace
-comma
-multiline_comment|/* Secondary standard Sony Interface */
-(brace
-l_int|0x330
-comma
-l_int|0
-)brace
-comma
-multiline_comment|/* Secondary standard Sony Interface */
-(brace
-l_int|0x634
-comma
-l_int|0
-)brace
-comma
-multiline_comment|/* Sound FX SC400 */
-(brace
-l_int|0x654
-comma
-l_int|0
-)brace
-comma
-multiline_comment|/* Sound FX SC400 */
-macro_line|#endif
 (brace
 l_int|0
 )brace
@@ -224,7 +166,7 @@ id|sony_blocks_left
 op_assign
 l_int|0
 suffix:semicolon
-multiline_comment|/* Number of 512 byte blocks left&n;                                             in the current read command. */
+multiline_comment|/* Number of 512 byte blocks left&n;&t;&t;&t;&t;&t;&t;   in the current read command. */
 multiline_comment|/* The base I/O address of the Sony Interface.  This is a variable (not a&n;   #define) so it can be easily changed via some future ioctl() */
 DECL|variable|cdu31a_port
 r_static
@@ -322,7 +264,7 @@ id|sony_xa_mode
 op_assign
 l_int|0
 suffix:semicolon
-multiline_comment|/* Is an XA disk in the drive&n;&t;&t;&t;&t;&t;      and the drive a CDU31A? */
+multiline_comment|/* Is an XA disk in the drive&n;&t;&t;&t;&t;   and the drive a CDU31A? */
 DECL|variable|sony_raw_data_mode
 r_static
 r_int
@@ -330,7 +272,7 @@ id|sony_raw_data_mode
 op_assign
 l_int|1
 suffix:semicolon
-multiline_comment|/* 1 if data tracks, 0 if audio.&n;                                              For raw data reads. */
+multiline_comment|/* 1 if data tracks, 0 if audio.&n;&t;&t;&t;&t;&t;   For raw data reads. */
 DECL|variable|sony_usage
 r_static
 r_int
@@ -339,7 +281,7 @@ id|sony_usage
 op_assign
 l_int|0
 suffix:semicolon
-multiline_comment|/* How many processes have the&n;                                              drive open. */
+multiline_comment|/* How many processes have the&n;&t;&t;&t;&t;&t;   drive open. */
 DECL|variable|sony_pas_init
 r_static
 r_int
@@ -347,21 +289,21 @@ id|sony_pas_init
 op_assign
 l_int|0
 suffix:semicolon
-multiline_comment|/* Initialize the Pro-Audio&n;&t;&t;&t;&t;&t;      Spectrum card? */
+multiline_comment|/* Initialize the Pro-Audio&n;&t;&t;&t;&t;   Spectrum card? */
 DECL|variable|single_toc
 r_static
 r_struct
 id|s_sony_session_toc
 id|single_toc
 suffix:semicolon
-multiline_comment|/* Holds the&n;&t;&t;&t;&t;&t;         table of&n;&t;&t;&t;&t;&t;         contents. */
+multiline_comment|/* Holds the&n;&t;&t;&t;&t;&t;&t;   table of&n;&t;&t;&t;&t;&t;&t;   contents. */
 DECL|variable|sony_toc
 r_static
 r_struct
 id|s_all_sessions_toc
 id|sony_toc
 suffix:semicolon
-multiline_comment|/* entries gathered from all&n;                                                sessions */
+multiline_comment|/* entries gathered from all&n;&t;&t;&t;&t;&t;&t;   sessions */
 DECL|variable|sony_toc_read
 r_static
 r_int
@@ -369,14 +311,14 @@ id|sony_toc_read
 op_assign
 l_int|0
 suffix:semicolon
-multiline_comment|/* Has the TOC been read for&n;&t;&t;&t;&t;&t;      the drive? */
+multiline_comment|/* Has the TOC been read for&n;&t;&t;&t;&t;   the drive? */
 DECL|variable|last_sony_subcode
 r_static
 r_struct
 id|s_sony_subcode
 id|last_sony_subcode
 suffix:semicolon
-multiline_comment|/* Points to the last&n;                                                   subcode address read */
+multiline_comment|/* Points to the last&n;&t;&t;&t;&t;&t;&t;   subcode address read */
 DECL|variable|sony_inuse
 r_static
 r_volatile
@@ -385,7 +327,7 @@ id|sony_inuse
 op_assign
 l_int|0
 suffix:semicolon
-multiline_comment|/* Is the drive in use?  Only one operation&n;&t;&t;&t;&t;&t;at a time allowed */
+multiline_comment|/* Is the drive in use?  Only one operation&n;&t;&t;&t;&t;&t;   at a time allowed */
 r_static
 id|DECLARE_WAIT_QUEUE_HEAD
 c_func
@@ -551,9 +493,9 @@ op_assign
 l_int|0
 suffix:semicolon
 multiline_comment|/*&n; * This routine returns 1 if the disk has been changed since the last&n; * check or 0 if it hasn&squot;t.&n; */
+DECL|function|scd_disk_change
 r_static
 r_int
-DECL|function|scd_disk_change
 id|scd_disk_change
 c_func
 (paren
@@ -577,9 +519,9 @@ id|retval
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Uniform cdrom interface function&n; * report back, if disc has changed from time of last request.&n; */
+DECL|function|scd_media_changed
 r_static
 r_int
-DECL|function|scd_media_changed
 id|scd_media_changed
 c_func
 (paren
@@ -655,10 +597,10 @@ suffix:colon
 id|CDS_DRIVE_NOT_READY
 suffix:semicolon
 )brace
+DECL|function|enable_interrupts
 r_static
 r_inline
 r_void
-DECL|function|enable_interrupts
 id|enable_interrupts
 c_func
 (paren
@@ -684,10 +626,10 @@ id|sony_cd_control_reg
 )paren
 suffix:semicolon
 )brace
+DECL|function|disable_interrupts
 r_static
 r_inline
 r_void
-DECL|function|disable_interrupts
 id|disable_interrupts
 c_func
 (paren
@@ -715,10 +657,10 @@ id|sony_cd_control_reg
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Wait a little while (used for polling the drive).  If in initialization,&n; * setting a timeout doesn&squot;t work, so just loop for a while.&n; */
+DECL|function|sony_sleep
 r_static
 r_inline
 r_void
-DECL|function|sony_sleep
 id|sony_sleep
 c_func
 (paren
@@ -749,8 +691,8 @@ l_int|0
 suffix:semicolon
 )brace
 r_else
-multiline_comment|/* Interrupt driven */
 (brace
+multiline_comment|/* Interrupt driven */
 id|save_flags
 c_func
 (paren
@@ -783,10 +725,10 @@ suffix:semicolon
 )brace
 )brace
 multiline_comment|/*&n; * The following are convenience routine to read various status and set&n; * various conditions in the drive.&n; */
+DECL|function|is_attention
 r_static
 r_inline
 r_int
-DECL|function|is_attention
 id|is_attention
 c_func
 (paren
@@ -794,6 +736,7 @@ r_void
 )paren
 (brace
 r_return
+(paren
 (paren
 id|inb
 c_func
@@ -805,12 +748,13 @@ id|SONY_ATTN_BIT
 )paren
 op_ne
 l_int|0
+)paren
 suffix:semicolon
 )brace
+DECL|function|is_busy
 r_static
 r_inline
 r_int
-DECL|function|is_busy
 id|is_busy
 c_func
 (paren
@@ -818,6 +762,7 @@ r_void
 )paren
 (brace
 r_return
+(paren
 (paren
 id|inb
 c_func
@@ -829,12 +774,13 @@ id|SONY_BUSY_BIT
 )paren
 op_ne
 l_int|0
+)paren
 suffix:semicolon
 )brace
+DECL|function|is_data_ready
 r_static
 r_inline
 r_int
-DECL|function|is_data_ready
 id|is_data_ready
 c_func
 (paren
@@ -842,6 +788,7 @@ r_void
 )paren
 (brace
 r_return
+(paren
 (paren
 id|inb
 c_func
@@ -853,12 +800,13 @@ id|SONY_DATA_RDY_BIT
 )paren
 op_ne
 l_int|0
+)paren
 suffix:semicolon
 )brace
+DECL|function|is_data_requested
 r_static
 r_inline
 r_int
-DECL|function|is_data_requested
 id|is_data_requested
 c_func
 (paren
@@ -866,6 +814,7 @@ r_void
 )paren
 (brace
 r_return
+(paren
 (paren
 id|inb
 c_func
@@ -877,12 +826,13 @@ id|SONY_DATA_REQUEST_BIT
 )paren
 op_ne
 l_int|0
+)paren
 suffix:semicolon
 )brace
+DECL|function|is_result_ready
 r_static
 r_inline
 r_int
-DECL|function|is_result_ready
 id|is_result_ready
 c_func
 (paren
@@ -890,6 +840,7 @@ r_void
 )paren
 (brace
 r_return
+(paren
 (paren
 id|inb
 c_func
@@ -901,12 +852,13 @@ id|SONY_RES_RDY_BIT
 )paren
 op_ne
 l_int|0
+)paren
 suffix:semicolon
 )brace
+DECL|function|is_param_write_rdy
 r_static
 r_inline
 r_int
-DECL|function|is_param_write_rdy
 id|is_param_write_rdy
 c_func
 (paren
@@ -914,6 +866,7 @@ r_void
 )paren
 (brace
 r_return
+(paren
 (paren
 id|inb
 c_func
@@ -925,12 +878,13 @@ id|SONY_PARAM_WRITE_RDY_BIT
 )paren
 op_ne
 l_int|0
+)paren
 suffix:semicolon
 )brace
+DECL|function|is_result_reg_not_empty
 r_static
 r_inline
 r_int
-DECL|function|is_result_reg_not_empty
 id|is_result_reg_not_empty
 c_func
 (paren
@@ -938,6 +892,7 @@ r_void
 )paren
 (brace
 r_return
+(paren
 (paren
 id|inb
 c_func
@@ -949,12 +904,13 @@ id|SONY_RES_REG_NOT_EMP_BIT
 )paren
 op_ne
 l_int|0
+)paren
 suffix:semicolon
 )brace
+DECL|function|reset_drive
 r_static
 r_inline
 r_void
-DECL|function|reset_drive
 id|reset_drive
 c_func
 (paren
@@ -1039,10 +995,10 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+DECL|function|clear_attention
 r_static
 r_inline
 r_void
-DECL|function|clear_attention
 id|clear_attention
 c_func
 (paren
@@ -1060,10 +1016,10 @@ id|sony_cd_control_reg
 )paren
 suffix:semicolon
 )brace
+DECL|function|clear_result_ready
 r_static
 r_inline
 r_void
-DECL|function|clear_result_ready
 id|clear_result_ready
 c_func
 (paren
@@ -1081,10 +1037,10 @@ id|sony_cd_control_reg
 )paren
 suffix:semicolon
 )brace
+DECL|function|clear_data_ready
 r_static
 r_inline
 r_void
-DECL|function|clear_data_ready
 id|clear_data_ready
 c_func
 (paren
@@ -1102,10 +1058,10 @@ id|sony_cd_control_reg
 )paren
 suffix:semicolon
 )brace
+DECL|function|clear_param_reg
 r_static
 r_inline
 r_void
-DECL|function|clear_param_reg
 id|clear_param_reg
 c_func
 (paren
@@ -1123,11 +1079,11 @@ id|sony_cd_control_reg
 )paren
 suffix:semicolon
 )brace
+DECL|function|read_status_register
 r_static
 r_inline
 r_int
 r_char
-DECL|function|read_status_register
 id|read_status_register
 c_func
 (paren
@@ -1135,18 +1091,20 @@ r_void
 )paren
 (brace
 r_return
+(paren
 id|inb
 c_func
 (paren
 id|sony_cd_status_reg
 )paren
+)paren
 suffix:semicolon
 )brace
+DECL|function|read_result_register
 r_static
 r_inline
 r_int
 r_char
-DECL|function|read_result_register
 id|read_result_register
 c_func
 (paren
@@ -1154,18 +1112,20 @@ r_void
 )paren
 (brace
 r_return
+(paren
 id|inb
 c_func
 (paren
 id|sony_cd_result_reg
 )paren
+)paren
 suffix:semicolon
 )brace
+DECL|function|read_data_register
 r_static
 r_inline
 r_int
 r_char
-DECL|function|read_data_register
 id|read_data_register
 c_func
 (paren
@@ -1173,17 +1133,19 @@ r_void
 )paren
 (brace
 r_return
+(paren
 id|inb
 c_func
 (paren
 id|sony_cd_read_reg
 )paren
+)paren
 suffix:semicolon
 )brace
+DECL|function|write_param
 r_static
 r_inline
 r_void
-DECL|function|write_param
 id|write_param
 c_func
 (paren
@@ -1201,10 +1163,10 @@ id|sony_cd_param_reg
 )paren
 suffix:semicolon
 )brace
+DECL|function|write_cmd
 r_static
 r_inline
 r_void
-DECL|function|write_cmd
 id|write_cmd
 c_func
 (paren
@@ -1232,9 +1194,9 @@ id|sony_cd_cmd_reg
 )paren
 suffix:semicolon
 )brace
+DECL|function|cdu31a_interrupt
 r_static
 r_void
-DECL|function|cdu31a_interrupt
 id|cdu31a_interrupt
 c_func
 (paren
@@ -1261,7 +1223,7 @@ c_cond
 id|abort_read_started
 )paren
 (brace
-multiline_comment|/* We might be waiting for an abort to finish.  Don&squot;t&n;         disable interrupts yet, though, because we handle&n;         this one here. */
+multiline_comment|/* We might be waiting for an abort to finish.  Don&squot;t&n;&t;&t;   disable interrupts yet, though, because we handle&n;&t;&t;   this one here. */
 multiline_comment|/* Clear out the result registers. */
 r_while
 c_loop
@@ -1371,7 +1333,6 @@ c_func
 )paren
 suffix:semicolon
 id|printk
-c_func
 (paren
 l_string|&quot;CDU31A: Got an interrupt but nothing was waiting&bslash;n&quot;
 )paren
@@ -1632,9 +1593,9 @@ id|errbuf
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Set the drive parameters so the drive will auto-spin-up when a&n; * disk is inserted.&n; */
+DECL|function|set_drive_params
 r_static
 r_void
-DECL|function|set_drive_params
 id|set_drive_params
 c_func
 (paren
@@ -1767,7 +1728,7 @@ l_int|1
 op_or_assign
 id|SONY_DOUBLE_SPEED_BIT
 suffix:semicolon
-multiline_comment|/* Set the drive to double speed if &n;                                             possible */
+multiline_comment|/* Set the drive to double speed if &n;&t;&t;&t;&t;&t;&t;&t;   possible */
 )brace
 id|do_sony_cd_cmd
 c_func
@@ -1916,9 +1877,9 @@ l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * This code will reset the drive and attempt to restore sane parameters.&n; */
+DECL|function|restart_on_error
 r_static
 r_void
-DECL|function|restart_on_error
 id|restart_on_error
 c_func
 (paren
@@ -2058,9 +2019,9 @@ c_func
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * This routine writes data to the parameter register.  Since this should&n; * happen fairly fast, it is polled with no OS waits between.&n; */
+DECL|function|write_params
 r_static
 r_int
-DECL|function|write_params
 id|write_params
 c_func
 (paren
@@ -2286,7 +2247,7 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
-multiline_comment|/*&n;    * Get the first two bytes.  This determines what else needs&n;    * to be done.&n;    */
+multiline_comment|/*&n;&t; * Get the first two bytes.  This determines what else needs&n;&t; * to be done.&n;&t; */
 id|clear_result_ready
 c_func
 (paren
@@ -2348,7 +2309,7 @@ id|result_size
 op_assign
 l_int|2
 suffix:semicolon
-multiline_comment|/*&n;    * 0x20 means an error occurred.  Byte 2 will have the error code.&n;    * Otherwise, the command succeeded, byte 2 will have the count of&n;    * how many more status bytes are coming.&n;    *&n;    * The result register can be read 10 bytes at a time, a wait for&n;    * result ready to be asserted must be done between every 10 bytes.&n;    */
+multiline_comment|/*&n;&t; * 0x20 means an error occurred.  Byte 2 will have the error code.&n;&t; * Otherwise, the command succeeded, byte 2 will have the count of&n;&t; * how many more status bytes are coming.&n;&t; *&n;&t; * The result register can be read 10 bytes at a time, a wait for&n;&t; * result ready to be asserted must be done between every 10 bytes.&n;&t; */
 r_if
 c_cond
 (paren
@@ -2701,8 +2662,8 @@ id|current
 op_ne
 id|has_cd_task
 )paren
-multiline_comment|/* Allow recursive calls to this routine */
 (brace
+multiline_comment|/* Allow recursive calls to this routine */
 r_while
 c_loop
 (paren
@@ -2983,9 +2944,9 @@ id|flags
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Handle an attention from the drive.  This will return 1 if it found one&n; * or 0 if not (if one is found, the caller might want to call again).&n; *&n; * This routine counts the number of consecutive times it is called&n; * (since this is always called from a while loop until it returns&n; * a 0), and returns a 0 if it happens too many times.  This will help&n; * prevent a lockup.&n; */
+DECL|function|handle_sony_cd_attention
 r_static
 r_int
-DECL|function|handle_sony_cd_attention
 id|handle_sony_cd_attention
 c_func
 (paren
@@ -3032,7 +2993,6 @@ id|CDU31A_MAX_CONSECUTIVE_ATTENTIONS
 )paren
 (brace
 id|printk
-c_func
 (paren
 l_string|&quot;cdu31a: Too many consecutive attentions: %d&bslash;n&quot;
 comma
@@ -3054,7 +3014,9 @@ id|__LINE__
 suffix:semicolon
 macro_line|#endif
 r_return
+(paren
 l_int|0
+)paren
 suffix:semicolon
 )brace
 id|clear_attention
@@ -3170,7 +3132,9 @@ id|__LINE__
 suffix:semicolon
 macro_line|#endif
 r_return
+(paren
 l_int|1
+)paren
 suffix:semicolon
 )brace
 r_else
@@ -3240,7 +3204,9 @@ id|__LINE__
 suffix:semicolon
 macro_line|#endif
 r_return
+(paren
 l_int|1
+)paren
 suffix:semicolon
 )brace
 id|num_consecutive_attentions
@@ -3258,15 +3224,17 @@ id|__LINE__
 suffix:semicolon
 macro_line|#endif
 r_return
+(paren
 l_int|0
+)paren
 suffix:semicolon
 )brace
 multiline_comment|/* Convert from an integer 0-99 to BCD */
+DECL|function|int_to_bcd
 r_static
 r_inline
 r_int
 r_int
-DECL|function|int_to_bcd
 id|int_to_bcd
 c_func
 (paren
@@ -3297,14 +3265,16 @@ op_mod
 l_int|10
 suffix:semicolon
 r_return
+(paren
 id|retval
+)paren
 suffix:semicolon
 )brace
 multiline_comment|/* Convert from BCD to an integer from 0-99 */
+DECL|function|bcd_to_int
 r_static
 r_int
 r_int
-DECL|function|bcd_to_int
 id|bcd_to_int
 c_func
 (paren
@@ -3314,6 +3284,7 @@ id|bcd
 )paren
 (brace
 r_return
+(paren
 (paren
 (paren
 (paren
@@ -3333,12 +3304,13 @@ id|bcd
 op_amp
 l_int|0x0f
 )paren
+)paren
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Convert a logical sector value (like the OS would want to use for&n; * a block device) to an MSF format.&n; */
+DECL|function|log_to_msf
 r_static
 r_void
-DECL|function|log_to_msf
 id|log_to_msf
 c_func
 (paren
@@ -3405,10 +3377,10 @@ l_int|75
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Convert an MSF format to a logical sector.&n; */
+DECL|function|msf_to_log
 r_static
 r_int
 r_int
-DECL|function|msf_to_log
 id|msf_to_log
 c_func
 (paren
@@ -3458,9 +3430,9 @@ id|log
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Take in integer size value and put it into a buffer like&n; * the drive would want to see a number-of-sector value.&n; */
+DECL|function|size_to_buf
 r_static
 r_void
-DECL|function|size_to_buf
 id|size_to_buf
 c_func
 (paren
@@ -3570,7 +3542,7 @@ op_assign
 id|nsect
 suffix:semicolon
 )brace
-multiline_comment|/*&n;    * If the full read-ahead would go beyond the end of the media, trim&n;    * it back to read just till the end of the media.&n;    */
+multiline_comment|/*&n;&t; * If the full read-ahead would go beyond the end of the media, trim&n;&t; * it back to read just till the end of the media.&n;&t; */
 r_else
 r_if
 c_cond
@@ -3613,7 +3585,7 @@ l_int|3
 )braket
 )paren
 suffix:semicolon
-multiline_comment|/*&n;    * Clear any outstanding attentions and wait for the drive to&n;    * complete any pending operations.&n;    */
+multiline_comment|/*&n;&t; * Clear any outstanding attentions and wait for the drive to&n;&t; * complete any pending operations.&n;&t; */
 r_while
 c_loop
 (paren
@@ -3689,7 +3661,9 @@ id|__LINE__
 suffix:semicolon
 macro_line|#endif
 r_return
+(paren
 l_int|1
+)paren
 suffix:semicolon
 )brace
 r_else
@@ -3750,7 +3724,9 @@ id|__LINE__
 suffix:semicolon
 macro_line|#endif
 r_return
+(paren
 l_int|0
+)paren
 suffix:semicolon
 )brace
 macro_line|#if DEBUG
@@ -3765,9 +3741,9 @@ suffix:semicolon
 macro_line|#endif
 )brace
 multiline_comment|/* Abort a pending read operation.  Clear all the drive status and&n;   readahead variables. */
+DECL|function|abort_read
 r_static
 r_void
-DECL|function|abort_read
 id|abort_read
 c_func
 (paren
@@ -3893,9 +3869,9 @@ l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/* Called when the timer times out.  This will abort the&n;   pending read operation. */
+DECL|function|handle_abort_timeout
 r_static
 r_void
-DECL|function|handle_abort_timeout
 id|handle_abort_timeout
 c_func
 (paren
@@ -3935,7 +3911,7 @@ op_logical_neg
 id|sony_inuse
 )paren
 (brace
-multiline_comment|/* We can&squot;t use abort_read(), because it will sleep&n;         or schedule in the timer interrupt.  Just start&n;         the operation, finish it on the next access to&n;         the drive. */
+multiline_comment|/* We can&squot;t use abort_read(), because it will sleep&n;&t;&t;   or schedule in the timer interrupt.  Just start&n;&t;&t;   the operation, finish it on the next access to&n;&t;&t;   the drive. */
 id|clear_result_ready
 c_func
 (paren
@@ -4028,7 +4004,7 @@ l_string|&quot;Entering input_data&bslash;n&quot;
 )paren
 suffix:semicolon
 macro_line|#endif
-multiline_comment|/* If an XA disk on a CDU31A, skip the first 12 bytes of data from&n;      the disk.  The real data is after that. */
+multiline_comment|/* If an XA disk on a CDU31A, skip the first 12 bytes of data from&n;&t;   the disk.  The real data is after that. */
 r_if
 c_cond
 (paren
@@ -4071,8 +4047,8 @@ id|bytesleft
 op_eq
 l_int|2048
 )paren
-multiline_comment|/* 2048 byte direct buffer transfer */
 (brace
+multiline_comment|/* 2048 byte direct buffer transfer */
 id|insb
 c_func
 (paren
@@ -4090,7 +4066,7 @@ suffix:semicolon
 )brace
 r_else
 (brace
-multiline_comment|/* If the input read did not align with the beginning of the block,&n;&t; skip the necessary bytes. */
+multiline_comment|/* If the input read did not align with the beginning of the block,&n;&t;&t;   skip the necessary bytes. */
 r_if
 c_cond
 (paren
@@ -4125,7 +4101,7 @@ comma
 id|bytesleft
 )paren
 suffix:semicolon
-multiline_comment|/* Get the rest of the data into the readahead buffer at the&n;&t; proper location. */
+multiline_comment|/* Get the rest of the data into the readahead buffer at the&n;&t;&t;   proper location. */
 id|readahead_dataleft
 op_assign
 (paren
@@ -4157,7 +4133,7 @@ id|sony_next_block
 op_add_assign
 id|nblocks
 suffix:semicolon
-multiline_comment|/* If an XA disk, we have to clear out the rest of the unused&n;      error correction data. */
+multiline_comment|/* If an XA disk, we have to clear out the rest of the unused&n;&t;   error correction data. */
 r_if
 c_cond
 (paren
@@ -4282,7 +4258,7 @@ id|offset
 op_assign
 l_int|0
 suffix:semicolon
-multiline_comment|/* If the data in the read-ahead does not match the block offset,&n;      then fix things up. */
+multiline_comment|/* If the data in the read-ahead does not match the block offset,&n;&t;   then fix things up. */
 r_if
 c_cond
 (paren
@@ -4337,7 +4313,7 @@ op_assign
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/* We have readahead data in the buffer, get that first before we&n;      decide if a read is necessary. */
+multiline_comment|/* We have readahead data in the buffer, get that first before we&n;&t;   decide if a read is necessary. */
 r_if
 c_cond
 (paren
@@ -4354,7 +4330,7 @@ OG
 id|readahead_dataleft
 )paren
 (brace
-multiline_comment|/* The readahead will not fill the requested buffer, but&n;&t;    get the data out of the readahead into the buffer. */
+multiline_comment|/* The readahead will not fill the requested buffer, but&n;&t;&t;&t;   get the data out of the readahead into the buffer. */
 id|memcpy
 c_func
 (paren
@@ -4386,7 +4362,7 @@ suffix:semicolon
 )brace
 r_else
 (brace
-multiline_comment|/* The readahead will fill the whole buffer, get the data&n;&t;    and return. */
+multiline_comment|/* The readahead will fill the whole buffer, get the data&n;&t;&t;&t;   and return. */
 id|memcpy
 c_func
 (paren
@@ -4419,7 +4395,7 @@ id|sony_next_block
 op_add_assign
 id|nblocks
 suffix:semicolon
-multiline_comment|/* If the data in the readahead is bad, return an error so the&n;&t;    driver will abort the buffer. */
+multiline_comment|/* If the data in the readahead is bad, return an error so the&n;&t;&t;&t;   driver will abort the buffer. */
 r_if
 c_cond
 (paren
@@ -4578,7 +4554,6 @@ l_int|0x20
 )paren
 (brace
 id|printk
-c_func
 (paren
 l_string|&quot;CDU31A: Got result that should have been error: %d&bslash;n&quot;
 comma
@@ -4812,7 +4787,7 @@ id|SONY_RECOV_LECC_ERR_BLK_STAT
 )paren
 )paren
 (brace
-multiline_comment|/* The data was successful, but if data was read from&n;&t;&t;  the readahead  and it was bad, set the whole&n;&t;&t;  buffer as bad. */
+multiline_comment|/* The data was successful, but if data was read from&n;&t;&t;&t;&t;&t;   the readahead  and it was bad, set the whole&n;&t;&t;&t;&t;&t;   buffer as bad. */
 r_if
 c_cond
 (paren
@@ -4847,7 +4822,6 @@ suffix:semicolon
 r_else
 (brace
 id|printk
-c_func
 (paren
 l_string|&quot;CDU31A: Data block error: 0x%x&bslash;n&quot;
 comma
@@ -4876,7 +4850,7 @@ id|res_size
 op_assign
 l_int|2
 suffix:semicolon
-multiline_comment|/* Data is in the readahead buffer but an error was returned.&n;                  Make sure future requests don&squot;t use the data. */
+multiline_comment|/* Data is in the readahead buffer but an error was returned.&n;&t;&t;&t;&t;&t;   Make sure future requests don&squot;t use the data. */
 r_if
 c_cond
 (paren
@@ -4926,9 +4900,8 @@ op_ne
 l_int|0x20
 )paren
 (brace
-multiline_comment|/* The drive gave me bad status, I don&squot;t know what to do.&n;               Reset the driver and return an error. */
+multiline_comment|/* The drive gave me bad status, I don&squot;t know what to do.&n;&t;&t;&t;&t;   Reset the driver and return an error. */
 id|printk
-c_func
 (paren
 l_string|&quot;CDU31A: Invalid block status: 0x%x&bslash;n&quot;
 comma
@@ -4977,9 +4950,9 @@ suffix:semicolon
 macro_line|#endif
 )brace
 multiline_comment|/*&n; * The OS calls this to perform a read or write operation to the drive.&n; * Write obviously fail.  Reads to a read ahead of sony_buffer_size&n; * bytes to help speed operations.  This especially helps since the OS&n; * uses 1024 byte blocks and the drive uses 2048 byte blocks.  Since most&n; * data access on a CD is done sequentially, this saves a lot of operations.&n; */
+DECL|function|do_cdu31a_request
 r_static
 r_void
-DECL|function|do_cdu31a_request
 id|do_cdu31a_request
 c_func
 (paren
@@ -5020,7 +4993,7 @@ l_string|&quot;Entering do_cdu31a_request&bslash;n&quot;
 )paren
 suffix:semicolon
 macro_line|#endif
-multiline_comment|/* &n;    * Make sure no one else is using the driver; wait for them&n;    * to finish if it is so.&n;    */
+multiline_comment|/* &n;&t; * Make sure no one else is using the driver; wait for them&n;&t; * to finish if it is so.&n;&t; */
 id|save_flags
 c_func
 (paren
@@ -5146,7 +5119,7 @@ l_int|1
 (brace
 id|cdu31a_request_startover
 suffix:colon
-multiline_comment|/*&n;       * The beginning here is stolen from the hard disk driver.  I hope&n;       * it&squot;s right.&n;       */
+multiline_comment|/*&n;&t;&t; * The beginning here is stolen from the hard disk driver.  I hope&n;&t;&t; * it&squot;s right.&n;&t;&t; */
 r_if
 c_cond
 (paren
@@ -5174,7 +5147,7 @@ c_func
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* I don&squot;t use INIT_REQUEST because it calls return, which would&n;         return without unlocking the device.  It shouldn&squot;t matter,&n;         but just to be safe... */
+multiline_comment|/* I don&squot;t use INIT_REQUEST because it calls return, which would&n;&t;&t;   return without unlocking the device.  It shouldn&squot;t matter,&n;&t;&t;   but just to be safe... */
 r_if
 c_cond
 (paren
@@ -5261,7 +5234,7 @@ id|CURRENT-&gt;cmd
 r_case
 id|READ
 suffix:colon
-multiline_comment|/*&n;          * If the block address is invalid or the request goes beyond the end of&n;          * the media, return an error.&n;          */
+multiline_comment|/*&n;&t;&t;&t; * If the block address is invalid or the request goes beyond the end of&n;&t;&t;&t; * the media, return an error.&n;&t;&t;&t; */
 macro_line|#if 0
 r_if
 c_cond
@@ -5276,7 +5249,6 @@ id|sony_toc.start_track_lba
 )paren
 (brace
 id|printk
-c_func
 (paren
 l_string|&quot;CDU31A: Request before beginning of media&bslash;n&quot;
 )paren
@@ -5305,7 +5277,6 @@ id|sony_toc.lead_out_start_lba
 )paren
 (brace
 id|printk
-c_func
 (paren
 l_string|&quot;CDU31A: Request past end of media&bslash;n&quot;
 )paren
@@ -5337,7 +5308,6 @@ id|sony_toc.lead_out_start_lba
 )paren
 (brace
 id|printk
-c_func
 (paren
 l_string|&quot;CDU31A: Request past end of media&bslash;n&quot;
 )paren
@@ -5390,7 +5360,7 @@ r_goto
 id|cdu31a_request_startover
 suffix:semicolon
 )brace
-multiline_comment|/* If no data is left to be read from the drive, start the&n;&t;    next request. */
+multiline_comment|/* If no data is left to be read from the drive, start the&n;&t;&t;&t;   next request. */
 r_if
 c_cond
 (paren
@@ -5403,7 +5373,6 @@ r_if
 c_cond
 (paren
 id|start_request
-c_func
 (paren
 id|block
 op_div
@@ -5428,7 +5397,7 @@ id|cdu31a_request_startover
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/* If the requested block is not the next one waiting in&n;&t;    the driver, abort the current operation and start a&n;&t;    new one. */
+multiline_comment|/* If the requested block is not the next one waiting in&n;&t;&t;&t;   the driver, abort the current operation and start a&n;&t;&t;&t;   new one. */
 r_else
 r_if
 c_cond
@@ -5440,7 +5409,6 @@ id|sony_next_block
 (brace
 macro_line|#if DEBUG
 id|printk
-c_func
 (paren
 l_string|&quot;CDU31A Warning: Read for block %d, expected %d&bslash;n&quot;
 comma
@@ -5482,7 +5450,6 @@ r_if
 c_cond
 (paren
 id|start_request
-c_func
 (paren
 id|block
 op_div
@@ -5497,7 +5464,6 @@ l_int|0
 )paren
 (brace
 id|printk
-c_func
 (paren
 l_string|&quot;CDU31a: start request failed&bslash;n&quot;
 )paren
@@ -5590,7 +5556,6 @@ suffix:semicolon
 r_else
 (brace
 id|printk
-c_func
 (paren
 l_string|&quot;CDU31A: %s error for block %d, nblock %d&bslash;n&quot;
 comma
@@ -5662,7 +5627,7 @@ c_func
 )paren
 suffix:semicolon
 macro_line|#else
-multiline_comment|/* Start a timer to time out after a while to disable&n;      the read. */
+multiline_comment|/* Start a timer to time out after a while to disable&n;&t;   the read. */
 id|cdu31a_abort_timer.expires
 op_assign
 id|jiffies
@@ -5713,9 +5678,9 @@ suffix:semicolon
 macro_line|#endif
 )brace
 multiline_comment|/*&n; * Read the table of contents from the drive and set up TOC if&n; * successful.&n; */
+DECL|function|sony_get_toc
 r_static
 r_void
-DECL|function|sony_get_toc
 id|sony_get_toc
 c_func
 (paren
@@ -5813,7 +5778,7 @@ op_amp
 id|res_size
 )paren
 suffix:semicolon
-multiline_comment|/* The drive sometimes returns error 0.  I don&squot;t know why, but ignore&n;         it.  It seems to mean the drive has already done the operation. */
+multiline_comment|/* The drive sometimes returns error 0.  I don&squot;t know why, but ignore&n;&t;&t;   it.  It seems to mean the drive has already done the operation. */
 r_if
 c_cond
 (paren
@@ -5871,7 +5836,7 @@ r_goto
 id|gettoc_drive_spinning
 suffix:semicolon
 )brace
-multiline_comment|/* If the drive says it is not spun up (even though we just did it!)&n;            then retry the operation at least a few times. */
+multiline_comment|/* If the drive says it is not spun up (even though we just did it!)&n;&t;&t;&t;   then retry the operation at least a few times. */
 r_if
 c_cond
 (paren
@@ -5923,7 +5888,7 @@ suffix:semicolon
 )brace
 id|gettoc_drive_spinning
 suffix:colon
-multiline_comment|/* The idea here is we keep asking for sessions until the command&n;&t; fails.  Then we know what the last valid session on the disk is.&n;&t; No need to check session 0, since session 0 is the same as session&n;         1; the command returns different information if you give it 0. &n;        */
+multiline_comment|/* The idea here is we keep asking for sessions until the command&n;&t;&t;   fails.  Then we know what the last valid session on the disk is.&n;&t;&t;   No need to check session 0, since session 0 is the same as session&n;&t;&t;   1; the command returns different information if you give it 0. &n;&t;&t; */
 macro_line|#if DEBUG
 id|memset
 c_func
@@ -6047,7 +6012,6 @@ op_eq
 l_int|1
 )paren
 id|printk
-c_func
 (paren
 l_string|&quot;Yikes! Couldn&squot;t read any sessions!&quot;
 )paren
@@ -6117,7 +6081,6 @@ l_int|0x20
 )paren
 (brace
 id|printk
-c_func
 (paren
 l_string|&quot;cdu31a: Error reading session %d: %x %s&bslash;n&quot;
 comma
@@ -6131,20 +6094,21 @@ comma
 id|translate_error
 c_func
 (paren
-id|single_toc.exec_status
+id|single_toc
+dot
+id|exec_status
 (braket
 l_int|1
 )braket
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/* An error reading the TOC.  Return without sony_toc_read&n;&t;       set. */
+multiline_comment|/* An error reading the TOC.  Return without sony_toc_read&n;&t;&t;&t;&t;   set. */
 r_return
 suffix:semicolon
 )brace
 macro_line|#if DEBUG
 id|printk
-c_func
 (paren
 l_string|&quot;add0 %01x, con0 %01x, poi0 %02x, 1st trk %d, dsktyp %x, dum0 %x&bslash;n&quot;
 comma
@@ -6166,7 +6130,6 @@ id|single_toc.dummy0
 )paren
 suffix:semicolon
 id|printk
-c_func
 (paren
 l_string|&quot;add1 %01x, con1 %01x, poi1 %02x, lst trk %d, dummy1 %x, dum2 %x&bslash;n&quot;
 comma
@@ -6188,7 +6151,6 @@ id|single_toc.dummy2
 )paren
 suffix:semicolon
 id|printk
-c_func
 (paren
 l_string|&quot;add2 %01x, con2 %01x, poi2 %02x leadout start min %d, sec %d, frame %d&bslash;n&quot;
 comma
@@ -6238,7 +6200,6 @@ OG
 l_int|0xaf
 )paren
 id|printk
-c_func
 (paren
 l_string|&quot;addb0 %01x, conb0 %01x, poib0 %02x, nextsession min %d, sec %d, frame %d&bslash;n&quot;
 l_string|&quot;#mode5_ptrs %02d, max_start_outer_leadout_msf min %d, sec %d, frame %d&bslash;n&quot;
@@ -6252,7 +6213,9 @@ comma
 id|bcd_to_int
 c_func
 (paren
-id|single_toc.next_poss_prog_area_msf
+id|single_toc
+dot
+id|next_poss_prog_area_msf
 (braket
 l_int|0
 )braket
@@ -6261,7 +6224,9 @@ comma
 id|bcd_to_int
 c_func
 (paren
-id|single_toc.next_poss_prog_area_msf
+id|single_toc
+dot
+id|next_poss_prog_area_msf
 (braket
 l_int|1
 )braket
@@ -6270,7 +6235,9 @@ comma
 id|bcd_to_int
 c_func
 (paren
-id|single_toc.next_poss_prog_area_msf
+id|single_toc
+dot
+id|next_poss_prog_area_msf
 (braket
 l_int|2
 )braket
@@ -6281,7 +6248,9 @@ comma
 id|bcd_to_int
 c_func
 (paren
-id|single_toc.max_start_outer_leadout_msf
+id|single_toc
+dot
+id|max_start_outer_leadout_msf
 (braket
 l_int|0
 )braket
@@ -6290,7 +6259,9 @@ comma
 id|bcd_to_int
 c_func
 (paren
-id|single_toc.max_start_outer_leadout_msf
+id|single_toc
+dot
+id|max_start_outer_leadout_msf
 (braket
 l_int|1
 )braket
@@ -6299,7 +6270,9 @@ comma
 id|bcd_to_int
 c_func
 (paren
-id|single_toc.max_start_outer_leadout_msf
+id|single_toc
+dot
+id|max_start_outer_leadout_msf
 (braket
 l_int|2
 )braket
@@ -6318,7 +6291,6 @@ OG
 l_int|0xaf
 )paren
 id|printk
-c_func
 (paren
 l_string|&quot;addb1 %01x, conb1 %01x, poib1 %02x, %x %x %x %x #skipint_ptrs %d, #skiptrkassign %d %x&bslash;n&quot;
 comma
@@ -6367,7 +6339,6 @@ OG
 l_int|0xaf
 )paren
 id|printk
-c_func
 (paren
 l_string|&quot;addb2 %01x, conb2 %01x, poib2 %02x, %02x %02x %02x %02x %02x %02x %02x&bslash;n&quot;
 comma
@@ -6425,7 +6396,6 @@ OG
 l_int|0xaf
 )paren
 id|printk
-c_func
 (paren
 l_string|&quot;addb3 %01x, conb3 %01x, poib3 %02x, %02x %02x %02x %02x %02x %02x %02x&bslash;n&quot;
 comma
@@ -6483,7 +6453,6 @@ OG
 l_int|0xaf
 )paren
 id|printk
-c_func
 (paren
 l_string|&quot;addb4 %01x, conb4 %01x, poib4 %02x, %02x %02x %02x %02x %02x %02x %02x&bslash;n&quot;
 comma
@@ -6541,7 +6510,6 @@ OG
 l_int|0xaf
 )paren
 id|printk
-c_func
 (paren
 l_string|&quot;addc0 %01x, conc0 %01x, poic0 %02x, %02x %02x %02x %02x %02x %02x %02x&bslash;n&quot;
 comma
@@ -6644,7 +6612,7 @@ c_func
 id|sony_toc.lead_out_start_msf
 )paren
 suffix:semicolon
-multiline_comment|/* For points that do not exist, move the data over them&n;&t; to the right location. */
+multiline_comment|/* For points that do not exist, move the data over them&n;&t;&t;&t;   to the right location. */
 r_if
 c_cond
 (paren
@@ -6705,7 +6673,9 @@ op_assign
 id|bcd_to_int
 c_func
 (paren
-id|single_toc.max_start_outer_leadout_msf
+id|single_toc
+dot
+id|max_start_outer_leadout_msf
 (braket
 l_int|0
 )braket
@@ -6719,7 +6689,9 @@ op_assign
 id|bcd_to_int
 c_func
 (paren
-id|single_toc.max_start_outer_leadout_msf
+id|single_toc
+dot
+id|max_start_outer_leadout_msf
 (braket
 l_int|1
 )braket
@@ -6733,7 +6705,9 @@ op_assign
 id|bcd_to_int
 c_func
 (paren
-id|single_toc.max_start_outer_leadout_msf
+id|single_toc
+dot
+id|max_start_outer_leadout_msf
 (braket
 l_int|2
 )braket
@@ -6744,7 +6718,9 @@ op_assign
 id|msf_to_log
 c_func
 (paren
-id|sony_toc.lead_out_start_msf
+id|sony_toc
+dot
+id|lead_out_start_msf
 )paren
 suffix:semicolon
 )brace
@@ -6965,7 +6941,6 @@ suffix:semicolon
 )brace
 macro_line|#if DEBUG
 id|printk
-c_func
 (paren
 l_string|&quot;start track lba %u,  leadout start lba %u&bslash;n&quot;
 comma
@@ -6998,7 +6973,9 @@ op_minus
 id|bcd_to_int
 c_func
 (paren
-id|single_toc.first_track_num
+id|single_toc
+dot
+id|first_track_num
 )paren
 suffix:semicolon
 id|i
@@ -7006,7 +6983,6 @@ op_increment
 )paren
 (brace
 id|printk
-c_func
 (paren
 l_string|&quot;trk %02d: add 0x%01x, con 0x%01x,  track %02d, start min %02d, sec %02d, frame %02d&bslash;n&quot;
 comma
@@ -7029,7 +7005,9 @@ comma
 id|bcd_to_int
 c_func
 (paren
-id|single_toc.tracks
+id|single_toc
+dot
+id|tracks
 (braket
 id|i
 )braket
@@ -7040,7 +7018,9 @@ comma
 id|bcd_to_int
 c_func
 (paren
-id|single_toc.tracks
+id|single_toc
+dot
+id|tracks
 (braket
 id|i
 )braket
@@ -7054,7 +7034,9 @@ comma
 id|bcd_to_int
 c_func
 (paren
-id|single_toc.tracks
+id|single_toc
+dot
+id|tracks
 (braket
 id|i
 )braket
@@ -7068,7 +7050,9 @@ comma
 id|bcd_to_int
 c_func
 (paren
-id|single_toc.tracks
+id|single_toc
+dot
+id|tracks
 (braket
 id|i
 )braket
@@ -7088,7 +7072,9 @@ OG
 id|bcd_to_int
 c_func
 (paren
-id|single_toc.tracks
+id|single_toc
+dot
+id|tracks
 (braket
 id|i
 )braket
@@ -7101,7 +7087,9 @@ op_assign
 id|bcd_to_int
 c_func
 (paren
-id|single_toc.tracks
+id|single_toc
+dot
+id|tracks
 (braket
 id|i
 )braket
@@ -7117,7 +7105,9 @@ OL
 id|bcd_to_int
 c_func
 (paren
-id|single_toc.tracks
+id|single_toc
+dot
+id|tracks
 (braket
 id|i
 )braket
@@ -7130,7 +7120,9 @@ op_assign
 id|bcd_to_int
 c_func
 (paren
-id|single_toc.tracks
+id|single_toc
+dot
+id|tracks
 (braket
 id|i
 )braket
@@ -7140,7 +7132,6 @@ id|track
 suffix:semicolon
 )brace
 id|printk
-c_func
 (paren
 l_string|&quot;min track number %d,   max track number %d&bslash;n&quot;
 comma
@@ -7269,7 +7260,9 @@ op_minus
 id|bcd_to_int
 c_func
 (paren
-id|single_toc.first_track_num
+id|single_toc
+dot
+id|first_track_num
 )paren
 suffix:semicolon
 id|i
@@ -7317,7 +7310,9 @@ op_assign
 id|bcd_to_int
 c_func
 (paren
-id|single_toc.tracks
+id|single_toc
+dot
+id|tracks
 (braket
 id|i
 )braket
@@ -7338,7 +7333,9 @@ op_assign
 id|bcd_to_int
 c_func
 (paren
-id|single_toc.tracks
+id|single_toc
+dot
+id|tracks
 (braket
 id|i
 )braket
@@ -7362,7 +7359,9 @@ op_assign
 id|bcd_to_int
 c_func
 (paren
-id|single_toc.tracks
+id|single_toc
+dot
+id|tracks
 (braket
 id|i
 )braket
@@ -7386,7 +7385,9 @@ op_assign
 id|bcd_to_int
 c_func
 (paren
-id|single_toc.tracks
+id|single_toc
+dot
+id|tracks
 (braket
 id|i
 )braket
@@ -7404,12 +7405,16 @@ id|i
 op_eq
 l_int|0
 )paren
-id|single_toc.start_track_lba
+id|single_toc
+dot
+id|start_track_lba
 op_assign
 id|msf_to_log
 c_func
 (paren
-id|sony_toc.tracks
+id|sony_toc
+dot
+id|tracks
 (braket
 id|totaltracks
 )braket
@@ -7431,7 +7436,9 @@ id|track
 )paren
 id|mint
 op_assign
-id|sony_toc.tracks
+id|sony_toc
+dot
+id|tracks
 (braket
 id|totaltracks
 )braket
@@ -7452,7 +7459,9 @@ id|track
 )paren
 id|maxt
 op_assign
-id|sony_toc.tracks
+id|sony_toc
+dot
+id|tracks
 (braket
 id|totaltracks
 )braket
@@ -7469,7 +7478,7 @@ id|sony_toc.last_track_num
 op_assign
 id|maxt
 suffix:semicolon
-multiline_comment|/* Disk type of last session wins. For example:&n;            CD-Extra has disk type 0 for the first session, so&n;            a dumb HiFi CD player thinks it is a plain audio CD.&n;&t;    We are interested in the disk type of the last session,&n;            which is 0x20 (XA) for CD-Extra, so we can access the&n;            data track ... */
+multiline_comment|/* Disk type of last session wins. For example:&n;&t;&t;&t;   CD-Extra has disk type 0 for the first session, so&n;&t;&t;&t;   a dumb HiFi CD player thinks it is a plain audio CD.&n;&t;&t;&t;   We are interested in the disk type of the last session,&n;&t;&t;&t;   which is 0x20 (XA) for CD-Extra, so we can access the&n;&t;&t;&t;   data track ... */
 id|sony_toc.disk_type
 op_assign
 id|single_toc.disk_type
@@ -7622,7 +7631,6 @@ DECL|macro|DEBUG
 macro_line|#undef DEBUG
 macro_line|#if DEBUG
 id|printk
-c_func
 (paren
 l_string|&quot;Disk session %d, start track: %d, stop track: %d&bslash;n&quot;
 comma
@@ -7707,9 +7715,9 @@ l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Search for a specific track in the table of contents.&n; */
+DECL|function|find_track
 r_static
 r_int
-DECL|function|find_track
 id|find_track
 c_func
 (paren
@@ -7759,9 +7767,9 @@ l_int|1
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Read the subcode and put it in last_sony_subcode for future use.&n; */
+DECL|function|read_subcode
 r_static
 r_int
-DECL|function|read_subcode
 id|read_subcode
 c_func
 (paren
@@ -8224,9 +8232,9 @@ l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Get the subchannel info like the CDROMSUBCHNL command wants to see it.  If&n; * the drive is playing, the subchannel needs to be read (since it would be&n; * changing).  If the drive is paused or completed, the subcode information has&n; * already been stored, just use that.  The ioctl call wants things in decimal&n; * (not BCD), so all the conversions are done.&n; */
+DECL|function|sony_get_subchnl_info
 r_static
 r_int
-DECL|function|sony_get_subchnl_info
 id|sony_get_subchnl_info
 c_func
 (paren
@@ -8609,7 +8617,6 @@ l_int|0x20
 )paren
 (brace
 id|printk
-c_func
 (paren
 l_string|&quot;CDU31A: Got result that should have been error: %d&bslash;n&quot;
 comma
@@ -8940,7 +8947,7 @@ op_ne
 l_int|0x20
 )paren
 (brace
-multiline_comment|/* The drive gave me bad status, I don&squot;t know what to do.&n;            Reset the driver and return an error. */
+multiline_comment|/* The drive gave me bad status, I don&squot;t know what to do.&n;&t;&t;&t;   Reset the driver and return an error. */
 id|printk
 c_func
 (paren
@@ -8980,9 +8987,9 @@ suffix:semicolon
 )brace
 )brace
 multiline_comment|/* Perform a raw data read.  This will automatically detect the&n;   track type and read the proper data (audio or data). */
+DECL|function|read_audio
 r_static
 r_int
-DECL|function|read_audio
 id|read_audio
 c_func
 (paren
@@ -9021,7 +9028,7 @@ r_int
 r_int
 id|flags
 suffix:semicolon
-multiline_comment|/* &n;    * Make sure no one else is using the driver; wait for them&n;    * to finish if it is so.&n;    */
+multiline_comment|/* &n;&t; * Make sure no one else is using the driver; wait for them&n;&t; * to finish if it is so.&n;&t; */
 id|save_flags
 c_func
 (paren
@@ -9166,7 +9173,7 @@ op_minus
 id|EIO
 suffix:semicolon
 )brace
-multiline_comment|/* From here down, we have to goto exit_read_audio instead of returning&n;      because the drive parameters have to be set back to data before&n;      return. */
+multiline_comment|/* From here down, we have to goto exit_read_audio instead of returning&n;&t;   because the drive parameters have to be set back to data before&n;&t;   return. */
 id|retval
 op_assign
 l_int|0
@@ -9246,7 +9253,6 @@ id|SONY_BAD_DATA_ERR
 )paren
 (brace
 id|printk
-c_func
 (paren
 l_string|&quot;CDU31A: Data error on audio sector %d&bslash;n&quot;
 comma
@@ -9336,7 +9342,6 @@ l_int|0x20
 )paren
 (brace
 id|printk
-c_func
 (paren
 l_string|&quot;CDU31A: Unable to set decode params: 0x%2.2x&bslash;n&quot;
 comma
@@ -9360,7 +9365,6 @@ r_if
 c_cond
 (paren
 id|start_request
-c_func
 (paren
 id|ra-&gt;addr.lba
 op_plus
@@ -9383,7 +9387,7 @@ r_goto
 id|exit_read_audio
 suffix:semicolon
 )brace
-multiline_comment|/* Don&squot;t go back to the top because don&squot;t want to get into&n;               and infinite loop.  A lot of code gets duplicated, but&n;               that&squot;s no big deal, I don&squot;t guess. */
+multiline_comment|/* Don&squot;t go back to the top because don&squot;t want to get into&n;&t;&t;&t;&t;   and infinite loop.  A lot of code gets duplicated, but&n;&t;&t;&t;&t;   that&squot;s no big deal, I don&squot;t guess. */
 id|read_audio_data
 c_func
 (paren
@@ -9422,7 +9426,6 @@ id|SONY_BAD_DATA_ERR
 )paren
 (brace
 id|printk
-c_func
 (paren
 l_string|&quot;CDU31A: Data error on audio sector %d&bslash;n&quot;
 comma
@@ -9435,7 +9438,6 @@ suffix:semicolon
 r_else
 (brace
 id|printk
-c_func
 (paren
 l_string|&quot;CDU31A: Error reading audio data on sector %d: %s&bslash;n&quot;
 comma
@@ -9444,7 +9446,6 @@ op_plus
 id|cframe
 comma
 id|translate_error
-c_func
 (paren
 id|res_reg
 (braket
@@ -9496,7 +9497,6 @@ suffix:semicolon
 r_else
 (brace
 id|printk
-c_func
 (paren
 l_string|&quot;CDU31A: Error reading audio data on sector %d: %s&bslash;n&quot;
 comma
@@ -9710,7 +9710,9 @@ id|sony_wait
 )paren
 suffix:semicolon
 r_return
+(paren
 id|retval
+)paren
 suffix:semicolon
 )brace
 r_static
@@ -10013,7 +10015,7 @@ op_amp
 id|res_size
 )paren
 suffix:semicolon
-multiline_comment|/*&n;       * Spin the drive down, ignoring the error if the disk was&n;       * already not spinning.&n;       */
+multiline_comment|/*&n;&t;&t; * Spin the drive down, ignoring the error if the disk was&n;&t;&t; * already not spinning.&n;&t;&t; */
 id|sony_audio_status
 op_assign
 id|CDROM_AUDIO_NO_STATUS
@@ -10044,7 +10046,6 @@ r_if
 c_cond
 (paren
 id|do_sony_cd_cmd_chk
-c_func
 (paren
 l_string|&quot;PAUSE&quot;
 comma
@@ -10060,12 +10061,10 @@ op_amp
 id|res_size
 )paren
 )paren
-(brace
 r_return
 op_minus
 id|EIO
 suffix:semicolon
-)brace
 multiline_comment|/* Get the current position and save it for resuming */
 r_if
 c_cond
@@ -10250,7 +10249,6 @@ r_if
 c_cond
 (paren
 id|do_sony_cd_cmd_chk
-c_func
 (paren
 l_string|&quot;RESUME&quot;
 comma
@@ -10268,12 +10266,10 @@ id|res_size
 OL
 l_int|0
 )paren
-(brace
 r_return
 op_minus
 id|EIO
 suffix:semicolon
-)brace
 id|sony_audio_status
 op_assign
 id|CDROM_AUDIO_PLAY
@@ -10351,7 +10347,6 @@ r_if
 c_cond
 (paren
 id|do_sony_cd_cmd_chk
-c_func
 (paren
 l_string|&quot;PLAYMSF&quot;
 comma
@@ -10369,12 +10364,10 @@ id|res_size
 OL
 l_int|0
 )paren
-(brace
 r_return
 op_minus
 id|EIO
 suffix:semicolon
-)brace
 multiline_comment|/* Save the final position for pauses and resumes */
 id|final_pos_msf
 (braket
@@ -10766,7 +10759,7 @@ l_int|2
 )braket
 )paren
 suffix:semicolon
-multiline_comment|/*&n;          * If we want to stop after the last track, use the lead-out&n;          * MSF to do that.&n;          */
+multiline_comment|/*&n;&t;&t;&t; * If we want to stop after the last track, use the lead-out&n;&t;&t;&t; * MSF to do that.&n;&t;&t;&t; */
 r_if
 c_cond
 (paren
@@ -10969,7 +10962,6 @@ l_int|6
 )paren
 suffix:semicolon
 id|printk
-c_func
 (paren
 l_string|&quot;Sony CDROM error %s (CDROMPLAYTRKIND)&bslash;n&quot;
 comma
@@ -11152,7 +11144,7 @@ id|cmd
 r_case
 id|CDROMREADAUDIO
 suffix:colon
-multiline_comment|/* Read 2352 byte audio tracks and 2340 byte&n;&t;&t;&t;&t; raw data tracks. */
+multiline_comment|/* Read 2352 byte audio tracks and 2340 byte&n;&t;&t;&t;&t;   raw data tracks. */
 (brace
 r_struct
 id|cdrom_read_audio
@@ -11196,12 +11188,10 @@ id|ra
 )paren
 )paren
 )paren
-(brace
 r_return
 op_minus
 id|EFAULT
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -11235,11 +11225,9 @@ id|i
 OL
 l_int|0
 )paren
-(brace
 r_return
 id|i
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -11349,7 +11337,7 @@ op_minus
 id|EINVAL
 suffix:semicolon
 )brace
-multiline_comment|/* I know, this can go negative on an unsigned.  However,&n;               the first thing done to the data is to add this value,&n;               so this should compensate and allow direct msf access. */
+multiline_comment|/* I know, this can go negative on an unsigned.  However,&n;&t;&t;&t;&t;   the first thing done to the data is to add this value,&n;&t;&t;&t;&t;   so this should compensate and allow direct msf access. */
 id|ra.addr.lba
 op_sub_assign
 id|LOG_START_OFFSET
@@ -11363,11 +11351,13 @@ id|EINVAL
 suffix:semicolon
 )brace
 r_return
+(paren
 id|read_audio
 c_func
 (paren
 op_amp
 id|ra
+)paren
 )paren
 suffix:semicolon
 )brace
@@ -11428,7 +11418,7 @@ op_amp
 id|res_size
 )paren
 suffix:semicolon
-multiline_comment|/* The drive sometimes returns error 0.  I don&squot;t know why, but ignore&n;      it.  It seems to mean the drive has already done the operation. */
+multiline_comment|/* The drive sometimes returns error 0.  I don&squot;t know why, but ignore&n;&t;   it.  It seems to mean the drive has already done the operation. */
 r_if
 c_cond
 (paren
@@ -11493,7 +11483,7 @@ op_amp
 id|res_size
 )paren
 suffix:semicolon
-multiline_comment|/* The drive sometimes returns error 0.  I don&squot;t know why, but ignore&n;      it.  It seems to mean the drive has already done the operation. */
+multiline_comment|/* The drive sometimes returns error 0.  I don&squot;t know why, but ignore&n;&t;   it.  It seems to mean the drive has already done the operation. */
 r_if
 c_cond
 (paren
@@ -11551,7 +11541,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/* If the drive says it is not spun up (even though we just did it!)&n;         then retry the operation at least a few times. */
+multiline_comment|/* If the drive says it is not spun up (even though we just did it!)&n;&t;&t;   then retry the operation at least a few times. */
 r_if
 c_cond
 (paren
@@ -11617,9 +11607,9 @@ l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Open the drive for operations.  Spin the drive up and read the table of&n; * contents if these have not already been done.&n; */
+DECL|function|scd_open
 r_static
 r_int
-DECL|function|scd_open
 id|scd_open
 c_func
 (paren
@@ -11712,7 +11702,7 @@ op_minus
 id|EIO
 suffix:semicolon
 )brace
-multiline_comment|/* For XA on the CDU31A only, we have to do special reads.&n;         The CDU33A handles XA automagically. */
+multiline_comment|/* For XA on the CDU31A only, we have to do special reads.&n;&t;&t;   The CDU33A handles XA automagically. */
 multiline_comment|/* if (   (sony_toc.disk_type == SONY_XA_DISK_TYPE) */
 r_if
 c_cond
@@ -11782,7 +11772,6 @@ l_int|0x20
 )paren
 (brace
 id|printk
-c_func
 (paren
 l_string|&quot;CDU31A: Unable to set XA params: 0x%2.2x&bslash;n&quot;
 comma
@@ -11859,7 +11848,6 @@ l_int|0x20
 )paren
 (brace
 id|printk
-c_func
 (paren
 l_string|&quot;CDU31A: Unable to reset XA params: 0x%2.2x&bslash;n&quot;
 comma
@@ -11888,9 +11876,9 @@ l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Close the drive.  Spin it down if no task is using it.  The spin&n; * down will fail if playing audio, so audio play is OK.&n; */
+DECL|function|scd_release
 r_static
 r_void
-DECL|function|scd_release
 id|scd_release
 c_func
 (paren
@@ -12060,7 +12048,6 @@ suffix:semicolon
 multiline_comment|/* The different types of disc loading mechanisms supported */
 DECL|variable|__initdata
 r_static
-r_const
 r_char
 op_star
 id|load_mech
@@ -12158,7 +12145,7 @@ id|cdu31a_port
 op_plus
 id|SONY_FIFOST_REG_OFFSET
 suffix:semicolon
-multiline_comment|/*&n;    * Check to see if anything exists at the status register location.&n;    * I don&squot;t know if this is a good way to check, but it seems to work&n;    * ok for me.&n;    */
+multiline_comment|/*&n;&t; * Check to see if anything exists at the status register location.&n;&t; * I don&squot;t know if this is a good way to check, but it seems to work&n;&t; * ok for me.&n;&t; */
 r_if
 c_cond
 (paren
@@ -12170,7 +12157,7 @@ op_ne
 l_int|0xff
 )paren
 (brace
-multiline_comment|/*&n;       * Reset the drive and wait for attention from it (to say it&squot;s reset).&n;       * If you don&squot;t wait, the next operation will probably fail.&n;       */
+multiline_comment|/*&n;&t;&t; * Reset the drive and wait for attention from it (to say it&squot;s reset).&n;&t;&t; * If you don&squot;t wait, the next operation will probably fail.&n;&t;&t; */
 id|reset_drive
 c_func
 (paren
@@ -12231,7 +12218,7 @@ r_return
 suffix:semicolon
 )brace
 macro_line|#endif
-multiline_comment|/*&n;       * Get the drive configuration.&n;       */
+multiline_comment|/*&n;&t;&t; * Get the drive configuration.&n;&t;&t; */
 id|do_sony_cd_cmd
 c_func
 (paren
@@ -12405,9 +12392,9 @@ r_int
 id|cdu31a_block_size
 suffix:semicolon
 multiline_comment|/*&n; * Initialize the driver.&n; */
+DECL|function|cdu31a_init
 r_int
 id|__init
-DECL|function|cdu31a_init
 id|cdu31a_init
 c_func
 (paren
@@ -12443,7 +12430,7 @@ suffix:semicolon
 r_int
 id|tmp_irq
 suffix:semicolon
-multiline_comment|/*&n;    * According to Alex Freed (freed@europa.orion.adobe.com), this is&n;    * required for the Fusion CD-16 package.  If the sound driver is&n;    * loaded, it should work fine, but just in case...&n;    *&n;    * The following turn on the CD-ROM interface for a Fusion CD-16.&n;    */
+multiline_comment|/*&n;&t; * According to Alex Freed (freed@europa.orion.adobe.com), this is&n;&t; * required for the Fusion CD-16 package.  If the sound driver is&n;&t; * loaded, it should work fine, but just in case...&n;&t; *&n;&t; * The following turn on the CD-ROM interface for a Fusion CD-16.&n;&t; */
 r_if
 c_cond
 (paren
@@ -12751,7 +12738,6 @@ r_if
 c_cond
 (paren
 id|request_irq
-c_func
 (paren
 id|cdu31a_irq
 comma
@@ -12766,7 +12752,6 @@ l_int|NULL
 )paren
 (brace
 id|printk
-c_func
 (paren
 l_string|&quot;Unable to grab IRQ%d for the CDU31A driver&bslash;n&quot;
 comma
@@ -13088,7 +13073,9 @@ id|drive_found
 )paren
 (brace
 r_return
+(paren
 l_int|0
+)paren
 suffix:semicolon
 )brace
 r_else
@@ -13151,9 +13138,9 @@ op_minus
 id|EIO
 suffix:semicolon
 )brace
+DECL|function|cdu31a_exit
 r_void
 id|__exit
-DECL|function|cdu31a_exit
 id|cdu31a_exit
 c_func
 (paren
@@ -13172,7 +13159,6 @@ id|scd_info
 )paren
 (brace
 id|printk
-c_func
 (paren
 l_string|&quot;Can&squot;t unregister cdu31a from Uniform cdrom driver&bslash;n&quot;
 )paren
@@ -13262,5 +13248,13 @@ c_func
 (paren
 id|cdu31a_exit
 )paren
+suffix:semicolon
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
+)paren
+suffix:semicolon
+id|EXPORT_NO_SYMBOLS
 suffix:semicolon
 eof

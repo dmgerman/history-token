@@ -398,6 +398,11 @@ r_int
 id|user
 suffix:semicolon
 multiline_comment|/* user count for exclusive use */
+DECL|member|removed
+r_int
+id|removed
+suffix:semicolon
+multiline_comment|/* device disconnected */
 DECL|member|streaming
 r_int
 id|streaming
@@ -522,6 +527,17 @@ r_int
 id|nullpackets
 suffix:semicolon
 )brace
+suffix:semicolon
+r_static
+r_inline
+r_void
+id|usb_se401_remove_disconnected
+(paren
+r_struct
+id|usb_se401
+op_star
+id|se401
+)paren
 suffix:semicolon
 macro_line|#endif
 eof

@@ -1,6 +1,6 @@
-multiline_comment|/* $Id: vino.h,v 1.2 1999/02/09 23:03:53 ulfc Exp $&n; * drivers/sgi/vino.h&n; *&n; * Copyright (C) 1999 Ulf Carlsson (ulfc@bun.falkenberg.se)&n; */
+multiline_comment|/*&n; * Copyright (C) 1999 Ulf Carlsson (ulfc@bun.falkenberg.se)&n; * Copyright (C) 2001 Ralf Baechle (ralf@gnu.org)&n; */
 DECL|macro|VINO_BASE
-mdefine_line|#define VINO_BASE&t;&t;0x0008000
+mdefine_line|#define VINO_BASE&t;&t;0x00080000&t;/* In EISA address space */
 DECL|macro|VINO_REVID
 mdefine_line|#define VINO_REVID&t;&t;0x0000
 DECL|macro|VINO_CTRL

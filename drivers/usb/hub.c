@@ -73,6 +73,53 @@ c_func
 id|khubd_exited
 )paren
 suffix:semicolon
+macro_line|#ifdef&t;DEBUG
+DECL|function|portspeed
+r_static
+r_inline
+r_char
+op_star
+id|portspeed
+(paren
+r_int
+id|portstatus
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|portstatus
+op_amp
+(paren
+l_int|1
+op_lshift
+id|USB_PORT_FEAT_HIGHSPEED
+)paren
+)paren
+r_return
+l_string|&quot;480 Mb/s&quot;
+suffix:semicolon
+r_else
+r_if
+c_cond
+(paren
+id|portstatus
+op_amp
+(paren
+l_int|1
+op_lshift
+id|USB_PORT_FEAT_LOWSPEED
+)paren
+)paren
+r_return
+l_string|&quot;1.5 Mb/s&quot;
+suffix:semicolon
+r_else
+r_return
+l_string|&quot;12 Mb/s&quot;
+suffix:semicolon
+)brace
+macro_line|#endif
 DECL|function|usb_get_hub_descriptor
 r_static
 r_int
@@ -530,7 +577,7 @@ l_int|0
 suffix:semicolon
 id|i
 OL
-id|hub-&gt;nports
+id|hub-&gt;descriptor-&gt;bNbrPorts
 suffix:semicolon
 id|i
 op_increment
@@ -609,7 +656,11 @@ op_assign
 id|kmalloc
 c_func
 (paren
-id|HUB_DESCRIPTOR_MAX_SIZE
+r_sizeof
+(paren
+op_star
+id|hub-&gt;descriptor
+)paren
 comma
 id|GFP_KERNEL
 )paren
@@ -626,7 +677,11 @@ c_func
 (paren
 l_string|&quot;Unable to kmalloc %d bytes for hub descriptor&quot;
 comma
-id|HUB_DESCRIPTOR_MAX_SIZE
+r_sizeof
+(paren
+op_star
+id|hub-&gt;descriptor
+)paren
 )paren
 suffix:semicolon
 r_return
@@ -644,7 +699,11 @@ id|dev
 comma
 id|hub-&gt;descriptor
 comma
-id|HUB_DESCRIPTOR_MAX_SIZE
+r_sizeof
+(paren
+op_star
+id|hub-&gt;descriptor
+)paren
 )paren
 suffix:semicolon
 multiline_comment|/* &lt;hub-&gt;descriptor&gt; is large enough for a hub with 127 ports;&n;&t;&t; * the hub can/will return fewer bytes here. */
@@ -675,15 +734,6 @@ op_minus
 l_int|1
 suffix:semicolon
 )brace
-id|le16_to_cpus
-c_func
-(paren
-op_amp
-id|hub-&gt;descriptor-&gt;wHubCharacteristics
-)paren
-suffix:semicolon
-id|hub-&gt;nports
-op_assign
 id|dev-&gt;maxchild
 op_assign
 id|hub-&gt;descriptor-&gt;bNbrPorts
@@ -693,10 +743,10 @@ c_func
 (paren
 l_string|&quot;%d port%s detected&quot;
 comma
-id|hub-&gt;nports
+id|hub-&gt;descriptor-&gt;bNbrPorts
 comma
 (paren
-id|hub-&gt;nports
+id|hub-&gt;descriptor-&gt;bNbrPorts
 op_eq
 l_int|1
 )paren
@@ -705,6 +755,13 @@ c_cond
 l_string|&quot;&quot;
 suffix:colon
 l_string|&quot;s&quot;
+)paren
+suffix:semicolon
+id|le16_to_cpus
+c_func
+(paren
+op_amp
+id|hub-&gt;descriptor-&gt;wHubCharacteristics
 )paren
 suffix:semicolon
 r_if
@@ -817,6 +874,129 @@ suffix:semicolon
 r_break
 suffix:semicolon
 )brace
+r_switch
+c_cond
+(paren
+id|dev-&gt;descriptor.bDeviceProtocol
+)paren
+(brace
+r_case
+l_int|0
+suffix:colon
+r_break
+suffix:semicolon
+r_case
+l_int|1
+suffix:colon
+id|dbg
+c_func
+(paren
+l_string|&quot;Single TT&quot;
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+l_int|2
+suffix:colon
+id|dbg
+c_func
+(paren
+l_string|&quot;Multiple TT&quot;
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
+r_default
+suffix:colon
+id|dbg
+c_func
+(paren
+l_string|&quot;Unrecognized hub protocol %d&quot;
+comma
+id|dev-&gt;descriptor.bDeviceProtocol
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
+)brace
+r_switch
+c_cond
+(paren
+id|hub-&gt;descriptor-&gt;wHubCharacteristics
+op_amp
+id|HUB_CHAR_TTTT
+)paren
+(brace
+r_case
+l_int|0x00
+suffix:colon
+r_if
+c_cond
+(paren
+id|dev-&gt;descriptor.bDeviceProtocol
+op_ne
+l_int|0
+)paren
+id|dbg
+c_func
+(paren
+l_string|&quot;TT requires at most 8 FS bit times&quot;
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+l_int|0x20
+suffix:colon
+id|dbg
+c_func
+(paren
+l_string|&quot;TT requires at most 16 FS bit times&quot;
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+l_int|0x40
+suffix:colon
+id|dbg
+c_func
+(paren
+l_string|&quot;TT requires at most 24 FS bit times&quot;
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+l_int|0x60
+suffix:colon
+id|dbg
+c_func
+(paren
+l_string|&quot;TT requires at most 32 FS bit times&quot;
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
+)brace
+id|dbg
+c_func
+(paren
+l_string|&quot;Port indicators are %s supported&quot;
+comma
+(paren
+id|hub-&gt;descriptor-&gt;wHubCharacteristics
+op_amp
+id|HUB_CHAR_PORTIND
+)paren
+ques
+c_cond
+l_string|&quot;&quot;
+suffix:colon
+l_string|&quot;not&quot;
+)paren
+suffix:semicolon
 id|dbg
 c_func
 (paren
@@ -1834,7 +2014,7 @@ l_int|0
 suffix:semicolon
 id|i
 OL
-id|hub-&gt;nports
+id|hub-&gt;descriptor-&gt;bNbrPorts
 suffix:semicolon
 id|i
 op_increment
@@ -2005,6 +2185,7 @@ DECL|macro|HUB_LONG_RESET_TIME
 mdefine_line|#define HUB_LONG_RESET_TIME&t;200
 DECL|macro|HUB_RESET_TIMEOUT
 mdefine_line|#define HUB_RESET_TIMEOUT&t;500
+multiline_comment|/* return: -1 on error, 0 on success, 1 on disconnect.  */
 DECL|function|usb_hub_port_wait_reset
 r_static
 r_int
@@ -2137,19 +2318,25 @@ id|portstatus
 comma
 id|portchange
 comma
+id|portspeed
+(paren
+id|portstatus
+)paren
+)paren
+suffix:semicolon
+multiline_comment|/* Device went away? */
+r_if
+c_cond
+(paren
+op_logical_neg
+(paren
 id|portstatus
 op_amp
-(paren
+id|USB_PORT_STAT_CONNECTION
+)paren
+)paren
+r_return
 l_int|1
-op_lshift
-id|USB_PORT_FEAT_LOWSPEED
-)paren
-ques
-c_cond
-l_string|&quot;1.5 Mb/s&quot;
-suffix:colon
-l_string|&quot;12 Mb/s&quot;
-)paren
 suffix:semicolon
 multiline_comment|/* bomb out completely if something weird happened */
 r_if
@@ -2159,13 +2346,6 @@ c_cond
 id|portchange
 op_amp
 id|USB_PORT_STAT_C_CONNECTION
-)paren
-op_logical_or
-op_logical_neg
-(paren
-id|portstatus
-op_amp
-id|USB_PORT_STAT_CONNECTION
 )paren
 )paren
 r_return
@@ -2190,18 +2370,33 @@ id|USB_PORT_STAT_ENABLE
 )paren
 )paren
 (brace
-id|dev-&gt;slow
+r_if
+c_cond
+(paren
+id|portstatus
+op_amp
+id|USB_PORT_STAT_HIGH_SPEED
+)paren
+id|dev-&gt;speed
 op_assign
+id|USB_SPEED_HIGH
+suffix:semicolon
+r_else
+r_if
+c_cond
 (paren
 id|portstatus
 op_amp
 id|USB_PORT_STAT_LOW_SPEED
 )paren
-ques
-c_cond
-l_int|1
-suffix:colon
-l_int|0
+id|dev-&gt;speed
+op_assign
+id|USB_SPEED_LOW
+suffix:semicolon
+r_else
+id|dev-&gt;speed
+op_assign
+id|USB_SPEED_FULL
 suffix:semicolon
 r_return
 l_int|0
@@ -2241,6 +2436,7 @@ op_minus
 l_int|1
 suffix:semicolon
 )brace
+multiline_comment|/* return: -1 on error, 0 on success, 1 on disconnect.  */
 DECL|function|usb_hub_port_reset
 r_static
 r_int
@@ -2267,6 +2463,8 @@ id|delay
 (brace
 r_int
 id|i
+comma
+id|status
 suffix:semicolon
 multiline_comment|/* Reset the port */
 r_for
@@ -2296,11 +2494,9 @@ comma
 id|USB_PORT_FEAT_RESET
 )paren
 suffix:semicolon
-multiline_comment|/* return success if the port reset OK */
-r_if
-c_cond
-(paren
-op_logical_neg
+multiline_comment|/* return on disconnect or reset */
+id|status
+op_assign
 id|usb_hub_port_wait_reset
 c_func
 (paren
@@ -2312,6 +2508,14 @@ id|dev
 comma
 id|delay
 )paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|status
+op_ne
+op_minus
+l_int|1
 )paren
 (brace
 id|usb_clear_port_feature
@@ -2327,7 +2531,7 @@ id|USB_PORT_FEAT_C_RESET
 )paren
 suffix:semicolon
 r_return
-l_int|0
+id|status
 suffix:semicolon
 )brace
 id|dbg
@@ -2497,18 +2701,10 @@ id|portstatus
 comma
 id|portchange
 comma
-id|portstatus
-op_amp
+id|portspeed
 (paren
-l_int|1
-op_lshift
-id|USB_PORT_FEAT_LOWSPEED
+id|portstatus
 )paren
-ques
-c_cond
-l_string|&quot;1.5 Mb/s&quot;
-suffix:colon
-l_string|&quot;12 Mb/s&quot;
 )paren
 suffix:semicolon
 multiline_comment|/* Clear the connection change status */
@@ -3109,7 +3305,7 @@ l_int|0
 suffix:semicolon
 id|i
 OL
-id|hub-&gt;nports
+id|hub-&gt;descriptor-&gt;bNbrPorts
 suffix:semicolon
 id|i
 op_increment

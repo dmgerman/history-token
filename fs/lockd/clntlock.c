@@ -448,6 +448,26 @@ id|list_head
 op_star
 id|tmp
 suffix:semicolon
+id|reparent_to_init
+c_func
+(paren
+)paren
+suffix:semicolon
+id|snprintf
+c_func
+(paren
+id|current-&gt;comm
+comma
+r_sizeof
+(paren
+id|current-&gt;comm
+)paren
+comma
+l_string|&quot;%s-reclaim&quot;
+comma
+id|host-&gt;h_name
+)paren
+suffix:semicolon
 multiline_comment|/* This one ensures that our parent doesn&squot;t terminate while the&n;&t; * reclaim is in progress */
 id|lock_kernel
 c_func

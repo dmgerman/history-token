@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *  Copyright (c) 2000-2001 LSI Logic Corporation. All rights reserved.&n; *&n; *  NAME:           fc_log.h&n; *  SUMMARY:        MPI IocLogInfo definitions for the SYMFC9xx chips&n; *  DESCRIPTION:    Contains the enumerated list of values that may be returned&n; *                  in the IOCLogInfo field of a MPI Default Reply Message.&n; *&n; *  CREATION DATE:  6/02/2000&n; *  ID:             $Id: fc_log.h,v 4.2 2001/03/01 18:28:59 fibre Exp $&n; */
+multiline_comment|/*&n; *  Copyright (c) 2000-2001 LSI Logic Corporation. All rights reserved.&n; *&n; *  NAME:           fc_log.h&n; *  SUMMARY:        MPI IocLogInfo definitions for the SYMFC9xx chips&n; *  DESCRIPTION:    Contains the enumerated list of values that may be returned&n; *                  in the IOCLogInfo field of a MPI Default Reply Message.&n; *&n; *  CREATION DATE:  6/02/2000&n; *  ID:             $Id: fc_log.h,v 4.5 2001/06/07 19:18:00 sschremm Exp $&n; */
 multiline_comment|/*&n; * MpiIocLogInfo_t enum&n; *&n; * These 32 bit values are used in the IOCLogInfo field of the MPI reply&n; * messages.&n; * The value is 0xabcccccc where&n; *          a = The type of log info as per the MPI spec. Since these codes are&n; *              all for Fibre Channel this value will always be 2.&n; *          b = Specifies a subclass of the firmware where&n; *                  0 = FCP Initiator&n; *                  1 = FCP Target&n; *                  2 = LAN&n; *                  3 = MPI Message Layer&n; *                  4 = FC Link&n; *                  5 = Context Manager&n; *                  6 = Invalid Field Offset&n; *                  7 = State Change Info&n; *                  all others are reserved for future use&n; *          c = A specific value within the subclass.&n; *&n; * NOTE: Any new values should be added to the end of each subclass so that the&n; *       codes remain consistent across firmware releases.&n; */
 DECL|enum|_MpiIocLogInfoFc
 r_typedef
@@ -21,19 +21,19 @@ id|MPI_IOCLOGINFO_FC_INIT_ERROR_BAD_START_OF_FRAME
 op_assign
 l_int|0x20000002
 comma
-multiline_comment|/* bad start of frame primative */
+multiline_comment|/* Bad Rx Frame, bad start of frame primative */
 DECL|enumerator|MPI_IOCLOGINFO_FC_INIT_ERROR_BAD_END_OF_FRAME
 id|MPI_IOCLOGINFO_FC_INIT_ERROR_BAD_END_OF_FRAME
 op_assign
 l_int|0x20000003
 comma
-multiline_comment|/* bad end of frame primative */
+multiline_comment|/* Bad Rx Frame, bad end of frame primative */
 DECL|enumerator|MPI_IOCLOGINFO_FC_INIT_ERROR_OVER_RUN
 id|MPI_IOCLOGINFO_FC_INIT_ERROR_OVER_RUN
 op_assign
 l_int|0x20000004
 comma
-multiline_comment|/* Receiver hardware detected overrun */
+multiline_comment|/* Bad Rx Frame, overrun */
 DECL|enumerator|MPI_IOCLOGINFO_FC_INIT_ERROR_RX_OTHER
 id|MPI_IOCLOGINFO_FC_INIT_ERROR_RX_OTHER
 op_assign
@@ -46,6 +46,36 @@ op_assign
 l_int|0x20000006
 comma
 multiline_comment|/* Main processor could not initialize sub-processor */
+DECL|enumerator|MPI_IOCLOGINFO_FC_INIT_ERROR_RX_OVERRUN
+id|MPI_IOCLOGINFO_FC_INIT_ERROR_RX_OVERRUN
+op_assign
+l_int|0x20000007
+comma
+multiline_comment|/* Scatter Gather overrun  */
+DECL|enumerator|MPI_IOCLOGINFO_FC_INIT_ERROR_RX_BAD_STATUS
+id|MPI_IOCLOGINFO_FC_INIT_ERROR_RX_BAD_STATUS
+op_assign
+l_int|0x20000008
+comma
+multiline_comment|/* Receiver detected context mismatch via invalid header */
+DECL|enumerator|MPI_IOCLOGINFO_FC_INIT_ERROR_RX_UNEXPECTED_FRAME
+id|MPI_IOCLOGINFO_FC_INIT_ERROR_RX_UNEXPECTED_FRAME
+op_assign
+l_int|0x20000009
+comma
+multiline_comment|/* CtxMgr detected unsupported frame type  */
+DECL|enumerator|MPI_IOCLOGINFO_FC_INIT_ERROR_LINK_FAILURE
+id|MPI_IOCLOGINFO_FC_INIT_ERROR_LINK_FAILURE
+op_assign
+l_int|0x2000000A
+comma
+multiline_comment|/* Link failure occurred  */
+DECL|enumerator|MPI_IOCLOGINFO_FC_INIT_ERROR_TX_TIMEOUT
+id|MPI_IOCLOGINFO_FC_INIT_ERROR_TX_TIMEOUT
+op_assign
+l_int|0x2000000B
+comma
+multiline_comment|/* Transmitter timeout error */
 DECL|enumerator|MPI_IOCLOGINFO_FC_TARGET_BASE
 id|MPI_IOCLOGINFO_FC_TARGET_BASE
 op_assign
@@ -192,6 +222,12 @@ op_assign
 l_int|0x24000003
 comma
 multiline_comment|/* Not synchronized to signal or still negotiating (possible cable problem) */
+DECL|enumerator|MPI_IOCLOGINFO_FC_LINK_CRC_ERROR
+id|MPI_IOCLOGINFO_FC_LINK_CRC_ERROR
+op_assign
+l_int|0x24000004
+comma
+multiline_comment|/* CRC check detected error on received frame */
 DECL|enumerator|MPI_IOCLOGINFO_FC_CTX_BASE
 id|MPI_IOCLOGINFO_FC_CTX_BASE
 op_assign
@@ -202,7 +238,7 @@ id|MPI_IOCLOGINFO_FC_INVALID_FIELD_BYTE_OFFSET
 op_assign
 l_int|0x26000000
 comma
-multiline_comment|/* The lower 24 bits give the byte offset of the field in the request message that is invalid. */
+multiline_comment|/* The lower 24 bits give the byte offset of the field in the request message that is invalid */
 DECL|enumerator|MPI_IOCLOGINFO_FC_INVALID_FIELD_MAX_OFFSET
 id|MPI_IOCLOGINFO_FC_INVALID_FIELD_MAX_OFFSET
 op_assign

@@ -13916,7 +13916,6 @@ id|pciid
 )paren
 (brace
 r_static
-r_const
 r_char
 id|__initdata
 id|sv_ddma_name

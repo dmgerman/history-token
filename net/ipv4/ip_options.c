@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * INET&t;&t;An implementation of the TCP/IP protocol suite for the LINUX&n; *&t;&t;operating system.  INET is implemented using the  BSD Socket&n; *&t;&t;interface as the means of communication with the user level.&n; *&n; *&t;&t;The options processing module for ip.c&n; *&n; * Version:&t;$Id: ip_options.c,v 1.20 2000/08/09 09:17:00 davem Exp $&n; *&n; * Authors:&t;A.N.Kuznetsov&n; *&t;&t;&n; */
+multiline_comment|/*&n; * INET&t;&t;An implementation of the TCP/IP protocol suite for the LINUX&n; *&t;&t;operating system.  INET is implemented using the  BSD Socket&n; *&t;&t;interface as the means of communication with the user level.&n; *&n; *&t;&t;The options processing module for ip.c&n; *&n; * Version:&t;$Id: ip_options.c,v 1.21 2001/09/01 00:31:50 davem Exp $&n; *&n; * Authors:&t;A.N.Kuznetsov&n; *&t;&t;&n; */
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;linux/skbuff.h&gt;
@@ -2978,6 +2978,14 @@ l_int|4
 suffix:semicolon
 )brace
 r_else
+r_if
+c_cond
+(paren
+id|net_ratelimit
+c_func
+(paren
+)paren
+)paren
 id|printk
 c_func
 (paren

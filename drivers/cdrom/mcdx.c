@@ -366,7 +366,7 @@ r_volatile
 r_int
 id|int_err
 suffix:semicolon
-macro_line|#endif /* AK2 */
+macro_line|#endif&t;&t;&t;&t;/* AK2 */
 multiline_comment|/* adds and odds */
 DECL|member|wreg_data
 r_void
@@ -1274,7 +1274,7 @@ comma
 l_string|&quot;ioctl() START&bslash;n&quot;
 )paren
 suffix:semicolon
-multiline_comment|/* Spin up the drive.  Don&squot;t think we can do this.&n;                 * For now, ignore it.&n;                 */
+multiline_comment|/* Spin up the drive.  Don&squot;t think we can do this.&n;&t;&t;&t;   * For now, ignore it.&n;&t;&t;&t; */
 r_return
 l_int|0
 suffix:semicolon
@@ -1655,7 +1655,7 @@ id|tp-&gt;control
 op_rshift
 l_int|4
 suffix:semicolon
-multiline_comment|/* Always return stuff in MSF, and let the Uniform cdrom driver&n;                worry about what the user actually wants */
+multiline_comment|/* Always return stuff in MSF, and let the Uniform cdrom driver&n;&t;&t;&t;   worry about what the user actually wants */
 id|entry-&gt;cdte_addr.msf.minute
 op_assign
 id|bcd2uint
@@ -1785,7 +1785,7 @@ comma
 id|sub-&gt;cdsc_ind
 )paren
 suffix:semicolon
-multiline_comment|/* Always return stuff in MSF, and let the Uniform cdrom driver&n;                worry about what the user actually wants */
+multiline_comment|/* Always return stuff in MSF, and let the Uniform cdrom driver&n;&t;&t;&t;   worry about what the user actually wants */
 id|sub-&gt;cdsc_absaddr.msf.minute
 op_assign
 id|bcd2uint
@@ -2000,7 +2000,7 @@ comma
 l_string|&quot;ioctl() MULTISESSION&bslash;n&quot;
 )paren
 suffix:semicolon
-multiline_comment|/* Always return stuff in LBA, and let the Uniform cdrom driver&n;&t;&t;&t;&t;worry about what the user actually wants */
+multiline_comment|/* Always return stuff in LBA, and let the Uniform cdrom driver&n;&t;&t;&t;   worry about what the user actually wants */
 id|ms-&gt;addr.lba
 op_assign
 id|msf2log
@@ -2062,12 +2062,14 @@ op_minus
 id|EBUSY
 suffix:semicolon
 r_return
+(paren
 id|mcdx_tray_move
 c_func
 (paren
 id|cdi
 comma
 l_int|1
+)paren
 )paren
 suffix:semicolon
 )brace
@@ -2084,12 +2086,14 @@ l_string|&quot;ioctl() CDROMCLOSETRAY&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
+(paren
 id|mcdx_tray_move
 c_func
 (paren
 id|cdi
 comma
 l_int|0
+)paren
 )paren
 suffix:semicolon
 )brace
@@ -2117,7 +2121,7 @@ comma
 l_string|&quot;ioctl() VOLCTRL&bslash;n&quot;
 )paren
 suffix:semicolon
-macro_line|#if 0&t;&t;/* not tested! */
+macro_line|#if 0&t;&t;&t;&t;/* not tested! */
 multiline_comment|/* adjust for the weirdness of workman (md) */
 multiline_comment|/* can&squot;t test it (hs) */
 id|volctrl.channel2
@@ -2145,14 +2149,6 @@ suffix:semicolon
 )brace
 r_default
 suffix:colon
-id|xwarn
-c_func
-(paren
-l_string|&quot;ioctl(): unknown request 0x%04x&bslash;n&quot;
-comma
-id|cmd
-)paren
-suffix:semicolon
 r_return
 op_minus
 id|EINVAL
@@ -2464,9 +2460,9 @@ r_goto
 id|again
 suffix:semicolon
 )brace
+DECL|function|mcdx_open
 r_static
 r_int
-DECL|function|mcdx_open
 id|mcdx_open
 c_func
 (paren
@@ -2902,7 +2898,9 @@ c_func
 (paren
 id|stuffp
 comma
-id|stuffp-&gt;xa
+id|stuffp
+op_member_access_from_pointer
+id|xa
 ques
 c_cond
 id|MODE2
@@ -3039,7 +3037,9 @@ l_string|&quot;XA / &quot;
 suffix:colon
 l_string|&quot;&quot;
 comma
-id|stuffp-&gt;multi.multi
+id|stuffp-&gt;multi
+dot
+id|multi
 ques
 c_cond
 l_string|&quot;Multi Session&quot;
@@ -3338,9 +3338,9 @@ l_string|&quot;got signal&bslash;n&quot;
 suffix:semicolon
 )brace
 )brace
+DECL|function|mcdx_intr
 r_static
 r_void
-DECL|function|mcdx_intr
 id|mcdx_intr
 c_func
 (paren
@@ -3405,7 +3405,7 @@ id|stuffp-&gt;int_err
 op_assign
 l_int|1
 suffix:semicolon
-macro_line|#endif /* AK2 */
+macro_line|#endif&t;&t;&t;&t;/* AK2 */
 multiline_comment|/* get the interrupt status */
 id|b
 op_assign
@@ -3514,10 +3514,11 @@ id|stuffp-&gt;busyq
 )paren
 suffix:semicolon
 )brace
+DECL|function|mcdx_talk
 r_static
 r_int
-DECL|function|mcdx_talk
 id|mcdx_talk
+c_func
 (paren
 r_struct
 id|s_drive_stuff
@@ -3611,7 +3612,7 @@ id|stuffp-&gt;lock
 op_assign
 l_int|1
 suffix:semicolon
-multiline_comment|/* An operation other then reading data destroys the&n;     * data already requested and remembered in stuffp-&gt;request, ... */
+multiline_comment|/* An operation other then reading data destroys the&n;&t;   * data already requested and remembered in stuffp-&gt;request, ... */
 id|stuffp-&gt;valid
 op_assign
 l_int|0
@@ -3682,7 +3683,7 @@ l_string|&quot;&bslash;n&quot;
 suffix:semicolon
 )brace
 macro_line|#endif
-multiline_comment|/*  give up if all tries are done (bad) or if the status&n;     *  st != -1 (good) */
+multiline_comment|/*  give up if all tries are done (bad) or if the status&n;&t; *  st != -1 (good) */
 r_for
 c_loop
 (paren
@@ -5264,9 +5265,9 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+DECL|function|mcdx_transfer
 r_static
 r_int
-DECL|function|mcdx_transfer
 id|mcdx_transfer
 c_func
 (paren
@@ -5470,7 +5471,7 @@ id|stuffp-&gt;low_border
 )paren
 )paren
 (brace
-multiline_comment|/* All (or at least a part of the sectors requested) seems&n;         * to be already requested, so we don&squot;t need to bother the&n;&t;&t; * drive with new requests ...&n;&t;&t; * Wait for the drive become idle, but first&n;&t;&t; * check for possible occurred errors --- the drive&n;&t;&t; * seems to report them asynchronously */
+multiline_comment|/* All (or at least a part of the sectors requested) seems&n;&t;&t;   * to be already requested, so we don&squot;t need to bother the&n;&t;&t;   * drive with new requests ...&n;&t;&t;   * Wait for the drive become idle, but first&n;&t;&t;   * check for possible occurred errors --- the drive&n;&t;&t;   * seems to report them asynchronously */
 id|border
 op_assign
 id|stuffp-&gt;high_border
@@ -5503,7 +5504,6 @@ id|stuffp-&gt;busy
 id|timeout
 op_assign
 id|interruptible_sleep_on_timeout
-c_func
 (paren
 op_amp
 id|stuffp-&gt;busyq
@@ -5601,7 +5601,7 @@ op_minus
 l_int|1
 suffix:semicolon
 )brace
-multiline_comment|/* check if we need to set the busy flag (as we&n;&t;&t; * expect an interrupt */
+multiline_comment|/* check if we need to set the busy flag (as we&n;&t;&t;&t; * expect an interrupt */
 id|stuffp-&gt;busy
 op_assign
 (paren
@@ -5614,7 +5614,7 @@ l_int|3
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/* Test if it&squot;s the first sector of a block,&n;&t;&t; * there we have to skip some bytes as we read raw data */
+multiline_comment|/* Test if it&squot;s the first sector of a block,&n;&t;&t;&t; * there we have to skip some bytes as we read raw data */
 r_if
 c_cond
 (paren
@@ -5671,7 +5671,7 @@ comma
 l_int|512
 )paren
 suffix:semicolon
-multiline_comment|/* test if it&squot;s the last sector of a block,&n;&t;&t; * if so, we have to handle XA special */
+multiline_comment|/* test if it&squot;s the last sector of a block,&n;&t;&t;&t; * if so, we have to handle XA special */
 r_if
 c_cond
 (paren
@@ -5811,7 +5811,6 @@ id|stuffp-&gt;lastsector
 )paren
 (brace
 id|xwarn
-c_func
 (paren
 l_string|&quot;transfer() sector %d from nirvana requested.&bslash;n&quot;
 comma
@@ -6013,7 +6012,7 @@ op_minus
 l_int|1
 suffix:semicolon
 )brace
-macro_line|#endif /* AK2 */
+macro_line|#endif&t;&t;&t;&t;/* AK2 */
 id|stuffp-&gt;low_border
 op_assign
 (paren
@@ -6565,7 +6564,9 @@ id|memset
 c_func
 (paren
 op_amp
-id|stuffp-&gt;toc
+id|stuffp
+op_member_access_from_pointer
+id|toc
 (braket
 id|stuffp-&gt;di.n_last
 op_minus
@@ -7072,9 +7073,9 @@ id|msf
 suffix:semicolon
 )brace
 multiline_comment|/* Drive functions ************************************************/
+DECL|function|mcdx_tray_move
 r_static
 r_int
-DECL|function|mcdx_tray_move
 id|mcdx_tray_move
 c_func
 (paren
@@ -7179,9 +7180,9 @@ r_return
 l_int|1
 suffix:semicolon
 )brace
+DECL|function|mcdx_stop
 r_static
 r_int
-DECL|function|mcdx_stop
 id|mcdx_stop
 c_func
 (paren
@@ -7216,9 +7217,9 @@ id|tries
 )paren
 suffix:semicolon
 )brace
+DECL|function|mcdx_hold
 r_static
 r_int
-DECL|function|mcdx_hold
 id|mcdx_hold
 c_func
 (paren
@@ -7253,9 +7254,9 @@ id|tries
 )paren
 suffix:semicolon
 )brace
+DECL|function|mcdx_requestsubqcode
 r_static
 r_int
-DECL|function|mcdx_requestsubqcode
 id|mcdx_requestsubqcode
 c_func
 (paren
@@ -7386,9 +7387,9 @@ r_return
 id|ans
 suffix:semicolon
 )brace
+DECL|function|mcdx_requestmultidiskinfo
 r_static
 r_int
-DECL|function|mcdx_requestmultidiskinfo
 id|mcdx_requestmultidiskinfo
 c_func
 (paren
@@ -7491,9 +7492,9 @@ l_int|0
 suffix:semicolon
 )brace
 )brace
+DECL|function|mcdx_requesttocdata
 r_static
 r_int
-DECL|function|mcdx_requesttocdata
 id|mcdx_requesttocdata
 c_func
 (paren
@@ -7634,9 +7635,9 @@ r_return
 id|ans
 suffix:semicolon
 )brace
+DECL|function|mcdx_setdrivemode
 r_static
 r_int
-DECL|function|mcdx_setdrivemode
 id|mcdx_setdrivemode
 c_func
 (paren
@@ -7799,9 +7800,9 @@ id|tries
 )paren
 suffix:semicolon
 )brace
+DECL|function|mcdx_setdatamode
 r_static
 r_int
-DECL|function|mcdx_setdatamode
 id|mcdx_setdatamode
 c_func
 (paren
@@ -7910,9 +7911,9 @@ id|tries
 )paren
 suffix:semicolon
 )brace
+DECL|function|mcdx_config
 r_static
 r_int
-DECL|function|mcdx_config
 id|mcdx_config
 c_func
 (paren
@@ -8030,9 +8031,9 @@ id|tries
 )paren
 suffix:semicolon
 )brace
+DECL|function|mcdx_requestversion
 r_static
 r_int
-DECL|function|mcdx_requestversion
 id|mcdx_requestversion
 c_func
 (paren
@@ -8113,9 +8114,9 @@ r_return
 id|ans
 suffix:semicolon
 )brace
+DECL|function|mcdx_reset
 r_static
 r_int
-DECL|function|mcdx_reset
 id|mcdx_reset
 c_func
 (paren
@@ -8296,9 +8297,9 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+DECL|function|mcdx_getstatus
 r_static
 r_int
-DECL|function|mcdx_getstatus
 id|mcdx_getstatus
 c_func
 (paren
@@ -8440,9 +8441,9 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+DECL|function|mcdx_setattentuator
 r_static
 r_int
-DECL|function|mcdx_setattentuator
 id|mcdx_setattentuator
 c_func
 (paren
@@ -8524,5 +8525,10 @@ id|tries
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* ex:set ts=4 sw=4 ai si: */
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
+)paren
+suffix:semicolon
 eof

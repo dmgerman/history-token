@@ -64,6 +64,10 @@ DECL|macro|MPT_LAN_MAX_MTU
 mdefine_line|#define MPT_LAN_MAX_MTU&t;&t;65280&t;&t;/* RFC2625 */
 DECL|macro|MPT_LAN_MTU
 mdefine_line|#define MPT_LAN_MTU             16128&t;&t;/* be nice to slab allocator */
+DECL|macro|MPT_LAN_NAA_RFC2625
+mdefine_line|#define MPT_LAN_NAA_RFC2625     0x1
+DECL|macro|MPT_LAN_NAA_QLOGIC
+mdefine_line|#define MPT_LAN_NAA_QLOGIC      0x2
 multiline_comment|/* MPT LAN Reset and Suspend Resource Flags Defines */
 DECL|macro|MPT_LAN_RESOURCE_FLAG_RETURN_POSTED_BUCKETS
 mdefine_line|#define MPT_LAN_RESOURCE_FLAG_RETURN_POSTED_BUCKETS    0x01

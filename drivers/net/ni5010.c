@@ -2665,13 +2665,6 @@ op_amp
 id|XS_COLL
 )paren
 (brace
-id|printk
-c_func
-(paren
-l_string|&quot;ether collision&bslash;n&quot;
-)paren
-suffix:semicolon
-multiline_comment|/* FIXME: remove */
 id|PRINTK
 c_func
 (paren

@@ -1029,7 +1029,7 @@ id|tsk-&gt;thread.trap_no
 op_assign
 l_int|14
 suffix:semicolon
-id|info.si_code
+id|info.si_signo
 op_assign
 id|SIGBUS
 suffix:semicolon

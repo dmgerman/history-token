@@ -236,11 +236,6 @@ c_func
 )paren
 suffix:semicolon
 macro_line|#endif
-id|xdr_init
-c_func
-(paren
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren

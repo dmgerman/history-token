@@ -1585,7 +1585,7 @@ id|packet-&gt;expect_response
 (brace
 id|packet-&gt;state
 op_assign
-id|complete
+id|completed
 suffix:semicolon
 id|up
 c_func
@@ -2245,7 +2245,7 @@ suffix:semicolon
 )brace
 id|packet-&gt;state
 op_assign
-id|complete
+id|completed
 suffix:semicolon
 id|up
 c_func
@@ -3374,7 +3374,7 @@ id|list
 suffix:semicolon
 id|packet-&gt;state
 op_assign
-id|complete
+id|completed
 suffix:semicolon
 id|packet-&gt;ack_code
 op_assign
@@ -3591,7 +3591,7 @@ id|list
 suffix:semicolon
 id|packet-&gt;state
 op_assign
-id|complete
+id|completed
 suffix:semicolon
 id|packet-&gt;ack_code
 op_assign

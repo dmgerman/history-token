@@ -11055,11 +11055,6 @@ id|thread
 op_assign
 id|arg
 suffix:semicolon
-r_struct
-id|completion
-op_star
-id|event
-suffix:semicolon
 id|md_lock_kernel
 c_func
 (paren
@@ -11629,6 +11624,9 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+op_logical_neg
+id|rrdev
+op_logical_or
 id|rrdev-&gt;faulty
 )paren
 r_return
@@ -13220,7 +13218,7 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;md: serializing resync, md%d shares one or more physical units with md%d!&bslash;n&quot;
+l_string|&quot;md: delaying resync of md%d until md%d has finished resync (they share one or more physical units)&bslash;n&quot;
 comma
 id|mdidx
 c_func
@@ -13503,6 +13501,10 @@ id|j
 )paren
 r_continue
 suffix:semicolon
+id|last_check
+op_assign
+id|j
+suffix:semicolon
 id|run_task_queue
 c_func
 (paren
@@ -13510,7 +13512,8 @@ op_amp
 id|tq_disk
 )paren
 suffix:semicolon
-singleline_comment|//??
+id|repeat
+suffix:colon
 r_if
 c_cond
 (paren
@@ -13612,8 +13615,6 @@ id|out
 suffix:semicolon
 )brace
 multiline_comment|/*&n;&t;&t; * this loop exits only if either when we are slower than&n;&t;&t; * the &squot;hard&squot; speed limit, or the system was IO-idle for&n;&t;&t; * a jiffy.&n;&t;&t; * the system might be non-idle CPU-wise, but we only care&n;&t;&t; * about not overloading the IO subsystem. (things like an&n;&t;&t; * e2fsck being done on the RAID array should execute fast)&n;&t;&t; */
-id|repeat
-suffix:colon
 r_if
 c_cond
 (paren
@@ -13693,16 +13694,6 @@ op_div
 l_int|4
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|md_signal_pending
-c_func
-(paren
-id|current
-)paren
-)paren
 r_goto
 id|repeat
 suffix:semicolon
@@ -15519,7 +15510,11 @@ l_int|1
 suffix:semicolon
 id|ainfo.state
 op_assign
+(paren
+l_int|1
+op_lshift
 id|MD_SB_CLEAN
+)paren
 suffix:semicolon
 id|ainfo.active_disks
 op_assign

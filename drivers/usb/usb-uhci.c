@@ -1,4 +1,4 @@
-multiline_comment|/* &n; * Universal Host Controller Interface driver for USB (take II).&n; *&n; * (c) 1999-2001 Georg Acher, acher@in.tum.de (executive slave) (base guitar)&n; *               Deti Fliegl, deti@fliegl.de (executive slave) (lead voice)&n; *               Thomas Sailer, sailer@ife.ee.ethz.ch (chief consultant) (cheer leader)&n; *               Roman Weissgaerber, weissg@vienna.at (virt root hub) (studio porter)&n; * (c) 2000      Yggdrasil Computing, Inc. (port of new PCI interface support&n; *               from usb-ohci.c by Adam Richter, adam@yggdrasil.com).&n; * (C) 2000      David Brownell, david-b@pacbell.net (usb-ohci.c)&n; *          &n; * HW-initalization based on material of&n; *&n; * (C) Copyright 1999 Linus Torvalds&n; * (C) Copyright 1999 Johannes Erdfelt&n; * (C) Copyright 1999 Randy Dunlap&n; * (C) Copyright 1999 Gregory P. Smith&n; *&n; * $Id: usb-uhci.c,v 1.267 2001/08/28 16:45:00 acher Exp $&n; */
+multiline_comment|/* &n; * Universal Host Controller Interface driver for USB (take II).&n; *&n; * (c) 1999-2001 Georg Acher, acher@in.tum.de (executive slave) (base guitar)&n; *               Deti Fliegl, deti@fliegl.de (executive slave) (lead voice)&n; *               Thomas Sailer, sailer@ife.ee.ethz.ch (chief consultant) (cheer leader)&n; *               Roman Weissgaerber, weissg@vienna.at (virt root hub) (studio porter)&n; * (c) 2000      Yggdrasil Computing, Inc. (port of new PCI interface support&n; *               from usb-ohci.c by Adam Richter, adam@yggdrasil.com).&n; * (C) 2000      David Brownell, david-b@pacbell.net (usb-ohci.c)&n; *          &n; * HW-initalization based on material of&n; *&n; * (C) Copyright 1999 Linus Torvalds&n; * (C) Copyright 1999 Johannes Erdfelt&n; * (C) Copyright 1999 Randy Dunlap&n; * (C) Copyright 1999 Gregory P. Smith&n; *&n; * $Id: usb-uhci.c,v 1.268 2001/08/29 14:08:43 acher Exp $&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
@@ -29,13 +29,13 @@ multiline_comment|/* This enables an extra UHCI slab for memory debugging */
 DECL|macro|DEBUG_SLAB
 mdefine_line|#define DEBUG_SLAB
 DECL|macro|VERSTR
-mdefine_line|#define VERSTR &quot;$Revision: 1.267 $ time &quot; __TIME__ &quot; &quot; __DATE__
+mdefine_line|#define VERSTR &quot;$Revision: 1.268 $ time &quot; __TIME__ &quot; &quot; __DATE__
 macro_line|#include &lt;linux/usb.h&gt;
 macro_line|#include &quot;usb-uhci.h&quot;
 macro_line|#include &quot;usb-uhci-debug.h&quot;
 multiline_comment|/*&n; * Version Information&n; */
 DECL|macro|DRIVER_VERSION
-mdefine_line|#define DRIVER_VERSION &quot;v1.267&quot;
+mdefine_line|#define DRIVER_VERSION &quot;v1.268&quot;
 DECL|macro|DRIVER_AUTHOR
 mdefine_line|#define DRIVER_AUTHOR &quot;Georg Acher, Deti Fliegl, Thomas Sailer, Roman Weissgaerber&quot;
 DECL|macro|DRIVER_DESC
@@ -5352,23 +5352,6 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-op_logical_neg
-id|in_interrupt
-c_func
-(paren
-)paren
-)paren
-singleline_comment|// shouldn&squot;t be called from interrupt at all...
-id|spin_lock
-c_func
-(paren
-op_amp
-id|urb-&gt;lock
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
 id|urb-&gt;status
 op_eq
 op_minus
@@ -5386,25 +5369,23 @@ comma
 id|UNLINK_ASYNC_DONT_STORE
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|in_interrupt
-c_func
-(paren
-)paren
-)paren
-id|spin_unlock
-c_func
-(paren
-op_amp
-id|urb-&gt;lock
-)paren
-suffix:semicolon
 id|urb_priv
 op_assign
 id|urb-&gt;hcpriv
+suffix:semicolon
+id|urb-&gt;status
+op_assign
+op_minus
+id|ENOENT
+suffix:semicolon
+singleline_comment|// prevent from double deletion after unlock&t;&t;
+id|spin_unlock_irqrestore
+(paren
+op_amp
+id|s-&gt;urb_list_lock
+comma
+id|flags
+)paren
 suffix:semicolon
 singleline_comment|// cleanup the rest
 r_switch
@@ -5471,14 +5452,12 @@ l_int|1
 )paren
 suffix:semicolon
 )brace
-id|spin_unlock_irqrestore
-(paren
-op_amp
-id|s-&gt;urb_list_lock
-comma
-id|flags
-)paren
+id|urb-&gt;status
+op_assign
+op_minus
+id|ENOENT
 suffix:semicolon
+singleline_comment|// mark urb as killed&t;&t;
 id|uhci_urb_dma_unmap
 c_func
 (paren
@@ -5489,12 +5468,6 @@ comma
 id|urb-&gt;hcpriv
 )paren
 suffix:semicolon
-id|urb-&gt;status
-op_assign
-op_minus
-id|ENOENT
-suffix:semicolon
-singleline_comment|// mark urb as killed&t;&t;
 macro_line|#ifdef DEBUG_SLAB
 id|kmem_cache_free
 (paren
@@ -5548,23 +5521,6 @@ id|usb_dev
 suffix:semicolon
 )brace
 r_else
-(brace
-r_if
-c_cond
-(paren
-op_logical_neg
-id|in_interrupt
-c_func
-(paren
-)paren
-)paren
-id|spin_unlock
-c_func
-(paren
-op_amp
-id|urb-&gt;lock
-)paren
-suffix:semicolon
 id|spin_unlock_irqrestore
 (paren
 op_amp
@@ -5573,7 +5529,6 @@ comma
 id|flags
 )paren
 suffix:semicolon
-)brace
 r_return
 l_int|0
 suffix:semicolon
@@ -6027,23 +5982,6 @@ comma
 id|flags
 )paren
 suffix:semicolon
-singleline_comment|// The URB needs to be locked if called outside completion context
-r_if
-c_cond
-(paren
-op_logical_neg
-id|in_interrupt
-c_func
-(paren
-)paren
-)paren
-id|spin_lock
-c_func
-(paren
-op_amp
-id|urb-&gt;lock
-)paren
-suffix:semicolon
 id|uhci_release_bandwidth
 c_func
 (paren
@@ -6060,22 +5998,6 @@ comma
 id|urb
 comma
 id|UNLINK_ASYNC_STORE_URB
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|in_interrupt
-c_func
-(paren
-)paren
-)paren
-id|spin_unlock
-c_func
-(paren
-op_amp
-id|urb-&gt;lock
 )paren
 suffix:semicolon
 id|spin_unlock_irqrestore
@@ -6582,8 +6504,6 @@ r_int
 id|nint
 comma
 id|n
-comma
-id|ret
 suffix:semicolon
 id|uhci_desc_t
 op_star
@@ -12374,13 +12294,6 @@ op_assign
 l_int|1
 suffix:semicolon
 )brace
-id|spin_lock
-c_func
-(paren
-op_amp
-id|urb-&gt;lock
-)paren
-suffix:semicolon
 singleline_comment|// Submit idle/non-killed URBs linked with urb-&gt;next
 singleline_comment|// Stop before the current URB&t;&t;&t;&t;
 id|next_urb
@@ -12555,13 +12468,6 @@ id|urb
 )paren
 suffix:semicolon
 )brace
-id|spin_unlock
-c_func
-(paren
-op_amp
-id|urb-&gt;lock
-)paren
-suffix:semicolon
 id|spin_lock
 c_func
 (paren

@@ -70,8 +70,8 @@ DECL|macro|AC97_PCM_SURR_DAC_RATE
 mdefine_line|#define AC97_PCM_SURR_DAC_RATE  0x002E  /* PCM Surround DAC Rate */
 DECL|macro|AC97_PCM_LFE_DAC_RATE
 mdefine_line|#define AC97_PCM_LFE_DAC_RATE   0x0030  /* PCM LFE DAC Rate */
-DECL|macro|AC97_PCM_LR_DAC_RATE
-mdefine_line|#define AC97_PCM_LR_DAC_RATE&t;0x0032&t;/* PCM LR DAC Rate */
+DECL|macro|AC97_PCM_LR_ADC_RATE
+mdefine_line|#define AC97_PCM_LR_ADC_RATE&t;0x0032&t;/* PCM LR DAC Rate */
 DECL|macro|AC97_PCM_MIC_ADC_RATE
 mdefine_line|#define AC97_PCM_MIC_ADC_RATE   0x0034  /* PCM MIC ADC Rate */
 DECL|macro|AC97_CENTER_LFE_MASTER

@@ -975,12 +975,6 @@ id|gfx_register
 )paren
 suffix:semicolon
 macro_line|#endif
-macro_line|#ifdef CONFIG_SGI
-id|streamable_init
-(paren
-)paren
-suffix:semicolon
-macro_line|#endif
 macro_line|#ifdef CONFIG_TOSHIBA
 id|tosh_init
 c_func

@@ -1411,12 +1411,6 @@ id|dongle_reg
 op_star
 id|reg
 suffix:semicolon
-r_char
-id|modname
-(braket
-l_int|32
-)braket
-suffix:semicolon
 id|dongle_t
 op_star
 id|dongle
@@ -1434,6 +1428,13 @@ suffix:semicolon
 )paren
 suffix:semicolon
 macro_line|#ifdef CONFIG_KMOD
+(brace
+r_char
+id|modname
+(braket
+l_int|32
+)braket
+suffix:semicolon
 multiline_comment|/* Try to load the module needed */
 id|sprintf
 c_func
@@ -1451,6 +1452,7 @@ c_func
 id|modname
 )paren
 suffix:semicolon
+)brace
 macro_line|#endif /* CONFIG_KMOD */
 r_if
 c_cond

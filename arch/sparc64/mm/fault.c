@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: fault.c,v 1.56 2001/08/27 18:42:07 kanoj Exp $&n; * arch/sparc64/mm/fault.c: Page fault handlers for the 64-bit Sparc.&n; *&n; * Copyright (C) 1996 David S. Miller (davem@caip.rutgers.edu)&n; * Copyright (C) 1997, 1999 Jakub Jelinek (jj@ultra.linux.cz)&n; */
+multiline_comment|/* $Id: fault.c,v 1.58 2001/09/01 00:11:16 kanoj Exp $&n; * arch/sparc64/mm/fault.c: Page fault handlers for the 64-bit Sparc.&n; *&n; * Copyright (C) 1996 David S. Miller (davem@caip.rutgers.edu)&n; * Copyright (C) 1997, 1999 Jakub Jelinek (jj@ultra.linux.cz)&n; */
 macro_line|#include &lt;asm/head.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
@@ -14,6 +14,8 @@ macro_line|#include &lt;asm/pgtable.h&gt;
 macro_line|#include &lt;asm/openprom.h&gt;
 macro_line|#include &lt;asm/oplib.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
+macro_line|#include &lt;asm/asi.h&gt;
+macro_line|#include &lt;asm/lsu.h&gt;
 DECL|macro|ELEMENTS
 mdefine_line|#define ELEMENTS(arr) (sizeof (arr)/sizeof (arr[0]))
 r_extern
@@ -24,6 +26,7 @@ id|sp_banks
 id|SPARC_PHYS_BANKS
 )braket
 suffix:semicolon
+multiline_comment|/*&n; * To debug kernel during syscall entry.&n; */
 DECL|function|syscall_trace_entry
 r_void
 id|syscall_trace_entry
@@ -59,6 +62,7 @@ id|UREG_G1
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/*&n; * To debug kernel during syscall exit.&n; */
 DECL|function|syscall_trace_exit
 r_void
 id|syscall_trace_exit
@@ -91,6 +95,147 @@ id|regs-&gt;u_regs
 (braket
 id|UREG_G1
 )braket
+)paren
+suffix:semicolon
+)brace
+multiline_comment|/*&n; * To debug kernel to catch accesses to certain virtual/physical addresses.&n; * Mode = 0 selects physical watchpoints, mode = 1 selects virtual watchpoints.&n; * flags = VM_READ watches memread accesses, flags = VM_WRITE watches memwrite accesses.&n; * Caller passes in a 64bit aligned addr, with mask set to the bytes that need to be&n; * watched. This is only useful on a single cpu machine for now. After the watchpoint&n; * is detected, the process causing it will be killed, thus preventing an infinite loop.&n; */
+DECL|function|set_brkpt
+r_void
+id|set_brkpt
+c_func
+(paren
+r_int
+r_int
+id|addr
+comma
+r_int
+r_char
+id|mask
+comma
+r_int
+id|flags
+comma
+r_int
+id|mode
+)paren
+(brace
+r_int
+r_int
+id|lsubits
+op_assign
+id|LSU_CONTROL_IC
+op_or
+id|LSU_CONTROL_DC
+op_or
+id|LSU_CONTROL_IM
+op_or
+id|LSU_CONTROL_DM
+suffix:semicolon
+id|__asm__
+id|__volatile__
+c_func
+(paren
+l_string|&quot;stxa&t;%0, [%1] %2&bslash;n&bslash;t&quot;
+l_string|&quot;membar&t;#Sync&quot;
+suffix:colon
+multiline_comment|/* no outputs */
+suffix:colon
+l_string|&quot;r&quot;
+(paren
+id|addr
+)paren
+comma
+l_string|&quot;r&quot;
+(paren
+id|mode
+ques
+c_cond
+id|VIRT_WATCHPOINT
+suffix:colon
+id|PHYS_WATCHPOINT
+)paren
+comma
+l_string|&quot;i&quot;
+(paren
+id|ASI_DMMU
+)paren
+)paren
+suffix:semicolon
+id|lsubits
+op_or_assign
+(paren
+(paren
+r_int
+r_int
+)paren
+id|mask
+op_lshift
+(paren
+id|mode
+ques
+c_cond
+l_int|25
+suffix:colon
+l_int|33
+)paren
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|flags
+op_amp
+id|VM_READ
+)paren
+id|lsubits
+op_or_assign
+(paren
+id|mode
+ques
+c_cond
+id|LSU_CONTROL_VR
+suffix:colon
+id|LSU_CONTROL_PR
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|flags
+op_amp
+id|VM_WRITE
+)paren
+id|lsubits
+op_or_assign
+(paren
+id|mode
+ques
+c_cond
+id|LSU_CONTROL_VW
+suffix:colon
+id|LSU_CONTROL_PW
+)paren
+suffix:semicolon
+id|__asm__
+id|__volatile__
+c_func
+(paren
+l_string|&quot;stxa %0, [%%g0] %1&bslash;n&bslash;t&quot;
+l_string|&quot;membar #Sync&quot;
+suffix:colon
+multiline_comment|/* no outputs */
+suffix:colon
+l_string|&quot;r&quot;
+(paren
+id|lsubits
+)paren
+comma
+l_string|&quot;i&quot;
+(paren
+id|ASI_LSU_CONTROL
+)paren
+suffix:colon
+l_string|&quot;memory&quot;
 )paren
 suffix:semicolon
 )brace
@@ -802,8 +947,16 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+(paren
 op_logical_neg
 id|insn
+)paren
+op_logical_and
+(paren
+id|regs-&gt;tstate
+op_amp
+id|TSTATE_PRIV
+)paren
 )paren
 r_goto
 id|cannot_handle
