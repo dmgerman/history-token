@@ -182,7 +182,7 @@ id|data
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * usb_serial - structure used by the usb-serial core for a device&n; * @dev: pointer to the struct usb_device for this device&n; * @type: pointer to the struct usb_serial_device_type for this device&n; * @interface: pointer to the struct usb_interface for this device&n; * @minor: the starting minor number for this device&n; * @num_ports: the number of ports this device has&n; * @num_interrupt_in: number of interrupt in endpoints we have&n; * @num_interrupt_out: number of interrupt out endpoints we have&n; * @num_bulk_in: number of bulk in endpoints we have&n; * @num_bulk_out: number of bulk out endpoints we have&n; * @vendor: vendor id of this device&n; * @product: product id of this device&n; * @port: array of struct usb_serial_port structures for the different ports.&n; * @private: place to put any driver specific information that is needed.  The&n; *&t;usb-serial driver is required to manage this data, the usb-serial core&n; *&t;will not touch this.  Use usb_get_serial_data() and&n; *&t;usb_set_serial_data() to access this.&n; */
+multiline_comment|/**&n; * usb_serial - structure used by the usb-serial core for a device&n; * @dev: pointer to the struct usb_device for this device&n; * @type: pointer to the struct usb_serial_device_type for this device&n; * @interface: pointer to the struct usb_interface for this device&n; * @minor: the starting minor number for this device&n; * @num_ports: the number of ports this device has&n; * @num_interrupt_in: number of interrupt in endpoints we have&n; * @num_interrupt_out: number of interrupt out endpoints we have&n; * @num_bulk_in: number of bulk in endpoints we have&n; * @num_bulk_out: number of bulk out endpoints we have&n; * @port: array of struct usb_serial_port structures for the different ports.&n; * @private: place to put any driver specific information that is needed.  The&n; *&t;usb-serial driver is required to manage this data, the usb-serial core&n; *&t;will not touch this.  Use usb_get_serial_data() and&n; *&t;usb_set_serial_data() to access this.&n; */
 DECL|struct|usb_serial
 r_struct
 id|usb_serial
@@ -235,14 +235,6 @@ suffix:semicolon
 DECL|member|num_bulk_out
 r_char
 id|num_bulk_out
-suffix:semicolon
-DECL|member|vendor
-id|__u16
-id|vendor
-suffix:semicolon
-DECL|member|product
-id|__u16
-id|product
 suffix:semicolon
 DECL|member|port
 r_struct

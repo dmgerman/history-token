@@ -107,7 +107,11 @@ multiline_comment|/* According to the technical support people at Genesys Logic,
 r_if
 c_cond
 (paren
+id|le16_to_cpu
+c_func
+(paren
 id|us-&gt;pusb_dev-&gt;descriptor.idVendor
+)paren
 op_eq
 id|USB_VENDOR_ID_GENESYS
 op_logical_and
