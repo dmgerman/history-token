@@ -2247,9 +2247,9 @@ op_star
 id|dir
 comma
 r_struct
-id|qstr
+id|dentry
 op_star
-id|name
+id|dentry
 comma
 r_int
 id|flags
@@ -2345,7 +2345,8 @@ comma
 dot
 id|name
 op_assign
-id|name
+op_amp
+id|dentry-&gt;d_name
 comma
 dot
 id|server
@@ -2856,9 +2857,9 @@ op_star
 id|dir
 comma
 r_struct
-id|qstr
+id|dentry
 op_star
-id|name
+id|dentry
 comma
 r_int
 id|flags
@@ -2898,7 +2899,7 @@ c_func
 (paren
 id|dir
 comma
-id|name
+id|dentry
 comma
 id|flags
 comma
@@ -3867,8 +3868,7 @@ c_func
 (paren
 id|dir
 comma
-op_amp
-id|dentry-&gt;d_name
+id|dentry
 comma
 id|nd-&gt;intent.open.flags
 comma
@@ -3983,8 +3983,7 @@ c_func
 (paren
 id|dir
 comma
-op_amp
-id|dentry-&gt;d_name
+id|dentry
 comma
 id|openflags
 comma
@@ -5052,8 +5051,7 @@ c_func
 (paren
 id|dentry-&gt;d_parent-&gt;d_inode
 comma
-op_amp
-id|dentry-&gt;d_name
+id|dentry
 comma
 id|FMODE_WRITE
 comma
@@ -6501,8 +6499,7 @@ c_func
 (paren
 id|dir
 comma
-op_amp
-id|dentry-&gt;d_name
+id|dentry
 comma
 id|flags
 comma
