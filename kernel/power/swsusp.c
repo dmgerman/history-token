@@ -4582,7 +4582,7 @@ r_return
 id|error
 suffix:semicolon
 )brace
-multiline_comment|/**&n; *&t;pmdisk_read - Read saved image from swap.&n; */
+multiline_comment|/**&n; *&t;swsusp_read - Read saved image from swap.&n; */
 DECL|function|swsusp_read
 r_int
 id|__init
@@ -4693,7 +4693,7 @@ r_else
 id|pr_debug
 c_func
 (paren
-l_string|&quot;pmdisk: Error %d resuming&bslash;n&quot;
+l_string|&quot;swsusp: Error %d resuming&bslash;n&quot;
 comma
 id|error
 )paren
