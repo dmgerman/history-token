@@ -2919,12 +2919,18 @@ suffix:semicolon
 multiline_comment|/* PathInfo/FileInfo infolevels */
 DECL|macro|SMB_INFO_STANDARD
 mdefine_line|#define SMB_INFO_STANDARD                   1
+DECL|macro|SMB_INFO_QUERY_EAS_FROM_LIST
+mdefine_line|#define SMB_INFO_QUERY_EAS_FROM_LIST        3
+DECL|macro|SMB_INFO_QUERY_ALL_EAS
+mdefine_line|#define SMB_INFO_QUERY_ALL_EAS              4
 DECL|macro|SMB_INFO_IS_NAME_VALID
 mdefine_line|#define SMB_INFO_IS_NAME_VALID              6
 DECL|macro|SMB_QUERY_FILE_BASIC_INFO
 mdefine_line|#define SMB_QUERY_FILE_BASIC_INFO       0x101
 DECL|macro|SMB_QUERY_FILE_STANDARD_INFO
 mdefine_line|#define SMB_QUERY_FILE_STANDARD_INFO    0x102
+DECL|macro|SMB_QUERY_FILE_EA_INFO
+mdefine_line|#define SMB_QUERY_FILE_EA_INFO          0x103
 DECL|macro|SMB_QUERY_FILE_NAME_INFO
 mdefine_line|#define SMB_QUERY_FILE_NAME_INFO        0x104
 DECL|macro|SMB_QUERY_FILE_ALLOCATION_INFO
