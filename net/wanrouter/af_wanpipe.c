@@ -1264,8 +1264,6 @@ id|wan_opt-&gt;tx_timer.function
 op_assign
 id|wanpipe_delayed_transmit
 suffix:semicolon
-id|MOD_INC_USE_COUNT
-suffix:semicolon
 id|sock_init_data
 c_func
 (paren
@@ -2576,8 +2574,6 @@ op_amp
 id|wanpipe_socks_nr
 )paren
 suffix:semicolon
-id|MOD_DEC_USE_COUNT
-suffix:semicolon
 r_return
 suffix:semicolon
 )brace
@@ -3257,8 +3253,6 @@ op_amp
 id|wanpipe_socks_nr
 )paren
 suffix:semicolon
-id|MOD_DEC_USE_COUNT
-suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
@@ -3881,8 +3875,6 @@ op_amp
 id|wanpipe_socks_nr
 )paren
 suffix:semicolon
-id|MOD_DEC_USE_COUNT
-suffix:semicolon
 r_return
 suffix:semicolon
 )brace
@@ -4055,8 +4047,6 @@ op_amp
 id|wanpipe_socks_nr
 )paren
 suffix:semicolon
-id|MOD_DEC_USE_COUNT
-suffix:semicolon
 r_return
 suffix:semicolon
 )brace
@@ -4161,10 +4151,6 @@ c_func
 op_amp
 id|wanpipe_socks_nr
 )paren
-suffix:semicolon
-id|MOD_DEC_USE_COUNT
-suffix:semicolon
-r_return
 suffix:semicolon
 )brace
 multiline_comment|/*============================================================&n; *  wanpipe_do_bind&n; *&n; * &t;Bottom half of the binding system call.&n; *      Once the wanpipe_bind() function checks  the&n; *      legality of the call, this function binds the&n; *      sock to the driver.&n; *===========================================================*/
@@ -9173,6 +9159,11 @@ dot
 id|create
 op_assign
 id|wanpipe_create
+comma
+dot
+id|owner
+op_assign
+id|THIS_MODULE
 comma
 )brace
 suffix:semicolon
