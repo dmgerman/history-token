@@ -3489,15 +3489,6 @@ id|weight_p
 suffix:semicolon
 r_extern
 r_int
-r_int
-id|netdev_fc_xoff
-suffix:semicolon
-r_extern
-id|atomic_t
-id|netdev_dropping
-suffix:semicolon
-r_extern
-r_int
 id|netdev_set_master
 c_func
 (paren
