@@ -1,4 +1,4 @@
-multiline_comment|/*&n;    it87.c - Part of lm_sensors, Linux kernel modules for hardware&n;             monitoring.&n;&n;    Supports: IT8705F  Super I/O chip w/LPC interface&n;              IT8712F  Super I/O chip w/LPC interface &amp; SMbus&n;              Sis950   A clone of the IT8705F&n;&n;    Copyright (c) 2001 Chris Gauthron &lt;chrisg@0-in.com&gt; &n;    Largely inspired by lm78.c of the same package&n;&n;    This program is free software; you can redistribute it and/or modify&n;    it under the terms of the GNU General Public License as published by&n;    the Free Software Foundation; either version 2 of the License, or&n;    (at your option) any later version.&n;&n;    This program is distributed in the hope that it will be useful,&n;    but WITHOUT ANY WARRANTY; without even the implied warranty of&n;    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n;    GNU General Public License for more details.&n;&n;    You should have received a copy of the GNU General Public License&n;    along with this program; if not, write to the Free Software&n;    Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n;*/
+multiline_comment|/*&n;    it87.c - Part of lm_sensors, Linux kernel modules for hardware&n;             monitoring.&n;&n;    Supports: IT8705F  Super I/O chip w/LPC interface&n;              IT8712F  Super I/O chip w/LPC interface &amp; SMbus&n;              Sis950   A clone of the IT8705F&n;&n;    Copyright (C) 2001 Chris Gauthron &lt;chrisg@0-in.com&gt; &n;    Largely inspired by lm78.c of the same package&n;&n;    This program is free software; you can redistribute it and/or modify&n;    it under the terms of the GNU General Public License as published by&n;    the Free Software Foundation; either version 2 of the License, or&n;    (at your option) any later version.&n;&n;    This program is distributed in the hope that it will be useful,&n;    but WITHOUT ANY WARRANTY; without even the implied warranty of&n;    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n;    GNU General Public License for more details.&n;&n;    You should have received a copy of the GNU General Public License&n;    along with this program; if not, write to the Free Software&n;    Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n;*/
 multiline_comment|/*&n;    djg@pdp8.net David Gesswein 7/18/01&n;    Modified to fix bug with not all alarms enabled.&n;    Added ability to read battery voltage and select temperature sensor&n;    type at module load time.&n;*/
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#ifdef CONFIG_I2C_DEBUG_CHIP
@@ -86,16 +86,6 @@ r_int
 id|update_vbat
 op_assign
 l_int|0
-suffix:semicolon
-multiline_comment|/* Enable Temp1 as thermal resistor */
-multiline_comment|/* Enable Temp2 as thermal diode */
-multiline_comment|/* Enable Temp3 as thermal resistor */
-DECL|variable|temp_type
-r_static
-r_int
-id|temp_type
-op_assign
-l_int|0x2a
 suffix:semicolon
 multiline_comment|/* Many IT87 constants specified below */
 multiline_comment|/* Length of ISA address segment */
@@ -1556,9 +1546,10 @@ c_func
 (paren
 id|buf
 comma
-l_string|&quot;1&bslash;n&quot;
+l_string|&quot;3&bslash;n&quot;
 )paren
 suffix:semicolon
+multiline_comment|/* thermal diode */
 r_if
 c_cond
 (paren
@@ -1579,6 +1570,7 @@ comma
 l_string|&quot;2&bslash;n&quot;
 )paren
 suffix:semicolon
+multiline_comment|/* thermistor */
 r_return
 id|sprintf
 c_func
@@ -1588,6 +1580,7 @@ comma
 l_string|&quot;0&bslash;n&quot;
 )paren
 suffix:semicolon
+multiline_comment|/* disabled */
 )brace
 DECL|function|set_sensor
 r_static
@@ -1665,12 +1658,13 @@ op_lshift
 id|nr
 )paren
 suffix:semicolon
+multiline_comment|/* 3 = thermal diode; 2 = thermistor; 0 = disabled */
 r_if
 c_cond
 (paren
 id|val
 op_eq
-l_int|1
+l_int|3
 )paren
 id|data-&gt;sensor
 op_or_assign
@@ -1691,6 +1685,18 @@ op_or_assign
 l_int|8
 op_lshift
 id|nr
+suffix:semicolon
+r_else
+r_if
+c_cond
+(paren
+id|val
+op_ne
+l_int|0
+)paren
+r_return
+op_minus
+l_int|1
 suffix:semicolon
 id|it87_write_value
 c_func
@@ -4272,10 +4278,9 @@ l_int|0xc0
 suffix:semicolon
 id|data-&gt;sensor
 op_or_assign
-id|temp_type
-op_amp
-l_int|0x3f
+l_int|0x2a
 suffix:semicolon
+multiline_comment|/* Temp1,Temp3=thermistor; Temp2=thermal diode */
 id|it87_write_value
 c_func
 (paren
@@ -4730,6 +4735,16 @@ op_lshift
 l_int|16
 )paren
 suffix:semicolon
+id|data-&gt;sensor
+op_assign
+id|it87_read_value
+c_func
+(paren
+id|client
+comma
+id|IT87_REG_TEMP_ENABLE
+)paren
+suffix:semicolon
 id|data-&gt;last_updated
 op_assign
 id|jiffies
@@ -4810,22 +4825,6 @@ c_func
 id|update_vbat
 comma
 l_string|&quot;Update vbat if set else return powerup value&quot;
-)paren
-suffix:semicolon
-id|MODULE_PARM
-c_func
-(paren
-id|temp_type
-comma
-l_string|&quot;i&quot;
-)paren
-suffix:semicolon
-id|MODULE_PARM_DESC
-c_func
-(paren
-id|temp_type
-comma
-l_string|&quot;Temperature sensor type, normally leave unset&quot;
 )paren
 suffix:semicolon
 id|MODULE_LICENSE
