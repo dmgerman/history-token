@@ -2944,7 +2944,7 @@ id|flags
 suffix:semicolon
 multiline_comment|/* XXX REVISIT for 2.5 Linux - need syncdma for zero-copy support.&n;&t;** For Astro based systems this isn&squot;t a big deal WRT performance.&n;&t;** As long as 2.4 kernels copyin/copyout data from/to userspace,&n;&t;** we don&squot;t need the syncdma. The issue here is I/O MMU cachelines&n;&t;** are *not* coherent in all cases.  May be hwrev dependent.&n;&t;** Need to investigate more.&n;&t;asm volatile(&quot;syncdma&quot;);&n;&t;*/
 )brace
-multiline_comment|/**&n; * sba_alloc_consistent - allocate/map shared mem for DMA&n; * @hwdev: instance of PCI owned by the driver that&squot;s asking.&n; * @size:  number of bytes mapped in driver buffer.&n; * @dma_handle:  IOVA of new buffer.&n; *&n; * See Documentation/DMA-mapping.txt&n; */
+multiline_comment|/**&n; * sba_alloc_coherent - allocate/map shared mem for DMA&n; * @dev: instance of PCI owned by the driver that&squot;s asking.&n; * @size:  number of bytes mapped in driver buffer.&n; * @dma_handle:  IOVA of new buffer.&n; *&n; * See Documentation/DMA-mapping.txt&n; */
 r_void
 op_star
 DECL|function|sba_alloc_coherent
@@ -2953,7 +2953,7 @@ id|sba_alloc_coherent
 r_struct
 id|device
 op_star
-id|hwdev
+id|dev
 comma
 r_int
 id|size
@@ -3008,7 +3008,7 @@ op_assign
 id|GET_IOC
 c_func
 (paren
-id|hwdev
+id|dev
 )paren
 suffix:semicolon
 id|ASSERT
@@ -3047,7 +3047,7 @@ r_return
 id|addr
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * sba_free_consistent - free/unmap shared mem for DMA&n; * @hwdev: instance of PCI owned by the driver that&squot;s asking.&n; * @size:  number of bytes mapped in driver buffer.&n; * @vaddr:  virtual address IOVA of &quot;consistent&quot; buffer.&n; * @dma_handler:  IO virtual address of &quot;consistent&quot; buffer.&n; *&n; * See Documentation/DMA-mapping.txt&n; */
+multiline_comment|/**&n; * sba_free_coherent - free/unmap shared mem for DMA&n; * @dev: instance of PCI owned by the driver that&squot;s asking.&n; * @size:  number of bytes mapped in driver buffer.&n; * @vaddr:  virtual address IOVA of &quot;consistent&quot; buffer.&n; * @dma_handler:  IO virtual address of &quot;consistent&quot; buffer.&n; *&n; * See Documentation/DMA-mapping.txt&n; */
 DECL|function|sba_free_coherent
 r_void
 id|sba_free_coherent
@@ -3055,7 +3055,7 @@ id|sba_free_coherent
 r_struct
 id|device
 op_star
-id|hwdev
+id|dev
 comma
 r_int
 id|size
@@ -3071,7 +3071,7 @@ id|dma_handle
 id|sba_unmap_single
 c_func
 (paren
-id|hwdev
+id|dev
 comma
 id|dma_handle
 comma
@@ -6325,6 +6325,7 @@ suffix:semicolon
 )brace
 )brace
 macro_line|#endif
+r_static
 r_void
 DECL|function|sba_connect_bus
 id|sba_connect_bus
