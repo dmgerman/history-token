@@ -317,7 +317,8 @@ multiline_comment|/* State of the Tx path in IrTTP */
 multiline_comment|/* ------------------- IrLMP and IrIAS part ------------------- */
 multiline_comment|/* Used for IrDA Discovery and socket name resolution */
 DECL|member|ckey
-id|__u32
+r_void
+op_star
 id|ckey
 suffix:semicolon
 multiline_comment|/* IrLMP client handle */

@@ -34,11 +34,15 @@ op_assign
 l_int|NULL
 suffix:semicolon
 DECL|variable|ckey
+r_static
+r_void
+op_star
+id|ckey
+suffix:semicolon
 DECL|variable|skey
 r_static
-id|__u32
-id|ckey
-comma
+r_void
+op_star
 id|skey
 suffix:semicolon
 multiline_comment|/* Module parameters */
