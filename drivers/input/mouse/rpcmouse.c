@@ -270,6 +270,13 @@ op_amp
 l_int|0x40
 )paren
 suffix:semicolon
+id|input_sync
+c_func
+(paren
+op_amp
+id|rpcmouse_dev
+)paren
+suffix:semicolon
 )brace
 DECL|function|rpcmouse_init
 r_static

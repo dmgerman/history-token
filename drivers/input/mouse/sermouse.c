@@ -286,6 +286,12 @@ suffix:semicolon
 r_break
 suffix:semicolon
 )brace
+id|input_sync
+c_func
+(paren
+id|dev
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -877,6 +883,12 @@ suffix:semicolon
 r_break
 suffix:semicolon
 )brace
+id|input_sync
+c_func
+(paren
+id|dev
+)paren
+suffix:semicolon
 id|sermouse-&gt;count
 op_increment
 suffix:semicolon

@@ -796,6 +796,12 @@ suffix:colon
 l_int|0
 )paren
 suffix:semicolon
+id|input_sync
+c_func
+(paren
+id|dev
+)paren
+suffix:semicolon
 )brace
 multiline_comment|/*&n; * psmouse_interrupt() handles incoming characters, either gathering them into&n; * packets or passing them to the command routine as command output.&n; */
 DECL|function|psmouse_interrupt

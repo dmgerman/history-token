@@ -187,6 +187,12 @@ comma
 id|down
 )paren
 suffix:semicolon
+id|input_sync
+c_func
+(paren
+id|dev
+)paren
+suffix:semicolon
 )brace
 DECL|function|npower_button_handler
 r_static
@@ -252,6 +258,12 @@ comma
 id|KEY_SUSPEND
 comma
 id|down
+)paren
+suffix:semicolon
+id|input_sync
+c_func
+(paren
+id|dev
 )paren
 suffix:semicolon
 )brace
@@ -769,6 +781,12 @@ multiline_comment|/* Send a non input event elsewhere */
 r_break
 suffix:semicolon
 )brace
+id|input_sync
+c_func
+(paren
+id|dev
+)paren
+suffix:semicolon
 )brace
 multiline_comment|/*&n; * h3600ts_event() handles events from the input module.&n; */
 DECL|function|h3600ts_event

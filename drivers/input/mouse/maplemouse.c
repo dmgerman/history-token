@@ -205,6 +205,12 @@ comma
 id|relz
 )paren
 suffix:semicolon
+id|input_sync
+c_func
+(paren
+id|dev
+)paren
+suffix:semicolon
 )brace
 DECL|function|dc_mouse_open
 r_static

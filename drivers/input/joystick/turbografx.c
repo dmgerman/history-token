@@ -444,6 +444,12 @@ id|TGFX_TOP2
 )paren
 )paren
 suffix:semicolon
+id|input_sync
+c_func
+(paren
+id|dev
+)paren
+suffix:semicolon
 )brace
 id|mod_timer
 c_func

@@ -1702,6 +1702,13 @@ op_logical_neg
 id|atkbd-&gt;release
 )paren
 suffix:semicolon
+id|input_sync
+c_func
+(paren
+op_amp
+id|atkbd-&gt;dev
+)paren
+suffix:semicolon
 )brace
 id|atkbd-&gt;release
 op_assign

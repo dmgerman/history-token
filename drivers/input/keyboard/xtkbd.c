@@ -387,6 +387,13 @@ id|XTKBD_RELEASE
 )paren
 )paren
 suffix:semicolon
+id|input_sync
+c_func
+(paren
+op_amp
+id|xtkbd-&gt;dev
+)paren
+suffix:semicolon
 )brace
 r_else
 (brace

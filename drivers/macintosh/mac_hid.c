@@ -803,6 +803,13 @@ comma
 id|down
 )paren
 suffix:semicolon
+id|input_sync
+c_func
+(paren
+op_amp
+id|emumousebtn
+)paren
+suffix:semicolon
 r_return
 l_int|1
 suffix:semicolon

@@ -433,6 +433,12 @@ suffix:semicolon
 r_break
 suffix:semicolon
 )brace
+id|input_sync
+c_func
+(paren
+id|dev
+)paren
+suffix:semicolon
 )brace
 DECL|function|magellan_interrupt
 r_static

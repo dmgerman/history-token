@@ -420,6 +420,12 @@ l_int|0x10
 )paren
 suffix:semicolon
 )brace
+id|input_sync
+c_func
+(paren
+id|dev
+)paren
+suffix:semicolon
 )brace
 DECL|variable|aiptek_features
 r_struct

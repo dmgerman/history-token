@@ -444,6 +444,12 @@ op_plus
 id|abs_y
 )paren
 suffix:semicolon
+id|input_sync
+c_func
+(paren
+id|dev
+)paren
+suffix:semicolon
 )brace
 r_return
 suffix:semicolon

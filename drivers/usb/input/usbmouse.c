@@ -240,6 +240,12 @@ l_int|3
 )braket
 )paren
 suffix:semicolon
+id|input_sync
+c_func
+(paren
+id|dev
+)paren
+suffix:semicolon
 )brace
 DECL|function|usb_mouse_open
 r_static
@@ -675,7 +681,7 @@ id|mouse-&gt;dev.phys
 op_assign
 id|mouse-&gt;phys
 suffix:semicolon
-id|mouse-&gt;dev.id.bus
+id|mouse-&gt;dev.id.bustype
 op_assign
 id|BUS_USB
 suffix:semicolon

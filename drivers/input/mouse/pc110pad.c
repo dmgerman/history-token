@@ -255,6 +255,13 @@ l_int|0x80
 )paren
 )paren
 suffix:semicolon
+id|input_sync
+c_func
+(paren
+op_amp
+id|pc110pad_dev
+)paren
+suffix:semicolon
 id|pc110pad_count
 op_assign
 l_int|0
@@ -302,10 +309,6 @@ op_star
 id|dev
 )paren
 (brace
-r_int
-r_int
-id|flags
-suffix:semicolon
 r_if
 c_cond
 (paren

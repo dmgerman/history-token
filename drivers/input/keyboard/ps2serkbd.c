@@ -1135,6 +1135,13 @@ op_logical_neg
 id|ps2serkbd-&gt;release
 )paren
 suffix:semicolon
+id|input_sync
+c_func
+(paren
+op_amp
+id|ps2serkbd-&gt;dev
+)paren
+suffix:semicolon
 )brace
 id|ps2serkbd-&gt;release
 op_assign

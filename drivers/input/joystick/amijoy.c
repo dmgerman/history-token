@@ -282,6 +282,14 @@ l_int|1
 )paren
 )paren
 suffix:semicolon
+id|input_sync
+c_func
+(paren
+id|amijoy_dev
+op_plus
+id|i
+)paren
+suffix:semicolon
 )brace
 )brace
 DECL|function|amijoy_open

@@ -403,6 +403,13 @@ comma
 l_int|0
 )paren
 suffix:semicolon
+id|input_sync
+c_func
+(paren
+op_amp
+id|amikbd_dev
+)paren
+suffix:semicolon
 r_return
 suffix:semicolon
 )brace
@@ -415,6 +422,13 @@ comma
 id|scancode
 comma
 id|down
+)paren
+suffix:semicolon
+id|input_sync
+c_func
+(paren
+op_amp
+id|amikbd_dev
 )paren
 suffix:semicolon
 r_return

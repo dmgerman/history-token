@@ -2278,6 +2278,13 @@ id|slot
 )braket
 )paren
 suffix:semicolon
+multiline_comment|/* Tell the receiver of the events to process them */
+id|input_sync
+c_func
+(paren
+id|dev
+)paren
+suffix:semicolon
 id|grip-&gt;dirty
 (braket
 id|slot

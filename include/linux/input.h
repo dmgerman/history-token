@@ -46,19 +46,19 @@ r_struct
 id|input_devinfo
 (brace
 DECL|member|bustype
-r_uint16
+id|__u16
 id|bustype
 suffix:semicolon
 DECL|member|vendor
-r_uint16
+id|__u16
 id|vendor
 suffix:semicolon
 DECL|member|product
-r_uint16
+id|__u16
 id|product
 suffix:semicolon
 DECL|member|version
-r_uint16
+id|__u16
 id|version
 suffix:semicolon
 )brace
@@ -98,8 +98,8 @@ mdefine_line|#define EVIOCRMFF&t;&t;_IOW(&squot;E&squot;, 0x81, int)&t;&t;&t;/* 
 DECL|macro|EVIOCGEFFECTS
 mdefine_line|#define EVIOCGEFFECTS&t;&t;_IOR(&squot;E&squot;, 0x84, int)&t;&t;&t;/* Report number of effects playable at the same time */
 multiline_comment|/*&n; * Event types&n; */
-DECL|macro|EV_RST
-mdefine_line|#define EV_RST&t;&t;&t;0x00
+DECL|macro|EV_SYN
+mdefine_line|#define EV_SYN&t;&t;&t;0x00
 DECL|macro|EV_KEY
 mdefine_line|#define EV_KEY&t;&t;&t;0x01
 DECL|macro|EV_REL
@@ -122,6 +122,11 @@ DECL|macro|EV_FF_STATUS
 mdefine_line|#define EV_FF_STATUS&t;&t;0x17
 DECL|macro|EV_MAX
 mdefine_line|#define EV_MAX&t;&t;&t;0x1f
+multiline_comment|/*&n; * Synchronization events.&n; */
+DECL|macro|SYN_REPORT
+mdefine_line|#define SYN_REPORT&t;&t;0
+DECL|macro|SYN_CONFIG
+mdefine_line|#define SYN_CONFIG&t;&t;1
 multiline_comment|/*&n; * Keys and buttons&n; */
 DECL|macro|KEY_RESERVED
 mdefine_line|#define KEY_RESERVED&t;&t;0
@@ -1465,6 +1470,10 @@ DECL|member|state
 r_int
 id|state
 suffix:semicolon
+DECL|member|sync
+r_int
+id|sync
+suffix:semicolon
 DECL|member|abs
 r_int
 id|abs
@@ -2113,6 +2122,8 @@ r_int
 id|value
 )paren
 suffix:semicolon
+DECL|macro|input_sync
+mdefine_line|#define input_sync(a)&t;&t;input_event(a, EV_SYN, SYN_REPORT, 0)
 DECL|macro|input_report_key
 mdefine_line|#define input_report_key(a,b,c) input_event(a, EV_KEY, b, !!(c))
 DECL|macro|input_report_rel

@@ -907,6 +907,12 @@ r_break
 suffix:semicolon
 )brace
 )brace
+id|input_sync
+c_func
+(paren
+id|dev
+)paren
+suffix:semicolon
 id|mod_timer
 c_func
 (paren

@@ -483,6 +483,13 @@ comma
 id|INPORT_DATA_PORT
 )paren
 suffix:semicolon
+id|input_sync
+c_func
+(paren
+op_amp
+id|inport_dev
+)paren
+suffix:semicolon
 )brace
 macro_line|#ifndef MODULE
 DECL|function|inport_setup

@@ -269,6 +269,13 @@ op_amp
 l_int|0x0400
 )paren
 suffix:semicolon
+id|input_sync
+c_func
+(paren
+op_amp
+id|amimouse_dev
+)paren
+suffix:semicolon
 )brace
 DECL|function|amimouse_open
 r_static

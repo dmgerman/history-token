@@ -871,6 +871,12 @@ l_int|0x04
 )paren
 )paren
 suffix:semicolon
+id|input_sync
+c_func
+(paren
+id|handle-&gt;dev
+)paren
+suffix:semicolon
 )brace
 )brace
 multiline_comment|/* Tell the user who may be running in X and not see the console that we have &n;   panic&squot;ed. This is to distingush panics from &quot;real&quot; lockups. &n;   Could in theory send the panic message as morse, but that is left as an&n;   exercise for the reader.  */

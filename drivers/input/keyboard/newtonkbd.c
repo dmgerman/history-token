@@ -400,6 +400,13 @@ comma
 id|serio-&gt;phys
 )paren
 suffix:semicolon
+id|input_sync
+c_func
+(paren
+op_amp
+id|nkbd-&gt;dev
+)paren
+suffix:semicolon
 )brace
 DECL|function|nkbd_connect
 r_void

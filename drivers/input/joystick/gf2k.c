@@ -1124,6 +1124,12 @@ op_amp
 l_int|1
 )paren
 suffix:semicolon
+id|input_sync
+c_func
+(paren
+id|dev
+)paren
+suffix:semicolon
 )brace
 multiline_comment|/*&n; * gf2k_timer() reads and analyzes Genius joystick data.&n; */
 DECL|function|gf2k_timer

@@ -533,6 +533,12 @@ op_amp
 l_int|4
 )paren
 suffix:semicolon
+id|input_sync
+c_func
+(paren
+id|dev
+)paren
+suffix:semicolon
 id|a3d-&gt;axes
 (braket
 l_int|0
@@ -1239,6 +1245,12 @@ l_int|7
 )braket
 op_amp
 l_int|1
+)paren
+suffix:semicolon
+id|input_sync
+c_func
+(paren
+id|dev
 )paren
 suffix:semicolon
 r_return

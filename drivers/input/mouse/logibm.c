@@ -481,6 +481,13 @@ op_amp
 l_int|4
 )paren
 suffix:semicolon
+id|input_sync
+c_func
+(paren
+op_amp
+id|logibm_dev
+)paren
+suffix:semicolon
 id|outb
 c_func
 (paren

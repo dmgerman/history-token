@@ -617,6 +617,12 @@ l_int|9
 )braket
 )paren
 suffix:semicolon
+id|input_sync
+c_func
+(paren
+id|dev
+)paren
+suffix:semicolon
 )brace
 DECL|function|xpad_irq_in
 r_static

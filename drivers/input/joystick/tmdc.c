@@ -1327,6 +1327,12 @@ id|k
 )braket
 suffix:semicolon
 )brace
+id|input_sync
+c_func
+(paren
+id|dev
+)paren
+suffix:semicolon
 )brace
 id|tmdc-&gt;bads
 op_add_assign

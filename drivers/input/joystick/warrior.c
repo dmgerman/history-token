@@ -222,7 +222,7 @@ op_amp
 l_int|1
 )paren
 suffix:semicolon
-r_return
+r_break
 suffix:semicolon
 r_case
 l_int|3
@@ -310,7 +310,7 @@ l_int|7
 )paren
 )paren
 suffix:semicolon
-r_return
+r_break
 suffix:semicolon
 r_case
 l_int|5
@@ -470,9 +470,15 @@ l_int|5
 )paren
 )paren
 suffix:semicolon
-r_return
+r_break
 suffix:semicolon
 )brace
+id|input_sync
+c_func
+(paren
+id|dev
+)paren
+suffix:semicolon
 )brace
 multiline_comment|/*&n; * warrior_interrupt() is called by the low level driver when characters&n; * are ready for us. We then buffer them for further processing, or call the&n; * packet processing routine.&n; */
 DECL|function|warrior_interrupt

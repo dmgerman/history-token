@@ -1038,6 +1038,12 @@ l_int|1
 )paren
 suffix:semicolon
 )brace
+id|input_sync
+c_func
+(paren
+id|dev
+)paren
+suffix:semicolon
 )brace
 multiline_comment|/*&n; * analog_cooked_read() reads analog joystick data.&n; */
 DECL|function|analog_cooked_read

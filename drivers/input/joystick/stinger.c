@@ -369,6 +369,12 @@ l_int|0x3F
 )paren
 )paren
 suffix:semicolon
+id|input_sync
+c_func
+(paren
+id|dev
+)paren
+suffix:semicolon
 r_return
 suffix:semicolon
 )brace

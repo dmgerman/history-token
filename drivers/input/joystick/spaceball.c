@@ -659,6 +659,12 @@ suffix:semicolon
 r_break
 suffix:semicolon
 )brace
+id|input_sync
+c_func
+(paren
+id|dev
+)paren
+suffix:semicolon
 )brace
 multiline_comment|/*&n; * Spaceball 4000 FLX packets all start with a one letter packet-type decriptor,&n; * and end in 0x0d. It uses &squot;^&squot; as an escape for CR, XOFF and XON characters which&n; * can occur in the axis values.&n; */
 DECL|function|spaceball_interrupt

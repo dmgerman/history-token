@@ -205,6 +205,12 @@ op_eq
 l_char|&squot;T&squot;
 )paren
 suffix:semicolon
+id|input_sync
+c_func
+(paren
+id|dev
+)paren
+suffix:semicolon
 )brace
 DECL|function|gunze_interrupt
 r_static

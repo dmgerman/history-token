@@ -867,6 +867,13 @@ id|i
 suffix:semicolon
 )brace
 )brace
+id|input_sync
+c_func
+(paren
+op_amp
+id|kbd-&gt;dev
+)paren
+suffix:semicolon
 id|memcpy
 c_func
 (paren
@@ -1631,7 +1638,7 @@ id|kbd-&gt;dev.phys
 op_assign
 id|kbd-&gt;phys
 suffix:semicolon
-id|kbd-&gt;dev.id.bus
+id|kbd-&gt;dev.id.bustype
 op_assign
 id|BUS_USB
 suffix:semicolon
