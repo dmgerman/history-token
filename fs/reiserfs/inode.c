@@ -3036,20 +3036,18 @@ comma
 id|tail_offset
 )paren
 suffix:semicolon
-multiline_comment|/* it is important the mark_buffer_uptodate is done after&n;&t;    ** the direct2indirect.  The buffer might contain valid&n;&t;    ** data newer than the data on disk (read by readpage, changed,&n;&t;    ** and then sent here by writepage).  direct2indirect needs&n;&t;    ** to know if unbh was already up to date, so it can decide&n;&t;    ** if the data in unbh needs to be replaced with data from&n;&t;    ** the disk&n;&t;    */
-id|mark_buffer_uptodate
-(paren
-id|unbh
-comma
-l_int|1
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
 id|retval
 )paren
 (brace
+id|reiserfs_unmap_buffer
+c_func
+(paren
+id|unbh
+)paren
+suffix:semicolon
 id|reiserfs_free_block
 (paren
 op_amp
@@ -3062,6 +3060,14 @@ r_goto
 id|failure
 suffix:semicolon
 )brace
+multiline_comment|/* it is important the mark_buffer_uptodate is done after&n;&t;    ** the direct2indirect.  The buffer might contain valid&n;&t;    ** data newer than the data on disk (read by readpage, changed,&n;&t;    ** and then sent here by writepage).  direct2indirect needs&n;&t;    ** to know if unbh was already up to date, so it can decide&n;&t;    ** if the data in unbh needs to be replaced with data from&n;&t;    ** the disk&n;&t;    */
+id|mark_buffer_uptodate
+(paren
+id|unbh
+comma
+l_int|1
+)paren
+suffix:semicolon
 multiline_comment|/* we&squot;ve converted the tail, so we must &n;&t;    ** flush unbh before the transaction commits&n;&t;    */
 id|add_to_flushlist
 c_func

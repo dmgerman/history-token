@@ -153,14 +153,28 @@ id|path
 op_eq
 id|POSITION_FOUND
 )paren
-id|reiserfs_panic
+(brace
+id|reiserfs_warning
 (paren
-id|sb
-comma
 l_string|&quot;PAP-14030: direct2indirect: &quot;
-l_string|&quot;pasted or inserted byte exists in the tree&quot;
+l_string|&quot;pasted or inserted byte exists in the tree %K. &quot;
+l_string|&quot;Use fsck to repair.&bslash;n&quot;
+comma
+op_amp
+id|end_key
 )paren
 suffix:semicolon
+id|pathrelse
+c_func
+(paren
+id|path
+)paren
+suffix:semicolon
+r_return
+op_minus
+id|EIO
+suffix:semicolon
+)brace
 id|p_le_ih
 op_assign
 id|PATH_PITEM_HEAD
