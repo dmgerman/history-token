@@ -9,6 +9,7 @@ macro_line|#include &lt;linux/list.h&gt;
 macro_line|#include &lt;linux/security.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/syscalls.h&gt;
+macro_line|#include &lt;linux/audit.h&gt;
 macro_line|#include &lt;asm/current.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &quot;util.h&quot;
@@ -1811,6 +1812,28 @@ id|version
 r_return
 op_minus
 id|EFAULT
+suffix:semicolon
+r_if
+c_cond
+(paren
+(paren
+id|err
+op_assign
+id|audit_ipc_perms
+c_func
+(paren
+id|setbuf.qbytes
+comma
+id|setbuf.uid
+comma
+id|setbuf.gid
+comma
+id|setbuf.mode
+)paren
+)paren
+)paren
+r_return
+id|err
 suffix:semicolon
 r_break
 suffix:semicolon
