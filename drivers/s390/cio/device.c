@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *  drivers/s390/cio/device.c&n; *  bus driver for ccw devices&n; *   $Revision: 1.60 $&n; *&n; *    Copyright (C) 2002 IBM Deutschland Entwicklung GmbH,&n; *&t;&t;&t; IBM Corporation&n; *    Author(s): Arnd Bergmann (arndb@de.ibm.com)&n; *&t;&t; Cornelia Huck (cohuck@de.ibm.com)&n; *&t;&t; Martin Schwidefsky (schwidefsky@de.ibm.com)&n; */
+multiline_comment|/*&n; *  drivers/s390/cio/device.c&n; *  bus driver for ccw devices&n; *   $Revision: 1.70 $&n; *&n; *    Copyright (C) 2002 IBM Deutschland Entwicklung GmbH,&n; *&t;&t;&t; IBM Corporation&n; *    Author(s): Arnd Bergmann (arndb@de.ibm.com)&n; *&t;&t; Cornelia Huck (cohuck@de.ibm.com)&n; *&t;&t; Martin Schwidefsky (schwidefsky@de.ibm.com)&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
@@ -937,9 +937,9 @@ comma
 id|cdev-&gt;online
 ques
 c_cond
-l_string|&quot;yes&bslash;n&quot;
+l_string|&quot;1&bslash;n&quot;
 suffix:colon
-l_string|&quot;no&bslash;n&quot;
+l_string|&quot;0&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
@@ -2272,20 +2272,11 @@ suffix:semicolon
 multiline_comment|/* Set an initial name for the device. */
 id|snprintf
 (paren
-id|cdev-&gt;dev.name
-comma
-id|DEVICE_NAME_SIZE
-comma
-l_string|&quot;ccw device&quot;
-)paren
-suffix:semicolon
-id|snprintf
-(paren
 id|cdev-&gt;dev.bus_id
 comma
-id|DEVICE_ID_SIZE
+id|BUS_ID_SIZE
 comma
-l_string|&quot;0:%04x&quot;
+l_string|&quot;0.0.%04x&quot;
 comma
 id|sch-&gt;schib.pmcw.dev
 )paren
@@ -2946,6 +2937,10 @@ id|ret
 )paren
 suffix:semicolon
 )brace
+id|console_cdev.online
+op_assign
+l_int|1
+suffix:semicolon
 r_return
 op_amp
 id|console_cdev
@@ -3045,18 +3040,29 @@ id|bus_id
 comma
 id|dev-&gt;bus_id
 comma
-id|DEVICE_ID_SIZE
+id|BUS_ID_SIZE
 )paren
 )paren
 r_break
 suffix:semicolon
 r_else
+r_if
+c_cond
+(paren
+id|dev
+)paren
+(brace
 id|put_device
 c_func
 (paren
 id|dev
 )paren
 suffix:semicolon
+id|dev
+op_assign
+l_int|NULL
+suffix:semicolon
+)brace
 )brace
 id|up_read
 c_func

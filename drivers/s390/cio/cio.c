@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *  drivers/s390/cio/cio.c&n; *   S/390 common I/O routines -- low level i/o calls&n; *   $Revision: 1.100 $&n; *&n; *    Copyright (C) 1999-2002 IBM Deutschland Entwicklung GmbH,&n; *&t;&t;&t;      IBM Corporation&n; *    Author(s): Ingo Adlung (adlung@de.ibm.com)&n; *&t;&t; Cornelia Huck (cohuck@de.ibm.com)&n; *&t;&t; Arnd Bergmann (arndb@de.ibm.com)&n; *&t;&t; Martin Schwidefsky (schwidefsky@de.ibm.com)&n; */
+multiline_comment|/*&n; *  drivers/s390/cio/cio.c&n; *   S/390 common I/O routines -- low level i/o calls&n; *   $Revision: 1.105 $&n; *&n; *    Copyright (C) 1999-2002 IBM Deutschland Entwicklung GmbH,&n; *&t;&t;&t;      IBM Corporation&n; *    Author(s): Ingo Adlung (adlung@de.ibm.com)&n; *&t;&t; Cornelia Huck (cohuck@de.ibm.com)&n; *&t;&t; Arnd Bergmann (arndb@de.ibm.com)&n; *&t;&t; Martin Schwidefsky (schwidefsky@de.ibm.com)&n; */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
@@ -953,7 +953,6 @@ r_return
 op_minus
 id|ENODEV
 suffix:semicolon
-multiline_comment|/*&n;&t; * we ignore the halt_io() request if ending_status was received but&n;&t; *  a SENSE operation is waiting for completion.&n;&t; */
 id|sprintf
 (paren
 id|dbf_txt
@@ -1062,7 +1061,6 @@ r_return
 op_minus
 id|ENODEV
 suffix:semicolon
-multiline_comment|/*&n;&t; * we ignore the clear_io() request if ending_status was received but&n;&t; *  a SENSE operation is waiting for completion.&n;&t; */
 id|sprintf
 (paren
 id|dbf_txt
@@ -1244,7 +1242,7 @@ id|ENODEV
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/*&n; * Function: cio_cancel&n; * Issues a &quot;Modify Subchannel&quot; on the specified subchannel&n; */
+multiline_comment|/*&n; * Function: cio_modify&n; * Issues a &quot;Modify Subchannel&quot; on the specified subchannel&n; */
 r_static
 r_int
 DECL|function|cio_modify
@@ -1595,7 +1593,6 @@ comma
 id|dbf_txt
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * If device isn&squot;t operational we have to perform delayed&n;&t; *  disabling when the next interrupt occurs - unless the&n;&t; *  irq is re-requested prior to the interrupt to occur.&n;&t; */
 id|ccode
 op_assign
 id|stsch

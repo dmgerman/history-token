@@ -284,6 +284,14 @@ suffix:colon
 l_int|1
 suffix:semicolon
 multiline_comment|/* delayed SENSE required */
+DECL|member|doverify
+r_int
+r_int
+id|doverify
+suffix:colon
+l_int|1
+suffix:semicolon
+multiline_comment|/* delayed path verification */
 DECL|member|flags
 )brace
 id|__attribute__

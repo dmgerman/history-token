@@ -34,12 +34,6 @@ DECL|enumerator|DEV_STATE_BOXED
 id|DEV_STATE_BOXED
 comma
 multiline_comment|/* states to wait for i/o completion before doing something */
-DECL|enumerator|DEV_STATE_ONLINE_VERIFY
-id|DEV_STATE_ONLINE_VERIFY
-comma
-DECL|enumerator|DEV_STATE_W4SENSE_VERIFY
-id|DEV_STATE_W4SENSE_VERIFY
-comma
 DECL|enumerator|DEV_STATE_CLEAR_VERIFY
 id|DEV_STATE_CLEAR_VERIFY
 comma
@@ -422,7 +416,7 @@ comma
 r_int
 )paren
 suffix:semicolon
-r_void
+r_int
 id|ccw_device_call_handler
 c_func
 (paren

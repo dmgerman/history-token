@@ -1397,4 +1397,11 @@ r_break
 suffix:semicolon
 )brace
 )brace
+DECL|variable|diag210
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|diag210
+)paren
+suffix:semicolon
 eof
