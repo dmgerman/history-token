@@ -68,6 +68,16 @@ DECL|macro|CR_XP
 mdefine_line|#define CR_XP&t;(1 &lt;&lt; 23)&t;/* Extended page tables&t;&t;&t;*/
 DECL|macro|CR_VE
 mdefine_line|#define CR_VE&t;(1 &lt;&lt; 24)&t;/* Vectored interrupts&t;&t;&t;*/
+DECL|macro|CPUID_ID
+mdefine_line|#define CPUID_ID&t;0
+DECL|macro|CPUID_CACHETYPE
+mdefine_line|#define CPUID_CACHETYPE&t;1
+DECL|macro|CPUID_TCM
+mdefine_line|#define CPUID_TCM&t;2
+DECL|macro|CPUID_TLBTYPE
+mdefine_line|#define CPUID_TLBTYPE&t;3
+DECL|macro|read_cpuid
+mdefine_line|#define read_cpuid(reg)&t;&t;&t;&t;&t;&bslash;&n;&t;({&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;unsigned int __val;&t;&t;&t;&bslash;&n;&t;&t;asm(&quot;mrc p15, 0, %0, c0, c0, &quot; #reg&t;&bslash;&n;&t;&t;    : &quot;=r&quot; (__val));&t;&t;&t;&bslash;&n;&t;&t;__val;&t;&t;&t;&t;&t;&bslash;&n;&t;})
 multiline_comment|/*&n; * This is used to ensure the compiler did actually allocate the register we&n; * asked it for some inline assembly sequences.  Apparently we can&squot;t trust&n; * the compiler from one version to another so a bit of paranoia won&squot;t hurt.&n; * This string is meant to be concatenated with the inline asm string and&n; * will cause compilation to stop on mismatch.&n; */
 DECL|macro|__asmeq
 mdefine_line|#define __asmeq(x, y)  &quot;.ifnc &quot; x &quot;,&quot; y &quot; ; .err ; .endif&bslash;n&bslash;t&quot;
