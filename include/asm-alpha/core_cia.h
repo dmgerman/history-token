@@ -233,6 +233,12 @@ DECL|macro|CIA_IOC_PCI_W3_MASK
 mdefine_line|#define CIA_IOC_PCI_W3_MASK&t;&t;(IDENT_ADDR + 0x8760000740UL)
 DECL|macro|CIA_IOC_PCI_T3_BASE
 mdefine_line|#define CIA_IOC_PCI_T3_BASE&t;&t;(IDENT_ADDR + 0x8760000780UL)
+DECL|macro|CIA_IOC_PCI_Wn_BASE
+mdefine_line|#define CIA_IOC_PCI_Wn_BASE(N)&t;(IDENT_ADDR + 0x8760000400UL + (N)*0x100) 
+DECL|macro|CIA_IOC_PCI_Wn_MASK
+mdefine_line|#define CIA_IOC_PCI_Wn_MASK(N)&t;(IDENT_ADDR + 0x8760000440UL + (N)*0x100) 
+DECL|macro|CIA_IOC_PCI_Tn_BASE
+mdefine_line|#define CIA_IOC_PCI_Tn_BASE(N)&t;(IDENT_ADDR + 0x8760000480UL + (N)*0x100) 
 DECL|macro|CIA_IOC_PCI_W_DAC
 mdefine_line|#define CIA_IOC_PCI_W_DAC&t;&t;(IDENT_ADDR + 0x87600007C0UL)
 multiline_comment|/*&n; * 2117A-CA Address Translation Registers.&n; */
