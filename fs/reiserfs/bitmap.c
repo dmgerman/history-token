@@ -1931,8 +1931,9 @@ op_assign
 l_int|0
 suffix:semicolon
 multiline_comment|/* clear default settings */
-r_for
+r_while
 c_loop
+(paren
 (paren
 id|this_char
 op_assign
@@ -1943,11 +1944,9 @@ id|options
 comma
 l_string|&quot;:&quot;
 )paren
-suffix:semicolon
-id|this_char
+)paren
 op_ne
 l_int|NULL
-suffix:semicolon
 )paren
 (brace
 r_if
