@@ -17,12 +17,73 @@ macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/string.h&gt;
 macro_line|#include &lt;asm/ptrace.h&gt;
 macro_line|#include &quot;conv.h&quot;
-DECL|macro|R4_DEV
-mdefine_line|#define R4_DEV(DEV) ((DEV &amp; 0xff) | ((DEV &amp; 0xff00) &lt;&lt; 10))
-DECL|macro|R4_MAJOR
-mdefine_line|#define R4_MAJOR(DEV) (((DEV) &gt;&gt; 18) &amp; 0x3fff)
-DECL|macro|R4_MINOR
-mdefine_line|#define R4_MINOR(DEV) ((DEV) &amp; 0x3ffff)
+DECL|function|R4_DEV
+r_static
+r_inline
+id|u32
+id|R4_DEV
+c_func
+(paren
+id|dev_t
+id|DEV
+)paren
+(brace
+r_return
+id|MINOR
+c_func
+(paren
+id|DEV
+)paren
+op_or
+(paren
+id|MAJOR
+c_func
+(paren
+id|DEV
+)paren
+op_lshift
+l_int|18
+)paren
+suffix:semicolon
+)brace
+DECL|function|R4_MAJOR
+r_static
+r_inline
+r_int
+id|R4_MAJOR
+c_func
+(paren
+id|u32
+id|DEV
+)paren
+(brace
+r_return
+(paren
+id|DEV
+op_rshift
+l_int|18
+)paren
+op_amp
+l_int|0x3fff
+suffix:semicolon
+)brace
+DECL|function|R4_MINOR
+r_static
+r_inline
+r_int
+id|R4_MINOR
+c_func
+(paren
+id|u32
+id|DEV
+)paren
+(brace
+r_return
+id|DEV
+op_amp
+l_int|0x3ffff
+suffix:semicolon
+)brace
 DECL|macro|R3_VERSION
 mdefine_line|#define R3_VERSION&t;1
 DECL|macro|R4_VERSION

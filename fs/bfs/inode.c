@@ -948,7 +948,11 @@ id|buf-&gt;f_fsid.val
 l_int|0
 )braket
 op_assign
+id|old_encode_dev
+c_func
+(paren
 id|s-&gt;s_dev
+)paren
 suffix:semicolon
 id|buf-&gt;f_namelen
 op_assign
