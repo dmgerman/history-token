@@ -1,6 +1,7 @@
-multiline_comment|/*&n; *   Copyright (c) International Business Machines  Corp., 2002&n; *   Copyright (c) Andreas Gruenbacher, 2001&n; *   Copyright (c) Linus Torvalds, 1991, 1992&n; *&n; *   This program is free software;  you can redistribute it and/or modify&n; *   it under the terms of the GNU General Public License as published by&n; *   the Free Software Foundation; either version 2 of the License, or &n; *   (at your option) any later version.&n; * &n; *   This program is distributed in the hope that it will be useful,&n; *   but WITHOUT ANY WARRANTY;  without even the implied warranty of&n; *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See&n; *   the GNU General Public License for more details.&n; *&n; *   You should have received a copy of the GNU General Public License&n; *   along with this program;  if not, write to the Free Software &n; *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA&n; */
+multiline_comment|/*&n; *   Copyright (C) International Business Machines  Corp., 2002-2004&n; *   Copyright (C) Andreas Gruenbacher, 2001&n; *   Copyright (C) Linus Torvalds, 1991, 1992&n; *&n; *   This program is free software;  you can redistribute it and/or modify&n; *   it under the terms of the GNU General Public License as published by&n; *   the Free Software Foundation; either version 2 of the License, or &n; *   (at your option) any later version.&n; * &n; *   This program is distributed in the hope that it will be useful,&n; *   but WITHOUT ANY WARRANTY;  without even the implied warranty of&n; *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See&n; *   the GNU General Public License for more details.&n; *&n; *   You should have received a copy of the GNU General Public License&n; *   along with this program;  if not, write to the Free Software &n; *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA&n; */
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/fs.h&gt;
+macro_line|#include &lt;linux/quotaops.h&gt;
 macro_line|#include &quot;jfs_incore.h&quot;
 macro_line|#include &quot;jfs_xattr.h&quot;
 macro_line|#include &quot;jfs_acl.h&quot;
@@ -1221,6 +1222,46 @@ id|rc
 r_return
 id|rc
 suffix:semicolon
+r_if
+c_cond
+(paren
+(paren
+id|iattr-&gt;ia_valid
+op_amp
+id|ATTR_UID
+op_logical_and
+id|iattr-&gt;ia_uid
+op_ne
+id|inode-&gt;i_uid
+)paren
+op_logical_or
+(paren
+id|iattr-&gt;ia_valid
+op_amp
+id|ATTR_GID
+op_logical_and
+id|iattr-&gt;ia_gid
+op_ne
+id|inode-&gt;i_gid
+)paren
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|DQUOT_TRANSFER
+c_func
+(paren
+id|inode
+comma
+id|iattr
+)paren
+)paren
+r_return
+op_minus
+id|EDQUOT
+suffix:semicolon
+)brace
 id|rc
 op_assign
 id|inode_setattr

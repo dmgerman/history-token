@@ -8476,16 +8476,6 @@ id|tlock
 op_star
 id|tlck
 suffix:semicolon
-id|jfs_warn
-c_func
-(paren
-l_string|&quot;txAbort: tid:%d dirty:0x%x&quot;
-comma
-id|tid
-comma
-id|dirty
-)paren
-suffix:semicolon
 multiline_comment|/*&n;&t; * free tlocks of the transaction&n;&t; */
 r_for
 c_loop
