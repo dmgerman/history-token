@@ -49,6 +49,9 @@ mdefine_line|#define IP_CT_TCP_FLAG_WINDOW_SCALE&t;&t;0x01
 multiline_comment|/* SACK is permitted by the sender */
 DECL|macro|IP_CT_TCP_FLAG_SACK_PERM
 mdefine_line|#define IP_CT_TCP_FLAG_SACK_PERM&t;&t;0x02
+multiline_comment|/* This sender sent FIN first */
+DECL|macro|IP_CT_TCP_FLAG_CLOSE_INIT
+mdefine_line|#define IP_CT_TCP_FLAG_CLOSE_INIT&t;&t;0x03
 DECL|struct|ip_ct_tcp_state
 r_struct
 id|ip_ct_tcp_state
@@ -82,7 +85,7 @@ DECL|member|flags
 id|u_int8_t
 id|flags
 suffix:semicolon
-multiline_comment|/* per direction state flags */
+multiline_comment|/* per direction options */
 )brace
 suffix:semicolon
 DECL|struct|ip_ct_tcp

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * This is a module which is used for queueing IPv4 packets and&n; * communicating with userspace via netlink.&n; *&n; * (C) 2000-2002 James Morris &lt;jmorris@intercode.com.au&gt;&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; *&n; * 2000-03-27: Simplified code (thanks to Andi Kleen for clues).&n; * 2000-05-20: Fixed notifier problems (following Miguel Freitas&squot; report).&n; * 2000-06-19: Fixed so nfmark is copied to metadata (reported by Sebastian &n; *             Zander).&n; * 2000-08-01: Added Nick Williams&squot; MAC support.&n; * 2002-06-25: Code cleanup.&n; *&n; */
+multiline_comment|/*&n; * This is a module which is used for queueing IPv4 packets and&n; * communicating with userspace via netlink.&n; *&n; * (C) 2000-2002 James Morris &lt;jmorris@intercode.com.au&gt;&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; *&n; * 2000-03-27: Simplified code (thanks to Andi Kleen for clues).&n; * 2000-05-20: Fixed notifier problems (following Miguel Freitas&squot; report).&n; * 2000-06-19: Fixed so nfmark is copied to metadata (reported by Sebastian &n; *             Zander).&n; * 2000-08-01: Added Nick Williams&squot; MAC support.&n; * 2002-06-25: Code cleanup.&n; * 2005-01-10: Added /proc counter for dropped packets; fixed so&n; *             packets aren&squot;t delivered to user space if they&squot;re going &n; *             to be dropped. &n; *&n; */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/skbuff.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
@@ -125,6 +125,22 @@ r_int
 r_int
 id|queue_total
 suffix:semicolon
+DECL|variable|queue_dropped
+r_static
+r_int
+r_int
+id|queue_dropped
+op_assign
+l_int|0
+suffix:semicolon
+DECL|variable|queue_user_dropped
+r_static
+r_int
+r_int
+id|queue_user_dropped
+op_assign
+l_int|0
+suffix:semicolon
 DECL|variable|ipqnl
 r_static
 r_struct
@@ -180,7 +196,7 @@ suffix:semicolon
 )brace
 r_static
 r_inline
-r_int
+r_void
 DECL|function|__ipq_enqueue_entry
 id|__ipq_enqueue_entry
 c_func
@@ -191,37 +207,6 @@ op_star
 id|entry
 )paren
 (brace
-r_if
-c_cond
-(paren
-id|queue_total
-op_ge
-id|queue_maxlen
-)paren
-(brace
-r_if
-c_cond
-(paren
-id|net_ratelimit
-c_func
-(paren
-)paren
-)paren
-id|printk
-c_func
-(paren
-id|KERN_WARNING
-l_string|&quot;ip_queue: full at %d entries, &quot;
-l_string|&quot;dropping packet(s).&bslash;n&quot;
-comma
-id|queue_total
-)paren
-suffix:semicolon
-r_return
-op_minus
-id|ENOSPC
-suffix:semicolon
-)brace
 id|list_add
 c_func
 (paren
@@ -234,9 +219,6 @@ id|queue_list
 suffix:semicolon
 id|queue_total
 op_increment
-suffix:semicolon
-r_return
-l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Find and return a queued entry matched by cmpfn, or return the last&n; * entry if cmpfn is NULL.&n; */
@@ -1154,6 +1136,45 @@ id|peer_pid
 r_goto
 id|err_out_free_nskb
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|queue_total
+op_ge
+id|queue_maxlen
+)paren
+(brace
+id|queue_dropped
+op_increment
+suffix:semicolon
+id|status
+op_assign
+op_minus
+id|ENOSPC
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|net_ratelimit
+c_func
+(paren
+)paren
+)paren
+id|printk
+(paren
+id|KERN_WARNING
+l_string|&quot;ip_queue: full at %d entries, &quot;
+l_string|&quot;dropping packets(s). Dropped: %d&bslash;n&quot;
+comma
+id|queue_total
+comma
+id|queue_dropped
+)paren
+suffix:semicolon
+r_goto
+id|err_out_free_nskb
+suffix:semicolon
+)brace
 multiline_comment|/* netlink_unicast will either free the nskb or attach it to a socket */
 id|status
 op_assign
@@ -1176,26 +1197,19 @@ id|status
 OL
 l_int|0
 )paren
+(brace
+id|queue_user_dropped
+op_increment
+suffix:semicolon
 r_goto
 id|err_out_unlock
 suffix:semicolon
-id|status
-op_assign
+)brace
 id|__ipq_enqueue_entry
 c_func
 (paren
 id|entry
 )paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|status
-OL
-l_int|0
-)paren
-r_goto
-id|err_out_unlock
 suffix:semicolon
 id|write_unlock_bh
 c_func
@@ -2555,6 +2569,8 @@ l_string|&quot;Copy mode         : %hu&bslash;n&quot;
 l_string|&quot;Copy range        : %u&bslash;n&quot;
 l_string|&quot;Queue length      : %u&bslash;n&quot;
 l_string|&quot;Queue max. length : %u&bslash;n&quot;
+l_string|&quot;Queue dropped     : %u&bslash;n&quot;
+l_string|&quot;Netlink dropped   : %u&bslash;n&quot;
 comma
 id|peer_pid
 comma
@@ -2565,6 +2581,10 @@ comma
 id|queue_total
 comma
 id|queue_maxlen
+comma
+id|queue_dropped
+comma
+id|queue_user_dropped
 )paren
 suffix:semicolon
 id|read_unlock_bh
