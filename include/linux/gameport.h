@@ -3,7 +3,6 @@ DECL|macro|_GAMEPORT_H
 mdefine_line|#define _GAMEPORT_H
 multiline_comment|/*&n; *  Copyright (c) 1999-2002 Vojtech Pavlik&n; *&n; * This program is free software; you can redistribute it and/or modify it&n; * under the terms of the GNU General Public License version 2 as published by&n; * the Free Software Foundation.&n; */
 macro_line|#include &lt;asm/io.h&gt;
-macro_line|#include &lt;linux/input.h&gt;
 macro_line|#include &lt;linux/list.h&gt;
 macro_line|#include &lt;linux/device.h&gt;
 DECL|struct|gameport
@@ -45,11 +44,6 @@ id|phys_buf
 (braket
 l_int|32
 )braket
-suffix:semicolon
-DECL|member|id
-r_struct
-id|input_id
-id|id
 suffix:semicolon
 DECL|member|io
 r_int
