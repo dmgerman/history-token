@@ -6279,6 +6279,10 @@ c_cond
 id|arq-&gt;state
 op_ne
 id|AS_RQ_POSTSCHED
+op_logical_and
+id|arq-&gt;state
+op_ne
+id|AS_RQ_PRESCHED
 )paren
 (brace
 id|printk
