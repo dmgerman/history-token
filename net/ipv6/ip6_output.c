@@ -1472,12 +1472,11 @@ id|inet6_skb_parm
 op_star
 id|opt
 op_assign
+id|IP6CB
+c_func
 (paren
-r_struct
-id|inet6_skb_parm
-op_star
+id|skb
 )paren
-id|skb-&gt;cb
 suffix:semicolon
 r_if
 c_cond
