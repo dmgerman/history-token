@@ -1,9 +1,7 @@
-multiline_comment|/*&n; * $Id: cu3088.c,v 1.22 2002/12/10 09:53:55 cohuck Exp $&n; *&n; * CTC / LCS ccw_device driver&n; *&n; * Copyright (C) 2002 IBM Deutschland Entwicklung GmbH, IBM Corporation&n; * Author(s): Arnd Bergmann &lt;arndb@de.ibm.com&gt;&n; *            Cornelia Huck &lt;cohuck@de.ibm.com&gt;&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2, or (at your option)&n; * any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; *&n; */
+multiline_comment|/*&n; * $Id: cu3088.c,v 1.26 2003/01/17 13:46:13 cohuck Exp $&n; *&n; * CTC / LCS ccw_device driver&n; *&n; * Copyright (C) 2002 IBM Deutschland Entwicklung GmbH, IBM Corporation&n; * Author(s): Arnd Bergmann &lt;arndb@de.ibm.com&gt;&n; *            Cornelia Huck &lt;cohuck@de.ibm.com&gt;&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2, or (at your option)&n; * any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; *&n; */
 "&f;"
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
-macro_line|#include &lt;linux/device.h&gt;
-macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;asm/ccwdev.h&gt;
 macro_line|#include &lt;asm/ccwgroup.h&gt;
 macro_line|#include &quot;cu3088.h&quot;
@@ -557,7 +555,6 @@ c_cond
 (paren
 id|rc
 )paren
-(brace
 id|device_unregister
 c_func
 (paren
@@ -565,10 +562,6 @@ op_amp
 id|cu3088_root_dev
 )paren
 suffix:semicolon
-r_return
-id|rc
-suffix:semicolon
-)brace
 r_return
 id|rc
 suffix:semicolon
@@ -629,6 +622,13 @@ id|module_exit
 c_func
 (paren
 id|cu3088_exit
+)paren
+suffix:semicolon
+DECL|variable|cu3088_type
+id|EXPORT_SYMBOL_GPL
+c_func
+(paren
+id|cu3088_type
 )paren
 suffix:semicolon
 DECL|variable|register_cu3088_discipline
