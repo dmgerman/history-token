@@ -9499,6 +9499,17 @@ op_assign
 op_minus
 id|ENOSPC
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|port-&gt;uartclk
+op_eq
+l_int|0
+)paren
+r_return
+op_minus
+id|EINVAL
+suffix:semicolon
 id|down
 c_func
 (paren
