@@ -248,8 +248,8 @@ op_star
 )paren
 suffix:semicolon
 r_extern
-r_int
-id|usb_stor_abort_transport
+r_void
+id|usb_stor_stop_transport
 c_func
 (paren
 r_struct

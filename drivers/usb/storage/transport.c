@@ -8,7 +8,7 @@ macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 multiline_comment|/***********************************************************************&n; * Data transfer routines&n; ***********************************************************************/
-multiline_comment|/*&n; * This is subtle, so pay attention:&n; * ---------------------------------&n; * We&squot;re very concerned about races with a command abort.  Hanging this code&n; * is a sure fire way to hang the kernel.  (Note that this discussion applies&n; * only to transactions resulting from a scsi queued-command, since only&n; * these transactions are subject to a scsi abort.  Other transactions, such&n; * as those occurring during device-specific initialization, must be handled&n; * by a separate code path.)&n; *&n; * The abort function first sets the machine state, then atomically&n; * tests-and-clears the CAN_CANCEL bit in us-&gt;flags to see if the current_urb&n; * needs to be aborted.&n; *&n; * The submit function first verifies that the submission completed without&n; * errors, and only then sets the CAN_CANCEL bit.  This prevents the abort&n; * function from trying to cancel the URB while the submit call is underway.&n; * Next, the submit function must test the state to see if we got aborted&n; * before the submission or before setting the CAN_CANCEL bit.  If so, it&squot;s&n; * essential to abort the URB if it hasn&squot;t been cancelled already (i.e.,&n; * if the CAN_CANCEL bit is still set).  Either way, the function must then&n; * wait for the URB to finish.  Note that because the URB_ASYNC_UNLINK flag&n; * is set, the URB can still be in progress even after a call to&n; * usb_unlink_urb() returns.&n; *&n; * (It&squot;s also permissible, but not necessary, to test the state -before-&n; * submitting the URB.  Doing so would prevent an unnecessary submission if&n; * the transaction had already been aborted, but this is very unlikely to&n; * happen, because the abort would have to have been requested during actual&n; * kernel processing rather than during an I/O delay.)&n; *&n; * The idea is that (1) once the state is changed to ABORTING, either the&n; * aborting function or the submitting function is guaranteed to call&n; * usb_unlink_urb() for an active URB, and (2) test_and_clear_bit() prevents&n; * usb_unlink_urb() from being called more than once or from being called&n; * during usb_submit_urb().&n; */
+multiline_comment|/*&n; * This is subtle, so pay attention:&n; * ---------------------------------&n; * We&squot;re very concerned about races with a command abort.  Hanging this code&n; * is a sure fire way to hang the kernel.  (Note that this discussion applies&n; * only to transactions resulting from a scsi queued-command, since only&n; * these transactions are subject to a scsi abort.  Other transactions, such&n; * as those occurring during device-specific initialization, must be handled&n; * by a separate code path.)&n; *&n; * The abort function (usb_storage_command_abort() in scsiglue.c) first&n; * sets the machine state and the ABORTING bit in us-&gt;flags to prevent&n; * new URBs from being submitted.  It then calls usb_stor_stop_transport()&n; * below, which atomically tests-and-clears the URB_ACTIVE bit in us-&gt;flags&n; * to see if the current_urb needs to be stopped.  Likewise, the SG_ACTIVE&n; * bit is tested to see if the current_sg scatter-gather request needs to be&n; * stopped.&n; *&n; * When a disconnect occurs, the DISCONNECTING bit in us-&gt;flags is set to&n; * prevent new URBs from being submitted, and usb_stor_stop_transport() is&n; * called to stop any ongoing requests.&n; *&n; * The submit function first verifies that the submitting is allowed&n; * (neither ABORTING nor DISCONNECTING bits are set) and that the submit&n; * completes without errors, and only then sets the URB_ACTIVE bit.  This&n; * prevents the stop_transport() function from trying to cancel the URB&n; * while the submit call is underway.  Next, the submit function must test&n; * the flags to see if an abort or disconnect occurred during the submission&n; * or before the URB_ACTIVE bit was set.  If so, it&squot;s essential to cancel&n; * the URB if it hasn&squot;t been cancelled already (i.e., if the URB_ACTIVE bit&n; * is still set).  Either way, the function must then wait for the URB to&n; * finish.  Note that because the URB_ASYNC_UNLINK flag is set, the URB can&n; * still be in progress even after a call to usb_unlink_urb() returns.&n; *&n; * The idea is that (1) once the ABORTING or DISCONNECTING bit is set,&n; * either the stop_transport() function or the submitting function&n; * is guaranteed to call usb_unlink_urb() for an active URB,&n; * and (2) test_and_clear_bit() prevents usb_unlink_urb() from being&n; * called more than once or from being called during usb_submit_urb().&n; */
 multiline_comment|/* This is the completion handler which will wake us up when an URB&n; * completes.&n; */
 DECL|function|usb_stor_blocking_completion
 r_static
@@ -66,6 +66,18 @@ suffix:semicolon
 r_int
 id|status
 suffix:semicolon
+multiline_comment|/* don&squot;t submit URBS during abort/disconnect processing */
+r_if
+c_cond
+(paren
+id|us-&gt;flags
+op_amp
+id|DONT_SUBMIT
+)paren
+r_return
+op_minus
+id|ECONNRESET
+suffix:semicolon
 multiline_comment|/* set up data structures for the wakeup system */
 id|init_completion
 c_func
@@ -122,24 +134,19 @@ multiline_comment|/* since the URB has been submitted successfully, it&squot;s n
 id|set_bit
 c_func
 (paren
-id|US_FLIDX_CAN_CANCEL
+id|US_FLIDX_URB_ACTIVE
 comma
 op_amp
 id|us-&gt;flags
 )paren
 suffix:semicolon
-multiline_comment|/* has the current command been aborted? */
+multiline_comment|/* did an abort/disconnect occur during the submission? */
 r_if
 c_cond
 (paren
-id|atomic_read
-c_func
-(paren
+id|us-&gt;flags
 op_amp
-id|us-&gt;sm_state
-)paren
-op_eq
-id|US_STATE_ABORTING
+id|DONT_SUBMIT
 )paren
 (brace
 multiline_comment|/* cancel the URB, if it hasn&squot;t been cancelled already */
@@ -149,7 +156,7 @@ c_cond
 id|test_and_clear_bit
 c_func
 (paren
-id|US_FLIDX_CAN_CANCEL
+id|US_FLIDX_URB_ACTIVE
 comma
 op_amp
 id|us-&gt;flags
@@ -181,7 +188,7 @@ suffix:semicolon
 id|clear_bit
 c_func
 (paren
-id|US_FLIDX_CAN_CANCEL
+id|US_FLIDX_URB_ACTIVE
 comma
 op_amp
 id|us-&gt;flags
@@ -1086,7 +1093,7 @@ id|partial
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Transfer a scatter-gather list via bulk transfer&n; *&n; * This function does basically the same thing as usb_stor_bulk_transfer_buf()&n; * above, but it uses the usbcore scatter-gather primitives&n; */
+multiline_comment|/*&n; * Transfer a scatter-gather list via bulk transfer&n; *&n; * This function does basically the same thing as usb_stor_bulk_transfer_buf()&n; * above, but it uses the usbcore scatter-gather library.&n; */
 DECL|function|usb_stor_bulk_transfer_sglist
 r_int
 id|usb_stor_bulk_transfer_sglist
@@ -1125,6 +1132,17 @@ suffix:semicolon
 r_int
 r_int
 id|partial
+suffix:semicolon
+multiline_comment|/* don&squot;t submit s-g requests during abort/disconnect processing */
+r_if
+c_cond
+(paren
+id|us-&gt;flags
+op_amp
+id|DONT_SUBMIT
+)paren
+r_return
+id|USB_STOR_XFER_ERROR
 suffix:semicolon
 multiline_comment|/* initialize the scatter-gather request block */
 id|US_DEBUGP
@@ -1182,24 +1200,19 @@ multiline_comment|/* since the block has been initialized successfully, it&squot
 id|set_bit
 c_func
 (paren
-id|US_FLIDX_CANCEL_SG
+id|US_FLIDX_SG_ACTIVE
 comma
 op_amp
 id|us-&gt;flags
 )paren
 suffix:semicolon
-multiline_comment|/* has the current command been aborted? */
+multiline_comment|/* did an abort/disconnect occur during the submission? */
 r_if
 c_cond
 (paren
-id|atomic_read
-c_func
-(paren
+id|us-&gt;flags
 op_amp
-id|us-&gt;sm_state
-)paren
-op_eq
-id|US_STATE_ABORTING
+id|DONT_SUBMIT
 )paren
 (brace
 multiline_comment|/* cancel the request, if it hasn&squot;t been cancelled already */
@@ -1209,7 +1222,7 @@ c_cond
 id|test_and_clear_bit
 c_func
 (paren
-id|US_FLIDX_CANCEL_SG
+id|US_FLIDX_SG_ACTIVE
 comma
 op_amp
 id|us-&gt;flags
@@ -1240,7 +1253,7 @@ suffix:semicolon
 id|clear_bit
 c_func
 (paren
-id|US_FLIDX_CANCEL_SG
+id|US_FLIDX_SG_ACTIVE
 comma
 op_amp
 id|us-&gt;flags
@@ -2083,6 +2096,16 @@ op_eq
 id|US_PR_BULK
 )paren
 (brace
+multiline_comment|/* permit the reset transfer to take place */
+id|clear_bit
+c_func
+(paren
+id|US_FLIDX_ABORTING
+comma
+op_amp
+id|us-&gt;flags
+)paren
+suffix:semicolon
 id|us
 op_member_access_from_pointer
 id|transport_reset
@@ -2093,10 +2116,10 @@ id|us
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/* Abort the currently running scsi command or device reset.&n; * This must be called with scsi_lock(us-&gt;srb-&gt;host) held */
-DECL|function|usb_stor_abort_transport
-r_int
-id|usb_stor_abort_transport
+multiline_comment|/* Stop the current URB transfer */
+DECL|function|usb_stor_stop_transport
+r_void
+id|usb_stor_stop_transport
 c_func
 (paren
 r_struct
@@ -2105,86 +2128,22 @@ op_star
 id|us
 )paren
 (brace
-r_struct
-id|Scsi_Host
-op_star
-id|host
-suffix:semicolon
-r_int
-id|state
-op_assign
-id|atomic_read
-c_func
-(paren
-op_amp
-id|us-&gt;sm_state
-)paren
-suffix:semicolon
 id|US_DEBUGP
 c_func
 (paren
-l_string|&quot;usb_stor_abort_transport called&bslash;n&quot;
-)paren
-suffix:semicolon
-multiline_comment|/* Normally the current state is RUNNING.  If the control thread&n;&t; * hasn&squot;t even started processing this command, the state will be&n;&t; * IDLE.  Anything else is a bug. */
-r_if
-c_cond
-(paren
-id|state
-op_ne
-id|US_STATE_RUNNING
-op_logical_and
-id|state
-op_ne
-id|US_STATE_IDLE
-)paren
-(brace
-id|printk
-c_func
-(paren
-id|KERN_ERR
-id|USB_STORAGE
-l_string|&quot;Error in %s: &quot;
-l_string|&quot;invalid state %d&bslash;n&quot;
+l_string|&quot;%s called&bslash;n&quot;
 comma
 id|__FUNCTION__
-comma
-id|state
 )paren
 suffix:semicolon
-r_return
-id|FAILED
-suffix:semicolon
-)brace
-multiline_comment|/* set state to abort and release the lock */
-id|atomic_set
-c_func
-(paren
-op_amp
-id|us-&gt;sm_state
-comma
-id|US_STATE_ABORTING
-)paren
-suffix:semicolon
-id|host
-op_assign
-id|us-&gt;srb-&gt;device-&gt;host
-suffix:semicolon
-id|scsi_unlock
-c_func
-(paren
-id|host
-)paren
-suffix:semicolon
-multiline_comment|/* If the state machine is blocked waiting for an URB,&n;&t; * let&squot;s wake it up */
-multiline_comment|/* If we have an URB pending, cancel it.  The test_and_clear_bit()&n;&t; * call guarantees that if a URB has just been submitted, it&n;&t; * won&squot;t be cancelled more than once. */
+multiline_comment|/* If the state machine is blocked waiting for an URB,&n;&t; * let&squot;s wake it up.  The test_and_clear_bit() call&n;&t; * guarantees that if a URB has just been submitted,&n;&t; * it won&squot;t be cancelled more than once. */
 r_if
 c_cond
 (paren
 id|test_and_clear_bit
 c_func
 (paren
-id|US_FLIDX_CAN_CANCEL
+id|US_FLIDX_URB_ACTIVE
 comma
 op_amp
 id|us-&gt;flags
@@ -2211,7 +2170,7 @@ c_cond
 id|test_and_clear_bit
 c_func
 (paren
-id|US_FLIDX_CANCEL_SG
+id|US_FLIDX_SG_ACTIVE
 comma
 op_amp
 id|us-&gt;flags
@@ -2231,24 +2190,6 @@ id|us-&gt;current_sg
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* Wait for the aborted command to finish */
-id|wait_for_completion
-c_func
-(paren
-op_amp
-id|us-&gt;notify
-)paren
-suffix:semicolon
-multiline_comment|/* Reacquire the lock: note that us-&gt;srb is now NULL */
-id|scsi_lock
-c_func
-(paren
-id|host
-)paren
-suffix:semicolon
-r_return
-id|SUCCESS
-suffix:semicolon
 )brace
 multiline_comment|/*&n; * Control/Bulk/Interrupt transport&n; */
 DECL|function|usb_stor_CBI_transport

@@ -417,6 +417,13 @@ id|srb
 )paren
 (brace
 r_struct
+id|Scsi_Host
+op_star
+id|host
+op_assign
+id|srb-&gt;device-&gt;host
+suffix:semicolon
+r_struct
 id|us_data
 op_star
 id|us
@@ -426,15 +433,27 @@ r_struct
 id|us_data
 op_star
 )paren
-id|srb-&gt;device-&gt;host-&gt;hostdata
+id|host-&gt;hostdata
 (braket
 l_int|0
 )braket
 suffix:semicolon
+r_int
+id|state
+op_assign
+id|atomic_read
+c_func
+(paren
+op_amp
+id|us-&gt;sm_state
+)paren
+suffix:semicolon
 id|US_DEBUGP
 c_func
 (paren
-l_string|&quot;command_abort() called&bslash;n&quot;
+l_string|&quot;%s called&bslash;n&quot;
+comma
+id|__FUNCTION__
 )paren
 suffix:semicolon
 multiline_comment|/* Is this command still active? */
@@ -455,12 +474,101 @@ r_return
 id|FAILED
 suffix:semicolon
 )brace
+multiline_comment|/* Normally the current state is RUNNING.  If the control thread&n;&t; * hasn&squot;t even started processing this command, the state will be&n;&t; * IDLE.  Anything else is a bug. */
+r_if
+c_cond
+(paren
+id|state
+op_ne
+id|US_STATE_RUNNING
+op_logical_and
+id|state
+op_ne
+id|US_STATE_IDLE
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_ERR
+id|USB_STORAGE
+l_string|&quot;Error in %s: &quot;
+l_string|&quot;invalid state %d&bslash;n&quot;
+comma
+id|__FUNCTION__
+comma
+id|state
+)paren
+suffix:semicolon
 r_return
-id|usb_stor_abort_transport
+id|FAILED
+suffix:semicolon
+)brace
+multiline_comment|/* Set state to ABORTING, set the ABORTING bit, and release the lock */
+id|atomic_set
+c_func
+(paren
+op_amp
+id|us-&gt;sm_state
+comma
+id|US_STATE_ABORTING
+)paren
+suffix:semicolon
+id|set_bit
+c_func
+(paren
+id|US_FLIDX_ABORTING
+comma
+op_amp
+id|us-&gt;flags
+)paren
+suffix:semicolon
+id|scsi_unlock
+c_func
+(paren
+id|host
+)paren
+suffix:semicolon
+multiline_comment|/* If the state was RUNNING, stop an ongoing USB transfer */
+r_if
+c_cond
+(paren
+id|state
+op_eq
+id|US_STATE_RUNNING
+)paren
+id|usb_stor_stop_transport
 c_func
 (paren
 id|us
 )paren
+suffix:semicolon
+multiline_comment|/* Wait for the aborted command to finish */
+id|wait_for_completion
+c_func
+(paren
+op_amp
+id|us-&gt;notify
+)paren
+suffix:semicolon
+multiline_comment|/* Reacquire the lock and allow USB transfers to resume */
+id|scsi_lock
+c_func
+(paren
+id|host
+)paren
+suffix:semicolon
+id|clear_bit
+c_func
+(paren
+id|US_FLIDX_ABORTING
+comma
+op_amp
+id|us-&gt;flags
+)paren
+suffix:semicolon
+r_return
+id|SUCCESS
 suffix:semicolon
 )brace
 multiline_comment|/* This invokes the transport reset mechanism to reset the state of the&n; * device */
