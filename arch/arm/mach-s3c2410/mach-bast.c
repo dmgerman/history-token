@@ -1149,7 +1149,7 @@ suffix:semicolon
 DECL|variable|__initdata
 r_static
 r_struct
-id|s3c2410_board
+id|s3c24xx_board
 id|bast_board
 id|__initdata
 op_assign
@@ -1202,7 +1202,7 @@ id|bast_uartcfgs
 )paren
 )paren
 suffix:semicolon
-id|s3c2410_set_board
+id|s3c24xx_set_board
 c_func
 (paren
 op_amp

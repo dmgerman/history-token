@@ -587,15 +587,6 @@ id|uart_devices
 )paren
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|ret
-)paren
-r_return
-id|ret
-suffix:semicolon
-singleline_comment|// todo: board specific inits?
 r_return
 id|ret
 suffix:semicolon
