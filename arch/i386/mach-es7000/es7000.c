@@ -201,6 +201,14 @@ c_func
 id|mi-&gt;mip_reg
 )paren
 suffix:semicolon
+id|mip_port
+op_assign
+id|MIP_PORT
+c_func
+(paren
+id|mi-&gt;mip_info
+)paren
+suffix:semicolon
 id|mip_addr
 op_assign
 id|val
