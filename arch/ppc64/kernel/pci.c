@@ -107,7 +107,7 @@ id|hose_list
 suffix:semicolon
 DECL|variable|pci_dma_ops
 r_struct
-id|pci_dma_ops
+id|dma_mapping_ops
 id|pci_dma_ops
 suffix:semicolon
 DECL|variable|pci_dma_ops
