@@ -2714,6 +2714,14 @@ c_func
 suffix:semicolon
 id|out
 suffix:colon
+id|BUG_ON
+c_func
+(paren
+id|error
+OG
+l_int|0
+)paren
+suffix:semicolon
 r_return
 id|ERR_PTR
 c_func
