@@ -1172,8 +1172,8 @@ DECL|macro|AGPSTAT2_2X
 mdefine_line|#define AGPSTAT2_2X&t;&t;(1&lt;&lt;1)
 DECL|macro|AGPSTAT2_4X
 mdefine_line|#define AGPSTAT2_4X&t;&t;(1&lt;&lt;2)
-DECL|macro|AGPSTAT_RSVD
-mdefine_line|#define AGPSTAT_RSVD&t;&t;(1&lt;&lt;2)
+DECL|macro|AGPSTAT3_RSVD
+mdefine_line|#define AGPSTAT3_RSVD&t;&t;(1&lt;&lt;2)
 DECL|macro|AGPSTAT3_8X
 mdefine_line|#define AGPSTAT3_8X&t;&t;(1&lt;&lt;1)
 DECL|macro|AGPSTAT3_4X
