@@ -151,6 +151,9 @@ r_int
 id|add
 )paren
 suffix:semicolon
+r_struct
+id|notifier_block
+suffix:semicolon
 macro_line|#ifdef CONFIG_MODULES
 multiline_comment|/* Get/put a kernel symbol (calls must be symmetric) */
 r_void
@@ -700,6 +703,26 @@ r_int
 id|addr
 )paren
 suffix:semicolon
+r_int
+id|register_module_notifier
+c_func
+(paren
+r_struct
+id|notifier_block
+op_star
+id|nb
+)paren
+suffix:semicolon
+r_int
+id|unregister_module_notifier
+c_func
+(paren
+r_struct
+id|notifier_block
+op_star
+id|nb
+)paren
+suffix:semicolon
 macro_line|#else /* !CONFIG_MODULES... */
 DECL|macro|EXPORT_SYMBOL
 mdefine_line|#define EXPORT_SYMBOL(sym)
@@ -820,6 +843,41 @@ id|modname
 (brace
 r_return
 l_int|NULL
+suffix:semicolon
+)brace
+DECL|function|register_module_notifier
+r_static
+r_inline
+r_int
+id|register_module_notifier
+c_func
+(paren
+r_struct
+id|notifier_block
+op_star
+id|nb
+)paren
+(brace
+multiline_comment|/* no events will happen anyway, so this can always succeed */
+r_return
+l_int|0
+suffix:semicolon
+)brace
+DECL|function|unregister_module_notifier
+r_static
+r_inline
+r_int
+id|unregister_module_notifier
+c_func
+(paren
+r_struct
+id|notifier_block
+op_star
+id|nb
+)paren
+(brace
+r_return
+l_int|0
 suffix:semicolon
 )brace
 macro_line|#endif /* CONFIG_MODULES */
