@@ -31,6 +31,7 @@ macro_line|#include &lt;asm/processor.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#ifdef SB1000_DEBUG
 DECL|variable|sb1000_debug
+r_static
 r_int
 id|sb1000_debug
 op_assign
@@ -38,6 +39,7 @@ id|SB1000_DEBUG
 suffix:semicolon
 macro_line|#else
 DECL|variable|sb1000_debug
+r_static
 r_int
 id|sb1000_debug
 op_assign
@@ -1206,6 +1208,7 @@ suffix:semicolon
 "&f;"
 multiline_comment|/*&n; * SB1000 hardware routines to be used during open/configuration phases&n; */
 DECL|variable|TimeOutJiffies
+r_static
 r_const
 r_int
 id|TimeOutJiffies
@@ -2004,6 +2007,7 @@ suffix:semicolon
 "&f;"
 multiline_comment|/*&n; * SB1000 hardware routines to be used during frame rx interrupt&n; */
 DECL|variable|Sb1000TimeOutJiffies
+r_static
 r_const
 r_int
 id|Sb1000TimeOutJiffies
