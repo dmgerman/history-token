@@ -1146,7 +1146,7 @@ id|reason
 )paren
 (brace
 r_case
-id|SCTP_RETRANSMIT_T3_RTX
+id|SCTP_RTXR_T3_RTX
 suffix:colon
 id|sctp_transport_lower_cwnd
 c_func
@@ -1173,7 +1173,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
-id|SCTP_RETRANSMIT_FAST_RTX
+id|SCTP_RTXR_FAST_RTX
 suffix:colon
 id|sctp_transport_lower_cwnd
 c_func
@@ -1189,6 +1189,9 @@ l_int|1
 suffix:semicolon
 r_break
 suffix:semicolon
+r_case
+id|SCTP_RTXR_PMTUD
+suffix:colon
 r_default
 suffix:colon
 r_break
@@ -2877,12 +2880,14 @@ suffix:semicolon
 r_while
 c_loop
 (paren
+(paren
 id|chunk
 op_assign
 id|sctp_outq_dequeue_data
 c_func
 (paren
 id|q
+)paren
 )paren
 )paren
 (brace
@@ -4954,7 +4959,7 @@ id|q
 comma
 id|transport
 comma
-id|SCTP_RETRANSMIT_FAST_RTX
+id|SCTP_RTXR_FAST_RTX
 )paren
 suffix:semicolon
 id|SCTP_DEBUG_PRINTK
