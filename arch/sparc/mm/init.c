@@ -342,8 +342,6 @@ id|ctx
 suffix:semicolon
 )brace
 )brace
-DECL|macro|DEBUG_BOOTMEM
-mdefine_line|#define DEBUG_BOOTMEM
 r_extern
 r_int
 r_int
@@ -601,8 +599,6 @@ r_int
 id|bootmap_size
 comma
 id|start_pfn
-comma
-id|max_pfn
 suffix:semicolon
 r_int
 r_int
@@ -621,14 +617,6 @@ suffix:semicolon
 r_int
 id|i
 suffix:semicolon
-macro_line|#ifdef DEBUG_BOOTMEM
-id|prom_printf
-c_func
-(paren
-l_string|&quot;bootmem_init: Scan sp_banks,  &quot;
-)paren
-suffix:semicolon
-macro_line|#endif
 id|bytes_avail
 op_assign
 l_int|0UL
@@ -969,20 +957,6 @@ suffix:semicolon
 )brace
 macro_line|#endif&t;
 multiline_comment|/* Initialize the boot-time allocator. */
-macro_line|#ifdef DEBUG_BOOTMEM
-id|prom_printf
-c_func
-(paren
-l_string|&quot;init_bootmem(spfn[%lx],bpfn[%lx],mlpfn[%lx])&bslash;n&quot;
-comma
-id|start_pfn
-comma
-id|bootmap_pfn
-comma
-id|max_low_pfn
-)paren
-suffix:semicolon
-macro_line|#endif
 id|bootmap_size
 op_assign
 id|init_bootmem_node
@@ -1113,23 +1087,6 @@ id|last_pfn
 op_minus
 id|curr_pfn
 suffix:semicolon
-macro_line|#ifdef DEBUG_BOOTMEM
-id|prom_printf
-c_func
-(paren
-l_string|&quot;free_bootmem: base[%lx] size[%lx]&bslash;n&quot;
-comma
-id|sp_banks
-(braket
-id|i
-)braket
-dot
-id|base_addr
-comma
-id|size
-)paren
-suffix:semicolon
-macro_line|#endif
 id|free_bootmem
 c_func
 (paren
@@ -1151,25 +1108,13 @@ c_cond
 id|initrd_start
 )paren
 (brace
+multiline_comment|/* Reserve the initrd image area. */
 id|size
 op_assign
 id|initrd_end
 op_minus
 id|initrd_start
 suffix:semicolon
-macro_line|#ifdef DEBUG_BOOTMEM
-id|prom_printf
-c_func
-(paren
-l_string|&quot;reserve_bootmem: base[%lx] size[%lx]&bslash;n&quot;
-comma
-id|initrd_start
-comma
-id|size
-)paren
-suffix:semicolon
-macro_line|#endif
-multiline_comment|/* Reserve the initrd image area. */
 id|reserve_bootmem
 c_func
 (paren
@@ -1210,18 +1155,6 @@ id|PAGE_SHIFT
 op_minus
 id|phys_base
 suffix:semicolon
-macro_line|#ifdef DEBUG_BOOTMEM
-id|prom_printf
-c_func
-(paren
-l_string|&quot;reserve_bootmem: base[%lx] size[%lx]&bslash;n&quot;
-comma
-id|phys_base
-comma
-id|size
-)paren
-suffix:semicolon
-macro_line|#endif
 id|reserve_bootmem
 c_func
 (paren
@@ -1246,22 +1179,6 @@ id|size
 op_assign
 id|bootmap_size
 suffix:semicolon
-macro_line|#ifdef DEBUG_BOOTMEM
-id|prom_printf
-c_func
-(paren
-l_string|&quot;reserve_bootmem: base[%lx] size[%lx]&bslash;n&quot;
-comma
-(paren
-id|bootmap_pfn
-op_lshift
-id|PAGE_SHIFT
-)paren
-comma
-id|size
-)paren
-suffix:semicolon
-macro_line|#endif
 id|reserve_bootmem
 c_func
 (paren
@@ -1891,14 +1808,6 @@ op_lshift
 id|PAGE_SHIFT
 )paren
 suffix:semicolon
-macro_line|#ifdef DEBUG_BOOTMEM
-id|prom_printf
-c_func
-(paren
-l_string|&quot;mem_init: Calling free_all_bootmem().&bslash;n&quot;
-)paren
-suffix:semicolon
-macro_line|#endif
 id|num_physpages
 op_assign
 id|totalram_pages
