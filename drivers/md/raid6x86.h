@@ -1,4 +1,3 @@
-macro_line|#ident &quot;$Id: raid6x86.h,v 1.3 2002/12/12 22:41:27 hpa Exp $&quot;
 multiline_comment|/* ----------------------------------------------------------------------- *&n; *&n; *   Copyright 2002-2004 H. Peter Anvin - All Rights Reserved&n; *&n; *   This program is free software; you can redistribute it and/or modify&n; *   it under the terms of the GNU General Public License as published by&n; *   the Free Software Foundation, Inc., 53 Temple Place Ste 330,&n; *   Bostom MA 02111-1307, USA; either version 2 of the License, or&n; *   (at your option) any later version; incorporated herein by reference.&n; *&n; * ----------------------------------------------------------------------- */
 multiline_comment|/*&n; * raid6x86.h&n; *&n; * Definitions common to x86 and x86-64 RAID-6 code only&n; */
 macro_line|#ifndef LINUX_RAID_RAID6X86_H
