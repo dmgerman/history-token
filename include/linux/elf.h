@@ -150,8 +150,8 @@ DECL|macro|EM_SPARCV9
 mdefine_line|#define EM_SPARCV9     43&t;/* SPARC v9 64-bit */
 DECL|macro|EM_IA_64
 mdefine_line|#define EM_IA_64&t;50&t;/* HP/Intel IA-64 */
-DECL|macro|EM_X8664
-mdefine_line|#define EM_X8664&t;62&t;/* AMD x86-64 */
+DECL|macro|EM_X86_64
+mdefine_line|#define EM_X86_64&t;62&t;/* AMD x86-64 */
 DECL|macro|EM_S390
 mdefine_line|#define EM_S390&t;&t;22&t;/* IBM S/390 */
 DECL|macro|EM_CRIS

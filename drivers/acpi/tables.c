@@ -124,6 +124,12 @@ id|ACPI_SPMI
 )braket
 op_assign
 l_string|&quot;SPMI&quot;
+comma
+(braket
+id|ACPI_HPET
+)braket
+op_assign
+l_string|&quot;HPET&quot;
 )brace
 suffix:semicolon
 multiline_comment|/* System Description Table (RSDT/XSDT) */
@@ -1211,7 +1217,7 @@ r_int
 r_int
 )paren
 id|entry
-op_add_assign
+op_plus
 id|entry-&gt;length
 )paren
 suffix:semicolon

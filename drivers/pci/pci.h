@@ -1,0 +1,27 @@
+multiline_comment|/* Functions internal to the PCI core code */
+r_extern
+r_int
+id|pci_hotplug
+(paren
+r_struct
+id|device
+op_star
+id|dev
+comma
+r_char
+op_star
+op_star
+id|envp
+comma
+r_int
+id|num_envp
+comma
+r_char
+op_star
+id|buffer
+comma
+r_int
+id|buffer_size
+)paren
+suffix:semicolon
+eof

@@ -5,6 +5,7 @@ mdefine_line|#define _LINUX_MODULE_H
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;linux/list.h&gt;
+macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;asm/atomic.h&gt;
 multiline_comment|/* Don&squot;t need to bring in all of uaccess.h just for this decl.  */
 r_struct
@@ -554,12 +555,6 @@ DECL|macro|MOD_DEC_USE_COUNT
 mdefine_line|#define MOD_DEC_USE_COUNT&t;do { } while (0)
 DECL|macro|MOD_IN_USE
 mdefine_line|#define MOD_IN_USE&t;&t;1
-r_extern
-r_struct
-id|module
-op_star
-id|module_list
-suffix:semicolon
 macro_line|#endif /* !__GENKSYMS__ */
 macro_line|#endif /* MODULE */
 DECL|macro|MODULE_DEVICE_TABLE
@@ -626,6 +621,61 @@ mdefine_line|#define SET_MODULE_OWNER(some_struct) do { (some_struct)-&gt;owner 
 macro_line|#else
 DECL|macro|SET_MODULE_OWNER
 mdefine_line|#define SET_MODULE_OWNER(some_struct) do { } while (0)
+macro_line|#endif
+r_extern
+r_void
+id|print_modules
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+macro_line|#if defined(CONFIG_MODULES) || defined(CONFIG_KALLSYMS)
+r_extern
+r_struct
+id|module
+op_star
+id|module_list
+suffix:semicolon
+multiline_comment|/*&n; * print_symbols takes a format string containing one %s.&n; * If support for resolving symbols is compiled in, the %s will&n; * be replaced by the closest symbol to the address and the entire&n; * string is printk()ed. Otherwise, nothing is printed.&n; */
+r_extern
+r_void
+id|print_symbol
+c_func
+(paren
+r_const
+r_char
+op_star
+id|fmt
+comma
+r_int
+r_int
+id|address
+)paren
+suffix:semicolon
+macro_line|#else
+r_static
+r_inline
+r_int
+DECL|function|print_symbol
+id|print_symbol
+c_func
+(paren
+r_const
+r_char
+op_star
+id|fmt
+comma
+r_int
+r_int
+id|address
+)paren
+(brace
+r_return
+op_minus
+id|ESRCH
+suffix:semicolon
+)brace
 macro_line|#endif
 macro_line|#endif /* _LINUX_MODULE_H */
 eof

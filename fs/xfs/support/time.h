@@ -3,6 +3,7 @@ macro_line|#ifndef __XFS_SUPPORT_TIME_H__
 DECL|macro|__XFS_SUPPORT_TIME_H__
 mdefine_line|#define __XFS_SUPPORT_TIME_H__
 macro_line|#include &lt;linux/sched.h&gt;
+macro_line|#include &lt;linux/time.h&gt;
 DECL|function|delay
 r_static
 r_inline
@@ -38,13 +39,26 @@ op_star
 id|tvp
 )paren
 (brace
+r_struct
+id|timeval
+id|tv
+suffix:semicolon
+id|do_gettimeofday
+c_func
+(paren
+op_amp
+id|tv
+)paren
+suffix:semicolon
 id|tvp-&gt;tv_sec
 op_assign
-id|xtime.tv_sec
+id|tv.tv_sec
 suffix:semicolon
 id|tvp-&gt;tv_nsec
 op_assign
-id|xtime.tv_nsec
+id|tv.tv_usec
+op_star
+l_int|1000
 suffix:semicolon
 )brace
 macro_line|#endif /* __XFS_SUPPORT_TIME_H__ */

@@ -37,7 +37,7 @@ id|ev-&gt;type
 op_eq
 id|LLC_STATION_EV_TYPE_SIMPLE
 op_logical_and
-id|ev-&gt;data.a.ev
+id|ev-&gt;prim_type
 op_eq
 id|LLC_STATION_EV_ENABLE_WITH_DUP_ADDR_CHECK
 ques
@@ -79,7 +79,7 @@ id|ev-&gt;type
 op_eq
 id|LLC_STATION_EV_TYPE_SIMPLE
 op_logical_and
-id|ev-&gt;data.a.ev
+id|ev-&gt;prim_type
 op_eq
 id|LLC_STATION_EV_ENABLE_WITHOUT_DUP_ADDR_CHECK
 ques
@@ -520,11 +520,11 @@ id|ev-&gt;type
 op_eq
 id|LLC_STATION_EV_TYPE_PRIM
 op_logical_and
-id|ev-&gt;data.prim.prim
+id|ev-&gt;prim
 op_eq
 id|LLC_DISABLE_PRIM
 op_logical_and
-id|ev-&gt;data.prim.type
+id|ev-&gt;prim_type
 op_eq
 id|LLC_PRIM_TYPE_REQ
 ques

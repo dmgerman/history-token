@@ -2,6 +2,7 @@ multiline_comment|/* orinoco.h&n; * &n; * Common definitions to all pieces of th
 macro_line|#ifndef _ORINOCO_H
 DECL|macro|_ORINOCO_H
 mdefine_line|#define _ORINOCO_H
+macro_line|#include &quot;hermes.h&quot;
 multiline_comment|/* To enable debug messages */
 singleline_comment|//#define ORINOCO_DEBUG&t;&t;3
 macro_line|#if (! defined (WIRELESS_EXT)) || (WIRELESS_EXT &lt; 10)
@@ -15,7 +16,6 @@ mdefine_line|#define ORINOCO_MAX_KEY_SIZE&t;14
 DECL|macro|ORINOCO_MAX_KEYS
 mdefine_line|#define ORINOCO_MAX_KEYS&t;4
 DECL|struct|orinoco_key
-r_typedef
 r_struct
 id|orinoco_key
 (brace
@@ -23,7 +23,7 @@ DECL|member|len
 id|u16
 id|len
 suffix:semicolon
-multiline_comment|/* always store little-endian */
+multiline_comment|/* always stored as little-endian */
 DECL|member|data
 r_char
 id|data
@@ -31,7 +31,6 @@ id|data
 id|ORINOCO_MAX_KEY_SIZE
 )braket
 suffix:semicolon
-DECL|typedef|orinoco_key_t
 )brace
 id|__attribute__
 (paren
@@ -39,17 +38,9 @@ id|__attribute__
 id|packed
 )paren
 )paren
-id|orinoco_key_t
 suffix:semicolon
-DECL|typedef|orinoco_keys_t
-r_typedef
-id|orinoco_key_t
-id|orinoco_keys_t
-(braket
-id|ORINOCO_MAX_KEYS
-)braket
-suffix:semicolon
-multiline_comment|/*====================================================================*/
+DECL|macro|ORINOCO_INTEN
+mdefine_line|#define ORINOCO_INTEN&t; &t;( HERMES_EV_RX | HERMES_EV_ALLOC | HERMES_EV_TX | &bslash;&n;&t;&t;&t;&t;HERMES_EV_TXEXC | HERMES_EV_WTERR | HERMES_EV_INFO | &bslash;&n;&t;&t;&t;&t;HERMES_EV_INFDROP )
 DECL|struct|orinoco_private
 r_struct
 id|orinoco_private
@@ -60,7 +51,6 @@ op_star
 id|card
 suffix:semicolon
 multiline_comment|/* Pointer to card dependant structure */
-multiline_comment|/* card dependant extra reset code (i.e. bus/interface specific */
 DECL|member|hard_reset
 r_int
 (paren
@@ -73,18 +63,24 @@ id|orinoco_private
 op_star
 )paren
 suffix:semicolon
+multiline_comment|/* Synchronisation stuff */
 DECL|member|lock
 id|spinlock_t
 id|lock
 suffix:semicolon
-DECL|member|state
+DECL|member|hw_unavailable
 r_int
-id|state
+id|hw_unavailable
 suffix:semicolon
-DECL|macro|ORINOCO_STATE_INIRQ
-mdefine_line|#define ORINOCO_STATE_INIRQ 0
-DECL|macro|ORINOCO_STATE_DOIRQ
-mdefine_line|#define ORINOCO_STATE_DOIRQ 1
+DECL|member|timeout_task
+r_struct
+id|tq_struct
+id|timeout_task
+suffix:semicolon
+DECL|member|open
+r_int
+id|open
+suffix:semicolon
 multiline_comment|/* Net device stuff */
 DECL|member|ndev
 r_struct
@@ -162,10 +158,6 @@ DECL|member|nicbuf_size
 r_int
 id|nicbuf_size
 suffix:semicolon
-DECL|member|broken_cor_reset
-r_int
-id|broken_cor_reset
-suffix:semicolon
 DECL|member|channel_mask
 id|u16
 id|channel_mask
@@ -190,8 +182,12 @@ comma
 id|tx_key
 suffix:semicolon
 DECL|member|keys
-id|orinoco_keys_t
+r_struct
+id|orinoco_key
 id|keys
+(braket
+id|ORINOCO_MAX_KEYS
+)braket
 suffix:semicolon
 DECL|member|bitratemode
 r_int
@@ -276,11 +272,11 @@ suffix:semicolon
 macro_line|#endif
 multiline_comment|/* Configuration dependent variables */
 DECL|member|port_type
-DECL|member|allow_ibss
+DECL|member|createibss
 r_int
 id|port_type
 comma
-id|allow_ibss
+id|createibss
 suffix:semicolon
 DECL|member|promiscuous
 DECL|member|mc_count
@@ -298,12 +294,6 @@ id|dir_dev
 suffix:semicolon
 )brace
 suffix:semicolon
-multiline_comment|/*====================================================================*/
-r_extern
-r_struct
-id|list_head
-id|orinoco_instances
-suffix:semicolon
 macro_line|#ifdef ORINOCO_DEBUG
 r_extern
 r_int
@@ -311,21 +301,15 @@ id|orinoco_debug
 suffix:semicolon
 DECL|macro|DEBUG
 mdefine_line|#define DEBUG(n, args...) do { if (orinoco_debug&gt;(n)) printk(KERN_DEBUG args); } while(0)
-DECL|macro|DEBUGMORE
-mdefine_line|#define DEBUGMORE(n, args...) do { if (orinoco_debug&gt;(n)) printk(args); } while (0)
 macro_line|#else
 DECL|macro|DEBUG
 mdefine_line|#define DEBUG(n, args...) do { } while (0)
-DECL|macro|DEBUGMORE
-mdefine_line|#define DEBUGMORE(n, args...) do { } while (0)
 macro_line|#endif&t;/* ORINOCO_DEBUG */
 DECL|macro|TRACE_ENTER
 mdefine_line|#define TRACE_ENTER(devname) DEBUG(2, &quot;%s: -&gt; &quot; __FUNCTION__ &quot;()&bslash;n&quot;, devname);
 DECL|macro|TRACE_EXIT
 mdefine_line|#define TRACE_EXIT(devname)  DEBUG(2, &quot;%s: &lt;- &quot; __FUNCTION__ &quot;()&bslash;n&quot;, devname);
-DECL|macro|RUP_EVEN
-mdefine_line|#define RUP_EVEN(a) ( (a) % 2 ? (a) + 1 : (a) )
-multiline_comment|/* utility routines */
+r_extern
 r_struct
 id|net_device
 op_star
@@ -334,26 +318,47 @@ c_func
 (paren
 r_int
 id|sizeof_card
+comma
+r_int
+(paren
+op_star
+id|hard_reset
 )paren
-suffix:semicolon
-r_extern
-r_void
-id|orinoco_shutdown
-c_func
 (paren
 r_struct
 id|orinoco_private
+op_star
+)paren
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|__orinoco_up
+c_func
+(paren
+r_struct
+id|net_device
 op_star
 id|dev
 )paren
 suffix:semicolon
 r_extern
 r_int
-id|orinoco_reset
+id|__orinoco_down
 c_func
 (paren
 r_struct
-id|orinoco_private
+id|net_device
+op_star
+id|dev
+)paren
+suffix:semicolon
+r_int
+id|orinoco_reinit_firmware
+c_func
+(paren
+r_struct
+id|net_device
 op_star
 id|dev
 )paren
@@ -364,7 +369,7 @@ id|orinoco_proc_dev_init
 c_func
 (paren
 r_struct
-id|orinoco_private
+id|net_device
 op_star
 id|dev
 )paren
@@ -375,9 +380,9 @@ id|orinoco_proc_dev_cleanup
 c_func
 (paren
 r_struct
-id|orinoco_private
+id|net_device
 op_star
-id|priv
+id|dev
 )paren
 suffix:semicolon
 r_extern
@@ -398,5 +403,100 @@ op_star
 id|regs
 )paren
 suffix:semicolon
+multiline_comment|/********************************************************************/
+multiline_comment|/* Locking and synchronization functions                            */
+multiline_comment|/********************************************************************/
+multiline_comment|/* These functions *must* be inline or they will break horribly on&n; * SPARC, due to its weird semantics for save/restore flags. extern&n; * inline should prevent the kernel from linking or module from&n; * loading if they are not inlined. */
+DECL|function|orinoco_lock
+r_extern
+r_inline
+r_int
+id|orinoco_lock
+c_func
+(paren
+r_struct
+id|orinoco_private
+op_star
+id|priv
+comma
+r_int
+r_int
+op_star
+id|flags
+)paren
+(brace
+id|spin_lock_irqsave
+c_func
+(paren
+op_amp
+id|priv-&gt;lock
+comma
+op_star
+id|flags
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|priv-&gt;hw_unavailable
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_DEBUG
+l_string|&quot;orinoco_lock() called with hw_unavailable (dev=%p)&bslash;n&quot;
+comma
+id|priv-&gt;ndev
+)paren
+suffix:semicolon
+id|spin_unlock_irqrestore
+c_func
+(paren
+op_amp
+id|priv-&gt;lock
+comma
+op_star
+id|flags
+)paren
+suffix:semicolon
+r_return
+op_minus
+id|EBUSY
+suffix:semicolon
+)brace
+r_return
+l_int|0
+suffix:semicolon
+)brace
+DECL|function|orinoco_unlock
+r_extern
+r_inline
+r_void
+id|orinoco_unlock
+c_func
+(paren
+r_struct
+id|orinoco_private
+op_star
+id|priv
+comma
+r_int
+r_int
+op_star
+id|flags
+)paren
+(brace
+id|spin_unlock_irqrestore
+c_func
+(paren
+op_amp
+id|priv-&gt;lock
+comma
+op_star
+id|flags
+)paren
+suffix:semicolon
+)brace
 macro_line|#endif /* _ORINOCO_H */
 eof
