@@ -4,10 +4,10 @@ macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/ioport.h&gt;
-macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/smp.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;linux/stddef.h&gt;
+macro_line|#include &lt;linux/slab.h&gt;
 multiline_comment|/* Set EXTENT bits starting at BASE in BITMAP to value TURN_ON. */
 DECL|function|set_bitmap
 r_static
@@ -274,29 +274,48 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|t-&gt;ioperm
+id|t-&gt;ts_io_bitmap
 )paren
 (brace
+r_int
+r_int
+op_star
+id|bitmap
+suffix:semicolon
+id|bitmap
+op_assign
+id|kmalloc
+c_func
+(paren
+id|IO_BITMAP_BYTES
+comma
+id|GFP_KERNEL
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|bitmap
+)paren
+r_return
+op_minus
+id|ENOMEM
+suffix:semicolon
 multiline_comment|/*&n;&t;&t; * just in case ...&n;&t;&t; */
 id|memset
 c_func
 (paren
-id|t-&gt;io_bitmap
+id|bitmap
 comma
 l_int|0xff
 comma
-(paren
-id|IO_BITMAP_SIZE
-op_plus
-l_int|1
-)paren
-op_star
-l_int|4
+id|IO_BITMAP_BYTES
 )paren
 suffix:semicolon
-id|t-&gt;ioperm
+id|t-&gt;ts_io_bitmap
 op_assign
-l_int|1
+id|bitmap
 suffix:semicolon
 multiline_comment|/*&n;&t;&t; * this activates it in the TSS&n;&t;&t; */
 id|tss-&gt;bitmap
@@ -308,7 +327,7 @@ multiline_comment|/*&n;&t; * do it in the per-thread copy and in the TSS ...&n;&
 id|set_bitmap
 c_func
 (paren
-id|t-&gt;io_bitmap
+id|t-&gt;ts_io_bitmap
 comma
 id|from
 comma
