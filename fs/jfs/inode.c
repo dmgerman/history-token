@@ -277,16 +277,12 @@ id|noisy
 op_assign
 l_int|5
 suffix:semicolon
-id|jFYI
+id|jfs_info
 c_func
 (paren
-l_int|1
-comma
-(paren
-l_string|&quot;In jfs_commit_inode, inode = 0x%p&bslash;n&quot;
+l_string|&quot;In jfs_commit_inode, inode = 0x%p&quot;
 comma
 id|inode
-)paren
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * Don&squot;t commit if inode has been committed since last being&n;&t; * marked dirty, or if it has been deleted.&n;&t; */
@@ -337,27 +333,19 @@ op_logical_and
 id|noisy
 )paren
 (brace
-id|jERROR
+id|jfs_err
 c_func
 (paren
-l_int|1
-comma
-(paren
 l_string|&quot;jfs_commit_inode(0x%p) called on &quot;
-l_string|&quot;read-only volume&bslash;n&quot;
+l_string|&quot;read-only volume&quot;
 comma
 id|inode
 )paren
-)paren
 suffix:semicolon
-id|jERROR
+id|jfs_err
 c_func
 (paren
-l_int|1
-comma
-(paren
-l_string|&quot;Is remount racy?&bslash;n&quot;
-)paren
+l_string|&quot;Is remount racy?&quot;
 )paren
 suffix:semicolon
 id|noisy
@@ -484,14 +472,10 @@ id|wait
 )paren
 )paren
 (brace
-id|jERROR
+id|jfs_err
 c_func
 (paren
-l_int|1
-comma
-(paren
-l_string|&quot;jfs_write_inode: jfs_commit_inode failed!&bslash;n&quot;
-)paren
+l_string|&quot;jfs_write_inode: jfs_commit_inode failed!&quot;
 )paren
 suffix:semicolon
 )brace
@@ -507,16 +491,12 @@ op_star
 id|inode
 )paren
 (brace
-id|jFYI
+id|jfs_info
 c_func
 (paren
-l_int|1
-comma
-(paren
-l_string|&quot;In jfs_delete_inode, inode = 0x%p&bslash;n&quot;
+l_string|&quot;In jfs_delete_inode, inode = 0x%p&quot;
 comma
 id|inode
-)paren
 )paren
 suffix:semicolon
 r_if
@@ -590,25 +570,16 @@ id|noisy
 )paren
 (brace
 multiline_comment|/* kernel allows writes to devices on read-only&n;&t;&t;&t; * partitions and may try to mark inode dirty&n;&t;&t;&t; */
-id|jERROR
+id|jfs_err
 c_func
 (paren
-l_int|1
-comma
-(paren
-l_string|&quot;jfs_dirty_inode called on &quot;
-l_string|&quot;read-only volume&bslash;n&quot;
-)paren
+l_string|&quot;jfs_dirty_inode called on read-only volume&quot;
 )paren
 suffix:semicolon
-id|jERROR
+id|jfs_err
 c_func
 (paren
-l_int|1
-comma
-(paren
-l_string|&quot;Is remount racy?&bslash;n&quot;
-)paren
+l_string|&quot;Is remount racy?&quot;
 )paren
 suffix:semicolon
 id|noisy
@@ -1563,19 +1534,15 @@ op_star
 id|ip
 )paren
 (brace
-id|jFYI
+id|jfs_info
 c_func
 (paren
-l_int|1
-comma
-(paren
-l_string|&quot;jfs_truncate: size = 0x%lx&bslash;n&quot;
+l_string|&quot;jfs_truncate: size = 0x%lx&quot;
 comma
 (paren
 id|ulong
 )paren
 id|ip-&gt;i_size
-)paren
 )paren
 suffix:semicolon
 id|nobh_truncate_page

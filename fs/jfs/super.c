@@ -86,7 +86,7 @@ DECL|variable|jfsloglevel
 r_int
 id|jfsloglevel
 op_assign
-l_int|1
+id|JFS_LOGLEVEL_WARN
 suffix:semicolon
 id|MODULE_PARM
 c_func
@@ -470,14 +470,10 @@ id|sbi-&gt;ipimap
 op_member_access_from_pointer
 id|i_imap
 suffix:semicolon
-id|jFYI
+id|jfs_info
 c_func
 (paren
-l_int|1
-comma
-(paren
-l_string|&quot;In jfs_statfs&bslash;n&quot;
-)paren
+l_string|&quot;In jfs_statfs&quot;
 )paren
 suffix:semicolon
 id|buf-&gt;f_type
@@ -590,14 +586,10 @@ suffix:semicolon
 r_int
 id|rc
 suffix:semicolon
-id|jFYI
+id|jfs_info
 c_func
 (paren
-l_int|1
-comma
-(paren
-l_string|&quot;In jfs_put_super&bslash;n&quot;
-)paren
+l_string|&quot;In jfs_put_super&quot;
 )paren
 suffix:semicolon
 id|rc
@@ -613,20 +605,14 @@ c_cond
 (paren
 id|rc
 )paren
-(brace
-id|jERROR
+id|jfs_err
 c_func
 (paren
-l_int|1
-comma
-(paren
-l_string|&quot;jfs_umount failed with return code %d&bslash;n&quot;
+l_string|&quot;jfs_umount failed with return code %d&quot;
 comma
 id|rc
 )paren
-)paren
 suffix:semicolon
-)brace
 id|unload_nls
 c_func
 (paren
@@ -1186,16 +1172,12 @@ id|newLVSize
 op_assign
 l_int|0
 suffix:semicolon
-id|jFYI
+id|jfs_info
 c_func
 (paren
-l_int|1
-comma
-(paren
-l_string|&quot;In jfs_read_super: s_flags=0x%lx&bslash;n&quot;
+l_string|&quot;In jfs_read_super: s_flags=0x%lx&quot;
 comma
 id|sb-&gt;s_flags
-)paren
 )paren
 suffix:semicolon
 id|sbi
@@ -1330,16 +1312,12 @@ op_logical_neg
 id|silent
 )paren
 (brace
-id|jERROR
+id|jfs_err
 c_func
 (paren
-l_int|1
-comma
-(paren
-l_string|&quot;jfs_mount failed w/return code = %d&bslash;n&quot;
+l_string|&quot;jfs_mount failed w/return code = %d&quot;
 comma
 id|rc
-)paren
 )paren
 suffix:semicolon
 )brace
@@ -1383,16 +1361,12 @@ op_logical_neg
 id|silent
 )paren
 (brace
-id|jERROR
+id|jfs_err
 c_func
 (paren
-l_int|1
-comma
-(paren
-l_string|&quot;jfs_mount_rw failed w/return code = %d&bslash;n&quot;
+l_string|&quot;jfs_mount_rw failed, return code = %d&quot;
 comma
 id|rc
-)paren
 )paren
 suffix:semicolon
 )brace
@@ -1499,14 +1473,10 @@ l_int|0
 suffix:semicolon
 id|out_no_root
 suffix:colon
-id|jEVENT
+id|jfs_err
 c_func
 (paren
-l_int|1
-comma
-(paren
-l_string|&quot;jfs_read_super: get root inode failed&bslash;n&quot;
-)paren
+l_string|&quot;jfs_read_super: get root inode failed&quot;
 )paren
 suffix:semicolon
 r_if
@@ -1536,16 +1506,12 @@ c_cond
 id|rc
 )paren
 (brace
-id|jERROR
+id|jfs_err
 c_func
 (paren
-l_int|1
-comma
-(paren
-l_string|&quot;jfs_umount failed with return code %d&bslash;n&quot;
+l_string|&quot;jfs_umount failed with return code %d&quot;
 comma
 id|rc
-)paren
 )paren
 suffix:semicolon
 )brace
@@ -1687,16 +1653,12 @@ id|log
 )paren
 )paren
 )paren
-id|jERROR
+id|jfs_err
 c_func
 (paren
-l_int|1
-comma
-(paren
-l_string|&quot;jfs_unlock failed with return code %d&bslash;n&quot;
+l_string|&quot;jfs_unlock failed with return code %d&quot;
 comma
 id|rc
-)paren
 )paren
 suffix:semicolon
 r_else
@@ -2095,16 +2057,12 @@ c_cond
 id|rc
 )paren
 (brace
-id|jERROR
+id|jfs_err
 c_func
 (paren
-l_int|1
-comma
-(paren
-l_string|&quot;metapage_init failed w/rc = %d&bslash;n&quot;
+l_string|&quot;metapage_init failed w/rc = %d&quot;
 comma
 id|rc
-)paren
 )paren
 suffix:semicolon
 r_goto
@@ -2125,16 +2083,12 @@ c_cond
 id|rc
 )paren
 (brace
-id|jERROR
+id|jfs_err
 c_func
 (paren
-l_int|1
-comma
-(paren
-l_string|&quot;txInit failed w/rc = %d&bslash;n&quot;
+l_string|&quot;txInit failed w/rc = %d&quot;
 comma
 id|rc
-)paren
 )paren
 suffix:semicolon
 r_goto
@@ -2166,16 +2120,12 @@ OL
 l_int|0
 )paren
 (brace
-id|jERROR
+id|jfs_err
 c_func
 (paren
-l_int|1
-comma
-(paren
-l_string|&quot;init_jfs_fs: fork failed w/rc = %d&bslash;n&quot;
+l_string|&quot;init_jfs_fs: fork failed w/rc = %d&quot;
 comma
 id|jfsIOthread
-)paren
 )paren
 suffix:semicolon
 r_goto
@@ -2214,16 +2164,12 @@ OL
 l_int|0
 )paren
 (brace
-id|jERROR
+id|jfs_err
 c_func
 (paren
-l_int|1
-comma
-(paren
-l_string|&quot;init_jfs_fs: fork failed w/rc = %d&bslash;n&quot;
+l_string|&quot;init_jfs_fs: fork failed w/rc = %d&quot;
 comma
 id|jfsCommitThread
-)paren
 )paren
 suffix:semicolon
 r_goto
@@ -2262,16 +2208,12 @@ OL
 l_int|0
 )paren
 (brace
-id|jERROR
+id|jfs_err
 c_func
 (paren
-l_int|1
-comma
-(paren
-l_string|&quot;init_jfs_fs: fork failed w/rc = %d&bslash;n&quot;
+l_string|&quot;init_jfs_fs: fork failed w/rc = %d&quot;
 comma
 id|jfsSyncThread
-)paren
 )paren
 suffix:semicolon
 r_goto
@@ -2380,14 +2322,10 @@ c_func
 r_void
 )paren
 (brace
-id|jFYI
+id|jfs_info
 c_func
 (paren
-l_int|1
-comma
-(paren
-l_string|&quot;exit_jfs_fs called&bslash;n&quot;
-)paren
+l_string|&quot;exit_jfs_fs called&quot;
 )paren
 suffix:semicolon
 id|jfs_stop_threads

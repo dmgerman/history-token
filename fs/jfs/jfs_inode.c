@@ -57,14 +57,10 @@ op_logical_neg
 id|inode
 )paren
 (brace
-id|jERROR
+id|jfs_warn
 c_func
 (paren
-l_int|1
-comma
-(paren
-l_string|&quot;ialloc: new_inode returned NULL!&bslash;n&quot;
-)paren
+l_string|&quot;ialloc: new_inode returned NULL!&quot;
 )paren
 suffix:semicolon
 r_return
@@ -101,16 +97,12 @@ c_cond
 id|rc
 )paren
 (brace
-id|jERROR
+id|jfs_warn
 c_func
 (paren
-l_int|1
-comma
-(paren
-l_string|&quot;ialloc: diAlloc returned %d!&bslash;n&quot;
+l_string|&quot;ialloc: diAlloc returned %d!&quot;
 comma
 id|rc
-)paren
 )paren
 suffix:semicolon
 id|make_bad_inode
@@ -300,16 +292,12 @@ id|jfs_inode-&gt;xtlid
 op_assign
 l_int|0
 suffix:semicolon
-id|jFYI
+id|jfs_info
 c_func
-(paren
-l_int|1
-comma
 (paren
 l_string|&quot;ialloc returns inode = 0x%p&bslash;n&quot;
 comma
 id|inode
-)paren
 )paren
 suffix:semicolon
 r_return

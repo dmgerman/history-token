@@ -1663,14 +1663,10 @@ op_eq
 l_int|NULL
 )paren
 (brace
-id|jERROR
+id|jfs_err
 c_func
 (paren
-l_int|1
-comma
-(paren
-l_string|&quot;dbSync: read_metapage failed!&bslash;n&quot;
-)paren
+l_string|&quot;dbSync: read_metapage failed!&quot;
 )paren
 suffix:semicolon
 r_return
@@ -4975,13 +4971,11 @@ id|bmp-&gt;db_agsize
 )paren
 )paren
 (brace
-id|jERROR
+id|jfs_err
 c_func
 (paren
-l_int|1
-comma
-(paren
-l_string|&quot;dbAllocAG: removed assert, but still need to debug here&bslash;nblkno = 0x%Lx, nblocks = 0x%Lx&bslash;n&quot;
+l_string|&quot;dbAllocAG: removed assert, but still need to &quot;
+l_string|&quot;debug here&bslash;nblkno = 0x%Lx, nblocks = 0x%Lx&quot;
 comma
 (paren
 r_int
@@ -4996,7 +4990,6 @@ r_int
 r_int
 )paren
 id|nblocks
-)paren
 )paren
 suffix:semicolon
 )brace
@@ -6026,14 +6019,10 @@ c_func
 )paren
 suffix:semicolon
 multiline_comment|/* !!! */
-id|jERROR
+id|jfs_err
 c_func
 (paren
-l_int|1
-comma
-(paren
-l_string|&quot;dbAllocCtl: I/O Error: Block Leakage.&bslash;n&quot;
-)paren
+l_string|&quot;dbAllocCtl: I/O Error: Block Leakage.&quot;
 )paren
 suffix:semicolon
 r_continue
@@ -6078,14 +6067,10 @@ c_func
 )paren
 suffix:semicolon
 multiline_comment|/* !!! */
-id|jERROR
+id|jfs_err
 c_func
 (paren
-l_int|1
-comma
-(paren
-l_string|&quot;dbAllocCtl: Block Leakage.&bslash;n&quot;
-)paren
+l_string|&quot;dbAllocCtl: Block Leakage.&quot;
 )paren
 suffix:semicolon
 r_continue
@@ -9617,13 +9602,10 @@ id|blkno
 op_plus
 id|nblocks
 suffix:semicolon
-id|jEVENT
+id|jfs_info
 c_func
 (paren
-l_int|0
-comma
-(paren
-l_string|&quot;dbExtendFS: blkno:%Ld nblocks:%Ld newsize:%Ld&bslash;n&quot;
+l_string|&quot;dbExtendFS: blkno:%Ld nblocks:%Ld newsize:%Ld&quot;
 comma
 (paren
 r_int
@@ -9642,7 +9624,6 @@ r_int
 r_int
 )paren
 id|newsize
-)paren
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; *      initialize bmap control page.&n;&t; *&n;&t; * all the data in bmap control page should exclude&n;&t; * the mkfs hidden dmap page.&n;&t; */
