@@ -2124,7 +2124,7 @@ suffix:semicolon
 id|DEBUG_AUTOCONF
 c_func
 (paren
-l_string|&quot;ttyS%d: autoconf (0x%04x, 0x%08lx): &quot;
+l_string|&quot;ttyS%d: autoconf (0x%04x, 0x%p): &quot;
 comma
 id|up-&gt;port.line
 comma
