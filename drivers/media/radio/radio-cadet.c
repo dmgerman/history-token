@@ -60,15 +60,10 @@ r_static
 id|wait_queue_head_t
 id|read_queue
 suffix:semicolon
-DECL|variable|tunertimer
-DECL|variable|rdstimer
 DECL|variable|readtimer
+r_static
 r_struct
 id|timer_list
-id|tunertimer
-comma
-id|rdstimer
-comma
 id|readtimer
 suffix:semicolon
 DECL|variable|rdsin
@@ -1190,6 +1185,7 @@ id|cadet_io_lock
 suffix:semicolon
 )brace
 DECL|function|cadet_handler
+r_static
 r_void
 id|cadet_handler
 c_func

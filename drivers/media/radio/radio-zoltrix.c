@@ -648,6 +648,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* Get signal strength */
 DECL|function|zol_getsigstr
+r_static
 r_int
 id|zol_getsigstr
 c_func
@@ -772,6 +773,7 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|function|zol_is_stereo
+r_static
 r_int
 id|zol_is_stereo
 (paren

@@ -1415,6 +1415,7 @@ comma
 )brace
 suffix:semicolon
 DECL|function|maxiradio_radio_init
+r_static
 r_int
 id|__init
 id|maxiradio_radio_init
@@ -1433,6 +1434,7 @@ id|maxiradio_driver
 suffix:semicolon
 )brace
 DECL|function|maxiradio_radio_exit
+r_static
 r_void
 id|__exit
 id|maxiradio_radio_exit

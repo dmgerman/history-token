@@ -1208,6 +1208,7 @@ l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
 DECL|function|maestro_radio_exit
+r_static
 r_void
 id|__exit
 id|maestro_radio_exit
@@ -1225,6 +1226,7 @@ id|maestro_radio
 suffix:semicolon
 )brace
 DECL|function|maestro_radio_init
+r_static
 r_int
 id|__init
 id|maestro_radio_init

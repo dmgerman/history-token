@@ -534,6 +534,7 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|function|tt_getsigstr
+r_static
 r_int
 id|tt_getsigstr
 c_func

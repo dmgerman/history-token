@@ -431,6 +431,7 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|function|gemtek_getsigstr
+r_static
 r_int
 id|gemtek_getsigstr
 c_func
