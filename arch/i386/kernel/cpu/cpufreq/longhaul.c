@@ -15,7 +15,7 @@ DECL|macro|dprintk
 mdefine_line|#define dprintk(msg...) printk(msg)
 macro_line|#else
 DECL|macro|dprintk
-mdefine_line|#define dprintk(msg...) do { } while(0);
+mdefine_line|#define dprintk(msg...) do { } while(0)
 macro_line|#endif
 DECL|variable|numscales
 DECL|variable|numvscales
