@@ -5,6 +5,7 @@ macro_line|#include &lt;linux/efi.h&gt;
 macro_line|#include &lt;linux/tty.h&gt;
 macro_line|#include &lt;linux/serial.h&gt;
 macro_line|#include &lt;linux/serial_core.h&gt;
+macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/serial.h&gt;
 macro_line|#include &quot;pcdp.h&quot;
 r_static
