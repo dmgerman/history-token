@@ -2374,15 +2374,6 @@ op_star
 id|dev
 )paren
 suffix:semicolon
-r_void
-id|pci_announce_device_to_drivers
-c_func
-(paren
-r_struct
-id|pci_dev
-op_star
-)paren
-suffix:semicolon
 r_int
 r_int
 id|pci_do_scan_bus

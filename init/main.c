@@ -25,9 +25,6 @@ macro_line|#include &lt;asm/bugs.h&gt;
 macro_line|#if defined(CONFIG_ARCH_S390)
 macro_line|#include &lt;asm/s390mach.h&gt;
 macro_line|#endif
-macro_line|#ifdef CONFIG_MTRR
-macro_line|#  include &lt;asm/mtrr.h&gt;
-macro_line|#endif
 macro_line|#ifdef CONFIG_X86_LOCAL_APIC
 macro_line|#include &lt;asm/smp.h&gt;
 macro_line|#endif
@@ -1674,14 +1671,6 @@ c_func
 r_void
 )paren
 (brace
-macro_line|#if defined(CONFIG_MTRR)&t;/* Do this after SMP initialization */
-multiline_comment|/*&n; * We should probably create some architecture-dependent &quot;fixup after&n; * everything is up&quot; style function where this would belong better&n; * than in init/main.c..&n; */
-id|mtrr_init
-c_func
-(paren
-)paren
-suffix:semicolon
-macro_line|#endif
 macro_line|#ifdef CONFIG_SYSCTL
 id|sysctl_init
 c_func

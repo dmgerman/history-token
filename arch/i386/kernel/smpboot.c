@@ -9,7 +9,6 @@ macro_line|#include &lt;linux/irq.h&gt;
 macro_line|#include &lt;linux/bootmem.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/mc146818rtc.h&gt;
-macro_line|#include &lt;asm/mtrr.h&gt;
 macro_line|#include &lt;asm/pgalloc.h&gt;
 macro_line|#include &lt;asm/tlbflush.h&gt;
 macro_line|#include &lt;asm/smpboot.h&gt;
@@ -1265,13 +1264,6 @@ c_func
 (paren
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_MTRR
-multiline_comment|/*&n;&t; * Must be done before calibration delay is computed&n;&t; */
-id|mtrr_init_secondary_cpu
-(paren
-)paren
-suffix:semicolon
-macro_line|#endif
 multiline_comment|/*&n;&t; * Get our bogomips.&n;&t; */
 id|calibrate_delay
 c_func

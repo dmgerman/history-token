@@ -1075,8 +1075,9 @@ suffix:semicolon
 id|dbg
 c_func
 (paren
+l_string|&quot;%s&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;&bslash;n&quot;
 )paren
 suffix:semicolon
 id|tempdword
@@ -1794,9 +1795,9 @@ r_int
 id|get_slot_mapping
 (paren
 r_struct
-id|pci_ops
+id|pci_bus
 op_star
-id|ops
+id|bus
 comma
 id|u8
 id|bus_num
@@ -1835,10 +1836,11 @@ suffix:semicolon
 id|dbg
 c_func
 (paren
-id|__FUNCTION__
-l_string|&quot; %p, %d, %d, %p&bslash;n&quot;
+l_string|&quot;%s: %p, %d, %d, %p&bslash;n&quot;
 comma
-id|ops
+id|__FUNCTION__
+comma
+id|bus
 comma
 id|bus_num
 comma
@@ -1993,15 +1995,21 @@ singleline_comment|// and it&squot;s secondary bus matches the bus number for th
 singleline_comment|// device, I need to save the bridge&squot;s slot number.  If I can&squot;t 
 singleline_comment|// find an entry for the target device, I will have to assume it&squot;s 
 singleline_comment|// on the other side of the bridge, and assign it the bridge&squot;s slot.
-id|pci_read_config_dword_nodev
-(paren
-id|ops
-comma
+id|bus-&gt;number
+op_assign
 id|tbus
+suffix:semicolon
+id|pci_bus_read_config_dword
+(paren
+id|bus
 comma
+id|PCI_DEVFN
+c_func
+(paren
 id|tdevice
 comma
 l_int|0
+)paren
 comma
 id|PCI_REVISION_ID
 comma
@@ -2021,15 +2029,17 @@ op_eq
 id|PCI_TO_PCI_BRIDGE_CLASS
 )paren
 (brace
-id|pci_read_config_dword_nodev
+id|pci_bus_read_config_dword
 (paren
-id|ops
+id|bus
 comma
-id|tbus
-comma
+id|PCI_DEVFN
+c_func
+(paren
 id|tdevice
 comma
 l_int|0
+)paren
 comma
 id|PCI_PRIMARY_BUS
 comma
@@ -2299,8 +2309,9 @@ suffix:semicolon
 id|dbg
 c_func
 (paren
+l_string|&quot;%s - physical_slot = %s&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot; - physical_slot = %s&bslash;n&quot;
 comma
 id|hotplug_slot-&gt;name
 )paren
@@ -2463,8 +2474,9 @@ suffix:semicolon
 id|dbg
 c_func
 (paren
+l_string|&quot;%s - physical_slot = %s&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot; - physical_slot = %s&bslash;n&quot;
 comma
 id|hotplug_slot-&gt;name
 )paren
@@ -2651,8 +2663,9 @@ suffix:semicolon
 id|dbg
 c_func
 (paren
+l_string|&quot;%s - physical_slot = %s&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot; - physical_slot = %s&bslash;n&quot;
 comma
 id|hotplug_slot-&gt;name
 )paren
@@ -2798,8 +2811,11 @@ suffix:semicolon
 id|dbg
 c_func
 (paren
+l_string|&quot;%s - physical_slot = %s&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;&bslash;n&quot;
+comma
+id|hotplug_slot-&gt;name
 )paren
 suffix:semicolon
 r_if
@@ -2883,8 +2899,9 @@ suffix:semicolon
 id|dbg
 c_func
 (paren
+l_string|&quot;%s - physical_slot = %s&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot; - physical_slot = %s&bslash;n&quot;
 comma
 id|hotplug_slot-&gt;name
 )paren
@@ -2965,8 +2982,9 @@ suffix:semicolon
 id|dbg
 c_func
 (paren
+l_string|&quot;%s - physical_slot = %s&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot; - physical_slot = %s&bslash;n&quot;
 comma
 id|hotplug_slot-&gt;name
 )paren
@@ -3047,8 +3065,9 @@ suffix:semicolon
 id|dbg
 c_func
 (paren
+l_string|&quot;%s - physical_slot = %s&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot; - physical_slot = %s&bslash;n&quot;
 comma
 id|hotplug_slot-&gt;name
 )paren
@@ -3128,8 +3147,9 @@ suffix:semicolon
 id|dbg
 c_func
 (paren
+l_string|&quot;%s - physical_slot = %s&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot; - physical_slot = %s&bslash;n&quot;
 comma
 id|hotplug_slot-&gt;name
 )paren
@@ -3366,8 +3386,9 @@ id|rc
 id|err
 c_func
 (paren
+l_string|&quot;%s : pci_read_config_word failed&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot; : pci_read_config_word failed&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -3438,8 +3459,9 @@ id|ctrl
 id|err
 c_func
 (paren
+l_string|&quot;%s : out of memory&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot; : out of memory&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -3483,8 +3505,9 @@ id|rc
 id|err
 c_func
 (paren
+l_string|&quot;%s : pci_read_config_word failed&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot; : pci_read_config_word failed&bslash;n&quot;
 )paren
 suffix:semicolon
 r_goto
@@ -4046,29 +4069,58 @@ id|ctrl-&gt;pci_dev
 op_assign
 id|pdev
 suffix:semicolon
-id|ctrl-&gt;pci_ops
+multiline_comment|/* make our own copy of the pci bus structure, as we like tweaking it a lot */
+id|ctrl-&gt;pci_bus
 op_assign
-id|pdev-&gt;bus-&gt;ops
+id|kmalloc
+(paren
+r_sizeof
+(paren
+op_star
+id|ctrl-&gt;pci_bus
+)paren
+comma
+id|GFP_KERNEL
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|ctrl-&gt;pci_bus
+)paren
+(brace
+id|err
+c_func
+(paren
+l_string|&quot;out of memory&bslash;n&quot;
+)paren
+suffix:semicolon
+id|rc
+op_assign
+op_minus
+id|ENOMEM
+suffix:semicolon
+r_goto
+id|err_free_ctrl
+suffix:semicolon
+)brace
+id|memcpy
+(paren
+id|ctrl-&gt;pci_bus
+comma
+id|pdev-&gt;bus
+comma
+r_sizeof
+(paren
+op_star
+id|ctrl-&gt;pci_bus
+)paren
+)paren
 suffix:semicolon
 id|ctrl-&gt;bus
 op_assign
 id|pdev-&gt;bus-&gt;number
-suffix:semicolon
-id|ctrl-&gt;device
-op_assign
-id|PCI_SLOT
-c_func
-(paren
-id|pdev-&gt;devfn
-)paren
-suffix:semicolon
-id|ctrl-&gt;function
-op_assign
-id|PCI_FUNC
-c_func
-(paren
-id|pdev-&gt;devfn
-)paren
 suffix:semicolon
 id|ctrl-&gt;rev
 op_assign
@@ -4081,9 +4133,17 @@ l_string|&quot;bus device function rev: %d %d %d %d&bslash;n&quot;
 comma
 id|ctrl-&gt;bus
 comma
-id|ctrl-&gt;device
+id|PCI_SLOT
+c_func
+(paren
+id|pdev-&gt;devfn
+)paren
 comma
-id|ctrl-&gt;function
+id|PCI_FUNC
+c_func
+(paren
+id|pdev-&gt;devfn
+)paren
 comma
 id|ctrl-&gt;rev
 )paren
@@ -4117,7 +4177,7 @@ id|rc
 )paren
 (brace
 r_goto
-id|err_free_ctrl
+id|err_free_bus
 suffix:semicolon
 )brace
 id|dbg
@@ -4195,7 +4255,7 @@ op_minus
 id|ENOMEM
 suffix:semicolon
 r_goto
-id|err_free_ctrl
+id|err_free_bus
 suffix:semicolon
 )brace
 id|ctrl-&gt;hpc_reg
@@ -4284,7 +4344,7 @@ op_assign
 id|get_slot_mapping
 c_func
 (paren
-id|ctrl-&gt;pci_ops
+id|ctrl-&gt;pci_bus
 comma
 id|pdev-&gt;bus-&gt;number
 comma
@@ -4362,8 +4422,9 @@ id|rc
 id|err
 c_func
 (paren
+l_string|&quot;%s: unable to save PCI configuration data, error %d&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;: unable to save PCI configuration data, error %d&bslash;n&quot;
 comma
 id|rc
 )paren
@@ -4467,8 +4528,9 @@ suffix:semicolon
 id|err
 c_func
 (paren
+l_string|&quot;%s: unable to save PCI configuration data, error %d&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;: unable to save PCI configuration data, error %d&bslash;n&quot;
 comma
 id|rc
 )paren
@@ -4933,6 +4995,14 @@ id|pdev
 comma
 l_int|0
 )paren
+)paren
+suffix:semicolon
+id|err_free_bus
+suffix:colon
+id|kfree
+c_func
+(paren
+id|ctrl-&gt;pci_bus
 )paren
 suffix:semicolon
 id|err_free_ctrl
@@ -5457,6 +5527,11 @@ id|tres
 )paren
 suffix:semicolon
 )brace
+id|kfree
+(paren
+id|ctrl-&gt;pci_bus
+)paren
+suffix:semicolon
 id|tctrl
 op_assign
 id|ctrl
