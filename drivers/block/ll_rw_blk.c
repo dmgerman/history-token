@@ -4537,7 +4537,7 @@ comma
 id|rq
 )paren
 suffix:semicolon
-id|_elv_add_request
+id|__elv_add_request
 c_func
 (paren
 id|q
