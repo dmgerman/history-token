@@ -275,6 +275,31 @@ comma
 id|US_FL_SINGLE_LUN
 )paren
 comma
+multiline_comment|/* Reported by Simon Levitt &lt;simon@whattf.com&gt;&n; * This entry needs Sub and Proto fields */
+id|UNUSUAL_DEV
+c_func
+(paren
+l_int|0x04b8
+comma
+l_int|0x0601
+comma
+l_int|0x0100
+comma
+l_int|0x0100
+comma
+l_string|&quot;Epson&quot;
+comma
+l_string|&quot;875DC Storage&quot;
+comma
+id|US_SC_SCSI
+comma
+id|US_PR_CB
+comma
+l_int|NULL
+comma
+id|US_FL_FIX_INQUIRY
+)paren
+comma
 multiline_comment|/* Reported by Khalid Aziz &lt;khalid@gonehiking.org&gt;&n; * This entry is needed because the device reports Sub=ff */
 id|UNUSUAL_DEV
 c_func
