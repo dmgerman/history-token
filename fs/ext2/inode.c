@@ -3836,6 +3836,10 @@ l_string|&quot;ext2_get_inode&quot;
 comma
 l_string|&quot;bad inode number: %lu&quot;
 comma
+(paren
+r_int
+r_int
+)paren
 id|ino
 )paren
 suffix:semicolon
@@ -3858,6 +3862,10 @@ l_string|&quot;ext2_get_inode&quot;
 comma
 l_string|&quot;unable to read inode block - inode=%lu, block=%lu&quot;
 comma
+(paren
+r_int
+r_int
+)paren
 id|ino
 comma
 id|block
@@ -4523,6 +4531,10 @@ l_string|&quot;ext2_write_inode&quot;
 comma
 l_string|&quot;bad inode number: %lu&quot;
 comma
+(paren
+r_int
+r_int
+)paren
 id|ino
 )paren
 suffix:semicolon
@@ -4964,6 +4976,10 @@ l_string|&quot;IO error syncing ext2 inode [%s:%08lx]&bslash;n&quot;
 comma
 id|sb-&gt;s_id
 comma
+(paren
+r_int
+r_int
+)paren
 id|ino
 )paren
 suffix:semicolon

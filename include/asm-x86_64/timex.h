@@ -32,11 +32,6 @@ id|get_cycles
 r_void
 )paren
 (brace
-macro_line|#ifndef CONFIG_X86_TSC
-r_return
-l_int|0
-suffix:semicolon
-macro_line|#else
 r_int
 r_int
 r_int
@@ -51,12 +46,16 @@ suffix:semicolon
 r_return
 id|ret
 suffix:semicolon
-macro_line|#endif
 )brace
 r_extern
 r_int
 r_int
 id|cpu_khz
+suffix:semicolon
+r_extern
+r_struct
+id|hpet_data
+id|hpet
 suffix:semicolon
 macro_line|#endif
 eof

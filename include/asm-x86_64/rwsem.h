@@ -49,6 +49,19 @@ id|rw_semaphore
 op_star
 )paren
 suffix:semicolon
+r_extern
+r_struct
+id|rw_semaphore
+op_star
+id|rwsem_downgrade_wake
+c_func
+(paren
+r_struct
+id|rw_semaphore
+op_star
+id|sem
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * the semaphore definition&n; */
 DECL|struct|rw_semaphore
 r_struct
@@ -192,6 +205,77 @@ l_string|&quot;cc&quot;
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/*&n; * trylock for reading -- returns 1 if successful, 0 if contention&n; */
+DECL|function|__down_read_trylock
+r_static
+r_inline
+r_int
+id|__down_read_trylock
+c_func
+(paren
+r_struct
+id|rw_semaphore
+op_star
+id|sem
+)paren
+(brace
+id|__s32
+id|result
+comma
+id|tmp
+suffix:semicolon
+id|__asm__
+id|__volatile__
+c_func
+(paren
+l_string|&quot;# beginning __down_read_trylock&bslash;n&bslash;t&quot;
+l_string|&quot;  movl      %0,%1&bslash;n&bslash;t&quot;
+l_string|&quot;1:&bslash;n&bslash;t&quot;
+l_string|&quot;  movl&t;     %1,%2&bslash;n&bslash;t&quot;
+l_string|&quot;  addl      %3,%2&bslash;n&bslash;t&quot;
+l_string|&quot;  jle&t;     2f&bslash;n&bslash;t&quot;
+id|LOCK_PREFIX
+l_string|&quot;  cmpxchgl  %2,%0&bslash;n&bslash;t&quot;
+l_string|&quot;  jnz&t;     1b&bslash;n&bslash;t&quot;
+l_string|&quot;2:&bslash;n&bslash;t&quot;
+l_string|&quot;# ending __down_read_trylock&bslash;n&bslash;t&quot;
+suffix:colon
+l_string|&quot;+m&quot;
+(paren
+id|sem-&gt;count
+)paren
+comma
+l_string|&quot;=&amp;a&quot;
+(paren
+id|result
+)paren
+comma
+l_string|&quot;=&amp;r&quot;
+(paren
+id|tmp
+)paren
+suffix:colon
+l_string|&quot;i&quot;
+(paren
+id|RWSEM_ACTIVE_READ_BIAS
+)paren
+suffix:colon
+l_string|&quot;memory&quot;
+comma
+l_string|&quot;cc&quot;
+)paren
+suffix:semicolon
+r_return
+id|result
+op_ge
+l_int|0
+ques
+c_cond
+l_int|1
+suffix:colon
+l_int|0
+suffix:semicolon
+)brace
 multiline_comment|/*&n; * lock for writing&n; */
 DECL|function|__down_write
 r_static
@@ -258,6 +342,49 @@ l_string|&quot;cc&quot;
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/*&n; * trylock for writing -- returns 1 if successful, 0 if contention&n; */
+DECL|function|__down_write_trylock
+r_static
+r_inline
+r_int
+id|__down_write_trylock
+c_func
+(paren
+r_struct
+id|rw_semaphore
+op_star
+id|sem
+)paren
+(brace
+r_int
+r_int
+id|ret
+op_assign
+id|cmpxchg
+c_func
+(paren
+op_amp
+id|sem-&gt;count
+comma
+id|RWSEM_UNLOCKED_VALUE
+comma
+id|RWSEM_ACTIVE_WRITE_BIAS
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|ret
+op_eq
+id|RWSEM_UNLOCKED_VALUE
+)paren
+r_return
+l_int|1
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+)brace
 multiline_comment|/*&n; * unlock after reading&n; */
 DECL|function|__up_read
 r_static
@@ -308,6 +435,9 @@ l_string|&quot;+m&quot;
 id|sem-&gt;count
 )paren
 comma
+(braket
+id|tmp
+)braket
 l_string|&quot;+r&quot;
 (paren
 id|tmp
@@ -346,7 +476,7 @@ id|__volatile__
 c_func
 (paren
 l_string|&quot;# beginning __up_write&bslash;n&bslash;t&quot;
-l_string|&quot;  movl      %2,%[tmp]&bslash;n&bslash;t&quot;
+l_string|&quot;  movl     %[bias],%[tmp]&bslash;n&bslash;t&quot;
 id|LOCK_PREFIX
 l_string|&quot;  xaddl     %[tmp],(%%rdi)&bslash;n&bslash;t&quot;
 multiline_comment|/* tries to transition 0xffff0001 -&gt; 0x00000000 */
@@ -376,7 +506,7 @@ comma
 (braket
 id|tmp
 )braket
-l_string|&quot;r&quot;
+l_string|&quot;=r&quot;
 (paren
 id|tmp
 )paren
@@ -386,10 +516,79 @@ l_string|&quot;D&quot;
 id|sem
 )paren
 comma
+(braket
+id|bias
+)braket
 l_string|&quot;i&quot;
 (paren
 op_minus
 id|RWSEM_ACTIVE_WRITE_BIAS
+)paren
+suffix:colon
+l_string|&quot;memory&quot;
+comma
+l_string|&quot;cc&quot;
+)paren
+suffix:semicolon
+)brace
+multiline_comment|/*&n; * downgrade write lock to read lock&n; */
+DECL|function|__downgrade_write
+r_static
+r_inline
+r_void
+id|__downgrade_write
+c_func
+(paren
+r_struct
+id|rw_semaphore
+op_star
+id|sem
+)paren
+(brace
+id|__asm__
+id|__volatile__
+c_func
+(paren
+l_string|&quot;# beginning __downgrade_write&bslash;n&bslash;t&quot;
+id|LOCK_PREFIX
+l_string|&quot;  addl      %[bias],(%%rdi)&bslash;n&bslash;t&quot;
+multiline_comment|/* transitions 0xZZZZ0001 -&gt; 0xYYYY0001 */
+l_string|&quot;  js        2f&bslash;n&bslash;t&quot;
+multiline_comment|/* jump if the lock is being waited upon */
+l_string|&quot;1:&bslash;n&bslash;t&quot;
+id|LOCK_SECTION_START
+c_func
+(paren
+l_string|&quot;&quot;
+)paren
+l_string|&quot;2:&bslash;n&bslash;t&quot;
+l_string|&quot;  call&t;     rwsem_downgrade_thunk&bslash;n&quot;
+l_string|&quot;  jmp       1b&bslash;n&quot;
+id|LOCK_SECTION_END
+l_string|&quot;# ending __downgrade_write&bslash;n&quot;
+suffix:colon
+l_string|&quot;=m&quot;
+(paren
+id|sem-&gt;count
+)paren
+suffix:colon
+l_string|&quot;D&quot;
+(paren
+id|sem
+)paren
+comma
+(braket
+id|bias
+)braket
+l_string|&quot;i&quot;
+(paren
+op_minus
+id|RWSEM_WAITING_BIAS
+)paren
+comma
+l_string|&quot;m&quot;
+(paren
+id|sem-&gt;count
 )paren
 suffix:colon
 l_string|&quot;memory&quot;

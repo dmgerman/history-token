@@ -160,7 +160,7 @@ suffix:semicolon
 multiline_comment|/* Per device statistics */
 DECL|member|post_buckets_task
 r_struct
-id|work_struct
+id|mpt_work_struct
 id|post_buckets_task
 suffix:semicolon
 DECL|member|post_buckets_active
@@ -3185,6 +3185,7 @@ c_cond
 id|priority
 )paren
 (brace
+macro_line|#if LINUX_VERSION_CODE &gt;= KERNEL_VERSION(2,5,41)
 id|schedule_work
 c_func
 (paren
@@ -3192,9 +3193,36 @@ op_amp
 id|priv-&gt;post_buckets_task
 )paren
 suffix:semicolon
+macro_line|#elif LINUX_VERSION_CODE &gt;= KERNEL_VERSION(2,5,40)
+id|schedule_task
+c_func
+(paren
+op_amp
+id|priv-&gt;post_buckets_task
+)paren
+suffix:semicolon
+macro_line|#else
+id|queue_task
+c_func
+(paren
+op_amp
+id|priv-&gt;post_buckets_task
+comma
+op_amp
+id|tq_immediate
+)paren
+suffix:semicolon
+id|mark_bh
+c_func
+(paren
+id|IMMEDIATE_BH
+)paren
+suffix:semicolon
+macro_line|#endif
 )brace
 r_else
 (brace
+macro_line|#if LINUX_VERSION_CODE &gt;= KERNEL_VERSION(2,5,41)
 id|schedule_delayed_work
 c_func
 (paren
@@ -3204,6 +3232,26 @@ comma
 l_int|1
 )paren
 suffix:semicolon
+macro_line|#elif LINUX_VERSION_CODE &gt;= KERNEL_VERSION(2,5,40)
+id|schedule_task
+c_func
+(paren
+op_amp
+id|priv-&gt;post_buckets_task
+)paren
+suffix:semicolon
+macro_line|#else
+id|queue_task
+c_func
+(paren
+op_amp
+id|priv-&gt;post_buckets_task
+comma
+op_amp
+id|tq_timer
+)paren
+suffix:semicolon
+macro_line|#endif
 id|dioprintk
 c_func
 (paren
@@ -5435,11 +5483,11 @@ comma
 r_sizeof
 (paren
 r_struct
-id|work_struct
+id|mpt_work_struct
 )paren
 )paren
 suffix:semicolon
-id|INIT_WORK
+id|MPT_INIT_WORK
 c_func
 (paren
 op_amp

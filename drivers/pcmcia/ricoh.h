@@ -67,6 +67,15 @@ DECL|macro|RL5C46X_BCR_3E0_ENA
 mdefine_line|#define RL5C46X_BCR_3E0_ENA&t;&t;0x0800
 DECL|macro|RL5C46X_BCR_3E2_ENA
 mdefine_line|#define RL5C46X_BCR_3E2_ENA&t;&t;0x1000
+multiline_comment|/* Bridge Configuration Register */
+DECL|macro|RL5C4XX_CONFIG
+mdefine_line|#define RL5C4XX_CONFIG&t;&t;&t;0x80&t;/* 16 bit */
+DECL|macro|RL5C4XX_CONFIG_IO_1_MODE
+mdefine_line|#define  RL5C4XX_CONFIG_IO_1_MODE&t;0x0200
+DECL|macro|RL5C4XX_CONFIG_IO_0_MODE
+mdefine_line|#define  RL5C4XX_CONFIG_IO_0_MODE&t;0x0100
+DECL|macro|RL5C4XX_CONFIG_PREFETCH
+mdefine_line|#define  RL5C4XX_CONFIG_PREFETCH&t;0x0001
 multiline_comment|/* Misc Control Register */
 DECL|macro|RL5C4XX_MISC
 mdefine_line|#define RL5C4XX_MISC&t;&t;&t;0x0082&t;/* 16 bit */
@@ -139,6 +148,8 @@ DECL|macro|rl_io
 mdefine_line|#define rl_io(socket)&t;&t;((socket)-&gt;private[2])
 DECL|macro|rl_mem
 mdefine_line|#define rl_mem(socket)&t;&t;((socket)-&gt;private[3])
+DECL|macro|rl_config
+mdefine_line|#define rl_config(socket)&t;((socket)-&gt;private[4])
 multiline_comment|/*&n; * Magic Ricoh initialization code.. Save state at&n; * beginning, re-initialize it after suspend.&n; */
 DECL|function|ricoh_open
 r_static
@@ -207,6 +218,20 @@ comma
 id|RL5C4XX_16BIT_MEM_0
 )paren
 suffix:semicolon
+id|rl_config
+c_func
+(paren
+id|socket
+)paren
+op_assign
+id|config_readw
+c_func
+(paren
+id|socket
+comma
+id|RL5C4XX_CONFIG
+)paren
+suffix:semicolon
 multiline_comment|/* Set the default timings, don&squot;t trust the original values */
 id|rl_ctl
 c_func
@@ -218,6 +243,36 @@ id|RL5C4XX_16CTL_IO_TIMING
 op_or
 id|RL5C4XX_16CTL_MEM_TIMING
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|socket-&gt;dev-&gt;device
+OL
+id|PCI_DEVICE_ID_RICOH_RL5C475
+)paren
+(brace
+id|rl_ctl
+c_func
+(paren
+id|socket
+)paren
+op_or_assign
+id|RL5C46X_16CTL_LEVEL_1
+op_or
+id|RL5C46X_16CTL_LEVEL_2
+suffix:semicolon
+)brace
+r_else
+(brace
+id|rl_config
+c_func
+(paren
+id|socket
+)paren
+op_or_assign
+id|RL5C4XX_CONFIG_PREFETCH
+suffix:semicolon
+)brace
 r_return
 l_int|0
 suffix:semicolon
@@ -289,6 +344,20 @@ comma
 id|RL5C4XX_16BIT_MEM_0
 comma
 id|rl_mem
+c_func
+(paren
+id|socket
+)paren
+)paren
+suffix:semicolon
+id|config_writew
+c_func
+(paren
+id|socket
+comma
+id|RL5C4XX_CONFIG
+comma
+id|rl_config
 c_func
 (paren
 id|socket

@@ -193,6 +193,13 @@ c_func
 id|scsi_ioctl_send_command
 )paren
 suffix:semicolon
+DECL|variable|scsi_set_medium_removal
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|scsi_set_medium_removal
+)paren
+suffix:semicolon
 macro_line|#if defined(CONFIG_SCSI_LOGGING)&t;/* { */
 DECL|variable|scsi_logging_level
 id|EXPORT_SYMBOL

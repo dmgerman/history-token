@@ -1,4 +1,4 @@
-multiline_comment|/*  x86-64 MTRR (Memory Type Range Register) driver.&n;&t;Based largely upon arch/i386/kernel/mtrr.c&n;&n;    Copyright (C) 1997-2000  Richard Gooch&n;&t;Copyright (C) 2002 Dave Jones.&n;&n;    This library is free software; you can redistribute it and/or&n;    modify it under the terms of the GNU Library General Public&n;    License as published by the Free Software Foundation; either&n;    version 2 of the License, or (at your option) any later version.&n;&n;    This library is distributed in the hope that it will be useful,&n;    but WITHOUT ANY WARRANTY; without even the implied warranty of&n;    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU&n;    Library General Public License for more details.&n;&n;    You should have received a copy of the GNU Library General Public&n;    License along with this library; if not, write to the Free&n;    Software Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n;&n;&t;(For earlier history, see arch/i386/kernel/mtrr.c)&n;&t;v2.00&t;September 2001&t;Dave Jones &lt;davej@suse.de&gt;&n;&t;&t;Initial rewrite for x86-64.&n;&t;  Removal of non-Intel style MTRR code.&n;&t;v2.01  June 2002  Dave Jones &lt;davej@suse.de&gt;&n;&t;  Removal of redundant abstraction layer.&n;&t;  64-bit fixes.&n;*/
+multiline_comment|/*  x86-64 MTRR (Memory Type Range Register) driver.&n;&t;Based largely upon arch/i386/kernel/mtrr.c&n;&n;    Copyright (C) 1997-2000  Richard Gooch&n;&t;Copyright (C) 2002 Dave Jones.&n;&n;    This library is free software; you can redistribute it and/or&n;    modify it under the terms of the GNU Library General Public&n;    License as published by the Free Software Foundation; either&n;    version 2 of the License, or (at your option) any later version.&n;&n;    This library is distributed in the hope that it will be useful,&n;    but WITHOUT ANY WARRANTY; without even the implied warranty of&n;    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU&n;    Library General Public License for more details.&n;&n;    You should have received a copy of the GNU Library General Public&n;    License along with this library; if not, write to the Free&n;    Software Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n;&n;&t;(For earlier history, see arch/i386/kernel/mtrr.c)&n;&t;v2.00&t;September 2001&t;Dave Jones &lt;davej@suse.de&gt;&n;&t;&t;Initial rewrite for x86-64.&n;&t;  Removal of non-Intel style MTRR code.&n;&t;v2.01  June 2002  Dave Jones &lt;davej@suse.de&gt;&n;&t;  Removal of redundant abstraction layer.&n;&t;  64-bit fixes.&n;&t;v2.02  July 2002  Dave Jones &lt;davej@suse.de&gt;&n;&t;  Fix gentry inconsistencies between kernel/userspace.&n;&t;  More casts to clean up warnings.&n;*/
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
@@ -23,6 +23,7 @@ macro_line|#include &lt;asm/mtrr.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/smp.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
+macro_line|#include &lt;linux/agp_backend.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/processor.h&gt;
@@ -35,7 +36,7 @@ macro_line|#include &lt;asm/msr.h&gt;
 macro_line|#include &lt;asm/hardirq.h&gt;
 macro_line|#include &lt;linux/irq.h&gt;
 DECL|macro|MTRR_VERSION
-mdefine_line|#define MTRR_VERSION &quot;2.01 (20020605)&quot;
+mdefine_line|#define MTRR_VERSION &quot;2.02 (20020716)&quot;
 DECL|macro|TRUE
 mdefine_line|#define TRUE  1
 DECL|macro|FALSE
@@ -120,7 +121,8 @@ id|u32
 id|deftype_hi
 suffix:semicolon
 DECL|member|flags
-id|u64
+r_int
+r_int
 id|flags
 suffix:semicolon
 DECL|member|cr4val
@@ -145,7 +147,7 @@ id|u64
 id|cr0
 suffix:semicolon
 multiline_comment|/* Disable interrupts locally */
-id|local_save_flags
+id|local_irq_save
 c_func
 (paren
 id|ctxt-&gt;flags
@@ -544,6 +546,12 @@ r_struct
 id|set_mtrr_context
 id|ctxt
 suffix:semicolon
+id|u64
+id|base64
+suffix:semicolon
+id|u64
+id|size64
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -580,6 +588,16 @@ suffix:semicolon
 )brace
 r_else
 (brace
+id|base64
+op_assign
+(paren
+id|base
+op_lshift
+id|PAGE_SHIFT
+)paren
+op_amp
+id|size_and_mask
+suffix:semicolon
 id|wrmsr
 (paren
 id|MSR_MTRRphysBase
@@ -588,24 +606,33 @@ c_func
 id|reg
 )paren
 comma
-id|base
-op_lshift
-id|PAGE_SHIFT
+id|base64
 op_or
 id|type
 comma
-(paren
-id|base
-op_amp
-id|size_and_mask
-)paren
+id|base64
 op_rshift
-(paren
 l_int|32
-op_minus
+)paren
+suffix:semicolon
+id|size64
+op_assign
+op_complement
+(paren
+(paren
+id|size
+op_lshift
 id|PAGE_SHIFT
 )paren
+op_minus
+l_int|1
 )paren
+suffix:semicolon
+id|size64
+op_assign
+id|size64
+op_amp
+id|size_and_mask
 suffix:semicolon
 id|wrmsr
 (paren
@@ -616,31 +643,21 @@ id|reg
 )paren
 comma
 (paren
-op_minus
-id|size
-op_minus
-l_int|1
+id|u32
 )paren
-op_lshift
-id|PAGE_SHIFT
+(paren
+id|size64
 op_or
 l_int|0x800
+)paren
 comma
 (paren
+id|u32
+)paren
 (paren
-op_minus
-id|size
-op_minus
-l_int|1
-)paren
-op_amp
-id|size_and_mask
-)paren
+id|size64
 op_rshift
-(paren
 l_int|32
-op_minus
-id|PAGE_SHIFT
 )paren
 )paren
 suffix:semicolon
@@ -1832,7 +1849,10 @@ id|atomic_set
 op_amp
 id|undone_count
 comma
-id|smp_num_cpus
+id|num_online_cpus
+c_func
+(paren
+)paren
 op_minus
 l_int|1
 )paren
@@ -1889,7 +1909,10 @@ id|atomic_set
 op_amp
 id|undone_count
 comma
-id|smp_num_cpus
+id|num_online_cpus
+c_func
+(paren
+)paren
 op_minus
 l_int|1
 )paren
@@ -2259,7 +2282,7 @@ l_int|0x100
 id|printk
 (paren
 id|KERN_WARNING
-l_string|&quot;mtrr: cannot set region below 1 MiB (0x%lx000,0x%x000)&bslash;n&quot;
+l_string|&quot;mtrr: cannot set region below 1 MiB (0x%Lx000,0x%x000)&bslash;n&quot;
 comma
 id|base
 comma
@@ -2271,6 +2294,9 @@ op_minus
 id|EINVAL
 suffix:semicolon
 )brace
+macro_line|#if defined(__x86_64__) &amp;&amp; defined(CONFIG_AGP) 
+multiline_comment|/*&t;{&n;&t;agp_kern_info info; &n;&t;if (type != MTRR_TYPE_UNCACHABLE &amp;&amp; agp_copy_info(&amp;info) &gt;= 0 &amp;&amp; &n;&t;    base&lt;&lt;PAGE_SHIFT &gt;= info.aper_base &amp;&amp; &n;            (base&lt;&lt;PAGE_SHIFT)+(size&lt;&lt;PAGE_SHIFT) &gt;= &n;&t;&t;&t;info.aper_base+info.aper_size*1024*1024)&n;&t;&t;printk(KERN_INFO &quot;%s[%d] setting conflicting mtrr into agp aperture&bslash;n&quot;,current-&gt;comm,current-&gt;pid); &n;&t;}*/
+macro_line|#endif
 multiline_comment|/*  Check upper bits of base and last are equal and lower bits are 0&n;&t;    for base and 1 for last  */
 id|last
 op_assign
@@ -2324,7 +2350,7 @@ id|last
 id|printk
 (paren
 id|KERN_WARNING
-l_string|&quot;mtrr: base(0x%lx000) is not aligned on a size(0x%x000) boundary&bslash;n&quot;
+l_string|&quot;mtrr: base(0x%Lx000) is not aligned on a size(0x%x000) boundary&bslash;n&quot;
 comma
 id|base
 comma
@@ -2389,16 +2415,48 @@ c_cond
 (paren
 id|base
 op_amp
+(paren
 id|size_or_mask
-op_logical_or
-id|size
-op_amp
-id|size_or_mask
+op_rshift
+id|PAGE_SHIFT
+)paren
 )paren
 (brace
 id|printk
 (paren
-l_string|&quot;mtrr: base or size exceeds the MTRR width&bslash;n&quot;
+id|KERN_WARNING
+l_string|&quot;mtrr: base(%lx) exceeds the MTRR width(%lx)&bslash;n&quot;
+comma
+id|base
+comma
+(paren
+id|size_or_mask
+op_rshift
+id|PAGE_SHIFT
+)paren
+)paren
+suffix:semicolon
+r_return
+op_minus
+id|EINVAL
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+id|size
+op_amp
+(paren
+id|size_or_mask
+op_rshift
+id|PAGE_SHIFT
+)paren
+)paren
+(brace
+id|printk
+(paren
+id|KERN_WARNING
+l_string|&quot;mtrr: size exceeds the MTRR width&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -2517,8 +2575,8 @@ suffix:semicolon
 id|printk
 (paren
 id|KERN_WARNING
-l_string|&quot;mtrr: 0x%lx000,0x%x000 overlaps existing&quot;
-l_string|&quot; 0x%lx000,0x%x000&bslash;n&quot;
+l_string|&quot;mtrr: 0x%Lx000,0x%x000 overlaps existing&quot;
+l_string|&quot; 0x%Lx000,0x%x000&bslash;n&quot;
 comma
 id|base
 comma
@@ -2560,7 +2618,7 @@ id|mtrr_lock
 suffix:semicolon
 id|printk
 (paren
-l_string|&quot;mtrr: type mismatch for %lx000,%x000 old: %s new: %s&bslash;n&quot;
+l_string|&quot;mtrr: type mismatch for %Lx000,%x000 old: %s new: %s&bslash;n&quot;
 comma
 id|base
 comma
@@ -2720,7 +2778,7 @@ l_string|&quot;mtrr: size and base must be multiples of 4 kiB&bslash;n&quot;
 suffix:semicolon
 id|printk
 (paren
-l_string|&quot;mtrr: size: 0x%x  base: 0x%lx&bslash;n&quot;
+l_string|&quot;mtrr: size: 0x%x  base: 0x%Lx&bslash;n&quot;
 comma
 id|size
 comma
@@ -2864,7 +2922,7 @@ id|mtrr_lock
 suffix:semicolon
 id|printk
 (paren
-l_string|&quot;mtrr: no MTRR for %lx000,%x000 found&bslash;n&quot;
+l_string|&quot;mtrr: no MTRR for %Lx000,%x000 found&bslash;n&quot;
 comma
 id|base
 comma
@@ -3054,7 +3112,7 @@ l_string|&quot;mtrr: size and base must be multiples of 4 kiB&bslash;n&quot;
 suffix:semicolon
 id|printk
 (paren
-l_string|&quot;mtrr: size: 0x%x  base: 0x%lx&bslash;n&quot;
+l_string|&quot;mtrr: size: 0x%x  base: 0x%Lx&bslash;n&quot;
 comma
 id|size
 comma
@@ -3219,7 +3277,7 @@ l_string|&quot;mtrr: size and base must be multiples of 4 kiB&bslash;n&quot;
 suffix:semicolon
 id|printk
 (paren
-l_string|&quot;mtrr: size: 0x%x  base: 0x%lx&bslash;n&quot;
+l_string|&quot;mtrr: size: 0x%x  base: 0x%Lx&bslash;n&quot;
 comma
 id|size
 comma
@@ -3338,7 +3396,7 @@ l_string|&quot;mtrr: size and base must be multiples of 4 kiB&bslash;n&quot;
 suffix:semicolon
 id|printk
 (paren
-l_string|&quot;mtrr: size: 0x%x  base: 0x%lx&bslash;n&quot;
+l_string|&quot;mtrr: size: 0x%x  base: 0x%Lx&bslash;n&quot;
 comma
 id|size
 comma
@@ -3797,7 +3855,7 @@ l_string|&quot;mtrr: size and base must be multiples of 4 kiB&bslash;n&quot;
 suffix:semicolon
 id|printk
 (paren
-l_string|&quot;mtrr: size: 0x%x  base: 0x%lx&bslash;n&quot;
+l_string|&quot;mtrr: size: 0x%x  base: 0x%Lx&bslash;n&quot;
 comma
 id|size
 comma
@@ -4295,6 +4353,10 @@ id|get_mtrr
 (paren
 id|gentry.regnum
 comma
+(paren
+id|u64
+op_star
+)paren
 op_amp
 id|gentry.base
 comma
@@ -4665,6 +4727,10 @@ id|get_mtrr
 (paren
 id|gentry.regnum
 comma
+(paren
+id|u64
+op_star
+)paren
 op_amp
 id|gentry.base
 comma
@@ -4746,6 +4812,10 @@ l_int|NULL
 r_return
 l_int|0
 suffix:semicolon
+id|lock_kernel
+(paren
+)paren
+suffix:semicolon
 id|max
 op_assign
 id|get_num_var_ranges
@@ -4807,6 +4877,10 @@ id|i
 suffix:semicolon
 )brace
 )brace
+id|unlock_kernel
+(paren
+)paren
+suffix:semicolon
 id|kfree
 (paren
 id|fcount
@@ -4827,24 +4901,29 @@ id|file_operations
 id|mtrr_fops
 op_assign
 (brace
+dot
 id|owner
-suffix:colon
+op_assign
 id|THIS_MODULE
 comma
+dot
 id|read
-suffix:colon
+op_assign
 id|mtrr_read
 comma
+dot
 id|write
-suffix:colon
+op_assign
 id|mtrr_write
 comma
+dot
 id|ioctl
-suffix:colon
+op_assign
 id|mtrr_ioctl
 comma
+dot
 id|release
-suffix:colon
+op_assign
 id|mtrr_close
 comma
 )brace
@@ -4986,12 +5065,15 @@ id|ascii_buffer
 op_plus
 id|ascii_buf_bytes
 comma
-l_string|&quot;reg%02i: base=0x%05lx000 (%4liMB), size=%4i%cB: %s, count=%d&bslash;n&quot;
+l_string|&quot;reg%02i: base=0x%05Lx000 (%4iMB), size=%4i%cB: %s, count=%d&bslash;n&quot;
 comma
 id|i
 comma
 id|base
 comma
+(paren
+id|u32
+)paren
 id|base
 op_rshift
 (paren
@@ -5111,24 +5193,23 @@ op_assign
 op_complement
 (paren
 (paren
-l_int|1
+l_int|1L
 op_lshift
-(paren
 id|phys_addr
-op_minus
-id|PAGE_SHIFT
-)paren
 )paren
 op_minus
 l_int|1
 )paren
 suffix:semicolon
+multiline_comment|/*&n;&t;&t;&t; * top bits MBZ as its beyond the addressable range.&n;&t;&t;&t; * bottom bits MBZ as we don&squot;t care about lower 12 bits of addr.&n;&t;&t;&t; */
 id|size_and_mask
 op_assign
+(paren
 op_complement
 id|size_or_mask
+)paren
 op_amp
-l_int|0xfffffffffff00000
+l_int|0x000ffffffffff000L
 suffix:semicolon
 )brace
 id|printk

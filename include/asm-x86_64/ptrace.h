@@ -198,16 +198,6 @@ DECL|macro|user_mode
 mdefine_line|#define user_mode(regs) (!!((regs)-&gt;cs &amp; 3))
 DECL|macro|instruction_pointer
 mdefine_line|#define instruction_pointer(regs) ((regs)-&gt;rip)
-r_extern
-r_void
-id|show_regs
-c_func
-(paren
-r_struct
-id|pt_regs
-op_star
-)paren
-suffix:semicolon
 r_void
 id|signal_fault
 c_func

@@ -58,7 +58,7 @@ suffix:semicolon
 id|MODULE_AUTHOR
 c_func
 (paren
-l_string|&quot;Scott J. Bertin &lt;sbertin@mindspring.com&gt; &amp; Peter Pregler &lt;Peter_Pregler@email.com&gt; &amp; Johannes Erdfelt &lt;jerdfelt@valinux.com&gt;&quot;
+l_string|&quot;Scott J. Bertin &lt;sbertin@securenym.net&gt; &amp; Peter Pregler &lt;Peter_Pregler@email.com&gt; &amp; Johannes Erdfelt &lt;johannes@erdfeld.com&gt;&quot;
 )paren
 suffix:semicolon
 id|MODULE_DESCRIPTION
@@ -268,6 +268,8 @@ DECL|macro|COMMAND_SETFLICKERCTRL
 mdefine_line|#define COMMAND_SETFLICKERCTRL&t;&t;0x2000
 DECL|macro|COMMAND_SETVLOFFSET
 mdefine_line|#define COMMAND_SETVLOFFSET&t;&t;0x4000
+DECL|macro|COMMAND_SETLIGHTS
+mdefine_line|#define COMMAND_SETLIGHTS&t;&t;0x8000
 multiline_comment|/* Developer&squot;s Guide Table 5 p 3-34&n; * indexed by [mains][sensorFps.baserate][sensorFps.divisor]*/
 DECL|variable|flicker_jumps
 r_static
@@ -642,7 +644,7 @@ suffix:semicolon
 r_char
 id|tmpstr
 (braket
-l_int|20
+l_int|29
 )braket
 suffix:semicolon
 multiline_comment|/* IMPORTANT: This output MUST be kept under PAGE_SIZE&n;&t; *            or we need to get more sophisticated. */
@@ -818,6 +820,38 @@ comma
 id|cam-&gt;params.status.errorCode
 )paren
 suffix:semicolon
+multiline_comment|/* QX3 specific entries */
+r_if
+c_cond
+(paren
+id|cam-&gt;params.qx3.qx3_detected
+)paren
+(brace
+id|out
+op_add_assign
+id|sprintf
+c_func
+(paren
+id|out
+comma
+l_string|&quot;button:                   %4d&bslash;n&quot;
+comma
+id|cam-&gt;params.qx3.button
+)paren
+suffix:semicolon
+id|out
+op_add_assign
+id|sprintf
+c_func
+(paren
+id|out
+comma
+l_string|&quot;cradled:                  %4d&bslash;n&quot;
+comma
+id|cam-&gt;params.qx3.cradled
+)paren
+suffix:semicolon
+)brace
 id|out
 op_add_assign
 id|sprintf
@@ -1235,9 +1269,11 @@ c_func
 (paren
 id|tmpstr
 comma
-l_string|&quot;%8d  %8d&quot;
+l_string|&quot;%8d  %8d  %8d&quot;
 comma
 l_int|1
+comma
+l_int|2
 comma
 l_int|2
 )paren
@@ -1248,7 +1284,13 @@ c_func
 (paren
 id|tmpstr
 comma
-l_string|&quot;1,2,4,8&quot;
+l_string|&quot;%8d  %8d  %8d&quot;
+comma
+l_int|1
+comma
+l_int|8
+comma
+l_int|2
 )paren
 suffix:semicolon
 r_if
@@ -1265,12 +1307,10 @@ c_func
 (paren
 id|out
 comma
-l_string|&quot;max_gain:                unknown  %18s&quot;
-l_string|&quot;  %8d&bslash;n&quot;
+l_string|&quot;max_gain:                unknown  %28s&quot;
+l_string|&quot;  powers of 2&bslash;n&quot;
 comma
 id|tmpstr
-comma
-l_int|2
 )paren
 suffix:semicolon
 r_else
@@ -1281,7 +1321,8 @@ c_func
 (paren
 id|out
 comma
-l_string|&quot;max_gain:               %8d  %18s  %8d&bslash;n&quot;
+l_string|&quot;max_gain:               %8d  %28s&quot;
+l_string|&quot;  1,2,4 or 8 &bslash;n&quot;
 comma
 l_int|1
 op_lshift
@@ -1292,8 +1333,6 @@ l_int|1
 )paren
 comma
 id|tmpstr
-comma
-l_int|2
 )paren
 suffix:semicolon
 r_switch
@@ -2134,6 +2173,60 @@ comma
 l_int|2
 )paren
 suffix:semicolon
+multiline_comment|/* QX3 specific entries */
+r_if
+c_cond
+(paren
+id|cam-&gt;params.qx3.qx3_detected
+)paren
+(brace
+id|out
+op_add_assign
+id|sprintf
+c_func
+(paren
+id|out
+comma
+l_string|&quot;toplight:               %8s  %8s  %8s  %8s&bslash;n&quot;
+comma
+id|cam-&gt;params.qx3.toplight
+ques
+c_cond
+l_string|&quot;on&quot;
+suffix:colon
+l_string|&quot;off&quot;
+comma
+l_string|&quot;off&quot;
+comma
+l_string|&quot;on&quot;
+comma
+l_string|&quot;off&quot;
+)paren
+suffix:semicolon
+id|out
+op_add_assign
+id|sprintf
+c_func
+(paren
+id|out
+comma
+l_string|&quot;bottomlight:            %8s  %8s  %8s  %8s&bslash;n&quot;
+comma
+id|cam-&gt;params.qx3.bottomlight
+ques
+c_cond
+l_string|&quot;on&quot;
+suffix:colon
+l_string|&quot;off&quot;
+comma
+l_string|&quot;off&quot;
+comma
+l_string|&quot;on&quot;
+comma
+l_string|&quot;off&quot;
+)paren
+suffix:semicolon
+)brace
 id|len
 op_assign
 id|out
@@ -2198,7 +2291,7 @@ comma
 r_const
 r_char
 op_star
-id|buffer
+id|buf
 comma
 r_int
 r_int
@@ -2209,11 +2302,6 @@ op_star
 id|data
 )paren
 (brace
-r_return
-op_minus
-id|EINVAL
-suffix:semicolon
-macro_line|#if 0
 r_struct
 id|cam_data
 op_star
@@ -2224,6 +2312,13 @@ suffix:semicolon
 r_struct
 id|cam_params
 id|new_params
+suffix:semicolon
+r_char
+op_star
+id|page
+comma
+op_star
+id|buffer
 suffix:semicolon
 r_int
 id|retval
@@ -2238,6 +2333,8 @@ suffix:semicolon
 r_int
 r_int
 id|val
+op_assign
+l_int|0
 suffix:semicolon
 id|u32
 id|command_flags
@@ -2246,6 +2343,138 @@ l_int|0
 suffix:semicolon
 id|u8
 id|new_mains
+suffix:semicolon
+multiline_comment|/*&n;&t; * This code to copy from buf to page is shamelessly copied&n;&t; * from the comx driver&n;&t; */
+r_if
+c_cond
+(paren
+id|count
+OG
+id|PAGE_SIZE
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;count is %lu &gt; %d!!!&bslash;n&quot;
+comma
+id|count
+comma
+(paren
+r_int
+)paren
+id|PAGE_SIZE
+)paren
+suffix:semicolon
+r_return
+op_minus
+id|ENOSPC
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+op_logical_neg
+(paren
+id|page
+op_assign
+(paren
+r_char
+op_star
+)paren
+id|__get_free_page
+c_func
+(paren
+id|GFP_KERNEL
+)paren
+)paren
+)paren
+r_return
+op_minus
+id|ENOMEM
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|copy_from_user
+c_func
+(paren
+id|page
+comma
+id|buf
+comma
+id|count
+)paren
+)paren
+(brace
+id|retval
+op_assign
+op_minus
+id|EFAULT
+suffix:semicolon
+r_goto
+id|out
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+id|page
+(braket
+id|count
+op_minus
+l_int|1
+)braket
+op_eq
+l_char|&squot;&bslash;n&squot;
+)paren
+id|page
+(braket
+id|count
+op_minus
+l_int|1
+)braket
+op_assign
+l_char|&squot;&bslash;0&squot;
+suffix:semicolon
+r_else
+r_if
+c_cond
+(paren
+id|count
+OL
+id|PAGE_SIZE
+)paren
+id|page
+(braket
+id|count
+)braket
+op_assign
+l_char|&squot;&bslash;0&squot;
+suffix:semicolon
+r_else
+r_if
+c_cond
+(paren
+id|page
+(braket
+id|count
+)braket
+)paren
+(brace
+id|retval
+op_assign
+op_minus
+id|EINVAL
+suffix:semicolon
+r_goto
+id|out
+suffix:semicolon
+)brace
+id|buffer
+op_assign
+id|page
 suffix:semicolon
 r_if
 c_cond
@@ -2302,8 +2531,11 @@ id|new_mains
 op_assign
 id|cam-&gt;mainsFreq
 suffix:semicolon
+DECL|macro|MATCH
 mdefine_line|#define MATCH(x) &bslash;&n;&t;({ &bslash;&n;&t;&t;int _len = strlen(x), _ret, _colon_found; &bslash;&n;&t;&t;_ret = (_len &lt;= count &amp;&amp; strncmp(buffer, x, _len) == 0); &bslash;&n;&t;&t;if (_ret) { &bslash;&n;&t;&t;&t;buffer += _len; &bslash;&n;&t;&t;&t;count -= _len; &bslash;&n;&t;&t;&t;if (find_colon) { &bslash;&n;&t;&t;&t;&t;_colon_found = 0; &bslash;&n;&t;&t;&t;&t;while (count &amp;&amp; (*buffer == &squot; &squot; || *buffer == &squot;&bslash;t&squot; || &bslash;&n;&t;&t;&t;&t;       (!_colon_found &amp;&amp; *buffer == &squot;:&squot;))) { &bslash;&n;&t;&t;&t;&t;&t;if (*buffer == &squot;:&squot;)  &bslash;&n;&t;&t;&t;&t;&t;&t;_colon_found = 1; &bslash;&n;&t;&t;&t;&t;&t;--count; &bslash;&n;&t;&t;&t;&t;&t;++buffer; &bslash;&n;&t;&t;&t;&t;} &bslash;&n;&t;&t;&t;&t;if (!count || !_colon_found) &bslash;&n;&t;&t;&t;&t;&t;retval = -EINVAL; &bslash;&n;&t;&t;&t;&t;find_colon = 0; &bslash;&n;&t;&t;&t;} &bslash;&n;&t;&t;} &bslash;&n;&t;&t;_ret; &bslash;&n;&t;})
+DECL|macro|FIRMWARE_VERSION
 mdefine_line|#define FIRMWARE_VERSION(x,y) (new_params.version.firmwareVersion == (x) &amp;&amp; &bslash;&n;                               new_params.version.firmwareRevision == (y))
+DECL|macro|VALUE
 mdefine_line|#define VALUE &bslash;&n;&t;({ &bslash;&n;&t;&t;char *_p; &bslash;&n;&t;&t;unsigned long int _ret; &bslash;&n;&t;&t;_ret = simple_strtoul(buffer, &amp;_p, 0); &bslash;&n;&t;&t;if (_p == buffer) &bslash;&n;&t;&t;&t;retval = -EINVAL; &bslash;&n;&t;&t;else { &bslash;&n;&t;&t;&t;count -= _p - buffer; &bslash;&n;&t;&t;&t;buffer = _p; &bslash;&n;&t;&t;} &bslash;&n;&t;&t;_ret; &bslash;&n;&t;})
 id|retval
 op_assign
@@ -5190,6 +5422,116 @@ id|COMMAND_SETCOMPRESSIONPARAMS
 suffix:semicolon
 )brace
 r_else
+r_if
+c_cond
+(paren
+id|MATCH
+c_func
+(paren
+l_string|&quot;toplight&quot;
+)paren
+)paren
+(brace
+r_if
+c_cond
+(paren
+op_logical_neg
+id|retval
+op_logical_and
+id|MATCH
+c_func
+(paren
+l_string|&quot;on&quot;
+)paren
+)paren
+id|new_params.qx3.toplight
+op_assign
+l_int|1
+suffix:semicolon
+r_else
+r_if
+c_cond
+(paren
+op_logical_neg
+id|retval
+op_logical_and
+id|MATCH
+c_func
+(paren
+l_string|&quot;off&quot;
+)paren
+)paren
+id|new_params.qx3.toplight
+op_assign
+l_int|0
+suffix:semicolon
+r_else
+id|retval
+op_assign
+op_minus
+id|EINVAL
+suffix:semicolon
+id|command_flags
+op_or_assign
+id|COMMAND_SETLIGHTS
+suffix:semicolon
+)brace
+r_else
+r_if
+c_cond
+(paren
+id|MATCH
+c_func
+(paren
+l_string|&quot;bottomlight&quot;
+)paren
+)paren
+(brace
+r_if
+c_cond
+(paren
+op_logical_neg
+id|retval
+op_logical_and
+id|MATCH
+c_func
+(paren
+l_string|&quot;on&quot;
+)paren
+)paren
+id|new_params.qx3.bottomlight
+op_assign
+l_int|1
+suffix:semicolon
+r_else
+r_if
+c_cond
+(paren
+op_logical_neg
+id|retval
+op_logical_and
+id|MATCH
+c_func
+(paren
+l_string|&quot;off&quot;
+)paren
+)paren
+id|new_params.qx3.bottomlight
+op_assign
+l_int|0
+suffix:semicolon
+r_else
+id|retval
+op_assign
+op_minus
+id|EINVAL
+suffix:semicolon
+id|command_flags
+op_or_assign
+id|COMMAND_SETLIGHTS
+suffix:semicolon
+)brace
+r_else
 (brace
 id|DBG
 c_func
@@ -5246,6 +5588,24 @@ c_cond
 (paren
 op_star
 id|buffer
+op_eq
+l_char|&squot;&bslash;0&squot;
+op_logical_and
+id|count
+op_ne
+l_int|1
+)paren
+id|retval
+op_assign
+op_minus
+id|EINVAL
+suffix:semicolon
+r_else
+r_if
+c_cond
+(paren
+op_star
+id|buffer
 op_ne
 l_char|&squot;&bslash;n&squot;
 op_logical_and
@@ -5253,6 +5613,11 @@ op_star
 id|buffer
 op_ne
 l_char|&squot;;&squot;
+op_logical_and
+op_star
+id|buffer
+op_ne
+l_char|&squot;&bslash;0&squot;
 )paren
 id|retval
 op_assign
@@ -5271,10 +5636,15 @@ suffix:semicolon
 )brace
 )brace
 )brace
+DECL|macro|MATCH
 macro_line|#undef MATCH&t;
+DECL|macro|FIRMWARE_VERSION
 macro_line|#undef FIRMWARE_VERSION
+DECL|macro|VALUE
 macro_line|#undef VALUE
+DECL|macro|FIND_VALUE
 macro_line|#undef FIND_VALUE
+DECL|macro|FIND_END
 macro_line|#undef FIND_END
 r_if
 c_cond
@@ -5362,10 +5732,21 @@ op_amp
 id|cam-&gt;param_lock
 )paren
 suffix:semicolon
+id|out
+suffix:colon
+id|free_page
+c_func
+(paren
+(paren
+r_int
+r_int
+)paren
+id|page
+)paren
+suffix:semicolon
 r_return
 id|retval
 suffix:semicolon
-macro_line|#endif
 )brace
 DECL|function|create_proc_cpia_cam
 r_static
@@ -5447,9 +5828,12 @@ id|ent-&gt;write_proc
 op_assign
 id|cpia_write_proc
 suffix:semicolon
+multiline_comment|/* &n;&t;   size of the proc entry is 3672 bytes for the standard webcam;&n; &t;   the extra features of the QX3 microscope add 188 bytes.&n;&t;   (we have not yet probed the camera to see which type it is).&n;&t;*/
 id|ent-&gt;size
 op_assign
-l_int|3626
+l_int|3672
+op_plus
+l_int|188
 suffix:semicolon
 id|cam-&gt;proc_entry
 op_assign
@@ -6595,6 +6979,18 @@ l_int|8
 suffix:semicolon
 r_break
 suffix:semicolon
+r_case
+id|CPIA_COMMAND_ReadMCPorts
+suffix:colon
+r_case
+id|CPIA_COMMAND_ReadVCRegs
+suffix:colon
+id|datasize
+op_assign
+l_int|4
+suffix:semicolon
+r_break
+suffix:semicolon
 r_default
 suffix:colon
 id|datasize
@@ -7109,6 +7505,91 @@ c_func
 (paren
 op_amp
 id|cam-&gt;param_lock
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+id|CPIA_COMMAND_ReadMCPorts
+suffix:colon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|cam-&gt;params.qx3.qx3_detected
+)paren
+r_break
+suffix:semicolon
+multiline_comment|/* test button press */
+id|cam-&gt;params.qx3.button
+op_assign
+(paren
+(paren
+id|data
+(braket
+l_int|1
+)braket
+op_amp
+l_int|0x02
+)paren
+op_eq
+l_int|0
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|cam-&gt;params.qx3.button
+)paren
+(brace
+multiline_comment|/* button pressed - unlock the latch */
+id|do_command
+c_func
+(paren
+id|cam
+comma
+id|CPIA_COMMAND_WriteMCPort
+comma
+l_int|3
+comma
+l_int|0xDF
+comma
+l_int|0xDF
+comma
+l_int|0
+)paren
+suffix:semicolon
+id|do_command
+c_func
+(paren
+id|cam
+comma
+id|CPIA_COMMAND_WriteMCPort
+comma
+l_int|3
+comma
+l_int|0xFF
+comma
+l_int|0xFF
+comma
+l_int|0
+)paren
+suffix:semicolon
+)brace
+multiline_comment|/* test whether microscope is cradled */
+id|cam-&gt;params.qx3.cradled
+op_assign
+(paren
+(paren
+id|data
+(braket
+l_int|2
+)braket
+op_amp
+l_int|0x40
+)paren
+op_eq
+l_int|0
 )paren
 suffix:semicolon
 r_break
@@ -8254,6 +8735,9 @@ id|fmt
 r_case
 id|VIDEO_PALETTE_GREY
 suffix:colon
+r_return
+id|count
+suffix:semicolon
 r_case
 id|VIDEO_PALETTE_RGB555
 suffix:colon
@@ -9592,6 +10076,77 @@ c_func
 id|cam
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|cam-&gt;cmd_queue
+op_amp
+id|COMMAND_SETLIGHTS
+op_logical_and
+id|cam-&gt;params.qx3.qx3_detected
+)paren
+(brace
+r_int
+id|p1
+op_assign
+(paren
+id|cam-&gt;params.qx3.bottomlight
+op_eq
+l_int|0
+)paren
+op_lshift
+l_int|1
+suffix:semicolon
+r_int
+id|p2
+op_assign
+(paren
+id|cam-&gt;params.qx3.toplight
+op_eq
+l_int|0
+)paren
+op_lshift
+l_int|3
+suffix:semicolon
+id|do_command
+c_func
+(paren
+id|cam
+comma
+id|CPIA_COMMAND_WriteVCReg
+comma
+l_int|0x90
+comma
+l_int|0x8F
+comma
+l_int|0x50
+comma
+l_int|0
+)paren
+suffix:semicolon
+id|do_command
+c_func
+(paren
+id|cam
+comma
+id|CPIA_COMMAND_WriteMCPort
+comma
+l_int|2
+comma
+l_int|0
+comma
+(paren
+id|p1
+op_or
+id|p2
+op_or
+l_int|0xE0
+)paren
+comma
+l_int|0
+)paren
+suffix:semicolon
+)brace
 id|up
 c_func
 (paren
@@ -9907,7 +10462,7 @@ c_func
 id|cam
 )paren
 suffix:semicolon
-multiline_comment|/* Update our knowledge of the camera state - FIXME: necessary? */
+multiline_comment|/* Update our knowledge of the camera state */
 id|do_command
 c_func
 (paren
@@ -9930,6 +10485,22 @@ c_func
 id|cam
 comma
 id|CPIA_COMMAND_GetExposure
+comma
+l_int|0
+comma
+l_int|0
+comma
+l_int|0
+comma
+l_int|0
+)paren
+suffix:semicolon
+id|do_command
+c_func
+(paren
+id|cam
+comma
+id|CPIA_COMMAND_ReadMCPorts
 comma
 l_int|0
 comma
@@ -10818,6 +11389,19 @@ r_return
 op_minus
 id|ENODEV
 suffix:semicolon
+multiline_comment|/* set QX3 detected flag */
+id|cam-&gt;params.qx3.qx3_detected
+op_assign
+(paren
+id|cam-&gt;params.pnpID.vendor
+op_eq
+l_int|0x0813
+op_logical_and
+id|cam-&gt;params.pnpID.product
+op_eq
+l_int|0x0001
+)paren
+suffix:semicolon
 multiline_comment|/* The fatal error checking should be done after&n;&t; * the camera powers up (developer&squot;s guide p 3-38) */
 multiline_comment|/* Set streamState before transition to high power to avoid bug&n;&t; * in firmware 1-02 */
 id|do_command
@@ -11334,7 +11918,7 @@ c_func
 id|cam
 )paren
 suffix:semicolon
-multiline_comment|/* Update the camera ststus */
+multiline_comment|/* Update the camera status */
 id|do_command
 c_func
 (paren
@@ -11485,7 +12069,7 @@ id|cam
 op_assign
 id|dev-&gt;priv
 suffix:semicolon
-multiline_comment|/* make this _really_ smp and multithredi-safe */
+multiline_comment|/* make this _really_ smp and multithread-safe */
 r_if
 c_cond
 (paren
@@ -12278,7 +12862,6 @@ op_or_assign
 id|COMMAND_SETFORMAT
 suffix:semicolon
 )brace
-singleline_comment|// FIXME needed??? memcpy(&amp;cam-&gt;vw, &amp;vw, sizeof(vw));
 id|up
 c_func
 (paren
@@ -12408,7 +12991,6 @@ suffix:semicolon
 r_int
 id|video_size
 suffix:semicolon
-macro_line|#if 1
 id|DBG
 c_func
 (paren
@@ -12423,7 +13005,6 @@ comma
 id|vm-&gt;height
 )paren
 suffix:semicolon
-macro_line|#endif
 r_if
 c_cond
 (paren
@@ -12458,6 +13039,12 @@ id|vm-&gt;format
 r_case
 id|VIDEO_PALETTE_GREY
 suffix:colon
+id|cam-&gt;vp.depth
+op_assign
+l_int|8
+suffix:semicolon
+r_break
+suffix:semicolon
 r_case
 id|VIDEO_PALETTE_RGB555
 suffix:colon
@@ -12570,20 +13157,6 @@ id|cam
 )paren
 suffix:semicolon
 )brace
-macro_line|#if 0
-id|DBG
-c_func
-(paren
-l_string|&quot;VIDIOCMCAPTURE: %d / %d/%d&bslash;n&quot;
-comma
-id|cam-&gt;video_size
-comma
-id|cam-&gt;vw.width
-comma
-id|cam-&gt;vw.height
-)paren
-suffix:semicolon
-macro_line|#endif
 multiline_comment|/* according to v4l-spec we must start streaming here */
 id|cam-&gt;mmap_kludge
 op_assign
@@ -13127,7 +13700,6 @@ id|hardware
 suffix:colon
 id|VID_HARDWARE_CPIA
 comma
-multiline_comment|/* FIXME */
 id|fops
 suffix:colon
 op_amp
@@ -13323,14 +13895,14 @@ l_int|1
 suffix:semicolon
 id|cam-&gt;params.yuvThreshold.yThreshold
 op_assign
-l_int|15
+l_int|6
 suffix:semicolon
-multiline_comment|/* FIXME? */
+multiline_comment|/* From windows driver */
 id|cam-&gt;params.yuvThreshold.uvThreshold
 op_assign
-l_int|15
+l_int|6
 suffix:semicolon
-multiline_comment|/* FIXME? */
+multiline_comment|/* From windows driver */
 id|cam-&gt;params.format.subSample
 op_assign
 id|SUBSAMPLE_422
@@ -13349,14 +13921,34 @@ id|CPIA_COMPRESSION_TARGET_QUALITY
 suffix:semicolon
 id|cam-&gt;params.compressionTarget.targetFR
 op_assign
-l_int|7
+l_int|15
 suffix:semicolon
-multiline_comment|/* FIXME? */
+multiline_comment|/* From windows driver */
 id|cam-&gt;params.compressionTarget.targetQ
 op_assign
-l_int|10
+l_int|5
 suffix:semicolon
-multiline_comment|/* FIXME? */
+multiline_comment|/* From windows driver */
+id|cam-&gt;params.qx3.qx3_detected
+op_assign
+l_int|0
+suffix:semicolon
+id|cam-&gt;params.qx3.toplight
+op_assign
+l_int|0
+suffix:semicolon
+id|cam-&gt;params.qx3.bottomlight
+op_assign
+l_int|0
+suffix:semicolon
+id|cam-&gt;params.qx3.button
+op_assign
+l_int|0
+suffix:semicolon
+id|cam-&gt;params.qx3.cradled
+op_assign
+l_int|0
+suffix:semicolon
 id|cam-&gt;video_size
 op_assign
 id|VIDEOSIZE_CIF
@@ -13388,14 +13980,14 @@ suffix:semicolon
 multiline_comment|/* not used -&gt; grayscale only */
 id|cam-&gt;vp.depth
 op_assign
-l_int|0
+l_int|24
 suffix:semicolon
-multiline_comment|/* FIXME: to be set by user? */
+multiline_comment|/* to be set by user */
 id|cam-&gt;vp.palette
 op_assign
 id|VIDEO_PALETTE_RGB24
 suffix:semicolon
-multiline_comment|/* FIXME: to be set by user? */
+multiline_comment|/* to be set by user */
 id|cam-&gt;vw.x
 op_assign
 l_int|0
@@ -13616,7 +14208,6 @@ id|cam_data
 op_star
 id|camera
 suffix:semicolon
-multiline_comment|/* Need a lock when adding/removing cameras.  This doesn&squot;t happen&n;&t; * often and doesn&squot;t take very long, so grabbing the kernel lock&n;&t; * should be OK. */
 r_if
 c_cond
 (paren
@@ -13638,16 +14229,9 @@ id|GFP_KERNEL
 op_eq
 l_int|NULL
 )paren
-(brace
-id|unlock_kernel
-c_func
-(paren
-)paren
-suffix:semicolon
 r_return
 l_int|NULL
 suffix:semicolon
-)brace
 id|init_camera_struct
 c_func
 (paren
@@ -13683,11 +14267,6 @@ id|kfree
 c_func
 (paren
 id|camera
-)paren
-suffix:semicolon
-id|unlock_kernel
-c_func
-(paren
 )paren
 suffix:semicolon
 id|printk
@@ -13759,8 +14338,6 @@ c_func
 id|camera-&gt;lowlevel_data
 )paren
 suffix:semicolon
-multiline_comment|/* Eh? Feeling happy? - jerdfelt */
-multiline_comment|/*&n;&t;camera-&gt;ops-&gt;open(camera-&gt;lowlevel_data);&n;&t;camera-&gt;ops-&gt;close(camera-&gt;lowlevel_data);&n;*/
 id|printk
 c_func
 (paren

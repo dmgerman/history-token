@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *  linux/drivers/message/fusion/mptbase.h&n; *      High performance SCSI + LAN / Fibre Channel device drivers.&n; *      For use with PCI chip/adapter(s):&n; *          LSIFC9xx/LSI409xx Fibre Channel&n; *      running LSI Logic Fusion MPT (Message Passing Technology) firmware.&n; *&n; *  Credits:&n; *     (see mptbase.c)&n; *&n; *  Copyright (c) 1999-2002 LSI Logic Corporation&n; *  Originally By: Steven J. Ralston&n; *  (mailto:sjralston1@netscape.net)&n; *  (mailto:Pam.Delaney@lsil.com)&n; *&n; *  $Id: mptbase.h,v 1.133 2002/09/05 22:30:09 pdelaney Exp $&n; */
+multiline_comment|/*&n; *  linux/drivers/message/fusion/mptbase.h&n; *      High performance SCSI + LAN / Fibre Channel device drivers.&n; *      For use with PCI chip/adapter(s):&n; *          LSIFC9xx/LSI409xx Fibre Channel&n; *      running LSI Logic Fusion MPT (Message Passing Technology) firmware.&n; *&n; *  Credits:&n; *     (see mptbase.c)&n; *&n; *  Copyright (c) 1999-2002 LSI Logic Corporation&n; *  Originally By: Steven J. Ralston&n; *  (mailto:sjralston1@netscape.net)&n; *  (mailto:Pam.Delaney@lsil.com)&n; *&n; *  $Id: mptbase.h,v 1.134 2002/10/03 13:10:12 pdelaney Exp $&n; */
 multiline_comment|/*=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=*/
 multiline_comment|/*&n;    This program is free software; you can redistribute it and/or modify&n;    it under the terms of the GNU General Public License as published by&n;    the Free Software Foundation; version 2 of the License.&n;&n;    This program is distributed in the hope that it will be useful,&n;    but WITHOUT ANY WARRANTY; without even the implied warranty of&n;    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n;    GNU General Public License for more details.&n;&n;    NO WARRANTY&n;    THE PROGRAM IS PROVIDED ON AN &quot;AS IS&quot; BASIS, WITHOUT WARRANTIES OR&n;    CONDITIONS OF ANY KIND, EITHER EXPRESS OR IMPLIED INCLUDING, WITHOUT&n;    LIMITATION, ANY WARRANTIES OR CONDITIONS OF TITLE, NON-INFRINGEMENT,&n;    MERCHANTABILITY OR FITNESS FOR A PARTICULAR PURPOSE. Each Recipient is&n;    solely responsible for determining the appropriateness of using and&n;    distributing the Program and assumes all risks associated with its&n;    exercise of rights under this Agreement, including but not limited to&n;    the risks and costs of program errors, damage to or loss of data,&n;    programs or equipment, and unavailability or interruption of operations.&n;&n;    DISCLAIMER OF LIABILITY&n;    NEITHER RECIPIENT NOR ANY CONTRIBUTORS SHALL HAVE ANY LIABILITY FOR ANY&n;    DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL&n;    DAMAGES (INCLUDING WITHOUT LIMITATION LOST PROFITS), HOWEVER CAUSED AND&n;    ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR&n;    TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE&n;    USE OR DISTRIBUTION OF THE PROGRAM OR THE EXERCISE OF ANY RIGHTS GRANTED&n;    HEREUNDER, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGES&n;&n;    You should have received a copy of the GNU General Public License&n;    along with this program; if not, write to the Free Software&n;    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n;*/
 macro_line|#ifndef MPTBASE_H_INCLUDED
@@ -27,9 +27,9 @@ DECL|macro|COPYRIGHT
 mdefine_line|#define COPYRIGHT&t;&quot;Copyright (c) 1999-2002 &quot; MODULEAUTHOR
 macro_line|#endif
 DECL|macro|MPT_LINUX_VERSION_COMMON
-mdefine_line|#define MPT_LINUX_VERSION_COMMON&t;&quot;2.02.01.01&quot;
+mdefine_line|#define MPT_LINUX_VERSION_COMMON&t;&quot;2.02.01.07&quot;
 DECL|macro|MPT_LINUX_PACKAGE_NAME
-mdefine_line|#define MPT_LINUX_PACKAGE_NAME&t;&t;&quot;@(#)mptlinux-2.02.01.01&quot;
+mdefine_line|#define MPT_LINUX_PACKAGE_NAME&t;&t;&quot;@(#)mptlinux-2.02.01.07&quot;
 DECL|macro|WHAT_MAGIC_STRING
 mdefine_line|#define WHAT_MAGIC_STRING&t;&t;&quot;@&quot; &quot;(&quot; &quot;#&quot; &quot;)&quot;
 DECL|macro|show_mptmod_ver
@@ -37,7 +37,7 @@ mdefine_line|#define show_mptmod_ver(s,ver)  &bslash;&n;&t;printk(KERN_INFO &quo
 multiline_comment|/*=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=*/
 multiline_comment|/*&n; *  Fusion MPT(linux) driver configurable stuff...&n; */
 DECL|macro|MPT_MAX_ADAPTERS
-mdefine_line|#define MPT_MAX_ADAPTERS&t;&t;16
+mdefine_line|#define MPT_MAX_ADAPTERS&t;&t;18
 DECL|macro|MPT_MAX_PROTOCOL_DRIVERS
 mdefine_line|#define MPT_MAX_PROTOCOL_DRIVERS&t;16
 DECL|macro|MPT_MAX_BUS
@@ -784,6 +784,7 @@ id|ScsiCmndTracker
 id|DoneQ
 suffix:semicolon
 singleline_comment|//--- LUN split here?
+macro_line|#ifdef MPT_SAVE_AUTOSENSE
 DECL|member|sense
 id|u8
 id|sense
@@ -800,6 +801,7 @@ l_int|2
 )braket
 suffix:semicolon
 multiline_comment|/* alignment */
+macro_line|#endif
 DECL|member|luns
 id|u32
 id|luns
@@ -903,8 +905,10 @@ DECL|macro|MPT_TARGET_FLAGS_VALID_NEGO
 mdefine_line|#define MPT_TARGET_FLAGS_VALID_NEGO&t;0x01
 DECL|macro|MPT_TARGET_FLAGS_VALID_INQUIRY
 mdefine_line|#define MPT_TARGET_FLAGS_VALID_INQUIRY&t;0x02
+macro_line|#ifdef MPT_SAVE_AUTOSENSE
 DECL|macro|MPT_TARGET_FLAGS_VALID_SENSE
 mdefine_line|#define MPT_TARGET_FLAGS_VALID_SENSE&t;0x04
+macro_line|#endif
 DECL|macro|MPT_TARGET_FLAGS_Q_YES
 mdefine_line|#define MPT_TARGET_FLAGS_Q_YES&t;&t;0x08
 DECL|macro|MPT_TARGET_FLAGS_VALID_56
@@ -2036,6 +2040,16 @@ DECL|member|taskQcnt
 r_int
 id|taskQcnt
 suffix:semicolon
+DECL|member|num_chain
+r_int
+id|num_chain
+suffix:semicolon
+multiline_comment|/* Number of chain buffers */
+DECL|member|max_sge
+r_int
+id|max_sge
+suffix:semicolon
+multiline_comment|/* Max No of SGE*/
 DECL|member|numTMrequests
 id|u8
 id|numTMrequests

@@ -2979,7 +2979,7 @@ suffix:semicolon
 )brace
 )brace
 )brace
-multiline_comment|/**&n; *&t;NCR5380_queue_command &t;&t;-&t;queue a command&n; *&t;@cmd: SCSI command&n; *&t;@done: completion handler&n; *&n; *      cmd is added to the per instance issue_queue, with minor &n; *      twiddling done to the host specific fields of cmd.  If the &n; *      main coroutine is not running, it is restarted.&n; *&n; *&t;Locks: io_request lock held by caller. Called functions drop and&n; *&t;retake this lock. Called functions take dma lock.&n; */
+multiline_comment|/**&n; *&t;NCR5380_queue_command &t;&t;-&t;queue a command&n; *&t;@cmd: SCSI command&n; *&t;@done: completion handler&n; *&n; *      cmd is added to the per instance issue_queue, with minor &n; *      twiddling done to the host specific fields of cmd.  If the &n; *      main coroutine is not running, it is restarted.&n; *&n; *&t;Locks: host lock taken by caller. Called functions drop and&n; *&t;retake this lock. Called functions take dma lock.&n; */
 multiline_comment|/* Only make static if a wrapper function is used */
 macro_line|#ifndef NCR5380_queue_command
 r_static
@@ -3027,6 +3027,10 @@ id|Scsi_Cmnd
 op_star
 id|tmp
 suffix:semicolon
+r_int
+r_int
+id|flags
+suffix:semicolon
 macro_line|#if (NDEBUG &amp; NDEBUG_NO_WRITE)
 r_switch
 c_cond
@@ -3070,6 +3074,14 @@ l_int|0
 suffix:semicolon
 )brace
 macro_line|#endif&t;&t;&t;&t;/* (NDEBUG &amp; NDEBUG_NO_WRITE) */
+id|spin_lock_irqsave
+c_func
+(paren
+id|instance-&gt;host_lock
+comma
+id|flags
+)paren
+suffix:semicolon
 macro_line|#ifdef NCR5380_STATS
 r_switch
 c_cond
@@ -3269,7 +3281,14 @@ l_string|&quot;tail&quot;
 )paren
 suffix:semicolon
 multiline_comment|/* Run the coroutine if it isn&squot;t already running. */
-multiline_comment|/* FIMXE: drop any locks here */
+id|spin_unlock_irqrestore
+c_func
+(paren
+id|instance-&gt;host_lock
+comma
+id|flags
+)paren
+suffix:semicolon
 id|run_main
 c_func
 (paren
@@ -5940,7 +5959,7 @@ op_minus
 l_int|1
 suffix:semicolon
 )brace
-multiline_comment|/**&n; *&t;do_reset&t;-&t;issue a reset command&n; *&t;@host: adapter to reset&n; *&n; *&t;Issue a reset sequence to the NCR5380 and try and get the bus&n; *&t;back into sane shape.&n; *&n; *&t;Locks: caller holds queue lock&n; *&t;FIXME: sort this out and get new_eh running&n; */
+multiline_comment|/**&n; *&t;do_reset&t;-&t;issue a reset command&n; *&t;@host: adapter to reset&n; *&n; *&t;Issue a reset sequence to the NCR5380 and try and get the bus&n; *&t;back into sane shape.&n; *&n; *&t;Locks: caller holds queue lock&n; */
 DECL|function|do_reset
 r_static
 r_void
@@ -9640,7 +9659,7 @@ suffix:semicolon
 )brace
 )brace
 macro_line|#endif&t;&t;&t;&t;/* def REAL_DMA */
-multiline_comment|/*&n; * Function : int NCR5380_abort (Scsi_Cmnd *cmd)&n; *&n; * Purpose : abort a command&n; *&n; * Inputs : cmd - the Scsi_Cmnd to abort, code - code to set the &n; *      host byte of the result field to, if zero DID_ABORTED is &n; *      used.&n; *&n; * Returns : 0 - success, -1 on failure.&n; *&n; *&t;XXX - there is no way to abort the command that is currently &n; *&t;connected, you have to wait for it to complete.  If this is &n; *&t;a problem, we could implement longjmp() / setjmp(), setjmp()&n; *&t;called where the loop started in NCR5380_main().&n; *&n; *&t;Locks: io_request_lock held by caller&n; */
+multiline_comment|/*&n; * Function : int NCR5380_abort (Scsi_Cmnd *cmd)&n; *&n; * Purpose : abort a command&n; *&n; * Inputs : cmd - the Scsi_Cmnd to abort, code - code to set the &n; *      host byte of the result field to, if zero DID_ABORTED is &n; *      used.&n; *&n; * Returns : 0 - success, -1 on failure.&n; *&n; *&t;XXX - there is no way to abort the command that is currently &n; *&t;connected, you have to wait for it to complete.  If this is &n; *&t;a problem, we could implement longjmp() / setjmp(), setjmp()&n; *&t;called where the loop started in NCR5380_main().&n; *&n; * Locks: host lock taken by function&n; */
 macro_line|#ifndef NCR5380_abort
 r_static
 macro_line|#endif
@@ -9666,6 +9685,10 @@ id|instance
 op_assign
 id|cmd-&gt;host
 suffix:semicolon
+r_int
+r_int
+id|flags
+suffix:semicolon
 r_struct
 id|NCR5380_hostdata
 op_star
@@ -9685,6 +9708,14 @@ comma
 op_star
 op_star
 id|prev
+suffix:semicolon
+id|spin_lock_irqsave
+c_func
+(paren
+id|instance-&gt;host_lock
+comma
+id|flags
+)paren
 suffix:semicolon
 id|printk
 c_func
@@ -9805,6 +9836,14 @@ id|ICR_ASSERT_ATN
 suffix:semicolon
 multiline_comment|/* &n; * Since we can&squot;t change phases until we&squot;ve completed the current &n; * handshake, we have to source or sink a byte of data if the current&n; * phase is not MSGOUT.&n; */
 multiline_comment|/* &n; * Return control to the executing NCR drive so we can clear the&n; * aborted flag and get back into our main loop.&n; */
+id|spin_unlock_irqrestore
+c_func
+(paren
+id|instance-&gt;host_lock
+comma
+id|flags
+)paren
+suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
@@ -9932,6 +9971,14 @@ c_func
 id|tmp
 )paren
 suffix:semicolon
+id|spin_unlock_irqrestore
+c_func
+(paren
+id|instance-&gt;host_lock
+comma
+id|flags
+)paren
+suffix:semicolon
 r_return
 id|SUCCESS
 suffix:semicolon
@@ -9973,6 +10020,14 @@ l_string|&quot;scsi%d : abort failed, command connected.&bslash;n&quot;
 comma
 id|instance-&gt;host_no
 )paren
+)paren
+suffix:semicolon
+id|spin_unlock_irqrestore
+c_func
+(paren
+id|instance-&gt;host_lock
+comma
+id|flags
 )paren
 suffix:semicolon
 r_return
@@ -10151,12 +10206,28 @@ c_func
 id|tmp
 )paren
 suffix:semicolon
+id|spin_unlock_irqrestore
+c_func
+(paren
+id|instance-&gt;host_lock
+comma
+id|flags
+)paren
+suffix:semicolon
 r_return
 id|SUCCESS
 suffix:semicolon
 )brace
 )brace
 multiline_comment|/*&n; * Case 5 : If we reached this point, the command was not found in any of &n; *          the queues.&n; *&n; * We probably reached this point because of an unlikely race condition&n; * between the command completing successfully and the abortion code,&n; * so we won&squot;t panic, but we will notify the user in case something really&n; * broke.&n; */
+id|spin_unlock_irqrestore
+c_func
+(paren
+id|instance-&gt;host_lock
+comma
+id|flags
+)paren
+suffix:semicolon
 id|printk
 c_func
 (paren
@@ -10171,7 +10242,7 @@ r_return
 id|FAILED
 suffix:semicolon
 )brace
-multiline_comment|/* &n; * Function : int NCR5380_bus_reset (Scsi_Cmnd *cmd)&n; * &n; * Purpose : reset the SCSI bus.&n; *&n; * Returns : SUCCESS&n; *&n; * Locks: io_request_lock held by caller&n; */
+multiline_comment|/* &n; * Function : int NCR5380_bus_reset (Scsi_Cmnd *cmd)&n; * &n; * Purpose : reset the SCSI bus.&n; *&n; * Returns : SUCCESS&n; *&n; * Locks: host lock taken by function&n; */
 macro_line|#ifndef NCR5380_bus_reset
 r_static
 macro_line|#endif
@@ -10185,6 +10256,17 @@ op_star
 id|cmd
 )paren
 (brace
+r_int
+r_int
+id|flags
+suffix:semicolon
+r_struct
+id|Scsi_Host
+op_star
+id|instance
+op_assign
+id|cmd-&gt;host
+suffix:semicolon
 id|NCR5380_local_declare
 c_func
 (paren
@@ -10194,6 +10276,14 @@ id|NCR5380_setup
 c_func
 (paren
 id|cmd-&gt;host
+)paren
+suffix:semicolon
+id|spin_lock_irqsave
+c_func
+(paren
+id|instance-&gt;host_lock
+comma
+id|flags
 )paren
 suffix:semicolon
 id|NCR5380_print_status
@@ -10206,6 +10296,14 @@ id|do_reset
 c_func
 (paren
 id|cmd-&gt;host
+)paren
+suffix:semicolon
+id|spin_unlock_irqrestore
+c_func
+(paren
+id|instance-&gt;host_lock
+comma
+id|flags
 )paren
 suffix:semicolon
 r_return

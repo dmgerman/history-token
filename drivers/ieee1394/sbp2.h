@@ -1037,7 +1037,7 @@ id|packet
 suffix:semicolon
 DECL|member|tq
 r_struct
-id|tq_struct
+id|hpsb_queue_struct
 id|tq
 suffix:semicolon
 DECL|member|hi_context
@@ -1663,6 +1663,9 @@ comma
 r_int
 r_int
 id|length
+comma
+id|u16
+id|flags
 )paren
 suffix:semicolon
 r_static
@@ -1688,6 +1691,9 @@ comma
 r_int
 r_int
 id|length
+comma
+id|u16
+id|flags
 )paren
 suffix:semicolon
 macro_line|#endif
@@ -1766,6 +1772,9 @@ comma
 r_int
 r_int
 id|length
+comma
+id|u16
+id|flags
 )paren
 suffix:semicolon
 r_static

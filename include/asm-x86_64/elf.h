@@ -34,14 +34,14 @@ id|elf_fpxregset_t
 suffix:semicolon
 multiline_comment|/*&n; * This is used to ensure we don&squot;t load something for the wrong architecture.&n; */
 DECL|macro|elf_check_arch
-mdefine_line|#define elf_check_arch(x) &bslash;&n;&t;((x)-&gt;e_machine == EM_X8664)
+mdefine_line|#define elf_check_arch(x) &bslash;&n;&t;((x)-&gt;e_machine == EM_X86_64)
 multiline_comment|/*&n; * These are used to set parameters in the core dumps.&n; */
 DECL|macro|ELF_CLASS
 mdefine_line|#define ELF_CLASS&t;ELFCLASS64
 DECL|macro|ELF_DATA
 mdefine_line|#define ELF_DATA&t;ELFDATA2LSB
 DECL|macro|ELF_ARCH
-mdefine_line|#define ELF_ARCH&t;EM_X8664
+mdefine_line|#define ELF_ARCH&t;EM_X86_64
 multiline_comment|/* SVR4/i386 ABI (pages 3-31, 3-32) says that when the program starts %edx&n;   contains a pointer to a function which might be registered using `atexit&squot;.&n;   This provides a mean for the dynamic linker to call DT_FINI functions for&n;   shared libraries that have been loaded before the code runs.&n;&n;   A value of 0 tells we have no such handler. &n;&n;   We might as well make sure everything else is cleared too (except for %esp),&n;   just to make things more deterministic.&n; */
 DECL|macro|ELF_PLAT_INIT
 mdefine_line|#define ELF_PLAT_INIT(_r)&t;do { &bslash;&n;&t;struct task_struct *cur = current; &bslash;&n;&t;(_r)-&gt;rbx = 0; (_r)-&gt;rcx = 0; (_r)-&gt;rdx = 0; &bslash;&n;&t;(_r)-&gt;rsi = 0; (_r)-&gt;rdi = 0; (_r)-&gt;rbp = 0; &bslash;&n;&t;(_r)-&gt;rax = 0;&t;&t;&t;&t;&bslash;&n;&t;(_r)-&gt;r8 = 0;&t;&t;&t;&t;&bslash;&n;&t;(_r)-&gt;r9 = 0;&t;&t;&t;&t;&bslash;&n;&t;(_r)-&gt;r10 = 0;&t;&t;&t;&t;&bslash;&n;&t;(_r)-&gt;r11 = 0;&t;&t;&t;&t;&bslash;&n;&t;(_r)-&gt;r12 = 0;&t;&t;&t;&t;&bslash;&n;&t;(_r)-&gt;r13 = 0;&t;&t;&t;&t;&bslash;&n;&t;(_r)-&gt;r14 = 0;&t;&t;&t;&t;&bslash;&n;&t;(_r)-&gt;r15 = 0;&t;&t;&t;&t;&bslash;&n;        cur-&gt;thread.fs = 0; cur-&gt;thread.gs = 0; &bslash;&n;&t;cur-&gt;thread.fsindex = 0; cur-&gt;thread.gsindex = 0; &bslash;&n;        cur-&gt;thread.ds = 0; cur-&gt;thread.es = 0;  &bslash;&n;&t;clear_thread_flag(TIF_IA32); &bslash;&n;} while (0)

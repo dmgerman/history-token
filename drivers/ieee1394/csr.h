@@ -95,7 +95,6 @@ comma
 id|channels_available_lo
 suffix:semicolon
 DECL|member|rom
-r_const
 id|quadlet_t
 op_star
 id|rom
@@ -103,6 +102,11 @@ suffix:semicolon
 DECL|member|rom_size
 r_int
 id|rom_size
+suffix:semicolon
+DECL|member|rom_version
+r_int
+r_char
+id|rom_version
 suffix:semicolon
 DECL|member|topology_map
 id|quadlet_t

@@ -324,7 +324,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;%s: adjusting direct map size to 0x%x&bslash;n&quot;
+l_string|&quot;%s: adjusting direct map size to 0x%lx&bslash;n&quot;
 comma
 id|__FUNCTION__
 comma

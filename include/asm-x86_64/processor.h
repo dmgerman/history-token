@@ -30,6 +30,10 @@ DECL|macro|VIP_MASK
 mdefine_line|#define VIP_MASK&t;0x00100000&t;/* virtual interrupt pending */
 DECL|macro|ID_MASK
 mdefine_line|#define ID_MASK&t;&t;0x00200000
+DECL|macro|desc_empty
+mdefine_line|#define desc_empty(desc) &bslash;&n;               (!((desc)-&gt;a + (desc)-&gt;b))
+DECL|macro|desc_equal
+mdefine_line|#define desc_equal(desc1, desc2) &bslash;&n;               (((desc1)-&gt;a == (desc2)-&gt;a) &amp;&amp; ((desc1)-&gt;b == (desc2)-&gt;b))
 multiline_comment|/*&n; * Default implementation of macro that returns current&n; * instruction pointer (&quot;program counter&quot;).&n; */
 DECL|macro|current_text_addr
 mdefine_line|#define current_text_addr() ({ void *pc; asm volatile(&quot;leaq 1f(%%rip),%0&bslash;n1:&quot;:&quot;=r&quot;(pc)); pc; })
@@ -86,7 +90,11 @@ DECL|member|x86_cache_size
 r_int
 id|x86_cache_size
 suffix:semicolon
-multiline_comment|/* in KB - valid for CPUS which support this&n;&t;&t;&t;&t;    call  */
+multiline_comment|/* in KB */
+DECL|member|x86_clflush_size
+r_int
+id|x86_clflush_size
+suffix:semicolon
 DECL|member|loops_per_jiffy
 r_int
 r_int
@@ -842,10 +850,18 @@ id|u32
 op_star
 id|io_bitmap_ptr
 suffix:semicolon
+multiline_comment|/* cached TLS descriptors. */
+DECL|member|tls_array
+id|u64
+id|tls_array
+(braket
+id|GDT_ENTRY_TLS_ENTRIES
+)braket
+suffix:semicolon
 )brace
 suffix:semicolon
 DECL|macro|INIT_THREAD
-mdefine_line|#define INIT_THREAD  {&t;&t;&t;&t;&bslash;&n;}
+mdefine_line|#define INIT_THREAD  {}
 DECL|macro|INIT_MMAP
 mdefine_line|#define INIT_MMAP &bslash;&n;{ &amp;init_mm, 0, 0, NULL, PAGE_SHARED, VM_READ | VM_WRITE | VM_EXEC, 1, NULL, NULL }
 DECL|macro|STACKFAULT_STACK
