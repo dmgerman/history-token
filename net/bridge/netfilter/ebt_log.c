@@ -681,7 +681,7 @@ c_cond
 (paren
 id|ah-&gt;ar_hrd
 op_eq
-id|__constant_htons
+id|htons
 c_func
 (paren
 l_int|1
