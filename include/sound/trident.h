@@ -37,14 +37,6 @@ DECL|macro|TRIDENT_DEVICE_ID_NX
 mdefine_line|#define TRIDENT_DEVICE_ID_NX&t;&t;((PCI_VENDOR_ID_TRIDENT&lt;&lt;16)|PCI_DEVICE_ID_TRIDENT_4DWAVE_NX)
 DECL|macro|TRIDENT_DEVICE_ID_SI7018
 mdefine_line|#define TRIDENT_DEVICE_ID_SI7018&t;((PCI_VENDOR_ID_SI&lt;&lt;16)|PCI_DEVICE_ID_SI_7018)
-multiline_comment|/* Trident chipsets have 1GB memory limit */
-macro_line|#ifdef __alpha__
-DECL|macro|TRIDENT_DMA_TYPE
-mdefine_line|#define TRIDENT_DMA_TYPE        SNDRV_DMA_TYPE_PCI_16MB
-macro_line|#else
-DECL|macro|TRIDENT_DMA_TYPE
-mdefine_line|#define TRIDENT_DMA_TYPE        SNDRV_DMA_TYPE_PCI
-macro_line|#endif
 DECL|macro|SNDRV_SEQ_DEV_ID_TRIDENT
 mdefine_line|#define SNDRV_SEQ_DEV_ID_TRIDENT&t;&t;&t;&quot;trident-synth&quot;
 DECL|macro|SNDRV_TRIDENT_VOICE_TYPE_PCM

@@ -9168,7 +9168,7 @@ c_func
 (paren
 id|pcm
 comma
-id|SNDRV_DMA_TYPE_PCI
+id|SNDRV_DMA_TYPE_DEV
 comma
 id|chip-&gt;dev_u.pdev
 comma

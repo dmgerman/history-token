@@ -3150,7 +3150,7 @@ suffix:semicolon
 multiline_comment|/* initialize graveyard buffer */
 id|harmony-&gt;dma_dev.type
 op_assign
-id|SNDRV_DMA_TYPE_PCI
+id|SNDRV_DMA_TYPE_DEV
 suffix:semicolon
 id|harmony-&gt;dma_dev.dev
 op_assign
