@@ -23,6 +23,12 @@ DECL|macro|SN_SAL_REGISTER_CE
 mdefine_line|#define  SN_SAL_REGISTER_CE&t;&t;&t;   0x02000007
 DECL|macro|SN_SAL_GET_PARTITION_ADDR
 mdefine_line|#define  SN_SAL_GET_PARTITION_ADDR&t;&t;   0x02000009
+DECL|macro|SN_SAL_XP_ADDR_REGION
+mdefine_line|#define  SN_SAL_XP_ADDR_REGION&t;&t;&t;   0x0200000f
+DECL|macro|SN_SAL_NO_FAULT_ZONE_VIRTUAL
+mdefine_line|#define  SN_SAL_NO_FAULT_ZONE_VIRTUAL&t;&t;   0x02000010
+DECL|macro|SN_SAL_NO_FAULT_ZONE_PHYSICAL
+mdefine_line|#define  SN_SAL_NO_FAULT_ZONE_PHYSICAL&t;&t;   0x02000011
 DECL|macro|SN_SAL_PRINT_ERROR
 mdefine_line|#define  SN_SAL_PRINT_ERROR&t;&t;&t;   0x02000012
 DECL|macro|SN_SAL_CONSOLE_PUTC
@@ -69,6 +75,8 @@ DECL|macro|SN_SAL_GET_MASTER_BASEIO_NASID
 mdefine_line|#define  SN_SAL_GET_MASTER_BASEIO_NASID&t;&t;   0x0200003c
 DECL|macro|SN_SAL_COHERENCE
 mdefine_line|#define  SN_SAL_COHERENCE                          0x0200003d
+DECL|macro|SN_SAL_MEMPROTECT
+mdefine_line|#define  SN_SAL_MEMPROTECT                         0x0200003e
 DECL|macro|SN_SAL_SYSCTL_FRU_CAPTURE
 mdefine_line|#define  SN_SAL_SYSCTL_FRU_CAPTURE&t;&t;   0x0200003f
 multiline_comment|/*&n; * Service-specific constants&n; */
@@ -1551,7 +1559,136 @@ id|sn_partid
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/*&n; * Change or query the coherence domain for this partition. Each cpu-based&n; * nasid is represented by a bit in an array of 64-bit words:&n; *      0 = not in this partition&squot;s coherency domain&n; *      1 = in this partition&squot;s coherency domain&n; * It is not possible for the local system&squot;s nasids to be removed from&n; * the coherency domain.&n; *&n; *      new_domain = set the coherence domain to the given nasids&n; *      old_domain = return the current coherence domain&n; */
+multiline_comment|/*&n; * Register or unregister a physical address range being referenced across&n; * a partition boundary for which certain SAL errors should be scanned for,&n; * cleaned up and ignored.  This is of value for kernel partitioning code only.&n; * Values for the operation argument:&n; *&t;1 = register this address range with SAL&n; *&t;0 = unregister this address range with SAL&n; * &n; * SAL maintains a reference count on an address range in case it is registered&n; * multiple times.&n; * &n; * On success, returns the reference count of the address range after the SAL&n; * call has performed the current registration/unregistration.  Returns a&n; * negative value if an error occurred.&n; */
+r_static
+r_inline
+r_int
+DECL|function|sn_register_xp_addr_region
+id|sn_register_xp_addr_region
+c_func
+(paren
+id|u64
+id|paddr
+comma
+id|u64
+id|len
+comma
+r_int
+id|operation
+)paren
+(brace
+r_struct
+id|ia64_sal_retval
+id|ret_stuff
+suffix:semicolon
+id|SAL_CALL
+c_func
+(paren
+id|ret_stuff
+comma
+id|SN_SAL_XP_ADDR_REGION
+comma
+id|paddr
+comma
+id|len
+comma
+(paren
+id|u64
+)paren
+id|operation
+comma
+l_int|0
+comma
+l_int|0
+comma
+l_int|0
+comma
+l_int|0
+)paren
+suffix:semicolon
+r_return
+id|ret_stuff.status
+suffix:semicolon
+)brace
+multiline_comment|/*&n; * Register or unregister an instruction range for which SAL errors should&n; * be ignored.  If an error occurs while in the registered range, SAL jumps&n; * to return_addr after ignoring the error.  Values for the operation argument:&n; *&t;1 = register this instruction range with SAL&n; *&t;0 = unregister this instruction range with SAL&n; *&n; * Returns 0 on success, or a negative value if an error occurred.&n; */
+r_static
+r_inline
+r_int
+DECL|function|sn_register_nofault_code
+id|sn_register_nofault_code
+c_func
+(paren
+id|u64
+id|start_addr
+comma
+id|u64
+id|end_addr
+comma
+id|u64
+id|return_addr
+comma
+r_int
+r_virtual
+comma
+r_int
+id|operation
+)paren
+(brace
+r_struct
+id|ia64_sal_retval
+id|ret_stuff
+suffix:semicolon
+id|u64
+id|call
+suffix:semicolon
+r_if
+c_cond
+(paren
+r_virtual
+)paren
+(brace
+id|call
+op_assign
+id|SN_SAL_NO_FAULT_ZONE_VIRTUAL
+suffix:semicolon
+)brace
+r_else
+(brace
+id|call
+op_assign
+id|SN_SAL_NO_FAULT_ZONE_PHYSICAL
+suffix:semicolon
+)brace
+id|SAL_CALL
+c_func
+(paren
+id|ret_stuff
+comma
+id|call
+comma
+id|start_addr
+comma
+id|end_addr
+comma
+id|return_addr
+comma
+(paren
+id|u64
+)paren
+l_int|1
+comma
+l_int|0
+comma
+l_int|0
+comma
+l_int|0
+)paren
+suffix:semicolon
+r_return
+id|ret_stuff.status
+suffix:semicolon
+)brace
+multiline_comment|/*&n; * Change or query the coherence domain for this partition. Each cpu-based&n; * nasid is represented by a bit in an array of 64-bit words:&n; *      0 = not in this partition&squot;s coherency domain&n; *      1 = in this partition&squot;s coherency domain&n; *&n; * It is not possible for the local system&squot;s nasids to be removed from&n; * the coherency domain.  Purpose of the domain arguments:&n; *      new_domain = set the coherence domain to the given nasids&n; *      old_domain = return the current coherence domain&n; *&n; * Returns 0 on success, or a negative value if an error occurred.&n; */
 r_static
 r_inline
 r_int
@@ -1598,6 +1735,70 @@ r_return
 id|ret_stuff.status
 suffix:semicolon
 )brace
+multiline_comment|/*&n; * Change memory access protections for a physical address range.&n; * nasid_array is not used on Altix, but may be in future architectures.&n; * Available memory protection access classes are defined after the function.&n; */
+r_static
+r_inline
+r_int
+DECL|function|sn_change_memprotect
+id|sn_change_memprotect
+c_func
+(paren
+id|u64
+id|paddr
+comma
+id|u64
+id|len
+comma
+id|u64
+id|perms
+comma
+id|u64
+op_star
+id|nasid_array
+)paren
+(brace
+r_struct
+id|ia64_sal_retval
+id|ret_stuff
+suffix:semicolon
+id|SAL_CALL
+c_func
+(paren
+id|ret_stuff
+comma
+id|SN_SAL_MEMPROTECT
+comma
+id|paddr
+comma
+id|len
+comma
+id|nasid_array
+comma
+id|perms
+comma
+l_int|0
+comma
+l_int|0
+comma
+l_int|0
+)paren
+suffix:semicolon
+r_return
+id|ret_stuff.status
+suffix:semicolon
+)brace
+DECL|macro|SN_MEMPROT_ACCESS_CLASS_0
+mdefine_line|#define SN_MEMPROT_ACCESS_CLASS_0&t;&t;0x14a080
+DECL|macro|SN_MEMPROT_ACCESS_CLASS_1
+mdefine_line|#define SN_MEMPROT_ACCESS_CLASS_1&t;&t;0x2520c2
+DECL|macro|SN_MEMPROT_ACCESS_CLASS_2
+mdefine_line|#define SN_MEMPROT_ACCESS_CLASS_2&t;&t;0x14a1ca
+DECL|macro|SN_MEMPROT_ACCESS_CLASS_3
+mdefine_line|#define SN_MEMPROT_ACCESS_CLASS_3&t;&t;0x14a290
+DECL|macro|SN_MEMPROT_ACCESS_CLASS_6
+mdefine_line|#define SN_MEMPROT_ACCESS_CLASS_6&t;&t;0x084080
+DECL|macro|SN_MEMPROT_ACCESS_CLASS_7
+mdefine_line|#define SN_MEMPROT_ACCESS_CLASS_7&t;&t;0x021080
 multiline_comment|/*&n; * Turns off system power.&n; */
 r_static
 r_inline

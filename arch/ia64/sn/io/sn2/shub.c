@@ -6,6 +6,7 @@ macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;asm/smp.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;asm/hw_irq.h&gt;
+macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/sn/sgi.h&gt;
 macro_line|#include &lt;asm/sn/iograph.h&gt;
 macro_line|#include &lt;asm/sn/invent.h&gt;
@@ -2131,6 +2132,20 @@ c_func
 r_void
 )paren
 (brace
+r_if
+c_cond
+(paren
+op_logical_neg
+id|ia64_platform_is
+c_func
+(paren
+l_string|&quot;sn2&quot;
+)paren
+)paren
+r_return
+op_minus
+id|ENODEV
+suffix:semicolon
 id|spin_lock_init
 c_func
 (paren
@@ -2171,6 +2186,8 @@ comma
 id|CLONE_FS
 op_or
 id|CLONE_FILES
+op_or
+id|CLONE_SIGHAND
 )paren
 suffix:semicolon
 r_return

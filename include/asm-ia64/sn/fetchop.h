@@ -52,10 +52,10 @@ DECL|typedef|AMO_t
 )brace
 id|AMO_t
 suffix:semicolon
-multiline_comment|/*&n; * The following APIs are externalized to the kernel to allocate/free fetchop variables.&n; * &t;fetchop_kalloc_one&t;- Allocate/initialize 1 fetchop variable on the specified cnode.&n; * &t;fetchop_kfree_one&t;- Free a previously allocated fetchop variable &n; */
+multiline_comment|/*&n; * The following APIs are externalized to the kernel to allocate/free pages of&n; * fetchop variables.&n; *&t;fetchop_kalloc_page&t;- Allocate/initialize 1 fetchop page on the&n; *&t;&t;&t;&t;  specified cnode. &n; *&t;fetchop_kfree_page&t;- Free a previously allocated fetchop page&n; */
 r_int
 r_int
-id|fetchop_kalloc_one
+id|fetchop_kalloc_page
 c_func
 (paren
 r_int
@@ -63,7 +63,7 @@ id|nid
 )paren
 suffix:semicolon
 r_void
-id|fetchop_kfree_one
+id|fetchop_kfree_page
 c_func
 (paren
 r_int

@@ -16,10 +16,27 @@ r_int
 r_int
 id|sn_rtc_cycles_per_second
 suffix:semicolon
+r_extern
+r_int
+r_int
+id|sn_rtc_usec_per_cyc
+suffix:semicolon
+r_extern
+r_int
+r_int
+id|sn_rtc_per_itc
+suffix:semicolon
+r_extern
+r_int
+r_int
+id|sn_rtc_delta
+suffix:semicolon
 macro_line|#include &lt;asm/sn/addrs.h&gt;
 macro_line|#include &lt;asm/sn/sn2/addrs.h&gt;
 macro_line|#include &lt;asm/sn/sn2/shubio.h&gt;
 macro_line|#include &lt;asm/sn/sn2/shub_mmr.h&gt;
+DECL|macro|RTC_MASK
+mdefine_line|#define RTC_MASK&t;&t;SH_RTC_MASK
 DECL|macro|RTC_COUNTER_ADDR
 mdefine_line|#define RTC_COUNTER_ADDR&t;((clkreg_t*)LOCAL_MMR_ADDR(SH_RTC))
 DECL|macro|RTC_COMPARE_A_ADDR
@@ -34,6 +51,8 @@ DECL|macro|RTC_INT_ENABLED_A_ADDR
 mdefine_line|#define RTC_INT_ENABLED_A_ADDR  ((clkreg_t*)LOCAL_MMR_ADDR(SH_RTC))
 DECL|macro|RTC_INT_ENABLED_B_ADDR
 mdefine_line|#define RTC_INT_ENABLED_B_ADDR  ((clkreg_t*)LOCAL_MMR_ADDR(SH_RTC))
+DECL|macro|SN_RTC_PER_ITC_SHIFT
+mdefine_line|#define SN_RTC_PER_ITC_SHIFT&t;34
 DECL|macro|GET_RTC_COUNTER
 mdefine_line|#define GET_RTC_COUNTER()&t;(*RTC_COUNTER_ADDR)
 DECL|macro|rtc_time

@@ -3,6 +3,7 @@ macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/proc_fs.h&gt;
+macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/sn/simulator.h&gt;
 multiline_comment|/* to lookup nasids */
@@ -1149,6 +1150,19 @@ id|name
 (braket
 id|NODE_NAME_LEN
 )braket
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|ia64_platform_is
+c_func
+(paren
+l_string|&quot;sn2&quot;
+)paren
+)paren
+r_return
+l_int|0
 suffix:semicolon
 id|TRACE
 c_func

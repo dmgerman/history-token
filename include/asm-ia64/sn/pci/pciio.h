@@ -4,6 +4,7 @@ DECL|macro|_ASM_SN_PCI_PCIIO_H
 mdefine_line|#define _ASM_SN_PCI_PCIIO_H
 multiline_comment|/*&n; * pciio.h -- platform-independent PCI interface&n; */
 macro_line|#include &lt;linux/config.h&gt;
+macro_line|#include &lt;linux/ioport.h&gt;
 macro_line|#include &lt;asm/sn/ioerror.h&gt;
 macro_line|#include &lt;asm/sn/driver.h&gt;
 macro_line|#include &lt;asm/sn/hcl.h&gt;
@@ -1359,10 +1360,11 @@ id|iopaddr_t
 id|pciio_device_win_alloc
 c_func
 (paren
-id|pciio_win_map_t
-id|win_map
+r_struct
+id|resource
+op_star
+id|res
 comma
-multiline_comment|/* win map */
 id|pciio_win_alloc_t
 id|win_alloc
 comma
