@@ -1,4 +1,4 @@
-multiline_comment|/* &n; * dvb_demux.c - DVB kernel demux API&n; *&n; * Copyright (C) 2000-2001 Ralph  Metzler &lt;ralph@convergence.de&gt;&n; *&t;&t;       &amp; Marcus Metzler &lt;marcus@convergence.de&gt;&n; *&t;&t;&t; for convergence integrated media GmbH&n; *&n; * This program is free software; you can redistribute it and/or&n; * modify it under the terms of the GNU Lesser General Public License&n; * as published by the Free Software Foundation; either version 2.1&n; * of the License, or (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU Lesser General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.&n; *&n; */
+multiline_comment|/*&n; * dvb_demux.c - DVB kernel demux API&n; *&n; * Copyright (C) 2000-2001 Ralph  Metzler &lt;ralph@convergence.de&gt;&n; *&t;&t;       &amp; Marcus Metzler &lt;marcus@convergence.de&gt;&n; *&t;&t;&t; for convergence integrated media GmbH&n; *&n; * This program is free software; you can redistribute it and/or&n; * modify it under the terms of the GNU Lesser General Public License&n; * as published by the Free Software Foundation; either version 2.1&n; * of the License, or (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU Lesser General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.&n; *&n; */
 macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/vmalloc.h&gt;
@@ -9,8 +9,8 @@ macro_line|#include &lt;linux/crc32.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &quot;dvb_demux.h&quot;
 DECL|macro|NOBUFS
-mdefine_line|#define NOBUFS  
-multiline_comment|/* &n;** #define DVB_DEMUX_SECTION_LOSS_LOG to monitor payload loss in the syslog&n;*/
+mdefine_line|#define NOBUFS
+multiline_comment|/*&n;** #define DVB_DEMUX_SECTION_LOSS_LOG to monitor payload loss in the syslog&n;*/
 singleline_comment|// #define DVB_DEMUX_SECTION_LOSS_LOG
 DECL|variable|dmx_muxs
 id|LIST_HEAD
@@ -900,7 +900,7 @@ op_assign
 id|sec-&gt;secbuf_base
 suffix:semicolon
 )brace
-multiline_comment|/* &n;** Losless Section Demux 1.4.1 by Emard&n;** Valsecchi Patrick:&n;**  - middle of section A  (no PUSI)&n;**  - end of section A and start of section B &n;**    (with PUSI pointing to the start of the second section)&n;**  &n;**  In this case, without feed-&gt;pusi_seen you&squot;ll receive a garbage section&n;**  consisting of the end of section A. Basically because tsfeedp&n;**  is incemented and the use=0 condition is not raised&n;**  when the second packet arrives.&n;**&n;** Fix:&n;** when demux is started, let feed-&gt;pusi_seen = 0 to&n;** prevent initial feeding of garbage from the end of&n;** previous section. When you for the first time see PUSI=1&n;** then set feed-&gt;pusi_seen = 1&n;*/
+multiline_comment|/*&n;** Losless Section Demux 1.4.1 by Emard&n;** Valsecchi Patrick:&n;**  - middle of section A  (no PUSI)&n;**  - end of section A and start of section B&n;**    (with PUSI pointing to the start of the second section)&n;**&n;**  In this case, without feed-&gt;pusi_seen you&squot;ll receive a garbage section&n;**  consisting of the end of section A. Basically because tsfeedp&n;**  is incemented and the use=0 condition is not raised&n;**  when the second packet arrives.&n;**&n;** Fix:&n;** when demux is started, let feed-&gt;pusi_seen = 0 to&n;** prevent initial feeding of garbage from the end of&n;** previous section. When you for the first time see PUSI=1&n;** then set feed-&gt;pusi_seen = 1&n;*/
 DECL|function|dvb_dmx_swfilter_section_copy_dump
 r_static
 r_int
@@ -1404,7 +1404,6 @@ id|count
 OG
 l_int|0
 )paren
-(brace
 id|printk
 c_func
 (paren
@@ -1413,7 +1412,6 @@ comma
 id|count
 )paren
 suffix:semicolon
-)brace
 macro_line|#endif
 )brace
 r_else
@@ -1705,6 +1703,7 @@ id|pid
 )paren
 (brace
 id|dvb_dmx_swfilter_packet_type
+c_func
 (paren
 id|feed
 comma

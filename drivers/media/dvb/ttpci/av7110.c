@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * driver for the SAA7146 based AV110 cards (like the Fujitsu-Siemens DVB)&n; * av7110.c: initialization and demux stuff&n; *&n; * Copyright (C) 1999-2002 Ralph  Metzler &n; *                       &amp; Marcus Metzler for convergence integrated media GmbH&n; *&n; * originally based on code by:&n; * Copyright (C) 1998,1999 Christian Theiss &lt;mistert@rz.fh-augsburg.de&gt;&n; *&n; * This program is free software; you can redistribute it and/or&n; * modify it under the terms of the GNU General Public License&n; * as published by the Free Software Foundation; either version 2&n; * of the License, or (at your option) any later version.&n; * &n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; * &n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.&n; * Or, point your browser to http://www.gnu.org/copyleft/gpl.html&n; * &n; *&n; * the project&squot;s page is at http://www.linuxtv.org/dvb/&n; */
+multiline_comment|/*&n; * driver for the SAA7146 based AV110 cards (like the Fujitsu-Siemens DVB)&n; * av7110.c: initialization and demux stuff&n; *&n; * Copyright (C) 1999-2002 Ralph  Metzler&n; *                       &amp; Marcus Metzler for convergence integrated media GmbH&n; *&n; * originally based on code by:&n; * Copyright (C) 1998,1999 Christian Theiss &lt;mistert@rz.fh-augsburg.de&gt;&n; *&n; * This program is free software; you can redistribute it and/or&n; * modify it under the terms of the GNU General Public License&n; * as published by the Free Software Foundation; either version 2&n; * of the License, or (at your option) any later version.&n; *&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.&n; * Or, point your browser to http://www.gnu.org/copyleft/gpl.html&n; *&n; *&n; * the project&squot;s page is at http://www.linuxtv.org/dvb/&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/kmod.h&gt;
@@ -251,7 +251,7 @@ op_assign
 l_int|0
 suffix:semicolon
 DECL|macro|FE_FUNC_OVERRIDE
-mdefine_line|#define FE_FUNC_OVERRIDE(fe_func, av7110_copy, av7110_func) &bslash;&n;{&bslash;&n;&t;if (fe_func != NULL) { &bslash;&n;&t;&t;av7110_copy = fe_func; &bslash;&n;&t;   &t;fe_func = av7110_func; &bslash;&n;&t;} &bslash;&n;}
+mdefine_line|#define FE_FUNC_OVERRIDE(fe_func, av7110_copy, av7110_func) &bslash;&n;{&bslash;&n;&t;if (fe_func != NULL) { &bslash;&n;&t;&t;av7110_copy = fe_func; &bslash;&n;&t;&t;fe_func = av7110_func; &bslash;&n;&t;} &bslash;&n;}
 DECL|function|init_av7110_av
 r_static
 r_void
@@ -381,7 +381,7 @@ comma
 l_int|0x00
 )paren
 suffix:semicolon
-multiline_comment|/**&n;&t; * some special handling for the Siemens DVB-C cards...&n;&t; */
+multiline_comment|/**&n;&t;&t; * some special handling for the Siemens DVB-C cards...&n;&t;&t; */
 )brace
 r_else
 r_if
@@ -657,21 +657,25 @@ id|av7110
 )paren
 suffix:semicolon
 id|lock_kernel
+c_func
 (paren
 )paren
 suffix:semicolon
 id|daemonize
+c_func
 (paren
 l_string|&quot;arm_mon&quot;
 )paren
 suffix:semicolon
 id|sigfillset
+c_func
 (paren
 op_amp
 id|current-&gt;blocked
 )paren
 suffix:semicolon
 id|unlock_kernel
+c_func
 (paren
 )paren
 suffix:semicolon
@@ -846,10 +850,11 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/**&n; *  Hack! we save the last av7110 ptr. This should be ok, since&n; *  you rarely will use more then one IR control. &n; *&n; *  If we want to support multiple controls we would have to do much more...&n; */
+multiline_comment|/**&n; *  Hack! we save the last av7110 ptr. This should be ok, since&n; *  you rarely will use more then one IR control.&n; *&n; *  If we want to support multiple controls we would have to do much more...&n; */
 DECL|function|av7110_setup_irc_config
 r_void
 id|av7110_setup_irc_config
+c_func
 (paren
 r_struct
 id|av7110
@@ -1517,6 +1522,7 @@ DECL|function|debiirq
 r_static
 r_void
 id|debiirq
+c_func
 (paren
 r_int
 r_int
@@ -2096,6 +2102,7 @@ DECL|function|gpioirq
 r_static
 r_void
 id|gpioirq
+c_func
 (paren
 r_int
 r_int
@@ -3896,7 +3903,7 @@ suffix:semicolon
 id|u16
 id|handle
 suffix:semicolon
-singleline_comment|//&t;u16 mode=0x0320;
+singleline_comment|//&t;u16 mode = 0x0320;
 id|u16
 id|mode
 op_assign
@@ -8208,6 +8215,7 @@ l_int|0x51
 suffix:semicolon
 )brace
 id|stv0299_writereg
+c_func
 (paren
 id|fe
 comma
@@ -8217,6 +8225,7 @@ id|aclk
 )paren
 suffix:semicolon
 id|stv0299_writereg
+c_func
 (paren
 id|fe
 comma
@@ -8226,6 +8235,7 @@ id|bclk
 )paren
 suffix:semicolon
 id|stv0299_writereg
+c_func
 (paren
 id|fe
 comma
@@ -8241,6 +8251,7 @@ l_int|0xff
 )paren
 suffix:semicolon
 id|stv0299_writereg
+c_func
 (paren
 id|fe
 comma
@@ -8256,6 +8267,7 @@ l_int|0xff
 )paren
 suffix:semicolon
 id|stv0299_writereg
+c_func
 (paren
 id|fe
 comma
@@ -8441,6 +8453,7 @@ suffix:semicolon
 id|ret
 op_assign
 id|i2c_transfer
+c_func
 (paren
 op_amp
 id|av7110-&gt;i2c_adap
@@ -8670,6 +8683,7 @@ r_if
 c_cond
 (paren
 id|i2c_transfer
+c_func
 (paren
 op_amp
 id|av7110-&gt;i2c_adap
@@ -8832,6 +8846,7 @@ r_if
 c_cond
 (paren
 id|i2c_transfer
+c_func
 (paren
 op_amp
 id|av7110-&gt;i2c_adap
@@ -9006,6 +9021,7 @@ r_if
 c_cond
 (paren
 id|i2c_transfer
+c_func
 (paren
 op_amp
 id|av7110-&gt;i2c_adap
@@ -9192,6 +9208,7 @@ r_if
 c_cond
 (paren
 id|i2c_transfer
+c_func
 (paren
 op_amp
 id|av7110-&gt;i2c_adap
@@ -9487,6 +9504,7 @@ r_if
 c_cond
 (paren
 id|i2c_transfer
+c_func
 (paren
 op_amp
 id|av7110-&gt;i2c_adap
@@ -9537,6 +9555,7 @@ r_if
 c_cond
 (paren
 id|i2c_transfer
+c_func
 (paren
 op_amp
 id|av7110-&gt;i2c_adap
@@ -12020,6 +12039,7 @@ l_int|1
 suffix:semicolon
 multiline_comment|/* locks for data transfers from/to AV7110 */
 id|spin_lock_init
+c_func
 (paren
 op_amp
 id|av7110-&gt;debilock
@@ -12351,6 +12371,7 @@ id|av7110-&gt;i2c_adap
 )paren
 suffix:semicolon
 id|dvb_unregister_adapter
+c_func
 (paren
 id|av7110-&gt;dvb_adapter
 )paren
@@ -12410,6 +12431,7 @@ DECL|function|av7110_detach
 r_static
 r_int
 id|av7110_detach
+c_func
 (paren
 r_struct
 id|saa7146_dev
@@ -12639,7 +12661,7 @@ suffix:semicolon
 id|av7110_num
 op_decrement
 suffix:semicolon
-macro_line|#ifndef CONFIG_DVB_AV7110_FIRMWARE_FILE 
+macro_line|#ifndef CONFIG_DVB_AV7110_FIRMWARE_FILE
 r_if
 c_cond
 (paren
@@ -12653,6 +12675,7 @@ id|av7110-&gt;bin_fw
 suffix:semicolon
 macro_line|#endif
 id|kfree
+c_func
 (paren
 id|av7110
 )paren
@@ -12718,6 +12741,7 @@ id|MASK_19
 )paren
 suffix:semicolon
 id|tasklet_schedule
+c_func
 (paren
 op_amp
 id|av7110-&gt;debi_tasklet
@@ -12735,6 +12759,7 @@ id|MASK_03
 (brace
 singleline_comment|//printk(&quot;av7110_irq: GPIO&bslash;n&quot;);
 id|tasklet_schedule
+c_func
 (paren
 op_amp
 id|av7110-&gt;gpio_tasklet

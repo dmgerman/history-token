@@ -4630,7 +4630,7 @@ r_return
 op_minus
 id|EINVAL
 suffix:semicolon
-multiline_comment|/*&n;&t;&t;&t;c-&gt;flags = V4L2_CTRL_FLAG_DISABLED;&t;&n;&t;&t;&t;return 0;&n;*/
+multiline_comment|/*&n;&t;&t;&t;c-&gt;flags = V4L2_CTRL_FLAG_DISABLED;&n;&t;&t;&t;return 0;&n;*/
 )brace
 id|DEB_EE
 c_func

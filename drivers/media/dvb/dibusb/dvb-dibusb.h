@@ -346,7 +346,7 @@ mdefine_line|#define DIBUSB_STATE_URB_LIST   0x001
 DECL|macro|DIBUSB_STATE_URB_BUF
 mdefine_line|#define DIBUSB_STATE_URB_BUF    0x002
 DECL|macro|DIBUSB_STATE_URB_SUBMIT
-mdefine_line|#define DIBUSB_STATE_URB_SUBMIT 0x004 
+mdefine_line|#define DIBUSB_STATE_URB_SUBMIT 0x004
 DECL|macro|DIBUSB_STATE_DVB
 mdefine_line|#define DIBUSB_STATE_DVB        0x008
 DECL|macro|DIBUSB_STATE_I2C
@@ -763,19 +763,19 @@ suffix:semicolon
 multiline_comment|/* i2c and transfer stuff */
 DECL|macro|DIBUSB_I2C_TIMEOUT
 mdefine_line|#define DIBUSB_I2C_TIMEOUT&t;&t;&t;&t;5000
-multiline_comment|/* &n; * protocol of all dibusb related devices&n; */
-multiline_comment|/* &n; * bulk msg to/from endpoint 0x01&n; *&n; * general structure:&n; * request_byte parameter_bytes&n; */
+multiline_comment|/*&n; * protocol of all dibusb related devices&n; */
+multiline_comment|/*&n; * bulk msg to/from endpoint 0x01&n; *&n; * general structure:&n; * request_byte parameter_bytes&n; */
 DECL|macro|DIBUSB_REQ_START_READ
 mdefine_line|#define DIBUSB_REQ_START_READ&t;&t;&t;0x00
 DECL|macro|DIBUSB_REQ_START_DEMOD
 mdefine_line|#define DIBUSB_REQ_START_DEMOD&t;&t;&t;0x01
-multiline_comment|/* &n; * i2c read &n; * bulk write: 0x02 ((7bit i2c_addr &lt;&lt; 1) &amp; 0x01) register_bytes length_word&n; * bulk read:  byte_buffer (length_word bytes)&n; */
+multiline_comment|/*&n; * i2c read&n; * bulk write: 0x02 ((7bit i2c_addr &lt;&lt; 1) &amp; 0x01) register_bytes length_word&n; * bulk read:  byte_buffer (length_word bytes)&n; */
 DECL|macro|DIBUSB_REQ_I2C_READ
-mdefine_line|#define DIBUSB_REQ_I2C_READ  &t;&t;&t;0x02
+mdefine_line|#define DIBUSB_REQ_I2C_READ&t;&t;&t;0x02
 multiline_comment|/*&n; * i2c write&n; * bulk write: 0x03 (7bit i2c_addr &lt;&lt; 1) register_bytes value_bytes&n; */
 DECL|macro|DIBUSB_REQ_I2C_WRITE
-mdefine_line|#define DIBUSB_REQ_I2C_WRITE &t;&t;&t;0x03
-multiline_comment|/* &n; * polling the value of the remote control &n; * bulk write: 0x04&n; * bulk read:  byte_buffer (5 bytes) &n; *&n; * first byte of byte_buffer shows the status (0x00, 0x01, 0x02)&n; */
+mdefine_line|#define DIBUSB_REQ_I2C_WRITE&t;&t;&t;0x03
+multiline_comment|/*&n; * polling the value of the remote control&n; * bulk write: 0x04&n; * bulk read:  byte_buffer (5 bytes)&n; *&n; * first byte of byte_buffer shows the status (0x00, 0x01, 0x02)&n; */
 DECL|macro|DIBUSB_REQ_POLL_REMOTE
 mdefine_line|#define DIBUSB_REQ_POLL_REMOTE&t;&t;&t;0x04
 DECL|macro|DIBUSB_RC_NEC_EMPTY
@@ -784,13 +784,13 @@ DECL|macro|DIBUSB_RC_NEC_KEY_PRESSED
 mdefine_line|#define DIBUSB_RC_NEC_KEY_PRESSED&t;&t;0x01
 DECL|macro|DIBUSB_RC_NEC_KEY_REPEATED
 mdefine_line|#define DIBUSB_RC_NEC_KEY_REPEATED&t;&t;0x02
-multiline_comment|/* streaming mode:&n; * bulk write: 0x05 mode_byte &n; *&n; * mode_byte is mostly 0x00&n; */
+multiline_comment|/* streaming mode:&n; * bulk write: 0x05 mode_byte&n; *&n; * mode_byte is mostly 0x00&n; */
 DECL|macro|DIBUSB_REQ_SET_STREAMING_MODE
 mdefine_line|#define DIBUSB_REQ_SET_STREAMING_MODE&t;0x05
 multiline_comment|/* interrupt the internal read loop, when blocking */
 DECL|macro|DIBUSB_REQ_INTR_READ
-mdefine_line|#define DIBUSB_REQ_INTR_READ&t;&t;   &t;0x06
-multiline_comment|/* io control&n; * 0x07 cmd_byte param_bytes&n; *&n; * param_bytes can be up to 32 bytes&n; *&n; * cmd_byte function    parameter name &n; * 0x00     power mode&n; *                      0x00      sleep&n; *                      0x01      wakeup&n; *&n; * 0x01     enable streaming &n; * 0x02     disable streaming&n; *&n; *&n; */
+mdefine_line|#define DIBUSB_REQ_INTR_READ&t;&t;&t;0x06
+multiline_comment|/* io control&n; * 0x07 cmd_byte param_bytes&n; *&n; * param_bytes can be up to 32 bytes&n; *&n; * cmd_byte function    parameter name&n; * 0x00     power mode&n; *                      0x00      sleep&n; *                      0x01      wakeup&n; *&n; * 0x01     enable streaming&n; * 0x02     disable streaming&n; *&n; *&n; */
 DECL|macro|DIBUSB_REQ_SET_IOCTL
 mdefine_line|#define DIBUSB_REQ_SET_IOCTL&t;&t;&t;0x07
 multiline_comment|/* IOCTL commands */

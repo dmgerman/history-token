@@ -2832,7 +2832,7 @@ op_star
 )paren
 id|fe-&gt;demodulator_priv
 suffix:semicolon
-multiline_comment|/* TODO log10 &n;&t;u16 sigpow = rd(DIB3000MB_REG_SIGNAL_POWER), &n;&t;&t;n_agc_power = rd(DIB3000MB_REG_AGC_POWER),&n;&t;&t;rf_power = rd(DIB3000MB_REG_RF_POWER);&n;&t;double rf_power_dBm, ad_power_dBm, minar_power_dBm;&n;&t;&n;&t;if (n_agc_power == 0 )&n;&t;&t;n_agc_power = 1 ;&n;&n;&t;ad_power_dBm    = 10 * log10 ( (float)n_agc_power / (float)(1&lt;&lt;16) );&n;&t;minor_power_dBm = ad_power_dBm - DIB3000MB_AGC_REF_dBm;&n;&t;rf_power_dBm = (-DIB3000MB_GAIN_SLOPE_dBm * (float)rf_power / (float)(1&lt;&lt;16) + &n;&t;&t;&t;DIB3000MB_GAIN_DELTA_dBm) + minor_power_dBm;&n;&t;// relative rf_power &n;&t;*strength = (u16) ((rf_power_dBm + 100) / 100 * 0xffff);&n;*/
+multiline_comment|/* TODO log10&n;&t;u16 sigpow = rd(DIB3000MB_REG_SIGNAL_POWER),&n;&t;&t;n_agc_power = rd(DIB3000MB_REG_AGC_POWER),&n;&t;&t;rf_power = rd(DIB3000MB_REG_RF_POWER);&n;&t;double rf_power_dBm, ad_power_dBm, minar_power_dBm;&n;&n;&t;if (n_agc_power == 0 )&n;&t;&t;n_agc_power = 1 ;&n;&n;&t;ad_power_dBm    = 10 * log10 ( (float)n_agc_power / (float)(1&lt;&lt;16) );&n;&t;minor_power_dBm = ad_power_dBm - DIB3000MB_AGC_REF_dBm;&n;&t;rf_power_dBm = (-DIB3000MB_GAIN_SLOPE_dBm * (float)rf_power / (float)(1&lt;&lt;16) +&n;&t;&t;&t;DIB3000MB_GAIN_DELTA_dBm) + minor_power_dBm;&n;&t;// relative rf_power&n;&t;*strength = (u16) ((rf_power_dBm + 100) / 100 * 0xffff);&n;*/
 op_star
 id|strength
 op_assign
@@ -2850,7 +2850,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Amaury: &n; * snr is the signal quality measured in dB.&n; * snr = 10*log10(signal power / noise power)&n; * the best quality is near 35dB (cable transmission &amp; good modulator)&n; * the minimum without errors depend of transmission parameters&n; * some indicative values are given in en300744 Annex A&n; * ex : 16QAM 2/3 (Gaussian)  = 11.1 dB&n; *&n; * If SNR is above 20dB, BER should be always 0.&n; * choose 0dB as the minimum&n; */
+multiline_comment|/*&n; * Amaury:&n; * snr is the signal quality measured in dB.&n; * snr = 10*log10(signal power / noise power)&n; * the best quality is near 35dB (cable transmission &amp; good modulator)&n; * the minimum without errors depend of transmission parameters&n; * some indicative values are given in en300744 Annex A&n; * ex : 16QAM 2/3 (Gaussian)  = 11.1 dB&n; *&n; * If SNR is above 20dB, BER should be always 0.&n; * choose 0dB as the minimum&n; */
 DECL|function|dib3000mb_read_snr
 r_static
 r_int
@@ -2911,7 +2911,7 @@ c_func
 id|DIB3000MB_REG_NOISE_POWER_LSB
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t;float snr_dBm=0;&n;&n;&t;if (sigpow &gt; 0 &amp;&amp; icipow &gt; 0)&n;&t;&t;snr_dBm = 10.0 * log10( (float) (sigpow&lt;&lt;8) / (float)icipow )  ;&n;&t;else if (sigpow &gt; 0)&n;&t;&t;snr_dBm = 35;&n;&t;&n;&t;*snr = (u16) ((snr_dBm / 35) * 0xffff);&n;*/
+multiline_comment|/*&n;&t;float snr_dBm=0;&n;&n;&t;if (sigpow &gt; 0 &amp;&amp; icipow &gt; 0)&n;&t;&t;snr_dBm = 10.0 * log10( (float) (sigpow&lt;&lt;8) / (float)icipow )  ;&n;&t;else if (sigpow &gt; 0)&n;&t;&t;snr_dBm = 35;&n;&n;&t;*snr = (u16) ((snr_dBm / 35) * 0xffff);&n;*/
 op_star
 id|snr
 op_assign

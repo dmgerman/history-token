@@ -64,7 +64,7 @@ l_string|&quot;Turn on/off debugging (default:off).&quot;
 )paren
 suffix:semicolon
 DECL|macro|dprintk
-mdefine_line|#define dprintk(level, args...) &bslash;&n;do {&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;if ((debug &amp; level)) {&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;printk(&quot;%s: %s(): &quot;, __stringify(KBUILD_MODNAME),&t;&bslash;&n;&t;&t;       __FUNCTION__);&t;&t;&t;&t;&t;&bslash;&n;&t;&t;printk(args); }&t;&t;&t;&t;&t;&t;&bslash;&n;} while (0)
+mdefine_line|#define dprintk(level, args...)&t;&t;&t;&t;&t;&t;&bslash;&n;do {&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;if ((debug &amp; level)) {&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;printk(&quot;%s: %s(): &quot;, __stringify(KBUILD_MODNAME),&t;&bslash;&n;&t;&t;       __FUNCTION__);&t;&t;&t;&t;&t;&bslash;&n;&t;&t;printk(args); }&t;&t;&t;&t;&t;&t;&bslash;&n;} while (0)
 DECL|enum|cinergyt2_ep1_cmd
 r_enum
 id|cinergyt2_ep1_cmd
@@ -2530,7 +2530,7 @@ suffix:semicolon
 r_case
 id|FE_GET_FRONTEND
 suffix:colon
-multiline_comment|/**&n;&t;&t; *  trivial to implement (see struct dvbt_get_status_msg).&n;&t;&t; *  equivalent to FE_READ ioctls, but needs &n;&t;&t; *  TPS -&gt; linux-dvb parameter set conversion. Feel free&n;&t;&t; *  to implement this and send us a patch if you need this&n;&t;&t; *  functionality.&n;&t;&t; */
+multiline_comment|/**&n;&t;&t; *  trivial to implement (see struct dvbt_get_status_msg).&n;&t;&t; *  equivalent to FE_READ ioctls, but needs&n;&t;&t; *  TPS -&gt; linux-dvb parameter set conversion. Feel free&n;&t;&t; *  to implement this and send us a patch if you need this&n;&t;&t; *  functionality.&n;&t;&t; */
 r_break
 suffix:semicolon
 r_case
@@ -2960,7 +2960,7 @@ op_complement
 l_int|0
 )paren
 (brace
-multiline_comment|/**&n;&t;&t;&t; * keyrepeat bit. If we would handle this properly&n;&t;&t;&t; * we would need to emit down events as long the&n;&t;&t;&t; * keyrepeat goes, a up event if no further &n;&t;&t;&t; * repeat bits occur. Would need a timer to implement&n;&t;&t;&t; * and no other driver does this, so we simply&n;&t;&t;&t; * emit the last key up/down sequence again.&n;&t;&t;&t; */
+multiline_comment|/**&n;&t;&t;&t; * keyrepeat bit. If we would handle this properly&n;&t;&t;&t; * we would need to emit down events as long the&n;&t;&t;&t; * keyrepeat goes, a up event if no further&n;&t;&t;&t; * repeat bits occur. Would need a timer to implement&n;&t;&t;&t; * and no other driver does this, so we simply&n;&t;&t;&t; * emit the last key up/down sequence again.&n;&t;&t;&t; */
 )brace
 r_else
 (brace

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * budget-av.c: driver for the SAA7146 based Budget DVB cards&n; *              with analog video in &n; *&n; * Compiled from various sources by Michael Hunold &lt;michael@mihu.de&gt; &n; *&n; * CI interface support (c) 2004 Olivier Gournet &lt;ogournet@anevia.com&gt; &amp;&n; *                               Andrew de Quincey &lt;adq_dvb@lidskialf.net&gt;&n; *&n; * Copyright (C) 2002 Ralph Metzler &lt;rjkm@metzlerbros.de&gt;&n; *&n; * Copyright (C) 1999-2002 Ralph  Metzler &n; *                       &amp; Marcus Metzler for convergence integrated media GmbH&n; *&n; * This program is free software; you can redistribute it and/or&n; * modify it under the terms of the GNU General Public License&n; * as published by the Free Software Foundation; either version 2&n; * of the License, or (at your option) any later version.&n; * &n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; * &n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.&n; * Or, point your browser to http://www.gnu.org/copyleft/gpl.html&n; * &n; *&n; * the project&squot;s page is at http://www.linuxtv.org/dvb/&n; */
+multiline_comment|/*&n; * budget-av.c: driver for the SAA7146 based Budget DVB cards&n; *              with analog video in&n; *&n; * Compiled from various sources by Michael Hunold &lt;michael@mihu.de&gt;&n; *&n; * CI interface support (c) 2004 Olivier Gournet &lt;ogournet@anevia.com&gt; &amp;&n; *                               Andrew de Quincey &lt;adq_dvb@lidskialf.net&gt;&n; *&n; * Copyright (C) 2002 Ralph Metzler &lt;rjkm@metzlerbros.de&gt;&n; *&n; * Copyright (C) 1999-2002 Ralph  Metzler&n; *                       &amp; Marcus Metzler for convergence integrated media GmbH&n; *&n; * This program is free software; you can redistribute it and/or&n; * modify it under the terms of the GNU General Public License&n; * as published by the Free Software Foundation; either version 2&n; * of the License, or (at your option) any later version.&n; *&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.&n; * Or, point your browser to http://www.gnu.org/copyleft/gpl.html&n; *&n; *&n; * the project&squot;s page is at http://www.linuxtv.org/dvb/&n; */
 macro_line|#include &quot;budget.h&quot;
 macro_line|#include &quot;stv0299.h&quot;
 macro_line|#include &quot;tda10021.h&quot;
@@ -63,6 +63,7 @@ DECL|function|i2c_readreg
 r_static
 id|u8
 id|i2c_readreg
+c_func
 (paren
 r_struct
 id|i2c_adapter
@@ -315,6 +316,7 @@ DECL|function|i2c_writereg
 r_static
 r_int
 id|i2c_writereg
+c_func
 (paren
 r_struct
 id|i2c_adapter
@@ -337,7 +339,11 @@ id|msg
 l_int|2
 )braket
 op_assign
-initialization_block
+(brace
+id|reg
+comma
+id|val
+)brace
 suffix:semicolon
 r_struct
 id|i2c_msg
@@ -1618,6 +1624,7 @@ DECL|function|saa7113_init
 r_static
 r_int
 id|saa7113_init
+c_func
 (paren
 r_struct
 id|budget_av
@@ -1644,6 +1651,7 @@ r_if
 c_cond
 (paren
 id|i2c_writereg
+c_func
 (paren
 op_amp
 id|budget-&gt;i2c_adap
@@ -1739,6 +1747,7 @@ DECL|function|saa7113_setinput
 r_static
 r_int
 id|saa7113_setinput
+c_func
 (paren
 r_struct
 id|budget_av
@@ -3788,6 +3797,7 @@ DECL|function|budget_av_detach
 r_static
 r_int
 id|budget_av_detach
+c_func
 (paren
 r_struct
 id|saa7146_dev
@@ -3845,6 +3855,7 @@ l_int|200
 )paren
 suffix:semicolon
 id|saa7146_unregister_device
+c_func
 (paren
 op_amp
 id|budget_av-&gt;vd
@@ -3880,12 +3891,14 @@ suffix:semicolon
 id|err
 op_assign
 id|ttpci_budget_deinit
+c_func
 (paren
 op_amp
 id|budget_av-&gt;budget
 )paren
 suffix:semicolon
 id|kfree
+c_func
 (paren
 id|budget_av
 )paren
@@ -4159,6 +4172,7 @@ id|SAA7146_HPS_SYNC_PORT_A
 )paren
 suffix:semicolon
 id|saa7113_setinput
+c_func
 (paren
 id|budget_av
 comma
@@ -4551,6 +4565,7 @@ id|input
 suffix:semicolon
 r_return
 id|saa7113_setinput
+c_func
 (paren
 id|budget_av
 comma

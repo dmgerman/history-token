@@ -407,6 +407,7 @@ DECL|function|stv0297_writereg
 r_static
 r_int
 id|stv0297_writereg
+c_func
 (paren
 r_struct
 id|stv0297_state
@@ -463,6 +464,7 @@ suffix:semicolon
 id|ret
 op_assign
 id|i2c_transfer
+c_func
 (paren
 id|state-&gt;i2c
 comma
@@ -512,6 +514,7 @@ DECL|function|stv0297_readreg
 r_static
 r_int
 id|stv0297_readreg
+c_func
 (paren
 r_struct
 id|stv0297_state
@@ -603,6 +606,7 @@ c_cond
 id|ret
 op_assign
 id|i2c_transfer
+c_func
 (paren
 id|state-&gt;i2c
 comma
@@ -643,6 +647,7 @@ c_cond
 id|ret
 op_assign
 id|i2c_transfer
+c_func
 (paren
 id|state-&gt;i2c
 comma
@@ -687,6 +692,7 @@ DECL|function|stv0297_writereg_mask
 r_static
 r_int
 id|stv0297_writereg_mask
+c_func
 (paren
 r_struct
 id|stv0297_state
@@ -747,6 +753,7 @@ DECL|function|stv0297_readregs
 r_static
 r_int
 id|stv0297_readregs
+c_func
 (paren
 r_struct
 id|stv0297_state
@@ -828,6 +835,7 @@ c_cond
 id|ret
 op_assign
 id|i2c_transfer
+c_func
 (paren
 id|state-&gt;i2c
 comma
@@ -868,6 +876,7 @@ c_cond
 id|ret
 op_assign
 id|i2c_transfer
+c_func
 (paren
 id|state-&gt;i2c
 comma
@@ -1025,6 +1034,7 @@ l_int|8192L
 suffix:semicolon
 multiline_comment|/* 8192 = 2^13 */
 id|stv0297_writereg
+c_func
 (paren
 id|state
 comma
@@ -1042,6 +1052,7 @@ l_int|0xFF
 )paren
 suffix:semicolon
 id|stv0297_writereg
+c_func
 (paren
 id|state
 comma
@@ -1059,6 +1070,7 @@ l_int|8
 )paren
 suffix:semicolon
 id|stv0297_writereg
+c_func
 (paren
 id|state
 comma
@@ -1076,6 +1088,7 @@ l_int|16
 )paren
 suffix:semicolon
 id|stv0297_writereg
+c_func
 (paren
 id|state
 comma
@@ -1303,7 +1316,7 @@ l_int|0x0f
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n;static long stv0297_get_carrieroffset(struct stv0297_state* state)&n;{&n;&t;s64 tmp;&n;&n;        stv0297_writereg(state,0x6B, 0x00);&n;&n;&t;tmp = stv0297_readreg(state, 0x66);&n;&t;tmp |= (stv0297_readreg(state, 0x67) &lt;&lt; 8);&n;&t;tmp |= (stv0297_readreg(state, 0x68) &lt;&lt; 16);&n;&t;tmp |= (stv0297_readreg(state, 0x69) &amp; 0x0F) &lt;&lt; 24;&n;&n;&t;tmp *= stv0297_get_symbolrate(state);&n;&t;tmp &gt;&gt;= 28;&n;&n;&t;return (s32) tmp;&n;}&n;*/
+multiline_comment|/*&n;static long stv0297_get_carrieroffset(struct stv0297_state *state)&n;{&n;&t;s64 tmp;&n;&n;&t;stv0297_writereg(state, 0x6B, 0x00);&n;&n;&t;tmp = stv0297_readreg(state, 0x66);&n;&t;tmp |= (stv0297_readreg(state, 0x67) &lt;&lt; 8);&n;&t;tmp |= (stv0297_readreg(state, 0x68) &lt;&lt; 16);&n;&t;tmp |= (stv0297_readreg(state, 0x69) &amp; 0x0F) &lt;&lt; 24;&n;&n;&t;tmp *= stv0297_get_symbolrate(state);&n;&t;tmp &gt;&gt;= 28;&n;&n;&t;return (s32) tmp;&n;}&n;*/
 DECL|function|stv0297_set_initialdemodfreq
 r_static
 r_void
@@ -1619,6 +1632,7 @@ DECL|function|stv0297_init
 r_static
 r_int
 id|stv0297_init
+c_func
 (paren
 r_struct
 id|dvb_frontend
@@ -1712,6 +1726,7 @@ l_int|2
 )paren
 (brace
 id|stv0297_writereg
+c_func
 (paren
 id|state
 comma
@@ -1916,6 +1931,7 @@ id|u8
 id|sync
 op_assign
 id|stv0297_readreg
+c_func
 (paren
 id|state
 comma
@@ -1986,6 +2002,7 @@ l_int|3
 )braket
 suffix:semicolon
 id|stv0297_writereg
+c_func
 (paren
 id|state
 comma
@@ -2003,6 +2020,7 @@ l_int|25
 suffix:semicolon
 singleline_comment|// Hopefully got 4096 Bytes
 id|stv0297_readregs
+c_func
 (paren
 id|state
 comma
@@ -2081,6 +2099,7 @@ l_int|2
 )braket
 suffix:semicolon
 id|stv0297_readregs
+c_func
 (paren
 id|state
 comma
@@ -2149,6 +2168,7 @@ l_int|2
 )braket
 suffix:semicolon
 id|stv0297_readregs
+c_func
 (paren
 id|state
 comma
@@ -2211,6 +2231,7 @@ id|ucblocks
 op_assign
 (paren
 id|stv0297_readreg
+c_func
 (paren
 id|state
 comma
@@ -2221,6 +2242,7 @@ l_int|8
 )paren
 op_or
 id|stv0297_readreg
+c_func
 (paren
 id|state
 comma

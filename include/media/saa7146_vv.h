@@ -957,7 +957,7 @@ multiline_comment|/* misc defines */
 DECL|macro|SAA7146_NO_SWAP
 mdefine_line|#define SAA7146_NO_SWAP&t;&t;(0x0)
 DECL|macro|SAA7146_TWO_BYTE_SWAP
-mdefine_line|#define SAA7146_TWO_BYTE_SWAP &t;(0x1)
+mdefine_line|#define SAA7146_TWO_BYTE_SWAP&t;(0x1)
 DECL|macro|SAA7146_FOUR_BYTE_SWAP
 mdefine_line|#define SAA7146_FOUR_BYTE_SWAP&t;(0x2)
 macro_line|#endif

@@ -939,7 +939,7 @@ l_int|0
 op_assign
 l_int|0x00
 suffix:semicolon
-multiline_comment|/*&n;&t; * CLK ratio:&n;&t; * system clock frequency is up to 64 or 96 MHz&n;&t; *&n;&t; * formula:&n;&t; * r = k * clk / symbol_rate&n;&t; *&n;&t; * k:&t;2^21 for caa 0..3,&n;&t; * &t;2^20 for caa 4..5,&n;&t; * &t;2^19 for caa 6..7&n;&t; */
+multiline_comment|/*&n;&t; * CLK ratio:&n;&t; * system clock frequency is up to 64 or 96 MHz&n;&t; *&n;&t; * formula:&n;&t; * r = k * clk / symbol_rate&n;&t; *&n;&t; * k:&t;2^21 for caa 0..3,&n;&t; *&t;2^20 for caa 4..5,&n;&t; *&t;2^19 for caa 6..7&n;&t; */
 r_if
 c_cond
 (paren

@@ -574,7 +574,7 @@ l_int|0x0087
 )brace
 suffix:semicolon
 DECL|macro|DIB3000MC_REG_IMP_NOISE_55
-mdefine_line|#define DIB3000MC_REG_IMP_NOISE_55 &t;&t;(    55)
+mdefine_line|#define DIB3000MC_REG_IMP_NOISE_55&t;&t;(    55)
 DECL|macro|DIB3000MC_IMP_NEW_ALGO
 mdefine_line|#define DIB3000MC_IMP_NEW_ALGO(w)&t;&t;(w | (1&lt;&lt;10))
 multiline_comment|/* Impulse noise params */
@@ -1143,7 +1143,7 @@ DECL|macro|DIB3000MC_REG_FEC_CFG
 mdefine_line|#define DIB3000MC_REG_FEC_CFG&t;&t;&t;(   195)
 DECL|macro|DIB3000MC_FEC_CFG
 mdefine_line|#define DIB3000MC_FEC_CFG&t;&t;&t;&t;(  0x10)
-multiline_comment|/*&n; * reg 206, output mode&n; *              1111 1111&n; *              |||| ||||&n; *              |||| |||+- unk&n; *              |||| ||+-- unk&n; *              |||| |+--- unk (on by default)&n; *              |||| +---- fifo_ctrl (1 = inhibit (flushed), 0 = active (unflushed))&n; *              |||+------ pid_parse (1 = enabled, 0 = disabled)&n; *              ||+------- outp_188  (1 = TS packet size 188, 0 = packet size 204)&n; *              |+-------- unk &n; *              +--------- unk&n; */
+multiline_comment|/*&n; * reg 206, output mode&n; *              1111 1111&n; *              |||| ||||&n; *              |||| |||+- unk&n; *              |||| ||+-- unk&n; *              |||| |+--- unk (on by default)&n; *              |||| +---- fifo_ctrl (1 = inhibit (flushed), 0 = active (unflushed))&n; *              |||+------ pid_parse (1 = enabled, 0 = disabled)&n; *              ||+------- outp_188  (1 = TS packet size 188, 0 = packet size 204)&n; *              |+-------- unk&n; *              +--------- unk&n; */
 DECL|macro|DIB3000MC_REG_SMO_MODE
 mdefine_line|#define DIB3000MC_REG_SMO_MODE&t;&t;&t;(   206)
 DECL|macro|DIB3000MC_SMO_MODE_DEFAULT

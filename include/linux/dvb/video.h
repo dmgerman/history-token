@@ -1,4 +1,4 @@
-multiline_comment|/* &n; * video.h&n; *&n; * Copyright (C) 2000 Marcus Metzler &lt;marcus@convergence.de&gt;&n; *                  &amp; Ralph  Metzler &lt;ralph@convergence.de&gt;&n;                      for convergence integrated media GmbH&n; *&n; * This program is free software; you can redistribute it and/or&n; * modify it under the terms of the GNU Lesser General Public License&n; * as published by the Free Software Foundation; either version 2.1&n; * of the License, or (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU Lesser General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.&n; *&n; */
+multiline_comment|/*&n; * video.h&n; *&n; * Copyright (C) 2000 Marcus Metzler &lt;marcus@convergence.de&gt;&n; *                  &amp; Ralph  Metzler &lt;ralph@convergence.de&gt;&n; *                    for convergence integrated media GmbH&n; *&n; * This program is free software; you can redistribute it and/or&n; * modify it under the terms of the GNU Lesser General Public License&n; * as published by the Free Software Foundation; either version 2.1&n; * of the License, or (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU Lesser General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.&n; *&n; */
 macro_line|#ifndef _DVBVIDEO_H_
 DECL|macro|_DVBVIDEO_H_
 mdefine_line|#define _DVBVIDEO_H_
@@ -103,7 +103,7 @@ comma
 multiline_comment|/* Select the demux as the main source */
 DECL|enumerator|VIDEO_SOURCE_MEMORY
 id|VIDEO_SOURCE_MEMORY
-multiline_comment|/* If this source is selected, the stream &n;&t;&t;&t;       comes from the user through the write &n;&t;&t;&t;       system call */
+multiline_comment|/* If this source is selected, the stream&n;&t;&t;&t;       comes from the user through the write&n;&t;&t;&t;       system call */
 DECL|typedef|video_stream_source_t
 )brace
 id|video_stream_source_t
@@ -135,7 +135,7 @@ r_int32
 id|type
 suffix:semicolon
 DECL|macro|VIDEO_EVENT_SIZE_CHANGED
-mdefine_line|#define VIDEO_EVENT_SIZE_CHANGED 1
+mdefine_line|#define VIDEO_EVENT_SIZE_CHANGED&t;1
 DECL|macro|VIDEO_EVENT_FRAME_RATE_CHANGED
 mdefine_line|#define VIDEO_EVENT_FRAME_RATE_CHANGED&t;2
 DECL|member|timestamp
@@ -335,15 +335,15 @@ multiline_comment|/*    0    film/camera mode (0=camera, 1=film (625/50 only)) *
 multiline_comment|/* bit definitions for capabilities: */
 multiline_comment|/* can the hardware decode MPEG1 and/or MPEG2? */
 DECL|macro|VIDEO_CAP_MPEG1
-mdefine_line|#define VIDEO_CAP_MPEG1   1 
+mdefine_line|#define VIDEO_CAP_MPEG1   1
 DECL|macro|VIDEO_CAP_MPEG2
 mdefine_line|#define VIDEO_CAP_MPEG2   2
-multiline_comment|/* can you send a system and/or program stream to video device?&n;   (you still have to open the video and the audio device but only &n;    send the stream to the video device) */
+multiline_comment|/* can you send a system and/or program stream to video device?&n;   (you still have to open the video and the audio device but only&n;    send the stream to the video device) */
 DECL|macro|VIDEO_CAP_SYS
 mdefine_line|#define VIDEO_CAP_SYS     4
 DECL|macro|VIDEO_CAP_PROG
 mdefine_line|#define VIDEO_CAP_PROG    8
-multiline_comment|/* can the driver also handle SPU, NAVI and CSS encoded data? &n;   (CSS API is not present yet) */
+multiline_comment|/* can the driver also handle SPU, NAVI and CSS encoded data?&n;   (CSS API is not present yet) */
 DECL|macro|VIDEO_CAP_SPU
 mdefine_line|#define VIDEO_CAP_SPU    16
 DECL|macro|VIDEO_CAP_NAVI
@@ -351,7 +351,7 @@ mdefine_line|#define VIDEO_CAP_NAVI   32
 DECL|macro|VIDEO_CAP_CSS
 mdefine_line|#define VIDEO_CAP_CSS    64
 DECL|macro|VIDEO_STOP
-mdefine_line|#define VIDEO_STOP                 _IO(&squot;o&squot;, 21) 
+mdefine_line|#define VIDEO_STOP                 _IO(&squot;o&squot;, 21)
 DECL|macro|VIDEO_PLAY
 mdefine_line|#define VIDEO_PLAY                 _IO(&squot;o&squot;, 22)
 DECL|macro|VIDEO_FREEZE

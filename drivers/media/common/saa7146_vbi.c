@@ -401,7 +401,7 @@ l_int|19
 )paren
 )paren
 suffix:semicolon
-singleline_comment|// 5 == vbi_start  
+singleline_comment|// 5 == vbi_start
 multiline_comment|/* wait for brs_done */
 id|WRITE_RPS1
 c_func

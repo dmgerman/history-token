@@ -144,9 +144,9 @@ mdefine_line|#define QUANT_MATRIX_EXTENSION       0x03
 DECL|macro|PICTURE_DISPLAY_EXTENSION
 mdefine_line|#define PICTURE_DISPLAY_EXTENSION    0x07
 DECL|macro|I_FRAME
-mdefine_line|#define I_FRAME 0x01 
+mdefine_line|#define I_FRAME 0x01
 DECL|macro|B_FRAME
-mdefine_line|#define B_FRAME 0x02 
+mdefine_line|#define B_FRAME 0x02
 DECL|macro|P_FRAME
 mdefine_line|#define P_FRAME 0x03
 multiline_comment|/* Initialize sequence_data */
@@ -177,7 +177,7 @@ DECL|macro|PES_CRC_FLAG
 mdefine_line|#define PES_CRC_FLAG     0x02
 DECL|macro|PES_EXT_FLAG
 mdefine_line|#define PES_EXT_FLAG     0x01
-singleline_comment|//pts_dts flags 
+singleline_comment|//pts_dts flags
 DECL|macro|PTS_ONLY
 mdefine_line|#define PTS_ONLY         0x80
 DECL|macro|PTS_DTS

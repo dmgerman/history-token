@@ -1,4 +1,4 @@
-multiline_comment|/* &n; * osd.h&n; *&n; * Copyright (C) 2001 Ralph  Metzler &lt;ralph@convergence.de&gt;&n; *                  &amp; Marcus Metzler &lt;marcus@convergence.de&gt;&n;                      for convergence integrated media GmbH&n; *&n; * This program is free software; you can redistribute it and/or&n; * modify it under the terms of the GNU General Lesser Public License&n; * as published by the Free Software Foundation; either version 2.1&n; * of the License, or (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU Lesser General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.&n; *&n; */
+multiline_comment|/*&n; * osd.h&n; *&n; * Copyright (C) 2001 Ralph  Metzler &lt;ralph@convergence.de&gt;&n; *                  &amp; Marcus Metzler &lt;marcus@convergence.de&gt;&n; *                    for convergence integrated media GmbH&n; *&n; * This program is free software; you can redistribute it and/or&n; * modify it under the terms of the GNU General Lesser Public License&n; * as published by the Free Software Foundation; either version 2.1&n; * of the License, or (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU Lesser General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.&n; *&n; */
 macro_line|#ifndef _DVBOSD_H_
 DECL|macro|_DVBOSD_H_
 mdefine_line|#define _DVBOSD_H_
@@ -137,7 +137,7 @@ singleline_comment|//  (x0) set window with number 0&lt;x0&lt;8 as current
 DECL|enumerator|OSD_MoveWindow
 id|OSD_MoveWindow
 comma
-singleline_comment|//  move current window to (x0, y0)  
+singleline_comment|//  move current window to (x0, y0)
 DECL|enumerator|OSD_OpenRaw
 id|OSD_OpenRaw
 comma
@@ -292,7 +292,7 @@ DECL|typedef|osd_cap_t
 id|osd_cap_t
 suffix:semicolon
 DECL|macro|OSD_SEND_CMD
-mdefine_line|#define OSD_SEND_CMD       _IOW(&squot;o&squot;, 160, osd_cmd_t)
+mdefine_line|#define OSD_SEND_CMD            _IOW(&squot;o&squot;, 160, osd_cmd_t)
 DECL|macro|OSD_GET_CAPABILITY
 mdefine_line|#define OSD_GET_CAPABILITY      _IOR(&squot;o&squot;, 161, osd_cap_t)
 macro_line|#endif

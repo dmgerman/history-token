@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * Bt8xx based DVB adapter driver &n; *&n; * Copyright (C) 2002,2003 Florian Schirmer &lt;jolt@tuxbox.org&gt;&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; *&n; */
+multiline_comment|/*&n; * Bt8xx based DVB adapter driver&n; *&n; * Copyright (C) 2002,2003 Florian Schirmer &lt;jolt@tuxbox.org&gt;&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; *&n; */
 macro_line|#include &lt;linux/bitops.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/moduleparam.h&gt;
@@ -899,7 +899,7 @@ id|i
 )braket
 suffix:semicolon
 multiline_comment|/* the gain values must be set by SetSymbolrate */
-multiline_comment|/* compute the pll divider needed, from Conexant data sheet,&n;           resolved for (n*32+a), remember f(vco) is f(receive) *2 or *4,&n;           depending on the divider bit. It is set to /4 on the 2 lowest &n;           bands  */
+multiline_comment|/* compute the pll divider needed, from Conexant data sheet,&n;           resolved for (n*32+a), remember f(vco) is f(receive) *2 or *4,&n;           depending on the divider bit. It is set to /4 on the 2 lowest&n;           bands  */
 id|n
 op_assign
 (paren
@@ -3054,7 +3054,7 @@ id|card-&gt;irq_err_ignore
 op_assign
 l_int|0
 suffix:semicolon
-multiline_comment|/* 26, 15, 14, 6, 5 &n;&t;&t; * A_PWRDN  DA_DPM DA_SBR DA_IOM_DA&n;&t;&t;&t;&t; * DA_APP(parallel) */
+multiline_comment|/* 26, 15, 14, 6, 5&n;&t;&t; * A_PWRDN  DA_DPM DA_SBR DA_IOM_DA&n;&t;&t; * DA_APP(parallel) */
 r_break
 suffix:semicolon
 macro_line|#ifdef BTTV_TWINHAN_VP3021
@@ -3140,7 +3140,7 @@ id|BT878_APPERR
 op_or
 id|BT878_AFBUS
 suffix:semicolon
-multiline_comment|/* 25,21,14,11,10,9,8,3,2 then&n;&t;&t;&t;&t; * 0x33 = 5,4,1,0&n;&t;&t;&t;&t; * A_SEL=SML, DA_MLB, DA_SBR, &n;&t;&t;&t;&t; * DA_SDR=f, fifo trigger = 32 DWORDS&n;&t;&t;&t;&t; * IOM = 0 == audio A/D&n;&t;&t;&t;&t; * DPM = 0 == digital audio mode&n;&t;&t;&t;&t; * == async data parallel port&n;&t;&t;&t;&t; * then 0x33 (13 is set by start_capture)&n;&t;&t;&t;&t; * DA_APP = async data parallel port, &n;&t;&t;&t;&t; * ACAP_EN = 1,&n;&t;&t;&t;&t; * RISC+FIFO ENABLE */
+multiline_comment|/* 25,21,14,11,10,9,8,3,2 then&n;&t;&t; * 0x33 = 5,4,1,0&n;&t;&t; * A_SEL=SML, DA_MLB, DA_SBR,&n;&t;&t; * DA_SDR=f, fifo trigger = 32 DWORDS&n;&t;&t; * IOM = 0 == audio A/D&n;&t;&t; * DPM = 0 == digital audio mode&n;&t;&t; * == async data parallel port&n;&t;&t; * then 0x33 (13 is set by start_capture)&n;&t;&t; * DA_APP = async data parallel port,&n;&t;&t; * ACAP_EN = 1,&n;&t;&t; * RISC+FIFO ENABLE */
 r_break
 suffix:semicolon
 r_default

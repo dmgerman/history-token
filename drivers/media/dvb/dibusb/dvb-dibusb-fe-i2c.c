@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * dvb-dibusb-fe-i2c.c is part of the driver for mobile USB Budget DVB-T devices &n; * based on reference design made by DiBcom (http://www.dibcom.fr/)&n; *&n; * Copyright (C) 2004-5 Patrick Boettcher (patrick.boettcher@desy.de)&n; *&n; * see dvb-dibusb-core.c for more copyright details.&n; *&n; * This file contains functions for attaching, initializing of an appropriate&n; * demodulator/frontend. I2C-stuff is also located here.&n; * &n; */
+multiline_comment|/*&n; * dvb-dibusb-fe-i2c.c is part of the driver for mobile USB Budget DVB-T devices&n; * based on reference design made by DiBcom (http://www.dibcom.fr/)&n; *&n; * Copyright (C) 2004-5 Patrick Boettcher (patrick.boettcher@desy.de)&n; *&n; * see dvb-dibusb-core.c for more copyright details.&n; *&n; * This file contains functions for attaching, initializing of an appropriate&n; * demodulator/frontend. I2C-stuff is also located here.&n; *&n; */
 macro_line|#include &quot;dvb-dibusb.h&quot;
 macro_line|#include &lt;linux/usb.h&gt;
 DECL|function|dibusb_i2c_msg
@@ -710,7 +710,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/* there is a ugly pid_filter in the firmware of the umt devices, it is accessible &n; * by i2c address 0x8. Don&squot;t know how to deactivate it and how many rows it has.&n; */
+multiline_comment|/* there is a ugly pid_filter in the firmware of the umt devices, it is accessible&n; * by i2c address 0x8. Don&squot;t know how to deactivate it and how many rows it has.&n; */
 DECL|function|dibusb_umt_pid_control
 r_static
 r_int
@@ -1585,7 +1585,7 @@ l_int|4
 suffix:semicolon
 singleline_comment|// UHF band Ch E21 to E27
 r_else
-singleline_comment|// if (freq &lt; 862000000) 
+singleline_comment|// if (freq &lt; 862000000)
 id|cp210
 op_assign
 l_int|5
@@ -1618,7 +1618,7 @@ l_int|2
 suffix:semicolon
 singleline_comment|// BW selected for VHF high E5 to E12
 r_else
-singleline_comment|// if (freq &lt; 862000000) 
+singleline_comment|// if (freq &lt; 862000000)
 id|p4321
 op_assign
 l_int|4
@@ -1678,7 +1678,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/*&n; *            &t;            7&t;6&t;&t;5&t;4&t;3&t;2&t;1&t;0&n; * Address Byte             1&t;1&t;&t;0&t;0&t;0&t;MA1&t;MA0&t;R/~W=0&n; *&n; * Program divider byte 1   0&t;n14&t;&t;n13&t;n12&t;n11&t;n10&t;n9&t;n8&n; * Program divider byte 2&t;n7&t;n6&t;&t;n5&t;n4&t;n3&t;n2&t;n1&t;n0&n; *&n; * Control byte 1           1&t;T/A=1&t;T2&t;T1&t;T0&t;R2&t;R1&t;R0&n; *                          1&t;T/A=0&t;0&t;0&t;ATC&t;AL2&t;AL1&t;AL0&n; * &n; * Control byte 2           CP2&t;CP1&t;&t;CP0&t;BS5&t;BS4&t;BS3&t;BS2&t;BS1&n; * &n; * MA0/1 = programmable address bits&n; * R/~W  = read/write bit (0 for writing)&n; * N14-0 = programmable LO frequency&n; * &n; * T/A   = test AGC bit (0 = next 6 bits AGC setting, &n; *                       1 = next 6 bits test and reference divider ratio settings)&n; * T2-0  = test bits&n; * R2-0  = reference divider ratio and programmable frequency step&n; * ATC   = AGC current setting and time constant&n; *         ATC = 0: AGC current = 220nA, AGC time constant = 2s&n; *         ATC = 1: AGC current = 9uA, AGC time constant = 50ms&n; * AL2-0 = AGC take-over point bits&n; * CP2-0 = charge pump current&n; * BS5-1 = PMOS ports control bits;&n; *             BSn = 0 corresponding port is off, high-impedance state (at power-on)&n; *             BSn = 1 corresponding port is on&n; */
+multiline_comment|/*&n; *&t;&t;&t;    7&t;6&t;&t;5&t;4&t;3&t;2&t;1&t;0&n; * Address Byte             1&t;1&t;&t;0&t;0&t;0&t;MA1&t;MA0&t;R/~W=0&n; *&n; * Program divider byte 1   0&t;n14&t;&t;n13&t;n12&t;n11&t;n10&t;n9&t;n8&n; * Program divider byte 2&t;n7&t;n6&t;&t;n5&t;n4&t;n3&t;n2&t;n1&t;n0&n; *&n; * Control byte 1           1&t;T/A=1&t;T2&t;T1&t;T0&t;R2&t;R1&t;R0&n; *                          1&t;T/A=0&t;0&t;0&t;ATC&t;AL2&t;AL1&t;AL0&n; *&n; * Control byte 2           CP2&t;CP1&t;&t;CP0&t;BS5&t;BS4&t;BS3&t;BS2&t;BS1&n; *&n; * MA0/1 = programmable address bits&n; * R/~W  = read/write bit (0 for writing)&n; * N14-0 = programmable LO frequency&n; *&n; * T/A   = test AGC bit (0 = next 6 bits AGC setting,&n; *                       1 = next 6 bits test and reference divider ratio settings)&n; * T2-0  = test bits&n; * R2-0  = reference divider ratio and programmable frequency step&n; * ATC   = AGC current setting and time constant&n; *         ATC = 0: AGC current = 220nA, AGC time constant = 2s&n; *         ATC = 1: AGC current = 9uA, AGC time constant = 50ms&n; * AL2-0 = AGC take-over point bits&n; * CP2-0 = charge pump current&n; * BS5-1 = PMOS ports control bits;&n; *             BSn = 0 corresponding port is off, high-impedance state (at power-on)&n; *             BSn = 1 corresponding port is on&n; */
 DECL|function|panasonic_cofdm_env77h11d5_tda6650_init
 r_static
 r_int
@@ -2050,7 +2050,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/*&n; *            &t;            7&t;6&t;5&t;4&t;3&t;2&t;1&t;0&n; * Address Byte             1&t;1&t;0&t;0&t;0&t;MA1&t;MA0&t;R/~W=0&n; *&n; * Program divider byte 1   0&t;n14&t;n13&t;n12&t;n11&t;n10&t;n9&t;n8&n; * Program divider byte 2&t;n7&t;n6&t;n5&t;n4&t;n3&t;n2&t;n1&t;n0&n; *&n; * Control byte             1&t;CP&t;T2&t;T1&t;T0&t;RSA&t;RSB&t;OS&n; * &n; * Band Switch byte         X&t;X&t;X&t;P4&t;P3&t;P2&t;P1&t;P0&n; *&n; * Auxiliary byte           ATC&t;AL2&t;AL1&t;AL0&t;0&t;0&t;0&t;0&n; *&n; * Address: MA1&t;MA0&t;Address&n; *          0&t;0&t;c0&n; *          0&t;1&t;c2 (always valid)&n; *          1&t;0&t;c4&n; *          1&t;1&t;c6&n; *&n; *&n; * &n; */
+multiline_comment|/*&n; *&t;&t;&t;    7&t;6&t;5&t;4&t;3&t;2&t;1&t;0&n; * Address Byte             1&t;1&t;0&t;0&t;0&t;MA1&t;MA0&t;R/~W=0&n; *&n; * Program divider byte 1   0&t;n14&t;n13&t;n12&t;n11&t;n10&t;n9&t;n8&n; * Program divider byte 2&t;n7&t;n6&t;n5&t;n4&t;n3&t;n2&t;n1&t;n0&n; *&n; * Control byte             1&t;CP&t;T2&t;T1&t;T0&t;RSA&t;RSB&t;OS&n; *&n; * Band Switch byte         X&t;X&t;X&t;P4&t;P3&t;P2&t;P1&t;P0&n; *&n; * Auxiliary byte           ATC&t;AL2&t;AL1&t;AL0&t;0&t;0&t;0&t;0&n; *&n; * Address: MA1&t;MA0&t;Address&n; *          0&t;0&t;c0&n; *          0&t;1&t;c2 (always valid)&n; *          1&t;0&t;c4&n; *          1&t;1&t;c6&n; *&n; *&n; *&n; */
 DECL|function|lg_tdtp_e102p_tua6034
 r_static
 r_int

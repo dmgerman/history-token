@@ -464,7 +464,7 @@ suffix:semicolon
 DECL|macro|DST_I2C_ENABLE
 mdefine_line|#define DST_I2C_ENABLE&t;1
 DECL|macro|DST_8820
-mdefine_line|#define DST_8820  &t;2
+mdefine_line|#define DST_8820&t;2
 DECL|function|dst_reset8820
 r_static
 r_int
@@ -5364,7 +5364,7 @@ id|symbol_rate_max
 op_assign
 l_int|45000000
 comma
-multiline_comment|/*     . symbol_rate_tolerance&t;= &t;???,*/
+multiline_comment|/*     . symbol_rate_tolerance&t;=&t;???,*/
 dot
 id|caps
 op_assign
@@ -5471,7 +5471,7 @@ id|symbol_rate_max
 op_assign
 l_int|45000000
 comma
-multiline_comment|/*     . symbol_rate_tolerance&t;= &t;???,*/
+multiline_comment|/*     . symbol_rate_tolerance&t;=&t;???,*/
 dot
 id|caps
 op_assign

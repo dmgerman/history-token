@@ -546,6 +546,7 @@ DECL|function|av7110_emit_keyup
 r_static
 r_void
 id|av7110_emit_keyup
+c_func
 (paren
 r_int
 r_int
@@ -560,6 +561,7 @@ id|data
 op_logical_or
 op_logical_neg
 id|test_bit
+c_func
 (paren
 id|data
 comma
@@ -569,6 +571,7 @@ id|input_dev.key
 r_return
 suffix:semicolon
 id|input_event
+c_func
 (paren
 op_amp
 id|input_dev
@@ -600,6 +603,7 @@ DECL|function|av7110_emit_key
 r_static
 r_void
 id|av7110_emit_key
+c_func
 (paren
 id|u32
 id|ircom
@@ -763,6 +767,7 @@ r_if
 c_cond
 (paren
 id|timer_pending
+c_func
 (paren
 op_amp
 id|keyup_timer
@@ -770,6 +775,7 @@ id|keyup_timer
 )paren
 (brace
 id|del_timer
+c_func
 (paren
 op_amp
 id|keyup_timer
@@ -788,6 +794,7 @@ id|old_toggle
 )paren
 (brace
 id|input_event
+c_func
 (paren
 op_amp
 id|input_dev
@@ -802,6 +809,7 @@ l_int|0
 )paren
 suffix:semicolon
 id|input_event
+c_func
 (paren
 op_amp
 id|input_dev
@@ -817,6 +825,7 @@ suffix:semicolon
 )brace
 r_else
 id|input_event
+c_func
 (paren
 op_amp
 id|input_dev
@@ -831,6 +840,7 @@ suffix:semicolon
 )brace
 r_else
 id|input_event
+c_func
 (paren
 op_amp
 id|input_dev
@@ -854,6 +864,7 @@ op_assign
 id|keycode
 suffix:semicolon
 id|add_timer
+c_func
 (paren
 op_amp
 id|keyup_timer
@@ -868,6 +879,7 @@ DECL|function|input_register_keys
 r_static
 r_void
 id|input_register_keys
+c_func
 (paren
 r_void
 )paren
@@ -876,6 +888,7 @@ r_int
 id|i
 suffix:semicolon
 id|memset
+c_func
 (paren
 id|input_dev.keybit
 comma
@@ -942,6 +955,7 @@ OG
 id|KEY_RESERVED
 )paren
 id|set_bit
+c_func
 (paren
 id|key_map
 (braket
@@ -970,6 +984,7 @@ DECL|function|av7110_ir_write_proc
 r_static
 r_int
 id|av7110_ir_write_proc
+c_func
 (paren
 r_struct
 id|file
@@ -1066,6 +1081,7 @@ id|EFAULT
 suffix:semicolon
 )brace
 id|memcpy
+c_func
 (paren
 op_amp
 id|ir_config
@@ -1076,6 +1092,7 @@ l_int|4
 )paren
 suffix:semicolon
 id|memcpy
+c_func
 (paren
 op_amp
 id|key_map
@@ -1099,6 +1116,7 @@ id|page
 )paren
 suffix:semicolon
 id|av7110_setup_irc_config
+c_func
 (paren
 l_int|NULL
 comma
@@ -1106,6 +1124,7 @@ id|ir_config
 )paren
 suffix:semicolon
 id|input_register_keys
+c_func
 (paren
 )paren
 suffix:semicolon
@@ -1117,6 +1136,7 @@ DECL|function|av7110_ir_init
 r_int
 id|__init
 id|av7110_ir_init
+c_func
 (paren
 r_void
 )paren
@@ -1128,6 +1148,7 @@ op_star
 id|e
 suffix:semicolon
 id|init_timer
+c_func
 (paren
 op_amp
 id|keyup_timer
@@ -1141,8 +1162,9 @@ id|input_dev.name
 op_assign
 l_string|&quot;DVB on-card IR receiver&quot;
 suffix:semicolon
-multiline_comment|/**&n;         *  enable keys&n;         */
+multiline_comment|/**&n;&t; *  enable keys&n;&t; */
 id|set_bit
+c_func
 (paren
 id|EV_KEY
 comma
@@ -1150,6 +1172,7 @@ id|input_dev.evbit
 )paren
 suffix:semicolon
 id|set_bit
+c_func
 (paren
 id|EV_REP
 comma
@@ -1157,6 +1180,7 @@ id|input_dev.evbit
 )paren
 suffix:semicolon
 id|input_register_keys
+c_func
 (paren
 )paren
 suffix:semicolon
@@ -1172,6 +1196,7 @@ op_assign
 id|input_repeat_key
 suffix:semicolon
 id|av7110_setup_irc_config
+c_func
 (paren
 l_int|NULL
 comma
@@ -1179,6 +1204,7 @@ l_int|0x0001
 )paren
 suffix:semicolon
 id|av7110_register_irc_handler
+c_func
 (paren
 id|av7110_emit_key
 )paren
@@ -1186,6 +1212,7 @@ suffix:semicolon
 id|e
 op_assign
 id|create_proc_entry
+c_func
 (paren
 l_string|&quot;av7110_ir&quot;
 comma
@@ -1228,6 +1255,7 @@ DECL|function|av7110_ir_exit
 r_void
 id|__exit
 id|av7110_ir_exit
+c_func
 (paren
 r_void
 )paren
@@ -1240,6 +1268,7 @@ id|keyup_timer
 )paren
 suffix:semicolon
 id|remove_proc_entry
+c_func
 (paren
 l_string|&quot;av7110_ir&quot;
 comma
@@ -1247,6 +1276,7 @@ l_int|NULL
 )paren
 suffix:semicolon
 id|av7110_unregister_irc_handler
+c_func
 (paren
 id|av7110_emit_key
 )paren

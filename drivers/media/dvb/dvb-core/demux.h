@@ -1,25 +1,25 @@
-multiline_comment|/* &n; * demux.h &n; *&n; * Copyright (c) 2002 Convergence GmbH&n; * &n; * based on code:&n; * Copyright (c) 2000 Nokia Research Center&n; *                    Tampere, FINLAND&n; *&n; * This program is free software; you can redistribute it and/or&n; * modify it under the terms of the GNU Lesser General Public License&n; * as published by the Free Software Foundation; either version 2.1&n; * of the License, or (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU Lesser General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.&n; *&n; */
-macro_line|#ifndef __DEMUX_H 
+multiline_comment|/*&n; * demux.h&n; *&n; * Copyright (c) 2002 Convergence GmbH&n; *&n; * based on code:&n; * Copyright (c) 2000 Nokia Research Center&n; *                    Tampere, FINLAND&n; *&n; * This program is free software; you can redistribute it and/or&n; * modify it under the terms of the GNU Lesser General Public License&n; * as published by the Free Software Foundation; either version 2.1&n; * of the License, or (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU Lesser General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.&n; *&n; */
+macro_line|#ifndef __DEMUX_H
 DECL|macro|__DEMUX_H
-mdefine_line|#define __DEMUX_H 
+mdefine_line|#define __DEMUX_H
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
-macro_line|#include &lt;linux/list.h&gt; 
-macro_line|#include &lt;linux/time.h&gt; 
+macro_line|#include &lt;linux/list.h&gt;
+macro_line|#include &lt;linux/time.h&gt;
 multiline_comment|/*--------------------------------------------------------------------------*/
 multiline_comment|/* Common definitions */
 multiline_comment|/*--------------------------------------------------------------------------*/
 multiline_comment|/*&n; * DMX_MAX_FILTER_SIZE: Maximum length (in bytes) of a section/PES filter.&n; */
-macro_line|#ifndef DMX_MAX_FILTER_SIZE 
+macro_line|#ifndef DMX_MAX_FILTER_SIZE
 DECL|macro|DMX_MAX_FILTER_SIZE
 mdefine_line|#define DMX_MAX_FILTER_SIZE 18
-macro_line|#endif 
+macro_line|#endif
 multiline_comment|/*&n; * DMX_MAX_SECFEED_SIZE: Maximum length (in bytes) of a private section feed filter.&n; */
-macro_line|#ifndef DMX_MAX_SECFEED_SIZE 
+macro_line|#ifndef DMX_MAX_SECFEED_SIZE
 DECL|macro|DMX_MAX_SECFEED_SIZE
 mdefine_line|#define DMX_MAX_SECFEED_SIZE 4096
-macro_line|#endif 
-multiline_comment|/*&n; * enum dmx_success: Success codes for the Demux Callback API. &n; */
+macro_line|#endif
+multiline_comment|/*&n; * enum dmx_success: Success codes for the Demux Callback API.&n; */
 DECL|enum|dmx_success
 r_enum
 id|dmx_success
@@ -60,7 +60,7 @@ multiline_comment|/* TS packet reception */
 multiline_comment|/*--------------------------------------------------------------------------*/
 multiline_comment|/* TS filter type for set() */
 DECL|macro|TS_PACKET
-mdefine_line|#define TS_PACKET       1   /* send TS packets (188 bytes) to callback (default) */ 
+mdefine_line|#define TS_PACKET       1   /* send TS packets (188 bytes) to callback (default) */
 DECL|macro|TS_PAYLOAD_ONLY
 mdefine_line|#define&t;TS_PAYLOAD_ONLY 2   /* in case TS_PACKET is set, only send the TS&n;&t;&t;&t;       payload (&lt;=184 bytes per packet) to callback */
 DECL|macro|TS_DECODER
@@ -533,7 +533,7 @@ r_struct
 id|list_head
 id|connectivity_list
 suffix:semicolon
-multiline_comment|/* List of front-ends that can &n;&t;&t;&t;&t;&t;       be connected to a particular &n;&t;&t;&t;&t;&t;       demux */
+multiline_comment|/* List of front-ends that can&n;&t;&t;&t;&t;&t;       be connected to a particular&n;&t;&t;&t;&t;&t;       demux */
 DECL|member|priv
 r_void
 op_star
@@ -550,27 +550,27 @@ suffix:semicolon
 multiline_comment|/*--------------------------------------------------------------------------*/
 multiline_comment|/* MPEG-2 TS Demux */
 multiline_comment|/*--------------------------------------------------------------------------*/
-multiline_comment|/* &n; * Flags OR&squot;ed in the capabilites field of struct dmx_demux. &n; */
+multiline_comment|/*&n; * Flags OR&squot;ed in the capabilites field of struct dmx_demux.&n; */
 DECL|macro|DMX_TS_FILTERING
-mdefine_line|#define DMX_TS_FILTERING                        1 
+mdefine_line|#define DMX_TS_FILTERING                        1
 DECL|macro|DMX_PES_FILTERING
-mdefine_line|#define DMX_PES_FILTERING                       2 
+mdefine_line|#define DMX_PES_FILTERING                       2
 DECL|macro|DMX_SECTION_FILTERING
-mdefine_line|#define DMX_SECTION_FILTERING                   4 
+mdefine_line|#define DMX_SECTION_FILTERING                   4
 DECL|macro|DMX_MEMORY_BASED_FILTERING
-mdefine_line|#define DMX_MEMORY_BASED_FILTERING              8    /* write() available */ 
+mdefine_line|#define DMX_MEMORY_BASED_FILTERING              8    /* write() available */
 DECL|macro|DMX_CRC_CHECKING
-mdefine_line|#define DMX_CRC_CHECKING                        16 
+mdefine_line|#define DMX_CRC_CHECKING                        16
 DECL|macro|DMX_TS_DESCRAMBLING
-mdefine_line|#define DMX_TS_DESCRAMBLING                     32 
+mdefine_line|#define DMX_TS_DESCRAMBLING                     32
 DECL|macro|DMX_SECTION_PAYLOAD_DESCRAMBLING
-mdefine_line|#define DMX_SECTION_PAYLOAD_DESCRAMBLING        64 
+mdefine_line|#define DMX_SECTION_PAYLOAD_DESCRAMBLING        64
 DECL|macro|DMX_MAC_ADDRESS_DESCRAMBLING
-mdefine_line|#define DMX_MAC_ADDRESS_DESCRAMBLING            128 
-multiline_comment|/* &n; * Demux resource type identifier. &n;*/
-multiline_comment|/* &n; * DMX_FE_ENTRY(): Casts elements in the list of registered &n; * front-ends from the generic type struct list_head&n; * to the type * struct dmx_frontend&n; *. &n;*/
+mdefine_line|#define DMX_MAC_ADDRESS_DESCRAMBLING            128
+multiline_comment|/*&n; * Demux resource type identifier.&n;*/
+multiline_comment|/*&n; * DMX_FE_ENTRY(): Casts elements in the list of registered&n; * front-ends from the generic type struct list_head&n; * to the type * struct dmx_frontend&n; *.&n;*/
 DECL|macro|DMX_FE_ENTRY
-mdefine_line|#define DMX_FE_ENTRY(list) list_entry(list, struct dmx_frontend, connectivity_list) 
+mdefine_line|#define DMX_FE_ENTRY(list) list_entry(list, struct dmx_frontend, connectivity_list)
 DECL|struct|dmx_demux
 r_struct
 id|dmx_demux
@@ -921,7 +921,7 @@ suffix:semicolon
 multiline_comment|/*--------------------------------------------------------------------------*/
 multiline_comment|/* Demux directory */
 multiline_comment|/*--------------------------------------------------------------------------*/
-multiline_comment|/* &n; * DMX_DIR_ENTRY(): Casts elements in the list of registered &n; * demuxes from the generic type struct list_head* to the type struct dmx_demux&n; *. &n; */
+multiline_comment|/*&n; * DMX_DIR_ENTRY(): Casts elements in the list of registered&n; * demuxes from the generic type struct list_head* to the type struct dmx_demux&n; *.&n; */
 DECL|macro|DMX_DIR_ENTRY
 mdefine_line|#define DMX_DIR_ENTRY(list) list_entry(list, struct dmx_demux, reg_list)
 r_int

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * dvb_frontend.c: DVB frontend tuning interface/thread&n; *&n; *&n; * Copyright (C) 1999-2001 Ralph  Metzler&n; *                         Marcus Metzler&n; *                         Holger Waechtler &n; *                                    for convergence integrated media GmbH&n; *&n; * Copyright (C) 2004 Andrew de Quincey (tuning thread cleanup)&n; *&n; * This program is free software; you can redistribute it and/or&n; * modify it under the terms of the GNU General Public License&n; * as published by the Free Software Foundation; either version 2&n; * of the License, or (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.&n; * Or, point your browser to http://www.gnu.org/copyleft/gpl.html&n; */
+multiline_comment|/*&n; * dvb_frontend.c: DVB frontend tuning interface/thread&n; *&n; *&n; * Copyright (C) 1999-2001 Ralph  Metzler&n; *&t;&t;&t;   Marcus Metzler&n; *&t;&t;&t;   Holger Waechtler&n; *&t;&t;&t;&t;      for convergence integrated media GmbH&n; *&n; * Copyright (C) 2004 Andrew de Quincey (tuning thread cleanup)&n; *&n; * This program is free software; you can redistribute it and/or&n; * modify it under the terms of the GNU General Public License&n; * as published by the Free Software Foundation; either version 2&n; * of the License, or (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.&t; See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.&n; * Or, point your browser to http://www.gnu.org/copyleft/gpl.html&n; */
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
@@ -641,6 +641,7 @@ DECL|function|update_delay
 r_static
 r_void
 id|update_delay
+c_func
 (paren
 r_int
 op_star
@@ -734,7 +735,7 @@ l_int|128
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * Performs automatic twiddling of frontend parameters.&n; * &n; * @param fe The frontend concerned.&n; * @param check_wrapped Checks if an iteration has completed. DO NOT SET ON THE FIRST ATTEMPT&n; * @returns Number of complete iterations that have been performed.&n; */
+multiline_comment|/**&n; * Performs automatic twiddling of frontend parameters.&n; *&n; * @param fe The frontend concerned.&n; * @param check_wrapped Checks if an iteration has completed. DO NOT SET ON THE FIRST ATTEMPT&n; * @returns Number of complete iterations that have been performed.&n; */
 DECL|function|dvb_frontend_autotune
 r_static
 r_int
@@ -1208,6 +1209,7 @@ DECL|function|dvb_frontend_thread
 r_static
 r_int
 id|dvb_frontend_thread
+c_func
 (paren
 r_void
 op_star
@@ -1268,6 +1270,7 @@ op_assign
 l_int|0
 suffix:semicolon
 id|dprintk
+c_func
 (paren
 l_string|&quot;%s&bslash;n&quot;
 comma
@@ -1289,21 +1292,25 @@ id|fe-&gt;dvb-&gt;num
 )paren
 suffix:semicolon
 id|lock_kernel
+c_func
 (paren
 )paren
 suffix:semicolon
 id|daemonize
+c_func
 (paren
 id|name
 )paren
 suffix:semicolon
 id|sigfillset
+c_func
 (paren
 op_amp
 id|current-&gt;blocked
 )paren
 suffix:semicolon
 id|unlock_kernel
+c_func
 (paren
 )paren
 suffix:semicolon
@@ -1312,6 +1319,7 @@ op_assign
 l_int|0
 suffix:semicolon
 id|dvb_frontend_init
+c_func
 (paren
 id|fe
 )paren
@@ -1356,6 +1364,7 @@ c_cond
 l_int|0
 op_ne
 id|dvb_frontend_is_exiting
+c_func
 (paren
 id|fe
 )paren
@@ -1453,6 +1462,7 @@ id|fepriv-&gt;status
 )paren
 (brace
 id|dvb_frontend_add_event
+c_func
 (paren
 id|fe
 comma
@@ -2140,6 +2150,7 @@ DECL|function|dvb_frontend_ioctl
 r_static
 r_int
 id|dvb_frontend_ioctl
+c_func
 (paren
 r_struct
 id|inode
@@ -2952,6 +2963,7 @@ id|fe
 )paren
 suffix:semicolon
 id|dvb_frontend_add_event
+c_func
 (paren
 id|fe
 comma
@@ -3045,6 +3057,7 @@ r_static
 r_int
 r_int
 id|dvb_frontend_poll
+c_func
 (paren
 r_struct
 id|file
@@ -3124,6 +3137,7 @@ DECL|function|dvb_frontend_open
 r_static
 r_int
 id|dvb_frontend_open
+c_func
 (paren
 r_struct
 id|inode
@@ -3238,6 +3252,7 @@ DECL|function|dvb_frontend_release
 r_static
 r_int
 id|dvb_frontend_release
+c_func
 (paren
 r_struct
 id|inode

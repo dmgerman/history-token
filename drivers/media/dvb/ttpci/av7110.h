@@ -201,13 +201,13 @@ id|adac_type
 suffix:semicolon
 multiline_comment|/* audio DAC type */
 DECL|macro|DVB_ADAC_TI
-mdefine_line|#define DVB_ADAC_TI       0
+mdefine_line|#define DVB_ADAC_TI&t;  0
 DECL|macro|DVB_ADAC_CRYSTAL
 mdefine_line|#define DVB_ADAC_CRYSTAL  1
 DECL|macro|DVB_ADAC_MSP
-mdefine_line|#define DVB_ADAC_MSP      2
+mdefine_line|#define DVB_ADAC_MSP&t;  2
 DECL|macro|DVB_ADAC_NONE
-mdefine_line|#define DVB_ADAC_NONE    -1
+mdefine_line|#define DVB_ADAC_NONE&t; -1
 multiline_comment|/* buffers */
 DECL|member|iobuf
 r_void
@@ -300,7 +300,7 @@ mdefine_line|#define RP_VIDEO 1
 DECL|macro|RP_AUDIO
 mdefine_line|#define RP_AUDIO 2
 DECL|macro|RP_AV
-mdefine_line|#define RP_AV    3
+mdefine_line|#define RP_AV&t; 3
 multiline_comment|/* OSD */
 DECL|member|osdwin
 r_int

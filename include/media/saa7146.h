@@ -583,9 +583,9 @@ multiline_comment|/* some i2c constants */
 DECL|macro|SAA7146_I2C_TIMEOUT
 mdefine_line|#define SAA7146_I2C_TIMEOUT&t;100&t;/* i2c-timeout-value in ms */
 DECL|macro|SAA7146_I2C_RETRIES
-mdefine_line|#define SAA7146_I2C_RETRIES &t;3&t;/* how many times shall we retry an i2c-operation? */
+mdefine_line|#define SAA7146_I2C_RETRIES&t;3&t;/* how many times shall we retry an i2c-operation? */
 DECL|macro|SAA7146_I2C_DELAY
-mdefine_line|#define SAA7146_I2C_DELAY &t;5&t;/* time we wait after certain i2c-operations */
+mdefine_line|#define SAA7146_I2C_DELAY&t;5&t;/* time we wait after certain i2c-operations */
 multiline_comment|/* unsorted defines */
 DECL|macro|ME1
 mdefine_line|#define ME1    0x0000000800
@@ -750,7 +750,7 @@ mdefine_line|#define MASK_W1   0xffff0000    /* Mask value for word 1 */
 DECL|macro|MASK_PA
 mdefine_line|#define MASK_PA   0xfffffffc    /* Mask value for physical address */
 DECL|macro|MASK_PR
-mdefine_line|#define MASK_PR   0xfffffffe &t;/* Mask value for protection register */
+mdefine_line|#define MASK_PR   0xfffffffe&t;/* Mask value for protection register */
 DECL|macro|MASK_ER
 mdefine_line|#define MASK_ER   0xffffffff    /* Mask value for the entire register */
 DECL|macro|MASK_NONE
@@ -787,7 +787,7 @@ mdefine_line|#define BASE_EVEN3        0x34
 DECL|macro|PROT_ADDR3
 mdefine_line|#define PROT_ADDR3        0x38
 DECL|macro|PITCH3
-mdefine_line|#define PITCH3            0x3C         
+mdefine_line|#define PITCH3            0x3C
 DECL|macro|BASE_PAGE3
 mdefine_line|#define BASE_PAGE3        0x40  /* Video DMA 3 base page */
 DECL|macro|NUM_LINE_BYTE3
@@ -833,11 +833,11 @@ mdefine_line|#define DEBI_COMMAND      0x80
 DECL|macro|DEBI_PAGE
 mdefine_line|#define DEBI_PAGE         0x84
 DECL|macro|DEBI_AD
-mdefine_line|#define DEBI_AD           0x88&t;
+mdefine_line|#define DEBI_AD           0x88
 DECL|macro|I2C_TRANSFER
-mdefine_line|#define I2C_TRANSFER      0x8C&t;
+mdefine_line|#define I2C_TRANSFER      0x8C
 DECL|macro|I2C_STATUS
-mdefine_line|#define I2C_STATUS        0x90&t;
+mdefine_line|#define I2C_STATUS        0x90
 DECL|macro|BASE_A1_IN
 mdefine_line|#define BASE_A1_IN        0x94&t;/* Audio 1 input DMA */
 DECL|macro|PROT_A1_IN
@@ -899,7 +899,7 @@ mdefine_line|#define RPS_ADDR0         0x104  /* RPS task 0 address register */
 DECL|macro|RPS_ADDR1
 mdefine_line|#define RPS_ADDR1         0x108  /* RPS task 1 address register */
 DECL|macro|ISR
-mdefine_line|#define ISR               0x10C  /* Interrupt status register */                                                             
+mdefine_line|#define ISR               0x10C  /* Interrupt status register */
 DECL|macro|PSR
 mdefine_line|#define PSR               0x110  /* Primary status register */
 DECL|macro|SSR
@@ -907,7 +907,7 @@ mdefine_line|#define SSR               0x114  /* Secondary status register */
 DECL|macro|EC1R
 mdefine_line|#define EC1R              0x118  /* Event counter set 1 register */
 DECL|macro|EC2R
-mdefine_line|#define EC2R              0x11C  /* Event counter set 2 register */         
+mdefine_line|#define EC2R              0x11C  /* Event counter set 2 register */
 DECL|macro|PCI_VDP1
 mdefine_line|#define PCI_VDP1          0x120  /* Video DMA pointer of FIFO 1 */
 DECL|macro|PCI_VDP2

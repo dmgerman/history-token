@@ -57,7 +57,7 @@ r_return
 id|iicsta
 suffix:semicolon
 )brace
-multiline_comment|/* this function runs through the i2c-messages and prepares the data to be&n;   sent through the saa7146. have a look at the specifications p. 122 ff &n;   to understand this. it returns the number of u32s to send, or -1&n;   in case of an error. */
+multiline_comment|/* this function runs through the i2c-messages and prepares the data to be&n;   sent through the saa7146. have a look at the specifications p. 122 ff&n;   to understand this. it returns the number of u32s to send, or -1&n;   in case of an error. */
 DECL|function|saa7146_i2c_msg_prepare
 r_static
 r_int
@@ -1611,7 +1611,7 @@ op_ne
 id|err
 )paren
 (brace
-multiline_comment|/* this one is unsatisfying: some i2c slaves on some&n;&t;&t;&t;&t;   dvb cards don&squot;t acknowledge correctly, so the saa7146&n;&t;&t;&t;&t;   thinks that an address error occured. in that case, the&n;&t;&t;&t;&t;   transaction should be retrying, even if an address error&n;&t;&t;&t;&t;   occured. analog saa7146 based cards extensively rely on&n;&t;&t;&t;&t;   i2c address probing, however, and address errors indicate that a &n;&t;&t;&t;&t;   device is really *not* there. retrying in that case&n;&t;&t;&t;&t;   increases the time the device needs to probe greatly, so&n;&t;&t;&t;&t;   it should be avoided. because of the fact, that only &n;&t;&t;&t;&t;   analog based cards use irq based i2c transactions (for dvb&n;&t;&t;&t;&t;   cards, this screwes up other interrupt sources), we bail out&n;&t;&t;&t;&t;   completely for analog cards after an address error and trust&n;&t;&t;&t;&t;   the saa7146 address error detection. */
+multiline_comment|/* this one is unsatisfying: some i2c slaves on some&n;&t;&t;&t;&t;   dvb cards don&squot;t acknowledge correctly, so the saa7146&n;&t;&t;&t;&t;   thinks that an address error occured. in that case, the&n;&t;&t;&t;&t;   transaction should be retrying, even if an address error&n;&t;&t;&t;&t;   occured. analog saa7146 based cards extensively rely on&n;&t;&t;&t;&t;   i2c address probing, however, and address errors indicate that a&n;&t;&t;&t;&t;   device is really *not* there. retrying in that case&n;&t;&t;&t;&t;   increases the time the device needs to probe greatly, so&n;&t;&t;&t;&t;   it should be avoided. because of the fact, that only&n;&t;&t;&t;&t;   analog based cards use irq based i2c transactions (for dvb&n;&t;&t;&t;&t;   cards, this screwes up other interrupt sources), we bail out&n;&t;&t;&t;&t;   completely for analog cards after an address error and trust&n;&t;&t;&t;&t;   the saa7146 address error detection. */
 r_if
 c_cond
 (paren

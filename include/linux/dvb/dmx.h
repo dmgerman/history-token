@@ -1,4 +1,4 @@
-multiline_comment|/* &n; * dmx.h&n; *&n; * Copyright (C) 2000 Marcus Metzler &lt;marcus@convergence.de&gt;&n; *                  &amp; Ralph  Metzler &lt;ralph@convergence.de&gt;&n;                      for convergence integrated media GmbH&n; *&n; * This program is free software; you can redistribute it and/or&n; * modify it under the terms of the GNU Lesser General Public License&n; * as published by the Free Software Foundation; either version 2.1&n; * of the License, or (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU Lesser General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.&n; *&n; */
+multiline_comment|/* &n; * dmx.h&n; *&n; * Copyright (C) 2000 Marcus Metzler &lt;marcus@convergence.de&gt;&n; *                  &amp; Ralph  Metzler &lt;ralph@convergence.de&gt;&n; *                    for convergence integrated media GmbH&n; *&n; * This program is free software; you can redistribute it and/or&n; * modify it under the terms of the GNU Lesser General Public License&n; * as published by the Free Software Foundation; either version 2.1&n; * of the License, or (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU Lesser General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.&n; *&n; */
 macro_line|#ifndef _DVBDMX_H_
 DECL|macro|_DVBDMX_H_
 mdefine_line|#define _DVBDMX_H_
@@ -333,24 +333,24 @@ multiline_comment|/* output: stc in &squot;base&squot;*90 kHz units */
 )brace
 suffix:semicolon
 DECL|macro|DMX_START
-mdefine_line|#define DMX_START                _IO(&squot;o&squot;,41) 
+mdefine_line|#define DMX_START                _IO(&squot;o&squot;, 41)
 DECL|macro|DMX_STOP
-mdefine_line|#define DMX_STOP                 _IO(&squot;o&squot;,42)
+mdefine_line|#define DMX_STOP                 _IO(&squot;o&squot;, 42)
 DECL|macro|DMX_SET_FILTER
-mdefine_line|#define DMX_SET_FILTER           _IOW(&squot;o&squot;,43,struct dmx_sct_filter_params)
+mdefine_line|#define DMX_SET_FILTER           _IOW(&squot;o&squot;, 43, struct dmx_sct_filter_params)
 DECL|macro|DMX_SET_PES_FILTER
-mdefine_line|#define DMX_SET_PES_FILTER       _IOW(&squot;o&squot;,44,struct dmx_pes_filter_params)
+mdefine_line|#define DMX_SET_PES_FILTER       _IOW(&squot;o&squot;, 44, struct dmx_pes_filter_params)
 DECL|macro|DMX_SET_BUFFER_SIZE
-mdefine_line|#define DMX_SET_BUFFER_SIZE      _IO(&squot;o&squot;,45)
+mdefine_line|#define DMX_SET_BUFFER_SIZE      _IO(&squot;o&squot;, 45)
 DECL|macro|DMX_GET_EVENT
-mdefine_line|#define DMX_GET_EVENT            _IOR(&squot;o&squot;,46,struct dmx_event)
+mdefine_line|#define DMX_GET_EVENT            _IOR(&squot;o&squot;, 46, struct dmx_event)
 DECL|macro|DMX_GET_PES_PIDS
 mdefine_line|#define DMX_GET_PES_PIDS         _IOR(&squot;o&squot;, 47, __u16[5])
 DECL|macro|DMX_GET_CAPS
-mdefine_line|#define DMX_GET_CAPS             _IOR(&squot;o&squot;,48,dmx_caps_t)
+mdefine_line|#define DMX_GET_CAPS             _IOR(&squot;o&squot;, 48, dmx_caps_t)
 DECL|macro|DMX_SET_SOURCE
-mdefine_line|#define DMX_SET_SOURCE           _IOW(&squot;o&squot;,49,dmx_source_t)
+mdefine_line|#define DMX_SET_SOURCE           _IOW(&squot;o&squot;, 49, dmx_source_t)
 DECL|macro|DMX_GET_STC
-mdefine_line|#define DMX_GET_STC              _IOWR(&squot;o&squot;,50,struct dmx_stc)
+mdefine_line|#define DMX_GET_STC              _IOWR(&squot;o&squot;, 50, struct dmx_stc)
 macro_line|#endif /*_DVBDMX_H_*/
 eof

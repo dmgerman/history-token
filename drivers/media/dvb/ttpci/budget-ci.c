@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * budget-ci.c: driver for the SAA7146 based Budget DVB cards &n; *&n; * Compiled from various sources by Michael Hunold &lt;michael@mihu.de&gt; &n; *&n; *     msp430 IR support contributed by Jack Thomasson &lt;jkt@Helius.COM&gt;&n; *     partially based on the Siemens DVB driver by Ralph+Marcus Metzler&n; *&n; * CI interface support (c) 2004 Andrew de Quincey &lt;adq_dvb@lidskialf.net&gt;&n; *&n; * This program is free software; you can redistribute it and/or&n; * modify it under the terms of the GNU General Public License&n; * as published by the Free Software Foundation; either version 2&n; * of the License, or (at your option) any later version.&n; * &n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; * &n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.&n; * Or, point your browser to http://www.gnu.org/copyleft/gpl.html&n; * &n; *&n; * the project&squot;s page is at http://www.linuxtv.org/dvb/&n; */
+multiline_comment|/*&n; * budget-ci.c: driver for the SAA7146 based Budget DVB cards&n; *&n; * Compiled from various sources by Michael Hunold &lt;michael@mihu.de&gt;&n; *&n; *     msp430 IR support contributed by Jack Thomasson &lt;jkt@Helius.COM&gt;&n; *     partially based on the Siemens DVB driver by Ralph+Marcus Metzler&n; *&n; * CI interface support (c) 2004 Andrew de Quincey &lt;adq_dvb@lidskialf.net&gt;&n; *&n; * This program is free software; you can redistribute it and/or&n; * modify it under the terms of the GNU General Public License&n; * as published by the Free Software Foundation; either version 2&n; * of the License, or (at your option) any later version.&n; *&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.&t; See the&n; * GNU General Public License for more details.&n; *&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.&n; * Or, point your browser to http://www.gnu.org/copyleft/gpl.html&n; *&n; *&n; * the project&squot;s page is at http://www.linuxtv.org/dvb/&n; */
 macro_line|#include &quot;budget.h&quot;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
@@ -239,6 +239,7 @@ DECL|function|msp430_ir_debounce
 r_static
 r_void
 id|msp430_ir_debounce
+c_func
 (paren
 r_int
 r_int
@@ -341,6 +342,7 @@ DECL|function|msp430_ir_interrupt
 r_static
 r_void
 id|msp430_ir_interrupt
+c_func
 (paren
 r_int
 r_int
@@ -533,6 +535,7 @@ DECL|function|msp430_ir_init
 r_static
 r_int
 id|msp430_ir_init
+c_func
 (paren
 r_struct
 id|budget_ci
@@ -566,6 +569,7 @@ id|input_dev
 )paren
 suffix:semicolon
 id|sprintf
+c_func
 (paren
 id|budget_ci-&gt;ir_dev_name
 comma
@@ -675,6 +679,7 @@ DECL|function|msp430_ir_deinit
 r_static
 r_void
 id|msp430_ir_deinit
+c_func
 (paren
 r_struct
 id|budget_ci
@@ -1341,6 +1346,7 @@ DECL|function|ciintf_interrupt
 r_static
 r_void
 id|ciintf_interrupt
+c_func
 (paren
 r_int
 r_int
@@ -1744,6 +1750,7 @@ suffix:semicolon
 )brace
 singleline_comment|// Setup CI slot IRQ
 id|tasklet_init
+c_func
 (paren
 op_amp
 id|budget_ci-&gt;ciintf_irq_tasklet
@@ -2042,6 +2049,7 @@ DECL|function|budget_ci_irq
 r_static
 r_void
 id|budget_ci_irq
+c_func
 (paren
 r_struct
 id|saa7146_dev
@@ -2086,6 +2094,7 @@ op_amp
 id|MASK_06
 )paren
 id|tasklet_schedule
+c_func
 (paren
 op_amp
 id|budget_ci-&gt;msp430_irq_tasklet
@@ -2100,6 +2109,7 @@ op_amp
 id|MASK_10
 )paren
 id|ttpci_budget_irq10_handler
+c_func
 (paren
 id|dev
 comma
@@ -2121,6 +2131,7 @@ id|budget_ci-&gt;budget.ci_present
 )paren
 )paren
 id|tasklet_schedule
+c_func
 (paren
 op_amp
 id|budget_ci-&gt;ciintf_irq_tasklet
@@ -4406,6 +4417,7 @@ op_logical_neg
 id|budget_ci
 op_assign
 id|kmalloc
+c_func
 (paren
 r_sizeof
 (paren
@@ -4461,6 +4473,7 @@ id|THIS_MODULE
 )paren
 (brace
 id|kfree
+c_func
 (paren
 id|budget_ci
 )paren
@@ -4470,6 +4483,7 @@ id|err
 suffix:semicolon
 )brace
 id|tasklet_init
+c_func
 (paren
 op_amp
 id|budget_ci-&gt;msp430_irq_tasklet
@@ -4484,6 +4498,7 @@ id|budget_ci
 )paren
 suffix:semicolon
 id|msp430_ir_init
+c_func
 (paren
 id|budget_ci
 )paren
@@ -4512,6 +4527,7 @@ DECL|function|budget_ci_detach
 r_static
 r_int
 id|budget_ci_detach
+c_func
 (paren
 r_struct
 id|saa7146_dev
@@ -4566,18 +4582,21 @@ suffix:semicolon
 id|err
 op_assign
 id|ttpci_budget_deinit
+c_func
 (paren
 op_amp
 id|budget_ci-&gt;budget
 )paren
 suffix:semicolon
 id|tasklet_kill
+c_func
 (paren
 op_amp
 id|budget_ci-&gt;msp430_irq_tasklet
 )paren
 suffix:semicolon
 id|msp430_ir_deinit
+c_func
 (paren
 id|budget_ci
 )paren
@@ -4594,6 +4613,7 @@ id|SAA7146_GPIO_INPUT
 )paren
 suffix:semicolon
 id|kfree
+c_func
 (paren
 id|budget_ci
 )paren
@@ -4623,7 +4643,7 @@ c_func
 (paren
 id|ttbt2
 comma
-l_string|&quot;TT-Budget/WinTV-NOVA-T  PCI&quot;
+l_string|&quot;TT-Budget/WinTV-NOVA-T&t; PCI&quot;
 comma
 id|BUDGET_TT
 )paren

@@ -739,7 +739,7 @@ op_and_assign
 op_complement
 id|MASK_29
 suffix:semicolon
-multiline_comment|/* calculate prescale-(xspc)-value:&t;[n   .. 1/2) : 1&n;&t;&t;&t;&t;    &t;&t;[1/2 .. 1/3) : 2&n;&t;&t;&t;&t;    &t;&t;[1/3 .. 1/4) : 3&n;&t;&t;&t;&t;&t;&t;... &t;&t;*/
+multiline_comment|/* calculate prescale-(xspc)-value:&t;[n   .. 1/2) : 1&n;&t;&t;&t;&t;&t;&t;[1/2 .. 1/3) : 2&n;&t;&t;&t;&t;&t;&t;[1/3 .. 1/4) : 3&n;&t;&t;&t;&t;&t;&t;...&t;&t;*/
 r_if
 c_cond
 (paren
@@ -1853,7 +1853,7 @@ op_div
 l_int|16
 )paren
 suffix:semicolon
-multiline_comment|/* the sequence length interval (yacl) has to be set according&n;&t;&t;   to the prescale value, e.g.&t;[n   .. 1/2) : 0&n;&t;&t;   &t;&t;&t;&t;[1/2 .. 1/3) : 1&n;&t;&t;&t;&t;&t;&t;[1/3 .. 1/4) : 2&n;&t;&t;&t;&t;&t;&t;... */
+multiline_comment|/* the sequence length interval (yacl) has to be set according&n;&t;&t;   to the prescale value, e.g.&t;[n   .. 1/2) : 0&n;&t;&t;&t;&t;&t;&t;[1/2 .. 1/3) : 1&n;&t;&t;&t;&t;&t;&t;[1/3 .. 1/4) : 2&n;&t;&t;&t;&t;&t;&t;... */
 r_if
 c_cond
 (paren
@@ -4435,7 +4435,7 @@ l_int|1
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/*&t;&t;&n;&t;printk(&quot;vdma%d.base_even:     0x%08x&bslash;n&quot;, which,vdma-&gt;base_even);&n;&t;printk(&quot;vdma%d.base_odd:      0x%08x&bslash;n&quot;, which,vdma-&gt;base_odd);&n;&t;printk(&quot;vdma%d.prot_addr:     0x%08x&bslash;n&quot;, which,vdma-&gt;prot_addr);&n;&t;printk(&quot;vdma%d.base_page:     0x%08x&bslash;n&quot;, which,vdma-&gt;base_page);&n;&t;printk(&quot;vdma%d.pitch:         0x%08x&bslash;n&quot;, which,vdma-&gt;pitch);&n;&t;printk(&quot;vdma%d.num_line_byte: 0x%08x&bslash;n&quot;, which,vdma-&gt;num_line_byte);&n;*/
+multiline_comment|/*&n;&t;printk(&quot;vdma%d.base_even:     0x%08x&bslash;n&quot;, which,vdma-&gt;base_even);&n;&t;printk(&quot;vdma%d.base_odd:      0x%08x&bslash;n&quot;, which,vdma-&gt;base_odd);&n;&t;printk(&quot;vdma%d.prot_addr:     0x%08x&bslash;n&quot;, which,vdma-&gt;prot_addr);&n;&t;printk(&quot;vdma%d.base_page:     0x%08x&bslash;n&quot;, which,vdma-&gt;base_page);&n;&t;printk(&quot;vdma%d.pitch:         0x%08x&bslash;n&quot;, which,vdma-&gt;pitch);&n;&t;printk(&quot;vdma%d.num_line_byte: 0x%08x&bslash;n&quot;, which,vdma-&gt;num_line_byte);&n;*/
 )brace
 DECL|function|calculate_video_dma_grab_packed
 r_static

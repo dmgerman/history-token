@@ -85,6 +85,7 @@ DECL|function|start_ts_capture
 r_static
 r_int
 id|start_ts_capture
+c_func
 (paren
 r_struct
 id|budget
@@ -172,7 +173,7 @@ id|budget-&gt;ttbp
 op_assign
 l_int|0
 suffix:semicolon
-multiline_comment|/*&n;&t; *  Signal path on the Activy:&n;&t; *&n;&t; *  tuner -&gt; SAA7146 port A -&gt; SAA7146 BRS -&gt; SAA7146 DMA3 -&gt; memory&n;&t; *&n;&t; *  Since the tuner feeds 204 bytes packets into the SAA7146,&n;&t; *  DMA3 is configured to strip the trailing 16 FEC bytes:&n;&t; *&t;Pitch: 188, NumBytes3: 188, NumLines3: 1024&n;&t; */
+multiline_comment|/*&n;&t; *  Signal path on the Activy:&n;&t; *&n;&t; *  tuner -&gt; SAA7146 port A -&gt; SAA7146 BRS -&gt; SAA7146 DMA3 -&gt; memory&n;&t; *&n;&t; *  Since the tuner feeds 204 bytes packets into the SAA7146,&n;&t; *  DMA3 is configured to strip the trailing 16 FEC bytes:&n;&t; *      Pitch: 188, NumBytes3: 188, NumLines3: 1024&n;&t; */
 r_switch
 c_cond
 (paren
@@ -546,6 +547,7 @@ DECL|function|vpeirq
 r_static
 r_void
 id|vpeirq
+c_func
 (paren
 r_int
 r_int
@@ -623,10 +625,8 @@ id|newdma
 op_eq
 id|olddma
 )paren
-(brace
 r_return
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -1240,6 +1240,7 @@ multiline_comment|/* have a clean section start */
 id|status
 op_assign
 id|start_ts_capture
+c_func
 (paren
 id|budget
 )paren
@@ -1309,6 +1310,7 @@ suffix:semicolon
 id|status
 op_assign
 id|stop_ts_capture
+c_func
 (paren
 id|budget
 )paren
@@ -1797,7 +1799,7 @@ op_amp
 id|budget-&gt;debilock
 )paren
 suffix:semicolon
-multiline_comment|/* the Siemens DVB needs this if you want to have the i2c chips&n;           get recognized before the main driver is loaded */
+multiline_comment|/* the Siemens DVB needs this if you want to have the i2c chips&n;&t;   get recognized before the main driver is loaded */
 r_if
 c_cond
 (paren
@@ -1877,6 +1879,7 @@ l_int|0
 )paren
 (brace
 id|dvb_unregister_adapter
+c_func
 (paren
 id|budget-&gt;dvb_adapter
 )paren
@@ -1947,6 +1950,7 @@ l_int|0x000000
 )paren
 suffix:semicolon
 id|tasklet_init
+c_func
 (paren
 op_amp
 id|budget-&gt;vpe_tasklet
@@ -2026,6 +2030,7 @@ id|budget-&gt;grabbing
 )paren
 suffix:semicolon
 id|dvb_unregister_adapter
+c_func
 (paren
 id|budget-&gt;dvb_adapter
 )paren
@@ -2037,6 +2042,7 @@ suffix:semicolon
 DECL|function|ttpci_budget_deinit
 r_int
 id|ttpci_budget_deinit
+c_func
 (paren
 r_struct
 id|budget
@@ -2062,6 +2068,7 @@ id|budget
 )paren
 suffix:semicolon
 id|budget_unregister
+c_func
 (paren
 id|budget
 )paren
@@ -2074,17 +2081,20 @@ id|budget-&gt;i2c_adap
 )paren
 suffix:semicolon
 id|dvb_unregister_adapter
+c_func
 (paren
 id|budget-&gt;dvb_adapter
 )paren
 suffix:semicolon
 id|tasklet_kill
+c_func
 (paren
 op_amp
 id|budget-&gt;vpe_tasklet
 )paren
 suffix:semicolon
 id|saa7146_pgtable_free
+c_func
 (paren
 id|dev-&gt;pci
 comma
@@ -2093,6 +2103,7 @@ id|budget-&gt;pt
 )paren
 suffix:semicolon
 id|vfree
+c_func
 (paren
 id|budget-&gt;grabbing
 )paren
@@ -2104,6 +2115,7 @@ suffix:semicolon
 DECL|function|ttpci_budget_irq10_handler
 r_void
 id|ttpci_budget_irq10_handler
+c_func
 (paren
 r_struct
 id|saa7146_dev
@@ -2148,6 +2160,7 @@ op_amp
 id|MASK_10
 )paren
 id|tasklet_schedule
+c_func
 (paren
 op_amp
 id|budget-&gt;vpe_tasklet

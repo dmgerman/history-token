@@ -364,7 +364,7 @@ l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/****************************************************************************&n; * general helper functions&n; ****************************************************************************/
-multiline_comment|/* this is videobuf_vmalloc_to_sg() from video-buf.c &n;   make sure virt has been allocated with vmalloc_32(), otherwise the BUG()&n;   may be triggered on highmem machines */
+multiline_comment|/* this is videobuf_vmalloc_to_sg() from video-buf.c&n;   make sure virt has been allocated with vmalloc_32(), otherwise the BUG()&n;   may be triggered on highmem machines */
 DECL|function|vmalloc_to_sg
 r_static
 r_struct

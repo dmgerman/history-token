@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * at76c651.c&n; * &n; * Atmel DVB-C Frontend Driver (at76c651/tua6010xs)&n; *&n; * Copyright (C) 2001 fnbrd &lt;fnbrd@gmx.de&gt;&n; *             &amp; 2002-2004 Andreas Oberritter &lt;obi@linuxtv.org&gt;&n; *             &amp; 2003 Wolfram Joost &lt;dbox2@frokaschwei.de&gt;&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; *&n; * AT76C651&n; * http://www.nalanda.nitc.ac.in/industry/datasheets/atmel/acrobat/doc1293.pdf&n; * http://www.atmel.com/atmel/acrobat/doc1320.pdf&n; */
+multiline_comment|/*&n; * at76c651.c&n; *&n; * Atmel DVB-C Frontend Driver (at76c651/tua6010xs)&n; *&n; * Copyright (C) 2001 fnbrd &lt;fnbrd@gmx.de&gt;&n; *             &amp; 2002-2004 Andreas Oberritter &lt;obi@linuxtv.org&gt;&n; *             &amp; 2003 Wolfram Joost &lt;dbox2@frokaschwei.de&gt;&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; *&n; * AT76C651&n; * http://www.nalanda.nitc.ac.in/industry/datasheets/atmel/acrobat/doc1293.pdf&n; * http://www.atmel.com/atmel/acrobat/doc1320.pdf&n; */
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/moduleparam.h&gt;
@@ -1126,7 +1126,7 @@ suffix:semicolon
 id|u8
 id|sync
 suffix:semicolon
-multiline_comment|/*&n;&t;&t;&t; * Bits: FEC, CAR, EQU, TIM, AGC2, AGC1, ADC, PLL (PLL=0) &n;&t;&t;&t; */
+multiline_comment|/*&n;&t; * Bits: FEC, CAR, EQU, TIM, AGC2, AGC1, ADC, PLL (PLL=0)&n;&t; */
 id|sync
 op_assign
 id|at76c651_readreg

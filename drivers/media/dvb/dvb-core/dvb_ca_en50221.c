@@ -55,29 +55,29 @@ mdefine_line|#define CTRLIF_SIZE_LOW  2
 DECL|macro|CTRLIF_SIZE_HIGH
 mdefine_line|#define CTRLIF_SIZE_HIGH 3
 DECL|macro|CMDREG_HC
-mdefine_line|#define CMDREG_HC        1 /* Host control */
+mdefine_line|#define CMDREG_HC        1&t;/* Host control */
 DECL|macro|CMDREG_SW
-mdefine_line|#define CMDREG_SW        2 /* Size write */
+mdefine_line|#define CMDREG_SW        2&t;/* Size write */
 DECL|macro|CMDREG_SR
-mdefine_line|#define CMDREG_SR        4 /* Size read */
+mdefine_line|#define CMDREG_SR        4&t;/* Size read */
 DECL|macro|CMDREG_RS
-mdefine_line|#define CMDREG_RS        8 /* Reset interface */
+mdefine_line|#define CMDREG_RS        8&t;/* Reset interface */
 DECL|macro|CMDREG_FRIE
-mdefine_line|#define CMDREG_FRIE   0x40 /* Enable FR interrupt */
+mdefine_line|#define CMDREG_FRIE   0x40&t;/* Enable FR interrupt */
 DECL|macro|CMDREG_DAIE
-mdefine_line|#define CMDREG_DAIE   0x80 /* Enable DA interrupt */
+mdefine_line|#define CMDREG_DAIE   0x80&t;/* Enable DA interrupt */
 DECL|macro|IRQEN
 mdefine_line|#define IRQEN (CMDREG_DAIE)
 DECL|macro|STATUSREG_RE
-mdefine_line|#define STATUSREG_RE     1 /* read error */
+mdefine_line|#define STATUSREG_RE     1&t;/* read error */
 DECL|macro|STATUSREG_WE
-mdefine_line|#define STATUSREG_WE     2 /* write error */
+mdefine_line|#define STATUSREG_WE     2&t;/* write error */
 DECL|macro|STATUSREG_FR
-mdefine_line|#define STATUSREG_FR  0x40 /* module free */
+mdefine_line|#define STATUSREG_FR  0x40&t;/* module free */
 DECL|macro|STATUSREG_DA
-mdefine_line|#define STATUSREG_DA  0x80 /* data available */
+mdefine_line|#define STATUSREG_DA  0x80&t;/* data available */
 DECL|macro|STATUSREG_TXERR
-mdefine_line|#define STATUSREG_TXERR (STATUSREG_RE|STATUSREG_WE) /* general transfer error */
+mdefine_line|#define STATUSREG_TXERR (STATUSREG_RE|STATUSREG_WE)&t;/* general transfer error */
 DECL|macro|DVB_CA_SLOTSTATE_NONE
 mdefine_line|#define DVB_CA_SLOTSTATE_NONE           0
 DECL|macro|DVB_CA_SLOTSTATE_UNINITIALISED
@@ -619,6 +619,7 @@ r_int
 id|start
 suffix:semicolon
 id|dprintk
+c_func
 (paren
 l_string|&quot;%s&bslash;n&quot;
 comma
@@ -765,6 +766,7 @@ l_int|2
 )braket
 suffix:semicolon
 id|dprintk
+c_func
 (paren
 l_string|&quot;%s&bslash;n&quot;
 comma
@@ -781,7 +783,7 @@ id|da_irq_supported
 op_assign
 l_int|0
 suffix:semicolon
-multiline_comment|/* set the host link buffer size temporarily. it will be overwritten with the&n;         * real negotiated size later. */
+multiline_comment|/* set the host link buffer size temporarily. it will be overwritten with the&n;&t; * real negotiated size later. */
 id|ca-&gt;slot_info
 (braket
 id|slot
@@ -2078,6 +2080,7 @@ r_int
 id|configoption
 suffix:semicolon
 id|dprintk
+c_func
 (paren
 l_string|&quot;%s&bslash;n&quot;
 comma
@@ -2190,6 +2193,7 @@ r_int
 id|i
 suffix:semicolon
 id|dprintk
+c_func
 (paren
 l_string|&quot;%s&bslash;n&quot;
 comma
@@ -2819,6 +2823,7 @@ r_int
 id|i
 suffix:semicolon
 id|dprintk
+c_func
 (paren
 l_string|&quot;%s&bslash;n&quot;
 comma
@@ -3195,6 +3200,7 @@ id|slot
 )paren
 (brace
 id|dprintk
+c_func
 (paren
 l_string|&quot;%s&bslash;n&quot;
 comma
@@ -3274,7 +3280,7 @@ dot
 id|sem
 )paren
 suffix:semicolon
-multiline_comment|/* need to wake up all processes to check if they&squot;re now&n;           trying to write to a defunct CAM */
+multiline_comment|/* need to wake up all processes to check if they&squot;re now&n;&t;   trying to write to a defunct CAM */
 id|wake_up_interruptible
 c_func
 (paren
@@ -3599,6 +3605,7 @@ id|ca
 )paren
 (brace
 id|dprintk
+c_func
 (paren
 l_string|&quot;%s&bslash;n&quot;
 comma
@@ -3901,6 +3908,7 @@ op_star
 id|rxbuf
 suffix:semicolon
 id|dprintk
+c_func
 (paren
 l_string|&quot;%s&bslash;n&quot;
 comma
@@ -3926,21 +3934,25 @@ id|ca-&gt;dvbdev-&gt;id
 )paren
 suffix:semicolon
 id|lock_kernel
+c_func
 (paren
 )paren
 suffix:semicolon
 id|daemonize
+c_func
 (paren
 id|name
 )paren
 suffix:semicolon
 id|sigfillset
+c_func
 (paren
 op_amp
 id|current-&gt;blocked
 )paren
 suffix:semicolon
 id|unlock_kernel
+c_func
 (paren
 )paren
 suffix:semicolon
@@ -4736,6 +4748,7 @@ c_func
 )paren
 suffix:semicolon
 id|wake_up_interruptible
+c_func
 (paren
 op_amp
 id|ca-&gt;thread_queue
@@ -4806,6 +4819,7 @@ r_int
 id|slot
 suffix:semicolon
 id|dprintk
+c_func
 (paren
 l_string|&quot;%s&bslash;n&quot;
 comma
@@ -5154,6 +5168,7 @@ r_int
 id|written
 suffix:semicolon
 id|dprintk
+c_func
 (paren
 l_string|&quot;%s&bslash;n&quot;
 comma
@@ -5847,6 +5862,7 @@ op_assign
 l_int|0
 suffix:semicolon
 id|dprintk
+c_func
 (paren
 l_string|&quot;%s&bslash;n&quot;
 comma
@@ -6312,6 +6328,7 @@ r_int
 id|i
 suffix:semicolon
 id|dprintk
+c_func
 (paren
 l_string|&quot;%s&bslash;n&quot;
 comma
@@ -6500,6 +6517,7 @@ op_assign
 l_int|0
 suffix:semicolon
 id|dprintk
+c_func
 (paren
 l_string|&quot;%s&bslash;n&quot;
 comma
@@ -6594,6 +6612,7 @@ op_assign
 l_int|0
 suffix:semicolon
 id|dprintk
+c_func
 (paren
 l_string|&quot;%s&bslash;n&quot;
 comma
@@ -6820,6 +6839,7 @@ r_int
 id|i
 suffix:semicolon
 id|dprintk
+c_func
 (paren
 l_string|&quot;%s&bslash;n&quot;
 comma
@@ -7125,6 +7145,7 @@ multiline_comment|/* create a kthread for monitoring this CA device */
 id|ret
 op_assign
 id|kernel_thread
+c_func
 (paren
 id|dvb_ca_en50221_thread
 comma
@@ -7250,6 +7271,7 @@ r_int
 id|i
 suffix:semicolon
 id|dprintk
+c_func
 (paren
 l_string|&quot;%s&bslash;n&quot;
 comma

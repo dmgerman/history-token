@@ -53,7 +53,7 @@ r_int
 id|debug
 suffix:semicolon
 DECL|macro|dprintk
-mdefine_line|#define dprintk(args...) &bslash;&n;do {&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;if (debug) printk(KERN_DEBUG &quot;mt352: &quot; args); &bslash;&n;} while (0)
+mdefine_line|#define dprintk(args...) &bslash;&n;&t;do { &bslash;&n;&t;&t;if (debug) printk(KERN_DEBUG &quot;mt352: &quot; args); &bslash;&n;&t;} while (0)
 DECL|function|mt352_single_write
 r_static
 r_int

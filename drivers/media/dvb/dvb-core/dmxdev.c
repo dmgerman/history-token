@@ -1,4 +1,4 @@
-multiline_comment|/* &n; * dmxdev.c - DVB demultiplexer device &n; *&n; * Copyright (C) 2000 Ralph  Metzler &lt;ralph@convergence.de&gt;&n; *&t;&t;  &amp; Marcus Metzler &lt;marcus@convergence.de&gt;&n;&t;&t;      for convergence integrated media GmbH&n; *&n; * This program is free software; you can redistribute it and/or&n; * modify it under the terms of the GNU Lesser General Public License&n; * as published by the Free Software Foundation; either version 2.1&n; * of the License, or (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU Lesser General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.&n; *&n; */
+multiline_comment|/*&n; * dmxdev.c - DVB demultiplexer device&n; *&n; * Copyright (C) 2000 Ralph  Metzler &lt;ralph@convergence.de&gt;&n; *&t;&t;  &amp; Marcus Metzler &lt;marcus@convergence.de&gt;&n;&t;&t;      for convergence integrated media GmbH&n; *&n; * This program is free software; you can redistribute it and/or&n; * modify it under the terms of the GNU Lesser General Public License&n; * as published by the Free Software Foundation; either version 2.1&n; * of the License, or (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU Lesser General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.&n; *&n; */
 macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/vmalloc.h&gt;
@@ -2107,7 +2107,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/* restart section feed if it has filters left associated with it, &n;   otherwise release the feed */
+multiline_comment|/* restart section feed if it has filters left associated with it,&n;   otherwise release the feed */
 DECL|function|dvb_dmxdev_feed_restart
 r_static
 r_int

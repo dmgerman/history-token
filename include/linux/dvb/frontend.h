@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * frontend.h&n; *&n; * Copyright (C) 2000 Marcus Metzler &lt;marcus@convergence.de&gt;&n; *                    Ralph  Metzler &lt;ralph@convergence.de&gt;&n; *                    Holger Waechtler &lt;holger@convergence.de&gt;&n; *                    Andre Draszik &lt;ad@convergence.de&gt;&n; *                    for convergence integrated media GmbH&n; *&n; * This program is free software; you can redistribute it and/or&n; * modify it under the terms of the GNU Lesser General Public License&n; * as published by the Free Software Foundation; either version 2.1&n; * of the License, or (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU Lesser General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.&n; *&n; */
+multiline_comment|/*&n; * frontend.h&n; *&n; * Copyright (C) 2000 Marcus Metzler &lt;marcus@convergence.de&gt;&n; *&t;&t;    Ralph  Metzler &lt;ralph@convergence.de&gt;&n; *&t;&t;    Holger Waechtler &lt;holger@convergence.de&gt;&n; *&t;&t;    Andre Draszik &lt;ad@convergence.de&gt;&n; *&t;&t;    for convergence integrated media GmbH&n; *&n; * This program is free software; you can redistribute it and/or&n; * modify it under the terms of the GNU Lesser General Public License&n; * as published by the Free Software Foundation; either version 2.1&n; * of the License, or (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU Lesser General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.&n; *&n; */
 macro_line|#ifndef _DVBFRONTEND_H_
 DECL|macro|_DVBFRONTEND_H_
 mdefine_line|#define _DVBFRONTEND_H_
@@ -684,7 +684,7 @@ suffix:semicolon
 )brace
 suffix:semicolon
 DECL|macro|FE_GET_INFO
-mdefine_line|#define FE_GET_INFO                _IOR(&squot;o&squot;, 61, struct dvb_frontend_info)
+mdefine_line|#define FE_GET_INFO&t;&t;   _IOR(&squot;o&squot;, 61, struct dvb_frontend_info)
 DECL|macro|FE_DISEQC_RESET_OVERLOAD
 mdefine_line|#define FE_DISEQC_RESET_OVERLOAD   _IO(&squot;o&squot;, 62)
 DECL|macro|FE_DISEQC_SEND_MASTER_CMD
@@ -694,27 +694,27 @@ mdefine_line|#define FE_DISEQC_RECV_SLAVE_REPLY _IOR(&squot;o&squot;, 64, struct
 DECL|macro|FE_DISEQC_SEND_BURST
 mdefine_line|#define FE_DISEQC_SEND_BURST       _IO(&squot;o&squot;, 65)  /* fe_sec_mini_cmd_t */
 DECL|macro|FE_SET_TONE
-mdefine_line|#define FE_SET_TONE                _IO(&squot;o&squot;, 66)  /* fe_sec_tone_mode_t */
+mdefine_line|#define FE_SET_TONE&t;&t;   _IO(&squot;o&squot;, 66)  /* fe_sec_tone_mode_t */
 DECL|macro|FE_SET_VOLTAGE
-mdefine_line|#define FE_SET_VOLTAGE             _IO(&squot;o&squot;, 67)  /* fe_sec_voltage_t */
+mdefine_line|#define FE_SET_VOLTAGE&t;&t;   _IO(&squot;o&squot;, 67)  /* fe_sec_voltage_t */
 DECL|macro|FE_ENABLE_HIGH_LNB_VOLTAGE
 mdefine_line|#define FE_ENABLE_HIGH_LNB_VOLTAGE _IO(&squot;o&squot;, 68)  /* int */
 DECL|macro|FE_READ_STATUS
-mdefine_line|#define FE_READ_STATUS             _IOR(&squot;o&squot;, 69, fe_status_t)
+mdefine_line|#define FE_READ_STATUS&t;&t;   _IOR(&squot;o&squot;, 69, fe_status_t)
 DECL|macro|FE_READ_BER
-mdefine_line|#define FE_READ_BER                _IOR(&squot;o&squot;, 70, __u32)
+mdefine_line|#define FE_READ_BER&t;&t;   _IOR(&squot;o&squot;, 70, __u32)
 DECL|macro|FE_READ_SIGNAL_STRENGTH
 mdefine_line|#define FE_READ_SIGNAL_STRENGTH    _IOR(&squot;o&squot;, 71, __u16)
 DECL|macro|FE_READ_SNR
-mdefine_line|#define FE_READ_SNR                _IOR(&squot;o&squot;, 72, __u16)
+mdefine_line|#define FE_READ_SNR&t;&t;   _IOR(&squot;o&squot;, 72, __u16)
 DECL|macro|FE_READ_UNCORRECTED_BLOCKS
 mdefine_line|#define FE_READ_UNCORRECTED_BLOCKS _IOR(&squot;o&squot;, 73, __u32)
 DECL|macro|FE_SET_FRONTEND
-mdefine_line|#define FE_SET_FRONTEND            _IOW(&squot;o&squot;, 76, struct dvb_frontend_parameters)
+mdefine_line|#define FE_SET_FRONTEND&t;&t;   _IOW(&squot;o&squot;, 76, struct dvb_frontend_parameters)
 DECL|macro|FE_GET_FRONTEND
-mdefine_line|#define FE_GET_FRONTEND            _IOR(&squot;o&squot;, 77, struct dvb_frontend_parameters)
+mdefine_line|#define FE_GET_FRONTEND&t;&t;   _IOR(&squot;o&squot;, 77, struct dvb_frontend_parameters)
 DECL|macro|FE_GET_EVENT
-mdefine_line|#define FE_GET_EVENT               _IOR(&squot;o&squot;, 78, struct dvb_frontend_event)
+mdefine_line|#define FE_GET_EVENT&t;&t;   _IOR(&squot;o&squot;, 78, struct dvb_frontend_event)
 DECL|macro|FE_DISHNETWORK_SEND_LEGACY_CMD
 mdefine_line|#define FE_DISHNETWORK_SEND_LEGACY_CMD _IO(&squot;o&squot;, 80) /* unsigned int */
 macro_line|#endif /*_DVBFRONTEND_H_*/

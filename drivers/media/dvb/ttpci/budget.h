@@ -228,6 +228,7 @@ suffix:semicolon
 r_extern
 r_int
 id|ttpci_budget_deinit
+c_func
 (paren
 r_struct
 id|budget
@@ -238,6 +239,7 @@ suffix:semicolon
 r_extern
 r_void
 id|ttpci_budget_irq10_handler
+c_func
 (paren
 r_struct
 id|saa7146_dev

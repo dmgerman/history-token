@@ -1,4 +1,4 @@
-multiline_comment|/* &n;    Driver for VES1893 and VES1993 QPSK Demodulators&n;&n;    Copyright (C) 1999 Convergence Integrated Media GmbH &lt;ralph@convergence.de&gt;&n;    Copyright (C) 2001 Ronny Strutz &lt;3des@elitedvb.de&gt;&n;    Copyright (C) 2002 Dennis Noermann &lt;dennis.noermann@noernet.de&gt;&n;    Copyright (C) 2002-2003 Andreas Oberritter &lt;obi@linuxtv.org&gt;&n;&n;    This program is free software; you can redistribute it and/or modify&n;    it under the terms of the GNU General Public License as published by&n;    the Free Software Foundation; either version 2 of the License, or&n;    (at your option) any later version.&n;&n;    This program is distributed in the hope that it will be useful,&n;    but WITHOUT ANY WARRANTY; without even the implied warranty of&n;    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n;&n;    GNU General Public License for more details.&n;&n;    You should have received a copy of the GNU General Public License&n;    along with this program; if not, write to the Free Software&n;    Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n;&n;*/
+multiline_comment|/*&n;    Driver for VES1893 and VES1993 QPSK Demodulators&n;&n;    Copyright (C) 1999 Convergence Integrated Media GmbH &lt;ralph@convergence.de&gt;&n;    Copyright (C) 2001 Ronny Strutz &lt;3des@elitedvb.de&gt;&n;    Copyright (C) 2002 Dennis Noermann &lt;dennis.noermann@noernet.de&gt;&n;    Copyright (C) 2002-2003 Andreas Oberritter &lt;obi@linuxtv.org&gt;&n;&n;    This program is free software; you can redistribute it and/or modify&n;    it under the terms of the GNU General Public License as published by&n;    the Free Software Foundation; either version 2 of the License, or&n;    (at your option) any later version.&n;&n;    This program is distributed in the hope that it will be useful,&n;    but WITHOUT ANY WARRANTY; without even the implied warranty of&n;    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n;&n;    GNU General Public License for more details.&n;&n;    You should have received a copy of the GNU General Public License&n;    along with this program; if not, write to the Free Software&n;    Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n;&n;*/
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
@@ -1346,7 +1346,7 @@ op_lshift
 l_int|5
 )paren
 suffix:semicolon
-multiline_comment|/*FCONF  = 0x80 | ((FNR &amp; 0x01) &lt;&lt; 5) | (((FNR &gt; 1) &amp; 0x03) &lt;&lt; 3) | ((FNR &gt;&gt; 1) &amp; 0x07);*/
+multiline_comment|/*FCONF&t; = 0x80 | ((FNR &amp; 0x01) &lt;&lt; 5) | (((FNR &gt; 1) &amp; 0x03) &lt;&lt; 3) | ((FNR &gt;&gt; 1) &amp; 0x07);*/
 )brace
 id|BDR
 op_assign
@@ -1827,7 +1827,7 @@ comma
 l_int|0x0e
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t;&t; * The ves1893 sometimes returns sync values that make no sense,&n;&t;&t; * because, e.g., the SIGNAL bit is 0, while some of the higher&n;&t;&t; * bits are 1 (and how can there be a CARRIER w/o a SIGNAL?).&n;&t;&t; * Tests showed that the the VITERBI and SYNC bits are returned&n;&t;&t; * reliably, while the SIGNAL and CARRIER bits ar sometimes wrong.&n;&t;&t; * If such a case occurs, we read the value again, until we get a&n;&t;&t; * valid value.&n;&t;&t; */
+multiline_comment|/*&n;&t; * The ves1893 sometimes returns sync values that make no sense,&n;&t; * because, e.g., the SIGNAL bit is 0, while some of the higher&n;&t; * bits are 1 (and how can there be a CARRIER w/o a SIGNAL?).&n;&t; * Tests showed that the the VITERBI and SYNC bits are returned&n;&t; * reliably, while the SIGNAL and CARRIER bits ar sometimes wrong.&n;&t; * If such a case occurs, we read the value again, until we get a&n;&t; * valid value.&n;&t; */
 r_int
 id|maxtry
 op_assign
@@ -2377,7 +2377,7 @@ id|p-&gt;frequency
 op_sub_assign
 id|afc
 suffix:semicolon
-multiline_comment|/*&n;&t;&t; * inversion indicator is only valid&n;&t;&t; * if auto inversion was used&n;&t;&t; */
+multiline_comment|/*&n;&t; * inversion indicator is only valid&n;&t; * if auto inversion was used&n;&t; */
 r_if
 c_cond
 (paren
