@@ -2588,12 +2588,6 @@ id|KERN_ERR
 l_string|&quot;wd7000: can&squot;t get enough free SCBs.&bslash;n&quot;
 )paren
 suffix:semicolon
-id|spin_unlock_irq
-c_func
-(paren
-id|host-&gt;host_lock
-)paren
-suffix:semicolon
 r_return
 (paren
 l_int|NULL
