@@ -1138,7 +1138,7 @@ suffix:semicolon
 )brace
 DECL|function|vidc_audio_dma_interrupt
 r_static
-r_void
+id|irqreturn_t
 id|vidc_audio_dma_interrupt
 c_func
 (paren
@@ -1152,6 +1152,9 @@ id|vidc_adev
 comma
 l_int|1
 )paren
+suffix:semicolon
+r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Prepare for outputting samples.&n; *&n; * Each buffer that will be passed will be `bsize&squot; bytes long,&n; * with a total of `bcount&squot; buffers.&n; */
