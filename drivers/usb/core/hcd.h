@@ -563,33 +563,6 @@ macro_line|#endif /* CONFIG_PCI */
 multiline_comment|/* -------------------------------------------------------------------------- */
 multiline_comment|/* Enumeration is only for the hub driver, or HCD virtual root hubs */
 r_extern
-r_struct
-id|usb_device
-op_star
-id|usb_alloc_dev
-c_func
-(paren
-r_struct
-id|usb_device
-op_star
-id|parent
-comma
-r_struct
-id|usb_bus
-op_star
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|usb_free_dev
-c_func
-(paren
-r_struct
-id|usb_device
-op_star
-)paren
-suffix:semicolon
-r_extern
 r_int
 id|usb_new_device
 c_func

@@ -202,39 +202,6 @@ DECL|macro|DEPTH_INTERVAL
 mdefine_line|#define DEPTH_INTERVAL&t;5
 DECL|macro|MAX_URB_LOOP
 mdefine_line|#define MAX_URB_LOOP&t;2048&t;&t;/* Maximum number of linked URB&squot;s */
-multiline_comment|/*&n; * Only the USB core should call uhci_alloc_dev and uhci_free_dev&n; */
-DECL|function|uhci_alloc_dev
-r_static
-r_int
-id|uhci_alloc_dev
-c_func
-(paren
-r_struct
-id|usb_device
-op_star
-id|dev
-)paren
-(brace
-r_return
-l_int|0
-suffix:semicolon
-)brace
-DECL|function|uhci_free_dev
-r_static
-r_int
-id|uhci_free_dev
-c_func
-(paren
-r_struct
-id|usb_device
-op_star
-id|dev
-)paren
-(brace
-r_return
-l_int|0
-suffix:semicolon
-)brace
 multiline_comment|/*&n; * Technically, updating td-&gt;status here is a race, but it&squot;s not really a&n; * problem. The worst that can happen is that we set the IOC bit again&n; * generating a spurios interrupt. We could fix this by creating another&n; * QH and leaving the IOC bit always set, but then we would have to play&n; * games with the FSBR code to make sure we get the correct order in all&n; * the cases. I don&squot;t think it&squot;s worth the effort&n; */
 DECL|function|uhci_set_next_interrupt
 r_static
@@ -7853,14 +7820,6 @@ id|usb_operations
 id|uhci_device_operations
 op_assign
 (brace
-id|allocate
-suffix:colon
-id|uhci_alloc_dev
-comma
-id|deallocate
-suffix:colon
-id|uhci_free_dev
-comma
 id|get_frame_number
 suffix:colon
 id|uhci_get_current_frame_number

@@ -1210,6 +1210,34 @@ id|USB_MAXCHILDREN
 suffix:semicolon
 )brace
 suffix:semicolon
+multiline_comment|/* usb_free_dev can be called anywhere from usb_dec_dev_use */
+r_extern
+r_struct
+id|usb_device
+op_star
+id|usb_alloc_dev
+c_func
+(paren
+r_struct
+id|usb_device
+op_star
+id|parent
+comma
+r_struct
+id|usb_bus
+op_star
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|usb_free_dev
+c_func
+(paren
+r_struct
+id|usb_device
+op_star
+)paren
+suffix:semicolon
 multiline_comment|/* for when layers above USB add new non-USB drivers */
 r_extern
 r_void
@@ -1262,7 +1290,7 @@ id|dev-&gt;refcnt
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * usb_dec_dev_use - drop a reference to a device&n; * @dev: the device no longer being referenced&n; *&n; * Each live reference to a device should be refcounted.&n; *&n; * Drivers for USB interfaces should normally release such references in&n; * their disconnect() methods, and record them in probe().&n; *&n; * Note that driver disconnect() methods must guarantee that when they&n; * return, all of their outstanding references to the device (and its&n; * interfaces) are cleaned up.  That means that all pending URBs from&n; * this driver must have completed, and that no more copies of the device&n; * handle are saved in driver records (including other kernel threads).&n; */
+multiline_comment|/**&n; * usb_dec_dev_use - drop a reference to a device&n; * @dev: the device no longer being referenced&n; *&n; * Each live reference to a device should be refcounted.&n; */
 DECL|function|usb_dec_dev_use
 r_static
 r_inline
@@ -1279,18 +1307,18 @@ r_if
 c_cond
 (paren
 id|atomic_dec_and_test
+c_func
 (paren
 op_amp
 id|dev-&gt;refcnt
 )paren
 )paren
-(brace
-multiline_comment|/* May only go to zero when usbcore finishes&n;&t;&t; * usb_disconnect() processing:  khubd or HCDs.&n;&t;&t; *&n;&t;&t; * If you hit this BUG() it&squot;s likely a problem&n;&t;&t; * with some driver&squot;s disconnect() routine.&n;&t;&t; */
-id|BUG
+id|usb_free_dev
+c_func
 (paren
+id|dev
 )paren
 suffix:semicolon
-)brace
 )brace
 multiline_comment|/* used these for multi-interface device registration */
 r_extern

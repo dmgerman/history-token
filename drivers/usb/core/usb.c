@@ -2868,6 +2868,11 @@ op_amp
 id|dev-&gt;serialize
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|dev-&gt;bus-&gt;op-&gt;allocate
+)paren
 id|dev-&gt;bus-&gt;op
 op_member_access_from_pointer
 id|allocate
@@ -2895,32 +2900,12 @@ id|dev
 r_if
 c_cond
 (paren
-id|in_interrupt
-(paren
-)paren
-)paren
-id|BUG
-(paren
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|atomic_dec_and_test
-(paren
-op_amp
-id|dev-&gt;refcnt
-)paren
-)paren
-(brace
-multiline_comment|/* MUST go to zero here, else someone&squot;s hanging on to&n;&t;&t; * a device that&squot;s supposed to have been cleaned up!!&n;&t;&t; */
-id|BUG
-(paren
-)paren
-suffix:semicolon
-)brace
 id|dev-&gt;bus-&gt;op-&gt;deallocate
+)paren
+id|dev-&gt;bus-&gt;op
+op_member_access_from_pointer
+id|deallocate
+c_func
 (paren
 id|dev
 )paren
@@ -6104,8 +6089,9 @@ id|dev-&gt;dev
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* Free up the device itself */
-id|usb_free_dev
+multiline_comment|/* Decrement the reference count, it&squot;ll auto free everything when */
+multiline_comment|/* it hits 0 which could very well be now */
+id|usb_dec_dev_use
 c_func
 (paren
 id|dev
