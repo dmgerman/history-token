@@ -11,7 +11,7 @@ macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &quot;cpqphp.h&quot;
 macro_line|#include &quot;cpqphp_nvram.h&quot;
-macro_line|#include &quot;../../arch/i386/kernel/pci-i386.h&quot;&t;/* horrible hack showing how processor dependant we are... */
+macro_line|#include &quot;../../arch/i386/kernel/pci/pci.h&quot;&t;/* horrible hack showing how processor dependant we are... */
 multiline_comment|/* Global variables */
 DECL|variable|cpqhp_debug
 r_int

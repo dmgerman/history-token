@@ -8,7 +8,7 @@ macro_line|#include &lt;linux/proc_fs.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &quot;cpqphp.h&quot;
 macro_line|#include &quot;cpqphp_nvram.h&quot;
-macro_line|#include &quot;../../arch/i386/kernel/pci-i386.h&quot;&t;/* horrible hack showing how processor dependant we are... */
+macro_line|#include &quot;../../arch/i386/kernel/pci/pci.h&quot;&t;/* horrible hack showing how processor dependant we are... */
 DECL|variable|cpqhp_nic_irq
 id|u8
 id|cpqhp_nic_irq
