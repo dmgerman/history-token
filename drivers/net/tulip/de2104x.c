@@ -8120,6 +8120,12 @@ id|i
 op_assign
 id|value
 suffix:semicolon
+id|udelay
+c_func
+(paren
+l_int|1
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
