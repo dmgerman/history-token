@@ -588,14 +588,17 @@ DECL|macro|NODE_DATA
 mdefine_line|#define NODE_DATA(nid)&t;&t;(&amp;contig_page_data)
 DECL|macro|NODE_MEM_MAP
 mdefine_line|#define NODE_MEM_MAP(nid)&t;mem_map
-DECL|macro|MAX_NR_NODES
-mdefine_line|#define MAX_NR_NODES&t;&t;1
+DECL|macro|MAX_NODES_SHIFT
+mdefine_line|#define MAX_NODES_SHIFT&t;&t;0
 macro_line|#else /* CONFIG_DISCONTIGMEM */
 macro_line|#include &lt;asm/mmzone.h&gt;
-multiline_comment|/* page-&gt;zone is currently 8 bits ... */
-DECL|macro|MAX_NR_NODES
-mdefine_line|#define MAX_NR_NODES&t;&t;(255 / MAX_NR_ZONES)
+multiline_comment|/*&n; * page-&gt;zone is currently 8 bits&n; * there are 3 zones (2 bits)&n; * this leaves 8-2=6 bits for nodes&n; */
+DECL|macro|MAX_NODES_SHIFT
+mdefine_line|#define MAX_NODES_SHIFT&t;&t;6
 macro_line|#endif /* !CONFIG_DISCONTIGMEM */
+macro_line|#if NODES_SHIFT &gt; MAX_NODES_SHIFT
+macro_line|#error NODES_SHIFT &gt; MAX_NODES_SHIFT
+macro_line|#endif
 r_extern
 id|DECLARE_BITMAP
 c_func
