@@ -1815,6 +1815,10 @@ c_func
 l_string|&quot;Can&squot;t register HCI device&quot;
 )paren
 suffix:semicolon
+id|info-&gt;hdev
+op_assign
+l_int|NULL
+suffix:semicolon
 id|hci_free_dev
 c_func
 (paren
@@ -1856,6 +1860,16 @@ op_star
 id|hdev
 op_assign
 id|info-&gt;hdev
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|hdev
+)paren
+r_return
+op_minus
+id|ENODEV
 suffix:semicolon
 id|btuart_hci_close
 c_func
