@@ -402,7 +402,7 @@ r_void
 )paren
 suffix:semicolon
 multiline_comment|/* scsi_proc.c */
-macro_line|#ifdef CONFIG_PROC_FS
+macro_line|#ifdef CONFIG_SCSI_PROC_FS
 r_extern
 r_void
 id|scsi_proc_hostdir_add

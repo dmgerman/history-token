@@ -2036,6 +2036,7 @@ r_return
 id|scsi_default_dev_flags
 suffix:semicolon
 )brace
+macro_line|#ifdef CONFIG_SCSI_PROC_FS
 multiline_comment|/* &n; * proc_scsi_dev_info_read: dump the scsi_dev_info_list via&n; * /proc/scsi/device_info&n; */
 DECL|function|proc_scsi_devinfo_read
 r_static
@@ -2342,6 +2343,7 @@ r_return
 id|err
 suffix:semicolon
 )brace
+macro_line|#endif /* CONFIG_SCSI_PROC_FS */
 id|module_param_string
 c_func
 (paren
@@ -2411,6 +2413,7 @@ id|scsi_dev_info_list
 op_star
 id|devinfo
 suffix:semicolon
+macro_line|#ifdef CONFIG_SCSI_PROC_FS
 id|remove_proc_entry
 c_func
 (paren
@@ -2419,6 +2422,7 @@ comma
 l_int|0
 )paren
 suffix:semicolon
+macro_line|#endif
 id|list_for_each_safe
 c_func
 (paren
@@ -2460,11 +2464,13 @@ c_func
 r_void
 )paren
 (brace
+macro_line|#ifdef CONFIG_SCSI_PROC_FS
 r_struct
 id|proc_dir_entry
 op_star
 id|p
 suffix:semicolon
+macro_line|#endif
 r_int
 id|error
 comma
@@ -2545,6 +2551,7 @@ r_goto
 id|out
 suffix:semicolon
 )brace
+macro_line|#ifdef CONFIG_SCSI_PROC_FS
 id|p
 op_assign
 id|create_proc_entry
@@ -2585,6 +2592,7 @@ id|p-&gt;write_proc
 op_assign
 id|proc_scsi_devinfo_write
 suffix:semicolon
+macro_line|#endif /* CONFIG_SCSI_PROC_FS */
 id|out
 suffix:colon
 r_if

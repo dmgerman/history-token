@@ -43,7 +43,7 @@ macro_line|#include &lt;scsi/scsi_driver.h&gt;
 macro_line|#include &lt;scsi/scsi_ioctl.h&gt;
 macro_line|#include &lt;scsi/sg.h&gt;
 macro_line|#include &quot;scsi_logging.h&quot;
-macro_line|#ifdef CONFIG_PROC_FS
+macro_line|#ifdef CONFIG_SCSI_PROC_FS
 macro_line|#include &lt;linux/proc_fs.h&gt;
 r_static
 r_int
@@ -928,7 +928,7 @@ op_star
 id|sclp
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_PROC_FS
+macro_line|#ifdef CONFIG_SCSI_PROC_FS
 r_static
 r_int
 id|sg_last_dev
@@ -8206,13 +8206,13 @@ id|rc
 r_return
 id|rc
 suffix:semicolon
-macro_line|#ifdef CONFIG_PROC_FS
+macro_line|#ifdef CONFIG_SCSI_PROC_FS
 id|sg_proc_init
 c_func
 (paren
 )paren
 suffix:semicolon
-macro_line|#endif&t;&t;&t;&t;/* CONFIG_PROC_FS */
+macro_line|#endif&t;&t;&t;&t;/* CONFIG_SCSI_PROC_FS */
 r_return
 l_int|0
 suffix:semicolon
@@ -8227,13 +8227,13 @@ c_func
 r_void
 )paren
 (brace
-macro_line|#ifdef CONFIG_PROC_FS
+macro_line|#ifdef CONFIG_SCSI_PROC_FS
 id|sg_proc_cleanup
 c_func
 (paren
 )paren
 suffix:semicolon
-macro_line|#endif&t;&t;&t;&t;/* CONFIG_PROC_FS */
+macro_line|#endif&t;&t;&t;&t;/* CONFIG_SCSI_PROC_FS */
 id|scsi_unregister_interface
 c_func
 (paren
@@ -11984,7 +11984,7 @@ r_return
 id|resp
 suffix:semicolon
 )brace
-macro_line|#ifdef CONFIG_PROC_FS
+macro_line|#ifdef CONFIG_SCSI_PROC_FS
 r_static
 id|Sg_request
 op_star
@@ -12404,7 +12404,7 @@ r_return
 id|res
 suffix:semicolon
 )brace
-macro_line|#ifdef CONFIG_PROC_FS
+macro_line|#ifdef CONFIG_SCSI_PROC_FS
 r_static
 id|Sg_fd
 op_star
@@ -13611,7 +13611,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-macro_line|#ifdef CONFIG_PROC_FS
+macro_line|#ifdef CONFIG_SCSI_PROC_FS
 r_static
 r_int
 DECL|function|sg_last_dev
@@ -13757,7 +13757,7 @@ r_return
 id|sdp
 suffix:semicolon
 )brace
-macro_line|#ifdef CONFIG_PROC_FS
+macro_line|#ifdef CONFIG_SCSI_PROC_FS
 DECL|variable|sg_proc_sgp
 r_static
 r_struct
@@ -15999,7 +15999,7 @@ r_return
 l_int|1
 suffix:semicolon
 )brace
-macro_line|#endif&t;&t;&t;&t;/* CONFIG_PROC_FS */
+macro_line|#endif&t;&t;&t;&t;/* CONFIG_SCSI_PROC_FS */
 DECL|variable|init_sg
 id|module_init
 c_func
