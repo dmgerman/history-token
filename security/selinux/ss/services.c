@@ -3771,6 +3771,11 @@ id|fp
 (brace
 id|LOAD_UNLOCK
 suffix:semicolon
+id|avtab_cache_destroy
+c_func
+(paren
+)paren
+suffix:semicolon
 r_return
 op_minus
 id|EINVAL
@@ -3797,6 +3802,11 @@ c_func
 (paren
 op_amp
 id|policydb
+)paren
+suffix:semicolon
+id|avtab_cache_destroy
+c_func
+(paren
 )paren
 suffix:semicolon
 r_return

@@ -321,6 +321,13 @@ c_func
 r_void
 )paren
 suffix:semicolon
+r_void
+id|avtab_cache_destroy
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
 DECL|macro|AVTAB_HASH_BITS
 mdefine_line|#define AVTAB_HASH_BITS 15
 DECL|macro|AVTAB_HASH_BUCKETS
