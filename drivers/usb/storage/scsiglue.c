@@ -582,9 +582,6 @@ op_star
 id|us
 suffix:semicolon
 r_int
-id|i
-suffix:semicolon
-r_int
 id|result
 suffix:semicolon
 multiline_comment|/* we use the usb_reset_device() function to handle this for us */
