@@ -4110,12 +4110,12 @@ c_func
 r_struct
 id|file
 op_star
-id|in_file
+id|out_file
 comma
 r_struct
 id|file
 op_star
-id|out_file
+id|in_file
 comma
 id|loff_t
 op_star
