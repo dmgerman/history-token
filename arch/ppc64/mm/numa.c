@@ -4,6 +4,7 @@ macro_line|#include &lt;linux/bootmem.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/mmzone.h&gt;
+macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;asm/lmb.h&gt;
 macro_line|#if 1
 DECL|macro|dbg
@@ -1448,6 +1449,11 @@ id|i
 comma
 id|nid
 suffix:semicolon
+r_struct
+id|page
+op_star
+id|node_mem_map
+suffix:semicolon
 r_for
 c_loop
 (paren
@@ -1491,20 +1497,6 @@ suffix:semicolon
 r_int
 r_int
 id|end_pfn
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|node_data
-(braket
-id|nid
-)braket
-dot
-id|node_spanned_pages
-op_eq
-l_int|0
-)paren
-r_continue
 suffix:semicolon
 id|start_pfn
 op_assign
@@ -1550,6 +1542,35 @@ comma
 id|start_pfn
 )paren
 suffix:semicolon
+multiline_comment|/* &n;&t;&t; * Give this empty node a dummy struct page to avoid&n;&t;&t; * us from trying to allocate a node local mem_map&n;&t;&t; * in free_area_init_node (which will fail).&n;&t;&t; */
+r_if
+c_cond
+(paren
+op_logical_neg
+id|node_data
+(braket
+id|nid
+)braket
+dot
+id|node_spanned_pages
+)paren
+id|node_mem_map
+op_assign
+id|alloc_bootmem
+c_func
+(paren
+r_sizeof
+(paren
+r_struct
+id|page
+)paren
+)paren
+suffix:semicolon
+r_else
+id|node_mem_map
+op_assign
+l_int|NULL
+suffix:semicolon
 id|free_area_init_node
 c_func
 (paren
@@ -1561,7 +1582,7 @@ c_func
 id|nid
 )paren
 comma
-l_int|NULL
+id|node_mem_map
 comma
 id|zones_size
 comma

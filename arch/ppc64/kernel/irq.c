@@ -29,24 +29,6 @@ macro_line|#include &lt;asm/ptrace.h&gt;
 macro_line|#include &lt;asm/iSeries/LparData.h&gt;
 macro_line|#include &lt;asm/machdep.h&gt;
 macro_line|#include &lt;asm/paca.h&gt;
-r_void
-id|enable_irq
-c_func
-(paren
-r_int
-r_int
-id|irq_nr
-)paren
-suffix:semicolon
-r_void
-id|disable_irq
-c_func
-(paren
-r_int
-r_int
-id|irq_nr
-)paren
-suffix:semicolon
 macro_line|#ifdef CONFIG_SMP
 r_extern
 r_void
@@ -283,6 +265,8 @@ op_or
 id|IRQ_AUTODETECT
 op_or
 id|IRQ_WAITING
+op_or
+id|IRQ_INPROGRESS
 )paren
 suffix:semicolon
 id|unmask_irq
@@ -799,12 +783,25 @@ r_int
 id|irq
 )paren
 (brace
+id|irq_desc_t
+op_star
+id|desc
+op_assign
+id|irq_desc
+op_plus
+id|irq
+suffix:semicolon
 id|disable_irq_nosync
 c_func
 (paren
 id|irq
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|desc-&gt;action
+)paren
 id|synchronize_irq
 c_func
 (paren
@@ -861,7 +858,11 @@ op_assign
 id|desc-&gt;status
 op_amp
 op_complement
+(paren
 id|IRQ_DISABLED
+op_or
+id|IRQ_INPROGRESS
+)paren
 suffix:semicolon
 id|desc-&gt;status
 op_assign

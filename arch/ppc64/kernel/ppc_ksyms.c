@@ -1048,4 +1048,11 @@ c_func
 id|tb_ticks_per_usec
 )paren
 suffix:semicolon
+DECL|variable|paca
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|paca
+)paren
+suffix:semicolon
 eof
