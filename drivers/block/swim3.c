@@ -1299,6 +1299,9 @@ id|req-&gt;rq_disk-&gt;disk_name
 comma
 id|req-&gt;cmd
 comma
+(paren
+r_int
+)paren
 id|req-&gt;sector
 comma
 id|req-&gt;nr_sectors
@@ -1425,15 +1428,26 @@ r_continue
 suffix:semicolon
 )brace
 )brace
+multiline_comment|/* Do not remove the cast. req-&gt;sector is now a sector_t and&n;&t;&t; * can be 64 bits, but it will never go past 32 bits for this&n;&t;&t; * driver anyway, so we can safely cast it down and not have&n;&t;&t; * to do a 64/32 division&n;&t;&t; */
 id|fs-&gt;req_cyl
 op_assign
+(paren
+(paren
+r_int
+)paren
 id|req-&gt;sector
+)paren
 op_div
 id|fs-&gt;secpercyl
 suffix:semicolon
 id|x
 op_assign
+(paren
+(paren
+r_int
+)paren
 id|req-&gt;sector
+)paren
 op_mod
 id|fs-&gt;secpercyl
 suffix:semicolon
@@ -2940,6 +2954,9 @@ suffix:colon
 l_string|&quot;read&quot;
 )paren
 comma
+(paren
+r_int
+)paren
 id|fd_req-&gt;sector
 )paren
 suffix:semicolon
@@ -3606,6 +3623,9 @@ l_string|&quot;writ&quot;
 suffix:colon
 l_string|&quot;read&quot;
 comma
+(paren
+r_int
+)paren
 id|fd_req-&gt;sector
 comma
 id|err
