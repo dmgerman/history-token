@@ -41608,7 +41608,7 @@ id|tp
 suffix:semicolon
 id|tp-&gt;regs
 op_assign
-id|ioremap
+id|ioremap_nocache
 c_func
 (paren
 id|tg3reg_base
