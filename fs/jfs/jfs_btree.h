@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *   Copyright (c) International Business Machines Corp., 2000-2001&n; *&n; *   This program is free software;  you can redistribute it and/or modify&n; *   it under the terms of the GNU General Public License as published by&n; *   the Free Software Foundation; either version 2 of the License, or &n; *   (at your option) any later version.&n; * &n; *   This program is distributed in the hope that it will be useful,&n; *   but WITHOUT ANY WARRANTY;  without even the implied warranty of&n; *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See&n; *   the GNU General Public License for more details.&n; *&n; *   You should have received a copy of the GNU General Public License&n; *   along with this program;  if not, write to the Free Software &n; *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA&n; */
+multiline_comment|/*&n; *   Copyright (C) International Business Machines Corp., 2000-2004&n; *&n; *   This program is free software;  you can redistribute it and/or modify&n; *   it under the terms of the GNU General Public License as published by&n; *   the Free Software Foundation; either version 2 of the License, or &n; *   (at your option) any later version.&n; * &n; *   This program is distributed in the hope that it will be useful,&n; *   but WITHOUT ANY WARRANTY;  without even the implied warranty of&n; *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See&n; *   the GNU General Public License for more details.&n; *&n; *   You should have received a copy of the GNU General Public License&n; *   along with this program;  if not, write to the Free Software &n; *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA&n; */
 macro_line|#ifndef&t;_H_JFS_BTREE
 DECL|macro|_H_JFS_BTREE
 mdefine_line|#define _H_JFS_BTREE
@@ -45,8 +45,6 @@ multiline_comment|/* put the page buffer */
 DECL|macro|BT_PUTPAGE
 mdefine_line|#define BT_PUTPAGE(MP)&bslash;&n;{&bslash;&n;&t;if (! BT_IS_ROOT(MP)) &bslash;&n;&t;&t;release_metapage(MP); &bslash;&n;}
 multiline_comment|/*&n; *&t;btree traversal stack&n; *&n; * record the path traversed during the search;&n; * top frame record the leaf page/entry selected.&n; */
-DECL|macro|MAXTREEHEIGHT
-mdefine_line|#define&t;MAXTREEHEIGHT&t;&t;8
 DECL|struct|btframe
 r_struct
 id|btframe
@@ -66,17 +64,17 @@ DECL|member|lastindex
 id|s16
 id|lastindex
 suffix:semicolon
-multiline_comment|/* 2: */
+multiline_comment|/* 2: unused */
 DECL|member|mp
 r_struct
 id|metapage
 op_star
 id|mp
 suffix:semicolon
-multiline_comment|/* 4: */
+multiline_comment|/* 4/8: */
 )brace
 suffix:semicolon
-multiline_comment|/* (16) */
+multiline_comment|/* (16/24) */
 DECL|struct|btstack
 r_struct
 id|btstack
@@ -103,12 +101,72 @@ suffix:semicolon
 suffix:semicolon
 DECL|macro|BT_CLR
 mdefine_line|#define BT_CLR(btstack)&bslash;&n;&t;(btstack)-&gt;top = (btstack)-&gt;stack
+DECL|macro|BT_STACK_FULL
+mdefine_line|#define BT_STACK_FULL(btstack)&bslash;&n;&t;( (btstack)-&gt;top == &amp;((btstack)-&gt;stack[MAXTREEHEIGHT-1]))
 DECL|macro|BT_PUSH
-mdefine_line|#define BT_PUSH(BTSTACK, BN, INDEX)&bslash;&n;{&bslash;&n;&t;(BTSTACK)-&gt;top-&gt;bn = BN;&bslash;&n;&t;(BTSTACK)-&gt;top-&gt;index = INDEX;&bslash;&n;&t;++(BTSTACK)-&gt;top;&bslash;&n;&t;assert((BTSTACK)-&gt;top != &amp;((BTSTACK)-&gt;stack[MAXTREEHEIGHT]));&bslash;&n;}
+mdefine_line|#define BT_PUSH(BTSTACK, BN, INDEX)&bslash;&n;{&bslash;&n;&t;assert(!BT_STACK_FULL(BTSTACK));&bslash;&n;&t;(BTSTACK)-&gt;top-&gt;bn = BN;&bslash;&n;&t;(BTSTACK)-&gt;top-&gt;index = INDEX;&bslash;&n;&t;++(BTSTACK)-&gt;top;&bslash;&n;}
 DECL|macro|BT_POP
 mdefine_line|#define BT_POP(btstack)&bslash;&n;&t;( (btstack)-&gt;top == (btstack)-&gt;stack ? NULL : --(btstack)-&gt;top )
 DECL|macro|BT_STACK
 mdefine_line|#define BT_STACK(btstack)&bslash;&n;&t;( (btstack)-&gt;top == (btstack)-&gt;stack ? NULL : (btstack)-&gt;top )
+DECL|function|BT_STACK_DUMP
+r_static
+r_inline
+r_void
+id|BT_STACK_DUMP
+c_func
+(paren
+r_struct
+id|btstack
+op_star
+id|btstack
+)paren
+(brace
+r_int
+id|i
+suffix:semicolon
+id|printk
+c_func
+(paren
+l_string|&quot;btstack dump:&bslash;n&quot;
+)paren
+suffix:semicolon
+r_for
+c_loop
+(paren
+id|i
+op_assign
+l_int|0
+suffix:semicolon
+id|i
+OL
+id|MAXTREEHEIGHT
+suffix:semicolon
+id|i
+op_increment
+)paren
+id|printk
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;bn = %Lx, index = %d&bslash;n&quot;
+comma
+id|btstack-&gt;stack
+(braket
+id|i
+)braket
+dot
+id|bn
+comma
+id|btstack-&gt;stack
+(braket
+id|i
+)braket
+dot
+id|index
+)paren
+suffix:semicolon
+)brace
 multiline_comment|/* retrieve search results */
 DECL|macro|BT_GETSEARCH
 mdefine_line|#define BT_GETSEARCH(IP, LEAF, BN, MP, TYPE, P, INDEX, ROOT)&bslash;&n;{&bslash;&n;&t;BN = (LEAF)-&gt;bn;&bslash;&n;&t;MP = (LEAF)-&gt;mp;&bslash;&n;&t;if (BN)&bslash;&n;&t;&t;P = (TYPE *)MP-&gt;data;&bslash;&n;&t;else&bslash;&n;&t;&t;P = (TYPE *)&amp;JFS_IP(IP)-&gt;ROOT;&bslash;&n;&t;INDEX = (LEAF)-&gt;index;&bslash;&n;}

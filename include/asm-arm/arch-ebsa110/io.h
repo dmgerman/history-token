@@ -155,7 +155,7 @@ mdefine_line|#define writew(v,b)&t;&t;__writew(v,b)
 DECL|macro|writel
 mdefine_line|#define writel(v,b)&t;&t;__writel(v,b)
 DECL|macro|__arch_ioremap
-mdefine_line|#define __arch_ioremap(cookie,sz,c)&t;((void *)(cookie))
+mdefine_line|#define __arch_ioremap(cookie,sz,c,a)&t;((void *)(cookie))
 DECL|macro|__arch_iounmap
 mdefine_line|#define __arch_iounmap(cookie)&t;&t;do { } while (0)
 macro_line|#endif

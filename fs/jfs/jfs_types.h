@@ -136,6 +136,8 @@ DECL|macro|lengthPXD
 mdefine_line|#define&t;lengthPXD(pxd)&t;__le24_to_cpu((pxd)-&gt;len)
 DECL|macro|addressPXD
 mdefine_line|#define&t;addressPXD(pxd)&bslash;&n;&t;( ((s64)((pxd)-&gt;addr1)) &lt;&lt; 32 | __le32_to_cpu((pxd)-&gt;addr2))
+DECL|macro|MAXTREEHEIGHT
+mdefine_line|#define MAXTREEHEIGHT 8
 multiline_comment|/* pxd list */
 DECL|struct|pxdlist
 r_struct
@@ -153,7 +155,7 @@ DECL|member|pxd
 id|pxd_t
 id|pxd
 (braket
-l_int|8
+id|MAXTREEHEIGHT
 )braket
 suffix:semicolon
 )brace

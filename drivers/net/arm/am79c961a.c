@@ -78,42 +78,23 @@ id|val
 )paren
 (brace
 id|__asm__
+c_func
 (paren
-"&quot;"
-id|str
-op_mod
-ques
-c_cond
-id|h
-op_mod
-l_int|1
+l_string|&quot;str%?h&t;%1, [%2]&t;@ NET_RAP&bslash;n&bslash;t&quot;
+l_string|&quot;str%?h&t;%0, [%2, #-4]&t;@ NET_RDP&quot;
+suffix:colon
+suffix:colon
+l_string|&quot;r&quot;
+(paren
+id|val
+)paren
 comma
-(braket
-op_mod
-l_int|2
-)braket
-"@"
-id|NET_RAP
-id|str
-op_mod
-ques
-c_cond
-id|h
-op_mod
-l_int|0
+l_string|&quot;r&quot;
+(paren
+id|reg
+)paren
 comma
-(braket
-op_mod
-l_int|2
-comma
-macro_line|#-4]&t;@ NET_RDP
-l_string|&quot; : : &quot;
-id|r
-l_string|&quot; (val), &quot;
-id|r
-l_string|&quot; (reg), &quot;
-id|r
-"&quot;"
+l_string|&quot;r&quot;
 (paren
 id|ISAIO_BASE
 op_plus
@@ -142,43 +123,22 @@ r_int
 id|v
 suffix:semicolon
 id|__asm__
+c_func
 (paren
-"&quot;"
-id|str
-op_mod
-ques
-c_cond
-id|h
-op_mod
-l_int|1
+l_string|&quot;str%?h&t;%1, [%2]&t;@ NET_RAP&bslash;n&bslash;t&quot;
+l_string|&quot;ldr%?h&t;%0, [%2, #-4]&t;@ NET_RDP&quot;
+suffix:colon
+l_string|&quot;=r&quot;
+(paren
+id|v
+)paren
+suffix:colon
+l_string|&quot;r&quot;
+(paren
+id|reg
+)paren
 comma
-(braket
-op_mod
-l_int|2
-)braket
-"@"
-id|NET_RAP
-id|ldr
-op_mod
-ques
-c_cond
-id|h
-op_mod
-l_int|0
-comma
-(braket
-op_mod
-l_int|2
-comma
-macro_line|#-4]&t;@ NET_RDP
-l_string|&quot; : &quot;
-op_assign
-id|r
-l_string|&quot; (v): &quot;
-id|r
-l_string|&quot; (reg), &quot;
-id|r
-"&quot;"
+l_string|&quot;r&quot;
 (paren
 id|ISAIO_BASE
 op_plus
@@ -208,42 +168,23 @@ id|val
 )paren
 (brace
 id|__asm__
+c_func
 (paren
-"&quot;"
-id|str
-op_mod
-ques
-c_cond
-id|h
-op_mod
-l_int|1
+l_string|&quot;str%?h&t;%1, [%2]&t;@ NET_RAP&bslash;n&bslash;t&quot;
+l_string|&quot;str%?h&t;%0, [%2, #8]&t;@ NET_IDP&quot;
+suffix:colon
+suffix:colon
+l_string|&quot;r&quot;
+(paren
+id|val
+)paren
 comma
-(braket
-op_mod
-l_int|2
-)braket
-"@"
-id|NET_RAP
-id|str
-op_mod
-ques
-c_cond
-id|h
-op_mod
-l_int|0
+l_string|&quot;r&quot;
+(paren
+id|reg
+)paren
 comma
-(braket
-op_mod
-l_int|2
-comma
-macro_line|#8]&t;@ NET_IDP
-l_string|&quot; : : &quot;
-id|r
-l_string|&quot; (val), &quot;
-id|r
-l_string|&quot; (reg), &quot;
-id|r
-"&quot;"
+l_string|&quot;r&quot;
 (paren
 id|ISAIO_BASE
 op_plus
@@ -420,118 +361,30 @@ id|__asm__
 id|__volatile__
 c_func
 (paren
-"&quot;"
-id|ldm
-op_mod
-ques
-c_cond
-id|ia
-op_mod
-l_int|1
-op_logical_neg
+l_string|&quot;ldm%?ia&t;%1!, {%2, %3}&bslash;n&bslash;t&quot;
+l_string|&quot;str%?h&t;%2, [%0], #4&bslash;n&bslash;t&quot;
+l_string|&quot;mov%?&t;%2, %2, lsr #16&bslash;n&bslash;t&quot;
+l_string|&quot;str%?h&t;%2, [%0], #4&bslash;n&bslash;t&quot;
+l_string|&quot;str%?h&t;%3, [%0], #4&bslash;n&bslash;t&quot;
+l_string|&quot;mov%?&t;%3, %3, lsr #16&bslash;n&bslash;t&quot;
+l_string|&quot;str%?h&t;%3, [%0], #4&quot;
+suffix:colon
+l_string|&quot;=&amp;r&quot;
+(paren
+id|offset
+)paren
 comma
-(brace
-op_mod
-l_int|2
+l_string|&quot;=&amp;r&quot;
+(paren
+id|buf
+)paren
 comma
-op_mod
-l_int|3
-)brace
-id|str
-op_mod
-ques
-c_cond
-id|h
-op_mod
-l_int|2
+l_string|&quot;=r&quot;
+(paren
+id|tmp
+)paren
 comma
-(braket
-op_mod
-l_int|0
-)braket
-comma
-macro_line|#4
-id|mov
-op_mod
-ques
-c_cond
-op_mod
-l_int|2
-comma
-op_mod
-l_int|2
-comma
-id|lsr
-macro_line|#16
-id|str
-op_mod
-ques
-c_cond
-id|h
-op_mod
-l_int|2
-comma
-(braket
-op_mod
-l_int|0
-)braket
-comma
-macro_line|#4
-id|str
-op_mod
-ques
-c_cond
-id|h
-op_mod
-l_int|3
-comma
-(braket
-op_mod
-l_int|0
-)braket
-comma
-macro_line|#4
-id|mov
-op_mod
-ques
-c_cond
-op_mod
-l_int|3
-comma
-op_mod
-l_int|3
-comma
-id|lsr
-macro_line|#16
-id|str
-op_mod
-ques
-c_cond
-id|h
-op_mod
-l_int|3
-comma
-(braket
-op_mod
-l_int|0
-)braket
-comma
-macro_line|#4
-l_string|&quot; : &quot;
-op_assign
-op_amp
-id|r
-l_string|&quot; (offset), &quot;
-op_assign
-op_amp
-id|r
-l_string|&quot; (buf), &quot;
-op_assign
-id|r
-l_string|&quot; (tmp), &quot;
-op_assign
-id|r
-"&quot;"
+l_string|&quot;=r&quot;
 (paren
 id|tmp2
 )paren
@@ -669,77 +522,32 @@ id|__asm__
 id|__volatile__
 c_func
 (paren
-"&quot;"
-id|ldr
-op_mod
-ques
-c_cond
-id|h
-op_mod
-l_int|2
+l_string|&quot;ldr%?h&t;%2, [%0], #4&bslash;n&bslash;t&quot;
+l_string|&quot;str%?b&t;%2, [%1], #1&bslash;n&bslash;t&quot;
+l_string|&quot;mov%?&t;%2, %2, lsr #8&bslash;n&bslash;t&quot;
+l_string|&quot;str%?b&t;%2, [%1], #1&quot;
+suffix:colon
+l_string|&quot;=&amp;r&quot;
+(paren
+id|offset
+)paren
 comma
-(braket
-op_mod
-l_int|0
-)braket
+l_string|&quot;=&amp;r&quot;
+(paren
+id|buf
+)paren
 comma
-macro_line|#4
-id|str
-op_mod
-ques
-c_cond
-id|b
-op_mod
-l_int|2
+l_string|&quot;=r&quot;
+(paren
+id|tmp
+)paren
+suffix:colon
+l_string|&quot;0&quot;
+(paren
+id|offset
+)paren
 comma
-(braket
-op_mod
-l_int|1
-)braket
-comma
-macro_line|#1
-id|mov
-op_mod
-ques
-c_cond
-op_mod
-l_int|2
-comma
-op_mod
-l_int|2
-comma
-id|lsr
-macro_line|#8
-id|str
-op_mod
-ques
-c_cond
-id|b
-op_mod
-l_int|2
-comma
-(braket
-op_mod
-l_int|1
-)braket
-comma
-macro_line|#1
-l_string|&quot; : &quot;
-op_assign
-op_amp
-id|r
-l_string|&quot; (offset), &quot;
-op_assign
-op_amp
-id|r
-l_string|&quot; (buf), &quot;
-op_assign
-id|r
-l_string|&quot; (tmp): &quot;
-l_int|0
-l_string|&quot; (offset), &quot;
-l_int|1
-"&quot;"
+l_string|&quot;1&quot;
 (paren
 id|buf
 )paren
@@ -770,127 +578,35 @@ id|__asm__
 id|__volatile__
 c_func
 (paren
-"&quot;"
-id|ldr
-op_mod
-ques
-c_cond
-id|h
-op_mod
-l_int|2
+l_string|&quot;ldr%?h&t;%2, [%0], #4&bslash;n&bslash;t&quot;
+l_string|&quot;ldr%?h&t;%3, [%0], #4&bslash;n&bslash;t&quot;
+l_string|&quot;orr%?&t;%2, %2, %3, lsl #16&bslash;n&bslash;t&quot;
+l_string|&quot;ldr%?h&t;%3, [%0], #4&bslash;n&bslash;t&quot;
+l_string|&quot;ldr%?h&t;%4, [%0], #4&bslash;n&bslash;t&quot;
+l_string|&quot;orr%?&t;%3, %3, %4, lsl #16&bslash;n&bslash;t&quot;
+l_string|&quot;stm%?ia&t;%1!, {%2, %3}&quot;
+suffix:colon
+l_string|&quot;=&amp;r&quot;
+(paren
+id|offset
+)paren
 comma
-(braket
-op_mod
-l_int|0
-)braket
+l_string|&quot;=&amp;r&quot;
+(paren
+id|buf
+)paren
 comma
-macro_line|#4
-id|ldr
-op_mod
-ques
-c_cond
-id|h
-op_mod
-l_int|3
+l_string|&quot;=r&quot;
+(paren
+id|tmp
+)paren
 comma
-(braket
-op_mod
-l_int|0
-)braket
+l_string|&quot;=r&quot;
+(paren
+id|tmp2
+)paren
 comma
-macro_line|#4
-id|orr
-op_mod
-ques
-c_cond
-op_mod
-l_int|2
-comma
-op_mod
-l_int|2
-comma
-op_mod
-l_int|3
-comma
-id|lsl
-macro_line|#16
-id|ldr
-op_mod
-ques
-c_cond
-id|h
-op_mod
-l_int|3
-comma
-(braket
-op_mod
-l_int|0
-)braket
-comma
-macro_line|#4
-id|ldr
-op_mod
-ques
-c_cond
-id|h
-op_mod
-l_int|4
-comma
-(braket
-op_mod
-l_int|0
-)braket
-comma
-macro_line|#4
-id|orr
-op_mod
-ques
-c_cond
-op_mod
-l_int|3
-comma
-op_mod
-l_int|3
-comma
-op_mod
-l_int|4
-comma
-id|lsl
-macro_line|#16
-id|stm
-op_mod
-ques
-c_cond
-id|ia
-op_mod
-l_int|1
-op_logical_neg
-comma
-(brace
-op_mod
-l_int|2
-comma
-op_mod
-l_int|3
-)brace
-l_string|&quot; : &quot;
-op_assign
-op_amp
-id|r
-l_string|&quot; (offset), &quot;
-op_assign
-op_amp
-id|r
-l_string|&quot; (buf), &quot;
-op_assign
-id|r
-l_string|&quot; (tmp), &quot;
-op_assign
-id|r
-l_string|&quot; (tmp2), &quot;
-op_assign
-id|r
-"&quot;"
+l_string|&quot;=r&quot;
 (paren
 id|tmp3
 )paren
@@ -927,77 +643,32 @@ id|__asm__
 id|__volatile__
 c_func
 (paren
-"&quot;"
-id|ldr
-op_mod
-ques
-c_cond
-id|h
-op_mod
-l_int|2
+l_string|&quot;ldr%?h&t;%2, [%0], #4&bslash;n&bslash;t&quot;
+l_string|&quot;str%?b&t;%2, [%1], #1&bslash;n&bslash;t&quot;
+l_string|&quot;mov%?&t;%2, %2, lsr #8&bslash;n&bslash;t&quot;
+l_string|&quot;str%?b&t;%2, [%1], #1&quot;
+suffix:colon
+l_string|&quot;=&amp;r&quot;
+(paren
+id|offset
+)paren
 comma
-(braket
-op_mod
-l_int|0
-)braket
+l_string|&quot;=&amp;r&quot;
+(paren
+id|buf
+)paren
 comma
-macro_line|#4
-id|str
-op_mod
-ques
-c_cond
-id|b
-op_mod
-l_int|2
+l_string|&quot;=r&quot;
+(paren
+id|tmp
+)paren
+suffix:colon
+l_string|&quot;0&quot;
+(paren
+id|offset
+)paren
 comma
-(braket
-op_mod
-l_int|1
-)braket
-comma
-macro_line|#1
-id|mov
-op_mod
-ques
-c_cond
-op_mod
-l_int|2
-comma
-op_mod
-l_int|2
-comma
-id|lsr
-macro_line|#8
-id|str
-op_mod
-ques
-c_cond
-id|b
-op_mod
-l_int|2
-comma
-(braket
-op_mod
-l_int|1
-)braket
-comma
-macro_line|#1
-l_string|&quot; : &quot;
-op_assign
-op_amp
-id|r
-l_string|&quot; (offset), &quot;
-op_assign
-op_amp
-id|r
-l_string|&quot; (buf), &quot;
-op_assign
-id|r
-l_string|&quot; (tmp) : &quot;
-l_int|0
-l_string|&quot; (offset), &quot;
-l_int|1
-"&quot;"
+l_string|&quot;1&quot;
 (paren
 id|buf
 )paren
@@ -3281,6 +2952,7 @@ id|jiffies
 )paren
 suffix:semicolon
 )brace
+)brace
 r_while
 c_loop
 (paren
@@ -3307,6 +2979,7 @@ suffix:semicolon
 multiline_comment|/*&n; * Initialise the chip.  Note that we always expect&n; * to be entered with interrupts enabled.&n; */
 r_static
 r_int
+DECL|function|am79c961_hw_init
 id|am79c961_hw_init
 c_func
 (paren
@@ -3379,6 +3052,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+DECL|function|am79c961_banner
 r_static
 r_void
 id|__init
@@ -3412,6 +3086,7 @@ id|version
 )paren
 suffix:semicolon
 )brace
+DECL|function|am79c961_init
 r_static
 r_int
 id|__init
@@ -3720,6 +3395,7 @@ r_return
 id|ret
 suffix:semicolon
 )brace
+DECL|variable|am79c961_init
 id|__initcall
 c_func
 (paren

@@ -652,11 +652,11 @@ op_assign
 dot
 id|flags
 op_assign
-(paren
+id|CPUFREQ_STICKY
+op_or
 id|CPUFREQ_PANIC_OUTOFSYNC
 op_or
 id|CPUFREQ_PANIC_RESUME_OUTOFSYNC
-)paren
 comma
 dot
 id|verify

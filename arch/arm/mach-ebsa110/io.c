@@ -113,7 +113,7 @@ l_int|1
 )paren
 id|ret
 op_assign
-id|__raw_getl
+id|__raw_readl
 c_func
 (paren
 id|a
@@ -122,7 +122,7 @@ suffix:semicolon
 r_else
 id|ret
 op_assign
-id|__raw_getb
+id|__raw_readb
 c_func
 (paren
 id|a
@@ -167,7 +167,7 @@ c_func
 )paren
 suffix:semicolon
 r_return
-id|__raw_getw
+id|__raw_readw
 c_func
 (paren
 id|a
@@ -212,7 +212,7 @@ c_func
 suffix:semicolon
 id|ret
 op_assign
-id|__raw_getw
+id|__raw_readw
 c_func
 (paren
 id|a
@@ -220,7 +220,7 @@ id|a
 suffix:semicolon
 id|ret
 op_or_assign
-id|__raw_getw
+id|__raw_readw
 c_func
 (paren
 id|a
@@ -287,7 +287,7 @@ id|addr
 op_amp
 l_int|1
 )paren
-id|__raw_putl
+id|__raw_writel
 c_func
 (paren
 id|val
@@ -296,7 +296,7 @@ id|a
 )paren
 suffix:semicolon
 r_else
-id|__raw_putb
+id|__raw_writeb
 c_func
 (paren
 id|val
@@ -342,7 +342,7 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|__raw_putw
+id|__raw_writew
 c_func
 (paren
 id|val
@@ -388,7 +388,7 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|__raw_putw
+id|__raw_writew
 c_func
 (paren
 id|val
@@ -396,7 +396,7 @@ comma
 id|a
 )paren
 suffix:semicolon
-id|__raw_putw
+id|__raw_writew
 c_func
 (paren
 id|val
@@ -456,7 +456,7 @@ id|port
 )paren
 id|ret
 op_assign
-id|__raw_getb
+id|__raw_readb
 c_func
 (paren
 id|ISAIO_BASE
@@ -496,7 +496,7 @@ l_int|1
 )paren
 id|ret
 op_assign
-id|__raw_getl
+id|__raw_readl
 c_func
 (paren
 id|a
@@ -505,7 +505,7 @@ suffix:semicolon
 r_else
 id|ret
 op_assign
-id|__raw_getb
+id|__raw_readb
 c_func
 (paren
 id|a
@@ -540,7 +540,7 @@ id|port
 )paren
 id|ret
 op_assign
-id|__raw_getw
+id|__raw_readw
 c_func
 (paren
 id|ISAIO_BASE
@@ -585,7 +585,7 @@ c_func
 suffix:semicolon
 id|ret
 op_assign
-id|__raw_getw
+id|__raw_readw
 c_func
 (paren
 id|a
@@ -657,7 +657,7 @@ c_func
 id|port
 )paren
 )paren
-id|__raw_putb
+id|__raw_writeb
 c_func
 (paren
 id|val
@@ -697,7 +697,7 @@ id|port
 op_amp
 l_int|1
 )paren
-id|__raw_putl
+id|__raw_writel
 c_func
 (paren
 id|val
@@ -706,7 +706,7 @@ id|a
 )paren
 suffix:semicolon
 r_else
-id|__raw_putb
+id|__raw_writeb
 c_func
 (paren
 id|val
@@ -773,7 +773,7 @@ c_func
 )paren
 suffix:semicolon
 )brace
-id|__raw_putw
+id|__raw_writew
 c_func
 (paren
 id|val
