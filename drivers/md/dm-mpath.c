@@ -5516,7 +5516,7 @@ id|_mpio_cache
 suffix:semicolon
 )brace
 DECL|variable|dm_pg_init_complete
-id|EXPORT_SYMBOL
+id|EXPORT_SYMBOL_GPL
 c_func
 (paren
 id|dm_pg_init_complete

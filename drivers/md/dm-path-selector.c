@@ -557,14 +557,14 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|variable|dm_register_path_selector
-id|EXPORT_SYMBOL
+id|EXPORT_SYMBOL_GPL
 c_func
 (paren
 id|dm_register_path_selector
 )paren
 suffix:semicolon
 DECL|variable|dm_unregister_path_selector
-id|EXPORT_SYMBOL
+id|EXPORT_SYMBOL_GPL
 c_func
 (paren
 id|dm_unregister_path_selector
