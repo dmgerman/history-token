@@ -70,6 +70,16 @@ comma
 l_int|0xff
 )brace
 suffix:semicolon
+DECL|variable|alb_delta_in_ticks
+r_static
+r_const
+r_int
+id|alb_delta_in_ticks
+op_assign
+id|HZ
+op_div
+id|ALB_TIMER_TICKS_PER_SEC
+suffix:semicolon
 macro_line|#pragma pack(1)
 DECL|struct|learning_pkt
 r_struct
@@ -1238,11 +1248,6 @@ id|bonding
 op_star
 id|bond
 op_assign
-(paren
-r_struct
-id|bonding
-op_star
-)paren
 id|bond_dev-&gt;priv
 suffix:semicolon
 r_struct
@@ -4200,11 +4205,6 @@ id|bonding
 op_star
 id|bond
 op_assign
-(paren
-r_struct
-id|bonding
-op_star
-)paren
 id|bond_dev-&gt;priv
 suffix:semicolon
 r_struct
@@ -4687,13 +4687,6 @@ op_star
 id|slave
 suffix:semicolon
 r_int
-id|delta_in_ticks
-op_assign
-id|HZ
-op_div
-id|ALB_TIMER_TICKS_PER_SEC
-suffix:semicolon
-r_int
 id|i
 suffix:semicolon
 id|read_lock
@@ -4989,7 +4982,7 @@ id|bond_info-&gt;alb_timer
 comma
 id|jiffies
 op_plus
-id|delta_in_ticks
+id|alb_delta_in_ticks
 )paren
 suffix:semicolon
 id|out
@@ -5462,11 +5455,6 @@ id|bonding
 op_star
 id|bond
 op_assign
-(paren
-r_struct
-id|bonding
-op_star
-)paren
 id|bond_dev-&gt;priv
 suffix:semicolon
 r_struct
