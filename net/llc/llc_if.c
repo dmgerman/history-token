@@ -142,7 +142,7 @@ suffix:semicolon
 id|MOD_DEC_USE_COUNT
 suffix:semicolon
 )brace
-multiline_comment|/**&n; *&t;llc_build_and_send_ui_pkt - unitdata request interface for upper layers&n; *&t;@sap: sap to use&n; *&t;@skb: packet to send&n; *&t;@addr: destination address&n; *&n; *&t;Upper layers calls this function when upper layer wants to send data&n; *&t;using connection-less mode communication (UI pdu).&n; *&n; *&t;Accept data frame from network layer to be sent using connection-&n; *&t;less mode communication; timeout/retries handled by network layer;&n; *&t;package primitive as an event and send to SAP event handler&n; */
+multiline_comment|/**&n; *&t;llc_build_and_send_ui_pkt - unitdata request interface for upper layers&n; *&t;@sap: sap to use&n; *&t;@skb: packet to send&n; *&t;@dmac: destination mac address&n; *&t;@dsap: destination sap&n; *&n; *&t;Upper layers calls this function when upper layer wants to send data&n; *&t;using connection-less mode communication (UI pdu).&n; *&n; *&t;Accept data frame from network layer to be sent using connection-&n; *&t;less mode communication; timeout/retries handled by network layer;&n; *&t;package primitive as an event and send to SAP event handler&n; */
 DECL|function|llc_build_and_send_ui_pkt
 r_void
 id|llc_build_and_send_ui_pkt
@@ -158,10 +158,12 @@ id|sk_buff
 op_star
 id|skb
 comma
-r_struct
-id|sockaddr_llc
+id|u8
 op_star
-id|addr
+id|dmac
+comma
+id|u8
+id|dsap
 )paren
 (brace
 r_union
@@ -181,14 +183,6 @@ id|llc_sap_ev
 c_func
 (paren
 id|skb
-)paren
-suffix:semicolon
-id|skb-&gt;protocol
-op_assign
-id|llc_proto_type
-c_func
-(paren
-id|addr-&gt;sllc_arphrd
 )paren
 suffix:semicolon
 id|prim.data
@@ -214,7 +208,7 @@ id|sap-&gt;laddr.lsap
 suffix:semicolon
 id|prim_data.udata.daddr.lsap
 op_assign
-id|addr-&gt;sllc_dsap
+id|dsap
 suffix:semicolon
 id|memcpy
 c_func
@@ -231,7 +225,7 @@ c_func
 (paren
 id|prim_data.udata.daddr.mac
 comma
-id|addr-&gt;sllc_dmac
+id|dmac
 comma
 id|IFHWADDRLEN
 )paren
@@ -262,7 +256,7 @@ id|skb
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/**&n; *&t;llc_build_and_send_test_pkt - TEST interface for upper layers.&n; *&t;@sap: sap to use&n; *&t;@skb: packet to send&n; *&t;@addr: destination address&n; *&n; *&t;This function is called when upper layer wants to send a TEST pdu.&n; *&t;Returns 0 for success, 1 otherwise.&n; */
+multiline_comment|/**&n; *&t;llc_build_and_send_test_pkt - TEST interface for upper layers.&n; *&t;@sap: sap to use&n; *&t;@skb: packet to send&n; *&t;@dmac: destination mac address&n; *&t;@dsap: destination sap&n; *&n; *&t;This function is called when upper layer wants to send a TEST pdu.&n; *&t;Returns 0 for success, 1 otherwise.&n; */
 DECL|function|llc_build_and_send_test_pkt
 r_void
 id|llc_build_and_send_test_pkt
@@ -278,10 +272,12 @@ id|sk_buff
 op_star
 id|skb
 comma
-r_struct
-id|sockaddr_llc
+id|u8
 op_star
-id|addr
+id|dmac
+comma
+id|u8
+id|dsap
 )paren
 (brace
 r_union
@@ -301,14 +297,6 @@ id|llc_sap_ev
 c_func
 (paren
 id|skb
-)paren
-suffix:semicolon
-id|skb-&gt;protocol
-op_assign
-id|llc_proto_type
-c_func
-(paren
-id|addr-&gt;sllc_arphrd
 )paren
 suffix:semicolon
 id|prim.data
@@ -334,7 +322,7 @@ id|sap-&gt;laddr.lsap
 suffix:semicolon
 id|prim_data.test.daddr.lsap
 op_assign
-id|addr-&gt;sllc_dsap
+id|dsap
 suffix:semicolon
 id|memcpy
 c_func
@@ -351,7 +339,7 @@ c_func
 (paren
 id|prim_data.test.daddr.mac
 comma
-id|addr-&gt;sllc_dmac
+id|dmac
 comma
 id|IFHWADDRLEN
 )paren
@@ -382,7 +370,7 @@ id|skb
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/**&n; *&t;llc_build_and_send_xid_pkt - XID interface for upper layers&n; *&t;@sap: sap to use&n; *&t;@skb: packet to send&n; *&t;@addr: destination address&n; *&n; *&t;This function is called when upper layer wants to send a XID pdu.&n; *&t;Returns 0 for success, 1 otherwise.&n; */
+multiline_comment|/**&n; *&t;llc_build_and_send_xid_pkt - XID interface for upper layers&n; *&t;@sap: sap to use&n; *&t;@skb: packet to send&n; *&t;@dmac: destination mac address&n; *&t;@dsap: destination sap&n; *&n; *&t;This function is called when upper layer wants to send a XID pdu.&n; *&t;Returns 0 for success, 1 otherwise.&n; */
 DECL|function|llc_build_and_send_xid_pkt
 r_void
 id|llc_build_and_send_xid_pkt
@@ -398,10 +386,12 @@ id|sk_buff
 op_star
 id|skb
 comma
-r_struct
-id|sockaddr_llc
+id|u8
 op_star
-id|addr
+id|dmac
+comma
+id|u8
+id|dsap
 )paren
 (brace
 r_union
@@ -421,14 +411,6 @@ id|llc_sap_ev
 c_func
 (paren
 id|skb
-)paren
-suffix:semicolon
-id|skb-&gt;protocol
-op_assign
-id|llc_proto_type
-c_func
-(paren
-id|addr-&gt;sllc_arphrd
 )paren
 suffix:semicolon
 id|prim.data
@@ -454,7 +436,7 @@ id|sap-&gt;laddr.lsap
 suffix:semicolon
 id|prim_data.xid.daddr.lsap
 op_assign
-id|addr-&gt;sllc_dsap
+id|dsap
 suffix:semicolon
 id|memcpy
 c_func
@@ -471,7 +453,7 @@ c_func
 (paren
 id|prim_data.xid.daddr.mac
 comma
-id|addr-&gt;sllc_dmac
+id|dmac
 comma
 id|IFHWADDRLEN
 )paren
@@ -502,7 +484,7 @@ id|skb
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/**&n; *&t;llc_build_and_send_pkt - Connection data sending for upper layers.&n; *&t;@prim: pointer to structure that contains service parameters&n; *&n; *&t;This function is called when upper layer wants to send data using&n; *&t;connection oriented communication mode. During sending data, connection&n; *&t;will be locked and received frames and expired timers will be queued.&n; *&t;Returns 0 for success, -ECONNABORTED when the connection already&n; *&t;closed and -EBUSY when sending data is not permitted in this state or&n; *&t;LLC has send an I pdu with p bit set to 1 and is waiting for it&squot;s&n; *&t;response.&n; */
+multiline_comment|/**&n; *&t;llc_build_and_send_pkt - Connection data sending for upper layers.&n; *&t;@sk: connection&n; *&t;@skb: packet to send&n; *&n; *&t;This function is called when upper layer wants to send data using&n; *&t;connection oriented communication mode. During sending data, connection&n; *&t;will be locked and received frames and expired timers will be queued.&n; *&t;Returns 0 for success, -ECONNABORTED when the connection already&n; *&t;closed and -EBUSY when sending data is not permitted in this state or&n; *&t;LLC has send an I pdu with p bit set to 1 and is waiting for it&squot;s&n; *&t;response.&n; */
 DECL|function|llc_build_and_send_pkt
 r_int
 id|llc_build_and_send_pkt
@@ -1076,6 +1058,13 @@ id|EXPORT_SYMBOL
 c_func
 (paren
 id|llc_sap_close
+)paren
+suffix:semicolon
+DECL|variable|llc_build_and_send_ui_pkt
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|llc_build_and_send_ui_pkt
 )paren
 suffix:semicolon
 eof

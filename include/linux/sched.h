@@ -64,8 +64,9 @@ DECL|macro|CLONE_CLEARTID
 mdefine_line|#define CLONE_CLEARTID&t;0x00200000&t;/* clear the userspace TID */
 DECL|macro|CLONE_DETACHED
 mdefine_line|#define CLONE_DETACHED&t;0x00400000&t;/* parent wants no child-exit signal */
-DECL|macro|CLONE_SIGNAL
-mdefine_line|#define CLONE_SIGNAL&t;(CLONE_SIGHAND | CLONE_THREAD)
+multiline_comment|/*&n; * List of flags we want to share for kernel threads,&n; * if only because they are not used by them anyway.&n; */
+DECL|macro|CLONE_KERNEL
+mdefine_line|#define CLONE_KERNEL&t;(CLONE_FS | CLONE_FILES | CLONE_SIGHAND)
 multiline_comment|/*&n; * These are the constant used to fake the fixed-point load-average&n; * counting. Some notes:&n; *  - 11 bit fractions expand to 22 bits by the multiplies: this gives&n; *    a load-average precision of 10 bits integer + 11 bits fractional&n; *  - if you want to count load-averages more often, you need more&n; *    precision, or rounding will get you. With 2-second counting freq,&n; *    the EXP_n values would be 1981, 2034 and 2043 if still using only&n; *    11 bit fractions.&n; */
 r_extern
 r_int
@@ -529,6 +530,12 @@ suffix:semicolon
 DECL|member|group_exit_code
 r_int
 id|group_exit_code
+suffix:semicolon
+DECL|member|group_exit_task
+r_struct
+id|task_struct
+op_star
+id|group_exit_task
 suffix:semicolon
 )brace
 suffix:semicolon
@@ -1885,6 +1892,17 @@ r_void
 )paren
 suffix:semicolon
 r_extern
+r_void
+id|release_task
+c_func
+(paren
+r_struct
+id|task_struct
+op_star
+id|p
+)paren
+suffix:semicolon
+r_extern
 r_int
 id|send_sig_info
 c_func
@@ -2902,9 +2920,9 @@ mdefine_line|#define remove_parent(p)&t;list_del_init(&amp;(p)-&gt;sibling)
 DECL|macro|add_parent
 mdefine_line|#define add_parent(p, parent)&t;list_add_tail(&amp;(p)-&gt;sibling,&amp;(parent)-&gt;children)
 DECL|macro|REMOVE_LINKS
-mdefine_line|#define REMOVE_LINKS(p) do {&t;&t;&t;&t;&bslash;&n;&t;list_del_init(&amp;(p)-&gt;tasks);&t;&t;&t;&bslash;&n;&t;remove_parent(p);&t;&t;&t;&t;&bslash;&n;&t;} while (0)
+mdefine_line|#define REMOVE_LINKS(p) do {&t;&t;&t;&t;&t;&bslash;&n;&t;if (thread_group_leader(p))&t;&t;&t;&t;&bslash;&n;&t;&t;list_del_init(&amp;(p)-&gt;tasks);&t;&t;&t;&bslash;&n;&t;remove_parent(p);&t;&t;&t;&t;&t;&bslash;&n;&t;} while (0)
 DECL|macro|SET_LINKS
-mdefine_line|#define SET_LINKS(p) do {&t;&t;&t;&t;&bslash;&n;&t;list_add_tail(&amp;(p)-&gt;tasks,&amp;init_task.tasks);&t;&bslash;&n;&t;add_parent(p, (p)-&gt;parent);&t;&t;&t;&bslash;&n;&t;} while (0)
+mdefine_line|#define SET_LINKS(p) do {&t;&t;&t;&t;&t;&bslash;&n;&t;if (thread_group_leader(p))&t;&t;&t;&t;&bslash;&n;&t;&t;list_add_tail(&amp;(p)-&gt;tasks,&amp;init_task.tasks);&t;&bslash;&n;&t;add_parent(p, (p)-&gt;parent);&t;&t;&t;&t;&bslash;&n;&t;} while (0)
 DECL|function|eldest_child
 r_static
 r_inline
@@ -3069,10 +3087,13 @@ DECL|macro|next_task
 mdefine_line|#define next_task(p)&t;list_entry((p)-&gt;tasks.next, struct task_struct, tasks)
 DECL|macro|prev_task
 mdefine_line|#define prev_task(p)&t;list_entry((p)-&gt;tasks.prev, struct task_struct, tasks)
-DECL|macro|for_each_task
-mdefine_line|#define for_each_task(p) &bslash;&n;&t;for (p = &amp;init_task ; (p = next_task(p)) != &amp;init_task ; )
-DECL|macro|for_each_thread
-mdefine_line|#define for_each_thread(task) &bslash;&n;&t;for (task = next_thread(current) ; task != current ; task = next_thread(task))
+DECL|macro|for_each_process
+mdefine_line|#define for_each_process(p) &bslash;&n;&t;for (p = &amp;init_task ; (p = next_task(p)) != &amp;init_task ; )
+multiline_comment|/*&n; * Careful: do_each_thread/while_each_thread is a double loop so&n; *          &squot;break&squot; will not work as expected - use goto instead.&n; */
+DECL|macro|do_each_thread
+mdefine_line|#define do_each_thread(g, t) &bslash;&n;&t;for (g = t = &amp;init_task ; (g = t = next_task(g)) != &amp;init_task ; ) do
+DECL|macro|while_each_thread
+mdefine_line|#define while_each_thread(g, t) &bslash;&n;&t;while ((t = next_thread(t)) != g)
 DECL|function|next_thread
 r_static
 r_inline

@@ -245,23 +245,6 @@ c_func
 id|skb
 )paren
 suffix:semicolon
-r_else
-id|printk
-c_func
-(paren
-id|KERN_INFO
-l_string|&quot;:%s !kfree_skb &amp; it is %s in a list&bslash;n&quot;
-comma
-id|__FUNCTION__
-comma
-id|skb-&gt;list
-ques
-c_cond
-l_string|&quot;&quot;
-suffix:colon
-l_string|&quot;NOT&quot;
-)paren
-suffix:semicolon
 )brace
 multiline_comment|/**&n; *&t;llc_sap_rtn_pdu - Informs upper layer on rx of an UI, XID or TEST pdu.&n; *&t;@sap: pointer to SAP&n; *&t;@skb: received pdu&n; */
 DECL|function|llc_sap_rtn_pdu

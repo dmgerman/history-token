@@ -5854,7 +5854,7 @@ op_logical_or
 (paren
 id|cmd
 op_eq
-id|F_SETLK
+id|F_SETLK64
 )paren
 )paren
 r_break

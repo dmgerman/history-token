@@ -14,11 +14,6 @@ r_struct
 id|timer_list
 id|timer
 suffix:semicolon
-DECL|member|running
-id|u8
-id|running
-suffix:semicolon
-multiline_comment|/* timer is running or no */
 DECL|member|expire
 id|u16
 id|expire
