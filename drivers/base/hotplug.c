@@ -602,6 +602,9 @@ id|device_class
 op_star
 id|cls
 suffix:semicolon
+r_int
+id|retval
+suffix:semicolon
 id|pr_debug
 (paren
 l_string|&quot;%s&bslash;n&quot;
@@ -647,7 +650,8 @@ r_return
 op_minus
 id|ENODEV
 suffix:semicolon
-r_return
+id|retval
+op_assign
 id|do_hotplug
 (paren
 id|dev
@@ -658,6 +662,15 @@ id|action
 comma
 id|cls-&gt;hotplug
 )paren
+suffix:semicolon
+id|put_devclass
+c_func
+(paren
+id|cls
+)paren
+suffix:semicolon
+r_return
+id|retval
 suffix:semicolon
 )brace
 eof
