@@ -3493,10 +3493,6 @@ op_eq
 l_int|0
 )paren
 (brace
-macro_line|#ifdef MODULE
-id|MOD_INC_USE_COUNT
-suffix:semicolon
-macro_line|#endif
 id|rp_num_ports_open
 op_increment
 suffix:semicolon
@@ -4319,10 +4315,6 @@ op_amp
 id|info-&gt;close_wait
 )paren
 suffix:semicolon
-macro_line|#ifdef MODULE
-id|MOD_DEC_USE_COUNT
-suffix:semicolon
-macro_line|#endif
 id|rp_num_ports_open
 op_decrement
 suffix:semicolon
@@ -6426,10 +6418,6 @@ c_cond
 id|info-&gt;count
 )paren
 (brace
-macro_line|#ifdef MODULE
-id|MOD_DEC_USE_COUNT
-suffix:semicolon
-macro_line|#endif
 id|rp_num_ports_open
 op_decrement
 suffix:semicolon
@@ -9095,6 +9083,10 @@ suffix:semicolon
 id|rocket_driver.magic
 op_assign
 id|TTY_DRIVER_MAGIC
+suffix:semicolon
+id|rocket_driver.owner
+op_assign
+id|THIS_MODULE
 suffix:semicolon
 macro_line|#ifdef CONFIG_DEVFS_FS
 id|rocket_driver.name
