@@ -159,5 +159,25 @@ r_const
 id|stop_vcn
 )paren
 suffix:semicolon
+r_extern
+r_int
+id|ntfs_rl_truncate_nolock
+c_func
+(paren
+r_const
+id|ntfs_volume
+op_star
+id|vol
+comma
+id|runlist
+op_star
+r_const
+id|runlist
+comma
+r_const
+id|s64
+id|new_length
+)paren
+suffix:semicolon
 macro_line|#endif /* _LINUX_NTFS_RUNLIST_H */
 eof
