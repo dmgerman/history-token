@@ -226,6 +226,9 @@ r_case
 id|CPU_RM7000
 suffix:colon
 r_case
+id|CPU_RM9000
+suffix:colon
+r_case
 id|CPU_TX49XX
 suffix:colon
 r_case

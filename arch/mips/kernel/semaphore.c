@@ -4,10 +4,11 @@ macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;asm/atomic.h&gt;
-macro_line|#include &lt;asm/semaphore.h&gt;
+macro_line|#include &lt;asm/cpu-features.h&gt;
 macro_line|#include &lt;asm/errno.h&gt;
-macro_line|#ifdef CONFIG_CPU_HAS_LLSC
-multiline_comment|/*&n; * Atomically update sem-&gt;count.&n; * This does the equivalent of the following:&n; *&n; *&t;old_count = sem-&gt;count;&n; *&t;tmp = MAX(old_count, 0) + incr;&n; *&t;sem-&gt;count = tmp;&n; *&t;return old_count;&n; */
+macro_line|#include &lt;asm/semaphore.h&gt;
+macro_line|#include &lt;asm/war.h&gt;
+multiline_comment|/*&n; * Atomically update sem-&gt;count.&n; * This does the equivalent of the following:&n; *&n; *&t;old_count = sem-&gt;count;&n; *&t;tmp = MAX(old_count, 0) + incr;&n; *&t;sem-&gt;count = tmp;&n; *&t;return old_count;&n; *&n; * On machines without lld/scd we need a spinlock to make the manipulation of&n; * sem-&gt;count and sem-&gt;waking atomic.  Scalability isn&squot;t an issue because&n; * this lock is used on UP only so it&squot;s just an empty variable.&n; */
 DECL|function|__sem_update_count
 r_static
 r_inline
@@ -29,6 +30,60 @@ id|old_count
 comma
 id|tmp
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|cpu_has_llsc
+op_logical_and
+id|R10000_LLSC_WAR
+)paren
+(brace
+id|__asm__
+id|__volatile__
+c_func
+(paren
+l_string|&quot;1:&t;ll&t;%0, %2&t;&t;&t;&t;&t;&bslash;n&quot;
+l_string|&quot;&t;sra&t;%1, %0, 31&t;&t;&t;&t;&bslash;n&quot;
+l_string|&quot;&t;not&t;%1&t;&t;&t;&t;&t;&bslash;n&quot;
+l_string|&quot;&t;and&t;%1, %0, %1&t;&t;&t;&t;&bslash;n&quot;
+l_string|&quot;&t;add&t;%1, %1, %3&t;&t;&t;&t;&bslash;n&quot;
+l_string|&quot;&t;sc&t;%1, %2&t;&t;&t;&t;&t;&bslash;n&quot;
+l_string|&quot;&t;beqzl&t;%1, 1b&t;&t;&t;&t;&t;&bslash;n&quot;
+suffix:colon
+l_string|&quot;=&amp;r&quot;
+(paren
+id|old_count
+)paren
+comma
+l_string|&quot;=&amp;r&quot;
+(paren
+id|tmp
+)paren
+comma
+l_string|&quot;=m&quot;
+(paren
+id|sem-&gt;count
+)paren
+suffix:colon
+l_string|&quot;r&quot;
+(paren
+id|incr
+)paren
+comma
+l_string|&quot;m&quot;
+(paren
+id|sem-&gt;count
+)paren
+)paren
+suffix:semicolon
+)brace
+r_else
+r_if
+c_cond
+(paren
+id|cpu_has_llsc
+)paren
+(brace
 id|__asm__
 id|__volatile__
 c_func
@@ -67,43 +122,18 @@ id|sem-&gt;count
 )paren
 )paren
 suffix:semicolon
-r_return
-id|old_count
-suffix:semicolon
 )brace
-macro_line|#else
-multiline_comment|/*&n; * On machines without lld/scd we need a spinlock to make the manipulation of&n; * sem-&gt;count and sem-&gt;waking atomic.  Scalability isn&squot;t an issue because&n; * this lock is used on UP only so it&squot;s just an empty variable.&n; */
-DECL|variable|semaphore_lock
+r_else
+(brace
 r_static
 id|spinlock_t
 id|semaphore_lock
 op_assign
 id|SPIN_LOCK_UNLOCKED
 suffix:semicolon
-DECL|function|__sem_update_count
-r_static
-r_inline
-r_int
-id|__sem_update_count
-c_func
-(paren
-r_struct
-id|semaphore
-op_star
-id|sem
-comma
-r_int
-id|incr
-)paren
-(brace
 r_int
 r_int
 id|flags
-suffix:semicolon
-r_int
-id|old_count
-comma
-id|tmp
 suffix:semicolon
 id|spin_lock_irqsave
 c_func
@@ -155,11 +185,11 @@ comma
 id|flags
 )paren
 suffix:semicolon
+)brace
 r_return
 id|old_count
 suffix:semicolon
 )brace
-macro_line|#endif
 DECL|function|__up
 r_void
 id|__up

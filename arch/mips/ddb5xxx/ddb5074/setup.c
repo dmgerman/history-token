@@ -19,24 +19,6 @@ macro_line|#include &lt;asm/time.h&gt;
 macro_line|#include &lt;asm/nile4.h&gt;
 macro_line|#include &lt;asm/ddb5xxx/ddb5074.h&gt;
 macro_line|#include &lt;asm/ddb5xxx/ddb5xxx.h&gt;
-macro_line|#ifdef CONFIG_KGDB
-r_extern
-r_void
-id|rs_kgdb_hook
-c_func
-(paren
-r_int
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|breakpoint
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-macro_line|#endif
 DECL|variable|back_to_prom
 r_static
 r_void
@@ -178,14 +160,6 @@ suffix:semicolon
 )brace
 r_extern
 r_void
-id|ddb_irq_setup
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-r_extern
-r_void
 id|rtc_ds1386_init
 c_func
 (paren
@@ -324,10 +298,6 @@ r_void
 r_extern
 r_int
 id|panic_timeout
-suffix:semicolon
-id|irq_setup
-op_assign
-id|ddb_irq_setup
 suffix:semicolon
 id|set_io_port_base
 c_func

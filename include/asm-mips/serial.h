@@ -36,7 +36,7 @@ macro_line|#endif
 multiline_comment|/*&n; * The following define the access methods for the HUB6 card. All&n; * access is through two ports for all 24 possible chips. The card is&n; * selected through the high 2 bits, the port on that card with the&n; * &quot;middle&quot; 3 bits, and the register on that port with the bottom&n; * 3 bits.&n; *&n; * While the access port and interrupt is configurable, the default&n; * port locations are 0x302 for the port control register, and 0x303&n; * for the data read/write register. Normally, the interrupt is at irq3&n; * but can be anything from 3 to 7 inclusive. Note that using 3 will&n; * require disabling com2.&n; */
 DECL|macro|C_P
 mdefine_line|#define C_P(card,port) (((card)&lt;&lt;6|(port)&lt;&lt;3) + 1)
-macro_line|#ifdef CONFIG_MIPS_JAZZ
+macro_line|#ifdef CONFIG_MACH_JAZZ
 macro_line|#include &lt;asm/jazz.h&gt;
 macro_line|#ifndef CONFIG_OLIVETTI_M700
 multiline_comment|/* Some Jazz machines seem to have an 8MHz crystal clock but I don&squot;t know&n;      exactly which ones ... XXX */
@@ -104,8 +104,26 @@ mdefine_line|#define TXX927_SERIAL_PORT_DEFNS
 macro_line|#endif
 macro_line|#ifdef CONFIG_SERIAL_AU1X00
 macro_line|#include &lt;asm/mach-au1x00/au1000.h&gt;
+macro_line|#ifdef CONFIG_SOC_AU1000
 DECL|macro|AU1000_SERIAL_PORT_DEFNS
-mdefine_line|#define AU1000_SERIAL_PORT_DEFNS                              &bslash;&n;    { .baud_base = 0, .port = UART0_ADDR, .irq = AU1000_UART0_INT,  &bslash;&n;      .flags = STD_COM_FLAGS, .type = 1 },                        &bslash;&n;    { .baud_base = 0, .port = UART1_ADDR, .irq = AU1000_UART1_INT,  &bslash;&n;      .flags = STD_COM_FLAGS, .type = 1 },     &bslash;&n;    { .baud_base = 0, .port = UART2_ADDR, .irq = AU1000_UART2_INT,  &bslash;&n;      .flags = STD_COM_FLAGS, .type = 1 },    &bslash;&n;    { .baud_base = 0, .port = UART3_ADDR, .irq = AU1000_UART3_INT,  &bslash;&n;      .flags = STD_COM_FLAGS, .type = 1 },
+mdefine_line|#define AU1000_SERIAL_PORT_DEFNS                       &bslash;&n;    { .baud_base = 0, .port = UART0_ADDR,              &bslash;&n;      .iomem_base = (unsigned char *)UART0_ADDR,       &bslash;&n;      .irq = AU1000_UART0_INT, .flags = STD_COM_FLAGS, &bslash;&n;      .iomem_reg_shift = 2 },                          &bslash;&n;    { .baud_base = 0, .port = UART1_ADDR,              &bslash;&n;      .iomem_base = (unsigned char *)UART1_ADDR,       &bslash;&n;      .irq = AU1000_UART1_INT, .flags = STD_COM_FLAGS, &bslash;&n;      .iomem_reg_shift = 2 },                          &bslash;&n;    { .baud_base = 0, .port = UART2_ADDR,              &bslash;&n;      .iomem_base = (unsigned char *)UART2_ADDR,       &bslash;&n;      .irq = AU1000_UART2_INT, .flags = STD_COM_FLAGS, &bslash;&n;      .iomem_reg_shift = 2 },                          &bslash;&n;    { .baud_base = 0, .port = UART3_ADDR,              &bslash;&n;      .iomem_base = (unsigned char *)UART3_ADDR,       &bslash;&n;      .irq = AU1000_UART3_INT, .flags = STD_COM_FLAGS, &bslash;&n;      .iomem_reg_shift = 2 },
+macro_line|#endif
+macro_line|#ifdef CONFIG_SOC_AU1500
+DECL|macro|AU1000_SERIAL_PORT_DEFNS
+mdefine_line|#define AU1000_SERIAL_PORT_DEFNS                       &bslash;&n;    { .baud_base = 0, .port = UART0_ADDR,              &bslash;&n;      .iomem_base = (unsigned char *)UART0_ADDR,       &bslash;&n;      .irq = AU1500_UART0_INT, .flags = STD_COM_FLAGS, &bslash;&n;      .iomem_reg_shift = 2 },                          &bslash;&n;    { .baud_base = 0, .port = UART3_ADDR,              &bslash;&n;      .iomem_base = (unsigned char *)UART3_ADDR,       &bslash;&n;      .irq = AU1500_UART3_INT, .flags = STD_COM_FLAGS, &bslash;&n;      .iomem_reg_shift = 2 },
+macro_line|#endif
+macro_line|#ifdef CONFIG_SOC_AU1100
+DECL|macro|AU1000_SERIAL_PORT_DEFNS
+mdefine_line|#define AU1000_SERIAL_PORT_DEFNS                       &bslash;&n;    { .baud_base = 0, .port = UART0_ADDR,              &bslash;&n;      .iomem_base = (unsigned char *)UART0_ADDR,       &bslash;&n;      .irq = AU1100_UART0_INT, .flags = STD_COM_FLAGS, &bslash;&n;      .iomem_reg_shift = 2 },                          &bslash;&n;    { .baud_base = 0, .port = UART1_ADDR,              &bslash;&n;      .iomem_base = (unsigned char *)UART1_ADDR,       &bslash;&n;      .irq = AU1100_UART1_INT, .flags = STD_COM_FLAGS, &bslash;&n;      .iomem_reg_shift = 2 },                          &bslash;&n;    { .baud_base = 0, .port = UART3_ADDR,              &bslash;&n;      .iomem_base = (unsigned char *)UART3_ADDR,       &bslash;&n;      .irq = AU1100_UART3_INT, .flags = STD_COM_FLAGS, &bslash;&n;      .iomem_reg_shift = 2 },
+macro_line|#endif
+macro_line|#ifdef CONFIG_SOC_AU1550
+DECL|macro|AU1000_SERIAL_PORT_DEFNS
+mdefine_line|#define AU1000_SERIAL_PORT_DEFNS                       &bslash;&n;    { .baud_base = 0, .port = UART0_ADDR,              &bslash;&n;      .iomem_base = (unsigned char *)UART0_ADDR,       &bslash;&n;      .irq = AU1550_UART0_INT, .flags = STD_COM_FLAGS, &bslash;&n;      .iomem_reg_shift = 2 },                          &bslash;&n;    { .baud_base = 0, .port = UART1_ADDR,              &bslash;&n;      .iomem_base = (unsigned char *)UART1_ADDR,       &bslash;&n;      .irq = AU1550_UART1_INT, .flags = STD_COM_FLAGS, &bslash;&n;      .iomem_reg_shift = 2 },                          &bslash;&n;    { .baud_base = 0, .port = UART3_ADDR,              &bslash;&n;      .iomem_base = (unsigned char *)UART3_ADDR,       &bslash;&n;      .irq = AU1550_UART3_INT,  .flags = STD_COM_FLAGS,&bslash;&n;      .iomem_reg_shift = 2 },
+macro_line|#endif
+macro_line|#ifdef CONFIG_SOC_AU1200
+DECL|macro|AU1000_SERIAL_PORT_DEFNS
+mdefine_line|#define AU1000_SERIAL_PORT_DEFNS                       &bslash;&n;    { .baud_base = 0, .port = UART0_ADDR,              &bslash;&n;      .iomem_base = (unsigned char *)UART0_ADDR,       &bslash;&n;      .irq = AU1200_UART0_INT, .flags = STD_COM_FLAGS, &bslash;&n;      .iomem_reg_shift = 2 },                          &bslash;&n;    { .baud_base = 0, .port = UART1_ADDR,              &bslash;&n;      .iomem_base = (unsigned char *)UART1_ADDR,       &bslash;&n;      .irq = AU1200_UART1_INT, .flags = STD_COM_FLAGS, &bslash;&n;      .iomem_reg_shift = 2 },
+macro_line|#endif
 macro_line|#else
 DECL|macro|AU1000_SERIAL_PORT_DEFNS
 mdefine_line|#define AU1000_SERIAL_PORT_DEFNS
@@ -151,6 +169,21 @@ mdefine_line|#define MOMENCO_JAGUAR_ATX_SERIAL_PORT_DEFNS&t;&t;&t;&t;&bslash;&n;
 macro_line|#else
 DECL|macro|MOMENCO_JAGUAR_ATX_SERIAL_PORT_DEFNS
 mdefine_line|#define MOMENCO_JAGUAR_ATX_SERIAL_PORT_DEFNS
+macro_line|#endif
+macro_line|#ifdef CONFIG_MOMENCO_OCELOT_3
+DECL|macro|OCELOT_3_BASE_BAUD
+mdefine_line|#define OCELOT_3_BASE_BAUD&t;( 20000000 / 16 )
+DECL|macro|OCELOT_3_SERIAL_IRQ
+mdefine_line|#define OCELOT_3_SERIAL_IRQ&t;6
+DECL|macro|OCELOT_3_SERIAL_BASE
+mdefine_line|#define OCELOT_3_SERIAL_BASE&t;(signed)0xfd000020
+DECL|macro|_OCELOT_3_SERIAL_INIT
+mdefine_line|#define _OCELOT_3_SERIAL_INIT(int, base)&t;&t;&t;&t;&bslash;&n;&t;{ baud_base: OCELOT_3_BASE_BAUD, irq: int, &t;&t;&t;&bslash;&n;&t;  flags: STD_COM_FLAGS,&t;&t;&t;&t;&t;&t;&bslash;&n;&t;  iomem_base: (u8 *) base, iomem_reg_shift: 2,&t;&t;&t;&bslash;&n;&t;  io_type: SERIAL_IO_MEM }
+DECL|macro|MOMENCO_OCELOT_3_SERIAL_PORT_DEFNS
+mdefine_line|#define MOMENCO_OCELOT_3_SERIAL_PORT_DEFNS&t;&t;&t;&t;&bslash;&n;&t;_OCELOT_3_SERIAL_INIT(OCELOT_3_SERIAL_IRQ, OCELOT_3_SERIAL_BASE)
+macro_line|#else
+DECL|macro|MOMENCO_OCELOT_3_SERIAL_PORT_DEFNS
+mdefine_line|#define MOMENCO_OCELOT_3_SERIAL_PORT_DEFNS
 macro_line|#endif
 macro_line|#ifdef CONFIG_MOMENCO_OCELOT
 multiline_comment|/* Ordinary NS16552 duart with a 20MHz crystal.  */
@@ -225,6 +258,6 @@ DECL|macro|IP32_SERIAL_PORT_DEFNS
 mdefine_line|#define IP32_SERIAL_PORT_DEFNS
 macro_line|#endif /* CONFIG_SGI_IP32 */
 DECL|macro|SERIAL_PORT_DFNS
-mdefine_line|#define SERIAL_PORT_DFNS&t;&t;&t;&t;&bslash;&n;&t;COBALT_SERIAL_PORT_DEFNS&t;&t;&t;&bslash;&n;&t;DDB5477_SERIAL_PORT_DEFNS&t;&t;&t;&bslash;&n;&t;EV96100_SERIAL_PORT_DEFNS&t;&t;&t;&bslash;&n;&t;EXTRA_SERIAL_PORT_DEFNS&t;&t;&t;&t;&bslash;&n;&t;HUB6_SERIAL_PORT_DFNS&t;&t;&t;&t;&bslash;&n;&t;IP32_SERIAL_PORT_DEFNS                          &bslash;&n;&t;ITE_SERIAL_PORT_DEFNS           &t;&t;&bslash;&n;&t;IVR_SERIAL_PORT_DEFNS           &t;&t;&bslash;&n;&t;JAZZ_SERIAL_PORT_DEFNS&t;&t;&t;&t;&bslash;&n;&t;STD_SERIAL_PORT_DEFNS&t;&t;&t;&t;&bslash;&n;&t;MOMENCO_OCELOT_G_SERIAL_PORT_DEFNS&t;&t;&bslash;&n;&t;MOMENCO_OCELOT_C_SERIAL_PORT_DEFNS&t;&t;&bslash;&n;&t;MOMENCO_OCELOT_SERIAL_PORT_DEFNS&t;&t;&bslash;&n;&t;TXX927_SERIAL_PORT_DEFNS                        &bslash;&n;&t;AU1000_SERIAL_PORT_DEFNS
+mdefine_line|#define SERIAL_PORT_DFNS&t;&t;&t;&t;&bslash;&n;&t;COBALT_SERIAL_PORT_DEFNS&t;&t;&t;&bslash;&n;&t;DDB5477_SERIAL_PORT_DEFNS&t;&t;&t;&bslash;&n;&t;EV96100_SERIAL_PORT_DEFNS&t;&t;&t;&bslash;&n;&t;EXTRA_SERIAL_PORT_DEFNS&t;&t;&t;&t;&bslash;&n;&t;HUB6_SERIAL_PORT_DFNS&t;&t;&t;&t;&bslash;&n;&t;IP32_SERIAL_PORT_DEFNS                          &bslash;&n;&t;ITE_SERIAL_PORT_DEFNS           &t;&t;&bslash;&n;&t;IVR_SERIAL_PORT_DEFNS           &t;&t;&bslash;&n;&t;JAZZ_SERIAL_PORT_DEFNS&t;&t;&t;&t;&bslash;&n;&t;STD_SERIAL_PORT_DEFNS&t;&t;&t;&t;&bslash;&n;&t;MOMENCO_OCELOT_G_SERIAL_PORT_DEFNS&t;&t;&bslash;&n;&t;MOMENCO_OCELOT_C_SERIAL_PORT_DEFNS&t;&t;&bslash;&n;&t;MOMENCO_OCELOT_SERIAL_PORT_DEFNS&t;&t;&bslash;&n;&t;MOMENCO_OCELOT_3_SERIAL_PORT_DEFNS&t;&t;&bslash;&n;&t;TXX927_SERIAL_PORT_DEFNS                        &bslash;&n;&t;AU1000_SERIAL_PORT_DEFNS
 macro_line|#endif /* _ASM_SERIAL_H */
 eof

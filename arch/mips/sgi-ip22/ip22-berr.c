@@ -267,7 +267,7 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;GIO error 0x%x:&lt;%s%s%s%s%s%s%s%s&gt; @ 0x08%x&bslash;n&quot;
+l_string|&quot;GIO error 0x%x:&lt;%s%s%s%s%s%s%s%s&gt; @ 0x%08x&bslash;n&quot;
 comma
 id|gio_err_stat
 comma

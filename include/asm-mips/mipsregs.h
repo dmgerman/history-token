@@ -313,6 +313,9 @@ DECL|macro|ST0_DE
 mdefine_line|#define ST0_DE&t;&t;&t;0x00010000
 DECL|macro|ST0_CE
 mdefine_line|#define ST0_CE&t;&t;&t;0x00020000
+multiline_comment|/*&n; * Setting c0_status.co enables Hit_Writeback and Hit_Writeback_Invalidate&n; * cacheops in userspace.  This bit exists only on RM7000 and RM9000&n; * processors.&n; */
+DECL|macro|ST0_CO
+mdefine_line|#define ST0_CO&t;&t;&t;0x08000000
 multiline_comment|/*&n; * Bitfields in the R[23]000 cp0 status register.&n; */
 DECL|macro|ST0_IEC
 mdefine_line|#define ST0_IEC                 0x00000001

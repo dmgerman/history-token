@@ -865,12 +865,6 @@ id|base
 r_int
 id|i
 suffix:semicolon
-r_extern
-id|irq_desc_t
-id|irq_desc
-(braket
-)braket
-suffix:semicolon
 id|irq_base
 op_assign
 id|base

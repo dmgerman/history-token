@@ -525,6 +525,10 @@ suffix:semicolon
 )brace
 suffix:semicolon
 multiline_comment|/*&n; * Prototypes&n; */
+r_extern
+r_int
+id|kgdb_enabled
+suffix:semicolon
 r_void
 id|set_debug_traps
 c_func

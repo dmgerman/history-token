@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * Copyright 2001 MontaVista Software Inc.&n; * Author: Jun Sun, jsun@mvista.com or jsun@junsun.net&n; * Copyright (c) 2003  Maciej W. Rozycki&n; *&n; * Common time service routines for MIPS machines. See&n; * Documentation/mips/time.README.&n; *&n; * This program is free software; you can redistribute  it and/or modify it&n; * under  the terms of  the GNU General  Public License as published by the&n; * Free Software Foundation;  either version 2 of the  License, or (at your&n; * option) any later version.&n; */
+multiline_comment|/*&n; * Copyright 2001 MontaVista Software Inc.&n; * Author: Jun Sun, jsun@mvista.com or jsun@junsun.net&n; * Copyright (c) 2003, 2004  Maciej W. Rozycki&n; *&n; * Common time service routines for MIPS machines. See&n; * Documentation/mips/time.README.&n; *&n; * This program is free software; you can redistribute  it and/or modify it&n; * under  the terms of  the GNU General  Public License as published by the&n; * Free Software Foundation;  either version 2 of the  License, or (at your&n; * option) any later version.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -13,6 +13,7 @@ macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;asm/bootinfo.h&gt;
+macro_line|#include &lt;asm/compiler.h&gt;
 macro_line|#include &lt;asm/cpu.h&gt;
 macro_line|#include &lt;asm/cpu-features.h&gt;
 macro_line|#include &lt;asm/div64.h&gt;
@@ -50,11 +51,6 @@ id|spinlock_t
 id|rtc_lock
 op_assign
 id|SPIN_LOCK_UNLOCKED
-suffix:semicolon
-multiline_comment|/*&n; * whether we emulate local_timer_interrupts for SMP machines.&n; */
-DECL|variable|emulate_local_timer_interrupt
-r_int
-id|emulate_local_timer_interrupt
 suffix:semicolon
 multiline_comment|/*&n; * By default we provide the null RTC ops&n; */
 DECL|function|null_rtc_get_time
@@ -803,7 +799,7 @@ id|sll32_usecs_per_cycle
 suffix:colon
 l_string|&quot;lo&quot;
 comma
-l_string|&quot;accum&quot;
+id|GCC_REG_ACCUM
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * Due to possible jiffies inconsistencies, we need to check&n;&t; * the result so that we&squot;ll get a timer that is monotonic.&n;&t; */
@@ -959,7 +955,7 @@ id|quotient
 suffix:colon
 l_string|&quot;lo&quot;
 comma
-l_string|&quot;accum&quot;
+id|GCC_REG_ACCUM
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * Due to possible jiffies inconsistencies, we need to check&n;&t; * the result so that we&squot;ll get a timer that is monotonic.&n;&t; */
@@ -1088,7 +1084,7 @@ l_string|&quot;hi&quot;
 comma
 l_string|&quot;lo&quot;
 comma
-l_string|&quot;accum&quot;
+id|GCC_REG_ACCUM
 )paren
 suffix:semicolon
 id|cached_quotient
@@ -1132,7 +1128,7 @@ id|quotient
 suffix:colon
 l_string|&quot;lo&quot;
 comma
-l_string|&quot;accum&quot;
+id|GCC_REG_ACCUM
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * Due to possible jiffies inconsistencies, we need to check&n;&t; * the result so that we&squot;ll get a timer that is monotonic.&n;&t; */
@@ -1460,7 +1456,6 @@ r_break
 suffix:semicolon
 )brace
 )brace
-macro_line|#if !defined(CONFIG_SMP)
 multiline_comment|/*&n;&t; * In UP mode, we call local_timer_interrupt() to do profiling&n;&t; * and process accouting.&n;&t; *&n;&t; * In SMP mode, local_timer_interrupt() is invoked by appropriate&n;&t; * low-level local timer interrupt handler.&n;&t; */
 id|local_timer_interrupt
 c_func
@@ -1472,22 +1467,6 @@ comma
 id|regs
 )paren
 suffix:semicolon
-macro_line|#else&t;/* CONFIG_SMP */
-r_if
-c_cond
-(paren
-id|emulate_local_timer_interrupt
-)paren
-(brace
-multiline_comment|/*&n;&t;&t; * this is the place where we send out inter-process&n;&t;&t; * interrupts and let each CPU do its own profiling&n;&t;&t; * and process accouting.&n;&t;&t; *&n;&t;&t; * Obviously we need to call local_timer_interrupt() for&n;&t;&t; * the current CPU too.&n;&t;&t; */
-id|panic
-c_func
-(paren
-l_string|&quot;Not implemented yet!!!&quot;
-)paren
-suffix:semicolon
-)brace
-macro_line|#endif&t;/* CONFIG_SMP */
 r_return
 id|IRQ_HANDLED
 suffix:semicolon

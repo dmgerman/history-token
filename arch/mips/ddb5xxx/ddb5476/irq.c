@@ -299,10 +299,10 @@ id|u32
 id|irq_base
 )paren
 suffix:semicolon
-DECL|function|ddb5476_irq_setup
+DECL|function|arch_init_irq
 r_void
 id|__init
-id|ddb5476_irq_setup
+id|arch_init_irq
 c_func
 (paren
 r_void

@@ -1,10 +1,11 @@
-multiline_comment|/*&n; * Copyright (C) 2003  Maciej W. Rozycki&n; *&n; * This program is free software; you can redistribute it and/or&n; * modify it under the terms of the GNU General Public License&n; * as published by the Free Software Foundation; either version&n; * 2 of the License, or (at your option) any later version.&n; */
+multiline_comment|/*&n; * Copyright (C) 2003, 2004  Maciej W. Rozycki&n; *&n; * This program is free software; you can redistribute it and/or&n; * modify it under the terms of the GNU General Public License&n; * as published by the Free Software Foundation; either version&n; * 2 of the License, or (at your option) any later version.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/ptrace.h&gt;
 macro_line|#include &lt;linux/stddef.h&gt;
 macro_line|#include &lt;asm/bugs.h&gt;
+macro_line|#include &lt;asm/compiler.h&gt;
 macro_line|#include &lt;asm/cpu.h&gt;
 macro_line|#include &lt;asm/fpu.h&gt;
 macro_line|#include &lt;asm/mipsregs.h&gt;
@@ -198,7 +199,7 @@ l_string|&quot;hi&quot;
 comma
 l_string|&quot;lo&quot;
 comma
-l_string|&quot;accum&quot;
+id|GCC_REG_ACCUM
 )paren
 suffix:semicolon
 multiline_comment|/* We have to use single integers for m1 and m2 and a double&n;&t; * one for p to be sure the mulsidi3 gcc&squot;s RTL multiplication&n;&t; * instruction has the workaround applied.  Older versions of&n;&t; * gcc have correct umulsi3 and mulsi3, but other&n;&t; * multiplication variants lack the workaround.&n;&t; */

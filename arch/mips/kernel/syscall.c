@@ -16,6 +16,7 @@ macro_line|#include &lt;linux/unistd.h&gt;
 macro_line|#include &lt;linux/sem.h&gt;
 macro_line|#include &lt;linux/msg.h&gt;
 macro_line|#include &lt;linux/shm.h&gt;
+macro_line|#include &lt;linux/compiler.h&gt;
 macro_line|#include &lt;asm/branch.h&gt;
 macro_line|#include &lt;asm/cachectl.h&gt;
 macro_line|#include &lt;asm/cacheflush.h&gt;
@@ -147,7 +148,7 @@ r_int
 r_int
 id|task_size
 suffix:semicolon
-macro_line|#if CONFIG_MIPS32
+macro_line|#ifdef CONFIG_MIPS32
 id|task_size
 op_assign
 id|TASK_SIZE
@@ -653,9 +654,11 @@ c_func
 id|sys_fork
 )paren
 suffix:semicolon
-DECL|function|_sys_fork
-id|static_unused
+id|__attribute_used__
+id|noinline
+r_static
 r_int
+DECL|function|_sys_fork
 id|_sys_fork
 c_func
 (paren
@@ -694,9 +697,11 @@ c_func
 id|sys_clone
 )paren
 suffix:semicolon
-DECL|function|_sys_clone
-id|static_unused
+id|__attribute_used__
+id|noinline
+r_static
 r_int
+DECL|function|_sys_clone
 id|_sys_clone
 c_func
 (paren

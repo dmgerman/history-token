@@ -34,10 +34,10 @@ comma
 l_int|NULL
 )brace
 suffix:semicolon
-DECL|function|init_IRQ
+DECL|function|arch_init_irq
 r_void
 id|__init
-id|init_IRQ
+id|arch_init_irq
 c_func
 (paren
 r_void
@@ -57,11 +57,6 @@ c_func
 l_int|0
 comma
 id|jaguar_handle_int
-)paren
-suffix:semicolon
-id|init_generic_irq
-c_func
-(paren
 )paren
 suffix:semicolon
 id|mips_cpu_irq_init

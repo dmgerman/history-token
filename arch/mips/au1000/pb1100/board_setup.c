@@ -12,8 +12,8 @@ macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;asm/mipsregs.h&gt;
 macro_line|#include &lt;asm/reboot.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
-macro_line|#include &lt;asm/au1000.h&gt;
-macro_line|#include &lt;asm/pb1100.h&gt;
+macro_line|#include &lt;asm/mach-au1x00/au1000.h&gt;
+macro_line|#include &lt;asm/mach-pb1x00/pb1100.h&gt;
 macro_line|#ifdef CONFIG_USB_OHCI
 singleline_comment|// Enable the workaround for the OHCI DoneHead
 singleline_comment|// register corruption problem.
@@ -56,6 +56,23 @@ op_logical_neg
 op_logical_neg
 op_logical_neg
 macro_line|#endif
+DECL|function|board_reset
+r_void
+id|board_reset
+(paren
+r_void
+)paren
+(brace
+multiline_comment|/* Hit BCSR.SYSTEM_CONTROL[SW_RST] */
+id|au_writel
+c_func
+(paren
+l_int|0x00000000
+comma
+l_int|0xAE00001C
+)paren
+suffix:semicolon
+)brace
 DECL|function|board_setup
 r_void
 id|__init

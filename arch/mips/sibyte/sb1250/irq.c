@@ -97,55 +97,10 @@ id|ldt_eoi_space
 suffix:semicolon
 macro_line|#endif
 macro_line|#ifdef CONFIG_KGDB
-macro_line|#include &lt;asm/gdb-stub.h&gt;
-r_extern
-r_void
-id|breakpoint
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
 DECL|variable|kgdb_irq
 r_static
 r_int
 id|kgdb_irq
-suffix:semicolon
-multiline_comment|/* kgdb is on when configured.  Pass &quot;nokgdb&quot; kernel arg to turn it off */
-DECL|variable|kgdb_flag
-r_static
-r_int
-id|kgdb_flag
-op_assign
-l_int|1
-suffix:semicolon
-DECL|function|nokgdb
-r_static
-r_int
-id|__init
-id|nokgdb
-c_func
-(paren
-r_char
-op_star
-id|str
-)paren
-(brace
-id|kgdb_flag
-op_assign
-l_int|0
-suffix:semicolon
-r_return
-l_int|1
-suffix:semicolon
-)brace
-id|__setup
-c_func
-(paren
-l_string|&quot;nokgdb&quot;
-comma
-id|nokgdb
-)paren
 suffix:semicolon
 multiline_comment|/* Default to UART1 */
 DECL|variable|kgdb_port
@@ -1178,7 +1133,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/*&n; *  init_IRQ is called early in the boot sequence from init/main.c.  It&n; *  is responsible for setting up the interrupt mapper and installing the&n; *  handler that will be responsible for dispatching interrupts to the&n; *  &quot;right&quot; place.&n; */
+multiline_comment|/*&n; *  arch_init_irq is called early in the boot sequence from init/main.c via&n; *  init_IRQ.  It is responsible for setting up the interrupt mapper and&n; *  installing the handler that will be responsible for dispatching interrupts&n; *  to the &quot;right&quot; place.&n; */
 multiline_comment|/*&n; * For now, map all interrupts to IP[2].  We could save&n; * some cycles by parceling out system interrupts to different&n; * IP lines, but keep it simple for bringup.  We&squot;ll also direct&n; * all interrupts to a single CPU; we should probably route&n; * PCI and LDT to one cpu and everything else to the other&n; * to balance the load a bit.&n; *&n; * On the second cpu, everything is set to IP5, which is&n; * ignored, EXCEPT the mailbox interrupt.  That one is&n; * set to IP[2] so it is handled.  This is needed so we&n; * can do cross-cpu function calls, as requred by SMP&n; */
 DECL|macro|IMR_IP2_VAL
 mdefine_line|#define IMR_IP2_VAL&t;K_INT_MAP_I0
@@ -1190,10 +1145,10 @@ DECL|macro|IMR_IP5_VAL
 mdefine_line|#define IMR_IP5_VAL&t;K_INT_MAP_I3
 DECL|macro|IMR_IP6_VAL
 mdefine_line|#define IMR_IP6_VAL&t;K_INT_MAP_I4
-DECL|function|init_IRQ
+DECL|function|arch_init_irq
 r_void
 id|__init
-id|init_IRQ
+id|arch_init_irq
 c_func
 (paren
 r_void
@@ -1541,24 +1496,6 @@ c_func
 l_int|0
 comma
 id|kgdb_irq
-)paren
-suffix:semicolon
-id|prom_printf
-c_func
-(paren
-l_string|&quot;Waiting for GDB on UART port %d&bslash;n&quot;
-comma
-id|kgdb_port
-)paren
-suffix:semicolon
-id|set_debug_traps
-c_func
-(paren
-)paren
-suffix:semicolon
-id|breakpoint
-c_func
-(paren
 )paren
 suffix:semicolon
 )brace

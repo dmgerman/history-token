@@ -48,15 +48,6 @@ r_void
 suffix:semicolon
 r_extern
 r_void
-id|per_hub_init
-c_func
-(paren
-id|cnodeid_t
-id|cnode
-)paren
-suffix:semicolon
-r_extern
-r_void
 id|install_cpu_nmi_handler
 c_func
 (paren
@@ -94,14 +85,6 @@ id|node_getfirstfree
 c_func
 (paren
 id|cnodeid_t
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|mlreset
-c_func
-(paren
-r_void
 )paren
 suffix:semicolon
 macro_line|#endif /* __ASM_SN_SN_PRIVATE_H */

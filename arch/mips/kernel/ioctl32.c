@@ -84,6 +84,7 @@ c_func
 id|SBPROF_ZBWAITFULL
 )paren
 macro_line|#endif /* CONFIG_SIBYTE_TBPROF */
+multiline_comment|/*HANDLE_IOCTL(RTC_IRQP_READ, w_long)&n;COMPATIBLE_IOCTL(RTC_IRQP_SET)&n;HANDLE_IOCTL(RTC_EPOCH_READ, w_long)&n;COMPATIBLE_IOCTL(RTC_EPOCH_SET)&n;*/
 id|IOCTL_TABLE_END
 r_int
 id|ioctl_table_size

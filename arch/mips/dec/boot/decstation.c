@@ -36,15 +36,6 @@ suffix:semicolon
 multiline_comment|/* begin and end of kernel image */
 r_extern
 r_void
-op_star
-id|__rd_start
-comma
-op_star
-id|__rd_end
-suffix:semicolon
-multiline_comment|/* begin and end of ramdisk image */
-r_extern
-r_void
 id|kernel_entry
 c_func
 (paren
@@ -330,34 +321,6 @@ c_func
 )paren
 suffix:semicolon
 )brace
-macro_line|#ifdef CONFIG_BLK_DEV_INITRD
-id|LOADER_TYPE
-op_assign
-l_int|1
-suffix:semicolon
-id|INITRD_START
-op_assign
-(paren
-r_int
-)paren
-op_amp
-id|__rd_start
-suffix:semicolon
-id|INITRD_SIZE
-op_assign
-(paren
-r_int
-)paren
-op_amp
-id|__rd_end
-op_minus
-(paren
-r_int
-)paren
-op_amp
-id|__rd_start
-suffix:semicolon
-macro_line|#endif
 id|kernel_entry
 c_func
 (paren

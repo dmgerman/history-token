@@ -118,11 +118,6 @@ DECL|macro|iu_iir
 mdefine_line|#define iu_iir u3.iir
 DECL|macro|iu_fcr
 mdefine_line|#define iu_fcr u3.fcr
-r_extern
-r_int
-r_int
-id|uart_base
-suffix:semicolon
 DECL|macro|IO_BASE_64
 mdefine_line|#define IO_BASE_64&t;0x9000000000000000ULL
 DECL|function|readb_outer_space
@@ -381,31 +376,6 @@ id|__asm__
 c_func
 (paren
 l_string|&quot;sll&t;$0, $0, 2&bslash;n&quot;
-)paren
-suffix:semicolon
-)brace
-DECL|function|console_uart
-r_static
-r_inline
-r_struct
-id|yo_uartregs
-op_star
-id|console_uart
-c_func
-(paren
-r_void
-)paren
-(brace
-r_return
-(paren
-r_struct
-id|yo_uartregs
-op_star
-)paren
-(paren
-id|uart_base
-op_plus
-l_int|8
 )paren
 suffix:semicolon
 )brace

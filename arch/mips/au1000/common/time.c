@@ -6,6 +6,7 @@ macro_line|#include &lt;linux/kernel_stat.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;linux/hardirq.h&gt;
+macro_line|#include &lt;asm/compiler.h&gt;
 macro_line|#include &lt;asm/mipsregs.h&gt;
 macro_line|#include &lt;asm/ptrace.h&gt;
 macro_line|#include &lt;asm/time.h&gt;
@@ -1106,6 +1107,12 @@ l_string|&quot;r&quot;
 (paren
 id|quotient
 )paren
+suffix:colon
+l_string|&quot;hi&quot;
+comma
+l_string|&quot;lo&quot;
+comma
+id|GCC_REG_ACCUM
 )paren
 suffix:semicolon
 multiline_comment|/*&n; &t; * Due to possible jiffies inconsistencies, we need to check &n;&t; * the result so that we&squot;ll get a timer that is monotonic.&n;&t; */

@@ -4,6 +4,7 @@ DECL|macro|_ASM_DELAY_H
 mdefine_line|#define _ASM_DELAY_H
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/param.h&gt;
+macro_line|#include &lt;asm/compiler.h&gt;
 r_extern
 r_int
 r_int
@@ -188,6 +189,8 @@ l_string|&quot;r&quot;
 (paren
 id|lpj
 )paren
+suffix:colon
+id|GCC_REG_ACCUM
 )paren
 suffix:semicolon
 r_else
@@ -225,6 +228,8 @@ l_string|&quot;r&quot;
 (paren
 id|lpj
 )paren
+suffix:colon
+id|GCC_REG_ACCUM
 )paren
 suffix:semicolon
 id|__delay

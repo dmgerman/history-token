@@ -1,9 +1,10 @@
 multiline_comment|/*&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1994, 1995 Waldorf Electronics GmbH&n; * Copyright (C) 1998, 1999 Ralf Baechle&n; */
-macro_line|#include &lt;net/checksum.h&gt;
+macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;asm/byteorder.h&gt;
 macro_line|#include &lt;asm/string.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
+macro_line|#include &lt;net/checksum.h&gt;
 multiline_comment|/*&n; * copy while checksumming, otherwise like csum_partial&n; */
 DECL|function|csum_partial_copy_nocheck
 r_int
@@ -84,6 +85,11 @@ id|err_ptr
 (brace
 r_int
 id|missing
+suffix:semicolon
+id|might_sleep
+c_func
+(paren
+)paren
 suffix:semicolon
 id|missing
 op_assign

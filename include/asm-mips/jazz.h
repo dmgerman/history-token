@@ -112,6 +112,8 @@ DECL|typedef|jazz_keyboard_hardware
 )brace
 id|jazz_keyboard_hardware
 suffix:semicolon
+DECL|macro|jazz_kh
+mdefine_line|#define jazz_kh ((keyboard_hardware *) JAZZ_KEYBOARD_ADDRESS)
 r_typedef
 r_struct
 (brace

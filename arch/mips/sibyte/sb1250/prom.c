@@ -6,21 +6,9 @@ macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/blkdev.h&gt;
 macro_line|#include &lt;linux/bootmem.h&gt;
 macro_line|#include &lt;linux/smp.h&gt;
+macro_line|#include &lt;linux/initrd.h&gt;
 macro_line|#include &lt;asm/bootinfo.h&gt;
 macro_line|#include &lt;asm/reboot.h&gt;
-macro_line|#ifdef CONFIG_EMBEDDED_RAMDISK
-multiline_comment|/* These are symbols defined by the ramdisk linker script */
-r_extern
-r_int
-r_char
-id|__rd_start
-suffix:semicolon
-r_extern
-r_int
-r_char
-id|__rd_end
-suffix:semicolon
-macro_line|#endif
 DECL|macro|MAX_RAM_SIZE
 mdefine_line|#define MAX_RAM_SIZE ((CONFIG_SIBYTE_STANDALONE_RAM_SIZE * 1024 * 1024) - 1)
 DECL|function|prom_meminit
@@ -42,36 +30,6 @@ r_int
 r_int
 id|initrd_pend
 suffix:semicolon
-macro_line|#ifdef CONFIG_EMBEDDED_RAMDISK
-multiline_comment|/* If we&squot;re using an embedded ramdisk, then __rd_start and __rd_end&n;&t;   are defined by the linker to be on either side of the ramdisk&n;&t;   area.  Otherwise, initrd_start should be defined by kernel command&n;&t;   line arguments */
-r_if
-c_cond
-(paren
-id|initrd_start
-op_eq
-l_int|0
-)paren
-(brace
-id|initrd_start
-op_assign
-(paren
-r_int
-r_int
-)paren
-op_amp
-id|__rd_start
-suffix:semicolon
-id|initrd_end
-op_assign
-(paren
-r_int
-r_int
-)paren
-op_amp
-id|__rd_end
-suffix:semicolon
-)brace
-macro_line|#endif
 id|initrd_pstart
 op_assign
 id|__pa

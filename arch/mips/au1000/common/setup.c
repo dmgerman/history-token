@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * Copyright 2000 MontaVista Software Inc.&n; * Author: MontaVista Software, Inc.&n; *         &t;ppopov@mvista.com or source@mvista.com&n; *&n; *  This program is free software; you can redistribute  it and/or modify it&n; *  under  the terms of  the GNU General  Public License as published by the&n; *  Free Software Foundation;  either version 2 of the  License, or (at your&n; *  option) any later version.&n; *&n; *  THIS  SOFTWARE  IS PROVIDED   ``AS  IS&squot;&squot; AND   ANY  EXPRESS OR IMPLIED&n; *  WARRANTIES,   INCLUDING, BUT NOT  LIMITED  TO, THE IMPLIED WARRANTIES OF&n; *  MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.  IN&n; *  NO  EVENT  SHALL   THE AUTHOR  BE    LIABLE FOR ANY   DIRECT, INDIRECT,&n; *  INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT&n; *  NOT LIMITED   TO, PROCUREMENT OF  SUBSTITUTE GOODS  OR SERVICES; LOSS OF&n; *  USE, DATA,  OR PROFITS; OR  BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON&n; *  ANY THEORY OF LIABILITY, WHETHER IN  CONTRACT, STRICT LIABILITY, OR TORT&n; *  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF&n; *  THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.&n; *&n; *  You should have received a copy of the  GNU General Public License along&n; *  with this program; if not, write  to the Free Software Foundation, Inc.,&n; *  675 Mass Ave, Cambridge, MA 02139, USA.&n; */
+multiline_comment|/*&n; * Copyright 2000 MontaVista Software Inc.&n; * Author: MontaVista Software, Inc.&n; *         &t;ppopov@mvista.com or source@mvista.com&n; *&n; * Updates to 2.6, Pete Popov, Embedded Alley Solutions, Inc.&n; *&n; *  This program is free software; you can redistribute  it and/or modify it&n; *  under  the terms of  the GNU General  Public License as published by the&n; *  Free Software Foundation;  either version 2 of the  License, or (at your&n; *  option) any later version.&n; *&n; *  THIS  SOFTWARE  IS PROVIDED   ``AS  IS&squot;&squot; AND   ANY  EXPRESS OR IMPLIED&n; *  WARRANTIES,   INCLUDING, BUT NOT  LIMITED  TO, THE IMPLIED WARRANTIES OF&n; *  MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.  IN&n; *  NO  EVENT  SHALL   THE AUTHOR  BE    LIABLE FOR ANY   DIRECT, INDIRECT,&n; *  INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT&n; *  NOT LIMITED   TO, PROCUREMENT OF  SUBSTITUTE GOODS  OR SERVICES; LOSS OF&n; *  USE, DATA,  OR PROFITS; OR  BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON&n; *  ANY THEORY OF LIABILITY, WHETHER IN  CONTRACT, STRICT LIABILITY, OR TORT&n; *  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF&n; *  THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.&n; *&n; *  You should have received a copy of the  GNU General Public License along&n; *  with this program; if not, write  to the Free Software Foundation, Inc.,&n; *  675 Mass Ave, Cambridge, MA 02139, USA.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
@@ -14,23 +14,6 @@ macro_line|#include &lt;asm/reboot.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
 macro_line|#include &lt;asm/mach-au1x00/au1000.h&gt;
 macro_line|#include &lt;asm/time.h&gt;
-macro_line|#ifdef CONFIG_BLK_DEV_INITRD
-r_extern
-r_int
-r_int
-id|initrd_start
-comma
-id|initrd_end
-suffix:semicolon
-r_extern
-r_void
-op_star
-id|__rd_start
-comma
-op_star
-id|__rd_end
-suffix:semicolon
-macro_line|#endif
 r_extern
 r_char
 op_star
@@ -127,34 +110,6 @@ op_star
 id|irq
 )paren
 suffix:semicolon
-macro_line|#if defined(CONFIG_64BIT_PHYS_ADDR) &amp;&amp; (defined(CONFIG_SOC_AU1500) || defined(CONFIG_SOC_AU1550))
-r_extern
-id|phys_t
-(paren
-op_star
-id|fixup_bigphys_addr
-)paren
-(paren
-id|phys_t
-id|phys_addr
-comma
-id|phys_t
-id|size
-)paren
-suffix:semicolon
-r_static
-id|phys_t
-id|au1500_fixup_bigphys_addr
-c_func
-(paren
-id|phys_t
-id|phys_addr
-comma
-id|phys_t
-id|size
-)paren
-suffix:semicolon
-macro_line|#endif
 r_extern
 r_void
 id|au1xxx_time_init
@@ -172,6 +127,14 @@ r_struct
 id|irqaction
 op_star
 id|irq
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|set_cpuspec
+c_func
+(paren
+r_void
 )paren
 suffix:semicolon
 DECL|function|au1x00_setup
@@ -245,7 +208,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;(PRId %08X) @ %dMHZ&bslash;n&quot;
+l_string|&quot;(PRId %08lx) @ %ldMHZ&bslash;n&quot;
 comma
 id|prid
 comma
@@ -531,12 +494,6 @@ id|board_timer_setup
 op_assign
 id|au1xxx_timer_setup
 suffix:semicolon
-macro_line|#if defined(CONFIG_64BIT_PHYS_ADDR) &amp;&amp; (defined(CONFIG_SOC_AU1500) || defined(CONFIG_SOC_AU1550))
-id|fixup_bigphys_addr
-op_assign
-id|au1500_fixup_bigphys_addr
-suffix:semicolon
-macro_line|#endif
 multiline_comment|/* IO/MEM resources. */
 id|set_io_port_base
 c_func
@@ -560,165 +517,6 @@ id|iomem_resource.end
 op_assign
 id|IOMEM_RESOURCE_END
 suffix:semicolon
-macro_line|#ifdef CONFIG_BLK_DEV_INITRD
-id|ROOT_DEV
-op_assign
-id|MKDEV
-c_func
-(paren
-id|RAMDISK_MAJOR
-comma
-l_int|0
-)paren
-suffix:semicolon
-id|initrd_start
-op_assign
-(paren
-r_int
-r_int
-)paren
-op_amp
-id|__rd_start
-suffix:semicolon
-id|initrd_end
-op_assign
-(paren
-r_int
-r_int
-)paren
-op_amp
-id|__rd_end
-suffix:semicolon
-macro_line|#endif
-macro_line|#if defined (CONFIG_USB_OHCI) || defined (CONFIG_AU1X00_USB_DEVICE)
-macro_line|#ifdef CONFIG_USB_OHCI
-r_if
-c_cond
-(paren
-(paren
-id|argptr
-op_assign
-id|strstr
-c_func
-(paren
-id|argptr
-comma
-l_string|&quot;usb_ohci=&quot;
-)paren
-)paren
-op_eq
-l_int|NULL
-)paren
-(brace
-r_char
-id|usb_args
-(braket
-l_int|80
-)braket
-suffix:semicolon
-id|argptr
-op_assign
-id|prom_getcmdline
-c_func
-(paren
-)paren
-suffix:semicolon
-id|memset
-c_func
-(paren
-id|usb_args
-comma
-l_int|0
-comma
-r_sizeof
-(paren
-id|usb_args
-)paren
-)paren
-suffix:semicolon
-id|sprintf
-c_func
-(paren
-id|usb_args
-comma
-l_string|&quot; usb_ohci=base:0x%x,len:0x%x,irq:%d&quot;
-comma
-id|USB_OHCI_BASE
-comma
-id|USB_OHCI_LEN
-comma
-id|AU1000_USB_HOST_INT
-)paren
-suffix:semicolon
-id|strcat
-c_func
-(paren
-id|argptr
-comma
-id|usb_args
-)paren
-suffix:semicolon
-)brace
-macro_line|#endif
-macro_line|#ifdef CONFIG_USB_OHCI
-multiline_comment|/* enable host controller and wait for reset done */
-id|au_writel
-c_func
-(paren
-l_int|0x08
-comma
-id|USB_HOST_CONFIG
-)paren
-suffix:semicolon
-id|udelay
-c_func
-(paren
-l_int|1000
-)paren
-suffix:semicolon
-id|au_writel
-c_func
-(paren
-l_int|0x0E
-comma
-id|USB_HOST_CONFIG
-)paren
-suffix:semicolon
-id|udelay
-c_func
-(paren
-l_int|1000
-)paren
-suffix:semicolon
-id|au_readl
-c_func
-(paren
-id|USB_HOST_CONFIG
-)paren
-suffix:semicolon
-multiline_comment|/* throw away first read */
-r_while
-c_loop
-(paren
-op_logical_neg
-(paren
-id|au_readl
-c_func
-(paren
-id|USB_HOST_CONFIG
-)paren
-op_amp
-l_int|0x10
-)paren
-)paren
-id|au_readl
-c_func
-(paren
-id|USB_HOST_CONFIG
-)paren
-suffix:semicolon
-macro_line|#endif
-macro_line|#endif /* defined (CONFIG_USB_OHCI) || defined (CONFIG_AU1X00_USB_DEVICE) */
 r_while
 c_loop
 (paren
@@ -777,12 +575,11 @@ c_func
 id|au1x00_setup
 )paren
 suffix:semicolon
-macro_line|#if defined(CONFIG_64BIT_PHYS_ADDR) &amp;&amp; (defined(CONFIG_SOC_AU1500) || defined(CONFIG_SOC_AU1550))
-multiline_comment|/* This routine should be valid for all Au1500 based boards */
-DECL|function|au1500_fixup_bigphys_addr
-r_static
+macro_line|#if defined(CONFIG_64BIT_PHYS_ADDR)
+multiline_comment|/* This routine should be valid for all Au1x based boards */
+DECL|function|fixup_bigphys_addr
 id|phys_t
-id|au1500_fixup_bigphys_addr
+id|fixup_bigphys_addr
 c_func
 (paren
 id|phys_t
@@ -793,20 +590,9 @@ id|size
 )paren
 (brace
 id|u32
-id|pci_start
-op_assign
-(paren
-id|u32
-)paren
-id|Au1500_PCI_MEM_START
-suffix:semicolon
-id|u32
-id|pci_end
-op_assign
-(paren
-id|u32
-)paren
-id|Au1500_PCI_MEM_END
+id|start
+comma
+id|end
 suffix:semicolon
 multiline_comment|/* Don&squot;t fixup 36 bit addresses */
 r_if
@@ -823,6 +609,21 @@ l_int|0
 r_return
 id|phys_addr
 suffix:semicolon
+macro_line|#ifdef CONFIG_PCI
+id|start
+op_assign
+(paren
+id|u32
+)paren
+id|Au1500_PCI_MEM_START
+suffix:semicolon
+id|end
+op_assign
+(paren
+id|u32
+)paren
+id|Au1500_PCI_MEM_END
+suffix:semicolon
 multiline_comment|/* check for pci memory window */
 r_if
 c_cond
@@ -830,7 +631,7 @@ c_cond
 (paren
 id|phys_addr
 op_ge
-id|pci_start
+id|start
 )paren
 op_logical_and
 (paren
@@ -840,7 +641,7 @@ op_plus
 id|size
 )paren
 OL
-id|pci_end
+id|end
 )paren
 )paren
 (brace
@@ -852,14 +653,44 @@ id|phys_t
 (paren
 id|phys_addr
 op_minus
-id|pci_start
+id|start
 )paren
 op_plus
 id|Au1500_PCI_MEM_START
 )paren
 suffix:semicolon
 )brace
-r_else
+macro_line|#endif
+multiline_comment|/* All Au1x SOCs have a pcmcia controller */
+multiline_comment|/* We setup our 32 bit pseudo addresses to be equal to the&n;&t; * 36 bit addr &gt;&gt; 4, to make it easier to check the address&n;&t; * and fix it.&n;&t; * The Au1x socket 0 phys attribute address is 0xF 4000 0000.&n;&t; * The pseudo address we use is 0xF400 0000. Any address over&n;&t; * 0xF400 0000 is a pcmcia pseudo address.&n;&t; */
+r_if
+c_cond
+(paren
+(paren
+id|phys_addr
+op_ge
+l_int|0xF4000000
+)paren
+op_logical_and
+(paren
+id|phys_addr
+OL
+l_int|0xFFFFFFFF
+)paren
+)paren
+(brace
+r_return
+(paren
+id|phys_t
+)paren
+(paren
+id|phys_addr
+op_lshift
+l_int|4
+)paren
+suffix:semicolon
+)brace
+multiline_comment|/* default nop */
 r_return
 id|phys_addr
 suffix:semicolon

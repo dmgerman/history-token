@@ -1,10 +1,9 @@
-multiline_comment|/*&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 2004 by Ralf Baechle&n; *&n; */
+multiline_comment|/*&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 2004 by Ralf Baechle (ralf@linux-mips.org)&n; */
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;asm/gt64240.h&gt;
-macro_line|#include &lt;asm/pci_channel.h&gt;
 r_extern
 r_struct
 id|pci_ops
@@ -26,6 +25,9 @@ comma
 id|IORESOURCE_MEM
 )brace
 suffix:semicolon
+multiline_comment|/*&n; * PMON really reserves 16MB of I/O port space but that&squot;s stupid, nothing&n; * needs that much since allocations are limited to 256 bytes per device&n; * anyway.  So we just claim 64kB here.&n; */
+DECL|macro|TITAN_IO_SIZE
+mdefine_line|#define TITAN_IO_SIZE&t;0x0000ffffUL
 DECL|variable|py_io_resource
 r_static
 r_struct
@@ -35,9 +37,11 @@ op_assign
 (brace
 l_string|&quot;Titan IO MEM&quot;
 comma
-l_int|0x00000000UL
+l_int|0x00001000UL
 comma
-l_int|0x00ffffffUL
+id|TITAN_IO_SIZE
+op_minus
+l_int|1
 comma
 id|IORESOURCE_IO
 comma
@@ -65,7 +69,7 @@ comma
 dot
 id|mem_offset
 op_assign
-l_int|0x10000000UL
+l_int|0x00000000UL
 comma
 dot
 id|io_resource
@@ -79,6 +83,16 @@ op_assign
 l_int|0x00000000UL
 )brace
 suffix:semicolon
+DECL|variable|__initdata
+r_static
+r_char
+id|ioremap_failed
+(braket
+)braket
+id|__initdata
+op_assign
+l_string|&quot;Could not ioremap I/O port range&quot;
+suffix:semicolon
 DECL|function|pmc_yosemite_setup
 r_static
 r_int
@@ -89,6 +103,48 @@ c_func
 r_void
 )paren
 (brace
+r_int
+r_int
+id|io_v_base
+suffix:semicolon
+id|io_v_base
+op_assign
+(paren
+r_int
+r_int
+)paren
+id|ioremap
+c_func
+(paren
+l_int|0xe0000000UL
+comma
+id|TITAN_IO_SIZE
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|io_v_base
+)paren
+id|panic
+c_func
+(paren
+id|ioremap_failed
+)paren
+suffix:semicolon
+id|set_io_port_base
+c_func
+(paren
+id|io_v_base
+)paren
+suffix:semicolon
+id|ioport_resource.end
+op_assign
+id|TITAN_IO_SIZE
+op_minus
+l_int|1
+suffix:semicolon
 id|register_pci_controller
 c_func
 (paren
@@ -96,5 +152,15 @@ op_amp
 id|py_controller
 )paren
 suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
 )brace
+DECL|variable|pmc_yosemite_setup
+id|arch_initcall
+c_func
+(paren
+id|pmc_yosemite_setup
+)paren
+suffix:semicolon
 eof

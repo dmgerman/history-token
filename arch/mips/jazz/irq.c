@@ -22,15 +22,6 @@ id|r4030_lock
 op_assign
 id|SPIN_LOCK_UNLOCKED
 suffix:semicolon
-r_extern
-id|asmlinkage
-r_void
-id|sni_rm200_pci_handle_int
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
 DECL|function|enable_r4030_irq
 r_static
 r_void
@@ -51,7 +42,7 @@ op_lshift
 (paren
 id|irq
 op_minus
-id|JAZZ_IE_PARALLEL
+id|JAZZ_PARALLEL_IRQ
 )paren
 suffix:semicolon
 r_int
@@ -139,7 +130,7 @@ op_lshift
 (paren
 id|irq
 op_minus
-id|JAZZ_IE_PARALLEL
+id|JAZZ_PARALLEL_IRQ
 )paren
 )paren
 suffix:semicolon
@@ -334,10 +325,11 @@ suffix:semicolon
 multiline_comment|/* clear error bits */
 )brace
 multiline_comment|/*&n; * On systems with i8259-style interrupt controllers we assume for&n; * driver compatibility reasons interrupts 0 - 15 to be the i8259&n; * interrupts even if the hardware uses a different interrupt numbering.&n; */
-DECL|function|init_IRQ
+DECL|function|arch_init_irq
 r_void
 id|__init
-id|init_IRQ
+id|arch_init_irq
+c_func
 (paren
 r_void
 )paren
@@ -348,11 +340,6 @@ c_func
 l_int|0
 comma
 id|jazz_handle_int
-)paren
-suffix:semicolon
-id|init_generic_irq
-c_func
-(paren
 )paren
 suffix:semicolon
 id|init_i8259_irqs

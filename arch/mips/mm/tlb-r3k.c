@@ -14,8 +14,12 @@ macro_line|#include &lt;asm/cpu.h&gt;
 DECL|macro|DEBUG_TLB
 macro_line|#undef DEBUG_TLB
 r_extern
-r_char
-id|except_vec0_r2300
+r_void
+id|build_tlb_refill_handler
+c_func
+(paren
+r_void
+)paren
 suffix:semicolon
 multiline_comment|/* CP0 hazard avoidance. */
 DECL|macro|BARRIER
@@ -1236,29 +1240,9 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|memcpy
+id|build_tlb_refill_handler
 c_func
 (paren
-(paren
-r_void
-op_star
-)paren
-id|KSEG0
-comma
-op_amp
-id|except_vec0_r2300
-comma
-l_int|0x80
-)paren
-suffix:semicolon
-id|flush_icache_range
-c_func
-(paren
-id|KSEG0
-comma
-id|KSEG0
-op_plus
-l_int|0x80
 )paren
 suffix:semicolon
 )brace

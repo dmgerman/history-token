@@ -1,9 +1,8 @@
-multiline_comment|/*&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * SNI specific PCI support for RM200/RM300.&n; *&n; * Copyright (C) 1997 - 2000, 2003 Ralf Baechle&n; */
+multiline_comment|/*&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * SNI specific PCI support for RM200/RM300.&n; *&n; * Copyright (C) 1997 - 2000, 2003, 04 Ralf Baechle (ralf@linux-mips.org)&n; */
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;asm/mipsregs.h&gt;
-macro_line|#include &lt;asm/pci_channel.h&gt;
 macro_line|#include &lt;asm/sni.h&gt;
 multiline_comment|/*&n; * Shortcuts ...&n; */
 DECL|macro|SCSI
@@ -336,6 +335,22 @@ id|slot
 (braket
 id|pin
 )braket
+suffix:semicolon
+)brace
+multiline_comment|/* Do platform specific device initialization at pci_enable_device() time */
+DECL|function|pcibios_plat_dev_init
+r_int
+id|pcibios_plat_dev_init
+c_func
+(paren
+r_struct
+id|pci_dev
+op_star
+id|dev
+)paren
+(brace
+r_return
+l_int|0
 suffix:semicolon
 )brace
 eof

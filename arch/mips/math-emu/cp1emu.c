@@ -1580,7 +1580,7 @@ id|cond
 op_ne
 l_int|0
 )paren
-op_ne
+op_eq
 (paren
 (paren
 id|MIPSInst_RT
@@ -1595,9 +1595,6 @@ op_ne
 l_int|0
 )paren
 )paren
-r_return
-l_int|0
-suffix:semicolon
 id|xcp-&gt;regs
 (braket
 id|MIPSInst_RD

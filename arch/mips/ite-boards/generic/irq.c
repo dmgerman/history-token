@@ -32,16 +32,6 @@ macro_line|#else
 DECL|macro|DPRINTK
 mdefine_line|#define DPRINTK(fmt, args...)
 macro_line|#endif
-macro_line|#ifdef CONFIG_KGDB
-r_extern
-r_void
-id|breakpoint
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-macro_line|#endif
 multiline_comment|/* revisit */
 DECL|macro|EXT_IRQ0_TO_IP
 mdefine_line|#define EXT_IRQ0_TO_IP 2 /* IP 2 */
@@ -921,10 +911,10 @@ id|flags
 )paren
 suffix:semicolon
 )brace
-DECL|function|init_IRQ
+DECL|function|arch_init_irq
 r_void
 id|__init
-id|init_IRQ
+id|arch_init_irq
 c_func
 (paren
 r_void
@@ -956,11 +946,6 @@ c_func
 l_int|0
 comma
 id|it8172_IRQ
-)paren
-suffix:semicolon
-id|init_generic_irq
-c_func
-(paren
 )paren
 suffix:semicolon
 multiline_comment|/* mask all interrupts */
@@ -1105,25 +1090,6 @@ c_func
 id|ALLINTS_NOTIMER
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_KGDB
-multiline_comment|/* If local serial I/O used for debug port, enter kgdb at once */
-id|puts
-c_func
-(paren
-l_string|&quot;Waiting for kgdb to connect...&quot;
-)paren
-suffix:semicolon
-id|set_debug_traps
-c_func
-(paren
-)paren
-suffix:semicolon
-id|breakpoint
-c_func
-(paren
-)paren
-suffix:semicolon
-macro_line|#endif
 )brace
 DECL|function|mips_spurious_interrupt
 r_void

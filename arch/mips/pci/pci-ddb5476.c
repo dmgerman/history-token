@@ -2,7 +2,6 @@ macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
-macro_line|#include &lt;asm/pci_channel.h&gt;
 macro_line|#include &lt;asm/debug.h&gt;
 macro_line|#include &lt;asm/ddb5xxx/ddb5xxx.h&gt;
 DECL|variable|extpci_io_resource
@@ -199,6 +198,22 @@ id|irq_map
 (braket
 id|slot
 )braket
+suffix:semicolon
+)brace
+multiline_comment|/* Do platform specific device initialization at pci_enable_device() time */
+DECL|function|pcibios_plat_dev_init
+r_int
+id|pcibios_plat_dev_init
+c_func
+(paren
+r_struct
+id|pci_dev
+op_star
+id|dev
+)paren
+(brace
+r_return
+l_int|0
 suffix:semicolon
 )brace
 DECL|function|ddb_pci_reset_bus

@@ -478,10 +478,33 @@ r_return
 id|error
 suffix:semicolon
 )brace
+multiline_comment|/*&n; * Allow physical addresses to be fixed up to help 36 bit peripherals.&n; */
+id|phys_t
+id|__attribute__
+(paren
+(paren
+id|weak
+)paren
+)paren
+DECL|function|fixup_bigphys_addr
+id|fixup_bigphys_addr
+c_func
+(paren
+id|phys_t
+id|phys_addr
+comma
+id|phys_t
+id|size
+)paren
+(brace
+r_return
+id|phys_addr
+suffix:semicolon
+)brace
 multiline_comment|/*&n; * Generic mapping function (not visible outside):&n; */
 multiline_comment|/*&n; * Remap an arbitrary physical address space into the kernel virtual&n; * address space. Needed when the kernel wants to access high addresses&n; * directly.&n; *&n; * NOTE! We need to allow non-page-aligned mappings too: we will obviously&n; * have to convert them into an offset in a page-aligned mapping, but the&n; * caller shouldn&squot;t need to know that small detail.&n; */
 DECL|macro|IS_LOW512
-mdefine_line|#define IS_LOW512(addr) (!((phys_t)(addr) &amp; ~0x1fffffffUL))
+mdefine_line|#define IS_LOW512(addr) (!((phys_t)(addr) &amp; (phys_t) ~0x1fffffffULL))
 DECL|function|__ioremap
 r_void
 op_star
@@ -514,6 +537,16 @@ suffix:semicolon
 r_void
 op_star
 id|addr
+suffix:semicolon
+id|phys_addr
+op_assign
+id|fixup_bigphys_addr
+c_func
+(paren
+id|phys_addr
+comma
+id|size
+)paren
 suffix:semicolon
 multiline_comment|/* Don&squot;t allow wraparound or zero size */
 id|last_addr
@@ -750,7 +783,9 @@ r_void
 id|__iounmap
 c_func
 (paren
+r_volatile
 r_void
+id|__iomem
 op_star
 id|addr
 )paren
@@ -771,24 +806,6 @@ id|addr
 )paren
 r_return
 suffix:semicolon
-id|vfree
-c_func
-(paren
-(paren
-r_void
-op_star
-)paren
-(paren
-id|PAGE_MASK
-op_amp
-(paren
-r_int
-r_int
-)paren
-id|addr
-)paren
-)paren
-suffix:semicolon
 id|p
 op_assign
 id|remove_vm_area
@@ -804,6 +821,7 @@ op_amp
 (paren
 r_int
 r_int
+id|__force
 )paren
 id|addr
 )paren

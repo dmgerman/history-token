@@ -1,10 +1,12 @@
 multiline_comment|/*&n; * Copyright (C) 1996 David S. Miller (dm@engr.sgi.com)&n; * Copyright (C) 1997, 2001 Ralf Baechle (ralf@gnu.org)&n; * Copyright (C) 2000, 2001, 2002, 2003 Broadcom Corporation&n; * Copyright (C) 2004  Maciej W. Rozycki&n; *&n; * This program is free software; you can redistribute it and/or&n; * modify it under the terms of the GNU General Public License&n; * as published by the Free Software Foundation; either version 2&n; * of the License, or (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
-macro_line|#include &lt;asm/mmu_context.h&gt;
+macro_line|#include &lt;asm/asm.h&gt;
 macro_line|#include &lt;asm/bootinfo.h&gt;
 macro_line|#include &lt;asm/cacheops.h&gt;
 macro_line|#include &lt;asm/cpu.h&gt;
+macro_line|#include &lt;asm/mipsregs.h&gt;
+macro_line|#include &lt;asm/mmu_context.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 r_extern
 r_void
@@ -1353,6 +1355,33 @@ l_int|1
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Relevant bits of the config1 register format (from the MIPS32/MIPS64 specs)&n; *&n; * 24:22 Icache sets per way&n; * 21:19 Icache line size&n; * 18:16 Icache Associativity&n; * 15:13 Dcache sets per way&n; * 12:10 Dcache line size&n; * 9:7   Dcache Associativity&n; */
+DECL|variable|way_string
+r_static
+r_char
+op_star
+id|way_string
+(braket
+)braket
+op_assign
+(brace
+l_string|&quot;direct mapped&quot;
+comma
+l_string|&quot;2-way&quot;
+comma
+l_string|&quot;3-way&quot;
+comma
+l_string|&quot;4-way&quot;
+comma
+l_string|&quot;5-way&quot;
+comma
+l_string|&quot;6-way&quot;
+comma
+l_string|&quot;7-way&quot;
+comma
+l_string|&quot;8-way&quot;
+comma
+)brace
+suffix:semicolon
 DECL|function|probe_cache_sizes
 r_static
 id|__init
@@ -1510,6 +1539,44 @@ l_int|2
 )paren
 op_star
 id|icache_line_size
+suffix:semicolon
+id|printk
+c_func
+(paren
+l_string|&quot;Primary instruction cache %ldkB, %s, linesize %d bytes.&bslash;n&quot;
+comma
+id|icache_size
+op_rshift
+l_int|10
+comma
+id|way_string
+(braket
+id|icache_assoc
+op_minus
+l_int|1
+)braket
+comma
+id|icache_line_size
+)paren
+suffix:semicolon
+id|printk
+c_func
+(paren
+l_string|&quot;Primary data cache %ldkB, %s, linesize %d bytes.&bslash;n&quot;
+comma
+id|dcache_size
+op_rshift
+l_int|10
+comma
+id|way_string
+(braket
+id|dcache_assoc
+op_minus
+l_int|1
+)braket
+comma
+id|dcache_line_size
+)paren
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * This is called from loadmmu.c.  We have to set up all the&n; * memory management function pointers, as well as initialize&n; * the caches and tlbs&n; */
@@ -1677,15 +1744,26 @@ id|__asm__
 id|__volatile__
 c_func
 (paren
+l_string|&quot;.set&t;push&t;&t;&t;&bslash;n&quot;
 l_string|&quot;&t;.set&t;noat&t;&t;&t;&bslash;n&quot;
 l_string|&quot;&t;.set&t;noreorder&t;&t;&bslash;n&quot;
-l_string|&quot;&t;.set&t;mips3&bslash;n&bslash;t&t;&t;&bslash;n&quot;
-l_string|&quot;&t;la&t;$1, 1f&t;&t;&t;&bslash;n&quot;
-l_string|&quot;&t;mtc0&t;$1, $14&t;&t;&t;&bslash;n&quot;
+l_string|&quot;&t;.set&t;mips3&t;&t;&t;&bslash;n&quot;
+l_string|&quot;&t;&quot;
+id|STR
+c_func
+(paren
+id|PTR_LA
+)paren
+l_string|&quot;&t;$1, 1f&t;&t;&bslash;n&quot;
+l_string|&quot;&t;&quot;
+id|STR
+c_func
+(paren
+id|MTC0
+)paren
+l_string|&quot;&t;$1, $14&t;&t;&bslash;n&quot;
 l_string|&quot;&t;eret&t;&t;&t;&t;&bslash;n&quot;
-l_string|&quot;1:&t;.set&t;mips0&bslash;n&bslash;t&t;&t;&bslash;n&quot;
-l_string|&quot;&t;.set&t;at&t;&t;&t;&bslash;n&quot;
-l_string|&quot;&t;.set&t;reorder&quot;
+l_string|&quot;1:&t;.set&t;pop&quot;
 suffix:colon
 suffix:colon
 suffix:colon

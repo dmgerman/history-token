@@ -6,26 +6,6 @@ macro_line|#include &lt;linux/profile.h&gt;
 macro_line|#include &lt;asm/atomic.h&gt;
 r_extern
 r_void
-id|mask_irq
-c_func
-(paren
-r_int
-r_int
-id|irq
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|unmask_irq
-c_func
-(paren
-r_int
-r_int
-id|irq
-)paren
-suffix:semicolon
-r_extern
-r_void
 id|disable_8259A_irq
 c_func
 (paren

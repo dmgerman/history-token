@@ -155,32 +155,6 @@ c_func
 suffix:semicolon
 )brace
 macro_line|#endif
-macro_line|#ifdef CONFIG_KGDB
-(brace
-id|printk
-c_func
-(paren
-l_string|&quot;Calling breakpoint() -- start remote kgdb&bslash;n&quot;
-)paren
-suffix:semicolon
-id|set_debug_traps
-c_func
-(paren
-)paren
-suffix:semicolon
-id|breakpoint
-c_func
-(paren
-)paren
-suffix:semicolon
-id|printk
-c_func
-(paren
-l_string|&quot;Calling breakpoint() -- done&bslash;n&quot;
-)paren
-suffix:semicolon
-)brace
-macro_line|#endif
 r_return
 suffix:semicolon
 )brace
