@@ -23930,17 +23930,10 @@ id|i
 op_increment
 )braket
 op_assign
-(paren
-r_int
-r_char
-op_star
-)paren
-(paren
 id|ints
 (braket
 id|j
 )braket
-)paren
 suffix:semicolon
 )brace
 )brace
