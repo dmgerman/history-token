@@ -776,13 +776,26 @@ c_func
 l_int|1
 comma
 (paren
-l_string|&quot;Can not get mem for SMB response buffer &quot;
+l_string|&quot;Can not get memory for SMB response&quot;
 )paren
 )paren
 suffix:semicolon
-r_return
-op_minus
-id|ENOMEM
+id|set_current_state
+c_func
+(paren
+id|TASK_INTERRUPTIBLE
+)paren
+suffix:semicolon
+id|schedule_timeout
+c_func
+(paren
+id|HZ
+op_star
+l_int|3
+)paren
+suffix:semicolon
+multiline_comment|/* give system time to free memory */
+r_continue
 suffix:semicolon
 )brace
 id|iov.iov_base
