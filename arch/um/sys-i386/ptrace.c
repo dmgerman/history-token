@@ -77,25 +77,19 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+multiline_comment|/* int 0x80 or sysenter */
 r_return
 (paren
 id|instr
 op_eq
 l_int|0x80cd
+)paren
 op_logical_or
+(paren
 id|instr
 op_eq
 l_int|0x340f
 )paren
-op_logical_and
-id|PT_REGS_EAX
-c_func
-(paren
-op_amp
-id|current-&gt;thread.regs
-)paren
-OL
-id|NR_syscalls
 suffix:semicolon
 )brace
 multiline_comment|/* determines which flags the user has access to. */
