@@ -36,7 +36,7 @@ l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
 DECL|macro|EDD_VERSION
-mdefine_line|#define EDD_VERSION &quot;0.08 2003-Jan-07&quot;
+mdefine_line|#define EDD_VERSION &quot;0.09 2003-Jan-22&quot;
 DECL|macro|EDD_DEVICE_NAME_SIZE
 mdefine_line|#define EDD_DEVICE_NAME_SIZE 16
 DECL|macro|REPORT_URL
@@ -144,6 +144,14 @@ r_struct
 id|edd_device
 op_star
 id|edev
+)paren
+suffix:semicolon
+r_static
+r_int
+id|kernel_has_scsi
+c_func
+(paren
+r_void
 )paren
 suffix:semicolon
 DECL|variable|edd_devices
@@ -1661,6 +1669,11 @@ c_cond
 (paren
 id|found_pci
 op_logical_and
+id|kernel_has_scsi
+c_func
+(paren
+)paren
+op_logical_and
 id|edd_dev_is_type
 c_func
 (paren
@@ -3174,6 +3187,11 @@ l_string|&quot;pci_dev&quot;
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/*&n; * FIXME - as of 15-Jan-2003, there are some non-&quot;scsi_device&quot;s on the&n; * scsi_bus list.  The following functions could possibly mis-access&n; * memory in that case.  This is actually a problem with the SCSI&n; * layer, which is being addressed there.  Until then, don&squot;t use the&n; * SCSI functions.&n; */
+DECL|macro|CONFIG_SCSI
+macro_line|#undef CONFIG_SCSI
+DECL|macro|CONFIG_SCSI_MODULE
+macro_line|#undef CONFIG_SCSI_MODULE
 macro_line|#if defined(CONFIG_SCSI) || defined(CONFIG_SCSI_MODULE)
 DECL|struct|edd_match_data
 r_struct
@@ -3454,7 +3472,33 @@ r_return
 id|rc
 suffix:semicolon
 )brace
+DECL|function|kernel_has_scsi
+r_static
+r_int
+id|kernel_has_scsi
+c_func
+(paren
+r_void
+)paren
+(brace
+r_return
+l_int|1
+suffix:semicolon
+)brace
 macro_line|#else
+DECL|function|kernel_has_scsi
+r_static
+r_int
+id|kernel_has_scsi
+c_func
+(paren
+r_void
+)paren
+(brace
+r_return
+l_int|0
+suffix:semicolon
+)brace
 r_static
 r_struct
 id|scsi_device
@@ -3604,7 +3648,12 @@ c_func
 id|edev
 )paren
 suffix:semicolon
-multiline_comment|/* FIXME - as of 15-Jan-2003, there are some&n;&t;&t;   non-&quot;scsi_device&quot;s on the scsi_bus list.  The following&n;&t;&t;   function could possibly mis-access memory in that&n;&t;&t;   case.  This is actually a problem with the SCSI&n;&t;&t;   layer, which is being addressed there.  Until then,&n;&t;&t;   don&squot;t call this function.&n;&t;&t;   &t;&t;   &n;&t;&t;   edd_create_symlink_to_scsidev(edev);&n;&t;&t;*/
+id|edd_create_symlink_to_scsidev
+c_func
+(paren
+id|edev
+)paren
+suffix:semicolon
 )brace
 )brace
 r_static
