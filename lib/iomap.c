@@ -1,5 +1,6 @@
 multiline_comment|/*&n; * Implement the default iomap interfaces&n; */
 macro_line|#include &lt;linux/pci.h&gt;
+macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 multiline_comment|/*&n; * Read/write from/to an (offsettable) iomem cookie. It might be a PIO&n; * access or a MMIO access, these functions don&squot;t care. The info is&n; * encoded in the hardware mapping set up by the mapping functions&n; * (or the cookie itself, depending on implementation and hw).&n; *&n; * The generic routines don&squot;t assume any hardware mappings, and just&n; * encode the PIO/MMIO as part of the cookie. They coldly assume that&n; * the MMIO IO mappings are not in the low address range.&n; *&n; * Architectures for which this is not true can&squot;t use this generic&n; * implementation and should do their own copy.&n; *&n; * We encode the physical PIO addresses (0-0xffff) into the&n; * pointer by offsetting them with a constant (0x10000) and&n; * assuming that all the low addresses are always PIO. That means&n; * we can do some sanity checks on the low bits, and don&squot;t&n; * need to just take things for granted.&n; */
 DECL|macro|PIO_OFFSET
@@ -115,6 +116,27 @@ id|addr
 )paren
 suffix:semicolon
 )brace
+DECL|variable|ioread8
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|ioread8
+)paren
+suffix:semicolon
+DECL|variable|ioread16
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|ioread16
+)paren
+suffix:semicolon
+DECL|variable|ioread32
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|ioread32
+)paren
+suffix:semicolon
 DECL|function|iowrite8
 r_void
 id|fastcall
@@ -229,6 +251,27 @@ id|addr
 )paren
 suffix:semicolon
 )brace
+DECL|variable|iowrite8
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|iowrite8
+)paren
+suffix:semicolon
+DECL|variable|iowrite16
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|iowrite16
+)paren
+suffix:semicolon
+DECL|variable|iowrite32
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|iowrite32
+)paren
+suffix:semicolon
 multiline_comment|/* Create a virtual mapping cookie for an IO port range */
 DECL|function|ioport_map
 r_void
@@ -286,6 +329,20 @@ id|addr
 (brace
 multiline_comment|/* Nothing to do */
 )brace
+DECL|variable|ioport_map
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|ioport_map
+)paren
+suffix:semicolon
+DECL|variable|ioport_unmap
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|ioport_unmap
+)paren
+suffix:semicolon
 multiline_comment|/* Create a virtual mapping cookie for a PCI BAR (memory or IO) */
 DECL|function|pci_iomap
 r_void
@@ -454,4 +511,18 @@ id|addr
 )paren
 suffix:semicolon
 )brace
+DECL|variable|pci_iomap
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|pci_iomap
+)paren
+suffix:semicolon
+DECL|variable|pci_iounmap
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|pci_iounmap
+)paren
+suffix:semicolon
 eof
