@@ -2562,6 +2562,11 @@ r_int
 id|dummy_netlink_send
 (paren
 r_struct
+id|sock
+op_star
+id|sk
+comma
+r_struct
 id|sk_buff
 op_star
 id|skb

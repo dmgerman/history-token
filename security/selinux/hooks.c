@@ -6124,6 +6124,11 @@ id|selinux_netlink_send
 c_func
 (paren
 r_struct
+id|sock
+op_star
+id|sk
+comma
+r_struct
 id|sk_buff
 op_star
 id|skb
