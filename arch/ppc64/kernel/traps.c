@@ -801,7 +801,7 @@ c_cond
 (paren
 id|err.disposition
 op_eq
-id|DISP_FULLY_RECOVERED
+id|RTAS_DISP_FULLY_RECOVERED
 )paren
 (brace
 multiline_comment|/* Platform corrected itself */
@@ -827,19 +827,19 @@ id|regs
 op_logical_and
 id|err.severity
 op_eq
-id|SEVERITY_ERROR_SYNC
+id|RTAS_SEVERITY_ERROR_SYNC
 op_logical_and
 id|err.disposition
 op_eq
-id|DISP_NOT_RECOVERED
+id|RTAS_DISP_NOT_RECOVERED
 op_logical_and
 id|err.target
 op_eq
-id|TARGET_MEMORY
+id|RTAS_TARGET_MEMORY
 op_logical_and
 id|err.type
 op_eq
-id|TYPE_ECC_UNCORR
+id|RTAS_TYPE_ECC_UNCORR
 op_logical_and
 op_logical_neg
 (paren
