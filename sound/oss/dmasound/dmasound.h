@@ -669,6 +669,10 @@ r_int
 id|minDev
 suffix:semicolon
 multiline_comment|/* minor device number currently open */
+DECL|member|lock
+id|spinlock_t
+id|lock
+suffix:semicolon
 )brace
 suffix:semicolon
 r_extern

@@ -1,5 +1,6 @@
 multiline_comment|/*&n; * sound/ics2101.c&n; *&n; * Driver for the ICS2101 mixer of GUS v3.7.&n; *&n; *&n; * Copyright (C) by Hannu Savolainen 1993-1997&n; *&n; * OSS/Free for Linux is distributed under the GNU GENERAL PUBLIC LICENSE (GPL)&n; * Version 2 (June 1991). See the &quot;COPYING&quot; file distributed with this software&n; * for more info.&n; *&n; *&n; * Thomas Sailer   : ioctl code reworked (vmalloc/vfree removed)&n; * Bartlomiej Zolnierkiewicz : added __init to ics2101_mixer_init()&n; */
 macro_line|#include &lt;linux/init.h&gt;
+macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &quot;sound_config.h&quot;
 macro_line|#include &lt;linux/ultrasound.h&gt;
 macro_line|#include &quot;gus.h&quot;
@@ -14,6 +15,10 @@ suffix:semicolon
 r_extern
 r_int
 id|gus_base
+suffix:semicolon
+r_extern
+id|spinlock_t
+id|lock
 suffix:semicolon
 DECL|variable|volumes
 r_static
@@ -244,15 +249,13 @@ op_or_assign
 l_int|0x03
 suffix:semicolon
 )brace
-id|save_flags
+id|spin_lock_irqsave
 c_func
 (paren
+op_amp
+id|lock
+comma
 id|flags
-)paren
-suffix:semicolon
-id|cli
-c_func
-(paren
 )paren
 suffix:semicolon
 id|outb
@@ -302,9 +305,12 @@ comma
 id|u_MixData
 )paren
 suffix:semicolon
-id|restore_flags
+id|spin_unlock_irqrestore
 c_func
 (paren
+op_amp
+id|lock
+comma
 id|flags
 )paren
 suffix:semicolon
