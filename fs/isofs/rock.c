@@ -22,7 +22,7 @@ mdefine_line|#define CONTINUE_DECLS &bslash;&n;  int cont_extent = 0, cont_offse
 DECL|macro|CHECK_CE
 mdefine_line|#define CHECK_CE&t;       &t;&t;&t;&bslash;&n;      {cont_extent = isonum_733(rr-&gt;u.CE.extent); &bslash;&n;      cont_offset = isonum_733(rr-&gt;u.CE.offset); &bslash;&n;      cont_size = isonum_733(rr-&gt;u.CE.size);}
 DECL|macro|SETUP_ROCK_RIDGE
-mdefine_line|#define SETUP_ROCK_RIDGE(DE,CHR,LEN)&t;      &t;&t;      &t;&bslash;&n;  {LEN= sizeof(struct iso_directory_record) + DE-&gt;name_len[0];&t;&bslash;&n;  if(LEN &amp; 1) LEN++;&t;&t;&t;&t;&t;&t;&bslash;&n;  CHR = ((unsigned char *) DE) + LEN;&t;&t;&t;&t;&bslash;&n;  LEN = *((unsigned char *) DE) - LEN;                          &bslash;&n;  if (ISOFS_SB(inode-&gt;i_sb)-&gt;s_rock_offset!=-1)                &bslash;&n;  {                                                             &bslash;&n;     LEN-=ISOFS_SB(inode-&gt;i_sb)-&gt;s_rock_offset;                &bslash;&n;     CHR+=ISOFS_SB(inode-&gt;i_sb)-&gt;s_rock_offset;                &bslash;&n;     if (LEN&lt;0) LEN=0;                                          &bslash;&n;  }                                                             &bslash;&n;}                                     
+mdefine_line|#define SETUP_ROCK_RIDGE(DE,CHR,LEN)&t;      &t;&t;      &t;&bslash;&n;  {LEN= sizeof(struct iso_directory_record) + DE-&gt;name_len[0];&t;&bslash;&n;  if(LEN &amp; 1) LEN++;&t;&t;&t;&t;&t;&t;&bslash;&n;  CHR = ((unsigned char *) DE) + LEN;&t;&t;&t;&t;&bslash;&n;  LEN = *((unsigned char *) DE) - LEN;                          &bslash;&n;  if (LEN&lt;0) LEN=0;                                             &bslash;&n;  if (ISOFS_SB(inode-&gt;i_sb)-&gt;s_rock_offset!=-1)                &bslash;&n;  {                                                             &bslash;&n;     LEN-=ISOFS_SB(inode-&gt;i_sb)-&gt;s_rock_offset;                &bslash;&n;     CHR+=ISOFS_SB(inode-&gt;i_sb)-&gt;s_rock_offset;                &bslash;&n;     if (LEN&lt;0) LEN=0;                                          &bslash;&n;  }                                                             &bslash;&n;}                                     
 DECL|macro|MAYBE_CONTINUE
 mdefine_line|#define MAYBE_CONTINUE(LABEL,DEV) &bslash;&n;  {if (buffer) { kfree(buffer); buffer = NULL; } &bslash;&n;  if (cont_extent){ &bslash;&n;    int block, offset, offset1; &bslash;&n;    struct buffer_head * pbh; &bslash;&n;    buffer = kmalloc(cont_size,GFP_KERNEL); &bslash;&n;    if (!buffer) goto out; &bslash;&n;    block = cont_extent; &bslash;&n;    offset = cont_offset; &bslash;&n;    offset1 = 0; &bslash;&n;    pbh = sb_bread(DEV-&gt;i_sb, block); &bslash;&n;    if(pbh){       &bslash;&n;      memcpy(buffer + offset1, pbh-&gt;b_data + offset, cont_size - offset1); &bslash;&n;      brelse(pbh); &bslash;&n;      chr = (unsigned char *) buffer; &bslash;&n;      len = cont_size; &bslash;&n;      cont_extent = 0; &bslash;&n;      cont_size = 0; &bslash;&n;      cont_offset = 0; &bslash;&n;      goto LABEL; &bslash;&n;    }    &bslash;&n;    printk(&quot;Unable to read rock-ridge attributes&bslash;n&quot;);    &bslash;&n;  }}
 multiline_comment|/* return length of name field; 0: not found, -1: to be ignored */
@@ -111,7 +111,7 @@ c_loop
 (paren
 id|len
 OG
-l_int|1
+l_int|2
 )paren
 (brace
 multiline_comment|/* There may be one byte for padding somewhere */
@@ -128,8 +128,8 @@ r_if
 c_cond
 (paren
 id|rr-&gt;len
-op_eq
-l_int|0
+OL
+l_int|3
 )paren
 r_goto
 id|out
@@ -151,6 +151,17 @@ id|len
 op_sub_assign
 id|rr-&gt;len
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|len
+OL
+l_int|0
+)paren
+r_goto
+id|out
+suffix:semicolon
+multiline_comment|/* corrupted isofs */
 r_switch
 c_cond
 (paren
@@ -231,6 +242,15 @@ r_if
 c_cond
 (paren
 id|truncate
+)paren
+r_break
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|rr-&gt;len
+OL
+l_int|5
 )paren
 r_break
 suffix:semicolon
@@ -496,7 +516,7 @@ c_loop
 (paren
 id|len
 OG
-l_int|1
+l_int|2
 )paren
 (brace
 multiline_comment|/* There may be one byte for padding somewhere */
@@ -513,8 +533,8 @@ r_if
 c_cond
 (paren
 id|rr-&gt;len
-op_eq
-l_int|0
+OL
+l_int|3
 )paren
 r_goto
 id|out
@@ -536,6 +556,17 @@ id|len
 op_sub_assign
 id|rr-&gt;len
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|len
+OL
+l_int|0
+)paren
+r_goto
+id|out
+suffix:semicolon
+multiline_comment|/* corrupted isofs */
 r_switch
 c_cond
 (paren
@@ -1951,10 +1982,8 @@ id|inode-&gt;i_sb
 op_member_access_from_pointer
 id|s_rock
 )paren
-id|panic
-(paren
-l_string|&quot;Cannot have symlink with high sierra variant of iso filesystem&bslash;n&quot;
-)paren
+r_goto
+id|error
 suffix:semicolon
 id|block
 op_assign
@@ -2040,7 +2069,7 @@ c_loop
 (paren
 id|len
 OG
-l_int|1
+l_int|2
 )paren
 (brace
 multiline_comment|/* There may be one byte for padding somewhere */
@@ -2057,8 +2086,8 @@ r_if
 c_cond
 (paren
 id|rr-&gt;len
-op_eq
-l_int|0
+OL
+l_int|3
 )paren
 r_goto
 id|out
@@ -2080,6 +2109,17 @@ id|len
 op_sub_assign
 id|rr-&gt;len
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|len
+OL
+l_int|0
+)paren
+r_goto
+id|out
+suffix:semicolon
+multiline_comment|/* corrupted isofs */
 r_switch
 c_cond
 (paren
@@ -2304,6 +2344,8 @@ c_func
 (paren
 )paren
 suffix:semicolon
+id|error
+suffix:colon
 id|SetPageError
 c_func
 (paren
