@@ -7,6 +7,7 @@ macro_line|#include &lt;linux/proc_fs.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/kmod.h&gt;
 macro_line|#include &lt;linux/seq_file.h&gt;
+macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;acpi/acpi_bus.h&gt;
 macro_line|#include &lt;acpi/acpi_drivers.h&gt;
 DECL|macro|ACPI_THERMAL_COMPONENT
