@@ -118,14 +118,12 @@ op_assign
 l_int|1024
 suffix:semicolon
 DECL|variable|nr_kernel_pages
-r_static
 r_int
 r_int
 id|__initdata
 id|nr_kernel_pages
 suffix:semicolon
 DECL|variable|nr_all_pages
-r_static
 r_int
 r_int
 id|__initdata

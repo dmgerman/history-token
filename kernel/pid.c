@@ -1124,7 +1124,7 @@ r_int
 r_int
 id|megabytes
 op_assign
-id|max_pfn
+id|nr_kernel_pages
 op_rshift
 (paren
 l_int|20
