@@ -233,7 +233,7 @@ op_assign
 id|hashbin_new
 c_func
 (paren
-id|HB_LOCAL
+id|HB_LOCK
 )paren
 suffix:semicolon
 r_if
@@ -246,12 +246,13 @@ r_return
 op_minus
 id|ENOMEM
 suffix:semicolon
+multiline_comment|/* Object repository - defined in irias_object.c */
 id|objects
 op_assign
 id|hashbin_new
 c_func
 (paren
-id|HB_LOCAL
+id|HB_LOCK
 )paren
 suffix:semicolon
 r_if
@@ -3854,17 +3855,6 @@ l_int|0
 suffix:semicolon
 )paren
 suffix:semicolon
-id|save_flags
-c_func
-(paren
-id|flags
-)paren
-suffix:semicolon
-id|cli
-c_func
-(paren
-)paren
-suffix:semicolon
 id|len
 op_assign
 l_int|0
@@ -3879,6 +3869,15 @@ op_plus
 id|len
 comma
 l_string|&quot;LM-IAS Objects:&bslash;n&quot;
+)paren
+suffix:semicolon
+id|spin_lock_irqsave
+c_func
+(paren
+op_amp
+id|objects-&gt;hb_spinlock
+comma
+id|flags
 )paren
 suffix:semicolon
 multiline_comment|/* List all objects */
@@ -3953,6 +3952,14 @@ op_plus
 id|len
 comma
 l_string|&quot;&bslash;n&quot;
+)paren
+suffix:semicolon
+multiline_comment|/* Careful for priority inversions here !&n;&t;&t; * All other uses of attrib spinlock are independant of&n;&t;&t; * the object spinlock, so we are safe. Jean II */
+id|spin_lock
+c_func
+(paren
+op_amp
+id|obj-&gt;attribs-&gt;hb_spinlock
 )paren
 suffix:semicolon
 multiline_comment|/* List all attributes for this object */
@@ -4142,6 +4149,13 @@ id|obj-&gt;attribs
 )paren
 suffix:semicolon
 )brace
+id|spin_unlock
+c_func
+(paren
+op_amp
+id|obj-&gt;attribs-&gt;hb_spinlock
+)paren
+suffix:semicolon
 id|obj
 op_assign
 (paren
@@ -4156,9 +4170,12 @@ id|objects
 )paren
 suffix:semicolon
 )brace
-id|restore_flags
+id|spin_unlock_irqrestore
 c_func
 (paren
+op_amp
+id|objects-&gt;hb_spinlock
+comma
 id|flags
 )paren
 suffix:semicolon

@@ -6,15 +6,13 @@ DECL|macro|IRDA_QUEUE_H
 mdefine_line|#define IRDA_QUEUE_H
 DECL|macro|NAME_SIZE
 mdefine_line|#define NAME_SIZE      32
-multiline_comment|/*&n; * Hash types&n; */
+multiline_comment|/*&n; * Hash types (some flags can be xored)&n; * See comments in irqueue.c for which one to use...&n; */
 DECL|macro|HB_NOLOCK
-mdefine_line|#define HB_NOLOCK      0
-DECL|macro|HB_GLOBAL
-mdefine_line|#define HB_GLOBAL      1
-DECL|macro|HB_LOCAL
-mdefine_line|#define HB_LOCAL       2
+mdefine_line|#define HB_NOLOCK&t;0&t;/* No concurent access prevention */
+DECL|macro|HB_LOCK
+mdefine_line|#define HB_LOCK&t;&t;1&t;/* Prevent concurent write with global lock */
 DECL|macro|HB_SORTED
-mdefine_line|#define HB_SORTED      4
+mdefine_line|#define HB_SORTED&t;4&t;/* Not yet supported */
 multiline_comment|/*&n; * Hash defines&n; */
 DECL|macro|HASHBIN_SIZE
 mdefine_line|#define HASHBIN_SIZE   8
@@ -39,9 +37,6 @@ op_star
 id|arg
 )paren
 suffix:semicolon
-multiline_comment|/*&n; * Hashbin&n; */
-DECL|macro|GET_HASHBIN
-mdefine_line|#define GET_HASHBIN(x) ( x &amp; HASHBIN_MASK )
 DECL|struct|irda_queue
 r_struct
 id|irda_queue
@@ -95,14 +90,11 @@ DECL|member|hb_size
 r_int
 id|hb_size
 suffix:semicolon
-DECL|member|IRDA_ALIGN
+DECL|member|hb_spinlock
 id|spinlock_t
-id|hb_mutex
-(braket
-id|HASHBIN_SIZE
-)braket
-id|IRDA_ALIGN
+id|hb_spinlock
 suffix:semicolon
+multiline_comment|/* HB_LOCK - Can be used by the user */
 DECL|member|IRDA_ALIGN
 id|irda_queue_t
 op_star
@@ -176,23 +168,6 @@ id|name
 suffix:semicolon
 r_void
 op_star
-id|hashbin_find
-c_func
-(paren
-id|hashbin_t
-op_star
-id|hashbin
-comma
-r_int
-id|hashv
-comma
-r_char
-op_star
-id|name
-)paren
-suffix:semicolon
-r_void
-op_star
 id|hashbin_remove
 c_func
 (paren
@@ -232,6 +207,62 @@ op_star
 id|entry
 )paren
 suffix:semicolon
+r_void
+op_star
+id|hashbin_find
+c_func
+(paren
+id|hashbin_t
+op_star
+id|hashbin
+comma
+r_int
+id|hashv
+comma
+r_char
+op_star
+id|name
+)paren
+suffix:semicolon
+r_void
+op_star
+id|hashbin_lock_find
+c_func
+(paren
+id|hashbin_t
+op_star
+id|hashbin
+comma
+r_int
+id|hashv
+comma
+r_char
+op_star
+id|name
+)paren
+suffix:semicolon
+r_void
+op_star
+id|hashbin_find_next
+c_func
+(paren
+id|hashbin_t
+op_star
+id|hashbin
+comma
+r_int
+id|hashv
+comma
+r_char
+op_star
+id|name
+comma
+r_void
+op_star
+op_star
+id|pnext
+)paren
+suffix:semicolon
 id|irda_queue_t
 op_star
 id|hashbin_get_first
@@ -250,45 +281,6 @@ c_func
 id|hashbin_t
 op_star
 id|hashbin
-)paren
-suffix:semicolon
-r_void
-id|enqueue_last
-c_func
-(paren
-id|irda_queue_t
-op_star
-op_star
-id|queue
-comma
-id|irda_queue_t
-op_star
-id|element
-)paren
-suffix:semicolon
-r_void
-id|enqueue_first
-c_func
-(paren
-id|irda_queue_t
-op_star
-op_star
-id|queue
-comma
-id|irda_queue_t
-op_star
-id|element
-)paren
-suffix:semicolon
-id|irda_queue_t
-op_star
-id|dequeue_first
-c_func
-(paren
-id|irda_queue_t
-op_star
-op_star
-id|queue
 )paren
 suffix:semicolon
 DECL|macro|HASHBIN_GET_SIZE
