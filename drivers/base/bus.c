@@ -596,6 +596,13 @@ r_if
 c_cond
 (paren
 op_logical_neg
+id|dev-&gt;driver
+)paren
+(brace
+r_if
+c_cond
+(paren
+op_logical_neg
 id|bus_match
 c_func
 (paren
@@ -612,6 +619,7 @@ c_func
 id|dev
 )paren
 suffix:semicolon
+)brace
 id|put_device
 c_func
 (paren
