@@ -688,8 +688,28 @@ DECL|macro|__NR_lstat64
 mdefine_line|#define __NR_lstat64&t;&t;&t;426
 DECL|macro|__NR_fstat64
 mdefine_line|#define __NR_fstat64&t;&t;&t;427
+DECL|macro|__NR_vserver
+mdefine_line|#define __NR_vserver&t;&t;&t;428
+DECL|macro|__NR_mbind
+mdefine_line|#define __NR_mbind&t;&t;&t;429
+DECL|macro|__NR_get_mempolicy
+mdefine_line|#define __NR_get_mempolicy&t;&t;430
+DECL|macro|__NR_set_mempolicy
+mdefine_line|#define __NR_set_mempolicy&t;&t;431
+DECL|macro|__NR_mq_open
+mdefine_line|#define __NR_mq_open&t;&t;&t;432
+DECL|macro|__NR_mq_unlink
+mdefine_line|#define __NR_mq_unlink&t;&t;&t;433
+DECL|macro|__NR_mq_timedsend
+mdefine_line|#define __NR_mq_timedsend&t;&t;434
+DECL|macro|__NR_mq_timedreceive
+mdefine_line|#define __NR_mq_timedreceive&t;&t;435
+DECL|macro|__NR_mq_notify
+mdefine_line|#define __NR_mq_notify&t;&t;&t;436
+DECL|macro|__NR_mq_getsetattr
+mdefine_line|#define __NR_mq_getsetattr&t;&t;437
 DECL|macro|NR_SYSCALLS
-mdefine_line|#define NR_SYSCALLS&t;&t;&t;428
+mdefine_line|#define NR_SYSCALLS&t;&t;&t;438
 macro_line|#if defined(__GNUC__)
 DECL|macro|_syscall_return
 mdefine_line|#define _syscall_return(type)&t;&t;&t;&t;&t;&t;&bslash;&n;&t;return (_sc_err ? errno = _sc_ret, _sc_ret = -1L : 0), (type) _sc_ret
