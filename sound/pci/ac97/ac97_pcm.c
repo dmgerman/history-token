@@ -628,10 +628,13 @@ id|ac97-&gt;reg_lock
 suffix:semicolon
 id|old
 op_assign
-id|ac97-&gt;regs
-(braket
+id|snd_ac97_read
+c_func
+(paren
+id|ac97
+comma
 id|reg
-)braket
+)paren
 op_amp
 id|mask
 suffix:semicolon
