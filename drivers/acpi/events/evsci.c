@@ -8,18 +8,25 @@ id|ACPI_MODULE_NAME
 (paren
 l_string|&quot;evsci&quot;
 )paren
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ev_sci_handler&n; *&n; * PARAMETERS:  Context   - Calling Context&n; *&n; * RETURN:      Status code indicates whether interrupt was handled.&n; *&n; * DESCRIPTION: Interrupt handler that will figure out what function or&n; *              control method to call to deal with a SCI.  Installed&n; *              using BU interrupt support.&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ev_sci_xrupt_handler&n; *&n; * PARAMETERS:  Context   - Calling Context&n; *&n; * RETURN:      Status code indicates whether interrupt was handled.&n; *&n; * DESCRIPTION: Interrupt handler that will figure out what function or&n; *              control method to call to deal with a SCI.&n; *&n; ******************************************************************************/
 r_static
 id|u32
 id|ACPI_SYSTEM_XFACE
-DECL|function|acpi_ev_sci_handler
-id|acpi_ev_sci_handler
+DECL|function|acpi_ev_sci_xrupt_handler
+id|acpi_ev_sci_xrupt_handler
 (paren
 r_void
 op_star
 id|context
 )paren
 (brace
+r_struct
+id|acpi_gpe_xrupt_info
+op_star
+id|gpe_xrupt_list
+op_assign
+id|context
+suffix:semicolon
 id|u32
 id|interrupt_handled
 op_assign
@@ -28,7 +35,7 @@ suffix:semicolon
 id|ACPI_FUNCTION_TRACE
 c_func
 (paren
-l_string|&quot;ev_sci_handler&quot;
+l_string|&quot;ev_sci_xrupt_handler&quot;
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * We are guaranteed by the ACPI CA initialization/shutdown code that&n;&t; * if this interrupt handler is installed, ACPI is enabled.&n;&t; */
@@ -39,11 +46,57 @@ id|acpi_ev_fixed_event_detect
 (paren
 )paren
 suffix:semicolon
+multiline_comment|/* TBD: What if there are no GPEs defined? */
 multiline_comment|/*&n;&t; * GPEs:&n;&t; * Check for and dispatch any GPEs that have occurred&n;&t; */
 id|interrupt_handled
 op_or_assign
 id|acpi_ev_gpe_detect
 (paren
+id|gpe_xrupt_list
+)paren
+suffix:semicolon
+id|return_VALUE
+(paren
+id|interrupt_handled
+)paren
+suffix:semicolon
+)brace
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ev_gpe_xrupt_handler&n; *&n; * PARAMETERS:  Context   - Calling Context&n; *&n; * RETURN:      Status code indicates whether interrupt was handled.&n; *&n; * DESCRIPTION: Handler for GPE Block Device interrupts&n; *&n; ******************************************************************************/
+id|u32
+id|ACPI_SYSTEM_XFACE
+DECL|function|acpi_ev_gpe_xrupt_handler
+id|acpi_ev_gpe_xrupt_handler
+(paren
+r_void
+op_star
+id|context
+)paren
+(brace
+r_struct
+id|acpi_gpe_xrupt_info
+op_star
+id|gpe_xrupt_list
+op_assign
+id|context
+suffix:semicolon
+id|u32
+id|interrupt_handled
+op_assign
+id|ACPI_INTERRUPT_NOT_HANDLED
+suffix:semicolon
+id|ACPI_FUNCTION_TRACE
+c_func
+(paren
+l_string|&quot;ev_gpe_xrupt_handler&quot;
+)paren
+suffix:semicolon
+multiline_comment|/*&n;&t; * We are guaranteed by the ACPI CA initialization/shutdown code that&n;&t; * if this interrupt handler is installed, ACPI is enabled.&n;&t; */
+multiline_comment|/*&n;&t; * GPEs:&n;&t; * Check for and dispatch any GPEs that have occurred&n;&t; */
+id|interrupt_handled
+op_or_assign
+id|acpi_ev_gpe_detect
+(paren
+id|gpe_xrupt_list
 )paren
 suffix:semicolon
 id|return_VALUE
@@ -79,9 +132,9 @@ id|u32
 )paren
 id|acpi_gbl_FADT-&gt;sci_int
 comma
-id|acpi_ev_sci_handler
+id|acpi_ev_sci_xrupt_handler
 comma
-l_int|NULL
+id|acpi_gbl_gpe_xrupt_list_head
 )paren
 suffix:semicolon
 id|return_ACPI_STATUS
@@ -116,7 +169,7 @@ id|u32
 )paren
 id|acpi_gbl_FADT-&gt;sci_int
 comma
-id|acpi_ev_sci_handler
+id|acpi_ev_sci_xrupt_handler
 )paren
 suffix:semicolon
 id|return_ACPI_STATUS

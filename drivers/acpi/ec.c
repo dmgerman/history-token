@@ -1383,12 +1383,12 @@ l_int|NULL
 suffix:semicolon
 id|end
 suffix:colon
-id|acpi_enable_event
+id|acpi_enable_gpe
 c_func
 (paren
-id|ec-&gt;gpe_bit
+l_int|NULL
 comma
-id|ACPI_EVENT_GPE
+id|ec-&gt;gpe_bit
 comma
 l_int|0
 )paren
@@ -1429,12 +1429,12 @@ id|ec
 )paren
 r_return
 suffix:semicolon
-id|acpi_disable_event
+id|acpi_disable_gpe
 c_func
 (paren
-id|ec-&gt;gpe_bit
+l_int|NULL
 comma
-id|ACPI_EVENT_GPE
+id|ec-&gt;gpe_bit
 comma
 l_int|0
 )paren
@@ -2227,6 +2227,8 @@ suffix:semicolon
 id|acpi_remove_gpe_handler
 c_func
 (paren
+l_int|NULL
+comma
 id|ec_ecdt-&gt;gpe_bit
 comma
 op_amp
@@ -2241,6 +2243,7 @@ id|ec_ecdt
 suffix:semicolon
 )brace
 multiline_comment|/* Get GPE bit assignment (EC events). */
+multiline_comment|/* TODO: Add support for _GPE returning a package */
 id|status
 op_assign
 id|acpi_evaluate_integer
@@ -2668,6 +2671,8 @@ op_assign
 id|acpi_install_gpe_handler
 c_func
 (paren
+l_int|NULL
+comma
 id|ec-&gt;gpe_bit
 comma
 id|ACPI_EVENT_EDGE_TRIGGERED
@@ -2726,6 +2731,8 @@ id|status
 id|acpi_remove_gpe_handler
 c_func
 (paren
+l_int|NULL
+comma
 id|ec-&gt;gpe_bit
 comma
 op_amp
@@ -2834,6 +2841,8 @@ op_assign
 id|acpi_remove_gpe_handler
 c_func
 (paren
+l_int|NULL
+comma
 id|ec-&gt;gpe_bit
 comma
 op_amp
@@ -3021,6 +3030,8 @@ op_assign
 id|acpi_install_gpe_handler
 c_func
 (paren
+l_int|NULL
+comma
 id|ec_ecdt-&gt;gpe_bit
 comma
 id|ACPI_EVENT_EDGE_TRIGGERED
@@ -3075,6 +3086,8 @@ id|status
 id|acpi_remove_gpe_handler
 c_func
 (paren
+l_int|NULL
+comma
 id|ec_ecdt-&gt;gpe_bit
 comma
 op_amp
