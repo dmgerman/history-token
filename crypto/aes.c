@@ -319,7 +319,7 @@ id|p
 comma
 id|q
 suffix:semicolon
-multiline_comment|/* log and power tables for GF(2**8) finite field with&n;&t;   0x011b as modular polynomial - the simplest prmitive&n;&t;   root is 0x03, used here to generate the tables */
+multiline_comment|/* log and power tables for GF(2**8) finite field with&n;&t;   0x011b as modular polynomial - the simplest primitive&n;&t;   root is 0x03, used here to generate the tables */
 r_for
 c_loop
 (paren
