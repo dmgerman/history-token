@@ -14,6 +14,7 @@ macro_line|#include &lt;linux/irq.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/ide.h&gt;
+macro_line|#include &lt;linux/pm.h&gt;
 macro_line|#include &lt;asm/page.h&gt;
 macro_line|#include &lt;asm/semaphore.h&gt;
 macro_line|#include &lt;asm/processor.h&gt;
@@ -189,13 +190,6 @@ c_func
 (paren
 r_int
 )paren
-suffix:semicolon
-r_extern
-r_int
-r_char
-id|__res
-(braket
-)braket
 suffix:semicolon
 r_extern
 r_int
@@ -1226,6 +1220,13 @@ id|EXPORT_SYMBOL
 c_func
 (paren
 id|to_tm
+)paren
+suffix:semicolon
+DECL|variable|pm_power_off
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|pm_power_off
 )paren
 suffix:semicolon
 DECL|variable|__ashrdi3
