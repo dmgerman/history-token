@@ -1,5 +1,4 @@
 multiline_comment|/*&n; * PowerPC64 port by Mike Corrigan and Dave Engebretsen&n; *   {mikejc|engebret}@us.ibm.com&n; *&n; *    Copyright (c) 2000 Mike Corrigan &lt;mikejc@us.ibm.com&gt;&n; *&n; * SMP scalability work:&n; *    Copyright (C) 2001 Anton Blanchard &lt;anton@au.ibm.com&gt;, IBM&n; * &n; *    Module name: htab.c&n; *&n; *    Description:&n; *      PowerPC Hashed Page Table functions&n; *&n; * This program is free software; you can redistribute it and/or&n; * modify it under the terms of the GNU General Public License&n; * as published by the Free Software Foundation; either version&n; * 2 of the License, or (at your option) any later version.&n; */
-macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
