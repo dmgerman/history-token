@@ -2596,7 +2596,7 @@ op_star
 id|format
 comma
 id|va_list
-id|argument_list
+id|ap
 )paren
 (brace
 id|diva_os_spin_lock_magic_t
@@ -2641,9 +2641,6 @@ suffix:semicolon
 r_int
 r_int
 id|code
-suffix:semicolon
-id|va_list
-id|ap
 suffix:semicolon
 r_if
 c_cond
@@ -2697,10 +2694,6 @@ l_int|0
 r_return
 suffix:semicolon
 )brace
-id|ap
-op_assign
-id|argument_list
-suffix:semicolon
 id|diva_os_get_time
 (paren
 op_amp
