@@ -709,10 +709,10 @@ id|pcmcia_socket
 op_star
 id|s
 comma
-id|ioaddr_t
+id|kio_addr_t
 id|base
 comma
-id|ioaddr_t
+id|kio_addr_t
 id|num
 )paren
 (brace
@@ -728,13 +728,14 @@ id|s_data
 op_assign
 id|s-&gt;resource_data
 suffix:semicolon
-id|ioaddr_t
+id|kio_addr_t
 id|i
 comma
 id|j
 comma
 id|bad
-comma
+suffix:semicolon
+r_int
 id|any
 suffix:semicolon
 id|u_char
@@ -749,7 +750,7 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;cs: IO port probe 0x%04x-0x%04x:&quot;
+l_string|&quot;cs: IO port probe %#lx-%#lx:&quot;
 comma
 id|base
 comma
@@ -1072,7 +1073,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot; %#04x-%#04x&quot;
+l_string|&quot; %#lx-%#lx&quot;
 comma
 id|bad
 comma
@@ -1145,7 +1146,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot; %#04x-%#04x&quot;
+l_string|&quot; %#lx-%#lx&quot;
 comma
 id|bad
 comma
@@ -3524,11 +3525,12 @@ id|data
 op_assign
 id|s-&gt;resource_data
 suffix:semicolon
-r_int
+id|kio_addr_t
 id|base
 comma
 id|num
-comma
+suffix:semicolon
+r_int
 id|ret
 op_assign
 id|CS_SUCCESS

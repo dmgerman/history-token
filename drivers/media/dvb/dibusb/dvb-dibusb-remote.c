@@ -988,7 +988,7 @@ comma
 id|msecs_to_jiffies
 c_func
 (paren
-id|rc_query_interval
+id|dib-&gt;rc_query_interval
 )paren
 )paren
 suffix:semicolon
@@ -1117,11 +1117,11 @@ multiline_comment|/* Start the remote-control polling. */
 r_if
 c_cond
 (paren
-id|rc_query_interval
+id|dib-&gt;rc_query_interval
 OL
 l_int|40
 )paren
-id|rc_query_interval
+id|dib-&gt;rc_query_interval
 op_assign
 l_int|100
 suffix:semicolon
@@ -1131,7 +1131,7 @@ c_func
 (paren
 l_string|&quot;schedule remote query interval to %d msecs.&quot;
 comma
-id|rc_query_interval
+id|dib-&gt;rc_query_interval
 )paren
 suffix:semicolon
 id|schedule_delayed_work
@@ -1143,7 +1143,7 @@ comma
 id|msecs_to_jiffies
 c_func
 (paren
-id|rc_query_interval
+id|dib-&gt;rc_query_interval
 )paren
 )paren
 suffix:semicolon

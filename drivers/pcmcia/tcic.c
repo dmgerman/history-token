@@ -77,6 +77,7 @@ multiline_comment|/* The base port address of the TCIC-2 chip */
 DECL|variable|tcic_base
 r_static
 r_int
+r_int
 id|tcic_base
 op_assign
 id|TCIC_BASE
@@ -154,7 +155,7 @@ c_func
 (paren
 id|tcic_base
 comma
-r_int
+id|ulong
 comma
 l_int|0444
 )paren
@@ -354,7 +355,7 @@ id|printk
 c_func
 (paren
 id|KERN_DEBUG
-l_string|&quot;tcic_getb(%#x) = %#x&bslash;n&quot;
+l_string|&quot;tcic_getb(%#lx) = %#x&bslash;n&quot;
 comma
 id|tcic_base
 op_plus
@@ -392,7 +393,7 @@ id|printk
 c_func
 (paren
 id|KERN_DEBUG
-l_string|&quot;tcic_getw(%#x) = %#x&bslash;n&quot;
+l_string|&quot;tcic_getw(%#lx) = %#x&bslash;n&quot;
 comma
 id|tcic_base
 op_plus
@@ -422,7 +423,7 @@ id|printk
 c_func
 (paren
 id|KERN_DEBUG
-l_string|&quot;tcic_setb(%#x, %#x)&bslash;n&quot;
+l_string|&quot;tcic_setb(%#lx, %#x)&bslash;n&quot;
 comma
 id|tcic_base
 op_plus
@@ -459,7 +460,7 @@ id|printk
 c_func
 (paren
 id|KERN_DEBUG
-l_string|&quot;tcic_setw(%#x, %#x)&bslash;n&quot;
+l_string|&quot;tcic_setw(%#lx, %#x)&bslash;n&quot;
 comma
 id|tcic_base
 op_plus
@@ -1447,18 +1448,6 @@ id|TCIC_ICTL_ENA
 )paren
 op_logical_and
 (paren
-id|check_region
-c_func
-(paren
-id|base
-comma
-id|num
-)paren
-op_ne
-l_int|0
-)paren
-op_logical_and
-(paren
 (paren
 id|base
 op_amp
@@ -1468,10 +1457,41 @@ op_ne
 l_int|0x02e8
 )paren
 )paren
+(brace
+r_struct
+id|resource
+op_star
+id|res
+op_assign
+id|request_region
+c_func
+(paren
+id|base
+comma
+id|num
+comma
+l_string|&quot;tcic-2&quot;
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|res
+)paren
+multiline_comment|/* region is busy */
 r_return
 l_int|1
 suffix:semicolon
-r_else
+id|release_region
+c_func
+(paren
+id|base
+comma
+id|num
+)paren
+suffix:semicolon
+)brace
 r_return
 l_int|0
 suffix:semicolon
@@ -4133,7 +4153,7 @@ c_func
 l_int|1
 comma
 l_string|&quot;SetIOMap(%d, %d, %#2.2x, %d ns, &quot;
-l_string|&quot;%#4.4x-%#4.4x)&bslash;n&quot;
+l_string|&quot;%#lx-%#lx)&bslash;n&quot;
 comma
 id|psock
 comma
@@ -4415,7 +4435,7 @@ c_func
 l_int|1
 comma
 l_string|&quot;SetMemMap(%d, %d, %#2.2x, %d ns, &quot;
-l_string|&quot;%#5.5lx-%#5.5lx, %#5.5x)&bslash;n&quot;
+l_string|&quot;%#lx-%#lx, %#x)&bslash;n&quot;
 comma
 id|psock
 comma

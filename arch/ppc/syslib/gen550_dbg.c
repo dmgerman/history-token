@@ -11,6 +11,11 @@ macro_line|#include &lt;asm/serial.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 DECL|macro|SERIAL_BAUD
 mdefine_line|#define SERIAL_BAUD&t;9600
+multiline_comment|/* SERIAL_PORT_DFNS is defined in &lt;asm/serial.h&gt; */
+macro_line|#ifndef SERIAL_PORT_DFNS
+DECL|macro|SERIAL_PORT_DFNS
+mdefine_line|#define SERIAL_PORT_DFNS
+macro_line|#endif
 DECL|variable|rs_table
 r_static
 r_struct
@@ -614,6 +619,22 @@ dot
 id|iomem_reg_shift
 op_assign
 id|serial_req-&gt;regshift
+suffix:semicolon
+id|rs_table
+(braket
+id|i
+)braket
+dot
+id|baud_base
+op_assign
+id|serial_req-&gt;uartclk
+ques
+c_cond
+id|serial_req-&gt;uartclk
+op_div
+l_int|16
+suffix:colon
+id|BASE_BAUD
 suffix:semicolon
 )brace
 macro_line|#ifdef CONFIG_SERIAL_TEXT_DEBUG

@@ -4401,6 +4401,7 @@ id|fragsize
 )paren
 r_return
 suffix:semicolon
+multiline_comment|/* if we are currently stopped, then our CIV is actually set to our&n;&t; * *last* sg segment and we are ready to wrap to the next.  However,&n;&t; * if we set our LVI to the last sg segment, then it won&squot;t wrap to&n;&t; * the next sg segment, it won&squot;t even get a start.  So, instead, when&n;&t; * we are stopped, we set both the LVI value and also we increment&n;&t; * the CIV value to the next sg segment to be played so that when&n;&t; * we call start, things will operate properly&n;&t; */
 r_if
 c_cond
 (paren
@@ -4421,6 +4422,16 @@ id|trigger
 )paren
 )paren
 r_return
+suffix:semicolon
+id|CIV_TO_LVI
+c_func
+(paren
+id|state-&gt;card
+comma
+id|port
+comma
+l_int|1
+)paren
 suffix:semicolon
 id|start
 c_func

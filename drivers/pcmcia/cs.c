@@ -1155,52 +1155,7 @@ c_func
 id|pcmcia_get_socket_by_nr
 )paren
 suffix:semicolon
-multiline_comment|/*======================================================================&n;&n;    Shutdown_Socket() and setup_socket() are scheduled using add_timer&n;    calls by the main event handler when card insertion and removal&n;    events are received.  Shutdown_Socket() unconfigures a socket and&n;    turns off socket power.  Setup_socket() turns on socket power&n;    and resets the socket, in two stages.&n;&n;======================================================================*/
-DECL|function|free_regions
-r_static
-r_void
-id|free_regions
-c_func
-(paren
-id|memory_handle_t
-op_star
-id|list
-)paren
-(brace
-id|memory_handle_t
-id|tmp
-suffix:semicolon
-r_while
-c_loop
-(paren
-op_star
-id|list
-op_ne
-l_int|NULL
-)paren
-(brace
-id|tmp
-op_assign
-op_star
-id|list
-suffix:semicolon
-op_star
-id|list
-op_assign
-id|tmp-&gt;info.next
-suffix:semicolon
-id|tmp-&gt;region_magic
-op_assign
-l_int|0
-suffix:semicolon
-id|kfree
-c_func
-(paren
-id|tmp
-)paren
-suffix:semicolon
-)brace
-)brace
+multiline_comment|/*======================================================================&n;&n;    socket_setup() and shutdown_socket() are called by the main event&n;    handler when card insertion and removal events are received.&n;    socket_setup() turns on socket power and resets the socket, in two stages.&n;    shutdown_socket() unconfigures a socket and turns off socket power.&n;&n;======================================================================*/
 DECL|function|shutdown_socket
 r_static
 r_void
@@ -1292,20 +1247,6 @@ op_assign
 l_int|NULL
 suffix:semicolon
 )brace
-id|free_regions
-c_func
-(paren
-op_amp
-id|s-&gt;a_region
-)paren
-suffix:semicolon
-id|free_regions
-c_func
-(paren
-op_amp
-id|s-&gt;c_region
-)paren
-suffix:semicolon
 (brace
 r_int
 id|status
@@ -2807,7 +2748,7 @@ id|lines
 r_int
 id|i
 suffix:semicolon
-id|ioaddr_t
+id|kio_addr_t
 r_try
 comma
 id|align
@@ -2859,7 +2800,7 @@ id|s
 comma
 l_int|0
 comma
-l_string|&quot;odd IO request: num %04x align %04x&bslash;n&quot;
+l_string|&quot;odd IO request: num %#x align %#lx&bslash;n&quot;
 comma
 id|num
 comma
@@ -2909,7 +2850,7 @@ id|s
 comma
 l_int|0
 comma
-l_string|&quot;odd IO request: base %04x align %04x&bslash;n&quot;
+l_string|&quot;odd IO request: base %#x align %#lx&bslash;n&quot;
 comma
 op_star
 id|base

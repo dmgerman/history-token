@@ -1,6 +1,7 @@
-multiline_comment|/*&n;    $Id: bttv-driver.c,v 1.27 2004/11/07 14:44:59 kraxel Exp $&n;&n;    bttv - Bt848 frame grabber driver&n;&n;    Copyright (C) 1996,97,98 Ralph  Metzler &lt;rjkm@thp.uni-koeln.de&gt;&n;                           &amp; Marcus Metzler &lt;mocm@thp.uni-koeln.de&gt;&n;    (c) 1999-2002 Gerd Knorr &lt;kraxel@bytesex.org&gt;&n;&n;    some v4l2 code lines are taken from Justin&squot;s bttv2 driver which is&n;    (c) 2000 Justin Schoeman &lt;justin@suntiger.ee.up.ac.za&gt;&n;&n;    This program is free software; you can redistribute it and/or modify&n;    it under the terms of the GNU General Public License as published by&n;    the Free Software Foundation; either version 2 of the License, or&n;    (at your option) any later version.&n;&n;    This program is distributed in the hope that it will be useful,&n;    but WITHOUT ANY WARRANTY; without even the implied warranty of&n;    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n;    GNU General Public License for more details.&n;&n;    You should have received a copy of the GNU General Public License&n;    along with this program; if not, write to the Free Software&n;    Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n;*/
+multiline_comment|/*&n;    $Id: bttv-driver.c,v 1.34 2005/01/07 13:11:19 kraxel Exp $&n;&n;    bttv - Bt848 frame grabber driver&n;&n;    Copyright (C) 1996,97,98 Ralph  Metzler &lt;rjkm@thp.uni-koeln.de&gt;&n;                           &amp; Marcus Metzler &lt;mocm@thp.uni-koeln.de&gt;&n;    (c) 1999-2002 Gerd Knorr &lt;kraxel@bytesex.org&gt;&n;&n;    some v4l2 code lines are taken from Justin&squot;s bttv2 driver which is&n;    (c) 2000 Justin Schoeman &lt;justin@suntiger.ee.up.ac.za&gt;&n;&n;    This program is free software; you can redistribute it and/or modify&n;    it under the terms of the GNU General Public License as published by&n;    the Free Software Foundation; either version 2 of the License, or&n;    (at your option) any later version.&n;&n;    This program is distributed in the hope that it will be useful,&n;    but WITHOUT ANY WARRANTY; without even the implied warranty of&n;    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n;    GNU General Public License for more details.&n;&n;    You should have received a copy of the GNU General Public License&n;    along with this program; if not, write to the Free Software&n;    Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n;*/
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
+macro_line|#include &lt;linux/moduleparam.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/fs.h&gt;
@@ -5107,6 +5108,7 @@ id|btv
 suffix:semicolon
 )brace
 DECL|function|bttv_reinit_bt848
+r_static
 r_void
 id|bttv_reinit_bt848
 c_func
@@ -6027,6 +6029,7 @@ id|comment
 suffix:semicolon
 )brace
 DECL|function|bttv_field_count
+r_static
 r_void
 id|bttv_field_count
 c_func
@@ -7022,6 +7025,7 @@ suffix:semicolon
 DECL|macro|V4L1_IOCTLS
 mdefine_line|#define V4L1_IOCTLS ARRAY_SIZE(v4l1_ioctls)
 DECL|function|bttv_common_ioctls
+r_static
 r_int
 id|bttv_common_ioctls
 c_func
@@ -11958,11 +11962,34 @@ id|V4L2_CAP_VIDEO_OVERLAY
 op_or
 id|V4L2_CAP_VBI_CAPTURE
 op_or
-id|V4L2_CAP_TUNER
-op_or
 id|V4L2_CAP_READWRITE
 op_or
 id|V4L2_CAP_STREAMING
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|bttv_tvcards
+(braket
+id|btv-&gt;c.type
+)braket
+dot
+id|tuner
+op_ne
+id|UNSET
+op_logical_and
+id|bttv_tvcards
+(braket
+id|btv-&gt;c.type
+)braket
+dot
+id|tuner
+op_ne
+id|TUNER_ABSENT
+)paren
+id|cap-&gt;capabilities
+op_or_assign
+id|V4L2_CAP_TUNER
 suffix:semicolon
 r_return
 l_int|0
@@ -14213,6 +14240,21 @@ id|RESOURCE_VBI
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/* free stuff */
+id|videobuf_mmap_free
+c_func
+(paren
+op_amp
+id|fh-&gt;cap
+)paren
+suffix:semicolon
+id|videobuf_mmap_free
+c_func
+(paren
+op_amp
+id|fh-&gt;vbi
+)paren
+suffix:semicolon
 id|v4l2_prio_close
 c_func
 (paren

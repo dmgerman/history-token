@@ -23,44 +23,6 @@ id|irq_cpustat_t
 suffix:semicolon
 DECL|macro|local_softirq_pending
 mdefine_line|#define local_softirq_pending() (S390_lowcore.softirq_pending)
-multiline_comment|/* this is always called with cpu == smp_processor_id() at the moment */
-r_static
-r_inline
-id|__u32
-DECL|function|softirq_pending
-id|softirq_pending
-c_func
-(paren
-r_int
-r_int
-id|cpu
-)paren
-(brace
-r_if
-c_cond
-(paren
-id|cpu
-op_eq
-id|smp_processor_id
-c_func
-(paren
-)paren
-)paren
-r_return
-id|local_softirq_pending
-c_func
-(paren
-)paren
-suffix:semicolon
-r_return
-id|lowcore_ptr
-(braket
-id|cpu
-)braket
-op_member_access_from_pointer
-id|softirq_pending
-suffix:semicolon
-)brace
 DECL|macro|__ARCH_IRQ_STAT
 mdefine_line|#define __ARCH_IRQ_STAT
 DECL|macro|__ARCH_HAS_DO_SOFTIRQ

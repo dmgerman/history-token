@@ -352,4 +352,14 @@ c_func
 (paren
 id|sys_pciconfig_iobase
 )paren
+id|cond_syscall
+c_func
+(paren
+id|sys32_ipc
+)paren
+id|cond_syscall
+c_func
+(paren
+id|sys32_sysctl
+)paren
 eof

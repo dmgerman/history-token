@@ -1959,6 +1959,10 @@ c_cond
 id|frag
 )paren
 (brace
+id|frag-&gt;ip_summed
+op_assign
+id|CHECKSUM_NONE
+suffix:semicolon
 id|frag-&gt;h.raw
 op_assign
 id|frag-&gt;data

@@ -13859,10 +13859,6 @@ id|vc
 )paren
 )paren
 (brace
-id|ops-&gt;blank_state
-op_assign
-id|blank
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -13882,6 +13878,10 @@ l_int|0
 )paren
 suffix:semicolon
 )brace
+id|ops-&gt;blank_state
+op_assign
+id|blank
+suffix:semicolon
 )brace
 )brace
 DECL|function|fbcon_event_notify

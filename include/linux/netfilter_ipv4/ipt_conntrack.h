@@ -29,6 +29,58 @@ DECL|macro|IPT_CONNTRACK_STATUS
 mdefine_line|#define IPT_CONNTRACK_STATUS&t;0x40
 DECL|macro|IPT_CONNTRACK_EXPIRES
 mdefine_line|#define IPT_CONNTRACK_EXPIRES&t;0x80
+multiline_comment|/* This is exposed to userspace, so remains frozen in time. */
+DECL|struct|ip_conntrack_old_tuple
+r_struct
+id|ip_conntrack_old_tuple
+(brace
+r_struct
+(brace
+DECL|member|ip
+id|__u32
+id|ip
+suffix:semicolon
+r_union
+(brace
+DECL|member|all
+id|__u16
+id|all
+suffix:semicolon
+DECL|member|u
+)brace
+id|u
+suffix:semicolon
+DECL|member|src
+)brace
+id|src
+suffix:semicolon
+r_struct
+(brace
+DECL|member|ip
+id|__u32
+id|ip
+suffix:semicolon
+r_union
+(brace
+DECL|member|all
+id|__u16
+id|all
+suffix:semicolon
+DECL|member|u
+)brace
+id|u
+suffix:semicolon
+multiline_comment|/* The protocol. */
+DECL|member|protonum
+id|u16
+id|protonum
+suffix:semicolon
+DECL|member|dst
+)brace
+id|dst
+suffix:semicolon
+)brace
+suffix:semicolon
 DECL|struct|ipt_conntrack_info
 r_struct
 id|ipt_conntrack_info
@@ -43,7 +95,7 @@ id|statusmask
 suffix:semicolon
 DECL|member|tuple
 r_struct
-id|ip_conntrack_tuple
+id|ip_conntrack_old_tuple
 id|tuple
 (braket
 id|IP_CT_DIR_MAX

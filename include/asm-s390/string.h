@@ -6,8 +6,6 @@ macro_line|#ifdef __KERNEL__
 macro_line|#ifndef _LINUX_TYPES_H
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#endif
-DECL|macro|__HAVE_ARCH_BCOPY
-mdefine_line|#define __HAVE_ARCH_BCOPY&t;/* arch function */
 DECL|macro|__HAVE_ARCH_MEMCHR
 mdefine_line|#define __HAVE_ARCH_MEMCHR&t;/* inline &amp; arch function */
 DECL|macro|__HAVE_ARCH_MEMCMP

@@ -1181,11 +1181,6 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|local_irq_enable
-c_func
-(paren
-)paren
-suffix:semicolon
 multiline_comment|/*&n;&t; * Get our bogomips.&n;&t; */
 id|calibrate_delay
 c_func
@@ -1209,11 +1204,6 @@ id|cpuid
 )paren
 suffix:semicolon
 id|disable_APIC_timer
-c_func
-(paren
-)paren
-suffix:semicolon
-id|local_irq_disable
 c_func
 (paren
 )paren
@@ -1341,6 +1331,12 @@ c_func
 )paren
 comma
 id|cpu_online_map
+)paren
+suffix:semicolon
+multiline_comment|/* We can take interrupts now: we&squot;re officially &quot;up&quot;. */
+id|local_irq_enable
+c_func
+(paren
 )paren
 suffix:semicolon
 id|wmb

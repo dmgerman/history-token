@@ -16,10 +16,8 @@ DECL|macro|__IRQ_STAT
 mdefine_line|#define __IRQ_STAT(cpu, member)&t;(irq_stat[cpu].member)
 macro_line|#endif
 multiline_comment|/* arch independent irq_stat fields */
-DECL|macro|softirq_pending
-mdefine_line|#define softirq_pending(cpu)&t;__IRQ_STAT((cpu), __softirq_pending)
 DECL|macro|local_softirq_pending
-mdefine_line|#define local_softirq_pending()&t;softirq_pending(smp_processor_id())
+mdefine_line|#define local_softirq_pending() &bslash;&n;&t;__IRQ_STAT(smp_processor_id(), __softirq_pending)
 multiline_comment|/* arch dependent irq_stat fields */
 DECL|macro|nmi_count
 mdefine_line|#define nmi_count(cpu)&t;&t;__IRQ_STAT((cpu), __nmi_count)&t;/* i386 */

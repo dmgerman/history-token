@@ -299,6 +299,10 @@ op_amp
 id|f-&gt;f_list
 )paren
 suffix:semicolon
+id|f-&gt;f_maxcount
+op_assign
+id|INT_MAX
+suffix:semicolon
 r_return
 id|f
 suffix:semicolon

@@ -10,7 +10,7 @@ mdefine_line|#define I2C_TDA985x_H      0xb6
 DECL|macro|I2C_TDA9874
 mdefine_line|#define I2C_TDA9874        0xb0 /* also used by 9875 */
 DECL|macro|I2C_TEA6300
-mdefine_line|#define I2C_TEA6300        0x80
+mdefine_line|#define I2C_TEA6300        0x80 /* also used by 6320 */
 DECL|macro|I2C_TEA6420
 mdefine_line|#define I2C_TEA6420&t;   0x98
 DECL|macro|I2C_PIC16C54

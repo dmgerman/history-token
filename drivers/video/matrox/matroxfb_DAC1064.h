@@ -11,7 +11,7 @@ id|matrox_switch
 id|matrox_mystique
 suffix:semicolon
 macro_line|#endif
-macro_line|#ifdef CONFIG_FB_MATROX_G100
+macro_line|#ifdef CONFIG_FB_MATROX_G
 r_extern
 r_struct
 id|matrox_switch

@@ -1,17 +1,18 @@
-multiline_comment|/*&n;    $Id: bttv-cards.c,v 1.32 2004/11/07 13:17:14 kraxel Exp $&n;&n;    bttv-cards.c&n;&n;    this file has configuration informations - card-specific stuff&n;    like the big tvcards array for the most part&n;&n;    Copyright (C) 1996,97,98 Ralph  Metzler (rjkm@thp.uni-koeln.de)&n;                           &amp; Marcus Metzler (mocm@thp.uni-koeln.de)&n;    (c) 1999-2001 Gerd Knorr &lt;kraxel@goldbach.in-berlin.de&gt;&n;&n;    This program is free software; you can redistribute it and/or modify&n;    it under the terms of the GNU General Public License as published by&n;    the Free Software Foundation; either version 2 of the License, or&n;    (at your option) any later version.&n;&n;    This program is distributed in the hope that it will be useful,&n;    but WITHOUT ANY WARRANTY; without even the implied warranty of&n;    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n;    GNU General Public License for more details.&n;&n;    You should have received a copy of the GNU General Public License&n;    along with this program; if not, write to the Free Software&n;    Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n;&n;*/
+multiline_comment|/*&n;    $Id: bttv-cards.c,v 1.42 2005/01/13 17:22:33 kraxel Exp $&n;&n;    bttv-cards.c&n;&n;    this file has configuration informations - card-specific stuff&n;    like the big tvcards array for the most part&n;&n;    Copyright (C) 1996,97,98 Ralph  Metzler (rjkm@thp.uni-koeln.de)&n;                           &amp; Marcus Metzler (mocm@thp.uni-koeln.de)&n;    (c) 1999-2001 Gerd Knorr &lt;kraxel@goldbach.in-berlin.de&gt;&n;&n;    This program is free software; you can redistribute it and/or modify&n;    it under the terms of the GNU General Public License as published by&n;    the Free Software Foundation; either version 2 of the License, or&n;    (at your option) any later version.&n;&n;    This program is distributed in the hope that it will be useful,&n;    but WITHOUT ANY WARRANTY; without even the implied warranty of&n;    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n;    GNU General Public License for more details.&n;&n;    You should have received a copy of the GNU General Public License&n;    along with this program; if not, write to the Free Software&n;    Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n;&n;*/
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
+macro_line|#include &lt;linux/moduleparam.h&gt;
 macro_line|#include &lt;linux/kmod.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/vmalloc.h&gt;
-macro_line|#if defined(CONFIG_FW_LOADER) || defined(CONFIG_FW_LOADER_MODULE)
-macro_line|# include &lt;linux/firmware.h&gt;
-macro_line|#endif
+macro_line|#include &lt;linux/firmware.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &quot;bttvp.h&quot;
+macro_line|#if 0 /* not working yet */
 macro_line|#include &quot;bt832.h&quot;
+macro_line|#endif
 multiline_comment|/* fwd decl */
 r_static
 r_void
@@ -439,6 +440,32 @@ id|btv
 suffix:semicolon
 r_static
 r_void
+id|tibetCS16_muxsel
+c_func
+(paren
+r_struct
+id|bttv
+op_star
+id|btv
+comma
+r_int
+r_int
+id|input
+)paren
+suffix:semicolon
+r_static
+r_void
+id|tibetCS16_init
+c_func
+(paren
+r_struct
+id|bttv
+op_star
+id|btv
+)paren
+suffix:semicolon
+r_static
+r_void
 id|sigmaSLC_muxsel
 c_func
 (paren
@@ -521,6 +548,18 @@ l_int|256
 )braket
 )paren
 suffix:semicolon
+r_static
+r_int
+id|__devinit
+id|pvr_boot
+c_func
+(paren
+r_struct
+id|bttv
+op_star
+id|btv
+)paren
+suffix:semicolon
 multiline_comment|/* config variables */
 DECL|variable|triton1
 r_static
@@ -547,6 +586,7 @@ op_assign
 id|UNSET
 suffix:semicolon
 DECL|variable|no_overlay
+r_static
 r_int
 r_int
 id|no_overlay
@@ -1914,7 +1954,7 @@ l_int|0x07611461
 comma
 id|BTTV_AVDVBT_761
 comma
-l_string|&quot;AverMedia AverTV DVB-T&quot;
+l_string|&quot;AverMedia AverTV DVB-T 761&quot;
 )brace
 comma
 (brace
@@ -1954,7 +1994,7 @@ l_int|0x07711461
 comma
 id|BTTV_AVDVBT_771
 comma
-l_string|&quot;AVermedia DVB-T 771&quot;
+l_string|&quot;AVermedia AverTV DVB-T 771&quot;
 )brace
 comma
 (brace
@@ -11971,6 +12011,182 @@ l_int|0
 comma
 singleline_comment|// .has_remote     = 1,
 )brace
+comma
+(brace
+multiline_comment|/* Rick C &lt;cryptdragoon@gmail.com&gt; */
+dot
+id|name
+op_assign
+l_string|&quot;Super TV Tuner&quot;
+comma
+dot
+id|video_inputs
+op_assign
+l_int|4
+comma
+dot
+id|audio_inputs
+op_assign
+l_int|1
+comma
+dot
+id|tuner
+op_assign
+l_int|0
+comma
+dot
+id|svhs
+op_assign
+l_int|2
+comma
+dot
+id|muxsel
+op_assign
+(brace
+l_int|2
+comma
+l_int|3
+comma
+l_int|1
+comma
+l_int|0
+)brace
+comma
+dot
+id|tuner_type
+op_assign
+id|TUNER_PHILIPS_NTSC
+comma
+dot
+id|gpiomask
+op_assign
+l_int|0x008007
+comma
+dot
+id|audiomux
+op_assign
+(brace
+l_int|0
+comma
+l_int|0x000001
+comma
+l_int|0
+comma
+l_int|0
+comma
+l_int|0
+)brace
+comma
+dot
+id|needs_tvaudio
+op_assign
+l_int|1
+comma
+dot
+id|has_radio
+op_assign
+l_int|1
+comma
+)brace
+comma
+(brace
+multiline_comment|/* Chris Fanning &lt;video4linux@haydon.net&gt; */
+dot
+id|name
+op_assign
+l_string|&quot;Tibet Systems &squot;Progress DVR&squot; CS16&quot;
+comma
+dot
+id|video_inputs
+op_assign
+l_int|16
+comma
+dot
+id|audio_inputs
+op_assign
+l_int|0
+comma
+dot
+id|tuner
+op_assign
+op_minus
+l_int|1
+comma
+dot
+id|svhs
+op_assign
+op_minus
+l_int|1
+comma
+dot
+id|muxsel
+op_assign
+(brace
+l_int|2
+comma
+l_int|2
+comma
+l_int|2
+comma
+l_int|2
+comma
+l_int|2
+comma
+l_int|2
+comma
+l_int|2
+comma
+l_int|2
+comma
+l_int|2
+comma
+l_int|2
+comma
+l_int|2
+comma
+l_int|2
+comma
+l_int|2
+comma
+l_int|2
+comma
+l_int|2
+comma
+l_int|2
+)brace
+comma
+dot
+id|pll
+op_assign
+id|PLL_28
+comma
+dot
+id|no_msp34xx
+op_assign
+l_int|1
+comma
+dot
+id|no_tda9875
+op_assign
+l_int|1
+comma
+dot
+id|no_tda7432
+op_assign
+l_int|1
+comma
+dot
+id|tuner_type
+op_assign
+op_minus
+l_int|1
+comma
+dot
+id|muxsel_hook
+op_assign
+id|tibetCS16_muxsel
+comma
+)brace
 )brace
 suffix:semicolon
 DECL|variable|bttv_num_tvcards
@@ -13754,6 +13970,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* ----------------------------------------------------------------------- */
 DECL|function|bttv_reset_audio
+r_static
 r_void
 id|bttv_reset_audio
 c_func
@@ -13899,6 +14116,23 @@ suffix:semicolon
 r_break
 suffix:semicolon
 )brace
+r_if
+c_cond
+(paren
+op_logical_neg
+id|bttv_tvcards
+(braket
+id|btv-&gt;c.type
+)braket
+dot
+id|has_dvb
+)paren
+id|bttv_reset_audio
+c_func
+(paren
+id|btv
+)paren
+suffix:semicolon
 )brace
 multiline_comment|/* initialization part two -- after registering i2c bus */
 DECL|function|bttv_init_card2
@@ -14280,6 +14514,17 @@ id|btv
 suffix:semicolon
 r_break
 suffix:semicolon
+r_case
+id|BTTV_TIBET_CS16
+suffix:colon
+id|tibetCS16_init
+c_func
+(paren
+id|btv
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
 )brace
 multiline_comment|/* pll configuration */
 r_if
@@ -14418,6 +14663,12 @@ id|btv-&gt;pll.pll_current
 op_assign
 op_minus
 l_int|1
+suffix:semicolon
+id|bttv_reset_audio
+c_func
+(paren
+id|btv
+)paren
 suffix:semicolon
 multiline_comment|/* tuner configuration (from card list / autodetect / insmod option) */
 r_if
@@ -14860,14 +15111,34 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+(paren
+id|btv-&gt;tuner_type
+op_eq
+id|TUNER_PHILIPS_FM1216ME_MK3
+)paren
+op_logical_or
+(paren
+id|btv-&gt;tuner_type
+op_eq
+id|TUNER_PHILIPS_FM1236_MK3
+)paren
+op_logical_or
+(paren
+id|btv-&gt;tuner_type
+op_eq
+id|TUNER_PHILIPS_FM1256_IH3
+)paren
+op_logical_or
 id|tda9887
 )paren
+(brace
 id|request_module
 c_func
 (paren
 l_string|&quot;tda9887&quot;
 )paren
 suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
@@ -14883,337 +15154,6 @@ l_string|&quot;tuner&quot;
 suffix:semicolon
 )brace
 multiline_comment|/* ----------------------------------------------------------------------- */
-multiline_comment|/* some hauppauge specific stuff                                           */
-DECL|struct|HAUPPAUGE_TUNER
-r_static
-r_struct
-id|HAUPPAUGE_TUNER
-(brace
-DECL|member|id
-r_int
-id|id
-suffix:semicolon
-DECL|member|name
-r_char
-op_star
-id|name
-suffix:semicolon
-)brace
-DECL|variable|__devinitdata
-id|hauppauge_tuner
-(braket
-)braket
-id|__devinitdata
-op_assign
-(brace
-(brace
-id|TUNER_ABSENT
-comma
-l_string|&quot;&quot;
-)brace
-comma
-(brace
-id|TUNER_ABSENT
-comma
-l_string|&quot;External&quot;
-)brace
-comma
-(brace
-id|TUNER_ABSENT
-comma
-l_string|&quot;Unspecified&quot;
-)brace
-comma
-(brace
-id|TUNER_PHILIPS_PAL
-comma
-l_string|&quot;Philips FI1216&quot;
-)brace
-comma
-(brace
-id|TUNER_PHILIPS_SECAM
-comma
-l_string|&quot;Philips FI1216MF&quot;
-)brace
-comma
-(brace
-id|TUNER_PHILIPS_NTSC
-comma
-l_string|&quot;Philips FI1236&quot;
-)brace
-comma
-(brace
-id|TUNER_PHILIPS_PAL_I
-comma
-l_string|&quot;Philips FI1246&quot;
-)brace
-comma
-(brace
-id|TUNER_PHILIPS_PAL_DK
-comma
-l_string|&quot;Philips FI1256&quot;
-)brace
-comma
-(brace
-id|TUNER_PHILIPS_PAL
-comma
-l_string|&quot;Philips FI1216 MK2&quot;
-)brace
-comma
-(brace
-id|TUNER_PHILIPS_SECAM
-comma
-l_string|&quot;Philips FI1216MF MK2&quot;
-)brace
-comma
-(brace
-id|TUNER_PHILIPS_NTSC
-comma
-l_string|&quot;Philips FI1236 MK2&quot;
-)brace
-comma
-(brace
-id|TUNER_PHILIPS_PAL_I
-comma
-l_string|&quot;Philips FI1246 MK2&quot;
-)brace
-comma
-(brace
-id|TUNER_PHILIPS_PAL_DK
-comma
-l_string|&quot;Philips FI1256 MK2&quot;
-)brace
-comma
-(brace
-id|TUNER_TEMIC_NTSC
-comma
-l_string|&quot;Temic 4032FY5&quot;
-)brace
-comma
-(brace
-id|TUNER_TEMIC_PAL
-comma
-l_string|&quot;Temic 4002FH5&quot;
-)brace
-comma
-(brace
-id|TUNER_TEMIC_PAL_I
-comma
-l_string|&quot;Temic 4062FY5&quot;
-)brace
-comma
-(brace
-id|TUNER_PHILIPS_PAL
-comma
-l_string|&quot;Philips FR1216 MK2&quot;
-)brace
-comma
-(brace
-id|TUNER_PHILIPS_SECAM
-comma
-l_string|&quot;Philips FR1216MF MK2&quot;
-)brace
-comma
-(brace
-id|TUNER_PHILIPS_NTSC
-comma
-l_string|&quot;Philips FR1236 MK2&quot;
-)brace
-comma
-(brace
-id|TUNER_PHILIPS_PAL_I
-comma
-l_string|&quot;Philips FR1246 MK2&quot;
-)brace
-comma
-(brace
-id|TUNER_PHILIPS_PAL_DK
-comma
-l_string|&quot;Philips FR1256 MK2&quot;
-)brace
-comma
-(brace
-id|TUNER_PHILIPS_PAL
-comma
-l_string|&quot;Philips FM1216&quot;
-)brace
-comma
-(brace
-id|TUNER_PHILIPS_SECAM
-comma
-l_string|&quot;Philips FM1216MF&quot;
-)brace
-comma
-(brace
-id|TUNER_PHILIPS_NTSC
-comma
-l_string|&quot;Philips FM1236&quot;
-)brace
-comma
-(brace
-id|TUNER_PHILIPS_PAL_I
-comma
-l_string|&quot;Philips FM1246&quot;
-)brace
-comma
-(brace
-id|TUNER_PHILIPS_PAL_DK
-comma
-l_string|&quot;Philips FM1256&quot;
-)brace
-comma
-(brace
-id|TUNER_TEMIC_4036FY5_NTSC
-comma
-l_string|&quot;Temic 4036FY5&quot;
-)brace
-comma
-(brace
-id|TUNER_ABSENT
-comma
-l_string|&quot;Samsung TCPN9082D&quot;
-)brace
-comma
-(brace
-id|TUNER_ABSENT
-comma
-l_string|&quot;Samsung TCPM9092P&quot;
-)brace
-comma
-(brace
-id|TUNER_TEMIC_4006FH5_PAL
-comma
-l_string|&quot;Temic 4006FH5&quot;
-)brace
-comma
-(brace
-id|TUNER_ABSENT
-comma
-l_string|&quot;Samsung TCPN9085D&quot;
-)brace
-comma
-(brace
-id|TUNER_ABSENT
-comma
-l_string|&quot;Samsung TCPB9085P&quot;
-)brace
-comma
-(brace
-id|TUNER_ABSENT
-comma
-l_string|&quot;Samsung TCPL9091P&quot;
-)brace
-comma
-(brace
-id|TUNER_TEMIC_4039FR5_NTSC
-comma
-l_string|&quot;Temic 4039FR5&quot;
-)brace
-comma
-(brace
-id|TUNER_PHILIPS_FQ1216ME
-comma
-l_string|&quot;Philips FQ1216 ME&quot;
-)brace
-comma
-(brace
-id|TUNER_TEMIC_4066FY5_PAL_I
-comma
-l_string|&quot;Temic 4066FY5&quot;
-)brace
-comma
-(brace
-id|TUNER_PHILIPS_NTSC
-comma
-l_string|&quot;Philips TD1536&quot;
-)brace
-comma
-(brace
-id|TUNER_PHILIPS_NTSC
-comma
-l_string|&quot;Philips TD1536D&quot;
-)brace
-comma
-(brace
-id|TUNER_PHILIPS_NTSC
-comma
-l_string|&quot;Philips FMR1236&quot;
-)brace
-comma
-multiline_comment|/* mono radio */
-(brace
-id|TUNER_ABSENT
-comma
-l_string|&quot;Philips FI1256MP&quot;
-)brace
-comma
-(brace
-id|TUNER_ABSENT
-comma
-l_string|&quot;Samsung TCPQ9091P&quot;
-)brace
-comma
-(brace
-id|TUNER_TEMIC_4006FN5_MULTI_PAL
-comma
-l_string|&quot;Temic 4006FN5&quot;
-)brace
-comma
-(brace
-id|TUNER_TEMIC_4009FR5_PAL
-comma
-l_string|&quot;Temic 4009FR5&quot;
-)brace
-comma
-(brace
-id|TUNER_TEMIC_4046FM5
-comma
-l_string|&quot;Temic 4046FM5&quot;
-)brace
-comma
-(brace
-id|TUNER_TEMIC_4009FN5_MULTI_PAL_FM
-comma
-l_string|&quot;Temic 4009FN5&quot;
-)brace
-comma
-(brace
-id|TUNER_ABSENT
-comma
-l_string|&quot;Philips TD1536D_FH_44&quot;
-)brace
-comma
-(brace
-id|TUNER_LG_NTSC_FM
-comma
-l_string|&quot;LG TPI8NSR01F&quot;
-)brace
-comma
-(brace
-id|TUNER_LG_PAL_FM
-comma
-l_string|&quot;LG TPI8PSB01D&quot;
-)brace
-comma
-(brace
-id|TUNER_LG_PAL
-comma
-l_string|&quot;LG TPI8PSB11D&quot;
-)brace
-comma
-(brace
-id|TUNER_LG_PAL_I_FM
-comma
-l_string|&quot;LG TAPC-I001D&quot;
-)brace
-comma
-(brace
-id|TUNER_LG_PAL_I
-comma
-l_string|&quot;LG TAPC-I701D&quot;
-)brace
-)brace
-suffix:semicolon
 DECL|function|modtec_eeprom
 r_static
 r_void
@@ -15382,159 +15322,26 @@ op_star
 id|btv
 )paren
 (brace
-r_int
-r_int
-id|blk2
-comma
-id|tuner
-comma
-id|radio
-comma
-id|model
+r_struct
+id|tveeprom
+id|tv
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|eeprom_data
-(braket
-l_int|0
-)braket
-op_ne
-l_int|0x84
-op_logical_or
-id|eeprom_data
-(braket
-l_int|2
-)braket
-op_ne
-l_int|0
-)paren
-id|printk
+id|tveeprom_hauppauge_analog
 c_func
 (paren
-id|KERN_WARNING
-l_string|&quot;bttv%d: Hauppauge eeprom: invalid&bslash;n&quot;
-comma
-id|btv-&gt;c.nr
-)paren
-suffix:semicolon
-multiline_comment|/* Block 2 starts after len+3 bytes header */
-id|blk2
-op_assign
-id|eeprom_data
-(braket
-l_int|1
-)braket
-op_plus
-l_int|3
-suffix:semicolon
-multiline_comment|/* decode + use some config infos */
-id|model
-op_assign
-id|eeprom_data
-(braket
-l_int|12
-)braket
-op_lshift
-l_int|8
-op_or
-id|eeprom_data
-(braket
-l_int|11
-)braket
-suffix:semicolon
-id|tuner
-op_assign
-id|eeprom_data
-(braket
-l_int|9
-)braket
-suffix:semicolon
-id|radio
-op_assign
-id|eeprom_data
-(braket
-id|blk2
-op_minus
-l_int|1
-)braket
 op_amp
-l_int|0x01
+id|tv
+comma
+id|eeprom_data
+)paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|tuner
-OL
-id|ARRAY_SIZE
-c_func
-(paren
-id|hauppauge_tuner
-)paren
-)paren
 id|btv-&gt;tuner_type
 op_assign
-id|hauppauge_tuner
-(braket
-id|tuner
-)braket
-dot
-id|id
+id|tv.tuner_type
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|radio
-)paren
 id|btv-&gt;has_radio
 op_assign
-l_int|1
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|bttv_verbose
-)paren
-id|printk
-c_func
-(paren
-id|KERN_INFO
-l_string|&quot;bttv%d: Hauppauge eeprom: model=%d, &quot;
-l_string|&quot;tuner=%s (%d), radio=%s&bslash;n&quot;
-comma
-id|btv-&gt;c.nr
-comma
-id|model
-comma
-(paren
-id|tuner
-OL
-id|ARRAY_SIZE
-c_func
-(paren
-id|hauppauge_tuner
-)paren
-ques
-c_cond
-id|hauppauge_tuner
-(braket
-id|tuner
-)braket
-dot
-id|name
-suffix:colon
-l_string|&quot;?&quot;
-)paren
-comma
-id|btv-&gt;tuner_type
-comma
-id|radio
-ques
-c_cond
-l_string|&quot;yes&quot;
-suffix:colon
-l_string|&quot;no&quot;
-)paren
+id|tv.has_radio
 suffix:semicolon
 )brace
 DECL|function|terratec_active_radio_upgrade
@@ -15879,6 +15686,7 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|function|pvr_boot
+r_static
 r_int
 id|__devinit
 id|pvr_boot
@@ -16513,6 +16321,8 @@ comma
 id|TUNER_PHILIPS_SECAM
 comma
 id|TUNER_PHILIPS_PAL
+comma
+id|TUNER_PHILIPS_FM1216ME_MK3
 )brace
 suffix:semicolon
 macro_line|#if 0
@@ -16662,7 +16472,7 @@ c_cond
 (paren
 id|tuner_format
 op_le
-l_int|9
+l_int|0x0a
 )paren
 (brace
 id|tuner
@@ -16696,6 +16506,27 @@ id|tuner_format
 )braket
 suffix:semicolon
 )brace
+r_if
+c_cond
+(paren
+id|tuner_make
+op_eq
+l_int|4
+)paren
+r_if
+c_cond
+(paren
+id|tuner_format
+op_eq
+l_int|0x09
+)paren
+(brace
+id|tuner
+op_assign
+id|TUNER_LG_NTSC_NEW_TAPC
+suffix:semicolon
+)brace
+singleline_comment|// TAPC-G702P
 id|printk
 c_func
 (paren
@@ -16973,6 +16804,7 @@ op_star
 id|btv
 )paren
 (brace
+macro_line|#if 0 /* not working yet */
 r_int
 id|resetbit
 op_assign
@@ -17098,6 +16930,7 @@ comma
 l_int|NULL
 )paren
 suffix:semicolon
+macro_line|#endif
 )brace
 multiline_comment|/* ----------------------------------------------------------------------- */
 multiline_comment|/*  Imagenation L-Model PXC200 Framegrabber */
@@ -19862,6 +19695,63 @@ id|mdelay
 c_func
 (paren
 l_int|1
+)paren
+suffix:semicolon
+)brace
+multiline_comment|/* Tibet Systems &squot;Progress DVR&squot; CS16 muxsel helper [Chris Fanning]&n; *&n; * The CS16 (available on eBay cheap) is a PCI board with four Fusion&n; * 878A chips, a PCI bridge, an Atmel microcontroller, four sync seperator&n; * chips, ten eight input analog multiplexors, a not chip and a few&n; * other components.&n; *&n; * 16 inputs on a secondary bracket are provided and can be selected&n; * from each of the four capture chips.  Two of the eight input&n; * multiplexors are used to select from any of the 16 input signals.&n; *&n; * Unsupported hardware capabilities:&n; *  . A video output monitor on the secondary bracket can be selected from&n; *    one of the 878A chips.&n; *  . Another passthrough but I haven&squot;t spent any time investigating it.&n; *  . Digital I/O (logic level connected to GPIO) is available from an&n; *    onboard header.&n; *&n; * The on chip input mux should always be set to 2.&n; * GPIO[16:19] - Video input selection&n; * GPIO[0:3]   - Video output monitor select (only available from one 878A)&n; * GPIO[?:?]   - Digital I/O.&n; *&n; * There is an ATMEL microcontroller with an 8031 core on board.  I have not&n; * determined what function (if any) it provides.  With the microcontroller&n; * and sync seperator chips a guess is that it might have to do with video&n; * switching and maybe some digital I/O.&n; */
+DECL|function|tibetCS16_muxsel
+r_static
+r_void
+id|tibetCS16_muxsel
+c_func
+(paren
+r_struct
+id|bttv
+op_star
+id|btv
+comma
+r_int
+r_int
+id|input
+)paren
+(brace
+multiline_comment|/* video mux */
+id|gpio_bits
+c_func
+(paren
+l_int|0x0f0000
+comma
+id|input
+op_lshift
+l_int|16
+)paren
+suffix:semicolon
+)brace
+DECL|function|tibetCS16_init
+r_static
+r_void
+id|tibetCS16_init
+c_func
+(paren
+r_struct
+id|bttv
+op_star
+id|btv
+)paren
+(brace
+multiline_comment|/* enable gpio bits, mask obtained via btSpy */
+id|gpio_inout
+c_func
+(paren
+l_int|0xffffff
+comma
+l_int|0x0f7fff
+)paren
+suffix:semicolon
+id|gpio_write
+c_func
+(paren
+l_int|0x0f7fff
 )paren
 suffix:semicolon
 )brace

@@ -435,7 +435,7 @@ r_void
 id|netwave_doreset
 c_func
 (paren
-id|ioaddr_t
+id|kio_addr_t
 id|iobase
 comma
 id|u_char
@@ -904,7 +904,7 @@ id|__iomem
 op_star
 id|ramBase
 comma
-id|ioaddr_t
+id|kio_addr_t
 id|iobase
 )paren
 (brace
@@ -1011,7 +1011,7 @@ r_int
 r_int
 id|flags
 suffix:semicolon
-id|ioaddr_t
+id|kio_addr_t
 id|iobase
 op_assign
 id|dev-&gt;base_addr
@@ -1625,7 +1625,7 @@ r_int
 r_int
 id|flags
 suffix:semicolon
-id|ioaddr_t
+id|kio_addr_t
 id|iobase
 op_assign
 id|dev-&gt;base_addr
@@ -1862,7 +1862,7 @@ r_int
 r_int
 id|flags
 suffix:semicolon
-id|ioaddr_t
+id|kio_addr_t
 id|iobase
 op_assign
 id|dev-&gt;base_addr
@@ -2291,7 +2291,7 @@ r_int
 r_int
 id|flags
 suffix:semicolon
-id|ioaddr_t
+id|kio_addr_t
 id|iobase
 op_assign
 id|dev-&gt;base_addr
@@ -4089,7 +4089,7 @@ r_void
 id|netwave_doreset
 c_func
 (paren
-id|ioaddr_t
+id|kio_addr_t
 id|ioBase
 comma
 id|u_char
@@ -4169,7 +4169,7 @@ id|ramBase
 op_assign
 id|priv-&gt;ramBase
 suffix:semicolon
-id|ioaddr_t
+id|kio_addr_t
 id|iobase
 op_assign
 id|dev-&gt;base_addr
@@ -4601,7 +4601,7 @@ id|ramBase
 op_assign
 id|priv-&gt;ramBase
 suffix:semicolon
-id|ioaddr_t
+id|kio_addr_t
 id|iobase
 op_assign
 id|dev-&gt;base_addr
@@ -5008,7 +5008,7 @@ op_star
 id|regs
 )paren
 (brace
-id|ioaddr_t
+id|kio_addr_t
 id|iobase
 suffix:semicolon
 id|u_char
@@ -5679,7 +5679,7 @@ id|ramBase
 op_assign
 id|priv-&gt;ramBase
 suffix:semicolon
-id|ioaddr_t
+id|kio_addr_t
 id|iobase
 op_assign
 id|dev-&gt;base_addr
@@ -6295,7 +6295,7 @@ op_star
 id|dev
 )paren
 (brace
-id|ioaddr_t
+id|kio_addr_t
 id|iobase
 op_assign
 id|dev-&gt;base_addr

@@ -4,7 +4,7 @@ macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &quot;op_arm_model.h&quot;
 DECL|function|oprofile_arch_init
-r_void
+r_int
 id|__init
 id|oprofile_arch_init
 c_func
@@ -15,7 +15,15 @@ op_star
 id|ops
 )paren
 (brace
+r_int
+id|ret
+op_assign
+op_minus
+id|ENODEV
+suffix:semicolon
 macro_line|#ifdef CONFIG_CPU_XSCALE
+id|ret
+op_assign
 id|pmu_init
 c_func
 (paren
@@ -26,6 +34,9 @@ id|op_xscale_spec
 )paren
 suffix:semicolon
 macro_line|#endif
+r_return
+id|ret
+suffix:semicolon
 )brace
 DECL|function|oprofile_arch_exit
 r_void

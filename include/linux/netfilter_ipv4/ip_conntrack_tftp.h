@@ -23,7 +23,7 @@ DECL|macro|TFTP_OPCODE_ACK
 mdefine_line|#define TFTP_OPCODE_ACK&t;&t;4
 DECL|macro|TFTP_OPCODE_ERROR
 mdefine_line|#define TFTP_OPCODE_ERROR&t;5
-DECL|variable|ip_nat_tftp_hook
+r_extern
 r_int
 r_int
 (paren

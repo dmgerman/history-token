@@ -107,8 +107,6 @@ comma
 id|__kernel_size_t
 )paren
 suffix:semicolon
-DECL|macro|__HAVE_ARCH_BCOPY
-mdefine_line|#define __HAVE_ARCH_BCOPY
 r_extern
 r_void
 id|__memzero

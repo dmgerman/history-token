@@ -287,7 +287,7 @@ id|count
 op_assign
 l_int|0
 suffix:semicolon
-id|ioaddr_t
+id|kio_addr_t
 id|base
 op_assign
 id|dev-&gt;base_addr
@@ -2725,7 +2725,7 @@ op_star
 id|lp
 )paren
 (brace
-id|ioaddr_t
+id|kio_addr_t
 id|base
 op_assign
 id|lp-&gt;dev-&gt;base_addr
@@ -3209,7 +3209,7 @@ r_int
 id|result
 )paren
 (brace
-id|ioaddr_t
+id|kio_addr_t
 id|base
 op_assign
 id|dev-&gt;base_addr
@@ -3618,7 +3618,7 @@ r_int
 id|len
 )paren
 (brace
-id|ioaddr_t
+id|kio_addr_t
 id|base
 op_assign
 id|dev-&gt;base_addr
@@ -4338,7 +4338,7 @@ op_star
 id|dev
 )paren
 (brace
-id|ioaddr_t
+id|kio_addr_t
 id|base
 op_assign
 id|dev-&gt;base_addr
@@ -5175,7 +5175,7 @@ op_star
 id|dev
 )paren
 (brace
-id|ioaddr_t
+id|kio_addr_t
 id|base
 op_assign
 id|dev-&gt;base_addr
@@ -5239,7 +5239,7 @@ id|printk
 c_func
 (paren
 id|KERN_NOTICE
-l_string|&quot;%s: WaveLAN: port %#x, irq %d, hw_addr&quot;
+l_string|&quot;%s: WaveLAN: port %#lx, irq %d, hw_addr&quot;
 comma
 id|dev-&gt;name
 comma
@@ -7180,7 +7180,7 @@ op_star
 id|extra
 )paren
 (brace
-id|ioaddr_t
+id|kio_addr_t
 id|base
 op_assign
 id|dev-&gt;base_addr
@@ -7580,7 +7580,7 @@ op_star
 id|extra
 )paren
 (brace
-id|ioaddr_t
+id|kio_addr_t
 id|base
 op_assign
 id|dev-&gt;base_addr
@@ -7700,7 +7700,7 @@ op_star
 id|extra
 )paren
 (brace
-id|ioaddr_t
+id|kio_addr_t
 id|base
 op_assign
 id|dev-&gt;base_addr
@@ -7909,7 +7909,7 @@ op_star
 id|extra
 )paren
 (brace
-id|ioaddr_t
+id|kio_addr_t
 id|base
 op_assign
 id|dev-&gt;base_addr
@@ -8164,7 +8164,7 @@ op_star
 id|extra
 )paren
 (brace
-id|ioaddr_t
+id|kio_addr_t
 id|base
 op_assign
 id|dev-&gt;base_addr
@@ -8464,7 +8464,7 @@ op_star
 id|extra
 )paren
 (brace
-id|ioaddr_t
+id|kio_addr_t
 id|base
 op_assign
 id|dev-&gt;base_addr
@@ -9186,7 +9186,7 @@ op_star
 id|extra
 )paren
 (brace
-id|ioaddr_t
+id|kio_addr_t
 id|base
 op_assign
 id|dev-&gt;base_addr
@@ -9492,7 +9492,7 @@ op_star
 id|extra
 )paren
 (brace
-id|ioaddr_t
+id|kio_addr_t
 id|base
 op_assign
 id|dev-&gt;base_addr
@@ -10487,7 +10487,7 @@ op_star
 id|dev
 )paren
 (brace
-id|ioaddr_t
+id|kio_addr_t
 id|base
 op_assign
 id|dev-&gt;base_addr
@@ -10758,7 +10758,7 @@ id|wrap
 )paren
 multiline_comment|/* start of buffer */
 (brace
-id|ioaddr_t
+id|kio_addr_t
 id|base
 op_assign
 id|dev-&gt;base_addr
@@ -11308,7 +11308,7 @@ op_star
 id|dev
 )paren
 (brace
-id|ioaddr_t
+id|kio_addr_t
 id|base
 op_assign
 id|dev-&gt;base_addr
@@ -11835,7 +11835,7 @@ c_func
 id|dev
 )paren
 suffix:semicolon
-id|ioaddr_t
+id|kio_addr_t
 id|base
 op_assign
 id|dev-&gt;base_addr
@@ -12250,7 +12250,7 @@ op_star
 id|dev
 )paren
 (brace
-id|ioaddr_t
+id|kio_addr_t
 id|base
 op_assign
 id|dev-&gt;base_addr
@@ -13020,7 +13020,7 @@ op_star
 id|dev
 )paren
 (brace
-id|ioaddr_t
+id|kio_addr_t
 id|base
 op_assign
 id|dev-&gt;base_addr
@@ -13263,7 +13263,7 @@ op_star
 id|dev
 )paren
 (brace
-id|ioaddr_t
+id|kio_addr_t
 id|base
 op_assign
 id|dev-&gt;base_addr
@@ -13595,7 +13595,7 @@ op_star
 id|dev
 )paren
 (brace
-id|ioaddr_t
+id|kio_addr_t
 id|base
 op_assign
 id|dev-&gt;base_addr
@@ -14783,7 +14783,7 @@ c_func
 id|dev
 )paren
 suffix:semicolon
-id|ioaddr_t
+id|kio_addr_t
 id|base
 op_assign
 id|dev-&gt;base_addr
@@ -15873,7 +15873,7 @@ id|net_local
 op_star
 id|lp
 suffix:semicolon
-id|ioaddr_t
+id|kio_addr_t
 id|base
 suffix:semicolon
 r_int
@@ -16707,7 +16707,7 @@ c_func
 id|dev
 )paren
 suffix:semicolon
-id|ioaddr_t
+id|kio_addr_t
 id|base
 op_assign
 id|dev-&gt;base_addr
@@ -16928,7 +16928,7 @@ id|link
 op_assign
 id|lp-&gt;link
 suffix:semicolon
-id|ioaddr_t
+id|kio_addr_t
 id|base
 op_assign
 id|dev-&gt;base_addr
@@ -17104,7 +17104,7 @@ id|dev
 op_member_access_from_pointer
 id|link
 suffix:semicolon
-id|ioaddr_t
+id|kio_addr_t
 id|base
 op_assign
 id|dev-&gt;base_addr

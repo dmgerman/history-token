@@ -39,7 +39,7 @@ id|depth
 )paren
 suffix:semicolon
 DECL|function|oprofile_arch_init
-r_void
+r_int
 id|__init
 id|oprofile_arch_init
 c_func
@@ -50,8 +50,16 @@ op_star
 id|ops
 )paren
 (brace
+r_int
+id|ret
+op_assign
+op_minus
+id|ENODEV
+suffix:semicolon
 macro_line|#ifdef CONFIG_PERFMON
 multiline_comment|/* perfmon_init() can fail, but we have no way to report it */
+id|ret
+op_assign
 id|perfmon_init
 c_func
 (paren
@@ -62,6 +70,9 @@ macro_line|#endif
 id|ops-&gt;backtrace
 op_assign
 id|ia64_backtrace
+suffix:semicolon
+r_return
+id|ret
 suffix:semicolon
 )brace
 DECL|function|oprofile_arch_exit

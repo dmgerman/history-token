@@ -454,9 +454,9 @@ r_void
 (brace
 r_int
 id|err
-op_assign
-l_int|0
 suffix:semicolon
+id|err
+op_assign
 id|oprofile_arch_init
 c_func
 (paren
@@ -467,6 +467,10 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|err
+OL
+l_int|0
+op_logical_or
 id|timer
 )paren
 (brace

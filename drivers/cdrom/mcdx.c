@@ -10,7 +10,6 @@ op_assign
 l_string|&quot;$Id: mcdx.c,v 1.21 1997/01/26 07:12:59 davem Exp $&quot;
 suffix:semicolon
 macro_line|#endif
-macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
@@ -5325,23 +5324,12 @@ r_void
 r_int
 id|drive
 suffix:semicolon
-macro_line|#ifdef MODULE
-id|xwarn
-c_func
-(paren
-l_string|&quot;Version 2.14(hs) for &quot;
-id|UTS_RELEASE
-l_string|&quot;&bslash;n&quot;
-)paren
-suffix:semicolon
-macro_line|#else
 id|xwarn
 c_func
 (paren
 l_string|&quot;Version 2.14(hs) &bslash;n&quot;
 )paren
 suffix:semicolon
-macro_line|#endif
 id|xwarn
 c_func
 (paren

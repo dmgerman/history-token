@@ -2685,22 +2685,19 @@ r_int
 id|mobile_mode
 )paren
 (brace
+r_struct
+id|dib3000_state
+op_star
+id|state
+suffix:semicolon
 id|deb_info
 c_func
 (paren
 l_string|&quot;init start&bslash;n&quot;
 )paren
 suffix:semicolon
-r_struct
-id|dib3000_state
-op_star
 id|state
 op_assign
-(paren
-r_struct
-id|dib3000_state
-op_star
-)paren
 id|fe-&gt;demodulator_priv
 suffix:semicolon
 id|state-&gt;timing_offset

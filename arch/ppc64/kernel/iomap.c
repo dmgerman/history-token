@@ -608,12 +608,13 @@ op_amp
 id|IORESOURCE_MEM
 )paren
 r_return
+id|ioremap
+c_func
 (paren
-r_void
-id|__iomem
-op_star
-)paren
 id|start
+comma
+id|len
+)paren
 suffix:semicolon
 multiline_comment|/* What? */
 r_return

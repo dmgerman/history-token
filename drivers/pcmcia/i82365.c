@@ -132,6 +132,7 @@ multiline_comment|/* Default base address for i82365sl and other ISA chips */
 DECL|variable|i365_base
 r_static
 r_int
+r_int
 id|i365_base
 op_assign
 l_int|0x3e0
@@ -299,7 +300,7 @@ c_func
 (paren
 id|i365_base
 comma
-r_int
+id|ulong
 comma
 l_int|0444
 )paren
@@ -559,7 +560,7 @@ r_int
 id|number
 suffix:semicolon
 DECL|member|ioaddr
-id|ioaddr_t
+id|kio_addr_t
 id|ioaddr
 suffix:semicolon
 DECL|member|psock
@@ -834,7 +835,7 @@ id|flags
 )paren
 suffix:semicolon
 (brace
-id|ioaddr_t
+id|kio_addr_t
 id|port
 op_assign
 id|socket
@@ -924,7 +925,7 @@ id|flags
 )paren
 suffix:semicolon
 (brace
-id|ioaddr_t
+id|kio_addr_t
 id|port
 op_assign
 id|socket
@@ -2953,7 +2954,7 @@ id|__init
 id|identify
 c_func
 (paren
-id|u_short
+id|kio_addr_t
 id|port
 comma
 id|u_short
@@ -3303,7 +3304,7 @@ id|sock
 id|u_char
 id|stat
 suffix:semicolon
-id|u_short
+id|kio_addr_t
 id|start
 comma
 id|stop
@@ -3435,7 +3436,7 @@ id|__init
 id|add_socket
 c_func
 (paren
-id|u_short
+id|kio_addr_t
 id|port
 comma
 r_int
@@ -3602,7 +3603,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot; ISA-to-PCMCIA at port %#x ofs 0x%02x&quot;
+l_string|&quot; ISA-to-PCMCIA at port %#lx ofs 0x%02x&quot;
 comma
 id|t-&gt;ioaddr
 comma
@@ -4074,7 +4075,7 @@ id|ns
 comma
 id|id
 suffix:semicolon
-id|ioaddr_t
+id|kio_addr_t
 id|port
 suffix:semicolon
 macro_line|#ifdef CONFIG_PNP
@@ -4232,7 +4233,7 @@ l_int|0
 id|printk
 c_func
 (paren
-l_string|&quot;port conflict at %#x&bslash;n&quot;
+l_string|&quot;port conflict at %#lx&bslash;n&quot;
 comma
 id|i365_base
 )paren
@@ -6382,7 +6383,7 @@ c_func
 l_int|1
 comma
 l_string|&quot;SetIOMap(%d, %d, %#2.2x, %d ns, &quot;
-l_string|&quot;%#4.4x-%#4.4x)&bslash;n&quot;
+l_string|&quot;%#lx-%#lx)&bslash;n&quot;
 comma
 id|sock
 comma
@@ -6637,8 +6638,8 @@ c_func
 (paren
 l_int|1
 comma
-l_string|&quot;SetMemMap(%d, %d, %#2.2x, %d ns, %#5.5lx-%#5.5&quot;
-l_string|&quot;lx, %#5.5x)&bslash;n&quot;
+l_string|&quot;SetMemMap(%d, %d, %#2.2x, %d ns, %#lx-%#lx, &quot;
+l_string|&quot;%#x)&bslash;n&quot;
 comma
 id|sock
 comma
@@ -8248,7 +8249,7 @@ l_int|2
 )paren
 suffix:semicolon
 )brace
-macro_line|#ifdef __ISAPNP__
+macro_line|#ifdef CONFIG_PNP
 r_if
 c_cond
 (paren

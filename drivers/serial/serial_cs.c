@@ -888,7 +888,7 @@ id|serial_info
 op_star
 id|info
 comma
-id|ioaddr_t
+id|kio_addr_t
 id|iobase
 comma
 r_int
@@ -1214,7 +1214,7 @@ id|link
 )paren
 (brace
 r_static
-id|ioaddr_t
+id|kio_addr_t
 id|base
 (braket
 l_int|5
@@ -1317,7 +1317,7 @@ id|CONF_VALID_CLIENT
 )paren
 )paren
 (brace
-id|ioaddr_t
+id|kio_addr_t
 id|port
 op_assign
 l_int|0

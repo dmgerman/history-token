@@ -2,7 +2,6 @@ multiline_comment|/*&n; *      Copyright (C) 1996, 1997 Claus-Justus Heine.&n;&n
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
-macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/signal.h&gt;
@@ -1240,10 +1239,6 @@ id|KERN_INFO
 l_string|&quot;Support for QIC-113 compatible volume table, dynamic memory allocation&bslash;n&quot;
 id|KERN_INFO
 l_string|&quot;and builtin compression (lzrw3 algorithm).&bslash;n&quot;
-id|KERN_INFO
-l_string|&quot;Compiled for Linux version %s&bslash;n&quot;
-comma
-id|UTS_RELEASE
 )paren
 suffix:semicolon
 )brace
@@ -1254,8 +1249,6 @@ c_func
 (paren
 id|KERN_INFO
 id|ZFTAPE_VERSION
-l_string|&quot; for Linux &quot;
-id|UTS_RELEASE
 l_string|&quot;&bslash;n&quot;
 )paren
 suffix:semicolon

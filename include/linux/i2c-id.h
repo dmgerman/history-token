@@ -351,6 +351,8 @@ DECL|macro|I2C_HW_B_S3VIA
 mdefine_line|#define I2C_HW_B_S3VIA&t;0x18&t;/* S3Via ProSavage adapter&t;&t;*/
 DECL|macro|I2C_HW_B_ZR36067
 mdefine_line|#define I2C_HW_B_ZR36067 0x19&t;/* Zoran-36057/36067 based boards&t;*/
+DECL|macro|I2C_HW_B_CX2388x
+mdefine_line|#define I2C_HW_B_CX2388x 0x1b&t;/* connexant 2388x based tv cards&t;*/
 multiline_comment|/* --- PCF 8584 based algorithms&t;&t;&t;&t;&t;*/
 DECL|macro|I2C_HW_P_LP
 mdefine_line|#define I2C_HW_P_LP&t;0x00&t;/* Parallel port interface&t;&t;*/

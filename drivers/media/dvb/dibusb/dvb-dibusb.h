@@ -14,20 +14,19 @@ macro_line|#include &quot;mt352.h&quot;
 multiline_comment|/* debug */
 macro_line|#ifdef CONFIG_DVB_DIBCOM_DEBUG
 DECL|macro|dprintk
-mdefine_line|#define dprintk(level,args...) &bslash;&n;&t;    do { if ((debug &amp; level)) { printk(args); } } while (0)
+mdefine_line|#define dprintk(level,args...) &bslash;&n;&t;    do { if ((dvb_dibusb_debug &amp; level)) { printk(args); } } while (0)
 DECL|macro|debug_dump
-mdefine_line|#define debug_dump(b,l) if (debug) {&bslash;&n;&t;int i; deb_xfer(&quot;%s: %d &gt; &quot;,__FUNCTION__,l); &bslash;&n;&t;for (i = 0; i &lt; l; i++) deb_xfer(&quot;%02x &quot;, b[i]); &bslash;&n;&t;deb_xfer(&quot;&bslash;n&quot;);&bslash;&n;}
-multiline_comment|/* module parameters - declared in -core.c */
-r_extern
-r_int
-id|debug
-suffix:semicolon
+mdefine_line|#define debug_dump(b,l) {&bslash;&n;&t;int i; &bslash;&n;&t;for (i = 0; i &lt; l; i++) deb_xfer(&quot;%02x &quot;, b[i]); &bslash;&n;&t;deb_xfer(&quot;&bslash;n&quot;);&bslash;&n;}
 macro_line|#else
 DECL|macro|dprintk
 mdefine_line|#define dprintk(args...)
 DECL|macro|debug_dump
 mdefine_line|#define debug_dump(b,l)
 macro_line|#endif
+r_extern
+r_int
+id|dvb_dibusb_debug
+suffix:semicolon
 multiline_comment|/* Version information */
 DECL|macro|DRIVER_VERSION
 mdefine_line|#define DRIVER_VERSION &quot;0.3&quot;
@@ -35,15 +34,6 @@ DECL|macro|DRIVER_DESC
 mdefine_line|#define DRIVER_DESC &quot;Driver for DiBcom based USB Budget DVB-T device&quot;
 DECL|macro|DRIVER_AUTHOR
 mdefine_line|#define DRIVER_AUTHOR &quot;Patrick Boettcher, patrick.boettcher@desy.de&quot;
-multiline_comment|/* module parameters - declared in -core.c */
-r_extern
-r_int
-id|pid_parse
-suffix:semicolon
-r_extern
-r_int
-id|rc_query_interval
-suffix:semicolon
 DECL|macro|deb_info
 mdefine_line|#define deb_info(args...) dprintk(0x01,args)
 DECL|macro|deb_xfer
@@ -373,10 +363,6 @@ DECL|member|feedcount
 r_int
 id|feedcount
 suffix:semicolon
-DECL|member|pid_parse
-r_int
-id|pid_parse
-suffix:semicolon
 DECL|member|xfer_ops
 r_struct
 id|dib_fe_xfer_ops
@@ -498,6 +484,15 @@ suffix:semicolon
 DECL|member|rc_input_event
 r_int
 id|rc_input_event
+suffix:semicolon
+multiline_comment|/* module parameters */
+DECL|member|pid_parse
+r_int
+id|pid_parse
+suffix:semicolon
+DECL|member|rc_query_interval
+r_int
+id|rc_query_interval
 suffix:semicolon
 )brace
 suffix:semicolon

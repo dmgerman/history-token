@@ -171,6 +171,7 @@ id|NF_DROP
 suffix:semicolon
 )brace
 multiline_comment|/*      strlen(&quot;&bslash;1DCC CHAT chat AAAAAAAA P&bslash;1&bslash;n&quot;)=27&n;&t; *      strlen(&quot;&bslash;1DCC SCHAT chat AAAAAAAA P&bslash;1&bslash;n&quot;)=28&n;&t; *      strlen(&quot;&bslash;1DCC SEND F AAAAAAAA P S&bslash;1&bslash;n&quot;)=26&n;&t; *      strlen(&quot;&bslash;1DCC MOVE F AAAAAAAA P S&bslash;1&bslash;n&quot;)=26&n;&t; *      strlen(&quot;&bslash;1DCC TSEND F AAAAAAAA P S&bslash;1&bslash;n&quot;)=27&n;&t; *              AAAAAAAAA: bound addr (1.0.0.0==16777216, min 8 digits,&n;&t; *                      255.255.255.255==4294967296, 10 digits)&n;&t; *              P:         bound port (min 1 d, max 5d (65635))&n;&t; *              F:         filename   (min 1 d )&n;&t; *              S:         size       (min 1 d )&n;&t; *              0x01, &bslash;n:  terminators&n;&t; */
+multiline_comment|/* AAA = &quot;us&quot;, ie. where server normally talks to. */
 id|sprintf
 c_func
 (paren
@@ -181,7 +182,12 @@ comma
 id|ntohl
 c_func
 (paren
-id|exp-&gt;tuple.src.ip
+id|exp-&gt;master-&gt;tuplehash
+(braket
+id|IP_CT_DIR_REPLY
+)braket
+dot
+id|tuple.dst.ip
 )paren
 comma
 id|port

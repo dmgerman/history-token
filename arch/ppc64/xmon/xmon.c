@@ -2522,6 +2522,61 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+multiline_comment|/* On systems with a hypervisor, we can&squot;t set the DABR&n;   (data address breakpoint register) directly. */
+DECL|function|set_controlled_dabr
+r_static
+r_void
+id|set_controlled_dabr
+c_func
+(paren
+r_int
+r_int
+id|val
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|systemcfg-&gt;platform
+op_eq
+id|PLATFORM_PSERIES_LPAR
+)paren
+(brace
+r_int
+id|rc
+op_assign
+id|plpar_hcall_norets
+c_func
+(paren
+id|H_SET_DABR
+comma
+id|val
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|rc
+op_ne
+id|H_Success
+)paren
+id|xmon_printf
+c_func
+(paren
+l_string|&quot;Warning: setting DABR failed (%d)&bslash;n&quot;
+comma
+id|rc
+)paren
+suffix:semicolon
+)brace
+r_else
+id|set_dabr
+c_func
+(paren
+id|val
+)paren
+suffix:semicolon
+)brace
 DECL|function|at_breakpoint
 r_static
 r_struct
@@ -3013,7 +3068,7 @@ c_cond
 (paren
 id|dabr.enabled
 )paren
-id|set_dabr
+id|set_controlled_dabr
 c_func
 (paren
 id|dabr.address
@@ -3175,7 +3230,7 @@ c_func
 r_void
 )paren
 (brace
-id|set_dabr
+id|set_controlled_dabr
 c_func
 (paren
 l_int|0
@@ -4881,8 +4936,8 @@ l_string|&quot;b                show breakpoints&bslash;n&quot;
 l_string|&quot;b &lt;addr&gt; [cnt]   set breakpoint at given instr addr&bslash;n&quot;
 l_string|&quot;bc               clear all breakpoints&bslash;n&quot;
 l_string|&quot;bc &lt;n/addr&gt;      clear breakpoint number n or at addr&bslash;n&quot;
-l_string|&quot;bi &lt;addr&gt; [cnt]  set hardware instr breakpoint (broken?)&bslash;n&quot;
-l_string|&quot;bd &lt;addr&gt; [cnt]  set hardware data breakpoint (broken?)&bslash;n&quot;
+l_string|&quot;bi &lt;addr&gt; [cnt]  set hardware instr breakpoint (POWER3/RS64 only)&bslash;n&quot;
+l_string|&quot;bd &lt;addr&gt; [cnt]  set hardware data breakpoint&bslash;n&quot;
 l_string|&quot;&quot;
 suffix:semicolon
 r_static

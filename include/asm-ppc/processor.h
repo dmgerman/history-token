@@ -32,6 +32,8 @@ DECL|macro|_CHRP_Motorola
 mdefine_line|#define _CHRP_Motorola&t;0x04&t;/* motorola chrp, the cobra */
 DECL|macro|_CHRP_IBM
 mdefine_line|#define _CHRP_IBM&t;0x05&t;/* IBM chrp, the longtrail and longtrail 2 */
+DECL|macro|_CHRP_Pegasos
+mdefine_line|#define _CHRP_Pegasos&t;0x06&t;/* Genesi/bplan&squot;s Pegasos and Pegasos2 */
 DECL|macro|_GLOBAL
 mdefine_line|#define _GLOBAL(n)&bslash;&n;&t;.stabs __stringify(n:F-1),N_FUN,0,0,n;&bslash;&n;&t;.globl n;&bslash;&n;n:
 multiline_comment|/*&n; * this is the minimum allowable io space due to the location&n; * of the io areas on prep (first one at 0x80000000) but&n; * as soon as I get around to remapping the io areas with the BATs&n; * to match the mac we can raise this. -- Cort&n; */
@@ -47,6 +49,10 @@ multiline_comment|/* what kind of prep workstation we are */
 r_extern
 r_int
 id|_prep_type
+suffix:semicolon
+r_extern
+r_int
+id|_chrp_type
 suffix:semicolon
 multiline_comment|/*&n; * This is used to identify the board type from a given PReP board&n; * vendor. Board revision is also made available.&n; */
 r_extern

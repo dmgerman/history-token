@@ -91,6 +91,10 @@ DECL|member|ecr_mask
 id|u32
 id|ecr_mask
 suffix:semicolon
+DECL|member|cons_index
+id|u32
+id|cons_index
+suffix:semicolon
 DECL|member|msi_x_vector
 id|u16
 id|msi_x_vector
@@ -106,10 +110,6 @@ suffix:semicolon
 DECL|member|nent
 r_int
 id|nent
-suffix:semicolon
-DECL|member|cons_index
-r_int
-id|cons_index
 suffix:semicolon
 DECL|member|page_list
 r_struct

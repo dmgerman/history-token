@@ -213,7 +213,7 @@ id|card_state
 suffix:semicolon
 multiline_comment|/*  0 = no socket,&n;&t;&t;&t;&t;    1 = empty socket, &n;&t;&t;&t;&t;    2 = card but not initialized,&n;&t;&t;&t;&t;    3 = operational card */
 DECL|member|io_base
-r_int
+id|kio_addr_t
 id|io_base
 suffix:semicolon
 multiline_comment|/* base io address of the socket */
@@ -378,6 +378,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+op_logical_neg
 id|request_region
 c_func
 (paren

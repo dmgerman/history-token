@@ -618,7 +618,7 @@ id|ioremap
 c_func
 (paren
 (paren
-id|ioaddr_t
+id|kio_addr_t
 )paren
 l_int|0xF00000000
 comma
@@ -666,7 +666,7 @@ id|ioremap
 c_func
 (paren
 (paren
-id|ioaddr_t
+id|kio_addr_t
 )paren
 l_int|0xF08000000
 comma

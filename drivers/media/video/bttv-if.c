@@ -1,4 +1,4 @@
-multiline_comment|/*&n;    $Id: bttv-if.c,v 1.3 2004/10/13 10:39:00 kraxel Exp $&n;&n;    bttv-if.c  --  old gpio interface to other kernel modules&n;                   don&squot;t use in new code, will go away in 2.7&n;&t;&t;   have a look at bttv-gpio.c instead.&n;&n;    bttv - Bt848 frame grabber driver&n;&n;    Copyright (C) 1996,97,98 Ralph  Metzler (rjkm@thp.uni-koeln.de)&n;                           &amp; Marcus Metzler (mocm@thp.uni-koeln.de)&n;    (c) 1999-2003 Gerd Knorr &lt;kraxel@bytesex.org&gt;&n;&n;    This program is free software; you can redistribute it and/or modify&n;    it under the terms of the GNU General Public License as published by&n;    the Free Software Foundation; either version 2 of the License, or&n;    (at your option) any later version.&n;&n;    This program is distributed in the hope that it will be useful,&n;    but WITHOUT ANY WARRANTY; without even the implied warranty of&n;    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n;    GNU General Public License for more details.&n;&n;    You should have received a copy of the GNU General Public License&n;    along with this program; if not, write to the Free Software&n;    Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n;&n;*/
+multiline_comment|/*&n;    $Id: bttv-if.c,v 1.4 2004/11/17 18:47:47 kraxel Exp $&n;&n;    bttv-if.c  --  old gpio interface to other kernel modules&n;                   don&squot;t use in new code, will go away in 2.7&n;&t;&t;   have a look at bttv-gpio.c instead.&n;&n;    bttv - Bt848 frame grabber driver&n;&n;    Copyright (C) 1996,97,98 Ralph  Metzler (rjkm@thp.uni-koeln.de)&n;                           &amp; Marcus Metzler (mocm@thp.uni-koeln.de)&n;    (c) 1999-2003 Gerd Knorr &lt;kraxel@bytesex.org&gt;&n;&n;    This program is free software; you can redistribute it and/or modify&n;    it under the terms of the GNU General Public License as published by&n;    the Free Software Foundation; either version 2 of the License, or&n;    (at your option) any later version.&n;&n;    This program is distributed in the hope that it will be useful,&n;    but WITHOUT ANY WARRANTY; without even the implied warranty of&n;    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n;    GNU General Public License for more details.&n;&n;    You should have received a copy of the GNU General Public License&n;    along with this program; if not, write to the Free Software&n;    Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n;&n;*/
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
@@ -82,6 +82,13 @@ op_star
 id|cardid
 )paren
 (brace
+id|printk
+c_func
+(paren
+l_string|&quot;The bttv_* interface is obsolete and will go away,&bslash;n&quot;
+l_string|&quot;please use the new, sysfs based interface instead.&bslash;n&quot;
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -163,7 +170,8 @@ id|card
 id|printk
 c_func
 (paren
-l_string|&quot;bttv_get_id is obsolete, use bttv_get_cardinfo instead&bslash;n&quot;
+l_string|&quot;The bttv_* interface is obsolete and will go away,&bslash;n&quot;
+l_string|&quot;please use the new, sysfs based interface instead.&bslash;n&quot;
 )paren
 suffix:semicolon
 r_if
@@ -446,6 +454,48 @@ suffix:semicolon
 r_return
 op_amp
 id|btv-&gt;gpioq
+suffix:semicolon
+)brace
+DECL|function|bttv_i2c_call
+r_void
+id|bttv_i2c_call
+c_func
+(paren
+r_int
+r_int
+id|card
+comma
+r_int
+r_int
+id|cmd
+comma
+r_void
+op_star
+id|arg
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|card
+op_ge
+id|bttv_num
+)paren
+r_return
+suffix:semicolon
+id|bttv_call_i2c_clients
+c_func
+(paren
+op_amp
+id|bttvs
+(braket
+id|card
+)braket
+comma
+id|cmd
+comma
+id|arg
+)paren
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Local variables:&n; * c-basic-offset: 8&n; * End:&n; */

@@ -397,11 +397,11 @@ op_star
 id|addr_link
 suffix:semicolon
 multiline_comment|/* addr symlink */
-DECL|member|_users
-id|atomic_t
-id|_users
+DECL|member|kref
+r_struct
+id|kref
+id|kref
 suffix:semicolon
-multiline_comment|/* reference count */
 DECL|member|_flags
 r_int
 r_int
@@ -416,14 +416,8 @@ op_star
 id|of_chosen
 suffix:semicolon
 multiline_comment|/* flag descriptions */
-DECL|macro|OF_STALE
-mdefine_line|#define OF_STALE   0 /* node is slated for deletion */
 DECL|macro|OF_DYNAMIC
 mdefine_line|#define OF_DYNAMIC 1 /* node and properties were allocated via kmalloc */
-DECL|macro|OF_IS_STALE
-mdefine_line|#define OF_IS_STALE(x) test_bit(OF_STALE, &amp;x-&gt;_flags)
-DECL|macro|OF_MARK_STALE
-mdefine_line|#define OF_MARK_STALE(x) set_bit(OF_STALE, &amp;x-&gt;_flags)
 DECL|macro|OF_IS_DYNAMIC
 mdefine_line|#define OF_IS_DYNAMIC(x) test_bit(OF_DYNAMIC, &amp;x-&gt;_flags)
 DECL|macro|OF_MARK_DYNAMIC

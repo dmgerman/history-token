@@ -41,11 +41,11 @@ macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;asm/time.h&gt;
 macro_line|#include &lt;asm/nvram.h&gt;
 macro_line|#include &lt;asm/plpar_wrappers.h&gt;
-macro_line|#include &quot;i8259.h&quot;
 macro_line|#include &lt;asm/xics.h&gt;
-macro_line|#include &lt;asm/ppcdebug.h&gt;
 macro_line|#include &lt;asm/cputable.h&gt;
+macro_line|#include &quot;i8259.h&quot;
 macro_line|#include &quot;mpic.h&quot;
+macro_line|#include &quot;pci.h&quot;
 macro_line|#ifdef DEBUG
 DECL|macro|DBG
 mdefine_line|#define DBG(fmt...) udbg_printf(fmt)
@@ -53,14 +53,6 @@ macro_line|#else
 DECL|macro|DBG
 mdefine_line|#define DBG(fmt...)
 macro_line|#endif
-r_extern
-r_void
-id|find_and_init_phbs
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
 r_extern
 r_void
 id|pSeries_final_fixup
@@ -148,19 +140,6 @@ r_int
 id|fwnmi_active
 suffix:semicolon
 multiline_comment|/* TRUE if an FWNMI handler is present */
-DECL|variable|virtPython0Facilities
-r_int
-r_int
-id|virtPython0Facilities
-op_assign
-l_int|0
-suffix:semicolon
-singleline_comment|// python0 facility area (memory mapped io) (64-bit format) VIRTUAL address.
-r_extern
-r_int
-r_int
-id|loops_per_jiffy
-suffix:semicolon
 r_extern
 r_int
 r_int
@@ -800,7 +779,11 @@ c_func
 )paren
 suffix:semicolon
 multiline_comment|/* Find and initialize PCI host bridges */
-multiline_comment|/* iSeries needs to be done much later. */
+id|init_pci_config_tokens
+c_func
+(paren
+)paren
+suffix:semicolon
 id|eeh_init
 c_func
 (paren

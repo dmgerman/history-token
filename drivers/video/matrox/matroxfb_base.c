@@ -7393,7 +7393,7 @@ id|matrox_mystique
 )brace
 suffix:semicolon
 macro_line|#endif&t;/* CONFIG_FB_MATROX_MYSTIQUE */
-macro_line|#ifdef CONFIG_FB_MATROX_G100
+macro_line|#ifdef CONFIG_FB_MATROX_G
 DECL|variable|vbG100
 r_static
 r_struct
@@ -7691,7 +7691,7 @@ l_string|&quot;Mystique 220 (PCI)&quot;
 )brace
 comma
 macro_line|#endif
-macro_line|#ifdef CONFIG_FB_MATROX_G100
+macro_line|#ifdef CONFIG_FB_MATROX_G
 (brace
 id|PCI_VENDOR_ID_MATROX
 comma
@@ -11429,7 +11429,7 @@ l_int|0
 )brace
 comma
 macro_line|#endif
-macro_line|#ifdef CONFIG_FB_MATROX_G100
+macro_line|#ifdef CONFIG_FB_MATROX_G
 (brace
 id|PCI_VENDOR_ID_MATROX
 comma

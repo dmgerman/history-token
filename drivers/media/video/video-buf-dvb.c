@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * $Id: video-buf-dvb.c,v 1.5 2004/11/07 13:17:15 kraxel Exp $&n; *&n; * some helper function for simple DVB cards which simply DMA the&n; * complete transport stream and let the computer sort everything else&n; * (i.e. we are using the software demux, ...).  Also uses the&n; * video-buf to manage DMA buffers.&n; *&n; * (c) 2004 Gerd Knorr &lt;kraxel@bytesex.org&gt; [SUSE Labs]&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; */
+multiline_comment|/*&n; * $Id: video-buf-dvb.c,v 1.7 2004/12/09 12:51:35 kraxel Exp $&n; *&n; * some helper function for simple DVB cards which simply DMA the&n; * complete transport stream and let the computer sort everything else&n; * (i.e. we are using the software demux, ...).  Also uses the&n; * video-buf to manage DMA buffers.&n; *&n; * (c) 2004 Gerd Knorr &lt;kraxel@bytesex.org&gt; [SUSE Labs]&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/device.h&gt;
@@ -48,7 +48,7 @@ l_string|&quot;enable debug messages&quot;
 )paren
 suffix:semicolon
 DECL|macro|dprintk
-mdefine_line|#define dprintk(fmt, arg...)&t;if (debug)&t;&t;&t;&bslash;&n;&t;printk(KERN_DEBUG &quot;%s/dvb: &quot; fmt, dvb-&gt;name, ## arg)
+mdefine_line|#define dprintk(fmt, arg...)&t;if (debug)&t;&t;&t;&bslash;&n;&t;printk(KERN_DEBUG &quot;%s/dvb: &quot; fmt, dvb-&gt;name , ## arg)
 multiline_comment|/* ------------------------------------------------------------------ */
 DECL|function|videobuf_dvb_thread
 r_static
@@ -473,6 +473,15 @@ r_struct
 id|videobuf_dvb
 op_star
 id|dvb
+comma
+r_struct
+id|module
+op_star
+id|module
+comma
+r_void
+op_star
+id|adapter_priv
 )paren
 (brace
 r_int
@@ -496,7 +505,7 @@ id|dvb-&gt;adapter
 comma
 id|dvb-&gt;name
 comma
-id|THIS_MODULE
+id|module
 )paren
 suffix:semicolon
 r_if
@@ -522,6 +531,10 @@ r_goto
 id|fail_adapter
 suffix:semicolon
 )brace
+id|dvb-&gt;adapter-&gt;priv
+op_assign
+id|adapter_priv
+suffix:semicolon
 multiline_comment|/* register frontend */
 id|result
 op_assign

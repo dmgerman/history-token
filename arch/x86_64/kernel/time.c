@@ -3781,7 +3781,6 @@ id|time_init_device
 suffix:semicolon
 macro_line|#ifdef CONFIG_HPET_EMULATE_RTC
 multiline_comment|/* HPET in LegacyReplacement Mode eats up RTC interrupt line. When, HPET&n; * is enabled, we support RTC interrupt functionality in software.&n; * RTC has 3 kinds of interrupts:&n; * 1) Update Interrupt - generate an interrupt, every sec, when RTC clock&n; *    is updated&n; * 2) Alarm Interrupt - generate an interrupt at a specific time of day&n; * 3) Periodic Interrupt - generate periodic interrupt, with frequencies&n; *    2Hz-8192Hz (2Hz-64Hz for non-root user) (all freqs in powers of 2)&n; * (1) and (2) above are implemented using polling at a frequency of&n; * 64 Hz. The exact frequency is a tradeoff between accuracy and interrupt&n; * overhead. (DEFAULT_RTC_INT_FREQ)&n; * For (3), we use interrupts at 64Hz or user specified periodic&n; * frequency, whichever is higher.&n; */
-macro_line|#include &lt;linux/mc146818rtc.h&gt;
 macro_line|#include &lt;linux/rtc.h&gt;
 r_extern
 id|irqreturn_t

@@ -3,6 +3,7 @@ macro_line|#ifndef __ASM_PPC_CPUTABLE_H
 DECL|macro|__ASM_PPC_CPUTABLE_H
 mdefine_line|#define __ASM_PPC_CPUTABLE_H
 macro_line|#include &lt;linux/config.h&gt;
+macro_line|#include &lt;asm/page.h&gt; /* for ASM_CONST */
 multiline_comment|/* Exposed to userland CPU features - Must match ppc32 definitions */
 DECL|macro|PPC_FEATURE_32
 mdefine_line|#define PPC_FEATURE_32&t;&t;&t;0x80000000
@@ -185,63 +186,63 @@ macro_line|#endif /* __ASSEMBLY__ */
 multiline_comment|/* CPU kernel features */
 multiline_comment|/* Retain the 32b definitions for the time being - use bottom half of word */
 DECL|macro|CPU_FTR_SPLIT_ID_CACHE
-mdefine_line|#define CPU_FTR_SPLIT_ID_CACHE&t;&t;0x0000000000000001
+mdefine_line|#define CPU_FTR_SPLIT_ID_CACHE&t;&t;ASM_CONST(0x0000000000000001)
 DECL|macro|CPU_FTR_L2CR
-mdefine_line|#define CPU_FTR_L2CR&t;&t;&t;0x0000000000000002
+mdefine_line|#define CPU_FTR_L2CR&t;&t;&t;ASM_CONST(0x0000000000000002)
 DECL|macro|CPU_FTR_SPEC7450
-mdefine_line|#define CPU_FTR_SPEC7450&t;&t;0x0000000000000004
+mdefine_line|#define CPU_FTR_SPEC7450&t;&t;ASM_CONST(0x0000000000000004)
 DECL|macro|CPU_FTR_ALTIVEC
-mdefine_line|#define CPU_FTR_ALTIVEC&t;&t;&t;0x0000000000000008
+mdefine_line|#define CPU_FTR_ALTIVEC&t;&t;&t;ASM_CONST(0x0000000000000008)
 DECL|macro|CPU_FTR_TAU
-mdefine_line|#define CPU_FTR_TAU&t;&t;&t;0x0000000000000010
+mdefine_line|#define CPU_FTR_TAU&t;&t;&t;ASM_CONST(0x0000000000000010)
 DECL|macro|CPU_FTR_CAN_DOZE
-mdefine_line|#define CPU_FTR_CAN_DOZE&t;&t;0x0000000000000020
+mdefine_line|#define CPU_FTR_CAN_DOZE&t;&t;ASM_CONST(0x0000000000000020)
 DECL|macro|CPU_FTR_USE_TB
-mdefine_line|#define CPU_FTR_USE_TB&t;&t;&t;0x0000000000000040
+mdefine_line|#define CPU_FTR_USE_TB&t;&t;&t;ASM_CONST(0x0000000000000040)
 DECL|macro|CPU_FTR_604_PERF_MON
-mdefine_line|#define CPU_FTR_604_PERF_MON&t;&t;0x0000000000000080
+mdefine_line|#define CPU_FTR_604_PERF_MON&t;&t;ASM_CONST(0x0000000000000080)
 DECL|macro|CPU_FTR_601
-mdefine_line|#define CPU_FTR_601&t;&t;&t;0x0000000000000100
+mdefine_line|#define CPU_FTR_601&t;&t;&t;ASM_CONST(0x0000000000000100)
 DECL|macro|CPU_FTR_HPTE_TABLE
-mdefine_line|#define CPU_FTR_HPTE_TABLE&t;&t;0x0000000000000200
+mdefine_line|#define CPU_FTR_HPTE_TABLE&t;&t;ASM_CONST(0x0000000000000200)
 DECL|macro|CPU_FTR_CAN_NAP
-mdefine_line|#define CPU_FTR_CAN_NAP&t;&t;&t;0x0000000000000400
+mdefine_line|#define CPU_FTR_CAN_NAP&t;&t;&t;ASM_CONST(0x0000000000000400)
 DECL|macro|CPU_FTR_L3CR
-mdefine_line|#define CPU_FTR_L3CR&t;&t;&t;0x0000000000000800
+mdefine_line|#define CPU_FTR_L3CR&t;&t;&t;ASM_CONST(0x0000000000000800)
 DECL|macro|CPU_FTR_L3_DISABLE_NAP
-mdefine_line|#define CPU_FTR_L3_DISABLE_NAP&t;&t;0x0000000000001000
+mdefine_line|#define CPU_FTR_L3_DISABLE_NAP&t;&t;ASM_CONST(0x0000000000001000)
 DECL|macro|CPU_FTR_NAP_DISABLE_L2_PR
-mdefine_line|#define CPU_FTR_NAP_DISABLE_L2_PR&t;0x0000000000002000
+mdefine_line|#define CPU_FTR_NAP_DISABLE_L2_PR&t;ASM_CONST(0x0000000000002000)
 DECL|macro|CPU_FTR_DUAL_PLL_750FX
-mdefine_line|#define CPU_FTR_DUAL_PLL_750FX&t;&t;0x0000000000004000
+mdefine_line|#define CPU_FTR_DUAL_PLL_750FX&t;&t;ASM_CONST(0x0000000000004000)
 multiline_comment|/* Add the 64b processor unique features in the top half of the word */
 DECL|macro|CPU_FTR_SLB
-mdefine_line|#define CPU_FTR_SLB           &t;&t;0x0000000100000000
+mdefine_line|#define CPU_FTR_SLB           &t;&t;ASM_CONST(0x0000000100000000)
 DECL|macro|CPU_FTR_16M_PAGE
-mdefine_line|#define CPU_FTR_16M_PAGE      &t;&t;0x0000000200000000
+mdefine_line|#define CPU_FTR_16M_PAGE      &t;&t;ASM_CONST(0x0000000200000000)
 DECL|macro|CPU_FTR_TLBIEL
-mdefine_line|#define CPU_FTR_TLBIEL         &t;&t;0x0000000400000000
+mdefine_line|#define CPU_FTR_TLBIEL         &t;&t;ASM_CONST(0x0000000400000000)
 DECL|macro|CPU_FTR_NOEXECUTE
-mdefine_line|#define CPU_FTR_NOEXECUTE     &t;&t;0x0000000800000000
+mdefine_line|#define CPU_FTR_NOEXECUTE     &t;&t;ASM_CONST(0x0000000800000000)
 DECL|macro|CPU_FTR_NODSISRALIGN
-mdefine_line|#define CPU_FTR_NODSISRALIGN  &t;&t;0x0000001000000000
+mdefine_line|#define CPU_FTR_NODSISRALIGN  &t;&t;ASM_CONST(0x0000001000000000)
 DECL|macro|CPU_FTR_IABR
-mdefine_line|#define CPU_FTR_IABR  &t;&t;&t;0x0000002000000000
+mdefine_line|#define CPU_FTR_IABR  &t;&t;&t;ASM_CONST(0x0000002000000000)
 DECL|macro|CPU_FTR_MMCRA
-mdefine_line|#define CPU_FTR_MMCRA  &t;&t;&t;0x0000004000000000
+mdefine_line|#define CPU_FTR_MMCRA  &t;&t;&t;ASM_CONST(0x0000004000000000)
 DECL|macro|CPU_FTR_PMC8
-mdefine_line|#define CPU_FTR_PMC8  &t;&t;&t;0x0000008000000000
+mdefine_line|#define CPU_FTR_PMC8  &t;&t;&t;ASM_CONST(0x0000008000000000)
 DECL|macro|CPU_FTR_SMT
-mdefine_line|#define CPU_FTR_SMT  &t;&t;&t;0x0000010000000000
+mdefine_line|#define CPU_FTR_SMT  &t;&t;&t;ASM_CONST(0x0000010000000000)
 DECL|macro|CPU_FTR_COHERENT_ICACHE
-mdefine_line|#define CPU_FTR_COHERENT_ICACHE  &t;0x0000020000000000
+mdefine_line|#define CPU_FTR_COHERENT_ICACHE  &t;ASM_CONST(0x0000020000000000)
 DECL|macro|CPU_FTR_LOCKLESS_TLBIE
-mdefine_line|#define CPU_FTR_LOCKLESS_TLBIE&t;&t;0x0000040000000000
+mdefine_line|#define CPU_FTR_LOCKLESS_TLBIE&t;&t;ASM_CONST(0x0000040000000000)
 DECL|macro|CPU_FTR_MMCRA_SIHV
-mdefine_line|#define CPU_FTR_MMCRA_SIHV&t;&t;0x0000080000000000
+mdefine_line|#define CPU_FTR_MMCRA_SIHV&t;&t;ASM_CONST(0x0000080000000000)
 multiline_comment|/* Platform firmware features */
 DECL|macro|FW_FTR_
-mdefine_line|#define FW_FTR_                         0x0000000000000001
+mdefine_line|#define FW_FTR_&t;&t;&t;&t;ASM_CONST(0x0000000000000001)
 macro_line|#ifndef __ASSEMBLY__
 DECL|macro|COMMON_USER_PPC64
 mdefine_line|#define COMMON_USER_PPC64&t;(PPC_FEATURE_32 | PPC_FEATURE_64 | &bslash;&n;&t;&t;&t;         PPC_FEATURE_HAS_FPU | PPC_FEATURE_HAS_MMU)

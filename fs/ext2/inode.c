@@ -1290,11 +1290,15 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+(paren
 id|block
 op_eq
 id|ei-&gt;i_next_alloc_block
 op_plus
 l_int|1
+)paren
+op_logical_and
+id|ei-&gt;i_next_alloc_goal
 )paren
 (brace
 id|ei-&gt;i_next_alloc_block

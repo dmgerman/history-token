@@ -1,32 +1,57 @@
 macro_line|#ifndef _VTX_H
 DECL|macro|_VTX_H
 mdefine_line|#define _VTX_H
-multiline_comment|/* $Id: videotext.h,v 1.1 1998/03/30 22:26:39 alan Exp $&n; *&n; * Copyright (c) 1994-97 Martin Buck  &lt;martin-2.buck@student.uni-ulm.de&gt;&n; * Read COPYING for more information&n; *&n; */
+multiline_comment|/*&n; * Teletext (=Videotext) hardware decoders using interface /dev/vtx&n; * Do not confuse with drivers using /dev/vbi which decode videotext by software&n; *&n; * Videotext IOCTLs changed in order to use _IO() macros defined in &lt;linux/ioctl.h&gt;,&n; * unused tuner IOCTLs cleaned up by&n; * Michael Geng &lt;linux@MichaelGeng.de&gt;&n; *&n; * Copyright (c) 1994-97 Martin Buck  &lt;martin-2.buck@student.uni-ulm.de&gt;&n; * Read COPYING for more information&n; *&n; */
 multiline_comment|/*&n; *&t;Videotext ioctls&n; */
 DECL|macro|VTXIOCGETINFO
-mdefine_line|#define VTXIOCGETINFO  0x7101  /* get version of driver &amp; capabilities of vtx-chipset */
+mdefine_line|#define VTXIOCGETINFO&t;_IOR  (0x81,  1, vtx_info_t)
 DECL|macro|VTXIOCCLRPAGE
-mdefine_line|#define VTXIOCCLRPAGE  0x7102  /* clear page-buffer */
+mdefine_line|#define VTXIOCCLRPAGE&t;_IOW  (0x81,  2, vtx_pagereq_t)
 DECL|macro|VTXIOCCLRFOUND
-mdefine_line|#define VTXIOCCLRFOUND 0x7103  /* clear bits indicating that page was found */
+mdefine_line|#define VTXIOCCLRFOUND&t;_IOW  (0x81,  3, vtx_pagereq_t)
 DECL|macro|VTXIOCPAGEREQ
-mdefine_line|#define VTXIOCPAGEREQ  0x7104  /* search for page */
+mdefine_line|#define VTXIOCPAGEREQ&t;_IOW  (0x81,  4, vtx_pagereq_t)
 DECL|macro|VTXIOCGETSTAT
-mdefine_line|#define VTXIOCGETSTAT  0x7105  /* get status of page-buffer */
+mdefine_line|#define VTXIOCGETSTAT&t;_IOW  (0x81,  5, vtx_pagereq_t)
 DECL|macro|VTXIOCGETPAGE
-mdefine_line|#define VTXIOCGETPAGE  0x7106  /* get contents of page-buffer */
+mdefine_line|#define VTXIOCGETPAGE&t;_IOW  (0x81,  6, vtx_pagereq_t)
 DECL|macro|VTXIOCSTOPDAU
-mdefine_line|#define VTXIOCSTOPDAU  0x7107  /* stop data acquisition unit */
+mdefine_line|#define VTXIOCSTOPDAU&t;_IOW  (0x81,  7, vtx_pagereq_t)
 DECL|macro|VTXIOCPUTPAGE
-mdefine_line|#define VTXIOCPUTPAGE  0x7108  /* display page on TV-screen */
+mdefine_line|#define VTXIOCPUTPAGE&t;_IO   (0x81,  8)
 DECL|macro|VTXIOCSETDISP
-mdefine_line|#define VTXIOCSETDISP  0x7109  /* set TV-mode */
+mdefine_line|#define VTXIOCSETDISP&t;_IO   (0x81,  9)
 DECL|macro|VTXIOCPUTSTAT
-mdefine_line|#define VTXIOCPUTSTAT  0x710a  /* set status of TV-output-buffer */
+mdefine_line|#define VTXIOCPUTSTAT&t;_IO   (0x81, 10)
 DECL|macro|VTXIOCCLRCACHE
-mdefine_line|#define VTXIOCCLRCACHE 0x710b  /* clear cache on VTX-interface (if avail.) */
+mdefine_line|#define VTXIOCCLRCACHE&t;_IO   (0x81, 11)
 DECL|macro|VTXIOCSETVIRT
-mdefine_line|#define VTXIOCSETVIRT  0x710c  /* turn on virtual mode (this disables TV-display) */
+mdefine_line|#define VTXIOCSETVIRT&t;_IOW  (0x81, 12, long)
+multiline_comment|/* for compatibility, will go away some day */
+DECL|macro|VTXIOCGETINFO_OLD
+mdefine_line|#define VTXIOCGETINFO_OLD  0x7101  /* get version of driver &amp; capabilities of vtx-chipset */
+DECL|macro|VTXIOCCLRPAGE_OLD
+mdefine_line|#define VTXIOCCLRPAGE_OLD  0x7102  /* clear page-buffer */
+DECL|macro|VTXIOCCLRFOUND_OLD
+mdefine_line|#define VTXIOCCLRFOUND_OLD 0x7103  /* clear bits indicating that page was found */
+DECL|macro|VTXIOCPAGEREQ_OLD
+mdefine_line|#define VTXIOCPAGEREQ_OLD  0x7104  /* search for page */
+DECL|macro|VTXIOCGETSTAT_OLD
+mdefine_line|#define VTXIOCGETSTAT_OLD  0x7105  /* get status of page-buffer */
+DECL|macro|VTXIOCGETPAGE_OLD
+mdefine_line|#define VTXIOCGETPAGE_OLD  0x7106  /* get contents of page-buffer */
+DECL|macro|VTXIOCSTOPDAU_OLD
+mdefine_line|#define VTXIOCSTOPDAU_OLD  0x7107  /* stop data acquisition unit */
+DECL|macro|VTXIOCPUTPAGE_OLD
+mdefine_line|#define VTXIOCPUTPAGE_OLD  0x7108  /* display page on TV-screen */
+DECL|macro|VTXIOCSETDISP_OLD
+mdefine_line|#define VTXIOCSETDISP_OLD  0x7109  /* set TV-mode */
+DECL|macro|VTXIOCPUTSTAT_OLD
+mdefine_line|#define VTXIOCPUTSTAT_OLD  0x710a  /* set status of TV-output-buffer */
+DECL|macro|VTXIOCCLRCACHE_OLD
+mdefine_line|#define VTXIOCCLRCACHE_OLD 0x710b  /* clear cache on VTX-interface (if avail.) */
+DECL|macro|VTXIOCSETVIRT_OLD
+mdefine_line|#define VTXIOCSETVIRT_OLD  0x710c  /* turn on virtual mode (this disables TV-display) */
 multiline_comment|/* &n; *&t;Definitions for VTXIOCGETINFO&n; */
 DECL|macro|SAA5243
 mdefine_line|#define SAA5243 0
@@ -244,153 +269,6 @@ multiline_comment|/* hamming-error occurred */
 )brace
 DECL|typedef|vtx_pageinfo_t
 id|vtx_pageinfo_t
-suffix:semicolon
-multiline_comment|/*&n; *&t;Definitions for VTXIOCSETDISP&n; */
-r_typedef
-r_enum
-(brace
-DECL|enumerator|DISPOFF
-DECL|enumerator|DISPNORM
-DECL|enumerator|DISPTRANS
-DECL|enumerator|DISPINS
-DECL|enumerator|INTERLACE_OFFSET
-id|DISPOFF
-comma
-id|DISPNORM
-comma
-id|DISPTRANS
-comma
-id|DISPINS
-comma
-id|INTERLACE_OFFSET
-DECL|typedef|vtxdisp_t
-)brace
-id|vtxdisp_t
-suffix:semicolon
-multiline_comment|/*&n; *&t;Tuner ioctls&n; */
-DECL|macro|TUNIOCGETINFO
-mdefine_line|#define TUNIOCGETINFO  0x7201  /* get version of driver &amp; capabilities of tuner */
-DECL|macro|TUNIOCRESET
-mdefine_line|#define TUNIOCRESET    0x7202  /* reset tuner */
-DECL|macro|TUNIOCSETFREQ
-mdefine_line|#define TUNIOCSETFREQ  0x7203  /* set tuning frequency (unit: kHz) */
-DECL|macro|TUNIOCGETFREQ
-mdefine_line|#define TUNIOCGETFREQ  0x7204  /* get tuning frequency (unit: kHz) */
-DECL|macro|TUNIOCSETCHAN
-mdefine_line|#define TUNIOCSETCHAN  0x7205  /* set tuning channel */
-DECL|macro|TUNIOCGETCHAN
-mdefine_line|#define TUNIOCGETCHAN  0x7206  /* get tuning channel */
-r_typedef
-r_struct
-(brace
-DECL|member|version_major
-DECL|member|version_minor
-r_int
-id|version_major
-comma
-id|version_minor
-suffix:semicolon
-multiline_comment|/* version of driver; if version_major changes, driver */
-multiline_comment|/* is not backward compatible!!! CHECK THIS!!! */
-DECL|member|freq
-r_int
-id|freq
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* tuner can be set to given frequency */
-DECL|member|chan
-r_int
-id|chan
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* tuner stores several channels */
-DECL|member|scan
-r_int
-id|scan
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* tuner supports scanning */
-DECL|member|autoscan
-r_int
-id|autoscan
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* tuner supports scanning with automatic stop */
-DECL|member|afc
-r_int
-id|afc
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* tuner supports AFC */
-DECL|member|dummy1
-DECL|member|dummy2
-DECL|member|dummy3
-DECL|member|dummy4
-DECL|member|dummy5
-DECL|member|dummy6
-DECL|member|dummy7
-DECL|member|dummy8
-DECL|member|dummy9
-DECL|member|dummy10
-r_int
-id|dummy1
-comma
-id|dummy2
-comma
-id|dummy3
-comma
-id|dummy4
-comma
-id|dummy5
-comma
-id|dummy6
-comma
-id|dummy7
-comma
-id|dummy8
-comma
-id|dummy9
-comma
-id|dummy10
-comma
-DECL|member|dummy11
-id|dummy11
-suffix:colon
-l_int|1
-suffix:semicolon
-DECL|member|dummy12
-DECL|member|dummy13
-DECL|member|dummy14
-DECL|member|dummy15
-DECL|member|dummy16
-DECL|member|dummy17
-DECL|member|dummy18
-DECL|member|dummy19
-r_int
-id|dummy12
-comma
-id|dummy13
-comma
-id|dummy14
-comma
-id|dummy15
-comma
-id|dummy16
-comma
-id|dummy17
-comma
-id|dummy18
-comma
-id|dummy19
-suffix:semicolon
-DECL|typedef|tuner_info_t
-)brace
-id|tuner_info_t
 suffix:semicolon
 macro_line|#endif /* _VTX_H */
 eof

@@ -8,6 +8,7 @@ macro_line|#else
 macro_line|#include &lt;sys/types.h&gt;
 macro_line|#endif
 macro_line|#if defined(__arm__) || defined(__mips__)
+multiline_comment|/* This (ioaddr_t) is exposed to userspace &amp; hence cannot be changed. */
 DECL|typedef|ioaddr_t
 r_typedef
 id|u_int
@@ -20,6 +21,12 @@ id|u_short
 id|ioaddr_t
 suffix:semicolon
 macro_line|#endif
+DECL|typedef|kio_addr_t
+r_typedef
+r_int
+r_int
+id|kio_addr_t
+suffix:semicolon
 DECL|typedef|socket_t
 r_typedef
 id|u_short

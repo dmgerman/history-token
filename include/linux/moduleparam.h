@@ -145,12 +145,12 @@ DECL|macro|module_param_call
 mdefine_line|#define module_param_call(name, set, get, arg, perm)&t;&t;&t;      &bslash;&n;&t;__module_param_call(MODULE_PARAM_PREFIX, name, set, get, arg, perm)
 multiline_comment|/* Helper functions: type is byte, short, ushort, int, uint, long,&n;   ulong, charp, bool or invbool, or XXX if you define param_get_XXX,&n;   param_set_XXX and param_check_XXX. */
 DECL|macro|module_param_named
-mdefine_line|#define module_param_named(name, value, type, perm)&t;&t;&t;   &bslash;&n;&t;param_check_##type(name, &amp;(value));&t;&t;&t;&t;   &bslash;&n;&t;module_param_call(name, param_set_##type, param_get_##type, &amp;value, perm)
+mdefine_line|#define module_param_named(name, value, type, perm)&t;&t;&t;   &bslash;&n;&t;param_check_##type(name, &amp;(value));&t;&t;&t;&t;   &bslash;&n;&t;module_param_call(name, param_set_##type, param_get_##type, &amp;value, perm); &bslash;&n;&t;__MODULE_INFO(parmtype, name##type, #name &quot;:&quot; #type)
 DECL|macro|module_param
 mdefine_line|#define module_param(name, type, perm)&t;&t;&t;&t;&bslash;&n;&t;module_param_named(name, name, type, perm)
 multiline_comment|/* Actually copy string: maxlen param is usually sizeof(string). */
 DECL|macro|module_param_string
-mdefine_line|#define module_param_string(name, string, len, perm)&t;&t;&t;&bslash;&n;&t;static struct kparam_string __param_string_##name&t;&t;&bslash;&n;&t;&t;= { len, string };&t;&t;&t;&t;&t;&bslash;&n;&t;module_param_call(name, param_set_copystring, param_get_string,&t;&bslash;&n;&t;&t;   &amp;__param_string_##name, perm)
+mdefine_line|#define module_param_string(name, string, len, perm)&t;&t;&t;&bslash;&n;&t;static struct kparam_string __param_string_##name&t;&t;&bslash;&n;&t;&t;= { len, string };&t;&t;&t;&t;&t;&bslash;&n;&t;module_param_call(name, param_set_copystring, param_get_string,&t;&bslash;&n;&t;&t;   &amp;__param_string_##name, perm);&t;&t;&t;&bslash;&n;&t;__MODULE_INFO(parmtype, name##type, #name &quot;:string&quot;)
 multiline_comment|/* Called on module insert or kernel boot */
 r_extern
 r_int
@@ -526,7 +526,7 @@ DECL|macro|param_check_invbool
 mdefine_line|#define param_check_invbool(name, p) __param_check(name, p, int)
 multiline_comment|/* Comma-separated array: *nump is set to number they actually specified. */
 DECL|macro|module_param_array_named
-mdefine_line|#define module_param_array_named(name, array, type, nump, perm)&t;&t;&bslash;&n;&t;static struct kparam_array __param_arr_##name&t;&t;&t;&bslash;&n;&t;= { ARRAY_SIZE(array), nump, param_set_##type, param_get_##type,&bslash;&n;&t;    sizeof(array[0]), array };&t;&t;&t;&t;&t;&bslash;&n;&t;module_param_call(name, param_array_set, param_array_get, &t;&bslash;&n;&t;&t;&t;  &amp;__param_arr_##name, perm)
+mdefine_line|#define module_param_array_named(name, array, type, nump, perm)&t;&t;&bslash;&n;&t;static struct kparam_array __param_arr_##name&t;&t;&t;&bslash;&n;&t;= { ARRAY_SIZE(array), nump, param_set_##type, param_get_##type,&bslash;&n;&t;    sizeof(array[0]), array };&t;&t;&t;&t;&t;&bslash;&n;&t;module_param_call(name, param_array_set, param_array_get, &t;&bslash;&n;&t;&t;&t;  &amp;__param_arr_##name, perm);&t;&t;&t;&bslash;&n;&t;__MODULE_INFO(parmtype, name##type, #name &quot;:array of &quot; #type)
 DECL|macro|module_param_array
 mdefine_line|#define module_param_array(name, type, nump, perm)&t;&t;&bslash;&n;&t;module_param_array_named(name, name, type, nump, perm)
 r_extern

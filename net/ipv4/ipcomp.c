@@ -2098,6 +2098,8 @@ id|xfrm_calg_get_byname
 c_func
 (paren
 id|x-&gt;calg-&gt;alg_name
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|BUG_ON

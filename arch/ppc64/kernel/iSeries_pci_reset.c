@@ -33,6 +33,7 @@ macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/irq.h&gt;
+macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/iSeries/HvCallPci.h&gt;
 macro_line|#include &lt;asm/iSeries/HvTypes.h&gt;
@@ -107,24 +108,14 @@ l_int|0
 )paren
 id|AssertDelay
 op_assign
-(paren
-l_int|5
-op_star
-id|HZ
-)paren
-op_div
-l_int|10
+l_int|500
 suffix:semicolon
 r_else
 id|AssertDelay
 op_assign
-(paren
 id|AssertTime
 op_star
-id|HZ
-)paren
-op_div
-l_int|10
+l_int|100
 suffix:semicolon
 r_if
 c_cond
@@ -135,24 +126,14 @@ l_int|0
 )paren
 id|WaitDelay
 op_assign
-(paren
-l_int|30
-op_star
-id|HZ
-)paren
-op_div
-l_int|10
+l_int|3000
 suffix:semicolon
 r_else
 id|WaitDelay
 op_assign
-(paren
 id|DelayTime
 op_star
-id|HZ
-)paren
-op_div
-l_int|10
+l_int|100
 suffix:semicolon
 multiline_comment|/*&n;&t; * Assert reset&n;&t; */
 id|DeviceNode-&gt;ReturnCode
@@ -181,13 +162,7 @@ op_eq
 l_int|0
 )paren
 (brace
-id|set_current_state
-c_func
-(paren
-id|TASK_UNINTERRUPTIBLE
-)paren
-suffix:semicolon
-id|schedule_timeout
+id|msleep
 c_func
 (paren
 id|AssertDelay
@@ -213,13 +188,7 @@ l_int|0
 )paren
 suffix:semicolon
 multiline_comment|/*&n;   &t;&t; * Wait for device to reset&n;&t;&t; */
-id|set_current_state
-c_func
-(paren
-id|TASK_UNINTERRUPTIBLE
-)paren
-suffix:semicolon
-id|schedule_timeout
+id|msleep
 c_func
 (paren
 id|WaitDelay

@@ -1288,7 +1288,7 @@ id|__asm__
 id|__volatile__
 c_func
 (paren
-l_string|&quot;ld %0,0(%1); twi 0,%0,0; isync&quot;
+l_string|&quot;ld%U1%X1 %0,%1; twi 0,%0,0; isync&quot;
 suffix:colon
 l_string|&quot;=r&quot;
 (paren

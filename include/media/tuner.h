@@ -106,6 +106,8 @@ DECL|macro|TUNER_TCL_2002N
 mdefine_line|#define TUNER_TCL_2002N          50
 DECL|macro|TUNER_PHILIPS_FM1256_IH3
 mdefine_line|#define TUNER_PHILIPS_FM1256_IH3   51
+DECL|macro|TUNER_THOMSON_DTT7610
+mdefine_line|#define TUNER_THOMSON_DTT7610    52
 DECL|macro|NOTUNER
 mdefine_line|#define NOTUNER 0
 DECL|macro|PAL
@@ -142,6 +144,8 @@ DECL|macro|Panasonic
 mdefine_line|#define Panasonic 10
 DECL|macro|TCL
 mdefine_line|#define TCL     11
+DECL|macro|THOMSON
+mdefine_line|#define THOMSON 12
 DECL|macro|TUNER_SET_TYPE
 mdefine_line|#define TUNER_SET_TYPE               _IOW(&squot;t&squot;,1,int)    /* set tuner type */
 DECL|macro|TUNER_SET_TVFREQ
@@ -155,14 +159,18 @@ mdefine_line|#define  TDA9887_SET_CONFIG          _IOW(&squot;t&squot;,5,int)
 multiline_comment|/* tv card specific */
 DECL|macro|TDA9887_PRESENT
 macro_line|# define TDA9887_PRESENT             (1&lt;&lt;0)
-DECL|macro|TDA9887_PORT1
-macro_line|# define TDA9887_PORT1               (1&lt;&lt;1)
-DECL|macro|TDA9887_PORT2
-macro_line|# define TDA9887_PORT2               (1&lt;&lt;2)
+DECL|macro|TDA9887_PORT1_INACTIVE
+macro_line|# define TDA9887_PORT1_INACTIVE      (1&lt;&lt;1)
+DECL|macro|TDA9887_PORT2_INACTIVE
+macro_line|# define TDA9887_PORT2_INACTIVE      (1&lt;&lt;2)
 DECL|macro|TDA9887_QSS
 macro_line|# define TDA9887_QSS                 (1&lt;&lt;3)
 DECL|macro|TDA9887_INTERCARRIER
 macro_line|# define TDA9887_INTERCARRIER        (1&lt;&lt;4)
+DECL|macro|TDA9887_PORT1_ACTIVE
+macro_line|# define TDA9887_PORT1_ACTIVE        (1&lt;&lt;5)
+DECL|macro|TDA9887_PORT2_ACTIVE
+macro_line|# define TDA9887_PORT2_ACTIVE        (1&lt;&lt;6)
 multiline_comment|/* config options */
 DECL|macro|TDA9887_DEEMPHASIS_MASK
 macro_line|# define TDA9887_DEEMPHASIS_MASK     (3&lt;&lt;16)

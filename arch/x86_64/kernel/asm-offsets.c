@@ -3,6 +3,7 @@ macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/stddef.h&gt;
 macro_line|#include &lt;linux/errno.h&gt; 
 macro_line|#include &lt;linux/hardirq.h&gt;
+macro_line|#include &lt;linux/suspend.h&gt;
 macro_line|#include &lt;asm/pda.h&gt;
 macro_line|#include &lt;asm/processor.h&gt;
 macro_line|#include &lt;asm/segment.h&gt;
@@ -215,6 +216,46 @@ c_func
 )paren
 suffix:semicolon
 macro_line|#endif
+id|DEFINE
+c_func
+(paren
+id|SIZEOF_PBE
+comma
+r_sizeof
+(paren
+r_struct
+id|pbe
+)paren
+)paren
+suffix:semicolon
+id|DEFINE
+c_func
+(paren
+id|pbe_address
+comma
+m_offsetof
+(paren
+r_struct
+id|pbe
+comma
+id|address
+)paren
+)paren
+suffix:semicolon
+id|DEFINE
+c_func
+(paren
+id|pbe_orig_address
+comma
+m_offsetof
+(paren
+r_struct
+id|pbe
+comma
+id|orig_address
+)paren
+)paren
+suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon

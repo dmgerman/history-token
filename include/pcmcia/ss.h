@@ -137,7 +137,7 @@ id|speed
 suffix:semicolon
 DECL|member|start
 DECL|member|stop
-id|ioaddr_t
+id|kio_addr_t
 id|start
 comma
 id|stop
@@ -529,14 +529,14 @@ id|Attributes
 suffix:semicolon
 DECL|member|BasePort
 DECL|member|NumPorts
-id|ioaddr_t
+id|kio_addr_t
 id|BasePort
 comma
 id|NumPorts
 suffix:semicolon
 DECL|member|InUse
 DECL|member|Config
-id|ioaddr_t
+id|kio_addr_t
 id|InUse
 comma
 id|Config
@@ -592,9 +592,6 @@ DECL|macro|MAX_WIN
 mdefine_line|#define MAX_WIN 4
 r_struct
 id|config_t
-suffix:semicolon
-r_struct
-id|region_t
 suffix:semicolon
 r_struct
 id|pcmcia_callback
@@ -673,16 +670,6 @@ id|win
 id|MAX_WIN
 )braket
 suffix:semicolon
-DECL|member|c_region
-DECL|member|a_region
-r_struct
-id|region_t
-op_star
-id|c_region
-comma
-op_star
-id|a_region
-suffix:semicolon
 DECL|member|cis_cache
 r_struct
 id|list_head
@@ -728,7 +715,7 @@ id|u_int
 id|map_size
 suffix:semicolon
 DECL|member|io_offset
-id|ioaddr_t
+id|kio_addr_t
 id|io_offset
 suffix:semicolon
 DECL|member|pci_irq

@@ -2496,11 +2496,6 @@ r_struct
 id|eeh_early_enable_info
 id|info
 suffix:semicolon
-id|init_pci_config_tokens
-c_func
-(paren
-)paren
-suffix:semicolon
 id|np
 op_assign
 id|of_find_node_by_path

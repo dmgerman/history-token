@@ -471,7 +471,7 @@ comma
 dot
 id|id
 op_assign
-id|I2C_HW_B_BT848
+id|I2C_HW_B_CX2388x
 comma
 dot
 id|client_register

@@ -2954,7 +2954,7 @@ id|link
 )paren
 (brace
 r_static
-id|ioaddr_t
+id|kio_addr_t
 id|base
 (braket
 l_int|5

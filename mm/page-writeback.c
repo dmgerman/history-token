@@ -211,6 +211,11 @@ comma
 r_int
 op_star
 id|pdirty
+comma
+r_struct
+id|address_space
+op_star
+id|mapping
 )paren
 (brace
 r_int
@@ -229,6 +234,12 @@ suffix:semicolon
 r_int
 id|dirty
 suffix:semicolon
+r_int
+r_int
+id|available_memory
+op_assign
+id|total_pages
+suffix:semicolon
 r_struct
 id|task_struct
 op_star
@@ -240,6 +251,29 @@ c_func
 id|wbs
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_HIGHMEM
+multiline_comment|/*&n;&t; * If this mapping can only allocate from low memory,&n;&t; * we exclude high memory from our count.&n;&t; */
+r_if
+c_cond
+(paren
+id|mapping
+op_logical_and
+op_logical_neg
+(paren
+id|mapping_gfp_mask
+c_func
+(paren
+id|mapping
+)paren
+op_amp
+id|__GFP_HIGHMEM
+)paren
+)paren
+id|available_memory
+op_sub_assign
+id|totalhigh_pages
+suffix:semicolon
+macro_line|#endif
 id|unmapped_ratio
 op_assign
 l_int|100
@@ -304,7 +338,7 @@ op_assign
 (paren
 id|background_ratio
 op_star
-id|total_pages
+id|available_memory
 )paren
 op_div
 l_int|100
@@ -314,7 +348,7 @@ op_assign
 (paren
 id|dirty_ratio
 op_star
-id|total_pages
+id|available_memory
 )paren
 op_div
 l_int|100
@@ -454,6 +488,8 @@ id|background_thresh
 comma
 op_amp
 id|dirty_thresh
+comma
+id|mapping
 )paren
 suffix:semicolon
 id|nr_reclaimable
@@ -502,6 +538,8 @@ id|background_thresh
 comma
 op_amp
 id|dirty_thresh
+comma
+id|mapping
 )paren
 suffix:semicolon
 id|nr_reclaimable
@@ -771,6 +809,8 @@ id|background_thresh
 comma
 op_amp
 id|dirty_thresh
+comma
+l_int|NULL
 )paren
 suffix:semicolon
 r_if

@@ -2,16 +2,23 @@ multiline_comment|/* &n; * eeh.h&n; * Copyright (C) 2001  Dave Engebretsen &amp;
 macro_line|#ifndef _PPC64_EEH_H
 DECL|macro|_PPC64_EEH_H
 mdefine_line|#define _PPC64_EEH_H
+macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/list.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
-macro_line|#include &lt;linux/notifier.h&gt;
 r_struct
 id|pci_dev
 suffix:semicolon
 r_struct
 id|device_node
 suffix:semicolon
+r_struct
+id|device_node
+suffix:semicolon
+r_struct
+id|notifier_block
+suffix:semicolon
+macro_line|#ifdef CONFIG_EEH
 multiline_comment|/* Values for eeh_mode bits in device_node */
 DECL|macro|EEH_MODE_SUPPORTED
 mdefine_line|#define EEH_MODE_SUPPORTED&t;(1&lt;&lt;0)
@@ -19,8 +26,6 @@ DECL|macro|EEH_MODE_NOCHECK
 mdefine_line|#define EEH_MODE_NOCHECK&t;(1&lt;&lt;1)
 DECL|macro|EEH_MODE_ISOLATED
 mdefine_line|#define EEH_MODE_ISOLATED&t;(1&lt;&lt;2)
-macro_line|#ifdef CONFIG_PPC_PSERIES
-r_extern
 r_void
 id|__init
 id|eeh_init
@@ -48,6 +53,7 @@ id|val
 suffix:semicolon
 r_int
 id|eeh_dn_check_failure
+c_func
 (paren
 r_struct
 id|device_node
@@ -61,22 +67,6 @@ id|dev
 )paren
 suffix:semicolon
 r_void
-id|__iomem
-op_star
-id|eeh_ioremap
-c_func
-(paren
-r_int
-r_int
-id|addr
-comma
-r_void
-id|__iomem
-op_star
-id|vaddr
-)paren
-suffix:semicolon
-r_void
 id|__init
 id|pci_addr_cache_build
 c_func
@@ -84,14 +74,7 @@ c_func
 r_void
 )paren
 suffix:semicolon
-macro_line|#else
-DECL|macro|eeh_check_failure
-mdefine_line|#define eeh_check_failure(token, val) (val)
-macro_line|#endif
 multiline_comment|/**&n; * eeh_add_device_early&n; * eeh_add_device_late&n; *&n; * Perform eeh initialization for devices added after boot.&n; * Call eeh_add_device_early before doing any i/o to the&n; * device (including config space i/o).  Call eeh_add_device_late&n; * to finish the eeh setup for this device.&n; */
-r_struct
-id|device_node
-suffix:semicolon
 r_void
 id|eeh_add_device_early
 c_func
@@ -128,19 +111,6 @@ DECL|macro|EEH_RELEASE_LOADSTORE
 mdefine_line|#define EEH_RELEASE_LOADSTORE&t;2
 DECL|macro|EEH_RELEASE_DMA
 mdefine_line|#define EEH_RELEASE_DMA&t;&t;3
-r_int
-id|eeh_set_option
-c_func
-(paren
-r_struct
-id|pci_dev
-op_star
-id|dev
-comma
-r_int
-id|options
-)paren
-suffix:semicolon
 multiline_comment|/**&n; * Notifier event flags.&n; */
 DECL|macro|EEH_NOTIFY_FREEZE
 mdefine_line|#define EEH_NOTIFY_FREEZE  1
@@ -199,6 +169,26 @@ mdefine_line|#define EEH_POSSIBLE_ERROR(val, type)&t;((val) == (type)~0)
 multiline_comment|/*&n; * Reads from a device which has been isolated by EEH will return&n; * all 1s.  This macro gives an all-1s value of the given size (in&n; * bytes: 1, 2, or 4) for comparing with the result of a read.&n; */
 DECL|macro|EEH_IO_ERROR_VALUE
 mdefine_line|#define EEH_IO_ERROR_VALUE(size)&t;(~0U &gt;&gt; ((4 - (size)) * 8))
+macro_line|#else
+DECL|macro|eeh_init
+mdefine_line|#define eeh_init()
+DECL|macro|eeh_check_failure
+mdefine_line|#define eeh_check_failure(token, val) (val)
+DECL|macro|eeh_dn_check_failure
+mdefine_line|#define eeh_dn_check_failure(dn, dev) (0)
+DECL|macro|pci_addr_cache_build
+mdefine_line|#define pci_addr_cache_build()
+DECL|macro|eeh_add_device_early
+mdefine_line|#define eeh_add_device_early(dn)
+DECL|macro|eeh_add_device_late
+mdefine_line|#define eeh_add_device_late(dev)
+DECL|macro|eeh_remove_device
+mdefine_line|#define eeh_remove_device(dev)
+DECL|macro|EEH_POSSIBLE_ERROR
+mdefine_line|#define EEH_POSSIBLE_ERROR(val, type) (0)
+DECL|macro|EEH_IO_ERROR_VALUE
+mdefine_line|#define EEH_IO_ERROR_VALUE(size) (-1UL)
+macro_line|#endif
 multiline_comment|/* &n; * MMIO read/write operations with EEH support.&n; */
 DECL|function|eeh_readb
 r_static

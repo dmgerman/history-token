@@ -5,7 +5,7 @@ mdefine_line|#define __SAA5246A_H__
 DECL|macro|MAJOR_VERSION
 mdefine_line|#define MAJOR_VERSION 1&t;&t;/* driver major version number */
 DECL|macro|MINOR_VERSION
-mdefine_line|#define MINOR_VERSION 7&t;&t;/* driver minor version number */
+mdefine_line|#define MINOR_VERSION 8&t;&t;/* driver minor version number */
 DECL|macro|IF_NAME
 mdefine_line|#define IF_NAME &quot;SAA5246A&quot;
 DECL|macro|I2C_ADDRESS

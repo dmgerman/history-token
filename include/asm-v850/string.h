@@ -2,8 +2,6 @@ multiline_comment|/*&n; * include/asm-v850/string.h -- Architecture specific str
 macro_line|#ifndef __V850_STRING_H__
 DECL|macro|__V850_STRING_H__
 mdefine_line|#define __V850_STRING_H__
-DECL|macro|__HAVE_ARCH_BCOPY
-mdefine_line|#define __HAVE_ARCH_BCOPY
 DECL|macro|__HAVE_ARCH_MEMCPY
 mdefine_line|#define __HAVE_ARCH_MEMCPY
 DECL|macro|__HAVE_ARCH_MEMSET
@@ -23,20 +21,6 @@ r_void
 op_star
 comma
 id|__kernel_size_t
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|bcopy
-(paren
-r_const
-r_char
-op_star
-comma
-r_char
-op_star
-comma
-r_int
 )paren
 suffix:semicolon
 r_extern

@@ -8,6 +8,11 @@ macro_line|#include &lt;asm/fiq.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
+macro_line|#if __GNUC__ &gt; 3 || (__GNUC__ == 3 &amp;&amp; __GNUC_MINOR__ &gt;= 4)
+macro_line|#warning This file requires GCC 3.3.x or older to build.  Alternatively,
+macro_line|#warning please talk to GCC people to resolve the issues with the
+macro_line|#warning assembly clobber list.
+macro_line|#endif
 DECL|variable|no_fiq_insn
 r_static
 r_int
@@ -191,22 +196,15 @@ r_register
 r_int
 r_int
 id|tmp
-comma
-id|tmp2
 suffix:semicolon
 id|__asm__
 r_volatile
 (paren
-l_string|&quot;mrs&t;%0, cpsr&bslash;n&bslash;&n;&t;mov&t;%1, %3&bslash;n&bslash;&n;&t;msr&t;cpsr_c, %1&t;@ select FIQ mode&bslash;n&bslash;&n;&t;mov&t;r0, r0&bslash;n&bslash;&n;&t;ldmia&t;%2, {r8 - r14}&bslash;n&bslash;&n;&t;msr&t;cpsr_c, %0&t;@ return to SVC mode&bslash;n&bslash;&n;&t;mov&t;r0, r0&quot;
+l_string|&quot;mrs&t;%0, cpsr&bslash;n&bslash;&n;&t;msr&t;cpsr_c, %2&t;@ select FIQ mode&bslash;n&bslash;&n;&t;mov&t;r0, r0&bslash;n&bslash;&n;&t;ldmia&t;%1, {r8 - r14}&bslash;n&bslash;&n;&t;msr&t;cpsr_c, %0&t;@ return to SVC mode&bslash;n&bslash;&n;&t;mov&t;r0, r0&quot;
 suffix:colon
 l_string|&quot;=&amp;r&quot;
 (paren
 id|tmp
-)paren
-comma
-l_string|&quot;=&amp;r&quot;
-(paren
-id|tmp2
 )paren
 suffix:colon
 l_string|&quot;r&quot;
@@ -256,22 +254,15 @@ r_register
 r_int
 r_int
 id|tmp
-comma
-id|tmp2
 suffix:semicolon
 id|__asm__
 r_volatile
 (paren
-l_string|&quot;mrs&t;%0, cpsr&bslash;n&bslash;&n;&t;mov&t;%1, %3&bslash;n&bslash;&n;&t;msr&t;cpsr_c, %1&t;@ select FIQ mode&bslash;n&bslash;&n;&t;mov&t;r0, r0&bslash;n&bslash;&n;&t;stmia&t;%2, {r8 - r14}&bslash;n&bslash;&n;&t;msr&t;cpsr_c, %0&t;@ return to SVC mode&bslash;n&bslash;&n;&t;mov&t;r0, r0&quot;
+l_string|&quot;mrs&t;%0, cpsr&bslash;n&bslash;&n;&t;msr&t;cpsr_c, %2&t;@ select FIQ mode&bslash;n&bslash;&n;&t;mov&t;r0, r0&bslash;n&bslash;&n;&t;stmia&t;%1, {r8 - r14}&bslash;n&bslash;&n;&t;msr&t;cpsr_c, %0&t;@ return to SVC mode&bslash;n&bslash;&n;&t;mov&t;r0, r0&quot;
 suffix:colon
 l_string|&quot;=&amp;r&quot;
 (paren
 id|tmp
-)paren
-comma
-l_string|&quot;=&amp;r&quot;
-(paren
-id|tmp2
 )paren
 suffix:colon
 l_string|&quot;r&quot;

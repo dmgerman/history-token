@@ -1902,7 +1902,7 @@ suffix:semicolon
 id|DPRINTK
 c_func
 (paren
-l_string|&quot;hs_set_io_map(sock=%d, map=%d, flags=0x%x, speed=%dns, start=0x%04x, stop=0x%04x)&bslash;n&quot;
+l_string|&quot;hs_set_io_map(sock=%d, map=%d, flags=0x%x, speed=%dns, start=%#lx, stop=%#lx)&bslash;n&quot;
 comma
 id|sock
 comma

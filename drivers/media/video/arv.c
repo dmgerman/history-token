@@ -2545,11 +2545,6 @@ id|ar_device
 op_star
 id|ar
 op_assign
-(paren
-r_struct
-id|ar_device
-op_star
-)paren
 id|dev-&gt;priv
 suffix:semicolon
 r_int

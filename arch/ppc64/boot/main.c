@@ -388,7 +388,7 @@ op_star
 id|stderr
 suffix:semicolon
 DECL|macro|DEBUG
-mdefine_line|#define DEBUG
+macro_line|#undef DEBUG
 DECL|variable|claim_base
 r_static
 r_int

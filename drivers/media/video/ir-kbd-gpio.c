@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * $Id: ir-kbd-gpio.c,v 1.10 2004/09/15 16:15:24 kraxel Exp $&n; *&n; * Copyright (c) 2003 Gerd Knorr&n; * Copyright (c) 2003 Pavel Machek&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA&n; */
+multiline_comment|/*&n; * $Id: ir-kbd-gpio.c,v 1.11 2004/10/25 11:26:36 kraxel Exp $&n; *&n; * Copyright (c) 2003 Gerd Knorr&n; * Copyright (c) 2003 Pavel Machek&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA&n; */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/moduleparam.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
@@ -1738,7 +1738,9 @@ suffix:semicolon
 r_case
 id|BTTV_AVDVBT_761
 suffix:colon
-multiline_comment|/* case BTTV_AVDVBT_771: */
+r_case
+id|BTTV_AVDVBT_771
+suffix:colon
 id|ir_codes
 op_assign
 id|ir_codes_avermedia_dvbt

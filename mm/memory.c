@@ -7348,9 +7348,21 @@ op_amp
 id|mapping-&gt;i_mmap_lock
 )paren
 suffix:semicolon
+multiline_comment|/* serialize i_size write against truncate_count write */
+id|smp_wmb
+c_func
+(paren
+)paren
+suffix:semicolon
 multiline_comment|/* Protect against page faults, and endless unmapping loops */
 id|mapping-&gt;truncate_count
 op_increment
+suffix:semicolon
+multiline_comment|/*&n;&t; * For archs where spin_lock has inclusive semantics like ia64&n;&t; * this smp_mb() will prevent to read pagetable contents&n;&t; * before the truncate_count increment is visible to&n;&t; * other cpus.&n;&t; */
+id|smp_mb
+c_func
+(paren
+)paren
 suffix:semicolon
 r_if
 c_cond
@@ -8680,6 +8692,12 @@ id|sequence
 op_assign
 id|mapping-&gt;truncate_count
 suffix:semicolon
+id|smp_rmb
+c_func
+(paren
+)paren
+suffix:semicolon
+multiline_comment|/* serializes i_size against truncate_count */
 )brace
 id|retry
 suffix:colon
@@ -8705,6 +8723,7 @@ op_amp
 id|ret
 )paren
 suffix:semicolon
+multiline_comment|/*&n;&t; * No smp_rmb is needed here as long as there&squot;s a full&n;&t; * spin_lock/unlock sequence inside the -&gt;nopage callback&n;&t; * (for the pagecache lookup) that acts as an implicit&n;&t; * smp_mb() and prevents the i_size read to happen&n;&t; * after the next truncate_count read.&n;&t; */
 multiline_comment|/* no page was available -- either SIGBUS or OOM */
 r_if
 c_cond

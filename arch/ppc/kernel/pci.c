@@ -7811,13 +7811,15 @@ id|flags
 op_amp
 id|IORESOURCE_MEM
 )paren
+multiline_comment|/* Not checking IORESOURCE_CACHEABLE because PPC does&n;&t;&t; * not currently distinguish between ioremap and&n;&t;&t; * ioremap_nocache.&n;&t;&t; */
 r_return
+id|ioremap
+c_func
 (paren
-r_void
-id|__iomem
-op_star
-)paren
 id|start
+comma
+id|len
+)paren
 suffix:semicolon
 multiline_comment|/* What? */
 r_return

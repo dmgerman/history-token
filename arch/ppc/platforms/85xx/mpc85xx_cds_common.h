@@ -58,10 +58,11 @@ mdefine_line|#define MPC85XX_PCI1_MEM_OFFSET      0x00000000
 DECL|macro|MPC85XX_PCI1_IO_SIZE
 mdefine_line|#define MPC85XX_PCI1_IO_SIZE         0x01000000
 multiline_comment|/* PCI 2 memory map */
+multiline_comment|/* Note: the standard PPC fixups will cause IO space to get bumped by&n; * hose-&gt;io_base_virt - isa_io_base =&gt; MPC85XX_PCI1_IO_SIZE */
 DECL|macro|MPC85XX_PCI2_LOWER_IO
-mdefine_line|#define MPC85XX_PCI2_LOWER_IO        0x01000000
+mdefine_line|#define MPC85XX_PCI2_LOWER_IO        0x00000000
 DECL|macro|MPC85XX_PCI2_UPPER_IO
-mdefine_line|#define MPC85XX_PCI2_UPPER_IO        0x01ffffff
+mdefine_line|#define MPC85XX_PCI2_UPPER_IO        0x00ffffff
 DECL|macro|MPC85XX_PCI2_LOWER_MEM
 mdefine_line|#define MPC85XX_PCI2_LOWER_MEM       0xa0000000
 DECL|macro|MPC85XX_PCI2_UPPER_MEM

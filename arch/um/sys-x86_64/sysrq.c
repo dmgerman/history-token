@@ -1,6 +1,6 @@
 multiline_comment|/*&n; * Copyright 2003 PathScale, Inc.&n; *&n; * Licensed under the GPL&n; */
 macro_line|#include &quot;linux/kernel.h&quot;
-macro_line|#include &quot;linux/version.h&quot;
+macro_line|#include &quot;linux/utsname.h&quot;
 macro_line|#include &quot;linux/module.h&quot;
 macro_line|#include &quot;asm/current.h&quot;
 macro_line|#include &quot;asm/ptrace.h&quot;
@@ -41,7 +41,7 @@ c_func
 (paren
 )paren
 comma
-id|UTS_RELEASE
+id|system_utsname.release
 )paren
 suffix:semicolon
 id|printk
