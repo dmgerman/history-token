@@ -493,12 +493,6 @@ op_plus
 l_int|17
 )paren
 suffix:semicolon
-id|iounmap
-c_func
-(paren
-id|mmap_ctl
-)paren
-suffix:semicolon
 )brace
 r_return
 id|ramsize
