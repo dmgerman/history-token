@@ -4455,6 +4455,14 @@ multiline_comment|/*&n;&t; *      unwind on error&n;&t; */
 id|errout30
 suffix:colon
 multiline_comment|/* release log page */
+id|log-&gt;wqueue
+op_assign
+l_int|NULL
+suffix:semicolon
+id|bp-&gt;l_wqnext
+op_assign
+l_int|NULL
+suffix:semicolon
 id|lbmFree
 c_func
 (paren
