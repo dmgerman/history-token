@@ -276,6 +276,31 @@ comma
 id|US_FL_SINGLE_LUN
 )paren
 comma
+multiline_comment|/* Reported by Andreas Bockhold &lt;andreas@bockionline.de&gt; */
+id|UNUSUAL_DEV
+c_func
+(paren
+l_int|0x04b0
+comma
+l_int|0x0405
+comma
+l_int|0x0100
+comma
+l_int|0x0100
+comma
+l_string|&quot;NIKON&quot;
+comma
+l_string|&quot;NIKON DSC D70&quot;
+comma
+id|US_SC_DEVICE
+comma
+id|US_PR_DEVICE
+comma
+l_int|NULL
+comma
+id|US_FL_FIX_CAPACITY
+)paren
+comma
 multiline_comment|/* Reported by Simon Levitt &lt;simon@whattf.com&gt;&n; * This entry needs Sub and Proto fields */
 id|UNUSUAL_DEV
 c_func
