@@ -432,9 +432,11 @@ r_if
 c_cond
 (paren
 op_logical_neg
+(paren
 id|vma-&gt;vm_flags
 op_amp
 id|VM_EXECUTABLE
+)paren
 )paren
 r_continue
 suffix:semicolon

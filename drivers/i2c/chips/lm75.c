@@ -1,10 +1,9 @@
 multiline_comment|/*&n;    lm75.c - Part of lm_sensors, Linux kernel modules for hardware&n;             monitoring&n;    Copyright (c) 1998, 1999  Frodo Looijaard &lt;frodol@dds.nl&gt;&n;&n;    This program is free software; you can redistribute it and/or modify&n;    it under the terms of the GNU General Public License as published by&n;    the Free Software Foundation; either version 2 of the License, or&n;    (at your option) any later version.&n;&n;    This program is distributed in the hope that it will be useful,&n;    but WITHOUT ANY WARRANTY; without even the implied warranty of&n;    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n;    GNU General Public License for more details.&n;&n;    You should have received a copy of the GNU General Public License&n;    along with this program; if not, write to the Free Software&n;    Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n;*/
-macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
+macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/i2c.h&gt;
 macro_line|#include &lt;linux/i2c-proc.h&gt;
-macro_line|#include &lt;linux/init.h&gt;
 DECL|macro|LM75_SYSCTL_TEMP
 mdefine_line|#define LM75_SYSCTL_TEMP 1200&t;/* Degrees Celcius * 10 */
 multiline_comment|/* Addresses to scan */
@@ -181,25 +180,6 @@ id|client
 )paren
 suffix:semicolon
 r_static
-r_int
-id|lm75_command
-c_func
-(paren
-r_struct
-id|i2c_client
-op_star
-id|client
-comma
-r_int
-r_int
-id|cmd
-comma
-r_void
-op_star
-id|arg
-)paren
-suffix:semicolon
-r_static
 id|u16
 id|swap_bytes
 c_func
@@ -284,6 +264,11 @@ id|lm75_driver
 op_assign
 (brace
 dot
+id|owner
+op_assign
+id|THIS_MODULE
+comma
+dot
 id|name
 op_assign
 l_string|&quot;LM75 sensor chip driver&quot;
@@ -307,11 +292,6 @@ dot
 id|detach_client
 op_assign
 id|lm75_detach_client
-comma
-dot
-id|command
-op_assign
-id|lm75_command
 comma
 )brace
 suffix:semicolon
@@ -362,6 +342,7 @@ op_assign
 l_int|0
 suffix:semicolon
 DECL|function|lm75_attach_adapter
+r_static
 r_int
 id|lm75_attach_adapter
 c_func
@@ -387,6 +368,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* This function is called by i2c_detect */
 DECL|function|lm75_detect
+r_static
 r_int
 id|lm75_detect
 c_func
@@ -821,6 +803,7 @@ id|err
 suffix:semicolon
 )brace
 DECL|function|lm75_detach_client
+r_static
 r_int
 id|lm75_detach_client
 c_func
@@ -860,30 +843,8 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-DECL|function|lm75_command
-r_int
-id|lm75_command
-c_func
-(paren
-r_struct
-id|i2c_client
-op_star
-id|client
-comma
-r_int
-r_int
-id|cmd
-comma
-r_void
-op_star
-id|arg
-)paren
-(brace
-r_return
-l_int|0
-suffix:semicolon
-)brace
 DECL|function|swap_bytes
+r_static
 id|u16
 id|swap_bytes
 c_func
@@ -908,6 +869,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* All registers are word-sized, except for the configuration register.&n;   LM75 uses a high-byte first convention, which is exactly opposite to&n;   the usual practice. */
 DECL|function|lm75_read_value
+r_static
 r_int
 id|lm75_read_value
 c_func
@@ -954,6 +916,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* All registers are word-sized, except for the configuration register.&n;   LM75 uses a high-byte first convention, which is exactly opposite to&n;   the usual practice. */
 DECL|function|lm75_write_value
+r_static
 r_int
 id|lm75_write_value
 c_func
@@ -1006,6 +969,7 @@ id|value
 suffix:semicolon
 )brace
 DECL|function|lm75_init_client
+r_static
 r_void
 id|lm75_init_client
 c_func
@@ -1057,6 +1021,7 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|function|lm75_update_client
+r_static
 r_void
 id|lm75_update_client
 c_func
@@ -1160,6 +1125,7 @@ id|data-&gt;update_lock
 suffix:semicolon
 )brace
 DECL|function|lm75_temp
+r_static
 r_void
 id|lm75_temp
 c_func
@@ -1331,6 +1297,7 @@ suffix:semicolon
 )brace
 )brace
 DECL|function|sensors_lm75_init
+r_static
 r_int
 id|__init
 id|sensors_lm75_init

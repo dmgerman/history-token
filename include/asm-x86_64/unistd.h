@@ -2006,8 +2006,89 @@ id|__NR_fadvise64
 comma
 id|sys_fadvise64
 )paren
+DECL|macro|__NR_timer_create
+mdefine_line|#define __NR_timer_create&t;&t;222
+id|__SYSCALL
+c_func
+(paren
+id|__NR_timer_create
+comma
+id|sys_timer_create
+)paren
+DECL|macro|__NR_timer_settime
+mdefine_line|#define __NR_timer_settime&t;&t;223
+id|__SYSCALL
+c_func
+(paren
+id|__NR_timer_settime
+comma
+id|sys_timer_settime
+)paren
+DECL|macro|__NR_timer_gettime
+mdefine_line|#define __NR_timer_gettime&t;&t;224
+id|__SYSCALL
+c_func
+(paren
+id|__NR_timer_gettime
+comma
+id|sys_timer_gettime
+)paren
+DECL|macro|__NR_timer_getoverrun
+mdefine_line|#define __NR_timer_getoverrun&t;&t;225
+id|__SYSCALL
+c_func
+(paren
+id|__NR_timer_getoverrun
+comma
+id|sys_timer_getoverrun
+)paren
+DECL|macro|__NR_timer_delete
+mdefine_line|#define __NR_timer_delete&t;226
+id|__SYSCALL
+c_func
+(paren
+id|__NR_timer_delete
+comma
+id|sys_timer_delete
+)paren
+DECL|macro|__NR_clock_settime
+mdefine_line|#define __NR_clock_settime&t;227
+id|__SYSCALL
+c_func
+(paren
+id|__NR_clock_settime
+comma
+id|sys_clock_settime
+)paren
+DECL|macro|__NR_clock_gettime
+mdefine_line|#define __NR_clock_gettime&t;228
+id|__SYSCALL
+c_func
+(paren
+id|__NR_clock_gettime
+comma
+id|sys_clock_gettime
+)paren
+DECL|macro|__NR_clock_getres
+mdefine_line|#define __NR_clock_getres&t;229
+id|__SYSCALL
+c_func
+(paren
+id|__NR_clock_getres
+comma
+id|sys_clock_getres
+)paren
+DECL|macro|__NR_clock_nanosleep
+mdefine_line|#define __NR_clock_nanosleep&t;230
+id|__SYSCALL
+c_func
+(paren
+id|__NR_clock_nanosleep
+comma
+id|sys_clock_nanosleep
+)paren
 DECL|macro|__NR_syscall_max
-mdefine_line|#define __NR_syscall_max __NR_fadvise64
+mdefine_line|#define __NR_syscall_max __NR_clock_nanosleep
 macro_line|#ifndef __NO_STUBS
 multiline_comment|/* user-visible error numbers are in the range -1 - -4095 */
 DECL|macro|__syscall_clobber

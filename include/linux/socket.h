@@ -48,6 +48,49 @@ suffix:semicolon
 multiline_comment|/* How long to linger for&t;*/
 )brace
 suffix:semicolon
+multiline_comment|/*&n; * Desired design of maximum size and alignment (see RFC2553)&n; */
+DECL|macro|_SS_MAXSIZE
+mdefine_line|#define _SS_MAXSIZE&t;128&t;/* Implementation specific max size */
+DECL|macro|_SS_ALIGNSIZE
+mdefine_line|#define _SS_ALIGNSIZE&t;(__alignof__ (struct sockaddr *))
+multiline_comment|/* Implementation specific desired alignment */
+DECL|struct|sockaddr_storage
+r_struct
+id|sockaddr_storage
+(brace
+DECL|member|ss_family
+id|sa_family_t
+id|ss_family
+suffix:semicolon
+multiline_comment|/* address family */
+multiline_comment|/* Following field(s) are implementation specific */
+DECL|member|__data
+r_char
+id|__data
+(braket
+id|_SS_MAXSIZE
+op_minus
+r_sizeof
+(paren
+id|sa_family_t
+)paren
+)braket
+suffix:semicolon
+multiline_comment|/* space to achieve desired size, */
+multiline_comment|/* _SS_MAXSIZE value minus size of ss_family */
+)brace
+id|__attribute__
+(paren
+(paren
+id|aligned
+c_func
+(paren
+id|_SS_ALIGNSIZE
+)paren
+)paren
+)paren
+suffix:semicolon
+multiline_comment|/* force desired alignment */
 multiline_comment|/*&n; *&t;As we do 4.4BSD message passing we use a 4.4BSD message passing&n; *&t;system, not 4.3. Thus msg_accrights(len) are now missing. They&n; *&t;belong in an obscure libc emulation or the bin.&n; */
 DECL|struct|msghdr
 r_struct

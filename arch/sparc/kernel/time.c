@@ -34,6 +34,12 @@ DECL|variable|jiffies_64
 id|u64
 id|jiffies_64
 suffix:semicolon
+DECL|variable|rtc_lock
+id|spinlock_t
+id|rtc_lock
+op_assign
+id|SPIN_LOCK_UNLOCKED
+suffix:semicolon
 DECL|variable|sp_clock_typ
 r_enum
 id|sparc_clock_type

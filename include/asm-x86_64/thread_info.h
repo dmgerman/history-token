@@ -5,6 +5,7 @@ mdefine_line|#define _ASM_THREAD_INFO_H
 macro_line|#ifdef __KERNEL__
 macro_line|#include &lt;asm/page.h&gt;
 macro_line|#include &lt;asm/types.h&gt;
+macro_line|#include &lt;asm/pda.h&gt;
 multiline_comment|/*&n; * low level task data that entry.S needs immediate access to&n; * - this struct should fit entirely inside of one cache line&n; * - this struct shares the supervisor stack pages&n; */
 macro_line|#ifndef __ASSEMBLY__
 r_struct
@@ -83,7 +84,45 @@ id|thread_info
 op_star
 id|ti
 suffix:semicolon
-id|asm
+id|ti
+op_assign
+(paren
+r_void
+op_star
+)paren
+id|read_pda
+c_func
+(paren
+id|kernelstack
+)paren
+op_plus
+id|PDA_STACKOFFSET
+op_minus
+id|THREAD_SIZE
+suffix:semicolon
+r_return
+id|ti
+suffix:semicolon
+)brace
+multiline_comment|/* do not use in interrupt context */
+DECL|function|stack_thread_info
+r_static
+r_inline
+r_struct
+id|thread_info
+op_star
+id|stack_thread_info
+c_func
+(paren
+r_void
+)paren
+(brace
+r_struct
+id|thread_info
+op_star
+id|ti
+suffix:semicolon
+id|__asm__
 c_func
 (paren
 l_string|&quot;andq %%rsp,%0; &quot;
@@ -95,7 +134,8 @@ id|ti
 suffix:colon
 l_string|&quot;0&quot;
 (paren
-id|CURRENT_MASK
+op_complement
+l_int|8191UL
 )paren
 )paren
 suffix:semicolon
@@ -116,7 +156,7 @@ macro_line|#else /* !__ASSEMBLY__ */
 multiline_comment|/* how to get the thread information struct from ASM */
 multiline_comment|/* only works on the process stack. otherwise get it via the PDA. */
 DECL|macro|GET_THREAD_INFO
-mdefine_line|#define GET_THREAD_INFO(reg) &bslash;&n;&t;movq $CURRENT_MASK, reg; &bslash;&n;&t;andq %rsp, reg
+mdefine_line|#define GET_THREAD_INFO(reg) &bslash;&n;&t;movq %gs:pda_kernelstack,reg ; &bslash;&n;&t;subq $(THREAD_SIZE-PDA_STACKOFFSET),reg
 macro_line|#endif
 multiline_comment|/*&n; * thread information flags&n; * - these are process state flags that various assembly files may need to access&n; * - pending work-to-be-done flags are in LSW&n; * - other flags in MSW&n; * Warning: layout of LSW is hardcoded in entry.S&n; */
 DECL|macro|TIF_SYSCALL_TRACE

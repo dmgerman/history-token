@@ -28,6 +28,7 @@ macro_line|#include &lt;asm/pgalloc.h&gt;
 macro_line|#include &lt;asm/nmi.h&gt;
 macro_line|#include &lt;asm/kdebug.h&gt;
 macro_line|#include &lt;asm/unistd.h&gt;
+macro_line|#include &lt;asm/delay.h&gt;
 r_extern
 id|spinlock_t
 id|rtc_lock
@@ -214,6 +215,13 @@ id|EXPORT_SYMBOL
 c_func
 (paren
 id|__udelay
+)paren
+suffix:semicolon
+DECL|variable|__ndelay
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|__ndelay
 )paren
 suffix:semicolon
 DECL|variable|__delay

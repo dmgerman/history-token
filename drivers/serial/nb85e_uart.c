@@ -2041,8 +2041,6 @@ id|module_exit
 id|nb85e_uart_exit
 )paren
 suffix:semicolon
-id|EXPORT_NO_SYMBOLS
-suffix:semicolon
 id|MODULE_AUTHOR
 (paren
 l_string|&quot;Miles Bader&quot;

@@ -2284,9 +2284,7 @@ c_func
 id|dst
 )paren
 suffix:semicolon
-id|skb-&gt;dst
-op_member_access_from_pointer
-id|output
+id|dst_output
 c_func
 (paren
 id|skb

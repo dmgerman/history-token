@@ -406,7 +406,7 @@ op_assign
 r_int
 r_int
 )paren
-id|current_thread_info
+id|stack_thread_info
 c_func
 (paren
 )paren

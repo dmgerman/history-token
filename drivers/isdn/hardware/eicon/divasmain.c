@@ -36,8 +36,6 @@ macro_line|#include &quot;xdi_msg.h&quot;
 macro_line|#include &quot;xdi_adapter.h&quot;
 macro_line|#include &quot;xdi_vers.h&quot;
 macro_line|#include &quot;diva_dma.h&quot;
-id|EXPORT_NO_SYMBOLS
-suffix:semicolon
 DECL|variable|main_revision
 r_static
 r_char

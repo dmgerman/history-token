@@ -3,6 +3,7 @@ macro_line|#include &lt;sound/driver.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
+macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;sound/core.h&gt;
 macro_line|#include &lt;sound/pcm.h&gt;
 macro_line|#include &lt;sound/ac97_codec.h&gt;
@@ -15508,11 +15509,6 @@ r_int
 id|vendor
 comma
 id|device
-suffix:semicolon
-r_struct
-id|ac97_quirk
-op_star
-id|q
 suffix:semicolon
 id|pci_read_config_word
 c_func

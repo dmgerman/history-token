@@ -1198,7 +1198,9 @@ DECL|macro|loaddebug
 mdefine_line|#define loaddebug(thread,register) &bslash;&n;&t;&t;set_debug(thread-&gt;debugreg[register], register)
 multiline_comment|/*&n; *&t;switch_to(x,y) should switch tasks from x to y.&n; *&n; * This could still be optimized: &n; * - fold all the options into a flag word and test it with a single test.&n; * - could test fs/gs bitsliced&n; */
 DECL|function|__switch_to
-r_void
+r_struct
+id|task_struct
+op_star
 id|__switch_to
 c_func
 (paren
@@ -1610,6 +1612,9 @@ id|INVALID_IO_BITMAP_OFFSET
 suffix:semicolon
 )brace
 )brace
+r_return
+id|prev_p
+suffix:semicolon
 )brace
 multiline_comment|/*&n; * sys_execve() executes a new program.&n; */
 id|asmlinkage

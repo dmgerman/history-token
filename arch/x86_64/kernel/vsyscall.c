@@ -12,6 +12,8 @@ macro_line|#include &lt;asm/fixmap.h&gt;
 macro_line|#include &lt;asm/errno.h&gt;
 DECL|macro|__vsyscall
 mdefine_line|#define __vsyscall(nr) __attribute__ ((unused,__section__(&quot;.vsyscall_&quot; #nr)))
+DECL|macro|force_inline
+mdefine_line|#define force_inline __attribute__((always_inline)) inline
 DECL|variable|__section_sysctl_vsyscall
 r_int
 id|__sysctl_vsyscall
@@ -29,7 +31,7 @@ suffix:semicolon
 macro_line|#include &lt;asm/unistd.h&gt;
 DECL|function|timeval_normalize
 r_static
-r_inline
+id|force_inline
 r_void
 id|timeval_normalize
 c_func
@@ -67,7 +69,7 @@ suffix:semicolon
 )brace
 DECL|function|do_vgettimeofday
 r_static
-r_inline
+id|force_inline
 r_void
 id|do_vgettimeofday
 c_func
@@ -119,7 +121,7 @@ id|usec
 op_assign
 (paren
 id|__xtime.tv_nsec
-op_star
+op_div
 l_int|1000
 )paren
 op_plus
@@ -183,7 +185,7 @@ suffix:semicolon
 multiline_comment|/* RED-PEN may want to readd seq locking, but then the variable should be write-once. */
 DECL|function|do_get_tz
 r_static
-r_inline
+id|force_inline
 r_void
 id|do_get_tz
 c_func
@@ -202,7 +204,7 @@ suffix:semicolon
 )brace
 DECL|function|gettimeofday
 r_static
-r_inline
+id|force_inline
 r_int
 id|gettimeofday
 c_func

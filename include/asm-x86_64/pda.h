@@ -1,6 +1,7 @@
 macro_line|#ifndef X86_64_PDA_H
 DECL|macro|X86_64_PDA_H
 mdefine_line|#define X86_64_PDA_H
+macro_line|#ifndef __ASSEMBLY__
 macro_line|#include &lt;linux/stddef.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/cache.h&gt;
@@ -105,8 +106,6 @@ DECL|variable|____cacheline_aligned
 )brace
 id|____cacheline_aligned
 suffix:semicolon
-DECL|macro|PDA_STACKOFFSET
-mdefine_line|#define PDA_STACKOFFSET (5*8)
 DECL|macro|IRQSTACK_ORDER
 mdefine_line|#define IRQSTACK_ORDER 2
 DECL|macro|IRQSTACKSIZE
@@ -146,5 +145,8 @@ DECL|macro|add_pda
 mdefine_line|#define add_pda(field,val) pda_to_op(&quot;add&quot;,field,val)
 DECL|macro|sub_pda
 mdefine_line|#define sub_pda(field,val) pda_to_op(&quot;sub&quot;,field,val)
+macro_line|#endif
+DECL|macro|PDA_STACKOFFSET
+mdefine_line|#define PDA_STACKOFFSET (5*8)
 macro_line|#endif
 eof

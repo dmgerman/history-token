@@ -2102,6 +2102,30 @@ op_amp
 id|init_mm.context
 )paren
 suffix:semicolon
+multiline_comment|/* Set up doublefault TSS pointer in the GDT */
+id|__set_tss_desc
+c_func
+(paren
+id|cpu
+comma
+id|GDT_ENTRY_DOUBLEFAULT_TSS
+comma
+op_amp
+id|doublefault_tss
+)paren
+suffix:semicolon
+id|cpu_gdt_table
+(braket
+id|cpu
+)braket
+(braket
+id|GDT_ENTRY_DOUBLEFAULT_TSS
+)braket
+dot
+id|b
+op_and_assign
+l_int|0xfffffdff
+suffix:semicolon
 multiline_comment|/* Clear %fs and %gs. */
 id|asm
 r_volatile

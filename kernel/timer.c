@@ -10,6 +10,7 @@ macro_line|#include &lt;linux/time.h&gt;
 macro_line|#include &lt;linux/jiffies.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/div64.h&gt;
+macro_line|#include &lt;asm/timex.h&gt;
 multiline_comment|/*&n; * per-CPU timer vector definitions:&n; */
 DECL|macro|TVN_BITS
 mdefine_line|#define TVN_BITS 6
@@ -2696,6 +2697,7 @@ r_int
 id|wall_jiffies
 suffix:semicolon
 multiline_comment|/*&n; * This read-write spinlock protects us from races in SMP while&n; * playing with xtime and avenrun.&n; */
+macro_line|#ifndef ARCH_HAVE_XTIME_LOCK
 DECL|variable|__cacheline_aligned_in_smp
 id|seqlock_t
 id|xtime_lock
@@ -2703,6 +2705,7 @@ id|__cacheline_aligned_in_smp
 op_assign
 id|SEQLOCK_UNLOCKED
 suffix:semicolon
+macro_line|#endif
 DECL|variable|last_time_offset
 r_int
 r_int

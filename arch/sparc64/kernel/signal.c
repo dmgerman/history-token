@@ -1432,7 +1432,7 @@ c_func
 (paren
 id|regs-&gt;u_regs
 (braket
-id|UREG_G6
+id|UREG_G7
 )braket
 comma
 op_amp
@@ -2751,6 +2751,8 @@ op_and_assign
 op_complement
 (paren
 id|TSTATE_ICC
+op_or
+id|TSTATE_XCC
 )paren
 suffix:semicolon
 id|regs-&gt;tstate
@@ -2758,7 +2760,11 @@ op_or_assign
 (paren
 id|tstate
 op_amp
+(paren
 id|TSTATE_ICC
+op_or
+id|TSTATE_XCC
+)paren
 )paren
 suffix:semicolon
 id|err

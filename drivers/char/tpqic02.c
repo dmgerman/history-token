@@ -7209,7 +7209,7 @@ c_func
 (paren
 l_string|&quot;qic02_tape_open: dev=%s, flags=%x     &quot;
 comma
-id|kdevname
+id|cdevname
 c_func
 (paren
 id|dev
@@ -7970,7 +7970,7 @@ c_func
 (paren
 l_string|&quot;qic02_tape_release: dev=%s&bslash;n&quot;
 comma
-id|kdevname
+id|cdevname
 c_func
 (paren
 id|dev

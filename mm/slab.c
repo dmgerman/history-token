@@ -8145,13 +8145,21 @@ c_cond
 op_logical_neg
 id|n
 )paren
-r_return
+(brace
+multiline_comment|/*&n;&t;&t; * Output format version, so at least we can change it&n;&t;&t; * without _too_ many complaints.&n;&t;&t; */
+id|seq_puts
+c_func
 (paren
-r_void
-op_star
+id|m
+comma
+l_string|&quot;slabinfo - version: 1.2&quot;
+macro_line|#if STATS
+l_string|&quot; (statistics)&quot;
+macro_line|#endif
+l_string|&quot;&bslash;n&quot;
 )paren
-l_int|1
 suffix:semicolon
+)brace
 id|p
 op_assign
 id|cache_chain.next
@@ -8159,8 +8167,8 @@ suffix:semicolon
 r_while
 c_loop
 (paren
-op_decrement
 id|n
+op_decrement
 )paren
 (brace
 id|p
@@ -8221,28 +8229,6 @@ suffix:semicolon
 op_increment
 op_star
 id|pos
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|p
-op_eq
-(paren
-r_void
-op_star
-)paren
-l_int|1
-)paren
-r_return
-id|list_entry
-c_func
-(paren
-id|cache_chain.next
-comma
-id|kmem_cache_t
-comma
-id|next
-)paren
 suffix:semicolon
 r_return
 id|cachep-&gt;next.next
@@ -8355,35 +8341,6 @@ suffix:semicolon
 r_char
 id|tmp
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|p
-op_eq
-(paren
-r_void
-op_star
-)paren
-l_int|1
-)paren
-(brace
-multiline_comment|/*&n;&t;&t; * Output format version, so at least we can change it&n;&t;&t; * without _too_ many complaints.&n;&t;&t; */
-id|seq_puts
-c_func
-(paren
-id|m
-comma
-l_string|&quot;slabinfo - version: 1.2&quot;
-macro_line|#if STATS
-l_string|&quot; (statistics)&quot;
-macro_line|#endif
-l_string|&quot;&bslash;n&quot;
-)paren
-suffix:semicolon
-r_return
-l_int|0
-suffix:semicolon
-)brace
 id|check_irq_on
 c_func
 (paren

@@ -15,8 +15,6 @@ macro_line|#include &quot;capi20.h&quot;
 macro_line|#include &quot;divacapi.h&quot;
 macro_line|#include &quot;cp_vers.h&quot;
 macro_line|#include &quot;capifunc.h&quot;
-id|EXPORT_NO_SYMBOLS
-suffix:semicolon
 DECL|variable|main_revision
 r_static
 r_char

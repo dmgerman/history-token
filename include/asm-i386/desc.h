@@ -90,16 +90,20 @@ id|addr
 suffix:semicolon
 DECL|macro|_set_tssldt_desc
 mdefine_line|#define _set_tssldt_desc(n,addr,limit,type) &bslash;&n;__asm__ __volatile__ (&quot;movw %w3,0(%2)&bslash;n&bslash;t&quot; &bslash;&n;&t;&quot;movw %%ax,2(%2)&bslash;n&bslash;t&quot; &bslash;&n;&t;&quot;rorl $16,%%eax&bslash;n&bslash;t&quot; &bslash;&n;&t;&quot;movb %%al,4(%2)&bslash;n&bslash;t&quot; &bslash;&n;&t;&quot;movb %4,5(%2)&bslash;n&bslash;t&quot; &bslash;&n;&t;&quot;movb $0,6(%2)&bslash;n&bslash;t&quot; &bslash;&n;&t;&quot;movb %%ah,7(%2)&bslash;n&bslash;t&quot; &bslash;&n;&t;&quot;rorl $16,%%eax&quot; &bslash;&n;&t;: &quot;=m&quot;(*(n)) : &quot;a&quot; (addr), &quot;r&quot;(n), &quot;ir&quot;(limit), &quot;i&quot;(type))
-DECL|function|set_tss_desc
+DECL|function|__set_tss_desc
 r_static
 r_inline
 r_void
-id|set_tss_desc
+id|__set_tss_desc
 c_func
 (paren
 r_int
 r_int
 id|cpu
+comma
+r_int
+r_int
+id|entry
 comma
 r_void
 op_star
@@ -115,7 +119,7 @@ id|cpu_gdt_table
 id|cpu
 )braket
 (braket
-id|GDT_ENTRY_TSS
+id|entry
 )braket
 comma
 (paren
@@ -129,6 +133,8 @@ l_int|0x89
 )paren
 suffix:semicolon
 )brace
+DECL|macro|set_tss_desc
+mdefine_line|#define set_tss_desc(cpu,addr) __set_tss_desc(cpu, GDT_ENTRY_TSS, addr)
 DECL|function|set_ldt_desc
 r_static
 r_inline

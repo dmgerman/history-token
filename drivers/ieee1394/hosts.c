@@ -1,5 +1,6 @@
 multiline_comment|/*&n; * IEEE 1394 for Linux&n; *&n; * Low level (host adapter) management.&n; *&n; * Copyright (C) 1999 Andreas E. Bombe&n; * Copyright (C) 1999 Emanuel Pirker&n; *&n; * This code is licensed under the GPL.  See the file COPYING in the root&n; * directory of the kernel sources for details.&n; */
 macro_line|#include &lt;linux/config.h&gt;
+macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/list.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
@@ -201,29 +202,21 @@ id|host_list
 r_if
 c_cond
 (paren
-id|host-&gt;driver
-op_member_access_from_pointer
-id|devctl
+id|try_module_get
 c_func
 (paren
-id|host
-comma
-id|MODIFY_USAGE
-comma
-l_int|1
+id|host-&gt;driver-&gt;owner
 )paren
 )paren
 (brace
-id|host-&gt;driver
-op_member_access_from_pointer
-id|devctl
+multiline_comment|/* we&squot;re doing this twice and don&squot;t seem&n;&t;&t;&t;&t;   to undo it..  --hch */
+(paren
+r_void
+)paren
+id|try_module_get
 c_func
 (paren
-id|host
-comma
-id|MODIFY_USAGE
-comma
-l_int|1
+id|host-&gt;driver-&gt;owner
 )paren
 suffix:semicolon
 id|host-&gt;refcount
@@ -267,16 +260,10 @@ r_int
 r_int
 id|flags
 suffix:semicolon
-id|host-&gt;driver
-op_member_access_from_pointer
-id|devctl
+id|module_put
 c_func
 (paren
-id|host
-comma
-id|MODIFY_USAGE
-comma
-l_int|0
+id|host-&gt;driver-&gt;owner
 )paren
 suffix:semicolon
 id|spin_lock_irqsave

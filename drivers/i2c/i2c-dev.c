@@ -2,21 +2,19 @@ multiline_comment|/*&n;    i2c-dev.c - i2c-bus driver, char device interface  &n
 multiline_comment|/* Note that this is a complete rewrite of Simon Vogl&squot;s i2c-dev module.&n;   But I have used so much of his original code and ideas that it seems&n;   only fair to recognize him as co-author -- Frodo */
 multiline_comment|/* The I2C_RDWR ioctl code is written by Kolja Waschk &lt;waschk@telos.de&gt; */
 multiline_comment|/* The devfs code is contributed by Philipp Matthias Hahn &n;   &lt;pmhahn@titan.lahn.de&gt; */
-multiline_comment|/* $Id: i2c-dev.c,v 1.48 2002/10/01 14:10:04 ac9410 Exp $ */
-macro_line|#include &lt;linux/config.h&gt;
+multiline_comment|/* $Id: i2c-dev.c,v 1.53 2003/01/21 08:08:16 kmalkki Exp $ */
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
-macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;linux/devfs_fs_kernel.h&gt;
-multiline_comment|/* If you want debugging uncomment: */
-multiline_comment|/* #define DEBUG */
 macro_line|#include &lt;linux/init.h&gt;
-macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;linux/i2c.h&gt;
 macro_line|#include &lt;linux/i2c-dev.h&gt;
+macro_line|#include &lt;asm/uaccess.h&gt;
+multiline_comment|/* If you want debugging uncomment: */
+multiline_comment|/* #define DEBUG */
 multiline_comment|/* struct file_operations changed too often in the 2.1 series for nice code */
 r_static
 id|ssize_t
@@ -338,12 +336,10 @@ id|count
 OG
 l_int|8192
 )paren
-(brace
 id|count
 op_assign
 l_int|8192
 suffix:semicolon
-)brace
 multiline_comment|/* copy user space data to kernel space. */
 id|tmp
 op_assign

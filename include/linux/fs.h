@@ -5754,6 +5754,17 @@ op_star
 id|list
 )paren
 suffix:semicolon
+r_extern
+r_void
+id|file_kill
+c_func
+(paren
+r_struct
+id|file
+op_star
+id|f
+)paren
+suffix:semicolon
 r_struct
 id|bio
 suffix:semicolon

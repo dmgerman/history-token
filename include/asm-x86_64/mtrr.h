@@ -30,6 +30,7 @@ suffix:semicolon
 multiline_comment|/*  Type of region   */
 )brace
 suffix:semicolon
+multiline_comment|/* Warning: this structure has a different order from i386&n;   on x86-64. The 32bit emulation code takes care of that.&n;   But you need to use this for 64bit, otherwise your X server&n;   will break. */
 DECL|struct|mtrr_gentry
 r_struct
 id|mtrr_gentry
@@ -40,18 +41,18 @@ r_int
 id|base
 suffix:semicolon
 multiline_comment|/*  Base address     */
-DECL|member|regnum
-r_int
-r_int
-id|regnum
-suffix:semicolon
-multiline_comment|/*  Register number  */
 DECL|member|size
 r_int
 r_int
 id|size
 suffix:semicolon
 multiline_comment|/*  Size of region   */
+DECL|member|regnum
+r_int
+r_int
+id|regnum
+suffix:semicolon
+multiline_comment|/*  Register number  */
 DECL|member|type
 r_int
 r_int

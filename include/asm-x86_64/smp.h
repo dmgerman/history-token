@@ -6,6 +6,10 @@ macro_line|#ifndef __ASSEMBLY__
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/threads.h&gt;
 macro_line|#include &lt;linux/bitops.h&gt;
+r_extern
+r_int
+id|disable_apic
+suffix:semicolon
 macro_line|#endif
 macro_line|#ifdef CONFIG_X86_LOCAL_APIC
 macro_line|#ifndef __ASSEMBLY__
@@ -245,10 +249,6 @@ id|APIC_ID
 )paren
 suffix:semicolon
 )brace
-r_extern
-r_int
-id|disable_apic
-suffix:semicolon
 r_extern
 r_int
 id|slow_smp_processor_id

@@ -131,6 +131,7 @@ id|timer_t
 id|timer_id
 comma
 r_int
+r_int
 op_star
 id|flags
 )paren
@@ -146,6 +147,7 @@ id|k_itimer
 op_star
 id|timr
 comma
+r_int
 r_int
 id|flags
 )paren
@@ -495,6 +497,7 @@ op_star
 id|timr
 suffix:semicolon
 r_int
+r_int
 id|flags
 suffix:semicolon
 id|timr
@@ -698,6 +701,7 @@ op_star
 )paren
 id|__data
 suffix:semicolon
+r_int
 r_int
 id|flags
 suffix:semicolon
@@ -1493,6 +1497,7 @@ op_star
 id|timr
 comma
 r_int
+r_int
 id|flags
 )paren
 (brace
@@ -1518,6 +1523,7 @@ c_func
 id|timer_t
 id|timer_id
 comma
+r_int
 r_int
 op_star
 id|flags
@@ -1859,6 +1865,7 @@ r_struct
 id|itimerspec
 id|cur_setting
 suffix:semicolon
+r_int
 r_int
 id|flags
 suffix:semicolon

@@ -4,11 +4,10 @@ multiline_comment|/* -----------------------------------------------------------
 multiline_comment|/*   Copyright (C) 1995-99 Simon G. Vogl&n;&n;    This program is free software; you can redistribute it and/or modify&n;    it under the terms of the GNU General Public License as published by&n;    the Free Software Foundation; either version 2 of the License, or&n;    (at your option) any later version.&n;&n;    This program is distributed in the hope that it will be useful,&n;    but WITHOUT ANY WARRANTY; without even the implied warranty of&n;    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n;    GNU General Public License for more details.&n;&n;    You should have received a copy of the GNU General Public License&n;    along with this program; if not, write to the Free Software&n;    Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.                */
 multiline_comment|/* ------------------------------------------------------------------------- */
 multiline_comment|/* With some changes from Ky&#xfffd;sti M&#xfffd;lkki &lt;kmalkki@cc.hut.fi&gt; and even&n;   Frodo Looijaard &lt;frodol@dds.nl&gt; */
-multiline_comment|/* $Id: i2c-algo-bit.h,v 1.7 1999/12/21 23:45:58 frodo Exp $ */
-macro_line|#ifndef I2C_ALGO_BIT_H
-DECL|macro|I2C_ALGO_BIT_H
-mdefine_line|#define I2C_ALGO_BIT_H 1
-macro_line|#include &lt;linux/i2c.h&gt;
+multiline_comment|/* $Id: i2c-algo-bit.h,v 1.10 2003/01/21 08:08:16 kmalkki Exp $ */
+macro_line|#ifndef _LINUX_I2C_ALGO_BIT_H
+DECL|macro|_LINUX_I2C_ALGO_BIT_H
+mdefine_line|#define _LINUX_I2C_ALGO_BIT_H
 multiline_comment|/* --- Defines for bit-adapters ---------------------------------------&t;*/
 multiline_comment|/*&n; * This struct contains the hw-dependent functions of bit-style adapters to &n; * manipulate the line states, and to init any hw-specific features. This is&n; * only used if you have more than one hw-type of adapter running. &n; */
 DECL|struct|i2c_algo_bit_data
@@ -114,5 +113,5 @@ id|i2c_adapter
 op_star
 )paren
 suffix:semicolon
-macro_line|#endif /* I2C_ALGO_BIT_H */
+macro_line|#endif /* _LINUX_I2C_ALGO_BIT_H */
 eof

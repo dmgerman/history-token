@@ -6162,7 +6162,5 @@ c_func
 l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
-id|EXPORT_NO_SYMBOLS
-suffix:semicolon
 multiline_comment|/*&n; * TODO:&n; *&t;- Get ridden of SisHostChipInfo[] completness dependancy.&n; *&t;- Study drivers/ide/ide-timing.h.&n; *&t;- Are there pre-ATA_16 SiS5513 chips ? -&gt; tune init code for them&n; *&t;  or remove ATA_00 define&n; *&t;- More checks in the config registers (force values instead of&n; *&t;  relying on the BIOS setting them correctly).&n; *&t;- Further optimisations ?&n; *&t;  . for example ATA66+ regs 0x48 &amp; 0x4A&n; */
 eof

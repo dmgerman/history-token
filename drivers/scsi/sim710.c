@@ -1313,8 +1313,6 @@ id|err
 op_assign
 op_minus
 id|ENODEV
-comma
-id|err2
 suffix:semicolon
 macro_line|#ifdef MODULE
 r_if
@@ -1330,11 +1328,6 @@ id|sim710
 suffix:semicolon
 macro_line|#endif
 macro_line|#ifdef CONFIG_MCA
-r_if
-c_cond
-(paren
-id|MCA_bus
-)paren
 id|err
 op_assign
 id|mca_register_driver
@@ -1346,7 +1339,7 @@ id|sim710_mca_driver
 suffix:semicolon
 macro_line|#endif
 macro_line|#ifdef CONFIG_EISA
-id|err2
+id|err
 op_assign
 id|eisa_driver_register
 c_func
@@ -1355,42 +1348,8 @@ op_amp
 id|sim710_eisa_driver
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * The eise_driver_register return values are strange.  I have&n;&t; * no idea why we don&squot;t just use river_register directly anyway..&n;&t; */
-r_if
-c_cond
-(paren
-id|err2
-op_eq
-l_int|1
-)paren
-id|err2
-op_assign
-l_int|0
-suffix:semicolon
 macro_line|#endif
-r_if
-c_cond
-(paren
-id|err
-OL
-l_int|0
-op_logical_or
-id|err2
-OL
-l_int|0
-)paren
-r_return
-(paren
-id|err
-OL
-l_int|0
-)paren
-ques
-c_cond
-id|err
-suffix:colon
-id|err2
-suffix:semicolon
+multiline_comment|/* FIXME: what we&squot;d really like to return here is -ENODEV if&n;&t; * no devices have actually been found.  Instead, the err&n;&t; * above actually only reports problems with kobject_register,&n;&t; * so for the moment return success */
 r_return
 l_int|0
 suffix:semicolon

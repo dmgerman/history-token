@@ -1541,8 +1541,6 @@ c_func
 id|rtc_generic_exit
 )paren
 suffix:semicolon
-id|EXPORT_NO_SYMBOLS
-suffix:semicolon
 multiline_comment|/*&n; *&t;Info exported via &quot;/proc/rtc&quot;.&n; */
 DECL|function|gen_rtc_proc_output
 r_int

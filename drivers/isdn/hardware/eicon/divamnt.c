@@ -15,8 +15,6 @@ macro_line|#include &quot;di_defs.h&quot;
 macro_line|#include &quot;divasync.h&quot;
 macro_line|#include &quot;di_defs.h&quot;
 macro_line|#include &quot;debug_if.h&quot;
-id|EXPORT_NO_SYMBOLS
-suffix:semicolon
 DECL|variable|main_revision
 r_static
 r_char

@@ -565,7 +565,6 @@ r_const
 r_int
 id|xid
 comma
-r_const
 r_struct
 id|cifsTconInfo
 op_star
@@ -609,7 +608,6 @@ r_const
 r_int
 id|xid
 comma
-r_const
 r_struct
 id|cifsTconInfo
 op_star
@@ -649,7 +647,6 @@ r_const
 r_int
 id|xid
 comma
-r_const
 r_struct
 id|cifsTconInfo
 op_star
@@ -681,7 +678,6 @@ r_const
 r_int
 id|xid
 comma
-r_const
 r_struct
 id|cifsTconInfo
 op_star
@@ -775,7 +771,6 @@ r_const
 r_int
 id|xid
 comma
-r_const
 r_struct
 id|cifsTconInfo
 op_star
@@ -986,7 +981,6 @@ r_const
 r_int
 id|xid
 comma
-r_const
 r_struct
 id|cifsTconInfo
 op_star
@@ -1013,7 +1007,6 @@ r_const
 r_int
 id|xid
 comma
-r_const
 r_struct
 id|cifsTconInfo
 op_star
@@ -1040,7 +1033,6 @@ r_const
 r_int
 id|xid
 comma
-r_const
 r_struct
 id|cifsTconInfo
 op_star
@@ -1067,7 +1059,6 @@ r_const
 r_int
 id|xid
 comma
-r_const
 r_struct
 id|cifsTconInfo
 op_star
@@ -1099,7 +1090,6 @@ r_const
 r_int
 id|xid
 comma
-r_const
 r_struct
 id|cifsTconInfo
 op_star
@@ -1131,7 +1121,6 @@ r_const
 r_int
 id|xid
 comma
-r_const
 r_struct
 id|cifsTconInfo
 op_star
@@ -1163,7 +1152,6 @@ r_const
 r_int
 id|xid
 comma
-r_const
 r_struct
 id|cifsTconInfo
 op_star
@@ -1195,7 +1183,6 @@ r_const
 r_int
 id|xid
 comma
-r_const
 r_struct
 id|cifsTconInfo
 op_star
@@ -1231,7 +1218,6 @@ r_const
 r_int
 id|xid
 comma
-r_const
 r_struct
 id|cifsTconInfo
 op_star
@@ -1270,7 +1256,6 @@ r_const
 r_int
 id|xid
 comma
-r_const
 r_struct
 id|cifsTconInfo
 op_star
@@ -1317,7 +1302,6 @@ r_const
 r_int
 id|xid
 comma
-r_const
 r_struct
 id|cifsTconInfo
 op_star
@@ -1337,7 +1321,6 @@ r_const
 r_int
 id|xid
 comma
-r_const
 r_struct
 id|cifsTconInfo
 op_star
@@ -1375,7 +1358,6 @@ r_const
 r_int
 id|xid
 comma
-r_const
 r_struct
 id|cifsTconInfo
 op_star
@@ -1418,7 +1400,6 @@ r_const
 r_int
 id|xid
 comma
-r_const
 r_struct
 id|cifsTconInfo
 op_star

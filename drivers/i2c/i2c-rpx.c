@@ -5,10 +5,10 @@ macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/stddef.h&gt;
 macro_line|#include &lt;linux/parport.h&gt;
-macro_line|#include &lt;asm/mpc8xx.h&gt;
-macro_line|#include &lt;asm/commproc.h&gt;
 macro_line|#include &lt;linux/i2c.h&gt;
 macro_line|#include &lt;linux/i2c-algo-8xx.h&gt;
+macro_line|#include &lt;asm/mpc8xx.h&gt;
+macro_line|#include &lt;asm/commproc.h&gt;
 r_static
 r_void
 DECL|function|rpx_iic_init

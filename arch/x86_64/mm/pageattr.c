@@ -714,6 +714,11 @@ r_int
 id|address
 )paren
 (brace
+id|preempt_disable
+c_func
+(paren
+)paren
+suffix:semicolon
 macro_line|#ifdef CONFIG_SMP 
 id|smp_call_function
 c_func
@@ -740,6 +745,11 @@ r_void
 op_star
 )paren
 id|address
+)paren
+suffix:semicolon
+id|preempt_enable
+c_func
+(paren
 )paren
 suffix:semicolon
 )brace

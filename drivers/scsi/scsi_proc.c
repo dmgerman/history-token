@@ -2720,7 +2720,6 @@ suffix:semicolon
 )brace
 DECL|function|scsi_exit_procfs
 r_void
-id|__exit
 id|scsi_exit_procfs
 c_func
 (paren

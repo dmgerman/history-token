@@ -1,4 +1,4 @@
-multiline_comment|/* xfrm_user.c: User interface to configure xfrm engine.&n; *&n; * Copyright (C) 2002 David S. Miller (davem@redhat.com)&n; */
+multiline_comment|/* xfrm_user.c: User interface to configure xfrm engine.&n; *&n; * Copyright (C) 2002 David S. Miller (davem@redhat.com)&n; *&n; * Changes&n; *&n; *&t;Mitsuru KANDA @USAGI       : IPv6 Support &n; * &t;Kazunori MIYAZAWA @USAGI   :&n; * &t;Kunihiro Ishiguro          :&n; * &t;&n; */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
@@ -13,6 +13,9 @@ macro_line|#include &lt;linux/pfkeyv2.h&gt;
 macro_line|#include &lt;linux/ipsec.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/security.h&gt;
+macro_line|#if defined(CONFIG_IPV6) || defined(CONFIG_IPV6_MODULE)
+macro_line|#include &lt;linux/in6.h&gt;
+macro_line|#endif
 macro_line|#include &lt;net/sock.h&gt;
 macro_line|#include &lt;net/xfrm.h&gt;
 DECL|variable|xfrm_nl
@@ -187,13 +190,19 @@ suffix:semicolon
 r_case
 id|AF_INET6
 suffix:colon
-multiline_comment|/* XXX */
+macro_line|#if defined(CONFIG_IPV6) || defined(CONFIG_IPV6_MODULE)
+r_break
+suffix:semicolon
+macro_line|#else
 id|err
 op_assign
 op_minus
 id|EAFNOSUPPORT
 suffix:semicolon
-multiline_comment|/* fallthru */
+r_goto
+id|out
+suffix:semicolon
+macro_line|#endif
 r_default
 suffix:colon
 r_goto
@@ -729,6 +738,15 @@ op_assign
 op_minus
 id|ENOENT
 suffix:semicolon
+r_switch
+c_cond
+(paren
+id|x-&gt;props.family
+)paren
+(brace
+r_case
+id|AF_INET
+suffix:colon
 id|x-&gt;type
 op_assign
 id|xfrm_get_type
@@ -737,6 +755,32 @@ c_func
 id|x-&gt;id.proto
 )paren
 suffix:semicolon
+r_break
+suffix:semicolon
+macro_line|#if defined(CONFIG_IPV6) || defined(CONFIG_IPV6_MODULE)
+r_case
+id|AF_INET6
+suffix:colon
+id|x-&gt;type
+op_assign
+id|xfrm6_get_type
+c_func
+(paren
+id|x-&gt;id.proto
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
+macro_line|#endif
+r_default
+suffix:colon
+id|x-&gt;type
+op_assign
+l_int|NULL
+suffix:semicolon
+r_break
+suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
@@ -901,6 +945,15 @@ id|x
 r_return
 id|err
 suffix:semicolon
+r_switch
+c_cond
+(paren
+id|x-&gt;props.family
+)paren
+(brace
+r_case
+id|AF_INET
+suffix:colon
 id|x1
 op_assign
 id|xfrm_state_lookup
@@ -913,6 +966,41 @@ comma
 id|x-&gt;id.proto
 )paren
 suffix:semicolon
+r_break
+suffix:semicolon
+macro_line|#if defined(CONFIG_IPV6) || defined(CONFIG_IPV6_MODULE)
+r_case
+id|AF_INET6
+suffix:colon
+id|x1
+op_assign
+id|xfrm6_state_lookup
+c_func
+(paren
+(paren
+r_struct
+id|in6_addr
+op_star
+)paren
+id|x-&gt;props.saddr.a6
+comma
+id|x-&gt;id.spi
+comma
+id|x-&gt;id.proto
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
+macro_line|#endif
+r_default
+suffix:colon
+id|x1
+op_assign
+l_int|NULL
+suffix:semicolon
+r_break
+suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
@@ -984,6 +1072,15 @@ c_func
 id|nlh
 )paren
 suffix:semicolon
+r_switch
+c_cond
+(paren
+id|p-&gt;family
+)paren
+(brace
+r_case
+id|AF_INET
+suffix:colon
 id|x
 op_assign
 id|xfrm_state_lookup
@@ -996,6 +1093,41 @@ comma
 id|p-&gt;proto
 )paren
 suffix:semicolon
+r_break
+suffix:semicolon
+macro_line|#if defined(CONFIG_IPV6) || defined(CONFIG_IPV6_MODULE)
+r_case
+id|AF_INET6
+suffix:colon
+id|x
+op_assign
+id|xfrm6_state_lookup
+c_func
+(paren
+(paren
+r_struct
+id|in6_addr
+op_star
+)paren
+id|p-&gt;saddr.a6
+comma
+id|p-&gt;spi
+comma
+id|p-&gt;proto
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
+macro_line|#endif
+r_default
+suffix:colon
+id|x
+op_assign
+l_int|NULL
+suffix:semicolon
+r_break
+suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
@@ -1630,6 +1762,15 @@ suffix:semicolon
 r_int
 id|err
 suffix:semicolon
+r_switch
+c_cond
+(paren
+id|p-&gt;family
+)paren
+(brace
+r_case
+id|AF_INET
+suffix:colon
 id|x
 op_assign
 id|xfrm_state_lookup
@@ -1642,6 +1783,41 @@ comma
 id|p-&gt;proto
 )paren
 suffix:semicolon
+r_break
+suffix:semicolon
+macro_line|#if defined(CONFIG_IPV6) || defined(CONFIG_IPV6_MODULE)
+r_case
+id|AF_INET6
+suffix:colon
+id|x
+op_assign
+id|xfrm6_state_lookup
+c_func
+(paren
+(paren
+r_struct
+id|in6_addr
+op_star
+)paren
+id|p-&gt;saddr.a6
+comma
+id|p-&gt;spi
+comma
+id|p-&gt;proto
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
+macro_line|#endif
+r_default
+suffix:colon
+id|x
+op_assign
+l_int|NULL
+suffix:semicolon
+r_break
+suffix:semicolon
+)brace
 id|err
 op_assign
 op_minus
@@ -1855,6 +2031,15 @@ id|err
 r_goto
 id|out_noput
 suffix:semicolon
+r_switch
+c_cond
+(paren
+id|p-&gt;info.family
+)paren
+(brace
+r_case
+id|AF_INET
+suffix:colon
 id|x
 op_assign
 id|xfrm_find_acq
@@ -1873,6 +2058,52 @@ comma
 l_int|1
 )paren
 suffix:semicolon
+r_break
+suffix:semicolon
+macro_line|#if defined(CONFIG_IPV6) || defined(CONFIG_IPV6_MODULE)
+r_case
+id|AF_INET6
+suffix:colon
+id|x
+op_assign
+id|xfrm6_find_acq
+c_func
+(paren
+id|p-&gt;info.mode
+comma
+id|p-&gt;info.reqid
+comma
+id|p-&gt;info.id.proto
+comma
+(paren
+r_struct
+id|in6_addr
+op_star
+)paren
+id|p-&gt;info.sel.daddr.a6
+comma
+(paren
+r_struct
+id|in6_addr
+op_star
+)paren
+id|p-&gt;info.sel.saddr.a6
+comma
+l_int|1
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
+macro_line|#endif
+r_default
+suffix:colon
+id|x
+op_assign
+l_int|NULL
+suffix:semicolon
+r_break
+suffix:semicolon
+)brace
 id|err
 op_assign
 op_minus

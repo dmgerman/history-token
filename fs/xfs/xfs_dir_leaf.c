@@ -2924,8 +2924,8 @@ c_cond
 (paren
 id|retval
 )paren
-r_return
-id|retval
+r_goto
+id|out
 suffix:semicolon
 id|ASSERT
 c_func

@@ -2,11 +2,6 @@ multiline_comment|/********************************************************&n;* 
 macro_line|#ifndef _EATA_PIO_H
 DECL|macro|_EATA_PIO_H
 mdefine_line|#define _EATA_PIO_H
-macro_line|#include &lt;linux/blk.h&gt;
-macro_line|#include &quot;scsi.h&quot;
-macro_line|#include &quot;hosts.h&quot;
-macro_line|#include &lt;scsi/scsicam.h&gt;
-macro_line|#include &quot;eata_generic.h&quot;
 DECL|macro|VER_MAJOR
 mdefine_line|#define VER_MAJOR 0
 DECL|macro|VER_MINOR
@@ -58,84 +53,5 @@ macro_line|#else
 DECL|macro|DBG
 mdefine_line|#define DBG(x, y)
 macro_line|#endif
-r_static
-r_int
-id|eata_pio_detect
-c_func
-(paren
-id|Scsi_Host_Template
-op_star
-)paren
-suffix:semicolon
-r_static
-r_int
-id|eata_pio_queue
-c_func
-(paren
-id|Scsi_Cmnd
-op_star
-comma
-r_void
-(paren
-op_star
-id|done
-)paren
-(paren
-id|Scsi_Cmnd
-op_star
-)paren
-)paren
-suffix:semicolon
-r_static
-r_int
-id|eata_pio_abort
-c_func
-(paren
-id|Scsi_Cmnd
-op_star
-)paren
-suffix:semicolon
-r_static
-r_int
-id|eata_pio_host_reset
-c_func
-(paren
-id|Scsi_Cmnd
-op_star
-)paren
-suffix:semicolon
-r_static
-r_int
-id|eata_pio_proc_info
-c_func
-(paren
-r_char
-op_star
-comma
-r_char
-op_star
-op_star
-comma
-id|off_t
-comma
-r_int
-comma
-r_int
-comma
-r_int
-)paren
-suffix:semicolon
-r_static
-r_int
-id|eata_pio_release
-c_func
-(paren
-r_struct
-id|Scsi_Host
-op_star
-)paren
-suffix:semicolon
-DECL|macro|EATA_PIO
-mdefine_line|#define EATA_PIO {&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;.proc_info         &t;= eata_pio_proc_info, /* procinfo&t;  */&t;&bslash;&n;&t;.name              &t;= &quot;EATA (Extended Attachment) PIO driver&quot;,&bslash;&n;&t;.detect            &t;= eata_pio_detect,&t;&t;&t;&bslash;&n;&t;.release           &t;= eata_pio_release,&t;&t;&t;&bslash;&n;&t;.queuecommand      &t;= eata_pio_queue,&t;&t;&t;&t;&bslash;&n;&t;.eh_abort_handler  &t;= eata_pio_abort,&t;&t;&t;&t;&bslash;&n;&t;.eh_host_reset_handler&t;= eata_pio_host_reset,&t;&t;&t;&bslash;&n;&t;.use_clustering    &t;= ENABLE_CLUSTERING &t;&t;&t;&bslash;&n;}
 macro_line|#endif&t;&t;&t;&t;/* _EATA_PIO_H */
 eof
