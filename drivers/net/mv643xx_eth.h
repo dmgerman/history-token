@@ -80,7 +80,7 @@ mdefine_line|#define&t;MV64340_NAPI
 DECL|macro|MV64340_TX_FAST_REFILL
 mdefine_line|#define&t;MV64340_TX_FAST_REFILL
 DECL|macro|MV64340_RX_QUEUE_FILL_ON_TASK
-macro_line|#undef&t;MV64340_RX_QUEUE_FILL_ON_TASK&t;&t;/* Does not work, yet */
+macro_line|#undef&t;MV64340_RX_QUEUE_FILL_ON_TASK&t;/* Does not work, yet */
 DECL|macro|MV64340_COAL
 macro_line|#undef&t;MV64340_COAL
 multiline_comment|/* &n; * Number of RX / TX descriptors on RX / TX rings.&n; * Note that allocating RX descriptors is done by allocating the RX&n; * ring AND a preallocated RX buffers (skb&squot;s) for each descriptor.&n; * The TX descriptors only allocates the TX descriptors ring,&n; * with no pre allocated TX buffers (skb&squot;s are allocated by higher layers.&n; */
@@ -587,22 +587,22 @@ DECL|member|rx_sram_addr
 id|u32
 id|rx_sram_addr
 suffix:semicolon
-multiline_comment|/* Base address of rx sram area&t;*/
+multiline_comment|/* Base address of rx sram area */
 DECL|member|rx_sram_size
 id|u32
 id|rx_sram_size
 suffix:semicolon
-multiline_comment|/* Size of rx sram area&t;&t;*/
+multiline_comment|/* Size of rx sram area         */
 DECL|member|tx_sram_addr
 id|u32
 id|tx_sram_addr
 suffix:semicolon
-multiline_comment|/* Base address of tx sram area&t;*/
+multiline_comment|/* Base address of tx sram area */
 DECL|member|tx_sram_size
 id|u32
 id|tx_sram_size
 suffix:semicolon
-multiline_comment|/* Size of tx sram area&t;&t;*/
+multiline_comment|/* Size of tx sram area         */
 DECL|member|rx_resource_err
 r_int
 id|rx_resource_err
@@ -967,5 +967,5 @@ op_star
 id|p_pkt_info
 )paren
 suffix:semicolon
-macro_line|#endif  /* __MV64340_ETH_H__ */
+macro_line|#endif&t;&t;&t;&t;/* __MV64340_ETH_H__ */
 eof

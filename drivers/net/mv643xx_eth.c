@@ -1475,7 +1475,7 @@ l_int|0x0007fffd
 (brace
 multiline_comment|/* Dont ack the Rx interrupt */
 macro_line|#endif
-multiline_comment|/*&n;&t; &t; * Clear specific ethernet port intrerrupt registers by&n;&t;&t; * acknowleding relevant bits.&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * Clear specific ethernet port intrerrupt registers by&n;&t;&t; * acknowleding relevant bits.&n;&t;&t; */
 id|MV_WRITE
 c_func
 (paren
@@ -1500,7 +1500,6 @@ id|MV_WRITE
 c_func
 (paren
 id|MV64340_ETH_INTERRUPT_CAUSE_EXTEND_REG
-c_func
 (paren
 id|port_num
 )paren
@@ -1576,7 +1575,6 @@ id|MV_WRITE
 c_func
 (paren
 id|MV64340_ETH_INTERRUPT_EXTEND_MASK_REG
-c_func
 (paren
 id|port_num
 )paren
@@ -1694,7 +1692,6 @@ id|MV_WRITE
 c_func
 (paren
 id|MV64340_ETH_TRANSMIT_QUEUE_COMMAND_REG
-c_func
 (paren
 id|port_num
 )paren
@@ -2786,6 +2783,7 @@ macro_line|#endif
 id|mp-&gt;tx_int_coal
 op_assign
 id|eth_port_set_tx_coal
+c_func
 (paren
 id|port_num
 comma
@@ -4745,7 +4743,7 @@ suffix:semicolon
 macro_line|#ifdef MV64340_CHECKSUM_OFFLOAD_TX
 macro_line|#ifdef MAX_SKB_FRAGS
 macro_line|#ifndef CONFIG_JAGUAR_DMALOW
-multiline_comment|/*&n;         * Zero copy can only work if we use Discovery II memory. Else, we will&n;         * have to map the buffers to ISA memory which is only 16 MB&n;         */
+multiline_comment|/*&n;&t; * Zero copy can only work if we use Discovery II memory. Else, we will&n;&t; * have to map the buffers to ISA memory which is only 16 MB&n;&t; */
 id|dev-&gt;features
 op_assign
 id|NETIF_F_SG
