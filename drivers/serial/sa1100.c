@@ -3368,6 +3368,11 @@ op_assign
 l_string|&quot;ttySA&quot;
 comma
 dot
+id|devfs_name
+op_assign
+l_string|&quot;ttySA&quot;
+comma
+dot
 id|major
 op_assign
 id|SERIAL_SA1100_MAJOR
