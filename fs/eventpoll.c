@@ -86,6 +86,9 @@ mdefine_line|#define EP_IS_LINKED(p) (!list_empty(p))
 multiline_comment|/* Get the &quot;struct epitem&quot; from a wait queue pointer */
 DECL|macro|EP_ITEM_FROM_WAIT
 mdefine_line|#define EP_ITEM_FROM_WAIT(p) ((struct epitem *) container_of(p, struct eppoll_entry, wait)-&gt;base)
+multiline_comment|/* Get the &quot;struct epitem&quot; from an epoll queue wrapper */
+DECL|macro|EP_ITEM_FROM_EPQUEUE
+mdefine_line|#define EP_ITEM_FROM_EPQUEUE(p) (container_of(p, struct ep_pqueue, pt)-&gt;dpi)
 multiline_comment|/*&n; * This structure is stored inside the &quot;private_data&quot; member of the file&n; * structure and rapresent the main data sructure for the eventpoll&n; * interface.&n; */
 DECL|struct|eventpoll
 r_struct
@@ -214,6 +217,23 @@ multiline_comment|/*&n;&t; * Used to keep track of the usage count of the struct
 DECL|member|usecnt
 id|atomic_t
 id|usecnt
+suffix:semicolon
+)brace
+suffix:semicolon
+multiline_comment|/* Wrapper struct used by poll queueing */
+DECL|struct|ep_pqueue
+r_struct
+id|ep_pqueue
+(brace
+DECL|member|pt
+id|poll_table
+id|pt
+suffix:semicolon
+DECL|member|dpi
+r_struct
+id|epitem
+op_star
+id|dpi
 suffix:semicolon
 )brace
 suffix:semicolon
@@ -398,13 +418,18 @@ r_void
 id|ep_ptable_queue_proc
 c_func
 (paren
-r_void
+r_struct
+id|file
 op_star
-id|priv
+id|file
 comma
 id|wait_queue_head_t
 op_star
 id|whead
+comma
+id|poll_table
+op_star
+id|pt
 )paren
 suffix:semicolon
 r_static
@@ -2756,13 +2781,18 @@ r_void
 id|ep_ptable_queue_proc
 c_func
 (paren
-r_void
+r_struct
+id|file
 op_star
-id|priv
+id|file
 comma
 id|wait_queue_head_t
 op_star
 id|whead
+comma
+id|poll_table
+op_star
+id|pt
 )paren
 (brace
 r_struct
@@ -2770,7 +2800,11 @@ id|epitem
 op_star
 id|dpi
 op_assign
-id|priv
+id|EP_ITEM_FROM_EPQUEUE
+c_func
+(paren
+id|pt
+)paren
 suffix:semicolon
 multiline_comment|/* No more than EP_MAX_POLL_QUEUE wait queue are supported */
 r_if
@@ -2847,8 +2881,9 @@ id|epitem
 op_star
 id|dpi
 suffix:semicolon
-id|poll_table
-id|pt
+r_struct
+id|ep_pqueue
+id|epq
 suffix:semicolon
 id|error
 op_assign
@@ -2961,17 +2996,17 @@ id|dpi
 suffix:semicolon
 )brace
 multiline_comment|/* Initialize the poll table using the queue callback */
+id|epq.dpi
+op_assign
+id|dpi
+suffix:semicolon
 id|poll_initwait_ex
 c_func
 (paren
 op_amp
-id|pt
-comma
-l_int|1
+id|epq.pt
 comma
 id|ep_ptable_queue_proc
-comma
-id|dpi
 )paren
 suffix:semicolon
 multiline_comment|/* We have to drop the new item inside our item list to keep track of it */
@@ -3017,7 +3052,7 @@ c_func
 id|tfile
 comma
 op_amp
-id|pt
+id|epq.pt
 )paren
 suffix:semicolon
 multiline_comment|/* If the file is already &quot;ready&quot; we drop it inside the ready list */
@@ -3098,7 +3133,7 @@ id|poll_freewait
 c_func
 (paren
 op_amp
-id|pt
+id|epq.pt
 )paren
 suffix:semicolon
 id|DNPRINTK
@@ -3157,23 +3192,6 @@ r_int
 r_int
 id|flags
 suffix:semicolon
-id|poll_table
-id|pt
-suffix:semicolon
-multiline_comment|/*&n;&t; * This is a special poll table initialization that will&n;&t; * make poll_wait() to not perform any wait queue insertion when&n;&t; * called by file-&gt;f_op-&gt;poll(). This is a fast way to retrieve&n;&t; * file events with perform any queue insertion, hence saving CPU cycles.&n;&t; */
-id|poll_initwait_ex
-c_func
-(paren
-op_amp
-id|pt
-comma
-l_int|0
-comma
-l_int|NULL
-comma
-l_int|NULL
-)paren
-suffix:semicolon
 id|write_lock_irqsave
 c_func
 (paren
@@ -3193,8 +3211,7 @@ c_func
 (paren
 id|dpi-&gt;file
 comma
-op_amp
-id|pt
+l_int|NULL
 )paren
 suffix:semicolon
 multiline_comment|/* Set the new event interest mask */
@@ -3281,13 +3298,6 @@ op_amp
 id|ep-&gt;lock
 comma
 id|flags
-)paren
-suffix:semicolon
-id|poll_freewait
-c_func
-(paren
-op_amp
-id|pt
 )paren
 suffix:semicolon
 r_return
@@ -3847,23 +3857,6 @@ id|eventbuf
 id|EP_EVENT_BUFF_SIZE
 )braket
 suffix:semicolon
-id|poll_table
-id|pt
-suffix:semicolon
-multiline_comment|/*&n;&t; * This is a special poll table initialization that will&n;&t; * make poll_wait() to not perform any wait queue insertion when&n;&t; * called by file-&gt;f_op-&gt;poll(). This is a fast way to retrieve&n;&t; * file events with perform any queue insertion, hence saving CPU cycles.&n;&t; */
-id|poll_initwait_ex
-c_func
-(paren
-op_amp
-id|pt
-comma
-l_int|0
-comma
-l_int|NULL
-comma
-l_int|NULL
-)paren
-suffix:semicolon
 id|write_lock_irqsave
 c_func
 (paren
@@ -3949,8 +3942,7 @@ c_func
 (paren
 id|dpi-&gt;file
 comma
-op_amp
-id|pt
+l_int|NULL
 )paren
 suffix:semicolon
 r_if
@@ -4029,19 +4021,10 @@ id|pollfd
 )paren
 )paren
 )paren
-(brace
-id|poll_freewait
-c_func
-(paren
-op_amp
-id|pt
-)paren
-suffix:semicolon
 r_return
 op_minus
 id|EFAULT
 suffix:semicolon
-)brace
 id|eventcnt
 op_add_assign
 id|ebufcnt
@@ -4112,13 +4095,6 @@ op_add_assign
 id|ebufcnt
 suffix:semicolon
 )brace
-id|poll_freewait
-c_func
-(paren
-op_amp
-id|pt
-)paren
-suffix:semicolon
 r_return
 id|eventcnt
 suffix:semicolon

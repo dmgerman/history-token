@@ -1671,6 +1671,7 @@ suffix:semicolon
 )brace
 r_else
 (brace
+macro_line|#ifdef CONFIG_MODULES
 multiline_comment|/* We are a NAT helper for protocol X.  If we need&n;&t;&t;&t; * respective conntrack helper for protoccol X, compute&n;&t;&t;&t; * conntrack helper name and try to load module */
 r_char
 id|name
@@ -1792,6 +1793,7 @@ r_return
 op_minus
 id|EBUSY
 suffix:semicolon
+macro_line|#endif
 macro_line|#endif
 )brace
 )brace
@@ -2034,6 +2036,7 @@ id|ct_helper-&gt;me
 )paren
 suffix:semicolon
 )brace
+macro_line|#ifdef CONFIG_MODULES
 r_else
 id|printk
 c_func
@@ -2046,6 +2049,7 @@ comma
 id|me-&gt;me-&gt;name
 )paren
 suffix:semicolon
+macro_line|#endif
 )brace
 )brace
 eof

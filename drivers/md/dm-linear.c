@@ -339,14 +339,10 @@ comma
 l_string|&quot;%s &quot;
 id|SECTOR_FORMAT
 comma
-id|kdevname
+id|bdevname
 c_func
 (paren
-id|to_kdev_t
-c_func
-(paren
-id|lc-&gt;dev-&gt;bdev-&gt;bd_dev
-)paren
+id|lc-&gt;dev-&gt;bdev
 )paren
 comma
 id|lc-&gt;start

@@ -1625,12 +1625,14 @@ id|intel_generic_masks
 op_assign
 (brace
 (brace
+dot
 id|mask
-suffix:colon
+op_assign
 l_int|0x00000017
 comma
+dot
 id|type
-suffix:colon
+op_assign
 l_int|0
 )brace
 )brace
