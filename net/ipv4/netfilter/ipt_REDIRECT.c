@@ -355,6 +355,10 @@ c_cond
 id|indev
 op_eq
 l_int|NULL
+op_logical_or
+id|indev-&gt;ifa_list
+op_eq
+l_int|NULL
 )paren
 r_return
 id|NF_DROP
