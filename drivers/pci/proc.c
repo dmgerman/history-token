@@ -118,6 +118,7 @@ op_star
 id|file
 comma
 r_char
+id|__user
 op_star
 id|buf
 comma
@@ -529,6 +530,7 @@ id|file
 comma
 r_const
 r_char
+id|__user
 op_star
 id|buf
 comma
@@ -1382,6 +1384,10 @@ op_amp
 id|pci_devices
 ques
 c_cond
+(paren
+r_void
+op_star
+)paren
 id|p-&gt;next
 suffix:colon
 l_int|NULL
