@@ -3611,9 +3611,17 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+(paren
 id|file-&gt;f_flags
 op_amp
 id|O_NONBLOCK
+)paren
+op_ne
+l_int|0
+op_logical_or
+id|result
+OG
+l_int|0
 )paren
 (brace
 id|err

@@ -1200,7 +1200,11 @@ id|SNDRV_PCM_INFO_PAUSE
 comma
 id|formats
 suffix:colon
+(paren
 id|SNDRV_PCM_FMTBIT_S16_LE
+op_or
+id|SNDRV_PCM_FMTBIT_S32_LE
+)paren
 comma
 id|rates
 suffix:colon
@@ -1277,7 +1281,11 @@ id|SNDRV_PCM_INFO_PAUSE
 comma
 id|formats
 suffix:colon
+(paren
 id|SNDRV_PCM_FMTBIT_S16_LE
+op_or
+id|SNDRV_PCM_FMTBIT_S32_LE
+)paren
 comma
 id|rates
 suffix:colon

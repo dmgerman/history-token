@@ -2360,7 +2360,7 @@ id|DMA_RQ_C2_AC_NONE
 op_plus
 id|DMA_RQ_C2_SIGNAL_DEST_PINGPONG
 op_plus
-l_int|1
+id|CS46XX_DSP_CAPTURE_CHANNEL
 comma
 id|DMA_RQ_SD_SP_SAMPLE_ADDR
 op_plus
@@ -3693,7 +3693,7 @@ c_cond
 (paren
 id|i
 op_eq
-l_int|1
+id|CS46XX_DSP_CAPTURE_CHANNEL
 )paren
 r_continue
 suffix:semicolon
