@@ -15,6 +15,7 @@ macro_line|#include &lt;linux/file.h&gt;
 macro_line|#include &lt;linux/binfmts.h&gt;
 macro_line|#include &lt;linux/mman.h&gt;
 macro_line|#include &lt;linux/fs.h&gt;
+macro_line|#include &lt;linux/cpu.h&gt;
 macro_line|#include &lt;linux/security.h&gt;
 macro_line|#include &lt;linux/syscalls.h&gt;
 macro_line|#include &lt;linux/jiffies.h&gt;
@@ -4728,10 +4729,46 @@ id|p
 suffix:semicolon
 )brace
 r_else
+(brace
+r_int
+id|cpu
+op_assign
+id|get_cpu
+c_func
+(paren
+)paren
+suffix:semicolon
 id|p-&gt;state
 op_assign
 id|TASK_STOPPED
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|cpu_is_offline
+c_func
+(paren
+id|task_cpu
+c_func
+(paren
+id|p
+)paren
+)paren
+)paren
+id|set_task_cpu
+c_func
+(paren
+id|p
+comma
+id|cpu
+)paren
+suffix:semicolon
+id|put_cpu
+c_func
+(paren
+)paren
+suffix:semicolon
+)brace
 op_increment
 id|total_forks
 suffix:semicolon

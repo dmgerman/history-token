@@ -1772,10 +1772,9 @@ macro_line|#else
 DECL|macro|sched_balance_exec
 mdefine_line|#define sched_balance_exec()   {}
 macro_line|#endif
-multiline_comment|/* Move tasks off this (offline) CPU onto another. */
 r_extern
 r_void
-id|migrate_all_tasks
+id|sched_idle_next
 c_func
 (paren
 r_void

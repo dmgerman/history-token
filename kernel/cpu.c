@@ -141,11 +141,6 @@ c_func
 (paren
 r_int
 id|cpu
-comma
-r_struct
-id|task_struct
-op_star
-id|k
 )paren
 (brace
 r_struct
@@ -177,19 +172,31 @@ id|p
 op_eq
 id|cpu
 op_logical_and
-id|p
+(paren
+id|p-&gt;utime
 op_ne
-id|k
+l_int|0
+op_logical_or
+id|p-&gt;stime
+op_ne
+l_int|0
+)paren
 )paren
 id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;Task %s is on cpu %d&bslash;n&quot;
+l_string|&quot;Task %s (pid = %d) is on cpu %d&bslash;&n;&t;&t;&t;&t;(state = %ld, flags = %lx) &bslash;n&quot;
 comma
 id|p-&gt;comm
 comma
+id|p-&gt;pid
+comma
 id|cpu
+comma
+id|p-&gt;state
+comma
+id|p-&gt;flags
 )paren
 suffix:semicolon
 )brace
@@ -407,8 +414,8 @@ id|cpu_online_map
 )paren
 suffix:semicolon
 r_else
-multiline_comment|/* Everyone else gets kicked off. */
-id|migrate_all_tasks
+multiline_comment|/* Force idle task to run as soon as we yield: it should&n;&t;&t;   immediately notice cpu is offline and die quickly. */
+id|sched_idle_next
 c_func
 (paren
 )paren
@@ -434,6 +441,11 @@ r_struct
 id|task_struct
 op_star
 id|p
+suffix:semicolon
+id|cpumask_t
+id|old_allowed
+comma
+id|tmp
 suffix:semicolon
 r_if
 c_cond
@@ -492,6 +504,31 @@ r_goto
 id|out
 suffix:semicolon
 )brace
+multiline_comment|/* Ensure that we are not runnable on dying cpu */
+id|old_allowed
+op_assign
+id|current-&gt;cpus_allowed
+suffix:semicolon
+id|tmp
+op_assign
+id|CPU_MASK_ALL
+suffix:semicolon
+id|cpu_clear
+c_func
+(paren
+id|cpu
+comma
+id|tmp
+)paren
+suffix:semicolon
+id|set_cpus_allowed
+c_func
+(paren
+id|current
+comma
+id|tmp
+)paren
+suffix:semicolon
 id|p
 op_assign
 id|__stop_machine_run
@@ -523,7 +560,7 @@ id|p
 )paren
 suffix:semicolon
 r_goto
-id|out
+id|out_allowed
 suffix:semicolon
 )brace
 r_if
@@ -537,14 +574,6 @@ id|cpu
 )paren
 r_goto
 id|out_thread
-suffix:semicolon
-id|check_for_tasks
-c_func
-(paren
-id|cpu
-comma
-id|p
-)paren
 suffix:semicolon
 multiline_comment|/* Wait for it to sleep (leaving idle task). */
 r_while
@@ -610,6 +639,12 @@ c_func
 (paren
 )paren
 suffix:semicolon
+id|check_for_tasks
+c_func
+(paren
+id|cpu
+)paren
+suffix:semicolon
 id|cpu_run_sbin_hotplug
 c_func
 (paren
@@ -626,6 +661,16 @@ id|kthread_stop
 c_func
 (paren
 id|p
+)paren
+suffix:semicolon
+id|out_allowed
+suffix:colon
+id|set_cpus_allowed
+c_func
+(paren
+id|current
+comma
+id|old_allowed
 )paren
 suffix:semicolon
 id|out
