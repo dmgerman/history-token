@@ -369,6 +369,11 @@ r_int
 id|busno
 suffix:semicolon
 multiline_comment|/* for pci devices */
+DECL|member|bussubno
+r_int
+id|bussubno
+suffix:semicolon
+multiline_comment|/* for pci devices */
 DECL|member|devfn
 r_int
 id|devfn

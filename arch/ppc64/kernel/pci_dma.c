@@ -3102,8 +3102,8 @@ c_cond
 id|dma_window
 )paren
 (brace
-multiline_comment|/* Busno hasn&squot;t been copied yet.&n;&t;&t;&t; * Do it now because getTceTableParmsPSeriesLP needs it.&n;&t;&t;&t; */
-id|busdn-&gt;busno
+multiline_comment|/* Bussubno hasn&squot;t been copied yet.&n;&t;&t;&t; * Do it now because getTceTableParmsPSeriesLP needs it.&n;&t;&t;&t; */
+id|busdn-&gt;bussubno
 op_assign
 id|bus-&gt;number
 suffix:semicolon
@@ -4126,7 +4126,7 @@ suffix:semicolon
 )brace
 id|newTceTable-&gt;busNumber
 op_assign
-id|dn-&gt;busno
+id|dn-&gt;bussubno
 suffix:semicolon
 id|newTceTable-&gt;size
 op_assign
@@ -4212,7 +4212,7 @@ id|PPCDBG_TCEINIT
 comma
 l_string|&quot;getTceTableParmsPSeriesLP for bus 0x%lx:&bslash;n&quot;
 comma
-id|dn-&gt;busno
+id|dn-&gt;bussubno
 )paren
 suffix:semicolon
 id|PPCDBG
@@ -4964,7 +4964,9 @@ id|NUM_TCE_LEVELS
 id|printk
 c_func
 (paren
-l_string|&quot;PCI_DMA: pci_unmap_single size to large: 0x%lx &bslash;n&quot;
+l_string|&quot;PCI_DMA: pci_unmap_single 0x%lx size to large: 0x%lx &bslash;n&quot;
+comma
+id|dma_handle
 comma
 id|size
 )paren
@@ -5964,6 +5966,10 @@ c_cond
 id|direction
 op_eq
 id|PCI_DMA_NONE
+op_logical_or
+id|nelms
+op_eq
+l_int|0
 )paren
 id|BUG
 c_func
@@ -5975,6 +5981,10 @@ op_assign
 id|sg-&gt;dma_address
 op_amp
 id|PAGE_MASK
+suffix:semicolon
+id|dma_end_page
+op_assign
+l_int|0
 suffix:semicolon
 r_for
 c_loop
@@ -6069,6 +6079,16 @@ op_ge
 id|NUM_TCE_LEVELS
 )paren
 (brace
+id|printk
+c_func
+(paren
+l_string|&quot;PCI_DMA: dma_start_page:0x%lx  dma_end_page:0x%lx&bslash;n&quot;
+comma
+id|dma_start_page
+comma
+id|dma_end_page
+)paren
+suffix:semicolon
 id|printk
 c_func
 (paren
