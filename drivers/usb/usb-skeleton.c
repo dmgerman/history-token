@@ -2181,9 +2181,7 @@ l_int|0
 id|err
 c_func
 (paren
-l_string|&quot;usb_register failed for the &quot;
-id|__FILE__
-l_string|&quot; driver. Error number %d&quot;
+l_string|&quot;usb_register failed. Error number %d&quot;
 comma
 id|result
 )paren
