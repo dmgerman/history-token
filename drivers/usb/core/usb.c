@@ -2568,7 +2568,6 @@ id|dev-&gt;dev
 suffix:semicolon
 multiline_comment|/* Decrement the reference count, it&squot;ll auto free everything when */
 multiline_comment|/* it hits 0 which could very well be now */
-multiline_comment|/* FIXME the decrement in device_unregister() should suffice ... */
 id|usb_put_dev
 c_func
 (paren
