@@ -2360,10 +2360,6 @@ id|hwif-&gt;ide_dma_host_off
 op_assign
 id|tmp_hwif-&gt;ide_dma_host_off
 suffix:semicolon
-id|hwif-&gt;ide_dma_verbose
-op_assign
-id|tmp_hwif-&gt;ide_dma_verbose
-suffix:semicolon
 id|hwif-&gt;ide_dma_lostirq
 op_assign
 id|tmp_hwif-&gt;ide_dma_lostirq
