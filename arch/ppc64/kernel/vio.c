@@ -513,14 +513,7 @@ l_int|NULL
 )paren
 )paren
 (brace
-id|printk
-c_func
-(paren
-id|KERN_INFO
-l_string|&quot;VIO: missing or empty /vdevice node; no virtual IO&quot;
-l_string|&quot; devices present.&bslash;n&quot;
-)paren
-suffix:semicolon
+multiline_comment|/* this machine doesn&squot;t do virtual IO, and that&squot;s ok */
 r_return
 l_int|0
 suffix:semicolon
@@ -944,7 +937,7 @@ id|viodev-&gt;dev.bus_id
 comma
 id|BUS_ID_SIZE
 comma
-l_string|&quot;%lx&quot;
+l_string|&quot;%x&quot;
 comma
 id|viodev-&gt;unit_address
 )paren

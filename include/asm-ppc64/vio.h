@@ -412,11 +412,6 @@ op_star
 id|driver_data
 suffix:semicolon
 multiline_comment|/* data private to the driver */
-DECL|member|unit_address
-r_int
-r_int
-id|unit_address
-suffix:semicolon
 DECL|member|iommu_table
 r_struct
 id|iommu_table
@@ -424,6 +419,10 @@ op_star
 id|iommu_table
 suffix:semicolon
 multiline_comment|/* vio_map_* uses this */
+DECL|member|unit_address
+r_uint32
+id|unit_address
+suffix:semicolon
 DECL|member|irq
 r_int
 r_int
