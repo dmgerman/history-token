@@ -370,7 +370,7 @@ op_minus
 id|EPERM
 suffix:semicolon
 r_return
-id|security_ops-&gt;quotactl
+id|security_quotactl
 (paren
 id|cmd
 comma

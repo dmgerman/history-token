@@ -2241,9 +2241,9 @@ r_void
 op_star
 )paren
 suffix:semicolon
-multiline_comment|/* capable prototype and code moved to security.[hc] */
-macro_line|#include &lt;linux/security.h&gt;
-macro_line|#if 0
+macro_line|#ifndef CONFIG_SECURITY
+multiline_comment|/* capable prototype and code are in security.[hc] if CONFIG_SECURITY */
+DECL|function|capable
 r_static
 r_inline
 r_int
@@ -2278,7 +2278,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-macro_line|#endif&t;/* if 0 */
+macro_line|#endif
 multiline_comment|/*&n; * Routines for handling mm_structs&n; */
 r_extern
 r_struct

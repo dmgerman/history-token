@@ -1,6 +1,8 @@
 multiline_comment|/*&n; * intf.c - driverfs glue for device interfaces&n; */
 macro_line|#include &lt;linux/device.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
+macro_line|#include &lt;linux/limits.h&gt;
+macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &quot;fs.h&quot;
 multiline_comment|/**&n; * intf_dev_link - symlink from interface&squot;s directory to device&squot;s directory&n; *&n; */
 DECL|function|intf_dev_link

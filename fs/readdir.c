@@ -6,6 +6,7 @@ macro_line|#include &lt;linux/stat.h&gt;
 macro_line|#include &lt;linux/file.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;linux/fs.h&gt;
+macro_line|#include &lt;linux/security.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 DECL|function|vfs_readdir
 r_int
@@ -50,22 +51,20 @@ id|file-&gt;f_op-&gt;readdir
 r_goto
 id|out
 suffix:semicolon
+r_if
+c_cond
+(paren
+(paren
 id|res
 op_assign
-id|security_ops
-op_member_access_from_pointer
-id|file_permission
+id|security_file_permission
 c_func
 (paren
 id|file
 comma
 id|MAY_READ
 )paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|res
+)paren
 )paren
 r_goto
 id|out
