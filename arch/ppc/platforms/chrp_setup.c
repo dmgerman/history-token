@@ -1669,12 +1669,6 @@ op_minus
 id|NUM_8259_INTERRUPTS
 )braket
 suffix:semicolon
-r_int
-id|nmi_irq
-op_assign
-op_minus
-l_int|1
-suffix:semicolon
 macro_line|#if defined(CONFIG_VT) &amp;&amp; defined(CONFIG_ADB_KEYBOARD) &amp;&amp; defined(XMON)&t;
 r_struct
 id|device_node
@@ -1789,11 +1783,7 @@ suffix:semicolon
 id|openpic_init
 c_func
 (paren
-l_int|1
-comma
 id|NUM_8259_INTERRUPTS
-comma
-id|nmi_irq
 )paren
 suffix:semicolon
 r_for
