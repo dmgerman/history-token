@@ -159,6 +159,8 @@ DECL|macro|PageLaunder
 mdefine_line|#define PageLaunder(page)&t;test_bit(PG_launder, &amp;(page)-&gt;flags)
 DECL|macro|SetPageLaunder
 mdefine_line|#define SetPageLaunder(page)&t;set_bit(PG_launder, &amp;(page)-&gt;flags)
+DECL|macro|ClearPageLaunder
+mdefine_line|#define ClearPageLaunder(page)&t;clear_bit(PG_launder, &amp;(page)-&gt;flags)
 DECL|macro|SetPagePrivate
 mdefine_line|#define SetPagePrivate(page)&t;set_bit(PG_private, &amp;(page)-&gt;flags)
 DECL|macro|ClearPagePrivate

@@ -309,6 +309,9 @@ mdefine_line|#define list_entry(ptr, type, member) &bslash;&n;&t;((type *)((char
 multiline_comment|/**&n; * list_for_each&t;-&t;iterate over a list&n; * @pos:&t;the &amp;struct list_head to use as a loop counter.&n; * @head:&t;the head for your list.&n; */
 DECL|macro|list_for_each
 mdefine_line|#define list_for_each(pos, head) &bslash;&n;&t;for (pos = (head)-&gt;next, prefetch(pos-&gt;next); pos != (head); &bslash;&n;        &t;pos = pos-&gt;next, prefetch(pos-&gt;next))
+multiline_comment|/**&n; * list_for_each_prev&t;-&t;iterate over a list backwards&n; * @pos:&t;the &amp;struct list_head to use as a loop counter.&n; * @head:&t;the head for your list.&n; */
+DECL|macro|list_for_each_prev
+mdefine_line|#define list_for_each_prev(pos, head) &bslash;&n;&t;for (pos = (head)-&gt;prev, prefetch(pos-&gt;prev); pos != (head); &bslash;&n;        &t;pos = pos-&gt;prev, prefetch(pos-&gt;prev))
 multiline_comment|/**&n; * list_for_each_safe&t;-&t;iterate over a list safe against removal of list entry&n; * @pos:&t;the &amp;struct list_head to use as a loop counter.&n; * @n:&t;&t;another &amp;struct list_head to use as temporary storage&n; * @head:&t;the head for your list.&n; */
 DECL|macro|list_for_each_safe
 mdefine_line|#define list_for_each_safe(pos, n, head) &bslash;&n;&t;for (pos = (head)-&gt;next, n = pos-&gt;next; pos != (head); &bslash;&n;&t;&t;pos = n, n = pos-&gt;next)

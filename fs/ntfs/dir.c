@@ -1984,7 +1984,7 @@ id|dt_type
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * VFS calls readdir with BKL held so no possible RACE conditions.&n; * We use the same basic approach as the old NTFS driver, i.e. we parse the&n; * index root entries and then the index allocation entries that are marked&n; * as in use in the index bitmap.&n; * While this will return the names in random order this doesn&squot;t matter for&n; * readdir but OTOH results in faster readdir.&n; */
+multiline_comment|/*&n; * VFS calls readdir without BKL but with i_sem held. This protects the VFS&n; * parts (e.g. -&gt;f_pos and -&gt;i_size, and it also protects against directory&n; * modifications). Together with the rw semaphore taken by the call to&n; * map_mft_record(), the directory is truly locked down so we have a race free&n; * ntfs_readdir() without the BKL. (-:&n; *&n; * We use the same basic approach as the old NTFS driver, i.e. we parse the&n; * index root entries and then the index allocation entries that are marked&n; * as in use in the index bitmap.&n; * While this will return the names in random order this doesn&squot;t matter for&n; * readdir but OTOH results in faster readdir.&n; */
 DECL|function|ntfs_readdir
 r_static
 r_int
@@ -2097,11 +2097,6 @@ suffix:semicolon
 id|attr_search_context
 op_star
 id|ctx
-suffix:semicolon
-id|lock_kernel
-c_func
-(paren
-)paren
 suffix:semicolon
 id|ntfs_debug
 c_func
@@ -3627,11 +3622,6 @@ id|filp-&gt;f_pos
 )paren
 suffix:semicolon
 macro_line|#endif
-id|unlock_kernel
-c_func
-(paren
-)paren
-suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
@@ -3726,6 +3716,11 @@ id|file_operations
 id|ntfs_dir_ops
 op_assign
 (brace
+id|llseek
+suffix:colon
+id|generic_file_llseek
+comma
+multiline_comment|/* Seek inside directory. */
 id|read
 suffix:colon
 id|generic_read_dir
@@ -3735,7 +3730,7 @@ id|readdir
 suffix:colon
 id|ntfs_readdir
 comma
-multiline_comment|/* Read directory. */
+multiline_comment|/* Read directory contents. */
 )brace
 suffix:semicolon
 eof

@@ -578,16 +578,14 @@ comma
 id|timings
 suffix:semicolon
 multiline_comment|/*&n;&t; * Default to DMA-off in case we run into trouble here.&n;&t; */
-id|hwif
-op_member_access_from_pointer
-id|udma
+id|udma_enable
 c_func
 (paren
-id|ide_dma_off_quietly
-comma
 id|drive
 comma
-l_int|NULL
+l_int|0
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|outb
@@ -643,16 +641,10 @@ l_int|1
 )paren
 op_logical_and
 op_logical_neg
-id|hwif
-op_member_access_from_pointer
-id|udma
+id|udma_black_list
 c_func
 (paren
-id|ide_dma_bad_drive
-comma
 id|mate
-comma
-l_int|NULL
 )paren
 )paren
 (brace
@@ -717,16 +709,10 @@ op_logical_and
 id|hwif-&gt;autodma
 op_logical_and
 op_logical_neg
-id|hwif
-op_member_access_from_pointer
-id|udma
+id|udma_black_list
 c_func
 (paren
-id|ide_dma_bad_drive
-comma
 id|drive
-comma
-l_int|NULL
 )paren
 )paren
 (brace
@@ -1055,50 +1041,32 @@ l_int|2
 suffix:semicolon
 multiline_comment|/* set DMA_capable bit */
 multiline_comment|/*&n;&t; * Finally, turn DMA on in software, and exit.&n;&t; */
-r_return
-id|hwif
-op_member_access_from_pointer
-id|udma
+id|udma_enable
 c_func
 (paren
-id|ide_dma_on
-comma
 id|drive
 comma
-l_int|NULL
+l_int|1
+comma
+l_int|1
 )paren
 suffix:semicolon
 multiline_comment|/* success */
+r_return
+l_int|0
+suffix:semicolon
 )brace
-multiline_comment|/*&n; * This is a CS5530-specific wrapper for the standard ide_dmaproc().&n; * We need it for our custom &quot;ide_dma_check&quot; function.&n; * All other requests are forwarded to the standard ide_dmaproc().&n; */
 DECL|function|cs5530_dmaproc
 r_int
 id|cs5530_dmaproc
 c_func
 (paren
-id|ide_dma_action_t
-id|func
-comma
 r_struct
 id|ata_device
 op_star
 id|drive
-comma
-r_struct
-id|request
-op_star
-id|rq
 )paren
 (brace
-r_switch
-c_cond
-(paren
-id|func
-)paren
-(brace
-r_case
-id|ide_dma_check
-suffix:colon
 r_return
 id|cs5530_config_dma
 c_func
@@ -1106,25 +1074,8 @@ c_func
 id|drive
 )paren
 suffix:semicolon
-r_default
-suffix:colon
-r_break
-suffix:semicolon
 )brace
-multiline_comment|/* Other cases are done by generic IDE-DMA code. */
-r_return
-id|ide_dmaproc
-c_func
-(paren
-id|func
-comma
-id|drive
-comma
-id|rq
-)paren
-suffix:semicolon
-)brace
-macro_line|#endif /* CONFIG_BLK_DEV_IDEDMA */
+macro_line|#endif
 multiline_comment|/*&n; * Initialize the cs5530 bridge for reliable IDE DMA operation.&n; */
 DECL|function|pci_init_cs5530
 r_int
@@ -1412,7 +1363,7 @@ comma
 id|d0_timings
 suffix:semicolon
 macro_line|#ifdef CONFIG_BLK_DEV_IDEDMA
-id|hwif-&gt;udma
+id|hwif-&gt;XXX_udma
 op_assign
 id|cs5530_dmaproc
 suffix:semicolon
@@ -1425,7 +1376,7 @@ id|hwif-&gt;autodma
 op_assign
 l_int|0
 suffix:semicolon
-macro_line|#endif /* CONFIG_BLK_DEV_IDEDMA */
+macro_line|#endif
 id|hwif-&gt;tuneproc
 op_assign
 op_amp

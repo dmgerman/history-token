@@ -1310,13 +1310,13 @@ id|printk
 c_func
 (paren
 id|KERN_NOTICE
-l_string|&quot;Looking up port of RPC %d/%d on %s&bslash;n&quot;
+l_string|&quot;Looking up port of RPC %d/%d on %u.%u.%u.%u&bslash;n&quot;
 comma
 id|program
 comma
 id|version
 comma
-id|in_ntoa
+id|NIPQUAD
 c_func
 (paren
 id|servaddr

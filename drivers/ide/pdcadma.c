@@ -160,54 +160,30 @@ suffix:semicolon
 macro_line|#ifdef CONFIG_BLK_DEV_IDEDMA
 multiline_comment|/*&n; * This initiates/aborts (U)DMA read/write operations on a drive.&n; */
 DECL|function|pdcadma_dmaproc
+r_static
 r_int
 id|pdcadma_dmaproc
 c_func
 (paren
-id|ide_dma_action_t
-id|func
-comma
 r_struct
 id|ata_device
 op_star
 id|drive
-comma
-r_struct
-id|request
-op_star
-id|rq
 )paren
 (brace
-r_switch
-c_cond
-(paren
-id|func
-)paren
-(brace
-r_case
-id|ide_dma_check
-suffix:colon
-id|func
-op_assign
-id|ide_dma_off_quietly
-suffix:semicolon
-r_default
-suffix:colon
-r_break
-suffix:semicolon
-)brace
-r_return
-id|ide_dmaproc
+id|udma_enable
 c_func
 (paren
-id|func
-comma
 id|drive
 comma
-id|rq
+l_int|0
+comma
+l_int|0
 )paren
 suffix:semicolon
-multiline_comment|/* use standard DMA stuff */
+r_return
+l_int|0
+suffix:semicolon
 )brace
 macro_line|#endif
 DECL|function|pci_init_pdcadma
@@ -289,7 +265,7 @@ suffix:semicolon
 singleline_comment|//&t;hwif-&gt;tuneproc = &amp;pdcadma_tune_drive;
 singleline_comment|//&t;hwif-&gt;speedproc = &amp;pdcadma_tune_chipset;
 singleline_comment|//&t;if (hwif-&gt;dma_base) {
-singleline_comment|//&t;&t;hwif-&gt;dmaproc = &amp;pdcadma_dmaproc;
+singleline_comment|//&t;&t;hwif-&gt;XXX_dmaproc = &amp;pdcadma_dmaproc;
 singleline_comment|//&t;&t;hwif-&gt;autodma = 1;
 singleline_comment|//&t;}
 )brace

@@ -229,6 +229,16 @@ mdefine_line|#define vm_swap_full() (nr_swap_pages*2 &lt; total_swap_pages)
 r_extern
 r_int
 r_int
+id|totalram_pages
+suffix:semicolon
+r_extern
+r_int
+r_int
+id|totalhigh_pages
+suffix:semicolon
+r_extern
+r_int
+r_int
 id|nr_free_pages
 c_func
 (paren

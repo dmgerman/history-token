@@ -1148,11 +1148,6 @@ id|__init_begin
 comma
 id|__init_end
 suffix:semicolon
-r_extern
-r_int
-r_int
-id|totalram_pages
-suffix:semicolon
 DECL|function|free_initmem
 r_void
 id|free_initmem

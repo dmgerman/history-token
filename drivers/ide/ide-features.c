@@ -33,138 +33,188 @@ id|byte
 id|xfer_rate
 )paren
 (brace
-r_switch
+r_static
+r_struct
+id|ide_xfer_par
+(brace
+id|byte
+id|rate
+suffix:semicolon
+r_char
+op_star
+id|name
+suffix:semicolon
+)brace
+id|xfer_verbose
+(braket
+)braket
+op_assign
+(brace
+(brace
+id|XFER_UDMA_7
+comma
+l_string|&quot;UDMA 7&quot;
+)brace
+comma
+(brace
+id|XFER_UDMA_6
+comma
+l_string|&quot;UDMA 6&quot;
+)brace
+comma
+(brace
+id|XFER_UDMA_5
+comma
+l_string|&quot;UDMA 5&quot;
+)brace
+comma
+(brace
+id|XFER_UDMA_4
+comma
+l_string|&quot;UDMA 4&quot;
+)brace
+comma
+(brace
+id|XFER_UDMA_3
+comma
+l_string|&quot;UDMA 3&quot;
+)brace
+comma
+(brace
+id|XFER_UDMA_2
+comma
+l_string|&quot;UDMA 2&quot;
+)brace
+comma
+(brace
+id|XFER_UDMA_1
+comma
+l_string|&quot;UDMA 1&quot;
+)brace
+comma
+(brace
+id|XFER_UDMA_0
+comma
+l_string|&quot;UDMA 0&quot;
+)brace
+comma
+(brace
+id|XFER_MW_DMA_2
+comma
+l_string|&quot;MW DMA 2&quot;
+)brace
+comma
+(brace
+id|XFER_MW_DMA_1
+comma
+l_string|&quot;MW DMA 1&quot;
+)brace
+comma
+(brace
+id|XFER_MW_DMA_0
+comma
+l_string|&quot;MW DMA 0&quot;
+)brace
+comma
+(brace
+id|XFER_SW_DMA_2
+comma
+l_string|&quot;SW DMA 2&quot;
+)brace
+comma
+(brace
+id|XFER_SW_DMA_1
+comma
+l_string|&quot;SW DMA 1&quot;
+)brace
+comma
+(brace
+id|XFER_SW_DMA_0
+comma
+l_string|&quot;SW DMA 0&quot;
+)brace
+comma
+(brace
+id|XFER_PIO_4
+comma
+l_string|&quot;PIO 4&quot;
+)brace
+comma
+(brace
+id|XFER_PIO_3
+comma
+l_string|&quot;PIO 3&quot;
+)brace
+comma
+(brace
+id|XFER_PIO_2
+comma
+l_string|&quot;PIO 2&quot;
+)brace
+comma
+(brace
+id|XFER_PIO_1
+comma
+l_string|&quot;PIO 1&quot;
+)brace
+comma
+(brace
+id|XFER_PIO_0
+comma
+l_string|&quot;PIO 0&quot;
+)brace
+comma
+(brace
+id|XFER_PIO_SLOW
+comma
+l_string|&quot;PIO SLOW&quot;
+)brace
+comma
+)brace
+suffix:semicolon
+r_int
+id|i
+op_assign
+l_int|0
+suffix:semicolon
+r_for
+c_loop
+(paren
+suffix:semicolon
+id|i
+OL
+id|ARRAY_SIZE
+c_func
+(paren
+id|xfer_verbose
+)paren
+suffix:semicolon
+id|i
+op_increment
+)paren
+r_if
 c_cond
 (paren
+id|xfer_verbose
+(braket
+id|i
+)braket
+dot
+id|rate
+op_eq
 id|xfer_rate
 )paren
-(brace
-r_case
-id|XFER_UDMA_7
-suffix:colon
 r_return
-l_string|&quot;UDMA 7&quot;
+id|xfer_verbose
+(braket
+id|i
+)braket
+dot
+id|name
 suffix:semicolon
-r_case
-id|XFER_UDMA_6
-suffix:colon
-r_return
-l_string|&quot;UDMA 6&quot;
-suffix:semicolon
-r_case
-id|XFER_UDMA_5
-suffix:colon
-r_return
-l_string|&quot;UDMA 5&quot;
-suffix:semicolon
-r_case
-id|XFER_UDMA_4
-suffix:colon
-r_return
-l_string|&quot;UDMA 4&quot;
-suffix:semicolon
-r_case
-id|XFER_UDMA_3
-suffix:colon
-r_return
-l_string|&quot;UDMA 3&quot;
-suffix:semicolon
-r_case
-id|XFER_UDMA_2
-suffix:colon
-r_return
-l_string|&quot;UDMA 2&quot;
-suffix:semicolon
-r_case
-id|XFER_UDMA_1
-suffix:colon
-r_return
-l_string|&quot;UDMA 1&quot;
-suffix:semicolon
-r_case
-id|XFER_UDMA_0
-suffix:colon
-r_return
-l_string|&quot;UDMA 0&quot;
-suffix:semicolon
-r_case
-id|XFER_MW_DMA_2
-suffix:colon
-r_return
-l_string|&quot;MW DMA 2&quot;
-suffix:semicolon
-r_case
-id|XFER_MW_DMA_1
-suffix:colon
-r_return
-l_string|&quot;MW DMA 1&quot;
-suffix:semicolon
-r_case
-id|XFER_MW_DMA_0
-suffix:colon
-r_return
-l_string|&quot;MW DMA 0&quot;
-suffix:semicolon
-r_case
-id|XFER_SW_DMA_2
-suffix:colon
-r_return
-l_string|&quot;SW DMA 2&quot;
-suffix:semicolon
-r_case
-id|XFER_SW_DMA_1
-suffix:colon
-r_return
-l_string|&quot;SW DMA 1&quot;
-suffix:semicolon
-r_case
-id|XFER_SW_DMA_0
-suffix:colon
-r_return
-l_string|&quot;SW DMA 0&quot;
-suffix:semicolon
-r_case
-id|XFER_PIO_4
-suffix:colon
-r_return
-l_string|&quot;PIO 4&quot;
-suffix:semicolon
-r_case
-id|XFER_PIO_3
-suffix:colon
-r_return
-l_string|&quot;PIO 3&quot;
-suffix:semicolon
-r_case
-id|XFER_PIO_2
-suffix:colon
-r_return
-l_string|&quot;PIO 2&quot;
-suffix:semicolon
-r_case
-id|XFER_PIO_1
-suffix:colon
-r_return
-l_string|&quot;PIO 1&quot;
-suffix:semicolon
-r_case
-id|XFER_PIO_0
-suffix:colon
-r_return
-l_string|&quot;PIO 0&quot;
-suffix:semicolon
-r_case
-id|XFER_PIO_SLOW
-suffix:colon
-r_return
-l_string|&quot;PIO SLOW&quot;
-suffix:semicolon
-r_default
-suffix:colon
 r_return
 l_string|&quot;XFER ERROR&quot;
 suffix:semicolon
-)brace
 )brace
 DECL|function|ide_auto_reduce_xfer
 id|byte

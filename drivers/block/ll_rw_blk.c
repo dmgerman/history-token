@@ -5492,12 +5492,9 @@ c_func
 id|bh
 )paren
 )paren
-id|printk
+id|buffer_error
 c_func
 (paren
-l_string|&quot;%s: read of uptodate buffer&bslash;n&quot;
-comma
-id|__FUNCTION__
 )paren
 suffix:semicolon
 r_if
@@ -5514,12 +5511,27 @@ c_func
 id|bh
 )paren
 )paren
-id|printk
+id|buffer_error
 c_func
 (paren
-l_string|&quot;%s: write of non-uptodate buffer&bslash;n&quot;
-comma
-id|__FUNCTION__
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|rw
+op_eq
+id|READ
+op_logical_and
+id|buffer_dirty
+c_func
+(paren
+id|bh
+)paren
+)paren
+id|buffer_error
+c_func
+(paren
 )paren
 suffix:semicolon
 id|set_buffer_req

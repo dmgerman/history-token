@@ -135,7 +135,7 @@ macro_line|#endif
 )brace
 suffix:semicolon
 DECL|macro|write_ind
-mdefine_line|#define write_ind(num, val, ap, dp)&t;do { &bslash;&n;&t;outb((num), (ap)); outb((val), (dp)); &bslash;&n;} while (0)
+mdefine_line|#define write_ind(num, val, ap, dp)&t;do { &bslash;&n;&t;outb((num), (ap)); outb((val), (dp)); &bslash;&n;} while (0);
 DECL|macro|read_ind
 mdefine_line|#define read_ind(num, var, ap, dp)&t;do { &bslash;&n;&t;outb((num), (ap)); var = inb((dp)); &bslash;&n;} while (0);
 multiline_comment|/* extension registers */
@@ -1510,7 +1510,7 @@ c_cond
 (paren
 id|con
 op_eq
-id|info-&gt;currcon
+id|p-&gt;info.currcon
 )paren
 (brace
 id|write_cr
@@ -1612,7 +1612,7 @@ c_cond
 (paren
 id|con
 op_eq
-id|info-&gt;currcon
+id|p-&gt;info.currcon
 )paren
 (brace
 id|write_cr

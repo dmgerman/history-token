@@ -2724,7 +2724,7 @@ r_return
 id|err
 suffix:semicolon
 )brace
-multiline_comment|/* &n; * journal_dirty_data: mark a buffer as containing dirty data which&n; * needs to be flushed before we can commit the current transaction.  &n; *&n; * The buffer is placed on the transaction&squot;s data list and is marked as&n; * belonging to the transaction.&n; *&n; * If `async&squot; is set then the writebask will be initiated by the caller&n; * using submit_bh -&gt; end_buffer_io_async.  We put the buffer onto&n; * t_async_datalist.&n; * &n; * Returns error number or 0 on success.  &n; *&n; * journal_dirty_data() can be called via page_launder-&gt;ext3_writepage&n; * by kswapd.  So it cannot block.  Happily, there&squot;s nothing here&n; * which needs lock_journal if `async&squot; is set.&n; *&n; * When the buffer is on the current transaction we freely move it&n; * between BJ_AsyncData and BJ_SyncData according to who tried to&n; * change its state last.&n; */
+multiline_comment|/* &n; * journal_dirty_data: mark a buffer as containing dirty data which&n; * needs to be flushed before we can commit the current transaction.  &n; *&n; * The buffer is placed on the transaction&squot;s data list and is marked as&n; * belonging to the transaction.&n; *&n; * If `async&squot; is set then the writebabk will be initiated by the caller&n; * using submit_bh -&gt; end_buffer_async_write.  We put the buffer onto&n; * t_async_datalist.&n; * &n; * Returns error number or 0 on success.  &n; *&n; * journal_dirty_data() can be called via page_launder-&gt;ext3_writepage&n; * by kswapd.  So it cannot block.  Happily, there&squot;s nothing here&n; * which needs lock_journal if `async&squot; is set.&n; *&n; * When the buffer is on the current transaction we freely move it&n; * between BJ_AsyncData and BJ_SyncData according to who tried to&n; * change its state last.&n; */
 DECL|function|journal_dirty_data
 r_int
 id|journal_dirty_data
@@ -4597,7 +4597,7 @@ op_member_access_from_pointer
 id|b_state
 )paren
 )paren
-id|set_buffer_dirty
+id|mark_buffer_dirty
 c_func
 (paren
 id|jh2bh
@@ -4607,6 +4607,7 @@ id|jh
 )paren
 )paren
 suffix:semicolon
+multiline_comment|/* Expose it to the VM */
 )brace
 DECL|function|journal_unfile_buffer
 r_void
@@ -4712,6 +4713,7 @@ c_func
 id|bh
 )paren
 )paren
+multiline_comment|/* AKPM: why? */
 r_goto
 id|out
 suffix:semicolon
@@ -5188,19 +5190,6 @@ comma
 l_string|&quot;entry&quot;
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|buffer_mapped
-c_func
-(paren
-id|bh
-)paren
-)paren
-r_return
-l_int|1
-suffix:semicolon
 multiline_comment|/* It is safe to proceed here without the&n;&t; * journal_datalist_spinlock because the buffers cannot be&n;&t; * stolen by try_to_free_buffers as long as we are holding the&n;&t; * page lock. --sct */
 r_if
 c_cond
@@ -5409,15 +5398,6 @@ suffix:semicolon
 )brace
 id|zap_buffer
 suffix:colon
-r_if
-c_cond
-(paren
-id|buffer_dirty
-c_func
-(paren
-id|bh
-)paren
-)paren
 id|clear_buffer_dirty
 c_func
 (paren

@@ -1087,10 +1087,12 @@ comma
 id|pte_val
 c_func
 (paren
-id|mk_pte_phys
+id|pfn_pte
 c_func
 (paren
 id|md-&gt;phys_addr
+op_rshift
+id|PAGE_SHIFT
 comma
 id|PAGE_KERNEL
 )paren

@@ -1229,7 +1229,7 @@ l_int|1
 )paren
 (brace
 multiline_comment|/* Recheck the page count with the pagecache lock held.. */
-id|read_lock
+id|write_lock
 c_func
 (paren
 op_amp
@@ -1273,7 +1273,7 @@ op_assign
 l_int|1
 suffix:semicolon
 )brace
-id|read_unlock
+id|write_unlock
 c_func
 (paren
 op_amp
