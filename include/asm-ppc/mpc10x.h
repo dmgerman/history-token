@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * arch/ppc/kernel/mpc10x.h&n; * &n; * Common routines for the Motorola SPS MPC106/8240/107 Host bridge/Mem&n; * ctlr/EPIC/etc.&n; *&n; * Author: Mark A. Greer&n; *         mgreer@mvista.com&n; *&n; * Copyright 2001 MontaVista Software Inc.&n; *&n; * This program is free software; you can redistribute  it and/or modify it&n; * under  the terms of  the GNU General  Public License as published by the&n; * Free Software Foundation;  either version 2 of the  License, or (at your&n; * option) any later version.&n; */
+multiline_comment|/*&n; * arch/ppc/kernel/mpc10x.h&n; * &n; * Common routines for the Motorola SPS MPC106/8240/107 Host bridge/Mem&n; * ctlr/EPIC/etc.&n; *&n; * Author: Mark A. Greer&n; *         mgreer@mvista.com&n; *&n; * 2001 (c) MontaVista, Software, Inc.  This file is licensed under&n; * the terms of the GNU General Public License version 2.1.  This program&n; * is licensed &quot;as is&quot; without any warranty of any kind, whether express&n; * or implied.&n; */
 macro_line|#ifndef __PPC_KERNEL_MPC10X_H
 DECL|macro|__PPC_KERNEL_MPC10X_H
 mdefine_line|#define __PPC_KERNEL_MPC10X_H
