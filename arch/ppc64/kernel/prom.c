@@ -6377,7 +6377,11 @@ c_func
 (paren
 id|option
 comma
+id|RELOC
+c_func
+(paren
 l_string|&quot;off&quot;
+)paren
 )paren
 )paren
 id|my_smt_enabled
@@ -6394,7 +6398,11 @@ c_func
 (paren
 id|option
 comma
+id|RELOC
+c_func
+(paren
 l_string|&quot;on&quot;
+)paren
 )paren
 )paren
 id|my_smt_enabled
