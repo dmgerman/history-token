@@ -5347,6 +5347,13 @@ id|page
 )paren
 suffix:semicolon
 )brace
+DECL|variable|try_to_release_page
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|try_to_release_page
+)paren
+suffix:semicolon
 multiline_comment|/**&n; * block_invalidatepage - invalidate part of all of a buffer-backed page&n; *&n; * @page: the page which is affected&n; * @offset: the index of the truncation point&n; *&n; * block_invalidatepage() is called when all or part of the page has become&n; * invalidatedby a truncate operation.&n; *&n; * block_invalidatepage() does not have to release all buffers, but it must&n; * ensure that no dirty buffer is left outside @offset and that no I/O&n; * is underway against any of the blocks which are outside the truncation&n; * point.  Because the caller is about to free (and possibly reuse) those&n; * blocks on-disk.&n; */
 DECL|function|block_invalidatepage
 r_int

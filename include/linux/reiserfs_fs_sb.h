@@ -110,20 +110,6 @@ DECL|macro|JOURNAL_HASH_SIZE
 mdefine_line|#define JOURNAL_HASH_SIZE 8192   
 DECL|macro|JOURNAL_NUM_BITMAPS
 mdefine_line|#define JOURNAL_NUM_BITMAPS 5 /* number of copies of the bitmaps to have floating.  Must be &gt;= 2 */
-multiline_comment|/* these are bh_state bit flag offset numbers, for use in the buffer head */
-DECL|macro|BH_JDirty
-mdefine_line|#define BH_JDirty       16      /* journal data needs to be written before buffer can be marked dirty */
-DECL|macro|BH_JDirty_wait
-mdefine_line|#define BH_JDirty_wait 18&t;/* commit is done, buffer marked dirty */
-DECL|macro|BH_JNew
-mdefine_line|#define BH_JNew 19&t;&t;/* buffer allocated during this transaction, no need to write if freed during this trans too */
-multiline_comment|/* ugly.  metadata blocks must be prepared before they can be logged.  &n;** prepared means unlocked and cleaned.  If the block is prepared, but not&n;** logged for some reason, any bits cleared while preparing it must be &n;** set again.&n;*/
-DECL|macro|BH_JPrepared
-mdefine_line|#define BH_JPrepared 20&t;&t;/* block has been prepared for the log */
-DECL|macro|BH_JRestore_dirty
-mdefine_line|#define BH_JRestore_dirty 22    /* restore the dirty bit later */
-DECL|macro|BH_JTest
-mdefine_line|#define BH_JTest 23             /* debugging use only */
 multiline_comment|/* One of these for every block in every transaction&n;** Each one is in two hash tables.  First, a hash of the current transaction, and after journal_end, a&n;** hash of all the in memory transactions.&n;** next and prev are used by the current transaction (journal_hash).&n;** hnext and hprev are used by journal_list_hash.  If a block is in more than one transaction, the journal_list_hash&n;** links it in multiple times.  This allows flush_journal_list to remove just the cnode belonging&n;** to a given transaction.&n;*/
 DECL|struct|reiserfs_journal_cnode
 r_struct
@@ -312,6 +298,18 @@ DECL|member|j_working_list
 r_struct
 id|list_head
 id|j_working_list
+suffix:semicolon
+multiline_comment|/* list of tail conversion targets in need of flush before commit */
+DECL|member|j_tail_bh_list
+r_struct
+id|list_head
+id|j_tail_bh_list
+suffix:semicolon
+multiline_comment|/* list of data=ordered buffers in need of flush before commit */
+DECL|member|j_bh_list
+r_struct
+id|list_head
+id|j_bh_list
 suffix:semicolon
 DECL|member|j_refcount
 r_int
@@ -621,10 +619,15 @@ r_int
 r_int
 id|j_max_batch_size
 suffix:semicolon
+multiline_comment|/* when flushing ordered buffers, throttle new ordered writers */
 DECL|member|j_work
 r_struct
 id|work_struct
 id|j_work
+suffix:semicolon
+DECL|member|j_async_throttle
+id|atomic_t
+id|j_async_throttle
 suffix:semicolon
 )brace
 suffix:semicolon
@@ -1177,41 +1180,80 @@ DECL|macro|REISERFS_3_5
 mdefine_line|#define REISERFS_3_5 0
 DECL|macro|REISERFS_3_6
 mdefine_line|#define REISERFS_3_6 1
+DECL|enum|reiserfs_mount_options
+r_enum
+id|reiserfs_mount_options
+(brace
 multiline_comment|/* Mount options */
-DECL|macro|REISERFS_LARGETAIL
-mdefine_line|#define REISERFS_LARGETAIL 0  /* large tails will be created in a session */
-DECL|macro|REISERFS_SMALLTAIL
-mdefine_line|#define REISERFS_SMALLTAIL 17  /* small (for files less than block size) tails will be created in a session */
-DECL|macro|REPLAYONLY
-mdefine_line|#define REPLAYONLY 3 /* replay journal and return 0. Use by fsck */
-DECL|macro|REISERFS_CONVERT
-mdefine_line|#define REISERFS_CONVERT 5    /* -o conv: causes conversion of old&n;                                 format super block to the new&n;                                 format. If not specified - old&n;                                 partition will be dealt with in a&n;                                 manner of 3.5.x */
+DECL|enumerator|REISERFS_LARGETAIL
+id|REISERFS_LARGETAIL
+comma
+multiline_comment|/* large tails will be created in a session */
+DECL|enumerator|REISERFS_SMALLTAIL
+id|REISERFS_SMALLTAIL
+comma
+multiline_comment|/* small (for files less than block size) tails will be created in a session */
+DECL|enumerator|REPLAYONLY
+id|REPLAYONLY
+comma
+multiline_comment|/* replay journal and return 0. Use by fsck */
+DECL|enumerator|REISERFS_CONVERT
+id|REISERFS_CONVERT
+comma
+multiline_comment|/* -o conv: causes conversion of old&n;                                 format super block to the new&n;                                 format. If not specified - old&n;                                 partition will be dealt with in a&n;                                 manner of 3.5.x */
 multiline_comment|/* -o hash={tea, rupasov, r5, detect} is meant for properly mounting &n;** reiserfs disks from 3.5.19 or earlier.  99% of the time, this option&n;** is not required.  If the normal autodection code can&squot;t determine which&n;** hash to use (because both hases had the same value for a file)&n;** use this option to force a specific hash.  It won&squot;t allow you to override&n;** the existing hash on the FS, so if you have a tea hash disk, and mount&n;** with -o hash=rupasov, the mount will fail.&n;*/
-DECL|macro|FORCE_TEA_HASH
-mdefine_line|#define FORCE_TEA_HASH 6      /* try to force tea hash on mount */
-DECL|macro|FORCE_RUPASOV_HASH
-mdefine_line|#define FORCE_RUPASOV_HASH 7  /* try to force rupasov hash on mount */
-DECL|macro|FORCE_R5_HASH
-mdefine_line|#define FORCE_R5_HASH 8       /* try to force rupasov hash on mount */
-DECL|macro|FORCE_HASH_DETECT
-mdefine_line|#define FORCE_HASH_DETECT 9   /* try to detect hash function on mount */
+DECL|enumerator|FORCE_TEA_HASH
+id|FORCE_TEA_HASH
+comma
+multiline_comment|/* try to force tea hash on mount */
+DECL|enumerator|FORCE_RUPASOV_HASH
+id|FORCE_RUPASOV_HASH
+comma
+multiline_comment|/* try to force rupasov hash on mount */
+DECL|enumerator|FORCE_R5_HASH
+id|FORCE_R5_HASH
+comma
+multiline_comment|/* try to force rupasov hash on mount */
+DECL|enumerator|FORCE_HASH_DETECT
+id|FORCE_HASH_DETECT
+comma
+multiline_comment|/* try to detect hash function on mount */
+DECL|enumerator|REISERFS_DATA_LOG
+id|REISERFS_DATA_LOG
+comma
+DECL|enumerator|REISERFS_DATA_ORDERED
+id|REISERFS_DATA_ORDERED
+comma
+DECL|enumerator|REISERFS_DATA_WRITEBACK
+id|REISERFS_DATA_WRITEBACK
+comma
 multiline_comment|/* used for testing experimental features, makes benchmarking new&n;   features with and without more convenient, should never be used by&n;   users in any code shipped to users (ideally) */
-DECL|macro|REISERFS_NO_BORDER
-mdefine_line|#define REISERFS_NO_BORDER 11
-DECL|macro|REISERFS_NO_UNHASHED_RELOCATION
-mdefine_line|#define REISERFS_NO_UNHASHED_RELOCATION 12
-DECL|macro|REISERFS_HASHED_RELOCATION
-mdefine_line|#define REISERFS_HASHED_RELOCATION 13
-DECL|macro|REISERFS_ATTRS
-mdefine_line|#define REISERFS_ATTRS 15
-DECL|macro|REISERFS_TEST1
-mdefine_line|#define REISERFS_TEST1 11
-DECL|macro|REISERFS_TEST2
-mdefine_line|#define REISERFS_TEST2 12
-DECL|macro|REISERFS_TEST3
-mdefine_line|#define REISERFS_TEST3 13
-DECL|macro|REISERFS_TEST4
-mdefine_line|#define REISERFS_TEST4 14 
+DECL|enumerator|REISERFS_NO_BORDER
+id|REISERFS_NO_BORDER
+comma
+DECL|enumerator|REISERFS_NO_UNHASHED_RELOCATION
+id|REISERFS_NO_UNHASHED_RELOCATION
+comma
+DECL|enumerator|REISERFS_HASHED_RELOCATION
+id|REISERFS_HASHED_RELOCATION
+comma
+DECL|enumerator|REISERFS_ATTRS
+id|REISERFS_ATTRS
+comma
+DECL|enumerator|REISERFS_TEST1
+id|REISERFS_TEST1
+comma
+DECL|enumerator|REISERFS_TEST2
+id|REISERFS_TEST2
+comma
+DECL|enumerator|REISERFS_TEST3
+id|REISERFS_TEST3
+comma
+DECL|enumerator|REISERFS_TEST4
+id|REISERFS_TEST4
+comma
+)brace
+suffix:semicolon
 DECL|macro|reiserfs_r5_hash
 mdefine_line|#define reiserfs_r5_hash(s) (REISERFS_SB(s)-&gt;s_mount_opt &amp; (1 &lt;&lt; FORCE_R5_HASH))
 DECL|macro|reiserfs_rupasov_hash
@@ -1234,14 +1276,18 @@ DECL|macro|have_small_tails
 mdefine_line|#define have_small_tails(s) (REISERFS_SB(s)-&gt;s_mount_opt &amp; (1 &lt;&lt; REISERFS_SMALLTAIL))
 DECL|macro|replay_only
 mdefine_line|#define replay_only(s) (REISERFS_SB(s)-&gt;s_mount_opt &amp; (1 &lt;&lt; REPLAYONLY))
-DECL|macro|reiserfs_dont_log
-mdefine_line|#define reiserfs_dont_log(s) (REISERFS_SB(s)-&gt;s_mount_opt &amp; (1 &lt;&lt; REISERFS_NOLOG))
 DECL|macro|reiserfs_attrs
 mdefine_line|#define reiserfs_attrs(s) (REISERFS_SB(s)-&gt;s_mount_opt &amp; (1 &lt;&lt; REISERFS_ATTRS))
 DECL|macro|old_format_only
 mdefine_line|#define old_format_only(s) (REISERFS_SB(s)-&gt;s_properties &amp; (1 &lt;&lt; REISERFS_3_5))
 DECL|macro|convert_reiserfs
 mdefine_line|#define convert_reiserfs(s) (REISERFS_SB(s)-&gt;s_mount_opt &amp; (1 &lt;&lt; REISERFS_CONVERT))
+DECL|macro|reiserfs_data_log
+mdefine_line|#define reiserfs_data_log(s) (REISERFS_SB(s)-&gt;s_mount_opt &amp; (1 &lt;&lt; REISERFS_DATA_LOG))
+DECL|macro|reiserfs_data_ordered
+mdefine_line|#define reiserfs_data_ordered(s) (REISERFS_SB(s)-&gt;s_mount_opt &amp; (1 &lt;&lt; REISERFS_DATA_ORDERED))
+DECL|macro|reiserfs_data_writeback
+mdefine_line|#define reiserfs_data_writeback(s) (REISERFS_SB(s)-&gt;s_mount_opt &amp; (1 &lt;&lt; REISERFS_DATA_WRITEBACK))
 r_void
 id|reiserfs_file_buffer
 (paren
