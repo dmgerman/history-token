@@ -3849,6 +3849,8 @@ DECL|macro|EEPROM_ID_LED_SETTINGS
 mdefine_line|#define EEPROM_ID_LED_SETTINGS        0x0004
 DECL|macro|EEPROM_SERDES_AMPLITUDE
 mdefine_line|#define EEPROM_SERDES_AMPLITUDE       0x0006 /* For SERDES output amplitude adjustment. */
+DECL|macro|EEPROM_PHY_CLASS_WORD
+mdefine_line|#define EEPROM_PHY_CLASS_WORD         0x0007
 DECL|macro|EEPROM_INIT_CONTROL1_REG
 mdefine_line|#define EEPROM_INIT_CONTROL1_REG      0x000A
 DECL|macro|EEPROM_INIT_CONTROL2_REG
@@ -3897,6 +3899,9 @@ mdefine_line|#define IGP_LED3_MODE           0x07000000
 multiline_comment|/* Mask bits for SERDES amplitude adjustment in Word 6 of the EEPROM */
 DECL|macro|EEPROM_SERDES_AMPLITUDE_MASK
 mdefine_line|#define EEPROM_SERDES_AMPLITUDE_MASK  0x000F
+multiline_comment|/* Mask bit for PHY class in Word 7 of the EEPROM */
+DECL|macro|EEPROM_PHY_CLASS_A
+mdefine_line|#define EEPROM_PHY_CLASS_A   0x8000
 multiline_comment|/* Mask bits for fields in Word 0x0a of the EEPROM */
 DECL|macro|EEPROM_WORD0A_ILOS
 mdefine_line|#define EEPROM_WORD0A_ILOS   0x0010
