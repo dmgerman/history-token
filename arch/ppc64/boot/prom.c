@@ -3,9 +3,6 @@ macro_line|#include &lt;stdarg.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/ctype.h&gt;
-DECL|macro|BITS_PER_LONG
-mdefine_line|#define BITS_PER_LONG 32
-macro_line|#include &lt;asm/div64.h&gt;
 DECL|variable|prom
 r_int
 (paren
@@ -102,6 +99,18 @@ comma
 dot
 dot
 dot
+)paren
+suffix:semicolon
+multiline_comment|/* there is no convenient header to get this from...  -- paulus */
+r_extern
+r_int
+r_int
+id|strlen
+c_func
+(paren
+r_const
+r_char
+op_star
 )paren
 suffix:semicolon
 r_int
@@ -1960,7 +1969,6 @@ op_star
 id|str
 comma
 r_int
-r_int
 id|num
 comma
 r_int
@@ -2168,6 +2176,7 @@ id|num
 op_ne
 l_int|0
 )paren
+(brace
 id|tmp
 (braket
 id|i
@@ -2176,15 +2185,16 @@ op_increment
 op_assign
 id|digits
 (braket
-id|do_div
-c_func
-(paren
 id|num
-comma
+op_mod
 id|base
-)paren
 )braket
 suffix:semicolon
+id|num
+op_div_assign
+id|base
+suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
@@ -2401,7 +2411,6 @@ id|args
 r_int
 id|len
 suffix:semicolon
-r_int
 r_int
 r_int
 id|num
@@ -3119,25 +3128,6 @@ suffix:semicolon
 r_continue
 suffix:semicolon
 )brace
-r_if
-c_cond
-(paren
-id|qualifier
-op_eq
-l_char|&squot;L&squot;
-)paren
-id|num
-op_assign
-id|va_arg
-c_func
-(paren
-id|args
-comma
-r_int
-r_int
-)paren
-suffix:semicolon
-r_else
 r_if
 c_cond
 (paren
