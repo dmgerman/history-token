@@ -2642,6 +2642,8 @@ id|regs
 r_int
 r_char
 id|reason
+op_assign
+l_int|0
 suffix:semicolon
 multiline_comment|/* Only the BSP gets external NMIs from the system.  */
 r_if
