@@ -1757,10 +1757,14 @@ id|sctp_lock
 )paren
 suffix:semicolon
 )brace
-id|ip_ct_refresh
+id|ip_ct_refresh_acct
 c_func
 (paren
 id|conntrack
+comma
+id|ctinfo
+comma
+id|skb
 comma
 op_star
 id|sctp_timeouts
