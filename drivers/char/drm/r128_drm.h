@@ -313,6 +313,16 @@ DECL|member|ctx_owner
 r_int
 id|ctx_owner
 suffix:semicolon
+DECL|member|pfAllowPageFlip
+r_int
+id|pfAllowPageFlip
+suffix:semicolon
+multiline_comment|/* number of 3d windows (0,1,2 or more) */
+DECL|member|pfCurrentPage
+r_int
+id|pfCurrentPage
+suffix:semicolon
+multiline_comment|/* which buffer is being displayed? */
 DECL|typedef|drm_r128_sarea_t
 )brace
 id|drm_r128_sarea_t
@@ -353,6 +363,8 @@ DECL|macro|DRM_IOCTL_R128_CLEAR2
 mdefine_line|#define DRM_IOCTL_R128_CLEAR2&t;&t;DRM_IOW( 0x51, drm_r128_clear2_t)
 DECL|macro|DRM_IOCTL_R128_GETPARAM
 mdefine_line|#define DRM_IOCTL_R128_GETPARAM&t;&t;DRM_IOW( 0x52, drm_r128_getparam_t)
+DECL|macro|DRM_IOCTL_R128_FLIP
+mdefine_line|#define DRM_IOCTL_R128_FLIP&t;&t;DRM_IO(  0x53)
 DECL|struct|drm_r128_init
 r_typedef
 r_struct
