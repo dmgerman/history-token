@@ -252,7 +252,7 @@ suffix:semicolon
 r_int
 id|pgd_idx
 comma
-id|pmd_ofs
+id|pmd_idx
 suffix:semicolon
 r_int
 r_int
@@ -270,9 +270,9 @@ c_func
 id|vaddr
 )paren
 suffix:semicolon
-id|pmd_ofs
+id|pmd_idx
 op_assign
-id|__pmd_offset
+id|pmd_index
 c_func
 (paren
 id|vaddr
@@ -338,7 +338,7 @@ c_loop
 (paren
 suffix:semicolon
 (paren
-id|pmd_ofs
+id|pmd_idx
 OL
 id|PTRS_PER_PMD
 )paren
@@ -352,7 +352,7 @@ suffix:semicolon
 id|pmd
 op_increment
 comma
-id|pmd_ofs
+id|pmd_idx
 op_increment
 )paren
 (brace
@@ -377,7 +377,7 @@ op_add_assign
 id|PMD_SIZE
 suffix:semicolon
 )brace
-id|pmd_ofs
+id|pmd_idx
 op_assign
 l_int|0
 suffix:semicolon
@@ -415,7 +415,7 @@ suffix:semicolon
 r_int
 id|pgd_idx
 comma
-id|pmd_ofs
+id|pmd_idx
 comma
 id|pte_ofs
 suffix:semicolon
@@ -472,11 +472,11 @@ suffix:semicolon
 r_for
 c_loop
 (paren
-id|pmd_ofs
+id|pmd_idx
 op_assign
 l_int|0
 suffix:semicolon
-id|pmd_ofs
+id|pmd_idx
 OL
 id|PTRS_PER_PMD
 op_logical_and
@@ -487,7 +487,7 @@ suffix:semicolon
 id|pmd
 op_increment
 comma
-id|pmd_ofs
+id|pmd_idx
 op_increment
 )paren
 (brace

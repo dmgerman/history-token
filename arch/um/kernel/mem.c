@@ -557,7 +557,7 @@ id|vaddr
 suffix:semicolon
 id|j
 op_assign
-id|__pmd_offset
+id|pmd_index
 c_func
 (paren
 id|vaddr

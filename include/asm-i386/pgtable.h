@@ -708,8 +708,8 @@ mdefine_line|#define pgd_offset(mm, address) ((mm)-&gt;pgd+pgd_index(address))
 multiline_comment|/* to find an entry in a kernel page-table-directory */
 DECL|macro|pgd_offset_k
 mdefine_line|#define pgd_offset_k(address) pgd_offset(&amp;init_mm, address)
-DECL|macro|__pmd_offset
-mdefine_line|#define __pmd_offset(address) &bslash;&n;&t;&t;(((address) &gt;&gt; PMD_SHIFT) &amp; (PTRS_PER_PMD-1))
+DECL|macro|pmd_index
+mdefine_line|#define pmd_index(address) &bslash;&n;&t;&t;(((address) &gt;&gt; PMD_SHIFT) &amp; (PTRS_PER_PMD-1))
 multiline_comment|/* Find an entry in the third-level page table.. */
 DECL|macro|__pte_offset
 mdefine_line|#define __pte_offset(address) &bslash;&n;&t;&t;(((address) &gt;&gt; PAGE_SHIFT) &amp; (PTRS_PER_PTE - 1))
