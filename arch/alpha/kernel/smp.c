@@ -141,15 +141,6 @@ c_func
 r_void
 )paren
 suffix:semicolon
-r_extern
-id|asmlinkage
-r_void
-id|entInt
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
 "&f;"
 multiline_comment|/*&n; * Called by both boot and secondaries to move global data into&n; *  per-processor storage.&n; */
 r_static
@@ -371,6 +362,19 @@ id|smp_setup_percpu_timer
 c_func
 (paren
 id|cpuid
+)paren
+suffix:semicolon
+multiline_comment|/* Call platform-specific callin, if specified */
+r_if
+c_cond
+(paren
+id|alpha_mv.smp_callin
+)paren
+id|alpha_mv
+dot
+id|smp_callin
+c_func
+(paren
 )paren
 suffix:semicolon
 multiline_comment|/* All kernel threads share the same mm context.  */

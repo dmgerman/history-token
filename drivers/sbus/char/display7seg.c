@@ -8,6 +8,7 @@ macro_line|#include &lt;linux/major.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/miscdevice.h&gt;
 macro_line|#include &lt;linux/ioport.h&gt;&t;&t;/* request_region, check_region */
+macro_line|#include &lt;asm/atomic.h&gt;
 macro_line|#include &lt;asm/ebus.h&gt;&t;&t;&t;/* EBus device&t;&t;&t;&t;&t;*/
 macro_line|#include &lt;asm/oplib.h&gt;&t;&t;&t;/* OpenProm Library &t;&t;&t;*/
 macro_line|#include &lt;asm/uaccess.h&gt;&t;&t;/* put_/get_user&t;&t;&t;*/
@@ -146,6 +147,17 @@ l_int|1
 )paren
 suffix:semicolon
 )brace
+DECL|variable|d7s_users
+r_static
+id|atomic_t
+id|d7s_users
+op_assign
+id|ATOMIC_INIT
+c_func
+(paren
+l_int|0
+)paren
+suffix:semicolon
 DECL|function|d7s_open
 r_static
 r_int
@@ -178,7 +190,12 @@ r_return
 op_minus
 id|ENODEV
 suffix:semicolon
-id|MOD_INC_USE_COUNT
+id|atomic_inc
+c_func
+(paren
+op_amp
+id|d7s_users
+)paren
 suffix:semicolon
 r_return
 l_int|0
@@ -201,33 +218,18 @@ op_star
 id|f
 )paren
 (brace
-r_if
-c_cond
-(paren
-id|D7S_MINOR
-op_ne
-id|minor
-c_func
-(paren
-id|inode-&gt;i_rdev
-)paren
-)paren
-r_return
-op_minus
-id|ENODEV
-suffix:semicolon
-id|MOD_DEC_USE_COUNT
-suffix:semicolon
 multiline_comment|/* Reset flipped state to OBP default only if&n;&t; * no other users have the device open and we&n;&t; * are not operating in solaris-compat mode&n;&t; */
 r_if
 c_cond
 (paren
-l_int|0
-op_eq
-id|MOD_IN_USE
+id|atomic_dec_and_test
+c_func
+(paren
+op_amp
+id|d7s_users
+)paren
 op_logical_and
-l_int|0
-op_eq
+op_logical_neg
 id|sol_compat
 )paren
 (brace

@@ -1,0 +1,162 @@
+macro_line|#ifndef _LINUX_EISA_H
+DECL|macro|_LINUX_EISA_H
+mdefine_line|#define _LINUX_EISA_H
+DECL|macro|EISA_SIG_LEN
+mdefine_line|#define EISA_SIG_LEN   8
+DECL|macro|EISA_MAX_SLOTS
+mdefine_line|#define EISA_MAX_SLOTS 8
+multiline_comment|/* A few EISA constants/offsets... */
+DECL|macro|EISA_DMA1_STATUS
+mdefine_line|#define EISA_DMA1_STATUS            8
+DECL|macro|EISA_INT1_CTRL
+mdefine_line|#define EISA_INT1_CTRL           0x20
+DECL|macro|EISA_INT1_MASK
+mdefine_line|#define EISA_INT1_MASK           0x21
+DECL|macro|EISA_INT2_CTRL
+mdefine_line|#define EISA_INT2_CTRL           0xA0
+DECL|macro|EISA_INT2_MASK
+mdefine_line|#define EISA_INT2_MASK           0xA1
+DECL|macro|EISA_DMA2_STATUS
+mdefine_line|#define EISA_DMA2_STATUS         0xD0
+DECL|macro|EISA_DMA2_WRITE_SINGLE
+mdefine_line|#define EISA_DMA2_WRITE_SINGLE   0xD4
+DECL|macro|EISA_EXT_NMI_RESET_CTRL
+mdefine_line|#define EISA_EXT_NMI_RESET_CTRL 0x461
+DECL|macro|EISA_INT1_EDGE_LEVEL
+mdefine_line|#define EISA_INT1_EDGE_LEVEL    0x4D0
+DECL|macro|EISA_INT2_EDGE_LEVEL
+mdefine_line|#define EISA_INT2_EDGE_LEVEL    0x4D1
+DECL|macro|EISA_VENDOR_ID_OFFSET
+mdefine_line|#define EISA_VENDOR_ID_OFFSET   0xC80
+multiline_comment|/* The EISA signature, in ASCII form, null terminated */
+DECL|struct|eisa_device_id
+r_struct
+id|eisa_device_id
+(brace
+DECL|member|sig
+r_char
+id|sig
+(braket
+id|EISA_SIG_LEN
+)braket
+suffix:semicolon
+)brace
+suffix:semicolon
+multiline_comment|/* There is not much we can say about an EISA device, apart from&n; * signature, slot number, and base address */
+DECL|struct|eisa_device
+r_struct
+id|eisa_device
+(brace
+DECL|member|id
+r_struct
+id|eisa_device_id
+id|id
+suffix:semicolon
+DECL|member|slot
+r_int
+id|slot
+suffix:semicolon
+DECL|member|base_addr
+r_int
+r_int
+id|base_addr
+suffix:semicolon
+DECL|member|res
+r_struct
+id|resource
+id|res
+suffix:semicolon
+DECL|member|dev
+r_struct
+id|device
+id|dev
+suffix:semicolon
+multiline_comment|/* generic device */
+)brace
+suffix:semicolon
+DECL|macro|to_eisa_device
+mdefine_line|#define to_eisa_device(n) container_of(n, struct eisa_device, dev)
+DECL|struct|eisa_driver
+r_struct
+id|eisa_driver
+(brace
+DECL|member|id_table
+r_const
+r_struct
+id|eisa_device_id
+op_star
+id|id_table
+suffix:semicolon
+DECL|member|driver
+r_struct
+id|device_driver
+id|driver
+suffix:semicolon
+)brace
+suffix:semicolon
+DECL|macro|to_eisa_driver
+mdefine_line|#define to_eisa_driver(drv) container_of(drv,struct eisa_driver, driver)
+r_extern
+r_struct
+id|bus_type
+id|eisa_bus_type
+suffix:semicolon
+r_int
+id|eisa_driver_register
+(paren
+r_struct
+id|eisa_driver
+op_star
+id|edrv
+)paren
+suffix:semicolon
+r_void
+id|eisa_driver_unregister
+(paren
+r_struct
+id|eisa_driver
+op_star
+id|edrv
+)paren
+suffix:semicolon
+multiline_comment|/* Mimics pci.h... */
+DECL|function|eisa_get_drvdata
+r_static
+r_inline
+r_void
+op_star
+id|eisa_get_drvdata
+(paren
+r_struct
+id|eisa_device
+op_star
+id|edev
+)paren
+(brace
+r_return
+id|edev-&gt;dev.driver_data
+suffix:semicolon
+)brace
+DECL|function|eisa_set_drvdata
+r_static
+r_inline
+r_void
+id|eisa_set_drvdata
+(paren
+r_struct
+id|eisa_device
+op_star
+id|edev
+comma
+r_void
+op_star
+id|data
+)paren
+(brace
+id|edev-&gt;dev.driver_data
+op_assign
+id|data
+suffix:semicolon
+)brace
+macro_line|#endif
+eof

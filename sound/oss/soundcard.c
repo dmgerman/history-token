@@ -2863,13 +2863,6 @@ id|i
 comma
 id|j
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|MOD_IN_USE
-)paren
-r_return
-suffix:semicolon
 r_for
 c_loop
 (paren

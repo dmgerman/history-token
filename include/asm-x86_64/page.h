@@ -157,51 +157,7 @@ mdefine_line|#define KERNEL_TEXT_SIZE  (40UL*1024*1024)
 DECL|macro|KERNEL_TEXT_START
 mdefine_line|#define KERNEL_TEXT_START 0xffffffff80000000UL 
 macro_line|#ifndef __ASSEMBLY__
-macro_line|#include &lt;linux/stringify.h&gt;
-multiline_comment|/*&n; * Tell the user there is some problem.  The exception handler decodes this frame.&n; */
-DECL|struct|bug_frame
-r_struct
-id|bug_frame
-(brace
-DECL|member|ud2
-r_int
-r_char
-id|ud2
-(braket
-l_int|2
-)braket
-suffix:semicolon
-DECL|member|filename
-r_char
-op_star
-id|filename
-suffix:semicolon
-multiline_comment|/* should use 32bit offset instead, but the assembler doesn&squot;t like it */
-DECL|member|line
-r_int
-r_int
-id|line
-suffix:semicolon
-)brace
-id|__attribute__
-c_func
-(paren
-(paren
-id|packed
-)paren
-)paren
-suffix:semicolon
-DECL|macro|BUG
-mdefine_line|#define BUG() &bslash;&n;&t;asm volatile(&quot;ud2 ; .quad %c1 ; .short %c0&quot; :: &bslash;&n;&t;&t;     &quot;i&quot;(__LINE__), &quot;i&quot; (__stringify(KBUILD_BASENAME)))
-DECL|macro|PAGE_BUG
-mdefine_line|#define PAGE_BUG(page) BUG()
-r_void
-id|out_of_line_bug
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
+macro_line|#include &lt;asm/bug.h&gt;
 multiline_comment|/* Pure 2^n version of get_order */
 DECL|function|get_order
 r_extern

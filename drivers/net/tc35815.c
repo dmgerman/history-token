@@ -7842,7 +7842,6 @@ id|net_device
 op_star
 id|next_dev
 suffix:semicolon
-multiline_comment|/* No need to check MOD_IN_USE, as sys_delete_module() checks. */
 r_while
 c_loop
 (paren

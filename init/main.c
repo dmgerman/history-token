@@ -1680,6 +1680,11 @@ c_func
 )paren
 suffix:semicolon
 macro_line|#endif
+id|node_nr_running_init
+c_func
+(paren
+)paren
+suffix:semicolon
 id|spawn_ksoftirqd
 c_func
 (paren

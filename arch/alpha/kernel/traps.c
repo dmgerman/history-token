@@ -502,11 +502,14 @@ id|sp
 )paren
 (brace
 r_extern
-r_int
-r_int
+r_char
 id|_stext
+(braket
+)braket
 comma
 id|_etext
+(braket
+)braket
 suffix:semicolon
 r_int
 r_int
