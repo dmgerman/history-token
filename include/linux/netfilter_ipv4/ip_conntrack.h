@@ -5,6 +5,7 @@ multiline_comment|/* Connection state tracking for netfilter.  This is separated
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/netfilter_ipv4/ip_conntrack_tuple.h&gt;
 macro_line|#include &lt;linux/bitops.h&gt;
+macro_line|#include &lt;linux/compiler.h&gt;
 macro_line|#include &lt;asm/atomic.h&gt;
 DECL|enum|ip_conntrack_info
 r_enum
@@ -623,6 +624,12 @@ r_int
 r_int
 id|ip_conntrack_htable_size
 suffix:semicolon
+multiline_comment|/* eg. PROVIDES_CONNTRACK(ftp); */
+DECL|macro|PROVIDES_CONNTRACK
+mdefine_line|#define PROVIDES_CONNTRACK(name)                        &bslash;&n;        int needs_ip_conntrack_##name;                  &bslash;&n;        EXPORT_SYMBOL(needs_ip_conntrack_##name)
+multiline_comment|/*. eg. NEEDS_CONNTRACK(ftp); */
+DECL|macro|NEEDS_CONNTRACK
+mdefine_line|#define NEEDS_CONNTRACK(name)                                           &bslash;&n;        extern int needs_ip_conntrack_##name;                           &bslash;&n;        static int *need_ip_conntrack_##name __attribute_used__ = &amp;needs_ip_conntrack_##name
 macro_line|#endif /* __KERNEL__ */
 macro_line|#endif /* _IP_CONNTRACK_H */
 eof

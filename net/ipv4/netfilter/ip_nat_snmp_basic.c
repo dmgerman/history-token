@@ -5823,7 +5823,7 @@ l_int|NULL
 comma
 l_string|&quot;snmp&quot;
 comma
-id|IP_NAT_HELPER_F_STANDALONE
+l_int|0
 comma
 id|THIS_MODULE
 comma
@@ -5891,7 +5891,7 @@ l_int|NULL
 comma
 l_string|&quot;snmp_trap&quot;
 comma
-id|IP_NAT_HELPER_F_STANDALONE
+l_int|0
 comma
 id|THIS_MODULE
 comma
