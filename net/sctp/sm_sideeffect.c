@@ -1284,6 +1284,23 @@ id|SCTP_STATE_CLOSED
 )paren
 )paren
 suffix:semicolon
+multiline_comment|/* Set sk_err to ECONNRESET on a 1-1 style socket. */
+r_if
+c_cond
+(paren
+op_logical_neg
+id|sctp_style
+c_func
+(paren
+id|asoc-&gt;base.sk
+comma
+id|UDP
+)paren
+)paren
+id|asoc-&gt;base.sk-&gt;sk_err
+op_assign
+id|ECONNRESET
+suffix:semicolon
 multiline_comment|/* SEND_FAILED sent later when cleaning up the association. */
 id|asoc-&gt;outqueue.error
 op_assign
