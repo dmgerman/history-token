@@ -4961,6 +4961,12 @@ id|sd
 op_assign
 id|tmp
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|sd
+)paren
+(brace
 id|schedstat_inc
 c_func
 (paren
@@ -4969,12 +4975,6 @@ comma
 id|sbe_attempts
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|sd
-)paren
-(brace
 id|new_cpu
 op_assign
 id|find_idlest_cpu
