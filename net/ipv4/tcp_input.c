@@ -2,6 +2,7 @@ multiline_comment|/*&n; * INET&t;&t;An implementation of the TCP/IP protocol sui
 multiline_comment|/*&n; * Changes:&n; *&t;&t;Pedro Roque&t;:&t;Fast Retransmit/Recovery.&n; *&t;&t;&t;&t;&t;Two receive queues.&n; *&t;&t;&t;&t;&t;Retransmit queue handled by TCP.&n; *&t;&t;&t;&t;&t;Better retransmit timer handling.&n; *&t;&t;&t;&t;&t;New congestion avoidance.&n; *&t;&t;&t;&t;&t;Header prediction.&n; *&t;&t;&t;&t;&t;Variable renaming.&n; *&n; *&t;&t;Eric&t;&t;:&t;Fast Retransmit.&n; *&t;&t;Randy Scott&t;:&t;MSS option defines.&n; *&t;&t;Eric Schenk&t;:&t;Fixes to slow start algorithm.&n; *&t;&t;Eric Schenk&t;:&t;Yet another double ACK bug.&n; *&t;&t;Eric Schenk&t;:&t;Delayed ACK bug fixes.&n; *&t;&t;Eric Schenk&t;:&t;Floyd style fast retrans war avoidance.&n; *&t;&t;David S. Miller&t;:&t;Don&squot;t allow zero congestion window.&n; *&t;&t;Eric Schenk&t;:&t;Fix retransmitter so that it sends&n; *&t;&t;&t;&t;&t;next packet on ack of previous packet.&n; *&t;&t;Andi Kleen&t;:&t;Moved open_request checking here&n; *&t;&t;&t;&t;&t;and process RSTs for open_requests.&n; *&t;&t;Andi Kleen&t;:&t;Better prune_queue, and other fixes.&n; *&t;&t;Andrey Savochkin:&t;Fix RTT measurements in the presnce of&n; *&t;&t;&t;&t;&t;timestamps.&n; *&t;&t;Andrey Savochkin:&t;Check sequence numbers correctly when&n; *&t;&t;&t;&t;&t;removing SACKs due to in sequence incoming&n; *&t;&t;&t;&t;&t;data segments.&n; *&t;&t;Andi Kleen:&t;&t;Make sure we never ack data there is not&n; *&t;&t;&t;&t;&t;enough room for. Also make this condition&n; *&t;&t;&t;&t;&t;a fatal error if it might still happen.&n; *&t;&t;Andi Kleen:&t;&t;Add tcp_measure_rcv_mss to make &n; *&t;&t;&t;&t;&t;connections with MSS&lt;min(MTU,ann. MSS)&n; *&t;&t;&t;&t;&t;work without delayed acks. &n; *&t;&t;Andi Kleen:&t;&t;Process packets with PSH set in the&n; *&t;&t;&t;&t;&t;fast path.&n; *&t;&t;J Hadi Salim:&t;&t;ECN support&n; *&t; &t;Andrei Gurtov,&n; *&t;&t;Pasi Sarolahti,&n; *&t;&t;Panu Kuhlberg:&t;&t;Experimental audit of TCP (re)transmission&n; *&t;&t;&t;&t;&t;engine. Lots of bugs are found.&n; *&t;&t;Pasi Sarolahti:&t;&t;F-RTO for dealing with spurious RTOs&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
+macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/sysctl.h&gt;
 macro_line|#include &lt;net/tcp.h&gt;
 macro_line|#include &lt;net/inet_common.h&gt;
@@ -16229,4 +16230,46 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+DECL|variable|sysctl_tcp_ecn
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|sysctl_tcp_ecn
+)paren
+suffix:semicolon
+DECL|variable|sysctl_tcp_reordering
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|sysctl_tcp_reordering
+)paren
+suffix:semicolon
+DECL|variable|tcp_cwnd_application_limited
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|tcp_cwnd_application_limited
+)paren
+suffix:semicolon
+DECL|variable|tcp_parse_options
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|tcp_parse_options
+)paren
+suffix:semicolon
+DECL|variable|tcp_rcv_established
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|tcp_rcv_established
+)paren
+suffix:semicolon
+DECL|variable|tcp_rcv_state_process
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|tcp_rcv_state_process
+)paren
+suffix:semicolon
 eof
