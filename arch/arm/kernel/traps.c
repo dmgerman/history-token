@@ -616,7 +616,7 @@ op_plus
 r_int
 r_int
 )paren
-id|tsk
+id|tsk-&gt;thread_info
 )paren
 id|printk
 c_func

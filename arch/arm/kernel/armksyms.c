@@ -274,7 +274,7 @@ r_void
 )paren
 suffix:semicolon
 DECL|macro|EXPORT_SYMBOL_ALIAS
-mdefine_line|#define EXPORT_SYMBOL_ALIAS(sym,orig)&t;&t;&bslash;&n; const char __kstrtab_##sym[]&t;&t;&t;&bslash;&n;  __attribute__((section(&quot;.kstrtab&quot;))) =&t;&bslash;&n;    __MODULE_STRING(sym);&t;&t;&t;&bslash;&n; const struct module_symbol __ksymtab_##sym&t;&bslash;&n;  __attribute__((section(&quot;__ksymtab&quot;))) =&t;&bslash;&n;    { (unsigned long)&amp;##orig, __kstrtab_##sym };
+mdefine_line|#define EXPORT_SYMBOL_ALIAS(sym,orig)&t;&t;&bslash;&n; const char __kstrtab_##sym[]&t;&t;&t;&bslash;&n;  __attribute__((section(&quot;.kstrtab&quot;))) =&t;&bslash;&n;    __MODULE_STRING(sym);&t;&t;&t;&bslash;&n; const struct module_symbol __ksymtab_##sym&t;&bslash;&n;  __attribute__((section(&quot;__ksymtab&quot;))) =&t;&bslash;&n;    { (unsigned long)&amp;orig, __kstrtab_##sym };
 multiline_comment|/*&n; * floating point math emulator support.&n; * These symbols will never change their calling convention...&n; */
 id|EXPORT_SYMBOL_ALIAS
 c_func

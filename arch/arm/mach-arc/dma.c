@@ -370,22 +370,7 @@ r_int
 r_int
 id|fdc1772_fdc_int_done
 suffix:semicolon
-op_star
-id|Explicit
-op_logical_neg
-id|If
-id|the
-r_int
-id|done
-id|is
-l_int|0
-id|then
-l_int|1
-r_int
-id|to
-id|go
-op_star
-op_div
+multiline_comment|/* Explicit! If the int done is 0 then 1 int to go */
 r_return
 (paren
 id|fdc1772_fdc_int_done
