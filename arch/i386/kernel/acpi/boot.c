@@ -2457,6 +2457,13 @@ r_return
 id|error
 suffix:semicolon
 )brace
+macro_line|#ifdef __i386__
+id|check_acpi_pci
+c_func
+(paren
+)paren
+suffix:semicolon
+macro_line|#endif
 id|acpi_table_parse
 c_func
 (paren
