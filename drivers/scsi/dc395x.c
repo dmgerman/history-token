@@ -21990,9 +21990,14 @@ id|PCI_BASE_ADDRESS_IO_MASK
 suffix:semicolon
 id|io_port_len
 op_assign
-l_int|0x80
+id|pci_resource_len
+c_func
+(paren
+id|dev
+comma
+l_int|0
+)paren
 suffix:semicolon
-multiline_comment|/* XXX: use pci_resource_len? */
 id|irq
 op_assign
 id|dev-&gt;irq
