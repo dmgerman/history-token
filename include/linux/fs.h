@@ -1856,6 +1856,18 @@ id|file_lock
 op_star
 )paren
 suffix:semicolon
+DECL|member|fl_break
+r_void
+(paren
+op_star
+id|fl_break
+)paren
+(paren
+r_struct
+id|file_lock
+op_star
+)paren
+suffix:semicolon
 )brace
 suffix:semicolon
 multiline_comment|/* that will die - we need it for nfs_lock_info */
