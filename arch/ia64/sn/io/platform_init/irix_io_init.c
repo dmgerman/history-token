@@ -61,14 +61,6 @@ c_func
 r_void
 )paren
 suffix:semicolon
-multiline_comment|/* #define DEBUG_IO_INIT 1 */
-macro_line|#ifdef DEBUG_IO_INIT
-DECL|macro|DBG
-mdefine_line|#define DBG(x...) printk(x)
-macro_line|#else
-DECL|macro|DBG
-mdefine_line|#define DBG(x...)
-macro_line|#endif /* DEBUG_IO_INIT */
 multiline_comment|/*&n; * This routine is responsible for the setup of all the IRIX hwgraph style&n; * stuff that&squot;s been pulled into linux.  It&squot;s called by sn_pci_find_bios which&n; * is called just before the generic Linux PCI layer does its probing (by &n; * platform_pci_fixup aka sn_pci_fixup).&n; *&n; * It is very IMPORTANT that this call is only made by the Master CPU!&n; *&n; */
 r_void
 id|__init

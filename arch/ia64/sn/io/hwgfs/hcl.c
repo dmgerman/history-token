@@ -2152,7 +2152,8 @@ r_char
 op_star
 id|buf
 comma
-id|uint
+r_int
+r_int
 id|buflen
 )paren
 (brace
@@ -2253,7 +2254,8 @@ r_char
 op_star
 id|buf
 comma
-id|uint
+r_int
+r_int
 id|buflen
 )paren
 (brace

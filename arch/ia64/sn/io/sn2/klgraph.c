@@ -13,24 +13,13 @@ multiline_comment|/* #define KLGRAPH_DEBUG 1 */
 macro_line|#ifdef KLGRAPH_DEBUG
 DECL|macro|GRPRINTF
 mdefine_line|#define GRPRINTF(x)&t;printk x
-DECL|macro|CE_GRPANIC
-mdefine_line|#define CE_GRPANIC&t;CE_PANIC
 macro_line|#else
 DECL|macro|GRPRINTF
 mdefine_line|#define GRPRINTF(x)
-DECL|macro|CE_GRPANIC
-mdefine_line|#define CE_GRPANIC&t;CE_PANIC
 macro_line|#endif
-macro_line|#include &lt;asm/sn/sn_private.h&gt;
 r_extern
 r_char
 id|arg_maxnodes
-(braket
-)braket
-suffix:semicolon
-r_extern
-id|u64
-id|klgraph_addr
 (braket
 )braket
 suffix:semicolon
@@ -43,6 +32,14 @@ id|vhdl
 comma
 id|cpuid_t
 id|cpuid
+)paren
+suffix:semicolon
+r_int
+id|is_specified
+c_func
+(paren
+r_char
+op_star
 )paren
 suffix:semicolon
 multiline_comment|/* ARGSUSED */
@@ -78,19 +75,6 @@ r_struct
 id|file_operations
 id|shub_mon_fops
 suffix:semicolon
-id|GRPRINTF
-c_func
-(paren
-(paren
-l_string|&quot;klhwg_add_hub: adding %s&bslash;n&quot;
-comma
-id|EDGE_LBL_HUB
-)paren
-)paren
-suffix:semicolon
-(paren
-r_void
-)paren
 id|hwgraph_path_add
 c_func
 (paren
@@ -100,6 +84,24 @@ id|EDGE_LBL_HUB
 comma
 op_amp
 id|myhubv
+)paren
+suffix:semicolon
+id|HWGRAPH_DEBUG
+c_func
+(paren
+(paren
+id|__FILE__
+comma
+id|__FUNCTION__
+comma
+id|__LINE__
+comma
+id|myhubv
+comma
+l_int|NULL
+comma
+l_string|&quot;Created path for hub vertex for Shub node.&bslash;n&quot;
+)paren
 )paren
 suffix:semicolon
 id|rc
@@ -112,6 +114,21 @@ comma
 id|node_vertex
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|rc
+)paren
+(brace
+id|printk
+c_func
+(paren
+l_string|&quot;klhwg_add_hub: Unable to create hub vertex.&bslash;n&quot;
+)paren
+suffix:semicolon
+r_return
+suffix:semicolon
+)brace
 id|hub_mon
 op_assign
 id|hwgraph_register
@@ -219,10 +236,12 @@ op_minus
 l_int|1
 )paren
 (brace
-id|sprintf
+id|snprintf
 c_func
 (paren
 id|name
+comma
+l_int|120
 comma
 l_string|&quot;%s/%s/%c&quot;
 comma
@@ -247,6 +266,24 @@ id|name
 comma
 op_amp
 id|my_cpu
+)paren
+suffix:semicolon
+id|HWGRAPH_DEBUG
+c_func
+(paren
+(paren
+id|__FILE__
+comma
+id|__FUNCTION__
+comma
+id|__LINE__
+comma
+id|my_cpu
+comma
+l_int|NULL
+comma
+l_string|&quot;Created path for disabled cpu slice.&bslash;n&quot;
+)paren
 )paren
 suffix:semicolon
 id|mark_cpuvertex_as_cpu
@@ -323,10 +360,12 @@ comma
 id|cpu-&gt;cpu_info.physid
 )paren
 suffix:semicolon
-id|sprintf
+id|snprintf
 c_func
 (paren
 id|name
+comma
+l_int|120
 comma
 l_string|&quot;%s/%d/%c&quot;
 comma
@@ -337,18 +376,6 @@ comma
 l_char|&squot;a&squot;
 op_plus
 id|cpu-&gt;cpu_info.physid
-)paren
-suffix:semicolon
-id|GRPRINTF
-c_func
-(paren
-(paren
-l_string|&quot;klhwg_add_cpu: adding %s to vertex 0x%p&bslash;n&quot;
-comma
-id|name
-comma
-id|node_vertex
-)paren
 )paren
 suffix:semicolon
 (paren
@@ -363,6 +390,24 @@ id|name
 comma
 op_amp
 id|my_cpu
+)paren
+suffix:semicolon
+id|HWGRAPH_DEBUG
+c_func
+(paren
+(paren
+id|__FILE__
+comma
+id|__FUNCTION__
+comma
+id|__LINE__
+comma
+id|my_cpu
+comma
+l_int|NULL
+comma
+l_string|&quot;Created path for active cpu slice.&bslash;n&quot;
+)paren
 )paren
 suffix:semicolon
 id|mark_cpuvertex_as_cpu
@@ -399,10 +444,12 @@ op_eq
 id|GRAPH_SUCCESS
 )paren
 (brace
-id|sprintf
+id|snprintf
 c_func
 (paren
 id|name
+comma
+l_int|120
 comma
 l_string|&quot;%c&quot;
 comma
@@ -422,6 +469,26 @@ comma
 id|my_cpu
 comma
 id|name
+)paren
+suffix:semicolon
+id|HWGRAPH_DEBUG
+c_func
+(paren
+(paren
+id|__FILE__
+comma
+id|__FUNCTION__
+comma
+id|__LINE__
+comma
+id|cpu_dir
+comma
+id|my_cpu
+comma
+l_string|&quot;Created % from vhdl1 to vhdl2.&bslash;n&quot;
+comma
+id|name
+)paren
 )paren
 suffix:semicolon
 )brace
@@ -513,18 +580,6 @@ id|brd
 )paren
 )paren
 r_return
-suffix:semicolon
-id|GRPRINTF
-c_func
-(paren
-(paren
-l_string|&quot;klhwg_add_xbow: adding cnode %d nasid %d xbow edges&bslash;n&quot;
-comma
-id|cnode
-comma
-id|nasid
-)paren
-)paren
 suffix:semicolon
 r_if
 c_cond
@@ -701,7 +756,27 @@ comma
 id|err
 )paren
 suffix:semicolon
+r_return
+suffix:semicolon
 )brace
+id|HWGRAPH_DEBUG
+c_func
+(paren
+(paren
+id|__FILE__
+comma
+id|__FUNCTION__
+comma
+id|__LINE__
+comma
+id|xbow_v
+comma
+l_int|NULL
+comma
+l_string|&quot;Created path for xtalk.&bslash;n&quot;
+)paren
+)paren
+suffix:semicolon
 id|xswitch_vertex_init
 c_func
 (paren
@@ -752,20 +827,6 @@ op_assign
 id|hub_nasid
 suffix:semicolon
 )brace
-id|GRPRINTF
-c_func
-(paren
-(paren
-l_string|&quot;klhwg_add_xbow: adding port nasid %d %s to vertex 0x%p&bslash;n&quot;
-comma
-id|hub_nasid
-comma
-id|EDGE_LBL_XTALK
-comma
-id|hubv
-)paren
-)paren
-suffix:semicolon
 )brace
 )brace
 multiline_comment|/* ARGSUSED */
@@ -821,6 +882,9 @@ id|klcpu_t
 op_star
 id|cpu
 suffix:semicolon
+id|vertex_hdl_t
+id|cpu_dir
+suffix:semicolon
 id|nasid
 op_assign
 id|COMPACT_TO_NASID_NODEID
@@ -847,30 +911,11 @@ comma
 id|KLTYPE_SNIA
 )paren
 suffix:semicolon
-id|GRPRINTF
-c_func
-(paren
-(paren
-l_string|&quot;klhwg_add_node: Adding cnode %d, nasid %d, brd 0x%p&bslash;n&quot;
-comma
-id|cnode
-comma
-id|nasid
-comma
-id|brd
-)paren
-)paren
-suffix:semicolon
 id|ASSERT
 c_func
 (paren
 id|brd
 )paren
-suffix:semicolon
-r_do
-(brace
-id|vertex_hdl_t
-id|cpu_dir
 suffix:semicolon
 multiline_comment|/* Generate a hardware graph path for this board. */
 id|board_to_path
@@ -879,18 +924,6 @@ c_func
 id|brd
 comma
 id|path_buffer
-)paren
-suffix:semicolon
-id|GRPRINTF
-c_func
-(paren
-(paren
-l_string|&quot;klhwg_add_node: adding %s to vertex 0x%p&bslash;n&quot;
-comma
-id|path_buffer
-comma
-id|hwgraph_root
-)paren
 )paren
 suffix:semicolon
 id|rv
@@ -913,13 +946,34 @@ id|rv
 op_ne
 id|GRAPH_SUCCESS
 )paren
-id|panic
+(brace
+id|printk
 c_func
 (paren
-l_string|&quot;Node vertex creation failed.  &quot;
-l_string|&quot;Path == %s&quot;
+l_string|&quot;Node vertex creation failed.  Path == %s&quot;
 comma
 id|path_buffer
+)paren
+suffix:semicolon
+r_return
+suffix:semicolon
+)brace
+id|HWGRAPH_DEBUG
+c_func
+(paren
+(paren
+id|__FILE__
+comma
+id|__FUNCTION__
+comma
+id|__LINE__
+comma
+id|node_vertex
+comma
+l_int|NULL
+comma
+l_string|&quot;Created path for SHUB node.&bslash;n&quot;
+)paren
 )paren
 suffix:semicolon
 id|hub
@@ -973,10 +1027,6 @@ c_func
 id|node_vertex
 comma
 id|cnode
-op_plus
-id|board_disabled
-op_star
-id|numnodes
 )paren
 suffix:semicolon
 id|s
@@ -1016,8 +1066,8 @@ comma
 id|GFP_KERNEL
 )paren
 suffix:semicolon
-id|ASSERT_ALWAYS
-c_func
+r_if
+c_cond
 (paren
 id|NODEPDA
 c_func
@@ -1026,10 +1076,21 @@ id|cnode
 )paren
 op_member_access_from_pointer
 id|hwg_node_name
-op_ne
-l_int|NULL
+op_le
+l_int|0
+)paren
+(brace
+id|printk
+c_func
+(paren
+l_string|&quot;%s: no memory&bslash;n&quot;
+comma
+id|__FUNCTION__
 )paren
 suffix:semicolon
+r_return
+suffix:semicolon
+)brace
 id|strcpy
 c_func
 (paren
@@ -1058,7 +1119,6 @@ op_member_access_from_pointer
 id|pdinfo
 )paren
 suffix:semicolon
-multiline_comment|/* Set up node board&squot;s slot */
 id|NODEPDA
 c_func
 (paren
@@ -1069,7 +1129,6 @@ id|slotdesc
 op_assign
 id|brd-&gt;brd_slot
 suffix:semicolon
-multiline_comment|/* Set up the module we&squot;re in */
 id|NODEPDA
 c_func
 (paren
@@ -1098,8 +1157,18 @@ id|brd-&gt;brd_geoid
 )paren
 )paren
 suffix:semicolon
+id|klhwg_add_hub
+c_func
+(paren
+id|node_vertex
+comma
+id|hub
+comma
+id|cnode
+)paren
+suffix:semicolon
 )brace
-multiline_comment|/* Get the first CPU structure */
+multiline_comment|/*&n;&t; * If there&squot;s at least 1 CPU, add a &quot;cpu&quot; directory to represent&n;&t; * the collection of all CPUs attached to this node.&n;&t; */
 id|cpu
 op_assign
 (paren
@@ -1114,7 +1183,6 @@ comma
 id|KLSTRUCT_CPU
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t;&t;* If there&squot;s at least 1 CPU, add a &quot;cpu&quot; directory to represent&n;&t;&t;* the collection of all CPUs attached to this node.&n;&t;&t;*/
 r_if
 c_cond
 (paren
@@ -1144,14 +1212,35 @@ id|rv
 op_ne
 id|GRAPH_SUCCESS
 )paren
-id|panic
+(brace
+id|printk
 c_func
 (paren
 l_string|&quot;klhwg_add_node: Cannot create CPU directory&bslash;n&quot;
 )paren
 suffix:semicolon
+r_return
+suffix:semicolon
 )brace
-multiline_comment|/* Add each CPU */
+id|HWGRAPH_DEBUG
+c_func
+(paren
+(paren
+id|__FILE__
+comma
+id|__FUNCTION__
+comma
+id|__LINE__
+comma
+id|cpu_dir
+comma
+l_int|NULL
+comma
+l_string|&quot;Created cpu directiry on SHUB node.&bslash;n&quot;
+)paren
+)paren
+suffix:semicolon
+)brace
 r_while
 c_loop
 (paren
@@ -1224,60 +1313,6 @@ id|KLSTRUCT_CPU
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* while */
-r_if
-c_cond
-(paren
-op_logical_neg
-id|board_disabled
-)paren
-(brace
-id|klhwg_add_hub
-c_func
-(paren
-id|node_vertex
-comma
-id|hub
-comma
-id|cnode
-)paren
-suffix:semicolon
-)brace
-id|brd
-op_assign
-id|KLCF_NEXT
-c_func
-(paren
-id|brd
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|brd
-)paren
-id|brd
-op_assign
-id|find_lboard
-c_func
-(paren
-id|brd
-comma
-id|KLTYPE_SNIA
-)paren
-suffix:semicolon
-r_else
-r_break
-suffix:semicolon
-)brace
-r_while
-c_loop
-(paren
-id|brd
-)paren
-(brace
-suffix:semicolon
-)brace
 )brace
 multiline_comment|/* ARGSUSED */
 r_static
@@ -1336,16 +1371,6 @@ c_func
 id|cnode
 )paren
 suffix:semicolon
-id|GRPRINTF
-c_func
-(paren
-(paren
-l_string|&quot;klhwg_add_all_routers: adding router on cnode %d&bslash;n&quot;
-comma
-id|cnode
-)paren
-)paren
-suffix:semicolon
 id|brd
 op_assign
 id|find_lboard_class
@@ -1381,16 +1406,6 @@ c_func
 id|brd
 )paren
 suffix:semicolon
-id|GRPRINTF
-c_func
-(paren
-(paren
-l_string|&quot;Router board struct is %p&bslash;n&quot;
-comma
-id|brd
-)paren
-)paren
-suffix:semicolon
 multiline_comment|/* Don&squot;t add duplicate boards. */
 r_if
 c_cond
@@ -1401,18 +1416,6 @@ id|DUPLICATE_BOARD
 )paren
 r_continue
 suffix:semicolon
-id|GRPRINTF
-c_func
-(paren
-(paren
-l_string|&quot;Router 0x%p module number is %d&bslash;n&quot;
-comma
-id|brd
-comma
-id|brd-&gt;brd_geoid
-)paren
-)paren
-suffix:semicolon
 multiline_comment|/* Generate a hardware graph path for this board. */
 id|board_to_path
 c_func
@@ -1422,29 +1425,7 @@ comma
 id|path_buffer
 )paren
 suffix:semicolon
-id|GRPRINTF
-c_func
-(paren
-(paren
-l_string|&quot;Router path is %s&bslash;n&quot;
-comma
-id|path_buffer
-)paren
-)paren
-suffix:semicolon
 multiline_comment|/* Add the router */
-id|GRPRINTF
-c_func
-(paren
-(paren
-l_string|&quot;klhwg_add_all_routers: adding %s to vertex 0x%p&bslash;n&quot;
-comma
-id|path_buffer
-comma
-id|hwgraph_root
-)paren
-)paren
-suffix:semicolon
 id|rv
 op_assign
 id|hwgraph_path_add
@@ -1465,7 +1446,8 @@ id|rv
 op_ne
 id|GRAPH_SUCCESS
 )paren
-id|panic
+(brace
+id|printk
 c_func
 (paren
 l_string|&quot;Router vertex creation &quot;
@@ -1474,13 +1456,24 @@ comma
 id|path_buffer
 )paren
 suffix:semicolon
-id|GRPRINTF
+r_return
+suffix:semicolon
+)brace
+id|HWGRAPH_DEBUG
 c_func
 (paren
 (paren
-l_string|&quot;klhwg_add_all_routers: get next board from 0x%p&bslash;n&quot;
+id|__FILE__
 comma
-id|brd
+id|__FUNCTION__
+comma
+id|__LINE__
+comma
+id|node_vertex
+comma
+l_int|NULL
+comma
+l_string|&quot;Created router path.&bslash;n&quot;
 )paren
 )paren
 suffix:semicolon
@@ -1503,14 +1496,6 @@ id|brd
 comma
 id|KLTYPE_ROUTER
 )paren
-)paren
-)paren
-suffix:semicolon
-id|GRPRINTF
-c_func
-(paren
-(paren
-l_string|&quot;klhwg_add_all_routers: Done.&bslash;n&quot;
 )paren
 )paren
 suffix:semicolon
@@ -1570,16 +1555,6 @@ id|lboard_t
 op_star
 id|dest_brd
 suffix:semicolon
-id|GRPRINTF
-c_func
-(paren
-(paren
-l_string|&quot;klhwg_connect_one_router: Connecting router on cnode %d&bslash;n&quot;
-comma
-id|cnode
-)paren
-)paren
-suffix:semicolon
 multiline_comment|/* Don&squot;t add duplicate boards. */
 r_if
 c_cond
@@ -1589,18 +1564,6 @@ op_amp
 id|DUPLICATE_BOARD
 )paren
 (brace
-id|GRPRINTF
-c_func
-(paren
-(paren
-l_string|&quot;klhwg_connect_one_router: Duplicate router 0x%p on cnode %d&bslash;n&quot;
-comma
-id|brd
-comma
-id|cnode
-)paren
-)paren
-suffix:semicolon
 r_return
 suffix:semicolon
 )brace
@@ -1838,7 +1801,7 @@ id|dest_brd
 )paren
 r_continue
 suffix:semicolon
-id|panic
+id|printk
 c_func
 (paren
 l_string|&quot;Can&squot;t find router: %s&quot;
@@ -1846,21 +1809,9 @@ comma
 id|dest_path
 )paren
 suffix:semicolon
-)brace
-id|GRPRINTF
-c_func
-(paren
-(paren
-l_string|&quot;klhwg_connect_one_router: Link from %s/%d to %s&bslash;n&quot;
-comma
-id|path_buffer
-comma
-id|port
-comma
-id|dest_path
-)paren
-)paren
+r_return
 suffix:semicolon
+)brace
 id|sprintf
 c_func
 (paren
@@ -1921,15 +1872,9 @@ c_cond
 id|rc
 op_ne
 id|GRAPH_SUCCESS
-op_logical_and
-op_logical_neg
-id|is_specified
-c_func
-(paren
-id|arg_maxnodes
 )paren
-)paren
-id|panic
+(brace
+id|printk
 c_func
 (paren
 l_string|&quot;Can&squot;t create edge: %s/%s to vertex 0x%p error 0x%x&bslash;n&quot;
@@ -1945,6 +1890,29 @@ op_star
 id|dest_hndl
 comma
 id|rc
+)paren
+suffix:semicolon
+r_return
+suffix:semicolon
+)brace
+id|HWGRAPH_DEBUG
+c_func
+(paren
+(paren
+id|__FILE__
+comma
+id|__FUNCTION__
+comma
+id|__LINE__
+comma
+id|router_hndl
+comma
+id|dest_hndl
+comma
+l_string|&quot;Created edge %s from vhdl1 to vhdl2.&bslash;n&quot;
+comma
+id|dest_path
+)paren
 )paren
 suffix:semicolon
 )brace
@@ -1991,16 +1959,6 @@ id|COMPACT_TO_NASID_NODEID
 c_func
 (paren
 id|cnode
-)paren
-suffix:semicolon
-id|GRPRINTF
-c_func
-(paren
-(paren
-l_string|&quot;klhwg_connect_routers: Connecting routers on cnode %d&bslash;n&quot;
-comma
-id|cnode
-)paren
 )paren
 suffix:semicolon
 id|brd
@@ -2151,16 +2109,6 @@ c_func
 id|cnode
 )paren
 suffix:semicolon
-id|GRPRINTF
-c_func
-(paren
-(paren
-l_string|&quot;klhwg_connect_hubs: Connecting hubs on cnode %d&bslash;n&quot;
-comma
-id|cnode
-)paren
-)paren
-suffix:semicolon
 id|brd
 op_assign
 id|find_lboard
@@ -2220,7 +2168,6 @@ id|port
 op_increment
 )paren
 (brace
-multiline_comment|/* See if the port&squot;s active */
 r_if
 c_cond
 (paren
@@ -2234,16 +2181,9 @@ op_eq
 id|INVALID_NASID
 )paren
 (brace
-id|GRPRINTF
-c_func
-(paren
-(paren
-l_string|&quot;klhwg_connect_hubs: port inactive.&bslash;n&quot;
-)paren
-)paren
-suffix:semicolon
 r_continue
 suffix:semicolon
+multiline_comment|/* Port not active */
 )brace
 r_if
 c_cond
@@ -2276,16 +2216,6 @@ c_func
 id|brd
 comma
 id|path_buffer
-)paren
-suffix:semicolon
-id|GRPRINTF
-c_func
-(paren
-(paren
-l_string|&quot;klhwg_connect_hubs: Hub path is %s.&bslash;n&quot;
-comma
-id|path_buffer
-)paren
 )paren
 suffix:semicolon
 id|rc
@@ -2388,13 +2318,15 @@ id|dest_brd
 )paren
 r_continue
 suffix:semicolon
-id|panic
+id|printk
 c_func
 (paren
 l_string|&quot;Can&squot;t find board: %s&quot;
 comma
 id|dest_path
 )paren
+suffix:semicolon
+r_return
 suffix:semicolon
 )brace
 r_else
@@ -2404,18 +2336,6 @@ id|buf
 (braket
 l_int|1024
 )braket
-suffix:semicolon
-id|GRPRINTF
-c_func
-(paren
-(paren
-l_string|&quot;klhwg_connect_hubs: Link from %s to %s.&bslash;n&quot;
-comma
-id|path_buffer
-comma
-id|dest_path
-)paren
-)paren
 suffix:semicolon
 id|rc
 op_assign
@@ -2428,6 +2348,24 @@ id|EDGE_LBL_INTERCONNECT
 comma
 op_amp
 id|hub_hndl
+)paren
+suffix:semicolon
+id|HWGRAPH_DEBUG
+c_func
+(paren
+(paren
+id|__FILE__
+comma
+id|__FUNCTION__
+comma
+id|__LINE__
+comma
+id|hub_hndl
+comma
+l_int|NULL
+comma
+l_string|&quot;Created link path.&bslash;n&quot;
+)paren
 )paren
 suffix:semicolon
 id|sprintf
@@ -2477,6 +2415,26 @@ comma
 id|buf
 )paren
 suffix:semicolon
+id|HWGRAPH_DEBUG
+c_func
+(paren
+(paren
+id|__FILE__
+comma
+id|__FUNCTION__
+comma
+id|__LINE__
+comma
+id|hub_hndl
+comma
+id|dest_hndl
+comma
+l_string|&quot;Created edge %s from vhdl1 to vhdl2.&bslash;n&quot;
+comma
+id|buf
+)paren
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -2484,7 +2442,8 @@ id|rc
 op_ne
 id|GRAPH_SUCCESS
 )paren
-id|panic
+(brace
+id|printk
 c_func
 (paren
 l_string|&quot;Can&squot;t create edge: %s/%s to vertex 0x%p, error 0x%x&bslash;n&quot;
@@ -2502,6 +2461,9 @@ comma
 id|rc
 )paren
 suffix:semicolon
+r_return
+suffix:semicolon
+)brace
 )brace
 )brace
 )brace
@@ -2807,6 +2769,24 @@ id|rc
 op_assign
 id|rc
 suffix:semicolon
+id|HWGRAPH_DEBUG
+c_func
+(paren
+(paren
+id|__FILE__
+comma
+id|__FUNCTION__
+comma
+id|__LINE__
+comma
+id|module_vhdl
+comma
+l_int|NULL
+comma
+l_string|&quot;Created module path.&bslash;n&quot;
+)paren
+)paren
+suffix:semicolon
 id|hwgraph_fastinfo_set
 c_func
 (paren
@@ -2858,6 +2838,24 @@ suffix:semicolon
 id|rc
 op_assign
 id|rc
+suffix:semicolon
+id|HWGRAPH_DEBUG
+c_func
+(paren
+(paren
+id|__FILE__
+comma
+id|__FUNCTION__
+comma
+id|__LINE__
+comma
+id|vhdl
+comma
+l_int|NULL
+comma
+l_string|&quot;Created L1 path.&bslash;n&quot;
+)paren
+)paren
 suffix:semicolon
 id|hwgraph_info_add_LBL
 c_func
