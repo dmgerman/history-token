@@ -5347,6 +5347,13 @@ c_func
 id|result
 )paren
 suffix:semicolon
+id|init_timer
+c_func
+(paren
+op_amp
+id|tz-&gt;timer
+)paren
+suffix:semicolon
 id|acpi_thermal_check
 c_func
 (paren
@@ -5396,13 +5403,6 @@ r_goto
 id|end
 suffix:semicolon
 )brace
-id|init_timer
-c_func
-(paren
-op_amp
-id|tz-&gt;timer
-)paren
-suffix:semicolon
 id|printk
 c_func
 (paren
