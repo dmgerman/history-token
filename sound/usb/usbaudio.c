@@ -4852,15 +4852,7 @@ suffix:semicolon
 multiline_comment|/* create a data pipe */
 id|ep
 op_assign
-id|get_endpoint
-c_func
-(paren
-id|alts
-comma
-l_int|0
-)paren
-op_member_access_from_pointer
-id|bEndpointAddress
+id|fmt-&gt;endpoint
 op_amp
 id|USB_ENDPOINT_NUMBER_MASK
 suffix:semicolon
@@ -4925,15 +4917,7 @@ suffix:semicolon
 multiline_comment|/* we need a sync pipe in async OUT or adaptive IN mode */
 id|attr
 op_assign
-id|get_endpoint
-c_func
-(paren
-id|alts
-comma
-l_int|0
-)paren
-op_member_access_from_pointer
-id|bmAttributes
+id|fmt-&gt;ep_attr
 op_amp
 id|EP_ATTR_MASK
 suffix:semicolon
@@ -4958,6 +4942,21 @@ id|EP_ATTR_ADAPTIVE
 )paren
 )paren
 (brace
+multiline_comment|/*&n;&t;&t; * QUIRK: plantronics headset has adaptive-in&n;&t;&t; * although it&squot;s really not...&n;&t;&t; */
+r_if
+c_cond
+(paren
+id|dev-&gt;descriptor.idVendor
+op_eq
+l_int|0x047f
+op_logical_and
+id|dev-&gt;descriptor.idProduct
+op_eq
+l_int|0x0ca1
+)paren
+r_goto
+id|_ok
+suffix:semicolon
 multiline_comment|/* check endpoint */
 r_if
 c_cond
@@ -5136,6 +5135,8 @@ op_member_access_from_pointer
 id|bRefresh
 suffix:semicolon
 )brace
+id|_ok
+suffix:colon
 r_if
 c_cond
 (paren
@@ -7851,7 +7852,7 @@ c_func
 (paren
 id|buffer
 comma
-l_string|&quot;    Rates: %d - %d (continous)&bslash;n&quot;
+l_string|&quot;    Rates: %d - %d (continuous)&bslash;n&quot;
 comma
 id|fp-&gt;rate_min
 comma

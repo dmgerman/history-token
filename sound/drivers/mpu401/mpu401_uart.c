@@ -2079,12 +2079,16 @@ id|mpu-&gt;irq_flags
 op_assign
 id|irq_flags
 suffix:semicolon
-id|strcpy
+id|sprintf
 c_func
 (paren
 id|rmidi-&gt;name
 comma
-l_string|&quot;MPU-401 (UART)&quot;
+l_string|&quot;MPU-401 (UART) %d-%d&quot;
+comma
+id|card-&gt;number
+comma
+id|device
 )paren
 suffix:semicolon
 id|snd_rawmidi_set_ops

@@ -3257,6 +3257,16 @@ comma
 id|runtime-&gt;rate
 )paren
 suffix:semicolon
+id|snd_ac97_set_rate
+c_func
+(paren
+id|chip-&gt;ac97
+comma
+id|AC97_SPDIF
+comma
+id|runtime-&gt;rate
+)paren
+suffix:semicolon
 id|via686_setup_format
 c_func
 (paren
@@ -3779,6 +3789,62 @@ comma
 id|viadev
 )paren
 suffix:semicolon
+multiline_comment|/* FIXME: a more generic solutions would be better */
+r_if
+c_cond
+(paren
+id|chip-&gt;chip_type
+op_eq
+id|TYPE_VIA8233A
+)paren
+(brace
+multiline_comment|/* VIA8233A cannot change the slot mapping, so we need&n;&t;&t; * to swap the RL/RR with C/L.&n;&t;&t; */
+DECL|macro|AC97_ID_ALC650
+mdefine_line|#define AC97_ID_ALC650&t;&t;0x414c4720
+r_if
+c_cond
+(paren
+id|chip-&gt;ac97-&gt;id
+op_eq
+id|AC97_ID_ALC650
+)paren
+(brace
+r_int
+r_int
+id|val
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|runtime-&gt;channels
+OG
+l_int|4
+)paren
+multiline_comment|/* slot mapping: 3,4,7,8 */
+id|val
+op_assign
+l_int|0
+suffix:semicolon
+r_else
+multiline_comment|/* slot mapping: 3,4,6,9,7,8 */
+id|val
+op_assign
+l_int|0x4000
+suffix:semicolon
+id|snd_ac97_update_bits
+c_func
+(paren
+id|chip-&gt;ac97
+comma
+id|AC97_ALC650_MULTICH
+comma
+l_int|0xc000
+comma
+id|val
+)paren
+suffix:semicolon
+)brace
+)brace
 id|fmt
 op_assign
 (paren
@@ -3812,7 +3878,7 @@ id|OFS_MULTPLAY_FORMAT
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/* set sample number to slot 3, 4, 7, 8, 6, 9 */
+multiline_comment|/* set sample number to slot 3, 4, 7, 8, 6, 9 (for VIA8233/C,8235) */
 multiline_comment|/* corresponding to FL, FR, RL, RR, C, LFE ?? */
 r_switch
 c_cond
@@ -3932,19 +3998,19 @@ l_int|4
 )paren
 op_or
 (paren
-l_int|5
+l_int|3
 op_lshift
 l_int|8
 )paren
 op_or
 (paren
-l_int|3
+l_int|4
 op_lshift
 l_int|12
 )paren
 op_or
 (paren
-l_int|4
+l_int|5
 op_lshift
 l_int|16
 )paren
@@ -3969,25 +4035,25 @@ l_int|4
 )paren
 op_or
 (paren
-l_int|5
+l_int|3
 op_lshift
 l_int|8
 )paren
 op_or
 (paren
-l_int|6
+l_int|4
 op_lshift
 l_int|12
 )paren
 op_or
 (paren
-l_int|3
+l_int|5
 op_lshift
 l_int|16
 )paren
 op_or
 (paren
-l_int|4
+l_int|6
 op_lshift
 l_int|20
 )paren
@@ -6549,10 +6615,11 @@ l_int|0x1106
 comma
 l_int|0x4161
 comma
+l_string|&quot;ASRock K7VT2&quot;
+comma
 id|AC97_TUNE_HP_ONLY
 )brace
 comma
-multiline_comment|/* ASRock K7VT2 */
 (brace
 )brace
 multiline_comment|/* terminator */
@@ -6641,7 +6708,6 @@ suffix:semicolon
 id|snd_ac97_tune_hardware
 c_func
 (paren
-op_amp
 id|chip-&gt;ac97
 comma
 id|chip-&gt;pci
