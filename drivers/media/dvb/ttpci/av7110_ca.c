@@ -343,7 +343,7 @@ id|cirbuf-&gt;data
 suffix:semicolon
 id|cirbuf-&gt;data
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|vfree
 c_func
@@ -353,7 +353,7 @@ id|ciwbuf-&gt;data
 suffix:semicolon
 id|ciwbuf-&gt;data
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 )brace
 DECL|function|ci_ll_reset
@@ -1696,7 +1696,7 @@ op_assign
 dot
 id|priv
 op_assign
-l_int|0
+l_int|NULL
 comma
 dot
 id|users

@@ -787,7 +787,7 @@ l_string|&quot;attach: Huh? i2c adapter not in sysfs tree?&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
-l_int|0
+l_int|NULL
 suffix:semicolon
 )brace
 id|pci

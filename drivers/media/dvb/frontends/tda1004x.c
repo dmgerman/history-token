@@ -2438,7 +2438,7 @@ comma
 dot
 id|buf
 op_assign
-l_int|0
+l_int|NULL
 comma
 dot
 id|len
@@ -2749,7 +2749,7 @@ comma
 dot
 id|buf
 op_assign
-l_int|0
+l_int|NULL
 comma
 dot
 id|len
@@ -6825,7 +6825,7 @@ comma
 dot
 id|buf
 op_assign
-l_int|0
+l_int|NULL
 comma
 dot
 id|len

@@ -524,7 +524,7 @@ id|p
 comma
 id|count
 comma
-l_int|0
+l_int|NULL
 comma
 l_int|0
 comma
@@ -628,7 +628,7 @@ id|feed-&gt;feed.sec.secbuf
 comma
 id|feed-&gt;feed.sec.seclen
 comma
-l_int|0
+l_int|NULL
 comma
 l_int|0
 comma
@@ -1453,7 +1453,7 @@ id|buf
 comma
 l_int|188
 comma
-l_int|0
+l_int|NULL
 comma
 l_int|0
 comma
@@ -1676,7 +1676,7 @@ id|buf
 comma
 l_int|188
 comma
-l_int|0
+l_int|NULL
 comma
 l_int|0
 comma
@@ -2756,7 +2756,7 @@ id|feed-&gt;buffer_size
 macro_line|#ifdef NOBUFS
 id|feed-&gt;buffer
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 macro_line|#else
 id|feed-&gt;buffer
@@ -3183,7 +3183,7 @@ l_int|0xfffa
 suffix:semicolon
 id|feed-&gt;buffer
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 (paren
 op_star
@@ -3209,7 +3209,7 @@ id|ts_feed
 op_member_access_from_pointer
 id|priv
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 (paren
 op_star
@@ -3549,7 +3549,7 @@ id|filter
 op_member_access_from_pointer
 id|priv
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|dvbdmxfilter-&gt;feed
 op_assign
@@ -3699,7 +3699,7 @@ suffix:semicolon
 macro_line|#ifdef NOBUFS
 id|dvbdmxfeed-&gt;buffer
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 macro_line|#else
 id|dvbdmxfeed-&gt;buffer
@@ -4441,11 +4441,11 @@ l_int|0
 suffix:semicolon
 id|dvbdmxfeed-&gt;filter
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|dvbdmxfeed-&gt;buffer
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 (paren
 op_star
@@ -4480,7 +4480,7 @@ id|feed
 op_member_access_from_pointer
 id|priv
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 (paren
 op_star
@@ -5397,7 +5397,7 @@ id|dvb_dmx_memcopy
 suffix:semicolon
 id|dmx-&gt;frontend
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|dmx-&gt;reg_list.prev
 op_assign

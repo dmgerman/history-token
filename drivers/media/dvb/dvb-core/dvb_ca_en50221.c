@@ -6490,7 +6490,7 @@ op_assign
 (brace
 id|priv
 suffix:colon
-l_int|0
+l_int|NULL
 comma
 id|users
 suffix:colon
