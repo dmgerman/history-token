@@ -5848,6 +5848,26 @@ id|scsi_devicelist
 op_assign
 id|tpnt
 suffix:semicolon
+id|tpnt-&gt;scsi_driverfs_driver.name
+op_assign
+(paren
+r_char
+op_star
+)paren
+id|tpnt-&gt;tag
+suffix:semicolon
+id|tpnt-&gt;scsi_driverfs_driver.bus
+op_assign
+op_amp
+id|scsi_driverfs_bus_type
+suffix:semicolon
+id|driver_register
+c_func
+(paren
+op_amp
+id|tpnt-&gt;scsi_driverfs_driver
+)paren
+suffix:semicolon
 multiline_comment|/*&n;&t; * First scan the devices that we know about, and see if we notice them.&n;&t; */
 r_for
 c_loop
@@ -6096,6 +6116,13 @@ l_int|0
 )paren
 r_goto
 id|error_out
+suffix:semicolon
+id|driver_unregister
+c_func
+(paren
+op_amp
+id|tpnt-&gt;scsi_driverfs_driver
+)paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * Next, detach the devices from the driver.&n;&t; */
 r_for
