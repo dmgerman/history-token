@@ -1,16 +1,19 @@
 multiline_comment|/* Transport &amp; Protocol Driver for In-System Design, Inc. ISD200 ASIC&n; *&n; * $Id: isd200.c,v 1.16 2002/04/22 03:39:43 mdharm Exp $&n; *&n; * Current development and maintenance:&n; *   (C) 2001-2002 Bj&#xfffd;rn Stenberg (bjorn@haxx.se)&n; *&n; * Developed with the assistance of:&n; *   (C) 2002 Alan Stern &lt;stern@rowland.org&gt;&n; *&n; * Initial work:&n; *   (C) 2000 In-System Design, Inc. (support@in-system.com)&n; *&n; * The ISD200 ASIC does not natively support ATA devices.  The chip&n; * does implement an interface, the ATA Command Block (ATACB) which provides&n; * a means of passing ATA commands and ATA register accesses to a device.&n; *&n; * This program is free software; you can redistribute it and/or modify it&n; * under the terms of the GNU General Public License as published by the&n; * Free Software Foundation; either version 2, or (at your option) any&n; * later version.&n; *&n; * This program is distributed in the hope that it will be useful, but&n; * WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU&n; * General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License along&n; * with this program; if not, write to the Free Software Foundation, Inc.,&n; * 675 Mass Ave, Cambridge, MA 02139, USA.&n; *&n; * History:&n; *&n; *  2002-10-19: Removed the specialized transfer routines.&n; *&t;&t;(Alan Stern &lt;stern@rowland.harvard.edu&gt;)&n; *  2001-02-24: Removed lots of duplicate code and simplified the structure.&n; *&t;      (bjorn@haxx.se)&n; *  2002-01-16: Fixed endianness bug so it works on the ppc arch.&n; *&t;      (Luc Saillard &lt;luc@saillard.org&gt;)&n; *  2002-01-17: All bitfields removed.&n; *&t;      (bjorn@haxx.se)&n; */
 multiline_comment|/* Include files */
+macro_line|#include &lt;linux/jiffies.h&gt;
+macro_line|#include &lt;linux/errno.h&gt;
+macro_line|#include &lt;linux/slab.h&gt;
+macro_line|#include &lt;linux/hdreg.h&gt;
+macro_line|#include &lt;linux/ide.h&gt;
+macro_line|#include &lt;scsi/scsi.h&gt;
+macro_line|#include &lt;scsi/scsi_cmnd.h&gt;
+macro_line|#include &lt;scsi/scsi_device.h&gt;
 macro_line|#include &quot;transport.h&quot;
 macro_line|#include &quot;protocol.h&quot;
 macro_line|#include &quot;usb.h&quot;
 macro_line|#include &quot;debug.h&quot;
 macro_line|#include &quot;scsiglue.h&quot;
 macro_line|#include &quot;isd200.h&quot;
-macro_line|#include &lt;linux/jiffies.h&gt;
-macro_line|#include &lt;linux/errno.h&gt;
-macro_line|#include &lt;linux/slab.h&gt;
-macro_line|#include &lt;linux/hdreg.h&gt;
-macro_line|#include &lt;linux/ide.h&gt;
 multiline_comment|/* Timeout defines (in Seconds) */
 DECL|macro|ISD200_ENUM_BSY_TIMEOUT
 mdefine_line|#define ISD200_ENUM_BSY_TIMEOUT&t;&t;35
@@ -743,7 +746,8 @@ id|us_data
 op_star
 id|us
 comma
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 id|srb
 )paren
@@ -1072,7 +1076,7 @@ id|REG_ERROR
 suffix:semicolon
 id|srb-&gt;sc_data_direction
 op_assign
-id|SCSI_DATA_READ
+id|DMA_FROM_DEVICE
 suffix:semicolon
 id|srb-&gt;request_buffer
 op_assign
@@ -1117,7 +1121,7 @@ id|value
 suffix:semicolon
 id|srb-&gt;sc_data_direction
 op_assign
-id|SCSI_DATA_NONE
+id|DMA_NONE
 suffix:semicolon
 r_break
 suffix:semicolon
@@ -1150,7 +1154,7 @@ id|ATA_DC_RESET_CONTROLLER
 suffix:semicolon
 id|srb-&gt;sc_data_direction
 op_assign
-id|SCSI_DATA_NONE
+id|DMA_NONE
 suffix:semicolon
 r_break
 suffix:semicolon
@@ -1183,7 +1187,7 @@ id|ATA_DC_REENABLE_CONTROLLER
 suffix:semicolon
 id|srb-&gt;sc_data_direction
 op_assign
-id|SCSI_DATA_NONE
+id|DMA_NONE
 suffix:semicolon
 r_break
 suffix:semicolon
@@ -1218,7 +1222,7 @@ id|WIN_SRST
 suffix:semicolon
 id|srb-&gt;sc_data_direction
 op_assign
-id|SCSI_DATA_NONE
+id|DMA_NONE
 suffix:semicolon
 r_break
 suffix:semicolon
@@ -1241,7 +1245,7 @@ id|WIN_IDENTIFY
 suffix:semicolon
 id|srb-&gt;sc_data_direction
 op_assign
-id|SCSI_DATA_READ
+id|DMA_FROM_DEVICE
 suffix:semicolon
 id|srb-&gt;request_buffer
 op_assign
@@ -1456,7 +1460,8 @@ id|us_data
 op_star
 id|us
 comma
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 id|srb
 comma
@@ -2465,7 +2470,7 @@ suffix:semicolon
 r_int
 id|recheckAsMaster
 op_assign
-id|FALSE
+l_int|0
 suffix:semicolon
 r_if
 c_cond
@@ -2493,7 +2498,7 @@ multiline_comment|/* loop until we detect !BSY or timeout */
 r_while
 c_loop
 (paren
-id|TRUE
+l_int|1
 )paren
 (brace
 macro_line|#ifdef CONFIG_USB_STORAGE_DEBUG
@@ -2690,11 +2695,8 @@ op_amp
 id|ATA_ADDRESS_DEVHEAD_SLAVE
 )paren
 op_logical_and
-(paren
+op_logical_neg
 id|recheckAsMaster
-op_eq
-id|FALSE
-)paren
 )paren
 (brace
 id|US_DEBUGP
@@ -2705,7 +2707,7 @@ l_string|&quot;   Identified ATAPI device as slave.  Rechecking again as master&
 suffix:semicolon
 id|recheckAsMaster
 op_assign
-id|TRUE
+l_int|1
 suffix:semicolon
 id|master_slave
 op_assign
@@ -2852,7 +2854,7 @@ id|us
 comma
 id|ATA_ADDRESS_DEVHEAD_STD
 comma
-id|FALSE
+l_int|0
 )paren
 suffix:semicolon
 r_if
@@ -2871,7 +2873,7 @@ id|us
 comma
 id|ATA_ADDRESS_DEVHEAD_SLAVE
 comma
-id|FALSE
+l_int|0
 )paren
 suffix:semicolon
 r_if
@@ -2907,7 +2909,7 @@ id|us
 comma
 id|ATA_ADDRESS_DEVHEAD_STD
 comma
-id|TRUE
+l_int|1
 )paren
 suffix:semicolon
 )brace
@@ -3605,14 +3607,15 @@ r_return
 id|retStatus
 suffix:semicolon
 )brace
-multiline_comment|/**************************************************************************&n; * isd200_scsi_to_ata&n; *&t;&t;&t;&t;&t;&t;&t;&t;&t; &n; * Translate SCSI commands to ATA commands.&n; *&n; * RETURNS:&n; *    TRUE if the command needs to be sent to the transport layer&n; *    FALSE otherwise&n; */
+multiline_comment|/**************************************************************************&n; * isd200_scsi_to_ata&n; *&t;&t;&t;&t;&t;&t;&t;&t;&t; &n; * Translate SCSI commands to ATA commands.&n; *&n; * RETURNS:&n; *    1 if the command needs to be sent to the transport layer&n; *    0 otherwise&n; */
 DECL|function|isd200_scsi_to_ata
 r_static
 r_int
 id|isd200_scsi_to_ata
 c_func
 (paren
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 id|srb
 comma
@@ -3649,7 +3652,7 @@ suffix:semicolon
 r_int
 id|sendToTransport
 op_assign
-id|TRUE
+l_int|1
 suffix:semicolon
 r_int
 r_char
@@ -3753,7 +3756,7 @@ id|SAM_STAT_GOOD
 suffix:semicolon
 id|sendToTransport
 op_assign
-id|FALSE
+l_int|0
 suffix:semicolon
 r_break
 suffix:semicolon
@@ -3827,7 +3830,7 @@ id|SAM_STAT_GOOD
 suffix:semicolon
 id|sendToTransport
 op_assign
-id|FALSE
+l_int|0
 suffix:semicolon
 )brace
 r_break
@@ -3888,7 +3891,7 @@ id|SAM_STAT_GOOD
 suffix:semicolon
 id|sendToTransport
 op_assign
-id|FALSE
+l_int|0
 suffix:semicolon
 )brace
 r_break
@@ -3982,7 +3985,7 @@ id|SAM_STAT_GOOD
 suffix:semicolon
 id|sendToTransport
 op_assign
-id|FALSE
+l_int|0
 suffix:semicolon
 )brace
 r_break
@@ -4512,7 +4515,7 @@ id|SAM_STAT_GOOD
 suffix:semicolon
 id|sendToTransport
 op_assign
-id|FALSE
+l_int|0
 suffix:semicolon
 )brace
 r_break
@@ -4640,7 +4643,7 @@ id|SAM_STAT_GOOD
 suffix:semicolon
 id|sendToTransport
 op_assign
-id|FALSE
+l_int|0
 suffix:semicolon
 )brace
 r_break
@@ -4666,7 +4669,7 @@ l_int|16
 suffix:semicolon
 id|sendToTransport
 op_assign
-id|FALSE
+l_int|0
 suffix:semicolon
 r_break
 suffix:semicolon
@@ -4971,7 +4974,8 @@ r_void
 id|isd200_ata_command
 c_func
 (paren
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 id|srb
 comma
@@ -4984,7 +4988,7 @@ id|us
 r_int
 id|sendToTransport
 op_assign
-id|TRUE
+l_int|1
 suffix:semicolon
 r_union
 id|ata_cdb

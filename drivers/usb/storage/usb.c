@@ -2,6 +2,9 @@ multiline_comment|/* Driver for USB Mass Storage compliant devices&n; *&n; * $Id
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
+macro_line|#include &lt;scsi/scsi.h&gt;
+macro_line|#include &lt;scsi/scsi_cmnd.h&gt;
+macro_line|#include &lt;scsi/scsi_device.h&gt;
 macro_line|#include &quot;usb.h&quot;
 macro_line|#include &quot;scsiglue.h&quot;
 macro_line|#include &quot;transport.h&quot;
@@ -992,7 +995,7 @@ c_cond
 (paren
 id|us-&gt;srb-&gt;sc_data_direction
 op_eq
-id|SCSI_DATA_UNKNOWN
+id|DMA_BIDIRECTIONAL
 )paren
 (brace
 id|US_DEBUGP

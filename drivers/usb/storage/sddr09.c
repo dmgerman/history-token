@@ -1,14 +1,15 @@
 multiline_comment|/* Driver for SanDisk SDDR-09 SmartMedia reader&n; *&n; * $Id: sddr09.c,v 1.24 2002/04/22 03:39:43 mdharm Exp $&n; *   (c) 2000, 2001 Robert Baruch (autophile@starband.net)&n; *   (c) 2002 Andries Brouwer (aeb@cwi.nl)&n; * Developed with the assistance of:&n; *   (c) 2002 Alan Stern &lt;stern@rowland.org&gt;&n; *&n; * The SanDisk SDDR-09 SmartMedia reader uses the Shuttle EUSB-01 chip.&n; * This chip is a programmable USB controller. In the SDDR-09, it has&n; * been programmed to obey a certain limited set of SCSI commands.&n; * This driver translates the &quot;real&quot; SCSI commands to the SDDR-09 SCSI&n; * commands.&n; *&n; * This program is free software; you can redistribute it and/or modify it&n; * under the terms of the GNU General Public License as published by the&n; * Free Software Foundation; either version 2, or (at your option) any&n; * later version.&n; *&n; * This program is distributed in the hope that it will be useful, but&n; * WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU&n; * General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License along&n; * with this program; if not, write to the Free Software Foundation, Inc.,&n; * 675 Mass Ave, Cambridge, MA 02139, USA.&n; */
 multiline_comment|/*&n; * Known vendor commands: 12 bytes, first byte is opcode&n; *&n; * E7: read scatter gather&n; * E8: read&n; * E9: write&n; * EA: erase&n; * EB: reset&n; * EC: read status&n; * ED: read ID&n; * EE: write CIS (?)&n; * EF: compute checksum (?)&n; */
+macro_line|#include &lt;linux/sched.h&gt;
+macro_line|#include &lt;linux/errno.h&gt;
+macro_line|#include &lt;linux/slab.h&gt;
+macro_line|#include &lt;scsi/scsi.h&gt;
+macro_line|#include &lt;scsi/scsi_cmnd.h&gt;
 macro_line|#include &quot;transport.h&quot;
 macro_line|#include &quot;protocol.h&quot;
 macro_line|#include &quot;usb.h&quot;
 macro_line|#include &quot;debug.h&quot;
 macro_line|#include &quot;sddr09.h&quot;
-macro_line|#include &lt;linux/version.h&gt;
-macro_line|#include &lt;linux/sched.h&gt;
-macro_line|#include &lt;linux/errno.h&gt;
-macro_line|#include &lt;linux/slab.h&gt;
 DECL|macro|short_pack
 mdefine_line|#define short_pack(lsb,msb) ( ((u16)(lsb)) | ( ((u16)(msb))&lt;&lt;8 ) )
 DECL|macro|LSB_of
@@ -6176,7 +6177,8 @@ r_int
 id|sddr09_transport
 c_func
 (paren
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 id|srb
 comma
@@ -7112,11 +7114,11 @@ c_cond
 (paren
 id|srb-&gt;sc_data_direction
 op_eq
-id|SCSI_DATA_WRITE
+id|DMA_TO_DEVICE
 op_logical_or
 id|srb-&gt;sc_data_direction
 op_eq
-id|SCSI_DATA_READ
+id|DMA_FROM_DEVICE
 )paren
 (brace
 r_int
@@ -7126,7 +7128,7 @@ op_assign
 (paren
 id|srb-&gt;sc_data_direction
 op_eq
-id|SCSI_DATA_WRITE
+id|DMA_TO_DEVICE
 )paren
 ques
 c_cond
@@ -7142,7 +7144,7 @@ comma
 (paren
 id|srb-&gt;sc_data_direction
 op_eq
-id|SCSI_DATA_WRITE
+id|DMA_TO_DEVICE
 )paren
 ques
 c_cond

@@ -6,10 +6,11 @@ macro_line|#include &lt;linux/usb.h&gt;
 macro_line|#include &lt;linux/blkdev.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;linux/completion.h&gt;
-macro_line|#include &quot;scsi.h&quot;
-macro_line|#include &lt;scsi/scsi_host.h&gt;
 r_struct
 id|us_data
+suffix:semicolon
+r_struct
+id|scsi_cmnd
 suffix:semicolon
 multiline_comment|/*&n; * Unusual device list definitions &n; */
 DECL|struct|us_unusual_dev
@@ -105,7 +106,8 @@ op_star
 id|trans_cmnd
 )paren
 (paren
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 comma
 r_struct
@@ -134,7 +136,8 @@ op_star
 id|proto_cmnd
 )paren
 (paren
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 comma
 r_struct
@@ -299,7 +302,8 @@ id|host
 suffix:semicolon
 multiline_comment|/* our dummy host data */
 DECL|member|srb
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 id|srb
 suffix:semicolon

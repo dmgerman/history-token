@@ -59,7 +59,8 @@ r_int
 id|hp8200e_transport
 c_func
 (paren
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 id|srb
 comma
