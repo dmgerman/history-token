@@ -3561,6 +3561,16 @@ suffix:semicolon
 )brace
 multiline_comment|/* ds_poll */
 multiline_comment|/*====================================================================*/
+r_extern
+r_int
+id|pcmcia_adjust_resource_info
+c_func
+(paren
+id|adjust_t
+op_star
+id|adj
+)paren
+suffix:semicolon
 DECL|function|ds_ioctl
 r_static
 r_int
@@ -3836,8 +3846,6 @@ op_assign
 id|pcmcia_adjust_resource_info
 c_func
 (paren
-id|s-&gt;handle
-comma
 op_amp
 id|buf.adjust
 )paren

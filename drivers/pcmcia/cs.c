@@ -9145,13 +9145,6 @@ c_func
 id|pcmcia_access_configuration_register
 )paren
 suffix:semicolon
-DECL|variable|pcmcia_adjust_resource_info
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|pcmcia_adjust_resource_info
-)paren
-suffix:semicolon
 DECL|variable|pcmcia_deregister_client
 id|EXPORT_SYMBOL
 c_func

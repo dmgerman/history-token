@@ -1531,19 +1531,6 @@ id|mask
 )paren
 suffix:semicolon
 macro_line|#endif
-multiline_comment|/* rsrc_mgr.c */
-r_int
-id|pcmcia_adjust_resource_info
-c_func
-(paren
-id|client_handle_t
-id|handle
-comma
-id|adjust_t
-op_star
-id|adj
-)paren
-suffix:semicolon
 macro_line|#endif /* __KERNEL__ */
 macro_line|#endif /* _LINUX_CS_H */
 eof
