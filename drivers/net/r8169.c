@@ -2841,13 +2841,9 @@ id|dev
 )paren
 suffix:semicolon
 r_return
-op_logical_neg
-op_logical_neg
-(paren
 id|tp-&gt;cp_cmd
 op_amp
 id|RxChkSum
-)paren
 suffix:semicolon
 )brace
 DECL|function|rtl8169_set_rx_csum
@@ -8093,15 +8089,6 @@ c_func
 id|dev
 )paren
 suffix:semicolon
-id|printk
-c_func
-(paren
-id|KERN_INFO
-l_string|&quot;%s: TX Timeout&bslash;n&quot;
-comma
-id|dev-&gt;name
-)paren
-suffix:semicolon
 id|rtl8169_hw_reset
 c_func
 (paren
@@ -10063,7 +10050,7 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;%s: interrupt %x taken in poll&bslash;n&quot;
+l_string|&quot;%s: interrupt %04x taken in poll&bslash;n&quot;
 comma
 id|dev-&gt;name
 comma
