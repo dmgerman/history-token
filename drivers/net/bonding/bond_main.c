@@ -509,7 +509,7 @@ comma
 r_struct
 id|net_device
 op_star
-id|dev
+id|bond_dev
 )paren
 suffix:semicolon
 r_static
@@ -525,7 +525,7 @@ comma
 r_struct
 id|net_device
 op_star
-id|dev
+id|bond_dev
 )paren
 suffix:semicolon
 r_static
@@ -541,7 +541,7 @@ comma
 r_struct
 id|net_device
 op_star
-id|dev
+id|bond_dev
 )paren
 suffix:semicolon
 r_static
@@ -554,7 +554,7 @@ c_func
 r_struct
 id|net_device
 op_star
-id|dev
+id|bond_dev
 )paren
 suffix:semicolon
 r_static
@@ -565,7 +565,7 @@ c_func
 r_struct
 id|net_device
 op_star
-id|dev
+id|bond_dev
 )paren
 suffix:semicolon
 r_static
@@ -576,7 +576,7 @@ c_func
 r_struct
 id|net_device
 op_star
-id|dev
+id|bond_dev
 )paren
 suffix:semicolon
 r_static
@@ -587,7 +587,7 @@ c_func
 r_struct
 id|net_device
 op_star
-id|dev
+id|bond_dev
 )paren
 suffix:semicolon
 r_static
@@ -645,12 +645,12 @@ c_func
 r_struct
 id|dev_mc_list
 op_star
-id|src
+id|mc_list
 comma
 r_struct
 id|bonding
 op_star
-id|dst
+id|bond
 comma
 r_int
 id|gpf_flag
@@ -732,12 +732,12 @@ comma
 r_struct
 id|slave
 op_star
-r_new
+id|new_active
 comma
 r_struct
 id|slave
 op_star
-id|old
+id|old_active
 )paren
 suffix:semicolon
 r_static
@@ -748,12 +748,12 @@ c_func
 r_struct
 id|net_device
 op_star
-id|master
+id|bond_dev
 comma
 r_struct
 id|net_device
 op_star
-id|slave
+id|slave_dev
 )paren
 suffix:semicolon
 r_static
@@ -764,12 +764,12 @@ c_func
 r_struct
 id|net_device
 op_star
-id|master
+id|bond_dev
 comma
 r_struct
 id|net_device
 op_star
-id|slave
+id|slave_dev
 )paren
 suffix:semicolon
 r_static
@@ -780,7 +780,7 @@ c_func
 r_struct
 id|net_device
 op_star
-id|master
+id|bond_dev
 )paren
 suffix:semicolon
 r_static
@@ -791,12 +791,12 @@ c_func
 r_struct
 id|net_device
 op_star
-id|master
+id|bond_dev
 comma
 r_struct
 id|net_device
 op_star
-id|slave
+id|slave_dev
 )paren
 suffix:semicolon
 r_static
@@ -812,7 +812,7 @@ comma
 r_struct
 id|slave
 op_star
-r_new
+id|new_active
 )paren
 suffix:semicolon
 r_static
@@ -1174,7 +1174,7 @@ id|slave
 r_struct
 id|net_device
 op_star
-id|dev
+id|slave_dev
 op_assign
 id|slave-&gt;dev
 suffix:semicolon
@@ -1206,7 +1206,7 @@ id|etool
 suffix:semicolon
 id|ioctl
 op_assign
-id|dev-&gt;do_ioctl
+id|slave_dev-&gt;do_ioctl
 suffix:semicolon
 r_if
 c_cond
@@ -1233,7 +1233,7 @@ c_cond
 id|IOCTL
 c_func
 (paren
-id|dev
+id|slave_dev
 comma
 op_amp
 id|ifr
@@ -1338,7 +1338,7 @@ c_func
 r_struct
 id|net_device
 op_star
-id|dev
+id|slave_dev
 comma
 r_int
 id|reporting
@@ -1385,7 +1385,7 @@ r_return
 id|netif_carrier_ok
 c_func
 (paren
-id|dev
+id|slave_dev
 )paren
 ques
 c_cond
@@ -1396,7 +1396,7 @@ suffix:semicolon
 )brace
 id|ioctl
 op_assign
-id|dev-&gt;do_ioctl
+id|slave_dev-&gt;do_ioctl
 suffix:semicolon
 r_if
 c_cond
@@ -1427,7 +1427,7 @@ c_cond
 id|IOCTL
 c_func
 (paren
-id|dev
+id|slave_dev
 comma
 op_amp
 id|ifr
@@ -1448,7 +1448,7 @@ c_cond
 id|IOCTL
 c_func
 (paren
-id|dev
+id|slave_dev
 comma
 op_amp
 id|ifr
@@ -1488,7 +1488,7 @@ c_cond
 id|IOCTL
 c_func
 (paren
-id|dev
+id|slave_dev
 comma
 op_amp
 id|ifr
@@ -1623,7 +1623,7 @@ c_func
 r_struct
 id|net_device
 op_star
-id|dev
+id|bond_dev
 )paren
 (brace
 r_struct
@@ -1636,7 +1636,7 @@ r_struct
 id|bonding
 op_star
 )paren
-id|dev-&gt;priv
+id|bond_dev-&gt;priv
 suffix:semicolon
 r_struct
 id|timer_list
@@ -1776,7 +1776,7 @@ op_assign
 r_int
 r_int
 )paren
-id|dev
+id|bond_dev
 suffix:semicolon
 id|timer-&gt;function
 op_assign
@@ -1821,7 +1821,7 @@ op_assign
 r_int
 r_int
 )paren
-id|dev
+id|bond_dev
 suffix:semicolon
 r_if
 c_cond
@@ -1940,7 +1940,7 @@ c_func
 r_struct
 id|net_device
 op_star
-id|master
+id|bond_dev
 )paren
 (brace
 r_struct
@@ -1953,7 +1953,7 @@ r_struct
 id|bonding
 op_star
 )paren
-id|master-&gt;priv
+id|bond_dev-&gt;priv
 suffix:semicolon
 id|write_lock_bh
 c_func
@@ -2089,7 +2089,7 @@ multiline_comment|/* Release the bonded slaves */
 id|bond_release_all
 c_func
 (paren
-id|master
+id|bond_dev
 )paren
 suffix:semicolon
 r_if
@@ -2130,12 +2130,12 @@ c_func
 r_struct
 id|net_device
 op_star
-id|dev
+id|slave_dev
 comma
 r_struct
 id|net_device
 op_star
-id|flush
+id|bond_dev
 )paren
 (brace
 r_struct
@@ -2148,7 +2148,7 @@ c_loop
 (paren
 id|dmi
 op_assign
-id|flush-&gt;mc_list
+id|bond_dev-&gt;mc_list
 suffix:semicolon
 id|dmi
 op_ne
@@ -2161,7 +2161,7 @@ id|dmi-&gt;next
 id|dev_mc_delete
 c_func
 (paren
-id|dev
+id|slave_dev
 comma
 id|dmi-&gt;dmi_addr
 comma
@@ -2190,7 +2190,7 @@ suffix:semicolon
 id|dev_mc_delete
 c_func
 (paren
-id|dev
+id|slave_dev
 comma
 id|lacpdu_multicast
 comma
@@ -2427,12 +2427,12 @@ c_func
 r_struct
 id|dev_mc_list
 op_star
-id|src
+id|mc_list
 comma
 r_struct
 id|bonding
 op_star
-id|dst
+id|bond
 comma
 r_int
 id|gpf_flag
@@ -2451,7 +2451,7 @@ c_loop
 (paren
 id|dmi
 op_assign
-id|src
+id|mc_list
 suffix:semicolon
 id|dmi
 op_ne
@@ -2491,9 +2491,9 @@ suffix:semicolon
 )brace
 id|new_dmi-&gt;next
 op_assign
-id|dst-&gt;mc_list
+id|bond-&gt;mc_list
 suffix:semicolon
-id|dst-&gt;mc_list
+id|bond-&gt;mc_list
 op_assign
 id|new_dmi
 suffix:semicolon
@@ -2780,7 +2780,7 @@ c_func
 r_struct
 id|net_device
 op_star
-id|master
+id|bond_dev
 )paren
 (brace
 r_struct
@@ -2793,7 +2793,7 @@ r_struct
 id|bonding
 op_star
 )paren
-id|master-&gt;priv
+id|bond_dev-&gt;priv
 suffix:semicolon
 r_struct
 id|dev_mc_list
@@ -2812,7 +2812,7 @@ r_if
 c_cond
 (paren
 (paren
-id|master-&gt;flags
+id|bond_dev-&gt;flags
 op_amp
 id|IFF_PROMISC
 )paren
@@ -2837,7 +2837,7 @@ c_cond
 (paren
 op_logical_neg
 (paren
-id|master-&gt;flags
+id|bond_dev-&gt;flags
 op_amp
 id|IFF_PROMISC
 )paren
@@ -2862,7 +2862,7 @@ r_if
 c_cond
 (paren
 (paren
-id|master-&gt;flags
+id|bond_dev-&gt;flags
 op_amp
 id|IFF_ALLMULTI
 )paren
@@ -2887,7 +2887,7 @@ c_cond
 (paren
 op_logical_neg
 (paren
-id|master-&gt;flags
+id|bond_dev-&gt;flags
 op_amp
 id|IFF_ALLMULTI
 )paren
@@ -2909,7 +2909,7 @@ l_int|1
 suffix:semicolon
 id|bond-&gt;flags
 op_assign
-id|master-&gt;flags
+id|bond_dev-&gt;flags
 suffix:semicolon
 multiline_comment|/* looking for addresses to add to slaves&squot; mc list */
 r_for
@@ -2917,7 +2917,7 @@ c_loop
 (paren
 id|dmi
 op_assign
-id|master-&gt;mc_list
+id|bond_dev-&gt;mc_list
 suffix:semicolon
 id|dmi
 op_ne
@@ -2977,7 +2977,7 @@ c_func
 (paren
 id|dmi
 comma
-id|master-&gt;mc_list
+id|bond_dev-&gt;mc_list
 )paren
 op_eq
 l_int|NULL
@@ -3003,7 +3003,7 @@ suffix:semicolon
 id|bond_mc_list_copy
 c_func
 (paren
-id|master-&gt;mc_list
+id|bond_dev-&gt;mc_list
 comma
 id|bond
 comma
@@ -3033,12 +3033,12 @@ comma
 r_struct
 id|slave
 op_star
-r_new
+id|new_active
 comma
 r_struct
 id|slave
 op_star
-id|old
+id|old_active
 )paren
 (brace
 r_struct
@@ -3064,7 +3064,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|old
+id|old_active
 )paren
 (brace
 r_if
@@ -3078,7 +3078,7 @@ id|IFF_PROMISC
 id|dev_set_promiscuity
 c_func
 (paren
-id|old-&gt;dev
+id|old_active-&gt;dev
 comma
 op_minus
 l_int|1
@@ -3096,7 +3096,7 @@ id|IFF_ALLMULTI
 id|dev_set_allmulti
 c_func
 (paren
-id|old-&gt;dev
+id|old_active-&gt;dev
 comma
 op_minus
 l_int|1
@@ -3122,7 +3122,7 @@ id|dmi-&gt;next
 id|dev_mc_delete
 c_func
 (paren
-id|old-&gt;dev
+id|old_active-&gt;dev
 comma
 id|dmi-&gt;dmi_addr
 comma
@@ -3136,7 +3136,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-r_new
+id|new_active
 )paren
 (brace
 r_if
@@ -3150,9 +3150,7 @@ id|IFF_PROMISC
 id|dev_set_promiscuity
 c_func
 (paren
-r_new
-op_member_access_from_pointer
-id|dev
+id|new_active-&gt;dev
 comma
 l_int|1
 )paren
@@ -3169,9 +3167,7 @@ id|IFF_ALLMULTI
 id|dev_set_allmulti
 c_func
 (paren
-r_new
-op_member_access_from_pointer
-id|dev
+id|new_active-&gt;dev
 comma
 l_int|1
 )paren
@@ -3196,9 +3192,7 @@ id|dmi-&gt;next
 id|dev_mc_add
 c_func
 (paren
-r_new
-op_member_access_from_pointer
-id|dev
+id|new_active-&gt;dev
 comma
 id|dmi-&gt;dmi_addr
 comma
@@ -3220,7 +3214,7 @@ c_func
 r_struct
 id|net_device
 op_star
-id|master_dev
+id|bond_dev
 comma
 r_struct
 id|net_device
@@ -3233,7 +3227,12 @@ id|bonding
 op_star
 id|bond
 op_assign
-l_int|NULL
+(paren
+r_struct
+id|bonding
+op_star
+)paren
+id|bond_dev-&gt;priv
 suffix:semicolon
 r_struct
 id|slave
@@ -3258,15 +3257,6 @@ suffix:semicolon
 r_struct
 id|sockaddr
 id|addr
-suffix:semicolon
-id|bond
-op_assign
-(paren
-r_struct
-id|bonding
-op_star
-)paren
-id|master_dev-&gt;priv
 suffix:semicolon
 r_if
 c_cond
@@ -3293,7 +3283,7 @@ c_cond
 (paren
 op_logical_neg
 (paren
-id|master_dev-&gt;flags
+id|bond_dev-&gt;flags
 op_amp
 id|IFF_UP
 )paren
@@ -3537,9 +3527,9 @@ c_func
 (paren
 id|addr.sa_data
 comma
-id|master_dev-&gt;dev_addr
+id|bond_dev-&gt;dev_addr
 comma
-id|master_dev-&gt;addr_len
+id|bond_dev-&gt;addr_len
 )paren
 suffix:semicolon
 id|addr.sa_family
@@ -3612,7 +3602,7 @@ c_func
 (paren
 id|slave_dev
 comma
-id|master_dev
+id|bond_dev
 )paren
 suffix:semicolon
 r_if
@@ -3706,7 +3696,7 @@ multiline_comment|/* set promiscuity level to new slave */
 r_if
 c_cond
 (paren
-id|master_dev-&gt;flags
+id|bond_dev-&gt;flags
 op_amp
 id|IFF_PROMISC
 )paren
@@ -3724,7 +3714,7 @@ multiline_comment|/* set allmulti level to new slave */
 r_if
 c_cond
 (paren
-id|master_dev-&gt;flags
+id|bond_dev-&gt;flags
 op_amp
 id|IFF_ALLMULTI
 )paren
@@ -3742,7 +3732,7 @@ c_loop
 (paren
 id|dmi
 op_assign
-id|master_dev-&gt;mc_list
+id|bond_dev-&gt;mc_list
 suffix:semicolon
 id|dmi
 op_ne
@@ -4293,7 +4283,7 @@ l_int|0
 suffix:semicolon
 id|ndx
 OL
-id|slave_dev-&gt;addr_len
+id|bond_dev-&gt;addr_len
 suffix:semicolon
 id|ndx
 op_increment
@@ -4302,7 +4292,7 @@ op_increment
 id|dprintk
 c_func
 (paren
-l_string|&quot;Checking ndx=%d of master_dev-&gt;dev_addr&bslash;n&quot;
+l_string|&quot;Checking ndx=%d of bond_dev-&gt;dev_addr&bslash;n&quot;
 comma
 id|ndx
 )paren
@@ -4310,7 +4300,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|master_dev-&gt;dev_addr
+id|bond_dev-&gt;dev_addr
 (braket
 id|ndx
 )braket
@@ -4335,16 +4325,16 @@ c_cond
 (paren
 id|ndx
 op_eq
-id|slave_dev-&gt;addr_len
+id|bond_dev-&gt;addr_len
 )paren
 (brace
 multiline_comment|/*&n;&t;&t;&t; * We got all the way through the address and it was&n;&t;&t;&t; * all 0&squot;s.&n;&t;&t;&t; */
 id|dprintk
 c_func
 (paren
-l_string|&quot;%s doesn&squot;t have a MAC address yet.  &quot;
+l_string|&quot;%s doesn&squot;t have a MAC address yet.  &bslash;n&quot;
 comma
-id|master_dev-&gt;name
+id|bond_dev-&gt;name
 )paren
 suffix:semicolon
 id|dprintk
@@ -4358,7 +4348,7 @@ suffix:semicolon
 id|bond_sethwaddr
 c_func
 (paren
-id|master_dev
+id|bond_dev
 comma
 id|slave_dev
 )paren
@@ -4372,7 +4362,7 @@ id|KERN_INFO
 id|DRV_NAME
 l_string|&quot;: %s: enslaving %s as a%s interface with a%s link.&bslash;n&quot;
 comma
-id|master_dev-&gt;name
+id|bond_dev-&gt;name
 comma
 id|slave_dev-&gt;name
 comma
@@ -4467,7 +4457,7 @@ c_func
 r_struct
 id|net_device
 op_star
-id|master_dev
+id|bond_dev
 comma
 r_struct
 id|net_device
@@ -4479,18 +4469,25 @@ r_struct
 id|bonding
 op_star
 id|bond
+op_assign
+(paren
+r_struct
+id|bonding
+op_star
+)paren
+id|bond_dev-&gt;priv
 suffix:semicolon
 r_struct
 id|slave
 op_star
-id|oldactive
+id|old_active
 op_assign
 l_int|NULL
 suffix:semicolon
 r_struct
 id|slave
 op_star
-id|newactive
+id|new_active
 op_assign
 l_int|NULL
 suffix:semicolon
@@ -4513,7 +4510,7 @@ op_logical_or
 (paren
 id|slave_dev-&gt;master
 op_ne
-id|master_dev
+id|bond_dev
 )paren
 )paren
 (brace
@@ -4522,15 +4519,6 @@ op_minus
 id|EINVAL
 suffix:semicolon
 )brace
-id|bond
-op_assign
-(paren
-r_struct
-id|bonding
-op_star
-)paren
-id|master_dev-&gt;priv
-suffix:semicolon
 id|write_lock_bh
 c_func
 (paren
@@ -4538,11 +4526,11 @@ op_amp
 id|bond-&gt;lock
 )paren
 suffix:semicolon
-id|oldactive
+id|old_active
 op_assign
 id|bond-&gt;current_slave
 suffix:semicolon
-id|newactive
+id|new_active
 op_assign
 id|bond_get_slave_by_dev
 c_func
@@ -4556,12 +4544,12 @@ multiline_comment|/*&n;&t; * Changing to the current active: do nothing; return 
 r_if
 c_cond
 (paren
-id|newactive
+id|new_active
 op_logical_and
 (paren
-id|newactive
+id|new_active
 op_eq
-id|oldactive
+id|old_active
 )paren
 )paren
 (brace
@@ -4580,19 +4568,19 @@ r_if
 c_cond
 (paren
 (paren
-id|newactive
+id|new_active
 op_ne
 l_int|NULL
 )paren
 op_logical_and
 (paren
-id|oldactive
+id|old_active
 op_ne
 l_int|NULL
 )paren
 op_logical_and
 (paren
-id|newactive-&gt;link
+id|new_active-&gt;link
 op_eq
 id|BOND_LINK_UP
 )paren
@@ -4600,7 +4588,7 @@ op_logical_and
 id|IS_UP
 c_func
 (paren
-id|newactive-&gt;dev
+id|new_active-&gt;dev
 )paren
 )paren
 (brace
@@ -4609,7 +4597,7 @@ c_func
 (paren
 id|bond
 comma
-id|newactive
+id|new_active
 )paren
 suffix:semicolon
 )brace
@@ -4650,10 +4638,10 @@ id|bond
 r_struct
 id|slave
 op_star
-id|newslave
+id|new_active
 comma
 op_star
-id|oldslave
+id|old_active
 suffix:semicolon
 r_struct
 id|slave
@@ -4668,16 +4656,16 @@ suffix:semicolon
 r_int
 id|i
 suffix:semicolon
-id|newslave
+id|new_active
 op_assign
-id|oldslave
+id|old_active
 op_assign
 id|bond-&gt;current_slave
 suffix:semicolon
 r_if
 c_cond
 (paren
-id|newslave
+id|new_active
 op_eq
 l_int|NULL
 )paren
@@ -4692,7 +4680,7 @@ l_int|0
 )paren
 (brace
 multiline_comment|/* found one slave */
-id|newslave
+id|new_active
 op_assign
 id|bond-&gt;first_slave
 suffix:semicolon
@@ -4735,26 +4723,26 @@ c_func
 id|bond-&gt;primary_slave-&gt;dev
 )paren
 )paren
-id|newslave
+id|new_active
 op_assign
 id|bond-&gt;primary_slave
 suffix:semicolon
 )brace
 multiline_comment|/* remember where to stop iterating over the slaves */
-id|oldslave
+id|old_active
 op_assign
-id|newslave
+id|new_active
 suffix:semicolon
 id|bond_for_each_slave_from
 c_func
 (paren
 id|bond
 comma
-id|newslave
+id|new_active
 comma
 id|i
 comma
-id|oldslave
+id|old_active
 )paren
 (brace
 r_if
@@ -4763,27 +4751,27 @@ c_cond
 id|IS_UP
 c_func
 (paren
-id|newslave-&gt;dev
+id|new_active-&gt;dev
 )paren
 )paren
 (brace
 r_if
 c_cond
 (paren
-id|newslave-&gt;link
+id|new_active-&gt;link
 op_eq
 id|BOND_LINK_UP
 )paren
 (brace
 r_return
-id|newslave
+id|new_active
 suffix:semicolon
 )brace
 r_else
 r_if
 c_cond
 (paren
-id|newslave-&gt;link
+id|new_active-&gt;link
 op_eq
 id|BOND_LINK_BACK
 )paren
@@ -4792,18 +4780,18 @@ multiline_comment|/* link up, but waiting for stabilization */
 r_if
 c_cond
 (paren
-id|newslave-&gt;delay
+id|new_active-&gt;delay
 OL
 id|mintime
 )paren
 (brace
 id|mintime
 op_assign
-id|newslave-&gt;delay
+id|new_active-&gt;delay
 suffix:semicolon
 id|bestslave
 op_assign
-id|newslave
+id|new_active
 suffix:semicolon
 )brace
 )brace
@@ -4828,22 +4816,22 @@ comma
 r_struct
 id|slave
 op_star
-r_new
+id|new_active
 )paren
 (brace
 r_struct
 id|slave
 op_star
-id|old
+id|old_active
 op_assign
 id|bond-&gt;current_slave
 suffix:semicolon
 r_if
 c_cond
 (paren
-id|old
+id|old_active
 op_eq
-r_new
+id|new_active
 )paren
 (brace
 r_return
@@ -4852,15 +4840,13 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-r_new
+id|new_active
 )paren
 (brace
 r_if
 c_cond
 (paren
-r_new
-op_member_access_from_pointer
-id|link
+id|new_active-&gt;link
 op_eq
 id|BOND_LINK_BACK
 )paren
@@ -4885,37 +4871,27 @@ l_string|&quot;active one %d ms earlier.&bslash;n&quot;
 comma
 id|bond-&gt;device-&gt;name
 comma
-r_new
-op_member_access_from_pointer
-id|dev-&gt;name
+id|new_active-&gt;dev-&gt;name
 comma
 (paren
 id|updelay
 op_minus
-r_new
-op_member_access_from_pointer
-id|delay
+id|new_active-&gt;delay
 )paren
 op_star
 id|miimon
 )paren
 suffix:semicolon
 )brace
-r_new
-op_member_access_from_pointer
-id|delay
+id|new_active-&gt;delay
 op_assign
 l_int|0
 suffix:semicolon
-r_new
-op_member_access_from_pointer
-id|link
+id|new_active-&gt;link
 op_assign
 id|BOND_LINK_UP
 suffix:semicolon
-r_new
-op_member_access_from_pointer
-id|jiffies
+id|new_active-&gt;jiffies
 op_assign
 id|jiffies
 suffix:semicolon
@@ -4930,7 +4906,7 @@ id|BOND_MODE_8023AD
 id|bond_3ad_handle_link_change
 c_func
 (paren
-r_new
+id|new_active
 comma
 id|BOND_LINK_UP
 )paren
@@ -4957,7 +4933,7 @@ c_func
 (paren
 id|bond
 comma
-r_new
+id|new_active
 comma
 id|BOND_LINK_UP
 )paren
@@ -4986,9 +4962,7 @@ l_string|&quot;active one.&bslash;n&quot;
 comma
 id|bond-&gt;device-&gt;name
 comma
-r_new
-op_member_access_from_pointer
-id|dev-&gt;name
+id|new_active-&gt;dev-&gt;name
 )paren
 suffix:semicolon
 )brace
@@ -5005,26 +4979,26 @@ id|BOND_MODE_ACTIVEBACKUP
 r_if
 c_cond
 (paren
-id|old
+id|old_active
 )paren
 (brace
 id|bond_set_slave_inactive_flags
 c_func
 (paren
-id|old
+id|old_active
 )paren
 suffix:semicolon
 )brace
 r_if
 c_cond
 (paren
-r_new
+id|new_active
 )paren
 (brace
 id|bond_set_slave_active_flags
 c_func
 (paren
-r_new
+id|new_active
 )paren
 suffix:semicolon
 )brace
@@ -5044,9 +5018,9 @@ c_func
 (paren
 id|bond
 comma
-r_new
+id|new_active
 comma
-id|old
+id|old_active
 )paren
 suffix:semicolon
 )brace
@@ -5071,7 +5045,7 @@ c_func
 (paren
 id|bond
 comma
-r_new
+id|new_active
 )paren
 suffix:semicolon
 )brace
@@ -5079,7 +5053,7 @@ r_else
 (brace
 id|bond-&gt;current_slave
 op_assign
-r_new
+id|new_active
 suffix:semicolon
 )brace
 )brace
@@ -5137,23 +5111,30 @@ c_func
 r_struct
 id|net_device
 op_star
-id|master
+id|bond_dev
 comma
 r_struct
 id|net_device
 op_star
-id|slave
+id|slave_dev
 )paren
 (brace
 r_struct
 id|bonding
 op_star
 id|bond
+op_assign
+(paren
+r_struct
+id|bonding
+op_star
+)paren
+id|bond_dev-&gt;priv
 suffix:semicolon
 r_struct
 id|slave
 op_star
-id|our_slave
+id|slave
 suffix:semicolon
 r_struct
 id|sockaddr
@@ -5168,15 +5149,15 @@ c_cond
 (paren
 op_logical_neg
 (paren
-id|slave-&gt;flags
+id|slave_dev-&gt;flags
 op_amp
 id|IFF_SLAVE
 )paren
 op_logical_or
 (paren
-id|slave-&gt;master
+id|slave_dev-&gt;master
 op_ne
-id|master
+id|bond_dev
 )paren
 )paren
 (brace
@@ -5187,9 +5168,9 @@ id|KERN_ERR
 id|DRV_NAME
 l_string|&quot;: Error: %s: cannot release %s.&bslash;n&quot;
 comma
-id|master-&gt;name
+id|bond_dev-&gt;name
 comma
-id|slave-&gt;name
+id|slave_dev-&gt;name
 )paren
 suffix:semicolon
 r_return
@@ -5197,15 +5178,6 @@ op_minus
 id|EINVAL
 suffix:semicolon
 )brace
-id|bond
-op_assign
-(paren
-r_struct
-id|bonding
-op_star
-)paren
-id|master-&gt;priv
-suffix:semicolon
 id|write_lock_bh
 c_func
 (paren
@@ -5213,20 +5185,20 @@ op_amp
 id|bond-&gt;lock
 )paren
 suffix:semicolon
-id|our_slave
+id|slave
 op_assign
 id|bond_get_slave_by_dev
 c_func
 (paren
 id|bond
 comma
-id|slave
+id|slave_dev
 )paren
 suffix:semicolon
 r_if
 c_cond
 (paren
-id|our_slave
+id|slave
 op_eq
 l_int|NULL
 )paren
@@ -5239,9 +5211,9 @@ id|KERN_INFO
 id|DRV_NAME
 l_string|&quot;: %s: %s not enslaved&bslash;n&quot;
 comma
-id|master-&gt;name
+id|bond_dev-&gt;name
 comma
-id|slave-&gt;name
+id|slave_dev-&gt;name
 )paren
 suffix:semicolon
 r_return
@@ -5256,7 +5228,7 @@ c_func
 (paren
 id|bond-&gt;device-&gt;dev_addr
 comma
-id|our_slave-&gt;perm_hwaddr
+id|slave-&gt;perm_hwaddr
 comma
 id|ETH_ALEN
 )paren
@@ -5285,41 +5257,41 @@ l_string|&quot;still in use by %s. Set the HWaddr of &quot;
 l_string|&quot;%s to a different address to avoid &quot;
 l_string|&quot;conflicts.&bslash;n&quot;
 comma
-id|slave-&gt;name
+id|slave_dev-&gt;name
 comma
-id|our_slave-&gt;perm_hwaddr
+id|slave-&gt;perm_hwaddr
 (braket
 l_int|0
 )braket
 comma
-id|our_slave-&gt;perm_hwaddr
+id|slave-&gt;perm_hwaddr
 (braket
 l_int|1
 )braket
 comma
-id|our_slave-&gt;perm_hwaddr
+id|slave-&gt;perm_hwaddr
 (braket
 l_int|2
 )braket
 comma
-id|our_slave-&gt;perm_hwaddr
+id|slave-&gt;perm_hwaddr
 (braket
 l_int|3
 )braket
 comma
-id|our_slave-&gt;perm_hwaddr
+id|slave-&gt;perm_hwaddr
 (braket
 l_int|4
 )braket
 comma
-id|our_slave-&gt;perm_hwaddr
+id|slave-&gt;perm_hwaddr
 (braket
 l_int|5
 )braket
 comma
 id|bond-&gt;device-&gt;name
 comma
-id|slave-&gt;name
+id|slave_dev-&gt;name
 )paren
 suffix:semicolon
 )brace
@@ -5336,7 +5308,7 @@ multiline_comment|/* must be called before the slave is&n;&t;&t; * detached from
 id|bond_3ad_unbind_slave
 c_func
 (paren
-id|our_slave
+id|slave
 )paren
 suffix:semicolon
 )brace
@@ -5347,10 +5319,10 @@ id|KERN_INFO
 id|DRV_NAME
 l_string|&quot;: %s: releasing %s interface %s&bslash;n&quot;
 comma
-id|master-&gt;name
+id|bond_dev-&gt;name
 comma
 (paren
-id|our_slave-&gt;state
+id|slave-&gt;state
 op_eq
 id|BOND_STATE_ACTIVE
 )paren
@@ -5360,7 +5332,7 @@ l_string|&quot;active&quot;
 suffix:colon
 l_string|&quot;backup&quot;
 comma
-id|slave-&gt;name
+id|slave_dev-&gt;name
 )paren
 suffix:semicolon
 id|bond-&gt;current_arp_slave
@@ -5373,7 +5345,7 @@ c_func
 (paren
 id|bond
 comma
-id|our_slave
+id|slave
 )paren
 suffix:semicolon
 r_if
@@ -5381,7 +5353,7 @@ c_cond
 (paren
 id|bond-&gt;primary_slave
 op_eq
-id|our_slave
+id|slave
 )paren
 (brace
 id|bond-&gt;primary_slave
@@ -5394,7 +5366,7 @@ c_cond
 (paren
 id|bond-&gt;current_slave
 op_eq
-id|our_slave
+id|slave
 )paren
 (brace
 id|bond_change_active_slave
@@ -5428,7 +5400,7 @@ id|DRV_NAME
 l_string|&quot;: %s: now running without any active &quot;
 l_string|&quot;interface !&bslash;n&quot;
 comma
-id|master-&gt;name
+id|bond_dev-&gt;name
 )paren
 suffix:semicolon
 )brace
@@ -5454,7 +5426,7 @@ c_func
 (paren
 id|bond
 comma
-id|our_slave
+id|slave
 )paren
 suffix:semicolon
 )brace
@@ -5481,7 +5453,7 @@ multiline_comment|/* unset promiscuity level from slave */
 r_if
 c_cond
 (paren
-id|master-&gt;flags
+id|bond_dev-&gt;flags
 op_amp
 id|IFF_PROMISC
 )paren
@@ -5489,7 +5461,7 @@ id|IFF_PROMISC
 id|dev_set_promiscuity
 c_func
 (paren
-id|slave
+id|slave_dev
 comma
 op_minus
 l_int|1
@@ -5500,14 +5472,14 @@ multiline_comment|/* unset allmulti level from slave */
 r_if
 c_cond
 (paren
-id|master-&gt;flags
+id|bond_dev-&gt;flags
 op_amp
 id|IFF_ALLMULTI
 )paren
 id|dev_set_allmulti
 c_func
 (paren
-id|slave
+id|slave_dev
 comma
 op_minus
 l_int|1
@@ -5516,16 +5488,16 @@ suffix:semicolon
 multiline_comment|/* flush master&squot;s mc_list from slave */
 id|bond_mc_list_flush
 (paren
-id|slave
+id|slave_dev
 comma
-id|master
+id|bond_dev
 )paren
 suffix:semicolon
 )brace
 id|netdev_set_master
 c_func
 (paren
-id|slave
+id|slave_dev
 comma
 l_int|NULL
 )paren
@@ -5534,7 +5506,7 @@ multiline_comment|/* close slave before restoring its mac address */
 id|dev_close
 c_func
 (paren
-id|slave
+id|slave_dev
 )paren
 suffix:semicolon
 r_if
@@ -5551,21 +5523,21 @@ c_func
 (paren
 id|addr.sa_data
 comma
-id|our_slave-&gt;perm_hwaddr
+id|slave-&gt;perm_hwaddr
 comma
 id|ETH_ALEN
 )paren
 suffix:semicolon
 id|addr.sa_family
 op_assign
-id|slave-&gt;type
+id|slave_dev-&gt;type
 suffix:semicolon
-id|slave
+id|slave_dev
 op_member_access_from_pointer
 id|set_mac_address
 c_func
 (paren
-id|slave
+id|slave_dev
 comma
 op_amp
 id|addr
@@ -5577,7 +5549,7 @@ r_if
 c_cond
 (paren
 (paren
-id|our_slave-&gt;original_flags
+id|slave-&gt;original_flags
 op_amp
 id|IFF_NOARP
 )paren
@@ -5585,7 +5557,7 @@ op_eq
 l_int|0
 )paren
 (brace
-id|slave-&gt;flags
+id|slave_dev-&gt;flags
 op_and_assign
 op_complement
 id|IFF_NOARP
@@ -5594,7 +5566,7 @@ suffix:semicolon
 id|kfree
 c_func
 (paren
-id|our_slave
+id|slave
 )paren
 suffix:semicolon
 multiline_comment|/* if the last slave was removed, zero the mac address&n;&t; * of the master so it will be set by the application&n;&t; * to the mac address of the first slave&n;&t; */
@@ -5609,11 +5581,11 @@ l_int|0
 id|memset
 c_func
 (paren
-id|master-&gt;dev_addr
+id|bond_dev-&gt;dev_addr
 comma
 l_int|0
 comma
-id|master-&gt;addr_len
+id|bond_dev-&gt;addr_len
 )paren
 suffix:semicolon
 )brace
@@ -5632,18 +5604,25 @@ c_func
 r_struct
 id|net_device
 op_star
-id|master
+id|bond_dev
 )paren
 (brace
 r_struct
 id|bonding
 op_star
 id|bond
+op_assign
+(paren
+r_struct
+id|bonding
+op_star
+)paren
+id|bond_dev-&gt;priv
 suffix:semicolon
 r_struct
 id|slave
 op_star
-id|our_slave
+id|slave
 suffix:semicolon
 r_struct
 id|net_device
@@ -5658,15 +5637,6 @@ r_int
 id|err
 op_assign
 l_int|0
-suffix:semicolon
-id|bond
-op_assign
-(paren
-r_struct
-id|bonding
-op_star
-)paren
-id|master-&gt;priv
 suffix:semicolon
 id|write_lock_bh
 c_func
@@ -5707,7 +5677,7 @@ r_while
 c_loop
 (paren
 (paren
-id|our_slave
+id|slave
 op_assign
 id|bond-&gt;first_slave
 )paren
@@ -5727,20 +5697,20 @@ id|BOND_MODE_8023AD
 id|bond_3ad_unbind_slave
 c_func
 (paren
-id|our_slave
+id|slave
 )paren
 suffix:semicolon
 )brace
 id|slave_dev
 op_assign
-id|our_slave-&gt;dev
+id|slave-&gt;dev
 suffix:semicolon
 id|bond_detach_slave
 c_func
 (paren
 id|bond
 comma
-id|our_slave
+id|slave
 )paren
 suffix:semicolon
 r_if
@@ -5765,7 +5735,7 @@ c_func
 (paren
 id|bond
 comma
-id|our_slave
+id|slave
 )paren
 suffix:semicolon
 )brace
@@ -5793,7 +5763,7 @@ multiline_comment|/* unset promiscuity level from slave */
 r_if
 c_cond
 (paren
-id|master-&gt;flags
+id|bond_dev-&gt;flags
 op_amp
 id|IFF_PROMISC
 )paren
@@ -5812,7 +5782,7 @@ multiline_comment|/* unset allmulti level from slave */
 r_if
 c_cond
 (paren
-id|master-&gt;flags
+id|bond_dev-&gt;flags
 op_amp
 id|IFF_ALLMULTI
 )paren
@@ -5827,10 +5797,11 @@ l_int|1
 suffix:semicolon
 multiline_comment|/* flush master&squot;s mc_list from slave */
 id|bond_mc_list_flush
+c_func
 (paren
 id|slave_dev
 comma
-id|master
+id|bond_dev
 )paren
 suffix:semicolon
 )brace
@@ -5863,7 +5834,7 @@ c_func
 (paren
 id|addr.sa_data
 comma
-id|our_slave-&gt;perm_hwaddr
+id|slave-&gt;perm_hwaddr
 comma
 id|ETH_ALEN
 )paren
@@ -5889,7 +5860,7 @@ r_if
 c_cond
 (paren
 (paren
-id|our_slave-&gt;original_flags
+id|slave-&gt;original_flags
 op_amp
 id|IFF_NOARP
 )paren
@@ -5906,7 +5877,7 @@ suffix:semicolon
 id|kfree
 c_func
 (paren
-id|our_slave
+id|slave
 )paren
 suffix:semicolon
 multiline_comment|/* re-acquire the lock before getting the next slave */
@@ -5922,11 +5893,11 @@ multiline_comment|/* zero the mac address of the master so it will be&n;&t; * se
 id|memset
 c_func
 (paren
-id|master-&gt;dev_addr
+id|bond_dev-&gt;dev_addr
 comma
 l_int|0
 comma
-id|master-&gt;addr_len
+id|bond_dev-&gt;addr_len
 )paren
 suffix:semicolon
 id|printk
@@ -5936,7 +5907,7 @@ id|KERN_INFO
 id|DRV_NAME
 l_string|&quot;: %s: released all slaves&bslash;n&quot;
 comma
-id|master-&gt;name
+id|bond_dev-&gt;name
 )paren
 suffix:semicolon
 id|out
@@ -5962,7 +5933,7 @@ c_func
 r_struct
 id|net_device
 op_star
-id|master
+id|bond_dev
 )paren
 (brace
 r_struct
@@ -5975,7 +5946,7 @@ r_struct
 id|bonding
 op_star
 )paren
-id|master-&gt;priv
+id|bond_dev-&gt;priv
 suffix:semicolon
 r_struct
 id|slave
@@ -6068,7 +6039,7 @@ id|i
 r_struct
 id|net_device
 op_star
-id|dev
+id|slave_dev
 op_assign
 id|slave-&gt;dev
 suffix:semicolon
@@ -6090,7 +6061,7 @@ op_assign
 id|bond_check_dev_link
 c_func
 (paren
-id|dev
+id|slave_dev
 comma
 l_int|0
 )paren
@@ -6157,12 +6128,12 @@ l_string|&quot;: %s: link status down for %s &quot;
 l_string|&quot;interface %s, disabling it in &quot;
 l_string|&quot;%d ms.&bslash;n&quot;
 comma
-id|master-&gt;name
+id|bond_dev-&gt;name
 comma
 id|IS_UP
 c_func
 (paren
-id|dev
+id|slave_dev
 )paren
 ques
 c_cond
@@ -6192,7 +6163,7 @@ l_string|&quot;&quot;
 suffix:colon
 l_string|&quot;idle &quot;
 comma
-id|dev-&gt;name
+id|slave_dev-&gt;name
 comma
 id|downdelay
 op_star
@@ -6261,9 +6232,9 @@ l_string|&quot;: %s: link status definitely &quot;
 l_string|&quot;down for interface %s, &quot;
 l_string|&quot;disabling it&quot;
 comma
-id|master-&gt;name
+id|bond_dev-&gt;name
 comma
-id|dev-&gt;name
+id|slave_dev-&gt;name
 )paren
 suffix:semicolon
 multiline_comment|/* notify ad that the link status has changed */
@@ -6355,7 +6326,7 @@ id|DRV_NAME
 l_string|&quot;: %s: link status up again after %d &quot;
 l_string|&quot;ms for interface %s.&bslash;n&quot;
 comma
-id|master-&gt;name
+id|bond_dev-&gt;name
 comma
 (paren
 id|downdelay
@@ -6365,7 +6336,7 @@ id|slave-&gt;delay
 op_star
 id|miimon
 comma
-id|dev-&gt;name
+id|slave_dev-&gt;name
 )paren
 suffix:semicolon
 )brace
@@ -6416,9 +6387,9 @@ l_string|&quot;: %s: link status up for &quot;
 l_string|&quot;interface %s, enabling it &quot;
 l_string|&quot;in %d ms.&bslash;n&quot;
 comma
-id|master-&gt;name
+id|bond_dev-&gt;name
 comma
-id|dev-&gt;name
+id|slave_dev-&gt;name
 comma
 id|updelay
 op_star
@@ -6453,7 +6424,7 @@ id|DRV_NAME
 l_string|&quot;: %s: link status down again after %d &quot;
 l_string|&quot;ms for interface %s.&bslash;n&quot;
 comma
-id|master-&gt;name
+id|bond_dev-&gt;name
 comma
 (paren
 id|updelay
@@ -6463,7 +6434,7 @@ id|slave-&gt;delay
 op_star
 id|miimon
 comma
-id|dev-&gt;name
+id|slave_dev-&gt;name
 )paren
 suffix:semicolon
 )brace
@@ -6539,9 +6510,9 @@ id|DRV_NAME
 l_string|&quot;: %s: link status definitely &quot;
 l_string|&quot;up for interface %s.&bslash;n&quot;
 comma
-id|master-&gt;name
+id|bond_dev-&gt;name
 comma
-id|dev-&gt;name
+id|slave_dev-&gt;name
 )paren
 suffix:semicolon
 multiline_comment|/* notify ad that the link status has changed */
@@ -6705,7 +6676,7 @@ id|DRV_NAME
 l_string|&quot;: %s: now running without any active &quot;
 l_string|&quot;interface !&bslash;n&quot;
 comma
-id|master-&gt;name
+id|bond_dev-&gt;name
 )paren
 suffix:semicolon
 )brace
@@ -6750,7 +6721,7 @@ c_func
 r_struct
 id|net_device
 op_star
-id|master
+id|bond_dev
 )paren
 (brace
 r_struct
@@ -6763,7 +6734,7 @@ r_struct
 id|bonding
 op_star
 )paren
-id|master-&gt;priv
+id|bond_dev-&gt;priv
 suffix:semicolon
 r_struct
 id|slave
@@ -6779,7 +6750,7 @@ op_assign
 l_int|0
 suffix:semicolon
 r_int
-id|the_delta_in_ticks
+id|delta_in_ticks
 op_assign
 id|arp_interval
 op_star
@@ -6866,7 +6837,7 @@ op_minus
 id|slave-&gt;dev-&gt;trans_start
 )paren
 op_le
-id|the_delta_in_ticks
+id|delta_in_ticks
 )paren
 op_logical_and
 (paren
@@ -6876,7 +6847,7 @@ op_minus
 id|slave-&gt;dev-&gt;last_rx
 )paren
 op_le
-id|the_delta_in_ticks
+id|delta_in_ticks
 )paren
 )paren
 (brace
@@ -6905,7 +6876,7 @@ id|DRV_NAME
 l_string|&quot;: %s: link status definitely &quot;
 l_string|&quot;up for interface %s, &quot;
 comma
-id|master-&gt;name
+id|bond_dev-&gt;name
 comma
 id|slave-&gt;dev-&gt;name
 )paren
@@ -6924,7 +6895,7 @@ id|KERN_INFO
 id|DRV_NAME
 l_string|&quot;: %s: interface %s is now up&bslash;n&quot;
 comma
-id|master-&gt;name
+id|bond_dev-&gt;name
 comma
 id|slave-&gt;dev-&gt;name
 )paren
@@ -6949,7 +6920,7 @@ op_ge
 (paren
 l_int|2
 op_star
-id|the_delta_in_ticks
+id|delta_in_ticks
 )paren
 )paren
 op_logical_or
@@ -6964,7 +6935,7 @@ op_ge
 (paren
 l_int|2
 op_star
-id|the_delta_in_ticks
+id|delta_in_ticks
 )paren
 )paren
 op_logical_and
@@ -7001,7 +6972,7 @@ id|KERN_INFO
 id|DRV_NAME
 l_string|&quot;: %s: interface %s is now down.&bslash;n&quot;
 comma
-id|master-&gt;name
+id|bond_dev-&gt;name
 comma
 id|slave-&gt;dev-&gt;name
 )paren
@@ -7076,7 +7047,7 @@ id|DRV_NAME
 l_string|&quot;: %s: now running without any active &quot;
 l_string|&quot;interface !&bslash;n&quot;
 comma
-id|master-&gt;name
+id|bond_dev-&gt;name
 )paren
 suffix:semicolon
 )brace
@@ -7098,7 +7069,7 @@ id|bond-&gt;arp_timer
 comma
 id|jiffies
 op_plus
-id|the_delta_in_ticks
+id|delta_in_ticks
 )paren
 suffix:semicolon
 id|out
@@ -7121,7 +7092,7 @@ c_func
 r_struct
 id|net_device
 op_star
-id|master
+id|bond_dev
 )paren
 (brace
 r_struct
@@ -7134,7 +7105,7 @@ r_struct
 id|bonding
 op_star
 )paren
-id|master-&gt;priv
+id|bond_dev-&gt;priv
 suffix:semicolon
 r_struct
 id|slave
@@ -7142,7 +7113,7 @@ op_star
 id|slave
 suffix:semicolon
 r_int
-id|the_delta_in_ticks
+id|delta_in_ticks
 op_assign
 id|arp_interval
 op_star
@@ -7210,7 +7181,7 @@ op_minus
 id|slave-&gt;dev-&gt;last_rx
 )paren
 op_le
-id|the_delta_in_ticks
+id|delta_in_ticks
 )paren
 (brace
 id|slave-&gt;link
@@ -7240,7 +7211,7 @@ op_minus
 id|slave-&gt;dev-&gt;trans_start
 )paren
 op_le
-id|the_delta_in_ticks
+id|delta_in_ticks
 )paren
 )paren
 (brace
@@ -7294,7 +7265,7 @@ id|DRV_NAME
 l_string|&quot;: %s: %s is up and now the &quot;
 l_string|&quot;active interface&bslash;n&quot;
 comma
-id|master-&gt;name
+id|bond_dev-&gt;name
 comma
 id|slave-&gt;dev-&gt;name
 )paren
@@ -7310,7 +7281,7 @@ id|DRV_NAME
 l_string|&quot;: %s: backup interface %s is &quot;
 l_string|&quot;now up&bslash;n&quot;
 comma
-id|master-&gt;name
+id|bond_dev-&gt;name
 comma
 id|slave-&gt;dev-&gt;name
 )paren
@@ -7359,7 +7330,7 @@ id|slave-&gt;dev-&gt;last_rx
 op_ge
 l_int|3
 op_star
-id|the_delta_in_ticks
+id|delta_in_ticks
 )paren
 op_logical_and
 (paren
@@ -7407,7 +7378,7 @@ id|KERN_INFO
 id|DRV_NAME
 l_string|&quot;: %s: backup interface %s is now down&bslash;n&quot;
 comma
-id|master-&gt;name
+id|bond_dev-&gt;name
 comma
 id|slave-&gt;dev-&gt;name
 )paren
@@ -7466,7 +7437,7 @@ op_ge
 (paren
 l_int|2
 op_star
-id|the_delta_in_ticks
+id|delta_in_ticks
 )paren
 )paren
 op_logical_or
@@ -7481,7 +7452,7 @@ op_ge
 (paren
 l_int|2
 op_star
-id|the_delta_in_ticks
+id|delta_in_ticks
 )paren
 )paren
 op_logical_and
@@ -7502,7 +7473,7 @@ id|slave-&gt;jiffies
 op_ge
 l_int|2
 op_star
-id|the_delta_in_ticks
+id|delta_in_ticks
 )paren
 )paren
 (brace
@@ -7530,7 +7501,7 @@ id|DRV_NAME
 l_string|&quot;: %s: link status down for active interface &quot;
 l_string|&quot;%s, disabling it&quot;
 comma
-id|master-&gt;name
+id|bond_dev-&gt;name
 comma
 id|slave-&gt;dev-&gt;name
 )paren
@@ -7609,7 +7580,7 @@ id|DRV_NAME
 l_string|&quot;: %s: changing from interface %s to primary &quot;
 l_string|&quot;interface %s&bslash;n&quot;
 comma
-id|master-&gt;name
+id|bond_dev-&gt;name
 comma
 id|slave-&gt;dev-&gt;name
 comma
@@ -7803,7 +7774,7 @@ id|DRV_NAME
 l_string|&quot;: %s: backup interface %s is &quot;
 l_string|&quot;now down.&bslash;n&quot;
 comma
-id|master-&gt;name
+id|bond_dev-&gt;name
 comma
 id|slave-&gt;dev-&gt;name
 )paren
@@ -7822,7 +7793,7 @@ id|bond-&gt;arp_timer
 comma
 id|jiffies
 op_plus
-id|the_delta_in_ticks
+id|delta_in_ticks
 )paren
 suffix:semicolon
 id|out
@@ -7844,46 +7815,46 @@ c_func
 r_struct
 id|net_device
 op_star
-id|master
+id|bond_dev
 comma
 r_struct
 id|net_device
 op_star
-id|slave
+id|slave_dev
 )paren
 (brace
 id|dprintk
 c_func
 (paren
-l_string|&quot;master=%p&bslash;n&quot;
+l_string|&quot;bond_dev=%p&bslash;n&quot;
 comma
-id|master
+id|bond_dev
 )paren
 suffix:semicolon
 id|dprintk
 c_func
 (paren
-l_string|&quot;slave=%p&bslash;n&quot;
+l_string|&quot;slave_dev=%p&bslash;n&quot;
 comma
-id|slave
+id|slave_dev
 )paren
 suffix:semicolon
 id|dprintk
 c_func
 (paren
-l_string|&quot;slave-&gt;addr_len=%d&bslash;n&quot;
+l_string|&quot;slave_dev-&gt;addr_len=%d&bslash;n&quot;
 comma
-id|slave-&gt;addr_len
+id|slave_dev-&gt;addr_len
 )paren
 suffix:semicolon
 id|memcpy
 c_func
 (paren
-id|master-&gt;dev_addr
+id|bond_dev-&gt;dev_addr
 comma
-id|slave-&gt;dev_addr
+id|slave_dev-&gt;dev_addr
 comma
-id|slave-&gt;addr_len
+id|slave_dev-&gt;addr_len
 )paren
 suffix:semicolon
 r_return
@@ -7899,7 +7870,7 @@ c_func
 r_struct
 id|net_device
 op_star
-id|master
+id|bond_dev
 comma
 r_struct
 id|ifbond
@@ -7917,7 +7888,7 @@ r_struct
 id|bonding
 op_star
 )paren
-id|master-&gt;priv
+id|bond_dev-&gt;priv
 suffix:semicolon
 id|info-&gt;bond_mode
 op_assign
@@ -7958,7 +7929,7 @@ c_func
 r_struct
 id|net_device
 op_star
-id|master
+id|bond_dev
 comma
 r_struct
 id|ifslave
@@ -7976,7 +7947,7 @@ r_struct
 id|bonding
 op_star
 )paren
-id|master-&gt;priv
+id|bond_dev-&gt;priv
 suffix:semicolon
 r_struct
 id|slave
@@ -8093,7 +8064,7 @@ c_func
 r_struct
 id|net_device
 op_star
-id|master_dev
+id|bond_dev
 comma
 r_struct
 id|ifreq
@@ -8314,7 +8285,7 @@ c_func
 r_struct
 id|net_device
 op_star
-id|master_dev
+id|bond_dev
 comma
 r_struct
 id|ifreq
@@ -8372,7 +8343,7 @@ c_func
 (paren
 l_string|&quot;bond_ioctl: master=%s, cmd=%d&bslash;n&quot;
 comma
-id|master_dev-&gt;name
+id|bond_dev-&gt;name
 comma
 id|cmd
 )paren
@@ -8390,7 +8361,7 @@ r_return
 id|bond_ethtool_ioctl
 c_func
 (paren
-id|master_dev
+id|bond_dev
 comma
 id|ifr
 )paren
@@ -8471,7 +8442,7 @@ r_struct
 id|bonding
 op_star
 )paren
-id|master_dev-&gt;priv
+id|bond_dev-&gt;priv
 suffix:semicolon
 id|mii-&gt;val_out
 op_assign
@@ -8563,7 +8534,7 @@ op_assign
 id|bond_info_query
 c_func
 (paren
-id|master_dev
+id|bond_dev
 comma
 op_amp
 id|k_binfo
@@ -8647,7 +8618,7 @@ op_assign
 id|bond_slave_info_query
 c_func
 (paren
-id|master_dev
+id|bond_dev
 comma
 op_amp
 id|k_sinfo
@@ -8805,7 +8776,7 @@ op_assign
 id|bond_enslave
 c_func
 (paren
-id|master_dev
+id|bond_dev
 comma
 id|slave_dev
 )paren
@@ -8823,7 +8794,7 @@ op_assign
 id|bond_release
 c_func
 (paren
-id|master_dev
+id|bond_dev
 comma
 id|slave_dev
 )paren
@@ -8841,7 +8812,7 @@ op_assign
 id|bond_sethwaddr
 c_func
 (paren
-id|master_dev
+id|bond_dev
 comma
 id|slave_dev
 )paren
@@ -8869,7 +8840,7 @@ op_assign
 id|bond_ioctl_change_active
 c_func
 (paren
-id|master_dev
+id|bond_dev
 comma
 id|slave_dev
 )paren
@@ -8928,7 +8899,7 @@ c_func
 r_struct
 id|net_device
 op_star
-id|dev
+id|bond_dev
 comma
 r_struct
 id|dst_entry
@@ -8957,17 +8928,9 @@ comma
 r_struct
 id|net_device
 op_star
-id|dev
+id|bond_dev
 )paren
 (brace
-r_struct
-id|slave
-op_star
-id|slave
-comma
-op_star
-id|start_at
-suffix:semicolon
 r_struct
 id|bonding
 op_star
@@ -8978,12 +8941,20 @@ r_struct
 id|bonding
 op_star
 )paren
-id|dev-&gt;priv
+id|bond_dev-&gt;priv
+suffix:semicolon
+r_struct
+id|slave
+op_star
+id|slave
+comma
+op_star
+id|start_at
 suffix:semicolon
 r_struct
 id|net_device
 op_star
-id|device_we_should_send_to
+id|tx_dev
 op_assign
 l_int|NULL
 suffix:semicolon
@@ -8997,7 +8968,7 @@ op_logical_neg
 id|IS_UP
 c_func
 (paren
-id|dev
+id|bond_dev
 )paren
 )paren
 (brace
@@ -9101,7 +9072,7 @@ id|BOND_STATE_ACTIVE
 r_if
 c_cond
 (paren
-id|device_we_should_send_to
+id|tx_dev
 )paren
 (brace
 r_struct
@@ -9141,7 +9112,7 @@ suffix:semicolon
 )brace
 id|skb2-&gt;dev
 op_assign
-id|device_we_should_send_to
+id|tx_dev
 suffix:semicolon
 id|skb2-&gt;priority
 op_assign
@@ -9154,7 +9125,7 @@ id|skb2
 )paren
 suffix:semicolon
 )brace
-id|device_we_should_send_to
+id|tx_dev
 op_assign
 id|slave-&gt;dev
 suffix:semicolon
@@ -9163,12 +9134,12 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|device_we_should_send_to
+id|tx_dev
 )paren
 (brace
 id|skb-&gt;dev
 op_assign
-id|device_we_should_send_to
+id|tx_dev
 suffix:semicolon
 id|skb-&gt;priority
 op_assign
@@ -9214,17 +9185,9 @@ comma
 r_struct
 id|net_device
 op_star
-id|dev
+id|bond_dev
 )paren
 (brace
-r_struct
-id|slave
-op_star
-id|slave
-comma
-op_star
-id|start_at
-suffix:semicolon
 r_struct
 id|bonding
 op_star
@@ -9235,7 +9198,15 @@ r_struct
 id|bonding
 op_star
 )paren
-id|dev-&gt;priv
+id|bond_dev-&gt;priv
+suffix:semicolon
+r_struct
+id|slave
+op_star
+id|slave
+comma
+op_star
+id|start_at
 suffix:semicolon
 r_int
 id|i
@@ -9247,7 +9218,7 @@ op_logical_neg
 id|IS_UP
 c_func
 (paren
-id|dev
+id|bond_dev
 )paren
 )paren
 (brace
@@ -9427,17 +9398,9 @@ comma
 r_struct
 id|net_device
 op_star
-id|dev
+id|bond_dev
 )paren
 (brace
-r_struct
-id|slave
-op_star
-id|slave
-comma
-op_star
-id|start_at
-suffix:semicolon
 r_struct
 id|bonding
 op_star
@@ -9448,7 +9411,7 @@ r_struct
 id|bonding
 op_star
 )paren
-id|dev-&gt;priv
+id|bond_dev-&gt;priv
 suffix:semicolon
 r_struct
 id|ethhdr
@@ -9461,6 +9424,14 @@ id|ethhdr
 op_star
 )paren
 id|skb-&gt;data
+suffix:semicolon
+r_struct
+id|slave
+op_star
+id|slave
+comma
+op_star
+id|start_at
 suffix:semicolon
 r_int
 id|slave_no
@@ -9475,7 +9446,7 @@ op_logical_neg
 id|IS_UP
 c_func
 (paren
-id|dev
+id|bond_dev
 )paren
 )paren
 (brace
@@ -9661,7 +9632,7 @@ comma
 r_struct
 id|net_device
 op_star
-id|dev
+id|bond_dev
 )paren
 (brace
 r_struct
@@ -9674,7 +9645,7 @@ r_struct
 id|bonding
 op_star
 )paren
-id|dev-&gt;priv
+id|bond_dev-&gt;priv
 suffix:semicolon
 r_int
 id|ret
@@ -9686,7 +9657,7 @@ op_logical_neg
 id|IS_UP
 c_func
 (paren
-id|dev
+id|bond_dev
 )paren
 )paren
 (brace
@@ -9870,7 +9841,7 @@ c_func
 r_struct
 id|net_device
 op_star
-id|dev
+id|bond_dev
 )paren
 (brace
 r_struct
@@ -9883,7 +9854,7 @@ r_struct
 id|bonding
 op_star
 )paren
-id|dev-&gt;priv
+id|bond_dev-&gt;priv
 suffix:semicolon
 r_struct
 id|net_device_stats
@@ -10885,7 +10856,7 @@ id|bond
 r_struct
 id|net_device
 op_star
-id|dev
+id|bond_dev
 op_assign
 id|bond-&gt;device
 suffix:semicolon
@@ -10900,7 +10871,7 @@ op_assign
 id|create_proc_entry
 c_func
 (paren
-id|dev-&gt;name
+id|bond_dev-&gt;name
 comma
 id|S_IRUGO
 comma
@@ -10922,7 +10893,7 @@ id|KERN_WARNING
 id|DRV_NAME
 l_string|&quot;: Warning: Cannot create /proc/net/bonding/%s&bslash;n&quot;
 comma
-id|dev-&gt;name
+id|bond_dev-&gt;name
 )paren
 suffix:semicolon
 )brace
@@ -10946,7 +10917,7 @@ c_func
 (paren
 id|bond-&gt;procdir_name
 comma
-id|dev-&gt;name
+id|bond_dev-&gt;name
 comma
 id|IFNAMSIZ
 )paren
@@ -11205,7 +11176,7 @@ c_func
 r_struct
 id|net_device
 op_star
-id|dev
+id|bond_dev
 comma
 r_void
 op_star
@@ -11222,7 +11193,7 @@ r_struct
 id|bonding
 op_star
 )paren
-id|dev-&gt;priv
+id|bond_dev-&gt;priv
 suffix:semicolon
 r_struct
 id|sockaddr
@@ -11364,11 +11335,11 @@ multiline_comment|/* success */
 id|memcpy
 c_func
 (paren
-id|dev-&gt;dev_addr
+id|bond_dev-&gt;dev_addr
 comma
 id|sa-&gt;sa_data
 comma
-id|dev-&gt;addr_len
+id|bond_dev-&gt;addr_len
 )paren
 suffix:semicolon
 r_return
@@ -11381,14 +11352,14 @@ c_func
 (paren
 id|tmp_sa.sa_data
 comma
-id|dev-&gt;dev_addr
+id|bond_dev-&gt;dev_addr
 comma
-id|dev-&gt;addr_len
+id|bond_dev-&gt;addr_len
 )paren
 suffix:semicolon
 id|tmp_sa.sa_family
 op_assign
-id|dev-&gt;type
+id|bond_dev-&gt;type
 suffix:semicolon
 multiline_comment|/* unwind from the first slave that failed to head */
 id|stop_at
@@ -11457,10 +11428,10 @@ c_func
 r_struct
 id|net_device
 op_star
-id|dev
+id|bond_dev
 comma
 r_int
-id|newmtu
+id|new_mtu
 )paren
 (brace
 r_struct
@@ -11473,7 +11444,7 @@ r_struct
 id|bonding
 op_star
 )paren
-id|dev-&gt;priv
+id|bond_dev-&gt;priv
 suffix:semicolon
 r_struct
 id|slave
@@ -11546,7 +11517,7 @@ c_func
 (paren
 id|slave-&gt;dev
 comma
-id|newmtu
+id|new_mtu
 )paren
 suffix:semicolon
 )brace
@@ -11554,7 +11525,7 @@ r_else
 (brace
 id|slave-&gt;dev-&gt;mtu
 op_assign
-id|newmtu
+id|new_mtu
 suffix:semicolon
 id|error
 op_assign
@@ -11583,9 +11554,9 @@ id|unwind
 suffix:semicolon
 )brace
 )brace
-id|dev-&gt;mtu
+id|bond_dev-&gt;mtu
 op_assign
-id|newmtu
+id|new_mtu
 suffix:semicolon
 r_return
 l_int|0
@@ -11624,7 +11595,7 @@ c_func
 (paren
 id|slave-&gt;dev
 comma
-id|dev-&gt;mtu
+id|bond_dev-&gt;mtu
 )paren
 suffix:semicolon
 )brace
@@ -11632,7 +11603,7 @@ r_else
 (brace
 id|slave-&gt;dev-&gt;mtu
 op_assign
-id|dev-&gt;mtu
+id|bond_dev-&gt;mtu
 suffix:semicolon
 )brace
 )brace
@@ -11684,7 +11655,7 @@ comma
 r_struct
 id|net_device
 op_star
-id|event_dev
+id|bond_dev
 )paren
 (brace
 r_struct
@@ -11697,7 +11668,7 @@ r_struct
 id|bonding
 op_star
 )paren
-id|event_dev-&gt;priv
+id|bond_dev-&gt;priv
 suffix:semicolon
 r_switch
 c_cond
@@ -11743,15 +11714,15 @@ comma
 r_struct
 id|net_device
 op_star
-id|event_dev
+id|slave_dev
 )paren
 (brace
 r_struct
 id|net_device
 op_star
-id|master
+id|bond_dev
 op_assign
-id|event_dev-&gt;master
+id|slave_dev-&gt;master
 suffix:semicolon
 r_switch
 c_cond
@@ -11765,7 +11736,7 @@ suffix:colon
 r_if
 c_cond
 (paren
-id|master
+id|bond_dev
 op_ne
 l_int|NULL
 )paren
@@ -11773,9 +11744,9 @@ l_int|NULL
 id|bond_release
 c_func
 (paren
-id|master
+id|bond_dev
 comma
-id|event_dev
+id|slave_dev
 )paren
 suffix:semicolon
 )brace
@@ -11941,7 +11912,7 @@ c_func
 r_struct
 id|net_device
 op_star
-id|dev
+id|bond_dev
 )paren
 (brace
 r_struct
@@ -11954,7 +11925,7 @@ r_struct
 id|bonding
 op_star
 )paren
-id|dev-&gt;priv
+id|bond_dev-&gt;priv
 suffix:semicolon
 id|list_del
 c_func
@@ -12006,20 +11977,20 @@ id|bond_list
 r_struct
 id|net_device
 op_star
-id|dev
+id|bond_dev
 op_assign
 id|bond-&gt;device
 suffix:semicolon
 id|unregister_netdevice
 c_func
 (paren
-id|dev
+id|bond_dev
 )paren
 suffix:semicolon
 id|bond_deinit
 c_func
 (paren
-id|dev
+id|bond_dev
 )paren
 suffix:semicolon
 )brace
@@ -12042,13 +12013,20 @@ c_func
 r_struct
 id|net_device
 op_star
-id|dev
+id|bond_dev
 )paren
 (brace
 r_struct
 id|bonding
 op_star
 id|bond
+op_assign
+(paren
+r_struct
+id|bonding
+op_star
+)paren
+id|bond_dev-&gt;priv
 suffix:semicolon
 r_int
 id|count
@@ -12058,17 +12036,8 @@ c_func
 (paren
 l_string|&quot;Begin bond_init for %s&bslash;n&quot;
 comma
-id|dev-&gt;name
+id|bond_dev-&gt;name
 )paren
-suffix:semicolon
-id|bond
-op_assign
-(paren
-r_struct
-id|bonding
-op_star
-)paren
-id|dev-&gt;priv
 suffix:semicolon
 multiline_comment|/* initialize rwlocks */
 id|rwlock_init
@@ -12104,10 +12073,10 @@ l_int|NULL
 suffix:semicolon
 id|bond-&gt;device
 op_assign
-id|dev
+id|bond_dev
 suffix:semicolon
 multiline_comment|/* Initialize the device structure. */
-id|dev-&gt;set_mac_address
+id|bond_dev-&gt;set_mac_address
 op_assign
 id|bond_set_mac_address
 suffix:semicolon
@@ -12120,7 +12089,7 @@ id|bond_mode
 r_case
 id|BOND_MODE_ACTIVEBACKUP
 suffix:colon
-id|dev-&gt;hard_start_xmit
+id|bond_dev-&gt;hard_start_xmit
 op_assign
 id|bond_xmit_activebackup
 suffix:semicolon
@@ -12129,7 +12098,7 @@ suffix:semicolon
 r_case
 id|BOND_MODE_ROUNDROBIN
 suffix:colon
-id|dev-&gt;hard_start_xmit
+id|bond_dev-&gt;hard_start_xmit
 op_assign
 id|bond_xmit_roundrobin
 suffix:semicolon
@@ -12138,7 +12107,7 @@ suffix:semicolon
 r_case
 id|BOND_MODE_XOR
 suffix:colon
-id|dev-&gt;hard_start_xmit
+id|bond_dev-&gt;hard_start_xmit
 op_assign
 id|bond_xmit_xor
 suffix:semicolon
@@ -12147,7 +12116,7 @@ suffix:semicolon
 r_case
 id|BOND_MODE_BROADCAST
 suffix:colon
-id|dev-&gt;hard_start_xmit
+id|bond_dev-&gt;hard_start_xmit
 op_assign
 id|bond_xmit_broadcast
 suffix:semicolon
@@ -12156,7 +12125,7 @@ suffix:semicolon
 r_case
 id|BOND_MODE_8023AD
 suffix:colon
-id|dev-&gt;hard_start_xmit
+id|bond_dev-&gt;hard_start_xmit
 op_assign
 id|bond_3ad_xmit_xor
 suffix:semicolon
@@ -12168,11 +12137,11 @@ suffix:colon
 r_case
 id|BOND_MODE_ALB
 suffix:colon
-id|dev-&gt;hard_start_xmit
+id|bond_dev-&gt;hard_start_xmit
 op_assign
 id|bond_alb_xmit
 suffix:semicolon
-id|dev-&gt;set_mac_address
+id|bond_dev-&gt;set_mac_address
 op_assign
 id|bond_alb_set_mac_address
 suffix:semicolon
@@ -12195,42 +12164,46 @@ op_minus
 id|EINVAL
 suffix:semicolon
 )brace
-id|dev-&gt;get_stats
+id|bond_dev-&gt;get_stats
 op_assign
 id|bond_get_stats
 suffix:semicolon
-id|dev-&gt;open
+id|bond_dev-&gt;open
 op_assign
 id|bond_open
 suffix:semicolon
-id|dev-&gt;stop
+id|bond_dev-&gt;stop
 op_assign
 id|bond_close
 suffix:semicolon
-id|dev-&gt;set_multicast_list
+id|bond_dev-&gt;set_multicast_list
 op_assign
 id|bond_set_multicast_list
 suffix:semicolon
-id|dev-&gt;do_ioctl
+id|bond_dev-&gt;do_ioctl
 op_assign
 id|bond_do_ioctl
 suffix:semicolon
-id|dev-&gt;change_mtu
+id|bond_dev-&gt;change_mtu
 op_assign
 id|bond_change_mtu
 suffix:semicolon
-id|dev-&gt;tx_queue_len
+id|bond_dev-&gt;destructor
+op_assign
+id|free_netdev
+suffix:semicolon
+id|bond_dev-&gt;tx_queue_len
 op_assign
 l_int|0
 suffix:semicolon
-id|dev-&gt;flags
+id|bond_dev-&gt;flags
 op_or_assign
 id|IFF_MASTER
 op_or
 id|IFF_MULTICAST
 suffix:semicolon
 macro_line|#ifdef CONFIG_NET_FASTROUTE
-id|dev-&gt;accept_fastpath
+id|bond_dev-&gt;accept_fastpath
 op_assign
 id|bond_accept_fastpath
 suffix:semicolon
@@ -12242,7 +12215,7 @@ id|KERN_INFO
 id|DRV_NAME
 l_string|&quot;: %s registered with&quot;
 comma
-id|dev-&gt;name
+id|bond_dev-&gt;name
 )paren
 suffix:semicolon
 r_if
@@ -12297,7 +12270,7 @@ id|KERN_INFO
 id|DRV_NAME
 l_string|&quot;: %s registered with&quot;
 comma
-id|dev-&gt;name
+id|bond_dev-&gt;name
 )paren
 suffix:semicolon
 r_if
@@ -12367,10 +12340,6 @@ id|bond
 )paren
 suffix:semicolon
 macro_line|#endif
-id|dev-&gt;destructor
-op_assign
-id|free_netdev
-suffix:semicolon
 id|list_add_tail
 c_func
 (paren
@@ -13246,7 +13215,7 @@ r_void
 )paren
 (brace
 r_int
-id|no
+id|i
 suffix:semicolon
 r_int
 id|err
@@ -13296,24 +13265,24 @@ suffix:semicolon
 r_for
 c_loop
 (paren
-id|no
+id|i
 op_assign
 l_int|0
 suffix:semicolon
-id|no
+id|i
 OL
 id|max_bonds
 suffix:semicolon
-id|no
+id|i
 op_increment
 )paren
 (brace
 r_struct
 id|net_device
 op_star
-id|dev
+id|bond_dev
 suffix:semicolon
-id|dev
+id|bond_dev
 op_assign
 id|alloc_netdev
 c_func
@@ -13333,7 +13302,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|dev
+id|bond_dev
 )paren
 (brace
 id|err
@@ -13350,7 +13319,7 @@ op_assign
 id|dev_alloc_name
 c_func
 (paren
-id|dev
+id|bond_dev
 comma
 l_string|&quot;bond%d&quot;
 )paren
@@ -13366,7 +13335,7 @@ l_int|0
 id|free_netdev
 c_func
 (paren
-id|dev
+id|bond_dev
 )paren
 suffix:semicolon
 r_goto
@@ -13379,7 +13348,7 @@ op_assign
 id|bond_init
 c_func
 (paren
-id|dev
+id|bond_dev
 )paren
 suffix:semicolon
 r_if
@@ -13393,7 +13362,7 @@ l_int|0
 id|free_netdev
 c_func
 (paren
-id|dev
+id|bond_dev
 )paren
 suffix:semicolon
 r_goto
@@ -13403,7 +13372,7 @@ suffix:semicolon
 id|SET_MODULE_OWNER
 c_func
 (paren
-id|dev
+id|bond_dev
 )paren
 suffix:semicolon
 id|err
@@ -13411,7 +13380,7 @@ op_assign
 id|register_netdevice
 c_func
 (paren
-id|dev
+id|bond_dev
 )paren
 suffix:semicolon
 r_if
@@ -13425,13 +13394,13 @@ l_int|0
 id|bond_deinit
 c_func
 (paren
-id|dev
+id|bond_dev
 )paren
 suffix:semicolon
 id|free_netdev
 c_func
 (paren
-id|dev
+id|bond_dev
 )paren
 suffix:semicolon
 r_goto

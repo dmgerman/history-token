@@ -311,7 +311,7 @@ comma
 r_struct
 id|net_device
 op_star
-id|dev
+id|bond_dev
 )paren
 suffix:semicolon
 r_void
@@ -331,7 +331,7 @@ c_func
 r_struct
 id|net_device
 op_star
-id|dev
+id|bond_dev
 comma
 r_void
 op_star
