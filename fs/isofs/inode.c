@@ -20,9 +20,6 @@ macro_line|#include &lt;linux/buffer_head.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &quot;zisofs.h&quot;
-multiline_comment|/*&n; * We have no support for &quot;multi volume&quot; CDs, but more and more disks carry&n; * wrong information within the volume descriptors.&n; */
-DECL|macro|IGNORE_WRONG_MULTI_VOLUME_SPECS
-mdefine_line|#define IGNORE_WRONG_MULTI_VOLUME_SPECS
 DECL|macro|BEQUIET
 mdefine_line|#define BEQUIET
 macro_line|#ifdef LEAK_CHECK
@@ -2606,88 +2603,6 @@ id|opt
 r_goto
 id|out_freesbi
 suffix:semicolon
-macro_line|#if 0
-id|printk
-c_func
-(paren
-l_string|&quot;map = %c&bslash;n&quot;
-comma
-id|opt.map
-)paren
-suffix:semicolon
-id|printk
-c_func
-(paren
-l_string|&quot;rock = %c&bslash;n&quot;
-comma
-id|opt.rock
-)paren
-suffix:semicolon
-id|printk
-c_func
-(paren
-l_string|&quot;joliet = %c&bslash;n&quot;
-comma
-id|opt.joliet
-)paren
-suffix:semicolon
-id|printk
-c_func
-(paren
-l_string|&quot;check = %c&bslash;n&quot;
-comma
-id|opt.check
-)paren
-suffix:semicolon
-id|printk
-c_func
-(paren
-l_string|&quot;cruft = %c&bslash;n&quot;
-comma
-id|opt.cruft
-)paren
-suffix:semicolon
-id|printk
-c_func
-(paren
-l_string|&quot;unhide = %c&bslash;n&quot;
-comma
-id|opt.unhide
-)paren
-suffix:semicolon
-id|printk
-c_func
-(paren
-l_string|&quot;blocksize = %d&bslash;n&quot;
-comma
-id|opt.blocksize
-)paren
-suffix:semicolon
-id|printk
-c_func
-(paren
-l_string|&quot;gid = %d&bslash;n&quot;
-comma
-id|opt.gid
-)paren
-suffix:semicolon
-id|printk
-c_func
-(paren
-l_string|&quot;uid = %d&bslash;n&quot;
-comma
-id|opt.uid
-)paren
-suffix:semicolon
-id|printk
-c_func
-(paren
-l_string|&quot;iocharset = %s&bslash;n&quot;
-comma
-id|opt.iocharset
-)paren
-suffix:semicolon
-macro_line|#endif
 multiline_comment|/*&n;&t; * First of all, get the hardware blocksize for this device.&n;&t; * If we don&squot;t know what it is, or the hardware blocksize is&n;&t; * larger than the blocksize the user specified, then use&n;&t; * that value.&n;&t; */
 multiline_comment|/*&n;&t; * What if bugger tells us to go beyond page size?&n;&t; */
 id|opt.blocksize
@@ -3125,21 +3040,6 @@ op_star
 )paren
 id|h_pri-&gt;root_directory_record
 suffix:semicolon
-macro_line|#ifndef IGNORE_WRONG_MULTI_VOLUME_SPECS
-r_if
-c_cond
-(paren
-id|isonum_723
-(paren
-id|h_pri-&gt;volume_set_size
-)paren
-op_ne
-l_int|1
-)paren
-r_goto
-id|out_no_support
-suffix:semicolon
-macro_line|#endif /* IGNORE_WRONG_MULTI_VOLUME_SPECS */
 id|sbi-&gt;s_nzones
 op_assign
 id|isonum_733
@@ -3174,21 +3074,6 @@ op_star
 )paren
 id|pri-&gt;root_directory_record
 suffix:semicolon
-macro_line|#ifndef IGNORE_WRONG_MULTI_VOLUME_SPECS
-r_if
-c_cond
-(paren
-id|isonum_723
-(paren
-id|pri-&gt;volume_set_size
-)paren
-op_ne
-l_int|1
-)paren
-r_goto
-id|out_no_support
-suffix:semicolon
-macro_line|#endif /* IGNORE_WRONG_MULTI_VOLUME_SPECS */
 id|sbi-&gt;s_nzones
 op_assign
 id|isonum_733
@@ -3809,20 +3694,6 @@ suffix:semicolon
 r_goto
 id|out_freebh
 suffix:semicolon
-macro_line|#ifndef IGNORE_WRONG_MULTI_VOLUME_SPECS
-id|out_no_support
-suffix:colon
-id|printk
-c_func
-(paren
-id|KERN_WARNING
-l_string|&quot;Multi-volume disks not supported.&bslash;n&quot;
-)paren
-suffix:semicolon
-r_goto
-id|out_freebh
-suffix:semicolon
-macro_line|#endif
 id|out_unknown_format
 suffix:colon
 r_if
@@ -5777,76 +5648,7 @@ id|isonum_723
 id|de-&gt;volume_sequence_number
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * Disable checking if we see any volume number other than 0 or 1.&n;&t; * We could use the cruft option, but that has multiple purposes, one&n;&t; * of which is limiting the file size to 16Mb.  Thus we silently allow&n;&t; * volume numbers of 0 to go through without complaining.&n;&t; */
-r_if
-c_cond
-(paren
-id|sbi-&gt;s_cruft
-op_eq
-l_char|&squot;n&squot;
-op_logical_and
-(paren
-id|volume_seq_no
-op_ne
-l_int|0
-)paren
-op_logical_and
-(paren
-id|volume_seq_no
-op_ne
-l_int|1
-)paren
-)paren
-(brace
-id|printk
-c_func
-(paren
-id|KERN_WARNING
-l_string|&quot;Warning: defective CD-ROM &quot;
-l_string|&quot;(volume sequence number %d). &quot;
-l_string|&quot;Enabling &bslash;&quot;cruft&bslash;&quot; mount option.&bslash;n&quot;
-comma
-id|volume_seq_no
-)paren
-suffix:semicolon
-id|sbi-&gt;s_cruft
-op_assign
-l_char|&squot;y&squot;
-suffix:semicolon
-)brace
 multiline_comment|/* Install the inode operations vector */
-macro_line|#ifndef IGNORE_WRONG_MULTI_VOLUME_SPECS
-r_if
-c_cond
-(paren
-id|sbi-&gt;s_cruft
-op_ne
-l_char|&squot;y&squot;
-op_logical_and
-(paren
-id|volume_seq_no
-op_ne
-l_int|0
-)paren
-op_logical_and
-(paren
-id|volume_seq_no
-op_ne
-l_int|1
-)paren
-)paren
-(brace
-id|printk
-c_func
-(paren
-id|KERN_WARNING
-l_string|&quot;Multi-volume CD somehow got mounted.&bslash;n&quot;
-)paren
-suffix:semicolon
-)brace
-r_else
-macro_line|#endif /*IGNORE_WRONG_MULTI_VOLUME_SPECS */
-(brace
 r_if
 c_cond
 (paren
@@ -5951,7 +5753,6 @@ id|inode-&gt;i_rdev
 )paren
 )paren
 suffix:semicolon
-)brace
 id|out
 suffix:colon
 r_if

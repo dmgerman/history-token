@@ -87,9 +87,30 @@ DECL|member|rdev
 id|__u32
 id|rdev
 suffix:semicolon
-DECL|member|fsid
+r_union
+(brace
+DECL|member|nfs3
 id|__u64
-id|fsid
+id|nfs3
+suffix:semicolon
+multiline_comment|/* also nfs2 */
+r_struct
+(brace
+DECL|member|major
+id|__u64
+id|major
+suffix:semicolon
+DECL|member|minor
+id|__u64
+id|minor
+suffix:semicolon
+DECL|member|nfs4
+)brace
+id|nfs4
+suffix:semicolon
+DECL|member|fsid_u
+)brace
+id|fsid_u
 suffix:semicolon
 DECL|member|fileid
 id|__u64
@@ -107,6 +128,16 @@ DECL|member|ctime
 id|__u64
 id|ctime
 suffix:semicolon
+DECL|member|change_attr
+id|__u64
+id|change_attr
+suffix:semicolon
+multiline_comment|/* NFSv4 change attribute */
+DECL|member|pre_change_attr
+id|__u64
+id|pre_change_attr
+suffix:semicolon
+multiline_comment|/* pre-op NFSv4 change attribute */
 DECL|member|timestamp
 r_int
 r_int
@@ -120,6 +151,10 @@ DECL|macro|NFS_ATTR_FATTR
 mdefine_line|#define NFS_ATTR_FATTR&t;&t;0x0002&t;&t;/* post-op attributes */
 DECL|macro|NFS_ATTR_FATTR_V3
 mdefine_line|#define NFS_ATTR_FATTR_V3&t;0x0004&t;&t;/* NFSv3 attributes */
+DECL|macro|NFS_ATTR_FATTR_V4
+mdefine_line|#define NFS_ATTR_FATTR_V4&t;0x0008
+DECL|macro|NFS_ATTR_PRE_CHANGE
+mdefine_line|#define NFS_ATTR_PRE_CHANGE&t;0x0010
 multiline_comment|/*&n; * Info on the file system&n; */
 DECL|struct|nfs_fsinfo
 r_struct
@@ -1090,6 +1125,76 @@ id|plus
 suffix:semicolon
 )brace
 suffix:semicolon
+DECL|struct|nfs_read_data
+r_struct
+id|nfs_read_data
+(brace
+DECL|member|task
+r_struct
+id|rpc_task
+id|task
+suffix:semicolon
+DECL|member|inode
+r_struct
+id|inode
+op_star
+id|inode
+suffix:semicolon
+DECL|member|cred
+r_struct
+id|rpc_cred
+op_star
+id|cred
+suffix:semicolon
+DECL|member|fattr
+r_struct
+id|nfs_fattr
+id|fattr
+suffix:semicolon
+multiline_comment|/* fattr storage */
+DECL|member|pages
+r_struct
+id|list_head
+id|pages
+suffix:semicolon
+multiline_comment|/* Coalesced read requests */
+DECL|member|pagevec
+r_struct
+id|page
+op_star
+id|pagevec
+(braket
+id|NFS_READ_MAXIOV
+)braket
+suffix:semicolon
+r_union
+(brace
+r_struct
+(brace
+DECL|member|args
+r_struct
+id|nfs_readargs
+id|args
+suffix:semicolon
+DECL|member|res
+r_struct
+id|nfs_readres
+id|res
+suffix:semicolon
+DECL|member|v3
+)brace
+id|v3
+suffix:semicolon
+multiline_comment|/* also v2 */
+macro_line|#ifdef CONFIG_NFS_V4
+multiline_comment|/* NFSv4 data will come here... */
+macro_line|#endif
+DECL|member|u
+)brace
+id|u
+suffix:semicolon
+)brace
+suffix:semicolon
 multiline_comment|/*&n; * RPC procedure vector for NFSv2/NFSv3 demuxing&n; */
 DECL|struct|nfs_rpc_ops
 r_struct
@@ -1144,7 +1249,7 @@ id|setattr
 )paren
 (paren
 r_struct
-id|inode
+id|dentry
 op_star
 comma
 r_struct
@@ -1519,7 +1624,7 @@ id|readdir
 )paren
 (paren
 r_struct
-id|inode
+id|dentry
 op_star
 comma
 r_struct
@@ -1605,6 +1710,22 @@ op_star
 comma
 r_int
 id|plus
+)paren
+suffix:semicolon
+DECL|member|read_setup
+r_void
+(paren
+op_star
+id|read_setup
+)paren
+(paren
+r_struct
+id|nfs_read_data
+op_star
+comma
+r_int
+r_int
+id|count
 )paren
 suffix:semicolon
 )brace

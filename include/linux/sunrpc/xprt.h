@@ -298,6 +298,12 @@ suffix:colon
 l_int|1
 comma
 multiline_comment|/* no congestion control */
+DECL|member|resvport
+id|resvport
+suffix:colon
+l_int|1
+comma
+multiline_comment|/* use a reserved port */
 DECL|member|stream
 id|stream
 suffix:colon

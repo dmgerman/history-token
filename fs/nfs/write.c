@@ -123,7 +123,7 @@ id|rpc_task
 op_star
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_NFS_V3
+macro_line|#if defined(CONFIG_NFS_V3) || defined(CONFIG_NFS_V4)
 r_static
 r_void
 id|nfs_commit_done
@@ -1675,7 +1675,7 @@ op_amp
 id|nfsi-&gt;dirty
 suffix:semicolon
 )brace
-macro_line|#ifdef CONFIG_NFS_V3
+macro_line|#if defined(CONFIG_NFS_V3) || defined(CONFIG_NFS_V4)
 multiline_comment|/*&n; * Add a request to the inode&squot;s commit list.&n; */
 r_static
 r_inline
@@ -2200,7 +2200,7 @@ r_return
 id|res
 suffix:semicolon
 )brace
-macro_line|#ifdef CONFIG_NFS_V3
+macro_line|#if defined(CONFIG_NFS_V3) || defined(CONFIG_NFS_V4)
 multiline_comment|/**&n; * nfs_scan_lru_commit_timeout - Scan LRU list for timed out commit requests&n; * @server: NFS superblock data&n; * @dst: destination list&n; *&n; * Finds the first a timed out request in the NFS commit LRU list and moves it&n; * to the list dst. If such an element is found, we move all other commit&n; * requests that apply to the same inode.&n; * The assumption is that doing everything in a single commit-to-disk is&n; * the cheaper alternative.&n; */
 r_int
 DECL|function|nfs_scan_lru_commit_timeout
@@ -2874,7 +2874,7 @@ id|inode
 op_member_access_from_pointer
 id|wpages
 suffix:semicolon
-macro_line|#ifdef CONFIG_NFS_V3
+macro_line|#if defined(CONFIG_NFS_V3) || defined(CONFIG_NFS_V4)
 r_if
 c_cond
 (paren
@@ -4181,7 +4181,7 @@ op_minus
 id|EIO
 suffix:semicolon
 )brace
-macro_line|#ifdef CONFIG_NFS_V3
+macro_line|#if defined(CONFIG_NFS_V3) || defined(CONFIG_NFS_V4)
 r_if
 c_cond
 (paren
@@ -4362,7 +4362,7 @@ r_goto
 id|next
 suffix:semicolon
 )brace
-macro_line|#ifdef CONFIG_NFS_V3
+macro_line|#if defined(CONFIG_NFS_V3) || defined(CONFIG_NFS_V4)
 r_if
 c_cond
 (paren
@@ -4441,7 +4441,7 @@ id|req
 suffix:semicolon
 )brace
 )brace
-macro_line|#ifdef CONFIG_NFS_V3
+macro_line|#if defined(CONFIG_NFS_V3) || defined(CONFIG_NFS_V4)
 multiline_comment|/*&n; * Set up the argument/result storage required for the RPC call.&n; */
 r_static
 r_void
@@ -5196,7 +5196,7 @@ r_return
 id|res
 suffix:semicolon
 )brace
-macro_line|#ifdef CONFIG_NFS_V3
+macro_line|#if defined(CONFIG_NFS_V3) || defined(CONFIG_NFS_V4)
 DECL|function|nfs_commit_file
 r_int
 id|nfs_commit_file
@@ -5402,7 +5402,7 @@ comma
 id|how
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_NFS_V3
+macro_line|#if defined(CONFIG_NFS_V3) || defined(CONFIG_NFS_V4)
 r_if
 c_cond
 (paren
