@@ -166,14 +166,6 @@ DECL|member|index
 id|__u32
 id|index
 suffix:semicolon
-DECL|member|refcnt
-r_int
-id|refcnt
-suffix:semicolon
-DECL|member|bindcnt
-r_int
-id|bindcnt
-suffix:semicolon
 DECL|member|action
 r_int
 id|action
@@ -209,6 +201,18 @@ DECL|member|peakrate
 r_struct
 id|tc_ratespec
 id|peakrate
+suffix:semicolon
+DECL|member|refcnt
+r_int
+id|refcnt
+suffix:semicolon
+DECL|member|bindcnt
+r_int
+id|bindcnt
+suffix:semicolon
+DECL|member|capab
+id|__u32
+id|capab
 suffix:semicolon
 )brace
 suffix:semicolon
@@ -318,6 +322,9 @@ comma
 DECL|enumerator|TCA_U32_INDEV
 id|TCA_U32_INDEV
 comma
+DECL|enumerator|TCA_U32_PCNT
+id|TCA_U32_PCNT
+comma
 DECL|enumerator|__TCA_U32_MAX
 id|__TCA_U32_MAX
 )brace
@@ -343,10 +350,6 @@ suffix:semicolon
 DECL|member|offmask
 r_int
 id|offmask
-suffix:semicolon
-DECL|member|kcnt
-id|__u32
-id|kcnt
 suffix:semicolon
 )brace
 suffix:semicolon
@@ -397,18 +400,31 @@ id|keys
 l_int|0
 )braket
 suffix:semicolon
+)brace
+suffix:semicolon
+macro_line|#ifdef CONFIG_CLS_U32_PERF
+DECL|struct|tc_u32_pcnt
+r_struct
+id|tc_u32_pcnt
+(brace
 DECL|member|rcnt
-r_int
-r_int
+id|__u64
 id|rcnt
 suffix:semicolon
 DECL|member|rhit
-r_int
-r_int
+id|__u64
 id|rhit
+suffix:semicolon
+DECL|member|kcnts
+id|__u64
+id|kcnts
+(braket
+l_int|0
+)braket
 suffix:semicolon
 )brace
 suffix:semicolon
+macro_line|#endif
 multiline_comment|/* Flags */
 DECL|macro|TC_U32_TERMINAL
 mdefine_line|#define TC_U32_TERMINAL&t;&t;1
@@ -535,9 +551,11 @@ comma
 DECL|enumerator|TCA_FW_INDEV
 id|TCA_FW_INDEV
 comma
+multiline_comment|/*  used by CONFIG_NET_CLS_IND */
 DECL|enumerator|TCA_FW_ACT
 id|TCA_FW_ACT
 comma
+multiline_comment|/* used by CONFIG_NET_CLS_ACT */
 DECL|enumerator|__TCA_FW_MAX
 id|__TCA_FW_MAX
 )brace

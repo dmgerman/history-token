@@ -3,7 +3,8 @@ macro_line|#include &lt;net/xfrm.h&gt;
 macro_line|#include &lt;linux/pfkeyv2.h&gt;
 macro_line|#include &lt;linux/ipsec.h&gt;
 macro_line|#include &lt;net/ipv6.h&gt;
-r_extern
+DECL|variable|xfrm6_state_afinfo
+r_static
 r_struct
 id|xfrm_state_afinfo
 id|xfrm6_state_afinfo

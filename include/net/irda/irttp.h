@@ -561,11 +561,5 @@ id|self-&gt;lsap-&gt;lap-&gt;irlap
 )paren
 suffix:semicolon
 )brace
-r_extern
-r_struct
-id|irttp_cb
-op_star
-id|irttp
-suffix:semicolon
 macro_line|#endif /* IRTTP_H */
 eof

@@ -64,11 +64,6 @@ mdefine_line|#define IF_IADBG_SUNI_STAT      0x02000000
 singleline_comment|// suni statistics
 DECL|macro|IF_IADBG_RESET
 mdefine_line|#define IF_IADBG_RESET          0x04000000        
-r_extern
-r_int
-r_int
-id|IADebugFlag
-suffix:semicolon
 DECL|macro|IF_IADBG
 mdefine_line|#define IF_IADBG(f) if (IADebugFlag &amp; (f))
 macro_line|#ifdef  CONFIG_ATM_IA_DEBUG   /* Debug build */
