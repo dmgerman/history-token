@@ -998,7 +998,7 @@ id|printk
 c_func
 (paren
 id|KERN_DEBUG
-l_string|&quot;memory : %p&bslash;n&quot;
+l_string|&quot;agp_allocate_memory: %p&bslash;n&quot;
 comma
 id|memory
 )paren

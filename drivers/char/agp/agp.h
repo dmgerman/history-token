@@ -556,6 +556,10 @@ macro_line|#ifndef PCI_DEVICE_ID_INTEL_820_0
 DECL|macro|PCI_DEVICE_ID_INTEL_820_0
 mdefine_line|#define PCI_DEVICE_ID_INTEL_820_0       0x2500
 macro_line|#endif
+macro_line|#ifndef PCI_DEVICE_ID_INTEL_820_UP_0
+DECL|macro|PCI_DEVICE_ID_INTEL_820_UP_0
+mdefine_line|#define PCI_DEVICE_ID_INTEL_820_UP_0    0x2501
+macro_line|#endif
 macro_line|#ifndef PCI_DEVICE_ID_INTEL_840_0
 DECL|macro|PCI_DEVICE_ID_INTEL_840_0
 mdefine_line|#define PCI_DEVICE_ID_INTEL_840_0&t;&t;0x1a21
@@ -570,7 +574,7 @@ mdefine_line|#define PCI_DEVICE_ID_INTEL_850_0     0x2530
 macro_line|#endif
 macro_line|#ifndef PCI_DEVICE_ID_INTEL_860_0
 DECL|macro|PCI_DEVICE_ID_INTEL_860_0
-mdefine_line|#define PCI_DEVICE_ID_INTEL_860_0&t;0x2532
+mdefine_line|#define PCI_DEVICE_ID_INTEL_860_0     0x2531
 macro_line|#endif
 macro_line|#ifndef PCI_DEVICE_ID_INTEL_810_DC100_0
 DECL|macro|PCI_DEVICE_ID_INTEL_810_DC100_0
@@ -694,6 +698,7 @@ DECL|macro|I830_RDRAM_ND
 mdefine_line|#define I830_RDRAM_ND(x)           (((x) &amp; 0x20) &gt;&gt; 5)
 DECL|macro|I830_RDRAM_DDT
 mdefine_line|#define I830_RDRAM_DDT(x)          (((x) &amp; 0x18) &gt;&gt; 3)
+multiline_comment|/* This one is for I830MP w. an external graphic card */
 DECL|macro|INTEL_I830_ERRSTS
 mdefine_line|#define INTEL_I830_ERRSTS          0x92
 multiline_comment|/* intel i820 registers */
