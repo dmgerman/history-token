@@ -144,12 +144,12 @@ r_int
 id|bi_size
 suffix:semicolon
 multiline_comment|/* residual I/O count */
-DECL|member|bi_max
+DECL|member|bi_max_vecs
 r_int
 r_int
-id|bi_max
+id|bi_max_vecs
 suffix:semicolon
-multiline_comment|/* max bvl_vecs we can hold,&n;&t;&t;&t;&t;&t;&t;   used as index into pool */
+multiline_comment|/* max bvl_vecs we can hold */
 DECL|member|bi_io_vec
 r_struct
 id|bio_vec
@@ -193,6 +193,15 @@ DECL|macro|BIO_CLONED
 mdefine_line|#define BIO_CLONED&t;4&t;/* doesn&squot;t own data */
 DECL|macro|bio_flagged
 mdefine_line|#define bio_flagged(bio, flag)&t;((bio)-&gt;bi_flags &amp; (1 &lt;&lt; (flag)))
+multiline_comment|/*&n; * top 4 bits of bio flags indicate the pool this bio came from&n; */
+DECL|macro|BIO_POOL_BITS
+mdefine_line|#define BIO_POOL_BITS&t;&t;(4)
+DECL|macro|BIO_POOL_OFFSET
+mdefine_line|#define BIO_POOL_OFFSET&t;&t;(BITS_PER_LONG - BIO_POOL_BITS)
+DECL|macro|BIO_POOL_MASK
+mdefine_line|#define BIO_POOL_MASK&t;&t;(1UL &lt;&lt; BIO_POOL_OFFSET)
+DECL|macro|BIO_POOL_IDX
+mdefine_line|#define BIO_POOL_IDX(bio)&t;((bio)-&gt;bi_flags &gt;&gt; BIO_POOL_OFFSET)&t;
 multiline_comment|/*&n; * bio bi_rw flags&n; *&n; * bit 0 -- read (not set) or write (set)&n; * bit 1 -- rw-ahead when set&n; * bit 2 -- barrier&n; */
 DECL|macro|BIO_RW
 mdefine_line|#define BIO_RW&t;&t;0
