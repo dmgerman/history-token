@@ -8992,8 +8992,12 @@ c_func
 (paren
 id|buf
 comma
-l_string|&quot;%04x&bslash;n&quot;
+l_string|&quot;%04lx&bslash;n&quot;
 comma
+(paren
+r_int
+r_int
+)paren
 id|tty_dev-&gt;dev
 )paren
 suffix:semicolon
