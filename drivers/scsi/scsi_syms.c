@@ -94,13 +94,6 @@ c_func
 id|scsi_do_cmd
 )paren
 suffix:semicolon
-DECL|variable|scsi_command_size
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|scsi_command_size
-)paren
-suffix:semicolon
 DECL|variable|scsi_ioctl
 id|EXPORT_SYMBOL
 c_func
