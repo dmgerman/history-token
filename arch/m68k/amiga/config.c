@@ -9,6 +9,7 @@ macro_line|#include &lt;linux/console.h&gt;
 macro_line|#include &lt;linux/rtc.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/vt_kern.h&gt;
+macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#ifdef CONFIG_ZORRO
 macro_line|#include &lt;linux/zorro.h&gt;
 macro_line|#endif
