@@ -1,4 +1,4 @@
-multiline_comment|/******************************************************************************&n; *&n; * Module Name: exnames - interpreter/scanner name load/execute&n; *              $Revision: 92 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Module Name: exnames - interpreter/scanner name load/execute&n; *              $Revision: 93 $&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;acinterp.h&quot;
@@ -19,7 +19,7 @@ mdefine_line|#define ACPI_AML_PACKAGE_TYPE3   0x400000
 DECL|macro|ACPI_AML_PACKAGE_TYPE4
 mdefine_line|#define ACPI_AML_PACKAGE_TYPE4   0x40000000
 multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ex_allocate_name_string&n; *&n; * PARAMETERS:  Prefix_count        - Count of parent levels. Special cases:&n; *                                    (-1) = root,  0 = none&n; *              Num_name_segs       - count of 4-character name segments&n; *&n; * RETURN:      A pointer to the allocated string segment.  This segment must&n; *              be deleted by the caller.&n; *&n; * DESCRIPTION: Allocate a buffer for a name string. Ensure allocated name&n; *              string is long enough, and set up prefix if any.&n; *&n; ******************************************************************************/
-id|NATIVE_CHAR
+r_char
 op_star
 DECL|function|acpi_ex_allocate_name_string
 id|acpi_ex_allocate_name_string
@@ -31,11 +31,11 @@ id|u32
 id|num_name_segs
 )paren
 (brace
-id|NATIVE_CHAR
+r_char
 op_star
 id|temp_ptr
 suffix:semicolon
-id|NATIVE_CHAR
+r_char
 op_star
 id|name_string
 suffix:semicolon
@@ -221,7 +221,7 @@ op_star
 op_star
 id|in_aml_address
 comma
-id|NATIVE_CHAR
+r_char
 op_star
 id|name_string
 )paren
@@ -496,7 +496,7 @@ id|u8
 op_star
 id|in_aml_address
 comma
-id|NATIVE_CHAR
+r_char
 op_star
 op_star
 id|out_name_string
@@ -517,7 +517,7 @@ id|aml_address
 op_assign
 id|in_aml_address
 suffix:semicolon
-id|NATIVE_CHAR
+r_char
 op_star
 id|name_string
 op_assign

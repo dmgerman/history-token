@@ -1,4 +1,4 @@
-multiline_comment|/******************************************************************************&n; *&n; * Name: acexcep.h - Exception codes returned by the ACPI subsystem&n; *       $Revision: 65 $&n; *&n; *****************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Name: acexcep.h - Exception codes returned by the ACPI subsystem&n; *       $Revision: 66 $&n; *&n; *****************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#ifndef __ACEXCEP_H__
 DECL|macro|__ACEXCEP_H__
@@ -212,7 +212,7 @@ mdefine_line|#define AE_CODE_CTRL_MAX                0x000B
 macro_line|#ifdef DEFINE_ACPI_GLOBALS
 multiline_comment|/*&n; * String versions of the exception codes above&n; * These strings must match the corresponding defines exactly&n; */
 DECL|variable|acpi_gbl_exception_names_env
-id|NATIVE_CHAR
+r_char
 r_const
 op_star
 id|acpi_gbl_exception_names_env
@@ -280,7 +280,7 @@ l_string|&quot;AE_ABORT_METHOD&quot;
 )brace
 suffix:semicolon
 DECL|variable|acpi_gbl_exception_names_pgm
-id|NATIVE_CHAR
+r_char
 r_const
 op_star
 id|acpi_gbl_exception_names_pgm
@@ -308,7 +308,7 @@ l_string|&quot;AE_BAD_DECIMAL_CONSTANT&quot;
 )brace
 suffix:semicolon
 DECL|variable|acpi_gbl_exception_names_tbl
-id|NATIVE_CHAR
+r_char
 r_const
 op_star
 id|acpi_gbl_exception_names_tbl
@@ -330,7 +330,7 @@ l_string|&quot;AE_INVALID_TABLE_LENGTH&quot;
 )brace
 suffix:semicolon
 DECL|variable|acpi_gbl_exception_names_aml
-id|NATIVE_CHAR
+r_char
 r_const
 op_star
 id|acpi_gbl_exception_names_aml
@@ -404,7 +404,7 @@ l_string|&quot;AE_AML_CIRCULAR_REFERENCE&quot;
 )brace
 suffix:semicolon
 DECL|variable|acpi_gbl_exception_names_ctrl
-id|NATIVE_CHAR
+r_char
 r_const
 op_star
 id|acpi_gbl_exception_names_ctrl

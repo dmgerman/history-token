@@ -1,4 +1,4 @@
-multiline_comment|/*******************************************************************************&n; *&n; * Module Name: utmisc - common utility procedures&n; *              $Revision: 90 $&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * Module Name: utmisc - common utility procedures&n; *              $Revision: 92 $&n; *&n; ******************************************************************************/
 multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;acnamesp.h&quot;
@@ -537,12 +537,12 @@ id|u32
 id|name
 )paren
 (brace
-id|NATIVE_CHAR
+r_char
 op_star
 id|name_ptr
 op_assign
 (paren
-id|NATIVE_CHAR
+r_char
 op_star
 )paren
 op_amp
@@ -636,7 +636,7 @@ id|u8
 DECL|function|acpi_ut_valid_acpi_character
 id|acpi_ut_valid_acpi_character
 (paren
-id|NATIVE_CHAR
+r_char
 id|character
 )paren
 (brace
@@ -688,7 +688,7 @@ id|acpi_status
 DECL|function|acpi_ut_strtoul64
 id|acpi_ut_strtoul64
 (paren
-id|NATIVE_CHAR
+r_char
 op_star
 id|string
 comma
@@ -1068,17 +1068,17 @@ id|status
 suffix:semicolon
 )brace
 multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    Acpi_ut_strupr&n; *&n; * PARAMETERS:  Src_string      - The source string to convert to&n; *&n; * RETURN:      Src_string&n; *&n; * DESCRIPTION: Convert string to uppercase&n; *&n; ******************************************************************************/
-id|NATIVE_CHAR
+r_char
 op_star
 DECL|function|acpi_ut_strupr
 id|acpi_ut_strupr
 (paren
-id|NATIVE_CHAR
+r_char
 op_star
 id|src_string
 )paren
 (brace
-id|NATIVE_CHAR
+r_char
 op_star
 id|string
 suffix:semicolon
@@ -2892,7 +2892,7 @@ r_void
 DECL|function|acpi_ut_report_error
 id|acpi_ut_report_error
 (paren
-id|NATIVE_CHAR
+r_char
 op_star
 id|module_name
 comma
@@ -2918,7 +2918,7 @@ r_void
 DECL|function|acpi_ut_report_warning
 id|acpi_ut_report_warning
 (paren
-id|NATIVE_CHAR
+r_char
 op_star
 id|module_name
 comma
@@ -2944,7 +2944,7 @@ r_void
 DECL|function|acpi_ut_report_info
 id|acpi_ut_report_info
 (paren
-id|NATIVE_CHAR
+r_char
 op_star
 id|module_name
 comma
