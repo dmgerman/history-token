@@ -877,25 +877,8 @@ suffix:colon
 multiline_comment|/* iBCS2 emulator entry point */
 id|err
 op_assign
-id|do_shmat
-(paren
-id|first
-comma
-(paren
-r_char
-id|__user
-op_star
-)paren
-id|ptr
-comma
-id|second
-comma
-(paren
-id|ulong
-op_star
-)paren
-id|third
-)paren
+op_minus
+id|EINVAL
 suffix:semicolon
 r_goto
 id|out

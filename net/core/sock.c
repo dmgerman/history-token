@@ -222,7 +222,7 @@ r_static
 r_char
 id|warncomm
 (braket
-l_int|16
+id|TASK_COMM_LEN
 )braket
 suffix:semicolon
 r_if

@@ -1044,6 +1044,10 @@ DECL|macro|ARCADIA_HOST_BRIDGE_IDSEL
 mdefine_line|#define ARCADIA_HOST_BRIDGE_IDSEL     17
 DECL|macro|ARCADIA_2ND_BRIDGE_IDSEL
 mdefine_line|#define ARCADIA_2ND_BRIDGE_IDSEL     3
+r_extern
+r_int
+id|mpc85xx_pci1_last_busno
+suffix:semicolon
 r_int
 DECL|function|mpc85xx_exclude_device
 id|mpc85xx_exclude_device
@@ -1075,13 +1079,21 @@ r_return
 id|PCIBIOS_DEVICE_NOT_FOUND
 suffix:semicolon
 macro_line|#ifdef CONFIG_85xx_PCI2
-multiline_comment|/* With the current code we know PCI2 will be bus 2, however this may&n;&t; * not be guarnteed */
+r_if
+c_cond
+(paren
+id|mpc85xx_pci1_last_busno
+)paren
 r_if
 c_cond
 (paren
 id|bus
 op_eq
-l_int|2
+(paren
+id|mpc85xx_pci1_last_busno
+op_plus
+l_int|1
+)paren
 op_logical_and
 id|PCI_SLOT
 c_func

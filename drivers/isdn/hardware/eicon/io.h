@@ -1036,39 +1036,6 @@ DECL|macro|PR_RAM
 mdefine_line|#define PR_RAM  ((struct pr_ram *)0)
 DECL|macro|RAM
 mdefine_line|#define RAM ((struct dual *)0)
-multiline_comment|/* ---------------------------------------------------------------------&n;  Functions for port io&n;   --------------------------------------------------------------------- */
-r_void
-id|outp_words_from_buffer
-(paren
-id|word
-id|__iomem
-op_star
-id|adr
-comma
-id|byte
-op_star
-id|P
-comma
-id|dword
-id|len
-)paren
-suffix:semicolon
-r_void
-id|inp_words_to_buffer
-(paren
-id|word
-id|__iomem
-op_star
-id|adr
-comma
-id|byte
-op_star
-id|P
-comma
-id|dword
-id|len
-)paren
-suffix:semicolon
 multiline_comment|/* ---------------------------------------------------------------------&n;  platform specific conversions&n;   --------------------------------------------------------------------- */
 r_extern
 r_void

@@ -14,34 +14,6 @@ id|diva_didd_load_time_finit
 r_void
 )paren
 suffix:semicolon
-r_int
-id|diva_didd_add_descriptor
-(paren
-id|DESCRIPTOR
-op_star
-id|d
-)paren
-suffix:semicolon
-r_int
-id|diva_didd_remove_descriptor
-(paren
-id|IDI_CALL
-id|request
-)paren
-suffix:semicolon
-r_int
-id|diva_didd_read_adapter_array
-(paren
-id|DESCRIPTOR
-op_star
-id|buffer
-comma
-r_int
-id|length
-)paren
-suffix:semicolon
-DECL|macro|OLD_MAX_DESCRIPTORS
-mdefine_line|#define OLD_MAX_DESCRIPTORS     16
 DECL|macro|NEW_MAX_DESCRIPTORS
 mdefine_line|#define NEW_MAX_DESCRIPTORS     64
 macro_line|#endif
