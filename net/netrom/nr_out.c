@@ -698,7 +698,11 @@ id|nr_cb
 op_star
 id|nr
 op_assign
-id|nr
+id|nr_sk
+c_func
+(paren
+id|sk
+)paren
 suffix:semicolon
 r_int
 r_char
