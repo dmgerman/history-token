@@ -1,6 +1,8 @@
 multiline_comment|/**&n; * @file arch/alpha/oprofile/op_model_ev4.c&n; *&n; * @remark Copyright 2002 OProfile authors&n; * @remark Read the file COPYING&n; *&n; * @author Richard Henderson &lt;rth@twiddle.net&gt;&n; */
 macro_line|#include &lt;linux/oprofile.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
+macro_line|#include &lt;linux/smp.h&gt;
+macro_line|#include &lt;asm/ptrace.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &quot;op_impl.h&quot;
 multiline_comment|/* Compute all of the registers in preparation for enabling profiling.  */
@@ -265,6 +267,56 @@ id|reg-&gt;proc_mode
 )paren
 suffix:semicolon
 )brace
+r_static
+r_void
+DECL|function|ev4_handle_interrupt
+id|ev4_handle_interrupt
+c_func
+(paren
+r_int
+r_int
+id|which
+comma
+r_struct
+id|pt_regs
+op_star
+id|regs
+comma
+r_struct
+id|op_counter_config
+op_star
+id|ctr
+)paren
+(brace
+multiline_comment|/* EV4 can&squot;t properly disable counters individually.&n;&t;   Discard &quot;disabled&quot; events now.  */
+r_if
+c_cond
+(paren
+op_logical_neg
+id|ctr
+(braket
+id|which
+)braket
+dot
+id|enabled
+)paren
+r_return
+suffix:semicolon
+multiline_comment|/* Record the sample.  */
+id|oprofile_add_sample
+c_func
+(paren
+id|regs-&gt;pc
+comma
+id|which
+comma
+id|smp_processor_id
+c_func
+(paren
+)paren
+)paren
+suffix:semicolon
+)brace
 DECL|variable|op_model_ev4
 r_struct
 id|op_axp_model
@@ -285,6 +337,11 @@ dot
 id|reset_ctr
 op_assign
 l_int|NULL
+comma
+dot
+id|handle_interrupt
+op_assign
+id|ev4_handle_interrupt
 comma
 dot
 id|cpu

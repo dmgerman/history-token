@@ -142,12 +142,6 @@ op_star
 id|regs
 )paren
 (brace
-r_if
-c_cond
-(paren
-id|model-&gt;handle_interrupt
-)paren
-(brace
 id|model
 op_member_access_from_pointer
 id|handle_interrupt
@@ -160,38 +154,6 @@ comma
 id|ctr
 )paren
 suffix:semicolon
-)brace
-r_else
-(brace
-multiline_comment|/* EV4 can&squot;t properly disable counters individually.&n;&t;&t;   Discard &quot;disabled&quot; events now.  */
-r_if
-c_cond
-(paren
-op_logical_neg
-id|ctr
-(braket
-id|which
-)braket
-dot
-id|enabled
-)paren
-r_return
-suffix:semicolon
-multiline_comment|/* Record the sample.  */
-id|oprofile_add_sample
-c_func
-(paren
-id|regs-&gt;pc
-comma
-id|which
-comma
-id|smp_processor_id
-c_func
-(paren
-)paren
-)paren
-suffix:semicolon
-)brace
 multiline_comment|/* If the user has selected an interrupt frequency that is&n;&t;   not exactly the width of the counter, write a new value&n;&t;   into the counter such that it&squot;ll overflow after N more&n;&t;   events.  */
 r_if
 c_cond
