@@ -191,6 +191,17 @@ op_star
 id|sreq
 )paren
 suffix:semicolon
+r_extern
+r_void
+id|__scsi_done
+c_func
+(paren
+r_struct
+id|scsi_cmnd
+op_star
+id|cmd
+)paren
+suffix:semicolon
 macro_line|#ifdef CONFIG_SCSI_LOGGING
 r_void
 id|scsi_log_send
