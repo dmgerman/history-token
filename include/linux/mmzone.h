@@ -152,9 +152,13 @@ r_struct
 id|list_head
 id|inactive_list
 suffix:semicolon
-DECL|member|refill_counter
+DECL|member|nr_scan_active
 id|atomic_t
-id|refill_counter
+id|nr_scan_active
+suffix:semicolon
+DECL|member|nr_scan_inactive
+id|atomic_t
+id|nr_scan_inactive
 suffix:semicolon
 DECL|member|nr_active
 r_int
