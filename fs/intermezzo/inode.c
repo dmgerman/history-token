@@ -605,8 +605,6 @@ comma
 id|presto_vmemory
 )paren
 suffix:semicolon
-id|MOD_DEC_USE_COUNT
-suffix:semicolon
 r_return
 suffix:semicolon
 )brace
