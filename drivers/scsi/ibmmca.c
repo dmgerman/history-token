@@ -17,6 +17,7 @@ macro_line|#include &lt;linux/blk.h&gt;
 macro_line|#include &lt;linux/proc_fs.h&gt;
 macro_line|#include &lt;linux/stat.h&gt;
 macro_line|#include &lt;linux/mca.h&gt;
+macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
@@ -1521,10 +1522,17 @@ suffix:semicolon
 r_int
 id|lastSCSI
 suffix:semicolon
+r_struct
+id|Scsi_Host
+op_star
+id|dev
+op_assign
+id|dev_id
+suffix:semicolon
 id|IBMLOCK
 c_func
 (paren
-id|dev_id
+id|dev
 )paren
 multiline_comment|/* search for one adapter-response on shared interrupt */
 r_for
@@ -1572,7 +1580,7 @@ id|host_index
 id|IBMUNLOCK
 c_func
 (paren
-id|dev_id
+id|dev
 )paren
 r_return
 suffix:semicolon
@@ -1613,7 +1621,7 @@ suffix:semicolon
 id|IBMUNLOCK
 c_func
 (paren
-id|dev_id
+id|dev
 )paren
 r_return
 suffix:semicolon
@@ -1647,13 +1655,18 @@ suffix:semicolon
 id|IBMUNLOCK
 c_func
 (paren
-id|dev_id
+id|dev
 )paren
 multiline_comment|/* cycle interrupt */
+id|cpu_relax
+c_func
+(paren
+)paren
+suffix:semicolon
 id|IBMLOCK
 c_func
 (paren
-id|dev_id
+id|dev
 )paren
 )brace
 id|ihost_index
@@ -1718,7 +1731,7 @@ suffix:semicolon
 id|IBMUNLOCK
 c_func
 (paren
-id|dev_id
+id|dev
 )paren
 multiline_comment|/*these should never happen (hw fails, or a local programming bug) */
 r_if
@@ -7590,7 +7603,7 @@ id|slot
 comma
 r_void
 op_star
-id|dev
+id|dev_id
 )paren
 (brace
 r_struct
@@ -7617,6 +7630,13 @@ suffix:semicolon
 r_int
 r_int
 id|flags
+suffix:semicolon
+r_struct
+id|Scsi_Host
+op_star
+id|dev
+op_assign
+id|dev_id
 suffix:semicolon
 id|IBMLOCK
 c_func
