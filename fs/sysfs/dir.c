@@ -485,6 +485,13 @@ r_if
 c_cond
 (paren
 id|error
+op_logical_and
+(paren
+id|error
+op_ne
+op_minus
+id|EEXIST
+)paren
 )paren
 id|d_drop
 c_func
