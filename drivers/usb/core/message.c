@@ -2964,14 +2964,7 @@ id|usb_host_config
 op_star
 id|config
 suffix:semicolon
-multiline_comment|/* dev-&gt;serialize guards all config changes */
-id|down
-c_func
-(paren
-op_amp
-id|dev-&gt;serialize
-)paren
-suffix:semicolon
+multiline_comment|/* caller must own dev-&gt;serialize (config won&squot;t change)&n;&t; * and the usb bus readlock (so driver bindings are stable);&n;&t; * so calls during probe() are fine&n;&t; */
 r_for
 c_loop
 (paren
@@ -3054,8 +3047,8 @@ id|dev-&gt;state
 op_assign
 id|USB_STATE_ADDRESS
 suffix:semicolon
-r_goto
-id|done
+r_return
+id|retval
 suffix:semicolon
 )brace
 id|dev-&gt;toggle
@@ -3121,25 +3114,7 @@ id|intf
 )paren
 suffix:semicolon
 )brace
-id|done
-suffix:colon
-id|up
-c_func
-(paren
-op_amp
-id|dev-&gt;serialize
-)paren
-suffix:semicolon
 r_return
-(paren
-id|retval
-OL
-l_int|0
-)paren
-ques
-c_cond
-id|retval
-suffix:colon
 l_int|0
 suffix:semicolon
 )brace
