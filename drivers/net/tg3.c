@@ -8906,6 +8906,12 @@ r_int
 r_int
 id|flags
 suffix:semicolon
+r_int
+r_int
+id|handled
+op_assign
+l_int|1
+suffix:semicolon
 id|spin_lock_irqsave
 c_func
 (paren
@@ -8993,6 +8999,14 @@ id|TG3_64BIT_REG_LOW
 suffix:semicolon
 )brace
 )brace
+r_else
+(brace
+multiline_comment|/* shared interrupt */
+id|handled
+op_assign
+l_int|0
+suffix:semicolon
+)brace
 id|spin_unlock_irqrestore
 c_func
 (paren
@@ -9003,7 +9017,11 @@ id|flags
 )paren
 suffix:semicolon
 r_return
-id|IRQ_HANDLED
+id|IRQ_RETVAL
+c_func
+(paren
+id|handled
+)paren
 suffix:semicolon
 )brace
 r_static
