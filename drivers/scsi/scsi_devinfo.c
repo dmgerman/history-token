@@ -632,6 +632,16 @@ id|BLIST_FORCELUN
 )brace
 comma
 (brace
+l_string|&quot;AFT PRO&quot;
+comma
+l_string|&quot;-IX CF&quot;
+comma
+l_string|&quot;0.0&gt;&quot;
+comma
+id|BLIST_FORCELUN
+)brace
+comma
+(brace
 l_string|&quot;BELKIN&quot;
 comma
 l_string|&quot;USB 2 HS-CF&quot;
@@ -649,6 +659,16 @@ comma
 l_int|NULL
 comma
 id|BLIST_SPARSELUN
+)brace
+comma
+(brace
+l_string|&quot;CBOX3&quot;
+comma
+l_string|&quot;USB Storage-SMC&quot;
+comma
+l_string|&quot;300A&quot;
+comma
+id|BLIST_FORCELUN
 )brace
 comma
 (brace
@@ -1358,6 +1378,16 @@ comma
 l_int|NULL
 comma
 id|BLIST_ISROM
+)brace
+comma
+(brace
+l_string|&quot;USB2.0&quot;
+comma
+l_string|&quot;SMARTMEDIA/XD&quot;
+comma
+l_int|NULL
+comma
+id|BLIST_FORCELUN
 )brace
 comma
 (brace
