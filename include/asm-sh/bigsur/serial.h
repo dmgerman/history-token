@@ -5,9 +5,6 @@ mdefine_line|#define _ASM_SERIAL_BIGSUR_H
 macro_line|#include &lt;asm/hd64465.h&gt;
 DECL|macro|BASE_BAUD
 mdefine_line|#define BASE_BAUD (3379200 / 16)
-multiline_comment|/* Leave 2 spare for possible PCMCIA serial cards */
-DECL|macro|RS_TABLE_SIZE
-mdefine_line|#define RS_TABLE_SIZE  3
 DECL|macro|STD_COM_FLAGS
 mdefine_line|#define STD_COM_FLAGS (ASYNC_BOOT_AUTOCONF | ASYNC_SKIP_TEST)
 DECL|macro|STD_SERIAL_PORT_DEFNS
