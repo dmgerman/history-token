@@ -2457,7 +2457,7 @@ r_return
 id|USB_STOR_TRANSPORT_GOOD
 suffix:semicolon
 )brace
-multiline_comment|/* If not UFI, we interpret the data as a result code &n;&t; * The first byte should always be a 0x0&n;&t; * The second byte &amp; 0x0F should be 0x0 for good, otherwise error &n;&t; */
+multiline_comment|/* If not UFI, we interpret the data as a result code &n;&t; * The first byte should always be a 0x0.&n;&t; *&n;&t; * Some bogus devices don&squot;t follow that rule.  They stuff the ASC&n;&t; * into the first byte -- so if it&squot;s non-zero, call it a failure.&n;&t; */
 r_if
 c_cond
 (paren
@@ -2470,7 +2470,7 @@ l_int|0
 id|US_DEBUGP
 c_func
 (paren
-l_string|&quot;CBI IRQ data showed reserved bType %d&bslash;n&quot;
+l_string|&quot;CBI IRQ data showed reserved bType 0x%x&bslash;n&quot;
 comma
 id|us-&gt;iobuf
 (braket
@@ -2478,10 +2478,11 @@ l_int|0
 )braket
 )paren
 suffix:semicolon
-r_return
-id|USB_STOR_TRANSPORT_ERROR
+r_goto
+id|Failed
 suffix:semicolon
 )brace
+multiline_comment|/* The second byte &amp; 0x0F should be 0x0 for good, otherwise error */
 r_switch
 c_cond
 (paren
