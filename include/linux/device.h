@@ -853,10 +853,10 @@ id|device_class
 op_star
 id|devclass
 suffix:semicolon
-DECL|member|subsys
+DECL|member|kset
 r_struct
-id|subsystem
-id|subsys
+id|kset
+id|kset
 suffix:semicolon
 DECL|member|devnum
 id|u32

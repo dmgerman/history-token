@@ -10,7 +10,7 @@ mdefine_line|#define to_dev(node) container_of(node,struct device,kobj.entry)
 r_extern
 r_struct
 id|subsystem
-id|device_subsys
+id|devices_subsys
 suffix:semicolon
 multiline_comment|/**&n; * device_suspend - suspend/remove all devices on the device ree&n; * @state:&t;state we&squot;re entering&n; * @level:&t;what stage of the suspend process we&squot;re at&n; *    (emb: it seems that these two arguments are described backwards of what&n; *          they actually mean .. is this correct?)&n; *&n; * The entries in the global device list are inserted such that they&squot;re in a&n; * depth-first ordering.  So, simply interate over the list, and call the &n; * driver&squot;s suspend or remove callback for each device.&n; */
 DECL|function|device_suspend
@@ -46,7 +46,7 @@ id|down_write
 c_func
 (paren
 op_amp
-id|device_subsys.rwsem
+id|devices_subsys.rwsem
 )paren
 suffix:semicolon
 id|list_for_each
@@ -55,7 +55,7 @@ c_func
 id|node
 comma
 op_amp
-id|device_subsys.kset.list
+id|devices_subsys.kset.list
 )paren
 (brace
 r_struct
@@ -121,7 +121,7 @@ id|up_write
 c_func
 (paren
 op_amp
-id|device_subsys.rwsem
+id|devices_subsys.rwsem
 )paren
 suffix:semicolon
 r_return
@@ -147,7 +147,7 @@ id|down_write
 c_func
 (paren
 op_amp
-id|device_subsys.rwsem
+id|devices_subsys.rwsem
 )paren
 suffix:semicolon
 id|list_for_each_prev
@@ -156,7 +156,7 @@ c_func
 id|node
 comma
 op_amp
-id|device_subsys.kset.list
+id|devices_subsys.kset.list
 )paren
 (brace
 r_struct
@@ -202,7 +202,7 @@ id|up_write
 c_func
 (paren
 op_amp
-id|device_subsys.rwsem
+id|devices_subsys.rwsem
 )paren
 suffix:semicolon
 id|printk
@@ -238,7 +238,7 @@ id|down_write
 c_func
 (paren
 op_amp
-id|device_subsys.rwsem
+id|devices_subsys.rwsem
 )paren
 suffix:semicolon
 id|list_for_each
@@ -247,7 +247,7 @@ c_func
 id|entry
 comma
 op_amp
-id|device_subsys.kset.list
+id|devices_subsys.kset.list
 )paren
 (brace
 r_struct
@@ -291,7 +291,7 @@ id|up_write
 c_func
 (paren
 op_amp
-id|device_subsys.rwsem
+id|devices_subsys.rwsem
 )paren
 suffix:semicolon
 )brace

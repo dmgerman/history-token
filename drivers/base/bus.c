@@ -14,7 +14,7 @@ mdefine_line|#define to_drv(node) container_of(node,struct device_driver,kobj.en
 DECL|macro|to_bus_attr
 mdefine_line|#define to_bus_attr(_attr) container_of(_attr,struct bus_attribute,attr)
 DECL|macro|to_bus
-mdefine_line|#define to_bus(obj) container_of(obj,struct bus_type,subsys.kobj)
+mdefine_line|#define to_bus(obj) container_of(obj,struct bus_type,subsys.kset.kobj)
 multiline_comment|/*&n; * sysfs bindings for drivers&n; */
 DECL|macro|to_drv_attr
 mdefine_line|#define to_drv_attr(_attr) container_of(_attr,struct driver_attribute,attr)
@@ -463,7 +463,7 @@ id|sysfs_create_file
 c_func
 (paren
 op_amp
-id|bus-&gt;subsys.kobj
+id|bus-&gt;subsys.kset.kobj
 comma
 op_amp
 id|attr-&gt;attr
@@ -516,7 +516,7 @@ id|sysfs_remove_file
 c_func
 (paren
 op_amp
-id|bus-&gt;subsys.kobj
+id|bus-&gt;subsys.kset.kobj
 comma
 op_amp
 id|attr-&gt;attr
@@ -545,23 +545,14 @@ id|bus_sysfs_ops
 comma
 )brace
 suffix:semicolon
-DECL|variable|bus_subsys
-r_struct
-id|subsystem
-id|bus_subsys
-op_assign
-(brace
-dot
-id|kobj
-op_assign
-(brace
-dot
-id|name
-op_assign
-l_string|&quot;bus&quot;
-)brace
+id|decl_subsys
+c_func
+(paren
+id|bus
 comma
-)brace
+op_amp
+id|ktype_bus
+)paren
 suffix:semicolon
 multiline_comment|/**&n; *&t;bus_for_each_dev - device iterator.&n; *&t;@bus:&t;bus type.&n; *&t;@start:&t;device to start iterating from.&n; *&t;@data:&t;data for the callback.&n; *&t;@fn:&t;function to be called for each device.&n; *&n; *&t;Iterate over @bus&squot;s list of devices, and call @fn for each,&n; *&t;passing it @data. If @start is not NULL, we use that device to&n; *&t;begin iterating from.&n; *&n; *&t;We check the return of @fn each time. If it returns anything&n; *&t;other than 0, we break out and return that value.&n; *&n; *&t;NOTE: The device that returns a non-zero value is not retained&n; *&t;in any way, nor is its refcount incremented. If the caller needs&n; *&t;to retain this data, it should do, and increment the reference &n; *&t;count in the supplied callback.&n; */
 DECL|function|bus_for_each_dev
@@ -1538,12 +1529,7 @@ comma
 id|KOBJ_NAME_LEN
 )paren
 suffix:semicolon
-id|drv-&gt;kobj.ktype
-op_assign
-op_amp
-id|ktype_driver
-suffix:semicolon
-id|drv-&gt;kobj.subsys
+id|drv-&gt;kobj.kset
 op_assign
 op_amp
 id|bus-&gt;drivers
@@ -1725,22 +1711,20 @@ id|bus
 id|strncpy
 c_func
 (paren
-id|bus-&gt;subsys.kobj.name
+id|bus-&gt;subsys.kset.kobj.name
 comma
 id|bus-&gt;name
 comma
 id|KOBJ_NAME_LEN
 )paren
 suffix:semicolon
-id|bus-&gt;subsys.kobj.ktype
-op_assign
-op_amp
-id|ktype_bus
-suffix:semicolon
-id|bus-&gt;subsys.kobj.subsys
-op_assign
-op_amp
+id|subsys_set_kset
+c_func
+(paren
+id|bus
+comma
 id|bus_subsys
+)paren
 suffix:semicolon
 id|subsystem_register
 c_func
@@ -1785,6 +1769,11 @@ id|bus-&gt;drivers.subsys
 op_assign
 op_amp
 id|bus-&gt;subsys
+suffix:semicolon
+id|bus-&gt;drivers.ktype
+op_assign
+op_amp
+id|ktype_driver
 suffix:semicolon
 id|kset_register
 c_func

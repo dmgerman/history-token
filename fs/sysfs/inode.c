@@ -534,7 +534,7 @@ id|error
 suffix:semicolon
 )brace
 DECL|macro|to_subsys
-mdefine_line|#define to_subsys(k) container_of(k,struct subsystem,kobj)
+mdefine_line|#define to_subsys(k) container_of(k,struct subsystem,kset.kobj)
 DECL|macro|to_sattr
 mdefine_line|#define to_sattr(a) container_of(a,struct subsys_attribute,attr)
 multiline_comment|/**&n; * Subsystem file operations.&n; * These operations allow subsystems to have files that can be &n; * read/written. &n; */
@@ -1184,6 +1184,18 @@ r_goto
 id|Einval
 suffix:semicolon
 multiline_comment|/* if the kobject has no ktype, then we assume that it is a subsystem&n;&t; * itself, and use ops for it.&n;&t; */
+r_if
+c_cond
+(paren
+id|kobj-&gt;kset
+op_logical_and
+id|kobj-&gt;kset-&gt;ktype
+)paren
+id|ops
+op_assign
+id|kobj-&gt;kset-&gt;ktype-&gt;sysfs_ops
+suffix:semicolon
+r_else
 r_if
 c_cond
 (paren

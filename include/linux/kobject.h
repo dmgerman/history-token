@@ -35,12 +35,6 @@ id|kobject
 op_star
 id|parent
 suffix:semicolon
-DECL|member|subsys
-r_struct
-id|subsystem
-op_star
-id|subsys
-suffix:semicolon
 DECL|member|kset
 r_struct
 id|kset
@@ -338,11 +332,6 @@ r_struct
 id|kset
 id|kset
 suffix:semicolon
-DECL|member|kobj
-r_struct
-id|kobject
-id|kobj
-suffix:semicolon
 DECL|member|rwsem
 r_struct
 id|rw_semaphore
@@ -350,6 +339,18 @@ id|rwsem
 suffix:semicolon
 )brace
 suffix:semicolon
+DECL|macro|decl_subsys
+mdefine_line|#define decl_subsys(_name,_type) &bslash;&n;struct subsystem _name##_subsys = { &bslash;&n;&t;.kset = { &bslash;&n;&t;&t;.kobj = { .name = __stringify(_name) }, &bslash;&n;&t;&t;.ktype = _type, &bslash;&n;&t;} &bslash;&n;}
+multiline_comment|/**&n; * Helpers for setting the kset of registered objects.&n; * Often, a registered object belongs to a kset embedded in a &n; * subsystem. These do no magic, just make the resulting code&n; * easier to follow. &n; */
+multiline_comment|/**&n; *&t;kobj_set_kset_s(obj,subsys) - set kset for embedded kobject.&n; *&t;@obj:&t;&t;ptr to some object type.&n; *&t;@subsys:&t;a subsystem object (not a ptr).&n; *&n; *&t;Can be used for any object type with an embedded -&gt;kobj.&n; */
+DECL|macro|kobj_set_kset_s
+mdefine_line|#define kobj_set_kset_s(obj,subsys) &bslash;&n;&t;(obj)-&gt;kobj.kset = &amp;(subsys).kset
+multiline_comment|/**&n; *&t;kset_set_kset_s(obj,subsys) - set kset for embedded kset.&n; *&t;@obj:&t;&t;ptr to some object type.&n; *&t;@subsys:&t;a subsystem object (not a ptr).&n; *&n; *&t;Can be used for any object type with an embedded -&gt;kset.&n; *&t;Sets the kset of @obj&squot;s  embedded kobject (via its embedded&n; *&t;kset) to @subsys.kset. This makes @obj a member of that &n; *&t;kset.&n; */
+DECL|macro|kset_set_kset_s
+mdefine_line|#define kset_set_kset_s(obj,subsys) &bslash;&n;&t;(obj)-&gt;kset.kobj.kset = &amp;(subsys).kset
+multiline_comment|/**&n; *&t;subsys_set_kset(obj,subsys) - set kset for subsystem&n; *&t;@obj:&t;&t;ptr to some object type.&n; *&t;@subsys:&t;a subsystem object (not a ptr).&n; *&n; *&t;Can be used for any object type with an embedded -&gt;subsys.&n; *&t;Sets the kset of @obj&squot;s kobject to @subsys.kset. This makes&n; *&t;the object a member of that kset.&n; */
+DECL|macro|subsys_set_kset
+mdefine_line|#define subsys_set_kset(obj,_subsys) &bslash;&n;&t;(obj)-&gt;subsys.kset.kobj.kset = &amp;(_subsys).kset
 r_extern
 r_void
 id|subsystem_init
