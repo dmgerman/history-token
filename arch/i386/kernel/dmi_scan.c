@@ -637,6 +637,7 @@ id|dmi_ident
 id|DMI_STRING_MAX
 )braket
 suffix:semicolon
+macro_line|#ifdef CONFIG_ACPI_BOOT
 multiline_comment|/* print some information suitable for a blacklist entry. */
 DECL|function|dmi_dump_system
 r_static
@@ -711,6 +712,7 @@ id|DMI_BOARD_VERSION
 )paren
 suffix:semicolon
 )brace
+macro_line|#endif
 multiline_comment|/*&n; *&t;Save a DMI string&n; */
 DECL|function|dmi_save_ident
 r_static
