@@ -478,11 +478,6 @@ op_star
 id|driver_data
 )paren
 suffix:semicolon
-multiline_comment|/* deprecated */
-DECL|macro|cpufreq_register
-mdefine_line|#define cpufreq_register(x)   cpufreq_register_driver(x)
-DECL|macro|cpufreq_unregister
-mdefine_line|#define cpufreq_unregister() cpufreq_unregister_driver(NULL)
 r_void
 id|cpufreq_notify_transition
 c_func
@@ -967,26 +962,6 @@ r_struct
 id|cpufreq_frequency_table
 op_star
 id|table
-)paren
-suffix:semicolon
-r_int
-id|cpufreq_frequency_table_setpolicy
-c_func
-(paren
-r_struct
-id|cpufreq_policy
-op_star
-id|policy
-comma
-r_struct
-id|cpufreq_frequency_table
-op_star
-id|table
-comma
-r_int
-r_int
-op_star
-id|index
 )paren
 suffix:semicolon
 r_int
