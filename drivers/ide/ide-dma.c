@@ -145,12 +145,6 @@ l_string|&quot;ALL&quot;
 )brace
 comma
 (brace
-l_string|&quot;CRD-8480C&quot;
-comma
-l_string|&quot;ALL&quot;
-)brace
-comma
-(brace
 l_string|&quot;CRD-8482B&quot;
 comma
 l_string|&quot;ALL&quot;
