@@ -1203,11 +1203,6 @@ id|hexium
 )paren
 )paren
 suffix:semicolon
-(paren
-r_struct
-id|hexium
-op_star
-)paren
 id|dev-&gt;ext_priv
 op_assign
 id|hexium
