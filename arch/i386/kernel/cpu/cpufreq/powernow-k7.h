@@ -1,12 +1,4 @@
 multiline_comment|/*&n; *  $Id: powernow-k7.h,v 1.2 2003/02/10 18:26:01 davej Exp $&n; *  (C) 2003 Dave Jones.&n; *&n; *  Licensed under the terms of the GNU GPL License version 2.&n; *&n; *  AMD-specific information&n; *&n; */
-macro_line|#ifndef MSR_K7_FID_VID_CTL
-DECL|macro|MSR_K7_FID_VID_CTL
-mdefine_line|#define MSR_K7_FID_VID_CTL&t;&t;0xc0010041
-macro_line|#endif
-macro_line|#ifndef MSR_K7_FID_VID_STATUS
-DECL|macro|MSR_K7_FID_VID_STATUS
-mdefine_line|#define MSR_K7_FID_VID_STATUS&t;0xc0010042
-macro_line|#endif
 DECL|union|msr_fidvidctl
 r_union
 id|msr_fidvidctl

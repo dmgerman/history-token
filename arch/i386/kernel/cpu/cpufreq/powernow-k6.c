@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *  $Id: powernow-k6.c,v 1.48 2003/02/22 10:23:46 db Exp $&n; *  This file was part of Powertweak Linux (http://powertweak.sf.net)&n; *  and is shared with the Linux Kernel module.&n; *&n; *  (C) 2000-2003  Dave Jones, Arjan van de Ven, Janne P&#xfffd;nk&#xfffd;l&#xfffd;, Dominik Brodowski.&n; *&n; *  Licensed under the terms of the GNU GPL License version 2.&n; *&n; *  BIG FAT DISCLAIMER: Work in progress code. Possibly *dangerous*&n; */
+multiline_comment|/*&n; *  This file was based upon code in Powertweak Linux (http://powertweak.sf.net)&n; *  (C) 2000-2003  Dave Jones, Arjan van de Ven, Janne P&#xfffd;nk&#xfffd;l&#xfffd;, Dominik Brodowski.&n; *&n; *  Licensed under the terms of the GNU GPL License version 2.&n; *&n; *  BIG FAT DISCLAIMER: Work in progress code. Possibly *dangerous*&n; */
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/module.h&gt; 
 macro_line|#include &lt;linux/init.h&gt;
@@ -809,7 +809,7 @@ suffix:semicolon
 )brace
 id|MODULE_AUTHOR
 (paren
-l_string|&quot;Arjan van de Ven &lt;arjanv@redhat.com&gt;, Dave Jones &lt;davej@suse.de&gt;, Dominik Brodowski &lt;linux@brodo.de&gt;&quot;
+l_string|&quot;Arjan van de Ven &lt;arjanv@redhat.com&gt;, Dave Jones &lt;davej@codemonkey.org.uk&gt;, Dominik Brodowski &lt;linux@brodo.de&gt;&quot;
 )paren
 suffix:semicolon
 id|MODULE_DESCRIPTION
