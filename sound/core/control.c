@@ -4401,6 +4401,7 @@ id|ue
 op_plus
 r_sizeof
 (paren
+op_star
 id|ue
 )paren
 suffix:semicolon
