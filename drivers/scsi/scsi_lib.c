@@ -534,10 +534,6 @@ id|cmd-&gt;serial_number_at_timeout
 op_assign
 l_int|0
 suffix:semicolon
-id|cmd-&gt;flags
-op_assign
-l_int|0
-suffix:semicolon
 id|cmd-&gt;abort_reason
 op_assign
 l_int|0

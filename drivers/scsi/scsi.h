@@ -141,22 +141,6 @@ DECL|macro|SCSI_2
 mdefine_line|#define SCSI_2          3
 DECL|macro|SCSI_3
 mdefine_line|#define SCSI_3          4
-multiline_comment|/*&n; *  Every SCSI command starts with a one byte OP-code.&n; *  The next byte&squot;s high three bits are the LUN of the&n; *  device.  Any multi-byte quantities are stored high byte&n; *  first, and may have a 5 bit MSB in the same byte&n; *  as the LUN.&n; */
-multiline_comment|/*&n; *  As the scsi do command functions are intelligent, and may need to&n; *  redo a command, we need to keep track of the last command&n; *  executed on each one.&n; */
-DECL|macro|WAS_RESET
-mdefine_line|#define WAS_RESET       0x01
-DECL|macro|WAS_TIMEDOUT
-mdefine_line|#define WAS_TIMEDOUT    0x02
-DECL|macro|WAS_SENSE
-mdefine_line|#define WAS_SENSE       0x04
-DECL|macro|IS_RESETTING
-mdefine_line|#define IS_RESETTING    0x08
-DECL|macro|IS_ABORTING
-mdefine_line|#define IS_ABORTING     0x10
-DECL|macro|ASKED_FOR_SENSE
-mdefine_line|#define ASKED_FOR_SENSE 0x20
-DECL|macro|SYNC_RESET
-mdefine_line|#define SYNC_RESET      0x40
 r_struct
 id|Scsi_Host
 suffix:semicolon

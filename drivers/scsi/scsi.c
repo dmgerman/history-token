@@ -1421,10 +1421,6 @@ id|cmd-&gt;buffer
 op_assign
 id|sreq-&gt;sr_buffer
 suffix:semicolon
-id|cmd-&gt;flags
-op_assign
-l_int|0
-suffix:semicolon
 id|cmd-&gt;retries
 op_assign
 l_int|0

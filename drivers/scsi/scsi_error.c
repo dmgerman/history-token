@@ -790,24 +790,6 @@ op_eq
 id|DID_RESET
 )paren
 (brace
-r_if
-c_cond
-(paren
-id|scmd-&gt;flags
-op_amp
-id|IS_RESETTING
-)paren
-(brace
-multiline_comment|/*&n;&t;&t;&t; * ok, this is normal.  we don&squot;t know whether in fact&n;&t;&t;&t; * the command in question really needs to be rerun&n;&t;&t;&t; * or not - if this was the original data command then&n;&t;&t;&t; * the answer is yes, otherwise we just flag it as&n;&t;&t;&t; * SUCCESS.&n;&t;&t;&t; */
-id|scmd-&gt;flags
-op_and_assign
-op_complement
-id|IS_RESETTING
-suffix:semicolon
-r_return
-id|NEEDS_RETRY
-suffix:semicolon
-)brace
 multiline_comment|/*&n;&t;&t; * rats.  we are already in the error handler, so we now&n;&t;&t; * get to try and figure out what to do next.  if the sense&n;&t;&t; * is valid, we have a pretty good idea of what to do.&n;&t;&t; * if not, we mark it as FAILED.&n;&t;&t; */
 r_return
 id|scsi_check_sense
@@ -3436,24 +3418,6 @@ suffix:semicolon
 r_case
 id|DID_RESET
 suffix:colon
-multiline_comment|/*&n;&t;&t; * in the normal case where we haven&squot;t initiated a reset,&n;&t;&t; * this is a failure.&n;&t;&t; */
-r_if
-c_cond
-(paren
-id|scmd-&gt;flags
-op_amp
-id|IS_RESETTING
-)paren
-(brace
-id|scmd-&gt;flags
-op_and_assign
-op_complement
-id|IS_RESETTING
-suffix:semicolon
-r_goto
-id|maybe_retry
-suffix:semicolon
-)brace
 r_return
 id|SUCCESS
 suffix:semicolon
