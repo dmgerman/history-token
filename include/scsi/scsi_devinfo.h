@@ -36,5 +36,9 @@ DECL|macro|BLIST_USE_10_BYTE_MS
 mdefine_line|#define BLIST_USE_10_BYTE_MS&t;0x8000&t;/* use 10 byte ms before 6 byte ms */
 DECL|macro|BLIST_MS_192_BYTES_FOR_3F
 mdefine_line|#define BLIST_MS_192_BYTES_FOR_3F&t;0x10000&t;/*  192 byte ms page 0x3f request */
+DECL|macro|BLIST_REPORTLUN2
+mdefine_line|#define BLIST_REPORTLUN2&t;0x20000&t;/* try REPORT_LUNS even for SCSI-2 devs&n; &t;&t;&t;&t;&t;   (if HBA supports more than 8 LUNs) */
+DECL|macro|BLIST_NOREPORTLUN
+mdefine_line|#define BLIST_NOREPORTLUN&t;0x40000&t;/* don&squot;t try REPORT_LUNS scan (SCSI-3 devs) */
 macro_line|#endif
 eof
