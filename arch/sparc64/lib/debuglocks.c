@@ -619,12 +619,12 @@ id|__asm__
 id|__volatile__
 c_func
 (paren
-l_string|&quot;&t;ldx&t;&t;[%0], %%g5&bslash;n&quot;
-l_string|&quot;&t;brlz,a,pn&t;%%g5, 2f&bslash;n&quot;
+l_string|&quot;&t;ldx&t;&t;[%0], %%g1&bslash;n&quot;
+l_string|&quot;&t;brlz,a,pn&t;%%g1, 2f&bslash;n&quot;
 l_string|&quot;&t; mov&t;&t;1, %0&bslash;n&quot;
-l_string|&quot;&t;add&t;&t;%%g5, 1, %%g7&bslash;n&quot;
-l_string|&quot;&t;casx&t;&t;[%0], %%g5, %%g7&bslash;n&quot;
-l_string|&quot;&t;sub&t;&t;%%g5, %%g7, %0&bslash;n&quot;
+l_string|&quot;&t;add&t;&t;%%g1, 1, %%g7&bslash;n&quot;
+l_string|&quot;&t;casx&t;&t;[%0], %%g1, %%g7&bslash;n&quot;
+l_string|&quot;&t;sub&t;&t;%%g1, %%g7, %0&bslash;n&quot;
 l_string|&quot;2:&quot;
 suffix:colon
 l_string|&quot;=r&quot;
@@ -640,7 +640,7 @@ id|rw-&gt;lock
 )paren
 )paren
 suffix:colon
-l_string|&quot;g5&quot;
+l_string|&quot;g1&quot;
 comma
 l_string|&quot;g7&quot;
 comma
@@ -755,11 +755,11 @@ id|__volatile__
 c_func
 (paren
 l_string|&quot;&t;membar&t;#StoreLoad | #LoadLoad&bslash;n&quot;
-l_string|&quot;&t;ldx&t;[%0], %%g5&bslash;n&quot;
-l_string|&quot;&t;sub&t;%%g5, 1, %%g7&bslash;n&quot;
-l_string|&quot;&t;casx&t;[%0], %%g5, %%g7&bslash;n&quot;
+l_string|&quot;&t;ldx&t;[%0], %%g1&bslash;n&quot;
+l_string|&quot;&t;sub&t;%%g1, 1, %%g7&bslash;n&quot;
+l_string|&quot;&t;casx&t;[%0], %%g1, %%g7&bslash;n&quot;
 l_string|&quot;&t;membar&t;#StoreLoad | #StoreStore&bslash;n&quot;
-l_string|&quot;&t;sub&t;%%g5, %%g7, %0&bslash;n&quot;
+l_string|&quot;&t;sub&t;%%g1, %%g7, %0&bslash;n&quot;
 suffix:colon
 l_string|&quot;=r&quot;
 (paren
@@ -774,7 +774,7 @@ id|rw-&gt;lock
 )paren
 )paren
 suffix:colon
-l_string|&quot;g5&quot;
+l_string|&quot;g1&quot;
 comma
 l_string|&quot;g7&quot;
 comma
@@ -932,13 +932,13 @@ c_func
 (paren
 l_string|&quot;&t;mov&t;1, %%g3&bslash;n&quot;
 l_string|&quot;&t;sllx&t;%%g3, 63, %%g3&bslash;n&quot;
-l_string|&quot;&t;ldx&t;[%0], %%g5&bslash;n&quot;
-l_string|&quot;&t;brlz,pn&t;%%g5, 1f&bslash;n&quot;
-l_string|&quot;&t; or&t;%%g5, %%g3, %%g7&bslash;n&quot;
-l_string|&quot;&t;casx&t;[%0], %%g5, %%g7&bslash;n&quot;
+l_string|&quot;&t;ldx&t;[%0], %%g1&bslash;n&quot;
+l_string|&quot;&t;brlz,pn&t;%%g1, 1f&bslash;n&quot;
+l_string|&quot;&t; or&t;%%g1, %%g3, %%g7&bslash;n&quot;
+l_string|&quot;&t;casx&t;[%0], %%g1, %%g7&bslash;n&quot;
 l_string|&quot;&t;membar&t;#StoreLoad | #StoreStore&bslash;n&quot;
 l_string|&quot;&t;ba,pt&t;%%xcc, 2f&bslash;n&quot;
-l_string|&quot;&t; sub&t;%%g5, %%g7, %0&bslash;n&quot;
+l_string|&quot;&t; sub&t;%%g1, %%g7, %0&bslash;n&quot;
 l_string|&quot;1:&t;mov&t;1, %0&bslash;n&quot;
 l_string|&quot;2:&quot;
 suffix:colon
@@ -957,7 +957,7 @@ id|rw-&gt;lock
 suffix:colon
 l_string|&quot;g3&quot;
 comma
-l_string|&quot;g5&quot;
+l_string|&quot;g1&quot;
 comma
 l_string|&quot;g7&quot;
 comma
@@ -1064,10 +1064,10 @@ c_func
 (paren
 l_string|&quot;&t;&t;mov&t;1, %%g3&bslash;n&quot;
 l_string|&quot;&t;&t;sllx&t;%%g3, 63, %%g3&bslash;n&quot;
-l_string|&quot;1:&t;&t;ldx&t;[%0], %%g5&bslash;n&quot;
-l_string|&quot;&t;&t;andn&t;%%g5, %%g3, %%g7&bslash;n&quot;
-l_string|&quot;&t;&t;casx&t;[%0], %%g5, %%g7&bslash;n&quot;
-l_string|&quot;&t;&t;cmp&t;%%g5, %%g7&bslash;n&quot;
+l_string|&quot;1:&t;&t;ldx&t;[%0], %%g1&bslash;n&quot;
+l_string|&quot;&t;&t;andn&t;%%g1, %%g3, %%g7&bslash;n&quot;
+l_string|&quot;&t;&t;casx&t;[%0], %%g1, %%g7&bslash;n&quot;
+l_string|&quot;&t;&t;cmp&t;%%g1, %%g7&bslash;n&quot;
 l_string|&quot;&t;&t;bne,pn&t;%%xcc, 1b&bslash;n&quot;
 l_string|&quot;&t;&t; membar&t;#StoreLoad | #StoreStore&quot;
 suffix:colon
@@ -1083,7 +1083,7 @@ id|rw-&gt;lock
 suffix:colon
 l_string|&quot;g3&quot;
 comma
-l_string|&quot;g5&quot;
+l_string|&quot;g1&quot;
 comma
 l_string|&quot;g7&quot;
 comma
@@ -1229,11 +1229,11 @@ c_func
 l_string|&quot;&t;membar&t;#StoreLoad | #LoadLoad&bslash;n&quot;
 l_string|&quot;&t;mov&t;1, %%g3&bslash;n&quot;
 l_string|&quot;&t;sllx&t;%%g3, 63, %%g3&bslash;n&quot;
-l_string|&quot;&t;ldx&t;[%0], %%g5&bslash;n&quot;
-l_string|&quot;&t;andn&t;%%g5, %%g3, %%g7&bslash;n&quot;
-l_string|&quot;&t;casx&t;[%0], %%g5, %%g7&bslash;n&quot;
+l_string|&quot;&t;ldx&t;[%0], %%g1&bslash;n&quot;
+l_string|&quot;&t;andn&t;%%g1, %%g3, %%g7&bslash;n&quot;
+l_string|&quot;&t;casx&t;[%0], %%g1, %%g7&bslash;n&quot;
 l_string|&quot;&t;membar&t;#StoreLoad | #StoreStore&bslash;n&quot;
-l_string|&quot;&t;sub&t;%%g5, %%g7, %0&bslash;n&quot;
+l_string|&quot;&t;sub&t;%%g1, %%g7, %0&bslash;n&quot;
 suffix:colon
 l_string|&quot;=r&quot;
 (paren
@@ -1250,7 +1250,7 @@ id|rw-&gt;lock
 suffix:colon
 l_string|&quot;g3&quot;
 comma
-l_string|&quot;g5&quot;
+l_string|&quot;g1&quot;
 comma
 l_string|&quot;g7&quot;
 comma
@@ -1339,13 +1339,13 @@ c_func
 (paren
 l_string|&quot;&t;mov&t;1, %%g3&bslash;n&quot;
 l_string|&quot;&t;sllx&t;%%g3, 63, %%g3&bslash;n&quot;
-l_string|&quot;&t;ldx&t;[%0], %%g5&bslash;n&quot;
-l_string|&quot;&t;brlz,pn&t;%%g5, 1f&bslash;n&quot;
-l_string|&quot;&t; or&t;%%g5, %%g3, %%g7&bslash;n&quot;
-l_string|&quot;&t;casx&t;[%0], %%g5, %%g7&bslash;n&quot;
+l_string|&quot;&t;ldx&t;[%0], %%g1&bslash;n&quot;
+l_string|&quot;&t;brlz,pn&t;%%g1, 1f&bslash;n&quot;
+l_string|&quot;&t; or&t;%%g1, %%g3, %%g7&bslash;n&quot;
+l_string|&quot;&t;casx&t;[%0], %%g1, %%g7&bslash;n&quot;
 l_string|&quot;&t;membar&t;#StoreLoad | #StoreStore&bslash;n&quot;
 l_string|&quot;&t;ba,pt&t;%%xcc, 2f&bslash;n&quot;
-l_string|&quot;&t; sub&t;%%g5, %%g7, %0&bslash;n&quot;
+l_string|&quot;&t; sub&t;%%g1, %%g7, %0&bslash;n&quot;
 l_string|&quot;1:&t;mov&t;1, %0&bslash;n&quot;
 l_string|&quot;2:&quot;
 suffix:colon
@@ -1364,7 +1364,7 @@ id|rw-&gt;lock
 suffix:colon
 l_string|&quot;g3&quot;
 comma
-l_string|&quot;g5&quot;
+l_string|&quot;g1&quot;
 comma
 l_string|&quot;g7&quot;
 comma
@@ -1413,10 +1413,10 @@ c_func
 (paren
 l_string|&quot;&t;&t;mov&t;1, %%g3&bslash;n&quot;
 l_string|&quot;&t;&t;sllx&t;%%g3, 63, %%g3&bslash;n&quot;
-l_string|&quot;1:&t;&t;ldx&t;[%0], %%g5&bslash;n&quot;
-l_string|&quot;&t;&t;andn&t;%%g5, %%g3, %%g7&bslash;n&quot;
-l_string|&quot;&t;&t;casx&t;[%0], %%g5, %%g7&bslash;n&quot;
-l_string|&quot;&t;&t;cmp&t;%%g5, %%g7&bslash;n&quot;
+l_string|&quot;1:&t;&t;ldx&t;[%0], %%g1&bslash;n&quot;
+l_string|&quot;&t;&t;andn&t;%%g1, %%g3, %%g7&bslash;n&quot;
+l_string|&quot;&t;&t;casx&t;[%0], %%g1, %%g7&bslash;n&quot;
+l_string|&quot;&t;&t;cmp&t;%%g1, %%g7&bslash;n&quot;
 l_string|&quot;&t;&t;bne,pn&t;%%xcc, 1b&bslash;n&quot;
 l_string|&quot;&t;&t; membar&t;#StoreLoad | #StoreStore&quot;
 suffix:colon
@@ -1432,7 +1432,7 @@ id|rw-&gt;lock
 suffix:colon
 l_string|&quot;g3&quot;
 comma
-l_string|&quot;g5&quot;
+l_string|&quot;g1&quot;
 comma
 l_string|&quot;g7&quot;
 comma

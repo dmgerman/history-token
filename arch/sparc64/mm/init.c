@@ -414,10 +414,10 @@ c_func
 (paren
 l_string|&quot;1:&bslash;n&bslash;t&quot;
 l_string|&quot;ldx&t;[%2], %%g7&bslash;n&bslash;t&quot;
-l_string|&quot;and&t;%%g7, %1, %%g5&bslash;n&bslash;t&quot;
-l_string|&quot;or&t;%%g5, %0, %%g5&bslash;n&bslash;t&quot;
-l_string|&quot;casx&t;[%2], %%g7, %%g5&bslash;n&bslash;t&quot;
-l_string|&quot;cmp&t;%%g7, %%g5&bslash;n&bslash;t&quot;
+l_string|&quot;and&t;%%g7, %1, %%g1&bslash;n&bslash;t&quot;
+l_string|&quot;or&t;%%g1, %0, %%g1&bslash;n&bslash;t&quot;
+l_string|&quot;casx&t;[%2], %%g7, %%g1&bslash;n&bslash;t&quot;
+l_string|&quot;cmp&t;%%g7, %%g1&bslash;n&bslash;t&quot;
 l_string|&quot;bne,pn&t;%%xcc, 1b&bslash;n&bslash;t&quot;
 l_string|&quot; membar&t;#StoreLoad | #StoreStore&quot;
 suffix:colon
@@ -439,7 +439,7 @@ op_amp
 id|page-&gt;flags
 )paren
 suffix:colon
-l_string|&quot;g5&quot;
+l_string|&quot;g1&quot;
 comma
 l_string|&quot;g7&quot;
 )paren
@@ -479,13 +479,13 @@ c_func
 l_string|&quot;! test_and_clear_dcache_dirty&bslash;n&quot;
 l_string|&quot;1:&bslash;n&bslash;t&quot;
 l_string|&quot;ldx&t;[%2], %%g7&bslash;n&bslash;t&quot;
-l_string|&quot;srlx&t;%%g7, 24, %%g5&bslash;n&bslash;t&quot;
-l_string|&quot;and&t;%%g5, %3, %%g5&bslash;n&bslash;t&quot;
-l_string|&quot;cmp&t;%%g5, %0&bslash;n&bslash;t&quot;
+l_string|&quot;srlx&t;%%g7, 24, %%g1&bslash;n&bslash;t&quot;
+l_string|&quot;and&t;%%g1, %3, %%g1&bslash;n&bslash;t&quot;
+l_string|&quot;cmp&t;%%g1, %0&bslash;n&bslash;t&quot;
 l_string|&quot;bne,pn&t;%%icc, 2f&bslash;n&bslash;t&quot;
-l_string|&quot; andn&t;%%g7, %1, %%g5&bslash;n&bslash;t&quot;
-l_string|&quot;casx&t;[%2], %%g7, %%g5&bslash;n&bslash;t&quot;
-l_string|&quot;cmp&t;%%g7, %%g5&bslash;n&bslash;t&quot;
+l_string|&quot; andn&t;%%g7, %1, %%g1&bslash;n&bslash;t&quot;
+l_string|&quot;casx&t;[%2], %%g7, %%g1&bslash;n&bslash;t&quot;
+l_string|&quot;cmp&t;%%g7, %%g1&bslash;n&bslash;t&quot;
 l_string|&quot;bne,pn&t;%%xcc, 1b&bslash;n&bslash;t&quot;
 l_string|&quot; membar&t;#StoreLoad | #StoreStore&bslash;n&quot;
 l_string|&quot;2:&quot;
@@ -515,7 +515,7 @@ op_minus
 l_int|1UL
 )paren
 suffix:colon
-l_string|&quot;g5&quot;
+l_string|&quot;g1&quot;
 comma
 l_string|&quot;g7&quot;
 )paren
