@@ -3,7 +3,7 @@ macro_line|#ifndef ARM_ASM_SA1100_APM_H
 DECL|macro|ARM_ASM_SA1100_APM_H
 mdefine_line|#define ARM_ASM_SA1100_APM_H
 macro_line|#include &lt;linux/config.h&gt;
-macro_line|#ifdef CONFIG_APM
+macro_line|#if defined(CONFIG_APM) || defined(CONFIG_APM_MODULE)
 DECL|macro|APM_AC_OFFLINE
 mdefine_line|#define APM_AC_OFFLINE 0
 DECL|macro|APM_AC_ONLINE

@@ -1927,7 +1927,7 @@ id|btwrite
 c_func
 (paren
 op_complement
-l_int|0x0UL
+l_int|0U
 comma
 id|BT878_AINT_STAT
 )paren

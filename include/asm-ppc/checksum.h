@@ -56,7 +56,7 @@ id|dst_err
 )paren
 suffix:semicolon
 DECL|macro|csum_partial_copy_from_user
-mdefine_line|#define csum_partial_copy_from_user(src, dst, len, sum, errp)&t;&bslash;&n;&t;csum_partial_copy_generic((src), (dst), (len), (sum), (errp), NULL)
+mdefine_line|#define csum_partial_copy_from_user(src, dst, len, sum, errp)&t;&bslash;&n;&t;csum_partial_copy_generic((__force void *)(src), (dst), (len), (sum), (errp), NULL)
 multiline_comment|/* FIXME: this needs to be written to really do no check -- Cort */
 DECL|macro|csum_partial_copy_nocheck
 mdefine_line|#define csum_partial_copy_nocheck(src, dst, len, sum)&t;&bslash;&n;&t;csum_partial_copy_generic((src), (dst), (len), (sum), NULL, NULL)

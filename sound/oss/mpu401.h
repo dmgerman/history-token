@@ -47,6 +47,11 @@ r_struct
 id|address_info
 op_star
 id|hw_config
+comma
+r_struct
+id|resource
+op_star
+id|ports
 )paren
 suffix:semicolon
 r_int

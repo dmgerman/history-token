@@ -297,7 +297,7 @@ id|p-&gt;start
 suffix:semicolon
 id|newblock-&gt;filp
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|newblock-&gt;next
 op_assign
@@ -371,7 +371,7 @@ id|size
 suffix:semicolon
 id|newblock-&gt;filp
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|newblock-&gt;next
 op_assign
@@ -477,7 +477,7 @@ c_cond
 (paren
 id|p-&gt;filp
 op_eq
-l_int|0
+l_int|NULL
 op_logical_and
 id|start
 op_plus
@@ -570,7 +570,7 @@ id|p
 (brace
 id|p-&gt;filp
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 multiline_comment|/* Assumes a single contiguous range.  Needs a special filp in&n;&t; * &squot;heap&squot; to stop it being subsumed.&n;&t; */
 r_if
@@ -578,7 +578,7 @@ c_cond
 (paren
 id|p-&gt;next-&gt;filp
 op_eq
-l_int|0
+l_int|NULL
 )paren
 (brace
 r_struct
@@ -618,7 +618,7 @@ c_cond
 (paren
 id|p-&gt;prev-&gt;filp
 op_eq
-l_int|0
+l_int|NULL
 )paren
 (brace
 r_struct
@@ -748,7 +748,7 @@ id|size
 suffix:semicolon
 id|blocks-&gt;filp
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|blocks-&gt;next
 op_assign
@@ -867,7 +867,7 @@ id|filp
 (brace
 id|p-&gt;filp
 op_assign
-l_int|0
+l_int|NULL
 suffix:semicolon
 id|mark_block
 c_func
@@ -903,11 +903,11 @@ c_loop
 (paren
 id|p-&gt;filp
 op_eq
-l_int|0
+l_int|NULL
 op_logical_and
 id|p-&gt;next-&gt;filp
 op_eq
-l_int|0
+l_int|NULL
 )paren
 (brace
 r_struct
