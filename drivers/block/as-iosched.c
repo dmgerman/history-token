@@ -137,12 +137,6 @@ op_star
 id|hash
 suffix:semicolon
 multiline_comment|/* request hash */
-DECL|member|hash_valid_count
-r_int
-r_int
-id|hash_valid_count
-suffix:semicolon
-multiline_comment|/* barrier hash count */
 DECL|member|current_batch_expires
 r_int
 r_int
@@ -304,10 +298,10 @@ r_struct
 id|list_head
 id|hash
 suffix:semicolon
-DECL|member|hash_valid_count
+DECL|member|on_hash
 r_int
 r_int
-id|hash_valid_count
+id|on_hash
 suffix:semicolon
 multiline_comment|/*&n;&t; * expire fifo&n;&t; */
 DECL|member|fifo
@@ -321,6 +315,7 @@ r_int
 id|expires
 suffix:semicolon
 DECL|member|is_sync
+r_int
 r_int
 id|is_sync
 suffix:semicolon
@@ -597,10 +592,6 @@ DECL|macro|rq_hash_key
 mdefine_line|#define rq_hash_key(rq)&t;&t;((rq)-&gt;sector + (rq)-&gt;nr_sectors)
 DECL|macro|list_entry_hash
 mdefine_line|#define list_entry_hash(ptr)&t;list_entry((ptr), struct as_rq, hash)
-DECL|macro|ON_HASH
-mdefine_line|#define ON_HASH(arq)&t;&t;(arq)-&gt;hash_valid_count
-DECL|macro|AS_INVALIDATE_HASH
-mdefine_line|#define AS_INVALIDATE_HASH(ad)&t;&t;&t;&t;&bslash;&n;&t;do {&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;if (!++(ad)-&gt;hash_valid_count)&t;&t;&bslash;&n;&t;&t;&t;(ad)-&gt;hash_valid_count = 1;&t;&bslash;&n;&t;} while (0)
 DECL|function|__as_del_arq_hash
 r_static
 r_inline
@@ -614,7 +605,7 @@ op_star
 id|arq
 )paren
 (brace
-id|arq-&gt;hash_valid_count
+id|arq-&gt;on_hash
 op_assign
 l_int|0
 suffix:semicolon
@@ -642,11 +633,7 @@ id|arq
 r_if
 c_cond
 (paren
-id|ON_HASH
-c_func
-(paren
-id|arq
-)paren
+id|arq-&gt;on_hash
 )paren
 id|__as_del_arq_hash
 c_func
@@ -717,16 +704,12 @@ suffix:semicolon
 id|BUG_ON
 c_func
 (paren
-id|ON_HASH
-c_func
-(paren
-id|arq
-)paren
+id|arq-&gt;on_hash
 )paren
 suffix:semicolon
-id|arq-&gt;hash_valid_count
+id|arq-&gt;on_hash
 op_assign
-id|ad-&gt;hash_valid_count
+l_int|1
 suffix:semicolon
 id|list_add
 c_func
@@ -799,11 +782,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|ON_HASH
-c_func
-(paren
-id|arq
-)paren
+id|arq-&gt;on_hash
 )paren
 (brace
 id|WARN_ON
@@ -921,11 +900,7 @@ id|BUG_ON
 c_func
 (paren
 op_logical_neg
-id|ON_HASH
-c_func
-(paren
-id|arq
-)paren
+id|arq-&gt;on_hash
 )paren
 suffix:semicolon
 r_if
@@ -937,10 +912,6 @@ c_func
 (paren
 id|__rq
 )paren
-op_logical_or
-id|arq-&gt;hash_valid_count
-op_ne
-id|ad-&gt;hash_valid_count
 )paren
 (brace
 id|__as_del_arq_hash
@@ -4688,12 +4659,6 @@ id|REQ_HARDBARRIER
 )paren
 )paren
 (brace
-id|AS_INVALIDATE_HASH
-c_func
-(paren
-id|ad
-)paren
-suffix:semicolon
 id|q-&gt;last_merge
 op_assign
 l_int|NULL
@@ -5715,7 +5680,7 @@ op_amp
 id|arq-&gt;hash
 )paren
 suffix:semicolon
-id|arq-&gt;hash_valid_count
+id|arq-&gt;on_hash
 op_assign
 l_int|0
 suffix:semicolon
@@ -6155,10 +6120,6 @@ id|REQ_ASYNC
 )braket
 op_assign
 id|default_write_expire
-suffix:semicolon
-id|ad-&gt;hash_valid_count
-op_assign
-l_int|1
 suffix:semicolon
 id|ad-&gt;antic_expire
 op_assign
