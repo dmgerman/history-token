@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * Product specific probe and attach routines for:&n; *      3940, 2940, aic7895, aic7890, aic7880,&n; *&t;aic7870, aic7860 and aic7850 SCSI controllers&n; *&n; * Copyright (c) 1994-2001 Justin T. Gibbs.&n; * Copyright (c) 2000-2001 Adaptec Inc.&n; * All rights reserved.&n; *&n; * Redistribution and use in source and binary forms, with or without&n; * modification, are permitted provided that the following conditions&n; * are met:&n; * 1. Redistributions of source code must retain the above copyright&n; *    notice, this list of conditions, and the following disclaimer,&n; *    without modification.&n; * 2. Redistributions in binary form must reproduce at minimum a disclaimer&n; *    substantially similar to the &quot;NO WARRANTY&quot; disclaimer below&n; *    (&quot;Disclaimer&quot;) and any redistribution must be conditioned upon&n; *    including a substantially similar Disclaimer requirement for further&n; *    binary redistribution.&n; * 3. Neither the names of the above-listed copyright holders nor the names&n; *    of any contributors may be used to endorse or promote products derived&n; *    from this software without specific prior written permission.&n; *&n; * Alternatively, this software may be distributed under the terms of the&n; * GNU General Public License (&quot;GPL&quot;) version 2 as published by the Free&n; * Software Foundation.&n; *&n; * NO WARRANTY&n; * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS&n; * &quot;AS IS&quot; AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT&n; * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTIBILITY AND FITNESS FOR&n; * A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT&n; * HOLDERS OR CONTRIBUTORS BE LIABLE FOR SPECIAL, EXEMPLARY, OR CONSEQUENTIAL&n; * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS&n; * OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)&n; * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,&n; * STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING&n; * IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE&n; * POSSIBILITY OF SUCH DAMAGES.&n; *&n; * $Id: //depot/aic7xxx/aic7xxx/aic7xxx_pci.c#66 $&n; *&n; * $FreeBSD$&n; */
+multiline_comment|/*&n; * Product specific probe and attach routines for:&n; *      3940, 2940, aic7895, aic7890, aic7880,&n; *&t;aic7870, aic7860 and aic7850 SCSI controllers&n; *&n; * Copyright (c) 1994-2001 Justin T. Gibbs.&n; * Copyright (c) 2000-2001 Adaptec Inc.&n; * All rights reserved.&n; *&n; * Redistribution and use in source and binary forms, with or without&n; * modification, are permitted provided that the following conditions&n; * are met:&n; * 1. Redistributions of source code must retain the above copyright&n; *    notice, this list of conditions, and the following disclaimer,&n; *    without modification.&n; * 2. Redistributions in binary form must reproduce at minimum a disclaimer&n; *    substantially similar to the &quot;NO WARRANTY&quot; disclaimer below&n; *    (&quot;Disclaimer&quot;) and any redistribution must be conditioned upon&n; *    including a substantially similar Disclaimer requirement for further&n; *    binary redistribution.&n; * 3. Neither the names of the above-listed copyright holders nor the names&n; *    of any contributors may be used to endorse or promote products derived&n; *    from this software without specific prior written permission.&n; *&n; * Alternatively, this software may be distributed under the terms of the&n; * GNU General Public License (&quot;GPL&quot;) version 2 as published by the Free&n; * Software Foundation.&n; *&n; * NO WARRANTY&n; * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS&n; * &quot;AS IS&quot; AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT&n; * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTIBILITY AND FITNESS FOR&n; * A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT&n; * HOLDERS OR CONTRIBUTORS BE LIABLE FOR SPECIAL, EXEMPLARY, OR CONSEQUENTIAL&n; * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS&n; * OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)&n; * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,&n; * STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING&n; * IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE&n; * POSSIBILITY OF SUCH DAMAGES.&n; *&n; * $Id: //depot/aic7xxx/aic7xxx/aic7xxx_pci.c#69 $&n; *&n; * $FreeBSD$&n; */
 macro_line|#ifdef __linux__
 macro_line|#include &quot;aic7xxx_osm.h&quot;
 macro_line|#include &quot;aic7xxx_inline.h&quot;
@@ -81,8 +81,8 @@ DECL|macro|ID_9005_SISL_ID
 mdefine_line|#define ID_9005_SISL_ID&t;&t;&t;0x0005900500000000ull
 DECL|macro|ID_AIC7850
 mdefine_line|#define ID_AIC7850&t;&t;&t;0x5078900400000000ull
-DECL|macro|ID_AHA_2902_04_10_15_20_30C
-mdefine_line|#define ID_AHA_2902_04_10_15_20_30C&t;0x5078900478509004ull
+DECL|macro|ID_AHA_2902_04_10_15_20C_30C
+mdefine_line|#define ID_AHA_2902_04_10_15_20C_30C&t;0x5078900478509004ull
 DECL|macro|ID_AIC7855
 mdefine_line|#define ID_AIC7855&t;&t;&t;0x5578900400000000ull
 DECL|macro|ID_AIC7859
@@ -397,11 +397,11 @@ op_assign
 (brace
 multiline_comment|/* aic7850 based controllers */
 (brace
-id|ID_AHA_2902_04_10_15_20_30C
+id|ID_AHA_2902_04_10_15_20C_30C
 comma
 id|ID_ALL_MASK
 comma
-l_string|&quot;Adaptec 2902/04/10/15/20/30C SCSI adapter&quot;
+l_string|&quot;Adaptec 2902/04/10/15/20C/30C SCSI adapter&quot;
 comma
 id|ahc_aic785X_setup
 )brace
@@ -2095,6 +2095,9 @@ id|ahc_reset
 c_func
 (paren
 id|ahc
+comma
+multiline_comment|/*reinit*/
+id|FALSE
 )paren
 suffix:semicolon
 r_if
@@ -3708,6 +3711,47 @@ id|ahc
 )paren
 op_eq
 l_int|0
+)paren
+suffix:semicolon
+multiline_comment|/* Clear any PCI errors that occurred before our driver attached. */
+id|status1
+op_assign
+id|ahc_pci_read_config
+c_func
+(paren
+id|ahc-&gt;dev_softc
+comma
+id|PCIR_STATUS
+op_plus
+l_int|1
+comma
+multiline_comment|/*bytes*/
+l_int|1
+)paren
+suffix:semicolon
+id|ahc_pci_write_config
+c_func
+(paren
+id|ahc-&gt;dev_softc
+comma
+id|PCIR_STATUS
+op_plus
+l_int|1
+comma
+id|status1
+comma
+multiline_comment|/*bytes*/
+l_int|1
+)paren
+suffix:semicolon
+id|ahc_outb
+c_func
+(paren
+id|ahc
+comma
+id|CLRINT
+comma
+id|CLRPARERR
 )paren
 suffix:semicolon
 id|ahc_outb

@@ -16412,9 +16412,6 @@ id|cm_state
 op_star
 id|s
 suffix:semicolon
-id|mm_segment_t
-id|fs
-suffix:semicolon
 r_int
 id|i
 comma
@@ -17276,19 +17273,6 @@ id|pcidev
 suffix:semicolon
 multiline_comment|/* enable bus mastering */
 multiline_comment|/* initialize the chips */
-id|fs
-op_assign
-id|get_fs
-c_func
-(paren
-)paren
-suffix:semicolon
-id|set_fs
-c_func
-(paren
-id|KERNEL_DS
-)paren
-suffix:semicolon
 multiline_comment|/* set mixer output */
 id|frobindir
 c_func

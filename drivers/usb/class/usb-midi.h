@@ -7,16 +7,6 @@ macro_line|#ifndef USB_SUBCLASS_MIDISTREAMING
 DECL|macro|USB_SUBCLASS_MIDISTREAMING
 mdefine_line|#define USB_SUBCLASS_MIDISTREAMING&t;3
 macro_line|#endif
-DECL|macro|USB_DT_CS_DEVICE
-mdefine_line|#define USB_DT_CS_DEVICE&t;&t;0x21
-DECL|macro|USB_DT_CS_CONFIG
-mdefine_line|#define USB_DT_CS_CONFIG&t;&t;0x22
-DECL|macro|USB_DT_CS_STRING
-mdefine_line|#define USB_DT_CS_STRING&t;&t;0x23
-DECL|macro|USB_DT_CS_INTERFACE
-mdefine_line|#define USB_DT_CS_INTERFACE&t;&t;0x24
-DECL|macro|USB_DT_CS_ENDPOINT
-mdefine_line|#define USB_DT_CS_ENDPOINT&t;&t;0x25
 multiline_comment|/* ------------------------------------------------------------------------- */
 multiline_comment|/* Roland MIDI Devices */
 DECL|macro|USB_VENDOR_ID_ROLAND

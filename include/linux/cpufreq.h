@@ -74,7 +74,7 @@ r_int
 r_int
 id|transition_latency
 suffix:semicolon
-multiline_comment|/* in 10^(-9) s */
+multiline_comment|/* in 10^(-9) s = nanoseconds */
 )brace
 suffix:semicolon
 DECL|struct|cpufreq_real_policy
@@ -732,7 +732,6 @@ op_star
 id|governor
 )paren
 suffix:semicolon
-macro_line|#if defined(CONFIG_CPU_FREQ_GOV_USERSPACE) || defined(CONFIG_CPU_FREQ_GOV_USERSPACE_MODULE)
 multiline_comment|/*********************************************************************&n; *                      CPUFREQ USERSPACE GOVERNOR                   *&n; *********************************************************************/
 r_int
 id|cpufreq_gov_userspace_init
@@ -741,6 +740,7 @@ c_func
 r_void
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_CPU_FREQ_24_API
 r_int
 id|cpufreq_setmax
 c_func
@@ -773,7 +773,6 @@ r_int
 id|cpu
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_CPU_FREQ_24_API
 multiline_comment|/* /proc/sys/cpu */
 r_enum
 (brace
@@ -966,7 +965,6 @@ comma
 )brace
 suffix:semicolon
 macro_line|#endif /* CONFIG_CPU_FREQ_24_API */
-macro_line|#endif /* CONFIG_CPU_FREQ_GOV_USERSPACE */
 multiline_comment|/*********************************************************************&n; *                       CPUFREQ DEFAULT GOVERNOR                    *&n; *********************************************************************/
 macro_line|#ifdef CONFIG_CPU_FREQ_DEFAULT_GOV_PERFORMANCE
 r_extern
@@ -1008,7 +1006,6 @@ suffix:semicolon
 multiline_comment|/* kHz - doesn&squot;t need to be in ascending&n;&t;&t;&t;&t;    * order */
 )brace
 suffix:semicolon
-macro_line|#if defined(CONFIG_CPU_FREQ_TABLE) || defined(CONFIG_CPU_FREQ_TABLE_MODULE)
 r_int
 id|cpufreq_frequency_table_cpuinfo
 c_func
@@ -1096,6 +1093,5 @@ r_int
 id|cpu
 )paren
 suffix:semicolon
-macro_line|#endif /* CONFIG_CPU_FREQ_TABLE */
 macro_line|#endif /* _LINUX_CPUFREQ_H */
 eof

@@ -6,9 +6,7 @@ macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/netfilter.h&gt;
 macro_line|#if defined(__KERNEL__) &amp;&amp; defined(CONFIG_BRIDGE_NETFILTER)
 macro_line|#include &lt;asm/atomic.h&gt;
-macro_line|#if defined(CONFIG_VLAN_8021Q) || defined(CONFIG_VLAN_8021Q_MODULE)
 macro_line|#include &lt;linux/if_ether.h&gt;
-macro_line|#endif
 macro_line|#endif
 multiline_comment|/* Bridge Hooks */
 multiline_comment|/* After promisc drops, checksum checks. */
@@ -217,7 +215,6 @@ c_cond
 id|skb-&gt;nf_bridge
 )paren
 (brace
-macro_line|#if defined(CONFIG_VLAN_8021Q) || defined(CONFIG_VLAN_8021Q_MODULE)
 r_if
 c_cond
 (paren
@@ -237,7 +234,7 @@ id|skb-&gt;data
 op_minus
 l_int|18
 comma
-id|skb-&gt;nf_bridge-&gt;hh
+id|skb-&gt;nf_bridge-&gt;data
 comma
 l_int|18
 )paren
@@ -252,7 +249,6 @@ l_int|4
 suffix:semicolon
 )brace
 r_else
-macro_line|#endif
 id|memcpy
 c_func
 (paren
@@ -260,7 +256,7 @@ id|skb-&gt;data
 op_minus
 l_int|16
 comma
-id|skb-&gt;nf_bridge-&gt;hh
+id|skb-&gt;nf_bridge-&gt;data
 comma
 l_int|16
 )paren
@@ -285,7 +281,6 @@ id|header_size
 op_assign
 l_int|16
 suffix:semicolon
-macro_line|#if defined(CONFIG_VLAN_8021Q) || defined(CONFIG_VLAN_8021Q_MODULE)
 r_if
 c_cond
 (paren
@@ -301,11 +296,10 @@ id|header_size
 op_assign
 l_int|18
 suffix:semicolon
-macro_line|#endif
 id|memcpy
 c_func
 (paren
-id|skb-&gt;nf_bridge-&gt;hh
+id|skb-&gt;nf_bridge-&gt;data
 comma
 id|skb-&gt;data
 op_minus

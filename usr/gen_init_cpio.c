@@ -855,6 +855,10 @@ comma
 id|stdout
 )paren
 suffix:semicolon
+id|offset
+op_add_assign
+id|buf.st_size
+suffix:semicolon
 id|close
 c_func
 (paren

@@ -453,42 +453,6 @@ DECL|macro|CM_ERASE
 mdefine_line|#define CM_ERASE    (2)
 DECL|macro|CM_MOVE
 mdefine_line|#define CM_MOVE     (3)
-multiline_comment|/*&n; *&t;Array of consoles built from command line options (console=)&n; */
-DECL|struct|console_cmdline
-r_struct
-id|console_cmdline
-(brace
-DECL|member|name
-r_char
-id|name
-(braket
-l_int|8
-)braket
-suffix:semicolon
-multiline_comment|/* Name of the driver&t;    */
-DECL|member|index
-r_int
-id|index
-suffix:semicolon
-multiline_comment|/* Minor dev. to use&t;    */
-DECL|member|options
-r_char
-op_star
-id|options
-suffix:semicolon
-multiline_comment|/* Options for the driver   */
-)brace
-suffix:semicolon
-DECL|macro|MAX_CMDLINECONSOLES
-mdefine_line|#define MAX_CMDLINECONSOLES 8
-r_extern
-r_struct
-id|console_cmdline
-id|console_list
-(braket
-id|MAX_CMDLINECONSOLES
-)braket
-suffix:semicolon
 multiline_comment|/*&n; *&t;The interface for a console, or any other device that&n; *&t;wants to capture console messages (printer driver?)&n; */
 DECL|macro|CON_PRINTBUFFER
 mdefine_line|#define CON_PRINTBUFFER&t;(1)
@@ -608,6 +572,23 @@ op_star
 id|next
 suffix:semicolon
 )brace
+suffix:semicolon
+r_extern
+r_int
+id|add_preferred_console
+c_func
+(paren
+r_char
+op_star
+id|name
+comma
+r_int
+id|idx
+comma
+r_char
+op_star
+id|options
+)paren
 suffix:semicolon
 r_extern
 r_void

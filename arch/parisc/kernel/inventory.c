@@ -1622,11 +1622,8 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|pdc_io_reset_devices
-c_func
-(paren
-)paren
-suffix:semicolon
+multiline_comment|/*&n;&t; * Unfortunately if we reset devices here, serial console&n;&t; * stops working :-(&n;&t; */
+multiline_comment|/* pdc_io_reset_devices(); */
 macro_line|#endif
 r_for
 c_loop

@@ -1032,6 +1032,17 @@ suffix:semicolon
 r_int
 id|actual
 suffix:semicolon
+r_int
+id|first_access
+op_assign
+l_int|0
+suffix:semicolon
+r_int
+r_int
+id|preoffset
+op_assign
+l_int|0
+suffix:semicolon
 multiline_comment|/*&n;&t; * Here we detect the case where the application is performing&n;&t; * sub-page sized reads.  We avoid doing extra work and bogusly&n;&t; * perturbing the readahead window expansion logic.&n;&t; * If next_size is zero, this is the very first read for this&n;&t; * file handle, or the window is maximally shrunk.&n;&t; */
 r_if
 c_cond
@@ -1101,13 +1112,13 @@ c_cond
 id|ra-&gt;next_size
 op_eq
 l_int|0
-op_logical_and
-id|offset
-op_eq
-l_int|0
 )paren
 (brace
-multiline_comment|/*&n;&t;&t; * Special case - first read from first page.&n;&t;&t; * We&squot;ll assume it&squot;s a whole-file read, and&n;&t;&t; * grow the window fast.&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * Special case - first read.&n;&t;&t; * We&squot;ll assume it&squot;s a whole-file read, and&n;&t;&t; * grow the window fast.&n;&t;&t; */
+id|first_access
+op_assign
+l_int|1
+suffix:semicolon
 id|ra-&gt;next_size
 op_assign
 id|max
@@ -1118,6 +1129,10 @@ r_goto
 id|do_io
 suffix:semicolon
 )brace
+id|preoffset
+op_assign
+id|ra-&gt;prev_page
+suffix:semicolon
 id|ra-&gt;prev_page
 op_assign
 id|offset
@@ -1249,6 +1264,35 @@ suffix:semicolon
 id|do_io
 suffix:colon
 multiline_comment|/*&n;&t;&t; * This is the &quot;unusual&quot; path.  We come here during&n;&t;&t; * startup or after an lseek.  We invalidate the&n;&t;&t; * ahead window and get some I/O underway for the new&n;&t;&t; * current window.&n;&t;&t; */
+r_if
+c_cond
+(paren
+op_logical_neg
+id|first_access
+op_logical_and
+id|preoffset
+op_ge
+id|ra-&gt;start
+op_logical_and
+id|preoffset
+OL
+(paren
+id|ra-&gt;start
+op_plus
+id|ra-&gt;size
+)paren
+)paren
+(brace
+multiline_comment|/* Heuristic:  If &squot;n&squot; pages were&n;&t;&t;&t;  * accessed in the current window, there&n;&t;&t;&t;  * is a high probability that around &squot;n&squot; pages&n;&t;&t;&t;  * shall be used in the next current window.&n;&t;&t;&t;  *&n;&t;&t;&t;  * To minimize lazy-readahead triggered&n;&t;&t;&t;  * in the next current window, read in&n;&t;&t;&t;  * an extra page.&n;&t;&t;&t;  */
+id|ra-&gt;next_size
+op_assign
+id|preoffset
+op_minus
+id|ra-&gt;start
+op_plus
+l_int|2
+suffix:semicolon
+)brace
 id|ra-&gt;start
 op_assign
 id|offset
@@ -1280,6 +1324,14 @@ comma
 id|ra-&gt;size
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|first_access
+)paren
+(brace
+multiline_comment|/*&n;&t;&t;&t; * do not adjust the readahead window size the first&n;&t;&t;&t; * time, the ahead window might get closed if all&n;&t;&t;&t; * the pages are already in the cache.&n;&t;&t;&t; */
 id|check_ra_success
 c_func
 (paren
@@ -1293,15 +1345,26 @@ id|orig_next_size
 )paren
 suffix:semicolon
 )brace
+)brace
 r_else
 (brace
-multiline_comment|/*&n;&t;&t; * This read request is within the current window.  It is time&n;&t;&t; * to submit I/O for the ahead window while the application is&n;&t;&t; * crunching through the current window.&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * This read request is within the current window.  It is time&n;&t;&t; * to submit I/O for the ahead window while the application is&n;&t;&t; * about to step into the ahead window.&n;&t;&t; * Heuristic: Defer reading the ahead window till we hit&n;&t;&t; * the last page in the current window. (lazy readahead)&n;&t;&t; * If we read in earlier we run the risk of wasting&n;&t;&t; * the ahead window.&n;&t;&t; */
 r_if
 c_cond
 (paren
 id|ra-&gt;ahead_start
 op_eq
 l_int|0
+op_logical_and
+id|offset
+op_eq
+(paren
+id|ra-&gt;start
+op_plus
+id|ra-&gt;size
+op_minus
+l_int|1
+)paren
 )paren
 (brace
 id|ra-&gt;ahead_start
@@ -1399,6 +1462,13 @@ l_int|1
 (brace
 id|ra-&gt;size
 op_assign
+id|ra-&gt;size
+ques
+c_cond
+id|ra-&gt;size
+op_minus
+l_int|1
+suffix:colon
 l_int|0
 suffix:semicolon
 multiline_comment|/* Not sequential */

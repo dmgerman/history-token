@@ -4860,14 +4860,18 @@ id|savelink
 op_assign
 l_int|1
 suffix:semicolon
-multiline_comment|/* two balancings: old name removal, new name insertion or &quot;save&quot; link,&n;       stat data updates: old directory and new directory and maybe block&n;       containing &quot;..&quot; of renamed directory */
+r_struct
+id|timespec
+id|ctime
+suffix:semicolon
+multiline_comment|/* three balancings: (1) old name removal, (2) new name insertion&n;       and (3) maybe &quot;save&quot; link insertion&n;       stat data updates: (1) old directory,&n;       (2) new directory and (3) maybe old object stat data (when it is&n;       directory) and (4) maybe stat data of object to which new entry&n;       pointed initially and (5) maybe block containing &quot;..&quot; of&n;       renamed directory */
 id|jbegin_count
 op_assign
 id|JOURNAL_PER_BALANCE_CNT
 op_star
 l_int|3
 op_plus
-l_int|3
+l_int|5
 suffix:semicolon
 id|old_inode
 op_assign
@@ -5588,15 +5592,26 @@ comma
 id|old_de.de_bh
 )paren
 suffix:semicolon
+id|ctime
+op_assign
+id|CURRENT_TIME
+suffix:semicolon
 id|old_dir-&gt;i_ctime
 op_assign
 id|old_dir-&gt;i_mtime
 op_assign
+id|ctime
+suffix:semicolon
 id|new_dir-&gt;i_ctime
 op_assign
 id|new_dir-&gt;i_mtime
 op_assign
-id|CURRENT_TIME
+id|ctime
+suffix:semicolon
+multiline_comment|/* thanks to Alex Adriaanse &lt;alex_a@caltech.edu&gt; for patch which adds ctime update of&n;       renamed object */
+id|old_inode-&gt;i_ctime
+op_assign
+id|ctime
 suffix:semicolon
 r_if
 c_cond
@@ -5628,7 +5643,7 @@ suffix:semicolon
 )brace
 id|new_dentry_inode-&gt;i_ctime
 op_assign
-id|new_dir-&gt;i_ctime
+id|ctime
 suffix:semicolon
 id|savelink
 op_assign
@@ -5766,6 +5781,14 @@ op_amp
 id|th
 comma
 id|new_dir
+)paren
+suffix:semicolon
+id|reiserfs_update_sd
+(paren
+op_amp
+id|th
+comma
+id|old_inode
 )paren
 suffix:semicolon
 r_if

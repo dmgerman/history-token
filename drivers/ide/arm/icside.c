@@ -594,10 +594,10 @@ DECL|macro|NR_ENTRIES
 mdefine_line|#define NR_ENTRIES 256
 DECL|macro|TABLE_SIZE
 mdefine_line|#define TABLE_SIZE (NR_ENTRIES * 8)
-DECL|function|ide_build_sglist
+DECL|function|icside_build_sglist
 r_static
 r_void
-id|ide_build_sglist
+id|icside_build_sglist
 c_func
 (paren
 id|ide_drive_t
@@ -1863,7 +1863,7 @@ id|hwif-&gt;hw.dma
 )paren
 )paren
 suffix:semicolon
-id|ide_build_sglist
+id|icside_build_sglist
 c_func
 (paren
 id|drive

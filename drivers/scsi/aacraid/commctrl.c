@@ -1,5 +1,4 @@
 multiline_comment|/*&n; *&t;Adaptec AAC series RAID controller driver&n; *&t;(c) Copyright 2001 Red Hat Inc.&t;&lt;alan@redhat.com&gt;&n; *&n; * based on the old aacraid driver that is..&n; * Adaptec aacraid device driver for Linux.&n; *&n; * Copyright (c) 2000 Adaptec, Inc. (aacraid@adaptec.com)&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2, or (at your option)&n; * any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; see the file COPYING.  If not, write to&n; * the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.&n; *&n; * Module Name:&n; *  commctrl.c&n; *&n; * Abstract: Contains all routines for control of the AFA comm layer&n; *&n; */
-macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
@@ -8,11 +7,10 @@ macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/completion.h&gt;
+macro_line|#include &lt;linux/dma-mapping.h&gt;
 macro_line|#include &lt;linux/blkdev.h&gt;
 macro_line|#include &lt;asm/semaphore.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
-macro_line|#include &quot;scsi.h&quot;
-macro_line|#include &quot;hosts.h&quot;
 macro_line|#include &quot;aacraid.h&quot;
 multiline_comment|/**&n; *&t;ioctl_send_fib&t;-&t;send a FIB from userspace&n; *&t;@dev:&t;adapter is being processed&n; *&t;@arg:&t;arguments to the ioctl call&n; *&t;&n; *&t;This routine sends a fib to the adapter on behalf of a user level&n; *&t;program.&n; */
 DECL|function|ioctl_send_fib
@@ -1488,7 +1486,7 @@ id|SRB_DataOut
 suffix:colon
 id|data_dir
 op_assign
-id|SCSI_DATA_WRITE
+id|DMA_TO_DEVICE
 suffix:semicolon
 r_break
 suffix:semicolon
@@ -1501,7 +1499,7 @@ id|SRB_DataOut
 suffix:colon
 id|data_dir
 op_assign
-id|SCSI_DATA_UNKNOWN
+id|DMA_BIDIRECTIONAL
 suffix:semicolon
 r_break
 suffix:semicolon
@@ -1510,7 +1508,7 @@ id|SRB_DataIn
 suffix:colon
 id|data_dir
 op_assign
-id|SCSI_DATA_READ
+id|DMA_FROM_DEVICE
 suffix:semicolon
 r_break
 suffix:semicolon
@@ -1518,7 +1516,7 @@ r_default
 suffix:colon
 id|data_dir
 op_assign
-id|SCSI_DATA_NONE
+id|DMA_NONE
 suffix:semicolon
 )brace
 r_if
@@ -1770,11 +1768,7 @@ id|i
 dot
 id|count
 comma
-id|scsi_to_pci_dma_dir
-c_func
-(paren
 id|data_dir
-)paren
 )paren
 suffix:semicolon
 id|le_addr
@@ -2129,11 +2123,7 @@ id|i
 dot
 id|count
 comma
-id|scsi_to_pci_dma_dir
-c_func
-(paren
 id|data_dir
-)paren
 )paren
 suffix:semicolon
 id|psg-&gt;sg

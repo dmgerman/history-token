@@ -275,7 +275,9 @@ mdefine_line|#define ZONE_NORMAL&t;&t;1
 DECL|macro|ZONE_HIGHMEM
 mdefine_line|#define ZONE_HIGHMEM&t;&t;2
 DECL|macro|MAX_NR_ZONES
-mdefine_line|#define MAX_NR_ZONES&t;&t;3
+mdefine_line|#define MAX_NR_ZONES&t;&t;3&t;/* Sync this with MAX_NR_ZONES_SHIFT */
+DECL|macro|MAX_NR_ZONES_SHIFT
+mdefine_line|#define MAX_NR_ZONES_SHIFT&t;2&t;/* ceil(log2(MAX_NR_ZONES)) */
 DECL|macro|GFP_ZONEMASK
 mdefine_line|#define GFP_ZONEMASK&t;0x03
 multiline_comment|/*&n; * One allocation request operates on a zonelist. A zonelist&n; * is a list of zones, the first one is the &squot;goal&squot; of the&n; * allocation, the other zones are fallback zones, in decreasing&n; * priority.&n; *&n; * Right now a zonelist takes up less than a cacheline. We never&n; * modify it apart from boot-up, and only a few indices are used,&n; * so despite the zonelist table being relatively big, the cache&n; * footprint of this construct is very small.&n; */
@@ -549,14 +551,6 @@ op_star
 comma
 r_int
 op_star
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|setup_per_zone_pages_min
-c_func
-(paren
-r_void
 )paren
 suffix:semicolon
 macro_line|#ifdef CONFIG_NUMA

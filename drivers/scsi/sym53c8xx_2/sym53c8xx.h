@@ -3,17 +3,7 @@ macro_line|#ifndef SYM53C8XX_H
 DECL|macro|SYM53C8XX_H
 mdefine_line|#define SYM53C8XX_H
 macro_line|#include &lt;linux/config.h&gt;
-multiline_comment|/*&n; *  Use normal IO if configured.&n; *  Normal IO forced for alpha.&n; *  Forced to MMIO for sparc.&n; */
-macro_line|#if defined(__alpha__)
-DECL|macro|SYM_CONF_IOMAPPED
-mdefine_line|#define&t;SYM_CONF_IOMAPPED
-macro_line|#elif defined(__sparc__)
-DECL|macro|SYM_CONF_IOMAPPED
-macro_line|#undef SYM_CONF_IOMAPPED
-multiline_comment|/* #elif defined(__powerpc__) */
-multiline_comment|/* #define&t;SYM_CONF_IOMAPPED */
-multiline_comment|/* #define SYM_OPT_NO_BUS_MEMORY_MAPPING */
-macro_line|#elif defined(CONFIG_SCSI_SYM53C8XX_IOMAPPED)
+macro_line|#ifdef CONFIG_SCSI_SYM53C8XX_IOMAPPED
 DECL|macro|SYM_CONF_IOMAPPED
 mdefine_line|#define&t;SYM_CONF_IOMAPPED
 macro_line|#endif
@@ -29,10 +19,6 @@ multiline_comment|/*&n; *  NVRAM support.&n; */
 macro_line|#if 1
 DECL|macro|SYM_CONF_NVRAM_SUPPORT
 mdefine_line|#define SYM_CONF_NVRAM_SUPPORT&t;&t;(1)
-DECL|macro|SYM_SETUP_SYMBIOS_NVRAM
-mdefine_line|#define SYM_SETUP_SYMBIOS_NVRAM&t;&t;(1)
-DECL|macro|SYM_SETUP_TEKRAM_NVRAM
-mdefine_line|#define SYM_SETUP_TEKRAM_NVRAM&t;&t;(1)
 macro_line|#endif
 multiline_comment|/*&n; *  These options are not tunable from &squot;make config&squot;&n; */
 macro_line|#if 1

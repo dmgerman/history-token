@@ -1,4 +1,4 @@
-multiline_comment|/*********************************************************************&n; *                &n; * Filename:      ali-ircc.h&n; * Version:       0.5&n; * Description:   Driver for the ALI M1535D and M1543C FIR Controller&n; * Status:        Experimental.&n; * Author:        Benjamin Kong &lt;benjamin_kong@ali.com.tw&gt;&n; * Created at:    2000/10/16 03:46PM&n; * Modified at:   2001/1/3 02:55PM&n; * Modified by:   Benjamin Kong &lt;benjamin_kong@ali.com.tw&gt;&n; * &n; *     Copyright (c) 2000 Benjamin Kong &lt;benjamin_kong@ali.com.tw&gt;&n; *     All Rights Reserved&n; *      &n; *     This program is free software; you can redistribute it and/or &n; *     modify it under the terms of the GNU General Public License as &n; *     published by the Free Software Foundation; either version 2 of &n; *     the License, or (at your option) any later version.&n; *  &n; ********************************************************************/
+multiline_comment|/*********************************************************************&n; *                &n; * Filename:      ali-ircc.h&n; * Version:       0.5&n; * Description:   Driver for the ALI M1535D and M1543C FIR Controller&n; * Status:        Experimental.&n; * Author:        Benjamin Kong &lt;benjamin_kong@ali.com.tw&gt;&n; * Created at:    2000/10/16 03:46PM&n; * Modified at:   2001/1/3 02:55PM&n; * Modified by:   Benjamin Kong &lt;benjamin_kong@ali.com.tw&gt;&n; * Modified at:   2003/11/6 and support for ALi south-bridge chipsets M1563&n; * Modified by:   Clear Zhang &lt;clear_zhang@ali.com.tw&gt;&n; * &n; *     Copyright (c) 2000 Benjamin Kong &lt;benjamin_kong@ali.com.tw&gt;&n; *     All Rights Reserved&n; *      &n; *     This program is free software; you can redistribute it and/or &n; *     modify it under the terms of the GNU General Public License as &n; *     published by the Free Software Foundation; either version 2 of &n; *     the License, or (at your option) any later version.&n; *  &n; ********************************************************************/
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
@@ -187,6 +187,28 @@ comma
 l_int|0x20
 comma
 l_int|0x53
+comma
+id|ali_ircc_probe_53
+comma
+id|ali_ircc_init_53
+)brace
+comma
+(brace
+l_string|&quot;M1563&quot;
+comma
+(brace
+l_int|0x3f0
+comma
+l_int|0x370
+)brace
+comma
+l_int|0x51
+comma
+l_int|0x23
+comma
+l_int|0x20
+comma
+l_int|0x63
 comma
 id|ali_ircc_probe_53
 comma
@@ -5041,11 +5063,7 @@ multiline_comment|/* Turn on interrups */
 id|outb
 c_func
 (paren
-id|UART_IER_RLSI
-op_or
 id|UART_IER_RDI
-op_or
-id|UART_IER_THRI
 comma
 id|iobase
 op_plus

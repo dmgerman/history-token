@@ -10,6 +10,7 @@ macro_line|#include &lt;linux/sound.h&gt;
 macro_line|#include &lt;linux/major.h&gt;
 macro_line|#include &lt;linux/kmod.h&gt;
 macro_line|#include &lt;linux/devfs_fs_kernel.h&gt;
+macro_line|#include &lt;linux/device.h&gt;
 DECL|macro|SOUND_STEP
 mdefine_line|#define SOUND_STEP 16
 DECL|struct|sound_unit
@@ -1606,6 +1607,13 @@ id|MODULE_LICENSE
 c_func
 (paren
 l_string|&quot;GPL&quot;
+)paren
+suffix:semicolon
+DECL|variable|SOUND_MAJOR
+id|MODULE_ALIAS_CHARDEV_MAJOR
+c_func
+(paren
+id|SOUND_MAJOR
 )paren
 suffix:semicolon
 DECL|function|cleanup_soundcore

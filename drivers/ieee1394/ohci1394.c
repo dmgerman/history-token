@@ -49,7 +49,7 @@ macro_line|#undef DBGMSG
 macro_line|#endif
 macro_line|#ifdef OHCI1394_DEBUG
 DECL|macro|DBGMSG
-mdefine_line|#define DBGMSG(card, fmt, args...) &bslash;&n;printk(KERN_INFO &quot;%s_%d: &quot; fmt &quot;&bslash;n&quot; , OHCI1394_DRIVER_NAME, card , ## args)
+mdefine_line|#define DBGMSG(card, fmt, args...) &bslash;&n;printk(KERN_INFO &quot;%s: fw-host%d: &quot; fmt &quot;&bslash;n&quot; , OHCI1394_DRIVER_NAME, card , ## args)
 macro_line|#else
 DECL|macro|DBGMSG
 mdefine_line|#define DBGMSG(card, fmt, args...)
@@ -77,7 +77,7 @@ DECL|macro|PRINT_G
 mdefine_line|#define PRINT_G(level, fmt, args...) &bslash;&n;printk(level &quot;%s: &quot; fmt &quot;&bslash;n&quot; , OHCI1394_DRIVER_NAME , ## args)
 multiline_comment|/* print card specific information */
 DECL|macro|PRINT
-mdefine_line|#define PRINT(level, card, fmt, args...) &bslash;&n;printk(level &quot;%s_%d: &quot; fmt &quot;&bslash;n&quot; , OHCI1394_DRIVER_NAME, card , ## args)
+mdefine_line|#define PRINT(level, card, fmt, args...) &bslash;&n;printk(level &quot;%s: fw-host%d: &quot; fmt &quot;&bslash;n&quot; , OHCI1394_DRIVER_NAME, card , ## args)
 DECL|variable|__devinitdata
 r_static
 r_char
@@ -86,7 +86,7 @@ id|version
 )braket
 id|__devinitdata
 op_assign
-l_string|&quot;$Rev: 1045 $ Ben Collins &lt;bcollins@debian.org&gt;&quot;
+l_string|&quot;$Rev: 1087 $ Ben Collins &lt;bcollins@debian.org&gt;&quot;
 suffix:semicolon
 multiline_comment|/* Module Parameters */
 DECL|variable|phys_dma
@@ -3453,7 +3453,8 @@ id|packet-&gt;data_size
 )paren
 suffix:semicolon
 r_return
-l_int|0
+op_minus
+id|EOVERFLOW
 suffix:semicolon
 )brace
 multiline_comment|/* Decide whether we have an iso, a request, or a response packet */
@@ -3515,7 +3516,8 @@ l_string|&quot;legacy IT context cannot be initialized during interrupt&quot;
 )paren
 suffix:semicolon
 r_return
-l_int|0
+op_minus
+id|EINVAL
 suffix:semicolon
 )brace
 r_if
@@ -3552,7 +3554,8 @@ l_string|&quot;error initializing legacy IT context&quot;
 )paren
 suffix:semicolon
 r_return
-l_int|0
+op_minus
+id|ENOMEM
 suffix:semicolon
 )brace
 id|initialize_dma_trm_ctx
@@ -3633,7 +3636,7 @@ id|flags
 )paren
 suffix:semicolon
 r_return
-l_int|1
+l_int|0
 suffix:semicolon
 )brace
 DECL|function|ohci_devctl
@@ -4560,10 +4563,14 @@ DECL|enumerator|BUFFER_FILL_MODE
 r_enum
 (brace
 id|BUFFER_FILL_MODE
+op_assign
+l_int|0
 comma
 DECL|enumerator|PACKET_PER_BUFFER_MODE
 DECL|member|dma_mode
 id|PACKET_PER_BUFFER_MODE
+op_assign
+l_int|1
 )brace
 id|dma_mode
 suffix:semicolon
@@ -4783,9 +4790,21 @@ multiline_comment|/* use buffer-fill mode, unless irq_interval is 1&n;&t;   (not
 r_if
 c_cond
 (paren
+(paren
+(paren
 id|iso-&gt;irq_interval
 op_eq
 l_int|1
+op_logical_and
+id|iso-&gt;dma_mode
+op_eq
+id|HPSB_ISO_DMA_OLD_ABI
+)paren
+op_logical_or
+id|iso-&gt;dma_mode
+op_eq
+id|HPSB_ISO_DMA_PACKET_PER_BUFFER
+)paren
 op_logical_and
 id|iso-&gt;channel
 op_ne
@@ -4848,12 +4867,31 @@ id|err
 suffix:semicolon
 )brace
 multiline_comment|/* iso-&gt;irq_interval is in packets - translate that to blocks */
-multiline_comment|/* (err, sort of... 1 is always the safest value) */
+r_if
+c_cond
+(paren
+id|iso-&gt;irq_interval
+op_eq
+l_int|1
+)paren
+id|recv-&gt;block_irq_interval
+op_assign
+l_int|1
+suffix:semicolon
+r_else
 id|recv-&gt;block_irq_interval
 op_assign
 id|iso-&gt;irq_interval
-op_div
+op_star
+(paren
+(paren
 id|recv-&gt;nblocks
+op_plus
+l_int|1
+)paren
+op_div
+id|iso-&gt;buf_packets
+)paren
 suffix:semicolon
 r_if
 c_cond
@@ -4891,6 +4929,32 @@ id|recv-&gt;nblocks
 op_assign
 id|iso-&gt;buf_packets
 suffix:semicolon
+id|recv-&gt;block_irq_interval
+op_assign
+id|iso-&gt;irq_interval
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|recv-&gt;block_irq_interval
+op_star
+l_int|4
+OG
+id|iso-&gt;buf_packets
+)paren
+id|recv-&gt;block_irq_interval
+op_assign
+id|iso-&gt;buf_packets
+op_div
+l_int|4
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|recv-&gt;block_irq_interval
+OL
+l_int|1
+)paren
 id|recv-&gt;block_irq_interval
 op_assign
 l_int|1
@@ -14936,13 +15000,6 @@ id|ent
 (brace
 r_static
 r_int
-r_int
-id|card_id_counter
-op_assign
-l_int|0
-suffix:semicolon
-r_static
-r_int
 id|version_printed
 op_assign
 l_int|0
@@ -14995,10 +15052,7 @@ c_func
 op_minus
 id|ENXIO
 comma
-l_string|&quot;Failed to enable OHCI hardware %d&quot;
-comma
-id|card_id_counter
-op_increment
+l_string|&quot;Failed to enable OHCI hardware&quot;
 )paren
 suffix:semicolon
 id|pci_set_master
@@ -15020,6 +15074,9 @@ r_sizeof
 r_struct
 id|ti_ohci
 )paren
+comma
+op_amp
+id|dev-&gt;dev
 )paren
 suffix:semicolon
 r_if
@@ -15043,8 +15100,7 @@ id|host-&gt;hostdata
 suffix:semicolon
 id|ohci-&gt;id
 op_assign
-id|card_id_counter
-op_increment
+id|host-&gt;id
 suffix:semicolon
 id|ohci-&gt;dev
 op_assign
@@ -15696,6 +15752,11 @@ id|ti_ohci
 op_star
 id|ohci
 suffix:semicolon
+r_struct
+id|device
+op_star
+id|dev
+suffix:semicolon
 id|ohci
 op_assign
 id|pci_get_drvdata
@@ -15711,6 +15772,15 @@ op_logical_neg
 id|ohci
 )paren
 r_return
+suffix:semicolon
+id|dev
+op_assign
+id|get_device
+c_func
+(paren
+op_amp
+id|ohci-&gt;host-&gt;device
+)paren
 suffix:semicolon
 r_switch
 c_cond
@@ -16070,13 +16140,18 @@ comma
 l_int|NULL
 )paren
 suffix:semicolon
-id|hpsb_unref_host
+)brace
+r_if
+c_cond
+(paren
+id|dev
+)paren
+id|put_device
 c_func
 (paren
-id|ohci-&gt;host
+id|dev
 )paren
 suffix:semicolon
-)brace
 )brace
 macro_line|#ifdef  CONFIG_PM
 DECL|function|ohci1394_pci_resume

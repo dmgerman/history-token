@@ -418,7 +418,7 @@ op_amp
 id|adap-&gt;clients
 )paren
 suffix:semicolon
-multiline_comment|/* Add the adapter to the driver core.&n;&t; * If the parent pointer is not set up,&n;&t; * we add this adapter to the legacy bus.&n;&t; */
+multiline_comment|/* Add the adapter to the driver core.&n;&t; * If the parent pointer is not set up,&n;&t; * we add this adapter to the host bus.&n;&t; */
 r_if
 c_cond
 (paren
@@ -429,7 +429,7 @@ l_int|NULL
 id|adap-&gt;dev.parent
 op_assign
 op_amp
-id|legacy_bus
+id|platform_bus
 suffix:semicolon
 id|sprintf
 c_func

@@ -2601,6 +2601,7 @@ r_int
 id|address
 comma
 r_int
+op_star
 id|unused
 )paren
 (brace

@@ -179,7 +179,7 @@ l_int|0x08B3
 )paren
 )brace
 comma
-multiline_comment|/* Logitech QuickCam Zoom */
+multiline_comment|/* Logitech QuickCam Zoom (old model) */
 (brace
 id|USB_DEVICE
 c_func
@@ -190,7 +190,7 @@ l_int|0x08B4
 )paren
 )brace
 comma
-multiline_comment|/* Logitech (reserved) */
+multiline_comment|/* Logitech QuickCam Zoom (new model) */
 (brace
 id|USB_DEVICE
 c_func
@@ -201,7 +201,7 @@ l_int|0x08B5
 )paren
 )brace
 comma
-multiline_comment|/* Logitech (reserved) */
+multiline_comment|/* Logitech QuickCam Orbit/Sphere */
 (brace
 id|USB_DEVICE
 c_func
@@ -520,6 +520,16 @@ r_struct
 id|file
 op_star
 id|file
+)paren
+suffix:semicolon
+r_static
+r_int
+id|pwc_video_release
+c_func
+(paren
+r_struct
+id|video_device
+op_star
 )paren
 suffix:semicolon
 r_static
@@ -3743,6 +3753,8 @@ id|new_snapshot
 (brace
 r_int
 id|ret
+comma
+id|start
 suffix:semicolon
 multiline_comment|/* Stop isoc stuff */
 id|pwc_isoc_cleanup
@@ -3759,6 +3771,8 @@ id|pdev
 )paren
 suffix:semicolon
 multiline_comment|/* Try to set video mode... */
+id|start
+op_assign
 id|ret
 op_assign
 id|pwc_set_video_mode
@@ -3782,8 +3796,17 @@ c_cond
 (paren
 id|ret
 )paren
+(brace
+id|Trace
+c_func
+(paren
+id|TRACE_FLOW
+comma
+l_string|&quot;pwc_set_video_mode attempt 1 failed.&bslash;n&quot;
+)paren
+suffix:semicolon
 multiline_comment|/* That failed... restore old mode (we know that worked) */
-id|ret
+id|start
 op_assign
 id|pwc_set_video_mode
 c_func
@@ -3804,9 +3827,27 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-op_logical_neg
-id|ret
+id|start
 )paren
+(brace
+id|Trace
+c_func
+(paren
+id|TRACE_FLOW
+comma
+l_string|&quot;pwc_set_video_mode attempt 2 failed.&bslash;n&quot;
+)paren
+suffix:semicolon
+)brace
+)brace
+r_if
+c_cond
+(paren
+id|start
+op_eq
+l_int|0
+)paren
+(brace
 r_if
 c_cond
 (paren
@@ -3818,12 +3859,21 @@ id|pdev
 OL
 l_int|0
 )paren
+(brace
 id|Info
 c_func
 (paren
-l_string|&quot;Failed to restart ISOC transfer in pwc_try_video_mode.&bslash;n&quot;
+l_string|&quot;Failed to restart ISOC transfers in pwc_try_video_mode.&bslash;n&quot;
 )paren
 suffix:semicolon
+id|ret
+op_assign
+op_minus
+id|EAGAIN
+suffix:semicolon
+multiline_comment|/* let&squot;s try again, who knows if it works a second time */
+)brace
+)brace
 id|pdev-&gt;drop_frames
 op_increment
 suffix:semicolon
@@ -3831,6 +3881,7 @@ multiline_comment|/* try to avoid garbage during switch */
 r_return
 id|ret
 suffix:semicolon
+multiline_comment|/* Return original error code */
 )brace
 multiline_comment|/***************************************************************************/
 multiline_comment|/* Video4Linux functions */
@@ -4170,6 +4221,13 @@ id|pdev-&gt;decompressor
 )paren
 suffix:semicolon
 macro_line|#endif
+id|pwc_construct
+c_func
+(paren
+id|pdev
+)paren
+suffix:semicolon
+multiline_comment|/* set min/max sizes correct */
 multiline_comment|/* So far, so good. Allocate memory. */
 id|i
 op_assign
@@ -4260,6 +4318,13 @@ op_assign
 l_int|0
 suffix:semicolon
 macro_line|#endif
+id|pwc_construct
+c_func
+(paren
+id|pdev
+)paren
+suffix:semicolon
+multiline_comment|/* set min/max sizes correct */
 multiline_comment|/* Set some defaults */
 id|pdev-&gt;vsnapshot
 op_assign
@@ -4685,6 +4750,27 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+DECL|function|pwc_video_release
+r_static
+r_int
+id|pwc_video_release
+c_func
+(paren
+r_struct
+id|video_device
+op_star
+id|vfd
+)paren
+(brace
+id|Trace
+c_func
+(paren
+id|TRACE_OPEN
+comma
+l_string|&quot;pwc_video_release() called. Now what?&bslash;n&quot;
+)paren
+suffix:semicolon
+)brace
 multiline_comment|/*&n; *&t;FIXME: what about two parallel reads ????&n; *      ANSWER: Not supported. You can&squot;t open the device more than once,&n;                despite what the V4L1 interface says. First, I don&squot;t see&n;                the need, second there&squot;s no mechanism of alerting the&n;                2nd/3rd/... process of events like changing image size.&n;                And I don&squot;t see the point of blocking that for the&n;                2nd/3rd/... process.&n;                In multi-threaded environments reading parallel from any&n;                device is tricky anyhow.&n; */
 DECL|function|pwc_video_read
 r_static
@@ -4741,7 +4827,7 @@ c_func
 (paren
 id|TRACE_READ
 comma
-l_string|&quot;video_read(0x%p, %p, %Zd) called.&bslash;n&quot;
+l_string|&quot;video_read(0x%p, %p, %d) called.&bslash;n&quot;
 comma
 id|vdev
 comma
@@ -6471,6 +6557,11 @@ comma
 id|hint
 suffix:semicolon
 r_int
+id|features
+op_assign
+l_int|0
+suffix:semicolon
+r_int
 id|video_nr
 op_assign
 op_minus
@@ -6875,11 +6966,49 @@ multiline_comment|/* CCD sensor */
 r_break
 suffix:semicolon
 r_case
-l_int|0x08b4
+l_int|0x08B4
 suffix:colon
+id|Info
+c_func
+(paren
+l_string|&quot;Logitech QuickCam Zoom (new model) USB webcam detected.&bslash;n&quot;
+)paren
+suffix:semicolon
+id|name
+op_assign
+l_string|&quot;Logitech QuickCam Zoom&quot;
+suffix:semicolon
+id|type_id
+op_assign
+l_int|740
+suffix:semicolon
+multiline_comment|/* CCD sensor */
+r_break
+suffix:semicolon
 r_case
 l_int|0x08b5
 suffix:colon
+id|Info
+c_func
+(paren
+l_string|&quot;Logitech QuickCam Orbit/Sphere USB webcam detected.&bslash;n&quot;
+)paren
+suffix:semicolon
+id|name
+op_assign
+l_string|&quot;Logitech QuickCam Orbit&quot;
+suffix:semicolon
+id|type_id
+op_assign
+l_int|740
+suffix:semicolon
+multiline_comment|/* CCD sensor */
+id|features
+op_or_assign
+id|FEATURE_MOTOR_PANTILT
+suffix:semicolon
+r_break
+suffix:semicolon
 r_case
 l_int|0x08b6
 suffix:colon
@@ -7255,12 +7384,6 @@ id|pdev-&gt;type
 op_assign
 id|type_id
 suffix:semicolon
-id|pwc_construct
-c_func
-(paren
-id|pdev
-)paren
-suffix:semicolon
 id|pdev-&gt;vsize
 op_assign
 id|default_size
@@ -7269,6 +7392,52 @@ id|pdev-&gt;vframes
 op_assign
 id|default_fps
 suffix:semicolon
+id|pdev-&gt;features
+op_assign
+id|features
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|vendor_id
+op_eq
+l_int|0x046D
+op_logical_and
+id|product_id
+op_eq
+l_int|0x08B5
+)paren
+(brace
+multiline_comment|/* Logitech QuickCam Orbit&n;&t;           The ranges have been determined experimentally; they may differ from cam to cam.&n;&t;           Also, the exact ranges left-right and up-down are different for my cam&n;&t;          */
+id|pdev-&gt;angle_range.pan_min
+op_assign
+op_minus
+l_int|7000
+suffix:semicolon
+id|pdev-&gt;angle_range.pan_max
+op_assign
+l_int|7000
+suffix:semicolon
+id|pdev-&gt;angle_range.tilt_min
+op_assign
+op_minus
+l_int|3000
+suffix:semicolon
+id|pdev-&gt;angle_range.tilt_max
+op_assign
+l_int|2500
+suffix:semicolon
+id|pdev-&gt;angle_range.zoom_min
+op_assign
+op_minus
+l_int|1
+suffix:semicolon
+id|pdev-&gt;angle_range.zoom_max
+op_assign
+op_minus
+l_int|1
+suffix:semicolon
+)brace
 id|init_MUTEX
 c_func
 (paren
@@ -7454,6 +7623,10 @@ suffix:semicolon
 )brace
 )brace
 )brace
+id|pdev-&gt;vdev.release
+op_assign
+id|pwc_video_release
+suffix:semicolon
 id|i
 op_assign
 id|video_register_device

@@ -111,10 +111,10 @@ r_int
 r_int
 id|mask
 suffix:semicolon
-DECL|member|hh
+DECL|member|data
 r_int
 r_int
-id|hh
+id|data
 (braket
 l_int|32
 op_div
@@ -1932,7 +1932,7 @@ r_return
 id|skb
 suffix:semicolon
 )brace
-multiline_comment|/**&n; *&t;skb_dequeue - remove from the head of the queue&n; *&t;@list: list to dequeue from&n; *&n; *&t;Remove the head of the list. The list lock is taken so the function&n; *&t;may be used safely with other locking list functions. The tail item is&n; *&t;returned or %NULL if the list is empty.&n; */
+multiline_comment|/**&n; *&t;skb_dequeue_tail - remove from the tail of the queue&n; *&t;@list: list to dequeue from&n; *&n; *&t;Remove the tail of the list. The list lock is taken so the function&n; *&t;may be used safely with other locking list functions. The tail item is&n; *&t;returned or %NULL if the list is empty.&n; */
 DECL|function|skb_dequeue_tail
 r_static
 r_inline

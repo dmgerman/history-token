@@ -29,6 +29,7 @@ r_int
 r_int
 id|vaddr
 suffix:semicolon
+multiline_comment|/* even !CONFIG_PREEMPT needs this, for in_atomic in do_page_fault */
 id|inc_preempt_count
 c_func
 (paren
@@ -194,6 +195,11 @@ c_func
 (paren
 )paren
 suffix:semicolon
+id|preempt_check_resched
+c_func
+(paren
+)paren
+suffix:semicolon
 r_return
 suffix:semicolon
 )brace
@@ -255,6 +261,11 @@ suffix:semicolon
 macro_line|#endif
 macro_line|#endif
 id|dec_preempt_count
+c_func
+(paren
+)paren
+suffix:semicolon
+id|preempt_check_resched
 c_func
 (paren
 )paren

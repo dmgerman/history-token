@@ -2239,6 +2239,9 @@ op_star
 id|data
 )paren
 (brace
+r_if
+c_cond
+(paren
 id|request_module
 c_func
 (paren
@@ -2251,6 +2254,21 @@ id|dev
 )paren
 comma
 id|MINOR
+c_func
+(paren
+id|dev
+)paren
+)paren
+OG
+l_int|0
+)paren
+multiline_comment|/* Make old-style 2.4 aliases work */
+id|request_module
+c_func
+(paren
+l_string|&quot;char-major-%d&quot;
+comma
+id|MAJOR
 c_func
 (paren
 id|dev

@@ -73,10 +73,6 @@ c_func
 id|Scsi_Cmnd
 op_star
 id|cmd
-comma
-r_int
-r_int
-id|resetFlags
 )paren
 suffix:semicolon
 r_extern
@@ -103,7 +99,6 @@ id|geom
 )braket
 )paren
 suffix:semicolon
-macro_line|#ifdef MODULE
 r_static
 r_int
 id|DC390_release
@@ -114,9 +109,5 @@ id|Scsi_Host
 op_star
 )paren
 suffix:semicolon
-macro_line|#else
-DECL|macro|DC390_release
-macro_line|# define DC390_release NULL
-macro_line|#endif
 macro_line|#endif /* DC390_H */
 eof

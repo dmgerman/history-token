@@ -58,6 +58,13 @@ c_func
 id|dvb_dmx_swfilter
 )paren
 suffix:semicolon
+DECL|variable|dvb_dmx_swfilter_204
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|dvb_dmx_swfilter_204
+)paren
+suffix:semicolon
 DECL|variable|dvbdmx_connect_frontend
 id|EXPORT_SYMBOL
 c_func

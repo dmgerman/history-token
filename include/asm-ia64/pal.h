@@ -933,47 +933,24 @@ r_typedef
 r_struct
 id|pal_cache_check_info_s
 (brace
-DECL|member|reserved1
-id|u64
-id|reserved1
-suffix:colon
-l_int|16
-comma
-DECL|member|way
-id|way
-suffix:colon
-l_int|5
-comma
-multiline_comment|/* Way in which the&n;&t;&t;&t;&t;&t;&t; * error occurred&n;&t;&t;&t;&t;&t;&t; */
-DECL|member|reserved2
-id|reserved2
-suffix:colon
-l_int|1
-comma
-DECL|member|mc
-id|mc
-suffix:colon
-l_int|1
-comma
-multiline_comment|/* Machine check corrected */
-DECL|member|tv
-id|tv
-suffix:colon
-l_int|1
-comma
-multiline_comment|/* Target address&n;&t;&t;&t;&t;&t;&t; * structure is valid&n;&t;&t;&t;&t;&t;&t; */
-DECL|member|wv
-id|wv
-suffix:colon
-l_int|1
-comma
-multiline_comment|/* Way field valid */
 DECL|member|op
+id|u64
 id|op
 suffix:colon
-l_int|3
+l_int|4
 comma
 multiline_comment|/* Type of cache&n;&t;&t;&t;&t;&t;&t; * operation that&n;&t;&t;&t;&t;&t;&t; * caused the machine&n;&t;&t;&t;&t;&t;&t; * check.&n;&t;&t;&t;&t;&t;&t; */
+DECL|member|level
+id|level
+suffix:colon
+l_int|2
+comma
+multiline_comment|/* Cache level */
+DECL|member|reserved1
+id|reserved1
+suffix:colon
+l_int|2
+comma
 DECL|member|dl
 id|dl
 suffix:colon
@@ -998,30 +975,100 @@ suffix:colon
 l_int|1
 comma
 multiline_comment|/* Failure in icache */
-DECL|member|index
-id|index
-suffix:colon
-l_int|24
-comma
-multiline_comment|/* Cache line index */
-DECL|member|mv
-id|mv
-suffix:colon
-l_int|1
-comma
-multiline_comment|/* mesi valid */
 DECL|member|mesi
 id|mesi
 suffix:colon
 l_int|3
 comma
 multiline_comment|/* Cache line state */
-DECL|member|level
-id|level
+DECL|member|mv
+id|mv
 suffix:colon
-l_int|4
+l_int|1
+comma
+multiline_comment|/* mesi valid */
+DECL|member|way
+id|way
+suffix:colon
+l_int|5
+comma
+multiline_comment|/* Way in which the&n;&t;&t;&t;&t;&t;&t; * error occurred&n;&t;&t;&t;&t;&t;&t; */
+DECL|member|wiv
+id|wiv
+suffix:colon
+l_int|1
+comma
+multiline_comment|/* Way field valid */
+DECL|member|reserved2
+id|reserved2
+suffix:colon
+l_int|10
+comma
+DECL|member|index
+id|index
+suffix:colon
+l_int|20
+comma
+multiline_comment|/* Cache line index */
+DECL|member|reserved3
+id|reserved3
+suffix:colon
+l_int|2
+comma
+DECL|member|is
+id|is
+suffix:colon
+l_int|1
+comma
+multiline_comment|/* instruction set (1 == ia32) */
+DECL|member|iv
+id|iv
+suffix:colon
+l_int|1
+comma
+multiline_comment|/* instruction set field valid */
+DECL|member|pl
+id|pl
+suffix:colon
+l_int|2
+comma
+multiline_comment|/* privilege level */
+DECL|member|pv
+id|pv
+suffix:colon
+l_int|1
+comma
+multiline_comment|/* privilege level field valid */
+DECL|member|mcc
+id|mcc
+suffix:colon
+l_int|1
+comma
+multiline_comment|/* Machine check corrected */
+DECL|member|tv
+id|tv
+suffix:colon
+l_int|1
+comma
+multiline_comment|/* Target address&n;&t;&t;&t;&t;&t;&t; * structure is valid&n;&t;&t;&t;&t;&t;&t; */
+DECL|member|rq
+id|rq
+suffix:colon
+l_int|1
+comma
+multiline_comment|/* Requester identifier&n;&t;&t;&t;&t;&t;&t; * structure is valid&n;&t;&t;&t;&t;&t;&t; */
+DECL|member|rp
+id|rp
+suffix:colon
+l_int|1
+comma
+multiline_comment|/* Responder identifier&n;&t;&t;&t;&t;&t;&t; * structure is valid&n;&t;&t;&t;&t;&t;&t; */
+DECL|member|pi
+id|pi
+suffix:colon
+l_int|1
 suffix:semicolon
-multiline_comment|/* Cache level */
+multiline_comment|/* Precise instruction pointer&n;&t;&t;&t;&t;&t;&t; * structure is valid&n;&t;&t;&t;&t;&t;&t; */
 DECL|typedef|pal_cache_check_info_t
 )brace
 id|pal_cache_check_info_t
@@ -1038,10 +1085,27 @@ suffix:colon
 l_int|8
 comma
 multiline_comment|/* Slot# of TR where&n;&t;&t;&t;&t;&t;&t; * error occurred&n;&t;&t;&t;&t;&t;&t; */
+DECL|member|trv
+id|trv
+suffix:colon
+l_int|1
+comma
+multiline_comment|/* tr_slot field is valid */
+DECL|member|reserved1
+id|reserved1
+suffix:colon
+l_int|1
+comma
+DECL|member|level
+id|level
+suffix:colon
+l_int|2
+comma
+multiline_comment|/* TLB level where failure occurred */
 DECL|member|reserved2
 id|reserved2
 suffix:colon
-l_int|8
+l_int|4
 comma
 DECL|member|dtr
 id|dtr
@@ -1067,17 +1131,71 @@ suffix:colon
 l_int|1
 comma
 multiline_comment|/* Fail in inst. TC */
-DECL|member|mc
-id|mc
+DECL|member|op
+id|op
+suffix:colon
+l_int|4
+comma
+multiline_comment|/* Cache operation */
+DECL|member|reserved3
+id|reserved3
+suffix:colon
+l_int|30
+comma
+DECL|member|is
+id|is
+suffix:colon
+l_int|1
+comma
+multiline_comment|/* instruction set (1 == ia32) */
+DECL|member|iv
+id|iv
+suffix:colon
+l_int|1
+comma
+multiline_comment|/* instruction set field valid */
+DECL|member|pl
+id|pl
+suffix:colon
+l_int|2
+comma
+multiline_comment|/* privilege level */
+DECL|member|pv
+id|pv
+suffix:colon
+l_int|1
+comma
+multiline_comment|/* privilege level field valid */
+DECL|member|mcc
+id|mcc
 suffix:colon
 l_int|1
 comma
 multiline_comment|/* Machine check corrected */
-DECL|member|reserved1
-id|reserved1
+DECL|member|tv
+id|tv
 suffix:colon
-l_int|43
+l_int|1
+comma
+multiline_comment|/* Target address&n;&t;&t;&t;&t;&t;&t; * structure is valid&n;&t;&t;&t;&t;&t;&t; */
+DECL|member|rq
+id|rq
+suffix:colon
+l_int|1
+comma
+multiline_comment|/* Requester identifier&n;&t;&t;&t;&t;&t;&t; * structure is valid&n;&t;&t;&t;&t;&t;&t; */
+DECL|member|rp
+id|rp
+suffix:colon
+l_int|1
+comma
+multiline_comment|/* Responder identifier&n;&t;&t;&t;&t;&t;&t; * structure is valid&n;&t;&t;&t;&t;&t;&t; */
+DECL|member|pi
+id|pi
+suffix:colon
+l_int|1
 suffix:semicolon
+multiline_comment|/* Precise instruction pointer&n;&t;&t;&t;&t;&t;&t; * structure is valid&n;&t;&t;&t;&t;&t;&t; */
 DECL|typedef|pal_tlb_check_info_t
 )brace
 id|pal_tlb_check_info_t
@@ -1093,7 +1211,7 @@ id|size
 suffix:colon
 l_int|5
 comma
-multiline_comment|/* Xaction size*/
+multiline_comment|/* Xaction size */
 DECL|member|ib
 id|ib
 suffix:colon
@@ -1124,44 +1242,287 @@ suffix:colon
 l_int|5
 comma
 multiline_comment|/* Bus error severity*/
-DECL|member|tv
-id|tv
+DECL|member|hier
+id|hier
+suffix:colon
+l_int|2
+comma
+multiline_comment|/* Bus hierarchy level */
+DECL|member|reserved1
+id|reserved1
 suffix:colon
 l_int|1
 comma
-multiline_comment|/* Targ addr valid */
-DECL|member|rp
-id|rp
-suffix:colon
-l_int|1
-comma
-multiline_comment|/* Resp addr valid */
-DECL|member|rq
-id|rq
-suffix:colon
-l_int|1
-comma
-multiline_comment|/* Req addr valid */
 DECL|member|bsi
 id|bsi
 suffix:colon
 l_int|8
 comma
 multiline_comment|/* Bus error status&n;&t;&t;&t;&t;&t;&t; * info&n;&t;&t;&t;&t;&t;&t; */
-DECL|member|mc
-id|mc
+DECL|member|reserved2
+id|reserved2
+suffix:colon
+l_int|22
+comma
+DECL|member|is
+id|is
+suffix:colon
+l_int|1
+comma
+multiline_comment|/* instruction set (1 == ia32) */
+DECL|member|iv
+id|iv
+suffix:colon
+l_int|1
+comma
+multiline_comment|/* instruction set field valid */
+DECL|member|pl
+id|pl
+suffix:colon
+l_int|2
+comma
+multiline_comment|/* privilege level */
+DECL|member|pv
+id|pv
+suffix:colon
+l_int|1
+comma
+multiline_comment|/* privilege level field valid */
+DECL|member|mcc
+id|mcc
 suffix:colon
 l_int|1
 comma
 multiline_comment|/* Machine check corrected */
-DECL|member|reserved1
-id|reserved1
+DECL|member|tv
+id|tv
 suffix:colon
-l_int|31
+l_int|1
+comma
+multiline_comment|/* Target address&n;&t;&t;&t;&t;&t;&t; * structure is valid&n;&t;&t;&t;&t;&t;&t; */
+DECL|member|rq
+id|rq
+suffix:colon
+l_int|1
+comma
+multiline_comment|/* Requester identifier&n;&t;&t;&t;&t;&t;&t; * structure is valid&n;&t;&t;&t;&t;&t;&t; */
+DECL|member|rp
+id|rp
+suffix:colon
+l_int|1
+comma
+multiline_comment|/* Responder identifier&n;&t;&t;&t;&t;&t;&t; * structure is valid&n;&t;&t;&t;&t;&t;&t; */
+DECL|member|pi
+id|pi
+suffix:colon
+l_int|1
 suffix:semicolon
+multiline_comment|/* Precise instruction pointer&n;&t;&t;&t;&t;&t;&t; * structure is valid&n;&t;&t;&t;&t;&t;&t; */
 DECL|typedef|pal_bus_check_info_t
 )brace
 id|pal_bus_check_info_t
+suffix:semicolon
+DECL|struct|pal_reg_file_check_info_s
+r_typedef
+r_struct
+id|pal_reg_file_check_info_s
+(brace
+DECL|member|id
+id|u64
+id|id
+suffix:colon
+l_int|4
+comma
+multiline_comment|/* Register file identifier */
+DECL|member|op
+id|op
+suffix:colon
+l_int|4
+comma
+multiline_comment|/* Type of register&n;&t;&t;&t;&t;&t;&t; * operation that&n;&t;&t;&t;&t;&t;&t; * caused the machine&n;&t;&t;&t;&t;&t;&t; * check.&n;&t;&t;&t;&t;&t;&t; */
+DECL|member|reg_num
+id|reg_num
+suffix:colon
+l_int|7
+comma
+multiline_comment|/* Register number */
+DECL|member|rnv
+id|rnv
+suffix:colon
+l_int|1
+comma
+multiline_comment|/* reg_num valid */
+DECL|member|reserved2
+id|reserved2
+suffix:colon
+l_int|38
+comma
+DECL|member|is
+id|is
+suffix:colon
+l_int|1
+comma
+multiline_comment|/* instruction set (1 == ia32) */
+DECL|member|iv
+id|iv
+suffix:colon
+l_int|1
+comma
+multiline_comment|/* instruction set field valid */
+DECL|member|pl
+id|pl
+suffix:colon
+l_int|2
+comma
+multiline_comment|/* privilege level */
+DECL|member|pv
+id|pv
+suffix:colon
+l_int|1
+comma
+multiline_comment|/* privilege level field valid */
+DECL|member|mcc
+id|mcc
+suffix:colon
+l_int|1
+comma
+multiline_comment|/* Machine check corrected */
+DECL|member|reserved3
+id|reserved3
+suffix:colon
+l_int|3
+comma
+DECL|member|pi
+id|pi
+suffix:colon
+l_int|1
+suffix:semicolon
+multiline_comment|/* Precise instruction pointer&n;&t;&t;&t;&t;&t;&t; * structure is valid&n;&t;&t;&t;&t;&t;&t; */
+DECL|typedef|pal_reg_file_check_info_t
+)brace
+id|pal_reg_file_check_info_t
+suffix:semicolon
+DECL|struct|pal_uarch_check_info_s
+r_typedef
+r_struct
+id|pal_uarch_check_info_s
+(brace
+DECL|member|sid
+id|u64
+id|sid
+suffix:colon
+l_int|5
+comma
+multiline_comment|/* Structure identification */
+DECL|member|level
+id|level
+suffix:colon
+l_int|3
+comma
+multiline_comment|/* Level of failure */
+DECL|member|array_id
+id|array_id
+suffix:colon
+l_int|4
+comma
+multiline_comment|/* Array identification */
+DECL|member|op
+id|op
+suffix:colon
+l_int|4
+comma
+multiline_comment|/* Type of&n;&t;&t;&t;&t;&t;&t; * operation that&n;&t;&t;&t;&t;&t;&t; * caused the machine&n;&t;&t;&t;&t;&t;&t; * check.&n;&t;&t;&t;&t;&t;&t; */
+DECL|member|way
+id|way
+suffix:colon
+l_int|6
+comma
+multiline_comment|/* Way of structure */
+DECL|member|wv
+id|wv
+suffix:colon
+l_int|1
+comma
+multiline_comment|/* way valid */
+DECL|member|xv
+id|xv
+suffix:colon
+l_int|1
+comma
+multiline_comment|/* index valid */
+DECL|member|reserved1
+id|reserved1
+suffix:colon
+l_int|8
+comma
+DECL|member|index
+id|index
+suffix:colon
+l_int|8
+comma
+multiline_comment|/* Index or set of the uarch&n;&t;&t;&t;&t;&t;&t; * structure that failed.&n;&t;&t;&t;&t;&t;&t; */
+DECL|member|reserved2
+id|reserved2
+suffix:colon
+l_int|24
+comma
+DECL|member|is
+id|is
+suffix:colon
+l_int|1
+comma
+multiline_comment|/* instruction set (1 == ia32) */
+DECL|member|iv
+id|iv
+suffix:colon
+l_int|1
+comma
+multiline_comment|/* instruction set field valid */
+DECL|member|pl
+id|pl
+suffix:colon
+l_int|2
+comma
+multiline_comment|/* privilege level */
+DECL|member|pv
+id|pv
+suffix:colon
+l_int|1
+comma
+multiline_comment|/* privilege level field valid */
+DECL|member|mcc
+id|mcc
+suffix:colon
+l_int|1
+comma
+multiline_comment|/* Machine check corrected */
+DECL|member|tv
+id|tv
+suffix:colon
+l_int|1
+comma
+multiline_comment|/* Target address&n;&t;&t;&t;&t;&t;&t; * structure is valid&n;&t;&t;&t;&t;&t;&t; */
+DECL|member|rq
+id|rq
+suffix:colon
+l_int|1
+comma
+multiline_comment|/* Requester identifier&n;&t;&t;&t;&t;&t;&t; * structure is valid&n;&t;&t;&t;&t;&t;&t; */
+DECL|member|rp
+id|rp
+suffix:colon
+l_int|1
+comma
+multiline_comment|/* Responder identifier&n;&t;&t;&t;&t;&t;&t; * structure is valid&n;&t;&t;&t;&t;&t;&t; */
+DECL|member|pi
+id|pi
+suffix:colon
+l_int|1
+suffix:semicolon
+multiline_comment|/* Precise instruction pointer&n;&t;&t;&t;&t;&t;&t; * structure is valid&n;&t;&t;&t;&t;&t;&t; */
+DECL|typedef|pal_uarch_check_info_t
+)brace
+id|pal_uarch_check_info_t
 suffix:semicolon
 DECL|union|pal_mc_error_info_u
 r_typedef
@@ -1187,6 +1548,14 @@ suffix:semicolon
 DECL|member|pme_bus
 id|pal_bus_check_info_t
 id|pme_bus
+suffix:semicolon
+DECL|member|pme_reg_file
+id|pal_reg_file_check_info_t
+id|pme_reg_file
+suffix:semicolon
+DECL|member|pme_uarch
+id|pal_uarch_check_info_t
+id|pme_uarch
 suffix:semicolon
 DECL|typedef|pal_mc_error_info_t
 )brace

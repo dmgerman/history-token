@@ -28,6 +28,7 @@ macro_line|#include &lt;linux/rcupdate.h&gt;
 macro_line|#include &lt;linux/moduleparam.h&gt;
 macro_line|#include &lt;linux/writeback.h&gt;
 macro_line|#include &lt;linux/cpu.h&gt;
+macro_line|#include &lt;linux/efi.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/bugs.h&gt;
 multiline_comment|/*&n; * This is one of the first .c files built. Error out early&n; * if we have compiler trouble..&n; */
@@ -227,14 +228,8 @@ c_func
 r_void
 )paren
 suffix:semicolon
-DECL|variable|rows
-DECL|variable|cols
-r_int
-id|rows
-comma
-id|cols
-suffix:semicolon
 DECL|variable|execute_command
+r_static
 r_char
 op_star
 id|execute_command
@@ -1268,7 +1263,9 @@ id|init
 comma
 l_int|NULL
 comma
-id|CLONE_KERNEL
+id|CLONE_FS
+op_or
+id|CLONE_SIGHAND
 )paren
 suffix:semicolon
 id|unlock_kernel
@@ -1331,11 +1328,6 @@ c_func
 (paren
 op_amp
 id|command_line
-)paren
-suffix:semicolon
-id|setup_per_zone_pages_min
-c_func
-(paren
 )paren
 suffix:semicolon
 id|setup_per_cpu_areas
@@ -1516,6 +1508,18 @@ c_func
 (paren
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_X86
+r_if
+c_cond
+(paren
+id|efi_enabled
+)paren
+id|efi_enter_virtual_mode
+c_func
+(paren
+)paren
+suffix:semicolon
+macro_line|#endif
 id|fork_init
 c_func
 (paren
@@ -1602,6 +1606,7 @@ c_func
 suffix:semicolon
 )brace
 DECL|variable|initcall_debug
+r_static
 r_int
 id|__initdata
 id|initcall_debug

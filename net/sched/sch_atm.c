@@ -617,9 +617,7 @@ id|flow-&gt;filter_list
 op_assign
 id|filter-&gt;next
 suffix:semicolon
-id|filter-&gt;ops
-op_member_access_from_pointer
-id|destroy
+id|tcf_destroy
 c_func
 (paren
 id|filter

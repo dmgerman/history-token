@@ -997,9 +997,7 @@ id|p-&gt;filter_list
 op_assign
 id|tp-&gt;next
 suffix:semicolon
-id|tp-&gt;ops
-op_member_access_from_pointer
-id|destroy
+id|tcf_destroy
 c_func
 (paren
 id|tp

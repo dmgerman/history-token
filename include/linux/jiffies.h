@@ -7,7 +7,7 @@ macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;linux/seqlock.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/param.h&gt;&t;&t;&t;/* for HZ */
-multiline_comment|/*&n; * The 64-bit value is not volatile - you MUST NOT read it&n; * without holding read_lock_irq(&amp;xtime_lock).&n; * get_jiffies_64() will do this for you as appropriate.&n; */
+multiline_comment|/*&n; * The 64-bit value is not volatile - you MUST NOT read it&n; * without sampling the sequence number in xtime_lock.&n; * get_jiffies_64() will do this for you as appropriate.&n; */
 r_extern
 id|u64
 id|jiffies_64

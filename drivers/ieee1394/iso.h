@@ -57,6 +57,33 @@ op_assign
 l_int|1
 )brace
 suffix:semicolon
+multiline_comment|/* The mode of the dma when receiving iso data. Must be supported by chip */
+DECL|enum|raw1394_iso_dma_recv_mode
+r_enum
+id|raw1394_iso_dma_recv_mode
+(brace
+DECL|enumerator|HPSB_ISO_DMA_DEFAULT
+id|HPSB_ISO_DMA_DEFAULT
+op_assign
+op_minus
+l_int|1
+comma
+DECL|enumerator|HPSB_ISO_DMA_OLD_ABI
+id|HPSB_ISO_DMA_OLD_ABI
+op_assign
+l_int|0
+comma
+DECL|enumerator|HPSB_ISO_DMA_BUFFERFILL
+id|HPSB_ISO_DMA_BUFFERFILL
+op_assign
+l_int|1
+comma
+DECL|enumerator|HPSB_ISO_DMA_PACKET_PER_BUFFER
+id|HPSB_ISO_DMA_PACKET_PER_BUFFER
+op_assign
+l_int|2
+)brace
+suffix:semicolon
 DECL|struct|hpsb_iso
 r_struct
 id|hpsb_iso
@@ -106,6 +133,11 @@ r_int
 id|channel
 suffix:semicolon
 multiline_comment|/* -1 if multichannel */
+DECL|member|dma_mode
+r_int
+id|dma_mode
+suffix:semicolon
+multiline_comment|/* dma receive mode */
 multiline_comment|/* greatest # of packets between interrupts - controls&n;&t;   the maximum latency of the buffer */
 DECL|member|irq_interval
 r_int
@@ -252,6 +284,9 @@ id|buf_packets
 comma
 r_int
 id|channel
+comma
+r_int
+id|dma_mode
 comma
 r_int
 id|irq_interval

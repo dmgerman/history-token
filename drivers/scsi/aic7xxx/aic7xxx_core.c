@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * Core routines and tables shareable across OS platforms.&n; *&n; * Copyright (c) 1994-2002 Justin T. Gibbs.&n; * Copyright (c) 2000-2002 Adaptec Inc.&n; * All rights reserved.&n; *&n; * Redistribution and use in source and binary forms, with or without&n; * modification, are permitted provided that the following conditions&n; * are met:&n; * 1. Redistributions of source code must retain the above copyright&n; *    notice, this list of conditions, and the following disclaimer,&n; *    without modification.&n; * 2. Redistributions in binary form must reproduce at minimum a disclaimer&n; *    substantially similar to the &quot;NO WARRANTY&quot; disclaimer below&n; *    (&quot;Disclaimer&quot;) and any redistribution must be conditioned upon&n; *    including a substantially similar Disclaimer requirement for further&n; *    binary redistribution.&n; * 3. Neither the names of the above-listed copyright holders nor the names&n; *    of any contributors may be used to endorse or promote products derived&n; *    from this software without specific prior written permission.&n; *&n; * Alternatively, this software may be distributed under the terms of the&n; * GNU General Public License (&quot;GPL&quot;) version 2 as published by the Free&n; * Software Foundation.&n; *&n; * NO WARRANTY&n; * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS&n; * &quot;AS IS&quot; AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT&n; * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTIBILITY AND FITNESS FOR&n; * A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT&n; * HOLDERS OR CONTRIBUTORS BE LIABLE FOR SPECIAL, EXEMPLARY, OR CONSEQUENTIAL&n; * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS&n; * OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)&n; * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,&n; * STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING&n; * IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE&n; * POSSIBILITY OF SUCH DAMAGES.&n; *&n; * $Id: //depot/aic7xxx/aic7xxx/aic7xxx.c#131 $&n; *&n; * $FreeBSD$&n; */
+multiline_comment|/*&n; * Core routines and tables shareable across OS platforms.&n; *&n; * Copyright (c) 1994-2002 Justin T. Gibbs.&n; * Copyright (c) 2000-2002 Adaptec Inc.&n; * All rights reserved.&n; *&n; * Redistribution and use in source and binary forms, with or without&n; * modification, are permitted provided that the following conditions&n; * are met:&n; * 1. Redistributions of source code must retain the above copyright&n; *    notice, this list of conditions, and the following disclaimer,&n; *    without modification.&n; * 2. Redistributions in binary form must reproduce at minimum a disclaimer&n; *    substantially similar to the &quot;NO WARRANTY&quot; disclaimer below&n; *    (&quot;Disclaimer&quot;) and any redistribution must be conditioned upon&n; *    including a substantially similar Disclaimer requirement for further&n; *    binary redistribution.&n; * 3. Neither the names of the above-listed copyright holders nor the names&n; *    of any contributors may be used to endorse or promote products derived&n; *    from this software without specific prior written permission.&n; *&n; * Alternatively, this software may be distributed under the terms of the&n; * GNU General Public License (&quot;GPL&quot;) version 2 as published by the Free&n; * Software Foundation.&n; *&n; * NO WARRANTY&n; * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS&n; * &quot;AS IS&quot; AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT&n; * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTIBILITY AND FITNESS FOR&n; * A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT&n; * HOLDERS OR CONTRIBUTORS BE LIABLE FOR SPECIAL, EXEMPLARY, OR CONSEQUENTIAL&n; * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS&n; * OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)&n; * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,&n; * STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING&n; * IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE&n; * POSSIBILITY OF SUCH DAMAGES.&n; *&n; * $Id: //depot/aic7xxx/aic7xxx/aic7xxx.c#134 $&n; *&n; * $FreeBSD$&n; */
 macro_line|#ifdef __linux__
 macro_line|#include &quot;aic7xxx_osm.h&quot;
 macro_line|#include &quot;aic7xxx_inline.h&quot;
@@ -5717,21 +5717,9 @@ id|MSG_EXT_WDTR
 comma
 id|FALSE
 )paren
-op_logical_or
-id|ahc_sent_msg
-c_func
-(paren
-id|ahc
-comma
-id|AHCMSG_EXT
-comma
-id|MSG_EXT_SDTR
-comma
-id|FALSE
-)paren
 )paren
 (brace
-multiline_comment|/*&n;&t;&t;&t;&t; * Negotiation Rejected.  Go-async and&n;&t;&t;&t;&t; * retry command.&n;&t;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t;&t; * Negotiation Rejected.  Go-narrow and&n;&t;&t;&t;&t; * retry command.&n;&t;&t;&t;&t; */
 id|ahc_set_width
 c_func
 (paren
@@ -5750,6 +5738,37 @@ multiline_comment|/*paused*/
 id|TRUE
 )paren
 suffix:semicolon
+id|ahc_qinfifo_requeue_tail
+c_func
+(paren
+id|ahc
+comma
+id|scb
+)paren
+suffix:semicolon
+id|printerror
+op_assign
+l_int|0
+suffix:semicolon
+)brace
+r_else
+r_if
+c_cond
+(paren
+id|ahc_sent_msg
+c_func
+(paren
+id|ahc
+comma
+id|AHCMSG_EXT
+comma
+id|MSG_EXT_SDTR
+comma
+id|FALSE
+)paren
+)paren
+(brace
+multiline_comment|/*&n;&t;&t;&t;&t; * Negotiation Rejected.  Go-async and&n;&t;&t;&t;&t; * retry command.&n;&t;&t;&t;&t; */
 id|ahc_set_syncrate
 c_func
 (paren
@@ -6311,6 +6330,8 @@ id|ahc
 comma
 id|SIMODE1
 comma
+id|simode1
+op_amp
 id|ENBUSFREE
 )paren
 suffix:semicolon
@@ -10151,6 +10172,10 @@ id|period
 op_assign
 id|tinfo-&gt;goal.period
 suffix:semicolon
+id|offset
+op_assign
+id|tinfo-&gt;goal.offset
+suffix:semicolon
 id|ppr_options
 op_assign
 id|tinfo-&gt;goal.ppr_options
@@ -10193,6 +10218,10 @@ id|tinfo-&gt;goal.width
 suffix:semicolon
 id|dosync
 op_assign
+id|tinfo-&gt;curr.offset
+op_ne
+id|offset
+op_logical_or
 id|tinfo-&gt;curr.period
 op_ne
 id|period
@@ -13118,6 +13147,21 @@ op_assign
 id|TRUE
 suffix:semicolon
 )brace
+multiline_comment|/*&n;&t;&t;&t; * After a wide message, we are async, but&n;&t;&t;&t; * some devices don&squot;t seem to honor this portion&n;&t;&t;&t; * of the spec.  Force a renegotiation of the&n;&t;&t;&t; * sync component of our transfer agreement even&n;&t;&t;&t; * if our goal is async.  By updating our width&n;&t;&t;&t; * after forcing the negotiation, we avoid&n;&t;&t;&t; * renegotiating for width.&n;&t;&t;&t; */
+id|ahc_update_neg_request
+c_func
+(paren
+id|ahc
+comma
+id|devinfo
+comma
+id|tstate
+comma
+id|tinfo
+comma
+id|AHC_NEG_ALWAYS
+)paren
+suffix:semicolon
 id|ahc_set_width
 c_func
 (paren
@@ -13135,32 +13179,6 @@ multiline_comment|/*paused*/
 id|TRUE
 )paren
 suffix:semicolon
-multiline_comment|/* After a wide message, we are async */
-id|ahc_set_syncrate
-c_func
-(paren
-id|ahc
-comma
-id|devinfo
-comma
-multiline_comment|/*syncrate*/
-l_int|NULL
-comma
-multiline_comment|/*period*/
-l_int|0
-comma
-multiline_comment|/*offset*/
-l_int|0
-comma
-multiline_comment|/*ppr_options*/
-l_int|0
-comma
-id|AHC_TRANS_ACTIVE
-comma
-multiline_comment|/*paused*/
-id|TRUE
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -13173,12 +13191,7 @@ op_eq
 id|FALSE
 )paren
 (brace
-r_if
-c_cond
-(paren
-id|tinfo-&gt;goal.offset
-)paren
-(brace
+multiline_comment|/*&n;&t;&t;&t;&t; * We will always have an SDTR to send.&n;&t;&t;&t;&t; */
 id|ahc-&gt;msgout_index
 op_assign
 l_int|0
@@ -13203,7 +13216,6 @@ id|response
 op_assign
 id|TRUE
 suffix:semicolon
-)brace
 )brace
 id|done
 op_assign
@@ -16567,6 +16579,9 @@ id|ahc_reset
 c_func
 (paren
 id|ahc
+comma
+multiline_comment|/*reinit*/
+id|FALSE
 )paren
 suffix:semicolon
 id|ahc_outb
@@ -16624,7 +16639,7 @@ l_int|0
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Reset the controller and record some information about it&n; * that is only available just after a reset.&n; */
+multiline_comment|/*&n; * Reset the controller and record some information about it&n; * that is only available just after a reset.  If &quot;reinit&quot; is&n; * non-zero, this reset occured after initial configuration&n; * and the caller requests that the chip be fully reinitialized&n; * to a runable state.  Chip interrupts are *not* enabled after&n; * a reinitialization.  The caller must enable interrupts via&n; * ahc_intr_enable().&n; */
 r_int
 DECL|function|ahc_reset
 id|ahc_reset
@@ -16634,6 +16649,9 @@ r_struct
 id|ahc_softc
 op_star
 id|ahc
+comma
+r_int
+id|reinit
 )paren
 (brace
 id|u_int
@@ -16993,8 +17011,8 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|ahc-&gt;init_level
-OG
+id|reinit
+op_ne
 l_int|0
 )paren
 multiline_comment|/*&n;&t;&t; * If a recovery action has forced a chip reset,&n;&t;&t; * re-initialize the chip to our liking.&n;&t;&t; */
@@ -19767,12 +19785,6 @@ r_int
 id|wait
 suffix:semicolon
 multiline_comment|/*&n;&t;&t; * Wait for up to 500ms for our transceivers&n;&t;&t; * to settle.  If the adapter does not have&n;&t;&t; * a cable attached, the transceivers may&n;&t;&t; * never settle, so don&squot;t complain if we&n;&t;&t; * fail here.&n;&t;&t; */
-id|ahc_pause
-c_func
-(paren
-id|ahc
-)paren
-suffix:semicolon
 r_for
 c_loop
 (paren
@@ -19809,13 +19821,13 @@ c_func
 l_int|100
 )paren
 suffix:semicolon
-id|ahc_unpause
+)brace
+id|ahc_restart
 c_func
 (paren
 id|ahc
 )paren
 suffix:semicolon
-)brace
 r_return
 (paren
 l_int|0
@@ -21675,6 +21687,23 @@ id|ahc
 )paren
 (brace
 id|ahc_reset
+c_func
+(paren
+id|ahc
+comma
+multiline_comment|/*reinit*/
+id|TRUE
+)paren
+suffix:semicolon
+id|ahc_intr_enable
+c_func
+(paren
+id|ahc
+comma
+id|TRUE
+)paren
+suffix:semicolon
+id|ahc_restart
 c_func
 (paren
 id|ahc
@@ -27120,12 +27149,6 @@ op_or
 id|FASTMODE
 )paren
 suffix:semicolon
-id|ahc_restart
-c_func
-(paren
-id|ahc
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -30028,7 +30051,7 @@ c_func
 id|ahc
 )paren
 suffix:semicolon
-id|ahc_unpause
+id|ahc_restart
 c_func
 (paren
 id|ahc
@@ -30050,6 +30073,12 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
+id|ahc_restart
+c_func
+(paren
+id|ahc
+)paren
+suffix:semicolon
 id|ahc_unlock
 c_func
 (paren
@@ -31168,12 +31197,6 @@ id|ahc-&gt;flags
 op_or_assign
 id|AHC_INITIATORROLE
 suffix:semicolon
-id|ahc_pause
-c_func
-(paren
-id|ahc
-)paren
-suffix:semicolon
 multiline_comment|/*&n;&t;&t;&t;&t; * Returning to a configuration that&n;&t;&t;&t;&t; * fit previously will always succeed.&n;&t;&t;&t;&t; */
 (paren
 r_void
@@ -31184,6 +31207,13 @@ c_func
 id|ahc
 )paren
 suffix:semicolon
+id|ahc_restart
+c_func
+(paren
+id|ahc
+)paren
+suffix:semicolon
+multiline_comment|/*&n;&t;&t;&t;&t; * Unpaused.  The extra unpause&n;&t;&t;&t;&t; * that follows is harmless.&n;&t;&t;&t;&t; */
 )brace
 )brace
 id|ahc_unpause
