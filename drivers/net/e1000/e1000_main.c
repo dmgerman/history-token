@@ -1100,8 +1100,6 @@ op_amp
 id|e1000_driver
 )paren
 suffix:semicolon
-r_return
-suffix:semicolon
 )brace
 DECL|variable|e1000_exit_module
 id|module_exit
@@ -2047,8 +2045,6 @@ c_func
 id|netdev
 )paren
 suffix:semicolon
-r_return
-suffix:semicolon
 )brace
 multiline_comment|/**&n; * e1000_sw_init - Initialize general software structures (struct e1000_adapter)&n; * @adapter: board private structure to initialize&n; *&n; * e1000_sw_init initializes the Adapter private data structure.&n; * Fields are initialized based on PCI device information and&n; * OS network device settings (MTU size).&n; **/
 r_static
@@ -2957,8 +2953,6 @@ id|adapter-&gt;txd_cmd
 op_or_assign
 id|E1000_TXD_CMD_RPS
 suffix:semicolon
-r_return
-suffix:semicolon
 )brace
 multiline_comment|/**&n; * e1000_setup_rx_resources - allocate Rx resources (Descriptors)&n; * @adapter: board private structure&n; *&n; * Returns 0 on success, negative on failure&n; **/
 r_static
@@ -3505,8 +3499,6 @@ comma
 id|rctl
 )paren
 suffix:semicolon
-r_return
-suffix:semicolon
 )brace
 multiline_comment|/**&n; * e1000_free_tx_resources - Free Tx Resources&n; * @adapter: board private structure&n; *&n; * Free all transmit software resources&n; **/
 r_static
@@ -3559,8 +3551,6 @@ suffix:semicolon
 id|adapter-&gt;tx_ring.desc
 op_assign
 l_int|NULL
-suffix:semicolon
-r_return
 suffix:semicolon
 )brace
 multiline_comment|/**&n; * e1000_clean_tx_ring - Free Tx Buffers&n; * @adapter: board private structure&n; **/
@@ -3722,8 +3712,6 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-r_return
-suffix:semicolon
 )brace
 multiline_comment|/**&n; * e1000_free_rx_resources - Free Rx Resources&n; * @adapter: board private structure&n; *&n; * Free all receive software resources&n; **/
 r_static
@@ -3776,8 +3764,6 @@ suffix:semicolon
 id|adapter-&gt;rx_ring.desc
 op_assign
 l_int|NULL
-suffix:semicolon
-r_return
 suffix:semicolon
 )brace
 multiline_comment|/**&n; * e1000_clean_rx_ring - Free Rx Buffers&n; * @adapter: board private structure&n; **/
@@ -3939,8 +3925,6 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-r_return
-suffix:semicolon
 )brace
 multiline_comment|/* The 82542 2.0 (revision 2) needs to have the receive unit in reset&n; * and memory write and invalidate disabled for certain operations&n; */
 r_static
@@ -4050,8 +4034,6 @@ id|adapter
 )paren
 suffix:semicolon
 )brace
-r_return
-suffix:semicolon
 )brace
 r_static
 r_void
@@ -4162,8 +4144,6 @@ id|adapter
 )paren
 suffix:semicolon
 )brace
-r_return
-suffix:semicolon
 )brace
 multiline_comment|/**&n; * e1000_set_mac - Change the Ethernet Address of the NIC&n; * @netdev: network interface device structure&n; * @p: pointer to an address structure&n; *&n; * Returns 0 on success, negative on failure&n; **/
 r_static
@@ -4541,8 +4521,6 @@ id|adapter
 )paren
 suffix:semicolon
 )brace
-r_return
-suffix:semicolon
 )brace
 multiline_comment|/* need to wait a few seconds after link up to get diagnostic information from the phy */
 r_static
@@ -4577,8 +4555,6 @@ comma
 op_amp
 id|adapter-&gt;phy_info
 )paren
-suffix:semicolon
-r_return
 suffix:semicolon
 )brace
 multiline_comment|/**&n; * e1000_watchdog - Timer Call-back&n; * @data: pointer to netdev cast into an unsigned long&n; **/
@@ -6684,8 +6660,6 @@ c_func
 (paren
 )paren
 suffix:semicolon
-r_return
-suffix:semicolon
 )brace
 multiline_comment|/**&n; * e1000_irq_enable - Enable default interrupt generation settings&n; * @adapter: board private structure&n; **/
 r_static
@@ -6724,8 +6698,6 @@ id|IMS_ENABLE_MASK
 )paren
 suffix:semicolon
 )brace
-r_return
-suffix:semicolon
 )brace
 multiline_comment|/**&n; * e1000_intr - Interrupt Handler&n; * @irq: interrupt number&n; * @data: pointer to a network interface device structure&n; * @pt_regs: CPU registers structure&n; **/
 r_static
@@ -7083,8 +7055,6 @@ id|netdev
 )paren
 suffix:semicolon
 )brace
-r_return
-suffix:semicolon
 )brace
 multiline_comment|/**&n; * e1000_clean_rx_irq - Send received data up the network stack,&n; * @adapter: board private structure&n; **/
 r_static
@@ -7558,8 +7528,6 @@ c_func
 id|adapter
 )paren
 suffix:semicolon
-r_return
-suffix:semicolon
 )brace
 multiline_comment|/**&n; * e1000_alloc_rx_buffers - Replace used receive buffers&n; * @data: address of board private structure&n; **/
 r_static
@@ -7781,8 +7749,6 @@ id|rx_ring-&gt;next_to_use
 op_assign
 id|i
 suffix:semicolon
-r_return
-suffix:semicolon
 )brace
 multiline_comment|/**&n; * e1000_ioctl -&n; * @netdev:&n; * @ifreq:&n; * @cmd:&n; **/
 r_static
@@ -7920,8 +7886,6 @@ id|adapter-&gt;hw_csum_good
 op_increment
 suffix:semicolon
 )brace
-r_return
-suffix:semicolon
 )brace
 multiline_comment|/**&n; * e1000_enable_WOL - Wake On Lan Support (Magic Pkt)&n; * @adapter: Adapter structure&n; **/
 r_void
@@ -7988,8 +7952,6 @@ id|adapter-&gt;wol
 )paren
 suffix:semicolon
 )brace
-r_return
-suffix:semicolon
 )brace
 r_void
 DECL|function|e1000_write_pci_cfg

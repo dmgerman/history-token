@@ -1348,7 +1348,7 @@ id|an_list
 )braket
 op_assign
 DECL|macro|AA
-mdefine_line|#define AA &quot;Autoneg advertising &quot;
+mdefine_line|#define AA &quot;AutoNeg advertising &quot;
 (brace
 (brace
 l_int|0x01
@@ -1579,7 +1579,7 @@ id|list_option
 comma
 id|name
 suffix:colon
-l_string|&quot;Autoneg&quot;
+l_string|&quot;AutoNeg&quot;
 comma
 id|err
 suffix:colon

@@ -249,8 +249,6 @@ suffix:colon
 id|AUTONEG_DISABLE
 )paren
 suffix:semicolon
-r_return
-suffix:semicolon
 )brace
 r_static
 r_int
@@ -512,8 +510,6 @@ op_amp
 id|adapter-&gt;hw
 )paren
 suffix:semicolon
-r_return
-suffix:semicolon
 )brace
 r_static
 r_void
@@ -743,8 +739,6 @@ op_or_assign
 id|WAKE_MAGIC
 suffix:semicolon
 )brace
-r_return
-suffix:semicolon
 )brace
 r_static
 r_int
@@ -781,14 +775,12 @@ id|e1000_82544
 (brace
 r_return
 id|wol-&gt;wolopts
-op_eq
-l_int|0
 ques
 c_cond
-l_int|0
-suffix:colon
 op_minus
 id|EOPNOTSUPP
+suffix:colon
+l_int|0
 suffix:semicolon
 )brace
 id|adapter-&gt;wol
