@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * BK Id: SCCS/s.locks.c 1.11 08/19/01 22:27:32 paulus&n; */
+multiline_comment|/*&n; * BK Id: %F% %I% %G% %U% %#%&n; */
 multiline_comment|/*&n; * Locks for smp ppc &n; * &n; * Written by Cort Dougan (cort@cs.nmt.edu)&n; */
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
@@ -34,7 +34,16 @@ suffix:semicolon
 id|__asm__
 id|__volatile__
 (paren
-l_string|&quot;&bslash;n&bslash;&n;1:&t;lwarx&t;%0,0,%1&bslash;n&bslash;&n;&t;cmpwi&t;0,%0,0&bslash;n&bslash;&n;&t;bne&t;2f&bslash;n&bslash;&n;&t;stwcx.&t;%2,0,%1&bslash;n&bslash;&n;&t;bne-&t;1b&bslash;n&bslash;&n;&t;isync&bslash;n&bslash;&n;2:&quot;
+l_string|&quot;&bslash;n&bslash;&n;1:&t;lwarx&t;%0,0,%1&bslash;n&bslash;&n;&t;cmpwi&t;0,%0,0&bslash;n&bslash;&n;&t;bne&t;2f&bslash;n&quot;
+id|PPC405_ERR77
+c_func
+(paren
+l_int|0
+comma
+op_mod
+l_int|1
+)paren
+l_string|&quot;&t;stwcx.&t;%2,0,%1&bslash;n&bslash;&n;&t;bne-&t;1b&bslash;n&bslash;&n;&t;isync&bslash;n&bslash;&n;2:&quot;
 suffix:colon
 l_string|&quot;=&amp;r&quot;
 (paren

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * BK Id: SCCS/s.nonstdio.h 1.5 05/17/01 18:14:23 cort&n; */
+multiline_comment|/*&n; * BK Id: %F% %I% %G% %U% %#%&n; */
 DECL|typedef|FILE
 r_typedef
 r_int
@@ -101,6 +101,15 @@ comma
 dot
 dot
 dot
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|xmon_puts
+c_func
+(paren
+r_char
+op_star
 )paren
 suffix:semicolon
 DECL|macro|perror

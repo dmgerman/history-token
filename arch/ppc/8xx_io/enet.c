@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * BK Id: SCCS/s.enet.c 1.17 10/11/01 11:55:47 trini&n; */
+multiline_comment|/*&n; * BK Id: %F% %I% %G% %U% %#%&n; */
 multiline_comment|/*&n; * Ethernet driver for Motorola MPC8xx.&n; * Copyright (c) 1997 Dan Malek (dmalek@jlc.net)&n; *&n; * I copied the basic skeleton from the lance driver, because I did not&n; * know how to write the Linux driver, but I did know how the LANCE worked.&n; *&n; * This version of the driver is somewhat selectable for the different&n; * processor/board combinations.  It works for the boards I know about&n; * now, and should be easily modified to include others.  Some of the&n; * configuration information is contained in &lt;asm/commproc.h&gt; and the&n; * remainder is here.&n; *&n; * Buffer descriptors are kept in the CPM dual port RAM, and the frame&n; * buffers are in the host memory.&n; *&n; * Right now, I am very watseful with the buffers.  I allocate memory&n; * pages and then divide them into 2K frame buffers.  This way I know I&n; * have buffers large enough to hold one frame within one buffer descriptor.&n; * Once I get this working, I will use 64 or 128 byte CPM buffers, which&n; * will be much more memory efficient and will easily handle lots of&n; * small packets.&n; *&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -116,6 +116,16 @@ DECL|member|sccp
 id|scc_t
 op_star
 id|sccp
+suffix:semicolon
+multiline_comment|/* Virtual addresses for the receive buffers because we can&squot;t&n;&t; * do a __va() on them anymore.&n;&t; */
+DECL|member|rx_vaddr
+r_int
+r_char
+op_star
+id|rx_vaddr
+(braket
+id|RX_RING_SIZE
+)braket
 suffix:semicolon
 DECL|member|stats
 r_struct
@@ -1221,16 +1231,12 @@ c_func
 (paren
 id|skb
 comma
-(paren
-r_int
-r_char
-op_star
-)paren
-id|__va
-c_func
-(paren
-id|bdp-&gt;cbd_bufaddr
-)paren
+id|cep-&gt;rx_vaddr
+(braket
+id|bdp
+op_minus
+id|cep-&gt;rx_bd_base
+)braket
 comma
 id|pkt_len
 op_minus
@@ -1616,19 +1622,19 @@ r_int
 id|i
 comma
 id|j
+comma
+id|k
 suffix:semicolon
 r_int
 r_char
 op_star
 id|eap
-suffix:semicolon
-r_int
-r_int
-id|mem_addr
-suffix:semicolon
-id|pte_t
+comma
 op_star
-id|pte
+id|ba
+suffix:semicolon
+id|dma_addr_t
+id|mem_addr
 suffix:semicolon
 id|bd_t
 op_star
@@ -2207,6 +2213,10 @@ id|bdp
 op_assign
 id|cep-&gt;rx_bd_base
 suffix:semicolon
+id|k
+op_assign
+l_int|0
+suffix:semicolon
 r_for
 c_loop
 (paren
@@ -2223,37 +2233,21 @@ op_increment
 )paren
 (brace
 multiline_comment|/* Allocate a page.&n;&t;&t;*/
-id|mem_addr
+id|ba
 op_assign
-id|__get_free_page
+(paren
+r_int
+r_char
+op_star
+)paren
+id|consistent_alloc
 c_func
 (paren
 id|GFP_KERNEL
-)paren
-suffix:semicolon
-multiline_comment|/* Make it uncached.&n;&t;&t;*/
-id|pte
-op_assign
-id|va_to_pte
-c_func
-(paren
-id|mem_addr
-)paren
-suffix:semicolon
-id|pte_val
-c_func
-(paren
-op_star
-id|pte
-)paren
-op_or_assign
-id|_PAGE_NO_CACHE
-suffix:semicolon
-id|flush_tlb_page
-c_func
-(paren
-id|init_mm.mmap
 comma
+id|PAGE_SIZE
+comma
+op_amp
 id|mem_addr
 )paren
 suffix:semicolon
@@ -2281,13 +2275,21 @@ id|BD_ENET_RX_INTR
 suffix:semicolon
 id|bdp-&gt;cbd_bufaddr
 op_assign
-id|__pa
-c_func
-(paren
 id|mem_addr
-)paren
+suffix:semicolon
+id|cep-&gt;rx_vaddr
+(braket
+id|k
+op_increment
+)braket
+op_assign
+id|ba
 suffix:semicolon
 id|mem_addr
+op_add_assign
+id|CPM_ENET_RX_FRSIZE
+suffix:semicolon
+id|ba
 op_add_assign
 id|CPM_ENET_RX_FRSIZE
 suffix:semicolon

@@ -31,7 +31,6 @@ l_int|2
 suffix:semicolon
 r_extern
 id|boot_infos_t
-op_star
 id|disp_bi
 suffix:semicolon
 r_extern
@@ -51,9 +50,7 @@ r_void
 id|btext_welcome
 c_func
 (paren
-id|boot_infos_t
-op_star
-id|bi
+r_void
 )paren
 suffix:semicolon
 r_void

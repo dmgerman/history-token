@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * BK Id: SCCS/s.commproc.c 1.15 10/16/01 16:21:52 trini&n; */
+multiline_comment|/*&n; * BK Id: %F% %I% %G% %U% %#%&n; */
 multiline_comment|/*&n; * General Purpose functions for the global management of the&n; * Communication Processor Module.&n; * Copyright (c) 1997 Dan Malek (dmalek@jlc.net)&n; *&n; * In addition to the individual control of the communication&n; * channels, there are a few functions that globally affect the&n; * communication processor.&n; *&n; * Buffer descriptors must be allocated from the dual ported memory&n; * space.  The allocator for that is here.  When the communication&n; * process is reset, we reclaim the memory available.  There is&n; * currently no deallocator for this memory.&n; * The amount of space available is platform dependent.  On the&n; * MBX, the EPPC software loads additional microcode into the&n; * communication processor, and uses some of the DP ram for this&n; * purpose.  Current, the first 512 bytes and the last 256 bytes of&n; * memory are used.  Right now I am conservative and only use the&n; * memory that can never be used for microcode.  If there are&n; * applications that require more DP ram, we can expand the boundaries&n; * but then we have to be careful of any downloaded microcode.&n; */
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
@@ -132,6 +132,142 @@ op_star
 id|regs
 )paren
 suffix:semicolon
+r_static
+r_void
+id|alloc_host_memory
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+macro_line|#if 1
+r_void
+DECL|function|m8xx_cpm_reset
+id|m8xx_cpm_reset
+c_func
+(paren
+)paren
+(brace
+r_volatile
+id|immap_t
+op_star
+id|imp
+suffix:semicolon
+r_volatile
+id|cpm8xx_t
+op_star
+id|commproc
+suffix:semicolon
+id|pte_t
+op_star
+id|pte
+suffix:semicolon
+id|imp
+op_assign
+(paren
+id|immap_t
+op_star
+)paren
+id|IMAP_ADDR
+suffix:semicolon
+id|commproc
+op_assign
+(paren
+id|cpm8xx_t
+op_star
+)paren
+op_amp
+id|imp-&gt;im_cpm
+suffix:semicolon
+macro_line|#ifdef CONFIG_UCODE_PATCH
+multiline_comment|/* Perform a reset.&n;&t;*/
+id|commproc-&gt;cp_cpcr
+op_assign
+(paren
+id|CPM_CR_RST
+op_or
+id|CPM_CR_FLG
+)paren
+suffix:semicolon
+multiline_comment|/* Wait for it.&n;&t;*/
+r_while
+c_loop
+(paren
+id|commproc-&gt;cp_cpcr
+op_amp
+id|CPM_CR_FLG
+)paren
+suffix:semicolon
+id|cpm_load_patch
+c_func
+(paren
+id|imp
+)paren
+suffix:semicolon
+macro_line|#endif
+multiline_comment|/* Set SDMA Bus Request priority 5.&n;&t; * On 860T, this also enables FEC priority 6.  I am not sure&n;&t; * this is what we realy want for some applications, but the&n;&t; * manual recommends it.&n;&t; * Bit 25, FAM can also be set to use FEC aggressive mode (860T).&n;&t; */
+id|imp-&gt;im_siu_conf.sc_sdcr
+op_assign
+l_int|1
+suffix:semicolon
+multiline_comment|/* Reclaim the DP memory for our use.&n;&t;*/
+id|dp_alloc_base
+op_assign
+id|CPM_DATAONLY_BASE
+suffix:semicolon
+id|dp_alloc_top
+op_assign
+id|dp_alloc_base
+op_plus
+id|CPM_DATAONLY_SIZE
+suffix:semicolon
+multiline_comment|/* Tell everyone where the comm processor resides.&n;&t;*/
+id|cpmp
+op_assign
+(paren
+id|cpm8xx_t
+op_star
+)paren
+id|commproc
+suffix:semicolon
+)brace
+multiline_comment|/* We used to do this earlier, but have to postpone as long as possible&n; * to ensure the kernel VM is now running.&n; */
+r_static
+r_void
+DECL|function|alloc_host_memory
+id|alloc_host_memory
+c_func
+(paren
+)paren
+(brace
+id|uint
+id|physaddr
+suffix:semicolon
+multiline_comment|/* Set the host page for allocation.&n;&t;*/
+id|host_buffer
+op_assign
+(paren
+id|uint
+)paren
+id|consistent_alloc
+c_func
+(paren
+id|GFP_KERNEL
+comma
+id|PAGE_SIZE
+comma
+op_amp
+id|physaddr
+)paren
+suffix:semicolon
+id|host_end
+op_assign
+id|host_buffer
+op_plus
+id|PAGE_SIZE
+suffix:semicolon
+)brace
+macro_line|#else
 r_void
 DECL|function|m8xx_cpm_reset
 id|m8xx_cpm_reset
@@ -280,6 +416,7 @@ op_star
 id|commproc
 suffix:semicolon
 )brace
+macro_line|#endif
 multiline_comment|/* This is called during init_IRQ.  We used to do it above, but this&n; * was too early since init_IRQ was not yet called.&n; */
 r_void
 DECL|function|cpm_interrupt_init
@@ -723,6 +860,18 @@ r_return
 id|retloc
 suffix:semicolon
 )brace
+id|uint
+DECL|function|m8xx_cpm_dpalloc_index
+id|m8xx_cpm_dpalloc_index
+c_func
+(paren
+r_void
+)paren
+(brace
+r_return
+id|dp_alloc_base
+suffix:semicolon
+)brace
 multiline_comment|/* We also own one page of host buffer space for the allocation of&n; * UART &quot;fifos&quot; and the like.&n; */
 id|uint
 DECL|function|m8xx_cpm_hostalloc
@@ -736,6 +885,20 @@ id|size
 id|uint
 id|retloc
 suffix:semicolon
+macro_line|#if 1
+r_if
+c_cond
+(paren
+id|host_buffer
+op_eq
+l_int|0
+)paren
+id|alloc_host_memory
+c_func
+(paren
+)paren
+suffix:semicolon
+macro_line|#endif
 r_if
 c_cond
 (paren

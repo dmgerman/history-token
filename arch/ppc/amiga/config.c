@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * BK Id: SCCS/s.config.c 1.12 09/18/01 11:19:06 paulus&n; */
+multiline_comment|/*&n; * BK Id: %F% %I% %G% %U% %#%&n; */
 DECL|macro|m68k_debug_device
 mdefine_line|#define m68k_debug_device debug_device
 multiline_comment|/*&n; *  linux/arch/m68k/amiga/config.c&n; *&n; *  Copyright (C) 1993 Hamish Macdonald&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file COPYING in the main directory of this archive&n; * for more details.&n; */
@@ -14,7 +14,6 @@ macro_line|#include &lt;linux/init.h&gt;
 macro_line|#ifdef CONFIG_ZORRO
 macro_line|#include &lt;linux/zorro.h&gt;
 macro_line|#endif
-macro_line|#include &lt;linux/seq_file.h&gt;
 macro_line|#include &lt;asm/bootinfo.h&gt;
 macro_line|#include &lt;asm/setup.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
@@ -435,18 +434,6 @@ c_func
 r_char
 op_star
 id|buffer
-)paren
-suffix:semicolon
-r_extern
-r_int
-id|show_amiga_interrupts
-(paren
-r_struct
-id|seq_file
-op_star
-comma
-r_void
-op_star
 )paren
 suffix:semicolon
 multiline_comment|/* amiga specific timer functions */
@@ -1854,12 +1841,12 @@ id|mach_init_IRQ
 op_assign
 id|amiga_init_IRQ
 suffix:semicolon
+macro_line|#ifndef CONFIG_APUS
 id|mach_default_handler
 op_assign
 op_amp
 id|amiga_default_handler
 suffix:semicolon
-macro_line|#ifndef CONFIG_APUS
 id|mach_request_irq
 op_assign
 id|amiga_request_irq
@@ -1884,10 +1871,6 @@ suffix:semicolon
 id|mach_get_hardware_list
 op_assign
 id|amiga_get_hardware_list
-suffix:semicolon
-id|mach_get_irq_list
-op_assign
-id|show_amiga_interrupts
 suffix:semicolon
 id|mach_gettimeoffset
 op_assign

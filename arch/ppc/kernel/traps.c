@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * BK Id: SCCS/s.traps.c 1.22 10/11/01 10:33:09 paulus&n; */
+multiline_comment|/*&n; * BK Id: %F% %I% %G% %U% %#%&n; */
 multiline_comment|/*&n; *  linux/arch/ppc/kernel/traps.c&n; *&n; *  Copyright (C) 1995-1996  Gary Thomas (gdt@linuxppc.org)&n; *&n; *  This program is free software; you can redistribute it and/or&n; *  modify it under the terms of the GNU General Public License&n; *  as published by the Free Software Foundation; either version&n; *  2 of the License, or (at your option) any later version.&n; *&n; *  Modified by Cort Dougan (cort@cs.nmt.edu)&n; *  and Paul Mackerras (paulus@cs.anu.edu.au)&n; */
 multiline_comment|/*&n; * This file handles the architecture-dependent parts of hardware exceptions&n; */
 macro_line|#include &lt;linux/errno.h&gt;
@@ -19,6 +19,9 @@ macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/processor.h&gt;
+macro_line|#ifdef CONFIG_PMAC_BACKLIGHT
+macro_line|#include &lt;asm/backlight.h&gt;
+macro_line|#endif
 r_extern
 r_int
 id|fix_alignment
@@ -284,12 +287,25 @@ op_star
 id|regs
 )paren
 suffix:semicolon
+macro_line|#else
+DECL|macro|debugger
+mdefine_line|#define debugger(regs)&t;&t;&t;do { } while (0)
+DECL|macro|debugger_bpt
+mdefine_line|#define debugger_bpt(regs)&t;&t;0
+DECL|macro|debugger_sstep
+mdefine_line|#define debugger_sstep(regs)&t;&t;0
+DECL|macro|debugger_iabr_match
+mdefine_line|#define debugger_iabr_match(regs)&t;0
+DECL|macro|debugger_dabr_match
+mdefine_line|#define debugger_dabr_match(regs)&t;0
+DECL|macro|debugger_fault_handler
+mdefine_line|#define debugger_fault_handler&t;&t;((void (*)(struct pt_regs *))0)
 macro_line|#endif
 macro_line|#endif
 multiline_comment|/*&n; * Trap &amp; Exception support&n; */
-DECL|variable|oops_lock
+DECL|variable|die_lock
 id|spinlock_t
-id|oops_lock
+id|die_lock
 op_assign
 id|SPIN_LOCK_UNLOCKED
 suffix:semicolon
@@ -321,9 +337,23 @@ id|spin_lock_irq
 c_func
 (paren
 op_amp
-id|oops_lock
+id|die_lock
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_PMAC_BACKLIGHT
+id|set_backlight_enable
+c_func
+(paren
+l_int|1
+)paren
+suffix:semicolon
+id|set_backlight_level
+c_func
+(paren
+id|BACKLIGHT_MAX
+)paren
+suffix:semicolon
+macro_line|#endif
 id|printk
 c_func
 (paren
@@ -344,7 +374,7 @@ id|spin_unlock_irq
 c_func
 (paren
 op_amp
-id|oops_lock
+id|die_lock
 )paren
 suffix:semicolon
 multiline_comment|/* do_exit() should take care of panic&squot;ing from an interrupt&n;&t; * context so we don&squot;t handle it here&n;&t; */
@@ -380,14 +410,12 @@ id|regs
 )paren
 )paren
 (brace
-macro_line|#if defined(CONFIG_XMON) || defined(CONFIG_KGDB)
 id|debugger
 c_func
 (paren
 id|regs
 )paren
 suffix:semicolon
-macro_line|#endif
 id|die
 c_func
 (paren
@@ -467,7 +495,6 @@ suffix:semicolon
 r_return
 suffix:semicolon
 macro_line|#endif
-macro_line|#if defined(CONFIG_XMON) || defined(CONFIG_KGDB)
 r_if
 c_cond
 (paren
@@ -483,9 +510,8 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
-macro_line|#endif
 macro_line|#ifdef CONFIG_ALL_PPC
-multiline_comment|/*&n;&t; * I/O accesses can cause machine checks on powermacs.&n;&t; * Check if the NIP corresponds to the address of a sync&n;&t; * instruction for which there is an entry in the exception&n;&t; * table.&n;&t; * Note that the 601 only takes a machine check on TEA&n;&t; * (transfer error ack) signal assertion, and does not&n;&t; * set of the top 16 bits of SRR1.&n;&t; *  -- paulus.&n;&t; */
+multiline_comment|/*&n;&t; * I/O accesses can cause machine checks on powermacs.&n;&t; * Check if the NIP corresponds to the address of a sync&n;&t; * instruction for which there is an entry in the exception&n;&t; * table.&n;&t; * Note that the 601 only takes a machine check on TEA&n;&t; * (transfer error ack) signal assertion, and does not&n;&t; * set any of the top 16 bits of SRR1.&n;&t; *  -- paulus.&n;&t; */
 r_if
 c_cond
 (paren
@@ -654,7 +680,7 @@ c_cond
 (paren
 id|msr
 op_amp
-l_int|0xF0000
+l_int|0x601F0000
 )paren
 (brace
 r_case
@@ -675,6 +701,10 @@ multiline_comment|/* for 601 */
 r_case
 l_int|0x40000
 suffix:colon
+r_case
+l_int|0x140000
+suffix:colon
+multiline_comment|/* 7450 MSS error and TEA */
 id|printk
 c_func
 (paren
@@ -705,6 +735,39 @@ l_string|&quot;Address parity error signal&bslash;n&quot;
 suffix:semicolon
 r_break
 suffix:semicolon
+r_case
+l_int|0x20000000
+suffix:colon
+id|printk
+c_func
+(paren
+l_string|&quot;L1 Data Cache error&bslash;n&quot;
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+l_int|0x40000000
+suffix:colon
+id|printk
+c_func
+(paren
+l_string|&quot;L1 Instruction Cache error&bslash;n&quot;
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+l_int|0x00100000
+suffix:colon
+id|printk
+c_func
+(paren
+l_string|&quot;L2 data cache parity error&bslash;n&quot;
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
 r_default
 suffix:colon
 id|printk
@@ -714,14 +777,12 @@ l_string|&quot;Unknown values in msr&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
-macro_line|#if defined(CONFIG_XMON) || defined(CONFIG_KGDB)
 id|debugger
 c_func
 (paren
 id|regs
 )paren
 suffix:semicolon
-macro_line|#endif
 id|die
 c_func
 (paren
@@ -744,18 +805,13 @@ op_star
 id|regs
 )paren
 (brace
-macro_line|#if defined(CONFIG_XMON) || defined(CONFIG_KGDB)
-(brace
 id|debugger
 c_func
 (paren
 id|regs
 )paren
 suffix:semicolon
-r_return
-suffix:semicolon
-)brace
-macro_line|#endif
+macro_line|#if !(defined(CONFIG_XMON) || defined(CONFIG_KGDB))
 id|show_regs
 c_func
 (paren
@@ -768,6 +824,7 @@ c_func
 l_string|&quot;System Management Interrupt&quot;
 )paren
 suffix:semicolon
+macro_line|#endif
 )brace
 r_void
 DECL|function|UnknownException
@@ -817,7 +874,6 @@ op_star
 id|regs
 )paren
 (brace
-macro_line|#if defined(CONFIG_XMON) || defined(CONFIG_KGDB)
 r_if
 c_cond
 (paren
@@ -829,7 +885,6 @@ id|regs
 )paren
 r_return
 suffix:semicolon
-macro_line|#endif
 id|_exception
 c_func
 (paren
@@ -988,6 +1043,9 @@ op_star
 id|regs
 )paren
 (brace
+r_int
+id|errcode
+suffix:semicolon
 macro_line|#if defined(CONFIG_4xx)
 r_int
 r_int
@@ -999,48 +1057,63 @@ c_func
 id|SPRN_ESR
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
+r_int
+id|isbpt
+op_assign
 id|esr
 op_amp
 id|ESR_PTR
+suffix:semicolon
+r_extern
+r_int
+id|do_mathemu
+c_func
+(paren
+r_struct
+id|pt_regs
+op_star
+id|regs
 )paren
-(brace
-macro_line|#if defined(CONFIG_XMON) || defined(CONFIG_KGDB)
+suffix:semicolon
 r_if
 c_cond
 (paren
-id|debugger_bpt
+id|isbpt
+)paren
+id|mtspr
+c_func
+(paren
+id|SPRN_DBSR
+comma
+id|DBSR_TIE
+)paren
+suffix:semicolon
+macro_line|#ifdef CONFIG_MATH_EMULATION
+r_if
+c_cond
+(paren
+op_logical_neg
+id|isbpt
+op_logical_and
+id|do_mathemu
 c_func
 (paren
 id|regs
 )paren
+op_eq
+l_int|0
 )paren
 r_return
 suffix:semicolon
-macro_line|#endif
-id|_exception
-c_func
-(paren
-id|SIGTRAP
-comma
-id|regs
-)paren
+macro_line|#endif /* CONFIG_MATH_EMULATION */
+macro_line|#else /* ! CONFIG_4xx */
+r_int
+id|isbpt
+op_assign
+id|regs-&gt;msr
+op_amp
+l_int|0x20000
 suffix:semicolon
-)brace
-r_else
-(brace
-id|_exception
-c_func
-(paren
-id|SIGILL
-comma
-id|regs
-)paren
-suffix:semicolon
-)brace
-macro_line|#else
 r_if
 c_cond
 (paren
@@ -1058,18 +1131,17 @@ comma
 id|regs
 )paren
 suffix:semicolon
+r_return
+suffix:semicolon
 )brace
-r_else
+macro_line|#endif /* ! CONFIG_4xx */
 r_if
 c_cond
 (paren
-id|regs-&gt;msr
-op_amp
-l_int|0x20000
+id|isbpt
 )paren
 (brace
 multiline_comment|/* trap exception */
-macro_line|#if defined(CONFIG_XMON) || defined(CONFIG_KGDB)
 r_if
 c_cond
 (paren
@@ -1081,7 +1153,6 @@ id|regs
 )paren
 r_return
 suffix:semicolon
-macro_line|#endif
 id|_exception
 c_func
 (paren
@@ -1090,13 +1161,10 @@ comma
 id|regs
 )paren
 suffix:semicolon
-)brace
-r_else
-(brace
-multiline_comment|/* Try to emulate it if we should. */
-r_int
-id|errcode
+r_return
 suffix:semicolon
+)brace
+multiline_comment|/* Try to emulate it if we should. */
 r_if
 c_cond
 (paren
@@ -1138,8 +1206,6 @@ id|regs
 suffix:semicolon
 )brace
 )brace
-macro_line|#endif
-)brace
 r_void
 DECL|function|SingleStepException
 id|SingleStepException
@@ -1157,7 +1223,6 @@ op_complement
 id|MSR_SE
 suffix:semicolon
 multiline_comment|/* Turn off &squot;trace&squot; bit */
-macro_line|#if defined(CONFIG_XMON) || defined(CONFIG_KGDB)
 r_if
 c_cond
 (paren
@@ -1169,7 +1234,6 @@ id|regs
 )paren
 r_return
 suffix:semicolon
-macro_line|#endif
 id|_exception
 c_func
 (paren
@@ -1292,14 +1356,12 @@ l_int|1
 )braket
 )paren
 suffix:semicolon
-macro_line|#if defined(CONFIG_XMON) || defined(CONFIG_KGDB)
 id|debugger
 c_func
 (paren
 id|regs
 )paren
 suffix:semicolon
-macro_line|#endif
 id|show_regs
 c_func
 (paren
@@ -1385,6 +1447,16 @@ id|pt_regs
 op_star
 )paren
 suffix:semicolon
+r_extern
+r_int
+id|Soft_emulate_8xx
+c_func
+(paren
+r_struct
+id|pt_regs
+op_star
+)paren
+suffix:semicolon
 r_int
 id|errcode
 suffix:semicolon
@@ -1399,14 +1471,12 @@ id|regs
 )paren
 )paren
 (brace
-macro_line|#if defined(CONFIG_XMON) || defined(CONFIG_KGDB)
 id|debugger
 c_func
 (paren
 id|regs
 )paren
 suffix:semicolon
-macro_line|#endif
 id|die
 c_func
 (paren
@@ -1419,10 +1489,6 @@ id|SIGFPE
 suffix:semicolon
 )brace
 macro_line|#ifdef CONFIG_MATH_EMULATION
-r_if
-c_cond
-(paren
-(paren
 id|errcode
 op_assign
 id|do_mathemu
@@ -1430,14 +1496,8 @@ c_func
 (paren
 id|regs
 )paren
-)paren
-)paren
-(brace
+suffix:semicolon
 macro_line|#else
-r_if
-c_cond
-(paren
-(paren
 id|errcode
 op_assign
 id|Soft_emulate_8xx
@@ -1445,10 +1505,14 @@ c_func
 (paren
 id|regs
 )paren
-)paren
+suffix:semicolon
+macro_line|#endif
+r_if
+c_cond
+(paren
+id|errcode
 )paren
 (brace
-macro_line|#endif
 r_if
 c_cond
 (paren
@@ -1492,7 +1556,133 @@ id|regs
 suffix:semicolon
 )brace
 )brace
-macro_line|#endif
+macro_line|#endif /* CONFIG_8xx */
+macro_line|#if defined(CONFIG_4xx)
+DECL|function|DebugException
+r_void
+id|DebugException
+c_func
+(paren
+r_struct
+id|pt_regs
+op_star
+id|regs
+)paren
+(brace
+r_int
+r_int
+id|debug_status
+suffix:semicolon
+id|debug_status
+op_assign
+id|mfspr
+c_func
+(paren
+id|SPRN_DBSR
+)paren
+suffix:semicolon
+id|regs-&gt;msr
+op_and_assign
+op_complement
+id|MSR_DE
+suffix:semicolon
+multiline_comment|/* Turn off &squot;debug&squot; bit */
+r_if
+c_cond
+(paren
+id|debug_status
+op_amp
+id|DBSR_TIE
+)paren
+(brace
+multiline_comment|/* trap instruction*/
+id|mtspr
+c_func
+(paren
+id|SPRN_DBSR
+comma
+id|DBSR_TIE
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|user_mode
+c_func
+(paren
+id|regs
+)paren
+op_logical_and
+id|debugger_bpt
+c_func
+(paren
+id|regs
+)paren
+)paren
+r_return
+suffix:semicolon
+id|_exception
+c_func
+(paren
+id|SIGTRAP
+comma
+id|regs
+)paren
+suffix:semicolon
+)brace
+r_else
+r_if
+c_cond
+(paren
+id|debug_status
+op_amp
+id|DBSR_IC
+)paren
+(brace
+multiline_comment|/* instruction completion */
+id|mtspr
+c_func
+(paren
+id|SPRN_DBSR
+comma
+id|DBSR_IC
+)paren
+suffix:semicolon
+id|regs-&gt;dbcr0
+op_and_assign
+op_complement
+id|DBCR0_IC
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|user_mode
+c_func
+(paren
+id|regs
+)paren
+op_logical_and
+id|debugger_sstep
+c_func
+(paren
+id|regs
+)paren
+)paren
+r_return
+suffix:semicolon
+id|_exception
+c_func
+(paren
+id|SIGTRAP
+comma
+id|regs
+)paren
+suffix:semicolon
+)brace
+)brace
+macro_line|#endif /* CONFIG_4xx */
 macro_line|#if !defined(CONFIG_TAU_INT)
 r_void
 DECL|function|TAUException

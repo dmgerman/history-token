@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * BK Id: SCCS/s.open_pic_defs.h 1.8 08/20/01 22:33:28 paulus&n; */
+multiline_comment|/*&n; * BK Id: %F% %I% %G% %U% %#%&n; */
 multiline_comment|/*&n; *  linux/openpic.h -- OpenPIC definitions&n; *&n; *  Copyright (C) 1997 Geert Uytterhoeven&n; *&n; *  This file is based on the following documentation:&n; *&n; *&t;The Open Programmable Interrupt Controller (PIC)&n; *&t;Register Interface Specification Revision 1.2&n; *&n; *&t;Issue Date: October 1995&n; *&n; *&t;Issued jointly by Advanced Micro Devices and Cyrix Corporation&n; *&n; *&t;AMD is a registered trademark of Advanced Micro Devices, Inc.&n; *&t;Copyright (C) 1995, Advanced Micro Devices, Inc. and Cyrix, Inc.&n; *&t;All Rights Reserved.&n; *&n; *  To receive a copy of this documentation, send an email to openpic@amd.com.&n; *&n; *  This file is subject to the terms and conditions of the GNU General Public&n; *  License.  See the file COPYING in the main directory of this archive&n; *  for more details.&n; */
 macro_line|#ifndef _LINUX_OPENPIC_H
 DECL|macro|_LINUX_OPENPIC_H
@@ -324,6 +324,11 @@ DECL|macro|OPENPIC_CONFIG_8259_PASSTHROUGH_DISABLE
 mdefine_line|#define OPENPIC_CONFIG_8259_PASSTHROUGH_DISABLE&t;0x20000000
 DECL|macro|OPENPIC_CONFIG_BASE_MASK
 mdefine_line|#define OPENPIC_CONFIG_BASE_MASK&t;&t;0x000fffff
+multiline_comment|/*&n;     *  Global Configuration Register 1&n;     *  This is the EICR on EPICs.&n;     */
+DECL|macro|OPENPIC_EICR_S_CLK_MASK
+mdefine_line|#define OPENPIC_EICR_S_CLK_MASK&t;&t;&t;0x70000000
+DECL|macro|OPENPIC_EICR_SIE
+mdefine_line|#define OPENPIC_EICR_SIE&t;&t;&t;0x08000000
 multiline_comment|/*&n;     *  Vendor Identification Register&n;     */
 DECL|macro|OPENPIC_VENDOR_ID_STEPPING_MASK
 mdefine_line|#define OPENPIC_VENDOR_ID_STEPPING_MASK&t;&t;0x00ff0000

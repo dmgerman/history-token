@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * BK Id: SCCS/s.smp.c 1.34 10/11/01 12:06:01 trini&n; */
+multiline_comment|/*&n; * BK Id: %F% %I% %G% %U% %#%&n; */
 multiline_comment|/*&n; * Smp support for ppc.&n; *&n; * Written by Cort Dougan (cort@cs.nmt.edu) borrowing a great&n; * deal of code from the sparc and intel versions.&n; *&n; * Copyright (C) 1999 Cort Dougan &lt;cort@cs.nmt.edu&gt;&n; *&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -26,7 +26,6 @@ macro_line|#include &lt;asm/prom.h&gt;
 macro_line|#include &lt;asm/smp.h&gt;
 macro_line|#include &lt;asm/residual.h&gt;
 macro_line|#include &lt;asm/time.h&gt;
-macro_line|#include &quot;open_pic.h&quot;
 DECL|variable|smp_threads_ready
 r_int
 id|smp_threads_ready
@@ -200,6 +199,17 @@ r_int
 id|wait
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_PPC_ISERIES
+r_extern
+r_void
+id|smp_iSeries_space_timers
+c_func
+(paren
+r_int
+id|nr
+)paren
+suffix:semicolon
+macro_line|#endif
 multiline_comment|/* Since OpenPIC has only 4 IPIs, we use slightly different message numbers.&n; * &n; * Make sure this matches openpic_request_IPIs in open_pic.c, or what shows up&n; * in /proc/interrupts will be wrong!!! --Troy */
 DECL|macro|PPC_MSG_CALL_FUNCTION
 mdefine_line|#define PPC_MSG_CALL_FUNCTION&t;0
@@ -919,14 +929,9 @@ l_int|0
 op_assign
 l_int|1
 suffix:semicolon
-id|current-&gt;processor
+id|current-&gt;cpu
 op_assign
 l_int|0
-suffix:semicolon
-id|init_idle
-c_func
-(paren
-)paren
 suffix:semicolon
 r_for
 c_loop
@@ -1008,6 +1013,14 @@ id|cpu_nr
 op_assign
 id|max_cpus
 suffix:semicolon
+macro_line|#ifdef CONFIG_PPC_ISERIES
+id|smp_iSeries_space_timers
+c_func
+(paren
+id|cpu_nr
+)paren
+suffix:semicolon
+macro_line|#endif
 r_for
 c_loop
 (paren
@@ -1031,8 +1044,7 @@ id|pt_regs
 id|regs
 suffix:semicolon
 multiline_comment|/* create a process for the processor */
-multiline_comment|/* we don&squot;t care about the values in regs since we&squot;ll&n;&t;&t;   never reschedule the forked task. */
-multiline_comment|/* We DO care about one bit in the pt_regs we&n;&t;&t;   pass to do_fork.  That is the MSR_FP bit in &n;&t;&t;   regs.msr.  If that bit is on, then do_fork&n;&t;&t;   (via copy_thread) will call giveup_fpu.&n;&t;&t;   giveup_fpu will get a pointer to our (current&squot;s)&n;&t;&t;   last register savearea via current-&gt;thread.regs &n;&t;&t;   and using that pointer will turn off the MSR_FP,&n;&t;&t;   MSR_FE0 and MSR_FE1 bits.  At this point, this &n;&t;&t;   pointer is pointing to some arbitrary point within&n;&t;&t;   our stack. */
+multiline_comment|/* only regs.msr is actually used, and 0 is OK for it */
 id|memset
 c_func
 (paren
@@ -1094,10 +1106,12 @@ comma
 id|i
 )paren
 suffix:semicolon
-id|del_from_runqueue
+id|init_idle
 c_func
 (paren
 id|p
+comma
+id|i
 )paren
 suffix:semicolon
 id|unhash_process
@@ -1106,18 +1120,11 @@ c_func
 id|p
 )paren
 suffix:semicolon
-id|init_tasks
-(braket
-id|i
-)braket
-op_assign
-id|p
-suffix:semicolon
-id|p-&gt;processor
+id|p-&gt;cpu
 op_assign
 id|i
 suffix:semicolon
-id|p-&gt;cpus_runnable
+id|p-&gt;cpus_allowed
 op_assign
 l_int|1
 op_lshift
@@ -1736,11 +1743,6 @@ id|setup_cpu
 c_func
 (paren
 id|cpu
-)paren
-suffix:semicolon
-id|init_idle
-c_func
-(paren
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * This cpu is now &quot;online&quot;.  Only set them online&n;&t; * before they enter the loop below since write access&n;&t; * to the below variable is _not_ guaranteed to be&n;&t; * atomic.&n;&t; *   -- Cort &lt;cort@fsmlabs.com&gt;&n;&t; */

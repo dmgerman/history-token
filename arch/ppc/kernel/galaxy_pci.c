@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * BK Id: SCCS/s.galaxy_pci.c 1.7 05/17/01 18:14:21 cort&n; */
+multiline_comment|/*&n; * BK Id: %F% %I% %G% %U% %#%&n; */
 multiline_comment|/*&n; *&n; *    Copyright (c) 2000 Grant Erickson &lt;grant@borg.umn.edu&gt;&n; *    All rights reserved.&n; *&n; *    Module name: galaxy_pci.c&n; *&n; *    Description:&n; *      PCI interface code for the IBM PowerPC 405GP on-chip PCI bus&n; *      interface.&n; *&n; *      Why is this file called &quot;galaxy_pci&quot;? Because on the original&n; *      IBM &quot;Walnut&quot; evaluation board schematic I have, the 405GP is&n; *      is labeled &quot;GALAXY&quot;.&n; *&n; */
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
@@ -8,7 +8,7 @@ macro_line|#include &lt;asm/processor.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/machdep.h&gt;
-macro_line|#include &quot;pci.h&quot;
+macro_line|#include &lt;asm/pci-bridge.h&gt;
 multiline_comment|/* Preprocessor Defines */
 DECL|macro|PCICFGADDR
 mdefine_line|#define&t;PCICFGADDR&t;(volatile unsigned int *)(0xEEC00000)

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * BK Id: SCCS/s.prom.h 1.19 08/17/01 15:23:17 paulus&n; */
+multiline_comment|/*&n; * BK Id: %F% %I% %G% %U% %#%&n; */
 multiline_comment|/*&n; * Definitions for talking to the Open Firmware PROM on&n; * Power Macintosh computers.&n; *&n; * Copyright (C) 1996 Paul Mackerras.&n; */
 macro_line|#ifdef __KERNEL__
 macro_line|#ifndef _PPC_PROM_H
@@ -424,6 +424,41 @@ id|np
 )paren
 suffix:semicolon
 r_extern
+r_struct
+id|resource
+op_star
+id|request_OF_resource
+c_func
+(paren
+r_struct
+id|device_node
+op_star
+id|node
+comma
+r_int
+id|index
+comma
+r_const
+r_char
+op_star
+id|name_postfix
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|release_OF_resource
+c_func
+(paren
+r_struct
+id|device_node
+op_star
+id|node
+comma
+r_int
+id|index
+)paren
+suffix:semicolon
+r_extern
 r_void
 id|print_properties
 c_func
@@ -470,12 +505,30 @@ c_func
 r_void
 )paren
 suffix:semicolon
+r_extern
+r_int
+r_int
+id|add_reloc_offset
+c_func
+(paren
+r_int
+r_int
+)paren
+suffix:semicolon
+r_extern
+r_int
+r_int
+id|sub_reloc_offset
+c_func
+(paren
+r_int
+r_int
+)paren
+suffix:semicolon
 DECL|macro|PTRRELOC
-mdefine_line|#define PTRRELOC(x)&t;((typeof(x))((unsigned long)(x) + offset))
+mdefine_line|#define PTRRELOC(x)&t;((typeof(x))add_reloc_offset((unsigned long)(x)))
 DECL|macro|PTRUNRELOC
-mdefine_line|#define PTRUNRELOC(x)&t;((typeof(x))((unsigned long)(x) - offset))
-DECL|macro|RELOC
-mdefine_line|#define RELOC(x)&t;(*PTRRELOC(&amp;(x)))
+mdefine_line|#define PTRUNRELOC(x)&t;((typeof(x))sub_reloc_offset((unsigned long)(x)))
 macro_line|#endif /* _PPC_PROM_H */
 macro_line|#endif /* __KERNEL__ */
 eof

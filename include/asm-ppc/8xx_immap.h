@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * BK Id: SCCS/s.8xx_immap.h 1.5 05/17/01 18:14:24 cort&n; */
+multiline_comment|/*&n; * BK Id: %F% %I% %G% %U% %#%&n; */
 multiline_comment|/*&n; * MPC8xx Internal Memory Map&n; * Copyright (c) 1997 Dan Malek (dmalek@jlc.net)&n; *&n; * The I/O on the MPC860 is comprised of blocks of special registers&n; * and the dual port ram for the Communication Processor Module.&n; * Within this space are functional units such as the SIU, memory&n; * controller, system timers, and other control functions.  It is&n; * a combination that I found difficult to separate into logical&n; * functional files.....but anyone else is welcome to try.  -- Dan&n; */
 macro_line|#ifdef __KERNEL__
 macro_line|#ifndef __IMMAP_8XX__
@@ -571,7 +571,7 @@ suffix:semicolon
 multiline_comment|/* The key to unlock registers maintained by keep-alive power.&n;*/
 DECL|macro|KAPWR_KEY
 mdefine_line|#define KAPWR_KEY&t;((unsigned int)0x55ccaa33)
-multiline_comment|/* LCD interface.  MPC821 Only.&n;*/
+multiline_comment|/* LCD interface.  MPC821 and MPC823 Only.&n;*/
 DECL|struct|lcd
 r_typedef
 r_struct
@@ -1305,6 +1305,24 @@ DECL|typedef|fec_t
 )brace
 id|fec_t
 suffix:semicolon
+multiline_comment|/* We need this as the fec and fb cmap use the same address space */
+DECL|union|fec_lcd
+r_union
+id|fec_lcd
+(brace
+DECL|member|fl_un_fec
+id|fec_t
+id|fl_un_fec
+suffix:semicolon
+DECL|member|fl_un_cmap
+id|u_char
+id|fl_un_cmap
+(braket
+l_int|0x200
+)braket
+suffix:semicolon
+)brace
+suffix:semicolon
 DECL|struct|comm_proc
 r_typedef
 r_struct
@@ -1559,11 +1577,16 @@ id|cp_siram
 l_int|0x200
 )braket
 suffix:semicolon
-multiline_comment|/* The fast ethernet controller is not really part of the CPM,&n;&t; * but it resides in the address space.&n;&t; */
-DECL|member|cp_fec
-id|fec_t
-id|cp_fec
+multiline_comment|/* The fast ethernet controller is not really part of the CPM,&n;&t; * but it resides in the address space.&n;&t; *&n;&t; * The colormap for the LCD controller is also located here&n;&t; */
+DECL|member|fl_un
+r_union
+id|fec_lcd
+id|fl_un
 suffix:semicolon
+DECL|macro|cp_fec
+mdefine_line|#define cp_fec&t;fl_un.fl_un_fec
+DECL|macro|lcd_cmap
+mdefine_line|#define lcd_cmap fl_un.fl_un_cmap
 DECL|member|res18
 r_char
 id|res18
@@ -1644,7 +1667,7 @@ DECL|member|im_lcd
 id|lcd8xx_t
 id|im_lcd
 suffix:semicolon
-multiline_comment|/* LCD (821 only) */
+multiline_comment|/* LCD (821 and 823 only) */
 DECL|member|im_i2c
 id|i2c8xx_t
 id|im_i2c

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * BK Id: SCCS/s.highmem.h 1.10 06/28/01 15:50:17 paulus&n; */
+multiline_comment|/*&n; * BK Id: %F% %I% %G% %U% %#%&n; */
 multiline_comment|/*&n; * highmem.h: virtual kernel memory mappings for high memory&n; *&n; * PowerPC version, stolen from the i386 version.&n; *&n; * Used in CONFIG_HIGHMEM systems for memory pages which&n; * are not addressable by direct kernel virtual addresses.&n; *&n; * Copyright (C) 1999 Gerhard Wichert, Siemens AG&n; *&t;&t;      Gerhard.Wichert@pdb.siemens.de&n; *&n; *&n; * Redesigned the x86 32-bit VM architecture to deal with &n; * up to 16 Terrabyte physical memory. With current x86 CPUs&n; * we now support up to 64 Gigabytes physical RAM.&n; *&n; * Copyright (C) 1999 Ingo Molnar &lt;mingo@redhat.com&gt;&n; */
 macro_line|#ifndef _ASM_HIGHMEM_H
 DECL|macro|_ASM_HIGHMEM_H
@@ -35,8 +35,13 @@ r_void
 id|__init
 suffix:semicolon
 multiline_comment|/*&n; * Right now we initialize only a single pte table. It can be extended&n; * easily, subsequent pte tables have to be allocated in one physical&n; * chunk of RAM.&n; */
+macro_line|#ifdef CONFIG_HIGHMEM_START_BOOL
+DECL|macro|PKMAP_BASE
+mdefine_line|#define PKMAP_BASE CONFIG_HIGHMEM_START
+macro_line|#else
 DECL|macro|PKMAP_BASE
 mdefine_line|#define PKMAP_BASE (0xfe000000UL)
+macro_line|#endif /* CONFIG_HIGHMEM_START_BOOL */
 DECL|macro|LAST_PKMAP
 mdefine_line|#define LAST_PKMAP 1024
 DECL|macro|LAST_PKMAP_MASK
@@ -46,7 +51,7 @@ mdefine_line|#define PKMAP_NR(virt)  ((virt-PKMAP_BASE) &gt;&gt; PAGE_SHIFT)
 DECL|macro|PKMAP_ADDR
 mdefine_line|#define PKMAP_ADDR(nr)  (PKMAP_BASE + ((nr) &lt;&lt; PAGE_SHIFT))
 DECL|macro|KMAP_FIX_BEGIN
-mdefine_line|#define KMAP_FIX_BEGIN&t;(0xfe400000UL)
+mdefine_line|#define KMAP_FIX_BEGIN&t;(PKMAP_BASE + 0x00400000UL)
 r_extern
 r_void
 op_star

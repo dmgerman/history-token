@@ -62,6 +62,15 @@ id|cpu_nr
 suffix:semicolon
 r_extern
 r_void
+id|__setup_cpu_7410
+c_func
+(paren
+r_int
+id|cpu_nr
+)paren
+suffix:semicolon
+r_extern
+r_void
 id|__setup_cpu_7450
 c_func
 (paren
@@ -72,15 +81,6 @@ suffix:semicolon
 r_extern
 r_void
 id|__setup_cpu_power3
-c_func
-(paren
-r_int
-id|cpu_nr
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|__setup_cpu_power4
 c_func
 (paren
 r_int
@@ -106,7 +106,7 @@ id|cpu_nr
 )paren
 suffix:semicolon
 DECL|macro|CLASSIC_PPC
-mdefine_line|#define CLASSIC_PPC (!defined(CONFIG_8xx) &amp;&amp; &t; &bslash;&n;&t;&t;     !defined(CONFIG_4xx) &amp;&amp; !defined(CONFIG_POWER3) &amp;&amp;  &bslash;&n;&t;&t;     !defined(CONFIG_POWER4) &amp;&amp; !defined(CONFIG_PPC_ISERIES))
+mdefine_line|#define CLASSIC_PPC (!defined(CONFIG_8xx) &amp;&amp; !defined(CONFIG_4xx) &amp;&amp; &bslash;&n;&t;&t;     !defined(CONFIG_POWER3) &amp;&amp; !defined(CONFIG_PPC_ISERIES))
 multiline_comment|/* This table only contains &quot;desktop&quot; CPUs, it need to be filled with embedded&n; * ones as well...&n; */
 DECL|macro|COMMON_PPC
 mdefine_line|#define COMMON_PPC&t;(PPC_FEATURE_32 | PPC_FEATURE_HAS_FPU | &bslash;&n;&t;&t;&t; PPC_FEATURE_HAS_MMU)
@@ -322,12 +322,12 @@ id|__setup_cpu_604
 )brace
 comma
 (brace
-multiline_comment|/* 750 (0x4202, don&squot;t support TAU ?) */
+multiline_comment|/* 740/750 (0x4202, don&squot;t support TAU ?) */
 l_int|0xffffffff
 comma
 l_int|0x00084202
 comma
-l_string|&quot;750&quot;
+l_string|&quot;740/750&quot;
 comma
 id|CPU_FTR_SPLIT_ID_CACHE
 op_or
@@ -349,12 +349,99 @@ id|__setup_cpu_750
 )brace
 comma
 (brace
-multiline_comment|/* 750CX */
-l_int|0xffffff00
+multiline_comment|/* 745/755 */
+l_int|0xfffff000
+comma
+l_int|0x00083000
+comma
+l_string|&quot;745/755&quot;
+comma
+id|CPU_FTR_SPLIT_ID_CACHE
+op_or
+id|CPU_FTR_CAN_DOZE
+op_or
+id|CPU_FTR_USE_TB
+op_or
+id|CPU_FTR_L2CR
+op_or
+id|CPU_FTR_TAU
+op_or
+id|CPU_FTR_HPTE_TABLE
+comma
+id|COMMON_PPC
+comma
+l_int|32
+comma
+l_int|32
+comma
+id|__setup_cpu_750
+)brace
+comma
+(brace
+multiline_comment|/* 750CX (80100 and 8010x?) */
+l_int|0xfffffff0
+comma
+l_int|0x00080100
+comma
+l_string|&quot;750CX&quot;
+comma
+id|CPU_FTR_SPLIT_ID_CACHE
+op_or
+id|CPU_FTR_CAN_DOZE
+op_or
+id|CPU_FTR_USE_TB
+op_or
+id|CPU_FTR_L2CR
+op_or
+id|CPU_FTR_TAU
+op_or
+id|CPU_FTR_HPTE_TABLE
+comma
+id|COMMON_PPC
+comma
+l_int|32
+comma
+l_int|32
+comma
+id|__setup_cpu_750
+)brace
+comma
+(brace
+multiline_comment|/* 750CX (82201 and 82202) */
+l_int|0xfffffff0
 comma
 l_int|0x00082200
 comma
 l_string|&quot;750CX&quot;
+comma
+id|CPU_FTR_SPLIT_ID_CACHE
+op_or
+id|CPU_FTR_CAN_DOZE
+op_or
+id|CPU_FTR_USE_TB
+op_or
+id|CPU_FTR_L2CR
+op_or
+id|CPU_FTR_TAU
+op_or
+id|CPU_FTR_HPTE_TABLE
+comma
+id|COMMON_PPC
+comma
+l_int|32
+comma
+l_int|32
+comma
+id|__setup_cpu_750
+)brace
+comma
+(brace
+multiline_comment|/* 750CXe (82214) */
+l_int|0xfffffff0
+comma
+l_int|0x00082210
+comma
+l_string|&quot;750CXe&quot;
 comma
 id|CPU_FTR_SPLIT_ID_CACHE
 op_or
@@ -500,11 +587,44 @@ l_int|32
 comma
 l_int|32
 comma
-id|__setup_cpu_7400
+id|__setup_cpu_7410
 )brace
 comma
 (brace
-multiline_comment|/* 7450 */
+multiline_comment|/* 7450 2.0 - no doze/nap */
+l_int|0xffffffff
+comma
+l_int|0x80000200
+comma
+l_string|&quot;7450&quot;
+comma
+id|CPU_FTR_SPLIT_ID_CACHE
+op_or
+id|CPU_FTR_USE_TB
+op_or
+id|CPU_FTR_L2CR
+op_or
+id|CPU_FTR_TAU
+op_or
+id|CPU_FTR_ALTIVEC_COMP
+op_or
+id|CPU_FTR_HPTE_TABLE
+op_or
+id|CPU_FTR_SPEC7450
+comma
+id|COMMON_PPC
+op_or
+id|PPC_FEATURE_HAS_ALTIVEC
+comma
+l_int|32
+comma
+l_int|32
+comma
+id|__setup_cpu_7450
+)brace
+comma
+(brace
+multiline_comment|/* 7450 others */
 l_int|0xffff0000
 comma
 l_int|0x80000000
@@ -687,33 +807,6 @@ id|__setup_cpu_power3
 )brace
 comma
 macro_line|#endif /* CONFIG_PPC64BRIDGE */    
-macro_line|#ifdef CONFIG_POWER4
-(brace
-multiline_comment|/* Power4 */
-l_int|0xffff0000
-comma
-l_int|0x00350000
-comma
-l_string|&quot;Power4&quot;
-comma
-id|CPU_FTR_SPLIT_ID_CACHE
-op_or
-id|CPU_FTR_USE_TB
-op_or
-id|CPU_FTR_HPTE_TABLE
-comma
-id|COMMON_PPC
-op_or
-id|PPC_FEATURE_64
-comma
-l_int|128
-comma
-l_int|128
-comma
-id|__setup_cpu_power4
-)brace
-comma
-macro_line|#endif /* CONFIG_POWER4 */    
 macro_line|#ifdef CONFIG_8xx
 (brace
 multiline_comment|/* 8xx */
@@ -865,6 +958,60 @@ comma
 l_int|32
 comma
 l_int|32
+comma
+l_int|0
+comma
+multiline_comment|/*__setup_cpu_405 */
+)brace
+comma
+(brace
+multiline_comment|/* STB 04xxx */
+l_int|0xffff0000
+comma
+l_int|0x41810000
+comma
+l_string|&quot;STB04xxx&quot;
+comma
+id|CPU_FTR_SPLIT_ID_CACHE
+op_or
+id|CPU_FTR_USE_TB
+comma
+id|PPC_FEATURE_32
+op_or
+id|PPC_FEATURE_HAS_MMU
+op_or
+id|PPC_FEATURE_HAS_4xxMAC
+comma
+l_int|32
+comma
+l_int|32
+comma
+l_int|0
+comma
+multiline_comment|/*__setup_cpu_405 */
+)brace
+comma
+(brace
+multiline_comment|/* NP405L */
+l_int|0xffff0000
+comma
+l_int|0x41610000
+comma
+l_string|&quot;NP405L&quot;
+comma
+id|CPU_FTR_SPLIT_ID_CACHE
+op_or
+id|CPU_FTR_USE_TB
+comma
+id|PPC_FEATURE_32
+op_or
+id|PPC_FEATURE_HAS_MMU
+op_or
+id|PPC_FEATURE_HAS_4xxMAC
+comma
+l_int|16
+comma
+l_int|8
 comma
 l_int|0
 comma
