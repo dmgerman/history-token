@@ -417,7 +417,7 @@ l_string|&quot;LS-120 Camera&quot;
 comma
 id|US_SC_UFI
 comma
-id|US_PR_CBI
+id|US_PR_DEVICE
 comma
 l_int|NULL
 comma
