@@ -254,7 +254,7 @@ r_int
 id|pmac_newworld
 suffix:semicolon
 DECL|macro|DEFAULT_ROOT_DEVICE
-mdefine_line|#define DEFAULT_ROOT_DEVICE 0x0801&t;/* sda1 - slightly silly choice */
+mdefine_line|#define DEFAULT_ROOT_DEVICE Root_SDA1&t;/* sda1 - slightly silly choice */
 r_extern
 r_void
 id|zs_kgdb_hook

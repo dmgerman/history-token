@@ -3166,6 +3166,7 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|function|tx3912_rs_init
+r_static
 r_void
 id|__init
 id|tx3912_rs_init
@@ -3454,6 +3455,13 @@ c_func
 )paren
 suffix:semicolon
 )brace
+DECL|variable|tx3912_rs_init
+id|module_init
+c_func
+(paren
+id|tx3912_rs_init
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * Begin serial console routines&n; */
 macro_line|#ifdef CONFIG_SERIAL_TX3912_CONSOLE
 DECL|function|serial_outc

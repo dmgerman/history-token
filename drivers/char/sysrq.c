@@ -29,11 +29,6 @@ r_int
 r_int
 )paren
 suffix:semicolon
-r_extern
-r_struct
-id|list_head
-id|super_blocks
-suffix:semicolon
 multiline_comment|/* Whether we react on sysrq keys or just ignore them */
 DECL|variable|sysrq_enabled
 r_int

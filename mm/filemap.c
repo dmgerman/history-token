@@ -5348,7 +5348,7 @@ id|mode
 op_and_assign
 id|S_ISUID
 suffix:semicolon
-multiline_comment|/* was any of the uid bits set? */
+multiline_comment|/* were any of the uid bits set? */
 r_if
 c_cond
 (paren
@@ -5367,6 +5367,8 @@ op_assign
 id|ATTR_KILL_SUID
 op_or
 id|ATTR_KILL_SGID
+op_or
+id|ATTR_FORCE
 suffix:semicolon
 id|notify_change
 c_func

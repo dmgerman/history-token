@@ -1854,7 +1854,11 @@ id|ENXIO
 suffix:semicolon
 id|param-&gt;dev
 op_assign
+id|old_encode_dev
+c_func
+(paren
 id|bdev-&gt;bd_dev
+)paren
 suffix:semicolon
 id|param-&gt;open_count
 op_assign
@@ -2327,7 +2331,11 @@ c_func
 id|MINOR
 c_func
 (paren
+id|old_decode_dev
+c_func
+(paren
 id|param-&gt;dev
+)paren
 )paren
 comma
 op_amp
@@ -3307,7 +3315,11 @@ id|count
 op_increment
 )braket
 op_assign
+id|old_encode_dev
+c_func
+(paren
 id|dd-&gt;bdev-&gt;bd_dev
+)paren
 suffix:semicolon
 )brace
 id|dm_table_put

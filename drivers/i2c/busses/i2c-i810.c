@@ -6,6 +6,7 @@ macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/i2c.h&gt;
 macro_line|#include &lt;linux/i2c-algo-bit.h&gt;
+macro_line|#include &lt;asm/io.h&gt;
 multiline_comment|/* GPIO register locations */
 DECL|macro|I810_IOCONTROL_OFFSET
 mdefine_line|#define I810_IOCONTROL_OFFSET&t;0x5000

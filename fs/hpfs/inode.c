@@ -809,7 +809,7 @@ id|i
 comma
 id|mode
 comma
-id|old_decode_dev
+id|new_decode_dev
 c_func
 (paren
 id|rdev
@@ -1332,7 +1332,7 @@ op_assign
 id|cpu_to_le32
 c_func
 (paren
-id|old_encode_dev
+id|new_encode_dev
 c_func
 (paren
 id|i-&gt;i_rdev

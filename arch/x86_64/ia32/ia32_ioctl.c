@@ -108,7 +108,15 @@ r_return
 id|put_user
 c_func
 (paren
-id|real_tty-&gt;device
+id|new_encode_dev
+c_func
+(paren
+id|tty_devnum
+c_func
+(paren
+id|real_tty
+)paren
+)paren
 comma
 id|ptr
 )paren

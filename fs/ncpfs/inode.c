@@ -1163,7 +1163,7 @@ id|inode
 comma
 id|inode-&gt;i_mode
 comma
-id|old_decode_dev
+id|new_decode_dev
 c_func
 (paren
 id|info-&gt;i.nfs.rdev

@@ -3659,7 +3659,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|old_valid_dev
+id|new_valid_dev
 c_func
 (paren
 id|rdev

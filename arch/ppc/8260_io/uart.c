@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *  UART driver for MPC8260 CPM SCC or SMC&n; *  Copyright (c) 1999 Dan Malek (dmalek@jlc.net)&n; *  Copyright (c) 2000 MontaVista Software, Inc. (source@mvista.com)&n; *&t;2.3.99 updates&n; *  Copyright (c) 2002 Allen Curtis, Ones and Zeros, Inc. (acurtis@onz.com)&n; *&t;2.5.50 updates&n; *&n; * I used the 8xx uart.c driver as the framework for this driver.&n; * The original code was written for the EST8260 board.  I tried to make&n; * it generic, but there may be some assumptions in the structures that&n; * have to be fixed later.&n; *&n; * The 8xx and 8260 are similar, but not identical.  Over time we&n; * could probably merge these two drivers.&n; * To save porting time, I did not bother to change any object names&n; * that are not accessed outside of this file.&n; * It still needs lots of work........When it was easy, I included code&n; * to support the SCCs.&n; * Only the SCCs support modem control, so that is not complete either.&n; *&n; * This module exports the following rs232 io functions:&n; *&n; *&t;int rs_8xx_init(void);&n; */
+multiline_comment|/*&n; *  UART driver for MPC8260 CPM SCC or SMC&n; *  Copyright (c) 1999 Dan Malek (dmalek@jlc.net)&n; *  Copyright (c) 2000 MontaVista Software, Inc. (source@mvista.com)&n; *&t;2.3.99 updates&n; *  Copyright (c) 2002 Allen Curtis, Ones and Zeros, Inc. (acurtis@onz.com)&n; *&t;2.5.50 updates&n; *&n; * I used the 8xx uart.c driver as the framework for this driver.&n; * The original code was written for the EST8260 board.  I tried to make&n; * it generic, but there may be some assumptions in the structures that&n; * have to be fixed later.&n; *&n; * The 8xx and 8260 are similar, but not identical.  Over time we&n; * could probably merge these two drivers.&n; * To save porting time, I did not bother to change any object names&n; * that are not accessed outside of this file.&n; * It still needs lots of work........When it was easy, I included code&n; * to support the SCCs.&n; * Only the SCCs support modem control, so that is not complete either.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
@@ -9004,6 +9004,7 @@ comma
 suffix:semicolon
 multiline_comment|/*&n; * The serial driver boot-time initialization code!&n; */
 DECL|function|rs_8xx_init
+r_static
 r_int
 id|__init
 id|rs_8xx_init
@@ -10285,6 +10286,13 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+DECL|variable|rs_8xx_init
+id|module_init
+c_func
+(paren
+id|rs_8xx_init
+)paren
+suffix:semicolon
 multiline_comment|/* This must always be called before the rs_8xx_init() function, otherwise&n; * it blows away the port control information.&n;*/
 DECL|function|serial_console_setup
 r_static

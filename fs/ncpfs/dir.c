@@ -4591,7 +4591,7 @@ id|mode
 suffix:semicolon
 id|finfo.i.nfs.rdev
 op_assign
-id|old_encode_dev
+id|new_encode_dev
 c_func
 (paren
 id|rdev
@@ -4611,7 +4611,7 @@ id|finfo.i.dirEntNum
 comma
 id|mode
 comma
-id|old_encode_dev
+id|new_encode_dev
 c_func
 (paren
 id|rdev
@@ -5724,7 +5724,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|old_valid_dev
+id|new_valid_dev
 c_func
 (paren
 id|rdev
