@@ -368,12 +368,6 @@ op_assign
 op_amp
 id|dev_info
 suffix:semicolon
-id|client_reg.Attributes
-op_assign
-id|INFO_IO_CLIENT
-op_or
-id|INFO_CARD_SHARE
-suffix:semicolon
 id|client_reg.event_handler
 op_assign
 op_amp

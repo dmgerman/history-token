@@ -456,10 +456,6 @@ DECL|member|dev_info
 id|dev_info_t
 id|dev_info
 suffix:semicolon
-DECL|member|Attributes
-id|u_int
-id|Attributes
-suffix:semicolon
 DECL|member|state
 id|u_int
 id|state

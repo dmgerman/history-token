@@ -357,6 +357,7 @@ DECL|member|Attributes
 id|u_int
 id|Attributes
 suffix:semicolon
+multiline_comment|/* UNUSED */
 DECL|member|EventMask
 id|u_int
 id|EventMask
@@ -763,7 +764,7 @@ DECL|macro|WIN_BAR_MASK
 mdefine_line|#define WIN_BAR_MASK&t;&t;0xe000
 DECL|macro|WIN_BAR_SHIFT
 mdefine_line|#define WIN_BAR_SHIFT&t;&t;13
-multiline_comment|/* Attributes for RegisterClient */
+multiline_comment|/* Attributes for RegisterClient -- UNUSED -- */
 DECL|macro|INFO_MASTER_CLIENT
 mdefine_line|#define INFO_MASTER_CLIENT&t;0x01
 DECL|macro|INFO_IO_CLIENT

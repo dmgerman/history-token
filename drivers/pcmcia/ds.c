@@ -2801,10 +2801,6 @@ id|client-&gt;Socket
 op_assign
 id|s
 suffix:semicolon
-id|client-&gt;Attributes
-op_assign
-id|req-&gt;Attributes
-suffix:semicolon
 id|client-&gt;EventMask
 op_assign
 id|req-&gt;EventMask

@@ -666,12 +666,6 @@ id|client_reg.dev_info
 op_assign
 id|hw-&gt;dev_info
 suffix:semicolon
-id|client_reg.Attributes
-op_assign
-id|INFO_IO_CLIENT
-op_or
-id|INFO_CARD_SHARE
-suffix:semicolon
 id|client_reg.EventMask
 op_assign
 id|CS_EVENT_CARD_INSERTION
