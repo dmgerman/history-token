@@ -14,6 +14,7 @@ macro_line|#include &lt;linux/inet.h&gt;
 macro_line|#include &lt;linux/netdevice.h&gt;
 macro_line|#include &lt;linux/if_arp.h&gt;
 macro_line|#include &lt;linux/skbuff.h&gt;
+macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;net/sock.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
@@ -26,6 +27,13 @@ r_static
 id|ax25_route
 op_star
 id|ax25_route_list
+suffix:semicolon
+DECL|variable|ax25_route_lock
+r_static
+id|spinlock_t
+id|ax25_route_lock
+op_assign
+id|SPIN_LOCK_UNLOCKED
 suffix:semicolon
 r_static
 id|ax25_route
@@ -118,6 +126,21 @@ op_star
 id|t
 comma
 op_star
+id|ax25_rt
+suffix:semicolon
+r_int
+r_int
+id|flags
+suffix:semicolon
+id|spin_lock_irqsave
+c_func
+(paren
+op_amp
+id|ax25_route_lock
+comma
+id|flags
+)paren
+suffix:semicolon
 id|ax25_rt
 op_assign
 id|ax25_route_list
@@ -234,6 +257,15 @@ suffix:semicolon
 )brace
 )brace
 )brace
+id|spin_unlock_irqrestore
+c_func
+(paren
+op_amp
+id|ax25_route_lock
+comma
+id|flags
+)paren
+suffix:semicolon
 )brace
 DECL|function|ax25_rt_ioctl
 r_int
@@ -597,15 +629,13 @@ id|i
 suffix:semicolon
 )brace
 )brace
-id|save_flags
+id|spin_lock_irqsave
 c_func
 (paren
+op_amp
+id|ax25_route_lock
+comma
 id|flags
-)paren
-suffix:semicolon
-id|cli
-c_func
-(paren
 )paren
 suffix:semicolon
 id|ax25_rt-&gt;next
@@ -616,9 +646,12 @@ id|ax25_route_list
 op_assign
 id|ax25_rt
 suffix:semicolon
-id|restore_flags
+id|spin_unlock_irqrestore
 c_func
 (paren
+op_amp
+id|ax25_route_lock
+comma
 id|flags
 )paren
 suffix:semicolon
@@ -965,6 +998,10 @@ op_star
 id|ax25_rt
 suffix:semicolon
 r_int
+r_int
+id|flags
+suffix:semicolon
+r_int
 id|len
 op_assign
 l_int|0
@@ -986,9 +1023,13 @@ suffix:semicolon
 r_int
 id|i
 suffix:semicolon
-id|cli
+id|spin_lock_irqsave
 c_func
 (paren
+op_amp
+id|ax25_route_lock
+comma
+id|flags
 )paren
 suffix:semicolon
 id|len
@@ -1214,9 +1255,13 @@ id|length
 r_break
 suffix:semicolon
 )brace
-id|sti
+id|spin_unlock_irqrestore
 c_func
 (paren
+op_amp
+id|ax25_route_lock
+comma
+id|flags
 )paren
 suffix:semicolon
 op_star
