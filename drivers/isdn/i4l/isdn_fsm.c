@@ -152,7 +152,7 @@ id|fsm-&gt;fn_tbl
 id|i
 )braket
 dot
-id|routine
+id|fn
 suffix:semicolon
 )brace
 r_return
@@ -303,6 +303,7 @@ id|event
 )braket
 )paren
 suffix:semicolon
+r_return
 id|fn
 c_func
 (paren
@@ -312,9 +313,6 @@ id|event
 comma
 id|arg
 )paren
-suffix:semicolon
-r_return
-l_int|0
 suffix:semicolon
 )brace
 r_void

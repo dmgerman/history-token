@@ -5141,7 +5141,7 @@ l_int|NULL
 suffix:semicolon
 )brace
 r_static
-r_void
+r_int
 id|dialout_next
 c_func
 (paren
@@ -5160,7 +5160,7 @@ id|arg
 suffix:semicolon
 multiline_comment|/* Initiate dialout. */
 r_static
-r_void
+r_int
 DECL|function|dialout_first
 id|dialout_first
 c_func
@@ -5210,6 +5210,8 @@ id|idev
 )paren
 suffix:semicolon
 r_return
+op_minus
+id|EPERM
 suffix:semicolon
 )brace
 r_if
@@ -5233,6 +5235,8 @@ id|idev
 )paren
 suffix:semicolon
 r_return
+op_minus
+id|EINVAL
 suffix:semicolon
 )brace
 id|idev-&gt;dial
@@ -5243,6 +5247,7 @@ id|idev-&gt;dialretry
 op_assign
 l_int|0
 suffix:semicolon
+r_return
 id|dialout_next
 c_func
 (paren
@@ -5256,7 +5261,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* Try dialing the next number. */
 r_static
-r_void
+r_int
 DECL|function|dialout_next
 id|dialout_next
 c_func
@@ -5414,10 +5419,13 @@ op_amp
 id|dial
 )paren
 suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
 )brace
 multiline_comment|/* If we didn&squot;t connect within dialtimeout, we give up for now&n; * and wait for dialwait jiffies before trying again.&n; */
 r_static
-r_void
+r_int
 DECL|function|dial_timeout
 id|dial_timeout
 c_func
@@ -5506,6 +5514,7 @@ id|idev
 )paren
 suffix:semicolon
 r_return
+l_int|0
 suffix:semicolon
 )brace
 id|idev-&gt;dial_event
@@ -5523,9 +5532,12 @@ op_plus
 id|mlp-&gt;dialwait
 )paren
 suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
 )brace
 r_static
-r_void
+r_int
 DECL|function|connect_fail
 id|connect_fail
 c_func
@@ -5577,9 +5589,12 @@ c_func
 id|idev
 )paren
 suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
 )brace
 r_static
-r_void
+r_int
 DECL|function|out_dconn
 id|out_dconn
 c_func
@@ -5626,9 +5641,12 @@ op_amp
 id|cmd
 )paren
 suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
 )brace
 r_static
-r_void
+r_int
 DECL|function|in_dconn
 id|in_dconn
 c_func
@@ -5675,9 +5693,12 @@ op_amp
 id|cmd
 )paren
 suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
 )brace
 r_static
-r_void
+r_int
 DECL|function|bconn
 id|bconn
 c_func
@@ -5764,7 +5785,7 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;isdn_net: %s connected&bslash;n&quot;
+l_string|&quot;%s connected&bslash;n&quot;
 comma
 id|idev-&gt;name
 )paren
@@ -5806,9 +5827,12 @@ c_func
 id|idev
 )paren
 suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
 )brace
 r_static
-r_void
+r_int
 DECL|function|bhup
 id|bhup
 c_func
@@ -5881,9 +5905,12 @@ c_func
 id|idev
 )paren
 suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
 )brace
 r_static
-r_void
+r_int
 DECL|function|dhup
 id|dhup
 c_func
@@ -5930,10 +5957,13 @@ c_func
 id|idev
 )paren
 suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
 )brace
 multiline_comment|/* Check if it&squot;s time for idle hang-up */
 r_static
-r_void
+r_int
 DECL|function|check_hup
 id|check_hup
 c_func
@@ -6041,6 +6071,7 @@ id|idev
 )paren
 suffix:semicolon
 r_return
+l_int|0
 suffix:semicolon
 )brace
 id|mod_timer
@@ -6056,10 +6087,13 @@ op_plus
 id|HZ
 )paren
 suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
 )brace
 multiline_comment|/* Charge-info from TelCo. */
 r_static
-r_void
+r_int
 DECL|function|got_cinf
 id|got_cinf
 c_func
@@ -6132,6 +6166,9 @@ l_string|&quot;%s: got CINF&bslash;n&quot;
 comma
 id|idev-&gt;name
 )paren
+suffix:semicolon
+r_return
+l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/* Perform hangup for a net-interface. */
@@ -6377,7 +6414,7 @@ id|arg
 suffix:semicolon
 )brace
 r_static
-r_void
+r_int
 DECL|function|hang_up
 id|hang_up
 c_func
@@ -6407,9 +6444,12 @@ c_func
 id|idev
 )paren
 suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
 )brace
 r_static
-r_void
+r_int
 DECL|function|got_bsent
 id|got_bsent
 c_func
@@ -6446,6 +6486,9 @@ id|idev
 comma
 id|c
 )paren
+suffix:semicolon
+r_return
+l_int|0
 suffix:semicolon
 )brace
 DECL|variable|isdn_net_fn_tbl
