@@ -4898,6 +4898,14 @@ id|req-&gt;ref_count
 )paren
 r_return
 suffix:semicolon
+id|elv_completed_request
+c_func
+(paren
+id|req-&gt;q
+comma
+id|req
+)paren
+suffix:semicolon
 id|req-&gt;rq_status
 op_assign
 id|RQ_INACTIVE
