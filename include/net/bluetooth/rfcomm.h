@@ -418,6 +418,10 @@ DECL|member|addr
 id|u8
 id|addr
 suffix:semicolon
+DECL|member|priority
+id|u8
+id|priority
+suffix:semicolon
 DECL|member|mtu
 id|uint
 id|mtu
