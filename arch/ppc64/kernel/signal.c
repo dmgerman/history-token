@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *  linux/arch/ppc64/kernel/signal.c&n; *&n; *  &n; *&n; *  PowerPC version &n; *    Copyright (C) 1995-1996 Gary Thomas (gdt@linuxppc.org)&n; *&n; *  Derived from &quot;arch/i386/kernel/signal.c&quot;&n; *    Copyright (C) 1991, 1992 Linus Torvalds&n; *    1997-11-28  Modified for POSIX.1b signals by Richard Henderson&n; *&n; *  This program is free software; you can redistribute it and/or&n; *  modify it under the terms of the GNU General Public License&n; *  as published by the Free Software Foundation; either version&n; *  2 of the License, or (at your option) any later version.&n; */
+multiline_comment|/*&n; *  linux/arch/ppc64/kernel/signal.c&n; *&n; *  PowerPC version &n; *    Copyright (C) 1995-1996 Gary Thomas (gdt@linuxppc.org)&n; *&n; *  Derived from &quot;arch/i386/kernel/signal.c&quot;&n; *    Copyright (C) 1991, 1992 Linus Torvalds&n; *    1997-11-28  Modified for POSIX.1b signals by Richard Henderson&n; *&n; *  This program is free software; you can redistribute it and/or&n; *  modify it under the terms of the GNU General Public License&n; *  as published by the Free Software Foundation; either version&n; *  2 of the License, or (at your option) any later version.&n; */
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/smp.h&gt;
@@ -288,20 +288,6 @@ id|regs
 id|sigset_t
 id|saveset
 suffix:semicolon
-id|PPCDBG
-c_func
-(paren
-id|PPCDBG_SYS64X
-comma
-l_string|&quot;sys_sigsuspend - running - pid=%ld current=%lx comm=%s &bslash;n&quot;
-comma
-id|current-&gt;pid
-comma
-id|current
-comma
-id|current-&gt;comm
-)paren
-suffix:semicolon
 id|mask
 op_and_assign
 id|_BLOCKABLE
@@ -416,20 +402,6 @@ id|sigset_t
 id|saveset
 comma
 id|newset
-suffix:semicolon
-id|PPCDBG
-c_func
-(paren
-id|PPCDBG_SYS64X
-comma
-l_string|&quot;sys_rt_sigsuspend - running - pid=%ld current=%lx comm=%s &bslash;n&quot;
-comma
-id|current-&gt;pid
-comma
-id|current
-comma
-id|current-&gt;comm
-)paren
 suffix:semicolon
 multiline_comment|/* XXX: Don&squot;t preclude handling different sized sigset_t&squot;s.  */
 r_if
@@ -548,7 +520,6 @@ suffix:semicolon
 )brace
 )brace
 DECL|function|sys_sigaltstack
-id|asmlinkage
 r_int
 id|sys_sigaltstack
 c_func
@@ -575,20 +546,6 @@ op_star
 )paren
 op_amp
 id|uss
-suffix:semicolon
-id|PPCDBG
-c_func
-(paren
-id|PPCDBG_SYS64X
-comma
-l_string|&quot;sys_sigaltstack - running - pid=%ld current=%lx comm=%s &bslash;n&quot;
-comma
-id|current-&gt;pid
-comma
-id|current
-comma
-id|current-&gt;comm
-)paren
 suffix:semicolon
 r_return
 id|do_sigaltstack
@@ -633,20 +590,6 @@ id|old_ka
 suffix:semicolon
 r_int
 id|ret
-suffix:semicolon
-id|PPCDBG
-c_func
-(paren
-id|PPCDBG_SYS64X
-comma
-l_string|&quot;sys_sigaction - running - pid=%ld current=%lx comm=%s &bslash;n&quot;
-comma
-id|current-&gt;pid
-comma
-id|current
-comma
-id|current-&gt;comm
-)paren
 suffix:semicolon
 r_if
 c_cond
@@ -731,6 +674,7 @@ c_func
 (paren
 id|sig
 comma
+(paren
 id|act
 ques
 c_cond
@@ -738,7 +682,9 @@ op_amp
 id|new_ka
 suffix:colon
 l_int|NULL
+)paren
 comma
+(paren
 id|oact
 ques
 c_cond
@@ -746,6 +692,7 @@ op_amp
 id|old_ka
 suffix:colon
 l_int|NULL
+)paren
 )paren
 suffix:semicolon
 r_if
@@ -822,7 +769,7 @@ r_return
 id|ret
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * When we have signals to deliver, we set up on the&n; * user stack, going down from the original stack pointer:&n; *&t;a sigregs struct&n; *&t;one or more sigcontext structs&n; *&t;a gap of __SIGNAL_FRAMESIZE bytes&n; *&n; * Each of these things must be a multiple of 16 bytes in size.&n; *&n; * XXX ultimately we will have to stack up a siginfo and ucontext&n; * for each rt signal.&n; */
+multiline_comment|/*&n; * When we have signals to deliver, we set up on the&n; * user stack, going down from the original stack pointer:&n; *&t;a sigregs struct&n; *&t;one or more sigcontext structs with&n; *&t;a gap of __SIGNAL_FRAMESIZE bytes&n; *&n; * Each of these things must be a multiple of 16 bytes in size.&n; *&n; * XXX ultimately we will have to stack up a siginfo and ucontext&n; * for each rt signal.&n; */
 DECL|struct|sigregs
 r_struct
 id|sigregs
@@ -2388,49 +2335,10 @@ r_int
 )paren
 id|frame-&gt;tramp
 suffix:semicolon
-id|PPCDBG
-c_func
-(paren
-id|PPCDBG_SIGNAL
-comma
-l_string|&quot;setup_frame - returning - regs-&gt;gpr[1]=%lx, regs-&gt;gpr[4]=%lx, regs-&gt;link=%lx &bslash;n&quot;
-comma
-id|regs-&gt;gpr
-(braket
-l_int|1
-)braket
-comma
-id|regs-&gt;gpr
-(braket
-l_int|4
-)braket
-comma
-id|regs-&gt;link
-)paren
-suffix:semicolon
 r_return
 suffix:semicolon
 id|badframe
 suffix:colon
-id|PPCDBG
-c_func
-(paren
-id|PPCDBG_SIGNAL
-comma
-l_string|&quot;setup_frame - badframe in setup_frame, regs=%p frame=%p newsp=%lx&bslash;n&quot;
-comma
-id|regs
-comma
-id|frame
-comma
-id|newsp
-)paren
-suffix:semicolon
-id|PPCDBG_ENTER_DEBUGGER
-c_func
-(paren
-)paren
-suffix:semicolon
 macro_line|#if DEBUG_SIG
 id|printk
 c_func
@@ -3050,20 +2958,6 @@ r_int
 r_int
 id|signr
 suffix:semicolon
-id|PPCDBG
-c_func
-(paren
-id|PPCDBG_SIGNAL
-comma
-l_string|&quot;do_signal - (pre) dequeueing signal - pid=%ld current=%lx comm=%s &bslash;n&quot;
-comma
-id|current-&gt;pid
-comma
-id|current
-comma
-id|current-&gt;comm
-)paren
-suffix:semicolon
 id|spin_lock_irq
 c_func
 (paren
@@ -3088,22 +2982,6 @@ c_func
 (paren
 op_amp
 id|current-&gt;sigmask_lock
-)paren
-suffix:semicolon
-id|PPCDBG
-c_func
-(paren
-id|PPCDBG_SIGNAL
-comma
-l_string|&quot;do_signal - (aft) dequeueing signal - signal=%lx - pid=%ld current=%lx comm=%s &bslash;n&quot;
-comma
-id|signr
-comma
-id|current-&gt;pid
-comma
-id|current
-comma
-id|current-&gt;comm
 )paren
 suffix:semicolon
 r_if
@@ -3246,18 +3124,6 @@ op_minus
 l_int|1
 )braket
 suffix:semicolon
-id|PPCDBG
-c_func
-(paren
-id|PPCDBG_SIGNAL
-comma
-l_string|&quot;do_signal - ka=%p, action handler=%lx &bslash;n&quot;
-comma
-id|ka
-comma
-id|ka-&gt;sa.sa_handler
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -3266,14 +3132,6 @@ op_eq
 id|SIG_IGN
 )paren
 (brace
-id|PPCDBG
-c_func
-(paren
-id|PPCDBG_SIGNAL
-comma
-l_string|&quot;do_signal - into SIG_IGN logic &bslash;n&quot;
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -3319,14 +3177,6 @@ r_int
 id|exit_code
 op_assign
 id|signr
-suffix:semicolon
-id|PPCDBG
-c_func
-(paren
-id|PPCDBG_SIGNAL
-comma
-l_string|&quot;do_signal - into SIG_DFL logic &bslash;n&quot;
-)paren
 suffix:semicolon
 multiline_comment|/* Init gets no signals it doesn&squot;t want.  */
 r_if
@@ -3531,20 +3381,6 @@ id|sigregs
 )paren
 suffix:semicolon
 multiline_comment|/* Whee!  Actually deliver the signal.  */
-id|PPCDBG
-c_func
-(paren
-id|PPCDBG_SIGNAL
-comma
-l_string|&quot;do_signal - GOING TO RUN SIGNAL HANDLER - pid=%ld current=%lx comm=%s &bslash;n&quot;
-comma
-id|current-&gt;pid
-comma
-id|current
-comma
-id|current-&gt;comm
-)paren
-suffix:semicolon
 id|handle_signal
 c_func
 (paren
@@ -3563,20 +3399,6 @@ op_amp
 id|newsp
 comma
 id|frame
-)paren
-suffix:semicolon
-id|PPCDBG
-c_func
-(paren
-id|PPCDBG_SIGNAL
-comma
-l_string|&quot;do_signal - after running signal handler - pid=%ld current=%lx comm=%s &bslash;n&quot;
-comma
-id|current-&gt;pid
-comma
-id|current
-comma
-id|current-&gt;comm
 )paren
 suffix:semicolon
 r_break
@@ -3617,14 +3439,6 @@ id|ERESTARTNOINTR
 )paren
 )paren
 (brace
-id|PPCDBG
-c_func
-(paren
-id|PPCDBG_SIGNAL
-comma
-l_string|&quot;do_signal - going to back up &amp; retry system call &bslash;n&quot;
-)paren
-suffix:semicolon
 id|regs-&gt;gpr
 (braket
 l_int|3
@@ -3649,20 +3463,10 @@ id|newsp
 op_eq
 id|frame
 )paren
-(brace
-id|PPCDBG
-c_func
-(paren
-id|PPCDBG_SIGNAL
-comma
-l_string|&quot;do_signal - returning w/ no signal delivered &bslash;n&quot;
-)paren
-suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
 multiline_comment|/* no signals delivered */
-)brace
 r_if
 c_cond
 (paren
@@ -3699,14 +3503,6 @@ op_star
 id|frame
 comma
 id|newsp
-)paren
-suffix:semicolon
-id|PPCDBG
-c_func
-(paren
-id|PPCDBG_SIGNAL
-comma
-l_string|&quot;do_signal - returning a signal was delivered &bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
