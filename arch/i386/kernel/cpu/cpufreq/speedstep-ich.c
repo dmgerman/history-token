@@ -63,6 +63,17 @@ macro_line|#else
 DECL|macro|dprintk
 mdefine_line|#define dprintk(msg...) do { } while(0)
 macro_line|#endif
+r_static
+r_int
+r_int
+id|speedstep_get
+c_func
+(paren
+r_int
+r_int
+id|cpu
+)paren
+suffix:semicolon
 multiline_comment|/**&n; * speedstep_set_state - set the SpeedStep state&n; * @state: new processor frequency state (SPEEDSTEP_LOW or SPEEDSTEP_HIGH)&n; *&n; *   Tries to change the SpeedStep state. &n; */
 DECL|function|speedstep_set_state
 r_static
