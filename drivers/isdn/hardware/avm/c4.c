@@ -18,14 +18,6 @@ macro_line|#include &lt;linux/isdn/capicmd.h&gt;
 macro_line|#include &lt;linux/isdn/capiutil.h&gt;
 macro_line|#include &lt;linux/isdn/capilli.h&gt;
 macro_line|#include &quot;avmcard.h&quot;
-DECL|variable|revision
-r_static
-r_char
-op_star
-id|revision
-op_assign
-l_string|&quot;$Revision: 1.1.4.1.2.1 $&quot;
-suffix:semicolon
 DECL|macro|CONFIG_C4_DEBUG
 macro_line|#undef CONFIG_C4_DEBUG
 DECL|macro|CONFIG_C4_POLLDEBUG
@@ -6016,11 +6008,6 @@ id|c4_add_card
 c_func
 (paren
 r_struct
-id|capi_driver
-op_star
-id|driver
-comma
-r_struct
 id|capicardparams
 op_star
 id|p
@@ -6067,9 +6054,7 @@ id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;%s: no memory.&bslash;n&quot;
-comma
-id|driver-&gt;name
+l_string|&quot;c4: no memory.&bslash;n&quot;
 )paren
 suffix:semicolon
 id|retval
@@ -6086,7 +6071,7 @@ op_assign
 id|avmcard_dma_alloc
 c_func
 (paren
-id|driver-&gt;name
+l_string|&quot;c4&quot;
 comma
 id|dev
 comma
@@ -6110,9 +6095,7 @@ id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;%s: no memory.&bslash;n&quot;
-comma
-id|driver-&gt;name
+l_string|&quot;c4: no memory.&bslash;n&quot;
 )paren
 suffix:semicolon
 id|retval
@@ -6129,9 +6112,9 @@ c_func
 (paren
 id|card-&gt;name
 comma
-l_string|&quot;%s-%x&quot;
+l_string|&quot;c%d-%x&quot;
 comma
-id|driver-&gt;name
+id|nr_controllers
 comma
 id|p-&gt;port
 )paren
@@ -6180,9 +6163,7 @@ id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;%s: ports 0x%03x-0x%03x in use.&bslash;n&quot;
-comma
-id|driver-&gt;name
+l_string|&quot;c4: ports 0x%03x-0x%03x in use.&bslash;n&quot;
 comma
 id|card-&gt;port
 comma
@@ -6222,9 +6203,7 @@ id|printk
 c_func
 (paren
 id|KERN_NOTICE
-l_string|&quot;%s: can&squot;t remap memory at 0x%lx&bslash;n&quot;
-comma
-id|driver-&gt;name
+l_string|&quot;c4: can&squot;t remap memory at 0x%lx&bslash;n&quot;
 comma
 id|card-&gt;membase
 )paren
@@ -6258,9 +6237,7 @@ id|printk
 c_func
 (paren
 id|KERN_NOTICE
-l_string|&quot;%s: NO card at 0x%x (%d)&bslash;n&quot;
-comma
-id|driver-&gt;name
+l_string|&quot;c4: NO card at 0x%x (%d)&bslash;n&quot;
 comma
 id|card-&gt;port
 comma
@@ -6308,9 +6285,7 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;%s: unable to get IRQ %d.&bslash;n&quot;
-comma
-id|driver-&gt;name
+l_string|&quot;c4: unable to get IRQ %d.&bslash;n&quot;
 comma
 id|card-&gt;irq
 )paren
@@ -6347,9 +6322,9 @@ id|card-&gt;ctrlinfo
 id|i
 )braket
 suffix:semicolon
-id|cinfo-&gt;capi_ctrl.driver
+id|cinfo-&gt;capi_ctrl.driver_name
 op_assign
-id|driver
+l_string|&quot;c4&quot;
 suffix:semicolon
 id|cinfo-&gt;capi_ctrl.driverdata
 op_assign
@@ -6417,9 +6392,7 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;%s: attach controller failed (%d).&bslash;n&quot;
-comma
-id|driver-&gt;name
+l_string|&quot;c4: attach controller failed (%d).&bslash;n&quot;
 comma
 id|i
 )paren
@@ -6474,9 +6447,7 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;%s: AVM C%d at i/o %#x, irq %d, mem %#lx&bslash;n&quot;
-comma
-id|driver-&gt;name
+l_string|&quot;c4: AVM C%d at i/o %#x, irq %d, mem %#lx&bslash;n&quot;
 comma
 id|nr_controllers
 comma
@@ -6541,40 +6512,6 @@ id|retval
 suffix:semicolon
 )brace
 multiline_comment|/* ------------------------------------------------------------- */
-DECL|variable|c2_driver
-r_static
-r_struct
-id|capi_driver
-id|c2_driver
-op_assign
-(brace
-id|name
-suffix:colon
-l_string|&quot;c2&quot;
-comma
-id|revision
-suffix:colon
-l_string|&quot;0.0&quot;
-comma
-)brace
-suffix:semicolon
-DECL|variable|c4_driver
-r_static
-r_struct
-id|capi_driver
-id|c4_driver
-op_assign
-(brace
-id|name
-suffix:colon
-l_string|&quot;c4&quot;
-comma
-id|revision
-suffix:colon
-l_string|&quot;0.0&quot;
-comma
-)brace
-suffix:semicolon
 DECL|function|c4_probe
 r_static
 r_int
@@ -6598,24 +6535,6 @@ r_int
 id|nr
 op_assign
 id|ent-&gt;driver_data
-suffix:semicolon
-r_struct
-id|capi_driver
-op_star
-id|driver
-op_assign
-(paren
-id|nr
-op_eq
-l_int|2
-)paren
-ques
-c_cond
-op_amp
-id|c2_driver
-suffix:colon
-op_amp
-id|c4_driver
 suffix:semicolon
 r_int
 id|retval
@@ -6642,9 +6561,7 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;%s: failed to enable AVM-C%d&bslash;n&quot;
-comma
-id|driver-&gt;name
+l_string|&quot;c4: failed to enable AVM-C%d&bslash;n&quot;
 comma
 id|nr
 )paren
@@ -6688,9 +6605,7 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;%s: PCI BIOS reports AVM-C%d at i/o %#x, irq %d, mem %#x&bslash;n&quot;
-comma
-id|driver-&gt;name
+l_string|&quot;c4: PCI BIOS reports AVM-C%d at i/o %#x, irq %d, mem %#x&bslash;n&quot;
 comma
 id|nr
 comma
@@ -6706,8 +6621,6 @@ op_assign
 id|c4_add_card
 c_func
 (paren
-id|driver
-comma
 op_amp
 id|param
 comma
@@ -6728,9 +6641,7 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;%s: no AVM-C%d at i/o %#x, irq %d detected, mem %#x&bslash;n&quot;
-comma
-id|driver-&gt;name
+l_string|&quot;c4: no AVM-C%d at i/o %#x, irq %d detected, mem %#x&bslash;n&quot;
 comma
 id|nr
 comma
@@ -6785,98 +6696,13 @@ c_func
 r_void
 )paren
 (brace
-r_int
-id|retval
-suffix:semicolon
-id|b1_set_revision
-c_func
-(paren
-op_amp
-id|c2_driver
-comma
-id|revision
-)paren
-suffix:semicolon
-id|attach_capi_driver
-c_func
-(paren
-op_amp
-id|c2_driver
-)paren
-suffix:semicolon
-id|b1_set_revision
-c_func
-(paren
-op_amp
-id|c4_driver
-comma
-id|revision
-)paren
-suffix:semicolon
-id|attach_capi_driver
-c_func
-(paren
-op_amp
-id|c4_driver
-)paren
-suffix:semicolon
-id|retval
-op_assign
+r_return
 id|pci_module_init
 c_func
 (paren
 op_amp
 id|c4_pci_driver
 )paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|retval
-OL
-l_int|0
-)paren
-r_goto
-id|err
-suffix:semicolon
-id|printk
-c_func
-(paren
-id|KERN_INFO
-l_string|&quot;%s: %d C4/C2 card(s) detected&bslash;n&quot;
-comma
-id|c4_driver.name
-comma
-id|retval
-)paren
-suffix:semicolon
-id|retval
-op_assign
-l_int|0
-suffix:semicolon
-r_goto
-id|out
-suffix:semicolon
-id|err
-suffix:colon
-id|detach_capi_driver
-c_func
-(paren
-op_amp
-id|c2_driver
-)paren
-suffix:semicolon
-id|detach_capi_driver
-c_func
-(paren
-op_amp
-id|c4_driver
-)paren
-suffix:semicolon
-id|out
-suffix:colon
-r_return
-id|retval
 suffix:semicolon
 )brace
 DECL|function|c4_exit
@@ -6894,20 +6720,6 @@ c_func
 (paren
 op_amp
 id|c4_pci_driver
-)paren
-suffix:semicolon
-id|detach_capi_driver
-c_func
-(paren
-op_amp
-id|c2_driver
-)paren
-suffix:semicolon
-id|detach_capi_driver
-c_func
-(paren
-op_amp
-id|c4_driver
 )paren
 suffix:semicolon
 )brace

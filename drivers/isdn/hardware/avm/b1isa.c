@@ -14,14 +14,6 @@ macro_line|#include &lt;linux/isdn/capicmd.h&gt;
 macro_line|#include &lt;linux/isdn/capiutil.h&gt;
 macro_line|#include &lt;linux/isdn/capilli.h&gt;
 macro_line|#include &quot;avmcard.h&quot;
-DECL|variable|revision
-r_static
-r_char
-op_star
-id|revision
-op_assign
-l_string|&quot;$Revision: 1.10.6.6 $&quot;
-suffix:semicolon
 multiline_comment|/* ------------------------------------------------------------- */
 id|MODULE_DESCRIPTION
 c_func
@@ -42,12 +34,6 @@ l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
 multiline_comment|/* ------------------------------------------------------------- */
-DECL|variable|b1isa_driver
-r_static
-r_struct
-id|capi_driver
-id|b1isa_driver
-suffix:semicolon
 DECL|function|b1isa_remove
 r_static
 r_void
@@ -73,25 +59,29 @@ suffix:semicolon
 id|avmcard
 op_star
 id|card
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|cinfo
+)paren
+r_return
+suffix:semicolon
+id|card
 op_assign
 id|cinfo-&gt;card
-suffix:semicolon
-r_int
-r_int
-id|port
-op_assign
-id|cinfo-&gt;card-&gt;port
 suffix:semicolon
 id|b1_reset
 c_func
 (paren
-id|port
+id|card-&gt;port
 )paren
 suffix:semicolon
 id|b1_reset
 c_func
 (paren
-id|port
+id|card-&gt;port
 )paren
 suffix:semicolon
 id|detach_capi_ctr
@@ -421,10 +411,9 @@ c_func
 id|card
 )paren
 suffix:semicolon
-id|cinfo-&gt;capi_ctrl.driver
+id|cinfo-&gt;capi_ctrl.driver_name
 op_assign
-op_amp
-id|b1isa_driver
+l_string|&quot;b1isa&quot;
 suffix:semicolon
 id|cinfo-&gt;capi_ctrl.driverdata
 op_assign
@@ -503,9 +492,7 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;%s: AVM B1 ISA at i/o %#x, irq %d, revision %d&bslash;n&quot;
-comma
-id|b1isa_driver.name
+l_string|&quot;b1isa: AVM B1 ISA at i/o %#x, irq %d, revision %d&bslash;n&quot;
 comma
 id|card-&gt;port
 comma
@@ -650,23 +637,6 @@ id|cinfo-&gt;infobuf
 suffix:semicolon
 )brace
 multiline_comment|/* ------------------------------------------------------------- */
-DECL|variable|b1isa_driver
-r_static
-r_struct
-id|capi_driver
-id|b1isa_driver
-op_assign
-(brace
-id|name
-suffix:colon
-l_string|&quot;b1isa&quot;
-comma
-id|revision
-suffix:colon
-l_string|&quot;0.0&quot;
-comma
-)brace
-suffix:semicolon
 DECL|macro|MAX_CARDS
 mdefine_line|#define MAX_CARDS 4
 DECL|variable|isa_dev
@@ -750,29 +720,11 @@ r_void
 (brace
 r_int
 id|i
-comma
-id|retval
 suffix:semicolon
 r_int
 id|found
 op_assign
 l_int|0
-suffix:semicolon
-id|b1_set_revision
-c_func
-(paren
-op_amp
-id|b1isa_driver
-comma
-id|revision
-)paren
-suffix:semicolon
-id|attach_capi_driver
-c_func
-(paren
-op_amp
-id|b1isa_driver
-)paren
 suffix:semicolon
 r_for
 c_loop
@@ -860,36 +812,12 @@ id|found
 op_eq
 l_int|0
 )paren
-(brace
-id|retval
-op_assign
+r_return
 op_minus
 id|ENODEV
 suffix:semicolon
-r_goto
-id|err
-suffix:semicolon
-)brace
-id|retval
-op_assign
-l_int|0
-suffix:semicolon
-r_goto
-id|out
-suffix:semicolon
-id|err
-suffix:colon
-id|detach_capi_driver
-c_func
-(paren
-op_amp
-id|b1isa_driver
-)paren
-suffix:semicolon
-id|out
-suffix:colon
 r_return
-id|retval
+l_int|0
 suffix:semicolon
 )brace
 DECL|function|b1isa_exit
@@ -942,13 +870,6 @@ id|i
 )paren
 suffix:semicolon
 )brace
-id|detach_capi_driver
-c_func
-(paren
-op_amp
-id|b1isa_driver
-)paren
-suffix:semicolon
 )brace
 DECL|variable|b1isa_init
 id|module_init

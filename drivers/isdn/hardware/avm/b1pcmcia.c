@@ -14,14 +14,6 @@ macro_line|#include &lt;linux/isdn/capicmd.h&gt;
 macro_line|#include &lt;linux/isdn/capiutil.h&gt;
 macro_line|#include &lt;linux/isdn/capilli.h&gt;
 macro_line|#include &quot;avmcard.h&quot;
-DECL|variable|revision
-r_static
-r_char
-op_star
-id|revision
-op_assign
-l_string|&quot;$Revision: 1.12.6.5 $&quot;
-suffix:semicolon
 multiline_comment|/* ------------------------------------------------------------- */
 id|MODULE_DESCRIPTION
 c_func
@@ -113,6 +105,13 @@ suffix:semicolon
 )brace
 multiline_comment|/* ------------------------------------------------------------- */
 r_static
+id|LIST_HEAD
+c_func
+(paren
+id|cards
+)paren
+suffix:semicolon
+r_static
 r_char
 op_star
 id|b1pcmcia_procinfo
@@ -130,11 +129,6 @@ r_int
 id|b1pcmcia_add_card
 c_func
 (paren
-r_struct
-id|capi_driver
-op_star
-id|driver
-comma
 r_int
 r_int
 id|port
@@ -181,9 +175,7 @@ id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;%s: no memory.&bslash;n&quot;
-comma
-id|driver-&gt;name
+l_string|&quot;b1pcmcia: no memory.&bslash;n&quot;
 )paren
 suffix:semicolon
 id|retval
@@ -288,9 +280,7 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;%s: unable to get IRQ %d.&bslash;n&quot;
-comma
-id|driver-&gt;name
+l_string|&quot;b1pcmcia: unable to get IRQ %d.&bslash;n&quot;
 comma
 id|card-&gt;irq
 )paren
@@ -332,9 +322,7 @@ id|printk
 c_func
 (paren
 id|KERN_NOTICE
-l_string|&quot;%s: NO card at 0x%x (%d)&bslash;n&quot;
-comma
-id|driver-&gt;name
+l_string|&quot;b1pcmcia: NO card at 0x%x (%d)&bslash;n&quot;
 comma
 id|card-&gt;port
 comma
@@ -362,9 +350,9 @@ c_func
 id|card
 )paren
 suffix:semicolon
-id|cinfo-&gt;capi_ctrl.driver
+id|cinfo-&gt;capi_ctrl.driver_name
 op_assign
-id|driver
+l_string|&quot;b1pcmcia&quot;
 suffix:semicolon
 id|cinfo-&gt;capi_ctrl.driverdata
 op_assign
@@ -432,9 +420,7 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;%s: attach controller failed.&bslash;n&quot;
-comma
-id|driver-&gt;name
+l_string|&quot;b1pcmcia: attach controller failed.&bslash;n&quot;
 )paren
 suffix:semicolon
 r_goto
@@ -478,9 +464,7 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;%s: AVM %s at i/o %#x, irq %d, revision %d&bslash;n&quot;
-comma
-id|driver-&gt;name
+l_string|&quot;b1pcmcia: AVM %s at i/o %#x, irq %d, revision %d&bslash;n&quot;
 comma
 id|cardname
 comma
@@ -489,6 +473,16 @@ comma
 id|card-&gt;irq
 comma
 id|card-&gt;revision
+)paren
+suffix:semicolon
+id|list_add
+c_func
+(paren
+op_amp
+id|card-&gt;list
+comma
+op_amp
+id|cards
 )paren
 suffix:semicolon
 r_return
@@ -610,24 +604,6 @@ id|cinfo-&gt;infobuf
 suffix:semicolon
 )brace
 multiline_comment|/* ------------------------------------------------------------- */
-DECL|variable|b1pcmcia_driver
-r_static
-r_struct
-id|capi_driver
-id|b1pcmcia_driver
-op_assign
-(brace
-id|name
-suffix:colon
-l_string|&quot;b1pcmcia&quot;
-comma
-id|revision
-suffix:colon
-l_string|&quot;0.0&quot;
-comma
-)brace
-suffix:semicolon
-multiline_comment|/* ------------------------------------------------------------- */
 DECL|function|b1pcmcia_addcard_b1
 r_int
 id|b1pcmcia_addcard_b1
@@ -645,9 +621,6 @@ r_return
 id|b1pcmcia_add_card
 c_func
 (paren
-op_amp
-id|b1pcmcia_driver
-comma
 id|port
 comma
 id|irq
@@ -673,9 +646,6 @@ r_return
 id|b1pcmcia_add_card
 c_func
 (paren
-op_amp
-id|b1pcmcia_driver
-comma
 id|port
 comma
 id|irq
@@ -701,9 +671,6 @@ r_return
 id|b1pcmcia_add_card
 c_func
 (paren
-op_amp
-id|b1pcmcia_driver
-comma
 id|port
 comma
 id|irq
@@ -730,11 +697,6 @@ id|list_head
 op_star
 id|l
 suffix:semicolon
-r_struct
-id|capi_ctr
-op_star
-id|ctrl
-suffix:semicolon
 id|avmcard
 op_star
 id|card
@@ -745,35 +707,20 @@ c_func
 id|l
 comma
 op_amp
-id|b1pcmcia_driver.contr_head
+id|cards
 )paren
 (brace
-id|ctrl
+id|card
 op_assign
 id|list_entry
 c_func
 (paren
 id|l
 comma
-r_struct
-id|capi_ctr
+id|avmcard
 comma
-id|driver_list
+id|list
 )paren
-suffix:semicolon
-id|card
-op_assign
-(paren
-(paren
-id|avmctrl_info
-op_star
-)paren
-(paren
-id|ctrl-&gt;driverdata
-)paren
-)paren
-op_member_access_from_pointer
-id|card
 suffix:semicolon
 r_if
 c_cond
@@ -790,7 +737,13 @@ id|irq
 id|b1pcmcia_remove_ctr
 c_func
 (paren
-id|ctrl
+op_amp
+id|card-&gt;ctrlinfo
+(braket
+l_int|0
+)braket
+dot
+id|capi_ctrl
 )paren
 suffix:semicolon
 r_return
@@ -829,69 +782,6 @@ id|EXPORT_SYMBOL
 c_func
 (paren
 id|b1pcmcia_delcard
-)paren
-suffix:semicolon
-multiline_comment|/* ------------------------------------------------------------- */
-DECL|function|b1pcmcia_init
-r_static
-r_int
-id|__init
-id|b1pcmcia_init
-c_func
-(paren
-r_void
-)paren
-(brace
-id|b1_set_revision
-c_func
-(paren
-op_amp
-id|b1pcmcia_driver
-comma
-id|revision
-)paren
-suffix:semicolon
-id|attach_capi_driver
-c_func
-(paren
-op_amp
-id|b1pcmcia_driver
-)paren
-suffix:semicolon
-r_return
-l_int|0
-suffix:semicolon
-)brace
-DECL|function|b1pcmcia_exit
-r_static
-r_void
-id|__exit
-id|b1pcmcia_exit
-c_func
-(paren
-r_void
-)paren
-(brace
-id|detach_capi_driver
-c_func
-(paren
-op_amp
-id|b1pcmcia_driver
-)paren
-suffix:semicolon
-)brace
-DECL|variable|b1pcmcia_init
-id|module_init
-c_func
-(paren
-id|b1pcmcia_init
-)paren
-suffix:semicolon
-DECL|variable|b1pcmcia_exit
-id|module_exit
-c_func
-(paren
-id|b1pcmcia_exit
 )paren
 suffix:semicolon
 eof
