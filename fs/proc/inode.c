@@ -922,11 +922,9 @@ r_goto
 id|out
 suffix:semicolon
 )brace
-DECL|function|proc_read_super
-r_struct
-id|super_block
-op_star
-id|proc_read_super
+DECL|function|proc_fill_super
+r_int
+id|proc_fill_super
 c_func
 (paren
 r_struct
@@ -1049,7 +1047,7 @@ id|root_inode-&gt;i_gid
 )paren
 suffix:semicolon
 r_return
-id|s
+l_int|0
 suffix:semicolon
 id|out_no_root
 suffix:colon
@@ -1066,7 +1064,8 @@ id|root_inode
 )paren
 suffix:semicolon
 r_return
-l_int|NULL
+op_minus
+id|ENOMEM
 suffix:semicolon
 )brace
 id|MODULE_LICENSE

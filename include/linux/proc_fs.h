@@ -354,10 +354,8 @@ op_star
 id|proc_mnt
 suffix:semicolon
 r_extern
-r_struct
-id|super_block
-op_star
-id|proc_read_super
+r_int
+id|proc_fill_super
 c_func
 (paren
 r_struct
