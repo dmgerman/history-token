@@ -3486,7 +3486,7 @@ suffix:semicolon
 DECL|function|quirk_usb_handoff_uhci
 r_static
 r_void
-id|__init
+id|__devinit
 id|quirk_usb_handoff_uhci
 c_func
 (paren
@@ -3734,7 +3734,7 @@ suffix:semicolon
 DECL|function|quirk_usb_handoff_ohci
 r_static
 r_void
-id|__init
+id|__devinit
 id|quirk_usb_handoff_ohci
 c_func
 (paren
@@ -3905,7 +3905,7 @@ suffix:semicolon
 DECL|function|quirk_usb_disable_ehci
 r_static
 r_void
-id|__init
+id|__devinit
 id|quirk_usb_disable_ehci
 c_func
 (paren
@@ -4338,7 +4338,7 @@ suffix:semicolon
 DECL|function|quirk_usb_early_handoff
 r_static
 r_void
-id|__init
+id|__devinit
 id|quirk_usb_early_handoff
 c_func
 (paren
