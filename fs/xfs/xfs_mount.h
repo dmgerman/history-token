@@ -235,13 +235,13 @@ id|xfs_send_namesp_t
 id|dm_eventtype_t
 comma
 r_struct
-id|bhv_desc
+id|vnode
 op_star
 comma
 id|dm_right_t
 comma
 r_struct
-id|bhv_desc
+id|vnode
 op_star
 comma
 id|dm_right_t
