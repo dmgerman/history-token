@@ -48,6 +48,9 @@ r_enum
 (brace
 DECL|enumerator|HCI_QUIRK_RESET_ON_INIT
 id|HCI_QUIRK_RESET_ON_INIT
+comma
+DECL|enumerator|HCI_QUIRK_RAW_DEVICE
+id|HCI_QUIRK_RAW_DEVICE
 )brace
 suffix:semicolon
 multiline_comment|/* HCI device flags */
