@@ -1024,6 +1024,9 @@ c_func
 id|dev
 )paren
 suffix:semicolon
+id|velocity_nics
+op_decrement
+suffix:semicolon
 )brace
 multiline_comment|/**&n; *&t;velocity_set_int_opt&t;-&t;parser for integer options&n; *&t;@opt: pointer to option value&n; *&t;@val: value the user requested (or -1 for default)&n; *&t;@min: lowest value allowed&n; *&t;@max: highest value allowed&n; *&t;@def: default value&n; *&t;@name: property name&n; *&t;@dev: device name&n; *&n; *&t;Set an integer property in the module options. This function does&n; *&t;all the verification and checking as well as reporting so that&n; *&t;we don&squot;t duplicate code for each option.&n; */
 DECL|function|velocity_set_int_opt
@@ -2581,7 +2584,6 @@ r_if
 c_cond
 (paren
 id|velocity_nics
-op_increment
 op_ge
 id|MAX_UNITS
 )paren
@@ -2866,8 +2868,6 @@ op_amp
 id|vptr-&gt;options
 comma
 id|velocity_nics
-op_minus
-l_int|1
 comma
 id|dev-&gt;name
 )paren
@@ -3037,6 +3037,9 @@ id|flags
 suffix:semicolon
 )brace
 macro_line|#endif
+id|velocity_nics
+op_increment
+suffix:semicolon
 id|out
 suffix:colon
 r_return
