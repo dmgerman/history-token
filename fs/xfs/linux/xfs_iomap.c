@@ -414,7 +414,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
-id|PBF_WRITE
+id|BMAP_WRITE
 suffix:colon
 id|lockmode
 op_assign
