@@ -3288,7 +3288,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * usb_set_configuration - Makes a particular device setting be current&n; * @dev: the device whose configuration is being updated&n; * @configuration: the configuration being chosen.&n; * Context: !in_interrupt ()&n; *&n; * This is used to enable non-default device modes.  Not all devices&n; * use this kind of configurability; many devices only have one&n; * configuration.&n; *&n; * USB device configurations may affect Linux interoperability,&n; * power consumption and the functionality available.  For example,&n; * the default configuration is limited to using 100mA of bus power,&n; * so that when certain device functionality requires more power,&n; * and the device is bus powered, that functionality should be in some&n; * non-default device configuration.  Other device modes may also be&n; * reflected as configuration options, such as whether two ISDN&n; * channels are available independently; and choosing between open&n; * standard device protocols (like CDC) or proprietary ones.&n; *&n; * Note that USB has an additional level of device configurability,&n; * associated with interfaces.  That configurability is accessed using&n; * usb_set_interface().&n; *&n; * This call is synchronous. The calling context must be able to sleep,&n; * and must not hold the driver model lock for USB; usb device driver&n; * probe() methods may not use this routine.&n; *&n; * Returns zero on success, or else the status code returned by the&n; * underlying call that failed.  On succesful completion, each interface&n; * in the original device configuration has been destroyed, and each one&n; * in the new configuration has been probed by all relevant usb device&n; * drivers currently known to the kernel.&n; */
+multiline_comment|/*&n; * usb_set_configuration - Makes a particular device setting be current&n; * @dev: the device whose configuration is being updated&n; * @configuration: the configuration being chosen.&n; * Context: !in_interrupt(), caller holds dev-&gt;serialize&n; *&n; * This is used to enable non-default device modes.  Not all devices&n; * use this kind of configurability; many devices only have one&n; * configuration.&n; *&n; * USB device configurations may affect Linux interoperability,&n; * power consumption and the functionality available.  For example,&n; * the default configuration is limited to using 100mA of bus power,&n; * so that when certain device functionality requires more power,&n; * and the device is bus powered, that functionality should be in some&n; * non-default device configuration.  Other device modes may also be&n; * reflected as configuration options, such as whether two ISDN&n; * channels are available independently; and choosing between open&n; * standard device protocols (like CDC) or proprietary ones.&n; *&n; * Note that USB has an additional level of device configurability,&n; * associated with interfaces.  That configurability is accessed using&n; * usb_set_interface().&n; *&n; * This call is synchronous. The calling context must be able to sleep,&n; * and must not hold the driver model lock for USB; usb device driver&n; * probe() methods may not use this routine.&n; *&n; * Returns zero on success, or else the status code returned by the&n; * underlying call that failed.  On succesful completion, each interface&n; * in the original device configuration has been destroyed, and each one&n; * in the new configuration has been probed by all relevant usb device&n; * drivers currently known to the kernel.&n; */
 DECL|function|usb_set_configuration
 r_int
 id|usb_set_configuration
@@ -3316,13 +3316,6 @@ op_assign
 l_int|NULL
 suffix:semicolon
 multiline_comment|/* dev-&gt;serialize guards all config changes */
-id|down
-c_func
-(paren
-op_amp
-id|dev-&gt;serialize
-)paren
-suffix:semicolon
 r_for
 c_loop
 (paren
@@ -3620,13 +3613,6 @@ suffix:semicolon
 )brace
 id|out
 suffix:colon
-id|up
-c_func
-(paren
-op_amp
-id|dev-&gt;serialize
-)paren
-suffix:semicolon
 r_return
 id|ret
 suffix:semicolon
@@ -4057,13 +4043,6 @@ id|EXPORT_SYMBOL
 c_func
 (paren
 id|usb_reset_configuration
-)paren
-suffix:semicolon
-DECL|variable|usb_set_configuration
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|usb_set_configuration
 )paren
 suffix:semicolon
 DECL|variable|usb_set_interface

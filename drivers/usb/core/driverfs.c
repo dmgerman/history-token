@@ -109,6 +109,13 @@ r_return
 op_minus
 id|EINVAL
 suffix:semicolon
+id|down
+c_func
+(paren
+op_amp
+id|udev-&gt;serialize
+)paren
+suffix:semicolon
 id|value
 op_assign
 id|usb_set_configuration
@@ -116,6 +123,13 @@ id|usb_set_configuration
 id|udev
 comma
 id|config
+)paren
+suffix:semicolon
+id|up
+c_func
+(paren
+op_amp
+id|udev-&gt;serialize
 )paren
 suffix:semicolon
 r_return

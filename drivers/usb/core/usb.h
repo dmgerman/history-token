@@ -126,6 +126,20 @@ r_int
 id|size
 )paren
 suffix:semicolon
+r_extern
+r_int
+id|usb_set_configuration
+c_func
+(paren
+r_struct
+id|usb_device
+op_star
+id|dev
+comma
+r_int
+id|configuration
+)paren
+suffix:semicolon
 multiline_comment|/* for labeling diagnostics */
 r_extern
 r_const

@@ -3428,6 +3428,13 @@ id|dev-&gt;descriptor.iSerialNumber
 )paren
 suffix:semicolon
 macro_line|#endif
+id|down
+c_func
+(paren
+op_amp
+id|dev-&gt;serialize
+)paren
+suffix:semicolon
 multiline_comment|/* put device-specific files into sysfs */
 id|err
 op_assign
@@ -3452,6 +3459,13 @@ comma
 l_string|&quot;can&squot;t device_add, error %d&bslash;n&quot;
 comma
 id|err
+)paren
+suffix:semicolon
+id|up
+c_func
+(paren
+op_amp
+id|dev-&gt;serialize
 )paren
 suffix:semicolon
 r_goto
@@ -3578,6 +3592,13 @@ c_func
 id|dev
 comma
 id|config
+)paren
+suffix:semicolon
+id|up
+c_func
+(paren
+op_amp
+id|dev-&gt;serialize
 )paren
 suffix:semicolon
 r_if
