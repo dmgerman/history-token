@@ -2337,6 +2337,13 @@ c_func
 )paren
 suffix:semicolon
 macro_line|#endif
+multiline_comment|/* Clear ITC to eliminiate sched_clock() overflows in human time.  */
+id|ia64_set_itc
+c_func
+(paren
+l_int|0
+)paren
+suffix:semicolon
 multiline_comment|/* disable all local interrupt sources: */
 id|ia64_set_itv
 c_func
