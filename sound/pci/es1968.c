@@ -10902,6 +10902,10 @@ id|gp-&gt;io
 op_assign
 id|JOYSTICK_ADDR
 suffix:semicolon
+id|gp-&gt;port_data
+op_assign
+id|r
+suffix:semicolon
 id|gameport_register_port
 c_func
 (paren
