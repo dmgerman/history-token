@@ -330,13 +330,6 @@ r_return
 op_minus
 id|EINVAL
 suffix:semicolon
-id|down
-c_func
-(paren
-op_amp
-id|inode-&gt;i_sem
-)paren
-suffix:semicolon
 id|newattrs.ia_size
 op_assign
 id|length
@@ -356,13 +349,6 @@ id|dentry
 comma
 op_amp
 id|newattrs
-)paren
-suffix:semicolon
-id|up
-c_func
-(paren
-op_amp
-id|inode-&gt;i_sem
 )paren
 suffix:semicolon
 r_return

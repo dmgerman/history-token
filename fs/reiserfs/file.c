@@ -360,6 +360,11 @@ suffix:semicolon
 r_int
 id|error
 suffix:semicolon
+id|lock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -384,10 +389,16 @@ id|attr-&gt;ia_size
 OG
 id|MAX_NON_LFS
 )paren
-r_return
+(brace
+id|error
+op_assign
 op_minus
 id|EFBIG
 suffix:semicolon
+r_goto
+id|out
+suffix:semicolon
+)brace
 multiline_comment|/* fill in hole pointers in the expanding truncate case. */
 r_if
 c_cond
@@ -462,8 +473,8 @@ c_cond
 (paren
 id|error
 )paren
-r_return
-id|error
+r_goto
+id|out
 suffix:semicolon
 )brace
 )brace
@@ -511,11 +522,17 @@ op_eq
 id|STAT_DATA_V1
 )paren
 )paren
+(brace
 multiline_comment|/* stat data of format v3.5 has 16 bit uid and gid */
-r_return
+id|error
+op_assign
 op_minus
 id|EINVAL
 suffix:semicolon
+r_goto
+id|out
+suffix:semicolon
+)brace
 id|error
 op_assign
 id|inode_change_ok
@@ -538,6 +555,13 @@ c_func
 id|inode
 comma
 id|attr
+)paren
+suffix:semicolon
+id|out
+suffix:colon
+id|unlock_kernel
+c_func
+(paren
 )paren
 suffix:semicolon
 r_return

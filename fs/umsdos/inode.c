@@ -568,6 +568,11 @@ suffix:semicolon
 r_int
 id|ret
 suffix:semicolon
+id|lock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
 id|ret
 op_assign
 id|umsdos_parse
@@ -748,13 +753,6 @@ id|ret
 r_goto
 id|out
 suffix:semicolon
-id|down
-c_func
-(paren
-op_amp
-id|dir-&gt;i_sem
-)paren
-suffix:semicolon
 id|ret
 op_assign
 id|umsdos_notify_change_locked
@@ -763,13 +761,6 @@ c_func
 id|dentry
 comma
 id|attr
-)paren
-suffix:semicolon
-id|up
-c_func
-(paren
-op_amp
-id|dir-&gt;i_sem
 )paren
 suffix:semicolon
 r_if
@@ -801,6 +792,11 @@ id|dentry
 )paren
 suffix:semicolon
 multiline_comment|/* if we had to use fake dentry for hardlinks, dput() it now */
+id|unlock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
 r_return
 id|ret
 suffix:semicolon
