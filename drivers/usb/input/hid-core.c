@@ -3822,7 +3822,7 @@ l_int|0
 suffix:semicolon
 id|i
 OL
-id|n
+id|len
 suffix:semicolon
 id|i
 op_increment
@@ -6484,6 +6484,7 @@ l_string|&quot; %02x&quot;
 comma
 (paren
 r_int
+r_char
 )paren
 id|rdesc
 (braket
@@ -6741,7 +6742,11 @@ id|SPIN_LOCK_UNLOCKED
 suffix:semicolon
 id|hid-&gt;version
 op_assign
+id|le16_to_cpu
+c_func
+(paren
 id|hdesc-&gt;bcdHID
+)paren
 suffix:semicolon
 id|hid-&gt;country
 op_assign
