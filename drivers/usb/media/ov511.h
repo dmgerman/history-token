@@ -1303,32 +1303,12 @@ r_int
 id|has_decoder
 suffix:semicolon
 multiline_comment|/* Device has a video decoder */
-DECL|member|has_tuner
-r_int
-id|has_tuner
-suffix:semicolon
-multiline_comment|/* Device has a TV tuner */
-DECL|member|has_audio_proc
-r_int
-id|has_audio_proc
-suffix:semicolon
-multiline_comment|/* Device has an audio processor */
-DECL|member|freq
-r_int
-id|freq
-suffix:semicolon
-multiline_comment|/* Current tuner frequency */
-DECL|member|tuner_type
-r_int
-id|tuner_type
-suffix:semicolon
-multiline_comment|/* Specific tuner model */
 DECL|member|pal
 r_int
 id|pal
 suffix:semicolon
 multiline_comment|/* Device is designed for PAL resolution */
-multiline_comment|/* I2C interface to kernel */
+multiline_comment|/* I2C interface */
 DECL|member|i2c_lock
 r_struct
 id|semaphore
@@ -1341,18 +1321,6 @@ r_char
 id|primary_i2c_slave
 suffix:semicolon
 multiline_comment|/* I2C write id of sensor */
-DECL|member|tuner_i2c_slave
-r_int
-r_char
-id|tuner_i2c_slave
-suffix:semicolon
-multiline_comment|/* I2C write id of tuner */
-DECL|member|audio_i2c_slave
-r_int
-r_char
-id|audio_i2c_slave
-suffix:semicolon
-multiline_comment|/* I2C write id of audio processor */
 multiline_comment|/* Control transaction stuff */
 DECL|member|cbuf
 r_int

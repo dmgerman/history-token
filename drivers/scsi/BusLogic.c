@@ -13569,8 +13569,10 @@ id|SCSI_Disk_T
 op_star
 id|Disk
 comma
-id|KernelDevice_T
-id|Device
+r_struct
+id|block_device
+op_star
+id|bdev
 comma
 r_int
 op_star
@@ -13677,7 +13679,7 @@ op_assign
 id|scsi_bios_ptable
 c_func
 (paren
-id|Device
+id|bdev
 )paren
 suffix:semicolon
 r_if

@@ -1048,6 +1048,11 @@ id|sigset_t
 op_star
 id|notifier_mask
 suffix:semicolon
+DECL|member|security
+r_void
+op_star
+id|security
+suffix:semicolon
 multiline_comment|/* Thread group tracking */
 DECL|member|parent_exec_id
 id|u32
@@ -2273,8 +2278,9 @@ r_void
 op_star
 )paren
 suffix:semicolon
-multiline_comment|/*&n; * capable() checks for a particular capability.&n; * See include/linux/capability.h for defined capabilities.&n; */
-DECL|function|capable
+multiline_comment|/* capable prototype and code moved to security.[hc] */
+macro_line|#include &lt;linux/security.h&gt;
+macro_line|#if 0
 r_static
 r_inline
 r_int
@@ -2309,6 +2315,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+macro_line|#endif&t;/* if 0 */
 multiline_comment|/*&n; * Routines for handling mm_structs&n; */
 r_extern
 r_struct

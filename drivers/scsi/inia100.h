@@ -77,13 +77,14 @@ c_func
 id|Scsi_Disk
 op_star
 comma
-id|kdev_t
+r_struct
+id|block_device
+op_star
 comma
 r_int
 op_star
 )paren
 suffix:semicolon
-multiline_comment|/*for linux v2.0 */
 DECL|macro|inia100_REVID
 mdefine_line|#define inia100_REVID &quot;Initio INI-A100U2W SCSI device driver; Revision: 1.02c&quot;
 DECL|macro|INIA100

@@ -13,8 +13,7 @@ id|magic
 suffix:semicolon
 multiline_comment|/* A magic number */
 DECL|member|mmu_private
-r_int
-r_int
+id|loff_t
 id|mmu_private
 suffix:semicolon
 DECL|member|entry

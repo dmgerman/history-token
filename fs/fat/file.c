@@ -189,8 +189,6 @@ r_if
 c_cond
 (paren
 id|iblock
-op_lshift
-id|sb-&gt;s_blocksize_bits
 op_ne
 id|MSDOS_I
 c_func
@@ -199,6 +197,8 @@ id|inode
 )paren
 op_member_access_from_pointer
 id|mmu_private
+op_rshift
+id|sb-&gt;s_blocksize_bits
 )paren
 (brace
 id|BUG

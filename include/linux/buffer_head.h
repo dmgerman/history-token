@@ -730,8 +730,7 @@ comma
 id|get_block_t
 op_star
 comma
-r_int
-r_int
+id|loff_t
 op_star
 )paren
 suffix:semicolon

@@ -3624,10 +3624,6 @@ comma
 id|boot_cpu_apicid
 )paren
 suffix:semicolon
-id|global_irq_holder
-op_assign
-id|NO_PROC_ID
-suffix:semicolon
 id|current_thread_info
 c_func
 (paren

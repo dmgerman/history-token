@@ -89,8 +89,10 @@ id|Disk
 op_star
 id|disk
 comma
-id|kdev_t
-id|devno
+r_struct
+id|block_device
+op_star
+id|dev
 comma
 r_int
 id|geom

@@ -2160,6 +2160,9 @@ l_int|1
 op_amp
 op_complement
 (paren
+(paren
+id|loff_t
+)paren
 id|inode-&gt;i_blksize
 op_minus
 l_int|1
@@ -3849,6 +3852,10 @@ c_func
 id|b-&gt;root_cluster
 )paren
 suffix:semicolon
+id|sb-&gt;s_maxbytes
+op_assign
+l_int|0xffffffff
+suffix:semicolon
 multiline_comment|/* MC - if info_sector is 0, don&squot;t multiply by 0 */
 id|sbi-&gt;fsinfo_sector
 op_assign
@@ -5447,6 +5454,9 @@ l_int|1
 op_amp
 op_complement
 (paren
+(paren
+id|loff_t
+)paren
 id|inode-&gt;i_blksize
 op_minus
 l_int|1

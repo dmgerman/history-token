@@ -249,6 +249,10 @@ id|unused
 suffix:semicolon
 )brace
 suffix:semicolon
+multiline_comment|/* forward declaration; pte_chain is meant to be internal to rmap.c */
+r_struct
+id|pte_chain
+suffix:semicolon
 multiline_comment|/*&n; * Each physical page in the system has a struct page associated with&n; * it to keep track of whatever it is we are using the page for at the&n; * moment. Note that we have no way to track which tasks are using&n; * a page.&n; *&n; * Try to keep the most commonly accessed fields in single cache lines&n; * here (16 bytes or greater).  This ordering should be particularly&n; * beneficial on 32-bit processors.&n; *&n; * The first line is data used in page cache lookup, the second line&n; * is used for linear searches (eg. clock algorithm scans). &n; *&n; * TODO: make this structure smaller, it could be as small as 32 bytes.&n; */
 DECL|struct|page
 r_struct
@@ -290,6 +294,24 @@ id|list_head
 id|lru
 suffix:semicolon
 multiline_comment|/* Pageout list, eg. active_list;&n;&t;&t;&t;&t;&t;   protected by pagemap_lru_lock !! */
+r_union
+(brace
+DECL|member|chain
+r_struct
+id|pte_chain
+op_star
+id|chain
+suffix:semicolon
+multiline_comment|/* Reverse pte mapping pointer.&n;&t;&t;&t;&t;&t; * protected by PG_chainlock */
+DECL|member|direct
+id|pte_t
+op_star
+id|direct
+suffix:semicolon
+DECL|member|pte
+)brace
+id|pte
+suffix:semicolon
 DECL|member|private
 r_int
 r_int
@@ -1529,20 +1551,6 @@ r_int
 suffix:semicolon
 multiline_comment|/* mm/page-writeback.c */
 r_int
-id|generic_writepages
-c_func
-(paren
-r_struct
-id|address_space
-op_star
-id|mapping
-comma
-r_int
-op_star
-id|nr_to_write
-)paren
-suffix:semicolon
-r_int
 id|write_one_page
 c_func
 (paren
@@ -1560,7 +1568,7 @@ DECL|macro|VM_MAX_READAHEAD
 mdefine_line|#define VM_MAX_READAHEAD&t;128&t;/* kbytes */
 DECL|macro|VM_MIN_READAHEAD
 mdefine_line|#define VM_MIN_READAHEAD&t;16&t;/* kbytes (includes current page) */
-r_void
+r_int
 id|do_page_cache_readahead
 c_func
 (paren
@@ -1607,7 +1615,7 @@ id|offset
 )paren
 suffix:semicolon
 r_void
-id|handle_ra_thrashing
+id|handle_ra_miss
 c_func
 (paren
 r_struct

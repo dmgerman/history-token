@@ -8,7 +8,7 @@ macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/pagemap.h&gt;
 macro_line|#include &lt;linux/writeback.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
-singleline_comment|//#include &lt;linux/sysrq.h&gt;
+macro_line|#include &lt;linux/sysrq.h&gt;
 macro_line|#include &lt;linux/backing-dev.h&gt;
 macro_line|#include &lt;linux/mpage.h&gt;
 multiline_comment|/*&n; * The maximum number of pages to writeout in a single bdflush/kupdate&n; * operation.  We do this so we don&squot;t hold I_LOCK against an inode for&n; * enormous amounts of time, which would block a userspace task which has&n; * been forced to throttle against that inode.  Also, the code reevaluates&n; * the dirty each time it has written this many pages.&n; */
@@ -16,10 +16,10 @@ DECL|macro|MAX_WRITEBACK_PAGES
 mdefine_line|#define MAX_WRITEBACK_PAGES&t;1024
 multiline_comment|/*&n; * After a CPU has dirtied this many pages, balance_dirty_pages_ratelimited&n; * will look to see if it needs to force writeback or throttling.  Probably&n; * should be scaled by memory size.&n; */
 DECL|macro|RATELIMIT_PAGES
-mdefine_line|#define RATELIMIT_PAGES&t;&t;1000
+mdefine_line|#define RATELIMIT_PAGES&t;&t;((512 * 1024) / PAGE_SIZE)
 multiline_comment|/*&n; * When balance_dirty_pages decides that the caller needs to perform some&n; * non-background writeback, this is how many pages it will attempt to write.&n; * It should be somewhat larger than RATELIMIT_PAGES to ensure that reasonably&n; * large amounts of I/O are submitted.&n; */
 DECL|macro|SYNC_WRITEBACK_PAGES
-mdefine_line|#define SYNC_WRITEBACK_PAGES&t;1500
+mdefine_line|#define SYNC_WRITEBACK_PAGES&t;((RATELIMIT_PAGES * 3) / 2)
 multiline_comment|/* The following parameters are exported via /proc/sys/vm */
 multiline_comment|/*&n; * Dirty memory thresholds, in percentages&n; */
 multiline_comment|/*&n; * Start background writeback (via pdflush) at this level&n; */
@@ -108,6 +108,11 @@ r_int
 r_int
 id|dirty_and_writeback
 suffix:semicolon
+r_struct
+id|backing_dev_info
+op_star
+id|bdi
+suffix:semicolon
 id|get_page_state
 c_func
 (paren
@@ -151,6 +156,10 @@ id|tot
 op_div
 l_int|100
 suffix:semicolon
+id|bdi
+op_assign
+id|mapping-&gt;backing_dev_info
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -164,9 +173,11 @@ id|nr_to_write
 op_assign
 id|SYNC_WRITEBACK_PAGES
 suffix:semicolon
-id|writeback_unlocked_inodes
+id|writeback_backing_dev
 c_func
 (paren
+id|bdi
+comma
 op_amp
 id|nr_to_write
 comma
@@ -197,9 +208,11 @@ id|nr_to_write
 op_assign
 id|SYNC_WRITEBACK_PAGES
 suffix:semicolon
-id|writeback_unlocked_inodes
+id|writeback_backing_dev
 c_func
 (paren
+id|bdi
+comma
 op_amp
 id|nr_to_write
 comma
@@ -223,7 +236,7 @@ op_logical_neg
 id|writeback_in_progress
 c_func
 (paren
-id|mapping-&gt;backing_dev_info
+id|bdi
 )paren
 op_logical_and
 id|ps.nr_dirty
@@ -359,6 +372,7 @@ suffix:semicolon
 r_int
 id|nr_to_write
 suffix:semicolon
+id|CHECK_EMERGENCY_SYNC
 r_do
 (brace
 r_struct
@@ -800,40 +814,6 @@ id|EXPORT_SYMBOL
 c_func
 (paren
 id|generic_vm_writeback
-)paren
-suffix:semicolon
-DECL|function|generic_writepages
-r_int
-id|generic_writepages
-c_func
-(paren
-r_struct
-id|address_space
-op_star
-id|mapping
-comma
-r_int
-op_star
-id|nr_to_write
-)paren
-(brace
-r_return
-id|mpage_writepages
-c_func
-(paren
-id|mapping
-comma
-id|nr_to_write
-comma
-l_int|NULL
-)paren
-suffix:semicolon
-)brace
-DECL|variable|generic_writepages
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|generic_writepages
 )paren
 suffix:semicolon
 DECL|function|do_writepages

@@ -282,8 +282,7 @@ id|qnx4_inode_entry
 id|raw
 suffix:semicolon
 DECL|member|mmu_private
-r_int
-r_int
+id|loff_t
 id|mmu_private
 suffix:semicolon
 DECL|member|vfs_inode

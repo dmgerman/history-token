@@ -10,7 +10,6 @@ DECL|macro|LinuxVersionCode
 mdefine_line|#define LinuxVersionCode(v, p, s) (((v)&lt;&lt;16)+((p)&lt;&lt;8)+(s))
 macro_line|#endif
 macro_line|#include &lt;linux/types.h&gt;
-macro_line|#include &lt;linux/kdev_t.h&gt;
 DECL|macro|SYM53C416_SCSI_ID
 mdefine_line|#define SYM53C416_SCSI_ID 7
 r_static
@@ -91,7 +90,9 @@ c_func
 id|Disk
 op_star
 comma
-id|kdev_t
+r_struct
+id|block_device
+op_star
 comma
 r_int
 op_star

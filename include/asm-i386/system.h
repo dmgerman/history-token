@@ -706,58 +706,16 @@ DECL|macro|local_irq_disable
 mdefine_line|#define local_irq_disable()&t;__cli()
 DECL|macro|local_irq_enable
 mdefine_line|#define local_irq_enable()&t;__sti()
-macro_line|#ifdef CONFIG_SMP
-r_extern
-r_void
-id|__global_cli
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|__global_sti
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-r_extern
-r_int
-r_int
-id|__global_save_flags
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|__global_restore_flags
-c_func
-(paren
-r_int
-r_int
-)paren
-suffix:semicolon
-DECL|macro|cli
-mdefine_line|#define cli() __global_cli()
+multiline_comment|/*&n; * Compatibility macros - they will be removed after some time.&n; */
+macro_line|#if !CONFIG_SMP
 DECL|macro|sti
-mdefine_line|#define sti() __global_sti()
-DECL|macro|save_flags
-mdefine_line|#define save_flags(x) ((x)=__global_save_flags())
-DECL|macro|restore_flags
-mdefine_line|#define restore_flags(x) __global_restore_flags(x)
-macro_line|#else
+macro_line|# define sti() __sti()
 DECL|macro|cli
-mdefine_line|#define cli() __cli()
-DECL|macro|sti
-mdefine_line|#define sti() __sti()
+macro_line|# define cli() __cli()
 DECL|macro|save_flags
-mdefine_line|#define save_flags(x) __save_flags(x)
+macro_line|# define save_flags(flags) __save_flags(flags)
 DECL|macro|restore_flags
-mdefine_line|#define restore_flags(x) __restore_flags(x)
+macro_line|# define restore_flags(flags) __restore_flags(flags)
 macro_line|#endif
 multiline_comment|/*&n; * disable hlt during certain critical i/o operations&n; */
 DECL|macro|HAVE_DISABLE_HLT

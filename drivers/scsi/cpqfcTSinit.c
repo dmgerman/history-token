@@ -4958,7 +4958,9 @@ id|Disk
 op_star
 id|disk
 comma
-id|kdev_t
+r_struct
+id|block_device
+op_star
 id|n
 comma
 r_int

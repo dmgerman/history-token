@@ -70,6 +70,11 @@ id|cap_permitted
 comma
 id|cap_effective
 suffix:semicolon
+DECL|member|security
+r_void
+op_star
+id|security
+suffix:semicolon
 DECL|member|argc
 DECL|member|envc
 r_int

@@ -425,10 +425,11 @@ id|curtask-&gt;fsgid
 op_assign
 l_int|0
 suffix:semicolon
-id|cap_set_full
+id|security_ops
+op_member_access_from_pointer
+id|task_kmod_set_label
 c_func
 (paren
-id|curtask-&gt;cap_effective
 )paren
 suffix:semicolon
 multiline_comment|/* Allow execve args to be in kernel space. */

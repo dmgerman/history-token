@@ -13,7 +13,7 @@ macro_line|#include &lt;linux/personality.h&gt;
 macro_line|#include &lt;linux/file.h&gt;
 macro_line|#include &lt;linux/binfmts.h&gt;
 macro_line|#include &lt;linux/fs.h&gt;
-macro_line|#include &lt;linux/mm.h&gt;
+macro_line|#include &lt;linux/security.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
 macro_line|#include &lt;asm/pgalloc.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
@@ -722,10 +722,6 @@ id|mm-&gt;cpu_vm_mask
 op_assign
 l_int|0
 suffix:semicolon
-id|mm-&gt;swap_address
-op_assign
-l_int|0
-suffix:semicolon
 id|pprev
 op_assign
 op_amp
@@ -1191,32 +1187,6 @@ id|mmlist_lock
 )paren
 )paren
 (brace
-r_extern
-r_struct
-id|mm_struct
-op_star
-id|swap_mm
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|swap_mm
-op_eq
-id|mm
-)paren
-id|swap_mm
-op_assign
-id|list_entry
-c_func
-(paren
-id|mm-&gt;mmlist.next
-comma
-r_struct
-id|mm_struct
-comma
-id|mmlist
-)paren
-suffix:semicolon
 id|list_del
 c_func
 (paren
@@ -2520,6 +2490,24 @@ id|EINVAL
 suffix:semicolon
 id|retval
 op_assign
+id|security_ops
+op_member_access_from_pointer
+id|task_create
+c_func
+(paren
+id|clone_flags
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|retval
+)paren
+r_goto
+id|fork_out
+suffix:semicolon
+id|retval
+op_assign
 op_minus
 id|ENOMEM
 suffix:semicolon
@@ -2851,6 +2839,10 @@ id|p-&gt;start_time
 op_assign
 id|jiffies
 suffix:semicolon
+id|p-&gt;security
+op_assign
+l_int|NULL
+suffix:semicolon
 id|INIT_LIST_HEAD
 c_func
 (paren
@@ -2862,6 +2854,20 @@ id|retval
 op_assign
 op_minus
 id|ENOMEM
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|security_ops
+op_member_access_from_pointer
+id|task_alloc_security
+c_func
+(paren
+id|p
+)paren
+)paren
+r_goto
+id|bad_fork_cleanup
 suffix:semicolon
 multiline_comment|/* copy all the process information */
 r_if
@@ -2876,7 +2882,7 @@ id|p
 )paren
 )paren
 r_goto
-id|bad_fork_cleanup
+id|bad_fork_cleanup_security
 suffix:semicolon
 r_if
 c_cond
@@ -3269,6 +3275,16 @@ multiline_comment|/* blocking */
 id|bad_fork_cleanup_semundo
 suffix:colon
 id|exit_semundo
+c_func
+(paren
+id|p
+)paren
+suffix:semicolon
+id|bad_fork_cleanup_security
+suffix:colon
+id|security_ops
+op_member_access_from_pointer
+id|task_free_security
 c_func
 (paren
 id|p
