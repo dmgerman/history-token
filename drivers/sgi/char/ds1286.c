@@ -1308,15 +1308,13 @@ comma
 id|DS1286_VERSION
 )paren
 suffix:semicolon
+r_return
 id|misc_register
 c_func
 (paren
 op_amp
 id|ds1286_dev
 )paren
-suffix:semicolon
-r_return
-l_int|0
 suffix:semicolon
 )brace
 DECL|variable|days
