@@ -3983,4 +3983,13 @@ c_func
 id|ip_conntrack_put
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_IP_NF_NAT_NEEDED
+DECL|variable|ip_conntrack_tcp_update
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|ip_conntrack_tcp_update
+)paren
+suffix:semicolon
+macro_line|#endif
 eof
