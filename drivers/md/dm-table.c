@@ -1196,7 +1196,7 @@ id|inode-&gt;i_mode
 id|r
 op_assign
 op_minus
-id|EINVAL
+id|ENOTBLK
 suffix:semicolon
 r_goto
 id|out
