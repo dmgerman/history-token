@@ -517,18 +517,18 @@ DECL|macro|WL3501_MGMT_CAPABILITY_CF_POLL_REQUEST
 mdefine_line|#define WL3501_MGMT_CAPABILITY_CF_POLL_REQUEST&t;0x0008  /*      - &quot; -&t;   */
 DECL|macro|WL3501_MGMT_CAPABILITY_PRIVACY
 mdefine_line|#define WL3501_MGMT_CAPABILITY_PRIVACY&t;&t;0x0010  /*      - &quot; -&t;   */
-DECL|macro|WL3501_FREQ_DOMAIN_FCC
-mdefine_line|#define WL3501_FREQ_DOMAIN_FCC    0x10&t;/* Channel 1 to 11 */
-DECL|macro|WL3501_FREQ_DOMAIN_IC
-mdefine_line|#define WL3501_FREQ_DOMAIN_IC     0x20&t;/* Channel 1 to 11 */
-DECL|macro|WL3501_FREQ_DOMAIN_ETSI
-mdefine_line|#define WL3501_FREQ_DOMAIN_ETSI   0x30&t;/* Channel 1 to 13 */
-DECL|macro|WL3501_FREQ_DOMAIN_SPAIN
-mdefine_line|#define WL3501_FREQ_DOMAIN_SPAIN  0x31&t;/* Channel 10 to 11 */
-DECL|macro|WL3501_FREQ_DOMAIN_FRANCE
-mdefine_line|#define WL3501_FREQ_DOMAIN_FRANCE 0x32&t;/* Channel 10 to 13 */
-DECL|macro|WL3501_FREQ_DOMAIN_MKK
-mdefine_line|#define WL3501_FREQ_DOMAIN_MKK    0x40&t;/* Channel 14 */
+DECL|macro|WL3501_REG_DOMAIN_FCC
+mdefine_line|#define WL3501_REG_DOMAIN_FCC    0x10&t;/* Channel 1 to 11 */
+DECL|macro|WL3501_REG_DOMAIN_IC
+mdefine_line|#define WL3501_REG_DOMAIN_IC     0x20&t;/* Channel 1 to 11 */
+DECL|macro|WL3501_REG_DOMAIN_ETSI
+mdefine_line|#define WL3501_REG_DOMAIN_ETSI   0x30&t;/* Channel 1 to 13 */
+DECL|macro|WL3501_REG_DOMAIN_SPAIN
+mdefine_line|#define WL3501_REG_DOMAIN_SPAIN  0x31&t;/* Channel 10 to 11 */
+DECL|macro|WL3501_REG_DOMAIN_FRANCE
+mdefine_line|#define WL3501_REG_DOMAIN_FRANCE 0x32&t;/* Channel 10 to 13 */
+DECL|macro|WL3501_REG_DOMAIN_MKK
+mdefine_line|#define WL3501_REG_DOMAIN_MKK    0x40&t;/* Channel 14 */
 DECL|macro|WL3501_ESSID_MAX_LEN
 mdefine_line|#define WL3501_ESSID_MAX_LEN (IW_ESSID_MAX_SIZE + 2)
 DECL|struct|wl3501_tx_hdr
@@ -1810,9 +1810,9 @@ DECL|member|adhoc_times
 id|u8
 id|adhoc_times
 suffix:semicolon
-DECL|member|freq_domain
+DECL|member|reg_domain
 id|u8
-id|freq_domain
+id|reg_domain
 suffix:semicolon
 DECL|member|version
 id|u8
