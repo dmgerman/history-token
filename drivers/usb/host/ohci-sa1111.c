@@ -1,5 +1,6 @@
 multiline_comment|/*&n; * OHCI HCD (Host Controller Driver) for USB.&n; *&n; * (C) Copyright 1999 Roman Weissgaerber &lt;weissg@vienna.at&gt;&n; * (C) Copyright 2000-2002 David Brownell &lt;dbrownell@users.sourceforge.net&gt;&n; * (C) Hewlett-Packard Company&n; * &n; * SA1111 Bus Glue&n; *&n; * Written by Christopher Hoover &lt;ch@hpl.hp.com&gt;&n; * Based on fragments of previous driver by Rusell King et al.&n; *&n; * This file is licenced under the GPL.&n; */
 macro_line|#include &lt;asm/hardware.h&gt;
+macro_line|#include &lt;asm/mach-types.h&gt;
 macro_line|#include &lt;asm/arch/assabet.h&gt;
 macro_line|#include &lt;asm/arch/badge4.h&gt;
 macro_line|#include &lt;asm/hardware/sa1111.h&gt;
