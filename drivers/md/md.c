@@ -1,4 +1,4 @@
-multiline_comment|/*&n;   md.c : Multiple Devices driver for Linux&n;&t;  Copyright (C) 1998, 1999, 2000 Ingo Molnar&n;&n;     completely rewritten, based on the MD driver code from Marc Zyngier&n;&n;   Changes:&n;&n;   - RAID-1/RAID-5 extensions by Miguel de Icaza, Gadi Oxman, Ingo Molnar&n;   - boot support for linear and striped mode by Harald Hoyer &lt;HarryH@Royal.Net&gt;&n;   - kerneld support by Boris Tobotras &lt;boris@xtalk.msk.su&gt;&n;   - kmod support by: Cyrus Durgin&n;   - RAID0 bugfixes: Mark Anthony Lisher &lt;markal@iname.com&gt;&n;   - Devfs support by Richard Gooch &lt;rgooch@atnf.csiro.au&gt;&n;&n;   - lots of fixes and improvements to the RAID1/RAID5 and generic&n;     RAID code (such as request based resynchronization):&n;&n;     Neil Brown &lt;neilb@cse.unsw.edu.au&gt;.&n;&n;   This program is free software; you can redistribute it and/or modify&n;   it under the terms of the GNU General Public License as published by&n;   the Free Software Foundation; either version 2, or (at your option)&n;   any later version.&n;&n;   You should have received a copy of the GNU General Public License&n;   (for example /usr/src/linux/COPYING); if not, write to the Free&n;   Software Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n;*/
+multiline_comment|/*&n;   md.c : Multiple Devices driver for Linux&n;&t;  Copyright (C) 1998, 1999, 2000 Ingo Molnar&n;&n;     completely rewritten, based on the MD driver code from Marc Zyngier&n;&n;   Changes:&n;&n;   - RAID-1/RAID-5 extensions by Miguel de Icaza, Gadi Oxman, Ingo Molnar&n;   - RAID-6 extensions by H. Peter Anvin &lt;hpa@zytor.com&gt;&n;   - boot support for linear and striped mode by Harald Hoyer &lt;HarryH@Royal.Net&gt;&n;   - kerneld support by Boris Tobotras &lt;boris@xtalk.msk.su&gt;&n;   - kmod support by: Cyrus Durgin&n;   - RAID0 bugfixes: Mark Anthony Lisher &lt;markal@iname.com&gt;&n;   - Devfs support by Richard Gooch &lt;rgooch@atnf.csiro.au&gt;&n;&n;   - lots of fixes and improvements to the RAID1/RAID5 and generic&n;     RAID code (such as request based resynchronization):&n;&n;     Neil Brown &lt;neilb@cse.unsw.edu.au&gt;.&n;&n;   This program is free software; you can redistribute it and/or modify&n;   it under the terms of the GNU General Public License as published by&n;   the Free Software Foundation; either version 2, or (at your option)&n;   any later version.&n;&n;   You should have received a copy of the GNU General Public License&n;   (for example /usr/src/linux/COPYING); if not, write to the Free&n;   Software Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n;*/
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/linkage.h&gt;
@@ -6003,15 +6003,17 @@ l_int|1
 )paren
 op_logical_or
 (paren
-id|mddev-&gt;level
-op_eq
-l_int|4
-)paren
-op_logical_or
 (paren
 id|mddev-&gt;level
-op_eq
-l_int|5
+op_ge
+l_int|4
+)paren
+op_logical_and
+(paren
+id|mddev-&gt;level
+op_le
+l_int|6
+)paren
 )paren
 )paren
 )paren
@@ -12775,9 +12777,19 @@ op_ge
 id|MAX_PERSONALITY
 )paren
 (brace
-id|MD_BUG
+id|printk
 c_func
 (paren
+id|KERN_ERR
+l_string|&quot;md: tried to install personality %s as nr %d, but max is %lu&bslash;n&quot;
+comma
+id|p-&gt;name
+comma
+id|pnum
+comma
+id|MAX_PERSONALITY
+op_minus
+l_int|1
 )paren
 suffix:semicolon
 r_return

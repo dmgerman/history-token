@@ -18,8 +18,10 @@ DECL|macro|HSM
 mdefine_line|#define HSM               6UL
 DECL|macro|MULTIPATH
 mdefine_line|#define MULTIPATH         7UL
+DECL|macro|RAID6
+mdefine_line|#define RAID6&t;&t;  8UL
 DECL|macro|MAX_PERSONALITY
-mdefine_line|#define MAX_PERSONALITY   8UL
+mdefine_line|#define MAX_PERSONALITY   9UL
 DECL|macro|LEVEL_MULTIPATH
 mdefine_line|#define&t;LEVEL_MULTIPATH&t;&t;(-4)
 DECL|macro|LEVEL_LINEAR
@@ -87,6 +89,12 @@ id|RAID5
 suffix:colon
 r_return
 l_int|5
+suffix:semicolon
+r_case
+id|RAID6
+suffix:colon
+r_return
+l_int|6
 suffix:semicolon
 )brace
 id|BUG
@@ -160,6 +168,12 @@ l_int|5
 suffix:colon
 r_return
 id|RAID5
+suffix:semicolon
+r_case
+l_int|6
+suffix:colon
+r_return
+id|RAID6
 suffix:semicolon
 )brace
 r_return
