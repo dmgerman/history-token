@@ -740,13 +740,15 @@ op_amp
 id|wait
 )paren
 suffix:semicolon
-id|current-&gt;state
-op_assign
-id|TASK_INTERRUPTIBLE
-suffix:semicolon
 r_do
 (brace
 multiline_comment|/* First make it right. Then make it fast. Putting this whole&n;&t;&t; * block within the parentheses of a while would be too&n;&t;&t; * confusing. And no, xchg() is not the answer. */
+id|__set_current_state
+c_func
+(paren
+id|TASK_INTERRUPTIBLE
+)paren
+suffix:semicolon
 id|spin_lock_irq
 (paren
 op_amp
