@@ -35,11 +35,18 @@ DECL|member|prefered_lft
 id|__u32
 id|prefered_lft
 suffix:semicolon
+DECL|member|cstamp
+r_int
+r_int
+id|cstamp
+suffix:semicolon
+multiline_comment|/* created timestamp */
 DECL|member|tstamp
 r_int
 r_int
 id|tstamp
 suffix:semicolon
+multiline_comment|/* updated timestamp */
 DECL|member|refcnt
 id|atomic_t
 id|refcnt
@@ -297,6 +304,16 @@ r_int
 r_char
 id|mca_crcount
 suffix:semicolon
+DECL|member|mca_cstamp
+r_int
+r_int
+id|mca_cstamp
+suffix:semicolon
+DECL|member|mca_tstamp
+r_int
+r_int
+id|mca_tstamp
+suffix:semicolon
 )brace
 suffix:semicolon
 multiline_comment|/* Anycast stuff */
@@ -353,6 +370,16 @@ suffix:semicolon
 DECL|member|aca_lock
 id|spinlock_t
 id|aca_lock
+suffix:semicolon
+DECL|member|aca_cstamp
+r_int
+r_int
+id|aca_cstamp
+suffix:semicolon
+DECL|member|aca_tstamp
+r_int
+r_int
+id|aca_tstamp
 suffix:semicolon
 )brace
 suffix:semicolon
