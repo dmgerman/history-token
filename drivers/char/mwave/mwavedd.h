@@ -4,9 +4,11 @@ DECL|macro|_LINUX_MWAVEDD_H
 mdefine_line|#define _LINUX_MWAVEDD_H
 macro_line|#include &quot;3780i.h&quot;
 macro_line|#include &quot;tp3780i.h&quot;
+macro_line|#include &quot;smapi.h&quot;
 macro_line|#include &quot;mwavepub.h&quot;
 macro_line|#include &lt;linux/ioctl.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
+macro_line|#include &lt;linux/wait.h&gt;
 r_extern
 r_int
 id|mwave_debug
