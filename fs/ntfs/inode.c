@@ -1150,7 +1150,7 @@ r_return
 id|ni
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * ntfs_is_extended_system_file - check if a file is in the $Extend directory&n; * @ctx:&t;initialized attribute search context&n; *&n; * Search all file name attributes in the inode described by the attribute&n; * search context @ctx and check if any of the names are in the $Extend system&n; * directory.&n; * &n; * Return values:&n; *&t;   1: file is in $Extend directory&n; *&t;   0: file is not in $Extend directory&n; *&t;-EIO: file is corrupt&n; */
+multiline_comment|/**&n; * ntfs_is_extended_system_file - check if a file is in the $Extend directory&n; * @ctx:&t;initialized attribute search context&n; *&n; * Search all file name attributes in the inode described by the attribute&n; * search context @ctx and check if any of the names are in the $Extend system&n; * directory.&n; *&n; * Return values:&n; *&t;   1: file is in $Extend directory&n; *&t;   0: file is not in $Extend directory&n; *&t;-EIO: file is corrupt&n; */
 DECL|function|ntfs_is_extended_system_file
 r_static
 r_int
@@ -5792,39 +5792,6 @@ id|vi
 suffix:semicolon
 r_goto
 id|out_now
-suffix:semicolon
-)brace
-multiline_comment|/**&n; * ntfs_dirty_inode - mark the inode&squot;s metadata dirty&n; * @vi:&t;&t;inode to mark dirty&n; *&n; * This is called from fs/inode.c::__mark_inode_dirty(), when the inode itself&n; * is being marked dirty. An example is when update_atime() is invoked.&n; *&n; * We mark the inode dirty by setting both the page in which the mft record&n; * resides and the buffer heads in that page which correspond to the mft record&n; * dirty. This ensures that the changes will eventually be propagated to disk&n; * when the inode is set dirty.&n; *&n; * FIXME: Can we do that with the buffer heads? I am not too sure. Because if we&n; * do that we need to make sure that the kernel will not write out those buffer&n; * heads or we are screwed as it will write corrupt data to disk. The only way&n; * a mft record can be written correctly is by mst protecting it, writting it&n; * synchronously and fast mst deprotecting it. During this period, obviously,&n; * the mft record must be marked as not uptodate, be locked for writing or&n; * whatever, so that nobody attempts anything stupid.&n; *&n; * FIXME: Do we need to check that the fs is not mounted read only? And what&n; * about the inode? Anything else?&n; *&n; * FIXME: As we are only a read only driver it is safe to just return here for&n; * the moment.&n; */
-DECL|function|ntfs_dirty_inode
-r_void
-id|ntfs_dirty_inode
-c_func
-(paren
-r_struct
-id|inode
-op_star
-id|vi
-)paren
-(brace
-id|ntfs_debug
-c_func
-(paren
-l_string|&quot;Entering for inode 0x%lx.&quot;
-comma
-id|vi-&gt;i_ino
-)paren
-suffix:semicolon
-id|NInoSetDirty
-c_func
-(paren
-id|NTFS_I
-c_func
-(paren
-id|vi
-)paren
-)paren
-suffix:semicolon
-r_return
 suffix:semicolon
 )brace
 multiline_comment|/**&n; * ntfs_commit_inode - write out a dirty inode&n; * @ni:&t;&t;inode to write out&n; *&n; */

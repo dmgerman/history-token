@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * super.c - NTFS kernel super block handling. Part of the Linux-NTFS project.&n; *&n; * Copyright (c) 2001-2004 Anton Altaparmakov&n; * Copyright (c) 2001,2002 Richard Russon&n; *&n; * This program/include file is free software; you can redistribute it and/or&n; * modify it under the terms of the GNU General Public License as published&n; * by the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * This program/include file is distributed in the hope that it will be &n; * useful, but WITHOUT ANY WARRANTY; without even the implied warranty &n; * of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program (in the main directory of the Linux-NTFS &n; * distribution in the file COPYING); if not, write to the Free Software&n; * Foundation,Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
+multiline_comment|/*&n; * super.c - NTFS kernel super block handling. Part of the Linux-NTFS project.&n; *&n; * Copyright (c) 2001-2004 Anton Altaparmakov&n; * Copyright (c) 2001,2002 Richard Russon&n; *&n; * This program/include file is free software; you can redistribute it and/or&n; * modify it under the terms of the GNU General Public License as published&n; * by the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * This program/include file is distributed in the hope that it will be&n; * useful, but WITHOUT ANY WARRANTY; without even the implied warranty&n; * of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program (in the main directory of the Linux-NTFS&n; * distribution in the file COPYING); if not, write to the Free Software&n; * Foundation,Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &lt;linux/stddef.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
@@ -306,11 +306,11 @@ id|old_nls
 suffix:semicolon
 multiline_comment|/* I am lazy... (-8 */
 DECL|macro|NTFS_GETOPT_WITH_DEFAULT
-mdefine_line|#define NTFS_GETOPT_WITH_DEFAULT(option, variable, default_value)&t;&bslash;&n;&t;if (!strcmp(p, option)) {&t;&t;&t;&t;&t;&bslash;&n;&t;&t;if (!v || !*v)&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;variable = default_value;&t;&t;&t;&bslash;&n;&t;&t;else {&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;variable = simple_strtoul(ov = v, &amp;v, 0);&t;&bslash;&n;&t;&t;&t;if (*v)&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;goto needs_val;&t;&t;&t;&t;&bslash;&n;&t;&t;}&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;} 
+mdefine_line|#define NTFS_GETOPT_WITH_DEFAULT(option, variable, default_value)&t;&bslash;&n;&t;if (!strcmp(p, option)) {&t;&t;&t;&t;&t;&bslash;&n;&t;&t;if (!v || !*v)&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;variable = default_value;&t;&t;&t;&bslash;&n;&t;&t;else {&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;variable = simple_strtoul(ov = v, &amp;v, 0);&t;&bslash;&n;&t;&t;&t;if (*v)&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;goto needs_val;&t;&t;&t;&t;&bslash;&n;&t;&t;}&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;}
 DECL|macro|NTFS_GETOPT
-mdefine_line|#define NTFS_GETOPT(option, variable)&t;&t;&t;&t;&t;&bslash;&n;&t;if (!strcmp(p, option)) {&t;&t;&t;&t;&t;&bslash;&n;&t;&t;if (!v || !*v)&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;goto needs_arg;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;variable = simple_strtoul(ov = v, &amp;v, 0);&t;&t;&bslash;&n;&t;&t;if (*v)&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;goto needs_val;&t;&t;&t;&t;&t;&bslash;&n;&t;} 
+mdefine_line|#define NTFS_GETOPT(option, variable)&t;&t;&t;&t;&t;&bslash;&n;&t;if (!strcmp(p, option)) {&t;&t;&t;&t;&t;&bslash;&n;&t;&t;if (!v || !*v)&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;goto needs_arg;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;variable = simple_strtoul(ov = v, &amp;v, 0);&t;&t;&bslash;&n;&t;&t;if (*v)&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;goto needs_val;&t;&t;&t;&t;&t;&bslash;&n;&t;}
 DECL|macro|NTFS_GETOPT_BOOL
-mdefine_line|#define NTFS_GETOPT_BOOL(option, variable)&t;&t;&t;&t;&bslash;&n;&t;if (!strcmp(p, option)) {&t;&t;&t;&t;&t;&bslash;&n;&t;&t;BOOL val;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;if (!simple_getbool(v, &amp;val))&t;&t;&t;&t;&bslash;&n;&t;&t;&t;goto needs_bool;&t;&t;&t;&t;&bslash;&n;&t;&t;variable = val;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;} 
+mdefine_line|#define NTFS_GETOPT_BOOL(option, variable)&t;&t;&t;&t;&bslash;&n;&t;if (!strcmp(p, option)) {&t;&t;&t;&t;&t;&bslash;&n;&t;&t;BOOL val;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;if (!simple_getbool(v, &amp;val))&t;&t;&t;&t;&bslash;&n;&t;&t;&t;goto needs_bool;&t;&t;&t;&t;&bslash;&n;&t;&t;variable = val;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;}
 DECL|macro|NTFS_GETOPT_OPTIONS_ARRAY
 mdefine_line|#define NTFS_GETOPT_OPTIONS_ARRAY(option, variable, opt_array)&t;&t;&bslash;&n;&t;if (!strcmp(p, option)) {&t;&t;&t;&t;&t;&bslash;&n;&t;&t;int _i;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;if (!v || !*v)&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;goto needs_arg;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;ov = v;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;if (variable == -1)&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;variable = 0;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;for (_i = 0; opt_array[_i].str &amp;&amp; *opt_array[_i].str; _i++) &bslash;&n;&t;&t;&t;if (!strcmp(opt_array[_i].str, v)) {&t;&t;&bslash;&n;&t;&t;&t;&t;variable |= opt_array[_i].val;&t;&t;&bslash;&n;&t;&t;&t;&t;break;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;}&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;if (!opt_array[_i].str || !*opt_array[_i].str)&t;&t;&bslash;&n;&t;&t;&t;goto needs_val;&t;&t;&t;&t;&t;&bslash;&n;&t;}
 r_if
@@ -2059,7 +2059,7 @@ r_return
 id|bh_backup
 suffix:semicolon
 )brace
-multiline_comment|/**&n; * parse_ntfs_boot_sector - parse the boot sector and store the data in @vol&n; * @vol:&t;volume structure to initialise with data from boot sector&n; * @b:&t;&t;boot sector to parse&n; * &n; * Parse the ntfs boot sector @b and store all imporant information therein in&n; * the ntfs super block @vol. Return TRUE on success and FALSE on error.&n; */
+multiline_comment|/**&n; * parse_ntfs_boot_sector - parse the boot sector and store the data in @vol&n; * @vol:&t;volume structure to initialise with data from boot sector&n; * @b:&t;&t;boot sector to parse&n; *&n; * Parse the ntfs boot sector @b and store all imporant information therein in&n; * the ntfs super block @vol. Return TRUE on success and FALSE on error.&n; */
 DECL|function|parse_ntfs_boot_sector
 r_static
 id|BOOL
@@ -5260,27 +5260,37 @@ op_assign
 id|ntfs_destroy_big_inode
 comma
 multiline_comment|/* VFS: Deallocate inode. */
-singleline_comment|//.dirty_inode&t;= ntfs_dirty_inode,&t;  /* VFS: Called from
-singleline_comment|//&t;&t;&t;&t;&t;     __mark_inode_dirty(). */
-singleline_comment|//.write_inode&t;= NULL,&t;&t;  /* VFS: Write dirty inode to disk. */
 dot
 id|put_inode
 op_assign
 id|ntfs_put_inode
 comma
-multiline_comment|/* VFS: Called just before the inode&n;&t;&t;&t;&t;&t;     reference count is decreased. */
-singleline_comment|//.delete_inode&t;= NULL,&t;&t;  /* VFS: Delete inode from disk. Called
-singleline_comment|//&t;&t;&t;&t;     when i_count becomes 0 and i_nlink
-singleline_comment|//&t;&t;&t;&t;     is also 0. */
+multiline_comment|/* VFS: Called just before&n;&t;&t;&t;&t;&t;&t;     the inode reference count&n;&t;&t;&t;&t;&t;&t;     is decreased. */
+macro_line|#ifdef NTFS_RW
+singleline_comment|//.dirty_inode&t;= NULL,&t;&t;&t;/* VFS: Called from
+singleline_comment|//&t;&t;&t;&t;&t;   __mark_inode_dirty(). */
+singleline_comment|//.write_inode&t;= NULL,&t;&t;&t;/* VFS: Write dirty inode to
+singleline_comment|//&t;&t;&t;&t;&t;   disk. */
+singleline_comment|//.drop_inode&t;= NULL,&t;&t;&t;/* VFS: Called just after the
+singleline_comment|//&t;&t;&t;&t;&t;   inode reference count has
+singleline_comment|//&t;&t;&t;&t;&t;   been decreased to zero.
+singleline_comment|//&t;&t;&t;&t;&t;   NOTE: The inode lock is
+singleline_comment|//&t;&t;&t;&t;&t;   held. See fs/inode.c::
+singleline_comment|//&t;&t;&t;&t;&t;   generic_drop_inode(). */
+singleline_comment|//.delete_inode&t;= NULL,&t;&t;&t;/* VFS: Delete inode from disk.
+singleline_comment|//&t;&t;&t;&t;&t;   Called when i_count becomes
+singleline_comment|//&t;&t;&t;&t;&t;   0 and i_nlink is also 0. */
+singleline_comment|//.write_super&t;= NULL,&t;&t;&t;/* Flush dirty super block to
+singleline_comment|//&t;&t;&t;&t;&t;   disk. */
+singleline_comment|//.write_super_lockfs&t;= NULL,&t;&t;/* ? */
+singleline_comment|//.unlockfs&t;= NULL,&t;&t;&t;/* ? */
+macro_line|#endif
 dot
 id|put_super
 op_assign
 id|ntfs_put_super
 comma
 multiline_comment|/* Syscall: umount. */
-singleline_comment|//write_super&t;= NULL,&t;&t;  /* Flush dirty super block to disk. */
-singleline_comment|//write_super_lockfs&t;= NULL,&t;  /* ? */
-singleline_comment|//unlockfs&t;= NULL,&t;&t;  /* ? */
 dot
 id|statfs
 op_assign
@@ -5299,13 +5309,13 @@ op_assign
 id|ntfs_clear_big_inode
 comma
 multiline_comment|/* VFS: Called when an inode is&n;&t;&t;&t;&t;&t;&t;   removed from memory. */
-singleline_comment|//.umount_begin&t;= NULL,&t;&t;     /* Forced umount. */
+singleline_comment|//.umount_begin&t;= NULL,&t;&t;&t;/* Forced umount. */
 dot
 id|show_options
 op_assign
 id|ntfs_show_options
 comma
-multiline_comment|/* Show mount options in proc. */
+multiline_comment|/* Show mount options in&n;&t;&t;&t;&t;&t;&t;   proc. */
 )brace
 suffix:semicolon
 multiline_comment|/**&n; * Declarations for NTFS specific export operations (fs/ntfs/namei.c).&n; */
@@ -5741,7 +5751,7 @@ r_goto
 id|err_out_now
 suffix:semicolon
 )brace
-multiline_comment|/* &n;&t; * TODO: When we start coping with sector sizes different from&n;&t; * NTFS_BLOCK_SIZE, we now probably need to set the blocksize of the&n;&t; * device (probably to NTFS_BLOCK_SIZE).&n;&t; */
+multiline_comment|/*&n;&t; * TODO: When we start coping with sector sizes different from&n;&t; * NTFS_BLOCK_SIZE, we now probably need to set the blocksize of the&n;&t; * device (probably to NTFS_BLOCK_SIZE).&n;&t; */
 multiline_comment|/* Setup remaining fields in the super block. */
 id|sb-&gt;s_magic
 op_assign
