@@ -578,17 +578,6 @@ op_star
 id|vcc
 )paren
 suffix:semicolon
-DECL|member|listenq
-r_struct
-id|sk_buff_head
-id|listenq
-suffix:semicolon
-DECL|member|backlog_quota
-r_int
-id|backlog_quota
-suffix:semicolon
-multiline_comment|/* number of connection requests we */
-multiline_comment|/* can still accept */
 DECL|member|reply
 r_int
 id|reply

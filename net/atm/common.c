@@ -457,13 +457,6 @@ op_amp
 id|vcc-&gt;sleep
 )paren
 suffix:semicolon
-id|skb_queue_head_init
-c_func
-(paren
-op_amp
-id|vcc-&gt;listenq
-)paren
-suffix:semicolon
 id|sk-&gt;sleep
 op_assign
 op_amp
@@ -2704,13 +2697,6 @@ c_func
 (paren
 op_amp
 id|vcc-&gt;sk-&gt;receive_queue
-)paren
-op_logical_or
-id|skb_peek
-c_func
-(paren
-op_amp
-id|vcc-&gt;listenq
 )paren
 )paren
 id|mask
