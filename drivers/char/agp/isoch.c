@@ -1368,9 +1368,6 @@ r_struct
 id|agp_bridge_data
 op_star
 id|bridge
-comma
-id|u32
-id|mode
 )paren
 (brace
 r_struct

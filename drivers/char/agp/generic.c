@@ -2078,8 +2078,6 @@ id|agp_3_5_enable
 c_func
 (paren
 id|agp_bridge
-comma
-id|mode
 )paren
 suffix:semicolon
 id|agp_device_command
