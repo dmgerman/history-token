@@ -4076,6 +4076,8 @@ c_func
 id|pathname
 comma
 id|O_RDWR
+op_or
+id|O_LARGEFILE
 comma
 l_int|0
 )paren
@@ -5374,6 +5376,8 @@ c_func
 id|name
 comma
 id|O_RDWR
+op_or
+id|O_LARGEFILE
 comma
 l_int|0
 )paren
