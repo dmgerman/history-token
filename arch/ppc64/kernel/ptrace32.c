@@ -273,6 +273,7 @@ id|tmp
 comma
 (paren
 id|u32
+id|__user
 op_star
 )paren
 id|data
@@ -296,6 +297,7 @@ r_int
 id|copied
 suffix:semicolon
 id|u32
+id|__user
 op_star
 id|addrOthers
 suffix:semicolon
@@ -315,7 +317,9 @@ id|addrOthers
 comma
 (paren
 id|u32
+id|__user
 op_star
+id|__user
 op_star
 )paren
 id|addr
@@ -369,6 +373,7 @@ id|tmp
 comma
 (paren
 id|u32
+id|__user
 op_star
 )paren
 id|data
@@ -487,6 +492,7 @@ id|tmp
 comma
 (paren
 id|u32
+id|__user
 op_star
 )paren
 id|data
@@ -647,6 +653,7 @@ id|reg32bits
 comma
 (paren
 id|u32
+id|__user
 op_star
 )paren
 id|data
@@ -726,6 +733,7 @@ op_assign
 id|data
 suffix:semicolon
 id|u32
+id|__user
 op_star
 id|addrOthers
 suffix:semicolon
@@ -745,7 +753,9 @@ id|addrOthers
 comma
 (paren
 id|u32
+id|__user
 op_star
+id|__user
 op_star
 )paren
 id|addr
@@ -1262,12 +1272,14 @@ l_int|0
 suffix:semicolon
 r_int
 r_int
+id|__user
 op_star
 id|tmp
 op_assign
 (paren
 r_int
 r_int
+id|__user
 op_star
 )paren
 id|addr
@@ -1343,12 +1355,14 @@ l_int|0
 suffix:semicolon
 r_int
 r_int
+id|__user
 op_star
 id|tmp
 op_assign
 (paren
 r_int
 r_int
+id|__user
 op_star
 )paren
 id|addr
@@ -1424,12 +1438,14 @@ l_int|0
 suffix:semicolon
 r_int
 r_int
+id|__user
 op_star
 id|tmp
 op_assign
 (paren
 r_int
 r_int
+id|__user
 op_star
 )paren
 id|addr
@@ -1518,12 +1534,14 @@ l_int|0
 suffix:semicolon
 r_int
 r_int
+id|__user
 op_star
 id|tmp
 op_assign
 (paren
 r_int
 r_int
+id|__user
 op_star
 )paren
 id|addr

@@ -562,6 +562,7 @@ id|d_type
 comma
 (paren
 r_char
+id|__user
 op_star
 )paren
 id|dirent
@@ -4924,6 +4925,7 @@ op_assign
 (paren
 (paren
 r_int
+r_int
 )paren
 op_amp
 id|args-&gt;__unused
@@ -4987,6 +4989,7 @@ id|oldlen
 comma
 (paren
 id|u32
+id|__user
 op_star
 )paren
 id|A
