@@ -4534,15 +4534,6 @@ id|lo-&gt;lo_queue
 r_goto
 id|out_mem4
 suffix:semicolon
-id|disks
-(braket
-id|i
-)braket
-op_member_access_from_pointer
-id|queue
-op_assign
-id|lo-&gt;lo_queue
-suffix:semicolon
 id|init_MUTEX
 c_func
 (paren
