@@ -521,6 +521,26 @@ r_int
 id|plug
 )paren
 (brace
+multiline_comment|/*&n;&t; * barriers implicitly indicate back insertion&n;&t; */
+r_if
+c_cond
+(paren
+id|rq-&gt;flags
+op_amp
+(paren
+id|REQ_SOFTBARRIER
+op_or
+id|REQ_HARDBARRIER
+)paren
+op_logical_and
+id|where
+op_eq
+id|ELEVATOR_INSERT_SORT
+)paren
+id|where
+op_assign
+id|ELEVATOR_INSERT_BACK
+suffix:semicolon
 r_if
 c_cond
 (paren
