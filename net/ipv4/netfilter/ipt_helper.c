@@ -94,7 +94,7 @@ suffix:semicolon
 r_int
 id|ret
 op_assign
-l_int|0
+id|info-&gt;invert
 suffix:semicolon
 id|ct
 op_assign
@@ -126,7 +126,7 @@ l_string|&quot;ipt_helper: Eek! invalid conntrack?&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
-l_int|0
+id|ret
 suffix:semicolon
 )brace
 r_if
@@ -145,7 +145,7 @@ id|ct
 )paren
 suffix:semicolon
 r_return
-l_int|0
+id|ret
 suffix:semicolon
 )brace
 id|exp
@@ -208,7 +208,7 @@ id|info-&gt;name
 )paren
 suffix:semicolon
 id|ret
-op_assign
+op_xor_assign
 op_logical_neg
 id|strncmp
 c_func
@@ -223,8 +223,6 @@ c_func
 id|exp-&gt;expectant-&gt;helper-&gt;name
 )paren
 )paren
-op_xor
-id|info-&gt;invert
 suffix:semicolon
 id|out_unlock
 suffix:colon
@@ -362,11 +360,6 @@ c_func
 r_void
 )paren
 (brace
-id|need_ip_conntrack
-c_func
-(paren
-)paren
-suffix:semicolon
 r_return
 id|ipt_register_match
 c_func
