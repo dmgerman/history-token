@@ -10759,6 +10759,14 @@ c_func
 id|chip
 )paren
 suffix:semicolon
+id|snd_es1968_set_acpi
+c_func
+(paren
+id|chip
+comma
+id|ACPI_D3
+)paren
+suffix:semicolon
 id|snd_power_change_state
 c_func
 (paren
@@ -10899,12 +10907,36 @@ c_cond
 (paren
 id|chip-&gt;res_io_port
 )paren
-id|snd_es1968_reset
+(brace
+id|synchronize_irq
 c_func
 (paren
-id|chip
+id|chip-&gt;irq
 )paren
 suffix:semicolon
+id|outw
+c_func
+(paren
+l_int|1
+comma
+id|chip-&gt;io_port
+op_plus
+l_int|0x04
+)paren
+suffix:semicolon
+multiline_comment|/* clear WP interrupts */
+id|outw
+c_func
+(paren
+l_int|0
+comma
+id|chip-&gt;io_port
+op_plus
+id|ESM_PORT_HOST_IRQ
+)paren
+suffix:semicolon
+multiline_comment|/* disable IRQ */
+)brace
 macro_line|#ifdef SUPPORT_JOYSTICK
 r_if
 c_cond
@@ -11060,6 +11092,13 @@ id|pm_whitelist
 id|__devinitdata
 op_assign
 (brace
+(brace
+id|TYPE_MAESTRO2E
+comma
+l_int|0x0e11
+)brace
+comma
+multiline_comment|/* Compaq Armada */
 (brace
 id|TYPE_MAESTRO2E
 comma
