@@ -189,9 +189,7 @@ multiline_comment|/* depth first traversal. We&squot;ll do it in groups of this 
 multiline_comment|/* to make sure it doesn&squot;t hog all of the bandwidth */
 DECL|macro|DEPTH_INTERVAL
 mdefine_line|#define DEPTH_INTERVAL 5
-DECL|macro|MAX_URB_LOOP
-mdefine_line|#define MAX_URB_LOOP&t;2048&t;&t;/* Maximum number of linked URB&squot;s */
-multiline_comment|/*&n; * Technically, updating td-&gt;status here is a race, but it&squot;s not really a&n; * problem. The worst that can happen is that we set the IOC bit again&n; * generating a spurios interrupt. We could fix this by creating another&n; * QH and leaving the IOC bit always set, but then we would have to play&n; * games with the FSBR code to make sure we get the correct order in all&n; * the cases. I don&squot;t think it&squot;s worth the effort&n; */
+multiline_comment|/*&n; * Technically, updating td-&gt;status here is a race, but it&squot;s not really a&n; * problem. The worst that can happen is that we set the IOC bit again&n; * generating a spurious interrupt. We could fix this by creating another&n; * QH and leaving the IOC bit always set, but then we would have to play&n; * games with the FSBR code to make sure we get the correct order in all&n; * the cases. I don&squot;t think it&squot;s worth the effort&n; */
 DECL|function|uhci_set_next_interrupt
 r_static
 r_inline
@@ -378,8 +376,6 @@ c_func
 (paren
 id|uhci-&gt;td_pool
 comma
-id|GFP_DMA
-op_or
 id|GFP_ATOMIC
 comma
 op_amp
@@ -934,7 +930,7 @@ id|urb
 op_star
 id|urb
 comma
-r_int
+id|u32
 id|breadth
 )paren
 (brace
@@ -1011,14 +1007,7 @@ c_func
 id|td-&gt;dma_handle
 )paren
 op_or
-(paren
 id|breadth
-ques
-c_cond
-l_int|0
-suffix:colon
-id|UHCI_PTR_DEPTH
-)paren
 suffix:semicolon
 id|ptd
 op_assign
@@ -1062,14 +1051,7 @@ c_func
 id|td-&gt;dma_handle
 )paren
 op_or
-(paren
 id|breadth
-ques
-c_cond
-l_int|0
-suffix:colon
-id|UHCI_PTR_DEPTH
-)paren
 suffix:semicolon
 id|ptd
 op_assign
@@ -1098,7 +1080,6 @@ op_star
 id|td
 )paren
 (brace
-multiline_comment|/*&n;&t;if (!list_empty(&amp;td-&gt;list) || !list_empty(&amp;td-&gt;fl_list))&n;&t;&t;dbg(&quot;td %p is still in URB list!&quot;, td);&n;*/
 r_if
 c_cond
 (paren
@@ -1193,8 +1174,6 @@ c_func
 (paren
 id|uhci-&gt;qh_pool
 comma
-id|GFP_DMA
-op_or
 id|GFP_ATOMIC
 comma
 op_amp
@@ -1331,7 +1310,7 @@ id|qh-&gt;dma_handle
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * MUST be called with uhci-&gt;frame_list_lock acquired&n; */
+multiline_comment|/*&n; * Append this urb&squot;s qh after the last qh in skelqh-&gt;list&n; * MUST be called with uhci-&gt;frame_list_lock acquired&n; *&n; * Note that urb_priv.queue_list doesn&squot;t have a separate queue head;&n; * it&squot;s a ring with every element &quot;live&quot;.&n; */
 DECL|function|_uhci_insert_qh
 r_static
 r_void
@@ -1369,9 +1348,6 @@ suffix:semicolon
 r_struct
 id|list_head
 op_star
-id|head
-comma
-op_star
 id|tmp
 suffix:semicolon
 r_struct
@@ -1393,27 +1369,13 @@ comma
 id|list
 )paren
 suffix:semicolon
-r_if
-c_cond
+multiline_comment|/* Patch this endpoint&squot;s URBs&squot; QHs to point to the next skelQH:&n;&t; *    SkelQH --&gt; ... lqh --&gt; NewQH --&gt; NextSkelQH&n;&t; * Do this first, so the HC always sees the right QH after this one.&n;&t; */
+id|list_for_each
 (paren
-id|lqh-&gt;urbp
-)paren
-(brace
-id|head
-op_assign
+id|tmp
+comma
 op_amp
-id|lqh-&gt;urbp-&gt;queue_list
-suffix:semicolon
-id|tmp
-op_assign
-id|head-&gt;next
-suffix:semicolon
-r_while
-c_loop
-(paren
-id|head
-op_ne
-id|tmp
+id|urbp-&gt;queue_list
 )paren
 (brace
 r_struct
@@ -1432,9 +1394,51 @@ comma
 id|queue_list
 )paren
 suffix:semicolon
-id|tmp
+id|turbp-&gt;qh-&gt;link
 op_assign
-id|tmp-&gt;next
+id|lqh-&gt;link
+suffix:semicolon
+)brace
+id|urbp-&gt;qh-&gt;link
+op_assign
+id|lqh-&gt;link
+suffix:semicolon
+id|wmb
+c_func
+(paren
+)paren
+suffix:semicolon
+multiline_comment|/* Ordering is important */
+multiline_comment|/* Patch QHs for previous endpoint&squot;s queued URBs?  HC goes&n;&t; * here next, not to the NextSkelQH it now points to.&n;&t; *&n;&t; *    lqh --&gt; td ... --&gt; qh ... --&gt; td --&gt; qh ... --&gt; td&n;&t; *     |                 |                 |&n;&t; *     v                 v                 v&n;&t; *     +&lt;----------------+-----------------+&n;&t; *     v&n;&t; *    NewQH --&gt; td ... --&gt; td&n;&t; *     |&n;&t; *     v&n;&t; *    ...&n;&t; *&n;&t; * The HC could see (and use!) any of these as we write them.&n;&t; */
+r_if
+c_cond
+(paren
+id|lqh-&gt;urbp
+)paren
+(brace
+id|list_for_each
+(paren
+id|tmp
+comma
+op_amp
+id|lqh-&gt;urbp-&gt;queue_list
+)paren
+(brace
+r_struct
+id|urb_priv
+op_star
+id|turbp
+op_assign
+id|list_entry
+c_func
+(paren
+id|tmp
+comma
+r_struct
+id|urb_priv
+comma
+id|queue_list
+)paren
 suffix:semicolon
 id|turbp-&gt;qh-&gt;link
 op_assign
@@ -1448,58 +1452,6 @@ id|UHCI_PTR_QH
 suffix:semicolon
 )brace
 )brace
-id|head
-op_assign
-op_amp
-id|urbp-&gt;queue_list
-suffix:semicolon
-id|tmp
-op_assign
-id|head-&gt;next
-suffix:semicolon
-r_while
-c_loop
-(paren
-id|head
-op_ne
-id|tmp
-)paren
-(brace
-r_struct
-id|urb_priv
-op_star
-id|turbp
-op_assign
-id|list_entry
-c_func
-(paren
-id|tmp
-comma
-r_struct
-id|urb_priv
-comma
-id|queue_list
-)paren
-suffix:semicolon
-id|tmp
-op_assign
-id|tmp-&gt;next
-suffix:semicolon
-id|turbp-&gt;qh-&gt;link
-op_assign
-id|lqh-&gt;link
-suffix:semicolon
-)brace
-id|urbp-&gt;qh-&gt;link
-op_assign
-id|lqh-&gt;link
-suffix:semicolon
-id|mb
-c_func
-(paren
-)paren
-suffix:semicolon
-multiline_comment|/* Ordering is important */
 id|lqh-&gt;link
 op_assign
 id|cpu_to_le32
@@ -1576,6 +1528,7 @@ id|flags
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/* start removal of qh from schedule; it finishes next frame.&n; * TDs should be unlinked before this is called.&n; */
 DECL|function|uhci_remove_qh
 r_static
 r_void
@@ -3533,7 +3486,7 @@ id|qh-&gt;urbp
 op_assign
 id|urbp
 suffix:semicolon
-multiline_comment|/* Low speed or small transfers gets a different queue and treatment */
+multiline_comment|/* Low speed transfers get a different queue, and won&squot;t hog the bus */
 r_if
 c_cond
 (paren
@@ -3549,7 +3502,7 @@ id|qh
 comma
 id|urb
 comma
-l_int|0
+id|UHCI_PTR_DEPTH
 )paren
 suffix:semicolon
 id|uhci_insert_qh
@@ -3572,7 +3525,7 @@ id|qh
 comma
 id|urb
 comma
-l_int|1
+id|UHCI_PTR_BREADTH
 )paren
 suffix:semicolon
 id|uhci_insert_qh
@@ -3754,10 +3707,10 @@ id|urbp-&gt;qh
 comma
 id|urb
 comma
-l_int|0
+id|UHCI_PTR_DEPTH
 )paren
 suffix:semicolon
-multiline_comment|/* Low speed or small transfers gets a different queue and treatment */
+multiline_comment|/* Low speed transfers get a different queue */
 r_if
 c_cond
 (paren
@@ -5332,7 +5285,7 @@ id|qh-&gt;urbp
 op_assign
 id|urbp
 suffix:semicolon
-multiline_comment|/* Always assume breadth first */
+multiline_comment|/* Always breadth first */
 id|uhci_insert_tds_in_qh
 c_func
 (paren
@@ -5340,7 +5293,7 @@ id|qh
 comma
 id|urb
 comma
-l_int|1
+id|UHCI_PTR_BREADTH
 )paren
 suffix:semicolon
 r_if
@@ -6537,6 +6490,26 @@ comma
 id|flags
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|ret
+op_ne
+op_minus
+id|EINPROGRESS
+)paren
+(brace
+id|uhci_destroy_urb_priv
+(paren
+id|uhci
+comma
+id|urb
+)paren
+suffix:semicolon
+r_return
+id|ret
+suffix:semicolon
+)brace
 r_return
 l_int|0
 suffix:semicolon
@@ -7902,11 +7875,6 @@ op_logical_or
 id|urb-&gt;status
 op_eq
 op_minus
-id|ECONNABORTED
-op_logical_or
-id|urb-&gt;status
-op_eq
-op_minus
 id|ECONNRESET
 )paren
 suffix:semicolon
@@ -8000,11 +7968,6 @@ id|urb-&gt;status
 op_eq
 op_minus
 id|ENOENT
-op_logical_or
-id|urb-&gt;status
-op_eq
-op_minus
-id|ECONNABORTED
 op_logical_or
 id|urb-&gt;status
 op_eq
@@ -8898,15 +8861,6 @@ op_assign
 id|USB_STATE_READY
 suffix:semicolon
 )brace
-macro_line|#ifdef CONFIG_PROC_FS
-DECL|variable|uhci_num
-r_static
-r_int
-id|uhci_num
-op_assign
-l_int|0
-suffix:semicolon
-macro_line|#endif
 multiline_comment|/*&n; * De-allocate all resources..&n; */
 DECL|function|release_uhci
 r_static
@@ -8923,14 +8877,6 @@ id|uhci
 r_int
 id|i
 suffix:semicolon
-macro_line|#ifdef CONFIG_PROC_FS
-r_char
-id|buf
-(braket
-l_int|8
-)braket
-suffix:semicolon
-macro_line|#endif
 r_for
 c_loop
 (paren
@@ -9058,7 +9004,7 @@ id|uhci-&gt;fl
 id|pci_free_consistent
 c_func
 (paren
-id|uhci-&gt;dev
+id|uhci-&gt;hcd.pdev
 comma
 r_sizeof
 (paren
@@ -9083,20 +9029,10 @@ c_cond
 id|uhci-&gt;proc_entry
 )paren
 (brace
-id|sprintf
-c_func
-(paren
-id|buf
-comma
-l_string|&quot;hc%d&quot;
-comma
-id|uhci-&gt;num
-)paren
-suffix:semicolon
 id|remove_proc_entry
 c_func
 (paren
-id|buf
+id|uhci-&gt;hcd.self.bus_name
 comma
 id|uhci_proc_root
 )paren
@@ -9133,13 +9069,6 @@ c_func
 id|hcd
 )paren
 suffix:semicolon
-r_struct
-id|pci_dev
-op_star
-id|dev
-op_assign
-id|hcd-&gt;pdev
-suffix:semicolon
 r_int
 id|retval
 op_assign
@@ -9151,96 +9080,48 @@ id|i
 comma
 id|port
 suffix:semicolon
+r_int
+id|io_size
+suffix:semicolon
 id|dma_addr_t
 id|dma_handle
 suffix:semicolon
-macro_line|#ifdef CONFIG_PROC_FS
-r_char
-id|buf
-(braket
-l_int|8
-)braket
+r_struct
+id|usb_device
+op_star
+id|udev
 suffix:semicolon
+macro_line|#ifdef CONFIG_PROC_FS
 r_struct
 id|proc_dir_entry
 op_star
 id|ent
 suffix:semicolon
 macro_line|#endif
-id|uhci-&gt;dev
-op_assign
-id|dev
-suffix:semicolon
-multiline_comment|/* Should probably move to core/hcd.c */
-r_if
-c_cond
-(paren
-id|pci_set_dma_mask
-c_func
-(paren
-id|dev
-comma
-l_int|0xFFFFFFFF
-)paren
-)paren
-(brace
-id|err
-c_func
-(paren
-l_string|&quot;couldn&squot;t set PCI dma mask&quot;
-)paren
-suffix:semicolon
-id|retval
-op_assign
-op_minus
-id|ENODEV
-suffix:semicolon
-r_goto
-id|err_pci_set_dma_mask
-suffix:semicolon
-)brace
 id|uhci-&gt;io_addr
 op_assign
-id|pci_resource_start
-c_func
 (paren
-id|dev
-comma
-id|hcd-&gt;region
+r_int
 )paren
+id|hcd-&gt;regs
 suffix:semicolon
-id|uhci-&gt;io_size
+id|io_size
 op_assign
 id|pci_resource_len
 c_func
 (paren
-id|dev
+id|hcd-&gt;pdev
 comma
 id|hcd-&gt;region
 )paren
 suffix:semicolon
 macro_line|#ifdef CONFIG_PROC_FS
-id|uhci-&gt;num
-op_assign
-id|uhci_num
-op_increment
-suffix:semicolon
-id|sprintf
-c_func
-(paren
-id|buf
-comma
-l_string|&quot;hc%d&quot;
-comma
-id|uhci-&gt;num
-)paren
-suffix:semicolon
 id|ent
 op_assign
 id|create_proc_entry
 c_func
 (paren
-id|buf
+id|hcd-&gt;self.bus_name
 comma
 id|S_IFREG
 op_or
@@ -9379,7 +9260,7 @@ op_assign
 id|pci_alloc_consistent
 c_func
 (paren
-id|dev
+id|hcd-&gt;pdev
 comma
 r_sizeof
 (paren
@@ -9437,7 +9318,7 @@ c_func
 (paren
 l_string|&quot;uhci_td&quot;
 comma
-id|dev
+id|hcd-&gt;pdev
 comma
 r_sizeof
 (paren
@@ -9449,8 +9330,6 @@ l_int|16
 comma
 l_int|0
 comma
-id|GFP_DMA
-op_or
 id|GFP_ATOMIC
 )paren
 suffix:semicolon
@@ -9478,7 +9357,7 @@ c_func
 (paren
 l_string|&quot;uhci_qh&quot;
 comma
-id|dev
+id|hcd-&gt;pdev
 comma
 r_sizeof
 (paren
@@ -9490,8 +9369,6 @@ l_int|16
 comma
 l_int|0
 comma
-id|GFP_DMA
-op_or
 id|GFP_ATOMIC
 )paren
 suffix:semicolon
@@ -9527,7 +9404,7 @@ suffix:semicolon
 id|port
 OL
 (paren
-id|uhci-&gt;io_size
+id|io_size
 op_minus
 l_int|0x10
 )paren
@@ -9611,7 +9488,7 @@ id|port
 suffix:semicolon
 id|hcd-&gt;self.root_hub
 op_assign
-id|uhci-&gt;rh_dev
+id|udev
 op_assign
 id|usb_alloc_dev
 c_func
@@ -9626,7 +9503,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|uhci-&gt;rh_dev
+id|udev
 )paren
 (brace
 id|err
@@ -9649,7 +9526,7 @@ c_func
 (paren
 id|uhci
 comma
-id|uhci-&gt;rh_dev
+id|udev
 )paren
 suffix:semicolon
 r_if
@@ -9705,7 +9582,7 @@ c_func
 (paren
 id|uhci
 comma
-id|uhci-&gt;rh_dev
+id|udev
 )paren
 suffix:semicolon
 r_if
@@ -9774,7 +9651,7 @@ c_func
 (paren
 id|uhci
 comma
-id|uhci-&gt;rh_dev
+id|udev
 )paren
 suffix:semicolon
 r_if
@@ -9819,7 +9696,7 @@ c_func
 (paren
 id|uhci
 comma
-id|uhci-&gt;rh_dev
+id|udev
 )paren
 suffix:semicolon
 r_if
@@ -10103,7 +9980,7 @@ multiline_comment|/* disable legacy emulation */
 id|pci_write_config_word
 c_func
 (paren
-id|dev
+id|hcd-&gt;pdev
 comma
 id|USBLEGSUP
 comma
@@ -10113,10 +9990,10 @@ suffix:semicolon
 id|usb_connect
 c_func
 (paren
-id|uhci-&gt;rh_dev
+id|udev
 )paren
 suffix:semicolon
-id|uhci-&gt;rh_dev-&gt;speed
+id|udev-&gt;speed
 op_assign
 id|USB_SPEED_FULL
 suffix:semicolon
@@ -10126,10 +10003,10 @@ c_cond
 id|usb_register_root_hub
 c_func
 (paren
-id|uhci-&gt;rh_dev
+id|udev
 comma
 op_amp
-id|dev-&gt;dev
+id|hcd-&gt;pdev-&gt;dev
 )paren
 op_ne
 l_int|0
@@ -10162,7 +10039,7 @@ c_func
 id|uhci
 )paren
 suffix:semicolon
-id|del_timer
+id|del_timer_sync
 c_func
 (paren
 op_amp
@@ -10260,10 +10137,10 @@ suffix:colon
 id|usb_free_dev
 c_func
 (paren
-id|uhci-&gt;rh_dev
+id|udev
 )paren
 suffix:semicolon
-id|uhci-&gt;rh_dev
+id|hcd-&gt;self.root_hub
 op_assign
 l_int|NULL
 suffix:semicolon
@@ -10296,7 +10173,7 @@ suffix:colon
 id|pci_free_consistent
 c_func
 (paren
-id|dev
+id|hcd-&gt;pdev
 comma
 r_sizeof
 (paren
@@ -10319,7 +10196,7 @@ macro_line|#ifdef CONFIG_PROC_FS
 id|remove_proc_entry
 c_func
 (paren
-id|buf
+id|hcd-&gt;self.bus_name
 comma
 id|uhci_proc_root
 )paren
@@ -10331,8 +10208,6 @@ suffix:semicolon
 id|err_create_proc_entry
 suffix:colon
 macro_line|#endif
-id|err_pci_set_dma_mask
-suffix:colon
 r_return
 id|retval
 suffix:semicolon
@@ -10360,19 +10235,7 @@ c_func
 id|hcd
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|uhci-&gt;rh_dev
-)paren
-id|usb_disconnect
-c_func
-(paren
-op_amp
-id|uhci-&gt;rh_dev
-)paren
-suffix:semicolon
-id|del_timer
+id|del_timer_sync
 c_func
 (paren
 op_amp
@@ -10474,7 +10337,7 @@ suffix:semicolon
 id|pci_set_master
 c_func
 (paren
-id|uhci-&gt;dev
+id|uhci-&gt;hcd.pdev
 )paren
 suffix:semicolon
 id|reset_hc

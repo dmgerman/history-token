@@ -1,8 +1,6 @@
 multiline_comment|/*****************************************************************************/
 multiline_comment|/*&n; *&t;inode.c  --  Inode/Dentry functions for the USB device file system.&n; *&n; *&t;Copyright (C) 2000 Thomas Sailer (sailer@ife.ee.ethz.ch)&n; *&t;Copyright (c) 2001,2002 Greg Kroah-Hartman (greg@kroah.com)&n; *&n; *&t;This program is free software; you can redistribute it and/or modify&n; *&t;it under the terms of the GNU General Public License as published by&n; *&t;the Free Software Foundation; either version 2 of the License, or&n; *&t;(at your option) any later version.&n; *&n; *&t;This program is distributed in the hope that it will be useful,&n; *&t;but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *&t;MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *&t;GNU General Public License for more details.&n; *&n; *&t;You should have received a copy of the GNU General Public License&n; *&t;along with this program; if not, write to the Free Software&n; *&t;Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; *&n; *  History:&n; *   0.1  04.01.2000  Created&n; *   0.2  10.12.2001  converted to use the vfs layer better&n; */
 multiline_comment|/*****************************************************************************/
-DECL|macro|__NO_VERSION__
-mdefine_line|#define __NO_VERSION__
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/fs.h&gt;
@@ -2523,6 +2521,8 @@ id|parent
 suffix:semicolon
 r_int
 id|retval
+op_assign
+l_int|0
 suffix:semicolon
 multiline_comment|/* create the devices special file */
 id|retval
@@ -2541,9 +2541,16 @@ c_cond
 (paren
 id|retval
 )paren
-r_return
-id|retval
+(brace
+id|err
+(paren
+l_string|&quot;Unable to get usbdevfs mount&quot;
+)paren
 suffix:semicolon
+r_goto
+m_exit
+suffix:semicolon
+)brace
 id|retval
 op_assign
 id|get_mount
@@ -2561,14 +2568,13 @@ c_cond
 id|retval
 )paren
 (brace
-id|put_mount
+id|err
 (paren
-op_amp
-id|usbfs_mount
+l_string|&quot;Unable to get usbfs mount&quot;
 )paren
 suffix:semicolon
-r_return
-id|retval
+r_goto
+id|error_clean_usbdevfs_mount
 suffix:semicolon
 )brace
 id|parent
@@ -2610,9 +2616,13 @@ id|err
 l_string|&quot;Unable to create devices usbfs file&quot;
 )paren
 suffix:semicolon
-r_return
+id|retval
+op_assign
 op_minus
 id|ENODEV
+suffix:semicolon
+r_goto
+id|error_clean_mounts
 suffix:semicolon
 )brace
 id|parent
@@ -2654,13 +2664,49 @@ id|err
 l_string|&quot;Unable to create devices usbfs file&quot;
 )paren
 suffix:semicolon
-r_return
+id|retval
+op_assign
 op_minus
 id|ENODEV
 suffix:semicolon
+r_goto
+id|error_remove_file
+suffix:semicolon
 )brace
+r_goto
+m_exit
+suffix:semicolon
+id|error_remove_file
+suffix:colon
+id|fs_remove_file
+(paren
+id|devices_usbfs_dentry
+)paren
+suffix:semicolon
+id|devices_usbfs_dentry
+op_assign
+l_int|NULL
+suffix:semicolon
+id|error_clean_mounts
+suffix:colon
+id|put_mount
+(paren
+op_amp
+id|usbfs_mount
+)paren
+suffix:semicolon
+id|error_clean_usbdevfs_mount
+suffix:colon
+id|put_mount
+(paren
+op_amp
+id|usbdevfs_mount
+)paren
+suffix:semicolon
+m_exit
+suffix:colon
 r_return
-l_int|0
+id|retval
 suffix:semicolon
 )brace
 DECL|function|remove_special_files

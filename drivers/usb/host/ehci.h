@@ -138,6 +138,11 @@ op_star
 id|sitd_pool
 suffix:semicolon
 multiline_comment|/* sitd per split iso urb */
+DECL|member|watchdog
+r_struct
+id|timer_list
+id|watchdog
+suffix:semicolon
 )brace
 suffix:semicolon
 multiline_comment|/* unwrap an HCD pointer to get an EHCI_HCD pointer */
@@ -900,5 +905,39 @@ l_int|32
 )paren
 )paren
 suffix:semicolon
+multiline_comment|/*-------------------------------------------------------------------------*/
+macro_line|#if LINUX_VERSION_CODE &lt; KERNEL_VERSION(2,5,32)
+DECL|macro|SUBMIT_URB
+mdefine_line|#define SUBMIT_URB(urb,mem_flags) usb_submit_urb(urb)
+DECL|macro|STUB_DEBUG_FILES
+mdefine_line|#define STUB_DEBUG_FILES
+macro_line|#else&t;/* LINUX_VERSION_CODE */
+DECL|function|hcd_to_bus
+r_static
+r_inline
+r_struct
+id|usb_bus
+op_star
+id|hcd_to_bus
+(paren
+r_struct
+id|usb_hcd
+op_star
+id|hcd
+)paren
+(brace
+r_return
+op_amp
+id|hcd-&gt;self
+suffix:semicolon
+)brace
+DECL|macro|SUBMIT_URB
+mdefine_line|#define SUBMIT_URB(urb,mem_flags) usb_submit_urb(urb,mem_flags)
+macro_line|#ifndef DEBUG
+DECL|macro|STUB_DEBUG_FILES
+mdefine_line|#define STUB_DEBUG_FILES
+macro_line|#endif&t;/* DEBUG */
+macro_line|#endif&t;/* LINUX_VERSION_CODE */
+multiline_comment|/*-------------------------------------------------------------------------*/
 macro_line|#endif /* __LINUX_EHCI_HCD_H */
 eof
