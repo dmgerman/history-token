@@ -81,15 +81,9 @@ mdefine_line|#define PCI_DEVICE_ID_AMD53C974 &t;PCI_DEVICE_ID_AMD_SCSI
 multiline_comment|/* Locking */
 multiline_comment|/* Note: Starting from 2.1.9x, the mid-level scsi code issues a &n; * spinlock_irqsave (&amp;io_request_lock) before calling the driver&squot;s &n; * routines, so we don&squot;t need to lock, except in the IRQ handler.&n; * The policy 3, let the midlevel scsi code do the io_request_locks&n; * and us locking on a driver specific lock, shouldn&squot;t hurt anybody; it&n; * just causes a minor performance degradation for setting the locks.&n; */
 multiline_comment|/* spinlock things&n; * level 3: lock on both adapter specific locks and (global) io_request_lock&n; * level 2: lock on adapter specific locks only&n; * level 1: rely on the locking of the mid level code (io_request_lock)&n; * undef  : traditional save_flags; cli; restore_flags;&n; */
-macro_line|#if LINUX_VERSION_CODE &gt;= KERNEL_VERSION(2,1,30)
-macro_line|# include &lt;linux/init.h&gt;
-macro_line|#if LINUX_VERSION_CODE &gt;= KERNEL_VERSION(2,3,30)
-macro_line|# include &lt;linux/spinlock.h&gt;
-macro_line|#else
-macro_line|# include &lt;asm/spinlock.h&gt;
-macro_line|#endif
-macro_line|#endif
-macro_line|#if LINUX_VERSION_CODE &gt;= KERNEL_VERSION(2,3,99) &amp;&amp; defined(MODULE)
+macro_line|#include &lt;linux/init.h&gt;
+macro_line|#include &lt;linux/spinlock.h&gt;
+macro_line|#if defined(MODULE)
 DECL|variable|tmscsim_pci_tbl
 r_static
 r_struct
@@ -138,10 +132,6 @@ suffix:semicolon
 macro_line|#endif
 DECL|macro|USE_SPINLOCKS
 mdefine_line|#define USE_SPINLOCKS 1
-DECL|macro|NEW_PCI
-mdefine_line|#define NEW_PCI 1
-DECL|macro|DC390_AFLAGS
-mdefine_line|#define DC390_AFLAGS 
 DECL|macro|DC390_IFLAGS
 mdefine_line|#define DC390_IFLAGS unsigned long iflags
 DECL|macro|DC390_DFLAGS
@@ -164,16 +154,6 @@ DECL|macro|DC390_LOCK_DRV_NI
 mdefine_line|#define DC390_LOCK_DRV_NI spin_lock (&amp;dc390_drvlock)
 DECL|macro|DC390_UNLOCK_DRV_NI
 mdefine_line|#define DC390_UNLOCK_DRV_NI spin_unlock (&amp;dc390_drvlock)
-DECL|macro|DC390_LOCK_ACB
-mdefine_line|#define DC390_LOCK_ACB /* DC390_LOCK_IO */
-DECL|macro|DC390_UNLOCK_ACB
-mdefine_line|#define DC390_UNLOCK_ACB /* DC390_UNLOCK_IO */
-DECL|macro|DC390_LOCK_ACB_NI
-mdefine_line|#define DC390_LOCK_ACB_NI /* spin_lock (&amp;(pACB-&gt;lock)) */
-DECL|macro|DC390_UNLOCK_ACB_NI
-mdefine_line|#define DC390_UNLOCK_ACB_NI /* spin_unlock (&amp;(pACB-&gt;lock)) */
-DECL|macro|DC390_LOCKA_INIT
-mdefine_line|#define DC390_LOCKA_INIT /* DC390_LOCKA_INIT */
 multiline_comment|/* These macros are used for uniform access to 2.0.x and 2.1.x PCI config space*/
 DECL|macro|PDEV
 mdefine_line|#define PDEV pdev
@@ -627,9 +607,6 @@ op_star
 id|host
 )paren
 suffix:semicolon
-singleline_comment|//static PSHT&t;dc390_pSHT_start = NULL;
-singleline_comment|//static PSH&t;dc390_pSH_start = NULL;
-singleline_comment|//static PSH&t;dc390_pSH_current = NULL;
 DECL|variable|dc390_pACB_start
 r_static
 id|PACB
@@ -692,7 +669,7 @@ op_minus
 l_int|2
 )brace
 suffix:semicolon
-macro_line|# if defined(MODULE) &amp;&amp; LINUX_VERSION_CODE &gt;= KERNEL_VERSION(2,1,30)
+macro_line|#if defined(MODULE)
 id|MODULE_PARM
 c_func
 (paren
@@ -709,8 +686,6 @@ comma
 l_string|&quot;Host SCSI ID, Speed (0=10MHz), Device Flags, Adapter Flags, Max Tags (log2(tags)-1), DelayReset (s)&quot;
 )paren
 suffix:semicolon
-macro_line|# endif
-macro_line|#if defined(MODULE) &amp;&amp; LINUX_VERSION_CODE &gt;= KERNEL_VERSION(2,1,30)
 id|MODULE_AUTHOR
 c_func
 (paren
@@ -893,15 +868,6 @@ comma
 l_int|20
 )brace
 suffix:semicolon
-macro_line|#if LINUX_VERSION_CODE &lt; KERNEL_VERSION(2,3,30)
-DECL|variable|DC390_proc_scsi_tmscsim
-r_struct
-id|proc_dir_entry
-id|DC390_proc_scsi_tmscsim
-op_assign
-initialization_block
-suffix:semicolon
-macro_line|#endif
 multiline_comment|/***********************************************************************&n; * Functions for access to DC390 EEPROM&n; * and some to emulate it&n; *&n; **********************************************************************/
 DECL|function|dc390_EnDisableCE
 r_static
@@ -1469,7 +1435,6 @@ l_int|180
 suffix:semicolon
 )brace
 multiline_comment|/* Override defaults on cmdline:&n; * tmscsim: AdaptID, MaxSpeed (Index), DevMode (Bitmapped), AdaptMode (Bitmapped)&n; */
-macro_line|#if LINUX_VERSION_CODE &gt; KERNEL_VERSION(2,3,13)
 DECL|function|dc390_setup
 r_int
 id|__init
@@ -1573,81 +1538,6 @@ comma
 id|dc390_setup
 )paren
 suffix:semicolon
-macro_line|#endif
-macro_line|#else
-DECL|function|dc390_setup
-r_void
-id|__init
-id|dc390_setup
-(paren
-r_char
-op_star
-id|str
-comma
-r_int
-op_star
-id|ints
-)paren
-(brace
-r_int
-id|i
-comma
-id|im
-suffix:semicolon
-id|im
-op_assign
-id|ints
-(braket
-l_int|0
-)braket
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|im
-OG
-l_int|6
-)paren
-(brace
-id|printk
-(paren
-id|KERN_NOTICE
-l_string|&quot;DC390: ignore extra params!&bslash;n&quot;
-)paren
-suffix:semicolon
-id|im
-op_assign
-l_int|6
-suffix:semicolon
-)brace
-r_for
-c_loop
-(paren
-id|i
-op_assign
-l_int|0
-suffix:semicolon
-id|i
-OL
-id|im
-suffix:semicolon
-id|i
-op_increment
-)paren
-id|tmscsim
-(braket
-id|i
-)braket
-op_assign
-id|ints
-(braket
-id|i
-op_plus
-l_int|1
-)braket
-suffix:semicolon
-multiline_comment|/* dc390_checkparams (); */
-)brace
 macro_line|#endif
 DECL|function|dc390_EEpromOutDI
 r_static
@@ -2809,32 +2699,6 @@ id|pSRB
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* 2.0 timer compatibility */
-macro_line|#if LINUX_VERSION_CODE &lt; KERNEL_VERSION(2,1,30)
-DECL|function|timer_pending
-r_static
-r_inline
-r_int
-id|timer_pending
-c_func
-(paren
-r_struct
-id|timer_list
-op_star
-id|timer
-)paren
-(brace
-r_return
-id|timer-&gt;prev
-op_ne
-l_int|NULL
-suffix:semicolon
-)brace
-DECL|macro|time_after
-mdefine_line|#define time_after(a,b)         ((long)(b) - (long)(a) &lt; 0)
-DECL|macro|time_before
-mdefine_line|#define time_before(a,b)        time_after(b,a)
-macro_line|#endif
 r_void
 id|DC390_waiting_timed_out
 (paren
@@ -3107,8 +2971,6 @@ id|ptr
 suffix:semicolon
 id|DC390_IFLAGS
 suffix:semicolon
-id|DC390_AFLAGS
-suffix:semicolon
 id|DEBUG0
 c_func
 (paren
@@ -3124,14 +2986,10 @@ c_func
 id|pACB-&gt;pScsiHost
 )paren
 suffix:semicolon
-id|DC390_LOCK_ACB
-suffix:semicolon
 id|dc390_Waiting_process
 (paren
 id|pACB
 )paren
-suffix:semicolon
-id|DC390_UNLOCK_ACB
 suffix:semicolon
 id|DC390_UNLOCK_IO
 c_func
@@ -3862,8 +3720,6 @@ id|PACB
 )paren
 id|cmd-&gt;device-&gt;host-&gt;hostdata
 suffix:semicolon
-id|DC390_AFLAGS
-suffix:semicolon
 id|DEBUG0
 c_func
 (paren
@@ -3890,8 +3746,6 @@ comma
 id|cmd-&gt;buffer
 )paren
 )paren
-suffix:semicolon
-id|DC390_LOCK_ACB
 suffix:semicolon
 multiline_comment|/* TODO: Change the policy: Always accept TEST_UNIT_READY or INQUIRY &n;     * commands and alloc a DCB for the device if not yet there. DCB will&n;     * be removed in dc390_SRBdone if SEL_TIMEOUT */
 r_if
@@ -4159,8 +4013,6 @@ comma
 id|pSRB
 )paren
 suffix:semicolon
-id|DC390_UNLOCK_ACB
-suffix:semicolon
 id|DEBUG1
 c_func
 (paren
@@ -4178,15 +4030,11 @@ l_int|0
 suffix:semicolon
 id|requeue
 suffix:colon
-id|DC390_UNLOCK_ACB
-suffix:semicolon
 r_return
 l_int|1
 suffix:semicolon
 id|fail
 suffix:colon
-id|DC390_UNLOCK_ACB
-suffix:semicolon
 id|cmd-&gt;result
 op_assign
 id|DID_BAD_TARGET
@@ -5125,10 +4973,6 @@ id|PACB
 )paren
 id|cmd-&gt;device-&gt;host-&gt;hostdata
 suffix:semicolon
-id|DC390_AFLAGS
-suffix:semicolon
-id|DC390_LOCK_ACB
-suffix:semicolon
 id|printk
 (paren
 l_string|&quot;DC390: Abort command (pid %li, Device %02i-%02i)&bslash;n&quot;
@@ -5531,8 +5375,6 @@ id|dc390_lastabortedpid
 op_assign
 id|cmd-&gt;pid
 suffix:semicolon
-id|DC390_UNLOCK_ACB
-suffix:semicolon
 singleline_comment|//do_DC390_Interrupt (pACB-&gt;IRQLevel, 0, 0);
 macro_line|#ifndef USE_NEW_EH&t;
 r_if
@@ -5807,16 +5649,12 @@ id|PACB
 )paren
 id|cmd-&gt;device-&gt;host-&gt;hostdata
 suffix:semicolon
-id|DC390_AFLAGS
-suffix:semicolon
 id|printk
 c_func
 (paren
 id|KERN_INFO
 l_string|&quot;DC390: RESET ... &quot;
 )paren
-suffix:semicolon
-id|DC390_LOCK_ACB
 suffix:semicolon
 r_if
 c_cond
@@ -5954,8 +5792,6 @@ c_func
 (paren
 l_string|&quot;done&bslash;n&quot;
 )paren
-suffix:semicolon
-id|DC390_UNLOCK_ACB
 suffix:semicolon
 r_return
 id|SCSI_RESET_SUCCESS
@@ -6495,8 +6331,6 @@ suffix:semicolon
 id|UCHAR
 id|i
 suffix:semicolon
-id|DC390_AFLAGS
-suffix:semicolon
 id|psh-&gt;can_queue
 op_assign
 id|MAX_CMD_QUEUE
@@ -6530,21 +6364,10 @@ id|psh-&gt;irq
 op_assign
 id|Irq
 suffix:semicolon
-macro_line|#if LINUX_VERSION_CODE &gt; KERNEL_VERSION(2,3,50)
 id|psh-&gt;base
 op_assign
 id|io_port
 suffix:semicolon
-macro_line|#else
-id|psh-&gt;base
-op_assign
-(paren
-r_char
-op_star
-)paren
-id|io_port
-suffix:semicolon
-macro_line|#endif&t;
 id|psh-&gt;unique_id
 op_assign
 id|io_port
@@ -7161,8 +6984,6 @@ suffix:semicolon
 id|PACB
 id|pACB
 suffix:semicolon
-id|DC390_AFLAGS
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -7324,39 +7145,6 @@ id|PACB
 )paren
 id|psh-&gt;hostdata
 suffix:semicolon
-id|DC390_LOCKA_INIT
-suffix:semicolon
-id|DC390_LOCK_ACB
-suffix:semicolon
-macro_line|#if 0
-r_if
-c_cond
-(paren
-op_logical_neg
-id|dc390_pSH_start
-)paren
-(brace
-id|dc390_pSH_start
-op_assign
-id|psh
-suffix:semicolon
-id|dc390_pSH_current
-op_assign
-id|psh
-suffix:semicolon
-)brace
-r_else
-(brace
-id|dc390_pSH_current-&gt;next
-op_assign
-id|psh
-suffix:semicolon
-id|dc390_pSH_current
-op_assign
-id|psh
-suffix:semicolon
-)brace
-macro_line|#endif
 id|DEBUG0
 c_func
 (paren
@@ -7458,8 +7246,6 @@ id|DC390_SRB
 )paren
 )paren
 suffix:semicolon
-id|DC390_UNLOCK_ACB
-suffix:semicolon
 r_return
 (paren
 l_int|0
@@ -7468,14 +7254,11 @@ suffix:semicolon
 )brace
 r_else
 (brace
-singleline_comment|//dc390_pSH_start = NULL;
 id|scsi_unregister
 c_func
 (paren
 id|psh
 )paren
-suffix:semicolon
-id|DC390_UNLOCK_ACB
 suffix:semicolon
 r_return
 op_minus
@@ -7483,110 +7266,6 @@ l_int|1
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/***********************************************************************&n; * Function : int DC390_detect(Scsi_Host_Template *psht)&n; *&n; * Purpose : detects and initializes AMD53C974 SCSI chips&n; *&t;     that were autoprobed, overridden on the LILO command line,&n; *&t;     or specified at compile time.&n; *&n; * Inputs : psht - template for this SCSI adapter&n; *&n; * Returns : number of host adapters detected&n; *&n; ***********************************************************************/
-macro_line|#ifndef NEW_PCI
-multiline_comment|/* Acc. to PCI 2.1 spec it&squot;s up to the driver to enable Bus mastering:&n; * We use pci_set_master () for 2.1.x and this func for 2.0.x:&t;*/
-DECL|function|dc390_set_master
-r_static
-r_void
-id|__init
-id|dc390_set_master
-(paren
-id|PDEVDECL
-)paren
-(brace
-id|USHORT
-id|cmd
-suffix:semicolon
-id|UCHAR
-id|lat
-suffix:semicolon
-id|PCI_READ_CONFIG_WORD
-(paren
-id|PDEV
-comma
-id|PCI_COMMAND
-comma
-op_amp
-id|cmd
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-(paren
-id|cmd
-op_amp
-id|PCI_COMMAND_MASTER
-)paren
-)paren
-(brace
-id|printk
-c_func
-(paren
-l_string|&quot;PCI: Enabling bus mastering for device %02x:%02x&bslash;n&quot;
-comma
-id|PCI_BUS_DEV
-)paren
-suffix:semicolon
-id|cmd
-op_or_assign
-id|PCI_COMMAND_MASTER
-suffix:semicolon
-id|PCI_WRITE_CONFIG_WORD
-c_func
-(paren
-id|PDEV
-comma
-id|PCI_COMMAND
-comma
-id|cmd
-)paren
-suffix:semicolon
-)brace
-id|PCI_READ_CONFIG_BYTE
-(paren
-id|PDEV
-comma
-id|PCI_LATENCY_TIMER
-comma
-op_amp
-id|lat
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|lat
-OL
-l_int|16
-multiline_comment|/* || lat == 255 */
-)paren
-(brace
-id|printk
-c_func
-(paren
-l_string|&quot;PCI: Setting latency timer of device %02x:%02x from %i to 64&bslash;n&quot;
-comma
-id|PCI_BUS_DEV
-comma
-id|lat
-)paren
-suffix:semicolon
-id|PCI_WRITE_CONFIG_BYTE
-c_func
-(paren
-id|PDEV
-comma
-id|PCI_LATENCY_TIMER
-comma
-l_int|64
-)paren
-suffix:semicolon
-)brace
-)brace
-macro_line|#endif /* ! NEW_PCI */
 DECL|function|dc390_set_pci_cfg
 r_static
 r_void
@@ -7658,7 +7337,6 @@ suffix:semicolon
 id|ULONG
 id|io_port
 suffix:semicolon
-singleline_comment|//dc390_pSHT_start = psht;
 id|dc390_pACB_start
 op_assign
 l_int|NULL
@@ -7778,18 +7456,10 @@ c_cond
 (paren
 id|dc390_adapterCnt
 )paren
-macro_line|#if LINUX_VERSION_CODE &gt;= KERNEL_VERSION(2,3,30)
 id|psht-&gt;proc_name
 op_assign
 l_string|&quot;tmscsim&quot;
 suffix:semicolon
-macro_line|#else
-id|psht-&gt;proc_dir
-op_assign
-op_amp
-id|DC390_proc_scsi_tmscsim
-suffix:semicolon
-macro_line|#endif
 id|printk
 c_func
 (paren
@@ -7856,8 +7526,6 @@ id|pACB
 suffix:semicolon
 id|PDCB
 id|pDCB
-suffix:semicolon
-id|DC390_AFLAGS
 suffix:semicolon
 id|pACB
 op_assign
@@ -7929,8 +7597,6 @@ l_string|&quot;Driver Version %s&bslash;n&quot;
 comma
 id|DC390_VERSION
 )paren
-suffix:semicolon
-id|DC390_LOCK_ACB
 suffix:semicolon
 id|SPRINTF
 c_func
@@ -8492,8 +8158,6 @@ l_string|&quot;&bslash;n&quot;
 )paren
 suffix:semicolon
 macro_line|#endif
-id|DC390_UNLOCK_ACB
-suffix:semicolon
 op_star
 id|start
 op_assign
@@ -8720,7 +8384,6 @@ op_star
 id|host
 )paren
 (brace
-id|DC390_AFLAGS
 id|DC390_IFLAGS
 suffix:semicolon
 id|PACB
@@ -8738,8 +8401,6 @@ c_func
 (paren
 id|host
 )paren
-suffix:semicolon
-id|DC390_LOCK_ACB
 suffix:semicolon
 multiline_comment|/* TO DO: We should check for outstanding commands first. */
 id|dc390_shutdown
@@ -8788,8 +8449,6 @@ id|dc390_freeDCBs
 (paren
 id|host
 )paren
-suffix:semicolon
-id|DC390_UNLOCK_ACB
 suffix:semicolon
 id|DC390_UNLOCK_IO
 c_func

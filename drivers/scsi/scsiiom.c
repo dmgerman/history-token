@@ -1151,10 +1151,8 @@ id|UCHAR
 id|dstatus
 suffix:semicolon
 macro_line|#endif
-id|DC390_AFLAGS
 id|DC390_IFLAGS
 suffix:semicolon
-singleline_comment|//DC390_DFLAGS
 id|pACB
 op_assign
 (paren
@@ -1200,7 +1198,6 @@ r_return
 id|IRQ_NONE
 suffix:semicolon
 )brace
-singleline_comment|//DC390_LOCK_DRV;
 id|sstatus
 op_assign
 id|DC390_read8
@@ -1219,12 +1216,10 @@ id|INTERRUPT
 )paren
 )paren
 (brace
-multiline_comment|/*DC390_UNLOCK_DRV;*/
 r_return
 id|IRQ_NONE
 suffix:semicolon
 )brace
-suffix:semicolon
 id|DEBUG1
 c_func
 (paren
@@ -1244,16 +1239,12 @@ c_func
 id|pACB-&gt;pScsiHost
 )paren
 suffix:semicolon
-id|DC390_LOCK_ACB
-suffix:semicolon
 id|dstatus
 op_assign
 id|dc390_dma_intr
 (paren
 id|pACB
 )paren
-suffix:semicolon
-id|DC390_UNLOCK_ACB
 suffix:semicolon
 id|DC390_UNLOCK_IO
 c_func
@@ -1294,7 +1285,6 @@ l_string|&quot;DC390 Int w/o SCSI actions (only DMA?)&bslash;n&quot;
 )paren
 )paren
 suffix:semicolon
-singleline_comment|//DC390_UNLOCK_DRV;
 r_return
 id|IRQ_NONE
 suffix:semicolon
@@ -1311,9 +1301,6 @@ c_func
 id|pACB-&gt;pScsiHost
 )paren
 suffix:semicolon
-id|DC390_LOCK_ACB
-suffix:semicolon
-singleline_comment|//DC390_UNLOCK_DRV_NI; /* Allow _other_ CPUs to process IRQ (useful for shared IRQs) */
 id|istate
 op_assign
 id|DC390_read8
@@ -1652,16 +1639,12 @@ suffix:semicolon
 )brace
 id|unlock
 suffix:colon
-singleline_comment|//DC390_LOCK_DRV_NI;
-id|DC390_UNLOCK_ACB
-suffix:semicolon
 id|DC390_UNLOCK_IO
 c_func
 (paren
 id|pACB-&gt;pScsiHost
 )paren
 suffix:semicolon
-singleline_comment|//DC390_UNLOCK_DRV; /* Restore initial flags */
 r_return
 id|IRQ_HANDLED
 suffix:semicolon
@@ -7664,14 +7647,12 @@ suffix:semicolon
 )brace
 )brace
 suffix:semicolon
-macro_line|#if LINUX_VERSION_CODE &gt; KERNEL_VERSION(2,3,30)
 id|pcmd-&gt;resid
 op_assign
 id|pcmd-&gt;request_bufflen
 op_minus
 id|pSRB-&gt;TotalXferredLen
 suffix:semicolon
-macro_line|#endif
 r_if
 c_cond
 (paren
@@ -7705,14 +7686,10 @@ id|pcmd-&gt;pid
 )paren
 )paren
 suffix:semicolon
-id|DC390_UNLOCK_ACB_NI
-suffix:semicolon
 id|pcmd-&gt;scsi_done
 (paren
 id|pcmd
 )paren
-suffix:semicolon
-id|DC390_LOCK_ACB_NI
 suffix:semicolon
 id|dc390_Waiting_process
 (paren
@@ -7854,8 +7831,6 @@ id|pcmd-&gt;pid
 )paren
 )paren
 suffix:semicolon
-id|DC390_UNLOCK_ACB_NI
-suffix:semicolon
 id|pcmd
 op_member_access_from_pointer
 id|scsi_done
@@ -7863,8 +7838,6 @@ c_func
 (paren
 id|pcmd
 )paren
-suffix:semicolon
-id|DC390_LOCK_ACB_NI
 suffix:semicolon
 macro_line|#endif&t;
 id|psrb
