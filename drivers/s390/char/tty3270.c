@@ -3128,6 +3128,13 @@ op_amp
 id|tp-&gt;freemem
 )paren
 suffix:semicolon
+id|init_timer
+c_func
+(paren
+op_amp
+id|tp-&gt;timer
+)paren
+suffix:semicolon
 r_for
 c_loop
 (paren
