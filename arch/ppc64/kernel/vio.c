@@ -738,6 +738,23 @@ suffix:semicolon
 r_int
 id|i
 suffix:semicolon
+multiline_comment|/* there is only one of each of these */
+id|vio_register_device_iseries
+c_func
+(paren
+l_string|&quot;viocons&quot;
+comma
+l_int|0
+)paren
+suffix:semicolon
+id|vio_register_device_iseries
+c_func
+(paren
+l_string|&quot;vscsi&quot;
+comma
+l_int|0
+)paren
+suffix:semicolon
 id|vlan_map
 op_assign
 id|HvLpConfig_getVirtualLanIndexMap
