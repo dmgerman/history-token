@@ -15195,6 +15195,11 @@ id|megaraid_template
 op_assign
 (brace
 dot
+id|module
+op_assign
+id|THIS_MODULE
+comma
+dot
 id|name
 op_assign
 l_string|&quot;MegaRAID&quot;
