@@ -9,7 +9,7 @@ macro_line|#include &lt;linux/usb.h&gt;
 DECL|macro|DRIVER_VERSION
 mdefine_line|#define DRIVER_VERSION &quot;USBLCD Driver Version 1.01&quot;
 DECL|macro|USBLCD_MINOR
-mdefine_line|#define USBLCD_MINOR&t;&t;132
+mdefine_line|#define USBLCD_MINOR&t;&t;144
 DECL|macro|IOCTL_GET_HARD_VERSION
 mdefine_line|#define IOCTL_GET_HARD_VERSION&t;1
 DECL|macro|IOCTL_GET_DRV_VERSION
