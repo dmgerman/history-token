@@ -1509,6 +1509,9 @@ c_func
 r_void
 )paren
 (brace
+r_int
+id|ret
+suffix:semicolon
 id|printk
 c_func
 (paren
@@ -1534,6 +1537,7 @@ id|video_fops
 id|printk
 c_func
 (paren
+id|KERN_WARNING
 l_string|&quot;video_dev: unable to get major %d&bslash;n&quot;
 comma
 id|VIDEO_MAJOR
@@ -1544,6 +1548,8 @@ op_minus
 id|EIO
 suffix:semicolon
 )brace
+id|ret
+op_assign
 id|class_register
 c_func
 (paren
@@ -1551,6 +1557,34 @@ op_amp
 id|video_class
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|ret
+OL
+l_int|0
+)paren
+(brace
+id|unregister_chrdev
+c_func
+(paren
+id|VIDEO_MAJOR
+comma
+id|VIDEO_NAME
+)paren
+suffix:semicolon
+id|printk
+c_func
+(paren
+id|KERN_WARNING
+l_string|&quot;video_dev: class_register failed&bslash;n&quot;
+)paren
+suffix:semicolon
+r_return
+op_minus
+id|EIO
+suffix:semicolon
+)brace
 r_return
 l_int|0
 suffix:semicolon
