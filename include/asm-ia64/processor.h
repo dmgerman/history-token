@@ -5,6 +5,7 @@ multiline_comment|/*&n; * Copyright (C) 1998-2003 Hewlett-Packard Co&n; *&t;Davi
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;asm/ptrace.h&gt;
 macro_line|#include &lt;asm/kregs.h&gt;
+macro_line|#include &lt;asm/ustack.h&gt;
 DECL|macro|IA64_NUM_DBG_REGS
 mdefine_line|#define IA64_NUM_DBG_REGS&t;8
 multiline_comment|/*&n; * Limits for PMC and PMD are set to less than maximum architected values&n; * but should be sufficient for a while&n; */
@@ -562,6 +563,11 @@ id|__u64
 id|task_size
 suffix:semicolon
 multiline_comment|/* limit for task size */
+DECL|member|rbs_bot
+id|__u64
+id|rbs_bot
+suffix:semicolon
+multiline_comment|/* the base address for the RBS */
 DECL|member|last_fph_cpu
 r_int
 id|last_fph_cpu
@@ -684,9 +690,9 @@ multiline_comment|/* saved/loaded on demand */
 )brace
 suffix:semicolon
 DECL|macro|INIT_THREAD
-mdefine_line|#define INIT_THREAD {&t;&t;&t;&t;&bslash;&n;&t;.flags =&t;0,&t;&t;&t;&bslash;&n;&t;.on_ustack =&t;0,&t;&t;&t;&bslash;&n;&t;.ksp =&t;&t;0,&t;&t;&t;&bslash;&n;&t;.map_base =&t;DEFAULT_MAP_BASE,&t;&bslash;&n;&t;.task_size =&t;DEFAULT_TASK_SIZE,&t;&bslash;&n;&t;.last_fph_cpu =  -1,&t;&t;&t;&bslash;&n;&t;INIT_THREAD_IA32&t;&t;&t;&bslash;&n;&t;INIT_THREAD_PM&t;&t;&t;&t;&bslash;&n;&t;.dbr =&t;&t;{0, },&t;&t;&t;&bslash;&n;&t;.ibr =&t;&t;{0, },&t;&t;&t;&bslash;&n;&t;.fph =&t;&t;{{{{0}}}, }&t;&t;&bslash;&n;}
+mdefine_line|#define INIT_THREAD {&t;&t;&t;&t;&bslash;&n;&t;.flags =&t;0,&t;&t;&t;&bslash;&n;&t;.on_ustack =&t;0,&t;&t;&t;&bslash;&n;&t;.ksp =&t;&t;0,&t;&t;&t;&bslash;&n;&t;.map_base =&t;DEFAULT_MAP_BASE,&t;&bslash;&n;&t;.rbs_bot =&t;DEFAULT_USER_STACK_SIZE,&t;&bslash;&n;&t;.task_size =&t;DEFAULT_TASK_SIZE,&t;&bslash;&n;&t;.last_fph_cpu =  -1,&t;&t;&t;&bslash;&n;&t;INIT_THREAD_IA32&t;&t;&t;&bslash;&n;&t;INIT_THREAD_PM&t;&t;&t;&t;&bslash;&n;&t;.dbr =&t;&t;{0, },&t;&t;&t;&bslash;&n;&t;.ibr =&t;&t;{0, },&t;&t;&t;&bslash;&n;&t;.fph =&t;&t;{{{{0}}}, }&t;&t;&bslash;&n;}
 DECL|macro|start_thread
-mdefine_line|#define start_thread(regs,new_ip,new_sp) do {&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;set_fs(USER_DS);&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;regs-&gt;cr_ipsr = ((regs-&gt;cr_ipsr | (IA64_PSR_BITS_TO_SET | IA64_PSR_CPL))&t;&t;&bslash;&n;&t;&t;&t; &amp; ~(IA64_PSR_BITS_TO_CLEAR | IA64_PSR_RI | IA64_PSR_IS));&t;&t;&bslash;&n;&t;regs-&gt;cr_iip = new_ip;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;regs-&gt;ar_rsc = 0xf;&t;&t;/* eager mode, privilege level 3 */&t;&t;&t;&bslash;&n;&t;regs-&gt;ar_rnat = 0;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;regs-&gt;ar_bspstore = IA64_RBS_BOT;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;regs-&gt;ar_fpsr = FPSR_DEFAULT;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;regs-&gt;loadrs = 0;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;regs-&gt;r8 = current-&gt;mm-&gt;dumpable;&t;/* set &quot;don&squot;t zap registers&quot; flag */&t;&t;&bslash;&n;&t;regs-&gt;r12 = new_sp - 16;&t;/* allocate 16 byte scratch area */&t;&t;&t;&bslash;&n;&t;if (unlikely(!current-&gt;mm-&gt;dumpable)) {&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;/*&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t; * Zap scratch regs to avoid leaking bits between processes with different&t;&bslash;&n;&t;&t; * uid/privileges.&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t; */&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;regs-&gt;ar_pfs = 0; regs-&gt;b0 = 0; regs-&gt;pr = 0;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;regs-&gt;r1 = 0; regs-&gt;r9  = 0; regs-&gt;r11 = 0; regs-&gt;r13 = 0; regs-&gt;r15 = 0;&t;&bslash;&n;&t;}&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;} while (0)
+mdefine_line|#define start_thread(regs,new_ip,new_sp) do {&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;set_fs(USER_DS);&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;regs-&gt;cr_ipsr = ((regs-&gt;cr_ipsr | (IA64_PSR_BITS_TO_SET | IA64_PSR_CPL))&t;&t;&bslash;&n;&t;&t;&t; &amp; ~(IA64_PSR_BITS_TO_CLEAR | IA64_PSR_RI | IA64_PSR_IS));&t;&t;&bslash;&n;&t;regs-&gt;cr_iip = new_ip;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;regs-&gt;ar_rsc = 0xf;&t;&t;/* eager mode, privilege level 3 */&t;&t;&t;&bslash;&n;&t;regs-&gt;ar_rnat = 0;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;regs-&gt;ar_bspstore = current-&gt;thread.rbs_bot;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;regs-&gt;ar_fpsr = FPSR_DEFAULT;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;regs-&gt;loadrs = 0;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;regs-&gt;r8 = current-&gt;mm-&gt;dumpable;&t;/* set &quot;don&squot;t zap registers&quot; flag */&t;&t;&bslash;&n;&t;regs-&gt;r12 = new_sp - 16;&t;/* allocate 16 byte scratch area */&t;&t;&t;&bslash;&n;&t;if (unlikely(!current-&gt;mm-&gt;dumpable)) {&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;/*&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t; * Zap scratch regs to avoid leaking bits between processes with different&t;&bslash;&n;&t;&t; * uid/privileges.&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t; */&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;regs-&gt;ar_pfs = 0; regs-&gt;b0 = 0; regs-&gt;pr = 0;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;regs-&gt;r1 = 0; regs-&gt;r9  = 0; regs-&gt;r11 = 0; regs-&gt;r13 = 0; regs-&gt;r15 = 0;&t;&bslash;&n;&t;}&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;} while (0)
 multiline_comment|/* Forward declarations, a strange C thing... */
 r_struct
 id|mm_struct
