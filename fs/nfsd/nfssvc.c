@@ -619,6 +619,11 @@ op_amp
 id|nfsd_list
 )paren
 suffix:semicolon
+id|unlock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
 multiline_comment|/*&n;&t; * The main request loop&n;&t; */
 r_for
 c_loop
@@ -852,6 +857,11 @@ op_assign
 id|signo
 suffix:semicolon
 )brace
+id|lock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
 multiline_comment|/* Release lockd */
 id|lockd_down
 c_func

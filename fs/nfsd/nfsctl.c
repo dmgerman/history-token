@@ -808,10 +808,6 @@ id|argsize
 comma
 id|respsize
 suffix:semicolon
-id|lock_kernel
-(paren
-)paren
-suffix:semicolon
 id|err
 op_assign
 op_minus
@@ -1199,10 +1195,6 @@ id|kfree
 c_func
 (paren
 id|res
-)paren
-suffix:semicolon
-id|unlock_kernel
-(paren
 )paren
 suffix:semicolon
 r_return
