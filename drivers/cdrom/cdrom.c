@@ -7268,7 +7268,7 @@ op_assign
 id|scsi_cmd_ioctl
 c_func
 (paren
-id|ip-&gt;i_bdev
+id|ip-&gt;i_bdev-&gt;bd_disk
 comma
 id|cmd
 comma
