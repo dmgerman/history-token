@@ -33046,7 +33046,11 @@ id|tg3
 op_star
 id|tp
 op_assign
-id|dev-&gt;priv
+id|netdev_priv
+c_func
+(paren
+id|dev
+)paren
 suffix:semicolon
 r_int
 id|ret
@@ -34757,7 +34761,11 @@ id|tg3
 op_star
 id|tp
 op_assign
-id|dev-&gt;priv
+id|netdev_priv
+c_func
+(paren
+id|dev
+)paren
 suffix:semicolon
 id|memcpy
 c_func
