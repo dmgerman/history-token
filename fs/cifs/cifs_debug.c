@@ -2,8 +2,6 @@ multiline_comment|/*&n; *   fs/cifs_debug.c&n; *&n; *   Copyright (c) Internatio
 macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/ctype.h&gt;
-DECL|macro|__NO_VERSION__
-mdefine_line|#define __NO_VERSION__
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/proc_fs.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
