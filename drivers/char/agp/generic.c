@@ -3787,7 +3787,6 @@ c_func
 id|agp_enable
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_SMP
 DECL|function|ipi_handler
 r_static
 r_void
@@ -3805,7 +3804,6 @@ c_func
 )paren
 suffix:semicolon
 )brace
-macro_line|#endif
 DECL|function|global_cache_flush
 r_void
 id|global_cache_flush
@@ -3814,7 +3812,6 @@ c_func
 r_void
 )paren
 (brace
-macro_line|#ifdef CONFIG_SMP
 r_if
 c_cond
 (paren
@@ -3839,13 +3836,6 @@ id|PFX
 l_string|&quot;timed out waiting for the other CPUs!&bslash;n&quot;
 )paren
 suffix:semicolon
-macro_line|#else
-id|flush_agp_cache
-c_func
-(paren
-)paren
-suffix:semicolon
-macro_line|#endif
 )brace
 DECL|variable|global_cache_flush
 id|EXPORT_SYMBOL
