@@ -655,7 +655,7 @@ comma
 l_int|1
 )paren
 suffix:semicolon
-id|local_irq_disable
+id|local_irq_enable
 c_func
 (paren
 )paren
@@ -749,7 +749,7 @@ id|sig
 op_assign
 id|sigusr1
 suffix:semicolon
-id|local_irq_enable
+id|local_irq_disable
 c_func
 (paren
 )paren

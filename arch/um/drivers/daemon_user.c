@@ -1,6 +1,7 @@
 multiline_comment|/*&n; * Copyright (C) 2001 Lennert Buytenhek (buytenh@gnu.org) and &n; * James Leu (jleu@mindspring.net).&n; * Copyright (C) 2001 by various other people who didn&squot;t put their name here.&n; * Licensed under the GPL.&n; */
 macro_line|#include &lt;errno.h&gt;
 macro_line|#include &lt;unistd.h&gt;
+macro_line|#include &lt;stdint.h&gt;
 macro_line|#include &lt;sys/socket.h&gt;
 macro_line|#include &lt;sys/un.h&gt;
 macro_line|#include &lt;sys/time.h&gt;
@@ -27,12 +28,11 @@ r_struct
 id|request_v3
 (brace
 DECL|member|magic
-r_int
-r_int
+r_uint32
 id|magic
 suffix:semicolon
 DECL|member|version
-r_int
+r_uint32
 id|version
 suffix:semicolon
 DECL|member|type

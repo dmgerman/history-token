@@ -430,6 +430,12 @@ op_star
 id|tv
 )paren
 (brace
+r_int
+r_int
+id|flags
+suffix:semicolon
+id|flags
+op_assign
 id|time_lock
 c_func
 (paren
@@ -457,6 +463,7 @@ suffix:semicolon
 id|time_unlock
 c_func
 (paren
+id|flags
 )paren
 suffix:semicolon
 )brace
@@ -475,6 +482,12 @@ r_struct
 id|timeval
 id|now
 suffix:semicolon
+r_int
+r_int
+id|flags
+suffix:semicolon
+id|flags
+op_assign
 id|time_lock
 c_func
 (paren
@@ -504,6 +517,7 @@ suffix:semicolon
 id|time_unlock
 c_func
 (paren
+id|flags
 )paren
 suffix:semicolon
 )brace
