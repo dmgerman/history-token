@@ -3303,6 +3303,10 @@ op_and_assign
 id|HDSP_BufferPositionMask
 suffix:semicolon
 id|position
+op_div_assign
+l_int|4
+suffix:semicolon
+id|position
 op_and_assign
 (paren
 id|hdsp-&gt;period_bytes
