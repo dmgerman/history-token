@@ -18437,7 +18437,7 @@ suffix:semicolon
 DECL|variable|floppy_device
 r_static
 r_struct
-id|sys_device
+id|platform_device
 id|floppy_device
 op_assign
 (brace
@@ -19338,7 +19338,7 @@ id|drive
 )paren
 suffix:semicolon
 )brace
-id|sys_device_register
+id|platform_device_register
 c_func
 (paren
 op_amp
@@ -20211,7 +20211,7 @@ r_void
 r_int
 id|drive
 suffix:semicolon
-id|sys_device_unregister
+id|platform_device_unregister
 c_func
 (paren
 op_amp
