@@ -1,5 +1,6 @@
 multiline_comment|/* &n; * Copyright (C) 2000 Jeff Dike (jdike@karaya.com)&n; * Licensed under the GPL&n; */
 macro_line|#include &quot;linux/kernel.h&quot;
+macro_line|#include &quot;linux/module.h&quot;
 macro_line|#include &quot;linux/unistd.h&quot;
 macro_line|#include &quot;linux/stddef.h&quot;
 macro_line|#include &quot;linux/spinlock.h&quot;
@@ -18,6 +19,13 @@ macro_line|#include &quot;mode.h&quot;
 DECL|variable|jiffies_64
 id|u64
 id|jiffies_64
+suffix:semicolon
+DECL|variable|jiffies_64
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|jiffies_64
+)paren
 suffix:semicolon
 DECL|function|hz
 r_int

@@ -1,6 +1,7 @@
 multiline_comment|/*&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1994 - 2000 Ralf Baechle&n; * Copyright (C) 1999, 2000 Silicon Graphics, Inc.&n; * Kevin D. Kissell, kevink@mips.com and Carsten Langgaard, carstenl@mips.com&n; * Copyright (C) 2000 MIPS Technologies, Inc.  All rights reserved.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
+macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/signal.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -197,6 +198,20 @@ suffix:semicolon
 DECL|variable|kmap_prot
 id|pgprot_t
 id|kmap_prot
+suffix:semicolon
+DECL|variable|kmap_prot
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|kmap_prot
+)paren
+suffix:semicolon
+DECL|variable|kmap_pte
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|kmap_pte
+)paren
 suffix:semicolon
 DECL|macro|kmap_get_fixmap_pte
 mdefine_line|#define kmap_get_fixmap_pte(vaddr)&t;&t;&t;&t;&t;&bslash;&n;&t;pte_offset_kernel(pmd_offset(pgd_offset_k(vaddr), (vaddr)), (vaddr))

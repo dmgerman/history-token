@@ -390,6 +390,13 @@ r_return
 id|result
 suffix:semicolon
 )brace
+DECL|variable|csum_partial
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|csum_partial
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * copy while checksumming, otherwise like csum_partial&n; */
 DECL|function|csum_partial_copy_nocheck
 r_int

@@ -5,6 +5,7 @@ mdefine_line|#define __KERNEL_SYSCALLS__
 macro_line|#include &lt;asm/atomic.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
+macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;linux/fs_struct.h&gt;
 macro_line|#include &lt;linux/init_task.h&gt;
@@ -65,6 +66,13 @@ c_func
 id|init_mm
 )paren
 suffix:semicolon
+DECL|variable|init_mm
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|init_mm
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * Initial thread structure.&n; *&n; * We need to make sure that this is 8192-byte aligned due to the&n; * way process stacks are handled. This is done by having a special&n; * &quot;init_task&quot; linker map entry..&n; */
 DECL|variable|init_thread_union
 r_union
@@ -102,6 +110,13 @@ c_func
 id|init_task
 )paren
 suffix:semicolon
+DECL|variable|init_task
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|init_task
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * The hlt_counter, disable_hlt and enable_hlt is just here as a hook if&n; * there would ever be a halt sequence (for power save when idle) with&n; * some largish delay when halting or resuming *and* a driver that can&squot;t&n; * afford that delay.  The hlt_counter would then be checked before&n; * executing the halt sequence, and the driver marks the unhaltable&n; * region by enable_hlt/disable_hlt.&n; */
 DECL|variable|hlt_counter
 r_static
@@ -122,6 +137,13 @@ id|hlt_counter
 op_increment
 suffix:semicolon
 )brace
+DECL|variable|disable_hlt
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|disable_hlt
+)paren
+suffix:semicolon
 DECL|function|enable_hlt
 r_void
 id|enable_hlt
@@ -134,6 +156,13 @@ id|hlt_counter
 op_decrement
 suffix:semicolon
 )brace
+DECL|variable|enable_hlt
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|enable_hlt
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * The following aren&squot;t currently used.&n; */
 DECL|variable|pm_idle
 r_void
@@ -230,6 +259,13 @@ c_func
 )paren
 suffix:semicolon
 )brace
+DECL|variable|machine_restart
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|machine_restart
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * Similar to machine_power_off, but don&squot;t shut off power.  Add code&n; * here to freeze the system for e.g. post-mortem debug purpose when&n; * possible.  This halt has nothing to do with the idle halt.&n; */
 DECL|function|machine_halt
 r_void
@@ -240,6 +276,13 @@ r_void
 )paren
 (brace
 )brace
+DECL|variable|machine_halt
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|machine_halt
+)paren
+suffix:semicolon
 multiline_comment|/* If or when software power-off is implemented, add code here.  */
 DECL|function|machine_power_off
 r_void
@@ -250,6 +293,13 @@ r_void
 )paren
 (brace
 )brace
+DECL|variable|machine_power_off
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|machine_power_off
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * When a process does an &quot;exec&quot;, machine state like FPU and debug&n; * registers need to be reset.  This is a hook function for that.&n; * Currently we don&squot;t have any such state to reset, so this is empty.&n; */
 DECL|function|flush_thread
 r_void

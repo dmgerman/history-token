@@ -1,6 +1,7 @@
 multiline_comment|/*&n; *  linux/arch/parisc/kernel/time.c&n; *&n; *  Copyright (C) 1991, 1992, 1995  Linus Torvalds&n; *  Modifications for ARM (C) 1994, 1995, 1996,1997 Russell King&n; *  Copyright (C) 1999 SuSE GmbH, (Philipp Rumpf, prumpf@tux.org)&n; *&n; * 1994-07-02  Alan Modra&n; *             fixed set_rtc_mmss, fixed time.year for &gt;= 2000, new mktime&n; * 1998-12-20  Updated NTP code according to technical memorandum Jan &squot;96&n; *             &quot;A Kernel Model for Precision Timekeeping&quot; by Dave Mills&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
+macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/param.h&gt;
@@ -23,6 +24,13 @@ id|u64
 id|jiffies_64
 op_assign
 id|INITIAL_JIFFIES
+suffix:semicolon
+DECL|variable|jiffies_64
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|jiffies_64
+)paren
 suffix:semicolon
 multiline_comment|/* xtime and wall_jiffies keep wall-clock time */
 r_extern
@@ -541,6 +549,13 @@ op_assign
 id|usec
 suffix:semicolon
 )brace
+DECL|variable|do_gettimeofday
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|do_gettimeofday
+)paren
+suffix:semicolon
 r_int
 DECL|function|do_settimeofday
 id|do_settimeofday
@@ -669,6 +684,13 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+DECL|variable|do_settimeofday
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|do_settimeofday
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * XXX: We can do better than this.&n; * Returns nanoseconds&n; */
 DECL|function|sched_clock
 r_int

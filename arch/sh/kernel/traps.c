@@ -2516,4 +2516,11 @@ l_int|NULL
 )paren
 suffix:semicolon
 )brace
+DECL|variable|dump_stack
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|dump_stack
+)paren
+suffix:semicolon
 eof

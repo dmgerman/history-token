@@ -135,6 +135,13 @@ r_int
 id|c2
 suffix:semicolon
 )brace
+DECL|variable|strnicmp
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|strnicmp
+)paren
+suffix:semicolon
 macro_line|#endif
 macro_line|#ifndef __HAVE_ARCH_STRCPY
 multiline_comment|/**&n; * strcpy - Copy a %NUL terminated string&n; * @dest: Where to copy the string to&n; * @src: Where to copy the string from&n; */
@@ -989,6 +996,13 @@ r_return
 id|count
 suffix:semicolon
 )brace
+DECL|variable|strspn
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|strspn
+)paren
+suffix:semicolon
 macro_line|#endif
 multiline_comment|/**&n; * strcspn - Calculate the length of the initial substring of @s which does&n; * &t;not contain letters in @reject&n; * @s: The string to be searched&n; * @reject: The string to avoid&n; */
 DECL|function|strcspn
@@ -1226,6 +1240,13 @@ r_return
 id|sbegin
 suffix:semicolon
 )brace
+DECL|variable|strsep
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|strsep
+)paren
+suffix:semicolon
 macro_line|#endif
 macro_line|#ifndef __HAVE_ARCH_MEMSET
 multiline_comment|/**&n; * memset - Fill a region of memory with the given value&n; * @s: Pointer to the start of the area.&n; * @c: The byte to fill the area with&n; * @count: The size of the area.&n; *&n; * Do not use memset() to access IO space, use memset_io() instead.&n; */

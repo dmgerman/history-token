@@ -1,4 +1,5 @@
 multiline_comment|/*&n; * linux/kernel/ptrace.c&n; *&n; * (C) Copyright 1999 Linus Torvalds&n; *&n; * Common interfaces for &quot;ptrace()&quot; which we do not want&n; * to continually duplicate across every architecture.&n; */
+macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
@@ -1445,4 +1446,11 @@ id|current-&gt;sighand-&gt;siglock
 )paren
 suffix:semicolon
 )brace
+DECL|variable|ptrace_notify
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|ptrace_notify
+)paren
+suffix:semicolon
 eof

@@ -1,5 +1,6 @@
 multiline_comment|/*&n; * High memory handling common code and variables.&n; *&n; * (C) 1999 Andrea Arcangeli, SuSE GmbH, andrea@suse.de&n; *          Gerhard Wichert, Siemens AG, Gerhard.Wichert@pdb.siemens.de&n; *&n; *&n; * Redesigned the x86 32-bit VM architecture to deal with&n; * 64-bit physical space. With current x86 CPUs this&n; * means up to 64 Gigabytes physical RAM.&n; *&n; * Rewrote high memory support to move the page cache into&n; * high memory. Implemented permanent (schedulable) kmaps&n; * based on Linus&squot; idea.&n; *&n; * Copyright (C) 1999 Ingo Molnar &lt;mingo@redhat.com&gt;&n; */
 macro_line|#include &lt;linux/mm.h&gt;
+macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/swap.h&gt;
 macro_line|#include &lt;linux/bio.h&gt;
 macro_line|#include &lt;linux/pagemap.h&gt;
@@ -546,6 +547,13 @@ op_star
 id|vaddr
 suffix:semicolon
 )brace
+DECL|variable|kmap_high
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|kmap_high
+)paren
+suffix:semicolon
 DECL|function|kunmap_high
 r_void
 id|kunmap_high
@@ -664,6 +672,13 @@ id|pkmap_map_wait
 )paren
 suffix:semicolon
 )brace
+DECL|variable|kunmap_high
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|kunmap_high
+)paren
+suffix:semicolon
 DECL|macro|POOL_SIZE
 mdefine_line|#define POOL_SIZE&t;64
 DECL|function|init_emergency_pool
@@ -1701,6 +1716,13 @@ id|pool
 )paren
 suffix:semicolon
 )brace
+DECL|variable|blk_queue_bounce
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|blk_queue_bounce
+)paren
+suffix:semicolon
 macro_line|#if defined(HASHED_PAGE_VIRTUAL)
 DECL|macro|PA_HASH_ORDER
 mdefine_line|#define PA_HASH_ORDER&t;7
@@ -1922,6 +1944,13 @@ r_return
 id|ret
 suffix:semicolon
 )brace
+DECL|variable|page_address
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|page_address
+)paren
+suffix:semicolon
 DECL|function|set_page_address
 r_void
 id|set_page_address

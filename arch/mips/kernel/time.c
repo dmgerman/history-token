@@ -30,6 +30,13 @@ id|jiffies_64
 op_assign
 id|INITIAL_JIFFIES
 suffix:semicolon
+DECL|variable|jiffies_64
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|jiffies_64
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * forward reference&n; */
 r_extern
 r_volatile
@@ -245,6 +252,13 @@ op_assign
 id|usec
 suffix:semicolon
 )brace
+DECL|variable|do_gettimeofday
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|do_gettimeofday
+)paren
+suffix:semicolon
 DECL|function|do_settimeofday
 r_int
 id|do_settimeofday
@@ -382,6 +396,13 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+DECL|variable|do_settimeofday
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|do_settimeofday
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * Gettimeoffset routines.  These routines returns the time duration&n; * since last timer interrupt in usecs.&n; *&n; * If the exact CPU counter frequency is known, use fixed_rate_gettimeoffset.&n; * Otherwise use calibrate_gettimeoffset()&n; *&n; * If the CPU does not have counter register all, you can either supply&n; * your own gettimeoffset() routine, or use null_gettimeoffset() routines,&n; * which gives the same resolution as HZ.&n; */
 multiline_comment|/* usecs per counter cycle, shifted to left by 32 bits */
 DECL|variable|sll32_usecs_per_cycle

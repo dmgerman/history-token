@@ -475,6 +475,13 @@ id|tsk-&gt;thread_info
 )paren
 suffix:semicolon
 )brace
+DECL|variable|dump_stack
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|dump_stack
+)paren
+suffix:semicolon
 DECL|function|dump_stack
 r_void
 id|dump_stack

@@ -1,4 +1,5 @@
 multiline_comment|/*&n; * arch/alpha/lib/checksum.c&n; *&n; * This file contains network checksum routines that are better done&n; * in an architecture-specific manner due to speed..&n; * Comments in other versions indicate that the algorithms are from RFC1071&n; *&n; * accellerated versions (and 21264 assembly versions ) contributed by&n; *&t;Rick Gorton&t;&lt;rick.gorton@alpha-processor.com&gt;&n; */
+macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;asm/byteorder.h&gt;
 DECL|function|from64to16
@@ -705,6 +706,13 @@ r_return
 id|result
 suffix:semicolon
 )brace
+DECL|variable|csum_partial
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|csum_partial
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * this routine is used for miscellaneous IP-like checksums, mainly&n; * in icmp.c&n; */
 DECL|function|ip_compute_csum
 r_int
