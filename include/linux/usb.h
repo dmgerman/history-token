@@ -831,6 +831,20 @@ id|packed
 suffix:semicolon
 multiline_comment|/* helpers for driver access to descriptors */
 r_extern
+r_int
+id|usb_ifnum_to_ifpos
+c_func
+(paren
+r_struct
+id|usb_device
+op_star
+id|dev
+comma
+r_int
+id|ifnum
+)paren
+suffix:semicolon
+r_extern
 r_struct
 id|usb_interface
 op_star
@@ -992,7 +1006,7 @@ multiline_comment|/**&n; * USB_INTERFACE_INFO - macro used to describe a class o
 DECL|macro|USB_INTERFACE_INFO
 mdefine_line|#define USB_INTERFACE_INFO(cl,sc,pr) &bslash;&n;&t;match_flags: USB_DEVICE_ID_MATCH_INT_INFO, bInterfaceClass: (cl), bInterfaceSubClass: (sc), bInterfaceProtocol: (pr)
 multiline_comment|/* -------------------------------------------------------------------------- */
-multiline_comment|/**&n; * struct usb_driver - identifies USB driver to usbcore&n; * @owner: pointer to the module owner of this driver&n; * @name: The driver name should be unique among USB drivers&n; * @probe: Called to see if the driver is willing to manage a particular&n; *&t;interface on a device.  The probe routine returns a handle that &n; *&t;will later be provided to disconnect(), or a null pointer to&n; *&t;indicate that the driver will not handle the interface.&n; *&t;The handle is normally a pointer to driver-specific data.&n; *&t;If the probe() routine needs to access the interface&n; *&t;structure itself, use usb_ifnum_to_if() to make sure it&squot;s using&n; *&t;the right one.&n; * @disconnect: Called when the interface is no longer accessible, usually&n; *&t;because its device has been (or is being) disconnected.  The&n; *&t;handle passed is what was returned by probe(), or was provided&n; *&t;to usb_driver_claim_interface().&n; * @fops: USB drivers can reuse some character device framework in&n; *&t;the USB subsystem by providing a file operations vector and&n; *&t;a minor number.&n; * @minor: Used with fops to simplify creating USB character devices.&n; *&t;Such drivers have sixteen character devices, using the USB&n; *&t;major number and starting with this minor number.&n; * @ioctl: Used for drivers that want to talk to userspace through&n; *&t;the &quot;usbfs&quot; filesystem.  This lets devices provide ways to&n; *&t;expose information to user space regardless of where they&n; *&t;do (or don&squot;t) show up otherwise in the filesystem.&n; * @id_table: USB drivers use ID table to support hotplugging.&n; *&t;Export this with MODULE_DEVICE_TABLE(usb,...), or use NULL to&n; *&t;say that probe() should be called for any unclaimed interfce.&n; *&n; * USB drivers should provide a name, probe() and disconnect() methods,&n; * and an id_table.  Other driver fields are optional.&n; *&n; * The id_table is used in hotplugging.  It holds a set of descriptors,&n; * and specialized data may be associated with each entry.  That table&n; * is used by both user and kernel mode hotplugging support.&n; *&n; * The probe() and disconnect() methods are called in a context where&n; * they can sleep, but they should avoid abusing the privilage.  Most&n; * work to connect to a device should be done when the device is opened,&n; * and undone at the last close.  The disconnect code needs to address&n; * concurrency issues with respect to open() and close() methods, as&n; * well as forcing all pending I/O requests to complete (by unlinking&n; * them as necessary, and blocking until the unlinks complete).&n; */
+multiline_comment|/**&n; * struct usb_driver - identifies USB driver to usbcore&n; * @owner: Pointer to the module owner of this driver; initialize&n; *&t;it using THIS_MODULE.&n; * @name: The driver name should be unique among USB drivers,&n; *&t;and should normally be the same as the module name.&n; * @probe: Called to see if the driver is willing to manage a particular&n; *&t;interface on a device.  The probe routine returns a handle that &n; *&t;will later be provided to disconnect(), or a null pointer to&n; *&t;indicate that the driver will not handle the interface.&n; *&t;The handle is normally a pointer to driver-specific data.&n; *&t;If the probe() routine needs to access the interface&n; *&t;structure itself, use usb_ifnum_to_if() to make sure it&squot;s using&n; *&t;the right one.&n; * @disconnect: Called when the interface is no longer accessible, usually&n; *&t;because its device has been (or is being) disconnected.  The&n; *&t;handle passed is what was returned by probe(), or was provided&n; *&t;to usb_driver_claim_interface().&n; * @fops: USB drivers can reuse some character device framework in&n; *&t;the USB subsystem by providing a file operations vector and&n; *&t;a minor number.&n; * @minor: Used with fops to simplify creating USB character devices.&n; *&t;Such drivers have sixteen character devices, using the USB&n; *&t;major number and starting with this minor number.&n; * @ioctl: Used for drivers that want to talk to userspace through&n; *&t;the &quot;usbfs&quot; filesystem.  This lets devices provide ways to&n; *&t;expose information to user space regardless of where they&n; *&t;do (or don&squot;t) show up otherwise in the filesystem.&n; * @id_table: USB drivers use ID table to support hotplugging.&n; *&t;Export this with MODULE_DEVICE_TABLE(usb,...), or use NULL to&n; *&t;say that probe() should be called for any unclaimed interfce.&n; *&n; * USB drivers should provide a name, probe() and disconnect() methods,&n; * and an id_table.  Other driver fields are optional.&n; *&n; * The id_table is used in hotplugging.  It holds a set of descriptors,&n; * and specialized data may be associated with each entry.  That table&n; * is used by both user and kernel mode hotplugging support.&n; *&n; * The probe() and disconnect() methods are called in a context where&n; * they can sleep, but they should avoid abusing the privilege.  Most&n; * work to connect to a device should be done when the device is opened,&n; * and undone at the last close.  The disconnect code needs to address&n; * concurrency issues with respect to open() and close() methods, as&n; * well as forcing all pending I/O requests to complete (by unlinking&n; * them as necessary, and blocking until the unlinks complete).&n; */
 DECL|struct|usb_driver
 r_struct
 id|usb_driver
@@ -2001,115 +2015,6 @@ multiline_comment|/* true means one TT per port */
 )brace
 suffix:semicolon
 multiline_comment|/* -------------------------------------------------------------------------- */
-multiline_comment|/* Enumeration is only for the hub driver, or HCD virtual root hubs */
-r_extern
-r_struct
-id|usb_device
-op_star
-id|usb_alloc_dev
-c_func
-(paren
-r_struct
-id|usb_device
-op_star
-id|parent
-comma
-r_struct
-id|usb_bus
-op_star
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|usb_free_dev
-c_func
-(paren
-r_struct
-id|usb_device
-op_star
-)paren
-suffix:semicolon
-r_extern
-r_int
-id|usb_new_device
-c_func
-(paren
-r_struct
-id|usb_device
-op_star
-id|dev
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|usb_connect
-c_func
-(paren
-r_struct
-id|usb_device
-op_star
-id|dev
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|usb_disconnect
-c_func
-(paren
-r_struct
-id|usb_device
-op_star
-op_star
-)paren
-suffix:semicolon
-macro_line|#ifndef _LINUX_HUB_H
-multiline_comment|/* exported to hub driver ONLY to support usb_reset_device () */
-r_extern
-r_int
-id|usb_get_configuration
-c_func
-(paren
-r_struct
-id|usb_device
-op_star
-id|dev
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|usb_set_maxpacket
-c_func
-(paren
-r_struct
-id|usb_device
-op_star
-id|dev
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|usb_destroy_configuration
-c_func
-(paren
-r_struct
-id|usb_device
-op_star
-id|dev
-)paren
-suffix:semicolon
-r_extern
-r_int
-id|usb_set_address
-c_func
-(paren
-r_struct
-id|usb_device
-op_star
-id|dev
-)paren
-suffix:semicolon
-macro_line|#endif /* _LINUX_HUB_H */
-multiline_comment|/* -------------------------------------------------------------------------- */
 multiline_comment|/* This is arbitrary.&n; * From USB 2.0 spec Table 11-13, offset 7, a hub can&n; * have up to 255 ports. The most yet reported is 10.&n; */
 DECL|macro|USB_MAXCHILDREN
 mdefine_line|#define USB_MAXCHILDREN&t;&t;(16)
@@ -2332,20 +2237,72 @@ op_star
 id|usb_dev
 )paren
 suffix:semicolon
-multiline_comment|/* drivers must track when they bind to a device&squot;s interfaces */
-r_extern
+multiline_comment|/**&n; * usb_inc_dev_use - record another reference to a device&n; * @dev: the device being referenced&n; *&n; * Each live reference to a device should be refcounted.&n; *&n; * Drivers for USB interfaces should normally record such references in&n; * their probe() methods, when they bind to an interface, and release&n; * them usb_dec_dev_use(), in their disconnect() methods.&n; */
+DECL|function|usb_inc_dev_use
+r_static
+r_inline
 r_void
 id|usb_inc_dev_use
+(paren
+r_struct
+id|usb_device
+op_star
+id|dev
+)paren
+(brace
+id|atomic_inc
+(paren
+op_amp
+id|dev-&gt;refcnt
+)paren
+suffix:semicolon
+)brace
+multiline_comment|/**&n; * usb_dec_dev_use - drop a reference to a device&n; * @dev: the device no longer being referenced&n; *&n; * Each live reference to a device should be refcounted.&n; *&n; * Drivers for USB interfaces should normally release such references in&n; * their disconnect() methods, and record them in probe().&n; *&n; * Note that driver disconnect() methods must guarantee that when they&n; * return, all of their outstanding references to the device (and its&n; * interfaces) are cleaned up.  That means that all pending URBs from&n; * this driver must have completed, and that no more copies of the device&n; * handle are saved in driver records (including other kernel threads).&n; */
+DECL|function|usb_dec_dev_use
+r_static
+r_inline
+r_void
+id|usb_dec_dev_use
+(paren
+r_struct
+id|usb_device
+op_star
+id|dev
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|atomic_dec_and_test
+(paren
+op_amp
+id|dev-&gt;refcnt
+)paren
+)paren
+(brace
+multiline_comment|/* May only go to zero when usbcore finishes&n;&t;&t; * usb_disconnect() processing:  khubd or HCDs.&n;&t;&t; *&n;&t;&t; * If you hit this BUG() it&squot;s likely a problem&n;&t;&t; * with some driver&squot;s disconnect() routine.&n;&t;&t; */
+id|BUG
+(paren
+)paren
+suffix:semicolon
+)brace
+)brace
+multiline_comment|/* used these for multi-interface device registration */
+r_extern
+r_int
+id|usb_find_interface_driver_for_ifnum
 c_func
 (paren
 r_struct
 id|usb_device
 op_star
+id|dev
+comma
+r_int
+r_int
+id|ifnum
 )paren
 suffix:semicolon
-DECL|macro|usb_dec_dev_use
-mdefine_line|#define usb_dec_dev_use usb_free_dev
-multiline_comment|/* used these for multi-interface device registration */
 r_extern
 r_void
 id|usb_driver_claim_interface
