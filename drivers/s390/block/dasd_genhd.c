@@ -695,20 +695,6 @@ id|ENOMEM
 )paren
 suffix:semicolon
 multiline_comment|/* Initialize gendisk structure. */
-id|memset
-c_func
-(paren
-id|gdp
-comma
-l_int|0
-comma
-r_sizeof
-(paren
-r_struct
-id|gendisk
-)paren
-)paren
-suffix:semicolon
 id|gdp-&gt;major
 op_assign
 id|mi-&gt;major
