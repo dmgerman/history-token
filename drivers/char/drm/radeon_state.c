@@ -6709,8 +6709,6 @@ dot
 id|start
 suffix:semicolon
 r_int
-id|tmp
-comma
 op_star
 id|data
 op_assign
@@ -6822,8 +6820,6 @@ op_assign
 id|header.scalars.count
 suffix:semicolon
 r_int
-id|tmp
-comma
 op_star
 id|data
 op_assign
@@ -6951,8 +6947,6 @@ op_assign
 id|header.vectors.count
 suffix:semicolon
 r_int
-id|tmp
-comma
 op_star
 id|data
 op_assign
