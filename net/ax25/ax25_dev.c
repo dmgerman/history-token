@@ -31,6 +31,8 @@ suffix:semicolon
 DECL|variable|ax25_dev_lock
 id|spinlock_t
 id|ax25_dev_lock
+op_assign
+id|SPIN_LOCK_UNLOCKED
 suffix:semicolon
 DECL|function|ax25_dev_ax25dev
 id|ax25_dev
