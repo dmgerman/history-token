@@ -3422,12 +3422,7 @@ comma
 id|ret
 )paren
 suffix:semicolon
-id|dev_kfree_skb
-c_func
-(paren
-id|skb
-)paren
-suffix:semicolon
+multiline_comment|/* irttp_data_request already free the packet */
 )brace
 id|DEXIT
 c_func

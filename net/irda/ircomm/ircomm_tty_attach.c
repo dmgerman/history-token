@@ -1,4 +1,4 @@
-multiline_comment|/*********************************************************************&n; *                &n; * Filename:      ircomm_tty_attach.c&n; * Version:       &n; * Description:   Code for attaching the serial driver to IrCOMM&n; * Status:        Experimental.&n; * Author:        Dag Brattli &lt;dagb@cs.uit.no&gt;&n; * Created at:    Sat Jun  5 17:42:00 1999&n; * Modified at:   Tue Jan  4 14:20:49 2000&n; * Modified by:   Dag Brattli &lt;dagb@cs.uit.no&gt;&n; * &n; *     Copyright (c) 1999-2000 Dag Brattli, All Rights Reserved.&n; *     &n; *     This program is free software; you can redistribute it and/or &n; *     modify it under the terms of the GNU General Public License as &n; *     published by the Free Software Foundation; either version 2 of &n; *     the License, or (at your option) any later version.&n; * &n; *     This program is distributed in the hope that it will be useful,&n; *     but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the&n; *     GNU General Public License for more details.&n; * &n; *     You should have received a copy of the GNU General Public License &n; *     along with this program; if not, write to the Free Software &n; *     Foundation, Inc., 59 Temple Place, Suite 330, Boston, &n; *     MA 02111-1307 USA&n; *     &n; ********************************************************************/
+multiline_comment|/*********************************************************************&n; *                &n; * Filename:      ircomm_tty_attach.c&n; * Version:       &n; * Description:   Code for attaching the serial driver to IrCOMM&n; * Status:        Experimental.&n; * Author:        Dag Brattli &lt;dagb@cs.uit.no&gt;&n; * Created at:    Sat Jun  5 17:42:00 1999&n; * Modified at:   Tue Jan  4 14:20:49 2000&n; * Modified by:   Dag Brattli &lt;dagb@cs.uit.no&gt;&n; * &n; *     Copyright (c) 1999-2000 Dag Brattli, All Rights Reserved.&n; *     Copyright (c) 2000-2003 Jean Tourrilhes &lt;jt@hpl.hp.com&gt;&n; *     &n; *     This program is free software; you can redistribute it and/or &n; *     modify it under the terms of the GNU General Public License as &n; *     published by the Free Software Foundation; either version 2 of &n; *     the License, or (at your option) any later version.&n; * &n; *     This program is distributed in the hope that it will be useful,&n; *     but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the&n; *     GNU General Public License for more details.&n; * &n; *     You should have received a copy of the GNU General Public License &n; *     along with this program; if not, write to the Free Software &n; *     Foundation, Inc., 59 Temple Place, Suite 330, Boston, &n; *     MA 02111-1307 USA&n; *     &n; ********************************************************************/
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;net/irda/irda.h&gt;
@@ -1588,12 +1588,7 @@ comma
 l_int|NULL
 )paren
 suffix:semicolon
-id|dev_kfree_skb
-c_func
-(paren
-id|skb
-)paren
-suffix:semicolon
+multiline_comment|/* No need to kfree_skb - see ircomm_ttp_connect_confirm() */
 )brace
 multiline_comment|/*&n; * Function ircomm_tty_connect_indication (instance, sap, qos, max_sdu_size, &n; *                                         skb)&n; *&n; *    we are discovered and being requested to connect by remote device !&n; *&n; */
 DECL|function|ircomm_tty_connect_indication
@@ -1734,12 +1729,7 @@ comma
 l_int|NULL
 )paren
 suffix:semicolon
-id|dev_kfree_skb
-c_func
-(paren
-id|skb
-)paren
-suffix:semicolon
+multiline_comment|/* No need to kfree_skb - see ircomm_ttp_connect_indication() */
 )brace
 multiline_comment|/*&n; * Function ircomm_tty_link_established (self)&n; *&n; *    Called when the IrCOMM link is established&n; *&n; */
 DECL|function|ircomm_tty_link_established
@@ -2238,7 +2228,8 @@ id|event
 )braket
 )paren
 suffix:semicolon
-r_return
+id|ret
+op_assign
 op_minus
 id|EINVAL
 suffix:semicolon
@@ -2501,7 +2492,8 @@ id|event
 )braket
 )paren
 suffix:semicolon
-r_return
+id|ret
+op_assign
 op_minus
 id|EINVAL
 suffix:semicolon
@@ -2720,7 +2712,8 @@ id|event
 )braket
 )paren
 suffix:semicolon
-r_return
+id|ret
+op_assign
 op_minus
 id|EINVAL
 suffix:semicolon
@@ -2911,7 +2904,8 @@ id|event
 )braket
 )paren
 suffix:semicolon
-r_return
+id|ret
+op_assign
 op_minus
 id|EINVAL
 suffix:semicolon
@@ -3094,7 +3088,8 @@ id|event
 )braket
 )paren
 suffix:semicolon
-r_return
+id|ret
+op_assign
 op_minus
 id|EINVAL
 suffix:semicolon
@@ -3260,7 +3255,8 @@ id|event
 )braket
 )paren
 suffix:semicolon
-r_return
+id|ret
+op_assign
 op_minus
 id|EINVAL
 suffix:semicolon
