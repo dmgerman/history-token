@@ -2272,10 +2272,6 @@ id|EWOULDBLOCK
 suffix:semicolon
 )brace
 multiline_comment|/* Mark it as dying. */
-id|sref-&gt;mod-&gt;waiter
-op_assign
-id|current
-suffix:semicolon
 id|sref-&gt;mod-&gt;state
 op_assign
 id|MODULE_STATE_GOING
@@ -2699,6 +2695,11 @@ id|out
 suffix:semicolon
 )brace
 )brace
+multiline_comment|/* Set this up before setting mod-&gt;state */
+id|mod-&gt;waiter
+op_assign
+id|current
+suffix:semicolon
 multiline_comment|/* Stop the machine so refcounts can&squot;t move and disable module. */
 id|ret
 op_assign
