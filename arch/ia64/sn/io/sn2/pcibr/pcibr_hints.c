@@ -5,10 +5,6 @@ macro_line|#include &lt;asm/sn/iograph.h&gt;
 macro_line|#include &lt;asm/sn/pci/pcibr.h&gt;
 macro_line|#include &lt;asm/sn/pci/pcibr_private.h&gt;
 macro_line|#include &lt;asm/sn/pci/pci_defs.h&gt;
-macro_line|#include &lt;asm/sn/prio.h&gt;
-macro_line|#include &lt;asm/sn/xtalk/xbow.h&gt;
-macro_line|#include &lt;asm/sn/io.h&gt;
-macro_line|#include &lt;asm/sn/sn_private.h&gt;
 id|pcibr_hints_t
 id|pcibr_hints_get
 c_func
