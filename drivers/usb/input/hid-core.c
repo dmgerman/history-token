@@ -6132,6 +6132,10 @@ DECL|macro|USB_VENDOR_ID_ONTRAK
 mdefine_line|#define USB_VENDOR_ID_ONTRAK&t;&t;0x0a07
 DECL|macro|USB_DEVICE_ID_ONTRAK_ADU100
 mdefine_line|#define USB_DEVICE_ID_ONTRAK_ADU100&t;0x0064
+DECL|macro|USB_VENDOR_ID_TANGTOP
+mdefine_line|#define USB_VENDOR_ID_TANGTOP          0x0d3d
+DECL|macro|USB_DEVICE_ID_TANGTOP_USBPS2
+mdefine_line|#define USB_DEVICE_ID_TANGTOP_USBPS2   0x0001
 DECL|struct|hid_blacklist
 r_struct
 id|hid_blacklist
@@ -6483,6 +6487,14 @@ op_plus
 l_int|500
 comma
 id|HID_QUIRK_IGNORE
+)brace
+comma
+(brace
+id|USB_VENDOR_ID_TANGTOP
+comma
+id|USB_DEVICE_ID_TANGTOP_USBPS2
+comma
+id|HID_QUIRK_NOGET
 )brace
 comma
 (brace
@@ -7563,6 +7575,15 @@ l_int|0
 comma
 id|GFP_KERNEL
 )paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|hid-&gt;urbctrl
+)paren
+r_goto
+id|fail
 suffix:semicolon
 id|usb_fill_control_urb
 c_func
