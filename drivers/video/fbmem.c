@@ -3050,6 +3050,15 @@ op_and_assign
 op_complement
 id|_PAGE_CACHABLE
 suffix:semicolon
+macro_line|#elif defined(__ia64__)
+id|vma-&gt;vm_page_prot
+op_assign
+id|pgprot_writecombine
+c_func
+(paren
+id|vma-&gt;vm_page_prot
+)paren
+suffix:semicolon
 macro_line|#else
 macro_line|#warning What do we have to do here??
 macro_line|#endif
