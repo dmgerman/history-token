@@ -135,8 +135,9 @@ mdefine_line|#define L2CAP_INFO_REQ    0x0a
 DECL|macro|L2CAP_INFO_RSP
 mdefine_line|#define L2CAP_INFO_RSP    0x0b
 multiline_comment|/* L2CAP structures */
-r_typedef
+DECL|struct|l2cap_hdr
 r_struct
+id|l2cap_hdr
 (brace
 DECL|member|len
 id|__u16
@@ -146,7 +147,6 @@ DECL|member|cid
 id|__u16
 id|cid
 suffix:semicolon
-DECL|typedef|l2cap_hdr
 )brace
 id|__attribute__
 (paren
@@ -154,12 +154,12 @@ id|__attribute__
 id|packed
 )paren
 )paren
-id|l2cap_hdr
 suffix:semicolon
 DECL|macro|L2CAP_HDR_SIZE
 mdefine_line|#define L2CAP_HDR_SIZE&t;&t;4
-r_typedef
+DECL|struct|l2cap_cmd_hdr
 r_struct
+id|l2cap_cmd_hdr
 (brace
 DECL|member|code
 id|__u8
@@ -173,7 +173,6 @@ DECL|member|len
 id|__u16
 id|len
 suffix:semicolon
-DECL|typedef|l2cap_cmd_hdr
 )brace
 id|__attribute__
 (paren
@@ -181,18 +180,17 @@ id|__attribute__
 id|packed
 )paren
 )paren
-id|l2cap_cmd_hdr
 suffix:semicolon
 DECL|macro|L2CAP_CMD_HDR_SIZE
 mdefine_line|#define L2CAP_CMD_HDR_SIZE&t;4
-r_typedef
+DECL|struct|l2cap_cmd_rej
 r_struct
+id|l2cap_cmd_rej
 (brace
 DECL|member|reason
 id|__u16
 id|reason
 suffix:semicolon
-DECL|typedef|l2cap_cmd_rej
 )brace
 id|__attribute__
 (paren
@@ -200,12 +198,10 @@ id|__attribute__
 id|packed
 )paren
 )paren
-id|l2cap_cmd_rej
 suffix:semicolon
-DECL|macro|L2CAP_CMD_REJ_SIZE
-mdefine_line|#define L2CAP_CMD_REJ_SIZE&t;2
-r_typedef
+DECL|struct|l2cap_conn_req
 r_struct
+id|l2cap_conn_req
 (brace
 DECL|member|psm
 id|__u16
@@ -215,7 +211,6 @@ DECL|member|scid
 id|__u16
 id|scid
 suffix:semicolon
-DECL|typedef|l2cap_conn_req
 )brace
 id|__attribute__
 (paren
@@ -223,12 +218,10 @@ id|__attribute__
 id|packed
 )paren
 )paren
-id|l2cap_conn_req
 suffix:semicolon
-DECL|macro|L2CAP_CONN_REQ_SIZE
-mdefine_line|#define L2CAP_CONN_REQ_SIZE&t;4
-r_typedef
+DECL|struct|l2cap_conn_rsp
 r_struct
+id|l2cap_conn_rsp
 (brace
 DECL|member|dcid
 id|__u16
@@ -246,7 +239,6 @@ DECL|member|status
 id|__u16
 id|status
 suffix:semicolon
-DECL|typedef|l2cap_conn_rsp
 )brace
 id|__attribute__
 (paren
@@ -254,10 +246,7 @@ id|__attribute__
 id|packed
 )paren
 )paren
-id|l2cap_conn_rsp
 suffix:semicolon
-DECL|macro|L2CAP_CONN_RSP_SIZE
-mdefine_line|#define L2CAP_CONN_RSP_SIZE&t;8
 multiline_comment|/* connect result */
 DECL|macro|L2CAP_CR_SUCCESS
 mdefine_line|#define L2CAP_CR_SUCCESS    0x0000
@@ -276,8 +265,9 @@ DECL|macro|L2CAP_CS_AUTHEN_PEND
 mdefine_line|#define L2CAP_CS_AUTHEN_PEND  0x0001
 DECL|macro|L2CAP_CS_AUTHOR_PEND
 mdefine_line|#define L2CAP_CS_AUTHOR_PEND  0x0002
-r_typedef
+DECL|struct|l2cap_conf_req
 r_struct
+id|l2cap_conf_req
 (brace
 DECL|member|dcid
 id|__u16
@@ -294,7 +284,6 @@ id|data
 l_int|0
 )braket
 suffix:semicolon
-DECL|typedef|l2cap_conf_req
 )brace
 id|__attribute__
 (paren
@@ -302,12 +291,10 @@ id|__attribute__
 id|packed
 )paren
 )paren
-id|l2cap_conf_req
 suffix:semicolon
-DECL|macro|L2CAP_CONF_REQ_SIZE
-mdefine_line|#define L2CAP_CONF_REQ_SIZE&t;4
-r_typedef
+DECL|struct|l2cap_conf_rsp
 r_struct
+id|l2cap_conf_rsp
 (brace
 DECL|member|scid
 id|__u16
@@ -328,7 +315,6 @@ id|data
 l_int|0
 )braket
 suffix:semicolon
-DECL|typedef|l2cap_conf_rsp
 )brace
 id|__attribute__
 (paren
@@ -336,16 +322,14 @@ id|__attribute__
 id|packed
 )paren
 )paren
-id|l2cap_conf_rsp
 suffix:semicolon
-DECL|macro|L2CAP_CONF_RSP_SIZE
-mdefine_line|#define L2CAP_CONF_RSP_SIZE   &t;6
 DECL|macro|L2CAP_CONF_SUCCESS
 mdefine_line|#define L2CAP_CONF_SUCCESS&t;0x00
 DECL|macro|L2CAP_CONF_UNACCEPT
 mdefine_line|#define L2CAP_CONF_UNACCEPT&t;0x01
-r_typedef
+DECL|struct|l2cap_conf_opt
 r_struct
+id|l2cap_conf_opt
 (brace
 DECL|member|type
 id|__u8
@@ -362,7 +346,6 @@ id|val
 l_int|0
 )braket
 suffix:semicolon
-DECL|typedef|l2cap_conf_opt
 )brace
 id|__attribute__
 (paren
@@ -370,7 +353,6 @@ id|__attribute__
 id|packed
 )paren
 )paren
-id|l2cap_conf_opt
 suffix:semicolon
 DECL|macro|L2CAP_CONF_OPT_SIZE
 mdefine_line|#define L2CAP_CONF_OPT_SIZE&t;2
@@ -382,31 +364,9 @@ DECL|macro|L2CAP_CONF_QOS
 mdefine_line|#define L2CAP_CONF_QOS&t;&t;0x03
 DECL|macro|L2CAP_CONF_MAX_SIZE
 mdefine_line|#define L2CAP_CONF_MAX_SIZE&t;22
-r_typedef
+DECL|struct|l2cap_disconn_req
 r_struct
-(brace
-DECL|member|dcid
-id|__u16
-id|dcid
-suffix:semicolon
-DECL|member|scid
-id|__u16
-id|scid
-suffix:semicolon
-DECL|typedef|l2cap_disconn_req
-)brace
-id|__attribute__
-(paren
-(paren
-id|packed
-)paren
-)paren
 id|l2cap_disconn_req
-suffix:semicolon
-DECL|macro|L2CAP_DISCONN_REQ_SIZE
-mdefine_line|#define L2CAP_DISCONN_REQ_SIZE&t;4
-r_typedef
-r_struct
 (brace
 DECL|member|dcid
 id|__u16
@@ -416,7 +376,6 @@ DECL|member|scid
 id|__u16
 id|scid
 suffix:semicolon
-DECL|typedef|l2cap_disconn_rsp
 )brace
 id|__attribute__
 (paren
@@ -424,12 +383,30 @@ id|__attribute__
 id|packed
 )paren
 )paren
-id|l2cap_disconn_rsp
 suffix:semicolon
-DECL|macro|L2CAP_DISCONN_RSP_SIZE
-mdefine_line|#define L2CAP_DISCONN_RSP_SIZE&t;4
-r_typedef
+DECL|struct|l2cap_disconn_rsp
 r_struct
+id|l2cap_disconn_rsp
+(brace
+DECL|member|dcid
+id|__u16
+id|dcid
+suffix:semicolon
+DECL|member|scid
+id|__u16
+id|scid
+suffix:semicolon
+)brace
+id|__attribute__
+(paren
+(paren
+id|packed
+)paren
+)paren
+suffix:semicolon
+DECL|struct|l2cap_info_req
+r_struct
+id|l2cap_info_req
 (brace
 DECL|member|type
 id|__u16
@@ -442,7 +419,6 @@ id|data
 l_int|0
 )braket
 suffix:semicolon
-DECL|typedef|l2cap_info_req
 )brace
 id|__attribute__
 (paren
@@ -450,12 +426,10 @@ id|__attribute__
 id|packed
 )paren
 )paren
-id|l2cap_info_req
 suffix:semicolon
-DECL|macro|L2CAP_INFO_REQ_SIZE
-mdefine_line|#define L2CAP_INFO_REQ_SIZE&t;2
-r_typedef
+DECL|struct|l2cap_info_rsp
 r_struct
+id|l2cap_info_rsp
 (brace
 DECL|member|type
 id|__u16
@@ -472,7 +446,6 @@ id|data
 l_int|0
 )braket
 suffix:semicolon
-DECL|typedef|l2cap_info_rsp
 )brace
 id|__attribute__
 (paren
@@ -480,10 +453,7 @@ id|__attribute__
 id|packed
 )paren
 )paren
-id|l2cap_info_rsp
 suffix:semicolon
-DECL|macro|L2CAP_INFO_RSP_SIZE
-mdefine_line|#define L2CAP_INFO_RSP_SIZE&t;4
 multiline_comment|/* ----- L2CAP connections ----- */
 DECL|struct|l2cap_chan_list
 r_struct
