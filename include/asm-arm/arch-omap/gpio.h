@@ -50,6 +50,15 @@ DECL|macro|OMAP_GPIO_BOTH_EDGES
 mdefine_line|#define OMAP_GPIO_BOTH_EDGES&t;  0x03
 r_extern
 r_int
+id|omap_gpio_init
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+multiline_comment|/* Call from board init only */
+r_extern
+r_int
 id|omap_request_gpio
 c_func
 (paren

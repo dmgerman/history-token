@@ -187,6 +187,10 @@ DECL|macro|INT_1610_SoSSI_MATCH
 mdefine_line|#define INT_1610_SoSSI_MATCH&t;(19 + IH2_BASE)
 DECL|macro|INT_1610_McBSP2RX_OF
 mdefine_line|#define INT_1610_McBSP2RX_OF&t;(31 + IH2_BASE)
+DECL|macro|INT_1610_STI
+mdefine_line|#define INT_1610_STI&t;&t;(32 + IH2_BASE)
+DECL|macro|INT_1610_STI_WAKEUP
+mdefine_line|#define INT_1610_STI_WAKEUP&t;(33 + IH2_BASE)
 DECL|macro|INT_1610_GPIO_BANK2
 mdefine_line|#define INT_1610_GPIO_BANK2&t;(40 + IH2_BASE)
 DECL|macro|INT_1610_GPIO_BANK3
