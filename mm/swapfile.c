@@ -1,6 +1,7 @@
 multiline_comment|/*&n; *  linux/mm/swapfile.c&n; *&n; *  Copyright (C) 1991, 1992, 1993, 1994  Linus Torvalds&n; *  Swap reorganised 29.12.95, Stephen Tweedie&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
+macro_line|#include &lt;linux/mman.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/kernel_stat.h&gt;
 macro_line|#include &lt;linux/swap.h&gt;
@@ -3976,11 +3977,6 @@ op_assign
 id|type
 suffix:semicolon
 )brace
-id|err
-op_assign
-op_minus
-id|EINVAL
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -3989,6 +3985,42 @@ OL
 l_int|0
 )paren
 (brace
+id|err
+op_assign
+op_minus
+id|EINVAL
+suffix:semicolon
+id|swap_list_unlock
+c_func
+(paren
+)paren
+suffix:semicolon
+r_goto
+id|out_dput
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+id|vm_enough_memory
+c_func
+(paren
+id|p-&gt;pages
+)paren
+)paren
+id|vm_unacct_memory
+c_func
+(paren
+id|p-&gt;pages
+)paren
+suffix:semicolon
+r_else
+(brace
+id|err
+op_assign
+op_minus
+id|ENOMEM
+suffix:semicolon
 id|swap_list_unlock
 c_func
 (paren
