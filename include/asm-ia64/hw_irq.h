@@ -5,6 +5,7 @@ multiline_comment|/*&n; * Copyright (C) 2001-2003 Hewlett-Packard Co&n; *&t;Davi
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
+macro_line|#include &lt;linux/profile.h&gt;
 macro_line|#include &lt;asm/machvec.h&gt;
 macro_line|#include &lt;asm/ptrace.h&gt;
 macro_line|#include &lt;asm/smp.h&gt;

@@ -596,6 +596,9 @@ multiline_comment|/* 64 predicate registers (1 bit each) */
 )brace
 suffix:semicolon
 macro_line|#ifdef __KERNEL__
+multiline_comment|/*&n; * We use the ia64_psr(regs)-&gt;ri to determine which of the three&n; * instructions in bundle (16 bytes) took the sample. Generate&n; * the canonical representation by adding to instruction pointer.&n; */
+DECL|macro|instruction_pointer
+macro_line|# define instruction_pointer(regs) ((regs)-&gt;cr_iip + ia64_psr(regs)-&gt;ri)
 multiline_comment|/* given a pointer to a task_struct, return the user&squot;s pt_regs */
 DECL|macro|ia64_task_regs
 macro_line|# define ia64_task_regs(t)&t;&t;(((struct pt_regs *) ((char *) (t) + IA64_STK_OFFSET)) - 1)
