@@ -274,7 +274,7 @@ comma
 "&bslash;"
 id|reg
 id|andw
-macro_line|#-KTHREAD_SIZE,&bslash;reg
+macro_line|#-THREAD_SIZE,&bslash;reg
 DECL|variable|reg
 id|movel
 "&bslash;"
@@ -291,7 +291,7 @@ mdefine_line|#define PT_OFF_ORIG_D0&t; 0x24
 mdefine_line|#define PT_OFF_FORMATVEC 0x32
 mdefine_line|#define PT_OFF_SR&t; 0x2C
 mdefine_line|#define SAVE_ALL_INT&t;&t;&t;&t;&bslash;&n;&t;&quot;clrl&t;%%sp@-;&quot;    /* stk_adj */&t;&bslash;&n;&t;&quot;pea&t;-1:w;&quot;&t;    /* orig d0 = -1 */&t;&bslash;&n;&t;&quot;movel&t;%%d0,%%sp@-;&quot; /* d0 */&t;&t;&bslash;&n;&t;&quot;moveml&t;%%d1-%%d5/%%a0-%%a2,%%sp@-&quot;
-mdefine_line|#define GET_CURRENT(tmp) &bslash;&n;&t;&quot;movel&t;%%sp,&quot;#tmp&quot;&bslash;n&bslash;t&quot; &bslash;&n;&t;&quot;andw&t;#-&quot;STR(KTHREAD_SIZE)&quot;,&quot;#tmp&quot;&bslash;n&bslash;t&quot; &bslash;&n;&t;&quot;movel&t;&quot;#tmp&quot;,%%a2&quot;
+mdefine_line|#define GET_CURRENT(tmp) &bslash;&n;&t;&quot;movel&t;%%sp,&quot;#tmp&quot;&bslash;n&bslash;t&quot; &bslash;&n;&t;&quot;andw&t;#-&quot;STR(THREAD_SIZE)&quot;,&quot;#tmp&quot;&bslash;n&bslash;t&quot; &bslash;&n;&t;&quot;movel&t;&quot;#tmp&quot;,%%a2&bslash;n&bslash;t&quot; &bslash;&n;&t;&quot;movel&t;%%a2@,%%a2&quot;
 macro_line|#endif
 macro_line|#endif /* __M68K_ENTRY_H */
 eof

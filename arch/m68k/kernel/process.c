@@ -73,7 +73,7 @@ comma
 id|aligned
 c_func
 (paren
-id|KTHREAD_SIZE
+id|THREAD_SIZE
 )paren
 )paren
 )paren
@@ -489,7 +489,7 @@ comma
 l_string|&quot;i&quot;
 (paren
 op_minus
-id|KTHREAD_SIZE
+id|THREAD_SIZE
 )paren
 suffix:colon
 l_string|&quot;d0&quot;
@@ -729,7 +729,7 @@ id|retp
 suffix:semicolon
 id|stack_offset
 op_assign
-id|KTHREAD_SIZE
+id|THREAD_SIZE
 op_minus
 r_sizeof
 (paren
@@ -749,7 +749,9 @@ op_star
 r_int
 r_int
 )paren
-id|p
+(paren
+id|p-&gt;thread_info
+)paren
 op_plus
 id|stack_offset
 )paren
