@@ -2182,9 +2182,9 @@ l_string|&quot;IBM&quot;
 comma
 l_string|&quot;IBM USB Memory Key&quot;
 comma
-id|US_SC_SCSI
+id|US_SC_DEVICE
 comma
-id|US_PR_BULK
+id|US_PR_DEVICE
 comma
 l_int|NULL
 comma
