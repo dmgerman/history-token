@@ -38,13 +38,6 @@ macro_line|#include &lt;linux/dcache.h&gt;
 macro_line|#include &lt;linux/mount.h&gt;
 macro_line|#include &lt;linux/namei.h&gt;
 macro_line|#include &lt;linux/pagemap.h&gt;
-multiline_comment|/*&n; * ioctl commands that are used by Linux filesystems&n; */
-DECL|macro|XFS_IOC_GETXFLAGS
-mdefine_line|#define XFS_IOC_GETXFLAGS&t;_IOR(&squot;f&squot;, 1, long)
-DECL|macro|XFS_IOC_SETXFLAGS
-mdefine_line|#define XFS_IOC_SETXFLAGS&t;_IOW(&squot;f&squot;, 2, long)
-DECL|macro|XFS_IOC_GETVERSION
-mdefine_line|#define XFS_IOC_GETVERSION&t;_IOR(&squot;v&squot;, 1, long)
 multiline_comment|/*&n; * xfs_find_handle maps from userspace xfs_fsop_handlereq structure to&n; * a file or fs handle.&n; *&n; * XFS_IOC_PATH_TO_FSHANDLE&n; *    returns fs handle for a mount point or path within that mount point&n; * XFS_IOC_FD_TO_HANDLE&n; *    returns full handle for a FD opened in user space&n; * XFS_IOC_PATH_TO_HANDLE&n; *    returns full handle for a path&n; */
 id|STATIC
 r_int

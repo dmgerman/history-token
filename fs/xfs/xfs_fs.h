@@ -1183,6 +1183,13 @@ DECL|macro|XFS_FSOP_GOING_FLAGS_LOGFLUSH
 mdefine_line|#define XFS_FSOP_GOING_FLAGS_LOGFLUSH&t;&t;0x1&t;/* flush log but not data */
 DECL|macro|XFS_FSOP_GOING_FLAGS_NOLOGFLUSH
 mdefine_line|#define XFS_FSOP_GOING_FLAGS_NOLOGFLUSH&t;&t;0x2&t;/* don&squot;t flush log nor data */
+multiline_comment|/*&n; * ioctl commands that are used by Linux filesystems&n; */
+DECL|macro|XFS_IOC_GETXFLAGS
+mdefine_line|#define XFS_IOC_GETXFLAGS&t;_IOR(&squot;f&squot;, 1, long)
+DECL|macro|XFS_IOC_SETXFLAGS
+mdefine_line|#define XFS_IOC_SETXFLAGS&t;_IOW(&squot;f&squot;, 2, long)
+DECL|macro|XFS_IOC_GETVERSION
+mdefine_line|#define XFS_IOC_GETVERSION&t;_IOR(&squot;v&squot;, 1, long)
 multiline_comment|/*&n; * ioctl commands that replace IRIX fcntl()&squot;s&n; * For &squot;documentation&squot; purposed more than anything else,&n; * the &quot;cmd #&quot; field reflects the IRIX fcntl number.&n; */
 DECL|macro|XFS_IOC_ALLOCSP
 mdefine_line|#define XFS_IOC_ALLOCSP&t;&t;_IOW (&squot;X&squot;, 10, struct xfs_flock64)
