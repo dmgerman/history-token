@@ -2829,13 +2829,13 @@ id|SWAP_CLUSTER_MAX
 op_star
 l_int|4
 suffix:semicolon
-id|atomic_sub
+id|atomic_set
 c_func
 (paren
-id|count
-comma
 op_amp
 id|zone-&gt;refill_counter
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|refill_inactive_zone
