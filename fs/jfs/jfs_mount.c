@@ -1440,7 +1440,11 @@ op_assign
 id|cpu_to_le32
 c_func
 (paren
+id|old_encode_dev
+c_func
+(paren
 id|sbi-&gt;log-&gt;bdev-&gt;bd_dev
+)paren
 )paren
 suffix:semicolon
 id|j_sb-&gt;s_logserial
@@ -1628,7 +1632,11 @@ op_assign
 id|cpu_to_le32
 c_func
 (paren
+id|old_encode_dev
+c_func
+(paren
 id|sb-&gt;s_bdev-&gt;bd_dev
+)paren
 )paren
 suffix:semicolon
 id|lmLog
