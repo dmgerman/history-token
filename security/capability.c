@@ -102,13 +102,8 @@ id|cap_vm_enough_memory
 comma
 )brace
 suffix:semicolon
-macro_line|#if defined(CONFIG_SECURITY_CAPABILITIES_MODULE)
 DECL|macro|MY_NAME
-mdefine_line|#define MY_NAME THIS_MODULE-&gt;name
-macro_line|#else
-DECL|macro|MY_NAME
-mdefine_line|#define MY_NAME &quot;capability&quot;
-macro_line|#endif
+mdefine_line|#define MY_NAME __stringify(KBUILD_MODNAME)
 multiline_comment|/* flag to keep track of how we were registered */
 DECL|variable|secondary
 r_static
@@ -135,12 +130,6 @@ id|capability_ops
 )paren
 )paren
 (brace
-id|printk
-(paren
-id|KERN_INFO
-l_string|&quot;Failure registering capabilities with the kernel&bslash;n&quot;
-)paren
-suffix:semicolon
 multiline_comment|/* try registering with primary module */
 r_if
 c_cond
@@ -174,7 +163,14 @@ suffix:semicolon
 id|printk
 (paren
 id|KERN_INFO
-l_string|&quot;Capability LSM initialized&bslash;n&quot;
+l_string|&quot;Capability LSM initialized%s&bslash;n&quot;
+comma
+id|secondary
+ques
+c_cond
+l_string|&quot; as secondary&quot;
+suffix:colon
+l_string|&quot;&quot;
 )paren
 suffix:semicolon
 r_return
