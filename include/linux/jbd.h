@@ -931,6 +931,12 @@ id|jbd_revoke_table_s
 op_star
 id|j_revoke
 suffix:semicolon
+multiline_comment|/* An opaque pointer to fs-private information.  ext3 puts its&n;&t; * superblock pointer here */
+DECL|member|j_private
+r_void
+op_star
+id|j_private
+suffix:semicolon
 )brace
 suffix:semicolon
 multiline_comment|/* &n; * Journal flag definitions &n; */

@@ -3924,8 +3924,6 @@ id|ext3_journal_stop
 c_func
 (paren
 id|handle
-comma
-id|inode
 )paren
 suffix:semicolon
 id|unlock_kernel
