@@ -8453,10 +8453,6 @@ r_case
 id|SIOCGMIIPHY
 suffix:colon
 multiline_comment|/* Get address of MII PHY in use. */
-r_case
-id|SIOCDEVPRIVATE
-suffix:colon
-multiline_comment|/* for binary compat, remove in 2.5 */
 id|data-&gt;phy_id
 op_assign
 (paren
@@ -8480,12 +8476,6 @@ r_case
 id|SIOCGMIIREG
 suffix:colon
 multiline_comment|/* Read MII PHY register. */
-r_case
-id|SIOCDEVPRIVATE
-op_plus
-l_int|1
-suffix:colon
-multiline_comment|/* for binary compat, remove in 2.5 */
 id|data-&gt;val_out
 op_assign
 id|mdio_read
@@ -8509,12 +8499,6 @@ r_case
 id|SIOCSMIIREG
 suffix:colon
 multiline_comment|/* Write MII PHY register. */
-r_case
-id|SIOCDEVPRIVATE
-op_plus
-l_int|2
-suffix:colon
-multiline_comment|/* for binary compat, remove in 2.5 */
 multiline_comment|/* TODO: Check the sequencing of this.  Might need to stop and&n;&t;&t; * restart Rx and Tx engines. -KDU&n;&t;&t; */
 r_if
 c_cond

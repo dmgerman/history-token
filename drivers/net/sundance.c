@@ -1,11 +1,11 @@
 multiline_comment|/* sundance.c: A Linux device driver for the Sundance ST201 &quot;Alta&quot;. */
-multiline_comment|/*&n;&t;Written 1999-2000 by Donald Becker.&n;&n;&t;This software may be used and distributed according to the terms of&n;&t;the GNU General Public License (GPL), incorporated herein by reference.&n;&t;Drivers based on or derived from this code fall under the GPL and must&n;&t;retain the authorship, copyright and license notice.  This file is not&n;&t;a complete program and may only be used when the entire operating&n;&t;system is licensed under the GPL.&n;&n;&t;The author may be reached as becker@scyld.com, or C/O&n;&t;Scyld Computing Corporation&n;&t;410 Severn Ave., Suite 210&n;&t;Annapolis MD 21403&n;&n;&t;Support and updates available at&n;&t;http://www.scyld.com/network/sundance.html&n;&n;&n;&t;Version 1.01a (jgarzik):&n;&t;- Replace some MII-related magic numbers with constants&n;&n;*/
+multiline_comment|/*&n;&t;Written 1999-2000 by Donald Becker.&n;&n;&t;This software may be used and distributed according to the terms of&n;&t;the GNU General Public License (GPL), incorporated herein by reference.&n;&t;Drivers based on or derived from this code fall under the GPL and must&n;&t;retain the authorship, copyright and license notice.  This file is not&n;&t;a complete program and may only be used when the entire operating&n;&t;system is licensed under the GPL.&n;&n;&t;The author may be reached as becker@scyld.com, or C/O&n;&t;Scyld Computing Corporation&n;&t;410 Severn Ave., Suite 210&n;&t;Annapolis MD 21403&n;&n;&t;Support and updates available at&n;&t;http://www.scyld.com/network/sundance.html&n;&n;&n;&t;Version 1.01a (jgarzik):&n;&t;- Replace some MII-related magic numbers with constants&n;&n;&t;Version 1.02 (D-Link):&n;&t;- Add new board to PCI ID list&n;&t;- Fix multicast bug&n;&n;*/
 DECL|macro|DRV_NAME
 mdefine_line|#define DRV_NAME&t;&quot;sundance&quot;
 DECL|macro|DRV_VERSION
-mdefine_line|#define DRV_VERSION&t;&quot;1.01a&quot;
+mdefine_line|#define DRV_VERSION&t;&quot;1.02&quot;
 DECL|macro|DRV_RELDATE
-mdefine_line|#define DRV_RELDATE&t;&quot;11-Nov-2001&quot;
+mdefine_line|#define DRV_RELDATE&t;&quot;17-Jan-2002&quot;
 multiline_comment|/* The user-configurable values.&n;   These may be modified when a driver module is loaded.*/
 DECL|variable|debug
 r_static
@@ -368,15 +368,31 @@ l_int|0x1186
 comma
 l_int|0x1002
 comma
-id|PCI_ANY_ID
+l_int|0x1186
 comma
-id|PCI_ANY_ID
+l_int|0x1040
 comma
 l_int|0
 comma
 l_int|0
 comma
 l_int|3
+)brace
+comma
+(brace
+l_int|0x1186
+comma
+l_int|0x1002
+comma
+id|PCI_ANY_ID
+comma
+id|PCI_ANY_ID
+comma
+l_int|0
+comma
+l_int|0
+comma
+l_int|4
 )brace
 comma
 (brace
@@ -392,7 +408,7 @@ l_int|0
 comma
 l_int|0
 comma
-l_int|4
+l_int|5
 )brace
 comma
 (brace
@@ -513,6 +529,23 @@ l_string|&quot;D-Link DFE-580TX 4 port Server Adapter&quot;
 comma
 (brace
 l_int|0x10121186
+comma
+l_int|0xffffffff
+comma
+)brace
+comma
+id|PCI_IOTYPE
+comma
+l_int|128
+comma
+id|CanHaveMII
+)brace
+comma
+(brace
+l_string|&quot;D-Link DFE-530TXS FAST Ethernet Adapter&quot;
+comma
+(brace
+l_int|0x10021186
 comma
 l_int|0xffffffff
 comma
@@ -6194,8 +6227,16 @@ id|dev_mc_list
 op_star
 id|mclist
 suffix:semicolon
+r_int
+id|bit
+suffix:semicolon
+r_int
+id|index
+suffix:semicolon
+r_int
+id|crc
+suffix:semicolon
 id|memset
-c_func
 (paren
 id|mc_filter
 comma
@@ -6232,20 +6273,65 @@ op_assign
 id|mclist-&gt;next
 )paren
 (brace
-id|set_bit
-c_func
-(paren
+id|crc
+op_assign
 id|ether_crc_le
-c_func
 (paren
 id|ETH_ALEN
 comma
 id|mclist-&gt;dmi_addr
 )paren
-op_amp
-l_int|0x3f
+suffix:semicolon
+r_for
+c_loop
+(paren
+id|index
+op_assign
+l_int|0
 comma
+id|bit
+op_assign
+l_int|0
+suffix:semicolon
+id|bit
+OL
+l_int|6
+suffix:semicolon
+id|bit
+op_increment
+comma
+id|crc
+op_lshift_assign
+l_int|1
+)paren
+r_if
+c_cond
+(paren
+id|crc
+op_amp
+l_int|0x80000000
+)paren
+id|index
+op_or_assign
+l_int|1
+op_lshift
+id|bit
+suffix:semicolon
 id|mc_filter
+(braket
+id|index
+op_div
+l_int|16
+)braket
+op_or_assign
+(paren
+l_int|1
+op_lshift
+(paren
+id|index
+op_mod
+l_int|16
+)paren
 )paren
 suffix:semicolon
 )brace
@@ -6496,10 +6582,6 @@ r_case
 id|SIOCGMIIPHY
 suffix:colon
 multiline_comment|/* Get address of MII PHY in use. */
-r_case
-id|SIOCDEVPRIVATE
-suffix:colon
-multiline_comment|/* for binary compat, remove in 2.5 */
 id|data-&gt;phy_id
 op_assign
 (paren
@@ -6523,12 +6605,6 @@ r_case
 id|SIOCGMIIREG
 suffix:colon
 multiline_comment|/* Read MII PHY register. */
-r_case
-id|SIOCDEVPRIVATE
-op_plus
-l_int|1
-suffix:colon
-multiline_comment|/* for binary compat, remove in 2.5 */
 id|data-&gt;val_out
 op_assign
 id|mdio_read
@@ -6552,12 +6628,6 @@ r_case
 id|SIOCSMIIREG
 suffix:colon
 multiline_comment|/* Write MII PHY register. */
-r_case
-id|SIOCDEVPRIVATE
-op_plus
-l_int|2
-suffix:colon
-multiline_comment|/* for binary compat, remove in 2.5 */
 r_if
 c_cond
 (paren

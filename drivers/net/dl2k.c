@@ -1,6 +1,6 @@
 multiline_comment|/*  D-Link DL2000-based Gigabit Ethernet Adapter Linux driver */
 multiline_comment|/*&n;    Copyright (c) 2001 by D-Link Corporation&n;    Written by Edward Peng.&lt;edward_peng@dlink.com.tw&gt;&n;    Created 03-May-2001, base on Linux&squot; sundance.c.&n;&n;    This program is free software; you can redistribute it and/or modify&n;    it under the terms of the GNU General Public License as published by&n;    the Free Software Foundation; either version 2 of the License, or&n;    (at your option) any later version.&n;*/
-multiline_comment|/*&n;    Rev&t;&t;Date&t;&t;Description&n;    ==========================================================================&n;    0.01&t;2001/05/03&t;Created DL2000-based linux driver&n;    0.02&t;2001/05/21&t;Added VLAN and hardware checksum support.&n;    1.00&t;2001/06/26&t;Added jumbo frame support.&n;    1.01&t;2001/08/21&t;Added two parameters, int_count and int_timeout.&n;    1.02&t;2001/10/08&t;Supported fiber media.&n;    &t;&t;&t;&t;Added flow control parameters.&n;    1.03&t;2001/10/12&t;Changed the default media to 1000mbps_fd for the &n;    &t;&t;&t;&t;fiber devices.&n;    1.04&t;2001/11/08&t;Fixed a bug which Tx stop when a very busy case.&n;*/
+multiline_comment|/*&n;    Rev&t;&t;Date&t;&t;Description&n;    ==========================================================================&n;    0.01&t;2001/05/03&t;Created DL2000-based linux driver&n;    0.02&t;2001/05/21&t;Added VLAN and hardware checksum support.&n;    1.00&t;2001/06/26&t;Added jumbo frame support.&n;    1.01&t;2001/08/21&t;Added two parameters, rx_coalesce and rx_timeout.&n;    1.02&t;2001/10/08&t;Supported fiber media.&n;    &t;&t;&t;&t;Added flow control parameters.&n;    1.03&t;2001/10/12&t;Changed the default media to 1000mbps_fd for &n;    &t;&t;&t;&t;the fiber devices.&n;    1.04&t;2001/11/08&t;Fixed Tx stopped when tx very busy.&n;    1.05&t;2001/11/22&t;Fixed Tx stopped when unidirectional tx busy.&n;    1.06&t;2001/12/13&t;Fixed disconnect bug at 10Mbps mode.&n;    &t;&t;&t;&t;Fixed tx_full flag incorrect.&n;&t;&t;&t;&t;Added tx_coalesce paramter.&n;    1.07&t;2002/01/03&t;Fixed miscount of RX frame error.&n;    1.08&t;2002/01/17&t;Fixed the multicast bug.&n; */
 macro_line|#include &quot;dl2k.h&quot;
 DECL|variable|__devinitdata
 r_static
@@ -11,7 +11,7 @@ id|version
 id|__devinitdata
 op_assign
 id|KERN_INFO
-l_string|&quot;D-Link DL2000-based linux driver v1.04 2001/11/08&bslash;n&quot;
+l_string|&quot;D-Link DL2000-based linux driver v1.08 2002/01/17&bslash;n&quot;
 suffix:semicolon
 DECL|macro|MAX_UNITS
 mdefine_line|#define MAX_UNITS 8
@@ -69,18 +69,27 @@ r_static
 r_int
 id|copy_thresh
 suffix:semicolon
-DECL|variable|int_count
+DECL|variable|rx_coalesce
 r_static
 r_int
-id|int_count
+id|rx_coalesce
+op_assign
+id|DEFAULT_RXC
 suffix:semicolon
-multiline_comment|/* Rx frame count each interrupt */
-DECL|variable|int_timeout
+DECL|variable|rx_timeout
 r_static
 r_int
-id|int_timeout
+id|rx_timeout
+op_assign
+id|DEFAULT_RXT
 suffix:semicolon
-multiline_comment|/* Rx DMA wait time in 64ns increments */
+DECL|variable|tx_coalesce
+r_static
+r_int
+id|tx_coalesce
+op_assign
+id|DEFAULT_TXC
+suffix:semicolon
 id|MODULE_AUTHOR
 (paren
 l_string|&quot;Edward Peng&quot;
@@ -89,6 +98,12 @@ suffix:semicolon
 id|MODULE_DESCRIPTION
 (paren
 l_string|&quot;D-Link DL2000-based Gigabit Ethernet Adapter&quot;
+)paren
+suffix:semicolon
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
 id|MODULE_PARM
@@ -172,21 +187,33 @@ l_string|&quot;i&quot;
 suffix:semicolon
 id|MODULE_PARM
 (paren
-id|int_count
+id|rx_coalesce
 comma
 l_string|&quot;i&quot;
 )paren
 suffix:semicolon
+multiline_comment|/* Rx frame count each interrupt */
 id|MODULE_PARM
 (paren
-id|int_timeout
+id|rx_timeout
 comma
 l_string|&quot;i&quot;
 )paren
 suffix:semicolon
+multiline_comment|/* Rx DMA wait time in 64ns increments */
+id|MODULE_PARM
+(paren
+id|tx_coalesce
+comma
+l_string|&quot;i&quot;
+)paren
+suffix:semicolon
+multiline_comment|/* HW xmit count each TxComplete [1-8] */
 multiline_comment|/* Enable the default interrupts */
+DECL|macro|DEFAULT_INTR
+mdefine_line|#define DEFAULT_INTR (RxDMAComplete | HostError | IntRequested | TxComplete| &bslash;&n;       UpdateStats | LinkEvent)
 DECL|macro|EnableInt
-mdefine_line|#define EnableInt() &bslash;&n;writew(RxDMAComplete | HostError | IntRequested | TxComplete| &bslash;&n;       UpdateStats | LinkEvent, ioaddr + IntEnable)
+mdefine_line|#define EnableInt() &bslash;&n;writew(DEFAULT_INTR, ioaddr + IntEnable)
 DECL|variable|max_intrloop
 r_static
 r_int
@@ -962,7 +989,7 @@ id|media
 id|card_idx
 )braket
 comma
-l_string|&quot;5&quot;
+l_string|&quot;6&quot;
 )paren
 op_eq
 l_int|0
@@ -1000,7 +1027,7 @@ id|media
 id|card_idx
 )braket
 comma
-l_string|&quot;6&quot;
+l_string|&quot;5&quot;
 )paren
 op_eq
 l_int|0
@@ -1040,7 +1067,7 @@ l_int|1
 suffix:semicolon
 id|dev-&gt;mtu
 op_assign
-l_int|9000
+id|MAX_JUMBO
 suffix:semicolon
 )brace
 r_else
@@ -1103,22 +1130,22 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|int_count
+id|rx_coalesce
 op_ne
 l_int|0
 op_logical_and
-id|int_timeout
+id|rx_timeout
 op_ne
 l_int|0
 )paren
 (brace
-id|np-&gt;int_count
+id|np-&gt;rx_coalesce
 op_assign
-id|int_count
+id|rx_coalesce
 suffix:semicolon
-id|np-&gt;int_timeout
+id|np-&gt;rx_timeout
 op_assign
-id|int_timeout
+id|rx_timeout
 suffix:semicolon
 id|np-&gt;coalesce
 op_assign
@@ -1152,6 +1179,28 @@ c_cond
 l_int|1
 suffix:colon
 l_int|0
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|tx_coalesce
+OL
+l_int|1
+)paren
+id|tx_coalesce
+op_assign
+l_int|1
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|tx_coalesce
+OG
+l_int|8
+)paren
+id|tx_coalesce
+op_assign
+l_int|8
 suffix:semicolon
 )brace
 id|dev-&gt;open
@@ -1198,12 +1247,10 @@ op_assign
 op_amp
 id|change_mtu
 suffix:semicolon
-macro_line|#ifdef TX_HW_CHECKSUM
+macro_line|#if 0
 id|dev-&gt;features
 op_assign
-id|NETIF_F_SG
-op_or
-id|NETIF_F_HW_CSUM
+id|NETIF_F_IP_CSUM
 suffix:semicolon
 macro_line|#endif
 id|pci_set_drvdata
@@ -2085,7 +2132,9 @@ l_int|0
 )paren
 id|writew
 (paren
-l_int|9014
+id|MAX_JUMBO
+op_plus
+l_int|14
 comma
 id|ioaddr
 op_plus
@@ -2139,9 +2188,9 @@ id|np-&gt;coalesce
 (brace
 id|writel
 (paren
-id|np-&gt;int_count
+id|np-&gt;rx_coalesce
 op_or
-id|np-&gt;int_timeout
+id|np-&gt;rx_timeout
 op_lshift
 l_int|16
 comma
@@ -2297,8 +2346,8 @@ id|dev-&gt;base_addr
 suffix:semicolon
 id|printk
 (paren
-id|KERN_WARNING
-l_string|&quot;%s: Transmit timed out, TxStatus %4.4x.&bslash;n&quot;
+id|KERN_INFO
+l_string|&quot;%s: Tx timed out (%4.4x), is buffer full?&bslash;n&quot;
 comma
 id|dev-&gt;name
 comma
@@ -2310,6 +2359,86 @@ id|TxStatus
 )paren
 )paren
 suffix:semicolon
+multiline_comment|/* Free used tx skbuffs */
+r_for
+c_loop
+(paren
+suffix:semicolon
+id|np-&gt;cur_tx
+op_minus
+id|np-&gt;old_tx
+OG
+l_int|0
+suffix:semicolon
+id|np-&gt;old_tx
+op_increment
+)paren
+(brace
+r_int
+id|entry
+op_assign
+id|np-&gt;old_tx
+op_mod
+id|TX_RING_SIZE
+suffix:semicolon
+r_struct
+id|sk_buff
+op_star
+id|skb
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+(paren
+id|np-&gt;tx_ring
+(braket
+id|entry
+)braket
+dot
+id|status
+op_amp
+id|TFDDone
+)paren
+)paren
+r_break
+suffix:semicolon
+id|skb
+op_assign
+id|np-&gt;tx_skbuff
+(braket
+id|entry
+)braket
+suffix:semicolon
+id|pci_unmap_single
+(paren
+id|np-&gt;pdev
+comma
+id|np-&gt;tx_ring
+(braket
+id|entry
+)braket
+dot
+id|fraginfo
+comma
+id|skb-&gt;len
+comma
+id|PCI_DMA_TODEVICE
+)paren
+suffix:semicolon
+id|dev_kfree_skb_irq
+(paren
+id|skb
+)paren
+suffix:semicolon
+id|np-&gt;tx_skbuff
+(braket
+id|entry
+)braket
+op_assign
+l_int|0
+suffix:semicolon
+)brace
 id|dev-&gt;if_port
 op_assign
 l_int|0
@@ -2321,17 +2450,31 @@ suffix:semicolon
 id|np-&gt;stats.tx_errors
 op_increment
 suffix:semicolon
+multiline_comment|/* If the ring is no longer full, clear tx_full and &n;&t;   call netif_wake_queue() */
 r_if
 c_cond
 (paren
-op_logical_neg
 id|np-&gt;tx_full
+op_logical_and
+id|np-&gt;cur_tx
+op_minus
+id|np-&gt;old_tx
+OL
+id|TX_QUEUE_LEN
+op_minus
+l_int|1
 )paren
+(brace
+id|np-&gt;tx_full
+op_assign
+l_int|0
+suffix:semicolon
 id|netif_wake_queue
 (paren
 id|dev
 )paren
 suffix:semicolon
+)brace
 )brace
 multiline_comment|/* allocate and initialize Tx and Rx descriptors */
 r_static
@@ -2416,7 +2559,38 @@ id|i
 dot
 id|status
 op_assign
-l_int|0
+id|cpu_to_le64
+(paren
+id|TFDDone
+)paren
+suffix:semicolon
+id|np-&gt;tx_ring
+(braket
+id|i
+)braket
+dot
+id|next_desc
+op_assign
+id|cpu_to_le64
+(paren
+id|np-&gt;tx_ring_dma
+op_plus
+(paren
+(paren
+id|i
+op_plus
+l_int|1
+)paren
+op_mod
+id|TX_RING_SIZE
+)paren
+op_star
+r_sizeof
+(paren
+r_struct
+id|netdev_desc
+)paren
+)paren
 suffix:semicolon
 )brace
 multiline_comment|/* Initialize Rx descriptors */
@@ -2683,10 +2857,6 @@ id|np-&gt;tx_ring
 id|entry
 )braket
 suffix:semicolon
-id|txdesc-&gt;next_desc
-op_assign
-l_int|0
-suffix:semicolon
 multiline_comment|/* Set TFDDone to avoid TxDMA gather this descriptor */
 id|txdesc-&gt;status
 op_assign
@@ -2710,7 +2880,7 @@ id|FragCountShift
 )paren
 )paren
 suffix:semicolon
-macro_line|#ifdef TX_HW_CHECKSUM
+macro_line|#if 0
 r_if
 c_cond
 (paren
@@ -2771,7 +2941,7 @@ c_cond
 (paren
 id|entry
 op_mod
-l_int|0x08
+id|tx_coalesce
 op_eq
 l_int|0
 op_logical_or
@@ -2810,31 +2980,6 @@ id|skb-&gt;len
 )paren
 op_lshift
 l_int|48
-suffix:semicolon
-multiline_comment|/* Chain the last descriptor&squot;s pointer to this one */
-r_if
-c_cond
-(paren
-id|np-&gt;last_tx
-)paren
-id|np-&gt;last_tx-&gt;next_desc
-op_assign
-id|cpu_to_le64
-(paren
-id|np-&gt;tx_ring_dma
-op_plus
-id|entry
-op_star
-r_sizeof
-(paren
-r_struct
-id|netdev_desc
-)paren
-)paren
-suffix:semicolon
-id|np-&gt;last_tx
-op_assign
-id|txdesc
 suffix:semicolon
 multiline_comment|/* Clear TFDDone, then TxDMA start to send this descriptor */
 id|txdesc-&gt;status
@@ -2890,6 +3035,15 @@ multiline_comment|/* do nothing */
 )brace
 r_else
 (brace
+id|spin_lock_irqsave
+c_func
+(paren
+op_amp
+id|np-&gt;lock
+comma
+id|flags
+)paren
+suffix:semicolon
 id|np-&gt;tx_full
 op_assign
 l_int|1
@@ -2897,6 +3051,14 @@ suffix:semicolon
 id|netif_stop_queue
 (paren
 id|dev
+)paren
+suffix:semicolon
+id|spin_unlock_irqrestore
+(paren
+op_amp
+id|np-&gt;lock
+comma
+id|flags
 )paren
 suffix:semicolon
 )brace
@@ -2941,14 +3103,6 @@ id|TFDListPtr1
 )paren
 suffix:semicolon
 )brace
-id|spin_lock_irqsave
-(paren
-op_amp
-id|np-&gt;lock
-comma
-id|flags
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -2957,6 +3111,14 @@ OG
 id|TX_RING_SIZE
 )paren
 (brace
+id|spin_lock_irqsave
+(paren
+op_amp
+id|np-&gt;lock
+comma
+id|flags
+)paren
+suffix:semicolon
 id|tx_shift
 op_assign
 id|TX_RING_SIZE
@@ -2969,7 +3131,6 @@ id|np-&gt;cur_tx
 op_sub_assign
 id|tx_shift
 suffix:semicolon
-)brace
 id|spin_unlock_irqrestore
 (paren
 op_amp
@@ -2978,6 +3139,7 @@ comma
 id|flags
 )paren
 suffix:semicolon
+)brace
 multiline_comment|/* NETDEV WATCHDOG timer */
 id|dev-&gt;trans_start
 op_assign
@@ -3037,6 +3199,7 @@ op_assign
 id|dev-&gt;priv
 suffix:semicolon
 id|spin_lock
+c_func
 (paren
 op_amp
 id|np-&gt;lock
@@ -3056,51 +3219,19 @@ id|ioaddr
 op_plus
 id|IntStatus
 )paren
-op_amp
-(paren
-id|HostError
-op_or
-id|TxComplete
-op_or
-id|IntRequested
-op_or
-id|UpdateStats
-op_or
-id|LinkEvent
-op_or
-id|RxDMAComplete
-)paren
 suffix:semicolon
 id|writew
 (paren
 id|int_status
-op_amp
-(paren
-id|HostError
-op_or
-id|TxComplete
-op_or
-id|RxComplete
-op_or
-id|IntRequested
-op_or
-id|UpdateStats
-op_or
-id|LinkEvent
-op_or
-id|TxDMAComplete
-op_or
-id|RxDMAComplete
-op_or
-id|RFDListEnd
-op_or
-id|RxDMAPriority
-)paren
 comma
 id|ioaddr
 op_plus
 id|IntStatus
 )paren
+suffix:semicolon
+id|int_status
+op_and_assign
+id|DEFAULT_INTR
 suffix:semicolon
 r_if
 c_cond
@@ -3128,14 +3259,18 @@ multiline_comment|/* TxComplete interrupt */
 r_if
 c_cond
 (paren
+(paren
 id|int_status
 op_amp
 id|TxComplete
+)paren
 op_logical_or
 id|np-&gt;tx_full
 )paren
 (brace
 r_int
+id|tx_status
+suffix:semicolon
 id|tx_status
 op_assign
 id|readl
@@ -3159,25 +3294,6 @@ comma
 id|tx_status
 )paren
 suffix:semicolon
-multiline_comment|/* Send one packet each time at 10Mbps mode */
-r_if
-c_cond
-(paren
-id|np-&gt;speed
-op_eq
-l_int|10
-)paren
-(brace
-id|np-&gt;tx_full
-op_assign
-l_int|0
-suffix:semicolon
-id|netif_wake_queue
-(paren
-id|dev
-)paren
-suffix:semicolon
-)brace
 multiline_comment|/* Free used tx skbuffs */
 r_for
 c_loop
@@ -3274,6 +3390,18 @@ op_minus
 l_int|1
 )paren
 (brace
+r_if
+c_cond
+(paren
+id|np-&gt;speed
+op_ne
+l_int|10
+op_logical_or
+id|int_status
+op_amp
+id|TxComplete
+)paren
+(brace
 id|np-&gt;tx_full
 op_assign
 l_int|0
@@ -3283,6 +3411,7 @@ id|netif_wake_queue
 id|dev
 )paren
 suffix:semicolon
+)brace
 )brace
 multiline_comment|/* Handle uncommon events */
 r_if
@@ -3345,6 +3474,7 @@ suffix:semicolon
 )brace
 )brace
 id|spin_unlock
+c_func
 (paren
 op_amp
 id|np-&gt;lock
@@ -3704,7 +3834,7 @@ id|np-&gt;stats.collisions
 op_increment
 suffix:semicolon
 macro_line|#endif
-multiline_comment|/* Restart the Tx. */
+multiline_comment|/* Restart the Tx */
 id|writel
 (paren
 id|readw
@@ -4050,7 +4180,7 @@ comma
 id|dev
 )paren
 suffix:semicolon
-macro_line|#ifdef RX_HW_CHECKSUM
+macro_line|#if 0
 multiline_comment|/* Checksum done by hw, but csum value unavailable. */
 r_if
 c_cond
@@ -4456,7 +4586,7 @@ id|HostError
 id|printk
 (paren
 id|KERN_ERR
-l_string|&quot;%s: PCI Error! IntStatus %4.4x.&bslash;n&quot;
+l_string|&quot;%s: HostError! IntStatus %4.4x.&bslash;n&quot;
 comma
 id|dev-&gt;name
 comma
@@ -4517,7 +4647,7 @@ suffix:semicolon
 r_int
 id|i
 suffix:semicolon
-multiline_comment|/* All statistics registers need to acknowledge,&n;&t;   else overflow could cause some problem */
+multiline_comment|/* All statistics registers need to be acknowledged,&n;&t;   else statistic overflow could cause problems */
 id|np-&gt;stats.rx_packets
 op_add_assign
 id|readl
@@ -4641,13 +4771,6 @@ id|readw
 (paren
 id|ioaddr
 op_plus
-id|InRangeLengthErrors
-)paren
-op_plus
-id|readw
-(paren
-id|ioaddr
-op_plus
 id|FrameTooLongErrors
 )paren
 suffix:semicolon
@@ -4661,6 +4784,13 @@ id|FrameCheckSeqError
 )paren
 suffix:semicolon
 multiline_comment|/* Clear all other statistic register. */
+id|readw
+(paren
+id|ioaddr
+op_plus
+id|InRangeLengthErrors
+)paren
+suffix:semicolon
 id|readw
 (paren
 id|ioaddr
@@ -4814,7 +4944,7 @@ id|np-&gt;jumbo
 )paren
 ques
 c_cond
-l_int|9000
+id|MAX_JUMBO
 suffix:colon
 l_int|1536
 suffix:semicolon
@@ -4877,6 +5007,14 @@ suffix:semicolon
 r_int
 id|i
 suffix:semicolon
+r_int
+id|bit
+suffix:semicolon
+r_int
+id|index
+comma
+id|crc
+suffix:semicolon
 r_struct
 id|dev_mc_list
 op_star
@@ -4889,12 +5027,25 @@ id|np
 op_assign
 id|dev-&gt;priv
 suffix:semicolon
-multiline_comment|/* Default: receive broadcast and unicast */
-id|rx_mode
+id|hash_table
+(braket
+l_int|0
+)braket
 op_assign
-id|ReceiveBroadcast
-op_or
-id|ReceiveUnicast
+id|hash_table
+(braket
+l_int|1
+)braket
+op_assign
+l_int|0
+suffix:semicolon
+multiline_comment|/* RxFlowcontrol DA: 01-80-C2-00-00-01. Hash index=0x39 */
+id|hash_table
+(braket
+l_int|1
+)braket
+op_or_assign
+l_int|0x02000000
 suffix:semicolon
 r_if
 c_cond
@@ -4906,7 +5057,7 @@ id|IFF_PROMISC
 (brace
 multiline_comment|/* Receive all frames promiscuously. */
 id|rx_mode
-op_or_assign
+op_assign
 id|ReceiveAllFrames
 suffix:semicolon
 )brace
@@ -4915,29 +5066,21 @@ r_if
 c_cond
 (paren
 (paren
-(paren
 id|dev-&gt;flags
 op_amp
-id|IFF_MULTICAST
+id|IFF_ALLMULTI
 )paren
-op_logical_and
+op_logical_or
 (paren
 id|dev-&gt;mc_count
 OG
 id|multicast_filter_limit
 )paren
 )paren
-op_logical_or
-(paren
-id|dev-&gt;flags
-op_amp
-id|IFF_ALLMULTI
-)paren
-)paren
 (brace
 multiline_comment|/* Receive broadcast and multicast frames */
 id|rx_mode
-op_or_assign
+op_assign
 id|ReceiveBroadcast
 op_or
 id|ReceiveMulticast
@@ -4949,54 +5092,19 @@ r_else
 r_if
 c_cond
 (paren
-(paren
-id|dev-&gt;flags
-op_amp
-id|IFF_MULTICAST
-)paren
-op_amp
-(paren
 id|dev-&gt;mc_count
 OG
 l_int|0
 )paren
-)paren
 (brace
-multiline_comment|/* Receive broadcast frames and multicast frames filtering by Hashtable */
+multiline_comment|/* Receive broadcast frames and multicast frames filtering &n;&t;&t;   by Hashtable */
 id|rx_mode
-op_or_assign
+op_assign
 id|ReceiveBroadcast
 op_or
 id|ReceiveMulticastHash
 op_or
 id|ReceiveUnicast
-suffix:semicolon
-)brace
-r_if
-c_cond
-(paren
-id|np-&gt;vlan
-)paren
-(brace
-multiline_comment|/* ReceiveVLANMatch field in ReceiveMode */
-id|rx_mode
-op_or_assign
-id|ReceiveVLANMatch
-suffix:semicolon
-)brace
-id|hash_table
-(braket
-l_int|0
-)braket
-op_assign
-l_int|0x00000000
-suffix:semicolon
-id|hash_table
-(braket
-l_int|1
-)braket
-op_assign
-l_int|0x00000000
 suffix:semicolon
 r_for
 c_loop
@@ -5023,20 +5131,90 @@ op_assign
 id|mclist-&gt;next
 )paren
 (brace
-id|set_bit
-(paren
+id|crc
+op_assign
 id|ether_crc_le
-c_func
 (paren
 id|ETH_ALEN
 comma
 id|mclist-&gt;dmi_addr
 )paren
-op_amp
-l_int|0x3f
+suffix:semicolon
+r_for
+c_loop
+(paren
+id|index
+op_assign
+l_int|0
 comma
-id|hash_table
+id|bit
+op_assign
+l_int|0
+suffix:semicolon
+id|bit
+OL
+l_int|6
+suffix:semicolon
+id|bit
+op_increment
+comma
+id|crc
+op_lshift_assign
+l_int|1
 )paren
+(brace
+r_if
+c_cond
+(paren
+id|crc
+op_amp
+l_int|0x80000000
+)paren
+id|index
+op_or_assign
+l_int|1
+op_lshift
+id|bit
+suffix:semicolon
+)brace
+id|hash_table
+(braket
+id|index
+op_div
+l_int|32
+)braket
+op_or_assign
+(paren
+l_int|1
+op_lshift
+(paren
+id|index
+op_mod
+l_int|32
+)paren
+)paren
+suffix:semicolon
+)brace
+)brace
+r_else
+(brace
+id|rx_mode
+op_assign
+id|ReceiveBroadcast
+op_or
+id|ReceiveUnicast
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+id|np-&gt;vlan
+)paren
+(brace
+multiline_comment|/* ReceiveVLANMatch field in ReceiveMode */
+id|rx_mode
+op_or_assign
+id|ReceiveVLANMatch
 suffix:semicolon
 )brace
 id|writel
@@ -8151,5 +8329,5 @@ id|module_exit
 id|rio_exit
 )paren
 suffix:semicolon
-multiline_comment|/*&n; &n;Compile command: &n; &n;gcc -D__KERNEL__ -DMODULE -I/usr/src/linux/include -Wall -Wstrict-prototypes -O2 -c dl2x.c&n;&n;Read Documentation/networking/dl2k.txt for details.&n;&n;*/
+multiline_comment|/*&n; &n;Compile command: &n; &n;gcc -D__KERNEL__ -DMODULE -I/usr/src/linux/include -Wall -Wstrict-prototypes -O2 -c dl2k.c&n;&n;Read Documentation/networking/dl2k.txt for details.&n;&n;*/
 eof

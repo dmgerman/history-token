@@ -1651,7 +1651,7 @@ id|c
 (brace
 multiline_comment|/* Huh? */
 r_return
-id|MKDEV
+id|mk_kdev
 c_func
 (paren
 id|TTY_MAJOR
