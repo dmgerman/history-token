@@ -188,6 +188,8 @@ DECL|macro|__devexit
 mdefine_line|#define __devexit
 DECL|macro|__devexitdata
 mdefine_line|#define __devexitdata
+DECL|macro|__devexit_p
+mdefine_line|#define __devexit_p(x)  &amp;(x)
 macro_line|#else
 DECL|macro|__devinit
 mdefine_line|#define __devinit __init
@@ -197,6 +199,8 @@ DECL|macro|__devexit
 mdefine_line|#define __devexit __exit
 DECL|macro|__devexitdata
 mdefine_line|#define __devexitdata __exitdata
+DECL|macro|__devexit_p
+mdefine_line|#define __devexit_p(x)  0
 macro_line|#endif
 macro_line|#endif /* _LINUX_INIT_H */
 eof
