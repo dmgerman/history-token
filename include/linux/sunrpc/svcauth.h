@@ -5,6 +5,7 @@ mdefine_line|#define _LINUX_SUNRPC_SVCAUTH_H_
 macro_line|#ifdef __KERNEL__
 macro_line|#include &lt;linux/sunrpc/msg_prot.h&gt;
 macro_line|#include &lt;linux/sunrpc/cache.h&gt;
+macro_line|#include &lt;linux/string.h&gt;
 DECL|struct|svc_cred
 r_struct
 id|svc_cred
