@@ -7,7 +7,6 @@ macro_line|#include &lt;linux/jiffies.h&gt;
 multiline_comment|/* #define DEBUG */
 multiline_comment|/**&n; * oom_badness - calculate a numeric value for how bad this task has been&n; * @p: task struct of which task we should calculate&n; * @p: current uptime in seconds&n; *&n; * The formula used is relatively simple and documented inline in the&n; * function. The main rationale is that we want to select a good task&n; * to kill when we run out of memory.&n; *&n; * Good in this context means that:&n; * 1) we lose the minimum amount of work done&n; * 2) we recover a large amount of memory&n; * 3) we don&squot;t kill anything innocent of eating tons of memory&n; * 4) we want to kill the minimum amount of processes (one)&n; * 5) we try to kill the process the user expects us to kill, this&n; *    algorithm has been meticulously tuned to meet the principle&n; *    of least surprise ... (be careful when you change it)&n; */
 DECL|function|badness
-r_static
 r_int
 r_int
 id|badness
@@ -204,6 +203,33 @@ id|points
 op_div_assign
 l_int|4
 suffix:semicolon
+multiline_comment|/*&n;&t; * Adjust the score by oomkilladj.&n;&t; */
+r_if
+c_cond
+(paren
+id|p-&gt;oomkilladj
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|p-&gt;oomkilladj
+OG
+l_int|0
+)paren
+id|points
+op_lshift_assign
+id|p-&gt;oomkilladj
+suffix:semicolon
+r_else
+id|points
+op_rshift_assign
+op_minus
+(paren
+id|p-&gt;oomkilladj
+)paren
+suffix:semicolon
+)brace
 macro_line|#ifdef DEBUG
 id|printk
 c_func

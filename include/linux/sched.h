@@ -1764,10 +1764,16 @@ id|thread_keyring
 suffix:semicolon
 multiline_comment|/* keyring private to this thread */
 macro_line|#endif
+multiline_comment|/*&n; * Must be changed atomically so it shouldn&squot;t be&n; * be a shareable bitflag.&n; */
 DECL|member|used_math
 r_int
-r_int
+r_char
 id|used_math
+suffix:semicolon
+multiline_comment|/*&n; * OOM kill score adjustment (bit shift).&n; * Cannot live together with used_math since&n; * used_math and oomkilladj can be changed at the&n; * same time, so they would race if they&squot;re in the&n; * same atomic block.&n; */
+DECL|member|oomkilladj
+r_int
+id|oomkilladj
 suffix:semicolon
 DECL|member|comm
 r_char
