@@ -3659,9 +3659,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|dev
-op_member_access_from_pointer
-id|set_mac_address
+id|dev_set_mac_address
 c_func
 (paren
 id|dev
@@ -3676,7 +3674,7 @@ c_func
 (paren
 id|KERN_ERR
 id|DRV_NAME
-l_string|&quot;: Error: dev-&gt;set_mac_address of dev %s failed! ALB &quot;
+l_string|&quot;: Error: dev_set_mac_address of dev %s failed! ALB &quot;
 l_string|&quot;mode requires that the base driver support setting &quot;
 l_string|&quot;the hw address also when the network device&squot;s &quot;
 l_string|&quot;interface is open&bslash;n&quot;
@@ -4380,9 +4378,7 @@ id|ETH_ALEN
 suffix:semicolon
 id|res
 op_assign
-id|slave-&gt;dev
-op_member_access_from_pointer
-id|set_mac_address
+id|dev_set_mac_address
 c_func
 (paren
 id|slave-&gt;dev
@@ -4460,9 +4456,7 @@ comma
 id|ETH_ALEN
 )paren
 suffix:semicolon
-id|slave-&gt;dev
-op_member_access_from_pointer
-id|set_mac_address
+id|dev_set_mac_address
 c_func
 (paren
 id|slave-&gt;dev
