@@ -1303,12 +1303,6 @@ r_struct
 id|class_device
 id|class_dev
 suffix:semicolon
-multiline_comment|/* statistics sub-directory */
-DECL|member|stats_kobj
-r_struct
-id|kobject
-id|stats_kobj
-suffix:semicolon
 )brace
 suffix:semicolon
 DECL|macro|SET_MODULE_OWNER
