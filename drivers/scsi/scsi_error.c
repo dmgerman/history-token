@@ -1267,7 +1267,6 @@ op_eq
 id|SUCCESS
 )paren
 (brace
-r_int
 id|rtn
 op_assign
 id|scsi_eh_completed_normally
