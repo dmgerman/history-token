@@ -472,8 +472,12 @@ suffix:semicolon
 id|pr_debug
 c_func
 (paren
-l_string|&quot;i2c-velleman: found device at %#x.&bslash;n&quot;
+l_string|&quot;i2c-velleman: found device at %p.&bslash;n&quot;
 comma
+(paren
+r_void
+op_star
+)paren
 id|base
 )paren
 suffix:semicolon
