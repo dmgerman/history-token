@@ -405,8 +405,9 @@ id|address_space_operations
 id|udf_symlink_aops
 op_assign
 (brace
+dot
 id|readpage
-suffix:colon
+op_assign
 id|udf_symlink_filler
 comma
 )brace
