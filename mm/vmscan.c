@@ -33,16 +33,18 @@ r_static
 r_int
 id|total_memory
 suffix:semicolon
+DECL|macro|lru_to_page
+mdefine_line|#define lru_to_page(_head) (list_entry((_head)-&gt;prev, struct page, lru))
 macro_line|#ifdef ARCH_HAS_PREFETCH
 DECL|macro|prefetch_prev_lru_page
-mdefine_line|#define prefetch_prev_lru_page(_page, _base, _field)&t;&t;&t;&bslash;&n;&t;do {&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;if ((_page)-&gt;lru.prev != _base) {&t;&t;&t;&bslash;&n;&t;&t;&t;struct page *prev;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;prev = list_entry(_page-&gt;lru.prev,&t;&t;&bslash;&n;&t;&t;&t;&t;&t;struct page, lru);&t;&t;&bslash;&n;&t;&t;&t;prefetch(&amp;prev-&gt;_field);&t;&t;&t;&bslash;&n;&t;&t;}&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;} while (0)
+mdefine_line|#define prefetch_prev_lru_page(_page, _base, _field)&t;&t;&t;&bslash;&n;&t;do {&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;if ((_page)-&gt;lru.prev != _base) {&t;&t;&t;&bslash;&n;&t;&t;&t;struct page *prev;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;prev = lru_to_page(&amp;(_page-&gt;lru));&t;&t;&bslash;&n;&t;&t;&t;prefetch(&amp;prev-&gt;_field);&t;&t;&t;&bslash;&n;&t;&t;}&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;} while (0)
 macro_line|#else
 DECL|macro|prefetch_prev_lru_page
 mdefine_line|#define prefetch_prev_lru_page(_page, _base, _field) do { } while (0)
 macro_line|#endif
 macro_line|#ifdef ARCH_HAS_PREFETCHW
 DECL|macro|prefetchw_prev_lru_page
-mdefine_line|#define prefetchw_prev_lru_page(_page, _base, _field)&t;&t;&t;&bslash;&n;&t;do {&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;if ((_page)-&gt;lru.prev != _base) {&t;&t;&t;&bslash;&n;&t;&t;&t;struct page *prev;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;prev = list_entry(_page-&gt;lru.prev,&t;&t;&bslash;&n;&t;&t;&t;&t;&t;struct page, lru);&t;&t;&bslash;&n;&t;&t;&t;prefetchw(&amp;prev-&gt;_field);&t;&t;&t;&bslash;&n;&t;&t;}&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;} while (0)
+mdefine_line|#define prefetchw_prev_lru_page(_page, _base, _field)&t;&t;&t;&bslash;&n;&t;do {&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;if ((_page)-&gt;lru.prev != _base) {&t;&t;&t;&bslash;&n;&t;&t;&t;struct page *prev;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;prev = lru_to_page(&amp;(_page-&gt;lru));&t;&t;&t;&bslash;&n;&t;&t;&t;prefetchw(&amp;prev-&gt;_field);&t;&t;&t;&bslash;&n;&t;&t;}&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;} while (0)
 macro_line|#else
 DECL|macro|prefetchw_prev_lru_page
 mdefine_line|#define prefetchw_prev_lru_page(_page, _base, _field) do { } while (0)
@@ -737,15 +739,10 @@ id|referenced
 suffix:semicolon
 id|page
 op_assign
-id|list_entry
+id|lru_to_page
 c_func
 (paren
-id|page_list-&gt;prev
-comma
-r_struct
-id|page
-comma
-id|lru
+id|page_list
 )paren
 suffix:semicolon
 id|list_del
@@ -1589,15 +1586,11 @@ id|zone-&gt;inactive_list
 (brace
 id|page
 op_assign
-id|list_entry
+id|lru_to_page
 c_func
 (paren
-id|zone-&gt;inactive_list.prev
-comma
-r_struct
-id|page
-comma
-id|lru
+op_amp
+id|zone-&gt;inactive_list
 )paren
 suffix:semicolon
 id|prefetchw_prev_lru_page
@@ -1830,15 +1823,11 @@ id|page_list
 (brace
 id|page
 op_assign
-id|list_entry
+id|lru_to_page
 c_func
 (paren
-id|page_list.prev
-comma
-r_struct
-id|page
-comma
-id|lru
+op_amp
+id|page_list
 )paren
 suffix:semicolon
 r_if
@@ -2057,15 +2046,11 @@ id|zone-&gt;active_list
 (brace
 id|page
 op_assign
-id|list_entry
+id|lru_to_page
 c_func
 (paren
-id|zone-&gt;active_list.prev
-comma
-r_struct
-id|page
-comma
-id|lru
+op_amp
+id|zone-&gt;active_list
 )paren
 suffix:semicolon
 id|prefetchw_prev_lru_page
@@ -2223,15 +2208,11 @@ id|l_hold
 (brace
 id|page
 op_assign
-id|list_entry
+id|lru_to_page
 c_func
 (paren
-id|l_hold.prev
-comma
-r_struct
-id|page
-comma
-id|lru
+op_amp
+id|l_hold
 )paren
 suffix:semicolon
 id|list_del
@@ -2390,15 +2371,11 @@ id|l_inactive
 (brace
 id|page
 op_assign
-id|list_entry
+id|lru_to_page
 c_func
 (paren
-id|l_inactive.prev
-comma
-r_struct
-id|page
-comma
-id|lru
+op_amp
+id|l_inactive
 )paren
 suffix:semicolon
 id|prefetchw_prev_lru_page
@@ -2569,15 +2546,11 @@ id|l_active
 (brace
 id|page
 op_assign
-id|list_entry
+id|lru_to_page
 c_func
 (paren
-id|l_active.prev
-comma
-r_struct
-id|page
-comma
-id|lru
+op_amp
+id|l_active
 )paren
 suffix:semicolon
 id|prefetchw_prev_lru_page
