@@ -6668,7 +6668,7 @@ id|gpr
 op_add_assign
 l_int|2
 suffix:semicolon
-multiline_comment|/* Music Playback */
+multiline_comment|/* Synth Playback */
 id|A_OP
 c_func
 (paren
@@ -6759,7 +6759,7 @@ id|nctl
 op_increment
 )braket
 comma
-l_string|&quot;Music Playback Volume&quot;
+l_string|&quot;Synth Playback Volume&quot;
 comma
 id|gpr
 comma
@@ -6860,7 +6860,7 @@ id|gpr
 op_add_assign
 l_int|2
 suffix:semicolon
-multiline_comment|/* Music Capture */
+multiline_comment|/* Synth Capture */
 id|A_OP
 c_func
 (paren
@@ -6951,7 +6951,7 @@ id|nctl
 op_increment
 )braket
 comma
-l_string|&quot;Music Capture Volume&quot;
+l_string|&quot;Synth Capture Volume&quot;
 comma
 id|gpr
 comma
@@ -12704,7 +12704,7 @@ id|gpr
 op_add_assign
 l_int|4
 suffix:semicolon
-multiline_comment|/* Music Playback Volume */
+multiline_comment|/* Synth Playback Volume */
 r_for
 c_loop
 (paren
@@ -12748,7 +12748,7 @@ op_plus
 id|i
 op_increment
 comma
-l_string|&quot;Music Playback Volume&quot;
+l_string|&quot;Synth Playback Volume&quot;
 comma
 id|gpr
 comma
@@ -12759,7 +12759,7 @@ id|gpr
 op_add_assign
 l_int|2
 suffix:semicolon
-multiline_comment|/* Music Capture Volume + Switch */
+multiline_comment|/* Synth Capture Volume + Switch */
 r_for
 c_loop
 (paren
@@ -12828,7 +12828,7 @@ op_plus
 id|i
 op_increment
 comma
-l_string|&quot;Music Capture Volume&quot;
+l_string|&quot;Synth Capture Volume&quot;
 comma
 id|gpr
 comma
@@ -12843,7 +12843,7 @@ op_plus
 id|i
 op_increment
 comma
-l_string|&quot;Music Capture Switch&quot;
+l_string|&quot;Synth Capture Switch&quot;
 comma
 id|gpr
 op_plus
