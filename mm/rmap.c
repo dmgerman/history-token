@@ -3642,23 +3642,11 @@ r_struct
 id|pte_chain
 )paren
 comma
-l_int|0
+id|SLAB_PANIC
 comma
 id|pte_chain_ctor
 comma
 l_int|NULL
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|pte_chain_cache
-)paren
-id|panic
-c_func
-(paren
-l_string|&quot;failed to create pte_chain cache!&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace

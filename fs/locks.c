@@ -7544,23 +7544,11 @@ id|file_lock
 comma
 l_int|0
 comma
-l_int|0
+id|SLAB_PANIC
 comma
 id|init_once
 comma
 l_int|NULL
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|filelock_cache
-)paren
-id|panic
-c_func
-(paren
-l_string|&quot;cannot create file lock slab cache&quot;
 )paren
 suffix:semicolon
 r_return

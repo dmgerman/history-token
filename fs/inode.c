@@ -4975,22 +4975,12 @@ comma
 l_int|0
 comma
 id|SLAB_HWCACHE_ALIGN
+op_or
+id|SLAB_PANIC
 comma
 id|init_once
 comma
 l_int|NULL
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|inode_cachep
-)paren
-id|panic
-c_func
-(paren
-l_string|&quot;cannot create inode slab cache&quot;
 )paren
 suffix:semicolon
 id|set_shrinker

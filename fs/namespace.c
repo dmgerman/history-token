@@ -5894,22 +5894,12 @@ comma
 l_int|0
 comma
 id|SLAB_HWCACHE_ALIGN
+op_or
+id|SLAB_PANIC
 comma
 l_int|NULL
 comma
 l_int|NULL
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|mnt_cache
-)paren
-id|panic
-c_func
-(paren
-l_string|&quot;Cannot create vfsmount cache&quot;
 )paren
 suffix:semicolon
 id|order

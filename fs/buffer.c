@@ -11822,7 +11822,7 @@ id|buffer_head
 comma
 l_int|0
 comma
-l_int|0
+id|SLAB_PANIC
 comma
 id|init_buffer_head
 comma
