@@ -182,6 +182,7 @@ macro_line|#else
 DECL|macro|ppa_release
 mdefine_line|#define ppa_release 0
 macro_line|#endif
+r_static
 r_int
 id|ppa_detect
 c_func
@@ -209,6 +210,7 @@ id|Scsi_Cmnd
 op_star
 )paren
 suffix:semicolon
+r_static
 r_int
 id|ppa_queuecommand
 c_func
@@ -227,6 +229,7 @@ op_star
 )paren
 )paren
 suffix:semicolon
+r_static
 r_int
 id|ppa_abort
 c_func
@@ -235,6 +238,7 @@ id|Scsi_Cmnd
 op_star
 )paren
 suffix:semicolon
+r_static
 r_int
 id|ppa_reset
 c_func
@@ -243,6 +247,7 @@ id|Scsi_Cmnd
 op_star
 )paren
 suffix:semicolon
+r_static
 r_int
 id|ppa_proc_info
 c_func
@@ -266,6 +271,7 @@ comma
 r_int
 )paren
 suffix:semicolon
+r_static
 r_int
 id|ppa_biosparam
 c_func

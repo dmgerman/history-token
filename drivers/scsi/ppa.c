@@ -9,6 +9,7 @@ macro_line|#include &lt;linux/parport.h&gt;
 macro_line|#include &lt;linux/workqueue.h&gt;
 macro_line|#include &quot;scsi.h&quot;
 macro_line|#include &quot;hosts.h&quot;
+r_static
 r_int
 id|ppa_release
 c_func
@@ -123,6 +124,7 @@ suffix:semicolon
 DECL|macro|PPA_BASE
 mdefine_line|#define PPA_BASE(x)&t;ppa_hosts[(x)].base
 DECL|function|ppa_wakeup
+r_static
 r_void
 id|ppa_wakeup
 c_func
@@ -189,6 +191,7 @@ r_return
 suffix:semicolon
 )brace
 DECL|function|ppa_release
+r_static
 r_int
 id|ppa_release
 c_func
@@ -378,6 +381,7 @@ suffix:semicolon
 macro_line|#include  &quot;scsi_module.c&quot;
 multiline_comment|/*&n; * Start of Chipset kludges&n; */
 DECL|function|ppa_detect
+r_static
 r_int
 id|ppa_detect
 c_func
@@ -409,7 +413,7 @@ id|parport
 op_star
 id|pb
 suffix:semicolon
-multiline_comment|/*&n;     * unlock to allow the lowlevel parport driver to probe&n;     * the irqs&n;     */
+multiline_comment|/*&n;&t; * unlock to allow the lowlevel parport driver to probe&n;&t; * the irqs&n;&t; */
 id|pb
 op_assign
 id|parport_enumerate
@@ -522,7 +526,7 @@ id|dev
 )paren
 r_continue
 suffix:semicolon
-multiline_comment|/* Claim the bus so it remembers what we do to the control&n;&t; * registers. [ CTR and ECP ]&n;&t; */
+multiline_comment|/* Claim the bus so it remembers what we do to the control&n;&t;&t; * registers. [ CTR and ECP ]&n;&t;&t; */
 r_if
 c_cond
 (paren
@@ -601,7 +605,9 @@ id|ppa_hosts
 id|i
 )braket
 dot
-id|cur_cmd-&gt;device-&gt;host-&gt;host_lock
+id|cur_cmd
+op_member_access_from_pointer
+id|device-&gt;host-&gt;host_lock
 )paren
 suffix:semicolon
 r_return
@@ -651,7 +657,7 @@ id|i
 dot
 id|dev-&gt;port-&gt;modes
 suffix:semicolon
-multiline_comment|/* Mode detection works up the chain of speed&n;&t; * This avoids a nasty if-then-else-if-... tree&n;&t; */
+multiline_comment|/* Mode detection works up the chain of speed&n;&t;&t; * This avoids a nasty if-then-else-if-... tree&n;&t;&t; */
 id|ppa_hosts
 (braket
 id|i
@@ -853,10 +859,8 @@ id|hreg
 op_eq
 l_int|NULL
 )paren
-(brace
 r_continue
 suffix:semicolon
-)brace
 id|hreg-&gt;io_port
 op_assign
 id|pb-&gt;base
@@ -910,25 +914,21 @@ l_string|&quot;WARNING - no ppa compatible devices found.&bslash;n&quot;
 )paren
 suffix:semicolon
 id|printk
-c_func
 (paren
 l_string|&quot;  As of 31/Aug/1998 Iomega started shipping parallel&bslash;n&quot;
 )paren
 suffix:semicolon
 id|printk
-c_func
 (paren
 l_string|&quot;  port ZIP drives with a different interface which is&bslash;n&quot;
 )paren
 suffix:semicolon
 id|printk
-c_func
 (paren
 l_string|&quot;  supported by the imm (ZIP Plus) driver. If the&bslash;n&quot;
 )paren
 suffix:semicolon
 id|printk
-c_func
 (paren
 l_string|&quot;  cable is marked with &bslash;&quot;AutoDetect&bslash;&quot;, this is what has&bslash;n&quot;
 )paren
@@ -1104,6 +1104,7 @@ id|EINVAL
 suffix:semicolon
 )brace
 DECL|function|ppa_proc_info
+r_static
 r_int
 id|ppa_proc_info
 c_func
@@ -1411,6 +1412,7 @@ c_loop
 id|r
 op_assign
 id|r_str
+c_func
 (paren
 id|ppb
 )paren
@@ -1434,6 +1436,7 @@ op_decrement
 )paren
 (brace
 id|udelay
+c_func
 (paren
 l_int|1
 )paren
@@ -1441,12 +1444,13 @@ suffix:semicolon
 id|r
 op_assign
 id|r_str
+c_func
 (paren
 id|ppb
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n;     * return some status information.&n;     * Semantics: 0xc0 = ZIP wants more data&n;     *            0xd0 = ZIP wants to send more data&n;     *            0xe0 = ZIP is expecting SCSI command data&n;     *            0xf0 = end of transfer, ZIP is sending status&n;     */
+multiline_comment|/*&n;&t; * return some status information.&n;&t; * Semantics: 0xc0 = ZIP wants more data&n;&t; *            0xd0 = ZIP wants to send more data&n;&t; *            0xe0 = ZIP is expecting SCSI command data&n;&t; *            0xf0 = end of transfer, ZIP is sending status&n;&t; */
 r_if
 c_cond
 (paren
@@ -2668,7 +2672,7 @@ c_func
 id|host_no
 )paren
 suffix:semicolon
-multiline_comment|/*&n;     * Bit 6 (0x40) is the device selected bit.&n;     * First we must wait till the current device goes off line...&n;     */
+multiline_comment|/*&n;&t; * Bit 6 (0x40) is the device selected bit.&n;&t; * First we must wait till the current device goes off line...&n;&t; */
 id|k
 op_assign
 id|PPA_SELECT_TMO
@@ -3066,7 +3070,7 @@ op_star
 id|cmd
 )paren
 (brace
-multiline_comment|/* Return codes:&n;     * -1     Error&n;     *  0     Told to schedule&n;     *  1     Finished data transfer&n;     */
+multiline_comment|/* Return codes:&n;&t; * -1     Error&n;&t; *  0     Told to schedule&n;&t; *  1     Finished data transfer&n;&t; */
 r_int
 id|host_no
 op_assign
@@ -3136,7 +3140,7 @@ id|WRITE_10
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/*&n;     * We only get here if the drive is ready to comunicate,&n;     * hence no need for a full ppa_wait.&n;     */
+multiline_comment|/*&n;&t; * We only get here if the drive is ready to comunicate,&n;&t; * hence no need for a full ppa_wait.&n;&t; */
 id|r
 op_assign
 (paren
@@ -3161,7 +3165,7 @@ r_char
 l_int|0xf0
 )paren
 (brace
-multiline_comment|/*&n;&t; * If we have been running for more than a full timer tick&n;&t; * then take a rest.&n;&t; */
+multiline_comment|/*&n;&t;&t; * If we have been running for more than a full timer tick&n;&t;&t; * then take a rest.&n;&t;&t; */
 r_if
 c_cond
 (paren
@@ -3202,7 +3206,7 @@ l_int|1
 suffix:semicolon
 multiline_comment|/* ERROR_RETURN */
 )brace
-multiline_comment|/* On some hardware we have SCSI disconnected (6th bit low)&n;&t; * for about 100usecs. It is too expensive to wait a &n;&t; * tick on every loop so we busy wait for no more than&n;&t; * 500usecs to give the drive a chance first. We do not &n;&t; * change things for &quot;normal&quot; hardware since generally &n;&t; * the 6th bit is always high.&n;&t; * This makes the CPU load higher on some hardware &n;&t; * but otherwise we can not get more than 50K/secs &n;&t; * on this problem hardware.&n;&t; */
+multiline_comment|/* On some hardware we have SCSI disconnected (6th bit low)&n;&t;&t; * for about 100usecs. It is too expensive to wait a &n;&t;&t; * tick on every loop so we busy wait for no more than&n;&t;&t; * 500usecs to give the drive a chance first. We do not &n;&t;&t; * change things for &quot;normal&quot; hardware since generally &n;&t;&t; * the 6th bit is always high.&n;&t;&t; * This makes the CPU load higher on some hardware &n;&t;&t; * but otherwise we can not get more than 50K/secs &n;&t;&t; * on this problem hardware.&n;&t;&t; */
 r_if
 c_cond
 (paren
@@ -3215,7 +3219,7 @@ op_ne
 l_int|0xc0
 )paren
 (brace
-multiline_comment|/* Wait for reconnection should be no more than &n;&t;    * jiffy/2 = 5ms = 5000 loops&n;&t;    */
+multiline_comment|/* Wait for reconnection should be no more than &n;&t;&t;&t; * jiffy/2 = 5ms = 5000 loops&n;&t;&t;&t; */
 r_int
 r_int
 id|k
@@ -3268,11 +3272,9 @@ c_cond
 op_logical_neg
 id|k
 )paren
-(brace
 r_return
 l_int|0
 suffix:semicolon
-)brace
 )brace
 multiline_comment|/* determine if we should use burst I/O */
 id|fast
@@ -3733,7 +3735,7 @@ suffix:semicolon
 r_int
 id|retv
 suffix:semicolon
-multiline_comment|/* First check for any errors that may of occurred&n;     * Here we check for internal errors&n;     */
+multiline_comment|/* First check for any errors that may of occurred&n;&t; * Here we check for internal errors&n;&t; */
 r_if
 c_cond
 (paren
@@ -3764,7 +3766,7 @@ OG
 id|HZ
 )paren
 (brace
-multiline_comment|/*&n;&t;     * We waited more than a second&n;&t;     * for parport to call us&n;&t;     */
+multiline_comment|/*&n;&t;&t;&t; * We waited more than a second&n;&t;&t;&t; * for parport to call us&n;&t;&t;&t; */
 id|ppa_fail
 c_func
 (paren
@@ -3876,7 +3878,6 @@ id|HZ
 )paren
 (brace
 id|printk
-c_func
 (paren
 l_string|&quot;ppa: Parallel port cable is unplugged!!&bslash;n&quot;
 )paren
@@ -4232,6 +4233,7 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|function|ppa_queuecommand
+r_static
 r_int
 id|ppa_queuecommand
 c_func
@@ -4355,6 +4357,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * Apparently the disk-&gt;capacity attribute is off by 1 sector &n; * for all disk drives.  We add the one here, but it should really&n; * be done in sd.c.  Even if it gets fixed there, this will still&n; * work.&n; */
 DECL|function|ppa_biosparam
+r_static
 r_int
 id|ppa_biosparam
 c_func
@@ -4494,6 +4497,7 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|function|ppa_abort
+r_static
 r_int
 id|ppa_abort
 c_func
@@ -4508,7 +4512,7 @@ id|host_no
 op_assign
 id|cmd-&gt;device-&gt;host-&gt;unique_id
 suffix:semicolon
-multiline_comment|/*&n;     * There is no method for aborting commands since Iomega&n;     * have tied the SCSI_MESSAGE line high in the interface&n;     */
+multiline_comment|/*&n;&t; * There is no method for aborting commands since Iomega&n;&t; * have tied the SCSI_MESSAGE line high in the interface&n;&t; */
 r_switch
 c_cond
 (paren
@@ -4591,6 +4595,7 @@ l_int|0xc
 suffix:semicolon
 )brace
 DECL|function|ppa_reset
+r_static
 r_int
 id|ppa_reset
 c_func
@@ -4678,7 +4683,7 @@ r_int
 id|host_no
 )paren
 (brace
-multiline_comment|/* This routine looks for a device and then attempts to use EPP&n;       to send a command. If all goes as planned then EPP is available. */
+multiline_comment|/* This routine looks for a device and then attempts to use EPP&n;&t;   to send a command. If all goes as planned then EPP is available. */
 r_static
 r_char
 id|cmd
@@ -4958,7 +4963,6 @@ id|second_pass
 suffix:semicolon
 )brace
 id|printk
-c_func
 (paren
 l_string|&quot;ppa: Unable to establish communication, aborting driver load.&bslash;n&quot;
 )paren
@@ -5092,7 +5096,6 @@ id|second_pass
 suffix:semicolon
 )brace
 id|printk
-c_func
 (paren
 l_string|&quot;ppa: Unable to establish communication, aborting driver load.&bslash;n&quot;
 )paren
