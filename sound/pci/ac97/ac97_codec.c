@@ -688,15 +688,27 @@ l_int|NULL
 )brace
 comma
 (brace
-l_int|0x43585429
+l_int|0x43585421
 comma
 l_int|0xffffffff
+comma
+l_string|&quot;HSD11246&quot;
+comma
+l_int|NULL
+)brace
+comma
+singleline_comment|// SmartMC II
+(brace
+l_int|0x43585428
+comma
+l_int|0xfffffff8
 comma
 l_string|&quot;Cx20468&quot;
 comma
 id|patch_conexant
 )brace
 comma
+singleline_comment|// SmartAMC fixme: the mask might be different
 (brace
 l_int|0x454d4328
 comma
@@ -11144,6 +11156,20 @@ comma
 id|name
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+(paren
+id|ac97-&gt;scaps
+op_amp
+id|AC97_SCAP_AUDIO
+)paren
+op_eq
+l_int|0
+)paren
+r_goto
+id|__modem
+suffix:semicolon
 id|val
 op_assign
 id|snd_ac97_read
@@ -12101,7 +12127,7 @@ c_func
 (paren
 id|buffer
 comma
-l_string|&quot;Extended modem ID: codec=%i %s%s%s%s%s&bslash;n&quot;
+l_string|&quot;Extended modem ID: codec=%i%s%s%s%s%s&bslash;n&quot;
 comma
 (paren
 id|mext

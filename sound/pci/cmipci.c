@@ -528,11 +528,11 @@ mdefine_line|#define CM_MMODE_MASK&t;&t;0x00000E00
 DECL|macro|CM_SPDIF_SELECT2
 mdefine_line|#define CM_SPDIF_SELECT2&t;0x00000100&t;/* for model &gt; 039 ? */
 DECL|macro|CM_ENCENTER
-mdefine_line|#define CM_ENCENTER&t;&t;0x00000080&t;/* shared with FLINKON? */
+mdefine_line|#define CM_ENCENTER&t;&t;0x00000080
 DECL|macro|CM_FLINKON
-mdefine_line|#define CM_FLINKON&t;&t;0x00000080
+mdefine_line|#define CM_FLINKON&t;&t;0x00000040
 DECL|macro|CM_FLINKOFF
-mdefine_line|#define CM_FLINKOFF&t;&t;0x00000040
+mdefine_line|#define CM_FLINKOFF&t;&t;0x00000020
 DECL|macro|CM_MIDSMP
 mdefine_line|#define CM_MIDSMP&t;&t;0x00000010
 DECL|macro|CM_UPDDMA_MASK
@@ -2096,10 +2096,9 @@ op_plus
 l_int|2
 comma
 id|rec-&gt;period_size
-op_minus
-l_int|1
 )paren
 suffix:semicolon
+multiline_comment|/* FIXME: or period_size-1 ?? */
 multiline_comment|/* set adc/dac flag */
 id|val
 op_assign
@@ -4227,6 +4226,10 @@ id|cmipci_t
 op_star
 id|cm
 comma
+id|snd_pcm_substream_t
+op_star
+id|subs
+comma
 r_int
 id|do_ac3
 comma
@@ -4338,7 +4341,7 @@ id|cm
 comma
 id|CM_REG_CHFORMAT
 comma
-id|CM_PLAYBACK_176K
+id|CM_PLAYBACK_SRATE_176K
 )paren
 suffix:semicolon
 )brace
@@ -4530,6 +4533,8 @@ c_func
 (paren
 id|cm
 comma
+id|subs
+comma
 id|do_ac3
 comma
 id|rate
@@ -4587,6 +4592,8 @@ id|setup_ac3
 c_func
 (paren
 id|cm
+comma
+id|subs
 comma
 l_int|0
 comma
@@ -5209,6 +5216,8 @@ id|SNDRV_PCM_INFO_INTERLEAVED
 op_or
 id|SNDRV_PCM_INFO_BLOCK_TRANSFER
 op_or
+id|SNDRV_PCM_INFO_PAUSE
+op_or
 id|SNDRV_PCM_INFO_MMAP_VALID
 )paren
 comma
@@ -5302,6 +5311,8 @@ op_or
 id|SNDRV_PCM_INFO_INTERLEAVED
 op_or
 id|SNDRV_PCM_INFO_BLOCK_TRANSFER
+op_or
+id|SNDRV_PCM_INFO_PAUSE
 op_or
 id|SNDRV_PCM_INFO_MMAP_VALID
 )paren
@@ -5397,6 +5408,8 @@ id|SNDRV_PCM_INFO_INTERLEAVED
 op_or
 id|SNDRV_PCM_INFO_BLOCK_TRANSFER
 op_or
+id|SNDRV_PCM_INFO_PAUSE
+op_or
 id|SNDRV_PCM_INFO_MMAP_VALID
 )paren
 comma
@@ -5486,6 +5499,8 @@ op_assign
 id|SNDRV_PCM_INFO_INTERLEAVED
 op_or
 id|SNDRV_PCM_INFO_BLOCK_TRANSFER
+op_or
+id|SNDRV_PCM_INFO_PAUSE
 )paren
 comma
 dot
@@ -5577,6 +5592,8 @@ op_or
 id|SNDRV_PCM_INFO_INTERLEAVED
 op_or
 id|SNDRV_PCM_INFO_BLOCK_TRANSFER
+op_or
+id|SNDRV_PCM_INFO_PAUSE
 op_or
 id|SNDRV_PCM_INFO_MMAP_VALID
 )paren

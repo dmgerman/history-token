@@ -648,8 +648,8 @@ c_func
 (paren
 r_sizeof
 (paren
-r_int
-r_int
+op_star
+id|dev-&gt;idx_table
 )paren
 op_star
 id|VIA_TABLE_SIZE
@@ -912,7 +912,9 @@ comma
 id|PAGE_ALIGN
 c_func
 (paren
-id|dev-&gt;tbl_entries
+id|VIA_TABLE_SIZE
+op_star
+l_int|2
 op_star
 l_int|8
 )paren

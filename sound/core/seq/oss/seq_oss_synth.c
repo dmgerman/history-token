@@ -618,14 +618,12 @@ id|rec-&gt;seq_device
 OL
 id|SNDRV_CARDS
 )paren
-id|snd_oss_info_register
+id|snd_oss_info_unregister
 c_func
 (paren
 id|SNDRV_OSS_INFO_DEV_SYNTH
 comma
 id|rec-&gt;seq_device
-comma
-l_int|NULL
 )paren
 suffix:semicolon
 id|snd_use_lock_sync

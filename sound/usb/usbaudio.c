@@ -627,13 +627,13 @@ r_int
 r_int
 id|curpacksize
 suffix:semicolon
-multiline_comment|/* current packet size in bytes */
+multiline_comment|/* current packet size in bytes (for capture) */
 DECL|member|curframesize
 r_int
 r_int
 id|curframesize
 suffix:semicolon
-multiline_comment|/* current packet size in frames */
+multiline_comment|/* current packet size in frames (for capture) */
 DECL|member|fill_max
 r_int
 r_int
@@ -4215,6 +4215,35 @@ op_minus
 id|EINVAL
 )paren
 suffix:semicolon
+multiline_comment|/* close the old interface */
+r_if
+c_cond
+(paren
+id|subs-&gt;interface
+op_ge
+l_int|0
+op_logical_and
+id|subs-&gt;interface
+op_ne
+id|fmt-&gt;iface
+)paren
+(brace
+id|usb_set_interface
+c_func
+(paren
+id|subs-&gt;dev
+comma
+id|subs-&gt;interface
+comma
+l_int|0
+)paren
+suffix:semicolon
+id|subs-&gt;interface
+op_assign
+op_minus
+l_int|1
+suffix:semicolon
+)brace
 multiline_comment|/* create a data pipe */
 id|ep
 op_assign
@@ -4252,10 +4281,6 @@ id|dev
 comma
 id|ep
 )paren
-suffix:semicolon
-id|subs-&gt;interface
-op_assign
-id|fmt-&gt;iface
 suffix:semicolon
 id|subs-&gt;format
 op_assign
@@ -4358,7 +4383,7 @@ l_string|&quot;%d:%d:%d : invalid synch pipe&bslash;n&quot;
 comma
 id|dev-&gt;devnum
 comma
-id|subs-&gt;interface
+id|fmt-&gt;iface
 comma
 id|fmt-&gt;altsetting
 )paren
@@ -4425,7 +4450,7 @@ l_string|&quot;%d:%d:%d : invalid synch pipe&bslash;n&quot;
 comma
 id|dev-&gt;devnum
 comma
-id|subs-&gt;interface
+id|fmt-&gt;iface
 comma
 id|fmt-&gt;altsetting
 )paren
@@ -4484,7 +4509,7 @@ c_func
 (paren
 id|dev
 comma
-id|subs-&gt;interface
+id|fmt-&gt;iface
 comma
 id|fmt-&gt;altset_idx
 )paren
@@ -4500,7 +4525,7 @@ l_string|&quot;%d:%d:%d: usb_set_interface failed&bslash;n&quot;
 comma
 id|dev-&gt;devnum
 comma
-id|subs-&gt;interface
+id|fmt-&gt;iface
 comma
 id|fmt-&gt;altsetting
 )paren
@@ -4510,19 +4535,29 @@ op_minus
 id|EIO
 suffix:semicolon
 )brace
-id|ep
-op_assign
-id|usb_pipeendpoint
+id|snd_printdd
 c_func
 (paren
-id|subs-&gt;datapipe
+id|KERN_INFO
+l_string|&quot;setting usb interface %d:%d&bslash;n&quot;
+comma
+id|fmt-&gt;iface
+comma
+id|fmt-&gt;altset_idx
 )paren
-op_or
-(paren
-id|subs-&gt;datapipe
-op_amp
-id|USB_DIR_IN
-)paren
+suffix:semicolon
+id|subs-&gt;interface
+op_assign
+id|fmt-&gt;iface
+suffix:semicolon
+id|ep
+op_assign
+id|alts-&gt;endpoint
+(braket
+l_int|0
+)braket
+dot
+id|bEndpointAddress
 suffix:semicolon
 multiline_comment|/* if endpoint has pitch control, enable it */
 r_if
@@ -8717,6 +8752,32 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|usb_interface_claimed
+c_func
+(paren
+id|iface
+)paren
+)paren
+(brace
+id|snd_printdd
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;%d:%d:%d: skipping, already claimed&bslash;n&quot;
+comma
+id|dev-&gt;devnum
+comma
+id|ctrlif
+comma
+id|j
+)paren
+suffix:semicolon
+r_continue
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
 id|iface-&gt;altsetting
 (braket
 l_int|0
@@ -8845,6 +8906,17 @@ comma
 id|j
 )paren
 suffix:semicolon
+id|usb_set_interface
+c_func
+(paren
+id|dev
+comma
+id|j
+comma
+l_int|0
+)paren
+suffix:semicolon
+multiline_comment|/* reset the current interface */
 id|usb_driver_claim_interface
 c_func
 (paren

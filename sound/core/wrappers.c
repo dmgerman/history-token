@@ -100,6 +100,10 @@ multiline_comment|/* check the condition in &lt;sound/core.h&gt; !! */
 macro_line|#if LINUX_VERSION_CODE &gt;= KERNEL_VERSION(2, 4, 0)
 macro_line|#if defined(__i386__) || defined(__ppc__) || defined(__x86_64__)
 macro_line|#include &lt;linux/pci.h&gt;
+multiline_comment|/* to be sure... */
+macro_line|#ifdef HACK_PCI_ALLOC_CONSISTENT
+macro_line|#error pci_alloc_consistent hack is already defined!!
+macro_line|#endif
 multiline_comment|/*&n; * A dirty hack... when the kernel code is fixed this should be removed.&n; *&n; * since pci_alloc_consistent always tries GFP_DMA when the requested&n; * pci memory region is below 32bit, it happens quite often that even&n; * 2 order of pages cannot be allocated.&n; *&n; * so in the following, we allocate at first without dma_mask, so that&n; * allocation will be done without GFP_DMA.  if the area doesn&squot;t match&n; * with the requested region, then realloate with the original dma_mask&n; * again.&n; */
 DECL|function|snd_pci_hack_alloc_consistent
 r_void
@@ -181,13 +185,26 @@ comma
 id|dma_handle
 )paren
 suffix:semicolon
+id|hwdev-&gt;dma_mask
+op_assign
+id|dma_mask
+suffix:semicolon
+multiline_comment|/* restore */
 r_if
 c_cond
 (paren
 id|ret
-op_logical_and
+)paren
+(brace
+multiline_comment|/* obtained address is out of range? */
+r_if
+c_cond
 (paren
 (paren
+(paren
+r_int
+r_int
+)paren
 op_star
 id|dma_handle
 op_plus
@@ -198,8 +215,8 @@ l_int|1
 op_amp
 id|rmask
 )paren
-)paren
 (brace
+multiline_comment|/* reallocate with the proper mask */
 id|pci_free_consistent
 c_func
 (paren
@@ -215,19 +232,27 @@ id|dma_handle
 suffix:semicolon
 id|ret
 op_assign
-l_int|0
+id|pci_alloc_consistent
+c_func
+(paren
+id|hwdev
+comma
+id|size
+comma
+id|dma_handle
+)paren
 suffix:semicolon
 )brace
-id|hwdev-&gt;dma_mask
-op_assign
-id|dma_mask
-suffix:semicolon
-multiline_comment|/* restore */
+)brace
+r_else
+(brace
+multiline_comment|/* wish to success now with the proper mask... */
 r_if
 c_cond
 (paren
-op_logical_neg
-id|ret
+id|dma_mask
+op_ne
+l_int|0xffffffff
 )paren
 id|ret
 op_assign
@@ -241,6 +266,7 @@ comma
 id|dma_handle
 )paren
 suffix:semicolon
+)brace
 r_return
 id|ret
 suffix:semicolon

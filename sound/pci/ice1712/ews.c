@@ -1531,6 +1531,10 @@ id|ice
 r_int
 id|err
 suffix:semicolon
+id|ak4524_t
+op_star
+id|ak
+suffix:semicolon
 multiline_comment|/* set the analog DACs */
 r_switch
 c_cond
@@ -1906,8 +1910,6 @@ r_break
 suffix:semicolon
 )brace
 multiline_comment|/* analog section */
-id|ak4524_t
-op_star
 id|ak
 op_assign
 op_amp

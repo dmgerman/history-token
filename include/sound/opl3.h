@@ -375,7 +375,7 @@ id|snd_seq_device_t
 op_star
 id|oss_seq_dev
 suffix:semicolon
-multiline_comment|/* OSS sequencer device, WIP */
+multiline_comment|/* OSS sequencer device */
 DECL|member|oss_chset
 id|snd_midi_channel_set_t
 op_star
