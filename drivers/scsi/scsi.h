@@ -1257,25 +1257,37 @@ DECL|member|scsi_level
 r_char
 id|scsi_level
 suffix:semicolon
+DECL|member|inquiry_len
+r_int
+r_char
+id|inquiry_len
+suffix:semicolon
+multiline_comment|/* valid bytes in &squot;inquiry&squot; */
+DECL|member|inquiry
+r_int
+r_char
+op_star
+id|inquiry
+suffix:semicolon
+multiline_comment|/* INQUIRY response data */
 DECL|member|vendor
+r_char
+op_star
+id|vendor
+suffix:semicolon
+multiline_comment|/* [back_compat] point into &squot;inquiry&squot; ... */
 DECL|member|model
+r_char
+op_star
+id|model
+suffix:semicolon
+multiline_comment|/* ... after scan; point to static string */
 DECL|member|rev
 r_char
-id|vendor
-(braket
-l_int|8
-)braket
-comma
-id|model
-(braket
-l_int|16
-)braket
-comma
+op_star
 id|rev
-(braket
-l_int|4
-)braket
 suffix:semicolon
+multiline_comment|/* ... &quot;nullnullnullnull&quot; before scan */
 DECL|member|current_tag
 r_int
 r_char
