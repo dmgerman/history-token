@@ -1391,6 +1391,15 @@ comma
 l_int|NULL
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|proc_bt
+)paren
+id|proc_bt-&gt;owner
+op_assign
+id|THIS_MODULE
+suffix:semicolon
 multiline_comment|/* Init socket cache */
 id|bt_sock_cache
 op_assign

@@ -540,7 +540,7 @@ suffix:semicolon
 )brace
 DECL|function|hci_proc_cleanup
 r_void
-id|__init
+id|__exit
 id|hci_proc_cleanup
 c_func
 (paren
@@ -601,7 +601,7 @@ suffix:semicolon
 )brace
 DECL|function|hci_proc_cleanup
 r_void
-id|__init
+id|__exit
 id|hci_proc_cleanup
 c_func
 (paren
