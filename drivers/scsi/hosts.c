@@ -1847,9 +1847,6 @@ suffix:semicolon
 id|shost-&gt;host_busy
 op_decrement
 suffix:semicolon
-id|sdev-&gt;device_busy
-op_decrement
-suffix:semicolon
 r_if
 c_cond
 (paren

@@ -148,6 +148,10 @@ id|device
 op_assign
 id|cmd-&gt;device
 suffix:semicolon
+r_int
+r_int
+id|flags
+suffix:semicolon
 id|SCSI_LOG_MLQUEUE
 c_func
 (paren
@@ -203,6 +207,25 @@ op_assign
 id|SCSI_OWNER_MIDLEVEL
 suffix:semicolon
 multiline_comment|/*&n;&t; * Decrement the counters, since these commands are no longer&n;&t; * active on the host/device.&n;&t; */
+id|spin_lock_irqsave
+c_func
+(paren
+id|device-&gt;request_queue-&gt;queue_lock
+comma
+id|flags
+)paren
+suffix:semicolon
+id|device-&gt;device_busy
+op_decrement
+suffix:semicolon
+id|spin_unlock_irqrestore
+c_func
+(paren
+id|device-&gt;request_queue-&gt;queue_lock
+comma
+id|flags
+)paren
+suffix:semicolon
 id|scsi_host_busy_dec_and_test
 c_func
 (paren
@@ -770,7 +793,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Called for single_lun devices on IO completion. If no requests&n; * outstanding for current_sdev, call __blk_run_queue for the next&n; * scsi_device on the same target that has requests.&n; *&n; * Called with queue_lock held.&n; */
+multiline_comment|/*&n; * Called for single_lun devices on IO completion. If no requests&n; * outstanding for current_sdev, call __blk_run_queue for the next&n; * scsi_device on the same target that has requests.&n; *&n; * Called with *no* scsi locks held.&n; */
 DECL|function|scsi_single_lun_run
 r_static
 r_void
@@ -903,22 +926,6 @@ r_int
 r_int
 id|flags
 suffix:semicolon
-id|ASSERT_LOCK
-c_func
-(paren
-id|q-&gt;queue_lock
-comma
-l_int|0
-)paren
-suffix:semicolon
-id|spin_lock_irqsave
-c_func
-(paren
-id|q-&gt;queue_lock
-comma
-id|flags
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -928,6 +935,14 @@ l_int|NULL
 )paren
 (brace
 multiline_comment|/*&n;&t;&t; * For some reason, we are not done with this request.&n;&t;&t; * This happens for I/O errors in the middle of the request,&n;&t;&t; * in which case we need to request the blocks that come after&n;&t;&t; * the bad sector.&n;&t;&t; */
+id|spin_lock_irqsave
+c_func
+(paren
+id|q-&gt;queue_lock
+comma
+id|flags
+)paren
+suffix:semicolon
 id|cmd-&gt;request-&gt;special
 op_assign
 id|cmd
@@ -971,6 +986,14 @@ comma
 l_int|0
 )paren
 suffix:semicolon
+id|spin_unlock_irqrestore
+c_func
+(paren
+id|q-&gt;queue_lock
+comma
+id|flags
+)paren
+suffix:semicolon
 )brace
 id|sdev
 op_assign
@@ -992,6 +1015,14 @@ suffix:semicolon
 id|shost
 op_assign
 id|sdev-&gt;host
+suffix:semicolon
+id|spin_lock_irqsave
+c_func
+(paren
+id|shost-&gt;host_lock
+comma
+id|flags
+)paren
 suffix:semicolon
 r_while
 c_loop
@@ -1026,7 +1057,7 @@ id|shost-&gt;can_queue
 )paren
 )paren
 (brace
-multiline_comment|/*&n;&t;&t; * As long as shost is accepting commands and we have&n;&t;&t; * starved queues, call __blk_run_queue. scsi_request_fn&n;&t;&t; * drops the queue_lock and can add us back to the&n;&t;&t; * starved_list.&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * As long as shost is accepting commands and we have&n;&t;&t; * starved queues, call __blk_run_queue. scsi_request_fn&n;&t;&t; * drops the queue_lock and can add us back to the&n;&t;&t; * starved_list.&n;&t;&t; *&n;&t;&t; * host_lock protects the starved_list and starved_entry.&n;&t;&t; * scsi_request_fn must get the host_lock before checking&n;&t;&t; * or modifying starved_list or starved_entry.&n;&t;&t; */
 id|sdev2
 op_assign
 id|list_entry
@@ -1047,13 +1078,61 @@ op_amp
 id|sdev2-&gt;starved_entry
 )paren
 suffix:semicolon
+id|spin_unlock_irqrestore
+c_func
+(paren
+id|shost-&gt;host_lock
+comma
+id|flags
+)paren
+suffix:semicolon
+id|spin_lock_irqsave
+c_func
+(paren
+id|sdev2-&gt;request_queue-&gt;queue_lock
+comma
+id|flags
+)paren
+suffix:semicolon
 id|__blk_run_queue
 c_func
 (paren
 id|sdev2-&gt;request_queue
 )paren
 suffix:semicolon
+id|spin_unlock_irqrestore
+c_func
+(paren
+id|sdev2-&gt;request_queue-&gt;queue_lock
+comma
+id|flags
+)paren
+suffix:semicolon
+id|spin_lock_irqsave
+c_func
+(paren
+id|shost-&gt;host_lock
+comma
+id|flags
+)paren
+suffix:semicolon
 )brace
+id|spin_unlock_irqrestore
+c_func
+(paren
+id|shost-&gt;host_lock
+comma
+id|flags
+)paren
+suffix:semicolon
+id|spin_lock_irqsave
+c_func
+(paren
+id|q-&gt;queue_lock
+comma
+id|flags
+)paren
+suffix:semicolon
 id|__blk_run_queue
 c_func
 (paren
@@ -1109,14 +1188,6 @@ suffix:semicolon
 r_int
 r_int
 id|flags
-suffix:semicolon
-id|ASSERT_LOCK
-c_func
-(paren
-id|q-&gt;queue_lock
-comma
-l_int|0
-)paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * If there are blocks left over at the end, set up the command&n;&t; * to queue the remainder of them.&n;&t; */
 r_if
@@ -1426,14 +1497,6 @@ id|req
 op_assign
 id|cmd-&gt;request
 suffix:semicolon
-id|ASSERT_LOCK
-c_func
-(paren
-id|cmd-&gt;device-&gt;host-&gt;host_lock
-comma
-l_int|0
-)paren
-suffix:semicolon
 multiline_comment|/*&n;&t; * Free up any indirection buffers we allocated for DMA purposes. &n;&t; */
 r_if
 c_cond
@@ -1567,14 +1630,6 @@ op_assign
 l_int|1
 suffix:semicolon
 multiline_comment|/*&n;&t; * We must do one of several things here:&n;&t; *&n;&t; *&t;Call scsi_end_request.  This will finish off the specified&n;&t; *&t;number of sectors.  If we are done, the command block will&n;&t; *&t;be released, and the queue function will be goosed.  If we&n;&t; *&t;are not done, then scsi_end_request will directly goose&n;&t; *&t;the queue.&n;&t; *&n;&t; *&t;We can just use scsi_queue_next_request() here.  This&n;&t; *&t;would be used if we just wanted to retry, for example.&n;&t; *&n;&t; */
-id|ASSERT_LOCK
-c_func
-(paren
-id|q-&gt;queue_lock
-comma
-l_int|0
-)paren
-suffix:semicolon
 multiline_comment|/*&n;&t; * Free up any indirection buffers we allocated for DMA purposes. &n;&t; * For the case of a READ, we need to copy the data out of the&n;&t; * bounce buffer and into the real buffer.&n;&t; */
 r_if
 c_cond
@@ -2827,7 +2882,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * scsi_check_shost: if we can send requests to shost, return 0 else return 1.&n; *&n; * Called with the queue_lock held.&n; */
+multiline_comment|/*&n; * scsi_check_shost: if we can send requests to shost, return 0 else return 1.&n; *&n; * Called with queue_lock and host_lock held.&n; */
 DECL|function|scsi_check_shost
 r_static
 r_inline
@@ -3022,13 +3077,9 @@ id|request
 op_star
 id|req
 suffix:semicolon
-id|ASSERT_LOCK
-c_func
-(paren
-id|q-&gt;queue_lock
-comma
-l_int|1
-)paren
+r_int
+r_int
+id|flags
 suffix:semicolon
 multiline_comment|/*&n;&t; * To start with, we keep looping until the queue is empty, or until&n;&t; * the host is no longer able to accept any more requests.&n;&t; */
 r_for
@@ -3047,7 +3098,8 @@ c_func
 id|q
 )paren
 )paren
-r_break
+r_goto
+id|completed
 suffix:semicolon
 multiline_comment|/*&n;&t;&t; * get next queueable request.  We do this early to make sure&n;&t;&t; * that the request is fully prepared even if we cannot &n;&t;&t; * accept it.  If there is no request, we&squot;ll detect this&n;&t;&t; * lower down.&n;&t;&t; */
 id|req
@@ -3069,7 +3121,16 @@ comma
 id|sdev
 )paren
 )paren
-r_break
+r_goto
+id|completed
+suffix:semicolon
+id|spin_lock_irqsave
+c_func
+(paren
+id|shost-&gt;host_lock
+comma
+id|flags
+)paren
 suffix:semicolon
 r_if
 c_cond
@@ -3084,7 +3145,8 @@ comma
 id|sdev
 )paren
 )paren
-r_break
+r_goto
+id|after_host_lock
 suffix:semicolon
 r_if
 c_cond
@@ -3097,7 +3159,8 @@ c_func
 id|sdev
 )paren
 )paren
-r_break
+r_goto
+id|after_host_lock
 suffix:semicolon
 multiline_comment|/*&n;&t;&t; * If we couldn&squot;t find a request that could be queued, then we&n;&t;&t; * can also quit.&n;&t;&t; */
 r_if
@@ -3109,7 +3172,8 @@ c_func
 id|q
 )paren
 )paren
-r_break
+r_goto
+id|after_host_lock
 suffix:semicolon
 r_if
 c_cond
@@ -3124,7 +3188,7 @@ c_cond
 (paren
 id|sdev-&gt;device_busy
 op_eq
-l_int|0
+l_int|1
 )paren
 id|blk_plug_device
 c_func
@@ -3132,7 +3196,8 @@ c_func
 id|q
 )paren
 suffix:semicolon
-r_break
+r_goto
+id|after_host_lock
 suffix:semicolon
 )brace
 id|cmd
@@ -3178,9 +3243,16 @@ c_func
 id|req
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t;&t; * Now bump the usage count for both the host and the&n;&t;&t; * device.&n;&t;&t; */
 id|shost-&gt;host_busy
 op_increment
+suffix:semicolon
+id|spin_unlock_irqrestore
+c_func
+(paren
+id|shost-&gt;host_lock
+comma
+id|flags
+)paren
 suffix:semicolon
 id|sdev-&gt;device_busy
 op_increment
@@ -3213,6 +3285,20 @@ id|q-&gt;queue_lock
 )paren
 suffix:semicolon
 )brace
+id|completed
+suffix:colon
+r_return
+suffix:semicolon
+id|after_host_lock
+suffix:colon
+id|spin_unlock_irqrestore
+c_func
+(paren
+id|shost-&gt;host_lock
+comma
+id|flags
+)paren
+suffix:semicolon
 )brace
 DECL|function|scsi_calculate_bounce_limit
 id|u64
@@ -3280,14 +3366,19 @@ id|scsi_alloc_queue
 c_func
 (paren
 r_struct
-id|Scsi_Host
+id|scsi_device
 op_star
-id|shost
+id|sdev
 )paren
 (brace
 id|request_queue_t
 op_star
 id|q
+suffix:semicolon
+r_struct
+id|Scsi_Host
+op_star
+id|shost
 suffix:semicolon
 id|q
 op_assign
@@ -3326,6 +3417,11 @@ id|q
 )paren
 )paren
 suffix:semicolon
+multiline_comment|/*&n;&t; * XXX move host code to scsi_register&n;&t; */
+id|shost
+op_assign
+id|sdev-&gt;host
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -3346,7 +3442,8 @@ id|q
 comma
 id|scsi_request_fn
 comma
-id|shost-&gt;host_lock
+op_amp
+id|sdev-&gt;sdev_lock
 )paren
 suffix:semicolon
 id|blk_queue_prep_rq

@@ -636,9 +636,9 @@ id|scsi_alloc_queue
 c_func
 (paren
 r_struct
-id|Scsi_Host
+id|scsi_device
 op_star
-id|shost
+id|sdev
 )paren
 suffix:semicolon
 r_extern
@@ -1386,6 +1386,11 @@ r_int
 id|device_busy
 suffix:semicolon
 multiline_comment|/* commands actually active on low-level */
+DECL|member|sdev_lock
+id|spinlock_t
+id|sdev_lock
+suffix:semicolon
+multiline_comment|/* also the request queue_lock */
 DECL|member|list_lock
 id|spinlock_t
 id|list_lock
