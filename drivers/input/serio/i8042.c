@@ -213,6 +213,33 @@ comma
 l_string|&quot;Disable the AUX Loopback command while probing for the AUX port&quot;
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_ACPI
+DECL|variable|i8042_noacpi
+r_static
+r_int
+id|i8042_noacpi
+suffix:semicolon
+id|module_param_named
+c_func
+(paren
+id|noacpi
+comma
+id|i8042_noacpi
+comma
+r_bool
+comma
+l_int|0
+)paren
+suffix:semicolon
+id|MODULE_PARM_DESC
+c_func
+(paren
+id|noacpi
+comma
+l_string|&quot;Do not use ACPI to detect controller settings&quot;
+)paren
+suffix:semicolon
+macro_line|#endif
 id|__obsolete_setup
 c_func
 (paren

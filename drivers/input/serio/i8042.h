@@ -12,6 +12,8 @@ macro_line|#elif defined(CONFIG_PPC)
 macro_line|#include &quot;i8042-ppcio.h&quot;
 macro_line|#elif defined(CONFIG_SPARC32) || defined(CONFIG_SPARC64)
 macro_line|#include &quot;i8042-sparcio.h&quot;
+macro_line|#elif defined(CONFIG_X86) || defined(CONFIG_IA64)
+macro_line|#include &quot;i8042-x86ia64io.h&quot;
 macro_line|#else
 macro_line|#include &quot;i8042-io.h&quot;
 macro_line|#endif
