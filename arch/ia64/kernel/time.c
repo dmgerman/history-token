@@ -25,6 +25,10 @@ r_int
 r_int
 id|last_time_offset
 suffix:semicolon
+DECL|variable|jiffies_64
+id|u64
+id|jiffies_64
+suffix:semicolon
 macro_line|#ifdef CONFIG_IA64_DEBUG_IRQ
 DECL|variable|last_cli_ip
 r_int

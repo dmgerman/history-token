@@ -406,11 +406,11 @@ c_func
 id|init_mm
 )paren
 suffix:semicolon
-DECL|variable|create_bounce
+DECL|variable|blk_queue_bounce
 id|EXPORT_SYMBOL
 c_func
 (paren
-id|create_bounce
+id|blk_queue_bounce
 )paren
 suffix:semicolon
 macro_line|#ifdef CONFIG_HIGHMEM
@@ -2964,11 +2964,11 @@ c_func
 id|init_special_inode
 )paren
 suffix:semicolon
-DECL|variable|__get_hash_table
+DECL|variable|__find_get_block
 id|EXPORT_SYMBOL
 c_func
 (paren
-id|__get_hash_table
+id|__find_get_block
 )paren
 suffix:semicolon
 DECL|variable|new_inode
@@ -3018,13 +3018,6 @@ id|EXPORT_SYMBOL
 c_func
 (paren
 id|event
-)paren
-suffix:semicolon
-DECL|variable|brw_page
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|brw_page
 )paren
 suffix:semicolon
 macro_line|#ifdef CONFIG_UID16

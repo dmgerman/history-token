@@ -3127,7 +3127,7 @@ id|s
 suffix:semicolon
 id|tbh
 op_assign
-id|journal_get_hash_table
+id|journal_find_get_block
 c_func
 (paren
 id|s
@@ -3316,7 +3316,7 @@ id|s
 suffix:semicolon
 id|tbh
 op_assign
-id|journal_get_hash_table
+id|journal_find_get_block
 c_func
 (paren
 id|s
@@ -14492,7 +14492,7 @@ id|th-&gt;t_super
 (brace
 id|bh
 op_assign
-id|sb_get_hash_table
+id|sb_find_get_block
 c_func
 (paren
 id|p_s_sb
@@ -14536,7 +14536,7 @@ suffix:semicolon
 )brace
 id|bh
 op_assign
-id|sb_get_hash_table
+id|sb_find_get_block
 c_func
 (paren
 id|p_s_sb

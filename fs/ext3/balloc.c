@@ -1168,7 +1168,7 @@ id|debug_bh
 suffix:semicolon
 id|debug_bh
 op_assign
-id|sb_get_hash_table
+id|sb_find_get_block
 c_func
 (paren
 id|sb
@@ -2599,7 +2599,7 @@ suffix:semicolon
 multiline_comment|/* Record bitmap buffer state in the newly allocated block */
 id|debug_bh
 op_assign
-id|sb_get_hash_table
+id|sb_find_get_block
 c_func
 (paren
 id|sb

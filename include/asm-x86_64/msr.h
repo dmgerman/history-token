@@ -68,6 +68,8 @@ DECL|macro|MSR_IA32_PERFCTR0
 mdefine_line|#define MSR_IA32_PERFCTR0      0xc1
 DECL|macro|MSR_IA32_PERFCTR1
 mdefine_line|#define MSR_IA32_PERFCTR1      0xc2
+DECL|macro|MSR_MTRRcap
+mdefine_line|#define MSR_MTRRcap&t;&t;0x0fe
 DECL|macro|MSR_IA32_BBL_CR_CTL
 mdefine_line|#define MSR_IA32_BBL_CR_CTL        0x119
 DECL|macro|MSR_IA32_MCG_CAP
@@ -90,6 +92,30 @@ DECL|macro|MSR_IA32_LASTINTFROMIP
 mdefine_line|#define MSR_IA32_LASTINTFROMIP     0x1dd
 DECL|macro|MSR_IA32_LASTINTTOIP
 mdefine_line|#define MSR_IA32_LASTINTTOIP       0x1de
+DECL|macro|MSR_MTRRfix64K_00000
+mdefine_line|#define MSR_MTRRfix64K_00000&t;0x250
+DECL|macro|MSR_MTRRfix16K_80000
+mdefine_line|#define MSR_MTRRfix16K_80000&t;0x258
+DECL|macro|MSR_MTRRfix16K_A0000
+mdefine_line|#define MSR_MTRRfix16K_A0000&t;0x259
+DECL|macro|MSR_MTRRfix4K_C0000
+mdefine_line|#define MSR_MTRRfix4K_C0000&t;0x268
+DECL|macro|MSR_MTRRfix4K_C8000
+mdefine_line|#define MSR_MTRRfix4K_C8000&t;0x269
+DECL|macro|MSR_MTRRfix4K_D0000
+mdefine_line|#define MSR_MTRRfix4K_D0000&t;0x26a
+DECL|macro|MSR_MTRRfix4K_D8000
+mdefine_line|#define MSR_MTRRfix4K_D8000&t;0x26b
+DECL|macro|MSR_MTRRfix4K_E0000
+mdefine_line|#define MSR_MTRRfix4K_E0000&t;0x26c
+DECL|macro|MSR_MTRRfix4K_E8000
+mdefine_line|#define MSR_MTRRfix4K_E8000&t;0x26d
+DECL|macro|MSR_MTRRfix4K_F0000
+mdefine_line|#define MSR_MTRRfix4K_F0000&t;0x26e
+DECL|macro|MSR_MTRRfix4K_F8000
+mdefine_line|#define MSR_MTRRfix4K_F8000&t;0x26f
+DECL|macro|MSR_MTRRdefType
+mdefine_line|#define MSR_MTRRdefType&t;&t;0x2ff
 DECL|macro|MSR_IA32_MC0_CTL
 mdefine_line|#define MSR_IA32_MC0_CTL       0x400
 DECL|macro|MSR_IA32_MC0_STATUS
@@ -189,13 +215,5 @@ DECL|macro|MSR_IA32_APICBASE_ENABLE
 mdefine_line|#define MSR_IA32_APICBASE_ENABLE        (1&lt;&lt;11)
 DECL|macro|MSR_IA32_APICBASE_BASE
 mdefine_line|#define MSR_IA32_APICBASE_BASE          (0xfffff&lt;&lt;12)
-DECL|macro|MSR_IA32_THERM_CONTROL
-mdefine_line|#define MSR_IA32_THERM_CONTROL&t;&t;0x19a
-DECL|macro|MSR_IA32_THERM_INTERRUPT
-mdefine_line|#define MSR_IA32_THERM_INTERRUPT&t;0x19b
-DECL|macro|MSR_IA32_THERM_STATUS
-mdefine_line|#define MSR_IA32_THERM_STATUS&t;&t;0x19c
-DECL|macro|MSR_IA32_MISC_ENABLE
-mdefine_line|#define MSR_IA32_MISC_ENABLE&t;&t;0x1a0
 macro_line|#endif
 eof

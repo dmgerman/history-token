@@ -22,5 +22,28 @@ DECL|macro|flush_icache_page
 mdefine_line|#define flush_icache_page(vma,pg)&t;&t;do { } while (0)
 DECL|macro|flush_icache_user_range
 mdefine_line|#define flush_icache_user_range(vma,pg,adr,len)&t;do { } while (0)
+r_void
+id|global_flush_tlb
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+r_int
+id|change_page_attr
+c_func
+(paren
+r_struct
+id|page
+op_star
+id|page
+comma
+r_int
+id|numpages
+comma
+id|pgprot_t
+id|prot
+)paren
+suffix:semicolon
 macro_line|#endif /* _I386_CACHEFLUSH_H */
 eof

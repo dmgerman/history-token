@@ -23,6 +23,7 @@ macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/reboot.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/ctype.h&gt;
+macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
@@ -1148,10 +1149,6 @@ id|cr4
 )paren
 suffix:semicolon
 )brace
-DECL|macro|__STR
-mdefine_line|#define __STR(x) #x
-DECL|macro|__STR2
-mdefine_line|#define __STR2(x) __STR(x)
 r_extern
 r_void
 id|load_gs_index
@@ -1169,7 +1166,43 @@ c_func
 r_void
 )paren
 (brace
-multiline_comment|/* nothing to do ... */
+r_struct
+id|task_struct
+op_star
+id|me
+op_assign
+id|current
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|me-&gt;thread.io_bitmap_ptr
+)paren
+(brace
+id|kfree
+c_func
+(paren
+id|me-&gt;thread.io_bitmap_ptr
+)paren
+suffix:semicolon
+id|me-&gt;thread.io_bitmap_ptr
+op_assign
+l_int|NULL
+suffix:semicolon
+(paren
+id|init_tss
+op_plus
+id|smp_processor_id
+c_func
+(paren
+)paren
+)paren
+op_member_access_from_pointer
+id|io_map_base
+op_assign
+id|INVALID_IO_BITMAP_OFFSET
+suffix:semicolon
+)brace
 )brace
 DECL|function|flush_thread
 r_void
@@ -1447,6 +1480,61 @@ id|p-&gt;thread.i387
 op_assign
 id|current-&gt;thread.i387
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|unlikely
+c_func
+(paren
+id|me-&gt;thread.io_bitmap_ptr
+op_ne
+l_int|NULL
+)paren
+)paren
+(brace
+id|p-&gt;thread.io_bitmap_ptr
+op_assign
+id|kmalloc
+c_func
+(paren
+(paren
+id|IO_BITMAP_SIZE
+op_plus
+l_int|1
+)paren
+op_star
+l_int|4
+comma
+id|GFP_KERNEL
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|p-&gt;thread.io_bitmap_ptr
+)paren
+r_return
+op_minus
+id|ENOMEM
+suffix:semicolon
+id|memcpy
+c_func
+(paren
+id|p-&gt;thread.io_bitmap_ptr
+comma
+id|me-&gt;thread.io_bitmap_ptr
+comma
+(paren
+id|IO_BITMAP_SIZE
+op_plus
+l_int|1
+)paren
+op_star
+l_int|4
+)paren
+suffix:semicolon
+)brace
 r_return
 l_int|0
 suffix:semicolon
@@ -1833,25 +1921,25 @@ c_cond
 id|unlikely
 c_func
 (paren
-id|prev-&gt;ioperm
+id|prev-&gt;io_bitmap_ptr
 op_logical_or
-id|next-&gt;ioperm
+id|next-&gt;io_bitmap_ptr
 )paren
 )paren
 (brace
 r_if
 c_cond
 (paren
-id|next-&gt;ioperm
+id|next-&gt;io_bitmap_ptr
 )paren
 (brace
-multiline_comment|/*&n;&t;&t;&t; * 4 cachelines copy ... not good, but not that&n;&t;&t;&t; * bad either. Anyone got something better?&n;&t;&t;&t; * This only affects processes which use ioperm().&n;&t;&t;&t; * [Putting the TSSs into 4k-tlb mapped regions&n;&t;&t;&t; * and playing VM tricks to switch the IO bitmap&n;&t;&t;&t; * is not really acceptable.]&n;&t;&t;&t; * On x86-64 we could put multiple bitmaps into &n;&t;&t;&t; * the GDT and just switch offsets&n;&t;&t;&t; * This would require ugly special cases on overflow&n;&t;&t;&t; * though -AK &n;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t; * 4 cachelines copy ... not good, but not that&n;&t;&t;&t; * bad either. Anyone got something better?&n;&t;&t;&t; * This only affects processes which use ioperm().&n;&t;&t;&t; */
 id|memcpy
 c_func
 (paren
 id|tss-&gt;io_bitmap
 comma
-id|next-&gt;io_bitmap
+id|next-&gt;io_bitmap_ptr
 comma
 id|IO_BITMAP_SIZE
 op_star

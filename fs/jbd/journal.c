@@ -1311,7 +1311,6 @@ op_assign
 id|alloc_buffer_head
 c_func
 (paren
-l_int|0
 )paren
 suffix:semicolon
 r_if

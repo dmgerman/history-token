@@ -830,7 +830,7 @@ comma
 id|error
 op_assign
 op_minus
-id|EINVAL
+id|ENOMEM
 suffix:semicolon
 id|down_read
 c_func
@@ -908,7 +908,7 @@ id|start
 r_goto
 id|out
 suffix:semicolon
-multiline_comment|/*&n;&t; * If the interval [start,end) covers some unmapped address ranges,&n;&t; * just ignore them, but return -EFAULT at the end.&n;&t; */
+multiline_comment|/*&n;&t; * If the interval [start,end) covers some unmapped address ranges,&n;&t; * just ignore them, but return -ENOMEM at the end.&n;&t; */
 id|vma
 op_assign
 id|find_vma
@@ -934,7 +934,7 @@ multiline_comment|/* Still start &lt; end. */
 id|error
 op_assign
 op_minus
-id|EFAULT
+id|ENOMEM
 suffix:semicolon
 r_if
 c_cond
@@ -957,7 +957,7 @@ id|vma-&gt;vm_start
 id|unmapped_error
 op_assign
 op_minus
-id|EFAULT
+id|ENOMEM
 suffix:semicolon
 id|start
 op_assign

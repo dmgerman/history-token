@@ -124,27 +124,10 @@ id|len
 suffix:semicolon
 DECL|macro|memcpy
 mdefine_line|#define memcpy(dst,src,len) &bslash;&n;&t;({ size_t __len = (len);&t;&t;&t;&t;&bslash;&n;&t;   void *__ret;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;   if (__builtin_constant_p(len) &amp;&amp; __len &gt;= 64)&t;&bslash;&n;&t;&t; __ret = __memcpy((dst),(src),__len);&t;&t;&bslash;&n;&t;   else&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t; __ret = __builtin_memcpy((dst),(src),__len);&t;&bslash;&n;&t;   __ret; }) 
-macro_line|#if 0
+DECL|macro|__HAVE_ARCH_MEMSET
 mdefine_line|#define __HAVE_ARCH_MEMSET
-r_extern
-r_void
-op_star
-id|__memset
-c_func
-(paren
-r_void
-op_star
-id|mem
-comma
-r_int
-id|val
-comma
-r_int
-id|len
-)paren
-suffix:semicolon
-mdefine_line|#define memset(dst,val,len)&t;&t;&t;&t;&t;&bslash;&n;&t;({ size_t __len = (len);&t;&t;&t;&t;&bslash;&n;&t;   void *__ret;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;   if (__builtin_constant_p(len) &amp;&amp; __len &gt;= 64)&t;&bslash;&n;&t;&t;   __ret = __memset((dst),(val),__len);&t;&t;&bslash;&n;&t;   else&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;   __ret = __builtin_memset((dst),(val),__len);&t;&bslash;&n;&t;   __ret; }) 
-macro_line|#endif&t;   
+DECL|macro|memset
+mdefine_line|#define memset __builtin_memset
 DECL|macro|__HAVE_ARCH_MEMMOVE
 mdefine_line|#define __HAVE_ARCH_MEMMOVE
 r_void

@@ -845,7 +845,7 @@ id|bh
 (brace
 id|bh
 op_assign
-id|__get_hash_table
+id|__find_get_block
 c_func
 (paren
 id|bdev
@@ -880,7 +880,7 @@ suffix:semicolon
 multiline_comment|/* If there is a different buffer_head lying around in&n;&t;&t; * memory anywhere... */
 id|bh2
 op_assign
-id|__get_hash_table
+id|__find_get_block
 c_func
 (paren
 id|bdev
@@ -1260,7 +1260,7 @@ id|bh2
 suffix:semicolon
 id|bh2
 op_assign
-id|__get_hash_table
+id|__find_get_block
 c_func
 (paren
 id|bh-&gt;b_bdev
