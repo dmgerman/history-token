@@ -358,7 +358,7 @@ c_func
 (paren
 id|agp_bridge-&gt;dev
 comma
-id|ALI_APBASE
+id|AGP_APBASE
 comma
 op_amp
 id|temp
