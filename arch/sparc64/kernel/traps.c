@@ -48,6 +48,11 @@ r_int
 r_int
 id|tnpc
 suffix:semicolon
+DECL|member|tt
+r_int
+r_int
+id|tt
+suffix:semicolon
 DECL|member|trapstack
 )brace
 id|trapstack
@@ -103,7 +108,9 @@ op_increment
 id|printk
 c_func
 (paren
-l_string|&quot;TRAPLOG: Trap level %d TSTATE[%016lx] TPC[%016lx] TNPC[%016lx]&bslash;n&quot;
+id|KERN_CRIT
+l_string|&quot;TRAPLOG: Trap level %d TSTATE[%016lx] TPC[%016lx] &quot;
+l_string|&quot;TNPC[%016lx] TT[%lx]&bslash;n&quot;
 comma
 id|i
 op_plus
@@ -129,6 +136,13 @@ id|i
 )braket
 dot
 id|tnpc
+comma
+id|p-&gt;trapstack
+(braket
+id|i
+)braket
+dot
+id|tt
 )paren
 suffix:semicolon
 )brace
