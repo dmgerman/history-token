@@ -2034,8 +2034,21 @@ op_ne
 l_int|0
 )paren
 (brace
-r_goto
-id|free_and_exit
+id|printk
+(paren
+id|KERN_INFO
+id|PFX
+l_string|&quot;Something bad happened setting up isochronous xfers. &quot;
+l_string|&quot;Falling back to non-isochronous xfer mode.&bslash;n&quot;
+)paren
+suffix:semicolon
+id|agp_3_0_nonisochronous_node_enable
+c_func
+(paren
+id|dev_list
+comma
+id|ndevs
+)paren
 suffix:semicolon
 )brace
 )brace
