@@ -163,6 +163,10 @@ id|b-&gt;b_when
 comma
 id|when
 )paren
+op_logical_and
+id|b-&gt;b_when
+op_ne
+id|NLM_NEVER
 )paren
 id|bp
 op_assign
