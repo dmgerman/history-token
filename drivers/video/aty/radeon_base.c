@@ -6345,7 +6345,7 @@ l_int|16
 suffix:semicolon
 id|newmode.ppll_ref_div
 op_assign
-id|rinfo-&gt;pll.ref_div
+id|rinfo-&gt;panel_info.ref_divider
 suffix:semicolon
 )brace
 )brace
