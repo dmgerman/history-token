@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * Network Checksum &amp; Copy routine&n; *&n; * Copyright (C) 1999, 2003 Hewlett-Packard Co&n; *&t;Stephane Eranian &lt;eranian@hpl.hp.com&gt;&n; *&n; * Most of the code has been imported from Linux/Alpha&n; */
+multiline_comment|/*&n; * Network Checksum &amp; Copy routine&n; *&n; * Copyright (C) 1999, 2003-2004 Hewlett-Packard Co&n; *&t;Stephane Eranian &lt;eranian@hpl.hp.com&gt;&n; *&n; * Most of the code has been imported from Linux/Alpha&n; */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
@@ -539,10 +539,10 @@ r_int
 r_int
 DECL|function|csum_partial_copy_from_user
 id|csum_partial_copy_from_user
-c_func
 (paren
 r_const
 r_char
+id|__user
 op_star
 id|src
 comma
@@ -569,11 +569,11 @@ op_logical_neg
 id|access_ok
 c_func
 (paren
+id|VERIFY_READ
+comma
 id|src
 comma
 id|len
-comma
-id|VERIFY_READ
 )paren
 )paren
 (brace
