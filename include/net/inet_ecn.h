@@ -2,6 +2,7 @@ macro_line|#ifndef _INET_ECN_H_
 DECL|macro|_INET_ECN_H_
 mdefine_line|#define _INET_ECN_H_
 macro_line|#include &lt;linux/ip.h&gt;
+macro_line|#include &lt;net/dsfield.h&gt;
 r_enum
 (brace
 DECL|enumerator|INET_ECN_NOT_ECT
@@ -302,6 +303,47 @@ c_func
 id|INET_ECN_MASK
 op_lshift
 l_int|20
+)paren
+suffix:semicolon
+)brace
+DECL|function|ipv6_copy_dscp
+r_static
+r_inline
+r_void
+id|ipv6_copy_dscp
+c_func
+(paren
+r_struct
+id|ipv6hdr
+op_star
+id|outer
+comma
+r_struct
+id|ipv6hdr
+op_star
+id|inner
+)paren
+(brace
+id|u32
+id|dscp
+op_assign
+id|ipv6_get_dsfield
+c_func
+(paren
+id|outer
+)paren
+op_amp
+op_complement
+id|INET_ECN_MASK
+suffix:semicolon
+id|ipv6_change_dsfield
+c_func
+(paren
+id|inner
+comma
+id|INET_ECN_MASK
+comma
+id|dscp
 )paren
 suffix:semicolon
 )brace
