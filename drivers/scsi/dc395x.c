@@ -299,6 +299,143 @@ id|length
 suffix:semicolon
 )brace
 suffix:semicolon
+multiline_comment|/*&n; * The SEEPROM structure for TRM_S1040 &n; */
+DECL|struct|NVRamTarget
+r_struct
+id|NVRamTarget
+(brace
+DECL|member|cfg0
+id|u8
+id|cfg0
+suffix:semicolon
+multiline_comment|/* Target configuration byte 0  */
+DECL|member|period
+id|u8
+id|period
+suffix:semicolon
+multiline_comment|/* Target period                */
+DECL|member|cfg2
+id|u8
+id|cfg2
+suffix:semicolon
+multiline_comment|/* Target configuration byte 2  */
+DECL|member|cfg3
+id|u8
+id|cfg3
+suffix:semicolon
+multiline_comment|/* Target configuration byte 3  */
+)brace
+suffix:semicolon
+DECL|struct|NvRamType
+r_struct
+id|NvRamType
+(brace
+DECL|member|sub_vendor_id
+id|u8
+id|sub_vendor_id
+(braket
+l_int|2
+)braket
+suffix:semicolon
+multiline_comment|/* 0,1  Sub Vendor ID   */
+DECL|member|sub_sys_id
+id|u8
+id|sub_sys_id
+(braket
+l_int|2
+)braket
+suffix:semicolon
+multiline_comment|/* 2,3  Sub System ID   */
+DECL|member|sub_class
+id|u8
+id|sub_class
+suffix:semicolon
+multiline_comment|/* 4    Sub Class       */
+DECL|member|vendor_id
+id|u8
+id|vendor_id
+(braket
+l_int|2
+)braket
+suffix:semicolon
+multiline_comment|/* 5,6  Vendor ID       */
+DECL|member|device_id
+id|u8
+id|device_id
+(braket
+l_int|2
+)braket
+suffix:semicolon
+multiline_comment|/* 7,8  Device ID       */
+DECL|member|reserved
+id|u8
+id|reserved
+suffix:semicolon
+multiline_comment|/* 9    Reserved        */
+DECL|member|target
+r_struct
+id|NVRamTarget
+id|target
+(braket
+id|DC395x_MAX_SCSI_ID
+)braket
+suffix:semicolon
+multiline_comment|/** 10,11,12,13&n;&t;&t;&t;&t;&t;&t; ** 14,15,16,17&n;&t;&t;&t;&t;&t;&t; ** ....&n;&t;&t;&t;&t;&t;&t; ** ....&n;&t;&t;&t;&t;&t;&t; ** 70,71,72,73&n;&t;&t;&t;&t;&t;&t; */
+DECL|member|scsi_id
+id|u8
+id|scsi_id
+suffix:semicolon
+multiline_comment|/* 74 Host Adapter SCSI ID      */
+DECL|member|channel_cfg
+id|u8
+id|channel_cfg
+suffix:semicolon
+multiline_comment|/* 75 Channel configuration     */
+DECL|member|delay_time
+id|u8
+id|delay_time
+suffix:semicolon
+multiline_comment|/* 76 Power on delay time       */
+DECL|member|max_tag
+id|u8
+id|max_tag
+suffix:semicolon
+multiline_comment|/* 77 Maximum tags              */
+DECL|member|reserved0
+id|u8
+id|reserved0
+suffix:semicolon
+multiline_comment|/* 78  */
+DECL|member|boot_target
+id|u8
+id|boot_target
+suffix:semicolon
+multiline_comment|/* 79  */
+DECL|member|boot_lun
+id|u8
+id|boot_lun
+suffix:semicolon
+multiline_comment|/* 80  */
+DECL|member|reserved1
+id|u8
+id|reserved1
+suffix:semicolon
+multiline_comment|/* 81  */
+DECL|member|reserved2
+id|u16
+id|reserved2
+(braket
+l_int|22
+)braket
+suffix:semicolon
+multiline_comment|/* 82,..125 */
+DECL|member|cksum
+id|u16
+id|cksum
+suffix:semicolon
+multiline_comment|/* 126,127 */
+)brace
+suffix:semicolon
 multiline_comment|/*-----------------------------------------------------------------------&n;  SCSI Request Block&n;  -----------------------------------------------------------------------*/
 DECL|struct|ScsiReqBlk
 r_struct
@@ -615,11 +752,6 @@ DECL|member|srb_count
 id|u16
 id|srb_count
 suffix:semicolon
-DECL|member|adapter_index
-id|u16
-id|adapter_index
-suffix:semicolon
-multiline_comment|/* nth Adapter this driver */
 DECL|member|dcb_count
 id|u8
 id|dcb_count
@@ -702,143 +834,12 @@ r_struct
 id|ScsiReqBlk
 id|srb
 suffix:semicolon
-)brace
-suffix:semicolon
-multiline_comment|/*&n; * The SEEPROM structure for TRM_S1040 &n; */
-DECL|struct|NVRamTarget
-r_struct
-id|NVRamTarget
-(brace
-DECL|member|cfg0
-id|u8
-id|cfg0
-suffix:semicolon
-multiline_comment|/* Target configuration byte 0  */
-DECL|member|period
-id|u8
-id|period
-suffix:semicolon
-multiline_comment|/* Target period                */
-DECL|member|cfg2
-id|u8
-id|cfg2
-suffix:semicolon
-multiline_comment|/* Target configuration byte 2  */
-DECL|member|cfg3
-id|u8
-id|cfg3
-suffix:semicolon
-multiline_comment|/* Target configuration byte 3  */
-)brace
-suffix:semicolon
-DECL|struct|NvRamType
+DECL|member|eeprom
 r_struct
 id|NvRamType
-(brace
-DECL|member|sub_vendor_id
-id|u8
-id|sub_vendor_id
-(braket
-l_int|2
-)braket
+id|eeprom
 suffix:semicolon
-multiline_comment|/* 0,1  Sub Vendor ID   */
-DECL|member|sub_sys_id
-id|u8
-id|sub_sys_id
-(braket
-l_int|2
-)braket
-suffix:semicolon
-multiline_comment|/* 2,3  Sub System ID   */
-DECL|member|sub_class
-id|u8
-id|sub_class
-suffix:semicolon
-multiline_comment|/* 4    Sub Class       */
-DECL|member|vendor_id
-id|u8
-id|vendor_id
-(braket
-l_int|2
-)braket
-suffix:semicolon
-multiline_comment|/* 5,6  Vendor ID       */
-DECL|member|device_id
-id|u8
-id|device_id
-(braket
-l_int|2
-)braket
-suffix:semicolon
-multiline_comment|/* 7,8  Device ID       */
-DECL|member|reserved
-id|u8
-id|reserved
-suffix:semicolon
-multiline_comment|/* 9    Reserved        */
-DECL|member|target
-r_struct
-id|NVRamTarget
-id|target
-(braket
-id|DC395x_MAX_SCSI_ID
-)braket
-suffix:semicolon
-multiline_comment|/** 10,11,12,13&n;&t;&t;&t;&t;&t;&t; ** 14,15,16,17&n;&t;&t;&t;&t;&t;&t; ** ....&n;&t;&t;&t;&t;&t;&t; ** ....&n;&t;&t;&t;&t;&t;&t; ** 70,71,72,73&n;&t;&t;&t;&t;&t;&t; */
-DECL|member|scsi_id
-id|u8
-id|scsi_id
-suffix:semicolon
-multiline_comment|/* 74 Host Adapter SCSI ID      */
-DECL|member|channel_cfg
-id|u8
-id|channel_cfg
-suffix:semicolon
-multiline_comment|/* 75 Channel configuration     */
-DECL|member|delay_time
-id|u8
-id|delay_time
-suffix:semicolon
-multiline_comment|/* 76 Power on delay time       */
-DECL|member|max_tag
-id|u8
-id|max_tag
-suffix:semicolon
-multiline_comment|/* 77 Maximum tags              */
-DECL|member|reserved0
-id|u8
-id|reserved0
-suffix:semicolon
-multiline_comment|/* 78  */
-DECL|member|boot_target
-id|u8
-id|boot_target
-suffix:semicolon
-multiline_comment|/* 79  */
-DECL|member|boot_lun
-id|u8
-id|boot_lun
-suffix:semicolon
-multiline_comment|/* 80  */
-DECL|member|reserved1
-id|u8
-id|reserved1
-suffix:semicolon
-multiline_comment|/* 81  */
-DECL|member|reserved2
-id|u16
-id|reserved2
-(braket
-l_int|22
-)braket
-suffix:semicolon
-multiline_comment|/* 82,..125 */
-DECL|member|cksum
-id|u16
-id|cksum
-suffix:semicolon
-multiline_comment|/* 126,127 */
+multiline_comment|/* eeprom settings for this adapter */
 )brace
 suffix:semicolon
 multiline_comment|/*---------------------------------------------------------------------------&n;                            Forward declarations&n; ---------------------------------------------------------------------------*/
@@ -1450,13 +1451,6 @@ id|acb_list_tail
 op_assign
 l_int|NULL
 suffix:semicolon
-DECL|variable|adapter_count
-r_static
-id|u16
-id|adapter_count
-op_assign
-l_int|0
-suffix:semicolon
 DECL|variable|current_sync_offset
 r_static
 id|u16
@@ -1542,14 +1536,6 @@ id|msgin_phase1
 comma
 multiline_comment|/* phase:7 */
 )brace
-suffix:semicolon
-DECL|variable|eeprom_buf
-r_struct
-id|NvRamType
-id|eeprom_buf
-(braket
-id|DC395x_MAX_ADAPTER_NUM
-)braket
 suffix:semicolon
 multiline_comment|/*&n; *Fast20:&t;000&t; 50ns, 20.0 MHz&n; *&t;&t;001&t; 75ns, 13.3 MHz&n; *&t;&t;010&t;100ns, 10.0 MHz&n; *&t;&t;011&t;125ns,  8.0 MHz&n; *&t;&t;100&t;150ns,  6.6 MHz&n; *&t;&t;101&t;175ns,  5.7 MHz&n; *&t;&t;110&t;200ns,  5.0 MHz&n; *&t;&t;111&t;250ns,  4.0 MHz&n; *&n; *Fast40(LVDS):&t;000&t; 25ns, 40.0 MHz&n; *&t;&t;001&t; 50ns, 20.0 MHz&n; *&t;&t;010&t; 75ns, 13.3 MHz&n; *&t;&t;011&t;100ns, 10.0 MHz&n; *&t;&t;100&t;125ns,  8.0 MHz&n; *&t;&t;101&t;150ns,  6.6 MHz&n; *&t;&t;110&t;175ns,  5.7 MHz&n; *&t;&t;111&t;200ns,  5.0 MHz&n; */
 multiline_comment|/*static u8&t;clock_period[] = {12,19,25,31,37,44,50,62};*/
@@ -5534,6 +5520,8 @@ r_struct
 id|DeviceCtlBlk
 op_star
 id|dcb
+op_assign
+id|acb-&gt;link_dcb
 suffix:semicolon
 r_struct
 id|DeviceCtlBlk
@@ -5544,12 +5532,12 @@ r_struct
 id|NvRamType
 op_star
 id|eeprom
+op_assign
+op_amp
+id|acb-&gt;eeprom
 suffix:semicolon
 id|u8
 id|period_index
-suffix:semicolon
-id|u16
-id|index
 suffix:semicolon
 id|dprintkdbg
 c_func
@@ -5558,10 +5546,6 @@ id|DBG_0
 comma
 l_string|&quot;reset_dev_param..............&bslash;n&quot;
 )paren
-suffix:semicolon
-id|dcb
-op_assign
-id|acb-&gt;link_dcb
 suffix:semicolon
 r_if
 c_cond
@@ -5594,18 +5578,6 @@ suffix:semicolon
 id|dcb-&gt;sync_offset
 op_assign
 l_int|0
-suffix:semicolon
-id|index
-op_assign
-id|acb-&gt;adapter_index
-suffix:semicolon
-id|eeprom
-op_assign
-op_amp
-id|eeprom_buf
-(braket
-id|index
-)braket
 suffix:semicolon
 id|dcb-&gt;dev_mode
 op_assign
@@ -5795,12 +5767,7 @@ l_int|2
 op_plus
 id|HZ
 op_star
-id|eeprom_buf
-(braket
-id|acb-&gt;adapter_index
-)braket
-dot
-id|delay_time
+id|acb-&gt;eeprom.delay_time
 suffix:semicolon
 multiline_comment|/*&n;&t; * re-enable interrupt      &n;&t; */
 multiline_comment|/* Clear SCSI FIFO          */
@@ -14034,12 +14001,7 @@ l_int|2
 op_plus
 id|HZ
 op_star
-id|eeprom_buf
-(braket
-id|acb-&gt;adapter_index
-)braket
-dot
-id|delay_time
+id|acb-&gt;eeprom.delay_time
 suffix:semicolon
 id|clear_fifo
 c_func
@@ -17514,12 +17476,7 @@ l_int|2
 op_plus
 id|HZ
 op_star
-id|eeprom_buf
-(braket
-id|acb-&gt;adapter_index
-)braket
-dot
-id|delay_time
+id|acb-&gt;eeprom.delay_time
 suffix:semicolon
 id|clear_fifo
 c_func
@@ -17871,12 +17828,12 @@ r_struct
 id|NvRamType
 op_star
 id|eeprom
+op_assign
+op_amp
+id|acb-&gt;eeprom
 suffix:semicolon
 id|u8
 id|period_index
-suffix:semicolon
-id|u16
-id|index
 suffix:semicolon
 r_struct
 id|DeviceCtlBlk
@@ -18011,18 +17968,6 @@ op_assign
 l_int|1
 suffix:semicolon
 multiline_comment|/* $$$$$$$ */
-id|index
-op_assign
-id|acb-&gt;adapter_index
-suffix:semicolon
-id|eeprom
-op_assign
-op_amp
-id|eeprom_buf
-(braket
-id|index
-)braket
-suffix:semicolon
 id|dcb-&gt;dev_mode
 op_assign
 id|eeprom-&gt;target
@@ -18786,31 +18731,30 @@ id|io_port
 comma
 id|u8
 id|irq
-comma
-id|u16
-id|index
 )paren
 (brace
-r_struct
-id|NvRamType
-op_star
-id|eeprom
-suffix:semicolon
 r_struct
 id|AdapterCtlBlk
 op_star
 id|acb
+op_assign
+(paren
+r_struct
+id|AdapterCtlBlk
+op_star
+)paren
+id|host-&gt;hostdata
 suffix:semicolon
-id|u16
-id|i
-suffix:semicolon
+r_struct
+id|NvRamType
+op_star
 id|eeprom
 op_assign
 op_amp
-id|eeprom_buf
-(braket
-id|index
-)braket
+id|acb-&gt;eeprom
+suffix:semicolon
+id|u16
+id|i
 suffix:semicolon
 id|host-&gt;max_cmd_len
 op_assign
@@ -18855,15 +18799,6 @@ suffix:semicolon
 id|host-&gt;last_reset
 op_assign
 id|jiffies
-suffix:semicolon
-id|acb
-op_assign
-(paren
-r_struct
-id|AdapterCtlBlk
-op_star
-)paren
-id|host-&gt;hostdata
 suffix:semicolon
 id|host-&gt;max_id
 op_assign
@@ -18931,10 +18866,6 @@ suffix:semicolon
 id|acb-&gt;srb_count
 op_assign
 id|DC395x_MAX_SRB_CNT
-suffix:semicolon
-id|acb-&gt;adapter_index
-op_assign
-id|index
 suffix:semicolon
 id|acb-&gt;scsi_host-&gt;this_id
 op_assign
@@ -19154,7 +19085,7 @@ l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/*===========================================================================&n;                                Init&n;  ===========================================================================*/
-multiline_comment|/**&n; * init_adapter - Initialize the SCSI chip control registers&n; *&n; * @host:&t;This hosts adapter strcuture&n; * @io_port:&t;The base I/O port&n; * @irq:&t;IRQ&n; * @index:&t;Card instance number&n; *&n; * Returns 0 if the initialization succeeds, any other value on failure.&n; **/
+multiline_comment|/**&n; * init_adapter - Initialize the SCSI chip control registers&n; *&n; * @host:&t;This hosts adapter strcuture&n; * @io_port:&t;The base I/O port&n; * @irq:&t;IRQ&n; *&n; * Returns 0 if the initialization succeeds, any other value on failure.&n; **/
 r_static
 DECL|function|init_adapter
 r_int
@@ -19172,22 +19103,8 @@ id|io_port
 comma
 id|u8
 id|irq
-comma
-id|u16
-id|index
 )paren
 (brace
-r_struct
-id|NvRamType
-op_star
-id|eeprom
-op_assign
-op_amp
-id|eeprom_buf
-(braket
-id|index
-)braket
-suffix:semicolon
 r_struct
 id|AdapterCtlBlk
 op_star
@@ -19199,6 +19116,14 @@ id|AdapterCtlBlk
 op_star
 )paren
 id|host-&gt;hostdata
+suffix:semicolon
+r_struct
+id|NvRamType
+op_star
+id|eeprom
+op_assign
+op_amp
+id|acb-&gt;eeprom
 suffix:semicolon
 r_if
 c_cond
@@ -19407,12 +19332,7 @@ l_int|2
 op_plus
 id|HZ
 op_star
-id|eeprom_buf
-(braket
-id|acb-&gt;adapter_index
-)braket
-dot
-id|delay_time
+id|acb-&gt;eeprom.delay_time
 suffix:semicolon
 multiline_comment|/*spin_lock_irq (&amp;io_request_lock); */
 )brace
@@ -20874,7 +20794,7 @@ l_string|&quot;&bslash;n&quot;
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/**&n; * print_eeprom_settings - output the eeprom settings&n; * to the kernel log so people can see what they were.&n; *&n; * @index: Adapter number&n; **/
+multiline_comment|/**&n; * print_eeprom_settings - output the eeprom settings&n; * to the kernel log so people can see what they were.&n; *&n; * @eeprom: The eeprom data strucutre to show details for.&n; **/
 r_static
 DECL|function|print_eeprom_settings
 r_void
@@ -20882,8 +20802,10 @@ id|__init
 id|print_eeprom_settings
 c_func
 (paren
-id|u16
-id|index
+r_struct
+id|NvRamType
+op_star
+id|eeprom
 )paren
 (brace
 id|dprintkl
@@ -20893,19 +20815,9 @@ id|KERN_INFO
 comma
 l_string|&quot;Used settings: AdapterID=%02i, Speed=%i(%02i.%01iMHz), dev_mode=0x%02x&bslash;n&quot;
 comma
-id|eeprom_buf
-(braket
-id|index
-)braket
-dot
-id|scsi_id
+id|eeprom-&gt;scsi_id
 comma
-id|eeprom_buf
-(braket
-id|index
-)braket
-dot
-id|target
+id|eeprom-&gt;target
 (braket
 l_int|0
 )braket
@@ -20914,12 +20826,7 @@ id|period
 comma
 id|clock_speed
 (braket
-id|eeprom_buf
-(braket
-id|index
-)braket
-dot
-id|target
+id|eeprom-&gt;target
 (braket
 l_int|0
 )braket
@@ -20931,12 +20838,7 @@ l_int|10
 comma
 id|clock_speed
 (braket
-id|eeprom_buf
-(braket
-id|index
-)braket
-dot
-id|target
+id|eeprom-&gt;target
 (braket
 l_int|0
 )braket
@@ -20946,12 +20848,7 @@ id|period
 op_mod
 l_int|10
 comma
-id|eeprom_buf
-(braket
-id|index
-)braket
-dot
-id|target
+id|eeprom-&gt;target
 (braket
 l_int|0
 )braket
@@ -20966,35 +20863,15 @@ id|KERN_INFO
 comma
 l_string|&quot;               AdaptMode=0x%02x, Tags=%i(%02i), DelayReset=%is&bslash;n&quot;
 comma
-id|eeprom_buf
-(braket
-id|index
-)braket
-dot
-id|channel_cfg
+id|eeprom-&gt;channel_cfg
 comma
-id|eeprom_buf
-(braket
-id|index
-)braket
-dot
-id|max_tag
+id|eeprom-&gt;max_tag
 comma
 l_int|1
 op_lshift
-id|eeprom_buf
-(braket
-id|index
-)braket
-dot
-id|max_tag
+id|eeprom-&gt;max_tag
 comma
-id|eeprom_buf
-(braket
-id|index
-)braket
-dot
-id|delay_time
+id|eeprom-&gt;delay_time
 )paren
 suffix:semicolon
 )brace
@@ -21017,9 +20894,6 @@ id|io_port
 comma
 id|u8
 id|irq
-comma
-id|u16
-id|index
 )paren
 (brace
 r_struct
@@ -21032,23 +20906,6 @@ id|AdapterCtlBlk
 op_star
 id|acb
 suffix:semicolon
-multiline_comment|/*&n;&t; * Read the eeprom contents info the buffer we supply. Use&n;&t; * defaults is eeprom checksum is wrong.&n;&t; */
-id|check_eeprom
-c_func
-(paren
-op_amp
-id|eeprom_buf
-(braket
-id|index
-)braket
-comma
-(paren
-id|u16
-)paren
-id|io_port
-)paren
-suffix:semicolon
-multiline_comment|/*&n;&t; *$$$$$$$$$$$  MEMORY ALLOCATE FOR ADAPTER CONTROL BLOCK $$$$$$$$$$$$&n;&t; */
 id|host
 op_assign
 id|scsi_host_alloc
@@ -21075,19 +20932,13 @@ c_func
 (paren
 id|KERN_INFO
 comma
-l_string|&quot;pSH scsi_host_alloc ERROR&bslash;n&quot;
+l_string|&quot;scsi_host_alloc failed&bslash;n&quot;
 )paren
 suffix:semicolon
-r_return
-l_int|0
+r_goto
+id|failed
 suffix:semicolon
 )brace
-id|print_eeprom_settings
-c_func
-(paren
-id|index
-)paren
-suffix:semicolon
 id|acb
 op_assign
 (paren
@@ -21096,6 +20947,25 @@ id|AdapterCtlBlk
 op_star
 )paren
 id|host-&gt;hostdata
+suffix:semicolon
+id|check_eeprom
+c_func
+(paren
+op_amp
+id|acb-&gt;eeprom
+comma
+(paren
+id|u16
+)paren
+id|io_port
+)paren
+suffix:semicolon
+id|print_eeprom_settings
+c_func
+(paren
+op_amp
+id|acb-&gt;eeprom
+)paren
 suffix:semicolon
 r_if
 c_cond
@@ -21108,19 +20978,11 @@ comma
 id|io_port
 comma
 id|irq
-comma
-id|index
 )paren
 )paren
 (brace
-id|scsi_host_put
-c_func
-(paren
-id|host
-)paren
-suffix:semicolon
-r_return
-l_int|0
+r_goto
+id|failed
 suffix:semicolon
 )brace
 id|print_config
@@ -21129,7 +20991,6 @@ c_func
 id|acb
 )paren
 suffix:semicolon
-multiline_comment|/*&n;        *$$$$$$$$$$$$$$$$$ INITIAL ADAPTER $$$$$$$$$$$$$$$$$&n;        */
 r_if
 c_cond
 (paren
@@ -21142,8 +21003,6 @@ comma
 id|io_port
 comma
 id|irq
-comma
-id|index
 )paren
 )paren
 (brace
@@ -21185,19 +21044,28 @@ comma
 l_string|&quot;DC395x_initAdapter initial ERROR&bslash;n&quot;
 )paren
 suffix:semicolon
+r_goto
+id|failed
+suffix:semicolon
+)brace
+r_return
+id|host
+suffix:semicolon
+id|failed
+suffix:colon
+r_if
+c_cond
+(paren
+id|host
+)paren
 id|scsi_host_put
 c_func
 (paren
 id|host
 )paren
 suffix:semicolon
-id|host
-op_assign
-l_int|NULL
-suffix:semicolon
-)brace
 r_return
-id|host
+l_int|NULL
 suffix:semicolon
 )brace
 DECL|macro|SEARCH
@@ -21349,7 +21217,7 @@ suffix:semicolon
 id|SPRINTF
 c_func
 (paren
-l_string|&quot;DC395U/UW/F DC315/U %s Adapter Nr %i&bslash;n&quot;
+l_string|&quot;DC395U/UW/F DC315/U %s&bslash;n&quot;
 comma
 (paren
 id|acb-&gt;config
@@ -21361,8 +21229,6 @@ c_cond
 l_string|&quot;Wide&quot;
 suffix:colon
 l_string|&quot;&quot;
-comma
-id|acb-&gt;adapter_index
 )paren
 suffix:semicolon
 id|SPRINTF
@@ -21441,12 +21307,7 @@ c_func
 (paren
 l_string|&quot;, DelayReset %is&bslash;n&quot;
 comma
-id|eeprom_buf
-(braket
-id|acb-&gt;adapter_index
-)braket
-dot
-id|delay_time
+id|acb-&gt;eeprom.delay_time
 )paren
 suffix:semicolon
 multiline_comment|/*SPRINTF(&quot;&bslash;n&quot;); */
@@ -22523,8 +22384,6 @@ comma
 id|io_port
 comma
 id|irq
-comma
-id|adapter_count
 )paren
 suffix:semicolon
 r_if
@@ -22568,10 +22427,6 @@ op_member_access_from_pointer
 id|dev
 op_assign
 id|dev
-suffix:semicolon
-multiline_comment|/* increment adaptor count */
-id|adapter_count
-op_increment
 suffix:semicolon
 multiline_comment|/* store ptr to scsi host in the PCI device structure */
 id|pci_set_drvdata
