@@ -6203,10 +6203,6 @@ id|rq-&gt;rq_status
 op_assign
 id|RQ_ACTIVE
 suffix:semicolon
-id|rq-&gt;rq_disk
-op_assign
-id|drive-&gt;disk
-suffix:semicolon
 multiline_comment|/*&n;&t; * we need to hold an extra reference to request for safe inspection&n;&t; * after completion&n;&t; */
 r_if
 c_cond

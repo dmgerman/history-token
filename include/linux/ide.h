@@ -1989,12 +1989,6 @@ id|semaphore
 id|gendev_rel_sem
 suffix:semicolon
 multiline_comment|/* to deal with device release() */
-DECL|member|disk
-r_struct
-id|gendisk
-op_star
-id|disk
-suffix:semicolon
 DECL|typedef|ide_drive_t
 )brace
 id|ide_drive_t
@@ -4457,12 +4451,17 @@ c_func
 r_void
 )paren
 suffix:semicolon
-r_extern
+r_void
+id|ide_init_disk
+c_func
+(paren
 r_struct
-id|block_device_operations
-id|ide_fops
-(braket
-)braket
+id|gendisk
+op_star
+comma
+id|ide_drive_t
+op_star
+)paren
 suffix:semicolon
 r_extern
 r_int
