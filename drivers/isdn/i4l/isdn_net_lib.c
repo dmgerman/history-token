@@ -9362,6 +9362,7 @@ op_amp
 id|isdn_net_fsm
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_ISDN_NET_SIMPLE
 id|register_isdn_netif
 c_func
 (paren
@@ -9398,6 +9399,8 @@ op_amp
 id|isdn_uihdlc_ops
 )paren
 suffix:semicolon
+macro_line|#endif
+macro_line|#ifdef CONFIG_ISDN_NET_CISCO
 id|register_isdn_netif
 c_func
 (paren
@@ -9416,6 +9419,7 @@ op_amp
 id|isdn_ciscohdlck_ops
 )paren
 suffix:semicolon
+macro_line|#endif
 macro_line|#ifdef CONFIG_ISDN_X25
 id|register_isdn_netif
 c_func
