@@ -469,6 +469,7 @@ id|ioaddr_t
 id|iobase
 comma
 id|u_char
+id|__iomem
 op_star
 id|ramBase
 )paren
@@ -800,6 +801,7 @@ id|node
 suffix:semicolon
 DECL|member|ramBase
 id|u_char
+id|__iomem
 op_star
 id|ramBase
 suffix:semicolon
@@ -864,6 +866,7 @@ id|get_uint16
 c_func
 (paren
 id|u_char
+id|__iomem
 op_star
 id|staddr
 )paren
@@ -885,6 +888,7 @@ id|get_int16
 c_func
 (paren
 id|u_char
+id|__iomem
 op_star
 id|staddr
 )paren
@@ -942,6 +946,7 @@ op_star
 id|priv
 comma
 id|u_char
+id|__iomem
 op_star
 id|ramBase
 comma
@@ -1068,6 +1073,7 @@ id|dev
 )paren
 suffix:semicolon
 id|u_char
+id|__iomem
 op_star
 id|ramBase
 op_assign
@@ -1735,6 +1741,7 @@ id|dev
 )paren
 suffix:semicolon
 id|u_char
+id|__iomem
 op_star
 id|ramBase
 op_assign
@@ -1971,6 +1978,7 @@ id|dev
 )paren
 suffix:semicolon
 id|u_char
+id|__iomem
 op_star
 id|ramBase
 op_assign
@@ -2399,6 +2407,7 @@ id|dev
 )paren
 suffix:semicolon
 id|u_char
+id|__iomem
 op_star
 id|ramBase
 op_assign
@@ -3355,6 +3364,7 @@ id|memreq_t
 id|mem
 suffix:semicolon
 id|u_char
+id|__iomem
 op_star
 id|ramBase
 op_assign
@@ -4170,6 +4180,7 @@ id|ioaddr_t
 id|ioBase
 comma
 id|u_char
+id|__iomem
 op_star
 id|ramBase
 )paren
@@ -4239,6 +4250,7 @@ id|dev
 )paren
 suffix:semicolon
 id|u_char
+id|__iomem
 op_star
 id|ramBase
 op_assign
@@ -4692,6 +4704,7 @@ id|dev
 )paren
 suffix:semicolon
 id|u_char
+id|__iomem
 op_star
 id|ramBase
 op_assign
@@ -5108,6 +5121,7 @@ id|ioaddr_t
 id|iobase
 suffix:semicolon
 id|u_char
+id|__iomem
 op_star
 id|ramBase
 suffix:semicolon
@@ -5768,6 +5782,7 @@ id|dev
 )paren
 suffix:semicolon
 id|u_char
+id|__iomem
 op_star
 id|ramBase
 op_assign
@@ -6411,6 +6426,7 @@ id|dev
 )paren
 suffix:semicolon
 id|u_char
+id|__iomem
 op_star
 id|ramBase
 op_assign
