@@ -1853,6 +1853,7 @@ suffix:semicolon
 )brace
 multiline_comment|/**&n; * pci_setup_device - fill in class and map information of a device&n; * @dev: the device structure to fill&n; *&n; * Initialize the device structure with information about the device&squot;s &n; * vendor,class,memory and IO-space addresses,IRQ lines etc.&n; * Called at initialisation of the PCI subsystem and by CardBus services.&n; * Returns 0 on success and -1 if unknown type of device (not normal, bridge&n; * or CardBus).&n; */
 DECL|function|pci_setup_device
+r_static
 r_int
 id|pci_setup_device
 c_func
@@ -2806,6 +2807,7 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|function|pci_alloc_primary_bus_parented
+r_static
 r_struct
 id|pci_bus
 op_star
@@ -3076,13 +3078,6 @@ id|pci_root_buses
 )paren
 suffix:semicolon
 macro_line|#ifdef CONFIG_HOTPLUG
-DECL|variable|pci_setup_device
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|pci_setup_device
-)paren
-suffix:semicolon
 DECL|variable|pci_add_new_bus
 id|EXPORT_SYMBOL
 c_func
