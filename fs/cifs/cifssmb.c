@@ -13413,7 +13413,11 @@ suffix:semicolon
 multiline_comment|/* now safe to change to le */
 id|parm_data-&gt;FileSize
 op_assign
+id|cpu_to_le64
+c_func
+(paren
 id|size
+)paren
 suffix:semicolon
 id|pSMB-&gt;Fid
 op_assign
