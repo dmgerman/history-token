@@ -958,21 +958,6 @@ id|current-&gt;pid
 )paren
 r_return
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|pc
-op_ge
-l_int|0xa0000000UL
-op_logical_and
-id|pc
-OL
-l_int|0xc0000000UL
-)paren
-id|pc
-op_sub_assign
-l_int|0x20000000
-suffix:semicolon
 id|pc
 op_sub_assign
 (paren
@@ -1057,7 +1042,11 @@ id|regs
 id|sh_do_profile
 c_func
 (paren
-id|regs-&gt;pc
+id|profile_pc
+c_func
+(paren
+id|regs
+)paren
 )paren
 suffix:semicolon
 macro_line|#ifdef CONFIG_HEARTBEAT

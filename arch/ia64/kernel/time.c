@@ -491,8 +491,6 @@ id|regs
 r_int
 r_int
 id|ip
-comma
-id|slot
 suffix:semicolon
 id|profile_hook
 c_func
@@ -519,33 +517,14 @@ id|prof_buffer
 )paren
 r_return
 suffix:semicolon
+multiline_comment|/* Conserve space in histogram by encoding slot bits in address&n;&t; * bits 2 and 3 rather than bits 0 and 1.&n;&t; */
 id|ip
 op_assign
-id|instruction_pointer
+id|profile_pc
 c_func
 (paren
 id|regs
 )paren
-suffix:semicolon
-multiline_comment|/* Conserve space in histogram by encoding slot bits in address&n;&t; * bits 2 and 3 rather than bits 0 and 1.&n;&t; */
-id|slot
-op_assign
-id|ip
-op_amp
-l_int|3
-suffix:semicolon
-id|ip
-op_assign
-(paren
-id|ip
-op_amp
-op_complement
-l_int|3UL
-)paren
-op_plus
-l_int|4
-op_star
-id|slot
 suffix:semicolon
 multiline_comment|/*&n;&t; * Only measure the CPUs specified by /proc/irq/prof_cpu_mask.&n;&t; * (default is all CPUs.)&n;&t; */
 r_if

@@ -19,6 +19,7 @@ macro_line|#include &lt;linux/bcd.h&gt;
 macro_line|#include &lt;linux/jiffies.h&gt;
 macro_line|#include &lt;linux/cpufreq.h&gt;
 macro_line|#include &lt;linux/percpu.h&gt;
+macro_line|#include &lt;linux/profile.h&gt;
 macro_line|#include &lt;asm/oplib.h&gt;
 macro_line|#include &lt;asm/mostek.h&gt;
 macro_line|#include &lt;asm/timer.h&gt;
@@ -1354,35 +1355,22 @@ r_return
 suffix:semicolon
 id|pc
 op_assign
-id|regs-&gt;tpc
-suffix:semicolon
-id|pc
-op_sub_assign
+(paren
+id|profile_pc
+c_func
+(paren
+id|regs
+)paren
+op_minus
 (paren
 r_int
 r_int
 )paren
 id|_stext
-suffix:semicolon
-id|pc
-op_rshift_assign
+)paren
+op_rshift
 id|prof_shift
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|pc
-op_ge
-id|prof_len
-)paren
-(brace
-id|pc
-op_assign
-id|prof_len
-op_minus
-l_int|1
-suffix:semicolon
-)brace
 id|atomic_inc
 c_func
 (paren
@@ -1393,7 +1381,15 @@ op_star
 op_amp
 id|prof_buffer
 (braket
+id|min
+c_func
+(paren
 id|pc
+comma
+id|prof_len
+op_minus
+l_int|1
+)paren
 )braket
 )paren
 suffix:semicolon
