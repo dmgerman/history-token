@@ -14,6 +14,7 @@ macro_line|#include &lt;linux/mc146818rtc.h&gt;
 macro_line|#include &lt;linux/time.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/profile.h&gt;
+macro_line|#include &lt;linux/cpu.h&gt;
 macro_line|#include &lt;asm/segment.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/processor.h&gt;
@@ -767,6 +768,17 @@ c_func
 )paren
 (brace
 macro_line|#ifdef CONFIG_SMP
+multiline_comment|/*&n;&t;&t; * We cannot disable the decrementer, so in the period&n;&t;&t; * between this cpu&squot;s being marked offline in cpu_online_map&n;&t;&t; * and calling stop-self, it is taking timer interrupts.&n;&t;&t; * Avoid calling into the scheduler rebalancing code if this&n;&t;&t; * is the case.&n;&t;&t; */
+r_if
+c_cond
+(paren
+op_logical_neg
+id|cpu_is_offline
+c_func
+(paren
+id|cpu
+)paren
+)paren
 id|smp_local_timer_interrupt
 c_func
 (paren
@@ -774,6 +786,7 @@ id|regs
 )paren
 suffix:semicolon
 macro_line|#endif
+multiline_comment|/*&n;&t;&t; * No need to check whether cpu is offline here; boot_cpuid&n;&t;&t; * should have been fixed up by now.&n;&t;&t; */
 r_if
 c_cond
 (paren
