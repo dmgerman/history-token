@@ -2881,6 +2881,12 @@ c_func
 l_int|3
 )paren
 suffix:semicolon
+id|device_power_down
+c_func
+(paren
+l_int|3
+)paren
+suffix:semicolon
 multiline_comment|/* serialize with the timer interrupt */
 id|write_seqlock_irq
 c_func
@@ -3017,6 +3023,11 @@ suffix:colon
 op_minus
 id|EIO
 suffix:semicolon
+id|device_power_up
+c_func
+(paren
+)paren
+suffix:semicolon
 id|device_resume
 c_func
 (paren
@@ -3106,6 +3117,12 @@ r_void
 r_int
 id|err
 suffix:semicolon
+id|device_power_down
+c_func
+(paren
+l_int|3
+)paren
+suffix:semicolon
 multiline_comment|/* serialize with the timer interrupt */
 id|write_seqlock_irq
 c_func
@@ -3156,6 +3173,11 @@ c_func
 l_string|&quot;standby&quot;
 comma
 id|err
+)paren
+suffix:semicolon
+id|device_power_up
+c_func
+(paren
 )paren
 suffix:semicolon
 )brace
