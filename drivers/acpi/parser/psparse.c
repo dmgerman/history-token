@@ -1,5 +1,5 @@
 multiline_comment|/******************************************************************************&n; *&n; * Module Name: psparse - Parser top level AML parse routines&n; *&n; *****************************************************************************/
-multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
+multiline_comment|/*&n; *  Copyright (C) 2000 - 2003, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 multiline_comment|/*&n; * Parse the AML and build an operation tree as most interpreters,&n; * like Perl, do.  Parsing is done by hand rather than with a YACC&n; * generated parser to tightly constrain stack and dynamic memory&n; * usage.  At the same time, parsing is kept flexible and the code&n; * fairly compact by parsing based on a list of AML opcode&n; * templates in aml_op_info[]&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;acparser.h&quot;
@@ -56,6 +56,7 @@ id|u16
 DECL|function|acpi_ps_peek_opcode
 id|acpi_ps_peek_opcode
 (paren
+r_struct
 id|acpi_parse_state
 op_star
 id|parser_state
@@ -124,28 +125,34 @@ r_void
 DECL|function|acpi_ps_complete_this_op
 id|acpi_ps_complete_this_op
 (paren
+r_struct
 id|acpi_walk_state
 op_star
 id|walk_state
 comma
+r_union
 id|acpi_parse_object
 op_star
 id|op
 )paren
 (brace
+r_union
 id|acpi_parse_object
 op_star
 id|prev
 suffix:semicolon
+r_union
 id|acpi_parse_object
 op_star
 id|next
 suffix:semicolon
 r_const
+r_struct
 id|acpi_opcode_info
 op_star
 id|parent_info
 suffix:semicolon
+r_union
 id|acpi_parse_object
 op_star
 id|replacement_op
@@ -523,10 +530,12 @@ id|acpi_status
 DECL|function|acpi_ps_next_parse_state
 id|acpi_ps_next_parse_state
 (paren
+r_struct
 id|acpi_walk_state
 op_star
 id|walk_state
 comma
+r_union
 id|acpi_parse_object
 op_star
 id|op
@@ -535,6 +544,7 @@ id|acpi_status
 id|callback_status
 )paren
 (brace
+r_struct
 id|acpi_parse_state
 op_star
 id|parser_state
@@ -733,6 +743,7 @@ id|acpi_status
 DECL|function|acpi_ps_parse_loop
 id|acpi_ps_parse_loop
 (paren
+r_struct
 id|acpi_walk_state
 op_star
 id|walk_state
@@ -743,6 +754,7 @@ id|status
 op_assign
 id|AE_OK
 suffix:semicolon
+r_union
 id|acpi_parse_object
 op_star
 id|op
@@ -750,15 +762,18 @@ op_assign
 l_int|NULL
 suffix:semicolon
 multiline_comment|/* current op */
+r_union
 id|acpi_parse_object
 op_star
 id|arg
 op_assign
 l_int|NULL
 suffix:semicolon
+r_union
 id|acpi_parse_object
 id|pre_op
 suffix:semicolon
+r_struct
 id|acpi_parse_state
 op_star
 id|parser_state
@@ -2530,6 +2545,7 @@ id|acpi_status
 DECL|function|acpi_ps_parse_aml
 id|acpi_ps_parse_aml
 (paren
+r_struct
 id|acpi_walk_state
 op_star
 id|walk_state
@@ -2541,16 +2557,19 @@ suffix:semicolon
 id|acpi_status
 id|terminate_status
 suffix:semicolon
+r_struct
 id|acpi_thread_state
 op_star
 id|thread
 suffix:semicolon
+r_struct
 id|acpi_thread_state
 op_star
 id|prev_walk_list
 op_assign
 id|acpi_gbl_current_walk_list
 suffix:semicolon
+r_struct
 id|acpi_walk_state
 op_star
 id|previous_walk_state
@@ -2915,6 +2934,7 @@ id|acpi_ut_delete_generic_state
 (paren
 id|ACPI_CAST_PTR
 (paren
+r_union
 id|acpi_generic_state
 comma
 id|thread

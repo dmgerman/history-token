@@ -1,5 +1,5 @@
 multiline_comment|/******************************************************************************&n; *&n; * Name: acutils.h -- prototypes for the common (subsystem-wide) procedures&n; *&n; *****************************************************************************/
-multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
+multiline_comment|/*&n; *  Copyright (C) 2000 - 2003, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#ifndef _ACUTILS_H
 DECL|macro|_ACUTILS_H
 mdefine_line|#define _ACUTILS_H
@@ -14,10 +14,12 @@ id|acpi_pkg_callback
 id|u8
 id|object_type
 comma
+r_union
 id|acpi_operand_object
 op_star
 id|source_object
 comma
+r_union
 id|acpi_generic_state
 op_star
 id|state
@@ -30,6 +32,7 @@ suffix:semicolon
 id|acpi_status
 id|acpi_ut_walk_package_tree
 (paren
+r_union
 id|acpi_operand_object
 op_star
 id|source_object
@@ -47,7 +50,6 @@ id|context
 )paren
 suffix:semicolon
 DECL|struct|acpi_pkg_info
-r_typedef
 r_struct
 id|acpi_pkg_info
 (brace
@@ -68,9 +70,7 @@ DECL|member|num_packages
 id|u32
 id|num_packages
 suffix:semicolon
-DECL|typedef|acpi_pkg_info
 )brace
-id|acpi_pkg_info
 suffix:semicolon
 DECL|macro|REF_INCREMENT
 mdefine_line|#define REF_INCREMENT       (u16) 0
@@ -142,6 +142,7 @@ r_char
 op_star
 id|acpi_ut_get_object_type_name
 (paren
+r_union
 id|acpi_operand_object
 op_star
 id|obj_desc
@@ -416,10 +417,12 @@ id|acpi_status
 id|acpi_ut_build_simple_object
 c_func
 (paren
+r_union
 id|acpi_operand_object
 op_star
 id|obj
 comma
+r_union
 id|acpi_object
 op_star
 id|user_obj
@@ -436,6 +439,7 @@ suffix:semicolon
 id|acpi_status
 id|acpi_ut_build_package_object
 (paren
+r_union
 id|acpi_operand_object
 op_star
 id|obj
@@ -455,10 +459,12 @@ id|acpi_ut_copy_ielement_to_eelement
 id|u8
 id|object_type
 comma
+r_union
 id|acpi_operand_object
 op_star
 id|source_object
 comma
+r_union
 id|acpi_generic_state
 op_star
 id|state
@@ -474,10 +480,12 @@ id|acpi_ut_copy_ielement_to_ielement
 id|u8
 id|object_type
 comma
+r_union
 id|acpi_operand_object
 op_star
 id|source_object
 comma
+r_union
 id|acpi_generic_state
 op_star
 id|state
@@ -490,10 +498,12 @@ suffix:semicolon
 id|acpi_status
 id|acpi_ut_copy_iobject_to_eobject
 (paren
+r_union
 id|acpi_operand_object
 op_star
 id|obj
 comma
+r_struct
 id|acpi_buffer
 op_star
 id|ret_buffer
@@ -503,10 +513,12 @@ id|acpi_status
 id|acpi_ut_copy_esimple_to_isimple
 c_func
 (paren
+r_union
 id|acpi_object
 op_star
 id|user_obj
 comma
+r_union
 id|acpi_operand_object
 op_star
 op_star
@@ -516,10 +528,12 @@ suffix:semicolon
 id|acpi_status
 id|acpi_ut_copy_eobject_to_iobject
 (paren
+r_union
 id|acpi_object
 op_star
 id|obj
 comma
+r_union
 id|acpi_operand_object
 op_star
 op_star
@@ -529,10 +543,12 @@ suffix:semicolon
 id|acpi_status
 id|acpi_ut_copy_isimple_to_isimple
 (paren
+r_union
 id|acpi_operand_object
 op_star
 id|source_obj
 comma
+r_union
 id|acpi_operand_object
 op_star
 id|dest_obj
@@ -541,14 +557,17 @@ suffix:semicolon
 id|acpi_status
 id|acpi_ut_copy_ipackage_to_ipackage
 (paren
+r_union
 id|acpi_operand_object
 op_star
 id|source_obj
 comma
+r_union
 id|acpi_operand_object
 op_star
 id|dest_obj
 comma
+r_struct
 id|acpi_walk_state
 op_star
 id|walk_state
@@ -557,10 +576,12 @@ suffix:semicolon
 id|acpi_status
 id|acpi_ut_copy_simple_object
 (paren
+r_union
 id|acpi_operand_object
 op_star
 id|source_desc
 comma
+r_union
 id|acpi_operand_object
 op_star
 id|dest_desc
@@ -569,15 +590,18 @@ suffix:semicolon
 id|acpi_status
 id|acpi_ut_copy_iobject_to_iobject
 (paren
+r_union
 id|acpi_operand_object
 op_star
 id|source_desc
 comma
+r_union
 id|acpi_operand_object
 op_star
 op_star
 id|dest_desc
 comma
+r_struct
 id|acpi_walk_state
 op_star
 id|walk_state
@@ -587,6 +611,7 @@ multiline_comment|/*&n; * ut_create - Object creation&n; */
 id|acpi_status
 id|acpi_ut_update_object_reference
 (paren
+r_union
 id|acpi_operand_object
 op_star
 id|object
@@ -614,6 +639,7 @@ id|acpi_ut_trace
 id|u32
 id|line_number
 comma
+r_struct
 id|acpi_debug_print_info
 op_star
 id|dbg_info
@@ -625,6 +651,7 @@ id|acpi_ut_trace_ptr
 id|u32
 id|line_number
 comma
+r_struct
 id|acpi_debug_print_info
 op_star
 id|dbg_info
@@ -640,6 +667,7 @@ id|acpi_ut_trace_u32
 id|u32
 id|line_number
 comma
+r_struct
 id|acpi_debug_print_info
 op_star
 id|dbg_info
@@ -654,6 +682,7 @@ id|acpi_ut_trace_str
 id|u32
 id|line_number
 comma
+r_struct
 id|acpi_debug_print_info
 op_star
 id|dbg_info
@@ -669,6 +698,7 @@ id|acpi_ut_exit
 id|u32
 id|line_number
 comma
+r_struct
 id|acpi_debug_print_info
 op_star
 id|dbg_info
@@ -680,6 +710,7 @@ id|acpi_ut_status_exit
 id|u32
 id|line_number
 comma
+r_struct
 id|acpi_debug_print_info
 op_star
 id|dbg_info
@@ -694,6 +725,7 @@ id|acpi_ut_value_exit
 id|u32
 id|line_number
 comma
+r_struct
 id|acpi_debug_print_info
 op_star
 id|dbg_info
@@ -708,6 +740,7 @@ id|acpi_ut_ptr_exit
 id|u32
 id|line_number
 comma
+r_struct
 id|acpi_debug_print_info
 op_star
 id|dbg_info
@@ -786,6 +819,7 @@ comma
 id|u32
 id|line_number
 comma
+r_struct
 id|acpi_debug_print_info
 op_star
 id|dbg_info
@@ -810,6 +844,7 @@ comma
 id|u32
 id|line_number
 comma
+r_struct
 id|acpi_debug_print_info
 op_star
 id|dbg_info
@@ -828,6 +863,7 @@ multiline_comment|/*&n; * ut_delete - Object deletion&n; */
 r_void
 id|acpi_ut_delete_internal_obj
 (paren
+r_union
 id|acpi_operand_object
 op_star
 id|object
@@ -836,6 +872,7 @@ suffix:semicolon
 r_void
 id|acpi_ut_delete_internal_package_object
 (paren
+r_union
 id|acpi_operand_object
 op_star
 id|object
@@ -844,6 +881,7 @@ suffix:semicolon
 r_void
 id|acpi_ut_delete_internal_simple_object
 (paren
+r_union
 id|acpi_operand_object
 op_star
 id|object
@@ -852,6 +890,7 @@ suffix:semicolon
 r_void
 id|acpi_ut_delete_internal_object_list
 (paren
+r_union
 id|acpi_operand_object
 op_star
 op_star
@@ -881,6 +920,7 @@ mdefine_line|#define METHOD_NAME__PRT        &quot;_PRT&quot;
 id|acpi_status
 id|acpi_ut_evaluate_object
 (paren
+r_struct
 id|acpi_namespace_node
 op_star
 id|prefix_node
@@ -892,6 +932,7 @@ comma
 id|u32
 id|expected_return_btypes
 comma
+r_union
 id|acpi_operand_object
 op_star
 op_star
@@ -905,6 +946,7 @@ r_char
 op_star
 id|object_name
 comma
+r_struct
 id|acpi_namespace_node
 op_star
 id|device_node
@@ -917,10 +959,12 @@ suffix:semicolon
 id|acpi_status
 id|acpi_ut_execute_HID
 (paren
+r_struct
 id|acpi_namespace_node
 op_star
 id|device_node
 comma
+r_struct
 id|acpi_device_id
 op_star
 id|hid
@@ -929,10 +973,12 @@ suffix:semicolon
 id|acpi_status
 id|acpi_ut_execute_CID
 (paren
+r_struct
 id|acpi_namespace_node
 op_star
 id|device_node
 comma
+r_struct
 id|acpi_device_id
 op_star
 id|cid
@@ -941,6 +987,7 @@ suffix:semicolon
 id|acpi_status
 id|acpi_ut_execute_STA
 (paren
+r_struct
 id|acpi_namespace_node
 op_star
 id|device_node
@@ -953,10 +1000,12 @@ suffix:semicolon
 id|acpi_status
 id|acpi_ut_execute_UID
 (paren
+r_struct
 id|acpi_namespace_node
 op_star
 id|device_node
 comma
+r_struct
 id|acpi_device_id
 op_star
 id|uid
@@ -1004,6 +1053,7 @@ id|mutex_id
 )paren
 suffix:semicolon
 multiline_comment|/*&n; * ut_object - internal object create/delete/cache routines&n; */
+r_union
 id|acpi_operand_object
 op_star
 id|acpi_ut_create_internal_object_dbg
@@ -1044,6 +1094,7 @@ mdefine_line|#define acpi_ut_allocate_object_desc()  acpi_ut_allocate_object_des
 r_void
 id|acpi_ut_delete_object_desc
 (paren
+r_union
 id|acpi_operand_object
 op_star
 id|object
@@ -1057,6 +1108,7 @@ op_star
 id|object
 )paren
 suffix:semicolon
+r_union
 id|acpi_operand_object
 op_star
 id|acpi_ut_create_buffer_object
@@ -1069,6 +1121,7 @@ multiline_comment|/*&n; * ut_ref_cnt - Object reference count management&n; */
 r_void
 id|acpi_ut_add_reference
 (paren
+r_union
 id|acpi_operand_object
 op_star
 id|object
@@ -1077,6 +1130,7 @@ suffix:semicolon
 r_void
 id|acpi_ut_remove_reference
 (paren
+r_union
 id|acpi_operand_object
 op_star
 id|object
@@ -1086,6 +1140,7 @@ multiline_comment|/*&n; * ut_size - Object size routines&n; */
 id|acpi_status
 id|acpi_ut_get_simple_object_size
 (paren
+r_union
 id|acpi_operand_object
 op_star
 id|obj
@@ -1098,6 +1153,7 @@ suffix:semicolon
 id|acpi_status
 id|acpi_ut_get_package_object_size
 (paren
+r_union
 id|acpi_operand_object
 op_star
 id|obj
@@ -1111,6 +1167,7 @@ id|acpi_status
 id|acpi_ut_get_object_size
 c_func
 (paren
+r_union
 id|acpi_operand_object
 op_star
 id|obj
@@ -1126,10 +1183,12 @@ id|acpi_ut_get_element_length
 id|u8
 id|object_type
 comma
+r_union
 id|acpi_operand_object
 op_star
 id|source_object
 comma
+r_union
 id|acpi_generic_state
 op_star
 id|state
@@ -1143,26 +1202,31 @@ multiline_comment|/*&n; * ut_state - Generic state creation/cache routines&n; */
 r_void
 id|acpi_ut_push_generic_state
 (paren
+r_union
 id|acpi_generic_state
 op_star
 op_star
 id|list_head
 comma
+r_union
 id|acpi_generic_state
 op_star
 id|state
 )paren
 suffix:semicolon
+r_union
 id|acpi_generic_state
 op_star
 id|acpi_ut_pop_generic_state
 (paren
+r_union
 id|acpi_generic_state
 op_star
 op_star
 id|list_head
 )paren
 suffix:semicolon
+r_union
 id|acpi_generic_state
 op_star
 id|acpi_ut_create_generic_state
@@ -1170,6 +1234,7 @@ id|acpi_ut_create_generic_state
 r_void
 )paren
 suffix:semicolon
+r_struct
 id|acpi_thread_state
 op_star
 id|acpi_ut_create_thread_state
@@ -1177,10 +1242,12 @@ id|acpi_ut_create_thread_state
 r_void
 )paren
 suffix:semicolon
+r_union
 id|acpi_generic_state
 op_star
 id|acpi_ut_create_update_state
 (paren
+r_union
 id|acpi_operand_object
 op_star
 id|object
@@ -1189,6 +1256,7 @@ id|u16
 id|action
 )paren
 suffix:semicolon
+r_union
 id|acpi_generic_state
 op_star
 id|acpi_ut_create_pkg_state
@@ -1208,6 +1276,7 @@ suffix:semicolon
 id|acpi_status
 id|acpi_ut_create_update_state_and_push
 (paren
+r_union
 id|acpi_operand_object
 op_star
 id|object
@@ -1215,6 +1284,7 @@ comma
 id|u16
 id|action
 comma
+r_union
 id|acpi_generic_state
 op_star
 op_star
@@ -1235,12 +1305,14 @@ comma
 id|u16
 id|index
 comma
+r_union
 id|acpi_generic_state
 op_star
 op_star
 id|state_list
 )paren
 suffix:semicolon
+r_union
 id|acpi_generic_state
 op_star
 id|acpi_ut_create_control_state
@@ -1251,6 +1323,7 @@ suffix:semicolon
 r_void
 id|acpi_ut_delete_generic_state
 (paren
+r_union
 id|acpi_generic_state
 op_star
 id|state
@@ -1361,6 +1434,7 @@ id|u8
 op_star
 id|acpi_ut_get_resource_end_tag
 (paren
+r_union
 id|acpi_operand_object
 op_star
 id|obj_desc
@@ -1398,6 +1472,7 @@ id|acpi_ut_display_init_pathname
 id|u8
 id|type
 comma
+r_struct
 id|acpi_namespace_node
 op_star
 id|obj_handle
@@ -1438,6 +1513,7 @@ suffix:semicolon
 id|acpi_status
 id|acpi_ut_validate_buffer
 (paren
+r_struct
 id|acpi_buffer
 op_star
 id|buffer
@@ -1446,6 +1522,7 @@ suffix:semicolon
 id|acpi_status
 id|acpi_ut_initialize_buffer
 (paren
+r_struct
 id|acpi_buffer
 op_star
 id|buffer
@@ -1546,6 +1623,7 @@ id|u32
 id|line
 )paren
 suffix:semicolon
+r_struct
 id|acpi_debug_mem_block
 op_star
 id|acpi_ut_find_allocation
@@ -1564,6 +1642,7 @@ id|acpi_ut_track_allocation
 id|u32
 id|list_id
 comma
+r_struct
 id|acpi_debug_mem_block
 op_star
 id|address
@@ -1591,6 +1670,7 @@ id|acpi_ut_remove_allocation
 id|u32
 id|list_id
 comma
+r_struct
 id|acpi_debug_mem_block
 op_star
 id|address

@@ -1,5 +1,5 @@
 multiline_comment|/******************************************************************************&n; *&n; * Module Name: tbxface - Public interfaces to the ACPI subsystem&n; *                         ACPI table oriented interfaces&n; *&n; *****************************************************************************/
-multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
+multiline_comment|/*&n; *  Copyright (C) 2000 - 2003, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;acnamesp.h&quot;
 macro_line|#include &quot;actables.h&quot;
@@ -17,6 +17,7 @@ id|acpi_load_tables
 r_void
 )paren
 (brace
+r_struct
 id|acpi_pointer
 id|rsdp_address
 suffix:semicolon
@@ -237,6 +238,7 @@ id|acpi_status
 DECL|function|acpi_load_table
 id|acpi_load_table
 (paren
+r_struct
 id|acpi_table_header
 op_star
 id|table_ptr
@@ -245,9 +247,11 @@ id|table_ptr
 id|acpi_status
 id|status
 suffix:semicolon
+r_struct
 id|acpi_table_desc
 id|table_info
 suffix:semicolon
+r_struct
 id|acpi_pointer
 id|address
 suffix:semicolon
@@ -419,6 +423,7 @@ id|acpi_table_type
 id|table_type
 )paren
 (brace
+r_struct
 id|acpi_table_desc
 op_star
 id|list_head
@@ -485,7 +490,7 @@ id|AE_OK
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_get_table_header&n; *&n; * PARAMETERS:  table_type      - one of the defined table types&n; *              Instance        - the non zero instance of the table, allows&n; *                                support for multiple tables of the same type&n; *                                see acpi_gbl_acpi_table_flag&n; *              out_table_header - pointer to the acpi_table_header if successful&n; *&n; * DESCRIPTION: This function is called to get an ACPI table header.  The caller&n; *              supplies an pointer to a data area sufficient to contain an ACPI&n; *              acpi_table_header structure.&n; *&n; *              The header contains a length field that can be used to determine&n; *              the size of the buffer needed to contain the entire table.  This&n; *              function is not valid for the RSD PTR table since it does not&n; *              have a standard header and is fixed length.&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_get_table_header&n; *&n; * PARAMETERS:  table_type      - one of the defined table types&n; *              Instance        - the non zero instance of the table, allows&n; *                                support for multiple tables of the same type&n; *                                see acpi_gbl_acpi_table_flag&n; *              out_table_header - pointer to the struct acpi_table_header if successful&n; *&n; * DESCRIPTION: This function is called to get an ACPI table header.  The caller&n; *              supplies an pointer to a data area sufficient to contain an ACPI&n; *              struct acpi_table_header structure.&n; *&n; *              The header contains a length field that can be used to determine&n; *              the size of the buffer needed to contain the entire table.  This&n; *              function is not valid for the RSD PTR table since it does not&n; *              have a standard header and is fixed length.&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_get_table_header
 id|acpi_get_table_header
@@ -496,11 +501,13 @@ comma
 id|u32
 id|instance
 comma
+r_struct
 id|acpi_table_header
 op_star
 id|out_table_header
 )paren
 (brace
+r_struct
 id|acpi_table_header
 op_star
 id|tbl_ptr
@@ -633,6 +640,7 @@ id|tbl_ptr
 comma
 r_sizeof
 (paren
+r_struct
 id|acpi_table_header
 )paren
 )paren
@@ -654,11 +662,13 @@ comma
 id|u32
 id|instance
 comma
+r_struct
 id|acpi_buffer
 op_star
 id|ret_buffer
 )paren
 (brace
+r_struct
 id|acpi_table_header
 op_star
 id|tbl_ptr
@@ -801,6 +811,7 @@ id|table_length
 op_assign
 r_sizeof
 (paren
+r_struct
 id|rsdp_descriptor
 )paren
 suffix:semicolon

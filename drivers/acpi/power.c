@@ -1753,9 +1753,11 @@ id|resource
 op_assign
 l_int|NULL
 suffix:semicolon
+r_union
 id|acpi_object
 id|acpi_object
 suffix:semicolon
+r_struct
 id|acpi_buffer
 id|buffer
 op_assign

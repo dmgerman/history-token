@@ -1,5 +1,5 @@
 multiline_comment|/*******************************************************************************&n; *&n; * Module Name: utdelete - object deletion and reference count utilities&n; *&n; ******************************************************************************/
-multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
+multiline_comment|/*&n; *  Copyright (C) 2000 - 2003, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;acinterp.h&quot;
 macro_line|#include &quot;acnamesp.h&quot;
@@ -14,6 +14,7 @@ r_void
 DECL|function|acpi_ut_delete_internal_obj
 id|acpi_ut_delete_internal_obj
 (paren
+r_union
 id|acpi_operand_object
 op_star
 id|object
@@ -25,10 +26,12 @@ id|obj_pointer
 op_assign
 l_int|NULL
 suffix:semicolon
+r_union
 id|acpi_operand_object
 op_star
 id|handler_desc
 suffix:semicolon
+r_union
 id|acpi_operand_object
 op_star
 id|second_desc
@@ -405,12 +408,14 @@ r_void
 DECL|function|acpi_ut_delete_internal_object_list
 id|acpi_ut_delete_internal_object_list
 (paren
+r_union
 id|acpi_operand_object
 op_star
 op_star
 id|obj_list
 )paren
 (brace
+r_union
 id|acpi_operand_object
 op_star
 op_star
@@ -458,6 +463,7 @@ r_void
 DECL|function|acpi_ut_update_ref_count
 id|acpi_ut_update_ref_count
 (paren
+r_union
 id|acpi_operand_object
 op_star
 id|object
@@ -698,6 +704,7 @@ id|acpi_status
 DECL|function|acpi_ut_update_object_reference
 id|acpi_ut_update_object_reference
 (paren
+r_union
 id|acpi_operand_object
 op_star
 id|object
@@ -712,20 +719,24 @@ suffix:semicolon
 id|u32
 id|i
 suffix:semicolon
+r_union
 id|acpi_operand_object
 op_star
 id|next
 suffix:semicolon
+r_union
 id|acpi_operand_object
 op_star
 r_new
 suffix:semicolon
+r_union
 id|acpi_generic_state
 op_star
 id|state_list
 op_assign
 l_int|NULL
 suffix:semicolon
+r_union
 id|acpi_generic_state
 op_star
 id|state
@@ -1175,6 +1186,7 @@ r_void
 DECL|function|acpi_ut_add_reference
 id|acpi_ut_add_reference
 (paren
+r_union
 id|acpi_operand_object
 op_star
 id|object
@@ -1220,6 +1232,7 @@ r_void
 DECL|function|acpi_ut_remove_reference
 id|acpi_ut_remove_reference
 (paren
+r_union
 id|acpi_operand_object
 op_star
 id|object

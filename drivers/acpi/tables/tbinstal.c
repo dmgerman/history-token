@@ -1,5 +1,5 @@
 multiline_comment|/******************************************************************************&n; *&n; * Module Name: tbinstal - ACPI table installation and removal&n; *&n; *****************************************************************************/
-multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
+multiline_comment|/*&n; *  Copyright (C) 2000 - 2003, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;actables.h&quot;
 DECL|macro|_COMPONENT
@@ -17,6 +17,7 @@ r_char
 op_star
 id|signature
 comma
+r_struct
 id|acpi_table_desc
 op_star
 id|table_info
@@ -161,6 +162,7 @@ id|acpi_status
 DECL|function|acpi_tb_install_table
 id|acpi_tb_install_table
 (paren
+r_struct
 id|acpi_table_desc
 op_star
 id|table_info
@@ -282,6 +284,7 @@ id|acpi_status
 DECL|function|acpi_tb_recognize_table
 id|acpi_tb_recognize_table
 (paren
+r_struct
 id|acpi_table_desc
 op_star
 id|table_info
@@ -290,6 +293,7 @@ id|u8
 id|search_type
 )paren
 (brace
+r_struct
 id|acpi_table_header
 op_star
 id|table_header
@@ -306,6 +310,7 @@ multiline_comment|/* Ensure that we have a valid table pointer */
 id|table_header
 op_assign
 (paren
+r_struct
 id|acpi_table_header
 op_star
 )paren
@@ -395,15 +400,18 @@ id|acpi_tb_init_table_descriptor
 id|acpi_table_type
 id|table_type
 comma
+r_struct
 id|acpi_table_desc
 op_star
 id|table_info
 )paren
 (brace
+r_struct
 id|acpi_table_desc
 op_star
 id|list_head
 suffix:semicolon
+r_struct
 id|acpi_table_desc
 op_star
 id|table_desc
@@ -484,6 +492,7 @@ id|ACPI_MEM_CALLOCATE
 (paren
 r_sizeof
 (paren
+r_struct
 id|acpi_table_desc
 )paren
 )paren
@@ -574,6 +583,7 @@ id|u32
 )paren
 r_sizeof
 (paren
+r_struct
 id|acpi_table_header
 )paren
 )paren
@@ -794,11 +804,13 @@ r_void
 DECL|function|acpi_tb_free_acpi_tables_of_type
 id|acpi_tb_free_acpi_tables_of_type
 (paren
+r_struct
 id|acpi_table_desc
 op_star
 id|list_head
 )paren
 (brace
+r_struct
 id|acpi_table_desc
 op_star
 id|table_desc
@@ -857,6 +869,7 @@ r_void
 DECL|function|acpi_tb_delete_single_table
 id|acpi_tb_delete_single_table
 (paren
+r_struct
 id|acpi_table_desc
 op_star
 id|table_desc
@@ -920,16 +933,19 @@ suffix:semicolon
 )brace
 )brace
 multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_tb_uninstall_table&n; *&n; * PARAMETERS:  table_info          - A table info struct&n; *&n; * RETURN:      Pointer to the next table in the list (of same type)&n; *&n; * DESCRIPTION: Free the memory associated with an internal ACPI table that&n; *              is either installed or has never been installed.&n; *              Table mutex should be locked.&n; *&n; ******************************************************************************/
+r_struct
 id|acpi_table_desc
 op_star
 DECL|function|acpi_tb_uninstall_table
 id|acpi_tb_uninstall_table
 (paren
+r_struct
 id|acpi_table_desc
 op_star
 id|table_desc
 )paren
 (brace
+r_struct
 id|acpi_table_desc
 op_star
 id|next_desc

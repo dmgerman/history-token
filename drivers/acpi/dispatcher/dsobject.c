@@ -1,5 +1,5 @@
 multiline_comment|/******************************************************************************&n; *&n; * Module Name: dsobject - Dispatcher object management routines&n; *&n; *****************************************************************************/
-multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
+multiline_comment|/*&n; *  Copyright (C) 2000 - 2003, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#include &quot;acpi.h&quot;
 macro_line|#include &quot;acparser.h&quot;
 macro_line|#include &quot;amlcode.h&quot;
@@ -18,20 +18,24 @@ id|acpi_status
 DECL|function|acpi_ds_build_internal_object
 id|acpi_ds_build_internal_object
 (paren
+r_struct
 id|acpi_walk_state
 op_star
 id|walk_state
 comma
+r_union
 id|acpi_parse_object
 op_star
 id|op
 comma
+r_union
 id|acpi_operand_object
 op_star
 op_star
 id|obj_desc_ptr
 )paren
 (brace
+r_union
 id|acpi_operand_object
 op_star
 id|obj_desc
@@ -84,6 +88,7 @@ comma
 l_int|NULL
 comma
 (paren
+r_struct
 id|acpi_namespace_node
 op_star
 op_star
@@ -196,10 +201,12 @@ id|acpi_status
 DECL|function|acpi_ds_build_internal_buffer_obj
 id|acpi_ds_build_internal_buffer_obj
 (paren
+r_struct
 id|acpi_walk_state
 op_star
 id|walk_state
 comma
+r_union
 id|acpi_parse_object
 op_star
 id|op
@@ -207,20 +214,24 @@ comma
 id|u32
 id|buffer_length
 comma
+r_union
 id|acpi_operand_object
 op_star
 op_star
 id|obj_desc_ptr
 )paren
 (brace
+r_union
 id|acpi_parse_object
 op_star
 id|arg
 suffix:semicolon
+r_union
 id|acpi_operand_object
 op_star
 id|obj_desc
 suffix:semicolon
+r_union
 id|acpi_parse_object
 op_star
 id|byte_list
@@ -421,6 +432,7 @@ suffix:semicolon
 id|op-&gt;common.node
 op_assign
 (paren
+r_struct
 id|acpi_namespace_node
 op_star
 )paren
@@ -437,10 +449,12 @@ id|acpi_status
 DECL|function|acpi_ds_build_internal_package_obj
 id|acpi_ds_build_internal_package_obj
 (paren
+r_struct
 id|acpi_walk_state
 op_star
 id|walk_state
 comma
+r_union
 id|acpi_parse_object
 op_star
 id|op
@@ -448,20 +462,24 @@ comma
 id|u32
 id|package_length
 comma
+r_union
 id|acpi_operand_object
 op_star
 op_star
 id|obj_desc_ptr
 )paren
 (brace
+r_union
 id|acpi_parse_object
 op_star
 id|arg
 suffix:semicolon
+r_union
 id|acpi_parse_object
 op_star
 id|parent
 suffix:semicolon
+r_union
 id|acpi_operand_object
 op_star
 id|obj_desc
@@ -674,6 +692,7 @@ id|i
 op_assign
 id|ACPI_CAST_PTR
 (paren
+r_union
 id|acpi_operand_object
 comma
 id|arg-&gt;common.node
@@ -713,6 +732,7 @@ suffix:semicolon
 id|op-&gt;common.node
 op_assign
 (paren
+r_struct
 id|acpi_namespace_node
 op_star
 )paren
@@ -729,14 +749,17 @@ id|acpi_status
 DECL|function|acpi_ds_create_node
 id|acpi_ds_create_node
 (paren
+r_struct
 id|acpi_walk_state
 op_star
 id|walk_state
 comma
+r_struct
 id|acpi_namespace_node
 op_star
 id|node
 comma
+r_union
 id|acpi_parse_object
 op_star
 id|op
@@ -745,6 +768,7 @@ id|op
 id|acpi_status
 id|status
 suffix:semicolon
+r_union
 id|acpi_operand_object
 op_star
 id|obj_desc
@@ -852,10 +876,12 @@ id|acpi_status
 DECL|function|acpi_ds_init_object_from_op
 id|acpi_ds_init_object_from_op
 (paren
+r_struct
 id|acpi_walk_state
 op_star
 id|walk_state
 comma
+r_union
 id|acpi_parse_object
 op_star
 id|op
@@ -863,6 +889,7 @@ comma
 id|u16
 id|opcode
 comma
+r_union
 id|acpi_operand_object
 op_star
 op_star
@@ -870,10 +897,12 @@ id|ret_obj_desc
 )paren
 (brace
 r_const
+r_struct
 id|acpi_opcode_info
 op_star
 id|op_info
 suffix:semicolon
+r_union
 id|acpi_operand_object
 op_star
 id|obj_desc
@@ -934,6 +963,7 @@ multiline_comment|/*&n;&t;&t; * Defer evaluation of Buffer term_arg operand&n;&t
 id|obj_desc-&gt;buffer.node
 op_assign
 (paren
+r_struct
 id|acpi_namespace_node
 op_star
 )paren
@@ -959,6 +989,7 @@ multiline_comment|/*&n;&t;&t; * Defer evaluation of Package term_arg operand&n;&
 id|obj_desc-&gt;package.node
 op_assign
 (paren
+r_struct
 id|acpi_namespace_node
 op_star
 )paren
@@ -1161,6 +1192,7 @@ comma
 id|walk_state
 comma
 (paren
+r_struct
 id|acpi_namespace_node
 op_star
 op_star

@@ -1,5 +1,5 @@
 multiline_comment|/******************************************************************************&n; *&n; * Name: actypes.h - Common data types for the entire ACPI subsystem&n; *&n; *****************************************************************************/
-multiline_comment|/*&n; *  Copyright (C) 2000 - 2002, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
+multiline_comment|/*&n; *  Copyright (C) 2000 - 2003, R. Byron Moore&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License as published by&n; *  the Free Software Foundation; either version 2 of the License, or&n; *  (at your option) any later version.&n; *&n; *  This program is distributed in the hope that it will be useful,&n; *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *  GNU General Public License for more details.&n; *&n; *  You should have received a copy of the GNU General Public License&n; *  along with this program; if not, write to the Free Software&n; *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n; */
 macro_line|#ifndef __ACTYPES_H__
 DECL|macro|__ACTYPES_H__
 mdefine_line|#define __ACTYPES_H__
@@ -168,7 +168,6 @@ r_int
 r_int
 id|UINT32
 suffix:semicolon
-r_typedef
 r_struct
 (brace
 DECL|member|Lo
@@ -179,9 +178,7 @@ DECL|member|Hi
 id|UINT32
 id|Hi
 suffix:semicolon
-DECL|typedef|UINT64
 )brace
-id|UINT64
 suffix:semicolon
 multiline_comment|/*! [End] no source code translation !*/
 DECL|typedef|acpi_native_uint
@@ -324,10 +321,9 @@ id|acpi_native_uint
 id|ACPI_PTRDIFF
 suffix:semicolon
 multiline_comment|/*&n; * Pointer overlays to avoid lots of typecasting for&n; * code that accepts both physical and logical pointers.&n; */
-DECL|union|acpi_ptrs
-r_typedef
+DECL|union|acpi_pointers
 r_union
-id|acpi_ptrs
+id|acpi_pointers
 (brace
 DECL|member|physical
 id|acpi_physical_address
@@ -342,12 +338,9 @@ DECL|member|value
 id|acpi_table_ptr
 id|value
 suffix:semicolon
-DECL|typedef|acpi_pointers
 )brace
-id|acpi_pointers
 suffix:semicolon
 DECL|struct|acpi_pointer
-r_typedef
 r_struct
 id|acpi_pointer
 (brace
@@ -357,12 +350,10 @@ id|pointer_type
 suffix:semicolon
 DECL|member|pointer
 r_union
-id|acpi_ptrs
+id|acpi_pointers
 id|pointer
 suffix:semicolon
-DECL|typedef|acpi_pointer
 )brace
-id|acpi_pointer
 suffix:semicolon
 multiline_comment|/* pointer_types for above */
 DECL|macro|ACPI_PHYSICAL_POINTER
@@ -426,8 +417,9 @@ op_star
 id|acpi_handle
 suffix:semicolon
 multiline_comment|/* Actually a ptr to an Node */
-r_typedef
+DECL|struct|uint64_struct
 r_struct
+id|uint64_struct
 (brace
 DECL|member|lo
 id|u32
@@ -437,27 +429,26 @@ DECL|member|hi
 id|u32
 id|hi
 suffix:semicolon
-DECL|typedef|uint64_struct
 )brace
-id|uint64_struct
 suffix:semicolon
-r_typedef
+DECL|union|uint64_overlay
 r_union
+id|uint64_overlay
 (brace
 DECL|member|full
 id|u64
 id|full
 suffix:semicolon
 DECL|member|part
+r_struct
 id|uint64_struct
 id|part
 suffix:semicolon
-DECL|typedef|uint64_overlay
 )brace
-id|uint64_overlay
 suffix:semicolon
-r_typedef
+DECL|struct|uint32_struct
 r_struct
+id|uint32_struct
 (brace
 DECL|member|lo
 id|u32
@@ -467,9 +458,7 @@ DECL|member|hi
 id|u32
 id|hi
 suffix:semicolon
-DECL|typedef|uint32_struct
 )brace
-id|uint32_struct
 suffix:semicolon
 multiline_comment|/*&n; * Acpi integer width. In ACPI version 1, integers are&n; * 32 bits.  In ACPI version 2, integers are 64 bits.&n; * Note that this pertains to the ACPI integer type only, not&n; * other integers used in the implementation of the ACPI CA&n; * subsystem.&n; */
 macro_line|#ifdef ACPI_NO_INTEGER64_SUPPORT
@@ -690,7 +679,7 @@ DECL|macro|ACPI_TYPE_LOCAL_SCOPE
 mdefine_line|#define ACPI_TYPE_LOCAL_SCOPE           0x1A  /* 1 Name, multiple object_list Nodes */
 DECL|macro|ACPI_TYPE_NS_NODE_MAX
 mdefine_line|#define ACPI_TYPE_NS_NODE_MAX           0x1A  /* Last typecode used within a NS Node */
-multiline_comment|/*&n; * These are special object types that never appear in&n; * a Namespace node, only in an acpi_operand_object&n; */
+multiline_comment|/*&n; * These are special object types that never appear in&n; * a Namespace node, only in an union acpi_operand_object&n; */
 DECL|macro|ACPI_TYPE_LOCAL_EXTRA
 mdefine_line|#define ACPI_TYPE_LOCAL_EXTRA           0x1B
 DECL|macro|ACPI_TYPE_LOCAL_DATA
@@ -845,6 +834,8 @@ DECL|macro|ACPI_ADR_SPACE_PCI_BAR_TARGET
 mdefine_line|#define ACPI_ADR_SPACE_PCI_BAR_TARGET   (acpi_adr_space_type) 6
 DECL|macro|ACPI_ADR_SPACE_DATA_TABLE
 mdefine_line|#define ACPI_ADR_SPACE_DATA_TABLE       (acpi_adr_space_type) 7
+DECL|macro|ACPI_ADR_SPACE_FIXED_HARDWARE
+mdefine_line|#define ACPI_ADR_SPACE_FIXED_HARDWARE   (acpi_adr_space_type) 127
 multiline_comment|/*&n; * bit_register IDs&n; * These are bitfields defined within the full ACPI registers&n; */
 DECL|macro|ACPI_BITREG_TIMER_STATUS
 mdefine_line|#define ACPI_BITREG_TIMER_STATUS                0x00
@@ -891,10 +882,9 @@ mdefine_line|#define ACPI_BITREG_MAX                         0x13
 DECL|macro|ACPI_NUM_BITREG
 mdefine_line|#define ACPI_NUM_BITREG                         ACPI_BITREG_MAX + 1
 multiline_comment|/*&n; * External ACPI object definition&n; */
-DECL|union|acpi_obj
-r_typedef
+DECL|union|acpi_object
 r_union
-id|acpi_obj
+id|acpi_object
 (brace
 DECL|member|type
 id|acpi_object_type
@@ -990,7 +980,7 @@ suffix:semicolon
 multiline_comment|/* # of elements in package */
 DECL|member|elements
 r_union
-id|acpi_obj
+id|acpi_object
 op_star
 id|elements
 suffix:semicolon
@@ -1039,28 +1029,24 @@ DECL|member|power_resource
 )brace
 id|power_resource
 suffix:semicolon
-DECL|typedef|acpi_object
 )brace
-id|acpi_object
 suffix:semicolon
 multiline_comment|/*&n; * List of objects, used as a parameter list for control method evaluation&n; */
-DECL|struct|acpi_obj_list
-r_typedef
+DECL|struct|acpi_object_list
 r_struct
-id|acpi_obj_list
+id|acpi_object_list
 (brace
 DECL|member|count
 id|u32
 id|count
 suffix:semicolon
 DECL|member|pointer
+r_union
 id|acpi_object
 op_star
 id|pointer
 suffix:semicolon
-DECL|typedef|acpi_object_list
 )brace
-id|acpi_object_list
 suffix:semicolon
 multiline_comment|/*&n; * Miscellaneous common Data Structures used by the interfaces&n; */
 DECL|macro|ACPI_NO_BUFFER
@@ -1069,8 +1055,9 @@ DECL|macro|ACPI_ALLOCATE_BUFFER
 mdefine_line|#define ACPI_ALLOCATE_BUFFER        (acpi_size) (-1)
 DECL|macro|ACPI_ALLOCATE_LOCAL_BUFFER
 mdefine_line|#define ACPI_ALLOCATE_LOCAL_BUFFER  (acpi_size) (-2)
-r_typedef
+DECL|struct|acpi_buffer
 r_struct
+id|acpi_buffer
 (brace
 DECL|member|length
 id|acpi_size
@@ -1083,9 +1070,7 @@ op_star
 id|pointer
 suffix:semicolon
 multiline_comment|/* pointer to buffer */
-DECL|typedef|acpi_buffer
 )brace
-id|acpi_buffer
 suffix:semicolon
 multiline_comment|/*&n; * name_type for acpi_get_name&n; */
 DECL|macro|ACPI_FULL_PATHNAME
@@ -1105,7 +1090,6 @@ DECL|macro|ACPI_SYS_MODES_MASK
 mdefine_line|#define ACPI_SYS_MODES_MASK             0x0003
 multiline_comment|/*&n; * ACPI Table Info.  One per ACPI table _type_&n; */
 DECL|struct|acpi_table_info
-r_typedef
 r_struct
 id|acpi_table_info
 (brace
@@ -1113,15 +1097,12 @@ DECL|member|count
 id|u32
 id|count
 suffix:semicolon
-DECL|typedef|acpi_table_info
 )brace
-id|acpi_table_info
 suffix:semicolon
 multiline_comment|/*&n; * System info returned by acpi_get_system_info()&n; */
-DECL|struct|_acpi_sys_info
-r_typedef
+DECL|struct|acpi_system_info
 r_struct
-id|_acpi_sys_info
+id|acpi_system_info
 (brace
 DECL|member|acpi_ca_version
 id|u32
@@ -1156,15 +1137,14 @@ id|u32
 id|num_table_types
 suffix:semicolon
 DECL|member|table_info
+r_struct
 id|acpi_table_info
 id|table_info
 (braket
 id|NUM_ACPI_TABLES
 )braket
 suffix:semicolon
-DECL|typedef|acpi_system_info
 )brace
-id|acpi_system_info
 suffix:semicolon
 multiline_comment|/*&n; * Various handlers and callback procedures&n; */
 r_typedef
@@ -1348,19 +1328,19 @@ mdefine_line|#define ACPI_VALID_ADR                  0x4
 DECL|macro|ACPI_VALID_STA
 mdefine_line|#define ACPI_VALID_STA                  0x8
 DECL|macro|ACPI_COMMON_OBJ_INFO
-mdefine_line|#define ACPI_COMMON_OBJ_INFO &bslash;&n;&t;acpi_object_type            type;           /* ACPI object type */ &bslash;&n;&t;acpi_name                   name            /* ACPI object Name */
-r_typedef
+mdefine_line|#define ACPI_COMMON_OBJ_INFO &bslash;&n;&t;acpi_object_type                    type;           /* ACPI object type */ &bslash;&n;&t;acpi_name                           name            /* ACPI object Name */
+DECL|struct|acpi_obj_info_header
 r_struct
+id|acpi_obj_info_header
 (brace
 DECL|member|ACPI_COMMON_OBJ_INFO
 id|ACPI_COMMON_OBJ_INFO
 suffix:semicolon
-DECL|typedef|acpi_obj_info_header
 )brace
-id|acpi_obj_info_header
 suffix:semicolon
-r_typedef
+DECL|struct|acpi_device_info
 r_struct
+id|acpi_device_info
 (brace
 DECL|member|ACPI_COMMON_OBJ_INFO
 id|ACPI_COMMON_OBJ_INFO
@@ -1396,13 +1376,12 @@ id|u32
 id|current_status
 suffix:semicolon
 multiline_comment|/*  _STA value */
-DECL|typedef|acpi_device_info
 )brace
-id|acpi_device_info
 suffix:semicolon
 multiline_comment|/* Context structs for address space handlers */
-r_typedef
+DECL|struct|acpi_pci_id
 r_struct
+id|acpi_pci_id
 (brace
 DECL|member|segment
 id|u16
@@ -1420,12 +1399,11 @@ DECL|member|function
 id|u16
 id|function
 suffix:semicolon
-DECL|typedef|acpi_pci_id
 )brace
-id|acpi_pci_id
 suffix:semicolon
-r_typedef
+DECL|struct|acpi_mem_space_context
 r_struct
+id|acpi_mem_space_context
 (brace
 DECL|member|length
 id|u32
@@ -1448,9 +1426,7 @@ DECL|member|mapped_length
 id|acpi_size
 id|mapped_length
 suffix:semicolon
-DECL|typedef|acpi_mem_space_context
 )brace
-id|acpi_mem_space_context
 suffix:semicolon
 multiline_comment|/*&n; * Definitions for Resource Attributes&n; */
 multiline_comment|/*&n; *  Memory Attributes&n; */
@@ -1537,8 +1513,9 @@ mdefine_line|#define ACPI_PRODUCER                   (u8) 0x00
 DECL|macro|ACPI_CONSUMER
 mdefine_line|#define ACPI_CONSUMER                   (u8) 0x01
 multiline_comment|/*&n; *  Structures used to describe device resources&n; */
-r_typedef
+DECL|struct|acpi_resource_irq
 r_struct
+id|acpi_resource_irq
 (brace
 DECL|member|edge_level
 id|u32
@@ -1563,12 +1540,11 @@ id|interrupts
 l_int|1
 )braket
 suffix:semicolon
-DECL|typedef|acpi_resource_irq
 )brace
-id|acpi_resource_irq
 suffix:semicolon
-r_typedef
+DECL|struct|acpi_resource_dma
 r_struct
+id|acpi_resource_dma
 (brace
 DECL|member|type
 id|u32
@@ -1593,12 +1569,11 @@ id|channels
 l_int|1
 )braket
 suffix:semicolon
-DECL|typedef|acpi_resource_dma
 )brace
-id|acpi_resource_dma
 suffix:semicolon
-r_typedef
+DECL|struct|acpi_resource_start_dpf
 r_struct
+id|acpi_resource_start_dpf
 (brace
 DECL|member|compatibility_priority
 id|u32
@@ -1608,13 +1583,12 @@ DECL|member|performance_robustness
 id|u32
 id|performance_robustness
 suffix:semicolon
-DECL|typedef|acpi_resource_start_dpf
 )brace
-id|acpi_resource_start_dpf
 suffix:semicolon
 multiline_comment|/*&n; * END_DEPENDENT_FUNCTIONS_RESOURCE struct is not&n; * needed because it has no fields&n; */
-r_typedef
+DECL|struct|acpi_resource_io
 r_struct
+id|acpi_resource_io
 (brace
 DECL|member|io_decode
 id|u32
@@ -1636,12 +1610,11 @@ DECL|member|range_length
 id|u32
 id|range_length
 suffix:semicolon
-DECL|typedef|acpi_resource_io
 )brace
-id|acpi_resource_io
 suffix:semicolon
-r_typedef
+DECL|struct|acpi_resource_fixed_io
 r_struct
+id|acpi_resource_fixed_io
 (brace
 DECL|member|base_address
 id|u32
@@ -1651,12 +1624,11 @@ DECL|member|range_length
 id|u32
 id|range_length
 suffix:semicolon
-DECL|typedef|acpi_resource_fixed_io
 )brace
-id|acpi_resource_fixed_io
 suffix:semicolon
-r_typedef
+DECL|struct|acpi_resource_vendor
 r_struct
+id|acpi_resource_vendor
 (brace
 DECL|member|length
 id|u32
@@ -1669,50 +1641,21 @@ id|reserved
 l_int|1
 )braket
 suffix:semicolon
-DECL|typedef|acpi_resource_vendor
 )brace
-id|acpi_resource_vendor
 suffix:semicolon
-r_typedef
+DECL|struct|acpi_resource_end_tag
 r_struct
+id|acpi_resource_end_tag
 (brace
 DECL|member|checksum
 id|u8
 id|checksum
 suffix:semicolon
-DECL|typedef|acpi_resource_end_tag
 )brace
-id|acpi_resource_end_tag
 suffix:semicolon
-r_typedef
+DECL|struct|acpi_resource_mem24
 r_struct
-(brace
-DECL|member|read_write_attribute
-id|u32
-id|read_write_attribute
-suffix:semicolon
-DECL|member|min_base_address
-id|u32
-id|min_base_address
-suffix:semicolon
-DECL|member|max_base_address
-id|u32
-id|max_base_address
-suffix:semicolon
-DECL|member|alignment
-id|u32
-id|alignment
-suffix:semicolon
-DECL|member|range_length
-id|u32
-id|range_length
-suffix:semicolon
-DECL|typedef|acpi_resource_mem24
-)brace
 id|acpi_resource_mem24
-suffix:semicolon
-r_typedef
-r_struct
 (brace
 DECL|member|read_write_attribute
 id|u32
@@ -1734,12 +1677,37 @@ DECL|member|range_length
 id|u32
 id|range_length
 suffix:semicolon
-DECL|typedef|acpi_resource_mem32
 )brace
-id|acpi_resource_mem32
 suffix:semicolon
-r_typedef
+DECL|struct|acpi_resource_mem32
 r_struct
+id|acpi_resource_mem32
+(brace
+DECL|member|read_write_attribute
+id|u32
+id|read_write_attribute
+suffix:semicolon
+DECL|member|min_base_address
+id|u32
+id|min_base_address
+suffix:semicolon
+DECL|member|max_base_address
+id|u32
+id|max_base_address
+suffix:semicolon
+DECL|member|alignment
+id|u32
+id|alignment
+suffix:semicolon
+DECL|member|range_length
+id|u32
+id|range_length
+suffix:semicolon
+)brace
+suffix:semicolon
+DECL|struct|acpi_resource_fixed_mem32
+r_struct
+id|acpi_resource_fixed_mem32
 (brace
 DECL|member|read_write_attribute
 id|u32
@@ -1753,12 +1721,11 @@ DECL|member|range_length
 id|u32
 id|range_length
 suffix:semicolon
-DECL|typedef|acpi_resource_fixed_mem32
 )brace
-id|acpi_resource_fixed_mem32
 suffix:semicolon
-r_typedef
+DECL|struct|acpi_memory_attribute
 r_struct
+id|acpi_memory_attribute
 (brace
 DECL|member|cache_attribute
 id|u16
@@ -1768,12 +1735,11 @@ DECL|member|read_write_attribute
 id|u16
 id|read_write_attribute
 suffix:semicolon
-DECL|typedef|acpi_memory_attribute
 )brace
-id|acpi_memory_attribute
 suffix:semicolon
-r_typedef
+DECL|struct|acpi_io_attribute
 r_struct
+id|acpi_io_attribute
 (brace
 DECL|member|range_attribute
 id|u16
@@ -1783,12 +1749,11 @@ DECL|member|reserved
 id|u16
 id|reserved
 suffix:semicolon
-DECL|typedef|acpi_io_attribute
 )brace
-id|acpi_io_attribute
 suffix:semicolon
-r_typedef
+DECL|struct|acpi_bus_attribute
 r_struct
+id|acpi_bus_attribute
 (brace
 DECL|member|reserved1
 id|u16
@@ -1798,31 +1763,32 @@ DECL|member|reserved2
 id|u16
 id|reserved2
 suffix:semicolon
-DECL|typedef|acpi_bus_attribute
 )brace
-id|acpi_bus_attribute
 suffix:semicolon
-r_typedef
+DECL|union|acpi_resource_attribute
 r_union
+id|acpi_resource_attribute
 (brace
 DECL|member|memory
+r_struct
 id|acpi_memory_attribute
 id|memory
 suffix:semicolon
 DECL|member|io
+r_struct
 id|acpi_io_attribute
 id|io
 suffix:semicolon
 DECL|member|bus
+r_struct
 id|acpi_bus_attribute
 id|bus
 suffix:semicolon
-DECL|typedef|acpi_resource_attribute
 )brace
-id|acpi_resource_attribute
 suffix:semicolon
-r_typedef
+DECL|struct|acpi_resource_source
 r_struct
+id|acpi_resource_source
 (brace
 DECL|member|index
 id|u32
@@ -1837,67 +1803,11 @@ r_char
 op_star
 id|string_ptr
 suffix:semicolon
-DECL|typedef|acpi_resource_source
 )brace
-id|acpi_resource_source
 suffix:semicolon
-r_typedef
+DECL|struct|acpi_resource_address16
 r_struct
-(brace
-DECL|member|resource_type
-id|u32
-id|resource_type
-suffix:semicolon
-DECL|member|producer_consumer
-id|u32
-id|producer_consumer
-suffix:semicolon
-DECL|member|decode
-id|u32
-id|decode
-suffix:semicolon
-DECL|member|min_address_fixed
-id|u32
-id|min_address_fixed
-suffix:semicolon
-DECL|member|max_address_fixed
-id|u32
-id|max_address_fixed
-suffix:semicolon
-DECL|member|attribute
-id|acpi_resource_attribute
-id|attribute
-suffix:semicolon
-DECL|member|granularity
-id|u32
-id|granularity
-suffix:semicolon
-DECL|member|min_address_range
-id|u32
-id|min_address_range
-suffix:semicolon
-DECL|member|max_address_range
-id|u32
-id|max_address_range
-suffix:semicolon
-DECL|member|address_translation_offset
-id|u32
-id|address_translation_offset
-suffix:semicolon
-DECL|member|address_length
-id|u32
-id|address_length
-suffix:semicolon
-DECL|member|resource_source
-id|acpi_resource_source
-id|resource_source
-suffix:semicolon
-DECL|typedef|acpi_resource_address16
-)brace
 id|acpi_resource_address16
-suffix:semicolon
-r_typedef
-r_struct
 (brace
 DECL|member|resource_type
 id|u32
@@ -1920,6 +1830,7 @@ id|u32
 id|max_address_fixed
 suffix:semicolon
 DECL|member|attribute
+r_union
 id|acpi_resource_attribute
 id|attribute
 suffix:semicolon
@@ -1944,15 +1855,15 @@ id|u32
 id|address_length
 suffix:semicolon
 DECL|member|resource_source
+r_struct
 id|acpi_resource_source
 id|resource_source
 suffix:semicolon
-DECL|typedef|acpi_resource_address32
 )brace
+suffix:semicolon
+DECL|struct|acpi_resource_address32
+r_struct
 id|acpi_resource_address32
-suffix:semicolon
-r_typedef
-r_struct
 (brace
 DECL|member|resource_type
 id|u32
@@ -1975,6 +1886,63 @@ id|u32
 id|max_address_fixed
 suffix:semicolon
 DECL|member|attribute
+r_union
+id|acpi_resource_attribute
+id|attribute
+suffix:semicolon
+DECL|member|granularity
+id|u32
+id|granularity
+suffix:semicolon
+DECL|member|min_address_range
+id|u32
+id|min_address_range
+suffix:semicolon
+DECL|member|max_address_range
+id|u32
+id|max_address_range
+suffix:semicolon
+DECL|member|address_translation_offset
+id|u32
+id|address_translation_offset
+suffix:semicolon
+DECL|member|address_length
+id|u32
+id|address_length
+suffix:semicolon
+DECL|member|resource_source
+r_struct
+id|acpi_resource_source
+id|resource_source
+suffix:semicolon
+)brace
+suffix:semicolon
+DECL|struct|acpi_resource_address64
+r_struct
+id|acpi_resource_address64
+(brace
+DECL|member|resource_type
+id|u32
+id|resource_type
+suffix:semicolon
+DECL|member|producer_consumer
+id|u32
+id|producer_consumer
+suffix:semicolon
+DECL|member|decode
+id|u32
+id|decode
+suffix:semicolon
+DECL|member|min_address_fixed
+id|u32
+id|min_address_fixed
+suffix:semicolon
+DECL|member|max_address_fixed
+id|u32
+id|max_address_fixed
+suffix:semicolon
+DECL|member|attribute
+r_union
 id|acpi_resource_attribute
 id|attribute
 suffix:semicolon
@@ -1999,15 +1967,15 @@ id|u64
 id|address_length
 suffix:semicolon
 DECL|member|resource_source
+r_struct
 id|acpi_resource_source
 id|resource_source
 suffix:semicolon
-DECL|typedef|acpi_resource_address64
 )brace
-id|acpi_resource_address64
 suffix:semicolon
-r_typedef
+DECL|struct|acpi_resource_ext_irq
 r_struct
+id|acpi_resource_ext_irq
 (brace
 DECL|member|producer_consumer
 id|u32
@@ -2030,6 +1998,7 @@ id|u32
 id|number_of_interrupts
 suffix:semicolon
 DECL|member|resource_source
+r_struct
 id|acpi_resource_source
 id|resource_source
 suffix:semicolon
@@ -2040,9 +2009,7 @@ id|interrupts
 l_int|1
 )braket
 suffix:semicolon
-DECL|typedef|acpi_resource_ext_irq
 )brace
-id|acpi_resource_ext_irq
 suffix:semicolon
 multiline_comment|/* ACPI_RESOURCE_TYPEs */
 DECL|macro|ACPI_RSTYPE_IRQ
@@ -2080,71 +2047,83 @@ r_typedef
 id|u32
 id|acpi_resource_type
 suffix:semicolon
-r_typedef
+DECL|union|acpi_resource_data
 r_union
+id|acpi_resource_data
 (brace
 DECL|member|irq
+r_struct
 id|acpi_resource_irq
 id|irq
 suffix:semicolon
 DECL|member|dma
+r_struct
 id|acpi_resource_dma
 id|dma
 suffix:semicolon
 DECL|member|start_dpf
+r_struct
 id|acpi_resource_start_dpf
 id|start_dpf
 suffix:semicolon
 DECL|member|io
+r_struct
 id|acpi_resource_io
 id|io
 suffix:semicolon
 DECL|member|fixed_io
+r_struct
 id|acpi_resource_fixed_io
 id|fixed_io
 suffix:semicolon
 DECL|member|vendor_specific
+r_struct
 id|acpi_resource_vendor
 id|vendor_specific
 suffix:semicolon
 DECL|member|end_tag
+r_struct
 id|acpi_resource_end_tag
 id|end_tag
 suffix:semicolon
 DECL|member|memory24
+r_struct
 id|acpi_resource_mem24
 id|memory24
 suffix:semicolon
 DECL|member|memory32
+r_struct
 id|acpi_resource_mem32
 id|memory32
 suffix:semicolon
 DECL|member|fixed_memory32
+r_struct
 id|acpi_resource_fixed_mem32
 id|fixed_memory32
 suffix:semicolon
 DECL|member|address16
+r_struct
 id|acpi_resource_address16
 id|address16
 suffix:semicolon
 DECL|member|address32
+r_struct
 id|acpi_resource_address32
 id|address32
 suffix:semicolon
 DECL|member|address64
+r_struct
 id|acpi_resource_address64
 id|address64
 suffix:semicolon
 DECL|member|extended_irq
+r_struct
 id|acpi_resource_ext_irq
 id|extended_irq
 suffix:semicolon
-DECL|typedef|acpi_resource_data
 )brace
-id|acpi_resource_data
 suffix:semicolon
 DECL|struct|acpi_resource
-r_typedef
 r_struct
 id|acpi_resource
 (brace
@@ -2157,12 +2136,11 @@ id|u32
 id|length
 suffix:semicolon
 DECL|member|data
+r_union
 id|acpi_resource_data
 id|data
 suffix:semicolon
-DECL|typedef|acpi_resource
 )brace
-id|acpi_resource
 suffix:semicolon
 DECL|macro|ACPI_RESOURCE_LENGTH
 mdefine_line|#define ACPI_RESOURCE_LENGTH                12
@@ -2171,7 +2149,7 @@ mdefine_line|#define ACPI_RESOURCE_LENGTH_NO_DATA        8       /* Id + Length 
 DECL|macro|ACPI_SIZEOF_RESOURCE
 mdefine_line|#define ACPI_SIZEOF_RESOURCE(type)          (ACPI_RESOURCE_LENGTH_NO_DATA + sizeof (type))
 DECL|macro|ACPI_NEXT_RESOURCE
-mdefine_line|#define ACPI_NEXT_RESOURCE(res)             (acpi_resource *)((u8 *) res + res-&gt;length)
+mdefine_line|#define ACPI_NEXT_RESOURCE(res)             (struct acpi_resource *)((u8 *) res + res-&gt;length)
 macro_line|#ifdef _HW_ALIGNMENT_SUPPORT
 DECL|macro|ACPI_ALIGN_RESOURCE_SIZE
 mdefine_line|#define ACPI_ALIGN_RESOURCE_SIZE(length)    (length)
@@ -2181,7 +2159,6 @@ mdefine_line|#define ACPI_ALIGN_RESOURCE_SIZE(length)    ACPI_ROUND_UP_TO_NATIVE
 macro_line|#endif
 multiline_comment|/*&n; * END: of definitions for Resource Attributes&n; */
 DECL|struct|acpi_pci_routing_table
-r_typedef
 r_struct
 id|acpi_pci_routing_table
 (brace
@@ -2210,9 +2187,7 @@ l_int|4
 )braket
 suffix:semicolon
 multiline_comment|/* pad to 64 bits so sizeof() works in all cases */
-DECL|typedef|acpi_pci_routing_table
 )brace
-id|acpi_pci_routing_table
 suffix:semicolon
 multiline_comment|/*&n; * END: of definitions for PCI Routing tables&n; */
 macro_line|#endif /* __ACTYPES_H__ */
