@@ -1675,6 +1675,7 @@ l_int|1
 suffix:semicolon
 )brace
 r_else
+(brace
 id|kmem_cache_free
 c_func
 (paren
@@ -1727,6 +1728,7 @@ r_return
 id|req
 suffix:semicolon
 )brace
+DECL|function|aio_get_req
 r_static
 r_inline
 r_struct
@@ -1786,6 +1788,7 @@ r_return
 id|req
 suffix:semicolon
 )brace
+DECL|function|really_put_req
 r_static
 r_inline
 r_void
@@ -1846,6 +1849,7 @@ id|ctx-&gt;wait
 )paren
 suffix:semicolon
 )brace
+DECL|function|aio_fput_routine
 r_static
 r_void
 id|aio_fput_routine
@@ -1964,6 +1968,7 @@ id|fput_lock
 suffix:semicolon
 )brace
 multiline_comment|/* __aio_put_req&n; *&t;Returns true if this put was the last user of the request.&n; */
+DECL|function|__aio_put_req
 r_static
 r_inline
 r_int
@@ -2114,6 +2119,7 @@ l_int|1
 suffix:semicolon
 )brace
 multiline_comment|/* aio_put_req&n; *&t;Returns true if this put was the last user of the kiocb,&n; *&t;false if the request is still in use.&n; */
+DECL|function|aio_put_req
 r_int
 id|aio_put_req
 c_func
@@ -2174,6 +2180,7 @@ id|ret
 suffix:semicolon
 )brace
 multiline_comment|/*&t;Lookup an ioctx id.  ioctx_list is lockless for reads.&n; *&t;FIXME: this is O(n) and is only suitable for development.&n; */
+DECL|function|lookup_ioctx
 r_static
 r_inline
 r_struct
@@ -2256,6 +2263,7 @@ r_return
 id|ioctx
 suffix:semicolon
 )brace
+DECL|function|use_mm
 r_static
 r_void
 id|use_mm
@@ -2313,6 +2321,7 @@ id|active_mm
 )paren
 suffix:semicolon
 )brace
+DECL|function|unuse_mm
 r_static
 r_void
 id|unuse_mm
@@ -2344,6 +2353,7 @@ c_func
 suffix:semicolon
 )brace
 multiline_comment|/* Run on kevent&squot;s context.  FIXME: needs to be per-cpu and warn if an&n; * operation blocks.&n; */
+DECL|function|aio_kick_handler
 r_static
 r_void
 id|aio_kick_handler
@@ -2501,6 +2511,7 @@ id|ctx-&gt;mm
 )paren
 suffix:semicolon
 )brace
+DECL|function|kick_iocb
 r_void
 id|kick_iocb
 c_func
@@ -2596,6 +2607,7 @@ suffix:semicolon
 )brace
 )brace
 multiline_comment|/* aio_complete&n; *&t;Called when the io request on the given iocb is complete.&n; *&t;Returns true if this is the last user of the request.  The &n; *&t;only other user of the request can be the cancellation code.&n; */
+DECL|function|aio_complete
 r_int
 id|aio_complete
 c_func
@@ -2910,6 +2922,7 @@ id|ret
 suffix:semicolon
 )brace
 multiline_comment|/* aio_read_evt&n; *&t;Pull an event off of the ioctx&squot;s event ring.  Returns the number of &n; *&t;events fetched (0 or 1 ;-)&n; *&t;FIXME: make this use cmpxchg.&n; *&t;TODO: make the ringbuffer user mmap()able (requires FIXME).&n; */
+DECL|function|aio_read_evt
 r_static
 r_int
 id|aio_read_evt
@@ -3115,16 +3128,20 @@ r_return
 id|ret
 suffix:semicolon
 )brace
+DECL|struct|timeout
 r_struct
 id|timeout
 (brace
+DECL|member|timer
 r_struct
 id|timer_list
 id|timer
 suffix:semicolon
+DECL|member|timed_out
 r_int
 id|timed_out
 suffix:semicolon
+DECL|member|p
 r_struct
 id|task_struct
 op_star
@@ -3132,6 +3149,7 @@ id|p
 suffix:semicolon
 )brace
 suffix:semicolon
+DECL|function|timeout_func
 r_static
 r_void
 id|timeout_func
@@ -3165,6 +3183,7 @@ id|to-&gt;p
 )paren
 suffix:semicolon
 )brace
+DECL|function|init_timeout
 r_static
 r_inline
 r_void
@@ -3205,6 +3224,7 @@ op_assign
 id|current
 suffix:semicolon
 )brace
+DECL|function|set_timeout
 r_static
 r_inline
 r_void
@@ -3259,6 +3279,7 @@ id|ts-&gt;tv_sec
 op_star
 id|HZ
 suffix:semicolon
+DECL|macro|HZ_NS
 mdefine_line|#define HZ_NS (1000000000 / HZ)
 id|how_long
 op_add_assign
@@ -3286,6 +3307,7 @@ id|to-&gt;timer
 )paren
 suffix:semicolon
 )brace
+DECL|function|clear_timeout
 r_static
 r_inline
 r_void
@@ -3306,6 +3328,7 @@ id|to-&gt;timer
 )paren
 suffix:semicolon
 )brace
+DECL|function|read_events
 r_static
 r_int
 id|read_events
@@ -3766,6 +3789,7 @@ id|ret
 suffix:semicolon
 )brace
 multiline_comment|/* Take an ioctx and remove it from the list of ioctx&squot;s.  Protects &n; * against races with itself via -&gt;dead.&n; */
+DECL|function|io_destroy
 r_static
 r_void
 id|io_destroy
@@ -3900,6 +3924,7 @@ suffix:semicolon
 multiline_comment|/* once for the lookup */
 )brace
 multiline_comment|/* sys_io_setup:&n; *&t;Create an aio_context capable of receiving at least nr_events.&n; *&t;ctxp must not point to an aio_context that already exists, and&n; *&t;must be initialized to 0 prior to the call.  On successful&n; *&t;creation of the aio_context, *ctxp is filled in with the resulting &n; *&t;handle.  May fail with -EINVAL if *ctxp is not initialized,&n; *&t;if the specified nr_events exceeds internal limits.  May fail &n; *&t;with -EAGAIN if the specified nr_events exceeds the user&squot;s limit &n; *&t;of available events.  May fail with -ENOMEM if insufficient kernel&n; *&t;resources are available.  May fail with -EFAULT if an invalid&n; *&t;pointer is passed for ctxp.  Will fail with -ENOSYS if not&n; *&t;implemented.&n; */
+DECL|function|sys_io_setup
 id|asmlinkage
 r_int
 id|sys_io_setup
@@ -4044,6 +4069,7 @@ id|ret
 suffix:semicolon
 )brace
 multiline_comment|/* sys_io_destroy:&n; *&t;Destroy the aio_context specified.  May cancel any outstanding &n; *&t;AIOs and block on completion.  Will fail with -ENOSYS if not&n; *&t;implemented.  May fail with -EFAULT if the context pointed to&n; *&t;is invalid.&n; */
+DECL|function|sys_io_destroy
 id|asmlinkage
 r_int
 id|sys_io_destroy
@@ -4122,6 +4148,7 @@ id|iocb
 )paren
 )paren
 suffix:semicolon
+DECL|function|io_submit_one
 r_static
 r_int
 id|io_submit_one
@@ -4622,6 +4649,7 @@ id|ret
 suffix:semicolon
 )brace
 multiline_comment|/* sys_io_submit:&n; *&t;Queue the nr iocbs pointed to by iocbpp for processing.  Returns&n; *&t;the number of iocbs queued.  May return -EINVAL if the aio_context&n; *&t;specified by ctx_id is invalid, if nr is &lt; 0, if the iocb at&n; *&t;*iocbpp[0] is not properly initialized, if the operation specified&n; *&t;is invalid for the file descriptor in the iocb.  May fail with&n; *&t;-EFAULT if any of the data structures point to invalid data.  May&n; *&t;fail with -EBADF if the file descriptor specified in the first&n; *&t;iocb is invalid.  May fail with -EAGAIN if insufficient resources&n; *&t;are available to queue any iocbs.  Will return 0 if nr is 0.  Will&n; *&t;fail with -ENOSYS if not implemented.&n; */
+DECL|function|sys_io_submit
 id|asmlinkage
 r_int
 id|sys_io_submit
@@ -4843,6 +4871,7 @@ id|ret
 suffix:semicolon
 )brace
 multiline_comment|/* lookup_kiocb&n; *&t;Finds a given iocb for cancellation.&n; *&t;MUST be called with ctx-&gt;ctx_lock held.&n; */
+DECL|function|lookup_kiocb
 r_struct
 id|kiocb
 op_star
@@ -4909,6 +4938,7 @@ l_int|NULL
 suffix:semicolon
 )brace
 multiline_comment|/* sys_io_cancel:&n; *&t;Attempts to cancel an iocb previously passed to io_submit.  If&n; *&t;the operation is successfully cancelled, the resulting event is&n; *&t;copied into the memory pointed to by result without being placed&n; *&t;into the completion queue and 0 is returned.  May fail with&n; *&t;-EFAULT if any of the data structures pointed to are invalid.&n; *&t;May fail with -EINVAL if aio_context specified by ctx_id is&n; *&t;invalid.  May fail with -EAGAIN if the iocb specified was not&n; *&t;cancelled.  Will fail with -ENOSYS if not implemented.&n; */
+DECL|function|sys_io_cancel
 id|asmlinkage
 r_int
 id|sys_io_cancel
@@ -5139,6 +5169,7 @@ id|ret
 suffix:semicolon
 )brace
 multiline_comment|/* io_getevents:&n; *&t;Attempts to read at least min_nr events and up to nr events from&n; *&t;the completion queue for the aio_context specified by ctx_id.  May&n; *&t;fail with -EINVAL if ctx_id is invalid, if min_nr is out of range,&n; *&t;if nr is out of range, if when is out of range.  May fail with&n; *&t;-EFAULT if any of the memory specified to is invalid.  May return&n; *&t;0 or &lt; min_nr if no events are available and the timeout specified&n; *&t;by when&t;has elapsed, where when == NULL specifies an infinite&n; *&t;timeout.  Note that the timeout pointed to by when is relative and&n; *&t;will be updated if not NULL and the operation blocks.  Will fail&n; *&t;with -ENOSYS if not implemented.&n; */
+DECL|function|sys_io_getevents
 id|asmlinkage
 r_int
 id|sys_io_getevents
@@ -5242,18 +5273,21 @@ r_return
 id|ret
 suffix:semicolon
 )brace
+DECL|variable|aio_setup
 id|__initcall
 c_func
 (paren
 id|aio_setup
 )paren
 suffix:semicolon
+DECL|variable|aio_complete
 id|EXPORT_SYMBOL
 c_func
 (paren
 id|aio_complete
 )paren
 suffix:semicolon
+DECL|variable|aio_put_req
 id|EXPORT_SYMBOL
 c_func
 (paren
