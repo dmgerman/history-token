@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * linux/include/linux/auth.h&n; *&n; * Declarations for the RPC authentication machinery.&n; *&n; * Copyright (C) 1996, Olaf Kirch &lt;okir@monad.swb.de&gt;&n; */
+multiline_comment|/*&n; * linux/include/linux/sunrpc/auth.h&n; *&n; * Declarations for the RPC client authentication machinery.&n; *&n; * Copyright (C) 1996, Olaf Kirch &lt;okir@monad.swb.de&gt;&n; */
 macro_line|#ifndef _LINUX_SUNRPC_AUTH_H
 DECL|macro|_LINUX_SUNRPC_AUTH_H
 mdefine_line|#define _LINUX_SUNRPC_AUTH_H
@@ -139,8 +139,7 @@ r_struct
 id|rpc_authops
 (brace
 DECL|member|au_flavor
-r_int
-r_int
+id|rpc_authflavor_t
 id|au_flavor
 suffix:semicolon
 multiline_comment|/* flavor (RPC_AUTH_*) */
@@ -310,8 +309,7 @@ op_star
 id|rpcauth_create
 c_func
 (paren
-r_int
-r_int
+id|rpc_authflavor_t
 comma
 r_struct
 id|rpc_clnt

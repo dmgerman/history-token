@@ -928,8 +928,7 @@ id|root_inode
 op_assign
 l_int|NULL
 suffix:semicolon
-r_int
-r_int
+id|rpc_authflavor_t
 id|authflavor
 suffix:semicolon
 r_struct
