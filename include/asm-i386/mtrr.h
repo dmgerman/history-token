@@ -97,13 +97,6 @@ mdefine_line|#define MTRR_TYPE_WRBACK     6
 DECL|macro|MTRR_NUM_TYPES
 mdefine_line|#define MTRR_NUM_TYPES       7
 macro_line|#ifdef __KERNEL__
-r_extern
-r_char
-op_star
-id|mtrr_strings
-(braket
-)braket
-suffix:semicolon
 multiline_comment|/*  The following functions are for use by other drivers  */
 macro_line|# ifdef CONFIG_MTRR
 r_extern
