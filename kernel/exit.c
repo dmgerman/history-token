@@ -1156,6 +1156,12 @@ comma
 id|args
 )paren
 suffix:semicolon
+id|va_end
+c_func
+(paren
+id|args
+)paren
+suffix:semicolon
 multiline_comment|/*&n;&t; * If we were started as result of loading a module, close all of the&n;&t; * user space pages.  We don&squot;t need them, and if we didn&squot;t close them&n;&t; * they would be locked into memory.&n;&t; */
 id|exit_mm
 c_func
