@@ -6628,10 +6628,6 @@ DECL|member|size
 r_int
 id|size
 suffix:semicolon
-DECL|member|flags
-r_int
-id|flags
-suffix:semicolon
 DECL|member|dev
 r_struct
 id|pci_dev
@@ -6688,8 +6684,7 @@ DECL|macro|POOL_TIMEOUT_JIFFIES
 mdefine_line|#define&t;POOL_TIMEOUT_JIFFIES&t;((100 /* msec */ * HZ) / 1000)
 DECL|macro|POOL_POISON_BYTE
 mdefine_line|#define&t;POOL_POISON_BYTE&t;0xa7
-singleline_comment|// #define CONFIG_PCIPOOL_DEBUG
-multiline_comment|/**&n; * pci_pool_create - Creates a pool of pci consistent memory blocks, for dma.&n; * @name: name of pool, for diagnostics&n; * @pdev: pci device that will be doing the DMA&n; * @size: size of the blocks in this pool.&n; * @align: alignment requirement for blocks; must be a power of two&n; * @allocation: returned blocks won&squot;t cross this boundary (or zero)&n; * @flags: SLAB_* flags (not all are supported).&n; *&n; * Returns a pci allocation pool with the requested characteristics, or&n; * null if one can&squot;t be created.  Given one of these pools, pci_pool_alloc()&n; * may be used to allocate memory.  Such memory will all have &quot;consistent&quot;&n; * DMA mappings, accessible by the device and its driver without using&n; * cache flushing primitives.  The actual size of blocks allocated may be&n; * larger than requested because of alignment.&n; *&n; * If allocation is nonzero, objects returned from pci_pool_alloc() won&squot;t&n; * cross that size boundary.  This is useful for devices which have&n; * addressing restrictions on individual DMA transfers, such as not crossing&n; * boundaries of 4KBytes.&n; */
+multiline_comment|/**&n; * pci_pool_create - Creates a pool of pci consistent memory blocks, for dma.&n; * @name: name of pool, for diagnostics&n; * @pdev: pci device that will be doing the DMA&n; * @size: size of the blocks in this pool.&n; * @align: alignment requirement for blocks; must be a power of two&n; * @allocation: returned blocks won&squot;t cross this boundary (or zero)&n; * @mem_flags: SLAB_* flags.&n; *&n; * Returns a pci allocation pool with the requested characteristics, or&n; * null if one can&squot;t be created.  Given one of these pools, pci_pool_alloc()&n; * may be used to allocate memory.  Such memory will all have &quot;consistent&quot;&n; * DMA mappings, accessible by the device and its driver without using&n; * cache flushing primitives.  The actual size of blocks allocated may be&n; * larger than requested because of alignment.&n; *&n; * If allocation is nonzero, objects returned from pci_pool_alloc() won&squot;t&n; * cross that size boundary.  This is useful for devices which have&n; * addressing restrictions on individual DMA transfers, such as not crossing&n; * boundaries of 4KBytes.&n; */
 r_struct
 id|pci_pool
 op_star
@@ -6716,7 +6711,7 @@ r_int
 id|allocation
 comma
 r_int
-id|flags
+id|mem_flags
 )paren
 (brace
 r_struct
@@ -6836,19 +6831,13 @@ r_sizeof
 op_star
 id|retval
 comma
-id|flags
+id|mem_flags
 )paren
 )paren
 )paren
 r_return
 id|retval
 suffix:semicolon
-macro_line|#ifdef&t;CONFIG_PCIPOOL_DEBUG
-id|flags
-op_or_assign
-id|SLAB_POISON
-suffix:semicolon
-macro_line|#endif
 id|strncpy
 (paren
 id|retval-&gt;name
@@ -6889,10 +6878,6 @@ id|retval-&gt;size
 op_assign
 id|size
 suffix:semicolon
-id|retval-&gt;flags
-op_assign
-id|flags
-suffix:semicolon
 id|retval-&gt;allocation
 op_assign
 id|allocation
@@ -6909,29 +6894,6 @@ op_amp
 id|retval-&gt;waitq
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_PCIPOOL_DEBUG
-id|printk
-(paren
-id|KERN_DEBUG
-l_string|&quot;pcipool create %s/%s size %d, %d/page (%d alloc)&bslash;n&quot;
-comma
-id|pdev
-ques
-c_cond
-id|pdev-&gt;slot_name
-suffix:colon
-l_int|NULL
-comma
-id|retval-&gt;name
-comma
-id|size
-comma
-id|retval-&gt;blocks_per_page
-comma
-id|allocation
-)paren
-suffix:semicolon
-macro_line|#endif
 r_return
 id|retval
 suffix:semicolon
@@ -7038,13 +7000,7 @@ id|mapsize
 )paren
 suffix:semicolon
 singleline_comment|// bit set == free
-r_if
-c_cond
-(paren
-id|pool-&gt;flags
-op_amp
-id|SLAB_POISON
-)paren
+macro_line|#ifdef&t;CONFIG_DEBUG_SLAB
 id|memset
 (paren
 id|page-&gt;vaddr
@@ -7054,6 +7010,7 @@ comma
 id|pool-&gt;allocation
 )paren
 suffix:semicolon
+macro_line|#endif
 id|list_add
 (paren
 op_amp
@@ -7146,13 +7103,7 @@ id|dma
 op_assign
 id|page-&gt;dma
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|pool-&gt;flags
-op_amp
-id|SLAB_POISON
-)paren
+macro_line|#ifdef&t;CONFIG_DEBUG_SLAB
 id|memset
 (paren
 id|page-&gt;vaddr
@@ -7162,6 +7113,7 @@ comma
 id|pool-&gt;allocation
 )paren
 suffix:semicolon
+macro_line|#endif
 id|pci_free_consistent
 (paren
 id|pool-&gt;dev
@@ -7200,23 +7152,6 @@ r_int
 r_int
 id|flags
 suffix:semicolon
-macro_line|#ifdef CONFIG_PCIPOOL_DEBUG
-id|printk
-(paren
-id|KERN_DEBUG
-l_string|&quot;pcipool destroy %s/%s&bslash;n&quot;
-comma
-id|pool-&gt;dev
-ques
-c_cond
-id|pool-&gt;dev-&gt;slot_name
-suffix:colon
-l_int|NULL
-comma
-id|pool-&gt;name
-)paren
-suffix:semicolon
-macro_line|#endif
 id|spin_lock_irqsave
 (paren
 op_amp
@@ -7786,7 +7721,27 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
-macro_line|#ifdef&t;CONFIG_PCIPOOL_DEBUG
+id|block
+op_assign
+id|dma
+op_minus
+id|page-&gt;dma
+suffix:semicolon
+id|block
+op_div_assign
+id|pool-&gt;size
+suffix:semicolon
+id|map
+op_assign
+id|block
+op_div
+id|BITS_PER_LONG
+suffix:semicolon
+id|block
+op_mod_assign
+id|BITS_PER_LONG
+suffix:semicolon
+macro_line|#ifdef&t;CONFIG_DEBUG_SLAB
 r_if
 c_cond
 (paren
@@ -7833,28 +7788,6 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
-macro_line|#endif
-id|block
-op_assign
-id|dma
-op_minus
-id|page-&gt;dma
-suffix:semicolon
-id|block
-op_div_assign
-id|pool-&gt;size
-suffix:semicolon
-id|map
-op_assign
-id|block
-op_div
-id|BITS_PER_LONG
-suffix:semicolon
-id|block
-op_mod_assign
-id|BITS_PER_LONG
-suffix:semicolon
-macro_line|#ifdef&t;CONFIG_PCIPOOL_DEBUG
 r_if
 c_cond
 (paren
@@ -7890,14 +7823,6 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
-macro_line|#endif
-r_if
-c_cond
-(paren
-id|pool-&gt;flags
-op_amp
-id|SLAB_POISON
-)paren
 id|memset
 (paren
 id|vaddr
@@ -7907,6 +7832,7 @@ comma
 id|pool-&gt;size
 )paren
 suffix:semicolon
+macro_line|#endif
 id|spin_lock_irqsave
 (paren
 op_amp

@@ -232,6 +232,10 @@ DECL|macro|HID_QUIRK_INVERT
 mdefine_line|#define HID_QUIRK_INVERT&t;0x01
 DECL|macro|HID_QUIRK_NOTOUCH
 mdefine_line|#define HID_QUIRK_NOTOUCH&t;0x02
+DECL|macro|HID_QUIRK_IGNORE
+mdefine_line|#define HID_QUIRK_IGNORE&t;0x04
+DECL|macro|HID_QUIRK_NOGET
+mdefine_line|#define HID_QUIRK_NOGET&t;&t;0x08
 multiline_comment|/*&n; * This is the global enviroment of the parser. This information is&n; * persistent for main-items. The global enviroment can be saved and&n; * restored with PUSH/POP statements.&n; */
 DECL|struct|hid_global
 r_struct
@@ -455,6 +459,11 @@ op_star
 id|report
 suffix:semicolon
 multiline_comment|/* associated report */
+DECL|member|index
+r_int
+id|index
+suffix:semicolon
+multiline_comment|/* index into report-&gt;field[] */
 )brace
 suffix:semicolon
 DECL|macro|HID_MAX_FIELDS

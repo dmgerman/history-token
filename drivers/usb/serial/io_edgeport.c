@@ -2192,7 +2192,7 @@ c_func
 (paren
 id|edge_serial-&gt;read_urb
 comma
-id|GFP_KERNEL
+id|GFP_ATOMIC
 )paren
 suffix:semicolon
 r_if
@@ -2503,7 +2503,7 @@ c_func
 (paren
 id|edge_serial-&gt;read_urb
 comma
-id|GFP_KERNEL
+id|GFP_ATOMIC
 )paren
 suffix:semicolon
 r_if
@@ -4402,7 +4402,7 @@ id|count
 op_plus
 l_int|2
 comma
-id|GFP_KERNEL
+id|GFP_ATOMIC
 )paren
 suffix:semicolon
 r_if
@@ -4615,7 +4615,7 @@ c_func
 (paren
 id|urb
 comma
-id|GFP_KERNEL
+id|GFP_ATOMIC
 )paren
 suffix:semicolon
 r_if
@@ -8307,7 +8307,7 @@ id|kmalloc
 (paren
 l_int|10
 comma
-id|GFP_KERNEL
+id|GFP_ATOMIC
 )paren
 suffix:semicolon
 r_if
@@ -8446,7 +8446,7 @@ id|usb_alloc_urb
 (paren
 l_int|0
 comma
-id|GFP_KERNEL
+id|GFP_ATOMIC
 )paren
 suffix:semicolon
 r_if
@@ -8512,7 +8512,7 @@ c_func
 (paren
 id|urb
 comma
-id|GFP_KERNEL
+id|GFP_ATOMIC
 )paren
 suffix:semicolon
 r_if
@@ -8686,7 +8686,7 @@ id|kmalloc
 (paren
 l_int|0x100
 comma
-id|GFP_KERNEL
+id|GFP_ATOMIC
 )paren
 suffix:semicolon
 r_if
@@ -9053,7 +9053,7 @@ id|kmalloc
 (paren
 l_int|0x10
 comma
-id|GFP_KERNEL
+id|GFP_ATOMIC
 )paren
 suffix:semicolon
 r_if

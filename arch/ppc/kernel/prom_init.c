@@ -35,8 +35,8 @@ macro_line|#ifndef FB_MAX&t;&t;&t;/* avoid pulling in all of the fb stuff */
 DECL|macro|FB_MAX
 mdefine_line|#define FB_MAX&t;8
 macro_line|#endif
-DECL|macro|ALIGN
-mdefine_line|#define ALIGN(x) (((x) + sizeof(unsigned long)-1) &amp; -sizeof(unsigned long))
+DECL|macro|ALIGNUL
+mdefine_line|#define ALIGNUL(x) (((x) + sizeof(unsigned long)-1) &amp; -sizeof(unsigned long))
 DECL|struct|prom_args
 r_struct
 id|prom_args
@@ -1884,7 +1884,7 @@ macro_line|#endif /* CONFIG_FB */
 )brace
 )brace
 r_return
-id|ALIGN
+id|ALIGNUL
 c_func
 (paren
 id|mem
@@ -2398,7 +2398,7 @@ id|allnodes
 suffix:semicolon
 id|mem_start
 op_assign
-id|ALIGN
+id|ALIGNUL
 c_func
 (paren
 id|mem_start
@@ -2665,7 +2665,7 @@ r_break
 suffix:semicolon
 id|mem_start
 op_assign
-id|ALIGN
+id|ALIGNUL
 c_func
 (paren
 (paren
@@ -2752,7 +2752,7 @@ multiline_comment|/* ignore this property */
 macro_line|#endif
 id|mem_start
 op_assign
-id|ALIGN
+id|ALIGNUL
 c_func
 (paren
 id|mem_start
@@ -2837,7 +2837,7 @@ l_string|&quot;linux,phandle&quot;
 suffix:semicolon
 id|mem_start
 op_assign
-id|ALIGN
+id|ALIGNUL
 c_func
 (paren
 (paren
@@ -2945,7 +2945,7 @@ l_int|0
 suffix:semicolon
 id|mem_start
 op_assign
-id|ALIGN
+id|ALIGNUL
 c_func
 (paren
 id|mem_start
@@ -3993,7 +3993,7 @@ id|d
 suffix:semicolon
 id|mem
 op_assign
-id|ALIGN
+id|ALIGNUL
 c_func
 (paren
 id|mem

@@ -13,14 +13,14 @@ DECL|macro|SIG
 mdefine_line|#define SIG(A,B) ((A) | ((B) &lt;&lt; 8)) /* isonum_721() */
 multiline_comment|/* This is a way of ensuring that we have something in the system&n;   use fields that is compatible with Rock Ridge */
 DECL|macro|CHECK_SP
-mdefine_line|#define CHECK_SP(FAIL)&t;       &t;&t;&t;&bslash;&n;      if(rr-&gt;u.SP.magic[0] != 0xbe) FAIL;&t;&bslash;&n;      if(rr-&gt;u.SP.magic[1] != 0xef) FAIL;       &bslash;&n;      inode-&gt;i_sb-&gt;u.isofs_sb.s_rock_offset=rr-&gt;u.SP.skip;
+mdefine_line|#define CHECK_SP(FAIL)&t;       &t;&t;&t;&bslash;&n;      if(rr-&gt;u.SP.magic[0] != 0xbe) FAIL;&t;&bslash;&n;      if(rr-&gt;u.SP.magic[1] != 0xef) FAIL;       &bslash;&n;      ISOFS_SB(inode-&gt;i_sb)-&gt;s_rock_offset=rr-&gt;u.SP.skip;
 multiline_comment|/* We define a series of macros because each function must do exactly the&n;   same thing in certain places.  We use the macros to ensure that everything&n;   is done correctly */
 DECL|macro|CONTINUE_DECLS
 mdefine_line|#define CONTINUE_DECLS &bslash;&n;  int cont_extent = 0, cont_offset = 0, cont_size = 0;   &bslash;&n;  void * buffer = 0
 DECL|macro|CHECK_CE
 mdefine_line|#define CHECK_CE&t;       &t;&t;&t;&bslash;&n;      {cont_extent = isonum_733(rr-&gt;u.CE.extent); &bslash;&n;      cont_offset = isonum_733(rr-&gt;u.CE.offset); &bslash;&n;      cont_size = isonum_733(rr-&gt;u.CE.size);}
 DECL|macro|SETUP_ROCK_RIDGE
-mdefine_line|#define SETUP_ROCK_RIDGE(DE,CHR,LEN)&t;      &t;&t;      &t;&bslash;&n;  {LEN= sizeof(struct iso_directory_record) + DE-&gt;name_len[0];&t;&bslash;&n;  if(LEN &amp; 1) LEN++;&t;&t;&t;&t;&t;&t;&bslash;&n;  CHR = ((unsigned char *) DE) + LEN;&t;&t;&t;&t;&bslash;&n;  LEN = *((unsigned char *) DE) - LEN;                          &bslash;&n;  if (inode-&gt;i_sb-&gt;u.isofs_sb.s_rock_offset!=-1)                &bslash;&n;  {                                                             &bslash;&n;     LEN-=inode-&gt;i_sb-&gt;u.isofs_sb.s_rock_offset;                &bslash;&n;     CHR+=inode-&gt;i_sb-&gt;u.isofs_sb.s_rock_offset;                &bslash;&n;     if (LEN&lt;0) LEN=0;                                          &bslash;&n;  }                                                             &bslash;&n;}                                     
+mdefine_line|#define SETUP_ROCK_RIDGE(DE,CHR,LEN)&t;      &t;&t;      &t;&bslash;&n;  {LEN= sizeof(struct iso_directory_record) + DE-&gt;name_len[0];&t;&bslash;&n;  if(LEN &amp; 1) LEN++;&t;&t;&t;&t;&t;&t;&bslash;&n;  CHR = ((unsigned char *) DE) + LEN;&t;&t;&t;&t;&bslash;&n;  LEN = *((unsigned char *) DE) - LEN;                          &bslash;&n;  if (ISOFS_SB(inode-&gt;i_sb)-&gt;s_rock_offset!=-1)                &bslash;&n;  {                                                             &bslash;&n;     LEN-=ISOFS_SB(inode-&gt;i_sb)-&gt;s_rock_offset;                &bslash;&n;     CHR+=ISOFS_SB(inode-&gt;i_sb)-&gt;s_rock_offset;                &bslash;&n;     if (LEN&lt;0) LEN=0;                                          &bslash;&n;  }                                                             &bslash;&n;}                                     
 DECL|macro|MAYBE_CONTINUE
 mdefine_line|#define MAYBE_CONTINUE(LABEL,DEV) &bslash;&n;  {if (buffer) kfree(buffer); &bslash;&n;  if (cont_extent){ &bslash;&n;    int block, offset, offset1; &bslash;&n;    struct buffer_head * pbh; &bslash;&n;    buffer = kmalloc(cont_size,GFP_KERNEL); &bslash;&n;    if (!buffer) goto out; &bslash;&n;    block = cont_extent; &bslash;&n;    offset = cont_offset; &bslash;&n;    offset1 = 0; &bslash;&n;    pbh = sb_bread(DEV-&gt;i_sb, block); &bslash;&n;    if(pbh){       &bslash;&n;      memcpy(buffer + offset1, pbh-&gt;b_data + offset, cont_size - offset1); &bslash;&n;      brelse(pbh); &bslash;&n;      chr = (unsigned char *) buffer; &bslash;&n;      len = cont_size; &bslash;&n;      cont_extent = 0; &bslash;&n;      cont_size = 0; &bslash;&n;      cont_offset = 0; &bslash;&n;      goto LABEL; &bslash;&n;    }    &bslash;&n;    printk(&quot;Unable to read rock-ridge attributes&bslash;n&quot;);    &bslash;&n;  }}
 multiline_comment|/* This is the inner layer of the get filename routine, and is called&n;   for each system area and continuation record related to the file */
@@ -94,7 +94,13 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|inode-&gt;i_sb-&gt;u.isofs_sb.s_rock
+id|ISOFS_SB
+c_func
+(paren
+id|inode-&gt;i_sb
+)paren
+op_member_access_from_pointer
+id|s_rock
 )paren
 r_return
 id|retval
@@ -397,7 +403,13 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|inode-&gt;i_sb-&gt;u.isofs_sb.s_rock
+id|ISOFS_SB
+c_func
+(paren
+id|inode-&gt;i_sb
+)paren
+op_member_access_from_pointer
+id|s_rock
 )paren
 r_return
 l_int|0
@@ -734,7 +746,13 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|inode-&gt;i_sb-&gt;u.isofs_sb.s_rock
+id|ISOFS_SB
+c_func
+(paren
+id|inode-&gt;i_sb
+)paren
+op_member_access_from_pointer
+id|s_rock
 )paren
 r_return
 l_int|0
@@ -928,7 +946,13 @@ comma
 l_char|&squot;R&squot;
 )paren
 suffix:colon
-id|inode-&gt;i_sb-&gt;u.isofs_sb.s_rock
+id|ISOFS_SB
+c_func
+(paren
+id|inode-&gt;i_sb
+)paren
+op_member_access_from_pointer
+id|s_rock
 op_assign
 l_int|1
 suffix:semicolon
@@ -1481,11 +1505,13 @@ id|inode
 op_member_access_from_pointer
 id|i_first_extent
 op_lshift
-id|inode
+id|ISOFS_SB
+c_func
+(paren
+id|inode-&gt;i_sb
+)paren
 op_member_access_from_pointer
-id|i_sb
-op_member_access_from_pointer
-id|u.isofs_sb.s_log_zone_size
+id|s_log_zone_size
 )paren
 )paren
 suffix:semicolon
@@ -1560,7 +1586,13 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|inode-&gt;i_sb-&gt;u.isofs_sb.s_nocompress
+id|ISOFS_SB
+c_func
+(paren
+id|inode-&gt;i_sb
+)paren
+op_member_access_from_pointer
+id|s_nocompress
 )paren
 (brace
 r_int
@@ -2005,14 +2037,26 @@ r_if
 c_cond
 (paren
 (paren
-id|inode-&gt;i_sb-&gt;u.isofs_sb.s_rock_offset
+id|ISOFS_SB
+c_func
+(paren
+id|inode-&gt;i_sb
+)paren
+op_member_access_from_pointer
+id|s_rock_offset
 op_eq
 op_minus
 l_int|1
 )paren
 op_logical_and
 (paren
-id|inode-&gt;i_sb-&gt;u.isofs_sb.s_rock
+id|ISOFS_SB
+c_func
+(paren
+id|inode-&gt;i_sb
+)paren
+op_member_access_from_pointer
+id|s_rock
 op_eq
 l_int|2
 )paren
@@ -2138,7 +2182,13 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|inode-&gt;i_sb-&gt;u.isofs_sb.s_rock
+id|ISOFS_SB
+c_func
+(paren
+id|inode-&gt;i_sb
+)paren
+op_member_access_from_pointer
+id|s_rock
 )paren
 id|panic
 (paren

@@ -773,7 +773,7 @@ id|kmalloc
 (paren
 id|URB_TRANSFER_BUFFER_SIZE
 comma
-id|GFP_KERNEL
+id|GFP_ATOMIC
 )paren
 suffix:semicolon
 r_if
@@ -881,7 +881,7 @@ c_func
 (paren
 id|urb
 comma
-id|GFP_KERNEL
+id|GFP_ATOMIC
 )paren
 suffix:semicolon
 r_if
@@ -1430,7 +1430,7 @@ c_func
 (paren
 id|port-&gt;read_urb
 comma
-id|GFP_KERNEL
+id|GFP_ATOMIC
 )paren
 suffix:semicolon
 r_if
@@ -1510,7 +1510,7 @@ c_func
 (paren
 id|port-&gt;read_urb
 comma
-id|GFP_KERNEL
+id|GFP_ATOMIC
 )paren
 suffix:semicolon
 r_if
