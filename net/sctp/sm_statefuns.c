@@ -2831,25 +2831,6 @@ id|new_asoc-&gt;c.peer_ttag
 r_return
 l_char|&squot;A&squot;
 suffix:semicolon
-multiline_comment|/* Collision case D.&n;&t; * Note: Test case D first, otherwise it may be incorrectly&n;&t; * identified as second case of B if the value of the Tie_tag is&n;&t; * not filled into the state cookie.&n;&t; */
-r_if
-c_cond
-(paren
-(paren
-id|asoc-&gt;c.my_vtag
-op_eq
-id|new_asoc-&gt;c.my_vtag
-)paren
-op_logical_and
-(paren
-id|asoc-&gt;c.peer_vtag
-op_eq
-id|new_asoc-&gt;c.peer_vtag
-)paren
-)paren
-r_return
-l_char|&squot;D&squot;
-suffix:semicolon
 multiline_comment|/* Collision case B. */
 r_if
 c_cond
@@ -2868,16 +2849,35 @@ id|new_asoc-&gt;c.peer_vtag
 )paren
 op_logical_or
 (paren
-op_logical_neg
-id|new_asoc-&gt;c.my_ttag
-op_logical_and
-op_logical_neg
-id|new_asoc-&gt;c.peer_ttag
+l_int|0
+op_eq
+id|asoc-&gt;c.peer_vtag
 )paren
+)paren
+)paren
+(brace
+r_return
+l_char|&squot;B&squot;
+suffix:semicolon
+)brace
+multiline_comment|/* Collision case D. */
+r_if
+c_cond
+(paren
+(paren
+id|asoc-&gt;c.my_vtag
+op_eq
+id|new_asoc-&gt;c.my_vtag
+)paren
+op_logical_and
+(paren
+id|asoc-&gt;c.peer_vtag
+op_eq
+id|new_asoc-&gt;c.peer_vtag
 )paren
 )paren
 r_return
-l_char|&squot;B&squot;
+l_char|&squot;D&squot;
 suffix:semicolon
 multiline_comment|/* Collision case C. */
 r_if
@@ -2910,10 +2910,10 @@ id|new_asoc-&gt;c.peer_ttag
 r_return
 l_char|&squot;C&squot;
 suffix:semicolon
+multiline_comment|/* No match to any of the special cases; discard this packet. */
 r_return
 l_char|&squot;E&squot;
 suffix:semicolon
-multiline_comment|/* No such case available. */
 )brace
 multiline_comment|/* Common helper routine for both duplicate and simulataneous INIT&n; * chunk handling.&n; */
 DECL|function|sctp_sf_do_unexpected_init
@@ -4035,15 +4035,30 @@ id|sctp_chunk_t
 op_star
 id|repl
 suffix:semicolon
-multiline_comment|/* The local endpoint cannot use any value from the received&n;&t; * state cookie and need to immediately resend a COOKIE-ACK&n;&t; * and move into ESTABLISHED if it hasn&squot;t done so.&n;&t; */
+multiline_comment|/* Clarification from Implementor&squot;s Guide:&n;&t; * D) When both local and remote tags match the endpoint should&n;         * enter the ESTABLISHED state, if it is in the COOKIE-ECHOED state.&n;         * It should stop any cookie timer that may be running and send&n;         * a COOKIE ACK.&n;&t; */
+multiline_comment|/* Don&squot;t accidentally move back into established state. */
 r_if
 c_cond
 (paren
-id|SCTP_STATE_ESTABLISHED
-op_ne
 id|asoc-&gt;state
+OL
+id|SCTP_STATE_ESTABLISHED
 )paren
 (brace
+id|sctp_add_cmd_sf
+c_func
+(paren
+id|commands
+comma
+id|SCTP_CMD_TIMER_STOP
+comma
+id|SCTP_TO
+c_func
+(paren
+id|SCTP_EVENT_TIMEOUT_T1_COOKIE
+)paren
+)paren
+suffix:semicolon
 id|sctp_add_cmd_sf
 c_func
 (paren
@@ -4351,8 +4366,6 @@ comma
 id|commands
 )paren
 suffix:semicolon
-r_break
-suffix:semicolon
 r_case
 op_minus
 id|SCTP_IERROR_BAD_SIG
@@ -4484,19 +4497,22 @@ r_break
 suffix:semicolon
 r_default
 suffix:colon
-multiline_comment|/* No such case, discard it. */
-id|printk
-c_func
-(paren
-id|KERN_WARNING
-l_string|&quot;%s:unknown case&bslash;n&quot;
-comma
-id|__FUNCTION__
-)paren
-suffix:semicolon
+multiline_comment|/* Discard packet for all others. */
 id|retval
 op_assign
-id|SCTP_DISPOSITION_DISCARD
+id|sctp_sf_pdiscard
+c_func
+(paren
+id|ep
+comma
+id|asoc
+comma
+id|type
+comma
+id|arg
+comma
+id|commands
+)paren
 suffix:semicolon
 r_break
 suffix:semicolon
@@ -5142,7 +5158,7 @@ id|SCTP_COUNTER_INIT_ERROR
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/* If we&squot;ve sent any data bundled with COOKIE-ECHO we need to &n;&t; * resend. &n;&t; */
+multiline_comment|/* If we&squot;ve sent any data bundled with COOKIE-ECHO we need to&n;&t; * resend.&n;&t; */
 id|list_for_each
 c_func
 (paren
