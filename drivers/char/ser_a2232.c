@@ -479,15 +479,10 @@ op_minus
 l_int|1
 suffix:semicolon
 multiline_comment|/* Does this here really have to be? */
-id|save_flags
+id|local_irq_save
 c_func
 (paren
 id|flags
-)paren
-suffix:semicolon
-id|cli
-c_func
-(paren
 )paren
 suffix:semicolon
 id|port-&gt;gs.flags
@@ -495,7 +490,7 @@ op_and_assign
 op_complement
 id|GS_TX_INTEN
 suffix:semicolon
-id|restore_flags
+id|local_irq_restore
 c_func
 (paren
 id|flags
@@ -547,22 +542,17 @@ op_assign
 l_int|0
 suffix:semicolon
 multiline_comment|/* Does this here really have to be? */
-id|save_flags
+id|local_irq_save
 c_func
 (paren
 id|flags
-)paren
-suffix:semicolon
-id|cli
-c_func
-(paren
 )paren
 suffix:semicolon
 id|port-&gt;gs.flags
 op_or_assign
 id|GS_TX_INTEN
 suffix:semicolon
-id|restore_flags
+id|local_irq_restore
 c_func
 (paren
 id|flags
@@ -684,15 +674,10 @@ comma
 id|port-&gt;which_port_on_a2232
 )paren
 suffix:semicolon
-id|save_flags
+id|local_irq_save
 c_func
 (paren
 id|flags
-)paren
-suffix:semicolon
-id|cli
-c_func
-(paren
 )paren
 suffix:semicolon
 id|port-&gt;gs.flags
@@ -735,7 +720,7 @@ op_minus
 l_int|1
 suffix:semicolon
 )brace
-id|restore_flags
+id|local_irq_restore
 c_func
 (paren
 id|flags
@@ -855,15 +840,10 @@ l_int|0
 )paren
 (brace
 multiline_comment|/* speed == 0 -&gt; drop DTR, do nothing else */
-id|save_flags
+id|local_irq_save
 c_func
 (paren
 id|flags
-)paren
-suffix:semicolon
-id|cli
-c_func
-(paren
 )paren
 suffix:semicolon
 singleline_comment|// Clear DTR (and RTS... mhhh).
@@ -890,7 +870,7 @@ op_assign
 op_minus
 l_int|1
 suffix:semicolon
-id|restore_flags
+id|local_irq_restore
 c_func
 (paren
 id|flags
@@ -1190,15 +1170,10 @@ op_or_assign
 id|ASYNC_CHECK_CD
 suffix:semicolon
 multiline_comment|/* Now we have all parameters and can go to set them: */
-id|save_flags
+id|local_irq_save
 c_func
 (paren
 id|flags
-)paren
-suffix:semicolon
-id|cli
-c_func
-(paren
 )paren
 suffix:semicolon
 id|status-&gt;Param
@@ -1228,7 +1203,7 @@ op_assign
 op_minus
 l_int|1
 suffix:semicolon
-id|restore_flags
+id|local_irq_restore
 c_func
 (paren
 id|flags
