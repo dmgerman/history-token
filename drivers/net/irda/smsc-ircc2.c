@@ -1622,6 +1622,7 @@ suffix:semicolon
 multiline_comment|/*******************************************************************************&n; *&n; *&n; * SMSC-ircc stuff&n; *&n; *&n; *******************************************************************************/
 multiline_comment|/*&n; * Function smsc_ircc_init ()&n; *&n; *    Initialize chip. Just try to find out how many chips we are dealing with&n; *    and where they are&n; */
 DECL|function|smsc_ircc_init
+r_static
 r_int
 id|__init
 id|smsc_ircc_init
@@ -7193,6 +7194,7 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|function|smsc_ircc_cleanup
+r_static
 r_void
 id|__exit
 id|smsc_ircc_cleanup

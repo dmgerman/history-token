@@ -2375,6 +2375,7 @@ suffix:semicolon
 DECL|function|__skb_pull
 r_static
 r_inline
+r_int
 r_char
 op_star
 id|__skb_pull
@@ -2468,6 +2469,7 @@ suffix:semicolon
 DECL|function|__pskb_pull
 r_static
 r_inline
+r_int
 r_char
 op_star
 id|__pskb_pull

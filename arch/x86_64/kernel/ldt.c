@@ -441,13 +441,6 @@ id|old_mm-&gt;context.sem
 )paren
 suffix:semicolon
 )brace
-id|rwlock_init
-c_func
-(paren
-op_amp
-id|mm-&gt;context.ldtlock
-)paren
-suffix:semicolon
 r_return
 id|retval
 suffix:semicolon
@@ -957,13 +950,6 @@ suffix:semicolon
 multiline_comment|/* Install the new entry ...  */
 id|install
 suffix:colon
-id|write_lock
-c_func
-(paren
-op_amp
-id|mm-&gt;context.ldtlock
-)paren
-suffix:semicolon
 op_star
 id|lp
 op_assign
@@ -977,13 +963,6 @@ l_int|1
 )paren
 op_assign
 id|entry_2
-suffix:semicolon
-id|write_unlock
-c_func
-(paren
-op_amp
-id|mm-&gt;context.ldtlock
-)paren
 suffix:semicolon
 id|error
 op_assign

@@ -2646,9 +2646,7 @@ id|info
 op_assign
 id|registered_fb
 (braket
-id|num_registered_fb
-op_minus
-l_int|1
+l_int|0
 )braket
 suffix:semicolon
 r_if

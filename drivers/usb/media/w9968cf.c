@@ -578,10 +578,10 @@ r_int
 r_int
 id|param_nv
 (braket
-l_int|23
+l_int|24
 )braket
 suffix:semicolon
-multiline_comment|/* number of values per paramater */
+multiline_comment|/* number of values per parameter */
 id|module_param
 c_func
 (paren

@@ -8842,6 +8842,11 @@ l_string|&quot;%llu sectors (%llu MB)&bslash;n&quot;
 comma
 id|drive-&gt;name
 comma
+(paren
+r_int
+r_int
+r_int
+)paren
 id|drive-&gt;capacity64
 comma
 id|sectors_to_MB

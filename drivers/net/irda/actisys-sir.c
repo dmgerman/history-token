@@ -54,7 +54,7 @@ multiline_comment|/* These are the baudrates supported, in the order available *
 multiline_comment|/* Note : the 220L doesn&squot;t support 38400, but we will fix that below */
 DECL|variable|baud_rates
 r_static
-id|__u32
+r_int
 id|baud_rates
 (braket
 )braket
@@ -162,6 +162,7 @@ comma
 )brace
 suffix:semicolon
 DECL|function|actisys_sir_init
+r_static
 r_int
 id|__init
 id|actisys_sir_init
@@ -227,6 +228,7 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|function|actisys_sir_cleanup
+r_static
 r_void
 id|__exit
 id|actisys_sir_cleanup
@@ -271,9 +273,7 @@ op_assign
 op_amp
 id|dev-&gt;qos
 suffix:semicolon
-id|dev
-op_member_access_from_pointer
-id|set_dtr_rts
+id|sirdev_set_dtr_rts
 c_func
 (paren
 id|dev
@@ -320,6 +320,7 @@ c_func
 id|qos
 )paren
 suffix:semicolon
+multiline_comment|/* irda thread waits 50 msec for power settling */
 r_return
 l_int|0
 suffix:semicolon
@@ -337,9 +338,7 @@ id|dev
 )paren
 (brace
 multiline_comment|/* Power off the dongle */
-id|dev
-op_member_access_from_pointer
-id|set_dtr_rts
+id|sirdev_set_dtr_rts
 c_func
 (paren
 id|dev
@@ -423,18 +422,13 @@ id|i
 (brace
 id|dev-&gt;speed
 op_assign
-id|baud_rates
-(braket
-id|i
-)braket
+id|speed
 suffix:semicolon
 r_break
 suffix:semicolon
 )brace
 multiline_comment|/* Set RTS low for 10 us */
-id|dev
-op_member_access_from_pointer
-id|set_dtr_rts
+id|sirdev_set_dtr_rts
 c_func
 (paren
 id|dev
@@ -451,9 +445,7 @@ id|MIN_DELAY
 )paren
 suffix:semicolon
 multiline_comment|/* Set RTS high for 10 us */
-id|dev
-op_member_access_from_pointer
-id|set_dtr_rts
+id|sirdev_set_dtr_rts
 c_func
 (paren
 id|dev
@@ -478,12 +470,20 @@ id|i
 op_ge
 id|MAX_SPEEDS
 )paren
+(brace
+id|actisys_reset
+c_func
+(paren
+id|dev
+)paren
+suffix:semicolon
 id|ret
 op_assign
 op_minus
-l_int|1
+id|EINVAL
 suffix:semicolon
 multiline_comment|/* This should not happen */
+)brace
 multiline_comment|/* Basta lavoro, on se casse d&squot;ici... */
 r_return
 id|ret
@@ -503,9 +503,7 @@ id|dev
 )paren
 (brace
 multiline_comment|/* Reset the dongle : set DTR low for 10 us */
-id|dev
-op_member_access_from_pointer
-id|set_dtr_rts
+id|sirdev_set_dtr_rts
 c_func
 (paren
 id|dev
@@ -522,9 +520,7 @@ id|MIN_DELAY
 )paren
 suffix:semicolon
 multiline_comment|/* Go back to normal mode */
-id|dev
-op_member_access_from_pointer
-id|set_dtr_rts
+id|sirdev_set_dtr_rts
 c_func
 (paren
 id|dev

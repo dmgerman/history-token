@@ -110,6 +110,10 @@ DECL|member|allow_ints
 r_int
 id|allow_ints
 suffix:semicolon
+DECL|member|forbid_idle
+r_int
+id|forbid_idle
+suffix:semicolon
 DECL|member|realmode_power_off
 r_int
 id|realmode_power_off

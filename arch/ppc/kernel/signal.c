@@ -888,14 +888,35 @@ id|mcontext
 id|__user
 op_star
 id|sr
+comma
+r_int
+id|sig
 )paren
 (brace
+r_int
+r_int
+id|save_r2
+suffix:semicolon
 macro_line|#ifdef CONFIG_ALTIVEC
 r_int
 r_int
 id|msr
 suffix:semicolon
 macro_line|#endif
+multiline_comment|/* backup/restore the TLS as we don&squot;t want it to be modified */
+r_if
+c_cond
+(paren
+op_logical_neg
+id|sig
+)paren
+id|save_r2
+op_assign
+id|regs-&gt;gpr
+(braket
+l_int|2
+)braket
+suffix:semicolon
 multiline_comment|/* copy up to but not including MSR */
 r_if
 c_cond
@@ -947,6 +968,19 @@ id|elf_greg_t
 )paren
 r_return
 l_int|1
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|sig
+)paren
+id|regs-&gt;gpr
+(braket
+l_int|2
+)braket
+op_assign
+id|save_r2
 suffix:semicolon
 multiline_comment|/* force the process to reload the FP registers from&n;&t;   current-&gt;thread when it next does FP instructions */
 id|regs-&gt;msr
@@ -1487,6 +1521,9 @@ r_struct
 id|pt_regs
 op_star
 id|regs
+comma
+r_int
+id|sig
 )paren
 (brace
 id|sigset_t
@@ -1544,6 +1581,8 @@ c_func
 id|regs
 comma
 id|mcp
+comma
+id|sig
 )paren
 )paren
 r_return
@@ -1572,7 +1611,7 @@ op_star
 id|new_ctx
 comma
 r_int
-id|r5
+id|ctx_size
 comma
 r_int
 id|r6
@@ -1592,6 +1631,22 @@ id|regs
 r_int
 r_char
 id|tmp
+suffix:semicolon
+multiline_comment|/* Context size is for future use. Right now, we only make sure&n;&t; * we are passed something we understand&n;&t; */
+r_if
+c_cond
+(paren
+id|ctx_size
+OL
+r_sizeof
+(paren
+r_struct
+id|ucontext
+)paren
+)paren
+r_return
+op_minus
+id|EINVAL
 suffix:semicolon
 r_if
 c_cond
@@ -1730,6 +1785,8 @@ c_func
 id|new_ctx
 comma
 id|regs
+comma
+l_int|0
 )paren
 )paren
 id|do_exit
@@ -1843,6 +1900,8 @@ op_amp
 id|rt_sf-&gt;uc
 comma
 id|regs
+comma
+l_int|1
 )paren
 )paren
 r_goto
@@ -2107,6 +2166,7 @@ comma
 (paren
 r_int
 r_int
+id|__user
 op_star
 )paren
 id|newsp
@@ -2351,6 +2411,8 @@ c_func
 id|regs
 comma
 id|sr
+comma
+l_int|1
 )paren
 )paren
 r_goto

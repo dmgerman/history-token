@@ -82,6 +82,9 @@ comma
 DECL|enumerator|DIE_CALL
 id|DIE_CALL
 comma
+DECL|enumerator|DIE_NMI_IPI
+id|DIE_NMI_IPI
+comma
 )brace
 suffix:semicolon
 DECL|function|notify_die
