@@ -6937,6 +6937,7 @@ id|info-&gt;flags
 op_assign
 id|FBINFO_FLAG_DEFAULT
 suffix:semicolon
+macro_line|#ifndef MODULE
 r_if
 c_cond
 (paren
@@ -6978,6 +6979,7 @@ id|err
 op_eq
 l_int|4
 )paren
+macro_line|#endif
 id|info-&gt;var
 op_assign
 id|tdfx_var

@@ -3492,32 +3492,6 @@ op_assign
 id|font-&gt;data
 suffix:semicolon
 )brace
-macro_line|#ifdef FONTWIDTH8_ONLY&t;&t;
-r_if
-c_cond
-(paren
-op_logical_neg
-id|fontwidthvalid
-c_func
-(paren
-id|p
-comma
-id|vc-&gt;vc_font.width
-)paren
-)paren
-(brace
-multiline_comment|/* ++Geert: changed from panic() to `correct and continue&squot; */
-id|printk
-c_func
-(paren
-id|KERN_ERR
-l_string|&quot;fbcon_set_display: No support for fontwidth %d&bslash;n&quot;
-comma
-id|vc-&gt;vc_font.width
-)paren
-suffix:semicolon
-)brace
-macro_line|#endif&t;&t;
 id|updatescrollmode
 c_func
 (paren
@@ -4222,32 +4196,6 @@ op_assign
 id|font-&gt;data
 suffix:semicolon
 )brace
-macro_line|#ifdef FONTWIDTH8_ONLY&t;&t;
-r_if
-c_cond
-(paren
-op_logical_neg
-id|fontwidthvalid
-c_func
-(paren
-id|p
-comma
-id|vc-&gt;vc_font.width
-)paren
-)paren
-(brace
-multiline_comment|/* ++Geert: changed from panic() to `correct and continue&squot; */
-id|printk
-c_func
-(paren
-id|KERN_ERR
-l_string|&quot;fbcon_set_display: No support for fontwidth %d&bslash;n&quot;
-comma
-id|vc-&gt;vc_font.width
-)paren
-suffix:semicolon
-)brace
-macro_line|#endif&t;
 id|updatescrollmode
 c_func
 (paren
@@ -9787,23 +9735,6 @@ id|i
 comma
 id|j
 suffix:semicolon
-macro_line|#ifdef CONFIG_FONTWIDTH8_ONLY
-r_if
-c_cond
-(paren
-id|fontwidth
-c_func
-(paren
-id|p
-)paren
-op_ne
-l_int|8
-)paren
-r_return
-op_minus
-id|EINVAL
-suffix:semicolon
-macro_line|#endif
 id|op-&gt;width
 op_assign
 id|vc-&gt;vc_font.width
@@ -9895,7 +9826,6 @@ id|j
 suffix:semicolon
 )brace
 )brace
-macro_line|#ifndef CONFIG_FONTWIDTH8_ONLY
 r_else
 r_if
 c_cond
@@ -10119,7 +10049,6 @@ id|j
 suffix:semicolon
 )brace
 )brace
-macro_line|#endif
 r_return
 l_int|0
 suffix:semicolon
@@ -10957,19 +10886,6 @@ comma
 op_star
 id|p
 suffix:semicolon
-macro_line|#ifdef CONFIG_FONTWIDTH8_ONLY
-r_if
-c_cond
-(paren
-id|w
-op_ne
-l_int|8
-)paren
-r_return
-op_minus
-id|EINVAL
-suffix:semicolon
-macro_line|#endif
 r_if
 c_cond
 (paren
@@ -11136,7 +11052,6 @@ id|h
 suffix:semicolon
 )brace
 )brace
-macro_line|#ifndef CONFIG_FONTWIDTH8_ONLY
 r_else
 r_if
 c_cond
@@ -11309,7 +11224,6 @@ id|h
 suffix:semicolon
 )brace
 )brace
-macro_line|#endif
 multiline_comment|/* we can do it in u32 chunks because of charcount is 256 or 512, so&n;&t;   font length must be multiple of 256, at least. And 256 is multiple&n;&t;   of 4 */
 id|k
 op_assign

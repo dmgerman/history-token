@@ -1328,6 +1328,8 @@ DECL|macro|fb_writew
 mdefine_line|#define fb_writew sbus_writew
 DECL|macro|fb_writel
 mdefine_line|#define fb_writel sbus_writel
+DECL|macro|fb_writeq
+mdefine_line|#define fb_writeq sbus_writeq
 DECL|macro|fb_memset
 mdefine_line|#define fb_memset sbus_memset_io
 macro_line|#elif defined(__i386__) || defined(__alpha__) || defined(__x86_64__) || defined(__hppa__)
@@ -1343,6 +1345,10 @@ DECL|macro|fb_writew
 mdefine_line|#define fb_writew __raw_writew
 DECL|macro|fb_writel
 mdefine_line|#define fb_writel __raw_writel
+macro_line|#if defined(__alpha__) || defined(__hppa__) || defined(__ia64__)
+DECL|macro|fb_writeq
+mdefine_line|#define fb_writeq __raw_writeq
+macro_line|#endif
 DECL|macro|fb_memset
 mdefine_line|#define fb_memset memset_io
 macro_line|#else
