@@ -175,6 +175,7 @@ r_else
 id|printk
 c_func
 (paren
+id|KERN_INFO
 id|OUR_NAME
 l_string|&quot;: Heartbeat lost! Will not ping the watchdog&bslash;n&quot;
 )paren
@@ -297,6 +298,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_INFO
 id|OUR_NAME
 l_string|&quot;: Watchdog timer is now enabled.&bslash;n&quot;
 )paren
@@ -328,6 +330,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_INFO
 id|OUR_NAME
 l_string|&quot;: Watchdog timer is now disabled...&bslash;n&quot;
 )paren
@@ -568,6 +571,7 @@ r_else
 id|printk
 c_func
 (paren
+id|KERN_INFO
 id|OUR_NAME
 l_string|&quot;: device file closed unexpectedly. Will not stop the WDT!&bslash;n&quot;
 )paren
@@ -808,6 +812,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_INFO
 id|OUR_NAME
 l_string|&quot;: Watchdog timer is now enabled with no heartbeat - should reboot in ~1 second.&bslash;n&quot;
 )paren
