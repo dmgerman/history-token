@@ -8996,7 +8996,7 @@ c_func
 id|dev-&gt;net
 comma
 op_amp
-id|dev-&gt;udev-&gt;dev
+id|udev-&gt;dev
 )paren
 suffix:semicolon
 id|status
