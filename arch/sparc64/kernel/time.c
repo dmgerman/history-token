@@ -952,6 +952,16 @@ c_func
 (paren
 )paren
 suffix:semicolon
+multiline_comment|/* XXX This seems to be necessary to &squot;jumpstart&squot; Hummingbird&n;&t; * XXX into actually sending STICK interrupts.  I think because&n;&t; * XXX of how we store %tick_cmpr in head.S this somehow resets the&n;&t; * XXX {TICK + STICK} interrupt mux.  -DaveM&n;&t; */
+id|__hbird_write_stick
+c_func
+(paren
+id|__hbird_read_stick
+c_func
+(paren
+)paren
+)paren
+suffix:semicolon
 id|val
 op_assign
 id|__hbird_read_stick
