@@ -746,11 +746,6 @@ r_int
 r_int
 id|flags
 suffix:semicolon
-id|spinlock_t
-id|divert_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
-suffix:semicolon
 id|divert_rule
 op_star
 id|rulep
