@@ -4752,7 +4752,7 @@ r_if
 c_cond
 (paren
 (paren
-id|stp-&gt;st_vfs_set
+id|stp-&gt;st_vfs_file
 )paren
 op_logical_and
 (paren
@@ -4816,7 +4816,7 @@ r_if
 c_cond
 (paren
 (paren
-id|stp-&gt;st_vfs_set
+id|stp-&gt;st_vfs_file
 )paren
 op_logical_and
 (paren
@@ -6433,10 +6433,6 @@ suffix:semicolon
 id|vfsopen
 op_increment
 suffix:semicolon
-id|stp-&gt;st_vfs_set
-op_assign
-l_int|1
-suffix:semicolon
 op_star
 id|stpp
 op_assign
@@ -8014,9 +8010,9 @@ id|stp
 (brace
 r_return
 (paren
-id|stp-&gt;st_vfs_set
+id|stp-&gt;st_vfs_file
 op_eq
-l_int|0
+l_int|NULL
 op_logical_or
 id|fhp-&gt;fh_dentry-&gt;d_inode
 op_ne
@@ -9011,10 +9007,6 @@ c_func
 (paren
 l_string|&quot;NFSD: preprocess_seqid_op: fh-stateid mismatch!&bslash;n&quot;
 )paren
-suffix:semicolon
-id|stp-&gt;st_vfs_set
-op_assign
-l_int|0
 suffix:semicolon
 r_goto
 id|out
@@ -11110,10 +11102,6 @@ op_assign
 id|open_stp-&gt;st_vfs_file
 suffix:semicolon
 multiline_comment|/* FIXME refcount?? */
-id|stp-&gt;st_vfs_set
-op_assign
-id|open_stp-&gt;st_vfs_set
-suffix:semicolon
 id|stp-&gt;st_access_bmap
 op_assign
 id|open_stp-&gt;st_access_bmap
@@ -12807,7 +12795,7 @@ id|st_perfilestate
 r_if
 c_cond
 (paren
-id|stp-&gt;st_vfs_set
+id|stp-&gt;st_vfs_file
 )paren
 (brace
 r_if

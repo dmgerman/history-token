@@ -584,10 +584,6 @@ id|file
 op_star
 id|st_vfs_file
 suffix:semicolon
-DECL|member|st_vfs_set
-r_int
-id|st_vfs_set
-suffix:semicolon
 DECL|member|st_access_bmap
 r_int
 r_int
