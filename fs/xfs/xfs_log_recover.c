@@ -7102,14 +7102,6 @@ id|error
 op_assign
 l_int|0
 suffix:semicolon
-id|xfs_inobp_check
-c_func
-(paren
-id|mp
-comma
-id|bp
-)paren
-suffix:semicolon
 id|ASSERT
 c_func
 (paren
@@ -7937,25 +7929,6 @@ suffix:semicolon
 )brace
 id|write_inode_buffer
 suffix:colon
-macro_line|#if 0
-multiline_comment|/*&n;&t; * Can&squot;t do this if the transaction didn&squot;t log the current&n;&t; * contents, e.g. rmdir.&n;&t; */
-id|XFS_DIR_SHORTFORM_VALIDATE_ONDISK
-c_func
-(paren
-id|mp
-comma
-id|dip
-)paren
-suffix:semicolon
-macro_line|#endif
-id|xfs_inobp_check
-c_func
-(paren
-id|mp
-comma
-id|bp
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
