@@ -3595,7 +3595,7 @@ id|ac97
 comma
 id|AC97_AD_MISC
 comma
-l_int|0
+l_int|0x0404
 )paren
 suffix:semicolon
 id|ac97-&gt;build_ops
