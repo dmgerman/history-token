@@ -1983,13 +1983,12 @@ id|msg.len
 op_assign
 id|count
 suffix:semicolon
+id|msg.buf
+op_assign
 (paren
-r_const
 r_char
 op_star
 )paren
-id|msg.buf
-op_assign
 id|buf
 suffix:semicolon
 id|DEB2
@@ -3828,7 +3827,6 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|function|i2c_smbus_write_quick
-r_extern
 id|s32
 id|i2c_smbus_write_quick
 c_func
@@ -3863,7 +3861,6 @@ l_int|NULL
 suffix:semicolon
 )brace
 DECL|function|i2c_smbus_read_byte
-r_extern
 id|s32
 id|i2c_smbus_read_byte
 c_func
@@ -3912,7 +3909,6 @@ id|data.byte
 suffix:semicolon
 )brace
 DECL|function|i2c_smbus_write_byte
-r_extern
 id|s32
 id|i2c_smbus_write_byte
 c_func
@@ -3953,7 +3949,6 @@ id|data
 suffix:semicolon
 )brace
 DECL|function|i2c_smbus_read_byte_data
-r_extern
 id|s32
 id|i2c_smbus_read_byte_data
 c_func
@@ -4005,7 +4000,6 @@ id|data.byte
 suffix:semicolon
 )brace
 DECL|function|i2c_smbus_write_byte_data
-r_extern
 id|s32
 id|i2c_smbus_write_byte_data
 c_func
@@ -4052,7 +4046,6 @@ id|data
 suffix:semicolon
 )brace
 DECL|function|i2c_smbus_read_word_data
-r_extern
 id|s32
 id|i2c_smbus_read_word_data
 c_func
@@ -4104,7 +4097,6 @@ id|data.word
 suffix:semicolon
 )brace
 DECL|function|i2c_smbus_write_word_data
-r_extern
 id|s32
 id|i2c_smbus_write_word_data
 c_func
@@ -4151,7 +4143,6 @@ id|data
 suffix:semicolon
 )brace
 DECL|function|i2c_smbus_process_call
-r_extern
 id|s32
 id|i2c_smbus_process_call
 c_func
@@ -4211,7 +4202,6 @@ suffix:semicolon
 )brace
 multiline_comment|/* Returns the number of read bytes */
 DECL|function|i2c_smbus_read_block_data
-r_extern
 id|s32
 id|i2c_smbus_read_block_data
 c_func
@@ -4302,7 +4292,6 @@ suffix:semicolon
 )brace
 )brace
 DECL|function|i2c_smbus_write_block_data
-r_extern
 id|s32
 id|i2c_smbus_write_block_data
 c_func
@@ -4397,7 +4386,6 @@ suffix:semicolon
 )brace
 multiline_comment|/* Returns the number of read bytes */
 DECL|function|i2c_smbus_block_process_call
-r_extern
 id|s32
 id|i2c_smbus_block_process_call
 c_func
@@ -4537,7 +4525,6 @@ suffix:semicolon
 )brace
 multiline_comment|/* Returns the number of read bytes */
 DECL|function|i2c_smbus_read_i2c_block_data
-r_extern
 id|s32
 id|i2c_smbus_read_i2c_block_data
 c_func
@@ -4628,7 +4615,6 @@ suffix:semicolon
 )brace
 )brace
 DECL|function|i2c_smbus_write_i2c_block_data
-r_extern
 id|s32
 id|i2c_smbus_write_i2c_block_data
 c_func
