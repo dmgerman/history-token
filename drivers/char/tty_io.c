@@ -6717,10 +6717,6 @@ l_int|0
 )paren
 (brace
 r_extern
-r_int
-id|fg_console
-suffix:semicolon
-r_extern
 r_struct
 id|tty_driver
 op_star
@@ -7893,12 +7889,6 @@ id|TTY_DRIVER_TYPE_CONSOLE
 )paren
 (brace
 r_int
-r_int
-id|currcons
-op_assign
-id|tty-&gt;index
-suffix:semicolon
-r_int
 id|rc
 suffix:semicolon
 id|acquire_console_sem
@@ -7911,7 +7901,7 @@ op_assign
 id|vc_resize
 c_func
 (paren
-id|currcons
+id|tty-&gt;driver_data
 comma
 id|tmp_ws.ws_col
 comma

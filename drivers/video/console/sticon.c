@@ -862,7 +862,7 @@ multiline_comment|/* vc_cols = (c-&gt;vc_cols &gt; vc_cols) ? vc_cols : c-&gt;vc
 id|vc_resize
 c_func
 (paren
-id|c-&gt;vc_num
+id|c
 comma
 id|vc_cols
 comma

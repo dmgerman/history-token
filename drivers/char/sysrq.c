@@ -19,16 +19,8 @@ macro_line|#include &lt;linux/suspend.h&gt;
 macro_line|#include &lt;linux/writeback.h&gt;
 macro_line|#include &lt;linux/buffer_head.h&gt;&t;&t;/* for fsync_bdev() */
 macro_line|#include &lt;linux/spinlock.h&gt;
+macro_line|#include &lt;linux/vt_kern.h&gt;
 macro_line|#include &lt;asm/ptrace.h&gt;
-r_extern
-r_void
-id|reset_vc
-c_func
-(paren
-r_int
-r_int
-)paren
-suffix:semicolon
 multiline_comment|/* Whether we react on sysrq keys or just ignore them */
 DECL|variable|sysrq_enabled
 r_int
@@ -154,7 +146,12 @@ suffix:semicolon
 id|reset_vc
 c_func
 (paren
+id|vc_cons
+(braket
 id|fg_console
+)braket
+dot
+id|d
 )paren
 suffix:semicolon
 )brace

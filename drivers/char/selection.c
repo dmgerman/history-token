@@ -59,10 +59,10 @@ id|sel_buffer
 suffix:semicolon
 multiline_comment|/* clear_selection, highlight and highlight_pointer can be called&n;   from interrupt (via scrollback/front) */
 multiline_comment|/* set reverse video on characters s-e of console with selection. */
-r_inline
-r_static
-r_void
 DECL|function|highlight
+r_static
+r_inline
+r_void
 id|highlight
 c_func
 (paren
@@ -93,10 +93,10 @@ l_int|1
 suffix:semicolon
 )brace
 multiline_comment|/* use complementary color to show the pointer */
-r_inline
-r_static
-r_void
 DECL|function|highlight_pointer
+r_static
+r_inline
+r_void
 id|highlight_pointer
 c_func
 (paren
