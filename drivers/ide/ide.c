@@ -4246,11 +4246,11 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|list_empty
+id|blk_queue_empty
 c_func
 (paren
 op_amp
-id|drive-&gt;queue.queue_head
+id|drive-&gt;queue
 )paren
 op_logical_and
 (paren

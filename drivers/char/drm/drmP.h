@@ -164,7 +164,7 @@ mdefine_line|#define pte_offset_map pte_offset
 DECL|macro|pte_unmap
 mdefine_line|#define pte_unmap(pte)
 macro_line|#endif
-macro_line|#if LINUX_VERSION_CODE &lt; 0x020413 /* KERNEL_VERSION(2,4,19) */
+macro_line|#if LINUX_VERSION_CODE &lt; KERNEL_VERSION(2,4,19)
 DECL|function|vmalloc_to_page
 r_static
 r_inline
@@ -305,7 +305,7 @@ id|page
 suffix:semicolon
 )brace
 macro_line|#endif
-macro_line|#if LINUX_VERSION_CODE &lt; 0x020500
+macro_line|#if LINUX_VERSION_CODE &lt; KERNEL_VERSION(2,5,0)
 DECL|macro|DRM_RPR_ARG
 mdefine_line|#define DRM_RPR_ARG(vma)
 macro_line|#else
@@ -1691,7 +1691,7 @@ op_star
 id|pdev
 suffix:semicolon
 macro_line|#ifdef __alpha__
-macro_line|#if LINUX_VERSION_CODE &lt; 0x020403
+macro_line|#if LINUX_VERSION_CODE &lt; KERNEL_VERSION(2,4,3)
 DECL|member|hose
 r_struct
 id|pci_controler

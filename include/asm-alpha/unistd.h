@@ -625,6 +625,30 @@ DECL|macro|__NR_lremovexattr
 mdefine_line|#define __NR_lremovexattr&t;&t;392
 DECL|macro|__NR_fremovexattr
 mdefine_line|#define __NR_fremovexattr&t;&t;393
+DECL|macro|__NR_futex
+mdefine_line|#define __NR_futex&t;&t;394
+DECL|macro|__NR_sched_setaffinity
+mdefine_line|#define __NR_sched_setaffinity&t;395     
+DECL|macro|__NR_sched_getaffinity
+mdefine_line|#define __NR_sched_getaffinity&t;396
+DECL|macro|__NR_tuxcall
+mdefine_line|#define __NR_tuxcall&t;&t;397
+DECL|macro|__NR_io_setup
+mdefine_line|#define __NR_io_setup&t;&t;398
+DECL|macro|__NR_io_destroy
+mdefine_line|#define __NR_io_destroy&t;&t;399
+DECL|macro|__NR_io_getevents
+mdefine_line|#define __NR_io_getevents&t;400
+DECL|macro|__NR_io_submit
+mdefine_line|#define __NR_io_submit&t;&t;401
+DECL|macro|__NR_io_cancel
+mdefine_line|#define __NR_io_cancel&t;&t;402
+DECL|macro|__NR_alloc_hugepages
+mdefine_line|#define __NR_alloc_hugepages&t;403
+DECL|macro|__NR_free_hugepages
+mdefine_line|#define __NR_free_hugepages&t;404
+DECL|macro|__NR_exit_group
+mdefine_line|#define __NR_exit_group&t;&t;405
 macro_line|#if defined(__GNUC__)
 DECL|macro|_syscall_return
 mdefine_line|#define _syscall_return(type)&t;&t;&t;&t;&t;&t;&bslash;&n;&t;return (_sc_err ? errno = _sc_ret, _sc_ret = -1L : 0), (type) _sc_ret

@@ -1056,6 +1056,9 @@ r_if
 c_cond
 (paren
 op_logical_neg
+id|s-&gt;lock
+op_logical_or
+op_logical_neg
 id|_DRM_LOCK_IS_HELD
 c_func
 (paren

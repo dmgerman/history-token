@@ -6327,6 +6327,8 @@ c_func
 id|dev
 )paren
 suffix:semicolon
+multiline_comment|/* &t;if (dev-&gt;irq)  */
+multiline_comment|/* &t;&t;radeon_emit_and_wait_irq( dev ); */
 r_return
 id|radeon_do_cp_idle
 c_func
