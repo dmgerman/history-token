@@ -3852,11 +3852,11 @@ op_minus
 l_int|1
 suffix:semicolon
 multiline_comment|/* -1 = no lock */
-id|p-&gt;start_time
-op_assign
-id|get_jiffies_64
+id|do_posix_clock_monotonic_gettime
 c_func
 (paren
+op_amp
+id|p-&gt;start_time
 )paren
 suffix:semicolon
 id|p-&gt;security
@@ -4484,6 +4484,11 @@ id|p
 suffix:semicolon
 id|bad_fork_cleanup_mm
 suffix:colon
+r_if
+c_cond
+(paren
+id|p-&gt;mm
+)paren
 id|mmput
 c_func
 (paren

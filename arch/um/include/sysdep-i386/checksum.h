@@ -260,6 +260,8 @@ l_string|&quot;2&quot;
 (paren
 id|ihl
 )paren
+suffix:colon
+l_string|&quot;memory&quot;
 )paren
 suffix:semicolon
 r_return

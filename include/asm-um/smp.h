@@ -6,14 +6,6 @@ macro_line|#include &quot;linux/config.h&quot;
 macro_line|#include &quot;linux/bitops.h&quot;
 macro_line|#include &quot;asm/current.h&quot;
 macro_line|#include &quot;linux/cpumask.h&quot;
-r_extern
-id|cpumask_t
-id|cpu_online_map
-suffix:semicolon
-r_extern
-id|cpumask_t
-id|cpu_possible_map
-suffix:semicolon
 DECL|macro|smp_processor_id
 mdefine_line|#define smp_processor_id() (current_thread-&gt;cpu)
 DECL|macro|cpu_logical_map
@@ -32,8 +24,6 @@ r_void
 suffix:semicolon
 DECL|macro|NO_PROC_ID
 mdefine_line|#define NO_PROC_ID -1
-DECL|macro|cpu_online
-mdefine_line|#define cpu_online(cpu) cpu_isset(cpu, cpu_online_map)
 r_extern
 r_int
 id|ncpus

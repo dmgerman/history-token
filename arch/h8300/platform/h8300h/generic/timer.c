@@ -24,7 +24,8 @@ mdefine_line|#define CLK_DIV8192 0x03
 DECL|macro|H8300_TIMER_FREQ
 mdefine_line|#define H8300_TIMER_FREQ CONFIG_CPU_CLOCK*1000/8192 /* Timer input freq. */
 DECL|function|platform_timer_setup
-r_int
+r_void
+id|__init
 id|platform_timer_setup
 c_func
 (paren
@@ -156,7 +157,8 @@ mdefine_line|#define CLK_DIV8 0x03
 DECL|macro|H8300_TIMER_FREQ
 mdefine_line|#define H8300_TIMER_FREQ CONFIG_CPU_CLOCK*1000/8 /* Timer input freq. */
 DECL|function|platform_timer_setup
-r_int
+r_void
+id|__init
 id|platform_timer_setup
 c_func
 (paren
