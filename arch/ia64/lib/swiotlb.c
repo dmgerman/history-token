@@ -1,4 +1,5 @@
 multiline_comment|/*&n; * Dynamic DMA mapping support.&n; *&n; * This implementation is for IA-64 platforms that do not support&n; * I/O TLBs (aka DMA address translation hardware).&n; * Copyright (C) 2000 Asit Mallick &lt;Asit.K.Mallick@intel.com&gt;&n; * Copyright (C) 2000 Goutham Rao &lt;goutham.rao@intel.com&gt;&n; *&n; * 00/12/13 davidm&t;Rename to swiotlb.c and add mark_clean() to avoid&n; *&t;&t;&t;unnecessary i-cache flushing.&n; */
+macro_line|#include &lt;linux/cache.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
@@ -10,8 +11,6 @@ macro_line|#include &lt;asm/pci.h&gt;
 macro_line|#include &lt;asm/dma.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/bootmem.h&gt;
-DECL|macro|ALIGN
-mdefine_line|#define ALIGN(val, align) ((unsigned long)&t;&bslash;&n;&t;(((unsigned long) (val) + ((align) - 1)) &amp; ~((align) - 1)))
 DECL|macro|OFFSET
 mdefine_line|#define OFFSET(val,align) ((unsigned long)&t;&bslash;&n;&t;                   ( (val) &amp; ( (align) - 1)))
 DECL|macro|SG_ENT_VIRT_ADDRESS
@@ -910,16 +909,7 @@ r_void
 op_star
 id|ret
 suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|hwdev
-op_logical_or
-id|hwdev-&gt;dma_mask
-op_le
-l_int|0xffffffff
-)paren
+multiline_comment|/*&n;&t; * Alloc_consistent() is defined to return memory &lt; 4GB, no matter what the DMA&n;&t; * mask says.&n;&t; */
 id|gfp
 op_or_assign
 id|GFP_DMA

@@ -1,6 +1,7 @@
 multiline_comment|/*&n; * Architecture-specific setup.&n; *&n; * Copyright (C) 1998-2001 Hewlett-Packard Co&n; *&t;David Mosberger-Tang &lt;davidm@hpl.hp.com&gt;&n; *&t;Stephane Eranian &lt;eranian@hpl.hp.com&gt;&n; * Copyright (C) 2000, Rohit Seth &lt;rohit.seth@intel.com&gt;&n; * Copyright (C) 1999 VA Linux Systems&n; * Copyright (C) 1999 Walt Drummond &lt;drummond@valinux.com&gt;&n; *&n; * 11/12/01 D.Mosberger Convert get_cpuinfo() to seq_file based show_cpuinfo().&n; * 04/04/00 D.Mosberger renamed cpu_initialized to cpu_online_map&n; * 03/31/00 R.Seth&t;cpu_initialized and current-&gt;processor fixes&n; * 02/04/00 D.Mosberger&t;some more get_cpuinfo fixes...&n; * 02/01/00 R.Seth&t;fixed get_cpuinfo for SMP&n; * 01/07/99 S.Eranian&t;added the support for command line argument&n; * 06/24/99 W.Drummond&t;added boot_cpu_data.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
+macro_line|#include &lt;linux/acpi.h&gt;
 macro_line|#include &lt;linux/bootmem.h&gt;
 macro_line|#include &lt;linux/console.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
@@ -11,7 +12,6 @@ macro_line|#include &lt;linux/seq_file.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/threads.h&gt;
 macro_line|#include &lt;linux/tty.h&gt;
-macro_line|#include &lt;asm/acpi-ext.h&gt;
 macro_line|#include &lt;asm/ia32.h&gt;
 macro_line|#include &lt;asm/page.h&gt;
 macro_line|#include &lt;asm/machvec.h&gt;
@@ -35,6 +35,7 @@ r_extern
 r_char
 id|_end
 suffix:semicolon
+macro_line|#ifdef CONFIG_SMP
 DECL|variable|__per_cpu_offset
 r_int
 r_int
@@ -43,6 +44,7 @@ id|__per_cpu_offset
 id|NR_CPUS
 )braket
 suffix:semicolon
+macro_line|#endif
 DECL|variable|__per_cpu_data
 r_struct
 id|cpuinfo_ia64
@@ -76,6 +78,14 @@ r_int
 id|ia64_iobase
 suffix:semicolon
 multiline_comment|/* virtual address for I/O accesses */
+DECL|variable|aux_device_present
+r_int
+r_char
+id|aux_device_present
+op_assign
+l_int|0xaa
+suffix:semicolon
+multiline_comment|/* XXX remove this when legacy I/O is gone */
 DECL|macro|COMMAND_LINE_SIZE
 mdefine_line|#define COMMAND_LINE_SIZE&t;512
 DECL|variable|saved_command_line
@@ -1002,6 +1012,10 @@ r_int
 r_int
 id|ia64_iobase
 suffix:semicolon
+r_int
+r_int
+id|phys_iobase
+suffix:semicolon
 id|unw_init
 c_func
 (paren
@@ -1147,8 +1161,8 @@ c_func
 )paren
 suffix:semicolon
 macro_line|#endif
-multiline_comment|/*&n;&t; *  Set `iobase&squot; to the appropriate address in region 6&n;&t; *    (uncached access range)&n;&t; *&n;&t; *  The EFI memory map is the &quot;prefered&quot; location to get the I/O port&n;&t; *  space base, rather the relying on AR.KR0. This should become more&n;&t; *  clear in future SAL specs. We&squot;ll fall back to getting it out of&n;&t; *  AR.KR0 if no appropriate entry is found in the memory map.&n;&t; */
-id|ia64_iobase
+multiline_comment|/*&n;&t; *  Set `iobase&squot; to the appropriate address in region 6 (uncached access range).&n;&t; *&n;&t; *  The EFI memory map is the &quot;preferred&quot; location to get the I/O port space base,&n;&t; *  rather the relying on AR.KR0. This should become more clear in future SAL&n;&t; *  specs. We&squot;ll fall back to getting it out of AR.KR0 if no appropriate entry is&n;&t; *  found in the memory map.&n;&t; */
+id|phys_iobase
 op_assign
 id|efi_get_iobase
 c_func
@@ -1158,7 +1172,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|ia64_iobase
+id|phys_iobase
 )paren
 multiline_comment|/* set AR.KR0 since this is all we use it for anyway */
 id|ia64_set_kr
@@ -1166,12 +1180,12 @@ c_func
 (paren
 id|IA64_KR_IO_BASE
 comma
-id|ia64_iobase
+id|phys_iobase
 )paren
 suffix:semicolon
 r_else
 (brace
-id|ia64_iobase
+id|phys_iobase
 op_assign
 id|ia64_get_kr
 c_func
@@ -1190,19 +1204,22 @@ c_func
 (paren
 l_string|&quot;I/O port base = 0x%lx&bslash;n&quot;
 comma
-id|ia64_iobase
+id|phys_iobase
 )paren
 suffix:semicolon
 )brace
 id|ia64_iobase
 op_assign
-id|__IA64_UNCACHED_OFFSET
-op_or
 (paren
-id|ia64_iobase
-op_amp
-op_complement
-id|PAGE_OFFSET
+r_int
+r_int
+)paren
+id|ioremap
+c_func
+(paren
+id|phys_iobase
+comma
+l_int|0
 )paren
 suffix:semicolon
 macro_line|#ifdef CONFIG_SMP
@@ -1224,47 +1241,40 @@ c_func
 )paren
 suffix:semicolon
 multiline_comment|/* initialize the bootstrap CPU */
-r_if
-c_cond
-(paren
-id|efi.acpi20
-)paren
-(brace
-multiline_comment|/* Parse the ACPI 2.0 tables */
-id|acpi20_parse
+macro_line|#ifdef CONFIG_ACPI_BOOT
+id|acpi_boot_init
 c_func
 (paren
-id|efi.acpi20
+op_star
+id|cmdline_p
 )paren
 suffix:semicolon
-)brace
-r_else
-r_if
-c_cond
-(paren
-id|efi.acpi
-)paren
-(brace
-multiline_comment|/* Parse the ACPI tables */
-id|acpi_parse
-c_func
-(paren
-id|efi.acpi
-)paren
-suffix:semicolon
-)brace
+macro_line|#endif
 macro_line|#ifdef CONFIG_VT
-macro_line|# if defined(CONFIG_VGA_CONSOLE)
-id|conswitchp
-op_assign
-op_amp
-id|vga_con
-suffix:semicolon
-macro_line|# elif defined(CONFIG_DUMMY_CONSOLE)
+macro_line|# if defined(CONFIG_DUMMY_CONSOLE)
 id|conswitchp
 op_assign
 op_amp
 id|dummy_con
+suffix:semicolon
+macro_line|# endif
+macro_line|# if defined(CONFIG_VGA_CONSOLE)
+multiline_comment|/*&n;&t; * Non-legacy systems may route legacy VGA MMIO range to system&n;&t; * memory.  vga_con probes the MMIO hole, so memory looks like&n;&t; * a VGA device to it.  The EFI memory map can tell us if it&squot;s&n;&t; * memory so we can avoid this problem.&n;&t; */
+r_if
+c_cond
+(paren
+id|efi_mem_type
+c_func
+(paren
+l_int|0xA0000
+)paren
+op_ne
+id|EFI_CONVENTIONAL_MEMORY
+)paren
+id|conswitchp
+op_assign
+op_amp
+id|vga_con
 suffix:semicolon
 macro_line|# endif
 macro_line|#endif
@@ -1955,10 +1965,6 @@ comma
 id|__phys_per_cpu_start
 (braket
 )braket
-comma
-id|__per_cpu_end
-(braket
-)braket
 suffix:semicolon
 r_extern
 r_void
@@ -1988,6 +1994,13 @@ suffix:semicolon
 r_void
 op_star
 id|my_cpu_data
+suffix:semicolon
+macro_line|#ifdef CONFIG_SMP
+r_extern
+r_char
+id|__per_cpu_end
+(braket
+)braket
 suffix:semicolon
 r_int
 id|cpu
@@ -2032,6 +2045,27 @@ id|my_cpu_data
 op_minus
 id|__per_cpu_start
 suffix:semicolon
+id|my_cpu_info
+op_assign
+id|my_cpu_data
+op_plus
+(paren
+(paren
+r_char
+op_star
+)paren
+op_amp
+id|cpu_info
+op_minus
+id|__per_cpu_start
+)paren
+suffix:semicolon
+macro_line|#else
+id|my_cpu_data
+op_assign
+id|__phys_per_cpu_start
+suffix:semicolon
+macro_line|#endif
 id|my_cpu_info
 op_assign
 id|my_cpu_data

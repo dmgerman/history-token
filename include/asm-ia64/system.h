@@ -6,15 +6,6 @@ macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;asm/page.h&gt;
 DECL|macro|KERNEL_START
 mdefine_line|#define KERNEL_START&t;&t;(PAGE_OFFSET + 68*1024*1024)
-multiline_comment|/*&n; * The following #defines must match with vmlinux.lds.S:&n; */
-DECL|macro|IVT_ADDR
-mdefine_line|#define IVT_ADDR&t;&t;(KERNEL_START)
-DECL|macro|IVT_END_ADDR
-mdefine_line|#define IVT_END_ADDR&t;&t;(KERNEL_START + 0x8000)
-DECL|macro|ZERO_PAGE_ADDR
-mdefine_line|#define ZERO_PAGE_ADDR&t;&t;PAGE_ALIGN(IVT_END_ADDR)
-DECL|macro|SWAPPER_PGD_ADDR
-mdefine_line|#define SWAPPER_PGD_ADDR&t;(ZERO_PAGE_ADDR + 1*PAGE_SIZE)
 DECL|macro|GATE_ADDR
 mdefine_line|#define GATE_ADDR&t;&t;(0xa000000000000000 + PAGE_SIZE)
 DECL|macro|PERCPU_ADDR

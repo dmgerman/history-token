@@ -16273,7 +16273,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|child-&gt;p_pptr
+id|child-&gt;parent
 op_ne
 id|current
 )paren

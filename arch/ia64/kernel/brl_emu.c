@@ -73,6 +73,8 @@ comma
 id|qp
 comma
 id|offset
+comma
+id|cpl
 suffix:semicolon
 r_int
 r_int
@@ -476,6 +478,16 @@ op_assign
 id|next_ip
 suffix:semicolon
 multiline_comment|/*&n;&t;&t;&t; *  AR[PFS].pfm = CFM&n;&t;&t;&t; *  AR[PFS].pec = AR[EC]&n;&t;&t;&t; *  AR[PFS].ppl = PSR.cpl&n;&t;&t;&t; */
+id|cpl
+op_assign
+id|ia64_psr
+c_func
+(paren
+id|regs
+)paren
+op_member_access_from_pointer
+id|cpl
+suffix:semicolon
 id|regs-&gt;ar_pfs
 op_assign
 (paren
@@ -492,16 +504,6 @@ l_int|52
 )paren
 op_or
 (paren
-(paren
-r_int
-r_int
-)paren
-id|ia64_psr
-c_func
-(paren
-id|regs
-)paren
-op_member_access_from_pointer
 id|cpl
 op_lshift
 l_int|62

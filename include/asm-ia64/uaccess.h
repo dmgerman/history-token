@@ -24,7 +24,7 @@ DECL|macro|segment_eq
 mdefine_line|#define segment_eq(a,b)&t;((a).seg == (b).seg)
 multiline_comment|/*&n; * When accessing user memory, we need to make sure the entire area really is in&n; * user-level space.  In order to do this efficiently, we make sure that the page at&n; * address TASK_SIZE is never valid.  We also need to make sure that the address doesn&squot;t&n; * point inside the virtually mapped linear page table.&n; */
 DECL|macro|__access_ok
-mdefine_line|#define __access_ok(addr,size,segment)&t;(((unsigned long) (addr)) &lt;= (segment).seg&t;&t;&bslash;&n;&t; &amp;&amp; ((segment).seg == KERNEL_DS.seg || rgn_offset((unsigned long) (addr)) &lt; RGN_MAP_LIMIT))
+mdefine_line|#define __access_ok(addr,size,segment)&t;(((unsigned long) (addr)) &lt;= (segment).seg&t;&bslash;&n;&t; &amp;&amp; ((segment).seg == KERNEL_DS.seg&t;&t;&t;&t;&t;&t;&bslash;&n;&t;     || REGION_OFFSET((unsigned long) (addr)) &lt; RGN_MAP_LIMIT))
 DECL|macro|access_ok
 mdefine_line|#define access_ok(type,addr,size)&t;__access_ok((addr),(size),get_fs())
 r_static
