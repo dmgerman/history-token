@@ -38,20 +38,6 @@ macro_line|#include &lt;asm/tsunami.h&gt;
 macro_line|#include &lt;asm/swift.h&gt;
 macro_line|#include &lt;asm/turbosparc.h&gt;
 macro_line|#include &lt;asm/btfixup.h&gt;
-multiline_comment|/*&n; * To support pagetables in highmem, Linux introduces APIs which&n; * return struct page* and generally manipulate page tables when&n; * they are not mapped into kernel space. Our hardware page tables&n; * are smaller than pages. We lump hardware tabes into big, page sized&n; * software tables.&n; *&n; * PMD_SHIFT determines the size of the area a second-level page table entry&n; * can map, and our pmd_t is 16 times larger than normal.&n; */
-DECL|macro|SRMMU_PTRS_PER_PMD_SOFT
-mdefine_line|#define SRMMU_PTRS_PER_PMD_SOFT    0x4&t;/* Each pmd_t contains 16 hard PTPs */
-DECL|macro|SRMMU_PTRS_PER_PTE_SOFT
-mdefine_line|#define SRMMU_PTRS_PER_PTE_SOFT  0x400&t;/* 16 hard tables per 4K page */
-DECL|macro|SRMMU_PTE_SZ_SOFT
-mdefine_line|#define SRMMU_PTE_SZ_SOFT       0x1000&t;/* same as above, in bytes */
-DECL|macro|SRMMU_PMD_SHIFT_SOFT
-mdefine_line|#define SRMMU_PMD_SHIFT_SOFT&t;22
-DECL|macro|SRMMU_PMD_SIZE_SOFT
-mdefine_line|#define SRMMU_PMD_SIZE_SOFT&t;(1UL &lt;&lt; SRMMU_PMD_SHIFT_SOFT)
-DECL|macro|SRMMU_PMD_MASK_SOFT
-mdefine_line|#define SRMMU_PMD_MASK_SOFT&t;(~(SRMMU_PMD_SIZE_SOFT-1))
-singleline_comment|// #define SRMMU_PMD_ALIGN(addr)  (((addr)+SRMMU_PMD_SIZE-1)&amp;SRMMU_PMD_MASK)
 DECL|variable|srmmu_modtype
 r_enum
 id|mbus_module
