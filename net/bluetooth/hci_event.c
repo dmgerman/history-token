@@ -1457,6 +1457,10 @@ r_if
 c_cond
 (paren
 id|conn
+op_logical_and
+id|conn-&gt;state
+op_eq
+id|BT_CONNECT
 )paren
 (brace
 id|conn-&gt;state
