@@ -321,6 +321,7 @@ r_int
 id|iobase
 )paren
 suffix:semicolon
+r_static
 r_void
 id|hwreset
 c_func
@@ -389,6 +390,7 @@ id|pdev
 suffix:semicolon
 multiline_comment|/* Should use udelay() instead, even if we are x86 only - Jean II */
 DECL|function|iodelay
+r_static
 r_void
 id|iodelay
 c_func
@@ -6220,6 +6222,7 @@ id|iHostIntType
 suffix:semicolon
 )brace
 DECL|function|hwreset
+r_static
 r_void
 id|hwreset
 c_func
