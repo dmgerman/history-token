@@ -1,4 +1,4 @@
-multiline_comment|/*******************************************************************************&n;&n;  &n;  Copyright(c) 1999 - 2004 Intel Corporation. All rights reserved.&n;  &n;  This program is free software; you can redistribute it and/or modify it &n;  under the terms of the GNU General Public License as published by the Free &n;  Software Foundation; either version 2 of the License, or (at your option) &n;  any later version.&n;  &n;  This program is distributed in the hope that it will be useful, but WITHOUT &n;  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or &n;  FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for &n;  more details.&n;  &n;  You should have received a copy of the GNU General Public License along with&n;  this program; if not, write to the Free Software Foundation, Inc., 59 &n;  Temple Place - Suite 330, Boston, MA  02111-1307, USA.&n;  &n;  The full GNU General Public License is included in this distribution in the&n;  file called LICENSE.&n;  &n;  Contact Information:&n;  Linux NICS &lt;linux.nics@intel.com&gt;&n;  Intel Corporation, 5200 N.E. Elam Young Parkway, Hillsboro, OR 97124-6497&n;&n;*******************************************************************************/
+multiline_comment|/*******************************************************************************&n;&n;  &n;  Copyright(c) 1999 - 2005 Intel Corporation. All rights reserved.&n;  &n;  This program is free software; you can redistribute it and/or modify it &n;  under the terms of the GNU General Public License as published by the Free &n;  Software Foundation; either version 2 of the License, or (at your option) &n;  any later version.&n;  &n;  This program is distributed in the hope that it will be useful, but WITHOUT &n;  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or &n;  FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for &n;  more details.&n;  &n;  You should have received a copy of the GNU General Public License along with&n;  this program; if not, write to the Free Software Foundation, Inc., 59 &n;  Temple Place - Suite 330, Boston, MA  02111-1307, USA.&n;  &n;  The full GNU General Public License is included in this distribution in the&n;  file called LICENSE.&n;  &n;  Contact Information:&n;  Linux NICS &lt;linux.nics@intel.com&gt;&n;  Intel Corporation, 5200 N.E. Elam Young Parkway, Hillsboro, OR 97124-6497&n;&n;*******************************************************************************/
 macro_line|#include &quot;ixgb_hw.h&quot;
 macro_line|#include &quot;ixgb_ee.h&quot;
 multiline_comment|/* Local prototypes */
@@ -974,7 +974,19 @@ r_uint16
 id|data
 )paren
 (brace
-multiline_comment|/*  Prepare the EEPROM for writing  */
+r_struct
+id|ixgb_ee_map_type
+op_star
+id|ee_map
+op_assign
+(paren
+r_struct
+id|ixgb_ee_map_type
+op_star
+)paren
+id|hw-&gt;eeprom
+suffix:semicolon
+multiline_comment|/* Prepare the EEPROM for writing */
 id|ixgb_setup_eeprom
 c_func
 (paren
@@ -1081,6 +1093,11 @@ c_func
 (paren
 id|hw
 )paren
+suffix:semicolon
+multiline_comment|/* clear the init_ctrl_reg_1 to signify that the cache is invalidated */
+id|ee_map-&gt;init_ctrl_reg_1
+op_assign
+id|EEPROM_ICW1_SIGNATURE_CLEAR
 suffix:semicolon
 r_return
 suffix:semicolon
@@ -1260,6 +1277,11 @@ c_func
 (paren
 l_string|&quot;ixgb_ee: Checksum invalid.&bslash;n&quot;
 )paren
+suffix:semicolon
+multiline_comment|/* clear the init_ctrl_reg_1 to signify that the cache is&n;&t;&t; * invalidated */
+id|ee_map-&gt;init_ctrl_reg_1
+op_assign
+id|EEPROM_ICW1_SIGNATURE_CLEAR
 suffix:semicolon
 r_return
 (paren
