@@ -164,6 +164,8 @@ DECL|macro|FB_ACCEL_3DLABS_PERMEDIA3
 mdefine_line|#define FB_ACCEL_3DLABS_PERMEDIA3 37&t;/* 3Dlabs Permedia 3&t;&t;*/
 DECL|macro|FB_ACCEL_ATI_RADEON
 mdefine_line|#define FB_ACCEL_ATI_RADEON&t;38&t;/* ATI Radeon family&t;&t;*/
+DECL|macro|FB_ACCEL_I810
+mdefine_line|#define FB_ACCEL_I810           39      /* Intel 810/815                */
 DECL|macro|FB_ACCEL_NEOMAGIC_NM2070
 mdefine_line|#define FB_ACCEL_NEOMAGIC_NM2070 90&t;/* NeoMagic NM2070              */
 DECL|macro|FB_ACCEL_NEOMAGIC_NM2090
@@ -1339,8 +1341,6 @@ DECL|macro|fb_readw
 mdefine_line|#define fb_readw __raw_readw
 DECL|macro|fb_readl
 mdefine_line|#define fb_readl __raw_readl
-DECL|macro|fb_readq
-mdefine_line|#define fb_readq __raw_readq
 DECL|macro|fb_writeb
 mdefine_line|#define fb_writeb __raw_writeb
 DECL|macro|fb_writew
@@ -1358,12 +1358,16 @@ DECL|macro|fb_readw
 mdefine_line|#define fb_readw(addr) (*(volatile u16 *) (addr))
 DECL|macro|fb_readl
 mdefine_line|#define fb_readl(addr) (*(volatile u32 *) (addr))
+DECL|macro|fb_readq
+mdefine_line|#define fb_readq(addr) (*(volatile u64 *) (addr))
 DECL|macro|fb_writeb
 mdefine_line|#define fb_writeb(b,addr) (*(volatile u8 *) (addr) = (b))
 DECL|macro|fb_writew
 mdefine_line|#define fb_writew(b,addr) (*(volatile u16 *) (addr) = (b))
 DECL|macro|fb_writel
 mdefine_line|#define fb_writel(b,addr) (*(volatile u32 *) (addr) = (b))
+DECL|macro|fb_writeq
+mdefine_line|#define fb_writeq(b,addr) (*(volatile u64 *) (addr) = (b))
 DECL|macro|fb_memset
 mdefine_line|#define fb_memset memset
 macro_line|#endif
@@ -1503,7 +1507,14 @@ id|fb_info
 suffix:semicolon
 r_extern
 r_int
-id|num_registered_fb
+id|fb_show_logo
+c_func
+(paren
+r_struct
+id|fb_info
+op_star
+id|fb_info
+)paren
 suffix:semicolon
 r_extern
 r_struct
@@ -1513,6 +1524,10 @@ id|registered_fb
 (braket
 id|FB_MAX
 )braket
+suffix:semicolon
+r_extern
+r_int
+id|num_registered_fb
 suffix:semicolon
 multiline_comment|/* drivers/video/fbmon.c */
 r_extern

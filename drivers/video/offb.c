@@ -1825,6 +1825,9 @@ id|fb_info
 op_star
 id|info
 suffix:semicolon
+r_int
+id|size
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1980,6 +1983,11 @@ comma
 r_sizeof
 (paren
 id|fix-&gt;id
+)paren
+op_minus
+r_sizeof
+(paren
+l_string|&quot;OFfb &quot;
 )paren
 )paren
 suffix:semicolon
@@ -2536,27 +2544,6 @@ suffix:semicolon
 id|var-&gt;vmode
 op_assign
 id|FB_VMODE_NONINTERLACED
-suffix:semicolon
-id|strcpy
-c_func
-(paren
-id|fix-&gt;id
-comma
-l_string|&quot;OFfb &quot;
-)paren
-suffix:semicolon
-id|strncat
-c_func
-(paren
-id|fix-&gt;id
-comma
-id|full_name
-comma
-r_sizeof
-(paren
-id|fix-&gt;id
-)paren
-)paren
 suffix:semicolon
 id|info-&gt;node
 op_assign

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *  controlfb.c -- frame buffer device for the PowerMac &squot;control&squot; display&n; *&n; *  Created 12 July 1998 by Dan Jacobowitz &lt;dan@debian.org&gt;&n; *  Copyright (C) 1998 Dan Jacobowitz&n; *  Copyright (C) 2001 Takashi Oe&n; *&n; *  Mmap code by Michel Lanners &lt;mlan@cpu.lu&gt;&n; *&n; *  Frame buffer structure from:&n; *    drivers/video/chipsfb.c -- frame buffer device for&n; *    Chips &amp; Technologies 65550 chip.&n; *&n; *    Copyright (C) 1998 Paul Mackerras&n; *&n; *    This file is derived from the Powermac &quot;chips&quot; driver:&n; *    Copyright (C) 1997 Fabio Riccardi.&n; *    And from the frame buffer device for Open Firmware-initialized devices:&n; *    Copyright (C) 1997 Geert Uytterhoeven.&n; *&n; *  Hardware information from:&n; *    control.c: Console support for PowerMac &quot;control&quot; display adaptor.&n; *    Copyright (C) 1996 Paul Mackerras&n; *&n; *  This file is subject to the terms and conditions of the GNU General Public&n; *  License. See the file COPYING in the main directory of this archive for&n; *  more details.&n; */
+multiline_comment|/*&n; *  controlfb.c -- frame buffer device for the PowerMac &squot;control&squot; display&n; *&n; *  Created 12 July 1998 by Dan Jacobowitz &lt;dan@debian.org&gt;&n; *  Copyright (C) 1998 Dan Jacobowitz&n; *  Copyright (C) 2001 Takashi Oe&n; *&n; *  Mmap code by Michel Lanners &lt;mlan@cpu.lu&gt;&n; *&n; *  Frame buffer structure from:&n; *    drivers/video/chipsfb.c -- frame buffer device for&n; *    Chips &amp; Technologies 65550 chip.&n; *&n; *    Copyright (C) 1998 Paul Mackerras&n; *&n; *    This file is derived from the Powermac &quot;chips&quot; driver:&n; *    Copyright (C) 1997 Fabio Riccardi.&n; *    And from the frame buffer device for Open Firmware-initialized devices:&n; *    Copyright (C) 1997 Geert Uytterhoeven.&n; *&n; *  Hardware information from:&n; *    control.c: Console support for PowerMac &quot;control&quot; display adaptor.&n; *    Copyright (C) 1996 Paul Mackerras&n; *&n; *  Updated to 2.5 framebuffer API by Ben Herrenschmidt&n; *  &lt;benh@kernel.crashing.org&gt;, Paul Mackerras &lt;paulus@samba.org&gt;,&n; *  and James Simmons &lt;jsimmons@infradead.org&gt;.&n; *&n; *  This file is subject to the terms and conditions of the GNU General Public&n; *  License. See the file COPYING in the main directory of this archive for&n; *  more details.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -21,11 +21,7 @@ macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/prom.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
 macro_line|#include &lt;asm/btext.h&gt;
-macro_line|#include &lt;video/fbcon.h&gt;
-macro_line|#include &lt;video/fbcon-cfb8.h&gt;
-macro_line|#include &lt;video/fbcon-cfb16.h&gt;
-macro_line|#include &lt;video/fbcon-cfb32.h&gt;
-macro_line|#include &lt;video/macmodes.h&gt;
+macro_line|#include &quot;macmodes.h&quot;
 macro_line|#include &quot;controlfb.h&quot;
 DECL|struct|fb_par_control
 r_struct
@@ -307,12 +303,6 @@ r_struct
 id|fb_info
 id|info
 suffix:semicolon
-DECL|member|display
-r_struct
-id|display
-id|display
-suffix:semicolon
-multiline_comment|/* Will disappear */
 DECL|member|par
 r_struct
 id|fb_par_control
@@ -390,7 +380,7 @@ suffix:semicolon
 suffix:semicolon
 multiline_comment|/* control register access macro */
 DECL|macro|CNTRL_REG
-mdefine_line|#define CNTRL_REG(INFO,REG) (&amp;(((INFO)-&gt;control_regs-&gt; ## REG).r))
+mdefine_line|#define CNTRL_REG(INFO,REG) (&amp;(((INFO)-&gt;control_regs-&gt;REG).r))
 multiline_comment|/******************** Prototypes for exported functions ********************/
 multiline_comment|/*&n; * struct fb_ops&n; */
 r_static
@@ -402,9 +392,6 @@ r_struct
 id|fb_var_screeninfo
 op_star
 id|var
-comma
-r_int
-id|con
 comma
 r_struct
 id|fb_info
@@ -714,11 +701,6 @@ op_assign
 id|THIS_MODULE
 comma
 dot
-id|fb_set_var
-op_assign
-id|gen_set_var
-comma
-dot
 id|fb_check_var
 op_assign
 id|controlfb_check_var
@@ -727,16 +709,6 @@ dot
 id|fb_set_par
 op_assign
 id|controlfb_set_par
-comma
-dot
-id|fb_get_cmap
-op_assign
-id|gen_get_cmap
-comma
-dot
-id|fb_set_cmap
-op_assign
-id|gen_set_cmap
 comma
 dot
 id|fb_setcolreg
@@ -1072,9 +1044,6 @@ r_struct
 id|fb_var_screeninfo
 op_star
 id|var
-comma
-r_int
-id|con
 comma
 r_struct
 id|fb_info
@@ -2090,14 +2059,11 @@ id|FB_ACTIVATE_NOW
 suffix:semicolon
 id|rc
 op_assign
-id|gen_set_var
+id|fb_set_var
 c_func
 (paren
 op_amp
 id|var
-comma
-op_minus
-l_int|1
 comma
 op_amp
 id|p-&gt;info
@@ -2144,7 +2110,7 @@ c_func
 id|KERN_INFO
 l_string|&quot;fb%d: control display adapter&bslash;n&quot;
 comma
-id|GET_FB_IDX
+id|minor
 c_func
 (paren
 id|p-&gt;info.node
@@ -4651,19 +4617,6 @@ id|p
 )paren
 (brace
 multiline_comment|/* Fill fb_info */
-id|strcpy
-c_func
-(paren
-id|info-&gt;modename
-comma
-l_string|&quot;control&quot;
-)paren
-suffix:semicolon
-id|info-&gt;currcon
-op_assign
-op_minus
-l_int|1
-suffix:semicolon
 id|info-&gt;par
 op_assign
 op_amp
@@ -4678,11 +4631,6 @@ op_assign
 op_amp
 id|controlfb_ops
 suffix:semicolon
-id|info-&gt;disp
-op_assign
-op_amp
-id|p-&gt;display
-suffix:semicolon
 id|info-&gt;pseudo_palette
 op_assign
 id|p-&gt;pseudo_palette
@@ -4690,38 +4638,6 @@ suffix:semicolon
 id|info-&gt;flags
 op_assign
 id|FBINFO_FLAG_DEFAULT
-suffix:semicolon
-id|strncpy
-(paren
-id|info-&gt;fontname
-comma
-id|fontname
-comma
-r_sizeof
-(paren
-id|info-&gt;fontname
-)paren
-)paren
-suffix:semicolon
-id|info-&gt;fontname
-(braket
-r_sizeof
-(paren
-id|info-&gt;fontname
-)paren
-op_minus
-l_int|1
-)braket
-op_assign
-l_int|0
-suffix:semicolon
-id|info-&gt;changevar
-op_assign
-l_int|NULL
-suffix:semicolon
-id|info-&gt;display_fg
-op_assign
-l_int|NULL
 suffix:semicolon
 id|info-&gt;screen_base
 op_assign
@@ -4732,18 +4648,6 @@ op_star
 id|p-&gt;frame_buffer
 op_plus
 id|CTRLFB_OFF
-suffix:semicolon
-id|info-&gt;changevar
-op_assign
-l_int|NULL
-suffix:semicolon
-id|info-&gt;switch_con
-op_assign
-id|gen_switch
-suffix:semicolon
-id|info-&gt;updatevar
-op_assign
-id|gen_update_var
 suffix:semicolon
 id|fb_alloc_cmap
 c_func

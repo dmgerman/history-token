@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *      linux/drivers/video/pmagb-b-fb.h&n; *&n; *      TurboChannel PMAGB-B framebuffer card support,&n; *      Copyright (C) 1999, 2000, 2001 by&n; *      Michael Engel &lt;engel@unix-ag.org&gt; and &n; *      Karsten Merker &lt;merker@linxutag.org&gt;&n; *      This file is subject to the terms and conditions of the GNU General&n; *      Public License.  See the file COPYING in the main directory of this&n; *      archive for more details.&n; */
+multiline_comment|/*&n; *      linux/drivers/video/pmagb-b-fb.h&n; *&n; *      TurboChannel PMAGB-B framebuffer card support,&n; *      Copyright (C) 1999, 2000, 2001 by&n; *      Michael Engel &lt;engel@unix-ag.org&gt; and &n; *      Karsten Merker &lt;merker@linuxtag.org&gt;&n; *      This file is subject to the terms and conditions of the GNU General&n; *      Public License.  See the file COPYING in the main directory of this&n; *      archive for more details.&n; */
 multiline_comment|/*&n; * Bt459 RAM DAC register base offset (rel. to TC slot base address)&n; */
 DECL|macro|PMAGB_B_BT459_OFFSET
 mdefine_line|#define PMAGB_B_BT459_OFFSET&t;&t;&t;0x001C0000
