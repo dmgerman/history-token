@@ -403,6 +403,7 @@ r_int
 id|third
 comma
 r_void
+id|__user
 op_star
 id|ptr
 comma
@@ -451,6 +452,7 @@ comma
 (paren
 r_struct
 id|sembuf
+id|__user
 op_star
 )paren
 id|ptr
@@ -515,6 +517,7 @@ id|fourth.__pad
 comma
 (paren
 r_void
+id|__user
 op_star
 op_star
 )paren
@@ -579,6 +582,7 @@ comma
 (paren
 r_struct
 id|msgbuf
+id|__user
 op_star
 )paren
 id|ptr
@@ -639,6 +643,7 @@ comma
 (paren
 r_struct
 id|ipc_kludge
+id|__user
 op_star
 )paren
 id|ptr
@@ -649,11 +654,9 @@ id|tmp
 )paren
 )paren
 )paren
-(brace
 r_goto
 id|out
 suffix:semicolon
-)brace
 id|err
 op_assign
 id|sys_msgrcv
@@ -734,6 +737,7 @@ comma
 (paren
 r_struct
 id|msqid_ds
+id|__user
 op_star
 )paren
 id|ptr
@@ -794,6 +798,7 @@ id|first
 comma
 (paren
 r_char
+id|__user
 op_star
 )paren
 id|ptr
@@ -826,16 +831,15 @@ id|raddr
 comma
 (paren
 id|ulong
+id|__user
 op_star
 )paren
 id|third
 )paren
 )paren
-(brace
 r_goto
 id|out
 suffix:semicolon
-)brace
 id|err
 op_assign
 l_int|0
@@ -856,6 +860,7 @@ id|first
 comma
 (paren
 r_char
+id|__user
 op_star
 )paren
 id|ptr
@@ -864,6 +869,7 @@ id|second
 comma
 (paren
 id|ulong
+id|__user
 op_star
 )paren
 id|third
@@ -882,6 +888,7 @@ id|sys_shmdt
 (paren
 (paren
 r_char
+id|__user
 op_star
 )paren
 id|ptr
@@ -921,6 +928,7 @@ comma
 (paren
 r_struct
 id|shmid_ds
+id|__user
 op_star
 )paren
 id|ptr
@@ -1776,11 +1784,13 @@ comma
 r_const
 r_struct
 id|old_sigaction
+id|__user
 op_star
 id|act
 comma
 r_struct
 id|old_sigaction
+id|__user
 op_star
 id|oact
 )paren
@@ -2004,15 +2014,18 @@ comma
 r_const
 r_struct
 id|sigaction
+id|__user
 op_star
 id|act
 comma
 r_struct
 id|sigaction
+id|__user
 op_star
 id|oact
 comma
 r_void
+id|__user
 op_star
 id|restorer
 comma
@@ -2149,6 +2162,7 @@ id|sys_getdomainname
 c_func
 (paren
 r_char
+id|__user
 op_star
 id|name
 comma
@@ -2200,11 +2214,9 @@ id|len
 OG
 id|__NEW_UTS_LEN
 )paren
-(brace
 r_goto
 id|done
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -2218,11 +2230,9 @@ comma
 id|len
 )paren
 )paren
-(brace
 r_goto
 id|done
 suffix:semicolon
-)brace
 id|err
 op_assign
 l_int|0

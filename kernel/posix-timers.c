@@ -743,7 +743,7 @@ id|flags
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * For some reason mips/mips64 define the SIGEV constants plus 128.&n; * Here we define a mask to get rid of the common bits.&t; The&n; * optimizer should make this costless to all but mips.&n; */
-macro_line|#if (ARCH == mips) || (ARCH == mips64)
+macro_line|#if defined(ARCH) &amp;&amp; ((ARCH == mips) || (ARCH == mips64))
 DECL|macro|MIPS_SIGEV
 mdefine_line|#define MIPS_SIGEV ~(SIGEV_NONE &amp; &bslash;&n;&t;&t;      SIGEV_SIGNAL &amp; &bslash;&n;&t;&t;      SIGEV_THREAD &amp;  &bslash;&n;&t;&t;      SIGEV_THREAD_ID)
 macro_line|#else
@@ -1001,10 +1001,12 @@ id|which_clock
 comma
 r_struct
 id|sigevent
+id|__user
 op_star
 id|timer_event_spec
 comma
 id|timer_t
+id|__user
 op_star
 id|created_timer_id
 )paren
@@ -1827,6 +1829,7 @@ id|timer_id
 comma
 r_struct
 id|itimerspec
+id|__user
 op_star
 id|setting
 )paren
@@ -2376,11 +2379,13 @@ comma
 r_const
 r_struct
 id|itimerspec
+id|__user
 op_star
 id|new_setting
 comma
 r_struct
 id|itimerspec
+id|__user
 op_star
 id|old_setting
 )paren
@@ -3061,6 +3066,7 @@ comma
 r_const
 r_struct
 id|timespec
+id|__user
 op_star
 id|tp
 )paren
@@ -3167,6 +3173,7 @@ id|which_clock
 comma
 r_struct
 id|timespec
+id|__user
 op_star
 id|tp
 )paren
@@ -3257,6 +3264,7 @@ id|which_clock
 comma
 r_struct
 id|timespec
+id|__user
 op_star
 id|tp
 )paren
@@ -3417,11 +3425,13 @@ c_func
 (paren
 r_struct
 id|timespec
+id|__user
 op_star
 id|rqtp
 comma
 r_struct
 id|timespec
+id|__user
 op_star
 id|rmtp
 )paren
@@ -3534,11 +3544,13 @@ comma
 r_const
 r_struct
 id|timespec
+id|__user
 op_star
 id|rqtp
 comma
 r_struct
 id|timespec
+id|__user
 op_star
 id|rmtp
 )paren
@@ -4117,6 +4129,7 @@ c_func
 (paren
 r_struct
 id|timespec
+id|__user
 op_star
 )paren
 (paren

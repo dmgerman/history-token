@@ -93,11 +93,9 @@ macro_line|#include &lt;linux/usbdevice_fs.h&gt;
 macro_line|#include &lt;linux/nbd.h&gt;
 macro_line|#include &lt;linux/random.h&gt;
 macro_line|#include &lt;linux/filter.h&gt;
-multiline_comment|/* Use this to get at 32-bit user passed pointers. &n;   See sys_sparc32.c for description about these. */
+multiline_comment|/* Use this to get at 32-bit user passed pointers. &n; * See sys_sparc32.c for description about it.&n; */
 DECL|macro|A
-mdefine_line|#define A(__x) ((unsigned long)(__x))
-DECL|macro|AA
-mdefine_line|#define AA(__x)&t;&t;&t;&t;&bslash;&n;({&t;unsigned long __ret;&t;&t;&bslash;&n;&t;__asm__ (&quot;srl&t;%0, 0, %0&quot;&t;&bslash;&n;&t;&t; : &quot;=r&quot; (__ret)&t;&t;&bslash;&n;&t;&t; : &quot;0&quot; (__x));&t;&t;&bslash;&n;&t;__ret;&t;&t;&t;&t;&bslash;&n;})
+mdefine_line|#define A(__x) ((void __user *)(unsigned long)(__x))
 multiline_comment|/* Aiee. Someone does not find a difference between int and long */
 DECL|macro|EXT2_IOC32_GETFLAGS
 mdefine_line|#define EXT2_IOC32_GETFLAGS               _IOR(&squot;f&squot;, 1, int)
@@ -986,6 +984,7 @@ id|up
 (brace
 r_struct
 id|video_clip32
+id|__user
 op_star
 id|ucp
 suffix:semicolon
@@ -1087,11 +1086,6 @@ id|up-&gt;clips
 suffix:semicolon
 id|ucp
 op_assign
-(paren
-r_struct
-id|video_clip32
-op_star
-)paren
 id|A
 c_func
 (paren
@@ -2184,6 +2178,7 @@ id|ifc
 suffix:semicolon
 r_struct
 id|ifreq32
+id|__user
 op_star
 id|ifr32
 suffix:semicolon
@@ -2302,11 +2297,6 @@ id|ifc.ifc_req
 suffix:semicolon
 id|ifr32
 op_assign
-(paren
-r_struct
-id|ifreq32
-op_star
-)paren
 id|A
 c_func
 (paren
@@ -2410,11 +2400,6 @@ id|ifc.ifc_req
 suffix:semicolon
 id|ifr32
 op_assign
-(paren
-r_struct
-id|ifreq32
-op_star
-)paren
 id|A
 c_func
 (paren
@@ -2718,6 +2703,7 @@ id|ethcmd
 comma
 (paren
 id|u32
+id|__user
 op_star
 )paren
 id|A
@@ -2784,14 +2770,10 @@ suffix:colon
 (brace
 r_struct
 id|ethtool_regs
+id|__user
 op_star
 id|regaddr
 op_assign
-(paren
-r_struct
-id|ethtool_regs
-op_star
-)paren
 id|A
 c_func
 (paren
@@ -2871,10 +2853,6 @@ c_func
 (paren
 id|ifr.ifr_data
 comma
-(paren
-r_char
-op_star
-)paren
 id|A
 c_func
 (paren
@@ -2962,10 +2940,6 @@ op_assign
 id|copy_to_user
 c_func
 (paren
-(paren
-r_char
-op_star
-)paren
 id|A
 c_func
 (paren
@@ -3181,10 +3155,6 @@ c_func
 (paren
 id|ifr.ifr_data
 comma
-(paren
-r_char
-op_star
-)paren
 id|A
 c_func
 (paren
@@ -3249,10 +3219,6 @@ op_assign
 id|copy_to_user
 c_func
 (paren
-(paren
-r_char
-op_star
-)paren
 id|A
 c_func
 (paren
@@ -3395,6 +3361,7 @@ id|IFNAMSIZ
 )braket
 suffix:semicolon
 r_void
+id|__user
 op_star
 id|data64
 suffix:semicolon
@@ -3446,10 +3413,6 @@ id|EFAULT
 suffix:semicolon
 id|data64
 op_assign
-(paren
-r_void
-op_star
-)paren
 id|A
 c_func
 (paren
@@ -4599,10 +4562,6 @@ id|copy_from_user
 (paren
 id|devname
 comma
-(paren
-r_char
-op_star
-)paren
 id|A
 c_func
 (paren
@@ -5241,10 +5200,6 @@ id|copy_from_user
 (paren
 id|red
 comma
-(paren
-r_char
-op_star
-)paren
 id|A
 c_func
 (paren
@@ -5260,10 +5215,6 @@ id|copy_from_user
 (paren
 id|green
 comma
-(paren
-r_char
-op_star
-)paren
 id|A
 c_func
 (paren
@@ -5279,10 +5230,6 @@ id|copy_from_user
 (paren
 id|blue
 comma
-(paren
-r_char
-op_star
-)paren
 id|A
 c_func
 (paren
@@ -5363,10 +5310,6 @@ id|ret
 op_assign
 id|copy_to_user
 (paren
-(paren
-r_char
-op_star
-)paren
 id|A
 c_func
 (paren
@@ -5382,10 +5325,6 @@ id|ret
 op_or_assign
 id|copy_to_user
 (paren
-(paren
-r_char
-op_star
-)paren
 id|A
 c_func
 (paren
@@ -5401,10 +5340,6 @@ id|ret
 op_or_assign
 id|copy_to_user
 (paren
-(paren
-r_char
-op_star
-)paren
 id|A
 c_func
 (paren
@@ -5819,10 +5754,6 @@ id|copy_from_user
 (paren
 id|mask
 comma
-(paren
-r_char
-op_star
-)paren
 id|A
 c_func
 (paren
@@ -5840,10 +5771,6 @@ id|copy_from_user
 (paren
 id|image
 comma
-(paren
-r_char
-op_star
-)paren
 id|A
 c_func
 (paren
@@ -5887,10 +5814,6 @@ id|copy_from_user
 (paren
 id|red
 comma
-(paren
-r_char
-op_star
-)paren
 id|A
 c_func
 (paren
@@ -5906,10 +5829,6 @@ id|copy_from_user
 (paren
 id|green
 comma
-(paren
-r_char
-op_star
-)paren
 id|A
 c_func
 (paren
@@ -5925,10 +5844,6 @@ id|copy_from_user
 (paren
 id|blue
 comma
-(paren
-r_char
-op_star
-)paren
 id|A
 c_func
 (paren
@@ -6448,10 +6363,6 @@ c_func
 (paren
 id|cmap.red
 comma
-(paren
-r_char
-op_star
-)paren
 id|A
 c_func
 (paren
@@ -6473,10 +6384,6 @@ c_func
 (paren
 id|cmap.green
 comma
-(paren
-r_char
-op_star
-)paren
 id|A
 c_func
 (paren
@@ -6498,10 +6405,6 @@ c_func
 (paren
 id|cmap.blue
 comma
-(paren
-r_char
-op_star
-)paren
 id|A
 c_func
 (paren
@@ -6528,10 +6431,6 @@ c_func
 (paren
 id|cmap.transp
 comma
-(paren
-r_char
-op_star
-)paren
 id|A
 c_func
 (paren
@@ -6983,10 +6882,6 @@ op_assign
 id|__copy_to_user
 c_func
 (paren
-(paren
-r_char
-op_star
-)paren
 id|A
 c_func
 (paren
@@ -7008,10 +6903,6 @@ op_or_assign
 id|__copy_to_user
 c_func
 (paren
-(paren
-r_char
-op_star
-)paren
 id|A
 c_func
 (paren
@@ -7033,10 +6924,6 @@ op_or_assign
 id|__copy_to_user
 c_func
 (paren
-(paren
-r_char
-op_star
-)paren
 id|A
 c_func
 (paren
@@ -7063,10 +6950,6 @@ op_or_assign
 id|__copy_to_user
 c_func
 (paren
-(paren
-r_char
-op_star
-)paren
 id|A
 c_func
 (paren
@@ -10133,13 +10016,10 @@ id|uptr32
 )paren
 (brace
 id|sg_iovec32_t
+id|__user
 op_star
 id|uiov
 op_assign
-(paren
-id|sg_iovec32_t
-op_star
-)paren
 id|A
 c_func
 (paren
@@ -10272,10 +10152,6 @@ c_func
 (paren
 id|kiov-&gt;iov_base
 comma
-(paren
-r_void
-op_star
-)paren
 id|A
 c_func
 (paren
@@ -10315,13 +10191,10 @@ id|uptr32
 )paren
 (brace
 id|sg_iovec32_t
+id|__user
 op_star
 id|uiov
 op_assign
-(paren
-id|sg_iovec32_t
-op_star
-)paren
 id|A
 c_func
 (paren
@@ -10381,10 +10254,6 @@ c_cond
 id|copy_to_user
 c_func
 (paren
-(paren
-r_void
-op_star
-)paren
 id|A
 c_func
 (paren
@@ -10687,10 +10556,6 @@ c_func
 (paren
 id|sg_io64.cmdp
 comma
-(paren
-r_void
-op_star
-)paren
 id|A
 c_func
 (paren
@@ -10755,10 +10620,6 @@ c_func
 (paren
 id|sg_io64.sbp
 comma
-(paren
-r_void
-op_star
-)paren
 id|A
 c_func
 (paren
@@ -10860,10 +10721,6 @@ c_func
 (paren
 id|sg_io64.dxferp
 comma
-(paren
-r_void
-op_star
-)paren
 id|A
 c_func
 (paren
@@ -11056,10 +10913,6 @@ op_or_assign
 id|copy_to_user
 c_func
 (paren
-(paren
-r_void
-op_star
-)paren
 id|A
 c_func
 (paren
@@ -11099,10 +10952,6 @@ op_or_assign
 id|copy_to_user
 c_func
 (paren
-(paren
-r_void
-op_star
-)paren
 id|A
 c_func
 (paren
@@ -11248,6 +11097,7 @@ id|sock_fprog
 )paren
 suffix:semicolon
 r_void
+id|__user
 op_star
 id|fptr64
 suffix:semicolon
@@ -11284,10 +11134,6 @@ id|EFAULT
 suffix:semicolon
 id|fptr64
 op_assign
-(paren
-r_void
-op_star
-)paren
 id|A
 c_func
 (paren
@@ -11520,10 +11366,6 @@ c_func
 (paren
 id|data.ptr
 comma
-(paren
-id|__u8
-op_star
-)paren
 id|A
 c_func
 (paren
@@ -13241,10 +13083,6 @@ op_assign
 id|copy_to_user
 c_func
 (paren
-(paren
-r_char
-op_star
-)paren
 id|A
 c_func
 (paren
@@ -13266,10 +13104,6 @@ op_assign
 id|copy_to_user
 c_func
 (paren
-(paren
-r_char
-op_star
-)paren
 id|A
 c_func
 (paren
@@ -13293,10 +13127,6 @@ op_assign
 id|copy_to_user
 c_func
 (paren
-(paren
-r_char
-op_star
-)paren
 id|A
 c_func
 (paren
@@ -14055,11 +13885,6 @@ id|EFAULT
 suffix:semicolon
 id|cfdarg.chardata
 op_assign
-(paren
-r_int
-r_char
-op_star
-)paren
 id|A
 c_func
 (paren
@@ -14375,11 +14200,6 @@ id|EPERM
 suffix:semicolon
 id|op.data
 op_assign
-(paren
-r_int
-r_char
-op_star
-)paren
 id|A
 c_func
 (paren
@@ -14594,11 +14414,6 @@ id|fg_console
 comma
 id|tmp.entry_ct
 comma
-(paren
-r_struct
-id|unipair
-op_star
-)paren
 id|A
 c_func
 (paren
@@ -14622,11 +14437,6 @@ op_amp
 id|user_ud-&gt;entry_ct
 )paren
 comma
-(paren
-r_struct
-id|unipair
-op_star
-)paren
 id|A
 c_func
 (paren
@@ -17727,6 +17537,7 @@ r_int
 id|size
 suffix:semicolon
 id|lv_block_exception32_t
+id|__user
 op_star
 id|lbe32
 suffix:semicolon
@@ -17735,13 +17546,10 @@ op_star
 id|lbe
 suffix:semicolon
 id|lv32_t
+id|__user
 op_star
 id|ul
 op_assign
-(paren
-id|lv32_t
-op_star
-)paren
 id|A
 c_func
 (paren
@@ -17959,10 +17767,6 @@ c_func
 (paren
 id|l-&gt;lv_current_pe
 comma
-(paren
-r_void
-op_star
-)paren
 id|A
 c_func
 (paren
@@ -18009,10 +17813,6 @@ id|l-&gt;lv_block_exception
 (brace
 id|lbe32
 op_assign
-(paren
-id|lv_block_exception32_t
-op_star
-)paren
 id|A
 c_func
 (paren
@@ -18168,13 +17968,10 @@ r_int
 id|err
 suffix:semicolon
 id|lv32_t
+id|__user
 op_star
 id|ul
 op_assign
-(paren
-id|lv32_t
-op_star
-)paren
 id|A
 c_func
 (paren
@@ -18309,10 +18106,6 @@ op_or_assign
 id|__copy_to_user
 c_func
 (paren
-(paren
-r_void
-op_star
-)paren
 id|A
 c_func
 (paren
@@ -18682,10 +18475,6 @@ id|v-&gt;pv
 id|i
 )braket
 comma
-(paren
-r_void
-op_star
-)paren
 id|A
 c_func
 (paren
@@ -18723,16 +18512,22 @@ op_assign
 id|copy_from_user
 c_func
 (paren
+op_amp
 id|v-&gt;pv
 (braket
 id|i
 )braket
 op_member_access_from_pointer
 id|pv_uuid
+(braket
+l_int|0
+)braket
 comma
+op_amp
 (paren
 (paren
 id|pv32_t
+id|__user
 op_star
 )paren
 id|A
@@ -18743,6 +18538,9 @@ id|ptr
 )paren
 op_member_access_from_pointer
 id|pv_uuid
+(braket
+l_int|0
+)braket
 comma
 id|UUID_LEN
 op_plus
@@ -19250,10 +19048,6 @@ c_func
 op_amp
 id|p
 comma
-(paren
-r_void
-op_star
-)paren
 id|A
 c_func
 (paren
@@ -19656,10 +19450,6 @@ op_assign
 id|copy_to_user
 c_func
 (paren
-(paren
-r_void
-op_star
-)paren
 id|A
 c_func
 (paren
@@ -19695,9 +19485,11 @@ op_assign
 id|copy_to_user
 c_func
 (paren
+op_amp
 (paren
 (paren
 id|pv_t
+id|__user
 op_star
 )paren
 id|A
@@ -19708,8 +19500,15 @@ id|ptr
 )paren
 op_member_access_from_pointer
 id|pv_uuid
+(braket
+l_int|0
+)braket
 comma
+op_amp
 id|p.pv_uuid
+(braket
+l_int|0
+)braket
 comma
 id|UUID_LEN
 op_plus
@@ -19824,6 +19623,7 @@ op_star
 id|arg
 suffix:semicolon
 r_char
+id|__user
 op_star
 id|name_ptr
 comma
@@ -19926,10 +19726,6 @@ id|EFAULT
 suffix:semicolon
 id|name_ptr
 op_assign
-(paren
-r_char
-op_star
-)paren
 id|A
 c_func
 (paren
@@ -19938,10 +19734,6 @@ id|tmp1
 suffix:semicolon
 id|date_ptr
 op_assign
-(paren
-r_char
-op_star
-)paren
 id|A
 c_func
 (paren
@@ -19950,10 +19742,6 @@ id|tmp2
 suffix:semicolon
 id|desc_ptr
 op_assign
-(paren
-r_char
-op_star
-)paren
 id|A
 c_func
 (paren
@@ -20302,6 +20090,7 @@ id|mm_segment_t
 id|old_fs
 suffix:semicolon
 r_char
+id|__user
 op_star
 id|uptr
 suffix:semicolon
@@ -20349,10 +20138,6 @@ id|EFAULT
 suffix:semicolon
 id|uptr
 op_assign
-(paren
-r_char
-op_star
-)paren
 id|A
 c_func
 (paren
@@ -20703,10 +20488,6 @@ id|EFAULT
 suffix:semicolon
 id|karg.handle
 op_assign
-(paren
-r_void
-op_star
-)paren
 id|A
 c_func
 (paren
@@ -20898,6 +20679,7 @@ op_star
 id|arg
 suffix:semicolon
 id|drm_buf_desc_t
+id|__user
 op_star
 id|ulist
 suffix:semicolon
@@ -20942,10 +20724,6 @@ id|EFAULT
 suffix:semicolon
 id|ulist
 op_assign
-(paren
-id|drm_buf_desc_t
-op_star
-)paren
 id|A
 c_func
 (paren
@@ -21137,6 +20915,7 @@ id|mm_segment_t
 id|old_fs
 suffix:semicolon
 r_int
+id|__user
 op_star
 id|ulist
 suffix:semicolon
@@ -21173,10 +20952,6 @@ id|EFAULT
 suffix:semicolon
 id|ulist
 op_assign
-(paren
-r_int
-op_star
-)paren
 id|A
 c_func
 (paren
@@ -21369,6 +21144,7 @@ op_star
 id|arg
 suffix:semicolon
 id|drm32_buf_pub_t
+id|__user
 op_star
 id|ulist
 suffix:semicolon
@@ -21430,10 +21206,6 @@ id|karg
 dot
 r_virtual
 op_assign
-(paren
-r_void
-op_star
-)paren
 id|A
 c_func
 (paren
@@ -21442,10 +21214,6 @@ id|tmp1
 suffix:semicolon
 id|ulist
 op_assign
-(paren
-id|drm32_buf_pub_t
-op_star
-)paren
 id|A
 c_func
 (paren
@@ -21585,10 +21353,6 @@ id|i
 dot
 id|address
 op_assign
-(paren
-r_void
-op_star
-)paren
 id|A
 c_func
 (paren
@@ -21877,6 +21641,7 @@ op_star
 id|arg
 suffix:semicolon
 r_int
+id|__user
 op_star
 id|u_si
 comma
@@ -22018,10 +21783,6 @@ id|EFAULT
 suffix:semicolon
 id|u_si
 op_assign
-(paren
-r_int
-op_star
-)paren
 id|A
 c_func
 (paren
@@ -22030,10 +21791,6 @@ id|tmp1
 suffix:semicolon
 id|u_ss
 op_assign
-(paren
-r_int
-op_star
-)paren
 id|A
 c_func
 (paren
@@ -22042,10 +21799,6 @@ id|tmp2
 suffix:semicolon
 id|u_ri
 op_assign
-(paren
-r_int
-op_star
-)paren
 id|A
 c_func
 (paren
@@ -22054,10 +21807,6 @@ id|tmp3
 suffix:semicolon
 id|u_rs
 op_assign
-(paren
-r_int
-op_star
-)paren
 id|A
 c_func
 (paren
@@ -22566,6 +22315,7 @@ op_star
 id|arg
 suffix:semicolon
 id|drm_ctx_t
+id|__user
 op_star
 id|ulist
 suffix:semicolon
@@ -22614,10 +22364,6 @@ id|EFAULT
 suffix:semicolon
 id|ulist
 op_assign
-(paren
-id|drm_ctx_t
-op_star
-)paren
 id|A
 c_func
 (paren
@@ -23172,9 +22918,11 @@ id|__u32
 id|udata
 suffix:semicolon
 r_void
+id|__user
 op_star
 id|uptr
-comma
+suffix:semicolon
+r_void
 op_star
 id|kptr
 suffix:semicolon
@@ -23238,10 +22986,6 @@ id|EFAULT
 suffix:semicolon
 id|uptr
 op_assign
-(paren
-r_void
-op_star
-)paren
 id|A
 c_func
 (paren
@@ -23465,9 +23209,11 @@ id|__u32
 id|udata
 suffix:semicolon
 r_void
+id|__user
 op_star
 id|uptr
-comma
+suffix:semicolon
+r_void
 op_star
 id|kptr
 suffix:semicolon
@@ -23528,10 +23274,6 @@ id|EFAULT
 suffix:semicolon
 id|uptr
 op_assign
-(paren
-r_void
-op_star
-)paren
 id|A
 c_func
 (paren
@@ -24177,9 +23919,11 @@ id|__u32
 id|udata
 suffix:semicolon
 r_void
+id|__user
 op_star
 id|uptr
-comma
+suffix:semicolon
+r_void
 op_star
 id|kptr
 suffix:semicolon
@@ -24296,10 +24040,6 @@ id|out
 suffix:semicolon
 id|uptr
 op_assign
-(paren
-r_void
-op_star
-)paren
 id|A
 c_func
 (paren
@@ -24575,6 +24315,7 @@ id|kptr
 comma
 (paren
 id|u32
+id|__user
 op_star
 )paren
 id|A
@@ -24802,6 +24543,7 @@ id|u32
 id|tmp
 suffix:semicolon
 r_char
+id|__user
 op_star
 id|ptr
 suffix:semicolon
@@ -24844,10 +24586,6 @@ id|EFAULT
 suffix:semicolon
 id|ptr
 op_assign
-(paren
-r_char
-op_star
-)paren
 id|A
 c_func
 (paren

@@ -5593,7 +5593,12 @@ op_or_assign
 id|SNDRV_CTL_EVENT_MASK_VALUE
 suffix:semicolon
 )brace
-id|ctl-&gt;access
+id|ctl-&gt;vd
+(braket
+l_int|0
+)braket
+dot
+id|access
 op_or_assign
 id|SNDRV_CTL_ELEM_ACCESS_INACTIVE
 suffix:semicolon
@@ -5693,7 +5698,12 @@ id|val
 )paren
 )paren
 suffix:semicolon
-id|ctl-&gt;access
+id|ctl-&gt;vd
+(braket
+l_int|0
+)braket
+dot
+id|access
 op_and_assign
 op_complement
 id|SNDRV_CTL_ELEM_ACCESS_INACTIVE

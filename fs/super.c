@@ -1548,6 +1548,7 @@ id|dev
 comma
 r_struct
 id|ustat
+id|__user
 op_star
 id|ubuf
 )paren

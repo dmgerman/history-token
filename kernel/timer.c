@@ -3600,6 +3600,7 @@ c_func
 (paren
 r_struct
 id|sysinfo
+id|__user
 op_star
 id|info
 )paren

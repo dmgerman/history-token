@@ -1,5 +1,6 @@
 multiline_comment|/*&n; *  Information interface for ALSA driver&n; *  Copyright (c) by Jaroslav Kysela &lt;perex@suse.cz&gt;&n; *&n; *&n; *   This program is free software; you can redistribute it and/or modify&n; *   it under the terms of the GNU General Public License as published by&n; *   the Free Software Foundation; either version 2 of the License, or&n; *   (at your option) any later version.&n; *&n; *   This program is distributed in the hope that it will be useful,&n; *   but WITHOUT ANY WARRANTY; without even the implied warranty of&n; *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; *   GNU General Public License for more details.&n; *&n; *   You should have received a copy of the GNU General Public License&n; *   along with this program; if not, write to the Free Software&n; *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA&n; *&n; */
 macro_line|#include &lt;sound/driver.h&gt;
+macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/vmalloc.h&gt;
 macro_line|#include &lt;linux/time.h&gt;
@@ -4146,6 +4147,11 @@ id|de-&gt;fill_inode
 op_assign
 id|snd_info_device_fill_inode
 suffix:semicolon
+id|de-&gt;ops
+op_assign
+op_amp
+id|snd_info_device_inode_operations
+suffix:semicolon
 )brace
 macro_line|#else
 DECL|function|snd_info_device_entry_prepare
@@ -4342,13 +4348,6 @@ comma
 id|entry
 )paren
 suffix:semicolon
-macro_line|#ifdef LINUX_2_2
-id|p-&gt;ops
-op_assign
-op_amp
-id|snd_info_device_inode_operations
-suffix:semicolon
-macro_line|#endif
 )brace
 r_else
 (brace

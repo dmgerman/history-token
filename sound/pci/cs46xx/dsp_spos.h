@@ -100,11 +100,11 @@ mdefine_line|#define SPDIFO_IP_OUTPUT_BUFFER1 0x1000
 DECL|macro|MIX_SAMPLE_BUF1
 mdefine_line|#define MIX_SAMPLE_BUF1          0x1400
 DECL|macro|MIX_SAMPLE_BUF2
-mdefine_line|#define MIX_SAMPLE_BUF2          0x2D00
+mdefine_line|#define MIX_SAMPLE_BUF2          0x2E80
 DECL|macro|MIX_SAMPLE_BUF3
-mdefine_line|#define MIX_SAMPLE_BUF3          0x2E00
+mdefine_line|#define MIX_SAMPLE_BUF3          0x2F00
 DECL|macro|MIX_SAMPLE_BUF4
-mdefine_line|#define MIX_SAMPLE_BUF4          0x2F00
+mdefine_line|#define MIX_SAMPLE_BUF4          0x2F80
 DECL|macro|MIX_SAMPLE_BUF5
 mdefine_line|#define MIX_SAMPLE_BUF5          0x3000
 multiline_comment|/* Task stack address */
@@ -153,8 +153,8 @@ DECL|macro|PCMSERIALINII_SCB_ADDR
 mdefine_line|#define PCMSERIALINII_SCB_ADDR   0x120
 DECL|macro|SPIOWRITE_SCB_ADDR
 mdefine_line|#define SPIOWRITE_SCB_ADDR       0x130
-DECL|macro|SEC_CODECOUT_SCB_ADDR
-mdefine_line|#define SEC_CODECOUT_SCB_ADDR    0x140
+DECL|macro|REAR_CODECOUT_SCB_ADDR
+mdefine_line|#define REAR_CODECOUT_SCB_ADDR   0x140
 DECL|macro|OUTPUTSNOOPII_SCB_ADDR
 mdefine_line|#define OUTPUTSNOOPII_SCB_ADDR   0x150
 DECL|macro|PCMSERIALIN_PCM_SCB_ADDR
@@ -163,8 +163,10 @@ DECL|macro|RECORD_MIXER_SCB_ADDR
 mdefine_line|#define RECORD_MIXER_SCB_ADDR    0x170
 DECL|macro|REAR_MIXER_SCB_ADDR
 mdefine_line|#define REAR_MIXER_SCB_ADDR      0x180
-DECL|macro|SPDIF_MIXER_SCB_ADDR
-mdefine_line|#define SPDIF_MIXER_SCB_ADDR     0x190
+DECL|macro|CLFE_MIXER_SCB_ADDR
+mdefine_line|#define CLFE_MIXER_SCB_ADDR      0x190
+DECL|macro|CLFE_CODEC_SCB_ADDR
+mdefine_line|#define CLFE_CODEC_SCB_ADDR      0x1A0
 multiline_comment|/* hyperforground SCB&squot;s*/
 DECL|macro|HFG_TREE_SCB
 mdefine_line|#define HFG_TREE_SCB             0xBA0

@@ -54,6 +54,7 @@ id|skb
 )paren
 (brace
 macro_line|#ifdef CONFIG_NETFILTER
+multiline_comment|/* FIXME: skb bas not been linearized: is this valid?? --RR */
 r_if
 c_cond
 (paren

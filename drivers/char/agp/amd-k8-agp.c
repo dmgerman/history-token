@@ -1,4 +1,4 @@
-multiline_comment|/* &n; * Copyright 2001,2002 SuSE Labs&n; * Distributed under the GNU public license, v2.&n; * &n; * This is a GART driver for the AMD K8 northbridge and the AMD 8151 &n; * AGP bridge. The main work is done in the northbridge. The configuration&n; * is only mirrored in the 8151 for compatibility (could be likely&n; * removed now).&n; */
+multiline_comment|/* &n; * Copyright 2001-2003 SuSE Labs.&n; * Distributed under the GNU public license, v2.&n; * &n; * This is a GART driver for the AMD Opteron/Athlon64 on-CPU northbridge.&n; * It also includes support for the AMD 8151 AGP bridge,&n; * although it doesn&squot;t actually do much, as all the real&n; * work is done in the northbridge(s).&n; */
 multiline_comment|/*&n; * On x86-64 the AGP driver needs to be initialized early by the IOMMU &n; * code.  When you use this driver as a template for a new K8 AGP bridge&n; * driver don&squot;t forget to change arch/x86_64/kernel/pci-gart.c too -AK.&n; */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
@@ -972,8 +972,14 @@ id|amd_8151_masks
 op_assign
 (brace
 (brace
+dot
+id|mask
+op_assign
 l_int|0x00000001
 comma
+dot
+id|type
+op_assign
 l_int|0
 )brace
 )brace
@@ -1136,7 +1142,7 @@ id|v3_devs
 )paren
 suffix:semicolon
 r_return
-id|agp_generic_agp_enable
+id|agp_generic_enable
 c_func
 (paren
 id|mode
@@ -1450,6 +1456,13 @@ l_int|0
 r_return
 op_minus
 id|ENODEV
+suffix:semicolon
+id|printk
+(paren
+id|KERN_INFO
+id|PFX
+l_string|&quot;Detected Opteron/Athlon64 on-CPU GART&bslash;n&quot;
+)paren
 suffix:semicolon
 id|agp_bridge-&gt;dev
 op_assign

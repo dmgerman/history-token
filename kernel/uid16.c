@@ -641,6 +641,7 @@ r_int
 id|gidsetsize
 comma
 id|old_gid_t
+id|__user
 op_star
 id|grouplist
 )paren
@@ -751,6 +752,7 @@ r_int
 id|gidsetsize
 comma
 id|old_gid_t
+id|__user
 op_star
 id|grouplist
 )paren

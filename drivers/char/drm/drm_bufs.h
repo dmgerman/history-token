@@ -327,7 +327,7 @@ suffix:colon
 r_case
 id|_DRM_FRAME_BUFFER
 suffix:colon
-macro_line|#if !defined(__sparc__) &amp;&amp; !defined(__alpha__)
+macro_line|#if !defined(__sparc__) &amp;&amp; !defined(__alpha__) &amp;&amp; !defined(__ia64__)
 r_if
 c_cond
 (paren
@@ -870,11 +870,15 @@ id|dev-&gt;maplist-&gt;head
 (brace
 id|r_list
 op_assign
+id|list_entry
+c_func
 (paren
-id|drm_map_list_t
-op_star
-)paren
 id|list
+comma
+id|drm_map_list_t
+comma
+id|head
+)paren
 suffix:semicolon
 r_if
 c_cond

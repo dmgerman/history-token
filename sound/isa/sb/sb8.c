@@ -713,7 +713,7 @@ OL
 l_int|0
 )paren
 (brace
-id|printk
+id|snd_printk
 c_func
 (paren
 id|KERN_ERR
@@ -757,7 +757,7 @@ OL
 l_int|0
 )paren
 (brace
-id|printk
+id|snd_printk
 c_func
 (paren
 id|KERN_ERR
@@ -1112,7 +1112,7 @@ id|cards
 )paren
 (brace
 macro_line|#ifdef MODULE
-id|printk
+id|snd_printk
 c_func
 (paren
 id|KERN_ERR

@@ -951,6 +951,11 @@ comma
 id|ct
 )paren
 suffix:semicolon
+multiline_comment|/* Indicate that this expectations parent is dead */
+id|exp-&gt;expectant
+op_assign
+l_int|NULL
+suffix:semicolon
 r_continue
 suffix:semicolon
 )brace
@@ -1199,6 +1204,14 @@ c_func
 (paren
 op_amp
 id|ip_conntrack_lock
+)paren
+suffix:semicolon
+multiline_comment|/* Delete us from our own list to prevent corruption later */
+id|list_del
+c_func
+(paren
+op_amp
+id|ct-&gt;sibling_list
 )paren
 suffix:semicolon
 multiline_comment|/* Delete our master expectation */
@@ -3504,6 +3517,31 @@ id|nfct
 )paren
 r_return
 id|NF_ACCEPT
+suffix:semicolon
+multiline_comment|/* FIXME: Push down to extensions --RR */
+r_if
+c_cond
+(paren
+id|skb_is_nonlinear
+c_func
+(paren
+op_star
+id|pskb
+)paren
+op_logical_and
+id|skb_linearize
+c_func
+(paren
+op_star
+id|pskb
+comma
+id|GFP_ATOMIC
+)paren
+op_ne
+l_int|0
+)paren
+r_return
+id|NF_DROP
 suffix:semicolon
 multiline_comment|/* Gather fragments. */
 r_if

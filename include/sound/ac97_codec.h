@@ -345,6 +345,15 @@ DECL|macro|AC97_YMF753_DIT_CTRL2
 mdefine_line|#define AC97_YMF753_DIT_CTRL2&t;0x66&t;/* DIT Control 2 */
 DECL|macro|AC97_YMF753_3D_MODE_SEL
 mdefine_line|#define AC97_YMF753_3D_MODE_SEL&t;0x68&t;/* 3D Mode Select */
+multiline_comment|/* specific - C-Media */
+DECL|macro|AC97_CM9738_VENDOR_CTRL
+mdefine_line|#define AC97_CM9738_VENDOR_CTRL&t;0x5a
+DECL|macro|AC97_CM9739_MULTI_CHAN
+mdefine_line|#define AC97_CM9739_MULTI_CHAN&t;0x64
+DECL|macro|AC97_CM9739_SPDIF_IN_STATUS
+mdefine_line|#define AC97_CM9739_SPDIF_IN_STATUS&t;0x68 /* 32bit */
+DECL|macro|AC97_CM9739_SPDIF_CTRL
+mdefine_line|#define AC97_CM9739_SPDIF_CTRL&t;0x6c
 multiline_comment|/* ac97-&gt;scaps */
 DECL|macro|AC97_SCAP_AUDIO
 mdefine_line|#define AC97_SCAP_AUDIO&t;&t;(1&lt;&lt;0)&t;/* audio AC&squot;97 codec */
@@ -483,6 +492,23 @@ id|snd_card_t
 op_star
 id|card
 suffix:semicolon
+DECL|member|pci
+r_struct
+id|pci_dev
+op_star
+id|pci
+suffix:semicolon
+multiline_comment|/* assigned PCI device - used for quirks */
+DECL|member|subsystem_vendor
+r_int
+r_int
+id|subsystem_vendor
+suffix:semicolon
+DECL|member|subsystem_device
+r_int
+r_int
+id|subsystem_device
+suffix:semicolon
 DECL|member|reg_lock
 id|spinlock_t
 id|reg_lock
@@ -620,6 +646,15 @@ l_int|3
 )braket
 suffix:semicolon
 singleline_comment|// PCM registers
+DECL|member|codec_cfg
+r_int
+r_int
+id|codec_cfg
+(braket
+l_int|3
+)braket
+suffix:semicolon
+singleline_comment|// CODEC_CFG bits
 DECL|member|mutex
 r_struct
 id|semaphore
@@ -923,11 +958,6 @@ c_func
 id|ac97_t
 op_star
 id|ac97
-comma
-r_struct
-id|pci_dev
-op_star
-id|pci
 comma
 r_struct
 id|ac97_quirk

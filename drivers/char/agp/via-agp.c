@@ -396,7 +396,6 @@ l_int|0
 )brace
 )brace
 suffix:semicolon
-macro_line|#ifdef CONFIG_AGP3
 DECL|function|via_fetch_size_agp3
 r_static
 r_int
@@ -1010,7 +1009,7 @@ id|FALSE
 suffix:semicolon
 id|agp_bridge-&gt;agp_enable
 op_assign
-id|agp_generic_agp_3_0_enable
+id|agp_generic_enable
 suffix:semicolon
 id|agp_bridge-&gt;configure
 op_assign
@@ -1084,32 +1083,6 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-macro_line|#else
-DECL|function|via_generic_agp3_setup
-r_static
-r_int
-id|__init
-id|via_generic_agp3_setup
-(paren
-r_struct
-id|pci_dev
-op_star
-id|pdev
-)paren
-(brace
-id|printk
-(paren
-id|KERN_INFO
-id|PFX
-l_string|&quot;Bridge in AGP3 mode, but CONFIG_AGP3=n&bslash;n&quot;
-)paren
-suffix:semicolon
-r_return
-op_minus
-id|ENODEV
-suffix:semicolon
-)brace
-macro_line|#endif&t;/* CONFIG_AGP3 */
 DECL|function|via_generic_setup
 r_static
 r_int
@@ -1122,7 +1095,6 @@ op_star
 id|pdev
 )paren
 (brace
-macro_line|#ifdef CONFIG_AGP3
 multiline_comment|/* Garg, there are KT400s with KT266 IDs. */
 r_if
 c_cond
@@ -1188,7 +1160,6 @@ suffix:semicolon
 multiline_comment|/* Its in 2.0 mode, drop through. */
 )brace
 )brace
-macro_line|#endif
 id|agp_bridge-&gt;masks
 op_assign
 id|via_generic_masks
@@ -1239,7 +1210,7 @@ id|via_mask_memory
 suffix:semicolon
 id|agp_bridge-&gt;agp_enable
 op_assign
-id|agp_generic_agp_enable
+id|agp_generic_enable
 suffix:semicolon
 id|agp_bridge-&gt;cache_flush
 op_assign
@@ -1457,7 +1428,20 @@ comma
 )brace
 comma
 multiline_comment|/* VT8361 */
-multiline_comment|/*&t;{&n;&t;&t;.device_id&t;= PCI_DEVICE_ID_VIA_8361,&t;// 0x3112&n;&t;&t;.chipset_name&t;= &quot;Apollo KLE133&quot;,&n;&t;}, */
+(brace
+dot
+id|device_id
+op_assign
+id|PCI_DEVICE_ID_VIA_8361
+comma
+singleline_comment|// 0x3112
+dot
+id|chipset_name
+op_assign
+l_string|&quot;Apollo KLE133&quot;
+comma
+)brace
+comma
 multiline_comment|/* VT8365 / VT8362 */
 (brace
 dot
@@ -1473,7 +1457,19 @@ comma
 )brace
 comma
 multiline_comment|/* VT8753A */
-multiline_comment|/*&t;{&n;&t;&t;.device_id&t;= PCI_DEVICE_ID_VIA_8753_0,&t;// 0x3128&n;&t;&t;.chipset_name&t;= &quot;P4X266&quot;,&n;&t;},&t;*/
+(brace
+dot
+id|device_id
+op_assign
+id|PCI_DEVICE_ID_VIA_8753_0
+comma
+dot
+id|chipset_name
+op_assign
+l_string|&quot;P4X266&quot;
+comma
+)brace
+comma
 multiline_comment|/* VT8366 */
 (brace
 dot
@@ -1503,9 +1499,33 @@ comma
 )brace
 comma
 multiline_comment|/* KM266 / PM266 */
-multiline_comment|/*&t;{&n;&t;&t;.device_id&t;= PCI_DEVICE_ID_VIA_KM266,&t;// 0x3116&n;&t;&t;.chipset_name&t;= &quot;KM266/PM266&quot;,&n;&t;},&t;*/
+(brace
+dot
+id|device_id
+op_assign
+id|PCI_DEVICE_ID_VIA_KM266
+comma
+dot
+id|chipset_name
+op_assign
+l_string|&quot;KM266/PM266&quot;
+comma
+)brace
+comma
 multiline_comment|/* CLE266 */
-multiline_comment|/*&t;{&n;&t;&t;.device_id&t;= PCI_DEVICE_ID_VIA_CLE266,&t;// 0x3123&n;&t;&t;.chipset_name&t;= &quot;CLE266&quot;,&n;&t;},&t;*/
+(brace
+dot
+id|device_id
+op_assign
+id|PCI_DEVICE_ID_VIA_CLE266
+comma
+dot
+id|chipset_name
+op_assign
+l_string|&quot;CLE266&quot;
+comma
+)brace
+comma
 (brace
 dot
 id|device_id
@@ -1538,9 +1558,33 @@ l_string|&quot;Apollo ProSavage PM133/PL133/PN133/Twister&quot;
 )brace
 comma
 multiline_comment|/* VT8752*/
-multiline_comment|/*&t;{&n;&t;&t;.device_id&t;= PCI_DEVICE_ID_VIA_8752,&t;// 0x3148&n;&t;&t;.chipset_name&t;= &quot;ProSavage DDR P4M266&quot;,&n;&t;},&t;*/
+(brace
+dot
+id|device_id
+op_assign
+id|PCI_DEVICE_ID_VIA_8752
+comma
+dot
+id|chipset_name
+op_assign
+l_string|&quot;ProSavage DDR P4M266&quot;
+comma
+)brace
+comma
 multiline_comment|/* KN266/PN266 */
-multiline_comment|/*&t;{&n;&t;&t;.device_id&t;= PCI_DEVICE_ID_KN266,&t;// 0x3156&n;&t;&t;.chipset_name&t;= &quot;KN266/PN266&quot;,&n;&t;},&t;*/
+(brace
+dot
+id|device_id
+op_assign
+id|PCI_DEVICE_ID_VIA_KN266
+comma
+dot
+id|chipset_name
+op_assign
+l_string|&quot;KN266/PN266&quot;
+comma
+)brace
+comma
 multiline_comment|/* VT8754 */
 (brace
 dot
@@ -1555,13 +1599,61 @@ l_string|&quot;Apollo P4X333/P4X400&quot;
 )brace
 comma
 multiline_comment|/* P4N333 */
-multiline_comment|/*&t;{&n;&t;&t;.device_id&t;= PCI_DEVICE_ID_VIA_P4N333,&t;// 0x3178&n;&t;&t;.chipset_name&t;= &quot;P4N333&quot;,&n;&t;}, */
+(brace
+dot
+id|device_id
+op_assign
+id|PCI_DEVICE_ID_VIA_P4N333
+comma
+dot
+id|chipset_name
+op_assign
+l_string|&quot;P4N333&quot;
+comma
+)brace
+comma
 multiline_comment|/* P4X600 */
-multiline_comment|/*&t;{&n;&t;&t;.device_id&t;= PCI_DEVICE_ID_VIA_P4X600,&t;// 0x0198&n;&t;&t;.chipset_name&t;= &quot;P4X600&quot;,&n;&t;},&t;*/
+(brace
+dot
+id|device_id
+op_assign
+id|PCI_DEVICE_ID_VIA_P4X600
+comma
+dot
+id|chipset_name
+op_assign
+l_string|&quot;P4X600&quot;
+comma
+)brace
+comma
 multiline_comment|/* KM400 */
-multiline_comment|/*&t;{&n;&t;&t;.device_id&t;= PCI_DEVICE_ID_VIA_KM400,&t;// 0x3205&n;&t;&t;.chipset_name&t;= &quot;KM400&quot;,&n;&t;},&t;*/
+(brace
+dot
+id|device_id
+op_assign
+id|PCI_DEVICE_ID_VIA_KM400
+comma
+dot
+id|chipset_name
+op_assign
+l_string|&quot;KM400&quot;
+comma
+)brace
+comma
 multiline_comment|/* P4M400 */
-multiline_comment|/*&t;{&n;&t;&t;.device_id&t;= PCI_DEVICE_ID_VIA_P4M400,&t;// 0x3209&n;&t;&t;.chipset_name&t;= &quot;PM400&quot;,&n;&t;},&t;*/
+(brace
+dot
+id|device_id
+op_assign
+id|PCI_DEVICE_ID_VIA_P4M400
+comma
+dot
+id|chipset_name
+op_assign
+l_string|&quot;PM400&quot;
+comma
+)brace
+comma
 (brace
 )brace
 comma

@@ -5,7 +5,7 @@ multiline_comment|/*&n; *  Init values for soundcard modules&n; *  Copyright (c)
 macro_line|#ifndef MODULE_GENERIC_STRING
 macro_line|#ifdef MODULE
 DECL|macro|MODULE_GENERIC_STRING
-mdefine_line|#define MODULE_GENERIC_STRING(name, string) &bslash;&n;static const char __module_generic_string_##name [] &bslash;&n;  __attribute__ ((section(&quot;.modstring&quot;))) = #name &quot;=&quot; string;
+mdefine_line|#define MODULE_GENERIC_STRING(name, string) &bslash;&n;static const char __module_generic_string_##name [] &bslash;&n;  __attribute__ ((unused, __section__(&quot;.modstring&quot;))) = #name &quot;=&quot; string;
 macro_line|#else
 DECL|macro|MODULE_GENERIC_STRING
 mdefine_line|#define MODULE_GENERIC_STRING(name, string)
