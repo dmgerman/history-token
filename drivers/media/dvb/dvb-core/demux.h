@@ -14,6 +14,11 @@ macro_line|#ifndef DMX_MAX_FILTER_SIZE
 DECL|macro|DMX_MAX_FILTER_SIZE
 mdefine_line|#define DMX_MAX_FILTER_SIZE 18
 macro_line|#endif 
+multiline_comment|/*&n; * DMX_MAX_SECFEED_SIZE: Maximum length (in bytes) of a private section feed filter.&n; */
+macro_line|#ifndef DMX_MAX_SECFEED_SIZE 
+DECL|macro|DMX_MAX_SECFEED_SIZE
+mdefine_line|#define DMX_MAX_SECFEED_SIZE 4096
+macro_line|#endif 
 multiline_comment|/*&n; * enum dmx_success: Success codes for the Demux Callback API. &n; */
 DECL|enum|dmx_success
 r_enum
@@ -302,18 +307,25 @@ id|crc_val
 suffix:semicolon
 DECL|member|secbuf
 id|u8
+op_star
 id|secbuf
+suffix:semicolon
+DECL|member|secbuf_base
+id|u8
+id|secbuf_base
 (braket
-l_int|4096
+id|DMX_MAX_SECFEED_SIZE
 )braket
 suffix:semicolon
 DECL|member|secbufp
-r_int
-id|secbufp
-suffix:semicolon
 DECL|member|seclen
-r_int
+DECL|member|tsfeedp
+id|u16
+id|secbufp
+comma
 id|seclen
+comma
+id|tsfeedp
 suffix:semicolon
 DECL|member|set
 r_int

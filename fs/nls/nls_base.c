@@ -433,6 +433,9 @@ op_star
 id|ip
 op_increment
 suffix:semicolon
+id|n
+op_decrement
+suffix:semicolon
 )brace
 )brace
 r_return
@@ -3570,6 +3573,12 @@ id|EXPORT_SYMBOL
 c_func
 (paren
 id|utf8_wcstombs
+)paren
+suffix:semicolon
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;Dual BSD/GPL&quot;
 )paren
 suffix:semicolon
 eof

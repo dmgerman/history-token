@@ -1,4 +1,4 @@
-multiline_comment|/*  $Id$&n; *  1993/03/31&n; *  linux/kernel/aha1740.c&n; *&n; *  Based loosely on aha1542.c which is&n; *  Copyright (C) 1992  Tommy Thorn and&n; *  Modified by Eric Youngdale&n; *&n; *  This file is aha1740.c, written and&n; *  Copyright (C) 1992,1993  Brad McLean&n; *  brad@saturn.gaylord.com or brad@bradpc.gaylord.com.&n; *  &n; *  Modifications to makecode and queuecommand&n; *  for proper handling of multiple devices courteously&n; *  provided by Michael Weller, March, 1993&n; *&n; *  Multiple adapter support, extended translation detection,&n; *  update to current scsi subsystem changes, proc fs support,&n; *  working (!) module support based on patches from Andreas Arens,&n; *  by Andreas Degert &lt;ad@papyrus.hamburg.com&gt;, 2/1997&n; *&n; * aha1740_makecode may still need even more work&n; * if it doesn&squot;t work for your devices, take a look.&n; *&n; * Reworked for new_eh and new locking by Alan Cox &lt;alan@redhat.com&gt;&n; *&n; * Converted to EISA and generic DMA APIs by Marc Zyngier&n; * &lt;maz@wild-wind.fr.eu.org&gt;, 4/2003.&n; *&n; * For the avoidance of doubt the &quot;preferred form&quot; of this code is one which&n; * is in an open non patent encumbered format. Where cryptographic key signing&n; * forms part of the process of creating an executable the information&n; * including keys needed to generate an equivalently functional executable&n; * are deemed to be part of the source code.&n; */
+multiline_comment|/*  $Id$&n; *  1993/03/31&n; *  linux/kernel/aha1740.c&n; *&n; *  Based loosely on aha1542.c which is&n; *  Copyright (C) 1992  Tommy Thorn and&n; *  Modified by Eric Youngdale&n; *&n; *  This file is aha1740.c, written and&n; *  Copyright (C) 1992,1993  Brad McLean&n; *  brad@saturn.gaylord.com or brad@bradpc.gaylord.com.&n; *  &n; *  Modifications to makecode and queuecommand&n; *  for proper handling of multiple devices courteously&n; *  provided by Michael Weller, March, 1993&n; *&n; *  Multiple adapter support, extended translation detection,&n; *  update to current scsi subsystem changes, proc fs support,&n; *  working (!) module support based on patches from Andreas Arens,&n; *  by Andreas Degert &lt;ad@papyrus.hamburg.com&gt;, 2/1997&n; *&n; * aha1740_makecode may still need even more work&n; * if it doesn&squot;t work for your devices, take a look.&n; *&n; * Reworked for new_eh and new locking by Alan Cox &lt;alan@redhat.com&gt;&n; *&n; * Converted to EISA and generic DMA APIs by Marc Zyngier&n; * &lt;maz@wild-wind.fr.eu.org&gt;, 4/2003.&n; *&n; * Shared interrupt support added by Rask Ingemann Lambertsen&n; * &lt;rask@sygehus.dk&gt;, 10/2003&n; *&n; * For the avoidance of doubt the &quot;preferred form&quot; of this code is one which&n; * is in an open non patent encumbered format. Where cryptographic key signing&n; * forms part of the process of creating an executable the information&n; * including keys needed to generate an equivalently functional executable&n; * are deemed to be part of the source code.&n; */
 macro_line|#include &lt;linux/blkdev.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
@@ -2305,7 +2305,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/* Query the board for its irq_level.  Nothing else matters&n;   in enhanced mode on an EISA bus. */
+multiline_comment|/* Query the board for its irq_level and irq_type.  Nothing else matters&n;   in enhanced mode on an EISA bus. */
 DECL|function|aha1740_getconfig
 r_static
 r_void
@@ -2320,6 +2320,11 @@ r_int
 r_int
 op_star
 id|irq_level
+comma
+r_int
+r_int
+op_star
+id|irq_type
 comma
 r_int
 r_int
@@ -2368,6 +2373,25 @@ id|base
 op_amp
 l_int|0x7
 )braket
+suffix:semicolon
+op_star
+id|irq_type
+op_assign
+(paren
+id|inb
+c_func
+(paren
+id|INTDEF
+c_func
+(paren
+id|base
+)paren
+)paren
+op_amp
+l_int|0x8
+)paren
+op_rshift
+l_int|3
 suffix:semicolon
 op_star
 id|translation
@@ -2631,6 +2655,8 @@ r_int
 r_int
 id|irq_level
 comma
+id|irq_type
+comma
 id|translation
 suffix:semicolon
 r_struct
@@ -2710,6 +2736,9 @@ op_amp
 id|irq_level
 comma
 op_amp
+id|irq_type
+comma
+op_amp
 id|translation
 )paren
 suffix:semicolon
@@ -2767,13 +2796,20 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;Configuring slot %d at IO:%x, IRQ %d&bslash;n&quot;
+l_string|&quot;Configuring slot %d at IO:%x, IRQ %u (%s)&bslash;n&quot;
 comma
 id|edev-&gt;slot
 comma
 id|slotbase
 comma
 id|irq_level
+comma
+id|irq_type
+ques
+c_cond
+l_string|&quot;edge&quot;
+suffix:colon
+l_string|&quot;level&quot;
 )paren
 suffix:semicolon
 id|printk
@@ -2914,7 +2950,12 @@ id|irq_level
 comma
 id|aha1740_intr_handle
 comma
+id|irq_type
+ques
+c_cond
 l_int|0
+suffix:colon
+id|SA_SHIRQ
 comma
 l_string|&quot;aha1740&quot;
 comma

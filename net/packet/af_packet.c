@@ -406,6 +406,17 @@ l_int|NULL
 r_goto
 id|oom
 suffix:semicolon
+multiline_comment|/* drop any routing info */
+id|dst_release
+c_func
+(paren
+id|skb-&gt;dst
+)paren
+suffix:semicolon
+id|skb-&gt;dst
+op_assign
+l_int|NULL
+suffix:semicolon
 id|spkt
 op_assign
 (paren
@@ -1211,6 +1222,16 @@ id|sk
 )paren
 suffix:semicolon
 id|skb-&gt;dev
+op_assign
+l_int|NULL
+suffix:semicolon
+id|dst_release
+c_func
+(paren
+id|skb-&gt;dst
+)paren
+suffix:semicolon
+id|skb-&gt;dst
 op_assign
 l_int|NULL
 suffix:semicolon

@@ -5856,7 +5856,7 @@ suffix:semicolon
 id|gtk_widget_grab_focus
 c_func
 (paren
-id|GTK_TREE_VIEW
+id|GTK_WIDGET
 c_func
 (paren
 id|tree2_w

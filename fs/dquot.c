@@ -395,6 +395,17 @@ r_struct
 id|dqstats
 id|dqstats
 suffix:semicolon
+r_static
+r_void
+id|dqput
+c_func
+(paren
+r_struct
+id|dquot
+op_star
+id|dquot
+)paren
+suffix:semicolon
 DECL|function|hashfn
 r_static
 r_inline
@@ -1178,6 +1189,16 @@ id|dquot
 )paren
 r_continue
 suffix:semicolon
+id|atomic_inc
+c_func
+(paren
+op_amp
+id|dquot-&gt;dq_count
+)paren
+suffix:semicolon
+id|dqstats.lookups
+op_increment
+suffix:semicolon
 id|spin_unlock
 c_func
 (paren
@@ -1187,7 +1208,13 @@ id|dq_list_lock
 suffix:semicolon
 id|sb-&gt;dq_op
 op_member_access_from_pointer
-id|sync_dquot
+id|write_dquot
+c_func
+(paren
+id|dquot
+)paren
+suffix:semicolon
+id|dqput
 c_func
 (paren
 id|dquot
@@ -1578,7 +1605,9 @@ op_amp
 id|dq_list_lock
 )paren
 suffix:semicolon
-id|commit_dqblk
+id|dquot-&gt;dq_sb-&gt;dq_op
+op_member_access_from_pointer
+id|write_dquot
 c_func
 (paren
 id|dquot
@@ -5048,7 +5077,7 @@ op_assign
 id|dquot_transfer
 comma
 dot
-id|sync_dquot
+id|write_dquot
 op_assign
 id|commit_dqblk
 )brace
@@ -5683,7 +5712,7 @@ id|type
 r_goto
 id|out_file_init
 suffix:semicolon
-multiline_comment|/* We don&squot;t want quota on quota files */
+multiline_comment|/* We don&squot;t want quota and atime on quota files (deadlocks possible) */
 id|dquot_drop_nolock
 c_func
 (paren
@@ -5693,6 +5722,8 @@ suffix:semicolon
 id|inode-&gt;i_flags
 op_or_assign
 id|S_NOQUOTA
+op_or
+id|S_NOATIME
 suffix:semicolon
 id|dqopt-&gt;ops
 (braket

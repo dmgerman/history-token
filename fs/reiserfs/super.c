@@ -2705,6 +2705,11 @@ r_char
 op_star
 op_star
 id|jdev_name
+comma
+r_int
+r_int
+op_star
+id|commit_max_age
 )paren
 (brace
 r_int
@@ -2879,6 +2884,18 @@ l_int|0
 )brace
 comma
 (brace
+l_string|&quot;commit&quot;
+comma
+l_char|&squot;c&squot;
+comma
+l_int|0
+comma
+l_int|0
+comma
+l_int|0
+)brace
+comma
+(brace
 l_int|NULL
 comma
 l_int|0
@@ -2999,6 +3016,73 @@ id|arg
 suffix:semicolon
 r_return
 l_int|0
+suffix:semicolon
+)brace
+)brace
+r_if
+c_cond
+(paren
+id|c
+op_eq
+l_char|&squot;c&squot;
+)paren
+(brace
+r_char
+op_star
+id|p
+op_assign
+l_int|0
+suffix:semicolon
+r_int
+id|val
+op_assign
+id|simple_strtoul
+(paren
+id|arg
+comma
+op_amp
+id|p
+comma
+l_int|0
+)paren
+suffix:semicolon
+multiline_comment|/* commit=NNN (time in seconds) */
+r_if
+c_cond
+(paren
+op_star
+id|p
+op_ne
+l_char|&squot;&bslash;0&squot;
+op_logical_or
+id|val
+op_eq
+l_int|0
+)paren
+(brace
+id|printk
+(paren
+l_string|&quot;reiserfs_parse_options: bad value %s&bslash;n&quot;
+comma
+id|arg
+)paren
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+id|val
+OG
+l_int|0
+)paren
+(brace
+op_star
+id|commit_max_age
+op_assign
+id|val
 suffix:semicolon
 )brace
 )brace
@@ -3277,6 +3361,12 @@ id|safe_mask
 op_assign
 l_int|0
 suffix:semicolon
+r_int
+r_int
+id|commit_max_age
+op_assign
+l_int|0
+suffix:semicolon
 id|rs
 op_assign
 id|SB_DISK_SUPER_BLOCK
@@ -3302,6 +3392,9 @@ op_amp
 id|blocks
 comma
 l_int|NULL
+comma
+op_amp
+id|commit_max_age
 )paren
 )paren
 r_return
@@ -3385,6 +3478,23 @@ op_amp
 id|safe_mask
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|commit_max_age
+op_ne
+l_int|0
+)paren
+(brace
+id|SB_JOURNAL_MAX_COMMIT_AGE
+c_func
+(paren
+id|s
+)paren
+op_assign
+id|commit_max_age
+suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
@@ -5754,11 +5864,13 @@ c_func
 (paren
 )paren
 suffix:semicolon
-singleline_comment|// should never happen 
+singleline_comment|// should never happen
 r_return
 l_int|0
 suffix:semicolon
 )brace
+DECL|macro|SPRINTK
+mdefine_line|#define SPRINTK(silent, ...)&t;&t;&t;&bslash;&n;&t;if (!(silent))&t;&t;&t;&t;&bslash;&n;&t;&t;printk(__VA_ARGS__)
 DECL|function|reiserfs_fill_super
 r_static
 r_int
@@ -5797,6 +5909,12 @@ suffix:semicolon
 r_int
 r_int
 id|blocks
+suffix:semicolon
+r_int
+r_int
+id|commit_max_age
+op_assign
+l_int|0
 suffix:semicolon
 r_int
 id|jinit_done
@@ -5953,6 +6071,9 @@ id|blocks
 comma
 op_amp
 id|jdev_name
+comma
+op_amp
+id|commit_max_age
 )paren
 op_eq
 l_int|0
@@ -5968,9 +6089,11 @@ c_cond
 id|blocks
 )paren
 (brace
-id|printk
+id|SPRINTK
 c_func
 (paren
+id|silent
+comma
 l_string|&quot;jmacd-7: reiserfs_fill_super: resize option for remount only&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -6007,9 +6130,11 @@ id|REISERFS_DISK_OFFSET_IN_BYTES
 )paren
 )paren
 (brace
-id|printk
+id|SPRINTK
 c_func
 (paren
+id|silent
+comma
 l_string|&quot;sh-2021: reiserfs_fill_super: can not find reiserfs on %s&bslash;n&quot;
 comma
 id|reiserfs_bdevname
@@ -6056,9 +6181,11 @@ id|rs
 )paren
 )paren
 (brace
-id|printk
+id|SPRINTK
 c_func
 (paren
+id|silent
+comma
 l_string|&quot;Filesystem on %s cannot be mounted because it is bigger than the device&bslash;n&quot;
 comma
 id|reiserfs_bdevname
@@ -6068,15 +6195,19 @@ id|s
 )paren
 )paren
 suffix:semicolon
-id|printk
+id|SPRINTK
 c_func
 (paren
+id|silent
+comma
 l_string|&quot;You may need to run fsck or increase size of your LVM partition&bslash;n&quot;
 )paren
 suffix:semicolon
-id|printk
+id|SPRINTK
 c_func
 (paren
+id|silent
+comma
 l_string|&quot;Or may be you forgot to reboot after fdisk when it told you to&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -6115,8 +6246,11 @@ id|s
 )paren
 )paren
 (brace
-id|printk
+id|SPRINTK
+c_func
 (paren
+id|silent
+comma
 l_string|&quot;jmacd-8: reiserfs_fill_super: unable to read bitmap&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -6125,15 +6259,19 @@ id|error
 suffix:semicolon
 )brace
 macro_line|#ifdef CONFIG_REISERFS_CHECK
-id|printk
+id|SPRINTK
 c_func
 (paren
+id|silent
+comma
 l_string|&quot;reiserfs:warning: CONFIG_REISERFS_CHECK is set ON&bslash;n&quot;
 )paren
 suffix:semicolon
-id|printk
+id|SPRINTK
 c_func
 (paren
+id|silent
+comma
 l_string|&quot;reiserfs:warning: - it is slow mode for debugging.&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -6150,12 +6288,16 @@ comma
 id|jdev_name
 comma
 id|old_format
+comma
+id|commit_max_age
 )paren
 )paren
 (brace
-id|printk
+id|SPRINTK
 c_func
 (paren
+id|silent
+comma
 l_string|&quot;sh-2022: reiserfs_fill_super: unable to initialize journal space&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -6169,7 +6311,7 @@ id|jinit_done
 op_assign
 l_int|1
 suffix:semicolon
-multiline_comment|/* once this is set, journal_release must be called&n;&t;&t;&t; ** if we error out of the mount &n;&t;&t;&t; */
+multiline_comment|/* once this is set, journal_release must be called&n;&t;&t;&t; ** if we error out of the mount&n;&t;&t;&t; */
 )brace
 r_if
 c_cond
@@ -6181,9 +6323,11 @@ id|s
 )paren
 )paren
 (brace
-id|printk
+id|SPRINTK
 c_func
 (paren
+id|silent
+comma
 l_string|&quot;jmacd-9: reiserfs_fill_super: unable to reread meta blocks after journal init&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -6219,9 +6363,11 @@ id|MS_RDONLY
 )paren
 )paren
 (brace
-id|printk
+id|SPRINTK
 c_func
 (paren
+id|silent
+comma
 l_string|&quot;clm-7000: Detected readonly device, marking FS readonly&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -6267,8 +6413,11 @@ op_logical_neg
 id|root_inode
 )paren
 (brace
-id|printk
+id|SPRINTK
+c_func
 (paren
+id|silent
+comma
 l_string|&quot;jmacd-10: reiserfs_fill_super: get root inode failed&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -6472,11 +6621,19 @@ id|s
 )paren
 (brace
 multiline_comment|/* and -o conv is given */
+r_if
+c_cond
+(paren
+op_logical_neg
+id|silent
+)paren
+(brace
 id|reiserfs_warning
 (paren
 l_string|&quot;reiserfs: converting 3.5 filesystem to the 3.6 format&bslash;n&quot;
 )paren
 suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
@@ -6536,6 +6693,12 @@ id|sbi-&gt;s_properties
 suffix:semicolon
 )brace
 r_else
+r_if
+c_cond
+(paren
+op_logical_neg
+id|silent
+)paren
 (brace
 id|reiserfs_warning
 c_func
@@ -6591,6 +6754,9 @@ c_func
 (paren
 id|s
 )paren
+op_logical_and
+op_logical_neg
+id|silent
 )paren
 (brace
 id|reiserfs_warning

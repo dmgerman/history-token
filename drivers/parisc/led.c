@@ -1455,7 +1455,6 @@ macro_line|#if HZ==100
 DECL|macro|NORMALIZED_COUNT
 mdefine_line|#define NORMALIZED_COUNT(count) (count)
 macro_line|#else
-macro_line|#warning &quot;Untested situation HZ != 100 !!&quot;
 DECL|macro|NORMALIZED_COUNT
 mdefine_line|#define NORMALIZED_COUNT(count) (count/(HZ/100))
 macro_line|#endif

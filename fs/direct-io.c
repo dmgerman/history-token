@@ -3124,6 +3124,13 @@ c_func
 id|dio
 )paren
 suffix:semicolon
+multiline_comment|/*&n;&t; * It is possible that, we return short IO due to end of file.&n;&t; * In that case, we need to release all the pages we got hold on.&n;&t; */
+id|dio_cleanup
+c_func
+(paren
+id|dio
+)paren
+suffix:semicolon
 multiline_comment|/*&n;&t; * OK, all BIOs are submitted, so we can decrement bio_count to truly&n;&t; * reflect the number of to-be-processed BIOs.&n;&t; */
 r_if
 c_cond

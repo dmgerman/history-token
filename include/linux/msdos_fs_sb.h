@@ -217,7 +217,7 @@ r_int
 r_int
 id|fsinfo_sector
 suffix:semicolon
-multiline_comment|/* FAT32 fsinfo offset from start of disk */
+multiline_comment|/* sector number of FAT32 fsinfo */
 DECL|member|fat_lock
 r_struct
 id|semaphore
@@ -227,7 +227,7 @@ DECL|member|prev_free
 r_int
 id|prev_free
 suffix:semicolon
-multiline_comment|/* previously returned free cluster number */
+multiline_comment|/* previously allocated cluster number */
 DECL|member|free_clusters
 r_int
 id|free_clusters

@@ -2054,6 +2054,15 @@ r_int
 id|count
 )paren
 suffix:semicolon
+r_extern
+r_void
+id|steal_locks
+c_func
+(paren
+id|fl_owner_t
+id|from
+)paren
+suffix:semicolon
 DECL|struct|fasync_struct
 r_struct
 id|fasync_struct
@@ -7553,6 +7562,15 @@ r_return
 id|res
 suffix:semicolon
 )brace
+multiline_comment|/* kernel/fork.c */
+r_extern
+r_int
+id|unshare_files
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
 macro_line|#endif /* __KERNEL__ */
 macro_line|#endif /* _LINUX_FS_H */
 eof

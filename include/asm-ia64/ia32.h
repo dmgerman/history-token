@@ -4,7 +4,10 @@ mdefine_line|#define _ASM_IA64_IA32_H
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;asm/ptrace.h&gt;
 macro_line|#include &lt;asm/signal.h&gt;
-macro_line|#ifdef CONFIG_IA32_SUPPORT
+DECL|macro|IA32_NR_syscalls
+mdefine_line|#define IA32_NR_syscalls&t;&t;275 /* length of syscall table */
+macro_line|#ifndef __ASSEMBLY__
+macro_line|# ifdef CONFIG_IA32_SUPPORT
 r_extern
 r_void
 id|ia32_cpu_init
@@ -69,7 +72,7 @@ op_star
 id|childregs
 )paren
 suffix:semicolon
-macro_line|#endif /* !CONFIG_IA32_SUPPORT */
+macro_line|# endif /* !CONFIG_IA32_SUPPORT */
 multiline_comment|/* Declare this unconditionally, so we don&squot;t get warnings for unreachable code.  */
 r_extern
 r_int
@@ -97,5 +100,6 @@ op_star
 id|regs
 )paren
 suffix:semicolon
+macro_line|#endif /* !__ASSEMBLY__ */
 macro_line|#endif /* _ASM_IA64_IA32_H */
 eof

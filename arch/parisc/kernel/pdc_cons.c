@@ -150,36 +150,6 @@ op_amp
 id|console_driver
 suffix:semicolon
 )brace
-macro_line|#elif defined(CONFIG_SERIAL_MUX)
-macro_line|#warning CONFIG_SERIAL_MUX
-DECL|macro|PDC_CONSOLE_DEVICE
-mdefine_line|#define PDC_CONSOLE_DEVICE pdc_console_device
-macro_line|#warning &quot;FIXME - should be: static struct tty_driver * pdc_console_device (struct console *c, int *index)&quot;
-DECL|function|pdc_console_device
-r_static
-id|kdev_t
-id|pdc_console_device
-(paren
-r_struct
-id|console
-op_star
-id|c
-comma
-r_int
-op_star
-id|index
-)paren
-(brace
-r_return
-id|mk_kdev
-c_func
-(paren
-id|MUX_MAJOR
-comma
-l_int|0
-)paren
-suffix:semicolon
-)brace
 macro_line|#else
 DECL|macro|PDC_CONSOLE_DEVICE
 mdefine_line|#define PDC_CONSOLE_DEVICE NULL
@@ -305,7 +275,7 @@ c_func
 r_void
 )paren
 (brace
-macro_line|#if defined(EARLY_BOOTUP_DEBUG) || defined(CONFIG_PDC_CONSOLE) || defined(CONFIG_SERIAL_MUX)
+macro_line|#if defined(EARLY_BOOTUP_DEBUG) || defined(CONFIG_PDC_CONSOLE)
 id|pdc_console_init_force
 c_func
 (paren

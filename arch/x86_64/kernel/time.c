@@ -293,26 +293,7 @@ id|xtime.tv_nsec
 op_div
 l_int|1000
 suffix:semicolon
-multiline_comment|/*&n;&t;&t; * If time_adjust is negative then NTP is slowing the clock&n;&t;&t; * so make sure not to go into next possible interval.&n;&t;&t; * Better to lose some accuracy than have time go backwards..&n;&t;&t; */
-r_if
-c_cond
-(paren
-id|unlikely
-c_func
-(paren
-id|time_adjust
-OL
-l_int|0
-)paren
-op_logical_and
-id|usec
-OG
-id|tickadj
-)paren
-id|usec
-op_assign
-id|tickadj
-suffix:semicolon
+multiline_comment|/* i386 does some correction here to keep the clock &n;&t;&t;   monotonus even when ntpd is fixing drift.&n;&t;&t;   But they didn&squot;t work for me, there is a non monotonic&n;&t;&t;   clock anyways with ntp.&n;&t;&t;   I dropped all corrections now until a real solution can&n;&t;&t;   be found. Note when you fix it here you need to do the same&n;&t;&t;   in arch/x86_64/kernel/vsyscall.c and export all needed&n;&t;&t;   variables in vmlinux.lds. -AK */
 id|t
 op_assign
 (paren
@@ -2098,6 +2079,16 @@ c_func
 id|FIX_HPET_BASE
 comma
 id|vxtime.hpet_address
+)paren
+suffix:semicolon
+id|__set_fixmap
+c_func
+(paren
+id|VSYSCALL_HPET
+comma
+id|vxtime.hpet_address
+comma
+id|PAGE_KERNEL_VSYSCALL_NOCACHE
 )paren
 suffix:semicolon
 multiline_comment|/*&n; * Read the period, compute tick and quotient.&n; */

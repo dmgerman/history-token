@@ -10857,6 +10857,13 @@ c_func
 (paren
 id|page
 )paren
+op_logical_and
+op_logical_neg
+id|PageError
+c_func
+(paren
+id|page
+)paren
 )paren
 id|buffer_error
 c_func

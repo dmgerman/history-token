@@ -474,23 +474,6 @@ DECL|macro|SYM_SCMD_PTR
 mdefine_line|#define SYM_SCMD_PTR(ucmd) sym_que_entry(ucmd, struct scsi_cmnd, SCp)
 DECL|macro|SYM_SOFTC_PTR
 mdefine_line|#define SYM_SOFTC_PTR(cmd) (((struct host_data *)cmd-&gt;device-&gt;host-&gt;hostdata)-&gt;ncb)
-multiline_comment|/*&n; *  Deal with DMA mapping/unmapping.&n; */
-DECL|macro|bus_unmap_sg
-mdefine_line|#define&t;bus_unmap_sg(pdev, sgptr, sgcnt, dir)&t;&t;&bslash;&n;&t;pci_unmap_sg(pdev, sgptr, sgcnt, dir)
-DECL|macro|bus_unmap_single
-mdefine_line|#define&t;bus_unmap_single(pdev, mapping, bufptr, dir)&t;&bslash;&n;&t;pci_unmap_single(pdev, mapping, bufptr, dir)
-DECL|macro|bus_map_single
-mdefine_line|#define&t;bus_map_single(pdev, bufptr, bufsiz, dir)&t;&bslash;&n;&t;pci_map_single(pdev, bufptr, bufsiz, dir)
-DECL|macro|bus_map_sg
-mdefine_line|#define&t;bus_map_sg(pdev, sgptr, sgcnt, dir)&t;&t;&bslash;&n;&t;pci_map_sg(pdev, sgptr, sgcnt, dir)
-DECL|macro|bus_dma_sync_sg
-mdefine_line|#define&t;bus_dma_sync_sg(pdev, sgptr, sgcnt, dir)&t;&bslash;&n;&t;pci_dma_sync_sg(pdev, sgptr, sgcnt, dir)
-DECL|macro|bus_dma_sync_single
-mdefine_line|#define&t;bus_dma_sync_single(pdev, mapping, bufsiz, dir)&t;&bslash;&n;&t;pci_dma_sync_single(pdev, mapping, bufsiz, dir)
-DECL|macro|bus_sg_dma_address
-mdefine_line|#define bus_sg_dma_address(sc)&t;sg_dma_address(sc)
-DECL|macro|bus_sg_dma_len
-mdefine_line|#define bus_sg_dma_len(sc)&t;sg_dma_len(sc)
 DECL|function|__unmap_scsi_data
 r_static
 r_void
@@ -532,7 +515,7 @@ id|data_mapped
 r_case
 l_int|2
 suffix:colon
-id|bus_unmap_sg
+id|pci_unmap_sg
 c_func
 (paren
 id|pdev
@@ -549,7 +532,7 @@ suffix:semicolon
 r_case
 l_int|1
 suffix:colon
-id|bus_unmap_single
+id|pci_unmap_single
 c_func
 (paren
 id|pdev
@@ -612,7 +595,7 @@ id|cmd-&gt;sc_data_direction
 suffix:semicolon
 id|mapping
 op_assign
-id|bus_map_single
+id|pci_map_single
 c_func
 (paren
 id|pdev
@@ -686,7 +669,7 @@ id|cmd-&gt;sc_data_direction
 suffix:semicolon
 id|use_sg
 op_assign
-id|bus_map_sg
+id|pci_map_sg
 c_func
 (paren
 id|pdev
@@ -772,7 +755,7 @@ id|data_mapped
 r_case
 l_int|2
 suffix:colon
-id|bus_dma_sync_sg
+id|pci_dma_sync_sg
 c_func
 (paren
 id|pdev
@@ -789,7 +772,7 @@ suffix:semicolon
 r_case
 l_int|1
 suffix:colon
-id|bus_dma_sync_single
+id|pci_dma_sync_single
 c_func
 (paren
 id|pdev
@@ -1784,7 +1767,7 @@ op_increment
 id|dma_addr_t
 id|baddr
 op_assign
-id|bus_sg_dma_address
+id|sg_dma_address
 c_func
 (paren
 op_amp
@@ -1798,7 +1781,7 @@ r_int
 r_int
 id|len
 op_assign
-id|bus_sg_dma_len
+id|sg_dma_len
 c_func
 (paren
 op_amp
@@ -6342,7 +6325,6 @@ id|np-&gt;s.mmio_va
 )paren
 suffix:semicolon
 macro_line|#endif
-macro_line|#ifndef SYM_OPT_NO_BUS_MEMORY_MAPPING
 r_if
 c_cond
 (paren
@@ -6354,7 +6336,6 @@ c_func
 id|np-&gt;s.ram_va
 )paren
 suffix:semicolon
-macro_line|#endif
 multiline_comment|/*&n;&t; *  Free O/S independent resources.&n;&t; */
 id|sym_hcb_free
 c_func
@@ -6492,11 +6473,14 @@ l_int|1
 suffix:semicolon
 )brace
 multiline_comment|/*&n; *  Host attach and initialisations.&n; *&n; *  Allocate host data and ncb structure.&n; *  Remap MMIO region.&n; *  Do chip initialization.&n; *  If all is OK, install interrupt handling and&n; *  start the timer daemon.&n; */
-r_static
-r_int
-id|__devinit
 DECL|function|sym_attach
+r_static
+r_struct
+id|Scsi_Host
+op_star
+id|__devinit
 id|sym_attach
+c_func
 (paren
 r_struct
 id|scsi_host_template
@@ -6534,13 +6518,6 @@ suffix:semicolon
 r_int
 r_int
 id|flags
-suffix:semicolon
-r_struct
-id|sym_nvram
-op_star
-id|nvram
-op_assign
-id|dev-&gt;nvram
 suffix:semicolon
 r_struct
 id|sym_fw
@@ -6897,7 +6874,6 @@ id|np-&gt;ram_ws
 op_assign
 l_int|4096
 suffix:semicolon
-macro_line|#ifndef SYM_OPT_NO_BUS_MEMORY_MAPPING
 id|np-&gt;s.ram_va
 op_assign
 id|ioremap
@@ -6931,7 +6907,6 @@ r_goto
 id|attach_failed
 suffix:semicolon
 )brace
-macro_line|#endif
 )brace
 multiline_comment|/*&n;&t; *  Perform O/S independent stuff.&n;&t; */
 r_if
@@ -6944,7 +6919,7 @@ id|np
 comma
 id|fw
 comma
-id|nvram
+id|dev-&gt;nvram
 )paren
 )paren
 r_goto
@@ -7146,25 +7121,8 @@ comma
 id|flags
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; *  Now let the generic SCSI driver&n;&t; *  look for the SCSI devices on the bus ..&n;&t; */
-id|scsi_add_host
-c_func
-(paren
-id|instance
-comma
-op_amp
-id|dev-&gt;pdev-&gt;dev
-)paren
-suffix:semicolon
-multiline_comment|/* XXX: handle failure */
-id|scsi_scan_host
-c_func
-(paren
-id|instance
-)paren
-suffix:semicolon
 r_return
-l_int|0
+id|instance
 suffix:semicolon
 id|reset_failed
 suffix:colon
@@ -7198,8 +7156,7 @@ op_logical_neg
 id|instance
 )paren
 r_return
-op_minus
-l_int|1
+l_int|NULL
 suffix:semicolon
 id|printf_info
 c_func
@@ -7231,8 +7188,7 @@ id|instance
 )paren
 suffix:semicolon
 r_return
-op_minus
-l_int|1
+l_int|NULL
 suffix:semicolon
 )brace
 multiline_comment|/*&n; *    Detect and try to read SYMBIOS and TEKRAM NVRAM.&n; */
@@ -8145,7 +8101,7 @@ suffix:semicolon
 )brace
 macro_line|#endif
 multiline_comment|/*&n;&t; *  Ignore Symbios chips controlled by various RAID controllers.&n;&t; *  These controllers set value 0x52414944 at RAM end - 16.&n;&t; */
-macro_line|#if defined(__i386__) &amp;&amp; !defined(SYM_OPT_NO_BUS_MEMORY_MAPPING)
+macro_line|#if defined(__i386__)
 r_if
 c_cond
 (paren
@@ -8411,7 +8367,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/*&n; *  Linux release module stuff.&n; *&n; *  Called before unloading the module.&n; *  Detach the host.&n; *  We have to free resources and halt the NCR chip.&n; *&n; */
+multiline_comment|/*&n; *  Called before unloading the module.&n; *  Detach the host.&n; *  We have to free resources and halt the NCR chip.&n; */
 DECL|function|sym_detach
 r_static
 r_int
@@ -8444,7 +8400,7 @@ op_amp
 id|np-&gt;s.timer
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; *  Reset NCR chip.&n;&t; *  We should use sym_soft_reset(), but we donnot want to do &n;&t; *  so, since we may not be safe if interrupts occur.&n;&t; */
+multiline_comment|/*&n;&t; * Reset NCR chip.&n;&t; * We should use sym_soft_reset(), but we don&squot;t want to do &n;&t; * so, since we may not be safe if interrupts occur.&n;&t; */
 id|printk
 c_func
 (paren
@@ -8476,7 +8432,6 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; *  Free host resources&n;&t; */
 id|sym_free_resources
 c_func
 (paren
@@ -8843,6 +8798,11 @@ r_struct
 id|sym_nvram
 id|nvram
 suffix:semicolon
+r_struct
+id|Scsi_Host
+op_star
+id|instance
+suffix:semicolon
 id|memset
 c_func
 (paren
@@ -8933,9 +8893,8 @@ op_amp
 id|nvram
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
+id|instance
+op_assign
 id|sym_attach
 c_func
 (paren
@@ -8947,15 +8906,54 @@ comma
 op_amp
 id|sym_dev
 )paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|instance
 )paren
 r_goto
 id|free
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|scsi_add_host
+c_func
+(paren
+id|instance
+comma
+op_amp
+id|pdev-&gt;dev
+)paren
+)paren
+r_goto
+id|detach
+suffix:semicolon
+id|scsi_scan_host
+c_func
+(paren
+id|instance
+)paren
 suffix:semicolon
 id|attach_count
 op_increment
 suffix:semicolon
 r_return
 l_int|0
+suffix:semicolon
+id|detach
+suffix:colon
+id|sym_detach
+c_func
+(paren
+id|pci_get_drvdata
+c_func
+(paren
+id|pdev
+)paren
+)paren
 suffix:semicolon
 id|free
 suffix:colon
@@ -8991,14 +8989,40 @@ op_star
 id|pdev
 )paren
 (brace
-id|sym_detach
-c_func
-(paren
+r_struct
+id|sym_hcb
+op_star
+id|np
+op_assign
 id|pci_get_drvdata
 c_func
 (paren
 id|pdev
 )paren
+suffix:semicolon
+r_struct
+id|Scsi_Host
+op_star
+id|host
+op_assign
+id|np-&gt;s.host
+suffix:semicolon
+id|scsi_remove_host
+c_func
+(paren
+id|host
+)paren
+suffix:semicolon
+id|scsi_host_put
+c_func
+(paren
+id|host
+)paren
+suffix:semicolon
+id|sym_detach
+c_func
+(paren
+id|np
 )paren
 suffix:semicolon
 id|pci_release_regions

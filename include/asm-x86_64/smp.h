@@ -182,7 +182,7 @@ id|APIC_ID
 suffix:semicolon
 )brace
 DECL|macro|safe_smp_processor_id
-mdefine_line|#define safe_smp_processor_id() (cpuid_ebx(1) &gt;&gt; 24) 
+mdefine_line|#define safe_smp_processor_id() (disable_apic ? 0 : hard_smp_processor_id())
 DECL|macro|cpu_online
 mdefine_line|#define cpu_online(cpu) cpu_isset(cpu, cpu_online_map)
 macro_line|#endif /* !ASSEMBLY */

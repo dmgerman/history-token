@@ -38,6 +38,7 @@ mdefine_line|#define _IOC(dir,type,nr,size) &bslash;&n;&t;(((dir)  &lt;&lt; _IOC
 multiline_comment|/* provoke compile error for invalid uses of size argument */
 r_extern
 r_int
+r_int
 id|__invalid_size_argument_for_IOC
 suffix:semicolon
 DECL|macro|_IOC_TYPECHECK

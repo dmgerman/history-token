@@ -2177,7 +2177,7 @@ c_func
 (paren
 id|t
 comma
-id|thread-&gt;esp0
+id|thread
 )paren
 suffix:semicolon
 id|set_tss_desc

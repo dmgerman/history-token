@@ -3,8 +3,7 @@ multiline_comment|/* i2c-algo-bit.c i2c driver algorithms for bit-shift adapters
 multiline_comment|/* ------------------------------------------------------------------------- */
 multiline_comment|/*   Copyright (C) 1995-2000 Simon G. Vogl&n;&n;    This program is free software; you can redistribute it and/or modify&n;    it under the terms of the GNU General Public License as published by&n;    the Free Software Foundation; either version 2 of the License, or&n;    (at your option) any later version.&n;&n;    This program is distributed in the hope that it will be useful,&n;    but WITHOUT ANY WARRANTY; without even the implied warranty of&n;    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n;    GNU General Public License for more details.&n;&n;    You should have received a copy of the GNU General Public License&n;    along with this program; if not, write to the Free Software&n;    Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&t;&t;     */
 multiline_comment|/* ------------------------------------------------------------------------- */
-multiline_comment|/* With some changes from Ky&#xfffd;sti M&#xfffd;lkki &lt;kmalkki@cc.hut.fi&gt; and even&n;   Frodo Looijaard &lt;frodol@dds.nl&gt; */
-multiline_comment|/* $Id: i2c-algo-bit.c,v 1.44 2003/01/21 08:08:16 kmalkki Exp $ */
+multiline_comment|/* With some changes from Frodo Looijaard &lt;frodol@dds.nl&gt;, Ky&#xfffd;sti M&#xfffd;lkki&n;   &lt;kmalkki@cc.hut.fi&gt; and Jean Delvare &lt;khali@linux-fr.org&gt; */
 multiline_comment|/* #define DEBUG 1 */
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
@@ -165,9 +164,17 @@ id|adap-&gt;getscl
 op_eq
 l_int|NULL
 )paren
+(brace
+id|udelay
+c_func
+(paren
+id|adap-&gt;udelay
+)paren
+suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
+)brace
 id|start
 op_assign
 id|jiffies
@@ -813,6 +820,21 @@ id|scl
 comma
 id|sda
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|adap-&gt;getscl
+op_eq
+l_int|NULL
+)paren
+id|printk
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;i2c-algo-bit.o: Testing SDA only, &quot;
+l_string|&quot;SCL is not readable.&bslash;n&quot;
+)paren
+suffix:semicolon
 id|sda
 op_assign
 id|getsda
@@ -821,52 +843,32 @@ c_func
 id|adap
 )paren
 suffix:semicolon
-r_if
-c_cond
+id|scl
+op_assign
 (paren
 id|adap-&gt;getscl
 op_eq
 l_int|NULL
+ques
+c_cond
+l_int|1
+suffix:colon
+id|getscl
+c_func
+(paren
+id|adap
 )paren
-(brace
+)paren
+suffix:semicolon
 id|printk
 c_func
 (paren
-id|KERN_WARNING
-l_string|&quot;i2c-algo-bit.o: Warning: Adapter can&squot;t read from clock line - skipping test.&bslash;n&quot;
-)paren
-suffix:semicolon
-r_return
-l_int|0
-suffix:semicolon
-)brace
+id|KERN_DEBUG
+l_string|&quot;i2c-algo-bit.o: (0) scl=%d, sda=%d&bslash;n&quot;
+comma
 id|scl
-op_assign
-id|getscl
-c_func
-(paren
-id|adap
-)paren
-suffix:semicolon
-id|printk
-c_func
-(paren
-id|KERN_INFO
-l_string|&quot;i2c-algo-bit.o: Adapter: %s scl: %d  sda: %d -- testing...&bslash;n&quot;
 comma
-id|name
-comma
-id|getscl
-c_func
-(paren
-id|adap
-)paren
-comma
-id|getsda
-c_func
-(paren
-id|adap
-)paren
+id|sda
 )paren
 suffix:semicolon
 r_if
@@ -882,8 +884,8 @@ id|sda
 id|printk
 c_func
 (paren
-id|KERN_INFO
-l_string|&quot; i2c-algo-bit.o: %s seems to be busy.&bslash;n&quot;
+id|KERN_WARNING
+l_string|&quot;i2c-algo-bit.o: %s seems to be busy.&bslash;n&quot;
 comma
 id|name
 )paren
@@ -898,23 +900,40 @@ c_func
 id|adap
 )paren
 suffix:semicolon
-id|printk
-c_func
-(paren
-id|KERN_DEBUG
-l_string|&quot;i2c-algo-bit.o:1 scl: %d  sda: %d &bslash;n&quot;
-comma
-id|getscl
-c_func
-(paren
-id|adap
-)paren
-comma
+id|sda
+op_assign
 id|getsda
 c_func
 (paren
 id|adap
 )paren
+suffix:semicolon
+id|scl
+op_assign
+(paren
+id|adap-&gt;getscl
+op_eq
+l_int|NULL
+ques
+c_cond
+l_int|1
+suffix:colon
+id|getscl
+c_func
+(paren
+id|adap
+)paren
+)paren
+suffix:semicolon
+id|printk
+c_func
+(paren
+id|KERN_DEBUG
+l_string|&quot;i2c-algo-bit.o: (1) scl=%d, sda=%d&bslash;n&quot;
+comma
+id|scl
+comma
+id|sda
 )paren
 suffix:semicolon
 r_if
@@ -922,26 +941,14 @@ c_cond
 (paren
 l_int|0
 op_ne
-id|getsda
-c_func
-(paren
-id|adap
-)paren
+id|sda
 )paren
 (brace
 id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;i2c-algo-bit.o: %s SDA stuck high!&bslash;n&quot;
-comma
-id|name
-)paren
-suffix:semicolon
-id|sdahi
-c_func
-(paren
-id|adap
+l_string|&quot;i2c-algo-bit.o: SDA stuck high!&bslash;n&quot;
 )paren
 suffix:semicolon
 r_goto
@@ -953,20 +960,15 @@ c_cond
 (paren
 l_int|0
 op_eq
-id|getscl
-c_func
-(paren
-id|adap
-)paren
+id|scl
 )paren
 (brace
 id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;i2c-algo-bit.o: %s SCL unexpected low while pulling SDA low!&bslash;n&quot;
-comma
-id|name
+l_string|&quot;i2c-algo-bit.o: SCL unexpected low &quot;
+l_string|&quot;while pulling SDA low!&bslash;n&quot;
 )paren
 suffix:semicolon
 r_goto
@@ -977,25 +979,42 @@ id|sdahi
 c_func
 (paren
 id|adap
+)paren
+suffix:semicolon
+id|sda
+op_assign
+id|getsda
+c_func
+(paren
+id|adap
+)paren
+suffix:semicolon
+id|scl
+op_assign
+(paren
+id|adap-&gt;getscl
+op_eq
+l_int|NULL
+ques
+c_cond
+l_int|1
+suffix:colon
+id|getscl
+c_func
+(paren
+id|adap
+)paren
 )paren
 suffix:semicolon
 id|printk
 c_func
 (paren
 id|KERN_DEBUG
-l_string|&quot;i2c-algo-bit.o:2 scl: %d  sda: %d &bslash;n&quot;
+l_string|&quot;i2c-algo-bit.o: (2) scl=%d, sda=%d&bslash;n&quot;
 comma
-id|getscl
-c_func
-(paren
-id|adap
-)paren
+id|scl
 comma
-id|getsda
-c_func
-(paren
-id|adap
-)paren
+id|sda
 )paren
 suffix:semicolon
 r_if
@@ -1003,26 +1022,14 @@ c_cond
 (paren
 l_int|0
 op_eq
-id|getsda
-c_func
-(paren
-id|adap
-)paren
+id|sda
 )paren
 (brace
 id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;i2c-algo-bit.o: %s SDA stuck low!&bslash;n&quot;
-comma
-id|name
-)paren
-suffix:semicolon
-id|sdahi
-c_func
-(paren
-id|adap
+l_string|&quot;i2c-algo-bit.o: SDA stuck low!&bslash;n&quot;
 )paren
 suffix:semicolon
 r_goto
@@ -1034,20 +1041,15 @@ c_cond
 (paren
 l_int|0
 op_eq
-id|getscl
-c_func
-(paren
-id|adap
-)paren
+id|scl
 )paren
 (brace
 id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;i2c-algo-bit.o: %s SCL unexpected low while SDA high!&bslash;n&quot;
-comma
-id|name
+l_string|&quot;i2c-algo-bit.o: SCL unexpected low &quot;
+l_string|&quot;while pulling SDA high!&bslash;n&quot;
 )paren
 suffix:semicolon
 r_goto
@@ -1060,23 +1062,40 @@ c_func
 id|adap
 )paren
 suffix:semicolon
-id|printk
-c_func
-(paren
-id|KERN_DEBUG
-l_string|&quot;i2c-algo-bit.o:3 scl: %d  sda: %d &bslash;n&quot;
-comma
-id|getscl
-c_func
-(paren
-id|adap
-)paren
-comma
+id|sda
+op_assign
 id|getsda
 c_func
 (paren
 id|adap
 )paren
+suffix:semicolon
+id|scl
+op_assign
+(paren
+id|adap-&gt;getscl
+op_eq
+l_int|NULL
+ques
+c_cond
+l_int|0
+suffix:colon
+id|getscl
+c_func
+(paren
+id|adap
+)paren
+)paren
+suffix:semicolon
+id|printk
+c_func
+(paren
+id|KERN_DEBUG
+l_string|&quot;i2c-algo-bit.o: (3) scl=%d, sda=%d&bslash;n&quot;
+comma
+id|scl
+comma
+id|sda
 )paren
 suffix:semicolon
 r_if
@@ -1084,26 +1103,14 @@ c_cond
 (paren
 l_int|0
 op_ne
-id|getscl
-c_func
-(paren
-id|adap
-)paren
+id|scl
 )paren
 (brace
 id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;i2c-algo-bit.o: %s SCL stuck high!&bslash;n&quot;
-comma
-id|name
-)paren
-suffix:semicolon
-id|sclhi
-c_func
-(paren
-id|adap
+l_string|&quot;i2c-algo-bit.o: SCL stuck high!&bslash;n&quot;
 )paren
 suffix:semicolon
 r_goto
@@ -1115,20 +1122,15 @@ c_cond
 (paren
 l_int|0
 op_eq
-id|getsda
-c_func
-(paren
-id|adap
-)paren
+id|sda
 )paren
 (brace
 id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;i2c-algo-bit.o: %s SDA unexpected low while pulling SCL low!&bslash;n&quot;
-comma
-id|name
+l_string|&quot;i2c-algo-bit.o: SDA unexpected low &quot;
+l_string|&quot;while pulling SCL low!&bslash;n&quot;
 )paren
 suffix:semicolon
 r_goto
@@ -1139,25 +1141,42 @@ id|sclhi
 c_func
 (paren
 id|adap
+)paren
+suffix:semicolon
+id|sda
+op_assign
+id|getsda
+c_func
+(paren
+id|adap
+)paren
+suffix:semicolon
+id|scl
+op_assign
+(paren
+id|adap-&gt;getscl
+op_eq
+l_int|NULL
+ques
+c_cond
+l_int|1
+suffix:colon
+id|getscl
+c_func
+(paren
+id|adap
+)paren
 )paren
 suffix:semicolon
 id|printk
 c_func
 (paren
 id|KERN_DEBUG
-l_string|&quot;i2c-algo-bit.o:4 scl: %d  sda: %d &bslash;n&quot;
+l_string|&quot;i2c-algo-bit.o: (4) scl=%d, sda=%d&bslash;n&quot;
 comma
-id|getscl
-c_func
-(paren
-id|adap
-)paren
+id|scl
 comma
-id|getsda
-c_func
-(paren
-id|adap
-)paren
+id|sda
 )paren
 suffix:semicolon
 r_if
@@ -1165,26 +1184,14 @@ c_cond
 (paren
 l_int|0
 op_eq
-id|getscl
-c_func
-(paren
-id|adap
-)paren
+id|scl
 )paren
 (brace
 id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;i2c-algo-bit.o: %s SCL stuck low!&bslash;n&quot;
-comma
-id|name
-)paren
-suffix:semicolon
-id|sclhi
-c_func
-(paren
-id|adap
+l_string|&quot;i2c-algo-bit.o: SCL stuck low!&bslash;n&quot;
 )paren
 suffix:semicolon
 r_goto
@@ -1196,20 +1203,15 @@ c_cond
 (paren
 l_int|0
 op_eq
-id|getsda
-c_func
-(paren
-id|adap
-)paren
+id|sda
 )paren
 (brace
 id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;i2c-algo-bit.o: %s SDA unexpected low while SCL high!&bslash;n&quot;
-comma
-id|name
+l_string|&quot;i2c-algo-bit.o: SDA unexpected low &quot;
+l_string|&quot;while pulling SCL high!&bslash;n&quot;
 )paren
 suffix:semicolon
 r_goto

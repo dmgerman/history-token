@@ -310,6 +310,20 @@ op_star
 id|urb
 suffix:semicolon
 multiline_comment|/* for interrupt polling pipe */
+DECL|member|urb_complete
+r_struct
+id|completion
+op_star
+id|urb_complete
+suffix:semicolon
+multiline_comment|/* wait for urb to end */
+DECL|member|urb_active
+r_int
+r_int
+id|urb_active
+suffix:colon
+l_int|1
+suffix:semicolon
 multiline_comment|/* buffer for urb ... 1 bit each for hub and children, rounded up */
 DECL|member|buffer
 r_char

@@ -89,10 +89,6 @@ comma
 l_int|0x40
 )paren
 suffix:semicolon
-id|xtime.tv_sec
-op_assign
-l_int|0
-suffix:semicolon
 id|timer_irq.handler
 op_assign
 id|timer_interrupt
