@@ -1,4 +1,4 @@
-multiline_comment|/* rwsem-spinlock.c: R/W semaphores: contention handling functions for generic spinlock&n; *                                   implementation&n; *&n; * Copyright (c) 2001   David Howells (dhowells@redhat.com).&n; * - Derived partially from idea by Andrea Arcangeli &lt;andrea@suse.de&gt;&n; * - Derived also from comments by Linus&n; */
+multiline_comment|/* rwsem-spinlock.c: R/W semaphores: contention handling functions for&n; * generic spinlock implementation&n; *&n; * Copyright (c) 2001   David Howells (dhowells@redhat.com).&n; * - Derived partially from idea by Andrea Arcangeli &lt;andrea@suse.de&gt;&n; * - Derived also from comments by Linus&n; */
 macro_line|#include &lt;linux/rwsem.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
@@ -114,13 +114,13 @@ l_int|0
 suffix:semicolon
 macro_line|#endif
 )brace
-multiline_comment|/*&n; * handle the lock being released whilst there are processes blocked on it that can now run&n; * - if we come here, then:&n; *   - the &squot;active count&squot; _reached_ zero&n; *   - the &squot;waiting count&squot; is non-zero&n; * - the spinlock must be held by the caller&n; * - woken process blocks are discarded from the list after having task zeroed&n; * - writers are only woken if wakewrite is non-zero&n; */
-DECL|function|__rwsem_do_wake
+multiline_comment|/*&n; * handle the lock release when processes blocked on it that can now run&n; * - if we come here, then:&n; *   - the &squot;active count&squot; _reached_ zero&n; *   - the &squot;waiting count&squot; is non-zero&n; * - the spinlock must be held by the caller&n; * - woken process blocks are discarded from the list after having task zeroed&n; * - writers are only woken if wakewrite is non-zero&n; */
 r_static
 r_inline
 r_struct
 id|rw_semaphore
 op_star
+DECL|function|__rwsem_do_wake
 id|__rwsem_do_wake
 c_func
 (paren
@@ -188,7 +188,7 @@ r_goto
 id|dont_wake_writers
 suffix:semicolon
 )brace
-multiline_comment|/* if we are allowed to wake writers try to grant a single write lock if there&squot;s a&n;&t; * writer at the front of the queue&n;&t; * - we leave the &squot;waiting count&squot; incremented to signify potential contention&n;&t; */
+multiline_comment|/* if we are allowed to wake writers try to grant a single write lock&n;&t; * if there&squot;s a writer at the front of the queue&n;&t; * - we leave the &squot;waiting count&squot; incremented to signify potential&n;&t; *   contention&n;&t; */
 r_if
 c_cond
 (paren
@@ -213,6 +213,7 @@ id|tsk
 op_assign
 id|waiter-&gt;task
 suffix:semicolon
+multiline_comment|/* Don&squot;t touch waiter after -&gt;task has been NULLed */
 id|mb
 c_func
 (paren
@@ -238,7 +239,7 @@ r_goto
 id|out
 suffix:semicolon
 )brace
-multiline_comment|/* grant an infinite number of read locks to the readers at the front of the queue */
+multiline_comment|/* grant an infinite number of read locks to the front of the queue */
 id|dont_wake_writers
 suffix:colon
 id|woken
@@ -340,12 +341,12 @@ id|sem
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * wake a single writer&n; */
-DECL|function|__rwsem_wake_one_writer
 r_static
 r_inline
 r_struct
 id|rw_semaphore
 op_star
+DECL|function|__rwsem_wake_one_writer
 id|__rwsem_wake_one_writer
 c_func
 (paren
@@ -423,6 +424,7 @@ multiline_comment|/*&n; * get a read lock on the semaphore&n; */
 DECL|function|__down_read
 r_void
 id|fastcall
+id|__sched
 id|__down_read
 c_func
 (paren
@@ -652,10 +654,11 @@ r_return
 id|ret
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * get a write lock on the semaphore&n; * - note that we increment the waiting count anyway to indicate an exclusive lock&n; */
+multiline_comment|/*&n; * get a write lock on the semaphore&n; * - we increment the waiting count anyway to indicate an exclusive lock&n; */
 DECL|function|__down_write
 r_void
 id|fastcall
+id|__sched
 id|__down_write
 c_func
 (paren
