@@ -8812,7 +8812,7 @@ id|SECURITY_FS_USE_MNTPOINT
 )paren
 r_return
 op_minus
-id|ENOTSUPP
+id|EOPNOTSUPP
 suffix:semicolon
 id|AVC_AUDIT_DATA_INIT
 c_func
@@ -9070,7 +9070,7 @@ id|SECURITY_FS_USE_MNTPOINT
 )paren
 r_return
 op_minus
-id|ENOTSUPP
+id|EOPNOTSUPP
 suffix:semicolon
 r_return
 id|dentry_has_perm
