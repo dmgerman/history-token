@@ -2000,7 +2000,7 @@ id|t
 r_goto
 id|out_nolock
 suffix:semicolon
-multiline_comment|/* The null signal is a permissions and process existance probe.&n;&t;   No signal is actually delivered.  Same goes for zombies. */
+multiline_comment|/* The null signal is a permissions and process existence probe.&n;&t;   No signal is actually delivered.  Same goes for zombies. */
 id|ret
 op_assign
 l_int|0

@@ -2995,7 +2995,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t;&t; * This is needed untill the driver is capable of reading the&n;&t;&t; * onboard I2C SROM to discover the &quot;real&quot; memory size.&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * This is needed until the driver is capable of reading the&n;&t;&t; * onboard I2C SROM to discover the &quot;real&quot; memory size.&n;&t;&t; */
 r_if
 c_cond
 (paren

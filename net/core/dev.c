@@ -1005,7 +1005,7 @@ r_return
 id|dev
 suffix:semicolon
 )brace
-multiline_comment|/* &n;   Return value is changed to int to prevent illegal usage in future.&n;   It is still legal to use to check for device existance.&n;&n;   User should understand, that the result returned by this function&n;   is meaningless, if it was not issued under rtnl semaphore.&n; */
+multiline_comment|/* &n;   Return value is changed to int to prevent illegal usage in future.&n;   It is still legal to use to check for device existence.&n;&n;   User should understand, that the result returned by this function&n;   is meaningless, if it was not issued under rtnl semaphore.&n; */
 multiline_comment|/**&n; *&t;dev_get&t;-&t;test if a device exists&n; *&t;@name:&t;name to test for&n; *&n; *&t;Test if a name exists. Returns true if the name is found. In order&n; *&t;to be sure the name is not allocated or removed during the test the&n; *&t;caller must hold the rtnl semaphore.&n; *&n; *&t;This function primarily exists for back compatibility with older&n; *&t;drivers. &n; */
 DECL|function|dev_get
 r_int
