@@ -257,12 +257,14 @@ id|dentry_operations
 id|hpfs_dentry_operations
 op_assign
 (brace
+dot
 id|d_hash
-suffix:colon
+op_assign
 id|hpfs_hash_dentry
 comma
+dot
 id|d_compare
-suffix:colon
+op_assign
 id|hpfs_compare_dentry
 comma
 )brace
