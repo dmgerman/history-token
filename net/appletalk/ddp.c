@@ -7144,7 +7144,7 @@ c_func
 id|atalk_init
 )paren
 suffix:semicolon
-multiline_comment|/*&n; * Note on MOD_{INC,DEC}_USE_COUNT:&n; *&n; * Use counts are incremented/decremented when&n; * sockets are created/deleted.&n; *&n; * AppleTalk interfaces are not incremented until atalkd is run&n; * and are only decremented when they are downed.&n; *&n; * Ergo, before the AppleTalk module can be removed, all AppleTalk&n; * sockets be closed from user space.&n; */
+multiline_comment|/*&n; * No explicit module reference count manipulation is needed in the&n; * protocol. Socket layer sets module reference count for us&n; * and interfaces reference counting is done&n; * by the network device layer.&n; *&n; * Ergo, before the AppleTalk module can be removed, all AppleTalk&n; * sockets be closed from user space.&n; */
 DECL|function|atalk_exit
 r_static
 r_void
