@@ -1,6 +1,8 @@
+macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/smp.h&gt;
 macro_line|#include &lt;linux/time.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
+macro_line|#include &lt;asm/io.h&gt;
 multiline_comment|/* IBM Summit (EXA) Cyclone counter code*/
 DECL|macro|CYCLONE_CBAR_ADDR
 mdefine_line|#define CYCLONE_CBAR_ADDR 0xFEB00CD0
