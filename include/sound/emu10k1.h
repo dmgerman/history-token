@@ -981,6 +981,10 @@ DECL|macro|A_ADCIDX
 mdefine_line|#define A_ADCIDX&t;&t;0x63
 DECL|macro|A_ADCIDX_IDX
 mdefine_line|#define A_ADCIDX_IDX&t;&t;0x10000063
+DECL|macro|A_MICIDX
+mdefine_line|#define A_MICIDX&t;&t;0x64
+DECL|macro|A_MICIDX_IDX
+mdefine_line|#define A_MICIDX_IDX&t;&t;0x10000064
 DECL|macro|FXIDX
 mdefine_line|#define FXIDX&t;&t;&t;0x65&t;&t;/* FX recording buffer index register&t;&t;*/
 DECL|macro|FXIDX_MASK
@@ -3100,10 +3104,10 @@ DECL|macro|A_EXTIN_LINE2_L
 mdefine_line|#define A_EXTIN_LINE2_L&t;&t;0x08&t;/* audigy drive line2/mic2 - left */
 DECL|macro|A_EXTIN_LINE2_R
 mdefine_line|#define A_EXTIN_LINE2_R&t;&t;0x09&t;/*                           right */
-DECL|macro|A_EXTIN_RCA_SPDIF_L
-mdefine_line|#define A_EXTIN_RCA_SPDIF_L     0x0a    /* audigy drive RCA SPDIF - left */
-DECL|macro|A_EXTIN_RCA_SPDIF_R
-mdefine_line|#define A_EXTIN_RCA_SPDIF_R     0x0b    /*                          right */
+DECL|macro|A_EXTIN_ADC_L
+mdefine_line|#define A_EXTIN_ADC_L&t;&t;0x0a    /* Philips ADC - left */
+DECL|macro|A_EXTIN_ADC_R
+mdefine_line|#define A_EXTIN_ADC_R&t;&t;0x0b    /*               right */
 DECL|macro|A_EXTIN_AUX2_L
 mdefine_line|#define A_EXTIN_AUX2_L&t;&t;0x0c&t;/* audigy drive aux2 - left */
 DECL|macro|A_EXTIN_AUX2_R
@@ -3147,6 +3151,8 @@ DECL|macro|A_EXTOUT_ADC_CAP_L
 mdefine_line|#define A_EXTOUT_ADC_CAP_L&t;0x16&t;/* ADC capture buffer left */
 DECL|macro|A_EXTOUT_ADC_CAP_R
 mdefine_line|#define A_EXTOUT_ADC_CAP_R&t;0x17&t;/*                    right */
+DECL|macro|A_EXTOUT_MIC_CAP
+mdefine_line|#define A_EXTOUT_MIC_CAP&t;0x18&t;/* Mic capture buffer */
 multiline_comment|/* Audigy constants */
 DECL|macro|A_C_00000000
 mdefine_line|#define A_C_00000000&t;0xc0

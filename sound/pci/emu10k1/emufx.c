@@ -7818,7 +7818,7 @@ id|gpr
 op_add_assign
 l_int|2
 suffix:semicolon
-multiline_comment|/* Wave Capture */
+multiline_comment|/* Wave (PCM) Capture */
 id|A_OP
 c_func
 (paren
@@ -7897,7 +7897,7 @@ id|nctl
 op_increment
 )braket
 comma
-l_string|&quot;Wave Capture Volume&quot;
+l_string|&quot;PCM Capture Volume&quot;
 comma
 id|gpr
 comma
@@ -8013,7 +8013,7 @@ suffix:semicolon
 multiline_comment|/*&n;&t; * inputs&n;&t; */
 DECL|macro|A_ADD_VOLUME_IN
 mdefine_line|#define A_ADD_VOLUME_IN(var,vol,input) &bslash;&n;A_OP(icode, &amp;ptr, iMAC0, A_GPR(var), A_GPR(var), A_GPR(vol), A_EXTIN(input))
-multiline_comment|/* AC&squot;97 Playback Volume */
+multiline_comment|/* AC&squot;97 Playback Volume - used only for mic */
 id|A_ADD_VOLUME_IN
 c_func
 (paren
@@ -8048,18 +8048,18 @@ id|nctl
 op_increment
 )braket
 comma
-l_string|&quot;AC97 Playback Volume&quot;
+l_string|&quot;AMic Playback Volume&quot;
 comma
 id|gpr
 comma
-l_int|100
+l_int|0
 )paren
 suffix:semicolon
 id|gpr
 op_add_assign
 l_int|2
 suffix:semicolon
-multiline_comment|/* AC&squot;97 Capture Volume */
+multiline_comment|/* AC&squot;97 Capture Volume - used only for mic */
 id|A_ADD_VOLUME_IN
 c_func
 (paren
@@ -8094,16 +8094,48 @@ id|nctl
 op_increment
 )braket
 comma
-l_string|&quot;AC97 Capture Volume&quot;
+l_string|&quot;Mic Capture Volume&quot;
 comma
 id|gpr
 comma
-l_int|100
+l_int|0
 )paren
 suffix:semicolon
 id|gpr
 op_add_assign
 l_int|2
+suffix:semicolon
+multiline_comment|/* mic capture buffer */
+id|A_OP
+c_func
+(paren
+id|icode
+comma
+op_amp
+id|ptr
+comma
+id|iINTERP
+comma
+id|A_EXTOUT
+c_func
+(paren
+id|A_EXTOUT_MIC_CAP
+)paren
+comma
+id|A_EXTIN
+c_func
+(paren
+id|A_EXTIN_AC97_L
+)paren
+comma
+l_int|0xcd
+comma
+id|A_EXTIN
+c_func
+(paren
+id|A_EXTIN_AC97_R
+)paren
+)paren
 suffix:semicolon
 multiline_comment|/* Audigy CD Playback Volume */
 id|A_ADD_VOLUME_IN
@@ -8381,7 +8413,7 @@ id|gpr
 op_add_assign
 l_int|2
 suffix:semicolon
-multiline_comment|/* RCA SPDIF Playback Volume */
+multiline_comment|/* Philips ADC Playback Volume */
 id|A_ADD_VOLUME_IN
 c_func
 (paren
@@ -8389,7 +8421,7 @@ id|stereo_mix
 comma
 id|gpr
 comma
-id|A_EXTIN_RCA_SPDIF_L
+id|A_EXTIN_ADC_L
 )paren
 suffix:semicolon
 id|A_ADD_VOLUME_IN
@@ -8403,7 +8435,7 @@ id|gpr
 op_plus
 l_int|1
 comma
-id|A_EXTIN_RCA_SPDIF_R
+id|A_EXTIN_ADC_R
 )paren
 suffix:semicolon
 id|snd_emu10k1_init_stereo_control
@@ -8416,7 +8448,7 @@ id|nctl
 op_increment
 )braket
 comma
-l_string|&quot;IEC958 Coaxial Playback Volume&quot;
+l_string|&quot;Analog Mix Playback Volume&quot;
 comma
 id|gpr
 comma
@@ -8427,7 +8459,7 @@ id|gpr
 op_add_assign
 l_int|2
 suffix:semicolon
-multiline_comment|/* RCA SPDIF Capture Volume */
+multiline_comment|/* Philips ADC Capture Volume */
 id|A_ADD_VOLUME_IN
 c_func
 (paren
@@ -8435,7 +8467,7 @@ id|capture
 comma
 id|gpr
 comma
-id|A_EXTIN_RCA_SPDIF_L
+id|A_EXTIN_ADC_L
 )paren
 suffix:semicolon
 id|A_ADD_VOLUME_IN
@@ -8449,7 +8481,7 @@ id|gpr
 op_plus
 l_int|1
 comma
-id|A_EXTIN_RCA_SPDIF_R
+id|A_EXTIN_ADC_R
 )paren
 suffix:semicolon
 id|snd_emu10k1_init_stereo_control
@@ -8462,7 +8494,7 @@ id|nctl
 op_increment
 )braket
 comma
-l_string|&quot;IEC958 Coaxial Capture Volume&quot;
+l_string|&quot;Analog Mix Capture Volume&quot;
 comma
 id|gpr
 comma

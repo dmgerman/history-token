@@ -2770,6 +2770,101 @@ comma
 l_string|&quot;PCM Out Path &amp; Mute&quot;
 )paren
 suffix:semicolon
+id|remove_ctl
+c_func
+(paren
+id|card
+comma
+l_string|&quot;Mono Output Select&quot;
+)paren
+suffix:semicolon
+multiline_comment|/* set master volume to 0 dB */
+id|snd_ac97_write
+c_func
+(paren
+id|emu-&gt;ac97
+comma
+id|AC97_MASTER
+comma
+l_int|0x0202
+)paren
+suffix:semicolon
+multiline_comment|/* set capture source to mic */
+id|snd_ac97_write
+c_func
+(paren
+id|emu-&gt;ac97
+comma
+id|AC97_REC_SEL
+comma
+l_int|0x0000
+)paren
+suffix:semicolon
+multiline_comment|/* remove unused AC97 capture controls */
+id|remove_ctl
+c_func
+(paren
+id|card
+comma
+l_string|&quot;Capture Source&quot;
+)paren
+suffix:semicolon
+id|remove_ctl
+c_func
+(paren
+id|card
+comma
+l_string|&quot;Capture Switch&quot;
+)paren
+suffix:semicolon
+id|remove_ctl
+c_func
+(paren
+id|card
+comma
+l_string|&quot;Capture Volume&quot;
+)paren
+suffix:semicolon
+id|remove_ctl
+c_func
+(paren
+id|card
+comma
+l_string|&quot;Mic Select&quot;
+)paren
+suffix:semicolon
+id|remove_ctl
+c_func
+(paren
+id|card
+comma
+l_string|&quot;Video Playback Switch&quot;
+)paren
+suffix:semicolon
+id|remove_ctl
+c_func
+(paren
+id|card
+comma
+l_string|&quot;Video Playback Volume&quot;
+)paren
+suffix:semicolon
+id|remove_ctl
+c_func
+(paren
+id|card
+comma
+l_string|&quot;Mic Playback Switch&quot;
+)paren
+suffix:semicolon
+id|remove_ctl
+c_func
+(paren
+id|card
+comma
+l_string|&quot;Mic Playback Volume&quot;
+)paren
+suffix:semicolon
 )brace
 )brace
 r_else
@@ -2837,6 +2932,16 @@ comma
 l_string|&quot;Wave Master Playback Volume&quot;
 comma
 l_string|&quot;Master Playback Volume&quot;
+)paren
+suffix:semicolon
+id|rename_ctl
+c_func
+(paren
+id|card
+comma
+l_string|&quot;AMic Playback Volume&quot;
+comma
+l_string|&quot;Mic Playback Volume&quot;
 )paren
 suffix:semicolon
 )brace
@@ -3156,6 +3261,51 @@ id|kctl
 r_return
 id|err
 suffix:semicolon
+r_if
+c_cond
+(paren
+(paren
+id|kctl
+op_assign
+id|ctl_find
+c_func
+(paren
+id|card
+comma
+id|SNDRV_CTL_NAME_IEC958
+c_func
+(paren
+l_string|&quot;&quot;
+comma
+id|PLAYBACK
+comma
+id|DEFAULT
+)paren
+)paren
+)paren
+op_ne
+l_int|NULL
+)paren
+(brace
+multiline_comment|/* already defined by ac97, remove it */
+multiline_comment|/* FIXME: or do we need both controls? */
+id|remove_ctl
+c_func
+(paren
+id|card
+comma
+id|SNDRV_CTL_NAME_IEC958
+c_func
+(paren
+l_string|&quot;&quot;
+comma
+id|PLAYBACK
+comma
+id|DEFAULT
+)paren
+)paren
+suffix:semicolon
+)brace
 r_if
 c_cond
 (paren

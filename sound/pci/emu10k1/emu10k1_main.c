@@ -1440,6 +1440,28 @@ id|A_IOCFG
 )paren
 suffix:semicolon
 )brace
+r_else
+(brace
+multiline_comment|/* Disable routing from AC97 line out to Front speakers */
+id|outl
+c_func
+(paren
+id|inl
+c_func
+(paren
+id|emu-&gt;port
+op_plus
+id|A_IOCFG
+)paren
+op_or
+l_int|0x0080
+comma
+id|emu-&gt;port
+op_plus
+id|A_IOCFG
+)paren
+suffix:semicolon
+)brace
 )brace
 macro_line|#if 0
 (brace
