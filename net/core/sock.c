@@ -298,11 +298,9 @@ comma
 id|SOCK_TIMESTAMP
 )paren
 suffix:semicolon
-id|atomic_dec
+id|net_disable_timestamp
 c_func
 (paren
-op_amp
-id|netstamp_needed
 )paren
 suffix:semicolon
 )brace
@@ -4591,17 +4589,6 @@ c_func
 id|release_sock
 )paren
 suffix:semicolon
-multiline_comment|/* When &gt; 0 there are consumers of rx skb time stamps */
-DECL|variable|netstamp_needed
-id|atomic_t
-id|netstamp_needed
-op_assign
-id|ATOMIC_INIT
-c_func
-(paren
-l_int|0
-)paren
-suffix:semicolon
 DECL|function|sock_get_timestamp
 r_int
 id|sock_get_timestamp
@@ -4725,11 +4712,9 @@ comma
 id|SOCK_TIMESTAMP
 )paren
 suffix:semicolon
-id|atomic_inc
+id|net_enable_timestamp
 c_func
 (paren
-op_amp
-id|netstamp_needed
 )paren
 suffix:semicolon
 )brace
