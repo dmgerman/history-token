@@ -97,7 +97,7 @@ l_string|&quot;usb_stor_send_control(): transfer aborted&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
-id|US_BULK_TRANSFER_ABORTED
+id|USB_STOR_TRANSPORT_ABORTED
 suffix:semicolon
 )brace
 singleline_comment|// Check the return code for the command.
@@ -126,7 +126,7 @@ l_string|&quot;-- Stall on control pipe&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
-id|USB_STOR_TRANSPORT_FAILED
+id|USB_STOR_TRANSPORT_ERROR
 suffix:semicolon
 )brace
 multiline_comment|/* Uh oh... serious problem here */
@@ -252,9 +252,11 @@ OL
 l_int|0
 )paren
 r_return
-id|US_BULK_TRANSFER_FAILED
+id|USB_STOR_XFER_ERROR
 suffix:semicolon
-multiline_comment|/* return US_BULK_TRANSFER_SHORT; */
+r_return
+id|USB_STOR_XFER_STALLED
+suffix:semicolon
 )brace
 multiline_comment|/* did we abort this command? */
 r_if
@@ -277,7 +279,7 @@ l_string|&quot;usb_storage_raw_bulk(): transfer aborted&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
-id|US_BULK_TRANSFER_ABORTED
+id|USB_STOR_XFER_ABORTED
 suffix:semicolon
 )brace
 r_if
@@ -349,7 +351,7 @@ id|result
 )paren
 suffix:semicolon
 r_return
-id|US_BULK_TRANSFER_FAILED
+id|USB_STOR_XFER_ERROR
 suffix:semicolon
 )brace
 r_if
@@ -373,7 +375,7 @@ id|len
 )paren
 suffix:semicolon
 r_return
-id|US_BULK_TRANSFER_SHORT
+id|USB_STOR_XFER_SHORT
 suffix:semicolon
 )brace
 macro_line|#if 0
@@ -401,7 +403,7 @@ id|len
 suffix:semicolon
 macro_line|#endif
 r_return
-id|US_BULK_TRANSFER_GOOD
+id|USB_STOR_XFER_GOOD
 suffix:semicolon
 )brace
 r_int
@@ -433,7 +435,7 @@ id|use_sg
 r_int
 id|result
 op_assign
-id|USB_STOR_TRANSPORT_GOOD
+id|USB_STOR_XFER_ERROR
 suffix:semicolon
 r_int
 id|transferred
@@ -460,7 +462,7 @@ op_eq
 l_int|0
 )paren
 r_return
-id|USB_STOR_TRANSPORT_GOOD
+id|USB_STOR_XFER_GOOD
 suffix:semicolon
 macro_line|#if DEBUG_PRCT
 r_if
@@ -721,7 +723,7 @@ c_cond
 (paren
 id|result
 op_ne
-id|US_BULK_TRANSFER_GOOD
+id|USB_STOR_XFER_GOOD
 )paren
 r_break
 suffix:semicolon

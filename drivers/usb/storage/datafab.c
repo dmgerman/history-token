@@ -60,7 +60,7 @@ op_eq
 l_int|0
 )paren
 r_return
-id|USB_STOR_TRANSPORT_GOOD
+id|USB_STOR_XFER_GOOD
 suffix:semicolon
 id|US_DEBUGP
 c_func
@@ -122,7 +122,7 @@ op_eq
 l_int|0
 )paren
 r_return
-id|USB_STOR_TRANSPORT_GOOD
+id|USB_STOR_XFER_GOOD
 suffix:semicolon
 id|US_DEBUGP
 c_func
@@ -440,7 +440,7 @@ c_cond
 (paren
 id|result
 op_ne
-id|USB_STOR_TRANSPORT_GOOD
+id|USB_STOR_XFER_GOOD
 )paren
 r_goto
 id|leave
@@ -463,7 +463,7 @@ c_cond
 (paren
 id|result
 op_ne
-id|USB_STOR_TRANSPORT_GOOD
+id|USB_STOR_XFER_GOOD
 )paren
 r_goto
 id|leave
@@ -544,7 +544,7 @@ id|buffer
 )paren
 suffix:semicolon
 r_return
-id|result
+id|USB_STOR_TRANSPORT_ERROR
 suffix:semicolon
 )brace
 DECL|function|datafab_write_data
@@ -861,7 +861,7 @@ c_cond
 (paren
 id|result
 op_ne
-id|USB_STOR_TRANSPORT_GOOD
+id|USB_STOR_XFER_GOOD
 )paren
 r_goto
 id|leave
@@ -884,7 +884,7 @@ c_cond
 (paren
 id|result
 op_ne
-id|USB_STOR_TRANSPORT_GOOD
+id|USB_STOR_XFER_GOOD
 )paren
 r_goto
 id|leave
@@ -910,7 +910,7 @@ c_cond
 (paren
 id|result
 op_ne
-id|USB_STOR_TRANSPORT_GOOD
+id|USB_STOR_XFER_GOOD
 )paren
 r_goto
 id|leave
@@ -1012,7 +1012,7 @@ id|buffer
 )paren
 suffix:semicolon
 r_return
-id|result
+id|USB_STOR_TRANSPORT_ERROR
 suffix:semicolon
 )brace
 DECL|function|datafab_determine_lun
@@ -1129,10 +1129,10 @@ c_cond
 (paren
 id|rc
 op_ne
-id|USB_STOR_TRANSPORT_GOOD
+id|USB_STOR_XFER_GOOD
 )paren
 r_return
-id|rc
+id|USB_STOR_TRANSPORT_ERROR
 suffix:semicolon
 id|rc
 op_assign
@@ -1154,7 +1154,7 @@ c_cond
 (paren
 id|rc
 op_eq
-id|USB_STOR_TRANSPORT_GOOD
+id|USB_STOR_XFER_GOOD
 )paren
 (brace
 id|info-&gt;lun
@@ -1189,10 +1189,10 @@ c_cond
 (paren
 id|rc
 op_ne
-id|USB_STOR_TRANSPORT_GOOD
+id|USB_STOR_XFER_GOOD
 )paren
 r_return
-id|rc
+id|USB_STOR_TRANSPORT_ERROR
 suffix:semicolon
 id|rc
 op_assign
@@ -1214,7 +1214,7 @@ c_cond
 (paren
 id|rc
 op_eq
-id|USB_STOR_TRANSPORT_GOOD
+id|USB_STOR_XFER_GOOD
 )paren
 (brace
 id|info-&gt;lun
@@ -1233,7 +1233,7 @@ l_int|20
 suffix:semicolon
 )brace
 r_return
-id|USB_STOR_TRANSPORT_FAILED
+id|USB_STOR_TRANSPORT_ERROR
 suffix:semicolon
 )brace
 DECL|function|datafab_id_device
@@ -1362,10 +1362,10 @@ c_cond
 (paren
 id|rc
 op_ne
-id|USB_STOR_TRANSPORT_GOOD
+id|USB_STOR_XFER_GOOD
 )paren
 r_return
-id|rc
+id|USB_STOR_TRANSPORT_ERROR
 suffix:semicolon
 singleline_comment|// we&squot;ll go ahead and extract the media capacity while we&squot;re here...
 singleline_comment|//
@@ -1389,7 +1389,7 @@ c_cond
 (paren
 id|rc
 op_eq
-id|USB_STOR_TRANSPORT_GOOD
+id|USB_STOR_XFER_GOOD
 )paren
 (brace
 singleline_comment|// capacity is at word offset 57-58
@@ -1450,9 +1450,12 @@ l_int|114
 )paren
 )paren
 suffix:semicolon
+r_return
+id|USB_STOR_TRANSPORT_GOOD
+suffix:semicolon
 )brace
 r_return
-id|rc
+id|USB_STOR_TRANSPORT_ERROR
 suffix:semicolon
 )brace
 DECL|function|datafab_handle_mode_sense

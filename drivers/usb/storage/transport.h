@@ -142,15 +142,17 @@ DECL|macro|US_BULK_RESET_REQUEST
 mdefine_line|#define US_BULK_RESET_REQUEST&t;0xff
 DECL|macro|US_BULK_GET_MAX_LUN
 mdefine_line|#define US_BULK_GET_MAX_LUN&t;0xfe
-multiline_comment|/*&n; * usb_stor_transfer() return codes&n; */
-DECL|macro|US_BULK_TRANSFER_GOOD
-mdefine_line|#define US_BULK_TRANSFER_GOOD&t;&t;0  /* good transfer                 */
-DECL|macro|US_BULK_TRANSFER_SHORT
-mdefine_line|#define US_BULK_TRANSFER_SHORT&t;&t;1  /* transfered less than expected */
-DECL|macro|US_BULK_TRANSFER_FAILED
-mdefine_line|#define US_BULK_TRANSFER_FAILED&t;&t;2  /* transfer died in the middle   */
-DECL|macro|US_BULK_TRANSFER_ABORTED
-mdefine_line|#define US_BULK_TRANSFER_ABORTED&t;3  /* transfer canceled             */
+multiline_comment|/*&n; * usb_stor_transfer() return codes, in order of severity&n; */
+DECL|macro|USB_STOR_XFER_GOOD
+mdefine_line|#define USB_STOR_XFER_GOOD&t;&t;0  /* good transfer                 */
+DECL|macro|USB_STOR_XFER_SHORT
+mdefine_line|#define USB_STOR_XFER_SHORT&t;&t;1  /* transfered less than expected */
+DECL|macro|USB_STOR_XFER_STALLED
+mdefine_line|#define USB_STOR_XFER_STALLED&t;&t;2  /* endpoint stalled&t;&t;    */
+DECL|macro|USB_STOR_XFER_ERROR
+mdefine_line|#define USB_STOR_XFER_ERROR&t;&t;3  /* transfer died in the middle   */
+DECL|macro|USB_STOR_XFER_ABORTED
+mdefine_line|#define USB_STOR_XFER_ABORTED&t;&t;4  /* transfer canceled             */
 multiline_comment|/*&n; * Transport return codes&n; */
 DECL|macro|USB_STOR_TRANSPORT_GOOD
 mdefine_line|#define USB_STOR_TRANSPORT_GOOD&t;   0   /* Transport good, command good&t;   */
