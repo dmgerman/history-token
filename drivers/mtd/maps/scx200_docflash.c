@@ -319,30 +319,20 @@ r_return
 op_minus
 id|ENODEV
 suffix:semicolon
+multiline_comment|/* check that we have found the configuration block */
 r_if
 c_cond
 (paren
 op_logical_neg
-id|scx200_cb_probe
+id|scx200_cb_present
 c_func
 (paren
-id|SCx200_CB_BASE
 )paren
 )paren
-(brace
-id|printk
-c_func
-(paren
-id|KERN_WARNING
-id|NAME
-l_string|&quot;: no configuration block found&bslash;n&quot;
-)paren
-suffix:semicolon
 r_return
 op_minus
 id|ENODEV
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -377,7 +367,7 @@ op_assign
 id|inl
 c_func
 (paren
-id|SCx200_CB_BASE
+id|scx200_cb_base
 op_plus
 id|SCx200_PMR
 )paren
@@ -671,7 +661,7 @@ op_assign
 id|inl
 c_func
 (paren
-id|SCx200_CB_BASE
+id|scx200_cb_base
 op_plus
 id|SCx200_PMR
 )paren
@@ -710,7 +700,7 @@ c_func
 (paren
 id|pmr
 comma
-id|SCx200_CB_BASE
+id|scx200_cb_base
 op_plus
 id|SCx200_PMR
 )paren
