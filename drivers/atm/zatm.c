@@ -9755,9 +9755,6 @@ c_func
 id|zatm_dev
 )paren
 suffix:semicolon
-multiline_comment|/* XXX: currently the driver is not unloadable.. */
-id|MOD_INC_USE_COUNT
-suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
@@ -9775,4 +9772,5 @@ c_func
 id|zatm_module_init
 )paren
 suffix:semicolon
+multiline_comment|/* module_exit not defined so not unloadable */
 eof
