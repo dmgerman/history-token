@@ -828,7 +828,7 @@ suffix:semicolon
 id|__put_user
 c_func
 (paren
-l_int|NULL
+l_int|0
 comma
 id|argv
 )paren
@@ -901,7 +901,7 @@ suffix:semicolon
 id|__put_user
 c_func
 (paren
-l_int|NULL
+l_int|0
 comma
 id|envp
 )paren
