@@ -191,6 +191,8 @@ multiline_comment|/*&n; * DBSR bits which have conflicting definitions on true B
 macro_line|#ifdef CONFIG_BOOKE
 DECL|macro|DBSR_IC
 mdefine_line|#define DBSR_IC&t;&t;0x08000000&t;/* Instruction Completion */
+DECL|macro|DBSR_BT
+mdefine_line|#define DBSR_BT&t;&t;0x04000000&t;/* Branch Taken */
 DECL|macro|DBSR_TIE
 mdefine_line|#define DBSR_TIE&t;0x01000000&t;/* Trap Instruction Event */
 macro_line|#endif
