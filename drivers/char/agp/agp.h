@@ -418,6 +418,7 @@ id|dev
 suffix:semicolon
 DECL|member|gatt_table
 id|u32
+id|__iomem
 op_star
 id|gatt_table
 suffix:semicolon
