@@ -1159,6 +1159,15 @@ c_cond
 (paren
 id|retval
 )paren
+(brace
+r_if
+c_cond
+(paren
+id|retval
+op_ne
+op_minus
+id|ENOSPC
+)paren
 id|reiserfs_warning
 (paren
 l_string|&quot;vs-2120: add_save_link: insert_item returned %d&bslash;n&quot;
@@ -1166,6 +1175,7 @@ comma
 id|retval
 )paren
 suffix:semicolon
+)brace
 r_else
 (brace
 r_if
