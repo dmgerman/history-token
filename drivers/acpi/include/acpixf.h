@@ -498,7 +498,7 @@ suffix:semicolon
 id|acpi_status
 id|acpi_acquire_global_lock
 (paren
-id|u32
+id|u16
 id|timeout
 comma
 id|u32
