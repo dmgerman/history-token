@@ -14,7 +14,6 @@ macro_line|#include &lt;support/sv.h&gt;
 macro_line|#include &lt;support/ktrace.h&gt;
 macro_line|#include &lt;support/mutex.h&gt;
 macro_line|#include &lt;support/sema.h&gt;
-macro_line|#include &lt;support/atomic.h&gt;
 macro_line|#include &lt;support/debug.h&gt;
 macro_line|#include &lt;support/move.h&gt;
 macro_line|#include &lt;support/uuid.h&gt;

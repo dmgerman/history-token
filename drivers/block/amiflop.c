@@ -7331,11 +7331,8 @@ suffix:colon
 r_if
 c_cond
 (paren
-id|blk_queue_empty
-c_func
-(paren
-id|QUEUE
-)paren
+op_logical_neg
+id|CURRENT
 )paren
 (brace
 multiline_comment|/* Nothing left to do */

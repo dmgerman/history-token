@@ -5,7 +5,6 @@ macro_line|#include &lt;xfs_types.h&gt;
 macro_line|#include &quot;kmem.h&quot;
 macro_line|#include &quot;spin.h&quot;
 macro_line|#include &quot;debug.h&quot;
-macro_line|#include &quot;atomic.h&quot;
 macro_line|#include &quot;ktrace.h&quot;
 macro_line|#if&t;(defined(DEBUG) || defined(CONFIG_XFS_VNODE_TRACING))
 DECL|variable|ktrace_hdr_zone
@@ -445,6 +444,12 @@ op_star
 id|val15
 )paren
 (brace
+r_static
+id|lock_t
+id|wrap_lock
+op_assign
+id|SPIN_LOCK_UNLOCKED
+suffix:semicolon
 r_int
 id|index
 suffix:semicolon
@@ -461,15 +466,34 @@ l_int|NULL
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * Grab an entry by pushing the index up to the next one.&n;&t; */
-id|index
-op_assign
-id|atomicIncWithWrap
+id|spin_lock
 c_func
 (paren
 op_amp
+id|wrap_lock
+)paren
+suffix:semicolon
+id|index
+op_assign
 id|ktp-&gt;kt_index
-comma
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_increment
+id|ktp-&gt;kt_index
+op_eq
 id|ktp-&gt;kt_nentries
+)paren
+id|ktp-&gt;kt_index
+op_assign
+l_int|0
+suffix:semicolon
+id|spin_unlock
+c_func
+(paren
+op_amp
+id|wrap_lock
 )paren
 suffix:semicolon
 r_if

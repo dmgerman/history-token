@@ -196,8 +196,8 @@ id|bhv_vfsops
 id|xfs_dmops
 suffix:semicolon
 r_extern
-r_void
-id|xfs_dm_init
+r_int
+id|dmapi_init
 c_func
 (paren
 r_void
@@ -205,7 +205,7 @@ r_void
 suffix:semicolon
 r_extern
 r_void
-id|xfs_dm_exit
+id|dmapi_uninit
 c_func
 (paren
 r_void

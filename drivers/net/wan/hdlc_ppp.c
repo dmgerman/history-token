@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * Generic HDLC support routines for Linux&n; * Point-to-point protocol support&n; *&n; * Copyright (C) 1999 - 2001 Krzysztof Halasa &lt;khc@pm.waw.pl&gt;&n; *&n; * This program is free software; you can redistribute it and/or modify it&n; * under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; */
+multiline_comment|/*&n; * Generic HDLC support routines for Linux&n; * Point-to-point protocol support&n; *&n; * Copyright (C) 1999 - 2003 Krzysztof Halasa &lt;khc@pm.waw.pl&gt;&n; *&n; * This program is free software; you can redistribute it and/or modify it&n; * under the terms of version 2 of the GNU General Public License&n; * as published by the Free Software Foundation.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -164,30 +164,29 @@ op_assign
 l_int|16
 suffix:semicolon
 )brace
-DECL|function|ppp_rx
+DECL|function|ppp_type_trans
 r_static
-r_void
-id|ppp_rx
+r_int
+r_int
+id|ppp_type_trans
 c_func
 (paren
 r_struct
 id|sk_buff
 op_star
 id|skb
+comma
+r_struct
+id|net_device
+op_star
+id|dev
 )paren
 (brace
-id|skb-&gt;protocol
-op_assign
-id|htons
+r_return
+id|__constant_htons
 c_func
 (paren
 id|ETH_P_WAN_PPP
-)paren
-suffix:semicolon
-id|netif_rx
-c_func
-(paren
-id|skb
 )paren
 suffix:semicolon
 )brace
@@ -308,7 +307,11 @@ id|ppp_close
 suffix:semicolon
 id|hdlc-&gt;netif_rx
 op_assign
-id|ppp_rx
+l_int|NULL
+suffix:semicolon
+id|hdlc-&gt;type_trans
+op_assign
+id|ppp_type_trans
 suffix:semicolon
 id|hdlc-&gt;proto
 op_assign

@@ -2240,9 +2240,12 @@ id|port-&gt;hdlc
 suffix:semicolon
 id|skb-&gt;protocol
 op_assign
-id|htons
+id|hdlc_type_trans
+c_func
 (paren
-id|ETH_P_HDLC
+id|skb
+comma
+id|skb-&gt;dev
 )paren
 suffix:semicolon
 id|netif_rx
