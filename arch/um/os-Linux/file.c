@@ -1387,12 +1387,14 @@ r_struct
 id|iovec
 )paren
 (brace
+dot
 id|iov_base
-suffix:colon
+op_assign
 id|helper_pid_out
 comma
+dot
 id|iov_len
-suffix:colon
+op_assign
 r_sizeof
 (paren
 op_star
