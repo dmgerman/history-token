@@ -208,9 +208,22 @@ op_star
 id|timer
 )paren
 suffix:semicolon
+r_extern
+r_int
+id|del_singleshot_timer_sync
+c_func
+(paren
+r_struct
+id|timer_list
+op_star
+id|timer
+)paren
+suffix:semicolon
 macro_line|#else
 DECL|macro|del_timer_sync
 macro_line|# define del_timer_sync(t) del_timer(t)
+DECL|macro|del_singleshot_timer_sync
+macro_line|# define del_singleshot_timer_sync(t) del_timer(t)
 macro_line|#endif
 r_extern
 r_void

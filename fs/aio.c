@@ -3281,7 +3281,7 @@ op_star
 id|to
 )paren
 (brace
-id|del_timer_sync
+id|del_singleshot_timer_sync
 c_func
 (paren
 op_amp
