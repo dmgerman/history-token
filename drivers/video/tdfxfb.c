@@ -326,7 +326,11 @@ comma
 dot
 id|remove
 op_assign
+id|__devexit_p
+c_func
+(paren
 id|tdfxfb_remove
+)paren
 comma
 )brace
 suffix:semicolon
