@@ -93,6 +93,8 @@ DECL|macro|E1000_DEFAULT_PBA
 mdefine_line|#define E1000_DEFAULT_PBA    0x00000030
 DECL|macro|AUTO_ALL_MODES
 mdefine_line|#define AUTO_ALL_MODES       0
+DECL|macro|E1000_EEPROM_APME
+mdefine_line|#define E1000_EEPROM_APME    4
 multiline_comment|/* only works for sizes that are powers of 2 */
 DECL|macro|E1000_ROUNDUP
 mdefine_line|#define E1000_ROUNDUP(i, size) ((i) = (((i) + (size) - 1) &amp; ~((size) - 1)))
