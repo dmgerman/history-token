@@ -971,6 +971,12 @@ id|mpnt-&gt;vm_file
 op_assign
 l_int|NULL
 suffix:semicolon
+id|mpol_set_vma_default
+c_func
+(paren
+id|mpnt
+)paren
+suffix:semicolon
 id|INIT_LIST_HEAD
 c_func
 (paren

@@ -428,6 +428,12 @@ id|vma-&gt;vm_private_data
 op_assign
 l_int|NULL
 suffix:semicolon
+id|mpol_set_vma_default
+c_func
+(paren
+id|vma
+)paren
+suffix:semicolon
 id|insert_vm_struct
 c_func
 (paren
@@ -510,6 +516,12 @@ op_or
 id|VM_IO
 op_or
 id|VM_RESERVED
+suffix:semicolon
+id|mpol_set_vma_default
+c_func
+(paren
+id|vma
+)paren
 suffix:semicolon
 id|insert_vm_struct
 c_func

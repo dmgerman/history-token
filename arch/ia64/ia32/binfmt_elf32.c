@@ -294,6 +294,12 @@ id|vma-&gt;vm_private_data
 op_assign
 l_int|NULL
 suffix:semicolon
+id|mpol_set_vma_default
+c_func
+(paren
+id|vma
+)paren
+suffix:semicolon
 id|down_write
 c_func
 (paren
@@ -664,6 +670,12 @@ suffix:semicolon
 id|mpnt-&gt;vm_private_data
 op_assign
 l_int|0
+suffix:semicolon
+id|mpol_set_vma_default
+c_func
+(paren
+id|mpnt
+)paren
 suffix:semicolon
 id|insert_vm_struct
 c_func

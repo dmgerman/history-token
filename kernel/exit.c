@@ -3051,6 +3051,12 @@ c_func
 (paren
 )paren
 suffix:semicolon
+id|mpol_free
+c_func
+(paren
+id|tsk-&gt;mempolicy
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren

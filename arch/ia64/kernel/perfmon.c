@@ -7866,6 +7866,12 @@ id|vma-&gt;vm_file
 op_assign
 l_int|NULL
 suffix:semicolon
+id|mpol_set_vma_default
+c_func
+(paren
+id|vma
+)paren
+suffix:semicolon
 id|vma-&gt;vm_private_data
 op_assign
 l_int|NULL
