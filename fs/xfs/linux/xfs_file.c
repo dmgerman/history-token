@@ -1868,14 +1868,14 @@ op_logical_and
 (paren
 id|newflags
 op_amp
-id|PROT_WRITE
+id|VM_WRITE
 )paren
 op_logical_and
 op_logical_neg
 (paren
 id|vma-&gt;vm_flags
 op_amp
-id|PROT_WRITE
+id|VM_WRITE
 )paren
 )paren
 (brace
