@@ -2,6 +2,7 @@ multiline_comment|/*&n; * net/sched/estimator.c&t;Simple rate estimator.&n; *&n;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/bitops.h&gt;
+macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/jiffies.h&gt;
@@ -689,4 +690,18 @@ id|timer
 suffix:semicolon
 )brace
 )brace
+DECL|variable|qdisc_kill_estimator
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|qdisc_kill_estimator
+)paren
+suffix:semicolon
+DECL|variable|qdisc_new_estimator
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|qdisc_new_estimator
+)paren
+suffix:semicolon
 eof
