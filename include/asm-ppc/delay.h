@@ -21,9 +21,9 @@ id|loops
 suffix:semicolon
 multiline_comment|/*&n; * Note that 19 * 226 == 4294 ==~ 2^32 / 10^6, so&n; * loops = (4294 * usecs * loops_per_jiffy * HZ) / 2^32.&n; *&n; * The mulhwu instruction gives us loops = (a * b) / 2^32.&n; * We choose a = usecs * 19 * HZ and b = loops_per_jiffy * 226&n; * because this lets us support a wide range of HZ and&n; * loops_per_jiffy values without either a or b overflowing 2^32.&n; * Thus we need usecs * HZ &lt;= (2^32 - 1) / 19 = 226050910 and&n; * loops_per_jiffy &lt;= (2^32 - 1) / 226 = 19004280&n; * (which corresponds to ~3800 bogomips at HZ = 100).&n; *  -- paulus&n; */
 DECL|macro|__MAX_UDELAY
-mdefine_line|#define __MAX_UDELAY&t;(226050910/HZ)&t;/* maximum udelay argument */
+mdefine_line|#define __MAX_UDELAY&t;(226050910UL/HZ)&t;/* maximum udelay argument */
 DECL|macro|__MAX_NDELAY
-mdefine_line|#define __MAX_NDELAY&t;(2147483647/HZ)&t;/* maximum ndelay argument */
+mdefine_line|#define __MAX_NDELAY&t;(4294967295UL/HZ)&t;/* maximum ndelay argument */
 DECL|function|__udelay
 r_extern
 id|__inline__
