@@ -2310,14 +2310,11 @@ macro_line|#else
 r_if
 c_cond
 (paren
-id|remap_pfn_range
-c_func
-(paren
-id|DRM_RPR_ARG
+id|io_remap_pfn_range
 c_func
 (paren
 id|vma
-)paren
+comma
 id|vma-&gt;vm_start
 comma
 (paren

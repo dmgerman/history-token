@@ -153,6 +153,11 @@ id|__iomem
 op_star
 id|hp_hpet
 suffix:semicolon
+DECL|member|hp_hpet_phys
+r_int
+r_int
+id|hp_hpet_phys
+suffix:semicolon
 DECL|member|hp_interpolator
 r_struct
 id|time_interpolator
@@ -984,11 +989,7 @@ id|file-&gt;private_data
 suffix:semicolon
 id|addr
 op_assign
-(paren
-r_int
-r_int
-)paren
-id|devp-&gt;hd_hpet
+id|devp-&gt;hd_hpets-&gt;hp_hpet_phys
 suffix:semicolon
 r_if
 c_cond
@@ -1028,7 +1029,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|remap_pfn_range
+id|io_remap_pfn_range
 c_func
 (paren
 id|vma
@@ -3395,6 +3396,10 @@ suffix:semicolon
 id|hpetp-&gt;hp_hpet
 op_assign
 id|hdp-&gt;hd_address
+suffix:semicolon
+id|hpetp-&gt;hp_hpet_phys
+op_assign
+id|hdp-&gt;hd_phys_address
 suffix:semicolon
 id|hpetp-&gt;hp_ntimer
 op_assign
