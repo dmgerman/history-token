@@ -99,10 +99,12 @@ id|sbi-&gt;log
 )paren
 )paren
 multiline_comment|/*&n;&t;&t; * Wait for outstanding transactions to be written to log: &n;&t;&t; */
-id|lmLogWait
+id|jfs_flush_journal
 c_func
 (paren
 id|log
+comma
+l_int|1
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * close fileset inode allocation map (aka fileset inode)&n;&t; */
@@ -349,10 +351,12 @@ r_return
 l_int|0
 suffix:semicolon
 multiline_comment|/*&n;&t; * close log: &n;&t; *&n;&t; * remove file system from log active file system list.&n;&t; */
-id|lmLogWait
+id|jfs_flush_journal
 c_func
 (paren
 id|log
+comma
+l_int|1
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * Make sure all metadata makes it to disk&n;&t; */
