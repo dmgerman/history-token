@@ -5,6 +5,7 @@ macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/devfs_fs_kernel.h&gt;
+macro_line|#include &lt;linux/buffer_head.h&gt;&t;&t;/* for invalidate_bdev() */
 macro_line|#include &lt;asm/uaccess.h&gt;
 multiline_comment|/*&n; * 35 has been officially registered as the RAMDISK major number, but&n; * so is the original MAJOR number of 1.  We&squot;re using 1 in&n; * include/linux/major.h for now&n; */
 DECL|macro|MAJOR_NR
