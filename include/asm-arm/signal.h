@@ -346,8 +346,8 @@ id|stack_t
 suffix:semicolon
 macro_line|#ifdef __KERNEL__
 macro_line|#include &lt;asm/sigcontext.h&gt;
-DECL|macro|HAVE_ARCH_GET_SIGNAL_TO_DELIVER
-mdefine_line|#define HAVE_ARCH_GET_SIGNAL_TO_DELIVER
+DECL|macro|ptrace_signal_deliver
+mdefine_line|#define ptrace_signal_deliver(regs, cookie) do { } while (0)
 macro_line|#endif
 macro_line|#endif
 eof

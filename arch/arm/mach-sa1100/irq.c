@@ -3,11 +3,12 @@ macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/ioport.h&gt;
 macro_line|#include &lt;linux/ptrace.h&gt;
+macro_line|#include &lt;linux/device.h&gt;
 macro_line|#include &lt;asm/hardware.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;asm/mach/irq.h&gt;
 macro_line|#include &quot;generic.h&quot;
-multiline_comment|/*&n; * SA1100 GPIO edge detection for IRQs:&n; * IRQs are generated on Falling-Edge, Rising-Edge, or both.&n; * This must be called *before* the appropriate IRQ is registered.&n; * Use this instead of directly setting GRER/GFER.&n; */
+multiline_comment|/*&n; * SA1100 GPIO edge detection for IRQs:&n; * IRQs are generated on Falling-Edge, Rising-Edge, or both.&n; * Use this instead of directly setting GRER/GFER.&n; */
 DECL|variable|GPIO_IRQ_rising_edge
 r_static
 r_int
@@ -31,56 +32,6 @@ l_int|11
 op_minus
 l_int|1
 suffix:semicolon
-DECL|function|sa1100_manual_rerun
-r_static
-r_void
-id|sa1100_manual_rerun
-c_func
-(paren
-r_int
-r_int
-id|irq
-)paren
-(brace
-r_struct
-id|pt_regs
-id|regs
-suffix:semicolon
-id|memset
-c_func
-(paren
-op_amp
-id|regs
-comma
-l_int|0
-comma
-r_sizeof
-(paren
-id|regs
-)paren
-)paren
-suffix:semicolon
-id|irq_desc
-(braket
-id|irq
-)braket
-dot
-id|handle
-c_func
-(paren
-id|irq
-comma
-op_amp
-id|irq_desc
-(braket
-id|irq
-)braket
-comma
-op_amp
-id|regs
-)paren
-suffix:semicolon
-)brace
 multiline_comment|/*&n; * To get the GPIO number from an IRQ number&n; */
 DECL|macro|GPIO_11_27_IRQ
 mdefine_line|#define GPIO_11_27_IRQ(i)&t;((i) - 21)
@@ -331,11 +282,6 @@ dot
 id|unmask
 op_assign
 id|sa1100_low_gpio_unmask
-comma
-dot
-id|rerun
-op_assign
-id|sa1100_manual_rerun
 comma
 dot
 id|type
@@ -621,11 +567,6 @@ op_assign
 id|sa1100_high_gpio_unmask
 comma
 dot
-id|rerun
-op_assign
-id|sa1100_manual_rerun
-comma
-dot
 id|type
 op_assign
 id|sa1100_gpio_type
@@ -701,7 +642,6 @@ id|unmask
 op_assign
 id|sa1100_unmask_irq
 comma
-multiline_comment|/* rerun should never be called */
 )brace
 suffix:semicolon
 DECL|variable|irq_resource
@@ -923,16 +863,6 @@ c_func
 id|IRQ_GPIO11_27
 comma
 id|sa1100_high_gpio_handler
-)paren
-suffix:semicolon
-multiline_comment|/*&n;&t; * We generally don&squot;t want the LCD IRQ being&n;&t; * enabled as soon as we request it.&n;&t; */
-id|set_irq_flags
-c_func
-(paren
-id|IRQ_LCD
-comma
-id|IRQF_VALID
-multiline_comment|/* | IRQF_NOAUTOEN*/
 )paren
 suffix:semicolon
 )brace
