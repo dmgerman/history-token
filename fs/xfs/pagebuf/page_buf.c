@@ -1,5 +1,5 @@
-multiline_comment|/*&n; * Copyright (c) 2000-2002 Silicon Graphics, Inc.  All Rights Reserved.&n; *&n; * This program is free software; you can redistribute it and/or modify it&n; * under the terms of version 2 of the GNU General Public License as&n; * published by the Free Software Foundation.&n; *&n; * This program is distributed in the hope that it would be useful, but&n; * WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.&n; *&n; * Further, this software is distributed without any warranty that it is&n; * free of the rightful claim of any third person regarding infringement&n; * or the like.&t; Any license provided herein, whether implied or&n; * otherwise, applies only to this software file.  Patent licenses, if&n; * any, provided herein do not apply to combinations of this program with&n; * other software, or any other product whatsoever.&n; *&n; * You should have received a copy of the GNU General Public License along&n; * with this program; if not, write the Free Software Foundation, Inc., 59&n; * Temple Place - Suite 330, Boston MA 02111-1307, USA.&n; *&n; * Contact information: Silicon Graphics, Inc., 1600 Amphitheatre Pkwy,&n; * Mountain View, CA  94043, or:&n; *&n; * http://www.sgi.com&n; *&n; * For further information regarding this notice, see:&n; *&n; * http://oss.sgi.com/projects/GenInfo/SGIGPLNoticeExplan/&n; */
-multiline_comment|/*&n; *&t;page_buf.c&n; *&n; *&t;The page_buf module provides an abstract buffer cache model on top of&n; *&t;the Linux page cache.  Cached metadata blocks for a file system are&n; *&t;hashed to the inode for the block device.  The page_buf module&n; *&t;assembles buffer (page_buf_t) objects on demand to aggregate such&n; *&t;cached pages for I/O.&n; *&n; *&n; *&t;Written by Steve Lord, Jim Mostek, Russell Cattelan&n; *&t;&t;    and Rajagopal Ananthanarayanan (&quot;ananth&quot;) at SGI.&n; *&n; */
+multiline_comment|/*&n; * Copyright (c) 2000-2002 Silicon Graphics, Inc.  All Rights Reserved.&n; *&n; * This program is free software; you can redistribute it and/or modify it&n; * under the terms of version 2 of the GNU General Public License as&n; * published by the Free Software Foundation.&n; *&n; * This program is distributed in the hope that it would be useful, but&n; * WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.&n; *&n; * Further, this software is distributed without any warranty that it is&n; * free of the rightful claim of any third person regarding infringement&n; * or the like.  Any license provided herein, whether implied or&n; * otherwise, applies only to this software file.  Patent licenses, if&n; * any, provided herein do not apply to combinations of this program with&n; * other software, or any other product whatsoever.&n; *&n; * You should have received a copy of the GNU General Public License along&n; * with this program; if not, write the Free Software Foundation, Inc., 59&n; * Temple Place - Suite 330, Boston MA 02111-1307, USA.&n; *&n; * Contact information: Silicon Graphics, Inc., 1600 Amphitheatre Pkwy,&n; * Mountain View, CA  94043, or:&n; *&n; * http://www.sgi.com&n; *&n; * For further information regarding this notice, see:&n; *&n; * http://oss.sgi.com/projects/GenInfo/SGIGPLNoticeExplan/&n; */
+multiline_comment|/*&n; *&t;page_buf.c&n; *&n; *&t;The page_buf module provides an abstract buffer cache model on top of&n; *&t;the Linux page cache.  Cached metadata blocks for a file system are&n; *&t;hashed to the inode for the block device.  The page_buf module&n; *&t;assembles buffer (page_buf_t) objects on demand to aggregate such&n; *&t;cached pages for I/O.&n; *&n; *&n; *      Written by Steve Lord, Jim Mostek, Russell Cattelan&n; *&t;&t;    and Rajagopal Ananthanarayanan (&quot;ananth&quot;) at SGI.&n; *&n; */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/stddef.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
@@ -53,7 +53,7 @@ id|pb_trace_func
 )paren
 suffix:semicolon
 DECL|macro|CIRC_INC
-mdefine_line|#define CIRC_INC(i)&t;(((i) + 1) &amp; (PB_TRACE_BUFSIZE - 1))
+mdefine_line|#define CIRC_INC(i)     (((i) + 1) &amp; (PB_TRACE_BUFSIZE - 1))
 r_void
 DECL|function|pb_trace_func
 id|pb_trace_func
@@ -671,7 +671,7 @@ id|old
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/*&n; *&t;Locking model:&n; *&n; *&t;Buffers associated with inodes for which buffer locking&n; *&t;is not enabled are not protected by semaphores, and are&n; *&t;assumed to be exclusively owned by the caller.&t;There is&n; *&t;spinlock in the buffer, for use by the caller when concurrent&n; *&t;access is possible.&n; */
+multiline_comment|/*&n; *&t;Locking model:&n; *&n; *&t;Buffers associated with inodes for which buffer locking&n; *&t;is not enabled are not protected by semaphores, and are&n; *&t;assumed to be exclusively owned by the caller.  There is&n; *&t;spinlock in the buffer, for use by the caller when concurrent&n; *&t;access is possible.&n; */
 multiline_comment|/*&n; *&t;Internal pagebuf object manipulation&n; */
 id|STATIC
 r_void
@@ -2360,7 +2360,7 @@ id|pb
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; *&t;pagebuf_find&n; *&n; *&t;pagebuf_find returns a buffer matching the specified range of&n; *&t;data for the specified target, if any of the relevant blocks&n; *&t;are in memory.&t;The buffer may have unallocated holes, if&n; *&t;some, but not all, of the blocks are in memory.&t; Even where&n; *&t;pages are present in the buffer, not all of every page may be&n; *&t;valid.&n; */
+multiline_comment|/*&n; *&t;pagebuf_find&n; *&n; *&t;pagebuf_find returns a buffer matching the specified range of&n; *&t;data for the specified target, if any of the relevant blocks&n; *&t;are in memory.  The buffer may have unallocated holes, if&n; *&t;some, but not all, of the blocks are in memory.  Even where&n; *&t;pages are present in the buffer, not all of every page may be&n; *&t;valid.&n; */
 id|page_buf_t
 op_star
 DECL|function|pagebuf_find
@@ -2415,7 +2415,7 @@ id|pb_target_t
 op_star
 id|target
 comma
-multiline_comment|/* target for buffer &t;&t;*/
+multiline_comment|/* target for buffer&t;&t;*/
 id|loff_t
 id|ioff
 comma
@@ -3684,7 +3684,7 @@ suffix:semicolon
 )brace
 )brace
 multiline_comment|/*&n; *&t;Pinning Buffer Storage in Memory&n; */
-multiline_comment|/*&n; *&t;pagebuf_pin&n; *&n; *&t;pagebuf_pin locks all of the memory represented by a buffer in&n; *&t;memory.&t; Multiple calls to pagebuf_pin and pagebuf_unpin, for&n; *&t;the same or different buffers affecting a given page, will&n; *&t;properly count the number of outstanding &quot;pin&quot; requests.  The&n; *&t;buffer may be released after the pagebuf_pin and a different&n; *&t;buffer used when calling pagebuf_unpin, if desired.&n; *&t;pagebuf_pin should be used by the file system when it wants be&n; *&t;assured that no attempt will be made to force the affected&n; *&t;memory to disk.&t; It does not assure that a given logical page&n; *&t;will not be moved to a different physical page.&n; */
+multiline_comment|/*&n; *&t;pagebuf_pin&n; *&n; *&t;pagebuf_pin locks all of the memory represented by a buffer in&n; *&t;memory.  Multiple calls to pagebuf_pin and pagebuf_unpin, for&n; *&t;the same or different buffers affecting a given page, will&n; *&t;properly count the number of outstanding &quot;pin&quot; requests.  The&n; *&t;buffer may be released after the pagebuf_pin and a different&n; *&t;buffer used when calling pagebuf_unpin, if desired.&n; *&t;pagebuf_pin should be used by the file system when it wants be&n; *&t;assured that no attempt will be made to force the affected&n; *&t;memory to disk.&t; It does not assure that a given logical page&n; *&t;will not be moved to a different physical page.&n; */
 r_void
 DECL|function|pagebuf_pin
 id|pagebuf_pin
@@ -3781,7 +3781,7 @@ id|pb-&gt;pb_pin_count
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; *&t;pagebuf_wait_unpin&n; *&n; *&t;pagebuf_wait_unpin waits until all of the memory associated&n; *&t;with the buffer is not longer locked in memory.&t; It returns&n; *&t;immediately if none of the affected pages are locked.&n; */
+multiline_comment|/*&n; *&t;pagebuf_wait_unpin&n; *&n; *&t;pagebuf_wait_unpin waits until all of the memory associated&n; *&t;with the buffer is not longer locked in memory.  It returns&n; *&t;immediately if none of the affected pages are locked.&n; */
 r_static
 r_inline
 r_void
@@ -6487,7 +6487,7 @@ r_return
 id|rval
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * pagebuf_daemon_stop&n; * &n; * Note: do not mark as __exit, it is called from pagebuf_terminate.&n; */
+multiline_comment|/*&n; * pagebuf_daemon_stop&n; *&n; * Note: do not mark as __exit, it is called from pagebuf_terminate.&n; */
 id|STATIC
 r_void
 DECL|function|pagebuf_daemon_stop
@@ -7025,7 +7025,7 @@ r_return
 id|len
 suffix:semicolon
 )brace
-macro_line|#endif&t;/* CONFIG_PROC_FS */
+macro_line|#endif  /* CONFIG_PROC_FS */
 id|STATIC
 r_void
 DECL|function|pagebuf_shaker
@@ -7238,7 +7238,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/*&n; *&t;pagebuf_terminate. &n; * &n; *&t;Note: do not mark as __exit, this is also called from the __init code.&n; */
+multiline_comment|/*&n; *&t;pagebuf_terminate.&n; *&n; *&t;Note: do not mark as __exit, this is also called from the __init code.&n; */
 r_void
 DECL|function|pagebuf_terminate
 id|pagebuf_terminate
@@ -7270,7 +7270,7 @@ c_func
 id|pagebuf_table_header
 )paren
 suffix:semicolon
-macro_line|#ifdef&t;CONFIG_PROC_FS
+macro_line|#ifdef  CONFIG_PROC_FS
 id|remove_proc_entry
 c_func
 (paren

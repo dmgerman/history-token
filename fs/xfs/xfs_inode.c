@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * Copyright (c) 2000-2003 Silicon Graphics, Inc.  All Rights Reserved.&n; *&n; * This program is free software; you can redistribute it and/or modify it&n; * under the terms of version 2 of the GNU General Public License as&n; * published by the Free Software Foundation.&n; *&n; * This program is distributed in the hope that it would be useful, but&n; * WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.&n; *&n; * Further, this software is distributed without any warranty that it is&n; * free of the rightful claim of any third person regarding infringement&n; * or the like.&t; Any license provided herein, whether implied or&n; * otherwise, applies only to this software file.  Patent licenses, if&n; * any, provided herein do not apply to combinations of this program with&n; * other software, or any other product whatsoever.&n; *&n; * You should have received a copy of the GNU General Public License along&n; * with this program; if not, write the Free Software Foundation, Inc., 59&n; * Temple Place - Suite 330, Boston MA 02111-1307, USA.&n; *&n; * Contact information: Silicon Graphics, Inc., 1600 Amphitheatre Pkwy,&n; * Mountain View, CA  94043, or:&n; *&n; * http://www.sgi.com&n; *&n; * For further information regarding this notice, see:&n; *&n; * http://oss.sgi.com/projects/GenInfo/SGIGPLNoticeExplan/&n; */
+multiline_comment|/*&n; * Copyright (c) 2000-2003 Silicon Graphics, Inc.  All Rights Reserved.&n; *&n; * This program is free software; you can redistribute it and/or modify it&n; * under the terms of version 2 of the GNU General Public License as&n; * published by the Free Software Foundation.&n; *&n; * This program is distributed in the hope that it would be useful, but&n; * WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.&n; *&n; * Further, this software is distributed without any warranty that it is&n; * free of the rightful claim of any third person regarding infringement&n; * or the like.  Any license provided herein, whether implied or&n; * otherwise, applies only to this software file.  Patent licenses, if&n; * any, provided herein do not apply to combinations of this program with&n; * other software, or any other product whatsoever.&n; *&n; * You should have received a copy of the GNU General Public License along&n; * with this program; if not, write the Free Software Foundation, Inc., 59&n; * Temple Place - Suite 330, Boston MA 02111-1307, USA.&n; *&n; * Contact information: Silicon Graphics, Inc., 1600 Amphitheatre Pkwy,&n; * Mountain View, CA  94043, or:&n; *&n; * http://www.sgi.com&n; *&n; * For further information regarding this notice, see:&n; *&n; * http://oss.sgi.com/projects/GenInfo/SGIGPLNoticeExplan/&n; */
 macro_line|#include &lt;xfs.h&gt;
 macro_line|#include &lt;asm/unaligned.h&gt;&t;/* for get_unaligned, put_unaligned */
 DECL|variable|xfs_ifork_zone
@@ -18,7 +18,7 @@ id|xfs_chashlist_zone
 suffix:semicolon
 multiline_comment|/*&n; * Used in xfs_itruncate().  This is the maximum number of extents&n; * freed from a file in a single transaction.&n; */
 DECL|macro|XFS_ITRUNC_MAX_EXTENTS
-mdefine_line|#define XFS_ITRUNC_MAX_EXTENTS&t;2
+mdefine_line|#define&t;XFS_ITRUNC_MAX_EXTENTS&t;2
 id|STATIC
 r_int
 id|xfs_iflush_int
@@ -267,7 +267,7 @@ id|CE_ALERT
 comma
 id|mp
 comma
-l_string|&quot;Detected a bogus zero next_unlinked field in incore inode buffer 0x%p.&t; About to pop an ASSERT.&quot;
+l_string|&quot;Detected a bogus zero next_unlinked field in incore inode buffer 0x%p.  About to pop an ASSERT.&quot;
 comma
 id|bp
 )paren
@@ -628,7 +628,7 @@ c_func
 id|CE_WARN
 comma
 l_string|&quot;xfs_inotobp: inode number (%d + %d) maps to a block outside the bounds &quot;
-l_string|&quot;of the file system %s.&t; Returning EINVAL.&quot;
+l_string|&quot;of the file system %s.  Returning EINVAL.&quot;
 comma
 id|imap.im_blkno
 comma
@@ -645,7 +645,7 @@ id|EINVAL
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t; * Read in the buffer.&t;If tp is NULL, xfs_trans_read_buf() will&n;&t; * default to just a read_buf() call.&n;&t; */
+multiline_comment|/*&n;&t; * Read in the buffer.  If tp is NULL, xfs_trans_read_buf() will&n;&t; * default to just a read_buf() call.&n;&t; */
 id|error
 op_assign
 id|xfs_trans_read_buf
@@ -777,7 +777,7 @@ c_func
 (paren
 id|CE_WARN
 comma
-l_string|&quot;xfs_inotobp: XFS_TEST_ERROR()&t;returned an &quot;
+l_string|&quot;xfs_inotobp: XFS_TEST_ERROR()  returned an &quot;
 l_string|&quot;error on %s.  Returning EFSCORRUPTED.&quot;
 comma
 id|mp-&gt;m_fsname
@@ -829,7 +829,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * This routine is called to map an inode to the buffer containing&n; * the on-disk version of the inode.  It returns a pointer to the&n; * buffer containing the on-disk inode in the bpp parameter, and in&n; * the dip parameter it returns a pointer to the on-disk inode within&n; * that buffer.&n; *&n; * If a non-zero error is returned, then the contents of bpp and&n; * dipp are undefined.&n; *&n; * If the inode is new and has not yet been initialized, use xfs_imap()&n; * to determine the size and location of the buffer to read from disk.&n; * If the inode has already been mapped to its buffer and read in once,&n; * then use the mapping information stored in the inode rather than&n; * calling xfs_imap().&t;This allows us to avoid the overhead of looking&n; * at the inode btree for small block file systems (see xfs_dilocate()).&n; * We can tell whether the inode has been mapped in before by comparing&n; * its disk block address to 0.&t; Only uninitialized inodes will have&n; * 0 for the disk block address.&n; */
+multiline_comment|/*&n; * This routine is called to map an inode to the buffer containing&n; * the on-disk version of the inode.  It returns a pointer to the&n; * buffer containing the on-disk inode in the bpp parameter, and in&n; * the dip parameter it returns a pointer to the on-disk inode within&n; * that buffer.&n; *&n; * If a non-zero error is returned, then the contents of bpp and&n; * dipp are undefined.&n; *&n; * If the inode is new and has not yet been initialized, use xfs_imap()&n; * to determine the size and location of the buffer to read from disk.&n; * If the inode has already been mapped to its buffer and read in once,&n; * then use the mapping information stored in the inode rather than&n; * calling xfs_imap().  This allows us to avoid the overhead of looking&n; * at the inode btree for small block file systems (see xfs_dilocate()).&n; * We can tell whether the inode has been mapped in before by comparing&n; * its disk block address to 0.  Only uninitialized inodes will have&n; * 0 for the disk block address.&n; */
 r_int
 DECL|function|xfs_itobp
 id|xfs_itobp
@@ -1031,7 +1031,7 @@ op_eq
 id|imap.im_blkno
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * Read in the buffer.&t;If tp is NULL, xfs_trans_read_buf() will&n;&t; * default to just a read_buf() call.&n;&t; */
+multiline_comment|/*&n;&t; * Read in the buffer.  If tp is NULL, xfs_trans_read_buf() will&n;&t; * default to just a read_buf() call.&n;&t; */
 id|error
 op_assign
 id|xfs_trans_read_buf
@@ -1299,7 +1299,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Move inode type and inode format specific information from the&n; * on-disk inode to the in-core inode.&t;For fifos, devs, and sockets&n; * this means set if_rdev to the proper value.&t;For files, directories,&n; * and symlinks this means to bring in the in-line data or extent&n; * pointers.  For a file in B-tree format, only the root is immediately&n; * brought in-core.  The rest will be in-lined in if_extents when it&n; * is first referenced (see xfs_iread_extents()).&n; */
+multiline_comment|/*&n; * Move inode type and inode format specific information from the&n; * on-disk inode to the in-core inode.  For fifos, devs, and sockets&n; * this means set if_rdev to the proper value.  For files, directories,&n; * and symlinks this means to bring in the in-line data or extent&n; * pointers.  For a file in B-tree format, only the root is immediately&n; * brought in-core.  The rest will be in-lined in if_extents when it&n; * is first referenced (see xfs_iread_extents()).&n; */
 id|STATIC
 r_int
 DECL|function|xfs_iformat
@@ -2869,7 +2869,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * xfs_xlate_dinode_core - translate an xfs_inode_core_t between ondisk&n; * and native format&n; *&n; * buf&t;= on-disk representation&n; * dip&t;= native representation&n; * dir&t;= direction - +ve -&gt; disk to native&n; *&t;&t;      -ve -&gt; native to disk&n; * arch = on-disk architecture&n; */
+multiline_comment|/*&n; * xfs_xlate_dinode_core - translate an xfs_inode_core_t between ondisk&n; * and native format&n; *&n; * buf  = on-disk representation&n; * dip  = native representation&n; * dir  = direction - +ve -&gt; disk to native&n; *                    -ve -&gt; native to disk&n; * arch = on-disk architecture&n; */
 r_void
 DECL|function|xfs_xlate_dinode_core
 id|xfs_xlate_dinode_core
@@ -3398,7 +3398,7 @@ id|ip-&gt;i_mount
 op_assign
 id|mp
 suffix:semicolon
-multiline_comment|/*&n;&t; * Get pointer&squot;s to the on-disk inode and the buffer containing it.&n;&t; * If the inode number refers to a block outside the file system&n;&t; * then xfs_itobp() will return NULL.  In this case we should&n;&t; * return NULL as well.&t; Set i_blkno to 0 so that xfs_itobp() will&n;&t; * know that this is a new incore inode.&n;&t; */
+multiline_comment|/*&n;&t; * Get pointer&squot;s to the on-disk inode and the buffer containing it.&n;&t; * If the inode number refers to a block outside the file system&n;&t; * then xfs_itobp() will return NULL.  In this case we should&n;&t; * return NULL as well.  Set i_blkno to 0 so that xfs_itobp() will&n;&t; * know that this is a new incore inode.&n;&t; */
 id|error
 op_assign
 id|xfs_itobp
@@ -3697,7 +3697,7 @@ id|ip-&gt;i_d.di_mode
 op_assign
 l_int|0
 suffix:semicolon
-multiline_comment|/*&n;&t;&t; * Initialize the per-fork minima and maxima for a new&n;&t;&t; * inode here.&t;xfs_iformat will do it for old inodes.&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * Initialize the per-fork minima and maxima for a new&n;&t;&t; * inode here.  xfs_iformat will do it for old inodes.&n;&t;&t; */
 id|ip-&gt;i_df.if_ext_max
 op_assign
 id|XFS_IFORK_DSIZE
@@ -3715,7 +3715,7 @@ id|xfs_bmbt_rec_t
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t; * The inode format changed when we moved the link count and&n;&t; * made it 32 bits long.  If this is an old format inode,&n;&t; * convert it in memory to look like a new one.&t; If it gets&n;&t; * flushed to disk we will convert back before flushing or&n;&t; * logging it.&t;We zero out the new projid field and the old link&n;&t; * count field.&t; We&squot;ll handle clearing the pad field (the remains&n;&t; * of the old uuid field) when we actually convert the inode to&n;&t; * the new format. We don&squot;t change the version number so that we&n;&t; * can distinguish this from a real new format inode.&n;&t; */
+multiline_comment|/*&n;&t; * The inode format changed when we moved the link count and&n;&t; * made it 32 bits long.  If this is an old format inode,&n;&t; * convert it in memory to look like a new one.  If it gets&n;&t; * flushed to disk we will convert back before flushing or&n;&t; * logging it.  We zero out the new projid field and the old link&n;&t; * count field.  We&squot;ll handle clearing the pad field (the remains&n;&t; * of the old uuid field) when we actually convert the inode to&n;&t; * the new format. We don&squot;t change the version number so that we&n;&t; * can distinguish this from a real new format inode.&n;&t; */
 r_if
 c_cond
 (paren
@@ -3741,7 +3741,7 @@ id|ip-&gt;i_delayed_blks
 op_assign
 l_int|0
 suffix:semicolon
-multiline_comment|/*&n;&t; * Mark the buffer containing the inode as something to keep&n;&t; * around for a while.&t;This helps to keep recently accessed&n;&t; * meta-data in-core longer.&n;&t; */
+multiline_comment|/*&n;&t; * Mark the buffer containing the inode as something to keep&n;&t; * around for a while.  This helps to keep recently accessed&n;&t; * meta-data in-core longer.&n;&t; */
 id|XFS_BUF_SET_REF
 c_func
 (paren
@@ -3750,7 +3750,7 @@ comma
 id|XFS_INO_REF
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * Use xfs_trans_brelse() to release the buffer containing the&n;&t; * on-disk inode, because it was acquired with xfs_trans_read_buf()&n;&t; * in xfs_itobp() above.  If tp is NULL, this is just a normal&n;&t; * brelse().  If we&squot;re within a transaction, then xfs_trans_brelse()&n;&t; * will only release the buffer if it is not dirty within the&n;&t; * transaction.&t; It will be OK to release the buffer in this case,&n;&t; * because inodes on disk are never destroyed and we will be&n;&t; * locking the new in-core inode before putting it in the hash&n;&t; * table where other processes can find it.  Thus we don&squot;t have&n;&t; * to worry about the inode being changed just because we released&n;&t; * the buffer.&n;&t; */
+multiline_comment|/*&n;&t; * Use xfs_trans_brelse() to release the buffer containing the&n;&t; * on-disk inode, because it was acquired with xfs_trans_read_buf()&n;&t; * in xfs_itobp() above.  If tp is NULL, this is just a normal&n;&t; * brelse().  If we&squot;re within a transaction, then xfs_trans_brelse()&n;&t; * will only release the buffer if it is not dirty within the&n;&t; * transaction.  It will be OK to release the buffer in this case,&n;&t; * because inodes on disk are never destroyed and we will be&n;&t; * locking the new in-core inode before putting it in the hash&n;&t; * table where other processes can find it.  Thus we don&squot;t have&n;&t; * to worry about the inode being changed just because we released&n;&t; * the buffer.&n;&t; */
 id|xfs_trans_brelse
 c_func
 (paren
@@ -4651,7 +4651,7 @@ id|HOLESTARTBLOCK
 suffix:semicolon
 )brace
 macro_line|#endif&t;/* DEBUG */
-multiline_comment|/*&n; * Calculate the last possible buffered byte in a file.&t; This must&n; * include data that was buffered beyond the EOF by the write code.&n; * This also needs to deal with overflowing the xfs_fsize_t type&n; * which can happen for sizes near the limit.&n; *&n; * We also need to take into account any blocks beyond the EOF.&t; It&n; * may be the case that they were buffered by a write which failed.&n; * In that case the pages will still be in memory, but the inode size&n; * will never have been updated.&n; */
+multiline_comment|/*&n; * Calculate the last possible buffered byte in a file.  This must&n; * include data that was buffered beyond the EOF by the write code.&n; * This also needs to deal with overflowing the xfs_fsize_t type&n; * which can happen for sizes near the limit.&n; *&n; * We also need to take into account any blocks beyond the EOF.  It&n; * may be the case that they were buffered by a write which failed.&n; * In that case the pages will still be in memory, but the inode size&n; * will never have been updated.&n; */
 id|xfs_fsize_t
 DECL|function|xfs_file_last_byte
 id|xfs_file_last_byte
@@ -5019,9 +5019,9 @@ suffix:semicolon
 )brace
 macro_line|#else
 DECL|macro|xfs_itrunc_trace
-mdefine_line|#define xfs_itrunc_trace(tag, ip, flag, new_size, toss_start, toss_finish)
+mdefine_line|#define&t;xfs_itrunc_trace(tag, ip, flag, new_size, toss_start, toss_finish)
 macro_line|#endif
-multiline_comment|/*&n; * Start the truncation of the file to new_size.  The new size&n; * must be smaller than the current size.  This routine will&n; * clear the buffer and page caches of file data in the removed&n; * range, and xfs_itruncate_finish() will remove the underlying&n; * disk blocks.&n; *&n; * The inode must have its I/O lock locked EXCLUSIVELY, and it&n; * must NOT have the inode lock held at all.  This is because we&squot;re&n; * calling into the buffer/page cache code and we can&squot;t hold the&n; * inode lock when we do so.&n; *&n; * The flags parameter can have either the value XFS_ITRUNC_DEFINITE&n; * or XFS_ITRUNC_MAYBE.&t; The XFS_ITRUNC_MAYBE value should be used&n; * in the case that the caller is locking things out of order and&n; * may not be able to call xfs_itruncate_finish() with the inode lock&n; * held without dropping the I/O lock.&t;If the caller must drop the&n; * I/O lock before calling xfs_itruncate_finish(), then xfs_itruncate_start()&n; * must be called again with all the same restrictions as the initial&n; * call.&n; */
+multiline_comment|/*&n; * Start the truncation of the file to new_size.  The new size&n; * must be smaller than the current size.  This routine will&n; * clear the buffer and page caches of file data in the removed&n; * range, and xfs_itruncate_finish() will remove the underlying&n; * disk blocks.&n; *&n; * The inode must have its I/O lock locked EXCLUSIVELY, and it&n; * must NOT have the inode lock held at all.  This is because we&squot;re&n; * calling into the buffer/page cache code and we can&squot;t hold the&n; * inode lock when we do so.&n; *&n; * The flags parameter can have either the value XFS_ITRUNC_DEFINITE&n; * or XFS_ITRUNC_MAYBE.  The XFS_ITRUNC_MAYBE value should be used&n; * in the case that the caller is locking things out of order and&n; * may not be able to call xfs_itruncate_finish() with the inode lock&n; * held without dropping the I/O lock.  If the caller must drop the&n; * I/O lock before calling xfs_itruncate_finish(), then xfs_itruncate_start()&n; * must be called again with all the same restrictions as the initial&n; * call.&n; */
 r_void
 DECL|function|xfs_itruncate_start
 id|xfs_itruncate_start
@@ -5242,7 +5242,7 @@ suffix:semicolon
 )brace
 macro_line|#endif
 )brace
-multiline_comment|/*&n; * Shrink the file to the given new_size.  The new&n; * size must be smaller than the current size.&n; * This will free up the underlying blocks&n; * in the removed range after a call to xfs_itruncate_start()&n; * or xfs_atruncate_start().&n; *&n; * The transaction passed to this routine must have made&n; * a permanent log reservation of at least XFS_ITRUNCATE_LOG_RES.&n; * This routine may commit the given transaction and&n; * start new ones, so make sure everything involved in&n; * the transaction is tidy before calling here.&n; * Some transaction will be returned to the caller to be&n; * committed.  The incoming transaction must already include&n; * the inode, and both inode locks must be held exclusively.&n; * The inode must also be &quot;held&quot; within the transaction.  On&n; * return the inode will be &quot;held&quot; within the returned transaction.&n; * This routine does NOT require any disk space to be reserved&n; * for it within the transaction.&n; *&n; * The fork parameter must be either xfs_attr_fork or xfs_data_fork,&n; * and it indicates the fork which is to be truncated.&t;For the&n; * attribute fork we only support truncation to size 0.&n; *&n; * We use the sync parameter to indicate whether or not the first&n; * transaction we perform might have to be synchronous.&t; For the attr fork,&n; * it needs to be so if the unlink of the inode is not yet known to be&n; * permanent in the log.  This keeps us from freeing and reusing the&n; * blocks of the attribute fork before the unlink of the inode becomes&n; * permanent.&n; *&n; * For the data fork, we normally have to run synchronously if we&squot;re&n; * being called out of the inactive path or we&squot;re being called&n; * out of the create path where we&squot;re truncating an existing file.&n; * Either way, the truncate needs to be sync so blocks don&squot;t reappear&n; * in the file with altered data in case of a crash.  wsync filesystems&n; * can run the first case async because anything that shrinks the inode&n; * has to run sync so by the time we&squot;re called here from inactive, the&n; * inode size is permanently set to 0.&n; *&n; * Calls from the truncate path always need to be sync unless we&squot;re&n; * in a wsync filesystem and the file has already been unlinked.&n; *&n; * The caller is responsible for correctly setting the sync parameter.&n; * It gets too hard for us to guess here which path we&squot;re being called&n; * out of just based on inode state.&n; */
+multiline_comment|/*&n; * Shrink the file to the given new_size.  The new&n; * size must be smaller than the current size.&n; * This will free up the underlying blocks&n; * in the removed range after a call to xfs_itruncate_start()&n; * or xfs_atruncate_start().&n; *&n; * The transaction passed to this routine must have made&n; * a permanent log reservation of at least XFS_ITRUNCATE_LOG_RES.&n; * This routine may commit the given transaction and&n; * start new ones, so make sure everything involved in&n; * the transaction is tidy before calling here.&n; * Some transaction will be returned to the caller to be&n; * committed.  The incoming transaction must already include&n; * the inode, and both inode locks must be held exclusively.&n; * The inode must also be &quot;held&quot; within the transaction.  On&n; * return the inode will be &quot;held&quot; within the returned transaction.&n; * This routine does NOT require any disk space to be reserved&n; * for it within the transaction.&n; *&n; * The fork parameter must be either xfs_attr_fork or xfs_data_fork,&n; * and it indicates the fork which is to be truncated.  For the&n; * attribute fork we only support truncation to size 0.&n; *&n; * We use the sync parameter to indicate whether or not the first&n; * transaction we perform might have to be synchronous.  For the attr fork,&n; * it needs to be so if the unlink of the inode is not yet known to be&n; * permanent in the log.  This keeps us from freeing and reusing the&n; * blocks of the attribute fork before the unlink of the inode becomes&n; * permanent.&n; *&n; * For the data fork, we normally have to run synchronously if we&squot;re&n; * being called out of the inactive path or we&squot;re being called&n; * out of the create path where we&squot;re truncating an existing file.&n; * Either way, the truncate needs to be sync so blocks don&squot;t reappear&n; * in the file with altered data in case of a crash.  wsync filesystems&n; * can run the first case async because anything that shrinks the inode&n; * has to run sync so by the time we&squot;re called here from inactive, the&n; * inode size is permanently set to 0.&n; *&n; * Calls from the truncate path always need to be sync unless we&squot;re&n; * in a wsync filesystem and the file has already been unlinked.&n; *&n; * The caller is responsible for correctly setting the sync parameter.&n; * It gets too hard for us to guess here which path we&squot;re being called&n; * out of just based on inode state.&n; */
 r_int
 DECL|function|xfs_itruncate_finish
 id|xfs_itruncate_finish
@@ -5463,7 +5463,7 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * The first thing we do is set the size to new_size permanently&n;&t; * on disk.  This way we don&squot;t have to worry about anyone ever&n;&t; * being able to look at the data being freed even in the face&n;&t; * of a crash.&t;What we&squot;re getting around here is the case where&n;&t; * we free a block, it is allocated to another file, it is written&n;&t; * to, and then we crash.  If the new data gets written to the&n;&t; * file but the log buffers containing the free and reallocation&n;&t; * don&squot;t, then we&squot;d end up with garbage in the blocks being freed.&n;&t; * As long as we make the new_size permanent before actually&n;&t; * freeing any blocks it doesn&squot;t matter if they get writtten to.&n;&t; *&n;&t; * The callers must signal into us whether or not the size&n;&t; * setting here must be synchronous.  There are a few cases&n;&t; * where it doesn&squot;t have to be synchronous.  Those cases&n;&t; * occur if the file is unlinked and we know the unlink is&n;&t; * permanent or if the blocks being truncated are guaranteed&n;&t; * to be beyond the inode eof (regardless of the link count)&n;&t; * and the eof value is permanent.  Both of these cases occur&n;&t; * only on wsync-mounted filesystems.  In those cases, we&squot;re&n;&t; * guaranteed that no user will ever see the data in the blocks&n;&t; * that are being truncated so the truncate can run async.&n;&t; * In the free beyond eof case, the file may wind up with&n;&t; * more blocks allocated to it than it needs if we crash&n;&t; * and that won&squot;t get fixed until the next time the file&n;&t; * is re-opened and closed but that&squot;s ok as that shouldn&squot;t&n;&t; * be too many blocks.&n;&t; *&n;&t; * However, we can&squot;t just make all wsync xactions run async&n;&t; * because there&squot;s one call out of the create path that needs&n;&t; * to run sync where it&squot;s truncating an existing file to size&n;&t; * 0 whose size is &gt; 0.&n;&t; *&n;&t; * It&squot;s probably possible to come up with a test in this&n;&t; * routine that would correctly distinguish all the above&n;&t; * cases from the values of the function parameters and the&n;&t; * inode state but for sanity&squot;s sake, I&squot;ve decided to let the&n;&t; * layers above just tell us.  It&squot;s simpler to correctly figure&n;&t; * out in the layer above exactly under what conditions we&n;&t; * can run async and I think it&squot;s easier for others read and&n;&t; * follow the logic in case something has to be changed.&n;&t; * cscope is your friend -- rcc.&n;&t; *&n;&t; * The attribute fork is much simpler.&n;&t; *&n;&t; * For the attribute fork we allow the caller to tell us whether&n;&t; * the unlink of the inode that led to this call is yet permanent&n;&t; * in the on disk log.&t;If it is not and we will be freeing extents&n;&t; * in this inode then we make the first transaction synchronous&n;&t; * to make sure that the unlink is permanent by the time we free&n;&t; * the blocks.&n;&t; */
+multiline_comment|/*&n;&t; * The first thing we do is set the size to new_size permanently&n;&t; * on disk.  This way we don&squot;t have to worry about anyone ever&n;&t; * being able to look at the data being freed even in the face&n;&t; * of a crash.  What we&squot;re getting around here is the case where&n;&t; * we free a block, it is allocated to another file, it is written&n;&t; * to, and then we crash.  If the new data gets written to the&n;&t; * file but the log buffers containing the free and reallocation&n;&t; * don&squot;t, then we&squot;d end up with garbage in the blocks being freed.&n;&t; * As long as we make the new_size permanent before actually&n;&t; * freeing any blocks it doesn&squot;t matter if they get writtten to.&n;&t; *&n;&t; * The callers must signal into us whether or not the size&n;&t; * setting here must be synchronous.  There are a few cases&n;&t; * where it doesn&squot;t have to be synchronous.  Those cases&n;&t; * occur if the file is unlinked and we know the unlink is&n;&t; * permanent or if the blocks being truncated are guaranteed&n;&t; * to be beyond the inode eof (regardless of the link count)&n;&t; * and the eof value is permanent.  Both of these cases occur&n;&t; * only on wsync-mounted filesystems.  In those cases, we&squot;re&n;&t; * guaranteed that no user will ever see the data in the blocks&n;&t; * that are being truncated so the truncate can run async.&n;&t; * In the free beyond eof case, the file may wind up with&n;&t; * more blocks allocated to it than it needs if we crash&n;&t; * and that won&squot;t get fixed until the next time the file&n;&t; * is re-opened and closed but that&squot;s ok as that shouldn&squot;t&n;&t; * be too many blocks.&n;&t; *&n;&t; * However, we can&squot;t just make all wsync xactions run async&n;&t; * because there&squot;s one call out of the create path that needs&n;&t; * to run sync where it&squot;s truncating an existing file to size&n;&t; * 0 whose size is &gt; 0.&n;&t; *&n;&t; * It&squot;s probably possible to come up with a test in this&n;&t; * routine that would correctly distinguish all the above&n;&t; * cases from the values of the function parameters and the&n;&t; * inode state but for sanity&squot;s sake, I&squot;ve decided to let the&n;&t; * layers above just tell us.  It&squot;s simpler to correctly figure&n;&t; * out in the layer above exactly under what conditions we&n;&t; * can run async and I think it&squot;s easier for others read and&n;&t; * follow the logic in case something has to be changed.&n;&t; * cscope is your friend -- rcc.&n;&t; *&n;&t; * The attribute fork is much simpler.&n;&t; *&n;&t; * For the attribute fork we allow the caller to tell us whether&n;&t; * the unlink of the inode that led to this call is yet permanent&n;&t; * in the on disk log.  If it is not and we will be freeing extents&n;&t; * in this inode then we make the first transaction synchronous&n;&t; * to make sure that the unlink is permanent by the time we free&n;&t; * the blocks.&n;&t; */
 r_if
 c_cond
 (paren
@@ -5567,7 +5567,7 @@ id|XFS_MOUNT_WSYNC
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * Since it is possible for space to become allocated beyond&n;&t; * the end of the file (in a crash where the space is allocated&n;&t; * but the inode size is not yet updated), simply remove any&n;&t; * blocks which show up between the new EOF and the maximum&n;&t; * possible file size.&t;If the first block to be removed is&n;&t; * beyond the maximum file size (ie it is the same as last_block),&n;&t; * then there is nothing to do.&n;&t; */
+multiline_comment|/*&n;&t; * Since it is possible for space to become allocated beyond&n;&t; * the end of the file (in a crash where the space is allocated&n;&t; * but the inode size is not yet updated), simply remove any&n;&t; * blocks which show up between the new EOF and the maximum&n;&t; * possible file size.  If the first block to be removed is&n;&t; * beyond the maximum file size (ie it is the same as last_block),&n;&t; * then there is nothing to do.&n;&t; */
 id|last_block
 op_assign
 id|XFS_B_TO_FSB
@@ -5624,7 +5624,7 @@ op_logical_neg
 id|done
 )paren
 (brace
-multiline_comment|/*&n;&t;&t; * Free up up to XFS_ITRUNC_MAX_EXTENTS.  xfs_bunmapi()&n;&t;&t; * will tell us whether it freed the entire range or&n;&t;&t; * not.&t; If this is a synchronous mount (wsync),&n;&t;&t; * then we can tell bunmapi to keep all the&n;&t;&t; * transactions asynchronous since the unlink&n;&t;&t; * transaction that made this inode inactive has&n;&t;&t; * already hit the disk.  There&squot;s no danger of&n;&t;&t; * the freed blocks being reused, there being a&n;&t;&t; * crash, and the reused blocks suddenly reappearing&n;&t;&t; * in this file with garbage in them once recovery&n;&t;&t; * runs.&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * Free up up to XFS_ITRUNC_MAX_EXTENTS.  xfs_bunmapi()&n;&t;&t; * will tell us whether it freed the entire range or&n;&t;&t; * not.  If this is a synchronous mount (wsync),&n;&t;&t; * then we can tell bunmapi to keep all the&n;&t;&t; * transactions asynchronous since the unlink&n;&t;&t; * transaction that made this inode inactive has&n;&t;&t; * already hit the disk.  There&squot;s no danger of&n;&t;&t; * the freed blocks being reused, there being a&n;&t;&t; * crash, and the reused blocks suddenly reappearing&n;&t;&t; * in this file with garbage in them once recovery&n;&t;&t; * runs.&n;&t;&t; */
 id|XFS_BMAP_INIT
 c_func
 (paren
@@ -5735,7 +5735,7 @@ c_cond
 id|committed
 )paren
 (brace
-multiline_comment|/*&n;&t;&t;&t;&t; * If the passed in transaction committed&n;&t;&t;&t;&t; * in xfs_bmap_finish(), then we want to&n;&t;&t;&t;&t; * add the inode to this one before returning.&n;&t;&t;&t;&t; * This keeps things simple for the higher&n;&t;&t;&t;&t; * level code, because it always knows that&n;&t;&t;&t;&t; * the inode is locked and held in the&n;&t;&t;&t;&t; * transaction that returns to it whether&n;&t;&t;&t;&t; * errors occur or not.&t; We don&squot;t mark the&n;&t;&t;&t;&t; * inode dirty so that this transaction can&n;&t;&t;&t;&t; * be easily aborted if possible.&n;&t;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t;&t; * If the passed in transaction committed&n;&t;&t;&t;&t; * in xfs_bmap_finish(), then we want to&n;&t;&t;&t;&t; * add the inode to this one before returning.&n;&t;&t;&t;&t; * This keeps things simple for the higher&n;&t;&t;&t;&t; * level code, because it always knows that&n;&t;&t;&t;&t; * the inode is locked and held in the&n;&t;&t;&t;&t; * transaction that returns to it whether&n;&t;&t;&t;&t; * errors occur or not.  We don&squot;t mark the&n;&t;&t;&t;&t; * inode dirty so that this transaction can&n;&t;&t;&t;&t; * be easily aborted if possible.&n;&t;&t;&t;&t; */
 id|xfs_trans_ijoin
 c_func
 (paren
@@ -6483,7 +6483,7 @@ op_ne
 id|NULLAGINO
 )paren
 (brace
-multiline_comment|/*&n;&t;&t; * There is already another inode in the bucket we need&n;&t;&t; * to add ourselves to.&t; Add us at the front of the list.&n;&t;&t; * Here we put the head pointer into our next pointer,&n;&t;&t; * and then we fall through to point the head at us.&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * There is already another inode in the bucket we need&n;&t;&t; * to add ourselves to.  Add us at the front of the list.&n;&t;&t; * Here we put the head pointer into our next pointer,&n;&t;&t; * and then we fall through to point the head at us.&n;&t;&t; */
 id|error
 op_assign
 id|xfs_itobp
@@ -6806,7 +6806,7 @@ c_func
 (paren
 id|CE_WARN
 comma
-l_string|&quot;xfs_iunlink_remove: xfs_trans_read_buf()  returned an error %d on %s.&t;Returning error.&quot;
+l_string|&quot;xfs_iunlink_remove: xfs_trans_read_buf()  returned an error %d on %s.  Returning error.&quot;
 comma
 id|error
 comma
@@ -6896,7 +6896,7 @@ c_func
 (paren
 id|CE_WARN
 comma
-l_string|&quot;xfs_iunlink_remove: XFS_TEST_ERROR()  returned an error on %s.&t; Returning EFSCORRUPTED.&quot;
+l_string|&quot;xfs_iunlink_remove: XFS_TEST_ERROR()  returned an error on %s.  Returning EFSCORRUPTED.&quot;
 comma
 id|mp-&gt;m_fsname
 )paren
@@ -6984,7 +6984,7 @@ op_eq
 id|agino
 )paren
 (brace
-multiline_comment|/*&n;&t;&t; * We&squot;re at the head of the list.  Get the inode&squot;s&n;&t;&t; * on-disk buffer to see if there is anyone after us&n;&t;&t; * on the list.&t; Only modify our next pointer if it&n;&t;&t; * is not already NULLAGINO.  This saves us the overhead&n;&t;&t; * of dealing with the buffer when there is no need to&n;&t;&t; * change it.&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * We&squot;re at the head of the list.  Get the inode&squot;s&n;&t;&t; * on-disk buffer to see if there is anyone after us&n;&t;&t; * on the list.  Only modify our next pointer if it&n;&t;&t; * is not already NULLAGINO.  This saves us the overhead&n;&t;&t; * of dealing with the buffer when there is no need to&n;&t;&t; * change it.&n;&t;&t; */
 id|error
 op_assign
 id|xfs_itobp
@@ -7283,7 +7283,7 @@ c_func
 (paren
 id|CE_WARN
 comma
-l_string|&quot;xfs_iunlink_remove: xfs_inotobp()  returned an error %d on %s.&t; Returning error.&quot;
+l_string|&quot;xfs_iunlink_remove: xfs_inotobp()  returned an error %d on %s.  Returning error.&quot;
 comma
 id|error
 comma
@@ -7540,7 +7540,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * This is called to return an inode to the inode free list.&n; * The inode should already be truncated to 0 length and have&n; * no pages associated with it.&t; This routine also assumes that&n; * the inode is already a part of the transaction.&n; *&n; * The on-disk copy of the inode will have been added to the list&n; * of unlinked inodes in the AGI. We need to remove the inode from&n; * that list atomically with respect to freeing it here.&n; */
+multiline_comment|/*&n; * This is called to return an inode to the inode free list.&n; * The inode should already be truncated to 0 length and have&n; * no pages associated with it.  This routine also assumes that&n; * the inode is already a part of the transaction.&n; *&n; * The on-disk copy of the inode will have been added to the list&n; * of unlinked inodes in the AGI. We need to remove the inode from&n; * that list atomically with respect to freeing it here.&n; */
 r_int
 DECL|function|xfs_ifree
 id|xfs_ifree
@@ -7736,7 +7736,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Reallocate the space for if_broot based on the number of records&n; * being added or deleted as indicated in rec_diff.  Move the records&n; * and pointers in if_broot to fit the new size.  When shrinking this&n; * will eliminate holes between the records and pointers created by&n; * the caller.&t;When growing this will create holes to be filled in&n; * by the caller.&n; *&n; * The caller must not request to add more records than would fit in&n; * the on-disk inode root.  If the if_broot is currently NULL, then&n; * if we adding records one will be allocated.&t;The caller must also&n; * not request that the number of records go below zero, although&n; * it can go to zero.&n; *&n; * ip -- the inode whose if_broot area is changing&n; * ext_diff -- the change in the number of records, positive or negative,&n; *&t; requested for the if_broot array.&n; */
+multiline_comment|/*&n; * Reallocate the space for if_broot based on the number of records&n; * being added or deleted as indicated in rec_diff.  Move the records&n; * and pointers in if_broot to fit the new size.  When shrinking this&n; * will eliminate holes between the records and pointers created by&n; * the caller.  When growing this will create holes to be filled in&n; * by the caller.&n; *&n; * The caller must not request to add more records than would fit in&n; * the on-disk inode root.  If the if_broot is currently NULL, then&n; * if we adding records one will be allocated.  The caller must also&n; * not request that the number of records go below zero, although&n; * it can go to zero.&n; *&n; * ip -- the inode whose if_broot area is changing&n; * ext_diff -- the change in the number of records, positive or negative,&n; *&t; requested for the if_broot array.&n; */
 r_void
 DECL|function|xfs_iroot_realloc
 id|xfs_iroot_realloc
@@ -8705,7 +8705,7 @@ suffix:semicolon
 )brace
 r_else
 (brace
-multiline_comment|/*&n;&t;&t; * Stuck with malloc/realloc.&n;&t;&t; * For inline data, the underlying buffer must be&n;&t;&t; * a multiple of 4 bytes in size so that it can be&n;&t;&t; * logged and stay on word boundaries.&t;We enforce&n;&t;&t; * that here.&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * Stuck with malloc/realloc.&n;&t;&t; * For inline data, the underlying buffer must be&n;&t;&t; * a multiple of 4 bytes in size so that it can be&n;&t;&t; * logged and stay on word boundaries.  We enforce&n;&t;&t; * that here.&n;&t;&t; */
 id|real_size
 op_assign
 id|roundup
@@ -9019,7 +9019,7 @@ op_assign
 l_int|NULL
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t; * If the format is local, then we can&squot;t have an extents&n;&t; * array so just look for an inline data array.&t; If we&squot;re&n;&t; * not local then we may or may not have an extents list,&n;&t; * so check and free it up if we do.&n;&t; */
+multiline_comment|/*&n;&t; * If the format is local, then we can&squot;t have an extents&n;&t; * array so just look for an inline data array.  If we&squot;re&n;&t; * not local then we may or may not have an extents list,&n;&t; * so check and free it up if we do.&n;&t; */
 r_if
 c_cond
 (paren
@@ -9399,7 +9399,7 @@ id|ip-&gt;i_pincount
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Decrement the pin count of the given inode, and wake up&n; * anyone in xfs_iwait_unpin() if the count goes to 0.&t;The&n; * inode must have been previoulsy pinned with a call to xfs_ipin().&n; */
+multiline_comment|/*&n; * Decrement the pin count of the given inode, and wake up&n; * anyone in xfs_iwait_unpin() if the count goes to 0.  The&n; * inode must have been previoulsy pinned with a call to xfs_ipin().&n; */
 r_void
 DECL|function|xfs_iunpin
 id|xfs_iunpin
@@ -10523,7 +10523,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t; * We can&squot;t flush the inode until it is unpinned, so&n;&t; * wait for it.&t; We know noone new can pin it, because&n;&t; * we are holding the inode lock shared and you need&n;&t; * to hold it exclusively to pin the inode.&n;&t; */
+multiline_comment|/*&n;&t; * We can&squot;t flush the inode until it is unpinned, so&n;&t; * wait for it.  We know noone new can pin it, because&n;&t; * we are holding the inode lock shared and you need&n;&t; * to hold it exclusively to pin the inode.&n;&t; */
 id|xfs_iunpin_wait
 c_func
 (paren
@@ -10801,7 +10801,7 @@ op_assign
 id|iq-&gt;i_cnext
 )paren
 (brace
-multiline_comment|/*&n;&t;&t; * Do an un-protected check to see if the inode is dirty and&n;&t;&t; * is a candidate for flushing.&t; These checks will be repeated&n;&t;&t; * later after the appropriate locks are acquired.&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * Do an un-protected check to see if the inode is dirty and&n;&t;&t; * is a candidate for flushing.  These checks will be repeated&n;&t;&t; * later after the appropriate locks are acquired.&n;&t;&t; */
 id|iip
 op_assign
 id|iq-&gt;i_itemp
@@ -11109,7 +11109,7 @@ id|EFSCORRUPTED
 suffix:semicolon
 id|cluster_corrupt_out
 suffix:colon
-multiline_comment|/* Corruption detected in the clustering loop.&t;Invalidate the&n;&t; * inode buffer and shut down the filesystem.&n;&t; */
+multiline_comment|/* Corruption detected in the clustering loop.  Invalidate the&n;&t; * inode buffer and shut down the filesystem.&n;&t; */
 id|mutex_spinunlock
 c_func
 (paren
@@ -11119,7 +11119,7 @@ comma
 id|s
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * Clean up the buffer.&t; If it was B_DELWRI, just release it --&n;&t; * brelse can handle it with no problems.  If not, shut down the&n;&t; * filesystem before releasing the buffer.&n;&t; */
+multiline_comment|/*&n;&t; * Clean up the buffer.  If it was B_DELWRI, just release it --&n;&t; * brelse can handle it with no problems.  If not, shut down the&n;&t; * filesystem before releasing the buffer.&n;&t; */
 r_if
 c_cond
 (paren
@@ -11374,7 +11374,7 @@ comma
 id|ip-&gt;i_boffset
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * Clear i_update_core before copying out the data.&n;&t; * This is for coordination with our timestamp updates&n;&t; * that don&squot;t hold the inode lock. They will always&n;&t; * update the timestamps BEFORE setting i_update_core,&n;&t; * so if we clear i_update_core after they set it we&n;&t; * are guaranteed to see their updates to the timestamps.&n;&t; * I believe that this depends on strongly ordered memory&n;&t; * semantics, but we have that.&t; We use the SYNCHRONIZE&n;&t; * macro to make sure that the compiler does not reorder&n;&t; * the i_update_core access below the data copy below.&n;&t; */
+multiline_comment|/*&n;&t; * Clear i_update_core before copying out the data.&n;&t; * This is for coordination with our timestamp updates&n;&t; * that don&squot;t hold the inode lock. They will always&n;&t; * update the timestamps BEFORE setting i_update_core,&n;&t; * so if we clear i_update_core after they set it we&n;&t; * are guaranteed to see their updates to the timestamps.&n;&t; * I believe that this depends on strongly ordered memory&n;&t; * semantics, but we have that.  We use the SYNCHRONIZE&n;&t; * macro to make sure that the compiler does not reorder&n;&t; * the i_update_core access below the data copy below.&n;&t; */
 id|ip-&gt;i_update_core
 op_assign
 l_int|0
@@ -11907,7 +11907,7 @@ comma
 id|bp
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * We&squot;ve recorded everything logged in the inode, so we&squot;d&n;&t; * like to clear the ilf_fields bits so we don&squot;t log and&n;&t; * flush things unnecessarily.&t;However, we can&squot;t stop&n;&t; * logging all this information until the data we&squot;ve copied&n;&t; * into the disk buffer is written to disk.  If we did we might&n;&t; * overwrite the copy of the inode in the log with all the&n;&t; * data after re-logging only part of it, and in the face of&n;&t; * a crash we wouldn&squot;t have all the data we need to recover.&n;&t; *&n;&t; * What we do is move the bits to the ili_last_fields field.&n;&t; * When logging the inode, these bits are moved back to the&n;&t; * ilf_fields field.  In the xfs_iflush_done() routine we&n;&t; * clear ili_last_fields, since we know that the information&n;&t; * those bits represent is permanently on disk.&t; As long as&n;&t; * the flush completes before the inode is logged again, then&n;&t; * both ilf_fields and ili_last_fields will be cleared.&n;&t; *&n;&t; * We can play with the ilf_fields bits here, because the inode&n;&t; * lock must be held exclusively in order to set bits there&n;&t; * and the flush lock protects the ili_last_fields bits.&n;&t; * Set ili_logged so the flush done&n;&t; * routine can tell whether or not to look in the AIL.&n;&t; * Also, store the current LSN of the inode so that we can tell&n;&t; * whether the item has moved in the AIL from xfs_iflush_done().&n;&t; * In order to read the lsn we need the AIL lock, because&n;&t; * it is a 64 bit value that cannot be read atomically.&n;&t; */
+multiline_comment|/*&n;&t; * We&squot;ve recorded everything logged in the inode, so we&squot;d&n;&t; * like to clear the ilf_fields bits so we don&squot;t log and&n;&t; * flush things unnecessarily.  However, we can&squot;t stop&n;&t; * logging all this information until the data we&squot;ve copied&n;&t; * into the disk buffer is written to disk.  If we did we might&n;&t; * overwrite the copy of the inode in the log with all the&n;&t; * data after re-logging only part of it, and in the face of&n;&t; * a crash we wouldn&squot;t have all the data we need to recover.&n;&t; *&n;&t; * What we do is move the bits to the ili_last_fields field.&n;&t; * When logging the inode, these bits are moved back to the&n;&t; * ilf_fields field.  In the xfs_iflush_done() routine we&n;&t; * clear ili_last_fields, since we know that the information&n;&t; * those bits represent is permanently on disk.  As long as&n;&t; * the flush completes before the inode is logged again, then&n;&t; * both ilf_fields and ili_last_fields will be cleared.&n;&t; *&n;&t; * We can play with the ilf_fields bits here, because the inode&n;&t; * lock must be held exclusively in order to set bits there&n;&t; * and the flush lock protects the ili_last_fields bits.&n;&t; * Set ili_logged so the flush done&n;&t; * routine can tell whether or not to look in the AIL.&n;&t; * Also, store the current LSN of the inode so that we can tell&n;&t; * whether the item has moved in the AIL from xfs_iflush_done().&n;&t; * In order to read the lsn we need the AIL lock, because&n;&t; * it is a 64 bit value that cannot be read atomically.&n;&t; */
 r_if
 c_cond
 (paren
@@ -12296,7 +12296,7 @@ suffix:semicolon
 r_continue
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t;&t;&t; * Sample vp mapping while holding mp locked on MP&n;&t;&t;&t; * systems, so we don&squot;t purge a reclaimed or&n;&t;&t;&t; * nonexistent vnode.  We break from the loop&n;&t;&t;&t; * since we know that we modify&n;&t;&t;&t; * it by pulling ourselves from it in xfs_reclaim()&n;&t;&t;&t; * called via vn_purge() below.&t; Set ip to the next&n;&t;&t;&t; * entry in the list anyway so we&squot;ll know below&n;&t;&t;&t; * whether we reached the end or not.&n;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t; * Sample vp mapping while holding mp locked on MP&n;&t;&t;&t; * systems, so we don&squot;t purge a reclaimed or&n;&t;&t;&t; * nonexistent vnode.  We break from the loop&n;&t;&t;&t; * since we know that we modify&n;&t;&t;&t; * it by pulling ourselves from it in xfs_reclaim()&n;&t;&t;&t; * called via vn_purge() below.  Set ip to the next&n;&t;&t;&t; * entry in the list anyway so we&squot;ll know below&n;&t;&t;&t; * whether we reached the end or not.&n;&t;&t;&t; */
 id|VMAP
 c_func
 (paren
@@ -12668,7 +12668,7 @@ id|EACCES
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Return whether or not it is OK to swap to the given file in the&n; * given range.&t; Return 0 for OK and otherwise return the error.&n; *&n; * It is only OK to swap to a file if it has no holes, and all&n; * extents have been initialized.&n; *&n; * We use the vnode behavior chain prevent and allow primitives&n; * to ensure that the vnode chain stays coherent while we do this.&n; * This allows us to walk the chain down to the bottom where XFS&n; * lives without worrying about it changing out from under us.&n; */
+multiline_comment|/*&n; * Return whether or not it is OK to swap to the given file in the&n; * given range.  Return 0 for OK and otherwise return the error.&n; *&n; * It is only OK to swap to a file if it has no holes, and all&n; * extents have been initialized.&n; *&n; * We use the vnode behavior chain prevent and allow primitives&n; * to ensure that the vnode chain stays coherent while we do this.&n; * This allows us to walk the chain down to the bottom where XFS&n; * lives without worrying about it changing out from under us.&n; */
 r_int
 DECL|function|xfs_swappable
 id|xfs_swappable
@@ -12871,7 +12871,7 @@ c_func
 id|vp
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * We&squot;re not supposed to change timestamps in readonly-mounted&n;&t; * filesystems.&t; Throw it away if anyone asks us.&n;&t; */
+multiline_comment|/*&n;&t; * We&squot;re not supposed to change timestamps in readonly-mounted&n;&t; * filesystems.  Throw it away if anyone asks us.&n;&t; */
 r_if
 c_cond
 (paren

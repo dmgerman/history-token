@@ -1,7 +1,7 @@
-multiline_comment|/*&n; * Copyright (c) 2000-2002 Silicon Graphics, Inc.  All Rights Reserved.&n; *&n; * This program is free software; you can redistribute it and/or modify it&n; * under the terms of version 2 of the GNU General Public License as&n; * published by the Free Software Foundation.&n; *&n; * This program is distributed in the hope that it would be useful, but&n; * WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.&n; *&n; * Further, this software is distributed without any warranty that it is&n; * free of the rightful claim of any third person regarding infringement&n; * or the like.&t; Any license provided herein, whether implied or&n; * otherwise, applies only to this software file.  Patent licenses, if&n; * any, provided herein do not apply to combinations of this program with&n; * other software, or any other product whatsoever.&n; *&n; * You should have received a copy of the GNU General Public License along&n; * with this program; if not, write the Free Software Foundation, Inc., 59&n; * Temple Place - Suite 330, Boston MA 02111-1307, USA.&n; *&n; * Contact information: Silicon Graphics, Inc., 1600 Amphitheatre Pkwy,&n; * Mountain View, CA  94043, or:&n; *&n; * http://www.sgi.com&n; *&n; * For further information regarding this notice, see:&n; *&n; * http://oss.sgi.com/projects/GenInfo/SGIGPLNoticeExplan/&n; */
+multiline_comment|/*&n; * Copyright (c) 2000-2002 Silicon Graphics, Inc.  All Rights Reserved.&n; *&n; * This program is free software; you can redistribute it and/or modify it&n; * under the terms of version 2 of the GNU General Public License as&n; * published by the Free Software Foundation.&n; *&n; * This program is distributed in the hope that it would be useful, but&n; * WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.&n; *&n; * Further, this software is distributed without any warranty that it is&n; * free of the rightful claim of any third person regarding infringement&n; * or the like.  Any license provided herein, whether implied or&n; * otherwise, applies only to this software file.  Patent licenses, if&n; * any, provided herein do not apply to combinations of this program with&n; * other software, or any other product whatsoever.&n; *&n; * You should have received a copy of the GNU General Public License along&n; * with this program; if not, write the Free Software Foundation, Inc., 59&n; * Temple Place - Suite 330, Boston MA 02111-1307, USA.&n; *&n; * Contact information: Silicon Graphics, Inc., 1600 Amphitheatre Pkwy,&n; * Mountain View, CA  94043, or:&n; *&n; * http://www.sgi.com&n; *&n; * For further information regarding this notice, see:&n; *&n; * http://oss.sgi.com/projects/GenInfo/SGIGPLNoticeExplan/&n; */
 macro_line|#ifndef __XFS_ALLOC_H__
 DECL|macro|__XFS_ALLOC_H__
-mdefine_line|#define __XFS_ALLOC_H__
+mdefine_line|#define&t;__XFS_ALLOC_H__
 r_struct
 id|xfs_buf
 suffix:semicolon
@@ -14,7 +14,7 @@ suffix:semicolon
 r_struct
 id|xfs_trans
 suffix:semicolon
-multiline_comment|/*&n; * Freespace allocation types.&t;Argument to xfs_alloc_[v]extent.&n; */
+multiline_comment|/*&n; * Freespace allocation types.  Argument to xfs_alloc_[v]extent.&n; */
 DECL|enum|xfs_alloctype
 r_typedef
 r_enum
@@ -53,7 +53,7 @@ id|xfs_alloctype_t
 suffix:semicolon
 multiline_comment|/*&n; * Flags for xfs_alloc_fix_freelist.&n; */
 DECL|macro|XFS_ALLOC_FLAG_TRYLOCK
-mdefine_line|#define XFS_ALLOC_FLAG_TRYLOCK&t;0x00000001  /* use trylock for buffer locking */
+mdefine_line|#define&t;XFS_ALLOC_FLAG_TRYLOCK&t;0x00000001  /* use trylock for buffer locking */
 multiline_comment|/*&n; * Argument structure for xfs_alloc routines.&n; * This is turned into a structure to avoid having 20 arguments passed&n; * down several levels of the stack.&n; */
 DECL|struct|xfs_alloc_arg
 r_typedef
@@ -190,23 +190,23 @@ mdefine_line|#define XFS_ALLOC_INITIAL_USER_DATA&t;2&t;/* special case start of 
 macro_line|#ifdef __KERNEL__
 multiline_comment|/*&n; * Types for alloc tracing.&n; */
 DECL|macro|XFS_ALLOC_KTRACE_ALLOC
-mdefine_line|#define XFS_ALLOC_KTRACE_ALLOC&t;1
+mdefine_line|#define&t;XFS_ALLOC_KTRACE_ALLOC&t;1
 DECL|macro|XFS_ALLOC_KTRACE_FREE
-mdefine_line|#define XFS_ALLOC_KTRACE_FREE&t;2
+mdefine_line|#define&t;XFS_ALLOC_KTRACE_FREE&t;2
 DECL|macro|XFS_ALLOC_KTRACE_MODAGF
-mdefine_line|#define XFS_ALLOC_KTRACE_MODAGF 3
+mdefine_line|#define&t;XFS_ALLOC_KTRACE_MODAGF&t;3
 DECL|macro|XFS_ALLOC_KTRACE_BUSY
-mdefine_line|#define XFS_ALLOC_KTRACE_BUSY&t;4
+mdefine_line|#define&t;XFS_ALLOC_KTRACE_BUSY&t;4
 DECL|macro|XFS_ALLOC_KTRACE_UNBUSY
-mdefine_line|#define XFS_ALLOC_KTRACE_UNBUSY 5
+mdefine_line|#define&t;XFS_ALLOC_KTRACE_UNBUSY&t;5
 DECL|macro|XFS_ALLOC_KTRACE_BUSYSEARCH
-mdefine_line|#define XFS_ALLOC_KTRACE_BUSYSEARCH&t;6
+mdefine_line|#define&t;XFS_ALLOC_KTRACE_BUSYSEARCH&t;6
 multiline_comment|/*&n; * Allocation tracing buffer size.&n; */
 DECL|macro|XFS_ALLOC_TRACE_SIZE
-mdefine_line|#define XFS_ALLOC_TRACE_SIZE&t;4096
+mdefine_line|#define&t;XFS_ALLOC_TRACE_SIZE&t;4096
 macro_line|#ifdef&t;XFS_ALL_TRACE
 DECL|macro|XFS_ALLOC_TRACE
-mdefine_line|#define XFS_ALLOC_TRACE
+mdefine_line|#define&t;XFS_ALLOC_TRACE
 macro_line|#endif
 macro_line|#if !defined(DEBUG)
 DECL|macro|XFS_ALLOC_TRACE

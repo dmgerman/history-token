@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * Copyright (c) 2000-2002 Silicon Graphics, Inc.  All Rights Reserved.&n; *&n; * This program is free software; you can redistribute it and/or modify it&n; * under the terms of version 2 of the GNU General Public License as&n; * published by the Free Software Foundation.&n; *&n; * This program is distributed in the hope that it would be useful, but&n; * WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.&n; *&n; * Further, this software is distributed without any warranty that it is&n; * free of the rightful claim of any third person regarding infringement&n; * or the like.&t; Any license provided herein, whether implied or&n; * otherwise, applies only to this software file.  Patent licenses, if&n; * any, provided herein do not apply to combinations of this program with&n; * other software, or any other product whatsoever.&n; *&n; * You should have received a copy of the GNU General Public License along&n; * with this program; if not, write the Free Software Foundation, Inc., 59&n; * Temple Place - Suite 330, Boston MA 02111-1307, USA.&n; *&n; * Contact information: Silicon Graphics, Inc., 1600 Amphitheatre Pkwy,&n; * Mountain View, CA  94043, or:&n; *&n; * http://www.sgi.com&n; *&n; * For further information regarding this notice, see:&n; *&n; * http://oss.sgi.com/projects/GenInfo/SGIGPLNoticeExplan/&n; */
+multiline_comment|/*&n; * Copyright (c) 2000-2002 Silicon Graphics, Inc.  All Rights Reserved.&n; *&n; * This program is free software; you can redistribute it and/or modify it&n; * under the terms of version 2 of the GNU General Public License as&n; * published by the Free Software Foundation.&n; *&n; * This program is distributed in the hope that it would be useful, but&n; * WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.&n; *&n; * Further, this software is distributed without any warranty that it is&n; * free of the rightful claim of any third person regarding infringement&n; * or the like.  Any license provided herein, whether implied or&n; * otherwise, applies only to this software file.  Patent licenses, if&n; * any, provided herein do not apply to combinations of this program with&n; * other software, or any other product whatsoever.&n; *&n; * You should have received a copy of the GNU General Public License along&n; * with this program; if not, write the Free Software Foundation, Inc., 59&n; * Temple Place - Suite 330, Boston MA 02111-1307, USA.&n; *&n; * Contact information: Silicon Graphics, Inc., 1600 Amphitheatre Pkwy,&n; * Mountain View, CA  94043, or:&n; *&n; * http://www.sgi.com&n; *&n; * For further information regarding this notice, see:&n; *&n; * http://oss.sgi.com/projects/GenInfo/SGIGPLNoticeExplan/&n; */
 macro_line|#include &lt;xfs.h&gt;
 macro_line|#ifdef DEBUG
 DECL|variable|xfs_bmap_trace_buf
@@ -370,7 +370,7 @@ suffix:semicolon
 multiline_comment|/* data or attr fork */
 macro_line|#else
 DECL|macro|xfs_bmap_check_extents
-mdefine_line|#define xfs_bmap_check_extents(ip,w)
+mdefine_line|#define&t;xfs_bmap_check_extents(ip,w)
 macro_line|#endif
 multiline_comment|/*&n; * Called by xfs_bmapi to update extent list structure and the btree&n; * after removing space (or undoing a delayed allocation).&n; */
 id|STATIC
@@ -544,7 +544,7 @@ id|whichfork
 )paren
 suffix:semicolon
 multiline_comment|/* data or attr fork */
-multiline_comment|/*&n; * Convert a local file to an extents file.&n; * This code is sort of bogus, since the file data needs to get&n; * logged so it won&squot;t be lost.&t;The bmap-level manipulations are ok, though.&n; */
+multiline_comment|/*&n; * Convert a local file to an extents file.&n; * This code is sort of bogus, since the file data needs to get&n; * logged so it won&squot;t be lost.  The bmap-level manipulations are ok, though.&n; */
 id|STATIC
 r_int
 multiline_comment|/* error */
@@ -811,13 +811,13 @@ suffix:semicolon
 multiline_comment|/* data or attr fork */
 macro_line|#else
 DECL|macro|xfs_bmap_trace_delete
-mdefine_line|#define xfs_bmap_trace_delete(f,d,ip,i,c,w)
+mdefine_line|#define&t;xfs_bmap_trace_delete(f,d,ip,i,c,w)
 DECL|macro|xfs_bmap_trace_insert
-mdefine_line|#define xfs_bmap_trace_insert(f,d,ip,i,c,r1,r2,w)
+mdefine_line|#define&t;xfs_bmap_trace_insert(f,d,ip,i,c,r1,r2,w)
 DECL|macro|xfs_bmap_trace_post_update
-mdefine_line|#define xfs_bmap_trace_post_update(f,d,ip,i,w)
+mdefine_line|#define&t;xfs_bmap_trace_post_update(f,d,ip,i,w)
 DECL|macro|xfs_bmap_trace_pre_update
-mdefine_line|#define xfs_bmap_trace_pre_update(f,d,ip,i,w)
+mdefine_line|#define&t;xfs_bmap_trace_pre_update(f,d,ip,i,w)
 macro_line|#endif&t;/* XFS_BMAP_TRACE */
 multiline_comment|/*&n; * Compute the worst-case number of indirect blocks that will be used&n; * for ip&squot;s delayed extent of length &quot;len&quot;.&n; */
 id|STATIC
@@ -864,7 +864,7 @@ id|ret_nmap
 suffix:semicolon
 macro_line|#else
 DECL|macro|xfs_bmap_validate_ret
-mdefine_line|#define xfs_bmap_validate_ret(bno,len,flags,mval,onmap,nmap)
+mdefine_line|#define&t;xfs_bmap_validate_ret(bno,len,flags,mval,onmap,nmap)
 macro_line|#endif /* DEBUG */
 macro_line|#if defined(DEBUG) &amp;&amp; defined(XFS_RW_TRACE)
 id|STATIC
@@ -892,7 +892,7 @@ id|ra
 suffix:semicolon
 macro_line|#else
 DECL|macro|xfs_bunmap_trace
-mdefine_line|#define xfs_bunmap_trace(ip, bno, len, flags, ra)
+mdefine_line|#define&t;xfs_bunmap_trace(ip, bno, len, flags, ra)
 macro_line|#endif&t;/* DEBUG &amp;&amp; XFS_RW_TRACE */
 id|STATIC
 r_int
@@ -2382,27 +2382,27 @@ id|RIGHT_VALID
 )brace
 suffix:semicolon
 DECL|macro|LEFT
-mdefine_line|#define LEFT&t;&t;r[0]
+mdefine_line|#define&t;LEFT&t;&t;r[0]
 DECL|macro|RIGHT
-mdefine_line|#define RIGHT&t;&t;r[1]
+mdefine_line|#define&t;RIGHT&t;&t;r[1]
 DECL|macro|PREV
-mdefine_line|#define PREV&t;&t;r[2]
+mdefine_line|#define&t;PREV&t;&t;r[2]
 DECL|macro|MASK
-mdefine_line|#define MASK(b)&t;&t;(1 &lt;&lt; (b))
+mdefine_line|#define&t;MASK(b)&t;&t;(1 &lt;&lt; (b))
 DECL|macro|MASK2
-mdefine_line|#define MASK2(a,b)&t;(MASK(a) | MASK(b))
+mdefine_line|#define&t;MASK2(a,b)&t;(MASK(a) | MASK(b))
 DECL|macro|MASK3
-mdefine_line|#define MASK3(a,b,c)&t;(MASK2(a,b) | MASK(c))
+mdefine_line|#define&t;MASK3(a,b,c)&t;(MASK2(a,b) | MASK(c))
 DECL|macro|MASK4
-mdefine_line|#define MASK4(a,b,c,d)&t;(MASK3(a,b,c) | MASK(d))
+mdefine_line|#define&t;MASK4(a,b,c,d)&t;(MASK3(a,b,c) | MASK(d))
 DECL|macro|STATE_SET
-mdefine_line|#define STATE_SET(b,v)&t;((v) ? (state |= MASK(b)) : (state &amp;= ~MASK(b)))
+mdefine_line|#define&t;STATE_SET(b,v)&t;((v) ? (state |= MASK(b)) : (state &amp;= ~MASK(b)))
 DECL|macro|STATE_TEST
-mdefine_line|#define STATE_TEST(b)&t;(state &amp; MASK(b))
+mdefine_line|#define&t;STATE_TEST(b)&t;(state &amp; MASK(b))
 DECL|macro|STATE_SET_TEST
-mdefine_line|#define STATE_SET_TEST(b,v)&t;((v) ? ((state |= MASK(b)), 1) : &bslash;&n;&t;&t;&t;&t;       ((state &amp;= ~MASK(b)), 0))
+mdefine_line|#define&t;STATE_SET_TEST(b,v)&t;((v) ? ((state |= MASK(b)), 1) : &bslash;&n;&t;&t;&t;&t;       ((state &amp;= ~MASK(b)), 0))
 DECL|macro|SWITCH_STATE
-mdefine_line|#define SWITCH_STATE&t;&t;&bslash;&n;&t;(state &amp; MASK4(LEFT_FILLING, RIGHT_FILLING, LEFT_CONTIG, RIGHT_CONTIG))
+mdefine_line|#define&t;SWITCH_STATE&t;&t;&bslash;&n;&t;(state &amp; MASK4(LEFT_FILLING, RIGHT_FILLING, LEFT_CONTIG, RIGHT_CONTIG))
 multiline_comment|/*&n;&t; * Set up a bunch of variables to make the tests simpler.&n;&t; */
 id|cur
 op_assign
@@ -5302,27 +5302,27 @@ id|RIGHT_VALID
 )brace
 suffix:semicolon
 DECL|macro|LEFT
-mdefine_line|#define LEFT&t;&t;r[0]
+mdefine_line|#define&t;LEFT&t;&t;r[0]
 DECL|macro|RIGHT
-mdefine_line|#define RIGHT&t;&t;r[1]
+mdefine_line|#define&t;RIGHT&t;&t;r[1]
 DECL|macro|PREV
-mdefine_line|#define PREV&t;&t;r[2]
+mdefine_line|#define&t;PREV&t;&t;r[2]
 DECL|macro|MASK
-mdefine_line|#define MASK(b)&t;&t;(1 &lt;&lt; (b))
+mdefine_line|#define&t;MASK(b)&t;&t;(1 &lt;&lt; (b))
 DECL|macro|MASK2
-mdefine_line|#define MASK2(a,b)&t;(MASK(a) | MASK(b))
+mdefine_line|#define&t;MASK2(a,b)&t;(MASK(a) | MASK(b))
 DECL|macro|MASK3
-mdefine_line|#define MASK3(a,b,c)&t;(MASK2(a,b) | MASK(c))
+mdefine_line|#define&t;MASK3(a,b,c)&t;(MASK2(a,b) | MASK(c))
 DECL|macro|MASK4
-mdefine_line|#define MASK4(a,b,c,d)&t;(MASK3(a,b,c) | MASK(d))
+mdefine_line|#define&t;MASK4(a,b,c,d)&t;(MASK3(a,b,c) | MASK(d))
 DECL|macro|STATE_SET
-mdefine_line|#define STATE_SET(b,v)&t;((v) ? (state |= MASK(b)) : (state &amp;= ~MASK(b)))
+mdefine_line|#define&t;STATE_SET(b,v)&t;((v) ? (state |= MASK(b)) : (state &amp;= ~MASK(b)))
 DECL|macro|STATE_TEST
-mdefine_line|#define STATE_TEST(b)&t;(state &amp; MASK(b))
+mdefine_line|#define&t;STATE_TEST(b)&t;(state &amp; MASK(b))
 DECL|macro|STATE_SET_TEST
-mdefine_line|#define STATE_SET_TEST(b,v)&t;((v) ? ((state |= MASK(b)), 1) : &bslash;&n;&t;&t;&t;&t;       ((state &amp;= ~MASK(b)), 0))
+mdefine_line|#define&t;STATE_SET_TEST(b,v)&t;((v) ? ((state |= MASK(b)), 1) : &bslash;&n;&t;&t;&t;&t;       ((state &amp;= ~MASK(b)), 0))
 DECL|macro|SWITCH_STATE
-mdefine_line|#define SWITCH_STATE&t;&t;&bslash;&n;&t;(state &amp; MASK4(LEFT_FILLING, RIGHT_FILLING, LEFT_CONTIG, RIGHT_CONTIG))
+mdefine_line|#define&t;SWITCH_STATE&t;&t;&bslash;&n;&t;(state &amp; MASK4(LEFT_FILLING, RIGHT_FILLING, LEFT_CONTIG, RIGHT_CONTIG))
 multiline_comment|/*&n;&t; * Set up a bunch of variables to make the tests simpler.&n;&t; */
 id|error
 op_assign
@@ -8137,17 +8137,17 @@ id|RIGHT_VALID
 )brace
 suffix:semicolon
 DECL|macro|MASK
-mdefine_line|#define MASK(b)&t;&t;&t;(1 &lt;&lt; (b))
+mdefine_line|#define&t;MASK(b)&t;&t;&t;(1 &lt;&lt; (b))
 DECL|macro|MASK2
-mdefine_line|#define MASK2(a,b)&t;&t;(MASK(a) | MASK(b))
+mdefine_line|#define&t;MASK2(a,b)&t;&t;(MASK(a) | MASK(b))
 DECL|macro|STATE_SET
-mdefine_line|#define STATE_SET(b,v)&t;&t;((v) ? (state |= MASK(b)) : (state &amp;= ~MASK(b)))
+mdefine_line|#define&t;STATE_SET(b,v)&t;&t;((v) ? (state |= MASK(b)) : (state &amp;= ~MASK(b)))
 DECL|macro|STATE_TEST
-mdefine_line|#define STATE_TEST(b)&t;&t;(state &amp; MASK(b))
+mdefine_line|#define&t;STATE_TEST(b)&t;&t;(state &amp; MASK(b))
 DECL|macro|STATE_SET_TEST
-mdefine_line|#define STATE_SET_TEST(b,v)&t;((v) ? ((state |= MASK(b)), 1) : &bslash;&n;&t;&t;&t;&t;       ((state &amp;= ~MASK(b)), 0))
+mdefine_line|#define&t;STATE_SET_TEST(b,v)&t;((v) ? ((state |= MASK(b)), 1) : &bslash;&n;&t;&t;&t;&t;       ((state &amp;= ~MASK(b)), 0))
 DECL|macro|SWITCH_STATE
-mdefine_line|#define SWITCH_STATE&t;&t;(state &amp; MASK2(LEFT_CONTIG, RIGHT_CONTIG))
+mdefine_line|#define&t;SWITCH_STATE&t;&t;(state &amp; MASK2(LEFT_CONTIG, RIGHT_CONTIG))
 id|base
 op_assign
 id|ip-&gt;i_df.if_u1.if_extents
@@ -8917,17 +8917,17 @@ id|RIGHT_VALID
 )brace
 suffix:semicolon
 DECL|macro|MASK
-mdefine_line|#define MASK(b)&t;&t;&t;(1 &lt;&lt; (b))
+mdefine_line|#define&t;MASK(b)&t;&t;&t;(1 &lt;&lt; (b))
 DECL|macro|MASK2
-mdefine_line|#define MASK2(a,b)&t;&t;(MASK(a) | MASK(b))
+mdefine_line|#define&t;MASK2(a,b)&t;&t;(MASK(a) | MASK(b))
 DECL|macro|STATE_SET
-mdefine_line|#define STATE_SET(b,v)&t;&t;((v) ? (state |= MASK(b)) : (state &amp;= ~MASK(b)))
+mdefine_line|#define&t;STATE_SET(b,v)&t;&t;((v) ? (state |= MASK(b)) : (state &amp;= ~MASK(b)))
 DECL|macro|STATE_TEST
-mdefine_line|#define STATE_TEST(b)&t;&t;(state &amp; MASK(b))
+mdefine_line|#define&t;STATE_TEST(b)&t;&t;(state &amp; MASK(b))
 DECL|macro|STATE_SET_TEST
-mdefine_line|#define STATE_SET_TEST(b,v)&t;((v) ? ((state |= MASK(b)), 1) : &bslash;&n;&t;&t;&t;&t;       ((state &amp;= ~MASK(b)), 0))
+mdefine_line|#define&t;STATE_SET_TEST(b,v)&t;((v) ? ((state |= MASK(b)), 1) : &bslash;&n;&t;&t;&t;&t;       ((state &amp;= ~MASK(b)), 0))
 DECL|macro|SWITCH_STATE
-mdefine_line|#define SWITCH_STATE&t;&t;(state &amp; MASK2(LEFT_CONTIG, RIGHT_CONTIG))
+mdefine_line|#define&t;SWITCH_STATE&t;&t;(state &amp; MASK2(LEFT_CONTIG, RIGHT_CONTIG))
 id|ifp
 op_assign
 id|XFS_IFORK_PTR
@@ -9971,7 +9971,7 @@ suffix:semicolon
 multiline_comment|/* realtime allocation length */
 macro_line|#endif
 DECL|macro|ISLEGAL
-mdefine_line|#define ISLEGAL(x,y)&t;&bslash;&n;&t;(rt ? &bslash;&n;&t;&t;(x) &lt; mp-&gt;m_sb.sb_rblocks : &bslash;&n;&t;&t;XFS_FSB_TO_AGNO(mp, x) == XFS_FSB_TO_AGNO(mp, y) &amp;&amp; &bslash;&n;&t;&t;XFS_FSB_TO_AGNO(mp, x) &lt; mp-&gt;m_sb.sb_agcount &amp;&amp; &bslash;&n;&t;&t;XFS_FSB_TO_AGBNO(mp, x) &lt; mp-&gt;m_sb.sb_agblocks)
+mdefine_line|#define&t;ISLEGAL(x,y)&t;&bslash;&n;&t;(rt ? &bslash;&n;&t;&t;(x) &lt; mp-&gt;m_sb.sb_rblocks : &bslash;&n;&t;&t;XFS_FSB_TO_AGNO(mp, x) == XFS_FSB_TO_AGNO(mp, y) &amp;&amp; &bslash;&n;&t;&t;XFS_FSB_TO_AGNO(mp, x) &lt; mp-&gt;m_sb.sb_agcount &amp;&amp; &bslash;&n;&t;&t;XFS_FSB_TO_AGBNO(mp, x) &lt; mp-&gt;m_sb.sb_agblocks)
 multiline_comment|/*&n;&t; * Set up variables.&n;&t; */
 id|mp
 op_assign
@@ -10086,7 +10086,7 @@ id|orig_off
 op_plus
 id|orig_alen
 suffix:semicolon
-multiline_comment|/*&n;&t;&t; * If the file offset is unaligned vs. the extent size&n;&t;&t; * we need to align it.&t; This will be possible unless&n;&t;&t; * the file was previously written with a kernel that didn&squot;t&n;&t;&t; * perform this alignment.&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * If the file offset is unaligned vs. the extent size&n;&t;&t; * we need to align it.  This will be possible unless&n;&t;&t; * the file was previously written with a kernel that didn&squot;t&n;&t;&t; * perform this alignment.&n;&t;&t; */
 id|mod_off
 op_assign
 id|do_mod
@@ -12623,7 +12623,7 @@ id|flags
 op_assign
 id|XFS_ILOG_CORE
 suffix:semicolon
-multiline_comment|/*&n;&t;&t; * Realtime allocation.&t; Free it and record di_nblocks update.&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * Realtime allocation.  Free it and record di_nblocks update.&n;&t;&t; */
 r_if
 c_cond
 (paren
@@ -18327,7 +18327,7 @@ id|flist-&gt;xbf_count
 op_increment
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Compute and fill in the value of the maximum depth of a bmap btree&n; * in this filesystem.&t;Done once, during mount.&n; */
+multiline_comment|/*&n; * Compute and fill in the value of the maximum depth of a bmap btree&n; * in this filesystem.  Done once, during mount.&n; */
 r_void
 DECL|function|xfs_bmap_compute_maxlevels
 id|xfs_bmap_compute_maxlevels
@@ -18489,7 +18489,7 @@ op_assign
 id|level
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Routine to be called at transaction&squot;s end by xfs_bmapi, xfs_bunmapi&n; * caller.  Frees all the extents that need freeing, which must be done&n; * last due to locking considerations.&t;We never free any extents in&n; * the first transaction.  This is to allow the caller to make the first&n; * transaction a synchronous one so that the pointers to the data being&n; * broken in this transaction will be permanent before the data is actually&n; * freed.  This is necessary to prevent blocks from being reallocated&n; * and written to before the free and reallocation are actually permanent.&n; * We do not just make the first transaction synchronous here, because&n; * there are more efficient ways to gain the same protection in some cases&n; * (see the file truncation code).&n; *&n; * Return 1 if the given transaction was committed and a new one&n; * started, and 0 otherwise in the committed parameter.&n; */
+multiline_comment|/*&n; * Routine to be called at transaction&squot;s end by xfs_bmapi, xfs_bunmapi&n; * caller.  Frees all the extents that need freeing, which must be done&n; * last due to locking considerations.  We never free any extents in&n; * the first transaction.  This is to allow the caller to make the first&n; * transaction a synchronous one so that the pointers to the data being&n; * broken in this transaction will be permanent before the data is actually&n; * freed.  This is necessary to prevent blocks from being reallocated&n; * and written to before the free and reallocation are actually permanent.&n; * We do not just make the first transaction synchronous here, because&n; * there are more efficient ways to gain the same protection in some cases&n; * (see the file truncation code).&n; *&n; * Return 1 if the given transaction was committed and a new one&n; * started, and 0 otherwise in the committed parameter.&n; */
 multiline_comment|/*ARGSUSED*/
 r_int
 multiline_comment|/* error */
@@ -24023,7 +24023,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Unmap (remove) blocks from a file.&n; * If nexts is nonzero then the number of extents to remove is limited to&n; * that value.&t;If not all extents in the block range can be removed then&n; * *done is set.&n; */
+multiline_comment|/*&n; * Unmap (remove) blocks from a file.&n; * If nexts is nonzero then the number of extents to remove is limited to&n; * that value.  If not all extents in the block range can be removed then&n; * *done is set.&n; */
 r_int
 multiline_comment|/* error */
 DECL|function|xfs_bunmapi

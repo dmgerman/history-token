@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * Copyright (c) 2000-2002 Silicon Graphics, Inc.  All Rights Reserved.&n; *&n; * This program is free software; you can redistribute it and/or modify it&n; * under the terms of version 2 of the GNU General Public License as&n; * published by the Free Software Foundation.&n; *&n; * This program is distributed in the hope that it would be useful, but&n; * WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.&n; *&n; * Further, this software is distributed without any warranty that it is&n; * free of the rightful claim of any third person regarding infringement&n; * or the like.&t; Any license provided herein, whether implied or&n; * otherwise, applies only to this software file.  Patent licenses, if&n; * any, provided herein do not apply to combinations of this program with&n; * other software, or any other product whatsoever.&n; *&n; * You should have received a copy of the GNU General Public License along&n; * with this program; if not, write the Free Software Foundation, Inc., 59&n; * Temple Place - Suite 330, Boston MA 02111-1307, USA.&n; *&n; * Contact information: Silicon Graphics, Inc., 1600 Amphitheatre Pkwy,&n; * Mountain View, CA  94043, or:&n; *&n; * http://www.sgi.com&n; *&n; * For further information regarding this notice, see:&n; *&n; * http://oss.sgi.com/projects/GenInfo/SGIGPLNoticeExplan/&n; */
+multiline_comment|/*&n; * Copyright (c) 2000-2002 Silicon Graphics, Inc.  All Rights Reserved.&n; *&n; * This program is free software; you can redistribute it and/or modify it&n; * under the terms of version 2 of the GNU General Public License as&n; * published by the Free Software Foundation.&n; *&n; * This program is distributed in the hope that it would be useful, but&n; * WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.&n; *&n; * Further, this software is distributed without any warranty that it is&n; * free of the rightful claim of any third person regarding infringement&n; * or the like.  Any license provided herein, whether implied or&n; * otherwise, applies only to this software file.  Patent licenses, if&n; * any, provided herein do not apply to combinations of this program with&n; * other software, or any other product whatsoever.&n; *&n; * You should have received a copy of the GNU General Public License along&n; * with this program; if not, write the Free Software Foundation, Inc., 59&n; * Temple Place - Suite 330, Boston MA 02111-1307, USA.&n; *&n; * Contact information: Silicon Graphics, Inc., 1600 Amphitheatre Pkwy,&n; * Mountain View, CA  94043, or:&n; *&n; * http://www.sgi.com&n; *&n; * For further information regarding this notice, see:&n; *&n; * http://oss.sgi.com/projects/GenInfo/SGIGPLNoticeExplan/&n; */
 macro_line|#include &lt;xfs.h&gt;
 multiline_comment|/*&n; * Return stat information for one inode.&n; * Return 0 if ok, else errno.&n; */
 r_int
@@ -70,7 +70,7 @@ multiline_comment|/* incore inode pointer */
 id|xfs_arch_t
 id|arch
 suffix:semicolon
-multiline_comment|/* these are set according to&t;   */
+multiline_comment|/* these are set according to      */
 id|__uint16_t
 id|di_flags
 suffix:semicolon
@@ -277,7 +277,7 @@ id|arch
 op_assign
 id|ARCH_CONVERT
 suffix:semicolon
-multiline_comment|/*&n;&t;&t; * The inode format changed when we moved the link count and&n;&t;&t; * made it 32 bits long.  If this is an old format inode,&n;&t;&t; * convert it in memory to look like a new one.&t; If it gets&n;&t;&t; * flushed to disk we will convert back before flushing or&n;&t;&t; * logging it.&t;We zero out the new projid field and the old link&n;&t;&t; * count field.&t; We&squot;ll handle clearing the pad field (the remains&n;&t;&t; * of the old uuid field) when we actually convert the inode to&n;&t;&t; * the new format. We don&squot;t change the version number so that we&n;&t;&t; * can distinguish this from a real new format inode.&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * The inode format changed when we moved the link count and&n;&t;&t; * made it 32 bits long.  If this is an old format inode,&n;&t;&t; * convert it in memory to look like a new one.  If it gets&n;&t;&t; * flushed to disk we will convert back before flushing or&n;&t;&t; * logging it.  We zero out the new projid field and the old link&n;&t;&t; * count field.  We&squot;ll handle clearing the pad field (the remains&n;&t;&t; * of the old uuid field) when we actually convert the inode to&n;&t;&t; * the new format. We don&squot;t change the version number so that we&n;&t;&t; * can distinguish this from a real new format inode.&n;&t;&t; */
 r_if
 c_cond
 (paren
@@ -1428,7 +1428,7 @@ suffix:semicolon
 )brace
 r_else
 (brace
-multiline_comment|/*&n;&t;&t;&t; * Start of ag.&t; Lookup the first inode chunk.&n;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t; * Start of ag.  Lookup the first inode chunk.&n;&t;&t;&t; */
 id|error
 op_assign
 id|xfs_inobt_lookup_ge

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * Copyright (c) 2000-2003 Silicon Graphics, Inc.  All Rights Reserved.&n; *&n; * This program is free software; you can redistribute it and/or modify it&n; * under the terms of version 2 of the GNU General Public License as&n; * published by the Free Software Foundation.&n; *&n; * This program is distributed in the hope that it would be useful, but&n; * WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.&n; *&n; * Further, this software is distributed without any warranty that it is&n; * free of the rightful claim of any third person regarding infringement&n; * or the like.&t; Any license provided herein, whether implied or&n; * otherwise, applies only to this software file.  Patent licenses, if&n; * any, provided herein do not apply to combinations of this program with&n; * other software, or any other product whatsoever.&n; *&n; * You should have received a copy of the GNU General Public License along&n; * with this program; if not, write the Free Software Foundation, Inc., 59&n; * Temple Place - Suite 330, Boston MA 02111-1307, USA.&n; *&n; * Contact information: Silicon Graphics, Inc., 1600 Amphitheatre Pkwy,&n; * Mountain View, CA  94043, or:&n; *&n; * http://www.sgi.com&n; *&n; * For further information regarding this notice, see:&n; *&n; * http://oss.sgi.com/projects/GenInfo/SGIGPLNoticeExplan/&n; */
+multiline_comment|/*&n; * Copyright (c) 2000-2003 Silicon Graphics, Inc.  All Rights Reserved.&n; *&n; * This program is free software; you can redistribute it and/or modify it&n; * under the terms of version 2 of the GNU General Public License as&n; * published by the Free Software Foundation.&n; *&n; * This program is distributed in the hope that it would be useful, but&n; * WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.&n; *&n; * Further, this software is distributed without any warranty that it is&n; * free of the rightful claim of any third person regarding infringement&n; * or the like.  Any license provided herein, whether implied or&n; * otherwise, applies only to this software file.  Patent licenses, if&n; * any, provided herein do not apply to combinations of this program with&n; * other software, or any other product whatsoever.&n; *&n; * You should have received a copy of the GNU General Public License along&n; * with this program; if not, write the Free Software Foundation, Inc., 59&n; * Temple Place - Suite 330, Boston MA 02111-1307, USA.&n; *&n; * Contact information: Silicon Graphics, Inc., 1600 Amphitheatre Pkwy,&n; * Mountain View, CA  94043, or:&n; *&n; * http://www.sgi.com&n; *&n; * For further information regarding this notice, see:&n; *&n; * http://oss.sgi.com/projects/GenInfo/SGIGPLNoticeExplan/&n; */
 macro_line|#include &lt;xfs.h&gt;
 id|STATIC
 r_void
@@ -58,7 +58,7 @@ DECL|member|type
 r_int
 id|type
 suffix:semicolon
-multiline_comment|/* 0 = integer&n;&t;&t;     * 1 = binary / string (no translation)&n;&t;&t;     */
+multiline_comment|/* 0 = integer&n;&t;&t;* 1 = binary / string (no translation)&n;&t;&t;*/
 DECL|variable|xfs_sb_info
 )brace
 id|xfs_sb_info
@@ -1544,7 +1544,7 @@ op_assign
 id|index
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * xfs_xlatesb&n; *&n; *     data&t;  - on disk version of sb&n; *     sb&t;  - a superblock&n; *     dir&t;  - conversion direction: &lt;0 - convert sb to buf&n; *&t;&t;&t;&t;&t;  &gt;0 - convert buf to sb&n; *     arch&t;  - architecture to read/write from/to buf&n; *     fields&t;  - which fields to copy (bitmask)&n; */
+multiline_comment|/*&n; * xfs_xlatesb&n; *&n; *     data       - on disk version of sb&n; *     sb         - a superblock&n; *     dir        - conversion direction: &lt;0 - convert sb to buf&n; *                                        &gt;0 - convert buf to sb&n; *     arch       - architecture to read/write from/to buf&n; *     fields     - which fields to copy (bitmask)&n; */
 r_void
 DECL|function|xfs_xlatesb
 id|xfs_xlatesb
@@ -3071,7 +3071,7 @@ id|mp-&gt;m_maxicount
 op_assign
 l_int|0
 suffix:semicolon
-multiline_comment|/*&n;&t; * XFS uses the uuid from the superblock as the unique&n;&t; * identifier for fsid.&t; We can not use the uuid from the volume&n;&t; * since a single partition filesystem is identical to a single&n;&t; * partition volume/filesystem.&n;&t; */
+multiline_comment|/*&n;&t; * XFS uses the uuid from the superblock as the unique&n;&t; * identifier for fsid.  We can not use the uuid from the volume&n;&t; * since a single partition filesystem is identical to a single&n;&t; * partition volume/filesystem.&n;&t; */
 r_if
 c_cond
 (paren
@@ -4813,7 +4813,7 @@ id|CE_ALERT
 comma
 id|mp
 comma
-l_string|&quot;Superblock write error detected while unmounting.&t; Filesystem may not be marked shared readonly&quot;
+l_string|&quot;Superblock write error detected while unmounting.  Filesystem may not be marked shared readonly&quot;
 )paren
 suffix:semicolon
 )brace
@@ -5735,7 +5735,7 @@ id|EINVAL
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/*&n; * xfs_mod_incore_sb() is used to change a field in the in-core&n; * superblock structure by the specified delta.&t; This modification&n; * is protected by the SB_LOCK.&t; Just use the xfs_mod_incore_sb_unlocked()&n; * routine to do the work.&n; */
+multiline_comment|/*&n; * xfs_mod_incore_sb() is used to change a field in the in-core&n; * superblock structure by the specified delta.  This modification&n; * is protected by the SB_LOCK.  Just use the xfs_mod_incore_sb_unlocked()&n; * routine to do the work.&n; */
 r_int
 DECL|function|xfs_mod_incore_sb
 id|xfs_mod_incore_sb
@@ -5872,7 +5872,7 @@ id|msbp
 op_increment
 )paren
 (brace
-multiline_comment|/*&n;&t;&t; * Apply the delta at index n.&t;If it fails, break&n;&t;&t; * from the loop so we&squot;ll fall into the undo loop&n;&t;&t; * below.&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * Apply the delta at index n.  If it fails, break&n;&t;&t; * from the loop so we&squot;ll fall into the undo loop&n;&t;&t; * below.&n;&t;&t; */
 id|status
 op_assign
 id|xfs_mod_incore_sb_unlocked
@@ -5899,7 +5899,7 @@ r_break
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/*&n;&t; * If we didn&squot;t complete the loop above, then back out&n;&t; * any changes made to the superblock.&t;If you add code&n;&t; * between the loop above and here, make sure that you&n;&t; * preserve the value of status. Loop back until&n;&t; * we step below the beginning of the array.  Make sure&n;&t; * we don&squot;t touch anything back there.&n;&t; */
+multiline_comment|/*&n;&t; * If we didn&squot;t complete the loop above, then back out&n;&t; * any changes made to the superblock.  If you add code&n;&t; * between the loop above and here, make sure that you&n;&t; * preserve the value of status. Loop back until&n;&t; * we step below the beginning of the array.  Make sure&n;&t; * we don&squot;t touch anything back there.&n;&t; */
 r_if
 c_cond
 (paren

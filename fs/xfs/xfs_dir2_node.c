@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * Copyright (c) 2000-2002 Silicon Graphics, Inc.  All Rights Reserved.&n; *&n; * This program is free software; you can redistribute it and/or modify it&n; * under the terms of version 2 of the GNU General Public License as&n; * published by the Free Software Foundation.&n; *&n; * This program is distributed in the hope that it would be useful, but&n; * WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.&n; *&n; * Further, this software is distributed without any warranty that it is&n; * free of the rightful claim of any third person regarding infringement&n; * or the like.&t; Any license provided herein, whether implied or&n; * otherwise, applies only to this software file.  Patent licenses, if&n; * any, provided herein do not apply to combinations of this program with&n; * other software, or any other product whatsoever.&n; *&n; * You should have received a copy of the GNU General Public License along&n; * with this program; if not, write the Free Software Foundation, Inc., 59&n; * Temple Place - Suite 330, Boston MA 02111-1307, USA.&n; *&n; * Contact information: Silicon Graphics, Inc., 1600 Amphitheatre Pkwy,&n; * Mountain View, CA  94043, or:&n; *&n; * http://www.sgi.com&n; *&n; * For further information regarding this notice, see:&n; *&n; * http://oss.sgi.com/projects/GenInfo/SGIGPLNoticeExplan/&n; */
+multiline_comment|/*&n; * Copyright (c) 2000-2002 Silicon Graphics, Inc.  All Rights Reserved.&n; *&n; * This program is free software; you can redistribute it and/or modify it&n; * under the terms of version 2 of the GNU General Public License as&n; * published by the Free Software Foundation.&n; *&n; * This program is distributed in the hope that it would be useful, but&n; * WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.&n; *&n; * Further, this software is distributed without any warranty that it is&n; * free of the rightful claim of any third person regarding infringement&n; * or the like.  Any license provided herein, whether implied or&n; * otherwise, applies only to this software file.  Patent licenses, if&n; * any, provided herein do not apply to combinations of this program with&n; * other software, or any other product whatsoever.&n; *&n; * You should have received a copy of the GNU General Public License along&n; * with this program; if not, write the Free Software Foundation, Inc., 59&n; * Temple Place - Suite 330, Boston MA 02111-1307, USA.&n; *&n; * Contact information: Silicon Graphics, Inc., 1600 Amphitheatre Pkwy,&n; * Mountain View, CA  94043, or:&n; *&n; * http://www.sgi.com&n; *&n; * For further information regarding this notice, see:&n; *&n; * http://oss.sgi.com/projects/GenInfo/SGIGPLNoticeExplan/&n; */
 multiline_comment|/*&n; * xfs_dir2_node.c&n; * XFS directory implementation, version 2, node form files&n; * See data structures in xfs_dir2_node.h and xfs_da_btree.h.&n; */
 macro_line|#include &lt;xfs.h&gt;
 multiline_comment|/*&n; * Function declarations.&n; */
@@ -50,7 +50,7 @@ id|bp
 suffix:semicolon
 macro_line|#else
 DECL|macro|xfs_dir2_leafn_check
-mdefine_line|#define xfs_dir2_leafn_check(dp, bp)
+mdefine_line|#define&t;xfs_dir2_leafn_check(dp, bp)
 macro_line|#endif
 r_static
 r_void
@@ -3491,7 +3491,7 @@ id|isleft
 op_assign
 l_int|1
 suffix:semicolon
-multiline_comment|/*&n;&t; * Calculate moved entry count.&t; Positive means left-to-right,&n;&t; * negative means right-to-left.  Then move the entries.&n;&t; */
+multiline_comment|/*&n;&t; * Calculate moved entry count.  Positive means left-to-right,&n;&t; * negative means right-to-left.  Then move the entries.&n;&t; */
 id|count
 op_assign
 id|INT_GET
@@ -6006,7 +6006,7 @@ id|foundhole
 op_assign
 l_int|0
 suffix:semicolon
-multiline_comment|/*&n;&t; * If we came in with a freespace block that means that lookup&n;&t; * found an entry with our hash value.&t;This is the freespace&n;&t; * block for that data entry.&n;&t; */
+multiline_comment|/*&n;&t; * If we came in with a freespace block that means that lookup&n;&t; * found an entry with our hash value.  This is the freespace&n;&t; * block for that data entry.&n;&t; */
 r_if
 c_cond
 (paren
@@ -6207,7 +6207,7 @@ op_minus
 l_int|1
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t; * While we haven&squot;t identified a data block, search the freeblock&n;&t; * data for a good data block.&t;If we find a null freeblock entry,&n;&t; * indicating a hole in the data blocks, remember that.&n;&t; */
+multiline_comment|/*&n;&t; * While we haven&squot;t identified a data block, search the freeblock&n;&t; * data for a good data block.  If we find a null freeblock entry,&n;&t; * indicating a hole in the data blocks, remember that.&n;&t; */
 r_while
 c_loop
 (paren

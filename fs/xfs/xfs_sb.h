@@ -1,7 +1,7 @@
-multiline_comment|/*&n; * Copyright (c) 2000-2001 Silicon Graphics, Inc.  All Rights Reserved.&n; *&n; * This program is free software; you can redistribute it and/or modify it&n; * under the terms of version 2 of the GNU General Public License as&n; * published by the Free Software Foundation.&n; *&n; * This program is distributed in the hope that it would be useful, but&n; * WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.&n; *&n; * Further, this software is distributed without any warranty that it is&n; * free of the rightful claim of any third person regarding infringement&n; * or the like.&t; Any license provided herein, whether implied or&n; * otherwise, applies only to this software file.  Patent licenses, if&n; * any, provided herein do not apply to combinations of this program with&n; * other software, or any other product whatsoever.&n; *&n; * You should have received a copy of the GNU General Public License along&n; * with this program; if not, write the Free Software Foundation, Inc., 59&n; * Temple Place - Suite 330, Boston MA 02111-1307, USA.&n; *&n; * Contact information: Silicon Graphics, Inc., 1600 Amphitheatre Pkwy,&n; * Mountain View, CA  94043, or:&n; *&n; * http://www.sgi.com&n; *&n; * For further information regarding this notice, see:&n; *&n; * http://oss.sgi.com/projects/GenInfo/SGIGPLNoticeExplan/&n; */
+multiline_comment|/*&n; * Copyright (c) 2000-2001 Silicon Graphics, Inc.  All Rights Reserved.&n; *&n; * This program is free software; you can redistribute it and/or modify it&n; * under the terms of version 2 of the GNU General Public License as&n; * published by the Free Software Foundation.&n; *&n; * This program is distributed in the hope that it would be useful, but&n; * WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.&n; *&n; * Further, this software is distributed without any warranty that it is&n; * free of the rightful claim of any third person regarding infringement&n; * or the like.  Any license provided herein, whether implied or&n; * otherwise, applies only to this software file.  Patent licenses, if&n; * any, provided herein do not apply to combinations of this program with&n; * other software, or any other product whatsoever.&n; *&n; * You should have received a copy of the GNU General Public License along&n; * with this program; if not, write the Free Software Foundation, Inc., 59&n; * Temple Place - Suite 330, Boston MA 02111-1307, USA.&n; *&n; * Contact information: Silicon Graphics, Inc., 1600 Amphitheatre Pkwy,&n; * Mountain View, CA  94043, or:&n; *&n; * http://www.sgi.com&n; *&n; * For further information regarding this notice, see:&n; *&n; * http://oss.sgi.com/projects/GenInfo/SGIGPLNoticeExplan/&n; */
 macro_line|#ifndef __XFS_SB_H__
 DECL|macro|__XFS_SB_H__
-mdefine_line|#define __XFS_SB_H__
+mdefine_line|#define&t;__XFS_SB_H__
 multiline_comment|/*&n; * Super block&n; * Fits into a sector-sized buffer at address 0 of each allocation group.&n; * Only the first of these is ever updated except during growfs.&n; */
 r_struct
 id|xfs_buf
@@ -10,51 +10,51 @@ r_struct
 id|xfs_mount
 suffix:semicolon
 DECL|macro|XFS_SB_MAGIC
-mdefine_line|#define XFS_SB_MAGIC&t;&t;0x58465342&t;/* &squot;XFSB&squot; */
+mdefine_line|#define&t;XFS_SB_MAGIC&t;&t;0x58465342&t;/* &squot;XFSB&squot; */
 DECL|macro|XFS_SB_VERSION_1
-mdefine_line|#define XFS_SB_VERSION_1&t;1&t;&t;/* 5.3, 6.0.1, 6.1 */
+mdefine_line|#define&t;XFS_SB_VERSION_1&t;1&t;&t;/* 5.3, 6.0.1, 6.1 */
 DECL|macro|XFS_SB_VERSION_2
-mdefine_line|#define XFS_SB_VERSION_2&t;2&t;&t;/* 6.2 - attributes */
+mdefine_line|#define&t;XFS_SB_VERSION_2&t;2&t;&t;/* 6.2 - attributes */
 DECL|macro|XFS_SB_VERSION_3
-mdefine_line|#define XFS_SB_VERSION_3&t;3&t;&t;/* 6.2 - new inode version */
+mdefine_line|#define&t;XFS_SB_VERSION_3&t;3&t;&t;/* 6.2 - new inode version */
 DECL|macro|XFS_SB_VERSION_4
-mdefine_line|#define XFS_SB_VERSION_4&t;4&t;&t;/* 6.2+ - bitmask version */
+mdefine_line|#define&t;XFS_SB_VERSION_4&t;4&t;&t;/* 6.2+ - bitmask version */
 DECL|macro|XFS_SB_VERSION_NUMBITS
-mdefine_line|#define XFS_SB_VERSION_NUMBITS&t;&t;0x000f
+mdefine_line|#define&t;XFS_SB_VERSION_NUMBITS&t;&t;0x000f
 DECL|macro|XFS_SB_VERSION_ALLFBITS
-mdefine_line|#define XFS_SB_VERSION_ALLFBITS&t;&t;0xfff0
+mdefine_line|#define&t;XFS_SB_VERSION_ALLFBITS&t;&t;0xfff0
 DECL|macro|XFS_SB_VERSION_SASHFBITS
-mdefine_line|#define XFS_SB_VERSION_SASHFBITS&t;0xf000
+mdefine_line|#define&t;XFS_SB_VERSION_SASHFBITS&t;0xf000
 DECL|macro|XFS_SB_VERSION_REALFBITS
-mdefine_line|#define XFS_SB_VERSION_REALFBITS&t;0x0ff0
+mdefine_line|#define&t;XFS_SB_VERSION_REALFBITS&t;0x0ff0
 DECL|macro|XFS_SB_VERSION_ATTRBIT
-mdefine_line|#define XFS_SB_VERSION_ATTRBIT&t;&t;0x0010
+mdefine_line|#define&t;XFS_SB_VERSION_ATTRBIT&t;&t;0x0010
 DECL|macro|XFS_SB_VERSION_NLINKBIT
-mdefine_line|#define XFS_SB_VERSION_NLINKBIT&t;&t;0x0020
+mdefine_line|#define&t;XFS_SB_VERSION_NLINKBIT&t;&t;0x0020
 DECL|macro|XFS_SB_VERSION_QUOTABIT
-mdefine_line|#define XFS_SB_VERSION_QUOTABIT&t;&t;0x0040
+mdefine_line|#define&t;XFS_SB_VERSION_QUOTABIT&t;&t;0x0040
 DECL|macro|XFS_SB_VERSION_ALIGNBIT
-mdefine_line|#define XFS_SB_VERSION_ALIGNBIT&t;&t;0x0080
+mdefine_line|#define&t;XFS_SB_VERSION_ALIGNBIT&t;&t;0x0080
 DECL|macro|XFS_SB_VERSION_DALIGNBIT
-mdefine_line|#define XFS_SB_VERSION_DALIGNBIT&t;0x0100
+mdefine_line|#define&t;XFS_SB_VERSION_DALIGNBIT&t;0x0100
 DECL|macro|XFS_SB_VERSION_SHAREDBIT
-mdefine_line|#define XFS_SB_VERSION_SHAREDBIT&t;0x0200
+mdefine_line|#define&t;XFS_SB_VERSION_SHAREDBIT&t;0x0200
 DECL|macro|XFS_SB_VERSION_LOGV2BIT
 mdefine_line|#define XFS_SB_VERSION_LOGV2BIT&t;&t;0x0400
 DECL|macro|XFS_SB_VERSION_SECTORBIT
 mdefine_line|#define XFS_SB_VERSION_SECTORBIT&t;0x0800
 DECL|macro|XFS_SB_VERSION_EXTFLGBIT
-mdefine_line|#define XFS_SB_VERSION_EXTFLGBIT&t;0x1000
+mdefine_line|#define&t;XFS_SB_VERSION_EXTFLGBIT&t;0x1000
 DECL|macro|XFS_SB_VERSION_DIRV2BIT
-mdefine_line|#define XFS_SB_VERSION_DIRV2BIT&t;&t;0x2000
+mdefine_line|#define&t;XFS_SB_VERSION_DIRV2BIT&t;&t;0x2000
 DECL|macro|XFS_SB_VERSION_OKSASHFBITS
-mdefine_line|#define XFS_SB_VERSION_OKSASHFBITS&t;&bslash;&n;&t;(XFS_SB_VERSION_EXTFLGBIT | &bslash;&n;&t; XFS_SB_VERSION_DIRV2BIT)
+mdefine_line|#define&t;XFS_SB_VERSION_OKSASHFBITS&t;&bslash;&n;&t;(XFS_SB_VERSION_EXTFLGBIT | &bslash;&n;&t; XFS_SB_VERSION_DIRV2BIT)
 DECL|macro|XFS_SB_VERSION_OKREALFBITS
-mdefine_line|#define XFS_SB_VERSION_OKREALFBITS&t;&bslash;&n;&t;(XFS_SB_VERSION_ATTRBIT | &bslash;&n;&t; XFS_SB_VERSION_NLINKBIT | &bslash;&n;&t; XFS_SB_VERSION_QUOTABIT | &bslash;&n;&t; XFS_SB_VERSION_ALIGNBIT | &bslash;&n;&t; XFS_SB_VERSION_DALIGNBIT | &bslash;&n;&t; XFS_SB_VERSION_SHAREDBIT | &bslash;&n;&t; XFS_SB_VERSION_LOGV2BIT | &bslash;&n;&t; XFS_SB_VERSION_SECTORBIT)
+mdefine_line|#define&t;XFS_SB_VERSION_OKREALFBITS&t;&bslash;&n;&t;(XFS_SB_VERSION_ATTRBIT | &bslash;&n;&t; XFS_SB_VERSION_NLINKBIT | &bslash;&n;&t; XFS_SB_VERSION_QUOTABIT | &bslash;&n;&t; XFS_SB_VERSION_ALIGNBIT | &bslash;&n;&t; XFS_SB_VERSION_DALIGNBIT | &bslash;&n;&t; XFS_SB_VERSION_SHAREDBIT | &bslash;&n;&t; XFS_SB_VERSION_LOGV2BIT | &bslash;&n;&t; XFS_SB_VERSION_SECTORBIT)
 DECL|macro|XFS_SB_VERSION_OKSASHBITS
-mdefine_line|#define XFS_SB_VERSION_OKSASHBITS&t;&bslash;&n;&t;(XFS_SB_VERSION_NUMBITS | &bslash;&n;&t; XFS_SB_VERSION_REALFBITS | &bslash;&n;&t; XFS_SB_VERSION_OKSASHFBITS)
+mdefine_line|#define&t;XFS_SB_VERSION_OKSASHBITS&t;&bslash;&n;&t;(XFS_SB_VERSION_NUMBITS | &bslash;&n;&t; XFS_SB_VERSION_REALFBITS | &bslash;&n;&t; XFS_SB_VERSION_OKSASHFBITS)
 DECL|macro|XFS_SB_VERSION_OKREALBITS
-mdefine_line|#define XFS_SB_VERSION_OKREALBITS&t;&bslash;&n;&t;(XFS_SB_VERSION_NUMBITS | &bslash;&n;&t; XFS_SB_VERSION_OKREALFBITS | &bslash;&n;&t; XFS_SB_VERSION_OKSASHFBITS)
+mdefine_line|#define&t;XFS_SB_VERSION_OKREALBITS&t;&bslash;&n;&t;(XFS_SB_VERSION_NUMBITS | &bslash;&n;&t; XFS_SB_VERSION_OKREALFBITS | &bslash;&n;&t; XFS_SB_VERSION_OKSASHFBITS)
 DECL|macro|XFS_SB_VERSION_MKFS
 mdefine_line|#define XFS_SB_VERSION_MKFS(ia,dia,extflag,dirv2,na,sflag)&t;&bslash;&n;&t;(((ia) || (dia) || (extflag) || (dirv2) || (na)) ? &bslash;&n;&t;&t;(XFS_SB_VERSION_4 | &bslash;&n;&t;&t; ((ia) ? XFS_SB_VERSION_ALIGNBIT : 0) | &bslash;&n;&t;&t; ((dia) ? XFS_SB_VERSION_DALIGNBIT : 0) | &bslash;&n;&t;&t; ((extflag) ? XFS_SB_VERSION_EXTFLGBIT : 0) | &bslash;&n;&t;&t; ((dirv2) ? XFS_SB_VERSION_DIRV2BIT : 0) | &bslash;&n;&t;&t; ((na) ? XFS_SB_VERSION_LOGV2BIT : 0) | &bslash;&n;&t;&t; ((sflag) ? XFS_SB_VERSION_SECTORBIT : 0)) : &bslash;&n;&t;&t;XFS_SB_VERSION_1)
 DECL|struct|xfs_sb
@@ -206,7 +206,7 @@ id|sb_imax_pct
 suffix:semicolon
 multiline_comment|/* max % of fs for inode space */
 multiline_comment|/* statistics */
-multiline_comment|/*&n;&t; * These fields must remain contiguous.&t; If you really&n;&t; * want to change their layout, make sure you fix the&n;&t; * code in xfs_trans_apply_sb_deltas().&n;&t; */
+multiline_comment|/*&n;&t; * These fields must remain contiguous.  If you really&n;&t; * want to change their layout, make sure you fix the&n;&t; * code in xfs_trans_apply_sb_deltas().&n;&t; */
 DECL|member|sb_icount
 id|__uint64_t
 id|sb_icount
@@ -436,19 +436,19 @@ id|xfs_sb_field_t
 suffix:semicolon
 multiline_comment|/*&n; * Mask values, defined based on the xfs_sb_field_t values.&n; * Only define the ones we&squot;re using.&n; */
 DECL|macro|XFS_SB_MVAL
-mdefine_line|#define XFS_SB_MVAL(x)&t;&t;(1LL &lt;&lt; XFS_SBS_ ## x)
+mdefine_line|#define&t;XFS_SB_MVAL(x)&t;&t;(1LL &lt;&lt; XFS_SBS_ ## x)
 DECL|macro|XFS_SB_UUID
-mdefine_line|#define XFS_SB_UUID&t;&t;XFS_SB_MVAL(UUID)
+mdefine_line|#define&t;XFS_SB_UUID&t;&t;XFS_SB_MVAL(UUID)
 DECL|macro|XFS_SB_FNAME
-mdefine_line|#define XFS_SB_FNAME&t;&t;XFS_SB_MVAL(FNAME)
+mdefine_line|#define&t;XFS_SB_FNAME&t;&t;XFS_SB_MVAL(FNAME)
 DECL|macro|XFS_SB_ROOTINO
-mdefine_line|#define XFS_SB_ROOTINO&t;&t;XFS_SB_MVAL(ROOTINO)
+mdefine_line|#define&t;XFS_SB_ROOTINO&t;&t;XFS_SB_MVAL(ROOTINO)
 DECL|macro|XFS_SB_RBMINO
-mdefine_line|#define XFS_SB_RBMINO&t;&t;XFS_SB_MVAL(RBMINO)
+mdefine_line|#define&t;XFS_SB_RBMINO&t;&t;XFS_SB_MVAL(RBMINO)
 DECL|macro|XFS_SB_RSUMINO
-mdefine_line|#define XFS_SB_RSUMINO&t;&t;XFS_SB_MVAL(RSUMINO)
+mdefine_line|#define&t;XFS_SB_RSUMINO&t;&t;XFS_SB_MVAL(RSUMINO)
 DECL|macro|XFS_SB_VERSIONNUM
-mdefine_line|#define XFS_SB_VERSIONNUM&t;XFS_SB_MVAL(VERSIONNUM)
+mdefine_line|#define&t;XFS_SB_VERSIONNUM&t;XFS_SB_MVAL(VERSIONNUM)
 DECL|macro|XFS_SB_UQUOTINO
 mdefine_line|#define XFS_SB_UQUOTINO&t;&t;XFS_SB_MVAL(UQUOTINO)
 DECL|macro|XFS_SB_GQUOTINO
@@ -462,11 +462,11 @@ mdefine_line|#define XFS_SB_UNIT&t;&t;XFS_SB_MVAL(UNIT)
 DECL|macro|XFS_SB_WIDTH
 mdefine_line|#define XFS_SB_WIDTH&t;&t;XFS_SB_MVAL(WIDTH)
 DECL|macro|XFS_SB_NUM_BITS
-mdefine_line|#define XFS_SB_NUM_BITS&t;&t;((int)XFS_SBS_FIELDCOUNT)
+mdefine_line|#define&t;XFS_SB_NUM_BITS&t;&t;((int)XFS_SBS_FIELDCOUNT)
 DECL|macro|XFS_SB_ALL_BITS
-mdefine_line|#define XFS_SB_ALL_BITS&t;&t;((1LL &lt;&lt; XFS_SB_NUM_BITS) - 1)
+mdefine_line|#define&t;XFS_SB_ALL_BITS&t;&t;((1LL &lt;&lt; XFS_SB_NUM_BITS) - 1)
 DECL|macro|XFS_SB_MOD_BITS
-mdefine_line|#define XFS_SB_MOD_BITS&t;&t;&bslash;&n;&t;(XFS_SB_UUID | XFS_SB_ROOTINO | XFS_SB_RBMINO | XFS_SB_RSUMINO | &bslash;&n;&t; XFS_SB_VERSIONNUM | XFS_SB_UQUOTINO | XFS_SB_GQUOTINO | &bslash;&n;&t; XFS_SB_QFLAGS | XFS_SB_SHARED_VN | XFS_SB_UNIT | XFS_SB_WIDTH)
+mdefine_line|#define&t;XFS_SB_MOD_BITS&t;&t;&bslash;&n;&t;(XFS_SB_UUID | XFS_SB_ROOTINO | XFS_SB_RBMINO | XFS_SB_RSUMINO | &bslash;&n;&t; XFS_SB_VERSIONNUM | XFS_SB_UQUOTINO | XFS_SB_GQUOTINO | &bslash;&n;&t; XFS_SB_QFLAGS | XFS_SB_SHARED_VN | XFS_SB_UNIT | XFS_SB_WIDTH)
 multiline_comment|/*&n; * Misc. Flags - warning - these will be cleared by xfs_repair unless&n; * a feature bit is set when the flag is used.&n; */
 DECL|macro|XFS_SBF_NOFLAGS
 mdefine_line|#define XFS_SBF_NOFLAGS&t;&t;0x00&t;/* no flags set */
@@ -486,10 +486,10 @@ id|sbp
 )paren
 suffix:semicolon
 DECL|macro|XFS_SB_VERSION_NUM
-mdefine_line|#define XFS_SB_VERSION_NUM(sbp) xfs_sb_version_num(sbp)
+mdefine_line|#define&t;XFS_SB_VERSION_NUM(sbp)&t;xfs_sb_version_num(sbp)
 macro_line|#else
 DECL|macro|XFS_SB_VERSION_NUM
-mdefine_line|#define XFS_SB_VERSION_NUM(sbp) ((sbp)-&gt;sb_versionnum &amp; XFS_SB_VERSION_NUMBITS)
+mdefine_line|#define&t;XFS_SB_VERSION_NUM(sbp)&t;((sbp)-&gt;sb_versionnum &amp; XFS_SB_VERSION_NUMBITS)
 macro_line|#endif
 macro_line|#if XFS_WANT_FUNCS || (XFS_WANT_SPACE &amp;&amp; XFSSO_XFS_SB_GOOD_VERSION)
 r_int
@@ -502,13 +502,13 @@ id|sbp
 )paren
 suffix:semicolon
 DECL|macro|XFS_SB_GOOD_VERSION
-mdefine_line|#define XFS_SB_GOOD_VERSION(sbp)&t;xfs_sb_good_version(sbp)
+mdefine_line|#define&t;XFS_SB_GOOD_VERSION(sbp)&t;xfs_sb_good_version(sbp)
 macro_line|#else
 DECL|macro|XFS_SB_GOOD_VERSION_INT
-mdefine_line|#define XFS_SB_GOOD_VERSION_INT(sbp)&t;&bslash;&n;&t;((((sbp)-&gt;sb_versionnum &gt;= XFS_SB_VERSION_1) &amp;&amp; &bslash;&n;&t;  ((sbp)-&gt;sb_versionnum &lt;= XFS_SB_VERSION_3)) || &bslash;&n;&t; ((XFS_SB_VERSION_NUM(sbp) == XFS_SB_VERSION_4) &amp;&amp; &bslash;&n;&t;  !((sbp)-&gt;sb_versionnum &amp; ~XFS_SB_VERSION_OKREALBITS)
+mdefine_line|#define&t;XFS_SB_GOOD_VERSION_INT(sbp)&t;&bslash;&n;&t;((((sbp)-&gt;sb_versionnum &gt;= XFS_SB_VERSION_1) &amp;&amp; &bslash;&n;&t;  ((sbp)-&gt;sb_versionnum &lt;= XFS_SB_VERSION_3)) || &bslash;&n;&t; ((XFS_SB_VERSION_NUM(sbp) == XFS_SB_VERSION_4) &amp;&amp; &bslash;&n;&t;  !((sbp)-&gt;sb_versionnum &amp; ~XFS_SB_VERSION_OKREALBITS)
 macro_line|#ifdef __KERNEL__
 DECL|macro|XFS_SB_GOOD_VERSION
-mdefine_line|#define XFS_SB_GOOD_VERSION(sbp)&t;&bslash;&n;&t;(XFS_SB_GOOD_VERSION_INT(sbp) &amp;&amp; &bslash;&n;&t;  (sbp)-&gt;sb_shared_vn &lt;= XFS_SB_MAX_SHARED_VN) ))
+mdefine_line|#define&t;XFS_SB_GOOD_VERSION(sbp)&t;&bslash;&n;&t;(XFS_SB_GOOD_VERSION_INT(sbp) &amp;&amp; &bslash;&n;&t;  (sbp)-&gt;sb_shared_vn &lt;= XFS_SB_MAX_SHARED_VN) ))
 macro_line|#else
 multiline_comment|/*&n; * extra 2 paren&squot;s here (( to unconfuse paren-matching editors&n; * like vi because XFS_SB_GOOD_VERSION_INT is a partial expression&n; * and the two XFS_SB_GOOD_VERSION&squot;s each 2 more close paren&squot;s to&n; * complete the expression.&n; */
 DECL|macro|XFS_SB_GOOD_VERSION
@@ -516,7 +516,7 @@ mdefine_line|#define XFS_SB_GOOD_VERSION(sbp)&t;&bslash;&n;&t;(XFS_SB_GOOD_VERSI
 macro_line|#endif /* __KERNEL__ */
 macro_line|#endif
 DECL|macro|XFS_SB_GOOD_SASH_VERSION
-mdefine_line|#define XFS_SB_GOOD_SASH_VERSION(sbp)&t;&bslash;&n;&t;((((sbp)-&gt;sb_versionnum &gt;= XFS_SB_VERSION_1) &amp;&amp; &bslash;&n;&t;  ((sbp)-&gt;sb_versionnum &lt;= XFS_SB_VERSION_3)) || &bslash;&n;&t; ((XFS_SB_VERSION_NUM(sbp) == XFS_SB_VERSION_4) &amp;&amp; &bslash;&n;&t;  !((sbp)-&gt;sb_versionnum &amp; ~XFS_SB_VERSION_OKSASHBITS)))
+mdefine_line|#define&t;XFS_SB_GOOD_SASH_VERSION(sbp)&t;&bslash;&n;&t;((((sbp)-&gt;sb_versionnum &gt;= XFS_SB_VERSION_1) &amp;&amp; &bslash;&n;&t;  ((sbp)-&gt;sb_versionnum &lt;= XFS_SB_VERSION_3)) || &bslash;&n;&t; ((XFS_SB_VERSION_NUM(sbp) == XFS_SB_VERSION_4) &amp;&amp; &bslash;&n;&t;  !((sbp)-&gt;sb_versionnum &amp; ~XFS_SB_VERSION_OKSASHBITS)))
 macro_line|#if XFS_WANT_FUNCS || (XFS_WANT_SPACE &amp;&amp; XFSSO_XFS_SB_VERSION_TONEW)
 r_int
 id|xfs_sb_version_tonew
@@ -527,10 +527,10 @@ id|v
 )paren
 suffix:semicolon
 DECL|macro|XFS_SB_VERSION_TONEW
-mdefine_line|#define XFS_SB_VERSION_TONEW(v) xfs_sb_version_tonew(v)
+mdefine_line|#define&t;XFS_SB_VERSION_TONEW(v)&t;xfs_sb_version_tonew(v)
 macro_line|#else
 DECL|macro|XFS_SB_VERSION_TONEW
-mdefine_line|#define XFS_SB_VERSION_TONEW(v) &bslash;&n;&t;((((v) == XFS_SB_VERSION_1) ? &bslash;&n;&t;&t;0 : &bslash;&n;&t;&t;(((v) == XFS_SB_VERSION_2) ? &bslash;&n;&t;&t;&t;XFS_SB_VERSION_ATTRBIT : &bslash;&n;&t;&t;&t;(XFS_SB_VERSION_ATTRBIT | XFS_SB_VERSION_NLINKBIT))) | &bslash;&n;&t; XFS_SB_VERSION_4)
+mdefine_line|#define&t;XFS_SB_VERSION_TONEW(v)&t;&bslash;&n;&t;((((v) == XFS_SB_VERSION_1) ? &bslash;&n;&t;&t;0 : &bslash;&n;&t;&t;(((v) == XFS_SB_VERSION_2) ? &bslash;&n;&t;&t;&t;XFS_SB_VERSION_ATTRBIT : &bslash;&n;&t;&t;&t;(XFS_SB_VERSION_ATTRBIT | XFS_SB_VERSION_NLINKBIT))) | &bslash;&n;&t; XFS_SB_VERSION_4)
 macro_line|#endif
 macro_line|#if XFS_WANT_FUNCS || (XFS_WANT_SPACE &amp;&amp; XFSSO_XFS_SB_VERSION_TOOLD)
 r_int
@@ -542,10 +542,10 @@ id|v
 )paren
 suffix:semicolon
 DECL|macro|XFS_SB_VERSION_TOOLD
-mdefine_line|#define XFS_SB_VERSION_TOOLD(v) xfs_sb_version_toold(v)
+mdefine_line|#define&t;XFS_SB_VERSION_TOOLD(v)&t;xfs_sb_version_toold(v)
 macro_line|#else
 DECL|macro|XFS_SB_VERSION_TOOLD
-mdefine_line|#define XFS_SB_VERSION_TOOLD(v) &bslash;&n;&t;(((v) &amp; (XFS_SB_VERSION_QUOTABIT | XFS_SB_VERSION_ALIGNBIT)) ? &bslash;&n;&t;&t;0 : &bslash;&n;&t;&t;(((v) &amp; XFS_SB_VERSION_NLINKBIT) ? &bslash;&n;&t;&t;&t;XFS_SB_VERSION_3 : &bslash;&n;&t;&t;&t;(((v) &amp; XFS_SB_VERSION_ATTRBIT) ?  &bslash;&n;&t;&t;&t;&t;XFS_SB_VERSION_2 : &bslash;&n;&t;&t;&t;&t;XFS_SB_VERSION_1)))
+mdefine_line|#define&t;XFS_SB_VERSION_TOOLD(v)&t;&bslash;&n;&t;(((v) &amp; (XFS_SB_VERSION_QUOTABIT | XFS_SB_VERSION_ALIGNBIT)) ? &bslash;&n;&t;&t;0 : &bslash;&n;&t;&t;(((v) &amp; XFS_SB_VERSION_NLINKBIT) ? &bslash;&n;&t;&t;&t;XFS_SB_VERSION_3 : &bslash;&n;&t;&t;&t;(((v) &amp; XFS_SB_VERSION_ATTRBIT) ?  &bslash;&n;&t;&t;&t;&t;XFS_SB_VERSION_2 : &bslash;&n;&t;&t;&t;&t;XFS_SB_VERSION_1)))
 macro_line|#endif
 macro_line|#if XFS_WANT_FUNCS || (XFS_WANT_SPACE &amp;&amp; XFSSO_XFS_SB_VERSION_HASATTR)
 r_int
@@ -558,10 +558,10 @@ id|sbp
 )paren
 suffix:semicolon
 DECL|macro|XFS_SB_VERSION_HASATTR
-mdefine_line|#define XFS_SB_VERSION_HASATTR(sbp)&t;xfs_sb_version_hasattr(sbp)
+mdefine_line|#define&t;XFS_SB_VERSION_HASATTR(sbp)&t;xfs_sb_version_hasattr(sbp)
 macro_line|#else
 DECL|macro|XFS_SB_VERSION_HASATTR
-mdefine_line|#define XFS_SB_VERSION_HASATTR(sbp)&t;&bslash;&n;&t;(((sbp)-&gt;sb_versionnum == XFS_SB_VERSION_2) || &bslash;&n;&t; ((sbp)-&gt;sb_versionnum == XFS_SB_VERSION_3) || &bslash;&n;&t; ((XFS_SB_VERSION_NUM(sbp) == XFS_SB_VERSION_4) &amp;&amp; &bslash;&n;&t;  ((sbp)-&gt;sb_versionnum &amp; XFS_SB_VERSION_ATTRBIT)))
+mdefine_line|#define&t;XFS_SB_VERSION_HASATTR(sbp)&t;&bslash;&n;&t;(((sbp)-&gt;sb_versionnum == XFS_SB_VERSION_2) || &bslash;&n;&t; ((sbp)-&gt;sb_versionnum == XFS_SB_VERSION_3) || &bslash;&n;&t; ((XFS_SB_VERSION_NUM(sbp) == XFS_SB_VERSION_4) &amp;&amp; &bslash;&n;&t;  ((sbp)-&gt;sb_versionnum &amp; XFS_SB_VERSION_ATTRBIT)))
 macro_line|#endif
 macro_line|#if XFS_WANT_FUNCS || (XFS_WANT_SPACE &amp;&amp; XFSSO_XFS_SB_VERSION_ADDATTR)
 r_void
@@ -574,10 +574,10 @@ id|sbp
 )paren
 suffix:semicolon
 DECL|macro|XFS_SB_VERSION_ADDATTR
-mdefine_line|#define XFS_SB_VERSION_ADDATTR(sbp)&t;xfs_sb_version_addattr(sbp)
+mdefine_line|#define&t;XFS_SB_VERSION_ADDATTR(sbp)&t;xfs_sb_version_addattr(sbp)
 macro_line|#else
 DECL|macro|XFS_SB_VERSION_ADDATTR
-mdefine_line|#define XFS_SB_VERSION_ADDATTR(sbp)&t;&bslash;&n;&t;((sbp)-&gt;sb_versionnum = &bslash;&n;&t; (((sbp)-&gt;sb_versionnum == XFS_SB_VERSION_1) ? &bslash;&n;&t;&t;XFS_SB_VERSION_2 : &bslash;&n;&t;&t;((XFS_SB_VERSION_NUM(sbp) == XFS_SB_VERSION_4) ? &bslash;&n;&t;&t;&t;((sbp)-&gt;sb_versionnum | XFS_SB_VERSION_ATTRBIT) : &bslash;&n;&t;&t;&t;(XFS_SB_VERSION_4 | XFS_SB_VERSION_ATTRBIT))))
+mdefine_line|#define&t;XFS_SB_VERSION_ADDATTR(sbp)&t;&bslash;&n;&t;((sbp)-&gt;sb_versionnum = &bslash;&n;&t; (((sbp)-&gt;sb_versionnum == XFS_SB_VERSION_1) ? &bslash;&n;&t;&t;XFS_SB_VERSION_2 : &bslash;&n;&t;&t;((XFS_SB_VERSION_NUM(sbp) == XFS_SB_VERSION_4) ? &bslash;&n;&t;&t;&t;((sbp)-&gt;sb_versionnum | XFS_SB_VERSION_ATTRBIT) : &bslash;&n;&t;&t;&t;(XFS_SB_VERSION_4 | XFS_SB_VERSION_ATTRBIT))))
 macro_line|#endif
 macro_line|#if XFS_WANT_FUNCS || (XFS_WANT_SPACE &amp;&amp; XFSSO_XFS_SB_VERSION_HASNLINK)
 r_int
@@ -590,10 +590,10 @@ id|sbp
 )paren
 suffix:semicolon
 DECL|macro|XFS_SB_VERSION_HASNLINK
-mdefine_line|#define XFS_SB_VERSION_HASNLINK(sbp)&t;xfs_sb_version_hasnlink(sbp)
+mdefine_line|#define&t;XFS_SB_VERSION_HASNLINK(sbp)&t;xfs_sb_version_hasnlink(sbp)
 macro_line|#else
 DECL|macro|XFS_SB_VERSION_HASNLINK
-mdefine_line|#define XFS_SB_VERSION_HASNLINK(sbp)&t;&bslash;&n;&t;(((sbp)-&gt;sb_versionnum == XFS_SB_VERSION_3) || &bslash;&n;&t; ((XFS_SB_VERSION_NUM(sbp) == XFS_SB_VERSION_4) &amp;&amp; &bslash;&n;&t;  ((sbp)-&gt;sb_versionnum &amp; XFS_SB_VERSION_NLINKBIT)))
+mdefine_line|#define&t;XFS_SB_VERSION_HASNLINK(sbp)&t;&bslash;&n;&t;(((sbp)-&gt;sb_versionnum == XFS_SB_VERSION_3) || &bslash;&n;&t; ((XFS_SB_VERSION_NUM(sbp) == XFS_SB_VERSION_4) &amp;&amp; &bslash;&n;&t;  ((sbp)-&gt;sb_versionnum &amp; XFS_SB_VERSION_NLINKBIT)))
 macro_line|#endif
 macro_line|#if XFS_WANT_FUNCS || (XFS_WANT_SPACE &amp;&amp; XFSSO_XFS_SB_VERSION_ADDNLINK)
 r_void
@@ -606,10 +606,10 @@ id|sbp
 )paren
 suffix:semicolon
 DECL|macro|XFS_SB_VERSION_ADDNLINK
-mdefine_line|#define XFS_SB_VERSION_ADDNLINK(sbp)&t;xfs_sb_version_addnlink(sbp)
+mdefine_line|#define&t;XFS_SB_VERSION_ADDNLINK(sbp)&t;xfs_sb_version_addnlink(sbp)
 macro_line|#else
 DECL|macro|XFS_SB_VERSION_ADDNLINK
-mdefine_line|#define XFS_SB_VERSION_ADDNLINK(sbp)&t;&bslash;&n;&t;((sbp)-&gt;sb_versionnum = &bslash;&n;&t; ((sbp)-&gt;sb_versionnum &lt;= XFS_SB_VERSION_2 ? &bslash;&n;&t;&t;XFS_SB_VERSION_3 : &bslash;&n;&t;&t;((sbp)-&gt;sb_versionnum | XFS_SB_VERSION_NLINKBIT)))
+mdefine_line|#define&t;XFS_SB_VERSION_ADDNLINK(sbp)&t;&bslash;&n;&t;((sbp)-&gt;sb_versionnum = &bslash;&n;&t; ((sbp)-&gt;sb_versionnum &lt;= XFS_SB_VERSION_2 ? &bslash;&n;&t;&t;XFS_SB_VERSION_3 : &bslash;&n;&t;&t;((sbp)-&gt;sb_versionnum | XFS_SB_VERSION_NLINKBIT)))
 macro_line|#endif
 macro_line|#if XFS_WANT_FUNCS || (XFS_WANT_SPACE &amp;&amp; XFSSO_XFS_SB_VERSION_HASQUOTA)
 r_int
@@ -622,10 +622,10 @@ id|sbp
 )paren
 suffix:semicolon
 DECL|macro|XFS_SB_VERSION_HASQUOTA
-mdefine_line|#define XFS_SB_VERSION_HASQUOTA(sbp)&t;xfs_sb_version_hasquota(sbp)
+mdefine_line|#define&t;XFS_SB_VERSION_HASQUOTA(sbp)&t;xfs_sb_version_hasquota(sbp)
 macro_line|#else
 DECL|macro|XFS_SB_VERSION_HASQUOTA
-mdefine_line|#define XFS_SB_VERSION_HASQUOTA(sbp)&t;&bslash;&n;&t;((XFS_SB_VERSION_NUM(sbp) == XFS_SB_VERSION_4) &amp;&amp; &bslash;&n;&t; ((sbp)-&gt;sb_versionnum &amp; XFS_SB_VERSION_QUOTABIT))
+mdefine_line|#define&t;XFS_SB_VERSION_HASQUOTA(sbp)&t;&bslash;&n;&t;((XFS_SB_VERSION_NUM(sbp) == XFS_SB_VERSION_4) &amp;&amp; &bslash;&n;&t; ((sbp)-&gt;sb_versionnum &amp; XFS_SB_VERSION_QUOTABIT))
 macro_line|#endif
 macro_line|#if XFS_WANT_FUNCS || (XFS_WANT_SPACE &amp;&amp; XFSSO_XFS_SB_VERSION_ADDQUOTA)
 r_void
@@ -638,10 +638,10 @@ id|sbp
 )paren
 suffix:semicolon
 DECL|macro|XFS_SB_VERSION_ADDQUOTA
-mdefine_line|#define XFS_SB_VERSION_ADDQUOTA(sbp)&t;xfs_sb_version_addquota(sbp)
+mdefine_line|#define&t;XFS_SB_VERSION_ADDQUOTA(sbp)&t;xfs_sb_version_addquota(sbp)
 macro_line|#else
 DECL|macro|XFS_SB_VERSION_ADDQUOTA
-mdefine_line|#define XFS_SB_VERSION_ADDQUOTA(sbp)&t;&bslash;&n;&t;((sbp)-&gt;sb_versionnum = &bslash;&n;&t; (XFS_SB_VERSION_NUM(sbp) == XFS_SB_VERSION_4 ? &bslash;&n;&t;&t;((sbp)-&gt;sb_versionnum | XFS_SB_VERSION_QUOTABIT) : &bslash;&n;&t;&t;(XFS_SB_VERSION_TONEW((sbp)-&gt;sb_versionnum) | &bslash;&n;&t;&t; XFS_SB_VERSION_QUOTABIT)))
+mdefine_line|#define&t;XFS_SB_VERSION_ADDQUOTA(sbp)&t;&bslash;&n;&t;((sbp)-&gt;sb_versionnum = &bslash;&n;&t; (XFS_SB_VERSION_NUM(sbp) == XFS_SB_VERSION_4 ? &bslash;&n;&t;&t;((sbp)-&gt;sb_versionnum | XFS_SB_VERSION_QUOTABIT) : &bslash;&n;&t;&t;(XFS_SB_VERSION_TONEW((sbp)-&gt;sb_versionnum) | &bslash;&n;&t;&t; XFS_SB_VERSION_QUOTABIT)))
 macro_line|#endif
 macro_line|#if XFS_WANT_FUNCS || (XFS_WANT_SPACE &amp;&amp; XFSSO_XFS_SB_VERSION_HASALIGN)
 r_int
@@ -654,10 +654,10 @@ id|sbp
 )paren
 suffix:semicolon
 DECL|macro|XFS_SB_VERSION_HASALIGN
-mdefine_line|#define XFS_SB_VERSION_HASALIGN(sbp)&t;xfs_sb_version_hasalign(sbp)
+mdefine_line|#define&t;XFS_SB_VERSION_HASALIGN(sbp)&t;xfs_sb_version_hasalign(sbp)
 macro_line|#else
 DECL|macro|XFS_SB_VERSION_HASALIGN
-mdefine_line|#define XFS_SB_VERSION_HASALIGN(sbp)&t;&bslash;&n;&t;((XFS_SB_VERSION_NUM(sbp) == XFS_SB_VERSION_4) &amp;&amp; &bslash;&n;&t; ((sbp)-&gt;sb_versionnum &amp; XFS_SB_VERSION_ALIGNBIT))
+mdefine_line|#define&t;XFS_SB_VERSION_HASALIGN(sbp)&t;&bslash;&n;&t;((XFS_SB_VERSION_NUM(sbp) == XFS_SB_VERSION_4) &amp;&amp; &bslash;&n;&t; ((sbp)-&gt;sb_versionnum &amp; XFS_SB_VERSION_ALIGNBIT))
 macro_line|#endif
 macro_line|#if XFS_WANT_FUNCS || (XFS_WANT_SPACE &amp;&amp; XFSSO_XFS_SB_VERSION_SUBALIGN)
 r_void
@@ -670,10 +670,10 @@ id|sbp
 )paren
 suffix:semicolon
 DECL|macro|XFS_SB_VERSION_SUBALIGN
-mdefine_line|#define XFS_SB_VERSION_SUBALIGN(sbp)&t;xfs_sb_version_subalign(sbp)
+mdefine_line|#define&t;XFS_SB_VERSION_SUBALIGN(sbp)&t;xfs_sb_version_subalign(sbp)
 macro_line|#else
 DECL|macro|XFS_SB_VERSION_SUBALIGN
-mdefine_line|#define XFS_SB_VERSION_SUBALIGN(sbp)&t;&bslash;&n;&t;((sbp)-&gt;sb_versionnum = &bslash;&n;&t; XFS_SB_VERSION_TOOLD((sbp)-&gt;sb_versionnum &amp; ~XFS_SB_VERSION_ALIGNBIT))
+mdefine_line|#define&t;XFS_SB_VERSION_SUBALIGN(sbp)&t;&bslash;&n;&t;((sbp)-&gt;sb_versionnum = &bslash;&n;&t; XFS_SB_VERSION_TOOLD((sbp)-&gt;sb_versionnum &amp; ~XFS_SB_VERSION_ALIGNBIT))
 macro_line|#endif
 macro_line|#if XFS_WANT_FUNCS || (XFS_WANT_SPACE &amp;&amp; XFSSO_XFS_SB_VERSION_HASDALIGN)
 r_int
@@ -866,10 +866,10 @@ id|mp
 )paren
 suffix:semicolon
 DECL|macro|XFS_SB_BLOCK
-mdefine_line|#define XFS_SB_BLOCK(mp)&t;xfs_sb_block(mp)
+mdefine_line|#define&t;XFS_SB_BLOCK(mp)&t;xfs_sb_block(mp)
 macro_line|#else
 DECL|macro|XFS_SB_BLOCK
-mdefine_line|#define XFS_SB_BLOCK(mp)&t;XFS_HDR_BLOCK(mp, XFS_SB_DADDR)
+mdefine_line|#define&t;XFS_SB_BLOCK(mp)&t;XFS_HDR_BLOCK(mp, XFS_SB_DADDR)
 macro_line|#endif
 macro_line|#if XFS_WANT_FUNCS || (XFS_WANT_SPACE &amp;&amp; XFSSO_XFS_HDR_BLOCK)
 id|xfs_agblock_t
@@ -886,10 +886,10 @@ id|d
 )paren
 suffix:semicolon
 DECL|macro|XFS_HDR_BLOCK
-mdefine_line|#define XFS_HDR_BLOCK(mp,d)&t;xfs_hdr_block(mp,d)
+mdefine_line|#define&t;XFS_HDR_BLOCK(mp,d)&t;xfs_hdr_block(mp,d)
 macro_line|#else
 DECL|macro|XFS_HDR_BLOCK
-mdefine_line|#define XFS_HDR_BLOCK(mp,d)&t;((xfs_agblock_t)(XFS_BB_TO_FSBT(mp,d)))
+mdefine_line|#define&t;XFS_HDR_BLOCK(mp,d)&t;((xfs_agblock_t)(XFS_BB_TO_FSBT(mp,d)))
 macro_line|#endif
 macro_line|#if XFS_WANT_FUNCS || (XFS_WANT_SPACE &amp;&amp; XFSSO_XFS_DADDR_TO_FSB)
 id|xfs_fsblock_t
@@ -906,10 +906,10 @@ id|d
 )paren
 suffix:semicolon
 DECL|macro|XFS_DADDR_TO_FSB
-mdefine_line|#define XFS_DADDR_TO_FSB(mp,d)&t;&t;xfs_daddr_to_fsb(mp,d)
+mdefine_line|#define&t;XFS_DADDR_TO_FSB(mp,d)&t;&t;xfs_daddr_to_fsb(mp,d)
 macro_line|#else
 DECL|macro|XFS_DADDR_TO_FSB
-mdefine_line|#define XFS_DADDR_TO_FSB(mp,d) &bslash;&n;&t;XFS_AGB_TO_FSB(mp, XFS_DADDR_TO_AGNO(mp,d), XFS_DADDR_TO_AGBNO(mp,d))
+mdefine_line|#define&t;XFS_DADDR_TO_FSB(mp,d) &bslash;&n;&t;XFS_AGB_TO_FSB(mp, XFS_DADDR_TO_AGNO(mp,d), XFS_DADDR_TO_AGBNO(mp,d))
 macro_line|#endif
 macro_line|#if XFS_WANT_FUNCS || (XFS_WANT_SPACE &amp;&amp; XFSSO_XFS_FSB_TO_DADDR)
 id|xfs_daddr_t
@@ -926,10 +926,10 @@ id|fsbno
 )paren
 suffix:semicolon
 DECL|macro|XFS_FSB_TO_DADDR
-mdefine_line|#define XFS_FSB_TO_DADDR(mp,fsbno)&t;xfs_fsb_to_daddr(mp,fsbno)
+mdefine_line|#define&t;XFS_FSB_TO_DADDR(mp,fsbno)&t;xfs_fsb_to_daddr(mp,fsbno)
 macro_line|#else
 DECL|macro|XFS_FSB_TO_DADDR
-mdefine_line|#define XFS_FSB_TO_DADDR(mp,fsbno) &bslash;&n;&t;XFS_AGB_TO_DADDR(mp, XFS_FSB_TO_AGNO(mp,fsbno), &bslash;&n;&t;&t;&t; XFS_FSB_TO_AGBNO(mp,fsbno))
+mdefine_line|#define&t;XFS_FSB_TO_DADDR(mp,fsbno) &bslash;&n;&t;XFS_AGB_TO_DADDR(mp, XFS_FSB_TO_AGNO(mp,fsbno), &bslash;&n;&t;&t;&t; XFS_FSB_TO_AGBNO(mp,fsbno))
 macro_line|#endif
 macro_line|#if XFS_WANT_FUNCS || (XFS_WANT_SPACE &amp;&amp; XFSSO_XFS_BUF_TO_SBP)
 id|xfs_sb_t
@@ -963,13 +963,13 @@ DECL|macro|XFS_B_TO_FSST
 mdefine_line|#define XFS_B_TO_FSST(mp,b)&t;(((__uint64_t)(b)) &gt;&gt; (mp)-&gt;m_sb.sb_sectlog)
 multiline_comment|/*&n; * File system block to basic block conversions.&n; */
 DECL|macro|XFS_FSB_TO_BB
-mdefine_line|#define XFS_FSB_TO_BB(mp,fsbno) ((fsbno) &lt;&lt; (mp)-&gt;m_blkbb_log)
+mdefine_line|#define&t;XFS_FSB_TO_BB(mp,fsbno)&t;((fsbno) &lt;&lt; (mp)-&gt;m_blkbb_log)
 DECL|macro|XFS_BB_TO_FSB
-mdefine_line|#define XFS_BB_TO_FSB(mp,bb)&t;&bslash;&n;&t;(((bb) + (XFS_FSB_TO_BB(mp,1) - 1)) &gt;&gt; (mp)-&gt;m_blkbb_log)
+mdefine_line|#define&t;XFS_BB_TO_FSB(mp,bb)&t;&bslash;&n;&t;(((bb) + (XFS_FSB_TO_BB(mp,1) - 1)) &gt;&gt; (mp)-&gt;m_blkbb_log)
 DECL|macro|XFS_BB_TO_FSBT
-mdefine_line|#define XFS_BB_TO_FSBT(mp,bb)&t;((bb) &gt;&gt; (mp)-&gt;m_blkbb_log)
+mdefine_line|#define&t;XFS_BB_TO_FSBT(mp,bb)&t;((bb) &gt;&gt; (mp)-&gt;m_blkbb_log)
 DECL|macro|XFS_BB_FSB_OFFSET
-mdefine_line|#define XFS_BB_FSB_OFFSET(mp,bb) ((bb) &amp; ((mp)-&gt;m_bsize - 1))
+mdefine_line|#define&t;XFS_BB_FSB_OFFSET(mp,bb) ((bb) &amp; ((mp)-&gt;m_bsize - 1))
 multiline_comment|/*&n; * File system block to byte conversions.&n; */
 DECL|macro|XFS_FSB_TO_B
 mdefine_line|#define XFS_FSB_TO_B(mp,fsbno)&t;((xfs_fsize_t)(fsbno) &lt;&lt; (mp)-&gt;m_sb.sb_blocklog)

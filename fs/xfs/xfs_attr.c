@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * Copyright (c) 2000-2002 Silicon Graphics, Inc.  All Rights Reserved.&n; *&n; * This program is free software; you can redistribute it and/or modify it&n; * under the terms of version 2 of the GNU General Public License as&n; * published by the Free Software Foundation.&n; *&n; * This program is distributed in the hope that it would be useful, but&n; * WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.&n; *&n; * Further, this software is distributed without any warranty that it is&n; * free of the rightful claim of any third person regarding infringement&n; * or the like.&t; Any license provided herein, whether implied or&n; * otherwise, applies only to this software file.  Patent licenses, if&n; * any, provided herein do not apply to combinations of this program with&n; * other software, or any other product whatsoever.&n; *&n; * You should have received a copy of the GNU General Public License along&n; * with this program; if not, write the Free Software Foundation, Inc., 59&n; * Temple Place - Suite 330, Boston MA 02111-1307, USA.&n; *&n; * Contact information: Silicon Graphics, Inc., 1600 Amphitheatre Pkwy,&n; * Mountain View, CA  94043, or:&n; *&n; * http://www.sgi.com&n; *&n; * For further information regarding this notice, see:&n; *&n; * http://oss.sgi.com/projects/GenInfo/SGIGPLNoticeExplan/&n; */
+multiline_comment|/*&n; * Copyright (c) 2000-2002 Silicon Graphics, Inc.  All Rights Reserved.&n; *&n; * This program is free software; you can redistribute it and/or modify it&n; * under the terms of version 2 of the GNU General Public License as&n; * published by the Free Software Foundation.&n; *&n; * This program is distributed in the hope that it would be useful, but&n; * WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.&n; *&n; * Further, this software is distributed without any warranty that it is&n; * free of the rightful claim of any third person regarding infringement&n; * or the like.  Any license provided herein, whether implied or&n; * otherwise, applies only to this software file.  Patent licenses, if&n; * any, provided herein do not apply to combinations of this program with&n; * other software, or any other product whatsoever.&n; *&n; * You should have received a copy of the GNU General Public License along&n; * with this program; if not, write the Free Software Foundation, Inc., 59&n; * Temple Place - Suite 330, Boston MA 02111-1307, USA.&n; *&n; * Contact information: Silicon Graphics, Inc., 1600 Amphitheatre Pkwy,&n; * Mountain View, CA  94043, or:&n; *&n; * http://www.sgi.com&n; *&n; * For further information regarding this notice, see:&n; *&n; * http://oss.sgi.com/projects/GenInfo/SGIGPLNoticeExplan/&n; */
 macro_line|#include &lt;xfs.h&gt;
 multiline_comment|/*&n; * xfs_attr.c&n; *&n; * Provide the external interfaces to manage attribute lists.&n; */
 multiline_comment|/*========================================================================&n; * Function prototypes for the kernel.&n; *========================================================================*/
@@ -129,7 +129,7 @@ suffix:semicolon
 DECL|macro|ATTR_RMTVALUE_MAPSIZE
 mdefine_line|#define ATTR_RMTVALUE_MAPSIZE&t;1&t;/* # of map entries at once */
 DECL|macro|ATTR_RMTVALUE_TRANSBLKS
-mdefine_line|#define ATTR_RMTVALUE_TRANSBLKS 8&t;/* max # of blks in a transaction */
+mdefine_line|#define ATTR_RMTVALUE_TRANSBLKS&t;8&t;/* max # of blks in a transaction */
 macro_line|#if defined(DEBUG)
 DECL|variable|xfs_attr_trace_buf
 id|ktrace_t
@@ -2040,7 +2040,7 @@ r_return
 id|error
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Generate a list of extended attribute names and optionally&n; * also value lengths.&t;Positive return value follows the XFS&n; * convention of being an error, zero or negative return code&n; * is the length of the buffer returned (negated), indicating&n; * success.&n; */
+multiline_comment|/*&n; * Generate a list of extended attribute names and optionally&n; * also value lengths.  Positive return value follows the XFS&n; * convention of being an error, zero or negative return code&n; * is the length of the buffer returned (negated), indicating&n; * success.&n; */
 r_int
 DECL|function|xfs_attr_list
 id|xfs_attr_list

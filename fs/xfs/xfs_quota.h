@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * Copyright (c) 2000-2003 Silicon Graphics, Inc.  All Rights Reserved.&n; *&n; * This program is free software; you can redistribute it and/or modify it&n; * under the terms of version 2 of the GNU General Public License as&n; * published by the Free Software Foundation.&n; *&n; * This program is distributed in the hope that it would be useful, but&n; * WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.&n; *&n; * Further, this software is distributed without any warranty that it is&n; * free of the rightful claim of any third person regarding infringement&n; * or the like.&t; Any license provided herein, whether implied or&n; * otherwise, applies only to this software file.  Patent licenses, if&n; * any, provided herein do not apply to combinations of this program with&n; * other software, or any other product whatsoever.&n; *&n; * You should have received a copy of the GNU General Public License along&n; * with this program; if not, write the Free Software Foundation, Inc., 59&n; * Temple Place - Suite 330, Boston MA 02111-1307, USA.&n; *&n; * Contact information: Silicon Graphics, Inc., 1600 Amphitheatre Pkwy,&n; * Mountain View, CA  94043, or:&n; *&n; * http://www.sgi.com&n; *&n; * For further information regarding this notice, see:&n; *&n; * http://oss.sgi.com/projects/GenInfo/SGIGPLNoticeExplan/&n; */
+multiline_comment|/*&n; * Copyright (c) 2000-2003 Silicon Graphics, Inc.  All Rights Reserved.&n; *&n; * This program is free software; you can redistribute it and/or modify it&n; * under the terms of version 2 of the GNU General Public License as&n; * published by the Free Software Foundation.&n; *&n; * This program is distributed in the hope that it would be useful, but&n; * WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.&n; *&n; * Further, this software is distributed without any warranty that it is&n; * free of the rightful claim of any third person regarding infringement&n; * or the like.  Any license provided herein, whether implied or&n; * otherwise, applies only to this software file.  Patent licenses, if&n; * any, provided herein do not apply to combinations of this program with&n; * other software, or any other product whatsoever.&n; *&n; * You should have received a copy of the GNU General Public License along&n; * with this program; if not, write the Free Software Foundation, Inc., 59&n; * Temple Place - Suite 330, Boston MA 02111-1307, USA.&n; *&n; * Contact information: Silicon Graphics, Inc., 1600 Amphitheatre Pkwy,&n; * Mountain View, CA  94043, or:&n; *&n; * http://www.sgi.com&n; *&n; * For further information regarding this notice, see:&n; *&n; * http://oss.sgi.com/projects/GenInfo/SGIGPLNoticeExplan/&n; */
 macro_line|#ifndef __XFS_QUOTA_H__
 DECL|macro|__XFS_QUOTA_H__
 mdefine_line|#define __XFS_QUOTA_H__
@@ -280,24 +280,24 @@ id|xfs_qoff_logformat_t
 suffix:semicolon
 multiline_comment|/*&n; * Disk quotas status in m_qflags, and also sb_qflags. 16 bits.&n; */
 DECL|macro|XFS_UQUOTA_ACCT
-mdefine_line|#define XFS_UQUOTA_ACCT 0x0001&t;/* user quota accounting ON */
+mdefine_line|#define XFS_UQUOTA_ACCT&t;0x0001  /* user quota accounting ON */
 DECL|macro|XFS_UQUOTA_ENFD
-mdefine_line|#define XFS_UQUOTA_ENFD 0x0002&t;/* user quota limits enforced */
+mdefine_line|#define XFS_UQUOTA_ENFD&t;0x0002  /* user quota limits enforced */
 DECL|macro|XFS_UQUOTA_CHKD
-mdefine_line|#define XFS_UQUOTA_CHKD 0x0004&t;/* quotacheck run on usr quotas */
+mdefine_line|#define XFS_UQUOTA_CHKD&t;0x0004  /* quotacheck run on usr quotas */
 DECL|macro|XFS_PQUOTA_ACCT
-mdefine_line|#define XFS_PQUOTA_ACCT 0x0008&t;/* (IRIX) project quota accounting ON */
+mdefine_line|#define XFS_PQUOTA_ACCT&t;0x0008  /* (IRIX) project quota accounting ON */
 DECL|macro|XFS_GQUOTA_ENFD
-mdefine_line|#define XFS_GQUOTA_ENFD 0x0010&t;/* group quota limits enforced */
+mdefine_line|#define XFS_GQUOTA_ENFD&t;0x0010  /* group quota limits enforced */
 DECL|macro|XFS_GQUOTA_CHKD
-mdefine_line|#define XFS_GQUOTA_CHKD 0x0020&t;/* quotacheck run on grp quotas */
+mdefine_line|#define XFS_GQUOTA_CHKD&t;0x0020  /* quotacheck run on grp quotas */
 DECL|macro|XFS_GQUOTA_ACCT
-mdefine_line|#define XFS_GQUOTA_ACCT 0x0040&t;/* group quota accounting ON */
+mdefine_line|#define XFS_GQUOTA_ACCT&t;0x0040  /* group quota accounting ON */
 multiline_comment|/*&n; * Incore only flags for quotaoff - these bits get cleared when quota(s)&n; * are in the process of getting turned off. These flags are in m_qflags but&n; * never in sb_qflags.&n; */
 DECL|macro|XFS_UQUOTA_ACTIVE
-mdefine_line|#define XFS_UQUOTA_ACTIVE&t;0x0080&t;/* uquotas are being turned off */
+mdefine_line|#define XFS_UQUOTA_ACTIVE&t;0x0080  /* uquotas are being turned off */
 DECL|macro|XFS_GQUOTA_ACTIVE
-mdefine_line|#define XFS_GQUOTA_ACTIVE&t;0x0100&t;/* gquotas are being turned off */
+mdefine_line|#define XFS_GQUOTA_ACTIVE&t;0x0100  /* gquotas are being turned off */
 multiline_comment|/*&n; * Checking XFS_IS_*QUOTA_ON() while holding any inode lock guarantees&n; * quota will be not be switched off as long as that inode lock is held.&n; */
 DECL|macro|XFS_IS_QUOTA_ON
 mdefine_line|#define XFS_IS_QUOTA_ON(mp)&t;((mp)-&gt;m_qflags &amp; (XFS_UQUOTA_ACTIVE | &bslash;&n;&t;&t;&t;&t;&t;&t;   XFS_GQUOTA_ACTIVE))
@@ -327,7 +327,7 @@ mdefine_line|#define XFS_QMOPT_UMOUNTING&t;0x0000100 /* filesys is being unmount
 DECL|macro|XFS_QMOPT_DOLOG
 mdefine_line|#define XFS_QMOPT_DOLOG&t;&t;0x0000200 /* log buf changes (in quotacheck) */
 DECL|macro|XFS_QMOPT_DOWARN
-mdefine_line|#define XFS_QMOPT_DOWARN&t;0x0000400 /* increase warning cnt if necessary */
+mdefine_line|#define XFS_QMOPT_DOWARN        0x0000400 /* increase warning cnt if necessary */
 DECL|macro|XFS_QMOPT_ILOCKED
 mdefine_line|#define XFS_QMOPT_ILOCKED&t;0x0000800 /* inode is already locked (excl) */
 DECL|macro|XFS_QMOPT_DQREPAIR
@@ -363,7 +363,7 @@ multiline_comment|/*&n; * flags to xfs_trans_mod_dquot.&n; */
 DECL|macro|XFS_TRANS_DQ_RES_BLKS
 mdefine_line|#define XFS_TRANS_DQ_RES_BLKS&t;XFS_QMOPT_RES_REGBLKS
 DECL|macro|XFS_TRANS_DQ_RES_RTBLKS
-mdefine_line|#define XFS_TRANS_DQ_RES_RTBLKS XFS_QMOPT_RES_RTBLKS
+mdefine_line|#define XFS_TRANS_DQ_RES_RTBLKS&t;XFS_QMOPT_RES_RTBLKS
 DECL|macro|XFS_TRANS_DQ_RES_INOS
 mdefine_line|#define XFS_TRANS_DQ_RES_INOS&t;XFS_QMOPT_RES_INOS
 DECL|macro|XFS_TRANS_DQ_BCOUNT

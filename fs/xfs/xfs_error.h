@@ -1,7 +1,7 @@
-multiline_comment|/*&n; * Copyright (c) 2000-2002 Silicon Graphics, Inc.  All Rights Reserved.&n; *&n; * This program is free software; you can redistribute it and/or modify it&n; * under the terms of version 2 of the GNU General Public License as&n; * published by the Free Software Foundation.&n; *&n; * This program is distributed in the hope that it would be useful, but&n; * WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.&n; *&n; * Further, this software is distributed without any warranty that it is&n; * free of the rightful claim of any third person regarding infringement&n; * or the like.&t; Any license provided herein, whether implied or&n; * otherwise, applies only to this software file.  Patent licenses, if&n; * any, provided herein do not apply to combinations of this program with&n; * other software, or any other product whatsoever.&n; *&n; * You should have received a copy of the GNU General Public License along&n; * with this program; if not, write the Free Software Foundation, Inc., 59&n; * Temple Place - Suite 330, Boston MA 02111-1307, USA.&n; *&n; * Contact information: Silicon Graphics, Inc., 1600 Amphitheatre Pkwy,&n; * Mountain View, CA  94043, or:&n; *&n; * http://www.sgi.com&n; *&n; * For further information regarding this notice, see:&n; *&n; * http://oss.sgi.com/projects/GenInfo/SGIGPLNoticeExplan/&n; */
-macro_line|#ifndef __XFS_ERROR_H__
+multiline_comment|/*&n; * Copyright (c) 2000-2002 Silicon Graphics, Inc.  All Rights Reserved.&n; *&n; * This program is free software; you can redistribute it and/or modify it&n; * under the terms of version 2 of the GNU General Public License as&n; * published by the Free Software Foundation.&n; *&n; * This program is distributed in the hope that it would be useful, but&n; * WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.&n; *&n; * Further, this software is distributed without any warranty that it is&n; * free of the rightful claim of any third person regarding infringement&n; * or the like.  Any license provided herein, whether implied or&n; * otherwise, applies only to this software file.  Patent licenses, if&n; * any, provided herein do not apply to combinations of this program with&n; * other software, or any other product whatsoever.&n; *&n; * You should have received a copy of the GNU General Public License along&n; * with this program; if not, write the Free Software Foundation, Inc., 59&n; * Temple Place - Suite 330, Boston MA 02111-1307, USA.&n; *&n; * Contact information: Silicon Graphics, Inc., 1600 Amphitheatre Pkwy,&n; * Mountain View, CA  94043, or:&n; *&n; * http://www.sgi.com&n; *&n; * For further information regarding this notice, see:&n; *&n; * http://oss.sgi.com/projects/GenInfo/SGIGPLNoticeExplan/&n; */
+macro_line|#ifndef&t;__XFS_ERROR_H__
 DECL|macro|__XFS_ERROR_H__
-mdefine_line|#define __XFS_ERROR_H__
+mdefine_line|#define&t;__XFS_ERROR_H__
 DECL|macro|prdev
 mdefine_line|#define prdev(fmt,dev,args...) &bslash;&n;&t;printk(&quot;XFS: device 0x%x- &quot; fmt &quot;&bslash;n&quot;, (unsigned)dev, ## args)
 DECL|macro|XFS_ERECOVER
@@ -9,18 +9,18 @@ mdefine_line|#define XFS_ERECOVER&t;1&t;/* Failure to recover log */
 DECL|macro|XFS_ELOGSTAT
 mdefine_line|#define XFS_ELOGSTAT&t;2&t;/* Failure to stat log in user space */
 DECL|macro|XFS_ENOLOGSPACE
-mdefine_line|#define XFS_ENOLOGSPACE 3&t;/* Reservation too large */
+mdefine_line|#define XFS_ENOLOGSPACE&t;3&t;/* Reservation too large */
 DECL|macro|XFS_ENOTSUP
 mdefine_line|#define XFS_ENOTSUP&t;4&t;/* Operation not supported */
 DECL|macro|XFS_ENOLSN
-mdefine_line|#define XFS_ENOLSN&t;5&t;/* Can&squot;t find the lsn you asked for */
+mdefine_line|#define&t;XFS_ENOLSN&t;5&t;/* Can&squot;t find the lsn you asked for */
 DECL|macro|XFS_ENOTFOUND
 mdefine_line|#define XFS_ENOTFOUND&t;6
 DECL|macro|XFS_ENOTXFS
 mdefine_line|#define XFS_ENOTXFS&t;7&t;/* Not XFS filesystem */
 macro_line|#ifdef DEBUG
 DECL|macro|XFS_ERROR_NTRAP
-mdefine_line|#define XFS_ERROR_NTRAP 10
+mdefine_line|#define&t;XFS_ERROR_NTRAP&t;10
 r_extern
 r_int
 id|xfs_etrap
@@ -37,10 +37,10 @@ r_int
 )paren
 suffix:semicolon
 DECL|macro|XFS_ERROR
-mdefine_line|#define XFS_ERROR(e)&t;xfs_error_trap(e)
+mdefine_line|#define&t;XFS_ERROR(e)&t;xfs_error_trap(e)
 macro_line|#else
 DECL|macro|XFS_ERROR
-mdefine_line|#define XFS_ERROR(e)&t;(e)
+mdefine_line|#define&t;XFS_ERROR(e)&t;(e)
 macro_line|#endif
 r_struct
 id|xfs_mount
@@ -146,23 +146,23 @@ mdefine_line|#define XFS_ERRTAG_IFLUSH_5&t;&t;&t;&t;5
 DECL|macro|XFS_ERRTAG_IFLUSH_6
 mdefine_line|#define XFS_ERRTAG_IFLUSH_6&t;&t;&t;&t;6
 DECL|macro|XFS_ERRTAG_DA_READ_BUF
-mdefine_line|#define XFS_ERRTAG_DA_READ_BUF&t;&t;&t;&t;7
+mdefine_line|#define&t;XFS_ERRTAG_DA_READ_BUF&t;&t;&t;&t;7
 DECL|macro|XFS_ERRTAG_BTREE_CHECK_LBLOCK
-mdefine_line|#define XFS_ERRTAG_BTREE_CHECK_LBLOCK&t;&t;&t;8
+mdefine_line|#define&t;XFS_ERRTAG_BTREE_CHECK_LBLOCK&t;&t;&t;8
 DECL|macro|XFS_ERRTAG_BTREE_CHECK_SBLOCK
-mdefine_line|#define XFS_ERRTAG_BTREE_CHECK_SBLOCK&t;&t;&t;9
+mdefine_line|#define&t;XFS_ERRTAG_BTREE_CHECK_SBLOCK&t;&t;&t;9
 DECL|macro|XFS_ERRTAG_ALLOC_READ_AGF
-mdefine_line|#define XFS_ERRTAG_ALLOC_READ_AGF&t;&t;&t;10
+mdefine_line|#define&t;XFS_ERRTAG_ALLOC_READ_AGF&t;&t;&t;10
 DECL|macro|XFS_ERRTAG_IALLOC_READ_AGI
-mdefine_line|#define XFS_ERRTAG_IALLOC_READ_AGI&t;&t;&t;11
+mdefine_line|#define&t;XFS_ERRTAG_IALLOC_READ_AGI&t;&t;&t;11
 DECL|macro|XFS_ERRTAG_ITOBP_INOTOBP
-mdefine_line|#define XFS_ERRTAG_ITOBP_INOTOBP&t;&t;&t;12
+mdefine_line|#define&t;XFS_ERRTAG_ITOBP_INOTOBP&t;&t;&t;12
 DECL|macro|XFS_ERRTAG_IUNLINK
-mdefine_line|#define XFS_ERRTAG_IUNLINK&t;&t;&t;&t;13
+mdefine_line|#define&t;XFS_ERRTAG_IUNLINK&t;&t;&t;&t;13
 DECL|macro|XFS_ERRTAG_IUNLINK_REMOVE
-mdefine_line|#define XFS_ERRTAG_IUNLINK_REMOVE&t;&t;&t;14
+mdefine_line|#define&t;XFS_ERRTAG_IUNLINK_REMOVE&t;&t;&t;14
 DECL|macro|XFS_ERRTAG_DIR_INO_VALIDATE
-mdefine_line|#define XFS_ERRTAG_DIR_INO_VALIDATE&t;&t;&t;15
+mdefine_line|#define&t;XFS_ERRTAG_DIR_INO_VALIDATE&t;&t;&t;15
 DECL|macro|XFS_ERRTAG_BULKSTAT_READ_CHUNK
 mdefine_line|#define XFS_ERRTAG_BULKSTAT_READ_CHUNK&t;&t;&t;16
 DECL|macro|XFS_ERRTAG_IODONE_IOERR
@@ -253,7 +253,7 @@ r_void
 )paren
 suffix:semicolon
 DECL|macro|XFS_NUM_INJECT_ERROR
-mdefine_line|#define XFS_NUM_INJECT_ERROR&t;&t;&t;&t;10
+mdefine_line|#define&t;XFS_NUM_INJECT_ERROR&t;&t;&t;&t;10
 macro_line|#ifdef __ANSI_CPP__
 DECL|macro|XFS_TEST_ERROR
 mdefine_line|#define XFS_TEST_ERROR(expr, mp, tag, rf)&t;&t;&bslash;&n;&t;((expr) || &bslash;&n;&t; xfs_error_test((tag), (mp)-&gt;m_fixedfsid, #expr, __LINE__, __FILE__, &bslash;&n;&t;&t;&t; (rf)))

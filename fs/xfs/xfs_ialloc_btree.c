@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * Copyright (c) 2000-2001 Silicon Graphics, Inc.  All Rights Reserved.&n; *&n; * This program is free software; you can redistribute it and/or modify it&n; * under the terms of version 2 of the GNU General Public License as&n; * published by the Free Software Foundation.&n; *&n; * This program is distributed in the hope that it would be useful, but&n; * WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.&n; *&n; * Further, this software is distributed without any warranty that it is&n; * free of the rightful claim of any third person regarding infringement&n; * or the like.&t; Any license provided herein, whether implied or&n; * otherwise, applies only to this software file.  Patent licenses, if&n; * any, provided herein do not apply to combinations of this program with&n; * other software, or any other product whatsoever.&n; *&n; * You should have received a copy of the GNU General Public License along&n; * with this program; if not, write the Free Software Foundation, Inc., 59&n; * Temple Place - Suite 330, Boston MA 02111-1307, USA.&n; *&n; * Contact information: Silicon Graphics, Inc., 1600 Amphitheatre Pkwy,&n; * Mountain View, CA  94043, or:&n; *&n; * http://www.sgi.com&n; *&n; * For further information regarding this notice, see:&n; *&n; * http://oss.sgi.com/projects/GenInfo/SGIGPLNoticeExplan/&n; */
+multiline_comment|/*&n; * Copyright (c) 2000-2001 Silicon Graphics, Inc.  All Rights Reserved.&n; *&n; * This program is free software; you can redistribute it and/or modify it&n; * under the terms of version 2 of the GNU General Public License as&n; * published by the Free Software Foundation.&n; *&n; * This program is distributed in the hope that it would be useful, but&n; * WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.&n; *&n; * Further, this software is distributed without any warranty that it is&n; * free of the rightful claim of any third person regarding infringement&n; * or the like.  Any license provided herein, whether implied or&n; * otherwise, applies only to this software file.  Patent licenses, if&n; * any, provided herein do not apply to combinations of this program with&n; * other software, or any other product whatsoever.&n; *&n; * You should have received a copy of the GNU General Public License along&n; * with this program; if not, write the Free Software Foundation, Inc., 59&n; * Temple Place - Suite 330, Boston MA 02111-1307, USA.&n; *&n; * Contact information: Silicon Graphics, Inc., 1600 Amphitheatre Pkwy,&n; * Mountain View, CA  94043, or:&n; *&n; * http://www.sgi.com&n; *&n; * For further information regarding this notice, see:&n; *&n; * http://oss.sgi.com/projects/GenInfo/SGIGPLNoticeExplan/&n; */
 multiline_comment|/*&n; * Inode allocation management for XFS.&n; */
 macro_line|#include &lt;xfs.h&gt;
 multiline_comment|/*&n; * Prototypes for internal functions.&n; */
@@ -601,7 +601,7 @@ l_int|1
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/*&n;&t; * It&squot;s a leaf.&t; Excise the record being deleted, by sliding the&n;&t; * entries past it down one.  Log the changed areas of the block.&n;&t; */
+multiline_comment|/*&n;&t; * It&squot;s a leaf.  Excise the record being deleted, by sliding the&n;&t; * entries past it down one.  Log the changed areas of the block.&n;&t; */
 r_else
 (brace
 id|rp
@@ -1805,7 +1805,7 @@ r_return
 id|error
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t; * Otherwise, we can&squot;t fix the imbalance.&n;&t; * Just return.&t; This is probably a logic error, but it&squot;s not fatal.&n;&t; */
+multiline_comment|/*&n;&t; * Otherwise, we can&squot;t fix the imbalance.&n;&t; * Just return.  This is probably a logic error, but it&squot;s not fatal.&n;&t; */
 r_else
 (brace
 r_if
@@ -2082,7 +2082,7 @@ suffix:semicolon
 )brace
 r_else
 (brace
-multiline_comment|/*&n;&t;&t; * It&squot;s a leaf.&t; Move records.&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * It&squot;s a leaf.  Move records.&n;&t;&t; */
 id|lrp
 op_assign
 id|XFS_INOBT_REC_ADDR

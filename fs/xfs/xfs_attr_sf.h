@@ -1,7 +1,7 @@
-multiline_comment|/*&n; * Copyright (c) 2000, 2002 Silicon Graphics, Inc.  All Rights Reserved.&n; *&n; * This program is free software; you can redistribute it and/or modify it&n; * under the terms of version 2 of the GNU General Public License as&n; * published by the Free Software Foundation.&n; *&n; * This program is distributed in the hope that it would be useful, but&n; * WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.&n; *&n; * Further, this software is distributed without any warranty that it is&n; * free of the rightful claim of any third person regarding infringement&n; * or the like.&t; Any license provided herein, whether implied or&n; * otherwise, applies only to this software file.  Patent licenses, if&n; * any, provided herein do not apply to combinations of this program with&n; * other software, or any other product whatsoever.&n; *&n; * You should have received a copy of the GNU General Public License along&n; * with this program; if not, write the Free Software Foundation, Inc., 59&n; * Temple Place - Suite 330, Boston MA 02111-1307, USA.&n; *&n; * Contact information: Silicon Graphics, Inc., 1600 Amphitheatre Pkwy,&n; * Mountain View, CA  94043, or:&n; *&n; * http://www.sgi.com&n; *&n; * For further information regarding this notice, see:&n; *&n; * http://oss.sgi.com/projects/GenInfo/SGIGPLNoticeExplan/&n; */
+multiline_comment|/*&n; * Copyright (c) 2000, 2002 Silicon Graphics, Inc.  All Rights Reserved.&n; *&n; * This program is free software; you can redistribute it and/or modify it&n; * under the terms of version 2 of the GNU General Public License as&n; * published by the Free Software Foundation.&n; *&n; * This program is distributed in the hope that it would be useful, but&n; * WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.&n; *&n; * Further, this software is distributed without any warranty that it is&n; * free of the rightful claim of any third person regarding infringement&n; * or the like.  Any license provided herein, whether implied or&n; * otherwise, applies only to this software file.  Patent licenses, if&n; * any, provided herein do not apply to combinations of this program with&n; * other software, or any other product whatsoever.&n; *&n; * You should have received a copy of the GNU General Public License along&n; * with this program; if not, write the Free Software Foundation, Inc., 59&n; * Temple Place - Suite 330, Boston MA 02111-1307, USA.&n; *&n; * Contact information: Silicon Graphics, Inc., 1600 Amphitheatre Pkwy,&n; * Mountain View, CA  94043, or:&n; *&n; * http://www.sgi.com&n; *&n; * For further information regarding this notice, see:&n; *&n; * http://oss.sgi.com/projects/GenInfo/SGIGPLNoticeExplan/&n; */
 macro_line|#ifndef __XFS_ATTR_SF_H__
 DECL|macro|__XFS_ATTR_SF_H__
-mdefine_line|#define __XFS_ATTR_SF_H__
+mdefine_line|#define&t;__XFS_ATTR_SF_H__
 multiline_comment|/*&n; * Attribute storage when stored inside the inode.&n; *&n; * Small attribute lists are packed as tightly as possible so as&n; * to fit into the literal area of the inode.&n; */
 r_struct
 id|xfs_inode
@@ -195,7 +195,7 @@ mdefine_line|#define XFS_ATTR_SF_TOTSIZE(dp)&t;&t;&t;/* total space in use */ &b
 macro_line|#endif
 macro_line|#ifdef XFS_ALL_TRACE
 DECL|macro|XFS_ATTR_TRACE
-mdefine_line|#define XFS_ATTR_TRACE
+mdefine_line|#define&t;XFS_ATTR_TRACE
 macro_line|#endif
 macro_line|#if !defined(DEBUG)
 DECL|macro|XFS_ATTR_TRACE
@@ -215,16 +215,16 @@ r_struct
 id|xfs_attr_leafblock
 suffix:semicolon
 DECL|macro|XFS_ATTR_TRACE_SIZE
-mdefine_line|#define XFS_ATTR_TRACE_SIZE&t;4096&t;/* size of global trace buffer */
+mdefine_line|#define&t;XFS_ATTR_TRACE_SIZE&t;4096&t;/* size of global trace buffer */
 multiline_comment|/*&n; * Trace record types.&n; */
 DECL|macro|XFS_ATTR_KTRACE_L_C
-mdefine_line|#define XFS_ATTR_KTRACE_L_C&t;1&t;/* context */
+mdefine_line|#define&t;XFS_ATTR_KTRACE_L_C&t;1&t;/* context */
 DECL|macro|XFS_ATTR_KTRACE_L_CN
-mdefine_line|#define XFS_ATTR_KTRACE_L_CN&t;2&t;/* context, node */
+mdefine_line|#define&t;XFS_ATTR_KTRACE_L_CN&t;2&t;/* context, node */
 DECL|macro|XFS_ATTR_KTRACE_L_CB
-mdefine_line|#define XFS_ATTR_KTRACE_L_CB&t;3&t;/* context, btree */
+mdefine_line|#define&t;XFS_ATTR_KTRACE_L_CB&t;3&t;/* context, btree */
 DECL|macro|XFS_ATTR_KTRACE_L_CL
-mdefine_line|#define XFS_ATTR_KTRACE_L_CL&t;4&t;/* context, leaf */
+mdefine_line|#define&t;XFS_ATTR_KTRACE_L_CL&t;4&t;/* context, leaf */
 macro_line|#if defined(XFS_ATTR_TRACE)
 r_void
 id|xfs_attr_trace_l_c
@@ -353,13 +353,13 @@ id|a15
 suffix:semicolon
 macro_line|#else
 DECL|macro|xfs_attr_trace_l_c
-mdefine_line|#define xfs_attr_trace_l_c(w,c)
+mdefine_line|#define&t;xfs_attr_trace_l_c(w,c)
 DECL|macro|xfs_attr_trace_l_cn
-mdefine_line|#define xfs_attr_trace_l_cn(w,c,n)
+mdefine_line|#define&t;xfs_attr_trace_l_cn(w,c,n)
 DECL|macro|xfs_attr_trace_l_cb
-mdefine_line|#define xfs_attr_trace_l_cb(w,c,b)
+mdefine_line|#define&t;xfs_attr_trace_l_cb(w,c,b)
 DECL|macro|xfs_attr_trace_l_cl
-mdefine_line|#define xfs_attr_trace_l_cl(w,c,l)
+mdefine_line|#define&t;xfs_attr_trace_l_cl(w,c,l)
 macro_line|#endif /* XFS_ATTR_TRACE */
 macro_line|#endif&t;/* __XFS_ATTR_SF_H__ */
 eof

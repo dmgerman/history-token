@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * Copyright (c) 2000-2003 Silicon Graphics, Inc.  All Rights Reserved.&n; *&n; * This program is free software; you can redistribute it and/or modify it&n; * under the terms of version 2 of the GNU General Public License as&n; * published by the Free Software Foundation.&n; *&n; * This program is distributed in the hope that it would be useful, but&n; * WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.&n; *&n; * Further, this software is distributed without any warranty that it is&n; * free of the rightful claim of any third person regarding infringement&n; * or the like.&t; Any license provided herein, whether implied or&n; * otherwise, applies only to this software file.  Patent licenses, if&n; * any, provided herein do not apply to combinations of this program with&n; * other software, or any other product whatsoever.&n; *&n; * You should have received a copy of the GNU General Public License along&n; * with this program; if not, write the Free Software Foundation, Inc., 59&n; * Temple Place - Suite 330, Boston MA 02111-1307, USA.&n; *&n; * Contact information: Silicon Graphics, Inc., 1600 Amphitheatre Pkwy,&n; * Mountain View, CA  94043, or:&n; *&n; * http://www.sgi.com&n; *&n; * For further information regarding this notice, see:&n; *&n; * http://oss.sgi.com/projects/GenInfo/SGIGPLNoticeExplan/&n; */
+multiline_comment|/*&n; * Copyright (c) 2000-2003 Silicon Graphics, Inc.  All Rights Reserved.&n; *&n; * This program is free software; you can redistribute it and/or modify it&n; * under the terms of version 2 of the GNU General Public License as&n; * published by the Free Software Foundation.&n; *&n; * This program is distributed in the hope that it would be useful, but&n; * WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.&n; *&n; * Further, this software is distributed without any warranty that it is&n; * free of the rightful claim of any third person regarding infringement&n; * or the like.  Any license provided herein, whether implied or&n; * otherwise, applies only to this software file.  Patent licenses, if&n; * any, provided herein do not apply to combinations of this program with&n; * other software, or any other product whatsoever.&n; *&n; * You should have received a copy of the GNU General Public License along&n; * with this program; if not, write the Free Software Foundation, Inc., 59&n; * Temple Place - Suite 330, Boston MA 02111-1307, USA.&n; *&n; * Contact information: Silicon Graphics, Inc., 1600 Amphitheatre Pkwy,&n; * Mountain View, CA  94043, or:&n; *&n; * http://www.sgi.com&n; *&n; * For further information regarding this notice, see:&n; *&n; * http://oss.sgi.com/projects/GenInfo/SGIGPLNoticeExplan/&n; */
 multiline_comment|/*&n; *  fs/xfs/linux/xfs_lrw.c (Linux Read Write stuff)&n; *&n; */
 macro_line|#include &lt;xfs.h&gt;
 macro_line|#include &lt;linux/capability.h&gt;
@@ -14,7 +14,7 @@ id|inode
 op_star
 id|ip
 comma
-multiline_comment|/* inode &t;&t;&t;*/
+multiline_comment|/* inode&t;&t;&t;*/
 id|loff_t
 id|pos
 comma
@@ -1298,7 +1298,7 @@ r_return
 id|error
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Zero any on disk space between the current EOF and the new,&n; * larger EOF.&t;This handles the normal case of zeroing the remainder&n; * of the last block in the file and the unusual case of zeroing blocks&n; * out beyond the size of the file.  This second case only happens&n; * with fixed size extents and when the system crashes before the inode&n; * size was updated but after blocks were allocated.  If fill is set,&n; * then any holes in the range are filled and zeroed.  If not, the holes&n; * are left alone as holes.&n; */
+multiline_comment|/*&n; * Zero any on disk space between the current EOF and the new,&n; * larger EOF.  This handles the normal case of zeroing the remainder&n; * of the last block in the file and the unusual case of zeroing blocks&n; * out beyond the size of the file.  This second case only happens&n; * with fixed size extents and when the system crashes before the inode&n; * size was updated but after blocks were allocated.  If fill is set,&n; * then any holes in the range are filled and zeroed.  If not, the holes&n; * are left alone as holes.&n; */
 r_int
 multiline_comment|/* error (positive) */
 DECL|function|xfs_zero_eof
@@ -1458,7 +1458,7 @@ r_return
 id|error
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t; * Calculate the range between the new size and the old&n;&t; * where blocks needing to be zeroed may exist.&t; To get the&n;&t; * block where the last byte in the file currently resides,&n;&t; * we need to subtract one from the size and truncate back&n;&t; * to a block boundary.&t; We subtract 1 in case the size is&n;&t; * exactly on a block boundary.&n;&t; */
+multiline_comment|/*&n;&t; * Calculate the range between the new size and the old&n;&t; * where blocks needing to be zeroed may exist.  To get the&n;&t; * block where the last byte in the file currently resides,&n;&t; * we need to subtract one from the size and truncate back&n;&t; * to a block boundary.  We subtract 1 in case the size is&n;&t; * exactly on a block boundary.&n;&t; */
 id|last_fsb
 op_assign
 id|isize
@@ -1678,7 +1678,7 @@ suffix:semicolon
 r_continue
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t;&t; * There are blocks in the range requested.&n;&t;&t; * Zero them a single write at a time.&t;We actually&n;&t;&t; * don&squot;t zero the entire range returned if it is&n;&t;&t; * too big and simply loop around to get the rest.&n;&t;&t; * That is not the most efficient thing to do, but it&n;&t;&t; * is simple and this path should not be exercised often.&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * There are blocks in the range requested.&n;&t;&t; * Zero them a single write at a time.  We actually&n;&t;&t; * don&squot;t zero the entire range returned if it is&n;&t;&t; * too big and simply loop around to get the rest.&n;&t;&t; * That is not the most efficient thing to do, but it&n;&t;&t; * is simple and this path should not be exercised often.&n;&t;&t; */
 id|buf_len_fsb
 op_assign
 id|XFS_FILBLKS_MIN
@@ -2804,7 +2804,7 @@ id|xip-&gt;i_update_size
 )paren
 )paren
 (brace
-multiline_comment|/*&n;&t;&t;&t; * If an allocation transaction occurred&n;&t;&t;&t; * without extending the size, then we have to force&n;&t;&t;&t; * the log up the proper point to ensure that the&n;&t;&t;&t; * allocation is permanent.  We can&squot;t count on&n;&t;&t;&t; * the fact that buffered writes lock out direct I/O&n;&t;&t;&t; * writes - the direct I/O write could have extended&n;&t;&t;&t; * the size nontransactionally, then finished before&n;&t;&t;&t; * we started.&t;xfs_write_file will think that the file&n;&t;&t;&t; * didn&squot;t grow but the update isn&squot;t safe unless the&n;&t;&t;&t; * size change is logged.&n;&t;&t;&t; *&n;&t;&t;&t; * Force the log if we&squot;ve committed a transaction&n;&t;&t;&t; * against the inode or if someone else has and&n;&t;&t;&t; * the commit record hasn&squot;t gone to disk (e.g.&n;&t;&t;&t; * the inode is pinned).  This guarantees that&n;&t;&t;&t; * all changes affecting the inode are permanent&n;&t;&t;&t; * when we return.&n;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t; * If an allocation transaction occurred&n;&t;&t;&t; * without extending the size, then we have to force&n;&t;&t;&t; * the log up the proper point to ensure that the&n;&t;&t;&t; * allocation is permanent.  We can&squot;t count on&n;&t;&t;&t; * the fact that buffered writes lock out direct I/O&n;&t;&t;&t; * writes - the direct I/O write could have extended&n;&t;&t;&t; * the size nontransactionally, then finished before&n;&t;&t;&t; * we started.  xfs_write_file will think that the file&n;&t;&t;&t; * didn&squot;t grow but the update isn&squot;t safe unless the&n;&t;&t;&t; * size change is logged.&n;&t;&t;&t; *&n;&t;&t;&t; * Force the log if we&squot;ve committed a transaction&n;&t;&t;&t; * against the inode or if someone else has and&n;&t;&t;&t; * the commit record hasn&squot;t gone to disk (e.g.&n;&t;&t;&t; * the inode is pinned).  This guarantees that&n;&t;&t;&t; * all changes affecting the inode are permanent&n;&t;&t;&t; * when we return.&n;&t;&t;&t; */
 id|xfs_inode_log_item_t
 op_star
 id|iip

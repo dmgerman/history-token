@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * Copyright (c) 2000-2002 Silicon Graphics, Inc.  All Rights Reserved.&n; *&n; * This program is free software; you can redistribute it and/or modify it&n; * under the terms of version 2 of the GNU General Public License as&n; * published by the Free Software Foundation.&n; *&n; * This program is distributed in the hope that it would be useful, but&n; * WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.&n; *&n; * Further, this software is distributed without any warranty that it is&n; * free of the rightful claim of any third person regarding infringement&n; * or the like.&t; Any license provided herein, whether implied or&n; * otherwise, applies only to this software file.  Patent licenses, if&n; * any, provided herein do not apply to combinations of this program with&n; * other software, or any other product whatsoever.&n; *&n; * You should have received a copy of the GNU General Public License along&n; * with this program; if not, write the Free Software Foundation, Inc., 59&n; * Temple Place - Suite 330, Boston MA 02111-1307, USA.&n; *&n; * Contact information: Silicon Graphics, Inc., 1600 Amphitheatre Pkwy,&n; * Mountain View, CA  94043, or:&n; *&n; * http://www.sgi.com&n; *&n; * For further information regarding this notice, see:&n; *&n; * http://oss.sgi.com/projects/GenInfo/SGIGPLNoticeExplan/&n; */
+multiline_comment|/*&n; * Copyright (c) 2000-2002 Silicon Graphics, Inc.  All Rights Reserved.&n; *&n; * This program is free software; you can redistribute it and/or modify it&n; * under the terms of version 2 of the GNU General Public License as&n; * published by the Free Software Foundation.&n; *&n; * This program is distributed in the hope that it would be useful, but&n; * WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.&n; *&n; * Further, this software is distributed without any warranty that it is&n; * free of the rightful claim of any third person regarding infringement&n; * or the like.  Any license provided herein, whether implied or&n; * otherwise, applies only to this software file.  Patent licenses, if&n; * any, provided herein do not apply to combinations of this program with&n; * other software, or any other product whatsoever.&n; *&n; * You should have received a copy of the GNU General Public License along&n; * with this program; if not, write the Free Software Foundation, Inc., 59&n; * Temple Place - Suite 330, Boston MA 02111-1307, USA.&n; *&n; * Contact information: Silicon Graphics, Inc., 1600 Amphitheatre Pkwy,&n; * Mountain View, CA  94043, or:&n; *&n; * http://www.sgi.com&n; *&n; * For further information regarding this notice, see:&n; *&n; * http://oss.sgi.com/projects/GenInfo/SGIGPLNoticeExplan/&n; */
 macro_line|#include &lt;xfs.h&gt;
 id|STATIC
 r_void
@@ -60,7 +60,7 @@ op_star
 suffix:semicolon
 macro_line|#else
 DECL|macro|xfs_ail_check
-mdefine_line|#define xfs_ail_check(a)
+mdefine_line|#define&t;xfs_ail_check(a)
 macro_line|#endif /* XFSDEBUG */
 multiline_comment|/*&n; * This is called by the log manager code to determine the LSN&n; * of the tail of the log.  This is exactly the LSN of the first&n; * item in the AIL.  If the AIL is empty, then this function&n; * returns 0.&n; *&n; * We need the AIL lock in order to get a coherent read of the&n; * lsn of the last item in the AIL.&n; */
 id|xfs_lsn_t
@@ -180,7 +180,7 @@ id|s
 )paren
 suffix:semicolon
 DECL|macro|XFS_TRANS_PUSH_AIL_RESTARTS
-mdefine_line|#define XFS_TRANS_PUSH_AIL_RESTARTS&t;10
+mdefine_line|#define&t;XFS_TRANS_PUSH_AIL_RESTARTS&t;10
 id|AIL_LOCK
 c_func
 (paren
@@ -236,7 +236,7 @@ c_func
 id|xfsstats.xs_push_ail
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * While the item we are looking at is below the given threshold&n;&t; * try to flush it out.&t; Make sure to limit the number of times&n;&t; * we allow xfs_trans_next_ail() to restart scanning from the&n;&t; * beginning of the list.  We&squot;d like not to stop until we&squot;ve at least&n;&t; * tried to push on everything in the AIL with an LSN less than&n;&t; * the given threshold. However, we may give up before that if&n;&t; * we realize that we&squot;ve been holding the AIL_LOCK for &squot;too long&squot;,&n;&t; * blocking interrupts. Currently, too long is &lt; 500us roughly.&n;&t; */
+multiline_comment|/*&n;&t; * While the item we are looking at is below the given threshold&n;&t; * try to flush it out.  Make sure to limit the number of times&n;&t; * we allow xfs_trans_next_ail() to restart scanning from the&n;&t; * beginning of the list.  We&squot;d like not to stop until we&squot;ve at least&n;&t; * tried to push on everything in the AIL with an LSN less than&n;&t; * the given threshold. However, we may give up before that if&n;&t; * we realize that we&squot;ve been holding the AIL_LOCK for &squot;too long&squot;,&n;&t; * blocking interrupts. Currently, too long is &lt; 500us roughly.&n;&t; */
 id|flush_log
 op_assign
 l_int|0
@@ -269,7 +269,7 @@ l_int|0
 )paren
 )paren
 (brace
-multiline_comment|/*&n;&t;&t; * If we can lock the item without sleeping, unlock&n;&t;&t; * the AIL lock and flush the item.  Then re-grab the&n;&t;&t; * AIL lock so we can look for the next item on the&n;&t;&t; * AIL.&t; Since we unlock the AIL while we flush the&n;&t;&t; * item, the next routine may start over again at the&n;&t;&t; * the beginning of the list if anything has changed.&n;&t;&t; * That is what the generation count is for.&n;&t;&t; *&n;&t;&t; * If we can&squot;t lock the item, either its holder will flush&n;&t;&t; * it or it is already being flushed or it is being relogged.&n;&t;&t; * In any of these case it is being taken care of and we&n;&t;&t; * can just skip to the next item in the list.&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * If we can lock the item without sleeping, unlock&n;&t;&t; * the AIL lock and flush the item.  Then re-grab the&n;&t;&t; * AIL lock so we can look for the next item on the&n;&t;&t; * AIL.  Since we unlock the AIL while we flush the&n;&t;&t; * item, the next routine may start over again at the&n;&t;&t; * the beginning of the list if anything has changed.&n;&t;&t; * That is what the generation count is for.&n;&t;&t; *&n;&t;&t; * If we can&squot;t lock the item, either its holder will flush&n;&t;&t; * it or it is already being flushed or it is being relogged.&n;&t;&t; * In any of these case it is being taken care of and we&n;&t;&t; * can just skip to the next item in the list.&n;&t;&t; */
 id|lock_result
 op_assign
 id|IOP_TRYLOCK
@@ -634,7 +634,7 @@ l_int|1
 suffix:semicolon
 )brace
 multiline_comment|/* xfs_trans_unlocked_item */
-multiline_comment|/*&n; * Update the position of the item in the AIL with the new&n; * lsn.&t; If it is not yet in the AIL, add it.  Otherwise, move&n; * it to its new position by removing it and re-adding it.&n; *&n; * Wakeup anyone with an lsn less than the item&squot;s lsn.&t;If the item&n; * we move in the AIL is the minimum one, update the tail lsn in the&n; * log manager.&n; *&n; * Increment the AIL&squot;s generation count to indicate that the tree&n; * has changed.&n; *&n; * This function must be called with the AIL lock held.&t; The lock&n; * is dropped before returning, so the caller must pass in the&n; * cookie returned by AIL_LOCK.&n; */
+multiline_comment|/*&n; * Update the position of the item in the AIL with the new&n; * lsn.  If it is not yet in the AIL, add it.  Otherwise, move&n; * it to its new position by removing it and re-adding it.&n; *&n; * Wakeup anyone with an lsn less than the item&squot;s lsn.  If the item&n; * we move in the AIL is the minimum one, update the tail lsn in the&n; * log manager.&n; *&n; * Increment the AIL&squot;s generation count to indicate that the tree&n; * has changed.&n; *&n; * This function must be called with the AIL lock held.  The lock&n; * is dropped before returning, so the caller must pass in the&n; * cookie returned by AIL_LOCK.&n; */
 r_void
 DECL|function|xfs_trans_update_ail
 id|xfs_trans_update_ail
@@ -784,7 +784,7 @@ suffix:semicolon
 )brace
 )brace
 multiline_comment|/* xfs_trans_update_ail */
-multiline_comment|/*&n; * Delete the given item from the AIL.&t;It must already be in&n; * the AIL.&n; *&n; * Wakeup anyone with an lsn less than item&squot;s lsn.    If the item&n; * we delete in the AIL is the minimum one, update the tail lsn in the&n; * log manager.&n; *&n; * Clear the IN_AIL flag from the item, reset its lsn to 0, and&n; * bump the AIL&squot;s generation count to indicate that the tree&n; * has changed.&n; *&n; * This function must be called with the AIL lock held.&t; The lock&n; * is dropped before returning, so the caller must pass in the&n; * cookie returned by AIL_LOCK.&n; */
+multiline_comment|/*&n; * Delete the given item from the AIL.  It must already be in&n; * the AIL.&n; *&n; * Wakeup anyone with an lsn less than item&squot;s lsn.    If the item&n; * we delete in the AIL is the minimum one, update the tail lsn in the&n; * log manager.&n; *&n; * Clear the IN_AIL flag from the item, reset its lsn to 0, and&n; * bump the AIL&squot;s generation count to indicate that the tree&n; * has changed.&n; *&n; * This function must be called with the AIL lock held.  The lock&n; * is dropped before returning, so the caller must pass in the&n; * cookie returned by AIL_LOCK.&n; */
 r_void
 DECL|function|xfs_trans_delete_ail
 id|xfs_trans_delete_ail
@@ -1313,7 +1313,7 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Delete the given item from the AIL.&t;Return a pointer to the item.&n; */
+multiline_comment|/*&n; * Delete the given item from the AIL.  Return a pointer to the item.&n; */
 multiline_comment|/*ARGSUSED*/
 id|STATIC
 id|xfs_log_item_t

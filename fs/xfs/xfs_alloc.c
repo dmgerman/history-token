@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * Copyright (c) 2000-2002 Silicon Graphics, Inc.  All Rights Reserved.&n; *&n; * This program is free software; you can redistribute it and/or modify it&n; * under the terms of version 2 of the GNU General Public License as&n; * published by the Free Software Foundation.&n; *&n; * This program is distributed in the hope that it would be useful, but&n; * WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.&n; *&n; * Further, this software is distributed without any warranty that it is&n; * free of the rightful claim of any third person regarding infringement&n; * or the like.&t; Any license provided herein, whether implied or&n; * otherwise, applies only to this software file.  Patent licenses, if&n; * any, provided herein do not apply to combinations of this program with&n; * other software, or any other product whatsoever.&n; *&n; * You should have received a copy of the GNU General Public License along&n; * with this program; if not, write the Free Software Foundation, Inc., 59&n; * Temple Place - Suite 330, Boston MA 02111-1307, USA.&n; *&n; * Contact information: Silicon Graphics, Inc., 1600 Amphitheatre Pkwy,&n; * Mountain View, CA  94043, or:&n; *&n; * http://www.sgi.com&n; *&n; * For further information regarding this notice, see:&n; *&n; * http://oss.sgi.com/projects/GenInfo/SGIGPLNoticeExplan/&n; */
+multiline_comment|/*&n; * Copyright (c) 2000-2002 Silicon Graphics, Inc.  All Rights Reserved.&n; *&n; * This program is free software; you can redistribute it and/or modify it&n; * under the terms of version 2 of the GNU General Public License as&n; * published by the Free Software Foundation.&n; *&n; * This program is distributed in the hope that it would be useful, but&n; * WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.&n; *&n; * Further, this software is distributed without any warranty that it is&n; * free of the rightful claim of any third person regarding infringement&n; * or the like.  Any license provided herein, whether implied or&n; * otherwise, applies only to this software file.  Patent licenses, if&n; * any, provided herein do not apply to combinations of this program with&n; * other software, or any other product whatsoever.&n; *&n; * You should have received a copy of the GNU General Public License along&n; * with this program; if not, write the Free Software Foundation, Inc., 59&n; * Temple Place - Suite 330, Boston MA 02111-1307, USA.&n; *&n; * Contact information: Silicon Graphics, Inc., 1600 Amphitheatre Pkwy,&n; * Mountain View, CA  94043, or:&n; *&n; * http://www.sgi.com&n; *&n; * For further information regarding this notice, see:&n; *&n; * http://oss.sgi.com/projects/GenInfo/SGIGPLNoticeExplan/&n; */
 multiline_comment|/*&n; * Free space allocation for XFS.&n; */
 macro_line|#include &lt;xfs.h&gt;
 macro_line|#if defined(DEBUG)
@@ -12,9 +12,9 @@ macro_line|#endif
 DECL|macro|XFS_ABSDIFF
 mdefine_line|#define XFS_ABSDIFF(a,b)&t;(((a) &lt;= (b)) ? ((b) - (a)) : ((a) - (b)))
 DECL|macro|XFSA_FIXUP_BNO_OK
-mdefine_line|#define XFSA_FIXUP_BNO_OK&t;1
+mdefine_line|#define&t;XFSA_FIXUP_BNO_OK&t;1
 DECL|macro|XFSA_FIXUP_CNT_OK
-mdefine_line|#define XFSA_FIXUP_CNT_OK&t;2
+mdefine_line|#define&t;XFSA_FIXUP_CNT_OK&t;2
 r_int
 id|xfs_alloc_search_busy
 c_func
@@ -35,30 +35,30 @@ id|len
 suffix:semicolon
 macro_line|#if defined(XFS_ALLOC_TRACE)
 DECL|macro|TRACE_ALLOC
-mdefine_line|#define TRACE_ALLOC(s,a)&t;&bslash;&n;&t;xfs_alloc_trace_alloc(fname, s, a, __LINE__)
+mdefine_line|#define&t;TRACE_ALLOC(s,a)&t;&bslash;&n;&t;xfs_alloc_trace_alloc(fname, s, a, __LINE__)
 DECL|macro|TRACE_FREE
-mdefine_line|#define TRACE_FREE(s,a,b,x,f)&t;&bslash;&n;&t;xfs_alloc_trace_free(fname, s, mp, a, b, x, f, __LINE__)
+mdefine_line|#define&t;TRACE_FREE(s,a,b,x,f)&t;&bslash;&n;&t;xfs_alloc_trace_free(fname, s, mp, a, b, x, f, __LINE__)
 DECL|macro|TRACE_MODAGF
-mdefine_line|#define TRACE_MODAGF(s,a,f)&t;&bslash;&n;&t;xfs_alloc_trace_modagf(fname, s, mp, a, f, __LINE__)
+mdefine_line|#define&t;TRACE_MODAGF(s,a,f)&t;&bslash;&n;&t;xfs_alloc_trace_modagf(fname, s, mp, a, f, __LINE__)
 DECL|macro|TRACE_BUSY
-mdefine_line|#define TRACE_BUSY(fname,s,ag,agb,l,sl,tp)&t;&bslash;&n;&t;xfs_alloc_trace_busy(fname, s, mp, ag, agb, l, sl, tp, XFS_ALLOC_KTRACE_BUSY, __LINE__)
+mdefine_line|#define&t;TRACE_BUSY(fname,s,ag,agb,l,sl,tp)&t;&bslash;&n;&t;xfs_alloc_trace_busy(fname, s, mp, ag, agb, l, sl, tp, XFS_ALLOC_KTRACE_BUSY, __LINE__)
 DECL|macro|TRACE_UNBUSY
-mdefine_line|#define TRACE_UNBUSY(fname,s,ag,sl,tp)&t;&bslash;&n;&t;xfs_alloc_trace_busy(fname, s, mp, ag, -1, -1, sl, tp, XFS_ALLOC_KTRACE_UNBUSY, __LINE__)
+mdefine_line|#define&t;TRACE_UNBUSY(fname,s,ag,sl,tp)&t;&bslash;&n;&t;xfs_alloc_trace_busy(fname, s, mp, ag, -1, -1, sl, tp, XFS_ALLOC_KTRACE_UNBUSY, __LINE__)
 DECL|macro|TRACE_BUSYSEARCH
-mdefine_line|#define TRACE_BUSYSEARCH(fname,s,ag,agb,l,sl,tp)&t;&bslash;&n;&t;xfs_alloc_trace_busy(fname, s, mp, ag, agb, l, sl, tp, XFS_ALLOC_KTRACE_BUSYSEARCH, __LINE__)
+mdefine_line|#define&t;TRACE_BUSYSEARCH(fname,s,ag,agb,l,sl,tp)&t;&bslash;&n;&t;xfs_alloc_trace_busy(fname, s, mp, ag, agb, l, sl, tp, XFS_ALLOC_KTRACE_BUSYSEARCH, __LINE__)
 macro_line|#else
 DECL|macro|TRACE_ALLOC
-mdefine_line|#define TRACE_ALLOC(s,a)
+mdefine_line|#define&t;TRACE_ALLOC(s,a)
 DECL|macro|TRACE_FREE
-mdefine_line|#define TRACE_FREE(s,a,b,x,f)
+mdefine_line|#define&t;TRACE_FREE(s,a,b,x,f)
 DECL|macro|TRACE_MODAGF
-mdefine_line|#define TRACE_MODAGF(s,a,f)
+mdefine_line|#define&t;TRACE_MODAGF(s,a,f)
 DECL|macro|TRACE_BUSY
-mdefine_line|#define TRACE_BUSY(s,a,ag,agb,l,sl,tp)
+mdefine_line|#define&t;TRACE_BUSY(s,a,ag,agb,l,sl,tp)
 DECL|macro|TRACE_UNBUSY
-mdefine_line|#define TRACE_UNBUSY(fname,s,ag,sl,tp)
+mdefine_line|#define&t;TRACE_UNBUSY(fname,s,ag,sl,tp)
 DECL|macro|TRACE_BUSYSEARCH
-mdefine_line|#define TRACE_BUSYSEARCH(fname,s,ag,agb,l,sl,tp)
+mdefine_line|#define&t;TRACE_BUSYSEARCH(fname,s,ag,agb,l,sl,tp)
 macro_line|#endif&t;/* XFS_ALLOC_TRACE */
 multiline_comment|/*&n; * Prototypes for per-ag allocation routines&n; */
 id|STATIC
@@ -7589,7 +7589,7 @@ comma
 id|isfl
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * Since blocks move to the free list without the coordination&n;&t; * used in xfs_bmap_finish, we can&squot;t allow block to be available&n;&t; * for reallocation and non-transaction writing (user data)&n;&t; * until we know that the transaction that moved it to the free&n;&t; * list is permanently on disk.&t; We track the blocks by declaring&n;&t; * these blocks as &quot;busy&quot;; the busy list is maintained on a per-ag&n;&t; * basis and each transaction records which entries should be removed&n;&t; * when the iclog commits to disk.  If a busy block is allocated,&n;&t; * the iclog is pushed up to the LSN that freed the block.&n;&t; */
+multiline_comment|/*&n;&t; * Since blocks move to the free list without the coordination&n;&t; * used in xfs_bmap_finish, we can&squot;t allow block to be available&n;&t; * for reallocation and non-transaction writing (user data)&n;&t; * until we know that the transaction that moved it to the free&n;&t; * list is permanently on disk.  We track the blocks by declaring&n;&t; * these blocks as &quot;busy&quot;; the busy list is maintained on a per-ag&n;&t; * basis and each transaction records which entries should be removed&n;&t; * when the iclog commits to disk.  If a busy block is allocated,&n;&t; * the iclog is pushed up to the LSN that freed the block.&n;&t; */
 id|xfs_alloc_mark_busy
 c_func
 (paren
@@ -8421,7 +8421,7 @@ id|targs
 r_return
 id|error
 suffix:semicolon
-multiline_comment|/*&n;&t;&t; * Stop if we run out.&t;Won&squot;t happen if callers are obeying&n;&t;&t; * the restrictions correctly.&t;Can happen for free calls&n;&t;&t; * on a completely full ag.&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * Stop if we run out.  Won&squot;t happen if callers are obeying&n;&t;&t; * the restrictions correctly.  Can happen for free calls&n;&t;&t; * on a completely full ag.&n;&t;&t; */
 r_if
 c_cond
 (paren
@@ -8747,7 +8747,7 @@ id|bnop
 op_assign
 id|bno
 suffix:semicolon
-multiline_comment|/*&n;&t; * As blocks are freed, they are added to the per-ag busy list&n;&t; * and remain there until the freeing transaction is committed to&n;&t; * disk.  Now that we have allocated blocks, this list must be&n;&t; * searched to see if a block is being reused.&t;If one is, then&n;&t; * the freeing transaction must be pushed to disk NOW by forcing&n;&t; * to disk all iclogs up that transaction&squot;s LSN.&n;&t; */
+multiline_comment|/*&n;&t; * As blocks are freed, they are added to the per-ag busy list&n;&t; * and remain there until the freeing transaction is committed to&n;&t; * disk.  Now that we have allocated blocks, this list must be&n;&t; * searched to see if a block is being reused.  If one is, then&n;&t; * the freeing transaction must be pushed to disk NOW by forcing&n;&t; * to disk all iclogs up that transaction&squot;s LSN.&n;&t; */
 id|xfs_alloc_search_busy
 c_func
 (paren
@@ -10837,7 +10837,7 @@ r_return
 id|error
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * AG Busy list management&n; * The busy list contains block ranges that have been freed but whose&n; * transacations have not yet hit disk.&t; If any block listed in a busy&n; * list is reused, the transaction that freed it must be forced to disk&n; * before continuing to use the block.&n; *&n; * xfs_alloc_mark_busy - add to the per-ag busy list&n; * xfs_alloc_clear_busy - remove an item from the per-ag busy list&n; */
+multiline_comment|/*&n; * AG Busy list management&n; * The busy list contains block ranges that have been freed but whose&n; * transacations have not yet hit disk.  If any block listed in a busy&n; * list is reused, the transaction that freed it must be forced to disk&n; * before continuing to use the block.&n; *&n; * xfs_alloc_mark_busy - add to the per-ag busy list&n; * xfs_alloc_clear_busy - remove an item from the per-ag busy list&n; */
 r_void
 DECL|function|xfs_alloc_mark_busy
 id|xfs_alloc_mark_busy

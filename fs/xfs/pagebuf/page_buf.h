@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * Copyright (c) 2000-2002 Silicon Graphics, Inc.  All Rights Reserved.&n; *&n; * This program is free software; you can redistribute it and/or modify it&n; * under the terms of version 2 of the GNU General Public License as&n; * published by the Free Software Foundation.&n; *&n; * This program is distributed in the hope that it would be useful, but&n; * WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.&n; *&n; * Further, this software is distributed without any warranty that it is&n; * free of the rightful claim of any third person regarding infringement&n; * or the like.&t; Any license provided herein, whether implied or&n; * otherwise, applies only to this software file.  Patent licenses, if&n; * any, provided herein do not apply to combinations of this program with&n; * other software, or any other product whatsoever.&n; *&n; * You should have received a copy of the GNU General Public License along&n; * with this program; if not, write the Free Software Foundation, Inc., 59&n; * Temple Place - Suite 330, Boston MA 02111-1307, USA.&n; *&n; * Contact information: Silicon Graphics, Inc., 1600 Amphitheatre Pkwy,&n; * Mountain View, CA  94043, or:&n; *&n; * http://www.sgi.com&n; *&n; * For further information regarding this notice, see:&n; *&n; * http://oss.sgi.com/projects/GenInfo/SGIGPLNoticeExplan/&n; */
+multiline_comment|/*&n; * Copyright (c) 2000-2002 Silicon Graphics, Inc.  All Rights Reserved.&n; *&n; * This program is free software; you can redistribute it and/or modify it&n; * under the terms of version 2 of the GNU General Public License as&n; * published by the Free Software Foundation.&n; *&n; * This program is distributed in the hope that it would be useful, but&n; * WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.&n; *&n; * Further, this software is distributed without any warranty that it is&n; * free of the rightful claim of any third person regarding infringement&n; * or the like.  Any license provided herein, whether implied or&n; * otherwise, applies only to this software file.  Patent licenses, if&n; * any, provided herein do not apply to combinations of this program with&n; * other software, or any other product whatsoever.&n; *&n; * You should have received a copy of the GNU General Public License along&n; * with this program; if not, write the Free Software Foundation, Inc., 59&n; * Temple Place - Suite 330, Boston MA 02111-1307, USA.&n; *&n; * Contact information: Silicon Graphics, Inc., 1600 Amphitheatre Pkwy,&n; * Mountain View, CA  94043, or:&n; *&n; * http://www.sgi.com&n; *&n; * For further information regarding this notice, see:&n; *&n; * http://oss.sgi.com/projects/GenInfo/SGIGPLNoticeExplan/&n; */
 multiline_comment|/*&n; * Written by Steve Lord, Jim Mostek, Russell Cattelan at SGI&n; */
 macro_line|#ifndef __PAGE_BUF_H__
 DECL|macro|__PAGE_BUF_H__
@@ -130,7 +130,7 @@ op_lshift
 l_int|2
 )paren
 comma
-multiline_comment|/* buffer mapped (pb_addr valid)&t;   */
+multiline_comment|/* buffer mapped (pb_addr valid)           */
 DECL|enumerator|PBF_PARTIAL
 id|PBF_PARTIAL
 op_assign
@@ -140,7 +140,7 @@ op_lshift
 l_int|3
 )paren
 comma
-multiline_comment|/* buffer partially read&t;&t;   */
+multiline_comment|/* buffer partially read                   */
 DECL|enumerator|PBF_ASYNC
 id|PBF_ASYNC
 op_assign
@@ -160,7 +160,7 @@ op_lshift
 l_int|5
 )paren
 comma
-multiline_comment|/* buffer not read at all&t;&t;   */
+multiline_comment|/* buffer not read at all                  */
 DECL|enumerator|PBF_DELWRI
 id|PBF_DELWRI
 op_assign
@@ -170,7 +170,7 @@ op_lshift
 l_int|6
 )paren
 comma
-multiline_comment|/* buffer has dirty pages&t;&t;   */
+multiline_comment|/* buffer has dirty pages                  */
 DECL|enumerator|PBF_FREED
 id|PBF_FREED
 op_assign
@@ -180,7 +180,7 @@ op_lshift
 l_int|7
 )paren
 comma
-multiline_comment|/* buffer has been freed and is invalid&t;   */
+multiline_comment|/* buffer has been freed and is invalid    */
 DECL|enumerator|PBF_SYNC
 id|PBF_SYNC
 op_assign
@@ -190,7 +190,7 @@ op_lshift
 l_int|8
 )paren
 comma
-multiline_comment|/* force updates to disk&t;&t;   */
+multiline_comment|/* force updates to disk                   */
 DECL|enumerator|PBF_MAPPABLE
 id|PBF_MAPPABLE
 op_assign
@@ -200,7 +200,7 @@ op_lshift
 l_int|9
 )paren
 comma
-multiline_comment|/* use directly-addressable pages&t;   */
+multiline_comment|/* use directly-addressable pages          */
 DECL|enumerator|PBF_STALE
 id|PBF_STALE
 op_assign
@@ -460,7 +460,7 @@ r_typedef
 id|page_buf_bmap_t
 id|pb_bmap_t
 suffix:semicolon
-multiline_comment|/*&n; *&t;page_buf_t:  Buffer structure for page cache-based buffers&n; *&n; * This buffer structure is used by the page cache buffer management routines&n; * to refer to an assembly of pages forming a logical buffer.  The actual&n; * I/O is performed with buffer_head or bio structures, as required by drivers,&n; * for drivers which do not understand this structure.&t;The buffer structure is&n; * used on temporary basis only, and discarded when released.&n; *&n; * The real data storage is recorded in the page cache.&t; Metadata is&n; * hashed to the inode for the block device on which the file system resides.&n; * File data is hashed to the inode for the file.  Pages which are only&n; * partially filled with data have bits set in their block_map entry&n; * to indicate which disk blocks in the page are not valid.&n; */
+multiline_comment|/*&n; *&t;page_buf_t:  Buffer structure for page cache-based buffers&n; *&n; * This buffer structure is used by the page cache buffer management routines&n; * to refer to an assembly of pages forming a logical buffer.  The actual&n; * I/O is performed with buffer_head or bio structures, as required by drivers,&n; * for drivers which do not understand this structure.  The buffer structure is&n; * used on temporary basis only, and discarded when released.&n; *&n; * The real data storage is recorded in the page cache.  Metadata is&n; * hashed to the inode for the block device on which the file system resides.&n; * File data is hashed to the inode for the file.  Pages which are only&n; * partially filled with data have bits set in their block_map entry&n; * to indicate which disk blocks in the page are not valid.&n; */
 r_struct
 id|page_buf_s
 suffix:semicolon
@@ -730,10 +730,10 @@ comma
 multiline_comment|/* inode for buffer&t;&t;*/
 id|loff_t
 comma
-multiline_comment|/* starting offset of range&t;*/
+multiline_comment|/* starting offset of range     */
 r_int
 comma
-multiline_comment|/* length of range&t;&t;*/
+multiline_comment|/* length of range              */
 id|page_buf_flags_t
 )paren
 suffix:semicolon
@@ -766,7 +766,7 @@ op_star
 id|pagebuf_get_empty
 c_func
 (paren
-multiline_comment|/* allocate pagebuf struct with */
+multiline_comment|/* allocate pagebuf struct with&t;*/
 multiline_comment|/*  no memory or disk address&t;*/
 r_struct
 id|pb_target
@@ -829,10 +829,10 @@ comma
 multiline_comment|/* target for buffer (or NULL)&t;*/
 id|loff_t
 comma
-multiline_comment|/* starting offset of range&t;*/
+multiline_comment|/* starting offset of range     */
 r_int
 comma
-multiline_comment|/* length of range&t;&t;*/
+multiline_comment|/* length of range              */
 id|page_buf_flags_t
 )paren
 suffix:semicolon
@@ -883,18 +883,18 @@ id|page_buf_t
 op_star
 )paren
 suffix:semicolon
-multiline_comment|/* buffer to check&t;&t;*/
+multiline_comment|/* buffer to check              */
 r_extern
 r_int
 id|pagebuf_lock
 c_func
 (paren
-multiline_comment|/* lock buffer&t;&t;&t;*/
+multiline_comment|/* lock buffer                  */
 id|page_buf_t
 op_star
 )paren
 suffix:semicolon
-multiline_comment|/* buffer to lock&t;&t;*/
+multiline_comment|/* buffer to lock               */
 r_extern
 r_void
 id|pagebuf_unlock
@@ -946,13 +946,13 @@ multiline_comment|/* use data/log helper thread.&t;*/
 r_int
 )paren
 suffix:semicolon
-multiline_comment|/* run completion locally, or in&n;&t;&t;&t;&t;&t; * a helper thread. &t;&t;*/
+multiline_comment|/* run completion locally, or in&n;&t;&t;&t;&t;&t; * a helper thread.&t;&t;*/
 r_extern
 r_void
 id|pagebuf_ioerror
 c_func
 (paren
-multiline_comment|/* mark buffer in error (or not) */
+multiline_comment|/* mark buffer in error&t;(or not) */
 id|page_buf_t
 op_star
 comma

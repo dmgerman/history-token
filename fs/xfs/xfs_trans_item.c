@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * Copyright (c) 2000-2002 Silicon Graphics, Inc.  All Rights Reserved.&n; *&n; * This program is free software; you can redistribute it and/or modify it&n; * under the terms of version 2 of the GNU General Public License as&n; * published by the Free Software Foundation.&n; *&n; * This program is distributed in the hope that it would be useful, but&n; * WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.&n; *&n; * Further, this software is distributed without any warranty that it is&n; * free of the rightful claim of any third person regarding infringement&n; * or the like.&t; Any license provided herein, whether implied or&n; * otherwise, applies only to this software file.  Patent licenses, if&n; * any, provided herein do not apply to combinations of this program with&n; * other software, or any other product whatsoever.&n; *&n; * You should have received a copy of the GNU General Public License along&n; * with this program; if not, write the Free Software Foundation, Inc., 59&n; * Temple Place - Suite 330, Boston MA 02111-1307, USA.&n; *&n; * Contact information: Silicon Graphics, Inc., 1600 Amphitheatre Pkwy,&n; * Mountain View, CA  94043, or:&n; *&n; * http://www.sgi.com&n; *&n; * For further information regarding this notice, see:&n; *&n; * http://oss.sgi.com/projects/GenInfo/SGIGPLNoticeExplan/&n; */
+multiline_comment|/*&n; * Copyright (c) 2000-2002 Silicon Graphics, Inc.  All Rights Reserved.&n; *&n; * This program is free software; you can redistribute it and/or modify it&n; * under the terms of version 2 of the GNU General Public License as&n; * published by the Free Software Foundation.&n; *&n; * This program is distributed in the hope that it would be useful, but&n; * WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.&n; *&n; * Further, this software is distributed without any warranty that it is&n; * free of the rightful claim of any third person regarding infringement&n; * or the like.  Any license provided herein, whether implied or&n; * otherwise, applies only to this software file.  Patent licenses, if&n; * any, provided herein do not apply to combinations of this program with&n; * other software, or any other product whatsoever.&n; *&n; * You should have received a copy of the GNU General Public License along&n; * with this program; if not, write the Free Software Foundation, Inc., 59&n; * Temple Place - Suite 330, Boston MA 02111-1307, USA.&n; *&n; * Contact information: Silicon Graphics, Inc., 1600 Amphitheatre Pkwy,&n; * Mountain View, CA  94043, or:&n; *&n; * http://www.sgi.com&n; *&n; * For further information regarding this notice, see:&n; *&n; * http://oss.sgi.com/projects/GenInfo/SGIGPLNoticeExplan/&n; */
 macro_line|#include &lt;xfs.h&gt;
 id|STATIC
 r_int
@@ -390,7 +390,7 @@ suffix:semicolon
 id|tp-&gt;t_items_free
 op_increment
 suffix:semicolon
-multiline_comment|/*&n;&t; * If there are no more used items in the chunk and this is not&n;&t; * the chunk embedded in the transaction structure, then free&n;&t; * the chunk. First pull it from the chunk list and then&n;&t; * free it back to the heap.  We didn&squot;t bother with a doubly&n;&t; * linked list here because the lists should be very short&n;&t; * and this is not a performance path.&t;It&squot;s better to save&n;&t; * the memory of the extra pointer.&n;&t; *&n;&t; * Also decrement the transaction structure&squot;s count of free items&n;&t; * by the number in a chunk since we are freeing an empty chunk.&n;&t; */
+multiline_comment|/*&n;&t; * If there are no more used items in the chunk and this is not&n;&t; * the chunk embedded in the transaction structure, then free&n;&t; * the chunk. First pull it from the chunk list and then&n;&t; * free it back to the heap.  We didn&squot;t bother with a doubly&n;&t; * linked list here because the lists should be very short&n;&t; * and this is not a performance path.  It&squot;s better to save&n;&t; * the memory of the extra pointer.&n;&t; *&n;&t; * Also decrement the transaction structure&squot;s count of free items&n;&t; * by the number in a chunk since we are freeing an empty chunk.&n;&t; */
 r_if
 c_cond
 (paren
@@ -470,7 +470,7 @@ id|XFS_LIC_NUM_SLOTS
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/*&n; * This is called to find the descriptor corresponding to the given&n; * log item.  It returns a pointer to the descriptor.&n; * The log item MUST have a corresponding descriptor in the given&n; * transaction.&t; This routine does not return NULL, it panics.&n; *&n; * The descriptor pointer is kept in the log item&squot;s li_desc field.&n; * Just return it.&n; */
+multiline_comment|/*&n; * This is called to find the descriptor corresponding to the given&n; * log item.  It returns a pointer to the descriptor.&n; * The log item MUST have a corresponding descriptor in the given&n; * transaction.  This routine does not return NULL, it panics.&n; *&n; * The descriptor pointer is kept in the log item&squot;s li_desc field.&n; * Just return it.&n; */
 multiline_comment|/*ARGSUSED*/
 id|xfs_log_item_desc_t
 op_star
@@ -1266,7 +1266,7 @@ id|freed
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * This is called to add the given busy item to the transaction&squot;s&n; * list of busy items.&t;It must find a free busy item descriptor&n; * or allocate a new one and add the item to that descriptor.&n; * The function returns a pointer to busy descriptor used to point&n; * to the new busy entry.  The log busy entry will now point to its new&n; * descriptor with its ???? field.&n; */
+multiline_comment|/*&n; * This is called to add the given busy item to the transaction&squot;s&n; * list of busy items.  It must find a free busy item descriptor&n; * or allocate a new one and add the item to that descriptor.&n; * The function returns a pointer to busy descriptor used to point&n; * to the new busy entry.  The log busy entry will now point to its new&n; * descriptor with its ???? field.&n; */
 id|xfs_log_busy_slot_t
 op_star
 DECL|function|xfs_trans_add_busy

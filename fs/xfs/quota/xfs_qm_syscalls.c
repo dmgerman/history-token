@@ -255,7 +255,7 @@ c_cond
 id|cmd
 )paren
 (brace
-multiline_comment|/* &n;&t;&t; * truncate quota files. quota must be off.&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * truncate quota files. quota must be off.&n;&t;&t; */
 r_case
 id|Q_XQUOTARM
 suffix:colon
@@ -471,7 +471,7 @@ id|B_FALSE
 suffix:semicolon
 r_break
 suffix:semicolon
-multiline_comment|/* &n;&t;&t; * Defaults to XFS_GETUQUOTA. &n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * Defaults to XFS_GETUQUOTA.&n;&t;&t; */
 r_case
 id|Q_XGETQUOTA
 suffix:colon
