@@ -1419,6 +1419,11 @@ op_amp
 id|qd6500_tune_drive
 )paren
 suffix:semicolon
+id|create_proc_ide_interfaces
+c_func
+(paren
+)paren
+suffix:semicolon
 r_return
 l_int|1
 suffix:semicolon
@@ -1559,6 +1564,11 @@ comma
 id|QD_CONTROL_PORT
 )paren
 suffix:semicolon
+id|create_proc_ide_interfaces
+c_func
+(paren
+)paren
+suffix:semicolon
 r_return
 l_int|1
 suffix:semicolon
@@ -1649,6 +1659,11 @@ c_func
 id|QD_DEF_CONTR
 comma
 id|QD_CONTROL_PORT
+)paren
+suffix:semicolon
+id|create_proc_ide_interfaces
+c_func
+(paren
 )paren
 suffix:semicolon
 r_return
