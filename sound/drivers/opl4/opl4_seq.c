@@ -21,12 +21,6 @@ c_func
 l_string|&quot;Dual BSD/GPL&quot;
 )paren
 suffix:semicolon
-id|MODULE_CLASSES
-c_func
-(paren
-l_string|&quot;{sound}&quot;
-)paren
-suffix:semicolon
 DECL|variable|volume_boost
 r_int
 id|volume_boost
@@ -49,14 +43,6 @@ c_func
 id|volume_boost
 comma
 l_string|&quot;Additional volume for OPL4 wavetable sounds.&quot;
-)paren
-suffix:semicolon
-id|MODULE_PARM_SYNTAX
-c_func
-(paren
-id|volume_boost
-comma
-l_string|&quot;default:8&quot;
 )paren
 suffix:semicolon
 DECL|function|snd_opl4_seq_use_inc

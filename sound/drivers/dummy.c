@@ -29,13 +29,7 @@ c_func
 l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
-id|MODULE_CLASSES
-c_func
-(paren
-l_string|&quot;{sound}&quot;
-)paren
-suffix:semicolon
-id|MODULE_DEVICES
+id|MODULE_SUPPORTED_DEVICE
 c_func
 (paren
 l_string|&quot;{{ALSA,Dummy soundcard}}&quot;
@@ -308,14 +302,6 @@ comma
 l_string|&quot;Index value for dummy soundcard.&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM_SYNTAX
-c_func
-(paren
-id|index
-comma
-id|SNDRV_INDEX_DESC
-)paren
-suffix:semicolon
 id|module_param_array
 c_func
 (paren
@@ -334,14 +320,6 @@ c_func
 id|id
 comma
 l_string|&quot;ID string for dummy soundcard.&quot;
-)paren
-suffix:semicolon
-id|MODULE_PARM_SYNTAX
-c_func
-(paren
-id|id
-comma
-id|SNDRV_ID_DESC
 )paren
 suffix:semicolon
 id|module_param_array
@@ -364,14 +342,6 @@ comma
 l_string|&quot;Enable this dummy soundcard.&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM_SYNTAX
-c_func
-(paren
-id|enable
-comma
-id|SNDRV_ENABLE_DESC
-)paren
-suffix:semicolon
 id|module_param_array
 c_func
 (paren
@@ -390,15 +360,6 @@ c_func
 id|pcm_devs
 comma
 l_string|&quot;PCM devices # (0-4) for dummy driver.&quot;
-)paren
-suffix:semicolon
-id|MODULE_PARM_SYNTAX
-c_func
-(paren
-id|pcm_devs
-comma
-id|SNDRV_ENABLED
-l_string|&quot;,allows:{{0,4}},default:1,dialog:list&quot;
 )paren
 suffix:semicolon
 id|module_param_array
@@ -421,18 +382,8 @@ comma
 l_string|&quot;PCM substreams # (1-16) for dummy driver.&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM_SYNTAX
-c_func
-(paren
-id|pcm_substreams
-comma
-id|SNDRV_ENABLED
-l_string|&quot;,allows:{{1,16}},default:8,dialog:list&quot;
-)paren
-suffix:semicolon
 singleline_comment|//module_param_array(midi_devs, int, boot_devs, 0444);
 singleline_comment|//MODULE_PARM_DESC(midi_devs, &quot;MIDI devices # (0-2) for dummy driver.&quot;);
-singleline_comment|//MODULE_PARM_SYNTAX(midi_devs, SNDRV_ENABLED &quot;,allows:{{0,2}},default:8,dialog:list&quot;);
 DECL|macro|MIXER_ADDR_MASTER
 mdefine_line|#define MIXER_ADDR_MASTER&t;0
 DECL|macro|MIXER_ADDR_LINE

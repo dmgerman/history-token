@@ -29,13 +29,7 @@ c_func
 l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
-id|MODULE_CLASSES
-c_func
-(paren
-l_string|&quot;{sound}&quot;
-)paren
-suffix:semicolon
-id|MODULE_DEVICES
+id|MODULE_SUPPORTED_DEVICE
 c_func
 (paren
 l_string|&quot;{{MOTU,MidiTimePiece AV multiport MIDI}}&quot;
@@ -105,14 +99,6 @@ comma
 l_string|&quot;Index value for MotuMTPAV MIDI.&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM_SYNTAX
-c_func
-(paren
-id|index
-comma
-id|SNDRV_INDEX_DESC
-)paren
-suffix:semicolon
 id|module_param
 c_func
 (paren
@@ -129,14 +115,6 @@ c_func
 id|id
 comma
 l_string|&quot;ID string for MotuMTPAV MIDI.&quot;
-)paren
-suffix:semicolon
-id|MODULE_PARM_SYNTAX
-c_func
-(paren
-id|id
-comma
-id|SNDRV_ID_DESC
 )paren
 suffix:semicolon
 id|module_param
@@ -157,15 +135,6 @@ comma
 l_string|&quot;Parallel port # for MotuMTPAV MIDI.&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM_SYNTAX
-c_func
-(paren
-id|port
-comma
-id|SNDRV_ENABLED
-l_string|&quot;,allows:{{0x378},{0x278}},dialog:list&quot;
-)paren
-suffix:semicolon
 id|module_param
 c_func
 (paren
@@ -184,15 +153,6 @@ comma
 l_string|&quot;Parallel IRQ # for MotuMTPAV MIDI.&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM_SYNTAX
-c_func
-(paren
-id|irq
-comma
-id|SNDRV_ENABLED
-l_string|&quot;,allows:{{7},{5}},dialog:list&quot;
-)paren
-suffix:semicolon
 id|module_param
 c_func
 (paren
@@ -209,15 +169,6 @@ c_func
 id|hwports
 comma
 l_string|&quot;Hardware ports # for MotuMTPAV MIDI.&quot;
-)paren
-suffix:semicolon
-id|MODULE_PARM_SYNTAX
-c_func
-(paren
-id|hwports
-comma
-id|SNDRV_ENABLED
-l_string|&quot;,allows:{{1,8}},dialog:list&quot;
 )paren
 suffix:semicolon
 multiline_comment|/*&n; *      defines&n; */

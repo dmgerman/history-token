@@ -21,12 +21,6 @@ c_func
 l_string|&quot;ALSA driver for OPL3 FM synth&quot;
 )paren
 suffix:semicolon
-id|MODULE_CLASSES
-c_func
-(paren
-l_string|&quot;{sound}&quot;
-)paren
-suffix:semicolon
 DECL|variable|use_internal_drums
 r_int
 id|use_internal_drums

@@ -31,13 +31,7 @@ c_func
 l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
-id|MODULE_CLASSES
-c_func
-(paren
-l_string|&quot;{sound}&quot;
-)paren
-suffix:semicolon
-id|MODULE_DEVICES
+id|MODULE_SUPPORTED_DEVICE
 c_func
 (paren
 l_string|&quot;{{Generic,USB Audio}}&quot;
@@ -169,14 +163,6 @@ comma
 l_string|&quot;Index value for the USB audio adapter.&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM_SYNTAX
-c_func
-(paren
-id|index
-comma
-id|SNDRV_INDEX_DESC
-)paren
-suffix:semicolon
 id|module_param_array
 c_func
 (paren
@@ -195,14 +181,6 @@ c_func
 id|id
 comma
 l_string|&quot;ID string for the USB audio adapter.&quot;
-)paren
-suffix:semicolon
-id|MODULE_PARM_SYNTAX
-c_func
-(paren
-id|id
-comma
-id|SNDRV_ID_DESC
 )paren
 suffix:semicolon
 id|module_param_array
@@ -225,14 +203,6 @@ comma
 l_string|&quot;Enable USB audio adapter.&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM_SYNTAX
-c_func
-(paren
-id|enable
-comma
-id|SNDRV_ENABLE_DESC
-)paren
-suffix:semicolon
 id|module_param_array
 c_func
 (paren
@@ -251,15 +221,6 @@ c_func
 id|vid
 comma
 l_string|&quot;Vendor ID for the USB audio device.&quot;
-)paren
-suffix:semicolon
-id|MODULE_PARM_SYNTAX
-c_func
-(paren
-id|vid
-comma
-id|SNDRV_ENABLED
-l_string|&quot;,allows:{{-1,0xffff}},base:16&quot;
 )paren
 suffix:semicolon
 id|module_param_array
@@ -282,15 +243,6 @@ comma
 l_string|&quot;Product ID for the USB audio device.&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM_SYNTAX
-c_func
-(paren
-id|pid
-comma
-id|SNDRV_ENABLED
-l_string|&quot;,allows:{{-1,0xffff}},base:16&quot;
-)paren
-suffix:semicolon
 id|module_param
 c_func
 (paren
@@ -309,15 +261,6 @@ comma
 l_string|&quot;Max. number of packets per URB.&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM_SYNTAX
-c_func
-(paren
-id|nrpacks
-comma
-id|SNDRV_ENABLED
-l_string|&quot;,allows:{{1,10}}&quot;
-)paren
-suffix:semicolon
 id|module_param
 c_func
 (paren
@@ -334,14 +277,6 @@ c_func
 id|async_unlink
 comma
 l_string|&quot;Use async unlink mode.&quot;
-)paren
-suffix:semicolon
-id|MODULE_PARM_SYNTAX
-c_func
-(paren
-id|async_unlink
-comma
-id|SNDRV_BOOLEAN_TRUE_DESC
 )paren
 suffix:semicolon
 multiline_comment|/*&n; * debug the h/w constraints&n; */
