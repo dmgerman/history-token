@@ -1969,6 +1969,9 @@ DECL|macro|PCIBR_TYPE0_CFG_DEV
 mdefine_line|#define PCIBR_TYPE0_CFG_DEV(ps, s) PCIBRIDGE_TYPE0_CFG_DEV((ps)-&gt;bs_busnum, s+1)
 DECL|macro|PCIBR_BUS_TYPE0_CFG_DEVF
 mdefine_line|#define PCIBR_BUS_TYPE0_CFG_DEVF(ps,s,f) PCIBRIDGE_TYPE0_CFG_DEVF((ps)-&gt;bs_busnum,(s+1),f)
+multiline_comment|/* NOTE: &squot;s&squot; is the internal device number, not the external slot number */
+DECL|macro|PCIBR_BUS_TYPE0_CFG_DEV
+mdefine_line|#define PCIBR_BUS_TYPE0_CFG_DEV(ps, s) &bslash;&n;&t;&t;PCIBRIDGE_TYPE0_CFG_DEV((ps)-&gt;bs_busnum, s+1)
 macro_line|#endif&t;&t;&t;&t;/* LANGUAGE_C */
 DECL|macro|BRIDGE_EXTERNAL_FLASH
 mdefine_line|#define BRIDGE_EXTERNAL_FLASH&t;0x00C00000&t;/* External Flash PROMS */
@@ -1997,10 +2000,6 @@ mdefine_line|#define XBRIDGE_REV_A&t;&t;&t;0x1
 DECL|macro|XBRIDGE_REV_B
 mdefine_line|#define XBRIDGE_REV_B&t;&t;&t;0x2
 multiline_comment|/* macros to determine bridge type. &squot;wid&squot; == widget identification */
-DECL|macro|IS_BRIDGE
-mdefine_line|#define IS_BRIDGE(wid) (XWIDGET_PART_NUM(wid) == BRIDGE_WIDGET_PART_NUM &amp;&amp; &bslash;&n;&t;&t;&t;XWIDGET_MFG_NUM(wid) == BRIDGE_WIDGET_MFGR_NUM)
-DECL|macro|IS_XBRIDGE
-mdefine_line|#define IS_XBRIDGE(wid) (XWIDGET_PART_NUM(wid) == XBRIDGE_WIDGET_PART_NUM &amp;&amp; &bslash;&n;&t;&t;&t;XWIDGET_MFG_NUM(wid) == XBRIDGE_WIDGET_MFGR_NUM)
 DECL|macro|IS_PIC_BUS0
 mdefine_line|#define IS_PIC_BUS0(wid) (XWIDGET_PART_NUM(wid) == PIC_WIDGET_PART_NUM_BUS0 &amp;&amp; &bslash;&n;&t;&t;&t;XWIDGET_MFG_NUM(wid) == PIC_WIDGET_MFGR_NUM)
 DECL|macro|IS_PIC_BUS1

@@ -2020,15 +2020,6 @@ r_void
 op_star
 id|bridge
 suffix:semicolon
-r_extern
-r_uint64
-id|pcireg_control_get
-c_func
-(paren
-r_void
-op_star
-)paren
-suffix:semicolon
 id|bridge
 op_assign
 (paren
@@ -2049,7 +2040,7 @@ l_int|0
 suffix:semicolon
 id|npdap-&gt;basew_id
 op_assign
-id|pcireg_control_get
+id|pcireg_bridge_control_get
 c_func
 (paren
 id|bridge
