@@ -1269,7 +1269,9 @@ id|init
 comma
 l_int|NULL
 comma
-id|CLONE_KERNEL
+id|CLONE_FS
+op_or
+id|CLONE_SIGHAND
 )paren
 suffix:semicolon
 id|unlock_kernel
