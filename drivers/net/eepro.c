@@ -1699,6 +1699,7 @@ multiline_comment|/* prints boot-time info */
 DECL|function|eepro_print_info
 r_static
 r_void
+id|__init
 id|eepro_print_info
 (paren
 r_struct
