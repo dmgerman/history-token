@@ -968,34 +968,6 @@ id|chip-&gt;card
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * snd_vxpocket_detach_all - detach all instances linked to the hw&n; */
-DECL|function|snd_vxpocket_detach_all
-r_void
-id|snd_vxpocket_detach_all
-c_func
-(paren
-r_struct
-id|snd_vxp_entry
-op_star
-id|hw
-)paren
-(brace
-r_while
-c_loop
-(paren
-id|hw-&gt;dev_list
-op_ne
-l_int|NULL
-)paren
-id|snd_vxpocket_detach
-c_func
-(paren
-id|hw
-comma
-id|hw-&gt;dev_list
-)paren
-suffix:semicolon
-)brace
 multiline_comment|/*&n; * configuration callback&n; */
 DECL|macro|CS_CHECK
 mdefine_line|#define CS_CHECK(fn, ret) &bslash;&n;do { last_fn = (fn); if ((last_ret = (ret)) != 0) goto cs_failed; } while (0)
@@ -1584,13 +1556,6 @@ id|EXPORT_SYMBOL
 c_func
 (paren
 id|snd_vxpocket_detach
-)paren
-suffix:semicolon
-DECL|variable|snd_vxpocket_detach_all
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|snd_vxpocket_detach_all
 )paren
 suffix:semicolon
 eof

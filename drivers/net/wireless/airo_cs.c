@@ -1923,35 +1923,14 @@ op_amp
 id|airo_driver
 )paren
 suffix:semicolon
-multiline_comment|/* XXX: this really needs to move into generic code.. */
-r_while
-c_loop
+id|BUG_ON
+c_func
 (paren
 id|dev_list
 op_ne
 l_int|NULL
 )paren
-(brace
-r_if
-c_cond
-(paren
-id|dev_list-&gt;state
-op_amp
-id|DEV_CONFIG
-)paren
-id|airo_release
-c_func
-(paren
-id|dev_list
-)paren
 suffix:semicolon
-id|airo_detach
-c_func
-(paren
-id|dev_list
-)paren
-suffix:semicolon
-)brace
 )brace
 multiline_comment|/*&n;    This program is free software; you can redistribute it and/or&n;    modify it under the terms of the GNU General Public License&n;    as published by the Free Software Foundation; either version 2&n;    of the License, or (at your option) any later version.&n;&n;    This program is distributed in the hope that it will be useful,&n;    but WITHOUT ANY WARRANTY; without even the implied warranty of&n;    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n;    GNU General Public License for more details.&n;&n;    In addition:&n;&n;    Redistribution and use in source and binary forms, with or without&n;    modification, are permitted provided that the following conditions&n;    are met:&n;&n;    1. Redistributions of source code must retain the above copyright&n;       notice, this list of conditions and the following disclaimer.&n;    2. Redistributions in binary form must reproduce the above copyright&n;       notice, this list of conditions and the following disclaimer in the&n;       documentation and/or other materials provided with the distribution.&n;    3. The name of the author may not be used to endorse or promote&n;       products derived from this software without specific prior written&n;       permission.&n;&n;    THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS&squot;&squot; AND ANY EXPRESS OR&n;    IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED&n;    WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE&n;    ARE DISCLAIMED. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT,&n;    INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES&n;    (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR&n;    SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)&n;    HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,&n;    STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING&n;    IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE&n;    POSSIBILITY OF SUCH DAMAGE.    &n;*/
 DECL|variable|airo_cs_init

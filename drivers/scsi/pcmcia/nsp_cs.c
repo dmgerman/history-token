@@ -8734,6 +8734,14 @@ op_amp
 id|nsp_driver
 )paren
 suffix:semicolon
+id|BUG_ON
+c_func
+(paren
+id|dev_list
+op_ne
+l_int|NULL
+)paren
+suffix:semicolon
 macro_line|#else
 id|unregister_pcmcia_driver
 c_func
@@ -8742,7 +8750,6 @@ op_amp
 id|dev_info
 )paren
 suffix:semicolon
-macro_line|#endif
 multiline_comment|/* XXX: this really needs to move into generic code.. */
 r_while
 c_loop
@@ -8774,6 +8781,7 @@ id|dev_list
 )paren
 suffix:semicolon
 )brace
+macro_line|#endif
 )brace
 id|module_init
 c_func

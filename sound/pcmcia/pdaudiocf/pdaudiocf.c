@@ -1058,30 +1058,6 @@ id|chip-&gt;card
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * snd_pdacf_detach_all - detach all instances linked to the hw&n; */
-DECL|function|snd_pdacf_detach_all
-r_static
-r_void
-id|snd_pdacf_detach_all
-c_func
-(paren
-r_void
-)paren
-(brace
-r_while
-c_loop
-(paren
-id|dev_list
-op_ne
-l_int|NULL
-)paren
-id|snd_pdacf_detach
-c_func
-(paren
-id|dev_list
-)paren
-suffix:semicolon
-)brace
 multiline_comment|/*&n; * configuration callback&n; */
 DECL|macro|CS_CHECK
 mdefine_line|#define CS_CHECK(fn, ret) &bslash;&n;do { last_fn = (fn); if ((last_ret = (ret)) != 0) goto cs_failed; } while (0)
@@ -1671,9 +1647,12 @@ op_amp
 id|pdacf_cs_driver
 )paren
 suffix:semicolon
-id|snd_pdacf_detach_all
+id|BUG_ON
 c_func
 (paren
+id|dev_list
+op_ne
+l_int|NULL
 )paren
 suffix:semicolon
 )brace

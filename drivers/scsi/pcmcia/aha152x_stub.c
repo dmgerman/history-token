@@ -1396,18 +1396,12 @@ op_amp
 id|aha152x_cs_driver
 )paren
 suffix:semicolon
-multiline_comment|/* XXX: this really needs to move into generic code.. */
-r_while
-c_loop
+id|BUG_ON
+c_func
 (paren
 id|dev_list
 op_ne
 l_int|NULL
-)paren
-id|aha152x_detach
-c_func
-(paren
-id|dev_list
 )paren
 suffix:semicolon
 )brace

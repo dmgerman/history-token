@@ -6339,18 +6339,12 @@ op_amp
 id|netwave_driver
 )paren
 suffix:semicolon
-r_if
-c_cond
+id|BUG_ON
+c_func
 (paren
 id|dev_list
 op_ne
 l_int|NULL
-)paren
-multiline_comment|/* Critical situation */
-id|printk
-c_func
-(paren
-l_string|&quot;netwave_cs: devices remaining when removing module&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
