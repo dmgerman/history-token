@@ -50,9 +50,6 @@ mdefine_line|#define NFS_SUPER_MAGIC&t;&t;&t;0x6969
 multiline_comment|/*&n; * These are the default flags for swap requests&n; */
 DECL|macro|NFS_RPC_SWAPFLAGS
 mdefine_line|#define NFS_RPC_SWAPFLAGS&t;&t;(RPC_TASK_SWAPPER|RPC_TASK_ROOTCREDS)
-multiline_comment|/* Flags in the RPC client structure */
-DECL|macro|NFS_CLNTF_BUFSIZE
-mdefine_line|#define NFS_CLNTF_BUFSIZE&t;0x0001&t;/* readdir buffer in longwords */
 DECL|macro|NFS_RW_SYNC
 mdefine_line|#define NFS_RW_SYNC&t;&t;0x0001&t;/* O_SYNC handling */
 DECL|macro|NFS_RW_SWAP

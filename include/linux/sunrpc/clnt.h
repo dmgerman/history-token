@@ -138,12 +138,6 @@ suffix:colon
 l_int|1
 suffix:semicolon
 multiline_comment|/* abandoned */
-DECL|member|cl_flags
-r_int
-r_int
-id|cl_flags
-suffix:semicolon
-multiline_comment|/* misc client flags */
 DECL|member|cl_hardmax
 r_int
 r_int

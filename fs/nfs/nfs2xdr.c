@@ -1609,20 +1609,6 @@ id|count
 op_assign
 id|args-&gt;count
 suffix:semicolon
-multiline_comment|/*&n;&t; * Some servers (e.g. HP OS 9.5) seem to expect the buffer size&n;&t; * to be in longwords ... check whether to convert the size.&n;&t; */
-r_if
-c_cond
-(paren
-id|task-&gt;tk_client-&gt;cl_flags
-op_amp
-id|NFS_CLNTF_BUFSIZE
-)paren
-id|count
-op_assign
-id|count
-op_rshift
-l_int|2
-suffix:semicolon
 id|p
 op_assign
 id|xdr_encode_fhandle
