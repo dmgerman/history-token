@@ -596,6 +596,12 @@ c_func
 id|port-&gt;interrupt_in_buffer
 )paren
 suffix:semicolon
+id|kfree
+c_func
+(paren
+id|port-&gt;interrupt_out_buffer
+)paren
+suffix:semicolon
 )brace
 )brace
 id|usb_put_dev
@@ -2194,6 +2200,12 @@ id|kfree
 c_func
 (paren
 id|port-&gt;interrupt_in_buffer
+)paren
+suffix:semicolon
+id|kfree
+c_func
+(paren
+id|port-&gt;interrupt_out_buffer
 )paren
 suffix:semicolon
 id|kfree
