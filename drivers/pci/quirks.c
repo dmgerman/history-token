@@ -3744,7 +3744,8 @@ op_star
 id|pdev
 )paren
 (brace
-r_char
+r_void
+id|__iomem
 op_star
 id|base
 suffix:semicolon
@@ -3919,7 +3920,8 @@ id|wait_time
 comma
 id|delta
 suffix:semicolon
-r_char
+r_void
+id|__iomem
 op_star
 id|base
 comma
