@@ -251,18 +251,6 @@ c_func
 id|id
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|drive-&gt;forced_lun
-)paren
-id|drive-&gt;last_lun
-op_assign
-id|id-&gt;last_lun
-op_amp
-l_int|0x7
-suffix:semicolon
 macro_line|#if defined (CONFIG_SCSI_EATA_DMA) || defined (CONFIG_SCSI_EATA_PIO) || defined (CONFIG_SCSI_EATA)
 multiline_comment|/*&n;&t; * EATA SCSI controllers do a hardware ATA emulation:&n;&t; * Ignore them if there is a driver for them available.&n;&t; */
 r_if

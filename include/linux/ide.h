@@ -1818,16 +1818,6 @@ id|u64
 id|capacity64
 suffix:semicolon
 multiline_comment|/* total number of sectors */
-DECL|member|last_lun
-r_int
-id|last_lun
-suffix:semicolon
-multiline_comment|/* last logical unit */
-DECL|member|forced_lun
-r_int
-id|forced_lun
-suffix:semicolon
-multiline_comment|/* if hdxlun was given at boot */
 DECL|member|lun
 r_int
 id|lun
