@@ -1564,7 +1564,7 @@ id|fl
 op_logical_or
 id|rt-&gt;u.dst.dev-&gt;type
 op_ne
-id|ARPHRD_IPGRE
+id|ARPHRD_TUNNEL
 )paren
 (brace
 id|ip_rt_put
@@ -1610,7 +1610,7 @@ id|skb2-&gt;dev
 op_logical_or
 id|skb2-&gt;dst-&gt;dev-&gt;type
 op_ne
-id|ARPHRD_IPGRE
+id|ARPHRD_TUNNEL
 )paren
 (brace
 id|kfree_skb
