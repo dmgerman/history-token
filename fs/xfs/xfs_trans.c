@@ -2719,15 +2719,6 @@ id|EIO
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t; * Once all the items of the transaction have been copied&n;&t; * to the in core log we can release them.  Do that here.&n;&t; * This will free descriptors pointing to items which were&n;&t; * not logged since there is nothing more to do with them.&n;&t; * For items which were logged, we will keep pointers to them&n;&t; * so they can be unpinned after the transaction commits to disk.&n;&t; * This will also stamp each modified meta-data item with&n;&t; * the commit lsn of this transaction for dependency tracking&n;&t; * purposes.&n;&t; */
-id|xfs_trans_unlock_items
-c_func
-(paren
-id|tp
-comma
-id|commit_lsn
-)paren
-suffix:semicolon
 multiline_comment|/*&n;&t; * Once the transaction has committed, unused&n;&t; * reservations need to be released and changes to&n;&t; * the superblock need to be reflected in the in-core&n;&t; * version.  Do that now.&n;&t; */
 id|xfs_trans_unreserve_and_mod_sb
 c_func
@@ -2817,7 +2808,7 @@ id|tp-&gt;t_logcb.cb_arg
 op_assign
 id|tp
 suffix:semicolon
-multiline_comment|/* We need to pass the iclog buffer which was used for the&n;&t; * transaction commit record into this function, attach&n;&t; * the callback to it, and then release it. This will guarantee&n;&t; * that we do callbacks on the transaction in the correct order.&n;&t; */
+multiline_comment|/* We need to pass the iclog buffer which was used for the&n;&t; * transaction commit record into this function, and attach&n;&t; * the callback to it. The callback must be attached before&n;&t; * the items are unlocked to avoid racing with other threads&n;&t; * waiting for an item to unlock.&n;&t; */
 id|error
 op_assign
 id|xfs_log_notify
@@ -2834,6 +2825,26 @@ id|tp-&gt;t_logcb
 )paren
 suffix:semicolon
 macro_line|#endif
+multiline_comment|/*&n;&t; * Once all the items of the transaction have been copied&n;&t; * to the in core log and the callback is attached, the&n;&t; * items can be unlocked.&n;&t; *&n;&t; * This will free descriptors pointing to items which were&n;&t; * not logged since there is nothing more to do with them.&n;&t; * For items which were logged, we will keep pointers to them&n;&t; * so they can be unpinned after the transaction commits to disk.&n;&t; * This will also stamp each modified meta-data item with&n;&t; * the commit lsn of this transaction for dependency tracking&n;&t; * purposes.&n;&t; */
+id|xfs_trans_unlock_items
+c_func
+(paren
+id|tp
+comma
+id|commit_lsn
+)paren
+suffix:semicolon
+multiline_comment|/*&n;&t; * Now that the xfs_trans_committed callback has been attached,&n;&t; * and the items are released we can finally allow the iclog to&n;&t; * go to disk.&n;&t; */
+id|error
+op_assign
+id|xfs_log_release_iclog
+c_func
+(paren
+id|mp
+comma
+id|commit_iclog
+)paren
+suffix:semicolon
 multiline_comment|/*&n;&t; * If the transaction needs to be synchronous, then force the&n;&t; * log out now and wait for it.&n;&t; */
 r_if
 c_cond

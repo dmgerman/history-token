@@ -12,8 +12,6 @@ id|lock_t
 suffix:semicolon
 DECL|macro|spinlock_init
 mdefine_line|#define spinlock_init(lock, name)&t;spin_lock_init(lock)
-DECL|macro|init_spinlock
-mdefine_line|#define init_spinlock(lock, name, ll)&t;spin_lock_init(lock)
 DECL|macro|spinlock_destroy
 mdefine_line|#define spinlock_destroy(lock)
 DECL|function|mutex_spinlock
