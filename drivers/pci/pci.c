@@ -6295,7 +6295,8 @@ id|pci_pm_save_state
 c_func
 (paren
 (paren
-id|u32
+r_int
+r_int
 )paren
 id|data
 )paren
@@ -6311,7 +6312,8 @@ id|pci_pm_suspend
 c_func
 (paren
 (paren
-id|u32
+r_int
+r_int
 )paren
 id|data
 )paren
