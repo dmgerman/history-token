@@ -19,8 +19,11 @@ macro_line|#include &lt;scsi/scsicam.h&gt;
 macro_line|#include &lt;asm/dma.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
-macro_line|#include &quot;scsi.h&quot;
+macro_line|#include &lt;scsi/scsi.h&gt;
+macro_line|#include &lt;scsi/scsi_cmnd.h&gt;
+macro_line|#include &lt;scsi/scsi_device.h&gt;
 macro_line|#include &lt;scsi/scsi_host.h&gt;
+macro_line|#include &lt;scsi/scsi_tcq.h&gt;
 macro_line|#include &quot;BusLogic.h&quot;
 macro_line|#include &quot;FlashPoint.c&quot;
 macro_line|#ifndef FAILURE
@@ -802,10 +805,17 @@ id|HostAdapter
 op_assign
 id|CCB-&gt;HostAdapter
 suffix:semicolon
+r_struct
+id|scsi_cmnd
+op_star
+id|cmd
+op_assign
+id|CCB-&gt;Command
+suffix:semicolon
 r_if
 c_cond
 (paren
-id|CCB-&gt;Command-&gt;use_sg
+id|cmd-&gt;use_sg
 op_ne
 l_int|0
 )paren
@@ -820,15 +830,11 @@ r_struct
 id|scatterlist
 op_star
 )paren
-id|CCB-&gt;Command-&gt;request_buffer
+id|cmd-&gt;request_buffer
 comma
-id|CCB-&gt;Command-&gt;use_sg
+id|cmd-&gt;use_sg
 comma
-id|scsi_to_pci_dma_dir
-c_func
-(paren
-id|CCB-&gt;Command-&gt;sc_data_direction
-)paren
+id|cmd-&gt;sc_data_direction
 )paren
 suffix:semicolon
 )brace
@@ -836,7 +842,7 @@ r_else
 r_if
 c_cond
 (paren
-id|CCB-&gt;Command-&gt;request_bufflen
+id|cmd-&gt;request_bufflen
 op_ne
 l_int|0
 )paren
@@ -850,11 +856,7 @@ id|CCB-&gt;DataPointer
 comma
 id|CCB-&gt;DataLength
 comma
-id|scsi_to_pci_dma_dir
-c_func
-(paren
-id|CCB-&gt;Command-&gt;sc_data_direction
-)paren
+id|cmd-&gt;sc_data_direction
 )paren
 suffix:semicolon
 )brace
@@ -10841,7 +10843,8 @@ r_int
 id|BusLogic_host_reset
 c_func
 (paren
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 id|SCpnt
 )paren
@@ -11124,11 +11127,7 @@ id|BufferPointer
 comma
 id|BufferLength
 comma
-id|scsi_to_pci_dma_dir
-c_func
-(paren
 id|Command-&gt;sc_data_direction
-)paren
 )paren
 suffix:semicolon
 )brace
@@ -11169,11 +11168,7 @@ id|ScatterList
 comma
 id|SegmentCount
 comma
-id|scsi_to_pci_dma_dir
-c_func
-(paren
 id|Command-&gt;sc_data_direction
-)paren
 )paren
 suffix:semicolon
 id|CCB-&gt;Opcode
