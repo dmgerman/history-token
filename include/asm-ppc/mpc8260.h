@@ -23,6 +23,9 @@ macro_line|#endif
 macro_line|#ifdef CONFIG_TQM8260
 macro_line|#include &lt;platforms/tqm8260.h&gt;
 macro_line|#endif
+macro_line|#ifdef CONFIG_PQ2ADS
+macro_line|#include &lt;platforms/pq2ads.h&gt;
+macro_line|#endif
 multiline_comment|/* Make sure the memory translation stuff is there if PCI not used.&n; */
 macro_line|#ifndef _IO_BASE
 DECL|macro|_IO_BASE

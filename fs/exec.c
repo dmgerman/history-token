@@ -1765,6 +1765,10 @@ id|mpnt-&gt;vm_flags
 op_assign
 id|VM_STACK_FLAGS
 suffix:semicolon
+id|mpnt-&gt;vm_flags
+op_or_assign
+id|mm-&gt;def_flags
+suffix:semicolon
 id|mpnt-&gt;vm_page_prot
 op_assign
 id|protection_map

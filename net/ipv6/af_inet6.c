@@ -847,7 +847,7 @@ op_ne
 l_int|0
 )paren
 (brace
-id|inet_sock_release
+id|sk_common_release
 c_func
 (paren
 id|sk
@@ -2029,13 +2029,13 @@ multiline_comment|/* ok&t;&t;*/
 dot
 id|setsockopt
 op_assign
-id|inet_setsockopt
+id|sock_common_setsockopt
 comma
 multiline_comment|/* ok&t;&t;*/
 dot
 id|getsockopt
 op_assign
-id|inet_getsockopt
+id|sock_common_getsockopt
 comma
 multiline_comment|/* ok&t;&t;*/
 dot
@@ -2047,7 +2047,7 @@ multiline_comment|/* ok&t;&t;*/
 dot
 id|recvmsg
 op_assign
-id|inet_recvmsg
+id|sock_common_recvmsg
 comma
 multiline_comment|/* ok&t;&t;*/
 dot
@@ -2137,13 +2137,13 @@ multiline_comment|/* ok&t;&t;*/
 dot
 id|setsockopt
 op_assign
-id|inet_setsockopt
+id|sock_common_setsockopt
 comma
 multiline_comment|/* ok&t;&t;*/
 dot
 id|getsockopt
 op_assign
-id|inet_getsockopt
+id|sock_common_getsockopt
 comma
 multiline_comment|/* ok&t;&t;*/
 dot
@@ -2155,7 +2155,7 @@ multiline_comment|/* ok&t;&t;*/
 dot
 id|recvmsg
 op_assign
-id|inet_recvmsg
+id|sock_common_recvmsg
 comma
 multiline_comment|/* ok&t;&t;*/
 dot

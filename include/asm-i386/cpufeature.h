@@ -71,6 +71,8 @@ DECL|macro|X86_FEATURE_SYSCALL
 mdefine_line|#define X86_FEATURE_SYSCALL&t;(1*32+11) /* SYSCALL/SYSRET */
 DECL|macro|X86_FEATURE_MP
 mdefine_line|#define X86_FEATURE_MP&t;&t;(1*32+19) /* MP Capable. */
+DECL|macro|X86_FEATURE_NX
+mdefine_line|#define X86_FEATURE_NX&t;&t;(1*32+20) /* Execute Disable */
 DECL|macro|X86_FEATURE_MMXEXT
 mdefine_line|#define X86_FEATURE_MMXEXT&t;(1*32+22) /* AMD MMX extensions */
 DECL|macro|X86_FEATURE_LM
@@ -155,6 +157,8 @@ DECL|macro|cpu_has_ht
 mdefine_line|#define cpu_has_ht&t;&t;boot_cpu_has(X86_FEATURE_HT)
 DECL|macro|cpu_has_mp
 mdefine_line|#define cpu_has_mp&t;&t;boot_cpu_has(X86_FEATURE_MP)
+DECL|macro|cpu_has_nx
+mdefine_line|#define cpu_has_nx&t;&t;boot_cpu_has(X86_FEATURE_NX)
 DECL|macro|cpu_has_k6_mtrr
 mdefine_line|#define cpu_has_k6_mtrr&t;&t;boot_cpu_has(X86_FEATURE_K6_MTRR)
 DECL|macro|cpu_has_cyrix_arr

@@ -14,12 +14,12 @@ macro_line|#include &lt;linux/netdevice.h&gt;
 macro_line|#include &lt;linux/etherdevice.h&gt;
 macro_line|#include &lt;linux/skbuff.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
-macro_line|#include &lt;asm/immap_8260.h&gt;
+macro_line|#include &lt;asm/immap_cpm2.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
 macro_line|#include &lt;asm/mpc8260.h&gt;
 macro_line|#include &lt;asm/bitops.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
-macro_line|#include &lt;asm/cpm_8260.h&gt;
+macro_line|#include &lt;asm/cpm2.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
 multiline_comment|/*&n; *&t;&t;&t;&t;Theory of Operation&n; *&n; * The MPC8260 CPM performs the Ethernet processing on an SCC.  It can use&n; * an aribtrary number of buffers on byte boundaries, but must have at&n; * least two receive buffers to prevent constant overrun conditions.&n; *&n; * The buffer descriptors are allocated from the CPM dual port memory&n; * with the data buffers allocated from host memory, just like all other&n; * serial communication protocols.  The host memory buffers are allocated&n; * from the free page pool, and then divided into smaller receive and&n; * transmit buffers.  The size of the buffers should be a power of two,&n; * since that nicely divides the page.  This creates a ring buffer&n; * structure similar to the LANCE and other controllers.&n; *&n; * Like the LANCE driver:&n; * The driver runs as two independent, single-threaded flows of control.  One&n; * is the send-packet routine, which enforces single-threaded use by the&n; * cep-&gt;tx_busy flag.  The other thread is the interrupt handler, which is&n; * single threaded by the hardware and other software.&n; */
 multiline_comment|/* The transmitter timeout&n; */
@@ -932,7 +932,7 @@ id|must_restart
 )paren
 (brace
 r_volatile
-id|cpm8260_t
+id|cpm_cpm2_t
 op_star
 id|cp
 suffix:semicolon
@@ -1419,14 +1419,14 @@ comma
 id|dev-&gt;name
 )paren
 suffix:semicolon
-id|cep-&gt;sccp-&gt;scc_pmsr
+id|cep-&gt;sccp-&gt;scc_psmr
 op_or_assign
 id|SCC_PSMR_PRO
 suffix:semicolon
 )brace
 r_else
 (brace
-id|cep-&gt;sccp-&gt;scc_pmsr
+id|cep-&gt;sccp-&gt;scc_psmr
 op_and_assign
 op_complement
 id|SCC_PSMR_PRO
@@ -1617,6 +1617,10 @@ id|j
 comma
 id|err
 suffix:semicolon
+r_void
+op_star
+id|dpaddr
+suffix:semicolon
 r_int
 r_char
 op_star
@@ -1636,7 +1640,7 @@ op_star
 id|bdp
 suffix:semicolon
 r_volatile
-id|cpm8260_t
+id|cpm_cpm2_t
 op_star
 id|cp
 suffix:semicolon
@@ -1651,12 +1655,12 @@ op_star
 id|ep
 suffix:semicolon
 r_volatile
-id|immap_t
+id|cpm2_map_t
 op_star
 id|immap
 suffix:semicolon
 r_volatile
-id|iop8260_t
+id|iop_cpm2_t
 op_star
 id|io
 suffix:semicolon
@@ -1668,10 +1672,10 @@ multiline_comment|/* Get pointer to Communication Processor */
 id|immap
 op_assign
 (paren
-id|immap_t
+id|cpm2_map_t
 op_star
 )paren
-id|IMAP_ADDR
+id|CPM_MAP_ADDR
 suffix:semicolon
 multiline_comment|/* and to internal registers */
 id|io
@@ -1859,9 +1863,9 @@ op_or_assign
 id|CMX_CLK_ROUTE
 suffix:semicolon
 multiline_comment|/* Allocate space for the buffer descriptors in the DP ram.&n;&t; * These are relative offsets in the DP ram address space.&n;&t; * Initialize base addresses for the buffer descriptors.&n;&t; */
-id|i
+id|dpaddr
 op_assign
-id|m8260_cpm_dpalloc
+id|cpm2_dpalloc
 c_func
 (paren
 r_sizeof
@@ -1876,7 +1880,11 @@ l_int|8
 suffix:semicolon
 id|ep-&gt;sen_genscc.scc_rbase
 op_assign
-id|i
+id|cpm2_dpram_offset
+c_func
+(paren
+id|dpaddr
+)paren
 suffix:semicolon
 id|cep-&gt;rx_bd_base
 op_assign
@@ -1884,15 +1892,11 @@ op_assign
 id|cbd_t
 op_star
 )paren
-op_amp
-id|immap-&gt;im_dprambase
-(braket
-id|i
-)braket
+id|dpaddr
 suffix:semicolon
-id|i
+id|dpaddr
 op_assign
-id|m8260_cpm_dpalloc
+id|cpm2_dpalloc
 c_func
 (paren
 r_sizeof
@@ -1907,7 +1911,11 @@ l_int|8
 suffix:semicolon
 id|ep-&gt;sen_genscc.scc_tbase
 op_assign
-id|i
+id|cpm2_dpram_offset
+c_func
+(paren
+id|dpaddr
+)paren
 suffix:semicolon
 id|cep-&gt;tx_bd_base
 op_assign
@@ -1915,11 +1923,7 @@ op_assign
 id|cbd_t
 op_star
 )paren
-op_amp
-id|immap-&gt;im_dprambase
-(braket
-id|i
-)braket
+id|dpaddr
 suffix:semicolon
 id|cep-&gt;dirty_tx
 op_assign
@@ -2298,7 +2302,7 @@ op_assign
 l_int|0xd555
 suffix:semicolon
 multiline_comment|/* Set processing mode.  Use Ethernet CRC, catch broadcast, and&n;&t; * start frame search 22 bit times after RENA.&n;&t; */
-id|sccp-&gt;scc_pmsr
+id|sccp-&gt;scc_psmr
 op_assign
 (paren
 id|SCC_PSMR_ENCRC

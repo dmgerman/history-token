@@ -15,25 +15,16 @@ macro_line|#include &quot;ncr53c8xx.h&quot;
 macro_line|#include &quot;NCR_Q720.h&quot;
 DECL|variable|__initdata
 r_static
+r_struct
 id|ncr_chip
 id|q720_chip
 id|__initdata
 op_assign
 (brace
 dot
-id|device_id
-op_assign
-id|PSEUDO_720_ID
-comma
-dot
 id|revision_id
 op_assign
 l_int|0x0f
-comma
-dot
-id|name
-op_assign
-l_string|&quot;720&quot;
 comma
 dot
 id|burst_max
@@ -128,7 +119,8 @@ suffix:semicolon
 )brace
 suffix:semicolon
 DECL|variable|NCR_Q720_tpnt
-id|Scsi_Host_Template
+r_struct
+id|scsi_host_template
 id|NCR_Q720_tpnt
 op_assign
 (brace

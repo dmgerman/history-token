@@ -1,9 +1,9 @@
-multiline_comment|/*&n; * MPC8260 Communication Processor Module.&n; * Copyright (c) 1999 Dan Malek (dmalek@jlc.net)&n; *&n; * This file contains structures and information for the communication&n; * processor channels found in the dual port RAM or parameter RAM.&n; * All CPM control and status is available through the MPC8260 internal&n; * memory map.  See immap.h for details.&n; */
+multiline_comment|/*&n; * Communication Processor Module v2.&n; *&n; * This file contains structures and information for the communication&n; * processor channels found in the dual port RAM or parameter RAM.&n; * All CPM control and status is available through the CPM2 internal&n; * memory map.  See immap_cpm2.h for details.&n; */
 macro_line|#ifdef __KERNEL__
-macro_line|#ifndef __CPM_82XX__
-DECL|macro|__CPM_82XX__
-mdefine_line|#define __CPM_82XX__
-macro_line|#include &lt;asm/immap_8260.h&gt;
+macro_line|#ifndef __CPM2__
+DECL|macro|__CPM2__
+mdefine_line|#define __CPM2__
+macro_line|#include &lt;asm/immap_cpm2.h&gt;
 multiline_comment|/* CPM Command register.&n;*/
 DECL|macro|CPM_CR_RST
 mdefine_line|#define CPM_CR_RST&t;((uint)0x80000000)
@@ -107,51 +107,110 @@ DECL|macro|CPM_CR_RESTART_TX
 mdefine_line|#define CPM_CR_RESTART_TX&t;((ushort)0x0006)
 DECL|macro|CPM_CR_SET_GADDR
 mdefine_line|#define CPM_CR_SET_GADDR&t;((ushort)0x0008)
+DECL|macro|CPM_CR_START_IDMA
+mdefine_line|#define CPM_CR_START_IDMA&t;((ushort)0x0009)
+DECL|macro|CPM_CR_STOP_IDMA
+mdefine_line|#define CPM_CR_STOP_IDMA&t;((ushort)0x000b)
 DECL|macro|mk_cr_cmd
 mdefine_line|#define mk_cr_cmd(PG, SBC, MCN, OP) &bslash;&n;&t;((PG &lt;&lt; 26) | (SBC &lt;&lt; 21) | (MCN &lt;&lt; 6) | OP)
 multiline_comment|/* Dual Port RAM addresses.  The first 16K is available for almost&n; * any CPM use, so we put the BDs there.  The first 128 bytes are&n; * used for SMC1 and SMC2 parameter RAM, so we start allocating&n; * BDs above that.  All of this must change when we start&n; * downloading RAM microcode.&n; */
 DECL|macro|CPM_DATAONLY_BASE
 mdefine_line|#define CPM_DATAONLY_BASE&t;((uint)128)
-DECL|macro|CPM_DATAONLY_SIZE
-mdefine_line|#define CPM_DATAONLY_SIZE&t;((uint)(16 * 1024) - CPM_DATAONLY_BASE)
 DECL|macro|CPM_DP_NOSPACE
 mdefine_line|#define CPM_DP_NOSPACE&t;&t;((uint)0x7fffffff)
+macro_line|#ifdef CONFIG_8272
+DECL|macro|CPM_DATAONLY_SIZE
+mdefine_line|#define CPM_DATAONLY_SIZE&t;((uint)(8 * 1024) - CPM_DATAONLY_BASE)
+DECL|macro|CPM_FCC_SPECIAL_BASE
+mdefine_line|#define CPM_FCC_SPECIAL_BASE&t;((uint)0x00009000)
+macro_line|#else
+DECL|macro|CPM_DATAONLY_SIZE
+mdefine_line|#define CPM_DATAONLY_SIZE&t;((uint)(16 * 1024) - CPM_DATAONLY_BASE)
 DECL|macro|CPM_FCC_SPECIAL_BASE
 mdefine_line|#define CPM_FCC_SPECIAL_BASE&t;((uint)0x0000b000)
+macro_line|#endif
 multiline_comment|/* The number of pages of host memory we allocate for CPM.  This is&n; * done early in kernel initialization to get physically contiguous&n; * pages.&n; */
 DECL|macro|NUM_CPM_HOST_PAGES
 mdefine_line|#define NUM_CPM_HOST_PAGES&t;2
 multiline_comment|/* Export the base address of the communication processor registers&n; * and dual port ram.&n; */
 r_extern
-id|cpm8260_t
+id|cpm_cpm2_t
 op_star
 id|cpmp
 suffix:semicolon
 multiline_comment|/* Pointer to comm processor */
-id|uint
-id|m8260_cpm_dpalloc
-c_func
-(paren
-id|uint
-id|size
-comma
-id|uint
-id|align
-)paren
-suffix:semicolon
-id|uint
-id|m8260_cpm_hostalloc
-c_func
-(paren
-id|uint
-id|size
-comma
-id|uint
-id|align
-)paren
-suffix:semicolon
+r_extern
 r_void
-id|m8260_cpm_setbrg
+op_star
+id|cpm2_dpalloc
+c_func
+(paren
+id|uint
+id|size
+comma
+id|uint
+id|align
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|cpm2_dpfree
+c_func
+(paren
+r_void
+op_star
+id|addr
+)paren
+suffix:semicolon
+r_extern
+r_void
+op_star
+id|cpm2_dpalloc_fixed
+c_func
+(paren
+r_void
+op_star
+id|addr
+comma
+id|uint
+id|size
+comma
+id|uint
+id|allign
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|cpm2_dpdump
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+r_extern
+r_int
+r_int
+id|cpm2_dpram_offset
+c_func
+(paren
+r_void
+op_star
+id|addr
+)paren
+suffix:semicolon
+r_extern
+r_void
+op_star
+id|cpm2_dpram_addr
+c_func
+(paren
+r_int
+id|offset
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|cpm2_setbrg
 c_func
 (paren
 id|uint
@@ -161,8 +220,9 @@ id|uint
 id|rate
 )paren
 suffix:semicolon
+r_extern
 r_void
-id|m8260_cpm_fastbrg
+id|cpm2_fastbrg
 c_func
 (paren
 id|uint
@@ -1218,33 +1278,33 @@ DECL|macro|UART_SCCM_TX
 mdefine_line|#define UART_SCCM_TX&t;&t;((ushort)0x0002)
 DECL|macro|UART_SCCM_RX
 mdefine_line|#define UART_SCCM_RX&t;&t;((ushort)0x0001)
-multiline_comment|/* The SCC PMSR when used as a UART.&n;*/
-DECL|macro|SCU_PMSR_FLC
-mdefine_line|#define SCU_PMSR_FLC&t;&t;((ushort)0x8000)
-DECL|macro|SCU_PMSR_SL
-mdefine_line|#define SCU_PMSR_SL&t;&t;((ushort)0x4000)
-DECL|macro|SCU_PMSR_CL
-mdefine_line|#define SCU_PMSR_CL&t;&t;((ushort)0x3000)
-DECL|macro|SCU_PMSR_UM
-mdefine_line|#define SCU_PMSR_UM&t;&t;((ushort)0x0c00)
-DECL|macro|SCU_PMSR_FRZ
-mdefine_line|#define SCU_PMSR_FRZ&t;&t;((ushort)0x0200)
-DECL|macro|SCU_PMSR_RZS
-mdefine_line|#define SCU_PMSR_RZS&t;&t;((ushort)0x0100)
-DECL|macro|SCU_PMSR_SYN
-mdefine_line|#define SCU_PMSR_SYN&t;&t;((ushort)0x0080)
-DECL|macro|SCU_PMSR_DRT
-mdefine_line|#define SCU_PMSR_DRT&t;&t;((ushort)0x0040)
-DECL|macro|SCU_PMSR_PEN
-mdefine_line|#define SCU_PMSR_PEN&t;&t;((ushort)0x0010)
-DECL|macro|SCU_PMSR_RPM
-mdefine_line|#define SCU_PMSR_RPM&t;&t;((ushort)0x000c)
-DECL|macro|SCU_PMSR_REVP
-mdefine_line|#define SCU_PMSR_REVP&t;&t;((ushort)0x0008)
-DECL|macro|SCU_PMSR_TPM
-mdefine_line|#define SCU_PMSR_TPM&t;&t;((ushort)0x0003)
-DECL|macro|SCU_PMSR_TEVP
-mdefine_line|#define SCU_PMSR_TEVP&t;&t;((ushort)0x0003)
+multiline_comment|/* The SCC PSMR when used as a UART.&n;*/
+DECL|macro|SCU_PSMR_FLC
+mdefine_line|#define SCU_PSMR_FLC&t;&t;((ushort)0x8000)
+DECL|macro|SCU_PSMR_SL
+mdefine_line|#define SCU_PSMR_SL&t;&t;((ushort)0x4000)
+DECL|macro|SCU_PSMR_CL
+mdefine_line|#define SCU_PSMR_CL&t;&t;((ushort)0x3000)
+DECL|macro|SCU_PSMR_UM
+mdefine_line|#define SCU_PSMR_UM&t;&t;((ushort)0x0c00)
+DECL|macro|SCU_PSMR_FRZ
+mdefine_line|#define SCU_PSMR_FRZ&t;&t;((ushort)0x0200)
+DECL|macro|SCU_PSMR_RZS
+mdefine_line|#define SCU_PSMR_RZS&t;&t;((ushort)0x0100)
+DECL|macro|SCU_PSMR_SYN
+mdefine_line|#define SCU_PSMR_SYN&t;&t;((ushort)0x0080)
+DECL|macro|SCU_PSMR_DRT
+mdefine_line|#define SCU_PSMR_DRT&t;&t;((ushort)0x0040)
+DECL|macro|SCU_PSMR_PEN
+mdefine_line|#define SCU_PSMR_PEN&t;&t;((ushort)0x0010)
+DECL|macro|SCU_PSMR_RPM
+mdefine_line|#define SCU_PSMR_RPM&t;&t;((ushort)0x000c)
+DECL|macro|SCU_PSMR_REVP
+mdefine_line|#define SCU_PSMR_REVP&t;&t;((ushort)0x0008)
+DECL|macro|SCU_PSMR_TPM
+mdefine_line|#define SCU_PSMR_TPM&t;&t;((ushort)0x0003)
+DECL|macro|SCU_PSMR_TEVP
+mdefine_line|#define SCU_PSMR_TEVP&t;&t;((ushort)0x0003)
 multiline_comment|/* CPM Transparent mode SCC.&n; */
 DECL|struct|scc_trans
 r_typedef
@@ -1544,9 +1604,9 @@ id|ushort
 id|fen_ibdcount
 suffix:semicolon
 multiline_comment|/* Internal BD counter */
-DECL|member|fen_idbstart
+DECL|member|fen_ibdstart
 id|ushort
-id|fen_idbstart
+id|fen_ibdstart
 suffix:semicolon
 multiline_comment|/* Internal BD start pointer */
 DECL|member|fen_ibdend
@@ -1852,8 +1912,732 @@ DECL|typedef|iic_t
 )brace
 id|iic_t
 suffix:semicolon
+multiline_comment|/* SPI parameter RAM.&n;*/
+DECL|struct|spi
+r_typedef
+r_struct
+id|spi
+(brace
+DECL|member|spi_rbase
+id|ushort
+id|spi_rbase
+suffix:semicolon
+multiline_comment|/* Rx Buffer descriptor base address */
+DECL|member|spi_tbase
+id|ushort
+id|spi_tbase
+suffix:semicolon
+multiline_comment|/* Tx Buffer descriptor base address */
+DECL|member|spi_rfcr
+id|u_char
+id|spi_rfcr
+suffix:semicolon
+multiline_comment|/* Rx function code */
+DECL|member|spi_tfcr
+id|u_char
+id|spi_tfcr
+suffix:semicolon
+multiline_comment|/* Tx function code */
+DECL|member|spi_mrblr
+id|ushort
+id|spi_mrblr
+suffix:semicolon
+multiline_comment|/* Max receive buffer length */
+DECL|member|spi_rstate
+id|uint
+id|spi_rstate
+suffix:semicolon
+multiline_comment|/* Internal */
+DECL|member|spi_rdp
+id|uint
+id|spi_rdp
+suffix:semicolon
+multiline_comment|/* Internal */
+DECL|member|spi_rbptr
+id|ushort
+id|spi_rbptr
+suffix:semicolon
+multiline_comment|/* Internal */
+DECL|member|spi_rbc
+id|ushort
+id|spi_rbc
+suffix:semicolon
+multiline_comment|/* Internal */
+DECL|member|spi_rxtmp
+id|uint
+id|spi_rxtmp
+suffix:semicolon
+multiline_comment|/* Internal */
+DECL|member|spi_tstate
+id|uint
+id|spi_tstate
+suffix:semicolon
+multiline_comment|/* Internal */
+DECL|member|spi_tdp
+id|uint
+id|spi_tdp
+suffix:semicolon
+multiline_comment|/* Internal */
+DECL|member|spi_tbptr
+id|ushort
+id|spi_tbptr
+suffix:semicolon
+multiline_comment|/* Internal */
+DECL|member|spi_tbc
+id|ushort
+id|spi_tbc
+suffix:semicolon
+multiline_comment|/* Internal */
+DECL|member|spi_txtmp
+id|uint
+id|spi_txtmp
+suffix:semicolon
+multiline_comment|/* Internal */
+DECL|member|spi_res
+id|uint
+id|spi_res
+suffix:semicolon
+multiline_comment|/* Tx temp. */
+DECL|member|spi_res1
+id|uint
+id|spi_res1
+(braket
+l_int|4
+)braket
+suffix:semicolon
+multiline_comment|/* SDMA temp. */
+DECL|typedef|spi_t
+)brace
+id|spi_t
+suffix:semicolon
+multiline_comment|/* SPI Mode register.&n;*/
+DECL|macro|SPMODE_LOOP
+mdefine_line|#define SPMODE_LOOP&t;((ushort)0x4000)&t;/* Loopback */
+DECL|macro|SPMODE_CI
+mdefine_line|#define SPMODE_CI&t;((ushort)0x2000)&t;/* Clock Invert */
+DECL|macro|SPMODE_CP
+mdefine_line|#define SPMODE_CP&t;((ushort)0x1000)&t;/* Clock Phase */
+DECL|macro|SPMODE_DIV16
+mdefine_line|#define SPMODE_DIV16&t;((ushort)0x0800)&t;/* BRG/16 mode */
+DECL|macro|SPMODE_REV
+mdefine_line|#define SPMODE_REV&t;((ushort)0x0400)&t;/* Reversed Data */
+DECL|macro|SPMODE_MSTR
+mdefine_line|#define SPMODE_MSTR&t;((ushort)0x0200)&t;/* SPI Master */
+DECL|macro|SPMODE_EN
+mdefine_line|#define SPMODE_EN&t;((ushort)0x0100)&t;/* Enable */
+DECL|macro|SPMODE_LENMSK
+mdefine_line|#define SPMODE_LENMSK&t;((ushort)0x00f0)&t;/* character length */
+DECL|macro|SPMODE_PMMSK
+mdefine_line|#define SPMODE_PMMSK&t;((ushort)0x000f)&t;/* prescale modulus */
+DECL|macro|SPMODE_LEN
+mdefine_line|#define SPMODE_LEN(x)&t;((((x)-1)&amp;0xF)&lt;&lt;4)
+DECL|macro|SPMODE_PM
+mdefine_line|#define SPMODE_PM(x)&t;((x) &amp;0xF)
+DECL|macro|SPI_EB
+mdefine_line|#define SPI_EB&t;&t;((u_char)0x10)&t;&t;/* big endian byte order */
 DECL|macro|BD_IIC_START
 mdefine_line|#define BD_IIC_START&t;&t;((ushort)0x0400)
-macro_line|#endif /* __CPM_82XX__ */
+multiline_comment|/* IDMA parameter RAM&n;*/
+DECL|struct|idma
+r_typedef
+r_struct
+id|idma
+(brace
+DECL|member|ibase
+id|ushort
+id|ibase
+suffix:semicolon
+multiline_comment|/* IDMA buffer descriptor table base address */
+DECL|member|dcm
+id|ushort
+id|dcm
+suffix:semicolon
+multiline_comment|/* DMA channel mode */
+DECL|member|ibdptr
+id|ushort
+id|ibdptr
+suffix:semicolon
+multiline_comment|/* IDMA current buffer descriptor pointer */
+DECL|member|dpr_buf
+id|ushort
+id|dpr_buf
+suffix:semicolon
+multiline_comment|/* IDMA transfer buffer base address */
+DECL|member|buf_inv
+id|ushort
+id|buf_inv
+suffix:semicolon
+multiline_comment|/* internal buffer inventory */
+DECL|member|ss_max
+id|ushort
+id|ss_max
+suffix:semicolon
+multiline_comment|/* steady-state maximum transfer size */
+DECL|member|dpr_in_ptr
+id|ushort
+id|dpr_in_ptr
+suffix:semicolon
+multiline_comment|/* write pointer inside the internal buffer */
+DECL|member|sts
+id|ushort
+id|sts
+suffix:semicolon
+multiline_comment|/* source transfer size */
+DECL|member|dpr_out_ptr
+id|ushort
+id|dpr_out_ptr
+suffix:semicolon
+multiline_comment|/* read pointer inside the internal buffer */
+DECL|member|seob
+id|ushort
+id|seob
+suffix:semicolon
+multiline_comment|/* source end of burst */
+DECL|member|deob
+id|ushort
+id|deob
+suffix:semicolon
+multiline_comment|/* destination end of burst */
+DECL|member|dts
+id|ushort
+id|dts
+suffix:semicolon
+multiline_comment|/* destination transfer size */
+DECL|member|ret_add
+id|ushort
+id|ret_add
+suffix:semicolon
+multiline_comment|/* return address when working in ERM=1 mode */
+DECL|member|res0
+id|ushort
+id|res0
+suffix:semicolon
+multiline_comment|/* reserved */
+DECL|member|bd_cnt
+id|uint
+id|bd_cnt
+suffix:semicolon
+multiline_comment|/* internal byte count */
+DECL|member|s_ptr
+id|uint
+id|s_ptr
+suffix:semicolon
+multiline_comment|/* source internal data pointer */
+DECL|member|d_ptr
+id|uint
+id|d_ptr
+suffix:semicolon
+multiline_comment|/* destination internal data pointer */
+DECL|member|istate
+id|uint
+id|istate
+suffix:semicolon
+multiline_comment|/* internal state */
+DECL|member|res1
+id|u_char
+id|res1
+(braket
+l_int|20
+)braket
+suffix:semicolon
+multiline_comment|/* pad to 64-byte length */
+DECL|typedef|idma_t
+)brace
+id|idma_t
+suffix:semicolon
+multiline_comment|/* DMA channel mode bit fields&n;*/
+DECL|macro|IDMA_DCM_FB
+mdefine_line|#define IDMA_DCM_FB&t;&t;((ushort)0x8000) /* fly-by mode */
+DECL|macro|IDMA_DCM_LP
+mdefine_line|#define IDMA_DCM_LP&t;&t;((ushort)0x4000) /* low priority */
+DECL|macro|IDMA_DCM_TC2
+mdefine_line|#define IDMA_DCM_TC2&t;&t;((ushort)0x0400) /* value driven on TC[2] */
+DECL|macro|IDMA_DCM_DMA_WRAP_MASK
+mdefine_line|#define IDMA_DCM_DMA_WRAP_MASK&t;((ushort)0x01c0) /* mask for DMA wrap */
+DECL|macro|IDMA_DCM_DMA_WRAP_64
+mdefine_line|#define IDMA_DCM_DMA_WRAP_64&t;((ushort)0x0000) /* 64-byte DMA xfer buffer */
+DECL|macro|IDMA_DCM_DMA_WRAP_128
+mdefine_line|#define IDMA_DCM_DMA_WRAP_128&t;((ushort)0x0040) /* 128-byte DMA xfer buffer */
+DECL|macro|IDMA_DCM_DMA_WRAP_256
+mdefine_line|#define IDMA_DCM_DMA_WRAP_256&t;((ushort)0x0080) /* 256-byte DMA xfer buffer */
+DECL|macro|IDMA_DCM_DMA_WRAP_512
+mdefine_line|#define IDMA_DCM_DMA_WRAP_512&t;((ushort)0x00c0) /* 512-byte DMA xfer buffer */
+DECL|macro|IDMA_DCM_DMA_WRAP_1024
+mdefine_line|#define IDMA_DCM_DMA_WRAP_1024&t;((ushort)0x0100) /* 1024-byte DMA xfer buffer */
+DECL|macro|IDMA_DCM_DMA_WRAP_2048
+mdefine_line|#define IDMA_DCM_DMA_WRAP_2048&t;((ushort)0x0140) /* 2048-byte DMA xfer buffer */
+DECL|macro|IDMA_DCM_SINC
+mdefine_line|#define IDMA_DCM_SINC&t;&t;((ushort)0x0020) /* source inc addr */
+DECL|macro|IDMA_DCM_DINC
+mdefine_line|#define IDMA_DCM_DINC&t;&t;((ushort)0x0010) /* destination inc addr */
+DECL|macro|IDMA_DCM_ERM
+mdefine_line|#define IDMA_DCM_ERM&t;&t;((ushort)0x0008) /* external request mode */
+DECL|macro|IDMA_DCM_DT
+mdefine_line|#define IDMA_DCM_DT&t;&t;((ushort)0x0004) /* DONE treatment */
+DECL|macro|IDMA_DCM_SD_MASK
+mdefine_line|#define IDMA_DCM_SD_MASK&t;((ushort)0x0003) /* mask for SD bit field */
+DECL|macro|IDMA_DCM_SD_MEM2MEM
+mdefine_line|#define IDMA_DCM_SD_MEM2MEM&t;((ushort)0x0000) /* memory-to-memory xfer */
+DECL|macro|IDMA_DCM_SD_PER2MEM
+mdefine_line|#define IDMA_DCM_SD_PER2MEM&t;((ushort)0x0002) /* peripheral-to-memory xfer */
+DECL|macro|IDMA_DCM_SD_MEM2PER
+mdefine_line|#define IDMA_DCM_SD_MEM2PER&t;((ushort)0x0001) /* memory-to-peripheral xfer */
+multiline_comment|/* IDMA Buffer Descriptors&n;*/
+DECL|struct|idma_bd
+r_typedef
+r_struct
+id|idma_bd
+(brace
+DECL|member|flags
+id|uint
+id|flags
+suffix:semicolon
+DECL|member|len
+id|uint
+id|len
+suffix:semicolon
+multiline_comment|/* data length */
+DECL|member|src
+id|uint
+id|src
+suffix:semicolon
+multiline_comment|/* source data buffer pointer */
+DECL|member|dst
+id|uint
+id|dst
+suffix:semicolon
+multiline_comment|/* destination data buffer pointer */
+DECL|typedef|idma_bd_t
+)brace
+id|idma_bd_t
+suffix:semicolon
+multiline_comment|/* IDMA buffer descriptor flag bit fields&n;*/
+DECL|macro|IDMA_BD_V
+mdefine_line|#define IDMA_BD_V&t;((uint)0x80000000)&t;/* valid */
+DECL|macro|IDMA_BD_W
+mdefine_line|#define IDMA_BD_W&t;((uint)0x20000000)&t;/* wrap */
+DECL|macro|IDMA_BD_I
+mdefine_line|#define IDMA_BD_I&t;((uint)0x10000000)&t;/* interrupt */
+DECL|macro|IDMA_BD_L
+mdefine_line|#define IDMA_BD_L&t;((uint)0x08000000)&t;/* last */
+DECL|macro|IDMA_BD_CM
+mdefine_line|#define IDMA_BD_CM&t;((uint)0x02000000)&t;/* continuous mode */
+DECL|macro|IDMA_BD_SDN
+mdefine_line|#define IDMA_BD_SDN&t;((uint)0x00400000)&t;/* source done */
+DECL|macro|IDMA_BD_DDN
+mdefine_line|#define IDMA_BD_DDN&t;((uint)0x00200000)&t;/* destination done */
+DECL|macro|IDMA_BD_DGBL
+mdefine_line|#define IDMA_BD_DGBL&t;((uint)0x00100000)&t;/* destination global */
+DECL|macro|IDMA_BD_DBO_LE
+mdefine_line|#define IDMA_BD_DBO_LE&t;((uint)0x00040000)&t;/* little-end dest byte order */
+DECL|macro|IDMA_BD_DBO_BE
+mdefine_line|#define IDMA_BD_DBO_BE&t;((uint)0x00080000)&t;/* big-end dest byte order */
+DECL|macro|IDMA_BD_DDTB
+mdefine_line|#define IDMA_BD_DDTB&t;((uint)0x00010000)&t;/* destination data bus */
+DECL|macro|IDMA_BD_SGBL
+mdefine_line|#define IDMA_BD_SGBL&t;((uint)0x00002000)&t;/* source global */
+DECL|macro|IDMA_BD_SBO_LE
+mdefine_line|#define IDMA_BD_SBO_LE&t;((uint)0x00000800)&t;/* little-end src byte order */
+DECL|macro|IDMA_BD_SBO_BE
+mdefine_line|#define IDMA_BD_SBO_BE&t;((uint)0x00001000)&t;/* big-end src byte order */
+DECL|macro|IDMA_BD_SDTB
+mdefine_line|#define IDMA_BD_SDTB&t;((uint)0x00000200)&t;/* source data bus */
+multiline_comment|/* per-channel IDMA registers&n;*/
+DECL|struct|im_idma
+r_typedef
+r_struct
+id|im_idma
+(brace
+DECL|member|idsr
+id|u_char
+id|idsr
+suffix:semicolon
+multiline_comment|/* IDMAn event status register */
+DECL|member|res0
+id|u_char
+id|res0
+(braket
+l_int|3
+)braket
+suffix:semicolon
+DECL|member|idmr
+id|u_char
+id|idmr
+suffix:semicolon
+multiline_comment|/* IDMAn event mask register */
+DECL|member|res1
+id|u_char
+id|res1
+(braket
+l_int|3
+)braket
+suffix:semicolon
+DECL|typedef|im_idma_t
+)brace
+id|im_idma_t
+suffix:semicolon
+multiline_comment|/* IDMA event register bit fields&n;*/
+DECL|macro|IDMA_EVENT_SC
+mdefine_line|#define IDMA_EVENT_SC&t;((unsigned char)0x08)&t;/* stop completed */
+DECL|macro|IDMA_EVENT_OB
+mdefine_line|#define IDMA_EVENT_OB&t;((unsigned char)0x04)&t;/* out of buffers */
+DECL|macro|IDMA_EVENT_EDN
+mdefine_line|#define IDMA_EVENT_EDN&t;((unsigned char)0x02)&t;/* external DONE asserted */
+DECL|macro|IDMA_EVENT_BC
+mdefine_line|#define IDMA_EVENT_BC&t;((unsigned char)0x01)&t;/* buffer descriptor complete */
+multiline_comment|/* RISC Controller Configuration Register (RCCR) bit fields&n;*/
+DECL|macro|RCCR_TIME
+mdefine_line|#define RCCR_TIME&t;((uint)0x80000000) /* timer enable */
+DECL|macro|RCCR_TIMEP_MASK
+mdefine_line|#define RCCR_TIMEP_MASK&t;((uint)0x3f000000) /* mask for timer period bit field */
+DECL|macro|RCCR_DR0M
+mdefine_line|#define RCCR_DR0M&t;((uint)0x00800000) /* IDMA0 request mode */
+DECL|macro|RCCR_DR1M
+mdefine_line|#define RCCR_DR1M&t;((uint)0x00400000) /* IDMA1 request mode */
+DECL|macro|RCCR_DR2M
+mdefine_line|#define RCCR_DR2M&t;((uint)0x00000080) /* IDMA2 request mode */
+DECL|macro|RCCR_DR3M
+mdefine_line|#define RCCR_DR3M&t;((uint)0x00000040) /* IDMA3 request mode */
+DECL|macro|RCCR_DR0QP_MASK
+mdefine_line|#define RCCR_DR0QP_MASK&t;((uint)0x00300000) /* mask for IDMA0 req priority */
+DECL|macro|RCCR_DR0QP_HIGH
+mdefine_line|#define RCCR_DR0QP_HIGH ((uint)0x00000000) /* IDMA0 has high req priority */
+DECL|macro|RCCR_DR0QP_MED
+mdefine_line|#define RCCR_DR0QP_MED&t;((uint)0x00100000) /* IDMA0 has medium req priority */
+DECL|macro|RCCR_DR0QP_LOW
+mdefine_line|#define RCCR_DR0QP_LOW&t;((uint)0x00200000) /* IDMA0 has low req priority */
+DECL|macro|RCCR_DR1QP_MASK
+mdefine_line|#define RCCR_DR1QP_MASK&t;((uint)0x00030000) /* mask for IDMA1 req priority */
+DECL|macro|RCCR_DR1QP_HIGH
+mdefine_line|#define RCCR_DR1QP_HIGH ((uint)0x00000000) /* IDMA1 has high req priority */
+DECL|macro|RCCR_DR1QP_MED
+mdefine_line|#define RCCR_DR1QP_MED&t;((uint)0x00010000) /* IDMA1 has medium req priority */
+DECL|macro|RCCR_DR1QP_LOW
+mdefine_line|#define RCCR_DR1QP_LOW&t;((uint)0x00020000) /* IDMA1 has low req priority */
+DECL|macro|RCCR_DR2QP_MASK
+mdefine_line|#define RCCR_DR2QP_MASK&t;((uint)0x00000030) /* mask for IDMA2 req priority */
+DECL|macro|RCCR_DR2QP_HIGH
+mdefine_line|#define RCCR_DR2QP_HIGH ((uint)0x00000000) /* IDMA2 has high req priority */
+DECL|macro|RCCR_DR2QP_MED
+mdefine_line|#define RCCR_DR2QP_MED&t;((uint)0x00000010) /* IDMA2 has medium req priority */
+DECL|macro|RCCR_DR2QP_LOW
+mdefine_line|#define RCCR_DR2QP_LOW&t;((uint)0x00000020) /* IDMA2 has low req priority */
+DECL|macro|RCCR_DR3QP_MASK
+mdefine_line|#define RCCR_DR3QP_MASK&t;((uint)0x00000003) /* mask for IDMA3 req priority */
+DECL|macro|RCCR_DR3QP_HIGH
+mdefine_line|#define RCCR_DR3QP_HIGH ((uint)0x00000000) /* IDMA3 has high req priority */
+DECL|macro|RCCR_DR3QP_MED
+mdefine_line|#define RCCR_DR3QP_MED&t;((uint)0x00000001) /* IDMA3 has medium req priority */
+DECL|macro|RCCR_DR3QP_LOW
+mdefine_line|#define RCCR_DR3QP_LOW&t;((uint)0x00000002) /* IDMA3 has low req priority */
+DECL|macro|RCCR_EIE
+mdefine_line|#define RCCR_EIE&t;((uint)0x00080000) /* external interrupt enable */
+DECL|macro|RCCR_SCD
+mdefine_line|#define RCCR_SCD&t;((uint)0x00040000) /* scheduler configuration */
+DECL|macro|RCCR_ERAM_MASK
+mdefine_line|#define RCCR_ERAM_MASK&t;((uint)0x0000e000) /* mask for enable RAM microcode */
+DECL|macro|RCCR_ERAM_0KB
+mdefine_line|#define RCCR_ERAM_0KB&t;((uint)0x00000000) /* use 0KB of dpram for microcode */
+DECL|macro|RCCR_ERAM_2KB
+mdefine_line|#define RCCR_ERAM_2KB&t;((uint)0x00002000) /* use 2KB of dpram for microcode */
+DECL|macro|RCCR_ERAM_4KB
+mdefine_line|#define RCCR_ERAM_4KB&t;((uint)0x00004000) /* use 4KB of dpram for microcode */
+DECL|macro|RCCR_ERAM_6KB
+mdefine_line|#define RCCR_ERAM_6KB&t;((uint)0x00006000) /* use 6KB of dpram for microcode */
+DECL|macro|RCCR_ERAM_8KB
+mdefine_line|#define RCCR_ERAM_8KB&t;((uint)0x00008000) /* use 8KB of dpram for microcode */
+DECL|macro|RCCR_ERAM_10KB
+mdefine_line|#define RCCR_ERAM_10KB&t;((uint)0x0000a000) /* use 10KB of dpram for microcode */
+DECL|macro|RCCR_ERAM_12KB
+mdefine_line|#define RCCR_ERAM_12KB&t;((uint)0x0000c000) /* use 12KB of dpram for microcode */
+DECL|macro|RCCR_EDM0
+mdefine_line|#define RCCR_EDM0&t;((uint)0x00000800) /* DREQ0 edge detect mode */
+DECL|macro|RCCR_EDM1
+mdefine_line|#define RCCR_EDM1&t;((uint)0x00000400) /* DREQ1 edge detect mode */
+DECL|macro|RCCR_EDM2
+mdefine_line|#define RCCR_EDM2&t;((uint)0x00000200) /* DREQ2 edge detect mode */
+DECL|macro|RCCR_EDM3
+mdefine_line|#define RCCR_EDM3&t;((uint)0x00000100) /* DREQ3 edge detect mode */
+DECL|macro|RCCR_DEM01
+mdefine_line|#define RCCR_DEM01&t;((uint)0x00000008) /* DONE0/DONE1 edge detect mode */
+DECL|macro|RCCR_DEM23
+mdefine_line|#define RCCR_DEM23&t;((uint)0x00000004) /* DONE2/DONE3 edge detect mode */
+multiline_comment|/*-----------------------------------------------------------------------&n; * CMXFCR - CMX FCC Clock Route Register&n; */
+DECL|macro|CMXFCR_FC1
+mdefine_line|#define CMXFCR_FC1         0x40000000   /* FCC1 connection              */
+DECL|macro|CMXFCR_RF1CS_MSK
+mdefine_line|#define CMXFCR_RF1CS_MSK   0x38000000   /* Receive FCC1 Clock Source Mask */
+DECL|macro|CMXFCR_TF1CS_MSK
+mdefine_line|#define CMXFCR_TF1CS_MSK   0x07000000   /* Transmit FCC1 Clock Source Mask */
+DECL|macro|CMXFCR_FC2
+mdefine_line|#define CMXFCR_FC2         0x00400000   /* FCC2 connection              */
+DECL|macro|CMXFCR_RF2CS_MSK
+mdefine_line|#define CMXFCR_RF2CS_MSK   0x00380000   /* Receive FCC2 Clock Source Mask */
+DECL|macro|CMXFCR_TF2CS_MSK
+mdefine_line|#define CMXFCR_TF2CS_MSK   0x00070000   /* Transmit FCC2 Clock Source Mask */
+DECL|macro|CMXFCR_FC3
+mdefine_line|#define CMXFCR_FC3         0x00004000   /* FCC3 connection              */
+DECL|macro|CMXFCR_RF3CS_MSK
+mdefine_line|#define CMXFCR_RF3CS_MSK   0x00003800   /* Receive FCC3 Clock Source Mask */
+DECL|macro|CMXFCR_TF3CS_MSK
+mdefine_line|#define CMXFCR_TF3CS_MSK   0x00000700   /* Transmit FCC3 Clock Source Mask */
+DECL|macro|CMXFCR_RF1CS_BRG5
+mdefine_line|#define CMXFCR_RF1CS_BRG5  0x00000000   /* Receive FCC1 Clock Source is BRG5 */
+DECL|macro|CMXFCR_RF1CS_BRG6
+mdefine_line|#define CMXFCR_RF1CS_BRG6  0x08000000   /* Receive FCC1 Clock Source is BRG6 */
+DECL|macro|CMXFCR_RF1CS_BRG7
+mdefine_line|#define CMXFCR_RF1CS_BRG7  0x10000000   /* Receive FCC1 Clock Source is BRG7 */
+DECL|macro|CMXFCR_RF1CS_BRG8
+mdefine_line|#define CMXFCR_RF1CS_BRG8  0x18000000   /* Receive FCC1 Clock Source is BRG8 */
+DECL|macro|CMXFCR_RF1CS_CLK9
+mdefine_line|#define CMXFCR_RF1CS_CLK9  0x20000000   /* Receive FCC1 Clock Source is CLK9 */
+DECL|macro|CMXFCR_RF1CS_CLK10
+mdefine_line|#define CMXFCR_RF1CS_CLK10 0x28000000   /* Receive FCC1 Clock Source is CLK10 */
+DECL|macro|CMXFCR_RF1CS_CLK11
+mdefine_line|#define CMXFCR_RF1CS_CLK11 0x30000000   /* Receive FCC1 Clock Source is CLK11 */
+DECL|macro|CMXFCR_RF1CS_CLK12
+mdefine_line|#define CMXFCR_RF1CS_CLK12 0x38000000   /* Receive FCC1 Clock Source is CLK12 */
+DECL|macro|CMXFCR_TF1CS_BRG5
+mdefine_line|#define CMXFCR_TF1CS_BRG5  0x00000000   /* Transmit FCC1 Clock Source is BRG5 */
+DECL|macro|CMXFCR_TF1CS_BRG6
+mdefine_line|#define CMXFCR_TF1CS_BRG6  0x01000000   /* Transmit FCC1 Clock Source is BRG6 */
+DECL|macro|CMXFCR_TF1CS_BRG7
+mdefine_line|#define CMXFCR_TF1CS_BRG7  0x02000000   /* Transmit FCC1 Clock Source is BRG7 */
+DECL|macro|CMXFCR_TF1CS_BRG8
+mdefine_line|#define CMXFCR_TF1CS_BRG8  0x03000000   /* Transmit FCC1 Clock Source is BRG8 */
+DECL|macro|CMXFCR_TF1CS_CLK9
+mdefine_line|#define CMXFCR_TF1CS_CLK9  0x04000000   /* Transmit FCC1 Clock Source is CLK9 */
+DECL|macro|CMXFCR_TF1CS_CLK10
+mdefine_line|#define CMXFCR_TF1CS_CLK10 0x05000000   /* Transmit FCC1 Clock Source is CLK10 */
+DECL|macro|CMXFCR_TF1CS_CLK11
+mdefine_line|#define CMXFCR_TF1CS_CLK11 0x06000000   /* Transmit FCC1 Clock Source is CLK11 */
+DECL|macro|CMXFCR_TF1CS_CLK12
+mdefine_line|#define CMXFCR_TF1CS_CLK12 0x07000000   /* Transmit FCC1 Clock Source is CLK12 */
+DECL|macro|CMXFCR_RF2CS_BRG5
+mdefine_line|#define CMXFCR_RF2CS_BRG5  0x00000000   /* Receive FCC2 Clock Source is BRG5 */
+DECL|macro|CMXFCR_RF2CS_BRG6
+mdefine_line|#define CMXFCR_RF2CS_BRG6  0x00080000   /* Receive FCC2 Clock Source is BRG6 */
+DECL|macro|CMXFCR_RF2CS_BRG7
+mdefine_line|#define CMXFCR_RF2CS_BRG7  0x00100000   /* Receive FCC2 Clock Source is BRG7 */
+DECL|macro|CMXFCR_RF2CS_BRG8
+mdefine_line|#define CMXFCR_RF2CS_BRG8  0x00180000   /* Receive FCC2 Clock Source is BRG8 */
+DECL|macro|CMXFCR_RF2CS_CLK13
+mdefine_line|#define CMXFCR_RF2CS_CLK13 0x00200000   /* Receive FCC2 Clock Source is CLK13 */
+DECL|macro|CMXFCR_RF2CS_CLK14
+mdefine_line|#define CMXFCR_RF2CS_CLK14 0x00280000   /* Receive FCC2 Clock Source is CLK14 */
+DECL|macro|CMXFCR_RF2CS_CLK15
+mdefine_line|#define CMXFCR_RF2CS_CLK15 0x00300000   /* Receive FCC2 Clock Source is CLK15 */
+DECL|macro|CMXFCR_RF2CS_CLK16
+mdefine_line|#define CMXFCR_RF2CS_CLK16 0x00380000   /* Receive FCC2 Clock Source is CLK16 */
+DECL|macro|CMXFCR_TF2CS_BRG5
+mdefine_line|#define CMXFCR_TF2CS_BRG5  0x00000000   /* Transmit FCC2 Clock Source is BRG5 */
+DECL|macro|CMXFCR_TF2CS_BRG6
+mdefine_line|#define CMXFCR_TF2CS_BRG6  0x00010000   /* Transmit FCC2 Clock Source is BRG6 */
+DECL|macro|CMXFCR_TF2CS_BRG7
+mdefine_line|#define CMXFCR_TF2CS_BRG7  0x00020000   /* Transmit FCC2 Clock Source is BRG7 */
+DECL|macro|CMXFCR_TF2CS_BRG8
+mdefine_line|#define CMXFCR_TF2CS_BRG8  0x00030000   /* Transmit FCC2 Clock Source is BRG8 */
+DECL|macro|CMXFCR_TF2CS_CLK13
+mdefine_line|#define CMXFCR_TF2CS_CLK13 0x00040000   /* Transmit FCC2 Clock Source is CLK13 */
+DECL|macro|CMXFCR_TF2CS_CLK14
+mdefine_line|#define CMXFCR_TF2CS_CLK14 0x00050000   /* Transmit FCC2 Clock Source is CLK14 */
+DECL|macro|CMXFCR_TF2CS_CLK15
+mdefine_line|#define CMXFCR_TF2CS_CLK15 0x00060000   /* Transmit FCC2 Clock Source is CLK15 */
+DECL|macro|CMXFCR_TF2CS_CLK16
+mdefine_line|#define CMXFCR_TF2CS_CLK16 0x00070000   /* Transmit FCC2 Clock Source is CLK16 */
+DECL|macro|CMXFCR_RF3CS_BRG5
+mdefine_line|#define CMXFCR_RF3CS_BRG5  0x00000000   /* Receive FCC3 Clock Source is BRG5 */
+DECL|macro|CMXFCR_RF3CS_BRG6
+mdefine_line|#define CMXFCR_RF3CS_BRG6  0x00000800   /* Receive FCC3 Clock Source is BRG6 */
+DECL|macro|CMXFCR_RF3CS_BRG7
+mdefine_line|#define CMXFCR_RF3CS_BRG7  0x00001000   /* Receive FCC3 Clock Source is BRG7 */
+DECL|macro|CMXFCR_RF3CS_BRG8
+mdefine_line|#define CMXFCR_RF3CS_BRG8  0x00001800   /* Receive FCC3 Clock Source is BRG8 */
+DECL|macro|CMXFCR_RF3CS_CLK13
+mdefine_line|#define CMXFCR_RF3CS_CLK13 0x00002000   /* Receive FCC3 Clock Source is CLK13 */
+DECL|macro|CMXFCR_RF3CS_CLK14
+mdefine_line|#define CMXFCR_RF3CS_CLK14 0x00002800   /* Receive FCC3 Clock Source is CLK14 */
+DECL|macro|CMXFCR_RF3CS_CLK15
+mdefine_line|#define CMXFCR_RF3CS_CLK15 0x00003000   /* Receive FCC3 Clock Source is CLK15 */
+DECL|macro|CMXFCR_RF3CS_CLK16
+mdefine_line|#define CMXFCR_RF3CS_CLK16 0x00003800   /* Receive FCC3 Clock Source is CLK16 */
+DECL|macro|CMXFCR_TF3CS_BRG5
+mdefine_line|#define CMXFCR_TF3CS_BRG5  0x00000000   /* Transmit FCC3 Clock Source is BRG5 */
+DECL|macro|CMXFCR_TF3CS_BRG6
+mdefine_line|#define CMXFCR_TF3CS_BRG6  0x00000100   /* Transmit FCC3 Clock Source is BRG6 */
+DECL|macro|CMXFCR_TF3CS_BRG7
+mdefine_line|#define CMXFCR_TF3CS_BRG7  0x00000200   /* Transmit FCC3 Clock Source is BRG7 */
+DECL|macro|CMXFCR_TF3CS_BRG8
+mdefine_line|#define CMXFCR_TF3CS_BRG8  0x00000300   /* Transmit FCC3 Clock Source is BRG8 */
+DECL|macro|CMXFCR_TF3CS_CLK13
+mdefine_line|#define CMXFCR_TF3CS_CLK13 0x00000400   /* Transmit FCC3 Clock Source is CLK13 */
+DECL|macro|CMXFCR_TF3CS_CLK14
+mdefine_line|#define CMXFCR_TF3CS_CLK14 0x00000500   /* Transmit FCC3 Clock Source is CLK14 */
+DECL|macro|CMXFCR_TF3CS_CLK15
+mdefine_line|#define CMXFCR_TF3CS_CLK15 0x00000600   /* Transmit FCC3 Clock Source is CLK15 */
+DECL|macro|CMXFCR_TF3CS_CLK16
+mdefine_line|#define CMXFCR_TF3CS_CLK16 0x00000700   /* Transmit FCC3 Clock Source is CLK16 */
+multiline_comment|/*-----------------------------------------------------------------------&n; * CMXSCR - CMX SCC Clock Route Register&n; */
+DECL|macro|CMXSCR_GR1
+mdefine_line|#define CMXSCR_GR1         0x80000000   /* Grant Support of SCC1        */
+DECL|macro|CMXSCR_SC1
+mdefine_line|#define CMXSCR_SC1         0x40000000   /* SCC1 connection              */
+DECL|macro|CMXSCR_RS1CS_MSK
+mdefine_line|#define CMXSCR_RS1CS_MSK   0x38000000   /* Receive SCC1 Clock Source Mask */
+DECL|macro|CMXSCR_TS1CS_MSK
+mdefine_line|#define CMXSCR_TS1CS_MSK   0x07000000   /* Transmit SCC1 Clock Source Mask */
+DECL|macro|CMXSCR_GR2
+mdefine_line|#define CMXSCR_GR2         0x00800000   /* Grant Support of SCC2        */
+DECL|macro|CMXSCR_SC2
+mdefine_line|#define CMXSCR_SC2         0x00400000   /* SCC2 connection              */
+DECL|macro|CMXSCR_RS2CS_MSK
+mdefine_line|#define CMXSCR_RS2CS_MSK   0x00380000   /* Receive SCC2 Clock Source Mask */
+DECL|macro|CMXSCR_TS2CS_MSK
+mdefine_line|#define CMXSCR_TS2CS_MSK   0x00070000   /* Transmit SCC2 Clock Source Mask */
+DECL|macro|CMXSCR_GR3
+mdefine_line|#define CMXSCR_GR3         0x00008000   /* Grant Support of SCC3        */
+DECL|macro|CMXSCR_SC3
+mdefine_line|#define CMXSCR_SC3         0x00004000   /* SCC3 connection              */
+DECL|macro|CMXSCR_RS3CS_MSK
+mdefine_line|#define CMXSCR_RS3CS_MSK   0x00003800   /* Receive SCC3 Clock Source Mask */
+DECL|macro|CMXSCR_TS3CS_MSK
+mdefine_line|#define CMXSCR_TS3CS_MSK   0x00000700   /* Transmit SCC3 Clock Source Mask */
+DECL|macro|CMXSCR_GR4
+mdefine_line|#define CMXSCR_GR4         0x00000080   /* Grant Support of SCC4        */
+DECL|macro|CMXSCR_SC4
+mdefine_line|#define CMXSCR_SC4         0x00000040   /* SCC4 connection              */
+DECL|macro|CMXSCR_RS4CS_MSK
+mdefine_line|#define CMXSCR_RS4CS_MSK   0x00000038   /* Receive SCC4 Clock Source Mask */
+DECL|macro|CMXSCR_TS4CS_MSK
+mdefine_line|#define CMXSCR_TS4CS_MSK   0x00000007   /* Transmit SCC4 Clock Source Mask */
+DECL|macro|CMXSCR_RS1CS_BRG1
+mdefine_line|#define CMXSCR_RS1CS_BRG1  0x00000000   /* SCC1 Rx Clock Source is BRG1 */
+DECL|macro|CMXSCR_RS1CS_BRG2
+mdefine_line|#define CMXSCR_RS1CS_BRG2  0x08000000   /* SCC1 Rx Clock Source is BRG2 */
+DECL|macro|CMXSCR_RS1CS_BRG3
+mdefine_line|#define CMXSCR_RS1CS_BRG3  0x10000000   /* SCC1 Rx Clock Source is BRG3 */
+DECL|macro|CMXSCR_RS1CS_BRG4
+mdefine_line|#define CMXSCR_RS1CS_BRG4  0x18000000   /* SCC1 Rx Clock Source is BRG4 */
+DECL|macro|CMXSCR_RS1CS_CLK11
+mdefine_line|#define CMXSCR_RS1CS_CLK11 0x20000000   /* SCC1 Rx Clock Source is CLK11 */
+DECL|macro|CMXSCR_RS1CS_CLK12
+mdefine_line|#define CMXSCR_RS1CS_CLK12 0x28000000   /* SCC1 Rx Clock Source is CLK12 */
+DECL|macro|CMXSCR_RS1CS_CLK3
+mdefine_line|#define CMXSCR_RS1CS_CLK3  0x30000000   /* SCC1 Rx Clock Source is CLK3 */
+DECL|macro|CMXSCR_RS1CS_CLK4
+mdefine_line|#define CMXSCR_RS1CS_CLK4  0x38000000   /* SCC1 Rx Clock Source is CLK4 */
+DECL|macro|CMXSCR_TS1CS_BRG1
+mdefine_line|#define CMXSCR_TS1CS_BRG1  0x00000000   /* SCC1 Tx Clock Source is BRG1 */
+DECL|macro|CMXSCR_TS1CS_BRG2
+mdefine_line|#define CMXSCR_TS1CS_BRG2  0x01000000   /* SCC1 Tx Clock Source is BRG2 */
+DECL|macro|CMXSCR_TS1CS_BRG3
+mdefine_line|#define CMXSCR_TS1CS_BRG3  0x02000000   /* SCC1 Tx Clock Source is BRG3 */
+DECL|macro|CMXSCR_TS1CS_BRG4
+mdefine_line|#define CMXSCR_TS1CS_BRG4  0x03000000   /* SCC1 Tx Clock Source is BRG4 */
+DECL|macro|CMXSCR_TS1CS_CLK11
+mdefine_line|#define CMXSCR_TS1CS_CLK11 0x04000000   /* SCC1 Tx Clock Source is CLK11 */
+DECL|macro|CMXSCR_TS1CS_CLK12
+mdefine_line|#define CMXSCR_TS1CS_CLK12 0x05000000   /* SCC1 Tx Clock Source is CLK12 */
+DECL|macro|CMXSCR_TS1CS_CLK3
+mdefine_line|#define CMXSCR_TS1CS_CLK3  0x06000000   /* SCC1 Tx Clock Source is CLK3 */
+DECL|macro|CMXSCR_TS1CS_CLK4
+mdefine_line|#define CMXSCR_TS1CS_CLK4  0x07000000   /* SCC1 Tx Clock Source is CLK4 */
+DECL|macro|CMXSCR_RS2CS_BRG1
+mdefine_line|#define CMXSCR_RS2CS_BRG1  0x00000000   /* SCC2 Rx Clock Source is BRG1 */
+DECL|macro|CMXSCR_RS2CS_BRG2
+mdefine_line|#define CMXSCR_RS2CS_BRG2  0x00080000   /* SCC2 Rx Clock Source is BRG2 */
+DECL|macro|CMXSCR_RS2CS_BRG3
+mdefine_line|#define CMXSCR_RS2CS_BRG3  0x00100000   /* SCC2 Rx Clock Source is BRG3 */
+DECL|macro|CMXSCR_RS2CS_BRG4
+mdefine_line|#define CMXSCR_RS2CS_BRG4  0x00180000   /* SCC2 Rx Clock Source is BRG4 */
+DECL|macro|CMXSCR_RS2CS_CLK11
+mdefine_line|#define CMXSCR_RS2CS_CLK11 0x00200000   /* SCC2 Rx Clock Source is CLK11 */
+DECL|macro|CMXSCR_RS2CS_CLK12
+mdefine_line|#define CMXSCR_RS2CS_CLK12 0x00280000   /* SCC2 Rx Clock Source is CLK12 */
+DECL|macro|CMXSCR_RS2CS_CLK3
+mdefine_line|#define CMXSCR_RS2CS_CLK3  0x00300000   /* SCC2 Rx Clock Source is CLK3 */
+DECL|macro|CMXSCR_RS2CS_CLK4
+mdefine_line|#define CMXSCR_RS2CS_CLK4  0x00380000   /* SCC2 Rx Clock Source is CLK4 */
+DECL|macro|CMXSCR_TS2CS_BRG1
+mdefine_line|#define CMXSCR_TS2CS_BRG1  0x00000000   /* SCC2 Tx Clock Source is BRG1 */
+DECL|macro|CMXSCR_TS2CS_BRG2
+mdefine_line|#define CMXSCR_TS2CS_BRG2  0x00010000   /* SCC2 Tx Clock Source is BRG2 */
+DECL|macro|CMXSCR_TS2CS_BRG3
+mdefine_line|#define CMXSCR_TS2CS_BRG3  0x00020000   /* SCC2 Tx Clock Source is BRG3 */
+DECL|macro|CMXSCR_TS2CS_BRG4
+mdefine_line|#define CMXSCR_TS2CS_BRG4  0x00030000   /* SCC2 Tx Clock Source is BRG4 */
+DECL|macro|CMXSCR_TS2CS_CLK11
+mdefine_line|#define CMXSCR_TS2CS_CLK11 0x00040000   /* SCC2 Tx Clock Source is CLK11 */
+DECL|macro|CMXSCR_TS2CS_CLK12
+mdefine_line|#define CMXSCR_TS2CS_CLK12 0x00050000   /* SCC2 Tx Clock Source is CLK12 */
+DECL|macro|CMXSCR_TS2CS_CLK3
+mdefine_line|#define CMXSCR_TS2CS_CLK3  0x00060000   /* SCC2 Tx Clock Source is CLK3 */
+DECL|macro|CMXSCR_TS2CS_CLK4
+mdefine_line|#define CMXSCR_TS2CS_CLK4  0x00070000   /* SCC2 Tx Clock Source is CLK4 */
+DECL|macro|CMXSCR_RS3CS_BRG1
+mdefine_line|#define CMXSCR_RS3CS_BRG1  0x00000000   /* SCC3 Rx Clock Source is BRG1 */
+DECL|macro|CMXSCR_RS3CS_BRG2
+mdefine_line|#define CMXSCR_RS3CS_BRG2  0x00000800   /* SCC3 Rx Clock Source is BRG2 */
+DECL|macro|CMXSCR_RS3CS_BRG3
+mdefine_line|#define CMXSCR_RS3CS_BRG3  0x00001000   /* SCC3 Rx Clock Source is BRG3 */
+DECL|macro|CMXSCR_RS3CS_BRG4
+mdefine_line|#define CMXSCR_RS3CS_BRG4  0x00001800   /* SCC3 Rx Clock Source is BRG4 */
+DECL|macro|CMXSCR_RS3CS_CLK5
+mdefine_line|#define CMXSCR_RS3CS_CLK5  0x00002000   /* SCC3 Rx Clock Source is CLK5 */
+DECL|macro|CMXSCR_RS3CS_CLK6
+mdefine_line|#define CMXSCR_RS3CS_CLK6  0x00002800   /* SCC3 Rx Clock Source is CLK6 */
+DECL|macro|CMXSCR_RS3CS_CLK7
+mdefine_line|#define CMXSCR_RS3CS_CLK7  0x00003000   /* SCC3 Rx Clock Source is CLK7 */
+DECL|macro|CMXSCR_RS3CS_CLK8
+mdefine_line|#define CMXSCR_RS3CS_CLK8  0x00003800   /* SCC3 Rx Clock Source is CLK8 */
+DECL|macro|CMXSCR_TS3CS_BRG1
+mdefine_line|#define CMXSCR_TS3CS_BRG1  0x00000000   /* SCC3 Tx Clock Source is BRG1 */
+DECL|macro|CMXSCR_TS3CS_BRG2
+mdefine_line|#define CMXSCR_TS3CS_BRG2  0x00000100   /* SCC3 Tx Clock Source is BRG2 */
+DECL|macro|CMXSCR_TS3CS_BRG3
+mdefine_line|#define CMXSCR_TS3CS_BRG3  0x00000200   /* SCC3 Tx Clock Source is BRG3 */
+DECL|macro|CMXSCR_TS3CS_BRG4
+mdefine_line|#define CMXSCR_TS3CS_BRG4  0x00000300   /* SCC3 Tx Clock Source is BRG4 */
+DECL|macro|CMXSCR_TS3CS_CLK5
+mdefine_line|#define CMXSCR_TS3CS_CLK5  0x00000400   /* SCC3 Tx Clock Source is CLK5 */
+DECL|macro|CMXSCR_TS3CS_CLK6
+mdefine_line|#define CMXSCR_TS3CS_CLK6  0x00000500   /* SCC3 Tx Clock Source is CLK6 */
+DECL|macro|CMXSCR_TS3CS_CLK7
+mdefine_line|#define CMXSCR_TS3CS_CLK7  0x00000600   /* SCC3 Tx Clock Source is CLK7 */
+DECL|macro|CMXSCR_TS3CS_CLK8
+mdefine_line|#define CMXSCR_TS3CS_CLK8  0x00000700   /* SCC3 Tx Clock Source is CLK8 */
+DECL|macro|CMXSCR_RS4CS_BRG1
+mdefine_line|#define CMXSCR_RS4CS_BRG1  0x00000000   /* SCC4 Rx Clock Source is BRG1 */
+DECL|macro|CMXSCR_RS4CS_BRG2
+mdefine_line|#define CMXSCR_RS4CS_BRG2  0x00000008   /* SCC4 Rx Clock Source is BRG2 */
+DECL|macro|CMXSCR_RS4CS_BRG3
+mdefine_line|#define CMXSCR_RS4CS_BRG3  0x00000010   /* SCC4 Rx Clock Source is BRG3 */
+DECL|macro|CMXSCR_RS4CS_BRG4
+mdefine_line|#define CMXSCR_RS4CS_BRG4  0x00000018   /* SCC4 Rx Clock Source is BRG4 */
+DECL|macro|CMXSCR_RS4CS_CLK5
+mdefine_line|#define CMXSCR_RS4CS_CLK5  0x00000020   /* SCC4 Rx Clock Source is CLK5 */
+DECL|macro|CMXSCR_RS4CS_CLK6
+mdefine_line|#define CMXSCR_RS4CS_CLK6  0x00000028   /* SCC4 Rx Clock Source is CLK6 */
+DECL|macro|CMXSCR_RS4CS_CLK7
+mdefine_line|#define CMXSCR_RS4CS_CLK7  0x00000030   /* SCC4 Rx Clock Source is CLK7 */
+DECL|macro|CMXSCR_RS4CS_CLK8
+mdefine_line|#define CMXSCR_RS4CS_CLK8  0x00000038   /* SCC4 Rx Clock Source is CLK8 */
+DECL|macro|CMXSCR_TS4CS_BRG1
+mdefine_line|#define CMXSCR_TS4CS_BRG1  0x00000000   /* SCC4 Tx Clock Source is BRG1 */
+DECL|macro|CMXSCR_TS4CS_BRG2
+mdefine_line|#define CMXSCR_TS4CS_BRG2  0x00000001   /* SCC4 Tx Clock Source is BRG2 */
+DECL|macro|CMXSCR_TS4CS_BRG3
+mdefine_line|#define CMXSCR_TS4CS_BRG3  0x00000002   /* SCC4 Tx Clock Source is BRG3 */
+DECL|macro|CMXSCR_TS4CS_BRG4
+mdefine_line|#define CMXSCR_TS4CS_BRG4  0x00000003   /* SCC4 Tx Clock Source is BRG4 */
+DECL|macro|CMXSCR_TS4CS_CLK5
+mdefine_line|#define CMXSCR_TS4CS_CLK5  0x00000004   /* SCC4 Tx Clock Source is CLK5 */
+DECL|macro|CMXSCR_TS4CS_CLK6
+mdefine_line|#define CMXSCR_TS4CS_CLK6  0x00000005   /* SCC4 Tx Clock Source is CLK6 */
+DECL|macro|CMXSCR_TS4CS_CLK7
+mdefine_line|#define CMXSCR_TS4CS_CLK7  0x00000006   /* SCC4 Tx Clock Source is CLK7 */
+DECL|macro|CMXSCR_TS4CS_CLK8
+mdefine_line|#define CMXSCR_TS4CS_CLK8  0x00000007   /* SCC4 Tx Clock Source is CLK8 */
+macro_line|#endif /* __CPM2__ */
 macro_line|#endif /* __KERNEL__ */
 eof

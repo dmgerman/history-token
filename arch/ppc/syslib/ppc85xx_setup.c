@@ -14,6 +14,7 @@ macro_line|#include &lt;asm/immap_85xx.h&gt;
 macro_line|#include &lt;asm/mmu.h&gt;
 macro_line|#include &lt;asm/ocp.h&gt;
 macro_line|#include &lt;asm/kgdb.h&gt;
+macro_line|#include &lt;syslib/ppc85xx_setup.h&gt;
 multiline_comment|/* Return the amount of memory */
 r_int
 r_int

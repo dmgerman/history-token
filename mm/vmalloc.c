@@ -1856,6 +1856,36 @@ c_func
 id|vmalloc
 )paren
 suffix:semicolon
+multiline_comment|/**&n; *&t;vmalloc_exec  -  allocate virtually contiguous, executable memory&n; *&n; *&t;@size:&t;&t;allocation size&n; *&n; *&t;Kernel-internal function to allocate enough pages to cover @size&n; *&t;the page level allocator and map them into contiguous and&n; *&t;executable kernel virtual space.&n; *&n; *&t;For tight cotrol over page level allocator and protection flags&n; *&t;use __vmalloc() instead.&n; */
+macro_line|#ifndef PAGE_KERNEL_EXEC
+DECL|macro|PAGE_KERNEL_EXEC
+macro_line|# define PAGE_KERNEL_EXEC PAGE_KERNEL
+macro_line|#endif
+DECL|function|vmalloc_exec
+r_void
+op_star
+id|vmalloc_exec
+c_func
+(paren
+r_int
+r_int
+id|size
+)paren
+(brace
+r_return
+id|__vmalloc
+c_func
+(paren
+id|size
+comma
+id|GFP_KERNEL
+op_or
+id|__GFP_HIGHMEM
+comma
+id|PAGE_KERNEL_EXEC
+)paren
+suffix:semicolon
+)brace
 multiline_comment|/**&n; *&t;vmalloc_32  -  allocate virtually contiguous memory (32bit addressable)&n; *&n; *&t;@size:&t;&t;allocation size&n; *&n; *&t;Allocate enough 32bit PA addressable pages to cover @size from the&n; *&t;page level allocator and map them into contiguous kernel virtual space.&n; */
 DECL|function|vmalloc_32
 r_void

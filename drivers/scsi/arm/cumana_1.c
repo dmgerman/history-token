@@ -11,7 +11,7 @@ macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &quot;../scsi.h&quot;
-macro_line|#include &quot;../hosts.h&quot;
+macro_line|#include &lt;scsi/scsi_host.h&gt;
 macro_line|#include &lt;scsi/scsicam.h&gt;
 DECL|macro|AUTOSENSE
 mdefine_line|#define AUTOSENSE

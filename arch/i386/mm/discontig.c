@@ -837,6 +837,7 @@ r_int
 r_int
 id|reserve_pages
 suffix:semicolon
+multiline_comment|/*&n;&t; * When mapping a NUMA machine we allocate the node_mem_map arrays&n;&t; * from node local memory.  They are then mapped directly into KVA&n;&t; * between zone normal and vmalloc space.  Calculate the size of&n;&t; * this space and use it to adjust the boundry between ZONE_NORMAL&n;&t; * and ZONE_HIGHMEM.&n;&t; */
 id|get_memcfg_numa
 c_func
 (paren
@@ -873,6 +874,28 @@ id|find_max_low_pfn
 c_func
 (paren
 )paren
+op_minus
+id|reserve_pages
+suffix:semicolon
+id|printk
+c_func
+(paren
+l_string|&quot;reserve_pages = %ld find_max_low_pfn() ~ %ld&bslash;n&quot;
+comma
+id|reserve_pages
+comma
+id|max_low_pfn
+op_plus
+id|reserve_pages
+)paren
+suffix:semicolon
+id|printk
+c_func
+(paren
+l_string|&quot;max_pfn = %ld&bslash;n&quot;
+comma
+id|max_pfn
+)paren
 suffix:semicolon
 macro_line|#ifdef CONFIG_HIGHMEM
 id|highstart_pfn
@@ -908,14 +931,6 @@ id|highstart_pfn
 )paren
 suffix:semicolon
 macro_line|#endif
-id|system_max_low_pfn
-op_assign
-id|max_low_pfn
-op_assign
-id|max_low_pfn
-op_minus
-id|reserve_pages
-suffix:semicolon
 id|printk
 c_func
 (paren
@@ -979,7 +994,11 @@ op_assign
 id|pfn_to_kaddr
 c_func
 (paren
+(paren
 id|highstart_pfn
+op_plus
+id|reserve_pages
+)paren
 op_minus
 id|node_remap_offset
 (braket
@@ -1014,6 +1033,8 @@ id|pfn_to_kaddr
 c_func
 (paren
 id|highstart_pfn
+op_plus
+id|reserve_pages
 op_minus
 id|node_remap_offset
 (braket
@@ -1042,6 +1063,12 @@ c_func
 id|highstart_pfn
 )paren
 )paren
+suffix:semicolon
+id|vmalloc_earlyreserve
+op_assign
+id|reserve_pages
+op_star
+id|PAGE_SIZE
 suffix:semicolon
 r_for
 c_loop

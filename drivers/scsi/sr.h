@@ -2,9 +2,11 @@ multiline_comment|/*&n; *      sr.h by David Giller&n; *      CD-ROM disk driver
 macro_line|#ifndef _SR_H
 DECL|macro|_SR_H
 mdefine_line|#define _SR_H
-macro_line|#include &quot;scsi.h&quot;
 macro_line|#include &lt;linux/genhd.h&gt;
 macro_line|#include &lt;linux/kref.h&gt;
+r_struct
+id|scsi_device
+suffix:semicolon
 multiline_comment|/* The CDROM is fairly slow, so we need a little extra time */
 multiline_comment|/* In fact, it is very slow if it has to spin up first */
 DECL|macro|IOCTL_TIMEOUT
@@ -26,7 +28,8 @@ id|capacity
 suffix:semicolon
 multiline_comment|/* size in blocks                       */
 DECL|member|device
-id|Scsi_Device
+r_struct
+id|scsi_device
 op_star
 id|device
 suffix:semicolon

@@ -2,7 +2,6 @@ multiline_comment|/*&n; * QLogic ISP2200 device driver for Linux 2.6.x&n; * Copy
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
-macro_line|#include &quot;qla_os.h&quot;
 macro_line|#include &quot;qla_def.h&quot;
 DECL|variable|qla_driver_name
 r_static

@@ -3712,9 +3712,10 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|radeon_accel_disabled
-c_func
 (paren
+id|info-&gt;flags
+op_amp
+id|FBINFO_HWACCEL_DISABLED
 )paren
 )paren
 (brace

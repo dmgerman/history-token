@@ -354,9 +354,9 @@ DECL|macro|TASK_UNMAPPED_64
 mdefine_line|#define TASK_UNMAPPED_64 PAGE_ALIGN(TASK_SIZE/3) 
 DECL|macro|TASK_UNMAPPED_BASE
 mdefine_line|#define TASK_UNMAPPED_BASE&t;&bslash;&n;&t;(test_thread_flag(TIF_IA32) ? TASK_UNMAPPED_32 : TASK_UNMAPPED_64)  
-multiline_comment|/*&n; * Size of io_bitmap, covering ports 0 to 0x3ff.&n; */
+multiline_comment|/*&n; * Size of io_bitmap.&n; */
 DECL|macro|IO_BITMAP_BITS
-mdefine_line|#define IO_BITMAP_BITS  1024
+mdefine_line|#define IO_BITMAP_BITS  65536
 DECL|macro|IO_BITMAP_BYTES
 mdefine_line|#define IO_BITMAP_BYTES (IO_BITMAP_BITS/8)
 DECL|macro|IO_BITMAP_LONGS

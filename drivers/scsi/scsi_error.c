@@ -8,9 +8,13 @@ macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/blkdev.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
-macro_line|#include &lt;scsi/scsi_ioctl.h&gt;
-macro_line|#include &quot;scsi.h&quot;
+macro_line|#include &lt;scsi/scsi.h&gt;
+macro_line|#include &lt;scsi/scsi_dbg.h&gt;
+macro_line|#include &lt;scsi/scsi_device.h&gt;
+macro_line|#include &lt;scsi/scsi_eh.h&gt;
 macro_line|#include &lt;scsi/scsi_host.h&gt;
+macro_line|#include &lt;scsi/scsi_ioctl.h&gt;
+macro_line|#include &lt;scsi/scsi_request.h&gt;
 macro_line|#include &quot;scsi_priv.h&quot;
 macro_line|#include &quot;scsi_logging.h&quot;
 DECL|macro|SENSE_TIMEOUT
@@ -343,6 +347,66 @@ comma
 id|TIMEOUT_ERROR
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|scmd-&gt;device-&gt;host-&gt;hostt-&gt;eh_timed_out
+)paren
+r_switch
+c_cond
+(paren
+id|scmd-&gt;device-&gt;host-&gt;hostt
+op_member_access_from_pointer
+id|eh_timed_out
+c_func
+(paren
+id|scmd
+)paren
+)paren
+(brace
+r_case
+id|EH_HANDLED
+suffix:colon
+id|__scsi_done
+c_func
+(paren
+id|scmd
+)paren
+suffix:semicolon
+r_return
+suffix:semicolon
+r_case
+id|EH_RESET_TIMER
+suffix:colon
+multiline_comment|/* This allows a single retry even of a command&n;&t;&t;&t; * with allowed == 0 */
+r_if
+c_cond
+(paren
+id|scmd-&gt;retries
+op_increment
+OG
+id|scmd-&gt;allowed
+)paren
+r_break
+suffix:semicolon
+id|scsi_add_timer
+c_func
+(paren
+id|scmd
+comma
+id|scmd-&gt;timeout_per_command
+comma
+id|scsi_times_out
+)paren
+suffix:semicolon
+r_return
+suffix:semicolon
+r_case
+id|EH_NOT_HANDLED
+suffix:colon
+r_break
+suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
@@ -1720,7 +1784,7 @@ c_func
 (paren
 l_int|3
 comma
-id|print_sense
+id|scsi_print_sense
 c_func
 (paren
 l_string|&quot;bh&quot;

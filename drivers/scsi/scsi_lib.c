@@ -7,9 +7,13 @@ macro_line|#include &lt;linux/mempool.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
+macro_line|#include &lt;scsi/scsi.h&gt;
+macro_line|#include &lt;scsi/scsi_dbg.h&gt;
+macro_line|#include &lt;scsi/scsi_device.h&gt;
 macro_line|#include &lt;scsi/scsi_driver.h&gt;
+macro_line|#include &lt;scsi/scsi_eh.h&gt;
 macro_line|#include &lt;scsi/scsi_host.h&gt;
-macro_line|#include &quot;scsi.h&quot;
+macro_line|#include &lt;scsi/scsi_request.h&gt;
 macro_line|#include &quot;scsi_priv.h&quot;
 macro_line|#include &quot;scsi_logging.h&quot;
 DECL|macro|SG_MEMPOOL_NR
@@ -2214,13 +2218,13 @@ r_int
 id|cmd-&gt;device-&gt;lun
 )paren
 suffix:semicolon
-id|print_command
+id|__scsi_print_command
 c_func
 (paren
 id|cmd-&gt;data_cmnd
 )paren
 suffix:semicolon
-id|print_sense
+id|scsi_print_sense
 c_func
 (paren
 l_string|&quot;&quot;
@@ -2308,7 +2312,7 @@ id|result
 op_amp
 id|DRIVER_SENSE
 )paren
-id|print_sense
+id|scsi_print_sense
 c_func
 (paren
 l_string|&quot;&quot;

@@ -9,6 +9,9 @@ macro_line|#ifdef CONFIG_85xx
 macro_line|#ifdef CONFIG_MPC8540_ADS
 macro_line|#include &lt;platforms/85xx/mpc8540_ads.h&gt;
 macro_line|#endif
+macro_line|#ifdef CONFIG_SBC8560
+macro_line|#include &lt;platforms/85xx/sbc8560.h&gt;
+macro_line|#endif
 DECL|macro|_IO_BASE
 mdefine_line|#define _IO_BASE        isa_io_base
 DECL|macro|_ISA_MEM_BASE

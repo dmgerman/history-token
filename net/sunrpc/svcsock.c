@@ -1478,7 +1478,6 @@ dot
 id|iov_len
 )paren
 (brace
-multiline_comment|/* The tail *will* be in respages[0]; */
 id|result
 op_assign
 id|sock-&gt;ops

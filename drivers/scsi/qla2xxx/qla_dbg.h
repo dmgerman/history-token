@@ -205,8 +205,12 @@ DECL|macro|DEBUG14
 mdefine_line|#define DEBUG14(x)&t;do {} while (0)
 macro_line|#endif
 multiline_comment|/*&n; * Firmware Dump structure definition&n; */
-DECL|macro|FW_DUMP_SIZE
-mdefine_line|#define FW_DUMP_SIZE&t;0xBC000&t;&t;/* bytes */
+DECL|macro|FW_DUMP_SIZE_128K
+mdefine_line|#define FW_DUMP_SIZE_128K&t;0xBC000
+DECL|macro|FW_DUMP_SIZE_512K
+mdefine_line|#define FW_DUMP_SIZE_512K&t;0x2FC000
+DECL|macro|FW_DUMP_SIZE_1M
+mdefine_line|#define FW_DUMP_SIZE_1M&t;&t;0x5FC000
 DECL|struct|qla2300_fw_dump
 r_struct
 id|qla2300_fw_dump
@@ -352,7 +356,7 @@ DECL|member|data_ram
 r_uint16
 id|data_ram
 (braket
-l_int|0xF000
+l_int|1
 )braket
 suffix:semicolon
 )brace

@@ -1056,6 +1056,18 @@ r_struct
 id|efi_memory_map
 id|memmap
 suffix:semicolon
+macro_line|#ifdef CONFIG_EFI_PCDP
+r_extern
+r_void
+id|__init
+id|efi_setup_pcdp_console
+c_func
+(paren
+r_char
+op_star
+)paren
+suffix:semicolon
+macro_line|#endif
 multiline_comment|/*&n; * We play games with efi_enabled so that the compiler will, if possible, remove&n; * EFI-related code altogether.&n; */
 macro_line|#ifdef CONFIG_EFI
 macro_line|# ifdef CONFIG_X86

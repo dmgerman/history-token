@@ -36,6 +36,7 @@ macro_line|#include &lt;linux/rmap.h&gt;
 macro_line|#include &lt;linux/mempolicy.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/bugs.h&gt;
+macro_line|#include &lt;asm/setup.h&gt;
 multiline_comment|/*&n; * This is one of the first .c files built. Error out early&n; * if we have compiler trouble..&n; */
 macro_line|#if __GNUC__ == 2 &amp;&amp; __GNUC_MINOR__ == 96
 macro_line|#ifdef CONFIG_FRAME_POINTER

@@ -30,6 +30,7 @@ macro_line|#include &lt;linux/sysrq.h&gt;
 macro_line|#include &lt;linux/reboot.h&gt;
 macro_line|#endif
 macro_line|#include &lt;linux/notifier.h&gt;
+macro_line|#include &lt;asm/setup.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 r_extern
 r_struct

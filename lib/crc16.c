@@ -1,11 +1,12 @@
-multiline_comment|/*********************************************************************&n; *                &n; * Filename:      crc.c&n; * Version:       0.1&n; * Description:   CRC calculation routines&n; * Status:        Experimental.&n; * Author:        Dag Brattli &lt;dagb@cs.uit.no&gt;&n; * Created at:    Mon Aug  4 20:40:53 1997&n; * Modified at:   Sun May  2 20:28:08 1999&n; * Modified by:   Dag Brattli &lt;dagb@cs.uit.no&gt;&n; * Sources:       ppp.c by Michael Callahan &lt;callahan@maths.ox.ac.uk&gt;&n; *                Al Longyear &lt;longyear@netcom.com&gt;&n; *&n; ********************************************************************/
-macro_line|#include &lt;net/irda/crc.h&gt;
+multiline_comment|/*&n; *&t;linux/lib/crc16.c&n; *&n; *&t;This source code is licensed under the GNU General Public License,&n; *&t;Version 2. See the file COPYING for more details.&n; */
+macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
-multiline_comment|/*&n; * This mysterious table is just the CRC of each possible byte.  It can be&n; * computed using the standard bit-at-a-time methods.  The polynomial can&n; * be seen in entry 128, 0x8408.  This corresponds to x^0 + x^5 + x^12.&n; * Add the implicit x^16, and you have the standard CRC-CCITT.&n; */
-DECL|variable|irda_crc16_table
-id|__u16
+macro_line|#include &lt;linux/crc16.h&gt;
+multiline_comment|/*&n; * This mysterious table is just the CRC of each possible byte. It can be&n; * computed using the standard bit-at-a-time methods. The polynomial can&n; * be seen in entry 128, 0x8408. This corresponds to x^0 + x^5 + x^12.&n; * Add the implicit x^16, and you have the standard CRC-CCITT.&n; */
+DECL|variable|crc16_table
+id|u16
 r_const
-id|irda_crc16_table
+id|crc16_table
 (braket
 l_int|256
 )braket
@@ -524,25 +525,26 @@ comma
 l_int|0x0f78
 )brace
 suffix:semicolon
-DECL|variable|irda_crc16_table
+DECL|variable|crc16_table
 id|EXPORT_SYMBOL
 c_func
 (paren
-id|irda_crc16_table
+id|crc16_table
 )paren
 suffix:semicolon
-DECL|function|irda_calc_crc16
-id|__u16
-id|irda_calc_crc16
+multiline_comment|/**&n; *&t;crc16 - recompute the CRC for the data buffer&n; *&t;@crc - previous CRC value&n; *&t;@buffer - data pointer&n; *&t;@len - number of bytes in the buffer&n; */
+DECL|function|crc16
+id|u16
+id|crc16
 c_func
 (paren
-id|__u16
-id|fcs
+id|u16
+id|crc
 comma
-id|__u8
+id|u8
 r_const
 op_star
-id|buf
+id|buffer
 comma
 r_int
 id|len
@@ -554,27 +556,39 @@ c_loop
 id|len
 op_decrement
 )paren
-id|fcs
+id|crc
 op_assign
-id|irda_fcs
+id|crc16_byte
 c_func
 (paren
-id|fcs
+id|crc
 comma
 op_star
-id|buf
+id|buffer
 op_increment
 )paren
 suffix:semicolon
 r_return
-id|fcs
+id|crc
 suffix:semicolon
 )brace
-DECL|variable|irda_calc_crc16
+DECL|variable|crc16
 id|EXPORT_SYMBOL
 c_func
 (paren
-id|irda_calc_crc16
+id|crc16
+)paren
+suffix:semicolon
+id|MODULE_DESCRIPTION
+c_func
+(paren
+l_string|&quot;CRC16 calculations&quot;
+)paren
+suffix:semicolon
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
 eof

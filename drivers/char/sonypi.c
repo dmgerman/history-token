@@ -11,6 +11,7 @@ macro_line|#include &lt;linux/poll.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/wait.h&gt;
 macro_line|#include &lt;linux/acpi.h&gt;
+macro_line|#include &lt;linux/dmi.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
@@ -3941,6 +3942,50 @@ l_string|&quot;sonypi: removed.&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
+DECL|variable|sonypi_dmi_table
+r_static
+r_struct
+id|dmi_system_id
+id|__initdata
+id|sonypi_dmi_table
+(braket
+)braket
+op_assign
+(brace
+(brace
+dot
+id|ident
+op_assign
+l_string|&quot;Sony Vaio&quot;
+comma
+dot
+id|matches
+op_assign
+(brace
+id|DMI_MATCH
+c_func
+(paren
+id|DMI_SYS_VENDOR
+comma
+l_string|&quot;Sony Corporation&quot;
+)paren
+comma
+id|DMI_MATCH
+c_func
+(paren
+id|DMI_PRODUCT_NAME
+comma
+l_string|&quot;PCG-&quot;
+)paren
+comma
+)brace
+comma
+)brace
+comma
+(brace
+)brace
+)brace
+suffix:semicolon
 DECL|function|sonypi_init_module
 r_static
 r_int
@@ -3961,7 +4006,11 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|is_sony_vaio_laptop
+id|dmi_check_system
+c_func
+(paren
+id|sonypi_dmi_table
+)paren
 )paren
 (brace
 id|pcidev

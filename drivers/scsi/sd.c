@@ -11,16 +11,19 @@ macro_line|#include &lt;linux/hdreg.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
-macro_line|#include &lt;linux/reboot.h&gt;
-macro_line|#include &lt;linux/vmalloc.h&gt;
 macro_line|#include &lt;linux/blkdev.h&gt;
 macro_line|#include &lt;linux/blkpg.h&gt;
 macro_line|#include &lt;linux/kref.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
-macro_line|#include &quot;scsi.h&quot;
-macro_line|#include &lt;scsi/scsi_host.h&gt;
+macro_line|#include &lt;scsi/scsi.h&gt;
+macro_line|#include &lt;scsi/scsi_cmnd.h&gt;
+macro_line|#include &lt;scsi/scsi_dbg.h&gt;
+macro_line|#include &lt;scsi/scsi_device.h&gt;
 macro_line|#include &lt;scsi/scsi_driver.h&gt;
+macro_line|#include &lt;scsi/scsi_eh.h&gt;
+macro_line|#include &lt;scsi/scsi_host.h&gt;
 macro_line|#include &lt;scsi/scsi_ioctl.h&gt;
+macro_line|#include &lt;scsi/scsi_request.h&gt;
 macro_line|#include &lt;scsi/scsicam.h&gt;
 macro_line|#include &quot;scsi_logging.h&quot;
 multiline_comment|/*&n; * Remaining dev_t-handling stuff&n; */
@@ -2935,7 +2938,7 @@ id|NO_SENSE
 suffix:colon
 multiline_comment|/* LLDD got sense data */
 multiline_comment|/*&n;&t;&t;&t; * Inform the user, but make sure that it&squot;s not treated&n;&t;&t;&t; * as a hard error.&n;&t;&t;&t; */
-id|print_sense
+id|scsi_print_sense
 c_func
 (paren
 l_string|&quot;sd&quot;
@@ -3585,7 +3588,7 @@ comma
 id|diskname
 )paren
 suffix:semicolon
-id|print_req_sense
+id|scsi_print_req_sense
 c_func
 (paren
 l_string|&quot;&quot;
@@ -3944,7 +3947,7 @@ id|the_result
 op_amp
 id|DRIVER_SENSE
 )paren
-id|print_req_sense
+id|scsi_print_req_sense
 c_func
 (paren
 l_string|&quot;sd&quot;
@@ -6315,7 +6318,7 @@ id|res
 op_amp
 id|DRIVER_SENSE
 )paren
-id|print_req_sense
+id|scsi_print_req_sense
 c_func
 (paren
 l_string|&quot;sd&quot;

@@ -5587,6 +5587,8 @@ r_return
 id|error
 suffix:semicolon
 )brace
+id|error
+op_assign
 id|inode_setattr
 c_func
 (paren
@@ -5598,9 +5600,14 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+op_logical_neg
+id|error
+op_logical_and
+(paren
 id|iattr-&gt;ia_valid
 op_amp
 id|ATTR_MODE
+)paren
 )paren
 id|error
 op_assign

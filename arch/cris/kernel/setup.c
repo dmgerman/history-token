@@ -7,6 +7,7 @@ macro_line|#include &lt;linux/bootmem.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
 macro_line|#include &lt;linux/seq_file.h&gt;
 macro_line|#include &lt;linux/tty.h&gt;
+macro_line|#include &lt;asm/setup.h&gt;
 multiline_comment|/*&n; * Setup options&n; */
 DECL|struct|drive_info_struct
 DECL|member|dummy

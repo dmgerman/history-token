@@ -99,8 +99,10 @@ macro_line|#else
 DECL|macro|RS_TABLE_SIZE
 mdefine_line|#define RS_TABLE_SIZE  2
 macro_line|#endif
+macro_line|#ifndef BASE_BAUD
 DECL|macro|BASE_BAUD
-mdefine_line|#define BASE_BAUD 0
+mdefine_line|#define BASE_BAUD 115200
+macro_line|#endif
 DECL|macro|STD_UART_OP
 mdefine_line|#define STD_UART_OP(num)&t;&t;&t;&t;&t;&bslash;&n;&t;{ 0, BASE_BAUD, num, MPC85xx_IRQ_DUART,&t;&t;&t;&bslash;&n;&t;&t;(ASYNC_BOOT_AUTOCONF | ASYNC_SKIP_TEST),&t;&bslash;&n;&t;&t;iomem_base: (u8 *)MPC85XX_##num##_SERIAL,&t;&bslash;&n;&t;&t;io_type: SERIAL_IO_MEM},
 multiline_comment|/* Offset of CPM register space */

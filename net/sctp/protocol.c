@@ -2132,7 +2132,7 @@ id|newsk
 )paren
 )paren
 (brace
-id|inet_sock_release
+id|sk_common_release
 c_func
 (paren
 id|newsk
@@ -3072,13 +3072,13 @@ multiline_comment|/* Looks harmless.  */
 dot
 id|setsockopt
 op_assign
-id|inet_setsockopt
+id|sock_common_setsockopt
 comma
 multiline_comment|/* IP_SOL IP_OPTION is a problem. */
 dot
 id|getsockopt
 op_assign
-id|inet_getsockopt
+id|sock_common_getsockopt
 comma
 dot
 id|sendmsg
@@ -3088,7 +3088,7 @@ comma
 dot
 id|recvmsg
 op_assign
-id|inet_recvmsg
+id|sock_common_recvmsg
 comma
 dot
 id|mmap

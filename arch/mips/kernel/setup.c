@@ -26,6 +26,7 @@ macro_line|#include &lt;asm/addrspace.h&gt;
 macro_line|#include &lt;asm/bootinfo.h&gt;
 macro_line|#include &lt;asm/cpu.h&gt;
 macro_line|#include &lt;asm/sections.h&gt;
+macro_line|#include &lt;asm/setup.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 DECL|variable|cpu_data
 r_struct
@@ -1849,10 +1850,7 @@ id|saved_command_line
 comma
 id|command_line
 comma
-r_sizeof
-(paren
-id|saved_command_line
-)paren
+id|COMMAND_LINE_SIZE
 )paren
 suffix:semicolon
 op_star

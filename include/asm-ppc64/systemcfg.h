@@ -157,6 +157,10 @@ DECL|macro|PV_POWER4p
 mdefine_line|#define PV_POWER4p      0x0038
 DECL|macro|PV_GPUL
 mdefine_line|#define PV_GPUL&t;&t;0x0039
+DECL|macro|PV_POWER5
+mdefine_line|#define PV_POWER5&t;0x003a
+DECL|macro|PV_970FX
+mdefine_line|#define PV_970FX&t;0x003c
 DECL|macro|PV_630
 mdefine_line|#define PV_630          0x0040
 DECL|macro|PV_630p

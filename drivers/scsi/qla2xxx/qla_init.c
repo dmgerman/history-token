@@ -1,6 +1,6 @@
 multiline_comment|/*&n; *                  QLOGIC LINUX SOFTWARE&n; *&n; * QLogic ISP2x00 device driver for Linux 2.6.x&n; * Copyright (C) 2003-2004 QLogic Corporation&n; * (www.qlogic.com)&n; *&n; * This program is free software; you can redistribute it and/or modify it&n; * under the terms of the GNU General Public License as published by the&n; * Free Software Foundation; either version 2, or (at your option) any&n; * later version.&n; *&n; * This program is distributed in the hope that it will be useful, but&n; * WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU&n; * General Public License for more details.&n; *&n; */
-macro_line|#include &quot;qla_os.h&quot;
 macro_line|#include &quot;qla_def.h&quot;
+macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &quot;qla_devtbl.h&quot;
 multiline_comment|/* XXX(hch): this is ugly, but we don&squot;t want to pull in exioctl.h */
 macro_line|#ifndef EXT_IS_LUN_BIT_SET
@@ -496,11 +496,11 @@ suffix:semicolon
 multiline_comment|/* Clear adapter flags. */
 id|ha-&gt;flags.online
 op_assign
-id|FALSE
+l_int|0
 suffix:semicolon
 id|ha-&gt;flags.reset_active
 op_assign
-id|FALSE
+l_int|0
 suffix:semicolon
 id|atomic_set
 c_func
@@ -883,25 +883,6 @@ op_eq
 id|QLA_SUCCESS
 )paren
 (brace
-multiline_comment|/* Retrieve firmware information */
-id|qla2x00_get_fw_version
-c_func
-(paren
-id|ha
-comma
-op_amp
-id|ha-&gt;fw_major_version
-comma
-op_amp
-id|ha-&gt;fw_minor_version
-comma
-op_amp
-id|ha-&gt;fw_subminor_version
-comma
-op_amp
-id|ha-&gt;fw_attributes
-)paren
-suffix:semicolon
 id|clear_bit
 c_func
 (paren
@@ -933,7 +914,7 @@ l_int|0
 suffix:semicolon
 id|ha-&gt;flags.online
 op_assign
-id|TRUE
+l_int|1
 suffix:semicolon
 )brace
 r_else
@@ -3077,6 +3058,41 @@ c_func
 id|ha
 )paren
 suffix:semicolon
+multiline_comment|/* Retrieve firmware information. */
+r_if
+c_cond
+(paren
+id|rval
+op_eq
+id|QLA_SUCCESS
+op_logical_and
+id|ha-&gt;fw_major_version
+op_eq
+l_int|0
+)paren
+(brace
+id|qla2x00_get_fw_version
+c_func
+(paren
+id|ha
+comma
+op_amp
+id|ha-&gt;fw_major_version
+comma
+op_amp
+id|ha-&gt;fw_minor_version
+comma
+op_amp
+id|ha-&gt;fw_subminor_version
+comma
+op_amp
+id|ha-&gt;fw_attributes
+comma
+op_amp
+id|ha-&gt;fw_memory_size
+)paren
+suffix:semicolon
+)brace
 )brace
 r_else
 (brace
@@ -3862,9 +3878,15 @@ op_amp
 id|ha-&gt;loop_down_timer
 )paren
 op_logical_and
+(paren
 id|fw_state
 op_ge
 id|FSTATE_LOSS_OF_SYNC
+op_logical_or
+id|fw_state
+op_eq
+id|FSTATE_WAIT_AL_PA
+)paren
 )paren
 (brace
 multiline_comment|/* Loop down. Timeout on min_wait for states&n;&t;&t;&t;&t; * other than Wait for Login. &n;&t;&t;&t;&t; */
@@ -4425,7 +4447,7 @@ id|reg
 op_assign
 id|ha-&gt;iobase
 suffix:semicolon
-r_uint16
+r_uint8
 id|timer_mode
 suffix:semicolon
 id|rval
@@ -4782,8 +4804,6 @@ l_int|0
 )braket
 op_assign
 id|BIT_5
-op_or
-id|BIT_4
 suffix:semicolon
 id|nv-&gt;add_firmware_options
 (braket
@@ -5243,6 +5263,55 @@ l_int|0
 op_or_assign
 id|BIT_2
 suffix:semicolon
+multiline_comment|/*&n;&t;&t; * &squot;Point-to-point preferred, else loop&squot; is not a safe&n;&t;&t; * connection mode setting.&n;&t;&t; */
+r_if
+c_cond
+(paren
+(paren
+id|nv-&gt;add_firmware_options
+(braket
+l_int|0
+)braket
+op_amp
+(paren
+id|BIT_6
+op_or
+id|BIT_5
+op_or
+id|BIT_4
+)paren
+)paren
+op_eq
+(paren
+id|BIT_5
+op_or
+id|BIT_4
+)paren
+)paren
+(brace
+multiline_comment|/* Force &squot;loop preferred, else point-to-point&squot;. */
+id|nv-&gt;add_firmware_options
+(braket
+l_int|0
+)braket
+op_and_assign
+op_complement
+(paren
+id|BIT_6
+op_or
+id|BIT_5
+op_or
+id|BIT_4
+)paren
+suffix:semicolon
+id|nv-&gt;add_firmware_options
+(braket
+l_int|0
+)braket
+op_or_assign
+id|BIT_5
+suffix:semicolon
+)brace
 id|strcpy
 c_func
 (paren
@@ -5949,7 +6018,7 @@ suffix:semicolon
 )brace
 r_else
 (brace
-multiline_comment|/* TEST ZIO:&n;&t;&t; *&n;&t;&t; * icb-&gt;add_firmware_options[0] &amp;=&n;&t;&t; *    ~(BIT_3 | BIT_2 | BIT_1 | BIT_0);&n;&t;&t; * icb-&gt;add_firmware_options[0] |= (BIT_2 | BIT_0);&n;&t;&t; */
+multiline_comment|/* Enable ZIO -- Support mode 5 only. */
 id|timer_mode
 op_assign
 id|icb-&gt;add_firmware_options
@@ -5967,12 +6036,43 @@ op_or
 id|BIT_0
 )paren
 suffix:semicolon
+id|icb-&gt;add_firmware_options
+(braket
+l_int|0
+)braket
+op_and_assign
+op_complement
+(paren
+id|BIT_3
+op_or
+id|BIT_2
+op_or
+id|BIT_1
+op_or
+id|BIT_0
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|ql2xenablezio
+)paren
+id|timer_mode
+op_assign
+id|BIT_2
+op_or
+id|BIT_0
+suffix:semicolon
 r_if
 c_cond
 (paren
 id|timer_mode
 op_eq
-l_int|5
+(paren
+id|BIT_2
+op_or
+id|BIT_0
+)paren
 )paren
 (brace
 id|DEBUG2
@@ -6001,6 +6101,13 @@ l_string|&quot;ZIO enabled; timer delay (%d).&bslash;n&quot;
 comma
 id|ql2xintrdelaytimer
 )paren
+suffix:semicolon
+id|icb-&gt;add_firmware_options
+(braket
+l_int|0
+)braket
+op_or_assign
+id|timer_mode
 suffix:semicolon
 id|icb-&gt;interrupt_delay_timer
 op_assign
@@ -6321,7 +6428,7 @@ id|flags
 (brace
 id|ha-&gt;flags.rscn_queue_overflow
 op_assign
-id|TRUE
+l_int|1
 suffix:semicolon
 id|set_bit
 c_func
@@ -6355,7 +6462,7 @@ id|flags
 (brace
 id|ha-&gt;flags.rscn_queue_overflow
 op_assign
-id|TRUE
+l_int|1
 suffix:semicolon
 id|set_bit
 c_func
@@ -6397,7 +6504,7 @@ id|flags
 (brace
 id|ha-&gt;flags.rscn_queue_overflow
 op_assign
-id|TRUE
+l_int|1
 suffix:semicolon
 id|set_bit
 c_func
@@ -9401,6 +9508,8 @@ l_int|0xfc
 comma
 id|mb
 comma
+id|BIT_1
+op_or
 id|BIT_0
 )paren
 suffix:semicolon
@@ -9415,6 +9524,9 @@ op_ne
 id|MBS_COMMAND_COMPLETE
 )paren
 (brace
+id|DEBUG2
+c_func
+(paren
 id|qla_printk
 c_func
 (paren
@@ -9452,10 +9564,11 @@ id|mb
 l_int|7
 )braket
 )paren
+)paren
 suffix:semicolon
 r_return
 (paren
-id|QLA_FUNCTION_FAILED
+id|QLA_SUCCESS
 )paren
 suffix:semicolon
 )brace
@@ -10442,24 +10555,6 @@ l_int|0xf0
 )paren
 r_continue
 suffix:semicolon
-multiline_comment|/* Bypass if same domain and area of adapter. */
-r_if
-c_cond
-(paren
-(paren
-id|new_fcport-&gt;d_id.b24
-op_amp
-l_int|0xffff00
-)paren
-op_eq
-(paren
-id|ha-&gt;d_id.b24
-op_amp
-l_int|0xffff00
-)paren
-)paren
-r_continue
-suffix:semicolon
 multiline_comment|/* Locate matching device in database. */
 id|found
 op_assign
@@ -10494,6 +10589,27 @@ suffix:semicolon
 id|found
 op_increment
 suffix:semicolon
+multiline_comment|/*&n;&t;&t;&t; * If address the same and state FCS_ONLINE, nothing&n;&t;&t;&t; * changed.&n;&t;&t;&t; */
+r_if
+c_cond
+(paren
+id|fcport-&gt;d_id.b24
+op_eq
+id|new_fcport-&gt;d_id.b24
+op_logical_and
+id|atomic_read
+c_func
+(paren
+op_amp
+id|fcport-&gt;state
+)paren
+op_eq
+id|FCS_ONLINE
+)paren
+(brace
+r_break
+suffix:semicolon
+)brace
 multiline_comment|/*&n;&t;&t;&t; * If device was not a fabric device before.&n;&t;&t;&t; */
 r_if
 c_cond
@@ -10528,27 +10644,6 @@ op_and_assign
 op_complement
 id|FCF_PERSISTENT_BOUND
 suffix:semicolon
-r_break
-suffix:semicolon
-)brace
-multiline_comment|/*&n;&t;&t;&t; * If address the same and state FCS_ONLINE, nothing&n;&t;&t;&t; * changed.&n;&t;&t;&t; */
-r_if
-c_cond
-(paren
-id|fcport-&gt;d_id.b24
-op_eq
-id|new_fcport-&gt;d_id.b24
-op_logical_and
-id|atomic_read
-c_func
-(paren
-op_amp
-id|fcport-&gt;state
-)paren
-op_eq
-id|FCS_ONLINE
-)paren
-(brace
 r_break
 suffix:semicolon
 )brace
@@ -11406,9 +11501,7 @@ id|ha
 comma
 id|fcport
 comma
-id|BIT_1
-op_or
-id|BIT_0
+l_int|0
 )paren
 suffix:semicolon
 r_if
@@ -12059,7 +12152,7 @@ c_func
 (paren
 id|ha
 comma
-id|TRUE
+l_int|1
 )paren
 suffix:semicolon
 )brace
@@ -15642,7 +15735,7 @@ id|ha-&gt;flags.online
 (brace
 id|ha-&gt;flags.online
 op_assign
-id|FALSE
+l_int|0
 suffix:semicolon
 id|clear_bit
 c_func
@@ -15682,6 +15775,15 @@ c_func
 id|ha
 )paren
 suffix:semicolon
+id|atomic_set
+c_func
+(paren
+op_amp
+id|ha-&gt;loop_down_timer
+comma
+id|LOOP_DOWN_TIME
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -15704,6 +15806,26 @@ comma
 id|LOOP_DOWN
 )paren
 suffix:semicolon
+id|qla2x00_mark_all_devices_lost
+c_func
+(paren
+id|ha
+)paren
+suffix:semicolon
+)brace
+r_else
+(brace
+r_if
+c_cond
+(paren
+op_logical_neg
+id|atomic_read
+c_func
+(paren
+op_amp
+id|ha-&gt;loop_down_timer
+)paren
+)paren
 id|atomic_set
 c_func
 (paren
@@ -15711,12 +15833,6 @@ op_amp
 id|ha-&gt;loop_down_timer
 comma
 id|LOOP_DOWN_TIME
-)paren
-suffix:semicolon
-id|qla2x00_mark_all_devices_lost
-c_func
-(paren
-id|ha
 )paren
 suffix:semicolon
 )brace
@@ -15776,11 +15892,24 @@ suffix:semicolon
 id|sp-&gt;lun_queue-&gt;out_cnt
 op_decrement
 suffix:semicolon
-id|sp-&gt;flags
-op_assign
-l_int|0
-suffix:semicolon
 multiline_comment|/*&n;&t;&t;&t;&t; * Set the cmd host_byte status depending on&n;&t;&t;&t;&t; * whether the scsi_error_handler is&n;&t;&t;&t;&t; * active or not.&n; &t;&t;&t;&t; */
+r_if
+c_cond
+(paren
+id|sp-&gt;flags
+op_amp
+id|SRB_TAPE
+)paren
+(brace
+id|sp-&gt;cmd-&gt;result
+op_assign
+id|DID_NO_CONNECT
+op_lshift
+l_int|16
+suffix:semicolon
+)brace
+r_else
+(brace
 r_if
 c_cond
 (paren
@@ -15788,16 +15917,13 @@ id|ha-&gt;host-&gt;eh_active
 op_ne
 id|EH_ACTIVE
 )paren
-(brace
 id|sp-&gt;cmd-&gt;result
 op_assign
 id|DID_BUS_BUSY
 op_lshift
 l_int|16
 suffix:semicolon
-)brace
 r_else
-(brace
 id|sp-&gt;cmd-&gt;result
 op_assign
 id|DID_RESET
@@ -15805,6 +15931,10 @@ op_lshift
 l_int|16
 suffix:semicolon
 )brace
+id|sp-&gt;flags
+op_assign
+l_int|0
+suffix:semicolon
 id|sp-&gt;cmd-&gt;host_scribble
 op_assign
 (paren
@@ -15879,7 +16009,7 @@ suffix:semicolon
 )brace
 id|ha-&gt;flags.online
 op_assign
-id|TRUE
+l_int|1
 suffix:semicolon
 multiline_comment|/* Enable ISP interrupts. */
 id|qla2x00_enable_intrs
@@ -15894,7 +16024,7 @@ c_func
 (paren
 id|ha
 comma
-id|TRUE
+l_int|1
 )paren
 suffix:semicolon
 multiline_comment|/* Restart queues that may have been stopped. */
@@ -15903,7 +16033,7 @@ c_func
 (paren
 id|ha
 comma
-id|TRUE
+l_int|1
 )paren
 suffix:semicolon
 id|ha-&gt;isp_abort_cnt
@@ -15925,7 +16055,7 @@ r_else
 multiline_comment|/* failed the ISP abort */
 id|ha-&gt;flags.online
 op_assign
-id|TRUE
+l_int|1
 suffix:semicolon
 r_if
 c_cond
@@ -15971,12 +16101,12 @@ c_func
 (paren
 id|ha
 comma
-id|FALSE
+l_int|0
 )paren
 suffix:semicolon
 id|ha-&gt;flags.online
 op_assign
-id|FALSE
+l_int|0
 suffix:semicolon
 id|clear_bit
 c_func
@@ -16136,7 +16266,7 @@ id|ha
 (brace
 id|ha-&gt;flags.online
 op_assign
-id|FALSE
+l_int|0
 suffix:semicolon
 r_if
 c_cond
@@ -16345,7 +16475,7 @@ suffix:semicolon
 )paren
 id|ha-&gt;flags.online
 op_assign
-id|TRUE
+l_int|1
 suffix:semicolon
 multiline_comment|/* Wait at most MAX_TARGET RSCNs for a stable link. */
 id|wait_time
@@ -16472,7 +16602,7 @@ id|ha-&gt;iobase
 suffix:semicolon
 id|ha-&gt;flags.online
 op_assign
-id|FALSE
+l_int|0
 suffix:semicolon
 id|qla2x00_disable_intrs
 c_func

@@ -4,6 +4,7 @@ multiline_comment|/*&n; *  ==FILEVERSION 20000114==&n; *&n; *  NOTE TO MAINTAINE
 macro_line|#ifndef _PPP_DEFS_H_
 DECL|macro|_PPP_DEFS_H_
 mdefine_line|#define _PPP_DEFS_H_
+macro_line|#include &lt;linux/crc16.h&gt;
 multiline_comment|/*&n; * The basic PPP frame.&n; */
 DECL|macro|PPP_HDRLEN
 mdefine_line|#define PPP_HDRLEN&t;4&t;/* octets for standard ppp header */
@@ -81,7 +82,7 @@ mdefine_line|#define PPP_INITFCS&t;0xffff&t;/* Initial FCS value */
 DECL|macro|PPP_GOODFCS
 mdefine_line|#define PPP_GOODFCS&t;0xf0b8&t;/* Good final FCS value */
 DECL|macro|PPP_FCS
-mdefine_line|#define PPP_FCS(fcs, c)&t;(((fcs) &gt;&gt; 8) ^ fcstab[((fcs) ^ (c)) &amp; 0xff])
+mdefine_line|#define PPP_FCS(fcs, c) crc16_byte(fcs, c)
 multiline_comment|/*&n; * Extended asyncmap - allows any character to be escaped.&n; */
 DECL|typedef|ext_accm
 r_typedef

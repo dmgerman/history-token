@@ -9,7 +9,9 @@ macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/blkdev.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
-macro_line|#include &quot;scsi.h&quot;
+macro_line|#include &lt;scsi/scsi.h&gt;
+macro_line|#include &lt;scsi/scsi_cmnd.h&gt;
+macro_line|#include &lt;scsi/scsi_device.h&gt;
 macro_line|#include &lt;scsi/scsi_host.h&gt;
 macro_line|#include &quot;wd33c93.h&quot;
 DECL|macro|WD33C93_VERSION
@@ -730,25 +732,6 @@ r_return
 id|x
 suffix:semicolon
 )brace
-multiline_comment|/* The 33c93 needs to be told which direction a command transfers its&n; * data; we use this function to figure it out. Returns true if there&n; * will be a DATA_OUT phase with this command, false otherwise.&n; * (Thanks to Joerg Dorchain for the research and suggestion.)&n; */
-r_static
-r_inline
-r_int
-DECL|function|is_dir_out
-id|is_dir_out
-c_func
-(paren
-id|Scsi_Cmnd
-op_star
-id|cmd
-)paren
-(brace
-r_return
-id|cmd-&gt;sc_data_direction
-op_eq
-id|SCSI_DATA_WRITE
-suffix:semicolon
-)brace
 DECL|variable|sx_table
 r_static
 r_struct
@@ -942,7 +925,8 @@ DECL|function|wd33c93_queuecommand
 id|wd33c93_queuecommand
 c_func
 (paren
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 id|cmd
 comma
@@ -952,7 +936,8 @@ op_star
 id|done
 )paren
 (paren
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 )paren
 )paren
@@ -962,7 +947,8 @@ id|WD33C93_hostdata
 op_star
 id|hostdata
 suffix:semicolon
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 id|tmp
 suffix:semicolon
@@ -995,7 +981,7 @@ comma
 id|cmd-&gt;pid
 )paren
 )paren
-multiline_comment|/* Set up a few fields in the Scsi_Cmnd structure for our own use:&n; *  - host_scribble is the pointer to the next cmd in the input queue&n; *  - scsi_done points to the routine we call when a cmd is finished&n; *  - result is what you&squot;d expect&n; */
+multiline_comment|/* Set up a few fields in the scsi_cmnd structure for our own use:&n; *  - host_scribble is the pointer to the next cmd in the input queue&n; *  - scsi_done points to the routine we call when a cmd is finished&n; *  - result is what you&squot;d expect&n; */
 id|cmd-&gt;host_scribble
 op_assign
 l_int|NULL
@@ -1121,7 +1107,8 @@ c_loop
 id|tmp
 op_assign
 (paren
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 )paren
 id|hostdata-&gt;input_Q
@@ -1131,7 +1118,8 @@ suffix:semicolon
 id|tmp
 op_assign
 (paren
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 )paren
 id|tmp-&gt;host_scribble
@@ -1208,7 +1196,8 @@ id|regs
 op_assign
 id|hostdata-&gt;regs
 suffix:semicolon
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 id|cmd
 comma
@@ -1252,7 +1241,8 @@ multiline_comment|/*&n;&t; * Search through the input_Q for a command destined&n
 id|cmd
 op_assign
 (paren
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 )paren
 id|hostdata-&gt;input_Q
@@ -1293,7 +1283,8 @@ suffix:semicolon
 id|cmd
 op_assign
 (paren
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 )paren
 id|cmd-&gt;host_scribble
@@ -1335,7 +1326,8 @@ r_else
 id|hostdata-&gt;input_Q
 op_assign
 (paren
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 )paren
 id|cmd-&gt;host_scribble
@@ -1352,11 +1344,9 @@ multiline_comment|/*&n;&t; * Start the selection process&n;&t; */
 r_if
 c_cond
 (paren
-id|is_dir_out
-c_func
-(paren
-id|cmd
-)paren
+id|cmd-&gt;sc_data_direction
+op_eq
+id|DMA_TO_DEVICE
 )paren
 id|write_wd33c93
 c_func
@@ -1445,7 +1435,8 @@ c_loop
 id|prev
 op_assign
 (paren
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 )paren
 id|hostdata-&gt;input_Q
@@ -1455,7 +1446,8 @@ suffix:semicolon
 id|prev
 op_assign
 (paren
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 )paren
 id|prev-&gt;host_scribble
@@ -1483,7 +1475,8 @@ c_loop
 id|prev
 op_assign
 (paren
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 )paren
 id|hostdata-&gt;input_Q
@@ -1493,7 +1486,8 @@ suffix:semicolon
 id|prev
 op_assign
 (paren
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 )paren
 id|prev-&gt;host_scribble
@@ -1710,11 +1704,9 @@ c_func
 id|cmd
 comma
 (paren
-id|is_dir_out
-c_func
-(paren
-id|cmd
-)paren
+id|cmd-&gt;sc_data_direction
+op_eq
+id|DMA_TO_DEVICE
 )paren
 ques
 c_cond
@@ -1994,7 +1986,8 @@ r_const
 id|wd33c93_regs
 id|regs
 comma
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 id|cmd
 comma
@@ -2242,7 +2235,8 @@ id|regs
 op_assign
 id|hostdata-&gt;regs
 suffix:semicolon
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 id|patch
 comma
@@ -2314,7 +2308,8 @@ macro_line|#endif
 id|cmd
 op_assign
 (paren
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 )paren
 id|hostdata-&gt;connected
@@ -2469,7 +2464,8 @@ r_else
 id|cmd
 op_assign
 (paren
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 )paren
 id|hostdata-&gt;selecting
@@ -2549,7 +2545,8 @@ op_assign
 id|cmd
 op_assign
 (paren
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 )paren
 id|hostdata-&gt;selecting
@@ -4412,7 +4409,8 @@ id|hostdata-&gt;selecting
 id|cmd
 op_assign
 (paren
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 )paren
 id|hostdata-&gt;selecting
@@ -4789,7 +4787,8 @@ multiline_comment|/* Now we look for the command that&squot;s reconnecting. */
 id|cmd
 op_assign
 (paren
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 )paren
 id|hostdata-&gt;disconnected_Q
@@ -4824,7 +4823,8 @@ suffix:semicolon
 id|cmd
 op_assign
 (paren
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 )paren
 id|cmd-&gt;host_scribble
@@ -4873,7 +4873,8 @@ r_else
 id|hostdata-&gt;disconnected_Q
 op_assign
 (paren
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 )paren
 id|cmd-&gt;host_scribble
@@ -4886,11 +4887,9 @@ multiline_comment|/* We don&squot;t need to worry about &squot;initialize_SCp()&
 r_if
 c_cond
 (paren
-id|is_dir_out
-c_func
-(paren
-id|cmd
-)paren
+id|cmd-&gt;sc_data_direction
+op_eq
+id|DMA_TO_DEVICE
 )paren
 id|write_wd33c93
 c_func
@@ -5322,7 +5321,8 @@ DECL|function|wd33c93_host_reset
 id|wd33c93_host_reset
 c_func
 (paren
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 id|SCpnt
 )paren
@@ -5484,7 +5484,8 @@ DECL|function|wd33c93_abort
 id|wd33c93_abort
 c_func
 (paren
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 id|cmd
 )paren
@@ -5502,7 +5503,8 @@ suffix:semicolon
 id|wd33c93_regs
 id|regs
 suffix:semicolon
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 id|tmp
 comma
@@ -5536,7 +5538,8 @@ multiline_comment|/*&n; * Case 1 : If the command hasn&squot;t been issued yet, 
 id|tmp
 op_assign
 (paren
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 )paren
 id|hostdata-&gt;input_Q
@@ -5572,7 +5575,8 @@ r_else
 id|hostdata-&gt;input_Q
 op_assign
 (paren
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 )paren
 id|cmd-&gt;host_scribble
@@ -5621,7 +5625,8 @@ suffix:semicolon
 id|tmp
 op_assign
 (paren
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 )paren
 id|tmp-&gt;host_scribble
@@ -5918,7 +5923,8 @@ multiline_comment|/*&n; * Case 3: If the command is currently disconnected from 
 id|tmp
 op_assign
 (paren
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 )paren
 id|hostdata-&gt;disconnected_Q
@@ -5965,7 +5971,8 @@ suffix:semicolon
 id|tmp
 op_assign
 (paren
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 )paren
 id|tmp-&gt;host_scribble
@@ -7129,7 +7136,8 @@ id|WD33C93_hostdata
 op_star
 id|hd
 suffix:semicolon
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 id|cmd
 suffix:semicolon
@@ -7834,7 +7842,8 @@ id|hd-&gt;connected
 id|cmd
 op_assign
 (paren
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 )paren
 id|hd-&gt;connected
@@ -7887,7 +7896,8 @@ suffix:semicolon
 id|cmd
 op_assign
 (paren
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 )paren
 id|hd-&gt;input_Q
@@ -7928,7 +7938,8 @@ suffix:semicolon
 id|cmd
 op_assign
 (paren
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 )paren
 id|cmd-&gt;host_scribble
@@ -7954,7 +7965,8 @@ suffix:semicolon
 id|cmd
 op_assign
 (paren
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 )paren
 id|hd-&gt;disconnected_Q
@@ -7995,7 +8007,8 @@ suffix:semicolon
 id|cmd
 op_assign
 (paren
-id|Scsi_Cmnd
+r_struct
+id|scsi_cmnd
 op_star
 )paren
 id|cmd-&gt;host_scribble

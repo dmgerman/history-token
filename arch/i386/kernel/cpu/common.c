@@ -1554,7 +1554,7 @@ id|printk
 c_func
 (paren
 id|KERN_DEBUG
-l_string|&quot;CPU:     After generic identify, caps: %08lx %08lx %08lx %08lx&bslash;n&quot;
+l_string|&quot;CPU: After generic identify, caps: %08lx %08lx %08lx %08lx&bslash;n&quot;
 comma
 id|c-&gt;x86_capability
 (braket
@@ -1595,7 +1595,7 @@ id|printk
 c_func
 (paren
 id|KERN_DEBUG
-l_string|&quot;CPU:     After vendor identify, caps: %08lx %08lx %08lx %08lx&bslash;n&quot;
+l_string|&quot;CPU: After vendor identify, caps:  %08lx %08lx %08lx %08lx&bslash;n&quot;
 comma
 id|c-&gt;x86_capability
 (braket
@@ -1748,7 +1748,7 @@ id|printk
 c_func
 (paren
 id|KERN_DEBUG
-l_string|&quot;CPU:     After all inits, caps: %08lx %08lx %08lx %08lx&bslash;n&quot;
+l_string|&quot;CPU: After all inits, caps:        %08lx %08lx %08lx %08lx&bslash;n&quot;
 comma
 id|c-&gt;x86_capability
 (braket

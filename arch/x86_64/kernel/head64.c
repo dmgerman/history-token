@@ -8,6 +8,7 @@ macro_line|#include &lt;asm/processor.h&gt;
 macro_line|#include &lt;asm/proto.h&gt;
 macro_line|#include &lt;asm/smp.h&gt;
 macro_line|#include &lt;asm/bootsetup.h&gt;
+macro_line|#include &lt;asm/setup.h&gt;
 multiline_comment|/* Don&squot;t add a printk in there. printk relies on the PDA which is not initialized &n;   yet. */
 DECL|function|clear_bss
 r_static

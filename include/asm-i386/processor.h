@@ -774,9 +774,9 @@ mdefine_line|#define TASK_SIZE&t;(PAGE_OFFSET)
 multiline_comment|/* This decides where the kernel will search for a free chunk of vm&n; * space during mmap&squot;s.&n; */
 DECL|macro|TASK_UNMAPPED_BASE
 mdefine_line|#define TASK_UNMAPPED_BASE&t;(PAGE_ALIGN(TASK_SIZE / 3))
-multiline_comment|/*&n; * Size of io_bitmap, covering ports 0 to 0x3ff.&n; */
+multiline_comment|/*&n; * Size of io_bitmap.&n; */
 DECL|macro|IO_BITMAP_BITS
-mdefine_line|#define IO_BITMAP_BITS  1024
+mdefine_line|#define IO_BITMAP_BITS  65536
 DECL|macro|IO_BITMAP_BYTES
 mdefine_line|#define IO_BITMAP_BYTES (IO_BITMAP_BITS/8)
 DECL|macro|IO_BITMAP_LONGS
@@ -1202,7 +1202,7 @@ r_int
 r_int
 id|__cacheline_filler
 (braket
-l_int|5
+l_int|37
 )braket
 suffix:semicolon
 multiline_comment|/*&n;&t; * .. and then another 0x100 bytes for emergency kernel stack&n;&t; */

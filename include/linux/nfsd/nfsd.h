@@ -677,12 +677,47 @@ c_func
 r_void
 )paren
 suffix:semicolon
+id|time_t
+id|nfs4_lease_time
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+r_void
+id|nfs4_reset_lease
+c_func
+(paren
+id|time_t
+id|leasetime
+)paren
+suffix:semicolon
 macro_line|#else
 DECL|function|nfs4_state_init
 r_void
 r_static
 r_inline
 DECL|function|nfs4_state_shutdown
+r_void
+r_static
+r_inline
+DECL|function|nfs4_lease_time
+id|time_t
+r_static
+r_inline
+(def_block
+id|nfs4_lease_time
+c_func
+(paren
+r_void
+)paren
+(brace
+r_return
+l_int|0
+suffix:semicolon
+)brace
+)def_block
+DECL|function|nfs4_reset_lease
 r_void
 r_static
 r_inline
@@ -905,7 +940,7 @@ mdefine_line|#define&t;COMPOUND_SLACK_SPACE&t;&t;140    /* OP_GETFH */
 DECL|macro|COMPOUND_ERR_SLACK_SPACE
 mdefine_line|#define COMPOUND_ERR_SLACK_SPACE&t;12     /* OP_SETATTR */
 DECL|macro|NFSD_LEASE_TIME
-mdefine_line|#define NFSD_LEASE_TIME&t;&t;&t;60  /* seconds */
+mdefine_line|#define NFSD_LEASE_TIME                 (nfs4_lease_time())
 DECL|macro|NFSD_LAUNDROMAT_MINTIMEOUT
 mdefine_line|#define NFSD_LAUNDROMAT_MINTIMEOUT      10   /* seconds */
 multiline_comment|/*&n; * The following attributes are currently not supported by the NFSv4 server:&n; *    ACL           (will be supported in a forthcoming patch)&n; *    ARCHIVE       (deprecated anyway)&n; *    FS_LOCATIONS  (will be supported eventually)&n; *    HIDDEN        (unlikely to be supported any time soon)&n; *    MIMETYPE      (unlikely to be supported any time soon)&n; *    QUOTA_*       (will be supported in a forthcoming patch)&n; *    SYSTEM        (unlikely to be supported any time soon)&n; *    TIME_BACKUP   (unlikely to be supported any time soon)&n; *    TIME_CREATE   (unlikely to be supported any time soon)&n; */

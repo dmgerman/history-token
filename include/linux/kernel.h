@@ -479,6 +479,16 @@ id|retptr
 suffix:semicolon
 r_extern
 r_int
+id|__kernel_text_address
+c_func
+(paren
+r_int
+r_int
+id|addr
+)paren
+suffix:semicolon
+r_extern
+r_int
 id|kernel_text_address
 c_func
 (paren
