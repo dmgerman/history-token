@@ -29,6 +29,16 @@ macro_line|#include &lt;asm/pstate.h&gt;
 macro_line|#include &lt;asm/elf.h&gt;
 macro_line|#include &lt;asm/fpumacro.h&gt;
 multiline_comment|/* #define VERBOSE_SHOWREGS */
+multiline_comment|/*&n; * Nothing special yet...&n; */
+DECL|function|default_idle
+r_void
+id|default_idle
+c_func
+(paren
+r_void
+)paren
+(brace
+)brace
 macro_line|#ifndef CONFIG_SMP
 multiline_comment|/*&n; * the idle loop on a Sparc... ;)&n; */
 DECL|function|cpu_idle
