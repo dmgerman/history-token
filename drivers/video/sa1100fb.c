@@ -6255,13 +6255,6 @@ op_complement
 id|LCCR0_LDM
 suffix:semicolon
 multiline_comment|/* Enable LCD Disable Done Interrupt */
-id|enable_irq
-c_func
-(paren
-id|IRQ_LCD
-)paren
-suffix:semicolon
-multiline_comment|/* Enable LCD IRQ */
 id|LCCR0
 op_and_assign
 op_complement
