@@ -7,6 +7,7 @@ macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/reboot.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/kallsyms.h&gt;
+macro_line|#include &lt;linux/cpumask.h&gt;
 macro_line|#include &lt;asm/ptrace.h&gt;
 macro_line|#include &lt;asm/string.h&gt;
 macro_line|#include &lt;asm/prom.h&gt;
@@ -28,11 +29,10 @@ mdefine_line|#define skipbl&t;xmon_skipbl
 macro_line|#ifdef CONFIG_SMP
 DECL|variable|cpus_in_xmon
 r_volatile
-r_int
-r_int
+id|cpumask_t
 id|cpus_in_xmon
 op_assign
-l_int|0
+id|CPU_MASK_NONE
 suffix:semicolon
 DECL|variable|got_xmon
 r_static
@@ -961,7 +961,7 @@ multiline_comment|/* possible race condition here if a CPU is held up and gets&n
 r_if
 c_cond
 (paren
-id|test_and_set_bit
+id|cpu_test_and_set
 c_func
 (paren
 id|smp_processor_id
@@ -969,7 +969,6 @@ c_func
 (paren
 )paren
 comma
-op_amp
 id|cpus_in_xmon
 )paren
 )paren
@@ -986,6 +985,10 @@ c_loop
 (paren
 suffix:semicolon
 suffix:semicolon
+)paren
+id|cpu_relax
+c_func
+(paren
 )paren
 suffix:semicolon
 )brace
@@ -1021,6 +1024,11 @@ suffix:semicolon
 r_break
 suffix:semicolon
 )brace
+id|cpu_relax
+c_func
+(paren
+)paren
+suffix:semicolon
 )brace
 multiline_comment|/*&n;&t; * XXX: breakpoints are removed while any cpu is in xmon&n;&t; */
 macro_line|#endif /* CONFIG_SMP */
@@ -1149,7 +1157,7 @@ op_amp
 id|got_xmon
 )paren
 suffix:semicolon
-id|clear_bit
+id|cpu_clear
 c_func
 (paren
 id|smp_processor_id
@@ -1157,7 +1165,6 @@ c_func
 (paren
 )paren
 comma
-op_amp
 id|cpus_in_xmon
 )paren
 suffix:semicolon
@@ -2351,6 +2358,11 @@ suffix:semicolon
 r_break
 suffix:semicolon
 )brace
+id|cpu_relax
+c_func
+(paren
+)paren
+suffix:semicolon
 )brace
 )brace
 DECL|function|bootcmds
@@ -2514,12 +2526,11 @@ id|cpu
 r_if
 c_cond
 (paren
-id|test_bit
+id|cpu_isset
 c_func
 (paren
 id|cpu
 comma
-op_amp
 id|cpus_in_xmon
 )paren
 )paren
@@ -2638,6 +2649,11 @@ suffix:semicolon
 r_break
 suffix:semicolon
 )brace
+id|cpu_relax
+c_func
+(paren
+)paren
+suffix:semicolon
 )brace
 )brace
 macro_line|#endif /* CONFIG_SMP */

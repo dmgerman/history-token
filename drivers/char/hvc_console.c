@@ -11,6 +11,7 @@ macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/kbd_kern.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
+macro_line|#include &lt;linux/cpumask.h&gt;
 r_extern
 r_int
 id|hvc_count
@@ -910,19 +911,19 @@ id|flags
 )paren
 suffix:semicolon
 )brace
-macro_line|#if defined (CONFIG_XMON)
+macro_line|#if defined(CONFIG_XMON) &amp;&amp; defined(CONFIG_SMP)
 r_extern
-r_int
-r_int
+id|cpumask_t
 id|cpus_in_xmon
 suffix:semicolon
 macro_line|#else
 DECL|variable|cpus_in_xmon
-r_int
-r_int
+r_static
+r_const
+id|cpumask_t
 id|cpus_in_xmon
 op_assign
-l_int|0
+id|CPU_MASK_NONE
 suffix:semicolon
 macro_line|#endif
 DECL|function|khvcd
@@ -954,8 +955,11 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-op_logical_neg
+id|cpus_empty
+c_func
+(paren
 id|cpus_in_xmon
+)paren
 )paren
 (brace
 r_for
