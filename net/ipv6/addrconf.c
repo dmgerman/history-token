@@ -4950,18 +4950,6 @@ id|net_device
 op_star
 id|dev
 suffix:semicolon
-id|u8
-id|eui64
-(braket
-l_int|8
-)braket
-suffix:semicolon
-id|u8
-id|digest
-(braket
-l_int|16
-)braket
-suffix:semicolon
 r_struct
 id|scatterlist
 id|sg
@@ -5014,7 +5002,7 @@ op_assign
 id|virt_to_page
 c_func
 (paren
-id|eui64
+id|idev-&gt;work_eui64
 )paren
 suffix:semicolon
 id|sg
@@ -5027,7 +5015,7 @@ op_assign
 id|offset_in_page
 c_func
 (paren
-id|eui64
+id|idev-&gt;work_eui64
 )paren
 suffix:semicolon
 id|sg
@@ -5049,7 +5037,7 @@ c_cond
 id|ipv6_generate_eui64
 c_func
 (paren
-id|eui64
+id|idev-&gt;work_eui64
 comma
 id|dev
 )paren
@@ -5067,11 +5055,11 @@ suffix:semicolon
 id|get_random_bytes
 c_func
 (paren
-id|eui64
+id|idev-&gt;work_eui64
 comma
 r_sizeof
 (paren
-id|eui64
+id|idev-&gt;work_eui64
 )paren
 )paren
 suffix:semicolon
@@ -5130,7 +5118,7 @@ c_func
 (paren
 id|md5_tfm
 comma
-id|digest
+id|idev-&gt;work_digest
 )paren
 suffix:semicolon
 id|spin_unlock
@@ -5146,7 +5134,7 @@ c_func
 id|idev-&gt;rndid
 comma
 op_amp
-id|digest
+id|idev-&gt;work_digest
 (braket
 l_int|0
 )braket
@@ -5168,7 +5156,7 @@ c_func
 id|idev-&gt;entropy
 comma
 op_amp
-id|digest
+id|idev-&gt;work_digest
 (braket
 l_int|8
 )braket
