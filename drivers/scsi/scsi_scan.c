@@ -2159,7 +2159,6 @@ suffix:semicolon
 )brace
 multiline_comment|/**&n; * scsi_free_sdev - cleanup and free a scsi_device&n; * @sdev:&t;cleanup and free this scsi_device&n; *&n; * Description:&n; *     Undo the actions in scsi_alloc_sdev, including removing @sdev from&n; *     the list, and freeing @sdev.&n; **/
 DECL|function|scsi_free_sdev
-r_static
 r_void
 id|scsi_free_sdev
 c_func
@@ -4874,12 +4873,6 @@ op_minus
 id|EINVAL
 suffix:semicolon
 id|scsi_device_unregister
-c_func
-(paren
-id|sdev
-)paren
-suffix:semicolon
-id|scsi_free_sdev
 c_func
 (paren
 id|sdev
