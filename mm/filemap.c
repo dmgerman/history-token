@@ -82,10 +82,11 @@ suffix:semicolon
 id|mapping-&gt;nrpages
 op_decrement
 suffix:semicolon
-id|dec_page_state
+id|pagecache_acct
 c_func
 (paren
-id|nr_pagecache
+op_minus
+l_int|1
 )paren
 suffix:semicolon
 )brace

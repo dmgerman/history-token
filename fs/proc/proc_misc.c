@@ -696,7 +696,10 @@ comma
 id|K
 c_func
 (paren
-id|ps.nr_pagecache
+id|get_page_cache_size
+c_func
+(paren
+)paren
 op_minus
 id|total_swapcache_pages
 op_minus

@@ -2140,15 +2140,6 @@ suffix:semicolon
 r_extern
 r_int
 r_int
-id|get_page_cache_size
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-r_extern
-r_int
-r_int
 id|nr_used_zone_pages
 c_func
 (paren
