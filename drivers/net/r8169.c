@@ -1216,8 +1216,9 @@ DECL|macro|PHY_Cap_100_Half_Or_Less
 mdefine_line|#define PHY_Cap_100_Half_Or_Less PHY_Cap_100_Half | PHY_Cap_10_Full_Or_Less
 DECL|macro|PHY_Cap_100_Full_Or_Less
 mdefine_line|#define PHY_Cap_100_Full_Or_Less PHY_Cap_100_Full | PHY_Cap_100_Half_Or_Less
-r_void
 DECL|function|mdio_write
+r_static
+r_void
 id|mdio_write
 c_func
 (paren
@@ -1304,8 +1305,9 @@ suffix:semicolon
 )brace
 )brace
 )brace
-r_int
 DECL|function|mdio_read
+r_static
+r_int
 id|mdio_read
 c_func
 (paren
@@ -7382,10 +7384,11 @@ id|flags
 suffix:semicolon
 )brace
 multiline_comment|/**&n; *  rtl8169_get_stats - Get rtl8169 read/write statistics&n; *  @dev: The Ethernet Device to get statistics for&n; *&n; *  Get TX/RX statistics for rtl8169&n; */
+DECL|function|rtl8169_get_stats
+r_static
 r_struct
 id|net_device_stats
 op_star
-DECL|function|rtl8169_get_stats
 id|rtl8169_get_stats
 c_func
 (paren
