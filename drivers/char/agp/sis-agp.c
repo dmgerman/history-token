@@ -4,6 +4,14 @@ macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/agp_backend.h&gt;
 macro_line|#include &quot;agp.h&quot;
+DECL|macro|SIS_ATTBASE
+mdefine_line|#define SIS_ATTBASE&t;0x90
+DECL|macro|SIS_APSIZE
+mdefine_line|#define SIS_APSIZE&t;0x94
+DECL|macro|SIS_TLBCNTRL
+mdefine_line|#define SIS_TLBCNTRL&t;0x97
+DECL|macro|SIS_TLBFLUSH
+mdefine_line|#define SIS_TLBFLUSH&t;0x98
 DECL|function|sis_fetch_size
 r_static
 r_int

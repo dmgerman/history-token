@@ -548,19 +548,6 @@ DECL|macro|INTEL_NBXCFG
 mdefine_line|#define INTEL_NBXCFG&t;0x50
 DECL|macro|INTEL_ERRSTS
 mdefine_line|#define INTEL_ERRSTS&t;0x91
-multiline_comment|/* Intel 460GX Registers */
-DECL|macro|INTEL_I460_BAPBASE
-mdefine_line|#define INTEL_I460_BAPBASE&t;&t;0x98
-DECL|macro|INTEL_I460_GXBCTL
-mdefine_line|#define INTEL_I460_GXBCTL&t;&t;0xa0
-DECL|macro|INTEL_I460_AGPSIZ
-mdefine_line|#define INTEL_I460_AGPSIZ&t;&t;0xa2
-DECL|macro|INTEL_I460_ATTBASE
-mdefine_line|#define INTEL_I460_ATTBASE&t;&t;0xfe200000
-DECL|macro|INTEL_I460_GATT_VALID
-mdefine_line|#define INTEL_I460_GATT_VALID&t;&t;(1UL &lt;&lt; 24)
-DECL|macro|INTEL_I460_GATT_COHERENT
-mdefine_line|#define INTEL_I460_GATT_COHERENT&t;(1UL &lt;&lt; 25)
 multiline_comment|/* Intel i830 registers */
 DECL|macro|I830_GMCH_CTRL
 mdefine_line|#define I830_GMCH_CTRL&t;&t;&t;0x52
@@ -620,31 +607,11 @@ DECL|macro|I852_GME
 mdefine_line|#define I852_GME&t;&t;&t;0x2
 DECL|macro|I852_GM
 mdefine_line|#define I852_GM&t;&t;&t;&t;0x5
-multiline_comment|/* Intel 815 register */
-DECL|macro|INTEL_815_APCONT
-mdefine_line|#define INTEL_815_APCONT&t;0x51
-DECL|macro|INTEL_815_ATTBASE_MASK
-mdefine_line|#define INTEL_815_ATTBASE_MASK&t;~0x1FFFFFFF
-multiline_comment|/* Intel i820 registers */
-DECL|macro|INTEL_I820_RDCR
-mdefine_line|#define INTEL_I820_RDCR&t;&t;0x51
-DECL|macro|INTEL_I820_ERRSTS
-mdefine_line|#define INTEL_I820_ERRSTS&t;0xc8
-multiline_comment|/* Intel i840 registers */
-DECL|macro|INTEL_I840_MCHCFG
-mdefine_line|#define INTEL_I840_MCHCFG&t;0x50
-DECL|macro|INTEL_I840_ERRSTS
-mdefine_line|#define INTEL_I840_ERRSTS&t;0xc8
 multiline_comment|/* Intel i845 registers */
 DECL|macro|INTEL_I845_AGPM
 mdefine_line|#define INTEL_I845_AGPM&t;&t;0x51
 DECL|macro|INTEL_I845_ERRSTS
 mdefine_line|#define INTEL_I845_ERRSTS&t;0xc8
-multiline_comment|/* Intel i850 registers */
-DECL|macro|INTEL_I850_MCHCFG
-mdefine_line|#define INTEL_I850_MCHCFG&t;0x50
-DECL|macro|INTEL_I850_ERRSTS
-mdefine_line|#define INTEL_I850_ERRSTS&t;0xc8
 multiline_comment|/* Intel i860 registers */
 DECL|macro|INTEL_I860_MCHCFG
 mdefine_line|#define INTEL_I860_MCHCFG&t;0x50
@@ -683,154 +650,6 @@ DECL|macro|I810_DRAM_ROW_0
 mdefine_line|#define I810_DRAM_ROW_0&t;&t;0x00000001
 DECL|macro|I810_DRAM_ROW_0_SDRAM
 mdefine_line|#define I810_DRAM_ROW_0_SDRAM&t;0x00000001
-multiline_comment|/* Intel 7505 registers */
-DECL|macro|INTEL_I7505_APSIZE
-mdefine_line|#define INTEL_I7505_APSIZE&t;0x74
-DECL|macro|INTEL_I7505_NCAPID
-mdefine_line|#define INTEL_I7505_NCAPID&t;0x60
-DECL|macro|INTEL_I7505_NISTAT
-mdefine_line|#define INTEL_I7505_NISTAT&t;0x6c
-DECL|macro|INTEL_I7505_ATTBASE
-mdefine_line|#define INTEL_I7505_ATTBASE&t;0x78
-DECL|macro|INTEL_I7505_ERRSTS
-mdefine_line|#define INTEL_I7505_ERRSTS&t;0x42
-DECL|macro|INTEL_I7505_AGPCTRL
-mdefine_line|#define INTEL_I7505_AGPCTRL&t;0x70
-DECL|macro|INTEL_I7505_MCHCFG
-mdefine_line|#define INTEL_I7505_MCHCFG&t;0x50
-multiline_comment|/* VIA register */
-DECL|macro|VIA_GARTCTRL
-mdefine_line|#define VIA_GARTCTRL&t;0x80
-DECL|macro|VIA_APSIZE
-mdefine_line|#define VIA_APSIZE&t;0x84
-DECL|macro|VIA_ATTBASE
-mdefine_line|#define VIA_ATTBASE&t;0x88
-multiline_comment|/* VIA KT400 */
-DECL|macro|VIA_AGP3_GARTCTRL
-mdefine_line|#define VIA_AGP3_GARTCTRL&t;0x90
-DECL|macro|VIA_AGP3_APSIZE
-mdefine_line|#define VIA_AGP3_APSIZE&t;&t;0x94
-DECL|macro|VIA_AGP3_ATTBASE
-mdefine_line|#define VIA_AGP3_ATTBASE&t;0x98
-DECL|macro|VIA_AGPSEL
-mdefine_line|#define VIA_AGPSEL&t;&t;0xfd
-multiline_comment|/* SiS registers */
-DECL|macro|SIS_ATTBASE
-mdefine_line|#define SIS_ATTBASE&t;0x90
-DECL|macro|SIS_APSIZE
-mdefine_line|#define SIS_APSIZE&t;0x94
-DECL|macro|SIS_TLBCNTRL
-mdefine_line|#define SIS_TLBCNTRL&t;0x97
-DECL|macro|SIS_TLBFLUSH
-mdefine_line|#define SIS_TLBFLUSH&t;0x98
-multiline_comment|/* AMD registers */
-DECL|macro|AMD_MMBASE
-mdefine_line|#define AMD_MMBASE&t;0x14
-DECL|macro|AMD_APSIZE
-mdefine_line|#define AMD_APSIZE&t;0xac
-DECL|macro|AMD_MODECNTL
-mdefine_line|#define AMD_MODECNTL&t;0xb0
-DECL|macro|AMD_MODECNTL2
-mdefine_line|#define AMD_MODECNTL2&t;0xb2
-DECL|macro|AMD_GARTENABLE
-mdefine_line|#define AMD_GARTENABLE&t;0x02&t;/* In mmio region (16-bit register) */
-DECL|macro|AMD_ATTBASE
-mdefine_line|#define AMD_ATTBASE&t;0x04&t;/* In mmio region (32-bit register) */
-DECL|macro|AMD_TLBFLUSH
-mdefine_line|#define AMD_TLBFLUSH&t;0x0c&t;/* In mmio region (32-bit register) */
-DECL|macro|AMD_CACHEENTRY
-mdefine_line|#define AMD_CACHEENTRY&t;0x10&t;/* In mmio region (32-bit register) */
-multiline_comment|/* AMD64 registers */
-DECL|macro|AMD64_GARTAPERTURECTL
-mdefine_line|#define AMD64_GARTAPERTURECTL&t;0x90
-DECL|macro|AMD64_GARTAPERTUREBASE
-mdefine_line|#define AMD64_GARTAPERTUREBASE&t;0x94
-DECL|macro|AMD64_GARTTABLEBASE
-mdefine_line|#define AMD64_GARTTABLEBASE&t;0x98
-DECL|macro|AMD64_GARTCACHECTL
-mdefine_line|#define AMD64_GARTCACHECTL&t;&t;0x9c
-DECL|macro|AMD64_GARTEN
-mdefine_line|#define AMD64_GARTEN&t;&t;(1&lt;&lt;0)
-multiline_comment|/* ALi registers */
-DECL|macro|ALI_AGPCTRL
-mdefine_line|#define ALI_AGPCTRL&t;&t;&t;0xb8
-DECL|macro|ALI_ATTBASE
-mdefine_line|#define ALI_ATTBASE&t;&t;&t;0xbc
-DECL|macro|ALI_TLBCTRL
-mdefine_line|#define ALI_TLBCTRL&t;&t;&t;0xc0
-DECL|macro|ALI_TAGCTRL
-mdefine_line|#define ALI_TAGCTRL&t;&t;&t;0xc4
-DECL|macro|ALI_CACHE_FLUSH_CTRL
-mdefine_line|#define ALI_CACHE_FLUSH_CTRL&t;&t;0xD0
-DECL|macro|ALI_CACHE_FLUSH_ADDR_MASK
-mdefine_line|#define ALI_CACHE_FLUSH_ADDR_MASK&t;0xFFFFF000
-DECL|macro|ALI_CACHE_FLUSH_EN
-mdefine_line|#define ALI_CACHE_FLUSH_EN&t;&t;0x100
-multiline_comment|/* ATI register */
-DECL|macro|ATI_GART_MMBASE_ADDR
-mdefine_line|#define ATI_GART_MMBASE_ADDR&t;0x14
-DECL|macro|ATI_RS100_APSIZE
-mdefine_line|#define ATI_RS100_APSIZE&t;0xac
-DECL|macro|ATI_RS300_APSIZE
-mdefine_line|#define ATI_RS300_APSIZE&t;0xf8
-DECL|macro|ATI_RS100_IG_AGPMODE
-mdefine_line|#define ATI_RS100_IG_AGPMODE&t;0xb0
-DECL|macro|ATI_RS300_IG_AGPMODE
-mdefine_line|#define ATI_RS300_IG_AGPMODE&t;0xfc
-DECL|macro|ATI_GART_FEATURE_ID
-mdefine_line|#define ATI_GART_FEATURE_ID&t;&t;0x00
-DECL|macro|ATI_GART_BASE
-mdefine_line|#define ATI_GART_BASE&t;&t;&t;0x04
-DECL|macro|ATI_GART_CACHE_SZBASE
-mdefine_line|#define ATI_GART_CACHE_SZBASE&t;&t;0x08
-DECL|macro|ATI_GART_CACHE_CNTRL
-mdefine_line|#define ATI_GART_CACHE_CNTRL&t;&t;0x0c
-DECL|macro|ATI_GART_CACHE_ENTRY_CNTRL
-mdefine_line|#define ATI_GART_CACHE_ENTRY_CNTRL&t;0x10
-multiline_comment|/* Serverworks Registers */
-DECL|macro|SVWRKS_APSIZE
-mdefine_line|#define SVWRKS_APSIZE&t;&t;0x10
-DECL|macro|SVWRKS_SIZE_MASK
-mdefine_line|#define SVWRKS_SIZE_MASK&t;0xfe000000
-DECL|macro|SVWRKS_MMBASE
-mdefine_line|#define SVWRKS_MMBASE&t;&t;0x14
-DECL|macro|SVWRKS_CACHING
-mdefine_line|#define SVWRKS_CACHING&t;&t;0x4b
-DECL|macro|SVWRKS_FEATURE
-mdefine_line|#define SVWRKS_FEATURE&t;&t;0x68
-multiline_comment|/* func 1 registers */
-DECL|macro|SVWRKS_AGP_ENABLE
-mdefine_line|#define SVWRKS_AGP_ENABLE&t;0x60
-DECL|macro|SVWRKS_COMMAND
-mdefine_line|#define SVWRKS_COMMAND&t;&t;0x04
-multiline_comment|/* Memory mapped registers */
-DECL|macro|SVWRKS_GART_CACHE
-mdefine_line|#define SVWRKS_GART_CACHE&t;0x02
-DECL|macro|SVWRKS_GATTBASE
-mdefine_line|#define SVWRKS_GATTBASE&t;&t;0x04
-DECL|macro|SVWRKS_TLBFLUSH
-mdefine_line|#define SVWRKS_TLBFLUSH&t;&t;0x10
-DECL|macro|SVWRKS_POSTFLUSH
-mdefine_line|#define SVWRKS_POSTFLUSH&t;0x14
-DECL|macro|SVWRKS_DIRFLUSH
-mdefine_line|#define SVWRKS_DIRFLUSH&t;&t;0x0c
-multiline_comment|/* NVIDIA registers */
-DECL|macro|NVIDIA_0_APSIZE
-mdefine_line|#define NVIDIA_0_APSIZE&t;&t;0x80
-DECL|macro|NVIDIA_1_WBC
-mdefine_line|#define NVIDIA_1_WBC&t;&t;0xf0
-DECL|macro|NVIDIA_2_GARTCTRL
-mdefine_line|#define NVIDIA_2_GARTCTRL&t;0xd0
-DECL|macro|NVIDIA_2_APBASE
-mdefine_line|#define NVIDIA_2_APBASE&t;&t;0xd8
-DECL|macro|NVIDIA_2_APLIMIT
-mdefine_line|#define NVIDIA_2_APLIMIT&t;0xdc
-DECL|macro|NVIDIA_2_ATTBASE
-mdefine_line|#define NVIDIA_2_ATTBASE(i)&t;(0xe0 + (i) * 4)
-DECL|macro|NVIDIA_3_APBASE
-mdefine_line|#define NVIDIA_3_APBASE&t;&t;0x50
-DECL|macro|NVIDIA_3_APLIMIT
-mdefine_line|#define NVIDIA_3_APLIMIT&t;0x54
 DECL|struct|agp_device_ids
 r_struct
 id|agp_device_ids
