@@ -2,8 +2,10 @@ multiline_comment|/* &n; * eeh.h&n; * Copyright (C) 2001  Dave Engebretsen &amp;
 macro_line|#ifndef _PPC64_EEH_H
 DECL|macro|_PPC64_EEH_H
 mdefine_line|#define _PPC64_EEH_H
-macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
+macro_line|#include &lt;linux/list.h&gt;
+macro_line|#include &lt;linux/string.h&gt;
+macro_line|#include &lt;linux/notifier.h&gt;
 r_struct
 id|pci_dev
 suffix:semicolon
@@ -15,6 +17,8 @@ DECL|macro|EEH_MODE_SUPPORTED
 mdefine_line|#define EEH_MODE_SUPPORTED&t;(1&lt;&lt;0)
 DECL|macro|EEH_MODE_NOCHECK
 mdefine_line|#define EEH_MODE_NOCHECK&t;(1&lt;&lt;1)
+DECL|macro|EEH_MODE_ISOLATED
+mdefine_line|#define EEH_MODE_ISOLATED&t;(1&lt;&lt;2)
 macro_line|#ifdef CONFIG_PPC_PSERIES
 r_extern
 r_void
@@ -137,7 +141,59 @@ r_int
 id|options
 )paren
 suffix:semicolon
-multiline_comment|/*&n; * EEH_POSSIBLE_ERROR() -- test for possible MMIO failure.&n; *&n; * If this macro yields TRUE, the caller relays to eeh_check_failure()&n; * which does further tests out of line.&n; */
+multiline_comment|/**&n; * Notifier event flags.&n; */
+DECL|macro|EEH_NOTIFY_FREEZE
+mdefine_line|#define EEH_NOTIFY_FREEZE  1
+multiline_comment|/** EEH event -- structure holding pci slot data that describes&n; *  a change in the isolation status of a PCI slot.  A pointer&n; *  to this struct is passed as the data pointer in a notify callback.&n; */
+DECL|struct|eeh_event
+r_struct
+id|eeh_event
+(brace
+DECL|member|list
+r_struct
+id|list_head
+id|list
+suffix:semicolon
+DECL|member|dev
+r_struct
+id|pci_dev
+op_star
+id|dev
+suffix:semicolon
+DECL|member|dn
+r_struct
+id|device_node
+op_star
+id|dn
+suffix:semicolon
+DECL|member|reset_state
+r_int
+id|reset_state
+suffix:semicolon
+)brace
+suffix:semicolon
+multiline_comment|/** Register to find out about EEH events. */
+r_int
+id|eeh_register_notifier
+c_func
+(paren
+r_struct
+id|notifier_block
+op_star
+id|nb
+)paren
+suffix:semicolon
+r_int
+id|eeh_unregister_notifier
+c_func
+(paren
+r_struct
+id|notifier_block
+op_star
+id|nb
+)paren
+suffix:semicolon
+multiline_comment|/**&n; * EEH_POSSIBLE_ERROR() -- test for possible MMIO failure.&n; *&n; * If this macro yields TRUE, the caller relays to eeh_check_failure()&n; * which does further tests out of line.&n; */
 DECL|macro|EEH_POSSIBLE_ERROR
 mdefine_line|#define EEH_POSSIBLE_ERROR(val, type)&t;((val) == (type)~0)
 multiline_comment|/*&n; * Reads from a device which has been isolated by EEH will return&n; * all 1s.  This macro gives an all-1s value of the given size (in&n; * bytes: 1, 2, or 4) for comparing with the result of a read.&n; */
