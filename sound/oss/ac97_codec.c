@@ -5666,6 +5666,29 @@ op_star
 id|codec
 )paren
 (brace
+multiline_comment|/* stop pop&squot;s during suspend/resume */
+id|codec
+op_member_access_from_pointer
+id|codec_write
+c_func
+(paren
+id|codec
+comma
+id|AC97_WM97XX_TEST
+comma
+id|codec
+op_member_access_from_pointer
+id|codec_read
+c_func
+(paren
+id|codec
+comma
+id|AC97_WM97XX_TEST
+)paren
+op_amp
+l_int|0xffbf
+)paren
+suffix:semicolon
 multiline_comment|/* set out3 volume */
 id|codec
 op_member_access_from_pointer

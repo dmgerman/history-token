@@ -459,7 +459,7 @@ suffix:semicolon
 id|XFS_STATS_INC
 c_func
 (paren
-id|xfsstats.xs_ig_frecycle
+id|xs_ig_frecycle
 )paren
 suffix:semicolon
 r_goto
@@ -483,7 +483,7 @@ suffix:semicolon
 id|XFS_STATS_INC
 c_func
 (paren
-id|xfsstats.xs_ig_found
+id|xs_ig_found
 )paren
 suffix:semicolon
 id|ip-&gt;i_flags
@@ -570,7 +570,7 @@ suffix:semicolon
 id|XFS_STATS_INC
 c_func
 (paren
-id|xfsstats.xs_ig_frecycle
+id|xs_ig_frecycle
 )paren
 suffix:semicolon
 r_goto
@@ -601,7 +601,7 @@ suffix:semicolon
 id|XFS_STATS_INC
 c_func
 (paren
-id|xfsstats.xs_ig_found
+id|xs_ig_found
 )paren
 suffix:semicolon
 id|finish_inode
@@ -667,7 +667,7 @@ multiline_comment|/*&n;&t; * Inode cache miss: save the hash chain version stamp
 id|XFS_STATS_INC
 c_func
 (paren
-id|xfsstats.xs_ig_missed
+id|xs_ig_missed
 )paren
 suffix:semicolon
 id|version
@@ -810,7 +810,7 @@ suffix:semicolon
 id|XFS_STATS_INC
 c_func
 (paren
-id|xfsstats.xs_ig_dup
+id|xs_ig_dup
 )paren
 suffix:semicolon
 r_goto
@@ -1299,7 +1299,7 @@ suffix:colon
 id|XFS_STATS_INC
 c_func
 (paren
-id|xfsstats.xs_ig_attempts
+id|xs_ig_attempts
 )paren
 suffix:semicolon
 r_if
@@ -1469,7 +1469,7 @@ l_int|NULL
 id|XFS_STATS_INC
 c_func
 (paren
-id|xfsstats.xs_ig_dup
+id|xs_ig_dup
 )paren
 suffix:semicolon
 r_goto
@@ -1521,7 +1521,7 @@ suffix:semicolon
 id|XFS_STATS_INC
 c_func
 (paren
-id|xfsstats.xs_ig_found
+id|xs_ig_found
 )paren
 suffix:semicolon
 op_star
@@ -1904,7 +1904,7 @@ multiline_comment|/*&n;&t; * Remove from old hash list and mount list.&n;&t; */
 id|XFS_STATS_INC
 c_func
 (paren
-id|xfsstats.xs_ig_reclaims
+id|xs_ig_reclaims
 )paren
 suffix:semicolon
 id|xfs_iextract

@@ -809,6 +809,11 @@ r_int
 id|real_max_depth
 suffix:semicolon
 multiline_comment|/* what the array can hold */
+DECL|member|refcnt
+id|atomic_t
+id|refcnt
+suffix:semicolon
+multiline_comment|/* map can be shared */
 )brace
 suffix:semicolon
 DECL|struct|request_queue
@@ -2083,6 +2088,10 @@ id|request_queue_t
 op_star
 comma
 r_int
+comma
+r_struct
+id|blk_queue_tag
+op_star
 )paren
 suffix:semicolon
 r_extern

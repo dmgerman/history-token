@@ -30,7 +30,6 @@ macro_line|#include &quot;xfs_bit.h&quot;
 macro_line|#include &quot;xfs_rw.h&quot;
 macro_line|#include &quot;xfs_quota.h&quot;
 macro_line|#include &quot;xfs_trans_space.h&quot;
-macro_line|#include &quot;xfs_dmapi.h&quot;
 id|STATIC
 id|xfs_fsize_t
 DECL|function|xfs_size_fn

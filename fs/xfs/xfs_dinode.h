@@ -1299,18 +1299,36 @@ mdefine_line|#define&t;XFS_BUF_TO_DINODE(bp)&t;((xfs_dinode_t *)(XFS_BUF_PTR(bp)
 macro_line|#endif
 multiline_comment|/*&n; * Values for di_flags&n; * There should be a one-to-one correspondence between these flags and the&n; * XFS_XFLAG_s.&n; */
 DECL|macro|XFS_DIFLAG_REALTIME_BIT
-mdefine_line|#define XFS_DIFLAG_REALTIME_BIT&t;0&t;/* file&squot;s blocks come from rt area */
+mdefine_line|#define XFS_DIFLAG_REALTIME_BIT  0&t;/* file&squot;s blocks come from rt area */
 DECL|macro|XFS_DIFLAG_PREALLOC_BIT
-mdefine_line|#define XFS_DIFLAG_PREALLOC_BIT&t;1&t;/* file space has been preallocated */
+mdefine_line|#define XFS_DIFLAG_PREALLOC_BIT  1&t;/* file space has been preallocated */
 DECL|macro|XFS_DIFLAG_NEWRTBM_BIT
-mdefine_line|#define&t;XFS_DIFLAG_NEWRTBM_BIT&t;2&t;/* for rtbitmap inode, new format */
+mdefine_line|#define XFS_DIFLAG_NEWRTBM_BIT   2&t;/* for rtbitmap inode, new format */
+DECL|macro|XFS_DIFLAG_IMMUTABLE_BIT
+mdefine_line|#define XFS_DIFLAG_IMMUTABLE_BIT 3&t;/* inode is immutable */
+DECL|macro|XFS_DIFLAG_APPEND_BIT
+mdefine_line|#define XFS_DIFLAG_APPEND_BIT    4&t;/* inode is append-only */
+DECL|macro|XFS_DIFLAG_SYNC_BIT
+mdefine_line|#define XFS_DIFLAG_SYNC_BIT      5&t;/* inode is written synchronously */
+DECL|macro|XFS_DIFLAG_NOATIME_BIT
+mdefine_line|#define XFS_DIFLAG_NOATIME_BIT   6&t;/* do not update atime */
+DECL|macro|XFS_DIFLAG_NODUMP_BIT
+mdefine_line|#define XFS_DIFLAG_NODUMP_BIT    7&t;/* do not dump */
 DECL|macro|XFS_DIFLAG_REALTIME
-mdefine_line|#define XFS_DIFLAG_REALTIME     (1 &lt;&lt; XFS_DIFLAG_REALTIME_BIT)
+mdefine_line|#define XFS_DIFLAG_REALTIME      (1 &lt;&lt; XFS_DIFLAG_REALTIME_BIT)
 DECL|macro|XFS_DIFLAG_PREALLOC
-mdefine_line|#define XFS_DIFLAG_PREALLOC&t;(1 &lt;&lt; XFS_DIFLAG_PREALLOC_BIT)
+mdefine_line|#define XFS_DIFLAG_PREALLOC      (1 &lt;&lt; XFS_DIFLAG_PREALLOC_BIT)
 DECL|macro|XFS_DIFLAG_NEWRTBM
-mdefine_line|#define&t;XFS_DIFLAG_NEWRTBM&t;(1 &lt;&lt; XFS_DIFLAG_NEWRTBM_BIT)
-DECL|macro|XFS_DIFLAG_ALL
-mdefine_line|#define XFS_DIFLAG_ALL  &bslash;&n;&t;(XFS_DIFLAG_REALTIME|XFS_DIFLAG_PREALLOC|XFS_DIFLAG_NEWRTBM)
+mdefine_line|#define XFS_DIFLAG_NEWRTBM       (1 &lt;&lt; XFS_DIFLAG_NEWRTBM_BIT)
+DECL|macro|XFS_DIFLAG_IMMUTABLE
+mdefine_line|#define XFS_DIFLAG_IMMUTABLE     (1 &lt;&lt; XFS_DIFLAG_IMMUTABLE_BIT)
+DECL|macro|XFS_DIFLAG_APPEND
+mdefine_line|#define XFS_DIFLAG_APPEND        (1 &lt;&lt; XFS_DIFLAG_APPEND_BIT)
+DECL|macro|XFS_DIFLAG_SYNC
+mdefine_line|#define XFS_DIFLAG_SYNC          (1 &lt;&lt; XFS_DIFLAG_SYNC_BIT)
+DECL|macro|XFS_DIFLAG_NOATIME
+mdefine_line|#define XFS_DIFLAG_NOATIME       (1 &lt;&lt; XFS_DIFLAG_NOATIME_BIT)
+DECL|macro|XFS_DIFLAG_NODUMP
+mdefine_line|#define XFS_DIFLAG_NODUMP        (1 &lt;&lt; XFS_DIFLAG_NODUMP_BIT)
 macro_line|#endif&t;/* __XFS_DINODE_H__ */
 eof
