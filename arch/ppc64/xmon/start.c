@@ -12,6 +12,7 @@ macro_line|#include &lt;asm/prom.h&gt;
 macro_line|#include &lt;asm/processor.h&gt;
 macro_line|#include &lt;asm/udbg.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
+macro_line|#include &quot;nonstdio.h&quot;
 macro_line|#ifdef CONFIG_MAGIC_SYSRQ
 DECL|function|sysrq_handle_xmon
 r_static
@@ -171,19 +172,14 @@ c_func
 suffix:semicolon
 )brace
 DECL|variable|xmon_stdin
-r_void
+id|FILE
 op_star
 id|xmon_stdin
 suffix:semicolon
 DECL|variable|xmon_stdout
-r_void
+id|FILE
 op_star
 id|xmon_stdout
-suffix:semicolon
-DECL|variable|xmon_stderr
-r_void
-op_star
-id|xmon_stderr
 suffix:semicolon
 r_int
 DECL|function|xmon_putc
