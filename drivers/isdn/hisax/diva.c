@@ -2296,7 +2296,7 @@ id|bcs-&gt;tx_cnt
 op_sub_assign
 id|count
 suffix:semicolon
-id|bcs-&gt;hw.hscx.count
+id|bcs-&gt;count
 op_add_assign
 id|count
 suffix:semicolon
@@ -2864,7 +2864,7 @@ c_func
 id|bcs
 )paren
 suffix:semicolon
-id|bcs-&gt;hw.hscx.count
+id|bcs-&gt;count
 op_assign
 l_int|0
 suffix:semicolon
@@ -2884,7 +2884,7 @@ id|bcs-&gt;squeue
 )paren
 )paren
 (brace
-id|bcs-&gt;hw.hscx.count
+id|bcs-&gt;count
 op_assign
 l_int|0
 suffix:semicolon
@@ -3012,14 +3012,14 @@ c_func
 (paren
 id|bcs-&gt;tx_skb
 comma
-id|bcs-&gt;hw.hscx.count
+id|bcs-&gt;count
 )paren
 suffix:semicolon
 id|bcs-&gt;tx_cnt
 op_add_assign
-id|bcs-&gt;hw.hscx.count
+id|bcs-&gt;count
 suffix:semicolon
-id|bcs-&gt;hw.hscx.count
+id|bcs-&gt;count
 op_assign
 l_int|0
 suffix:semicolon
@@ -3168,14 +3168,14 @@ c_func
 (paren
 id|bcs-&gt;tx_skb
 comma
-id|bcs-&gt;hw.hscx.count
+id|bcs-&gt;count
 )paren
 suffix:semicolon
 id|bcs-&gt;tx_cnt
 op_add_assign
-id|bcs-&gt;hw.hscx.count
+id|bcs-&gt;count
 suffix:semicolon
-id|bcs-&gt;hw.hscx.count
+id|bcs-&gt;count
 op_assign
 l_int|0
 suffix:semicolon
@@ -6291,9 +6291,9 @@ id|MemWriteHSCX_IPACX
 suffix:semicolon
 id|cs-&gt;BC_Send_Data
 op_assign
-l_int|0
+op_amp
+id|ipacx_fill_fifo
 suffix:semicolon
-singleline_comment|// function located in ipacx module
 id|cs-&gt;irq_func
 op_assign
 op_amp

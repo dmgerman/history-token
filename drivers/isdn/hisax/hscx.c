@@ -721,7 +721,7 @@ op_amp
 id|st-&gt;l1.bcs-&gt;Flag
 )paren
 suffix:semicolon
-id|st-&gt;l1.bcs-&gt;hw.hscx.count
+id|st-&gt;l1.bcs-&gt;count
 op_assign
 l_int|0
 suffix:semicolon
@@ -790,7 +790,7 @@ id|st-&gt;l1.bcs-&gt;tx_skb
 op_assign
 id|skb
 suffix:semicolon
-id|st-&gt;l1.bcs-&gt;hw.hscx.count
+id|st-&gt;l1.bcs-&gt;count
 op_assign
 l_int|0
 suffix:semicolon
