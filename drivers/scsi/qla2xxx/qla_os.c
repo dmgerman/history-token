@@ -302,6 +302,30 @@ l_string|&quot;Signal mid-layer to perform scan after driver load: 0 -- no &quot
 l_string|&quot;signal sent to mid-layer.&quot;
 )paren
 suffix:semicolon
+DECL|variable|ql2xloginretrycount
+r_int
+id|ql2xloginretrycount
+op_assign
+l_int|0
+suffix:semicolon
+id|module_param
+c_func
+(paren
+id|ql2xloginretrycount
+comma
+r_int
+comma
+l_int|0
+)paren
+suffix:semicolon
+id|MODULE_PARM_DESC
+c_func
+(paren
+id|ql2xloginretrycount
+comma
+l_string|&quot;Specify an alternate value for the NVRAM login retry count.&quot;
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * Proc structures and functions&n; */
 DECL|struct|info_str
 r_struct

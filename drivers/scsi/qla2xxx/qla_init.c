@@ -5692,6 +5692,15 @@ id|ha-&gt;login_retry_count
 op_assign
 id|ha-&gt;port_down_retry_count
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|ql2xloginretrycount
+)paren
+id|ha-&gt;login_retry_count
+op_assign
+id|ql2xloginretrycount
+suffix:semicolon
 id|ha-&gt;binding_type
 op_assign
 id|Bind

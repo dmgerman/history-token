@@ -213,6 +213,10 @@ id|ql2xintrdelaytimer
 suffix:semicolon
 r_extern
 r_int
+id|ql2xloginretrycount
+suffix:semicolon
+r_extern
+r_int
 id|ConfigRequired
 suffix:semicolon
 r_extern
