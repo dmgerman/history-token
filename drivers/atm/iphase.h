@@ -2139,8 +2139,6 @@ id|r_vc_abr_entry
 suffix:semicolon
 DECL|macro|MRM
 mdefine_line|#define MRM 3
-DECL|macro|MIN
-mdefine_line|#define MIN(x,y)&t;((x) &lt; (y)) ? (x) : (y)
 DECL|struct|srv_cls_param
 r_typedef
 r_struct
@@ -3088,7 +3086,6 @@ DECL|member|close_pending
 id|u32
 id|close_pending
 suffix:semicolon
-macro_line|#if LINUX_VERSION_CODE &gt;= 0x20303
 DECL|member|close_wait
 id|wait_queue_head_t
 id|close_wait
@@ -3097,20 +3094,6 @@ DECL|member|timeout_wait
 id|wait_queue_head_t
 id|timeout_wait
 suffix:semicolon
-macro_line|#else
-DECL|member|close_wait
-r_struct
-id|wait_queue
-op_star
-id|close_wait
-suffix:semicolon
-DECL|member|timeout_wait
-r_struct
-id|wait_queue
-op_star
-id|timeout_wait
-suffix:semicolon
-macro_line|#endif
 DECL|member|tx_buf
 r_struct
 id|cpcs_trailer_desc

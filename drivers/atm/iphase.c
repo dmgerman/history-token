@@ -2122,7 +2122,7 @@ id|srv_p-&gt;pcr
 suffix:semicolon
 id|icr
 op_assign
-id|MIN
+id|min
 c_func
 (paren
 id|srv_p-&gt;icr
