@@ -828,6 +828,24 @@ op_star
 id|core
 )paren
 suffix:semicolon
+r_void
+id|bttv_i2c_info
+c_func
+(paren
+r_struct
+id|bttv_core
+op_star
+id|core
+comma
+r_struct
+id|i2c_client
+op_star
+id|client
+comma
+r_int
+id|attach
+)paren
+suffix:semicolon
 multiline_comment|/* ---------------------------------------------------------- */
 multiline_comment|/* bttv-driver.c                                              */
 multiline_comment|/* insmod options */
