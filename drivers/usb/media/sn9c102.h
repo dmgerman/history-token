@@ -11,8 +11,7 @@ macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;linux/wait.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/param.h&gt;
-macro_line|#include &lt;asm/semaphore.h&gt;
-macro_line|#include &lt;asm/rwsem.h&gt;
+macro_line|#include &lt;linux/rwsem.h&gt;
 macro_line|#include &quot;sn9c102_sensor.h&quot;
 multiline_comment|/*****************************************************************************/
 DECL|macro|SN9C102_DEBUG
