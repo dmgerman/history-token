@@ -181,34 +181,34 @@ DECL|macro|AUDRDD
 mdefine_line|#define AUDRDD&t;&t;&t;(IRQ_BOARD_END + 41)
 DECL|macro|AUDSTO
 mdefine_line|#define AUDSTO&t;&t;&t;(IRQ_BOARD_END + 42)
-DECL|macro|USBPWR
-mdefine_line|#define USBPWR&t;&t;&t;(IRQ_BOARD_END + 43)
-DECL|macro|NIRQHCIM
-mdefine_line|#define NIRQHCIM&t;&t;(IRQ_BOARD_END + 44)
-DECL|macro|IRQHCIBUFFACC
-mdefine_line|#define IRQHCIBUFFACC&t;&t;(IRQ_BOARD_END + 45)
-DECL|macro|IRQHCIRMTWKP
-mdefine_line|#define IRQHCIRMTWKP&t;&t;(IRQ_BOARD_END + 46)
-DECL|macro|NHCIMFCIR
-mdefine_line|#define NHCIMFCIR&t;&t;(IRQ_BOARD_END + 47)
-DECL|macro|USB_PORT_RESUME
-mdefine_line|#define USB_PORT_RESUME&t;&t;(IRQ_BOARD_END + 48)
-DECL|macro|S0_READY_NINT
-mdefine_line|#define S0_READY_NINT&t;&t;(IRQ_BOARD_END + 49)
-DECL|macro|S1_READY_NINT
-mdefine_line|#define S1_READY_NINT&t;&t;(IRQ_BOARD_END + 50)
-DECL|macro|S0_CD_VALID
-mdefine_line|#define S0_CD_VALID&t;&t;(IRQ_BOARD_END + 51)
-DECL|macro|S1_CD_VALID
-mdefine_line|#define S1_CD_VALID&t;&t;(IRQ_BOARD_END + 52)
-DECL|macro|S0_BVD1_STSCHG
-mdefine_line|#define S0_BVD1_STSCHG&t;&t;(IRQ_BOARD_END + 53)
-DECL|macro|S1_BVD1_STSCHG
-mdefine_line|#define S1_BVD1_STSCHG&t;&t;(IRQ_BOARD_END + 54)
+DECL|macro|IRQ_USBPWR
+mdefine_line|#define IRQ_USBPWR&t;&t;(IRQ_BOARD_END + 43)
+DECL|macro|IRQ_NHCIM
+mdefine_line|#define IRQ_NHCIM&t;&t;(IRQ_BOARD_END + 44)
+DECL|macro|IRQ_HCIBUFFACC
+mdefine_line|#define IRQ_HCIBUFFACC&t;&t;(IRQ_BOARD_END + 45)
+DECL|macro|IRQ_HCIRMTWKP
+mdefine_line|#define IRQ_HCIRMTWKP&t;&t;(IRQ_BOARD_END + 46)
+DECL|macro|IRQ_NHCIMFCIR
+mdefine_line|#define IRQ_NHCIMFCIR&t;&t;(IRQ_BOARD_END + 47)
+DECL|macro|IRQ_USB_PORT_RESUME
+mdefine_line|#define IRQ_USB_PORT_RESUME&t;(IRQ_BOARD_END + 48)
+DECL|macro|IRQ_S0_READY_NINT
+mdefine_line|#define IRQ_S0_READY_NINT&t;(IRQ_BOARD_END + 49)
+DECL|macro|IRQ_S1_READY_NINT
+mdefine_line|#define IRQ_S1_READY_NINT&t;(IRQ_BOARD_END + 50)
+DECL|macro|IRQ_S0_CD_VALID
+mdefine_line|#define IRQ_S0_CD_VALID&t;&t;(IRQ_BOARD_END + 51)
+DECL|macro|IRQ_S1_CD_VALID
+mdefine_line|#define IRQ_S1_CD_VALID&t;&t;(IRQ_BOARD_END + 52)
+DECL|macro|IRQ_S0_BVD1_STSCHG
+mdefine_line|#define IRQ_S0_BVD1_STSCHG&t;(IRQ_BOARD_END + 53)
+DECL|macro|IRQ_S1_BVD1_STSCHG
+mdefine_line|#define IRQ_S1_BVD1_STSCHG&t;(IRQ_BOARD_END + 54)
 multiline_comment|/*&n; * Figure out the MAX IRQ number.&n; *&n; * If we have an SA1111, the max IRQ is S1_BVD1_STSCHG+1.&n; * If graphicsclient or graphicsmaster, we don&squot;t have a SA1111.&n; * Otherwise, we have the standard IRQs only.&n; */
 macro_line|#ifdef CONFIG_SA1111
 DECL|macro|NR_IRQS
-mdefine_line|#define NR_IRQS&t;&t;&t;(S1_BVD1_STSCHG + 1)
+mdefine_line|#define NR_IRQS&t;&t;&t;(IRQ_S1_BVD1_STSCHG + 1)
 macro_line|#elif defined(CONFIG_SA1100_GRAPHICSCLIENT) || &bslash;&n;      defined(CONFIG_SA1100_GRAPHICSMASTER) || &bslash;&n;      defined(CONFIG_SA1100_H3800)
 DECL|macro|NR_IRQS
 mdefine_line|#define NR_IRQS&t;&t;&t;(IRQ_BOARD_END)
