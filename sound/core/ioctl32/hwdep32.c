@@ -40,6 +40,7 @@ multiline_comment|/* don&squot;t set packed attribute here */
 suffix:semicolon
 DECL|function|_snd_ioctl32_hwdep_dsp_image
 r_static
+r_inline
 r_int
 id|_snd_ioctl32_hwdep_dsp_image
 c_func

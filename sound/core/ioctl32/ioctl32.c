@@ -265,6 +265,7 @@ DECL|macro|CVT_sndrv_ctl_elem_list
 mdefine_line|#define CVT_sndrv_ctl_elem_list()&bslash;&n;{&bslash;&n;&t;COPY(offset);&bslash;&n;&t;COPY(space);&bslash;&n;&t;COPY(used);&bslash;&n;&t;COPY(count);&bslash;&n;&t;CPTR(pids);&bslash;&n;}
 DECL|function|_snd_ioctl32_ctl_elem_list
 r_static
+r_inline
 r_int
 id|_snd_ioctl32_ctl_elem_list
 c_func
@@ -594,6 +595,7 @@ id|packed
 suffix:semicolon
 DECL|function|_snd_ioctl32_ctl_elem_info
 r_static
+r_inline
 r_int
 id|_snd_ioctl32_ctl_elem_info
 c_func
@@ -1086,6 +1088,7 @@ suffix:semicolon
 )brace
 DECL|function|_snd_ioctl32_ctl_elem_value
 r_static
+r_inline
 r_int
 id|_snd_ioctl32_ctl_elem_value
 c_func
