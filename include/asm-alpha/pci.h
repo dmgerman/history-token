@@ -104,6 +104,11 @@ id|pci_iommu_arena
 op_star
 id|sg_isa
 suffix:semicolon
+DECL|member|sysdata
+r_void
+op_star
+id|sysdata
+suffix:semicolon
 )brace
 suffix:semicolon
 multiline_comment|/* Override the logic in pci_scan_bus for skipping already-configured&n;   bus numbers.  */

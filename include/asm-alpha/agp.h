@@ -1,6 +1,7 @@
 macro_line|#ifndef AGP_H
 DECL|macro|AGP_H
 mdefine_line|#define AGP_H 1
+macro_line|#include &lt;asm/io.h&gt;
 multiline_comment|/* dummy for now */
 DECL|macro|map_page_into_agp
 mdefine_line|#define map_page_into_agp(page) 

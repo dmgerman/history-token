@@ -105,6 +105,8 @@ DECL|macro|ST_DEC_EIGER
 mdefine_line|#define ST_DEC_EIGER&t;&t; 37&t;/* Eiger systype&t;*/
 DECL|macro|ST_DEC_TITAN
 mdefine_line|#define ST_DEC_TITAN&t;&t; 38&t;/* Titan systype&t;*/
+DECL|macro|ST_DEC_MARVEL
+mdefine_line|#define ST_DEC_MARVEL&t;&t; 39&t;/* Marvel systype&t;*/
 multiline_comment|/* UNOFFICIAL!!! */
 DECL|macro|ST_UNOFFICIAL_BIAS
 mdefine_line|#define ST_UNOFFICIAL_BIAS&t;100
