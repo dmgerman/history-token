@@ -797,17 +797,12 @@ multiline_comment|/* Not needed */
 r_int
 id|physical_slot_num
 suffix:semicolon
-r_int
-id|updown
+id|u8
+id|ctrlcap
 suffix:semicolon
-multiline_comment|/* Not needed */
 r_int
 id|rc
 suffix:semicolon
-r_int
-id|flags
-suffix:semicolon
-multiline_comment|/* Not needed */
 id|rc
 op_assign
 id|pcie_get_ctlr_slot_config
@@ -825,10 +820,7 @@ op_amp
 id|physical_slot_num
 comma
 op_amp
-id|updown
-comma
-op_amp
-id|flags
+id|ctrlcap
 )paren
 suffix:semicolon
 r_if
@@ -869,16 +861,14 @@ id|ctrl-&gt;first_slot
 op_assign
 id|physical_slot_num
 suffix:semicolon
-id|ctrl-&gt;slot_num_inc
+id|ctrl-&gt;ctrlcap
 op_assign
-id|updown
+id|ctrlcap
 suffix:semicolon
-multiline_comment|/* Not needed */
-multiline_comment|/* either -1 or 1 */
 id|dbg
 c_func
 (paren
-l_string|&quot;%s: bus(0x%x) num_slot(0x%x) 1st_dev(0x%x) psn(0x%x) updown(%d) for b:d (%x:%x)&bslash;n&quot;
+l_string|&quot;%s: bus(0x%x) num_slot(0x%x) 1st_dev(0x%x) psn(0x%x) ctrlcap(%x) for b:d (%x:%x)&bslash;n&quot;
 comma
 id|__FUNCTION__
 comma
@@ -890,7 +880,7 @@ id|first_device_num
 comma
 id|physical_slot_num
 comma
-id|updown
+id|ctrlcap
 comma
 id|ctrl-&gt;bus
 comma
@@ -942,6 +932,15 @@ id|hotplug_slot-&gt;info-&gt;attention_status
 op_assign
 id|status
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|ATTN_LED
+c_func
+(paren
+id|slot-&gt;ctrl-&gt;ctrlcap
+)paren
+)paren
 id|slot-&gt;hpc_ops
 op_member_access_from_pointer
 id|set_attention_status
@@ -1928,6 +1927,14 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+(paren
+id|POWER_CTRL
+c_func
+(paren
+id|ctrl-&gt;ctrlcap
+)paren
+)paren
+op_logical_and
 op_logical_neg
 id|value
 )paren
