@@ -152,6 +152,8 @@ DECL|macro|inb_p
 mdefine_line|#define inb_p(p)     in_8(ADDR_TRANS_B(p))
 DECL|macro|inw
 mdefine_line|#define inw(p)     in_be16(ADDR_TRANS_W(p))
+DECL|macro|inw_p
+mdefine_line|#define inw_p(p)     in_be16(ADDR_TRANS_W(p))
 DECL|macro|outb
 mdefine_line|#define outb(v,p)  out_8(ADDR_TRANS_B(p),v)
 DECL|macro|outb_p

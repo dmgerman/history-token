@@ -1886,6 +1886,34 @@ l_int|1
 suffix:semicolon
 id|u8
 id|unit
+suffix:semicolon
+id|u64
+id|addr
+suffix:semicolon
+multiline_comment|/* Method overloaded by host chip specific code. */
+r_if
+c_cond
+(paren
+id|ch-&gt;udma_enable
+)paren
+(brace
+id|ch
+op_member_access_from_pointer
+id|udma_enable
+c_func
+(paren
+id|drive
+comma
+id|on
+comma
+id|verbose
+)paren
+suffix:semicolon
+r_return
+suffix:semicolon
+)brace
+multiline_comment|/* Fall back to the default implementation. */
+id|unit
 op_assign
 (paren
 id|drive-&gt;select.b.unit
@@ -1893,7 +1921,6 @@ op_amp
 l_int|0x01
 )paren
 suffix:semicolon
-id|u64
 id|addr
 op_assign
 id|BLK_BOUNCE_HIGH

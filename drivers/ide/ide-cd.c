@@ -2628,12 +2628,17 @@ op_assign
 id|MIN
 c_func
 (paren
+(paren
+r_int
+)paren
+(paren
 id|rq-&gt;current_nr_sectors
 op_minus
 id|bio_sectors
 c_func
 (paren
 id|rq-&gt;bio
+)paren
 )paren
 comma
 id|sectors_to_transfer

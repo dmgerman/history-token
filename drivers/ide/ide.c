@@ -8218,6 +8218,10 @@ id|ch-&gt;XXX_udma
 op_assign
 id|old.XXX_udma
 suffix:semicolon
+id|ch-&gt;udma_enable
+op_assign
+id|old.udma_enable
+suffix:semicolon
 id|ch-&gt;udma_start
 op_assign
 id|old.udma_start

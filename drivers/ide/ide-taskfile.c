@@ -32,8 +32,6 @@ macro_line|#else
 DECL|macro|DTF
 mdefine_line|#define DTF(x...)
 macro_line|#endif
-DECL|macro|SUPPORT_VLB_SYNC
-mdefine_line|#define SUPPORT_VLB_SYNC 1
 multiline_comment|/*&n; * for now, taskfile requests are special :/&n; */
 DECL|function|ide_map_rq
 r_static
