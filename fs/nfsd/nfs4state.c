@@ -2442,10 +2442,6 @@ id|status
 suffix:semicolon
 )brace
 multiline_comment|/* &n; * Open owner state (share locks)&n; */
-DECL|macro|ZERO_STATEID
-mdefine_line|#define ZERO_STATEID(stateid)       (!memcmp((stateid), &amp;zerostateid, sizeof(stateid_t)))
-DECL|macro|ONE_STATEID
-mdefine_line|#define ONE_STATEID(stateid)        (!memcmp((stateid), &amp;onestateid, sizeof(stateid_t)))
 multiline_comment|/* hash tables for nfs4_stateowner */
 DECL|macro|OWNER_HASH_BITS
 mdefine_line|#define OWNER_HASH_BITS              8
