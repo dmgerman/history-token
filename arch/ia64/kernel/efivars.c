@@ -1203,7 +1203,7 @@ comma
 id|EFIVARS_VERSION
 )paren
 suffix:semicolon
-multiline_comment|/* Since efi.c happens before procfs is available,&n;           we create the directory here if it doesn&squot;t&n;           already exist.  There&squot;s probably a better way&n;           to do this.&n;        */
+multiline_comment|/* Since efi.c happens before procfs is available,&n;&t;   we create the directory here if it doesn&squot;t&n;&t;   already exist.  There&squot;s probably a better way&n;&t;   to do this.&n;&t;*/
 r_if
 c_cond
 (paren
