@@ -896,14 +896,9 @@ op_assign
 op_minus
 l_int|1
 suffix:semicolon
-id|printk
-c_func
-(paren
-l_string|&quot;spurious PPC interrupt!&bslash;n&quot;
-)paren
-suffix:semicolon
 )brace
 r_else
+(brace
 id|irq
 op_assign
 id|real_irq_to_virt
@@ -914,6 +909,7 @@ id|vec
 op_plus
 id|XICS_IRQ_OFFSET
 suffix:semicolon
+)brace
 r_return
 id|irq
 suffix:semicolon

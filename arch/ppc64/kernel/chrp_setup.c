@@ -795,10 +795,6 @@ id|ppc_md.get_irq
 op_assign
 id|openpic_get_irq
 suffix:semicolon
-id|ppc_md.post_irq
-op_assign
-l_int|NULL
-suffix:semicolon
 )brace
 r_else
 (brace
@@ -809,10 +805,6 @@ suffix:semicolon
 id|ppc_md.get_irq
 op_assign
 id|xics_get_irq
-suffix:semicolon
-id|ppc_md.post_irq
-op_assign
-l_int|NULL
 suffix:semicolon
 )brace
 id|ppc_md.init_ras_IRQ

@@ -371,20 +371,6 @@ id|pt_regs
 op_star
 )paren
 suffix:semicolon
-DECL|member|post_irq
-r_void
-(paren
-op_star
-id|post_irq
-)paren
-(paren
-r_struct
-id|pt_regs
-op_star
-comma
-r_int
-)paren
-suffix:semicolon
 multiline_comment|/* A general init function, called by ppc_init in init/main.c.&n;&t;   May be NULL. */
 DECL|member|init
 r_void
