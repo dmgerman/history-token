@@ -1,4 +1,4 @@
-multiline_comment|/* &n; * File...........: linux/drivers/s390/block/dasd.c&n; * Author(s)......: Holger Smolinski &lt;Holger.Smolinski@de.ibm.com&gt;&n; * Bugreports.to..: &lt;Linux390@de.ibm.com&gt;&n; * (C) IBM Corporation, IBM Deutschland Entwicklung GmbH, 1999,2000&n; *&n; * This file is the interface of the DASD device driver, which is exported to user space&n; * any future changes wrt the API will result in a change of the APIVERSION reported&n; * to userspace by the DASDAPIVER-ioctl&n; *&n; * $Revision: 1.3 $&n; *&n; * History of changes (starts July 2000)&n; * 05/04/01 created by moving the kernel interface to drivers/s390/block/dasd_int.h&n; * 12/06/01 DASD_API_VERSION 2 - binary compatible to 0 (new BIODASDINFO2)&n; * 01/23/02 DASD_API_VERSION 3 - added BIODASDPSRD (and BIODASDENAPAV) IOCTL&n; * 02/15/02 DASD_API_VERSION 4 - added BIODASDSATTR IOCTL&n; * ##/##/## DASD_API_VERSION 5 - added boxed dasd support TOBEDONE&n; * 21/06/02 DASD_API_VERSION 6 - fixed HDIO_GETGEO: geo.start is in sectors!&n; *         &n; */
+multiline_comment|/* &n; * File...........: linux/drivers/s390/block/dasd.c&n; * Author(s)......: Holger Smolinski &lt;Holger.Smolinski@de.ibm.com&gt;&n; * Bugreports.to..: &lt;Linux390@de.ibm.com&gt;&n; * (C) IBM Corporation, IBM Deutschland Entwicklung GmbH, 1999,2000&n; *&n; * This file is the interface of the DASD device driver, which is exported to user space&n; * any future changes wrt the API will result in a change of the APIVERSION reported&n; * to userspace by the DASDAPIVER-ioctl&n; *&n; * $Revision: 1.4 $&n; *&n; */
 macro_line|#ifndef DASD_H
 DECL|macro|DASD_H
 mdefine_line|#define DASD_H
@@ -725,6 +725,12 @@ mdefine_line|#define BIODASDSLCK    _IO(DASD_IOCTL_LETTER,4) /* steal lock */
 multiline_comment|/* reset profiling information of a device */
 DECL|macro|BIODASDPRRST
 mdefine_line|#define BIODASDPRRST   _IO(DASD_IOCTL_LETTER,5)
+multiline_comment|/* Quiesce IO on device */
+DECL|macro|BIODASDQUIESCE
+mdefine_line|#define BIODASDQUIESCE _IO(DASD_IOCTL_LETTER,6) 
+multiline_comment|/* Resume IO on device */
+DECL|macro|BIODASDRESUME
+mdefine_line|#define BIODASDRESUME  _IO(DASD_IOCTL_LETTER,7) 
 multiline_comment|/* retrieve API version number */
 DECL|macro|DASDAPIVER
 mdefine_line|#define DASDAPIVER     _IOR(DASD_IOCTL_LETTER,0,int)

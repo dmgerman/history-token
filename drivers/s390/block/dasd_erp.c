@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * File...........: linux/drivers/s390/block/dasd.c&n; * Author(s)......: Holger Smolinski &lt;Holger.Smolinski@de.ibm.com&gt;&n; *&t;&t;    Horst Hummel &lt;Horst.Hummel@de.ibm.com&gt;&n; *&t;&t;    Carsten Otte &lt;Cotte@de.ibm.com&gt;&n; *&t;&t;    Martin Schwidefsky &lt;schwidefsky@de.ibm.com&gt;&n; * Bugreports.to..: &lt;Linux390@de.ibm.com&gt;&n; * (C) IBM Corporation, IBM Deutschland Entwicklung GmbH, 1999-2001&n; *&n; * $Revision: 1.9 $&n; */
+multiline_comment|/*&n; * File...........: linux/drivers/s390/block/dasd.c&n; * Author(s)......: Holger Smolinski &lt;Holger.Smolinski@de.ibm.com&gt;&n; *&t;&t;    Horst Hummel &lt;Horst.Hummel@de.ibm.com&gt;&n; *&t;&t;    Carsten Otte &lt;Cotte@de.ibm.com&gt;&n; *&t;&t;    Martin Schwidefsky &lt;schwidefsky@de.ibm.com&gt;&n; * Bugreports.to..: &lt;Linux390@de.ibm.com&gt;&n; * (C) IBM Corporation, IBM Deutschland Entwicklung GmbH, 1999-2001&n; *&n; * $Revision: 1.10 $&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/ctype.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
@@ -447,7 +447,7 @@ id|device-&gt;ref_count
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * DESCRIPTION&n; *   sets up the default-ERP struct dasd_ccw_req, namely one, which performs&n; *   a TIC to the original channel program with a retry counter of 16&n; *&n; * PARAMETER&n; *   cqr&t;&t;failed CQR&n; *&n; * RETURN VALUES&n; *   erp&t;&t;CQR performing the ERP&n; */
+multiline_comment|/*&n; * dasd_default_erp_action just retries the current cqr&n; */
 r_struct
 id|dasd_ccw_req
 op_star
@@ -466,64 +466,46 @@ id|dasd_device
 op_star
 id|device
 suffix:semicolon
-r_struct
-id|dasd_ccw_req
-op_star
-id|erp
-suffix:semicolon
-id|MESSAGE
-c_func
-(paren
-id|KERN_DEBUG
-comma
-l_string|&quot;%s&quot;
-comma
-l_string|&quot;Default ERP called... &quot;
-)paren
-suffix:semicolon
 id|device
 op_assign
 id|cqr-&gt;device
 suffix:semicolon
-id|erp
-op_assign
-id|dasd_alloc_erp_request
-c_func
-(paren
-(paren
-r_char
-op_star
-)paren
-op_amp
-id|cqr-&gt;magic
-comma
-l_int|1
-comma
-l_int|0
-comma
-id|device
-)paren
-suffix:semicolon
+multiline_comment|/* just retry - there is nothing to save ... I got no sense data.... */
 r_if
 c_cond
 (paren
-id|IS_ERR
-c_func
-(paren
-id|erp
-)paren
+id|cqr-&gt;retries
+OG
+l_int|0
 )paren
 (brace
 id|DEV_MESSAGE
-c_func
 (paren
-id|KERN_ERR
+id|KERN_DEBUG
+comma
+id|device
+comma
+l_string|&quot;default ERP called (%i retries left)&quot;
+comma
+id|cqr-&gt;retries
+)paren
+suffix:semicolon
+id|cqr-&gt;status
+op_assign
+id|DASD_CQR_QUEUED
+suffix:semicolon
+)brace
+r_else
+(brace
+id|DEV_MESSAGE
+(paren
+id|KERN_WARNING
 comma
 id|device
 comma
 l_string|&quot;%s&quot;
 comma
-l_string|&quot;Unable to allocate request for default ERP&quot;
+l_string|&quot;default ERP called (NO retry left)&quot;
 )paren
 suffix:semicolon
 id|cqr-&gt;status
@@ -533,68 +515,12 @@ suffix:semicolon
 id|cqr-&gt;stopclk
 op_assign
 id|get_clock
-c_func
 (paren
 )paren
-suffix:semicolon
-r_return
-id|cqr
 suffix:semicolon
 )brace
-id|erp-&gt;cpaddr-&gt;cmd_code
-op_assign
-id|CCW_CMD_TIC
-suffix:semicolon
-id|erp-&gt;cpaddr-&gt;cda
-op_assign
-(paren
-id|__u32
-)paren
-(paren
-id|addr_t
-)paren
-id|cqr-&gt;cpaddr
-suffix:semicolon
-id|erp-&gt;function
-op_assign
-id|dasd_default_erp_action
-suffix:semicolon
-id|erp-&gt;refers
-op_assign
-id|cqr
-suffix:semicolon
-id|erp-&gt;device
-op_assign
-id|device
-suffix:semicolon
-id|erp-&gt;magic
-op_assign
-id|cqr-&gt;magic
-suffix:semicolon
-id|erp-&gt;retries
-op_assign
-l_int|16
-suffix:semicolon
-id|erp-&gt;status
-op_assign
-id|DASD_CQR_FILLED
-suffix:semicolon
-id|list_add
-c_func
-(paren
-op_amp
-id|erp-&gt;list
-comma
-op_amp
-id|device-&gt;ccw_queue
-)paren
-suffix:semicolon
-id|erp-&gt;status
-op_assign
-id|DASD_CQR_QUEUED
-suffix:semicolon
 r_return
-id|erp
+id|cqr
 suffix:semicolon
 )brace
 multiline_comment|/* end dasd_default_erp_action */
