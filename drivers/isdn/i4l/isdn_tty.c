@@ -5793,6 +5793,7 @@ op_star
 id|info
 comma
 id|uint
+id|__user
 op_star
 id|value
 )paren
@@ -5828,10 +5829,6 @@ c_func
 (paren
 id|result
 comma
-(paren
-id|uint
-op_star
-)paren
 id|value
 )paren
 suffix:semicolon
@@ -6376,6 +6373,7 @@ l_int|0
 comma
 (paren
 id|ulong
+id|__user
 op_star
 )paren
 id|arg
@@ -6405,6 +6403,7 @@ id|arg
 comma
 (paren
 id|ulong
+id|__user
 op_star
 )paren
 id|arg
