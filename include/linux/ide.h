@@ -3603,9 +3603,10 @@ m_abort
 id|ide_drive_t
 op_star
 comma
-r_const
-r_char
+r_struct
+id|request
 op_star
+id|rq
 )paren
 suffix:semicolon
 DECL|member|ioctl
@@ -3882,6 +3883,18 @@ id|msg
 comma
 id|byte
 id|stat
+)paren
+suffix:semicolon
+id|ide_startstop_t
+id|__ide_abort
+c_func
+(paren
+id|ide_drive_t
+op_star
+comma
+r_struct
+id|request
+op_star
 )paren
 suffix:semicolon
 multiline_comment|/*&n; * Abort a running command on the controller triggering the abort&n; * from a host side, non error situation&n; * (drive, msg)&n; */
