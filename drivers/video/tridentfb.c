@@ -5942,7 +5942,11 @@ c_func
 (paren
 l_string|&quot;%s board found&bslash;n&quot;
 comma
-id|dev-&gt;dev.name
+id|pci_name
+c_func
+(paren
+id|dev
+)paren
 )paren
 suffix:semicolon
 macro_line|#if 0&t;
