@@ -14,6 +14,7 @@ macro_line|#include &lt;linux/dirent.h&gt;
 macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;linux/amigaffs.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
+macro_line|#include &lt;linux/highmem.h&gt;
 macro_line|#include &lt;linux/pagemap.h&gt;
 macro_line|#include &lt;linux/buffer_head.h&gt;
 macro_line|#if PAGE_SIZE &lt; 4096
@@ -2863,6 +2864,12 @@ c_func
 (paren
 )paren
 suffix:semicolon
+id|kmap
+c_func
+(paren
+id|page
+)paren
+suffix:semicolon
 id|data
 op_assign
 id|page_address
@@ -3007,6 +3014,18 @@ op_assign
 l_int|0
 suffix:semicolon
 )brace
+id|flush_dcache_page
+c_func
+(paren
+id|page
+)paren
+suffix:semicolon
+id|kunmap
+c_func
+(paren
+id|page
+)paren
+suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
@@ -3823,14 +3842,22 @@ OL
 id|PAGE_CACHE_SIZE
 )paren
 (brace
-id|memset
-c_func
-(paren
-id|page_address
+r_char
+op_star
+id|kaddr
+op_assign
+id|kmap_atomic
 c_func
 (paren
 id|page
+comma
+id|KM_USER0
 )paren
+suffix:semicolon
+id|memset
+c_func
+(paren
+id|kaddr
 op_plus
 id|to
 comma
@@ -3839,6 +3866,20 @@ comma
 id|PAGE_CACHE_SIZE
 op_minus
 id|to
+)paren
+suffix:semicolon
+id|flush_dcache_page
+c_func
+(paren
+id|page
+)paren
+suffix:semicolon
+id|kunmap_atomic
+c_func
+(paren
+id|kaddr
+comma
+id|KM_USER0
 )paren
 suffix:semicolon
 r_if
