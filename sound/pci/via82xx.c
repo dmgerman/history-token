@@ -10370,6 +10370,24 @@ multiline_comment|/* Amira Note book */
 dot
 id|vendor
 op_assign
+l_int|0x161f
+comma
+dot
+id|device
+op_assign
+l_int|0x2032
+comma
+dot
+id|action
+op_assign
+id|VIA_DXS_ENABLE
+)brace
+comma
+multiline_comment|/* m680x machines */
+(brace
+dot
+id|vendor
+op_assign
 l_int|0x1631
 comma
 dot
