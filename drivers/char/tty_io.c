@@ -25,6 +25,7 @@ macro_line|#include &lt;linux/proc_fs.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
+macro_line|#include &lt;linux/device.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/bitops.h&gt;
@@ -376,14 +377,6 @@ c_func
 r_void
 )paren
 suffix:semicolon
-macro_line|#ifndef MIN
-DECL|macro|MIN
-mdefine_line|#define MIN(a,b)&t;((a) &lt; (b) ? (a) : (b))
-macro_line|#endif
-macro_line|#ifndef MAX
-DECL|macro|MAX
-mdefine_line|#define MAX(a,b)&t;((a) &lt; (b) ? (b) : (a))
-macro_line|#endif
 DECL|function|alloc_tty_struct
 r_static
 r_struct
@@ -2924,14 +2917,18 @@ r_int
 r_int
 id|size
 op_assign
-id|MAX
+id|max
 c_func
 (paren
+(paren
+r_int
+r_int
+)paren
 id|PAGE_SIZE
 op_star
 l_int|2
 comma
-l_int|16384
+l_int|16384UL
 )paren
 suffix:semicolon
 r_if
@@ -5459,7 +5456,7 @@ id|driver-&gt;other-&gt;minor_start
 )paren
 )paren
 suffix:semicolon
-id|tty_register_devfs
+id|tty_register_device
 c_func
 (paren
 op_amp
@@ -5467,8 +5464,6 @@ id|pts_driver
 (braket
 id|major
 )braket
-comma
-id|DEVFS_FL_DEFAULT
 comma
 id|pts_driver
 (braket
@@ -8628,7 +8623,6 @@ l_int|1
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Register a tty device described by &lt;driver&gt;, with minor number &lt;minor&gt;.&n; */
 DECL|function|tty_register_devfs
 r_void
 id|tty_register_devfs
@@ -8849,18 +8843,65 @@ id|driver-&gt;name_base
 )paren
 suffix:semicolon
 )brace
-DECL|variable|tty_register_devfs
-id|EXPORT_SYMBOL
+multiline_comment|/*&n; * Register a tty device described by &lt;driver&gt;, with minor number &lt;minor&gt;.&n; */
+DECL|function|tty_register_device
+r_void
+id|tty_register_device
+(paren
+r_struct
+id|tty_driver
+op_star
+id|driver
+comma
+r_int
+id|minor
+)paren
+(brace
+id|tty_register_devfs
 c_func
 (paren
-id|tty_register_devfs
+id|driver
+comma
+l_int|0
+comma
+id|minor
 )paren
 suffix:semicolon
-DECL|variable|tty_unregister_devfs
+)brace
+DECL|function|tty_unregister_device
+r_void
+id|tty_unregister_device
+(paren
+r_struct
+id|tty_driver
+op_star
+id|driver
+comma
+r_int
+id|minor
+)paren
+(brace
+id|tty_unregister_devfs
+c_func
+(paren
+id|driver
+comma
+id|minor
+)paren
+suffix:semicolon
+)brace
+DECL|variable|tty_register_device
 id|EXPORT_SYMBOL
 c_func
 (paren
-id|tty_unregister_devfs
+id|tty_register_device
+)paren
+suffix:semicolon
+DECL|variable|tty_unregister_device
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|tty_unregister_device
 )paren
 suffix:semicolon
 multiline_comment|/*&n; * Called by a tty driver to register itself.&n; */
@@ -8974,12 +9015,10 @@ id|i
 op_increment
 )paren
 (brace
-id|tty_register_devfs
+id|tty_register_device
 c_func
 (paren
 id|driver
-comma
-l_int|0
 comma
 id|driver-&gt;minor_start
 op_plus
@@ -9207,7 +9246,7 @@ id|tp
 )paren
 suffix:semicolon
 )brace
-id|tty_unregister_devfs
+id|tty_unregister_device
 c_func
 (paren
 id|driver
@@ -9497,6 +9536,26 @@ r_void
 )paren
 suffix:semicolon
 macro_line|#endif
+DECL|variable|tty_devclass
+r_struct
+id|device_class
+id|tty_devclass
+op_assign
+(brace
+dot
+id|name
+op_assign
+l_string|&quot;tty&quot;
+comma
+)brace
+suffix:semicolon
+DECL|variable|tty_devclass
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|tty_devclass
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * Ok, now we can initialize the rest of the tty devices and can count&n; * on memory allocations, interrupts etc..&n; */
 DECL|function|tty_init
 r_void
@@ -9507,6 +9566,13 @@ c_func
 r_void
 )paren
 (brace
+id|devclass_register
+c_func
+(paren
+op_amp
+id|tty_devclass
+)paren
+suffix:semicolon
 multiline_comment|/*&n;&t; * dev_tty_driver and dev_console_driver are actually magic&n;&t; * devices which get redirected at open time.  Nevertheless,&n;&t; * we register them so that register_chrdev is called&n;&t; * appropriately.&n;&t; */
 id|memset
 c_func
