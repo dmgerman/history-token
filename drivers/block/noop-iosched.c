@@ -1,15 +1,9 @@
 multiline_comment|/*&n; * elevator noop&n; */
-macro_line|#include &lt;linux/kernel.h&gt;
-macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;linux/blkdev.h&gt;
 macro_line|#include &lt;linux/elevator.h&gt;
 macro_line|#include &lt;linux/bio.h&gt;
-macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
-macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
-macro_line|#include &lt;linux/compiler.h&gt;
-macro_line|#include &lt;asm/uaccess.h&gt;
 multiline_comment|/*&n; * See if we can find a request that this buffer can be coalesced with.&n; */
 DECL|function|elevator_noop_merge
 r_static
