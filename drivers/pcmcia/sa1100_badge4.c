@@ -1,6 +1,8 @@
 multiline_comment|/*&n; * linux/drivers/pcmcia/sa1100_badge4.c&n; *&n; * BadgePAD 4 PCMCIA specific routines&n; *&n; *   Christopher Hoover &lt;ch@hpl.hp.com&gt;&n; *&n; * Copyright (C) 2002 Hewlett-Packard Company&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; *&n; */
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
+macro_line|#include &lt;linux/device.h&gt;
+macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;asm/hardware.h&gt;
 macro_line|#include &lt;asm/arch/badge4.h&gt;
@@ -27,7 +29,7 @@ r_static
 r_int
 id|badge4_cfvcc
 op_assign
-l_int|0
+l_int|33
 suffix:semicolon
 DECL|function|badge4_pcmcia_init
 r_static
@@ -155,13 +157,6 @@ l_int|10
 )paren
 suffix:semicolon
 )brace
-DECL|variable|badge4_need_5V_bitmap
-r_static
-r_int
-id|badge4_need_5V_bitmap
-op_assign
-l_int|0
-suffix:semicolon
 r_static
 r_int
 DECL|function|badge4_pcmcia_configure_socket

@@ -36,6 +36,9 @@ r_int
 id|rd_sz
 )paren
 suffix:semicolon
+r_struct
+id|tag
+suffix:semicolon
 DECL|struct|machine_desc
 r_struct
 id|machine_desc
@@ -134,7 +137,7 @@ id|machine_desc
 op_star
 comma
 r_struct
-id|param_struct
+id|tag
 op_star
 comma
 r_char

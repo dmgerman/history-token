@@ -2,6 +2,7 @@ multiline_comment|/*&n; *  linux/include/asm-arm/unistd.h&n; *&n; *  Copyright (
 macro_line|#ifndef __ASM_ARM_UNISTD_H
 DECL|macro|__ASM_ARM_UNISTD_H
 mdefine_line|#define __ASM_ARM_UNISTD_H
+macro_line|#include &lt;linux/linkage.h&gt;
 DECL|macro|__NR_SYSCALL_BASE
 mdefine_line|#define __NR_SYSCALL_BASE&t;0x900000
 multiline_comment|/*&n; * This file contains the system call numbers.&n; */

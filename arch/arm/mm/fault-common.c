@@ -1053,11 +1053,7 @@ id|task_struct
 op_star
 id|tsk
 suffix:semicolon
-r_struct
-id|mm_struct
-op_star
-id|mm
-suffix:semicolon
+r_int
 r_int
 id|offset
 suffix:semicolon
@@ -1101,6 +1097,7 @@ c_func
 id|addr
 )paren
 suffix:semicolon
+multiline_comment|/*&n;&t; * FIXME: CP15 C1 is write only on ARMv3 architectures.&n;&t; */
 id|pgd
 op_assign
 id|cpu_get_pgd
@@ -1129,7 +1126,6 @@ id|pgd_k
 r_goto
 id|bad_area
 suffix:semicolon
-macro_line|#if 0&t;/* note that we are two-level */
 r_if
 c_cond
 (paren
@@ -1150,7 +1146,6 @@ op_star
 id|pgd_k
 )paren
 suffix:semicolon
-macro_line|#endif
 id|pmd_k
 op_assign
 id|pmd_offset
@@ -1202,16 +1197,12 @@ id|tsk
 op_assign
 id|current
 suffix:semicolon
-id|mm
-op_assign
-id|tsk-&gt;active_mm
-suffix:semicolon
 id|do_bad_area
 c_func
 (paren
 id|tsk
 comma
-id|mm
+id|tsk-&gt;active_mm
 comma
 id|addr
 comma

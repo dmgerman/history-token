@@ -849,6 +849,16 @@ c_func
 id|PHYS_OFFSET
 )paren
 suffix:semicolon
+id|max_pfn
+op_assign
+id|memend_pfn
+op_minus
+id|O_PFN_DOWN
+c_func
+(paren
+id|PHYS_OFFSET
+)paren
+suffix:semicolon
 id|mi-&gt;end
 op_assign
 id|memend_pfn
