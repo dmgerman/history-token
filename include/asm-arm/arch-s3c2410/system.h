@@ -23,8 +23,9 @@ c_func
 r_void
 )paren
 (brace
-r_int
-r_int
+r_void
+id|__iomem
+op_star
 id|reg
 op_assign
 id|S3C2410_CLKCON

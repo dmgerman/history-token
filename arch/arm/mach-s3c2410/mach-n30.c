@@ -1,4 +1,4 @@
-multiline_comment|/* linux/arch/arm/mach-s3c2410/mach-n30.c&n; *&n; * Copyright (c) 2003-2005 Simtec Electronics&n; *&t;Ben Dooks &lt;ben@simtec.co.uk&gt;&n; *&n; * Copyright (c) 2005 Christer Weinigel &lt;christer@weinigel.se&gt;&n; *&n; * There is a wiki with more information about the n30 port at&n; * http://handhelds.org/moin/moin.cgi/AcerN30Documentation .&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; *&n; * Modifications:&n; *     10-Mar-2005 LCVR Changed S3C2410_VA to S3C24XX_VA&n;*/
+multiline_comment|/* linux/arch/arm/mach-s3c2410/mach-n30.c&n; *&n; * Copyright (c) 2003-2005 Simtec Electronics&n; *&t;Ben Dooks &lt;ben@simtec.co.uk&gt;&n; *&n; * Copyright (c) 2005 Christer Weinigel &lt;christer@weinigel.se&gt;&n; *&n; * There is a wiki with more information about the n30 port at&n; * http://handhelds.org/moin/moin.cgi/AcerN30Documentation .&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n;*/
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
@@ -401,6 +401,9 @@ id|S3C2410_SDRAM_PA
 comma
 id|S3C2410_PA_UART
 comma
+(paren
+id|u32
+)paren
 id|S3C24XX_VA_UART
 )paren
 id|BOOT_PARAMS

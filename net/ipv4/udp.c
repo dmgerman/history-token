@@ -2212,7 +2212,13 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|sk-&gt;sk_localroute
+id|sock_flag
+c_func
+(paren
+id|sk
+comma
+id|SOCK_LOCALROUTE
+)paren
 op_logical_or
 (paren
 id|msg-&gt;msg_flags

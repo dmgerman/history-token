@@ -3,8 +3,13 @@ macro_line|#ifndef __ASM_ARCH_MAP_H
 DECL|macro|__ASM_ARCH_MAP_H
 mdefine_line|#define __ASM_ARCH_MAP_H
 multiline_comment|/* we have a bit of a tight squeeze to fit all our registers from&n; * 0xF00000000 upwards, since we use all of the nGCS space in some&n; * capacity, and also need to fit the S3C2410 registers in as well...&n; *&n; * we try to ensure stuff like the IRQ registers are available for&n; * an single MOVS instruction (ie, only 8 bits of set data)&n; *&n; * Note, we are trying to remove some of these from the implementation&n; * as they are only useful to certain drivers...&n; */
+macro_line|#ifndef __ASSEMBLY__
+DECL|macro|S3C2410_ADDR
+mdefine_line|#define S3C2410_ADDR(x)&t;  ((void __iomem *)0xF0000000 + (x))
+macro_line|#else
 DECL|macro|S3C2410_ADDR
 mdefine_line|#define S3C2410_ADDR(x)&t;  (0xF0000000 + (x))
+macro_line|#endif
 DECL|macro|S3C2400_ADDR
 mdefine_line|#define S3C2400_ADDR(x)&t;  S3C2410_ADDR(x)
 multiline_comment|/* interrupt controller is the first thing we put in, to make&n; * the assembly code for the irq detection easier&n; */
