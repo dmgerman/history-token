@@ -313,7 +313,7 @@ id|current-&gt;comm
 comma
 r_sizeof
 (paren
-id|current-&gt;comm
+id|dump.u_comm
 )paren
 )paren
 suffix:semicolon
