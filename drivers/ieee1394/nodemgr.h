@@ -3,73 +3,12 @@ macro_line|#ifndef _IEEE1394_NODEMGR_H
 DECL|macro|_IEEE1394_NODEMGR_H
 mdefine_line|#define _IEEE1394_NODEMGR_H
 macro_line|#include &lt;linux/device.h&gt;
+macro_line|#include &quot;csr1212.h&quot;
 macro_line|#include &quot;ieee1394_core.h&quot;
 macro_line|#include &quot;ieee1394_hotplug.h&quot;
-DECL|macro|CONFIG_ROM_BUS_INFO_LENGTH
-mdefine_line|#define CONFIG_ROM_BUS_INFO_LENGTH(q)&t;&t;((q) &gt;&gt; 24)
-DECL|macro|CONFIG_ROM_BUS_CRC_LENGTH
-mdefine_line|#define CONFIG_ROM_BUS_CRC_LENGTH(q)&t;&t;(((q) &gt;&gt; 16) &amp; 0xff)
-DECL|macro|CONFIG_ROM_BUS_CRC
-mdefine_line|#define CONFIG_ROM_BUS_CRC(q)&t;&t;&t;((q) &amp; 0xffff)
-DECL|macro|CONFIG_ROM_ROOT_LENGTH
-mdefine_line|#define CONFIG_ROM_ROOT_LENGTH(q)&t;&t;((q) &gt;&gt; 16)
-DECL|macro|CONFIG_ROM_ROOT_CRC
-mdefine_line|#define CONFIG_ROM_ROOT_CRC(q)&t;&t;&t;((q) &amp; 0xffff)
-DECL|macro|CONFIG_ROM_DIRECTORY_LENGTH
-mdefine_line|#define CONFIG_ROM_DIRECTORY_LENGTH(q)&t;&t;((q) &gt;&gt; 16)
-DECL|macro|CONFIG_ROM_DIRECTORY_CRC
-mdefine_line|#define CONFIG_ROM_DIRECTORY_CRC(q)&t;&t;((q) &amp; 0xffff)
-DECL|macro|CONFIG_ROM_LEAF_LENGTH
-mdefine_line|#define CONFIG_ROM_LEAF_LENGTH(q)&t;&t;((q) &gt;&gt; 16)
-DECL|macro|CONFIG_ROM_LEAF_CRC
-mdefine_line|#define CONFIG_ROM_LEAF_CRC(q)&t;&t;&t;((q) &amp; 0xffff)
-DECL|macro|CONFIG_ROM_DESCRIPTOR_TYPE
-mdefine_line|#define CONFIG_ROM_DESCRIPTOR_TYPE(q)&t;&t;((q) &gt;&gt; 24)
-DECL|macro|CONFIG_ROM_DESCRIPTOR_SPECIFIER_ID
-mdefine_line|#define CONFIG_ROM_DESCRIPTOR_SPECIFIER_ID(q)&t;((q) &amp; 0xffffff)
-DECL|macro|CONFIG_ROM_DESCRIPTOR_WIDTH
-mdefine_line|#define CONFIG_ROM_DESCRIPTOR_WIDTH(q)&t;&t;((q) &gt;&gt; 28)
-DECL|macro|CONFIG_ROM_DESCRIPTOR_CHAR_SET
-mdefine_line|#define CONFIG_ROM_DESCRIPTOR_CHAR_SET(q)&t;(((q) &gt;&gt; 16) &amp; 0xfff)
-DECL|macro|CONFIG_ROM_DESCRIPTOR_LANG
-mdefine_line|#define CONFIG_ROM_DESCRIPTOR_LANG(q)&t;&t;((q) &amp; 0xffff)
-DECL|macro|CONFIG_ROM_KEY_ID_MASK
-mdefine_line|#define CONFIG_ROM_KEY_ID_MASK&t;&t;&t;0x3f
-DECL|macro|CONFIG_ROM_KEY_TYPE_MASK
-mdefine_line|#define CONFIG_ROM_KEY_TYPE_MASK&t;&t;0xc0
-DECL|macro|CONFIG_ROM_KEY_TYPE_IMMEDIATE
-mdefine_line|#define CONFIG_ROM_KEY_TYPE_IMMEDIATE&t;&t;0x00
-DECL|macro|CONFIG_ROM_KEY_TYPE_OFFSET
-mdefine_line|#define CONFIG_ROM_KEY_TYPE_OFFSET&t;&t;0x40
-DECL|macro|CONFIG_ROM_KEY_TYPE_LEAF
-mdefine_line|#define CONFIG_ROM_KEY_TYPE_LEAF&t;&t;0x80
-DECL|macro|CONFIG_ROM_KEY_TYPE_DIRECTORY
-mdefine_line|#define CONFIG_ROM_KEY_TYPE_DIRECTORY&t;&t;0xc0
-DECL|macro|CONFIG_ROM_KEY
-mdefine_line|#define CONFIG_ROM_KEY(q)&t;&t;&t;((q) &gt;&gt; 24)
-DECL|macro|CONFIG_ROM_VALUE
-mdefine_line|#define CONFIG_ROM_VALUE(q)&t;&t;&t;((q) &amp; 0xffffff)
-DECL|macro|CONFIG_ROM_VENDOR_ID
-mdefine_line|#define CONFIG_ROM_VENDOR_ID&t;&t;&t;0x03
-DECL|macro|CONFIG_ROM_MODEL_ID
-mdefine_line|#define CONFIG_ROM_MODEL_ID&t;&t;&t;0x17
-DECL|macro|CONFIG_ROM_NODE_CAPABILITES
-mdefine_line|#define CONFIG_ROM_NODE_CAPABILITES&t;&t;0x0C
-DECL|macro|CONFIG_ROM_UNIT_DIRECTORY
-mdefine_line|#define CONFIG_ROM_UNIT_DIRECTORY&t;&t;0xd1
-DECL|macro|CONFIG_ROM_LOGICAL_UNIT_DIRECTORY
-mdefine_line|#define CONFIG_ROM_LOGICAL_UNIT_DIRECTORY&t;0xd4
-DECL|macro|CONFIG_ROM_SPECIFIER_ID
-mdefine_line|#define CONFIG_ROM_SPECIFIER_ID&t;&t;&t;0x12 
-DECL|macro|CONFIG_ROM_UNIT_SW_VERSION
-mdefine_line|#define CONFIG_ROM_UNIT_SW_VERSION&t;&t;0x13
-DECL|macro|CONFIG_ROM_DESCRIPTOR_LEAF
-mdefine_line|#define CONFIG_ROM_DESCRIPTOR_LEAF&t;&t;0x81
-DECL|macro|CONFIG_ROM_DESCRIPTOR_DIRECTORY
-mdefine_line|#define CONFIG_ROM_DESCRIPTOR_DIRECTORY&t;&t;0xc1
 multiline_comment|/* &squot;1&squot; &squot;3&squot; &squot;9&squot; &squot;4&squot; in ASCII */
 DECL|macro|IEEE1394_BUSID_MAGIC
-mdefine_line|#define IEEE1394_BUSID_MAGIC&t;0x31333934
+mdefine_line|#define IEEE1394_BUSID_MAGIC&t;__constant_cpu_to_be32(0x31333934)
 multiline_comment|/* This is the start of a Node entry structure. It should be a stable API&n; * for which to gather info from the Node Manager about devices attached&n; * to the bus.  */
 DECL|struct|bus_options
 r_struct
@@ -105,6 +44,11 @@ id|u8
 id|cyc_clk_acc
 suffix:semicolon
 multiline_comment|/* Cycle clock accuracy */
+DECL|member|max_rom
+id|u8
+id|max_rom
+suffix:semicolon
+multiline_comment|/* Maximum block read supported in the CSR */
 DECL|member|generation
 id|u8
 id|generation
@@ -130,14 +74,10 @@ DECL|macro|UNIT_DIRECTORY_SPECIFIER_ID
 mdefine_line|#define UNIT_DIRECTORY_SPECIFIER_ID&t;&t;0x04
 DECL|macro|UNIT_DIRECTORY_VERSION
 mdefine_line|#define UNIT_DIRECTORY_VERSION&t;&t;&t;0x08
-DECL|macro|UNIT_DIRECTORY_VENDOR_TEXT
-mdefine_line|#define UNIT_DIRECTORY_VENDOR_TEXT&t;&t;0x10
-DECL|macro|UNIT_DIRECTORY_MODEL_TEXT
-mdefine_line|#define UNIT_DIRECTORY_MODEL_TEXT&t;&t;0x20
 DECL|macro|UNIT_DIRECTORY_HAS_LUN_DIRECTORY
-mdefine_line|#define UNIT_DIRECTORY_HAS_LUN_DIRECTORY&t;0x40
+mdefine_line|#define UNIT_DIRECTORY_HAS_LUN_DIRECTORY&t;0x10
 DECL|macro|UNIT_DIRECTORY_LUN_DIRECTORY
-mdefine_line|#define UNIT_DIRECTORY_LUN_DIRECTORY&t;&t;0x80
+mdefine_line|#define UNIT_DIRECTORY_LUN_DIRECTORY&t;&t;0x20
 multiline_comment|/*&n; * A unit directory corresponds to a protocol supported by the&n; * node. If a node supports eg. IP/1394 and AV/C, its config rom has a&n; * unit directory for each of these protocols.&n; */
 DECL|struct|unit_directory
 r_struct
@@ -164,11 +104,11 @@ DECL|member|vendor_id
 id|quadlet_t
 id|vendor_id
 suffix:semicolon
-DECL|member|vendor_name
-r_const
-r_char
+DECL|member|vendor_name_kv
+r_struct
+id|csr1212_keyval
 op_star
-id|vendor_name
+id|vendor_name_kv
 suffix:semicolon
 DECL|member|vendor_oui
 r_const
@@ -176,23 +116,15 @@ r_char
 op_star
 id|vendor_oui
 suffix:semicolon
-DECL|member|vendor_name_size
-r_int
-id|vendor_name_size
-suffix:semicolon
 DECL|member|model_id
 id|quadlet_t
 id|model_id
 suffix:semicolon
-DECL|member|model_name
-r_const
-r_char
+DECL|member|model_name_kv
+r_struct
+id|csr1212_keyval
 op_star
-id|model_name
-suffix:semicolon
-DECL|member|model_name_size
-r_int
-id|model_name_size
+id|model_name_kv
 suffix:semicolon
 DECL|member|specifier_id
 id|quadlet_t
@@ -207,6 +139,10 @@ r_int
 r_int
 id|id
 suffix:semicolon
+DECL|member|ignore_driver
+r_int
+id|ignore_driver
+suffix:semicolon
 DECL|member|length
 r_int
 id|length
@@ -217,13 +153,11 @@ r_struct
 id|device
 id|device
 suffix:semicolon
-multiline_comment|/* XXX Must be last in the struct! */
-DECL|member|quadlets
-id|quadlet_t
-id|quadlets
-(braket
-l_int|0
-)braket
+DECL|member|ud_kv
+r_struct
+id|csr1212_keyval
+op_star
+id|ud_kv
 suffix:semicolon
 )brace
 suffix:semicolon
@@ -281,11 +215,11 @@ DECL|member|vendor_id
 id|u32
 id|vendor_id
 suffix:semicolon
-DECL|member|vendor_name
-r_const
-r_char
+DECL|member|vendor_name_kv
+r_struct
+id|csr1212_keyval
 op_star
-id|vendor_name
+id|vendor_name_kv
 suffix:semicolon
 DECL|member|vendor_oui
 r_const
@@ -308,13 +242,21 @@ r_struct
 id|device
 id|device
 suffix:semicolon
-multiline_comment|/* XXX Must be last in the struct! */
-DECL|member|quadlets
-id|quadlet_t
-id|quadlets
-(braket
-l_int|0
-)braket
+DECL|member|class_dev
+r_struct
+id|class_device
+id|class_dev
+suffix:semicolon
+multiline_comment|/* Means this node is not attached anymore */
+DECL|member|in_limbo
+r_int
+id|in_limbo
+suffix:semicolon
+DECL|member|csr
+r_struct
+id|csr1212_csr
+op_star
+id|csr
 suffix:semicolon
 )brace
 suffix:semicolon
@@ -336,9 +278,9 @@ id|ieee1394_device_id
 op_star
 id|id_table
 suffix:semicolon
-multiline_comment|/*&n;&t; * The update function is called when the node has just&n;&t; * survived a bus reset, i.e. it is still present on the bus.&n;&t; * However, it may be necessary to reestablish the connection&n;&t; * or login into the node again, depending on the protocol.&n;&t; */
+multiline_comment|/*&n;&t; * The update function is called when the node has just&n;&t; * survived a bus reset, i.e. it is still present on the bus.&n;&t; * However, it may be necessary to reestablish the connection&n;&t; * or login into the node again, depending on the protocol. If the&n;&t; * probe fails (returns non-zero), we unbind the driver from this&n;&t; * device.&n;&t; */
 DECL|member|update
-r_void
+r_int
 (paren
 op_star
 id|update
@@ -563,6 +505,16 @@ r_extern
 r_struct
 id|device
 id|nodemgr_dev_template_host
+suffix:semicolon
+multiline_comment|/* Bus attributes we export */
+r_extern
+r_struct
+id|bus_attribute
+op_star
+r_const
+id|fw_bus_attrs
+(braket
+)braket
 suffix:semicolon
 macro_line|#endif /* _IEEE1394_NODEMGR_H */
 eof

@@ -1,8 +1,8 @@
-multiline_comment|/*&n; * mcs01_pci.h&n; *&n; * Carsten Langgaard, carstenl@mips.com&n; * Copyright (C) 2002 MIPS Technologies, Inc.  All rights reserved.&n; *&n; * ########################################################################&n; *&n; * PCI Register definitions for the MIPS System Controller.&n; */
-macro_line|#ifndef MSC01_PCI_H
-DECL|macro|MSC01_PCI_H
-mdefine_line|#define MSC01_PCI_H
-multiline_comment|/*****************************************************************************&n; * Register offset addresses&n; ****************************************************************************/
+multiline_comment|/*&n; * PCI Register definitions for the MIPS System Controller.&n; *&n; * Carsten Langgaard, carstenl@mips.com&n; * Copyright (C) 2002 MIPS Technologies, Inc.  All rights reserved.&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; */
+macro_line|#ifndef __ASM_MIPS_BOARDS_MSC01_PCI_H
+DECL|macro|__ASM_MIPS_BOARDS_MSC01_PCI_H
+mdefine_line|#define __ASM_MIPS_BOARDS_MSC01_PCI_H
+multiline_comment|/*&n; * Register offset addresses&n; */
 DECL|macro|MSC01_PCI_ID_OFS
 mdefine_line|#define MSC01_PCI_ID_OFS&t;&t;0x0000
 DECL|macro|MSC01_PCI_SC2PMBASL_OFS
@@ -327,7 +327,21 @@ DECL|macro|MSC01_PCI_SWAP_NOSWAP
 mdefine_line|#define MSC01_PCI_SWAP_NOSWAP&t;&t;0
 DECL|macro|MSC01_PCI_SWAP_BYTESWAP
 mdefine_line|#define MSC01_PCI_SWAP_BYTESWAP&t;&t;1
-multiline_comment|/*****************************************************************************&n; * Registers absolute addresses&n; ****************************************************************************/
+multiline_comment|/*&n; * MIPS System controller PCI register base.&n; *&n; * FIXME - are these macros specific to Malta and co or to the MSC?  If the&n; * latter, they should be moved elsewhere.&n; */
+DECL|macro|MIPS_MSC01_PCI_REG_BASE
+mdefine_line|#define MIPS_MSC01_PCI_REG_BASE&t;0x1bd00000
+r_extern
+r_int
+r_int
+id|_pcictrl_msc
+suffix:semicolon
+DECL|macro|MSC01_PCI_REG_BASE
+mdefine_line|#define MSC01_PCI_REG_BASE&t;_pcictrl_msc
+DECL|macro|MSC_WRITE
+mdefine_line|#define MSC_WRITE(reg, data)&t;do { *(volatile u32 *)(reg) = data; } while (0)
+DECL|macro|MSC_READ
+mdefine_line|#define MSC_READ(reg, data)&t;do { data = *(volatile u32 *)(reg); } while (0)
+multiline_comment|/*&n; * Registers absolute addresses&n; */
 DECL|macro|MSC01_PCI_ID
 mdefine_line|#define MSC01_PCI_ID            (MSC01_PCI_REG_BASE + MSC01_PCI_ID_OFS)
 DECL|macro|MSC01_PCI_SC2PMBASL
@@ -394,6 +408,5 @@ DECL|macro|MSC01_PCI_CFG
 mdefine_line|#define MSC01_PCI_CFG&t;&t;(MSC01_PCI_REG_BASE + MSC01_PCI_CFG_OFS)
 DECL|macro|MSC01_PCI_SWAP
 mdefine_line|#define MSC01_PCI_SWAP&t;&t;(MSC01_PCI_REG_BASE + MSC01_PCI_SWAP_OFS)
-macro_line|#endif
-multiline_comment|/*****************************************************************************&n; *  End of msc01_pci.h&n; *****************************************************************************/
+macro_line|#endif /* __ASM_MIPS_BOARDS_MSC01_PCI_H */
 eof

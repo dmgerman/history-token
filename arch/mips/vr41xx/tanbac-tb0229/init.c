@@ -1,20 +1,13 @@
 multiline_comment|/*&n; * FILE NAME&n; *&t;arch/mips/vr41xx/tanbac-tb0229/init.c&n; *&n; * BRIEF MODULE DESCRIPTION&n; *&t;Initialisation code for the TANBAC TB0229(VR4131DIMM)&n; *&n; * Copyright 2002,2003 Yoichi Yuasa&n; *                yuasa@hh.iij4u.or.jp&n; *&n; * Modified for TANBAC TB0229:&n; * Copyright 2003 Megasolution Inc.&n; *                matsu@megasolution.jp&n; *&n; *  This program is free software; you can redistribute it and/or modify it&n; *  under the terms of the GNU General Public License as published by the&n; *  Free Software Foundation; either version 2 of the License, or (at your&n; *  option) any later version.&n; */
-macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
+macro_line|#include &lt;linux/smp.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;asm/bootinfo.h&gt;
 macro_line|#include &lt;asm/cpu.h&gt;
 macro_line|#include &lt;asm/mipsregs.h&gt;
 macro_line|#include &lt;asm/vr41xx/vr41xx.h&gt;
-DECL|variable|arcs_cmdline
-r_char
-id|arcs_cmdline
-(braket
-id|CL_SIZE
-)braket
-suffix:semicolon
 DECL|function|get_system_type
 r_const
 r_char
@@ -35,25 +28,25 @@ id|__init
 id|prom_init
 c_func
 (paren
+r_void
+)paren
+(brace
 r_int
 id|argc
-comma
+op_assign
+id|fw_arg0
+suffix:semicolon
 r_char
 op_star
 op_star
 id|argv
-comma
-r_int
-r_int
-id|magic
-comma
-r_int
+op_assign
+(paren
+r_char
 op_star
-id|prom_vec
+op_star
 )paren
-(brace
-id|u32
-id|config
+id|fw_arg1
 suffix:semicolon
 r_int
 id|i
@@ -113,52 +106,19 @@ id|mips_machtype
 op_assign
 id|MACH_TANBAC_TB0229
 suffix:semicolon
-r_switch
-c_cond
-(paren
-id|current_cpu_data.processor_id
-)paren
-(brace
-r_case
-id|PRID_VR4131_REV1_2
-suffix:colon
-id|config
-op_assign
-id|read_c0_config
-c_func
-(paren
-)paren
-suffix:semicolon
-id|config
-op_and_assign
-op_complement
-l_int|0x00000030UL
-suffix:semicolon
-id|config
-op_or_assign
-l_int|0x00410000UL
-suffix:semicolon
-id|write_c0_config
-c_func
-(paren
-id|config
-)paren
-suffix:semicolon
-r_break
-suffix:semicolon
-r_default
-suffix:colon
-r_break
-suffix:semicolon
-)brace
 )brace
 DECL|function|prom_free_prom_memory
-r_void
+r_int
+r_int
 id|__init
 id|prom_free_prom_memory
+c_func
 (paren
 r_void
 )paren
 (brace
+r_return
+l_int|0
+suffix:semicolon
 )brace
 eof

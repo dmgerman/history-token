@@ -28,7 +28,6 @@ id|irq
 suffix:semicolon
 multiline_comment|/*&n; * This is the &squot;legacy&squot; 8259A Programmable Interrupt Controller,&n; * present in the majority of PC/AT boxes.&n; * plus some generic x86 specific things if generic specifics makes&n; * any sense at all.&n; * this file should become arch/i386/kernel/irq.c when the old irq.c&n; * moves to arch independent land&n; */
 DECL|variable|i8259A_lock
-r_static
 id|spinlock_t
 id|i8259A_lock
 op_assign
@@ -982,27 +981,6 @@ op_amp
 id|i8259A_lock
 comma
 id|flags
-)paren
-suffix:semicolon
-)brace
-DECL|function|i8259_do_irq
-id|asmlinkage
-r_void
-id|i8259_do_irq
-c_func
-(paren
-r_int
-id|irq
-comma
-r_struct
-id|pt_regs
-id|regs
-)paren
-(brace
-id|panic
-c_func
-(paren
-l_string|&quot;i8259_do_irq: I want to be implemented&quot;
 )paren
 suffix:semicolon
 )brace

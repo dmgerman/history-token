@@ -9,21 +9,29 @@ macro_line|#endif
 macro_line|#ifdef CONFIG_MIPS64
 macro_line|#include &lt;asm/page-64.h&gt;
 macro_line|#endif
-multiline_comment|/* PAGE_SHIFT determines the page size */
+macro_line|#ifdef __KERNEL__
+multiline_comment|/*&n; * PAGE_SHIFT determines the page size&n; */
+macro_line|#ifdef CONFIG_PAGE_SIZE_4KB
 DECL|macro|PAGE_SHIFT
 mdefine_line|#define PAGE_SHIFT&t;12
+macro_line|#endif
+macro_line|#ifdef CONFIG_PAGE_SIZE_16KB
+DECL|macro|PAGE_SHIFT
+mdefine_line|#define PAGE_SHIFT&t;14
+macro_line|#endif
+macro_line|#ifdef CONFIG_PAGE_SIZE_64KB
+DECL|macro|PAGE_SHIFT
+mdefine_line|#define PAGE_SHIFT&t;16
+macro_line|#endif
 DECL|macro|PAGE_SIZE
 mdefine_line|#define PAGE_SIZE&t;(1UL &lt;&lt; PAGE_SHIFT)
 DECL|macro|PAGE_MASK
 mdefine_line|#define PAGE_MASK&t;(~(PAGE_SIZE-1))
-macro_line|#ifdef __KERNEL__
 macro_line|#ifndef __ASSEMBLY__
 r_extern
 r_void
-(paren
-op_star
-id|_clear_page
-)paren
+id|clear_page
+c_func
 (paren
 r_void
 op_star
@@ -32,10 +40,8 @@ id|page
 suffix:semicolon
 r_extern
 r_void
-(paren
-op_star
-id|_copy_page
-)paren
+id|copy_page
+c_func
 (paren
 r_void
 op_star
@@ -46,10 +52,6 @@ op_star
 id|from
 )paren
 suffix:semicolon
-DECL|macro|clear_page
-mdefine_line|#define clear_page(addr)&t;&t;_clear_page((void *)(addr))
-DECL|macro|copy_page
-mdefine_line|#define copy_page(to, from)&t;&t;_copy_page((void *)(to), (void *)(from))
 r_extern
 r_int
 r_int
@@ -374,13 +376,13 @@ DECL|macro|pfn_to_page
 mdefine_line|#define pfn_to_page(pfn)&t;(mem_map + (pfn))
 DECL|macro|page_to_pfn
 mdefine_line|#define page_to_pfn(page)&t;((unsigned long)((page) - mem_map))
-DECL|macro|virt_to_page
-mdefine_line|#define virt_to_page(kaddr)&t;pfn_to_page(__pa(kaddr) &gt;&gt; PAGE_SHIFT)
 DECL|macro|pfn_valid
 mdefine_line|#define pfn_valid(pfn)&t;&t;((pfn) &lt; max_mapnr)
+macro_line|#endif
+DECL|macro|virt_to_page
+mdefine_line|#define virt_to_page(kaddr)&t;pfn_to_page(__pa(kaddr) &gt;&gt; PAGE_SHIFT)
 DECL|macro|virt_addr_valid
 mdefine_line|#define virt_addr_valid(kaddr)&t;pfn_valid(__pa(kaddr) &gt;&gt; PAGE_SHIFT)
-macro_line|#endif
 DECL|macro|VM_DATA_DEFAULT_FLAGS
 mdefine_line|#define VM_DATA_DEFAULT_FLAGS&t;(VM_READ | VM_WRITE | VM_EXEC | &bslash;&n;&t;&t;&t;&t; VM_MAYREAD | VM_MAYWRITE | VM_MAYEXEC)
 DECL|macro|UNCAC_ADDR

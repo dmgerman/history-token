@@ -1009,7 +1009,8 @@ id|tmin_ctl
 suffix:semicolon
 multiline_comment|/* Register value */
 DECL|member|therm_total
-id|u32
+r_int
+r_int
 id|therm_total
 suffix:semicolon
 multiline_comment|/* Cummulative therm count */

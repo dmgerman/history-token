@@ -1,5 +1,4 @@
-multiline_comment|/*&n; * Carsten Langgaard, carstenl@mips.com&n; * Copyright (C) 1999,2000 MIPS Technologies, Inc.  All rights reserved.&n; *&n; * ########################################################################&n; *&n; *  This program is free software; you can distribute it and/or modify it&n; *  under the terms of the GNU General Public License (Version 2) as&n; *  published by the Free Software Foundation.&n; *&n; *  This program is distributed in the hope it will be useful, but WITHOUT&n; *  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or&n; *  FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License&n; *  for more details.&n; *&n; *  You should have received a copy of the GNU General Public License along&n; *  with this program; if not, write to the Free Software Foundation, Inc.,&n; *  59 Temple Place - Suite 330, Boston MA 02111-1307, USA.&n; *&n; * ########################################################################&n; *&n; * Routines for generic manipulation of the interrupts found on the &n; * Lasat boards.&n; *&n; */
-macro_line|#include &lt;linux/config.h&gt;
+multiline_comment|/*&n; * Carsten Langgaard, carstenl@mips.com&n; * Copyright (C) 1999,2000 MIPS Technologies, Inc.  All rights reserved.&n; *&n; *  This program is free software; you can distribute it and/or modify it&n; *  under the terms of the GNU General Public License (Version 2) as&n; *  published by the Free Software Foundation.&n; *&n; *  This program is distributed in the hope it will be useful, but WITHOUT&n; *  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or&n; *  FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License&n; *  for more details.&n; *&n; *  You should have received a copy of the GNU General Public License along&n; *  with this program; if not, write to the Free Software Foundation, Inc.,&n; *  59 Temple Place - Suite 330, Boston MA 02111-1307, USA.&n; *&n; * Routines for generic manipulation of the interrupts found on the &n; * Lasat boards.&n; */
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
@@ -42,12 +41,6 @@ c_func
 r_void
 )paren
 suffix:semicolon
-macro_line|#if 0
-mdefine_line|#define DEBUG_INT(x...) printk(x)
-macro_line|#else
-DECL|macro|DEBUG_INT
-mdefine_line|#define DEBUG_INT(x...)
-macro_line|#endif
 DECL|function|disable_lasat_irq
 r_void
 id|disable_lasat_irq
@@ -61,14 +54,6 @@ id|irq_nr
 r_int
 r_int
 id|flags
-suffix:semicolon
-id|DEBUG_INT
-c_func
-(paren
-l_string|&quot;disable_lasat_irq: %d&quot;
-comma
-id|irq_nr
-)paren
 suffix:semicolon
 id|local_irq_save
 c_func
@@ -108,14 +93,6 @@ id|irq_nr
 r_int
 r_int
 id|flags
-suffix:semicolon
-id|DEBUG_INT
-c_func
-(paren
-l_string|&quot;enable_lasat_irq: %d&quot;
-comma
-id|irq_nr
-)paren
 suffix:semicolon
 id|local_irq_save
 c_func
@@ -396,13 +373,11 @@ r_void
 )paren
 (brace
 r_return
-(paren
 op_star
 id|lasat_int_status
 op_amp
 op_star
 id|lasat_int_mask
-)paren
 suffix:semicolon
 )brace
 DECL|function|get_int_status_200
@@ -473,11 +448,8 @@ r_if
 c_cond
 (paren
 id|int_status
-op_eq
-l_int|0
 )paren
-r_return
-suffix:semicolon
+(brace
 id|irq
 op_assign
 id|ls1bit32
@@ -486,86 +458,15 @@ c_func
 id|int_status
 )paren
 suffix:semicolon
-id|action
-op_assign
-id|irq_desc
-(braket
-id|irq
-)braket
-dot
-id|action
-suffix:semicolon
-id|DEBUG_INT
-c_func
-(paren
-l_string|&quot;lasat_hw0_irqdispatch: irq=%d&bslash;n&quot;
-comma
-id|irq
-)paren
-suffix:semicolon
-multiline_comment|/* if action == NULL, then we don&squot;t have a handler for the irq */
-r_if
-c_cond
-(paren
-id|action
-op_eq
-l_int|NULL
-)paren
-(brace
-id|printk
-c_func
-(paren
-l_string|&quot;No handler for hw0 irq: %i&bslash;n&quot;
-comma
-id|irq
-)paren
-suffix:semicolon
-id|atomic_inc
-c_func
-(paren
-op_amp
-id|irq_err_count
-)paren
-suffix:semicolon
-id|disable_lasat_irq
+id|do_IRQ
 c_func
 (paren
 id|irq
-)paren
-suffix:semicolon
-r_return
-suffix:semicolon
-)brace
-id|irq_enter
-c_func
-(paren
-)paren
-suffix:semicolon
-id|kstat_this_cpu.irqs
-(braket
-id|irq
-)braket
-op_increment
-suffix:semicolon
-id|action
-op_member_access_from_pointer
-id|handler
-c_func
-(paren
-id|irq
-comma
-id|action-&gt;dev_id
 comma
 id|regs
 )paren
 suffix:semicolon
-id|irq_exit
-c_func
-(paren
-)paren
-suffix:semicolon
-r_return
-suffix:semicolon
+)brace
 )brace
 DECL|function|init_IRQ
 r_void

@@ -4,7 +4,6 @@ macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/kdev_t.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
-macro_line|#include &lt;linux/console.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/ide.h&gt;
@@ -599,6 +598,7 @@ id|resource
 id|pci_mem_resource
 suffix:semicolon
 DECL|function|jmr3927_setup
+r_static
 r_void
 id|__init
 id|jmr3927_setup
@@ -924,6 +924,13 @@ suffix:semicolon
 )brace
 macro_line|#endif
 )brace
+DECL|variable|jmr3927_setup
+id|early_initcall
+c_func
+(paren
+id|jmr3927_setup
+)paren
+suffix:semicolon
 r_static
 r_void
 id|tx3927_setup
@@ -962,17 +969,6 @@ op_assign
 l_int|0
 suffix:semicolon
 macro_line|#endif
-r_extern
-r_struct
-id|rtc_ops
-op_star
-id|rtc_ops
-suffix:semicolon
-r_extern
-r_struct
-id|rtc_ops
-id|jmr3927_rtc_ops
-suffix:semicolon
 DECL|function|jmr3927_board_init
 r_static
 r_void
@@ -1010,13 +1006,6 @@ c_func
 (paren
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_VT
-id|conswitchp
-op_assign
-op_amp
-id|dummy_con
-suffix:semicolon
-macro_line|#endif
 r_if
 c_cond
 (paren
@@ -1073,23 +1062,6 @@ macro_line|#ifdef CONFIG_BLK_DEV_IDE
 multiline_comment|/* overrides PCI-IDE */
 macro_line|#endif
 )brace
-macro_line|#ifdef USE_RTC_DS1742
-r_if
-c_cond
-(paren
-id|jmr3927_have_nvram
-c_func
-(paren
-)paren
-)paren
-(brace
-id|rtc_ops
-op_assign
-op_amp
-id|jmr3927_rtc_ops
-suffix:semicolon
-)brace
-macro_line|#endif
 multiline_comment|/* SIO0 DTR on */
 id|jmr3927_ioc_reg_out
 c_func

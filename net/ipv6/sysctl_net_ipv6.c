@@ -287,7 +287,6 @@ l_int|0
 )brace
 )brace
 suffix:semicolon
-macro_line|#ifdef MODULE
 DECL|variable|ipv6_sysctl_header
 r_static
 r_struct
@@ -405,6 +404,5 @@ id|ipv6_sysctl_header
 )paren
 suffix:semicolon
 )brace
-macro_line|#endif&t;/* MODULE */
 macro_line|#endif /* CONFIG_SYSCTL */
 eof

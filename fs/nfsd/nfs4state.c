@@ -7456,8 +7456,16 @@ c_func
 (paren
 l_string|&quot;NFSD: nfsd4_lock: start=%Ld length=%Ld&bslash;n&quot;
 comma
+(paren
+r_int
+r_int
+)paren
 id|lock-&gt;lk_offset
 comma
+(paren
+r_int
+r_int
+)paren
 id|lock-&gt;lk_length
 )paren
 suffix:semicolon
@@ -8443,8 +8451,16 @@ c_func
 (paren
 l_string|&quot;NFSD: nfsd4_locku: start=%Ld length=%Ld&bslash;n&quot;
 comma
+(paren
+r_int
+r_int
+)paren
 id|locku-&gt;lu_offset
 comma
+(paren
+r_int
+r_int
+)paren
 id|locku-&gt;lu_length
 )paren
 suffix:semicolon

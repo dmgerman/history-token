@@ -7,11 +7,21 @@ macro_line|#include &lt;asm/pgtable.h&gt;
 macro_line|#include &lt;asm/processor.h&gt;
 macro_line|#include &lt;asm/reboot.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
-macro_line|#include &lt;asm/au1000.h&gt;
+macro_line|#include &lt;asm/mach-au1x00/au1000.h&gt;
 r_extern
 r_int
 id|au_sleep
 c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+r_extern
+r_void
+(paren
+op_star
+id|flush_cache_all
+)paren
 (paren
 r_void
 )paren
@@ -105,6 +115,42 @@ l_int|0xb0300040
 )paren
 suffix:semicolon
 multiline_comment|/* ir_enable */
+id|au_writel
+c_func
+(paren
+l_int|0x00
+comma
+l_int|0xb4004104
+)paren
+suffix:semicolon
+multiline_comment|/* mac dma */
+id|au_writel
+c_func
+(paren
+l_int|0x00
+comma
+l_int|0xb4004114
+)paren
+suffix:semicolon
+multiline_comment|/* mac dma */
+id|au_writel
+c_func
+(paren
+l_int|0x00
+comma
+l_int|0xb4004124
+)paren
+suffix:semicolon
+multiline_comment|/* mac dma */
+id|au_writel
+c_func
+(paren
+l_int|0x00
+comma
+l_int|0xb4004134
+)paren
+suffix:semicolon
+multiline_comment|/* mac dma */
 id|au_writel
 c_func
 (paren
@@ -216,6 +262,24 @@ multiline_comment|/* sys_clksrc */
 id|au_writel
 c_func
 (paren
+l_int|0x10
+comma
+l_int|0xb1900060
+)paren
+suffix:semicolon
+multiline_comment|/* sys_cpupll */
+id|au_writel
+c_func
+(paren
+l_int|0x00
+comma
+l_int|0xb1900064
+)paren
+suffix:semicolon
+multiline_comment|/* sys_auxpll */
+id|au_writel
+c_func
+(paren
 l_int|0x00
 comma
 l_int|0xb1900100
@@ -270,6 +334,42 @@ l_int|0xb0200058
 )paren
 suffix:semicolon
 multiline_comment|/* usbd_enable */
+id|au_writel
+c_func
+(paren
+l_int|0x00
+comma
+l_int|0xb4004104
+)paren
+suffix:semicolon
+multiline_comment|/* mac dma */
+id|au_writel
+c_func
+(paren
+l_int|0x00
+comma
+l_int|0xb4004114
+)paren
+suffix:semicolon
+multiline_comment|/* mac dma */
+id|au_writel
+c_func
+(paren
+l_int|0x00
+comma
+l_int|0xb4004124
+)paren
+suffix:semicolon
+multiline_comment|/* mac dma */
+id|au_writel
+c_func
+(paren
+l_int|0x00
+comma
+l_int|0xb4004134
+)paren
+suffix:semicolon
+multiline_comment|/* mac dma */
 id|au_writel
 c_func
 (paren
@@ -336,6 +436,24 @@ multiline_comment|/* sys_clksrc */
 id|au_writel
 c_func
 (paren
+l_int|0x10
+comma
+l_int|0xb1900060
+)paren
+suffix:semicolon
+multiline_comment|/* sys_cpupll */
+id|au_writel
+c_func
+(paren
+l_int|0x00
+comma
+l_int|0xb1900064
+)paren
+suffix:semicolon
+multiline_comment|/* sys_auxpll */
+id|au_writel
+c_func
+(paren
 l_int|0x00
 comma
 l_int|0xb1900100
@@ -399,6 +517,42 @@ l_int|0xb0300040
 )paren
 suffix:semicolon
 multiline_comment|/* ir_enable */
+id|au_writel
+c_func
+(paren
+l_int|0x00
+comma
+l_int|0xb4004104
+)paren
+suffix:semicolon
+multiline_comment|/* mac dma */
+id|au_writel
+c_func
+(paren
+l_int|0x00
+comma
+l_int|0xb4004114
+)paren
+suffix:semicolon
+multiline_comment|/* mac dma */
+id|au_writel
+c_func
+(paren
+l_int|0x00
+comma
+l_int|0xb4004124
+)paren
+suffix:semicolon
+multiline_comment|/* mac dma */
+id|au_writel
+c_func
+(paren
+l_int|0x00
+comma
+l_int|0xb4004134
+)paren
+suffix:semicolon
+multiline_comment|/* mac dma */
 id|au_writel
 c_func
 (paren
@@ -489,6 +643,24 @@ l_int|0xb1900028
 )paren
 suffix:semicolon
 multiline_comment|/* sys_clksrc */
+id|au_writel
+c_func
+(paren
+l_int|0x10
+comma
+l_int|0xb1900060
+)paren
+suffix:semicolon
+multiline_comment|/* sys_cpupll */
+id|au_writel
+c_func
+(paren
+l_int|0x00
+comma
+l_int|0xb1900064
+)paren
+suffix:semicolon
+multiline_comment|/* sys_auxpll */
 id|au_writel
 c_func
 (paren

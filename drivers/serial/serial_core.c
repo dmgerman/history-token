@@ -6009,7 +6009,7 @@ c_func
 (paren
 id|buf
 comma
-l_string|&quot;%d: uart:%s port:%08X irq:%d&quot;
+l_string|&quot;%d: uart:%s %s%08lX irq:%d&quot;
 comma
 id|port-&gt;line
 comma
@@ -6019,6 +6019,26 @@ c_func
 id|port
 )paren
 comma
+id|port-&gt;iotype
+op_eq
+id|UPIO_MEM
+ques
+c_cond
+l_string|&quot;mmio:0x&quot;
+suffix:colon
+l_string|&quot;port:&quot;
+comma
+id|port-&gt;iotype
+op_eq
+id|UPIO_MEM
+ques
+c_cond
+id|port-&gt;mapbase
+suffix:colon
+(paren
+r_int
+r_int
+)paren
 id|port-&gt;iobase
 comma
 id|port-&gt;irq

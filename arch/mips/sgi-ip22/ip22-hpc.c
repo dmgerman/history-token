@@ -1,7 +1,8 @@
 multiline_comment|/*&n; * ip22-hpc.c: Routines for generic manipulation of the HPC controllers.&n; *&n; * Copyright (C) 1996 David S. Miller (dm@engr.sgi.com)&n; * Copyright (C) 1998 Ralf Baechle&n; */
 macro_line|#include &lt;linux/init.h&gt;
+macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
-macro_line|#include &lt;asm/addrspace.h&gt;
+macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/sgi/hpc3.h&gt;
 macro_line|#include &lt;asm/sgi/ioc.h&gt;
 macro_line|#include &lt;asm/sgi/ip22.h&gt;
@@ -15,11 +16,32 @@ comma
 op_star
 id|hpc3c1
 suffix:semicolon
+DECL|variable|hpc3c0
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|hpc3c0
+)paren
+suffix:semicolon
+DECL|variable|hpc3c1
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|hpc3c1
+)paren
+suffix:semicolon
 DECL|variable|sgioc
 r_struct
 id|sgioc_regs
 op_star
 id|sgioc
+suffix:semicolon
+DECL|variable|sgioc
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|sgioc
+)paren
 suffix:semicolon
 multiline_comment|/* We need software copies of these because they are write only. */
 DECL|variable|sgi_ioc_reset
@@ -43,6 +65,7 @@ c_func
 r_void
 )paren
 (brace
+multiline_comment|/* ioremap can&squot;t fail */
 id|hpc3c0
 op_assign
 (paren
@@ -50,10 +73,16 @@ r_struct
 id|hpc3_regs
 op_star
 )paren
+id|ioremap
+c_func
 (paren
-id|KSEG1
-op_plus
 id|HPC3_CHIP0_BASE
+comma
+r_sizeof
+(paren
+r_struct
+id|hpc3_regs
+)paren
 )paren
 suffix:semicolon
 id|hpc3c1
@@ -63,10 +92,16 @@ r_struct
 id|hpc3_regs
 op_star
 )paren
+id|ioremap
+c_func
 (paren
-id|KSEG1
-op_plus
 id|HPC3_CHIP1_BASE
+comma
+r_sizeof
+(paren
+r_struct
+id|hpc3_regs
+)paren
 )paren
 suffix:semicolon
 multiline_comment|/* IOC lives in PBUS PIO channel 6 */

@@ -2,13 +2,6 @@ multiline_comment|/*&n; * init.c: PROM library initialisation code.&n; *&n; * Co
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;asm/addrspace.h&gt;
 macro_line|#include &lt;asm/bootinfo.h&gt;
-DECL|variable|arcs_cmdline
-r_char
-id|arcs_cmdline
-(braket
-id|CL_SIZE
-)braket
-suffix:semicolon
 DECL|function|get_system_type
 r_const
 r_char
@@ -30,9 +23,7 @@ id|__init
 id|prom_init
 c_func
 (paren
-r_int
-r_int
-id|mem_upper
+r_void
 )paren
 (brace
 id|mem_upper
@@ -40,7 +31,7 @@ op_assign
 id|PHYSADDR
 c_func
 (paren
-id|mem_upper
+id|fw_arg0
 )paren
 suffix:semicolon
 id|mips_machgroup
@@ -74,11 +65,17 @@ id|BOOT_MEM_RAM
 suffix:semicolon
 )brace
 DECL|function|prom_free_prom_memory
-r_void
+r_int
+r_int
+id|__init
 id|prom_free_prom_memory
+c_func
 (paren
 r_void
 )paren
 (brace
+r_return
+l_int|0
+suffix:semicolon
 )brace
 eof

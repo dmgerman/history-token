@@ -16046,9 +16046,9 @@ id|ipv6_devconf_dflt
 suffix:semicolon
 macro_line|#endif
 )brace
-macro_line|#ifdef MODULE
 DECL|function|addrconf_cleanup
 r_void
+id|__exit
 id|addrconf_cleanup
 c_func
 (paren
@@ -16264,5 +16264,4 @@ l_string|&quot;if_inet6&quot;
 suffix:semicolon
 macro_line|#endif
 )brace
-macro_line|#endif&t;/* MODULE */
 eof

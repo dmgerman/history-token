@@ -4,12 +4,12 @@ macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/bootmem.h&gt;
 macro_line|#include &lt;asm/sn/sgi.h&gt;
 macro_line|#include &lt;asm/sn/io.h&gt;
-macro_line|#include &lt;asm/sn/iograph.h&gt;
 macro_line|#include &lt;asm/sn/hcl.h&gt;
 macro_line|#include &lt;asm/sn/labelcl.h&gt;
 macro_line|#include &lt;asm/sn/sn_private.h&gt;
 macro_line|#include &lt;asm/sn/klconfig.h&gt;
 macro_line|#include &lt;asm/sn/sn_cpuid.h&gt;
+macro_line|#include &lt;asm/sn/simulator.h&gt;
 DECL|variable|maxcpus
 r_int
 id|maxcpus
@@ -211,6 +211,16 @@ suffix:semicolon
 r_extern
 r_int
 id|numionodes
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|IS_RUNNING_ON_SIMULATOR
+c_func
+(paren
+)paren
+)paren
+r_return
 suffix:semicolon
 r_for
 c_loop

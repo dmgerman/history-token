@@ -8884,9 +8884,9 @@ c_func
 suffix:semicolon
 macro_line|#endif
 )brace
-macro_line|#ifdef MODULE
 DECL|function|ip6_route_cleanup
 r_void
+id|__exit
 id|ip6_route_cleanup
 c_func
 (paren
@@ -8932,5 +8932,4 @@ id|ip6_dst_ops.kmem_cachep
 )paren
 suffix:semicolon
 )brace
-macro_line|#endif&t;/* MODULE */
 eof

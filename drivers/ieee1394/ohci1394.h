@@ -811,6 +811,16 @@ DECL|macro|OHCI1394_LinkControlSet
 mdefine_line|#define OHCI1394_LinkControlSet               0x0E0
 DECL|macro|OHCI1394_LinkControlClear
 mdefine_line|#define OHCI1394_LinkControlClear             0x0E4
+DECL|macro|OHCI1394_LinkControl_RcvSelfID
+mdefine_line|#define  OHCI1394_LinkControl_RcvSelfID&t;&t;0x00000200
+DECL|macro|OHCI1394_LinkControl_RcvPhyPkt
+mdefine_line|#define  OHCI1394_LinkControl_RcvPhyPkt&t;&t;0x00000400
+DECL|macro|OHCI1394_LinkControl_CycleTimerEnable
+mdefine_line|#define  OHCI1394_LinkControl_CycleTimerEnable&t;0x00100000
+DECL|macro|OHCI1394_LinkControl_CycleMaster
+mdefine_line|#define  OHCI1394_LinkControl_CycleMaster&t;0x00200000
+DECL|macro|OHCI1394_LinkControl_CycleSource
+mdefine_line|#define  OHCI1394_LinkControl_CycleSource&t;0x00400000
 DECL|macro|OHCI1394_NodeID
 mdefine_line|#define OHCI1394_NodeID                       0x0E8
 DECL|macro|OHCI1394_PhyControl

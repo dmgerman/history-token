@@ -1,4 +1,3 @@
-macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
@@ -53,32 +52,29 @@ r_struct
 id|pci_ops
 id|ddb5476_ext_pci_ops
 suffix:semicolon
-DECL|variable|mips_pci_channels
+DECL|variable|ddb5476_controller
 r_struct
-id|pci_channel
-id|mips_pci_channels
-(braket
-)braket
+id|pci_controller
+id|ddb5476_controller
 op_assign
 (brace
-(brace
+dot
+id|pci_ops
+op_assign
 op_amp
 id|ddb5476_ext_pci_ops
 comma
+dot
+id|io_resource
+op_assign
 op_amp
 id|extpci_io_resource
 comma
+dot
+id|mem_resource
+op_assign
 op_amp
 id|extpci_mem_resource
-)brace
-comma
-(brace
-l_int|NULL
-comma
-l_int|NULL
-comma
-l_int|NULL
-)brace
 )brace
 suffix:semicolon
 multiline_comment|/*&n; * we fix up irqs based on the slot number.&n; * The first entry is at AD:11.&n; *&n; * This does not work for devices on sub-buses yet.&n; */
@@ -106,222 +102,105 @@ id|MAX_SLOT_NUM
 )braket
 op_assign
 (brace
-multiline_comment|/* SLOT:  0, AD:11 */
-l_int|0xff
-comma
-multiline_comment|/* SLOT:  1, AD:12 */
-l_int|0xff
-comma
-multiline_comment|/* SLOT:  2, AD:13 */
+(braket
+l_int|2
+)braket
+op_assign
 l_int|9
 comma
-multiline_comment|/* USB */
-multiline_comment|/* SLOT:  3, AD:14 */
+multiline_comment|/* AD:13&t;USB&t;&t;*/
+(braket
+l_int|3
+)braket
+op_assign
 l_int|10
 comma
-multiline_comment|/* PMU */
-multiline_comment|/* SLOT:  4, AD:15 */
-l_int|0xff
+multiline_comment|/* AD:14&t;PMU&t;&t;*/
+(braket
+l_int|5
+)braket
+op_assign
+l_int|0
 comma
-multiline_comment|/* SLOT:  5, AD:16 */
-l_int|0x0
-comma
-multiline_comment|/* P2P bridge */
-multiline_comment|/* SLOT:  6, AD:17 */
+multiline_comment|/* AD:16 &t;P2P bridge&t;*/
+(braket
+l_int|6
+)braket
+op_assign
 id|nile4_to_irq
 c_func
 (paren
 id|PCI_EXT_INTB
 )paren
 comma
-multiline_comment|/* SLOT:  7, AD:18 */
+multiline_comment|/* AD:17&t;&t;&t;*/
+(braket
+l_int|7
+)braket
+op_assign
 id|nile4_to_irq
 c_func
 (paren
 id|PCI_EXT_INTC
 )paren
 comma
-multiline_comment|/* SLOT:  8, AD:19 */
+multiline_comment|/* AD:18&t;&t;&t;*/
+(braket
+l_int|8
+)braket
+op_assign
 id|nile4_to_irq
 c_func
 (paren
 id|PCI_EXT_INTD
 )paren
 comma
-multiline_comment|/* SLOT:  9, AD:20 */
+multiline_comment|/* AD:19&t;&t;&t;*/
+(braket
+l_int|9
+)braket
+op_assign
 id|nile4_to_irq
 c_func
 (paren
 id|PCI_EXT_INTA
 )paren
 comma
-multiline_comment|/* SLOT: 10, AD:21 */
-l_int|0xff
-comma
-multiline_comment|/* SLOT: 11, AD:22 */
-l_int|0xff
-comma
-multiline_comment|/* SLOT: 12, AD:23 */
-l_int|0xff
-comma
-multiline_comment|/* SLOT: 13, AD:24 */
+multiline_comment|/* AD:20&t;&t;&t;*/
+(braket
+l_int|13
+)braket
+op_assign
 l_int|14
 comma
-multiline_comment|/* HD controller, M5229 */
-multiline_comment|/* SLOT: 14, AD:25 */
-l_int|0xff
-comma
-multiline_comment|/* SLOT: 15, AD:26 */
-l_int|0xff
-comma
-multiline_comment|/* SLOT: 16, AD:27 */
-l_int|0xff
-comma
-multiline_comment|/* SLOT: 17, AD:28 */
-l_int|0xff
-comma
-multiline_comment|/* SLOT: 18, AD:29 */
-l_int|0xff
-comma
-multiline_comment|/* SLOT: 19, AD:30 */
-l_int|0xff
-comma
-multiline_comment|/* SLOT: 20, AD:31 */
-l_int|0xff
+multiline_comment|/* AD:24 HD controller, M5229&t;*/
 )brace
 suffix:semicolon
-r_extern
+DECL|function|pcibios_map_irq
 r_int
-id|vrc5477_irq_to_irq
-c_func
-(paren
-r_int
-id|irq
-)paren
-suffix:semicolon
-DECL|function|pcibios_fixup_irqs
-r_void
 id|__init
-id|pcibios_fixup_irqs
+id|pcibios_map_irq
 c_func
 (paren
-r_void
-)paren
-(brace
 r_struct
 id|pci_dev
 op_star
 id|dev
-op_assign
-l_int|NULL
-suffix:semicolon
-r_int
-id|slot_num
-suffix:semicolon
-r_while
-c_loop
-(paren
-(paren
-id|dev
-op_assign
-id|pci_find_device
-c_func
-(paren
-id|PCI_ANY_ID
 comma
-id|PCI_ANY_ID
+id|u8
+id|slot
 comma
-id|dev
-)paren
-)paren
-op_ne
-l_int|NULL
+id|u8
+id|pin
 )paren
 (brace
-id|slot_num
-op_assign
-id|PCI_SLOT
-c_func
-(paren
-id|dev-&gt;devfn
-)paren
-suffix:semicolon
-multiline_comment|/* we don&squot;t do IRQ fixup for sub-bus yet */
-r_if
-c_cond
-(paren
-id|dev-&gt;bus-&gt;parent
-op_ne
-l_int|NULL
-)paren
-(brace
-id|db_run
-c_func
-(paren
-id|printk
-(paren
-l_string|&quot;Don&squot;t know how to fixup irq for PCI device %d on sub-bus %d&bslash;n&quot;
-comma
-id|slot_num
-comma
-id|dev-&gt;bus-&gt;number
-)paren
-)paren
-suffix:semicolon
-r_continue
-suffix:semicolon
-)brace
-id|db_assert
-c_func
-(paren
-id|slot_num
-OL
-id|MAX_SLOT_NUM
-)paren
-suffix:semicolon
-id|db_assert
-c_func
-(paren
+r_return
 id|irq_map
 (braket
-id|slot_num
-)braket
-op_ne
-l_int|0xff
-)paren
-suffix:semicolon
-id|pci_write_config_byte
-c_func
-(paren
-id|dev
-comma
-id|PCI_INTERRUPT_LINE
-comma
-id|irq_map
-(braket
-id|slot_num
-)braket
-)paren
-suffix:semicolon
-id|dev-&gt;irq
-op_assign
-id|irq_map
-(braket
-id|slot_num
+id|slot
 )braket
 suffix:semicolon
 )brace
-)brace
-macro_line|#if defined(CONFIG_RUNTIME_DEBUG)
-r_extern
-r_void
-id|jsun_scan_pci_bus
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-macro_line|#endif
 DECL|function|ddb_pci_reset_bus
 r_void
 id|__init
@@ -374,43 +253,5 @@ comma
 id|temp
 )paren
 suffix:semicolon
-)brace
-DECL|function|pcibios_assign_all_busses
-r_int
-id|__init
-r_int
-id|pcibios_assign_all_busses
-c_func
-(paren
-r_void
-)paren
-(brace
-multiline_comment|/* we hope pci_auto has assigned the bus numbers to all buses */
-r_return
-l_int|1
-suffix:semicolon
-)brace
-DECL|function|pcibios_fixup_resources
-r_void
-id|__init
-id|pcibios_fixup_resources
-c_func
-(paren
-r_struct
-id|pci_dev
-op_star
-id|dev
-)paren
-(brace
-)brace
-DECL|function|pcibios_fixup
-r_void
-id|__init
-id|pcibios_fixup
-c_func
-(paren
-r_void
-)paren
-(brace
 )brace
 eof

@@ -339,6 +339,9 @@ multiline_comment|/* 0x12 */
 l_string|&quot;133 MHz PCIX 533&quot;
 comma
 multiline_comment|/* 0x13 */
+l_string|&quot;25 GBps PCI-E&quot;
+comma
+multiline_comment|/* 0x14 */
 )brace
 suffix:semicolon
 macro_line|#ifdef CONFIG_HOTPLUG_PCI_CPCI

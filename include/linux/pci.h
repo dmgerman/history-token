@@ -556,10 +556,6 @@ DECL|macro|PCI_DMA_NONE
 mdefine_line|#define PCI_DMA_NONE&t;&t;3
 DECL|macro|DEVICE_COUNT_COMPATIBLE
 mdefine_line|#define DEVICE_COUNT_COMPATIBLE&t;4
-DECL|macro|DEVICE_COUNT_IRQ
-mdefine_line|#define DEVICE_COUNT_IRQ&t;2
-DECL|macro|DEVICE_COUNT_DMA
-mdefine_line|#define DEVICE_COUNT_DMA&t;2
 DECL|macro|DEVICE_COUNT_RESOURCE
 mdefine_line|#define DEVICE_COUNT_RESOURCE&t;12
 multiline_comment|/*&n; * The pci_dev structure is used to describe PCI devices.&n; */

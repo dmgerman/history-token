@@ -1545,11 +1545,6 @@ id|u8
 id|unmask
 suffix:semicolon
 multiline_comment|/* okay to unmask other irqs */
-DECL|member|slow
-id|u8
-id|slow
-suffix:semicolon
-multiline_comment|/* slow data port */
 DECL|member|bswap
 id|u8
 id|bswap
@@ -1635,13 +1630,6 @@ suffix:colon
 l_int|1
 suffix:semicolon
 multiline_comment|/* disallow enabling 32bit I/O */
-DECL|member|nobios
-r_int
-id|nobios
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* do not probe bios for drive */
 DECL|member|atapi_overlap
 r_int
 id|atapi_overlap
@@ -1684,13 +1672,6 @@ suffix:colon
 l_int|1
 suffix:semicolon
 multiline_comment|/* 0=noremap, 1=remap 0-&gt;1 (for EZDrive) */
-DECL|member|ata_flash
-r_int
-id|ata_flash
-suffix:colon
-l_int|1
-suffix:semicolon
-multiline_comment|/* 1=present, 0=default */
 DECL|member|blocked
 r_int
 id|blocked
@@ -3628,6 +3609,12 @@ id|ide_proc_entry_t
 suffix:semicolon
 macro_line|#ifdef CONFIG_PROC_FS
 r_extern
+r_struct
+id|proc_dir_entry
+op_star
+id|proc_ide_root
+suffix:semicolon
+r_extern
 r_void
 id|proc_ide_create
 c_func
@@ -3709,10 +3696,36 @@ DECL|variable|proc_ide_read_geometry
 id|read_proc_t
 id|proc_ide_read_geometry
 suffix:semicolon
+macro_line|#ifdef CONFIG_BLK_DEV_IDEPCI
+r_void
+id|ide_pci_create_host_proc
+c_func
+(paren
+r_const
+r_char
+op_star
+comma
+id|get_info_t
+op_star
+)paren
+suffix:semicolon
+macro_line|#endif
 multiline_comment|/*&n; * Standard exit stuff:&n; */
 DECL|macro|PROC_IDE_READ_RETURN
 mdefine_line|#define PROC_IDE_READ_RETURN(page,start,off,count,eof,len) &bslash;&n;{&t;&t;&t;&t;&t;&bslash;&n;&t;len -= off;&t;&t;&t;&bslash;&n;&t;if (len &lt; count) {&t;&t;&bslash;&n;&t;&t;*eof = 1;&t;&t;&bslash;&n;&t;&t;if (len &lt;= 0)&t;&t;&bslash;&n;&t;&t;&t;return 0;&t;&bslash;&n;&t;} else&t;&t;&t;&t;&bslash;&n;&t;&t;len = count;&t;&t;&bslash;&n;&t;*start = page + off;&t;&t;&bslash;&n;&t;return len;&t;&t;&t;&bslash;&n;}
 macro_line|#else
+DECL|function|create_proc_ide_interfaces
+r_static
+r_inline
+r_void
+id|create_proc_ide_interfaces
+c_func
+(paren
+r_void
+)paren
+(brace
+suffix:semicolon
+)brace
 DECL|macro|PROC_IDE_READ_RETURN
 mdefine_line|#define PROC_IDE_READ_RETURN(page,start,off,count,eof,len) return 0;
 macro_line|#endif
@@ -3738,8 +3751,6 @@ comma
 )brace
 suffix:semicolon
 multiline_comment|/*&n; * Subdrivers support.&n; */
-DECL|macro|IDE_SUBDRIVER_VERSION
-mdefine_line|#define IDE_SUBDRIVER_VERSION&t;1
 DECL|struct|ide_driver_s
 r_typedef
 r_struct
@@ -3784,28 +3795,6 @@ r_int
 (paren
 op_star
 id|cleanup
-)paren
-(paren
-id|ide_drive_t
-op_star
-)paren
-suffix:semicolon
-DECL|member|shutdown
-r_int
-(paren
-op_star
-id|shutdown
-)paren
-(paren
-id|ide_drive_t
-op_star
-)paren
-suffix:semicolon
-DECL|member|flushcache
-r_int
-(paren
-op_star
-id|flushcache
 )paren
 (paren
 id|ide_drive_t
@@ -4775,20 +4764,6 @@ id|ide_task_t
 op_star
 )paren
 suffix:semicolon
-multiline_comment|/* (ide_drive_t *drive, u8 stat, u8 err) */
-r_extern
-r_void
-id|ide_end_taskfile
-c_func
-(paren
-id|ide_drive_t
-op_star
-comma
-id|u8
-comma
-id|u8
-)paren
-suffix:semicolon
 multiline_comment|/*&n; * Special Flagged Register Validation Caller&n; */
 r_extern
 id|ide_startstop_t
@@ -5370,17 +5345,13 @@ id|driver
 suffix:semicolon
 r_int
 id|ide_register_subdriver
+c_func
 (paren
 id|ide_drive_t
 op_star
-id|drive
 comma
 id|ide_driver_t
 op_star
-id|driver
-comma
-r_int
-id|version
 )paren
 suffix:semicolon
 r_int
@@ -5405,51 +5376,6 @@ op_star
 id|driver
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_PROC_FS
-DECL|struct|ide_pci_host_proc_s
-r_typedef
-r_struct
-id|ide_pci_host_proc_s
-(brace
-DECL|member|name
-r_char
-op_star
-id|name
-suffix:semicolon
-DECL|member|set
-id|u8
-id|set
-suffix:semicolon
-DECL|member|get_info
-id|get_info_t
-op_star
-id|get_info
-suffix:semicolon
-DECL|member|parent
-r_struct
-id|proc_dir_entry
-op_star
-id|parent
-suffix:semicolon
-DECL|member|next
-r_struct
-id|ide_pci_host_proc_s
-op_star
-id|next
-suffix:semicolon
-DECL|typedef|ide_pci_host_proc_t
-)brace
-id|ide_pci_host_proc_t
-suffix:semicolon
-r_void
-id|ide_pci_register_host_proc
-c_func
-(paren
-id|ide_pci_host_proc_t
-op_star
-)paren
-suffix:semicolon
-macro_line|#endif /* CONFIG_PROC_FS */
 DECL|macro|ON_BOARD
 mdefine_line|#define ON_BOARD&t;&t;1
 DECL|macro|NEVER_BOARD

@@ -1,54 +1,26 @@
-multiline_comment|/*&n; * Lowlevel hardware stuff for the MIPS based Cobalt microservers.&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1997 Cobalt Microserver&n; * Copyright (C) 1997 Ralf Baechle&n; * Copyright (C) 2001, 2002, 2003 Liam Davies (ldavies@agile.tv)&n; *&n; */
-macro_line|#ifndef __ASM_MIPS_COBALT_H
-DECL|macro|__ASM_MIPS_COBALT_H
-mdefine_line|#define __ASM_MIPS_COBALT_H
-multiline_comment|/*&n; * COBALT interrupt enable bits&n; */
-DECL|macro|COBALT_IE_PCI
-mdefine_line|#define COBALT_IE_PCI          (1 &lt;&lt; 0)
-DECL|macro|COBALT_IE_FLOPPY
-mdefine_line|#define COBALT_IE_FLOPPY       (1 &lt;&lt; 1)
-DECL|macro|COBALT_IE_KEYBOARD
-mdefine_line|#define COBALT_IE_KEYBOARD     (1 &lt;&lt; 2)
-DECL|macro|COBALT_IE_SERIAL1
-mdefine_line|#define COBALT_IE_SERIAL1      (1 &lt;&lt; 3)
-DECL|macro|COBALT_IE_SERIAL2
-mdefine_line|#define COBALT_IE_SERIAL2      (1 &lt;&lt; 4)
-DECL|macro|COBALT_IE_PARALLEL
-mdefine_line|#define COBALT_IE_PARALLEL     (1 &lt;&lt; 5)
-DECL|macro|COBALT_IE_GPIO
-mdefine_line|#define COBALT_IE_GPIO         (1 &lt;&lt; 6)
-DECL|macro|COBALT_IE_RTC
-mdefine_line|#define COBALT_IE_RTC          (1 &lt;&lt; 7)
-multiline_comment|/*&n; * PCI defines&n; */
-DECL|macro|COBALT_IE_ETHERNET
-mdefine_line|#define COBALT_IE_ETHERNET     (1 &lt;&lt; 7)
-DECL|macro|COBALT_IE_SCSI
-mdefine_line|#define COBALT_IE_SCSI         (1 &lt;&lt; 7)
-multiline_comment|/*&n; * COBALT Interrupt Level definitions.&n; * These should match the request IRQ id&squot;s.&n; */
+multiline_comment|/*&n; * Lowlevel hardware stuff for the MIPS based Cobalt microservers.&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1997 Cobalt Microserver&n; * Copyright (C) 1997, 2003 Ralf Baechle&n; * Copyright (C) 2001, 2002, 2003 Liam Davies (ldavies@agile.tv)&n; */
+macro_line|#ifndef __ASM_COBALT_H
+DECL|macro|__ASM_COBALT_H
+mdefine_line|#define __ASM_COBALT_H
+multiline_comment|/*&n; * i8259 legacy interrupts used on Cobalt:&n; *&n; *     8  - RTC&n; *     9  - PCI&n; *    14  - IDE0&n; *    15  - IDE1&n; *&n; * CPU IRQs  are 16 ... 23&n; */
 DECL|macro|COBALT_TIMER_IRQ
-mdefine_line|#define COBALT_TIMER_IRQ       0
-DECL|macro|COBALT_KEYBOARD_IRQ
-mdefine_line|#define COBALT_KEYBOARD_IRQ    1
-DECL|macro|COBALT_QUBE_SLOT_IRQ
-mdefine_line|#define COBALT_QUBE_SLOT_IRQ   9
-DECL|macro|COBALT_ETH0_IRQ
-mdefine_line|#define COBALT_ETH0_IRQ        4
-DECL|macro|COBALT_ETH1_IRQ
-mdefine_line|#define COBALT_ETH1_IRQ        13
+mdefine_line|#define COBALT_TIMER_IRQ&t;18
 DECL|macro|COBALT_SCC_IRQ
-mdefine_line|#define COBALT_SCC_IRQ         4
-DECL|macro|COBALT_SERIAL2_IRQ
-mdefine_line|#define COBALT_SERIAL2_IRQ     4
-DECL|macro|COBALT_PARALLEL_IRQ
-mdefine_line|#define COBALT_PARALLEL_IRQ    5
-DECL|macro|COBALT_FLOPPY_IRQ
-mdefine_line|#define COBALT_FLOPPY_IRQ      6 /* needs to be consistent with floppy driver! */
-DECL|macro|COBALT_SCSI_IRQ
-mdefine_line|#define COBALT_SCSI_IRQ        7
-DECL|macro|COBALT_SERIAL_IRQ
-mdefine_line|#define COBALT_SERIAL_IRQ      7
+mdefine_line|#define COBALT_SCC_IRQ          19&t;&t;/* pre-production has 85C30 */
 DECL|macro|COBALT_RAQ_SCSI_IRQ
-mdefine_line|#define COBALT_RAQ_SCSI_IRQ    4
+mdefine_line|#define COBALT_RAQ_SCSI_IRQ&t;19
+DECL|macro|COBALT_ETH0_IRQ
+mdefine_line|#define COBALT_ETH0_IRQ&t;&t;19
+DECL|macro|COBALT_ETH1_IRQ
+mdefine_line|#define COBALT_ETH1_IRQ&t;&t;20
+DECL|macro|COBALT_SERIAL_IRQ
+mdefine_line|#define COBALT_SERIAL_IRQ&t;21
+DECL|macro|COBALT_SCSI_IRQ
+mdefine_line|#define COBALT_SCSI_IRQ         21
+DECL|macro|COBALT_VIA_IRQ
+mdefine_line|#define COBALT_VIA_IRQ&t;&t;22&t;&t;/* Chained to VIA ISA bridge */
+DECL|macro|COBALT_QUBE_SLOT_IRQ
+mdefine_line|#define COBALT_QUBE_SLOT_IRQ&t;23
 multiline_comment|/*&n; * PCI configuration space manifest constants.  These are wired into&n; * the board layout according to the PCI spec to enable the software&n; * to probe the hardware configuration space in a well defined manner.&n; *&n; * The PCI_DEVSHFT() macro transforms these values into numbers&n; * suitable for passing as the dev parameter to the various&n; * pcibios_read/write_config routines.&n; */
 DECL|macro|COBALT_PCICONF_CPU
 mdefine_line|#define COBALT_PCICONF_CPU      0x06
@@ -75,20 +47,24 @@ DECL|macro|COBALT_BRD_ID_QUBE2
 mdefine_line|#define COBALT_BRD_ID_QUBE2    0x5
 DECL|macro|COBALT_BRD_ID_RAQ2
 mdefine_line|#define COBALT_BRD_ID_RAQ2     0x6
-multiline_comment|/*&n; * Galileo chipset access macros for the Cobalt. The base address for&n; * the GT64111 chip is 0x14000000&n; */
+multiline_comment|/*&n; * Galileo chipset access macros for the Cobalt. The base address for&n; * the GT64111 chip is 0x14000000&n; *&n; * Most of this really should go into a separate GT64111 header file.&n; */
+DECL|macro|GT64111_IO_BASE
+mdefine_line|#define GT64111_IO_BASE&t;&t;0x10000000UL
 DECL|macro|GT64111_BASE
-mdefine_line|#define GT64111_BASE&t;&t;0x04000000
+mdefine_line|#define GT64111_BASE&t;&t;0x14000000UL
 DECL|macro|GALILEO_REG
-mdefine_line|#define GALILEO_REG(ofs)&t;(GT64111_BASE + (ofs))
+mdefine_line|#define GALILEO_REG(ofs)&t;(KSEG0 + GT64111_BASE + (unsigned long)(ofs))
 DECL|macro|GALILEO_INL
-mdefine_line|#define GALILEO_INL(port)&t;(inl(GALILEO_REG(port)))
+mdefine_line|#define GALILEO_INL(port)&t;(*(volatile unsigned int *) GALILEO_REG(port))
 DECL|macro|GALILEO_OUTL
-mdefine_line|#define GALILEO_OUTL(val, port)&t;outl(val, GALILEO_REG(port))
+mdefine_line|#define GALILEO_OUTL(val, port)&t;&t;&t;&t;&t;&t;&bslash;&n;do {&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;*(volatile unsigned int *) GALILEO_REG(port) = (port);&t;&t;&bslash;&n;} while (0)
 DECL|macro|GALILEO_T0EXP
 mdefine_line|#define GALILEO_T0EXP&t;&t;0x0100
 DECL|macro|GALILEO_ENTC0
 mdefine_line|#define GALILEO_ENTC0&t;&t;0x01
 DECL|macro|GALILEO_SELTC0
 mdefine_line|#define GALILEO_SELTC0&t;&t;0x02
-macro_line|#endif /* __ASM_MIPS_COBALT_H */
+DECL|macro|PCI_CFG_SET
+mdefine_line|#define PCI_CFG_SET(devfn,where)&t;&t;&t;&t;&t;&bslash;&n;&t;GALILEO_OUTL((0x80000000 | (PCI_SLOT (devfn) &lt;&lt; 11) |&t;&t;&bslash;&n;&t;&t;(PCI_FUNC (devfn) &lt;&lt; 8) | (where)), GT_PCI0_CFGADDR_OFS)
+macro_line|#endif /* __ASM_COBALT_H */
 eof

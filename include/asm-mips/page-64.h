@@ -4,7 +4,7 @@ DECL|macro|_ASM_PAGE_64_H
 mdefine_line|#define _ASM_PAGE_64_H
 macro_line|#include &lt;linux/config.h&gt;
 multiline_comment|/*&n; * This handles the memory map.&n; */
-macro_line|#ifdef CONFIG_NONCOHERENT_IO
+macro_line|#ifdef CONFIG_DMA_NONCOHERENT
 DECL|macro|PAGE_OFFSET
 mdefine_line|#define PAGE_OFFSET&t;0x9800000000000000UL
 macro_line|#else

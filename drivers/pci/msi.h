@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *&t;msi.h&n; *&n; */
+multiline_comment|/*&n; * File:&t;msi.h&n; *&n; * Copyright (C) 2003-2004 Intel&n; * Copyright (C) Tom Long Nguyen (tom.l.nguyen@intel.com)&n; */
 macro_line|#ifndef MSI_H
 DECL|macro|MSI_H
 mdefine_line|#define MSI_H

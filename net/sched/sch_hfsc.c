@@ -7470,6 +7470,7 @@ id|hfsc_walk
 )brace
 suffix:semicolon
 DECL|variable|hfsc_qdisc_ops
+r_static
 r_struct
 id|Qdisc_ops
 id|hfsc_qdisc_ops

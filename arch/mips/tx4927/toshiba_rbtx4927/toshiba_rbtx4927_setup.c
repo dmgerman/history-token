@@ -12,18 +12,14 @@ macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/timex.h&gt;
 macro_line|#include &lt;asm/bootinfo.h&gt;
 macro_line|#include &lt;asm/page.h&gt;
-macro_line|#include &lt;asm/bootinfo.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
-macro_line|#include &lt;asm/pci.h&gt;
 macro_line|#include &lt;asm/processor.h&gt;
 macro_line|#include &lt;asm/ptrace.h&gt;
 macro_line|#include &lt;asm/reboot.h&gt;
 macro_line|#include &lt;asm/time.h&gt;
-macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;linux/bootmem.h&gt;
 macro_line|#include &lt;linux/blkdev.h&gt;
-macro_line|#include &lt;linux/console.h&gt;
 macro_line|#ifdef CONFIG_RTC_DS1742
 macro_line|#include &lt;asm/rtc_ds1742.h&gt;
 macro_line|#endif
@@ -33,24 +29,11 @@ macro_line|#endif
 macro_line|#include &lt;asm/tx4927/toshiba_rbtx4927.h&gt;
 macro_line|#ifdef CONFIG_PCI
 macro_line|#include &lt;asm/tx4927/tx4927_pci.h&gt;
-macro_line|#include &lt;linux/types.h&gt;
-macro_line|#include &lt;linux/pci.h&gt;
-macro_line|#include &lt;linux/kernel.h&gt;
-macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;asm/pci_channel.h&gt;
-macro_line|#endif
-macro_line|#ifdef CONFIG_PC_KEYB
-macro_line|#include &lt;asm/keyboard.h&gt;
 macro_line|#endif
 macro_line|#ifdef CONFIG_BLK_DEV_IDEPCI
 macro_line|#include &lt;linux/hdreg.h&gt;
-macro_line|#include &lt;asm/ptrace.h&gt;
 macro_line|#include &lt;linux/ide.h&gt;
-r_extern
-r_struct
-id|ide_ops
-id|std_ide_ops
-suffix:semicolon
 macro_line|#endif
 DECL|macro|TOSHIBA_RBTX4927_SETUP_DEBUG
 macro_line|#undef TOSHIBA_RBTX4927_SETUP_DEBUG
@@ -911,7 +894,7 @@ id|fake_pci_dev
 c_func
 (paren
 r_struct
-id|pci_channel
+id|pci_controller
 op_star
 id|hose
 comma
@@ -980,7 +963,7 @@ id|dev
 suffix:semicolon
 )brace
 DECL|macro|EARLY_PCI_OP
-mdefine_line|#define EARLY_PCI_OP(rw, size, type)                                    &bslash;&n;static int early_##rw##_config_##size(struct pci_channel *hose,                &bslash;&n;        int top_bus, int bus, int devfn, int offset, type value)        &bslash;&n;{                                                                       &bslash;&n;        return pci_##rw##_config_##size(                                &bslash;&n;                fake_pci_dev(hose, top_bus, bus, devfn),                &bslash;&n;                offset, value);                                         &bslash;&n;}
+mdefine_line|#define EARLY_PCI_OP(rw, size, type)                                    &bslash;&n;static int early_##rw##_config_##size(struct pci_controller *hose,      &bslash;&n;        int top_bus, int bus, int devfn, int offset, type value)        &bslash;&n;{                                                                       &bslash;&n;        return pci_##rw##_config_##size(                                &bslash;&n;                fake_pci_dev(hose, top_bus, bus, devfn),                &bslash;&n;                offset, value);                                         &bslash;&n;}
 id|EARLY_PCI_OP
 c_func
 (paren
@@ -1049,27 +1032,17 @@ r_int
 id|busno
 comma
 r_struct
-id|pci_channel
+id|pci_controller
 op_star
 id|hose
 )paren
 (brace
-id|u32
-id|pci_devfn
-suffix:semicolon
-r_int
-id|devfn_start
-op_assign
-l_int|0
-suffix:semicolon
-r_int
-id|devfn_stop
-op_assign
-l_int|0xff
-suffix:semicolon
 r_int
 r_int
 id|id
+suffix:semicolon
+id|u32
+id|pci_devfn
 suffix:semicolon
 id|TOSHIBA_RBTX4927_SETUP_DPRINTK
 c_func
@@ -1079,34 +1052,16 @@ comma
 l_string|&quot;-&bslash;n&quot;
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|hose-&gt;first_devfn
-)paren
-id|devfn_start
-op_assign
-id|hose-&gt;first_devfn
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|hose-&gt;last_devfn
-)paren
-id|devfn_stop
-op_assign
-id|hose-&gt;last_devfn
-suffix:semicolon
 r_for
 c_loop
 (paren
 id|pci_devfn
 op_assign
-id|devfn_start
+l_int|0x0
 suffix:semicolon
 id|pci_devfn
 OL
-id|devfn_stop
+l_int|0xff
 suffix:semicolon
 id|pci_devfn
 op_increment
@@ -1960,9 +1915,7 @@ l_string|&quot;+&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
-(paren
 id|busno
-)paren
 suffix:semicolon
 )brace
 r_extern
@@ -2745,48 +2698,15 @@ l_string|&quot;:pci setup complete:&bslash;n&quot;
 )paren
 suffix:semicolon
 singleline_comment|//tx4927_dump_pcic_settings();
-(brace
-r_struct
-id|pci_channel
-op_star
-id|p
-suffix:semicolon
-r_int
-id|busno
-suffix:semicolon
-id|busno
-op_assign
-l_int|0
-suffix:semicolon
-r_for
-c_loop
-(paren
-id|p
-op_assign
-id|mips_pci_channels
-suffix:semicolon
-id|p-&gt;pci_ops
-op_ne
-l_int|NULL
-suffix:semicolon
-id|p
-op_increment
-)paren
-(brace
-id|busno
-op_assign
 id|tx4927_pcibios_init
 c_func
 (paren
-id|busno
+l_int|0
 comma
-id|p
+op_amp
+id|tx4927_controller
 )paren
-op_plus
-l_int|1
 suffix:semicolon
-)brace
-)brace
 id|TOSHIBA_RBTX4927_SETUP_DPRINTK
 c_func
 (paren
@@ -3133,41 +3053,6 @@ id|_machine_power_off
 op_assign
 id|toshiba_rbtx4927_power_off
 suffix:semicolon
-macro_line|#ifdef CONFIG_BLK_DEV_IDEPCI
-(brace
-id|TOSHIBA_RBTX4927_SETUP_DPRINTK
-(paren
-id|TOSHIBA_RBTX4927_SETUP_SETUP
-comma
-l_string|&quot;:ide_ops=&amp;std_ide_ops(modified)&bslash;n&quot;
-)paren
-suffix:semicolon
-id|ide_ops
-op_assign
-op_amp
-id|std_ide_ops
-suffix:semicolon
-)brace
-macro_line|#else
-(brace
-id|TOSHIBA_RBTX4927_SETUP_DPRINTK
-(paren
-id|TOSHIBA_RBTX4927_SETUP_SETUP
-comma
-l_string|&quot;:ide_ops=&lt;NOT_CONFIG&gt;&bslash;n&quot;
-)paren
-suffix:semicolon
-)brace
-macro_line|#endif
-macro_line|#ifdef CONFIG_FB
-(brace
-id|conswitchp
-op_assign
-op_amp
-id|dummy_con
-suffix:semicolon
-)brace
-macro_line|#endif
 macro_line|#ifdef CONFIG_PCI
 multiline_comment|/* PCIC */
 multiline_comment|/*&n;&t;   * ASSUMPTION: PCIDIVMODE is configured for PCI 33MHz or 66MHz.&n;&t;   * PCIDIVMODE[12:11]&squot;s initial value are given by S9[4:3] (ON:0, OFF:1).&n;&t;   * CPU 166MHz: PCI 66MHz : PCIDIVMODE: 00 (1/2.5)&n;&t;   * CPU 200MHz: PCI 66MHz : PCIDIVMODE: 01 (1/3)&n;&t;   * CPU 166MHz: PCI 33MHz : PCIDIVMODE: 10 (1/5)&n;&t;   * CPU 200MHz: PCI 33MHz : PCIDIVMODE: 11 (1/6)&n;&t;   * i.e. S9[3]: ON (83MHz), OFF (100MHz)&n;&t; */
@@ -3328,10 +3213,7 @@ id|early_read_config_dword
 c_func
 (paren
 op_amp
-id|mips_pci_channels
-(braket
-l_int|0
-)braket
+id|tx4927_controller
 comma
 l_int|0
 comma
@@ -3374,55 +3256,6 @@ l_string|&quot;backplane board NOT installed&bslash;n&quot;
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/* this is only done if backplane board installed, so must wait for pci */
-macro_line|#ifdef CONFIG_PC_KEYB
-(brace
-r_if
-c_cond
-(paren
-id|tx4927_using_backplane
-)paren
-(brace
-r_extern
-r_struct
-id|kbd_ops
-id|std_kbd_ops
-suffix:semicolon
-id|kbd_ops
-op_assign
-op_amp
-id|std_kbd_ops
-suffix:semicolon
-id|TOSHIBA_RBTX4927_SETUP_DPRINTK
-(paren
-id|TOSHIBA_RBTX4927_SETUP_SETUP
-comma
-l_string|&quot;:kbd_ops=&amp;std_kbd_ops&bslash;n&quot;
-)paren
-suffix:semicolon
-)brace
-r_else
-(brace
-id|TOSHIBA_RBTX4927_SETUP_DPRINTK
-(paren
-id|TOSHIBA_RBTX4927_SETUP_SETUP
-comma
-l_string|&quot;:kbd_ops=&lt;NO_BACKPLANE&gt;&bslash;n&quot;
-)paren
-suffix:semicolon
-)brace
-)brace
-macro_line|#else
-(brace
-id|TOSHIBA_RBTX4927_SETUP_DPRINTK
-(paren
-id|TOSHIBA_RBTX4927_SETUP_SETUP
-comma
-l_string|&quot;:kbd_ops=&lt;NOT_CONFIG&gt;&bslash;n&quot;
-)paren
-suffix:semicolon
-)brace
-macro_line|#endif
 multiline_comment|/* this is on ISA bus behind PCI bus, so need PCI up first */
 macro_line|#ifdef CONFIG_TOSHIBA_FPCIB0
 (brace
@@ -3606,7 +3439,7 @@ c_func
 (paren
 id|TOSHIBA_RBTX4927_SETUP_TIME_INIT
 comma
-l_string|&quot;:Calibrate mips_counter_frequency-&bslash;n&quot;
+l_string|&quot;:Calibrate mips_hpt_frequency-&bslash;n&quot;
 )paren
 suffix:semicolon
 id|rtc_ds1742_wait
@@ -3641,7 +3474,7 @@ c_func
 (paren
 id|TOSHIBA_RBTX4927_SETUP_TIME_INIT
 comma
-l_string|&quot;:Calibrate mips_counter_frequency+&bslash;n&quot;
+l_string|&quot;:Calibrate mips_hpt_frequency+&bslash;n&quot;
 )paren
 suffix:semicolon
 id|TOSHIBA_RBTX4927_SETUP_DPRINTK
@@ -3665,7 +3498,7 @@ id|c2
 )paren
 suffix:semicolon
 multiline_comment|/* this diff is as close as we are going to get to counter ticks per sec */
-id|mips_counter_frequency
+id|mips_hpt_frequency
 op_assign
 id|abs
 c_func
@@ -3682,11 +3515,11 @@ id|TOSHIBA_RBTX4927_SETUP_TIME_INIT
 comma
 l_string|&quot;:f1=%12u&bslash;n&quot;
 comma
-id|mips_counter_frequency
+id|mips_hpt_frequency
 )paren
 suffix:semicolon
 multiline_comment|/* round to 1/10th of a MHz */
-id|mips_counter_frequency
+id|mips_hpt_frequency
 op_div_assign
 (paren
 l_int|100
@@ -3694,7 +3527,7 @@ op_star
 l_int|1000
 )paren
 suffix:semicolon
-id|mips_counter_frequency
+id|mips_hpt_frequency
 op_mul_assign
 (paren
 l_int|100
@@ -3709,7 +3542,7 @@ id|TOSHIBA_RBTX4927_SETUP_TIME_INIT
 comma
 l_string|&quot;:f2=%12u&bslash;n&quot;
 comma
-id|mips_counter_frequency
+id|mips_hpt_frequency
 )paren
 suffix:semicolon
 id|TOSHIBA_RBTX4927_SETUP_DPRINTK
@@ -3717,17 +3550,17 @@ c_func
 (paren
 id|TOSHIBA_RBTX4927_SETUP_INFO
 comma
-l_string|&quot;:mips_counter_frequency=%uHz (%uMHz)&bslash;n&quot;
+l_string|&quot;:mips_hpt_frequency=%uHz (%uMHz)&bslash;n&quot;
 comma
-id|mips_counter_frequency
+id|mips_hpt_frequency
 comma
-id|mips_counter_frequency
+id|mips_hpt_frequency
 op_div
 l_int|1000000
 )paren
 suffix:semicolon
 macro_line|#else
-id|mips_counter_frequency
+id|mips_hpt_frequency
 op_assign
 l_int|100000000
 suffix:semicolon

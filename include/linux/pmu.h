@@ -578,10 +578,10 @@ r_int
 id|max_charge
 suffix:semicolon
 multiline_comment|/* maximum charge */
-DECL|member|current
+DECL|member|amperage
 r_int
 r_int
-id|current
+id|amperage
 suffix:semicolon
 multiline_comment|/* current, positive if charging */
 DECL|member|voltage

@@ -379,8 +379,6 @@ suffix:semicolon
 )brace
 DECL|macro|__pte_free_tlb
 mdefine_line|#define __pte_free_tlb(tlb,pte)&t;&t;tlb_remove_page((tlb),(pte))
-DECL|macro|__pmd_free_tlb
-mdefine_line|#define __pmd_free_tlb(tlb,x)&t;&t;do { } while (0)
 macro_line|#ifdef CONFIG_MIPS32
 DECL|macro|pgd_populate
 mdefine_line|#define pgd_populate(mm, pmd, pte)&t;BUG()
@@ -389,6 +387,8 @@ DECL|macro|pmd_alloc_one
 mdefine_line|#define pmd_alloc_one(mm, addr)&t;&t;({ BUG(); ((pmd_t *)2); })
 DECL|macro|pmd_free
 mdefine_line|#define pmd_free(x)&t;&t;&t;do { } while (0)
+DECL|macro|__pmd_free_tlb
+mdefine_line|#define __pmd_free_tlb(tlb,x)&t;&t;do { } while (0)
 macro_line|#endif
 macro_line|#ifdef CONFIG_MIPS64
 DECL|macro|pgd_populate
@@ -481,6 +481,8 @@ id|PMD_ORDER
 )paren
 suffix:semicolon
 )brace
+DECL|macro|__pmd_free_tlb
+mdefine_line|#define __pmd_free_tlb(tlb,x)&t;pmd_free(x)
 macro_line|#endif
 multiline_comment|/*&n; * Used for the b0rked handling of kernel pagetables on the 64-bit kernel.&n; */
 r_extern

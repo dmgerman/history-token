@@ -6,11 +6,24 @@ macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/ide.h&gt;
 macro_line|#include &lt;linux/bootmem.h&gt;
-macro_line|#include &lt;asm/mc146818rtc.h&gt;
 macro_line|#include &lt;asm/reboot.h&gt;
 macro_line|#include &lt;asm/time.h&gt;
 macro_line|#include &lt;asm/hp-lj/asic.h&gt;
 macro_line|#include &quot;utils.h&quot;
+r_extern
+r_char
+id|CommandLine
+(braket
+)braket
+suffix:semicolon
+r_extern
+r_void
+id|pci_setup
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
 macro_line|#ifdef CONFIG_KGDB
 DECL|variable|remote_debug
 r_int
@@ -578,9 +591,7 @@ c_loop
 (paren
 l_int|1
 )paren
-(brace
 suffix:semicolon
-)brace
 )brace
 DECL|function|hplj_halt
 r_static
@@ -596,11 +607,10 @@ c_loop
 (paren
 l_int|1
 )paren
-(brace
 suffix:semicolon
 )brace
-)brace
 DECL|function|hp_setup
+r_static
 r_void
 id|__init
 id|hp_setup
@@ -610,33 +620,11 @@ r_void
 )paren
 (brace
 macro_line|#ifdef CONFIG_PCI
-r_extern
-r_void
-id|pci_setup
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
 id|pci_setup
 c_func
 (paren
 )paren
 suffix:semicolon
-macro_line|#endif
-macro_line|#ifdef CONFIG_IDE
-(brace
-r_extern
-r_struct
-id|ide_ops
-id|std_ide_ops
-suffix:semicolon
-id|ide_ops
-op_assign
-op_amp
-id|std_ide_ops
-suffix:semicolon
-)brace
 macro_line|#endif
 id|_machine_restart
 op_assign
@@ -665,13 +653,6 @@ op_assign
 id|hp_time_init
 suffix:semicolon
 macro_line|#ifdef CONFIG_KGDB
-(brace
-r_extern
-r_char
-id|CommandLine
-(braket
-)braket
-suffix:semicolon
 id|remote_debug
 op_assign
 (paren
@@ -686,7 +667,6 @@ op_ne
 l_int|NULL
 )paren
 suffix:semicolon
-)brace
 macro_line|#endif
 id|printk
 c_func
@@ -695,4 +675,11 @@ l_string|&quot;HP SETUP&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
+DECL|variable|hp_setup
+id|early_initcall
+c_func
+(paren
+id|hp_setup
+)paren
+suffix:semicolon
 eof

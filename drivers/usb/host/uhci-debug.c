@@ -1118,7 +1118,7 @@ c_cond
 (paren
 id|len
 OL
-l_int|80
+l_int|160
 )paren
 r_return
 l_int|0
@@ -1130,7 +1130,7 @@ c_func
 (paren
 id|out
 comma
-l_string|&quot;  stat%d     =     %04x   %s%s%s%s%s%s%s%s&bslash;n&quot;
+l_string|&quot;  stat%d     =     %04x  %s%s%s%s%s%s%s%s%s%s&bslash;n&quot;
 comma
 id|port
 comma
@@ -1143,7 +1143,29 @@ id|USBPORTSC_SUSP
 )paren
 ques
 c_cond
-l_string|&quot;PortSuspend &quot;
+l_string|&quot; Suspend&quot;
+suffix:colon
+l_string|&quot;&quot;
+comma
+(paren
+id|status
+op_amp
+id|USBPORTSC_OCC
+)paren
+ques
+c_cond
+l_string|&quot; OverCurrentChange&quot;
+suffix:colon
+l_string|&quot;&quot;
+comma
+(paren
+id|status
+op_amp
+id|USBPORTSC_OC
+)paren
+ques
+c_cond
+l_string|&quot; OverCurrent&quot;
 suffix:colon
 l_string|&quot;&quot;
 comma
@@ -1154,7 +1176,7 @@ id|USBPORTSC_PR
 )paren
 ques
 c_cond
-l_string|&quot;PortReset &quot;
+l_string|&quot; Reset&quot;
 suffix:colon
 l_string|&quot;&quot;
 comma
@@ -1165,7 +1187,7 @@ id|USBPORTSC_LSDA
 )paren
 ques
 c_cond
-l_string|&quot;LowSpeed &quot;
+l_string|&quot; LowSpeed&quot;
 suffix:colon
 l_string|&quot;&quot;
 comma
@@ -1176,7 +1198,7 @@ id|USBPORTSC_RD
 )paren
 ques
 c_cond
-l_string|&quot;ResumeDetect &quot;
+l_string|&quot; ResumeDetect&quot;
 suffix:colon
 l_string|&quot;&quot;
 comma
@@ -1187,7 +1209,7 @@ id|USBPORTSC_PEC
 )paren
 ques
 c_cond
-l_string|&quot;EnableChange &quot;
+l_string|&quot; EnableChange&quot;
 suffix:colon
 l_string|&quot;&quot;
 comma
@@ -1198,7 +1220,7 @@ id|USBPORTSC_PE
 )paren
 ques
 c_cond
-l_string|&quot;PortEnabled &quot;
+l_string|&quot; Enabled&quot;
 suffix:colon
 l_string|&quot;&quot;
 comma
@@ -1209,7 +1231,7 @@ id|USBPORTSC_CSC
 )paren
 ques
 c_cond
-l_string|&quot;ConnectChange &quot;
+l_string|&quot; ConnectChange&quot;
 suffix:colon
 l_string|&quot;&quot;
 comma
@@ -1220,7 +1242,7 @@ id|USBPORTSC_CCS
 )paren
 ques
 c_cond
-l_string|&quot;PortConnected &quot;
+l_string|&quot; Connected&quot;
 suffix:colon
 l_string|&quot;&quot;
 )paren
@@ -1912,7 +1934,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|urbp-&gt;status
+id|urbp-&gt;urb-&gt;status
 op_ne
 op_minus
 id|EINPROGRESS
@@ -1926,7 +1948,7 @@ id|out
 comma
 l_string|&quot;Status=%d &quot;
 comma
-id|urbp-&gt;status
+id|urbp-&gt;urb-&gt;status
 )paren
 suffix:semicolon
 singleline_comment|//out += sprintf(out, &quot;Inserttime=%lx &quot;,urbp-&gt;inserttime);
@@ -2434,7 +2456,7 @@ comma
 r_struct
 id|urb_priv
 comma
-id|complete_list
+id|urb_list
 )paren
 suffix:semicolon
 id|out
@@ -2522,6 +2544,8 @@ id|buf
 suffix:semicolon
 r_int
 id|i
+comma
+id|j
 suffix:semicolon
 r_struct
 id|uhci_qh
@@ -2839,6 +2863,22 @@ suffix:semicolon
 r_continue
 suffix:semicolon
 )brace
+id|j
+op_assign
+(paren
+id|i
+OL
+l_int|7
+)paren
+ques
+c_cond
+l_int|7
+suffix:colon
+id|i
+op_plus
+l_int|1
+suffix:semicolon
+multiline_comment|/* Next skeleton */
 r_if
 c_cond
 (paren
@@ -2871,9 +2911,7 @@ c_func
 (paren
 id|uhci-&gt;skelqh
 (braket
-id|i
-op_plus
-l_int|1
+id|j
 )braket
 op_member_access_from_pointer
 id|dma_handle
@@ -2984,9 +3022,7 @@ c_func
 (paren
 id|uhci-&gt;skelqh
 (braket
-id|i
-op_plus
-l_int|1
+id|j
 )braket
 op_member_access_from_pointer
 id|dma_handle

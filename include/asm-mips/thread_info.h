@@ -53,8 +53,6 @@ id|restart_block
 suffix:semicolon
 )brace
 suffix:semicolon
-DECL|macro|PREEMPT_ACTIVE
-mdefine_line|#define PREEMPT_ACTIVE&t;&t;0x4000000
 multiline_comment|/*&n; * macros/functions for gaining access to the thread information structure&n; *&n; * preempt_count needs to be 1 initially, until the scheduler is functional.&n; */
 DECL|macro|INIT_THREAD_INFO
 mdefine_line|#define INIT_THREAD_INFO(tsk)&t;&t;&t;&bslash;&n;{&t;&t;&t;&t;&t;&t;&bslash;&n;&t;.task&t;&t;= &amp;tsk,&t;&t;&t;&bslash;&n;&t;.exec_domain&t;= &amp;default_exec_domain,&t;&bslash;&n;&t;.flags&t;&t;= 0,&t;&t;&t;&bslash;&n;&t;.cpu&t;&t;= 0,&t;&t;&t;&bslash;&n;&t;.preempt_count&t;= 1,&t;&t;&t;&bslash;&n;&t;.addr_limit&t;= KERNEL_DS,&t;&t;&bslash;&n;&t;.restart_block&t;= {&t;&t;&t;&bslash;&n;&t;&t;.fn = do_no_restart_syscall,&t;&bslash;&n;&t;},&t;&t;&t;&t;&t;&bslash;&n;}
@@ -77,20 +75,33 @@ suffix:semicolon
 DECL|macro|current_thread_info
 mdefine_line|#define current_thread_info()  __current_thread_info
 multiline_comment|/* thread information allocation */
-macro_line|#ifdef CONFIG_MIPS32
+macro_line|#if defined(CONFIG_PAGE_SIZE_4KB) &amp;&amp; defined(CONFIG_MIPS32)
 DECL|macro|THREAD_SIZE_ORDER
 mdefine_line|#define THREAD_SIZE_ORDER (1)
 macro_line|#endif
-macro_line|#ifdef CONFIG_MIPS64
+macro_line|#if defined(CONFIG_PAGE_SIZE_4KB) &amp;&amp; defined(CONFIG_MIPS64)
 DECL|macro|THREAD_SIZE_ORDER
-mdefine_line|#define THREAD_SIZE_ORDER (1)
+mdefine_line|#define THREAD_SIZE_ORDER (2)
+macro_line|#endif
+macro_line|#ifdef CONFIG_PAGE_SIZE_16KB
+DECL|macro|THREAD_SIZE_ORDER
+mdefine_line|#define THREAD_SIZE_ORDER (0)
+macro_line|#endif
+macro_line|#ifdef CONFIG_PAGE_SIZE_64KB
+DECL|macro|THREAD_SIZE_ORDER
+mdefine_line|#define THREAD_SIZE_ORDER (0)
 macro_line|#endif
 DECL|macro|THREAD_SIZE
 mdefine_line|#define THREAD_SIZE (PAGE_SIZE &lt;&lt; THREAD_SIZE_ORDER)
 DECL|macro|THREAD_MASK
 mdefine_line|#define THREAD_MASK (THREAD_SIZE - 1UL)
+macro_line|#ifdef CONFIG_DEBUG_STACK_USAGE
 DECL|macro|alloc_thread_info
-mdefine_line|#define alloc_thread_info(task) &bslash;&n;&t;((struct thread_info *)kmalloc(THREAD_SIZE, GFP_KERNEL))
+mdefine_line|#define alloc_thread_info(tsk)&t;&t;&t;&t;&t;&bslash;&n;({&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;struct thread_info *ret;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;ret = kmalloc(THREAD_SIZE, GFP_KERNEL);&t;&t;&t;&bslash;&n;&t;if (ret)&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;memset(ret, 0, THREAD_SIZE);&t;&t;&t;&bslash;&n;&t;ret;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;})
+macro_line|#else
+DECL|macro|alloc_thread_info
+mdefine_line|#define alloc_thread_info(tsk) kmalloc(THREAD_SIZE, GFP_KERNEL)
+macro_line|#endif
 DECL|macro|free_thread_info
 mdefine_line|#define free_thread_info(info) kfree(info)
 DECL|macro|get_thread_info
@@ -98,6 +109,8 @@ mdefine_line|#define get_thread_info(ti) get_task_struct((ti)-&gt;task)
 DECL|macro|put_thread_info
 mdefine_line|#define put_thread_info(ti) put_task_struct((ti)-&gt;task)
 macro_line|#endif /* !__ASSEMBLY__ */
+DECL|macro|PREEMPT_ACTIVE
+mdefine_line|#define PREEMPT_ACTIVE&t;&t;0x4000000
 multiline_comment|/*&n; * thread information flags&n; * - these are process state flags that various assembly files may need to&n; *   access&n; * - pending work-to-be-done flags are in LSW&n; * - other flags in MSW&n; */
 DECL|macro|TIF_NOTIFY_RESUME
 mdefine_line|#define TIF_NOTIFY_RESUME&t;1&t;/* resumption notification requested */

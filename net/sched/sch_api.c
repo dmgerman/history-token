@@ -5247,6 +5247,7 @@ suffix:semicolon
 )brace
 macro_line|#endif
 DECL|function|pktsched_init
+r_static
 r_int
 id|__init
 id|pktsched_init
@@ -5398,138 +5399,20 @@ op_assign
 id|tc_dump_tclass
 suffix:semicolon
 )brace
-DECL|macro|INIT_QDISC
-mdefine_line|#define INIT_QDISC(name) { &bslash;&n;          extern struct Qdisc_ops name##_qdisc_ops; &bslash;&n;          register_qdisc(&amp; name##_qdisc_ops);       &bslash;&n;&t;}
-id|INIT_QDISC
+id|register_qdisc
 c_func
 (paren
-id|pfifo
+op_amp
+id|pfifo_qdisc_ops
 )paren
 suffix:semicolon
-id|INIT_QDISC
+id|register_qdisc
 c_func
 (paren
-id|bfifo
+op_amp
+id|bfifo_qdisc_ops
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_NET_SCH_CBQ
-id|INIT_QDISC
-c_func
-(paren
-id|cbq
-)paren
-suffix:semicolon
-macro_line|#endif
-macro_line|#ifdef CONFIG_NET_SCH_HTB
-id|INIT_QDISC
-c_func
-(paren
-id|htb
-)paren
-suffix:semicolon
-macro_line|#endif
-macro_line|#ifdef CONFIG_NET_SCH_CSZ
-id|INIT_QDISC
-c_func
-(paren
-id|csz
-)paren
-suffix:semicolon
-macro_line|#endif
-macro_line|#ifdef CONFIG_NET_SCH_HPFQ
-id|INIT_QDISC
-c_func
-(paren
-id|hpfq
-)paren
-suffix:semicolon
-macro_line|#endif
-macro_line|#ifdef CONFIG_NET_SCH_HFSC
-id|INIT_QDISC
-c_func
-(paren
-id|hfsc
-)paren
-suffix:semicolon
-macro_line|#endif
-macro_line|#ifdef CONFIG_NET_SCH_RED
-id|INIT_QDISC
-c_func
-(paren
-id|red
-)paren
-suffix:semicolon
-macro_line|#endif
-macro_line|#ifdef CONFIG_NET_SCH_GRED
-id|INIT_QDISC
-c_func
-(paren
-id|gred
-)paren
-suffix:semicolon
-macro_line|#endif
-macro_line|#ifdef CONFIG_NET_SCH_INGRESS
-id|INIT_QDISC
-c_func
-(paren
-id|ingress
-)paren
-suffix:semicolon
-macro_line|#endif
-macro_line|#ifdef CONFIG_NET_SCH_DSMARK
-id|INIT_QDISC
-c_func
-(paren
-id|dsmark
-)paren
-suffix:semicolon
-macro_line|#endif
-macro_line|#ifdef CONFIG_NET_SCH_SFQ
-id|INIT_QDISC
-c_func
-(paren
-id|sfq
-)paren
-suffix:semicolon
-macro_line|#endif
-macro_line|#ifdef CONFIG_NET_SCH_TBF
-id|INIT_QDISC
-c_func
-(paren
-id|tbf
-)paren
-suffix:semicolon
-macro_line|#endif
-macro_line|#ifdef CONFIG_NET_SCH_TEQL
-id|teql_init
-c_func
-(paren
-)paren
-suffix:semicolon
-macro_line|#endif
-macro_line|#ifdef CONFIG_NET_SCH_PRIO
-id|INIT_QDISC
-c_func
-(paren
-id|prio
-)paren
-suffix:semicolon
-macro_line|#endif
-macro_line|#ifdef CONFIG_NET_SCH_ATM
-id|INIT_QDISC
-c_func
-(paren
-id|atm
-)paren
-suffix:semicolon
-macro_line|#endif
-macro_line|#ifdef CONFIG_NET_CLS
-id|tc_filter_init
-c_func
-(paren
-)paren
-suffix:semicolon
-macro_line|#endif
 id|proc_net_fops_create
 c_func
 (paren
@@ -5545,6 +5428,13 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+DECL|variable|pktsched_init
+id|subsys_initcall
+c_func
+(paren
+id|pktsched_init
+)paren
+suffix:semicolon
 DECL|variable|qdisc_copy_stats
 id|EXPORT_SYMBOL
 c_func

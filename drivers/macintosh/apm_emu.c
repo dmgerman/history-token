@@ -1524,7 +1524,7 @@ op_minus
 l_int|1
 suffix:semicolon
 r_int
-id|current
+id|amperage
 op_assign
 l_int|0
 suffix:semicolon
@@ -1625,14 +1625,14 @@ id|i
 dot
 id|charge
 suffix:semicolon
-id|current
+id|amperage
 op_add_assign
 id|pmu_batteries
 (braket
 id|i
 )braket
 dot
-id|current
+id|amperage
 suffix:semicolon
 r_if
 c_cond
@@ -1685,7 +1685,7 @@ id|real_count
 r_if
 c_cond
 (paren
-id|current
+id|amperage
 OL
 l_int|0
 )paren
@@ -1706,7 +1706,7 @@ l_int|59
 )paren
 op_div
 (paren
-id|current
+id|amperage
 op_star
 op_minus
 l_int|1
@@ -1722,7 +1722,7 @@ l_int|16440
 )paren
 op_div
 (paren
-id|current
+id|amperage
 op_star
 op_minus
 l_int|60

@@ -6,6 +6,7 @@ macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/seq_file.h&gt;
 macro_line|#include &lt;asm/bootinfo.h&gt;
 macro_line|#include &lt;asm/cpu.h&gt;
+macro_line|#include &lt;asm/cpu-features.h&gt;
 macro_line|#include &lt;asm/mipsregs.h&gt;
 macro_line|#include &lt;asm/processor.h&gt;
 macro_line|#include &lt;asm/watch.h&gt;
@@ -133,6 +134,11 @@ id|CPU_R10000
 l_string|&quot;R10000&quot;
 comma
 (braket
+id|CPU_R12000
+)braket
+l_string|&quot;R12000&quot;
+comma
+(braket
 id|CPU_R4300
 )braket
 l_string|&quot;R4300&quot;
@@ -171,6 +177,11 @@ comma
 id|CPU_RM7000
 )braket
 l_string|&quot;RM7000&quot;
+comma
+(braket
+id|CPU_RM9000
+)braket
+l_string|&quot;RM9000&quot;
 comma
 (braket
 id|CPU_R5432
@@ -253,6 +264,16 @@ id|CPU_20KC
 l_string|&quot;MIPS 20Kc&quot;
 comma
 (braket
+id|CPU_24K
+)braket
+l_string|&quot;MIPS 24K&quot;
+comma
+(braket
+id|CPU_25KF
+)braket
+l_string|&quot;MIPS 25Kf&quot;
+comma
+(braket
 id|CPU_VR4111
 )braket
 l_string|&quot;NEC VR4111&quot;
@@ -271,6 +292,11 @@ comma
 id|CPU_VR4131
 )braket
 l_string|&quot;NEC VR4131&quot;
+comma
+(braket
+id|CPU_VR4133
+)braket
+l_string|&quot;NEC VR4133&quot;
 comma
 (braket
 id|CPU_VR4181

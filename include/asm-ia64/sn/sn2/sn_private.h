@@ -5,6 +5,7 @@ mdefine_line|#define _ASM_IA64_SN_SN2_SN_PRIVATE_H
 macro_line|#include &lt;linux/wait.h&gt;
 macro_line|#include &lt;asm/sn/nodepda.h&gt;
 macro_line|#include &lt;asm/sn/io.h&gt;
+macro_line|#include &lt;asm/sn/iograph.h&gt;
 macro_line|#include &lt;asm/sn/xtalk/xwidget.h&gt;
 macro_line|#include &lt;asm/sn/xtalk/xtalk_private.h&gt;
 r_extern

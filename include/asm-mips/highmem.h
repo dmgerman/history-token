@@ -3,7 +3,6 @@ macro_line|#ifndef _ASM_HIGHMEM_H
 DECL|macro|_ASM_HIGHMEM_H
 mdefine_line|#define _ASM_HIGHMEM_H
 macro_line|#ifdef __KERNEL__
-macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;asm/kmap_types.h&gt;

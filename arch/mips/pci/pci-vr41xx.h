@@ -109,10 +109,6 @@ DECL|macro|MPCIINTREG
 mdefine_line|#define MPCIINTREG&t;&t;&t;KSEG1ADDR(0x0f0000b2)
 DECL|macro|MAX_PCI_CLOCK
 mdefine_line|#define MAX_PCI_CLOCK&t;&t;&t;33333333
-DECL|macro|PCIU_CLOCK
-mdefine_line|#define PCIU_CLOCK&t;&t;&t;0x0080
-DECL|macro|PCI_CLOCK
-mdefine_line|#define PCI_CLOCK&t;&t;&t;0x2000
 DECL|function|pciu_read_config_byte
 r_static
 r_inline

@@ -352,9 +352,11 @@ c_func
 suffix:semicolon
 )brace
 DECL|function|prom_free_prom_memory
-r_void
+r_int
+r_int
 id|__init
 id|prom_free_prom_memory
+c_func
 (paren
 r_void
 )paren
@@ -469,6 +471,11 @@ id|PAGE_SIZE
 op_rshift
 l_int|10
 )paren
+suffix:semicolon
+r_return
+id|end
+op_minus
+id|PAGE_SIZE
 suffix:semicolon
 )brace
 eof

@@ -171,6 +171,7 @@ multiline_comment|/* control characters */
 )brace
 suffix:semicolon
 macro_line|#ifdef __KERNEL__
+macro_line|#include &lt;linux/module.h&gt;
 multiline_comment|/*&n; *&t;intr=^C&t;&t;quit=^&bslash;&t;&t;erase=del&t;kill=^U&n; *&t;vmin=&bslash;1&t;&t;vtime=&bslash;0&t;eol2=&bslash;0&t;&t;swtc=&bslash;0&n; *&t;start=^Q&t;stop=^S&t;&t;susp=^Z&t;&t;vdsusp=&n; *&t;reprint=^R&t;discard=^U&t;werase=^W&t;lnext=^V&n; *&t;eof=^D&t;&t;eol=&bslash;0&n; */
 DECL|macro|INIT_C_CC
 mdefine_line|#define INIT_C_CC &quot;&bslash;003&bslash;034&bslash;177&bslash;025&bslash;1&bslash;0&bslash;0&bslash;0&bslash;021&bslash;023&bslash;032&bslash;0&bslash;022&bslash;017&bslash;027&bslash;026&bslash;004&bslash;0&quot;

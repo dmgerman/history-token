@@ -4336,9 +4336,9 @@ l_int|NULL
 )paren
 suffix:semicolon
 )brace
-macro_line|#ifdef MODULE
 DECL|function|fib6_gc_cleanup
 r_void
+id|__exit
 id|fib6_gc_cleanup
 c_func
 (paren
@@ -4359,5 +4359,4 @@ id|fib6_node_kmem
 )paren
 suffix:semicolon
 )brace
-macro_line|#endif
 eof

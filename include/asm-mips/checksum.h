@@ -209,78 +209,146 @@ id|ihl
 (brace
 r_int
 r_int
-id|dummy
-comma
-id|sum
+op_star
+id|word
+op_assign
+(paren
+r_int
+r_int
+op_star
+)paren
+id|iph
 suffix:semicolon
-multiline_comment|/*&n;&t; * This is for 32-bit processors ...  but works just fine for 64-bit&n;&t; * processors for now ...  XXX&n;&t; */
-id|__asm__
-id|__volatile__
-c_func
-(paren
-l_string|&quot;.set&bslash;tnoreorder&bslash;t&bslash;t&bslash;t# ip_fast_csum&bslash;n&bslash;t&quot;
-l_string|&quot;.set&bslash;tnoat&bslash;n&bslash;t&quot;
-l_string|&quot;lw&bslash;t%0, (%1)&bslash;n&bslash;t&quot;
-l_string|&quot;subu&bslash;t%2, 4&bslash;n&bslash;t&quot;
-l_string|&quot;sll&bslash;t%2, 2&bslash;n&bslash;t&quot;
-l_string|&quot;lw&bslash;t%3, 4(%1)&bslash;n&bslash;t&quot;
-l_string|&quot;addu&bslash;t%2, %1&bslash;n&bslash;t&quot;
-l_string|&quot;addu&bslash;t%0, %3&bslash;n&bslash;t&quot;
-l_string|&quot;sltu&bslash;t$1, %0, %3&bslash;n&bslash;t&quot;
-l_string|&quot;lw&bslash;t%3, 8(%1)&bslash;n&bslash;t&quot;
-l_string|&quot;addu&bslash;t%0, $1&bslash;n&bslash;t&quot;
-l_string|&quot;addu&bslash;t%0, %3&bslash;n&bslash;t&quot;
-l_string|&quot;sltu&bslash;t$1, %0, %3&bslash;n&bslash;t&quot;
-l_string|&quot;lw&bslash;t%3, 12(%1)&bslash;n&bslash;t&quot;
-l_string|&quot;addu&bslash;t%0, $1&bslash;n&bslash;t&quot;
-l_string|&quot;addu&bslash;t%0, %3&bslash;n&bslash;t&quot;
-l_string|&quot;sltu&bslash;t$1, %0, %3&bslash;n&bslash;t&quot;
-l_string|&quot;addu&bslash;t%0, $1&bslash;n&quot;
-l_string|&quot;1:&bslash;tlw&bslash;t%3, 16(%1)&bslash;n&bslash;t&quot;
-l_string|&quot;addiu&bslash;t%1, 4&bslash;n&bslash;t&quot;
-l_string|&quot;addu&bslash;t%0, %3&bslash;n&bslash;t&quot;
-l_string|&quot;sltu&bslash;t$1, %0, %3&bslash;n&bslash;t&quot;
-l_string|&quot;bne&bslash;t%2, %1, 1b&bslash;n&bslash;t&quot;
-l_string|&quot; addu&bslash;t%0, $1&bslash;n&quot;
-l_string|&quot;2:&bslash;t.set&bslash;tat&bslash;n&bslash;t&quot;
-l_string|&quot;.set&bslash;treorder&quot;
-suffix:colon
-l_string|&quot;=&amp;r&quot;
-(paren
-id|sum
-)paren
-comma
-l_string|&quot;=&amp;r&quot;
-(paren
-id|iph
-)paren
-comma
-l_string|&quot;=&amp;r&quot;
-(paren
+r_int
+r_int
+op_star
+id|stop
+op_assign
+id|word
+op_plus
 id|ihl
-)paren
-comma
-l_string|&quot;=&amp;r&quot;
+suffix:semicolon
+r_int
+r_int
+id|csum
+suffix:semicolon
+r_int
+id|carry
+suffix:semicolon
+id|csum
+op_assign
+id|word
+(braket
+l_int|0
+)braket
+suffix:semicolon
+id|csum
+op_add_assign
+id|word
+(braket
+l_int|1
+)braket
+suffix:semicolon
+id|carry
+op_assign
 (paren
-id|dummy
+id|csum
+OL
+id|word
+(braket
+l_int|1
+)braket
 )paren
-suffix:colon
-l_string|&quot;1&quot;
+suffix:semicolon
+id|csum
+op_add_assign
+id|carry
+suffix:semicolon
+id|csum
+op_add_assign
+id|word
+(braket
+l_int|2
+)braket
+suffix:semicolon
+id|carry
+op_assign
 (paren
-id|iph
+id|csum
+OL
+id|word
+(braket
+l_int|2
+)braket
 )paren
-comma
-l_string|&quot;2&quot;
+suffix:semicolon
+id|csum
+op_add_assign
+id|carry
+suffix:semicolon
+id|csum
+op_add_assign
+id|word
+(braket
+l_int|3
+)braket
+suffix:semicolon
+id|carry
+op_assign
 (paren
-id|ihl
+id|csum
+OL
+id|word
+(braket
+l_int|3
+)braket
 )paren
+suffix:semicolon
+id|csum
+op_add_assign
+id|carry
+suffix:semicolon
+id|word
+op_add_assign
+l_int|4
+suffix:semicolon
+r_do
+(brace
+id|csum
+op_add_assign
+op_star
+id|word
+suffix:semicolon
+id|carry
+op_assign
+(paren
+id|csum
+OL
+op_star
+id|word
+)paren
+suffix:semicolon
+id|csum
+op_add_assign
+id|carry
+suffix:semicolon
+id|word
+op_increment
+suffix:semicolon
+)brace
+r_while
+c_loop
+(paren
+id|word
+op_ne
+id|stop
 )paren
 suffix:semicolon
 r_return
 id|csum_fold
 c_func
 (paren
-id|sum
+id|csum
 )paren
 suffix:semicolon
 )brace
@@ -358,7 +426,11 @@ macro_line|#ifdef __MIPSEL__
 l_string|&quot;r&quot;
 (paren
 (paren
-id|ntohs
+(paren
+r_int
+r_int
+)paren
+id|htons
 c_func
 (paren
 id|len
@@ -376,6 +448,10 @@ macro_line|#else
 l_string|&quot;r&quot;
 (paren
 (paren
+(paren
+r_int
+r_int
+)paren
 (paren
 id|proto
 )paren

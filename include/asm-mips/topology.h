@@ -1,6 +1,7 @@
 macro_line|#ifndef __ASM_TOPOLOGY_H
 DECL|macro|__ASM_TOPOLOGY_H
 mdefine_line|#define __ASM_TOPOLOGY_H
+macro_line|#include &lt;linux/config.h&gt;
 macro_line|#ifdef CONFIG_SGI_IP27
 macro_line|#include &lt;asm/mmzone.h&gt;
 DECL|macro|cpu_to_node

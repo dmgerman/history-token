@@ -5,6 +5,7 @@ mdefine_line|#define __ASM_SMP_H
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#ifdef CONFIG_SMP
 macro_line|#include &lt;linux/bitops.h&gt;
+macro_line|#include &lt;linux/linkage.h&gt;
 macro_line|#include &lt;linux/threads.h&gt;
 macro_line|#include &lt;linux/cpumask.h&gt;
 macro_line|#include &lt;asm/atomic.h&gt;
@@ -88,25 +89,6 @@ DECL|macro|cpu_possible_map
 mdefine_line|#define cpu_possible_map&t;phys_cpu_present_map
 DECL|macro|cpu_online
 mdefine_line|#define cpu_online(cpu)&t;&t;cpu_isset(cpu, cpu_online_map)
-DECL|function|num_online_cpus
-r_static
-r_inline
-r_int
-r_int
-id|num_online_cpus
-c_func
-(paren
-r_void
-)paren
-(brace
-r_return
-id|cpus_weight
-c_func
-(paren
-id|cpu_online_map
-)paren
-suffix:semicolon
-)brace
 r_extern
 id|cpumask_t
 id|cpu_callout_map
@@ -127,6 +109,122 @@ id|cpus_weight
 c_func
 (paren
 id|cpu_callout_map
+)paren
+suffix:semicolon
+)brace
+multiline_comment|/* These are defined by the board-specific code. */
+multiline_comment|/*&n; * Cause the function described by call_data to be executed on the passed&n; * cpu.  When the function has finished, increment the finished field of&n; * call_data.&n; */
+r_extern
+r_void
+id|core_send_ipi
+c_func
+(paren
+r_int
+id|cpu
+comma
+r_int
+r_int
+id|action
+)paren
+suffix:semicolon
+multiline_comment|/*&n; * Detect available CPUs, populate phys_cpu_present_map&n; */
+r_extern
+r_void
+id|prom_build_cpu_map
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+multiline_comment|/*&n; * Firmware CPU startup hook&n; */
+r_extern
+r_void
+id|prom_boot_secondary
+c_func
+(paren
+r_int
+id|cpu
+comma
+r_struct
+id|task_struct
+op_star
+id|idle
+)paren
+suffix:semicolon
+multiline_comment|/*&n; *  After we&squot;ve done initial boot, this function is called to allow the&n; *  board code to clean up state, if needed&n; */
+r_extern
+r_void
+id|prom_init_secondary
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+multiline_comment|/*&n; * Callout to firmware before smp_init&n; */
+r_extern
+r_void
+id|prom_prepare_cpus
+c_func
+(paren
+r_int
+r_int
+id|max_cpus
+)paren
+suffix:semicolon
+multiline_comment|/*&n; * Do whatever setup needs to be done for SMP at the board level.  Return&n; * the number of cpus in the system, including this one&n; */
+r_extern
+r_int
+id|prom_setup_smp
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+multiline_comment|/*&n; * Last chance for the board code to finish SMP initialization before&n; * the CPU is &quot;online&quot;.&n; */
+r_extern
+r_void
+id|prom_smp_finish
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+multiline_comment|/* Hook for after all CPUs are online */
+r_extern
+r_void
+id|prom_cpus_done
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|asmlinkage
+id|smp_bootstrap
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+multiline_comment|/*&n; * this function sends a &squot;reschedule&squot; IPI to another CPU.&n; * it goes straight through and wastes no time serializing&n; * anything. Worst case is that we lose a reschedule ...&n; */
+DECL|function|smp_send_reschedule
+r_static
+r_inline
+r_void
+id|smp_send_reschedule
+c_func
+(paren
+r_int
+id|cpu
+)paren
+(brace
+id|core_send_ipi
+c_func
+(paren
+id|cpu
+comma
+id|SMP_RESCHEDULE_YOURSELF
 )paren
 suffix:semicolon
 )brace

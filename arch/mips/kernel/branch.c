@@ -4,6 +4,7 @@ macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/signal.h&gt;
 macro_line|#include &lt;asm/branch.h&gt;
 macro_line|#include &lt;asm/cpu.h&gt;
+macro_line|#include &lt;asm/cpu-features.h&gt;
 macro_line|#include &lt;asm/inst.h&gt;
 macro_line|#include &lt;asm/ptrace.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;

@@ -4044,6 +4044,7 @@ r_int
 r_int
 r_int
 )paren
+(paren
 id|np-&gt;tx_ring_dma
 op_plus
 id|i
@@ -4052,6 +4053,7 @@ r_sizeof
 (paren
 op_star
 id|np-&gt;tx_ring
+)paren
 )paren
 comma
 id|le32_to_cpu
@@ -8042,6 +8044,7 @@ r_int
 r_int
 r_int
 )paren
+(paren
 id|np-&gt;tx_ring_dma
 op_plus
 id|i
@@ -8050,6 +8053,7 @@ r_sizeof
 (paren
 op_star
 id|np-&gt;tx_ring
+)paren
 )paren
 comma
 id|le32_to_cpu

@@ -182,14 +182,12 @@ multiline_comment|/* Only necessary for soft interrupts */
 id|clear_c0_cause
 c_func
 (paren
-l_int|1
+l_int|0x100
 op_lshift
 (paren
 id|irq
 op_minus
 id|mips_cpu_irq_base
-op_plus
-l_int|8
 )paren
 )paren
 suffix:semicolon

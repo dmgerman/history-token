@@ -2,6 +2,7 @@ multiline_comment|/* net/sched/sch_dsmark.c - Differentiated Services field mark
 multiline_comment|/* Written 1998-2000 by Werner Almesberger, EPFL ICA */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
+macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
@@ -2217,6 +2218,7 @@ comma
 )brace
 suffix:semicolon
 DECL|variable|dsmark_qdisc_ops
+r_static
 r_struct
 id|Qdisc_ops
 id|dsmark_qdisc_ops
@@ -2299,10 +2301,11 @@ id|THIS_MODULE
 comma
 )brace
 suffix:semicolon
-macro_line|#ifdef MODULE
-DECL|function|init_module
+DECL|function|dsmark_module_init
+r_static
 r_int
-id|init_module
+id|__init
+id|dsmark_module_init
 c_func
 (paren
 r_void
@@ -2317,9 +2320,11 @@ id|dsmark_qdisc_ops
 )paren
 suffix:semicolon
 )brace
-DECL|function|cleanup_module
+DECL|function|dsmark_module_exit
+r_static
 r_void
-id|cleanup_module
+id|__exit
+id|dsmark_module_exit
 c_func
 (paren
 r_void
@@ -2333,7 +2338,16 @@ id|dsmark_qdisc_ops
 )paren
 suffix:semicolon
 )brace
-macro_line|#endif
+id|module_init
+c_func
+(paren
+id|dsmark_module_init
+)paren
+id|module_exit
+c_func
+(paren
+id|dsmark_module_exit
+)paren
 id|MODULE_LICENSE
 c_func
 (paren

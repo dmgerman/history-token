@@ -5,6 +5,8 @@ DECL|macro|FTDI_SIO_PID
 mdefine_line|#define FTDI_SIO_PID&t;0x8372&t;/* Product Id SIO application of 8U100AX  */
 DECL|macro|FTDI_8U232AM_PID
 mdefine_line|#define FTDI_8U232AM_PID 0x6001 /* Similar device to SIO above */
+DECL|macro|FTDI_8U232AM_ALT_PID
+mdefine_line|#define FTDI_8U232AM_ALT_PID 0x6006 /* FTDI&squot;s alternate PID for above */
 DECL|macro|FTDI_RELAIS_PID
 mdefine_line|#define FTDI_RELAIS_PID&t;0xFA10  /* Relais device from Rudolf Gugler */
 DECL|macro|FTDI_NF_RIC_VID
@@ -157,6 +159,9 @@ multiline_comment|/* USB-UIRT - An infrared receiver and transmitter using the 8
 multiline_comment|/* http://home.earthlink.net/~jrhees/USBUIRT/index.htm */
 DECL|macro|FTDI_USB_UIRT_PID
 mdefine_line|#define FTDI_USB_UIRT_PID&t;0xF850&t;/* Product Id */
+multiline_comment|/* ELV USB Module UO100 (PID sent by Stefan Frings) */
+DECL|macro|FTDI_ELV_UO100_PID
+mdefine_line|#define FTDI_ELV_UO100_PID&t;0xFB58&t;/* Product Id */
 multiline_comment|/*&n; * Definitions for ID TECH (www.idt-net.com) devices&n; */
 DECL|macro|IDTECH_VID
 mdefine_line|#define IDTECH_VID&t;&t;0x0ACD&t;/* ID TECH Vendor ID */

@@ -2,6 +2,7 @@ multiline_comment|/* net/sched/sch_atm.c - ATM VC selection &quot;queueing disci
 multiline_comment|/* Written 1998-2000 by Werner Almesberger, EPFL ICA */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
+macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/skbuff.h&gt;
@@ -3502,6 +3503,7 @@ comma
 )brace
 suffix:semicolon
 DECL|variable|atm_qdisc_ops
+r_static
 r_struct
 id|Qdisc_ops
 id|atm_qdisc_ops
@@ -3584,10 +3586,11 @@ id|THIS_MODULE
 comma
 )brace
 suffix:semicolon
-macro_line|#ifdef MODULE
-DECL|function|init_module
+DECL|function|atm_init
+r_static
 r_int
-id|init_module
+id|__init
+id|atm_init
 c_func
 (paren
 r_void
@@ -3602,9 +3605,11 @@ id|atm_qdisc_ops
 )paren
 suffix:semicolon
 )brace
-DECL|function|cleanup_module
+DECL|function|atm_exit
+r_static
 r_void
-id|cleanup_module
+id|__exit
+id|atm_exit
 c_func
 (paren
 r_void
@@ -3618,5 +3623,14 @@ id|atm_qdisc_ops
 )paren
 suffix:semicolon
 )brace
-macro_line|#endif
+id|module_init
+c_func
+(paren
+id|atm_init
+)paren
+id|module_exit
+c_func
+(paren
+id|atm_exit
+)paren
 eof

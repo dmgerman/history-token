@@ -250,6 +250,31 @@ comma
 id|US_FL_FIX_INQUIRY
 )paren
 comma
+multiline_comment|/* Patch for Kyocera Finecam L3&n; * Submitted by Michael Krauth &lt;michael.krauth@web.de&gt;&n; */
+id|UNUSUAL_DEV
+c_func
+(paren
+l_int|0x0482
+comma
+l_int|0x0105
+comma
+l_int|0x0100
+comma
+l_int|0x0100
+comma
+l_string|&quot;Kyocera&quot;
+comma
+l_string|&quot;Finecam L3&quot;
+comma
+id|US_SC_SCSI
+comma
+id|US_PR_BULK
+comma
+l_int|NULL
+comma
+id|US_FL_FIX_INQUIRY
+)paren
+comma
 multiline_comment|/* Reported by Paul Stewart &lt;stewart@wetlogic.net&gt;&n; * This entry is needed because the device reports Sub=ff */
 id|UNUSUAL_DEV
 c_func
@@ -340,7 +365,7 @@ l_string|&quot;Fujifilm&quot;
 comma
 l_string|&quot;FinePix 1400Zoom&quot;
 comma
-id|US_SC_DEVICE
+id|US_SC_UFI
 comma
 id|US_PR_DEVICE
 comma
@@ -464,9 +489,9 @@ l_string|&quot;Shuttle&quot;
 comma
 l_string|&quot;eUSCSI Bridge&quot;
 comma
-id|US_SC_SCSI
+id|US_SC_DEVICE
 comma
-id|US_PR_BULK
+id|US_PR_DEVICE
 comma
 id|usb_stor_euscsi_init
 comma
@@ -893,6 +918,31 @@ comma
 l_int|NULL
 comma
 id|US_FL_SINGLE_LUN
+)paren
+comma
+multiline_comment|/* Submitted by Michal Mlotek &lt;mlotek@foobar.pl&gt; */
+id|UNUSUAL_DEV
+c_func
+(paren
+l_int|0x054c
+comma
+l_int|0x0058
+comma
+l_int|0x0000
+comma
+l_int|0x9999
+comma
+l_string|&quot;Sony&quot;
+comma
+l_string|&quot;PEG N760c Memorystick&quot;
+comma
+id|US_SC_DEVICE
+comma
+id|US_PR_DEVICE
+comma
+l_int|NULL
+comma
+id|US_FL_FIX_INQUIRY
 )paren
 comma
 id|UNUSUAL_DEV
@@ -1342,56 +1392,6 @@ id|US_FL_SINGLE_LUN
 )paren
 comma
 macro_line|#endif
-multiline_comment|/* Submitted by Benny Sjostrand &lt;benny@hostmobility.com&gt; */
-id|UNUSUAL_DEV
-c_func
-(paren
-l_int|0x0686
-comma
-l_int|0x4011
-comma
-l_int|0x0001
-comma
-l_int|0x0001
-comma
-l_string|&quot;Minolta&quot;
-comma
-l_string|&quot;Dimage F300&quot;
-comma
-id|US_SC_SCSI
-comma
-id|US_PR_BULK
-comma
-l_int|NULL
-comma
-l_int|0
-)paren
-comma
-multiline_comment|/* Reported by Miguel A. Fosas &lt;amn3s1a@ono.com&gt; */
-id|UNUSUAL_DEV
-c_func
-(paren
-l_int|0x0686
-comma
-l_int|0x4017
-comma
-l_int|0x0001
-comma
-l_int|0x0001
-comma
-l_string|&quot;Minolta&quot;
-comma
-l_string|&quot;DIMAGE E223&quot;
-comma
-id|US_SC_SCSI
-comma
-id|US_PR_DEVICE
-comma
-l_int|NULL
-comma
-l_int|0
-)paren
-comma
 multiline_comment|/* Following three Minolta cameras reported by Martin Pool&n; * &lt;mbp@sourcefrog.net&gt;.  Originally discovered by Kedar Petankar,&n; * Matthew Geier, Mikael Lofj&quot;ard, Marcel de Boer.&n; */
 id|UNUSUAL_DEV
 c_func
@@ -1455,6 +1455,56 @@ comma
 l_string|&quot;Minolta&quot;
 comma
 l_string|&quot;DiMAGE 7Hi&quot;
+comma
+id|US_SC_SCSI
+comma
+id|US_PR_DEVICE
+comma
+l_int|NULL
+comma
+l_int|0
+)paren
+comma
+multiline_comment|/* Submitted by Benny Sjostrand &lt;benny@hostmobility.com&gt; */
+id|UNUSUAL_DEV
+c_func
+(paren
+l_int|0x0686
+comma
+l_int|0x4011
+comma
+l_int|0x0001
+comma
+l_int|0x0001
+comma
+l_string|&quot;Minolta&quot;
+comma
+l_string|&quot;Dimage F300&quot;
+comma
+id|US_SC_SCSI
+comma
+id|US_PR_BULK
+comma
+l_int|NULL
+comma
+l_int|0
+)paren
+comma
+multiline_comment|/* Reported by Miguel A. Fosas &lt;amn3s1a@ono.com&gt; */
+id|UNUSUAL_DEV
+c_func
+(paren
+l_int|0x0686
+comma
+l_int|0x4017
+comma
+l_int|0x0001
+comma
+l_int|0x0001
+comma
+l_string|&quot;Minolta&quot;
+comma
+l_string|&quot;DIMAGE E223&quot;
 comma
 id|US_SC_SCSI
 comma
@@ -1980,7 +2030,7 @@ l_string|&quot;Casio&quot;
 comma
 l_string|&quot;QV DigitalCamera&quot;
 comma
-id|US_SC_8070
+id|US_SC_DEVICE
 comma
 id|US_PR_CB
 comma
@@ -2058,31 +2108,6 @@ comma
 id|US_SC_DEVICE
 comma
 id|US_PR_DEVICE
-comma
-l_int|NULL
-comma
-id|US_FL_MODE_XLATE
-)paren
-comma
-multiline_comment|/*Medion 6047 Digital Camera&n;Davide Andrian &lt;_nessuno_@katamail.com&gt;&n;*/
-id|UNUSUAL_DEV
-c_func
-(paren
-l_int|0x08ca
-comma
-l_int|0x2011
-comma
-l_int|0x0001
-comma
-l_int|0x0001
-comma
-l_string|&quot;3MegaCam&quot;
-comma
-l_string|&quot;3MegaCam&quot;
-comma
-id|US_SC_DEVICE
-comma
-id|US_PR_BULK
 comma
 l_int|NULL
 comma
@@ -2330,6 +2355,31 @@ comma
 l_string|&quot;Jenoptik&quot;
 comma
 l_string|&quot;JD 5200 z3&quot;
+comma
+id|US_SC_DEVICE
+comma
+id|US_PR_DEVICE
+comma
+l_int|NULL
+comma
+id|US_FL_FIX_INQUIRY
+)paren
+comma
+multiline_comment|/* Reported by Lubomir Blaha &lt;tritol@trilogic.cz&gt;&n; * I _REALLY_ don&squot;t know what 3rd, 4th number and all defines mean, but this&n; * works for me. Can anybody correct these values? (I able to test corrected&n; * version.)&n; */
+id|UNUSUAL_DEV
+c_func
+(paren
+l_int|0x0dd8
+comma
+l_int|0x1060
+comma
+l_int|0x0000
+comma
+l_int|0xffff
+comma
+l_string|&quot;Netac&quot;
+comma
+l_string|&quot;USB-CF-Card&quot;
 comma
 id|US_SC_DEVICE
 comma

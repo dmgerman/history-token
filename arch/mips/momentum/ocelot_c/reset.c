@@ -1,4 +1,5 @@
-multiline_comment|/*&n; * This program is free software; you can redistribute  it and/or modify it&n; * under  the terms of  the GNU General  Public License as published by the&n; * Free Software Foundation;  either version 2 of the  License, or (at your&n; * option) any later version.&n; *&n; * Copyright (C) 1997, 2001 Ralf Baechle&n; * Copyright 2001 MontaVista Software Inc.&n; * Author: jsun@mvista.com or jsun@junsun.net&n; *&n; * Copyright (C) 2002 Momentum Computer Inc.&n; * Author: Matthew Dharm &lt;mdharm@momenco.com&gt;&n; */
+multiline_comment|/*&n; * This program is free software; you can redistribute  it and/or modify it&n; * under  the terms of  the GNU General  Public License as published by the&n; * Free Software Foundation;  either version 2 of the  License, or (at your&n; * option) any later version.&n; *&n; * Copyright (C) 1997, 2001 Ralf Baechle&n; * Copyright 2001 MontaVista Software Inc.&n; * Author: jsun@mvista.com or jsun@junsun.net&n; *&n; * Copyright (C) 2002 Momentum Computer Inc.&n; * Author: Matthew Dharm &lt;mdharm@momenco.com&gt;&n; *&n; * Louis Hamilton, Red Hat, Inc.&n; * hamilton@redhat.com  [MIPS64 modifications]&n; */
+macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
@@ -26,8 +27,13 @@ op_assign
 r_void
 op_star
 )paren
+macro_line|#ifdef CONFIG_MIPS64
+l_int|0xfffffffffc807000
+suffix:semicolon
+macro_line|#else
 l_int|0xfc807000
 suffix:semicolon
+macro_line|#endif
 multiline_comment|/* Ask the NVRAM/RTC/watchdog chip to assert reset in 1/16 second */
 id|writeb
 c_func

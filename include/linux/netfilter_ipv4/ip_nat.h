@@ -187,14 +187,6 @@ id|manips
 id|IP_NAT_MAX_MANIPS
 )braket
 suffix:semicolon
-multiline_comment|/* The mapping type which created us (NULL for null mapping). */
-DECL|member|mtype
-r_const
-r_struct
-id|ip_nat_mapping_type
-op_star
-id|mtype
-suffix:semicolon
 DECL|member|bysource
 DECL|member|byipsproto
 r_struct

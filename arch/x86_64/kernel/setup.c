@@ -2490,6 +2490,7 @@ c_func
 r_void
 )paren
 (brace
+macro_line|#ifdef CONFIG_SMP
 r_extern
 r_int
 id|phys_proc_id
@@ -2700,6 +2701,7 @@ id|cpu
 )paren
 suffix:semicolon
 )brace
+macro_line|#endif
 )brace
 DECL|macro|LVL_1_INST
 mdefine_line|#define LVL_1_INST&t;1

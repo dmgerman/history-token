@@ -14321,8 +14321,6 @@ id|drive
 comma
 op_amp
 id|ide_cdrom_driver
-comma
-id|IDE_SUBDRIVER_VERSION
 )paren
 )paren
 (brace

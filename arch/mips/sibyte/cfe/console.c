@@ -1,5 +1,5 @@
+macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
-macro_line|#include &lt;linux/major.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/console.h&gt;
 macro_line|#include &lt;asm/sibyte/board.h&gt;
@@ -189,34 +189,6 @@ id|count
 suffix:semicolon
 )brace
 )brace
-DECL|function|cfe_console_device
-r_static
-r_struct
-id|tty_driver
-op_star
-id|cfe_console_device
-c_func
-(paren
-r_struct
-id|console
-op_star
-id|c
-comma
-r_int
-op_star
-id|index
-)paren
-(brace
-op_star
-id|index
-op_assign
-op_minus
-l_int|1
-suffix:semicolon
-r_return
-l_int|NULL
-suffix:semicolon
-)brace
 DECL|function|cfe_console_setup
 r_static
 r_int
@@ -349,11 +321,6 @@ dot
 id|write
 op_assign
 id|cfe_console_write
-comma
-dot
-id|device
-op_assign
-id|cfe_console_device
 comma
 dot
 id|setup

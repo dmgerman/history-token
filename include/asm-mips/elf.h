@@ -203,7 +203,7 @@ suffix:semicolon
 macro_line|#ifdef CONFIG_MIPS32
 multiline_comment|/*&n; * This is used to ensure we don&squot;t load something for the wrong architecture.&n; */
 DECL|macro|elf_check_arch
-mdefine_line|#define elf_check_arch(hdr)&t;&t;&t;&t;&t;&t;&bslash;&n;({&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;int __res = 1;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;struct elfhdr *__h = (hdr);&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;if (__h-&gt;e_machine != EM_MIPS)&t;&t;&t;&t;&t;&bslash;&n;&t;&t;__res = 0;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;if (__h-&gt;e_ident[EI_CLASS] != ELFCLASS64) &t;&t;&t;&bslash;&n;&t;&t;__res = 0;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;__res;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;})
+mdefine_line|#define elf_check_arch(hdr)&t;&t;&t;&t;&t;&t;&bslash;&n;({&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;int __res = 1;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;struct elfhdr *__h = (hdr);&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;if (__h-&gt;e_machine != EM_MIPS)&t;&t;&t;&t;&t;&bslash;&n;&t;&t;__res = 0;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;if (__h-&gt;e_ident[EI_CLASS] != ELFCLASS32)&t;&t;&t;&bslash;&n;&t;&t;__res = 0;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;if ((__h-&gt;e_flags &amp; EF_MIPS_ABI2) != 0)&t;&t;&t;&t;&bslash;&n;&t;&t;__res = 0;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;if (((__h-&gt;e_flags &amp; EF_MIPS_ABI) != 0) &amp;&amp;&t;&t;&t;&bslash;&n;&t;    ((__h-&gt;e_flags &amp; EF_MIPS_ABI) != EF_MIPS_ABI_O32))&t;&t;&bslash;&n;&t;&t;__res = 0;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;__res;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;})
 multiline_comment|/*&n; * These are used to set parameters in the core dumps.&n; */
 DECL|macro|ELF_CLASS
 mdefine_line|#define ELF_CLASS&t;ELFCLASS32
@@ -211,7 +211,7 @@ macro_line|#endif /* CONFIG_MIPS32 */
 macro_line|#ifdef CONFIG_MIPS64
 multiline_comment|/*&n; * This is used to ensure we don&squot;t load something for the wrong architecture.&n; */
 DECL|macro|elf_check_arch
-mdefine_line|#define elf_check_arch(hdr)&t;&t;&t;&t;&t;&t;&bslash;&n;({&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;int __res = 1;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;struct elfhdr *__h = (hdr);&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;if (__h-&gt;e_machine != EM_MIPS)&t;&t;&t;&t;&t;&bslash;&n;&t;&t;__res = 0;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;if (__h-&gt;e_ident[EI_CLASS] != ELFCLASS32)&t;&t;&t;&bslash;&n;&t;&t;__res = 0;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;if ((__h-&gt;e_flags &amp; EF_MIPS_ABI2) != 0)&t;&t;&t;&t;&bslash;&n;&t;&t;__res = 0;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;if (((__h-&gt;e_flags &amp; EF_MIPS_ABI) != 0) &amp;&amp;&t;&t;&t;&bslash;&n;&t;    ((__h-&gt;e_flags &amp; EF_MIPS_ABI) != EF_MIPS_ABI_O32))&t;&t;&bslash;&n;&t;&t;__res = 0;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;__res;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;})
+mdefine_line|#define elf_check_arch(hdr)&t;&t;&t;&t;&t;&t;&bslash;&n;({&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;int __res = 1;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;struct elfhdr *__h = (hdr);&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;if (__h-&gt;e_machine != EM_MIPS)&t;&t;&t;&t;&t;&bslash;&n;&t;&t;__res = 0;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;if (__h-&gt;e_ident[EI_CLASS] != ELFCLASS64) &t;&t;&t;&bslash;&n;&t;&t;__res = 0;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;__res;&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;})
 multiline_comment|/*&n; * These are used to set parameters in the core dumps.&n; */
 DECL|macro|ELF_CLASS
 mdefine_line|#define ELF_CLASS&t;ELFCLASS64
@@ -243,7 +243,7 @@ mdefine_line|#define irix_elf_check_arch(hdr)&t;((hdr)-&gt;e_machine == EM_MIPS)
 DECL|macro|USE_ELF_CORE_DUMP
 mdefine_line|#define USE_ELF_CORE_DUMP
 DECL|macro|ELF_EXEC_PAGESIZE
-mdefine_line|#define ELF_EXEC_PAGESIZE&t;4096
+mdefine_line|#define ELF_EXEC_PAGESIZE&t;PAGE_SIZE
 DECL|macro|ELF_CORE_COPY_REGS
 mdefine_line|#define ELF_CORE_COPY_REGS(_dest,_regs)&t;&t;&t;&t;&bslash;&n;&t;memcpy((char *) &amp;_dest, (char *) _regs,&t;&t;&t;&bslash;&n;&t;       sizeof(struct pt_regs));
 multiline_comment|/* This yields a mask that user programs can use to figure out what&n;   instruction set this cpu supports.  This could be done in userspace,&n;   but it&squot;s not easy, and we&squot;ve already done it here.  */

@@ -5,16 +5,16 @@ DECL|struct|hpsb_address_serve
 r_struct
 id|hpsb_address_serve
 (brace
-DECL|member|as_list
+DECL|member|host_list
 r_struct
 id|list_head
-id|as_list
+id|host_list
 suffix:semicolon
-multiline_comment|/* global list */
-DECL|member|addr_list
+multiline_comment|/* per host list */
+DECL|member|hl_list
 r_struct
 id|list_head
-id|addr_list
+id|hl_list
 suffix:semicolon
 multiline_comment|/* hpsb_highlevel list */
 DECL|member|op
@@ -535,6 +535,38 @@ id|hl
 )paren
 suffix:semicolon
 multiline_comment|/*&n; * Register handlers for host address spaces.  Start and end are 48 bit pointers&n; * and have to be quadlet aligned (end points to the first address behind the&n; * handled addresses.  This function can be called multiple times for a single&n; * hpsb_highlevel to implement sparse register sets.  The requested region must&n; * not overlap any previously allocated region, otherwise registering will fail.&n; *&n; * It returns true for successful allocation.  There is no unregister function,&n; * all address spaces are deallocated together with the hpsb_highlevel.&n; */
+id|u64
+id|hpsb_allocate_and_register_addrspace
+c_func
+(paren
+r_struct
+id|hpsb_highlevel
+op_star
+id|hl
+comma
+r_struct
+id|hpsb_host
+op_star
+id|host
+comma
+r_struct
+id|hpsb_address_ops
+op_star
+id|ops
+comma
+id|u64
+id|size
+comma
+id|u64
+id|alignment
+comma
+id|u64
+id|start
+comma
+id|u64
+id|end
+)paren
+suffix:semicolon
 r_int
 id|hpsb_register_addrspace
 c_func

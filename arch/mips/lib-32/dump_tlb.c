@@ -633,7 +633,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;Addr                 == %08x&bslash;n&quot;
+l_string|&quot;Addr                 == %08lx&bslash;n&quot;
 comma
 id|addr
 )paren
@@ -1076,8 +1076,12 @@ op_increment
 id|printk
 c_func
 (paren
-l_string|&quot;*%8p = %08lx, &quot;
+l_string|&quot;*%08lx == %08lx, &quot;
 comma
+(paren
+r_int
+r_int
+)paren
 id|p
 comma
 op_star
@@ -1090,8 +1094,12 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;*%8p = %08lx&bslash;n&quot;
+l_string|&quot;*%08lx == %08lx&bslash;n&quot;
 comma
+(paren
+r_int
+r_int
+)paren
 id|p
 comma
 op_star

@@ -17,7 +17,7 @@ macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/ucontext.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/fpu.h&gt;
-multiline_comment|/*&n; * Including &lt;asm/unistd.h would give use the 64-bit syscall numbers ...&n; */
+multiline_comment|/*&n; * Including &lt;asm/unistd.h&gt; would give use the 64-bit syscall numbers ...&n; */
 DECL|macro|__NR_O32_sigreturn
 mdefine_line|#define __NR_O32_sigreturn&t;&t;4119
 DECL|macro|__NR_O32_rt_sigreturn
@@ -493,11 +493,17 @@ id|err
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Atomically swap in the new signal mask, and wait for a signal.&n; */
-DECL|function|sys32_sigsuspend
-id|asmlinkage
-r_inline
-r_int
+DECL|variable|sys32_sigsuspend
+id|save_static_function
+c_func
+(paren
 id|sys32_sigsuspend
+)paren
+suffix:semicolon
+DECL|function|_sys32_sigsuspend
+id|static_unused
+r_int
+id|_sys32_sigsuspend
 c_func
 (paren
 id|nabi_no_regargs
@@ -514,13 +520,6 @@ id|sigset_t
 id|newset
 comma
 id|saveset
-suffix:semicolon
-id|save_static
-c_func
-(paren
-op_amp
-id|regs
-)paren
 suffix:semicolon
 id|uset
 op_assign
@@ -634,10 +633,17 @@ id|EINTR
 suffix:semicolon
 )brace
 )brace
-DECL|function|sys32_rt_sigsuspend
-id|asmlinkage
-r_int
+DECL|variable|sys32_rt_sigsuspend
+id|save_static_function
+c_func
+(paren
 id|sys32_rt_sigsuspend
+)paren
+suffix:semicolon
+DECL|function|_sys32_rt_sigsuspend
+id|static_unused
+r_int
+id|_sys32_rt_sigsuspend
 c_func
 (paren
 id|nabi_no_regargs
@@ -657,13 +663,6 @@ id|saveset
 suffix:semicolon
 r_int
 id|sigsetsize
-suffix:semicolon
-id|save_static
-c_func
-(paren
-op_amp
-id|regs
-)paren
 suffix:semicolon
 multiline_comment|/* XXX Don&squot;t preclude handling different sized sigset_t&squot;s.  */
 id|sigsetsize
@@ -1189,8 +1188,12 @@ op_amp
 id|uss-&gt;ss_sp
 )paren
 suffix:semicolon
-id|kss.ss_size
+id|kss.ss_sp
 op_assign
+(paren
+r_void
+op_star
+)paren
 (paren
 r_int
 )paren
@@ -1372,6 +1375,16 @@ r_int
 id|err
 op_assign
 l_int|0
+suffix:semicolon
+multiline_comment|/* Always make any pending restarted system calls return -EINTR */
+id|current_thread_info
+c_func
+(paren
+)paren
+op_member_access_from_pointer
+id|restart_block.fn
+op_assign
+id|do_no_restart_syscall
 suffix:semicolon
 id|err
 op_or_assign
@@ -3399,15 +3412,6 @@ l_int|0
 r_case
 id|ERESTART_RESTARTBLOCK
 suffix:colon
-id|current_thread_info
-c_func
-(paren
-)paren
-op_member_access_from_pointer
-id|restart_block.fn
-op_assign
-id|do_no_restart_syscall
-suffix:semicolon
 r_case
 id|ERESTARTNOHAND
 suffix:colon
@@ -3709,6 +3713,16 @@ l_int|2
 )braket
 op_assign
 id|__NR_O32_restart_syscall
+suffix:semicolon
+id|regs-&gt;regs
+(braket
+l_int|7
+)braket
+op_assign
+id|regs-&gt;regs
+(braket
+l_int|26
+)braket
 suffix:semicolon
 id|regs-&gt;cp0_epc
 op_sub_assign

@@ -1005,12 +1005,25 @@ r_int
 id|irq
 )paren
 (brace
+id|irq_desc_t
+op_star
+id|desc
+op_assign
+id|irq_desc
+op_plus
+id|irq
+suffix:semicolon
 id|disable_irq_nosync
 c_func
 (paren
 id|irq
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|desc-&gt;action
+)paren
 id|synchronize_irq
 c_func
 (paren
@@ -1067,7 +1080,11 @@ op_assign
 id|desc-&gt;status
 op_amp
 op_complement
+(paren
 id|IRQ_DISABLED
+op_or
+id|IRQ_INPROGRESS
+)paren
 suffix:semicolon
 id|desc-&gt;status
 op_assign
@@ -2228,7 +2245,7 @@ id|val
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Return the one interrupt that triggered (this can&n; * handle any interrupt source).&n; */
-multiline_comment|/**&n; *&t;probe_irq_off&t;- end an interrupt autodetect&n; *&t;@val: mask of potential interrupts (unused)&n; *&n; *&t;Scans the unused interrupt lines and returns the line which&n; *&t;appears to have triggered the interrupt. If no interrupt was&n; *&t;found then zero is returned. If more than one interrupt is&n; *&t;found then minus the first candidate is returned to indicate&n; *&t;their is doubt.&n; *&n; *&t;The interrupt probe logic state is returned to its previous&n; *&t;value.&n; *&n; *&t;BUGS: When used in a module (which arguably shouldnt happen)&n; *&t;nothing prevents two IRQ probe callers from overlapping. The&n; *&t;results of this are non-optimal.&n; */
+multiline_comment|/**&n; *&t;probe_irq_off&t;- end an interrupt autodetect&n; *&t;@val: mask of potential interrupts (unused)&n; *&n; *&t;Scans the unused interrupt lines and returns the line which&n; *&t;appears to have triggered the interrupt. If no interrupt was&n; *&t;found then zero is returned. If more than one interrupt is&n; *&t;found then minus the first candidate is returned to indicate&n; *&t;there is doubt.&n; *&n; *&t;The interrupt probe logic state is returned to its previous&n; *&t;value.&n; *&n; *&t;BUGS: When used in a module (which arguably shouldnt happen)&n; *&t;nothing prevents two IRQ probe callers from overlapping. The&n; *&t;results of this are non-optimal.&n; */
 DECL|function|probe_irq_off
 r_int
 id|probe_irq_off
@@ -2878,7 +2895,7 @@ c_func
 (paren
 id|tmp
 comma
-id|tmp
+id|new_value
 comma
 id|cpu_online_map
 )paren

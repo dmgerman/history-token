@@ -25,7 +25,7 @@ mdefine_line|#define TX4927_IRC_REG          0xff1ff600
 DECL|macro|TX4927_CE3
 mdefine_line|#define TX4927_CE3      0x17f00000      /* 1M */
 DECL|macro|TX4927_PCIRESET_ADDR
-mdefine_line|#define TX4927_PCIRESET_ADDR    0x1c00f006
+mdefine_line|#define TX4927_PCIRESET_ADDR    0xbc00f006
 DECL|macro|TX4927_PCI_CLK_ADDR
 mdefine_line|#define TX4927_PCI_CLK_ADDR     (KSEG1 + TX4927_CE3 + 0x00040020)
 DECL|macro|TX4927_IMSTAT_ADDR

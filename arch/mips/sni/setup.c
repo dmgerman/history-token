@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * Setup pointers to hardware-dependent routines.&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1996, 1997, 1998, 2000, 2003 by Ralf Baechle&n; */
+multiline_comment|/*&n; * Setup pointers to hardware-dependent routines.&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1996, 1997, 1998, 2000, 2003, 2004 by Ralf Baechle&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/eisa.h&gt;
 macro_line|#include &lt;linux/hdreg.h&gt;
@@ -6,16 +6,19 @@ macro_line|#include &lt;linux/ioport.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
-macro_line|#include &lt;linux/timex.h&gt;
-macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/mc146818rtc.h&gt;
+macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/console.h&gt;
 macro_line|#include &lt;linux/fb.h&gt;
-macro_line|#include &lt;linux/ide.h&gt;
+macro_line|#include &lt;linux/tty.h&gt;
+macro_line|#include &lt;asm/arc/types.h&gt;
+macro_line|#include &lt;asm/sgialib.h&gt;
 macro_line|#include &lt;asm/bcache.h&gt;
 macro_line|#include &lt;asm/bootinfo.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
+macro_line|#include &lt;asm/mc146818-time.h&gt;
+macro_line|#include &lt;asm/pci_channel.h&gt;
 macro_line|#include &lt;asm/processor.h&gt;
 macro_line|#include &lt;asm/ptrace.h&gt;
 macro_line|#include &lt;asm/reboot.h&gt;
@@ -47,16 +50,6 @@ c_func
 (paren
 r_void
 )paren
-suffix:semicolon
-r_extern
-r_struct
-id|ide_ops
-id|std_ide_ops
-suffix:semicolon
-r_extern
-r_struct
-id|rtc_ops
-id|std_rtc_ops
 suffix:semicolon
 DECL|function|sni_rm200_pci_timer_setup
 r_static
@@ -112,11 +105,6 @@ id|irq
 )paren
 suffix:semicolon
 )brace
-r_extern
-r_int
-r_char
-id|sni_map_isa_cache
-suffix:semicolon
 multiline_comment|/*&n; * A bit more gossip about the iron we&squot;re running on ...&n; */
 DECL|function|sni_pcimt_detect
 r_static
@@ -258,8 +246,457 @@ id|boardtype
 )paren
 suffix:semicolon
 )brace
-DECL|function|sni_rm200_pci_setup
+DECL|function|sni_display_setup
+r_static
 r_void
+id|__init
+id|sni_display_setup
+c_func
+(paren
+r_void
+)paren
+(brace
+macro_line|#ifdef CONFIG_VT
+macro_line|#if defined(CONFIG_VGA_CONSOLE)
+r_struct
+id|screen_info
+op_star
+id|si
+op_assign
+op_amp
+id|screen_info
+suffix:semicolon
+id|DISPLAY_STATUS
+op_star
+id|di
+suffix:semicolon
+id|di
+op_assign
+id|ArcGetDisplayStatus
+c_func
+(paren
+l_int|1
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|di
+)paren
+(brace
+id|si-&gt;orig_x
+op_assign
+id|di-&gt;CursorXPosition
+suffix:semicolon
+id|si-&gt;orig_y
+op_assign
+id|di-&gt;CursorYPosition
+suffix:semicolon
+id|si-&gt;orig_video_cols
+op_assign
+id|di-&gt;CursorMaxXPosition
+suffix:semicolon
+id|si-&gt;orig_video_lines
+op_assign
+id|di-&gt;CursorMaxYPosition
+suffix:semicolon
+id|si-&gt;orig_video_isVGA
+op_assign
+id|VIDEO_TYPE_VGAC
+suffix:semicolon
+id|si-&gt;orig_video_points
+op_assign
+l_int|16
+suffix:semicolon
+)brace
+macro_line|#endif
+macro_line|#endif
+)brace
+DECL|variable|sni_io_resource
+r_static
+r_struct
+id|resource
+id|sni_io_resource
+op_assign
+(brace
+l_string|&quot;PCIMT IO MEM&quot;
+comma
+l_int|0x00001000UL
+comma
+l_int|0x03bfffffUL
+comma
+id|IORESOURCE_IO
+comma
+)brace
+suffix:semicolon
+DECL|variable|pcimt_io_resources
+r_static
+r_struct
+id|resource
+id|pcimt_io_resources
+(braket
+)braket
+op_assign
+(brace
+(brace
+l_string|&quot;dma1&quot;
+comma
+l_int|0x00
+comma
+l_int|0x1f
+comma
+id|IORESOURCE_BUSY
+)brace
+comma
+(brace
+l_string|&quot;timer&quot;
+comma
+l_int|0x40
+comma
+l_int|0x5f
+comma
+id|IORESOURCE_BUSY
+)brace
+comma
+(brace
+l_string|&quot;keyboard&quot;
+comma
+l_int|0x60
+comma
+l_int|0x6f
+comma
+id|IORESOURCE_BUSY
+)brace
+comma
+(brace
+l_string|&quot;dma page reg&quot;
+comma
+l_int|0x80
+comma
+l_int|0x8f
+comma
+id|IORESOURCE_BUSY
+)brace
+comma
+(brace
+l_string|&quot;dma2&quot;
+comma
+l_int|0xc0
+comma
+l_int|0xdf
+comma
+id|IORESOURCE_BUSY
+)brace
+comma
+(brace
+l_string|&quot;PCI config data&quot;
+comma
+l_int|0xcfc
+comma
+l_int|0xcff
+comma
+id|IORESOURCE_BUSY
+)brace
+)brace
+suffix:semicolon
+DECL|variable|sni_mem_resource
+r_static
+r_struct
+id|resource
+id|sni_mem_resource
+op_assign
+(brace
+l_string|&quot;PCIMT PCI MEM&quot;
+comma
+l_int|0x10000000UL
+comma
+l_int|0xffffffffUL
+comma
+id|IORESOURCE_MEM
+)brace
+suffix:semicolon
+multiline_comment|/*&n; * The RM200/RM300 has a few holes in it&squot;s PCI/EISA memory address space used&n; * for other purposes.  Be paranoid and allocate all of the before the PCI&n; * code gets a chance to to map anything else there ...&n; * &n; * This leaves the following areas available:&n; *&n; * 0x10000000 - 0x1009ffff (640kB) PCI/EISA/ISA Bus Memory&n; * 0x10100000 - 0x13ffffff ( 15MB) PCI/EISA/ISA Bus Memory&n; * 0x18000000 - 0x1fbfffff (124MB) PCI/EISA Bus Memory&n; * 0x1ff08000 - 0x1ffeffff (816kB) PCI/EISA Bus Memory&n; * 0xa0000000 - 0xffffffff (1.5GB) PCI/EISA Bus Memory&n; */
+DECL|variable|pcimt_mem_resources
+r_static
+r_struct
+id|resource
+id|pcimt_mem_resources
+(braket
+)braket
+op_assign
+(brace
+(brace
+l_string|&quot;Video RAM area&quot;
+comma
+l_int|0x100a0000
+comma
+l_int|0x100bffff
+comma
+id|IORESOURCE_BUSY
+)brace
+comma
+(brace
+l_string|&quot;ISA Reserved&quot;
+comma
+l_int|0x100c0000
+comma
+l_int|0x100fffff
+comma
+id|IORESOURCE_BUSY
+)brace
+comma
+(brace
+l_string|&quot;PCI IO&quot;
+comma
+l_int|0x14000000
+comma
+l_int|0x17bfffff
+comma
+id|IORESOURCE_BUSY
+)brace
+comma
+(brace
+l_string|&quot;Cache Replacement Area&quot;
+comma
+l_int|0x17c00000
+comma
+l_int|0x17ffffff
+comma
+id|IORESOURCE_BUSY
+)brace
+comma
+(brace
+l_string|&quot;PCI INT Acknowledge&quot;
+comma
+l_int|0x1a000000
+comma
+l_int|0x1a000003
+comma
+id|IORESOURCE_BUSY
+)brace
+comma
+(brace
+l_string|&quot;Boot PROM&quot;
+comma
+l_int|0x1fc00000
+comma
+l_int|0x1fc7ffff
+comma
+id|IORESOURCE_BUSY
+)brace
+comma
+(brace
+l_string|&quot;Diag PROM&quot;
+comma
+l_int|0x1fc80000
+comma
+l_int|0x1fcfffff
+comma
+id|IORESOURCE_BUSY
+)brace
+comma
+(brace
+l_string|&quot;X-Bus&quot;
+comma
+l_int|0x1fd00000
+comma
+l_int|0x1fdfffff
+comma
+id|IORESOURCE_BUSY
+)brace
+comma
+(brace
+l_string|&quot;BIOS map&quot;
+comma
+l_int|0x1fe00000
+comma
+l_int|0x1fefffff
+comma
+id|IORESOURCE_BUSY
+)brace
+comma
+(brace
+l_string|&quot;NVRAM / EEPROM&quot;
+comma
+l_int|0x1ff00000
+comma
+l_int|0x1ff7ffff
+comma
+id|IORESOURCE_BUSY
+)brace
+comma
+(brace
+l_string|&quot;ASIC PCI&quot;
+comma
+l_int|0x1fff0000
+comma
+l_int|0x1fffefff
+comma
+id|IORESOURCE_BUSY
+)brace
+comma
+(brace
+l_string|&quot;MP Agent&quot;
+comma
+l_int|0x1ffff000
+comma
+l_int|0x1fffffff
+comma
+id|IORESOURCE_BUSY
+)brace
+comma
+(brace
+l_string|&quot;Main Memory&quot;
+comma
+l_int|0x20000000
+comma
+l_int|0x9fffffff
+comma
+id|IORESOURCE_BUSY
+)brace
+)brace
+suffix:semicolon
+DECL|function|sni_resource_init
+r_static
+r_void
+id|__init
+id|sni_resource_init
+c_func
+(paren
+r_void
+)paren
+(brace
+r_int
+id|i
+suffix:semicolon
+multiline_comment|/* request I/O space for devices used on all i[345]86 PCs */
+r_for
+c_loop
+(paren
+id|i
+op_assign
+l_int|0
+suffix:semicolon
+id|i
+OL
+id|ARRAY_SIZE
+c_func
+(paren
+id|pcimt_io_resources
+)paren
+suffix:semicolon
+id|i
+op_increment
+)paren
+id|request_resource
+c_func
+(paren
+op_amp
+id|ioport_resource
+comma
+id|pcimt_io_resources
+op_plus
+id|i
+)paren
+suffix:semicolon
+multiline_comment|/* request mem space for pcimt-specific devices */
+r_for
+c_loop
+(paren
+id|i
+op_assign
+l_int|0
+suffix:semicolon
+id|i
+OL
+id|ARRAY_SIZE
+c_func
+(paren
+id|pcimt_mem_resources
+)paren
+suffix:semicolon
+id|i
+op_increment
+)paren
+id|request_resource
+c_func
+(paren
+op_amp
+id|sni_mem_resource
+comma
+id|pcimt_mem_resources
+op_plus
+id|i
+)paren
+suffix:semicolon
+id|ioport_resource.end
+op_assign
+id|sni_io_resource.end
+suffix:semicolon
+)brace
+r_extern
+r_struct
+id|pci_ops
+id|sni_pci_ops
+suffix:semicolon
+DECL|variable|sni_controller
+r_static
+r_struct
+id|pci_controller
+id|sni_controller
+op_assign
+(brace
+dot
+id|pci_ops
+op_assign
+op_amp
+id|sni_pci_ops
+comma
+dot
+id|mem_resource
+op_assign
+op_amp
+id|sni_mem_resource
+comma
+dot
+id|mem_offset
+op_assign
+l_int|0x10000000UL
+comma
+dot
+id|io_resource
+op_assign
+op_amp
+id|sni_io_resource
+comma
+dot
+id|io_offset
+op_assign
+l_int|0x00000000UL
+)brace
+suffix:semicolon
+DECL|function|sni_pcimt_time_init
+r_static
+r_inline
+r_void
+id|sni_pcimt_time_init
+c_func
+(paren
+r_void
+)paren
+(brace
+id|rtc_get_time
+op_assign
+id|mc146818_get_cmos_time
+suffix:semicolon
+id|rtc_set_time
+op_assign
+id|mc146818_set_rtc_mmss
+suffix:semicolon
+)brace
+DECL|function|sni_rm200_pci_setup
+r_static
+r_int
 id|__init
 id|sni_rm200_pci_setup
 c_func
@@ -277,73 +714,35 @@ c_func
 (paren
 )paren
 suffix:semicolon
+id|sni_pcimt_time_init
+c_func
+(paren
+)paren
+suffix:semicolon
 id|set_io_port_base
 c_func
 (paren
 id|SNI_PORT_BASE
 )paren
 suffix:semicolon
+id|ioport_resource.end
+op_assign
+id|sni_io_resource.end
+suffix:semicolon
 multiline_comment|/*&n;&t; * Setup (E)ISA I/O memory access stuff&n;&t; */
 id|isa_slot_offset
 op_assign
 l_int|0xb0000000
 suffix:semicolon
-singleline_comment|// sni_map_isa_cache = 0;
 macro_line|#ifdef CONFIG_EISA
 id|EISA_bus
 op_assign
 l_int|1
 suffix:semicolon
 macro_line|#endif
-id|request_region
+id|sni_resource_init
 c_func
 (paren
-l_int|0x00
-comma
-l_int|0x20
-comma
-l_string|&quot;dma1&quot;
-)paren
-suffix:semicolon
-id|request_region
-c_func
-(paren
-l_int|0x40
-comma
-l_int|0x20
-comma
-l_string|&quot;timer&quot;
-)paren
-suffix:semicolon
-multiline_comment|/* XXX FIXME: CONFIG_RTC */
-id|request_region
-c_func
-(paren
-l_int|0x70
-comma
-l_int|0x10
-comma
-l_string|&quot;rtc&quot;
-)paren
-suffix:semicolon
-id|request_region
-c_func
-(paren
-l_int|0x80
-comma
-l_int|0x10
-comma
-l_string|&quot;dma page reg&quot;
-)paren
-suffix:semicolon
-id|request_region
-c_func
-(paren
-l_int|0xc0
-comma
-l_int|0x20
-comma
-l_string|&quot;dma2&quot;
 )paren
 suffix:semicolon
 id|board_timer_setup
@@ -362,74 +761,29 @@ id|_machine_power_off
 op_assign
 id|sni_machine_power_off
 suffix:semicolon
-multiline_comment|/*&n;&t; * Some cluefull person has placed the PCI config data directly in&n;&t; * the I/O port space ...&n;&t; */
-id|request_region
+id|sni_display_setup
 c_func
 (paren
-l_int|0xcfc
-comma
-l_int|0x04
-comma
-l_string|&quot;PCI config data&quot;
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_BLK_DEV_IDE
-id|ide_ops
-op_assign
+macro_line|#ifdef CONFIG_PCI
+id|register_pci_controller
+c_func
+(paren
 op_amp
-id|std_ide_ops
+id|sni_controller
+)paren
 suffix:semicolon
 macro_line|#endif
-id|conswitchp
-op_assign
-op_amp
-id|vga_con
+r_return
+l_int|0
 suffix:semicolon
-id|screen_info
-op_assign
+)brace
+DECL|variable|sni_rm200_pci_setup
+id|early_initcall
+c_func
 (paren
-r_struct
-id|screen_info
+id|sni_rm200_pci_setup
 )paren
-(brace
-l_int|0
-comma
-l_int|0
-comma
-multiline_comment|/* orig-x, orig-y */
-l_int|0
-comma
-multiline_comment|/* unused */
-l_int|52
-comma
-multiline_comment|/* orig_video_page */
-l_int|3
-comma
-multiline_comment|/* orig_video_mode */
-l_int|80
-comma
-multiline_comment|/* orig_video_cols */
-l_int|4626
-comma
-l_int|3
-comma
-l_int|9
-comma
-multiline_comment|/* unused, ega_bx, unused */
-l_int|50
-comma
-multiline_comment|/* orig_video_lines */
-l_int|0x22
-comma
-multiline_comment|/* orig_video_isVGA */
-l_int|16
-multiline_comment|/* orig_video_points */
-)brace
 suffix:semicolon
-id|rtc_ops
-op_assign
-op_amp
-id|std_rtc_ops
-suffix:semicolon
-)brace
 eof

@@ -3460,6 +3460,7 @@ l_int|1
 suffix:semicolon
 )brace
 DECL|variable|cls_u32_ops
+r_static
 r_struct
 id|tcf_proto_ops
 id|cls_u32_ops
@@ -3527,10 +3528,11 @@ id|THIS_MODULE
 comma
 )brace
 suffix:semicolon
-macro_line|#ifdef MODULE
-DECL|function|init_module
+DECL|function|init_u32
+r_static
 r_int
-id|init_module
+id|__init
+id|init_u32
 c_func
 (paren
 r_void
@@ -3545,9 +3547,11 @@ id|cls_u32_ops
 )paren
 suffix:semicolon
 )brace
-DECL|function|cleanup_module
+DECL|function|exit_u32
+r_static
 r_void
-id|cleanup_module
+id|__exit
+id|exit_u32
 c_func
 (paren
 r_void
@@ -3561,7 +3565,16 @@ id|cls_u32_ops
 )paren
 suffix:semicolon
 )brace
-macro_line|#endif
+id|module_init
+c_func
+(paren
+id|init_u32
+)paren
+id|module_exit
+c_func
+(paren
+id|exit_u32
+)paren
 id|MODULE_LICENSE
 c_func
 (paren

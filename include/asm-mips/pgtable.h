@@ -70,6 +70,14 @@ id|zero_page_mask
 suffix:semicolon
 DECL|macro|ZERO_PAGE
 mdefine_line|#define ZERO_PAGE(vaddr) &bslash;&n;&t;(virt_to_page(empty_zero_page + (((unsigned long)(vaddr)) &amp; zero_page_mask)))
+r_extern
+r_void
+id|paging_init
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
 multiline_comment|/*&n; * Conversion functions: convert a page and protection to a page entry,&n; * and a page entry and page directory to the page they refer to.&n; */
 DECL|macro|page_pte
 mdefine_line|#define page_pte(page)&t;&t;page_pte_prot(page, __pgprot(0))
@@ -219,6 +227,19 @@ DECL|macro|set_pmd
 mdefine_line|#define set_pmd(pmdptr, pmdval) do { *(pmdptr) = (pmdval); } while(0)
 DECL|macro|set_pgd
 mdefine_line|#define set_pgd(pgdptr, pgdval) do { *(pgdptr) = (pgdval); } while(0)
+DECL|macro|PGD_T_LOG2
+mdefine_line|#define PGD_T_LOG2&t;ffz(~sizeof(pgd_t))
+DECL|macro|PMD_T_LOG2
+mdefine_line|#define PMD_T_LOG2&t;ffz(~sizeof(pmd_t))
+DECL|macro|PTE_T_LOG2
+mdefine_line|#define PTE_T_LOG2&t;ffz(~sizeof(pte_t))
+r_extern
+id|pgd_t
+id|swapper_pg_dir
+(braket
+id|PTRS_PER_PGD
+)braket
+suffix:semicolon
 DECL|macro|PTE_FILE_MAX_BITS
 mdefine_line|#define PTE_FILE_MAX_BITS&t;27
 multiline_comment|/*&n; * The following only work if pte_present() is true.&n; * Undefined behaviour if not..&n; */

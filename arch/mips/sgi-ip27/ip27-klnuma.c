@@ -10,8 +10,7 @@ macro_line|#include &lt;asm/smp.h&gt;
 macro_line|#include &lt;asm/sn/types.h&gt;
 macro_line|#include &lt;asm/sn/arch.h&gt;
 macro_line|#include &lt;asm/sn/gda.h&gt;
-macro_line|#include &lt;asm/mmzone.h&gt;
-macro_line|#include &lt;asm/sn/klkernvars.h&gt;
+macro_line|#include &lt;asm/sn/hub.h&gt;
 macro_line|#include &lt;asm/sn/mapped_kernel.h&gt;
 macro_line|#include &lt;asm/sn/sn_private.h&gt;
 r_extern
@@ -42,18 +41,18 @@ id|cnodeid_t
 id|cnode
 suffix:semicolon
 multiline_comment|/* Set only the master cnode&squot;s bit.  The master cnode is always 0. */
-id|CPUMASK_CLRALL
+id|cpus_clear
 c_func
 (paren
 id|ktext_repmask
 )paren
 suffix:semicolon
-id|CPUMASK_SETB
+id|cpu_set
 c_func
 (paren
-id|ktext_repmask
-comma
 l_int|0
+comma
+id|ktext_repmask
 )paren
 suffix:semicolon
 id|numa_kernel_replication_ratio
@@ -99,12 +98,12 @@ id|numa_kernel_replication_ratio
 )paren
 (brace
 multiline_comment|/* Advertise that we have a copy of the kernel */
-id|CPUMASK_SETB
+id|cpu_set
 c_func
 (paren
-id|ktext_repmask
-comma
 id|cnode
+comma
+id|ktext_repmask
 )paren
 suffix:semicolon
 )brace
@@ -149,10 +148,10 @@ id|kvp
 op_assign
 op_amp
 (paren
-id|PLAT_NODE_DATA
+id|HUB_DATA
 c_func
 (paren
-id|client_cnode
+id|client_nasid
 )paren
 op_member_access_from_pointer
 id|kern_vars
@@ -347,12 +346,12 @@ multiline_comment|/* Check if this node should get a copy of the kernel */
 r_if
 c_cond
 (paren
-id|CPUMASK_TSTB
+id|cpu_isset
 c_func
 (paren
-id|ktext_repmask
-comma
 id|cnode
+comma
+id|ktext_repmask
 )paren
 )paren
 (brace
@@ -442,12 +441,12 @@ l_int|0
 )paren
 op_logical_or
 (paren
-id|CPUMASK_TSTB
+id|cpu_isset
 c_func
 (paren
-id|ktext_repmask
-comma
 id|cnode
+comma
+id|ktext_repmask
 )paren
 )paren
 )paren
