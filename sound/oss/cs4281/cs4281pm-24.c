@@ -64,11 +64,8 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;cs4281: cs4281_pm_callback dev=0x%x rqst=0x%x state=%d&bslash;n&quot;
+l_string|&quot;cs4281: cs4281_pm_callback dev=%p rqst=0x%x state=%p&bslash;n&quot;
 comma
-(paren
-r_int
-)paren
 id|dev
 comma
 (paren
@@ -76,9 +73,6 @@ r_int
 )paren
 id|rqst
 comma
-(paren
-r_int
-)paren
 id|data
 )paren
 )paren

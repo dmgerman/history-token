@@ -10,8 +10,8 @@ macro_line|#include &lt;asm/ecard.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
-macro_line|#include &quot;../../scsi/scsi.h&quot;
-macro_line|#include &quot;../../scsi/hosts.h&quot;
+macro_line|#include &quot;../scsi.h&quot;
+macro_line|#include &quot;../hosts.h&quot;
 macro_line|#include &lt;scsi/scsicam.h&gt;
 DECL|macro|AUTOSENSE
 mdefine_line|#define AUTOSENSE
@@ -65,7 +65,7 @@ DECL|macro|BOARD_NORMAL
 mdefine_line|#define BOARD_NORMAL&t;0
 DECL|macro|BOARD_NCR53C400
 mdefine_line|#define BOARD_NCR53C400&t;1
-macro_line|#include &quot;../../scsi/NCR5380.h&quot;
+macro_line|#include &quot;../NCR5380.h&quot;
 DECL|function|cumanascsi_setup
 r_void
 id|cumanascsi_setup
@@ -1365,7 +1365,7 @@ suffix:semicolon
 )brace
 DECL|macro|CTRL
 macro_line|#undef CTRL
-macro_line|#include &quot;../../scsi/NCR5380.c&quot;
+macro_line|#include &quot;../NCR5380.c&quot;
 DECL|variable|cumanascsi_template
 r_static
 id|Scsi_Host_Template

@@ -191,6 +191,11 @@ id|scatterlist
 id|cur_sg
 suffix:semicolon
 multiline_comment|/* Current controller buffer&t;*/
+DECL|member|state
+r_int
+r_int
+id|state
+suffix:semicolon
 DECL|member|d_ops
 r_struct
 id|dma_ops

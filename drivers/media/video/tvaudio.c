@@ -34,8 +34,6 @@ op_assign
 l_int|0
 suffix:semicolon
 multiline_comment|/* insmod parameter */
-DECL|macro|dprintk
-mdefine_line|#define dprintk  if (debug) printk
 id|MODULE_DESCRIPTION
 c_func
 (paren
@@ -54,6 +52,10 @@ c_func
 l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
+DECL|macro|UNSET
+mdefine_line|#define UNSET    (-1U)
+DECL|macro|dprintk
+mdefine_line|#define dprintk  if (debug) printk
 multiline_comment|/* ---------------------------------------------------------------------- */
 multiline_comment|/* our structs                                                            */
 DECL|macro|MAXREGS
@@ -501,7 +503,12 @@ c_func
 (paren
 l_string|&quot;%s: chip_write: 0x%x&bslash;n&quot;
 comma
-id|chip-&gt;c.dev.name
+id|i2c_clientname
+c_func
+(paren
+op_amp
+id|chip-&gt;c
+)paren
 comma
 id|val
 )paren
@@ -543,7 +550,12 @@ c_func
 id|KERN_WARNING
 l_string|&quot;%s: I/O error (write 0x%x)&bslash;n&quot;
 comma
-id|chip-&gt;c.dev.name
+id|i2c_clientname
+c_func
+(paren
+op_amp
+id|chip-&gt;c
+)paren
 comma
 id|val
 )paren
@@ -561,7 +573,12 @@ c_func
 (paren
 l_string|&quot;%s: chip_write: reg%d=0x%x&bslash;n&quot;
 comma
-id|chip-&gt;c.dev.name
+id|i2c_clientname
+c_func
+(paren
+op_amp
+id|chip-&gt;c
+)paren
 comma
 id|subaddr
 comma
@@ -614,7 +631,12 @@ c_func
 id|KERN_WARNING
 l_string|&quot;%s: I/O error (write reg%d=0x%x)&bslash;n&quot;
 comma
-id|chip-&gt;c.dev.name
+id|i2c_clientname
+c_func
+(paren
+op_amp
+id|chip-&gt;c
+)paren
 comma
 id|subaddr
 comma
@@ -764,7 +786,12 @@ c_func
 id|KERN_WARNING
 l_string|&quot;%s: I/O error (read)&bslash;n&quot;
 comma
-id|chip-&gt;c.dev.name
+id|i2c_clientname
+c_func
+(paren
+op_amp
+id|chip-&gt;c
+)paren
 )paren
 suffix:semicolon
 r_return
@@ -777,7 +804,12 @@ c_func
 (paren
 l_string|&quot;%s: chip_read: 0x%x&bslash;n&quot;
 comma
-id|chip-&gt;c.dev.name
+id|i2c_clientname
+c_func
+(paren
+op_amp
+id|chip-&gt;c
+)paren
 comma
 id|buffer
 )paren
@@ -873,7 +905,12 @@ c_func
 id|KERN_WARNING
 l_string|&quot;%s: I/O error (read2)&bslash;n&quot;
 comma
-id|chip-&gt;c.dev.name
+id|i2c_clientname
+c_func
+(paren
+op_amp
+id|chip-&gt;c
+)paren
 )paren
 suffix:semicolon
 r_return
@@ -886,7 +923,12 @@ c_func
 (paren
 l_string|&quot;%s: chip_read2: reg%d=0x%x&bslash;n&quot;
 comma
-id|chip-&gt;c.dev.name
+id|i2c_clientname
+c_func
+(paren
+op_amp
+id|chip-&gt;c
+)paren
 comma
 id|subaddr
 comma
@@ -942,7 +984,12 @@ c_func
 (paren
 l_string|&quot;%s: chip_cmd(%s): reg=%d, data:&quot;
 comma
-id|chip-&gt;c.dev.name
+id|i2c_clientname
+c_func
+(paren
+op_amp
+id|chip-&gt;c
+)paren
 comma
 id|name
 comma
@@ -1024,7 +1071,12 @@ c_func
 id|KERN_WARNING
 l_string|&quot;%s: I/O error (%s)&bslash;n&quot;
 comma
-id|chip-&gt;c.dev.name
+id|i2c_clientname
+c_func
+(paren
+op_amp
+id|chip-&gt;c
+)paren
 comma
 id|name
 )paren
@@ -1098,38 +1150,44 @@ id|chiplist
 op_plus
 id|chip-&gt;type
 suffix:semicolon
-macro_line|#ifdef CONFIG_SMP
 id|lock_kernel
 c_func
 (paren
 )paren
 suffix:semicolon
-macro_line|#endif
 id|daemonize
 c_func
 (paren
 l_string|&quot;%s&quot;
 comma
-id|chip-&gt;c.dev.name
+id|i2c_clientname
+c_func
+(paren
+op_amp
+id|chip-&gt;c
+)paren
 )paren
 suffix:semicolon
 id|chip-&gt;thread
 op_assign
 id|current
 suffix:semicolon
-macro_line|#ifdef CONFIG_SMP
 id|unlock_kernel
 c_func
 (paren
 )paren
 suffix:semicolon
-macro_line|#endif
 id|dprintk
 c_func
 (paren
 l_string|&quot;%s: thread started&bslash;n&quot;
 comma
-id|chip-&gt;c.dev.name
+id|i2c_clientname
+c_func
+(paren
+op_amp
+id|chip-&gt;c
+)paren
 )paren
 suffix:semicolon
 r_if
@@ -1166,7 +1224,12 @@ c_func
 (paren
 l_string|&quot;%s: thread wakeup&bslash;n&quot;
 comma
-id|chip-&gt;c.dev.name
+id|i2c_clientname
+c_func
+(paren
+op_amp
+id|chip-&gt;c
+)paren
 )paren
 suffix:semicolon
 r_if
@@ -1229,7 +1292,12 @@ c_func
 (paren
 l_string|&quot;%s: thread exiting&bslash;n&quot;
 comma
-id|chip-&gt;c.dev.name
+id|i2c_clientname
+c_func
+(paren
+op_amp
+id|chip-&gt;c
+)paren
 )paren
 suffix:semicolon
 r_if
@@ -1297,7 +1365,12 @@ c_func
 (paren
 l_string|&quot;%s: thread checkmode&bslash;n&quot;
 comma
-id|chip-&gt;c.dev.name
+id|i2c_clientname
+c_func
+(paren
+op_amp
+id|chip-&gt;c
+)paren
 )paren
 suffix:semicolon
 id|chip-&gt;prevmode
@@ -2337,26 +2410,26 @@ multiline_comment|/* insmod options for tda9874a */
 DECL|variable|tda9874a_SIF
 r_static
 r_int
+r_int
 id|tda9874a_SIF
 op_assign
-op_minus
-l_int|1
+id|UNSET
 suffix:semicolon
 DECL|variable|tda9874a_AMSEL
 r_static
 r_int
+r_int
 id|tda9874a_AMSEL
 op_assign
-op_minus
-l_int|1
+id|UNSET
 suffix:semicolon
 DECL|variable|tda9874a_STD
 r_static
 r_int
+r_int
 id|tda9874a_STD
 op_assign
-op_minus
-l_int|1
+id|UNSET
 suffix:semicolon
 id|MODULE_PARM
 c_func
@@ -3608,7 +3681,7 @@ l_int|0x07
 )paren
 )paren
 (brace
-id|dprintk
+id|printk
 c_func
 (paren
 l_string|&quot;tvaudio: found tda9874%s.&bslash;n&quot;
@@ -3620,9 +3693,9 @@ l_int|0x11
 )paren
 ques
 c_cond
-l_string|&quot;a (new)&quot;
+l_string|&quot;a&quot;
 suffix:colon
-l_string|&quot;h (old)&quot;
+l_string|&quot;h&quot;
 )paren
 suffix:semicolon
 id|tda9874a_dic
@@ -3655,11 +3728,37 @@ r_if
 c_cond
 (paren
 id|tda9874a_SIF
-op_ne
-op_minus
+OG
+l_int|2
+)paren
+id|tda9874a_SIF
+op_assign
+l_int|1
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|tda9874a_STD
+op_ge
+l_int|8
+)paren
+id|tda9874a_STD
+op_assign
+l_int|0
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|tda9874a_AMSEL
+OG
 l_int|1
 )paren
 (brace
+id|tda9874a_AMSEL
+op_assign
+l_int|0
+suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
@@ -3675,54 +3774,11 @@ suffix:semicolon
 )brace
 multiline_comment|/* sound IF input 1 */
 r_else
-r_if
-c_cond
-(paren
-id|tda9874a_SIF
-op_eq
-l_int|2
-)paren
-(brace
 id|tda9874a_GCONR
 op_assign
 l_int|0xc1
 suffix:semicolon
-)brace
 multiline_comment|/* sound IF input 2 */
-r_else
-id|printk
-c_func
-(paren
-id|KERN_WARNING
-l_string|&quot;tda9874a: SIF parameter must be 1 or 2.&bslash;n&quot;
-)paren
-suffix:semicolon
-)brace
-r_if
-c_cond
-(paren
-id|tda9874a_STD
-op_ne
-op_minus
-l_int|1
-)paren
-(brace
-r_if
-c_cond
-(paren
-(paren
-id|tda9874a_STD
-op_ge
-l_int|0
-)paren
-op_logical_and
-(paren
-id|tda9874a_STD
-op_le
-l_int|8
-)paren
-)paren
-(brace
 id|tda9874a_ESP
 op_assign
 id|tda9874a_STD
@@ -3740,27 +3796,6 @@ l_int|0
 suffix:colon
 l_int|1
 suffix:semicolon
-)brace
-r_else
-(brace
-id|printk
-c_func
-(paren
-id|KERN_WARNING
-l_string|&quot;tda9874a: STD parameter must be between 0 and 8.&bslash;n&quot;
-)paren
-suffix:semicolon
-)brace
-)brace
-r_if
-c_cond
-(paren
-id|tda9874a_AMSEL
-op_ne
-op_minus
-l_int|1
-)paren
-(brace
 r_if
 c_cond
 (paren
@@ -3776,29 +3811,11 @@ suffix:semicolon
 )brace
 multiline_comment|/* auto-mute: analog mono input */
 r_else
-r_if
-c_cond
-(paren
-id|tda9874a_AMSEL
-op_eq
-l_int|1
-)paren
-(brace
 id|tda9874a_NCONR
 op_assign
 l_int|0x05
 suffix:semicolon
-)brace
 multiline_comment|/* auto-mute: 1st carrier FM or AM */
-r_else
-id|printk
-c_func
-(paren
-id|KERN_WARNING
-l_string|&quot;tda9874a: AMSEL parameter must be 0 or 1.&bslash;n&quot;
-)paren
-suffix:semicolon
-)brace
 id|tda9874a_setup
 c_func
 (paren
@@ -4161,6 +4178,313 @@ mdefine_line|#define PIC16C54_MISC_SWITCH_TUNER     0x40 /* bit 6&t;, Switch to 
 DECL|macro|PIC16C54_MISC_SWITCH_LINE
 mdefine_line|#define PIC16C54_MISC_SWITCH_LINE      0x80 /* bit 7&t;, Switch to Tuner */
 multiline_comment|/* ---------------------------------------------------------------------- */
+multiline_comment|/* audio chip descriptions - defines+functions for TA8874Z                */
+singleline_comment|// write 1st byte
+DECL|macro|TA8874Z_LED_STE
+mdefine_line|#define TA8874Z_LED_STE&t;0x80
+DECL|macro|TA8874Z_LED_BIL
+mdefine_line|#define TA8874Z_LED_BIL&t;0x40
+DECL|macro|TA8874Z_LED_EXT
+mdefine_line|#define TA8874Z_LED_EXT&t;0x20
+DECL|macro|TA8874Z_MONO_SET
+mdefine_line|#define TA8874Z_MONO_SET&t;0x10
+DECL|macro|TA8874Z_MUTE
+mdefine_line|#define TA8874Z_MUTE&t;0x08
+DECL|macro|TA8874Z_F_MONO
+mdefine_line|#define TA8874Z_F_MONO&t;0x04
+DECL|macro|TA8874Z_MODE_SUB
+mdefine_line|#define TA8874Z_MODE_SUB&t;0x02
+DECL|macro|TA8874Z_MODE_MAIN
+mdefine_line|#define TA8874Z_MODE_MAIN&t;0x01
+singleline_comment|// write 2nd byte
+singleline_comment|//#define TA8874Z_TI&t;0x80  // test mode
+DECL|macro|TA8874Z_SEPARATION
+mdefine_line|#define TA8874Z_SEPARATION&t;0x3f
+DECL|macro|TA8874Z_SEPARATION_DEFAULT
+mdefine_line|#define TA8874Z_SEPARATION_DEFAULT&t;0x10
+singleline_comment|// read
+DECL|macro|TA8874Z_B1
+mdefine_line|#define TA8874Z_B1&t;0x80
+DECL|macro|TA8874Z_B0
+mdefine_line|#define TA8874Z_B0&t;0x40
+DECL|macro|TA8874Z_CHAG_FLAG
+mdefine_line|#define TA8874Z_CHAG_FLAG&t;0x20
+singleline_comment|//        B1 B0
+singleline_comment|// mono    L  H
+singleline_comment|// stereo  L  L
+singleline_comment|// BIL     H  L
+DECL|function|ta8874z_getmode
+r_static
+r_int
+id|ta8874z_getmode
+c_func
+(paren
+r_struct
+id|CHIPSTATE
+op_star
+id|chip
+)paren
+(brace
+r_int
+id|val
+comma
+id|mode
+suffix:semicolon
+id|val
+op_assign
+id|chip_read
+c_func
+(paren
+id|chip
+)paren
+suffix:semicolon
+id|mode
+op_assign
+id|VIDEO_SOUND_MONO
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|val
+op_amp
+id|TA8874Z_B1
+)paren
+(brace
+id|mode
+op_or_assign
+id|VIDEO_SOUND_LANG1
+op_or
+id|VIDEO_SOUND_LANG2
+suffix:semicolon
+)brace
+r_else
+r_if
+c_cond
+(paren
+op_logical_neg
+(paren
+id|val
+op_amp
+id|TA8874Z_B0
+)paren
+)paren
+(brace
+id|mode
+op_or_assign
+id|VIDEO_SOUND_STEREO
+suffix:semicolon
+)brace
+singleline_comment|//dprintk (&quot;ta8874z_getmode(): raw chip read: 0x%02x, return: 0x%02x&bslash;n&quot;, val, mode);
+r_return
+id|mode
+suffix:semicolon
+)brace
+DECL|variable|ta8874z_stereo
+r_static
+id|audiocmd
+id|ta8874z_stereo
+op_assign
+(brace
+l_int|2
+comma
+(brace
+l_int|0
+comma
+id|TA8874Z_SEPARATION_DEFAULT
+)brace
+)brace
+suffix:semicolon
+DECL|variable|ta8874z_mono
+r_static
+id|audiocmd
+id|ta8874z_mono
+op_assign
+(brace
+l_int|2
+comma
+(brace
+id|TA8874Z_MONO_SET
+comma
+id|TA8874Z_SEPARATION_DEFAULT
+)brace
+)brace
+suffix:semicolon
+DECL|variable|ta8874z_main
+r_static
+id|audiocmd
+id|ta8874z_main
+op_assign
+(brace
+l_int|2
+comma
+(brace
+l_int|0
+comma
+id|TA8874Z_SEPARATION_DEFAULT
+)brace
+)brace
+suffix:semicolon
+DECL|variable|ta8874z_sub
+r_static
+id|audiocmd
+id|ta8874z_sub
+op_assign
+(brace
+l_int|2
+comma
+(brace
+id|TA8874Z_MODE_SUB
+comma
+id|TA8874Z_SEPARATION_DEFAULT
+)brace
+)brace
+suffix:semicolon
+DECL|function|ta8874z_setmode
+r_static
+r_void
+id|ta8874z_setmode
+c_func
+(paren
+r_struct
+id|CHIPSTATE
+op_star
+id|chip
+comma
+r_int
+id|mode
+)paren
+(brace
+r_int
+id|update
+op_assign
+l_int|1
+suffix:semicolon
+id|audiocmd
+op_star
+id|t
+op_assign
+l_int|NULL
+suffix:semicolon
+id|dprintk
+c_func
+(paren
+l_string|&quot;ta8874z_setmode(): mode: 0x%02x&bslash;n&quot;
+comma
+id|mode
+)paren
+suffix:semicolon
+r_switch
+c_cond
+(paren
+id|mode
+)paren
+(brace
+r_case
+id|VIDEO_SOUND_MONO
+suffix:colon
+id|t
+op_assign
+op_amp
+id|ta8874z_mono
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+id|VIDEO_SOUND_STEREO
+suffix:colon
+id|t
+op_assign
+op_amp
+id|ta8874z_stereo
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+id|VIDEO_SOUND_LANG1
+suffix:colon
+id|t
+op_assign
+op_amp
+id|ta8874z_main
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+id|VIDEO_SOUND_LANG2
+suffix:colon
+id|t
+op_assign
+op_amp
+id|ta8874z_sub
+suffix:semicolon
+r_break
+suffix:semicolon
+r_default
+suffix:colon
+id|update
+op_assign
+l_int|0
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+id|update
+)paren
+(brace
+id|chip_cmd
+c_func
+(paren
+id|chip
+comma
+l_string|&quot;TA8874Z&quot;
+comma
+id|t
+)paren
+suffix:semicolon
+)brace
+)brace
+DECL|function|ta8874z_checkit
+r_static
+r_int
+id|ta8874z_checkit
+c_func
+(paren
+r_struct
+id|CHIPSTATE
+op_star
+id|chip
+)paren
+(brace
+r_int
+id|rc
+suffix:semicolon
+id|rc
+op_assign
+id|chip_read
+c_func
+(paren
+id|chip
+)paren
+suffix:semicolon
+r_return
+(paren
+(paren
+id|rc
+op_amp
+l_int|0x1f
+)paren
+op_eq
+l_int|0x1f
+)paren
+ques
+c_cond
+l_int|1
+suffix:colon
+l_int|0
+suffix:semicolon
+)brace
+multiline_comment|/* ---------------------------------------------------------------------- */
 multiline_comment|/* audio chip descriptions - struct CHIPDESC                              */
 multiline_comment|/* insmod options to enable/disable individual audio chips */
 DECL|variable|tda8425
@@ -4205,6 +4529,7 @@ id|tea6300
 op_assign
 l_int|0
 suffix:semicolon
+singleline_comment|// address clash with msp34xx
 DECL|variable|tea6420
 r_int
 id|tea6420
@@ -4217,6 +4542,13 @@ id|pic16c54
 op_assign
 l_int|1
 suffix:semicolon
+DECL|variable|ta8874z
+r_int
+id|ta8874z
+op_assign
+l_int|0
+suffix:semicolon
+singleline_comment|// address clash with tda9840
 id|MODULE_PARM
 c_func
 (paren
@@ -4285,6 +4617,14 @@ id|MODULE_PARM
 c_func
 (paren
 id|pic16c54
+comma
+l_string|&quot;i&quot;
+)paren
+suffix:semicolon
+id|MODULE_PARM
+c_func
+(paren
+id|ta8874z
 comma
 l_string|&quot;i&quot;
 )paren
@@ -5106,8 +5446,82 @@ comma
 )brace
 comma
 (brace
+dot
 id|name
-suffix:colon
+op_assign
+l_string|&quot;ta8874z&quot;
+comma
+dot
+id|id
+op_assign
+op_minus
+l_int|1
+comma
+singleline_comment|//.id         = I2C_DRIVERID_TA8874Z,
+dot
+id|checkit
+op_assign
+id|ta8874z_checkit
+comma
+dot
+id|insmodopt
+op_assign
+op_amp
+id|ta8874z
+comma
+dot
+id|addr_lo
+op_assign
+id|I2C_TDA9840
+op_rshift
+l_int|1
+comma
+dot
+id|addr_hi
+op_assign
+id|I2C_TDA9840
+op_rshift
+l_int|1
+comma
+dot
+id|registers
+op_assign
+l_int|2
+comma
+dot
+id|getmode
+op_assign
+id|ta8874z_getmode
+comma
+dot
+id|setmode
+op_assign
+id|ta8874z_setmode
+comma
+dot
+id|checkmode
+op_assign
+id|generic_checkmode
+comma
+dot
+id|init
+op_assign
+(brace
+l_int|2
+comma
+(brace
+id|TA8874Z_MONO_SET
+comma
+id|TA8874Z_SEPARATION_DEFAULT
+)brace
+)brace
+comma
+)brace
+comma
+(brace
+dot
+id|name
+op_assign
 l_int|NULL
 )brace
 multiline_comment|/* EOF */
@@ -5302,9 +5716,13 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;tvaudio: found %s&bslash;n&quot;
+l_string|&quot;tvaudio: found %s @ 0x%x&bslash;n&quot;
 comma
 id|desc-&gt;name
+comma
+id|addr
+op_lshift
+l_int|1
 )paren
 suffix:semicolon
 id|dprintk
@@ -5347,14 +5765,17 @@ l_string|&quot;&quot;
 )paren
 suffix:semicolon
 multiline_comment|/* fill required data structures */
-id|strncpy
+id|strcpy
 c_func
 (paren
-id|chip-&gt;c.dev.name
+id|i2c_clientname
+c_func
+(paren
+op_amp
+id|chip-&gt;c
+)paren
 comma
 id|desc-&gt;name
-comma
-id|DEVICE_NAME_SIZE
 )paren
 suffix:semicolon
 id|chip-&gt;type
@@ -5375,8 +5796,6 @@ op_minus
 l_int|1
 suffix:semicolon
 multiline_comment|/* register */
-id|MOD_INC_USE_COUNT
-suffix:semicolon
 id|i2c_attach_client
 c_func
 (paren
@@ -5734,8 +6153,6 @@ c_func
 id|chip
 )paren
 suffix:semicolon
-id|MOD_DEC_USE_COUNT
-suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
@@ -5793,7 +6210,12 @@ c_func
 (paren
 l_string|&quot;%s: chip_command 0x%x&bslash;n&quot;
 comma
-id|chip-&gt;c.dev.name
+id|i2c_clientname
+c_func
+(paren
+op_amp
+id|chip-&gt;c
+)paren
 comma
 id|cmd
 )paren
@@ -6294,6 +6716,12 @@ id|i2c_client
 id|client_template
 op_assign
 (brace
+id|I2C_DEVNAME
+c_func
+(paren
+l_string|&quot;(unset)&quot;
+)paren
+comma
 dot
 id|flags
 op_assign
@@ -6304,17 +6732,6 @@ id|driver
 op_assign
 op_amp
 id|driver
-comma
-dot
-id|dev
-op_assign
-(brace
-dot
-id|name
-op_assign
-l_string|&quot;(unset)&quot;
-comma
-)brace
 comma
 )brace
 suffix:semicolon

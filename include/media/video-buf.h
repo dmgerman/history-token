@@ -648,6 +648,17 @@ op_star
 id|q
 )paren
 suffix:semicolon
+r_enum
+id|v4l2_field
+id|videobuf_next_field
+c_func
+(paren
+r_struct
+id|videobuf_queue
+op_star
+id|q
+)paren
+suffix:semicolon
 r_void
 id|videobuf_status
 c_func

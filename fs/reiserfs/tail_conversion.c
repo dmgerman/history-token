@@ -79,8 +79,7 @@ comma
 id|n_retval
 suffix:semicolon
 multiline_comment|/* returned value for reiserfs_insert_item and clones */
-r_struct
-id|unfm_nodeinfo
+id|unp_t
 id|unfm_ptr
 suffix:semicolon
 multiline_comment|/* Handle on an unformatted node&n;&t;&t;&t;&t;       that will be inserted in the&n;&t;&t;&t;&t;       tree. */
@@ -182,18 +181,13 @@ id|PATH_PITEM_HEAD
 id|path
 )paren
 suffix:semicolon
-id|unfm_ptr.unfm_nodenum
+id|unfm_ptr
 op_assign
 id|cpu_to_le32
 (paren
 id|unbh-&gt;b_blocknr
 )paren
 suffix:semicolon
-id|unfm_ptr.unfm_freespace
-op_assign
-l_int|0
-suffix:semicolon
-singleline_comment|// ???
 r_if
 c_cond
 (paren

@@ -25,6 +25,7 @@ DECL|macro|AUDIO_MUTE
 mdefine_line|#define AUDIO_MUTE         0x80
 DECL|macro|AUDIO_UNMUTE
 mdefine_line|#define AUDIO_UNMUTE       0x81
+multiline_comment|/* all the stuff below is obsolete and just here for reference.  I&squot;ll&n; * remove it once the driver is tested and works fine.&n; *&n; * Instead creating alot of tiny API&squot;s for all kinds of different&n; * chips, we&squot;ll just pass throuth the v4l ioctl structs (v4l2 not&n; * yet...).  It is a bit less flexible, but most/all used i2c chips&n; * make sense in v4l context only.  So I think that&squot;s acceptable...&n; */
 multiline_comment|/* misc stuff to pass around config info to i2c chips */
 DECL|macro|AUDC_CONFIG_PINNACLE
 mdefine_line|#define AUDC_CONFIG_PINNACLE  _IOW(&squot;m&squot;,32,int)

@@ -44,7 +44,7 @@ id|parameters
 )paren
 suffix:semicolon
 r_static
-r_void
+id|irqreturn_t
 id|button_handler
 (paren
 r_int

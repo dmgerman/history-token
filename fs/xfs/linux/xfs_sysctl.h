@@ -42,6 +42,11 @@ id|ulong
 id|error_level
 suffix:semicolon
 multiline_comment|/* Degree of reporting for internal probs*/
+DECL|member|sync_interval
+id|ulong
+id|sync_interval
+suffix:semicolon
+multiline_comment|/* time between sync calls&t;&t; */
 DECL|typedef|xfs_param_t
 )brace
 id|xfs_param_t
@@ -78,6 +83,11 @@ DECL|enumerator|XFS_ERRLEVEL
 id|XFS_ERRLEVEL
 op_assign
 l_int|6
+comma
+DECL|enumerator|XFS_SYNC_INTERVAL
+id|XFS_SYNC_INTERVAL
+op_assign
+l_int|7
 comma
 )brace
 suffix:semicolon

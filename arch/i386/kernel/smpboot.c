@@ -1483,7 +1483,7 @@ id|regs
 suffix:semicolon
 multiline_comment|/*&n;&t; * don&squot;t care about the eip and regs settings since&n;&t; * we&squot;ll never reschedule the forked task.&n;&t; */
 r_return
-id|do_fork
+id|copy_process
 c_func
 (paren
 id|CLONE_VM
@@ -2733,6 +2733,12 @@ comma
 id|cpu
 )paren
 suffix:semicolon
+id|wake_up_forked_process
+c_func
+(paren
+id|idle
+)paren
+suffix:semicolon
 multiline_comment|/*&n;&t; * We remove it from the pidhash and the runqueue&n;&t; * once we got the process:&n;&t; */
 id|init_idle
 c_func
@@ -3234,6 +3240,8 @@ comma
 id|cpu
 comma
 id|bit
+comma
+id|kicked
 suffix:semicolon
 multiline_comment|/*&n;&t; * Setup boot CPU information&n;&t; */
 id|smp_store_cpu_info
@@ -3492,6 +3500,10 @@ comma
 id|phys_cpu_present_map
 )paren
 suffix:semicolon
+id|kicked
+op_assign
+l_int|1
+suffix:semicolon
 r_for
 c_loop
 (paren
@@ -3499,9 +3511,13 @@ id|bit
 op_assign
 l_int|0
 suffix:semicolon
-id|bit
+id|kicked
 OL
 id|NR_CPUS
+op_logical_and
+id|bit
+OL
+id|BITS_PER_LONG
 suffix:semicolon
 id|bit
 op_increment
@@ -3572,6 +3588,10 @@ l_string|&quot;CPU #%d not responding - cannot use it.&bslash;n&quot;
 comma
 id|apicid
 )paren
+suffix:semicolon
+r_else
+op_increment
+id|kicked
 suffix:semicolon
 )brace
 multiline_comment|/*&n;&t; * Cleanup possible dangling ends...&n;&t; */
