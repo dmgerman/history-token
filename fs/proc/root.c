@@ -260,6 +260,15 @@ comma
 l_int|0
 )paren
 suffix:semicolon
+id|proc_mkdir
+c_func
+(paren
+l_string|&quot;fs/nfsd&quot;
+comma
+l_int|0
+)paren
+suffix:semicolon
+multiline_comment|/* somewhere for the nfsd filesystem to be mounted */
 macro_line|#if defined(CONFIG_SUN_OPENPROMFS) || defined(CONFIG_SUN_OPENPROMFS_MODULE)
 multiline_comment|/* just give it a mountpoint */
 id|proc_mkdir
