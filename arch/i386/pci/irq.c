@@ -1016,7 +1016,7 @@ r_return
 l_int|1
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * The VIA pirq rules are nibble-based, like ALI,&n; * but without the ugly irq number munging.&n; */
+multiline_comment|/*&n; * The VIA pirq rules are nibble-based, like ALI,&n; * but without the ugly irq number munging.&n; * However, PIRQD is in the upper instead of lower 4 bits.&n; */
 DECL|function|pirq_via_get
 r_static
 r_int
@@ -1045,6 +1045,13 @@ id|router
 comma
 l_int|0x55
 comma
+id|pirq
+op_eq
+l_int|4
+ques
+c_cond
+l_int|5
+suffix:colon
 id|pirq
 )paren
 suffix:semicolon
@@ -1079,6 +1086,13 @@ id|router
 comma
 l_int|0x55
 comma
+id|pirq
+op_eq
+l_int|4
+ques
+c_cond
+l_int|5
+suffix:colon
 id|pirq
 comma
 id|irq
