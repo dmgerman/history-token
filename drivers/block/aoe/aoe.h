@@ -97,11 +97,6 @@ id|AOE_HVER
 op_assign
 l_int|0x10
 comma
-DECL|enumerator|ETH_P_AOE
-id|ETH_P_AOE
-op_assign
-l_int|0x88a2
-comma
 )brace
 suffix:semicolon
 DECL|struct|aoe_hdr
