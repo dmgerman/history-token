@@ -3,20 +3,6 @@ macro_line|#ifndef DM_KCOPYD_H
 DECL|macro|DM_KCOPYD_H
 mdefine_line|#define DM_KCOPYD_H
 macro_line|#include &quot;dm-io.h&quot;
-r_int
-id|kcopyd_init
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-r_void
-id|kcopyd_exit
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
 multiline_comment|/* FIXME: make this configurable */
 DECL|macro|KCOPYD_MAX_REGIONS
 mdefine_line|#define KCOPYD_MAX_REGIONS 8
