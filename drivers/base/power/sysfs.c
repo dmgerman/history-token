@@ -1,6 +1,7 @@
 multiline_comment|/*&n; * drivers/base/power/sysfs.c - sysfs entries for device PM&n; */
 macro_line|#include &lt;linux/device.h&gt;
 macro_line|#include &quot;power.h&quot;
+multiline_comment|/**&n; *&t;state - Control current power state of device&n; *&n; *&t;show() returns the current power state of the device. &squot;0&squot; indicates&n; *&t;the device is on. Other values (1-3) indicate the device is in a low&n; *&t;power state. &n; *&n; *&t;store() sets the current power state, which is an integer value &n; *&t;between 0-3. If the device is on (&squot;0&squot;), and the value written is &n; *&t;greater than 0, then the device is placed directly into the low-power&n; *&t;state (via its driver&squot;s -&gt;suspend() method).&n; *&t;If the device is currently in a low-power state, and the value is 0,&n; *&t;the device is powered back on (via the -&gt;resume() method).&n; *&t;If the device is in a low-power state, and a different low-power state&n; *&t;is requested, the device is first resumed, then suspended into the new&n; *&t;low-power state.&n; */
 DECL|function|state_show
 r_static
 id|ssize_t
@@ -114,6 +115,7 @@ suffix:colon
 id|n
 suffix:semicolon
 )brace
+r_static
 id|DEVICE_ATTR
 c_func
 (paren
@@ -153,7 +155,7 @@ op_assign
 dot
 id|name
 op_assign
-l_string|&quot;pm&quot;
+l_string|&quot;power&quot;
 comma
 dot
 id|attrs
