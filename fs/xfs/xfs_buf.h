@@ -344,7 +344,7 @@ id|PBF_ASYNC
 op_eq
 l_int|0
 )paren
-id|pagebuf_run_task_queue
+id|pagebuf_run_queues
 c_func
 (paren
 id|bp
@@ -478,7 +478,7 @@ suffix:semicolon
 )brace
 r_else
 (brace
-id|pagebuf_run_task_queue
+id|pagebuf_run_queues
 c_func
 (paren
 id|pb

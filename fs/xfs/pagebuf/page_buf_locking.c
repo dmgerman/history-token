@@ -155,7 +155,7 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-id|pagebuf_run_task_queue
+id|pagebuf_run_queues
 c_func
 (paren
 id|pb

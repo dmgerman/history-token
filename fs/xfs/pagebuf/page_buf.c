@@ -3948,7 +3948,7 @@ l_int|0
 r_break
 suffix:semicolon
 )brace
-id|pagebuf_run_task_queue
+id|pagebuf_run_queues
 c_func
 (paren
 id|pb
@@ -5236,7 +5236,7 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-id|pagebuf_run_task_queue
+id|pagebuf_run_queues
 c_func
 (paren
 id|pb
@@ -6268,7 +6268,7 @@ c_cond
 (paren
 id|count
 )paren
-id|pagebuf_run_task_queue
+id|pagebuf_run_queues
 c_func
 (paren
 l_int|NULL
@@ -6550,7 +6550,7 @@ op_amp
 id|pb_daemon-&gt;pb_delwrite_lock
 )paren
 suffix:semicolon
-id|pagebuf_run_task_queue
+id|pagebuf_run_queues
 c_func
 (paren
 l_int|NULL
