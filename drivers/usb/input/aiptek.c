@@ -633,6 +633,8 @@ l_int|2
 op_assign
 id|data
 suffix:semicolon
+multiline_comment|/* &n;&t; * FIXME, either remove this call, or talk the maintainer into &n;&t; * adding it back into the core.&n;&t; */
+macro_line|#if 0
 r_if
 c_cond
 (paren
@@ -666,6 +668,7 @@ id|data
 )paren
 suffix:semicolon
 )brace
+macro_line|#endif
 )brace
 r_static
 r_void
