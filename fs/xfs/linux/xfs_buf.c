@@ -1672,6 +1672,10 @@ id|pi
 suffix:semicolon
 )brace
 )brace
+id|pb-&gt;pb_flags
+op_or_assign
+id|_PBF_PAGECACHE
+suffix:semicolon
 id|mapit
 suffix:colon
 id|pb-&gt;pb_flags

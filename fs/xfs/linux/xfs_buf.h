@@ -203,6 +203,16 @@ l_int|15
 comma
 multiline_comment|/* do not block in current thread&t;   */
 multiline_comment|/* flags used only internally */
+DECL|enumerator|_PBF_PAGECACHE
+id|_PBF_PAGECACHE
+op_assign
+(paren
+l_int|1
+op_lshift
+l_int|16
+)paren
+comma
+multiline_comment|/* backed by pagecache&t;&t;   */
 DECL|enumerator|_PBF_ALL_PAGES_MAPPED
 id|_PBF_ALL_PAGES_MAPPED
 op_assign
