@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * include/asm-ppc/pplus.h&n; * &n; * Definitions for Motorola MCG Falcon/Raven &amp; HAWK North Bridge &amp; Memory ctlr.&n; *&n; * Author: Mark A. Greer&n; *         mgreer@mvista.com&n; *&n; * 2001 (c) MontaVista, Software, Inc.  This file is licensed under&n; * the terms of the GNU General Public License version 2.1.  This program&n; * is licensed &quot;as is&quot; without any warranty of any kind, whether express&n; * or implied.&n; */
+multiline_comment|/*&n; * include/asm-ppc/pplus.h&n; * &n; * Definitions for Motorola MCG Falcon/Raven &amp; HAWK North Bridge &amp; Memory ctlr.&n; *&n; * Author: Mark A. Greer&n; *         mgreer@mvista.com&n; *&n; * 2001 (c) MontaVista, Software, Inc.  This file is licensed under&n; * the terms of the GNU General Public License version 2.  This program&n; * is licensed &quot;as is&quot; without any warranty of any kind, whether express&n; * or implied.&n; */
 macro_line|#ifndef __ASMPPC_PPLUS_H
 DECL|macro|__ASMPPC_PPLUS_H
 mdefine_line|#define __ASMPPC_PPLUS_H
