@@ -11,6 +11,7 @@ macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/timer.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/cpumask.h&gt;
+macro_line|#include &lt;linux/reboot.h&gt;
 macro_line|#include &lt;asm/s390_ext.h&gt;
 macro_line|#include &lt;asm/processor.h&gt;
 macro_line|#include &quot;sclp.h&quot;
@@ -129,6 +130,8 @@ DECL|macro|SCLP_RUNNING
 mdefine_line|#define SCLP_RUNNING&t;&t;1
 DECL|macro|SCLP_READING
 mdefine_line|#define SCLP_READING&t;&t;2
+DECL|macro|SCLP_SHUTDOWN
+mdefine_line|#define SCLP_SHUTDOWN&t;&t;3
 DECL|macro|SCLP_INIT_POLL_INTERVAL
 mdefine_line|#define SCLP_INIT_POLL_INTERVAL&t;1
 DECL|macro|SCLP_BUSY_POLL_INTERVAL
@@ -2280,6 +2283,20 @@ comma
 id|flags
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|test_bit
+c_func
+(paren
+id|SCLP_SHUTDOWN
+comma
+op_amp
+id|sclp_status
+)paren
+)paren
+(brace
 id|list_for_each
 c_func
 (paren
@@ -2310,6 +2327,7 @@ id|sccb-&gt;send_mask
 op_or_assign
 id|t-&gt;send_mask
 suffix:semicolon
+)brace
 )brace
 id|sccb-&gt;sclp_receive_mask
 op_assign
@@ -2475,6 +2493,17 @@ r_if
 c_cond
 (paren
 op_logical_neg
+id|test_bit
+c_func
+(paren
+id|SCLP_SHUTDOWN
+comma
+op_amp
+id|sclp_status
+)paren
+op_logical_and
+(paren
+op_logical_neg
 id|timer_pending
 c_func
 (paren
@@ -2494,6 +2523,7 @@ op_plus
 id|SCLP_INIT_POLL_INTERVAL
 op_star
 id|HZ
+)paren
 )paren
 )paren
 (brace
@@ -2568,6 +2598,81 @@ c_func
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/* Reboot event handler - reset send and receive mask to prevent pending SCLP&n; * events from interfering with rebooted system. */
+r_static
+r_int
+DECL|function|sclp_reboot_event
+id|sclp_reboot_event
+c_func
+(paren
+r_struct
+id|notifier_block
+op_star
+id|this
+comma
+r_int
+r_int
+id|event
+comma
+r_void
+op_star
+id|ptr
+)paren
+(brace
+r_int
+r_int
+id|flags
+suffix:semicolon
+multiline_comment|/* Note: need spinlock to maintain atomicity when accessing global&n;         * variables. */
+id|spin_lock_irqsave
+c_func
+(paren
+op_amp
+id|sclp_lock
+comma
+id|flags
+)paren
+suffix:semicolon
+id|set_bit
+c_func
+(paren
+id|SCLP_SHUTDOWN
+comma
+op_amp
+id|sclp_status
+)paren
+suffix:semicolon
+id|spin_unlock_irqrestore
+c_func
+(paren
+op_amp
+id|sclp_lock
+comma
+id|flags
+)paren
+suffix:semicolon
+id|sclp_init_mask
+c_func
+(paren
+)paren
+suffix:semicolon
+r_return
+id|NOTIFY_DONE
+suffix:semicolon
+)brace
+DECL|variable|sclp_reboot_notifier
+r_static
+r_struct
+id|notifier_block
+id|sclp_reboot_notifier
+op_assign
+(brace
+dot
+id|notifier_call
+op_assign
+id|sclp_reboot_event
+)brace
+suffix:semicolon
 multiline_comment|/*&n; * sclp setup function. Called early (no kmalloc!) from sclp_console_init().&n; */
 r_static
 r_int
@@ -2638,6 +2743,23 @@ comma
 op_amp
 id|sclp_reg_list
 )paren
+suffix:semicolon
+id|rc
+op_assign
+id|register_reboot_notifier
+c_func
+(paren
+op_amp
+id|sclp_reboot_notifier
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|rc
+)paren
+r_return
+id|rc
 suffix:semicolon
 multiline_comment|/*&n;&t; * request the 0x2401 external interrupt&n;&t; * The sclp driver is initialized early (before kmalloc works). We&n;&t; * need to use register_early_external_interrupt.&n;&t; */
 r_if
