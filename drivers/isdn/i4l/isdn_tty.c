@@ -3,7 +3,15 @@ DECL|macro|ISDN_TTY_STAT_DEBUG
 mdefine_line|#define ISDN_TTY_STAT_DEBUG
 DECL|macro|ISDN_DEBUG_MODEM_HUP
 mdefine_line|#define ISDN_DEBUG_MODEM_HUP
-macro_line|#include &lt;linux/config.h&gt;
+DECL|macro|ISDN_DEBUG_MODEM_VOICE
+mdefine_line|#define ISDN_DEBUG_MODEM_VOICE
+DECL|macro|ISDN_DEBUG_MODEM_OPEN
+mdefine_line|#define ISDN_DEBUG_MODEM_OPEN
+DECL|macro|ISDN_DEBUG_MODEM_IOCTL
+mdefine_line|#define ISDN_DEBUG_MODEM_IOCTL
+DECL|macro|ISDN_DEBUG_MODEM_ICALL
+mdefine_line|#define ISDN_DEBUG_MODEM_ICALL
+macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/isdn.h&gt;
 macro_line|#include &quot;isdn_common.h&quot;
 macro_line|#include &quot;isdn_tty.h&quot;
@@ -4727,11 +4735,6 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|isdn_MOD_INC_USE_COUNT
-c_func
-(paren
-)paren
-suffix:semicolon
 macro_line|#ifdef ISDN_DEBUG_MODEM_OPEN
 id|printk
 c_func
@@ -4849,11 +4852,6 @@ c_func
 )paren
 suffix:semicolon
 multiline_comment|/* Disable interrupts */
-id|isdn_MOD_DEC_USE_COUNT
-c_func
-(paren
-)paren
-suffix:semicolon
 id|info-&gt;msr
 op_and_assign
 op_complement
@@ -7477,6 +7475,9 @@ id|retval
 comma
 id|line
 suffix:semicolon
+multiline_comment|/* FIXME. This is not unload-race free AFAICS */
+id|MOD_INC_USE_COUNT
+suffix:semicolon
 id|line
 op_assign
 id|minor
@@ -7733,7 +7734,8 @@ comma
 l_string|&quot;isdn_tty_close&quot;
 )paren
 )paren
-r_return
+r_goto
+id|out
 suffix:semicolon
 id|save_flags
 c_func
@@ -7771,7 +7773,8 @@ l_string|&quot;isdn_tty_close return after tty_hung_up_p&bslash;n&quot;
 )paren
 suffix:semicolon
 macro_line|#endif
-r_return
+r_goto
+id|out
 suffix:semicolon
 )brace
 r_if
@@ -7852,7 +7855,8 @@ l_string|&quot;isdn_tty_close after info-&gt;count != 0&bslash;n&quot;
 )paren
 suffix:semicolon
 macro_line|#endif
-r_return
+r_goto
+id|out
 suffix:semicolon
 )brace
 id|info-&gt;flags
@@ -8057,6 +8061,10 @@ l_string|&quot;isdn_tty_close normal exit&bslash;n&quot;
 )paren
 suffix:semicolon
 macro_line|#endif
+id|out
+suffix:colon
+id|MOD_DEC_USE_COUNT
+suffix:semicolon
 )brace
 multiline_comment|/*&n; * isdn_tty_hangup() --- called by tty_hangup() when a hangup is signaled.&n; */
 r_static
