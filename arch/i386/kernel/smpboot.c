@@ -3335,7 +3335,7 @@ c_func
 (paren
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * If we couldnt find an SMP configuration at boot time,&n;&t; * get out of here now!&n;&t; */
+multiline_comment|/*&n;&t; * If we couldn&squot;t find an SMP configuration at boot time,&n;&t; * get out of here now!&n;&t; */
 r_if
 c_cond
 (paren

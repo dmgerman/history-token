@@ -9168,7 +9168,7 @@ id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;md: couldnt set array info. %d&bslash;n&quot;
+l_string|&quot;md: couldn&squot;t set array info. %d&bslash;n&quot;
 comma
 id|err
 )paren

@@ -3122,7 +3122,7 @@ c_func
 (paren
 l_int|1
 comma
-l_string|&quot;couldnt find size %d,%d&quot;
+l_string|&quot;couldn&squot;t find size %d,%d&quot;
 comma
 id|x
 comma
