@@ -475,6 +475,8 @@ id|from-&gt;_sifields._sigchld
 )paren
 suffix:semicolon
 )brace
+DECL|macro|HAVE_ARCH_COPY_SIGINFO_TO_USER
+mdefine_line|#define HAVE_ARCH_COPY_SIGINFO_TO_USER
 r_extern
 r_int
 id|copy_siginfo_to_user
