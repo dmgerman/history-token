@@ -573,6 +573,115 @@ suffix:semicolon
 singleline_comment|// extern int usb_hcd_pci_enable_wake (struct pci_dev *dev, u32 state, int flg);
 macro_line|#endif /* CONFIG_PM */
 macro_line|#endif /* CONFIG_PCI */
+multiline_comment|/* -------------------------------------------------------------------------- */
+multiline_comment|/* Enumeration is only for the hub driver, or HCD virtual root hubs */
+r_extern
+r_struct
+id|usb_device
+op_star
+id|usb_alloc_dev
+c_func
+(paren
+r_struct
+id|usb_device
+op_star
+id|parent
+comma
+r_struct
+id|usb_bus
+op_star
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|usb_free_dev
+c_func
+(paren
+r_struct
+id|usb_device
+op_star
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|usb_new_device
+c_func
+(paren
+r_struct
+id|usb_device
+op_star
+id|dev
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|usb_connect
+c_func
+(paren
+r_struct
+id|usb_device
+op_star
+id|dev
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|usb_disconnect
+c_func
+(paren
+r_struct
+id|usb_device
+op_star
+op_star
+)paren
+suffix:semicolon
+macro_line|#ifndef _LINUX_HUB_H
+multiline_comment|/* exported to hub driver ONLY to support usb_reset_device () */
+r_extern
+r_int
+id|usb_get_configuration
+c_func
+(paren
+r_struct
+id|usb_device
+op_star
+id|dev
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|usb_set_maxpacket
+c_func
+(paren
+r_struct
+id|usb_device
+op_star
+id|dev
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|usb_destroy_configuration
+c_func
+(paren
+r_struct
+id|usb_device
+op_star
+id|dev
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|usb_set_address
+c_func
+(paren
+r_struct
+id|usb_device
+op_star
+id|dev
+)paren
+suffix:semicolon
+macro_line|#endif /* _LINUX_HUB_H */
 multiline_comment|/*-------------------------------------------------------------------------*/
 multiline_comment|/*&n; * HCD Root Hub support&n; */
 macro_line|#include &quot;hub.h&quot;

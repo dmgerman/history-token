@@ -2426,10 +2426,7 @@ r_return
 id|dev
 suffix:semicolon
 )brace
-singleline_comment|// usbcore-internal ...
-singleline_comment|// but usb_dec_dev_use() is #defined to this, and that&squot;s public!!
-singleline_comment|// FIXME the public call should BUG() whenever count goes to zero,
-singleline_comment|// the usbcore-internal one should do so _unless_ it does so...
+multiline_comment|/**&n; * usb_free_dev - free a usb device structure (usbcore-internal)&n; * @dev: device that&squot;s been disconnected&n; * Context: !in_interrupt ()&n; *&n; * Used by hub and virtual root hub drivers.  The device is completely&n; * gone, everything is cleaned up, so it&squot;s time to get rid of these last&n; * records of this device.&n; */
 DECL|function|usb_free_dev
 r_void
 id|usb_free_dev
@@ -2444,18 +2441,6 @@ id|dev
 r_if
 c_cond
 (paren
-id|atomic_dec_and_test
-c_func
-(paren
-op_amp
-id|dev-&gt;refcnt
-)paren
-)paren
-(brace
-multiline_comment|/* Normally only goes to zero in usb_disconnect(), from&n;&t;&t; * khubd or from roothub shutdown (rmmod/apmd/... thread).&n;&t;&t; * Abnormally, roothub init errors can happen, so HCDs&n;&t;&t; * call this directly.&n;&t;&t; *&n;&t;&t; * Otherwise this is a nasty device driver bug, often in&n;&t;&t; * disconnect processing.&n;&t;&t; */
-r_if
-c_cond
-(paren
 id|in_interrupt
 (paren
 )paren
@@ -2464,51 +2449,41 @@ id|BUG
 (paren
 )paren
 suffix:semicolon
-id|dev-&gt;bus-&gt;op
-op_member_access_from_pointer
-id|deallocate
-c_func
+r_if
+c_cond
+(paren
+op_logical_neg
+id|atomic_dec_and_test
+(paren
+op_amp
+id|dev-&gt;refcnt
+)paren
+)paren
+(brace
+multiline_comment|/* MUST go to zero here, else someone&squot;s hanging on to&n;&t;&t; * a device that&squot;s supposed to have been cleaned up!!&n;&t;&t; */
+id|BUG
+(paren
+)paren
+suffix:semicolon
+)brace
+id|dev-&gt;bus-&gt;op-&gt;deallocate
 (paren
 id|dev
 )paren
 suffix:semicolon
 id|usb_destroy_configuration
-c_func
 (paren
 id|dev
 )paren
 suffix:semicolon
 id|usb_bus_put
-c_func
 (paren
 id|dev-&gt;bus
 )paren
 suffix:semicolon
 id|kfree
-c_func
 (paren
 id|dev
-)paren
-suffix:semicolon
-)brace
-)brace
-multiline_comment|/**&n; * usb_inc_dev_use - record another reference to a device&n; * @dev: the device being referenced&n; *&n; * Each live reference to a device should be refcounted.&n; *&n; * Device drivers should normally record such references in their&n; * open() methods.&n; * Drivers should then release them, using usb_dec_dev_use(), in their&n; * close() methods.&n; */
-DECL|function|usb_inc_dev_use
-r_void
-id|usb_inc_dev_use
-c_func
-(paren
-r_struct
-id|usb_device
-op_star
-id|dev
-)paren
-(brace
-id|atomic_inc
-c_func
-(paren
-op_amp
-id|dev-&gt;refcnt
 )paren
 suffix:semicolon
 )brace
