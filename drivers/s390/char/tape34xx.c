@@ -6385,10 +6385,11 @@ id|s2b
 op_assign
 id|bsize
 op_div
-id|get_hardsect_size
+id|queue_hardsect_size
 c_func
 (paren
-id|dev
+op_amp
+id|ti-&gt;request_queue
 )paren
 suffix:semicolon
 r_int

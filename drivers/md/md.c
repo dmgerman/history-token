@@ -6931,10 +6931,10 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|get_hardsect_size
+id|bdev_hardsect_size
 c_func
 (paren
-id|rdev-&gt;dev
+id|rdev-&gt;bdev
 )paren
 OG
 id|md_blocksizes
@@ -6955,10 +6955,10 @@ id|mddev
 )paren
 )braket
 op_assign
-id|get_hardsect_size
+id|bdev_hardsect_size
 c_func
 (paren
-id|rdev-&gt;dev
+id|rdev-&gt;bdev
 )paren
 suffix:semicolon
 )brace

@@ -1092,10 +1092,10 @@ suffix:colon
 multiline_comment|/* get block device hardware sector size */
 id|intval
 op_assign
-id|get_hardsect_size
+id|bdev_hardsect_size
 c_func
 (paren
-id|dev
+id|bdev
 )paren
 suffix:semicolon
 r_return

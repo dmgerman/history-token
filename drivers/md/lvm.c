@@ -2605,10 +2605,10 @@ r_return
 id|put_user
 c_func
 (paren
-id|get_hardsect_size
+id|bdev_hardsect_size
 c_func
 (paren
-id|inode-&gt;i_rdev
+id|inode-&gt;i_bdev
 )paren
 comma
 (paren

@@ -751,10 +751,10 @@ id|rq
 r_int
 id|hard_sect
 op_assign
-id|get_hardsect_size
+id|queue_hardsect_size
 c_func
 (paren
-id|rq-&gt;rq_dev
+id|q
 )paren
 suffix:semicolon
 id|sector_t
@@ -5025,7 +5025,7 @@ suffix:semicolon
 multiline_comment|/* Determine correct block size for this device. */
 id|correct_size
 op_assign
-id|get_hardsect_size
+id|bdev_hardsect_size
 c_func
 (paren
 id|bhs
@@ -5033,7 +5033,7 @@ id|bhs
 l_int|0
 )braket
 op_member_access_from_pointer
-id|b_dev
+id|b_bdev
 )paren
 suffix:semicolon
 multiline_comment|/* Verify requested block sizes. */

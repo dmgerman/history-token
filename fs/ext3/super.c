@@ -4269,11 +4269,6 @@ id|journal_inum
 op_assign
 l_int|0
 suffix:semicolon
-id|kdev_t
-id|dev
-op_assign
-id|sb-&gt;s_dev
-suffix:semicolon
 r_int
 id|blocksize
 suffix:semicolon
@@ -4625,10 +4620,10 @@ id|sb-&gt;s_blocksize_bits
 suffix:semicolon
 id|hblock
 op_assign
-id|get_hardsect_size
+id|bdev_hardsect_size
 c_func
 (paren
-id|dev
+id|sb-&gt;s_bdev
 )paren
 suffix:semicolon
 r_if
@@ -5958,10 +5953,10 @@ id|sb-&gt;s_blocksize
 suffix:semicolon
 id|hblock
 op_assign
-id|get_hardsect_size
+id|bdev_hardsect_size
 c_func
 (paren
-id|j_dev
+id|bdev
 )paren
 suffix:semicolon
 r_if

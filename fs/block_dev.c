@@ -442,10 +442,10 @@ id|size
 r_int
 id|minsize
 op_assign
-id|get_hardsect_size
+id|bdev_hardsect_size
 c_func
 (paren
-id|sb-&gt;s_dev
+id|sb-&gt;s_bdev
 )paren
 suffix:semicolon
 r_if

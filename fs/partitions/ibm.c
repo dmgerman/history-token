@@ -465,10 +465,10 @@ l_int|0
 suffix:semicolon
 id|blocksize
 op_assign
-id|get_hardsect_size
+id|bdev_hardsect_size
 c_func
 (paren
-id|dev
+id|bdev
 )paren
 op_rshift
 l_int|9

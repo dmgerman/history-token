@@ -9731,14 +9731,10 @@ c_cond
 id|size
 op_amp
 (paren
-id|get_hardsect_size
+id|bdev_hardsect_size
 c_func
 (paren
-id|to_kdev_t
-c_func
-(paren
-id|bdev-&gt;bd_dev
-)paren
+id|bdev
 )paren
 op_minus
 l_int|1
