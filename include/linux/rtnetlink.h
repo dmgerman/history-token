@@ -981,16 +981,48 @@ comma
 multiline_comment|/* Wireless Extension event - see wireless.h */
 DECL|macro|IFLA_WIRELESS
 mdefine_line|#define IFLA_WIRELESS IFLA_WIRELESS
+DECL|enumerator|IFLA_PROTINFO
+id|IFLA_PROTINFO
+comma
+multiline_comment|/* Protocol specific information for a link */
+DECL|macro|IFLA_PROTINFO
+mdefine_line|#define IFLA_PROTINFO IFLA_PROTINFO
 )brace
 suffix:semicolon
 DECL|macro|IFLA_MAX
-mdefine_line|#define IFLA_MAX IFLA_WIRELESS
+mdefine_line|#define IFLA_MAX IFLA_PROTINFO
 DECL|macro|IFLA_RTA
 mdefine_line|#define IFLA_RTA(r)  ((struct rtattr*)(((char*)(r)) + NLMSG_ALIGN(sizeof(struct ifinfomsg))))
 DECL|macro|IFLA_PAYLOAD
 mdefine_line|#define IFLA_PAYLOAD(n) NLMSG_PAYLOAD(n,sizeof(struct ifinfomsg))
 multiline_comment|/* ifi_flags.&n;&n;   IFF_* flags.&n;&n;   The only change is:&n;   IFF_LOOPBACK, IFF_BROADCAST and IFF_POINTOPOINT are&n;   more not changeable by user. They describe link media&n;   characteristics and set by device driver.&n;&n;   Comments:&n;   - Combination IFF_BROADCAST|IFF_POINTOPOINT is invalid&n;   - If neither of these three flags are set;&n;     the interface is NBMA.&n;&n;   - IFF_MULTICAST does not mean anything special:&n;   multicasts can be used on all not-NBMA links.&n;   IFF_MULTICAST means that this media uses special encapsulation&n;   for multicast frames. Apparently, all IFF_POINTOPOINT and&n;   IFF_BROADCAST devices are able to use multicasts too.&n; */
 multiline_comment|/* IFLA_LINK.&n;   For usual devices it is equal ifi_index.&n;   If it is a &quot;virtual interface&quot; (f.e. tunnel), ifi_link&n;   can point to real physical interface (f.e. for bandwidth calculations),&n;   or maybe 0, what means, that real media is unknown (usual&n;   for IPIP tunnels, when route to endpoint is allowed to change)&n; */
+multiline_comment|/* Subtype attributes for IFLA_PROTINFO */
+r_enum
+(brace
+DECL|enumerator|IFLA_INET6_UNSPEC
+id|IFLA_INET6_UNSPEC
+comma
+DECL|enumerator|IFLA_INET6_FLAGS
+id|IFLA_INET6_FLAGS
+comma
+multiline_comment|/* link flags&t;&t;&t;*/
+DECL|enumerator|IFLA_INET6_CONF
+id|IFLA_INET6_CONF
+comma
+multiline_comment|/* sysctl parameters&t;&t;*/
+DECL|enumerator|IFLA_INET6_STATS
+id|IFLA_INET6_STATS
+comma
+multiline_comment|/* statistics&t;&t;&t;*/
+DECL|enumerator|IFLA_INET6_MCAST
+id|IFLA_INET6_MCAST
+comma
+multiline_comment|/* MC things. What of them?&t;*/
+)brace
+suffix:semicolon
+DECL|macro|IFLA_INET6_MAX
+mdefine_line|#define IFLA_INET6_MAX&t;IFLA_INET6_MCAST
 multiline_comment|/*****************************************************************&n; *&t;&t;Traffic control messages.&n; ****/
 DECL|struct|tcmsg
 r_struct
