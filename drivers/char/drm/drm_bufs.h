@@ -3056,6 +3056,14 @@ op_plus
 id|offset
 )paren
 suffix:semicolon
+id|buf-&gt;bus_address
+op_assign
+id|virt_to_bus
+c_func
+(paren
+id|buf-&gt;address
+)paren
+suffix:semicolon
 id|buf-&gt;next
 op_assign
 l_int|NULL
