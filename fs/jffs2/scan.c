@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * JFFS2 -- Journalling Flash File System, Version 2.&n; *&n; * Copyright (C) 2001-2003 Red Hat, Inc.&n; *&n; * Created by David Woodhouse &lt;dwmw2@redhat.com&gt;&n; *&n; * For licensing information, see the file &squot;LICENCE&squot; in this directory.&n; *&n; * $Id: scan.c,v 1.103 2003/10/07 14:46:23 dwmw2 Exp $&n; *&n; */
+multiline_comment|/*&n; * JFFS2 -- Journalling Flash File System, Version 2.&n; *&n; * Copyright (C) 2001-2003 Red Hat, Inc.&n; *&n; * Created by David Woodhouse &lt;dwmw2@redhat.com&gt;&n; *&n; * For licensing information, see the file &squot;LICENCE&squot; in this directory.&n; *&n; * $Id: scan.c,v 1.104 2003/10/11 14:52:48 dwmw2 Exp $&n; *&n; */
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
@@ -397,8 +397,8 @@ id|ret
 OL
 l_int|0
 )paren
-r_return
-id|ret
+r_goto
+id|out
 suffix:semicolon
 id|ACCT_PARANOIA_CHECK
 c_func
@@ -907,9 +907,13 @@ comma
 id|c-&gt;nr_blocks
 )paren
 suffix:semicolon
-r_return
+id|ret
+op_assign
 op_minus
 id|EIO
+suffix:semicolon
+r_goto
+id|out
 suffix:semicolon
 )brace
 id|jffs2_erase_pending_trigger
@@ -919,6 +923,12 @@ id|c
 )paren
 suffix:semicolon
 )brace
+id|ret
+op_assign
+l_int|0
+suffix:semicolon
+id|out
+suffix:colon
 r_if
 c_cond
 (paren
@@ -948,7 +958,7 @@ id|c-&gt;mtd-&gt;size
 suffix:semicolon
 macro_line|#endif
 r_return
-l_int|0
+id|ret
 suffix:semicolon
 )brace
 DECL|function|jffs2_fill_scan_buf
