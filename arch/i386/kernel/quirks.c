@@ -134,10 +134,12 @@ c_func
 l_string|&quot;&quot;
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_PROC_FS
 id|no_irq_affinity
 op_assign
 l_int|1
 suffix:semicolon
+macro_line|#endif
 )brace
 id|config
 op_and_assign
