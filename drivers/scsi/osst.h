@@ -252,7 +252,7 @@ mdefine_line|#define BLOCK_SIZE_PAGE_LENGTH     4
 DECL|macro|BUFFER_FILLING_PAGE
 mdefine_line|#define BUFFER_FILLING_PAGE        0x33
 DECL|macro|BUFFER_FILLING_PAGE_LENGTH
-mdefine_line|#define BUFFER_FILLING_PAGE_LENGTH 
+mdefine_line|#define BUFFER_FILLING_PAGE_LENGTH 4
 DECL|macro|VENDOR_IDENT_PAGE
 mdefine_line|#define VENDOR_IDENT_PAGE          0x36
 DECL|macro|VENDOR_IDENT_PAGE_LENGTH
@@ -2203,6 +2203,10 @@ r_int
 id|recover_count
 suffix:semicolon
 multiline_comment|/* from tape opening */
+DECL|member|abort_count
+r_int
+id|abort_count
+suffix:semicolon
 DECL|member|write_count
 r_int
 id|write_count
