@@ -709,6 +709,13 @@ c_func
 id|mark_buffer_dirty
 )paren
 suffix:semicolon
+DECL|variable|end_buffer_io_sync
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|end_buffer_io_sync
+)paren
+suffix:semicolon
 DECL|variable|set_buffer_async_io
 id|EXPORT_SYMBOL
 c_func
@@ -716,7 +723,6 @@ c_func
 id|set_buffer_async_io
 )paren
 suffix:semicolon
-multiline_comment|/* for reiserfs_writepage */
 DECL|variable|__mark_buffer_dirty
 id|EXPORT_SYMBOL
 c_func
