@@ -2843,7 +2843,7 @@ op_assign
 id|DEVICE_NR
 c_func
 (paren
-id|MINOR
+id|minor
 c_func
 (paren
 id|CURRENT-&gt;rq_dev
@@ -3014,7 +3014,7 @@ op_assign
 id|DEVICE_NR
 c_func
 (paren
-id|MINOR
+id|minor
 c_func
 (paren
 id|CURRENT-&gt;rq_dev
@@ -3697,7 +3697,7 @@ suffix:semicolon
 )brace
 id|dev
 op_assign
-id|MINOR
+id|minor
 c_func
 (paren
 id|CURRENT-&gt;rq_dev
@@ -4303,7 +4303,7 @@ op_assign
 id|DEVICE_NR
 c_func
 (paren
-id|MINOR
+id|minor
 c_func
 (paren
 id|inode-&gt;i_rdev
@@ -4548,7 +4548,7 @@ op_assign
 id|DEVICE_NR
 c_func
 (paren
-id|MINOR
+id|minor
 c_func
 (paren
 id|inode-&gt;i_rdev
@@ -4711,7 +4711,7 @@ op_assign
 id|DEVICE_NR
 c_func
 (paren
-id|MINOR
+id|minor
 c_func
 (paren
 id|inode-&gt;i_rdev
@@ -4849,7 +4849,7 @@ op_assign
 id|DEVICE_NR
 c_func
 (paren
-id|MINOR
+id|minor
 c_func
 (paren
 id|dev
@@ -6979,7 +6979,7 @@ c_func
 op_amp
 id|acsi_gendisk
 comma
-id|MKDEV
+id|mk_kdev
 c_func
 (paren
 id|MAJOR_NR
@@ -7411,7 +7411,7 @@ op_assign
 id|DEVICE_NR
 c_func
 (paren
-id|MINOR
+id|minor
 c_func
 (paren
 id|dev

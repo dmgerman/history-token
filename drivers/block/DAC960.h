@@ -8022,7 +8022,7 @@ mdefine_line|#define DAC960_MinorNumber(LogicalDriveNumber, PartitionNumber) &bs
 DECL|macro|DAC960_MinorCount
 mdefine_line|#define DAC960_MinorCount&t;&t;&t;(DAC960_MaxLogicalDrives &bslash;&n;&t;&t;&t;&t;&t;&t; * DAC960_MaxPartitions)
 DECL|macro|DAC960_KernelDevice
-mdefine_line|#define DAC960_KernelDevice(ControllerNumber,&t;&t;&t;&t;       &bslash;&n;&t;&t;&t;    LogicalDriveNumber,&t;&t;&t;&t;       &bslash;&n;&t;&t;&t;    PartitionNumber)&t;&t;&t;&t;       &bslash;&n;   MKDEV(DAC960_MajorNumber(ControllerNumber),&t;&t;&t;&t;       &bslash;&n;&t; DAC960_MinorNumber(LogicalDriveNumber, PartitionNumber))
+mdefine_line|#define DAC960_KernelDevice(ControllerNumber,&t;&t;&t;&t;       &bslash;&n;&t;&t;&t;    LogicalDriveNumber,&t;&t;&t;&t;       &bslash;&n;&t;&t;&t;    PartitionNumber)&t;&t;&t;&t;       &bslash;&n;   mk_kdev(DAC960_MajorNumber(ControllerNumber),&t;&t;&t;&t;       &bslash;&n;&t; DAC960_MinorNumber(LogicalDriveNumber, PartitionNumber))
 multiline_comment|/*&n;  Define the DAC960 Controller fixed Block Size and Block Size Bits.&n;*/
 DECL|macro|DAC960_BlockSize
 mdefine_line|#define DAC960_BlockSize&t;&t;&t;512

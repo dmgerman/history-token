@@ -1084,7 +1084,7 @@ id|mknod-&gt;path
 comma
 id|mknod-&gt;mode
 comma
-id|MKDEV
+id|mk_kdev
 c_func
 (paren
 id|mknod-&gt;major

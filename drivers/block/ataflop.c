@@ -2384,7 +2384,7 @@ id|type
 comma
 id|drive
 op_assign
-id|MINOR
+id|minor
 c_func
 (paren
 id|device
@@ -2460,7 +2460,7 @@ id|flags
 suffix:semicolon
 id|type
 op_assign
-id|MINOR
+id|minor
 c_func
 (paren
 id|device
@@ -5260,7 +5260,7 @@ r_int
 r_int
 id|drive
 op_assign
-id|MINOR
+id|minor
 c_func
 (paren
 id|dev
@@ -5271,7 +5271,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|MAJOR
+id|major
 c_func
 (paren
 id|dev
@@ -5352,7 +5352,7 @@ id|dev
 r_int
 id|drive
 op_assign
-id|MINOR
+id|minor
 c_func
 (paren
 id|dev
@@ -5696,7 +5696,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|MAJOR
+id|major
 c_func
 (paren
 id|CURRENT-&gt;rq_dev
@@ -5732,7 +5732,7 @@ l_string|&quot;: block not locked&quot;
 suffix:semicolon
 id|device
 op_assign
-id|MINOR
+id|minor
 c_func
 (paren
 id|CURRENT_DEVICE
@@ -6080,7 +6080,7 @@ suffix:semicolon
 id|set_bit
 c_func
 (paren
-id|MINOR
+id|minor
 c_func
 (paren
 id|rdev
@@ -6188,7 +6188,7 @@ suffix:semicolon
 )brace
 id|drive
 op_assign
-id|MINOR
+id|minor
 (paren
 id|device
 )paren
@@ -7472,7 +7472,7 @@ suffix:semicolon
 )brace
 id|drive
 op_assign
-id|MINOR
+id|minor
 c_func
 (paren
 id|inode-&gt;i_rdev
@@ -7482,7 +7482,7 @@ l_int|3
 suffix:semicolon
 id|type
 op_assign
-id|MINOR
+id|minor
 c_func
 (paren
 id|inode-&gt;i_rdev
@@ -7532,7 +7532,7 @@ id|drive
 op_logical_and
 id|old_dev
 op_ne
-id|MINOR
+id|minor
 c_func
 (paren
 id|inode-&gt;i_rdev
@@ -7595,7 +7595,7 @@ id|fd_device
 id|drive
 )braket
 op_assign
-id|MINOR
+id|minor
 c_func
 (paren
 id|inode-&gt;i_rdev
@@ -7608,7 +7608,7 @@ id|old_dev
 op_logical_and
 id|old_dev
 op_ne
-id|MINOR
+id|minor
 c_func
 (paren
 id|inode-&gt;i_rdev
@@ -7617,7 +7617,7 @@ id|inode-&gt;i_rdev
 id|invalidate_buffers
 c_func
 (paren
-id|MKDEV
+id|mk_kdev
 c_func
 (paren
 id|FLOPPY_MAJOR
@@ -7703,7 +7703,7 @@ id|filp
 r_int
 id|drive
 op_assign
-id|MINOR
+id|minor
 c_func
 (paren
 id|inode-&gt;i_rdev

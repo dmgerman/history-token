@@ -2165,7 +2165,7 @@ c_cond
 id|cdrom_get_last_written
 c_func
 (paren
-id|MKDEV
+id|mkdev
 c_func
 (paren
 id|MAJOR_NR

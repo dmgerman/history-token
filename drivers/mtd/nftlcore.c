@@ -492,7 +492,7 @@ macro_line|#else
 id|grok_partitions
 c_func
 (paren
-id|MKDEV
+id|mk_kdev
 c_func
 (paren
 id|MAJOR_NR
@@ -2963,7 +2963,7 @@ id|nftl
 op_assign
 id|NFTLs
 (braket
-id|MINOR
+id|minor
 c_func
 (paren
 id|inode-&gt;i_rdev
@@ -3274,7 +3274,7 @@ id|req-&gt;current_nr_sectors
 suffix:semicolon
 id|dev
 op_assign
-id|MINOR
+id|minor
 c_func
 (paren
 id|req-&gt;rq_dev
@@ -3398,7 +3398,7 @@ c_func
 l_string|&quot;nftl%c%d: bad access: block = %d, count = %d&bslash;n&quot;
 comma
 (paren
-id|MINOR
+id|minor
 c_func
 (paren
 id|req-&gt;rq_dev
@@ -3715,7 +3715,7 @@ id|fp
 r_int
 id|nftlnum
 op_assign
-id|MINOR
+id|minor
 c_func
 (paren
 id|ip-&gt;i_rdev
@@ -3786,7 +3786,11 @@ l_string|&quot;ENODEV: thisNFTL = %d, minor = %d, ip = %p, fp = %p&bslash;n&quot
 comma
 id|nftlnum
 comma
+id|minor
+c_func
+(paren
 id|ip-&gt;i_rdev
+)paren
 comma
 id|ip
 comma
@@ -3862,7 +3866,7 @@ id|thisNFTL
 op_assign
 id|NFTLs
 (braket
-id|MINOR
+id|minor
 c_func
 (paren
 id|inode-&gt;i_rdev

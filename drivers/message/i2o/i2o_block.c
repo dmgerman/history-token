@@ -76,7 +76,7 @@ mdefine_line|#define I2O_BSA_DSC_VOLUME_CHANGED      0x000D
 DECL|macro|I2O_BSA_DSC_TIMEOUT
 mdefine_line|#define I2O_BSA_DSC_TIMEOUT             0x000E
 DECL|macro|I2O_UNIT
-mdefine_line|#define I2O_UNIT(dev)&t;(i2ob_dev[MINOR((dev)) &amp; 0xf0])
+mdefine_line|#define I2O_UNIT(dev)&t;(i2ob_dev[minor((dev)) &amp; 0xf0])
 DECL|macro|I2O_LOCK
 mdefine_line|#define I2O_LOCK(unit)&t;(i2ob_dev[(unit)].req_queue-&gt;queue_lock)
 multiline_comment|/*&n; *&t;Some of these can be made smaller later&n; */
@@ -2543,7 +2543,7 @@ c_cond
 id|do_i2ob_revalidate
 c_func
 (paren
-id|MKDEV
+id|mk_kdev
 c_func
 (paren
 id|MAJOR_NR
@@ -2969,7 +2969,7 @@ suffix:semicolon
 )brace
 id|unit
 op_assign
-id|MINOR
+id|minor
 c_func
 (paren
 id|ireq-&gt;req-&gt;rq_dev
@@ -3078,7 +3078,7 @@ suffix:semicolon
 )brace
 id|unit
 op_assign
-id|MINOR
+id|minor
 c_func
 (paren
 id|req-&gt;rq_dev
@@ -3431,7 +3431,7 @@ id|maxu
 r_int
 id|minor
 op_assign
-id|MINOR
+id|minor
 c_func
 (paren
 id|dev
@@ -3505,7 +3505,7 @@ suffix:semicolon
 id|invalidate_device
 c_func
 (paren
-id|MKDEV
+id|mk_kdev
 c_func
 (paren
 id|MAJOR_NR
@@ -3615,8 +3615,11 @@ c_cond
 op_logical_neg
 id|inode
 op_logical_or
-op_logical_neg
+id|kdev_none
+c_func
+(paren
 id|inode-&gt;i_rdev
+)paren
 )paren
 r_return
 op_minus
@@ -3639,7 +3642,7 @@ suffix:semicolon
 r_int
 id|u
 op_assign
-id|MINOR
+id|minor
 c_func
 (paren
 id|inode-&gt;i_rdev
@@ -3794,7 +3797,7 @@ id|minor
 suffix:semicolon
 id|minor
 op_assign
-id|MINOR
+id|minor
 c_func
 (paren
 id|inode-&gt;i_rdev
@@ -4102,7 +4105,7 @@ id|EINVAL
 suffix:semicolon
 id|minor
 op_assign
-id|MINOR
+id|minor
 c_func
 (paren
 id|inode-&gt;i_rdev
@@ -5105,7 +5108,7 @@ suffix:semicolon
 id|grok_partitions
 c_func
 (paren
-id|MKDEV
+id|mk_kdev
 c_func
 (paren
 id|MAJOR_NR
@@ -6251,7 +6254,7 @@ id|dev
 r_int
 id|i
 op_assign
-id|MINOR
+id|minor
 c_func
 (paren
 id|dev
@@ -6949,7 +6952,7 @@ c_func
 op_amp
 id|i2ob_gendisk
 comma
-id|MKDEV
+id|mk_kdev
 c_func
 (paren
 id|MAJOR_NR
