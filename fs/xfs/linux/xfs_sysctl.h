@@ -37,10 +37,16 @@ id|ulong
 id|panic_mask
 suffix:semicolon
 multiline_comment|/* bitmask to specify panics on errors.  */
+DECL|member|error_level
+id|ulong
+id|error_level
+suffix:semicolon
+multiline_comment|/* Degree of reporting for internal probs*/
 DECL|typedef|xfs_param_t
 )brace
 id|xfs_param_t
 suffix:semicolon
+multiline_comment|/*&n; * xfs_error_level:&n; *&n; * How much error reporting will be done when internal problems are&n; * encountered.  These problems normally return an EFSCORRUPTED to their&n; * caller, with no other information reported.&n; *&n; * 0&t;No error reports&n; * 1&t;Report EFSCORRUPTED errors that will cause a filesystem shutdown&n; * 5&t;Report all EFSCORRUPTED errors (all of the above errors, plus any&n; *&t;additional errors that are known to not cause shutdowns)&n; *&n; * xfs_panic_mask bit 0x8 turns the error reports into panics&n; */
 r_enum
 (brace
 DECL|enumerator|XFS_STATS_CLEAR
@@ -67,6 +73,11 @@ DECL|enumerator|XFS_PANIC_MASK
 id|XFS_PANIC_MASK
 op_assign
 l_int|5
+comma
+DECL|enumerator|XFS_ERRLEVEL
+id|XFS_ERRLEVEL
+op_assign
+l_int|6
 comma
 )brace
 suffix:semicolon

@@ -413,6 +413,12 @@ c_func
 id|xfsstats.vn_active
 )paren
 suffix:semicolon
+id|XFS_STATS_INC
+c_func
+(paren
+id|xfsstats.vn_alloc
+)paren
+suffix:semicolon
 id|vp-&gt;v_flag
 op_assign
 id|VMODIFIED

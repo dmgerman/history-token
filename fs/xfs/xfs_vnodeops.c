@@ -106,6 +106,13 @@ c_func
 id|ip
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|ip-&gt;i_d.di_nextents
+OG
+l_int|0
+)paren
 (paren
 r_void
 )paren
@@ -320,6 +327,8 @@ op_or
 id|XFS_AT_NODEID
 op_or
 id|XFS_AT_NLINK
+op_or
+id|XFS_AT_BLKSIZE
 )paren
 )paren
 op_eq
@@ -7071,6 +7080,11 @@ suffix:semicolon
 id|boolean_t
 id|dp_joined_to_trans
 suffix:semicolon
+r_int
+id|dm_event_sent
+op_assign
+l_int|0
+suffix:semicolon
 id|uint
 id|cancel_flags
 suffix:semicolon
@@ -7200,8 +7214,11 @@ id|error
 r_return
 id|error
 suffix:semicolon
+id|dm_event_sent
+op_assign
+l_int|1
+suffix:semicolon
 )brace
-multiline_comment|/* Return through std_return after this point. */
 id|mp
 op_assign
 id|dp-&gt;i_mount
@@ -7222,6 +7239,7 @@ c_func
 id|EIO
 )paren
 suffix:semicolon
+multiline_comment|/* Return through std_return after this point. */
 id|udqp
 op_assign
 id|gdqp
@@ -7848,9 +7866,18 @@ r_if
 c_cond
 (paren
 (paren
+op_star
+id|vpp
+op_logical_or
+(paren
 id|error
 op_ne
 l_int|0
+op_logical_and
+id|dm_event_sent
+op_ne
+l_int|0
+)paren
 )paren
 op_logical_and
 id|DM_EVENT_ENABLED
@@ -7880,6 +7907,10 @@ id|dir_bdp
 comma
 id|DM_RIGHT_NULL
 comma
+op_star
+id|vpp
+ques
+c_cond
 id|vn_bhv_lookup_unlocked
 c_func
 (paren
@@ -7892,6 +7923,8 @@ comma
 op_amp
 id|xfs_vnodeops
 )paren
+suffix:colon
+l_int|NULL
 comma
 id|DM_RIGHT_NULL
 comma
@@ -10458,6 +10491,11 @@ id|created
 op_assign
 id|B_FALSE
 suffix:semicolon
+r_int
+id|dm_event_sent
+op_assign
+l_int|0
+suffix:semicolon
 id|xfs_prid_t
 id|prid
 suffix:semicolon
@@ -10586,6 +10624,10 @@ id|error
 )paren
 r_return
 id|error
+suffix:semicolon
+id|dm_event_sent
+op_assign
+l_int|1
 suffix:semicolon
 )brace
 multiline_comment|/* Return through std_return after this point. */
@@ -11257,6 +11299,10 @@ id|created
 op_logical_or
 (paren
 id|error
+op_ne
+l_int|0
+op_logical_and
+id|dm_event_sent
 op_ne
 l_int|0
 )paren

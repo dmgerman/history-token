@@ -1014,6 +1014,9 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|unlikely
+c_func
+(paren
 id|sbp-&gt;sb_logstart
 op_eq
 l_int|0
@@ -1022,6 +1025,7 @@ id|mp-&gt;m_logdev_targp
 op_eq
 id|mp-&gt;m_ddev_targp
 )paren
+)paren
 (brace
 id|cmn_err
 c_func
@@ -1029,6 +1033,18 @@ c_func
 id|CE_WARN
 comma
 l_string|&quot;XFS: filesystem is marked as having an external log; specify logdev on the&bslash;nmount command line.&quot;
+)paren
+suffix:semicolon
+id|XFS_CORRUPTION_ERROR
+c_func
+(paren
+l_string|&quot;xfs_mount_validate_sb(1)&quot;
+comma
+id|XFS_ERRLEVEL_HIGH
+comma
+id|mp
+comma
+id|sbp
 )paren
 suffix:semicolon
 r_return
@@ -1042,6 +1058,9 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|unlikely
+c_func
+(paren
 id|sbp-&gt;sb_logstart
 op_ne
 l_int|0
@@ -1050,6 +1069,7 @@ id|mp-&gt;m_logdev_targp
 op_ne
 id|mp-&gt;m_ddev_targp
 )paren
+)paren
 (brace
 id|cmn_err
 c_func
@@ -1057,6 +1077,18 @@ c_func
 id|CE_WARN
 comma
 l_string|&quot;XFS: filesystem is marked as having an internal log; don&squot;t specify logdev on&bslash;nthe mount command line.&quot;
+)paren
+suffix:semicolon
+id|XFS_CORRUPTION_ERROR
+c_func
+(paren
+l_string|&quot;xfs_mount_validate_sb(2)&quot;
+comma
+id|XFS_ERRLEVEL_HIGH
+comma
+id|mp
+comma
+id|sbp
 )paren
 suffix:semicolon
 r_return
@@ -1070,6 +1102,9 @@ suffix:semicolon
 multiline_comment|/*&n;&t; * More sanity checking. These were stolen directly from&n;&t; * xfs_repair.&n;&t; */
 r_if
 c_cond
+(paren
+id|unlikely
+c_func
 (paren
 id|sbp-&gt;sb_agcount
 op_le
@@ -1115,6 +1150,7 @@ id|sbp-&gt;sb_imax_pct
 OG
 l_int|100
 )paren
+)paren
 (brace
 id|cmn_err
 c_func
@@ -1122,6 +1158,18 @@ c_func
 id|CE_WARN
 comma
 l_string|&quot;XFS: SB sanity check 1 failed&quot;
+)paren
+suffix:semicolon
+id|XFS_CORRUPTION_ERROR
+c_func
+(paren
+l_string|&quot;xfs_mount_validate_sb(3)&quot;
+comma
+id|XFS_ERRLEVEL_LOW
+comma
+id|mp
+comma
+id|sbp
 )paren
 suffix:semicolon
 r_return
@@ -1135,6 +1183,9 @@ suffix:semicolon
 multiline_comment|/*&n;&t; * Sanity check AG count, size fields against data size field&n;&t; */
 r_if
 c_cond
+(paren
+id|unlikely
+c_func
 (paren
 id|sbp-&gt;sb_dblocks
 op_eq
@@ -1164,6 +1215,7 @@ id|sbp-&gt;sb_agblocks
 op_plus
 id|XFS_MIN_AG_BLOCKS
 )paren
+)paren
 (brace
 id|cmn_err
 c_func
@@ -1171,6 +1223,16 @@ c_func
 id|CE_WARN
 comma
 l_string|&quot;XFS: SB sanity check 2 failed&quot;
+)paren
+suffix:semicolon
+id|XFS_ERROR_REPORT
+c_func
+(paren
+l_string|&quot;xfs_mount_validate_sb(4)&quot;
+comma
+id|XFS_ERRLEVEL_LOW
+comma
+id|mp
 )paren
 suffix:semicolon
 r_return
@@ -1214,7 +1276,11 @@ macro_line|#endif
 r_if
 c_cond
 (paren
+id|unlikely
+c_func
+(paren
 id|sbp-&gt;sb_inprogress
+)paren
 )paren
 (brace
 id|cmn_err
@@ -1223,6 +1289,16 @@ c_func
 id|CE_WARN
 comma
 l_string|&quot;XFS: file system busy&quot;
+)paren
+suffix:semicolon
+id|XFS_ERROR_REPORT
+c_func
+(paren
+l_string|&quot;xfs_mount_validate_sb(5)&quot;
+comma
+id|XFS_ERRLEVEL_LOW
+comma
+id|mp
 )paren
 suffix:semicolon
 r_return
@@ -2796,12 +2872,6 @@ r_goto
 id|error1
 suffix:semicolon
 )brace
-id|mp-&gt;m_dalign
-op_assign
-id|mp-&gt;m_swidth
-op_assign
-l_int|0
-suffix:semicolon
 )brace
 r_else
 (brace
@@ -3824,9 +3894,13 @@ multiline_comment|/*&n;&t; * log&squot;s mount-time initialization. Perform 1st 
 r_if
 c_cond
 (paren
+id|likely
+c_func
+(paren
 id|sbp-&gt;sb_logblocks
 OG
 l_int|0
+)paren
 )paren
 (brace
 multiline_comment|/* check for volume case */
@@ -3884,6 +3958,16 @@ c_func
 id|CE_WARN
 comma
 l_string|&quot;XFS: no log defined&quot;
+)paren
+suffix:semicolon
+id|XFS_ERROR_REPORT
+c_func
+(paren
+l_string|&quot;xfs_mountfs_int(1)&quot;
+comma
+id|XFS_ERRLEVEL_LOW
+comma
+id|mp
 )paren
 suffix:semicolon
 id|error
@@ -3955,6 +4039,9 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|unlikely
+c_func
+(paren
 (paren
 id|rip-&gt;i_d.di_mode
 op_amp
@@ -3962,6 +4049,7 @@ id|IFMT
 )paren
 op_ne
 id|IFDIR
+)paren
 )paren
 (brace
 id|cmn_err
@@ -4016,6 +4104,16 @@ id|rvp
 comma
 op_amp
 id|vmap
+)paren
+suffix:semicolon
+id|XFS_ERROR_REPORT
+c_func
+(paren
+l_string|&quot;xfs_mountfs_int(2)&quot;
+comma
+id|XFS_ERRLEVEL_LOW
+comma
+id|mp
 )paren
 suffix:semicolon
 id|error

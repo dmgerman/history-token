@@ -5913,6 +5913,9 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|unlikely
+c_func
+(paren
 id|XFS_TEST_ERROR
 c_func
 (paren
@@ -5926,7 +5929,20 @@ comma
 id|XFS_RANDOM_IALLOC_READ_AGI
 )paren
 )paren
+)paren
 (brace
+id|XFS_CORRUPTION_ERROR
+c_func
+(paren
+l_string|&quot;xfs_ialloc_read_agi&quot;
+comma
+id|XFS_ERRLEVEL_LOW
+comma
+id|mp
+comma
+id|agi
+)paren
+suffix:semicolon
 id|xfs_trans_brelse
 c_func
 (paren
@@ -5935,20 +5951,6 @@ comma
 id|bp
 )paren
 suffix:semicolon
-macro_line|#ifdef __KERNEL__&t;/* additional, temporary, debugging code */
-id|cmn_err
-c_func
-(paren
-id|CE_NOTE
-comma
-l_string|&quot;EFSCORRUPTED returned from file %s line %d&quot;
-comma
-id|__FILE__
-comma
-id|__LINE__
-)paren
-suffix:semicolon
-macro_line|#endif
 r_return
 id|XFS_ERROR
 c_func

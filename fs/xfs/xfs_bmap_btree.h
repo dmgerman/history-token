@@ -924,8 +924,6 @@ id|xfs_btree_cur
 op_star
 comma
 r_int
-comma
-r_int
 op_star
 )paren
 suffix:semicolon

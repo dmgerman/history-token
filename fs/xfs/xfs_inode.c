@@ -1,5 +1,6 @@
 multiline_comment|/*&n; * Copyright (c) 2000-2002 Silicon Graphics, Inc.  All Rights Reserved.&n; *&n; * This program is free software; you can redistribute it and/or modify it&n; * under the terms of version 2 of the GNU General Public License as&n; * published by the Free Software Foundation.&n; *&n; * This program is distributed in the hope that it would be useful, but&n; * WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.&n; *&n; * Further, this software is distributed without any warranty that it is&n; * free of the rightful claim of any third person regarding infringement&n; * or the like.&t; Any license provided herein, whether implied or&n; * otherwise, applies only to this software file.  Patent licenses, if&n; * any, provided herein do not apply to combinations of this program with&n; * other software, or any other product whatsoever.&n; *&n; * You should have received a copy of the GNU General Public License along&n; * with this program; if not, write the Free Software Foundation, Inc., 59&n; * Temple Place - Suite 330, Boston MA 02111-1307, USA.&n; *&n; * Contact information: Silicon Graphics, Inc., 1600 Amphitheatre Pkwy,&n; * Mountain View, CA  94043, or:&n; *&n; * http://www.sgi.com&n; *&n; * For further information regarding this notice, see:&n; *&n; * http://oss.sgi.com/projects/GenInfo/SGIGPLNoticeExplan/&n; */
 macro_line|#include &lt;xfs.h&gt;
+macro_line|#include &lt;asm/unaligned.h&gt;&t;/* for get_unaligned, put_unaligned */
 DECL|variable|xfs_ifork_zone
 id|kmem_zone_t
 op_star
@@ -733,6 +734,9 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|unlikely
+c_func
+(paren
 id|XFS_TEST_ERROR
 c_func
 (paren
@@ -746,7 +750,20 @@ comma
 id|XFS_RANDOM_ITOBP_INOTOBP
 )paren
 )paren
+)paren
 (brace
+id|XFS_CORRUPTION_ERROR
+c_func
+(paren
+l_string|&quot;xfs_inotobp&quot;
+comma
+id|XFS_ERRLEVEL_LOW
+comma
+id|mp
+comma
+id|dip
+)paren
+suffix:semicolon
 id|xfs_trans_brelse
 c_func
 (paren
@@ -1165,6 +1182,9 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|unlikely
+c_func
+(paren
 id|XFS_TEST_ERROR
 c_func
 (paren
@@ -1176,6 +1196,7 @@ comma
 id|XFS_ERRTAG_ITOBP_INOTOBP
 comma
 id|XFS_RANDOM_ITOBP_INOTOBP
+)paren
 )paren
 )paren
 (brace
@@ -1206,6 +1227,18 @@ id|ARCH_CONVERT
 )paren
 suffix:semicolon
 macro_line|#endif
+id|XFS_CORRUPTION_ERROR
+c_func
+(paren
+l_string|&quot;xfs_itobp&quot;
+comma
+id|XFS_ERRLEVEL_LOW
+comma
+id|mp
+comma
+id|dip
+)paren
+suffix:semicolon
 id|xfs_trans_brelse
 c_func
 (paren
@@ -1318,6 +1351,9 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|unlikely
+c_func
+(paren
 id|INT_GET
 c_func
 (paren
@@ -1340,6 +1376,7 @@ c_func
 id|dip-&gt;di_core.di_nblocks
 comma
 id|ARCH_CONVERT
+)paren
 )paren
 )paren
 (brace
@@ -1395,6 +1432,18 @@ id|ARCH_CONVERT
 )paren
 )paren
 suffix:semicolon
+id|XFS_CORRUPTION_ERROR
+c_func
+(paren
+l_string|&quot;xfs_iformat(1)&quot;
+comma
+id|XFS_ERRLEVEL_LOW
+comma
+id|ip-&gt;i_mount
+comma
+id|dip
+)paren
+suffix:semicolon
 r_return
 id|XFS_ERROR
 c_func
@@ -1406,6 +1455,9 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|unlikely
+c_func
+(paren
 id|INT_GET
 c_func
 (paren
@@ -1415,6 +1467,7 @@ id|ARCH_CONVERT
 )paren
 OG
 id|ip-&gt;i_mount-&gt;m_sb.sb_inodesize
+)paren
 )paren
 (brace
 id|xfs_fs_cmn_err
@@ -1448,6 +1501,18 @@ id|ARCH_CONVERT
 )paren
 )paren
 suffix:semicolon
+id|XFS_CORRUPTION_ERROR
+c_func
+(paren
+l_string|&quot;xfs_iformat(2)&quot;
+comma
+id|XFS_ERRLEVEL_LOW
+comma
+id|ip-&gt;i_mount
+comma
+id|dip
+)paren
+suffix:semicolon
 r_return
 id|XFS_ERROR
 c_func
@@ -1479,6 +1544,9 @@ suffix:colon
 r_if
 c_cond
 (paren
+id|unlikely
+c_func
+(paren
 id|INT_GET
 c_func
 (paren
@@ -1489,6 +1557,20 @@ id|ARCH_CONVERT
 op_ne
 id|XFS_DINODE_FMT_DEV
 )paren
+)paren
+(brace
+id|XFS_CORRUPTION_ERROR
+c_func
+(paren
+l_string|&quot;xfs_iformat(3)&quot;
+comma
+id|XFS_ERRLEVEL_LOW
+comma
+id|ip-&gt;i_mount
+comma
+id|dip
+)paren
+suffix:semicolon
 r_return
 id|XFS_ERROR
 c_func
@@ -1496,6 +1578,7 @@ c_func
 id|EFSCORRUPTED
 )paren
 suffix:semicolon
+)brace
 id|ip-&gt;i_d.di_size
 op_assign
 l_int|0
@@ -1540,6 +1623,9 @@ multiline_comment|/*&n;&t;&t;&t; * no local regular files yet&n;&t;&t;&t; */
 r_if
 c_cond
 (paren
+id|unlikely
+c_func
+(paren
 (paren
 id|INT_GET
 c_func
@@ -1554,6 +1640,7 @@ id|IFMT
 op_eq
 id|IFREG
 )paren
+)paren
 (brace
 id|xfs_fs_cmn_err
 c_func
@@ -1562,9 +1649,7 @@ id|CE_WARN
 comma
 id|ip-&gt;i_mount
 comma
-l_string|&quot;corrupt inode &quot;
-l_string|&quot;(local format for regular file) %Lu.  &quot;
-l_string|&quot;Unmount and run xfs_repair.&quot;
+l_string|&quot;corrupt inode (local format for regular file) %Lu.  Unmount and run xfs_repair.&quot;
 comma
 (paren
 r_int
@@ -1572,6 +1657,18 @@ r_int
 r_int
 )paren
 id|ip-&gt;i_ino
+)paren
+suffix:semicolon
+id|XFS_CORRUPTION_ERROR
+c_func
+(paren
+l_string|&quot;xfs_iformat(4)&quot;
+comma
+id|XFS_ERRLEVEL_LOW
+comma
+id|ip-&gt;i_mount
+comma
+id|dip
 )paren
 suffix:semicolon
 r_return
@@ -1595,6 +1692,9 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|unlikely
+c_func
+(paren
 id|di_size
 OG
 id|XFS_DFORK_DSIZE_ARCH
@@ -1607,6 +1707,7 @@ comma
 id|ARCH_CONVERT
 )paren
 )paren
+)paren
 (brace
 id|xfs_fs_cmn_err
 c_func
@@ -1615,9 +1716,7 @@ id|CE_WARN
 comma
 id|ip-&gt;i_mount
 comma
-l_string|&quot;corrupt inode %Lu &quot;
-l_string|&quot;(bad size %Ld for local inode).  &quot;
-l_string|&quot;Unmount and run xfs_repair.&quot;
+l_string|&quot;corrupt inode %Lu (bad size %Ld for local inode).  Unmount and run xfs_repair.&quot;
 comma
 (paren
 r_int
@@ -1631,6 +1730,18 @@ r_int
 r_int
 )paren
 id|di_size
+)paren
+suffix:semicolon
+id|XFS_CORRUPTION_ERROR
+c_func
+(paren
+l_string|&quot;xfs_iformat(5)&quot;
+comma
+id|XFS_ERRLEVEL_LOW
+comma
+id|ip-&gt;i_mount
+comma
+id|dip
 )paren
 suffix:semicolon
 r_return
@@ -1700,6 +1811,16 @@ r_break
 suffix:semicolon
 r_default
 suffix:colon
+id|XFS_ERROR_REPORT
+c_func
+(paren
+l_string|&quot;xfs_iformat(6)&quot;
+comma
+id|XFS_ERRLEVEL_LOW
+comma
+id|ip-&gt;i_mount
+)paren
+suffix:semicolon
 r_return
 id|XFS_ERROR
 c_func
@@ -1712,6 +1833,16 @@ r_break
 suffix:semicolon
 r_default
 suffix:colon
+id|XFS_ERROR_REPORT
+c_func
+(paren
+l_string|&quot;xfs_iformat(7)&quot;
+comma
+id|XFS_ERRLEVEL_LOW
+comma
+id|ip-&gt;i_mount
+)paren
+suffix:semicolon
 r_return
 id|XFS_ERROR
 c_func
@@ -1948,6 +2079,9 @@ multiline_comment|/*&n;&t; * If the size is unreasonable, then something&n;&t; *
 r_if
 c_cond
 (paren
+id|unlikely
+c_func
+(paren
 id|size
 OG
 id|XFS_DFORK_SIZE_ARCH
@@ -1962,6 +2096,7 @@ comma
 id|ARCH_CONVERT
 )paren
 )paren
+)paren
 (brace
 id|xfs_fs_cmn_err
 c_func
@@ -1970,9 +2105,7 @@ id|CE_WARN
 comma
 id|ip-&gt;i_mount
 comma
-l_string|&quot;corrupt inode %Lu &quot;
-l_string|&quot;(bad size %d for local fork, size = %d).  &quot;
-l_string|&quot;Unmount and run xfs_repair.&quot;
+l_string|&quot;corrupt inode %Lu (bad size %d for local fork, size = %d).  Unmount and run xfs_repair.&quot;
 comma
 (paren
 r_int
@@ -1994,6 +2127,18 @@ id|whichfork
 comma
 id|ARCH_CONVERT
 )paren
+)paren
+suffix:semicolon
+id|XFS_CORRUPTION_ERROR
+c_func
+(paren
+l_string|&quot;xfs_iformat_local&quot;
+comma
+id|XFS_ERRLEVEL_LOW
+comma
+id|ip-&gt;i_mount
+comma
+id|dip
 )paren
 suffix:semicolon
 r_return
@@ -2193,6 +2338,9 @@ multiline_comment|/*&n;&t; * If the number of extents is unreasonable, then some
 r_if
 c_cond
 (paren
+id|unlikely
+c_func
+(paren
 id|size
 template_param
 id|XFS_DFORK_SIZE_ARCH
@@ -2207,6 +2355,7 @@ comma
 id|ARCH_CONVERT
 )paren
 )paren
+)paren
 (brace
 id|xfs_fs_cmn_err
 c_func
@@ -2215,8 +2364,7 @@ id|CE_WARN
 comma
 id|ip-&gt;i_mount
 comma
-l_string|&quot;corrupt inode %Lu ((a)extents = %d).  &quot;
-l_string|&quot;Unmount and run xfs_repair.&quot;
+l_string|&quot;corrupt inode %Lu ((a)extents = %d).  Unmount and run xfs_repair.&quot;
 comma
 (paren
 r_int
@@ -2226,6 +2374,18 @@ r_int
 id|ip-&gt;i_ino
 comma
 id|nex
+)paren
+suffix:semicolon
+id|XFS_CORRUPTION_ERROR
+c_func
+(paren
+l_string|&quot;xfs_iformat_extents(1)&quot;
+comma
+id|XFS_ERRLEVEL_LOW
+comma
+id|ip-&gt;i_mount
+comma
+id|dip
 )paren
 suffix:semicolon
 r_return
@@ -2377,7 +2537,16 @@ op_assign
 id|INT_GET
 c_func
 (paren
+id|get_unaligned
+c_func
+(paren
+(paren
+id|u64
+op_star
+)paren
+op_amp
 id|dp-&gt;l0
+)paren
 comma
 id|ARCH_CONVERT
 )paren
@@ -2387,7 +2556,16 @@ op_assign
 id|INT_GET
 c_func
 (paren
+id|get_unaligned
+c_func
+(paren
+(paren
+id|u64
+op_star
+)paren
+op_amp
 id|dp-&gt;l1
+)paren
 comma
 id|ARCH_CONVERT
 )paren
@@ -2435,6 +2613,9 @@ id|XFS_EXTFMT_NOSTATE
 r_if
 c_cond
 (paren
+id|unlikely
+c_func
+(paren
 id|xfs_check_nostate_extents
 c_func
 (paren
@@ -2443,6 +2624,18 @@ comma
 id|nex
 )paren
 )paren
+)paren
+(brace
+id|XFS_ERROR_REPORT
+c_func
+(paren
+l_string|&quot;xfs_iformat_extents(2)&quot;
+comma
+id|XFS_ERRLEVEL_LOW
+comma
+id|ip-&gt;i_mount
+)paren
+suffix:semicolon
 r_return
 id|XFS_ERROR
 c_func
@@ -2450,6 +2643,7 @@ c_func
 id|EFSCORRUPTED
 )paren
 suffix:semicolon
+)brace
 )brace
 id|ifp-&gt;if_flags
 op_or_assign
@@ -2539,6 +2733,9 @@ multiline_comment|/*&n;&t; * blow out if -- fork has less extents than can fit i
 r_if
 c_cond
 (paren
+id|unlikely
+c_func
+(paren
 id|XFS_IFORK_NEXTENTS
 c_func
 (paren
@@ -2577,6 +2774,7 @@ id|whichfork
 OG
 id|ip-&gt;i_d.di_nblocks
 )paren
+)paren
 (brace
 id|xfs_fs_cmn_err
 c_func
@@ -2585,8 +2783,7 @@ id|CE_WARN
 comma
 id|ip-&gt;i_mount
 comma
-l_string|&quot;corrupt inode %Lu (btree).  &quot;
-l_string|&quot;Unmount and run xfs_repair.&quot;
+l_string|&quot;corrupt inode %Lu (btree).  Unmount and run xfs_repair.&quot;
 comma
 (paren
 r_int
@@ -2594,6 +2791,16 @@ r_int
 r_int
 )paren
 id|ip-&gt;i_ino
+)paren
+suffix:semicolon
+id|XFS_ERROR_REPORT
+c_func
+(paren
+l_string|&quot;xfs_iformat_btree&quot;
+comma
+id|XFS_ERRLEVEL_LOW
+comma
+id|ip-&gt;i_mount
 )paren
 suffix:semicolon
 r_return
@@ -3592,6 +3799,9 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|unlikely
+c_func
+(paren
 id|XFS_IFORK_FORMAT
 c_func
 (paren
@@ -3602,6 +3812,18 @@ id|whichfork
 op_ne
 id|XFS_DINODE_FMT_BTREE
 )paren
+)paren
+(brace
+id|XFS_ERROR_REPORT
+c_func
+(paren
+l_string|&quot;xfs_iread_extents&quot;
+comma
+id|XFS_ERRLEVEL_LOW
+comma
+id|ip-&gt;i_mount
+)paren
+suffix:semicolon
 r_return
 id|XFS_ERROR
 c_func
@@ -3609,6 +3831,7 @@ c_func
 id|EFSCORRUPTED
 )paren
 suffix:semicolon
+)brace
 id|size
 op_assign
 id|XFS_IFORK_NEXTENTS
@@ -6181,6 +6404,9 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|unlikely
+c_func
+(paren
 id|XFS_TEST_ERROR
 c_func
 (paren
@@ -6194,7 +6420,20 @@ comma
 id|XFS_RANDOM_IUNLINK
 )paren
 )paren
+)paren
 (brace
+id|XFS_CORRUPTION_ERROR
+c_func
+(paren
+l_string|&quot;xfs_iunlink&quot;
+comma
+id|XFS_ERRLEVEL_LOW
+comma
+id|mp
+comma
+id|agi
+)paren
+suffix:semicolon
 id|xfs_trans_brelse
 c_func
 (paren
@@ -6656,6 +6895,9 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|unlikely
+c_func
+(paren
 id|XFS_TEST_ERROR
 c_func
 (paren
@@ -6669,7 +6911,20 @@ comma
 id|XFS_RANDOM_IUNLINK_REMOVE
 )paren
 )paren
+)paren
 (brace
+id|XFS_CORRUPTION_ERROR
+c_func
+(paren
+l_string|&quot;xfs_iunlink_remove&quot;
+comma
+id|XFS_ERRLEVEL_LOW
+comma
+id|mp
+comma
+id|agi
+)paren
+suffix:semicolon
 id|xfs_trans_brelse
 c_func
 (paren
@@ -9507,8 +9762,9 @@ suffix:semicolon
 )brace
 macro_line|#if ARCH_CONVERT != ARCH_NOCONVERT
 multiline_comment|/* Translate to on disk format */
-id|dest_ep-&gt;l0
-op_assign
+id|put_unaligned
+c_func
+(paren
 id|INT_GET
 c_func
 (paren
@@ -9516,15 +9772,32 @@ id|ep-&gt;l0
 comma
 id|ARCH_CONVERT
 )paren
+comma
+(paren
+id|u64
+op_star
+)paren
+op_amp
+id|dest_ep-&gt;l0
+)paren
 suffix:semicolon
-id|dest_ep-&gt;l1
-op_assign
+id|put_unaligned
+c_func
+(paren
 id|INT_GET
 c_func
 (paren
 id|ep-&gt;l1
 comma
 id|ARCH_CONVERT
+)paren
+comma
+(paren
+id|u64
+op_star
+)paren
+op_amp
+id|dest_ep-&gt;l1
 )paren
 suffix:semicolon
 macro_line|#else
@@ -9805,6 +10078,9 @@ id|XFS_DATA_FORK
 r_if
 c_cond
 (paren
+id|unlikely
+c_func
+(paren
 id|XFS_DIR_SHORTFORM_VALIDATE_ONDISK
 c_func
 (paren
@@ -9813,7 +10089,18 @@ comma
 id|dip
 )paren
 )paren
+)paren
 (brace
+id|XFS_ERROR_REPORT
+c_func
+(paren
+l_string|&quot;xfs_iflush_fork&quot;
+comma
+id|XFS_ERRLEVEL_LOW
+comma
+id|mp
+)paren
+suffix:semicolon
 r_return
 id|XFS_ERROR
 c_func
