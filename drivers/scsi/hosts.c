@@ -5,12 +5,10 @@ macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
-macro_line|#include &lt;linux/list.h&gt;
 macro_line|#include &lt;linux/completion.h&gt;
-macro_line|#include &lt;linux/unistd.h&gt;
+macro_line|#include &lt;scsi/scsi_device.h&gt;
 macro_line|#include &lt;scsi/scsi_host.h&gt;
 macro_line|#include &lt;scsi/scsi_transport.h&gt;
-macro_line|#include &quot;scsi.h&quot;
 macro_line|#include &quot;scsi_priv.h&quot;
 macro_line|#include &quot;scsi_logging.h&quot;
 DECL|variable|scsi_host_next_hn

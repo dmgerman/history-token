@@ -8,9 +8,13 @@ macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/blkdev.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
-macro_line|#include &lt;scsi/scsi_ioctl.h&gt;
-macro_line|#include &quot;scsi.h&quot;
+macro_line|#include &lt;scsi/scsi.h&gt;
+macro_line|#include &lt;scsi/scsi_dbg.h&gt;
+macro_line|#include &lt;scsi/scsi_device.h&gt;
+macro_line|#include &lt;scsi/scsi_eh.h&gt;
 macro_line|#include &lt;scsi/scsi_host.h&gt;
+macro_line|#include &lt;scsi/scsi_ioctl.h&gt;
+macro_line|#include &lt;scsi/scsi_request.h&gt;
 macro_line|#include &quot;scsi_priv.h&quot;
 macro_line|#include &quot;scsi_logging.h&quot;
 DECL|macro|SENSE_TIMEOUT
@@ -1780,7 +1784,7 @@ c_func
 (paren
 l_int|3
 comma
-id|print_sense
+id|scsi_print_sense
 c_func
 (paren
 l_string|&quot;bh&quot;

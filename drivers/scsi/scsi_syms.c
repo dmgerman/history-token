@@ -1,22 +1,15 @@
 multiline_comment|/*&n; * We should not even be trying to compile this if we are not doing&n; * a module.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
-macro_line|#include &lt;linux/sched.h&gt;
-macro_line|#include &lt;linux/timer.h&gt;
-macro_line|#include &lt;linux/string.h&gt;
-macro_line|#include &lt;linux/slab.h&gt;
-macro_line|#include &lt;linux/ioport.h&gt;
-macro_line|#include &lt;linux/kernel.h&gt;
-macro_line|#include &lt;linux/blkdev.h&gt;
-macro_line|#include &lt;linux/fs.h&gt;
-macro_line|#include &lt;asm/system.h&gt;
-macro_line|#include &lt;asm/irq.h&gt;
-macro_line|#include &lt;asm/dma.h&gt;
+macro_line|#include &lt;scsi/scsi.h&gt;
+macro_line|#include &lt;scsi/scsi_dbg.h&gt;
+macro_line|#include &lt;scsi/scsi_device.h&gt;
 macro_line|#include &lt;scsi/scsi_driver.h&gt;
+macro_line|#include &lt;scsi/scsi_eh.h&gt;
 macro_line|#include &lt;scsi/scsi_host.h&gt;
 macro_line|#include &lt;scsi/scsi_ioctl.h&gt;
+macro_line|#include &lt;scsi/scsi_request.h&gt;
 macro_line|#include &lt;scsi/scsicam.h&gt;
-macro_line|#include &quot;scsi.h&quot;
 macro_line|#include &quot;scsi_logging.h&quot;
 multiline_comment|/*&n; * This source file contains the symbol table used by scsi loadable&n; * modules.&n; */
 DECL|variable|scsi_register_driver

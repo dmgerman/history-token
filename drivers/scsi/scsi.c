@@ -17,8 +17,14 @@ macro_line|#include &lt;linux/kmod.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/notifier.h&gt;
 macro_line|#include &lt;linux/cpu.h&gt;
+macro_line|#include &lt;scsi/scsi.h&gt;
+macro_line|#include &lt;scsi/scsi_cmnd.h&gt;
+macro_line|#include &lt;scsi/scsi_dbg.h&gt;
+macro_line|#include &lt;scsi/scsi_device.h&gt;
+macro_line|#include &lt;scsi/scsi_eh.h&gt;
 macro_line|#include &lt;scsi/scsi_host.h&gt;
-macro_line|#include &quot;scsi.h&quot;
+macro_line|#include &lt;scsi/scsi_tcq.h&gt;
+macro_line|#include &lt;scsi/scsi_request.h&gt;
 macro_line|#include &quot;scsi_priv.h&quot;
 macro_line|#include &quot;scsi_logging.h&quot;
 multiline_comment|/*&n; * Definitions and constants.&n; */
@@ -1127,10 +1133,10 @@ c_func
 l_string|&quot;                 &quot;
 )paren
 suffix:semicolon
-id|print_command
+id|scsi_print_command
 c_func
 (paren
-id|cmd-&gt;cmnd
+id|cmd
 )paren
 suffix:semicolon
 r_if
@@ -1345,10 +1351,10 @@ comma
 id|cmd-&gt;result
 )paren
 suffix:semicolon
-id|print_command
+id|scsi_print_command
 c_func
 (paren
-id|cmd-&gt;cmnd
+id|cmd
 )paren
 suffix:semicolon
 r_if
@@ -1364,7 +1370,7 @@ id|CHECK_CONDITION
 )paren
 (brace
 multiline_comment|/*&n;&t;&t;&t;&t; * XXX The print_sense formatting/prefix&n;&t;&t;&t;&t; * doesn&squot;t match this function.&n;&t;&t;&t;&t; */
-id|print_sense
+id|scsi_print_sense
 c_func
 (paren
 l_string|&quot;&quot;
