@@ -831,6 +831,20 @@ id|packed
 suffix:semicolon
 multiline_comment|/* helpers for driver access to descriptors */
 r_extern
+r_int
+id|usb_ifnum_to_ifpos
+c_func
+(paren
+r_struct
+id|usb_device
+op_star
+id|dev
+comma
+r_int
+id|ifnum
+)paren
+suffix:semicolon
+r_extern
 r_struct
 id|usb_interface
 op_star
@@ -2346,6 +2360,21 @@ suffix:semicolon
 DECL|macro|usb_dec_dev_use
 mdefine_line|#define usb_dec_dev_use usb_free_dev
 multiline_comment|/* used these for multi-interface device registration */
+r_extern
+r_int
+id|usb_find_interface_driver_for_ifnum
+c_func
+(paren
+r_struct
+id|usb_device
+op_star
+id|dev
+comma
+r_int
+r_int
+id|ifnum
+)paren
+suffix:semicolon
 r_extern
 r_void
 id|usb_driver_claim_interface
