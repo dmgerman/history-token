@@ -588,11 +588,12 @@ c_func
 id|TASK_RUNNING
 )paren
 suffix:semicolon
+multiline_comment|/*&n;&t; * We can check for list emptiness outside the lock&n;&t; * IFF:&n;&t; *  - we use the &quot;careful&quot; check that verifies both&n;&t; *    the next and prev pointers, so that there cannot&n;&t; *    be any half-pending updates in progress on other&n;&t; *    CPU&squot;s that we haven&squot;t seen yet (and that might&n;&t; *    still change the stack area.&n;&t; * and&n;&t; *  - all other users take the lock (ie we can only&n;&t; *    have _one_ other CPU that looks at or modifies&n;&t; *    the list).&n;&t; */
 r_if
 c_cond
 (paren
 op_logical_neg
-id|list_empty
+id|list_empty_careful
 c_func
 (paren
 op_amp
