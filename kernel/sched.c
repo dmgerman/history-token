@@ -3388,7 +3388,7 @@ id|run_list
 suffix:semicolon
 multiline_comment|/*&n;&t; * We do not migrate tasks that are:&n;&t; * 1) running (obviously), or&n;&t; * 2) cannot be migrated to this CPU due to cpus_allowed, or&n;&t; * 3) are cache-hot on their current CPU.&n;&t; */
 DECL|macro|CAN_MIGRATE_TASK
-mdefine_line|#define CAN_MIGRATE_TASK(p,rq,this_cpu)&t;&t;&t;&t;&t;&bslash;&n;&t;((jiffies - (p)-&gt;last_run &gt; cache_decay_ticks) &amp;&amp;&t;&bslash;&n;&t;&t;!task_running(rq, p) &amp;&amp;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;((p)-&gt;cpus_allowed &amp; (1UL &lt;&lt; (this_cpu))))
+mdefine_line|#define CAN_MIGRATE_TASK(p,rq,this_cpu)&t;&t;&t;&t;&t;&bslash;&n;&t;((!idle || (jiffies - (p)-&gt;last_run &gt; cache_decay_ticks)) &amp;&amp;&t;&bslash;&n;&t;&t;!task_running(rq, p) &amp;&amp;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;&t;((p)-&gt;cpus_allowed &amp; (1UL &lt;&lt; (this_cpu))))
 id|curr
 op_assign
 id|curr-&gt;prev
