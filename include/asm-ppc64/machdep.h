@@ -587,6 +587,13 @@ id|cmd_line
 id|COMMAND_LINE_SIZE
 )braket
 suffix:semicolon
+r_extern
+r_char
+id|saved_command_line
+(braket
+id|COMMAND_LINE_SIZE
+)braket
+suffix:semicolon
 multiline_comment|/* Functions to produce codes on the leds.&n; * The SRC code should be unique for the message category and should&n; * be limited to the lower 24 bits (the upper 8 are set by these funcs),&n; * and (for boot &amp; dump) should be sorted numerically in the order&n; * the events occur.&n; */
 multiline_comment|/* Print a boot progress message. */
 r_void

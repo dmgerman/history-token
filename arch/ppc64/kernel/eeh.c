@@ -898,13 +898,6 @@ r_struct
 id|eeh_early_enable_info
 id|info
 suffix:semicolon
-r_extern
-r_char
-id|cmd_line
-(braket
-)braket
-suffix:semicolon
-multiline_comment|/* Very early cmd line parse.  Cheap, but works. */
 r_char
 op_star
 id|eeh_force_off
@@ -912,7 +905,7 @@ op_assign
 id|strstr
 c_func
 (paren
-id|cmd_line
+id|saved_command_line
 comma
 l_string|&quot;eeh-force-off&quot;
 )paren
@@ -924,7 +917,7 @@ op_assign
 id|strstr
 c_func
 (paren
-id|cmd_line
+id|saved_command_line
 comma
 l_string|&quot;eeh-force-on&quot;
 )paren

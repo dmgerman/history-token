@@ -47,12 +47,6 @@ macro_line|#include &lt;asm/time.h&gt;
 macro_line|#include &lt;asm/of_device.h&gt;
 macro_line|#include &lt;asm/lmb.h&gt;
 macro_line|#include &quot;pmac.h&quot;
-r_extern
-r_char
-id|saved_command_line
-(braket
-)braket
-suffix:semicolon
 DECL|variable|current_root_goodness
 r_static
 r_int

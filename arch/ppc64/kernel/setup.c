@@ -1836,7 +1836,7 @@ c_cond
 id|strstr
 c_func
 (paren
-id|cmd_line
+id|saved_command_line
 comma
 l_string|&quot;console=&quot;
 )paren

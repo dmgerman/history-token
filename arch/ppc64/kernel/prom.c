@@ -35,6 +35,7 @@ macro_line|#include &lt;asm/bootinfo.h&gt;
 macro_line|#include &lt;asm/ppcdebug.h&gt;
 macro_line|#include &lt;asm/btext.h&gt;
 macro_line|#include &lt;asm/sections.h&gt;
+macro_line|#include &lt;asm/machdep.h&gt;
 macro_line|#include &quot;open_pic.h&quot;
 macro_line|#ifdef CONFIG_LOGO_LINUX_CLUT224
 macro_line|#include &lt;linux/linux_logo.h&gt;
@@ -551,14 +552,6 @@ r_int
 id|offset
 )paren
 suffix:semicolon
-r_extern
-r_char
-id|cmd_line
-(braket
-l_int|512
-)braket
-suffix:semicolon
-multiline_comment|/* XXX */
 DECL|variable|dev_tree_size
 r_int
 r_int
@@ -8457,7 +8450,7 @@ l_int|0
 op_ne
 l_int|0
 )paren
-id|strncpy
+id|strlcpy
 c_func
 (paren
 id|RELOC
@@ -8475,22 +8468,6 @@ id|cmd_line
 )paren
 suffix:semicolon
 )brace
-id|RELOC
-c_func
-(paren
-id|cmd_line
-(braket
-r_sizeof
-(paren
-id|cmd_line
-)paren
-op_minus
-l_int|1
-)braket
-)paren
-op_assign
-l_int|0
-suffix:semicolon
 id|mem
 op_assign
 id|prom_initialize_lmb
