@@ -723,6 +723,9 @@ id|result
 comma
 r_int
 id|mode
+comma
+r_int
+id|num_targets
 )paren
 (brace
 r_struct
@@ -782,7 +785,26 @@ comma
 l_int|1
 )paren
 suffix:semicolon
-multiline_comment|/* allocate a single nodes worth of targets to begin with */
+r_if
+c_cond
+(paren
+op_logical_neg
+id|num_targets
+)paren
+id|num_targets
+op_assign
+id|KEYS_PER_NODE
+suffix:semicolon
+id|num_targets
+op_assign
+id|dm_round_up
+c_func
+(paren
+id|num_targets
+comma
+id|KEYS_PER_NODE
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -791,7 +813,7 @@ c_func
 (paren
 id|t
 comma
-id|KEYS_PER_NODE
+id|num_targets
 )paren
 )paren
 (brace

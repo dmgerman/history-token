@@ -2280,6 +2280,8 @@ c_func
 (paren
 id|param
 )paren
+comma
+id|param-&gt;target_count
 )paren
 suffix:semicolon
 r_if
@@ -3624,6 +3626,8 @@ c_func
 (paren
 id|param
 )paren
+comma
+id|param-&gt;target_count
 )paren
 suffix:semicolon
 r_if
