@@ -2876,6 +2876,8 @@ id|drive
 )braket
 op_assign
 id|MAX_DISK_SIZE
+op_lshift
+l_int|1
 suffix:semicolon
 )brace
 multiline_comment|/*USETF(FD_DISK_NEWCHANGE);*/
@@ -9910,13 +9912,7 @@ id|current_drive
 )paren
 )braket
 op_assign
-(paren
 id|_floppy-&gt;size
-op_plus
-l_int|1
-)paren
-op_rshift
-l_int|1
 suffix:semicolon
 r_break
 suffix:semicolon
@@ -9960,13 +9956,7 @@ id|current_drive
 )paren
 )braket
 op_assign
-(paren
 id|_floppy-&gt;size
-op_plus
-l_int|1
-)paren
-op_rshift
-l_int|1
 suffix:semicolon
 id|probing
 op_assign
@@ -14122,7 +14112,6 @@ op_plus
 l_int|0x80
 )braket
 op_assign
-(paren
 id|floppy_type
 (braket
 id|type
@@ -14130,9 +14119,6 @@ id|type
 dot
 id|size
 op_plus
-l_int|1
-)paren
-op_rshift
 l_int|1
 suffix:semicolon
 id|process_fd_request
@@ -14271,18 +14257,12 @@ id|floppy_sizes
 id|drive
 )braket
 op_assign
-(paren
 id|user_params
 (braket
 id|drive
 )braket
 dot
 id|size
-op_plus
-l_int|1
-)paren
-op_rshift
-l_int|1
 suffix:semicolon
 r_if
 c_cond
@@ -15037,6 +15017,8 @@ id|drive
 )braket
 op_assign
 id|MAX_DISK_SIZE
+op_lshift
+l_int|1
 suffix:semicolon
 id|UDRS-&gt;keep_data
 op_assign
@@ -15837,24 +15819,6 @@ r_char
 op_star
 id|tmp
 suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|filp
-)paren
-(brace
-id|DPRINT
-c_func
-(paren
-l_string|&quot;Weird, open called with filp=0&bslash;n&quot;
-)paren
-suffix:semicolon
-r_return
-op_minus
-id|EIO
-suffix:semicolon
-)brace
 id|filp-&gt;private_data
 op_assign
 (paren
@@ -16862,6 +16826,11 @@ suffix:semicolon
 r_int
 id|cf
 suffix:semicolon
+r_int
+id|res
+op_assign
+l_int|0
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -17010,7 +16979,8 @@ id|NO_GEOM
 )paren
 (brace
 multiline_comment|/* auto-sensing */
-r_return
+id|res
+op_assign
 id|floppy_read_block_0
 c_func
 (paren
@@ -17018,6 +16988,8 @@ id|dev
 )paren
 suffix:semicolon
 )brace
+r_else
+(brace
 r_if
 c_cond
 (paren
@@ -17036,6 +17008,7 @@ c_func
 (paren
 )paren
 suffix:semicolon
+)brace
 )brace
 id|set_capacity
 c_func
@@ -17057,7 +17030,7 @@ id|dev
 )paren
 suffix:semicolon
 r_return
-l_int|0
+id|res
 suffix:semicolon
 )brace
 DECL|variable|floppy_fops
@@ -18696,7 +18669,6 @@ id|floppy_sizes
 id|i
 )braket
 op_assign
-(paren
 id|floppy_type
 (braket
 id|ITYPE
@@ -18707,11 +18679,6 @@ id|i
 )braket
 dot
 id|size
-op_plus
-l_int|1
-)paren
-op_rshift
-l_int|1
 suffix:semicolon
 r_else
 id|floppy_sizes
@@ -18720,6 +18687,8 @@ id|i
 )braket
 op_assign
 id|MAX_DISK_SIZE
+op_lshift
+l_int|1
 suffix:semicolon
 id|blk_init_queue
 c_func
