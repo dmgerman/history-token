@@ -1,4 +1,5 @@
 multiline_comment|/* &n; * Copyright (C) 2002 Jeff Dike (jdike@karaya.com)&n; * Licensed under the GPL&n; */
+macro_line|#include &lt;stdlib.h&gt;
 macro_line|#include &lt;errno.h&gt;
 macro_line|#include &lt;fcntl.h&gt;
 macro_line|#include &quot;chan_user.h&quot;
@@ -49,8 +50,18 @@ comma
 r_void
 op_star
 id|d
+comma
+r_char
+op_star
+op_star
+id|dev_out
 )paren
 (brace
+op_star
+id|dev_out
+op_assign
+l_int|NULL
+suffix:semicolon
 r_return
 id|os_open_file
 c_func
@@ -109,6 +120,10 @@ id|chan_ops
 id|null_ops
 op_assign
 (brace
+id|type
+suffix:colon
+l_string|&quot;null&quot;
+comma
 id|init
 suffix:colon
 id|null_init
