@@ -199,12 +199,6 @@ DECL|macro|DC395x_write16
 mdefine_line|#define DC395x_write16(acb,address,value)&t;outw((value), acb-&gt;io_port_base + (address))
 DECL|macro|DC395x_write32
 mdefine_line|#define DC395x_write32(acb,address,value)&t;outl((value), acb-&gt;io_port_base + (address))
-DECL|macro|BUS_ADDR
-mdefine_line|#define BUS_ADDR(sg)&t;&t;sg_dma_address(&amp;(sg))
-DECL|macro|CPU_ADDR
-mdefine_line|#define CPU_ADDR(sg)&t;&t;(page_address((sg).page)+(sg).offset)
-DECL|macro|PAGE_ADDRESS
-mdefine_line|#define PAGE_ADDRESS(sg)&t;page_address((sg)-&gt;page)
 multiline_comment|/* cmd-&gt;result */
 DECL|macro|RES_TARGET
 mdefine_line|#define RES_TARGET&t;&t;0x000000FF&t;/* Target State */
@@ -232,6 +226,9 @@ DECL|macro|SET_RES_DRV
 mdefine_line|#define SET_RES_DRV(who,drv) { who &amp;= ~RES_DRV; who |= (int)(drv) &lt;&lt; 24; }
 DECL|macro|TAG_NONE
 mdefine_line|#define TAG_NONE 255
+multiline_comment|/*&n; * srb-&gt;segement_x is the hw sg list. It is always allocated as a&n; * DC395x_MAX_SG_LISTENTRY entries in a linear block which does not&n; * cross a page boundy.&n; */
+DECL|macro|SEGMENTX_LEN
+mdefine_line|#define SEGMENTX_LEN&t;(sizeof(struct SGentry)*DC395x_MAX_SG_LISTENTRY)
 DECL|struct|SGentry
 r_struct
 id|SGentry
@@ -400,50 +397,54 @@ id|DeviceCtlBlk
 op_star
 id|dcb
 suffix:semicolon
-multiline_comment|/* HW scatter list (up to 64 entries) */
+DECL|member|cmd
+id|Scsi_Cmnd
+op_star
+id|cmd
+suffix:semicolon
 DECL|member|segment_x
 r_struct
 id|SGentry
 op_star
 id|segment_x
 suffix:semicolon
-DECL|member|cmd
-id|Scsi_Cmnd
-op_star
-id|cmd
+multiline_comment|/* Linear array of hw sg entries (up to 64 entries) */
+DECL|member|sg_bus_addr
+id|u32
+id|sg_bus_addr
 suffix:semicolon
+multiline_comment|/* Bus address of sg list (ie, of segment_x) */
+DECL|member|sg_count
+id|u8
+id|sg_count
+suffix:semicolon
+multiline_comment|/* No of HW sg entries for this request */
+DECL|member|sg_index
+id|u8
+id|sg_index
+suffix:semicolon
+multiline_comment|/* Index of HW sg entry for this request */
+DECL|member|total_xfer_length
+id|u32
+id|total_xfer_length
+suffix:semicolon
+multiline_comment|/* Total number of bytes remaining to be transfered */
 DECL|member|virt_addr
 r_int
 r_char
 op_star
 id|virt_addr
 suffix:semicolon
-multiline_comment|/* set by update_sg_list */
-DECL|member|total_xfer_length
-id|u32
-id|total_xfer_length
-suffix:semicolon
+multiline_comment|/* Virtual address of current transfer position */
+multiline_comment|/*&n;&t; * The sense buffer handling function, request_sense, uses&n;&t; * the first hw sg entry (segment_x[0]) and the transfer&n;&t; * length (total_xfer_length). While doing this it stores the&n;&t; * original values into the last sg hw list&n;&t; * (srb-&gt;segment_x[DC395x_MAX_SG_LISTENTRY - 1] and the&n;&t; * total_xfer_length in xferred. These values are restored in&n;&t; * pci_unmap_srb_sense. This is the only place xferred is used.&n;&t; */
 DECL|member|xferred
 id|u32
 id|xferred
 suffix:semicolon
-multiline_comment|/* Backup for the already xferred len */
-DECL|member|sg_bus_addr
-id|u32
-id|sg_bus_addr
-suffix:semicolon
-multiline_comment|/* bus address of DC395x scatterlist */
+multiline_comment|/* Saved copy of total_xfer_length */
 DECL|member|state
 id|u16
 id|state
-suffix:semicolon
-DECL|member|sg_count
-id|u8
-id|sg_count
-suffix:semicolon
-DECL|member|sg_index
-id|u8
-id|sg_index
 suffix:semicolon
 DECL|member|msgin_buf
 id|u8
@@ -3534,25 +3535,13 @@ id|srb
 )paren
 (brace
 r_int
-id|i
-comma
-id|max
-suffix:semicolon
-r_struct
-id|SGentry
-op_star
-id|sgp
-suffix:semicolon
-r_struct
-id|scatterlist
-op_star
-id|sl
-suffix:semicolon
-id|u32
-id|request_size
-suffix:semicolon
-r_int
 id|dir
+op_assign
+id|scsi_to_pci_dma_dir
+c_func
+(paren
+id|cmd-&gt;sc_data_direction
+)paren
 suffix:semicolon
 id|dprintkdbg
 c_func
@@ -3570,86 +3559,118 @@ id|srb-&gt;cmd
 op_assign
 id|cmd
 suffix:semicolon
-id|dir
+id|srb-&gt;sg_count
 op_assign
-id|scsi_to_pci_dma_dir
-c_func
-(paren
-id|cmd-&gt;sc_data_direction
-)paren
+l_int|0
+suffix:semicolon
+id|srb-&gt;total_xfer_length
+op_assign
+l_int|0
+suffix:semicolon
+id|srb-&gt;sg_bus_addr
+op_assign
+l_int|0
+suffix:semicolon
+id|srb-&gt;virt_addr
+op_assign
+l_int|0
+suffix:semicolon
+id|srb-&gt;sg_index
+op_assign
+l_int|0
+suffix:semicolon
+id|srb-&gt;adapter_status
+op_assign
+l_int|0
+suffix:semicolon
+id|srb-&gt;target_status
+op_assign
+l_int|0
+suffix:semicolon
+id|srb-&gt;msg_count
+op_assign
+l_int|0
+suffix:semicolon
+id|srb-&gt;status
+op_assign
+l_int|0
+suffix:semicolon
+id|srb-&gt;flag
+op_assign
+l_int|0
+suffix:semicolon
+id|srb-&gt;state
+op_assign
+l_int|0
+suffix:semicolon
+id|srb-&gt;retry_count
+op_assign
+l_int|0
+suffix:semicolon
+id|srb-&gt;tag_number
+op_assign
+id|TAG_NONE
+suffix:semicolon
+id|srb-&gt;scsi_phase
+op_assign
+id|PH_BUS_FREE
+suffix:semicolon
+multiline_comment|/* initial phase */
+id|srb-&gt;end_message
+op_assign
+l_int|0
 suffix:semicolon
 r_if
 c_cond
 (paren
-id|cmd-&gt;use_sg
-op_logical_and
 id|dir
-op_ne
+op_eq
 id|PCI_DMA_NONE
+op_logical_or
+op_logical_neg
+id|cmd-&gt;request_buffer
+)paren
+(brace
+id|dprintkdbg
+c_func
+(paren
+id|DBG_0
+comma
+l_string|&quot;srb[A] len=%d buf=%p use_sg=%d !MAP=%08x&bslash;n&quot;
+comma
+id|cmd-&gt;bufflen
+comma
+id|cmd-&gt;request_buffer
+comma
+id|cmd-&gt;use_sg
+comma
+id|srb-&gt;segment_x
+(braket
+l_int|0
+)braket
+dot
+id|address
+)paren
+suffix:semicolon
+)brace
+r_else
+r_if
+c_cond
+(paren
+id|cmd-&gt;use_sg
 )paren
 (brace
 r_int
-r_int
-id|len
-op_assign
-l_int|0
+id|i
 suffix:semicolon
-multiline_comment|/* TODO: In case usg_sg and the no of segments differ, things&n;&t;&t; * will probably go wrong. */
-id|max
+id|u32
+id|reqlen
 op_assign
-id|srb-&gt;sg_count
-op_assign
-id|pci_map_sg
-c_func
-(paren
-id|dcb-&gt;acb-&gt;dev
-comma
-(paren
+id|cmd-&gt;request_bufflen
+suffix:semicolon
 r_struct
 id|scatterlist
 op_star
-)paren
-id|cmd-&gt;request_buffer
-comma
-id|cmd-&gt;use_sg
-comma
-id|dir
-)paren
-suffix:semicolon
-id|sgp
-op_assign
-id|srb-&gt;segment_x
-suffix:semicolon
-id|request_size
-op_assign
-id|cmd-&gt;request_bufflen
-suffix:semicolon
-id|dprintkdbg
-c_func
-(paren
-id|DBG_SGPARANOIA
-comma
-l_string|&quot;BuildSRB: Bufflen = %d, buffer = %p, use_sg = %d&bslash;n&quot;
-comma
-id|cmd-&gt;request_bufflen
-comma
-id|cmd-&gt;request_buffer
-comma
-id|cmd-&gt;use_sg
-)paren
-suffix:semicolon
-id|dprintkdbg
-c_func
-(paren
-id|DBG_SGPARANOIA
-comma
-l_string|&quot;Mapped %i Segments to %i&bslash;n&quot;
-comma
-id|cmd-&gt;use_sg
-comma
-id|srb-&gt;sg_count
-)paren
-suffix:semicolon
 id|sl
 op_assign
 (paren
@@ -3658,6 +3679,43 @@ id|scatterlist
 op_star
 )paren
 id|cmd-&gt;request_buffer
+suffix:semicolon
+r_struct
+id|SGentry
+op_star
+id|sgp
+op_assign
+id|srb-&gt;segment_x
+suffix:semicolon
+id|srb-&gt;sg_count
+op_assign
+id|pci_map_sg
+c_func
+(paren
+id|dcb-&gt;acb-&gt;dev
+comma
+id|sl
+comma
+id|cmd-&gt;use_sg
+comma
+id|dir
+)paren
+suffix:semicolon
+id|dprintkdbg
+c_func
+(paren
+id|DBG_0
+comma
+l_string|&quot;srb[B] len=%d buf=%p use_sg=%d segs=%d&bslash;n&quot;
+comma
+id|reqlen
+comma
+id|cmd-&gt;request_buffer
+comma
+id|cmd-&gt;use_sg
+comma
+id|srb-&gt;sg_count
+)paren
 suffix:semicolon
 id|srb-&gt;virt_addr
 op_assign
@@ -3676,7 +3734,7 @@ l_int|0
 suffix:semicolon
 id|i
 OL
-id|max
+id|srb-&gt;sg_count
 suffix:semicolon
 id|i
 op_increment
@@ -3729,82 +3787,40 @@ id|length
 op_assign
 id|seglen
 suffix:semicolon
-id|len
+id|srb-&gt;total_xfer_length
 op_add_assign
 id|seglen
-suffix:semicolon
-id|dprintkdbg
-c_func
-(paren
-id|DBG_SGPARANOIA
-comma
-l_string|&quot;Setting up sgp %d, address = 0x%08x, length = %d, tot len = %d&bslash;n&quot;
-comma
-id|i
-comma
-id|busaddr
-comma
-id|seglen
-comma
-id|len
-)paren
 suffix:semicolon
 )brace
 id|sgp
 op_add_assign
-id|max
+id|srb-&gt;sg_count
 op_minus
 l_int|1
 suffix:semicolon
-multiline_comment|/* Fixup for last buffer too big as it is allocated on even page boundaries */
+multiline_comment|/*&n;&t;&t; * adjust last page if too big as it is allocated&n;&t;&t; * on even page boundaries&n;&t;&t; */
 r_if
 c_cond
 (paren
-id|len
+id|srb-&gt;total_xfer_length
 OG
-id|request_size
+id|reqlen
 )paren
 (brace
-macro_line|#if debug_enabled(DBG_KG) || debug_enabled(DBG_SGPARANOIA)
-id|dprintkdbg
-c_func
-(paren
-id|DBG_KG
-op_or
-id|DBG_SGPARANOIA
-comma
-l_string|&quot;Fixup SG total length: %d-&gt;%d, last seg %d-&gt;%d&bslash;n&quot;
-comma
-id|len
-comma
-id|request_size
-comma
-id|sgp-&gt;length
-comma
-id|sgp-&gt;length
-op_minus
-(paren
-id|len
-op_minus
-id|request_size
-)paren
-)paren
-suffix:semicolon
-macro_line|#endif
 id|sgp-&gt;length
 op_sub_assign
 (paren
-id|len
+id|srb-&gt;total_xfer_length
 op_minus
-id|request_size
+id|reqlen
 )paren
 suffix:semicolon
-id|len
+id|srb-&gt;total_xfer_length
 op_assign
-id|request_size
+id|reqlen
 suffix:semicolon
 )brace
-multiline_comment|/* WIDE padding */
+multiline_comment|/* Fixup for WIDE padding - make sure length is even */
 r_if
 c_cond
 (paren
@@ -3812,24 +3828,18 @@ id|dcb-&gt;sync_period
 op_amp
 id|WIDE_SYNC
 op_logical_and
-id|len
+id|srb-&gt;total_xfer_length
 op_mod
 l_int|2
 )paren
 (brace
-id|len
+id|srb-&gt;total_xfer_length
 op_increment
 suffix:semicolon
 id|sgp-&gt;length
 op_increment
 suffix:semicolon
 )brace
-id|srb-&gt;total_xfer_length
-op_assign
-id|len
-suffix:semicolon
-multiline_comment|/*? */
-multiline_comment|/* Hopefully this does not cross a page boundary ... */
 id|srb-&gt;sg_bus_addr
 op_assign
 id|pci_map_single
@@ -3839,13 +3849,7 @@ id|dcb-&gt;acb-&gt;dev
 comma
 id|srb-&gt;segment_x
 comma
-r_sizeof
-(paren
-r_struct
-id|SGentry
-)paren
-op_star
-id|DC395x_MAX_SG_LISTENTRY
+id|SEGMENTX_LEN
 comma
 id|PCI_DMA_TODEVICE
 )paren
@@ -3855,40 +3859,22 @@ c_func
 (paren
 id|DBG_SGPARANOIA
 comma
-l_string|&quot;Map SG descriptor list %p (%05x) to %08x&bslash;n&quot;
+l_string|&quot;srb[B] map sg %p-&gt;%08x(%05x)&bslash;n&quot;
 comma
 id|srb-&gt;segment_x
 comma
-r_sizeof
-(paren
-r_struct
-id|SGentry
-)paren
-op_star
-id|DC395x_MAX_SG_LISTENTRY
-comma
 id|srb-&gt;sg_bus_addr
+comma
+id|SEGMENTX_LEN
 )paren
 suffix:semicolon
 )brace
 r_else
 (brace
-r_if
-c_cond
-(paren
-id|cmd-&gt;request_buffer
-op_logical_and
-id|dir
-op_ne
-id|PCI_DMA_NONE
-)paren
-(brace
-id|u32
-id|len
+id|srb-&gt;total_xfer_length
 op_assign
 id|cmd-&gt;request_bufflen
 suffix:semicolon
-multiline_comment|/* Actual request size */
 id|srb-&gt;sg_count
 op_assign
 l_int|1
@@ -3907,12 +3893,12 @@ id|dcb-&gt;acb-&gt;dev
 comma
 id|cmd-&gt;request_buffer
 comma
-id|len
+id|srb-&gt;total_xfer_length
 comma
 id|dir
 )paren
 suffix:semicolon
-multiline_comment|/* WIDE padding */
+multiline_comment|/* Fixup for WIDE padding - make sure length is even */
 r_if
 c_cond
 (paren
@@ -3920,11 +3906,11 @@ id|dcb-&gt;sync_period
 op_amp
 id|WIDE_SYNC
 op_logical_and
-id|len
+id|srb-&gt;total_xfer_length
 op_mod
 l_int|2
 )paren
-id|len
+id|srb-&gt;total_xfer_length
 op_increment
 suffix:semicolon
 id|srb-&gt;segment_x
@@ -3934,28 +3920,20 @@ l_int|0
 dot
 id|length
 op_assign
-id|len
-suffix:semicolon
 id|srb-&gt;total_xfer_length
-op_assign
-id|len
 suffix:semicolon
 id|srb-&gt;virt_addr
 op_assign
 id|cmd-&gt;request_buffer
 suffix:semicolon
-id|srb-&gt;sg_bus_addr
-op_assign
-l_int|0
-suffix:semicolon
 id|dprintkdbg
 c_func
 (paren
-id|DBG_SGPARANOIA
+id|DBG_0
 comma
-l_string|&quot;BuildSRB: len = %d, buffer = %p, use_sg = %d, map %08x&bslash;n&quot;
+l_string|&quot;srb[C] len=%d buf=%p use_sg=%d map=%08x&bslash;n&quot;
 comma
-id|len
+id|srb-&gt;total_xfer_length
 comma
 id|cmd-&gt;request_buffer
 comma
@@ -3970,122 +3948,6 @@ id|address
 )paren
 suffix:semicolon
 )brace
-r_else
-(brace
-id|srb-&gt;sg_count
-op_assign
-l_int|0
-suffix:semicolon
-id|srb-&gt;total_xfer_length
-op_assign
-l_int|0
-suffix:semicolon
-id|srb-&gt;sg_bus_addr
-op_assign
-l_int|0
-suffix:semicolon
-id|srb-&gt;virt_addr
-op_assign
-l_int|0
-suffix:semicolon
-id|dprintkdbg
-c_func
-(paren
-id|DBG_SGPARANOIA
-comma
-l_string|&quot;BuildSRB: buflen = %d, buffer = %p, use_sg = %d, NOMAP %08x&bslash;n&quot;
-comma
-id|cmd-&gt;bufflen
-comma
-id|cmd-&gt;request_buffer
-comma
-id|cmd-&gt;use_sg
-comma
-id|srb-&gt;segment_x
-(braket
-l_int|0
-)braket
-dot
-id|address
-)paren
-suffix:semicolon
-)brace
-)brace
-id|srb-&gt;sg_index
-op_assign
-l_int|0
-suffix:semicolon
-id|srb-&gt;adapter_status
-op_assign
-l_int|0
-suffix:semicolon
-id|srb-&gt;target_status
-op_assign
-l_int|0
-suffix:semicolon
-id|srb-&gt;msg_count
-op_assign
-l_int|0
-suffix:semicolon
-id|srb-&gt;status
-op_assign
-l_int|0
-suffix:semicolon
-id|srb-&gt;flag
-op_assign
-l_int|0
-suffix:semicolon
-id|srb-&gt;state
-op_assign
-l_int|0
-suffix:semicolon
-id|srb-&gt;retry_count
-op_assign
-l_int|0
-suffix:semicolon
-macro_line|#if debug_enabled(DBG_TRACE|DBG_TRACEALL) &amp;&amp; debug_enabled(DBG_SGPARANOIA)
-r_if
-c_cond
-(paren
-(paren
-r_int
-r_int
-)paren
-id|srb-&gt;debugtrace
-op_amp
-(paren
-id|DEBUGTRACEBUFSZ
-op_minus
-l_int|1
-)paren
-)paren
-(brace
-id|dprintkdbg
-c_func
-(paren
-id|DBG_SGPARANOIA
-comma
-l_string|&quot;SRB %i (%p): debugtrace %p corrupt!&bslash;n&quot;
-comma
-(paren
-id|srb
-op_minus
-id|dcb-&gt;acb-&gt;srb_array
-)paren
-op_div
-r_sizeof
-(paren
-r_struct
-id|ScsiReqBlk
-)paren
-comma
-id|srb
-comma
-id|srb-&gt;debugtrace
-)paren
-suffix:semicolon
-)brace
-macro_line|#endif
 macro_line|#if debug_enabled(DBG_TRACE|DBG_TRACEALL)
 id|srb-&gt;debugpos
 op_assign
@@ -4096,43 +3958,6 @@ op_assign
 l_int|0
 suffix:semicolon
 macro_line|#endif
-id|TRACEPRINTF
-c_func
-(paren
-l_string|&quot;pid %li(%li):%02x %02x..(%i-%i) *&quot;
-comma
-id|cmd-&gt;pid
-comma
-id|jiffies
-comma
-id|cmd-&gt;cmnd
-(braket
-l_int|0
-)braket
-comma
-id|cmd-&gt;cmnd
-(braket
-l_int|1
-)braket
-comma
-id|cmd-&gt;device-&gt;id
-comma
-id|cmd-&gt;device-&gt;lun
-)paren
-suffix:semicolon
-id|srb-&gt;tag_number
-op_assign
-id|TAG_NONE
-suffix:semicolon
-id|srb-&gt;scsi_phase
-op_assign
-id|PH_BUS_FREE
-suffix:semicolon
-multiline_comment|/* initial phase */
-id|srb-&gt;end_message
-op_assign
-l_int|0
-suffix:semicolon
 )brace
 multiline_comment|/**&n; * dc395x_queue_command - queue scsi command passed from the mid&n; * layer, invoke &squot;done&squot; on completion&n; *&n; * @cmd: pointer to scsi command object&n; * @done: function pointer to be invoked on completion&n; *&n; * Returns 1 if the adapter (host) is busy, else returns 0. One&n; * reason for an adapter to be busy is that the number&n; * of outstanding queued commands is already equal to&n; * struct Scsi_Host::can_queue .&n; *&n; * Required: if struct Scsi_Host::can_queue is ever non-zero&n; *           then this function is required.&n; *&n; * Locks: struct Scsi_Host::host_lock held on entry (with &quot;irqsave&quot;)&n; *        and is expected to be held on return.&n; *&n; **/
 DECL|function|dc395x_queue_command
@@ -6101,7 +5926,9 @@ c_func
 (paren
 id|DBG_0
 comma
-l_string|&quot;start_scsi..............&bslash;n&quot;
+l_string|&quot;start_scsi (#%li)&bslash;n&quot;
+comma
+id|srb-&gt;cmd-&gt;pid
 )paren
 suffix:semicolon
 id|srb-&gt;tag_number
@@ -7577,7 +7404,9 @@ c_func
 (paren
 id|DBG_0
 comma
-l_string|&quot;msgout_phase0...&bslash;n&quot;
+l_string|&quot;msgout_phase0 (#%li)&bslash;n&quot;
+comma
+id|srb-&gt;cmd-&gt;pid
 )paren
 suffix:semicolon
 r_if
@@ -7653,7 +7482,9 @@ c_func
 (paren
 id|DBG_0
 comma
-l_string|&quot;msgout_phase1...&bslash;n&quot;
+l_string|&quot;msgout_phase1 (#%li)&bslash;n&quot;
+comma
+id|srb-&gt;cmd-&gt;pid
 )paren
 suffix:semicolon
 id|TRACEPRINTF
@@ -7877,6 +7708,16 @@ op_star
 id|pscsi_status
 )paren
 (brace
+id|dprintkdbg
+c_func
+(paren
+id|DBG_0
+comma
+l_string|&quot;command_phase0 (#%li)&bslash;n&quot;
+comma
+id|srb-&gt;cmd-&gt;pid
+)paren
+suffix:semicolon
 id|TRACEPRINTF
 c_func
 (paren
@@ -7934,7 +7775,9 @@ c_func
 (paren
 id|DBG_0
 comma
-l_string|&quot;command_phase1...&bslash;n&quot;
+l_string|&quot;command_phase1 (#%li)&bslash;n&quot;
+comma
+id|srb-&gt;cmd-&gt;pid
 )paren
 suffix:semicolon
 id|TRACEPRINTF
@@ -8119,12 +7962,11 @@ id|SCMD_FIFO_OUT
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* Do sanity checks for S/G list */
-DECL|function|check_sg_list
+multiline_comment|/*&n; * Verify that the remaining space in the hw sg lists is the same as&n; * the count of remaining bytes in srb-&gt;total_xfer_length&n; */
+DECL|function|sg_verify_length
 r_static
-r_inline
 r_void
-id|check_sg_list
+id|sg_verify_length
 c_func
 (paren
 r_struct
@@ -8202,10 +8044,10 @@ suffix:semicolon
 )brace
 )brace
 multiline_comment|/*&n; * Compute the next Scatter Gather list index and adjust its length&n; * and address if necessary; also compute virt_addr&n; */
-DECL|function|update_sg_list
+DECL|function|sg_update_list
 r_static
 r_void
-id|update_sg_list
+id|sg_update_list
 c_func
 (paren
 r_struct
@@ -8217,18 +8059,13 @@ id|u32
 id|left
 )paren
 (brace
-r_struct
-id|SGentry
-op_star
-id|psge
-suffix:semicolon
-id|u32
-id|xferred
-op_assign
-l_int|0
-suffix:semicolon
 id|u8
 id|idx
+suffix:semicolon
+r_struct
+id|scatterlist
+op_star
+id|sg
 suffix:semicolon
 id|Scsi_Cmnd
 op_star
@@ -8236,62 +8073,66 @@ id|cmd
 op_assign
 id|srb-&gt;cmd
 suffix:semicolon
-r_struct
-id|scatterlist
-op_star
-id|sg
-suffix:semicolon
 r_int
 id|segment
 op_assign
 id|cmd-&gt;use_sg
 suffix:semicolon
-id|dprintkdbg
-c_func
-(paren
-id|DBG_KG
-comma
-l_string|&quot;Update SG: Total %i, Left %i&bslash;n&quot;
-comma
-id|srb-&gt;total_xfer_length
-comma
-id|left
-)paren
-suffix:semicolon
-id|check_sg_list
-c_func
-(paren
-id|srb
-)paren
-suffix:semicolon
-id|psge
-op_assign
-id|srb-&gt;segment_x
-op_plus
-id|srb-&gt;sg_index
-suffix:semicolon
-multiline_comment|/* data that has already been transferred */
+id|u32
 id|xferred
 op_assign
 id|srb-&gt;total_xfer_length
 op_minus
 id|left
 suffix:semicolon
+multiline_comment|/* bytes transfered */
+r_struct
+id|SGentry
+op_star
+id|psge
+op_assign
+id|srb-&gt;segment_x
+op_plus
+id|srb-&gt;sg_index
+suffix:semicolon
+id|dprintkdbg
+c_func
+(paren
+id|DBG_0
+comma
+l_string|&quot;sg_update_list: Transfered %i of %i bytes, &quot;
+l_string|&quot;%i remain&bslash;n&quot;
+comma
+id|xferred
+comma
+id|srb-&gt;total_xfer_length
+comma
+id|left
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
-id|srb-&gt;total_xfer_length
-op_ne
-id|left
+id|xferred
+op_eq
+l_int|0
 )paren
 (brace
-multiline_comment|/*check_sg_list_TX (srb, xferred); */
-multiline_comment|/* Remaining */
+multiline_comment|/* nothing to update since we did not transfer any data */
+r_return
+suffix:semicolon
+)brace
+id|sg_verify_length
+c_func
+(paren
+id|srb
+)paren
+suffix:semicolon
 id|srb-&gt;total_xfer_length
 op_assign
 id|left
 suffix:semicolon
-multiline_comment|/* parsing from last time disconnect SGIndex */
+multiline_comment|/* update remaining count */
 r_for
 c_loop
 (paren
@@ -8307,7 +8148,6 @@ id|idx
 op_increment
 )paren
 (brace
-multiline_comment|/* Complete SG entries done */
 r_if
 c_cond
 (paren
@@ -8315,23 +8155,24 @@ id|xferred
 op_ge
 id|psge-&gt;length
 )paren
+(brace
+multiline_comment|/* Complete SG entries done */
 id|xferred
 op_sub_assign
 id|psge-&gt;length
 suffix:semicolon
-multiline_comment|/* Partial SG entries done */
+)brace
 r_else
 (brace
+multiline_comment|/* Partial SG entry done */
 id|psge-&gt;length
 op_sub_assign
 id|xferred
 suffix:semicolon
-multiline_comment|/* residue data length  */
 id|psge-&gt;address
 op_add_assign
 id|xferred
 suffix:semicolon
-multiline_comment|/* residue data pointer */
 id|srb-&gt;sg_index
 op_assign
 id|idx
@@ -8345,13 +8186,7 @@ id|acb-&gt;dev
 comma
 id|srb-&gt;sg_bus_addr
 comma
-r_sizeof
-(paren
-r_struct
-id|SGentry
-)paren
-op_star
-id|DC395x_MAX_SG_LISTENTRY
+id|SEGMENTX_LEN
 comma
 id|PCI_DMA_TODEVICE
 )paren
@@ -8363,15 +8198,13 @@ id|psge
 op_increment
 suffix:semicolon
 )brace
-id|check_sg_list
+id|sg_verify_length
 c_func
 (paren
 id|srb
 )paren
 suffix:semicolon
-)brace
-multiline_comment|/* We need the corresponding virtual address sg_to_virt */
-multiline_comment|/*dprintkl(KERN_DEBUG, &quot;sg_to_virt: bus %08x -&gt; virt &quot;, psge-&gt;address); */
+multiline_comment|/* we need the corresponding virtual address */
 r_if
 c_cond
 (paren
@@ -8383,7 +8216,6 @@ id|srb-&gt;virt_addr
 op_add_assign
 id|xferred
 suffix:semicolon
-multiline_comment|/*printk(&quot;%p&bslash;n&quot;, srb-&gt;virt_addr); */
 r_return
 suffix:semicolon
 )brace
@@ -8404,7 +8236,6 @@ id|segment
 op_decrement
 )paren
 (brace
-multiline_comment|/*printk(&quot;(%08x)%p &quot;, BUS_ADDR(*sg), PAGE_ADDRESS(sg)); */
 r_int
 r_int
 id|mask
@@ -8426,10 +8257,9 @@ r_if
 c_cond
 (paren
 (paren
-id|BUS_ADDR
+id|sg_dma_address
 c_func
 (paren
-op_star
 id|sg
 )paren
 op_amp
@@ -8446,10 +8276,10 @@ id|mask
 id|srb-&gt;virt_addr
 op_assign
 (paren
-id|PAGE_ADDRESS
+id|page_address
 c_func
 (paren
-id|sg
+id|sg-&gt;page
 )paren
 op_plus
 id|psge-&gt;address
@@ -8461,7 +8291,6 @@ id|PAGE_MASK
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/*printk(&quot;%p&bslash;n&quot;, srb-&gt;virt_addr); */
 r_return
 suffix:semicolon
 )brace
@@ -8481,6 +8310,72 @@ id|srb-&gt;virt_addr
 op_assign
 l_int|0
 suffix:semicolon
+)brace
+multiline_comment|/*&n; * We have transfered a single byte (PIO mode?) and need to update&n; * the count of bytes remaining (total_xfer_length) and update the sg&n; * entry to either point to next byte in the current sg entry, or of&n; * already at the end to point to the start of the next sg entry&n; */
+DECL|function|sg_subtract_one
+r_static
+r_void
+id|sg_subtract_one
+c_func
+(paren
+r_struct
+id|ScsiReqBlk
+op_star
+id|srb
+)paren
+(brace
+id|srb-&gt;total_xfer_length
+op_decrement
+suffix:semicolon
+id|srb-&gt;segment_x
+(braket
+id|srb-&gt;sg_index
+)braket
+dot
+id|length
+op_decrement
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|srb-&gt;total_xfer_length
+op_logical_and
+op_logical_neg
+id|srb-&gt;segment_x
+(braket
+id|srb-&gt;sg_index
+)braket
+dot
+id|length
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|debug_enabled
+c_func
+(paren
+id|DBG_PIO
+)paren
+)paren
+id|printk
+c_func
+(paren
+l_string|&quot; (next segment)&quot;
+)paren
+suffix:semicolon
+id|srb-&gt;sg_index
+op_increment
+suffix:semicolon
+id|sg_update_list
+c_func
+(paren
+id|srb
+comma
+id|srb-&gt;total_xfer_length
+)paren
+suffix:semicolon
+)brace
 )brace
 multiline_comment|/* &n; * cleanup_after_transfer&n; * &n; * Makes sure, DMA and SCSI engine are empty, after the transfer has finished&n; * KG: Currently called from  StatusPhase1 ()&n; * Should probably also be called from other places&n; * Best might be to call it in DataXXPhase0, if new phase will differ &n; */
 DECL|function|cleanup_after_transfer
@@ -8685,7 +8580,9 @@ c_func
 (paren
 id|DBG_0
 comma
-l_string|&quot;data_out_phase0...&bslash;n&quot;
+l_string|&quot;data_out_phase0 (#%li)&bslash;n&quot;
+comma
+id|srb-&gt;cmd-&gt;pid
 )paren
 suffix:semicolon
 id|TRACEPRINTF
@@ -9005,7 +8902,7 @@ l_int|2
 suffix:colon
 l_int|1
 suffix:semicolon
-id|update_sg_list
+id|sg_update_list
 c_func
 (paren
 id|srb
@@ -9062,7 +8959,7 @@ id|srb-&gt;total_xfer_length
 op_minus
 id|diff
 suffix:semicolon
-id|update_sg_list
+id|sg_update_list
 c_func
 (paren
 id|srb
@@ -9175,7 +9072,9 @@ c_func
 (paren
 id|DBG_0
 comma
-l_string|&quot;data_out_phase1...&bslash;n&quot;
+l_string|&quot;data_out_phase1 (#%li)&bslash;n&quot;
+comma
+id|srb-&gt;cmd-&gt;pid
 )paren
 suffix:semicolon
 multiline_comment|/*1.25 */
@@ -9248,7 +9147,9 @@ c_func
 (paren
 id|DBG_0
 comma
-l_string|&quot;data_in_phase0...&bslash;n&quot;
+l_string|&quot;data_in_phase0 (#%li)&bslash;n&quot;
+comma
+id|srb-&gt;cmd-&gt;pid
 )paren
 suffix:semicolon
 id|TRACEPRINTF
@@ -9558,7 +9459,7 @@ id|DC395x_LASTPIO
 )paren
 (brace
 multiline_comment|/*u32 addr = (srb-&gt;segment_x[srb-&gt;sg_index].address); */
-multiline_comment|/*update_sg_list (srb, d_left_counter); */
+multiline_comment|/*sg_update_list (srb, d_left_counter); */
 id|dprintkdbg
 c_func
 (paren
@@ -9661,61 +9562,15 @@ comma
 id|byte
 )paren
 suffix:semicolon
-id|srb-&gt;total_xfer_length
-op_decrement
-suffix:semicolon
 id|d_left_counter
 op_decrement
 suffix:semicolon
-id|srb-&gt;segment_x
-(braket
-id|srb-&gt;sg_index
-)braket
-dot
-id|length
-op_decrement
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|srb-&gt;total_xfer_length
-op_logical_and
-op_logical_neg
-id|srb-&gt;segment_x
-(braket
-id|srb-&gt;sg_index
-)braket
-dot
-id|length
-)paren
-(brace
-r_if
-c_cond
-(paren
-id|debug_enabled
-c_func
-(paren
-id|DBG_PIO
-)paren
-)paren
-id|printk
-c_func
-(paren
-l_string|&quot; (next segment)&quot;
-)paren
-suffix:semicolon
-id|srb-&gt;sg_index
-op_increment
-suffix:semicolon
-id|update_sg_list
+id|sg_subtract_one
 c_func
 (paren
 id|srb
-comma
-id|d_left_counter
 )paren
 suffix:semicolon
-)brace
 )brace
 r_if
 c_cond
@@ -9725,7 +9580,8 @@ op_amp
 id|WIDE_SYNC
 )paren
 (brace
-macro_line|#if 1&t;&t;&t;&t;/* Read the last byte ... */
+macro_line|#if 1
+multiline_comment|/* Read the last byte ... */
 r_if
 c_cond
 (paren
@@ -9738,6 +9594,7 @@ id|u8
 id|byte
 op_assign
 id|DC395x_read8
+c_func
 (paren
 id|acb
 comma
@@ -10003,7 +9860,7 @@ r_else
 (brace
 multiline_comment|/* phase changed */
 multiline_comment|/*&n;&t;&t;&t; * parsing the case:&n;&t;&t;&t; * when a transfer not yet complete &n;&t;&t;&t; * but be disconnected by target&n;&t;&t;&t; * if transfer not yet complete&n;&t;&t;&t; * there were some data residue in SCSI FIFO or&n;&t;&t;&t; * SCSI transfer counter not empty&n;&t;&t;&t; */
-id|update_sg_list
+id|sg_update_list
 c_func
 (paren
 id|srb
@@ -10151,7 +10008,9 @@ c_func
 (paren
 id|DBG_0
 comma
-l_string|&quot;data_in_phase1...&bslash;n&quot;
+l_string|&quot;data_in_phase1 (#%li)&bslash;n&quot;
+comma
+id|srb-&gt;cmd-&gt;pid
 )paren
 suffix:semicolon
 multiline_comment|/* FIFO should be cleared, if previous phase was not DataPhase */
@@ -10217,7 +10076,7 @@ c_func
 (paren
 id|DBG_0
 comma
-l_string|&quot;DataIO_transfer %c (pid %li): len = %i, SG: %i/%i&bslash;n&quot;
+l_string|&quot;data_io_transfer %c (#%li): len=%i, sg=(%i/%i)&bslash;n&quot;
 comma
 (paren
 (paren
@@ -10272,10 +10131,14 @@ r_if
 c_cond
 (paren
 id|srb-&gt;sg_index
-OL
+op_ge
 id|srb-&gt;sg_count
 )paren
 (brace
+multiline_comment|/* can&squot;t happen? out of bounds error */
+r_return
+suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
@@ -10295,7 +10158,7 @@ comma
 id|TRM_S1040_DMA_STATUS
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t;&t;&t; * KG: What should we do: Use SCSI Cmd 0x90/0x92?&n;&t;&t;&t; * Maybe, even ABORTXFER would be appropriate&n;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t; * KG: What should we do: Use SCSI Cmd 0x90/0x92?&n;&t;&t; * Maybe, even ABORTXFER would be appropriate&n;&t;&t; */
 r_if
 c_cond
 (paren
@@ -10334,7 +10197,7 @@ id|CLRXFIFO
 suffix:semicolon
 )brace
 multiline_comment|/* clear_fifo(acb, &quot;IO&quot;); */
-multiline_comment|/* &n;&t;&t;&t; * load what physical address of Scatter/Gather list table want to be&n;&t;&t;&t; * transfer &n;&t;&t;&t; */
+multiline_comment|/* &n;&t;&t; * load what physical address of Scatter/Gather list table&n;&t;&t; * want to be transfer&n;&t;&t; */
 id|srb-&gt;state
 op_or_assign
 id|SRB_DATA_XFER
@@ -10378,7 +10241,7 @@ op_star
 id|srb-&gt;sg_index
 )paren
 suffix:semicolon
-multiline_comment|/* load how many bytes in the Scatter/Gather list table */
+multiline_comment|/* load how many bytes in the sg list table */
 id|DC395x_write32
 c_func
 (paren
@@ -10527,8 +10390,7 @@ l_int|0
 )paren
 (brace
 multiline_comment|/* The last four bytes: Do PIO */
-multiline_comment|/* clear_fifo(acb, &quot;IO&quot;); */
-multiline_comment|/* &n;&t;&t;&t; * load what physical address of Scatter/Gather list table want to be&n;&t;&t;&t; * transfer &n;&t;&t;&t; */
+multiline_comment|/* &n;&t;&t; * load what physical address of Scatter/Gather list table&n;&t;&t; * want to be transfer&n;&t;&t; */
 id|srb-&gt;state
 op_or_assign
 id|SRB_DATA_XFER
@@ -10591,6 +10453,7 @@ op_amp
 id|WIDE_SYNC
 )paren
 id|DC395x_write8
+c_func
 (paren
 id|acb
 comma
@@ -10642,6 +10505,7 @@ id|srb-&gt;virt_addr
 )paren
 suffix:semicolon
 id|DC395x_write8
+c_func
 (paren
 id|acb
 comma
@@ -10654,60 +10518,12 @@ id|srb-&gt;virt_addr
 op_increment
 )paren
 suffix:semicolon
-id|srb-&gt;total_xfer_length
-op_decrement
-suffix:semicolon
-id|srb-&gt;segment_x
-(braket
-id|srb-&gt;sg_index
-)braket
-dot
-id|length
-op_decrement
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|srb-&gt;total_xfer_length
-op_logical_and
-op_logical_neg
-id|srb-&gt;segment_x
-(braket
-id|srb
-op_member_access_from_pointer
-id|sg_index
-)braket
-dot
-id|length
-)paren
-(brace
-r_if
-c_cond
-(paren
-id|debug_enabled
-c_func
-(paren
-id|DBG_PIO
-)paren
-)paren
-id|printk
-c_func
-(paren
-l_string|&quot; (next segment)&quot;
-)paren
-suffix:semicolon
-id|srb-&gt;sg_index
-op_increment
-suffix:semicolon
-id|update_sg_list
+id|sg_subtract_one
 c_func
 (paren
 id|srb
-comma
-id|srb-&gt;total_xfer_length
 )paren
 suffix:semicolon
-)brace
 )brace
 r_if
 c_cond
@@ -10752,6 +10568,7 @@ l_string|&quot; |00&quot;
 suffix:semicolon
 )brace
 id|DC395x_write8
+c_func
 (paren
 id|acb
 comma
@@ -10817,7 +10634,7 @@ op_or_assign
 id|OVER_RUN
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t;&t;&t; * KG: despite the fact that we are using 16 bits I/O ops&n;&t;&t;&t; * the SCSI FIFO is only 8 bits according to the docs&n;&t;&t;&t; * (we can set bit 1 in 0x8f to serialize FIFO access ...)&n;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t; * KG: despite the fact that we are using 16 bits I/O ops&n;&t;&t; * the SCSI FIFO is only 8 bits according to the docs&n;&t;&t; * (we can set bit 1 in 0x8f to serialize FIFO access ...)&n;&t;&t; */
 r_if
 c_cond
 (paren
@@ -10854,10 +10671,10 @@ op_amp
 id|DMACMD_DIR
 )paren
 (brace
-multiline_comment|/* read */
 id|data
 op_assign
 id|DC395x_read8
+c_func
 (paren
 id|acb
 comma
@@ -10867,17 +10684,17 @@ suffix:semicolon
 id|data2
 op_assign
 id|DC395x_read8
+c_func
 (paren
 id|acb
 comma
 id|TRM_S1040_SCSI_FIFO
 )paren
 suffix:semicolon
-multiline_comment|/*dprintkl(KERN_DEBUG, &quot;DataIO: Xfer pad: %02x %02x&bslash;n&quot;, data, data2); */
 )brace
 r_else
 (brace
-multiline_comment|/* Danger, Robinson: If you find KGs scattered over the wide&n;&t;&t;&t;&t;&t; * disk, the driver or chip is to blame :-( */
+multiline_comment|/* Danger, Robinson: If you find KGs&n;&t;&t;&t;&t; * scattered over the wide disk, the driver&n;&t;&t;&t;&t; * or chip is to blame :-( */
 id|DC395x_write8
 c_func
 (paren
@@ -10922,7 +10739,7 @@ comma
 l_int|1
 )paren
 suffix:semicolon
-multiline_comment|/* Danger, Robinson: If you find a collection of Ks on your disk&n;&t;&t;&t;&t; * something broke :-( */
+multiline_comment|/* Danger, Robinson: If you find a collection of Ks on your disk&n;&t;&t;&t; * something broke :-( */
 r_if
 c_cond
 (paren
@@ -10930,21 +10747,17 @@ id|io_dir
 op_amp
 id|DMACMD_DIR
 )paren
-(brace
-multiline_comment|/* read */
 id|data
 op_assign
 id|DC395x_read8
+c_func
 (paren
 id|acb
 comma
 id|TRM_S1040_SCSI_FIFO
 )paren
 suffix:semicolon
-multiline_comment|/*dprintkl(KERN_DEBUG, &quot;DataIO: Xfer pad: %02x&bslash;n&quot;, data); */
-)brace
 r_else
-(brace
 id|DC395x_write8
 c_func
 (paren
@@ -10955,7 +10768,6 @@ comma
 l_char|&squot;K&squot;
 )paren
 suffix:semicolon
-)brace
 )brace
 id|srb-&gt;state
 op_or_assign
@@ -10998,7 +10810,6 @@ id|bval
 suffix:semicolon
 )brace
 )brace
-)brace
 DECL|function|status_phase0
 r_static
 r_void
@@ -11025,7 +10836,7 @@ c_func
 (paren
 id|DBG_0
 comma
-l_string|&quot;StatusPhase0 (pid %li)&bslash;n&quot;
+l_string|&quot;status_phase0 (#%li)&bslash;n&quot;
 comma
 id|srb-&gt;cmd-&gt;pid
 )paren
@@ -11118,7 +10929,7 @@ c_func
 (paren
 id|DBG_0
 comma
-l_string|&quot;StatusPhase1 (pid=%li)&bslash;n&quot;
+l_string|&quot;status_phase1 (#%li)&bslash;n&quot;
 comma
 id|srb-&gt;cmd-&gt;pid
 )paren
@@ -11129,8 +10940,6 @@ c_func
 l_string|&quot;STP1 *&quot;
 )paren
 suffix:semicolon
-multiline_comment|/* Cleanup is now done at the end of DataXXPhase0 */
-multiline_comment|/*cleanup_after_transfer (acb, srb); */
 id|srb-&gt;state
 op_assign
 id|SRB_STATUS
@@ -11455,11 +11264,13 @@ c_func
 (paren
 id|DBG_0
 comma
-l_string|&quot;QTag Msg (SRB %p): %i&bslash;n&quot;
+l_string|&quot;msgin_qtag (#%li) tag=%i (srb=%p)&bslash;n&quot;
 comma
-id|srb
+id|srb-&gt;cmd-&gt;pid
 comma
 id|tag
+comma
+id|srb
 )paren
 suffix:semicolon
 r_if
@@ -12659,7 +12470,9 @@ c_func
 (paren
 id|DBG_0
 comma
-l_string|&quot;msgin_phase0...&bslash;n&quot;
+l_string|&quot;msgin_phase0 (#%li)&bslash;n&quot;
+comma
+id|srb-&gt;cmd-&gt;pid
 )paren
 suffix:semicolon
 id|TRACEPRINTF
@@ -13167,7 +12980,9 @@ c_func
 (paren
 id|DBG_0
 comma
-l_string|&quot;msgin_phase1...&bslash;n&quot;
+l_string|&quot;msgin_phase1 (#%li)&bslash;n&quot;
+comma
+id|srb-&gt;cmd-&gt;pid
 )paren
 suffix:semicolon
 id|TRACEPRINTF
@@ -13457,7 +13272,7 @@ c_func
 (paren
 id|DBG_0
 comma
-l_string|&quot;Disconnect (pid=%li)&bslash;n&quot;
+l_string|&quot;disconnect (#%li)&bslash;n&quot;
 comma
 id|srb-&gt;cmd-&gt;pid
 )paren
@@ -13666,7 +13481,7 @@ c_func
 (paren
 id|DBG_KG
 comma
-l_string|&quot;Disc: SelTO (pid=%li) for dev %02i-%i&bslash;n&quot;
+l_string|&quot;Disc: SelTO (#%li) for dev %02i-%i&bslash;n&quot;
 comma
 id|srb-&gt;cmd-&gt;pid
 comma
@@ -13753,7 +13568,7 @@ id|TRM_S1040_SCSI_SIGNAL
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t;&t;&t; * SRB_DISCONNECT (This is what we expect!)&n;&t;&t;&t; */
-multiline_comment|/* dprintkl(KERN_DEBUG, &quot;DoWaitingSRB (pid=%li)&bslash;n&quot;, srb-&gt;cmd-&gt;pid); */
+multiline_comment|/* dprintkl(KERN_DEBUG, &quot;DoWaitingSRB (#%li)&bslash;n&quot;, srb-&gt;cmd-&gt;pid); */
 id|TRACEPRINTF
 c_func
 (paren
@@ -13829,7 +13644,7 @@ id|srb-&gt;state
 op_assign
 id|SRB_FREE
 suffix:semicolon
-multiline_comment|/*dprintkl(KERN_DEBUG, &quot;done (pid=%li)&bslash;n&quot;, srb-&gt;cmd-&gt;pid); */
+multiline_comment|/*dprintkl(KERN_DEBUG, &quot;done (#%li)&bslash;n&quot;, srb-&gt;cmd-&gt;pid); */
 id|srb_done
 c_func
 (paren
@@ -14607,17 +14422,11 @@ c_func
 (paren
 id|DBG_SGPARANOIA
 comma
-l_string|&quot;Unmap SG descriptor list %08x (%05x)&bslash;n&quot;
+l_string|&quot;unmap SG list %08x(%05x)&bslash;n&quot;
 comma
 id|srb-&gt;sg_bus_addr
 comma
-r_sizeof
-(paren
-r_struct
-id|SGentry
-)paren
-op_star
-id|DC395x_MAX_SG_LISTENTRY
+id|SEGMENTX_LEN
 )paren
 suffix:semicolon
 id|pci_unmap_single
@@ -14627,13 +14436,7 @@ id|acb-&gt;dev
 comma
 id|srb-&gt;sg_bus_addr
 comma
-r_sizeof
-(paren
-r_struct
-id|SGentry
-)paren
-op_star
-id|DC395x_MAX_SG_LISTENTRY
+id|SEGMENTX_LEN
 comma
 id|PCI_DMA_TODEVICE
 )paren
@@ -14685,7 +14488,7 @@ c_func
 (paren
 id|DBG_SGPARANOIA
 comma
-l_string|&quot;Unmap buffer at %08x (%05x)&bslash;n&quot;
+l_string|&quot;Unmap buffer %08x(%05x)&bslash;n&quot;
 comma
 id|srb-&gt;segment_x
 (braket
@@ -14879,6 +14682,44 @@ c_func
 id|cmd-&gt;sc_data_direction
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|cmd-&gt;use_sg
+)paren
+(brace
+r_struct
+id|scatterlist
+op_star
+id|sg
+op_assign
+(paren
+r_struct
+id|scatterlist
+op_star
+)paren
+id|cmd-&gt;request_buffer
+suffix:semicolon
+id|ptr
+op_assign
+(paren
+r_struct
+id|ScsiInqData
+op_star
+)paren
+(paren
+id|page_address
+c_func
+(paren
+id|sg-&gt;page
+)paren
+op_plus
+id|sg-&gt;offset
+)paren
+suffix:semicolon
+)brace
+r_else
+(brace
 id|ptr
 op_assign
 (paren
@@ -14890,36 +14731,13 @@ op_star
 id|cmd-&gt;request_buffer
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|cmd-&gt;use_sg
-)paren
-id|ptr
-op_assign
-(paren
-r_struct
-id|ScsiInqData
-op_star
-)paren
-id|CPU_ADDR
-c_func
-(paren
-op_star
-(paren
-r_struct
-id|scatterlist
-op_star
-)paren
-id|ptr
-)paren
-suffix:semicolon
+)brace
 id|dprintkdbg
 c_func
 (paren
 id|DBG_SGPARANOIA
 comma
-l_string|&quot;SRBdone SG=%i (%i/%i), req_buf = %p, adr = %p&bslash;n&quot;
+l_string|&quot;srb_done sg=%i(%i/%i), buf=%p, addr=%p&bslash;n&quot;
 comma
 id|cmd-&gt;use_sg
 comma
@@ -14937,7 +14755,7 @@ c_func
 (paren
 id|DBG_KG
 comma
-l_string|&quot;SRBdone (pid %li, target %02i-%i): &quot;
+l_string|&quot;srb_done (#%li) (target %02i-%i): &quot;
 comma
 id|srb-&gt;cmd-&gt;pid
 comma
@@ -15815,7 +15633,7 @@ c_func
 (paren
 id|DBG_0
 comma
-l_string|&quot;SRBdone: done pid %li&bslash;n&quot;
+l_string|&quot;srb_done: done (#%li)&bslash;n&quot;
 comma
 id|cmd-&gt;pid
 )paren
@@ -16848,14 +16666,9 @@ c_func
 (paren
 id|DBG_SGPARANOIA
 comma
-l_string|&quot;Map sense buffer at %p (%05x) to %08x&bslash;n&quot;
+l_string|&quot;Map sense buffer %p-&gt;%08x(%05x)&bslash;n&quot;
 comma
 id|cmd-&gt;sense_buffer
-comma
-r_sizeof
-(paren
-id|cmd-&gt;sense_buffer
-)paren
 comma
 id|srb-&gt;segment_x
 (braket
@@ -16863,6 +16676,11 @@ l_int|0
 )braket
 dot
 id|address
+comma
+r_sizeof
+(paren
+id|cmd-&gt;sense_buffer
+)paren
 )paren
 suffix:semicolon
 id|srb-&gt;sg_count
@@ -19284,15 +19102,7 @@ id|srbs_per_page
 op_assign
 id|PAGE_SIZE
 op_div
-(paren
-id|DC395x_MAX_SG_LISTENTRY
-op_star
-r_sizeof
-(paren
-r_struct
-id|SGentry
-)paren
-)paren
+id|SEGMENTX_LEN
 suffix:semicolon
 r_for
 c_loop
@@ -19355,13 +19165,7 @@ op_plus
 l_int|1
 )paren
 op_star
-id|DC395x_MAX_SG_LISTENTRY
-op_star
-r_sizeof
-(paren
-r_struct
-id|SGentry
-)paren
+id|SEGMENTX_LEN
 suffix:semicolon
 r_int
 id|pages
@@ -19384,15 +19188,7 @@ id|srbs_per_page
 op_assign
 id|PAGE_SIZE
 op_div
-(paren
-id|DC395x_MAX_SG_LISTENTRY
-op_star
-r_sizeof
-(paren
-r_struct
-id|SGentry
-)paren
-)paren
+id|SEGMENTX_LEN
 suffix:semicolon
 r_int
 id|srb_idx
