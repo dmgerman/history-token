@@ -1,6 +1,7 @@
 multiline_comment|/*&n;    ali15x3.c - Part of lm_sensors, Linux kernel modules for hardware&n;              monitoring&n;    Copyright (c) 1999  Frodo Looijaard &lt;frodol@dds.nl&gt; and&n;    Philip Edelbrock &lt;phil@netroedge.com&gt; and&n;    Mark D. Studebaker &lt;mdsxyz123@yahoo.com&gt;&n;&n;    This program is free software; you can redistribute it and/or modify&n;    it under the terms of the GNU General Public License as published by&n;    the Free Software Foundation; either version 2 of the License, or&n;    (at your option) any later version.&n;&n;    This program is distributed in the hope that it will be useful,&n;    but WITHOUT ANY WARRANTY; without even the implied warranty of&n;    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n;    GNU General Public License for more details.&n;&n;    You should have received a copy of the GNU General Public License&n;    along with this program; if not, write to the Free Software&n;    Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n;*/
 multiline_comment|/*&n;    This is the driver for the SMB Host controller on&n;    Acer Labs Inc. (ALI) M1541 and M1543C South Bridges.&n;&n;    The M1543C is a South bridge for desktop systems.&n;    The M1533 is a South bridge for portable systems.&n;    They are part of the following ALI chipsets:&n;       &quot;Aladdin Pro 2&quot;: Includes the M1621 Slot 1 North bridge&n;       with AGP and 100MHz CPU Front Side bus&n;       &quot;Aladdin V&quot;: Includes the M1541 Socket 7 North bridge&n;       with AGP and 100MHz CPU Front Side bus&n;       &quot;Aladdin IV&quot;: Includes the M1541 Socket 7 North bridge&n;       with host bus up to 83.3 MHz.&n;    For an overview of these chips see http://www.acerlabs.com&n;&n;    The M1533/M1543C devices appear as FOUR separate devices&n;    on the PCI bus. An output of lspci will show something similar&n;    to the following:&n;&n;&t;00:02.0 USB Controller: Acer Laboratories Inc. M5237&n;&t;00:03.0 Bridge: Acer Laboratories Inc. M7101&n;&t;00:07.0 ISA bridge: Acer Laboratories Inc. M1533&n;&t;00:0f.0 IDE interface: Acer Laboratories Inc. M5229&n;&n;    The SMB controller is part of the 7101 device, which is an&n;    ACPI-compliant Power Management Unit (PMU).&n;&n;    The whole 7101 device has to be enabled for the SMB to work.&n;    You can&squot;t just enable the SMB alone.&n;    The SMB and the ACPI have separate I/O spaces.&n;    We make sure that the SMB is enabled. We leave the ACPI alone.&n;&n;    This driver controls the SMB Host only.&n;    The SMB Slave controller on the M15X3 is not enabled.&n;&n;    This driver does not use interrupts.&n;*/
 multiline_comment|/* Note: we assume there can only be one ALI15X3, with one SMBus interface */
+multiline_comment|/* #define DEBUG 1 */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -119,14 +120,6 @@ r_int
 id|amount
 )paren
 suffix:semicolon
-r_static
-r_int
-id|ali15x3_transaction
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
 DECL|variable|ali15x3_smba
 r_static
 r_int
@@ -227,9 +220,14 @@ op_eq
 l_int|0
 )paren
 (brace
-id|printk
+id|dev_err
+c_func
 (paren
-l_string|&quot;i2c-ali15x3.o: ALI15X3_smb region uninitialized - upgrade BIOS or use force_addr=0xaddr&bslash;n&quot;
+op_amp
+id|ALI15X3_dev-&gt;dev
+comma
+l_string|&quot;ALI15X3_smb region uninitialized &quot;
+l_string|&quot;- upgrade BIOS or use force_addr=0xaddr&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -267,9 +265,13 @@ id|ALI15X3_SMB_IOSIZE
 )paren
 )paren
 (brace
-id|printk
+id|dev_err
+c_func
 (paren
-l_string|&quot;i2c-ali15x3.o: ALI15X3_smb region 0x%x already in use!&bslash;n&quot;
+op_amp
+id|ALI15X3_dev-&gt;dev
+comma
+l_string|&quot;ALI15X3_smb region 0x%x already in use!&bslash;n&quot;
 comma
 id|ali15x3_smba
 )paren
@@ -285,10 +287,13 @@ c_cond
 id|force_addr
 )paren
 (brace
-id|printk
+id|dev_info
 c_func
 (paren
-l_string|&quot;i2c-ali15x3.o: forcing ISA address 0x%04X&bslash;n&quot;
+op_amp
+id|ALI15X3_dev-&gt;dev
+comma
+l_string|&quot;forcing ISA address 0x%04X&bslash;n&quot;
 comma
 id|ali15x3_smba
 )paren
@@ -350,10 +355,13 @@ id|ali15x3_smba
 )paren
 (brace
 multiline_comment|/* make sure it works */
-id|printk
+id|dev_err
 c_func
 (paren
-l_string|&quot;i2c-ali15x3.o: force address failed - not supported?&bslash;n&quot;
+op_amp
+id|ALI15X3_dev-&gt;dev
+comma
+l_string|&quot;force address failed - not supported?&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -386,10 +394,13 @@ op_eq
 l_int|0
 )paren
 (brace
-id|printk
+id|dev_info
 c_func
 (paren
-l_string|&quot;i2c-ali15x3: enabling SMBus device&bslash;n&quot;
+op_amp
+id|ALI15X3_dev-&gt;dev
+comma
+l_string|&quot;enabling SMBus device&bslash;n&quot;
 )paren
 suffix:semicolon
 id|pci_write_config_byte
@@ -429,10 +440,13 @@ op_eq
 l_int|0
 )paren
 (brace
-id|printk
+id|dev_info
 c_func
 (paren
-l_string|&quot;i2c-ali15x3: enabling SMBus controller&bslash;n&quot;
+op_amp
+id|ALI15X3_dev-&gt;dev
+comma
+l_string|&quot;enabling SMBus controller&bslash;n&quot;
 )paren
 suffix:semicolon
 id|pci_write_config_byte
@@ -470,8 +484,7 @@ comma
 l_string|&quot;ali15x3-smb&quot;
 )paren
 suffix:semicolon
-macro_line|#ifdef DEBUG
-multiline_comment|/*&n;  The interrupt routing for SMB is set up in register 0x77 in the&n;  1533 ISA Bridge device, NOT in the 7101 device.&n;  Don&squot;t bother with finding the 1533 device and reading the register.&n;  if ((....... &amp; 0x0F) == 1)&n;     printk(&quot;i2c-ali15x3.o: ALI15X3 using Interrupt 9 for SMBus.&bslash;n&quot;);&n;*/
+multiline_comment|/*&n;  The interrupt routing for SMB is set up in register 0x77 in the&n;  1533 ISA Bridge device, NOT in the 7101 device.&n;  Don&squot;t bother with finding the 1533 device and reading the register.&n;&t;if ((....... &amp; 0x0F) == 1)&n;&t;&t;dev_dbg(&amp;ALI15X3_dev-&gt;dev, &quot;ALI15X3 using Interrupt 9 for SMBus.&bslash;n&quot;);&n;*/
 id|pci_read_config_byte
 c_func
 (paren
@@ -483,23 +496,28 @@ op_amp
 id|temp
 )paren
 suffix:semicolon
-id|printk
+id|dev_dbg
 c_func
 (paren
-l_string|&quot;i2c-ali15x3.o: SMBREV = 0x%X&bslash;n&quot;
+op_amp
+id|ALI15X3_dev-&gt;dev
+comma
+l_string|&quot;SMBREV = 0x%X&bslash;n&quot;
 comma
 id|temp
 )paren
 suffix:semicolon
-id|printk
+id|dev_dbg
 c_func
 (paren
-l_string|&quot;i2c-ali15x3.o: ALI15X3_smba = 0x%X&bslash;n&quot;
+op_amp
+id|ALI15X3_dev-&gt;dev
+comma
+l_string|&quot;iALI15X3_smba = 0x%X&bslash;n&quot;
 comma
 id|ali15x3_smba
 )paren
 suffix:semicolon
-macro_line|#endif&t;&t;&t;&t;/* DEBUG */
 r_return
 l_int|0
 suffix:semicolon
@@ -528,11 +546,15 @@ suffix:semicolon
 )brace
 multiline_comment|/* Another internally used function */
 DECL|function|ali15x3_transaction
+r_static
 r_int
 id|ali15x3_transaction
 c_func
 (paren
-r_void
+r_struct
+id|i2c_adapter
+op_star
+id|adap
 )paren
 (brace
 r_int
@@ -548,11 +570,14 @@ id|timeout
 op_assign
 l_int|0
 suffix:semicolon
-macro_line|#ifdef DEBUG
-id|printk
+id|dev_dbg
+c_func
 (paren
-l_string|&quot;i2c-ali15x3.o: Transaction (pre): STS=%02x, CNT=%02x, CMD=%02x, ADD=%02x, DAT0=%02x, &quot;
-l_string|&quot;DAT1=%02x&bslash;n&quot;
+op_amp
+id|adap-&gt;dev
+comma
+l_string|&quot;Transaction (pre): STS=%02x, CNT=%02x, CMD=%02x, &quot;
+l_string|&quot;ADD=%02x, DAT0=%02x, DAT1=%02x&bslash;n&quot;
 comma
 id|inb_p
 c_func
@@ -591,7 +616,6 @@ id|SMBHSTDAT1
 )paren
 )paren
 suffix:semicolon
-macro_line|#endif
 multiline_comment|/* get status */
 id|temp
 op_assign
@@ -611,13 +635,17 @@ op_amp
 id|ALI15X3_STS_BUSY
 )paren
 (brace
-multiline_comment|/*&n;   If the host controller is still busy, it may have timed out in the previous transaction,&n;   resulting in a &quot;SMBus Timeout&quot; printk.&n;   I&squot;ve tried the following to reset a stuck busy bit.&n;&t;1. Reset the controller with an ABORT command.&n;&t;   (this doesn&squot;t seem to clear the controller if an external device is hung)&n;&t;2. Reset the controller and the other SMBus devices with a T_OUT command.&n;&t;   (this clears the host busy bit if an external device is hung,&n;&t;   but it comes back upon a new access to a device)&n;&t;3. Disable and reenable the controller in SMBHSTCFG&n;   Worst case, nothing seems to work except power reset.&n;*/
+multiline_comment|/*&n;   If the host controller is still busy, it may have timed out in the previous transaction,&n;   resulting in a &quot;SMBus Timeout&quot; Dev.&n;   I&squot;ve tried the following to reset a stuck busy bit.&n;&t;1. Reset the controller with an ABORT command.&n;&t;   (this doesn&squot;t seem to clear the controller if an external device is hung)&n;&t;2. Reset the controller and the other SMBus devices with a T_OUT command.&n;&t;   (this clears the host busy bit if an external device is hung,&n;&t;   but it comes back upon a new access to a device)&n;&t;3. Disable and reenable the controller in SMBHSTCFG&n;   Worst case, nothing seems to work except power reset.&n;*/
 multiline_comment|/* Abort - reset the host controller */
-multiline_comment|/*&n;#ifdef DEBUG&n;    printk(&quot;i2c-ali15x3.o: Resetting host controller to clear busy condition&bslash;n&quot;,temp);&n;#endif&n;    outb_p(ALI15X3_ABORT, SMBHSTCNT);&n;    temp = inb_p(SMBHSTSTS);&n;    if (temp &amp; ALI15X3_STS_BUSY) {&n;*/
 multiline_comment|/*&n;   Try resetting entire SMB bus, including other devices -&n;   This may not work either - it clears the BUSY bit but&n;   then the BUSY bit may come back on when you try and use the chip again.&n;   If that&squot;s the case you are stuck.&n;*/
-id|printk
+id|dev_info
+c_func
 (paren
-l_string|&quot;i2c-ali15x3.o: Resetting entire SMB Bus to clear busy condition (%02x)&bslash;n&quot;
+op_amp
+id|adap-&gt;dev
+comma
+l_string|&quot;Resetting entire SMB Bus to &quot;
+l_string|&quot;clear busy condition (%02x)&bslash;n&quot;
 comma
 id|temp
 )paren
@@ -684,9 +712,14 @@ id|ALI15X3_STS_BUSY
 (brace
 multiline_comment|/* this is probably going to be correctable only by a power reset&n;&t;&t;&t;   as one of the bits now appears to be stuck */
 multiline_comment|/* This may be a bus or device with electrical problems. */
-id|printk
+id|dev_err
+c_func
 (paren
-l_string|&quot;i2c-ali15x3.o: SMBus reset failed! (0x%02x) - controller or device on bus is probably hung&bslash;n&quot;
+op_amp
+id|adap-&gt;dev
+comma
+l_string|&quot;SMBus reset failed! (0x%02x) - &quot;
+l_string|&quot;controller or device on bus is probably hung&bslash;n&quot;
 comma
 id|temp
 )paren
@@ -787,10 +820,13 @@ op_assign
 op_minus
 l_int|1
 suffix:semicolon
-id|printk
+id|dev_err
 c_func
 (paren
-l_string|&quot;i2c-ali15x3.o: SMBus Timeout!&bslash;n&quot;
+op_amp
+id|adap-&gt;dev
+comma
+l_string|&quot;SMBus Timeout!&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
@@ -807,14 +843,15 @@ op_assign
 op_minus
 l_int|1
 suffix:semicolon
-macro_line|#ifdef DEBUG
-id|printk
+id|dev_dbg
 c_func
 (paren
-l_string|&quot;i2c-ali15x3.o: Error: Failed bus transaction&bslash;n&quot;
+op_amp
+id|adap-&gt;dev
+comma
+l_string|&quot;Error: Failed bus transaction&bslash;n&quot;
 )paren
 suffix:semicolon
-macro_line|#endif
 )brace
 multiline_comment|/*&n;  Unfortunately the ALI SMB controller maps &quot;no response&quot; and &quot;bus collision&quot;&n;  into a single bit. No reponse is the usual case so don&squot;t&n;  do a printk.&n;  This means that bus collisions go unreported.&n;*/
 r_if
@@ -830,10 +867,13 @@ op_assign
 op_minus
 l_int|1
 suffix:semicolon
-macro_line|#ifdef DEBUG
-id|printk
+id|dev_dbg
+c_func
 (paren
-l_string|&quot;i2c-ali15x3.o: Error: no response or bus collision ADD=%02x&bslash;n&quot;
+op_amp
+id|adap-&gt;dev
+comma
+l_string|&quot;Error: no response or bus collision ADD=%02x&bslash;n&quot;
 comma
 id|inb_p
 c_func
@@ -842,7 +882,6 @@ id|SMBHSTADD
 )paren
 )paren
 suffix:semicolon
-macro_line|#endif
 )brace
 multiline_comment|/* haven&squot;t ever seen this */
 r_if
@@ -858,18 +897,24 @@ op_assign
 op_minus
 l_int|1
 suffix:semicolon
-id|printk
+id|dev_err
 c_func
 (paren
-l_string|&quot;i2c-ali15x3.o: Error: device error&bslash;n&quot;
+op_amp
+id|adap-&gt;dev
+comma
+l_string|&quot;Error: device error&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
-macro_line|#ifdef DEBUG
-id|printk
+id|dev_dbg
+c_func
 (paren
-l_string|&quot;i2c-ali15x3.o: Transaction (post): STS=%02x, CNT=%02x, CMD=%02x, ADD=%02x, &quot;
-l_string|&quot;DAT0=%02x, DAT1=%02x&bslash;n&quot;
+op_amp
+id|adap-&gt;dev
+comma
+l_string|&quot;Transaction (post): STS=%02x, CNT=%02x, CMD=%02x, &quot;
+l_string|&quot;ADD=%02x, DAT0=%02x, DAT1=%02x&bslash;n&quot;
 comma
 id|inb_p
 c_func
@@ -908,7 +953,6 @@ id|SMBHSTDAT1
 )paren
 )paren
 suffix:semicolon
-macro_line|#endif
 r_return
 id|result
 suffix:semicolon
@@ -1022,10 +1066,13 @@ op_ge
 id|MAX_TIMEOUT
 )paren
 (brace
-id|printk
+id|dev_err
 c_func
 (paren
-l_string|&quot;i2c-ali15x3.o: Idle wait Timeout! STS=0x%02x&bslash;n&quot;
+op_amp
+id|adap-&gt;dev
+comma
+l_string|&quot;Idle wait Timeout! STS=0x%02x&bslash;n&quot;
 comma
 id|temp
 )paren
@@ -1040,9 +1087,13 @@ id|size
 r_case
 id|I2C_SMBUS_PROC_CALL
 suffix:colon
-id|printk
+id|dev_err
+c_func
 (paren
-l_string|&quot;i2c-ali15x3.o: I2C_SMBUS_PROC_CALL not supported!&bslash;n&quot;
+op_amp
+id|adap-&gt;dev
+comma
+l_string|&quot;I2C_SMBUS_PROC_CALL not supported!&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -1411,6 +1462,7 @@ c_cond
 id|ali15x3_transaction
 c_func
 (paren
+id|adap
 )paren
 )paren
 multiline_comment|/* Error in transaction */
@@ -1565,10 +1617,13 @@ c_func
 id|SMBBLKDAT
 )paren
 suffix:semicolon
-macro_line|#ifdef DEBUG
-id|printk
+id|dev_dbg
+c_func
 (paren
-l_string|&quot;i2c-ali15x3.o: Blk: len=%d, i=%d, data=%02x&bslash;n&quot;
+op_amp
+id|adap-&gt;dev
+comma
+l_string|&quot;Blk: len=%d, i=%d, data=%02x&bslash;n&quot;
 comma
 id|len
 comma
@@ -1580,7 +1635,6 @@ id|i
 )braket
 )paren
 suffix:semicolon
-macro_line|#endif&t;/* DEBUG */
 )brace
 r_break
 suffix:semicolon
@@ -1741,9 +1795,13 @@ id|dev
 )paren
 )paren
 (brace
-id|printk
+id|dev_err
+c_func
 (paren
-l_string|&quot;i2c-ali15x3.o: ALI15X3 not detected, module not inserted.&bslash;n&quot;
+op_amp
+id|dev-&gt;dev
+comma
+l_string|&quot;ALI15X3 not detected, module not inserted.&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
