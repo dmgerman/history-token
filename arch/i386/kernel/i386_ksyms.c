@@ -200,6 +200,7 @@ id|xquad_portio
 )paren
 suffix:semicolon
 macro_line|#endif
+macro_line|#ifndef CONFIG_X86_WP_WORKS_OK
 DECL|variable|__verify_write
 id|EXPORT_SYMBOL
 c_func
@@ -207,6 +208,7 @@ c_func
 id|__verify_write
 )paren
 suffix:semicolon
+macro_line|#endif
 DECL|variable|dump_thread
 id|EXPORT_SYMBOL
 c_func

@@ -43,7 +43,7 @@ multiline_comment|/*&n;&t; * descriptor tables&n;&t; */
 id|asm
 r_volatile
 (paren
-l_string|&quot;sgdt (%0)&quot;
+l_string|&quot;sgdt %0&quot;
 suffix:colon
 l_string|&quot;=m&quot;
 (paren
@@ -54,7 +54,7 @@ suffix:semicolon
 id|asm
 r_volatile
 (paren
-l_string|&quot;sidt (%0)&quot;
+l_string|&quot;sidt %0&quot;
 suffix:colon
 l_string|&quot;=m&quot;
 (paren
@@ -65,7 +65,7 @@ suffix:semicolon
 id|asm
 r_volatile
 (paren
-l_string|&quot;sldt (%0)&quot;
+l_string|&quot;sldt %0&quot;
 suffix:colon
 l_string|&quot;=m&quot;
 (paren
@@ -76,7 +76,7 @@ suffix:semicolon
 id|asm
 r_volatile
 (paren
-l_string|&quot;str (%0)&quot;
+l_string|&quot;str %0&quot;
 suffix:colon
 l_string|&quot;=m&quot;
 (paren
@@ -88,7 +88,7 @@ multiline_comment|/*&n;&t; * save the general registers.&n;&t; * note that gcc h
 id|asm
 r_volatile
 (paren
-l_string|&quot;movl %%esp, (%0)&quot;
+l_string|&quot;movl %%esp, %0&quot;
 suffix:colon
 l_string|&quot;=m&quot;
 (paren
@@ -99,7 +99,7 @@ suffix:semicolon
 id|asm
 r_volatile
 (paren
-l_string|&quot;movl %%eax, (%0)&quot;
+l_string|&quot;movl %%eax, %0&quot;
 suffix:colon
 l_string|&quot;=m&quot;
 (paren
@@ -110,7 +110,7 @@ suffix:semicolon
 id|asm
 r_volatile
 (paren
-l_string|&quot;movl %%ebx, (%0)&quot;
+l_string|&quot;movl %%ebx, %0&quot;
 suffix:colon
 l_string|&quot;=m&quot;
 (paren
@@ -121,7 +121,7 @@ suffix:semicolon
 id|asm
 r_volatile
 (paren
-l_string|&quot;movl %%ecx, (%0)&quot;
+l_string|&quot;movl %%ecx, %0&quot;
 suffix:colon
 l_string|&quot;=m&quot;
 (paren
@@ -132,7 +132,7 @@ suffix:semicolon
 id|asm
 r_volatile
 (paren
-l_string|&quot;movl %%edx, (%0)&quot;
+l_string|&quot;movl %%edx, %0&quot;
 suffix:colon
 l_string|&quot;=m&quot;
 (paren
@@ -143,7 +143,7 @@ suffix:semicolon
 id|asm
 r_volatile
 (paren
-l_string|&quot;movl %%ebp, (%0)&quot;
+l_string|&quot;movl %%ebp, %0&quot;
 suffix:colon
 l_string|&quot;=m&quot;
 (paren
@@ -154,7 +154,7 @@ suffix:semicolon
 id|asm
 r_volatile
 (paren
-l_string|&quot;movl %%esi, (%0)&quot;
+l_string|&quot;movl %%esi, %0&quot;
 suffix:colon
 l_string|&quot;=m&quot;
 (paren
@@ -165,7 +165,7 @@ suffix:semicolon
 id|asm
 r_volatile
 (paren
-l_string|&quot;movl %%edi, (%0)&quot;
+l_string|&quot;movl %%edi, %0&quot;
 suffix:colon
 l_string|&quot;=m&quot;
 (paren
@@ -173,13 +173,14 @@ id|saved_context.edi
 )paren
 )paren
 suffix:semicolon
+multiline_comment|/* FIXME: Need to save XMM0..XMM15? */
 multiline_comment|/*&n;&t; * segment registers&n;&t; */
 id|asm
 r_volatile
 (paren
 l_string|&quot;movw %%es, %0&quot;
 suffix:colon
-l_string|&quot;=r&quot;
+l_string|&quot;=m&quot;
 (paren
 id|saved_context.es
 )paren
@@ -190,7 +191,7 @@ r_volatile
 (paren
 l_string|&quot;movw %%fs, %0&quot;
 suffix:colon
-l_string|&quot;=r&quot;
+l_string|&quot;=m&quot;
 (paren
 id|saved_context.fs
 )paren
@@ -201,7 +202,7 @@ r_volatile
 (paren
 l_string|&quot;movw %%gs, %0&quot;
 suffix:colon
-l_string|&quot;=r&quot;
+l_string|&quot;=m&quot;
 (paren
 id|saved_context.gs
 )paren
@@ -212,7 +213,7 @@ r_volatile
 (paren
 l_string|&quot;movw %%ss, %0&quot;
 suffix:colon
-l_string|&quot;=r&quot;
+l_string|&quot;=m&quot;
 (paren
 id|saved_context.ss
 )paren
@@ -267,7 +268,7 @@ multiline_comment|/*&n;&t; * eflags&n;&t; */
 id|asm
 r_volatile
 (paren
-l_string|&quot;pushfl ; popl (%0)&quot;
+l_string|&quot;pushfl ; popl %0&quot;
 suffix:colon
 l_string|&quot;=m&quot;
 (paren
@@ -307,19 +308,10 @@ multiline_comment|/*&n;&t; * first restore %ds, so we can access our data proper
 id|asm
 r_volatile
 (paren
-l_string|&quot;.align 4&quot;
-)paren
-suffix:semicolon
-id|asm
-r_volatile
-(paren
 l_string|&quot;movw %0, %%ds&quot;
 op_scope_resolution
 l_string|&quot;r&quot;
 (paren
-(paren
-id|u16
-)paren
 id|__KERNEL_DS
 )paren
 )paren
@@ -507,7 +499,7 @@ multiline_comment|/*&n;&t; * now restore the descriptor tables to their proper v
 id|asm
 r_volatile
 (paren
-l_string|&quot;lgdt (%0)&quot;
+l_string|&quot;lgdt %0&quot;
 op_scope_resolution
 l_string|&quot;m&quot;
 (paren
@@ -518,7 +510,7 @@ suffix:semicolon
 id|asm
 r_volatile
 (paren
-l_string|&quot;lidt (%0)&quot;
+l_string|&quot;lidt %0&quot;
 op_scope_resolution
 l_string|&quot;m&quot;
 (paren
@@ -529,7 +521,7 @@ suffix:semicolon
 id|asm
 r_volatile
 (paren
-l_string|&quot;lldt (%0)&quot;
+l_string|&quot;lldt %0&quot;
 op_scope_resolution
 l_string|&quot;m&quot;
 (paren

@@ -39,6 +39,7 @@ r_extern
 r_int
 id|console_loglevel
 suffix:semicolon
+macro_line|#ifndef CONFIG_X86_WP_WORKS_OK
 multiline_comment|/*&n; * Ugly, ugly, but the goto&squot;s result in better assembly..&n; */
 DECL|function|__verify_write
 r_int
@@ -55,6 +56,13 @@ r_int
 id|size
 )paren
 (brace
+r_struct
+id|mm_struct
+op_star
+id|mm
+op_assign
+id|current-&gt;mm
+suffix:semicolon
 r_struct
 id|vm_area_struct
 op_star
@@ -75,9 +83,27 @@ c_cond
 (paren
 op_logical_neg
 id|size
+op_logical_or
+id|segment_eq
+c_func
+(paren
+id|get_fs
+c_func
+(paren
+)paren
+comma
+id|KERNEL_DS
+)paren
 )paren
 r_return
 l_int|1
+suffix:semicolon
+id|down_read
+c_func
+(paren
+op_amp
+id|mm-&gt;mmap_sem
+)paren
 suffix:semicolon
 id|vma
 op_assign
@@ -250,6 +276,14 @@ id|bad_area
 suffix:semicolon
 suffix:semicolon
 )brace
+multiline_comment|/*&n;&t; * We really need to hold mmap_sem over the whole access to&n;&t; * userspace, else another thread could change permissions.&n;&t; * This is unfixable, so don&squot;t use i386-class machines for&n;&t; * critical servers.&n;&t; */
+id|up_read
+c_func
+(paren
+op_amp
+id|mm-&gt;mmap_sem
+)paren
+suffix:semicolon
 r_return
 l_int|1
 suffix:semicolon
@@ -286,6 +320,13 @@ id|good_area
 suffix:semicolon
 id|bad_area
 suffix:colon
+id|up_read
+c_func
+(paren
+op_amp
+id|mm-&gt;mmap_sem
+)paren
+suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
@@ -312,6 +353,7 @@ r_goto
 id|bad_area
 suffix:semicolon
 )brace
+macro_line|#endif
 multiline_comment|/*&n; * Unlock any spinlocks which will prevent us from getting the&n; * message out &n; */
 DECL|function|bust_spinlocks
 r_void

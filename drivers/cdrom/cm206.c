@@ -6371,7 +6371,7 @@ c_func
 (paren
 id|disk-&gt;disk_name
 comma
-l_string|&quot;cm206&quot;
+l_string|&quot;cm206cd&quot;
 )paren
 suffix:semicolon
 id|disk-&gt;fops
