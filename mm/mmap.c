@@ -307,7 +307,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/* Remove one vm structure from the inode&squot;s i_mapping address space. */
+multiline_comment|/*&n; * Remove one vm structure from the inode&squot;s i_mapping address space.&n; */
 DECL|function|remove_shared_vm_struct
 r_static
 r_void
@@ -340,11 +340,11 @@ id|inode
 op_assign
 id|file-&gt;f_dentry-&gt;d_inode
 suffix:semicolon
-id|spin_lock
+id|down
 c_func
 (paren
 op_amp
-id|inode-&gt;i_mapping-&gt;i_shared_lock
+id|inode-&gt;i_mapping-&gt;i_shared_sem
 )paren
 suffix:semicolon
 r_if
@@ -368,11 +368,11 @@ op_amp
 id|vma-&gt;shared
 )paren
 suffix:semicolon
-id|spin_unlock
+id|up
 c_func
 (paren
 op_amp
-id|inode-&gt;i_mapping-&gt;i_shared_lock
+id|inode-&gt;i_mapping-&gt;i_shared_sem
 )paren
 suffix:semicolon
 )brace
@@ -1325,11 +1325,11 @@ c_cond
 (paren
 id|mapping
 )paren
-id|spin_lock
+id|down
 c_func
 (paren
 op_amp
-id|mapping-&gt;i_shared_lock
+id|mapping-&gt;i_shared_sem
 )paren
 suffix:semicolon
 id|spin_lock
@@ -1365,11 +1365,11 @@ c_cond
 (paren
 id|mapping
 )paren
-id|spin_unlock
+id|up
 c_func
 (paren
 op_amp
-id|mapping-&gt;i_shared_lock
+id|mapping-&gt;i_shared_sem
 )paren
 suffix:semicolon
 id|mm-&gt;map_count
@@ -4005,6 +4005,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* Normal function to fix up a mapping&n; * This function is the default for when an area has no specific&n; * function.  This may be used as part of a more specific routine.&n; *&n; * By the time this function is called, the area struct has been&n; * removed from the process mapping list.&n; */
 DECL|function|unmap_vma
+r_static
 r_void
 id|unmap_vma
 c_func
@@ -5615,7 +5616,7 @@ id|next
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/* Insert vm structure into process list sorted by address&n; * and into the inode&squot;s i_mmap ring.  If vm_file is non-NULL&n; * then the i_shared_lock must be held here.&n; */
+multiline_comment|/* Insert vm structure into process list sorted by address&n; * and into the inode&squot;s i_mmap ring.  If vm_file is non-NULL&n; * then i_shared_sem is taken here.&n; */
 DECL|function|insert_vm_struct
 r_void
 id|insert_vm_struct

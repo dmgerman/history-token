@@ -773,11 +773,12 @@ id|list_head
 id|i_mmap_shared
 suffix:semicolon
 multiline_comment|/* list of private mappings */
-DECL|member|i_shared_lock
-id|spinlock_t
-id|i_shared_lock
+DECL|member|i_shared_sem
+r_struct
+id|semaphore
+id|i_shared_sem
 suffix:semicolon
-multiline_comment|/* and spinlock protecting it */
+multiline_comment|/* and sem protecting it */
 DECL|member|dirtied_when
 r_int
 r_int

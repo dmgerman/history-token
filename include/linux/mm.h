@@ -1820,22 +1820,6 @@ r_int
 id|new_below
 )paren
 suffix:semicolon
-r_extern
-r_void
-id|unmap_vma
-c_func
-(paren
-r_struct
-id|mm_struct
-op_star
-id|mm
-comma
-r_struct
-id|vm_area_struct
-op_star
-id|area
-)paren
-suffix:semicolon
 multiline_comment|/* Look up the first VMA which intersects the interval start_addr..end_addr-1,&n;   NULL if none.  Assume start_addr &lt; end_addr. */
 DECL|function|find_vma_intersection
 r_static
