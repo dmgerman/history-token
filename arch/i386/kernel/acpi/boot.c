@@ -3,6 +3,7 @@ macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/acpi.h&gt;
 macro_line|#include &lt;asm/pgalloc.h&gt;
+macro_line|#include &lt;asm/io_apic.h&gt;
 macro_line|#include &lt;asm/apic.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/mpspec.h&gt;
@@ -19,6 +20,18 @@ suffix:semicolon
 r_extern
 r_int
 id|acpi_ht
+suffix:semicolon
+DECL|variable|acpi_lapic
+r_int
+id|acpi_lapic
+op_assign
+l_int|0
+suffix:semicolon
+DECL|variable|acpi_ioapic
+r_int
+id|acpi_ioapic
+op_assign
+l_int|0
 suffix:semicolon
 multiline_comment|/* --------------------------------------------------------------------------&n;                              Boot-time Configuration&n;   -------------------------------------------------------------------------- */
 DECL|variable|acpi_irq_model
@@ -161,10 +174,6 @@ id|offset
 suffix:semicolon
 )brace
 macro_line|#ifdef CONFIG_X86_LOCAL_APIC
-DECL|variable|acpi_lapic
-r_int
-id|acpi_lapic
-suffix:semicolon
 DECL|variable|__initdata
 r_static
 id|u64
@@ -378,7 +387,6 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-macro_line|#ifdef CONFIG_ACPI
 r_static
 r_int
 id|__init
@@ -441,14 +449,8 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-macro_line|#endif /*CONFIG_ACPI*/
 macro_line|#endif /*CONFIG_X86_LOCAL_APIC*/
 macro_line|#ifdef CONFIG_X86_IO_APIC
-DECL|variable|acpi_ioapic
-r_int
-id|acpi_ioapic
-suffix:semicolon
-macro_line|#ifdef CONFIG_ACPI
 r_static
 r_int
 id|__init
@@ -611,7 +613,6 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-macro_line|#endif /*CONFIG_ACPI*/ 
 macro_line|#endif /*CONFIG_X86_IO_APIC*/
 r_static
 r_int
@@ -788,7 +789,6 @@ id|result
 r_return
 id|result
 suffix:semicolon
-macro_line|#ifdef&t;CONFIG_ACPI
 id|result
 op_assign
 id|acpi_blacklisted
@@ -818,7 +818,6 @@ r_return
 id|result
 suffix:semicolon
 )brace
-macro_line|#endif
 macro_line|#ifdef CONFIG_X86_LOCAL_APIC
 multiline_comment|/* &n;&t; * MADT&n;&t; * ----&n;&t; * Parse the Multiple APIC Description Table (MADT), if exists.&n;&t; * Note that this table provides platform SMP configuration &n;&t; * information -- the successor to MPS tables.&n;&t; */
 id|result
@@ -977,7 +976,6 @@ r_return
 id|result
 suffix:semicolon
 )brace
-macro_line|#ifdef&t;CONFIG_ACPI
 id|result
 op_assign
 id|acpi_table_parse_madt
@@ -1009,14 +1007,12 @@ r_return
 id|result
 suffix:semicolon
 )brace
-macro_line|#endif /*CONFIG_ACPI*/
 id|acpi_lapic
 op_assign
 l_int|1
 suffix:semicolon
 macro_line|#endif /*CONFIG_X86_LOCAL_APIC*/
 macro_line|#ifdef CONFIG_X86_IO_APIC
-macro_line|#ifdef&t;CONFIG_ACPI
 multiline_comment|/* &n;&t; * I/O APIC &n;&t; * --------&n;&t; */
 multiline_comment|/*&n;&t; * ACPI interpreter is required to complete interrupt setup,&n;&t; * so if it is off, don&squot;t enumerate the io-apics with ACPI.&n;&t; * If MPS is present, it will handle them,&n;&t; * otherwise the system will stay in PIC mode&n;&t; */
 r_if
@@ -1033,7 +1029,10 @@ multiline_comment|/*&n; &t; * if &quot;noapic&quot; boot option, don&squot;t loo
 r_if
 c_cond
 (paren
-id|skip_ioapic_setup
+id|ioapic_setup_disabled
+c_func
+(paren
+)paren
 )paren
 (brace
 id|printk
@@ -1176,7 +1175,6 @@ id|acpi_ioapic
 op_assign
 l_int|1
 suffix:semicolon
-macro_line|#endif /*CONFIG_ACPI*/
 macro_line|#endif /*CONFIG_X86_IO_APIC*/
 macro_line|#ifdef CONFIG_X86_LOCAL_APIC
 r_if
