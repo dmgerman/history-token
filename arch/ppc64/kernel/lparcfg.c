@@ -516,7 +516,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-macro_line|#endif /* CONFIG_PPC_ISERIES */
+macro_line|#endif&t;&t;&t;&t;/* CONFIG_PPC_ISERIES */
 macro_line|#ifdef CONFIG_PPC_PSERIES
 multiline_comment|/* &n; * Methods used to fetch LPAR data when running on a pSeries platform.&n; */
 multiline_comment|/*&n; * H_GET_PPP hcall returns info in 4 parms.&n; *  entitled_capacity,unallocated_capacity,&n; *  aggregation, resource_capability).&n; *&n; *  R4 = Entitled Processor Capacity Percentage. &n; *  R5 = Unallocated Processor Capacity Percentage.&n; *  R6 (AABBCCDDEEFFGGHH).&n; *      XXXX - reserved (0)&n; *          XXXX - reserved (0)&n; *              XXXX - Group Number&n; *                  XXXX - Pool Number.&n; *  R7 (IIJJKKLLMMNNOOPP).&n; *      XX - reserved. (0)&n; *        XX - bit 0-6 reserved (0).   bit 7 is Capped indicator.&n; *          XX - variable processor Capacity Weight&n; *            XX - Unallocated Variable Processor Capacity Weight.&n; *              XXXX - Active processors in Physical Processor Pool.&n; *                  XXXX  - Processors active on platform. &n; */
@@ -1007,7 +1007,7 @@ op_eq
 l_char|&squot;=&squot;
 )paren
 (brace
-multiline_comment|/* code here to replace workbuffer contents&n;&t;&t;&t;&t; with different keyword strings */
+multiline_comment|/* code here to replace workbuffer contents&n;&t;&t;&t;&t;   with different keyword strings */
 r_if
 c_cond
 (paren
@@ -1688,8 +1688,8 @@ id|purr
 suffix:semicolon
 )brace
 r_else
-multiline_comment|/* non SPLPAR case */
 (brace
+multiline_comment|/* non SPLPAR case */
 id|seq_printf
 c_func
 (paren
@@ -2211,7 +2211,7 @@ r_return
 id|retval
 suffix:semicolon
 )brace
-macro_line|#endif /* CONFIG_PPC_PSERIES */
+macro_line|#endif&t;&t;&t;&t;/* CONFIG_PPC_PSERIES */
 DECL|function|lparcfg_open
 r_static
 r_int
