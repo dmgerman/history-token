@@ -334,8 +334,8 @@ l_int|5
 )braket
 )paren
 suffix:semicolon
-id|p
-op_add_assign
+id|len
+op_sub_assign
 id|p
 (braket
 l_int|1
@@ -343,8 +343,8 @@ l_int|1
 op_plus
 l_int|2
 suffix:semicolon
-id|len
-op_sub_assign
+id|p
+op_add_assign
 id|p
 (braket
 l_int|1
