@@ -1666,13 +1666,6 @@ c_func
 id|tcp_v4_connect
 )paren
 suffix:semicolon
-DECL|variable|tcp_v4_hash_connecting
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|tcp_v4_hash_connecting
-)paren
-suffix:semicolon
 DECL|variable|tcp_unhash
 id|EXPORT_SYMBOL
 c_func

@@ -1,6 +1,7 @@
 multiline_comment|/*&n; * INET&t;&t;An implementation of the TCP/IP protocol suite for the LINUX&n; *&t;&t;operating system.  INET is implemented using the  BSD Socket&n; *&t;&t;interface as the means of communication with the user level.&n; *&n; *&t;&t;Implementation of the Transmission Control Protocol(TCP).&n; *&n; * Version:&t;$Id: tcp_output.c,v 1.146 2002/02/01 22:01:04 davem Exp $&n; *&n; * Authors:&t;Ross Biro, &lt;bir7@leland.Stanford.Edu&gt;&n; *&t;&t;Fred N. van Kempen, &lt;waltje@uWalt.NL.Mugnet.ORG&gt;&n; *&t;&t;Mark Evans, &lt;evansmp@uhura.aston.ac.uk&gt;&n; *&t;&t;Corey Minyard &lt;wf-rch!minyard@relay.EU.net&gt;&n; *&t;&t;Florian La Roche, &lt;flla@stud.uni-sb.de&gt;&n; *&t;&t;Charles Hedrick, &lt;hedrick@klinzhai.rutgers.edu&gt;&n; *&t;&t;Linus Torvalds, &lt;torvalds@cs.helsinki.fi&gt;&n; *&t;&t;Alan Cox, &lt;gw4pts@gw4pts.ampr.org&gt;&n; *&t;&t;Matthew Dillon, &lt;dillon@apollo.west.oic.com&gt;&n; *&t;&t;Arnt Gulbrandsen, &lt;agulbra@nvg.unit.no&gt;&n; *&t;&t;Jorge Cwik, &lt;jorge@laser.satlink.net&gt;&n; */
 multiline_comment|/*&n; * Changes:&t;Pedro Roque&t;:&t;Retransmit queue handled by TCP.&n; *&t;&t;&t;&t;:&t;Fragmentation on mtu decrease&n; *&t;&t;&t;&t;:&t;Segment collapse on retransmit&n; *&t;&t;&t;&t;:&t;AF independence&n; *&n; *&t;&t;Linus Torvalds&t;:&t;send_delayed_ack&n; *&t;&t;David S. Miller&t;:&t;Charge memory using the right skb&n; *&t;&t;&t;&t;&t;during syn/ack processing.&n; *&t;&t;David S. Miller :&t;Output engine completely rewritten.&n; *&t;&t;Andrea Arcangeli:&t;SYNACK carry ts_recent in tsecr.&n; *&t;&t;Cacophonix Gaul :&t;draft-minshall-nagle-01&n; *&t;&t;J Hadi Salim&t;:&t;ECN support&n; *&n; */
 macro_line|#include &lt;net/tcp.h&gt;
+macro_line|#include &lt;linux/compiler.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
 multiline_comment|/* People can turn this off for buggy TCP&squot;s found in printers etc. */
 DECL|variable|sysctl_tcp_retrans_collapse
@@ -4754,20 +4755,18 @@ r_return
 id|skb
 suffix:semicolon
 )brace
-DECL|function|tcp_connect
-r_int
-id|tcp_connect
+multiline_comment|/* &n; * Do all connect socket setups that can be done AF independent.&n; */
+DECL|function|tcp_connect_init
+r_static
+r_inline
+r_void
+id|tcp_connect_init
 c_func
 (paren
 r_struct
 id|sock
 op_star
 id|sk
-comma
-r_struct
-id|sk_buff
-op_star
-id|buff
 )paren
 (brace
 r_struct
@@ -4790,15 +4789,6 @@ id|tcp_sk
 c_func
 (paren
 id|sk
-)paren
-suffix:semicolon
-multiline_comment|/* Reserve space for headers. */
-id|skb_reserve
-c_func
-(paren
-id|buff
-comma
-id|MAX_TCP_HEADER
 )paren
 suffix:semicolon
 multiline_comment|/* We&squot;ll fix this up when we get a response from the other end.&n;&t; * See tcp_input.c:tcp_rcv_state_process case TCP_SYN_SENT.&n;&t; */
@@ -4903,29 +4893,6 @@ id|tp-&gt;rcv_ssthresh
 op_assign
 id|tp-&gt;rcv_wnd
 suffix:semicolon
-multiline_comment|/* Socket identity change complete, no longer&n;&t; * in TCP_CLOSE, so enter ourselves into the&n;&t; * hash tables.&n;&t; */
-id|tcp_set_state
-c_func
-(paren
-id|sk
-comma
-id|TCP_SYN_SENT
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|tp-&gt;af_specific
-op_member_access_from_pointer
-id|hash_connecting
-c_func
-(paren
-id|sk
-)paren
-)paren
-r_goto
-id|err_out
-suffix:semicolon
 id|sk-&gt;err
 op_assign
 l_int|0
@@ -4980,6 +4947,76 @@ id|tcp_clear_retrans
 c_func
 (paren
 id|tp
+)paren
+suffix:semicolon
+)brace
+multiline_comment|/*&n; * Build a SYN and send it off.&n; */
+DECL|function|tcp_connect
+r_int
+id|tcp_connect
+c_func
+(paren
+r_struct
+id|sock
+op_star
+id|sk
+)paren
+(brace
+r_struct
+id|tcp_opt
+op_star
+id|tp
+op_assign
+op_amp
+(paren
+id|sk-&gt;tp_pinfo.af_tcp
+)paren
+suffix:semicolon
+r_struct
+id|sk_buff
+op_star
+id|buff
+suffix:semicolon
+id|tcp_connect_init
+c_func
+(paren
+id|sk
+)paren
+suffix:semicolon
+id|buff
+op_assign
+id|alloc_skb
+c_func
+(paren
+id|MAX_TCP_HEADER
+op_plus
+l_int|15
+comma
+id|sk-&gt;allocation
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|unlikely
+c_func
+(paren
+id|buff
+op_eq
+l_int|NULL
+)paren
+)paren
+r_return
+op_minus
+id|ENOBUFS
+suffix:semicolon
+multiline_comment|/* Reserve space for headers. */
+id|skb_reserve
+c_func
+(paren
+id|buff
+comma
+id|MAX_TCP_HEADER
 )paren
 suffix:semicolon
 id|TCP_SKB_CB
@@ -5117,26 +5154,6 @@ id|tp-&gt;rto
 suffix:semicolon
 r_return
 l_int|0
-suffix:semicolon
-id|err_out
-suffix:colon
-id|tcp_set_state
-c_func
-(paren
-id|sk
-comma
-id|TCP_CLOSE
-)paren
-suffix:semicolon
-id|kfree_skb
-c_func
-(paren
-id|buff
-)paren
-suffix:semicolon
-r_return
-op_minus
-id|EADDRNOTAVAIL
 suffix:semicolon
 )brace
 multiline_comment|/* Send out a delayed ack, the caller does the policy checking&n; * to see if we should even be here.  See tcp_input.c:tcp_ack_snd_check()&n; * for details.&n; */
