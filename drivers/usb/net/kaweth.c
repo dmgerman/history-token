@@ -1575,7 +1575,7 @@ op_star
 )paren
 suffix:semicolon
 r_static
-r_void
+r_int
 id|kaweth_resubmit_rx_urb
 c_func
 (paren
