@@ -185,6 +185,13 @@ op_amp
 id|drv-&gt;devices
 )paren
 suffix:semicolon
+id|INIT_LIST_HEAD
+c_func
+(paren
+op_amp
+id|drv-&gt;class_list
+)paren
+suffix:semicolon
 id|init_MUTEX_LOCKED
 c_func
 (paren
