@@ -374,11 +374,6 @@ id|PTE
 op_star
 id|ptr
 suffix:semicolon
-r_struct
-id|task_struct
-op_star
-id|p
-suffix:semicolon
 macro_line|#endif /* CONFIG_PPC_STD_MMU */
 r_char
 id|buffer
@@ -547,8 +542,6 @@ op_increment
 (brace
 r_int
 r_int
-id|ctx
-comma
 id|mctx
 comma
 id|vsid
@@ -561,8 +554,7 @@ id|ptr-&gt;v
 )paren
 r_continue
 suffix:semicolon
-multiline_comment|/* make sure someone is using this context/vsid */
-multiline_comment|/* first undo the esid skew */
+multiline_comment|/* undo the esid skew */
 id|vsid
 op_assign
 id|ptr-&gt;vsid
@@ -594,23 +586,12 @@ id|mctx
 op_eq
 l_int|0
 )paren
-(brace
 id|kptes
 op_increment
 suffix:semicolon
-r_continue
-suffix:semicolon
-)brace
-multiline_comment|/* now undo the context skew; 801921 * 897 == 1 mod 2^20 */
-id|ctx
-op_assign
-(paren
-id|mctx
-op_star
-l_int|801921
-)paren
-op_amp
-l_int|0xfffff
+r_else
+id|uptes
+op_increment
 suffix:semicolon
 )brace
 id|n
