@@ -4,7 +4,7 @@ macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;net/irda/timer.h&gt;
 macro_line|#include &lt;net/irda/irda.h&gt;
-macro_line|#include &lt;net/irda/irtty.h&gt;
+macro_line|#include &lt;net/irda/irda_device.h&gt;
 macro_line|#include &lt;net/irda/irlap.h&gt;
 macro_line|#include &lt;net/irda/irlmp.h&gt;
 r_static

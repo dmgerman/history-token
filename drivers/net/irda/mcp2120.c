@@ -5,7 +5,6 @@ macro_line|#include &lt;linux/tty.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;net/irda/irda.h&gt;
 macro_line|#include &lt;net/irda/irda_device.h&gt;
-macro_line|#include &lt;net/irda/irtty.h&gt;
 r_static
 r_int
 id|mcp2120_reset

@@ -4,7 +4,6 @@ macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;asm/byteorder.h&gt;
 macro_line|#include &lt;net/irda/irda.h&gt;
 macro_line|#include &lt;net/irda/wrapper.h&gt;
-macro_line|#include &lt;net/irda/irtty.h&gt;
 macro_line|#include &lt;net/irda/crc.h&gt;
 macro_line|#include &lt;net/irda/irlap.h&gt;
 macro_line|#include &lt;net/irda/irlap_frame.h&gt;

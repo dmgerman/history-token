@@ -7,7 +7,6 @@ macro_line|#include &lt;linux/tty.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;net/irda/irda.h&gt;
 macro_line|#include &lt;net/irda/irda_device.h&gt;
-macro_line|#include &lt;net/irda/irtty.h&gt;
 macro_line|#ifndef NDEBUG
 DECL|macro|IRDA_DEBUG
 macro_line|#undef IRDA_DEBUG
