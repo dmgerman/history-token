@@ -6530,10 +6530,6 @@ id|index
 id|EE_ADAPT_SCSI_ID
 )braket
 suffix:semicolon
-id|pACB-&gt;DeviceCnt
-op_assign
-l_int|0
-suffix:semicolon
 id|pACB-&gt;DCBCnt
 op_assign
 l_int|0
@@ -7959,9 +7955,7 @@ suffix:semicolon
 id|SPRINTF
 c_func
 (paren
-l_string|&quot;Nr of attached devices: %i, Nr of DCBs: %i&bslash;n&quot;
-comma
-id|pACB-&gt;DeviceCnt
+l_string|&quot;Nr of DCBs: %i&bslash;n&quot;
 comma
 id|pACB-&gt;DCBCnt
 )paren

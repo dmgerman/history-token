@@ -514,15 +514,10 @@ id|UCHAR
 id|AdapterIndex
 suffix:semicolon
 multiline_comment|/*; nth Adapter this driver */
-DECL|member|DeviceCnt
-id|UCHAR
-id|DeviceCnt
-suffix:semicolon
 DECL|member|DCBCnt
 id|UCHAR
 id|DCBCnt
 suffix:semicolon
-multiline_comment|/* 0x10: */
 DECL|member|TagMaxNum
 id|UCHAR
 id|TagMaxNum
@@ -563,7 +558,6 @@ DECL|member|pTmpSRB
 id|PSRB
 id|pTmpSRB
 suffix:semicolon
-multiline_comment|/* 0x2c: */
 DECL|member|msgin123
 id|UCHAR
 id|msgin123
@@ -586,7 +580,6 @@ DECL|member|pad
 id|UCHAR
 id|pad
 suffix:semicolon
-multiline_comment|/* 0x30: */
 macro_line|#if defined(USE_SPINLOCKS) &amp;&amp; USE_SPINLOCKS &gt; 1 &amp;&amp; (defined(CONFIG_SMP) || DEBUG_SPINLOCKS &gt; 0)
 DECL|member|lock
 id|spinlock_t
@@ -614,7 +607,6 @@ DECL|member|PDEVDECL1
 id|PDEVDECL1
 suffix:semicolon
 multiline_comment|/* Pointer to PCI cfg. space */
-multiline_comment|/* 0x40/0x3c: */
 DECL|member|Cmds
 id|ULONG
 id|Cmds
@@ -635,18 +627,15 @@ DECL|member|CmdOutOfSRB
 id|UINT
 id|CmdOutOfSRB
 suffix:semicolon
-multiline_comment|/* 0x54/0x50: */
 DECL|member|Waiting_Timer
 r_struct
 id|timer_list
 id|Waiting_Timer
 suffix:semicolon
-multiline_comment|/* 0x68/0x64: */
 DECL|member|TmpSRB
 id|DC390_SRB
 id|TmpSRB
 suffix:semicolon
-multiline_comment|/* 0xcc/0xc8: */
 DECL|member|SRB_array
 id|DC390_SRB
 id|SRB_array
@@ -655,7 +644,6 @@ id|MAX_SRB_CNT
 )braket
 suffix:semicolon
 multiline_comment|/* 50 SRBs */
-multiline_comment|/* 0xfa4/0xfa0: */
 )brace
 suffix:semicolon
 DECL|typedef|DC390_ACB

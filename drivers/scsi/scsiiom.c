@@ -6083,7 +6083,6 @@ suffix:semicolon
 id|pACB-&gt;DCBCnt
 op_decrement
 suffix:semicolon
-multiline_comment|/* pACB-&gt;DeviceCnt--; */
 )brace
 suffix:semicolon
 r_static
@@ -7579,14 +7578,6 @@ id|pDCB
 comma
 id|ptr
 )paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|pACB-&gt;scan_devices
-)paren
-id|pACB-&gt;DeviceCnt
-op_increment
 suffix:semicolon
 )brace
 r_if
