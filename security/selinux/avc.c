@@ -17,13 +17,107 @@ macro_line|#include &lt;linux/ipv6.h&gt;
 macro_line|#include &lt;net/ipv6.h&gt;
 macro_line|#include &quot;avc.h&quot;
 macro_line|#include &quot;avc_ss.h&quot;
-macro_line|#ifdef CONFIG_AUDIT
-macro_line|#include &quot;class_to_string.h&quot;
-macro_line|#endif
-macro_line|#include &quot;common_perm_to_string.h&quot;
-macro_line|#include &quot;av_inherit.h&quot;
+DECL|struct|av_perm_to_string
+r_static
+r_const
+r_struct
+id|av_perm_to_string
+(brace
+DECL|member|tclass
+id|u16
+id|tclass
+suffix:semicolon
+DECL|member|value
+id|u32
+id|value
+suffix:semicolon
+DECL|member|name
+r_const
+r_char
+op_star
+id|name
+suffix:semicolon
+DECL|variable|av_perm_to_string
+)brace
+id|av_perm_to_string
+(braket
+)braket
+op_assign
+(brace
+DECL|macro|S_
+mdefine_line|#define S_(c, v, s) { c, v, s },
 macro_line|#include &quot;av_perm_to_string.h&quot;
-macro_line|#include &quot;objsec.h&quot;
+DECL|macro|S_
+macro_line|#undef S_
+)brace
+suffix:semicolon
+macro_line|#ifdef CONFIG_AUDIT
+DECL|variable|class_to_string
+r_static
+r_const
+r_char
+op_star
+id|class_to_string
+(braket
+)braket
+op_assign
+(brace
+DECL|macro|S_
+mdefine_line|#define S_(s) s,
+macro_line|#include &quot;class_to_string.h&quot;
+DECL|macro|S_
+macro_line|#undef S_
+)brace
+suffix:semicolon
+macro_line|#endif
+DECL|macro|TB_
+mdefine_line|#define TB_(s) static const char * s [] = {
+DECL|macro|TE_
+mdefine_line|#define TE_(s) };
+DECL|macro|S_
+mdefine_line|#define S_(s) s,
+macro_line|#include &quot;common_perm_to_string.h&quot;
+DECL|macro|TB_
+macro_line|#undef TB_
+DECL|macro|TE_
+macro_line|#undef TE_
+DECL|macro|S_
+macro_line|#undef S_
+DECL|struct|av_inherit
+r_static
+r_const
+r_struct
+id|av_inherit
+(brace
+DECL|member|tclass
+id|u16
+id|tclass
+suffix:semicolon
+DECL|member|common_pts
+r_const
+r_char
+op_star
+op_star
+id|common_pts
+suffix:semicolon
+DECL|member|common_base
+id|u32
+id|common_base
+suffix:semicolon
+DECL|variable|av_inherit
+)brace
+id|av_inherit
+(braket
+)braket
+op_assign
+(brace
+DECL|macro|S_
+mdefine_line|#define S_(c, i, b) { c, common_##i##_perm_to_string, b },
+macro_line|#include &quot;av_inherit.h&quot;
+DECL|macro|S_
+macro_line|#undef S_
+)brace
+suffix:semicolon
 DECL|macro|AVC_CACHE_SLOTS
 mdefine_line|#define AVC_CACHE_SLOTS&t;&t;&t;512
 DECL|macro|AVC_DEF_CACHE_THRESHOLD
@@ -282,6 +376,7 @@ id|u32
 id|av
 )paren
 (brace
+r_const
 r_char
 op_star
 op_star
