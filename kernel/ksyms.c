@@ -3157,6 +3157,13 @@ c_func
 id|raise_softirq
 )paren
 suffix:semicolon
+DECL|variable|open_softirq
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|open_softirq
+)paren
+suffix:semicolon
 DECL|variable|cpu_raise_softirq
 id|EXPORT_SYMBOL
 c_func
