@@ -2885,11 +2885,17 @@ id|gfp_mask
 op_amp
 id|__GFP_NOWARN
 )paren
+op_logical_and
+id|printk_ratelimit
+c_func
+(paren
+)paren
 )paren
 (brace
 id|printk
 c_func
 (paren
+id|KERN_WARNING
 l_string|&quot;%s: page allocation failure.&quot;
 l_string|&quot; order:%d, mode:0x%x&bslash;n&quot;
 comma
@@ -2898,6 +2904,11 @@ comma
 id|order
 comma
 id|gfp_mask
+)paren
+suffix:semicolon
+id|dump_stack
+c_func
+(paren
 )paren
 suffix:semicolon
 )brace

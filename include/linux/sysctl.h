@@ -438,6 +438,18 @@ op_assign
 l_int|59
 comma
 multiline_comment|/* int: hppa unaligned-trap enable */
+DECL|enumerator|KERN_PRINTK_RATELIMIT
+id|KERN_PRINTK_RATELIMIT
+op_assign
+l_int|60
+comma
+multiline_comment|/* int: tune printk ratelimiting */
+DECL|enumerator|KERN_PRINTK_RATELIMIT_BURST
+id|KERN_PRINTK_RATELIMIT_BURST
+op_assign
+l_int|61
+comma
+multiline_comment|/* int: tune printk ratelimiting */
 )brace
 suffix:semicolon
 multiline_comment|/* CTL_VM names: */
