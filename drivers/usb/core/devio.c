@@ -1584,9 +1584,12 @@ op_assign
 op_minus
 id|EBUSY
 suffix:semicolon
-id|lock_kernel
+multiline_comment|/* lock against other changes to driver bindings */
+id|down_write
 c_func
 (paren
+op_amp
+id|usb_bus_type.subsys.rwsem
 )paren
 suffix:semicolon
 r_if
@@ -1625,9 +1628,11 @@ op_assign
 l_int|0
 suffix:semicolon
 )brace
-id|unlock_kernel
+id|up_write
 c_func
 (paren
+op_amp
+id|usb_bus_type.subsys.rwsem
 )paren
 suffix:semicolon
 r_return
@@ -1695,6 +1700,14 @@ op_amp
 id|dev-&gt;serialize
 )paren
 suffix:semicolon
+multiline_comment|/* lock against other changes to driver bindings */
+id|down_write
+c_func
+(paren
+op_amp
+id|usb_bus_type.subsys.rwsem
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1729,6 +1742,13 @@ op_assign
 l_int|0
 suffix:semicolon
 )brace
+id|up_write
+c_func
+(paren
+op_amp
+id|usb_bus_type.subsys.rwsem
+)paren
+suffix:semicolon
 id|up
 c_func
 (paren

@@ -690,12 +690,13 @@ id|end
 r_return
 id|start
 suffix:semicolon
-id|lock_kernel
+id|down_read
 c_func
 (paren
+op_amp
+id|usb_bus_type.subsys.rwsem
 )paren
 suffix:semicolon
-multiline_comment|/* driver might be unloaded */
 id|start
 op_add_assign
 id|sprintf
@@ -731,9 +732,11 @@ suffix:colon
 l_string|&quot;(none)&quot;
 )paren
 suffix:semicolon
-id|unlock_kernel
+id|up_read
 c_func
 (paren
+op_amp
+id|usb_bus_type.subsys.rwsem
 )paren
 suffix:semicolon
 r_return
