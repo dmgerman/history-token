@@ -1,7 +1,11 @@
 multiline_comment|/*&n;    i2c-sis630.c - Part of lm_sensors, Linux kernel modules for hardware&n;              monitoring&n;&n;    Copyright (c) 2002,2003 Alexander Malysh &lt;amalysh@web.de&gt;&n;&n;    This program is free software; you can redistribute it and/or modify&n;    it under the terms of the GNU General Public License as published by&n;    the Free Software Foundation; either version 2 of the License, or&n;    (at your option) any later version.&n;&n;    This program is distributed in the hope that it will be useful,&n;    but WITHOUT ANY WARRANTY; without even the implied warranty of&n;    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n;    GNU General Public License for more details.&n;&n;    You should have received a copy of the GNU General Public License&n;    along with this program; if not, write to the Free Software&n;    Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n;*/
 multiline_comment|/*&n;   Changes:&n;   24.08.2002&n;   &t;Fixed the typo in sis630_access (Thanks to Mark M. Hoffman)&n;&t;Changed sis630_transaction.(Thanks to Mark M. Hoffman)&n;   18.09.2002&n;&t;Added SIS730 as supported.&n;   21.09.2002&n;&t;Added high_clock module option.If this option is set&n;&t;used Host Master Clock 56KHz (default 14KHz).For now we save old Host&n;&t;Master Clock and after transaction completed restore (otherwise&n;&t;it&squot;s confuse BIOS and hung Machine).&n;   24.09.2002&n;&t;Fixed typo in sis630_access&n;&t;Fixed logical error by restoring of Host Master Clock&n;   31.07.2003&n;   &t;Added block data read/write support.&n;*/
 multiline_comment|/*&n;   Status: beta&n;&n;   Supports:&n;&t;SIS 630&n;&t;SIS 730&n;&n;   Note: we assume there can only be one device, with one SMBus interface.&n;*/
-multiline_comment|/* #define DEBUG 1 */
+macro_line|#include &lt;linux/config.h&gt;
+macro_line|#ifdef CONFIG_I2C_DEBUG_BUS
+DECL|macro|DEBUG
+mdefine_line|#define DEBUG&t;1
+macro_line|#endif
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;

@@ -275,11 +275,14 @@ mdefine_line|#define ZONE_NORMAL&t;&t;1
 DECL|macro|ZONE_HIGHMEM
 mdefine_line|#define ZONE_HIGHMEM&t;&t;2
 DECL|macro|MAX_NR_ZONES
-mdefine_line|#define MAX_NR_ZONES&t;&t;3&t;/* Sync this with MAX_NR_ZONES_SHIFT */
-DECL|macro|MAX_NR_ZONES_SHIFT
-mdefine_line|#define MAX_NR_ZONES_SHIFT&t;2&t;/* ceil(log2(MAX_NR_ZONES)) */
+mdefine_line|#define MAX_NR_ZONES&t;&t;3&t;/* Sync this with ZONES_SHIFT */
+DECL|macro|ZONES_SHIFT
+mdefine_line|#define ZONES_SHIFT&t;&t;2&t;/* ceil(log2(MAX_NR_ZONES)) */
 DECL|macro|GFP_ZONEMASK
 mdefine_line|#define GFP_ZONEMASK&t;0x03
+multiline_comment|/*&n; * The &quot;priority&quot; of VM scanning is how much of the queues we will scan in one&n; * go. A value of 12 for DEF_PRIORITY implies that we will scan 1/4096th of the&n; * queues (&quot;queue_length &gt;&gt; 12&quot;) during an aging round.&n; */
+DECL|macro|DEF_PRIORITY
+mdefine_line|#define DEF_PRIORITY 12
 multiline_comment|/*&n; * One allocation request operates on a zonelist. A zonelist&n; * is a list of zones, the first one is the &squot;goal&squot; of the&n; * allocation, the other zones are fallback zones, in decreasing&n; * priority.&n; *&n; * Right now a zonelist takes up less than a cacheline. We never&n; * modify it apart from boot-up, and only a few indices are used,&n; * so despite the zonelist table being relatively big, the cache&n; * footprint of this construct is very small.&n; */
 DECL|struct|zonelist
 r_struct
@@ -575,11 +578,11 @@ mdefine_line|#define NODE_DATA(nid)&t;&t;(&amp;contig_page_data)
 DECL|macro|NODE_MEM_MAP
 mdefine_line|#define NODE_MEM_MAP(nid)&t;mem_map
 DECL|macro|MAX_NODES_SHIFT
-mdefine_line|#define MAX_NODES_SHIFT&t;&t;0
+mdefine_line|#define MAX_NODES_SHIFT&t;&t;1
 macro_line|#else /* CONFIG_DISCONTIGMEM */
 macro_line|#include &lt;asm/mmzone.h&gt;
 macro_line|#if BITS_PER_LONG == 32
-multiline_comment|/*&n; * with 32 bit flags field, page-&gt;zone is currently 8 bits.&n; * there are 3 zones (2 bits) and this leaves 8-2=6 bits for nodes.&n; */
+multiline_comment|/*&n; * with 32 bit page-&gt;flags field, we reserve 8 bits for node/zone info.&n; * there are 3 zones (2 bits) and this leaves 8-2=6 bits for nodes.&n; */
 DECL|macro|MAX_NODES_SHIFT
 mdefine_line|#define MAX_NODES_SHIFT&t;&t;6
 macro_line|#elif BITS_PER_LONG == 64
@@ -590,6 +593,12 @@ macro_line|#endif
 macro_line|#endif /* !CONFIG_DISCONTIGMEM */
 macro_line|#if NODES_SHIFT &gt; MAX_NODES_SHIFT
 macro_line|#error NODES_SHIFT &gt; MAX_NODES_SHIFT
+macro_line|#endif
+multiline_comment|/* There are currently 3 zones: DMA, Normal &amp; Highmem, thus we need 2 bits */
+DECL|macro|MAX_ZONES_SHIFT
+mdefine_line|#define MAX_ZONES_SHIFT&t;&t;2
+macro_line|#if ZONES_SHIFT &gt; MAX_ZONES_SHIFT
+macro_line|#error ZONES_SHIFT &gt; MAX_ZONES_SHIFT
 macro_line|#endif
 r_extern
 id|DECLARE_BITMAP

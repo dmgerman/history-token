@@ -694,7 +694,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* end kafscmd() */
 multiline_comment|/*****************************************************************************/
-multiline_comment|/*&n; * handle a call coming in to the cache manager&n; * - if I want to keep the call, I must increment its usage count&n; * - the return value will be negated and passed back in an abort packet if non-zero&n; * - serialised by virtue of there only being one krxiod&n; */
+multiline_comment|/*&n; * handle a call coming in to the cache manager&n; * - if I want to keep the call, I must increment its usage count&n; * - the return value will be negated and passed back in an abort packet if&n; *   non-zero&n; * - serialised by virtue of there only being one krxiod&n; */
 DECL|function|afscm_new_call
 r_static
 r_int
@@ -1220,16 +1220,12 @@ op_amp
 id|afscm_sem
 )paren
 suffix:semicolon
-r_if
-c_cond
+id|BUG_ON
+c_func
 (paren
 id|afscm_usage
 op_eq
 l_int|0
-)paren
-id|BUG
-c_func
-(paren
 )paren
 suffix:semicolon
 id|afscm_usage
@@ -1253,7 +1249,7 @@ op_amp
 id|AFSCM_service
 )paren
 suffix:semicolon
-multiline_comment|/* abort any calls I&squot;ve still got open (the afscm_error() will dequeue them) */
+multiline_comment|/* abort any calls I&squot;ve still got open (the afscm_error() will&n;&t;&t; * dequeue them) */
 id|spin_lock
 c_func
 (paren
@@ -1315,7 +1311,7 @@ op_minus
 id|ESRCH
 )paren
 suffix:semicolon
-multiline_comment|/* abort, dequeue and put */
+multiline_comment|/* abort, dequeue and&n;&t;&t;&t;&t;&t;&t;&t; * put */
 id|_debug
 c_func
 (paren
@@ -1481,7 +1477,8 @@ op_star
 id|call
 )paren
 (brace
-id|afs_server_t
+r_struct
+id|afs_server
 op_star
 id|server
 suffix:semicolon
@@ -1543,6 +1540,7 @@ r_if
 c_cond
 (paren
 id|qty
+template_param
 l_int|50
 op_star
 (paren
@@ -1556,7 +1554,8 @@ l_int|8
 r_break
 suffix:semicolon
 (brace
-id|afs_callback_t
+r_struct
+id|afs_callback
 op_star
 id|cb
 comma
@@ -1583,7 +1582,7 @@ comma
 id|qty
 )paren
 suffix:semicolon
-multiline_comment|/* drag the entire argument block out to the scratch space */
+multiline_comment|/* drag the entire argument block out to the scratch&n;&t;&t;&t; * space */
 id|ret
 op_assign
 id|rxrpc_call_read_data
@@ -1709,7 +1708,8 @@ c_func
 (paren
 id|call
 comma
-id|afs_callback_t
+r_struct
+id|afs_callback
 )paren
 suffix:semicolon
 r_for
@@ -1994,7 +1994,8 @@ op_star
 id|call
 )paren
 (brace
-id|afs_server_t
+r_struct
+id|afs_server
 op_star
 id|server
 suffix:semicolon
@@ -2035,7 +2036,7 @@ c_cond
 id|call-&gt;app_call_state
 )paren
 (brace
-multiline_comment|/* we&squot;ve received the last packet - drain all the data from the call */
+multiline_comment|/* we&squot;ve received the last packet - drain all the data from the&n;&t;&t; * call */
 r_case
 id|RXRPC_CSTATE_SRVR_GOT_ARGS
 suffix:colon
@@ -2224,7 +2225,8 @@ op_star
 id|call
 )paren
 (brace
-id|afs_server_t
+r_struct
+id|afs_server
 op_star
 id|server
 suffix:semicolon
@@ -2265,7 +2267,7 @@ c_cond
 id|call-&gt;app_call_state
 )paren
 (brace
-multiline_comment|/* we&squot;ve received the last packet - drain all the data from the call */
+multiline_comment|/* we&squot;ve received the last packet - drain all the data from the&n;&t;&t; * call */
 r_case
 id|RXRPC_CSTATE_SRVR_GOT_ARGS
 suffix:colon

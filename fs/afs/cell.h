@@ -158,7 +158,9 @@ r_int
 id|afs_cell_init
 c_func
 (paren
-r_void
+r_char
+op_star
+id|rootcell
 )paren
 suffix:semicolon
 r_extern

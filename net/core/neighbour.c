@@ -9,6 +9,7 @@ macro_line|#include &lt;linux/netdevice.h&gt;
 macro_line|#ifdef CONFIG_SYSCTL
 macro_line|#include &lt;linux/sysctl.h&gt;
 macro_line|#endif
+macro_line|#include &lt;linux/times.h&gt;
 macro_line|#include &lt;net/neighbour.h&gt;
 macro_line|#include &lt;net/dst.h&gt;
 macro_line|#include &lt;net/sock.h&gt;
@@ -7062,7 +7063,7 @@ dot
 id|proc_handler
 op_assign
 op_amp
-id|proc_dointvec
+id|proc_dointvec_userhz_jiffies
 comma
 )brace
 comma
@@ -7272,7 +7273,7 @@ dot
 id|proc_handler
 op_assign
 op_amp
-id|proc_dointvec
+id|proc_dointvec_userhz_jiffies
 comma
 )brace
 comma
@@ -7304,7 +7305,7 @@ dot
 id|proc_handler
 op_assign
 op_amp
-id|proc_dointvec
+id|proc_dointvec_userhz_jiffies
 comma
 )brace
 comma
@@ -7336,7 +7337,7 @@ dot
 id|proc_handler
 op_assign
 op_amp
-id|proc_dointvec
+id|proc_dointvec_userhz_jiffies
 comma
 )brace
 comma

@@ -2135,6 +2135,7 @@ id|SPEED_1152000
 suffix:semicolon
 r_break
 suffix:semicolon
+macro_line|#ifdef B4000000
 r_case
 id|B4000000
 suffix:colon
@@ -2144,6 +2145,7 @@ id|SPEED_4000000
 suffix:semicolon
 r_break
 suffix:semicolon
+macro_line|#endif
 )brace
 r_if
 c_cond

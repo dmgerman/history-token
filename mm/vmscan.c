@@ -21,9 +21,6 @@ macro_line|#include &lt;asm/pgalloc.h&gt;
 macro_line|#include &lt;asm/tlbflush.h&gt;
 macro_line|#include &lt;asm/div64.h&gt;
 macro_line|#include &lt;linux/swapops.h&gt;
-multiline_comment|/*&n; * The &quot;priority&quot; of VM scanning is how much of the queues we will scan in one&n; * go. A value of 12 for DEF_PRIORITY implies that we will scan 1/4096th of the&n; * queues (&quot;queue_length &gt;&gt; 12&quot;) during an aging round.&n; */
-DECL|macro|DEF_PRIORITY
-mdefine_line|#define DEF_PRIORITY 12
 multiline_comment|/*&n; * From 0 .. 100.  Higher means more swappy.&n; */
 DECL|variable|vm_swappiness
 r_int

@@ -59,7 +59,7 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|function|av7110_ipack_init
-r_void
+r_int
 id|av7110_ipack_init
 c_func
 (paren
@@ -115,6 +115,10 @@ id|printk
 l_string|&quot;Couldn&squot;t allocate memory for ipack&bslash;n&quot;
 )paren
 suffix:semicolon
+r_return
+op_minus
+id|ENOMEM
+suffix:semicolon
 )brace
 id|p-&gt;size
 op_assign
@@ -133,6 +137,9 @@ c_func
 (paren
 id|p
 )paren
+suffix:semicolon
+r_return
+l_int|0
 suffix:semicolon
 )brace
 DECL|function|av7110_ipack_free
@@ -238,7 +245,7 @@ op_minus
 l_int|6
 )paren
 op_amp
-l_int|0xFF00
+l_int|0xff00
 )paren
 op_rshift
 l_int|8
@@ -259,7 +266,7 @@ op_minus
 l_int|6
 )paren
 op_amp
-l_int|0x00FF
+l_int|0x00ff
 )paren
 suffix:semicolon
 r_if
@@ -294,7 +301,7 @@ c_cond
 (paren
 id|streamid
 op_amp
-l_int|0xF8
+l_int|0xf8
 )paren
 op_eq
 l_int|0x80
@@ -392,7 +399,7 @@ op_rshift
 l_int|8
 )paren
 op_amp
-l_int|0xFF
+l_int|0xff
 suffix:semicolon
 id|p-&gt;buf
 (braket
@@ -405,7 +412,7 @@ op_assign
 id|ac3_off
 )paren
 op_amp
-l_int|0xFF
+l_int|0xff
 suffix:semicolon
 id|p-&gt;buf
 (braket
@@ -476,7 +483,7 @@ op_logical_and
 (paren
 id|streamid
 op_amp
-l_int|0xF8
+l_int|0xf8
 )paren
 op_eq
 l_int|0x80
@@ -504,7 +511,7 @@ op_rshift
 l_int|8
 )paren
 op_amp
-l_int|0xFF
+l_int|0xff
 suffix:semicolon
 id|p-&gt;buf
 (braket
@@ -515,7 +522,7 @@ op_assign
 id|ac3_off
 )paren
 op_amp
-l_int|0xFF
+l_int|0xff
 suffix:semicolon
 id|p-&gt;buf
 (braket
@@ -562,7 +569,7 @@ op_minus
 l_int|6
 )paren
 op_amp
-l_int|0xFF00
+l_int|0xff00
 )paren
 op_rshift
 l_int|8
@@ -583,7 +590,7 @@ op_minus
 l_int|6
 )paren
 op_amp
-l_int|0x00FF
+l_int|0x00ff
 )paren
 suffix:semicolon
 id|p
@@ -603,7 +610,7 @@ id|p-&gt;buf
 l_int|6
 )braket
 op_assign
-l_int|0x0F
+l_int|0x0f
 suffix:semicolon
 id|p-&gt;count
 op_assign
@@ -933,12 +940,10 @@ id|c
 op_eq
 l_int|0
 )paren
-(brace
 id|p-&gt;found
 op_assign
 l_int|2
 suffix:semicolon
-)brace
 r_else
 id|p-&gt;found
 op_assign
@@ -993,6 +998,7 @@ id|p-&gt;done
 op_assign
 l_int|1
 suffix:semicolon
+multiline_comment|/* fall through */
 r_case
 id|PRIVATE_STREAM1
 suffix:colon
@@ -1183,7 +1189,7 @@ c_cond
 (paren
 id|p-&gt;flag1
 op_amp
-l_int|0xC0
+l_int|0xc0
 )paren
 op_eq
 l_int|0x80
@@ -1272,10 +1278,6 @@ id|p-&gt;found
 op_increment
 suffix:semicolon
 )brace
-r_break
-suffix:semicolon
-r_default
-suffix:colon
 r_break
 suffix:semicolon
 )brace
@@ -1534,7 +1536,7 @@ id|count
 op_logical_and
 id|p-&gt;check
 op_eq
-l_int|0xFF
+l_int|0xff
 )paren
 (brace
 id|p-&gt;check
@@ -1582,7 +1584,7 @@ c_cond
 (paren
 id|p-&gt;check
 op_amp
-l_int|0xC0
+l_int|0xc0
 )paren
 op_eq
 l_int|0x40
@@ -1738,7 +1740,7 @@ l_int|0x30
 op_logical_and
 id|p-&gt;check
 op_ne
-l_int|0xFF
+l_int|0xff
 )paren
 (brace
 id|p-&gt;flag2
@@ -1746,7 +1748,7 @@ op_assign
 (paren
 id|p-&gt;check
 op_amp
-l_int|0xF0
+l_int|0xf0
 )paren
 op_lshift
 l_int|2

@@ -61,8 +61,8 @@ op_star
 id|mm
 )paren
 (brace
-r_if
-c_cond
+id|BUG_ON
+c_func
 (paren
 id|atomic_read
 c_func
@@ -72,10 +72,6 @@ id|mm-&gt;mm_users
 )paren
 op_ne
 l_int|1
-)paren
-id|BUG
-c_func
-(paren
 )paren
 suffix:semicolon
 id|mm-&gt;context
@@ -232,17 +228,13 @@ id|next
 )paren
 (brace
 multiline_comment|/*&n;&t; * Activate_mm is our one chance to allocate a space id&n;&t; * for a new mm created in the exec path. There&squot;s also&n;&t; * some lazy tlb stuff, which is currently dead code, but&n;&t; * we only allocate a space id if one hasn&squot;t been allocated&n;&t; * already, so we should be OK.&n;&t; */
-r_if
-c_cond
+id|BUG_ON
+c_func
 (paren
 id|next
 op_eq
 op_amp
 id|init_mm
-)paren
-id|BUG
-c_func
-(paren
 )paren
 suffix:semicolon
 multiline_comment|/* Should never happen */

@@ -1,4 +1,5 @@
 multiline_comment|/*&n; * Network interface table.&n; *&n; * Network interfaces (devices) do not have a security field, so we&n; * maintain a table associating each interface with a SID.&n; *&n; * Author: James Morris &lt;jmorris@redhat.com&gt;&n; *&n; * Copyright (C) 2003 Red Hat, Inc., James Morris &lt;jmorris@redhat.com&gt;&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2,&n; * as published by the Free Software Foundation.&n; */
+macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/stddef.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;

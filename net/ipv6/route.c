@@ -8789,6 +8789,12 @@ id|sysctl_jiffies
 comma
 )brace
 comma
+(brace
+dot
+id|ctl_name
+op_assign
+l_int|0
+)brace
 )brace
 suffix:semicolon
 macro_line|#endif

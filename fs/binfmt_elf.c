@@ -1434,6 +1434,10 @@ comma
 id|elf_type
 )paren
 suffix:semicolon
+id|error
+op_assign
+id|map_addr
+suffix:semicolon
 r_if
 c_cond
 (paren

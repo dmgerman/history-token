@@ -2768,11 +2768,6 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|sort_exception_table
-c_func
-(paren
-)paren
-suffix:semicolon
 multiline_comment|/* this is for modules since _machine can be a define -- Cort */
 id|ppc_md.ppc_machine
 op_assign

@@ -149,6 +149,11 @@ op_star
 id|arg
 )paren
 (brace
+r_struct
+id|afs_timer
+op_star
+id|timer
+suffix:semicolon
 id|DECLARE_WAITQUEUE
 c_func
 (paren
@@ -156,10 +161,6 @@ id|myself
 comma
 id|current
 )paren
-suffix:semicolon
-id|afs_timer_t
-op_star
-id|timer
 suffix:semicolon
 id|printk
 c_func
@@ -288,7 +289,8 @@ c_func
 (paren
 id|kafstimod_list.next
 comma
-id|afs_timer_t
+r_struct
+id|afs_timer
 comma
 id|link
 )paren
@@ -355,7 +357,7 @@ id|TASK_INTERRUPTIBLE
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* the thing on the front of the queue needs processing&n;&t; * - we come here with the lock held and timer pointing to the expired entry&n;&t; */
+multiline_comment|/* the thing on the front of the queue needs processing&n;&t; * - we come here with the lock held and timer pointing to the expired&n;&t; *   entry&n;&t; */
 id|immediate
 suffix:colon
 id|remove_wait_queue
@@ -424,7 +426,8 @@ r_void
 id|afs_kafstimod_add_timer
 c_func
 (paren
-id|afs_timer_t
+r_struct
+id|afs_timer
 op_star
 id|timer
 comma
@@ -434,13 +437,14 @@ id|timeout
 )paren
 (brace
 r_struct
+id|afs_timer
+op_star
+id|ptimer
+suffix:semicolon
+r_struct
 id|list_head
 op_star
 id|_p
-suffix:semicolon
-id|afs_timer_t
-op_star
-id|ptimer
 suffix:semicolon
 id|_enter
 c_func
@@ -466,7 +470,7 @@ op_amp
 id|timer-&gt;link
 )paren
 suffix:semicolon
-multiline_comment|/* the timer was deferred or reset - put it back in the queue at the right place */
+multiline_comment|/* the timer was deferred or reset - put it back in the queue at the&n;&t; * right place */
 id|timer-&gt;timo_jif
 op_assign
 id|jiffies
@@ -489,7 +493,8 @@ c_func
 (paren
 id|_p
 comma
-id|afs_timer_t
+r_struct
+id|afs_timer
 comma
 id|link
 )paren
@@ -547,7 +552,8 @@ r_int
 id|afs_kafstimod_del_timer
 c_func
 (paren
-id|afs_timer_t
+r_struct
+id|afs_timer
 op_star
 id|timer
 )paren

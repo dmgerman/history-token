@@ -378,6 +378,8 @@ c_func
 id|addr
 comma
 l_int|NULL
+comma
+l_int|0
 )paren
 )paren
 r_return

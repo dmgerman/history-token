@@ -117,7 +117,7 @@ comma
 suffix:semicolon
 macro_line|#endif
 multiline_comment|/*****************************************************************************/
-multiline_comment|/*&n; * lookup a volume by name&n; * - this can be one of the following:&n; *&t;&quot;%[cell:]volume[.]&quot;&t;&t;R/W volume&n; *&t;&quot;#[cell:]volume[.]&quot;&t;&t;R/O or R/W volume (rwparent=0), or R/W (rwparent=1) volume&n; *&t;&quot;%[cell:]volume.readonly&quot;&t;R/O volume&n; *&t;&quot;#[cell:]volume.readonly&quot;&t;R/O volume&n; *&t;&quot;%[cell:]volume.backup&quot;&t;&t;Backup volume&n; *&t;&quot;#[cell:]volume.backup&quot;&t;&t;Backup volume&n; *&n; * The cell name is optional, and defaults to the current cell.&n; *&n; * See &quot;The Rules of Mount Point Traversal&quot; in Chapter 5 of the AFS SysAdmin Guide&n; * - Rule 1: Explicit type suffix forces access of that type or nothing&n; *           (no suffix, then use Rule 2 &amp; 3)&n; * - Rule 2: If parent volume is R/O, then mount R/O volume by preference, R/W if not available&n; * - Rule 3: If parent volume is R/W, then only mount R/W volume unless explicitly told otherwise&n; */
+multiline_comment|/*&n; * lookup a volume by name&n; * - this can be one of the following:&n; *&t;&quot;%[cell:]volume[.]&quot;&t;&t;R/W volume&n; *&t;&quot;#[cell:]volume[.]&quot;&t;&t;R/O or R/W volume (rwparent=0),&n; *&t;&t;&t;&t;&t; or R/W (rwparent=1) volume&n; *&t;&quot;%[cell:]volume.readonly&quot;&t;R/O volume&n; *&t;&quot;#[cell:]volume.readonly&quot;&t;R/O volume&n; *&t;&quot;%[cell:]volume.backup&quot;&t;&t;Backup volume&n; *&t;&quot;#[cell:]volume.backup&quot;&t;&t;Backup volume&n; *&n; * The cell name is optional, and defaults to the current cell.&n; *&n; * See &quot;The Rules of Mount Point Traversal&quot; in Chapter 5 of the AFS SysAdmin&n; * Guide&n; * - Rule 1: Explicit type suffix forces access of that type or nothing&n; *           (no suffix, then use Rule 2 &amp; 3)&n; * - Rule 2: If parent volume is R/O, then mount R/O volume by preference, R/W&n; *           if not available&n; * - Rule 3: If parent volume is R/W, then only mount R/W volume unless&n; *           explicitly told otherwise&n; */
 DECL|function|afs_volume_lookup
 r_int
 id|afs_volume_lookup
@@ -136,7 +136,8 @@ comma
 r_int
 id|rwpath
 comma
-id|afs_volume_t
+r_struct
+id|afs_volume
 op_star
 op_star
 id|_volume
@@ -378,6 +379,9 @@ op_assign
 id|volname
 op_minus
 id|name
+suffix:semicolon
+id|volname
+op_increment
 suffix:semicolon
 )brace
 r_else
@@ -694,7 +698,8 @@ c_func
 (paren
 r_sizeof
 (paren
-id|afs_volume_t
+r_struct
+id|afs_volume
 )paren
 comma
 id|GFP_KERNEL
@@ -718,7 +723,8 @@ l_int|0
 comma
 r_sizeof
 (paren
-id|afs_volume_t
+r_struct
+id|afs_volume
 )paren
 )paren
 suffix:semicolon
@@ -970,12 +976,14 @@ r_void
 id|afs_put_volume
 c_func
 (paren
-id|afs_volume_t
+r_struct
+id|afs_volume
 op_star
 id|volume
 )paren
 (brace
-id|afs_vlocation_t
+r_struct
+id|afs_vlocation
 op_star
 id|vlocation
 suffix:semicolon
@@ -1003,8 +1011,8 @@ op_assign
 id|volume-&gt;vlocation
 suffix:semicolon
 multiline_comment|/* sanity check */
-r_if
-c_cond
+id|BUG_ON
+c_func
 (paren
 id|atomic_read
 c_func
@@ -1015,12 +1023,8 @@ id|volume-&gt;usage
 op_le
 l_int|0
 )paren
-id|BUG
-c_func
-(paren
-)paren
 suffix:semicolon
-multiline_comment|/* to prevent a race, the decrement and the dequeue must be effectively atomic */
+multiline_comment|/* to prevent a race, the decrement and the dequeue must be effectively&n;&t; * atomic */
 id|down_write
 c_func
 (paren
@@ -1137,17 +1141,20 @@ r_int
 id|afs_volume_pick_fileserver
 c_func
 (paren
-id|afs_volume_t
+r_struct
+id|afs_volume
 op_star
 id|volume
 comma
-id|afs_server_t
+r_struct
+id|afs_server
 op_star
 op_star
 id|_server
 )paren
 (brace
-id|afs_server_t
+r_struct
+id|afs_server
 op_star
 id|server
 suffix:semicolon
@@ -1212,7 +1219,7 @@ r_return
 id|ret
 suffix:semicolon
 )brace
-multiline_comment|/* basically, just search the list for the first live server and use that */
+multiline_comment|/* basically, just search the list for the first live server and use&n;&t; * that */
 id|ret
 op_assign
 l_int|0
@@ -1418,11 +1425,13 @@ r_int
 id|afs_volume_release_fileserver
 c_func
 (paren
-id|afs_volume_t
+r_struct
+id|afs_volume
 op_star
 id|volume
 comma
-id|afs_server_t
+r_struct
+id|afs_server
 op_star
 id|server
 comma
@@ -1481,7 +1490,7 @@ op_amp
 id|volume-&gt;server_sem
 )paren
 suffix:semicolon
-multiline_comment|/* first, find where the server is in the active list (if it is) */
+multiline_comment|/* first, find where the server is in the active list (if it&n;&t;&t; * is) */
 r_for
 c_loop
 (paren
@@ -1577,7 +1586,7 @@ multiline_comment|/* another server might acknowledge its existence */
 r_goto
 id|try_next_server_upw
 suffix:semicolon
-multiline_comment|/* handle the case where all the fileservers have rejected the volume&n;&t;&t; * - TODO: try asking the fileservers for volume information&n;&t;&t; * - TODO: contact the VL server again to see if the volume is no longer registered&n;&t;&t; */
+multiline_comment|/* handle the case where all the fileservers have rejected the&n;&t;&t; * volume&n;&t;&t; * - TODO: try asking the fileservers for volume information&n;&t;&t; * - TODO: contact the VL server again to see if the volume is&n;&t;&t; *         no longer registered&n;&t;&t; */
 id|up_write
 c_func
 (paren

@@ -99,6 +99,13 @@ r_int
 r_int
 id|offset
 suffix:semicolon
+multiline_comment|/* used for custom pagetables (used for example by budget dvb cards) */
+DECL|member|slist
+r_struct
+id|scatterlist
+op_star
+id|slist
+suffix:semicolon
 )brace
 suffix:semicolon
 DECL|struct|saa7146_pci_extension_data
