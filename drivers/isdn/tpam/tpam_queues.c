@@ -472,6 +472,12 @@ OG
 l_int|0xfffffff
 )paren
 (brace
+id|kfree_skb
+c_func
+(paren
+id|skb
+)paren
+suffix:semicolon
 id|spin_unlock
 c_func
 (paren
