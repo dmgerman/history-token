@@ -4761,6 +4761,11 @@ op_ne
 l_int|NULL
 )paren
 (brace
+id|sock-&gt;sk-&gt;reuse
+op_assign
+l_int|1
+suffix:semicolon
+multiline_comment|/* allow address reuse */
 id|error
 op_assign
 id|sock-&gt;ops
