@@ -3526,13 +3526,8 @@ multiline_comment|/*&n;&t;&t; * Nowhere to write this to... I guess we&n;&t;&t; 
 id|printk
 c_func
 (paren
-id|IO_ERROR
-comma
-id|bdev_partition_name
-c_func
-(paren
-id|bio-&gt;bi_bdev
-)paren
+id|KERN_ALERT
+l_string|&quot;raid1: sync aborting as there is nowhere to write sector %lu&bslash;n&quot;
 comma
 id|r1_bio-&gt;sector
 )paren
