@@ -1877,6 +1877,11 @@ l_int|20
 comma
 l_string|&quot;0x%llx&bslash;n&quot;
 comma
+(paren
+r_int
+r_int
+r_int
+)paren
 op_star
 (paren
 id|u64
