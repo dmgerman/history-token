@@ -815,6 +815,10 @@ id|block_device
 op_star
 id|bd_contains
 suffix:semicolon
+DECL|member|bd_block_size
+r_int
+id|bd_block_size
+suffix:semicolon
 )brace
 suffix:semicolon
 DECL|struct|inode

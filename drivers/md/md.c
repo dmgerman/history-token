@@ -186,14 +186,6 @@ id|md_hd_struct
 id|MAX_MD_DEVS
 )braket
 suffix:semicolon
-DECL|variable|md_blocksizes
-r_static
-r_int
-id|md_blocksizes
-(braket
-id|MAX_MD_DEVS
-)braket
-suffix:semicolon
 DECL|variable|md_maxreadahead
 r_static
 r_int
@@ -6946,6 +6938,8 @@ comma
 l_int|1
 )paren
 suffix:semicolon
+macro_line|#if 0
+multiline_comment|/*&n;&t; * Aside of obvious breakage (code below results in block size set&n;&t; * according to the sector size of last component instead of the&n;&t; * maximal sector size), we have more interesting problem here.&n;&t; * Namely, we actually ought to set _sector_ size for the array&n;&t; * and that requires per-array request queues.  Disabled for now.&n;&t; */
 id|md_blocksizes
 (braket
 id|mdidx
@@ -6990,6 +6984,7 @@ c_func
 id|rdev-&gt;bdev
 )paren
 suffix:semicolon
+macro_line|#endif
 )brace
 id|mddev-&gt;pers
 op_assign
@@ -15056,13 +15051,6 @@ id|i
 op_increment
 )paren
 (brace
-id|md_blocksizes
-(braket
-id|i
-)braket
-op_assign
-l_int|1024
-suffix:semicolon
 id|md_size
 (braket
 id|i
@@ -15078,13 +15066,6 @@ op_assign
 l_int|32
 suffix:semicolon
 )brace
-id|blksize_size
-(braket
-id|MAJOR_NR
-)braket
-op_assign
-id|md_blocksizes
-suffix:semicolon
 id|blk_size
 (braket
 id|MAJOR_NR

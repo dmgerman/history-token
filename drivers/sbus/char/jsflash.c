@@ -197,14 +197,6 @@ mdefine_line|#define JSF_BASE_ALL&t;0x20000000
 DECL|macro|JSF_BASE_JK
 mdefine_line|#define JSF_BASE_JK&t;0x20400000
 multiline_comment|/*&n; */
-DECL|variable|jsfd_blksizes
-r_static
-r_int
-id|jsfd_blksizes
-(braket
-id|JSF_MAX
-)braket
-suffix:semicolon
 DECL|variable|jsfd_sizes
 r_static
 r_int
@@ -2455,13 +2447,6 @@ op_minus
 id|EIO
 suffix:semicolon
 )brace
-id|blksize_size
-(braket
-id|JSFD_MAJOR
-)braket
-op_assign
-id|jsfd_blksizes
-suffix:semicolon
 id|blk_size
 (braket
 id|JSFD_MAJOR
@@ -2528,13 +2513,6 @@ suffix:semicolon
 id|jdp-&gt;refcnt
 op_assign
 l_int|0
-suffix:semicolon
-id|jsfd_blksizes
-(braket
-id|i
-)braket
-op_assign
-l_int|1024
 suffix:semicolon
 id|jsfd_bytesizes
 (braket

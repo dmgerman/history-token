@@ -66,15 +66,6 @@ id|blk_size
 id|MAX_BLKDEV
 )braket
 suffix:semicolon
-multiline_comment|/*&n; * blksize_size contains the size of all block-devices:&n; *&n; * blksize_size[MAJOR][MINOR]&n; *&n; * if (!blksize_size[MAJOR]) then 1024 bytes is assumed.&n; */
-DECL|variable|blksize_size
-r_int
-op_star
-id|blksize_size
-(braket
-id|MAX_BLKDEV
-)braket
-suffix:semicolon
 multiline_comment|/*&n; * How many reqeusts do we allocate per queue,&n; * and how many do we &quot;batch&quot; on freeing them?&n; */
 DECL|variable|queue_nr_requests
 DECL|variable|batch_requests
