@@ -504,6 +504,12 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|sctp_addip_enable
+)paren
+(brace
+r_if
+c_cond
+(paren
 id|cid
 op_eq
 id|SCTP_CID_ASCONF
@@ -535,6 +541,7 @@ l_int|1
 id|state
 )braket
 suffix:semicolon
+)brace
 r_return
 op_amp
 id|chunk_event_table_unknown

@@ -2174,6 +2174,11 @@ id|NET_SCTP_MAX_BURST
 op_assign
 l_int|12
 comma
+DECL|enumerator|NET_SCTP_ADDIP_ENABLE
+id|NET_SCTP_ADDIP_ENABLE
+op_assign
+l_int|13
+comma
 )brace
 suffix:semicolon
 multiline_comment|/* CTL_PROC names: */

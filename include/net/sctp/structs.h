@@ -284,6 +284,11 @@ DECL|member|local_addr_lock
 id|spinlock_t
 id|local_addr_lock
 suffix:semicolon
+multiline_comment|/* Flag to indicate if addip is enabled. */
+DECL|member|addip_enable
+r_int
+id|addip_enable
+suffix:semicolon
 )brace
 id|sctp_globals
 suffix:semicolon
@@ -337,6 +342,8 @@ DECL|macro|sctp_local_addr_list
 mdefine_line|#define sctp_local_addr_list&t;&t;(sctp_globals.local_addr_list)
 DECL|macro|sctp_local_addr_lock
 mdefine_line|#define sctp_local_addr_lock&t;&t;(sctp_globals.local_addr_lock)
+DECL|macro|sctp_addip_enable
+mdefine_line|#define sctp_addip_enable&t;&t;(sctp_globals.addip_enable)
 multiline_comment|/* SCTP Socket type: UDP or TCP style. */
 r_typedef
 r_enum
