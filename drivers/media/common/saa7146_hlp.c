@@ -1,8 +1,5 @@
+macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;media/saa7146_vv.h&gt;
-DECL|macro|my_min
-mdefine_line|#define my_min(type,x,y) &bslash;&n;&t;({ type __x = (x), __y = (y); __x &lt; __y ? __x: __y; })
-DECL|macro|my_max
-mdefine_line|#define my_max(type,x,y) &bslash;&n;&t;({ type __x = (x), __y = (y); __x &gt; __y ? __x: __y; })
 DECL|function|calculate_output_format_register
 r_static
 r_void
@@ -2717,7 +2714,7 @@ op_star
 id|i
 )braket
 op_assign
-id|my_min
+id|min_t
 c_func
 (paren
 r_int
@@ -2738,7 +2735,7 @@ op_plus
 l_int|1
 )braket
 op_assign
-id|my_min
+id|min_t
 c_func
 (paren
 r_int
@@ -2756,7 +2753,7 @@ op_star
 id|i
 )braket
 op_assign
-id|my_min
+id|min_t
 c_func
 (paren
 r_int
@@ -2777,7 +2774,7 @@ op_plus
 l_int|1
 )braket
 op_assign
-id|my_min
+id|min_t
 c_func
 (paren
 r_int
@@ -2826,7 +2823,7 @@ suffix:semicolon
 multiline_comment|/* calculate the number of used u32s */
 id|numdwords
 op_assign
-id|my_max
+id|max_t
 c_func
 (paren
 r_int
@@ -2848,7 +2845,7 @@ l_int|2
 suffix:semicolon
 id|numdwords
 op_assign
-id|my_max
+id|max_t
 c_func
 (paren
 r_int
@@ -2860,7 +2857,7 @@ id|numdwords
 suffix:semicolon
 id|numdwords
 op_assign
-id|my_min
+id|min_t
 c_func
 (paren
 r_int
@@ -6375,6 +6372,12 @@ c_func
 id|dev
 comma
 id|sfmt-&gt;trans
+)paren
+suffix:semicolon
+id|saa7146_disable_clipping
+c_func
+(paren
+id|dev
 )paren
 suffix:semicolon
 r_if

@@ -98,7 +98,7 @@ l_string|&quot;=&amp;d&quot;
 id|reg2
 )paren
 comma
-l_string|&quot;+m&quot;
+l_string|&quot;=m&quot;
 (paren
 id|lp-&gt;lock
 )paren
@@ -108,8 +108,15 @@ l_string|&quot;a&quot;
 op_amp
 id|lp-&gt;lock
 )paren
+comma
+l_string|&quot;m&quot;
+(paren
+id|lp-&gt;lock
+)paren
 suffix:colon
 l_string|&quot;cc&quot;
+comma
+l_string|&quot;memory&quot;
 )paren
 suffix:semicolon
 macro_line|#else /* __s390x__ */
@@ -141,7 +148,7 @@ l_string|&quot;=&amp;d&quot;
 id|reg2
 )paren
 comma
-l_string|&quot;+m&quot;
+l_string|&quot;=m&quot;
 (paren
 id|lp-&gt;lock
 )paren
@@ -156,8 +163,15 @@ l_string|&quot;i&quot;
 (paren
 id|__DIAG44_OPERAND
 )paren
+comma
+l_string|&quot;m&quot;
+(paren
+id|lp-&gt;lock
+)paren
 suffix:colon
 l_string|&quot;cc&quot;
+comma
+l_string|&quot;memory&quot;
 )paren
 suffix:semicolon
 macro_line|#endif /* __s390x__ */
@@ -207,7 +221,7 @@ l_string|&quot;=&amp;d&quot;
 id|reg
 )paren
 comma
-l_string|&quot;+m&quot;
+l_string|&quot;=m&quot;
 (paren
 id|lp-&gt;lock
 )paren
@@ -217,8 +231,15 @@ l_string|&quot;a&quot;
 op_amp
 id|lp-&gt;lock
 )paren
+comma
+l_string|&quot;m&quot;
+(paren
+id|lp-&gt;lock
+)paren
 suffix:colon
 l_string|&quot;cc&quot;
+comma
+l_string|&quot;memory&quot;
 )paren
 suffix:semicolon
 r_return
@@ -274,6 +295,8 @@ id|lp
 )paren
 suffix:colon
 l_string|&quot;cc&quot;
+comma
+l_string|&quot;memory&quot;
 )paren
 suffix:semicolon
 )brace
@@ -305,31 +328,31 @@ DECL|macro|rwlock_is_locked
 mdefine_line|#define rwlock_is_locked(x) ((x)-&gt;lock != 0)
 macro_line|#ifndef __s390x__
 DECL|macro|_raw_read_lock
-mdefine_line|#define _raw_read_lock(rw)   &bslash;&n;        asm volatile(&quot;   l     2,0(%1)&bslash;n&quot;   &bslash;&n;                     &quot;   j     1f&bslash;n&quot;     &bslash;&n;                     &quot;0: diag  0,0,68&bslash;n&quot; &bslash;&n;                     &quot;1: la    2,0(2)&bslash;n&quot;     /* clear high (=write) bit */ &bslash;&n;                     &quot;   la    3,1(2)&bslash;n&quot;     /* one more reader */ &bslash;&n;                     &quot;   cs    2,3,0(%1)&bslash;n&quot;  /* try to write new value */ &bslash;&n;                     &quot;   jl    0b&quot;       &bslash;&n;                     : &quot;+m&quot; ((rw)-&gt;lock) : &quot;a&quot; (&amp;(rw)-&gt;lock) &bslash;&n;&t;&t;     : &quot;2&quot;, &quot;3&quot;, &quot;cc&quot; )
+mdefine_line|#define _raw_read_lock(rw)   &bslash;&n;        asm volatile(&quot;   l     2,0(%1)&bslash;n&quot;   &bslash;&n;                     &quot;   j     1f&bslash;n&quot;     &bslash;&n;                     &quot;0: diag  0,0,68&bslash;n&quot; &bslash;&n;                     &quot;1: la    2,0(2)&bslash;n&quot;     /* clear high (=write) bit */ &bslash;&n;                     &quot;   la    3,1(2)&bslash;n&quot;     /* one more reader */ &bslash;&n;                     &quot;   cs    2,3,0(%1)&bslash;n&quot;  /* try to write new value */ &bslash;&n;                     &quot;   jl    0b&quot;       &bslash;&n;                     : &quot;=m&quot; ((rw)-&gt;lock) : &quot;a&quot; (&amp;(rw)-&gt;lock), &bslash;&n;&t;&t;       &quot;m&quot; ((rw)-&gt;lock) : &quot;2&quot;, &quot;3&quot;, &quot;cc&quot;, &quot;memory&quot; )
 macro_line|#else /* __s390x__ */
 DECL|macro|_raw_read_lock
-mdefine_line|#define _raw_read_lock(rw)   &bslash;&n;        asm volatile(&quot;   lg    2,0(%1)&bslash;n&quot;   &bslash;&n;                     &quot;   j     1f&bslash;n&quot;     &bslash;&n;                     &quot;0: &quot; __DIAG44_INSN &quot; 0,%2&bslash;n&quot; &bslash;&n;                     &quot;1: nihh  2,0x7fff&bslash;n&quot; /* clear high (=write) bit */ &bslash;&n;                     &quot;   la    3,1(2)&bslash;n&quot;   /* one more reader */  &bslash;&n;                     &quot;   csg   2,3,0(%1)&bslash;n&quot; /* try to write new value */ &bslash;&n;                     &quot;   jl    0b&quot;       &bslash;&n;                     : &quot;+m&quot; ((rw)-&gt;lock) &bslash;&n;&t;&t;     : &quot;a&quot; (&amp;(rw)-&gt;lock), &quot;i&quot; (__DIAG44_OPERAND) &bslash;&n;&t;&t;     : &quot;2&quot;, &quot;3&quot;, &quot;cc&quot; )
+mdefine_line|#define _raw_read_lock(rw)   &bslash;&n;        asm volatile(&quot;   lg    2,0(%1)&bslash;n&quot;   &bslash;&n;                     &quot;   j     1f&bslash;n&quot;     &bslash;&n;                     &quot;0: &quot; __DIAG44_INSN &quot; 0,%2&bslash;n&quot; &bslash;&n;                     &quot;1: nihh  2,0x7fff&bslash;n&quot; /* clear high (=write) bit */ &bslash;&n;                     &quot;   la    3,1(2)&bslash;n&quot;   /* one more reader */  &bslash;&n;                     &quot;   csg   2,3,0(%1)&bslash;n&quot; /* try to write new value */ &bslash;&n;                     &quot;   jl    0b&quot;       &bslash;&n;                     : &quot;=m&quot; ((rw)-&gt;lock) &bslash;&n;&t;&t;     : &quot;a&quot; (&amp;(rw)-&gt;lock), &quot;i&quot; (__DIAG44_OPERAND), &bslash;&n;&t;&t;       &quot;m&quot; ((rw)-&gt;lock) : &quot;2&quot;, &quot;3&quot;, &quot;cc&quot;, &quot;memory&quot; )
 macro_line|#endif /* __s390x__ */
 macro_line|#ifndef __s390x__
 DECL|macro|_raw_read_unlock
-mdefine_line|#define _raw_read_unlock(rw) &bslash;&n;        asm volatile(&quot;   l     2,0(%1)&bslash;n&quot;   &bslash;&n;                     &quot;   j     1f&bslash;n&quot;     &bslash;&n;                     &quot;0: diag  0,0,68&bslash;n&quot; &bslash;&n;                     &quot;1: lr    3,2&bslash;n&quot;    &bslash;&n;                     &quot;   ahi   3,-1&bslash;n&quot;    /* one less reader */ &bslash;&n;                     &quot;   cs    2,3,0(%1)&bslash;n&quot; &bslash;&n;                     &quot;   jl    0b&quot;       &bslash;&n;                     : &quot;+m&quot; ((rw)-&gt;lock) : &quot;a&quot; (&amp;(rw)-&gt;lock) &bslash;&n;&t;&t;     : &quot;2&quot;, &quot;3&quot;, &quot;cc&quot; )
+mdefine_line|#define _raw_read_unlock(rw) &bslash;&n;        asm volatile(&quot;   l     2,0(%1)&bslash;n&quot;   &bslash;&n;                     &quot;   j     1f&bslash;n&quot;     &bslash;&n;                     &quot;0: diag  0,0,68&bslash;n&quot; &bslash;&n;                     &quot;1: lr    3,2&bslash;n&quot;    &bslash;&n;                     &quot;   ahi   3,-1&bslash;n&quot;    /* one less reader */ &bslash;&n;                     &quot;   cs    2,3,0(%1)&bslash;n&quot; &bslash;&n;                     &quot;   jl    0b&quot;       &bslash;&n;                     : &quot;=m&quot; ((rw)-&gt;lock) : &quot;a&quot; (&amp;(rw)-&gt;lock), &bslash;&n;&t;&t;       &quot;m&quot; ((rw)-&gt;lock) : &quot;2&quot;, &quot;3&quot;, &quot;cc&quot;, &quot;memory&quot; )
 macro_line|#else /* __s390x__ */
 DECL|macro|_raw_read_unlock
-mdefine_line|#define _raw_read_unlock(rw) &bslash;&n;        asm volatile(&quot;   lg    2,0(%1)&bslash;n&quot;   &bslash;&n;                     &quot;   j     1f&bslash;n&quot;     &bslash;&n;                     &quot;0: &quot; __DIAG44_INSN &quot; 0,%2&bslash;n&quot; &bslash;&n;                     &quot;1: lgr   3,2&bslash;n&quot;    &bslash;&n;                     &quot;   bctgr 3,0&bslash;n&quot;    /* one less reader */ &bslash;&n;                     &quot;   csg   2,3,0(%1)&bslash;n&quot; &bslash;&n;                     &quot;   jl    0b&quot;       &bslash;&n;                     : &quot;+m&quot; ((rw)-&gt;lock) &bslash;&n;&t;&t;     : &quot;a&quot; (&amp;(rw)-&gt;lock), &quot;i&quot; (__DIAG44_OPERAND) &bslash;&n;&t;&t;     : &quot;2&quot;, &quot;3&quot;, &quot;cc&quot; )
+mdefine_line|#define _raw_read_unlock(rw) &bslash;&n;        asm volatile(&quot;   lg    2,0(%1)&bslash;n&quot;   &bslash;&n;                     &quot;   j     1f&bslash;n&quot;     &bslash;&n;                     &quot;0: &quot; __DIAG44_INSN &quot; 0,%2&bslash;n&quot; &bslash;&n;                     &quot;1: lgr   3,2&bslash;n&quot;    &bslash;&n;                     &quot;   bctgr 3,0&bslash;n&quot;    /* one less reader */ &bslash;&n;                     &quot;   csg   2,3,0(%1)&bslash;n&quot; &bslash;&n;                     &quot;   jl    0b&quot;       &bslash;&n;                     : &quot;=m&quot; ((rw)-&gt;lock) &bslash;&n;&t;&t;     : &quot;a&quot; (&amp;(rw)-&gt;lock), &quot;i&quot; (__DIAG44_OPERAND), &bslash;&n;&t;&t;       &quot;m&quot; ((rw)-&gt;lock) : &quot;2&quot;, &quot;3&quot;, &quot;cc&quot;, &quot;memory&quot; )
 macro_line|#endif /* __s390x__ */
 macro_line|#ifndef __s390x__
 DECL|macro|_raw_write_lock
-mdefine_line|#define _raw_write_lock(rw) &bslash;&n;        asm volatile(&quot;   lhi   3,1&bslash;n&quot;    &bslash;&n;                     &quot;   sll   3,31&bslash;n&quot;    /* new lock value = 0x80000000 */ &bslash;&n;                     &quot;   j     1f&bslash;n&quot;     &bslash;&n;                     &quot;0: diag  0,0,68&bslash;n&quot; &bslash;&n;                     &quot;1: slr   2,2&bslash;n&quot;     /* old lock value must be 0 */ &bslash;&n;                     &quot;   cs    2,3,0(%1)&bslash;n&quot; &bslash;&n;                     &quot;   jl    0b&quot;       &bslash;&n;                     : &quot;+m&quot; ((rw)-&gt;lock) : &quot;a&quot; (&amp;(rw)-&gt;lock) &bslash;&n;&t;&t;     : &quot;2&quot;, &quot;3&quot;, &quot;cc&quot; )
+mdefine_line|#define _raw_write_lock(rw) &bslash;&n;        asm volatile(&quot;   lhi   3,1&bslash;n&quot;    &bslash;&n;                     &quot;   sll   3,31&bslash;n&quot;    /* new lock value = 0x80000000 */ &bslash;&n;                     &quot;   j     1f&bslash;n&quot;     &bslash;&n;                     &quot;0: diag  0,0,68&bslash;n&quot; &bslash;&n;                     &quot;1: slr   2,2&bslash;n&quot;     /* old lock value must be 0 */ &bslash;&n;                     &quot;   cs    2,3,0(%1)&bslash;n&quot; &bslash;&n;                     &quot;   jl    0b&quot;       &bslash;&n;                     : &quot;=m&quot; ((rw)-&gt;lock) : &quot;a&quot; (&amp;(rw)-&gt;lock), &bslash;&n;&t;&t;       &quot;m&quot; ((rw)-&gt;lock) : &quot;2&quot;, &quot;3&quot;, &quot;cc&quot;, &quot;memory&quot; )
 macro_line|#else /* __s390x__ */
 DECL|macro|_raw_write_lock
-mdefine_line|#define _raw_write_lock(rw) &bslash;&n;        asm volatile(&quot;   llihh 3,0x8000&bslash;n&quot; /* new lock value = 0x80...0 */ &bslash;&n;                     &quot;   j     1f&bslash;n&quot;       &bslash;&n;                     &quot;0: &quot; __DIAG44_INSN &quot; 0,%2&bslash;n&quot;   &bslash;&n;                     &quot;1: slgr  2,2&bslash;n&quot;      /* old lock value must be 0 */ &bslash;&n;                     &quot;   csg   2,3,0(%1)&bslash;n&quot; &bslash;&n;                     &quot;   jl    0b&quot;         &bslash;&n;                     : &quot;+m&quot; ((rw)-&gt;lock) &bslash;&n;&t;&t;     : &quot;a&quot; (&amp;(rw)-&gt;lock), &quot;i&quot; (__DIAG44_OPERAND) &bslash;&n;&t;&t;     : &quot;2&quot;, &quot;3&quot;, &quot;cc&quot; )
+mdefine_line|#define _raw_write_lock(rw) &bslash;&n;        asm volatile(&quot;   llihh 3,0x8000&bslash;n&quot; /* new lock value = 0x80...0 */ &bslash;&n;                     &quot;   j     1f&bslash;n&quot;       &bslash;&n;                     &quot;0: &quot; __DIAG44_INSN &quot; 0,%2&bslash;n&quot;   &bslash;&n;                     &quot;1: slgr  2,2&bslash;n&quot;      /* old lock value must be 0 */ &bslash;&n;                     &quot;   csg   2,3,0(%1)&bslash;n&quot; &bslash;&n;                     &quot;   jl    0b&quot;         &bslash;&n;                     : &quot;=m&quot; ((rw)-&gt;lock) &bslash;&n;&t;&t;     : &quot;a&quot; (&amp;(rw)-&gt;lock), &quot;i&quot; (__DIAG44_OPERAND), &bslash;&n;&t;&t;       &quot;m&quot; ((rw)-&gt;lock) : &quot;2&quot;, &quot;3&quot;, &quot;cc&quot;, &quot;memory&quot; )
 macro_line|#endif /* __s390x__ */
 macro_line|#ifndef __s390x__
 DECL|macro|_raw_write_unlock
-mdefine_line|#define _raw_write_unlock(rw) &bslash;&n;        asm volatile(&quot;   slr   3,3&bslash;n&quot;     /* new lock value = 0 */ &bslash;&n;                     &quot;   j     1f&bslash;n&quot;     &bslash;&n;                     &quot;0: diag  0,0,68&bslash;n&quot; &bslash;&n;                     &quot;1: lhi   2,1&bslash;n&quot;    &bslash;&n;                     &quot;   sll   2,31&bslash;n&quot;    /* old lock value must be 0x80000000 */ &bslash;&n;                     &quot;   cs    2,3,0(%1)&bslash;n&quot; &bslash;&n;                     &quot;   jl    0b&quot;       &bslash;&n;                     : &quot;+m&quot; ((rw)-&gt;lock) : &quot;a&quot; (&amp;(rw)-&gt;lock) &bslash;&n;&t;&t;     : &quot;2&quot;, &quot;3&quot;, &quot;cc&quot; )
+mdefine_line|#define _raw_write_unlock(rw) &bslash;&n;        asm volatile(&quot;   slr   3,3&bslash;n&quot;     /* new lock value = 0 */ &bslash;&n;                     &quot;   j     1f&bslash;n&quot;     &bslash;&n;                     &quot;0: diag  0,0,68&bslash;n&quot; &bslash;&n;                     &quot;1: lhi   2,1&bslash;n&quot;    &bslash;&n;                     &quot;   sll   2,31&bslash;n&quot;    /* old lock value must be 0x80000000 */ &bslash;&n;                     &quot;   cs    2,3,0(%1)&bslash;n&quot; &bslash;&n;                     &quot;   jl    0b&quot;       &bslash;&n;                     : &quot;=m&quot; ((rw)-&gt;lock) : &quot;a&quot; (&amp;(rw)-&gt;lock), &bslash;&n;&t;&t;       &quot;m&quot; ((rw)-&gt;lock) : &quot;2&quot;, &quot;3&quot;, &quot;cc&quot;, &quot;memory&quot; )
 macro_line|#else /* __s390x__ */
 DECL|macro|_raw_write_unlock
-mdefine_line|#define _raw_write_unlock(rw) &bslash;&n;        asm volatile(&quot;   slgr  3,3&bslash;n&quot;      /* new lock value = 0 */ &bslash;&n;                     &quot;   j     1f&bslash;n&quot;       &bslash;&n;                     &quot;0: &quot; __DIAG44_INSN &quot; 0,%2&bslash;n&quot;   &bslash;&n;                     &quot;1: llihh 2,0x8000&bslash;n&quot; /* old lock value must be 0x8..0 */&bslash;&n;                     &quot;   csg   2,3,0(%1)&bslash;n&quot;   &bslash;&n;                     &quot;   jl    0b&quot;         &bslash;&n;                     : &quot;+m&quot; ((rw)-&gt;lock) &bslash;&n;&t;&t;     : &quot;a&quot; (&amp;(rw)-&gt;lock), &quot;i&quot; (__DIAG44_OPERAND) &bslash;&n;&t;&t;     : &quot;2&quot;, &quot;3&quot;, &quot;cc&quot; )
+mdefine_line|#define _raw_write_unlock(rw) &bslash;&n;        asm volatile(&quot;   slgr  3,3&bslash;n&quot;      /* new lock value = 0 */ &bslash;&n;                     &quot;   j     1f&bslash;n&quot;       &bslash;&n;                     &quot;0: &quot; __DIAG44_INSN &quot; 0,%2&bslash;n&quot;   &bslash;&n;                     &quot;1: llihh 2,0x8000&bslash;n&quot; /* old lock value must be 0x8..0 */&bslash;&n;                     &quot;   csg   2,3,0(%1)&bslash;n&quot;   &bslash;&n;                     &quot;   jl    0b&quot;         &bslash;&n;                     : &quot;=m&quot; ((rw)-&gt;lock) &bslash;&n;&t;&t;     : &quot;a&quot; (&amp;(rw)-&gt;lock), &quot;i&quot; (__DIAG44_OPERAND), &bslash;&n;&t;&t;       &quot;m&quot; ((rw)-&gt;lock) : &quot;2&quot;, &quot;3&quot;, &quot;cc&quot;, &quot;memory&quot; )
 macro_line|#endif /* __s390x__ */
 DECL|function|_raw_write_trylock
 r_extern
@@ -374,7 +397,7 @@ l_string|&quot;=&amp;d&quot;
 id|reg
 )paren
 comma
-l_string|&quot;+m&quot;
+l_string|&quot;=m&quot;
 (paren
 id|rw-&gt;lock
 )paren
@@ -384,8 +407,15 @@ l_string|&quot;a&quot;
 op_amp
 id|rw-&gt;lock
 )paren
+comma
+l_string|&quot;m&quot;
+(paren
+id|rw-&gt;lock
+)paren
 suffix:colon
 l_string|&quot;cc&quot;
+comma
+l_string|&quot;memory&quot;
 )paren
 suffix:semicolon
 r_return

@@ -1233,7 +1233,7 @@ id|ide_unknown
 op_logical_or
 id|hwif-&gt;chipset
 op_eq
-id|ide_generic
+id|ide_forced
 )paren
 (brace
 r_if

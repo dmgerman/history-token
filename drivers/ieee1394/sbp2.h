@@ -1285,6 +1285,13 @@ id|sbp2scsi_host_info
 op_star
 id|hi
 suffix:semicolon
+multiline_comment|/* The scsi_device associated with this scsi_id */
+DECL|member|sdev
+r_struct
+id|scsi_device
+op_star
+id|sdev
+suffix:semicolon
 multiline_comment|/* Device specific workarounds/brokeness */
 DECL|member|workarounds
 id|u32

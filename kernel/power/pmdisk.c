@@ -9,6 +9,7 @@ macro_line|#include &lt;linux/reboot.h&gt;
 macro_line|#include &lt;linux/device.h&gt;
 macro_line|#include &lt;linux/swapops.h&gt;
 macro_line|#include &lt;linux/bootmem.h&gt;
+macro_line|#include &lt;linux/utsname.h&gt;
 macro_line|#include &lt;asm/mmu_context.h&gt;
 macro_line|#include &quot;power.h&quot;
 r_extern

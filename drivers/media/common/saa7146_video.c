@@ -3563,7 +3563,7 @@ id|RESOURCE_DMA1_HPS
 suffix:semicolon
 id|dmas
 op_assign
-id|MASK_20
+id|MASK_22
 suffix:semicolon
 )brace
 id|saa7146_res_free
@@ -5095,6 +5095,20 @@ op_minus
 id|EAGAIN
 suffix:semicolon
 )brace
+)brace
+r_else
+(brace
+id|DEB_D
+c_func
+(paren
+(paren
+l_string|&quot;overlay is not active&bslash;n&quot;
+)paren
+)paren
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
 )brace
 id|spin_lock_irqsave
 c_func

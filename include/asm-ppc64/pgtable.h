@@ -3,6 +3,7 @@ DECL|macro|_PPC64_PGTABLE_H
 mdefine_line|#define _PPC64_PGTABLE_H
 multiline_comment|/*&n; * This file contains the functions and defines necessary to modify and use&n; * the ppc64 hashed page table.&n; */
 macro_line|#ifndef __ASSEMBLY__
+macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/stddef.h&gt;
 macro_line|#include &lt;asm/processor.h&gt;&t;&t;/* For TASK_SIZE */
 macro_line|#include &lt;asm/mmu.h&gt;

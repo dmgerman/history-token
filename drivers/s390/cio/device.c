@@ -3873,4 +3873,11 @@ c_func
 id|ccw_bus_type
 )paren
 suffix:semicolon
+DECL|variable|ccw_device_work
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|ccw_device_work
+)paren
+suffix:semicolon
 eof

@@ -13,14 +13,12 @@ macro_line|#include &quot;xfs_dinode.h&quot;
 macro_line|#include &quot;xfs_inode.h&quot;
 macro_line|#include &quot;xfs_da_btree.h&quot;
 macro_line|#include &quot;xfs_dir2_trace.h&quot;
-macro_line|#ifdef DEBUG
+macro_line|#ifdef XFS_DIR2_TRACE
 DECL|variable|xfs_dir2_trace_buf
 id|ktrace_t
 op_star
 id|xfs_dir2_trace_buf
 suffix:semicolon
-macro_line|#endif /* DEBUG */
-macro_line|#ifdef XFS_DIR2_TRACE
 multiline_comment|/*&n; * Enter something in the trace buffers.&n; */
 r_static
 r_void

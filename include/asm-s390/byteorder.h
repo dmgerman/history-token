@@ -131,6 +131,12 @@ l_string|&quot;a&quot;
 (paren
 id|x
 )paren
+comma
+l_string|&quot;m&quot;
+(paren
+op_star
+id|x
+)paren
 suffix:colon
 l_string|&quot;cc&quot;
 )paren
@@ -193,6 +199,11 @@ l_string|&quot;d&quot;
 (paren
 id|x
 )paren
+comma
+l_string|&quot;m&quot;
+(paren
+id|x
+)paren
 )paren
 suffix:semicolon
 r_return
@@ -251,6 +262,12 @@ id|result
 suffix:colon
 l_string|&quot;a&quot;
 (paren
+id|x
+)paren
+comma
+l_string|&quot;m&quot;
+(paren
+op_star
 id|x
 )paren
 suffix:colon

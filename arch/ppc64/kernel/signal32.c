@@ -1,4 +1,5 @@
 multiline_comment|/*&n; * signal32.c: Support 32bit signal syscalls.&n; *&n; * Copyright (C) 2001 IBM&n; * Copyright (C) 1997,1998 Jakub Jelinek (jj@sunsite.mff.cuni.cz)&n; * Copyright (C) 1997 David S. Miller (davem@caip.rutgers.edu)&n; *&n; * These routines maintain argument size conversion between 32bit and 64bit&n; * environment.&n; *&n; *      This program is free software; you can redistribute it and/or&n; *      modify it under the terms of the GNU General Public License&n; *      as published by the Free Software Foundation; either version&n; *      2 of the License, or (at your option) any later version.&n; */
+macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/mm.h&gt; 
 macro_line|#include &lt;linux/smp.h&gt;

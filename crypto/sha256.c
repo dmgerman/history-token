@@ -4426,6 +4426,7 @@ id|i
 comma
 id|j
 suffix:semicolon
+r_static
 r_const
 id|u8
 id|padding

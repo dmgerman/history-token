@@ -178,16 +178,16 @@ id|__volatile__
 c_func
 (paren
 macro_line|#ifndef __s390x__
-l_string|&quot;   l    %0,0(%2)&bslash;n&quot;
+l_string|&quot;   l    %0,0(%3)&bslash;n&quot;
 l_string|&quot;0: lr   %1,%0&bslash;n&quot;
-l_string|&quot;   ahi  %1,%3&bslash;n&quot;
-l_string|&quot;   cs   %0,%1,0(%2)&bslash;n&quot;
+l_string|&quot;   ahi  %1,%5&bslash;n&quot;
+l_string|&quot;   cs   %0,%1,0(%3)&bslash;n&quot;
 l_string|&quot;   jl   0b&quot;
 macro_line|#else /* __s390x__ */
-l_string|&quot;   lg   %0,0(%2)&bslash;n&quot;
+l_string|&quot;   lg   %0,0(%3)&bslash;n&quot;
 l_string|&quot;0: lgr  %1,%0&bslash;n&quot;
-l_string|&quot;   aghi %1,%3&bslash;n&quot;
-l_string|&quot;   csg  %0,%1,0(%2)&bslash;n&quot;
+l_string|&quot;   aghi %1,%5&bslash;n&quot;
+l_string|&quot;   csg  %0,%1,0(%3)&bslash;n&quot;
 l_string|&quot;   jl   0b&quot;
 macro_line|#endif /* __s390x__ */
 suffix:colon
@@ -200,10 +200,20 @@ l_string|&quot;=&amp;d&quot;
 (paren
 r_new
 )paren
+comma
+l_string|&quot;=m&quot;
+(paren
+id|sem-&gt;count
+)paren
 suffix:colon
 l_string|&quot;a&quot;
 (paren
 op_amp
+id|sem-&gt;count
+)paren
+comma
+l_string|&quot;m&quot;
+(paren
 id|sem-&gt;count
 )paren
 comma
@@ -256,19 +266,19 @@ id|__volatile__
 c_func
 (paren
 macro_line|#ifndef __s390x__
-l_string|&quot;   l    %0,0(%2)&bslash;n&quot;
+l_string|&quot;   l    %0,0(%3)&bslash;n&quot;
 l_string|&quot;0: ltr  %1,%0&bslash;n&quot;
 l_string|&quot;   jm   1f&bslash;n&quot;
-l_string|&quot;   ahi  %1,%3&bslash;n&quot;
-l_string|&quot;   cs   %0,%1,0(%2)&bslash;n&quot;
+l_string|&quot;   ahi  %1,%5&bslash;n&quot;
+l_string|&quot;   cs   %0,%1,0(%3)&bslash;n&quot;
 l_string|&quot;   jl   0b&bslash;n&quot;
 l_string|&quot;1:&quot;
 macro_line|#else /* __s390x__ */
-l_string|&quot;   lg   %0,0(%2)&bslash;n&quot;
+l_string|&quot;   lg   %0,0(%3)&bslash;n&quot;
 l_string|&quot;0: ltgr %1,%0&bslash;n&quot;
 l_string|&quot;   jm   1f&bslash;n&quot;
-l_string|&quot;   aghi %1,%3&bslash;n&quot;
-l_string|&quot;   csg  %0,%1,0(%2)&bslash;n&quot;
+l_string|&quot;   aghi %1,%5&bslash;n&quot;
+l_string|&quot;   csg  %0,%1,0(%3)&bslash;n&quot;
 l_string|&quot;   jl   0b&bslash;n&quot;
 l_string|&quot;1:&quot;
 macro_line|#endif /* __s390x__ */
@@ -282,10 +292,20 @@ l_string|&quot;=&amp;d&quot;
 (paren
 r_new
 )paren
+comma
+l_string|&quot;=m&quot;
+(paren
+id|sem-&gt;count
+)paren
 suffix:colon
 l_string|&quot;a&quot;
 (paren
 op_amp
+id|sem-&gt;count
+)paren
+comma
+l_string|&quot;m&quot;
+(paren
 id|sem-&gt;count
 )paren
 comma
@@ -341,16 +361,16 @@ id|__volatile__
 c_func
 (paren
 macro_line|#ifndef __s390x__
-l_string|&quot;   l    %0,0(%2)&bslash;n&quot;
+l_string|&quot;   l    %0,0(%3)&bslash;n&quot;
 l_string|&quot;0: lr   %1,%0&bslash;n&quot;
-l_string|&quot;   a    %1,%3&bslash;n&quot;
-l_string|&quot;   cs   %0,%1,0(%2)&bslash;n&quot;
+l_string|&quot;   a    %1,%5&bslash;n&quot;
+l_string|&quot;   cs   %0,%1,0(%3)&bslash;n&quot;
 l_string|&quot;   jl   0b&quot;
 macro_line|#else /* __s390x__ */
-l_string|&quot;   lg   %0,0(%2)&bslash;n&quot;
+l_string|&quot;   lg   %0,0(%3)&bslash;n&quot;
 l_string|&quot;0: lgr  %1,%0&bslash;n&quot;
-l_string|&quot;   ag   %1,%3&bslash;n&quot;
-l_string|&quot;   csg  %0,%1,0(%2)&bslash;n&quot;
+l_string|&quot;   ag   %1,%5&bslash;n&quot;
+l_string|&quot;   csg  %0,%1,0(%3)&bslash;n&quot;
 l_string|&quot;   jl   0b&quot;
 macro_line|#endif /* __s390x__ */
 suffix:colon
@@ -363,10 +383,20 @@ l_string|&quot;=&amp;d&quot;
 (paren
 r_new
 )paren
+comma
+l_string|&quot;=m&quot;
+(paren
+id|sem-&gt;count
+)paren
 suffix:colon
 l_string|&quot;a&quot;
 (paren
 op_amp
+id|sem-&gt;count
+)paren
+comma
+l_string|&quot;m&quot;
+(paren
 id|sem-&gt;count
 )paren
 comma
@@ -417,16 +447,16 @@ id|__volatile__
 c_func
 (paren
 macro_line|#ifndef __s390x__
-l_string|&quot;   l    %0,0(%1)&bslash;n&quot;
+l_string|&quot;   l    %0,0(%2)&bslash;n&quot;
 l_string|&quot;0: ltr  %0,%0&bslash;n&quot;
 l_string|&quot;   jnz  1f&bslash;n&quot;
-l_string|&quot;   cs   %0,%2,0(%1)&bslash;n&quot;
+l_string|&quot;   cs   %0,%4,0(%2)&bslash;n&quot;
 l_string|&quot;   jl   0b&bslash;n&quot;
 macro_line|#else /* __s390x__ */
-l_string|&quot;   lg   %0,0(%1)&bslash;n&quot;
+l_string|&quot;   lg   %0,0(%2)&bslash;n&quot;
 l_string|&quot;0: ltgr %0,%0&bslash;n&quot;
 l_string|&quot;   jnz  1f&bslash;n&quot;
-l_string|&quot;   csg  %0,%2,0(%1)&bslash;n&quot;
+l_string|&quot;   csg  %0,%4,0(%2)&bslash;n&quot;
 l_string|&quot;   jl   0b&bslash;n&quot;
 macro_line|#endif /* __s390x__ */
 l_string|&quot;1:&quot;
@@ -435,10 +465,20 @@ l_string|&quot;=&amp;d&quot;
 (paren
 id|old
 )paren
+comma
+l_string|&quot;=m&quot;
+(paren
+id|sem-&gt;count
+)paren
 suffix:colon
 l_string|&quot;a&quot;
 (paren
 op_amp
+id|sem-&gt;count
+)paren
+comma
+l_string|&quot;m&quot;
+(paren
 id|sem-&gt;count
 )paren
 comma
@@ -490,16 +530,16 @@ id|__volatile__
 c_func
 (paren
 macro_line|#ifndef __s390x__
-l_string|&quot;   l    %0,0(%2)&bslash;n&quot;
+l_string|&quot;   l    %0,0(%3)&bslash;n&quot;
 l_string|&quot;0: lr   %1,%0&bslash;n&quot;
-l_string|&quot;   ahi  %1,%3&bslash;n&quot;
-l_string|&quot;   cs   %0,%1,0(%2)&bslash;n&quot;
+l_string|&quot;   ahi  %1,%5&bslash;n&quot;
+l_string|&quot;   cs   %0,%1,0(%3)&bslash;n&quot;
 l_string|&quot;   jl   0b&quot;
 macro_line|#else /* __s390x__ */
-l_string|&quot;   lg   %0,0(%2)&bslash;n&quot;
+l_string|&quot;   lg   %0,0(%3)&bslash;n&quot;
 l_string|&quot;0: lgr  %1,%0&bslash;n&quot;
-l_string|&quot;   aghi %1,%3&bslash;n&quot;
-l_string|&quot;   csg  %0,%1,0(%2)&bslash;n&quot;
+l_string|&quot;   aghi %1,%5&bslash;n&quot;
+l_string|&quot;   csg  %0,%1,0(%3)&bslash;n&quot;
 l_string|&quot;   jl   0b&quot;
 macro_line|#endif /* __s390x__ */
 suffix:colon
@@ -512,10 +552,20 @@ l_string|&quot;=&amp;d&quot;
 (paren
 r_new
 )paren
+comma
+l_string|&quot;=m&quot;
+(paren
+id|sem-&gt;count
+)paren
 suffix:colon
 l_string|&quot;a&quot;
 (paren
 op_amp
+id|sem-&gt;count
+)paren
+comma
+l_string|&quot;m&quot;
+(paren
 id|sem-&gt;count
 )paren
 comma
@@ -587,16 +637,16 @@ id|__volatile__
 c_func
 (paren
 macro_line|#ifndef __s390x__
-l_string|&quot;   l    %0,0(%2)&bslash;n&quot;
+l_string|&quot;   l    %0,0(%3)&bslash;n&quot;
 l_string|&quot;0: lr   %1,%0&bslash;n&quot;
-l_string|&quot;   a    %1,%3&bslash;n&quot;
-l_string|&quot;   cs   %0,%1,0(%2)&bslash;n&quot;
+l_string|&quot;   a    %1,%5&bslash;n&quot;
+l_string|&quot;   cs   %0,%1,0(%3)&bslash;n&quot;
 l_string|&quot;   jl   0b&quot;
 macro_line|#else /* __s390x__ */
-l_string|&quot;   lg   %0,0(%2)&bslash;n&quot;
+l_string|&quot;   lg   %0,0(%3)&bslash;n&quot;
 l_string|&quot;0: lgr  %1,%0&bslash;n&quot;
-l_string|&quot;   ag   %1,%3&bslash;n&quot;
-l_string|&quot;   csg  %0,%1,0(%2)&bslash;n&quot;
+l_string|&quot;   ag   %1,%5&bslash;n&quot;
+l_string|&quot;   csg  %0,%1,0(%3)&bslash;n&quot;
 l_string|&quot;   jl   0b&quot;
 macro_line|#endif /* __s390x__ */
 suffix:colon
@@ -609,10 +659,20 @@ l_string|&quot;=&amp;d&quot;
 (paren
 r_new
 )paren
+comma
+l_string|&quot;=m&quot;
+(paren
+id|sem-&gt;count
+)paren
 suffix:colon
 l_string|&quot;a&quot;
 (paren
 op_amp
+id|sem-&gt;count
+)paren
+comma
+l_string|&quot;m&quot;
+(paren
 id|sem-&gt;count
 )paren
 comma
@@ -683,16 +743,16 @@ id|__volatile__
 c_func
 (paren
 macro_line|#ifndef __s390x__
-l_string|&quot;   l    %0,0(%2)&bslash;n&quot;
+l_string|&quot;   l    %0,0(%3)&bslash;n&quot;
 l_string|&quot;0: lr   %1,%0&bslash;n&quot;
-l_string|&quot;   a    %1,%3&bslash;n&quot;
-l_string|&quot;   cs   %0,%1,0(%2)&bslash;n&quot;
+l_string|&quot;   a    %1,%5&bslash;n&quot;
+l_string|&quot;   cs   %0,%1,0(%3)&bslash;n&quot;
 l_string|&quot;   jl   0b&quot;
 macro_line|#else /* __s390x__ */
-l_string|&quot;   lg   %0,0(%2)&bslash;n&quot;
+l_string|&quot;   lg   %0,0(%3)&bslash;n&quot;
 l_string|&quot;0: lgr  %1,%0&bslash;n&quot;
-l_string|&quot;   ag   %1,%3&bslash;n&quot;
-l_string|&quot;   csg  %0,%1,0(%2)&bslash;n&quot;
+l_string|&quot;   ag   %1,%5&bslash;n&quot;
+l_string|&quot;   csg  %0,%1,0(%3)&bslash;n&quot;
 l_string|&quot;   jl   0b&quot;
 macro_line|#endif /* __s390x__ */
 suffix:colon
@@ -705,10 +765,20 @@ l_string|&quot;=&amp;d&quot;
 (paren
 r_new
 )paren
+comma
+l_string|&quot;=m&quot;
+(paren
+id|sem-&gt;count
+)paren
 suffix:colon
 l_string|&quot;a&quot;
 (paren
 op_amp
+id|sem-&gt;count
+)paren
+comma
+l_string|&quot;m&quot;
+(paren
 id|sem-&gt;count
 )paren
 comma
@@ -764,16 +834,16 @@ id|__volatile__
 c_func
 (paren
 macro_line|#ifndef __s390x__
-l_string|&quot;   l    %0,0(%2)&bslash;n&quot;
+l_string|&quot;   l    %0,0(%3)&bslash;n&quot;
 l_string|&quot;0: lr   %1,%0&bslash;n&quot;
-l_string|&quot;   ar   %1,%3&bslash;n&quot;
-l_string|&quot;   cs   %0,%1,0(%2)&bslash;n&quot;
+l_string|&quot;   ar   %1,%5&bslash;n&quot;
+l_string|&quot;   cs   %0,%1,0(%3)&bslash;n&quot;
 l_string|&quot;   jl   0b&quot;
 macro_line|#else /* __s390x__ */
-l_string|&quot;   lg   %0,0(%2)&bslash;n&quot;
+l_string|&quot;   lg   %0,0(%3)&bslash;n&quot;
 l_string|&quot;0: lgr  %1,%0&bslash;n&quot;
-l_string|&quot;   agr  %1,%3&bslash;n&quot;
-l_string|&quot;   csg  %0,%1,0(%2)&bslash;n&quot;
+l_string|&quot;   agr  %1,%5&bslash;n&quot;
+l_string|&quot;   csg  %0,%1,0(%3)&bslash;n&quot;
 l_string|&quot;   jl   0b&quot;
 macro_line|#endif /* __s390x__ */
 suffix:colon
@@ -786,10 +856,20 @@ l_string|&quot;=&amp;d&quot;
 (paren
 r_new
 )paren
+comma
+l_string|&quot;=m&quot;
+(paren
+id|sem-&gt;count
+)paren
 suffix:colon
 l_string|&quot;a&quot;
 (paren
 op_amp
+id|sem-&gt;count
+)paren
+comma
+l_string|&quot;m&quot;
+(paren
 id|sem-&gt;count
 )paren
 comma
@@ -832,16 +912,16 @@ id|__volatile__
 c_func
 (paren
 macro_line|#ifndef __s390x__
-l_string|&quot;   l    %0,0(%2)&bslash;n&quot;
+l_string|&quot;   l    %0,0(%3)&bslash;n&quot;
 l_string|&quot;0: lr   %1,%0&bslash;n&quot;
-l_string|&quot;   ar   %1,%3&bslash;n&quot;
-l_string|&quot;   cs   %0,%1,0(%2)&bslash;n&quot;
+l_string|&quot;   ar   %1,%5&bslash;n&quot;
+l_string|&quot;   cs   %0,%1,0(%3)&bslash;n&quot;
 l_string|&quot;   jl   0b&quot;
 macro_line|#else /* __s390x__ */
-l_string|&quot;   lg   %0,0(%2)&bslash;n&quot;
+l_string|&quot;   lg   %0,0(%3)&bslash;n&quot;
 l_string|&quot;0: lgr  %1,%0&bslash;n&quot;
-l_string|&quot;   agr  %1,%3&bslash;n&quot;
-l_string|&quot;   csg  %0,%1,0(%2)&bslash;n&quot;
+l_string|&quot;   agr  %1,%5&bslash;n&quot;
+l_string|&quot;   csg  %0,%1,0(%3)&bslash;n&quot;
 l_string|&quot;   jl   0b&quot;
 macro_line|#endif /* __s390x__ */
 suffix:colon
@@ -854,10 +934,20 @@ l_string|&quot;=&amp;d&quot;
 (paren
 r_new
 )paren
+comma
+l_string|&quot;=m&quot;
+(paren
+id|sem-&gt;count
+)paren
 suffix:colon
 l_string|&quot;a&quot;
 (paren
 op_amp
+id|sem-&gt;count
+)paren
+comma
+l_string|&quot;m&quot;
+(paren
 id|sem-&gt;count
 )paren
 comma

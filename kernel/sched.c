@@ -79,14 +79,6 @@ mdefine_line|#define CREDIT_LIMIT&t;&t;100
 multiline_comment|/*&n; * If a task is &squot;interactive&squot; then we reinsert it in the active&n; * array after it has expired its current timeslice. (it will not&n; * continue to run immediately, it will still roundrobin with&n; * other interactive tasks.)&n; *&n; * This part scales the interactivity limit depending on niceness.&n; *&n; * We scale it linearly, offset by the INTERACTIVE_DELTA delta.&n; * Here are a few examples of different nice levels:&n; *&n; *  TASK_INTERACTIVE(-20): [1,1,1,1,1,1,1,1,1,0,0]&n; *  TASK_INTERACTIVE(-10): [1,1,1,1,1,1,1,0,0,0,0]&n; *  TASK_INTERACTIVE(  0): [1,1,1,1,0,0,0,0,0,0,0]&n; *  TASK_INTERACTIVE( 10): [1,1,0,0,0,0,0,0,0,0,0]&n; *  TASK_INTERACTIVE( 19): [0,0,0,0,0,0,0,0,0,0,0]&n; *&n; * (the X axis represents the possible -5 ... 0 ... +5 dynamic&n; *  priority range a task can explore, a value of &squot;1&squot; means the&n; *  task is rated interactive.)&n; *&n; * Ie. nice +19 tasks can never get &squot;interactive&squot; enough to be&n; * reinserted into the active array. And only heavily CPU-hog nice -20&n; * tasks will be expired. Default nice 0 tasks are somewhere between,&n; * it takes some effort for them to get interactive, but it&squot;s not&n; * too hard.&n; */
 DECL|macro|CURRENT_BONUS
 mdefine_line|#define CURRENT_BONUS(p) &bslash;&n;&t;(NS_TO_JIFFIES((p)-&gt;sleep_avg) * MAX_BONUS / &bslash;&n;&t;&t;MAX_SLEEP_AVG)
-multiline_comment|/* spinlock debugging needs this, even on !CONFIG_SMP */
-DECL|variable|__cacheline_aligned_in_smp
-id|spinlock_t
-id|kernel_flag
-id|__cacheline_aligned_in_smp
-op_assign
-id|SPIN_LOCK_UNLOCKED
-suffix:semicolon
 macro_line|#ifdef CONFIG_SMP
 DECL|macro|TIMESLICE_GRANULARITY
 mdefine_line|#define TIMESLICE_GRANULARITY(p)&t;(MIN_TIMESLICE * &bslash;&n;&t;&t;(1 &lt;&lt; (((MAX_BONUS - CURRENT_BONUS(p)) ? : 1) - 1)) * &bslash;&n;&t;&t;&t;num_online_cpus())
@@ -9682,8 +9674,14 @@ l_int|0
 suffix:semicolon
 )brace
 macro_line|#endif
-macro_line|#if defined(CONFIG_SMP) || defined(CONFIG_PREEMPT)
-multiline_comment|/*&n; * The &squot;big kernel lock&squot;&n; *&n; * This spinlock is taken and released recursively by lock_kernel()&n; * and unlock_kernel().  It is transparently dropped and reaquired&n; * over schedule().  It is used to protect legacy code that hasn&squot;t&n; * been migrated to a proper locking design yet.&n; *&n; * Don&squot;t use in new code.&n; */
+multiline_comment|/*&n; * The &squot;big kernel lock&squot;&n; *&n; * This spinlock is taken and released recursively by lock_kernel()&n; * and unlock_kernel().  It is transparently dropped and reaquired&n; * over schedule().  It is used to protect legacy code that hasn&squot;t&n; * been migrated to a proper locking design yet.&n; *&n; * Don&squot;t use in new code.&n; *&n; * Note: spinlock debugging needs this even on !CONFIG_SMP.&n; */
+DECL|variable|__cacheline_aligned_in_smp
+id|spinlock_t
+id|kernel_flag
+id|__cacheline_aligned_in_smp
+op_assign
+id|SPIN_LOCK_UNLOCKED
+suffix:semicolon
 DECL|variable|kernel_flag
 id|EXPORT_SYMBOL
 c_func
@@ -9691,7 +9689,6 @@ c_func
 id|kernel_flag
 )paren
 suffix:semicolon
-macro_line|#endif
 DECL|function|kstat_init_cpu
 r_static
 r_void

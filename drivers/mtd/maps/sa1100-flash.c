@@ -346,89 +346,17 @@ suffix:semicolon
 macro_line|#endif
 macro_line|#ifdef CONFIG_SA1100_CERF
 macro_line|#ifdef CONFIG_SA1100_CERF_FLASH_32MB
-DECL|variable|cerf_partitions
-r_static
-r_struct
-id|mtd_partition
-id|cerf_partitions
-(braket
-)braket
-op_assign
-(brace
-(brace
-dot
-id|name
-op_assign
-l_string|&quot;firmware&quot;
-comma
-dot
-id|size
-op_assign
-l_int|0x00040000
-comma
-dot
-id|offset
-op_assign
-l_int|0
-comma
-)brace
-comma
-(brace
-dot
-id|name
-op_assign
-l_string|&quot;params&quot;
-comma
-dot
-id|size
-op_assign
-l_int|0x00040000
-comma
-dot
-id|offset
-op_assign
-l_int|0x00040000
-comma
-)brace
-comma
-(brace
-dot
-id|name
-op_assign
-l_string|&quot;kernel&quot;
-comma
-dot
-id|size
-op_assign
-l_int|0x00100000
-comma
-dot
-id|offset
-op_assign
-l_int|0x00080000
-comma
-)brace
-comma
-(brace
-dot
-id|name
-op_assign
-l_string|&quot;rootdisk&quot;
-comma
-dot
-id|size
-op_assign
-l_int|0x01E80000
-comma
-dot
-id|offset
-op_assign
-l_int|0x00180000
-comma
-)brace
-)brace
-suffix:semicolon
+DECL|macro|CERF_FLASH_SIZE
+macro_line|#  define CERF_FLASH_SIZE&t;0x02000000
 macro_line|#elif defined CONFIG_SA1100_CERF_FLASH_16MB
+DECL|macro|CERF_FLASH_SIZE
+macro_line|#  define CERF_FLASH_SIZE&t;0x01000000
+macro_line|#elif defined CONFIG_SA1100_CERF_FLASH_8MB
+DECL|macro|CERF_FLASH_SIZE
+macro_line|#  define CERF_FLASH_SIZE&t;0x00800000
+macro_line|#else
+macro_line|#  error &quot;Undefined flash size for CERF in sa1100-flash.c&quot;
+macro_line|#endif
 DECL|variable|cerf_partitions
 r_static
 r_struct
@@ -442,7 +370,7 @@ op_assign
 dot
 id|name
 op_assign
-l_string|&quot;firmware&quot;
+l_string|&quot;Bootloader&quot;
 comma
 dot
 id|size
@@ -452,7 +380,7 @@ comma
 dot
 id|offset
 op_assign
-l_int|0
+l_int|0x00000000
 comma
 )brace
 comma
@@ -460,12 +388,12 @@ comma
 dot
 id|name
 op_assign
-l_string|&quot;params&quot;
+l_string|&quot;Params&quot;
 comma
 dot
 id|size
 op_assign
-l_int|0x00020000
+l_int|0x00040000
 comma
 dot
 id|offset
@@ -478,7 +406,7 @@ comma
 dot
 id|name
 op_assign
-l_string|&quot;kernel&quot;
+l_string|&quot;Kernel&quot;
 comma
 dot
 id|size
@@ -488,7 +416,7 @@ comma
 dot
 id|offset
 op_assign
-l_int|0x00040000
+l_int|0x00060000
 comma
 )brace
 comma
@@ -496,26 +424,23 @@ comma
 dot
 id|name
 op_assign
-l_string|&quot;rootdisk&quot;
+l_string|&quot;Filesystem&quot;
 comma
 dot
 id|size
 op_assign
-l_int|0x00EC0000
+id|CERF_FLASH_SIZE
+op_minus
+l_int|0x00160000
 comma
 dot
 id|offset
 op_assign
-l_int|0x00140000
+l_int|0x00160000
 comma
 )brace
 )brace
 suffix:semicolon
-macro_line|#elif defined CONFIG_SA1100_CERF_FLASH_8MB
-macro_line|#   error &quot;Unwritten type definition&quot;
-macro_line|#else
-macro_line|#   error &quot;Undefined memory orientation for CERF in sa1100-flash.c&quot;
-macro_line|#endif
 macro_line|#endif
 macro_line|#ifdef CONFIG_SA1100_CONSUS
 DECL|variable|consus_partitions

@@ -72,77 +72,57 @@ id|u32
 id|default_decr
 suffix:semicolon
 multiline_comment|/* Default decrementer value&t;&t;0x1c */
-DECL|member|unused1
-id|u64
-id|unused1
-suffix:semicolon
 DECL|member|xKsave
 id|u64
 id|xKsave
 suffix:semicolon
-multiline_comment|/* Saved Kernel stack addr or zero&t;0x28 */
+multiline_comment|/* Saved Kernel stack addr or zero&t;0x20 */
 DECL|member|pvr
 id|u64
 id|pvr
 suffix:semicolon
-multiline_comment|/* Processor version register&t;&t;0x30 */
-DECL|member|exception_sp
-id|u8
-op_star
-id|exception_sp
-suffix:semicolon
-multiline_comment|/*&t;&t;&t;&t;&t;0x38 */
+multiline_comment|/* Processor version register&t;&t;0x28 */
 DECL|member|lpQueuePtr
 r_struct
 id|ItLpQueue
 op_star
 id|lpQueuePtr
 suffix:semicolon
-multiline_comment|/* LpQueue handled by this processor    0x40 */
+multiline_comment|/* LpQueue handled by this processor    0x30 */
 DECL|member|xTOC
 id|u64
 id|xTOC
 suffix:semicolon
-multiline_comment|/* Kernel TOC address&t;&t;&t;0x48 */
+multiline_comment|/* Kernel TOC address&t;&t;&t;0x38 */
 DECL|member|xStab_data
 id|STAB
 id|xStab_data
 suffix:semicolon
-multiline_comment|/* Segment table information&t;&t;0x50,0x58,0x60 */
-DECL|member|xSegments
+multiline_comment|/* Segment table information&t;&t;0x40,0x48,0x50 */
+DECL|member|exception_sp
 id|u8
-id|xSegments
-(braket
-id|STAB_CACHE_SIZE
-)braket
+op_star
+id|exception_sp
 suffix:semicolon
-multiline_comment|/* Cache of used stab entries&t;&t;0x68,0x70 */
+multiline_comment|/*                                      0x58 */
 DECL|member|xProcEnabled
 id|u8
 id|xProcEnabled
 suffix:semicolon
-multiline_comment|/* 1=soft enabled&t;&t;&t;0x78 */
-DECL|member|unused2
-id|u8
-id|unused2
-suffix:semicolon
+multiline_comment|/*                                      0x59 */
 DECL|member|prof_enabled
 id|u8
 id|prof_enabled
 suffix:semicolon
-multiline_comment|/* 1=iSeries profiling enabled          0x7A */
-DECL|member|stab_cache_pointer
-id|u8
-id|stab_cache_pointer
-suffix:semicolon
+multiline_comment|/* 1=iSeries profiling enabled          0x60 */
 DECL|member|resv1
 id|u8
 id|resv1
 (braket
-l_int|4
+l_int|30
 )braket
 suffix:semicolon
-multiline_comment|/*&t;&t;&t;&t;&t;0x7B-0x7F */
+multiline_comment|/*&t;&t;&t;&t;&t;0x61-0x7F */
 multiline_comment|/*=====================================================================================&n; * CACHE_LINE_2 0x0080 - 0x00FF&n; *=====================================================================================&n; */
 DECL|member|spare1
 id|u64

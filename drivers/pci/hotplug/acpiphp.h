@@ -358,7 +358,7 @@ mdefine_line|#define SLOT_POWEREDON&t;&t;(0x00000001)
 DECL|macro|SLOT_ENABLED
 mdefine_line|#define SLOT_ENABLED&t;&t;(0x00000002)
 DECL|macro|SLOT_MULTIFUNCTION
-mdefine_line|#define SLOT_MULTIFUNCTION&t;(x000000004)
+mdefine_line|#define SLOT_MULTIFUNCTION&t;(0x00000004)
 multiline_comment|/* function flags */
 DECL|macro|FUNC_HAS_STA
 mdefine_line|#define FUNC_HAS_STA&t;&t;(0x00000001)
@@ -372,8 +372,6 @@ DECL|macro|FUNC_HAS_PS2
 mdefine_line|#define FUNC_HAS_PS2&t;&t;(0x00000040)
 DECL|macro|FUNC_HAS_PS3
 mdefine_line|#define FUNC_HAS_PS3&t;&t;(0x00000080)
-DECL|macro|FUNC_EXISTS
-mdefine_line|#define FUNC_EXISTS&t;&t;(0x10000000) /* to make sure we call _EJ0 only for existing funcs */
 multiline_comment|/* function prototypes */
 multiline_comment|/* acpiphp_glue.c */
 r_extern
@@ -500,6 +498,16 @@ suffix:semicolon
 r_extern
 id|u8
 id|acpiphp_get_adapter_status
+(paren
+r_struct
+id|acpiphp_slot
+op_star
+id|slot
+)paren
+suffix:semicolon
+r_extern
+id|u32
+id|acpiphp_get_address
 (paren
 r_struct
 id|acpiphp_slot

@@ -38,6 +38,7 @@ macro_line|#include &lt;asm/starfire.h&gt;
 macro_line|#include &lt;asm/hardirq.h&gt;
 macro_line|#include &lt;asm/mmu_context.h&gt;
 macro_line|#include &lt;asm/timer.h&gt;
+macro_line|#include &lt;asm/sections.h&gt;
 macro_line|#ifdef CONFIG_IP_PNP
 macro_line|#include &lt;net/ipconfig.h&gt;
 macro_line|#endif
@@ -2187,6 +2188,74 @@ op_assign
 id|phys_base
 op_rshift
 id|PAGE_SHIFT
+suffix:semicolon
+r_switch
+c_cond
+(paren
+id|tlb_type
+)paren
+(brace
+r_default
+suffix:colon
+r_case
+id|spitfire
+suffix:colon
+id|kern_base
+op_assign
+id|spitfire_get_itlb_data
+c_func
+(paren
+id|sparc64_highest_locked_tlbent
+c_func
+(paren
+)paren
+)paren
+suffix:semicolon
+id|kern_base
+op_and_assign
+id|_PAGE_PADDR_SF
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+id|cheetah
+suffix:colon
+r_case
+id|cheetah_plus
+suffix:colon
+id|kern_base
+op_assign
+id|cheetah_get_litlb_data
+c_func
+(paren
+id|sparc64_highest_locked_tlbent
+c_func
+(paren
+)paren
+)paren
+suffix:semicolon
+id|kern_base
+op_and_assign
+id|_PAGE_PADDR
+suffix:semicolon
+r_break
+suffix:semicolon
+)brace
+suffix:semicolon
+id|kern_size
+op_assign
+(paren
+r_int
+r_int
+)paren
+op_amp
+id|_end
+op_minus
+(paren
+r_int
+r_int
+)paren
+id|KERNBASE
 suffix:semicolon
 r_if
 c_cond

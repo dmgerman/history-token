@@ -1,5 +1,4 @@
 multiline_comment|/*&n; * PPC64 (POWER4) Huge TLB Page Support for Kernel.&n; *&n; * Copyright (C) 2003 David Gibson, IBM Corporation.&n; *&n; * Based on the IA-32 version:&n; * Copyright (C) 2002, Rohit Seth &lt;rohit.seth@intel.com&gt;&n; */
-macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
@@ -2957,16 +2956,11 @@ suffix:semicolon
 r_int
 id|slot
 suffix:semicolon
+multiline_comment|/* We have to find the first hugepte in the batch, since&n;&t; * that&squot;s the one that will store the HPTE flags */
 id|ea
 op_and_assign
-op_complement
-(paren
-id|HPAGE_SIZE
-op_minus
-l_int|1
-)paren
+id|HPAGE_MASK
 suffix:semicolon
-multiline_comment|/* We have to find the first hugepte in the batch, since&n;&t; * that&squot;s the one that will store the HPTE flags */
 id|ptep
 op_assign
 id|hugepte_offset
@@ -4113,6 +4107,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;Total HugeTLB memory allocated, %d&bslash;n&quot;
 comma
 id|htlbpage_free
@@ -4128,6 +4123,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
+id|KERN_INFO
 l_string|&quot;CPU does not support HugeTLB&bslash;n&quot;
 )paren
 suffix:semicolon

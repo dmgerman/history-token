@@ -513,9 +513,9 @@ mdefine_line|#define&t;TODC_TYPE_MC146818_CNTL_B&t;&t;0x0a
 DECL|macro|TODC_TYPE_MC146818_CNTL_A
 mdefine_line|#define&t;TODC_TYPE_MC146818_CNTL_A&t;&t;0x0b&t;/* control_a R/W regs */
 DECL|macro|TODC_TYPE_MC146818_WATCHDOG
-mdefine_line|#define&t;TODC_TYPE_MC146818_WATCHDOG&t;&t;0x0c
+mdefine_line|#define&t;TODC_TYPE_MC146818_WATCHDOG&t;&t;0
 DECL|macro|TODC_TYPE_MC146818_INTERRUPTS
-mdefine_line|#define&t;TODC_TYPE_MC146818_INTERRUPTS&t;&t;0x0d
+mdefine_line|#define&t;TODC_TYPE_MC146818_INTERRUPTS&t;&t;0x0c
 DECL|macro|TODC_TYPE_MC146818_ALARM_DATE
 mdefine_line|#define&t;TODC_TYPE_MC146818_ALARM_DATE&t;&t;0xff
 DECL|macro|TODC_TYPE_MC146818_ALARM_HOUR

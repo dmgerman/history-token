@@ -28,7 +28,7 @@ macro_line|#include &quot;xfs_bit.h&quot;
 macro_line|#include &quot;xfs_bmap.h&quot;
 macro_line|#include &quot;xfs_error.h&quot;
 macro_line|#include &quot;xfs_quota.h&quot;
-macro_line|#ifdef DEBUG
+macro_line|#if defined(XFS_BMBT_TRACE)
 DECL|variable|xfs_bmbt_trace_buf
 id|ktrace_t
 op_star

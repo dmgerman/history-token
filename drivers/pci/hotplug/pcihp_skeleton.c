@@ -1256,7 +1256,7 @@ suffix:semicolon
 multiline_comment|/*&n;&t;&t; * Initilize the slot info structure with some known&n;&t;&t; * good values.&n;&t;&t; */
 id|info-&gt;power_status
 op_assign
-id|get_skel_power_status
+id|get_power_status
 c_func
 (paren
 id|slot
@@ -1264,7 +1264,7 @@ id|slot
 suffix:semicolon
 id|info-&gt;attention_status
 op_assign
-id|get_skel_attention_status
+id|get_attention_status
 c_func
 (paren
 id|slot
@@ -1272,7 +1272,7 @@ id|slot
 suffix:semicolon
 id|info-&gt;latch_status
 op_assign
-id|get_skel_latch_status
+id|get_latch_status
 c_func
 (paren
 id|slot
@@ -1280,7 +1280,7 @@ id|slot
 suffix:semicolon
 id|info-&gt;adapter_status
 op_assign
-id|get_skel_adapter_status
+id|get_adapter_status
 c_func
 (paren
 id|slot

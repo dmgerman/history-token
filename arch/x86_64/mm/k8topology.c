@@ -341,7 +341,7 @@ id|numnodes
 id|printk
 c_func
 (paren
-l_string|&quot;Ignoring excess node %d (%x:%x)&bslash;n&quot;
+l_string|&quot;Ignoring excess node %d (%lx:%lx)&bslash;n&quot;
 comma
 id|nodeid
 comma

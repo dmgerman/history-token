@@ -1,7 +1,7 @@
 macro_line|#ifndef _ASM_IA64_UACCESS_H
 DECL|macro|_ASM_IA64_UACCESS_H
 mdefine_line|#define _ASM_IA64_UACCESS_H
-multiline_comment|/*&n; * This file defines various macros to transfer memory areas across&n; * the user/kernel boundary.  This needs to be done carefully because&n; * this code is executed in kernel mode and uses user-specified&n; * addresses.  Thus, we need to be careful not to let the user to&n; * trick us into accessing kernel memory that would normally be&n; * inaccessible.  This code is also fairly performance sensitive,&n; * so we want to spend as little time doing safety checks as&n; * possible.&n; *&n; * To make matters a bit more interesting, these macros sometimes also&n; * called from within the kernel itself, in which case the address&n; * validity check must be skipped.  The get_fs() macro tells us what&n; * to do: if get_fs()==USER_DS, checking is performed, if&n; * get_fs()==KERNEL_DS, checking is bypassed.&n; *&n; * Note that even if the memory area specified by the user is in a&n; * valid address range, it is still possible that we&squot;ll get a page&n; * fault while accessing it.  This is handled by filling out an&n; * exception handler fixup entry for each instruction that has the&n; * potential to fault.  When such a fault occurs, the page fault&n; * handler checks to see whether the faulting instruction has a fixup&n; * associated and, if so, sets r8 to -EFAULT and clears r9 to 0 and&n; * then resumes execution at the continuation point.&n; *&n; * Based on &lt;asm-alpha/uaccess.h&gt;.&n; *&n; * Copyright (C) 1998, 1999, 2001-2003 Hewlett-Packard Co&n; *&t;David Mosberger-Tang &lt;davidm@hpl.hp.com&gt;&n; */
+multiline_comment|/*&n; * This file defines various macros to transfer memory areas across&n; * the user/kernel boundary.  This needs to be done carefully because&n; * this code is executed in kernel mode and uses user-specified&n; * addresses.  Thus, we need to be careful not to let the user to&n; * trick us into accessing kernel memory that would normally be&n; * inaccessible.  This code is also fairly performance sensitive,&n; * so we want to spend as little time doing safety checks as&n; * possible.&n; *&n; * To make matters a bit more interesting, these macros sometimes also&n; * called from within the kernel itself, in which case the address&n; * validity check must be skipped.  The get_fs() macro tells us what&n; * to do: if get_fs()==USER_DS, checking is performed, if&n; * get_fs()==KERNEL_DS, checking is bypassed.&n; *&n; * Note that even if the memory area specified by the user is in a&n; * valid address range, it is still possible that we&squot;ll get a page&n; * fault while accessing it.  This is handled by filling out an&n; * exception handler fixup entry for each instruction that has the&n; * potential to fault.  When such a fault occurs, the page fault&n; * handler checks to see whether the faulting instruction has a fixup&n; * associated and, if so, sets r8 to -EFAULT and clears r9 to 0 and&n; * then resumes execution at the continuation point.&n; *&n; * Based on &lt;asm-alpha/uaccess.h&gt;.&n; *&n; * Copyright (C) 1998, 1999, 2001-2004 Hewlett-Packard Co&n; *&t;David Mosberger-Tang &lt;davidm@hpl.hp.com&gt;&n; */
 macro_line|#include &lt;linux/compiler.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
@@ -397,6 +397,7 @@ r_int
 suffix:semicolon
 DECL|macro|strnlen_user
 mdefine_line|#define strnlen_user(str, len)&t;&t;&t;&t;&t;&bslash;&n;({&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;const char *__su_str = (str);&t;&t;&t;&t;&bslash;&n;&t;unsigned long __su_ret = 0;&t;&t;&t;&t;&bslash;&n;&t;if (__access_ok((long) __su_str, 0, get_fs()))&t;&t;&bslash;&n;&t;&t;__su_ret = __strnlen_user(__su_str, len);&t;&bslash;&n;&t;__su_ret;&t;&t;&t;&t;&t;&t;&bslash;&n;})
+multiline_comment|/* Generic code can&squot;t deal with the location-relative format that we use for compactness.  */
 DECL|macro|ARCH_HAS_SORT_EXTABLE
 mdefine_line|#define ARCH_HAS_SORT_EXTABLE
 DECL|macro|ARCH_HAS_SEARCH_EXTABLE
@@ -409,12 +410,12 @@ DECL|member|addr
 r_int
 id|addr
 suffix:semicolon
-multiline_comment|/* gp-relative address of insn this fixup is for */
+multiline_comment|/* location-relative address of insn this fixup is for */
 DECL|member|cont
 r_int
 id|cont
 suffix:semicolon
-multiline_comment|/* gp-relative continuation address; if bit 2 is set, r9 is set to 0 */
+multiline_comment|/* location-relative continuation addr.; if bit 2 is set, r9 is set to 0 */
 )brace
 suffix:semicolon
 r_extern
@@ -445,8 +446,6 @@ r_int
 id|addr
 )paren
 suffix:semicolon
-DECL|macro|SEARCH_EXCEPTION_TABLE
-macro_line|# define SEARCH_EXCEPTION_TABLE(regs) search_exception_tables(regs-&gt;cr_iip + ia64_psr(regs)-&gt;ri)
 r_static
 r_inline
 r_int
@@ -467,10 +466,18 @@ id|e
 suffix:semicolon
 id|e
 op_assign
-id|SEARCH_EXCEPTION_TABLE
+id|search_exception_tables
+c_func
+(paren
+id|regs-&gt;cr_iip
+op_plus
+id|ia64_psr
 c_func
 (paren
 id|regs
+)paren
+op_member_access_from_pointer
+id|ri
 )paren
 suffix:semicolon
 r_if

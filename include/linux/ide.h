@@ -363,7 +363,10 @@ comma
 id|ide_acorn
 comma
 DECL|enumerator|ide_pc9800
+DECL|enumerator|ide_forced
 id|ide_pc9800
+comma
+id|ide_forced
 DECL|typedef|hwif_chipset_t
 )brace
 id|hwif_chipset_t
@@ -4344,16 +4347,6 @@ id|ide_hwifs
 )braket
 suffix:semicolon
 multiline_comment|/* master data repository */
-r_extern
-r_int
-(paren
-op_star
-id|ide_probe
-)paren
-(paren
-r_void
-)paren
-suffix:semicolon
 r_extern
 id|ide_devices_t
 op_star

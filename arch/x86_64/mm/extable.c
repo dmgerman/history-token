@@ -225,8 +225,5 @@ op_ne
 l_int|0
 )paren
 suffix:semicolon
-r_return
-l_int|0
-suffix:semicolon
 )brace
 eof
