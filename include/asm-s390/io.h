@@ -73,6 +73,9 @@ id|address
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/*&n; * Change &quot;struct page&quot; to physical address.&n; */
+DECL|macro|page_to_phys
+mdefine_line|#define page_to_phys(page)&t;((page - mem_map) &lt;&lt; PAGE_SHIFT)
 r_extern
 r_void
 op_star

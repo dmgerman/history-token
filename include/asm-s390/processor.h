@@ -4,6 +4,7 @@ DECL|macro|__ASM_S390_PROCESSOR_H
 mdefine_line|#define __ASM_S390_PROCESSOR_H
 macro_line|#include &lt;asm/page.h&gt;
 macro_line|#include &lt;asm/ptrace.h&gt;
+macro_line|#ifdef __KERNEL__
 multiline_comment|/*&n; * Default implementation of macro that returns current&n; * instruction pointer (&quot;program counter&quot;).&n; */
 DECL|macro|current_text_addr
 mdefine_line|#define current_text_addr() ({ void *pc; __asm__(&quot;basr %0,0&quot;:&quot;=a&quot;(pc)); pc; })
@@ -112,20 +113,12 @@ mdefine_line|#define TASK_SIZE       (0x80000000)
 multiline_comment|/* This decides where the kernel will search for a free chunk of vm&n; * space during mmap&squot;s.&n; */
 DECL|macro|TASK_UNMAPPED_BASE
 mdefine_line|#define TASK_UNMAPPED_BASE      (TASK_SIZE / 2)
-DECL|macro|THREAD_SIZE
-mdefine_line|#define THREAD_SIZE (2*PAGE_SIZE)
 r_typedef
 r_struct
 (brace
-DECL|member|seg
-r_int
-r_int
-id|seg
-suffix:semicolon
-DECL|member|acc4
-r_int
-r_int
-id|acc4
+DECL|member|ar4
+id|__u32
+id|ar4
 suffix:semicolon
 DECL|typedef|mm_segment_t
 )brace
@@ -136,13 +129,6 @@ DECL|struct|thread_struct
 r_struct
 id|thread_struct
 (brace
-DECL|member|regs
-r_struct
-id|pt_regs
-op_star
-id|regs
-suffix:semicolon
-multiline_comment|/* the user registers can be found on*/
 DECL|member|fp_regs
 id|s390_fp_regs
 id|fp_regs
@@ -181,11 +167,6 @@ DECL|member|trap_no
 id|__u32
 id|trap_no
 suffix:semicolon
-multiline_comment|/* perform syscall argument validation (get/set_fs) */
-DECL|member|fs
-id|mm_segment_t
-id|fs
-suffix:semicolon
 DECL|member|per_info
 id|per_struct
 id|per_info
@@ -210,11 +191,14 @@ id|thread_struct
 id|thread_struct
 suffix:semicolon
 DECL|macro|INIT_THREAD
-mdefine_line|#define INIT_THREAD { (struct pt_regs *) 0,                       &bslash;&n;                    { 0,{{0},{0},{0},{0},{0},{0},{0},{0},{0},{0}, &bslash;&n;&t;&t;&t;    {0},{0},{0},{0},{0},{0}}},            &bslash;&n;                     0, 0,                                        &bslash;&n;                    sizeof(init_stack) + (__u32) &amp;init_stack,     &bslash;&n;              (__pa((__u32) &amp;swapper_pg_dir[0]) + _SEGMENT_TABLE),&bslash;&n;                     0,0,0,                                       &bslash;&n;                     (mm_segment_t) { 0,1},                       &bslash;&n;                     (per_struct) {{{{0,}}},0,0,0,0,{{0,}}},      &bslash;&n;                     0, 0                                         &bslash;&n;}
+mdefine_line|#define INIT_THREAD {{0,{{0},{0},{0},{0},{0},{0},{0},{0},{0},{0}, &bslash;&n;&t;&t;&t;    {0},{0},{0},{0},{0},{0}}},            &bslash;&n;                     0, 0,                                        &bslash;&n;                    sizeof(init_stack) + (__u32) &amp;init_stack,     &bslash;&n;              (__pa((__u32) &amp;swapper_pg_dir[0]) + _SEGMENT_TABLE),&bslash;&n;                     0,0,0,                                       &bslash;&n;                     (per_struct) {{{{0,}}},0,0,0,0,{{0,}}},      &bslash;&n;                     0, 0                                         &bslash;&n;}
 multiline_comment|/* need to define ... */
 DECL|macro|start_thread
 mdefine_line|#define start_thread(regs, new_psw, new_stackp) do {            &bslash;&n;        regs-&gt;psw.mask  = _USER_PSW_MASK;                       &bslash;&n;        regs-&gt;psw.addr  = new_psw | 0x80000000;                 &bslash;&n;        regs-&gt;gprs[15]  = new_stackp ;                          &bslash;&n;} while (0)
 multiline_comment|/* Forward declaration, a strange C thing */
+r_struct
+id|task_struct
+suffix:semicolon
 r_struct
 id|mm_struct
 suffix:semicolon
@@ -258,38 +242,36 @@ DECL|macro|copy_segments
 mdefine_line|#define copy_segments(nr, mm)           do { } while (0)
 DECL|macro|release_segments
 mdefine_line|#define release_segments(mm)            do { } while (0)
-multiline_comment|/*&n; * Return saved PC of a blocked thread. used in kernel/sched&n; */
-DECL|function|thread_saved_pc
+multiline_comment|/*&n; * Return saved PC of a blocked thread.&n; */
 r_extern
-r_inline
 r_int
 r_int
 id|thread_saved_pc
 c_func
 (paren
 r_struct
-id|thread_struct
+id|task_struct
 op_star
 id|t
 )paren
-(brace
-r_return
-(paren
-id|t-&gt;regs
-)paren
-ques
-c_cond
-(paren
-(paren
-r_int
-r_int
-)paren
-id|t-&gt;regs-&gt;psw.addr
-)paren
-suffix:colon
-l_int|0
 suffix:semicolon
-)brace
+multiline_comment|/*&n; * Print register of task into buffer. Used in fs/proc/array.c.&n; */
+r_extern
+r_char
+op_star
+id|task_show_regs
+c_func
+(paren
+r_struct
+id|task_struct
+op_star
+id|task
+comma
+r_char
+op_star
+id|buffer
+)paren
+suffix:semicolon
 r_int
 r_int
 id|get_wchan
@@ -301,22 +283,12 @@ op_star
 id|p
 )paren
 suffix:semicolon
+DECL|macro|__KSTK_PTREGS
+mdefine_line|#define __KSTK_PTREGS(tsk) ((struct pt_regs *) &bslash;&n;        (((addr_t) tsk-&gt;thread_info + THREAD_SIZE - sizeof(struct pt_regs)) &amp; -8L))
 DECL|macro|KSTK_EIP
-mdefine_line|#define KSTK_EIP(tsk)   ((tsk)-&gt;thread.regs-&gt;psw.addr)
+mdefine_line|#define KSTK_EIP(tsk)&t;(__KSTK_PTREGS(tsk)-&gt;psw.addr)
 DECL|macro|KSTK_ESP
-mdefine_line|#define KSTK_ESP(tsk)   ((tsk)-&gt;thread.ksp)
-multiline_comment|/* Allocation and freeing of basic task resources. */
-multiline_comment|/*&n; * NOTE! The task struct and the stack go together&n; */
-DECL|macro|alloc_task_struct
-mdefine_line|#define alloc_task_struct() &bslash;&n;        ((struct task_struct *) __get_free_pages(GFP_KERNEL,1))
-DECL|macro|free_task_struct
-mdefine_line|#define free_task_struct(p)     free_pages((unsigned long)(p),1)
-DECL|macro|get_task_struct
-mdefine_line|#define get_task_struct(tsk)      atomic_inc(&amp;virt_to_page(tsk)-&gt;count)
-DECL|macro|init_task
-mdefine_line|#define init_task       (init_task_union.task)
-DECL|macro|init_stack
-mdefine_line|#define init_stack      (init_task_union.stack)
+mdefine_line|#define KSTK_ESP(tsk)&t;(__KSTK_PTREGS(tsk)-&gt;gprs[15])
 DECL|macro|cpu_relax
 mdefine_line|#define cpu_relax()&t;do { } while (0)
 multiline_comment|/*&n; * Set of msr bits that gdb can change on behalf of a process.&n; */
@@ -335,6 +307,104 @@ DECL|macro|USER_STD_MASK
 mdefine_line|#define USER_STD_MASK           0x00000080UL
 DECL|macro|PSW_PROBLEM_STATE
 mdefine_line|#define PSW_PROBLEM_STATE       0x00010000UL
+multiline_comment|/*&n; * Set PSW mask to specified value, while leaving the&n; * PSW addr pointing to the next instruction.&n; */
+DECL|function|__load_psw_mask
+r_static
+r_inline
+r_void
+id|__load_psw_mask
+(paren
+r_int
+r_int
+id|mask
+)paren
+(brace
+r_int
+r_int
+id|addr
+suffix:semicolon
+id|psw_t
+id|psw
+suffix:semicolon
+id|psw.mask
+op_assign
+id|mask
+suffix:semicolon
+id|asm
+r_volatile
+(paren
+l_string|&quot;    basr %0,0&bslash;n&quot;
+l_string|&quot;0:  ahi  %0,1f-0b&bslash;n&quot;
+l_string|&quot;    st   %0,4(%1)&bslash;n&quot;
+l_string|&quot;    lpsw 0(%1)&bslash;n&quot;
+l_string|&quot;1:&quot;
+suffix:colon
+l_string|&quot;=&amp;d&quot;
+(paren
+id|addr
+)paren
+suffix:colon
+l_string|&quot;a&quot;
+(paren
+op_amp
+id|psw
+)paren
+suffix:colon
+l_string|&quot;memory&quot;
+comma
+l_string|&quot;cc&quot;
+)paren
+suffix:semicolon
+)brace
+multiline_comment|/*&n; * Function to stop a processor until an interruption occured&n; */
+DECL|function|enabled_wait
+r_static
+r_inline
+r_void
+id|enabled_wait
+c_func
+(paren
+r_void
+)paren
+(brace
+r_int
+r_int
+id|reg
+suffix:semicolon
+id|psw_t
+id|wait_psw
+suffix:semicolon
+id|wait_psw.mask
+op_assign
+l_int|0x070e0000
+suffix:semicolon
+id|asm
+r_volatile
+(paren
+l_string|&quot;    basr %0,0&bslash;n&quot;
+l_string|&quot;0:  la   %0,1f-0b(%0)&bslash;n&quot;
+l_string|&quot;    st   %0,4(%1)&bslash;n&quot;
+l_string|&quot;    oi   4(%1),0x80&bslash;n&quot;
+l_string|&quot;    lpsw 0(%1)&bslash;n&quot;
+l_string|&quot;1:&quot;
+suffix:colon
+l_string|&quot;=&amp;a&quot;
+(paren
+id|reg
+)paren
+suffix:colon
+l_string|&quot;a&quot;
+(paren
+op_amp
+id|wait_psw
+)paren
+suffix:colon
+l_string|&quot;memory&quot;
+comma
+l_string|&quot;cc&quot;
+)paren
+suffix:semicolon
+)brace
 multiline_comment|/*&n; * Function to drop a processor into disabled wait state&n; */
 DECL|function|disabled_wait
 r_static
@@ -453,5 +523,6 @@ l_string|&quot;cc&quot;
 )paren
 suffix:semicolon
 )brace
+macro_line|#endif
 macro_line|#endif                                 /* __ASM_S390_PROCESSOR_H           */
 eof

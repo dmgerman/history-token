@@ -3,6 +3,8 @@ macro_line|#ifndef __ASM_SMP_H
 DECL|macro|__ASM_SMP_H
 mdefine_line|#define __ASM_SMP_H
 macro_line|#include &lt;linux/config.h&gt;
+macro_line|#include &lt;linux/threads.h&gt;
+macro_line|#include &lt;linux/ptrace.h&gt;
 macro_line|#if defined(__KERNEL__) &amp;&amp; defined(CONFIG_SMP) &amp;&amp; !defined(__ASSEMBLY__)
 macro_line|#include &lt;asm/lowcore.h&gt;
 multiline_comment|/*&n;  s390 specific smp.c headers&n; */
@@ -30,6 +32,7 @@ DECL|typedef|sigp_info
 id|sigp_info
 suffix:semicolon
 r_extern
+r_volatile
 r_int
 r_int
 id|cpu_online_map
@@ -40,7 +43,7 @@ multiline_comment|/*&n; *&t;This magic constant controls our willingness to tran
 DECL|macro|PROC_CHANGE_PENALTY
 mdefine_line|#define PROC_CHANGE_PENALTY&t;20&t;&t;/* Schedule penalty */
 DECL|macro|smp_processor_id
-mdefine_line|#define smp_processor_id() (current-&gt;processor)
+mdefine_line|#define smp_processor_id() (current_thread_info()-&gt;cpu)
 DECL|function|cpu_logical_map
 r_extern
 id|__inline__
@@ -100,16 +103,6 @@ suffix:semicolon
 )brace
 DECL|macro|cpu_logical_map
 mdefine_line|#define cpu_logical_map(cpu) (cpu)
-r_void
-id|smp_local_timer_interrupt
-c_func
-(paren
-r_struct
-id|pt_regs
-op_star
-id|regs
-)paren
-suffix:semicolon
 macro_line|#endif
 macro_line|#endif
 eof

@@ -3,6 +3,7 @@ macro_line|#ifndef _S390_CURRENT_H
 DECL|macro|_S390_CURRENT_H
 mdefine_line|#define _S390_CURRENT_H
 macro_line|#ifdef __KERNEL__
+macro_line|#include &lt;asm/thread_info.h&gt;
 r_struct
 id|task_struct
 suffix:semicolon
@@ -18,28 +19,13 @@ c_func
 r_void
 )paren
 (brace
-r_struct
-id|task_struct
-op_star
-id|current
-suffix:semicolon
-id|__asm__
+r_return
+id|current_thread_info
 c_func
 (paren
-l_string|&quot;lhi   %0,-8192&bslash;n&bslash;t&quot;
-l_string|&quot;al    %0,0xc40&quot;
-suffix:colon
-l_string|&quot;=&amp;r&quot;
-(paren
-id|current
 )paren
-suffix:colon
-suffix:colon
-l_string|&quot;cc&quot;
-)paren
-suffix:semicolon
-r_return
-id|current
+op_member_access_from_pointer
+id|task
 suffix:semicolon
 )brace
 DECL|macro|current
