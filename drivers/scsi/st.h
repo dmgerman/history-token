@@ -2,6 +2,46 @@ macro_line|#ifndef _ST_H
 DECL|macro|_ST_H
 mdefine_line|#define _ST_H
 macro_line|#include &lt;linux/completion.h&gt;
+multiline_comment|/* Descriptor for analyzed sense data */
+DECL|struct|st_cmdstatus
+r_struct
+id|st_cmdstatus
+(brace
+DECL|member|midlevel_result
+r_int
+id|midlevel_result
+suffix:semicolon
+DECL|member|sense_hdr
+r_struct
+id|scsi_sense_hdr
+id|sense_hdr
+suffix:semicolon
+DECL|member|have_sense
+r_int
+id|have_sense
+suffix:semicolon
+DECL|member|uremainder64
+id|u64
+id|uremainder64
+suffix:semicolon
+DECL|member|flags
+id|u8
+id|flags
+suffix:semicolon
+DECL|member|remainder_valid
+id|u8
+id|remainder_valid
+suffix:semicolon
+DECL|member|fixed_format
+id|u8
+id|fixed_format
+suffix:semicolon
+DECL|member|deferred
+id|u8
+id|deferred
+suffix:semicolon
+)brace
+suffix:semicolon
 multiline_comment|/* The tape buffer descriptor. */
 DECL|struct|st_buffer
 r_struct
@@ -44,10 +84,6 @@ DECL|member|writing
 r_int
 id|writing
 suffix:semicolon
-DECL|member|midlevel_result
-r_int
-id|midlevel_result
-suffix:semicolon
 DECL|member|syscall_result
 r_int
 id|syscall_result
@@ -57,6 +93,11 @@ r_struct
 id|scsi_request
 op_star
 id|last_SRpnt
+suffix:semicolon
+DECL|member|cmdstat
+r_struct
+id|st_cmdstatus
+id|cmdstat
 suffix:semicolon
 DECL|member|b_data
 r_int
@@ -642,5 +683,12 @@ DECL|macro|ST_YES
 mdefine_line|#define ST_YES         2
 DECL|macro|EXTENDED_SENSE_START
 mdefine_line|#define EXTENDED_SENSE_START  18
+multiline_comment|/* Masks for some conditions in the sense data */
+DECL|macro|SENSE_FMK
+mdefine_line|#define SENSE_FMK   0x80
+DECL|macro|SENSE_EOM
+mdefine_line|#define SENSE_EOM   0x40
+DECL|macro|SENSE_ILI
+mdefine_line|#define SENSE_ILI   0x20
 macro_line|#endif
 eof
