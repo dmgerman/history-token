@@ -1936,17 +1936,6 @@ c_func
 r_void
 )paren
 (brace
-id|printk
-c_func
-(paren
-id|KERN_INFO
-l_string|&quot;i2c-piix4 version %s (%s)&bslash;n&quot;
-comma
-id|I2C_VERSION
-comma
-id|I2C_DATE
-)paren
-suffix:semicolon
 r_return
 id|pci_module_init
 c_func

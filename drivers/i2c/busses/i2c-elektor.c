@@ -134,7 +134,7 @@ id|printk
 c_func
 (paren
 id|KERN_DEBUG
-l_string|&quot;i2c-elektor.o: Write 0x%X 0x%02X&bslash;n&quot;
+l_string|&quot;i2c-elektor: Write 0x%X 0x%02X&bslash;n&quot;
 comma
 id|address
 comma
@@ -246,7 +246,7 @@ id|printk
 c_func
 (paren
 id|KERN_DEBUG
-l_string|&quot;i2c-elektor.o: Read 0x%X 0x%02X&bslash;n&quot;
+l_string|&quot;i2c-elektor: Read 0x%X 0x%02X&bslash;n&quot;
 comma
 id|address
 comma
@@ -431,7 +431,7 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;i2c-elektor.o: requested I/O region (0x%X:2) &quot;
+l_string|&quot;i2c-elektor: requested I/O region (0x%X:2) &quot;
 l_string|&quot;is in use.&bslash;n&quot;
 comma
 id|base
@@ -475,7 +475,7 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;i2c-elektor.o: Request irq%d failed&bslash;n&quot;
+l_string|&quot;i2c-elektor: Request irq%d failed&bslash;n&quot;
 comma
 id|irq
 )paren
@@ -645,7 +645,7 @@ id|printk
 c_func
 (paren
 id|KERN_DEBUG
-l_string|&quot;i2c-elektor.o: found cy82c693, config register 0x47 = 0x%02x.&bslash;n&quot;
+l_string|&quot;i2c-elektor: found cy82c693, config register 0x47 = 0x%02x.&bslash;n&quot;
 comma
 id|config
 )paren
@@ -686,7 +686,7 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;i2c-elektor.o: found API UP2000 like board, will probe PCF8584 later.&bslash;n&quot;
+l_string|&quot;i2c-elektor: found API UP2000 like board, will probe PCF8584 later.&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
@@ -709,7 +709,7 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;i2c-elektor.o: incorrect base address (0x%0X) specified for mmapped I/O.&bslash;n&quot;
+l_string|&quot;i2c-elektor: incorrect base address (0x%0X) specified for mmapped I/O.&bslash;n&quot;
 comma
 id|base
 )paren
@@ -723,11 +723,7 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;i2c-elektor.o: i2c pcf8584-isa adapter module version %s (%s)&bslash;n&quot;
-comma
-id|I2C_VERSION
-comma
-id|I2C_DATE
+l_string|&quot;i2c-elektor: i2c pcf8584-isa adapter driver&bslash;n&quot;
 )paren
 suffix:semicolon
 r_if
@@ -781,7 +777,7 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;i2c-elektor.o: found device at %#x.&bslash;n&quot;
+l_string|&quot;i2c-elektor: found device at %#x.&bslash;n&quot;
 comma
 id|base
 )paren

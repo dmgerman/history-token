@@ -362,11 +362,7 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;i2c-velleman.o: i2c Velleman K8000 adapter module version %s (%s)&bslash;n&quot;
-comma
-id|I2C_VERSION
-comma
-id|I2C_DATE
+l_string|&quot;i2c-velleman: i2c Velleman K8000 driver&bslash;n&quot;
 )paren
 suffix:semicolon
 r_if
@@ -480,7 +476,7 @@ id|printk
 c_func
 (paren
 id|KERN_DEBUG
-l_string|&quot;i2c-velleman.o: found device at %#x.&bslash;n&quot;
+l_string|&quot;i2c-velleman: found device at %#x.&bslash;n&quot;
 comma
 id|base
 )paren

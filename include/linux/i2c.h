@@ -10,10 +10,6 @@ multiline_comment|/* $Id: i2c.h,v 1.68 2003/01/21 08:08:16 kmalkki Exp $ */
 macro_line|#ifndef _LINUX_I2C_H
 DECL|macro|_LINUX_I2C_H
 mdefine_line|#define _LINUX_I2C_H
-DECL|macro|I2C_DATE
-mdefine_line|#define I2C_DATE &quot;20021208&quot;
-DECL|macro|I2C_VERSION
-mdefine_line|#define I2C_VERSION &quot;2.7.0&quot;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/i2c-id.h&gt;
