@@ -11,7 +11,7 @@ macro_line|#include &lt;asm/mmu.h&gt;
 macro_line|#ifdef CONFIG_PPC_STD_MMU
 multiline_comment|/* Classic PPC with hash-table based MMU... */
 r_struct
-id|free_pte_ctx
+id|mmu_gather
 suffix:semicolon
 r_extern
 r_void
@@ -19,7 +19,7 @@ id|tlb_flush
 c_func
 (paren
 r_struct
-id|free_pte_ctx
+id|mmu_gather
 op_star
 id|tlb
 )paren
@@ -96,16 +96,6 @@ suffix:semicolon
 )brace
 macro_line|#else
 multiline_comment|/* Embedded PPC with software-loaded TLB, very simple... */
-DECL|struct|flush_tlb_arch
-r_struct
-id|flush_tlb_arch
-(brace
-)brace
-suffix:semicolon
-DECL|macro|tlb_init_arch
-mdefine_line|#define tlb_init_arch(tlb, full_flush)&t;do { } while (0)
-DECL|macro|tlb_finish_arch
-mdefine_line|#define tlb_finish_arch(tlb)&t;&t;do { } while (0)
 DECL|macro|tlb_start_vma
 mdefine_line|#define tlb_start_vma(tlb, vma)&t;&t;do { } while (0)
 DECL|macro|tlb_end_vma
