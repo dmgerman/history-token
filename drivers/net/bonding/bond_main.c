@@ -1757,8 +1757,6 @@ r_if
 c_cond
 (paren
 id|miimon
-OG
-l_int|0
 )paren
 (brace
 multiline_comment|/* link check interval, in milliseconds. */
@@ -1802,8 +1800,6 @@ r_if
 c_cond
 (paren
 id|arp_interval
-OG
-l_int|0
 )paren
 (brace
 multiline_comment|/* arp interval, in milliseconds. */
@@ -2005,8 +2001,6 @@ r_if
 c_cond
 (paren
 id|miimon
-OG
-l_int|0
 )paren
 (brace
 multiline_comment|/* link check interval, in milliseconds. */
@@ -2022,8 +2016,6 @@ r_if
 c_cond
 (paren
 id|arp_interval
-OG
-l_int|0
 )paren
 (brace
 multiline_comment|/* arp interval, in milliseconds. */
@@ -2155,13 +2147,12 @@ op_assign
 id|bond_dev-&gt;mc_list
 suffix:semicolon
 id|dmi
-op_ne
-l_int|NULL
 suffix:semicolon
 id|dmi
 op_assign
 id|dmi-&gt;next
 )paren
+(brace
 id|dev_mc_delete
 c_func
 (paren
@@ -2174,6 +2165,7 @@ comma
 l_int|0
 )paren
 suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
@@ -2284,9 +2276,8 @@ r_if
 c_cond
 (paren
 id|bond-&gt;curr_active_slave
-op_ne
-l_int|NULL
 )paren
+(brace
 id|dev_mc_add
 c_func
 (paren
@@ -2299,6 +2290,7 @@ comma
 l_int|0
 )paren
 suffix:semicolon
+)brace
 )brace
 r_else
 (brace
@@ -2370,9 +2362,8 @@ r_if
 c_cond
 (paren
 id|bond-&gt;curr_active_slave
-op_ne
-l_int|NULL
 )paren
+(brace
 id|dev_mc_delete
 c_func
 (paren
@@ -2385,6 +2376,7 @@ comma
 l_int|0
 )paren
 suffix:semicolon
+)brace
 )brace
 r_else
 (brace
@@ -2458,8 +2450,6 @@ op_assign
 id|mc_list
 suffix:semicolon
 id|dmi
-op_ne
-l_int|NULL
 suffix:semicolon
 id|dmi
 op_assign
@@ -2483,11 +2473,11 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+op_logical_neg
 id|new_dmi
-op_eq
-l_int|NULL
 )paren
 (brace
+multiline_comment|/* FIXME: Potential memory leak !!! */
 r_return
 op_minus
 id|ENOMEM
@@ -2670,9 +2660,8 @@ r_if
 c_cond
 (paren
 id|bond-&gt;curr_active_slave
-op_ne
-l_int|NULL
 )paren
+(brace
 id|dev_set_allmulti
 c_func
 (paren
@@ -2681,6 +2670,7 @@ comma
 id|inc
 )paren
 suffix:semicolon
+)brace
 )brace
 r_else
 (brace
@@ -2746,8 +2736,6 @@ op_assign
 id|mc_list
 suffix:semicolon
 id|idmi
-op_ne
-l_int|NULL
 suffix:semicolon
 id|idmi
 op_assign
@@ -2828,6 +2816,7 @@ op_amp
 id|IFF_PROMISC
 )paren
 )paren
+(brace
 id|bond_set_promiscuity
 c_func
 (paren
@@ -2836,6 +2825,7 @@ comma
 l_int|1
 )paren
 suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
@@ -2852,6 +2842,7 @@ op_amp
 id|IFF_PROMISC
 )paren
 )paren
+(brace
 id|bond_set_promiscuity
 c_func
 (paren
@@ -2861,6 +2852,7 @@ op_minus
 l_int|1
 )paren
 suffix:semicolon
+)brace
 multiline_comment|/* set allmulti flag to slaves */
 r_if
 c_cond
@@ -2878,6 +2870,7 @@ op_amp
 id|IFF_ALLMULTI
 )paren
 )paren
+(brace
 id|bond_set_allmulti
 c_func
 (paren
@@ -2886,6 +2879,7 @@ comma
 l_int|1
 )paren
 suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
@@ -2902,6 +2896,7 @@ op_amp
 id|IFF_ALLMULTI
 )paren
 )paren
+(brace
 id|bond_set_allmulti
 c_func
 (paren
@@ -2911,6 +2906,7 @@ op_minus
 l_int|1
 )paren
 suffix:semicolon
+)brace
 id|bond-&gt;flags
 op_assign
 id|bond_dev-&gt;flags
@@ -2924,8 +2920,6 @@ op_assign
 id|bond_dev-&gt;mc_list
 suffix:semicolon
 id|dmi
-op_ne
-l_int|NULL
 suffix:semicolon
 id|dmi
 op_assign
@@ -2935,6 +2929,7 @@ id|dmi-&gt;next
 r_if
 c_cond
 (paren
+op_logical_neg
 id|bond_mc_list_find_dmi
 c_func
 (paren
@@ -2942,9 +2937,8 @@ id|dmi
 comma
 id|bond-&gt;mc_list
 )paren
-op_eq
-l_int|NULL
 )paren
+(brace
 id|bond_mc_add
 c_func
 (paren
@@ -2956,6 +2950,7 @@ id|dmi-&gt;dmi_addrlen
 )paren
 suffix:semicolon
 )brace
+)brace
 multiline_comment|/* looking for addresses to delete from slaves&squot; list */
 r_for
 c_loop
@@ -2965,8 +2960,6 @@ op_assign
 id|bond-&gt;mc_list
 suffix:semicolon
 id|dmi
-op_ne
-l_int|NULL
 suffix:semicolon
 id|dmi
 op_assign
@@ -2976,6 +2969,7 @@ id|dmi-&gt;next
 r_if
 c_cond
 (paren
+op_logical_neg
 id|bond_mc_list_find_dmi
 c_func
 (paren
@@ -2983,9 +2977,8 @@ id|dmi
 comma
 id|bond_dev-&gt;mc_list
 )paren
-op_eq
-l_int|NULL
 )paren
+(brace
 id|bond_mc_delete
 c_func
 (paren
@@ -2996,6 +2989,7 @@ comma
 id|dmi-&gt;dmi_addrlen
 )paren
 suffix:semicolon
+)brace
 )brace
 multiline_comment|/* save master&squot;s multicast list */
 id|bond_mc_list_destroy
@@ -3115,8 +3109,6 @@ op_assign
 id|bond-&gt;dev-&gt;mc_list
 suffix:semicolon
 id|dmi
-op_ne
-l_int|NULL
 suffix:semicolon
 id|dmi
 op_assign
@@ -3185,8 +3177,6 @@ op_assign
 id|bond-&gt;dev-&gt;mc_list
 suffix:semicolon
 id|dmi
-op_ne
-l_int|NULL
 suffix:semicolon
 id|dmi
 op_assign
@@ -3460,10 +3450,6 @@ id|EOPNOTSUPP
 suffix:semicolon
 )brace
 )brace
-r_if
-c_cond
-(paren
-(paren
 id|new_slave
 op_assign
 id|kmalloc
@@ -3477,9 +3463,12 @@ id|slave
 comma
 id|GFP_KERNEL
 )paren
-)paren
-op_eq
-l_int|NULL
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|new_slave
 )paren
 (brace
 r_return
@@ -3722,6 +3711,7 @@ id|bond_dev-&gt;flags
 op_amp
 id|IFF_ALLMULTI
 )paren
+(brace
 id|dev_set_allmulti
 c_func
 (paren
@@ -3730,6 +3720,7 @@ comma
 l_int|1
 )paren
 suffix:semicolon
+)brace
 multiline_comment|/* upload master&squot;s mc_list to new slave */
 r_for
 c_loop
@@ -3739,13 +3730,12 @@ op_assign
 id|bond_dev-&gt;mc_list
 suffix:semicolon
 id|dmi
-op_ne
-l_int|NULL
 suffix:semicolon
 id|dmi
 op_assign
 id|dmi-&gt;next
 )paren
+(brace
 id|dev_mc_add
 (paren
 id|slave_dev
@@ -3757,6 +3747,7 @@ comma
 l_int|0
 )paren
 suffix:semicolon
+)brace
 )brace
 r_if
 c_cond
@@ -3815,8 +3806,6 @@ r_if
 c_cond
 (paren
 id|miimon
-OG
-l_int|0
 op_logical_and
 op_logical_neg
 id|use_carrier
@@ -3842,11 +3831,8 @@ op_minus
 l_int|1
 )paren
 op_logical_and
-(paren
+op_logical_neg
 id|arp_interval
-op_eq
-l_int|0
-)paren
 )paren
 (brace
 multiline_comment|/*&n;&t;&t;&t; * miimon is set but a bonded network driver&n;&t;&t;&t; * does not support ETHTOOL/MII and&n;&t;&t;&t; * arp_interval is not set.  Note: if&n;&t;&t;&t; * use_carrier is enabled, we will never go&n;&t;&t;&t; * here (because netif_carrier is always&n;&t;&t;&t; * supported); thus, we don&squot;t need to change&n;&t;&t;&t; * the messages for netif_carrier.&n;&t;&t;&t; */
@@ -3896,11 +3882,8 @@ multiline_comment|/* check for initial state */
 r_if
 c_cond
 (paren
-(paren
+op_logical_neg
 id|miimon
-op_le
-l_int|0
-)paren
 op_logical_or
 (paren
 id|bond_check_dev_link
@@ -4026,8 +4009,6 @@ id|bond_mode
 )paren
 op_logical_and
 id|primary
-op_ne
-l_int|NULL
 )paren
 (brace
 multiline_comment|/* if there is a primary slave, remember it */
@@ -4066,9 +4047,8 @@ c_cond
 (paren
 (paren
 (paren
+op_logical_neg
 id|bond-&gt;curr_active_slave
-op_eq
-l_int|NULL
 )paren
 op_logical_or
 (paren
@@ -4204,9 +4184,8 @@ r_if
 c_cond
 (paren
 (paren
+op_logical_neg
 id|bond-&gt;curr_active_slave
-op_eq
-l_int|NULL
 )paren
 op_logical_and
 (paren
@@ -4245,14 +4224,15 @@ multiline_comment|/* In trunking mode there is little meaning to curr_active_sla
 r_if
 c_cond
 (paren
+op_logical_neg
 id|bond-&gt;curr_active_slave
-op_eq
-l_int|NULL
 )paren
+(brace
 id|bond-&gt;curr_active_slave
 op_assign
 id|new_slave
 suffix:semicolon
+)brace
 r_break
 suffix:semicolon
 )brace
@@ -4573,14 +4553,10 @@ c_cond
 (paren
 (paren
 id|new_active
-op_ne
-l_int|NULL
 )paren
 op_logical_and
 (paren
 id|old_active
-op_ne
-l_int|NULL
 )paren
 op_logical_and
 (paren
@@ -4669,9 +4645,8 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+op_logical_neg
 id|new_active
-op_eq
-l_int|NULL
 )paren
 (brace
 multiline_comment|/* there were no active slaves left */
@@ -4707,19 +4682,13 @@ c_cond
 (paren
 (paren
 id|bond-&gt;primary_slave
-op_ne
-l_int|NULL
 )paren
 op_logical_and
 (paren
+op_logical_neg
 id|arp_interval
-op_eq
-l_int|0
 )paren
-)paren
-(brace
-r_if
-c_cond
+op_logical_and
 (paren
 id|IS_UP
 c_func
@@ -4727,6 +4696,8 @@ c_func
 id|bond-&gt;primary_slave-&gt;dev
 )paren
 )paren
+)paren
+(brace
 id|new_active
 op_assign
 id|bond-&gt;primary_slave
@@ -5202,9 +5173,8 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+op_logical_neg
 id|slave
-op_eq
-l_int|NULL
 )paren
 (brace
 multiline_comment|/* not a slave of this bond */
@@ -5480,6 +5450,7 @@ id|bond_dev-&gt;flags
 op_amp
 id|IFF_ALLMULTI
 )paren
+(brace
 id|dev_set_allmulti
 c_func
 (paren
@@ -5489,6 +5460,7 @@ op_minus
 l_int|1
 )paren
 suffix:semicolon
+)brace
 multiline_comment|/* flush master&squot;s mc_list from slave */
 id|bond_mc_list_flush
 (paren
@@ -5785,6 +5757,7 @@ id|bond_dev-&gt;flags
 op_amp
 id|IFF_ALLMULTI
 )paren
+(brace
 id|dev_set_allmulti
 c_func
 (paren
@@ -5794,6 +5767,7 @@ op_minus
 l_int|1
 )paren
 suffix:semicolon
+)brace
 multiline_comment|/* flush master&squot;s mc_list from slave */
 id|bond_mc_list_flush
 c_func
@@ -6114,8 +6088,6 @@ r_if
 c_cond
 (paren
 id|downdelay
-OG
-l_int|0
 )paren
 (brace
 id|printk
@@ -6372,8 +6344,6 @@ r_if
 c_cond
 (paren
 id|updelay
-OG
-l_int|0
 )paren
 (brace
 multiline_comment|/* if updelay == 0, no need to&n;&t;&t;&t;&t;&t;   advertise about a 0 ms delay */
@@ -6563,9 +6533,8 @@ r_if
 c_cond
 (paren
 (paren
+op_logical_neg
 id|oldcurrent
-op_eq
-l_int|NULL
 )paren
 op_logical_or
 (paren
@@ -6590,8 +6559,25 @@ suffix:semicolon
 )brace
 r_break
 suffix:semicolon
+r_default
+suffix:colon
+multiline_comment|/* Should not happen */
+id|printk
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;bonding: Error: %s  Illegal value (link=%d)&bslash;n&quot;
+comma
+id|slave-&gt;dev-&gt;name
+comma
+id|slave-&gt;link
+)paren
+suffix:semicolon
+r_goto
+id|out
+suffix:semicolon
 )brace
-multiline_comment|/* end of switch */
+multiline_comment|/* end of switch (slave-&gt;link) */
 id|bond_update_speed_duplex
 c_func
 (paren
@@ -6862,9 +6848,8 @@ multiline_comment|/* primary_slave has no meaning in round-robin&n;&t;&t;&t;&t; 
 r_if
 c_cond
 (paren
+op_logical_neg
 id|oldcurrent
-op_eq
-l_int|NULL
 )paren
 (brace
 id|printk
@@ -6939,8 +6924,6 @@ id|delta_in_ticks
 )paren
 op_logical_and
 id|my_ip
-op_ne
-l_int|0
 )paren
 )paren
 (brace
@@ -7198,9 +7181,8 @@ r_if
 c_cond
 (paren
 (paren
+op_logical_neg
 id|bond-&gt;curr_active_slave
-op_eq
-l_int|NULL
 )paren
 op_logical_and
 (paren
@@ -7314,9 +7296,8 @@ id|bond-&gt;curr_active_slave
 )paren
 op_logical_and
 (paren
+op_logical_neg
 id|bond-&gt;current_arp_slave
-op_eq
-l_int|NULL
 )paren
 op_logical_and
 (paren
@@ -7332,11 +7313,7 @@ op_star
 id|delta_in_ticks
 )paren
 op_logical_and
-(paren
 id|my_ip
-op_ne
-l_int|0
-)paren
 )paren
 )paren
 (brace
@@ -7417,8 +7394,6 @@ r_if
 c_cond
 (paren
 id|slave
-op_ne
-l_int|NULL
 )paren
 (brace
 multiline_comment|/* if we have sent traffic in the past 2*arp_intervals but&n;&t;&t; * haven&squot;t xmit and rx traffic in that time interval, select &n;&t;&t; * a different slave. slave-&gt;jiffies is only updated when&n;&t;&t; * a slave first becomes the curr_active_slave - not necessarily&n;&t;&t; * after every arp; this ensures the slave has a full 2*delta &n;&t;&t; * before being taken out. if a primary is being used, check &n;&t;&t; * if it is up and needs to take over as the curr_active_slave&n;&t;&t; */
@@ -7455,11 +7430,7 @@ id|delta_in_ticks
 )paren
 )paren
 op_logical_and
-(paren
 id|my_ip
-op_ne
-l_int|0
-)paren
 )paren
 )paren
 op_logical_and
@@ -7537,8 +7508,6 @@ r_if
 c_cond
 (paren
 id|slave
-op_ne
-l_int|NULL
 )paren
 (brace
 id|slave-&gt;jiffies
@@ -7553,8 +7522,6 @@ c_cond
 (paren
 (paren
 id|bond-&gt;primary_slave
-op_ne
-l_int|NULL
 )paren
 op_logical_and
 (paren
@@ -7629,17 +7596,9 @@ multiline_comment|/* the current slave must tx an arp to ensure backup slaves&n;
 r_if
 c_cond
 (paren
-(paren
 id|slave
-op_ne
-l_int|NULL
-)paren
 op_logical_and
-(paren
 id|my_ip
-op_ne
-l_int|0
-)paren
 )paren
 (brace
 id|bond_arp_send_all
@@ -7654,9 +7613,8 @@ multiline_comment|/* if we don&squot;t have a curr_active_slave, search for the 
 r_if
 c_cond
 (paren
+op_logical_neg
 id|slave
-op_eq
-l_int|NULL
 )paren
 (brace
 r_if
@@ -8080,6 +8038,14 @@ suffix:semicolon
 r_uint32
 id|cmd
 suffix:semicolon
+r_struct
+id|ethtool_drvinfo
+id|info
+suffix:semicolon
+r_char
+op_star
+id|endptr
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -8095,10 +8061,12 @@ op_star
 id|addr
 )paren
 )paren
+(brace
 r_return
 op_minus
 id|EFAULT
 suffix:semicolon
+)brace
 r_switch
 c_cond
 (paren
@@ -8108,15 +8076,6 @@ id|cmd
 r_case
 id|ETHTOOL_GDRVINFO
 suffix:colon
-(brace
-r_struct
-id|ethtool_drvinfo
-id|info
-suffix:semicolon
-r_char
-op_star
-id|endptr
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -8134,10 +8093,12 @@ id|info
 )paren
 )paren
 )paren
+(brace
 r_return
 op_minus
 id|EFAULT
 suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
@@ -8257,15 +8218,14 @@ id|info
 )paren
 )paren
 )paren
+(brace
 r_return
 op_minus
 id|EFAULT
 suffix:semicolon
+)brace
 r_return
 l_int|0
-suffix:semicolon
-)brace
-r_break
 suffix:semicolon
 r_default
 suffix:colon
@@ -8381,9 +8341,8 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+op_logical_neg
 id|mii
-op_eq
-l_int|NULL
 )paren
 (brace
 r_return
@@ -8413,9 +8372,8 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+op_logical_neg
 id|mii
-op_eq
-l_int|NULL
 )paren
 (brace
 r_return
@@ -8658,6 +8616,11 @@ suffix:semicolon
 r_return
 id|res
 suffix:semicolon
+r_default
+suffix:colon
+multiline_comment|/* Go on */
+r_break
+suffix:semicolon
 )brace
 r_if
 c_cond
@@ -8737,9 +8700,8 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+op_logical_neg
 id|slave_dev
-op_eq
-l_int|NULL
 )paren
 (brace
 id|res
@@ -9010,9 +8972,8 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+op_logical_neg
 id|start_at
-op_eq
-l_int|NULL
 )paren
 (brace
 multiline_comment|/* we&squot;re at the root, get the first slave */
@@ -9078,12 +9039,6 @@ r_struct
 id|sk_buff
 op_star
 id|skb2
-suffix:semicolon
-r_if
-c_cond
-(paren
-(paren
-id|skb2
 op_assign
 id|skb_clone
 c_func
@@ -9092,9 +9047,12 @@ id|skb
 comma
 id|GFP_ATOMIC
 )paren
-)paren
-op_eq
-l_int|NULL
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|skb2
 )paren
 (brace
 id|printk
@@ -9152,12 +9110,14 @@ id|skb
 suffix:semicolon
 )brace
 r_else
+(brace
 id|dev_kfree_skb
 c_func
 (paren
 id|skb
 )paren
 suffix:semicolon
+)brace
 multiline_comment|/* frame sent to all suitable interfaces */
 id|read_unlock
 c_func
@@ -9262,9 +9222,8 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+op_logical_neg
 id|slave
-op_eq
-l_int|NULL
 )paren
 (brace
 multiline_comment|/* we&squot;re at the root, get the first slave */
@@ -9672,17 +9631,10 @@ multiline_comment|/* if we are sending arp packets, try to at least &n;&t;   ide
 r_if
 c_cond
 (paren
-(paren
 id|arp_interval
-OG
-l_int|0
-)paren
 op_logical_and
-(paren
+op_logical_neg
 id|my_ip
-op_eq
-l_int|0
-)paren
 op_logical_and
 (paren
 id|skb-&gt;protocol
@@ -9753,8 +9705,6 @@ r_if
 c_cond
 (paren
 id|bond-&gt;curr_active_slave
-op_ne
-l_int|NULL
 )paren
 (brace
 multiline_comment|/* one usable interface */
@@ -11757,8 +11707,6 @@ r_if
 c_cond
 (paren
 id|bond_dev
-op_ne
-l_int|NULL
 )paren
 (brace
 id|bond_release
@@ -12242,8 +12190,6 @@ r_if
 c_cond
 (paren
 id|miimon
-OG
-l_int|0
 )paren
 (brace
 id|printk
@@ -12325,6 +12271,7 @@ suffix:semicolon
 id|count
 op_increment
 )paren
+(brace
 id|printk
 c_func
 (paren
@@ -12336,6 +12283,7 @@ id|count
 )braket
 )paren
 suffix:semicolon
+)brace
 id|printk
 c_func
 (paren
@@ -12408,8 +12356,6 @@ id|i
 )braket
 dot
 id|modename
-op_ne
-l_int|NULL
 suffix:semicolon
 id|i
 op_increment
@@ -12445,8 +12391,6 @@ l_int|0
 )paren
 op_logical_or
 (paren
-l_int|0
-op_eq
 id|strncmp
 c_func
 (paren
@@ -12470,6 +12414,8 @@ dot
 id|modename
 )paren
 )paren
+op_eq
+l_int|0
 )paren
 )paren
 (brace
@@ -12742,8 +12688,6 @@ r_if
 c_cond
 (paren
 id|arp_interval
-op_ne
-l_int|0
 )paren
 (brace
 id|printk
@@ -12765,8 +12709,6 @@ r_if
 c_cond
 (paren
 id|miimon
-op_eq
-l_int|0
 )paren
 (brace
 id|printk
@@ -12813,9 +12755,8 @@ id|BOND_MODE_ALB
 r_if
 c_cond
 (paren
+op_logical_neg
 id|miimon
-op_eq
-l_int|0
 )paren
 (brace
 id|printk
@@ -12868,25 +12809,16 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+op_logical_neg
 id|miimon
-op_eq
-l_int|0
 )paren
 (brace
 r_if
 c_cond
 (paren
-(paren
 id|updelay
-op_ne
-l_int|0
-)paren
 op_logical_or
-(paren
 id|downdelay
-op_ne
-l_int|0
-)paren
 )paren
 (brace
 multiline_comment|/* just warn the user the up/down delay will have&n;&t;&t;&t; * no effect since miimon is zero...&n;&t;&t;&t; */
@@ -12914,8 +12846,6 @@ r_if
 c_cond
 (paren
 id|arp_interval
-op_ne
-l_int|0
 )paren
 (brace
 id|printk
@@ -13121,17 +13051,10 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-(paren
 id|arp_interval
-OG
-l_int|0
-)paren
 op_logical_and
-(paren
+op_logical_neg
 id|arp_ip_count
-op_eq
-l_int|0
-)paren
 )paren
 (brace
 multiline_comment|/* don&squot;t allow arping if no arp_ip_target given... */
@@ -13155,17 +13078,11 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-(paren
+op_logical_neg
 id|miimon
-op_eq
-l_int|0
-)paren
 op_logical_and
-(paren
+op_logical_neg
 id|arp_interval
-op_eq
-l_int|0
-)paren
 )paren
 (brace
 multiline_comment|/* miimon and arp_interval not set, we need one so things&n;&t;&t; * work as expected, see bonding.txt for details&n;&t;&t; */
@@ -13184,11 +13101,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-(paren
 id|primary
-op_ne
-l_int|NULL
-)paren
 op_logical_and
 op_logical_neg
 id|USES_PRIMARY
