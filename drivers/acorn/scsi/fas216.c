@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *  linux/arch/arm/drivers/scsi/fas216.c&n; *&n; *  Copyright (C) 1997-2000 Russell King&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; *&n; * Based on information in qlogicfas.c by Tom Zerucha, Michael Griffith, and&n; * other sources, including:&n; *   the AMD Am53CF94 data sheet&n; *   the AMD Am53C94 data sheet &n; *&n; * This is a generic driver.  To use it, have a look at cumana_2.c.  You&n; * should define your own structure that overlays FAS216_Info, eg:&n; * struct my_host_data {&n; *    FAS216_Info info;&n; *    ... my host specific data ...&n; * };&n; *&n; * Changelog:&n; *  30-08-1997&t;RMK&t;Created&n; *  14-09-1997&t;RMK&t;Started disconnect support&n; *  08-02-1998&t;RMK&t;Corrected real DMA support&n; *  15-02-1998&t;RMK&t;Started sync xfer support&n; *  06-04-1998&t;RMK&t;Tightened conditions for printing incomplete&n; *&t;&t;&t;transfers&n; *  02-05-1998&t;RMK&t;Added extra checks in fas216_reset&n; *  24-05-1998&t;RMK&t;Fixed synchronous transfers with period &gt;= 200ns&n; *  27-06-1998&t;RMK&t;Changed asm/delay.h to linux/delay.h&n; *  26-08-1998&t;RMK&t;Improved message support wrt MESSAGE_REJECT&n; *  02-04-2000&t;RMK&t;Converted to use the new error handling, and&n; *&t;&t;&t;automatically request sense data upon check&n; *&t;&t;&t;condition status from targets.&n; *&n; * Todo:&n; *  - allow individual devices to enable sync xfers.&n; */
+multiline_comment|/*&n; *  linux/drivers/acorn/scsi/fas216.c&n; *&n; *  Copyright (C) 1997-2000 Russell King&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License version 2 as&n; * published by the Free Software Foundation.&n; *&n; * Based on information in qlogicfas.c by Tom Zerucha, Michael Griffith, and&n; * other sources, including:&n; *   the AMD Am53CF94 data sheet&n; *   the AMD Am53C94 data sheet &n; *&n; * This is a generic driver.  To use it, have a look at cumana_2.c.  You&n; * should define your own structure that overlays FAS216_Info, eg:&n; * struct my_host_data {&n; *    FAS216_Info info;&n; *    ... my host specific data ...&n; * };&n; *&n; * Changelog:&n; *  30-08-1997&t;RMK&t;Created&n; *  14-09-1997&t;RMK&t;Started disconnect support&n; *  08-02-1998&t;RMK&t;Corrected real DMA support&n; *  15-02-1998&t;RMK&t;Started sync xfer support&n; *  06-04-1998&t;RMK&t;Tightened conditions for printing incomplete&n; *&t;&t;&t;transfers&n; *  02-05-1998&t;RMK&t;Added extra checks in fas216_reset&n; *  24-05-1998&t;RMK&t;Fixed synchronous transfers with period &gt;= 200ns&n; *  27-06-1998&t;RMK&t;Changed asm/delay.h to linux/delay.h&n; *  26-08-1998&t;RMK&t;Improved message support wrt MESSAGE_REJECT&n; *  02-04-2000&t;RMK&t;Converted to use the new error handling, and&n; *&t;&t;&t;automatically request sense data upon check&n; *&t;&t;&t;condition status from targets.&n; *&n; * Todo:&n; *  - allow individual devices to enable sync xfers.&n; */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/blk.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -1225,7 +1225,7 @@ r_int
 id|result
 )paren
 suffix:semicolon
-multiline_comment|/* Function: int fas216_clockrate(unsigned int clock)&n; * Purpose : calculate correct value to be written into clock conversion&n; *&t;     factor register.&n; * Params  : clock - clock speed in MHz&n; * Returns : CLKF_ value&n; */
+multiline_comment|/** &n; * fast216_clockrate - calculate clock conversion factor&n; * @clock: clock speed in MHz&n; * &n; * Calculate correct value to be written into clock conversion factor &n; * register. Returns CLKF_ value.&n; */
 DECL|function|fas216_clockrate
 r_static
 r_int
@@ -1282,7 +1282,7 @@ r_return
 id|clock
 suffix:semicolon
 )brace
-multiline_comment|/* Function: unsigned short fas216_get_last_msg(FAS216_Info *info, int pos)&n; * Purpose : retrieve a last message from the list, using position in fifo&n; * Params  : info - interface to search&n; *         : pos  - current fifo position&n; */
+multiline_comment|/** &n; * fas216_get_last_msg - retrive last message from the list&n; * @info: interface to search&n; * @pos: current fifo position&n; * &n; * Retrieve a last message from the list, using position in fifo.&n; */
 r_static
 r_inline
 r_int
@@ -1399,7 +1399,7 @@ r_return
 id|packed_msg
 suffix:semicolon
 )brace
-multiline_comment|/* Function: int fas216_syncperiod(FAS216_Info *info, int ns)&n; * Purpose : Calculate value to be loaded into the STP register&n; *           for a given period in ns&n; * Params  : info - state structure for interface connected to device&n; *         : ns   - period in ns (between subsequent bytes)&n; * Returns : Value suitable for REG_STP&n; */
+multiline_comment|/** &n; * fas216_syncperiod - calculate STP register value&n; * @info: state structure for interface connected to device&n; * @ns: period in ns (between subsequent bytes)&n; * &n; * Calculate value to be loaded into the STP register for a given period &n; * in ns. Returns a value suitable for REG_STP.&n; */
 DECL|function|fas216_syncperiod
 r_static
 r_int
@@ -1460,7 +1460,7 @@ op_amp
 l_int|31
 suffix:semicolon
 )brace
-multiline_comment|/* Function: void fas216_set_sync(FAS216_Info *info, int target)&n; * Purpose : Correctly setup FAS216 chip for specified transfer period.&n; * Params  : info   - state structure for interface&n; *         : target - target&n; * Notes   : we need to switch the chip out of FASTSCSI mode if we have&n; *           a transfer period &gt;= 200ns - otherwise the chip will violate&n; *           the SCSI timings.&n; */
+multiline_comment|/**  &n; * fas216_set_sync - setup FAS216 chip for specified transfer period.&n; * @info: state structure for interface connected to device &n; * @target: target&n; * &n; * Correctly setup FAS216 chip for specified transfer period.&n; * Notes   : we need to switch the chip out of FASTSCSI mode if we have&n; *           a transfer period &gt;= 200ns - otherwise the chip will violate&n; *           the SCSI timings.&n; */
 DECL|function|fas216_set_sync
 r_static
 r_void
@@ -1561,7 +1561,7 @@ id|info
 suffix:semicolon
 )brace
 multiline_comment|/* Synchronous transfer support&n; *&n; * Note: The SCSI II r10 spec says (5.6.12):&n; *&n; *  (2)  Due to historical problems with early host adapters that could&n; *  not accept an SDTR message, some targets may not initiate synchronous&n; *  negotiation after a power cycle as required by this standard.  Host&n; *  adapters that support synchronous mode may avoid the ensuing failure&n; *  modes when the target is independently power cycled by initiating a&n; *  synchronous negotiation on each REQUEST SENSE and INQUIRY command.&n; *  This approach increases the SCSI bus overhead and is not recommended&n; *  for new implementations.  The correct method is to respond to an&n; *  SDTR message with a MESSAGE REJECT message if the either the&n; *  initiator or target devices does not support synchronous transfers&n; *  or does not want to negotiate for synchronous transfers at the time.&n; *  Using the correct method assures compatibility with wide data&n; *  transfers and future enhancements.&n; *&n; * We will always initiate a synchronous transfer negotiation request on&n; * every INQUIRY or REQUEST SENSE message, unless the target itself has&n; * at some point performed a synchronous transfer negotiation request, or&n; * we have synchronous transfers disabled for this device.&n; */
-multiline_comment|/* Function: void fas216_handlesync(FAS216_Info *info, char *msg)&n; * Purpose : Handle a synchronous transfer message from the target&n; * Params  : info - state structure for interface&n; *         : msg  - message from target&n; */
+multiline_comment|/**&n; * fas216_handlesync - Handle a synchronous transfer message&n; * @info: state structure for interface&n; * @ms: message from target&n; * &n; * Handle a synchronous transfer message from the target&n; */
 DECL|function|fas216_handlesync
 r_static
 r_void
@@ -1912,7 +1912,7 @@ r_break
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/* Function: void fas216_handlewide(FAS216_Info *info, char *msg)&n; * Purpose : Handle a wide transfer message from the target&n; * Params  : info - state structure for interface&n; *         : msg  - message from target&n; */
+multiline_comment|/** &n; * fas216_handlewide - Handle a wide transfer message &n; * @info: state structure for interface&n; * @msg: message from target&n; * &n; * Handle a wide transfer message from the target&n; */
 DECL|function|fas216_handlewide
 r_static
 r_void
@@ -2175,7 +2175,7 @@ r_break
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/* Function: void fas216_updateptrs(FAS216_Info *info, int bytes_transferred)&n; * Purpose : update data pointers after transfer suspended/paused&n; * Params  : info              - interface&squot;s local pointer to update&n; *           bytes_transferred - number of bytes transferred&n; */
+multiline_comment|/** &n; * fas216_updateptrs - update data pointers after transfer suspended/paused&n; * @info: interface&squot;s local pointer to update&n; * @bytes_transferred: number of bytes transferred&n; * &n; * Update data pointers after transfer suspended/paused&n; */
 DECL|function|fas216_updateptrs
 r_static
 r_void
@@ -2287,7 +2287,7 @@ op_assign
 l_int|NULL
 suffix:semicolon
 )brace
-multiline_comment|/* Function: void fas216_pio(FAS216_Info *info, fasdmadir_t direction)&n; * Purpose : transfer data off of/on to card using programmed IO&n; * Params  : info      - interface to transfer data to/from&n; *           direction - direction to transfer data (DMA_OUT/DMA_IN)&n; * Notes   : this is incredibly slow&n; */
+multiline_comment|/**&n; * fas216_pio - transfer data off of/on to card using programmed IO&n; * @info: interface to transfer data to/from&n; * @direction: direction to transfer data (DMA_OUT/DMA_IN)&n; * &n; * Transfer data off of/on to card using programmed IO.&n; * Notes: this is incredibly slow.&n; */
 DECL|function|fas216_pio
 r_static
 r_void
@@ -2546,7 +2546,7 @@ op_assign
 id|fasdma_none
 suffix:semicolon
 )brace
-multiline_comment|/* Function: void fas216_starttransfer(FAS216_Info *info,&n; *&t;&t;&t;&t;       fasdmadir_t direction)&n; * Purpose : Start a DMA/PIO transfer off of/on to card&n; * Params  : info      - interface from which device disconnected from&n; *           direction - transfer direction (DMA_OUT/DMA_IN)&n; */
+multiline_comment|/** &n; * fas216_starttransfer - Start a DMA/PIO transfer off of/on to card&n; * @info: interface from which device disconnected from&n; * @direction: transfer direction (DMA_OUT/DMA_IN)&n; * &n; * Start a DMA/PIO transfer off of/on to card&n; */
 DECL|function|fas216_starttransfer
 r_static
 r_void
@@ -3057,7 +3057,7 @@ r_break
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/* Function: void fas216_stoptransfer(FAS216_Info *info)&n; * Purpose : Stop a DMA transfer onto / off of the card&n; * Params  : info      - interface from which device disconnected from&n; */
+multiline_comment|/** &n; * fas216_stoptransfer - Stop a DMA transfer onto / off of the card&n; * @info: interface from which device disconnected from&n; * &n; * Stop a DMA transfer onto / off of the card&n; */
 DECL|function|fas216_stoptransfer
 r_static
 r_void
@@ -3179,7 +3179,7 @@ id|CMD_FLUSHFIFO
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* Function: void fas216_disconnected_intr(FAS216_Info *info)&n; * Purpose : handle device disconnection&n; * Params  : info - interface from which device disconnected from&n; */
+multiline_comment|/** &n; * fas216_disconnected_intr - handle device disconnection&n; * @info: interface from which device disconnected from&n; * &n; * Handle device disconnection&n; */
 DECL|function|fas216_disconnect_intr
 r_static
 r_void
@@ -3363,7 +3363,7 @@ r_break
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/* Function: void fas216_reselected_intr(FAS216_Info *info)&n; * Purpose : Start reconnection of a device&n; * Params  : info - interface which was reselected&n; */
+multiline_comment|/** &n; * fas216_reselected_intr - start reconnection of a device&n; * @info: interface which was reselected&n; * &n; * Start reconnection of a device&n; */
 r_static
 r_void
 DECL|function|fas216_reselected_intr
@@ -3908,7 +3908,7 @@ id|CMD_MSGACCEPTED
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* Function: void fas216_finish_reconnect(FAS216_Info *info)&n; * Purpose : finish reconnection sequence for device&n; * Params  : info - interface which caused function done interrupt&n; */
+multiline_comment|/** &n; * fas216_finish_reconnect - finish reconnection sequence for device&n; * @info: interface which caused function done interrupt&n; *&n; * Finish reconnection sequence for device&n; */
 r_static
 r_void
 DECL|function|fas216_finish_reconnect
@@ -4855,7 +4855,7 @@ op_minus
 l_int|3
 suffix:semicolon
 )brace
-multiline_comment|/* Function: void fas216_message(FAS216_Info *info)&n; * Purpose : handle a function done interrupt from FAS216 chip&n; * Params  : info - interface which caused function done interrupt&n; */
+multiline_comment|/**&n; * fas216_message - handle a function done interrupt from FAS216 chip&n; * @info: interface which caused function done interrupt&n; * &n; * Handle a function done interrupt from FAS216 chip&n; */
 DECL|function|fas216_message
 r_static
 r_void
@@ -5154,7 +5154,7 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
-multiline_comment|/* Function: void fas216_send_command(FAS216_Info *info)&n; * Purpose : send a command to a target after all message bytes have been sent&n; * Params  : info - interface which caused bus service&n; */
+multiline_comment|/**&n; * fas216_send_command - send command after all message bytes have been sent&n; * @info: interface which caused bus service&n; * &n; * Send a command to a target after all message bytes have been sent&n; */
 DECL|function|fas216_send_command
 r_static
 r_void
@@ -5236,7 +5236,7 @@ op_assign
 id|PHASE_COMMAND
 suffix:semicolon
 )brace
-multiline_comment|/* Function: void fas216_send_messageout(FAS216_Info *info, int start)&n; * Purpose : handle bus service to send a message&n; * Params  : info - interface which caused bus service&n; * Note    : We do not allow the device to change the data direction!&n; */
+multiline_comment|/** &n; * fas216_send_messageout - handle bus service to send a message&n; * @info: interface which caused bus service&n; * &n; * Handle bus service to send a message.&n; * Note: We do not allow the device to change the data direction!&n; */
 DECL|function|fas216_send_messageout
 r_static
 r_void
@@ -5394,7 +5394,7 @@ op_assign
 id|PHASE_MSGOUT
 suffix:semicolon
 )brace
-multiline_comment|/* Function: void fas216_busservice_intr(FAS216_Info *info, unsigned int stat, unsigned int ssr)&n; * Purpose : handle a bus service interrupt from FAS216 chip&n; * Params  : info - interface which caused bus service interrupt&n; *           stat - Status register contents&n; *           ssr  - SCSI Status register contents&n; */
+multiline_comment|/** &n; * fas216_busservice_intr - handle bus service interrupt from FAS216 chip&n; * @info: interface which caused bus service interrupt&n; * @stat: Status register contents&n; * @ssr: SCSI Status register contents&n; * &n; * Handle a bus service interrupt from FAS216 chip&n; */
 DECL|function|fas216_busservice_intr
 r_static
 r_void
@@ -6357,7 +6357,7 @@ id|DID_ERROR
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* Function: void fas216_funcdone_intr(FAS216_Info *info, unsigned int stat, unsigned int ssr)&n; * Purpose : handle a function done interrupt from FAS216 chip&n; * Params  : info - interface which caused function done interrupt&n; *           stat - Status register contents&n; *           ssr  - SCSI Status register contents&n; */
+multiline_comment|/**&n; * fas216_funcdone_intr - handle a function done interrupt from FAS216 chip&n; * @info: interface which caused function done interrupt&n; * @stat: Status register contents&n; * @ssr: SCSI Status register contents&n; * &n; * Handle a function done interrupt from FAS216 chip&n; */
 DECL|function|fas216_funcdone_intr
 r_static
 r_void
@@ -6751,7 +6751,7 @@ id|info-&gt;eh_wait
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* Function: void fas216_intr(struct Scsi_Host *instance)&n; * Purpose : handle interrupts from the interface to progress a command&n; * Params  : instance - interface to service&n; */
+multiline_comment|/** &n; * fas216_intr - handle interrupts to progress a command&n; * @instance: interface to service&n; * &n; * Handle interrupts from the interface to progress a command&n; */
 DECL|function|fas216_intr
 r_void
 id|fas216_intr
@@ -8055,7 +8055,7 @@ id|CMD_SELECTATNSTOP
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* Function: void fas216_kick(FAS216_Info *info)&n; * Purpose : kick a command to the interface - interface should be idle&n; * Params  : info - our host interface to kick&n; * Notes   : Interrupts are always disabled!&n; */
+multiline_comment|/**&n; * fas216_kick - kick a command to the interface&n; * @info: our host interface to kick&n; * &n; * kick a command to the interface, interface should be idle.&n; * Notes: Interrupts are always disabled!&n; */
 DECL|function|fas216_kick
 r_static
 r_void
@@ -8351,7 +8351,7 @@ id|info-&gt;eh_wait
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* Function: void fas216_rq_sns_done(info, SCpnt, result)&n; * Purpose : Finish processing automatic request sense command&n; * Params  : info   - interface that completed&n; *&t;     SCpnt  - command that completed&n; *&t;     result - driver byte of result&n; */
+multiline_comment|/**&n; * fas216_rq_sns_done - Finish processing automatic request sense command&n; * @info: interface that completed&n; * @SCpnt: command that completed&n; * @result: driver byte of result&n; * &n; * Finish processing automatic request sense command&n; */
 r_static
 r_void
 DECL|function|fas216_rq_sns_done
@@ -8424,7 +8424,7 @@ id|SCpnt
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* Function: void fas216_std_done(info, SCpnt, result)&n; * Purpose : Finish processing of standard command&n; * Params  : info   - interface that completed&n; *&t;     SCpnt  - command that completed&n; *&t;     result - driver byte of result&n; */
+multiline_comment|/**&n; * fas216_std_done - finish processing of standard command&n; * @info: interface that completed&n; * @SCpnt: command that completed&n; * @result: driver byte of result&n; * &n; * Finish processing of standard command&n; */
 r_static
 r_void
 DECL|function|fas216_std_done
@@ -8746,7 +8746,7 @@ op_assign
 id|SCpnt
 suffix:semicolon
 )brace
-multiline_comment|/* Function: void fas216_done(FAS216_Info *info, unsigned int result)&n; * Purpose : complete processing for current command&n; * Params  : info   - interface that completed&n; *&t;     result - driver byte of result&n; */
+multiline_comment|/**&n; * fas216_done - complete processing for current command&n; * @info: interface that completed&n; * @result: driver byte of result&n; * &n; * Complete processing for current command&n; */
 DECL|function|fas216_done
 r_static
 r_void
@@ -8982,7 +8982,7 @@ id|info-&gt;host-&gt;host_no
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* Function: int fas216_queue_command(Scsi_Cmnd *SCpnt, void (*done)(Scsi_Cmnd *))&n; * Purpose : queue a command for adapter to process.&n; * Params  : SCpnt - Command to queue&n; *&t;     done  - done function to call once command is complete&n; * Returns : 0 - success, else error&n; * Notes   : io_request_lock is held, interrupts are disabled.&n; */
+multiline_comment|/**&n; * fas216_queue_command - queue a command for adapter to process.&n; * @SCpnt: Command to queue&n; * @done: done function to call once command is complete&n; * &n; * Queue a command for adapter to process.&n; * Returns: 0 in success, else error. &n; * Notes: io_request_lock is held, interrupts are disabled.&n; */
 DECL|function|fas216_queue_command
 r_int
 id|fas216_queue_command
@@ -9138,7 +9138,7 @@ r_return
 id|result
 suffix:semicolon
 )brace
-multiline_comment|/* Function: void fas216_internal_done(Scsi_Cmnd *SCpnt)&n; * Purpose : trigger restart of a waiting thread in fas216_command&n; * Params  : SCpnt - Command to wake&n; */
+multiline_comment|/**&n; * fas216_internal_done - trigger restart of a waiting thread in fas216_command&n; * @SCpnt: Command to wake&n; * &n; * Trigger restart of a waiting thread in fas216_command&n; */
 DECL|function|fas216_internal_done
 r_static
 r_void
@@ -9171,7 +9171,7 @@ op_assign
 l_int|1
 suffix:semicolon
 )brace
-multiline_comment|/* Function: int fas216_command(Scsi_Cmnd *SCpnt)&n; * Purpose : queue a command for adapter to process.&n; * Params  : SCpnt - Command to queue&n; * Returns : scsi result code&n; * Notes   : io_request_lock is held, interrupts are disabled.&n; */
+multiline_comment|/**&n; * fas216_command - queue a command for adapter to process.&n; * @SCpnt:  Command to queue&n; * &n; * Qqueue a command for adapter to process.&n; * Returns: scsi result code.&n; * Notes: io_request_lock is held, interrupts are disabled.&n; */
 DECL|function|fas216_command
 r_int
 id|fas216_command
@@ -9372,7 +9372,7 @@ id|res_hw_abort
 multiline_comment|/* command on disconnected dev&t;*/
 )brace
 suffix:semicolon
-multiline_comment|/*&n; * Prototype: enum res_find fas216_do_abort(FAS216_Info *info, Scsi_Cmnd *SCpnt)&n; * Purpose  : decide how to abort a command&n; * Params   : SCpnt - command to abort&n; * Returns  : abort status&n; */
+multiline_comment|/**&n; * fas216_do_abort - decide how to abort a command&n; * @SCpnt: command to abort&n; * &n; * Decide how to abort a command.&n; * Returns: abort status&n; */
 DECL|function|fas216_find_command
 r_static
 r_enum
@@ -9546,7 +9546,7 @@ r_return
 id|res
 suffix:semicolon
 )brace
-multiline_comment|/* Function: int fas216_eh_abort(Scsi_Cmnd *SCpnt)&n; * Purpose : abort this command&n; * Params  : SCpnt - command to abort&n; * Returns : FAILED if unable to abort&n; * Notes   : io_request_lock is taken, and irqs are disabled&n; */
+multiline_comment|/**&n; * fas216_eh_abort - abort this command&n; * @SCpnt: command to abort&n; * &n; * Abort this command.&n; * Returns: FAILED if unable to abort&n; * Notes: io_request_lock is taken, and irqs are disabled&n; */
 DECL|function|fas216_eh_abort
 r_int
 id|fas216_eh_abort
@@ -9670,7 +9670,7 @@ r_return
 id|result
 suffix:semicolon
 )brace
-multiline_comment|/* Function: int fas216_eh_device_reset(Scsi_Cmnd *SCpnt)&n; * Purpose : Reset the device associated with this command&n; * Params  : SCpnt - command specifing device to reset&n; * Returns : FAILED if unable to reset&n; * Notes   : We won&squot;t be re-entered, so we&squot;ll only have one device&n; *           reset on the go at one time.&n; */
+multiline_comment|/**&n; * fas216_eh_device_reset - Reset the device associated with this command&n; * @SCpnt:  command specifing device to reset&n; * &n; * Reset the device associated with this command.&n; * Returns: FAILED if unable to reset.&n; * Notes: We won&squot;t be re-entered, so we&squot;ll only have one device&n; *        reset on the go at one time.&n; */
 DECL|function|fas216_eh_device_reset
 r_int
 id|fas216_eh_device_reset
@@ -9948,7 +9948,7 @@ r_return
 id|res
 suffix:semicolon
 )brace
-multiline_comment|/* Function: int fas216_eh_bus_reset(Scsi_Cmnd *SCpnt)&n; * Purpose : Reset the bus associated with the command&n; * Params  : SCpnt - command specifing bus to reset&n; * Returns : FAILED if unable to reset&n; * Notes   : Further commands are blocked.&n; */
+multiline_comment|/**&n; * fas216_eh_bus_reset - Reset the bus associated with the command&n; * @SCpnt: command specifing bus to reset&n; * &n; * Reset the bus associated with the command.&n; * Returns: FAILED if unable to reset.&n; * Notes: Further commands are blocked.&n; */
 DECL|function|fas216_eh_bus_reset
 r_int
 id|fas216_eh_bus_reset
@@ -10230,7 +10230,7 @@ suffix:colon
 id|FAILED
 suffix:semicolon
 )brace
-multiline_comment|/* Function: void fas216_init_chip(FAS216_Info *info)&n; * Purpose : Initialise FAS216 state after reset&n; * Params  : info - state structure for interface&n; */
+multiline_comment|/**&n; * fas216_init_chip - Initialise FAS216 state after reset&n; * @info:  state structure for interface&n; * &n; * Initialise FAS216 state after reset&n; */
 DECL|function|fas216_init_chip
 r_static
 r_void
@@ -10355,7 +10355,7 @@ id|info
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* Function: int fas216_eh_host_reset(Scsi_Cmnd *SCpnt)&n; * Purpose : Reset the host associated with this command&n; * Params  : SCpnt - command specifing host to reset&n; * Returns : FAILED if unable to reset&n; * Notes   : io_request_lock is taken, and irqs are disabled&n; */
+multiline_comment|/**&n; * fas216_eh_host_reset - Reset the host associated with this command&n; * @SCpnt: command specifing host to reset&n; * &n; * Reset the host associated with this command.&n; * Returns: FAILED if unable to reset.&n; * Notes: io_request_lock is taken, and irqs are disabled&n; */
 DECL|function|fas216_eh_host_reset
 r_int
 id|fas216_eh_host_reset
@@ -10836,7 +10836,7 @@ r_return
 id|TYPE_NCR53C9x
 suffix:semicolon
 )brace
-multiline_comment|/* Function: void fas216_reset_state(FAS216_Info *info)&n; * Purpose : Initialise driver internal state&n; * Params  : info - state to initialise&n; */
+multiline_comment|/** &n; * fas216_reset_state - Initialise driver internal state&n; * @info: state to initialise&n; * &n; * Initialise driver internal state&n; */
 DECL|function|fas216_reset_state
 r_static
 r_void
@@ -10951,7 +10951,7 @@ op_assign
 l_int|NULL
 suffix:semicolon
 )brace
-multiline_comment|/* Function: int fas216_init(struct Scsi_Host *instance)&n; * Purpose : initialise FAS/NCR/AMD SCSI ic.&n; * Params  : instance - a driver-specific filled-out structure&n; * Returns : 0 on success&n; */
+multiline_comment|/**&n; * fas216_init - initialise FAS/NCR/AMD SCSI ic.&n; * @instance: a driver-specific filled-out structure&n; * &n; * Initialise FAS/NCR/AMD SCSI ic.&n; * Returns: 0 on success&n; */
 DECL|function|fas216_init
 r_int
 id|fas216_init
@@ -11250,7 +11250,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/* Function: int fas216_release(struct Scsi_Host *instance)&n; * Purpose : release all resources and put everything to bed for&n; *           FAS/NCR/AMD SCSI ic.&n; * Params  : instance - a driver-specific filled-out structure&n; * Returns : 0 on success&n; */
+multiline_comment|/**&n; * fas216_release - release all resources for FAS/NCR/AMD SCSI ic.&n; * @instance: a driver-specific filled-out structure&n; * &n; * release all resources and put everything to bed for FAS/NCR/AMD SCSI ic,&n; * Returns: 0 on success.&n; */
 DECL|function|fas216_release
 r_int
 id|fas216_release
@@ -11308,7 +11308,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * Function: int fas216_info(FAS216_Info *info, char *buffer)&n; * Purpose : generate a string containing information about this&n; *&t;     host.&n; * Params  : info   - FAS216 host information&n; *&t;     buffer - string buffer to build string&n; * Returns : size of built string&n; */
+multiline_comment|/**&n; * fas216_info - generate a string containing information about host.&n; * @info: FAS216 host information&n; * @buffer: string buffer to build string&n; * &n; * Generate a string containing information about this host.&n; * Returns: size of built string&n; */
 DECL|function|fas216_info
 r_int
 id|fas216_info
