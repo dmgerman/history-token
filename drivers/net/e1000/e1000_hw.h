@@ -3569,6 +3569,8 @@ DECL|macro|E1000_RCTL_PMCF
 mdefine_line|#define E1000_RCTL_PMCF           0x00800000    /* pass MAC control frames */
 DECL|macro|E1000_RCTL_BSEX
 mdefine_line|#define E1000_RCTL_BSEX           0x02000000    /* Buffer size extension */
+DECL|macro|E1000_RCTL_SECRC
+mdefine_line|#define E1000_RCTL_SECRC          0x04000000    /* Strip Ethernet CRC */
 multiline_comment|/* Receive Descriptor */
 DECL|macro|E1000_RDT_DELAY
 mdefine_line|#define E1000_RDT_DELAY 0x0000ffff      /* Delay timer (1=1024us) */
