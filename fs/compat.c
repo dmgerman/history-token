@@ -15,6 +15,7 @@ macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;linux/ctype.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
+macro_line|#include &lt;net/sock.h&gt;&t;&t;/* siocdevprivate_ioctl */
 macro_line|#include &lt;asm/uaccess.h&gt;
 multiline_comment|/*&n; * Not all architectures have sys_utime, so implement this in terms&n; * of sys_utimes.&n; */
 DECL|function|compat_sys_utime
