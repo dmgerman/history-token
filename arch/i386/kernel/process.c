@@ -981,9 +981,14 @@ id|tss_struct
 op_star
 id|tss
 op_assign
+op_amp
+id|per_cpu
+c_func
+(paren
 id|init_tss
-op_plus
+comma
 id|cpu
+)paren
 suffix:semicolon
 id|kfree
 c_func
@@ -1799,9 +1804,14 @@ id|tss_struct
 op_star
 id|tss
 op_assign
+op_amp
+id|per_cpu
+c_func
+(paren
 id|init_tss
-op_plus
+comma
 id|cpu
+)paren
 suffix:semicolon
 multiline_comment|/* never put a printk in __switch_to... printk() calls wake_up*() indirectly */
 id|__unlazy_fpu

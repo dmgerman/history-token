@@ -2180,9 +2180,14 @@ id|tss_struct
 op_star
 id|t
 op_assign
+op_amp
+id|per_cpu
+c_func
+(paren
 id|init_tss
-op_plus
+comma
 id|cpu
+)paren
 suffix:semicolon
 r_struct
 id|thread_struct

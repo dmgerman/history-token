@@ -329,11 +329,16 @@ suffix:semicolon
 multiline_comment|/*&n;&t; * do it in the per-thread copy and in the TSS ...&n;&t; *&n;&t; * Disable preemption via get_cpu() - we must not switch away&n;&t; * because the -&gt;io_bitmap_max value must match the bitmap&n;&t; * contents:&n;&t; */
 id|tss
 op_assign
+op_amp
+id|per_cpu
+c_func
+(paren
 id|init_tss
-op_plus
+comma
 id|get_cpu
 c_func
 (paren
+)paren
 )paren
 suffix:semicolon
 id|set_bitmap
