@@ -5353,11 +5353,6 @@ id|pDCB-&gt;pGoingSRB
 op_assign
 l_int|0
 suffix:semicolon
-id|dc390_Query_to_Waiting
-(paren
-id|pACB
-)paren
-suffix:semicolon
 id|dc390_Waiting_process
 (paren
 id|pACB
@@ -7719,11 +7714,6 @@ id|pcmd
 suffix:semicolon
 id|DC390_LOCK_ACB_NI
 suffix:semicolon
-id|dc390_Query_to_Waiting
-(paren
-id|pACB
-)paren
-suffix:semicolon
 id|dc390_Waiting_process
 (paren
 id|pACB
@@ -7909,11 +7899,6 @@ id|pDCB
 (brace
 suffix:semicolon
 )brace
-id|dc390_Query_to_Waiting
-(paren
-id|pACB
-)paren
-suffix:semicolon
 )brace
 r_static
 r_void
