@@ -517,6 +517,12 @@ suffix:semicolon
 id|printf
 c_func
 (paren
+l_string|&quot;kallsyms_num_syms:&bslash;n&quot;
+)paren
+suffix:semicolon
+id|printf
+c_func
+(paren
 l_string|&quot;&bslash;t.long&bslash;t%d&bslash;n&quot;
 comma
 id|valid
@@ -532,12 +538,6 @@ id|printf
 c_func
 (paren
 l_string|&quot;.globl kallsyms_names&bslash;n&quot;
-)paren
-suffix:semicolon
-id|printf
-c_func
-(paren
-l_string|&quot;.data&bslash;n&quot;
 )paren
 suffix:semicolon
 id|printf
