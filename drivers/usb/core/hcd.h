@@ -60,7 +60,6 @@ op_star
 id|regs
 suffix:semicolon
 multiline_comment|/* device memory/io */
-macro_line|#ifdef&t;CONFIG_PCI
 multiline_comment|/* a few non-PCI controllers exist, mostly for OHCI */
 DECL|member|pdev
 r_struct
@@ -69,6 +68,7 @@ op_star
 id|pdev
 suffix:semicolon
 multiline_comment|/* pci is typical */
+macro_line|#ifdef&t;CONFIG_PCI
 DECL|member|region
 r_int
 id|region
