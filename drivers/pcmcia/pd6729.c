@@ -2607,10 +2607,6 @@ op_assign
 op_amp
 id|res
 comma
-dot
-id|sys_stop
-op_assign
-l_int|0x0fff
 )brace
 suffix:semicolon
 id|pd6729_set_socket

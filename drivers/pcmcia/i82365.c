@@ -7556,11 +7556,6 @@ op_assign
 op_amp
 id|res
 comma
-dot
-id|sys_stop
-op_assign
-l_int|0x1000
-comma
 )brace
 suffix:semicolon
 r_for

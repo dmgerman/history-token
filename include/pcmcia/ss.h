@@ -163,13 +163,6 @@ DECL|member|speed
 id|u_short
 id|speed
 suffix:semicolon
-DECL|member|sys_start
-DECL|member|sys_stop
-id|u_long
-id|sys_start
-comma
-id|sys_stop
-suffix:semicolon
 DECL|member|static_start
 id|u_long
 id|static_start

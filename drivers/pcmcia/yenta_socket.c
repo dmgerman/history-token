@@ -2701,11 +2701,6 @@ op_assign
 op_amp
 id|res
 comma
-dot
-id|sys_stop
-op_assign
-l_int|0x0fff
-comma
 )brace
 suffix:semicolon
 id|yenta_set_socket

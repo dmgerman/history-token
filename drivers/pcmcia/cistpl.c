@@ -265,14 +265,6 @@ r_return
 l_int|NULL
 suffix:semicolon
 )brace
-id|mem-&gt;sys_start
-op_assign
-id|mem-&gt;res-&gt;start
-suffix:semicolon
-id|mem-&gt;sys_stop
-op_assign
-id|mem-&gt;res-&gt;end
-suffix:semicolon
 id|s-&gt;cis_virt
 op_assign
 id|ioremap
