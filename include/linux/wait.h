@@ -183,9 +183,12 @@ op_star
 id|q
 )paren
 (brace
+id|spin_lock_init
+c_func
+(paren
+op_amp
 id|q-&gt;lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 id|INIT_LIST_HEAD
 c_func
