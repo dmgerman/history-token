@@ -288,7 +288,7 @@ comma
 dot
 id|num_devices
 op_assign
-l_int|20
+l_int|19
 comma
 dot
 id|device_list
@@ -332,8 +332,6 @@ id|MPC85xx_CPM_FCC1
 comma
 id|MPC85xx_CPM_FCC2
 comma
-id|MPC85xx_CPM_FCC3
-comma
 id|MPC85xx_CPM_SMC1
 comma
 id|MPC85xx_CPM_SMC2
@@ -363,7 +361,7 @@ comma
 dot
 id|num_devices
 op_assign
-l_int|21
+l_int|20
 comma
 dot
 id|device_list
@@ -408,8 +406,6 @@ comma
 id|MPC85xx_CPM_FCC1
 comma
 id|MPC85xx_CPM_FCC2
-comma
-id|MPC85xx_CPM_FCC3
 comma
 id|MPC85xx_CPM_SMC1
 comma

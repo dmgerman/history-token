@@ -3293,7 +3293,7 @@ comma
 id|order
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * Go through the zonelist again. Let __GFP_HIGH and allocations&n;&t; * coming from realtime tasks to go deeper into reserves&n;&t; */
+multiline_comment|/*&n;&t; * Go through the zonelist again. Let __GFP_HIGH and allocations&n;&t; * coming from realtime tasks to go deeper into reserves&n;&t; *&n;&t; * This is the last chance, in general, before the goto nopage.&n;&t; * Ignore cpuset if GFP_ATOMIC (!wait) rather than fail alloc.&n;&t; */
 r_for
 c_loop
 (paren
@@ -3343,6 +3343,8 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|wait
+op_logical_and
 op_logical_neg
 id|cpuset_zone_allowed
 c_func

@@ -10568,17 +10568,6 @@ c_func
 id|vc
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|oops_in_progress
-)paren
-id|poke_blanked_console
-c_func
-(paren
-)paren
-suffix:semicolon
 id|quit
 suffix:colon
 id|clear_bit
@@ -13050,6 +13039,18 @@ id|vc_data
 op_star
 id|vc
 suffix:semicolon
+multiline_comment|/* This should now always be called from a &quot;sane&quot; (read: can schedule)&n;&t; * context for the sake of the low level drivers, except in the special&n;&t; * case of oops_in_progress&n;&t; */
+r_if
+c_cond
+(paren
+op_logical_neg
+id|oops_in_progress
+)paren
+id|might_sleep
+c_func
+(paren
+)paren
+suffix:semicolon
 id|WARN_CONSOLE_UNLOCKED
 c_func
 (paren
@@ -13239,6 +13240,12 @@ r_void
 )paren
 (brace
 id|WARN_CONSOLE_UNLOCKED
+c_func
+(paren
+)paren
+suffix:semicolon
+multiline_comment|/* Add this so we quickly catch whoever might call us in a non&n;&t; * safe context. Nowadays, unblank_screen() isn&squot;t to be called in&n;&t; * atomic contexts and is allowed to schedule (with the special case&n;&t; * of oops_in_progress, but that isn&squot;t of any concern for this&n;&t; * function. --BenH.&n;&t; */
+id|might_sleep
 c_func
 (paren
 )paren

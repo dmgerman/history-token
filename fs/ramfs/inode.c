@@ -51,11 +51,22 @@ l_int|0
 comma
 multiline_comment|/* No readahead */
 dot
-id|memory_backed
+id|capabilities
 op_assign
-l_int|1
+id|BDI_CAP_NO_ACCT_DIRTY
+op_or
+id|BDI_CAP_NO_WRITEBACK
+op_or
+id|BDI_CAP_MAP_DIRECT
+op_or
+id|BDI_CAP_MAP_COPY
+op_or
+id|BDI_CAP_READ_MAP
+op_or
+id|BDI_CAP_WRITE_MAP
+op_or
+id|BDI_CAP_EXEC_MAP
 comma
-multiline_comment|/* Does not contribute to dirty memory */
 )brace
 suffix:semicolon
 DECL|function|ramfs_get_inode

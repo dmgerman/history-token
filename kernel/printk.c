@@ -61,9 +61,17 @@ c_func
 id|console_printk
 )paren
 suffix:semicolon
+multiline_comment|/*&n; * Low lever drivers may need that to know if they can schedule in&n; * their unblank() callback or not. So let&squot;s export it.&n; */
 DECL|variable|oops_in_progress
 r_int
 id|oops_in_progress
+suffix:semicolon
+DECL|variable|oops_in_progress
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|oops_in_progress
+)paren
 suffix:semicolon
 multiline_comment|/*&n; * console_sem protects the console_drivers list, and also&n; * provides serialisation for access to the entire console&n; * driver system.&n; */
 r_static
@@ -2854,7 +2862,13 @@ id|console
 op_star
 id|c
 suffix:semicolon
-multiline_comment|/*&n;&t; * Try to get the console semaphore. If someone else owns it&n;&t; * we have to return without unblanking because console_unblank&n;&t; * may be called in interrupt context.&n;&t; */
+multiline_comment|/*&n;&t; * console_unblank can no longer be called in interrupt context unless&n;&t; * oops_in_progress is set to 1..&n;&t; */
+r_if
+c_cond
+(paren
+id|oops_in_progress
+)paren
+(brace
 r_if
 c_cond
 (paren
@@ -2868,6 +2882,13 @@ op_ne
 l_int|0
 )paren
 r_return
+suffix:semicolon
+)brace
+r_else
+id|acquire_console_sem
+c_func
+(paren
+)paren
 suffix:semicolon
 id|console_locked
 op_assign

@@ -32,6 +32,7 @@ DECL|macro|ACPI_POWER_RESOURCE_STATE_ON
 mdefine_line|#define ACPI_POWER_RESOURCE_STATE_ON&t;0x01
 DECL|macro|ACPI_POWER_RESOURCE_STATE_UNKNOWN
 mdefine_line|#define ACPI_POWER_RESOURCE_STATE_UNKNOWN 0xFF
+r_static
 r_int
 id|acpi_power_add
 (paren
@@ -41,6 +42,7 @@ op_star
 id|device
 )paren
 suffix:semicolon
+r_static
 r_int
 id|acpi_power_remove
 (paren
@@ -1755,6 +1757,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* --------------------------------------------------------------------------&n;                              FS Interface (/proc)&n;   -------------------------------------------------------------------------- */
 DECL|variable|acpi_power_dir
+r_static
 r_struct
 id|proc_dir_entry
 op_star
@@ -2132,6 +2135,7 @@ l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/* --------------------------------------------------------------------------&n;                                Driver Interface&n;   -------------------------------------------------------------------------- */
+r_static
 r_int
 DECL|function|acpi_power_add
 id|acpi_power_add
@@ -2436,6 +2440,7 @@ id|result
 )paren
 suffix:semicolon
 )brace
+r_static
 r_int
 DECL|function|acpi_power_remove
 id|acpi_power_remove

@@ -1,10 +1,6 @@
 multiline_comment|/*&n; * linux/kernel/seccomp.c&n; *&n; * Copyright 2004-2005  Andrea Arcangeli &lt;andrea@cpushare.com&gt;&n; *&n; * This defines a simple but solid secure-computing mode.&n; */
 macro_line|#include &lt;linux/seccomp.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
-macro_line|#include &lt;asm/unistd.h&gt;
-macro_line|#ifdef TIF_IA32
-macro_line|#include &lt;asm/ia32_unistd.h&gt;
-macro_line|#endif
 multiline_comment|/* #define SECCOMP_DEBUG 1 */
 multiline_comment|/*&n; * Secure computing mode 1 allows only read/write/exit/sigreturn.&n; * To be fully secure this must be combined with rlimit&n; * to limit the stack allocations too.&n; */
 DECL|variable|mode1_syscalls
@@ -15,42 +11,35 @@ id|mode1_syscalls
 )braket
 op_assign
 (brace
-id|__NR_read
+id|__NR_seccomp_read
 comma
-id|__NR_write
+id|__NR_seccomp_write
 comma
-id|__NR_exit
+id|__NR_seccomp_exit
 comma
-multiline_comment|/*&n;&t; * Allow either sigreturn or rt_sigreturn, newer archs&n;&t; * like x86-64 only defines __NR_rt_sigreturn.&n;&t; */
-macro_line|#ifdef __NR_sigreturn
-id|__NR_sigreturn
+id|__NR_seccomp_sigreturn
 comma
-macro_line|#else
-id|__NR_rt_sigreturn
-comma
-macro_line|#endif
 l_int|0
 comma
 multiline_comment|/* null terminated */
 )brace
 suffix:semicolon
-macro_line|#ifdef TIF_IA32
-DECL|variable|mode1_syscalls_32bit
+macro_line|#ifdef TIF_32BIT
+DECL|variable|mode1_syscalls_32
 r_static
 r_int
-id|mode1_syscalls_32bit
+id|mode1_syscalls_32
 (braket
 )braket
 op_assign
 (brace
-id|__NR_ia32_read
+id|__NR_seccomp_read_32
 comma
-id|__NR_ia32_write
+id|__NR_seccomp_write_32
 comma
-id|__NR_ia32_exit
+id|__NR_seccomp_exit_32
 comma
-multiline_comment|/*&n;&t; * Allow either sigreturn or rt_sigreturn, newer archs&n;&t; * like x86-64 only defines __NR_rt_sigreturn.&n;&t; */
-id|__NR_ia32_sigreturn
+id|__NR_seccomp_sigreturn_32
 comma
 l_int|0
 comma
@@ -89,19 +78,19 @@ id|syscall
 op_assign
 id|mode1_syscalls
 suffix:semicolon
-macro_line|#ifdef TIF_IA32
+macro_line|#ifdef TIF_32BIT
 r_if
 c_cond
 (paren
 id|test_thread_flag
 c_func
 (paren
-id|TIF_IA32
+id|TIF_32BIT
 )paren
 )paren
 id|syscall
 op_assign
-id|mode1_syscalls_32bit
+id|mode1_syscalls_32
 suffix:semicolon
 macro_line|#endif
 r_do

@@ -91,14 +91,14 @@ id|loglevel_save
 op_assign
 id|console_loglevel
 suffix:semicolon
-id|oops_in_progress
-op_assign
-l_int|0
-suffix:semicolon
 id|console_unblank
 c_func
 (paren
 )paren
+suffix:semicolon
+id|oops_in_progress
+op_assign
+l_int|0
 suffix:semicolon
 multiline_comment|/*&n;&t;&t; * OK, the message is on the console.  Now we call printk()&n;&t;&t; * without oops_in_progress set so that printk will give klogd&n;&t;&t; * a poke.  Hold onto your hats...&n;&t;&t; */
 id|console_loglevel

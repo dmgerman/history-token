@@ -4,6 +4,6 @@ DECL|macro|__PLATFORMS_LITE5200_H__
 mdefine_line|#define __PLATFORMS_LITE5200_H__
 multiline_comment|/* Serial port used for low-level debug */
 DECL|macro|MPC52xx_PF_CONSOLE_PORT
-mdefine_line|#define MPC52xx_PF_CONSOLE_PORT 0&t;/* PSC1 */
+mdefine_line|#define MPC52xx_PF_CONSOLE_PORT 1&t;/* PSC1 */
 macro_line|#endif /* __PLATFORMS_LITE5200_H__ */
 eof

@@ -17,8 +17,6 @@ macro_line|#include &lt;linux/netfilter_ipv4/ipt_hashlimit.h&gt;
 macro_line|#include &lt;linux/netfilter_ipv4/lockhelp.h&gt;
 multiline_comment|/* FIXME: this is just for IP_NF_ASSERRT */
 macro_line|#include &lt;linux/netfilter_ipv4/ip_conntrack.h&gt;
-DECL|macro|MS2JIFFIES
-mdefine_line|#define MS2JIFFIES(x) ((x*HZ)/1000)
 id|MODULE_LICENSE
 c_func
 (paren
@@ -319,8 +317,6 @@ r_struct
 id|dsthash_ent
 op_star
 id|ent
-op_assign
-l_int|NULL
 suffix:semicolon
 r_struct
 id|hlist_node
@@ -380,12 +376,13 @@ id|dst
 )paren
 )paren
 (brace
-r_break
+r_return
+id|ent
 suffix:semicolon
 )brace
 )brace
 r_return
-id|ent
+l_int|NULL
 suffix:semicolon
 )brace
 multiline_comment|/* allocate dsthash_ent, initialize dst, put in htable and lock it */
@@ -878,7 +875,7 @@ id|hinfo-&gt;timer.expires
 op_assign
 id|jiffies
 op_plus
-id|MS2JIFFIES
+id|msecs_to_jiffies
 c_func
 (paren
 id|hinfo-&gt;cfg.gc_interval
@@ -1139,7 +1136,7 @@ id|ht-&gt;timer.expires
 op_assign
 id|jiffies
 op_plus
-id|MS2JIFFIES
+id|msecs_to_jiffies
 c_func
 (paren
 id|ht-&gt;cfg.gc_interval
@@ -1882,7 +1879,7 @@ id|dh-&gt;expires
 op_assign
 id|jiffies
 op_plus
-id|MS2JIFFIES
+id|msecs_to_jiffies
 c_func
 (paren
 id|hinfo-&gt;cfg.expire
@@ -1936,7 +1933,7 @@ id|dh-&gt;expires
 op_assign
 id|now
 op_plus
-id|MS2JIFFIES
+id|msecs_to_jiffies
 c_func
 (paren
 id|hinfo-&gt;cfg.expire

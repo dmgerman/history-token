@@ -1,4 +1,5 @@
 multiline_comment|/* &n; * xfrm_policy.c&n; *&n; * Changes:&n; *&t;Mitsuru KANDA @USAGI&n; * &t;Kazunori MIYAZAWA @USAGI&n; * &t;Kunihiro Ishiguro &lt;kunihiro@ipinfusion.com&gt;&n; * &t;&t;IPv6 support&n; * &t;Kazunori MIYAZAWA @USAGI&n; * &t;YOSHIFUJI Hideaki&n; * &t;&t;Split up af-specific portion&n; *&t;Derek Atkins &lt;derek@ihtfp.com&gt;&t;&t;Add the post_input processor&n; * &t;&n; */
+macro_line|#include &lt;asm/bug.h&gt;
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/kmod.h&gt;
@@ -1340,7 +1341,25 @@ op_star
 id|policy
 )paren
 (brace
+r_int
+id|dead
+suffix:semicolon
 id|write_lock_bh
+c_func
+(paren
+op_amp
+id|policy-&gt;lock
+)paren
+suffix:semicolon
+id|dead
+op_assign
+id|policy-&gt;dead
+suffix:semicolon
+id|policy-&gt;dead
+op_assign
+l_int|1
+suffix:semicolon
+id|write_unlock_bh
 c_func
 (paren
 op_amp
@@ -1350,23 +1369,22 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|policy-&gt;dead
-)paren
-(brace
-id|write_unlock_bh
+id|unlikely
 c_func
 (paren
-op_amp
-id|policy-&gt;lock
+id|dead
+)paren
+)paren
+(brace
+id|WARN_ON
+c_func
+(paren
+l_int|1
 )paren
 suffix:semicolon
 r_return
 suffix:semicolon
 )brace
-id|policy-&gt;dead
-op_assign
-l_int|1
-suffix:semicolon
 id|spin_lock
 c_func
 (paren
@@ -1382,14 +1400,6 @@ id|policy-&gt;list
 comma
 op_amp
 id|xfrm_policy_gc_list
-)paren
-suffix:semicolon
-multiline_comment|/*&n;&t; * Unlock the policy (out of order unlocking), to make sure&n;&t; * the GC context does not free it with an active lock:&n;&t; */
-id|write_unlock_bh
-c_func
-(paren
-op_amp
-id|policy-&gt;lock
 )paren
 suffix:semicolon
 id|spin_unlock

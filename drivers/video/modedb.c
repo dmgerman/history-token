@@ -2742,6 +2742,7 @@ suffix:semicolon
 )brace
 multiline_comment|/**&n; *&t;fb_try_mode - test a video mode&n; *&t;@var: frame buffer user defined part of display&n; *&t;@info: frame buffer info structure&n; *&t;@mode: frame buffer video mode structure&n; *&t;@bpp: color depth in bits per pixel&n; *&n; *&t;Tries a video mode to test it&squot;s validity for device @info.&n; *&n; *&t;Returns 1 on success.&n; *&n; */
 DECL|function|fb_try_mode
+r_static
 r_int
 id|fb_try_mode
 c_func

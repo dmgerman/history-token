@@ -125,13 +125,21 @@ op_assign
 op_star
 id|buffer
 suffix:semicolon
-multiline_comment|/* Values 0-2 are valid */
+multiline_comment|/* Values 0-2 and 0xC0-0xFF are valid */
 r_if
 c_cond
+(paren
 (paren
 id|temp8
 OG
 l_int|2
+)paren
+op_logical_and
+(paren
+id|temp8
+OL
+l_int|0xC0
+)paren
 )paren
 (brace
 id|return_ACPI_STATUS
@@ -143,8 +151,6 @@ suffix:semicolon
 id|output_struct-&gt;data.address16.resource_type
 op_assign
 id|temp8
-op_amp
-l_int|0x03
 suffix:semicolon
 multiline_comment|/*&n;&t; * Get the General Flags (Byte4)&n;&t; */
 id|buffer
@@ -1003,13 +1009,21 @@ op_assign
 op_star
 id|buffer
 suffix:semicolon
-multiline_comment|/* Values 0-2 are valid */
+multiline_comment|/* Values 0-2 and 0xC0-0xFF are valid */
 r_if
 c_cond
+(paren
 (paren
 id|temp8
 OG
 l_int|2
+)paren
+op_logical_and
+(paren
+id|temp8
+OL
+l_int|0xC0
+)paren
 )paren
 (brace
 id|return_ACPI_STATUS
@@ -1021,8 +1035,6 @@ suffix:semicolon
 id|output_struct-&gt;data.address32.resource_type
 op_assign
 id|temp8
-op_amp
-l_int|0x03
 suffix:semicolon
 multiline_comment|/*&n;&t; * Get the General Flags (Byte4)&n;&t; */
 id|buffer
@@ -1805,6 +1817,9 @@ id|u8
 id|temp8
 suffix:semicolon
 id|u8
+id|resource_type
+suffix:semicolon
+id|u8
 op_star
 id|temp_ptr
 suffix:semicolon
@@ -1830,6 +1845,11 @@ id|ACPI_SIZEOF_RESOURCE
 r_struct
 id|acpi_resource_address64
 )paren
+suffix:semicolon
+id|resource_type
+op_assign
+op_star
+id|buffer
 suffix:semicolon
 multiline_comment|/*&n;&t; * Point past the Descriptor to get the number of bytes consumed&n;&t; */
 id|buffer
@@ -1880,13 +1900,21 @@ op_assign
 op_star
 id|buffer
 suffix:semicolon
-multiline_comment|/* Values 0-2 are valid */
+multiline_comment|/* Values 0-2 and 0xC0-0xFF are valid */
 r_if
 c_cond
+(paren
 (paren
 id|temp8
 OG
 l_int|2
+)paren
+op_logical_and
+(paren
+id|temp8
+OL
+l_int|0xC0
+)paren
 )paren
 (brace
 id|return_ACPI_STATUS
@@ -1898,8 +1926,6 @@ suffix:semicolon
 id|output_struct-&gt;data.address64.resource_type
 op_assign
 id|temp8
-op_amp
-l_int|0x03
 suffix:semicolon
 multiline_comment|/*&n;&t; * Get the General Flags (Byte4)&n;&t; */
 id|buffer
@@ -2039,7 +2065,21 @@ multiline_comment|/* BUS_NUMBER_RANGE == output_struct-&gt;Data.Address64.resour
 multiline_comment|/* Nothing needs to be filled in */
 )brace
 )brace
-multiline_comment|/*&n;&t; * Get Granularity (Bytes 6-13)&n;&t; */
+r_if
+c_cond
+(paren
+id|resource_type
+op_eq
+id|ACPI_RDESC_TYPE_EXTENDED_ADDRESS_SPACE
+)paren
+(brace
+multiline_comment|/* Move past revision_id and Reserved byte */
+id|buffer
+op_add_assign
+l_int|2
+suffix:semicolon
+)brace
+multiline_comment|/*&n;&t; * Get Granularity (Bytes 6-13) or (Bytes 8-15)&n;&t; */
 id|buffer
 op_add_assign
 l_int|1
@@ -2052,7 +2092,7 @@ comma
 id|buffer
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * Get min_address_range (Bytes 14-21)&n;&t; */
+multiline_comment|/*&n;&t; * Get min_address_range (Bytes 14-21) or (Bytes 16-23)&n;&t; */
 id|buffer
 op_add_assign
 l_int|8
@@ -2065,7 +2105,7 @@ comma
 id|buffer
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * Get max_address_range (Bytes 22-29)&n;&t; */
+multiline_comment|/*&n;&t; * Get max_address_range (Bytes 22-29) or (Bytes 24-31)&n;&t; */
 id|buffer
 op_add_assign
 l_int|8
@@ -2078,7 +2118,7 @@ comma
 id|buffer
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * Get address_translation_offset (Bytes 30-37)&n;&t; */
+multiline_comment|/*&n;&t; * Get address_translation_offset (Bytes 30-37) or (Bytes 32-39)&n;&t; */
 id|buffer
 op_add_assign
 l_int|8
@@ -2091,7 +2131,7 @@ comma
 id|buffer
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * Get address_length (Bytes 38-45)&n;&t; */
+multiline_comment|/*&n;&t; * Get address_length (Bytes 38-45) or (Bytes 40-47)&n;&t; */
 id|buffer
 op_add_assign
 l_int|8
@@ -2104,12 +2144,52 @@ comma
 id|buffer
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * Resource Source Index (if present)&n;&t; */
+id|output_struct-&gt;data.address64.resource_source.index
+op_assign
+l_int|0x00
+suffix:semicolon
+id|output_struct-&gt;data.address64.resource_source.string_length
+op_assign
+l_int|0
+suffix:semicolon
+id|output_struct-&gt;data.address64.resource_source.string_ptr
+op_assign
+l_int|NULL
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|resource_type
+op_eq
+id|ACPI_RDESC_TYPE_EXTENDED_ADDRESS_SPACE
+)paren
+(brace
+multiline_comment|/* Get type_specific_attribute (Bytes 48-55) */
 id|buffer
 op_add_assign
 l_int|8
 suffix:semicolon
-multiline_comment|/*&n;&t; * This will leave us pointing to the Resource Source Index&n;&t; * If it is present, then save it off and calculate the&n;&t; * pointer to where the null terminated string goes:&n;&t; * Each Interrupt takes 32-bits + the 5 bytes of the&n;&t; * stream that are default.&n;&t; *&n;&t; * Note: Some resource descriptors will have an additional null, so&n;&t; * we add 1 to the length.&n;&t; */
+id|ACPI_MOVE_64_TO_64
+(paren
+op_amp
+id|output_struct-&gt;data.address64.type_specific_attributes
+comma
+id|buffer
+)paren
+suffix:semicolon
+)brace
+r_else
+(brace
+id|output_struct-&gt;data.address64.type_specific_attributes
+op_assign
+l_int|0
+suffix:semicolon
+multiline_comment|/*&n;&t;&t; * Resource Source Index (if present)&n;&t;&t; */
+id|buffer
+op_add_assign
+l_int|8
+suffix:semicolon
+multiline_comment|/*&n;&t;&t; * This will leave us pointing to the Resource Source Index&n;&t;&t; * If it is present, then save it off and calculate the&n;&t;&t; * pointer to where the null terminated string goes:&n;&t;&t; * Each Interrupt takes 32-bits + the 5 bytes of the&n;&t;&t; * stream that are default.&n;&t;&t; *&n;&t;&t; * Note: Some resource descriptors will have an additional null, so&n;&t;&t; * we add 1 to the length.&n;&t;&t; */
 r_if
 c_cond
 (paren
@@ -2199,7 +2279,7 @@ op_add_assign
 l_int|1
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t;&t; * Add the terminating null&n;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t; * Add the terminating null&n;&t;&t;&t; */
 op_star
 id|temp_ptr
 op_assign
@@ -2211,7 +2291,7 @@ id|index
 op_plus
 l_int|1
 suffix:semicolon
-multiline_comment|/*&n;&t;&t; * In order for the struct_size to fall on a 32-bit boundary,&n;&t;&t; * calculate the length of the string and expand the&n;&t;&t; * struct_size to the next 32-bit boundary.&n;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t; * In order for the struct_size to fall on a 32-bit boundary,&n;&t;&t;&t; * calculate the length of the string and expand the&n;&t;&t;&t; * struct_size to the next 32-bit boundary.&n;&t;&t;&t; */
 id|temp8
 op_assign
 (paren
@@ -2231,20 +2311,6 @@ id|temp8
 )paren
 suffix:semicolon
 )brace
-r_else
-(brace
-id|output_struct-&gt;data.address64.resource_source.index
-op_assign
-l_int|0x00
-suffix:semicolon
-id|output_struct-&gt;data.address64.resource_source.string_length
-op_assign
-l_int|0
-suffix:semicolon
-id|output_struct-&gt;data.address64.resource_source.string_ptr
-op_assign
-l_int|NULL
-suffix:semicolon
 )brace
 multiline_comment|/*&n;&t; * Set the Length parameter&n;&t; */
 id|output_struct-&gt;length

@@ -18,8 +18,10 @@ macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/suspend.h&gt;
 macro_line|#include &lt;linux/writeback.h&gt;
 macro_line|#include &lt;linux/buffer_head.h&gt;&t;&t;/* for fsync_bdev() */
+macro_line|#include &lt;linux/swap.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;linux/vt_kern.h&gt;
+macro_line|#include &lt;linux/workqueue.h&gt;
 macro_line|#include &lt;asm/ptrace.h&gt;
 multiline_comment|/* Whether we react on sysrq keys or just ignore them */
 DECL|variable|sysrq_enabled
@@ -701,6 +703,87 @@ id|SYSRQ_ENABLE_SIGNAL
 comma
 )brace
 suffix:semicolon
+DECL|function|moom_callback
+r_static
+r_void
+id|moom_callback
+c_func
+(paren
+r_void
+op_star
+id|ignored
+)paren
+(brace
+id|out_of_memory
+c_func
+(paren
+id|GFP_KERNEL
+)paren
+suffix:semicolon
+)brace
+r_static
+id|DECLARE_WORK
+c_func
+(paren
+id|moom_work
+comma
+id|moom_callback
+comma
+l_int|NULL
+)paren
+suffix:semicolon
+DECL|function|sysrq_handle_moom
+r_static
+r_void
+id|sysrq_handle_moom
+c_func
+(paren
+r_int
+id|key
+comma
+r_struct
+id|pt_regs
+op_star
+id|pt_regs
+comma
+r_struct
+id|tty_struct
+op_star
+id|tty
+)paren
+(brace
+id|schedule_work
+c_func
+(paren
+op_amp
+id|moom_work
+)paren
+suffix:semicolon
+)brace
+DECL|variable|sysrq_moom_op
+r_static
+r_struct
+id|sysrq_key_op
+id|sysrq_moom_op
+op_assign
+(brace
+dot
+id|handler
+op_assign
+id|sysrq_handle_moom
+comma
+dot
+id|help_msg
+op_assign
+l_string|&quot;Full&quot;
+comma
+dot
+id|action_msg
+op_assign
+l_string|&quot;Manual OOM execution&quot;
+comma
+)brace
+suffix:semicolon
 DECL|function|sysrq_handle_kill
 r_static
 r_void
@@ -897,7 +980,8 @@ op_amp
 id|sysrq_term_op
 comma
 multiline_comment|/* f */
-l_int|NULL
+op_amp
+id|sysrq_moom_op
 comma
 multiline_comment|/* g */
 l_int|NULL

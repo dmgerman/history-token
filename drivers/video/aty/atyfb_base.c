@@ -44,9 +44,9 @@ macro_line|#ifdef CONFIG_MTRR
 macro_line|#include &lt;asm/mtrr.h&gt;
 macro_line|#endif
 multiline_comment|/*&n; * Debug flags.&n; */
-multiline_comment|/*#undef DEBUG*/
 DECL|macro|DEBUG
-mdefine_line|#define DEBUG
+macro_line|#undef DEBUG
+multiline_comment|/*#define DEBUG*/
 multiline_comment|/* Make sure n * PAGE_SIZE is protected at end of Aperture for GUI-regs */
 multiline_comment|/*  - must be large enough to catch all GUI-Regs   */
 multiline_comment|/*  - must be aligned to a PAGE boundary           */
@@ -1047,6 +1047,15 @@ DECL|variable|xclk
 r_static
 r_int
 id|xclk
+suffix:semicolon
+DECL|variable|__initdata
+r_static
+r_int
+id|comp_sync
+id|__initdata
+op_assign
+op_minus
+l_int|1
 suffix:semicolon
 DECL|variable|mode
 r_static
@@ -12423,6 +12432,32 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|comp_sync
+op_ne
+op_minus
+l_int|1
+)paren
+(brace
+r_if
+c_cond
+(paren
+op_logical_neg
+id|comp_sync
+)paren
+id|var.sync
+op_and_assign
+op_complement
+id|FB_SYNC_COMP_HIGH_ACT
+suffix:semicolon
+r_else
+id|var.sync
+op_or_assign
+id|FB_SYNC_COMP_HIGH_ACT
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
 id|var.yres
 op_eq
 id|var.yres_virtual
@@ -16980,11 +17015,6 @@ suffix:semicolon
 id|err_release_io
 suffix:colon
 macro_line|#ifdef __sparc__
-r_if
-c_cond
-(paren
-id|par-&gt;mmap_map
-)paren
 id|kfree
 c_func
 (paren
@@ -17022,7 +17052,6 @@ c_cond
 (paren
 id|par-&gt;aux_start
 )paren
-(brace
 id|release_mem_region
 c_func
 (paren
@@ -17031,7 +17060,6 @@ comma
 id|par-&gt;aux_size
 )paren
 suffix:semicolon
-)brace
 id|release_mem_region
 c_func
 (paren
@@ -17462,11 +17490,6 @@ suffix:semicolon
 macro_line|#endif
 macro_line|#endif
 macro_line|#ifdef __sparc__
-r_if
-c_cond
-(paren
-id|par-&gt;mmap_map
-)paren
 id|kfree
 c_func
 (paren
@@ -17827,6 +17850,35 @@ comma
 l_int|0
 )paren
 suffix:semicolon
+r_else
+r_if
+c_cond
+(paren
+op_logical_neg
+id|strncmp
+c_func
+(paren
+id|this_opt
+comma
+l_string|&quot;comp_sync:&quot;
+comma
+l_int|10
+)paren
+)paren
+id|comp_sync
+op_assign
+id|simple_strtoul
+c_func
+(paren
+id|this_opt
+op_plus
+l_int|10
+comma
+l_int|NULL
+comma
+l_int|0
+)paren
+suffix:semicolon
 macro_line|#ifdef CONFIG_PPC
 r_else
 r_if
@@ -18077,7 +18129,7 @@ id|option
 suffix:semicolon
 macro_line|#endif
 macro_line|#ifdef CONFIG_PCI
-id|pci_module_init
+id|pci_register_driver
 c_func
 (paren
 op_amp
@@ -18230,6 +18282,24 @@ c_func
 id|xclk
 comma
 l_string|&quot;int: override accelerated engine clock&quot;
+)paren
+suffix:semicolon
+id|module_param
+c_func
+(paren
+id|comp_sync
+comma
+r_int
+comma
+l_int|0
+)paren
+suffix:semicolon
+id|MODULE_PARM_DESC
+c_func
+(paren
+id|comp_sync
+comma
+l_string|&quot;Set composite sync signal to low (0) or high (1)&quot;
 )paren
 suffix:semicolon
 id|module_param

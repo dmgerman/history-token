@@ -2740,6 +2740,7 @@ id|level
 comma
 r_struct
 id|pt_regs
+op_star
 id|regs
 )paren
 suffix:semicolon

@@ -2193,11 +2193,6 @@ c_func
 id|info-&gt;screen_base
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|par-&gt;mmap_map
-)paren
 id|kfree
 c_func
 (paren

@@ -7,21 +7,11 @@ macro_line|#include &lt;asm/mpc52xx_psc.h&gt;
 macro_line|#include &lt;asm/serial.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/time.h&gt;
-macro_line|#if MPC52xx_PF_CONSOLE_PORT == 0
+macro_line|#ifdef MPC52xx_PF_CONSOLE_PORT
 DECL|macro|MPC52xx_CONSOLE
-mdefine_line|#define MPC52xx_CONSOLE&t;&t;MPC52xx_PSC1
+mdefine_line|#define MPC52xx_CONSOLE MPC52xx_PSCx_OFFSET(MPC52xx_PF_CONSOLE_PORT)
 DECL|macro|MPC52xx_PSC_CONFIG_SHIFT
-mdefine_line|#define MPC52xx_PSC_CONFIG_SHIFT&t;0
-macro_line|#elif MPC52xx_PF_CONSOLE_PORT == 1
-DECL|macro|MPC52xx_CONSOLE
-mdefine_line|#define MPC52xx_CONSOLE&t;&t;MPC52xx_PSC2
-DECL|macro|MPC52xx_PSC_CONFIG_SHIFT
-mdefine_line|#define MPC52xx_PSC_CONFIG_SHIFT&t;4
-macro_line|#elif MPC52xx_PF_CONSOLE_PORT == 2
-DECL|macro|MPC52xx_CONSOLE
-mdefine_line|#define MPC52xx_CONSOLE&t;&t;MPC52xx_PSC3
-DECL|macro|MPC52xx_PSC_CONFIG_SHIFT
-mdefine_line|#define MPC52xx_PSC_CONFIG_SHIFT&t;8
+mdefine_line|#define MPC52xx_PSC_CONFIG_SHIFT ((MPC52xx_PF_CONSOLE_PORT-1)&lt;&lt;2)
 macro_line|#else
 macro_line|#error &quot;MPC52xx_PF_CONSOLE_PORT not defined&quot;
 macro_line|#endif
@@ -39,9 +29,13 @@ id|mpc52xx_psc
 id|__iomem
 op_star
 )paren
+id|MPC52xx_PA
+c_func
+(paren
 id|MPC52xx_CONSOLE
+)paren
 suffix:semicolon
-multiline_comment|/* The decrementer counts at the system bus clock frequency&n; * divided by four.  The most accurate time base is connected to the&n; * rtc.  We read the decrementer change during one rtc tick (one second)&n; * and multiply by 4 to get the system bus clock frequency.&n; */
+multiline_comment|/* The decrementer counts at the system bus clock frequency&n; * divided by four.  The most accurate time base is connected to the&n; * rtc.  We read the decrementer change during one rtc tick&n; * and multiply by 4 to get the system bus clock frequency. Since a&n; * rtc tick is one seconds, and that&squot;s pretty long, we change the rtc&n; * dividers temporarly to set them 64x faster ;)&n; */
 r_static
 r_int
 DECL|function|mpc52xx_ipbfreq
@@ -63,7 +57,11 @@ id|mpc52xx_rtc
 id|__iomem
 op_star
 )paren
-id|MPC52xx_RTC
+id|MPC52xx_PA
+c_func
+(paren
+id|MPC52xx_RTC_OFFSET
+)paren
 suffix:semicolon
 r_struct
 id|mpc52xx_cdm
@@ -77,7 +75,11 @@ id|mpc52xx_cdm
 id|__iomem
 op_star
 )paren
-id|MPC52xx_CDM
+id|MPC52xx_PA
+c_func
+(paren
+id|MPC52xx_CDM_OFFSET
+)paren
 suffix:semicolon
 r_int
 id|current_time
@@ -235,7 +237,11 @@ id|mpc52xx_gpio
 id|__iomem
 op_star
 )paren
-id|MPC52xx_GPIO
+id|MPC52xx_PA
+c_func
+(paren
+id|MPC52xx_GPIO_OFFSET
+)paren
 suffix:semicolon
 r_int
 id|divisor

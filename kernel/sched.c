@@ -521,10 +521,6 @@ id|v
 r_int
 id|cpu
 suffix:semicolon
-r_enum
-id|idle_type
-id|itype
-suffix:semicolon
 id|seq_printf
 c_func
 (paren
@@ -626,6 +622,10 @@ comma
 id|sd
 )paren
 (brace
+r_enum
+id|idle_type
+id|itype
+suffix:semicolon
 r_char
 id|mask_str
 (braket

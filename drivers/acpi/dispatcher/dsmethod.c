@@ -972,7 +972,21 @@ op_assign
 id|return_desc
 suffix:semicolon
 )brace
+multiline_comment|/*&n;&t;&t; * The following code is the&n;&t;&t; * optional support for a so-called &quot;implicit return&quot;. Some AML code&n;&t;&t; * assumes that the last value of the method is &quot;implicitly&quot; returned&n;&t;&t; * to the caller. Just save the last result as the return value.&n;&t;&t; * NOTE: this is optional because the ASL language does not actually&n;&t;&t; * support this behavior.&n;&t;&t; */
 r_else
+r_if
+c_cond
+(paren
+op_logical_neg
+id|acpi_ds_do_implicit_return
+(paren
+id|return_desc
+comma
+id|walk_state
+comma
+id|FALSE
+)paren
+)paren
 (brace
 multiline_comment|/*&n;&t;&t;&t; * Delete the return value if it will not be used by the&n;&t;&t;&t; * calling method&n;&t;&t;&t; */
 id|acpi_ut_remove_reference

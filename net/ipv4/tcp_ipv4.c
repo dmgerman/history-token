@@ -11307,7 +11307,7 @@ op_assign
 id|MAX_TCP_HEADER
 comma
 dot
-id|slab_obj_size
+id|obj_size
 op_assign
 r_sizeof
 (paren

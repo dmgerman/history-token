@@ -53,6 +53,11 @@ op_assign
 l_int|0
 comma
 dot
+id|capabilities
+op_assign
+id|BDI_CAP_MAP_COPY
+comma
+dot
 id|unplug_io_fn
 op_assign
 id|default_unplug_io_fn

@@ -543,6 +543,7 @@ l_string|&quot;No, enabling workaround&bslash;n&quot;
 suffix:semicolon
 )brace
 r_else
+(brace
 id|panic
 c_func
 (paren
@@ -551,6 +552,7 @@ comma
 id|n
 )paren
 suffix:semicolon
+)brace
 )brace
 DECL|function|tty_close
 r_static
@@ -1141,6 +1143,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+multiline_comment|/* Must be called with sigio_lock held, because it&squot;s needed by the marked&n; * critical section. */
 DECL|function|update_thread
 r_static
 r_void
@@ -1264,11 +1267,7 @@ r_return
 suffix:semicolon
 id|fail
 suffix:colon
-id|sigio_lock
-c_func
-(paren
-)paren
-suffix:semicolon
+multiline_comment|/* Critical section start */
 r_if
 c_cond
 (paren
@@ -1328,11 +1327,7 @@ l_int|1
 )braket
 )paren
 suffix:semicolon
-id|sigio_unlock
-c_func
-(paren
-)paren
-suffix:semicolon
+multiline_comment|/* Critical section end */
 id|set_signals
 c_func
 (paren
@@ -2138,6 +2133,11 @@ comma
 l_int|1
 )paren
 suffix:semicolon
+id|write_sigio_pid
+op_assign
+op_minus
+l_int|1
+suffix:semicolon
 )brace
 )brace
 DECL|variable|sigio_cleanup
@@ -2147,5 +2147,4 @@ c_func
 id|sigio_cleanup
 )paren
 suffix:semicolon
-multiline_comment|/*&n; * Overrides for Emacs so that we follow Linus&squot;s tabbing style.&n; * Emacs will notice this stuff at the end of the file and automatically&n; * adjust the settings for this buffer only.  This must remain at the end&n; * of the file.&n; * ---------------------------------------------------------------------------&n; * Local variables:&n; * c-file-style: &quot;linux&quot;&n; * End:&n; */
 eof

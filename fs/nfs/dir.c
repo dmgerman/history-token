@@ -6569,6 +6569,7 @@ c_func
 id|set-&gt;cred
 )paren
 suffix:semicolon
+)brace
 id|NFS_FLAGS
 c_func
 (paren
@@ -6578,7 +6579,6 @@ op_and_assign
 op_complement
 id|NFS_INO_INVALID_ACCESS
 suffix:semicolon
-)brace
 id|cache-&gt;jiffies
 op_assign
 id|set-&gt;jiffies

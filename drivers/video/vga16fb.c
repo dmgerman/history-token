@@ -4077,6 +4077,7 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|function|vga_8planes_fillrect
+r_static
 r_void
 id|vga_8planes_fillrect
 c_func
@@ -4353,6 +4354,7 @@ id|oldindex
 suffix:semicolon
 )brace
 DECL|function|vga16fb_fillrect
+r_static
 r_void
 id|vga16fb_fillrect
 c_func
@@ -4701,6 +4703,7 @@ suffix:semicolon
 )brace
 )brace
 DECL|function|vga_8planes_copyarea
+r_static
 r_void
 id|vga_8planes_copyarea
 c_func
@@ -5018,6 +5021,7 @@ id|oldindex
 suffix:semicolon
 )brace
 DECL|function|vga16fb_copyarea
+r_static
 r_void
 id|vga16fb_copyarea
 c_func
@@ -5675,6 +5679,7 @@ macro_line|#error &quot;Only __BIG_ENDIAN and __LITTLE_ENDIAN are supported in v
 macro_line|#endif
 macro_line|#endif
 DECL|function|vga_8planes_imageblit
+r_static
 r_void
 id|vga_8planes_imageblit
 c_func
@@ -5889,6 +5894,7 @@ id|oldindex
 suffix:semicolon
 )brace
 DECL|function|vga_imageblit_expand
+r_static
 r_void
 id|vga_imageblit_expand
 c_func
@@ -6244,6 +6250,7 @@ suffix:semicolon
 )brace
 )brace
 DECL|function|vga_imageblit_color
+r_static
 r_void
 id|vga_imageblit_color
 c_func
@@ -6454,6 +6461,7 @@ suffix:semicolon
 )brace
 )brace
 DECL|function|vga16fb_imageblit
+r_static
 r_void
 id|vga16fb_imageblit
 c_func
@@ -6564,7 +6572,9 @@ id|soft_cursor
 comma
 )brace
 suffix:semicolon
+macro_line|#ifndef MODULE
 DECL|function|vga16fb_setup
+r_static
 r_int
 id|vga16fb_setup
 c_func
@@ -6624,7 +6634,9 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+macro_line|#endif
 DECL|function|vga16fb_init
+r_static
 r_int
 id|__init
 id|vga16fb_init
@@ -6963,14 +6975,12 @@ id|vga16fb.cmap
 suffix:semicolon
 multiline_comment|/* XXX unshare VGA regions */
 )brace
-macro_line|#ifdef MODULE
 id|MODULE_LICENSE
 c_func
 (paren
 l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
-macro_line|#endif
 DECL|variable|vga16fb_init
 id|module_init
 c_func

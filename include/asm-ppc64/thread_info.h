@@ -148,6 +148,8 @@ DECL|macro|TIF_SINGLESTEP
 mdefine_line|#define TIF_SINGLESTEP&t;&t;9&t;/* singlestepping active */
 DECL|macro|TIF_MEMDIE
 mdefine_line|#define TIF_MEMDIE&t;&t;10
+DECL|macro|TIF_SECCOMP
+mdefine_line|#define TIF_SECCOMP&t;&t;11&t;/* secure computing */
 multiline_comment|/* as above, but as bit values */
 DECL|macro|_TIF_SYSCALL_TRACE
 mdefine_line|#define _TIF_SYSCALL_TRACE&t;(1&lt;&lt;TIF_SYSCALL_TRACE)
@@ -169,8 +171,10 @@ DECL|macro|_TIF_SYSCALL_AUDIT
 mdefine_line|#define _TIF_SYSCALL_AUDIT&t;(1&lt;&lt;TIF_SYSCALL_AUDIT)
 DECL|macro|_TIF_SINGLESTEP
 mdefine_line|#define _TIF_SINGLESTEP&t;&t;(1&lt;&lt;TIF_SINGLESTEP)
+DECL|macro|_TIF_SECCOMP
+mdefine_line|#define _TIF_SECCOMP&t;&t;(1&lt;&lt;TIF_SECCOMP)
 DECL|macro|_TIF_SYSCALL_T_OR_A
-mdefine_line|#define _TIF_SYSCALL_T_OR_A&t;(_TIF_SYSCALL_TRACE|_TIF_SYSCALL_AUDIT)
+mdefine_line|#define _TIF_SYSCALL_T_OR_A&t;(_TIF_SYSCALL_TRACE|_TIF_SYSCALL_AUDIT|_TIF_SECCOMP)
 DECL|macro|_TIF_USER_WORK_MASK
 mdefine_line|#define _TIF_USER_WORK_MASK&t;(_TIF_NOTIFY_RESUME | _TIF_SIGPENDING | &bslash;&n;&t;&t;&t;&t; _TIF_NEED_RESCHED)
 macro_line|#endif /* __KERNEL__ */

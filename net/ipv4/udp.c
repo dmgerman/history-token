@@ -5660,7 +5660,7 @@ op_assign
 id|udp_v4_get_port
 comma
 dot
-id|slab_obj_size
+id|obj_size
 op_assign
 r_sizeof
 (paren

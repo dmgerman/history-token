@@ -2403,17 +2403,6 @@ id|i
 op_increment
 )paren
 (brace
-r_if
-c_cond
-(paren
-id|gSaveImagePtr
-(braket
-id|i
-)braket
-op_ne
-l_int|NULL
-)paren
-(brace
 id|kfree
 c_func
 (paren
@@ -2430,7 +2419,6 @@ id|i
 op_assign
 l_int|NULL
 suffix:semicolon
-)brace
 )brace
 )brace
 macro_line|#ifdef CONFIG_PM

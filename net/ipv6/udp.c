@@ -4936,7 +4936,7 @@ op_assign
 dot
 id|name
 op_assign
-l_string|&quot;UDP&quot;
+l_string|&quot;UDPv6&quot;
 comma
 dot
 id|owner
@@ -5009,7 +5009,7 @@ op_assign
 id|udp_v6_get_port
 comma
 dot
-id|slab_obj_size
+id|obj_size
 op_assign
 r_sizeof
 (paren

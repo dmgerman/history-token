@@ -4,7 +4,6 @@ macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/time.h&gt;
 macro_line|#include &lt;asm/mpc52xx.h&gt;
 macro_line|#include &lt;asm/mpc52xx_psc.h&gt;
-macro_line|#include &lt;asm/ocp.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
 macro_line|#include &lt;asm/ppcboot.h&gt;
 r_extern
@@ -104,16 +103,14 @@ id|__iomem
 op_star
 id|gpt0
 op_assign
+id|MPC52xx_VA
+c_func
 (paren
-r_struct
-id|mpc52xx_gpt
-id|__iomem
-op_star
-)paren
-id|MPC52xx_GPTx
+id|MPC52xx_GPTx_OFFSET
 c_func
 (paren
 l_int|0
+)paren
 )paren
 suffix:semicolon
 id|local_irq_disable
@@ -122,14 +119,6 @@ c_func
 )paren
 suffix:semicolon
 multiline_comment|/* Turn on the watchdog and wait for it to expire. It effectively&n;&t;  does a reset */
-r_if
-c_cond
-(paren
-id|gpt0
-op_ne
-l_int|NULL
-)paren
-(brace
 id|out_be32
 c_func
 (paren
@@ -146,15 +135,6 @@ op_amp
 id|gpt0-&gt;mode
 comma
 l_int|0x00009004
-)paren
-suffix:semicolon
-)brace
-r_else
-id|printk
-c_func
-(paren
-id|KERN_ERR
-l_string|&quot;mpc52xx_restart: Unable to ioremap GPT0 registers, -&gt; looping ...&quot;
 )paren
 suffix:semicolon
 r_while
@@ -261,10 +241,7 @@ id|_PAGE_IO
 suffix:semicolon
 )brace
 macro_line|#ifdef CONFIG_SERIAL_TEXT_DEBUG
-macro_line|#ifdef MPC52xx_PF_CONSOLE_PORT
-DECL|macro|MPC52xx_CONSOLE
-mdefine_line|#define MPC52xx_CONSOLE MPC52xx_PSCx(MPC52xx_PF_CONSOLE_PORT)
-macro_line|#else
+macro_line|#ifndef MPC52xx_PF_CONSOLE_PORT
 macro_line|#error &quot;mpc52xx PSC for console not selected&quot;
 macro_line|#endif
 r_static
@@ -332,14 +309,18 @@ id|mpc52xx_psc
 id|__iomem
 op_star
 id|psc
+suffix:semicolon
+id|psc
 op_assign
+id|MPC52xx_VA
+c_func
 (paren
-r_struct
-id|mpc52xx_psc
-id|__iomem
-op_star
+id|MPC52xx_PSCx_OFFSET
+c_func
+(paren
+id|MPC52xx_PF_CONSOLE_PORT
 )paren
-id|MPC52xx_CONSOLE
+)paren
 suffix:semicolon
 r_while
 c_loop
@@ -435,13 +416,11 @@ suffix:semicolon
 multiline_comment|/* Temp BAT2 mapping active when this is called ! */
 id|mmap_ctl
 op_assign
+id|MPC52xx_VA
+c_func
 (paren
-r_struct
-id|mpc52xx_mmap_ctl
-id|__iomem
-op_star
+id|MPC52xx_MMAP_CTL_OFFSET
 )paren
-id|MPC52xx_MMAP_CTL
 suffix:semicolon
 id|sdram_config_0
 op_assign
@@ -590,13 +569,13 @@ op_assign
 id|ioremap
 c_func
 (paren
-id|MPC52xx_RTC
-comma
-r_sizeof
+id|MPC52xx_PA
+c_func
 (paren
-r_struct
-id|mpc52xx_rtc
+id|MPC52xx_RTC_OFFSET
 )paren
+comma
+id|MPC52xx_RTC_SIZE
 )paren
 suffix:semicolon
 id|cdm
@@ -604,13 +583,13 @@ op_assign
 id|ioremap
 c_func
 (paren
-id|MPC52xx_CDM
-comma
-r_sizeof
+id|MPC52xx_PA
+c_func
 (paren
-r_struct
-id|mpc52xx_cdm
+id|MPC52xx_CDM_OFFSET
 )paren
+comma
+id|MPC52xx_CDM_SIZE
 )paren
 suffix:semicolon
 r_if
@@ -866,43 +845,71 @@ l_int|1000000
 )paren
 suffix:semicolon
 )brace
-r_void
-id|__init
-DECL|function|mpc52xx_add_board_devices
-id|mpc52xx_add_board_devices
+DECL|function|mpc52xx_match_psc_function
+r_int
+id|mpc52xx_match_psc_function
 c_func
 (paren
-r_struct
-id|ocp_def
-id|board_ocp
-(braket
-)braket
+r_int
+id|psc_idx
+comma
+r_const
+r_char
+op_star
+id|func
 )paren
 (brace
+r_struct
+id|mpc52xx_psc_func
+op_star
+id|cf
+op_assign
+id|mpc52xx_psc_functions
+suffix:semicolon
 r_while
 c_loop
 (paren
-id|board_ocp-&gt;vendor
+(paren
+id|cf-&gt;id
 op_ne
-id|OCP_VENDOR_INVALID
+op_minus
+l_int|1
 )paren
-r_if
-c_cond
+op_logical_and
 (paren
-id|ocp_add_one_device
-c_func
-(paren
-id|board_ocp
-op_increment
+id|cf-&gt;func
+op_ne
+l_int|NULL
 )paren
 )paren
 (brace
-id|printk
+r_if
+c_cond
+(paren
+(paren
+id|cf-&gt;id
+op_eq
+id|psc_idx
+)paren
+op_logical_and
+op_logical_neg
+id|strcmp
 c_func
 (paren
-l_string|&quot;mpc5200-ocp: Failed to add board device !&bslash;n&quot;
+id|cf-&gt;func
+comma
+id|func
 )paren
+)paren
+r_return
+l_int|1
+suffix:semicolon
+id|cf
+op_increment
 suffix:semicolon
 )brace
+r_return
+l_int|0
+suffix:semicolon
 )brace
 eof

@@ -62,8 +62,12 @@ mdefine_line|#define cnodeid_to_nasid(cnodeid)&t;pda-&gt;cnodeid_to_nasid_table[
 multiline_comment|/*&n; * nasid_to_cnodeid - convert a NASID to a cnodeid&n; */
 DECL|macro|nasid_to_cnodeid
 mdefine_line|#define nasid_to_cnodeid(nasid)&t;&t;(physical_node_map[nasid])
-multiline_comment|/*&n; * partition_coherence_id - cget the coherence ID of the current partition&n; */
+multiline_comment|/*&n; * partition_coherence_id - get the coherence ID of the current partition&n; */
+r_extern
+id|u8
+id|sn_coherency_id
+suffix:semicolon
 DECL|macro|partition_coherence_id
-mdefine_line|#define partition_coherence_id()&t;(get_nasid() &gt;&gt; 9)
+mdefine_line|#define partition_coherence_id()&t;(sn_coherency_id)
 macro_line|#endif /* _ASM_IA64_SN_SN_CPUID_H */
 eof

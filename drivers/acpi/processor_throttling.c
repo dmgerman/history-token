@@ -929,6 +929,7 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|function|acpi_processor_throttling_open_fs
+r_static
 r_int
 id|acpi_processor_throttling_open_fs
 c_func

@@ -571,6 +571,16 @@ c_cond
 id|err
 op_le
 l_int|0
+op_logical_and
+(paren
+id|err
+op_ne
+op_minus
+id|EAGAIN
+op_logical_or
+op_logical_neg
+id|ret
+)paren
 )paren
 (brace
 id|ret

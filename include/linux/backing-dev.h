@@ -55,11 +55,12 @@ r_int
 id|state
 suffix:semicolon
 multiline_comment|/* Always use atomic bitops on this */
-DECL|member|memory_backed
+DECL|member|capabilities
 r_int
-id|memory_backed
+r_int
+id|capabilities
 suffix:semicolon
-multiline_comment|/* Cannot clean pages with writepage */
+multiline_comment|/* Device capabilities */
 DECL|member|congested_fn
 id|congested_fn
 op_star
@@ -95,6 +96,26 @@ id|unplug_io_data
 suffix:semicolon
 )brace
 suffix:semicolon
+multiline_comment|/*&n; * Flags in backing_dev_info::capability&n; * - The first two flags control whether dirty pages will contribute to the&n; *   VM&squot;s accounting and whether writepages() should be called for dirty pages&n; *   (something that would not, for example, be appropriate for ramfs)&n; * - These flags let !MMU mmap() govern direct device mapping vs immediate&n; *   copying more easily for MAP_PRIVATE, especially for ROM filesystems&n; */
+DECL|macro|BDI_CAP_NO_ACCT_DIRTY
+mdefine_line|#define BDI_CAP_NO_ACCT_DIRTY&t;0x00000001&t;/* Dirty pages shouldn&squot;t contribute to accounting */
+DECL|macro|BDI_CAP_NO_WRITEBACK
+mdefine_line|#define BDI_CAP_NO_WRITEBACK&t;0x00000002&t;/* Don&squot;t write pages back */
+DECL|macro|BDI_CAP_MAP_COPY
+mdefine_line|#define BDI_CAP_MAP_COPY&t;0x00000004&t;/* Copy can be mapped (MAP_PRIVATE) */
+DECL|macro|BDI_CAP_MAP_DIRECT
+mdefine_line|#define BDI_CAP_MAP_DIRECT&t;0x00000008&t;/* Can be mapped directly (MAP_SHARED) */
+DECL|macro|BDI_CAP_READ_MAP
+mdefine_line|#define BDI_CAP_READ_MAP&t;0x00000010&t;/* Can be mapped for reading */
+DECL|macro|BDI_CAP_WRITE_MAP
+mdefine_line|#define BDI_CAP_WRITE_MAP&t;0x00000020&t;/* Can be mapped for writing */
+DECL|macro|BDI_CAP_EXEC_MAP
+mdefine_line|#define BDI_CAP_EXEC_MAP&t;0x00000040&t;/* Can be mapped for execution */
+DECL|macro|BDI_CAP_VMFLAGS
+mdefine_line|#define BDI_CAP_VMFLAGS &bslash;&n;&t;(BDI_CAP_READ_MAP | BDI_CAP_WRITE_MAP | BDI_CAP_EXEC_MAP)
+macro_line|#if defined(VM_MAYREAD) &amp;&amp; &bslash;&n;&t;(BDI_CAP_READ_MAP != VM_MAYREAD || &bslash;&n;&t; BDI_CAP_WRITE_MAP != VM_MAYWRITE || &bslash;&n;&t; BDI_CAP_EXEC_MAP != VM_MAYEXEC)
+macro_line|#error please change backing_dev_info::capabilities flags
+macro_line|#endif
 r_extern
 r_struct
 id|backing_dev_info
@@ -268,5 +289,13 @@ id|BDI_write_congested
 )paren
 suffix:semicolon
 )brace
+DECL|macro|bdi_cap_writeback_dirty
+mdefine_line|#define bdi_cap_writeback_dirty(bdi) &bslash;&n;&t;(!((bdi)-&gt;capabilities &amp; BDI_CAP_NO_WRITEBACK))
+DECL|macro|bdi_cap_account_dirty
+mdefine_line|#define bdi_cap_account_dirty(bdi) &bslash;&n;&t;(!((bdi)-&gt;capabilities &amp; BDI_CAP_NO_ACCT_DIRTY))
+DECL|macro|mapping_cap_writeback_dirty
+mdefine_line|#define mapping_cap_writeback_dirty(mapping) &bslash;&n;&t;bdi_cap_writeback_dirty((mapping)-&gt;backing_dev_info)
+DECL|macro|mapping_cap_account_dirty
+mdefine_line|#define mapping_cap_account_dirty(mapping) &bslash;&n;&t;bdi_cap_account_dirty((mapping)-&gt;backing_dev_info)
 macro_line|#endif&t;&t;/* _LINUX_BACKING_DEV_H */
 eof
