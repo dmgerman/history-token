@@ -2796,6 +2796,11 @@ id|comb
 comma
 id|tmp
 suffix:semicolon
+r_int
+id|ich
+op_assign
+l_int|0
+suffix:semicolon
 multiline_comment|/*&n;&t; * Narrow down to Intel SATA PCI devices.&n;&t; */
 r_switch
 c_cond
@@ -2816,12 +2821,25 @@ suffix:colon
 r_case
 l_int|0x25b0
 suffix:colon
+id|ich
+op_assign
+l_int|5
+suffix:semicolon
+r_break
+suffix:semicolon
 r_case
 l_int|0x2651
 suffix:colon
 r_case
 l_int|0x2652
 suffix:colon
+r_case
+l_int|0x2653
+suffix:colon
+id|ich
+op_assign
+l_int|6
+suffix:semicolon
 r_break
 suffix:semicolon
 r_default
@@ -2843,6 +2861,14 @@ id|tmp
 )paren
 suffix:semicolon
 multiline_comment|/* combined mode reg */
+r_if
+c_cond
+(paren
+id|ich
+op_eq
+l_int|5
+)paren
+(brace
 id|tmp
 op_and_assign
 l_int|0x6
@@ -2887,6 +2913,68 @@ r_else
 r_return
 suffix:semicolon
 multiline_comment|/* not in combined mode */
+)brace
+r_else
+(brace
+id|WARN_ON
+c_func
+(paren
+id|ich
+op_ne
+l_int|6
+)paren
+suffix:semicolon
+id|tmp
+op_and_assign
+l_int|0x3
+suffix:semicolon
+multiline_comment|/* interesting bits 1:0 */
+r_if
+c_cond
+(paren
+id|tmp
+op_amp
+(paren
+l_int|1
+op_lshift
+l_int|0
+)paren
+)paren
+id|comb
+op_assign
+(paren
+l_int|1
+op_lshift
+l_int|2
+)paren
+suffix:semicolon
+multiline_comment|/* PATA port 0, SATA port 1 */
+r_else
+r_if
+c_cond
+(paren
+id|tmp
+op_amp
+(paren
+l_int|1
+op_lshift
+l_int|1
+)paren
+)paren
+id|comb
+op_assign
+(paren
+l_int|1
+op_lshift
+l_int|0
+)paren
+suffix:semicolon
+multiline_comment|/* SATA port 0, PATA port 1 */
+r_else
+r_return
+suffix:semicolon
+multiline_comment|/* not in combined mode */
+)brace
 multiline_comment|/*&n;&t; * Read programming interface register.&n;&t; * (Tells us if it&squot;s legacy or native mode)&n;&t; */
 id|pci_read_config_byte
 c_func
