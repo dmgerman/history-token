@@ -418,7 +418,7 @@ id|status
 )paren
 suffix:semicolon
 r_static
-r_void
+id|irqreturn_t
 id|gt96100_interrupt
 c_func
 (paren
@@ -6572,7 +6572,7 @@ suffix:semicolon
 )brace
 )brace
 r_static
-r_void
+id|irqreturn_t
 DECL|function|gt96100_interrupt
 id|gt96100_interrupt
 c_func
@@ -6617,6 +6617,11 @@ suffix:semicolon
 id|u32
 id|status
 suffix:semicolon
+r_int
+id|handled
+op_assign
+l_int|0
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -6634,6 +6639,7 @@ id|__FUNCTION__
 )paren
 suffix:semicolon
 r_return
+id|IRQ_NONE
 suffix:semicolon
 )brace
 id|dbg
@@ -6720,6 +6726,10 @@ id|icrRxBuffer
 )paren
 )paren
 r_break
+suffix:semicolon
+id|handled
+op_assign
+l_int|1
 suffix:semicolon
 r_if
 c_cond
@@ -7074,6 +7084,13 @@ c_func
 (paren
 op_amp
 id|gp-&gt;lock
+)paren
+suffix:semicolon
+r_return
+id|IRQ_RETVAL
+c_func
+(paren
+id|handled
 )paren
 suffix:semicolon
 )brace

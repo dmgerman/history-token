@@ -304,7 +304,7 @@ id|nodeid
 )paren
 suffix:semicolon
 r_static
-r_void
+id|irqreturn_t
 id|cops_interrupt
 (paren
 r_int
@@ -2401,7 +2401,7 @@ suffix:semicolon
 multiline_comment|/*&n; *      The typical workload of the driver:&n; *      Handle the network interface interrupts.&n; */
 DECL|function|cops_interrupt
 r_static
-r_void
+id|irqreturn_t
 id|cops_interrupt
 c_func
 (paren
@@ -2601,6 +2601,7 @@ suffix:semicolon
 )brace
 )brace
 r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 multiline_comment|/*&n; *      We have a good packet(s), get it/them out of the buffers.&n; */

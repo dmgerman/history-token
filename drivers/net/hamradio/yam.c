@@ -3675,7 +3675,7 @@ suffix:semicolon
 multiline_comment|/***********************************************************************************&n;* ISR routine&n;************************************************************************************/
 DECL|function|yam_interrupt
 r_static
-r_void
+id|irqreturn_t
 id|yam_interrupt
 c_func
 (paren
@@ -3926,6 +3926,9 @@ suffix:semicolon
 )brace
 )brace
 )brace
+r_return
+id|IRQ_HANDLED
+suffix:semicolon
 )brace
 DECL|function|yam_net_get_info
 r_static

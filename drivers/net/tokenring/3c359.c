@@ -287,7 +287,7 @@ id|dev
 )paren
 suffix:semicolon
 r_static
-r_void
+id|irqreturn_t
 id|xl_interrupt
 c_func
 (paren
@@ -4860,7 +4860,7 @@ suffix:semicolon
 )brace
 DECL|function|xl_interrupt
 r_static
-r_void
+id|irqreturn_t
 id|xl_interrupt
 c_func
 (paren
@@ -4927,6 +4927,7 @@ l_string|&quot;Device structure dead, aaahhhh !&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
+id|IRQ_NONE
 suffix:semicolon
 )brace
 id|intstatus
@@ -4951,6 +4952,7 @@ l_int|1
 )paren
 multiline_comment|/* We didn&squot;t generate the interrupt */
 r_return
+id|IRQ_NONE
 suffix:semicolon
 id|spin_lock
 c_func
@@ -5108,6 +5110,7 @@ id|xl_priv-&gt;xl_lock
 )paren
 suffix:semicolon
 r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 multiline_comment|/* Host Error */
@@ -5482,6 +5485,7 @@ id|xl_priv-&gt;xl_lock
 )paren
 suffix:semicolon
 r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 )brace
@@ -5543,6 +5547,9 @@ c_func
 op_amp
 id|xl_priv-&gt;xl_lock
 )paren
+suffix:semicolon
+r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 multiline_comment|/*&n; *&t;Tx - Polling configuration&n; */
