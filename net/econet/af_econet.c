@@ -2047,11 +2047,7 @@ id|THIS_MODULE
 suffix:semicolon
 id|eo
 op_assign
-id|ec_sk
-c_func
-(paren
-id|sk
-)paren
+id|sk-&gt;sk_protinfo
 op_assign
 id|kmalloc
 c_func
