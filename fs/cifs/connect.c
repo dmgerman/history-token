@@ -3170,12 +3170,6 @@ op_assign
 l_int|0
 suffix:semicolon
 r_char
-id|session_key
-(braket
-id|CIFS_SESSION_KEY_SIZE
-)braket
-suffix:semicolon
-r_char
 id|ntlm_session_key
 (braket
 id|CIFS_SESSION_KEY_SIZE
@@ -3348,14 +3342,25 @@ c_func
 l_int|1
 comma
 (paren
-l_string|&quot;Able to use the more secure NTLM version 2 password hash&quot;
+l_string|&quot;Can use more secure NTLM version 2 password hash&quot;
 )paren
 )paren
 suffix:semicolon
 multiline_comment|/* SMBNTv2encrypt( ...);  */
-multiline_comment|/* BB fix this up - &n;&t;&t;&t;   and note that Samba client equivalent looks wrong */
+multiline_comment|/* BB fix this up */
+id|CalcNTLMv2_partial_mac_key
+c_func
+(paren
+id|pSesInfo
+comma
+id|nls_info
+)paren
+suffix:semicolon
+multiline_comment|/*&t;&t;&t;&t;&t;cifs_calculate_ntlmv2_mac_key(pSesInfo-&gt;mac_signing_key, ntlm_session_key, */
+multiline_comment|/* BB Put dummy sig in SessSetup PDU? */
 )brace
 r_else
+(brace
 id|SMBNTencrypt
 c_func
 (paren
@@ -3366,9 +3371,18 @@ comma
 id|ntlm_session_key
 )paren
 suffix:semicolon
-multiline_comment|/* BB add call to save MAC key here BB */
-multiline_comment|/* for better security the weaker lanman hash not sent &n;&t;&t;&t;&t;   in AuthSessSetup so why bother calculating it */
-multiline_comment|/* toUpper(nls_info,&n;&t;&t;&t;&t;&t;password_with_pad);&n;&t;&t;&t;&t;SMBencrypt(password_with_pad,&n;&t;&t;&t;&t;&t;   pSesInfo-&gt;server-&gt;cryptKey, session_key); */
+id|cifs_calculate_mac_key
+c_func
+(paren
+id|pSesInfo-&gt;mac_signing_key
+comma
+id|ntlm_session_key
+comma
+id|pSesInfo-&gt;password_with_pad
+)paren
+suffix:semicolon
+)brace
+multiline_comment|/* for better security the weaker lanman hash not sent&n;&t;&t;&t;   in AuthSessSetup so we no longer calculate it */
 id|rc
 op_assign
 id|CIFSNTLMSSPAuthSessSetup
@@ -3379,8 +3393,6 @@ comma
 id|pSesInfo
 comma
 id|ntlm_session_key
-comma
-id|session_key
 comma
 id|ntlmv2_flag
 comma
@@ -6691,7 +6703,7 @@ c_func
 l_int|1
 comma
 (paren
-l_string|&quot;In v2 sesssetup &quot;
+l_string|&quot;In spnego sesssetup &quot;
 )paren
 )paren
 suffix:semicolon
@@ -8347,10 +8359,20 @@ id|NTLMSSP_NEGOTIATE_NTLM
 op_or
 l_int|0x80000000
 op_or
-id|NTLMSSP_NEGOTIATE_ALWAYS_SIGN
-op_or
+multiline_comment|/* NTLMSSP_NEGOTIATE_ALWAYS_SIGN | */
 id|NTLMSSP_NEGOTIATE_128
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|sign_CIFS_PDUs
+)paren
+(brace
+id|SecurityBlob-&gt;NegotiateFlags
+op_or_assign
+id|NTLMSSP_NEGOTIATE_SIGN
+suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
@@ -8984,6 +9006,8 @@ op_assign
 id|TRUE
 suffix:semicolon
 )brace
+multiline_comment|/*&t;&t;&t;&t;if(SecurityBlob2-&gt;NegotiateFlags &amp; NTLMSSP_NEGOTIATE_SIGN)&n;&t;&t;&t;&t;&t;always sign */
+multiline_comment|/* BB FIXME BB */
 r_if
 c_cond
 (paren
@@ -9617,10 +9641,6 @@ r_char
 op_star
 id|ntlm_session_key
 comma
-r_char
-op_star
-id|lanman_session_key
-comma
 r_int
 id|ntlmv2_flag
 comma
@@ -9927,10 +9947,20 @@ id|NTLMSSP_NEGOTIATE_TARGET_INFO
 op_or
 l_int|0x80000000
 op_or
-id|NTLMSSP_NEGOTIATE_ALWAYS_SIGN
-op_or
 id|NTLMSSP_NEGOTIATE_128
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|sign_CIFS_PDUs
+)paren
+(brace
+id|SecurityBlob-&gt;NegotiateFlags
+op_or_assign
+multiline_comment|/* NTLMSSP_NEGOTIATE_ALWAYS_SIGN |*/
+id|NTLMSSP_NEGOTIATE_SIGN
+suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
