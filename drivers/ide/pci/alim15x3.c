@@ -2792,16 +2792,11 @@ multiline_comment|/*&n;&t; * We should only tune the 1533 enable if we are using
 r_if
 c_cond
 (paren
-op_logical_neg
-id|isa_dev
-op_logical_or
-(paren
 id|north
 op_logical_and
 id|north-&gt;vendor
 op_ne
 id|PCI_VENDOR_ID_AL
-)paren
 )paren
 (brace
 id|local_irq_restore
@@ -2814,7 +2809,17 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t; * set south-bridge&squot;s enable bit, m1533, 0x79&n;&t; */
+r_if
+c_cond
+(paren
+id|m5229_revision
+OL
+l_int|0xC5
+op_logical_and
+id|isa_dev
+)paren
+(brace
+multiline_comment|/*&n;&t;&t; * set south-bridge&squot;s enable bit, m1533, 0x79&n;&t;&t; */
 id|pci_read_config_byte
 c_func
 (paren
@@ -2834,7 +2839,7 @@ op_eq
 l_int|0xC2
 )paren
 (brace
-multiline_comment|/*&n;&t;&t; * 1543C-B0 (m1533, 0x79, bit 2)&n;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t; * 1543C-B0 (m1533, 0x79, bit 2)&n;&t;&t;&t; */
 id|pci_write_config_byte
 c_func
 (paren
@@ -2857,7 +2862,7 @@ op_ge
 l_int|0xC3
 )paren
 (brace
-multiline_comment|/*&n;&t;&t; * 1553/1535 (m1533, 0x79, bit 1)&n;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t; * 1553/1535 (m1533, 0x79, bit 1)&n;&t;&t;&t; */
 id|pci_write_config_byte
 c_func
 (paren
@@ -2870,6 +2875,7 @@ op_or
 l_int|0x02
 )paren
 suffix:semicolon
+)brace
 )brace
 id|local_irq_restore
 c_func
