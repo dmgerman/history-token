@@ -1153,6 +1153,8 @@ multiline_comment|/*&n; * fls: find last (most-significant) bit set.&n; * Note f
 DECL|macro|fls
 mdefine_line|#define fls(x) generic_fls(x)
 multiline_comment|/*&n; * hweightN: returns the hamming weight (i.e. the number&n; * of bits set) of a N-bit word&n; */
+DECL|macro|hweight64
+mdefine_line|#define hweight64(x) generic_hweight64(x)
 DECL|macro|hweight32
 mdefine_line|#define hweight32(x) generic_hweight32(x)
 DECL|macro|hweight16
