@@ -814,21 +814,6 @@ DECL|macro|SVWRKS_POSTFLUSH
 mdefine_line|#define SVWRKS_POSTFLUSH&t;0x14
 DECL|macro|SVWRKS_DIRFLUSH
 mdefine_line|#define SVWRKS_DIRFLUSH&t;&t;0x0c
-multiline_comment|/* HP ZX1 SBA registers */
-DECL|macro|HP_ZX1_CTRL
-mdefine_line|#define HP_ZX1_CTRL&t;&t;0x200
-DECL|macro|HP_ZX1_IBASE
-mdefine_line|#define HP_ZX1_IBASE&t;&t;0x300
-DECL|macro|HP_ZX1_IMASK
-mdefine_line|#define HP_ZX1_IMASK&t;&t;0x308
-DECL|macro|HP_ZX1_PCOM
-mdefine_line|#define HP_ZX1_PCOM&t;&t;0x310
-DECL|macro|HP_ZX1_TCNFG
-mdefine_line|#define HP_ZX1_TCNFG&t;&t;0x318
-DECL|macro|HP_ZX1_PDIR_BASE
-mdefine_line|#define HP_ZX1_PDIR_BASE&t;0x320
-DECL|macro|HP_ZX1_CACHE_FLUSH
-mdefine_line|#define HP_ZX1_CACHE_FLUSH&t;0x428
 multiline_comment|/* NVIDIA registers */
 DECL|macro|NVIDIA_0_APSIZE
 mdefine_line|#define NVIDIA_0_APSIZE&t;&t;0x80
