@@ -2188,7 +2188,9 @@ id|tfm
 comma
 id|sg
 comma
-id|nfrags
+id|sg
+comma
+id|clen
 )paren
 suffix:semicolon
 r_if
@@ -2706,7 +2708,9 @@ id|esp-&gt;conf.tfm
 comma
 id|sg
 comma
-id|nfrags
+id|sg
+comma
+id|elen
 )paren
 suffix:semicolon
 r_if
