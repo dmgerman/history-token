@@ -8741,6 +8741,7 @@ id|uhci-&gt;io_addr
 op_assign
 (paren
 r_int
+r_int
 )paren
 id|hcd-&gt;regs
 suffix:semicolon
