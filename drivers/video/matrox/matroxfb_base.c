@@ -14300,11 +14300,11 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-DECL|variable|initialized
+DECL|variable|__initdata
 r_static
 r_int
-id|__init
 id|initialized
+id|__initdata
 op_assign
 l_int|0
 suffix:semicolon

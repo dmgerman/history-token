@@ -487,7 +487,7 @@ comma
 id|htonl
 c_func
 (paren
-id|argp-&gt;proc
+id|argp-&gt;prog
 )paren
 comma
 id|htonl

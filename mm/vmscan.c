@@ -1493,6 +1493,10 @@ suffix:semicolon
 multiline_comment|/**&n; * page_launder - clean dirty inactive pages, move to inactive_clean list&n; * @gfp_mask: what operations we are allowed to do&n; * @sync: should we wait synchronously for the cleaning of pages&n; *&n; * When this function is called, we are most likely low on free +&n; * inactive_clean pages. Since we want to refill those pages as&n; * soon as possible, we&squot;ll make two loops over the inactive list,&n; * one to move the already cleaned pages to the inactive_clean lists&n; * and one to (often asynchronously) clean the dirty inactive pages.&n; *&n; * In situations where kswapd cannot keep up, user processes will&n; * end up calling this function. Since the user process needs to&n; * have a page before it can continue with its allocation, we&squot;ll&n; * do synchronous page flushing in that case.&n; *&n; * This code is heavily inspired by the FreeBSD source code. Thanks&n; * go out to Matthew Dillon.&n; */
 DECL|macro|MAX_LAUNDER
 mdefine_line|#define MAX_LAUNDER &t;&t;(4 * (1 &lt;&lt; page_cluster))
+DECL|macro|CAN_DO_IO
+mdefine_line|#define CAN_DO_IO&t;&t;(gfp_mask &amp; __GFP_IO)
+DECL|macro|CAN_DO_BUFFERS
+mdefine_line|#define CAN_DO_BUFFERS&t;&t;(gfp_mask &amp; __GFP_BUFFER)
 DECL|function|page_launder
 r_int
 id|page_launder
@@ -1514,9 +1518,6 @@ id|cleaned_pages
 comma
 id|maxlaunder
 suffix:semicolon
-r_int
-id|can_get_io_locks
-suffix:semicolon
 r_struct
 id|list_head
 op_star
@@ -1526,13 +1527,6 @@ r_struct
 id|page
 op_star
 id|page
-suffix:semicolon
-multiline_comment|/*&n;&t; * We can only grab the IO locks (eg. for flushing dirty&n;&t; * buffers to disk) if __GFP_IO is set.&n;&t; */
-id|can_get_io_locks
-op_assign
-id|gfp_mask
-op_amp
-id|__GFP_IO
 suffix:semicolon
 id|launder_loop
 op_assign
@@ -1637,6 +1631,10 @@ id|page-&gt;age
 OG
 l_int|0
 op_logical_or
+id|page-&gt;zone-&gt;free_pages
+OG
+id|page-&gt;zone-&gt;pages_high
+op_logical_or
 (paren
 op_logical_neg
 id|page-&gt;buffers
@@ -1740,6 +1738,9 @@ c_cond
 (paren
 op_logical_neg
 id|launder_loop
+op_logical_or
+op_logical_neg
+id|CAN_DO_IO
 )paren
 (brace
 id|list_del
@@ -2081,7 +2082,11 @@ multiline_comment|/*&n;&t; * If we don&squot;t have enough free pages, we loop b
 r_if
 c_cond
 (paren
-id|can_get_io_locks
+(paren
+id|CAN_DO_IO
+op_logical_or
+id|CAN_DO_BUFFERS
+)paren
 op_logical_and
 op_logical_neg
 id|launder_loop
@@ -2168,50 +2173,12 @@ id|nr_deactivated
 op_assign
 l_int|0
 suffix:semicolon
-multiline_comment|/*&n;&t; * When we are background aging, we try to increase the page aging&n;&t; * information in the system. When we have too many inactive pages&n;&t; * we don&squot;t do background aging since having all pages on the&n;&t; * inactive list decreases aging information.&n;&t; *&n;&t; * Since not all active pages have to be on the active list, we round&n;&t; * nr_active_pages up to num_physpages/2, if needed.&n;&t; */
+multiline_comment|/*&n;&t; * When we are background aging, we try to increase the page aging&n;&t; * information in the system.&n;&t; */
 r_if
 c_cond
 (paren
 op_logical_neg
 id|target
-)paren
-(brace
-r_int
-id|inactive
-op_assign
-id|nr_free_pages
-c_func
-(paren
-)paren
-op_plus
-id|nr_inactive_clean_pages
-c_func
-(paren
-)paren
-op_plus
-id|nr_inactive_dirty_pages
-suffix:semicolon
-r_int
-id|active
-op_assign
-id|MAX
-c_func
-(paren
-id|nr_active_pages
-comma
-id|num_physpages
-op_div
-l_int|2
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|active
-OG
-l_int|10
-op_star
-id|inactive
 )paren
 id|maxscan
 op_assign
@@ -2219,27 +2186,6 @@ id|nr_active_pages
 op_rshift
 l_int|4
 suffix:semicolon
-r_else
-r_if
-c_cond
-(paren
-id|active
-OG
-l_int|3
-op_star
-id|inactive
-)paren
-id|maxscan
-op_assign
-id|nr_active_pages
-op_rshift
-l_int|8
-suffix:semicolon
-r_else
-r_return
-l_int|0
-suffix:semicolon
-)brace
 multiline_comment|/* Take the lock while messing with the list... */
 id|spin_lock
 c_func

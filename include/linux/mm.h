@@ -376,6 +376,8 @@ DECL|macro|PG_inactive_clean
 mdefine_line|#define PG_inactive_clean&t;11
 DECL|macro|PG_highmem
 mdefine_line|#define PG_highmem&t;&t;12
+DECL|macro|PG_checked
+mdefine_line|#define PG_checked&t;&t;13&t;/* kill me in 2.5.&lt;early&gt;. */
 multiline_comment|/* bits 21-29 unused */
 DECL|macro|PG_arch_1
 mdefine_line|#define PG_arch_1&t;&t;30
@@ -400,6 +402,10 @@ DECL|macro|LockPage
 mdefine_line|#define LockPage(page)&t;&t;set_bit(PG_locked, &amp;(page)-&gt;flags)
 DECL|macro|TryLockPage
 mdefine_line|#define TryLockPage(page)&t;test_and_set_bit(PG_locked, &amp;(page)-&gt;flags)
+DECL|macro|PageChecked
+mdefine_line|#define PageChecked(page)&t;test_bit(PG_checked, &amp;(page)-&gt;flags)
+DECL|macro|SetPageChecked
+mdefine_line|#define SetPageChecked(page)&t;set_bit(PG_checked, &amp;(page)-&gt;flags)
 r_extern
 r_void
 id|__set_page_dirty
@@ -532,16 +538,40 @@ op_star
 id|FASTCALL
 c_func
 (paren
-id|__alloc_pages
+id|_alloc_pages
 c_func
 (paren
-id|zonelist_t
-op_star
-id|zonelist
+r_int
+r_int
+id|gfp_mask
 comma
 r_int
 r_int
 id|order
+)paren
+)paren
+suffix:semicolon
+r_extern
+r_struct
+id|page
+op_star
+id|FASTCALL
+c_func
+(paren
+id|__alloc_pages
+c_func
+(paren
+r_int
+r_int
+id|gfp_mask
+comma
+r_int
+r_int
+id|order
+comma
+id|zonelist_t
+op_star
+id|zonelist
 )paren
 )paren
 suffix:semicolon
@@ -563,7 +593,6 @@ r_int
 id|order
 )paren
 suffix:semicolon
-macro_line|#ifndef CONFIG_DISCONTIGMEM
 DECL|function|alloc_pages
 r_static
 r_inline
@@ -593,36 +622,15 @@ r_return
 l_int|NULL
 suffix:semicolon
 r_return
-id|__alloc_pages
+id|_alloc_pages
 c_func
 (paren
-id|contig_page_data.node_zonelists
-op_plus
-(paren
 id|gfp_mask
-)paren
 comma
 id|order
 )paren
 suffix:semicolon
 )brace
-macro_line|#else /* !CONFIG_DISCONTIGMEM */
-r_extern
-r_struct
-id|page
-op_star
-id|alloc_pages
-c_func
-(paren
-r_int
-id|gfp_mask
-comma
-r_int
-r_int
-id|order
-)paren
-suffix:semicolon
-macro_line|#endif /* !CONFIG_DISCONTIGMEM */
 DECL|macro|alloc_page
 mdefine_line|#define alloc_page(gfp_mask) alloc_pages(gfp_mask, 0)
 r_extern
@@ -1512,23 +1520,22 @@ r_int
 )paren
 suffix:semicolon
 multiline_comment|/*&n; * GFP bitmasks..&n; */
-DECL|macro|__GFP_WAIT
-mdefine_line|#define __GFP_WAIT&t;0x01
-DECL|macro|__GFP_HIGH
-mdefine_line|#define __GFP_HIGH&t;0x02
-DECL|macro|__GFP_IO
-mdefine_line|#define __GFP_IO&t;0x04
+multiline_comment|/* Zone modifiers in GFP_ZONEMASK (see linux/mmzone.h - low four bits) */
 DECL|macro|__GFP_DMA
-mdefine_line|#define __GFP_DMA&t;0x08
-macro_line|#ifdef CONFIG_HIGHMEM
+mdefine_line|#define __GFP_DMA&t;0x01
 DECL|macro|__GFP_HIGHMEM
-mdefine_line|#define __GFP_HIGHMEM&t;0x10
-macro_line|#else
-DECL|macro|__GFP_HIGHMEM
-mdefine_line|#define __GFP_HIGHMEM&t;0x0 /* noop */
-macro_line|#endif
+mdefine_line|#define __GFP_HIGHMEM&t;0x02
+multiline_comment|/* Action modifiers - doesn&squot;t change the zoning */
+DECL|macro|__GFP_WAIT
+mdefine_line|#define __GFP_WAIT&t;0x10
+DECL|macro|__GFP_HIGH
+mdefine_line|#define __GFP_HIGH&t;0x20
+DECL|macro|__GFP_IO
+mdefine_line|#define __GFP_IO&t;0x40
+DECL|macro|__GFP_BUFFER
+mdefine_line|#define __GFP_BUFFER&t;0x80
 DECL|macro|GFP_BUFFER
-mdefine_line|#define GFP_BUFFER&t;(__GFP_HIGH | __GFP_WAIT)
+mdefine_line|#define GFP_BUFFER&t;(__GFP_HIGH | __GFP_WAIT | __GFP_BUFFER)
 DECL|macro|GFP_ATOMIC
 mdefine_line|#define GFP_ATOMIC&t;(__GFP_HIGH)
 DECL|macro|GFP_USER

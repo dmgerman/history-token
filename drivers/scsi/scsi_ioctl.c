@@ -932,6 +932,10 @@ id|retries
 )paren
 suffix:semicolon
 multiline_comment|/* &n;&t; * If there was an error condition, pass the info back to the user. &n;&t; */
+id|result
+op_assign
+id|SRpnt-&gt;sr_result
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -972,12 +976,14 @@ comma
 id|sb_len
 )paren
 )paren
-r_return
+id|result
+op_assign
 op_minus
 id|EFAULT
 suffix:semicolon
 )brace
 r_else
+(brace
 r_if
 c_cond
 (paren
@@ -991,14 +997,12 @@ comma
 id|outlen
 )paren
 )paren
-r_return
+id|result
+op_assign
 op_minus
 id|EFAULT
 suffix:semicolon
-id|result
-op_assign
-id|SRpnt-&gt;sr_result
-suffix:semicolon
+)brace
 id|SDpnt
 op_assign
 id|SRpnt-&gt;sr_device

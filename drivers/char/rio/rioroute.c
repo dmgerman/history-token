@@ -2650,6 +2650,15 @@ comma
 l_string|&quot;Tx pkts not set up yet&bslash;n&quot;
 )paren
 suffix:semicolon
+id|rio_spin_unlock_irqrestore
+c_func
+(paren
+op_amp
+id|PortP-&gt;portSem
+comma
+id|flags
+)paren
+suffix:semicolon
 r_break
 suffix:semicolon
 )brace

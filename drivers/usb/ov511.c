@@ -1183,7 +1183,7 @@ id|out
 comma
 l_string|&quot;driver_version  : %s&bslash;n&quot;
 comma
-id|version
+id|DRIVER_VERSION
 )paren
 suffix:semicolon
 id|out

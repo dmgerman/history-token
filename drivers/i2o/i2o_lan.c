@@ -4393,7 +4393,7 @@ l_int|3
 suffix:semicolon
 singleline_comment|// TransmitControlWord
 singleline_comment|// bit 30: reply as soon as transmission attempt is complete
-singleline_comment|// bit 3: Supress CRC generation
+singleline_comment|// bit 3: Suppress CRC generation
 id|__raw_writel
 c_func
 (paren

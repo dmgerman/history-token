@@ -581,6 +581,20 @@ id|es
 op_assign
 id|sb-&gt;u.ext2_sb.s_es
 suffix:semicolon
+id|is_directory
+op_assign
+id|S_ISDIR
+c_func
+(paren
+id|inode-&gt;i_mode
+)paren
+suffix:semicolon
+multiline_comment|/* Do this BEFORE marking the inode not in use or returning an error */
+id|clear_inode
+(paren
+id|inode
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -597,9 +611,11 @@ id|ext2_error
 (paren
 id|sb
 comma
-l_string|&quot;free_inode&quot;
+l_string|&quot;ext2_free_inode&quot;
 comma
-l_string|&quot;reserved inode or nonexistent inode&quot;
+l_string|&quot;reserved or nonexistent inode %lu&quot;
+comma
+id|ino
 )paren
 suffix:semicolon
 r_goto
@@ -659,20 +675,6 @@ id|sb-&gt;u.ext2_sb.s_inode_bitmap
 (braket
 id|bitmap_nr
 )braket
-suffix:semicolon
-id|is_directory
-op_assign
-id|S_ISDIR
-c_func
-(paren
-id|inode-&gt;i_mode
-)paren
-suffix:semicolon
-multiline_comment|/* Do this BEFORE marking the inode not in use */
-id|clear_inode
-(paren
-id|inode
-)paren
 suffix:semicolon
 multiline_comment|/* Ok, now we can actually update the inode bitmaps.. */
 r_if

@@ -4043,6 +4043,11 @@ op_amp
 id|sb-&gt;s_umount
 )paren
 suffix:semicolon
+id|lock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
 id|sb-&gt;s_root
 op_assign
 l_int|NULL
@@ -4170,6 +4175,11 @@ id|unlock_super
 c_func
 (paren
 id|sb
+)paren
+suffix:semicolon
+id|unlock_kernel
+c_func
+(paren
 )paren
 suffix:semicolon
 id|up_write

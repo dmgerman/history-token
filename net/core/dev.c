@@ -3694,7 +3694,7 @@ comma
 id|pt
 )paren
 suffix:semicolon
-id|tasklet_enable
+id|tasklet_hi_enable
 c_func
 (paren
 id|bh_task_vec

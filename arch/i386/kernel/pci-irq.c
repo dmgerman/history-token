@@ -3108,8 +3108,7 @@ comma
 id|pin
 )paren
 suffix:semicolon
-multiline_comment|/*&n; * Will be removed completely if things work out well with fuzzy parsing&n; */
-macro_line|#if 0
+multiline_comment|/*&n;&t; * Busses behind bridges are typically not listed in the MP-table.&n;&t; * In this case we have to look up the IRQ based on the parent bus,&n;&t; * parent slot, and pin number. The SMP code detects such bridged&n;&t; * busses itself so we should get into this branch reliably.&n;&t; */
 r_if
 c_cond
 (paren
@@ -3185,7 +3184,6 @@ id|irq
 )paren
 suffix:semicolon
 )brace
-macro_line|#endif
 r_if
 c_cond
 (paren

@@ -1350,13 +1350,7 @@ multiline_comment|/* Do &quot;administrative&quot; work here while we don&squot;
 r_if
 c_cond
 (paren
-id|softirq_active
-c_func
-(paren
-id|this_cpu
-)paren
-op_amp
-id|softirq_mask
+id|softirq_pending
 c_func
 (paren
 id|this_cpu

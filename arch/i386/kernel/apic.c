@@ -2213,6 +2213,20 @@ comma
 l_int|0
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|softirq_pending
+c_func
+(paren
+id|cpu
+)paren
+)paren
+id|do_softirq
+c_func
+(paren
+)paren
+suffix:semicolon
 )brace
 multiline_comment|/*&n; * This interrupt should _never_ happen with our APIC/SMP architecture&n; */
 DECL|function|smp_spurious_interrupt

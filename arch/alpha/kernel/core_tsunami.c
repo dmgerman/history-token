@@ -4,7 +4,6 @@ macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
-macro_line|#include &lt;linux/bootmem.h&gt;
 macro_line|#include &lt;asm/ptrace.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/smp.h&gt;
@@ -14,6 +13,7 @@ macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/core_tsunami.h&gt;
 DECL|macro|__EXTERN_INLINE
 macro_line|#undef __EXTERN_INLINE
+macro_line|#include &lt;linux/bootmem.h&gt;
 macro_line|#include &quot;proto.h&quot;
 macro_line|#include &quot;pci_impl.h&quot;
 r_static

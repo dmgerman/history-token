@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * USB HandSpring Visor driver&n; *&n; *&t;Copyright (C) 1999, 2000&n; *&t;    Greg Kroah-Hartman (greg@kroah.com)&n; *&n; *&t;This program is free software; you can redistribute it and/or modify&n; *&t;it under the terms of the GNU General Public License as published by&n; *&t;the Free Software Foundation; either version 2 of the License, or&n; *&t;(at your option) any later version.&n; *&n; * See Documentation/usb/usb-serial.txt for more information on using this driver&n; * &n; */
+multiline_comment|/*&n; * USB HandSpring Visor driver&n; *&n; *&t;Copyright (C) 1999 - 2001&n; *&t;    Greg Kroah-Hartman (greg@kroah.com)&n; *&n; *&t;This program is free software; you can redistribute it and/or modify&n; *&t;it under the terms of the GNU General Public License as published by&n; *&t;the Free Software Foundation; either version 2 of the License, or&n; *&t;(at your option) any later version.&n; *&n; * See Documentation/usb/usb-serial.txt for more information on using this driver&n; * &n; */
 macro_line|#ifndef __LINUX_USB_SERIAL_VISOR_H
 DECL|macro|__LINUX_USB_SERIAL_VISOR_H
 mdefine_line|#define __LINUX_USB_SERIAL_VISOR_H
@@ -6,6 +6,12 @@ DECL|macro|HANDSPRING_VENDOR_ID
 mdefine_line|#define HANDSPRING_VENDOR_ID&t;&t;0x082d
 DECL|macro|HANDSPRING_VISOR_ID
 mdefine_line|#define HANDSPRING_VISOR_ID&t;&t;0x0100
+DECL|macro|PALM_VENDOR_ID
+mdefine_line|#define PALM_VENDOR_ID&t;&t;&t;0x0830
+DECL|macro|PALM_M500_ID
+mdefine_line|#define PALM_M500_ID&t;&t;&t;0x0001
+DECL|macro|PALM_M505_ID
+mdefine_line|#define PALM_M505_ID&t;&t;&t;0x0002
 multiline_comment|/****************************************************************************&n; * Handspring Visor Vendor specific request codes (bRequest values)&n; * A big thank you to Handspring for providing the following information.&n; * If anyone wants the original file where these values and structures came&n; * from, send email to &lt;greg@kroah.com&gt;.&n; ****************************************************************************/
 multiline_comment|/****************************************************************************&n; * VISOR_REQUEST_BYTES_AVAILABLE asks the visor for the number of bytes that&n; * are available to be transferred to the host for the specified endpoint.&n; * Currently this is not used, and always returns 0x0001&n; ****************************************************************************/
 DECL|macro|VISOR_REQUEST_BYTES_AVAILABLE
@@ -60,5 +66,8 @@ DECL|macro|VISOR_FUNCTION_CONSOLE
 mdefine_line|#define VISOR_FUNCTION_CONSOLE&t;&t;0x03
 DECL|macro|VISOR_FUNCTION_REMOTE_FILE_SYS
 mdefine_line|#define VISOR_FUNCTION_REMOTE_FILE_SYS&t;0x04
+multiline_comment|/****************************************************************************&n; * PALM_GET_SOME_UNKNOWN_INFORMATION is sent by the host during enumeration to&n; * get some information from the M series devices, that is currently unknown.&n; ****************************************************************************/
+DECL|macro|PALM_GET_SOME_UNKNOWN_INFORMATION
+mdefine_line|#define PALM_GET_SOME_UNKNOWN_INFORMATION&t;0x04
 macro_line|#endif
 eof

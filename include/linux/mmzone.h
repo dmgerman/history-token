@@ -145,16 +145,12 @@ l_int|1
 )braket
 suffix:semicolon
 singleline_comment|// NULL delimited
-DECL|member|gfp_mask
-r_int
-id|gfp_mask
-suffix:semicolon
 DECL|typedef|zonelist_t
 )brace
 id|zonelist_t
 suffix:semicolon
-DECL|macro|NR_GFPINDEX
-mdefine_line|#define NR_GFPINDEX&t;&t;0x20
+DECL|macro|GFP_ZONEMASK
+mdefine_line|#define GFP_ZONEMASK&t;0x0f
 multiline_comment|/*&n; * The pg_data_t structure is used in machines with CONFIG_DISCONTIGMEM&n; * (mostly NUMA machines?) to denote a higher-level memory zone than the&n; * zone_struct denotes.&n; *&n; * On NUMA machines, each NUMA node would have a pg_data_t to describe&n; * it&squot;s memory layout.&n; *&n; * XXX: we need to move the global memory statistics (active_list, ...)&n; *      into the pg_data_t to properly support NUMA.&n; */
 r_struct
 id|bootmem_data
@@ -175,7 +171,9 @@ DECL|member|node_zonelists
 id|zonelist_t
 id|node_zonelists
 (braket
-id|NR_GFPINDEX
+id|GFP_ZONEMASK
+op_plus
+l_int|1
 )braket
 suffix:semicolon
 DECL|member|node_mem_map

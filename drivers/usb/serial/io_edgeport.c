@@ -2783,7 +2783,7 @@ c_func
 id|__FUNCTION__
 l_string|&quot; - nonzero write bulk status received: %d&quot;
 comma
-id|urb-&gt;status
+id|status
 )paren
 suffix:semicolon
 r_return

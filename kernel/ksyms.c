@@ -212,6 +212,13 @@ id|exit_sighand
 )paren
 suffix:semicolon
 multiline_comment|/* internal kernel memory management */
+DECL|variable|_alloc_pages
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|_alloc_pages
+)paren
+suffix:semicolon
 DECL|variable|__alloc_pages
 id|EXPORT_SYMBOL
 c_func
@@ -254,23 +261,6 @@ c_func
 id|free_pages
 )paren
 suffix:semicolon
-macro_line|#ifndef CONFIG_DISCONTIGMEM
-DECL|variable|contig_page_data
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|contig_page_data
-)paren
-suffix:semicolon
-macro_line|#else
-DECL|variable|alloc_pages
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|alloc_pages
-)paren
-suffix:semicolon
-macro_line|#endif
 DECL|variable|num_physpages
 id|EXPORT_SYMBOL
 c_func

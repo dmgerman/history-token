@@ -232,7 +232,7 @@ mdefine_line|#define BUFSIZE_INDEX(X) ((int) buffersize_index[(X)&gt;&gt;9])
 DECL|macro|MAX_BUF_PER_PAGE
 mdefine_line|#define MAX_BUF_PER_PAGE (PAGE_CACHE_SIZE / 512)
 DECL|macro|NR_RESERVED
-mdefine_line|#define NR_RESERVED (2*MAX_BUF_PER_PAGE)
+mdefine_line|#define NR_RESERVED (10*MAX_BUF_PER_PAGE)
 DECL|macro|MAX_UNUSED_BUFFERS
 mdefine_line|#define MAX_UNUSED_BUFFERS NR_RESERVED+20 /* don&squot;t ever have more than this &n;&t;&t;&t;&t;&t;     number of unused buffer heads */
 multiline_comment|/* Anti-deadlock ordering:&n; *&t;lru_list_lock &gt; hash_table_lock &gt; free_list_lock &gt; unused_list_lock&n; */
@@ -5253,15 +5253,19 @@ op_amp
 id|tq_disk
 )paren
 suffix:semicolon
-multiline_comment|/* &n;&t; * Set our state for sleeping, then check again for buffer heads.&n;&t; * This ensures we won&squot;t miss a wake_up from an interrupt.&n;&t; */
-id|wait_event
+id|current-&gt;policy
+op_or_assign
+id|SCHED_YIELD
+suffix:semicolon
+id|__set_current_state
 c_func
 (paren
-id|buffer_wait
-comma
-id|nr_unused_buffer_heads
-op_ge
-id|MAX_BUF_PER_PAGE
+id|TASK_RUNNING
+)paren
+suffix:semicolon
+id|schedule
+c_func
+(paren
 )paren
 suffix:semicolon
 r_goto
