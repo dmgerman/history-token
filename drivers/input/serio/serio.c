@@ -329,6 +329,12 @@ id|node
 r_if
 c_cond
 (paren
+op_logical_neg
+id|drv-&gt;manual_bind
+)paren
+r_if
+c_cond
+(paren
 id|serio_bind_driver
 c_func
 (paren
@@ -2026,6 +2032,14 @@ op_amp
 id|driver_attr_description
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|drv-&gt;manual_bind
+)paren
+r_goto
+id|out
+suffix:semicolon
 id|start_over
 suffix:colon
 id|list_for_each_entry
@@ -2065,6 +2079,8 @@ id|start_over
 suffix:semicolon
 )brace
 )brace
+id|out
+suffix:colon
 id|up
 c_func
 (paren

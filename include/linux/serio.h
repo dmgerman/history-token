@@ -156,6 +156,10 @@ r_char
 op_star
 id|description
 suffix:semicolon
+DECL|member|manual_bind
+r_int
+id|manual_bind
+suffix:semicolon
 DECL|member|write_wakeup
 r_void
 (paren
