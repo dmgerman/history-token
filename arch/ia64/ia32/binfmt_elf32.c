@@ -199,6 +199,8 @@ op_assign
 id|VM_READ
 op_or
 id|VM_MAYREAD
+op_or
+id|VM_RESERVED
 suffix:semicolon
 id|vma-&gt;vm_ops
 op_assign
