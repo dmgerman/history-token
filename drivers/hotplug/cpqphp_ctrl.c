@@ -2705,8 +2705,9 @@ id|node-&gt;next
 id|dbg
 c_func
 (paren
+l_string|&quot;%s: req_size =%x node=%p, base=%x, length=%x&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;: req_size =%x node=%p, base=%x, length=%x&bslash;n&quot;
 comma
 id|size
 comma
@@ -2741,8 +2742,9 @@ l_int|1
 id|dbg
 c_func
 (paren
+l_string|&quot;%s: not aligned&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;: not aligned&bslash;n&quot;
 )paren
 suffix:semicolon
 singleline_comment|// this one isn&squot;t base aligned properly
@@ -2848,8 +2850,9 @@ id|size
 id|dbg
 c_func
 (paren
+l_string|&quot;%s: too big&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;: too big&bslash;n&quot;
 )paren
 suffix:semicolon
 singleline_comment|// this one is longer than we need
@@ -2912,8 +2915,9 @@ singleline_comment|// End of too big on top end
 id|dbg
 c_func
 (paren
+l_string|&quot;%s: got one!!!&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;: got one!!!&bslash;n&quot;
 )paren
 suffix:semicolon
 singleline_comment|// If we got here, then it is the right size
@@ -2999,8 +3003,9 @@ suffix:semicolon
 id|dbg
 c_func
 (paren
+l_string|&quot;%s: head = %p, *head = %p&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;: head = %p, *head = %p&bslash;n&quot;
 comma
 id|head
 comma
@@ -3368,8 +3373,9 @@ id|MISC
 suffix:semicolon
 id|dbg
 (paren
+l_string|&quot;%s - waking up&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot; - waking up&bslash;n&quot;
 )paren
 suffix:semicolon
 id|wake_up_interruptible
@@ -4835,8 +4841,9 @@ suffix:semicolon
 id|dbg
 c_func
 (paren
+l_string|&quot;%s: func-&gt;device, slot_offset, hp_slot = %d, %d ,%d&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;: func-&gt;device, slot_offset, hp_slot = %d, %d ,%d&bslash;n&quot;
 comma
 id|func-&gt;device
 comma
@@ -5005,8 +5012,9 @@ singleline_comment|// Wait for exclusive access to hardware
 id|dbg
 c_func
 (paren
+l_string|&quot;%s: before down&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;: before down&bslash;n&quot;
 )paren
 suffix:semicolon
 id|down
@@ -5019,15 +5027,17 @@ suffix:semicolon
 id|dbg
 c_func
 (paren
+l_string|&quot;%s: after down&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;: after down&bslash;n&quot;
 )paren
 suffix:semicolon
 id|dbg
 c_func
 (paren
+l_string|&quot;%s: before slot_enable&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;: before slot_enable&bslash;n&quot;
 )paren
 suffix:semicolon
 id|slot_enable
@@ -5040,8 +5050,9 @@ suffix:semicolon
 id|dbg
 c_func
 (paren
+l_string|&quot;%s: before green_LED_blink&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;: before green_LED_blink&bslash;n&quot;
 )paren
 suffix:semicolon
 id|green_LED_blink
@@ -5054,8 +5065,9 @@ suffix:semicolon
 id|dbg
 c_func
 (paren
+l_string|&quot;%s: before amber_LED_blink&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;: before amber_LED_blink&bslash;n&quot;
 )paren
 suffix:semicolon
 id|amber_LED_off
@@ -5068,8 +5080,9 @@ suffix:semicolon
 id|dbg
 c_func
 (paren
+l_string|&quot;%s: before set_SOGO&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;: before set_SOGO&bslash;n&quot;
 )paren
 suffix:semicolon
 id|set_SOGO
@@ -5082,8 +5095,9 @@ singleline_comment|// Wait for SOBS to be unset
 id|dbg
 c_func
 (paren
+l_string|&quot;%s: before wait_for_ctrl_irq&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;: before wait_for_ctrl_irq&bslash;n&quot;
 )paren
 suffix:semicolon
 id|wait_for_ctrl_irq
@@ -5094,16 +5108,18 @@ suffix:semicolon
 id|dbg
 c_func
 (paren
+l_string|&quot;%s: after wait_for_ctrl_irq&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;: after wait_for_ctrl_irq&bslash;n&quot;
 )paren
 suffix:semicolon
 singleline_comment|// Done with exclusive hardware access
 id|dbg
 c_func
 (paren
+l_string|&quot;%s: before up&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;: before up&bslash;n&quot;
 )paren
 suffix:semicolon
 id|up
@@ -5116,16 +5132,18 @@ suffix:semicolon
 id|dbg
 c_func
 (paren
+l_string|&quot;%s: after up&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;: after up&bslash;n&quot;
 )paren
 suffix:semicolon
 singleline_comment|// Wait for ~1 second because of hot plug spec
 id|dbg
 c_func
 (paren
+l_string|&quot;%s: before long_delay&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;: before long_delay&bslash;n&quot;
 )paren
 suffix:semicolon
 id|long_delay
@@ -5139,15 +5157,17 @@ suffix:semicolon
 id|dbg
 c_func
 (paren
+l_string|&quot;%s: after long_delay&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;: after long_delay&bslash;n&quot;
 )paren
 suffix:semicolon
 id|dbg
 c_func
 (paren
+l_string|&quot;%s: func status = %x&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;: func status = %x&bslash;n&quot;
 comma
 id|func-&gt;status
 )paren
@@ -5169,8 +5189,9 @@ suffix:semicolon
 id|dbg
 c_func
 (paren
+l_string|&quot;%s: temp register set to %x by power fault&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;: temp register set to %x by power fault&bslash;n&quot;
 comma
 id|temp_register
 )paren
@@ -5187,17 +5208,23 @@ suffix:semicolon
 r_else
 (brace
 singleline_comment|// Get vendor/device ID u32
+id|ctrl-&gt;pci_bus-&gt;number
+op_assign
+id|func-&gt;bus
+suffix:semicolon
 id|rc
 op_assign
-id|pci_read_config_dword_nodev
+id|pci_bus_read_config_dword
 (paren
-id|ctrl-&gt;pci_ops
+id|ctrl-&gt;pci_bus
 comma
-id|func-&gt;bus
-comma
+id|PCI_DEVFN
+c_func
+(paren
 id|func-&gt;device
 comma
 id|func-&gt;function
+)paren
 comma
 id|PCI_VENDOR_ID
 comma
@@ -5208,8 +5235,9 @@ suffix:semicolon
 id|dbg
 c_func
 (paren
+l_string|&quot;%s: pci_read_config_dword returns %d&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;: pci_read_config_dword returns %d&bslash;n&quot;
 comma
 id|rc
 )paren
@@ -5217,8 +5245,9 @@ suffix:semicolon
 id|dbg
 c_func
 (paren
+l_string|&quot;%s: temp_register is %x&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;: temp_register is %x&bslash;n&quot;
 comma
 id|temp_register
 )paren
@@ -5239,8 +5268,9 @@ suffix:semicolon
 id|dbg
 c_func
 (paren
+l_string|&quot;%s: temp register set to %x by error&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;: temp register set to %x by error&bslash;n&quot;
 comma
 id|temp_register
 )paren
@@ -5300,8 +5330,9 @@ suffix:semicolon
 id|dbg
 c_func
 (paren
+l_string|&quot;%s: back from configure_new_device&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;: back from configure_new_device&bslash;n&quot;
 )paren
 suffix:semicolon
 id|ctrl-&gt;io_head
@@ -5442,8 +5473,9 @@ singleline_comment|//next, we will instantiate the linux pci_dev structures (wit
 id|dbg
 c_func
 (paren
+l_string|&quot;%s: configure linux pci_dev structure&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;: configure linux pci_dev structure&bslash;n&quot;
 )paren
 suffix:semicolon
 id|index
@@ -5670,9 +5702,9 @@ suffix:semicolon
 id|dbg
 c_func
 (paren
-l_string|&quot;In &quot;
+l_string|&quot;In %s, hp_slot = %d&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;, hp_slot = %d&bslash;n&quot;
 comma
 id|hp_slot
 )paren
@@ -7052,9 +7084,9 @@ id|func
 id|dbg
 c_func
 (paren
-l_string|&quot;Error! func NULL in &quot;
+l_string|&quot;Error! func NULL in %s&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -7158,9 +7190,9 @@ id|func
 id|dbg
 c_func
 (paren
-l_string|&quot;Error! func NULL in &quot;
+l_string|&quot;Error! func NULL in %s&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
@@ -7607,8 +7639,9 @@ id|rc
 id|dbg
 c_func
 (paren
+l_string|&quot;%s: rc = %d&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;: rc = %d&bslash;n&quot;
 comma
 id|rc
 )paren
@@ -7668,10 +7701,21 @@ id|rc
 op_assign
 l_int|0
 suffix:semicolon
+r_int
+r_int
+id|devfn
+suffix:semicolon
 r_struct
 id|slot
 op_star
 id|p_slot
+suffix:semicolon
+r_struct
+id|pci_bus
+op_star
+id|pci_bus
+op_assign
+id|ctrl-&gt;pci_bus
 suffix:semicolon
 r_int
 id|physical_slot
@@ -7726,18 +7770,28 @@ op_logical_neg
 id|rc
 )paren
 (brace
-singleline_comment|// Check the Class Code
-id|rc
+id|pci_bus-&gt;number
 op_assign
-id|pci_read_config_byte_nodev
-(paren
-id|ctrl-&gt;pci_ops
-comma
 id|func-&gt;bus
-comma
+suffix:semicolon
+id|devfn
+op_assign
+id|PCI_DEVFN
+c_func
+(paren
 id|func-&gt;device
 comma
 id|func-&gt;function
+)paren
+suffix:semicolon
+singleline_comment|// Check the Class Code
+id|rc
+op_assign
+id|pci_bus_read_config_byte
+(paren
+id|pci_bus
+comma
+id|devfn
 comma
 l_int|0x0B
 comma
@@ -7772,15 +7826,11 @@ r_else
 singleline_comment|// See if it&squot;s a bridge
 id|rc
 op_assign
-id|pci_read_config_byte_nodev
+id|pci_bus_read_config_byte
 (paren
-id|ctrl-&gt;pci_ops
+id|pci_bus
 comma
-id|func-&gt;bus
-comma
-id|func-&gt;device
-comma
-id|func-&gt;function
+id|devfn
 comma
 id|PCI_HEADER_TYPE
 comma
@@ -7811,15 +7861,11 @@ id|PCI_HEADER_TYPE_BRIDGE
 (brace
 id|rc
 op_assign
-id|pci_read_config_byte_nodev
+id|pci_bus_read_config_byte
 (paren
-id|ctrl-&gt;pci_ops
+id|pci_bus
 comma
-id|func-&gt;bus
-comma
-id|func-&gt;device
-comma
-id|func-&gt;function
+id|devfn
 comma
 id|PCI_BRIDGE_CONTROL
 comma
@@ -8724,22 +8770,29 @@ suffix:semicolon
 id|dbg
 c_func
 (paren
+l_string|&quot;%s&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;&bslash;n&quot;
 )paren
 suffix:semicolon
 singleline_comment|// Check for Multi-function device
+id|ctrl-&gt;pci_bus-&gt;number
+op_assign
+id|func-&gt;bus
+suffix:semicolon
 id|rc
 op_assign
-id|pci_read_config_byte_nodev
+id|pci_bus_read_config_byte
 (paren
-id|ctrl-&gt;pci_ops
+id|ctrl-&gt;pci_bus
 comma
-id|func-&gt;bus
-comma
+id|PCI_DEVFN
+c_func
+(paren
 id|func-&gt;device
 comma
 id|func-&gt;function
+)paren
 comma
 l_int|0x0E
 comma
@@ -8756,8 +8809,9 @@ id|rc
 id|dbg
 c_func
 (paren
+l_string|&quot;%s: rc = %d&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;: rc = %d&bslash;n&quot;
 comma
 id|rc
 )paren
@@ -8882,15 +8936,17 @@ id|stop_it
 )paren
 )paren
 (brace
-id|pci_read_config_dword_nodev
+id|pci_bus_read_config_dword
 (paren
-id|ctrl-&gt;pci_ops
+id|ctrl-&gt;pci_bus
 comma
-id|func-&gt;bus
-comma
+id|PCI_DEVFN
+c_func
+(paren
 id|func-&gt;device
 comma
 id|function
+)paren
 comma
 l_int|0x00
 comma
@@ -9042,6 +9098,10 @@ suffix:semicolon
 id|u32
 id|ID
 suffix:semicolon
+r_int
+r_int
+id|devfn
+suffix:semicolon
 r_struct
 id|pci_resource
 op_star
@@ -9092,21 +9152,40 @@ op_star
 id|new_slot
 suffix:semicolon
 r_struct
+id|pci_bus
+op_star
+id|pci_bus
+suffix:semicolon
+r_struct
 id|resource_lists
 id|temp_resources
+suffix:semicolon
+id|pci_bus
+op_assign
+id|ctrl-&gt;pci_bus
+suffix:semicolon
+id|pci_bus-&gt;number
+op_assign
+id|func-&gt;bus
+suffix:semicolon
+id|devfn
+op_assign
+id|PCI_DEVFN
+c_func
+(paren
+id|func-&gt;device
+comma
+id|func-&gt;function
+)paren
 suffix:semicolon
 singleline_comment|// Check for Bridge
 id|rc
 op_assign
-id|pci_read_config_byte_nodev
+id|pci_bus_read_config_byte
 (paren
-id|ctrl-&gt;pci_ops
+id|pci_bus
 comma
-id|func-&gt;bus
-comma
-id|func-&gt;device
-comma
-id|func-&gt;function
+id|devfn
 comma
 id|PCI_HEADER_TYPE
 comma
@@ -9146,16 +9225,11 @@ id|func-&gt;bus
 suffix:semicolon
 id|rc
 op_assign
-id|pci_write_config_byte_nodev
-c_func
+id|pci_bus_write_config_byte
 (paren
-id|ctrl-&gt;pci_ops
+id|pci_bus
 comma
-id|func-&gt;bus
-comma
-id|func-&gt;device
-comma
-id|func-&gt;function
+id|devfn
 comma
 id|PCI_PRIMARY_BUS
 comma
@@ -9214,16 +9288,11 @@ id|bus_node-&gt;base
 suffix:semicolon
 id|rc
 op_assign
-id|pci_write_config_byte_nodev
-c_func
+id|pci_bus_write_config_byte
 (paren
-id|ctrl-&gt;pci_ops
+id|pci_bus
 comma
-id|func-&gt;bus
-comma
-id|func-&gt;device
-comma
-id|func-&gt;function
+id|devfn
 comma
 id|PCI_SECONDARY_BUS
 comma
@@ -9261,16 +9330,11 @@ l_int|1
 suffix:semicolon
 id|rc
 op_assign
-id|pci_write_config_byte_nodev
-c_func
+id|pci_bus_write_config_byte
 (paren
-id|ctrl-&gt;pci_ops
+id|pci_bus
 comma
-id|func-&gt;bus
-comma
-id|func-&gt;device
-comma
-id|func-&gt;function
+id|devfn
 comma
 id|PCI_SUBORDINATE_BUS
 comma
@@ -9292,16 +9356,11 @@ l_int|0x40
 suffix:semicolon
 id|rc
 op_assign
-id|pci_write_config_byte_nodev
-c_func
+id|pci_bus_write_config_byte
 (paren
-id|ctrl-&gt;pci_ops
+id|pci_bus
 comma
-id|func-&gt;bus
-comma
-id|func-&gt;device
-comma
-id|func-&gt;function
+id|devfn
 comma
 id|PCI_SEC_LATENCY_TIMER
 comma
@@ -9318,16 +9377,11 @@ id|rc
 suffix:semicolon
 id|rc
 op_assign
-id|pci_write_config_byte_nodev
-c_func
+id|pci_bus_write_config_byte
 (paren
-id|ctrl-&gt;pci_ops
+id|pci_bus
 comma
-id|func-&gt;bus
-comma
-id|func-&gt;device
-comma
-id|func-&gt;function
+id|devfn
 comma
 id|PCI_LATENCY_TIMER
 comma
@@ -9349,16 +9403,11 @@ l_int|0x08
 suffix:semicolon
 id|rc
 op_assign
-id|pci_write_config_byte_nodev
-c_func
+id|pci_bus_write_config_byte
 (paren
-id|ctrl-&gt;pci_ops
+id|pci_bus
 comma
-id|func-&gt;bus
-comma
-id|func-&gt;device
-comma
-id|func-&gt;function
+id|devfn
 comma
 id|PCI_CACHE_LINE_SIZE
 comma
@@ -9795,16 +9844,11 @@ l_int|8
 suffix:semicolon
 id|rc
 op_assign
-id|pci_write_config_byte_nodev
-c_func
+id|pci_bus_write_config_byte
 (paren
-id|ctrl-&gt;pci_ops
+id|pci_bus
 comma
-id|func-&gt;bus
-comma
-id|func-&gt;device
-comma
-id|func-&gt;function
+id|devfn
 comma
 id|PCI_IO_BASE
 comma
@@ -9825,16 +9869,11 @@ l_int|8
 suffix:semicolon
 id|rc
 op_assign
-id|pci_write_config_byte_nodev
-c_func
+id|pci_bus_write_config_byte
 (paren
-id|ctrl-&gt;pci_ops
+id|pci_bus
 comma
-id|func-&gt;bus
-comma
-id|func-&gt;device
-comma
-id|func-&gt;function
+id|devfn
 comma
 id|PCI_IO_LIMIT
 comma
@@ -9891,16 +9930,11 @@ l_int|16
 suffix:semicolon
 id|rc
 op_assign
-id|pci_write_config_word_nodev
-c_func
+id|pci_bus_write_config_word
 (paren
-id|ctrl-&gt;pci_ops
+id|pci_bus
 comma
-id|func-&gt;bus
-comma
-id|func-&gt;device
-comma
-id|func-&gt;function
+id|devfn
 comma
 id|PCI_MEMORY_BASE
 comma
@@ -9921,16 +9955,11 @@ l_int|16
 suffix:semicolon
 id|rc
 op_assign
-id|pci_write_config_word_nodev
-c_func
+id|pci_bus_write_config_word
 (paren
-id|ctrl-&gt;pci_ops
+id|pci_bus
 comma
-id|func-&gt;bus
-comma
-id|func-&gt;device
-comma
-id|func-&gt;function
+id|devfn
 comma
 id|PCI_MEMORY_LIMIT
 comma
@@ -9946,16 +9975,11 @@ l_int|0xFFFF
 suffix:semicolon
 id|rc
 op_assign
-id|pci_write_config_word_nodev
-c_func
+id|pci_bus_write_config_word
 (paren
-id|ctrl-&gt;pci_ops
+id|pci_bus
 comma
-id|func-&gt;bus
-comma
-id|func-&gt;device
-comma
-id|func-&gt;function
+id|devfn
 comma
 id|PCI_MEMORY_BASE
 comma
@@ -9968,16 +9992,11 @@ l_int|0x0000
 suffix:semicolon
 id|rc
 op_assign
-id|pci_write_config_word_nodev
-c_func
+id|pci_bus_write_config_word
 (paren
-id|ctrl-&gt;pci_ops
+id|pci_bus
 comma
-id|func-&gt;bus
-comma
-id|func-&gt;device
-comma
-id|func-&gt;function
+id|devfn
 comma
 id|PCI_MEMORY_LIMIT
 comma
@@ -10031,16 +10050,11 @@ l_int|16
 suffix:semicolon
 id|rc
 op_assign
-id|pci_write_config_word_nodev
-c_func
+id|pci_bus_write_config_word
 (paren
-id|ctrl-&gt;pci_ops
+id|pci_bus
 comma
-id|func-&gt;bus
-comma
-id|func-&gt;device
-comma
-id|func-&gt;function
+id|devfn
 comma
 id|PCI_PREF_MEMORY_BASE
 comma
@@ -10061,16 +10075,11 @@ l_int|16
 suffix:semicolon
 id|rc
 op_assign
-id|pci_write_config_word_nodev
-c_func
+id|pci_bus_write_config_word
 (paren
-id|ctrl-&gt;pci_ops
+id|pci_bus
 comma
-id|func-&gt;bus
-comma
-id|func-&gt;device
-comma
-id|func-&gt;function
+id|devfn
 comma
 id|PCI_PREF_MEMORY_LIMIT
 comma
@@ -10086,16 +10095,11 @@ l_int|0xFFFF
 suffix:semicolon
 id|rc
 op_assign
-id|pci_write_config_word_nodev
-c_func
+id|pci_bus_write_config_word
 (paren
-id|ctrl-&gt;pci_ops
+id|pci_bus
 comma
-id|func-&gt;bus
-comma
-id|func-&gt;device
-comma
-id|func-&gt;function
+id|devfn
 comma
 id|PCI_PREF_MEMORY_BASE
 comma
@@ -10108,16 +10112,11 @@ l_int|0x0000
 suffix:semicolon
 id|rc
 op_assign
-id|pci_write_config_word_nodev
-c_func
+id|pci_bus_write_config_word
 (paren
-id|ctrl-&gt;pci_ops
+id|pci_bus
 comma
-id|func-&gt;bus
-comma
-id|func-&gt;device
-comma
-id|func-&gt;function
+id|devfn
 comma
 id|PCI_PREF_MEMORY_LIMIT
 comma
@@ -10178,21 +10177,31 @@ id|ID
 op_assign
 l_int|0xFFFFFFFF
 suffix:semicolon
-id|pci_read_config_dword_nodev
-(paren
-id|ctrl-&gt;pci_ops
-comma
+id|pci_bus-&gt;number
+op_assign
 id|hold_bus_node-&gt;base
+suffix:semicolon
+id|pci_bus_read_config_dword
+(paren
+id|pci_bus
 comma
+id|PCI_DEVFN
+c_func
+(paren
 id|device
 comma
 l_int|0
+)paren
 comma
 l_int|0x00
 comma
 op_amp
 id|ID
 )paren
+suffix:semicolon
+id|pci_bus-&gt;number
+op_assign
+id|func-&gt;bus
 suffix:semicolon
 r_if
 c_cond
@@ -10551,16 +10560,11 @@ suffix:semicolon
 singleline_comment|// set subordinate bus
 id|rc
 op_assign
-id|pci_write_config_byte_nodev
-c_func
+id|pci_bus_write_config_byte
 (paren
-id|ctrl-&gt;pci_ops
+id|pci_bus
 comma
-id|func-&gt;bus
-comma
-id|func-&gt;device
-comma
-id|func-&gt;function
+id|devfn
 comma
 id|PCI_SUBORDINATE_BUS
 comma
@@ -10650,16 +10654,11 @@ l_int|8
 suffix:semicolon
 id|rc
 op_assign
-id|pci_write_config_word_nodev
-c_func
+id|pci_bus_write_config_word
 (paren
-id|ctrl-&gt;pci_ops
+id|pci_bus
 comma
-id|func-&gt;bus
-comma
-id|func-&gt;device
-comma
-id|func-&gt;function
+id|devfn
 comma
 id|PCI_IO_BASE
 comma
@@ -10732,16 +10731,11 @@ l_int|8
 suffix:semicolon
 id|rc
 op_assign
-id|pci_write_config_byte_nodev
-c_func
+id|pci_bus_write_config_byte
 (paren
-id|ctrl-&gt;pci_ops
+id|pci_bus
 comma
-id|func-&gt;bus
-comma
-id|func-&gt;device
-comma
-id|func-&gt;function
+id|devfn
 comma
 id|PCI_IO_LIMIT
 comma
@@ -10767,16 +10761,13 @@ id|temp_word
 op_assign
 l_int|0x0000
 suffix:semicolon
-id|pci_write_config_word_nodev
-c_func
+id|rc
+op_assign
+id|pci_bus_write_config_word
 (paren
-id|ctrl-&gt;pci_ops
+id|pci_bus
 comma
-id|func-&gt;bus
-comma
-id|func-&gt;device
-comma
-id|func-&gt;function
+id|devfn
 comma
 id|PCI_IO_LIMIT
 comma
@@ -10883,16 +10874,11 @@ l_int|16
 suffix:semicolon
 id|rc
 op_assign
-id|pci_write_config_word_nodev
-c_func
+id|pci_bus_write_config_word
 (paren
-id|ctrl-&gt;pci_ops
+id|pci_bus
 comma
-id|func-&gt;bus
-comma
-id|func-&gt;device
-comma
-id|func-&gt;function
+id|devfn
 comma
 id|PCI_MEMORY_BASE
 comma
@@ -10965,16 +10951,11 @@ l_int|16
 suffix:semicolon
 id|rc
 op_assign
-id|pci_write_config_word_nodev
-c_func
+id|pci_bus_write_config_word
 (paren
-id|ctrl-&gt;pci_ops
+id|pci_bus
 comma
-id|func-&gt;bus
-comma
-id|func-&gt;device
-comma
-id|func-&gt;function
+id|devfn
 comma
 id|PCI_MEMORY_LIMIT
 comma
@@ -11003,16 +10984,11 @@ l_int|0x0000
 suffix:semicolon
 id|rc
 op_assign
-id|pci_write_config_word_nodev
-c_func
+id|pci_bus_write_config_word
 (paren
-id|ctrl-&gt;pci_ops
+id|pci_bus
 comma
-id|func-&gt;bus
-comma
-id|func-&gt;device
-comma
-id|func-&gt;function
+id|devfn
 comma
 id|PCI_MEMORY_LIMIT
 comma
@@ -11117,16 +11093,11 @@ l_int|16
 suffix:semicolon
 id|rc
 op_assign
-id|pci_write_config_word_nodev
-c_func
+id|pci_bus_write_config_word
 (paren
-id|ctrl-&gt;pci_ops
+id|pci_bus
 comma
-id|func-&gt;bus
-comma
-id|func-&gt;device
-comma
-id|func-&gt;function
+id|devfn
 comma
 id|PCI_PREF_MEMORY_BASE
 comma
@@ -11199,16 +11170,11 @@ l_int|16
 suffix:semicolon
 id|rc
 op_assign
-id|pci_write_config_word_nodev
-c_func
+id|pci_bus_write_config_word
 (paren
-id|ctrl-&gt;pci_ops
+id|pci_bus
 comma
-id|func-&gt;bus
-comma
-id|func-&gt;device
-comma
-id|func-&gt;function
+id|devfn
 comma
 id|PCI_PREF_MEMORY_LIMIT
 comma
@@ -11236,16 +11202,11 @@ l_int|0x0000
 suffix:semicolon
 id|rc
 op_assign
-id|pci_write_config_word_nodev
-c_func
+id|pci_bus_write_config_word
 (paren
-id|ctrl-&gt;pci_ops
+id|pci_bus
 comma
-id|func-&gt;bus
-comma
-id|func-&gt;device
-comma
-id|func-&gt;function
+id|devfn
 comma
 id|PCI_PREF_MEMORY_LIMIT
 comma
@@ -11312,16 +11273,11 @@ suffix:semicolon
 singleline_comment|// = PCI_COMMAND_IO | PCI_COMMAND_MEMORY | PCI_COMMAND_MASTER |  PCI_COMMAND_INVALIDATE | PCI_COMMAND_PARITY | PCI_COMMAND_SERR
 id|rc
 op_assign
-id|pci_write_config_word_nodev
-c_func
+id|pci_bus_write_config_word
 (paren
-id|ctrl-&gt;pci_ops
+id|pci_bus
 comma
-id|func-&gt;bus
-comma
-id|func-&gt;device
-comma
-id|func-&gt;function
+id|devfn
 comma
 id|PCI_COMMAND
 comma
@@ -11336,16 +11292,11 @@ suffix:semicolon
 singleline_comment|// = PCI_BRIDGE_CTL_PARITY | PCI_BRIDGE_CTL_SERR | PCI_BRIDGE_CTL_NO_ISA
 id|rc
 op_assign
-id|pci_write_config_word_nodev
-c_func
+id|pci_bus_write_config_word
 (paren
-id|ctrl-&gt;pci_ops
+id|pci_bus
 comma
-id|func-&gt;bus
-comma
-id|func-&gt;device
-comma
-id|func-&gt;function
+id|devfn
 comma
 id|PCI_BRIDGE_CONTROL
 comma
@@ -11369,15 +11320,11 @@ id|PCI_HEADER_TYPE_NORMAL
 singleline_comment|// Standard device
 id|rc
 op_assign
-id|pci_read_config_byte_nodev
+id|pci_bus_read_config_byte
 (paren
-id|ctrl-&gt;pci_ops
+id|pci_bus
 comma
-id|func-&gt;bus
-comma
-id|func-&gt;device
-comma
-id|func-&gt;function
+id|devfn
 comma
 l_int|0x0B
 comma
@@ -11422,29 +11369,22 @@ suffix:semicolon
 id|dbg
 c_func
 (paren
-l_string|&quot;CND: bus=%d, device=%d, func=%d, offset=%d&bslash;n&quot;
+l_string|&quot;CND: bus=%d, devfn=%d, offset=%d&bslash;n&quot;
 comma
-id|func-&gt;bus
+id|pci_bus-&gt;number
 comma
-id|func-&gt;device
-comma
-id|func-&gt;function
+id|devfn
 comma
 id|cloop
 )paren
 suffix:semicolon
 id|rc
 op_assign
-id|pci_write_config_dword_nodev
-c_func
+id|pci_bus_write_config_dword
 (paren
-id|ctrl-&gt;pci_ops
+id|pci_bus
 comma
-id|func-&gt;bus
-comma
-id|func-&gt;device
-comma
-id|func-&gt;function
+id|devfn
 comma
 id|cloop
 comma
@@ -11453,15 +11393,11 @@ id|temp_register
 suffix:semicolon
 id|rc
 op_assign
-id|pci_read_config_dword_nodev
+id|pci_bus_read_config_dword
 (paren
-id|ctrl-&gt;pci_ops
+id|pci_bus
 comma
-id|func-&gt;bus
-comma
-id|func-&gt;device
-comma
-id|func-&gt;function
+id|devfn
 comma
 id|cloop
 comma
@@ -11829,16 +11765,11 @@ suffix:semicolon
 )brace
 id|rc
 op_assign
-id|pci_write_config_dword_nodev
-c_func
+id|pci_bus_write_config_dword
 (paren
-id|ctrl-&gt;pci_ops
+id|pci_bus
 comma
-id|func-&gt;bus
-comma
-id|func-&gt;device
-comma
-id|func-&gt;function
+id|devfn
 comma
 id|cloop
 comma
@@ -11870,16 +11801,11 @@ l_int|0
 suffix:semicolon
 id|rc
 op_assign
-id|pci_write_config_dword_nodev
-c_func
+id|pci_bus_write_config_dword
 (paren
-id|ctrl-&gt;pci_ops
+id|pci_bus
 comma
-id|func-&gt;bus
-comma
-id|func-&gt;device
-comma
-id|func-&gt;function
+id|devfn
 comma
 id|cloop
 comma
@@ -11893,15 +11819,11 @@ singleline_comment|// End of base register loop
 singleline_comment|// Figure out which interrupt pin this function uses
 id|rc
 op_assign
-id|pci_read_config_byte_nodev
+id|pci_bus_read_config_byte
 (paren
-id|ctrl-&gt;pci_ops
+id|pci_bus
 comma
-id|func-&gt;bus
-comma
-id|func-&gt;device
-comma
-id|func-&gt;function
+id|devfn
 comma
 id|PCI_INTERRUPT_PIN
 comma
@@ -11962,15 +11884,11 @@ r_else
 singleline_comment|// Program IRQ based on card type
 id|rc
 op_assign
-id|pci_read_config_byte_nodev
+id|pci_bus_read_config_byte
 (paren
-id|ctrl-&gt;pci_ops
+id|pci_bus
 comma
-id|func-&gt;bus
-comma
-id|func-&gt;device
-comma
-id|func-&gt;function
+id|devfn
 comma
 l_int|0x0B
 comma
@@ -12002,16 +11920,11 @@ suffix:semicolon
 singleline_comment|// IRQ Line
 id|rc
 op_assign
-id|pci_write_config_byte_nodev
-c_func
+id|pci_bus_write_config_byte
 (paren
-id|ctrl-&gt;pci_ops
+id|pci_bus
 comma
-id|func-&gt;bus
-comma
-id|func-&gt;device
-comma
-id|func-&gt;function
+id|devfn
 comma
 id|PCI_INTERRUPT_LINE
 comma
@@ -12090,16 +12003,11 @@ l_int|0x40
 suffix:semicolon
 id|rc
 op_assign
-id|pci_write_config_byte_nodev
-c_func
+id|pci_bus_write_config_byte
 (paren
-id|ctrl-&gt;pci_ops
+id|pci_bus
 comma
-id|func-&gt;bus
-comma
-id|func-&gt;device
-comma
-id|func-&gt;function
+id|devfn
 comma
 id|PCI_LATENCY_TIMER
 comma
@@ -12113,16 +12021,11 @@ l_int|0x08
 suffix:semicolon
 id|rc
 op_assign
-id|pci_write_config_byte_nodev
-c_func
+id|pci_bus_write_config_byte
 (paren
-id|ctrl-&gt;pci_ops
+id|pci_bus
 comma
-id|func-&gt;bus
-comma
-id|func-&gt;device
-comma
-id|func-&gt;function
+id|devfn
 comma
 id|PCI_CACHE_LINE_SIZE
 comma
@@ -12136,16 +12039,11 @@ l_int|0x00L
 suffix:semicolon
 id|rc
 op_assign
-id|pci_write_config_word_nodev
-c_func
+id|pci_bus_write_config_word
 (paren
-id|ctrl-&gt;pci_ops
+id|pci_bus
 comma
-id|func-&gt;bus
-comma
-id|func-&gt;device
-comma
-id|func-&gt;function
+id|devfn
 comma
 id|PCI_ROM_ADDRESS
 comma
@@ -12160,16 +12058,11 @@ suffix:semicolon
 singleline_comment|// = PCI_COMMAND_IO | PCI_COMMAND_MEMORY | PCI_COMMAND_MASTER |  PCI_COMMAND_INVALIDATE | PCI_COMMAND_PARITY | PCI_COMMAND_SERR
 id|rc
 op_assign
-id|pci_write_config_word_nodev
-c_func
+id|pci_bus_write_config_word
 (paren
-id|ctrl-&gt;pci_ops
+id|pci_bus
 comma
-id|func-&gt;bus
-comma
-id|func-&gt;device
-comma
-id|func-&gt;function
+id|devfn
 comma
 id|PCI_COMMAND
 comma

@@ -212,6 +212,8 @@ DECL|macro|US_FL_SCM_MULT_TARG
 mdefine_line|#define US_FL_SCM_MULT_TARG   0x00000020 /* supports multiple targets&t;    */
 DECL|macro|US_FL_FIX_INQUIRY
 mdefine_line|#define US_FL_FIX_INQUIRY     0x00000040 /* INQUIRY response needs fixing   */
+DECL|macro|US_FL_FIX_CAPACITY
+mdefine_line|#define US_FL_FIX_CAPACITY    0x00000080 /* READ CAPACITY response too big  */
 DECL|macro|US_FL_DEV_ATTACHED
 mdefine_line|#define US_FL_DEV_ATTACHED    0x00010000 /* is the device attached?&t;    */
 DECL|macro|US_FLIDX_IP_WANTED

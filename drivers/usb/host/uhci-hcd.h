@@ -97,6 +97,8 @@ DECL|macro|UHCI_PTR_QH
 mdefine_line|#define UHCI_PTR_QH&t;&t;cpu_to_le32(0x0002)
 DECL|macro|UHCI_PTR_DEPTH
 mdefine_line|#define UHCI_PTR_DEPTH&t;&t;cpu_to_le32(0x0004)
+DECL|macro|UHCI_PTR_BREADTH
+mdefine_line|#define UHCI_PTR_BREADTH&t;cpu_to_le32(0x0000)
 DECL|macro|UHCI_NUMFRAMES
 mdefine_line|#define UHCI_NUMFRAMES&t;&t;1024&t;/* in the frame list [array] */
 DECL|macro|UHCI_MAX_SOF_NUMBER
@@ -131,6 +133,7 @@ suffix:semicolon
 r_struct
 id|urb_priv
 suffix:semicolon
+multiline_comment|/* One role of a QH is to hold a queue of TDs for some endpoint.  Each QH is&n; * used with one URB, and qh-&gt;element (updated by the HC) is either:&n; *   - the next unprocessed TD for the URB, or&n; *   - UHCI_PTR_TERM (when there&squot;s no more traffic for this endpoint), or&n; *   - the QH for the next URB queued to the same endpoint.&n; *&n; * The other role of a QH is to serve as a &quot;skeleton&quot; framelist entry, so we&n; * can easily splice a QH for some endpoint into the schedule at the right&n; * place.  Then qh-&gt;element is UHCI_PTR_TERM.&n; *&n; * In the frame list, qh-&gt;link maintains a list of QHs seen by the HC:&n; *     skel1 --&gt; ep1-qh --&gt; ep2-qh --&gt; ... --&gt; skel2 --&gt; ...&n; */
 DECL|struct|uhci_qh
 r_struct
 id|uhci_qh
@@ -260,7 +263,7 @@ DECL|macro|uhci_packetout
 mdefine_line|#define uhci_packetout(token)&t;(uhci_packetid(token) != USB_PID_IN)
 DECL|macro|uhci_packetin
 mdefine_line|#define uhci_packetin(token)&t;(uhci_packetid(token) == USB_PID_IN)
-multiline_comment|/*&n; * The documentation says &quot;4 words for hardware, 4 words for software&quot;.&n; *&n; * That&squot;s silly, the hardware doesn&squot;t care. The hardware only cares that&n; * the hardware words are 16-byte aligned, and we can have any amount of&n; * sw space after the TD entry as far as I can tell.&n; *&n; * But let&squot;s just go with the documentation, at least for 32-bit machines.&n; * On 64-bit machines we probably want to take advantage of the fact that&n; * hw doesn&squot;t really care about the size of the sw-only area.&n; *&n; * Alas, not anymore, we have more than 4 words for software, woops.&n; * Everything still works tho, surprise! -jerdfelt&n; */
+multiline_comment|/*&n; * The documentation says &quot;4 words for hardware, 4 words for software&quot;.&n; *&n; * That&squot;s silly, the hardware doesn&squot;t care. The hardware only cares that&n; * the hardware words are 16-byte aligned, and we can have any amount of&n; * sw space after the TD entry as far as I can tell.&n; *&n; * But let&squot;s just go with the documentation, at least for 32-bit machines.&n; * On 64-bit machines we probably want to take advantage of the fact that&n; * hw doesn&squot;t really care about the size of the sw-only area.&n; *&n; * Alas, not anymore, we have more than 4 words for software, woops.&n; * Everything still works tho, surprise! -jerdfelt&n; *&n; * td-&gt;link points to either another TD (not necessarily for the same urb or&n; * even the same endpoint), or nothing (PTR_TERM), or a QH (for queued urbs)&n; */
 DECL|struct|uhci_td
 r_struct
 id|uhci_td
@@ -309,6 +312,7 @@ DECL|member|frame
 r_int
 id|frame
 suffix:semicolon
+multiline_comment|/* for iso: what frame? */
 DECL|member|fl_list
 r_struct
 id|list_head
@@ -328,7 +332,7 @@ l_int|16
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/*&n; * There are various standard queues. We set up several different&n; * queues for each of the three basic queue types: interrupt,&n; * control, and bulk.&n; *&n; *  - There are various different interrupt latencies: ranging from&n; *    every other USB frame (2 ms apart) to every 256 USB frames (ie&n; *    256 ms apart). Make your choice according to how obnoxious you&n; *    want to be on the wire, vs how critical latency is for you.&n; *  - The control list is done every frame.&n; *  - There are 4 bulk lists, so that up to four devices can have a&n; *    bulk list of their own and when run concurrently all four lists&n; *    will be be serviced.&n; *&n; * This is a bit misleading, there are various interrupt latencies, but they&n; * vary a bit, interrupt2 isn&squot;t exactly 2ms, it can vary up to 4ms since the&n; * other queues can &quot;override&quot; it. interrupt4 can vary up to 8ms, etc. Minor&n; * problem&n; *&n; * In the case of the root hub, these QH&squot;s are just head&squot;s of qh&squot;s. Don&squot;t&n; * be scared, it kinda makes sense. Look at this wonderful picture care of&n; * Linus:&n; *&n; *  generic-  -&gt;  dev1-  -&gt;  generic-  -&gt;  dev1-  -&gt;  control-  -&gt;  bulk- -&gt; ...&n; *   iso-QH      iso-QH       irq-QH      irq-QH        QH           QH&n; *      |           |            |           |           |            |&n; *     End     dev1-iso-TD1     End     dev1-irq-TD1    ...          ... &n; *                  |&n; *             dev1-iso-TD2&n; *                  |&n; *                ....&n; *&n; * This may vary a bit (the UHCI docs don&squot;t explicitly say you can put iso&n; * transfers in QH&squot;s and all of their pictures don&squot;t have that either) but&n; * other than that, that is what we&squot;re doing now&n; *&n; * And now we don&squot;t put Iso transfers in QH&squot;s, so we don&squot;t waste one on it&n; * --jerdfelt&n; *&n; * To keep with Linus&squot; nomenclature, this is called the QH skeleton. These&n; * labels (below) are only signficant to the root hub&squot;s QH&squot;s&n; */
+multiline_comment|/*&n; * There are various standard queues. We set up several different&n; * queues for each of the three basic queue types: interrupt,&n; * control, and bulk.&n; *&n; *  - There are various different interrupt latencies: ranging from&n; *    every other USB frame (2 ms apart) to every 256 USB frames (ie&n; *    256 ms apart). Make your choice according to how obnoxious you&n; *    want to be on the wire, vs how critical latency is for you.&n; *  - The control list is done every frame.&n; *  - There are 4 bulk lists, so that up to four devices can have a&n; *    bulk list of their own and when run concurrently all four lists&n; *    will be be serviced.&n; *&n; * This is a bit misleading, there are various interrupt latencies, but they&n; * vary a bit, interrupt2 isn&squot;t exactly 2ms, it can vary up to 4ms since the&n; * other queues can &quot;override&quot; it. interrupt4 can vary up to 8ms, etc. Minor&n; * problem&n; *&n; * In the case of the root hub, these QH&squot;s are just head&squot;s of qh&squot;s. Don&squot;t&n; * be scared, it kinda makes sense. Look at this wonderful picture care of&n; * Linus:&n; *&n; *  generic-  -&gt;  dev1-  -&gt;  generic-  -&gt;  dev1-  -&gt;  control-  -&gt;  bulk- -&gt; ...&n; *   iso-QH      iso-QH       irq-QH      irq-QH        QH           QH&n; *      |           |            |           |           |            |&n; *     End     dev1-iso-TD1     End     dev1-irq-TD1    ...          ... &n; *                  |&n; *             dev1-iso-TD2&n; *                  |&n; *                ....&n; *&n; * This may vary a bit (the UHCI docs don&squot;t explicitly say you can put iso&n; * transfers in QH&squot;s and all of their pictures don&squot;t have that either) but&n; * other than that, that is what we&squot;re doing now&n; *&n; * And now we don&squot;t put Iso transfers in QH&squot;s, so we don&squot;t waste one on it&n; * --jerdfelt&n; *&n; * To keep with Linus&squot; nomenclature, this is called the QH skeleton. These&n; * labels (below) are only signficant to the root hub&squot;s QH&squot;s&n; *&n; *&n; * NOTE:  That ASCII art doesn&squot;t match the current (August 2002) code, in&n; * more ways than just not using QHs for ISO.&n; *&n; * NOTE:  Another way to look at the UHCI schedules is to compare them to what&n; * other host controller interfaces use.  EHCI, OHCI, and UHCI all have tables&n; * of transfers that the controller scans, frame by frame, and which hold the&n; * scheduled periodic transfers.  The key differences are that UHCI&n; *&n; *   (a) puts control and bulk transfers into that same table; the others&n; *       have separate data structures for non-periodic transfers.&n; *   (b) lets QHs be linked from TDs, not just other QHs, since they don&squot;t&n; *       hold endpoint data.  this driver chooses to use one QH per URB.&n; *   (c) needs more TDs, since it uses one per packet.  the data toggle&n; *       is stored in those TDs, along with all other endpoint state.&n; */
 DECL|macro|UHCI_NUM_SKELTD
 mdefine_line|#define UHCI_NUM_SKELTD&t;&t;10
 DECL|macro|skel_int1_td
@@ -462,7 +466,7 @@ suffix:semicolon
 multiline_comment|/* int128 for 128-255 ms (Max.) */
 )brace
 DECL|macro|hcd_to_uhci
-mdefine_line|#define hcd_to_uhci(hcd_ptr) list_entry(hcd_ptr, struct uhci_hcd, hcd)
+mdefine_line|#define hcd_to_uhci(hcd_ptr) container_of(hcd_ptr, struct uhci_hcd, hcd)
 multiline_comment|/*&n; * This describes the full uhci information.&n; *&n; * Note how the &quot;proper&quot; USB information is just&n; * a subset of what the full implementation needs.&n; */
 DECL|struct|uhci_hcd
 r_struct
@@ -473,18 +477,8 @@ r_struct
 id|usb_hcd
 id|hcd
 suffix:semicolon
-DECL|member|dev
-r_struct
-id|pci_dev
-op_star
-id|dev
-suffix:semicolon
 macro_line|#ifdef CONFIG_PROC_FS
 multiline_comment|/* procfs */
-DECL|member|num
-r_int
-id|num
-suffix:semicolon
 DECL|member|proc_entry
 r_struct
 id|proc_dir_entry
@@ -493,19 +487,10 @@ id|proc_entry
 suffix:semicolon
 macro_line|#endif
 multiline_comment|/* Grabbed from PCI */
-DECL|member|irq
-r_int
-id|irq
-suffix:semicolon
 DECL|member|io_addr
 r_int
 r_int
 id|io_addr
-suffix:semicolon
-DECL|member|io_size
-r_int
-r_int
-id|io_size
 suffix:semicolon
 DECL|member|qh_pool
 r_struct
@@ -615,13 +600,6 @@ id|list_head
 id|complete_list
 suffix:semicolon
 multiline_comment|/* P: uhci-&gt;complete_list_lock */
-DECL|member|rh_dev
-r_struct
-id|usb_device
-op_star
-id|rh_dev
-suffix:semicolon
-multiline_comment|/* Root hub */
 DECL|member|rh_numports
 r_int
 id|rh_numports

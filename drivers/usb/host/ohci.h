@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * OHCI HCD (Host Controller Driver) for USB.&n; * &n; * (C) Copyright 1999 Roman Weissgaerber &lt;weissg@vienna.at&gt;&n; * (C) Copyright 2000-2002 David Brownell &lt;dbrownell@users.sourceforge.net&gt;&n; * &n; * This file is licenced under the GPL.&n; * $Id: ohci.h,v 1.6 2002/03/22 16:04:54 dbrownell Exp $&n; */
+multiline_comment|/*&n; * OHCI HCD (Host Controller Driver) for USB.&n; * &n; * (C) Copyright 1999 Roman Weissgaerber &lt;weissg@vienna.at&gt;&n; * (C) Copyright 2000-2002 David Brownell &lt;dbrownell@users.sourceforge.net&gt;&n; * &n; * This file is licenced under the GPL.&n; */
 multiline_comment|/*&n; * OHCI Endpoint Descriptor (ED) ... holds TD queue&n; * See OHCI spec, section 4.2&n; *&n; * This is a &quot;Queue Head&quot; for those transfers, which is why&n; * both EHCI and UHCI call similar structures a &quot;QH&quot;.&n; */
 DECL|struct|ed
 r_struct
@@ -10,6 +10,10 @@ id|__u32
 id|hwINFO
 suffix:semicolon
 multiline_comment|/* endpoint config bitmap */
+multiline_comment|/* info bits defined by hcd */
+DECL|macro|ED_DEQUEUE
+mdefine_line|#define ED_DEQUEUE&t;__constant_cpu_to_le32(1 &lt;&lt; 27)
+multiline_comment|/* info bits defined by the hardware */
 DECL|macro|ED_ISO
 mdefine_line|#define ED_ISO&t;&t;__constant_cpu_to_le32(1 &lt;&lt; 15)
 DECL|macro|ED_SKIP
@@ -29,7 +33,7 @@ DECL|member|hwHeadP
 id|__u32
 id|hwHeadP
 suffix:semicolon
-multiline_comment|/* head of TD list */
+multiline_comment|/* head of TD list (hc r/w) */
 DECL|macro|ED_C
 mdefine_line|#define ED_C&t;&t;__constant_cpu_to_le32(0x02)&t;/* toggle carry */
 DECL|macro|ED_H
@@ -90,39 +94,24 @@ id|u8
 id|type
 suffix:semicolon
 multiline_comment|/* PIPE_{BULK,...} */
+multiline_comment|/* periodic scheduling params (for intr and iso) */
+DECL|member|branch
+id|u8
+id|branch
+suffix:semicolon
 DECL|member|interval
 id|u16
 id|interval
 suffix:semicolon
-multiline_comment|/* interrupt, isochronous */
-r_union
-(brace
-DECL|struct|intr_info
-r_struct
-id|intr_info
-(brace
-multiline_comment|/* interrupt */
-DECL|member|int_branch
-id|u8
-id|int_branch
-suffix:semicolon
-DECL|member|int_load
-id|u8
-id|int_load
-suffix:semicolon
-DECL|member|intr_info
-)brace
-id|intr_info
+DECL|member|load
+id|u16
+id|load
 suffix:semicolon
 DECL|member|last_iso
 id|u16
 id|last_iso
 suffix:semicolon
-multiline_comment|/* isochronous */
-DECL|member|intriso
-)brace
-id|intriso
-suffix:semicolon
+multiline_comment|/* iso only */
 multiline_comment|/* HC may see EDs on rm_list until next frame (frame_no == tick) */
 DECL|member|tick
 id|u16
@@ -758,12 +747,8 @@ suffix:semicolon
 suffix:semicolon
 DECL|macro|TD_HASH_SIZE
 mdefine_line|#define TD_HASH_SIZE    64    /* power&squot;o&squot;two */
-DECL|macro|ED_HASH_SIZE
-mdefine_line|#define ED_HASH_SIZE    64    /* power&squot;o&squot;two */
 DECL|macro|TD_HASH_FUNC
 mdefine_line|#define TD_HASH_FUNC(td_dma) ((td_dma ^ (td_dma &gt;&gt; 5)) % TD_HASH_SIZE)
-DECL|macro|ED_HASH_FUNC
-mdefine_line|#define ED_HASH_FUNC(ed_dma) ((ed_dma ^ (ed_dma &gt;&gt; 5)) % ED_HASH_SIZE)
 multiline_comment|/*&n; * This is the full ohci controller description&n; *&n; * Note how the &quot;proper&quot; USB information is just&n; * a subset of what the full implementation needs. (Linus)&n; */
 DECL|struct|ohci_hcd
 r_struct
@@ -819,13 +804,16 @@ op_star
 id|ed_controltail
 suffix:semicolon
 multiline_comment|/* last in ctrl list */
-DECL|member|ed_isotail
+DECL|member|periodic
 r_struct
 id|ed
 op_star
-id|ed_isotail
+id|periodic
+(braket
+id|NUM_INTS
+)braket
 suffix:semicolon
-multiline_comment|/* last in iso list */
+multiline_comment|/* shadow int_table */
 multiline_comment|/*&n;&t; * memory management for queue data structures&n;&t; */
 DECL|member|td_cache
 r_struct
@@ -847,14 +835,6 @@ id|td_hash
 id|TD_HASH_SIZE
 )braket
 suffix:semicolon
-DECL|member|ed_hash
-r_struct
-id|hash_list_t
-id|ed_hash
-(braket
-id|ED_HASH_SIZE
-)braket
-suffix:semicolon
 multiline_comment|/*&n;&t; * driver state&n;&t; */
 DECL|member|disabled
 r_int
@@ -865,9 +845,9 @@ DECL|member|sleeping
 r_int
 id|sleeping
 suffix:semicolon
-DECL|member|ohci_int_load
+DECL|member|load
 r_int
-id|ohci_int_load
+id|load
 (braket
 id|NUM_INTS
 )braket

@@ -501,8 +501,9 @@ suffix:semicolon
 )brace
 id|dbg
 (paren
+l_string|&quot;%s - returned %d&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot; - returned %d&bslash;n&quot;
 comma
 id|result
 )paren
@@ -972,7 +973,11 @@ c_func
 op_amp
 id|pFill
 comma
-id|ctrl-&gt;device
+id|PCI_SLOT
+c_func
+(paren
+id|ctrl-&gt;pci_dev-&gt;devfn
+)paren
 comma
 op_amp
 id|usedbytes
@@ -998,7 +1003,11 @@ c_func
 op_amp
 id|pFill
 comma
-id|ctrl-&gt;function
+id|PCI_FUNC
+c_func
+(paren
+id|ctrl-&gt;pci_dev-&gt;devfn
+)paren
 comma
 op_amp
 id|usedbytes
@@ -1669,13 +1678,21 @@ op_logical_or
 (paren
 id|device
 op_ne
-id|ctrl-&gt;device
+id|PCI_SLOT
+c_func
+(paren
+id|ctrl-&gt;pci_dev-&gt;devfn
+)paren
 )paren
 op_logical_or
 (paren
 id|function
 op_ne
-id|ctrl-&gt;function
+id|PCI_FUNC
+c_func
+(paren
+id|ctrl-&gt;pci_dev-&gt;devfn
+)paren
 )paren
 )paren
 (brace

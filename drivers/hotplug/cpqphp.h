@@ -1505,11 +1505,11 @@ id|pci_dev
 op_star
 id|pci_dev
 suffix:semicolon
-DECL|member|pci_ops
+DECL|member|pci_bus
 r_struct
-id|pci_ops
+id|pci_bus
 op_star
-id|pci_ops
+id|pci_bus
 suffix:semicolon
 DECL|member|proc_entry
 r_struct
@@ -1549,14 +1549,7 @@ DECL|member|bus
 id|u8
 id|bus
 suffix:semicolon
-DECL|member|device
-id|u8
-id|device
-suffix:semicolon
-DECL|member|function
-id|u8
-id|function
-suffix:semicolon
+multiline_comment|/* bus number for the pci hotplug controller */
 DECL|member|rev
 id|u8
 id|rev
@@ -3221,8 +3214,9 @@ suffix:semicolon
 id|dbg
 c_func
 (paren
+l_string|&quot;%s: slot-&gt;device = %d, ctrl-&gt;slot_device_offset = %d &bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;: slot-&gt;device = %d, ctrl-&gt;slot_device_offset = %d &bslash;n&quot;
 comma
 id|slot-&gt;device
 comma
@@ -3410,8 +3404,9 @@ suffix:semicolon
 id|dbg
 c_func
 (paren
+l_string|&quot;%s - start&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot; - start&bslash;n&quot;
 )paren
 suffix:semicolon
 id|add_wait_queue
@@ -3472,8 +3467,9 @@ suffix:semicolon
 id|dbg
 c_func
 (paren
+l_string|&quot;%s - end&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot; - end&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return
