@@ -731,6 +731,7 @@ r_int
 r_int
 id|port
 comma
+r_const
 r_void
 op_star
 id|src
@@ -810,7 +811,10 @@ r_char
 DECL|function|___ia64_readb
 id|___ia64_readb
 (paren
+r_const
+r_volatile
 r_void
+id|__iomem
 op_star
 id|addr
 )paren
@@ -821,6 +825,7 @@ op_star
 r_volatile
 r_int
 r_char
+id|__force
 op_star
 )paren
 id|addr
@@ -833,7 +838,10 @@ r_int
 DECL|function|___ia64_readw
 id|___ia64_readw
 (paren
+r_const
+r_volatile
 r_void
+id|__iomem
 op_star
 id|addr
 )paren
@@ -844,6 +852,7 @@ op_star
 r_volatile
 r_int
 r_int
+id|__force
 op_star
 )paren
 id|addr
@@ -856,7 +865,10 @@ r_int
 DECL|function|___ia64_readl
 id|___ia64_readl
 (paren
+r_const
+r_volatile
 r_void
+id|__iomem
 op_star
 id|addr
 )paren
@@ -867,6 +879,7 @@ op_star
 r_volatile
 r_int
 r_int
+id|__force
 op_star
 )paren
 id|addr
@@ -879,7 +892,10 @@ r_int
 DECL|function|___ia64_readq
 id|___ia64_readq
 (paren
+r_const
+r_volatile
 r_void
+id|__iomem
 op_star
 id|addr
 )paren
@@ -890,6 +906,7 @@ op_star
 r_volatile
 r_int
 r_int
+id|__force
 op_star
 )paren
 id|addr
@@ -905,7 +922,9 @@ r_int
 r_char
 id|val
 comma
+r_volatile
 r_void
+id|__iomem
 op_star
 id|addr
 )paren
@@ -915,6 +934,7 @@ op_star
 r_volatile
 r_int
 r_char
+id|__force
 op_star
 )paren
 id|addr
@@ -932,7 +952,9 @@ r_int
 r_int
 id|val
 comma
+r_volatile
 r_void
+id|__iomem
 op_star
 id|addr
 )paren
@@ -942,6 +964,7 @@ op_star
 r_volatile
 r_int
 r_int
+id|__force
 op_star
 )paren
 id|addr
@@ -959,7 +982,9 @@ r_int
 r_int
 id|val
 comma
+r_volatile
 r_void
+id|__iomem
 op_star
 id|addr
 )paren
@@ -969,6 +994,7 @@ op_star
 r_volatile
 r_int
 r_int
+id|__force
 op_star
 )paren
 id|addr
@@ -986,7 +1012,9 @@ r_int
 r_int
 id|val
 comma
+r_volatile
 r_void
+id|__iomem
 op_star
 id|addr
 )paren
@@ -996,6 +1024,7 @@ op_star
 r_volatile
 r_int
 r_int
+id|__force
 op_star
 )paren
 id|addr
@@ -1020,21 +1049,21 @@ mdefine_line|#define __readl_relaxed&t;platform_readl_relaxed
 DECL|macro|__readq_relaxed
 mdefine_line|#define __readq_relaxed&t;platform_readq_relaxed
 DECL|macro|readb
-mdefine_line|#define readb(a)&t;__readb((void *)(a))
+mdefine_line|#define readb(a)&t;__readb((a))
 DECL|macro|readw
-mdefine_line|#define readw(a)&t;__readw((void *)(a))
+mdefine_line|#define readw(a)&t;__readw((a))
 DECL|macro|readl
-mdefine_line|#define readl(a)&t;__readl((void *)(a))
+mdefine_line|#define readl(a)&t;__readl((a))
 DECL|macro|readq
-mdefine_line|#define readq(a)&t;__readq((void *)(a))
+mdefine_line|#define readq(a)&t;__readq((a))
 DECL|macro|readb_relaxed
-mdefine_line|#define readb_relaxed(a)&t;__readb_relaxed((void *)(a))
+mdefine_line|#define readb_relaxed(a)&t;__readb_relaxed((a))
 DECL|macro|readw_relaxed
-mdefine_line|#define readw_relaxed(a)&t;__readw_relaxed((void *)(a))
+mdefine_line|#define readw_relaxed(a)&t;__readw_relaxed((a))
 DECL|macro|readl_relaxed
-mdefine_line|#define readl_relaxed(a)&t;__readl_relaxed((void *)(a))
+mdefine_line|#define readl_relaxed(a)&t;__readl_relaxed((a))
 DECL|macro|readq_relaxed
-mdefine_line|#define readq_relaxed(a)&t;__readq_relaxed((void *)(a))
+mdefine_line|#define readq_relaxed(a)&t;__readq_relaxed((a))
 DECL|macro|__raw_readb
 mdefine_line|#define __raw_readb&t;readb
 DECL|macro|__raw_readw
@@ -1052,13 +1081,13 @@ mdefine_line|#define __raw_readl_relaxed&t;readl_relaxed
 DECL|macro|__raw_readq_relaxed
 mdefine_line|#define __raw_readq_relaxed&t;readq_relaxed
 DECL|macro|writeb
-mdefine_line|#define writeb(v,a)&t;__writeb((v), (void *) (a))
+mdefine_line|#define writeb(v,a)&t;__writeb((v), (a))
 DECL|macro|writew
-mdefine_line|#define writew(v,a)&t;__writew((v), (void *) (a))
+mdefine_line|#define writew(v,a)&t;__writew((v), (a))
 DECL|macro|writel
-mdefine_line|#define writel(v,a)&t;__writel((v), (void *) (a))
+mdefine_line|#define writel(v,a)&t;__writel((v), (a))
 DECL|macro|writeq
-mdefine_line|#define writeq(v,a)&t;__writeq((v), (void *) (a))
+mdefine_line|#define writeq(v,a)&t;__writeq((v), (a))
 DECL|macro|__raw_writeb
 mdefine_line|#define __raw_writeb&t;writeb
 DECL|macro|__raw_writew
@@ -1095,6 +1124,7 @@ multiline_comment|/*&n; * An &quot;address&quot; in IO memory space is not clear
 r_static
 r_inline
 r_void
+id|__iomem
 op_star
 DECL|function|ioremap
 id|ioremap
@@ -1111,6 +1141,7 @@ id|size
 r_return
 (paren
 r_void
+id|__iomem
 op_star
 )paren
 (paren
@@ -1128,7 +1159,9 @@ r_void
 DECL|function|iounmap
 id|iounmap
 (paren
+r_volatile
 r_void
+id|__iomem
 op_star
 id|addr
 )paren
@@ -1145,8 +1178,10 @@ id|__ia64_memcpy_fromio
 r_void
 op_star
 comma
-r_int
-r_int
+r_volatile
+r_void
+id|__iomem
+op_star
 comma
 r_int
 )paren
@@ -1155,8 +1190,10 @@ r_extern
 r_void
 id|__ia64_memcpy_toio
 (paren
-r_int
-r_int
+r_volatile
+r_void
+id|__iomem
+op_star
 comma
 r_void
 op_star
@@ -1168,8 +1205,10 @@ r_extern
 r_void
 id|__ia64_memset_c_io
 (paren
-r_int
-r_int
+r_volatile
+r_void
+id|__iomem
+op_star
 comma
 r_int
 r_int
@@ -1178,11 +1217,11 @@ r_int
 )paren
 suffix:semicolon
 DECL|macro|memcpy_fromio
-mdefine_line|#define memcpy_fromio(to,from,len) &bslash;&n;  __ia64_memcpy_fromio((to),(unsigned long)(from),(len))
+mdefine_line|#define memcpy_fromio(to,from,len)&t;__ia64_memcpy_fromio((to), (from),(len))
 DECL|macro|memcpy_toio
-mdefine_line|#define memcpy_toio(to,from,len) &bslash;&n;  __ia64_memcpy_toio((unsigned long)(to),(from),(len))
+mdefine_line|#define memcpy_toio(to,from,len)&t;__ia64_memcpy_toio((to),(from),(len))
 DECL|macro|memset_io
-mdefine_line|#define memset_io(addr,c,len) &bslash;&n;  __ia64_memset_c_io((unsigned long)(addr),0x0101010101010101UL*(u8)(c),(len))
+mdefine_line|#define memset_io(addr,c,len)&t;&t;__ia64_memset_c_io((addr), 0x0101010101010101UL*(u8)(c), &bslash;&n;&t;&t;&t;&t;&t;&t;&t;   (len))
 DECL|macro|dma_cache_inv
 mdefine_line|#define dma_cache_inv(_start,_size)             do { } while (0)
 DECL|macro|dma_cache_wback

@@ -156,6 +156,7 @@ id|ioc
 (brace
 DECL|member|ioc_hpa
 r_void
+id|__iomem
 op_star
 id|ioc_hpa
 suffix:semicolon
