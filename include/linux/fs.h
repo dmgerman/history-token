@@ -149,6 +149,8 @@ mdefine_line|#define SEL_EX&t;&t;4
 multiline_comment|/* public flags for file_system_type */
 DECL|macro|FS_REQUIRES_DEV
 mdefine_line|#define FS_REQUIRES_DEV 1 
+DECL|macro|FS_BINARY_MOUNTDATA
+mdefine_line|#define FS_BINARY_MOUNTDATA 2
 DECL|macro|FS_REVAL_DOT
 mdefine_line|#define FS_REVAL_DOT&t;16384&t;/* Check the paths &quot;.&quot;, &quot;..&quot; for staleness */
 DECL|macro|FS_ODD_RENAME
