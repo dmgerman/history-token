@@ -3476,11 +3476,25 @@ op_assign
 id|chunk_tp
 suffix:semicolon
 multiline_comment|/* Send it to the lower layers.  */
+id|err
+op_assign
 id|sctp_primitive_SEND
 c_func
 (paren
 id|asoc
 comma
+id|chunk
+)paren
+suffix:semicolon
+multiline_comment|/* Did the lower layer accept the chunk? */
+r_if
+c_cond
+(paren
+id|err
+)paren
+id|sctp_chunk_free
+c_func
+(paren
 id|chunk
 )paren
 suffix:semicolon
@@ -3497,6 +3511,15 @@ c_func
 id|datamsg
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|err
+)paren
+r_goto
+id|out_free
+suffix:semicolon
+r_else
 id|err
 op_assign
 id|msg_len
