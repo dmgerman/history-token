@@ -7884,7 +7884,6 @@ id|trailer
 )paren
 suffix:semicolon
 )brace
-r_else
 macro_line|#endif&t;/* CONFIG_USB_NET1080 */
 id|usb_fill_bulk_urb
 (paren
