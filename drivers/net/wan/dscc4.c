@@ -47,8 +47,6 @@ DECL|macro|DRV_NAME
 mdefine_line|#define&t;DRV_NAME&t;&quot;dscc4&quot;
 DECL|macro|DSCC4_POLLING
 macro_line|#undef DSCC4_POLLING
-DECL|macro|DEBUG
-mdefine_line|#define DEBUG
 multiline_comment|/* Module parameters */
 id|MODULE_AUTHOR
 c_func
@@ -170,8 +168,6 @@ id|end
 suffix:semicolon
 )brace
 suffix:semicolon
-DECL|macro|CONFIG_DSCC4_DEBUG
-mdefine_line|#define CONFIG_DSCC4_DEBUG
 DECL|macro|DUMMY_SKB_SIZE
 mdefine_line|#define DUMMY_SKB_SIZE&t;&t;64
 DECL|macro|TX_LOW
@@ -555,6 +551,8 @@ DECL|macro|Alls
 mdefine_line|#define Alls&t;&t;0x00040000
 DECL|macro|Xdu
 mdefine_line|#define Xdu&t;&t;0x00010000
+DECL|macro|Cts
+mdefine_line|#define Cts&t;&t;0x00004000
 DECL|macro|Xmr
 mdefine_line|#define Xmr&t;&t;0x00002000
 DECL|macro|Xpr
@@ -563,6 +561,8 @@ DECL|macro|Rdo
 mdefine_line|#define Rdo&t;&t;0x00000080
 DECL|macro|Rfs
 mdefine_line|#define Rfs&t;&t;0x00000040
+DECL|macro|Cd
+mdefine_line|#define Cd&t;&t;0x00000004
 DECL|macro|Rfo
 mdefine_line|#define Rfo&t;&t;0x00000002
 DECL|macro|Flex
@@ -3383,10 +3383,11 @@ suffix:semicolon
 multiline_comment|/* Interrupt mask */
 macro_line|#else
 singleline_comment|//scc_writel(0xfffaef7f, dpriv, dev, IMR); /* Interrupt mask */
+singleline_comment|//scc_writel(0xfffaef7e, dpriv, dev, IMR); /* Interrupt mask */
 id|scc_writel
 c_func
 (paren
-l_int|0xfffaef7e
+l_int|0xfffa8f7a
 comma
 id|dpriv
 comma
@@ -5974,13 +5975,20 @@ op_logical_neg
 id|state
 )paren
 (brace
-macro_line|#ifdef DEBUG
 r_if
 c_cond
+(paren
+(paren
+id|debug
+OG
+l_int|1
+)paren
+op_logical_and
 (paren
 id|loop
 OG
 l_int|1
+)paren
 )paren
 id|printk
 c_func
@@ -5993,7 +6001,6 @@ comma
 id|loop
 )paren
 suffix:semicolon
-macro_line|#endif
 r_if
 c_cond
 (paren
@@ -6323,6 +6330,39 @@ c_cond
 (paren
 id|state
 op_amp
+id|Cts
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;%s: CTS transition&bslash;n&quot;
+comma
+id|dev-&gt;name
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+(paren
+id|state
+op_and_assign
+op_complement
+id|Cts
+)paren
+)paren
+multiline_comment|/* DEBUG */
+r_goto
+r_try
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+id|state
+op_amp
 id|Xmr
 )paren
 (brace
@@ -6579,6 +6619,39 @@ op_complement
 id|Xpr
 )paren
 )paren
+r_goto
+r_try
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+id|state
+op_amp
+id|Cd
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;%s: CD transition&bslash;n&quot;
+comma
+id|dev-&gt;name
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+(paren
+id|state
+op_and_assign
+op_complement
+id|Cd
+)paren
+)paren
+multiline_comment|/* DEBUG */
 r_goto
 r_try
 suffix:semicolon
@@ -6922,7 +6995,7 @@ suffix:semicolon
 )brace
 r_else
 (brace
-multiline_comment|/* ! SccEvt */
+multiline_comment|/* SccEvt */
 r_if
 c_cond
 (paren
@@ -6956,12 +7029,6 @@ l_string|&quot;TIN&quot;
 )brace
 comma
 (brace
-l_int|0x00004000
-comma
-l_string|&quot;CSC&quot;
-)brace
-comma
-(brace
 l_int|0x00000020
 comma
 l_string|&quot;RSC&quot;
@@ -6977,12 +7044,6 @@ comma
 l_int|0x00000008
 comma
 l_string|&quot;PLLA&quot;
-)brace
-comma
-(brace
-l_int|0x00000004
-comma
-l_string|&quot;CDSC&quot;
 )brace
 comma
 (brace
@@ -7057,6 +7118,39 @@ op_complement
 l_int|0x0000c03c
 )paren
 )paren
+r_goto
+r_try
+suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+id|state
+op_amp
+id|Cts
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;%s: CTS transition&bslash;n&quot;
+comma
+id|dev-&gt;name
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+(paren
+id|state
+op_and_assign
+op_complement
+id|Cts
+)paren
+)paren
+multiline_comment|/* DEBUG */
 r_goto
 r_try
 suffix:semicolon
@@ -7349,38 +7443,23 @@ r_goto
 r_try
 suffix:semicolon
 )brace
-multiline_comment|/* These will be used later */
 r_if
 c_cond
 (paren
 id|state
 op_amp
-id|Rfs
+id|Cd
 )paren
 (brace
-r_if
-c_cond
+id|printk
+c_func
 (paren
-op_logical_neg
-(paren
-id|state
-op_and_assign
-op_complement
-id|Rfs
+id|KERN_INFO
+l_string|&quot;%s: CD transition&bslash;n&quot;
+comma
+id|dev-&gt;name
 )paren
-)paren
-r_goto
-r_try
 suffix:semicolon
-)brace
-r_if
-c_cond
-(paren
-id|state
-op_amp
-id|Rfo
-)paren
-(brace
 r_if
 c_cond
 (paren
@@ -7389,9 +7468,10 @@ op_logical_neg
 id|state
 op_and_assign
 op_complement
-id|Rfo
+id|Cd
 )paren
 )paren
+multiline_comment|/* DEBUG */
 r_goto
 r_try
 suffix:semicolon
