@@ -8159,6 +8159,12 @@ comma
 l_int|NULL
 )paren
 suffix:semicolon
+id|e100_tx_clean
+c_func
+(paren
+id|nic
+)paren
+suffix:semicolon
 id|e100_enable_irq
 c_func
 (paren
