@@ -22,7 +22,6 @@ macro_line|#include &lt;asm/pgtable.h&gt;
 macro_line|#include &quot;scsi.h&quot;
 macro_line|#include &quot;hosts.h&quot;
 macro_line|#include &quot;NCR53C9x.h&quot;
-macro_line|#include &quot;oktagon_esp.h&quot;
 macro_line|#include &lt;linux/zorro.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;asm/amigaints.h&gt;
@@ -32,6 +31,11 @@ macro_line|#include &lt;linux/workqueue.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#endif
 macro_line|#include &lt;linux/unistd.h&gt;
+multiline_comment|/* The controller registers can be found in the Z2 config area at these&n; * offsets:&n; */
+DECL|macro|OKTAGON_ESP_ADDR
+mdefine_line|#define OKTAGON_ESP_ADDR 0x03000
+DECL|macro|OKTAGON_DMA_ADDR
+mdefine_line|#define OKTAGON_DMA_ADDR 0x01000
 r_static
 r_int
 id|dma_bytes_sent
@@ -1961,15 +1965,6 @@ suffix:semicolon
 )brace
 DECL|macro|HOSTS_C
 mdefine_line|#define HOSTS_C
-macro_line|#include &quot;oktagon_esp.h&quot;
-DECL|variable|driver_template
-r_static
-id|Scsi_Host_Template
-id|driver_template
-op_assign
-id|SCSI_OKTAGON_ESP
-suffix:semicolon
-macro_line|#include &quot;scsi_module.c&quot;
 DECL|function|oktagon_esp_release
 r_int
 id|oktagon_esp_release
@@ -2038,6 +2033,80 @@ r_return
 l_int|1
 suffix:semicolon
 )brace
+DECL|variable|driver_template
+r_static
+id|Scsi_Host_Template
+id|driver_template
+op_assign
+(brace
+dot
+id|proc_name
+op_assign
+l_string|&quot;esp-oktagon&quot;
+comma
+dot
+id|proc_info
+op_assign
+op_amp
+id|esp_proc_info
+comma
+dot
+id|name
+op_assign
+l_string|&quot;BSC Oktagon SCSI&quot;
+comma
+dot
+id|detect
+op_assign
+id|oktagon_esp_detect
+comma
+dot
+id|release
+op_assign
+id|oktagon_esp_release
+comma
+dot
+id|queuecommand
+op_assign
+id|esp_queue
+comma
+dot
+id|eh_abort_handler
+op_assign
+id|esp_abort
+comma
+dot
+id|eh_bus_reset_handler
+op_assign
+id|esp_reset
+comma
+dot
+id|can_queue
+op_assign
+l_int|7
+comma
+dot
+id|this_id
+op_assign
+l_int|7
+comma
+dot
+id|sg_tablesize
+op_assign
+id|SG_ALL
+comma
+dot
+id|cmd_per_lun
+op_assign
+l_int|1
+comma
+dot
+id|use_clustering
+op_assign
+id|ENABLE_CLUSTERING
+)brace
+suffix:semicolon
+macro_line|#include &quot;scsi_module.c&quot;
 id|MODULE_LICENSE
 c_func
 (paren
