@@ -1106,6 +1106,13 @@ c_func
 id|agp_register_driver
 )paren
 suffix:semicolon
+DECL|variable|agp_unregister_driver
+id|EXPORT_SYMBOL_GPL
+c_func
+(paren
+id|agp_unregister_driver
+)paren
+suffix:semicolon
 id|MODULE_AUTHOR
 c_func
 (paren
