@@ -9,7 +9,7 @@ id|ACPI_MODULE_NAME
 (paren
 l_string|&quot;exconvrt&quot;
 )paren
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ex_convert_to_integer&n; *&n; * PARAMETERS:  *obj_desc       - Object to be converted.  Must be an&n; *                                Integer, Buffer, or String&n; *              walk_state      - Current method state&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Convert an ACPI Object to an integer.&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ex_convert_to_integer&n; *&n; * PARAMETERS:  obj_desc        - Object to be converted.  Must be an&n; *                                Integer, Buffer, or String&n; *              result_desc     - Where the new Integer object is returned&n; *              walk_state      - Current method state&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Convert an ACPI Object to an integer.&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_ex_convert_to_integer
 id|acpi_ex_convert_to_integer
@@ -296,7 +296,7 @@ id|AE_OK
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ex_convert_to_buffer&n; *&n; * PARAMETERS:  *obj_desc       - Object to be converted.  Must be an&n; *                                Integer, Buffer, or String&n; *              walk_state      - Current method state&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Convert an ACPI Object to a Buffer&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ex_convert_to_buffer&n; *&n; * PARAMETERS:  obj_desc        - Object to be converted.  Must be an&n; *                                Integer, Buffer, or String&n; *              result_desc     - Where the new buffer object is returned&n; *              walk_state      - Current method state&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Convert an ACPI Object to a Buffer&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_ex_convert_to_buffer
 id|acpi_ex_convert_to_buffer
@@ -646,7 +646,7 @@ c_loop
 (paren
 id|j
 op_assign
-l_int|1
+l_int|0
 suffix:semicolon
 id|j
 OL
@@ -678,7 +678,7 @@ multiline_comment|/* Create the decimal digit */
 r_if
 c_cond
 (paren
-id|digit
+id|remainder
 op_ne
 l_int|0
 )paren
@@ -809,7 +809,7 @@ suffix:colon
 r_break
 suffix:semicolon
 )brace
-multiline_comment|/*&n;&t; * Since leading zeros are supressed, we must check for the case where&n;&t; * the integer equals 0.&n;&t; *&n;&t; * Finally, null terminate the string and return the length&n;&t; */
+multiline_comment|/*&n;&t; * Since leading zeros are supressed, we must check for the case where&n;&t; * the integer equals 0&n;&t; *&n;&t; * Finally, null terminate the string and return the length&n;&t; */
 r_if
 c_cond
 (paren
@@ -842,7 +842,7 @@ id|k
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ex_convert_to_string&n; *&n; * PARAMETERS:  *obj_desc       - Object to be converted.  Must be an&n; *                                Integer, Buffer, or String&n; *              walk_state      - Current method state&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Convert an ACPI Object to a string&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ex_convert_to_string&n; *&n; * PARAMETERS:  obj_desc        - Object to be converted.  Must be an&n; *                                  Integer, Buffer, or String&n; *              result_desc     - Where the string object is returned&n; *              Base            - 10 or 16&n; *              max_length      - Max length of the returned string&n; *              walk_state      - Current method state&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Convert an ACPI Object to a string&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_ex_convert_to_string
 id|acpi_ex_convert_to_string
@@ -875,12 +875,6 @@ id|acpi_operand_object
 op_star
 id|ret_desc
 suffix:semicolon
-id|u32
-id|i
-suffix:semicolon
-id|u32
-id|string_length
-suffix:semicolon
 id|u8
 op_star
 id|new_buf
@@ -888,6 +882,12 @@ suffix:semicolon
 id|u8
 op_star
 id|pointer
+suffix:semicolon
+id|u32
+id|string_length
+suffix:semicolon
+id|u32
+id|i
 suffix:semicolon
 id|ACPI_FUNCTION_TRACE_PTR
 (paren
@@ -1280,7 +1280,7 @@ id|AE_OK
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ex_convert_to_target_type&n; *&n; * PARAMETERS:  destination_type    - Current type of the destination&n; *              source_desc         - Source object to be converted.&n; *              walk_state          - Current method state&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Implements &quot;implicit conversion&quot; rules for storing an object.&n; *&n; ******************************************************************************/
+multiline_comment|/*******************************************************************************&n; *&n; * FUNCTION:    acpi_ex_convert_to_target_type&n; *&n; * PARAMETERS:  destination_type    - Current type of the destination&n; *              source_desc         - Source object to be converted.&n; *              result_desc         - Where the converted object is returned&n; *              walk_state          - Current method state&n; *&n; * RETURN:      Status&n; *&n; * DESCRIPTION: Implements &quot;implicit conversion&quot; rules for storing an object.&n; *&n; ******************************************************************************/
 id|acpi_status
 DECL|function|acpi_ex_convert_to_target_type
 id|acpi_ex_convert_to_target_type
@@ -1471,6 +1471,15 @@ r_break
 suffix:semicolon
 r_default
 suffix:colon
+id|ACPI_REPORT_ERROR
+(paren
+(paren
+l_string|&quot;Bad destination type during conversion: %X&bslash;n&quot;
+comma
+id|destination_type
+)paren
+)paren
+suffix:semicolon
 id|status
 op_assign
 id|AE_AML_INTERNAL
@@ -1509,6 +1518,17 @@ id|destination_type
 )paren
 )paren
 suffix:semicolon
+id|ACPI_REPORT_ERROR
+(paren
+(paren
+l_string|&quot;Bad Target Type (ARGI): %X&bslash;n&quot;
+comma
+id|GET_CURRENT_ARG_TYPE
+(paren
+id|walk_state-&gt;op_info-&gt;runtime_args
+)paren
+)paren
+)paren
 id|status
 op_assign
 id|AE_AML_INTERNAL
