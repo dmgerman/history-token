@@ -4270,13 +4270,9 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|softirq_pending
+id|local_softirq_pending
 c_func
 (paren
-id|smp_processor_id
-c_func
-(paren
-)paren
 )paren
 )paren
 id|do_softirq
