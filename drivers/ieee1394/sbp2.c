@@ -4593,6 +4593,9 @@ id|data
 l_int|2
 )braket
 suffix:semicolon
+r_int
+id|error
+suffix:semicolon
 id|SBP2_DEBUG
 c_func
 (paren
@@ -4732,7 +4735,6 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-r_int
 id|error
 op_assign
 id|hpsb_node_write
@@ -4807,6 +4809,9 @@ id|data
 (braket
 l_int|2
 )braket
+suffix:semicolon
+r_int
+id|error
 suffix:semicolon
 id|SBP2_DEBUG
 c_func
@@ -4963,7 +4968,6 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-r_int
 id|error
 op_assign
 id|hpsb_node_write
