@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *  linux/arch/arm/mach-pxa/idp.c&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License version 2 as&n; *  published by the Free Software Foundation.&n; *&n; *  Copyright (c) 2001 Cliff Brake, Accelent Systems Inc.&n; *&n; *  2001-09-13: Cliff Brake &lt;cbrake@accelent.com&gt;&n; *              Initial code&n; */
+multiline_comment|/*&n; *  linux/arch/arm/mach-pxa/idp.c&n; *&n; *  This program is free software; you can redistribute it and/or modify&n; *  it under the terms of the GNU General Public License version 2 as&n; *  published by the Free Software Foundation.&n; *&n; *  Copyright (c) 2001 Cliff Brake, Accelent Systems Inc.&n; *&n; *  2001-09-13: Cliff Brake &lt;cbrake@accelent.com&gt;&n; *              Initial code&n; *&n; * Expected command line: mem=32M initrd=0xa1000000,4M root=/dev/ram ramdisk=8192&n; */
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/major.h&gt;
@@ -14,8 +14,6 @@ macro_line|#include &lt;asm/irq.h&gt;
 macro_line|#include &lt;asm/mach/arch.h&gt;
 macro_line|#include &lt;asm/mach/map.h&gt;
 macro_line|#include &quot;generic.h&quot;
-DECL|macro|PXA_IDP_REV02
-mdefine_line|#define PXA_IDP_REV02
 macro_line|#ifndef PXA_IDP_REV02
 multiline_comment|/* shadow registers for write only registers */
 DECL|variable|idp_cpld_led_control_shadow
@@ -252,7 +250,7 @@ id|idp_io_desc
 )paren
 )paren
 suffix:semicolon
-id|set_GPIO_IRQ_edge
+id|set_irq_type
 c_func
 (paren
 id|IRQ_TO_GPIO_2_80
@@ -262,6 +260,43 @@ id|TOUCH_PANEL_IRQ
 )paren
 comma
 id|TOUCH_PANEL_IRQ_EDGE
+)paren
+suffix:semicolon
+singleline_comment|// serial ports 2 &amp; 3
+id|pxa_gpio_mode
+c_func
+(paren
+id|GPIO42_BTRXD_MD
+)paren
+suffix:semicolon
+id|pxa_gpio_mode
+c_func
+(paren
+id|GPIO43_BTTXD_MD
+)paren
+suffix:semicolon
+id|pxa_gpio_mode
+c_func
+(paren
+id|GPIO44_BTCTS_MD
+)paren
+suffix:semicolon
+id|pxa_gpio_mode
+c_func
+(paren
+id|GPIO45_BTRTS_MD
+)paren
+suffix:semicolon
+id|pxa_gpio_mode
+c_func
+(paren
+id|GPIO46_STRXD_MD
+)paren
+suffix:semicolon
+id|pxa_gpio_mode
+c_func
+(paren
+id|GPIO47_STTXD_MD
 )paren
 suffix:semicolon
 )brace

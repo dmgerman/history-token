@@ -116,7 +116,7 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|variable|adsbitsy_init
-id|__initcall
+id|arch_initcall
 c_func
 (paren
 id|adsbitsy_init

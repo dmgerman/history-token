@@ -1134,7 +1134,7 @@ suffix:semicolon
 multiline_comment|/**********************************************************************&n; *  Exported Functions&n; */
 multiline_comment|/**********************************************************************&n; *  kernel magic macros&n; */
 DECL|variable|system3_init
-id|__initcall
+id|arch_initcall
 c_func
 (paren
 id|system3_init

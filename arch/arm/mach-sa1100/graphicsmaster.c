@@ -104,7 +104,7 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|variable|graphicsmaster_init
-id|__initcall
+id|arch_initcall
 c_func
 (paren
 id|graphicsmaster_init

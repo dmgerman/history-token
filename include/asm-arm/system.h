@@ -184,6 +184,8 @@ DECL|macro|clf
 mdefine_line|#define clf()&t;&t;&t;__clf()
 DECL|macro|stf
 mdefine_line|#define stf()&t;&t;&t;__stf()
+DECL|macro|irqs_disabled
+mdefine_line|#define irqs_disabled()&t;&t;&t;&bslash;&n;({&t;&t;&t;&t;&t;&bslash;&n;&t;unsigned long flags;&t;&t;&bslash;&n;&t;local_save_flags(flags);&t;&bslash;&n;&t;flags &amp; PSR_I_BIT;&t;&t;&bslash;&n;})
 macro_line|#endif /* CONFIG_SMP */
 macro_line|#endif /* __KERNEL__ */
 macro_line|#endif
