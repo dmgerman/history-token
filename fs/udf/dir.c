@@ -1,15 +1,11 @@
-multiline_comment|/*&n; * dir.c&n; *&n; * PURPOSE&n; *  Directory handling routines for the OSTA-UDF(tm) filesystem.&n; *&n; * CONTACTS&n; *&t;E-mail regarding any portion of the Linux UDF file system should be&n; *&t;directed to the development team mailing list (run by majordomo):&n; *&t;&t;linux_udf@hpesjro.fc.hp.com&n; *&n; * COPYRIGHT&n; *&t;This file is distributed under the terms of the GNU General Public&n; *&t;License (GPL). Copies of the GPL can be obtained from:&n; *&t;&t;ftp://prep.ai.mit.edu/pub/gnu/GPL&n; *&t;Each contributing author retains all rights to their own work.&n; *&n; *  (C) 1998-2000 Ben Fennema&n; *&n; * HISTORY&n; *&n; *  10/05/98 dgb  Split directory operations into it&squot;s own file&n; *                Implemented directory reads via do_udf_readdir&n; *  10/06/98      Made directory operations work!&n; *  11/17/98      Rewrote directory to support ICB_FLAG_AD_LONG&n; *  11/25/98 blf  Rewrote directory handling (readdir+lookup) to support reading&n; *                across blocks.&n; *  12/12/98      Split out the lookup code to namei.c. bulk of directory&n; *                code now in directory.c:udf_fileident_read.&n; */
+multiline_comment|/*&n; * dir.c&n; *&n; * PURPOSE&n; *  Directory handling routines for the OSTA-UDF(tm) filesystem.&n; *&n; * CONTACTS&n; *&t;E-mail regarding any portion of the Linux UDF file system should be&n; *&t;directed to the development team mailing list (run by majordomo):&n; *&t;&t;linux_udf@hpesjro.fc.hp.com&n; *&n; * COPYRIGHT&n; *&t;This file is distributed under the terms of the GNU General Public&n; *&t;License (GPL). Copies of the GPL can be obtained from:&n; *&t;&t;ftp://prep.ai.mit.edu/pub/gnu/GPL&n; *&t;Each contributing author retains all rights to their own work.&n; *&n; *  (C) 1998-2001 Ben Fennema&n; *&n; * HISTORY&n; *&n; *  10/05/98 dgb  Split directory operations into it&squot;s own file&n; *                Implemented directory reads via do_udf_readdir&n; *  10/06/98      Made directory operations work!&n; *  11/17/98      Rewrote directory to support ICBTAG_FLAG_AD_LONG&n; *  11/25/98 blf  Rewrote directory handling (readdir+lookup) to support reading&n; *                across blocks.&n; *  12/12/98      Split out the lookup code to namei.c. bulk of directory&n; *                code now in directory.c:udf_fileident_read.&n; */
 macro_line|#include &quot;udfdecl.h&quot;
-macro_line|#if defined(__linux__) &amp;&amp; defined(__KERNEL__)
-macro_line|#include &lt;linux/version.h&gt;
-macro_line|#include &quot;udf_i.h&quot;
-macro_line|#include &quot;udf_sb.h&quot;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
-macro_line|#include &lt;linux/udf_fs.h&gt;
-macro_line|#endif
+macro_line|#include &quot;udf_i.h&quot;
+macro_line|#include &quot;udf_sb.h&quot;
 multiline_comment|/* Prototypes for file operations */
 r_static
 r_int
@@ -188,14 +184,14 @@ id|udf_fileident_bh
 id|fibh
 suffix:semicolon
 r_struct
-id|FileIdentDesc
+id|fileIdentDesc
 op_star
 id|fi
 op_assign
 l_int|NULL
 suffix:semicolon
 r_struct
-id|FileIdentDesc
+id|fileIdentDesc
 id|cfi
 suffix:semicolon
 r_int
@@ -223,10 +219,10 @@ r_char
 op_star
 id|nameptr
 suffix:semicolon
-id|Uint16
+r_uint16
 id|liu
 suffix:semicolon
-id|Uint8
+r_uint8
 id|lfi
 suffix:semicolon
 id|loff_t
@@ -265,7 +261,7 @@ id|bloc
 comma
 id|eloc
 suffix:semicolon
-id|Uint32
+r_uint32
 id|extoffset
 comma
 id|elen
@@ -365,7 +361,11 @@ op_amp
 id|bh
 )paren
 op_eq
-id|EXTENT_RECORDED_ALLOCATED
+(paren
+id|EXT_RECORDED_ALLOCATED
+op_rshift
+l_int|30
+)paren
 )paren
 (brace
 id|offset
@@ -406,7 +406,7 @@ c_func
 id|dir
 )paren
 op_eq
-id|ICB_FLAG_AD_SHORT
+id|ICBTAG_FLAG_AD_SHORT
 )paren
 id|extoffset
 op_sub_assign
@@ -425,7 +425,7 @@ c_func
 id|dir
 )paren
 op_eq
-id|ICB_FLAG_AD_LONG
+id|ICBTAG_FLAG_AD_LONG
 )paren
 id|extoffset
 op_sub_assign
@@ -778,7 +778,7 @@ op_plus
 r_sizeof
 (paren
 r_struct
-id|FileIdentDesc
+id|fileIdentDesc
 )paren
 op_plus
 id|liu
@@ -848,7 +848,7 @@ c_cond
 (paren
 id|cfi.fileCharacteristics
 op_amp
-id|FILE_DELETED
+id|FID_FILE_CHAR_DELETED
 )paren
 op_ne
 l_int|0
@@ -875,7 +875,7 @@ c_cond
 (paren
 id|cfi.fileCharacteristics
 op_amp
-id|FILE_HIDDEN
+id|FID_FILE_CHAR_HIDDEN
 )paren
 op_ne
 l_int|0
@@ -901,7 +901,7 @@ c_cond
 (paren
 id|cfi.fileCharacteristics
 op_amp
-id|FILE_PARENT
+id|FID_FILE_CHAR_PARENT
 )paren
 (brace
 id|iblock

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * truncate.c&n; *&n; * PURPOSE&n; *&t;Truncate handling routines for the OSTA-UDF(tm) filesystem.&n; *&n; * CONTACTS&n; *&t;E-mail regarding any portion of the Linux UDF file system should be&n; *&t;directed to the development team mailing list (run by majordomo):&n; *&t;&t;linux_udf@hpesjro.fc.hp.com&n; *&n; * COPYRIGHT&n; *&t;This file is distributed under the terms of the GNU General Public&n; *&t;License (GPL). Copies of the GPL can be obtained from:&n; *&t;&t;ftp://prep.ai.mit.edu/pub/gnu/GPL&n; *&t;Each contributing author retains all rights to their own work.&n; *&n; *  (C) 1999-2000 Ben Fennema&n; *  (C) 1999 Stelias Computing Inc&n; *&n; * HISTORY&n; *&n; *  02/24/99 blf  Created.&n; *&n; */
+multiline_comment|/*&n; * truncate.c&n; *&n; * PURPOSE&n; *&t;Truncate handling routines for the OSTA-UDF(tm) filesystem.&n; *&n; * CONTACTS&n; *&t;E-mail regarding any portion of the Linux UDF file system should be&n; *&t;directed to the development team mailing list (run by majordomo):&n; *&t;&t;linux_udf@hpesjro.fc.hp.com&n; *&n; * COPYRIGHT&n; *&t;This file is distributed under the terms of the GNU General Public&n; *&t;License (GPL). Copies of the GPL can be obtained from:&n; *&t;&t;ftp://prep.ai.mit.edu/pub/gnu/GPL&n; *&t;Each contributing author retains all rights to their own work.&n; *&n; *  (C) 1999-2001 Ben Fennema&n; *  (C) 1999 Stelias Computing Inc&n; *&n; * HISTORY&n; *&n; *  02/24/99 blf  Created.&n; *&n; */
 macro_line|#include &quot;udfdecl.h&quot;
 macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
@@ -25,10 +25,10 @@ comma
 id|lb_addr
 id|eloc
 comma
-id|Sint8
+r_int8
 id|etype
 comma
-id|Uint32
+r_uint32
 id|elen
 comma
 r_struct
@@ -36,7 +36,7 @@ id|buffer_head
 op_star
 id|bh
 comma
-id|Uint32
+r_uint32
 id|nelen
 )paren
 (brace
@@ -86,7 +86,11 @@ c_cond
 (paren
 id|etype
 op_eq
-id|EXTENT_NOT_RECORDED_ALLOCATED
+(paren
+id|EXT_NOT_RECORDED_ALLOCATED
+op_rshift
+l_int|30
+)paren
 )paren
 (brace
 id|udf_free_blocks
@@ -105,7 +109,11 @@ id|last_block
 suffix:semicolon
 id|etype
 op_assign
-id|EXTENT_NOT_RECORDED_NOT_ALLOCATED
+(paren
+id|EXT_NOT_RECORDED_NOT_ALLOCATED
+op_rshift
+l_int|30
+)paren
 suffix:semicolon
 )brace
 r_else
@@ -166,7 +174,11 @@ c_cond
 (paren
 id|etype
 op_eq
-id|EXTENT_RECORDED_ALLOCATED
+(paren
+id|EXT_RECORDED_ALLOCATED
+op_rshift
+l_int|30
+)paren
 )paren
 id|mark_inode_dirty
 c_func
@@ -179,7 +191,11 @@ c_cond
 (paren
 id|etype
 op_ne
-id|EXTENT_NOT_RECORDED_NOT_ALLOCATED
+(paren
+id|EXT_NOT_RECORDED_NOT_ALLOCATED
+op_rshift
+l_int|30
+)paren
 )paren
 id|udf_free_blocks
 c_func
@@ -224,7 +240,7 @@ comma
 l_int|0
 )brace
 suffix:semicolon
-id|Uint32
+r_uint32
 id|extoffset
 comma
 id|elen
@@ -241,7 +257,7 @@ l_int|0
 comma
 id|lenalloc
 suffix:semicolon
-id|Sint8
+r_int8
 id|etype
 suffix:semicolon
 r_int
@@ -270,7 +286,7 @@ c_func
 id|inode
 )paren
 op_eq
-id|ICB_FLAG_AD_SHORT
+id|ICBTAG_FLAG_AD_SHORT
 )paren
 id|adsize
 op_assign
@@ -289,7 +305,7 @@ c_func
 id|inode
 )paren
 op_eq
-id|ICB_FLAG_AD_LONG
+id|ICBTAG_FLAG_AD_LONG
 )paren
 id|adsize
 op_assign
@@ -433,7 +449,7 @@ op_sub_assign
 r_sizeof
 (paren
 r_struct
-id|AllocExtDesc
+id|allocExtDesc
 )paren
 suffix:semicolon
 r_while
@@ -475,7 +491,11 @@ c_cond
 (paren
 id|etype
 op_eq
-id|EXTENT_NEXT_EXTENT_ALLOCDECS
+(paren
+id|EXT_NEXT_EXTENT_ALLOCDECS
+op_rshift
+l_int|30
+)paren
 )paren
 (brace
 id|udf_write_aext
@@ -555,7 +575,7 @@ comma
 r_sizeof
 (paren
 r_struct
-id|AllocExtDesc
+id|allocExtDesc
 )paren
 )paren
 suffix:semicolon
@@ -618,13 +638,13 @@ suffix:semicolon
 r_else
 (brace
 r_struct
-id|AllocExtDesc
+id|allocExtDesc
 op_star
 id|aed
 op_assign
 (paren
 r_struct
-id|AllocExtDesc
+id|allocExtDesc
 op_star
 )paren
 (paren
@@ -669,7 +689,7 @@ op_plus
 r_sizeof
 (paren
 r_struct
-id|AllocExtDesc
+id|allocExtDesc
 )paren
 )paren
 suffix:semicolon
@@ -682,7 +702,7 @@ comma
 r_sizeof
 (paren
 r_struct
-id|AllocExtDesc
+id|allocExtDesc
 )paren
 )paren
 suffix:semicolon
@@ -815,7 +835,7 @@ comma
 r_sizeof
 (paren
 r_struct
-id|AllocExtDesc
+id|allocExtDesc
 )paren
 )paren
 suffix:semicolon
@@ -878,13 +898,13 @@ suffix:semicolon
 r_else
 (brace
 r_struct
-id|AllocExtDesc
+id|allocExtDesc
 op_star
 id|aed
 op_assign
 (paren
 r_struct
-id|AllocExtDesc
+id|allocExtDesc
 op_star
 )paren
 (paren
@@ -929,7 +949,7 @@ op_plus
 r_sizeof
 (paren
 r_struct
-id|AllocExtDesc
+id|allocExtDesc
 )paren
 )paren
 suffix:semicolon
@@ -942,7 +962,7 @@ comma
 r_sizeof
 (paren
 r_struct
-id|AllocExtDesc
+id|allocExtDesc
 )paren
 )paren
 suffix:semicolon
@@ -1004,7 +1024,11 @@ c_cond
 (paren
 id|etype
 op_eq
-id|EXTENT_NOT_RECORDED_NOT_ALLOCATED
+(paren
+id|EXT_NOT_RECORDED_NOT_ALLOCATED
+op_rshift
+l_int|30
+)paren
 )paren
 (brace
 id|extoffset
@@ -1013,11 +1037,7 @@ id|adsize
 suffix:semicolon
 id|elen
 op_assign
-(paren
-id|EXTENT_NOT_RECORDED_NOT_ALLOCATED
-op_lshift
-l_int|30
-)paren
+id|EXT_NOT_RECORDED_NOT_ALLOCATED
 op_or
 (paren
 id|elen
@@ -1051,7 +1071,11 @@ c_cond
 (paren
 id|etype
 op_eq
-id|EXTENT_NOT_RECORDED_ALLOCATED
+(paren
+id|EXT_NOT_RECORDED_ALLOCATED
+op_rshift
+l_int|30
+)paren
 )paren
 (brace
 id|lb_addr
@@ -1069,11 +1093,7 @@ id|adsize
 suffix:semicolon
 id|nelen
 op_assign
-(paren
-id|EXTENT_NOT_RECORDED_NOT_ALLOCATED
-op_lshift
-l_int|30
-)paren
+id|EXT_NOT_RECORDED_NOT_ALLOCATED
 op_or
 (paren
 (paren
@@ -1161,11 +1181,7 @@ id|adsize
 suffix:semicolon
 id|elen
 op_assign
-(paren
-id|EXTENT_RECORDED_ALLOCATED
-op_lshift
-l_int|30
-)paren
+id|EXT_RECORDED_ALLOCATED
 op_or
 (paren
 (paren
@@ -1220,11 +1236,7 @@ id|lb_addr
 suffix:semicolon
 id|elen
 op_assign
-(paren
-id|EXTENT_NOT_RECORDED_NOT_ALLOCATED
-op_lshift
-l_int|30
-)paren
+id|EXT_NOT_RECORDED_NOT_ALLOCATED
 op_or
 id|offset
 suffix:semicolon

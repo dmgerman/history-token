@@ -1,7 +1,7 @@
 multiline_comment|/*&n; * udf_fs_sb.h&n; * &n; * This include file is for the Linux kernel/module.&n; *&n; * CONTACTS&n; *&t;E-mail regarding any portion of the Linux UDF file system should be&n; *&t;directed to the development team mailing list (run by majordomo):&n; *&t;&t;linux_udf@hpesjro.fc.hp.com&n; *&n; * COPYRIGHT&n; *&t;This file is distributed under the terms of the GNU General Public&n; *&t;License (GPL). Copies of the GPL can be obtained from:&n; *&t;&t;ftp://prep.ai.mit.edu/pub/gnu/GPL&n; *&t;Each contributing author retains all rights to their own work.&n; */
-macro_line|#if !defined(_LINUX_UDF_FS_SB_H)
-DECL|macro|_LINUX_UDF_FS_SB_H
-mdefine_line|#define _LINUX_UDF_FS_SB_H
+macro_line|#ifndef _UDF_FS_SB_H
+DECL|macro|_UDF_FS_SB_H
+mdefine_line|#define _UDF_FS_SB_H 1
 macro_line|#pragma pack(1)
 DECL|macro|UDF_MAX_BLOCK_LOADED
 mdefine_line|#define UDF_MAX_BLOCK_LOADED&t;8
@@ -269,5 +269,5 @@ id|s_vat
 suffix:semicolon
 )brace
 suffix:semicolon
-macro_line|#endif /* !defined(_LINUX_UDF_FS_SB_H) */
+macro_line|#endif /* _UDF_FS_SB_H */
 eof

@@ -1,14 +1,8 @@
 multiline_comment|/* Copyright (C) 1993, 1994, 1995, 1996, 1997 Free Software Foundation, Inc.&n;   This file is part of the GNU C Library.&n;   Contributed by Paul Eggert (eggert@twinsun.com).&n;&n;   The GNU C Library is free software; you can redistribute it and/or&n;   modify it under the terms of the GNU Library General Public License as&n;   published by the Free Software Foundation; either version 2 of the&n;   License, or (at your option) any later version.&n;&n;   The GNU C Library is distributed in the hope that it will be useful,&n;   but WITHOUT ANY WARRANTY; without even the implied warranty of&n;   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU&n;   Library General Public License for more details.&n;&n;   You should have received a copy of the GNU Library General Public&n;   License along with the GNU C Library; see the file COPYING.LIB.  If not,&n;   write to the Free Software Foundation, Inc., 59 Temple Place - Suite 330,&n;   Boston, MA 02111-1307, USA.  */
 multiline_comment|/*&n; * dgb 10/02/98: ripped this from glibc source to help convert timestamps to unix time &n; *     10/04/98: added new table-based lookup after seeing how ugly the gnu code is&n; * blf 09/27/99: ripped out all the old code and inserted new table from&n; *&t;&t;&t;&t;&t;John Brockmeyer (without leap second corrections)&n; *&t;&t;&t;&t; rewrote udf_stamp_to_time and fixed timezone accounting in&n;&t;&t;&t;&t;&t;udf_time_to_stamp.&n; */
 multiline_comment|/*&n; * We don&squot;t take into account leap seconds. This may be correct or incorrect.&n; * For more NIST information (especially dealing with leap seconds), see:&n; *  http://www.boulder.nist.gov/timefreq/pubs/bulletin/leapsecond.htm&n; */
-macro_line|#if defined(__linux__) &amp;&amp; defined(__KERNEL__)
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
-macro_line|#else
-macro_line|#include &lt;stdio.h&gt;
-macro_line|#include &lt;sys/types.h&gt;
-macro_line|#include &lt;sys/time.h&gt;
-macro_line|#endif
 macro_line|#include &quot;udfdecl.h&quot;
 DECL|macro|EPOCH_YEAR
 mdefine_line|#define EPOCH_YEAR 1970
@@ -814,13 +808,11 @@ l_int|0
 )paren
 )brace
 suffix:semicolon
-macro_line|#ifdef __KERNEL__
 r_extern
 r_struct
 id|timezone
 id|sys_tz
 suffix:semicolon
-macro_line|#endif
 DECL|macro|SECS_PER_HOUR
 mdefine_line|#define SECS_PER_HOUR&t;(60 * 60)
 DECL|macro|SECS_PER_DAY
@@ -846,14 +838,14 @@ id|src
 r_int
 id|yday
 suffix:semicolon
-id|Uint8
+r_uint8
 id|type
 op_assign
 id|src.typeAndTimezone
 op_rshift
 l_int|12
 suffix:semicolon
-id|Sint16
+r_int16
 id|offset
 suffix:semicolon
 r_if
@@ -1046,29 +1038,9 @@ r_int
 op_star
 id|ip
 suffix:semicolon
-id|Sint16
+r_int16
 id|offset
 suffix:semicolon
-macro_line|#ifndef __KERNEL__
-r_struct
-id|timeval
-id|tv
-suffix:semicolon
-r_struct
-id|timezone
-id|sys_tz
-suffix:semicolon
-id|gettimeofday
-c_func
-(paren
-op_amp
-id|tv
-comma
-op_amp
-id|sys_tz
-)paren
-suffix:semicolon
-macro_line|#endif
 id|offset
 op_assign
 op_minus

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * partition.c&n; *&n; * PURPOSE&n; *      Partition handling routines for the OSTA-UDF(tm) filesystem.&n; *&n; * CONTACTS&n; *      E-mail regarding any portion of the Linux UDF file system should be&n; *      directed to the development team mailing list (run by majordomo):&n; *              linux_udf@hpesjro.fc.hp.com&n; *&n; * COPYRIGHT&n; *      This file is distributed under the terms of the GNU General Public&n; *      License (GPL). Copies of the GPL can be obtained from:&n; *              ftp://prep.ai.mit.edu/pub/gnu/GPL&n; *      Each contributing author retains all rights to their own work.&n; *&n; *  (C) 1998-2000 Ben Fennema&n; *&n; * HISTORY&n; *&n; * 12/06/98 blf  Created file. &n; *&n; */
+multiline_comment|/*&n; * partition.c&n; *&n; * PURPOSE&n; *      Partition handling routines for the OSTA-UDF(tm) filesystem.&n; *&n; * CONTACTS&n; *      E-mail regarding any portion of the Linux UDF file system should be&n; *      directed to the development team mailing list (run by majordomo):&n; *              linux_udf@hpesjro.fc.hp.com&n; *&n; * COPYRIGHT&n; *      This file is distributed under the terms of the GNU General Public&n; *      License (GPL). Copies of the GPL can be obtained from:&n; *              ftp://prep.ai.mit.edu/pub/gnu/GPL&n; *      Each contributing author retains all rights to their own work.&n; *&n; *  (C) 1998-2001 Ben Fennema&n; *&n; * HISTORY&n; *&n; * 12/06/98 blf  Created file. &n; *&n; */
 macro_line|#include &quot;udfdecl.h&quot;
 macro_line|#include &quot;udf_sb.h&quot;
 macro_line|#include &quot;udf_i.h&quot;
@@ -8,7 +8,7 @@ macro_line|#include &lt;linux/udf_fs.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 DECL|function|udf_get_pblock
 r_inline
-id|Uint32
+r_uint32
 id|udf_get_pblock
 c_func
 (paren
@@ -17,13 +17,13 @@ id|super_block
 op_star
 id|sb
 comma
-id|Uint32
+r_uint32
 id|block
 comma
-id|Uint16
+r_uint16
 id|partition
 comma
-id|Uint32
+r_uint32
 id|offset
 )paren
 (brace
@@ -100,7 +100,7 @@ id|offset
 suffix:semicolon
 )brace
 DECL|function|udf_get_pblock_virt15
-id|Uint32
+r_uint32
 id|udf_get_pblock_virt15
 c_func
 (paren
@@ -109,13 +109,13 @@ id|super_block
 op_star
 id|sb
 comma
-id|Uint32
+r_uint32
 id|block
 comma
-id|Uint16
+r_uint16
 id|partition
 comma
-id|Uint32
+r_uint32
 id|offset
 )paren
 (brace
@@ -126,13 +126,13 @@ id|bh
 op_assign
 l_int|NULL
 suffix:semicolon
-id|Uint32
+r_uint32
 id|newblock
 suffix:semicolon
-id|Uint32
+r_uint32
 id|index
 suffix:semicolon
-id|Uint32
+r_uint32
 id|loc
 suffix:semicolon
 id|index
@@ -153,7 +153,7 @@ id|s_start_offset
 op_div
 r_sizeof
 (paren
-id|Uint32
+r_uint32
 )paren
 suffix:semicolon
 r_if
@@ -218,7 +218,7 @@ id|sb-&gt;s_blocksize
 op_div
 r_sizeof
 (paren
-id|Uint32
+r_uint32
 )paren
 )paren
 )paren
@@ -232,7 +232,7 @@ id|sb-&gt;s_blocksize
 op_div
 r_sizeof
 (paren
-id|Uint32
+r_uint32
 )paren
 )paren
 suffix:semicolon
@@ -257,7 +257,7 @@ id|s_start_offset
 op_div
 r_sizeof
 (paren
-id|Uint32
+r_uint32
 )paren
 op_plus
 id|block
@@ -321,7 +321,7 @@ c_func
 (paren
 (paren
 (paren
-id|Uint32
+r_uint32
 op_star
 )paren
 id|bh-&gt;b_data
@@ -391,7 +391,7 @@ suffix:semicolon
 )brace
 DECL|function|udf_get_pblock_virt20
 r_inline
-id|Uint32
+r_uint32
 id|udf_get_pblock_virt20
 c_func
 (paren
@@ -400,13 +400,13 @@ id|super_block
 op_star
 id|sb
 comma
-id|Uint32
+r_uint32
 id|block
 comma
-id|Uint16
+r_uint16
 id|partition
 comma
-id|Uint32
+r_uint32
 id|offset
 )paren
 (brace
@@ -425,7 +425,7 @@ id|offset
 suffix:semicolon
 )brace
 DECL|function|udf_get_pblock_spar15
-id|Uint32
+r_uint32
 id|udf_get_pblock_spar15
 c_func
 (paren
@@ -434,13 +434,13 @@ id|super_block
 op_star
 id|sb
 comma
-id|Uint32
+r_uint32
 id|block
 comma
-id|Uint16
+r_uint16
 id|partition
 comma
-id|Uint32
+r_uint32
 id|offset
 )paren
 (brace
@@ -448,13 +448,13 @@ r_int
 id|i
 suffix:semicolon
 r_struct
-id|SparingTable
+id|sparingTable
 op_star
 id|st
 op_assign
 l_int|NULL
 suffix:semicolon
-id|Uint32
+r_uint32
 id|packet
 op_assign
 (paren
@@ -516,7 +516,7 @@ id|st
 op_assign
 (paren
 r_struct
-id|SparingTable
+id|sparingTable
 op_star
 )paren
 id|UDF_SB_TYPESPAR
@@ -689,16 +689,17 @@ op_star
 id|sdata
 suffix:semicolon
 r_struct
-id|SparingTable
+id|sparingTable
 op_star
 id|st
 op_assign
 l_int|NULL
 suffix:semicolon
-id|SparingEntry
+r_struct
+id|sparingEntry
 id|mapEntry
 suffix:semicolon
-id|Uint32
+r_uint32
 id|packet
 suffix:semicolon
 r_int
@@ -831,7 +832,7 @@ id|st
 op_assign
 (paren
 r_struct
-id|SparingTable
+id|sparingTable
 op_star
 )paren
 id|sdata-&gt;s_spar_map
@@ -911,7 +912,7 @@ id|st
 op_assign
 (paren
 r_struct
-id|SparingTable
+id|sparingTable
 op_star
 )paren
 id|sdata-&gt;s_spar_map
@@ -946,14 +947,15 @@ comma
 r_sizeof
 (paren
 r_struct
-id|SparingTable
+id|sparingTable
 )paren
 op_plus
 id|st-&gt;reallocationTableLen
 op_star
 r_sizeof
 (paren
-id|SparingEntry
+r_struct
+id|sparingEntry
 )paren
 )paren
 suffix:semicolon
@@ -1139,7 +1141,7 @@ id|st
 op_assign
 (paren
 r_struct
-id|SparingTable
+id|sparingTable
 op_star
 )paren
 id|sdata-&gt;s_spar_map
@@ -1189,7 +1191,8 @@ id|k
 op_star
 r_sizeof
 (paren
-id|SparingEntry
+r_struct
+id|sparingEntry
 )paren
 )paren
 suffix:semicolon
@@ -1212,14 +1215,15 @@ comma
 r_sizeof
 (paren
 r_struct
-id|SparingTable
+id|sparingTable
 )paren
 op_plus
 id|st-&gt;reallocationTableLen
 op_star
 r_sizeof
 (paren
-id|SparingEntry
+r_struct
+id|sparingEntry
 )paren
 )paren
 suffix:semicolon
