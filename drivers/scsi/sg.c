@@ -23,7 +23,6 @@ macro_line|#include &lt;linux/ioctl.h&gt;
 macro_line|#include &lt;linux/fcntl.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/poll.h&gt;
-macro_line|#include &lt;linux/vmalloc.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;linux/moduleparam.h&gt;
 macro_line|#include &lt;linux/devfs_fs_kernel.h&gt;
@@ -44,7 +43,7 @@ r_char
 op_star
 id|sg_version_date
 op_assign
-l_string|&quot;20040513&quot;
+l_string|&quot;20040516&quot;
 suffix:semicolon
 r_static
 r_int
@@ -71,7 +70,7 @@ mdefine_line|#define SG_ALLOW_DIO_DEF 0
 DECL|macro|SG_ALLOW_DIO_CODE
 mdefine_line|#define SG_ALLOW_DIO_CODE /* compile out by commenting this define */
 DECL|macro|SG_MAX_DEVS
-mdefine_line|#define SG_MAX_DEVS 8192
+mdefine_line|#define SG_MAX_DEVS 32768
 multiline_comment|/*&n; * Suppose you want to calculate the formula muldiv(x,m,d)=int(x * m / d)&n; * Then when using 32 bit integers x * m may overflow during the calculation.&n; * Replacing muldiv(x) by muldiv(x)=((x % d) * m) / d + int(x / d) * m&n; * calculates the same, but prevents the overflow when both m and d&n; * are &quot;small&quot; numbers (like HZ and USER_HZ).&n; * Of course an overflow is inavoidable if the result of muldiv doesn&squot;t fit&n; * in 32 bits.&n; */
 DECL|macro|MULDIV
 mdefine_line|#define MULDIV(X,MUL,DIV) ((((X % DIV) * MUL) / DIV) + ((X / DIV) * MUL))
@@ -7167,13 +7166,15 @@ id|error
 suffix:semicolon
 id|sdp
 op_assign
-id|vmalloc
+id|kmalloc
 c_func
 (paren
 r_sizeof
 (paren
 id|Sg_device
 )paren
+comma
+id|GFP_KERNEL
 )paren
 suffix:semicolon
 r_if
@@ -7182,10 +7183,19 @@ c_cond
 op_logical_neg
 id|sdp
 )paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_WARNING
+l_string|&quot;kmalloc Sg_device failure&bslash;n&quot;
+)paren
+suffix:semicolon
 r_return
 op_minus
 id|ENOMEM
 suffix:semicolon
+)brace
 id|write_lock_irqsave
 c_func
 (paren
@@ -7231,7 +7241,7 @@ id|iflags
 suffix:semicolon
 id|tmp_da
 op_assign
-id|vmalloc
+id|kmalloc
 c_func
 (paren
 id|tmp_dev_max
@@ -7241,6 +7251,8 @@ r_sizeof
 id|Sg_device
 op_star
 )paren
+comma
+id|GFP_KERNEL
 )paren
 suffix:semicolon
 r_if
@@ -7447,13 +7459,13 @@ id|error
 OL
 l_int|0
 )paren
-id|vfree
+id|kfree
 c_func
 (paren
 id|sdp
 )paren
 suffix:semicolon
-id|vfree
+id|kfree
 c_func
 (paren
 id|old_sg_dev_arr
@@ -7467,7 +7479,7 @@ suffix:colon
 id|printk
 c_func
 (paren
-id|KERN_ERR
+id|KERN_WARNING
 l_string|&quot;sg_alloc: device array cannot be resized&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -7581,10 +7593,19 @@ c_cond
 op_logical_neg
 id|disk
 )paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_WARNING
+l_string|&quot;alloc_disk failed&bslash;n&quot;
+)paren
+suffix:semicolon
 r_return
 op_minus
 id|ENOMEM
 suffix:semicolon
+)brace
 id|disk-&gt;major
 op_assign
 id|SCSI_GENERIC_MAJOR
@@ -7607,9 +7628,18 @@ c_cond
 op_logical_neg
 id|cdev
 )paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_WARNING
+l_string|&quot;cdev_alloc failed&bslash;n&quot;
+)paren
+suffix:semicolon
 r_goto
 id|out
 suffix:semicolon
+)brace
 id|cdev-&gt;owner
 op_assign
 id|THIS_MODULE
@@ -7636,9 +7666,18 @@ id|error
 OL
 l_int|0
 )paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_WARNING
+l_string|&quot;sg_alloc failed&bslash;n&quot;
+)paren
+suffix:semicolon
 r_goto
 id|out
 suffix:semicolon
+)brace
 id|k
 op_assign
 id|error
@@ -8216,7 +8255,7 @@ l_int|NULL
 op_eq
 id|sdp-&gt;headfp
 )paren
-id|vfree
+id|kfree
 c_func
 (paren
 (paren
@@ -8502,7 +8541,7 @@ op_ne
 l_int|NULL
 )paren
 (brace
-id|vfree
+id|kfree
 c_func
 (paren
 (paren
@@ -13261,7 +13300,7 @@ id|k
 op_assign
 l_int|NULL
 suffix:semicolon
-id|vfree
+id|kfree
 c_func
 (paren
 (paren
