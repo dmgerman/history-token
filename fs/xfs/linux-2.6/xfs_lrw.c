@@ -38,6 +38,7 @@ macro_line|#include &quot;xfs_buf_item.h&quot;
 macro_line|#include &quot;xfs_utils.h&quot;
 macro_line|#include &quot;xfs_iomap.h&quot;
 macro_line|#include &lt;linux/capability.h&gt;
+macro_line|#include &lt;linux/writeback.h&gt;
 macro_line|#if defined(XFS_RW_TRACE)
 r_void
 DECL|function|xfs_rw_enter_trace
@@ -3604,6 +3605,11 @@ id|XFS_ILOCK_EXCL
 )paren
 suffix:semicolon
 )brace
+id|error
+op_assign
+op_minus
+id|ret
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -3611,24 +3617,9 @@ id|ret
 op_le
 l_int|0
 )paren
-(brace
-id|xfs_rwunlock
-c_func
-(paren
-id|bdp
-comma
-id|locktype
-)paren
-suffix:semicolon
-id|error
-op_assign
-op_minus
-id|ret
-suffix:semicolon
 r_goto
-id|out_unlock_isem
+id|out_unlock_internal
 suffix:semicolon
-)brace
 id|XFS_STATS_ADD
 c_func
 (paren
@@ -3650,7 +3641,7 @@ op_logical_or
 id|IS_SYNC
 c_func
 (paren
-id|file-&gt;f_dentry-&gt;d_inode
+id|inode
 )paren
 )paren
 (brace
@@ -3671,18 +3662,13 @@ id|xip-&gt;i_update_size
 )paren
 )paren
 (brace
-multiline_comment|/*&n;&t;&t;&t; * If an allocation transaction occurred&n;&t;&t;&t; * without extending the size, then we have to force&n;&t;&t;&t; * the log up the proper point to ensure that the&n;&t;&t;&t; * allocation is permanent.  We can&squot;t count on&n;&t;&t;&t; * the fact that buffered writes lock out direct I/O&n;&t;&t;&t; * writes - the direct I/O write could have extended&n;&t;&t;&t; * the size nontransactionally, then finished before&n;&t;&t;&t; * we started.  xfs_write_file will think that the file&n;&t;&t;&t; * didn&squot;t grow but the update isn&squot;t safe unless the&n;&t;&t;&t; * size change is logged.&n;&t;&t;&t; *&n;&t;&t;&t; * Force the log if we&squot;ve committed a transaction&n;&t;&t;&t; * against the inode or if someone else has and&n;&t;&t;&t; * the commit record hasn&squot;t gone to disk (e.g.&n;&t;&t;&t; * the inode is pinned).  This guarantees that&n;&t;&t;&t; * all changes affecting the inode are permanent&n;&t;&t;&t; * when we return.&n;&t;&t;&t; */
 id|xfs_inode_log_item_t
 op_star
-id|iip
-suffix:semicolon
-id|xfs_lsn_t
-id|lsn
-suffix:semicolon
 id|iip
 op_assign
 id|xip-&gt;i_itemp
 suffix:semicolon
+multiline_comment|/*&n;&t;&t;&t; * If an allocation transaction occurred&n;&t;&t;&t; * without extending the size, then we have to force&n;&t;&t;&t; * the log up the proper point to ensure that the&n;&t;&t;&t; * allocation is permanent.  We can&squot;t count on&n;&t;&t;&t; * the fact that buffered writes lock out direct I/O&n;&t;&t;&t; * writes - the direct I/O write could have extended&n;&t;&t;&t; * the size nontransactionally, then finished before&n;&t;&t;&t; * we started.  xfs_write_file will think that the file&n;&t;&t;&t; * didn&squot;t grow but the update isn&squot;t safe unless the&n;&t;&t;&t; * size change is logged.&n;&t;&t;&t; *&n;&t;&t;&t; * Force the log if we&squot;ve committed a transaction&n;&t;&t;&t; * against the inode or if someone else has and&n;&t;&t;&t; * the commit record hasn&squot;t gone to disk (e.g.&n;&t;&t;&t; * the inode is pinned).  This guarantees that&n;&t;&t;&t; * all changes affecting the inode are permanent&n;&t;&t;&t; * when we return.&n;&t;&t;&t; */
 r_if
 c_cond
 (paren
@@ -3691,16 +3677,12 @@ op_logical_and
 id|iip-&gt;ili_last_lsn
 )paren
 (brace
-id|lsn
-op_assign
-id|iip-&gt;ili_last_lsn
-suffix:semicolon
 id|xfs_log_force
 c_func
 (paren
 id|mp
 comma
-id|lsn
+id|iip-&gt;ili_last_lsn
 comma
 id|XFS_LOG_FORCE
 op_or
@@ -3858,10 +3840,16 @@ comma
 id|XFS_ILOCK_EXCL
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|error
+)paren
+r_goto
+id|out_unlock_internal
+suffix:semicolon
 )brace
 )brace
-)brace
-multiline_comment|/* (ioflags &amp; O_SYNC) */
 id|xfs_rwunlock
 c_func
 (paren
@@ -3872,8 +3860,42 @@ id|locktype
 suffix:semicolon
 id|error
 op_assign
+id|sync_page_range
+c_func
+(paren
+id|inode
+comma
+id|mapping
+comma
+id|pos
+comma
+id|ret
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|error
+)paren
+id|error
+op_assign
 op_minus
 id|ret
+suffix:semicolon
+r_goto
+id|out_unlock_isem
+suffix:semicolon
+)brace
+id|out_unlock_internal
+suffix:colon
+id|xfs_rwunlock
+c_func
+(paren
+id|bdp
+comma
+id|locktype
+)paren
 suffix:semicolon
 id|out_unlock_isem
 suffix:colon
