@@ -2,6 +2,7 @@ multiline_comment|/*&n; * linux/arch/arm/mach-footbridge/cats-hw.c&n; *&n; * CAT
 macro_line|#include &lt;linux/ioport.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
+macro_line|#include &lt;linux/tty.h&gt;
 macro_line|#include &lt;asm/hardware/dec21285.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/mach-types.h&gt;
