@@ -382,6 +382,7 @@ id|snd_azf3328_ids
 suffix:semicolon
 DECL|function|snd_azf3328_io2_write
 r_static
+r_inline
 r_void
 id|snd_azf3328_io2_write
 c_func
@@ -411,6 +412,7 @@ suffix:semicolon
 )brace
 DECL|function|snd_azf3328_io2_read
 r_static
+r_inline
 r_int
 r_char
 id|snd_azf3328_io2_read
