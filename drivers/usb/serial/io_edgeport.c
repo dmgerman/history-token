@@ -12,6 +12,7 @@ macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;linux/serial.h&gt;
 macro_line|#include &lt;linux/ioctl.h&gt;
+macro_line|#include &lt;linux/wait.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;linux/usb.h&gt;
 macro_line|#include &quot;usb-serial.h&quot;
@@ -3140,9 +3141,6 @@ suffix:semicolon
 r_int
 id|response
 suffix:semicolon
-r_int
-id|timeout
-suffix:semicolon
 id|dbg
 c_func
 (paren
@@ -3442,31 +3440,20 @@ id|ENODEV
 suffix:semicolon
 )brace
 multiline_comment|/* now wait for the port to be completely opened */
-id|timeout
-op_assign
-id|OPEN_TIMEOUT
-suffix:semicolon
-r_while
-c_loop
+id|wait_event_timeout
+c_func
 (paren
-id|timeout
-op_logical_and
-id|edge_port-&gt;openPending
-op_eq
-id|TRUE
-)paren
-(brace
-id|timeout
-op_assign
-id|interruptible_sleep_on_timeout
-(paren
-op_amp
 id|edge_port-&gt;wait_open
 comma
-id|timeout
+(paren
+id|edge_port-&gt;openPending
+op_ne
+id|TRUE
+)paren
+comma
+id|OPEN_TIMEOUT
 )paren
 suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
