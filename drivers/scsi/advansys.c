@@ -11447,16 +11447,6 @@ id|asc_dvc_varp-&gt;cfg-&gt;adapter_info
 l_int|5
 )braket
 suffix:semicolon
-id|ep-&gt;adapter_info
-(braket
-l_int|6
-)braket
-op_assign
-id|asc_dvc_varp-&gt;cfg-&gt;adapter_info
-(braket
-l_int|6
-)braket
-suffix:semicolon
 multiline_comment|/*&n;                * Modify board configuration.&n;                */
 id|ASC_DBG
 c_func
