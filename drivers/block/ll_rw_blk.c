@@ -3688,6 +3688,11 @@ r_struct
 id|backing_dev_info
 op_star
 id|bdi
+comma
+r_struct
+id|page
+op_star
+id|page
 )paren
 (brace
 id|request_queue_t
