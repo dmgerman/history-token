@@ -126,6 +126,10 @@ macro_line|#else
 DECL|macro|ELF_MIN_ALIGN
 macro_line|# define ELF_MIN_ALIGN&t;PAGE_SIZE
 macro_line|#endif
+macro_line|#ifndef ELF_CORE_EFLAGS
+DECL|macro|ELF_CORE_EFLAGS
+mdefine_line|#define ELF_CORE_EFLAGS&t;0
+macro_line|#endif
 DECL|macro|ELF_PAGESTART
 mdefine_line|#define ELF_PAGESTART(_v) ((_v) &amp; ~(unsigned long)(ELF_MIN_ALIGN-1))
 DECL|macro|ELF_PAGEOFFSET
@@ -4868,7 +4872,7 @@ l_int|0
 suffix:semicolon
 id|elf-&gt;e_flags
 op_assign
-l_int|0
+id|ELF_CORE_EFLAGS
 suffix:semicolon
 id|elf-&gt;e_ehsize
 op_assign
