@@ -20,7 +20,11 @@ DECL|macro|SERIAL_CPM_MINOR
 mdefine_line|#define SERIAL_CPM_MINOR&t;42
 macro_line|#endif
 DECL|macro|IS_SMC
-mdefine_line|#define IS_SMC(pinfo) (pinfo-&gt;flags &amp; FLAG_SMC)
+mdefine_line|#define IS_SMC(pinfo) &t;&t;(pinfo-&gt;flags &amp; FLAG_SMC)
+DECL|macro|IS_DISCARDING
+mdefine_line|#define IS_DISCARDING(pinfo)&t;(pinfo-&gt;flags &amp; FLAG_DISCARDING)
+DECL|macro|FLAG_DISCARDING
+mdefine_line|#define FLAG_DISCARDING&t;0x00000004&t;/* when set, don&squot;t discard */
 DECL|macro|FLAG_SMC
 mdefine_line|#define FLAG_SMC&t;0x00000002
 DECL|macro|FLAG_CONSOLE
@@ -78,7 +82,6 @@ op_star
 id|smcp
 suffix:semicolon
 DECL|member|smcup
-r_volatile
 id|smc_uart_t
 op_star
 id|smcup
@@ -162,6 +165,7 @@ DECL|member|dma_addr
 id|dma_addr_t
 id|dma_addr
 suffix:semicolon
+multiline_comment|/* helpers */
 DECL|member|baud
 r_int
 id|baud
@@ -192,7 +196,6 @@ id|UART_NR
 )braket
 suffix:semicolon
 multiline_comment|/* these are located in their respective files */
-r_extern
 r_void
 id|cpm_line_cr_cmd
 c_func
@@ -204,7 +207,6 @@ r_int
 id|cmd
 )paren
 suffix:semicolon
-r_extern
 r_int
 id|cpm_uart_init_portdesc
 c_func
@@ -212,7 +214,6 @@ c_func
 r_void
 )paren
 suffix:semicolon
-r_extern
 r_int
 id|cpm_uart_allocbuf
 c_func
@@ -227,7 +228,6 @@ r_int
 id|is_con
 )paren
 suffix:semicolon
-r_extern
 r_void
 id|cpm_uart_freebuf
 c_func
@@ -238,7 +238,6 @@ op_star
 id|pinfo
 )paren
 suffix:semicolon
-r_extern
 r_void
 id|smc1_lineif
 c_func
@@ -249,7 +248,6 @@ op_star
 id|pinfo
 )paren
 suffix:semicolon
-r_extern
 r_void
 id|smc2_lineif
 c_func
@@ -260,7 +258,6 @@ op_star
 id|pinfo
 )paren
 suffix:semicolon
-r_extern
 r_void
 id|scc1_lineif
 c_func
@@ -271,7 +268,6 @@ op_star
 id|pinfo
 )paren
 suffix:semicolon
-r_extern
 r_void
 id|scc2_lineif
 c_func
@@ -282,7 +278,6 @@ op_star
 id|pinfo
 )paren
 suffix:semicolon
-r_extern
 r_void
 id|scc3_lineif
 c_func
@@ -293,7 +288,6 @@ op_star
 id|pinfo
 )paren
 suffix:semicolon
-r_extern
 r_void
 id|scc4_lineif
 c_func
@@ -304,5 +298,5 @@ op_star
 id|pinfo
 )paren
 suffix:semicolon
-macro_line|#endif&t;&t;&t;&t;/* CPM_UART_H */
+macro_line|#endif /* CPM_UART_H */
 eof
