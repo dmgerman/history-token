@@ -10155,6 +10155,24 @@ multiline_comment|/* ASUS A7V600 &amp; K8V*/
 dot
 id|vendor
 op_assign
+l_int|0x1071
+comma
+dot
+id|device
+op_assign
+l_int|0x8375
+comma
+dot
+id|action
+op_assign
+id|VIA_DXS_NO_VRA
+)brace
+comma
+multiline_comment|/* Vobis/Yakumo/Mitac notebook */
+(brace
+dot
+id|vendor
+op_assign
 l_int|0x10cf
 comma
 dot
