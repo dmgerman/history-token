@@ -3839,7 +3839,7 @@ id|fl
 suffix:semicolon
 r_extern
 r_int
-id|xfrm_check_output
+id|xfrm_state_check
 c_func
 (paren
 r_struct
@@ -3851,10 +3851,6 @@ r_struct
 id|sk_buff
 op_star
 id|skb
-comma
-r_int
-r_int
-id|family
 )paren
 suffix:semicolon
 r_extern
