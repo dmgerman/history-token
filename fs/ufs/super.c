@@ -6042,7 +6042,13 @@ id|UFS2_MAGIC
 suffix:semicolon
 id|buf-&gt;f_blocks
 op_assign
+id|fs64_to_cpu
+c_func
+(paren
+id|sb
+comma
 id|usb-&gt;fs_u11.fs_u2.fs_dsize
+)paren
 suffix:semicolon
 id|buf-&gt;f_bfree
 op_assign

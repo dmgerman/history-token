@@ -2267,6 +2267,11 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|fs32_to_cpu
+c_func
+(paren
+id|sb
+comma
 id|UFS_SB
 c_func
 (paren
@@ -2280,6 +2285,7 @@ id|cgno
 )paren
 dot
 id|cs_nffree
+)paren
 OL
 id|count
 )paren
