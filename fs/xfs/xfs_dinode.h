@@ -104,10 +104,15 @@ DECL|member|di_pad
 id|__uint8_t
 id|di_pad
 (braket
-l_int|10
+l_int|8
 )braket
 suffix:semicolon
 multiline_comment|/* unused, zeroed space */
+DECL|member|di_flushiter
+id|__uint16_t
+id|di_flushiter
+suffix:semicolon
+multiline_comment|/* incremented on flush */
 DECL|member|di_atime
 id|xfs_timestamp_t
 id|di_atime
@@ -182,6 +187,8 @@ DECL|typedef|xfs_dinode_core_t
 )brace
 id|xfs_dinode_core_t
 suffix:semicolon
+DECL|macro|DI_MAX_FLUSH
+mdefine_line|#define DI_MAX_FLUSH 0xffff
 DECL|struct|xfs_dinode
 r_typedef
 r_struct

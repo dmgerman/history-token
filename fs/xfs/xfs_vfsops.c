@@ -4849,7 +4849,7 @@ id|xfs_lsn_t
 )paren
 l_int|0
 comma
-id|XFS_LOG_FORCE
+id|log_flags
 )paren
 suffix:semicolon
 )brace
