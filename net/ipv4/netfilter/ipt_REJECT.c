@@ -113,7 +113,10 @@ r_int
 id|otcplen
 suffix:semicolon
 id|u_int16_t
-id|tmp
+id|tmp_port
+suffix:semicolon
+id|u_int32_t
+id|tmp_addr
 suffix:semicolon
 r_int
 id|needs_ack
@@ -253,6 +256,10 @@ op_assign
 l_int|0
 suffix:semicolon
 macro_line|#endif
+id|nskb-&gt;nfmark
+op_assign
+l_int|0
+suffix:semicolon
 id|tcph
 op_assign
 (paren
@@ -271,18 +278,19 @@ id|nskb-&gt;nh.iph-&gt;ihl
 )paren
 suffix:semicolon
 multiline_comment|/* Swap source and dest */
-id|nskb-&gt;nh.iph-&gt;daddr
+id|tmp_addr
 op_assign
-id|xchg
-c_func
-(paren
-op_amp
 id|nskb-&gt;nh.iph-&gt;saddr
-comma
+suffix:semicolon
+id|nskb-&gt;nh.iph-&gt;saddr
+op_assign
 id|nskb-&gt;nh.iph-&gt;daddr
-)paren
 suffix:semicolon
-id|tmp
+id|nskb-&gt;nh.iph-&gt;daddr
+op_assign
+id|tmp_addr
+suffix:semicolon
+id|tmp_port
 op_assign
 id|tcph-&gt;source
 suffix:semicolon
@@ -292,7 +300,7 @@ id|tcph-&gt;dest
 suffix:semicolon
 id|tcph-&gt;dest
 op_assign
-id|tmp
+id|tmp_port
 suffix:semicolon
 multiline_comment|/* Truncate to length (no data) */
 id|tcph-&gt;doff

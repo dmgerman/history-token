@@ -47,9 +47,9 @@ op_star
 id|sk
 comma
 r_struct
-id|llc_conn_state_ev
+id|sk_buff
 op_star
-id|ev
+id|skb
 )paren
 suffix:semicolon
 r_static
@@ -68,7 +68,7 @@ op_star
 id|trans
 comma
 r_struct
-id|llc_conn_state_ev
+id|sk_buff
 op_star
 id|ev
 )paren
@@ -86,9 +86,9 @@ op_star
 id|sk
 comma
 r_struct
-id|llc_conn_state_ev
+id|sk_buff
 op_star
-id|ev
+id|skb
 )paren
 suffix:semicolon
 multiline_comment|/* Offset table on connection states transition diagram */
@@ -103,82 +103,7 @@ id|NBR_CONN_STATES
 id|NBR_CONN_EV
 )braket
 suffix:semicolon
-multiline_comment|/**&n; *&t;llc_conn_alloc_event: allocates an event&n; *&t;@sk: socket that event is associated&n; *&n; *&t;Returns pointer to allocated connection on success, %NULL on failure.&n; */
-DECL|function|llc_conn_alloc_ev
-r_struct
-id|llc_conn_state_ev
-op_star
-id|llc_conn_alloc_ev
-c_func
-(paren
-r_struct
-id|sock
-op_star
-id|sk
-)paren
-(brace
-r_struct
-id|llc_conn_state_ev
-op_star
-id|ev
-op_assign
-l_int|NULL
-suffix:semicolon
-multiline_comment|/* verify connection is valid, active and open */
-r_if
-c_cond
-(paren
-id|llc_sk
-c_func
-(paren
-id|sk
-)paren
-op_member_access_from_pointer
-id|state
-op_ne
-id|LLC_CONN_OUT_OF_SVC
-)paren
-(brace
-multiline_comment|/* get event structure to build a station event */
-id|ev
-op_assign
-id|kmalloc
-c_func
-(paren
-r_sizeof
-(paren
-op_star
-id|ev
-)paren
-comma
-id|GFP_ATOMIC
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|ev
-)paren
-id|memset
-c_func
-(paren
-id|ev
-comma
-l_int|0
-comma
-r_sizeof
-(paren
-op_star
-id|ev
-)paren
-)paren
-suffix:semicolon
-)brace
-r_return
-id|ev
-suffix:semicolon
-)brace
-multiline_comment|/**&n; *&t;llc_conn_send_event - sends event to connection state machine&n; *&t;@sk: connection&n; *&t;@ev: occurred event&n; *&n; *&t;Sends an event to connection state machine. after processing event&n; *&t;(executing it&squot;s actions and changing state), upper layer will be&n; *&t;indicated or confirmed, if needed. Returns 0 for success, 1 for&n; *&t;failure. The socket lock has to be held before calling this function.&n; */
+multiline_comment|/**&n; *&t;llc_conn_send_event - sends event to connection state machine&n; *&t;@sk: connection&n; *&t;@skb: occurred event&n; *&n; *&t;Sends an event to connection state machine. after processing event&n; *&t;(executing it&squot;s actions and changing state), upper layer will be&n; *&t;indicated or confirmed, if needed. Returns 0 for success, 1 for&n; *&t;failure. The socket lock has to be held before calling this function.&n; */
 DECL|function|llc_conn_send_ev
 r_int
 id|llc_conn_send_ev
@@ -190,9 +115,9 @@ op_star
 id|sk
 comma
 r_struct
-id|llc_conn_state_ev
+id|sk_buff
 op_star
-id|ev
+id|skb
 )paren
 (brace
 multiline_comment|/* sending event to state machine */
@@ -204,7 +129,7 @@ c_func
 (paren
 id|sk
 comma
-id|ev
+id|skb
 )paren
 suffix:semicolon
 r_struct
@@ -216,6 +141,17 @@ id|llc_sk
 c_func
 (paren
 id|sk
+)paren
+suffix:semicolon
+r_struct
+id|llc_conn_state_ev
+op_star
+id|ev
+op_assign
+id|llc_conn_ev
+c_func
+(paren
+id|skb
 )paren
 suffix:semicolon
 id|u8
@@ -240,7 +176,7 @@ suffix:semicolon
 id|llc_conn_free_ev
 c_func
 (paren
-id|ev
+id|skb
 )paren
 suffix:semicolon
 macro_line|#ifdef THIS_BREAKS_DISCONNECT_NOTIFICATION_BADLY
@@ -415,7 +351,7 @@ id|sk
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/**&n; *&t;llc_conn_rtn_pdu - sends received data pdu to upper layer&n; *&t;@sk: Active connection&n; *&t;@skb: Received data frame&n; *&t;@ev: Occurred event&n; *&n; *&t;Sends received data pdu to upper layer (by using indicate function).&n; *&t;Prepares service parameters (prim and prim_data). calling indication&n; *&t;function will be done in llc_conn_send_ev.&n; */
+multiline_comment|/**&n; *&t;llc_conn_rtn_pdu - sends received data pdu to upper layer&n; *&t;@sk: Active connection&n; *&t;@skb: Received data frame&n; *&n; *&t;Sends received data pdu to upper layer (by using indicate function).&n; *&t;Prepares service parameters (prim and prim_data). calling indication&n; *&t;function will be done in llc_conn_send_ev.&n; */
 DECL|function|llc_conn_rtn_pdu
 r_void
 id|llc_conn_rtn_pdu
@@ -430,13 +366,19 @@ r_struct
 id|sk_buff
 op_star
 id|skb
-comma
+)paren
+(brace
 r_struct
 id|llc_conn_state_ev
 op_star
 id|ev
+op_assign
+id|llc_conn_ev
+c_func
+(paren
+id|skb
 )paren
-(brace
+suffix:semicolon
 r_struct
 id|llc_opt
 op_star
@@ -1155,18 +1097,29 @@ id|skb
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/**&n; *&t;llc_conn_free_ev - free event&n; *&t;@ev: event to free&n; *&n; *&t;Free allocated event.&n; */
+multiline_comment|/**&n; *&t;llc_conn_free_ev - free event&n; *&t;@skb: event to free&n; *&n; *&t;Free allocated event.&n; */
 DECL|function|llc_conn_free_ev
 r_void
 id|llc_conn_free_ev
 c_func
 (paren
 r_struct
+id|sk_buff
+op_star
+id|skb
+)paren
+(brace
+r_struct
 id|llc_conn_state_ev
 op_star
 id|ev
+op_assign
+id|llc_conn_ev
+c_func
+(paren
+id|skb
 )paren
-(brace
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1175,18 +1128,17 @@ op_eq
 id|LLC_CONN_EV_TYPE_PDU
 )paren
 (brace
-multiline_comment|/* free the frame that binded to this event */
+multiline_comment|/* free the frame that is bound to this event */
 r_struct
 id|llc_pdu_sn
 op_star
 id|pdu
 op_assign
+id|llc_pdu_sn_hdr
+c_func
 (paren
-r_struct
-id|llc_pdu_sn
-op_star
+id|skb
 )paren
-id|ev-&gt;data.pdu.skb-&gt;nh.raw
 suffix:semicolon
 r_if
 c_cond
@@ -1206,19 +1158,44 @@ id|ev-&gt;ind_prim
 id|kfree_skb
 c_func
 (paren
-id|ev-&gt;data.pdu.skb
+id|skb
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* free event structure to free list of the same */
-id|kfree
+r_else
+r_if
+c_cond
+(paren
+id|ev-&gt;type
+op_eq
+id|LLC_CONN_EV_TYPE_PRIM
+op_logical_and
+id|ev-&gt;data.prim.prim
+op_ne
+id|LLC_DATA_PRIM
+)paren
+id|kfree_skb
 c_func
 (paren
-id|ev
+id|skb
+)paren
+suffix:semicolon
+r_else
+r_if
+c_cond
+(paren
+id|ev-&gt;type
+op_eq
+id|LLC_CONN_EV_TYPE_P_TMR
+)paren
+id|kfree_skb
+c_func
+(paren
+id|skb
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/**&n; *&t;llc_conn_service - finds transition and changes state of connection&n; *&t;@sk: connection&n; *&t;@ev: happened event&n; *&n; *&t;This function finds transition that matches with happened event, then&n; *&t;executes related actions and finally changes state of connection.&n; *&t;Returns 0 for success, 1 for failure.&n; */
+multiline_comment|/**&n; *&t;llc_conn_service - finds transition and changes state of connection&n; *&t;@sk: connection&n; *&t;@skb: happened event&n; *&n; *&t;This function finds transition that matches with happened event, then&n; *&t;executes related actions and finally changes state of connection.&n; *&t;Returns 0 for success, 1 for failure.&n; */
 DECL|function|llc_conn_service
 r_static
 r_int
@@ -1231,9 +1208,9 @@ op_star
 id|sk
 comma
 r_struct
-id|llc_conn_state_ev
+id|sk_buff
 op_star
-id|ev
+id|skb
 )paren
 (brace
 r_int
@@ -1273,7 +1250,7 @@ c_func
 (paren
 id|sk
 comma
-id|ev
+id|skb
 )paren
 suffix:semicolon
 r_if
@@ -1291,7 +1268,7 @@ id|sk
 comma
 id|trans
 comma
-id|ev
+id|skb
 )paren
 suffix:semicolon
 r_if
@@ -1321,12 +1298,12 @@ r_return
 id|rc
 suffix:semicolon
 )brace
-multiline_comment|/**&n; *&t;llc_qualify_conn_ev - finds transition for event&n; *&t;@sk: connection&n; *&t;@ev: happened event&n; *&n; *&t;This function finds transition that matches with happened event.&n; *&t;Returns pointer to found transition on success, %NULL otherwise.&n; */
+multiline_comment|/**&n; *&t;llc_qualify_conn_ev - finds transition for event&n; *&t;@sk: connection&n; *&t;@skb: happened event&n; *&n; *&t;This function finds transition that matches with happened event.&n; *&t;Returns pointer to found transition on success, %NULL otherwise.&n; */
+DECL|function|llc_qualify_conn_ev
 r_static
 r_struct
 id|llc_conn_state_trans
 op_star
-DECL|function|llc_qualify_conn_ev
 id|llc_qualify_conn_ev
 c_func
 (paren
@@ -1336,9 +1313,9 @@ op_star
 id|sk
 comma
 r_struct
-id|llc_conn_state_ev
+id|sk_buff
 op_star
-id|ev
+id|skb
 )paren
 (brace
 r_struct
@@ -1352,6 +1329,28 @@ op_star
 id|next_qualifier
 suffix:semicolon
 r_struct
+id|llc_conn_state_ev
+op_star
+id|ev
+op_assign
+id|llc_conn_ev
+c_func
+(paren
+id|skb
+)paren
+suffix:semicolon
+r_struct
+id|llc_opt
+op_star
+id|llc
+op_assign
+id|llc_sk
+c_func
+(paren
+id|sk
+)paren
+suffix:semicolon
+r_struct
 id|llc_conn_state
 op_star
 id|curr_state
@@ -1359,13 +1358,7 @@ op_assign
 op_amp
 id|llc_conn_state_table
 (braket
-id|llc_sk
-c_func
-(paren
-id|sk
-)paren
-op_member_access_from_pointer
-id|state
+id|llc-&gt;state
 op_minus
 l_int|1
 )braket
@@ -1381,13 +1374,7 @@ op_plus
 id|llc_find_offset
 c_func
 (paren
-id|llc_sk
-c_func
-(paren
-id|sk
-)paren
-op_member_access_from_pointer
-id|state
+id|llc-&gt;state
 op_minus
 l_int|1
 comma
@@ -1420,7 +1407,7 @@ id|ev
 (paren
 id|sk
 comma
-id|ev
+id|skb
 )paren
 )paren
 (brace
@@ -1450,7 +1437,7 @@ id|next_qualifier
 (paren
 id|sk
 comma
-id|ev
+id|skb
 )paren
 suffix:semicolon
 id|next_qualifier
@@ -1479,7 +1466,7 @@ r_return
 l_int|NULL
 suffix:semicolon
 )brace
-multiline_comment|/**&n; *&t;llc_exec_conn_trans_actions - executes related actions&n; *&t;@sk: connection&n; *&t;@trans: transition that it&squot;s actions must be performed&n; *&t;@ev: happened event&n; *&n; *&t;Executes actions that is related to happened event. Returns 0 for&n; *&t;success, 1 to indicate failure of at least one action or 2 if the&n; *&t;connection was freed (llc_conn_disc was called)&n; */
+multiline_comment|/**&n; *&t;llc_exec_conn_trans_actions - executes related actions&n; *&t;@sk: connection&n; *&t;@trans: transition that it&squot;s actions must be performed&n; *&t;@skb: happened event&n; *&n; *&t;Executes actions that is related to happened event. Returns 0 for&n; *&t;success, 1 to indicate failure of at least one action or 2 if the&n; *&t;connection was freed (llc_conn_disc was called)&n; */
 DECL|function|llc_exec_conn_trans_actions
 r_static
 r_int
@@ -1497,9 +1484,9 @@ op_star
 id|trans
 comma
 r_struct
-id|llc_conn_state_ev
+id|sk_buff
 op_star
-id|ev
+id|skb
 )paren
 (brace
 r_int
@@ -1537,7 +1524,7 @@ id|next_action
 (paren
 id|sk
 comma
-id|ev
+id|skb
 )paren
 suffix:semicolon
 r_if

@@ -108,36 +108,6 @@ l_int|1
 suffix:semicolon
 )brace
 suffix:semicolon
-macro_line|#ifdef __KERNEL__
-macro_line|#include &lt;linux/list.h&gt;
-macro_line|#include &lt;linux/netfilter_ipv4/lockhelp.h&gt;
-multiline_comment|/* Protects NAT hash tables, and NAT-private part of conntracks. */
-DECL|variable|ip_nat_lock
-id|DECLARE_RWLOCK_EXTERN
-c_func
-(paren
-id|ip_nat_lock
-)paren
-suffix:semicolon
-multiline_comment|/* Hashes for by-source and IP/protocol. */
-DECL|struct|ip_nat_hash
-r_struct
-id|ip_nat_hash
-(brace
-DECL|member|list
-r_struct
-id|list_head
-id|list
-suffix:semicolon
-multiline_comment|/* conntrack we&squot;re embedded in: NULL if not in hash. */
-DECL|member|conntrack
-r_struct
-id|ip_conntrack
-op_star
-id|conntrack
-suffix:semicolon
-)brace
-suffix:semicolon
 multiline_comment|/* Worst case: local-out manip + 1 post-routing, and reverse dirn. */
 DECL|macro|IP_NAT_MAX_MANIPS
 mdefine_line|#define IP_NAT_MAX_MANIPS (2*3)
@@ -165,6 +135,36 @@ DECL|member|manip
 r_struct
 id|ip_conntrack_manip
 id|manip
+suffix:semicolon
+)brace
+suffix:semicolon
+macro_line|#ifdef __KERNEL__
+macro_line|#include &lt;linux/list.h&gt;
+macro_line|#include &lt;linux/netfilter_ipv4/lockhelp.h&gt;
+multiline_comment|/* Protects NAT hash tables, and NAT-private part of conntracks. */
+DECL|variable|ip_nat_lock
+id|DECLARE_RWLOCK_EXTERN
+c_func
+(paren
+id|ip_nat_lock
+)paren
+suffix:semicolon
+multiline_comment|/* Hashes for by-source and IP/protocol. */
+DECL|struct|ip_nat_hash
+r_struct
+id|ip_nat_hash
+(brace
+DECL|member|list
+r_struct
+id|list_head
+id|list
+suffix:semicolon
+multiline_comment|/* conntrack we&squot;re embedded in: NULL if not in hash. */
+DECL|member|conntrack
+r_struct
+id|ip_conntrack
+op_star
+id|conntrack
 suffix:semicolon
 )brace
 suffix:semicolon

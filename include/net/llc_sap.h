@@ -136,9 +136,9 @@ op_star
 id|sap
 comma
 r_struct
-id|llc_sap_state_ev
+id|sk_buff
 op_star
-id|ev
+id|skb
 )paren
 suffix:semicolon
 r_extern
@@ -155,11 +155,6 @@ r_struct
 id|sk_buff
 op_star
 id|skb
-comma
-r_struct
-id|llc_sap_state_ev
-op_star
-id|ev
 )paren
 suffix:semicolon
 r_extern
@@ -176,19 +171,6 @@ r_struct
 id|sk_buff
 op_star
 id|skb
-)paren
-suffix:semicolon
-r_extern
-r_struct
-id|llc_sap_state_ev
-op_star
-id|llc_sap_alloc_ev
-c_func
-(paren
-r_struct
-id|llc_sap
-op_star
-id|sap
 )paren
 suffix:semicolon
 macro_line|#endif /* LLC_SAP_H */

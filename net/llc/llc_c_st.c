@@ -1380,11 +1380,11 @@ comma
 )brace
 suffix:semicolon
 multiline_comment|/*&n; * Common dummy state transition; must be last entry for all state&n; * transition groups - it&squot;ll be on .bss, so will be zeroed.&n; */
-DECL|variable|llc_common_state_trans_n
+DECL|variable|llc_common_state_trans_end
 r_static
 r_struct
 id|llc_conn_state_trans
-id|llc_common_state_trans_n
+id|llc_common_state_trans_end
 suffix:semicolon
 multiline_comment|/* LLC_CONN_STATE_ADM transitions */
 multiline_comment|/* State transitions for LLC_CONN_EV_CONN_REQ event */
@@ -1737,14 +1737,14 @@ l_int|1
 )braket
 op_assign
 op_amp
-id|llc_common_state_trans_n
+id|llc_common_state_trans_end
 comma
 (braket
 l_int|2
 )braket
 op_assign
 op_amp
-id|llc_common_state_trans_n
+id|llc_common_state_trans_end
 comma
 multiline_comment|/* local_busy */
 (braket
@@ -1752,7 +1752,7 @@ l_int|3
 )braket
 op_assign
 op_amp
-id|llc_common_state_trans_n
+id|llc_common_state_trans_end
 comma
 multiline_comment|/* init_pf_cycle */
 (braket
@@ -1760,7 +1760,7 @@ l_int|4
 )braket
 op_assign
 op_amp
-id|llc_common_state_trans_n
+id|llc_common_state_trans_end
 comma
 multiline_comment|/* timer */
 (braket
@@ -1797,7 +1797,7 @@ l_int|9
 )braket
 op_assign
 op_amp
-id|llc_common_state_trans_n
+id|llc_common_state_trans_end
 comma
 )brace
 suffix:semicolon
@@ -2452,7 +2452,7 @@ l_int|0
 )braket
 op_assign
 op_amp
-id|llc_common_state_trans_n
+id|llc_common_state_trans_end
 comma
 multiline_comment|/* Request */
 (braket
@@ -2460,7 +2460,7 @@ l_int|1
 )braket
 op_assign
 op_amp
-id|llc_common_state_trans_n
+id|llc_common_state_trans_end
 comma
 multiline_comment|/* local busy */
 (braket
@@ -2468,7 +2468,7 @@ l_int|2
 )braket
 op_assign
 op_amp
-id|llc_common_state_trans_n
+id|llc_common_state_trans_end
 comma
 multiline_comment|/* init_pf_cycle */
 (braket
@@ -2498,7 +2498,7 @@ l_int|6
 )braket
 op_assign
 op_amp
-id|llc_common_state_trans_n
+id|llc_common_state_trans_end
 comma
 (braket
 l_int|7
@@ -2534,7 +2534,7 @@ l_int|11
 )braket
 op_assign
 op_amp
-id|llc_common_state_trans_n
+id|llc_common_state_trans_end
 comma
 )brace
 suffix:semicolon
@@ -5528,7 +5528,7 @@ l_int|5
 )braket
 op_assign
 op_amp
-id|llc_common_state_trans_n
+id|llc_common_state_trans_end
 comma
 (braket
 l_int|6
@@ -5557,7 +5557,7 @@ l_int|9
 )braket
 op_assign
 op_amp
-id|llc_common_state_trans_n
+id|llc_common_state_trans_end
 comma
 (braket
 l_int|10
@@ -5572,7 +5572,7 @@ l_int|11
 )braket
 op_assign
 op_amp
-id|llc_common_state_trans_n
+id|llc_common_state_trans_end
 comma
 (braket
 l_int|12
@@ -5629,7 +5629,7 @@ l_int|19
 )braket
 op_assign
 op_amp
-id|llc_common_state_trans_n
+id|llc_common_state_trans_end
 comma
 (braket
 l_int|20
@@ -5876,7 +5876,7 @@ l_int|54
 )braket
 op_assign
 op_amp
-id|llc_common_state_trans_n
+id|llc_common_state_trans_end
 comma
 )brace
 suffix:semicolon
@@ -9182,7 +9182,7 @@ l_int|5
 )braket
 op_assign
 op_amp
-id|llc_common_state_trans_n
+id|llc_common_state_trans_end
 comma
 (braket
 l_int|6
@@ -9232,7 +9232,7 @@ l_int|12
 )braket
 op_assign
 op_amp
-id|llc_common_state_trans_n
+id|llc_common_state_trans_end
 comma
 (braket
 l_int|13
@@ -9247,7 +9247,7 @@ l_int|14
 )braket
 op_assign
 op_amp
-id|llc_common_state_trans_n
+id|llc_common_state_trans_end
 comma
 (braket
 l_int|15
@@ -9318,7 +9318,7 @@ l_int|24
 )braket
 op_assign
 op_amp
-id|llc_common_state_trans_n
+id|llc_common_state_trans_end
 comma
 (braket
 l_int|25
@@ -9558,7 +9558,7 @@ l_int|58
 )braket
 op_assign
 op_amp
-id|llc_common_state_trans_n
+id|llc_common_state_trans_end
 comma
 )brace
 suffix:semicolon
@@ -12235,7 +12235,7 @@ l_int|2
 )braket
 op_assign
 op_amp
-id|llc_common_state_trans_n
+id|llc_common_state_trans_end
 comma
 (braket
 l_int|3
@@ -12278,7 +12278,7 @@ l_int|8
 )braket
 op_assign
 op_amp
-id|llc_common_state_trans_n
+id|llc_common_state_trans_end
 comma
 (braket
 l_int|9
@@ -12293,7 +12293,7 @@ l_int|10
 )braket
 op_assign
 op_amp
-id|llc_common_state_trans_n
+id|llc_common_state_trans_end
 comma
 (braket
 l_int|11
@@ -12357,7 +12357,7 @@ l_int|19
 )braket
 op_assign
 op_amp
-id|llc_common_state_trans_n
+id|llc_common_state_trans_end
 comma
 (braket
 l_int|20
@@ -12590,7 +12590,7 @@ l_int|52
 )braket
 op_assign
 op_amp
-id|llc_common_state_trans_n
+id|llc_common_state_trans_end
 comma
 )brace
 suffix:semicolon
@@ -14274,7 +14274,7 @@ l_int|3
 )braket
 op_assign
 op_amp
-id|llc_common_state_trans_n
+id|llc_common_state_trans_end
 comma
 (braket
 l_int|4
@@ -14289,14 +14289,14 @@ l_int|5
 )braket
 op_assign
 op_amp
-id|llc_common_state_trans_n
+id|llc_common_state_trans_end
 comma
 (braket
 l_int|6
 )braket
 op_assign
 op_amp
-id|llc_common_state_trans_n
+id|llc_common_state_trans_end
 comma
 multiline_comment|/* Initiate PF Cycle */
 (braket
@@ -14340,7 +14340,7 @@ l_int|12
 )braket
 op_assign
 op_amp
-id|llc_common_state_trans_n
+id|llc_common_state_trans_end
 comma
 (braket
 l_int|13
@@ -14559,7 +14559,7 @@ l_int|43
 )braket
 op_assign
 op_amp
-id|llc_common_state_trans_n
+id|llc_common_state_trans_end
 comma
 )brace
 suffix:semicolon
@@ -16437,7 +16437,7 @@ l_int|3
 )braket
 op_assign
 op_amp
-id|llc_common_state_trans_n
+id|llc_common_state_trans_end
 comma
 (braket
 l_int|4
@@ -16466,14 +16466,14 @@ l_int|7
 )braket
 op_assign
 op_amp
-id|llc_common_state_trans_n
+id|llc_common_state_trans_end
 comma
 (braket
 l_int|8
 )braket
 op_assign
 op_amp
-id|llc_common_state_trans_n
+id|llc_common_state_trans_end
 comma
 multiline_comment|/* Initiate PF cycle */
 (braket
@@ -16517,7 +16517,7 @@ l_int|14
 )braket
 op_assign
 op_amp
-id|llc_common_state_trans_n
+id|llc_common_state_trans_end
 comma
 (braket
 l_int|15
@@ -16736,7 +16736,7 @@ l_int|45
 )braket
 op_assign
 op_amp
-id|llc_common_state_trans_n
+id|llc_common_state_trans_end
 comma
 )brace
 suffix:semicolon
@@ -18392,7 +18392,7 @@ l_int|3
 )braket
 op_assign
 op_amp
-id|llc_common_state_trans_n
+id|llc_common_state_trans_end
 comma
 (braket
 l_int|4
@@ -18407,14 +18407,14 @@ l_int|5
 )braket
 op_assign
 op_amp
-id|llc_common_state_trans_n
+id|llc_common_state_trans_end
 comma
 (braket
 l_int|6
 )braket
 op_assign
 op_amp
-id|llc_common_state_trans_n
+id|llc_common_state_trans_end
 comma
 multiline_comment|/* Initiate PF cycle */
 (braket
@@ -18458,7 +18458,7 @@ l_int|12
 )braket
 op_assign
 op_amp
-id|llc_common_state_trans_n
+id|llc_common_state_trans_end
 comma
 (braket
 l_int|13
@@ -18677,7 +18677,7 @@ l_int|43
 )braket
 op_assign
 op_amp
-id|llc_common_state_trans_n
+id|llc_common_state_trans_end
 comma
 )brace
 suffix:semicolon
@@ -19641,14 +19641,14 @@ l_int|1
 )braket
 op_assign
 op_amp
-id|llc_common_state_trans_n
+id|llc_common_state_trans_end
 comma
 (braket
 l_int|2
 )braket
 op_assign
 op_amp
-id|llc_common_state_trans_n
+id|llc_common_state_trans_end
 comma
 multiline_comment|/* Local busy */
 (braket
@@ -19656,7 +19656,7 @@ l_int|3
 )braket
 op_assign
 op_amp
-id|llc_common_state_trans_n
+id|llc_common_state_trans_end
 comma
 multiline_comment|/* Initiate PF cycle */
 (braket
@@ -19686,7 +19686,7 @@ l_int|7
 )braket
 op_assign
 op_amp
-id|llc_common_state_trans_n
+id|llc_common_state_trans_end
 comma
 (braket
 l_int|8
@@ -19743,7 +19743,7 @@ l_int|15
 )braket
 op_assign
 op_amp
-id|llc_common_state_trans_n
+id|llc_common_state_trans_end
 comma
 )brace
 suffix:semicolon
@@ -20889,14 +20889,14 @@ l_int|1
 )braket
 op_assign
 op_amp
-id|llc_common_state_trans_n
+id|llc_common_state_trans_end
 comma
 (braket
 l_int|2
 )braket
 op_assign
 op_amp
-id|llc_common_state_trans_n
+id|llc_common_state_trans_end
 comma
 multiline_comment|/* Local busy */
 (braket
@@ -20904,7 +20904,7 @@ l_int|3
 )braket
 op_assign
 op_amp
-id|llc_common_state_trans_n
+id|llc_common_state_trans_end
 comma
 multiline_comment|/* Initiate PF cycle */
 (braket
@@ -20941,7 +20941,7 @@ l_int|8
 )braket
 op_assign
 op_amp
-id|llc_common_state_trans_n
+id|llc_common_state_trans_end
 comma
 (braket
 l_int|9
@@ -20998,7 +20998,7 @@ l_int|16
 )braket
 op_assign
 op_amp
-id|llc_common_state_trans_n
+id|llc_common_state_trans_end
 comma
 )brace
 suffix:semicolon
@@ -21652,14 +21652,14 @@ l_int|1
 )braket
 op_assign
 op_amp
-id|llc_common_state_trans_n
+id|llc_common_state_trans_end
 comma
 (braket
 l_int|2
 )braket
 op_assign
 op_amp
-id|llc_common_state_trans_n
+id|llc_common_state_trans_end
 comma
 multiline_comment|/* Local busy */
 (braket
@@ -21667,7 +21667,7 @@ l_int|3
 )braket
 op_assign
 op_amp
-id|llc_common_state_trans_n
+id|llc_common_state_trans_end
 comma
 multiline_comment|/* Initiate PF cycle */
 (braket
@@ -21690,7 +21690,7 @@ l_int|6
 )braket
 op_assign
 op_amp
-id|llc_common_state_trans_n
+id|llc_common_state_trans_end
 comma
 (braket
 l_int|7
@@ -21740,7 +21740,7 @@ l_int|13
 )braket
 op_assign
 op_amp
-id|llc_common_state_trans_n
+id|llc_common_state_trans_end
 comma
 )brace
 suffix:semicolon
@@ -21833,14 +21833,14 @@ l_int|1
 )braket
 op_assign
 op_amp
-id|llc_common_state_trans_n
+id|llc_common_state_trans_end
 comma
 (braket
 l_int|2
 )braket
 op_assign
 op_amp
-id|llc_common_state_trans_n
+id|llc_common_state_trans_end
 comma
 multiline_comment|/* local busy */
 (braket
@@ -21848,7 +21848,7 @@ l_int|3
 )braket
 op_assign
 op_amp
-id|llc_common_state_trans_n
+id|llc_common_state_trans_end
 comma
 multiline_comment|/* init_pf_cycle */
 (braket
@@ -21856,7 +21856,7 @@ l_int|4
 )braket
 op_assign
 op_amp
-id|llc_common_state_trans_n
+id|llc_common_state_trans_end
 comma
 multiline_comment|/* timer */
 (braket
@@ -21864,7 +21864,7 @@ l_int|5
 )braket
 op_assign
 op_amp
-id|llc_common_state_trans_n
+id|llc_common_state_trans_end
 comma
 multiline_comment|/* receive */
 )brace
@@ -21875,9 +21875,16 @@ r_struct
 id|llc_conn_state
 id|llc_conn_state_table
 (braket
+id|NBR_CONN_STATES
 )braket
 op_assign
 (brace
+(braket
+id|LLC_CONN_STATE_ADM
+op_minus
+l_int|1
+)braket
+op_assign
 (brace
 dot
 id|current_state
@@ -21891,6 +21898,12 @@ id|llc_adm_state_transitions
 comma
 )brace
 comma
+(braket
+id|LLC_CONN_STATE_SETUP
+op_minus
+l_int|1
+)braket
+op_assign
 (brace
 dot
 id|current_state
@@ -21904,6 +21917,12 @@ id|llc_setup_state_transitions
 comma
 )brace
 comma
+(braket
+id|LLC_CONN_STATE_NORMAL
+op_minus
+l_int|1
+)braket
+op_assign
 (brace
 dot
 id|current_state
@@ -21917,6 +21936,12 @@ id|llc_normal_state_transitions
 comma
 )brace
 comma
+(braket
+id|LLC_CONN_STATE_BUSY
+op_minus
+l_int|1
+)braket
+op_assign
 (brace
 dot
 id|current_state
@@ -21930,6 +21955,12 @@ id|llc_busy_state_transitions
 comma
 )brace
 comma
+(braket
+id|LLC_CONN_STATE_REJ
+op_minus
+l_int|1
+)braket
+op_assign
 (brace
 dot
 id|current_state
@@ -21943,6 +21974,12 @@ id|llc_reject_state_transitions
 comma
 )brace
 comma
+(braket
+id|LLC_CONN_STATE_AWAIT
+op_minus
+l_int|1
+)braket
+op_assign
 (brace
 dot
 id|current_state
@@ -21956,6 +21993,12 @@ id|llc_await_state_transitions
 comma
 )brace
 comma
+(braket
+id|LLC_CONN_STATE_AWAIT_BUSY
+op_minus
+l_int|1
+)braket
+op_assign
 (brace
 dot
 id|current_state
@@ -21969,6 +22012,12 @@ id|llc_await_busy_state_transitions
 comma
 )brace
 comma
+(braket
+id|LLC_CONN_STATE_AWAIT_REJ
+op_minus
+l_int|1
+)braket
+op_assign
 (brace
 dot
 id|current_state
@@ -21982,6 +22031,12 @@ id|llc_await_rejct_state_transitions
 comma
 )brace
 comma
+(braket
+id|LLC_CONN_STATE_D_CONN
+op_minus
+l_int|1
+)braket
+op_assign
 (brace
 dot
 id|current_state
@@ -21995,6 +22050,12 @@ id|llc_d_conn_state_transitions
 comma
 )brace
 comma
+(braket
+id|LLC_CONN_STATE_RESET
+op_minus
+l_int|1
+)braket
+op_assign
 (brace
 dot
 id|current_state
@@ -22008,6 +22069,12 @@ id|llc_rst_state_transitions
 comma
 )brace
 comma
+(braket
+id|LLC_CONN_STATE_ERROR
+op_minus
+l_int|1
+)braket
+op_assign
 (brace
 dot
 id|current_state
@@ -22021,6 +22088,12 @@ id|llc_error_state_transitions
 comma
 )brace
 comma
+(braket
+id|LLC_CONN_STATE_TEMP
+op_minus
+l_int|1
+)braket
+op_assign
 (brace
 dot
 id|current_state

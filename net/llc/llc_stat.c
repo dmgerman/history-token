@@ -7,11 +7,11 @@ macro_line|#include &lt;net/llc_actn.h&gt;
 macro_line|#include &lt;net/llc_stat.h&gt;
 multiline_comment|/* COMMON STATION STATE transitions */
 multiline_comment|/* dummy last-transition indicator; common to all state transition groups&n; * last entry for this state&n; * all members are zeros, .bss zeroes it&n; */
-DECL|variable|llc_stat_state_trans_n
+DECL|variable|llc_stat_state_trans_end
 r_static
 r_struct
 id|llc_station_state_trans
-id|llc_stat_state_trans_n
+id|llc_stat_state_trans_end
 suffix:semicolon
 multiline_comment|/* DOWN STATE transitions */
 multiline_comment|/* state transition for LLC_STATION_EV_ENABLE_WITH_DUP_ADDR_CHECK event */
@@ -157,7 +157,7 @@ l_int|2
 )braket
 op_assign
 op_amp
-id|llc_stat_state_trans_n
+id|llc_stat_state_trans_end
 comma
 )brace
 suffix:semicolon
@@ -341,7 +341,7 @@ l_int|3
 )braket
 op_assign
 op_amp
-id|llc_stat_state_trans_n
+id|llc_stat_state_trans_end
 comma
 )brace
 suffix:semicolon
@@ -550,6 +550,7 @@ dot
 id|ev_actions
 op_assign
 id|llc_stat_dupaddr_state_actions_4
+comma
 )brace
 suffix:semicolon
 multiline_comment|/* state transition for LLC_STATION_EV_ACK_TMR_EXP_EQ_RETRY_CNT_MAX_RETRY&n; * event&n; */
@@ -709,7 +710,8 @@ l_int|6
 )braket
 op_assign
 op_amp
-id|llc_stat_state_trans_n
+id|llc_stat_state_trans_end
+comma
 )brace
 suffix:semicolon
 DECL|variable|llc_station_state_table
@@ -721,6 +723,12 @@ id|LLC_NBR_STATION_STATES
 )braket
 op_assign
 (brace
+(braket
+id|LLC_STATION_STATE_DOWN
+op_minus
+l_int|1
+)braket
+op_assign
 (brace
 dot
 id|curr_state
@@ -734,6 +742,12 @@ id|llc_stat_dwn_state_trans
 comma
 )brace
 comma
+(braket
+id|LLC_STATION_STATE_DUP_ADDR_CHK
+op_minus
+l_int|1
+)braket
+op_assign
 (brace
 dot
 id|curr_state
@@ -747,6 +761,12 @@ id|llc_stat_dupaddr_state_trans
 comma
 )brace
 comma
+(braket
+id|LLC_STATION_STATE_UP
+op_minus
+l_int|1
+)braket
+op_assign
 (brace
 dot
 id|curr_state
@@ -759,6 +779,7 @@ op_assign
 id|llc_stat_up_state_trans
 comma
 )brace
+comma
 )brace
 suffix:semicolon
 eof

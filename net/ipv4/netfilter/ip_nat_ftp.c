@@ -1350,16 +1350,9 @@ id|i
 op_assign
 l_int|0
 suffix:semicolon
-(paren
 id|i
 OL
-id|MAX_PORTS
-)paren
-op_logical_and
-id|ports
-(braket
-id|i
-)braket
+id|ports_c
 suffix:semicolon
 id|i
 op_increment

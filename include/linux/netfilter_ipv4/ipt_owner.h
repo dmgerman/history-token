@@ -10,6 +10,8 @@ DECL|macro|IPT_OWNER_PID
 mdefine_line|#define IPT_OWNER_PID&t;0x04
 DECL|macro|IPT_OWNER_SID
 mdefine_line|#define IPT_OWNER_SID&t;0x08
+DECL|macro|IPT_OWNER_COMM
+mdefine_line|#define IPT_OWNER_COMM&t;0x10
 DECL|struct|ipt_owner_info
 r_struct
 id|ipt_owner_info
@@ -29,6 +31,13 @@ suffix:semicolon
 DECL|member|sid
 id|pid_t
 id|sid
+suffix:semicolon
+DECL|member|comm
+r_char
+id|comm
+(braket
+l_int|16
+)braket
 suffix:semicolon
 DECL|member|match
 DECL|member|invert
