@@ -2038,7 +2038,7 @@ suffix:semicolon
 id|print_sense
 c_func
 (paren
-l_string|&quot;sd&quot;
+l_string|&quot;&quot;
 comma
 id|cmd
 )paren
@@ -2112,7 +2112,7 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;SCSI %s error : host %d channel %d id %d lun %d return code = %x&bslash;n&quot;
+l_string|&quot;SCSI %s error : &lt;%d %d %d %d&gt; return code = 0x%x&bslash;n&quot;
 comma
 (paren
 id|sdt
@@ -2148,7 +2148,7 @@ id|DRIVER_SENSE
 id|print_sense
 c_func
 (paren
-l_string|&quot;sd&quot;
+l_string|&quot;&quot;
 comma
 id|cmd
 )paren
