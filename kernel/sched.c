@@ -8032,7 +8032,17 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;bad: scheduling while atomic!&bslash;n&quot;
+l_string|&quot;scheduling while atomic: &quot;
+l_string|&quot;%s/0x%08x/%d&bslash;n&quot;
+comma
+id|current-&gt;comm
+comma
+id|preempt_count
+c_func
+(paren
+)paren
+comma
+id|current-&gt;pid
 )paren
 suffix:semicolon
 id|dump_stack
