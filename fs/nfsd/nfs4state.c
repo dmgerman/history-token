@@ -6077,7 +6077,7 @@ id|status
 op_assign
 id|nfserr_bad_stateid
 suffix:semicolon
-multiline_comment|/* for new lock stateowners, check that the lock-&gt;v.new.open_stateid&n;&t; * refers to an open stateowner, and that the lockclid&n;&t; * (nfs4_lock-&gt;v.new.clientid) is the same as the&n;&t; * open_stateid-&gt;st_stateowner-&gt;so_client-&gt;clientid&n;&t; */
+multiline_comment|/* for new lock stateowners:&n;&t; * check that the lock-&gt;v.new.open_stateid&n;&t; * refers to an open stateowner&n;&t; *&n;&t; * check that the lockclid (nfs4_lock-&gt;v.new.clientid) is the same&n;&t; * as the open_stateid-&gt;st_stateowner-&gt;so_client-&gt;clientid&n;&t; */
 r_if
 c_cond
 (paren
@@ -8229,7 +8229,25 @@ r_goto
 id|out
 suffix:semicolon
 )brace
-multiline_comment|/* does the clientid in the lock owner own the open stateid? */
+multiline_comment|/* is the new lock seqid presented by the client zero? */
+id|status
+op_assign
+id|nfserr_bad_seqid
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|lock-&gt;v
+dot
+r_new
+dot
+id|lock_seqid
+op_ne
+l_int|0
+)paren
+r_goto
+id|out
+suffix:semicolon
 multiline_comment|/* validate and update open stateid and open seqid */
 id|status
 op_assign
@@ -8306,14 +8324,11 @@ id|status
 op_assign
 id|nfserr_bad_stateid
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|find_lockstateowner_str
+id|lock_sop
+op_assign
+id|find_lockstateowner
 c_func
 (paren
-id|strhashval
-comma
 op_amp
 id|lock-&gt;v
 dot
@@ -8327,10 +8342,12 @@ dot
 r_new
 dot
 id|clientid
-comma
-op_amp
-id|lock_sop
 )paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|lock_sop
 )paren
 r_goto
 id|out
