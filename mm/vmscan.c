@@ -2928,6 +2928,11 @@ r_break
 suffix:semicolon
 )brace
 )brace
+id|throttle_vm_writeout
+c_func
+(paren
+)paren
+suffix:semicolon
 )brace
 multiline_comment|/*&n; * This is the direct reclaim path, for page-allocating processes.  We only&n; * try to reclaim pages from zones which will satisfy the caller&squot;s allocation&n; * request.&n; *&n; * We reclaim from a zone even if that zone is over pages_high.  Because:&n; * a) The caller may be trying to free *extra* pages to satisfy a higher-order&n; *    allocation or&n; * b) The zones may be over pages_high but they must go *over* pages_high to&n; *    satisfy the `incremental min&squot; zone defense algorithm.&n; *&n; * Returns the number of reclaimed pages.&n; *&n; * If a zone is deemed to be full of pinned pages then just give it a light&n; * scan then give up on it.&n; */
 r_static
