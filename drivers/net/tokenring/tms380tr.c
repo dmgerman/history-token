@@ -859,6 +859,7 @@ multiline_comment|/* init the spinlock */
 id|spin_lock_init
 c_func
 (paren
+op_amp
 id|tp-&gt;lock
 )paren
 suffix:semicolon
@@ -5883,6 +5884,9 @@ op_star
 id|tp
 )paren
 op_plus
+(paren
+r_int
+)paren
 id|tp-&gt;dmabuffer
 )paren
 suffix:semicolon

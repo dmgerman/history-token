@@ -3846,13 +3846,13 @@ suffix:semicolon
 )brace
 )brace
 multiline_comment|/*end of for loop*/
-r_return
-suffix:semicolon
 id|LEAVE
 c_func
 (paren
 l_string|&quot;tachyon_interrupt&quot;
 )paren
+suffix:semicolon
+r_return
 suffix:semicolon
 )brace
 DECL|function|handle_SFS_BUF_WARN_interrupt
@@ -19503,14 +19503,14 @@ c_func
 l_string|&quot;Port Name does not match. Txing LOGO.&quot;
 )paren
 suffix:semicolon
-r_return
-l_int|0
-suffix:semicolon
 id|LEAVE
 c_func
 (paren
 l_string|&quot;validate_login&quot;
 )paren
+suffix:semicolon
+r_return
+l_int|0
 suffix:semicolon
 )brace
 DECL|function|add_to_address_cache
