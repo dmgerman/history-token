@@ -584,10 +584,6 @@ DECL|macro|EVENT_SCAN_ALL_EVENTS
 mdefine_line|#define EVENT_SCAN_ALL_EVENTS&t;0xf0000000
 DECL|macro|SURVEILLANCE_TOKEN
 mdefine_line|#define SURVEILLANCE_TOKEN&t;9000
-DECL|macro|SURVEILLANCE_TIMEOUT
-mdefine_line|#define SURVEILLANCE_TIMEOUT&t;1
-DECL|macro|SURVEILLANCE_SCANRATE
-mdefine_line|#define SURVEILLANCE_SCANRATE&t;1
 DECL|macro|LOG_NUMBER
 mdefine_line|#define LOG_NUMBER&t;&t;64&t;&t;/* must be a power of two */
 DECL|macro|LOG_NUMBER_MASK
