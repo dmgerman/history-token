@@ -45,8 +45,8 @@ mdefine_line|#define DRIVER_PRETAKEDOWN() do {&t;&t;&t;&t;&t;&bslash;&n;&t;r128_
 multiline_comment|/* DMA customization:&n; */
 DECL|macro|__HAVE_DMA
 mdefine_line|#define __HAVE_DMA&t;&t;1
-DECL|macro|__HAVE_DMA_IRQ
-mdefine_line|#define __HAVE_DMA_IRQ&t;&t;1
+DECL|macro|__HAVE_IRQ
+mdefine_line|#define __HAVE_IRQ&t;&t;1
 DECL|macro|__HAVE_VBL_IRQ
 mdefine_line|#define __HAVE_VBL_IRQ&t;&t;1
 DECL|macro|__HAVE_SHARED_IRQ

@@ -5,12 +5,12 @@ macro_line|#include &quot;drm.h&quot;
 macro_line|#include &quot;radeon_drm.h&quot;
 macro_line|#include &quot;radeon_drv.h&quot;
 multiline_comment|/* Interrupts - Used for device synchronization and flushing in the&n; * following circumstances:&n; *&n; * - Exclusive FB access with hw idle:&n; *    - Wait for GUI Idle (?) interrupt, then do normal flush.&n; *&n; * - Frame throttling, NV_fence:&n; *    - Drop marker irq&squot;s into command stream ahead of time.&n; *    - Wait on irq&squot;s with lock *not held*&n; *    - Check each for termination condition&n; *&n; * - Internally in cp_getbuffer, etc:&n; *    - as above, but wait with lock held???&n; *&n; * NOTE: These functions are misleadingly named -- the irq&squot;s aren&squot;t&n; * tied to dma at all, this is just a hangover from dri prehistory.&n; */
-DECL|function|dma_service
+DECL|function|irq_handler
 id|irqreturn_t
 id|DRM
 c_func
 (paren
-id|dma_service
+id|irq_handler
 )paren
 (paren
 id|DRM_IRQ_ARGS

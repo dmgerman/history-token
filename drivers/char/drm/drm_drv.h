@@ -8,9 +8,9 @@ macro_line|#ifndef __HAVE_CTX_BITMAP
 DECL|macro|__HAVE_CTX_BITMAP
 mdefine_line|#define __HAVE_CTX_BITMAP&t;&t;0
 macro_line|#endif
-macro_line|#ifndef __HAVE_DMA_IRQ
-DECL|macro|__HAVE_DMA_IRQ
-mdefine_line|#define __HAVE_DMA_IRQ&t;&t;&t;0
+macro_line|#ifndef __HAVE_IRQ
+DECL|macro|__HAVE_IRQ
+mdefine_line|#define __HAVE_IRQ&t;&t;&t;0
 macro_line|#endif
 macro_line|#ifndef __HAVE_DMA_QUEUE
 DECL|macro|__HAVE_DMA_QUEUE
@@ -847,7 +847,9 @@ comma
 l_int|0
 )brace
 comma
-multiline_comment|/* The DRM_IOCTL_DMA ioctl should be defined by the driver.&n;&t; */
+multiline_comment|/* The DRM_IOCTL_DMA ioctl should be defined by the driver. */
+macro_line|#endif
+macro_line|#if __HAVE_IRQ || __HAVE_DMA
 (braket
 id|DRM_IOCTL_NR
 c_func
@@ -1650,7 +1652,7 @@ c_func
 (paren
 )paren
 suffix:semicolon
-macro_line|#if __HAVE_DMA_IRQ
+macro_line|#if __HAVE_IRQ
 r_if
 c_cond
 (paren

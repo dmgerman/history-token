@@ -68,13 +68,13 @@ multiline_comment|/* XXX: Add vblank support? */
 DECL|macro|USE_IRQS
 mdefine_line|#define USE_IRQS 0
 macro_line|#if USE_IRQS
-DECL|macro|__HAVE_DMA_IRQ
-mdefine_line|#define __HAVE_DMA_IRQ&t;&t;1
+DECL|macro|__HAVE_IRQ
+mdefine_line|#define __HAVE_IRQ&t;&t;1
 DECL|macro|__HAVE_SHARED_IRQ
 mdefine_line|#define __HAVE_SHARED_IRQ&t;1
 macro_line|#else
-DECL|macro|__HAVE_DMA_IRQ
-mdefine_line|#define __HAVE_DMA_IRQ          0
+DECL|macro|__HAVE_IRQ
+mdefine_line|#define __HAVE_IRQ          0
 macro_line|#endif
 multiline_comment|/* Buffer customization:&n; */
 DECL|macro|DRIVER_BUF_PRIV_T

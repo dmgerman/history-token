@@ -873,7 +873,7 @@ id|dma
 op_assign
 id|dev-&gt;dma
 suffix:semicolon
-macro_line|#if _HAVE_DMA_IRQ
+macro_line|#if __HAVE_IRQ
 multiline_comment|/* Make sure interrupts are disabled here because the uninstall ioctl&n;&t; * may not have been called from userspace and after dev_private&n;&t; * is freed, it&squot;s too late.&n;&t; */
 r_if
 c_cond

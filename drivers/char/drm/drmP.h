@@ -58,9 +58,9 @@ macro_line|#ifndef __HAVE_DMA
 DECL|macro|__HAVE_DMA
 mdefine_line|#define __HAVE_DMA&t;&t;0
 macro_line|#endif
-macro_line|#ifndef __HAVE_DMA_IRQ
-DECL|macro|__HAVE_DMA_IRQ
-mdefine_line|#define __HAVE_DMA_IRQ&t;&t;0
+macro_line|#ifndef __HAVE_IRQ
+DECL|macro|__HAVE_IRQ
+mdefine_line|#define __HAVE_IRQ&t;&t;0
 macro_line|#endif
 macro_line|#ifndef __HAVE_DMA_WAITLIST
 DECL|macro|__HAVE_DMA_WAITLIST
@@ -3457,7 +3457,9 @@ op_star
 id|filp
 )paren
 suffix:semicolon
-macro_line|#if __HAVE_DMA_IRQ
+macro_line|#endif /* __HAVE_DMA */
+multiline_comment|/* IRQ support (drm_irq.h) */
+macro_line|#if __HAVE_IRQ || __HAVE_DMA
 r_extern
 r_int
 id|DRM
@@ -3485,6 +3487,8 @@ r_int
 id|arg
 )paren
 suffix:semicolon
+macro_line|#endif
+macro_line|#if __HAVE_IRQ
 r_extern
 r_int
 id|DRM
@@ -3519,7 +3523,7 @@ id|irqreturn_t
 id|DRM
 c_func
 (paren
-id|dma_service
+id|irq_handler
 )paren
 (paren
 id|DRM_IRQ_ARGS
@@ -3624,13 +3628,13 @@ id|dev
 )paren
 suffix:semicolon
 macro_line|#endif
-macro_line|#if __HAVE_DMA_IRQ_BH
+macro_line|#if __HAVE_IRQ_BH
 r_extern
 r_void
 id|DRM
 c_func
 (paren
-id|dma_immediate_bh
+id|irq_immediate_bh
 )paren
 (paren
 r_void
@@ -3640,7 +3644,6 @@ id|dev
 suffix:semicolon
 macro_line|#endif
 macro_line|#endif
-macro_line|#endif /* __HAVE_DMA */
 macro_line|#if __REALLY_HAVE_AGP
 multiline_comment|/* AGP/GART support (drm_agpsupport.h) */
 r_extern

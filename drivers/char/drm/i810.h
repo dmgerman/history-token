@@ -65,8 +65,8 @@ DECL|macro|DRIVER_DMA_QUIESCENT
 mdefine_line|#define DRIVER_DMA_QUIESCENT() do {&t;&t;&t;&t;&t;&bslash;&n;&t;i810_dma_quiescent( dev );&t;&t;&t;&t;&t;&bslash;&n;} while (0)
 multiline_comment|/* Don&squot;t need an irq any more.  The template code will make sure that&n; * a noop stub is generated for compatibility.&n; */
 multiline_comment|/* XXX: Add vblank support? */
-DECL|macro|__HAVE_DMA_IRQ
-mdefine_line|#define __HAVE_DMA_IRQ&t;&t;0
+DECL|macro|__HAVE_IRQ
+mdefine_line|#define __HAVE_IRQ&t;&t;0
 multiline_comment|/* Buffer customization:&n; */
 DECL|macro|DRIVER_BUF_PRIV_T
 mdefine_line|#define DRIVER_BUF_PRIV_T&t;drm_i810_buf_priv_t
