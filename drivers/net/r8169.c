@@ -4,6 +4,7 @@ macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#include &lt;linux/netdevice.h&gt;
 macro_line|#include &lt;linux/etherdevice.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
+macro_line|#include &lt;linux/ethtool.h&gt;
 macro_line|#include &lt;linux/crc32.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
@@ -1355,6 +1356,73 @@ r_return
 id|value
 suffix:semicolon
 )brace
+DECL|function|rtl8169_get_drvinfo
+r_static
+r_void
+id|rtl8169_get_drvinfo
+c_func
+(paren
+r_struct
+id|net_device
+op_star
+id|dev
+comma
+r_struct
+id|ethtool_drvinfo
+op_star
+id|info
+)paren
+(brace
+r_struct
+id|rtl8169_private
+op_star
+id|tp
+op_assign
+id|dev-&gt;priv
+suffix:semicolon
+id|strcpy
+c_func
+(paren
+id|info-&gt;driver
+comma
+id|RTL8169_DRIVER_NAME
+)paren
+suffix:semicolon
+id|strcpy
+c_func
+(paren
+id|info-&gt;version
+comma
+id|RTL8169_VERSION
+)paren
+suffix:semicolon
+id|strcpy
+c_func
+(paren
+id|info-&gt;bus_info
+comma
+id|pci_name
+c_func
+(paren
+id|tp-&gt;pci_dev
+)paren
+)paren
+suffix:semicolon
+)brace
+DECL|variable|rtl8169_ethtool_ops
+r_static
+r_struct
+id|ethtool_ops
+id|rtl8169_ethtool_ops
+op_assign
+(brace
+dot
+id|get_drvinfo
+op_assign
+id|rtl8169_get_drvinfo
+comma
+)brace
+suffix:semicolon
 DECL|function|rtl8169_write_gmii_reg_bit
 r_static
 r_void
@@ -3369,6 +3437,11 @@ suffix:semicolon
 id|dev-&gt;get_stats
 op_assign
 id|rtl8169_get_stats
+suffix:semicolon
+id|dev-&gt;ethtool_ops
+op_assign
+op_amp
+id|rtl8169_ethtool_ops
 suffix:semicolon
 id|dev-&gt;stop
 op_assign
