@@ -1595,7 +1595,7 @@ op_star
 id|jmp_ptr
 )paren
 (brace
-id|jmp_buf
+id|sigjmp_buf
 id|buf
 suffix:semicolon
 r_int

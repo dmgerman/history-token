@@ -442,7 +442,7 @@ op_star
 )paren
 id|fault_addr
 suffix:semicolon
-id|jmp_buf
+id|sigjmp_buf
 id|jbuf
 suffix:semicolon
 op_star

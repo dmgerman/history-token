@@ -1026,7 +1026,7 @@ r_int
 r_int
 id|flags
 suffix:semicolon
-id|jmp_buf
+id|sigjmp_buf
 id|switch_buf
 comma
 id|fork_buf
@@ -1105,7 +1105,7 @@ op_star
 id|fb
 )paren
 (brace
-id|jmp_buf
+id|sigjmp_buf
 id|buf
 comma
 op_star
@@ -1409,7 +1409,7 @@ op_star
 id|next
 )paren
 (brace
-id|jmp_buf
+id|sigjmp_buf
 id|my_buf
 comma
 op_star
@@ -1456,7 +1456,7 @@ suffix:semicolon
 )brace
 DECL|variable|initial_jmpbuf
 r_static
-id|jmp_buf
+id|sigjmp_buf
 id|initial_jmpbuf
 suffix:semicolon
 multiline_comment|/* XXX Make these percpu */
@@ -1481,7 +1481,7 @@ id|cb_arg
 suffix:semicolon
 DECL|variable|cb_back
 r_static
-id|jmp_buf
+id|sigjmp_buf
 op_star
 id|cb_back
 suffix:semicolon
@@ -1504,7 +1504,7 @@ op_star
 id|fork_buf_ptr
 )paren
 (brace
-id|jmp_buf
+id|sigjmp_buf
 op_star
 op_star
 id|switch_buf
@@ -1716,7 +1716,7 @@ op_star
 id|arg
 )paren
 (brace
-id|jmp_buf
+id|sigjmp_buf
 id|here
 suffix:semicolon
 id|cb_proc
