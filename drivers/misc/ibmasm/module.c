@@ -872,4 +872,12 @@ c_func
 l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
+id|MODULE_DEVICE_TABLE
+c_func
+(paren
+id|pci
+comma
+id|ibmasm_pci_table
+)paren
+suffix:semicolon
 eof

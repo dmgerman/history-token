@@ -1443,6 +1443,14 @@ c_func
 l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
+id|MODULE_DEVICE_TABLE
+c_func
+(paren
+id|eisa
+comma
+id|ne3210_ids
+)paren
+suffix:semicolon
 DECL|function|ne3210_init
 r_int
 id|ne3210_init

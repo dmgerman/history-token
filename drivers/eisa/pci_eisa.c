@@ -202,4 +202,12 @@ c_func
 id|pci_eisa_init_module
 )paren
 suffix:semicolon
+id|MODULE_DEVICE_TABLE
+c_func
+(paren
+id|pci
+comma
+id|pci_eisa_pci_tbl
+)paren
+suffix:semicolon
 eof

@@ -3177,4 +3177,12 @@ c_func
 id|vrc4173_cardu_exit
 )paren
 suffix:semicolon
+id|MODULE_DEVICE_TABLE
+c_func
+(paren
+id|pci
+comma
+id|vrc4173_cardu_id_table
+)paren
+suffix:semicolon
 eof

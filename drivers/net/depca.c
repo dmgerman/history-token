@@ -212,6 +212,14 @@ l_string|&quot;&quot;
 )brace
 )brace
 suffix:semicolon
+id|MODULE_DEVICE_TABLE
+c_func
+(paren
+id|eisa
+comma
+id|depca_eisa_ids
+)paren
+suffix:semicolon
 r_static
 r_int
 id|depca_eisa_probe

@@ -2052,4 +2052,12 @@ c_func
 l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
+id|MODULE_DEVICE_TABLE
+c_func
+(paren
+id|usb
+comma
+id|b2c2_usb_table
+)paren
+suffix:semicolon
 eof

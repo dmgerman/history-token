@@ -1454,6 +1454,14 @@ id|sb_pnp_remove
 comma
 )brace
 suffix:semicolon
+id|MODULE_DEVICE_TABLE
+c_func
+(paren
+id|pnp_card
+comma
+id|sb_pnp_card_table
+)paren
+suffix:semicolon
 macro_line|#endif /* CONFIG_PNP */
 DECL|function|sb_init
 r_static

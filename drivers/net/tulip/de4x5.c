@@ -8080,6 +8080,14 @@ comma
 )brace
 )brace
 suffix:semicolon
+id|MODULE_DEVICE_TABLE
+c_func
+(paren
+id|eisa
+comma
+id|de4x5_eisa_ids
+)paren
+suffix:semicolon
 macro_line|#endif
 macro_line|#ifdef CONFIG_PCI
 multiline_comment|/*&n;** This function searches the current bus (which is &gt;0) for a DECchip with an&n;** SROM, so that in multiport cards that have one SROM shared between multiple &n;** DECchips, we can find the base SROM irrespective of the BIOS scan direction.&n;** For single port cards this is a time waster...&n;*/

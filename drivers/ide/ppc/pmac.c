@@ -7052,6 +7052,14 @@ id|pmac_ide_pci_resume
 comma
 )brace
 suffix:semicolon
+id|MODULE_DEVICE_TABLE
+c_func
+(paren
+id|pci
+comma
+id|pmac_ide_pci_match
+)paren
+suffix:semicolon
 r_void
 id|__init
 DECL|function|pmac_ide_probe

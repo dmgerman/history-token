@@ -1790,4 +1790,12 @@ c_func
 id|i2o_dma_realloc
 )paren
 suffix:semicolon
+id|MODULE_DEVICE_TABLE
+c_func
+(paren
+id|pci
+comma
+id|i2o_pci_ids
+)paren
+suffix:semicolon
 eof

@@ -50,6 +50,14 @@ c_func
 l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
+id|MODULE_DEVICE_TABLE
+c_func
+(paren
+id|pci
+comma
+id|amd8111e_pci_tbl
+)paren
+suffix:semicolon
 id|module_param_array
 c_func
 (paren
