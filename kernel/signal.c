@@ -6505,7 +6505,9 @@ c_func
 (paren
 id|signr
 )paren
-op_logical_and
+)paren
+(brace
+multiline_comment|/*&n;&t;&t;&t; * If it was able to dump core, this kills all&n;&t;&t;&t; * other threads in the group and synchronizes with&n;&t;&t;&t; * their demise.  If we lost the race with another&n;&t;&t;&t; * thread getting here, it set group_exit_code&n;&t;&t;&t; * first and our do_group_exit call below will use&n;&t;&t;&t; * that value and ignore the one we pass it.&n;&t;&t;&t; */
 id|do_coredump
 c_func
 (paren
@@ -6518,39 +6520,7 @@ id|signr
 comma
 id|regs
 )paren
-)paren
-(brace
-multiline_comment|/*&n;&t;&t;&t; * That killed all other threads in the group and&n;&t;&t;&t; * synchronized with their demise, so there can&squot;t&n;&t;&t;&t; * be any more left to kill now.  The group_exit&n;&t;&t;&t; * flags are set by do_coredump.  Note that&n;&t;&t;&t; * thread_group_empty won&squot;t always be true yet,&n;&t;&t;&t; * because those threads were blocked in __exit_mm&n;&t;&t;&t; * and we just let them go to finish dying.&n;&t;&t;&t; */
-r_const
-r_int
-id|code
-op_assign
-id|signr
-op_or
-l_int|0x80
 suffix:semicolon
-id|BUG_ON
-c_func
-(paren
-op_logical_neg
-id|current-&gt;signal-&gt;group_exit
-)paren
-suffix:semicolon
-id|BUG_ON
-c_func
-(paren
-id|current-&gt;signal-&gt;group_exit_code
-op_ne
-id|code
-)paren
-suffix:semicolon
-id|do_exit
-c_func
-(paren
-id|code
-)paren
-suffix:semicolon
-multiline_comment|/* NOTREACHED */
 )brace
 multiline_comment|/*&n;&t;&t; * Death signals, no core dump.&n;&t;&t; */
 id|do_group_exit
