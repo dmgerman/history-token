@@ -8713,7 +8713,7 @@ id|port.irq
 suffix:semicolon
 )brace
 )brace
-multiline_comment|/**&n; *&t;serial8250_suspend_port - suspend one serial port&n; *&t;@line: serial line number&n; *&n; *&t;Suspend one serial port.&n; */
+multiline_comment|/**&n; *&t;serial8250_suspend_port - suspend one serial port&n; *&t;@line:  serial line number&n; *      @level: the level of port suspension, as per uart_suspend_port&n; *&n; *&t;Suspend one serial port.&n; */
 DECL|function|serial8250_suspend_port
 r_void
 id|serial8250_suspend_port
@@ -8739,7 +8739,7 @@ id|port
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/**&n; *&t;serial8250_resume_port - resume one serial port&n; *&t;@line: serial line number&n; *&n; *&t;Resume one serial port.&n; */
+multiline_comment|/**&n; *&t;serial8250_resume_port - resume one serial port&n; *&t;@line:  serial line number&n; *      @level: the level of port resumption, as per uart_resume_port&n; *&n; *&t;Resume one serial port.&n; */
 DECL|function|serial8250_resume_port
 r_void
 id|serial8250_resume_port

@@ -3,7 +3,6 @@ macro_line|#ifndef __ASM_I386_I387_H
 DECL|macro|__ASM_I386_I387_H
 mdefine_line|#define __ASM_I386_I387_H
 macro_line|#include &lt;linux/sched.h&gt;
-macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;asm/processor.h&gt;
 macro_line|#include &lt;asm/sigcontext.h&gt;
 macro_line|#include &lt;asm/user.h&gt;

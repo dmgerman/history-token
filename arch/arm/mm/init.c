@@ -22,13 +22,6 @@ macro_line|#include &lt;asm/setup.h&gt;
 macro_line|#include &lt;asm/tlb.h&gt;
 macro_line|#include &lt;asm/mach/arch.h&gt;
 macro_line|#include &lt;asm/mach/map.h&gt;
-macro_line|#ifndef CONFIG_DISCONTIGMEM
-DECL|macro|NR_NODES
-mdefine_line|#define NR_NODES&t;1
-macro_line|#else
-DECL|macro|NR_NODES
-mdefine_line|#define NR_NODES&t;4
-macro_line|#endif
 macro_line|#ifdef CONFIG_CPU_32
 DECL|macro|TABLE_OFFSET
 mdefine_line|#define TABLE_OFFSET&t;(PTRS_PER_PTE)
@@ -580,7 +573,7 @@ l_int|0
 suffix:semicolon
 id|i
 OL
-id|NR_NODES
+id|MAX_NUMNODES
 suffix:semicolon
 id|i
 op_increment
@@ -695,7 +688,7 @@ c_cond
 (paren
 id|numnodes
 OG
-id|NR_NODES
+id|MAX_NUMNODES
 )paren
 id|BUG
 c_func
@@ -1307,7 +1300,7 @@ r_struct
 id|node_info
 id|node_info
 (braket
-id|NR_NODES
+id|MAX_NUMNODES
 )braket
 comma
 op_star

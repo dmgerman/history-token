@@ -2,8 +2,8 @@ multiline_comment|/*&n; *  linux/include/asm-arm/numnodes.h&n; *&n; *  Copyright
 macro_line|#ifndef __ASM_ARM_NUMNODES_H
 DECL|macro|__ASM_ARM_NUMNODES_H
 mdefine_line|#define __ASM_ARM_NUMNODES_H
-macro_line|#include &lt;asm/memory.h&gt;
-DECL|macro|MAX_NUMNODES
-mdefine_line|#define MAX_NUMNODES&t;NR_NODES
+multiline_comment|/* Max 4 Nodes */
+DECL|macro|NODES_SHIFT
+mdefine_line|#define NODES_SHIFT&t;2
 macro_line|#endif
 eof

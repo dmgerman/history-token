@@ -73,9 +73,9 @@ id|pages
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* Optimisation macro. */
+multiline_comment|/*&n; * Optimisation macro.  It is equivalent to:&n; *      (x &amp; bit1) ? bit2 : 0&n; * but this version is faster.&n; * (&quot;bit1&quot; and &quot;bit2&quot; must be single bits)&n; */
 DECL|macro|_calc_vm_trans
-mdefine_line|#define _calc_vm_trans(x,bit1,bit2) &bslash;&n;  ((bit1) &lt;= (bit2) ? ((x) &amp; (bit1)) * ((bit2) / (bit1)) &bslash;&n;   : ((x) &amp; (bit1)) / ((bit1) / (bit2)))
+mdefine_line|#define _calc_vm_trans(x, bit1, bit2) &bslash;&n;  ((bit1) &lt;= (bit2) ? ((x) &amp; (bit1)) * ((bit2) / (bit1)) &bslash;&n;   : ((x) &amp; (bit1)) / ((bit1) / (bit2)))
 multiline_comment|/*&n; * Combine the mmap &quot;prot&quot; argument into &quot;vm_flags&quot; used internally.&n; */
 r_static
 r_inline

@@ -40,12 +40,10 @@ r_int
 r_int
 id|max_low_pfn
 suffix:semicolon
-macro_line|#ifdef CONFIG_IA64_DIG
+macro_line|#if defined(CONFIG_IA64_DIG)
 multiline_comment|/*&n; * Platform definitions for DIG platform with contiguous memory.&n; */
 DECL|macro|MAX_PHYSNODE_ID
-mdefine_line|#define MAX_PHYSNODE_ID&t;8&t;/* Maximum node number +1 */
-DECL|macro|NR_NODES
-mdefine_line|#define NR_NODES&t;8&t;/* Maximum number of nodes in SSI */
+mdefine_line|#define MAX_PHYSNODE_ID&t;8&t;&t;/* Maximum node number +1 */
 DECL|macro|MAX_PHYS_MEMORY
 mdefine_line|#define MAX_PHYS_MEMORY&t;(1UL &lt;&lt; 40)&t;/* 1 TB */
 multiline_comment|/*&n; * Bank definitions.&n; * Configurable settings for DIG: 512MB/bank:  16GB/node,&n; *                               2048MB/bank:  64GB/node,&n; *                               8192MB/bank: 256GB/node.&n; */
@@ -65,41 +63,36 @@ macro_line|# error Unsupported bank and nodesize!
 macro_line|#endif
 DECL|macro|BANKSIZE
 mdefine_line|#define BANKSIZE&t;&t;(1UL &lt;&lt; BANKSHIFT)
+macro_line|#elif defined(CONFIG_IA64_SGI_SN2)
+multiline_comment|/*&n; * SGI SN2 discontig definitions&n; */
+DECL|macro|MAX_PHYSNODE_ID
+mdefine_line|#define MAX_PHYSNODE_ID&t;2048&t;/* 2048 node ids (also called nasid) */
+DECL|macro|MAX_PHYS_MEMORY
+mdefine_line|#define MAX_PHYS_MEMORY&t;(1UL &lt;&lt; 49)
+DECL|macro|NR_BANKS_PER_NODE
+mdefine_line|#define NR_BANKS_PER_NODE&t;4
+DECL|macro|BANKSHIFT
+mdefine_line|#define BANKSHIFT&t;&t;38
+DECL|macro|SN2_NODE_SIZE
+mdefine_line|#define SN2_NODE_SIZE&t;&t;(64UL*1024*1024*1024)&t;/* 64GB per node */
+DECL|macro|BANKSIZE
+mdefine_line|#define BANKSIZE&t;&t;(SN2_NODE_SIZE/NR_BANKS_PER_NODE)
+macro_line|#endif /* CONFIG_IA64_DIG */
+macro_line|#if defined(CONFIG_IA64_DIG) || defined (CONFIG_IA64_SGI_SN2)
+multiline_comment|/* Common defines for both platforms */
+macro_line|#include &lt;asm/numnodes.h&gt;
 DECL|macro|BANK_OFFSET
 mdefine_line|#define BANK_OFFSET(addr)&t;((unsigned long)(addr) &amp; (BANKSIZE-1))
 DECL|macro|NR_BANKS
-mdefine_line|#define NR_BANKS&t;&t;(NR_BANKS_PER_NODE * NR_NODES)
+mdefine_line|#define NR_BANKS&t;&t;(NR_BANKS_PER_NODE * (1 &lt;&lt; NODES_SHIFT))
+DECL|macro|NR_MEMBLKS
+mdefine_line|#define NR_MEMBLKS&t;&t;(NR_BANKS)
 multiline_comment|/*&n; * VALID_MEM_KADDR returns a boolean to indicate if a kaddr is&n; * potentially a valid cacheable identity mapped RAM memory address.&n; * Note that the RAM may or may not actually be present!!&n; */
 DECL|macro|VALID_MEM_KADDR
 mdefine_line|#define VALID_MEM_KADDR(kaddr)&t;1
 multiline_comment|/*&n; * Given a nodeid &amp; a bank number, find the address of the mem_map&n; * entry for the first page of the bank.&n; */
 DECL|macro|BANK_MEM_MAP_INDEX
 mdefine_line|#define BANK_MEM_MAP_INDEX(kaddr) &bslash;&n;&t;(((unsigned long)(kaddr) &amp; (MAX_PHYS_MEMORY-1)) &gt;&gt; BANKSHIFT)
-macro_line|#elif defined(CONFIG_IA64_SGI_SN2)
-multiline_comment|/*&n; * SGI SN2 discontig definitions&n; */
-DECL|macro|MAX_PHYSNODE_ID
-mdefine_line|#define MAX_PHYSNODE_ID&t;2048&t;/* 2048 node ids (also called nasid) */
-DECL|macro|NR_NODES
-mdefine_line|#define NR_NODES&t;128&t;/* Maximum number of nodes in SSI */
-DECL|macro|MAX_PHYS_MEMORY
-mdefine_line|#define MAX_PHYS_MEMORY&t;(1UL &lt;&lt; 49)
-DECL|macro|BANKSHIFT
-mdefine_line|#define BANKSHIFT&t;&t;38
-DECL|macro|NR_BANKS_PER_NODE
-mdefine_line|#define NR_BANKS_PER_NODE&t;4
-DECL|macro|SN2_NODE_SIZE
-mdefine_line|#define SN2_NODE_SIZE&t;&t;(64UL*1024*1024*1024)&t;/* 64GB per node */
-DECL|macro|BANKSIZE
-mdefine_line|#define BANKSIZE&t;&t;(SN2_NODE_SIZE/NR_BANKS_PER_NODE)
-DECL|macro|BANK_OFFSET
-mdefine_line|#define BANK_OFFSET(addr)&t;((unsigned long)(addr) &amp; (BANKSIZE-1))
-DECL|macro|NR_BANKS
-mdefine_line|#define NR_BANKS&t;&t;(NR_BANKS_PER_NODE * NR_NODES)
-DECL|macro|VALID_MEM_KADDR
-mdefine_line|#define VALID_MEM_KADDR(kaddr)&t;1
-multiline_comment|/*&n; * Given a nodeid &amp; a bank number, find the address of the mem_map&n; * entry for the first page of the bank.&n; */
-DECL|macro|BANK_MEM_MAP_INDEX
-mdefine_line|#define BANK_MEM_MAP_INDEX(kaddr) &bslash;&n;&t;(((unsigned long)(kaddr) &amp; (MAX_PHYS_MEMORY-1)) &gt;&gt; BANKSHIFT)
-macro_line|#endif /* CONFIG_IA64_DIG */
+macro_line|#endif /* CONFIG_IA64_DIG || CONFIG_IA64_SGI_SN2 */
 macro_line|#endif /* _ASM_IA64_MMZONE_H */
 eof

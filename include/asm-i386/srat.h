@@ -5,8 +5,6 @@ mdefine_line|#define _ASM_SRAT_H_
 macro_line|#ifndef CONFIG_ACPI_SRAT
 macro_line|#error CONFIG_ACPI_SRAT not defined, and srat.h header has been included
 macro_line|#endif
-DECL|macro|MAX_NUMNODES
-mdefine_line|#define MAX_NUMNODES&t;&t;8
 r_extern
 r_int
 id|get_memcfg_from_srat

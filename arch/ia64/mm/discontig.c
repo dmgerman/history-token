@@ -4,7 +4,6 @@ macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/swap.h&gt;
 macro_line|#include &lt;linux/bootmem.h&gt;
-macro_line|#include &lt;linux/mmzone.h&gt;
 macro_line|#include &lt;linux/acpi.h&gt;
 macro_line|#include &lt;linux/efi.h&gt;
 macro_line|#include &lt;asm/pgalloc.h&gt;
@@ -19,7 +18,7 @@ id|ia64_node_data
 op_star
 id|node_data
 (braket
-id|NR_NODES
+id|MAX_NUMNODES
 )braket
 suffix:semicolon
 DECL|variable|__initdata
@@ -29,7 +28,7 @@ id|boot_pg_data
 (braket
 l_int|8
 op_star
-id|NR_NODES
+id|MAX_NUMNODES
 op_plus
 r_sizeof
 (paren
@@ -44,7 +43,7 @@ id|pg_data_t
 op_star
 id|pg_data_ptr
 (braket
-id|NR_NODES
+id|MAX_NUMNODES
 )braket
 id|__initdata
 suffix:semicolon
@@ -53,7 +52,7 @@ r_static
 id|bootmem_data_t
 id|bdata
 (braket
-id|NR_NODES
+id|MAX_NUMNODES
 )braket
 (braket
 id|NR_BANKS_PER_NODE
