@@ -38,7 +38,6 @@ macro_line|#include &lt;asm/pci_dma.h&gt;
 macro_line|#include &lt;asm/dma.h&gt;
 macro_line|#include &lt;asm/machdep.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
-macro_line|#include &lt;asm/keyboard.h&gt;
 macro_line|#include &lt;asm/naca.h&gt;
 macro_line|#include &lt;asm/time.h&gt;
 macro_line|#include &quot;local_irq.h&quot;
@@ -77,84 +76,6 @@ c_func
 (paren
 r_void
 )paren
-suffix:semicolon
-r_extern
-r_int
-id|pckbd_setkeycode
-c_func
-(paren
-r_int
-r_int
-id|scancode
-comma
-r_int
-r_int
-id|keycode
-)paren
-suffix:semicolon
-r_extern
-r_int
-id|pckbd_getkeycode
-c_func
-(paren
-r_int
-r_int
-id|scancode
-)paren
-suffix:semicolon
-r_extern
-r_int
-id|pckbd_translate
-c_func
-(paren
-r_int
-r_char
-id|scancode
-comma
-r_int
-r_char
-op_star
-id|keycode
-comma
-r_char
-id|raw_mode
-)paren
-suffix:semicolon
-r_extern
-r_char
-id|pckbd_unexpected_up
-c_func
-(paren
-r_int
-r_char
-id|keycode
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|pckbd_leds
-c_func
-(paren
-r_int
-r_char
-id|leds
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|pckbd_init_hw
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-r_extern
-r_int
-r_char
-id|pckbd_sysrq_xlate
-(braket
-l_int|128
-)braket
 suffix:semicolon
 r_extern
 r_void
@@ -941,43 +862,6 @@ id|ppc_md.progress
 op_assign
 id|chrp_progress
 suffix:semicolon
-macro_line|#ifdef CONFIG_VT
-id|ppc_md.kbd_setkeycode
-op_assign
-id|pckbd_setkeycode
-suffix:semicolon
-id|ppc_md.kbd_getkeycode
-op_assign
-id|pckbd_getkeycode
-suffix:semicolon
-id|ppc_md.kbd_translate
-op_assign
-id|pckbd_translate
-suffix:semicolon
-id|ppc_md.kbd_unexpected_up
-op_assign
-id|pckbd_unexpected_up
-suffix:semicolon
-id|ppc_md.kbd_leds
-op_assign
-id|pckbd_leds
-suffix:semicolon
-id|ppc_md.kbd_init_hw
-op_assign
-id|pckbd_init_hw
-suffix:semicolon
-macro_line|#ifdef CONFIG_MAGIC_SYSRQ
-id|ppc_md.ppc_kbd_sysrq_xlate
-op_assign
-id|pckbd_sysrq_xlate
-suffix:semicolon
-id|SYSRQ_KEY
-op_assign
-l_int|0x63
-suffix:semicolon
-multiline_comment|/* Print Screen */
-macro_line|#endif
-macro_line|#endif
 id|ppc_md
 dot
 id|progress
