@@ -1749,7 +1749,7 @@ mdefine_line|#define VIDIOC_G_FBUF&t;&t;_IOR  (&squot;V&squot;, 10, struct v4l2_
 DECL|macro|VIDIOC_S_FBUF
 mdefine_line|#define VIDIOC_S_FBUF&t;&t;_IOW  (&squot;V&squot;, 11, struct v4l2_framebuffer)
 DECL|macro|VIDIOC_OVERLAY
-mdefine_line|#define VIDIOC_OVERLAY&t;&t;_IOWR (&squot;V&squot;, 14, int)
+mdefine_line|#define VIDIOC_OVERLAY&t;&t;_IOW  (&squot;V&squot;, 14, int)
 DECL|macro|VIDIOC_QBUF
 mdefine_line|#define VIDIOC_QBUF&t;&t;_IOWR (&squot;V&squot;, 15, struct v4l2_buffer)
 DECL|macro|VIDIOC_DQBUF
@@ -1761,7 +1761,7 @@ mdefine_line|#define VIDIOC_STREAMOFF&t;_IOW  (&squot;V&squot;, 19, int)
 DECL|macro|VIDIOC_G_PARM
 mdefine_line|#define VIDIOC_G_PARM&t;&t;_IOWR (&squot;V&squot;, 21, struct v4l2_streamparm)
 DECL|macro|VIDIOC_S_PARM
-mdefine_line|#define VIDIOC_S_PARM&t;&t;_IOW  (&squot;V&squot;, 22, struct v4l2_streamparm)
+mdefine_line|#define VIDIOC_S_PARM&t;&t;_IOWR (&squot;V&squot;, 22, struct v4l2_streamparm)
 DECL|macro|VIDIOC_G_STD
 mdefine_line|#define VIDIOC_G_STD&t;&t;_IOR  (&squot;V&squot;, 23, v4l2_std_id)
 DECL|macro|VIDIOC_S_STD
@@ -1773,13 +1773,13 @@ mdefine_line|#define VIDIOC_ENUMINPUT&t;_IOWR (&squot;V&squot;, 26, struct v4l2_
 DECL|macro|VIDIOC_G_CTRL
 mdefine_line|#define VIDIOC_G_CTRL&t;&t;_IOWR (&squot;V&squot;, 27, struct v4l2_control)
 DECL|macro|VIDIOC_S_CTRL
-mdefine_line|#define VIDIOC_S_CTRL&t;&t;_IOW  (&squot;V&squot;, 28, struct v4l2_control)
+mdefine_line|#define VIDIOC_S_CTRL&t;&t;_IOWR (&squot;V&squot;, 28, struct v4l2_control)
 DECL|macro|VIDIOC_G_TUNER
 mdefine_line|#define VIDIOC_G_TUNER&t;&t;_IOWR (&squot;V&squot;, 29, struct v4l2_tuner)
 DECL|macro|VIDIOC_S_TUNER
 mdefine_line|#define VIDIOC_S_TUNER&t;&t;_IOW  (&squot;V&squot;, 30, struct v4l2_tuner)
 DECL|macro|VIDIOC_G_AUDIO
-mdefine_line|#define VIDIOC_G_AUDIO&t;&t;_IOWR (&squot;V&squot;, 33, struct v4l2_audio)
+mdefine_line|#define VIDIOC_G_AUDIO&t;&t;_IOR  (&squot;V&squot;, 33, struct v4l2_audio)
 DECL|macro|VIDIOC_S_AUDIO
 mdefine_line|#define VIDIOC_S_AUDIO&t;&t;_IOW  (&squot;V&squot;, 34, struct v4l2_audio)
 DECL|macro|VIDIOC_QUERYCTRL
@@ -1797,7 +1797,7 @@ mdefine_line|#define VIDIOC_S_OUTPUT&t;&t;_IOWR (&squot;V&squot;, 47, int)
 DECL|macro|VIDIOC_ENUMOUTPUT
 mdefine_line|#define VIDIOC_ENUMOUTPUT&t;_IOWR (&squot;V&squot;, 48, struct v4l2_output)
 DECL|macro|VIDIOC_G_AUDOUT
-mdefine_line|#define VIDIOC_G_AUDOUT&t;&t;_IOWR (&squot;V&squot;, 49, struct v4l2_audioout)
+mdefine_line|#define VIDIOC_G_AUDOUT&t;&t;_IOR  (&squot;V&squot;, 49, struct v4l2_audioout)
 DECL|macro|VIDIOC_S_AUDOUT
 mdefine_line|#define VIDIOC_S_AUDOUT&t;&t;_IOW  (&squot;V&squot;, 50, struct v4l2_audioout)
 DECL|macro|VIDIOC_G_MODULATOR
@@ -1822,6 +1822,21 @@ DECL|macro|VIDIOC_QUERYSTD
 mdefine_line|#define VIDIOC_QUERYSTD      &t;_IOR  (&squot;V&squot;, 63, v4l2_std_id)
 DECL|macro|VIDIOC_TRY_FMT
 mdefine_line|#define VIDIOC_TRY_FMT      &t;_IOWR (&squot;V&squot;, 64, struct v4l2_format)
+DECL|macro|VIDIOC_ENUMAUDIO
+mdefine_line|#define VIDIOC_ENUMAUDIO&t;_IOWR (&squot;V&squot;, 65, struct v4l2_audio)
+DECL|macro|VIDIOC_ENUMAUDOUT
+mdefine_line|#define VIDIOC_ENUMAUDOUT&t;_IOWR (&squot;V&squot;, 66, struct v4l2_audioout)
+multiline_comment|/* for compatibility, will go away some day */
+DECL|macro|VIDIOC_OVERLAY_OLD
+mdefine_line|#define VIDIOC_OVERLAY_OLD     &t;_IOWR (&squot;V&squot;, 14, int)
+DECL|macro|VIDIOC_S_PARM_OLD
+mdefine_line|#define VIDIOC_S_PARM_OLD      &t;_IOW  (&squot;V&squot;, 22, struct v4l2_streamparm)
+DECL|macro|VIDIOC_S_CTRL_OLD
+mdefine_line|#define VIDIOC_S_CTRL_OLD      &t;_IOW  (&squot;V&squot;, 28, struct v4l2_control)
+DECL|macro|VIDIOC_G_AUDIO_OLD
+mdefine_line|#define VIDIOC_G_AUDIO_OLD     &t;_IOWR (&squot;V&squot;, 33, struct v4l2_audio)
+DECL|macro|VIDIOC_G_AUDOUT_OLD
+mdefine_line|#define VIDIOC_G_AUDOUT_OLD    &t;_IOWR (&squot;V&squot;, 49, struct v4l2_audioout)
 DECL|macro|BASE_VIDIOC_PRIVATE
 mdefine_line|#define BASE_VIDIOC_PRIVATE&t;192&t;&t;/* 192-255 are private */
 macro_line|#ifdef __KERNEL__
