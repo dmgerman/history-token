@@ -495,7 +495,7 @@ c_func
 )paren
 suffix:semicolon
 r_else
-id|set_task_state
+id|__set_task_state
 c_func
 (paren
 id|current
@@ -634,7 +634,7 @@ c_func
 )paren
 suffix:semicolon
 r_else
-id|set_task_state
+id|__set_task_state
 c_func
 (paren
 id|current
