@@ -4811,6 +4811,16 @@ suffix:semicolon
 r_extern
 r_struct
 id|file_operations
+id|def_chr_fops
+suffix:semicolon
+r_extern
+r_struct
+id|file_operations
+id|bad_sock_fops
+suffix:semicolon
+r_extern
+r_struct
+id|file_operations
 id|def_fifo_fops
 suffix:semicolon
 r_extern
