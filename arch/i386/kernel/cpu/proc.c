@@ -21,6 +21,13 @@ id|v
 )paren
 (brace
 multiline_comment|/* &n;&t; * These flag bits must match the definitions in &lt;asm/cpufeature.h&gt;.&n;&t; * NULL means this bit is undefined or reserved; either way it doesn&squot;t&n;&t; * have meaning as far as Linux is concerned.  Note that it&squot;s important&n;&t; * to realize there is a difference between this table and CPUID -- if&n;&t; * applications want to get the raw CPUID data, they should access&n;&t; * /dev/cpu/&lt;cpu_nr&gt;/cpuid instead.&n;&t; */
+r_extern
+r_int
+id|phys_proc_id
+(braket
+id|NR_CPUS
+)braket
+suffix:semicolon
 r_static
 r_char
 op_star
@@ -444,6 +451,38 @@ comma
 id|c-&gt;x86_cache_size
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_SMP
+r_if
+c_cond
+(paren
+id|cpu_has_ht
+)paren
+(brace
+id|seq_printf
+c_func
+(paren
+id|m
+comma
+l_string|&quot;physical id&bslash;t: %d&bslash;n&quot;
+comma
+id|phys_proc_id
+(braket
+id|n
+)braket
+)paren
+suffix:semicolon
+id|seq_printf
+c_func
+(paren
+id|m
+comma
+l_string|&quot;siblings&bslash;t: %d&bslash;n&quot;
+comma
+id|smp_num_siblings
+)paren
+suffix:semicolon
+)brace
+macro_line|#endif
 multiline_comment|/* We use exception 16 if we have hardware math and we&squot;ve either seen it or the CPU claims it is internal */
 id|fpu_exception
 op_assign
