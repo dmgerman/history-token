@@ -28,6 +28,10 @@ DECL|member|i_frag_size
 id|__u8
 id|i_frag_size
 suffix:semicolon
+DECL|member|i_state
+id|__u16
+id|i_state
+suffix:semicolon
 DECL|member|i_file_acl
 id|__u32
 id|i_file_acl
@@ -64,6 +68,20 @@ DECL|member|i_dir_start_lookup
 id|__u32
 id|i_dir_start_lookup
 suffix:semicolon
+macro_line|#ifdef CONFIG_EXT2_FS_POSIX_ACL
+DECL|member|i_acl
+r_struct
+id|posix_acl
+op_star
+id|i_acl
+suffix:semicolon
+DECL|member|i_default_acl
+r_struct
+id|posix_acl
+op_star
+id|i_default_acl
+suffix:semicolon
+macro_line|#endif
 DECL|member|i_meta_lock
 id|rwlock_t
 id|i_meta_lock
@@ -75,6 +93,9 @@ id|vfs_inode
 suffix:semicolon
 )brace
 suffix:semicolon
+multiline_comment|/*&n; * Inode dynamic state flags&n; */
+DECL|macro|EXT2_STATE_NEW
+mdefine_line|#define EXT2_STATE_NEW&t;&t;&t;0x00000001 /* inode is newly created */
 multiline_comment|/*&n; * Function prototypes&n; */
 multiline_comment|/*&n; * Ok, these declarations are also in &lt;linux/kernel.h&gt; but none of the&n; * ext2 source programs needs to include it so they are duplicated here.&n; */
 DECL|function|EXT2_I
@@ -471,6 +492,19 @@ id|inode
 op_star
 )paren
 suffix:semicolon
+r_extern
+r_int
+id|ext2_setattr
+(paren
+r_struct
+id|dentry
+op_star
+comma
+r_struct
+id|iattr
+op_star
+)paren
+suffix:semicolon
 multiline_comment|/* ioctl.c */
 r_extern
 r_int
@@ -645,10 +679,20 @@ r_struct
 id|inode_operations
 id|ext2_dir_inode_operations
 suffix:semicolon
+r_extern
+r_struct
+id|inode_operations
+id|ext2_special_inode_operations
+suffix:semicolon
 multiline_comment|/* symlink.c */
 r_extern
 r_struct
 id|inode_operations
 id|ext2_fast_symlink_inode_operations
+suffix:semicolon
+r_extern
+r_struct
+id|inode_operations
+id|ext2_symlink_inode_operations
 suffix:semicolon
 eof

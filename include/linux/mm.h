@@ -957,80 +957,6 @@ op_star
 id|page
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_HUGETLB_PAGE
-DECL|macro|is_vm_hugetlb_page
-mdefine_line|#define is_vm_hugetlb_page(vma) (vma-&gt;vm_flags &amp; VM_HUGETLB)
-r_extern
-r_int
-id|copy_hugetlb_page_range
-c_func
-(paren
-r_struct
-id|mm_struct
-op_star
-comma
-r_struct
-id|mm_struct
-op_star
-comma
-r_struct
-id|vm_area_struct
-op_star
-)paren
-suffix:semicolon
-r_extern
-r_int
-id|follow_hugetlb_page
-c_func
-(paren
-r_struct
-id|mm_struct
-op_star
-comma
-r_struct
-id|vm_area_struct
-op_star
-comma
-r_struct
-id|page
-op_star
-op_star
-comma
-r_struct
-id|vm_area_struct
-op_star
-op_star
-comma
-r_int
-r_int
-op_star
-comma
-r_int
-op_star
-comma
-r_int
-)paren
-suffix:semicolon
-r_extern
-r_int
-id|free_hugepages
-c_func
-(paren
-r_struct
-id|vm_area_struct
-op_star
-)paren
-suffix:semicolon
-macro_line|#else
-DECL|macro|is_vm_hugetlb_page
-mdefine_line|#define is_vm_hugetlb_page(vma) (0)
-DECL|macro|follow_hugetlb_page
-mdefine_line|#define follow_hugetlb_page(mm, vma, pages, vmas, start, len, i) (0)
-DECL|macro|copy_hugetlb_page_range
-mdefine_line|#define copy_hugetlb_page_range(dst, src, vma) (0)
-DECL|macro|free_hugepages
-mdefine_line|#define free_hugepages(mpnt)  do { } while(0)
-macro_line|#endif
 multiline_comment|/*&n; * Prototype to add a shrinker callback for ageable caches.&n; * &n; * These functions are passed a count `nr_to_scan&squot; and a gfpmask.  They should&n; * scan `nr_to_scan&squot; objects, attempting to free them.&n; *&n; * The callback must the number of objects which remain in the cache.&n; *&n; * The callback will be passes nr_to_scan == 0 when the VM is querying the&n; * cache size, so a fastpath for that case is appropriate.&n; */
 DECL|typedef|shrinker_t
 r_typedef
@@ -1810,6 +1736,22 @@ id|addr
 comma
 r_int
 id|new_below
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|unmap_vma
+c_func
+(paren
+r_struct
+id|mm_struct
+op_star
+id|mm
+comma
+r_struct
+id|vm_area_struct
+op_star
+id|area
 )paren
 suffix:semicolon
 multiline_comment|/* Look up the first VMA which intersects the interval start_addr..end_addr-1,&n;   NULL if none.  Assume start_addr &lt; end_addr. */

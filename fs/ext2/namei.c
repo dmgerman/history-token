@@ -1,6 +1,8 @@
 multiline_comment|/*&n; * linux/fs/ext2/namei.c&n; *&n; * Rewrite to pagecache. Almost all code had been changed, so blame me&n; * if the things go wrong. Please, send bug reports to viro@math.psu.edu&n; *&n; * Stuff here is basically a glue between the VFS and generic UNIXish&n; * filesystem that keeps everything in pagecache. All knowledge of the&n; * directory layout is in fs/ext2/dir.c - it turned out to be easily separatable&n; * and it&squot;s easier to debug that way. In principle we might want to&n; * generalize that a bit and turn it into a library. Or not.&n; *&n; * The only non-static object here is ext2_dir_inode_operations.&n; *&n; * TODO: get rid of kmap() use, add readahead.&n; *&n; * Copyright (C) 1992, 1993, 1994, 1995&n; * Remy Card (card@masi.ibp.fr)&n; * Laboratoire MASI - Institut Blaise Pascal&n; * Universite Pierre et Marie Curie (Paris VI)&n; *&n; *  from&n; *&n; *  linux/fs/minix/namei.c&n; *&n; *  Copyright (C) 1991, 1992  Linus Torvalds&n; *&n; *  Big-endian to little-endian byte-swapping/bitmaps by&n; *        David S. Miller (davem@caip.rutgers.edu), 1995&n; */
-macro_line|#include &quot;ext2.h&quot;
 macro_line|#include &lt;linux/pagemap.h&gt;
+macro_line|#include &quot;ext2.h&quot;
+macro_line|#include &quot;xattr.h&quot;
+macro_line|#include &quot;acl.h&quot;
 multiline_comment|/*&n; * Couple of helper functions - make the code slightly cleaner.&n; */
 DECL|function|ext2_inc_count
 r_static
@@ -496,11 +498,18 @@ c_func
 (paren
 id|inode
 comma
-id|mode
+id|inode-&gt;i_mode
 comma
 id|rdev
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_EXT2_FS_EXT_ATTR
+id|inode-&gt;i_op
+op_assign
+op_amp
+id|ext2_special_inode_operations
+suffix:semicolon
+macro_line|#endif
 id|mark_inode_dirty
 c_func
 (paren
@@ -634,7 +643,7 @@ multiline_comment|/* slow symlink */
 id|inode-&gt;i_op
 op_assign
 op_amp
-id|page_symlink_inode_operations
+id|ext2_symlink_inode_operations
 suffix:semicolon
 id|inode-&gt;i_mapping-&gt;a_ops
 op_assign
@@ -1584,6 +1593,74 @@ dot
 id|rename
 op_assign
 id|ext2_rename
+comma
+dot
+id|setxattr
+op_assign
+id|ext2_setxattr
+comma
+dot
+id|getxattr
+op_assign
+id|ext2_getxattr
+comma
+dot
+id|listxattr
+op_assign
+id|ext2_listxattr
+comma
+dot
+id|removexattr
+op_assign
+id|ext2_removexattr
+comma
+dot
+id|setattr
+op_assign
+id|ext2_setattr
+comma
+dot
+id|permission
+op_assign
+id|ext2_permission
+comma
+)brace
+suffix:semicolon
+DECL|variable|ext2_special_inode_operations
+r_struct
+id|inode_operations
+id|ext2_special_inode_operations
+op_assign
+(brace
+dot
+id|setxattr
+op_assign
+id|ext2_setxattr
+comma
+dot
+id|getxattr
+op_assign
+id|ext2_getxattr
+comma
+dot
+id|listxattr
+op_assign
+id|ext2_listxattr
+comma
+dot
+id|removexattr
+op_assign
+id|ext2_removexattr
+comma
+dot
+id|setattr
+op_assign
+id|ext2_setattr
+comma
+dot
+id|permission
+op_assign
+id|ext2_permission
 comma
 )brace
 suffix:semicolon

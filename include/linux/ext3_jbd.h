@@ -10,9 +10,12 @@ mdefine_line|#define EXT3_JOURNAL(inode)&t;(EXT3_SB((inode)-&gt;i_sb)-&gt;s_jour
 multiline_comment|/* Define the number of blocks we need to account to a transaction to&n; * modify one block of data.&n; * &n; * We may have to touch one inode, one bitmap buffer, up to three&n; * indirection blocks, the group and superblock summaries, and the data&n; * block to complete the transaction.  */
 DECL|macro|EXT3_SINGLEDATA_TRANS_BLOCKS
 mdefine_line|#define EXT3_SINGLEDATA_TRANS_BLOCKS&t;8
+multiline_comment|/* Extended attributes may touch two data buffers, two bitmap buffers,&n; * and two group and summaries. */
+DECL|macro|EXT3_XATTR_TRANS_BLOCKS
+mdefine_line|#define EXT3_XATTR_TRANS_BLOCKS&t;&t;8
 multiline_comment|/* Define the minimum size for a transaction which modifies data.  This&n; * needs to take into account the fact that we may end up modifying two&n; * quota files too (one for the group, one for the user quota).  The&n; * superblock only gets updated once, of course, so don&squot;t bother&n; * counting that again for the quota updates. */
 DECL|macro|EXT3_DATA_TRANS_BLOCKS
-mdefine_line|#define EXT3_DATA_TRANS_BLOCKS&t;&t;(3 * EXT3_SINGLEDATA_TRANS_BLOCKS - 2)
+mdefine_line|#define EXT3_DATA_TRANS_BLOCKS&t;&t;(3 * EXT3_SINGLEDATA_TRANS_BLOCKS + &bslash;&n;&t;&t;&t;&t;&t; EXT3_XATTR_TRANS_BLOCKS - 2)
 r_extern
 r_int
 id|ext3_writepage_trans_blocks

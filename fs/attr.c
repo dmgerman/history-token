@@ -392,7 +392,6 @@ id|error
 suffix:semicolon
 )brace
 DECL|function|setattr_mask
-r_static
 r_int
 id|setattr_mask
 c_func

@@ -1,6 +1,8 @@
 multiline_comment|/*&n; *  linux/fs/ext2/file.c&n; *&n; * Copyright (C) 1992, 1993, 1994, 1995&n; * Remy Card (card@masi.ibp.fr)&n; * Laboratoire MASI - Institut Blaise Pascal&n; * Universite Pierre et Marie Curie (Paris VI)&n; *&n; *  from&n; *&n; *  linux/fs/minix/file.c&n; *&n; *  Copyright (C) 1991, 1992  Linus Torvalds&n; *&n; *  ext2 fs regular file handling primitives&n; *&n; *  64-bit file support on 64-bit platforms by Jakub Jelinek&n; * &t;(jj@sunsite.ms.mff.cuni.cz)&n; */
-macro_line|#include &quot;ext2.h&quot;
 macro_line|#include &lt;linux/time.h&gt;
+macro_line|#include &quot;ext2.h&quot;
+macro_line|#include &quot;xattr.h&quot;
+macro_line|#include &quot;acl.h&quot;
 multiline_comment|/*&n; * Called when an inode is released. Note that this is different&n; * from ext2_open_file: open gets called at every open, but release&n; * gets called only when /all/ the files are closed.&n; */
 DECL|function|ext2_release_file
 r_static
@@ -118,6 +120,36 @@ dot
 id|truncate
 op_assign
 id|ext2_truncate
+comma
+dot
+id|setxattr
+op_assign
+id|ext2_setxattr
+comma
+dot
+id|getxattr
+op_assign
+id|ext2_getxattr
+comma
+dot
+id|listxattr
+op_assign
+id|ext2_listxattr
+comma
+dot
+id|removexattr
+op_assign
+id|ext2_removexattr
+comma
+dot
+id|setattr
+op_assign
+id|ext2_setattr
+comma
+dot
+id|permission
+op_assign
+id|ext2_permission
 comma
 )brace
 suffix:semicolon

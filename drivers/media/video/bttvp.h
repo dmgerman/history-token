@@ -3,7 +3,7 @@ macro_line|#ifndef _BTTVP_H_
 DECL|macro|_BTTVP_H_
 mdefine_line|#define _BTTVP_H_
 DECL|macro|BTTV_VERSION_CODE
-mdefine_line|#define BTTV_VERSION_CODE KERNEL_VERSION(0,8,42)
+mdefine_line|#define BTTV_VERSION_CODE KERNEL_VERSION(0,9,1)
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/wait.h&gt;
 macro_line|#include &lt;linux/i2c.h&gt;
@@ -38,8 +38,10 @@ DECL|macro|RISC_SLOT_LOOP
 mdefine_line|#define RISC_SLOT_LOOP        14
 DECL|macro|RESOURCE_OVERLAY
 mdefine_line|#define RESOURCE_OVERLAY       1
-DECL|macro|RESOURCE_STREAMING
-mdefine_line|#define RESOURCE_STREAMING     2
+DECL|macro|RESOURCE_VIDEO
+mdefine_line|#define RESOURCE_VIDEO         2
+DECL|macro|RESOURCE_VBI
+mdefine_line|#define RESOURCE_VBI           3
 DECL|macro|RAW_LINES
 mdefine_line|#define RAW_LINES            640
 DECL|macro|RAW_BPL
@@ -52,6 +54,11 @@ id|bttv_tvnorm
 DECL|member|v4l2_id
 r_int
 id|v4l2_id
+suffix:semicolon
+DECL|member|name
+r_char
+op_star
+id|name
 suffix:semicolon
 DECL|member|Fsc
 id|u32
@@ -97,6 +104,10 @@ suffix:semicolon
 DECL|member|vbipack
 id|u8
 id|vbipack
+suffix:semicolon
+DECL|member|sram
+r_int
+id|sram
 suffix:semicolon
 )brace
 suffix:semicolon
@@ -221,14 +232,12 @@ r_int
 id|size
 suffix:semicolon
 DECL|member|cpu
-r_int
-r_int
+id|u32
 op_star
 id|cpu
 suffix:semicolon
 DECL|member|jmp
-r_int
-r_int
+id|u32
 op_star
 id|jmp
 suffix:semicolon
@@ -273,15 +282,15 @@ r_struct
 id|bttv_geometry
 id|geo
 suffix:semicolon
-DECL|member|even
+DECL|member|top
 r_struct
 id|bttv_riscmem
-id|even
+id|top
 suffix:semicolon
-DECL|member|odd
+DECL|member|bottom
 r_struct
 id|bttv_riscmem
-id|odd
+id|bottom
 suffix:semicolon
 )brace
 suffix:semicolon
@@ -293,47 +302,25 @@ DECL|member|tvnorm
 r_int
 id|tvnorm
 suffix:semicolon
-DECL|member|x
-DECL|member|y
-DECL|member|width
-DECL|member|height
-r_int
-id|x
-comma
-id|y
-comma
-id|width
-comma
-id|height
+DECL|member|w
+r_struct
+id|v4l2_rect
+id|w
+suffix:semicolon
+DECL|member|field
+r_enum
+id|v4l2_field
+id|field
 suffix:semicolon
 DECL|member|clips
 r_struct
-id|video_clip
+id|v4l2_clip
 op_star
 id|clips
 suffix:semicolon
 DECL|member|nclips
 r_int
 id|nclips
-suffix:semicolon
-)brace
-suffix:semicolon
-DECL|struct|bttv_vbi
-r_struct
-id|bttv_vbi
-(brace
-DECL|member|users
-r_int
-id|users
-suffix:semicolon
-DECL|member|lines
-r_int
-id|lines
-suffix:semicolon
-DECL|member|q
-r_struct
-id|videobuf_queue
-id|q
 suffix:semicolon
 )brace
 suffix:semicolon
@@ -347,14 +334,25 @@ id|bttv
 op_star
 id|btv
 suffix:semicolon
-DECL|member|q
-r_struct
-id|videobuf_queue
-id|q
-suffix:semicolon
 DECL|member|resources
 r_int
 id|resources
+suffix:semicolon
+DECL|member|type
+r_enum
+id|v4l2_buf_type
+id|type
+suffix:semicolon
+multiline_comment|/* video capture */
+DECL|member|cap
+r_struct
+id|videobuf_queue
+id|cap
+suffix:semicolon
+DECL|member|buf
+r_struct
+id|bttv_buffer
+id|buf
 suffix:semicolon
 multiline_comment|/* current settings */
 DECL|member|ovfmt
@@ -369,10 +367,15 @@ r_struct
 id|bttv_overlay
 id|ov
 suffix:semicolon
-DECL|member|buf
+multiline_comment|/* video overlay */
+DECL|member|vbi
 r_struct
-id|bttv_buffer
-id|buf
+id|videobuf_queue
+id|vbi
+suffix:semicolon
+DECL|member|lines
+r_int
+id|lines
 suffix:semicolon
 )brace
 suffix:semicolon
@@ -498,25 +501,19 @@ r_int
 id|bttv_screen_clips
 c_func
 (paren
+r_int
+id|swidth
+comma
+r_int
+id|sheight
+comma
 r_struct
-id|video_buffer
+id|v4l2_rect
 op_star
-id|fbuf
-comma
-r_int
-id|x
-comma
-r_int
-id|y
-comma
-r_int
-id|width
-comma
-r_int
-id|height
+id|win
 comma
 r_struct
-id|video_clip
+id|v4l2_clip
 op_star
 id|clips
 comma
@@ -529,7 +526,7 @@ id|bttv_sort_clips
 c_func
 (paren
 r_struct
-id|video_clip
+id|v4l2_clip
 op_star
 id|clips
 comma
@@ -563,7 +560,10 @@ op_star
 id|ov
 comma
 r_int
-id|flags
+id|skip_top
+comma
+r_int
+id|skip_bottom
 )paren
 suffix:semicolon
 multiline_comment|/* calculate / apply geometry settings */
@@ -609,7 +609,7 @@ op_star
 id|geo
 comma
 r_int
-id|odd
+id|top
 )paren
 suffix:semicolon
 multiline_comment|/* control dma register + risc main loop */
@@ -662,28 +662,6 @@ id|irqflags
 suffix:semicolon
 multiline_comment|/* capture buffer handling */
 r_int
-id|bttv_buffer_field
-c_func
-(paren
-r_struct
-id|bttv
-op_star
-id|btv
-comma
-r_int
-id|field
-comma
-r_int
-id|def_field
-comma
-r_int
-id|tvnorm
-comma
-r_int
-id|height
-)paren
-suffix:semicolon
-r_int
 id|bttv_buffer_risc
 c_func
 (paren
@@ -710,12 +688,12 @@ comma
 r_struct
 id|bttv_buffer
 op_star
-id|odd
+id|top
 comma
 r_struct
 id|bttv_buffer
 op_star
-id|even
+id|bottom
 )paren
 suffix:semicolon
 r_void
@@ -762,15 +740,43 @@ id|buf
 suffix:semicolon
 multiline_comment|/* ---------------------------------------------------------- */
 multiline_comment|/* bttv-vbi.c                                                 */
-r_extern
+r_void
+id|bttv_vbi_fmt
+c_func
+(paren
 r_struct
-id|video_device
-id|bttv_vbi_template
+id|bttv_fh
+op_star
+id|fh
+comma
+r_struct
+id|v4l2_format
+op_star
+id|f
+)paren
+suffix:semicolon
+r_void
+id|bttv_vbi_setlines
+c_func
+(paren
+r_struct
+id|bttv_fh
+op_star
+id|fh
+comma
+r_struct
+id|bttv
+op_star
+id|btv
+comma
+r_int
+id|lines
+)paren
 suffix:semicolon
 r_extern
 r_struct
 id|videobuf_queue_ops
-id|vbi_qops
+id|bttv_vbi_qops
 suffix:semicolon
 multiline_comment|/* ---------------------------------------------------------- */
 multiline_comment|/* bttv-driver.c                                              */
@@ -808,6 +814,17 @@ suffix:semicolon
 r_extern
 r_int
 id|init_bttv_i2c
+c_func
+(paren
+r_struct
+id|bttv
+op_star
+id|btv
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|pvr_boot
 c_func
 (paren
 r_struct
@@ -1119,6 +1136,10 @@ DECL|member|field_count
 r_int
 id|field_count
 suffix:semicolon
+DECL|member|digital_video
+r_int
+id|digital_video
+suffix:semicolon
 multiline_comment|/* various options */
 DECL|member|opt_combfilter
 r_int
@@ -1140,17 +1161,16 @@ DECL|member|opt_adc_crush
 r_int
 id|opt_adc_crush
 suffix:semicolon
-multiline_comment|/* vbi data/state */
-DECL|member|vbi
-r_struct
-id|bttv_vbi
-id|vbi
-suffix:semicolon
 multiline_comment|/* radio data/state */
 DECL|member|has_radio
 r_int
 id|has_radio
 suffix:semicolon
+DECL|member|radio_user
+r_int
+id|radio_user
+suffix:semicolon
+multiline_comment|/* miro/pinnacle + Aimslab VHX&n;&t;   philips matchbox (tea5757 radio tuner) support */
 DECL|member|has_matchbox
 r_int
 id|has_matchbox
@@ -1175,9 +1195,18 @@ DECL|member|mbox_mask
 r_int
 id|mbox_mask
 suffix:semicolon
-DECL|member|radio_user
+multiline_comment|/* ISA stuff (Terratec Active Radio Upgrade) */
+DECL|member|mbox_ior
 r_int
-id|radio_user
+id|mbox_ior
+suffix:semicolon
+DECL|member|mbox_iow
+r_int
+id|mbox_iow
+suffix:semicolon
+DECL|member|mbox_csel
+r_int
+id|mbox_csel
 suffix:semicolon
 multiline_comment|/* risc memory management data&n;&t;   - must aquire s_lock before changing these&n;&t;   - only the irq handler is supported to touch odd + even */
 DECL|member|main
@@ -1185,33 +1214,33 @@ r_struct
 id|bttv_riscmem
 id|main
 suffix:semicolon
-DECL|member|odd
+DECL|member|top
 r_struct
 id|bttv_buffer
 op_star
-id|odd
+id|top
 suffix:semicolon
-multiline_comment|/* current active odd field   */
-DECL|member|even
+multiline_comment|/* current active top field    */
+DECL|member|bottom
 r_struct
 id|bttv_buffer
 op_star
-id|even
+id|bottom
 suffix:semicolon
-multiline_comment|/* current active even field  */
+multiline_comment|/* current active bottom field */
 DECL|member|screen
 r_struct
 id|bttv_buffer
 op_star
 id|screen
 suffix:semicolon
-multiline_comment|/* overlay                    */
+multiline_comment|/* overlay                     */
 DECL|member|capture
 r_struct
 id|list_head
 id|capture
 suffix:semicolon
-multiline_comment|/* capture buffer queue       */
+multiline_comment|/* capture buffer queue        */
 DECL|member|vcurr
 r_struct
 id|bttv_buffer
