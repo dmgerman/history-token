@@ -290,16 +290,6 @@ l_int|1
 )paren
 comma
 multiline_comment|/* cmd not yet ack&squot;d to scsi lyer */
-DECL|enumerator|ATA_QCFLAG_DMA
-id|ATA_QCFLAG_DMA
-op_assign
-(paren
-l_int|1
-op_lshift
-l_int|2
-)paren
-comma
-multiline_comment|/* data delivered via DMA */
 DECL|enumerator|ATA_QCFLAG_SG
 id|ATA_QCFLAG_SG
 op_assign
@@ -2383,11 +2373,6 @@ op_star
 id|qc
 )paren
 (brace
-id|qc-&gt;flags
-op_and_assign
-op_complement
-id|ATA_QCFLAG_DMA
-suffix:semicolon
 id|qc-&gt;tf.ctl
 op_or_assign
 id|ATA_NIEN

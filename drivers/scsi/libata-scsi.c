@@ -3110,6 +3110,22 @@ id|cmd
 op_assign
 id|qc-&gt;scsicmd
 suffix:semicolon
+r_struct
+id|ata_device
+op_star
+id|dev
+op_assign
+id|qc-&gt;dev
+suffix:semicolon
+r_int
+id|using_pio
+op_assign
+(paren
+id|dev-&gt;flags
+op_amp
+id|ATA_DFLAG_PIO
+)paren
+suffix:semicolon
 id|qc-&gt;tf.flags
 op_or_assign
 id|ATA_TFLAG_ISADDR
@@ -3151,26 +3167,14 @@ id|qc-&gt;tf.protocol
 op_assign
 id|ATA_PROT_ATAPI
 suffix:semicolon
-multiline_comment|/* PIO data xfer - polling */
+multiline_comment|/* PIO data xfer */
 r_else
 r_if
 c_cond
 (paren
-(paren
-id|qc-&gt;flags
-op_amp
-id|ATA_QCFLAG_DMA
-)paren
-op_eq
-l_int|0
+id|using_pio
 )paren
 (brace
-id|ata_qc_set_polling
-c_func
-(paren
-id|qc
-)paren
-suffix:semicolon
 id|qc-&gt;tf.protocol
 op_assign
 id|ATA_PROT_ATAPI
@@ -3195,7 +3199,7 @@ l_int|1024
 op_rshift
 l_int|8
 suffix:semicolon
-multiline_comment|/* DMA data xfer - interrupt-driven */
+multiline_comment|/* DMA data xfer */
 )brace
 r_else
 (brace
