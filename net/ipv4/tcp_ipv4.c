@@ -8748,9 +8748,13 @@ id|sk-&gt;sk_write_space
 op_assign
 id|sk_stream_write_space
 suffix:semicolon
-id|sk-&gt;sk_use_write_queue
-op_assign
-l_int|1
+id|sock_set_flag
+c_func
+(paren
+id|sk
+comma
+id|SOCK_USE_WRITE_QUEUE
+)paren
 suffix:semicolon
 id|tp-&gt;af_specific
 op_assign

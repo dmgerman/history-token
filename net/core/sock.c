@@ -2255,7 +2255,13 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|sk-&gt;sk_use_write_queue
+id|sock_flag
+c_func
+(paren
+id|sk
+comma
+id|SOCK_USE_WRITE_QUEUE
+)paren
 )paren
 id|sk
 op_member_access_from_pointer
