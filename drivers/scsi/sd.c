@@ -2553,7 +2553,7 @@ l_int|1
 suffix:semicolon
 multiline_comment|/* This will force a flush, if called from&n;&t;&t;&t;&t; * check_disk_change */
 )brace
-multiline_comment|/* Using Start/Stop enables differentiation between drive with&n;&t; * no cartridge loaded - NOT READY, drive with changed cartridge -&n;&t; * UNIT ATTENTION, or with same cartridge - GOOD STATUS.&n;&t; * This also handles drives that auto spin down. eg iomega jaz 1GB&n;&t; * as this will spin up the drive.&n;&t; */
+multiline_comment|/* Using TEST_UNIT_READY enables differentiation between drive with&n;&t; * no cartridge loaded - NOT READY, drive with changed cartridge -&n;&t; * UNIT ATTENTION, or with same cartridge - GOOD STATUS.&n;&t; *&n;&t; * Drives that auto spin down. eg iomega jaz 1G, will be started&n;&t; * by sd_spinup_disk() from sd_init_onedisk(), which happens whenever&n;&t; * sd_revalidate() is called.&n;&t; */
 id|retval
 op_assign
 op_minus
@@ -2575,7 +2575,7 @@ c_func
 (paren
 id|sdp
 comma
-id|SCSI_IOCTL_START_UNIT
+id|SCSI_IOCTL_TEST_UNIT_READY
 comma
 l_int|NULL
 )paren
@@ -2884,14 +2884,11 @@ id|SRpnt
 )paren
 r_return
 suffix:semicolon
-multiline_comment|/* Look for non-removable devices that return NOT_READY.&n;&t;&t; * Issue command to spin up drive for these cases. */
+multiline_comment|/* Look for devices that return NOT_READY.&n;&t;&t; * Issue command to spin up drive for these cases. */
 r_if
 c_cond
 (paren
 id|the_result
-op_logical_and
-op_logical_neg
-id|sdp-&gt;removable
 op_logical_and
 id|SRpnt-&gt;sr_sense_buffer
 (braket
