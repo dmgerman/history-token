@@ -1301,7 +1301,6 @@ r_return
 id|retval
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * function:    zfcp_unit_tgt_lookup&n; *&n; * purpose:&n; *&n; * returns:&n; *&n; * context:&t;&n; */
 r_static
 r_struct
 id|zfcp_port
@@ -1351,6 +1350,7 @@ suffix:semicolon
 )brace
 r_return
 (paren
+r_struct
 id|zfcp_port
 op_star
 )paren
@@ -2284,7 +2284,7 @@ c_func
 (paren
 id|unit
 comma
-id|LOGICAL_UNIT_RESET
+id|FCP_LOGICAL_UNIT_RESET
 )paren
 suffix:semicolon
 r_if
@@ -2346,7 +2346,7 @@ c_func
 (paren
 id|unit
 comma
-id|TARGET_RESET
+id|FCP_TARGET_RESET
 )paren
 suffix:semicolon
 r_if
