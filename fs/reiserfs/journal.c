@@ -20,8 +20,6 @@ DECL|variable|reiserfs_mounted_fs_count
 r_static
 r_int
 id|reiserfs_mounted_fs_count
-op_assign
-l_int|0
 suffix:semicolon
 DECL|variable|commit_wq
 r_static
@@ -243,8 +241,6 @@ suffix:semicolon
 r_static
 r_int
 id|id
-op_assign
-l_int|0
 suffix:semicolon
 id|bn
 op_assign

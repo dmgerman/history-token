@@ -21,8 +21,6 @@ DECL|variable|debug
 r_static
 r_int
 id|debug
-op_assign
-l_int|0
 suffix:semicolon
 DECL|variable|snmp_lock
 r_static

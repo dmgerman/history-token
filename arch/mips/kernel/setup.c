@@ -1,7 +1,6 @@
-multiline_comment|/*&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1995  Linus Torvalds&n; * Copyright (C) 1995  Waldorf Electronics&n; * Copyright (C) 1995, 1996, 1997, 1998, 1999, 2000, 2001  Ralf Baechle&n; * Copyright (C) 1996  Stoned Elipot&n; * Copyright (C) 2000, 2001, 2002  Maciej W. Rozycki&n; */
+multiline_comment|/*&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1995 Linus Torvalds&n; * Copyright (C) 1995 Waldorf Electronics&n; * Copyright (C) 1994, 95, 96, 97, 98, 99, 2000, 01, 02, 03  Ralf Baechle&n; * Copyright (C) 1996 Stoned Elipot&n; * Copyright (C) 1999 Silicon Graphics, Inc.&n; * Copyright (C) 2000 2001, 2002  Maciej W. Rozycki&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
-macro_line|#include &lt;linux/hdreg.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/ioport.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
@@ -18,17 +17,12 @@ macro_line|#include &lt;linux/a.out.h&gt;
 macro_line|#include &lt;linux/tty.h&gt;
 macro_line|#include &lt;linux/bootmem.h&gt;
 macro_line|#include &lt;linux/initrd.h&gt;
-macro_line|#include &lt;linux/ide.h&gt;
-macro_line|#include &lt;linux/timex.h&gt;
 macro_line|#include &lt;linux/major.h&gt;
 macro_line|#include &lt;linux/kdev_t.h&gt;
 macro_line|#include &lt;linux/root_dev.h&gt;
-macro_line|#include &lt;asm/asm.h&gt;
+macro_line|#include &lt;asm/addrspace.h&gt;
 macro_line|#include &lt;asm/bootinfo.h&gt;
-macro_line|#include &lt;asm/cachectl.h&gt;
 macro_line|#include &lt;asm/cpu.h&gt;
-macro_line|#include &lt;asm/io.h&gt;
-macro_line|#include &lt;asm/ptrace.h&gt;
 macro_line|#include &lt;asm/sections.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 DECL|variable|cpu_data
@@ -39,20 +33,28 @@ id|cpu_data
 id|NR_CPUS
 )braket
 suffix:semicolon
-multiline_comment|/*&n; * There are several bus types available for MIPS machines.  &quot;RISC PC&quot;&n; * type machines have ISA, EISA, VLB or PCI available, DECstations&n; * have Turbochannel or Q-Bus, SGI has GIO, there are lots of VME&n; * boxes ...&n; * This flag is set if a EISA slots are available.&n; */
-macro_line|#ifdef CONFIG_EISA
-DECL|variable|EISA_bus
-r_int
-id|EISA_bus
-op_assign
-l_int|0
-suffix:semicolon
-macro_line|#endif
+macro_line|#ifdef CONFIG_VT
 DECL|variable|screen_info
 r_struct
 id|screen_info
 id|screen_info
 suffix:semicolon
+macro_line|#endif
+multiline_comment|/*&n; * Set if box has EISA slots.&n; */
+macro_line|#ifdef CONFIG_EISA
+DECL|variable|EISA_bus
+r_int
+id|EISA_bus
+suffix:semicolon
+DECL|variable|EISA_bus
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|EISA_bus
+)paren
+suffix:semicolon
+macro_line|#endif
+macro_line|#if defined(CONFIG_BLK_DEV_FD) || defined(CONFIG_BLK_DEV_FD_MODULE)
 r_extern
 r_struct
 id|fd_ops
@@ -64,6 +66,7 @@ id|fd_ops
 op_star
 id|fd_ops
 suffix:semicolon
+macro_line|#endif
 macro_line|#if defined(CONFIG_BLK_DEV_IDE) || defined(CONFIG_BLK_DEV_IDE_MODULE)
 r_extern
 r_struct
@@ -115,11 +118,6 @@ DECL|variable|boot_mem_map
 r_struct
 id|boot_mem_map
 id|boot_mem_map
-suffix:semicolon
-DECL|variable|aux_device_present
-r_int
-r_char
-id|aux_device_present
 suffix:semicolon
 DECL|variable|command_line
 r_static
@@ -190,6 +188,7 @@ r_void
 )paren
 suffix:semicolon
 r_extern
+id|ATTRIB_NORET
 id|asmlinkage
 r_void
 id|start_kernel
@@ -237,10 +236,10 @@ op_assign
 l_string|&quot;Kernel data&quot;
 )brace
 suffix:semicolon
+DECL|function|init_arch
 id|asmlinkage
 r_void
 id|__init
-DECL|function|init_arch
 id|init_arch
 c_func
 (paren
@@ -285,12 +284,13 @@ c_func
 (paren
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * Determine the mmu/cache attached to this machine,&n;&t; * then flush the tlb and caches.  On the r4xx0&n;&t; * variants this also sets CP0_WIRED to zero.&n;&t; */
+multiline_comment|/*&n;&t; * Determine the mmu/cache attached to this machine, then flush the&n;&t; * tlb and caches.  On the r4xx0 variants this also sets CP0_WIRED to&n;&t; * zero.&n;&t; */
 id|load_mmu
 c_func
 (paren
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_MIPS32
 multiline_comment|/* Disable coprocessors and set FPU for 16/32 FPR register model */
 id|clear_c0_status
 c_func
@@ -314,6 +314,36 @@ c_func
 id|ST0_CU0
 )paren
 suffix:semicolon
+macro_line|#endif
+macro_line|#ifdef CONFIG_MIPS64
+multiline_comment|/*&n;&t; * On IP27, I am seeing the TS bit set when the kernel is loaded.&n;&t; * Maybe because the kernel is in ckseg0 and not xkphys? Clear it&n;&t; * anyway ...&n;&t; */
+id|clear_c0_status
+c_func
+(paren
+id|ST0_BEV
+op_or
+id|ST0_TS
+op_or
+id|ST0_CU1
+op_or
+id|ST0_CU2
+op_or
+id|ST0_CU3
+)paren
+suffix:semicolon
+id|set_c0_status
+c_func
+(paren
+id|ST0_CU0
+op_or
+id|ST0_KX
+op_or
+id|ST0_SX
+op_or
+id|ST0_FR
+)paren
+suffix:semicolon
+macro_line|#endif
 id|start_kernel
 c_func
 (paren
@@ -420,7 +450,14 @@ op_increment
 id|printk
 c_func
 (paren
-l_string|&quot; memory: %08Lx @ %08Lx &quot;
+l_string|&quot; memory: %0*Lx @ %0*Lx &quot;
+comma
+r_sizeof
+(paren
+r_int
+)paren
+op_star
+l_int|2
 comma
 (paren
 id|u64
@@ -431,6 +468,13 @@ id|i
 )braket
 dot
 id|size
+comma
+r_sizeof
+(paren
+r_int
+)paren
+op_star
+l_int|2
 comma
 (paren
 id|u64
@@ -854,7 +898,7 @@ op_assign
 id|PFN_UP
 c_func
 (paren
-id|__pa
+id|CPHYSADDR
 c_func
 (paren
 (paren
@@ -879,7 +923,7 @@ op_assign
 id|PFN_UP
 c_func
 (paren
-id|__pa
+id|CPHYSADDR
 c_func
 (paren
 op_amp
@@ -888,6 +932,7 @@ id|_end
 )paren
 suffix:semicolon
 macro_line|#endif&t;/* CONFIG_BLK_DEV_INITRD */
+macro_line|#ifndef CONFIG_SGI_IP27
 multiline_comment|/* Find the highest page frame number we have available.  */
 id|max_pfn
 op_assign
@@ -1046,7 +1091,7 @@ id|printk
 c_func
 (paren
 id|KERN_WARNING
-l_string|&quot;Warning only %dMB will be used.&bslash;n&quot;
+l_string|&quot;Warning only %ldMB will be used.&bslash;n&quot;
 comma
 id|MAXMEM
 op_rshift
@@ -1313,6 +1358,7 @@ comma
 id|bootmap_size
 )paren
 suffix:semicolon
+macro_line|#endif
 macro_line|#ifdef CONFIG_BLK_DEV_INITRD
 multiline_comment|/* Board specific code should have set up initrd_start and initrd_end */
 id|ROOT_DEV
@@ -1394,10 +1440,12 @@ comma
 id|initrd_size
 )paren
 suffix:semicolon
+multiline_comment|/* FIXME: is this right? */
+macro_line|#ifndef CONFIG_SGI_IP27
 r_if
 c_cond
 (paren
-id|PHYSADDR
+id|CPHYSADDR
 c_func
 (paren
 id|initrd_end
@@ -1414,13 +1462,27 @@ id|printk
 c_func
 (paren
 l_string|&quot;initrd extends beyond end of memory &quot;
-l_string|&quot;(0x%08lx &gt; 0x%08lx)&bslash;ndisabling initrd&bslash;n&quot;
+l_string|&quot;(0x%0*Lx &gt; 0x%0*Lx)&bslash;ndisabling initrd&bslash;n&quot;
 comma
-id|PHYSADDR
+r_sizeof
+(paren
+r_int
+)paren
+op_star
+l_int|2
+comma
+id|CPHYSADDR
 c_func
 (paren
 id|initrd_end
 )paren
+comma
+r_sizeof
+(paren
+r_int
+)paren
+op_star
+l_int|2
 comma
 id|PFN_PHYS
 c_func
@@ -1436,6 +1498,7 @@ op_assign
 l_int|0
 suffix:semicolon
 )brace
+macro_line|#endif /* !CONFIG_SGI_IP27 */
 )brace
 macro_line|#endif /* CONFIG_BLK_DEV_INITRD  */
 )brace
@@ -1679,6 +1742,7 @@ op_star
 id|cmdline_p
 )paren
 (brace
+r_extern
 r_void
 id|atlas_setup
 c_func
@@ -1686,6 +1750,7 @@ c_func
 r_void
 )paren
 suffix:semicolon
+r_extern
 r_void
 id|baget_setup
 c_func
@@ -1693,6 +1758,7 @@ c_func
 r_void
 )paren
 suffix:semicolon
+r_extern
 r_void
 id|cobalt_setup
 c_func
@@ -1700,6 +1766,7 @@ c_func
 r_void
 )paren
 suffix:semicolon
+r_extern
 r_void
 id|lasat_setup
 c_func
@@ -1707,6 +1774,7 @@ c_func
 r_void
 )paren
 suffix:semicolon
+r_extern
 r_void
 id|ddb_setup
 c_func
@@ -1714,6 +1782,7 @@ c_func
 r_void
 )paren
 suffix:semicolon
+r_extern
 r_void
 id|decstation_setup
 c_func
@@ -1721,6 +1790,7 @@ c_func
 r_void
 )paren
 suffix:semicolon
+r_extern
 r_void
 id|deskstation_setup
 c_func
@@ -1728,6 +1798,7 @@ c_func
 r_void
 )paren
 suffix:semicolon
+r_extern
 r_void
 id|jazz_setup
 c_func
@@ -1735,6 +1806,7 @@ c_func
 r_void
 )paren
 suffix:semicolon
+r_extern
 r_void
 id|sni_rm200_pci_setup
 c_func
@@ -1742,6 +1814,7 @@ c_func
 r_void
 )paren
 suffix:semicolon
+r_extern
 r_void
 id|ip22_setup
 c_func
@@ -1749,6 +1822,23 @@ c_func
 r_void
 )paren
 suffix:semicolon
+r_extern
+r_void
+id|ip27_setup
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|ip32_setup
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+r_extern
 r_void
 id|ev96100_setup
 c_func
@@ -1756,6 +1846,7 @@ c_func
 r_void
 )paren
 suffix:semicolon
+r_extern
 r_void
 id|malta_setup
 c_func
@@ -1763,6 +1854,7 @@ c_func
 r_void
 )paren
 suffix:semicolon
+r_extern
 r_void
 id|sead_setup
 c_func
@@ -1770,6 +1862,7 @@ c_func
 r_void
 )paren
 suffix:semicolon
+r_extern
 r_void
 id|ikos_setup
 c_func
@@ -1777,6 +1870,7 @@ c_func
 r_void
 )paren
 suffix:semicolon
+r_extern
 r_void
 id|momenco_ocelot_setup
 c_func
@@ -1784,6 +1878,7 @@ c_func
 r_void
 )paren
 suffix:semicolon
+r_extern
 r_void
 id|momenco_ocelot_g_setup
 c_func
@@ -1791,6 +1886,7 @@ c_func
 r_void
 )paren
 suffix:semicolon
+r_extern
 r_void
 id|momenco_ocelot_c_setup
 c_func
@@ -1798,6 +1894,7 @@ c_func
 r_void
 )paren
 suffix:semicolon
+r_extern
 r_void
 id|nec_osprey_setup
 c_func
@@ -1805,6 +1902,7 @@ c_func
 r_void
 )paren
 suffix:semicolon
+r_extern
 r_void
 id|nec_eagle_setup
 c_func
@@ -1812,6 +1910,7 @@ c_func
 r_void
 )paren
 suffix:semicolon
+r_extern
 r_void
 id|zao_capcella_setup
 c_func
@@ -1819,6 +1918,7 @@ c_func
 r_void
 )paren
 suffix:semicolon
+r_extern
 r_void
 id|victor_mpc30x_setup
 c_func
@@ -1826,6 +1926,7 @@ c_func
 r_void
 )paren
 suffix:semicolon
+r_extern
 r_void
 id|ibm_workpad_setup
 c_func
@@ -1833,6 +1934,7 @@ c_func
 r_void
 )paren
 suffix:semicolon
+r_extern
 r_void
 id|casio_e55_setup
 c_func
@@ -1840,6 +1942,7 @@ c_func
 r_void
 )paren
 suffix:semicolon
+r_extern
 r_void
 id|jmr3927_setup
 c_func
@@ -1847,6 +1950,7 @@ c_func
 r_void
 )paren
 suffix:semicolon
+r_extern
 r_void
 id|it8172_setup
 c_func
@@ -1854,6 +1958,7 @@ c_func
 r_void
 )paren
 suffix:semicolon
+r_extern
 r_void
 id|swarm_setup
 c_func
@@ -1861,6 +1966,7 @@ c_func
 r_void
 )paren
 suffix:semicolon
+r_extern
 r_void
 id|hp_setup
 c_func
@@ -1868,6 +1974,7 @@ c_func
 r_void
 )paren
 suffix:semicolon
+r_extern
 r_void
 id|au1x00_setup
 c_func
@@ -1875,6 +1982,7 @@ c_func
 r_void
 )paren
 suffix:semicolon
+r_extern
 r_void
 id|frame_info_init
 c_func
@@ -2038,6 +2146,30 @@ r_case
 id|MACH_GROUP_SGI
 suffix:colon
 id|ip22_setup
+c_func
+(paren
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
+macro_line|#endif
+macro_line|#ifdef CONFIG_SGI_IP27
+r_case
+id|MACH_GROUP_SGI
+suffix:colon
+id|ip27_setup
+c_func
+(paren
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
+macro_line|#endif
+macro_line|#ifdef CONFIG_SGI_IP32
+r_case
+id|MACH_GROUP_SGI
+suffix:colon
+id|ip32_setup
 c_func
 (paren
 )paren
@@ -2319,7 +2451,9 @@ comma
 id|arcs_cmdline
 comma
 r_sizeof
+(paren
 id|command_line
+)paren
 )paren
 suffix:semicolon
 id|strlcpy
@@ -2330,7 +2464,9 @@ comma
 id|command_line
 comma
 r_sizeof
+(paren
 id|saved_command_line
+)paren
 )paren
 suffix:semicolon
 op_star

@@ -95,14 +95,13 @@ DECL|macro|GEM_MODULE_NAME
 mdefine_line|#define GEM_MODULE_NAME&t;&quot;gem&quot;
 DECL|macro|PFX
 mdefine_line|#define PFX GEM_MODULE_NAME &quot;: &quot;
-DECL|variable|__devinitdata
+DECL|variable|gem_pci_tbl
 r_static
 r_struct
 id|pci_device_id
 id|gem_pci_tbl
 (braket
 )braket
-id|__devinitdata
 op_assign
 (brace
 (brace
@@ -9624,13 +9623,6 @@ op_assign
 l_int|1
 suffix:semicolon
 )brace
-id|spin_lock_irq
-c_func
-(paren
-op_amp
-id|gp-&gt;lock
-)paren
-suffix:semicolon
 multiline_comment|/* We can now request the interrupt as we know it&squot;s masked&n;&t; * on the controller&n;&t; */
 r_if
 c_cond
@@ -9654,13 +9646,6 @@ id|dev
 )paren
 )paren
 (brace
-id|spin_unlock_irq
-c_func
-(paren
-op_amp
-id|gp-&gt;lock
-)paren
-suffix:semicolon
 id|printk
 c_func
 (paren
@@ -9668,6 +9653,13 @@ id|KERN_ERR
 l_string|&quot;%s: failed to request irq !&bslash;n&quot;
 comma
 id|gp-&gt;dev-&gt;name
+)paren
+suffix:semicolon
+id|spin_lock_irq
+c_func
+(paren
+op_amp
+id|gp-&gt;lock
 )paren
 suffix:semicolon
 macro_line|#ifdef CONFIG_PPC_PMAC
@@ -9711,11 +9703,25 @@ op_amp
 id|gp-&gt;pm_sem
 )paren
 suffix:semicolon
+id|spin_unlock_irq
+c_func
+(paren
+op_amp
+id|gp-&gt;lock
+)paren
+suffix:semicolon
 r_return
 op_minus
 id|EAGAIN
 suffix:semicolon
 )brace
+id|spin_lock_irq
+c_func
+(paren
+op_amp
+id|gp-&gt;lock
+)paren
+suffix:semicolon
 multiline_comment|/* Allocate &amp; setup ring buffers */
 id|gem_init_rings
 c_func
@@ -10589,7 +10595,11 @@ c_func
 (paren
 id|info.bus_info
 comma
-id|gp-&gt;pdev-&gt;slot_name
+id|pci_name
+c_func
+(paren
+id|gp-&gt;pdev
+)paren
 comma
 id|ETHTOOL_BUSINFO_LEN
 )paren

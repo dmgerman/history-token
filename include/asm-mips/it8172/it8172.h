@@ -4,7 +4,7 @@ DECL|macro|__IT8172__H__
 mdefine_line|#define __IT8172__H__
 macro_line|#include &lt;asm/addrspace.h&gt;
 DECL|macro|IT8172_BASE
-mdefine_line|#define IT8172_BASE&t;&t;&t;0x18000000&t;
+mdefine_line|#define IT8172_BASE&t;&t;&t;0x18000000
 DECL|macro|IT8172_PCI_IO_BASE
 mdefine_line|#define IT8172_PCI_IO_BASE&t;&t;0x14000000
 DECL|macro|IT8172_PCI_MEM_BASE
@@ -108,29 +108,29 @@ singleline_comment|// PCI to Internal/LPC Bus Bridge configuration header regist
 DECL|macro|IT_P2I_BCR
 mdefine_line|#define IT_P2I_BCR&t;&t;&t;&t;0x4C
 DECL|macro|IT_P2I_D0IOSC
-mdefine_line|#define IT_P2I_D0IOSC&t;&t;&t;&t;0x50 
+mdefine_line|#define IT_P2I_D0IOSC&t;&t;&t;&t;0x50
 DECL|macro|IT_P2I_D1IOSC
 mdefine_line|#define IT_P2I_D1IOSC&t;&t;&t;&t;0x54
 DECL|macro|IT_P2I_D2IOSC
-mdefine_line|#define IT_P2I_D2IOSC&t;&t;&t;&t;0x58 
+mdefine_line|#define IT_P2I_D2IOSC&t;&t;&t;&t;0x58
 DECL|macro|IT_P2I_D3IOSC
-mdefine_line|#define IT_P2I_D3IOSC&t;&t;&t;&t;0x5C 
+mdefine_line|#define IT_P2I_D3IOSC&t;&t;&t;&t;0x5C
 DECL|macro|IT_P2I_D4IOSC
-mdefine_line|#define IT_P2I_D4IOSC&t;&t;&t;&t;0x60 
+mdefine_line|#define IT_P2I_D4IOSC&t;&t;&t;&t;0x60
 DECL|macro|IT_P2I_D5IOSC
-mdefine_line|#define IT_P2I_D5IOSC&t;&t;&t;&t;0x64 
+mdefine_line|#define IT_P2I_D5IOSC&t;&t;&t;&t;0x64
 DECL|macro|IT_P2I_D6IOSC
-mdefine_line|#define IT_P2I_D6IOSC&t;&t;&t;&t;0x68 
+mdefine_line|#define IT_P2I_D6IOSC&t;&t;&t;&t;0x68
 DECL|macro|IT_P2I_D7IOSC
-mdefine_line|#define IT_P2I_D7IOSC&t;&t;&t;&t;0x6C 
+mdefine_line|#define IT_P2I_D7IOSC&t;&t;&t;&t;0x6C
 DECL|macro|IT_P2I_D8IOSC
-mdefine_line|#define IT_P2I_D8IOSC&t;&t;&t;&t;0x70 
+mdefine_line|#define IT_P2I_D8IOSC&t;&t;&t;&t;0x70
 DECL|macro|IT_P2I_D9IOSC
-mdefine_line|#define IT_P2I_D9IOSC&t;&t;&t;&t;0x74 
+mdefine_line|#define IT_P2I_D9IOSC&t;&t;&t;&t;0x74
 DECL|macro|IT_P2I_D10IOSC
-mdefine_line|#define IT_P2I_D10IOSC&t;&t;&t;&t;0x78 
+mdefine_line|#define IT_P2I_D10IOSC&t;&t;&t;&t;0x78
 DECL|macro|IT_P2I_D11IOSC
-mdefine_line|#define IT_P2I_D11IOSC&t;&t;&t;&t;0x7C 
+mdefine_line|#define IT_P2I_D11IOSC&t;&t;&t;&t;0x7C
 singleline_comment|// Memory controller register offsets from IT8172_BASE
 DECL|macro|IT_MC_SDRMR
 mdefine_line|#define IT_MC_SDRMR&t;&t;&t;&t;&t;0x1000
@@ -166,9 +166,9 @@ DECL|macro|IT_M68K_BSR
 mdefine_line|#define IT_M68K_BSR&t;&t;&t;&t;&t;0x5D
 DECL|macro|IT_M68K_DTR
 mdefine_line|#define IT_M68K_DTR&t;&t;&t;&t;&t;0x5F
-singleline_comment|// Register offset from IT8172_PCI_IO_BASE 
+singleline_comment|// Register offset from IT8172_PCI_IO_BASE
 singleline_comment|// These registers are accessible through 8172 PCI IO window.
-singleline_comment|// INTC 
+singleline_comment|// INTC
 DECL|macro|IT_INTC_BASE
 mdefine_line|#define IT_INTC_BASE&t;&t;&t;&t;0x10000
 DECL|macro|IT_INTC_LBDNIRR
@@ -267,6 +267,8 @@ mdefine_line|#define IT_GCR&t;&t;&t;&t;&t;0x13818
 singleline_comment|// IT8172 RTC
 DECL|macro|IT_RTC_BASE
 mdefine_line|#define IT_RTC_BASE&t;&t;&t;&t;0x14800
+DECL|macro|IT_RTC_CENTURY
+mdefine_line|#define IT_RTC_CENTURY&t;&t;&t;&t;0x14808
 DECL|macro|IT_RTC_RIR0
 mdefine_line|#define IT_RTC_RIR0&t;&t;&t;&t;0x00
 DECL|macro|IT_RTC_RTR0

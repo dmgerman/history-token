@@ -431,7 +431,7 @@ suffix:semicolon
 )brace
 DECL|function|cisco_rx
 r_static
-r_void
+r_int
 id|cisco_rx
 c_func
 (paren
@@ -502,17 +502,6 @@ id|CISCO_UNICAST
 r_goto
 id|rx_error
 suffix:semicolon
-id|skb_pull
-c_func
-(paren
-id|skb
-comma
-r_sizeof
-(paren
-id|hdlc_header
-)paren
-)paren
-suffix:semicolon
 r_switch
 c_cond
 (paren
@@ -534,6 +523,7 @@ id|skb
 )paren
 suffix:semicolon
 r_return
+id|NET_RX_SUCCESS
 suffix:semicolon
 r_case
 id|CISCO_KEEPALIVE
@@ -543,10 +533,20 @@ c_cond
 (paren
 id|skb-&gt;len
 op_ne
+r_sizeof
+(paren
+id|hdlc_header
+)paren
+op_plus
 id|CISCO_PACKET_LEN
 op_logical_and
 id|skb-&gt;len
 op_ne
+r_sizeof
+(paren
+id|hdlc_header
+)paren
+op_plus
 id|CISCO_BIG_PACKET_LEN
 )paren
 (brace
@@ -576,7 +576,14 @@ op_assign
 id|cisco_packet
 op_star
 )paren
+(paren
 id|skb-&gt;data
+op_plus
+r_sizeof
+(paren
+id|hdlc_header
+)paren
+)paren
 suffix:semicolon
 r_switch
 c_cond
@@ -712,6 +719,7 @@ id|skb
 )paren
 suffix:semicolon
 r_return
+id|NET_RX_SUCCESS
 suffix:semicolon
 r_case
 id|CISCO_ADDR_REPLY
@@ -857,6 +865,7 @@ id|skb
 )paren
 suffix:semicolon
 r_return
+id|NET_RX_SUCCESS
 suffix:semicolon
 )brace
 multiline_comment|/* switch(keepalive type) */
@@ -884,6 +893,7 @@ id|skb
 )paren
 suffix:semicolon
 r_return
+id|NET_RX_DROP
 suffix:semicolon
 id|rx_error
 suffix:colon
@@ -896,6 +906,9 @@ c_func
 (paren
 id|skb
 )paren
+suffix:semicolon
+r_return
+id|NET_RX_DROP
 suffix:semicolon
 )brace
 DECL|function|cisco_timer

@@ -1479,5 +1479,31 @@ DECL|macro|i2c_is_isa_client
 mdefine_line|#define i2c_is_isa_client(clientptr) &bslash;&n;        ((clientptr)-&gt;adapter-&gt;algo-&gt;id == I2C_ALGO_ISA)
 DECL|macro|i2c_is_isa_adapter
 mdefine_line|#define i2c_is_isa_adapter(adapptr) &bslash;&n;        ((adapptr)-&gt;algo-&gt;id == I2C_ALGO_ISA)
+multiline_comment|/* Tiny delay function used by the i2c bus drivers */
+DECL|function|i2c_delay
+r_static
+r_inline
+r_void
+id|i2c_delay
+c_func
+(paren
+r_int
+r_int
+id|timeout
+)paren
+(brace
+id|set_current_state
+c_func
+(paren
+id|TASK_INTERRUPTIBLE
+)paren
+suffix:semicolon
+id|schedule_timeout
+c_func
+(paren
+id|timeout
+)paren
+suffix:semicolon
+)brace
 macro_line|#endif /* _LINUX_I2C_H */
 eof

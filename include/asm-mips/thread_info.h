@@ -1,8 +1,9 @@
-multiline_comment|/* thread_info.h: i386 low-level thread information&n; *&n; * Copyright (C) 2002  David Howells (dhowells@redhat.com)&n; * - Incorporating suggestions made by Linus Torvalds and Dave Miller&n; */
+multiline_comment|/* thread_info.h: MIPS low-level thread information&n; *&n; * Copyright (C) 2002  David Howells (dhowells@redhat.com)&n; * - Incorporating suggestions made by Linus Torvalds and Dave Miller&n; */
 macro_line|#ifndef _ASM_THREAD_INFO_H
 DECL|macro|_ASM_THREAD_INFO_H
 mdefine_line|#define _ASM_THREAD_INFO_H
 macro_line|#ifdef __KERNEL__
+macro_line|#include &lt;linux/config.h&gt;
 macro_line|#ifndef __ASSEMBLY__
 macro_line|#include &lt;asm/processor.h&gt;
 multiline_comment|/*&n; * low level task data that entry.S needs immediate access to&n; * - this struct should fit entirely inside of one cache line&n; * - this struct shares the supervisor stack pages&n; * - if the contents of this structure are changed, the assembly constants&n; *   must also be changed&n; */
@@ -76,14 +77,22 @@ suffix:semicolon
 DECL|macro|current_thread_info
 mdefine_line|#define current_thread_info()  __current_thread_info
 multiline_comment|/* thread information allocation */
+macro_line|#ifdef CONFIG_MIPS32
 DECL|macro|THREAD_SIZE_ORDER
 mdefine_line|#define THREAD_SIZE_ORDER (1)
+macro_line|#endif
+macro_line|#ifdef CONFIG_MIPS64
+DECL|macro|THREAD_SIZE_ORDER
+mdefine_line|#define THREAD_SIZE_ORDER (1)
+macro_line|#endif
 DECL|macro|THREAD_SIZE
 mdefine_line|#define THREAD_SIZE (PAGE_SIZE &lt;&lt; THREAD_SIZE_ORDER)
+DECL|macro|THREAD_MASK
+mdefine_line|#define THREAD_MASK (THREAD_SIZE - 1UL)
 DECL|macro|alloc_thread_info
-mdefine_line|#define alloc_thread_info(tsk) ((struct thread_info *) &bslash;&n;&t;__get_free_pages(GFP_KERNEL,THREAD_SIZE_ORDER))
+mdefine_line|#define alloc_thread_info(task) &bslash;&n;&t;((struct thread_info *)kmalloc(THREAD_SIZE, GFP_KERNEL))
 DECL|macro|free_thread_info
-mdefine_line|#define free_thread_info(ti) free_pages((unsigned long) (ti), THREAD_SIZE_ORDER)
+mdefine_line|#define free_thread_info(info) kfree(info)
 DECL|macro|get_thread_info
 mdefine_line|#define get_thread_info(ti) get_task_struct((ti)-&gt;task)
 DECL|macro|put_thread_info

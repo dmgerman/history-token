@@ -836,15 +836,21 @@ id|psched_time_t
 id|psched_time_base
 suffix:semicolon
 macro_line|#if PSCHED_CLOCK_SOURCE == PSCHED_JIFFIES
-macro_line|#if HZ == 100
+macro_line|#if HZ &lt; 96
+DECL|macro|PSCHED_JSCALE
+mdefine_line|#define PSCHED_JSCALE 14
+macro_line|#elif HZ &gt;= 96 &amp;&amp; HZ &lt; 192
 DECL|macro|PSCHED_JSCALE
 mdefine_line|#define PSCHED_JSCALE 13
-macro_line|#elif HZ == 1024
+macro_line|#elif HZ &gt;= 192 &amp;&amp; HZ &lt; 384
+DECL|macro|PSCHED_JSCALE
+mdefine_line|#define PSCHED_JSCALE 12
+macro_line|#elif HZ &gt;= 384 &amp;&amp; HZ &lt; 768
+DECL|macro|PSCHED_JSCALE
+mdefine_line|#define PSCHED_JSCALE 11
+macro_line|#elif HZ &gt;= 768
 DECL|macro|PSCHED_JSCALE
 mdefine_line|#define PSCHED_JSCALE 10
-macro_line|#else
-DECL|macro|PSCHED_JSCALE
-mdefine_line|#define PSCHED_JSCALE 0
 macro_line|#endif
 DECL|macro|PSCHED_EXPORTLIST_2
 mdefine_line|#define PSCHED_EXPORTLIST_2

@@ -212,8 +212,8 @@ comma
 DECL|enumerator|USB_FEATURE_BASSBOOST
 id|USB_FEATURE_BASSBOOST
 comma
-DECL|enumerator|FSB_FEATURE_LOUDNESS
-id|FSB_FEATURE_LOUDNESS
+DECL|enumerator|USB_FEATURE_LOUDNESS
+id|USB_FEATURE_LOUDNESS
 )brace
 suffix:semicolon
 r_enum
@@ -7490,7 +7490,7 @@ id|chip-&gt;dev-&gt;actconfig-&gt;interface
 (braket
 id|ctrlif
 )braket
-dot
+op_member_access_from_pointer
 id|altsetting
 (braket
 l_int|0

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * termbits stuff for Linux/MIPS.&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1995, 1996, 2001 Ralf Baechle&n; * Copyright (C) 2001  MIPS Technologies, Inc.&n; */
+multiline_comment|/*&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1995, 1996, 1999, 2001 Ralf Baechle&n; * Copyright (C) 1999 Silicon Graphics, Inc.&n; * Copyright (C) 2001 MIPS Technologies, Inc.&n; */
 macro_line|#ifndef _ASM_TERMBITS_H
 DECL|macro|_ASM_TERMBITS_H
 mdefine_line|#define _ASM_TERMBITS_H
@@ -9,6 +9,7 @@ r_int
 r_char
 id|cc_t
 suffix:semicolon
+macro_line|#if (_MIPS_SZLONG == 32)
 DECL|typedef|speed_t
 r_typedef
 r_int
@@ -21,6 +22,19 @@ r_int
 r_int
 id|tcflag_t
 suffix:semicolon
+macro_line|#endif
+macro_line|#if (_MIPS_SZLONG == 64)
+DECL|typedef|speed_t
+r_typedef
+id|__u32
+id|speed_t
+suffix:semicolon
+DECL|typedef|tcflag_t
+r_typedef
+id|__u32
+id|tcflag_t
+suffix:semicolon
+macro_line|#endif
 multiline_comment|/*&n; * The ABI says nothing about NCC but seems to use NCCS as&n; * replacement for it in struct termio&n; */
 DECL|macro|NCCS
 mdefine_line|#define NCCS&t;23
@@ -48,7 +62,6 @@ id|tcflag_t
 id|c_lflag
 suffix:semicolon
 multiline_comment|/* local mode flags */
-multiline_comment|/*&n;&t; * Seems nonexistent in the ABI, but Linux assumes existence ...&n;&t; */
 DECL|member|c_line
 id|cc_t
 id|c_line

@@ -236,14 +236,13 @@ DECL|macro|PCI_DEVICE_ID_EICON_BRI2M_2_VOIP
 mdefine_line|#define PCI_DEVICE_ID_EICON_BRI2M_2_VOIP     0xE01B
 macro_line|#endif
 multiline_comment|/*&n;  This table should be sorted by PCI device ID&n;  */
-DECL|variable|__devinitdata
+DECL|variable|divas_pci_tbl
 r_static
 r_struct
 id|pci_device_id
 id|divas_pci_tbl
 (braket
 )braket
-id|__devinitdata
 op_assign
 (brace
 multiline_comment|/* Diva Server BRI-2M PCI 0xE010 */

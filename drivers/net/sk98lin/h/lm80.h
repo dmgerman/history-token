@@ -1,6 +1,6 @@
-multiline_comment|/******************************************************************************&n; *&n; * Name:&t;lm80.h&t;&n; * Project:&t;GEnesis, PCI Gigabit Ethernet Adapter&n; * Version:&t;$Revision: 1.3 $&n; * Date:&t;$Date: 1999/11/22 13:41:19 $&n; * Purpose:&t;Contains all defines for the LM80 Chip&n; *&t;&t;(National Semiconductor).&n; *&n; ******************************************************************************/
-multiline_comment|/******************************************************************************&n; *&n; *&t;(C)Copyright 1998,1999 SysKonnect,&n; *&t;a business unit of Schneider &amp; Koch &amp; Co. Datensysteme GmbH.&n; *&n; *&t;This program is free software; you can redistribute it and/or modify&n; *&t;it under the terms of the GNU General Public License as published by&n; *&t;the Free Software Foundation; either version 2 of the License, or&n; *&t;(at your option) any later version.&n; *&n; *&t;The information in this file is provided &quot;AS IS&quot; without warranty.&n; *&n; ******************************************************************************/
-multiline_comment|/******************************************************************************&n; *&n; * History:&n; *&t;$Log: lm80.h,v $&n; *&t;Revision 1.3  1999/11/22 13:41:19  cgoos&n; *&t;Changed license header to GPL.&n; *&t;&n; *&t;Revision 1.2  1999/03/12 13:26:51  malthoff&n; *&t;remove __STDC__.&n; *&t;&n; *&t;Revision 1.1  1998/06/19 09:28:31  malthoff&n; *&t;created.&n; *&t;&n; *&n; ******************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Name:&t;lm80.h&t;&n; * Project:&t;Gigabit Ethernet Adapters, Common Modules&n; * Version:&t;$Revision: 1.6 $&n; * Date:&t;$Date: 2003/05/13 17:26:52 $&n; * Purpose:&t;Contains all defines for the LM80 Chip&n; *&t;&t;(National Semiconductor).&n; *&n; ******************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; *&t;(C)Copyright 1998-2002 SysKonnect.&n; *&t;(C)Copyright 2002-2003 Marvell.&n; *&n; *&t;This program is free software; you can redistribute it and/or modify&n; *&t;it under the terms of the GNU General Public License as published by&n; *&t;the Free Software Foundation; either version 2 of the License, or&n; *&t;(at your option) any later version.&n; *&n; *&t;The information in this file is provided &quot;AS IS&quot; without warranty.&n; *&n; ******************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * History:&n; *&t;$Log: lm80.h,v $&n; *&t;Revision 1.6  2003/05/13 17:26:52  mkarl&n; *&t;Editorial changes.&n; *&t;&n; *&t;Revision 1.5  2003/03/31 07:15:18  mkarl&n; *&t;Corrected Copyright.&n; *&t;Editorial changes.&n; *&t;&n; *&t;Revision 1.4  2002/04/25 11:04:10  rschmidt&n; *&t;Editorial changes&n; *&t;&n; *&t;Revision 1.3  1999/11/22 13:41:19  cgoos&n; *&t;Changed license header to GPL.&n; *&t;&n; *&t;Revision 1.2  1999/03/12 13:26:51  malthoff&n; *&t;remove __STDC__.&n; *&t;&n; *&t;Revision 1.1  1998/06/19 09:28:31  malthoff&n; *&t;created.&n; *&t;&n; *&n; ******************************************************************************/
 macro_line|#ifndef __INC_LM80_H
 DECL|macro|__INC_LM80_H
 mdefine_line|#define __INC_LM80_H
@@ -12,15 +12,15 @@ macro_line|#endif&t;/* __cplusplus */
 multiline_comment|/* defines ********************************************************************/
 multiline_comment|/*&n; * LM80 register definition&n; *&n; * All registers are 8 bit wide&n; */
 DECL|macro|LM80_CFG
-mdefine_line|#define&t;LM80_CFG&t;&t;0x00&t;/* Configuration Register */
+mdefine_line|#define LM80_CFG&t;&t;&t;0x00&t;/* Configuration Register */
 DECL|macro|LM80_ISRC_1
-mdefine_line|#define&t;LM80_ISRC_1&t;&t;0x01&t;/* Interrupt Status Register 1 */
+mdefine_line|#define LM80_ISRC_1&t;&t;&t;0x01&t;/* Interrupt Status Register 1 */
 DECL|macro|LM80_ISRC_2
-mdefine_line|#define LM80_ISRC_2&t;&t;0x02&t;/* Interrupt Status Register 2 */
+mdefine_line|#define LM80_ISRC_2&t;&t;&t;0x02&t;/* Interrupt Status Register 2 */
 DECL|macro|LM80_IMSK_1
-mdefine_line|#define LM80_IMSK_1&t;&t;0x03&t;/* Interrupt Mask Register 1 */
+mdefine_line|#define LM80_IMSK_1&t;&t;&t;0x03&t;/* Interrupt Mask Register 1 */
 DECL|macro|LM80_IMSK_2
-mdefine_line|#define LM80_IMSK_2&t;&t;0x04&t;/* Interrupt Mask Register 2 */
+mdefine_line|#define LM80_IMSK_2&t;&t;&t;0x04&t;/* Interrupt Mask Register 2 */
 DECL|macro|LM80_FAN_CTRL
 mdefine_line|#define LM80_FAN_CTRL&t;&t;0x05&t;/* Fan Devisor/RST#/OS# Register */
 DECL|macro|LM80_TEMP_CTRL
@@ -28,21 +28,21 @@ mdefine_line|#define LM80_TEMP_CTRL&t;&t;0x06&t;/* OS# Config, Temp Res. Reg */
 multiline_comment|/* 0x07 - 0x1f reserved&t;*/
 multiline_comment|/* current values */
 DECL|macro|LM80_VT0_IN
-mdefine_line|#define LM80_VT0_IN&t;&t;0x20&t;/* current Voltage 0 value */
+mdefine_line|#define LM80_VT0_IN&t;&t;&t;0x20&t;/* current Voltage 0 value */
 DECL|macro|LM80_VT1_IN
-mdefine_line|#define LM80_VT1_IN&t;&t;0x21&t;/* current Voltage 1 value */
+mdefine_line|#define LM80_VT1_IN&t;&t;&t;0x21&t;/* current Voltage 1 value */
 DECL|macro|LM80_VT2_IN
-mdefine_line|#define LM80_VT2_IN&t;&t;0x22&t;/* current Voltage 2 value */
+mdefine_line|#define LM80_VT2_IN&t;&t;&t;0x22&t;/* current Voltage 2 value */
 DECL|macro|LM80_VT3_IN
-mdefine_line|#define LM80_VT3_IN&t;&t;0x23&t;/* current Voltage 3 value */
+mdefine_line|#define LM80_VT3_IN&t;&t;&t;0x23&t;/* current Voltage 3 value */
 DECL|macro|LM80_VT4_IN
-mdefine_line|#define LM80_VT4_IN&t;&t;0x24&t;/* current Voltage 4 value */
+mdefine_line|#define LM80_VT4_IN&t;&t;&t;0x24&t;/* current Voltage 4 value */
 DECL|macro|LM80_VT5_IN
-mdefine_line|#define LM80_VT5_IN&t;&t;0x25&t;/* current Voltage 5 value */
+mdefine_line|#define LM80_VT5_IN&t;&t;&t;0x25&t;/* current Voltage 5 value */
 DECL|macro|LM80_VT6_IN
-mdefine_line|#define LM80_VT6_IN&t;&t;0x26&t;/* current Voltage 6 value */
+mdefine_line|#define LM80_VT6_IN&t;&t;&t;0x26&t;/* current Voltage 6 value */
 DECL|macro|LM80_TEMP_IN
-mdefine_line|#define LM80_TEMP_IN&t;&t;0x27&t;/* current temperature value */
+mdefine_line|#define LM80_TEMP_IN&t;&t;0x27&t;/* current Temperature value */
 DECL|macro|LM80_FAN1_IN
 mdefine_line|#define LM80_FAN1_IN&t;&t;0x28&t;/* current Fan 1 count */
 DECL|macro|LM80_FAN2_IN
@@ -85,9 +85,9 @@ mdefine_line|#define LM80_TOS_LIM_UP&t;&t;0x3a&t;/* OS temperature limit (high) 
 DECL|macro|LM80_TOS_LIM_LO
 mdefine_line|#define LM80_TOS_LIM_LO&t;&t;0x3b&t;/* OS temperature limit (low) */
 DECL|macro|LM80_FAN1_COUNT_LIM
-mdefine_line|#define&t;LM80_FAN1_COUNT_LIM&t;0x3c&t;/* Fan 1 count limit (high) */
+mdefine_line|#define LM80_FAN1_COUNT_LIM&t;0x3c&t;/* Fan 1 count limit (high) */
 DECL|macro|LM80_FAN2_COUNT_LIM
-mdefine_line|#define&t;LM80_FAN2_COUNT_LIM&t;0x3d&t;/* Fan 2 count limit (low) */
+mdefine_line|#define LM80_FAN2_COUNT_LIM&t;0x3d&t;/* Fan 2 count limit (low) */
 multiline_comment|/* 0x3e - 0x3f reserved&t;*/
 multiline_comment|/*&n; * LM80 bit definitions&n; */
 multiline_comment|/*&t;LM80_CFG&t;&t;Configuration Register */
@@ -110,35 +110,35 @@ mdefine_line|#define LM80_CFG_INIT&t;&t;(1&lt;&lt;7)&t;/* restore power on defau
 multiline_comment|/*&t;LM80_ISRC_1&t;&t;Interrupt Status Register 1 */
 multiline_comment|/*&t;LM80_IMSK_1&t;&t;Interrupt Mask Register 1 */
 DECL|macro|LM80_IS_VT0
-mdefine_line|#define LM80_IS_VT0&t;&t;(1&lt;&lt;0)&t;/* limit exceeded for Voltage 0 */
+mdefine_line|#define LM80_IS_VT0&t;&t;&t;(1&lt;&lt;0)&t;/* limit exceeded for Voltage 0 */
 DECL|macro|LM80_IS_VT1
-mdefine_line|#define LM80_IS_VT1&t;&t;(1&lt;&lt;1)&t;/* limit exceeded for Voltage 1 */
+mdefine_line|#define LM80_IS_VT1&t;&t;&t;(1&lt;&lt;1)&t;/* limit exceeded for Voltage 1 */
 DECL|macro|LM80_IS_VT2
-mdefine_line|#define LM80_IS_VT2&t;&t;(1&lt;&lt;2)&t;/* limit exceeded for Voltage 2 */
+mdefine_line|#define LM80_IS_VT2&t;&t;&t;(1&lt;&lt;2)&t;/* limit exceeded for Voltage 2 */
 DECL|macro|LM80_IS_VT3
-mdefine_line|#define LM80_IS_VT3&t;&t;(1&lt;&lt;3)&t;/* limit exceeded for Voltage 3 */
+mdefine_line|#define LM80_IS_VT3&t;&t;&t;(1&lt;&lt;3)&t;/* limit exceeded for Voltage 3 */
 DECL|macro|LM80_IS_VT4
-mdefine_line|#define LM80_IS_VT4&t;&t;(1&lt;&lt;4)&t;/* limit exceeded for Voltage 4 */
+mdefine_line|#define LM80_IS_VT4&t;&t;&t;(1&lt;&lt;4)&t;/* limit exceeded for Voltage 4 */
 DECL|macro|LM80_IS_VT5
-mdefine_line|#define LM80_IS_VT5&t;&t;(1&lt;&lt;5)&t;/* limit exceeded for Voltage 5 */
+mdefine_line|#define LM80_IS_VT5&t;&t;&t;(1&lt;&lt;5)&t;/* limit exceeded for Voltage 5 */
 DECL|macro|LM80_IS_VT6
-mdefine_line|#define LM80_IS_VT6&t;&t;(1&lt;&lt;6)&t;/* limit exceeded for Voltage 6 */
+mdefine_line|#define LM80_IS_VT6&t;&t;&t;(1&lt;&lt;6)&t;/* limit exceeded for Voltage 6 */
 DECL|macro|LM80_IS_INT_IN
 mdefine_line|#define LM80_IS_INT_IN&t;&t;(1&lt;&lt;7)&t;/* state of INT_IN# */
 multiline_comment|/*&t;LM80_ISRC_2&t;&t;Interrupt Status Register 2 */
 multiline_comment|/*&t;LM80_IMSK_2&t;&t;Interrupt Mask Register 2 */
 DECL|macro|LM80_IS_TEMP
-mdefine_line|#define&t;LM80_IS_TEMP&t;&t;(1&lt;&lt;0)&t;/* HOT temperature limit exceeded */
+mdefine_line|#define LM80_IS_TEMP&t;&t;(1&lt;&lt;0)&t;/* HOT temperature limit exceeded */
 DECL|macro|LM80_IS_BTI
-mdefine_line|#define LM80_IS_BTI&t;&t;(1&lt;&lt;1)&t;/* state of BTI# pin */
+mdefine_line|#define LM80_IS_BTI&t;&t;&t;(1&lt;&lt;1)&t;/* state of BTI# pin */
 DECL|macro|LM80_IS_FAN1
 mdefine_line|#define LM80_IS_FAN1&t;&t;(1&lt;&lt;2)&t;/* count limit exceeded for Fan 1 */
 DECL|macro|LM80_IS_FAN2
 mdefine_line|#define LM80_IS_FAN2&t;&t;(1&lt;&lt;3)&t;/* count limit exceeded for Fan 2 */
 DECL|macro|LM80_IS_CI
-mdefine_line|#define LM80_IS_CI&t;&t;(1&lt;&lt;4)&t;/* Chassis Intrusion occurred */
+mdefine_line|#define LM80_IS_CI&t;&t;&t;(1&lt;&lt;4)&t;/* Chassis Intrusion occured */
 DECL|macro|LM80_IS_OS
-mdefine_line|#define LM80_IS_OS&t;&t;(1&lt;&lt;5)&t;/* OS temperature limit exceeded */
+mdefine_line|#define LM80_IS_OS&t;&t;&t;(1&lt;&lt;5)&t;/* OS temperature limit exceeded */
 multiline_comment|/* bit 6 and 7 are reserved in LM80_ISRC_2 */
 DECL|macro|LM80_IS_HT_IRQ_MD
 mdefine_line|#define LM80_IS_HT_IRQ_MD&t;(1&lt;&lt;6)&t;/* Hot temperature interrupt mode */
@@ -159,7 +159,7 @@ DECL|macro|LM80_FAN_RST_ENA
 mdefine_line|#define LM80_FAN_RST_ENA&t;(1&lt;&lt;7)&t;/* sets RST_OUT#/OS# pins in RST mode */
 multiline_comment|/*&t;LM80_TEMP_CTRL&t;&t;OS# Config, Temp Res. Reg */
 DECL|macro|LM80_TEMP_OS_STAT
-mdefine_line|#define&t;LM80_TEMP_OS_STAT&t;(1&lt;&lt;0)&t;/* mirrors the state of RST_OUT#/OS# */
+mdefine_line|#define LM80_TEMP_OS_STAT&t;(1&lt;&lt;0)&t;/* mirrors the state of RST_OUT#/OS# */
 DECL|macro|LM80_TEMP_OS_POL
 mdefine_line|#define LM80_TEMP_OS_POL&t;(1&lt;&lt;1)&t;/* select OS# polarity */
 DECL|macro|LM80_TEMP_OS_MODE
@@ -203,7 +203,7 @@ multiline_comment|/*&t;LM80_FAN1_COUNT_LIM&t;Fan 1 count limit (high) */
 multiline_comment|/*&t;LM80_FAN2_COUNT_LIM&t;Fan 2 count limit (low) */
 multiline_comment|/* 0x3e - 0x3f reserved&t;*/
 DECL|macro|LM80_ADDR
-mdefine_line|#define LM80_ADDR&t;0x28&t;/* LM80 default addr */
+mdefine_line|#define LM80_ADDR&t;&t;0x28&t;/* LM80 default addr */
 multiline_comment|/* typedefs *******************************************************************/
 multiline_comment|/* function prototypes ********************************************************/
 macro_line|#ifdef __cplusplus

@@ -666,7 +666,11 @@ id|KERN_ERR
 l_string|&quot;PCI: Device %s not available because &quot;
 l_string|&quot;of resource collisions&bslash;n&quot;
 comma
-id|dev-&gt;slot_name
+id|pci_name
+c_func
+(paren
+id|dev
+)paren
 )paren
 suffix:semicolon
 r_return
@@ -710,7 +714,11 @@ c_func
 (paren
 l_string|&quot;PCI: Enabling device %s (%04x -&gt; %04x)&bslash;n&quot;
 comma
-id|dev-&gt;slot_name
+id|pci_name
+c_func
+(paren
+id|dev
+)paren
 comma
 id|old_cmd
 comma

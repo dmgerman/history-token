@@ -9842,12 +9842,6 @@ comma
 id|USBLEGSUP_DEFAULT
 )paren
 suffix:semicolon
-id|usb_connect
-c_func
-(paren
-id|udev
-)paren
-suffix:semicolon
 id|udev-&gt;speed
 op_assign
 id|USB_SPEED_FULL
@@ -10426,7 +10420,6 @@ r_static
 r_const
 r_struct
 id|pci_device_id
-id|__devinitdata
 id|uhci_pci_ids
 (braket
 )braket

@@ -206,8 +206,9 @@ l_int|256
 suffix:semicolon
 r_const
 r_char
-op_star
 id|name
+(braket
+)braket
 op_assign
 l_string|&quot;TRAILER!!!&quot;
 suffix:semicolon

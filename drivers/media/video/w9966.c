@@ -593,7 +593,7 @@ id|arg
 )paren
 suffix:semicolon
 r_static
-r_int
+id|ssize_t
 id|w9966_v4l_read
 c_func
 (paren
@@ -3946,7 +3946,7 @@ suffix:semicolon
 singleline_comment|// Capture data
 DECL|function|w9966_v4l_read
 r_static
-r_int
+id|ssize_t
 id|w9966_v4l_read
 c_func
 (paren

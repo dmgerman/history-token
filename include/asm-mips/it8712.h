@@ -3,7 +3,7 @@ DECL|macro|__IT8712_H__
 mdefine_line|#define __IT8712_H__
 DECL|macro|LPC_BASE_ADDR
 mdefine_line|#define LPC_BASE_ADDR&t;0x14000000
-singleline_comment|// MB PnP configuration register 
+singleline_comment|// MB PnP configuration register
 DECL|macro|LPC_KEY_ADDR
 mdefine_line|#define LPC_KEY_ADDR&t;0x1400002E
 DECL|macro|LPC_DATA_ADDR

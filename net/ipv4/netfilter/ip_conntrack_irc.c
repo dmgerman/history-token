@@ -22,8 +22,6 @@ DECL|variable|ports_c
 r_static
 r_int
 id|ports_c
-op_assign
-l_int|0
 suffix:semicolon
 DECL|variable|max_dcc_channels
 r_static

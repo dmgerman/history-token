@@ -2,6 +2,7 @@ multiline_comment|/*&n; *  Digital Audio (PCM) abstract layer&n; *  Copyright (c
 macro_line|#include &lt;sound/driver.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;linux/time.h&gt;
+macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;sound/core.h&gt;
 macro_line|#include &lt;sound/pcm.h&gt;
 macro_line|#include &lt;sound/info.h&gt;
@@ -1834,4 +1835,60 @@ id|idx
 suffix:semicolon
 )brace
 macro_line|#endif /* CONFIG_PCI */
+macro_line|#ifndef MODULE
+multiline_comment|/* format is: snd-pcm=preallocate_dma,maximum_substreams */
+DECL|function|alsa_pcm_setup
+r_static
+r_int
+id|__init
+id|alsa_pcm_setup
+c_func
+(paren
+r_char
+op_star
+id|str
+)paren
+(brace
+(paren
+r_void
+)paren
+(paren
+id|get_option
+c_func
+(paren
+op_amp
+id|str
+comma
+op_amp
+id|preallocate_dma
+)paren
+op_eq
+l_int|2
+op_logical_and
+id|get_option
+c_func
+(paren
+op_amp
+id|str
+comma
+op_amp
+id|maximum_substreams
+)paren
+op_eq
+l_int|2
+)paren
+suffix:semicolon
+r_return
+l_int|1
+suffix:semicolon
+)brace
+id|__setup
+c_func
+(paren
+l_string|&quot;snd-pcm=&quot;
+comma
+id|alsa_pcm_setup
+)paren
+suffix:semicolon
+macro_line|#endif /* ifndef MODULE */
 eof

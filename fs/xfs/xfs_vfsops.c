@@ -713,7 +713,7 @@ l_string|&quot;XFS: invalid logbufs value: %d [not %d-%d]&quot;
 comma
 id|ap-&gt;logbufs
 comma
-id|XLOG_NUM_ICLOGS
+id|XLOG_MIN_ICLOGS
 comma
 id|XLOG_MAX_ICLOGS
 )paren

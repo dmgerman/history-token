@@ -139,7 +139,11 @@ l_string|&quot;[SA-1111]&quot;
 suffix:semicolon
 r_else
 r_return
-id|pdev-&gt;slot_name
+id|pci_name
+c_func
+(paren
+id|pdev
+)paren
 suffix:semicolon
 )brace
 multiline_comment|/**&n; * pci_pool_create - Creates a pool of pci consistent memory blocks, for dma.&n; * @name: name of pool, for diagnostics&n; * @pdev: pci device that will be doing the DMA&n; * @size: size of the blocks in this pool.&n; * @align: alignment requirement for blocks; must be a power of two&n; * @allocation: returned blocks won&squot;t cross this boundary (or zero)&n; * Context: !in_interrupt()&n; *&n; * Returns a pci allocation pool with the requested characteristics, or&n; * null if one can&squot;t be created.  Given one of these pools, pci_pool_alloc()&n; * may be used to allocate memory.  Such memory will all have &quot;consistent&quot;&n; * DMA mappings, accessible by the device and its driver without using&n; * cache flushing primitives.  The actual size of blocks allocated may be&n; * larger than requested because of alignment.&n; *&n; * If allocation is nonzero, objects returned from pci_pool_alloc() won&squot;t&n; * cross that size boundary.  This is useful for devices which have&n; * addressing restrictions on individual DMA transfers, such as not crossing&n; * boundaries of 4KBytes.&n; */
@@ -1185,7 +1189,11 @@ comma
 id|pool-&gt;dev
 ques
 c_cond
-id|pool-&gt;dev-&gt;slot_name
+id|pci_name
+c_func
+(paren
+id|pool-&gt;dev
+)paren
 suffix:colon
 l_int|NULL
 comma
@@ -1252,7 +1260,11 @@ comma
 id|pool-&gt;dev
 ques
 c_cond
-id|pool-&gt;dev-&gt;slot_name
+id|pci_name
+c_func
+(paren
+id|pool-&gt;dev
+)paren
 suffix:colon
 l_int|NULL
 comma
@@ -1293,7 +1305,11 @@ comma
 id|pool-&gt;dev
 ques
 c_cond
-id|pool-&gt;dev-&gt;slot_name
+id|pci_name
+c_func
+(paren
+id|pool-&gt;dev
+)paren
 suffix:colon
 l_int|NULL
 comma

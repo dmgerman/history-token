@@ -182,8 +182,6 @@ r_void
 r_static
 r_int
 id|old_max
-op_assign
-l_int|0
 suffix:semicolon
 r_struct
 id|file

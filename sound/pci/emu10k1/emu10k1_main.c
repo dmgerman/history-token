@@ -3195,6 +3195,37 @@ id|emu-&gt;APS
 op_assign
 l_int|1
 suffix:semicolon
+id|emu-&gt;no_ac97
+op_assign
+l_int|1
+suffix:semicolon
+multiline_comment|/* APS has no AC97 chip */
+)brace
+r_else
+r_if
+c_cond
+(paren
+id|emu-&gt;revision
+op_eq
+l_int|4
+op_logical_and
+id|emu-&gt;serial
+op_eq
+l_int|0x10051102
+)paren
+(brace
+multiline_comment|/* Audigy 2 EX has apparently no effective AC97 controls&n;&t;&t; * (for both input and output), so we skip the AC97 detections&n;&t;&t; */
+id|snd_printdd
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;Audigy2 EX is detected. skpping ac97.&bslash;n&quot;
+)paren
+suffix:semicolon
+id|emu-&gt;no_ac97
+op_assign
+l_int|1
+suffix:semicolon
 )brace
 id|emu-&gt;fx8010.fxbus_mask
 op_assign

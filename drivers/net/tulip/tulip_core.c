@@ -582,14 +582,13 @@ id|tulip_timer
 comma
 )brace
 suffix:semicolon
-DECL|variable|__devinitdata
+DECL|variable|tulip_pci_tbl
 r_static
 r_struct
 id|pci_device_id
 id|tulip_pci_tbl
 (braket
 )braket
-id|__devinitdata
 op_assign
 (brace
 (brace
@@ -4880,7 +4879,11 @@ c_func
 (paren
 id|info.bus_info
 comma
-id|np-&gt;pdev-&gt;slot_name
+id|pci_name
+c_func
+(paren
+id|np-&gt;pdev
+)paren
 )paren
 suffix:semicolon
 r_if
@@ -6733,7 +6736,11 @@ c_func
 id|KERN_DEBUG
 l_string|&quot;%s: tulip_mwi_config()&bslash;n&quot;
 comma
-id|pdev-&gt;slot_name
+id|pci_name
+c_func
+(paren
+id|pdev
+)paren
 )paren
 suffix:semicolon
 id|tp-&gt;csr0
@@ -7005,7 +7012,11 @@ c_func
 id|KERN_DEBUG
 l_string|&quot;%s: MWI config cacheline=%d, csr0=%08x&bslash;n&quot;
 comma
-id|pdev-&gt;slot_name
+id|pci_name
+c_func
+(paren
+id|pdev
+)paren
 comma
 id|cache
 comma
@@ -7513,7 +7524,11 @@ id|PFX
 l_string|&quot;%s: I/O region (0x%lx@0x%lx) too small, &quot;
 l_string|&quot;aborting&bslash;n&quot;
 comma
-id|pdev-&gt;slot_name
+id|pci_name
+c_func
+(paren
+id|pdev
+)paren
 comma
 id|pci_resource_len
 (paren

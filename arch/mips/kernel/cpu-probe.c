@@ -1,10 +1,13 @@
+multiline_comment|/*&n; * Processor capabilities determination functions.&n; *&n; * Copyright (C) 1994 - 2003 Ralf Baechle&n; * Copyright (C) 2001 MIPS Inc.&n; *&n; * This program is free software; you can redistribute it and/or&n; * modify it under the terms of the GNU General Public License&n; * as published by the Free Software Foundation; either version&n; * 2 of the License, or (at your option) any later version.&n; */
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
+macro_line|#include &lt;linux/ptrace.h&gt;
 macro_line|#include &lt;linux/stddef.h&gt;
 macro_line|#include &lt;asm/bugs.h&gt;
 macro_line|#include &lt;asm/cpu.h&gt;
 macro_line|#include &lt;asm/fpu.h&gt;
 macro_line|#include &lt;asm/mipsregs.h&gt;
+macro_line|#include &lt;asm/system.h&gt;
 multiline_comment|/*&n; * Not all of the MIPS CPUs have the &quot;wait&quot; instruction available. Moreover,&n; * the implementation of the &quot;wait&quot; feature differs between CPU families. This&n; * points to the function that implements CPU specific wait.&n; * The wait instruction stops the pipeline and reduces the power consumption of&n; * the CPU very much.&n; */
 DECL|variable|cpu_wait
 r_void
@@ -271,10 +274,10 @@ r_break
 suffix:semicolon
 )brace
 )brace
-DECL|function|check_bugs
+DECL|function|check_bugs32
 r_void
 id|__init
-id|check_bugs
+id|check_bugs32
 c_func
 (paren
 r_void
@@ -1706,20 +1709,6 @@ suffix:colon
 id|c-&gt;cputype
 op_assign
 id|CPU_UNKNOWN
-suffix:semicolon
-id|c-&gt;tlbsize
-op_assign
-(paren
-(paren
-id|config1
-op_rshift
-l_int|25
-)paren
-op_amp
-l_int|0x3f
-)paren
-op_plus
-l_int|1
 suffix:semicolon
 )brace
 r_if

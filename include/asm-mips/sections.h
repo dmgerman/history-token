@@ -1,16 +1,14 @@
-macro_line|#ifndef __ASM_SECTIONS_H
-DECL|macro|__ASM_SECTIONS_H
-mdefine_line|#define __ASM_SECTIONS_H
+macro_line|#ifndef _ASM_SECTIONS_H
+DECL|macro|_ASM_SECTIONS_H
+mdefine_line|#define _ASM_SECTIONS_H
 macro_line|#include &lt;asm-generic/sections.h&gt;
 r_extern
 r_char
-id|_stext
-comma
-id|_etext
+id|_fdata
 suffix:semicolon
 r_extern
 r_char
 id|_end
 suffix:semicolon
-macro_line|#endif /* __ASM_SECTIONS_H */
+macro_line|#endif /* _ASM_SECTIONS_H */
 eof

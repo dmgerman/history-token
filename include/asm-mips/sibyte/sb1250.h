@@ -1,9 +1,14 @@
-multiline_comment|/*&n; * Copyright (C) 2000, 2001 Broadcom Corporation&n; *&n; * This program is free software; you can redistribute it and/or&n; * modify it under the terms of the GNU General Public License&n; * as published by the Free Software Foundation; either version 2&n; * of the License, or (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.&n; */
+multiline_comment|/*&n; * Copyright (C) 2000, 2001, 2002, 2003 Broadcom Corporation&n; *&n; * This program is free software; you can redistribute it and/or&n; * modify it under the terms of the GNU General Public License&n; * as published by the Free Software Foundation; either version 2&n; * of the License, or (at your option) any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.&n; */
 macro_line|#ifndef _ASM_SIBYTE_SB1250_H
 DECL|macro|_ASM_SIBYTE_SB1250_H
 mdefine_line|#define _ASM_SIBYTE_SB1250_H
+multiline_comment|/*&n; * yymmddpp: year, month, day, patch.&n; * should sync with Makefile EXTRAVERSION&n; */
+DECL|macro|SIBYTE_RELEASE
+mdefine_line|#define SIBYTE_RELEASE 0x02111403
 DECL|macro|SB1250_NR_IRQS
 mdefine_line|#define SB1250_NR_IRQS 64
+DECL|macro|SB1250_DUART_MINOR_BASE
+mdefine_line|#define SB1250_DUART_MINOR_BASE&t;&t;64
 macro_line|#ifndef __ASSEMBLY__
 macro_line|#include &lt;asm/addrspace.h&gt;
 multiline_comment|/* For revision/pass information */
@@ -27,6 +32,11 @@ r_extern
 r_int
 r_int
 id|periph_rev
+suffix:semicolon
+r_extern
+r_int
+r_int
+id|zbbus_mhz
 suffix:semicolon
 r_extern
 r_void

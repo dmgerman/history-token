@@ -51,7 +51,11 @@ id|printk
 id|KERN_ERR
 l_string|&quot;pci_eisa : Could not enable device %s&bslash;n&quot;
 comma
-id|pdev-&gt;slot_name
+id|pci_name
+c_func
+(paren
+id|pdev
+)paren
 )paren
 suffix:semicolon
 r_return

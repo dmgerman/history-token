@@ -1713,7 +1713,7 @@ c_func
 (paren
 id|zeros_num
 comma
-l_string|&quot;PAP-12090: illegal parameter in case of a directory&quot;
+l_string|&quot;PAP-12090: invalid parameter in case of a directory&quot;
 )paren
 suffix:semicolon
 multiline_comment|/* directory item */
@@ -3236,7 +3236,7 @@ c_func
 (paren
 id|zeros_num
 comma
-l_string|&quot;PAP-12145: illegal parametr in case of a directory&quot;
+l_string|&quot;PAP-12145: invalid parameter in case of a directory&quot;
 )paren
 suffix:semicolon
 id|entry_count

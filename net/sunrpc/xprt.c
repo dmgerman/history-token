@@ -20,7 +20,6 @@ macro_line|#include &lt;net/sock.h&gt;
 macro_line|#include &lt;net/checksum.h&gt;
 macro_line|#include &lt;net/udp.h&gt;
 macro_line|#include &lt;net/tcp.h&gt;
-macro_line|#include &lt;asm/uaccess.h&gt;
 multiline_comment|/*&n; * Local variables&n; */
 macro_line|#ifdef RPC_DEBUG
 DECL|macro|RPC_DEBUG_DATA
@@ -2073,23 +2072,15 @@ r_static
 r_int
 r_int
 id|nextstat
-op_assign
-l_int|0
 suffix:semicolon
 r_static
 r_int
 r_int
 id|pkt_rtt
-op_assign
-l_int|0
 comma
 id|pkt_len
-op_assign
-l_int|0
 comma
 id|pkt_cnt
-op_assign
-l_int|0
 suffix:semicolon
 id|pkt_cnt
 op_increment

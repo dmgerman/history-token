@@ -1559,14 +1559,13 @@ l_string|&quot;RTL-8169&quot;
 comma
 )brace
 suffix:semicolon
-DECL|variable|__devinitdata
+DECL|variable|cp_pci_tbl
 r_static
 r_struct
 id|pci_device_id
 id|cp_pci_tbl
 (braket
 )braket
-id|__devinitdata
 op_assign
 (brace
 (brace
@@ -6470,7 +6469,11 @@ id|strcpy
 (paren
 id|info.bus_info
 comma
-id|cp-&gt;pdev-&gt;slot_name
+id|pci_name
+c_func
+(paren
+id|cp-&gt;pdev
+)paren
 )paren
 suffix:semicolon
 id|info.regdump_len
@@ -8545,7 +8548,11 @@ id|KERN_ERR
 id|PFX
 l_string|&quot;pci dev %s (id %04x:%04x rev %02x) is not an 8139C+ compatible chip&bslash;n&quot;
 comma
-id|pdev-&gt;slot_name
+id|pci_name
+c_func
+(paren
+id|pdev
+)paren
 comma
 id|pdev-&gt;vendor
 comma
@@ -8725,7 +8732,11 @@ l_string|&quot;invalid irq (%d) for pci dev %s&bslash;n&quot;
 comma
 id|pdev-&gt;irq
 comma
-id|pdev-&gt;slot_name
+id|pci_name
+c_func
+(paren
+id|pdev
+)paren
 )paren
 suffix:semicolon
 r_goto
@@ -8761,7 +8772,11 @@ id|KERN_ERR
 id|PFX
 l_string|&quot;no MMIO resource for pci dev %s&bslash;n&quot;
 comma
-id|pdev-&gt;slot_name
+id|pci_name
+c_func
+(paren
+id|pdev
+)paren
 )paren
 suffix:semicolon
 r_goto
@@ -8802,7 +8817,11 @@ comma
 l_int|1
 )paren
 comma
-id|pdev-&gt;slot_name
+id|pci_name
+c_func
+(paren
+id|pdev
+)paren
 )paren
 suffix:semicolon
 r_goto
@@ -8909,7 +8928,11 @@ l_int|1
 comma
 id|pciaddr
 comma
-id|pdev-&gt;slot_name
+id|pci_name
+c_func
+(paren
+id|pdev
+)paren
 )paren
 suffix:semicolon
 r_goto

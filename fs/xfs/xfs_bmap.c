@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * Copyright (c) 2000-2002 Silicon Graphics, Inc.  All Rights Reserved.&n; *&n; * This program is free software; you can redistribute it and/or modify it&n; * under the terms of version 2 of the GNU General Public License as&n; * published by the Free Software Foundation.&n; *&n; * This program is distributed in the hope that it would be useful, but&n; * WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.&n; *&n; * Further, this software is distributed without any warranty that it is&n; * free of the rightful claim of any third person regarding infringement&n; * or the like.  Any license provided herein, whether implied or&n; * otherwise, applies only to this software file.  Patent licenses, if&n; * any, provided herein do not apply to combinations of this program with&n; * other software, or any other product whatsoever.&n; *&n; * You should have received a copy of the GNU General Public License along&n; * with this program; if not, write the Free Software Foundation, Inc., 59&n; * Temple Place - Suite 330, Boston MA 02111-1307, USA.&n; *&n; * Contact information: Silicon Graphics, Inc., 1600 Amphitheatre Pkwy,&n; * Mountain View, CA  94043, or:&n; *&n; * http://www.sgi.com&n; *&n; * For further information regarding this notice, see:&n; *&n; * http://oss.sgi.com/projects/GenInfo/SGIGPLNoticeExplan/&n; */
+multiline_comment|/*&n; * Copyright (c) 2000-2003 Silicon Graphics, Inc.  All Rights Reserved.&n; *&n; * This program is free software; you can redistribute it and/or modify it&n; * under the terms of version 2 of the GNU General Public License as&n; * published by the Free Software Foundation.&n; *&n; * This program is distributed in the hope that it would be useful, but&n; * WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.&n; *&n; * Further, this software is distributed without any warranty that it is&n; * free of the rightful claim of any third person regarding infringement&n; * or the like.  Any license provided herein, whether implied or&n; * otherwise, applies only to this software file.  Patent licenses, if&n; * any, provided herein do not apply to combinations of this program with&n; * other software, or any other product whatsoever.&n; *&n; * You should have received a copy of the GNU General Public License along&n; * with this program; if not, write the Free Software Foundation, Inc., 59&n; * Temple Place - Suite 330, Boston MA 02111-1307, USA.&n; *&n; * Contact information: Silicon Graphics, Inc., 1600 Amphitheatre Pkwy,&n; * Mountain View, CA  94043, or:&n; *&n; * http://www.sgi.com&n; *&n; * For further information regarding this notice, see:&n; *&n; * http://oss.sgi.com/projects/GenInfo/SGIGPLNoticeExplan/&n; */
 macro_line|#include &quot;xfs.h&quot;
 macro_line|#include &quot;xfs_macros.h&quot;
 macro_line|#include &quot;xfs_types.h&quot;
@@ -10006,8 +10006,8 @@ l_int|0
 suffix:semicolon
 multiline_comment|/* realtime allocation length */
 macro_line|#endif
-DECL|macro|ISLEGAL
-mdefine_line|#define&t;ISLEGAL(x,y)&t;&bslash;&n;&t;(rt ? &bslash;&n;&t;&t;(x) &lt; mp-&gt;m_sb.sb_rblocks : &bslash;&n;&t;&t;XFS_FSB_TO_AGNO(mp, x) == XFS_FSB_TO_AGNO(mp, y) &amp;&amp; &bslash;&n;&t;&t;XFS_FSB_TO_AGNO(mp, x) &lt; mp-&gt;m_sb.sb_agcount &amp;&amp; &bslash;&n;&t;&t;XFS_FSB_TO_AGBNO(mp, x) &lt; mp-&gt;m_sb.sb_agblocks)
+DECL|macro|ISVALID
+mdefine_line|#define&t;ISVALID(x,y)&t;&bslash;&n;&t;(rt ? &bslash;&n;&t;&t;(x) &lt; mp-&gt;m_sb.sb_rblocks : &bslash;&n;&t;&t;XFS_FSB_TO_AGNO(mp, x) == XFS_FSB_TO_AGNO(mp, y) &amp;&amp; &bslash;&n;&t;&t;XFS_FSB_TO_AGNO(mp, x) &lt; mp-&gt;m_sb.sb_agcount &amp;&amp; &bslash;&n;&t;&t;XFS_FSB_TO_AGBNO(mp, x) &lt; mp-&gt;m_sb.sb_agblocks)
 multiline_comment|/*&n;&t; * Set up variables.&n;&t; */
 id|mp
 op_assign
@@ -10246,7 +10246,7 @@ id|ap-&gt;alen
 suffix:colon
 l_int|0
 suffix:semicolon
-multiline_comment|/*&n;&t;&t; * If we&squot;re now overlapping the next or previous extent that&n;&t;&t; * means we can&squot;t fit an extsz piece in this hole.  Just move&n;&t;&t; * the start forward to the first legal spot and set&n;&t;&t; * the length so we hit the end.&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * If we&squot;re now overlapping the next or previous extent that&n;&t;&t; * means we can&squot;t fit an extsz piece in this hole.  Just move&n;&t;&t; * the start forward to the first valid spot and set&n;&t;&t; * the length so we hit the end.&n;&t;&t; */
 r_if
 c_cond
 (paren
@@ -10436,7 +10436,7 @@ id|ap-&gt;alen
 op_div
 id|mp-&gt;m_sb.sb_rextsize
 suffix:semicolon
-multiline_comment|/*&n;&t;&t; * If the old value was close enough to MAXEXTLEN that&n;&t;&t; * we rounded up to it, cut it back so it&squot;s legal again.&n;&t;&t; * Note that if it&squot;s a really large request (bigger than&n;&t;&t; * MAXEXTLEN), we don&squot;t hear about that number, and can&squot;t&n;&t;&t; * adjust the starting point to match it.&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * If the old value was close enough to MAXEXTLEN that&n;&t;&t; * we rounded up to it, cut it back so it&squot;s valid again.&n;&t;&t; * Note that if it&squot;s a really large request (bigger than&n;&t;&t; * MAXEXTLEN), we don&squot;t hear about that number, and can&squot;t&n;&t;&t; * adjust the starting point to match it.&n;&t;&t; */
 r_if
 c_cond
 (paren
@@ -10548,7 +10548,7 @@ c_func
 id|ap-&gt;prevp-&gt;br_startblock
 )paren
 op_logical_and
-id|ISLEGAL
+id|ISVALID
 c_func
 (paren
 id|ap-&gt;prevp-&gt;br_startblock
@@ -10581,7 +10581,7 @@ c_cond
 (paren
 id|adjust
 op_logical_and
-id|ISLEGAL
+id|ISVALID
 c_func
 (paren
 id|ap-&gt;rval
@@ -10648,7 +10648,7 @@ op_plus
 id|ap-&gt;prevp-&gt;br_blockcount
 )paren
 op_logical_and
-id|ISLEGAL
+id|ISVALID
 c_func
 (paren
 id|prevbno
@@ -10670,7 +10670,7 @@ op_plus
 id|ap-&gt;prevp-&gt;br_blockcount
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t;&t;&t; * Figure the startblock based on the previous block&squot;s&n;&t;&t;&t; * end and the gap size.&n;&t;&t;&t; * Heuristic!&n;&t;&t;&t; * If the gap is large relative to the piece we&squot;re&n;&t;&t;&t; * allocating, or using it gives us an illegal block&n;&t;&t;&t; * number, then just use the end of the previous block.&n;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t; * Figure the startblock based on the previous block&squot;s&n;&t;&t;&t; * end and the gap size.&n;&t;&t;&t; * Heuristic!&n;&t;&t;&t; * If the gap is large relative to the piece we&squot;re&n;&t;&t;&t; * allocating, or using it gives us an invalid block&n;&t;&t;&t; * number, then just use the end of the previous block.&n;&t;&t;&t; */
 r_if
 c_cond
 (paren
@@ -10680,7 +10680,7 @@ id|XFS_ALLOC_GAP_UNITS
 op_star
 id|ap-&gt;alen
 op_logical_and
-id|ISLEGAL
+id|ISVALID
 c_func
 (paren
 id|prevbno
@@ -10756,7 +10756,7 @@ id|gotbno
 op_assign
 id|ap-&gt;gotp-&gt;br_startblock
 suffix:semicolon
-multiline_comment|/*&n;&t;&t;&t; * Heuristic!&n;&t;&t;&t; * If the gap is large relative to the piece we&squot;re&n;&t;&t;&t; * allocating, or using it gives us an illegal block&n;&t;&t;&t; * number, then just use the start of the next block&n;&t;&t;&t; * offset by our length.&n;&t;&t;&t; */
+multiline_comment|/*&n;&t;&t;&t; * Heuristic!&n;&t;&t;&t; * If the gap is large relative to the piece we&squot;re&n;&t;&t;&t; * allocating, or using it gives us an invalid block&n;&t;&t;&t; * number, then just use the start of the next block&n;&t;&t;&t; * offset by our length.&n;&t;&t;&t; */
 r_if
 c_cond
 (paren
@@ -10766,7 +10766,7 @@ id|XFS_ALLOC_GAP_UNITS
 op_star
 id|ap-&gt;alen
 op_logical_and
-id|ISLEGAL
+id|ISVALID
 c_func
 (paren
 id|gotbno
@@ -10784,7 +10784,7 @@ r_else
 r_if
 c_cond
 (paren
-id|ISLEGAL
+id|ISVALID
 c_func
 (paren
 id|gotbno
@@ -11991,8 +11991,8 @@ suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
-DECL|macro|ISLEGAL
-macro_line|#undef&t;ISLEGAL
+DECL|macro|ISVALID
+macro_line|#undef&t;ISVALID
 )brace
 multiline_comment|/*&n; * Transform a btree format file with only one leaf node, where the&n; * extents list will fit in the inode, into an extents format file.&n; * Since the extent list is already in-core, all we have to do is&n; * give up the space for the btree root and pitch the leaf block.&n; */
 id|STATIC
@@ -15072,7 +15072,7 @@ op_star
 id|ifp
 suffix:semicolon
 multiline_comment|/* inode fork pointer */
-multiline_comment|/*&n;&t; * We don&squot;t want to deal with the case of keeping inode data inline yet.&n;&t; * So sending the data fork of a regular inode is illegal.&n;&t; */
+multiline_comment|/*&n;&t; * We don&squot;t want to deal with the case of keeping inode data inline yet.&n;&t; * So sending the data fork of a regular inode is invalid.&n;&t; */
 id|ASSERT
 c_func
 (paren
@@ -26145,7 +26145,11 @@ l_int|1
 suffix:semicolon
 id|fixlen
 op_assign
-id|XFS_MAX_FILE_OFFSET
+id|XFS_MAXIOFFSET
+c_func
+(paren
+id|mp
+)paren
 suffix:semicolon
 )brace
 r_else

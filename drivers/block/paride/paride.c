@@ -19,6 +19,12 @@ macro_line|#ifdef CONFIG_PARPORT
 macro_line|#include &lt;linux/parport.h&gt;
 macro_line|#endif
 macro_line|#include &quot;paride.h&quot;
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
+)paren
+suffix:semicolon
 DECL|macro|MAX_PROTOS
 mdefine_line|#define MAX_PROTOS&t;32
 DECL|variable|protocols

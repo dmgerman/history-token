@@ -1452,6 +1452,9 @@ c_func
 r_void
 )paren
 (brace
+r_int
+id|result
+op_assign
 id|usb_register
 c_func
 (paren
@@ -1459,6 +1462,14 @@ op_amp
 id|aiptek_driver
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|result
+op_eq
+l_int|0
+)paren
+(brace
 id|info
 c_func
 (paren
@@ -1473,8 +1484,9 @@ c_func
 id|DRIVER_DESC
 )paren
 suffix:semicolon
+)brace
 r_return
-l_int|0
+id|result
 suffix:semicolon
 )brace
 r_static

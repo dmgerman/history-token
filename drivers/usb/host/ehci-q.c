@@ -568,6 +568,9 @@ id|pipe
 )paren
 )paren
 suffix:semicolon
+multiline_comment|/* if async CSPLIT failed, try cleaning out the TT buffer */
+)brace
+r_else
 r_if
 c_cond
 (paren
@@ -576,8 +579,16 @@ op_logical_and
 op_logical_neg
 id|usb_pipeint
 (paren
-id|pipe
+id|urb-&gt;pipe
 )paren
+op_logical_and
+id|QTD_CERR
+c_func
+(paren
+id|token
+)paren
+op_eq
+l_int|0
 )paren
 (brace
 macro_line|#ifdef DEBUG
@@ -588,13 +599,12 @@ id|tt
 op_assign
 id|urb-&gt;dev-&gt;tt-&gt;hub
 suffix:semicolon
-id|dbg
+id|dev_dbg
 (paren
-l_string|&quot;clear tt %s-%s p%d buffer, a%d ep%d&quot;
+op_amp
+id|tt-&gt;dev
 comma
-id|tt-&gt;bus-&gt;bus_name
-comma
-id|tt-&gt;devpath
+l_string|&quot;clear tt buffer port %d, a%d ep%d t%08x&bslash;n&quot;
 comma
 id|urb-&gt;dev-&gt;ttport
 comma
@@ -602,8 +612,10 @@ id|urb-&gt;dev-&gt;devnum
 comma
 id|usb_pipeendpoint
 (paren
-id|pipe
+id|urb-&gt;pipe
 )paren
+comma
+id|token
 )paren
 suffix:semicolon
 macro_line|#endif /* DEBUG */
@@ -611,10 +623,9 @@ id|usb_hub_tt_clear_buffer
 (paren
 id|urb-&gt;dev
 comma
-id|pipe
+id|urb-&gt;pipe
 )paren
 suffix:semicolon
-)brace
 )brace
 )brace
 )brace

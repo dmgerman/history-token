@@ -342,14 +342,13 @@ id|pdev
 )paren
 suffix:semicolon
 multiline_comment|/* supported Rage128 chipsets */
-DECL|variable|__devinitdata
+DECL|variable|aty128_pci_tbl
 r_static
 r_struct
 id|pci_device_id
 id|aty128_pci_tbl
 (braket
 )braket
-id|__devinitdata
 op_assign
 (brace
 (brace

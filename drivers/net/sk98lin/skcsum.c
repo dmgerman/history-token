@@ -1,6 +1,6 @@
-multiline_comment|/******************************************************************************&n; *&n; * Name:&t;skcsum.c&n; * Project:&t;GEnesis, PCI Gigabit Ethernet Adapter&n; * Version:&t;$Revision: 1.8 $&n; * Date:&t;$Date: 2001/02/06 11:15:36 $&n; * Purpose:&t;Store/verify Internet checksum in send/receive packets.&n; *&n; ******************************************************************************/
-multiline_comment|/******************************************************************************&n; *&n; *&t;(C)Copyright 1998-2001 SysKonnect GmbH.&n; *&n; *&t;This program is free software; you can redistribute it and/or modify&n; *&t;it under the terms of the GNU General Public License as published by&n; *&t;the Free Software Foundation; either version 2 of the License, or&n; *&t;(at your option) any later version.&n; *&n; *&t;The information in this file is provided &quot;AS IS&quot; without warranty.&n; *&n; ******************************************************************************/
-multiline_comment|/******************************************************************************&n; *&n; * History:&n; *&n; *&t;$Log: skcsum.c,v $&n; *&t;Revision 1.8  2001/02/06 11:15:36  rassmann&n; *&t;Supporting two nets on dual-port adapters.&n; *&t;&n; *&t;Revision 1.7  2000/06/29 13:17:05  rassmann&n; *&t;Corrected reception of a packet with UDP checksum == 0 (which means there&n; *&t;is no UDP checksum).&n; *&t;&n; *&t;Revision 1.6  2000/02/21 12:35:10  cgoos&n; *&t;Fixed license header comment.&n; *&t;&n; *&t;Revision 1.5  2000/02/21 11:05:19  cgoos&n; *&t;Merged changes back to common source.&n; *&t;Fixed rx path for BIG ENDIAN architecture.&n; *&t;&n; *&t;Revision 1.1  1999/07/26 15:28:12  mkarl&n; *&t;added return SKCS_STATUS_IP_CSUM_ERROR_UDP and&n; *&t;SKCS_STATUS_IP_CSUM_ERROR_TCP to pass the NidsTester&n; *&t;changed from common source to windows specific source&n; *&t;therefore restarting with v1.0&n; *&t;&n; *&t;Revision 1.3  1999/05/10 08:39:33  mkarl&n; *&t;prevent overflows in SKCS_HTON16&n; *&t;fixed a bug in pseudo header checksum calculation&n; *&t;added some comments&n; *&t;&n; *&t;Revision 1.2  1998/10/22 11:53:28  swolf&n; *&t;Now using SK_DBG_MSG.&n; *&t;&n; *&t;Revision 1.1  1998/09/01 15:35:41  swolf&n; *&t;initial revision&n; *&n; *&t;13-May-1998 sw&t;Created.&n; *&n; ******************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Name:&t;skcsum.c&n; * Project:&t;GEnesis, PCI Gigabit Ethernet Adapter&n; * Version:&t;$Revision: 1.11 $&n; * Date:&t;$Date: 2003/03/11 14:05:55 $&n; * Purpose:&t;Store/verify Internet checksum in send/receive packets.&n; *&n; ******************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; *&t;(C)Copyright 1998-2003 SysKonnect GmbH.&n; *&n; *&t;This program is free software; you can redistribute it and/or modify&n; *&t;it under the terms of the GNU General Public License as published by&n; *&t;the Free Software Foundation; either version 2 of the License, or&n; *&t;(at your option) any later version.&n; *&n; *&t;The information in this file is provided &quot;AS IS&quot; without warranty.&n; *&n; ******************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * History:&n; *&n; *&t;$Log: skcsum.c,v $&n; *&t;Revision 1.11  2003/03/11 14:05:55  rschmidt&n; *&t;Replaced memset() by macro SK_MEMSET()&n; *&t;Editorial changes&n; *&t;&n; *&t;Revision 1.10  2002/04/11 10:02:04  rwahl&n; *&t;Fix in SkCsGetSendInfo():&n; *&t;- function did not return ProtocolFlags in every case.&n; *&t;- pseudo header csum calculated wrong for big endian.&n; *&t;&n; *&t;Revision 1.9  2001/06/13 07:42:08  gklug&n; *&t;fix: NetNumber was wrong in CLEAR_STAT event&n; *&t;add: check for good NetNumber in Clear STAT&n; *&t;&n; *&t;Revision 1.8  2001/02/06 11:15:36  rassmann&n; *&t;Supporting two nets on dual-port adapters.&n; *&t;&n; *&t;Revision 1.7  2000/06/29 13:17:05  rassmann&n; *&t;Corrected reception of a packet with UDP checksum == 0 (which means there&n; *&t;is no UDP checksum).&n; *&t;&n; *&t;Revision 1.6  2000/02/21 12:35:10  cgoos&n; *&t;Fixed license header comment.&n; *&t;&n; *&t;Revision 1.5  2000/02/21 11:05:19  cgoos&n; *&t;Merged changes back to common source.&n; *&t;Fixed rx path for BIG ENDIAN architecture.&n; *&t;&n; *&t;Revision 1.1  1999/07/26 15:28:12  mkarl&n; *&t;added return SKCS_STATUS_IP_CSUM_ERROR_UDP and&n; *&t;SKCS_STATUS_IP_CSUM_ERROR_TCP to pass the NidsTester&n; *&t;changed from common source to windows specific source&n; *&t;therefore restarting with v1.0&n; *&t;&n; *&t;Revision 1.3  1999/05/10 08:39:33  mkarl&n; *&t;prevent overflows in SKCS_HTON16&n; *&t;fixed a bug in pseudo header checksum calculation&n; *&t;added some comments&n; *&t;&n; *&t;Revision 1.2  1998/10/22 11:53:28  swolf&n; *&t;Now using SK_DBG_MSG.&n; *&t;&n; *&t;Revision 1.1  1998/09/01 15:35:41  swolf&n; *&t;initial revision&n; *&n; *&t;13-May-1998 sw&t;Created.&n; *&n; ******************************************************************************/
 macro_line|#ifdef SK_USE_CSUM&t;/* Check if CSUM is to be used. */
 macro_line|#ifndef lint
 DECL|variable|SysKonnectFileId
@@ -11,12 +11,10 @@ id|SysKonnectFileId
 (braket
 )braket
 op_assign
-l_string|&quot;@(#)&quot;
-l_string|&quot;$Id: skcsum.c,v 1.8 2001/02/06 11:15:36 rassmann Exp $&quot;
-l_string|&quot; (C) SysKonnect.&quot;
+l_string|&quot;@(#) $Id: skcsum.c,v 1.11 2003/03/11 14:05:55 rschmidt Exp $ (C) SysKonnect.&quot;
 suffix:semicolon
 macro_line|#endif&t;/* !lint */
-multiline_comment|/******************************************************************************&n; *&n; * Description:&n; *&n; * This is the &quot;GEnesis&quot; common module &quot;CSUM&quot;.&n; *&n; * This module contains the code necessary to calculate, store, and verify the&n; * Internet Checksum of IP, TCP, and UDP frames.&n; *&n; * &quot;GEnesis&quot; is an abbreviation of &quot;Gigabit Ethernet Network System in Silicon&quot;&n; * and is the code name of this SysKonnect project.&n; *&n; * Compilation Options:&n; *&n; *&t;SK_USE_CSUM - Define if CSUM is to be used. Otherwise, CSUM will be an&n; *&t;empty module.&n; *&n; *&t;SKCS_OVERWRITE_PROTO - Define to overwrite the default protocol id&n; *&t;definitions. In this case, all SKCS_PROTO_xxx definitions must be made&n; *&t;external.&n; *&n; *&t;SKCS_OVERWRITE_STATUS - Define to overwrite the default return status&n; *&t;definitions. In this case, all SKCS_STATUS_xxx definitions must be made&n; *&t;external.&n; *&n; * Include File Hierarchy:&n; *&n; *&t;&quot;h/skdrv1st.h&quot;&n; *&t;&quot;h/skcsum.h&quot;&n; *&t; &quot;h/sktypes.h&quot;&n; *&t; &quot;h/skqueue.h&quot;&n; *&t;&quot;h/skdrv2nd.h&quot;&n; *&n; ******************************************************************************/
+multiline_comment|/******************************************************************************&n; *&n; * Description:&n; *&n; * This is the &quot;GEnesis&quot; common module &quot;CSUM&quot;.&n; *&n; * This module contains the code necessary to calculate, store, and verify the&n; * Internet Checksum of IP, TCP, and UDP frames.&n; *&n; * &quot;GEnesis&quot; is an abbreviation of &quot;Gigabit Ethernet Network System in Silicon&quot;&n; * and is the code name of this SysKonnect project.&n; *&n; * Compilation Options:&n; *&n; *&t;SK_USE_CSUM - Define if CSUM is to be used. Otherwise, CSUM will be an&n; *&t;empty module.&n; *&n; *&t;SKCS_OVERWRITE_PROTO - Define to overwrite the default protocol id&n; *&t;definitions. In this case, all SKCS_PROTO_xxx definitions must be made&n; *&t;external.&n; *&n; *&t;SKCS_OVERWRITE_STATUS - Define to overwrite the default return status&n; *&t;definitions. In this case, all SKCS_STATUS_xxx definitions must be made&n; *&t;external.&n; *&n; * Include File Hierarchy:&n; *&n; *&t;&quot;h/skdrv1st.h&quot;&n; *&t;&quot;h/skcsum.h&quot;&n; *&t;&quot;h/sktypes.h&quot;&n; *&t;&quot;h/skqueue.h&quot;&n; *&t;&quot;h/skdrv2nd.h&quot;&n; *&n; ******************************************************************************/
 macro_line|#include &quot;h/skdrv1st.h&quot;
 macro_line|#include &quot;h/skcsum.h&quot;
 macro_line|#include &quot;h/skdrv2nd.h&quot;
@@ -67,7 +65,7 @@ mdefine_line|#define SKCS_IDX(pPtr, Ofs)&t;((void *) ((char *) (pPtr) + (Ofs)))
 multiline_comment|/*&n; * Macros that convert host to network representation and vice versa, i.e.&n; * little/big endian conversion on little endian machines only.&n; */
 macro_line|#ifdef SK_LITTLE_ENDIAN
 DECL|macro|SKCS_HTON16
-mdefine_line|#define SKCS_HTON16(Val16)&t;(((unsigned) (Val16) &gt;&gt; 8) | (((Val16) &amp; 0xFF) &lt;&lt; 8))
+mdefine_line|#define SKCS_HTON16(Val16)&t;(((unsigned) (Val16) &gt;&gt; 8) | (((Val16) &amp; 0xff) &lt;&lt; 8))
 macro_line|#endif&t;/* SK_LITTLE_ENDIAN */
 macro_line|#ifdef SK_BIG_ENDIAN
 DECL|macro|SKCS_HTON16
@@ -77,7 +75,7 @@ DECL|macro|SKCS_NTOH16
 mdefine_line|#define SKCS_NTOH16(Val16)&t;SKCS_HTON16(Val16)
 multiline_comment|/* typedefs *******************************************************************/
 multiline_comment|/* function prototypes ********************************************************/
-multiline_comment|/******************************************************************************&n; *&n; *&t;SkCsGetSendInfo - get checksum information for a send packet&n; *&n; * Description:&n; *&t;Get all checksum information necessary to send a TCP or UDP packet. The&n; *&t;function checks the IP header passed to it. If the high-level protocol&n; *&t;is either TCP or UDP the pseudo header checksum is calculated and&n; *&t;returned.&n; *&n; *&t;The function returns the total length of the IP header (including any&n; *&t;IP option fields), which is the same as the start offset of the IP data&n; *&t;which in turn is the start offset of the TCP or UDP header.&n; *&n; *&t;The function also returns the TCP or UDP pseudo header checksum, which&n; *&t;should be used as the start value for the hardware checksum calculation.&n; *&t;(Note that any actual pseudo header checksum can never calculate to&n; *&t;zero.)&n; *&n; * Note:&n; *&t;There is a bug in the ASIC which may lead to wrong checksums.&n; *&n; * Arguments:&n; *&t;pAc - A pointer to the adapter context struct.&n; *&n; *&t;pIpHeader - Pointer to IP header. Must be at least the IP header *not*&n; *&t;including any option fields, i.e. at least 20 bytes.&n; *&n; *&t;Note: This pointer will be used to address 8-, 16-, and 32-bit&n; *&t;variables with the respective alignment offsets relative to the pointer.&n; *&t;Thus, the pointer should point to a 32-bit aligned address. If the&n; *&t;target system cannot address 32-bit variables on non 32-bit aligned&n; *&t;addresses, then the pointer *must* point to a 32-bit aligned address.&n; *&n; *&t;pPacketInfo - A pointer to the packet information structure for this&n; *&t;packet. Before calling this SkCsGetSendInfo(), the following field must&n; *&t;be initialized:&n; *&n; *&t;&t;ProtocolFlags - Initialize with any combination of&n; *&t;&t;SKCS_PROTO_XXX bit flags. SkCsGetSendInfo() will only work on&n; *&t;&t;the protocols specified here. Any protocol(s) not specified&n; *&t;&t;here will be ignored.&n; *&n; *&t;&t;Note: Only one checksum can be calculated in hardware. Thus, if&n; *&t;&t;SKCS_PROTO_IP is specified in the &squot;ProtocolFlags&squot;,&n; *&t;&t;SkCsGetSendInfo() must calculate the IP header checksum in&n; *&t;&t;software. It might be a better idea to have the calling&n; *&t;&t;protocol stack calculate the IP header checksum.&n; *&n; * Returns: N/A&n; *&t;On return, the following fields in &squot;pPacketInfo&squot; may or may not have&n; *&t;been filled with information, depending on the protocol(s) found in the&n; *&t;packet:&n; *&n; *&t;ProtocolFlags - Returns the SKCS_PROTO_XXX bit flags of the protocol(s)&n; *&t;that were both requested by the caller and actually found in the packet.&n; *&t;Protocol(s) not specified by the caller and/or not found in the packet&n; *&t;will have their respective SKCS_PROTO_XXX bit flags reset.&n; *&n; *&t;Note: For IP fragments, TCP and UDP packet information is ignored.&n; *&n; *&t;IpHeaderLength - The total length in bytes of the complete IP header&n; *&t;including any option fields is returned here. This is the start offset&n; *&t;of the IP data, i.e. the TCP or UDP header if present.&n; *&n; *&t;IpHeaderChecksum - If IP has been specified in the &squot;ProtocolFlags&squot;, the&n; *&t;16-bit Internet Checksum of the IP header is returned here. This value&n; *&t;is to be stored into the packet&squot;s &squot;IP Header Checksum&squot; field.&n; *&n; *&t;PseudoHeaderChecksum - If this is a TCP or UDP packet and if TCP or UDP&n; *&t;has been specified in the &squot;ProtocolFlags&squot;, the 16-bit Internet Checksum&n; *&t;of the TCP or UDP pseudo header is returned here.&n; */
+multiline_comment|/******************************************************************************&n; *&n; *&t;SkCsGetSendInfo - get checksum information for a send packet&n; *&n; * Description:&n; *&t;Get all checksum information necessary to send a TCP or UDP packet. The&n; *&t;function checks the IP header passed to it. If the high-level protocol&n; *&t;is either TCP or UDP the pseudo header checksum is calculated and&n; *&t;returned.&n; *&n; *&t;The function returns the total length of the IP header (including any&n; *&t;IP option fields), which is the same as the start offset of the IP data&n; *&t;which in turn is the start offset of the TCP or UDP header.&n; *&n; *&t;The function also returns the TCP or UDP pseudo header checksum, which&n; *&t;should be used as the start value for the hardware checksum calculation.&n; *&t;(Note that any actual pseudo header checksum can never calculate to&n; *&t;zero.)&n; *&n; * Note:&n; *&t;There is a bug in the GENESIS ASIC which may lead to wrong checksums.&n; *&n; * Arguments:&n; *&t;pAc - A pointer to the adapter context struct.&n; *&n; *&t;pIpHeader - Pointer to IP header. Must be at least the IP header *not*&n; *&t;including any option fields, i.e. at least 20 bytes.&n; *&n; *&t;Note: This pointer will be used to address 8-, 16-, and 32-bit&n; *&t;variables with the respective alignment offsets relative to the pointer.&n; *&t;Thus, the pointer should point to a 32-bit aligned address. If the&n; *&t;target system cannot address 32-bit variables on non 32-bit aligned&n; *&t;addresses, then the pointer *must* point to a 32-bit aligned address.&n; *&n; *&t;pPacketInfo - A pointer to the packet information structure for this&n; *&t;packet. Before calling this SkCsGetSendInfo(), the following field must&n; *&t;be initialized:&n; *&n; *&t;&t;ProtocolFlags - Initialize with any combination of&n; *&t;&t;SKCS_PROTO_XXX bit flags. SkCsGetSendInfo() will only work on&n; *&t;&t;the protocols specified here. Any protocol(s) not specified&n; *&t;&t;here will be ignored.&n; *&n; *&t;&t;Note: Only one checksum can be calculated in hardware. Thus, if&n; *&t;&t;SKCS_PROTO_IP is specified in the &squot;ProtocolFlags&squot;,&n; *&t;&t;SkCsGetSendInfo() must calculate the IP header checksum in&n; *&t;&t;software. It might be a better idea to have the calling&n; *&t;&t;protocol stack calculate the IP header checksum.&n; *&n; * Returns: N/A&n; *&t;On return, the following fields in &squot;pPacketInfo&squot; may or may not have&n; *&t;been filled with information, depending on the protocol(s) found in the&n; *&t;packet:&n; *&n; *&t;ProtocolFlags - Returns the SKCS_PROTO_XXX bit flags of the protocol(s)&n; *&t;that were both requested by the caller and actually found in the packet.&n; *&t;Protocol(s) not specified by the caller and/or not found in the packet&n; *&t;will have their respective SKCS_PROTO_XXX bit flags reset.&n; *&n; *&t;Note: For IP fragments, TCP and UDP packet information is ignored.&n; *&n; *&t;IpHeaderLength - The total length in bytes of the complete IP header&n; *&t;including any option fields is returned here. This is the start offset&n; *&t;of the IP data, i.e. the TCP or UDP header if present.&n; *&n; *&t;IpHeaderChecksum - If IP has been specified in the &squot;ProtocolFlags&squot;, the&n; *&t;16-bit Internet Checksum of the IP header is returned here. This value&n; *&t;is to be stored into the packet&squot;s &squot;IP Header Checksum&squot; field.&n; *&n; *&t;PseudoHeaderChecksum - If this is a TCP or UDP packet and if TCP or UDP&n; *&t;has been specified in the &squot;ProtocolFlags&squot;, the 16-bit Internet Checksum&n; *&t;of the TCP or UDP pseudo header is returned here.&n; */
 DECL|function|SkCsGetSendInfo
 r_void
 id|SkCsGetSendInfo
@@ -557,10 +555,10 @@ op_plus
 r_int
 r_int
 )paren
+id|SKCS_HTON16
+c_func
 (paren
 id|NextLevelProtocol
-op_lshift
-l_int|8
 )paren
 op_plus
 (paren
@@ -594,6 +592,10 @@ id|PseudoHeaderChecksum
 comma
 l_int|0
 )paren
+suffix:semicolon
+id|pPacketInfo-&gt;ProtocolFlags
+op_assign
+id|ProtocolFlags
 suffix:semicolon
 id|NextLevelProtoStats-&gt;TxOkCts
 op_increment
@@ -889,7 +891,7 @@ c_cond
 (paren
 id|IpHeaderChecksum
 op_ne
-l_int|0xFFFF
+l_int|0xffff
 )paren
 (brace
 id|pAc-&gt;Csum.ProtoStats
@@ -1246,7 +1248,7 @@ r_int
 )paren
 id|NextLevelProtocolChecksum
 op_eq
-l_int|0xFFFF
+l_int|0xffff
 )paren
 (brace
 multiline_comment|/* TCP/UDP checksum ok. */
@@ -1517,7 +1519,7 @@ r_int
 )paren
 id|Param.Para32
 (braket
-l_int|0
+l_int|1
 )braket
 suffix:semicolon
 id|NetNumber
@@ -1527,7 +1529,7 @@ r_int
 )paren
 id|Param.Para32
 (braket
-l_int|1
+l_int|0
 )braket
 suffix:semicolon
 r_if
@@ -1539,7 +1541,15 @@ l_int|0
 )paren
 (brace
 multiline_comment|/* Clear for all protocols. */
-id|memset
+r_if
+c_cond
+(paren
+id|NetNumber
+op_ge
+l_int|0
+)paren
+(brace
+id|SK_MEMSET
 c_func
 (paren
 op_amp
@@ -1563,10 +1573,11 @@ id|NetNumber
 )paren
 suffix:semicolon
 )brace
+)brace
 r_else
 (brace
 multiline_comment|/* Clear for individual protocol. */
-id|memset
+id|SK_MEMSET
 c_func
 (paren
 op_amp

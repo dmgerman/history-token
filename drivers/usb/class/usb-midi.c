@@ -6432,7 +6432,7 @@ id|d-&gt;actconfig-&gt;interface
 (braket
 id|ifnum
 )braket
-dot
+op_member_access_from_pointer
 id|num_altsetting
 suffix:semicolon
 r_for
@@ -6457,7 +6457,7 @@ id|d-&gt;actconfig-&gt;interface
 (braket
 id|ifnum
 )braket
-dot
+op_member_access_from_pointer
 id|altsetting
 (braket
 id|alt
@@ -8081,7 +8081,7 @@ id|c-&gt;interface
 (braket
 id|ifnum
 )braket
-dot
+op_member_access_from_pointer
 id|num_altsetting
 suffix:semicolon
 id|i
@@ -8094,7 +8094,7 @@ id|c-&gt;interface
 (braket
 id|ifnum
 )braket
-dot
+op_member_access_from_pointer
 id|altsetting
 op_plus
 id|i
@@ -8543,7 +8543,7 @@ id|c-&gt;interface
 (braket
 id|ifnum
 )braket
-dot
+op_member_access_from_pointer
 id|num_altsetting
 suffix:semicolon
 id|i
@@ -8556,7 +8556,7 @@ id|c-&gt;interface
 (braket
 id|ifnum
 )braket
-dot
+op_member_access_from_pointer
 id|altsetting
 op_plus
 id|i

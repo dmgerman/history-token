@@ -3759,7 +3759,12 @@ suffix:semicolon
 id|interface
 op_assign
 op_amp
-id|serial-&gt;serial-&gt;dev-&gt;config-&gt;interface-&gt;altsetting-&gt;desc
+id|serial-&gt;serial-&gt;dev-&gt;config-&gt;interface
+(braket
+l_int|0
+)braket
+op_member_access_from_pointer
+id|altsetting-&gt;desc
 suffix:semicolon
 r_if
 c_cond

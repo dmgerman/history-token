@@ -74,29 +74,6 @@ op_assign
 l_int|0
 suffix:semicolon
 multiline_comment|/* &n;  SMBUS event = I/O 28-29 bit 11&n;     see E0 for the status bits and enabled in E2&n;     &n;*/
-multiline_comment|/* Internally used pause function */
-DECL|function|amd756_do_pause
-r_static
-r_void
-id|amd756_do_pause
-c_func
-(paren
-r_int
-r_int
-id|amount
-)paren
-(brace
-id|current-&gt;state
-op_assign
-id|TASK_INTERRUPTIBLE
-suffix:semicolon
-id|schedule_timeout
-c_func
-(paren
-id|amount
-)paren
-suffix:semicolon
-)brace
 DECL|macro|GS_ABRT_STS
 mdefine_line|#define GS_ABRT_STS&t;(1 &lt;&lt; 0)
 DECL|macro|GS_COL_STS
@@ -212,7 +189,7 @@ id|temp
 suffix:semicolon
 r_do
 (brace
-id|amd756_do_pause
+id|i2c_delay
 c_func
 (paren
 l_int|1
@@ -295,7 +272,7 @@ suffix:semicolon
 multiline_comment|/* We will always wait for a fraction of a second! */
 r_do
 (brace
-id|amd756_do_pause
+id|i2c_delay
 c_func
 (paren
 l_int|1
@@ -537,7 +514,7 @@ comma
 id|SMB_GLOBAL_ENABLE
 )paren
 suffix:semicolon
-id|amd756_do_pause
+id|i2c_delay
 c_func
 (paren
 l_int|100
@@ -1193,14 +1170,13 @@ comma
 id|NFORCE
 )brace
 suffix:semicolon
-DECL|variable|__devinitdata
+DECL|variable|amd756_ids
 r_static
 r_struct
 id|pci_device_id
 id|amd756_ids
 (braket
 )braket
-id|__devinitdata
 op_assign
 (brace
 (brace

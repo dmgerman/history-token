@@ -344,7 +344,7 @@ id|hdlc
 )paren
 suffix:semicolon
 DECL|member|netif_rx
-r_void
+r_int
 (paren
 op_star
 id|netif_rx

@@ -567,7 +567,7 @@ id|timeout
 op_amp
 l_int|3
 suffix:semicolon
-id|lp-&gt;owner
+id|lp-&gt;hw.owner
 op_assign
 id|THIS_MODULE
 suffix:semicolon

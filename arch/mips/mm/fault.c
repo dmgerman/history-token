@@ -27,62 +27,6 @@ mdefine_line|#define development_version (LINUX_VERSION_CODE &amp; 0x100)
 multiline_comment|/*&n; * Macro for exception fixup code to access integer registers.&n; */
 DECL|macro|dpf_reg
 mdefine_line|#define dpf_reg(r) (regs-&gt;regs[r])
-multiline_comment|/*&n; * Unlock any spinlocks which will prevent us from getting the out&n; */
-DECL|function|bust_spinlocks
-r_void
-id|bust_spinlocks
-c_func
-(paren
-r_int
-id|yes
-)paren
-(brace
-r_int
-id|loglevel_save
-op_assign
-id|console_loglevel
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|yes
-)paren
-(brace
-id|oops_in_progress
-op_assign
-l_int|1
-suffix:semicolon
-r_return
-suffix:semicolon
-)brace
-macro_line|#ifdef CONFIG_VT
-id|unblank_screen
-c_func
-(paren
-)paren
-suffix:semicolon
-macro_line|#endif
-id|oops_in_progress
-op_assign
-l_int|0
-suffix:semicolon
-multiline_comment|/*&n;&t; * OK, the message is on the console.  Now we call printk()&n;&t; * without oops_in_progress set so that printk will give klogd&n;&t; * a poke.  Hold onto your hats...&n;&t; */
-id|console_loglevel
-op_assign
-l_int|15
-suffix:semicolon
-multiline_comment|/* NMI oopser may have shut the console up */
-id|printk
-c_func
-(paren
-l_string|&quot; &quot;
-)paren
-suffix:semicolon
-id|console_loglevel
-op_assign
-id|loglevel_save
-suffix:semicolon
-)brace
 multiline_comment|/*&n; * This routine handles page faults.  It determines the address,&n; * and the problem, and then passes it off to one of the appropriate&n; * routines.&n; */
 DECL|function|do_page_fault
 id|asmlinkage
@@ -129,6 +73,16 @@ id|exception_table_entry
 op_star
 id|fixup
 suffix:semicolon
+r_const
+r_int
+id|szlong
+op_assign
+r_sizeof
+(paren
+r_int
+r_int
+)paren
+suffix:semicolon
 id|siginfo_t
 id|info
 suffix:semicolon
@@ -136,7 +90,7 @@ macro_line|#if 0
 id|printk
 c_func
 (paren
-l_string|&quot;Cpu%d[%s:%d:%08lx:%ld:%08lx]&bslash;n&quot;
+l_string|&quot;Cpu%d[%s:%d:%0*lx:%ld:%0*lx]&bslash;n&quot;
 comma
 id|smp_processor_id
 c_func
@@ -147,9 +101,13 @@ id|current-&gt;comm
 comma
 id|current-&gt;pid
 comma
+id|szlong
+comma
 id|address
 comma
 id|write
+comma
+id|szlong
 comma
 id|regs-&gt;cp0_epc
 )paren
@@ -392,8 +350,8 @@ macro_line|#if 0
 id|printk
 c_func
 (paren
-l_string|&quot;do_page_fault() #2: sending SIGSEGV to %s for invalid %s&bslash;n&quot;
-l_string|&quot;%08lx (epc == %08lx, ra == %08lx)&bslash;n&quot;
+l_string|&quot;do_page_fault() #2: sending SIGSEGV to %s for &quot;
+l_string|&quot;invalid %s&bslash;n%0*lx (epc == %0*lx, ra == %0*lx)&bslash;n&quot;
 comma
 id|tsk-&gt;comm
 comma
@@ -404,13 +362,19 @@ l_string|&quot;write access to&quot;
 suffix:colon
 l_string|&quot;read access from&quot;
 comma
+id|szlong
+comma
 id|address
+comma
+id|szlong
 comma
 (paren
 r_int
 r_int
 )paren
 id|regs-&gt;cp0_epc
+comma
+id|szlong
 comma
 (paren
 r_int
@@ -521,12 +485,23 @@ id|printk
 c_func
 (paren
 id|KERN_ALERT
-l_string|&quot;Unable to handle kernel paging request at virtual &quot;
-l_string|&quot;address %08lx, epc == %08lx, ra == %08lx&bslash;n&quot;
+l_string|&quot;CPU %d Unable to handle kernel paging request at &quot;
+l_string|&quot;virtual address %0*lx, epc == %0*lx, ra == %0*lx&bslash;n&quot;
+comma
+id|smp_processor_id
+c_func
+(paren
+)paren
+comma
+id|szlong
 comma
 id|address
 comma
+id|szlong
+comma
 id|regs-&gt;cp0_epc
+comma
+id|szlong
 comma
 id|regs-&gt;regs
 (braket

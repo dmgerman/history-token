@@ -112,7 +112,7 @@ id|ETHTOOL_BUSINFO_LEN
 )braket
 suffix:semicolon
 multiline_comment|/* Bus info for this IF. */
-multiline_comment|/* For PCI devices, use pci_dev-&gt;slot_name. */
+multiline_comment|/* For PCI devices, use pci_name(pci_dev). */
 DECL|member|reserved1
 r_char
 id|reserved1

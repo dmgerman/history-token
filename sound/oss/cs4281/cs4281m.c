@@ -21057,14 +21057,13 @@ l_string|&quot;cs4281: cs4281_remove()-: remove successful&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
-DECL|variable|__devinitdata
+DECL|variable|cs4281_pci_tbl
 r_static
 r_struct
 id|pci_device_id
 id|cs4281_pci_tbl
 (braket
 )braket
-id|__devinitdata
 op_assign
 (brace
 (brace

@@ -2,6 +2,7 @@ multiline_comment|/*&n; *&t;Linux NET3:&t;Internet Group Management Protocol  [I
 macro_line|#ifndef _LINUX_IGMP_H
 DECL|macro|_LINUX_IGMP_H
 mdefine_line|#define _LINUX_IGMP_H
+macro_line|#include &lt;asm/byteorder.h&gt;
 multiline_comment|/*&n; *&t;IGMP protocol structures&n; */
 multiline_comment|/*&n; *&t;Header in on cable format&n; */
 DECL|struct|igmphdr

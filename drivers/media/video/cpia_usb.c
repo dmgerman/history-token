@@ -2898,7 +2898,6 @@ c_func
 op_amp
 id|cpia_driver
 comma
-op_amp
 id|udev-&gt;actconfig-&gt;interface
 (braket
 l_int|0

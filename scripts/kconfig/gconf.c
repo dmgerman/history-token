@@ -186,10 +186,6 @@ id|parents
 (braket
 l_int|256
 )braket
-op_assign
-(brace
-l_int|0
-)brace
 suffix:semicolon
 DECL|variable|indent
 r_static
@@ -501,10 +497,6 @@ id|buf
 (braket
 l_int|256
 )braket
-op_assign
-(brace
-l_int|0
-)brace
 suffix:semicolon
 id|bzero
 c_func
@@ -3009,8 +3001,6 @@ id|user_data
 r_static
 id|gint
 id|old_h
-op_assign
-l_int|0
 suffix:semicolon
 id|gint
 id|w
@@ -5900,10 +5890,6 @@ id|row
 (braket
 id|COL_NUMBER
 )braket
-op_assign
-(brace
-l_int|0
-)brace
 suffix:semicolon
 r_struct
 id|symbol

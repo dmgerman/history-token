@@ -62,8 +62,6 @@ r_struct
 id|rtc_ops
 id|ip22_rtc_ops
 suffix:semicolon
-DECL|macro|KBD_STAT_IBF
-mdefine_line|#define KBD_STAT_IBF&t;&t;0x02&t;/* Keyboard input buffer full */
 DECL|variable|sgi_gfxaddr
 r_int
 r_int
@@ -170,12 +168,6 @@ id|indy_sc_init
 c_func
 (paren
 )paren
-suffix:semicolon
-macro_line|#endif
-macro_line|#ifdef CONFIG_VT
-id|conswitchp
-op_assign
-l_int|NULL
 suffix:semicolon
 macro_line|#endif
 multiline_comment|/* Set the IO space to some sane value */
@@ -379,6 +371,11 @@ multiline_comment|/* Breakpoints and stuff are in sgi_irq_setup() */
 )brace
 macro_line|#endif
 macro_line|#ifdef CONFIG_VT
+id|conswitchp
+op_assign
+op_amp
+id|dummy_con
+suffix:semicolon
 macro_line|#ifdef CONFIG_SGI_NEWPORT_CONSOLE
 r_if
 c_cond
@@ -413,9 +410,6 @@ op_star
 (paren
 r_int
 op_star
-)paren
-(paren
-r_int
 )paren
 (paren
 (paren
@@ -494,61 +488,54 @@ r_struct
 id|screen_info
 )paren
 (brace
+dot
+id|orig_x
+op_assign
 l_int|0
 comma
+dot
+id|orig_y
+op_assign
 l_int|0
 comma
-multiline_comment|/* orig-x, orig-y */
+dot
+id|orig_video_page
+op_assign
 l_int|0
 comma
-multiline_comment|/* unused */
+dot
+id|orig_video_mode
+op_assign
 l_int|0
 comma
-multiline_comment|/* orig_video_page */
-l_int|0
-comma
-multiline_comment|/* orig_video_mode */
+dot
+id|orig_video_cols
+op_assign
 l_int|160
 comma
-multiline_comment|/* orig_video_cols */
+dot
+id|orig_video_ega_bx
+op_assign
 l_int|0
 comma
-l_int|0
-comma
-l_int|0
-comma
-multiline_comment|/* unused, ega_bx, unused */
+dot
+id|orig_video_lines
+op_assign
 l_int|64
 comma
-multiline_comment|/* orig_video_lines */
+dot
+id|orig_video_isVGA
+op_assign
 l_int|0
 comma
-multiline_comment|/* orig_video_isVGA */
-l_int|16
-multiline_comment|/* orig_video_points */
-)brace
-suffix:semicolon
-)brace
-)brace
-macro_line|#endif
-macro_line|#ifdef CONFIG_DUMMY_CONSOLE
-multiline_comment|/* Either if newport console wasn&squot;t used or failed to initialize. */
-macro_line|#ifdef CONFIG_SGI_NEWPORT_CONSOLE
-r_if
-c_cond
-(paren
-id|conswitchp
-op_ne
-op_amp
-id|newport_con
-)paren
-(brace
-macro_line|#endif
-id|conswitchp
+dot
+id|orig_video_points
 op_assign
-op_amp
-id|dummy_con
+l_int|16
+comma
+)brace
 suffix:semicolon
+)brace
 )brace
 macro_line|#endif
 macro_line|#endif
@@ -557,11 +544,5 @@ op_assign
 op_amp
 id|ip22_rtc_ops
 suffix:semicolon
-macro_line|#ifdef CONFIG_PSMOUSE
-id|aux_device_present
-op_assign
-l_int|0xaa
-suffix:semicolon
-macro_line|#endif
 )brace
 eof

@@ -2415,16 +2415,6 @@ comma
 l_string|&quot;remove from old cp transaction&quot;
 )paren
 suffix:semicolon
-id|J_ASSERT_JH
-c_func
-(paren
-id|jh
-comma
-id|commit_transaction
-op_ne
-id|cp_transaction
-)paren
-suffix:semicolon
 id|__journal_remove_checkpoint
 c_func
 (paren

@@ -1991,14 +1991,13 @@ id|chips_sleep_notifier
 suffix:semicolon
 macro_line|#endif /* CONFIG_PMAC_PBOOK */
 )brace
-DECL|variable|__devinitdata
+DECL|variable|chipsfb_pci_tbl
 r_static
 r_struct
 id|pci_device_id
 id|chipsfb_pci_tbl
 (braket
 )braket
-id|__devinitdata
 op_assign
 (brace
 (brace

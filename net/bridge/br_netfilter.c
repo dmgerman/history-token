@@ -111,8 +111,6 @@ r_static
 r_int
 r_int
 id|last_complaint
-op_assign
-l_int|0
 suffix:semicolon
 r_if
 c_cond

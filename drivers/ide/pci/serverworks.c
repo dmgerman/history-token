@@ -4417,14 +4417,13 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-DECL|variable|__devinitdata
+DECL|variable|svwks_pci_tbl
 r_static
 r_struct
 id|pci_device_id
 id|svwks_pci_tbl
 (braket
 )braket
-id|__devinitdata
 op_assign
 (brace
 (brace

@@ -2909,7 +2909,6 @@ r_int
 id|valid_irq
 (braket
 )braket
-id|__devinitdata
 op_assign
 (brace
 l_int|9

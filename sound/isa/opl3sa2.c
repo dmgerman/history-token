@@ -3250,19 +3250,19 @@ id|SNDRV_CTL_POWER_D3hot
 )paren
 r_return
 suffix:semicolon
-multiline_comment|/* FIXME: is this order ok? */
+id|snd_pcm_suspend_all
+c_func
+(paren
+id|chip-&gt;cs4231-&gt;pcm
+)paren
+suffix:semicolon
+multiline_comment|/* stop before saving regs */
 id|chip
 op_member_access_from_pointer
 id|cs4231_suspend
 c_func
 (paren
 id|chip-&gt;cs4231
-)paren
-suffix:semicolon
-id|snd_pcm_suspend_all
-c_func
-(paren
-id|chip-&gt;cs4231-&gt;pcm
 )paren
 suffix:semicolon
 multiline_comment|/* power down */

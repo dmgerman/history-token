@@ -422,8 +422,6 @@ suffix:semicolon
 r_static
 r_char
 id|is_init
-op_assign
-l_int|0
 suffix:semicolon
 r_if
 c_cond

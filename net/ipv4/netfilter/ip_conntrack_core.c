@@ -98,8 +98,6 @@ DECL|variable|ip_conntrack_max
 r_static
 r_int
 id|ip_conntrack_max
-op_assign
-l_int|0
 suffix:semicolon
 DECL|variable|ip_conntrack_count
 r_static
@@ -2472,8 +2470,6 @@ r_static
 r_int
 r_int
 id|drop_next
-op_assign
-l_int|0
 suffix:semicolon
 r_if
 c_cond
@@ -6143,8 +6139,6 @@ DECL|variable|hashsize
 r_static
 r_int
 id|hashsize
-op_assign
-l_int|0
 suffix:semicolon
 id|MODULE_PARM
 c_func

@@ -1233,29 +1233,18 @@ op_star
 )paren
 op_amp
 id|dummy
+op_minus
+l_int|4
 )paren
-suffix:semicolon
-r_int
-r_int
-op_star
-id|usp
-op_assign
-id|rdusp
-c_func
-(paren
-)paren
-op_plus
-l_int|8
 suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;call %06x:%d 1:%08x,2:%08x,3:%08x,ret:%08x&bslash;n&quot;
+l_string|&quot;call %06lx:%ld 1:%08lx,2:%08lx,3:%08lx,ret:%08lx&bslash;n&quot;
 comma
 (paren
 (paren
-op_star
-id|usp
+id|regs-&gt;pc
 )paren
 op_amp
 l_int|0xffffff

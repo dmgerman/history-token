@@ -278,7 +278,11 @@ c_func
 (paren
 l_string|&quot;pci_fixup_ioc3: Fixing base addresses for ioc3 device %s&bslash;n&quot;
 comma
-id|d-&gt;slot_name
+id|pci_name
+c_func
+(paren
+id|d
+)paren
 )paren
 suffix:semicolon
 multiline_comment|/* I happen to know from the spec that the ioc3 needs only 0xfffff &n;&t; * The standard pci trick of writing ~0 to the baddr and seeing&n;&t; * what comes back doesn&squot;t work with the ioc3&n;&t; */

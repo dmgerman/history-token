@@ -350,6 +350,12 @@ id|kobj_type
 op_star
 id|elevator_ktype
 suffix:semicolon
+DECL|member|elevator_name
+r_const
+r_char
+op_star
+id|elevator_name
+suffix:semicolon
 )brace
 suffix:semicolon
 multiline_comment|/*&n; * block elevator interface&n; */

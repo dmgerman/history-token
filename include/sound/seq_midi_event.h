@@ -36,15 +36,18 @@ r_int
 r_char
 id|lastcmd
 suffix:semicolon
+multiline_comment|/* last command (for MIDI state handling) */
 DECL|member|nostat
 r_int
 r_char
 id|nostat
 suffix:semicolon
+multiline_comment|/* no state flag */
 DECL|member|bufsize
 r_int
 id|bufsize
 suffix:semicolon
+multiline_comment|/* allocated buffer size */
 DECL|member|buf
 r_int
 r_char
@@ -58,8 +61,6 @@ id|lock
 suffix:semicolon
 )brace
 suffix:semicolon
-DECL|macro|SND_MIDI_EVENT_NOSTATUS
-mdefine_line|#define SND_MIDI_EVENT_NOSTATUS&t;&t;(1&lt;&lt;0)&t;/* don&squot;t encode MIDI status */
 r_int
 id|snd_midi_event_new
 c_func

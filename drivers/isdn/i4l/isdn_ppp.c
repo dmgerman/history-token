@@ -2934,7 +2934,7 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;isdn_ppp_bind: illegal interface name %s.&bslash;n&quot;
+l_string|&quot;isdn_ppp_bind: invalid interface name %s.&bslash;n&quot;
 comma
 id|idev-&gt;name
 )paren

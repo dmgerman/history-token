@@ -2455,7 +2455,7 @@ id|nr
 )braket
 )paren
 op_star
-l_int|10
+l_int|100
 )paren
 suffix:semicolon
 )brace
@@ -2524,7 +2524,7 @@ id|nr
 )braket
 )paren
 op_star
-l_int|10
+l_int|100
 )paren
 suffix:semicolon
 )brace
@@ -2593,7 +2593,7 @@ id|nr
 )braket
 )paren
 op_star
-l_int|10
+l_int|100
 )paren
 suffix:semicolon
 )brace
@@ -2655,7 +2655,7 @@ comma
 l_int|10
 )paren
 op_div
-l_int|10
+l_int|100
 suffix:semicolon
 id|data-&gt;temp_over
 (braket
@@ -2747,7 +2747,7 @@ comma
 l_int|10
 )paren
 op_div
-l_int|10
+l_int|100
 suffix:semicolon
 id|data-&gt;temp_hyst
 (braket
@@ -4903,14 +4903,13 @@ id|data-&gt;update_lock
 )paren
 suffix:semicolon
 )brace
-DECL|variable|__devinitdata
+DECL|variable|via686a_pci_ids
 r_static
 r_struct
 id|pci_device_id
 id|via686a_pci_ids
 (braket
 )braket
-id|__devinitdata
 op_assign
 (brace
 (brace

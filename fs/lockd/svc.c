@@ -525,8 +525,6 @@ r_void
 r_static
 r_int
 id|warned
-op_assign
-l_int|0
 suffix:semicolon
 r_struct
 id|svc_serv
@@ -743,8 +741,6 @@ r_void
 r_static
 r_int
 id|warned
-op_assign
-l_int|0
 suffix:semicolon
 id|down
 c_func

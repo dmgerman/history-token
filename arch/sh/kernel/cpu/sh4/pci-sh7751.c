@@ -968,7 +968,11 @@ l_int|3
 comma
 l_string|&quot;PCI: IDE base address fixup for %s&bslash;n&quot;
 comma
-id|d-&gt;slot_name
+id|pci_name
+c_func
+(paren
+id|d
+)paren
 )paren
 suffix:semicolon
 r_for
@@ -1633,7 +1637,11 @@ l_string|&quot;PCI: Cannot allocate resource region %d of bridge %s&bslash;n&quo
 comma
 id|idx
 comma
-id|dev-&gt;slot_name
+id|pci_name
+c_func
+(paren
+id|dev
+)paren
 )paren
 suffix:semicolon
 )brace
@@ -1833,7 +1841,11 @@ l_string|&quot;PCI: Cannot allocate resource region %d of device %s&bslash;n&quo
 comma
 id|idx
 comma
-id|dev-&gt;slot_name
+id|pci_name
+c_func
+(paren
+id|dev
+)paren
 )paren
 suffix:semicolon
 multiline_comment|/* We&squot;ll assign a new address later */
@@ -1882,7 +1894,11 @@ l_int|3
 comma
 l_string|&quot;PCI: Switching off ROM of %s&bslash;n&quot;
 comma
-id|dev-&gt;slot_name
+id|pci_name
+c_func
+(paren
+id|dev
+)paren
 )paren
 suffix:semicolon
 id|r-&gt;flags
@@ -2220,7 +2236,11 @@ l_int|2
 comma
 l_string|&quot;Setting IRQ for slot %s to %d&bslash;n&quot;
 comma
-id|dev-&gt;slot_name
+id|pci_name
+c_func
+(paren
+id|dev
+)paren
 comma
 id|irq
 )paren

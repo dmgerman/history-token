@@ -212,14 +212,13 @@ macro_line|#ifndef CONFIG_SUNDANCE_MMIO
 DECL|macro|USE_IO_OPS
 mdefine_line|#define USE_IO_OPS 1
 macro_line|#endif
-DECL|variable|__devinitdata
+DECL|variable|sundance_pci_tbl
 r_static
 r_struct
 id|pci_device_id
 id|sundance_pci_tbl
 (braket
 )braket
-id|__devinitdata
 op_assign
 (brace
 (brace
@@ -7568,7 +7567,11 @@ c_func
 (paren
 id|info.bus_info
 comma
-id|np-&gt;pci_dev-&gt;slot_name
+id|pci_name
+c_func
+(paren
+id|np-&gt;pci_dev
+)paren
 )paren
 suffix:semicolon
 id|memset

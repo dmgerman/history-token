@@ -519,7 +519,6 @@ suffix:semicolon
 )brace
 )brace
 macro_line|#ifdef CONFIG_PM
-macro_line|#include &lt;linux/device.h&gt;
 DECL|variable|nmi_pm_active
 r_static
 r_int

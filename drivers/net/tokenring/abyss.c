@@ -23,14 +23,13 @@ l_string|&quot;abyss.c: v1.02 23/11/2000 by Adam Fritzler&bslash;n&quot;
 suffix:semicolon
 DECL|macro|ABYSS_IO_EXTENT
 mdefine_line|#define ABYSS_IO_EXTENT 64
-DECL|variable|__initdata
+DECL|variable|abyss_pci_tbl
 r_static
 r_struct
 id|pci_device_id
 id|abyss_pci_tbl
 (braket
 )braket
-id|__initdata
 op_assign
 (brace
 (brace

@@ -7872,14 +7872,13 @@ l_string|&quot;meye: removed&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
-DECL|variable|__devinitdata
+DECL|variable|meye_pci_tbl
 r_static
 r_struct
 id|pci_device_id
 id|meye_pci_tbl
 (braket
 )braket
-id|__devinitdata
 op_assign
 (brace
 (brace

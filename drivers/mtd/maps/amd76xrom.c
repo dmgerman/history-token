@@ -700,14 +700,13 @@ id|info-&gt;window_size
 suffix:semicolon
 macro_line|#endif /* REQUEST_MEM_REGION */
 )brace
-DECL|variable|__devinitdata
+DECL|variable|amd76xrom_pci_tbl
 r_static
 r_struct
 id|pci_device_id
 id|amd76xrom_pci_tbl
 (braket
 )braket
-id|__devinitdata
 op_assign
 (brace
 (brace

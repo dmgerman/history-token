@@ -547,7 +547,11 @@ id|PPCDBG_BUSWALK
 comma
 l_string|&quot;&bslash;tDevice: %s No Interrupt used by device.&bslash;n&quot;
 comma
-id|pci_dev-&gt;slot_name
+id|pci_name
+c_func
+(paren
+id|pci_dev
+)paren
 )paren
 suffix:semicolon
 r_return
@@ -577,7 +581,11 @@ id|PPCDBG_BUSWALK
 comma
 l_string|&quot;&bslash;tDevice: %s Device Node not found.&bslash;n&quot;
 comma
-id|pci_dev-&gt;slot_name
+id|pci_name
+c_func
+(paren
+id|pci_dev
+)paren
 )paren
 suffix:semicolon
 r_return
@@ -600,7 +608,11 @@ id|PPCDBG_BUSWALK
 comma
 l_string|&quot;&bslash;tDevice: %s No Device OF interrupts defined.&bslash;n&quot;
 comma
-id|pci_dev-&gt;slot_name
+id|pci_name
+c_func
+(paren
+id|pci_dev
+)paren
 )paren
 suffix:semicolon
 r_return
@@ -652,7 +664,11 @@ id|PPCDBG_BUSWALK
 comma
 l_string|&quot;&bslash;tDevice: %s pci_dev-&gt;irq = 0x%02X&bslash;n&quot;
 comma
-id|pci_dev-&gt;slot_name
+id|pci_name
+c_func
+(paren
+id|pci_dev
+)paren
 comma
 id|pci_dev-&gt;irq
 )paren

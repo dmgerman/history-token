@@ -2613,7 +2613,11 @@ id|pirq_router_dev-&gt;vendor
 comma
 id|pirq_router_dev-&gt;device
 comma
-id|pirq_router_dev-&gt;slot_name
+id|pci_name
+c_func
+(paren
+id|pirq_router_dev
+)paren
 )paren
 suffix:semicolon
 )brace
@@ -2832,7 +2836,11 @@ c_func
 (paren
 l_string|&quot;IRQ for %s:%d&quot;
 comma
-id|dev-&gt;slot_name
+id|pci_name
+c_func
+(paren
+id|dev
+)paren
 comma
 id|pin
 )paren
@@ -2997,7 +3005,11 @@ l_string|&quot;PCI: IRQ %i for device %s doesn&squot;t match PIRQ mask - try pci
 comma
 id|newirq
 comma
-id|dev-&gt;slot_name
+id|pci_name
+c_func
+(paren
+id|dev
+)paren
 )paren
 suffix:semicolon
 )brace
@@ -3301,7 +3313,11 @@ id|msg
 comma
 id|irq
 comma
-id|dev-&gt;slot_name
+id|pci_name
+c_func
+(paren
+id|dev
+)paren
 )paren
 suffix:semicolon
 multiline_comment|/* Update IRQ for all devices with the same pirq value */
@@ -3414,7 +3430,11 @@ c_func
 id|KERN_INFO
 l_string|&quot;IRQ routing conflict for %s, have irq %d, want irq %d&bslash;n&quot;
 comma
-id|dev2-&gt;slot_name
+id|pci_name
+c_func
+(paren
+id|dev2
+)paren
 comma
 id|dev2-&gt;irq
 comma
@@ -3449,7 +3469,11 @@ l_string|&quot;PCI: Sharing IRQ %d with %s&bslash;n&quot;
 comma
 id|irq
 comma
-id|dev2-&gt;slot_name
+id|pci_name
+c_func
+(paren
+id|dev2
+)paren
 )paren
 suffix:semicolon
 )brace
@@ -3518,7 +3542,11 @@ c_func
 (paren
 l_string|&quot;%s: ignoring bogus IRQ %d&bslash;n&quot;
 comma
-id|dev-&gt;slot_name
+id|pci_name
+c_func
+(paren
+id|dev
+)paren
 comma
 id|dev-&gt;irq
 )paren
@@ -4037,7 +4065,11 @@ id|pin
 op_minus
 l_int|1
 comma
-id|dev-&gt;slot_name
+id|pci_name
+c_func
+(paren
+id|dev
+)paren
 comma
 id|msg
 )paren

@@ -1535,10 +1535,16 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;FAT: cache corruption&quot;
-l_string|&quot; (ino %lu)&bslash;n&quot;
+l_string|&quot;FAT: cache corruption &quot;
+l_string|&quot;(i_pos %lld)&bslash;n&quot;
 comma
-id|inode-&gt;i_ino
+id|MSDOS_I
+c_func
+(paren
+id|inode
+)paren
+op_member_access_from_pointer
+id|i_pos
 )paren
 suffix:semicolon
 id|__fat_cache_inval_inode
@@ -1750,7 +1756,7 @@ c_func
 id|sb
 comma
 l_string|&quot;%s: detected the cluster chain loop&quot;
-l_string|&quot; (i_pos %llu)&quot;
+l_string|&quot; (i_pos %lld)&quot;
 comma
 id|__FUNCTION__
 comma
@@ -1807,7 +1813,7 @@ c_func
 id|sb
 comma
 l_string|&quot;%s: invalid cluster chain&quot;
-l_string|&quot; (i_pos %llu)&quot;
+l_string|&quot; (i_pos %lld)&quot;
 comma
 id|__FUNCTION__
 comma
@@ -1963,7 +1969,7 @@ c_func
 (paren
 id|sb
 comma
-l_string|&quot;%s: request beyond EOF (i_pos %llu)&quot;
+l_string|&quot;%s: request beyond EOF (i_pos %lld)&quot;
 comma
 id|__FUNCTION__
 comma
@@ -2433,11 +2439,17 @@ c_func
 (paren
 id|sb
 comma
-l_string|&quot;%s: deleting beyond EOF (ino %lu)&quot;
+l_string|&quot;%s: deleting beyond EOF (i_pos %lld)&quot;
 comma
 id|__FUNCTION__
 comma
-id|inode-&gt;i_ino
+id|MSDOS_I
+c_func
+(paren
+id|inode
+)paren
+op_member_access_from_pointer
+id|i_pos
 )paren
 suffix:semicolon
 id|nr

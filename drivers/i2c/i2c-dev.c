@@ -398,12 +398,10 @@ id|class_dev
 )paren
 suffix:semicolon
 r_return
-id|sprintf
+id|print_dev_t
 c_func
 (paren
 id|buf
-comma
-l_string|&quot;%04x&bslash;n&quot;
 comma
 id|MKDEV
 c_func

@@ -113,8 +113,6 @@ id|conntrack
 r_static
 id|u_int16_t
 id|port
-op_assign
-l_int|0
 comma
 op_star
 id|portptr

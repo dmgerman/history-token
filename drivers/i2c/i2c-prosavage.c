@@ -934,14 +934,13 @@ id|ret
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Data for PCI driver interface&n; */
-DECL|variable|__devinitdata
+DECL|variable|prosavage_pci_tbl
 r_static
 r_struct
 id|pci_device_id
 id|prosavage_pci_tbl
 (braket
 )braket
-id|__devinitdata
 op_assign
 (brace
 (brace

@@ -445,14 +445,13 @@ id|Compatable
 suffix:semicolon
 multiline_comment|/* Version Compatability Table      */
 multiline_comment|/* This table describes all ServeRAID Adapters */
-DECL|variable|__devinitdata
+DECL|variable|ips_pci_table
 r_static
 r_struct
 id|pci_device_id
 id|ips_pci_table
 (braket
 )braket
-id|__devinitdata
 op_assign
 (brace
 (brace

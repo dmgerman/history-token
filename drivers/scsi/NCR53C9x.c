@@ -3846,11 +3846,6 @@ id|sp
 )paren
 suffix:semicolon
 r_else
-id|sp-&gt;SCp.have_data_in
-op_assign
-(paren
-r_int
-)paren
 id|sp-&gt;SCp.ptr
 op_assign
 (paren
@@ -14433,7 +14428,7 @@ id|ESPLOG
 c_func
 (paren
 (paren
-l_string|&quot;esp%d: illegal command&bslash;n&quot;
+l_string|&quot;esp%d: invalid command&bslash;n&quot;
 comma
 id|esp-&gt;esp_id
 )paren

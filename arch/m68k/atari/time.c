@@ -5,7 +5,7 @@ macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/rtc.h&gt;
 macro_line|#include &lt;linux/bcd.h&gt;
-macro_line|#include &lt;asm/rtc.h&gt;
+macro_line|#include &lt;asm/atariints.h&gt;
 r_void
 id|__init
 DECL|function|atari_sched_init

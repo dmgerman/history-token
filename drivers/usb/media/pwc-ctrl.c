@@ -1,4 +1,4 @@
-multiline_comment|/* Driver for Philips webcam&n;   Functions that send various control messages to the webcam, including&n;   video modes.&n;   (C) 1999-2002 Nemosoft Unv. (webcam@smcc.demon.nl)&n;&n;   This program is free software; you can redistribute it and/or modify&n;   it under the terms of the GNU General Public License as published by&n;   the Free Software Foundation; either version 2 of the License, or&n;   (at your option) any later version.&n;&n;   This program is distributed in the hope that it will be useful,&n;   but WITHOUT ANY WARRANTY; without even the implied warranty of&n;   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n;   GNU General Public License for more details.&n;&n;   You should have received a copy of the GNU General Public License&n;   along with this program; if not, write to the Free Software&n;   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n;*/
+multiline_comment|/* Driver for Philips webcam&n;   Functions that send various control messages to the webcam, including&n;   video modes.&n;   (C) 1999-2003 Nemosoft Unv. (webcam@smcc.demon.nl)&n;&n;   This program is free software; you can redistribute it and/or modify&n;   it under the terms of the GNU General Public License as published by&n;   the Free Software Foundation; either version 2 of the License, or&n;   (at your option) any later version.&n;&n;   This program is distributed in the hope that it will be useful,&n;   but WITHOUT ANY WARRANTY; without even the implied warranty of&n;   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n;   GNU General Public License for more details.&n;&n;   You should have received a copy of the GNU General Public License&n;   along with this program; if not, write to the Free Software&n;   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA&n;*/
 multiline_comment|/*&n;   Changes&n;   2001/08/03  Alvarado   Added methods for changing white balance and &n;                          red/green gains&n; */
 multiline_comment|/* Control functions for the cam; brightness, contrast, video mode, etc. */
 macro_line|#ifdef __KERNEL__
@@ -1706,7 +1706,7 @@ c_func
 (paren
 id|TRACE_SIZE
 comma
-l_string|&quot;Set viewport to %dx%d, image size is %dx%d, palette = %d.&bslash;n&quot;
+l_string|&quot;Set viewport to %dx%d, image size is %dx%d.&bslash;n&quot;
 comma
 id|width
 comma
@@ -1725,8 +1725,6 @@ id|size
 )braket
 dot
 id|y
-comma
-id|pdev-&gt;vpalette
 )paren
 suffix:semicolon
 r_return
@@ -1753,70 +1751,6 @@ id|filler
 op_assign
 l_int|0
 suffix:semicolon
-r_switch
-c_cond
-(paren
-id|pdev-&gt;vpalette
-)paren
-(brace
-r_case
-id|VIDEO_PALETTE_RGB32
-op_or
-l_int|0x80
-suffix:colon
-r_case
-id|VIDEO_PALETTE_RGB32
-suffix:colon
-id|factor
-op_assign
-l_int|16
-suffix:semicolon
-id|filler
-op_assign
-l_int|0
-suffix:semicolon
-r_break
-suffix:semicolon
-r_case
-id|VIDEO_PALETTE_RGB24
-op_or
-l_int|0x80
-suffix:colon
-r_case
-id|VIDEO_PALETTE_RGB24
-suffix:colon
-id|factor
-op_assign
-l_int|12
-suffix:semicolon
-id|filler
-op_assign
-l_int|0
-suffix:semicolon
-r_break
-suffix:semicolon
-r_case
-id|VIDEO_PALETTE_YUYV
-suffix:colon
-r_case
-id|VIDEO_PALETTE_YUV422
-suffix:colon
-id|factor
-op_assign
-l_int|8
-suffix:semicolon
-id|filler
-op_assign
-l_int|128
-suffix:semicolon
-r_break
-suffix:semicolon
-r_case
-id|VIDEO_PALETTE_YUV420
-suffix:colon
-r_case
-id|VIDEO_PALETTE_YUV420P
-suffix:colon
 id|factor
 op_assign
 l_int|6
@@ -1825,34 +1759,6 @@ id|filler
 op_assign
 l_int|128
 suffix:semicolon
-r_break
-suffix:semicolon
-macro_line|#if PWC_DEBUG&t;&t;
-r_case
-id|VIDEO_PALETTE_RAW
-suffix:colon
-id|pdev-&gt;image.size
-op_assign
-id|pdev-&gt;frame_size
-suffix:semicolon
-id|pdev-&gt;view.size
-op_assign
-id|pdev-&gt;frame_size
-suffix:semicolon
-r_return
-suffix:semicolon
-r_break
-suffix:semicolon
-macro_line|#endif&t;
-r_default
-suffix:colon
-id|factor
-op_assign
-l_int|0
-suffix:semicolon
-r_break
-suffix:semicolon
-)brace
 multiline_comment|/* Set sizes in bytes */
 id|pdev-&gt;image.size
 op_assign
@@ -5588,7 +5494,7 @@ c_func
 (paren
 id|probe-&gt;name
 comma
-id|pdev-&gt;vdev-&gt;name
+id|pdev-&gt;vdev.name
 )paren
 suffix:semicolon
 id|probe-&gt;type

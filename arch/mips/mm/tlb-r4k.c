@@ -1,4 +1,5 @@
-multiline_comment|/*&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * r4xx0.c: R4000 processor variant specific MMU/Cache routines.&n; *&n; * Copyright (C) 1996 David S. Miller (dm@engr.sgi.com)&n; * Copyright (C) 1997, 1998, 1999, 2000 Ralf Baechle ralf@gnu.org&n; *&n; * To do:&n; *&n; *  - this code is a overbloated pig&n; *  - many of the bug workarounds are not efficient at all, but at&n; *    least they are functional ...&n; */
+multiline_comment|/*&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1996 David S. Miller (dm@engr.sgi.com)&n; * Copyright (C) 1997, 1998, 1999, 2000 Ralf Baechle ralf@gnu.org&n; * Carsten Langgaard, carstenl@mips.com&n; * Copyright (C) 2002 MIPS Technologies, Inc.  All rights reserved.&n; */
+macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
@@ -7,17 +8,37 @@ macro_line|#include &lt;asm/bootinfo.h&gt;
 macro_line|#include &lt;asm/mmu_context.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
-DECL|macro|DEBUG_TLB
-macro_line|#undef DEBUG_TLB
-DECL|macro|DEBUG_TLBUPDATE
-macro_line|#undef DEBUG_TLBUPDATE
 r_extern
-r_char
+r_void
 id|except_vec0_nevada
-comma
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+r_extern
+r_void
 id|except_vec0_r4000
-comma
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+r_extern
+r_void
 id|except_vec0_r4600
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|except_vec1_r4k
+c_func
+(paren
+r_void
+)paren
 suffix:semicolon
 multiline_comment|/* CP0 hazard avoidance. */
 DECL|macro|BARRIER
@@ -41,14 +62,6 @@ suffix:semicolon
 r_int
 id|entry
 suffix:semicolon
-macro_line|#ifdef DEBUG_TLB
-id|printk
-c_func
-(paren
-l_string|&quot;[tlball]&quot;
-)paren
-suffix:semicolon
-macro_line|#endif
 id|local_irq_save
 c_func
 (paren
@@ -58,14 +71,12 @@ suffix:semicolon
 multiline_comment|/* Save old context and create impossible VPN2 value */
 id|old_ctx
 op_assign
-(paren
 id|read_c0_entryhi
 c_func
 (paren
 )paren
 op_amp
 id|ASID_MASK
-)paren
 suffix:semicolon
 id|write_c0_entrylo0
 c_func
@@ -174,23 +185,6 @@ id|mm
 op_ne
 l_int|0
 )paren
-(brace
-macro_line|#ifdef DEBUG_TLB
-id|printk
-c_func
-(paren
-l_string|&quot;[tlbmm&lt;%d&gt;]&quot;
-comma
-id|cpu_context
-c_func
-(paren
-id|cpu
-comma
-id|mm
-)paren
-)paren
-suffix:semicolon
-macro_line|#endif
 id|drop_mmu_context
 c_func
 (paren
@@ -199,7 +193,6 @@ comma
 id|cpu
 )paren
 suffix:semicolon
-)brace
 )brace
 DECL|function|local_flush_tlb_range
 r_void
@@ -256,28 +249,6 @@ suffix:semicolon
 r_int
 id|size
 suffix:semicolon
-macro_line|#ifdef DEBUG_TLB
-id|printk
-c_func
-(paren
-l_string|&quot;[tlbrange&lt;%02x,%08lx,%08lx&gt;]&quot;
-comma
-id|cpu_context
-c_func
-(paren
-id|cpu
-comma
-id|mm
-)paren
-op_amp
-id|ASID_MASK
-comma
-id|start
-comma
-id|end
-)paren
-suffix:semicolon
-macro_line|#endif
 id|local_irq_save
 c_func
 (paren
@@ -333,15 +304,13 @@ suffix:semicolon
 r_int
 id|newpid
 op_assign
-id|cpu_context
+id|cpu_asid
 c_func
 (paren
 id|cpu
 comma
 id|mm
 )paren
-op_amp
-id|ASID_MASK
 suffix:semicolon
 id|start
 op_and_assign
@@ -503,18 +472,6 @@ suffix:semicolon
 r_int
 id|size
 suffix:semicolon
-macro_line|#ifdef DEBUG_TLB
-id|printk
-c_func
-(paren
-l_string|&quot;[tlbkernelrange&lt;%02x,%08lx,%08lx&gt;]&quot;
-comma
-id|start
-comma
-id|end
-)paren
-suffix:semicolon
-macro_line|#endif
 id|local_irq_save
 c_func
 (paren
@@ -724,9 +681,6 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-op_logical_neg
-id|vma
-op_logical_or
 id|cpu_context
 c_func
 (paren
@@ -749,36 +703,14 @@ id|newpid
 comma
 id|idx
 suffix:semicolon
-macro_line|#ifdef DEBUG_TLB
-id|printk
-c_func
-(paren
-l_string|&quot;[tlbpage&lt;%d,%08lx&gt;]&quot;
-comma
-id|cpu_context
-c_func
-(paren
-id|cpu
-comma
-id|vma-&gt;vm_mm
-)paren
-comma
-id|page
-)paren
-suffix:semicolon
-macro_line|#endif
 id|newpid
 op_assign
-(paren
-id|cpu_context
+id|cpu_asid
 c_func
 (paren
 id|cpu
 comma
 id|vma-&gt;vm_mm
-)paren
-op_amp
-id|ASID_MASK
 )paren
 suffix:semicolon
 id|page
@@ -797,14 +729,12 @@ id|flags
 suffix:semicolon
 id|oldpid
 op_assign
-(paren
 id|read_c0_entryhi
 c_func
 (paren
 )paren
 op_amp
 id|ASID_MASK
-)paren
 suffix:semicolon
 id|write_c0_entryhi
 c_func
@@ -849,11 +779,9 @@ id|idx
 OL
 l_int|0
 )paren
-(brace
 r_goto
 id|finish
 suffix:semicolon
-)brace
 multiline_comment|/* Make sure all entries differ. */
 id|write_c0_entryhi
 c_func
@@ -1015,7 +943,7 @@ id|flags
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* We will need multiple versions of update_mmu_cache(), one that just&n; * updates the TLB with the new pte(s), and another which also checks&n; * for the R4k &quot;end of page&quot; hardware bug and does the needy.&n; */
+multiline_comment|/*&n; * We will need multiple versions of update_mmu_cache(), one that just&n; * updates the TLB with the new pte(s), and another which also checks&n; * for the R4k &quot;end of page&quot; hardware bug and does the needy.&n; */
 DECL|function|__update_tlb
 r_void
 id|__update_tlb
@@ -1074,61 +1002,6 @@ c_func
 op_amp
 id|ASID_MASK
 suffix:semicolon
-macro_line|#ifdef DEBUG_TLB
-r_if
-c_cond
-(paren
-(paren
-id|pid
-op_ne
-id|cpu_context
-c_func
-(paren
-id|cpu
-comma
-id|vma-&gt;vm_mm
-)paren
-op_amp
-id|ASID_MASK
-)paren
-op_logical_or
-(paren
-id|cpu_context
-c_func
-(paren
-id|vma-&gt;vm_mm
-)paren
-op_eq
-l_int|0
-)paren
-)paren
-(brace
-id|printk
-c_func
-(paren
-l_string|&quot;update_mmu_cache: Wheee, bogus tlbpid mmpid=%d &quot;
-l_string|&quot;tlbpid=%d&bslash;n&quot;
-comma
-(paren
-r_int
-)paren
-(paren
-id|cpu_context
-c_func
-(paren
-id|cpu
-comma
-id|vma-&gt;vm_mm
-)paren
-op_amp
-id|ASID_MASK
-)paren
-comma
-id|pid
-)paren
-suffix:semicolon
-)brace
-macro_line|#endif
 id|local_irq_save
 c_func
 (paren
@@ -1803,10 +1676,9 @@ l_int|31
 )paren
 )paren
 )paren
-multiline_comment|/*&n;&t;&t; * Not a MIPS32 complianant CPU.  Config 1 register not&n;&t;&t; * supported, we assume R4k style.  Cpu probing already figured&n;&t;&t; * out the number of tlb entries.&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * Not a MIPS32/MIPS64 CPU..  Config 1 register not&n;&t;&t; * supported, we assume R4k style.  Cpu probing already figured&n;&t;&t; * out the number of tlb entries.&n;&t;&t; */
 r_return
 suffix:semicolon
-macro_line|#if defined(CONFIG_CPU_MIPS32) || defined (CONFIG_CPU_MIPS64)
 id|config1
 op_assign
 id|read_c0_config1
@@ -1849,7 +1721,6 @@ l_int|0x3f
 op_plus
 l_int|1
 suffix:semicolon
-macro_line|#endif
 )brace
 DECL|function|r4k_tlb_init
 r_void
@@ -1860,7 +1731,8 @@ c_func
 r_void
 )paren
 (brace
-id|u32
+r_int
+r_int
 id|config
 op_assign
 id|read_c0_config
@@ -1898,14 +1770,7 @@ c_func
 (paren
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|cpu_has_4kex
-op_logical_and
-id|cpu_has_4ktlb
-)paren
-(brace
+macro_line|#ifdef CONFIG_MIPS32
 r_if
 c_cond
 (paren
@@ -1977,6 +1842,38 @@ op_plus
 l_int|0x80
 )paren
 suffix:semicolon
-)brace
+macro_line|#endif
+macro_line|#ifdef CONFIG_MIPS64
+id|memcpy
+c_func
+(paren
+(paren
+r_void
+op_star
+)paren
+(paren
+id|KSEG0
+op_plus
+l_int|0x80
+)paren
+comma
+id|except_vec1_r4k
+comma
+l_int|0x80
+)paren
+suffix:semicolon
+id|flush_icache_range
+c_func
+(paren
+id|KSEG0
+op_plus
+l_int|0x80
+comma
+id|KSEG0
+op_plus
+l_int|0x100
+)paren
+suffix:semicolon
+macro_line|#endif
 )brace
 eof

@@ -527,6 +527,15 @@ op_amp
 id|inode-&gt;i_data.i_shared_sem
 )paren
 suffix:semicolon
+id|atomic_set
+c_func
+(paren
+op_amp
+id|inode-&gt;i_data.truncate_count
+comma
+l_int|0
+)paren
+suffix:semicolon
 id|INIT_LIST_HEAD
 c_func
 (paren
@@ -2453,8 +2462,6 @@ id|max_reserved
 r_static
 id|ino_t
 id|counter
-op_assign
-l_int|0
 suffix:semicolon
 r_struct
 id|inode

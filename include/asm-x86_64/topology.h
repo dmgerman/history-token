@@ -3,6 +3,7 @@ DECL|macro|_ASM_X86_64_TOPOLOGY_H
 mdefine_line|#define _ASM_X86_64_TOPOLOGY_H
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#ifdef CONFIG_DISCONTIGMEM
+macro_line|#include &lt;asm/mpspec.h&gt;
 multiline_comment|/* Map the K8 CPU local memory controllers to a simple 1:1 CPU:NODE topology */
 r_extern
 r_int
@@ -25,6 +26,27 @@ DECL|macro|node_to_cpu_mask
 mdefine_line|#define node_to_cpu_mask(node)&t;(fake_node ? cpu_online_map : (1UL &lt;&lt; (node)))
 DECL|macro|node_to_memblk
 mdefine_line|#define node_to_memblk(node)&t;&t;(node)
+DECL|function|pcibus_to_cpumask
+r_static
+r_inline
+r_int
+r_int
+id|pcibus_to_cpumask
+c_func
+(paren
+r_int
+id|bus
+)paren
+(brace
+r_return
+id|mp_bus_to_cpumask
+(braket
+id|bus
+)braket
+op_amp
+id|cpu_online_map
+suffix:semicolon
+)brace
 DECL|macro|NODE_BALANCE_RATE
 mdefine_line|#define NODE_BALANCE_RATE 30&t;/* CHECKME */ 
 macro_line|#endif

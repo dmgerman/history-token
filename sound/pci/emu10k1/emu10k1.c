@@ -39,7 +39,7 @@ l_string|&quot;{{Creative Labs,SB Live!/PCI512/E-mu APS},&quot;
 l_string|&quot;{Creative Labs,SB Audigy}}&quot;
 )paren
 suffix:semicolon
-macro_line|#if defined(CONFIG_SND_SEQUENCER) || defined(CONFIG_SND_SEQUENCER_MODULE)
+macro_line|#if defined(CONFIG_SND_SEQUENCER) || (defined(MODULE) &amp;&amp; defined(CONFIG_SND_SEQUENCER_MODULE))
 DECL|macro|ENABLE_SYNTH
 mdefine_line|#define ENABLE_SYNTH
 macro_line|#include &lt;sound/emu10k1_synth.h&gt;
@@ -495,14 +495,13 @@ comma
 id|SNDRV_ENABLE_DESC
 )paren
 suffix:semicolon
-DECL|variable|__devinitdata
+DECL|variable|snd_emu10k1_ids
 r_static
 r_struct
 id|pci_device_id
 id|snd_emu10k1_ids
 (braket
 )braket
-id|__devinitdata
 op_assign
 (brace
 (brace
@@ -888,14 +887,6 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-op_logical_neg
-id|emu-&gt;APS
-)paren
-(brace
-multiline_comment|/* APS board has not an AC97 mixer */
-r_if
-c_cond
-(paren
 (paren
 id|err
 op_assign
@@ -918,7 +909,6 @@ suffix:semicolon
 r_return
 id|err
 suffix:semicolon
-)brace
 )brace
 r_if
 c_cond

@@ -1,6 +1,7 @@
 multiline_comment|/* Kernel module to match ESP parameters. */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/skbuff.h&gt;
+macro_line|#include &lt;linux/ip.h&gt;
 macro_line|#include &lt;linux/netfilter_ipv4/ipt_esp.h&gt;
 macro_line|#include &lt;linux/netfilter_ipv4/ip_tables.h&gt;
 id|MODULE_LICENSE
@@ -16,16 +17,6 @@ macro_line|#else
 DECL|macro|duprintf
 mdefine_line|#define duprintf(format, args...)
 macro_line|#endif
-DECL|struct|esphdr
-r_struct
-id|esphdr
-(brace
-DECL|member|spi
-id|__u32
-id|spi
-suffix:semicolon
-)brace
-suffix:semicolon
 multiline_comment|/* Returns 1 if the spi is matched by the range, 0 otherwise */
 r_static
 r_inline
@@ -140,7 +131,7 @@ id|hotdrop
 )paren
 (brace
 r_struct
-id|esphdr
+id|ip_esp_hdr
 id|esp
 suffix:semicolon
 r_const

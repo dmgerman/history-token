@@ -27889,7 +27889,6 @@ id|usb_interface
 op_star
 id|ifp
 op_assign
-op_amp
 id|ov-&gt;dev-&gt;config
 (braket
 l_int|0

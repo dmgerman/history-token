@@ -1243,7 +1243,11 @@ l_int|3
 comma
 l_string|&quot;PCI: Error mapping IRQ on device %s&bslash;n&quot;
 comma
-id|dev-&gt;slot_name
+id|pci_name
+c_func
+(paren
+id|dev
+)paren
 )paren
 suffix:semicolon
 r_return
@@ -1257,7 +1261,11 @@ l_int|2
 comma
 l_string|&quot;Setting IRQ for slot %s to %d&bslash;n&quot;
 comma
-id|dev-&gt;slot_name
+id|pci_name
+c_func
+(paren
+id|dev
+)paren
 comma
 id|irq
 )paren

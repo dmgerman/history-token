@@ -13917,7 +13917,7 @@ suffix:colon
 id|printk
 c_func
 (paren
-l_string|&quot;*illegal*&quot;
+l_string|&quot;*invalid*&quot;
 )paren
 suffix:semicolon
 r_break
@@ -15998,7 +15998,7 @@ suffix:colon
 id|SPRINTF
 c_func
 (paren
-l_string|&quot;*illegal*&quot;
+l_string|&quot;*invalid*&quot;
 )paren
 suffix:semicolon
 r_break

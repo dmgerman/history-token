@@ -2795,14 +2795,13 @@ op_star
 id|dev
 )paren
 suffix:semicolon
-DECL|variable|__devinitdata
+DECL|variable|synclink_pci_tbl
 r_static
 r_struct
 id|pci_device_id
 id|synclink_pci_tbl
 (braket
 )braket
-id|__devinitdata
 op_assign
 (brace
 (brace
@@ -12792,7 +12791,7 @@ id|mgsl_device_count
 id|printk
 c_func
 (paren
-l_string|&quot;%s(%d):mgsl_open with illegal line #%d.&bslash;n&quot;
+l_string|&quot;%s(%d):mgsl_open with invalid line #%d.&bslash;n&quot;
 comma
 id|__FILE__
 comma

@@ -1950,11 +1950,6 @@ id|n
 comma
 id|index
 suffix:semicolon
-r_int
-id|ret1
-comma
-id|ret2
-suffix:semicolon
 r_struct
 id|mxser_hwconf
 id|hwconf

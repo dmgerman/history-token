@@ -15,8 +15,6 @@ r_static
 r_int
 r_int
 id|ntfs_nr_compression_users
-op_assign
-l_int|0
 suffix:semicolon
 multiline_comment|/* Error constants/strings used in inode.c::ntfs_show_options(). */
 r_typedef
@@ -6400,8 +6398,9 @@ DECL|variable|ntfs_attr_ctx_cache_name
 r_static
 r_const
 r_char
-op_star
 id|ntfs_attr_ctx_cache_name
+(braket
+)braket
 op_assign
 l_string|&quot;ntfs_attr_ctx_cache&quot;
 suffix:semicolon
@@ -6409,8 +6408,9 @@ DECL|variable|ntfs_name_cache_name
 r_static
 r_const
 r_char
-op_star
 id|ntfs_name_cache_name
+(braket
+)braket
 op_assign
 l_string|&quot;ntfs_name_cache&quot;
 suffix:semicolon
@@ -6418,8 +6418,9 @@ DECL|variable|ntfs_inode_cache_name
 r_static
 r_const
 r_char
-op_star
 id|ntfs_inode_cache_name
+(braket
+)braket
 op_assign
 l_string|&quot;ntfs_inode_cache&quot;
 suffix:semicolon
@@ -6427,8 +6428,9 @@ DECL|variable|ntfs_big_inode_cache_name
 r_static
 r_const
 r_char
-op_star
 id|ntfs_big_inode_cache_name
+(braket
+)braket
 op_assign
 l_string|&quot;ntfs_big_inode_cache&quot;
 suffix:semicolon

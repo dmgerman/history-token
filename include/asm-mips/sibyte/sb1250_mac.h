@@ -1,4 +1,4 @@
-multiline_comment|/*  *********************************************************************&n;    *  SB1250 Board Support Package&n;    *  &n;    *  MAC constants and macros&t;&t;&t;File: sb1250_mac.h&n;    *  &n;    *  This module contains constants and macros for the SB1250&squot;s&n;    *  ethernet controllers.&n;    *  &n;    *  SB1250 specification level:  User&squot;s manual 1/02/02&n;    *  &n;    *  Author:  Mitch Lichtenberg (mpl@broadcom.com)&n;    *  &n;    *********************************************************************  &n;    *&n;    *  Copyright 2000,2001,2002,2003&n;    *  Broadcom Corporation. All rights reserved.&n;    *  &n;    *  This program is free software; you can redistribute it and/or &n;    *  modify it under the terms of the GNU General Public License as &n;    *  published by the Free Software Foundation; either version 2 of &n;    *  the License, or (at your option) any later version.&n;    *&n;    *  This program is distributed in the hope that it will be useful,&n;    *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n;    *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n;    *  GNU General Public License for more details.&n;    *&n;    *  You should have received a copy of the GNU General Public License&n;    *  along with this program; if not, write to the Free Software&n;    *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, &n;    *  MA 02111-1307 USA&n;    ********************************************************************* */
+multiline_comment|/*  *********************************************************************&n;    *  SB1250 Board Support Package&n;    *  &n;    *  MAC constants and macros&t;&t;&t;File: sb1250_mac.h&n;    *  &n;    *  This module contains constants and macros for the SB1250&squot;s&n;    *  ethernet controllers.&n;    *  &n;    *  SB1250 specification level:  User&squot;s manual 1/02/02&n;    *  &n;    *  Author:  Mitch Lichtenberg&n;    *  &n;    *********************************************************************  &n;    *&n;    *  Copyright 2000,2001,2002,2003&n;    *  Broadcom Corporation. All rights reserved.&n;    *  &n;    *  This program is free software; you can redistribute it and/or &n;    *  modify it under the terms of the GNU General Public License as &n;    *  published by the Free Software Foundation; either version 2 of &n;    *  the License, or (at your option) any later version.&n;    *&n;    *  This program is distributed in the hope that it will be useful,&n;    *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n;    *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n;    *  GNU General Public License for more details.&n;    *&n;    *  You should have received a copy of the GNU General Public License&n;    *  along with this program; if not, write to the Free Software&n;    *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, &n;    *  MA 02111-1307 USA&n;    ********************************************************************* */
 macro_line|#ifndef _SB1250_MAC_H
 DECL|macro|_SB1250_MAC_H
 mdefine_line|#define _SB1250_MAC_H
@@ -137,10 +137,10 @@ macro_line|#if SIBYTE_HDR_FEATURE(1250, PASS2) || SIBYTE_HDR_FEATURE(112x, PASS1
 DECL|macro|M_MAC_RX_CH_SEL_MSB
 mdefine_line|#define M_MAC_RX_CH_SEL_MSB&t;    _SB_MAKEMASK1(44)
 macro_line|#endif /* 1250 PASS2 || 112x PASS1 */
-macro_line|#if SIBYTE_HDR_FEATURE(112x, PASS1)
+macro_line|#if SIBYTE_HDR_FEATURE(1250, PASS3) || SIBYTE_HDR_FEATURE(112x, PASS1)
 DECL|macro|M_MAC_SPLIT_CH_SEL
 mdefine_line|#define M_MAC_SPLIT_CH_SEL&t;    _SB_MAKEMASK1(45)
-macro_line|#endif /* 112x PASS1 */
+macro_line|#endif /* 1250 PASS3 || 112x PASS1 */
 DECL|macro|S_MAC_BYPASS_IFG
 mdefine_line|#define S_MAC_BYPASS_IFG            _SB_MAKE64(46)
 DECL|macro|M_MAC_BYPASS_IFG
@@ -296,7 +296,7 @@ DECL|macro|V_MAC_IFG_RX
 mdefine_line|#define V_MAC_IFG_RX(x)             _SB_MAKEVALUE(x,S_MAC_IFG_RX)
 DECL|macro|G_MAC_IFG_RX
 mdefine_line|#define G_MAC_IFG_RX(x)             _SB_GETVALUE(x,S_MAC_IFG_RX,M_MAC_IFG_RX)
-macro_line|#if SIBYTE_HDR_FEATURE(112x, PASS1)
+macro_line|#if SIBYTE_HDR_FEATURE(1250, PASS3) || SIBYTE_HDR_FEATURE(112x, PASS1)
 DECL|macro|S_MAC_PRE_LEN
 mdefine_line|#define S_MAC_PRE_LEN               _SB_MAKE64(0)
 DECL|macro|M_MAC_PRE_LEN
@@ -305,7 +305,7 @@ DECL|macro|V_MAC_PRE_LEN
 mdefine_line|#define V_MAC_PRE_LEN(x)            _SB_MAKEVALUE(x,S_MAC_PRE_LEN)
 DECL|macro|G_MAC_PRE_LEN
 mdefine_line|#define G_MAC_PRE_LEN(x)            _SB_GETVALUE(x,S_MAC_PRE_LEN,M_MAC_PRE_LEN)
-macro_line|#endif /* 112x PASS1 */
+macro_line|#endif /* 1250 PASS3 || 112x PASS1 */
 DECL|macro|S_MAC_IFG_TX
 mdefine_line|#define S_MAC_IFG_TX                _SB_MAKE64(6)
 DECL|macro|M_MAC_IFG_TX
@@ -436,7 +436,7 @@ DECL|macro|V_MAC_VLAN_TAG
 mdefine_line|#define V_MAC_VLAN_TAG(x)        _SB_MAKEVALUE(x,S_MAC_VLAN_TAG)
 DECL|macro|G_MAC_VLAN_TAG
 mdefine_line|#define G_MAC_VLAN_TAG(x)        _SB_GETVALUE(x,S_MAC_VLAN_TAG,M_MAC_VLAN_TAG)
-macro_line|#if SIBYTE_HDR_FEATURE(112x, PASS1)
+macro_line|#if SIBYTE_HDR_FEATURE(1250, PASS3) || SIBYTE_HDR_FEATURE(112x, PASS1)
 DECL|macro|S_MAC_TX_PKT_OFFSET
 mdefine_line|#define S_MAC_TX_PKT_OFFSET      _SB_MAKE64(32)
 DECL|macro|M_MAC_TX_PKT_OFFSET
@@ -455,7 +455,7 @@ DECL|macro|G_MAC_TX_CRC_OFFSET
 mdefine_line|#define G_MAC_TX_CRC_OFFSET(x)   _SB_GETVALUE(x,S_MAC_TX_CRC_OFFSET,M_MAC_TX_CRC_OFFSET)
 DECL|macro|M_MAC_CH_BASE_FC_EN
 mdefine_line|#define M_MAC_CH_BASE_FC_EN      _SB_MAKEMASK1(48)
-macro_line|#endif /* 112x PASS1 */
+macro_line|#endif /* 1250 PASS3 || 112x PASS1 */
 multiline_comment|/*&n; * MAC Status Registers (Table 9-17)&n; * Also used for the MAC Interrupt Mask Register (Table 9-18)&n; * Register: MAC_STATUS_0&n; * Register: MAC_STATUS_1&n; * Register: MAC_STATUS_2&n; * Register: MAC_INT_MASK_0&n; * Register: MAC_INT_MASK_1&n; * Register: MAC_INT_MASK_2&n; */
 multiline_comment|/* &n; * Use these constants to shift the appropriate channel&n; * into the CH0 position so the same tests can be used&n; * on each channel.&n; */
 DECL|macro|S_MAC_RX_CH0
@@ -542,10 +542,10 @@ DECL|macro|V_MAC_COUNTER_ADDR
 mdefine_line|#define V_MAC_COUNTER_ADDR(x)       _SB_MAKEVALUE(x,S_MAC_COUNTER_ADDR)
 DECL|macro|G_MAC_COUNTER_ADDR
 mdefine_line|#define G_MAC_COUNTER_ADDR(x)       _SB_GETVALUE(x,S_MAC_COUNTER_ADDR,M_MAC_COUNTER_ADDR)
-macro_line|#if SIBYTE_HDR_FEATURE(112x, PASS1)
+macro_line|#if SIBYTE_HDR_FEATURE(1250, PASS3) || SIBYTE_HDR_FEATURE(112x, PASS1)
 DECL|macro|M_MAC_TX_PAUSE_ON
 mdefine_line|#define M_MAC_TX_PAUSE_ON&t;    _SB_MAKEMASK1(52)
-macro_line|#endif /* 112x PASS1 */
+macro_line|#endif /* 1250 PASS3 || 112x PASS1 */
 multiline_comment|/*&n; * MAC Fifo Pointer Registers (Table 9-19)    [Debug register]&n; * Register: MAC_FIFO_PTRS_0&n; * Register: MAC_FIFO_PTRS_1&n; * Register: MAC_FIFO_PTRS_2&n; */
 DECL|macro|S_MAC_TX_WRPTR
 mdefine_line|#define S_MAC_TX_WRPTR              _SB_MAKE64(0)
@@ -666,7 +666,7 @@ DECL|macro|V_MAC_IPHDR_OFFSET
 mdefine_line|#define V_MAC_IPHDR_OFFSET(x)&t;_SB_MAKEVALUE(x,S_MAC_IPHDR_OFFSET)
 DECL|macro|G_MAC_IPHDR_OFFSET
 mdefine_line|#define G_MAC_IPHDR_OFFSET(x)&t;_SB_GETVALUE(x,S_MAC_IPHDR_OFFSET,M_MAC_IPHDR_OFFSET)
-macro_line|#if SIBYTE_HDR_FEATURE(112x, PASS1)
+macro_line|#if SIBYTE_HDR_FEATURE(1250, PASS3) || SIBYTE_HDR_FEATURE(112x, PASS1)
 DECL|macro|S_MAC_RX_CRC_OFFSET
 mdefine_line|#define S_MAC_RX_CRC_OFFSET     _SB_MAKE64(16)
 DECL|macro|M_MAC_RX_CRC_OFFSET
@@ -695,7 +695,7 @@ DECL|macro|V_MAC_RX_CH_MSN_SEL
 mdefine_line|#define V_MAC_RX_CH_MSN_SEL(x)&t;_SB_MAKEVALUE(x,S_MAC_RX_CH_MSN_SEL)
 DECL|macro|G_MAC_RX_CH_MSN_SEL
 mdefine_line|#define G_MAC_RX_CH_MSN_SEL(x)&t;_SB_GETVALUE(x,S_MAC_RX_CH_MSN_SEL,M_MAC_RX_CH_MSN_SEL)
-macro_line|#endif /* 112x PASS1 */
+macro_line|#endif /* 1250 PASS3 || 112x PASS1 */
 multiline_comment|/*&n; * MAC Receive Channel Select Registers (Table 9-25)&n; */
 multiline_comment|/* no bitfields */
 multiline_comment|/*&n; * MAC MII Management Interface Registers (Table 9-26)&n; * Register: MAC_MDIO_0&n; * Register: MAC_MDIO_1&n; * Register: MAC_MDIO_2&n; */

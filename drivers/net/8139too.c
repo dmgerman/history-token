@@ -360,14 +360,13 @@ id|RTL8139_CAPS
 comma
 )brace
 suffix:semicolon
-DECL|variable|__devinitdata
+DECL|variable|rtl8139_pci_tbl
 r_static
 r_struct
 id|pci_device_id
 id|rtl8139_pci_tbl
 (braket
 )braket
-id|__devinitdata
 op_assign
 (brace
 (brace
@@ -2695,7 +2694,11 @@ id|KERN_ERR
 id|PFX
 l_string|&quot;%s: Unable to alloc new net device&bslash;n&quot;
 comma
-id|pdev-&gt;slot_name
+id|pci_name
+c_func
+(paren
+id|pdev
+)paren
 )paren
 suffix:semicolon
 r_return
@@ -2850,7 +2853,11 @@ id|KERN_ERR
 id|PFX
 l_string|&quot;%s: region #0 not a PIO resource, aborting&bslash;n&quot;
 comma
-id|pdev-&gt;slot_name
+id|pci_name
+c_func
+(paren
+id|pdev
+)paren
 )paren
 suffix:semicolon
 id|rc
@@ -2877,7 +2884,11 @@ id|KERN_ERR
 id|PFX
 l_string|&quot;%s: Invalid PCI I/O region size(s), aborting&bslash;n&quot;
 comma
-id|pdev-&gt;slot_name
+id|pci_name
+c_func
+(paren
+id|pdev
+)paren
 )paren
 suffix:semicolon
 id|rc
@@ -2908,7 +2919,11 @@ id|KERN_ERR
 id|PFX
 l_string|&quot;%s: region #1 not an MMIO resource, aborting&bslash;n&quot;
 comma
-id|pdev-&gt;slot_name
+id|pci_name
+c_func
+(paren
+id|pdev
+)paren
 )paren
 suffix:semicolon
 id|rc
@@ -2934,7 +2949,11 @@ id|KERN_ERR
 id|PFX
 l_string|&quot;%s: Invalid PCI mem region size(s), aborting&bslash;n&quot;
 comma
-id|pdev-&gt;slot_name
+id|pci_name
+c_func
+(paren
+id|pdev
+)paren
 )paren
 suffix:semicolon
 id|rc
@@ -3016,7 +3035,11 @@ id|KERN_ERR
 id|PFX
 l_string|&quot;%s: cannot remap MMIO, aborting&bslash;n&quot;
 comma
-id|pdev-&gt;slot_name
+id|pci_name
+c_func
+(paren
+id|pdev
+)paren
 )paren
 suffix:semicolon
 id|rc
@@ -3070,7 +3093,11 @@ id|KERN_ERR
 id|PFX
 l_string|&quot;%s: Chip not responding, ignoring board&bslash;n&quot;
 comma
-id|pdev-&gt;slot_name
+id|pci_name
+c_func
+(paren
+id|pdev
+)paren
 )paren
 suffix:semicolon
 id|rc
@@ -3135,7 +3162,11 @@ id|KERN_DEBUG
 id|PFX
 l_string|&quot;%s: unknown chip version, assuming RTL-8139&bslash;n&quot;
 comma
-id|pdev-&gt;slot_name
+id|pci_name
+c_func
+(paren
+id|pdev
+)paren
 )paren
 suffix:semicolon
 id|printk
@@ -3144,7 +3175,11 @@ id|KERN_DEBUG
 id|PFX
 l_string|&quot;%s: TxConfig = 0x%lx&bslash;n&quot;
 comma
-id|pdev-&gt;slot_name
+id|pci_name
+c_func
+(paren
+id|pdev
+)paren
 comma
 id|RTL_R32
 (paren
@@ -3477,7 +3512,11 @@ id|KERN_INFO
 id|PFX
 l_string|&quot;pci dev %s (id %04x:%04x rev %02x) is an enhanced 8139C+ chip&bslash;n&quot;
 comma
-id|pdev-&gt;slot_name
+id|pci_name
+c_func
+(paren
+id|pdev
+)paren
 comma
 id|pdev-&gt;vendor
 comma
@@ -9235,7 +9274,11 @@ id|strcpy
 (paren
 id|info.bus_info
 comma
-id|np-&gt;pci_dev-&gt;slot_name
+id|pci_name
+c_func
+(paren
+id|np-&gt;pci_dev
+)paren
 )paren
 suffix:semicolon
 id|info.regdump_len

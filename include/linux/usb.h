@@ -225,6 +225,9 @@ id|data
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/* this maximum is arbitrary */
+DECL|macro|USB_MAXINTERFACES
+mdefine_line|#define USB_MAXINTERFACES&t;32
 multiline_comment|/* USB_DT_CONFIG: Configuration descriptor information.&n; *&n; * USB_DT_OTHER_SPEED_CONFIG is the same descriptor, except that the&n; * descriptor type is different.  Highspeed-capable devices can look&n; * different depending on what speed they&squot;re currently running.  Only&n; * devices with a USB_DT_DEVICE_QUALIFIER have an OTHER_SPEED_CONFIG.&n; */
 DECL|struct|usb_host_config
 r_struct
@@ -241,6 +244,9 @@ r_struct
 id|usb_interface
 op_star
 id|interface
+(braket
+id|USB_MAXINTERFACES
+)braket
 suffix:semicolon
 DECL|member|extra
 r_int
@@ -1053,28 +1059,6 @@ r_struct
 id|usb_class_driver
 op_star
 id|class_driver
-)paren
-suffix:semicolon
-r_extern
-r_int
-id|usb_device_probe
-c_func
-(paren
-r_struct
-id|device
-op_star
-id|dev
-)paren
-suffix:semicolon
-r_extern
-r_int
-id|usb_device_remove
-c_func
-(paren
-r_struct
-id|device
-op_star
-id|dev
 )paren
 suffix:semicolon
 r_extern

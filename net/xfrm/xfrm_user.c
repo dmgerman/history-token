@@ -812,6 +812,10 @@ id|x-&gt;props.saddr
 op_assign
 id|p-&gt;saddr
 suffix:semicolon
+id|x-&gt;props.flags
+op_assign
+id|p-&gt;flags
+suffix:semicolon
 )brace
 DECL|function|xfrm_state_construct
 r_static
@@ -1401,6 +1405,10 @@ suffix:semicolon
 id|p-&gt;family
 op_assign
 id|x-&gt;props.family
+suffix:semicolon
+id|p-&gt;flags
+op_assign
+id|x-&gt;props.flags
 suffix:semicolon
 id|p-&gt;seq
 op_assign
@@ -2162,10 +2170,10 @@ comma
 id|p-&gt;info.id.proto
 comma
 op_amp
-id|p-&gt;info.sel.daddr
+id|p-&gt;info.id.daddr
 comma
 op_amp
-id|p-&gt;info.sel.saddr
+id|p-&gt;info.saddr
 comma
 l_int|1
 comma
@@ -4523,6 +4531,8 @@ comma
 op_amp
 id|err
 )paren
+OL
+l_int|0
 )paren
 (brace
 r_if

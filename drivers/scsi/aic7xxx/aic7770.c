@@ -414,7 +414,7 @@ suffix:colon
 id|printf
 c_func
 (paren
-l_string|&quot;aic7770_config: illegal irq setting %d&bslash;n&quot;
+l_string|&quot;aic7770_config: invalid irq setting %d&bslash;n&quot;
 comma
 id|intdef
 )paren

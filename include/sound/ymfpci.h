@@ -5,6 +5,7 @@ multiline_comment|/*&n; *  Copyright (c) by Jaroslav Kysela &lt;perex@suse.cz&gt
 macro_line|#include &quot;pcm.h&quot;
 macro_line|#include &quot;rawmidi.h&quot;
 macro_line|#include &quot;ac97_codec.h&quot;
+macro_line|#include &lt;linux/gameport.h&gt;
 macro_line|#ifndef PCI_VENDOR_ID_YAMAHA
 DECL|macro|PCI_VENDOR_ID_YAMAHA
 mdefine_line|#define PCI_VENDOR_ID_YAMAHA            0x1073
@@ -750,11 +751,29 @@ r_int
 r_int
 id|old_legacy_ctrl
 suffix:semicolon
+macro_line|#if defined(CONFIG_GAMEPORT) || defined(CONFIG_GAMEPORT_MODULE)
 DECL|member|joystick_port
 r_int
 r_int
 id|joystick_port
 suffix:semicolon
+DECL|member|joystick_mutex
+r_struct
+id|semaphore
+id|joystick_mutex
+suffix:semicolon
+DECL|member|joystick_res
+r_struct
+id|resource
+op_star
+id|joystick_res
+suffix:semicolon
+DECL|member|gameport
+r_struct
+id|gameport
+id|gameport
+suffix:semicolon
+macro_line|#endif
 DECL|member|work_ptr
 r_void
 op_star
@@ -1121,6 +1140,7 @@ r_int
 id|rear_switch
 )paren
 suffix:semicolon
+macro_line|#if defined(CONFIG_GAMEPORT) || defined(CONFIG_GAMEPORT_MODULE)
 r_int
 id|snd_ymfpci_joystick
 c_func
@@ -1130,6 +1150,7 @@ op_star
 id|chip
 )paren
 suffix:semicolon
+macro_line|#endif
 r_int
 id|snd_ymfpci_voice_alloc
 c_func

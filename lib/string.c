@@ -183,7 +183,7 @@ suffix:semicolon
 )brace
 macro_line|#endif
 macro_line|#ifndef __HAVE_ARCH_STRNCPY
-multiline_comment|/**&n; * strncpy - Copy a length-limited, %NUL-terminated string&n; * @dest: Where to copy the string to&n; * @src: Where to copy the string from&n; * @count: The maximum number of bytes to copy&n; *&n; * Note that unlike userspace strncpy, this does not %NUL-pad the buffer.&n; * However, the result is not %NUL-terminated if the source exceeds&n; * @count bytes.&n; */
+multiline_comment|/**&n; * strncpy - Copy a length-limited, %NUL-terminated string&n; * @dest: Where to copy the string to&n; * @src: Where to copy the string from&n; * @count: The maximum number of bytes to copy&n; *&n; * The result is not %NUL-terminated if the source exceeds&n; * @count bytes.&n; */
 DECL|function|strncpy
 r_char
 op_star
@@ -213,7 +213,6 @@ r_while
 c_loop
 (paren
 id|count
-op_decrement
 op_logical_and
 (paren
 op_star
@@ -227,8 +226,25 @@ op_increment
 op_ne
 l_char|&squot;&bslash;0&squot;
 )paren
-multiline_comment|/* nothing */
+id|count
+op_decrement
 suffix:semicolon
+r_while
+c_loop
+(paren
+id|count
+)paren
+(brace
+op_star
+id|dest
+op_increment
+op_assign
+l_int|0
+suffix:semicolon
+id|count
+op_decrement
+suffix:semicolon
+)brace
 r_return
 id|tmp
 suffix:semicolon

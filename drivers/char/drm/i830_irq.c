@@ -7,7 +7,7 @@ macro_line|#include &quot;i830_drv.h&quot;
 macro_line|#include &lt;linux/interrupt.h&gt;&t;/* For task queue support */
 macro_line|#include &lt;linux/delay.h&gt;
 DECL|function|dma_service
-r_void
+id|irqreturn_t
 id|DRM
 c_func
 (paren
@@ -69,11 +69,15 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+op_logical_neg
+(paren
 id|temp
-op_eq
-l_int|0
+op_amp
+l_int|2
+)paren
 )paren
 r_return
+id|IRQ_NONE
 suffix:semicolon
 id|I830_WRITE16
 c_func
@@ -83,14 +87,6 @@ comma
 id|temp
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|temp
-op_amp
-l_int|2
-)paren
-(brace
 id|atomic_inc
 c_func
 (paren
@@ -105,7 +101,9 @@ op_amp
 id|dev_priv-&gt;irq_queue
 )paren
 suffix:semicolon
-)brace
+r_return
+id|IRQ_HANDLED
+suffix:semicolon
 )brace
 DECL|function|i830_emit_irq
 r_int

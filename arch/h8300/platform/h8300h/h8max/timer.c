@@ -6,24 +6,57 @@ macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/param.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
+macro_line|#include &lt;linux/interrupt.h&gt;
+macro_line|#include &lt;linux/init.h&gt;
+macro_line|#include &lt;linux/timex.h&gt;
 macro_line|#include &lt;asm/segment.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
-macro_line|#include &lt;linux/timex.h&gt;
-DECL|macro|TMR8CMA2
-mdefine_line|#define TMR8CMA2 0x00ffff94
-DECL|macro|TMR8TCSR2
-mdefine_line|#define TMR8TCSR2 0x00ffff92
-DECL|macro|TMR8TCNT2
-mdefine_line|#define TMR8TCNT2 0x00ffff90
+macro_line|#include &lt;asm/regs306x.h&gt;
 DECL|macro|CMFA
 mdefine_line|#define CMFA 6
-DECL|function|platform_timer_setup
+r_extern
 r_int
+id|request_irq_boot
+c_func
+(paren
+r_int
+r_int
+comma
+id|irqreturn_t
+(paren
+op_star
+id|handler
+)paren
+(paren
+r_int
+comma
+r_void
+op_star
+comma
+r_struct
+id|pt_regs
+op_star
+)paren
+comma
+r_int
+r_int
+comma
+r_const
+r_char
+op_star
+comma
+r_void
+op_star
+)paren
+suffix:semicolon
+DECL|function|platform_timer_setup
+r_void
+id|__init
 id|platform_timer_setup
 c_func
 (paren
-r_void
+id|irqreturn_t
 (paren
 op_star
 id|timer_int
@@ -43,13 +76,9 @@ op_star
 id|outb
 c_func
 (paren
-id|CONFIG_CLK_FREQ
-op_star
-l_int|10
-op_div
-l_int|8192
+id|H8300_TIMER_COUNT_DATA
 comma
-id|TMR8CMA2
+id|TCORA2
 )paren
 suffix:semicolon
 id|outb
@@ -57,10 +86,10 @@ c_func
 (paren
 l_int|0x00
 comma
-id|TMR8TCSR2
+id|_8TCSR2
 )paren
 suffix:semicolon
-id|request_irq
+id|request_irq_boot
 c_func
 (paren
 l_int|40
@@ -83,7 +112,7 @@ l_int|0x08
 op_or
 l_int|0x03
 comma
-id|TMR8TCNT2
+id|_8TCR2
 )paren
 suffix:semicolon
 )brace
@@ -97,11 +126,12 @@ r_void
 (brace
 op_star
 (paren
+r_volatile
 r_int
 r_char
 op_star
 )paren
-id|TMR8TCSR2
+id|_8TCSR2
 op_and_assign
 op_complement
 (paren

@@ -229,7 +229,11 @@ l_string|&quot;manufacturer and name of serial board or&bslash;n&quot;
 id|KERN_WARNING
 l_string|&quot;modem board to rmk+serial@arm.linux.org.uk.&bslash;n&quot;
 comma
-id|dev-&gt;slot_name
+id|pci_name
+c_func
+(paren
+id|dev
+)paren
 comma
 id|str
 comma
@@ -6294,14 +6298,13 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-DECL|variable|__devinitdata
+DECL|variable|serial_pci_tbl
 r_static
 r_struct
 id|pci_device_id
 id|serial_pci_tbl
 (braket
 )braket
-id|__devinitdata
 op_assign
 (brace
 (brace

@@ -3362,8 +3362,6 @@ r_else
 r_static
 id|u32
 id|zero
-op_assign
-l_int|0
 suffix:semicolon
 id|RTA_PUT
 c_func

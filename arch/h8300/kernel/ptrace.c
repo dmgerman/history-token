@@ -25,8 +25,6 @@ mdefine_line|#define TRACE_BITS 0x8000
 multiline_comment|/* Find the stack offset for a register, relative to thread.esp0. */
 DECL|macro|PT_REG
 mdefine_line|#define PT_REG(reg)&t;((long)&amp;((struct pt_regs *)0)-&gt;reg)
-DECL|macro|SW_REG
-mdefine_line|#define SW_REG(reg)&t;((long)&amp;((struct switch_stack *)0)-&gt;reg &bslash;&n;&t;&t;&t; - sizeof(struct switch_stack))
 multiline_comment|/* Mapping from PT_xxx to the stack offset at which the register is&n;   saved.  Notice that usp has no stack-slot and needs to be treated&n;   specially (see get_reg/put_reg below). */
 DECL|variable|regoff
 r_static
@@ -55,19 +53,19 @@ c_func
 id|er3
 )paren
 comma
-id|SW_REG
+id|PT_REG
 c_func
 (paren
 id|er4
 )paren
 comma
-id|SW_REG
+id|PT_REG
 c_func
 (paren
 id|er5
 )paren
 comma
-id|SW_REG
+id|PT_REG
 c_func
 (paren
 id|er6

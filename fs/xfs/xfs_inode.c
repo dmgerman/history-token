@@ -3881,7 +3881,7 @@ comma
 id|whichfork
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * We know that the size is legal (it&squot;s checked in iformat_btree)&n;&t; */
+multiline_comment|/*&n;&t; * We know that the size is valid (it&squot;s checked in iformat_btree)&n;&t; */
 id|ifp-&gt;if_u1.if_extents
 op_assign
 id|kmem_alloc
@@ -4627,7 +4627,11 @@ comma
 (paren
 id|xfs_ufsize_t
 )paren
-id|XFS_MAX_FILE_OFFSET
+id|XFS_MAXIOFFSET
+c_func
+(paren
+id|mp
+)paren
 )paren
 op_minus
 id|map_first
@@ -4805,7 +4809,11 @@ l_int|0
 )paren
 (brace
 r_return
-id|XFS_MAX_FILE_OFFSET
+id|XFS_MAXIOFFSET
+c_func
+(paren
+id|mp
+)paren
 suffix:semicolon
 )brace
 id|last_byte
@@ -4825,7 +4833,11 @@ l_int|0
 )paren
 (brace
 r_return
-id|XFS_MAX_FILE_OFFSET
+id|XFS_MAXIOFFSET
+c_func
+(paren
+id|mp
+)paren
 suffix:semicolon
 )brace
 r_return
@@ -5599,7 +5611,11 @@ comma
 (paren
 id|xfs_ufsize_t
 )paren
-id|XFS_MAX_FILE_OFFSET
+id|XFS_MAXIOFFSET
+c_func
+(paren
+id|mp
+)paren
 )paren
 suffix:semicolon
 id|ASSERT

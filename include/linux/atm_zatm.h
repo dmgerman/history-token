@@ -15,9 +15,6 @@ multiline_comment|/* get statistics and zero */
 DECL|macro|ZATM_SETPOOL
 mdefine_line|#define ZATM_SETPOOL&t;_IOW(&squot;a&squot;,ATMIOC_SARPRV+3,struct atmif_sioc)
 multiline_comment|/* set pool parameters */
-DECL|macro|ZATM_GETTHIST
-mdefine_line|#define ZATM_GETTHIST&t;_IOW(&squot;a&squot;,ATMIOC_SARPRV+4,struct atmif_sioc)
-multiline_comment|/* get a history of timer&n;&t;&t;&t;&t;&t;&t;   differences */
 DECL|struct|zatm_pool_info
 r_struct
 id|zatm_pool_info

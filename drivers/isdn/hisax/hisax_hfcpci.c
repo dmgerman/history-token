@@ -45,14 +45,13 @@ l_string|&quot;HFC PCI ISDN driver&quot;
 suffix:semicolon
 DECL|macro|ID
 mdefine_line|#define ID(ven, dev, name)                     &bslash;&n;        { .vendor      = PCI_VENDOR_ID_##ven,    &bslash;&n;&t;  .device      = PCI_DEVICE_ID_##dev,    &bslash;&n;&t;  .subvendor   = PCI_ANY_ID,             &bslash;&n;&t;  .subdevice   = PCI_ANY_ID,             &bslash;&n;&t;  .class       = 0,                      &bslash;&n;          .class_mask  = 0,                      &bslash;&n;&t;  .driver_data = (unsigned long) name }
-DECL|variable|__devinitdata
+DECL|variable|hfcpci_ids
 r_static
 r_struct
 id|pci_device_id
 id|hfcpci_ids
 (braket
 )braket
-id|__devinitdata
 op_assign
 (brace
 id|ID
@@ -6387,7 +6386,11 @@ op_star
 )paren
 id|ent-&gt;driver_data
 comma
-id|pdev-&gt;slot_name
+id|pci_name
+c_func
+(paren
+id|pdev
+)paren
 )paren
 suffix:semicolon
 r_return

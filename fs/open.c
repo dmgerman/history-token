@@ -15,8 +15,7 @@ macro_line|#include &lt;linux/security.h&gt;
 macro_line|#include &lt;linux/mount.h&gt;
 macro_line|#include &lt;linux/vfs.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
-DECL|macro|special_file
-mdefine_line|#define special_file(m) (S_ISCHR(m)||S_ISBLK(m)||S_ISFIFO(m)||S_ISSOCK(m))
+macro_line|#include &lt;linux/fs.h&gt;
 DECL|function|vfs_statfs
 r_int
 id|vfs_statfs

@@ -24483,7 +24483,7 @@ id|dev-&gt;actconfig-&gt;interface
 (braket
 id|ifnum
 )braket
-dot
+op_member_access_from_pointer
 id|num_altsetting
 suffix:semicolon
 r_if
@@ -24555,7 +24555,7 @@ id|dev-&gt;actconfig-&gt;interface
 (braket
 id|ifnum
 )braket
-dot
+op_member_access_from_pointer
 id|altsetting
 (braket
 id|i

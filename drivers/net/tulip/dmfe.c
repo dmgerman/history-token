@@ -1699,7 +1699,11 @@ id|ent-&gt;driver_data
 op_rshift
 l_int|16
 comma
-id|pdev-&gt;slot_name
+id|pci_name
+c_func
+(paren
+id|pdev
+)paren
 )paren
 suffix:semicolon
 r_for
@@ -4052,7 +4056,11 @@ c_func
 (paren
 id|info.bus_info
 comma
-id|db-&gt;pdev-&gt;slot_name
+id|pci_name
+c_func
+(paren
+id|db-&gt;pdev
+)paren
 )paren
 suffix:semicolon
 r_else
@@ -8471,14 +8479,13 @@ l_int|600
 suffix:semicolon
 multiline_comment|/* Match, every 10 minutes, check */
 )brace
-DECL|variable|__devinitdata
+DECL|variable|dmfe_pci_tbl
 r_static
 r_struct
 id|pci_device_id
 id|dmfe_pci_tbl
 (braket
 )braket
-id|__devinitdata
 op_assign
 (brace
 (brace

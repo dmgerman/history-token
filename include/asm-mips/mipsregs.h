@@ -811,6 +811,10 @@ DECL|macro|read_c0_cause
 mdefine_line|#define read_c0_cause()&t;&t;__read_32bit_c0_register($13, 0)
 DECL|macro|write_c0_cause
 mdefine_line|#define write_c0_cause(val)&t;__write_32bit_c0_register($13, 0, val)
+DECL|macro|read_c0_epc
+mdefine_line|#define read_c0_epc()&t;&t;__read_ulong_c0_register($14, 0)
+DECL|macro|write_c0_epc
+mdefine_line|#define write_c0_epc(val)&t;__write_ulong_c0_register($14, 0, val)
 DECL|macro|read_c0_prid
 mdefine_line|#define read_c0_prid()&t;&t;__read_32bit_c0_register($15, 0)
 DECL|macro|read_c0_config

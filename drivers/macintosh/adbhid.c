@@ -9,7 +9,9 @@ macro_line|#include &lt;linux/adb.h&gt;
 macro_line|#include &lt;linux/cuda.h&gt;
 macro_line|#include &lt;linux/pmu.h&gt;
 macro_line|#include &lt;asm/machdep.h&gt;
+macro_line|#ifdef CONFIG_PPC_PMAC
 macro_line|#include &lt;asm/pmac_feature.h&gt;
+macro_line|#endif
 macro_line|#ifdef CONFIG_PMAC_BACKLIGHT
 macro_line|#include &lt;asm/backlight.h&gt;
 macro_line|#endif
@@ -795,6 +797,7 @@ suffix:colon
 multiline_comment|/* ignore Powerbook Fn key */
 r_return
 suffix:semicolon
+macro_line|#ifdef CONFIG_PPC_PMAC
 r_case
 l_int|0x7e
 suffix:colon
@@ -831,6 +834,7 @@ suffix:semicolon
 )brace
 r_break
 suffix:semicolon
+macro_line|#endif /* CONFIG_PPC_PMAC */
 )brace
 r_if
 c_cond

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1991, 1992  Linus Torvalds&n; * Copyright (C) 1994 - 1999  Ralf Baechle&n; * Copyright (C) 1999 Silicon Graphics, Inc.&n; */
+multiline_comment|/*&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1991, 1992  Linus Torvalds&n; * Copyright (C) 1994 - 2000  Ralf Baechle&n; * Copyright (C) 1999, 2000 Silicon Graphics, Inc.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
@@ -9,14 +9,13 @@ macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/signal.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/wait.h&gt;
+macro_line|#include &lt;linux/ptrace.h&gt;
 macro_line|#include &lt;linux/unistd.h&gt;
 macro_line|#include &lt;asm/asm.h&gt;
 macro_line|#include &lt;asm/bitops.h&gt;
 macro_line|#include &lt;asm/cacheflush.h&gt;
-macro_line|#include &lt;asm/cpu.h&gt;
 macro_line|#include &lt;asm/fpu.h&gt;
-macro_line|#include &lt;asm/offset.h&gt;
-macro_line|#include &lt;asm/ptrace.h&gt;
+macro_line|#include &lt;asm/sim.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/ucontext.h&gt;
 DECL|macro|DEBUG_SIG
@@ -49,6 +48,7 @@ r_void
 )paren
 suffix:semicolon
 multiline_comment|/*&n; * Atomically swap in the new signal mask, and wait for a signal.&n; */
+macro_line|#ifdef CONFIG_TRAD_SIGNALS
 DECL|variable|sys_sigsuspend
 id|save_static_function
 c_func
@@ -192,6 +192,7 @@ id|EINTR
 suffix:semicolon
 )brace
 )brace
+macro_line|#endif
 DECL|variable|sys_rt_sigsuspend
 id|save_static_function
 c_func
@@ -205,6 +206,7 @@ r_int
 id|_sys_rt_sigsuspend
 c_func
 (paren
+id|nabi_no_regargs
 r_struct
 id|pt_regs
 id|regs
@@ -220,6 +222,13 @@ id|newset
 suffix:semicolon
 r_int
 id|sigsetsize
+suffix:semicolon
+id|save_static
+c_func
+(paren
+op_amp
+id|regs
+)paren
 suffix:semicolon
 multiline_comment|/* XXX Don&squot;t preclude handling different sized sigset_t&squot;s.  */
 id|sigsetsize
@@ -360,6 +369,7 @@ id|EINTR
 suffix:semicolon
 )brace
 )brace
+macro_line|#ifdef CONFIG_TRAD_SIGNALS
 DECL|function|sys_sigaction
 id|asmlinkage
 r_int
@@ -627,12 +637,14 @@ r_return
 id|ret
 suffix:semicolon
 )brace
+macro_line|#endif
 DECL|function|sys_sigaltstack
 id|asmlinkage
 r_int
 id|sys_sigaltstack
 c_func
 (paren
+id|nabi_no_regargs
 r_struct
 id|pt_regs
 id|regs
@@ -688,7 +700,7 @@ id|usp
 suffix:semicolon
 )brace
 DECL|function|restore_sigcontext
-r_static
+id|asmlinkage
 r_int
 id|restore_sigcontext
 c_func
@@ -709,9 +721,6 @@ id|err
 op_assign
 l_int|0
 suffix:semicolon
-id|u64
-id|reg
-suffix:semicolon
 id|err
 op_or_assign
 id|__get_user
@@ -728,39 +737,25 @@ op_or_assign
 id|__get_user
 c_func
 (paren
-id|reg
+id|regs-&gt;hi
 comma
 op_amp
 id|sc-&gt;sc_mdhi
 )paren
-suffix:semicolon
-id|regs-&gt;hi
-op_assign
-(paren
-r_int
-)paren
-id|reg
 suffix:semicolon
 id|err
 op_or_assign
 id|__get_user
 c_func
 (paren
-id|reg
+id|regs-&gt;lo
 comma
 op_amp
 id|sc-&gt;sc_mdlo
 )paren
 suffix:semicolon
-id|regs-&gt;lo
-op_assign
-(paren
-r_int
-)paren
-id|reg
-suffix:semicolon
 DECL|macro|restore_gp_reg
-mdefine_line|#define restore_gp_reg(i) do {&t;&t;&t;&t;&t;&t;&bslash;&n;&t;err |= __get_user(reg, &amp;sc-&gt;sc_regs[i]);&t;&t;&t;&bslash;&n;&t;regs-&gt;regs[i] = reg;&t;&t;&t;&t;&t;&t;&bslash;&n;} while(0)
+mdefine_line|#define restore_gp_reg(i) do {&t;&t;&t;&t;&t;&t;&bslash;&n;&t;err |= __get_user(regs-&gt;regs[i], &amp;sc-&gt;sc_regs[i]);&t;&t;&bslash;&n;} while(0)
 id|restore_gp_reg
 c_func
 (paren
@@ -984,7 +979,7 @@ suffix:semicolon
 r_else
 (brace
 multiline_comment|/* signal handler may have used FPU.  Give it up. */
-id|loose_fpu
+id|lose_fpu
 c_func
 (paren
 )paren
@@ -994,6 +989,7 @@ r_return
 id|err
 suffix:semicolon
 )brace
+macro_line|#ifdef CONFIG_TRAD_SIGNALS
 DECL|struct|sigframe
 r_struct
 id|sigframe
@@ -1025,6 +1021,7 @@ id|sf_mask
 suffix:semicolon
 )brace
 suffix:semicolon
+macro_line|#endif
 DECL|struct|rt_sigframe
 r_struct
 id|rt_sigframe
@@ -1057,6 +1054,7 @@ id|rs_uc
 suffix:semicolon
 )brace
 suffix:semicolon
+macro_line|#ifdef CONFIG_TRAD_SIGNALS
 DECL|function|sys_sigreturn
 id|asmlinkage
 r_void
@@ -1225,12 +1223,14 @@ id|current
 )paren
 suffix:semicolon
 )brace
+macro_line|#endif
 DECL|function|sys_rt_sigreturn
 id|asmlinkage
 r_void
 id|sys_rt_sigreturn
 c_func
 (paren
+id|nabi_no_regargs
 r_struct
 id|pt_regs
 id|regs
@@ -1416,7 +1416,6 @@ id|current
 suffix:semicolon
 )brace
 DECL|function|setup_sigcontext
-r_static
 r_inline
 r_int
 id|setup_sigcontext
@@ -1438,19 +1437,12 @@ id|err
 op_assign
 l_int|0
 suffix:semicolon
-id|u64
-id|reg
-suffix:semicolon
-id|reg
-op_assign
-id|regs-&gt;cp0_epc
-suffix:semicolon
 id|err
 op_or_assign
 id|__put_user
 c_func
 (paren
-id|reg
+id|regs-&gt;cp0_epc
 comma
 op_amp
 id|sc-&gt;sc_pc
@@ -1468,17 +1460,11 @@ id|sc-&gt;sc_status
 )paren
 suffix:semicolon
 DECL|macro|save_gp_reg
-mdefine_line|#define save_gp_reg(i) {&t;&t;&t;&t;&t;&t;&bslash;&n;&t;reg = regs-&gt;regs[i];&t;&t;&t;&t;&t;&t;&bslash;&n;&t;err |= __put_user(reg, &amp;sc-&gt;sc_regs[i]);&t;&t;&t;&bslash;&n;} while(0)
-id|reg
-op_assign
-l_int|0
-suffix:semicolon
-id|err
-op_or_assign
+mdefine_line|#define save_gp_reg(i) do {&t;&t;&t;&t;&t;&t;&bslash;&n;&t;err |= __put_user(regs-&gt;regs[i], &amp;sc-&gt;sc_regs[i]);&t;&t;&bslash;&n;} while(0)
 id|__put_user
 c_func
 (paren
-id|reg
+l_int|0
 comma
 op_amp
 id|sc-&gt;sc_regs
@@ -1675,31 +1661,23 @@ l_int|31
 suffix:semicolon
 DECL|macro|save_gp_reg
 macro_line|#undef save_gp_reg
-id|reg
-op_assign
-id|regs-&gt;hi
-suffix:semicolon
 id|err
 op_or_assign
 id|__put_user
 c_func
 (paren
-id|reg
+id|regs-&gt;hi
 comma
 op_amp
 id|sc-&gt;sc_mdhi
 )paren
 suffix:semicolon
-id|reg
-op_assign
-id|regs-&gt;lo
-suffix:semicolon
 id|err
 op_or_assign
 id|__put_user
 c_func
 (paren
-id|reg
+id|regs-&gt;lo
 comma
 op_amp
 id|sc-&gt;sc_mdlo
@@ -1747,7 +1725,7 @@ id|current-&gt;used_math
 r_goto
 id|out
 suffix:semicolon
-multiline_comment|/* &n;&t; * Save FPU state to signal context.  Signal handler will &quot;inherit&quot;&n;&t; * current FPU state.&n;&t; */
+multiline_comment|/*&n;&t; * Save FPU state to signal context.  Signal handler will &quot;inherit&quot;&n;&t; * current FPU state.&n;&t; */
 r_if
 c_cond
 (paren
@@ -1863,6 +1841,7 @@ id|ALMASK
 )paren
 suffix:semicolon
 )brace
+macro_line|#ifdef CONFIG_TRAD_SIGNALS
 DECL|function|setup_frame
 r_static
 r_void
@@ -2084,7 +2063,10 @@ id|frame
 comma
 id|regs-&gt;cp0_epc
 comma
-id|frame-&gt;sf_code
+id|frame-&gt;regs
+(braket
+l_int|31
+)braket
 )paren
 suffix:semicolon
 macro_line|#endif
@@ -2112,6 +2094,7 @@ id|current
 )paren
 suffix:semicolon
 )brace
+macro_line|#endif
 DECL|function|setup_rt_frame
 r_static
 r_void
@@ -2421,7 +2404,10 @@ id|frame
 comma
 id|regs-&gt;cp0_epc
 comma
-id|frame-&gt;rs_code
+id|regs-&gt;regs
+(braket
+l_int|31
+)braket
 )paren
 suffix:semicolon
 macro_line|#endif
@@ -2449,6 +2435,33 @@ id|current
 )paren
 suffix:semicolon
 )brace
+r_extern
+r_void
+id|setup_rt_frame_n32
+c_func
+(paren
+r_struct
+id|k_sigaction
+op_star
+id|ka
+comma
+r_struct
+id|pt_regs
+op_star
+id|regs
+comma
+r_int
+id|signr
+comma
+id|sigset_t
+op_star
+id|set
+comma
+id|siginfo_t
+op_star
+id|info
+)paren
+suffix:semicolon
 DECL|function|handle_signal
 r_static
 r_inline
@@ -2496,6 +2509,18 @@ l_int|0
 )braket
 )paren
 (brace
+r_case
+id|ERESTART_RESTARTBLOCK
+suffix:colon
+id|current_thread_info
+c_func
+(paren
+)paren
+op_member_access_from_pointer
+id|restart_block.fn
+op_assign
+id|do_no_restart_syscall
+suffix:semicolon
 r_case
 id|ERESTARTNOHAND
 suffix:colon
@@ -2560,6 +2585,7 @@ op_assign
 l_int|0
 suffix:semicolon
 multiline_comment|/* Don&squot;t deal with this again.  */
+macro_line|#ifdef CONFIG_TRAD_SIGNALS
 r_if
 c_cond
 (paren
@@ -2567,6 +2593,40 @@ id|ka-&gt;sa.sa_flags
 op_amp
 id|SA_SIGINFO
 )paren
+macro_line|#else
+r_if
+c_cond
+(paren
+l_int|1
+)paren
+macro_line|#endif
+macro_line|#ifdef CONFIG_MIPS32_N32
+r_if
+c_cond
+(paren
+(paren
+id|current-&gt;thread.mflags
+op_amp
+id|MF_ABI_MASK
+)paren
+op_eq
+id|MF_N32
+)paren
+id|setup_rt_frame_n32
+(paren
+id|ka
+comma
+id|regs
+comma
+id|sig
+comma
+id|oldset
+comma
+id|info
+)paren
+suffix:semicolon
+r_else
+macro_line|#endif
 id|setup_rt_frame
 c_func
 (paren
@@ -2659,6 +2719,36 @@ id|current-&gt;sighand-&gt;siglock
 suffix:semicolon
 )brace
 )brace
+r_extern
+r_int
+id|do_signal32
+c_func
+(paren
+id|sigset_t
+op_star
+id|oldset
+comma
+r_struct
+id|pt_regs
+op_star
+id|regs
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|do_irix_signal
+c_func
+(paren
+id|sigset_t
+op_star
+id|oldset
+comma
+r_struct
+id|pt_regs
+op_star
+id|regs
+)paren
+suffix:semicolon
 DECL|function|do_signal
 id|asmlinkage
 r_int
@@ -2681,6 +2771,30 @@ suffix:semicolon
 r_int
 id|signr
 suffix:semicolon
+macro_line|#ifdef CONFIG_BINFMT_ELF32
+r_if
+c_cond
+(paren
+(paren
+id|current-&gt;thread.mflags
+op_amp
+id|MF_ABI_MASK
+)paren
+op_eq
+id|MF_O32
+)paren
+(brace
+r_return
+id|do_signal32
+c_func
+(paren
+id|oldset
+comma
+id|regs
+)paren
+suffix:semicolon
+)brace
+macro_line|#endif
 r_if
 c_cond
 (paren
@@ -2713,7 +2827,6 @@ OG
 l_int|0
 )paren
 (brace
-multiline_comment|/* Whee!  Actually deliver the signal.  */
 id|handle_signal
 c_func
 (paren
@@ -2781,6 +2894,29 @@ op_sub_assign
 l_int|8
 suffix:semicolon
 )brace
+r_if
+c_cond
+(paren
+id|regs-&gt;regs
+(braket
+l_int|2
+)braket
+op_eq
+id|ERESTART_RESTARTBLOCK
+)paren
+(brace
+id|regs-&gt;regs
+(braket
+l_int|2
+)braket
+op_assign
+id|__NR_restart_syscall
+suffix:semicolon
+id|regs-&gt;cp0_epc
+op_sub_assign
+l_int|4
+suffix:semicolon
+)brace
 )brace
 r_return
 l_int|0
@@ -2830,6 +2966,35 @@ op_amp
 id|_TIF_SIGPENDING
 )paren
 (brace
+macro_line|#ifdef CONFIG_BINFMT_ELF32
+r_if
+c_cond
+(paren
+id|likely
+c_func
+(paren
+(paren
+id|current-&gt;thread.mflags
+op_amp
+id|MF_ABI_MASK
+)paren
+op_eq
+id|MF_O32
+)paren
+)paren
+(brace
+id|do_signal32
+c_func
+(paren
+id|oldset
+comma
+id|regs
+)paren
+suffix:semicolon
+r_return
+suffix:semicolon
+)brace
+macro_line|#endif
 macro_line|#ifdef CONFIG_BINFMT_IRIX
 r_if
 c_cond

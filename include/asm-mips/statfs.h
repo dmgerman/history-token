@@ -3,6 +3,7 @@ macro_line|#ifndef _ASM_STATFS_H
 DECL|macro|_ASM_STATFS_H
 mdefine_line|#define _ASM_STATFS_H
 macro_line|#include &lt;linux/posix_types.h&gt;
+macro_line|#include &lt;asm/sgidefs.h&gt;
 macro_line|#ifndef __KERNEL_STRICT_NAMES
 macro_line|#include &lt;linux/types.h&gt;
 DECL|typedef|fsid_t
@@ -68,7 +69,8 @@ l_int|6
 suffix:semicolon
 )brace
 suffix:semicolon
-multiline_comment|/*&n; * Unlike the 32-bit version the 64-bit version has none of the ABI baggage.&n; */
+macro_line|#if (_MIPS_SIM == _MIPS_SIM_ABI32) || (_MIPS_SIM == _MIPS_SIM_NABI32)
+multiline_comment|/*&n; * Unlike the traditional version the LFAPI version has none of the ABI junk&n; */
 DECL|struct|statfs64
 r_struct
 id|statfs64
@@ -122,5 +124,64 @@ l_int|5
 suffix:semicolon
 )brace
 suffix:semicolon
+macro_line|#endif /* _MIPS_SIM == _MIPS_SIM_ABI32 */
+macro_line|#if _MIPS_SIM == _MIPS_SIM_ABI64
+DECL|struct|statfs64
+r_struct
+id|statfs64
+(brace
+multiline_comment|/* Same as struct statfs */
+DECL|member|f_type
+r_int
+id|f_type
+suffix:semicolon
+DECL|member|f_bsize
+r_int
+id|f_bsize
+suffix:semicolon
+DECL|member|f_frsize
+r_int
+id|f_frsize
+suffix:semicolon
+multiline_comment|/* Fragment size - unsupported */
+DECL|member|f_blocks
+r_int
+id|f_blocks
+suffix:semicolon
+DECL|member|f_bfree
+r_int
+id|f_bfree
+suffix:semicolon
+DECL|member|f_files
+r_int
+id|f_files
+suffix:semicolon
+DECL|member|f_ffree
+r_int
+id|f_ffree
+suffix:semicolon
+multiline_comment|/* Linux specials */
+DECL|member|f_bavail
+r_int
+id|f_bavail
+suffix:semicolon
+DECL|member|f_fsid
+id|__kernel_fsid_t
+id|f_fsid
+suffix:semicolon
+DECL|member|f_namelen
+r_int
+id|f_namelen
+suffix:semicolon
+DECL|member|f_spare
+r_int
+id|f_spare
+(braket
+l_int|6
+)braket
+suffix:semicolon
+)brace
+suffix:semicolon
+macro_line|#endif /* _MIPS_SIM == _MIPS_SIM_ABI64 */
 macro_line|#endif /* _ASM_STATFS_H */
 eof

@@ -159,6 +159,24 @@ id|closing
 suffix:colon
 l_int|1
 suffix:semicolon
+DECL|member|timestamping
+r_int
+r_int
+id|timestamping
+suffix:colon
+l_int|1
+suffix:semicolon
+DECL|member|time_real
+r_int
+r_int
+id|time_real
+suffix:colon
+l_int|1
+suffix:semicolon
+DECL|member|time_queue
+r_int
+id|time_queue
+suffix:semicolon
 multiline_comment|/* capability, inport, output, sync */
 DECL|member|capability
 r_int

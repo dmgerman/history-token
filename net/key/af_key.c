@@ -3210,6 +3210,17 @@ id|sa-&gt;sadb_sa_flags
 op_assign
 l_int|0
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|x-&gt;props.flags
+op_amp
+id|XFRM_STATE_NOECN
+)paren
+id|sa-&gt;sadb_sa_flags
+op_or_assign
+id|SADB_SAFLAGS_NOECN
+suffix:semicolon
 multiline_comment|/* hard time */
 r_if
 c_cond
@@ -4721,6 +4732,17 @@ suffix:semicolon
 id|x-&gt;props.replay_window
 op_assign
 id|sa-&gt;sadb_sa_replay
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|sa-&gt;sadb_sa_flags
+op_amp
+id|SADB_SAFLAGS_NOECN
+)paren
+id|x-&gt;props.flags
+op_or_assign
+id|XFRM_STATE_NOECN
 suffix:semicolon
 id|lifetime
 op_assign

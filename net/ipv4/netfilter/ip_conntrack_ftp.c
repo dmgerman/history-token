@@ -47,8 +47,6 @@ DECL|variable|ports_c
 r_static
 r_int
 id|ports_c
-op_assign
-l_int|0
 suffix:semicolon
 macro_line|#ifdef MODULE_PARM
 id|MODULE_PARM
@@ -70,8 +68,6 @@ DECL|variable|loose
 r_static
 r_int
 id|loose
-op_assign
-l_int|0
 suffix:semicolon
 id|MODULE_PARM
 c_func

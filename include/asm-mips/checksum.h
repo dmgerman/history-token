@@ -1,9 +1,10 @@
-multiline_comment|/*&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1995, 1996, 1997, 1998, 2001 by Ralf Baechle&n; */
+multiline_comment|/*&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1995, 96, 97, 98, 99, 2001 by Ralf Baechle&n; * Copyright (C) 1999 Silicon Graphics, Inc.&n; * Copyright (C) 2001 Thiemo Seufer.&n; * Copyright (C) 2002 Maciej W. Rozycki&n; */
 macro_line|#ifndef _ASM_CHECKSUM_H
 DECL|macro|_ASM_CHECKSUM_H
 mdefine_line|#define _ASM_CHECKSUM_H
-macro_line|#include &lt;asm/uaccess.h&gt;
+macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/in6.h&gt;
+macro_line|#include &lt;asm/uaccess.h&gt;
 multiline_comment|/*&n; * computes the checksum of a memory block at buff, length len,&n; * and adds in &quot;sum&quot; (32-bit)&n; *&n; * returns a 32-bit number suitable for feeding into itself&n; * or csum_tcpudp_magic&n; *&n; * this function must be called with even lengths, except&n; * for the last fragment, which may be odd&n; *&n; * it&squot;s best to have buff aligned on a 32-bit boundary&n; */
 r_int
 r_int
@@ -208,13 +209,11 @@ id|ihl
 (brace
 r_int
 r_int
+id|dummy
+comma
 id|sum
 suffix:semicolon
-r_int
-r_int
-id|dummy
-suffix:semicolon
-multiline_comment|/*&n;&t; * This is for 32-bit MIPS processors.&n;&t; */
+multiline_comment|/*&n;&t; * This is for 32-bit processors ...  but works just fine for 64-bit&n;&t; * processors for now ...  XXX&n;&t; */
 id|__asm__
 id|__volatile__
 c_func
@@ -223,8 +222,7 @@ l_string|&quot;.set&bslash;tnoreorder&bslash;t&bslash;t&bslash;t# ip_fast_csum&b
 l_string|&quot;.set&bslash;tnoat&bslash;n&bslash;t&quot;
 l_string|&quot;lw&bslash;t%0, (%1)&bslash;n&bslash;t&quot;
 l_string|&quot;subu&bslash;t%2, 4&bslash;n&bslash;t&quot;
-l_string|&quot;#blez&bslash;t%2, 2f&bslash;n&bslash;t&quot;
-l_string|&quot; sll&bslash;t%2, 2&bslash;n&bslash;t&quot;
+l_string|&quot;sll&bslash;t%2, 2&bslash;n&bslash;t&quot;
 l_string|&quot;lw&bslash;t%3, 4(%1)&bslash;n&bslash;t&quot;
 l_string|&quot;addu&bslash;t%2, %1&bslash;n&bslash;t&quot;
 l_string|&quot;addu&bslash;t%0, %3&bslash;n&bslash;t&quot;
@@ -320,6 +318,7 @@ id|__asm__
 c_func
 (paren
 l_string|&quot;.set&bslash;tnoat&bslash;t&bslash;t&bslash;t# csum_tcpudp_nofold&bslash;n&bslash;t&quot;
+macro_line|#ifdef CONFIG_MIPS32
 l_string|&quot;addu&bslash;t%0, %2&bslash;n&bslash;t&quot;
 l_string|&quot;sltu&bslash;t$1, %0, %2&bslash;n&bslash;t&quot;
 l_string|&quot;addu&bslash;t%0, $1&bslash;n&bslash;t&quot;
@@ -329,6 +328,15 @@ l_string|&quot;addu&bslash;t%0, $1&bslash;n&bslash;t&quot;
 l_string|&quot;addu&bslash;t%0, %4&bslash;n&bslash;t&quot;
 l_string|&quot;sltu&bslash;t$1, %0, %4&bslash;n&bslash;t&quot;
 l_string|&quot;addu&bslash;t%0, $1&bslash;n&bslash;t&quot;
+macro_line|#endif
+macro_line|#ifdef CONFIG_MIPS64
+l_string|&quot;daddu&bslash;t%0, %2&bslash;n&bslash;t&quot;
+l_string|&quot;daddu&bslash;t%0, %3&bslash;n&bslash;t&quot;
+l_string|&quot;daddu&bslash;t%0, %4&bslash;n&bslash;t&quot;
+l_string|&quot;dsll32&bslash;t$1, %0, 0&bslash;n&bslash;t&quot;
+l_string|&quot;daddu&bslash;t%0, $1&bslash;n&bslash;t&quot;
+l_string|&quot;dsrl32&bslash;t%0, %0, 0&bslash;n&bslash;t&quot;
+macro_line|#endif
 l_string|&quot;.set&bslash;tat&quot;
 suffix:colon
 l_string|&quot;=r&quot;

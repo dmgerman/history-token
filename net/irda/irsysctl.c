@@ -180,8 +180,6 @@ DECL|variable|min_min_tx_turn_time
 r_static
 r_int
 id|min_min_tx_turn_time
-op_assign
-l_int|0
 suffix:semicolon
 DECL|variable|max_max_tx_data_size
 r_static

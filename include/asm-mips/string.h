@@ -1,12 +1,14 @@
-multiline_comment|/*&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (c) 1994, 1995, 1996, 1997, 1998, 2001 Ralf Baechle&n; * Copyright (c) 2001 MIPS Technologies, Inc.&n; */
-macro_line|#ifndef __ASM_STRING_H
-DECL|macro|__ASM_STRING_H
-mdefine_line|#define __ASM_STRING_H
+multiline_comment|/*&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (c) 1994, 95, 96, 97, 98, 2000, 01 Ralf Baechle&n; * Copyright (c) 2000 by Silicon Graphics, Inc.&n; * Copyright (c) 2001 MIPS Technologies, Inc.&n; */
+macro_line|#ifndef _ASM_STRING_H
+DECL|macro|_ASM_STRING_H
+mdefine_line|#define _ASM_STRING_H
 macro_line|#include &lt;linux/config.h&gt;
+multiline_comment|/*&n; * Most of the inline functions are rather naive implementations so I just&n; * didn&squot;t bother updating them for 64-bit ...&n; */
+macro_line|#ifdef CONFIG_MIPS32
 DECL|macro|__HAVE_ARCH_STRCPY
 mdefine_line|#define __HAVE_ARCH_STRCPY
 DECL|function|strcpy
-r_extern
+r_static
 id|__inline__
 r_char
 op_star
@@ -73,7 +75,7 @@ suffix:semicolon
 DECL|macro|__HAVE_ARCH_STRNCPY
 mdefine_line|#define __HAVE_ARCH_STRNCPY
 DECL|function|strncpy
-r_extern
+r_static
 id|__inline__
 r_char
 op_star
@@ -166,7 +168,7 @@ suffix:semicolon
 DECL|macro|__HAVE_ARCH_STRCMP
 mdefine_line|#define __HAVE_ARCH_STRCMP
 DECL|function|strcmp
-r_extern
+r_static
 id|__inline__
 r_int
 id|strcmp
@@ -239,7 +241,7 @@ suffix:semicolon
 )brace
 DECL|macro|__HAVE_ARCH_STRNCMP
 mdefine_line|#define __HAVE_ARCH_STRNCMP
-r_extern
+r_static
 id|__inline__
 r_int
 DECL|function|strncmp
@@ -326,6 +328,7 @@ r_return
 id|__res
 suffix:semicolon
 )brace
+macro_line|#endif /* CONFIG_MIPS32 */
 DECL|macro|__HAVE_ARCH_MEMSET
 mdefine_line|#define __HAVE_ARCH_MEMSET
 r_extern
@@ -390,10 +393,11 @@ suffix:semicolon
 multiline_comment|/* Don&squot;t build bcopy at all ...  */
 DECL|macro|__HAVE_ARCH_BCOPY
 mdefine_line|#define __HAVE_ARCH_BCOPY
+macro_line|#ifdef CONFIG_MIPS32
 DECL|macro|__HAVE_ARCH_MEMSCAN
 mdefine_line|#define __HAVE_ARCH_MEMSCAN
 DECL|function|memscan
-r_extern
+r_static
 id|__inline__
 r_void
 op_star
@@ -475,5 +479,6 @@ r_return
 id|__addr
 suffix:semicolon
 )brace
-macro_line|#endif /* __ASM_STRING_H */
+macro_line|#endif /* CONFIG_MIPS32 */
+macro_line|#endif /* _ASM_STRING_H */
 eof

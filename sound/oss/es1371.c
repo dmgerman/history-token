@@ -16109,14 +16109,13 @@ l_int|NULL
 )paren
 suffix:semicolon
 )brace
-DECL|variable|__devinitdata
+DECL|variable|id_table
 r_static
 r_struct
 id|pci_device_id
 id|id_table
 (braket
 )braket
-id|__devinitdata
 op_assign
 (brace
 (brace

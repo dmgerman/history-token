@@ -1,3 +1,6 @@
+macro_line|#include &lt;linux/config.h&gt;
+macro_line|#include &lt;linux/init.h&gt;
+macro_line|#include &lt;linux/pci.h&gt;
 DECL|function|pcibios_fixup_bus
 r_void
 id|__init
@@ -10,12 +13,6 @@ op_star
 id|b
 )paren
 (brace
-id|Dprintk
-c_func
-(paren
-l_string|&quot;pcibios_fixup_bus()&bslash;n&quot;
-)paren
-suffix:semicolon
 )brace
 DECL|function|pcibios_enable_resources
 r_static
@@ -115,7 +112,11 @@ c_func
 id|KERN_ERR
 l_string|&quot;PCI: Device %s not available because of resource collisions&bslash;n&quot;
 comma
-id|dev-&gt;slot_name
+id|pci_name
+c_func
+(paren
+id|dev
+)paren
 )paren
 suffix:semicolon
 r_return
@@ -173,7 +174,11 @@ c_func
 (paren
 l_string|&quot;PCI: Enabling device %s (%04x -&gt; %04x)&bslash;n&quot;
 comma
-id|dev-&gt;slot_name
+id|pci_name
+c_func
+(paren
+id|dev
+)paren
 comma
 id|old_cmd
 comma

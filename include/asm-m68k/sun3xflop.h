@@ -323,7 +323,7 @@ suffix:semicolon
 )brace
 DECL|function|sun3xflop_hardint
 id|asmlinkage
-r_void
+id|irqreturn_t
 id|sun3xflop_hardint
 c_func
 (paren
@@ -387,6 +387,7 @@ id|regs
 )paren
 suffix:semicolon
 r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 singleline_comment|//&t;printk(&quot;doing pdma&bslash;n&quot;);// st %x&bslash;n&quot;, sun_fdc-&gt;status_82072);
@@ -465,6 +466,7 @@ op_assign
 id|lptr
 suffix:semicolon
 r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 r_if
@@ -541,6 +543,7 @@ l_int|0x20
 )paren
 (brace
 r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 r_if
@@ -603,6 +606,7 @@ id|regs
 )paren
 suffix:semicolon
 r_return
+id|IRQ_HANDLED
 suffix:semicolon
 )brace
 macro_line|#ifdef TRACE_FLPY_INT
@@ -618,6 +622,9 @@ op_increment
 suffix:semicolon
 )brace
 macro_line|#endif
+r_return
+id|IRQ_HANDLED
+suffix:semicolon
 )brace
 DECL|function|sun3xflop_request_irq
 r_static

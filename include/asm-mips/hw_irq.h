@@ -73,6 +73,7 @@ r_int
 id|aeoi
 )paren
 suffix:semicolon
+macro_line|#include &lt;asm/atomic.h&gt;
 r_extern
 id|atomic_t
 id|irq_err_count

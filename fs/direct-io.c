@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * fs/direct-io.c&n; *&n; * Copyright (C) 2002, Linus Torvalds.&n; *&n; * O_DIRECT&n; *&n; * 04Jul2002&t;akpm@zip.com.au&n; *&t;&t;Initial version&n; * 11Sep2002&t;janetinc@us.ibm.com&n; * &t;&t;added readv/writev support.&n; * 29Oct2002&t;akpm@zip.com.au&n; *&t;&t;rewrote bio_add_page() support.&n; * 30Oct2002&t;pbadari@us.ibm.com&n; *&t;&t;added support for non-aligned IO.&n; * 06Nov2002&t;pbadari@us.ibm.com&n; *&t;&t;added asynchronous IO support.&n; */
+multiline_comment|/*&n; * fs/direct-io.c&n; *&n; * Copyright (C) 2002, Linus Torvalds.&n; *&n; * O_DIRECT&n; *&n; * 04Jul2002&t;akpm@zip.com.au&n; *&t;&t;Initial version&n; * 11Sep2002&t;janetinc@us.ibm.com&n; * &t;&t;added readv/writev support.&n; * 29Oct2002&t;akpm@zip.com.au&n; *&t;&t;rewrote bio_add_page() support.&n; * 30Oct2002&t;pbadari@us.ibm.com&n; *&t;&t;added support for non-aligned IO.&n; * 06Nov2002&t;pbadari@us.ibm.com&n; *&t;&t;added asynchronous IO support.&n; * 21Jul2003&t;nathans@sgi.com&n; *&t;&t;added IO completion notifier.&n; */
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/fs.h&gt;
@@ -96,6 +96,12 @@ op_star
 id|get_blocks
 suffix:semicolon
 multiline_comment|/* block mapping function */
+DECL|member|end_io
+id|dio_iodone_t
+op_star
+id|end_io
+suffix:semicolon
+multiline_comment|/* IO completion function */
 DECL|member|final_block_in_bio
 id|sector_t
 id|final_block_in_bio
@@ -491,6 +497,45 @@ op_increment
 )braket
 suffix:semicolon
 )brace
+multiline_comment|/*&n; * Called when all DIO BIO I/O has been completed - let the filesystem&n; * know, if it registered an interest earlier via get_blocks.  Pass the&n; * private field of the map buffer_head so that filesystems can use it&n; * to hold additional state between get_blocks calls and dio_complete.&n; */
+DECL|function|dio_complete
+r_static
+r_void
+id|dio_complete
+c_func
+(paren
+r_struct
+id|dio
+op_star
+id|dio
+comma
+id|loff_t
+id|offset
+comma
+id|ssize_t
+id|bytes
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|dio-&gt;end_io
+)paren
+id|dio
+op_member_access_from_pointer
+id|end_io
+c_func
+(paren
+id|dio-&gt;inode
+comma
+id|offset
+comma
+id|bytes
+comma
+id|dio-&gt;map_bh.b_private
+)paren
+suffix:semicolon
+)brace
 multiline_comment|/*&n; * Called when a BIO has been processed.  If the count goes to zero then IO is&n; * complete and we can signal this to the AIO layer.&n; */
 DECL|function|finished_one_bio
 r_static
@@ -521,6 +566,18 @@ c_cond
 id|dio-&gt;is_async
 )paren
 (brace
+id|dio_complete
+c_func
+(paren
+id|dio
+comma
+id|dio-&gt;block_in_file
+op_lshift
+id|dio-&gt;blkbits
+comma
+id|dio-&gt;result
+)paren
+suffix:semicolon
 id|aio_complete
 c_func
 (paren
@@ -2634,6 +2691,9 @@ id|blkbits
 comma
 id|get_blocks_t
 id|get_blocks
+comma
+id|dio_iodone_t
+id|end_io
 )paren
 (brace
 r_int
@@ -2743,6 +2803,14 @@ suffix:semicolon
 id|dio-&gt;get_blocks
 op_assign
 id|get_blocks
+suffix:semicolon
+id|dio-&gt;end_io
+op_assign
+id|end_io
+suffix:semicolon
+id|dio-&gt;map_bh.b_private
+op_assign
+l_int|NULL
 suffix:semicolon
 id|dio-&gt;final_block_in_bio
 op_assign
@@ -3171,6 +3239,16 @@ op_minus
 id|offset
 suffix:semicolon
 )brace
+id|dio_complete
+c_func
+(paren
+id|dio
+comma
+id|offset
+comma
+id|ret
+)paren
+suffix:semicolon
 id|kfree
 c_func
 (paren
@@ -3221,6 +3299,9 @@ id|nr_segs
 comma
 id|get_blocks_t
 id|get_blocks
+comma
+id|dio_iodone_t
+id|end_io
 )paren
 (brace
 r_int
@@ -3428,6 +3509,8 @@ comma
 id|blkbits
 comma
 id|get_blocks
+comma
+id|end_io
 )paren
 suffix:semicolon
 id|out

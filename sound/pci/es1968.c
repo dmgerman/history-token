@@ -1358,14 +1358,13 @@ op_star
 id|regs
 )paren
 suffix:semicolon
-DECL|variable|__devinitdata
+DECL|variable|snd_es1968_ids
 r_static
 r_struct
 id|pci_device_id
 id|snd_es1968_ids
 (braket
 )braket
-id|__devinitdata
 op_assign
 (brace
 multiline_comment|/* Maestro 1 */
@@ -1649,6 +1648,8 @@ r_return
 id|result
 suffix:semicolon
 )brace
+DECL|macro|big_mdelay
+mdefine_line|#define big_mdelay(msec) do {&bslash;&n;&t;set_current_state(TASK_UNINTERRUPTIBLE);&bslash;&n;&t;schedule_timeout(((msec) * HZ + 999) / 1000);&bslash;&n;} while (0)
 multiline_comment|/* Wait for the codec bus to be free */
 DECL|function|snd_es1968_ac97_wait
 r_static
@@ -9067,7 +9068,7 @@ l_int|0x60
 )paren
 suffix:semicolon
 multiline_comment|/* write 1 to gpio 1 */
-id|mdelay
+id|big_mdelay
 c_func
 (paren
 l_int|20
@@ -9224,13 +9225,12 @@ l_int|0x60
 )paren
 suffix:semicolon
 multiline_comment|/* write 9 to gpio */
-id|mdelay
+id|big_mdelay
 c_func
 (paren
 l_int|500
 )paren
 suffix:semicolon
-multiline_comment|/* .. ouch.. */
 singleline_comment|//outw(inw(ioaddr + 0x38) &amp; 0xfffc, ioaddr + 0x38);
 id|outw
 c_func
@@ -9451,7 +9451,7 @@ l_int|0x37
 )paren
 suffix:semicolon
 multiline_comment|/* do a software reset */
-id|mdelay
+id|big_mdelay
 c_func
 (paren
 l_int|500
@@ -10266,25 +10266,6 @@ id|ASSP_CONTROL_C
 )paren
 suffix:semicolon
 multiline_comment|/* M: Disable ASSP, ASSP IRQ&squot;s and FM Port */
-multiline_comment|/* Enable IRQ&squot;s */
-id|w
-op_assign
-id|ESM_HIRQ_DSIE
-op_or
-id|ESM_HIRQ_MPU401
-op_or
-id|ESM_HIRQ_HW_VOLUME
-suffix:semicolon
-id|outw
-c_func
-(paren
-id|w
-comma
-id|iobase
-op_plus
-id|ESM_PORT_HOST_IRQ
-)paren
-suffix:semicolon
 multiline_comment|/*&n;&t; * set up wavecache&n;&t; */
 r_for
 c_loop
@@ -10661,6 +10642,41 @@ l_int|0
 suffix:semicolon
 )brace
 )brace
+multiline_comment|/* Enable IRQ&squot;s */
+DECL|function|snd_es1968_start_irq
+r_static
+r_void
+id|snd_es1968_start_irq
+c_func
+(paren
+id|es1968_t
+op_star
+id|chip
+)paren
+(brace
+r_int
+r_int
+id|w
+suffix:semicolon
+id|w
+op_assign
+id|ESM_HIRQ_DSIE
+op_or
+id|ESM_HIRQ_MPU401
+op_or
+id|ESM_HIRQ_HW_VOLUME
+suffix:semicolon
+id|outw
+c_func
+(paren
+id|w
+comma
+id|chip-&gt;io_port
+op_plus
+id|ESM_PORT_HOST_IRQ
+)paren
+suffix:semicolon
+)brace
 macro_line|#ifdef CONFIG_PM
 multiline_comment|/*&n; * PM support&n; */
 DECL|function|es1968_suspend
@@ -10786,6 +10802,12 @@ l_int|12
 )paren
 suffix:semicolon
 )brace
+id|snd_es1968_start_irq
+c_func
+(paren
+id|chip
+)paren
+suffix:semicolon
 multiline_comment|/* restore ac97 state */
 id|snd_ac97_resume
 c_func
@@ -10819,7 +10841,6 @@ id|SNDRV_CTL_POWER_D0
 )paren
 suffix:semicolon
 )brace
-macro_line|#ifndef PCI_OLD_SUSPEND
 DECL|function|snd_es1968_suspend
 r_static
 r_int
@@ -10907,82 +10928,6 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-macro_line|#else
-DECL|function|snd_es1968_suspend
-r_static
-r_void
-id|snd_es1968_suspend
-c_func
-(paren
-r_struct
-id|pci_dev
-op_star
-id|dev
-)paren
-(brace
-id|es1968_t
-op_star
-id|chip
-op_assign
-id|snd_magic_cast
-c_func
-(paren
-id|es1968_t
-comma
-id|pci_get_drvdata
-c_func
-(paren
-id|dev
-)paren
-comma
-r_return
-)paren
-suffix:semicolon
-id|es1968_suspend
-c_func
-(paren
-id|chip
-)paren
-suffix:semicolon
-)brace
-DECL|function|snd_es1968_resume
-r_static
-r_void
-id|snd_es1968_resume
-c_func
-(paren
-r_struct
-id|pci_dev
-op_star
-id|dev
-)paren
-(brace
-id|es1968_t
-op_star
-id|chip
-op_assign
-id|snd_magic_cast
-c_func
-(paren
-id|es1968_t
-comma
-id|pci_get_drvdata
-c_func
-(paren
-id|dev
-)paren
-comma
-r_return
-)paren
-suffix:semicolon
-id|es1968_resume
-c_func
-(paren
-id|chip
-)paren
-suffix:semicolon
-)brace
-macro_line|#endif
 multiline_comment|/* callback */
 DECL|function|snd_es1968_set_power_state
 r_static
@@ -11589,7 +11534,7 @@ r_int
 r_int
 id|vend
 suffix:semicolon
-id|pci_read_config_dword
+id|pci_read_config_word
 c_func
 (paren
 id|chip-&gt;pci
@@ -11609,11 +11554,13 @@ id|TYPE_MAESTRO2E
 op_logical_or
 (paren
 id|vend
-op_amp
-l_int|0xffff
-)paren
 op_ne
 l_int|0x1028
+op_logical_and
+id|vend
+op_ne
+l_int|0x1179
+)paren
 )paren
 (brace
 id|printk
@@ -12331,6 +12278,12 @@ id|err
 suffix:semicolon
 )brace
 )brace
+id|snd_es1968_start_irq
+c_func
+(paren
+id|chip
+)paren
+suffix:semicolon
 id|chip-&gt;clock
 op_assign
 id|clock

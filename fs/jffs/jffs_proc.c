@@ -59,8 +59,6 @@ r_struct
 id|jffs_partition_dir
 op_star
 id|jffs_part_dirs
-op_assign
-l_int|0
 suffix:semicolon
 multiline_comment|/*&n; * Read functions for entries&n; */
 r_static

@@ -1,7 +1,7 @@
 multiline_comment|/*&n; *&t;include/asm-mips/dec/prom.h&n; *&n; *&t;DECstation PROM interface.&n; *&n; *&t;Copyright (C) 2002  Maciej W. Rozycki&n; *&n; *&t;This program is free software; you can redistribute it and/or&n; *&t;modify it under the terms of the GNU General Public License&n; *&t;as published by the Free Software Foundation; either version&n; *&t;2 of the License, or (at your option) any later version.&n; *&n; *&t;Based on arch/mips/dec/prom/prom.h by the Anonymous.&n; */
-macro_line|#ifndef __ASM_MIPS_DEC_PROM_H
-DECL|macro|__ASM_MIPS_DEC_PROM_H
-mdefine_line|#define __ASM_MIPS_DEC_PROM_H
+macro_line|#ifndef _ASM_DEC_PROM_H
+DECL|macro|_ASM_DEC_PROM_H
+mdefine_line|#define _ASM_DEC_PROM_H
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;asm/addrspace.h&gt;
 multiline_comment|/*&n; * PMAX/3MAX PROM entry points for DS2100/3100&squot;s and DS5000/2xx&squot;s.&n; * Many of these will work for MIPSen as well!&n; */
@@ -501,5 +501,5 @@ comma
 id|u32
 )paren
 suffix:semicolon
-macro_line|#endif /* __ASM_MIPS_DEC_PROM_H */
+macro_line|#endif /* _ASM_DEC_PROM_H */
 eof

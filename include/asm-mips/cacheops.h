@@ -21,15 +21,15 @@ DECL|macro|Hit_Invalidate_D
 mdefine_line|#define Hit_Invalidate_D&t;0x11
 DECL|macro|Hit_Writeback_Inv_D
 mdefine_line|#define Hit_Writeback_Inv_D&t;0x15
-DECL|macro|Hit_Writeback_I
-mdefine_line|#define Hit_Writeback_I&t;&t;0x18
-DECL|macro|Hit_Writeback_D
-mdefine_line|#define Hit_Writeback_D&t;&t;0x19
 multiline_comment|/*&n; * R4000-specific cacheops&n; */
 DECL|macro|Create_Dirty_Excl_D
 mdefine_line|#define Create_Dirty_Excl_D&t;0x0d
 DECL|macro|Fill
 mdefine_line|#define Fill&t;&t;&t;0x14
+DECL|macro|Hit_Writeback_I
+mdefine_line|#define Hit_Writeback_I&t;&t;0x18
+DECL|macro|Hit_Writeback_D
+mdefine_line|#define Hit_Writeback_D&t;&t;0x19
 multiline_comment|/*&n; * R4000SC and R4400SC-specific cacheops&n; */
 DECL|macro|Index_Invalidate_SI
 mdefine_line|#define Index_Invalidate_SI     0x02

@@ -5,6 +5,12 @@ macro_line|#include &lt;linux/if_arp.h&gt;
 macro_line|#include &lt;linux/netdevice.h&gt;
 macro_line|#include &lt;linux/skbuff.h&gt;
 macro_line|#include &lt;linux/arcdevice.h&gt;
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
+)paren
+suffix:semicolon
 DECL|macro|VERSION
 mdefine_line|#define VERSION &quot;arcnet: RFC1201 &bslash;&quot;standard&bslash;&quot; (`a&squot;) encapsulation support loaded.&bslash;n&quot;
 r_static

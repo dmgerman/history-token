@@ -488,8 +488,6 @@ id|from
 suffix:semicolon
 DECL|macro|zorro_request_device
 mdefine_line|#define zorro_request_device(z, name) &bslash;&n;    request_mem_region((z)-&gt;resource.start, &bslash;&n;&t;&t;       (z)-&gt;resource.end-(z)-&gt;resource.start+1, (name))
-DECL|macro|zorro_check_device
-mdefine_line|#define zorro_check_device(z) &bslash;&n;    check_mem_region((z)-&gt;resource.start, &bslash;&n;&t;&t;     (z)-&gt;resource.end-(z)-&gt;resource.start+1)
 DECL|macro|zorro_release_device
 mdefine_line|#define zorro_release_device(z) &bslash;&n;    release_mem_region((z)-&gt;resource.start, &bslash;&n;&t;&t;       (z)-&gt;resource.end-(z)-&gt;resource.start+1)
 multiline_comment|/*&n;     *  Bitmask indicating portions of available Zorro II RAM that are unused&n;     *  by the system. Every bit represents a 64K chunk, for a maximum of 8MB&n;     *  (128 chunks, physical 0x00200000-0x009fffff).&n;     *&n;     *  If you want to use (= allocate) portions of this RAM, you should clear&n;     *  the corresponding bits.&n;     */

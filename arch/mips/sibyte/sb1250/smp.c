@@ -5,7 +5,7 @@ macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/smp.h&gt;
 macro_line|#include &lt;linux/kernel_stat.h&gt;
 macro_line|#include &lt;asm/mmu_context.h&gt;
-macro_line|#include &lt;asm/sibyte/64bit.h&gt;
+macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/sibyte/sb1250.h&gt;
 macro_line|#include &lt;asm/sibyte/sb1250_regs.h&gt;
 macro_line|#include &lt;asm/sibyte/sb1250_int.h&gt;
@@ -113,7 +113,7 @@ r_int
 id|action
 )paren
 (brace
-id|out64
+id|__raw_writeq
 c_func
 (paren
 (paren
@@ -184,13 +184,7 @@ r_int
 r_int
 id|action
 suffix:semicolon
-id|kstat_cpu
-c_func
-(paren
-id|cpu
-)paren
-dot
-id|irqs
+id|kstat_this_cpu.irqs
 (braket
 id|K_INT_MBOX_0
 )braket
@@ -200,7 +194,7 @@ multiline_comment|/* Load the mailbox register to figure out what we&squot;re su
 id|action
 op_assign
 (paren
-id|in64
+id|__raw_readq
 c_func
 (paren
 id|mailbox_regs
@@ -215,7 +209,7 @@ op_amp
 l_int|0xffff
 suffix:semicolon
 multiline_comment|/* Clear the mailbox to clear the interrupt */
-id|out64
+id|__raw_writeq
 c_func
 (paren
 (paren
@@ -480,7 +474,7 @@ r_int
 )paren
 id|idle
 op_plus
-id|KERNEL_STACK_SIZE
+id|THREAD_SIZE
 op_minus
 l_int|32
 comma

@@ -351,8 +351,6 @@ id|p-&gt;minor
 op_assign
 id|i
 suffix:semicolon
-id|MOD_INC_USE_COUNT
-suffix:semicolon
 id|up
 c_func
 (paren
@@ -425,8 +423,6 @@ c_func
 op_amp
 id|phone_lock
 )paren
-suffix:semicolon
-id|MOD_DEC_USE_COUNT
 suffix:semicolon
 )brace
 DECL|variable|phone_fops

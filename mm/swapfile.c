@@ -4889,8 +4889,6 @@ suffix:semicolon
 r_static
 r_int
 id|least_priority
-op_assign
-l_int|0
 suffix:semicolon
 r_union
 id|swap_header

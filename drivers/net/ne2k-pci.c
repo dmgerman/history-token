@@ -335,14 +335,13 @@ comma
 )brace
 )brace
 suffix:semicolon
-DECL|variable|__devinitdata
+DECL|variable|ne2k_pci_tbl
 r_static
 r_struct
 id|pci_device_id
 id|ne2k_pci_tbl
 (braket
 )braket
-id|__devinitdata
 op_assign
 (brace
 (brace
@@ -1380,7 +1379,11 @@ id|printk
 id|KERN_ERR
 l_string|&quot;ne2kpci(%s): unable to get memory for dev-&gt;priv.&bslash;n&quot;
 comma
-id|pdev-&gt;slot_name
+id|pci_name
+c_func
+(paren
+id|pdev
+)paren
 )paren
 suffix:semicolon
 r_goto
@@ -2880,7 +2883,11 @@ c_func
 (paren
 id|info.bus_info
 comma
-id|pci_dev-&gt;slot_name
+id|pci_name
+c_func
+(paren
+id|pci_dev
+)paren
 )paren
 suffix:semicolon
 r_if

@@ -494,6 +494,14 @@ id|DRM_IOCTL_ARGS
 suffix:semicolon
 r_extern
 r_int
+id|r128_cce_flip
+c_func
+(paren
+id|DRM_IOCTL_ARGS
+)paren
+suffix:semicolon
+r_extern
+r_int
 id|r128_cce_vertex
 c_func
 (paren

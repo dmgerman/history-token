@@ -16091,14 +16091,13 @@ suffix:semicolon
 macro_line|#endif
 DECL|macro|PCI_CLASS_FIREWIRE_OHCI
 mdefine_line|#define PCI_CLASS_FIREWIRE_OHCI     ((PCI_CLASS_SERIAL_FIREWIRE &lt;&lt; 8) | 0x10)
-DECL|variable|__devinitdata
+DECL|variable|ohci1394_pci_tbl
 r_static
 r_struct
 id|pci_device_id
 id|ohci1394_pci_tbl
 (braket
 )braket
-id|__devinitdata
 op_assign
 (brace
 (brace

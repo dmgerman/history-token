@@ -1,6 +1,7 @@
 macro_line|#ifndef __BEN_VLAN_PROC_INC__
 DECL|macro|__BEN_VLAN_PROC_INC__
 mdefine_line|#define __BEN_VLAN_PROC_INC__
+macro_line|#ifdef CONFIG_PROC_FS
 r_int
 id|vlan_proc_init
 c_func
@@ -33,7 +34,15 @@ id|vlan_proc_cleanup
 r_void
 )paren
 suffix:semicolon
-DECL|macro|VLAN_PROC_BUFSZ
-mdefine_line|#define&t;VLAN_PROC_BUFSZ&t;(4096)&t;/* buffer size for printing proc info */
+macro_line|#else /* No CONFIG_PROC_FS */
+DECL|macro|vlan_proc_init
+mdefine_line|#define vlan_proc_init()&t;(0)
+DECL|macro|vlan_proc_cleanup
+mdefine_line|#define vlan_proc_cleanup()&t;do {} while(0)
+DECL|macro|vlan_proc_add_dev
+mdefine_line|#define vlan_proc_add_dev(dev)&t;((void)(dev), 0)
+DECL|macro|vlan_proc_rem_dev
+mdefine_line|#define vlan_proc_rem_dev(dev)&t;((void)(dev), 0)
+macro_line|#endif
 macro_line|#endif /* !(__BEN_VLAN_PROC_INC__) */
 eof

@@ -1,6 +1,7 @@
 macro_line|#ifndef _H8300_TYPES_H
 DECL|macro|_H8300_TYPES_H
 mdefine_line|#define _H8300_TYPES_H
+macro_line|#if !defined(__ASSEMBLY__)
 multiline_comment|/*&n; * This file is never included by application software unless&n; * explicitly requested (e.g., via linux/types.h) in which case the&n; * application is Linux specific so (user-) name space pollution is&n; * not a major issue.  However, for interoperability, libraries still&n; * need to be careful to avoid a name clashes.&n; */
 DECL|typedef|umode_t
 r_typedef
@@ -121,6 +122,14 @@ r_typedef
 id|u32
 id|dma_addr_t
 suffix:semicolon
+DECL|macro|HAVE_SECTOR_T
+mdefine_line|#define HAVE_SECTOR_T
+DECL|typedef|sector_t
+r_typedef
+id|u64
+id|sector_t
+suffix:semicolon
 macro_line|#endif /* __KERNEL__ */
+macro_line|#endif /* __ASSEMBLY__ */
 macro_line|#endif /* _H8300_TYPES_H */
 eof

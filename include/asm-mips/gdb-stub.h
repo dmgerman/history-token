@@ -1,7 +1,7 @@
-multiline_comment|/*&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1995 Andreas Busse&n; */
-macro_line|#ifndef __ASM_MIPS_GDB_STUB_H
-DECL|macro|__ASM_MIPS_GDB_STUB_H
-mdefine_line|#define __ASM_MIPS_GDB_STUB_H
+multiline_comment|/*&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1995 Andreas Busse&n; * Copyright (C) 2003 Ralf Baechle&n; */
+macro_line|#ifndef _ASM_GDB_STUB_H
+DECL|macro|_ASM_GDB_STUB_H
+mdefine_line|#define _ASM_GDB_STUB_H
 multiline_comment|/*&n; * important register numbers&n; */
 DECL|macro|REG_EPC
 mdefine_line|#define REG_EPC&t;&t;&t;37
@@ -15,188 +15,188 @@ mdefine_line|#define NUMREGS&t;&t;&t;90
 DECL|macro|GDB_FR_REG0
 mdefine_line|#define GDB_FR_REG0&t;&t;(PTRSIZE*5)&t;&t;&t;/* 0 */
 DECL|macro|GDB_FR_REG1
-mdefine_line|#define GDB_FR_REG1&t;&t;((GDB_FR_REG0) + 4)&t;&t;/* 1 */
+mdefine_line|#define GDB_FR_REG1&t;&t;((GDB_FR_REG0) + LONGSIZE)&t;/* 1 */
 DECL|macro|GDB_FR_REG2
-mdefine_line|#define GDB_FR_REG2&t;&t;((GDB_FR_REG1) + 4)&t;&t;/* 2 */
+mdefine_line|#define GDB_FR_REG2&t;&t;((GDB_FR_REG1) + LONGSIZE)&t;/* 2 */
 DECL|macro|GDB_FR_REG3
-mdefine_line|#define GDB_FR_REG3&t;&t;((GDB_FR_REG2) + 4)&t;&t;/* 3 */
+mdefine_line|#define GDB_FR_REG3&t;&t;((GDB_FR_REG2) + LONGSIZE)&t;/* 3 */
 DECL|macro|GDB_FR_REG4
-mdefine_line|#define GDB_FR_REG4&t;&t;((GDB_FR_REG3) + 4)&t;&t;/* 4 */
+mdefine_line|#define GDB_FR_REG4&t;&t;((GDB_FR_REG3) + LONGSIZE)&t;/* 4 */
 DECL|macro|GDB_FR_REG5
-mdefine_line|#define GDB_FR_REG5&t;&t;((GDB_FR_REG4) + 4)&t;&t;/* 5 */
+mdefine_line|#define GDB_FR_REG5&t;&t;((GDB_FR_REG4) + LONGSIZE)&t;/* 5 */
 DECL|macro|GDB_FR_REG6
-mdefine_line|#define GDB_FR_REG6&t;&t;((GDB_FR_REG5) + 4)&t;&t;/* 6 */
+mdefine_line|#define GDB_FR_REG6&t;&t;((GDB_FR_REG5) + LONGSIZE)&t;/* 6 */
 DECL|macro|GDB_FR_REG7
-mdefine_line|#define GDB_FR_REG7&t;&t;((GDB_FR_REG6) + 4)&t;&t;/* 7 */
+mdefine_line|#define GDB_FR_REG7&t;&t;((GDB_FR_REG6) + LONGSIZE)&t;/* 7 */
 DECL|macro|GDB_FR_REG8
-mdefine_line|#define GDB_FR_REG8&t;&t;((GDB_FR_REG7) + 4)&t;&t;/* 8 */
+mdefine_line|#define GDB_FR_REG8&t;&t;((GDB_FR_REG7) + LONGSIZE)&t;/* 8 */
 DECL|macro|GDB_FR_REG9
-mdefine_line|#define GDB_FR_REG9&t;        ((GDB_FR_REG8) + 4)&t;&t;/* 9 */
+mdefine_line|#define GDB_FR_REG9&t;        ((GDB_FR_REG8) + LONGSIZE)&t;/* 9 */
 DECL|macro|GDB_FR_REG10
-mdefine_line|#define GDB_FR_REG10&t;&t;((GDB_FR_REG9) + 4)&t;&t;/* 10 */
+mdefine_line|#define GDB_FR_REG10&t;&t;((GDB_FR_REG9) + LONGSIZE)&t;/* 10 */
 DECL|macro|GDB_FR_REG11
-mdefine_line|#define GDB_FR_REG11&t;&t;((GDB_FR_REG10) + 4)&t;&t;/* 11 */
+mdefine_line|#define GDB_FR_REG11&t;&t;((GDB_FR_REG10) + LONGSIZE)&t;/* 11 */
 DECL|macro|GDB_FR_REG12
-mdefine_line|#define GDB_FR_REG12&t;&t;((GDB_FR_REG11) + 4)&t;&t;/* 12 */
+mdefine_line|#define GDB_FR_REG12&t;&t;((GDB_FR_REG11) + LONGSIZE)&t;/* 12 */
 DECL|macro|GDB_FR_REG13
-mdefine_line|#define GDB_FR_REG13&t;&t;((GDB_FR_REG12) + 4)&t;&t;/* 13 */
+mdefine_line|#define GDB_FR_REG13&t;&t;((GDB_FR_REG12) + LONGSIZE)&t;/* 13 */
 DECL|macro|GDB_FR_REG14
-mdefine_line|#define GDB_FR_REG14&t;&t;((GDB_FR_REG13) + 4)&t;&t;/* 14 */
+mdefine_line|#define GDB_FR_REG14&t;&t;((GDB_FR_REG13) + LONGSIZE)&t;/* 14 */
 DECL|macro|GDB_FR_REG15
-mdefine_line|#define GDB_FR_REG15&t;&t;((GDB_FR_REG14) + 4)&t;&t;/* 15 */
+mdefine_line|#define GDB_FR_REG15&t;&t;((GDB_FR_REG14) + LONGSIZE)&t;/* 15 */
 DECL|macro|GDB_FR_REG16
-mdefine_line|#define GDB_FR_REG16&t;&t;((GDB_FR_REG15) + 4)&t;&t;/* 16 */
+mdefine_line|#define GDB_FR_REG16&t;&t;((GDB_FR_REG15) + LONGSIZE)&t;/* 16 */
 DECL|macro|GDB_FR_REG17
-mdefine_line|#define GDB_FR_REG17&t;&t;((GDB_FR_REG16) + 4)&t;&t;/* 17 */
+mdefine_line|#define GDB_FR_REG17&t;&t;((GDB_FR_REG16) + LONGSIZE)&t;/* 17 */
 DECL|macro|GDB_FR_REG18
-mdefine_line|#define GDB_FR_REG18&t;&t;((GDB_FR_REG17) + 4)&t;&t;/* 18 */
+mdefine_line|#define GDB_FR_REG18&t;&t;((GDB_FR_REG17) + LONGSIZE)&t;/* 18 */
 DECL|macro|GDB_FR_REG19
-mdefine_line|#define GDB_FR_REG19&t;&t;((GDB_FR_REG18) + 4)&t;&t;/* 19 */
+mdefine_line|#define GDB_FR_REG19&t;&t;((GDB_FR_REG18) + LONGSIZE)&t;/* 19 */
 DECL|macro|GDB_FR_REG20
-mdefine_line|#define GDB_FR_REG20&t;&t;((GDB_FR_REG19) + 4)&t;&t;/* 20 */
+mdefine_line|#define GDB_FR_REG20&t;&t;((GDB_FR_REG19) + LONGSIZE)&t;/* 20 */
 DECL|macro|GDB_FR_REG21
-mdefine_line|#define GDB_FR_REG21&t;&t;((GDB_FR_REG20) + 4)&t;&t;/* 21 */
+mdefine_line|#define GDB_FR_REG21&t;&t;((GDB_FR_REG20) + LONGSIZE)&t;/* 21 */
 DECL|macro|GDB_FR_REG22
-mdefine_line|#define GDB_FR_REG22&t;&t;((GDB_FR_REG21) + 4)&t;&t;/* 22 */
+mdefine_line|#define GDB_FR_REG22&t;&t;((GDB_FR_REG21) + LONGSIZE)&t;/* 22 */
 DECL|macro|GDB_FR_REG23
-mdefine_line|#define GDB_FR_REG23&t;&t;((GDB_FR_REG22) + 4)&t;&t;/* 23 */
+mdefine_line|#define GDB_FR_REG23&t;&t;((GDB_FR_REG22) + LONGSIZE)&t;/* 23 */
 DECL|macro|GDB_FR_REG24
-mdefine_line|#define GDB_FR_REG24&t;&t;((GDB_FR_REG23) + 4)&t;&t;/* 24 */
+mdefine_line|#define GDB_FR_REG24&t;&t;((GDB_FR_REG23) + LONGSIZE)&t;/* 24 */
 DECL|macro|GDB_FR_REG25
-mdefine_line|#define GDB_FR_REG25&t;&t;((GDB_FR_REG24) + 4)&t;&t;/* 25 */
+mdefine_line|#define GDB_FR_REG25&t;&t;((GDB_FR_REG24) + LONGSIZE)&t;/* 25 */
 DECL|macro|GDB_FR_REG26
-mdefine_line|#define GDB_FR_REG26&t;&t;((GDB_FR_REG25) + 4)&t;&t;/* 26 */
+mdefine_line|#define GDB_FR_REG26&t;&t;((GDB_FR_REG25) + LONGSIZE)&t;/* 26 */
 DECL|macro|GDB_FR_REG27
-mdefine_line|#define GDB_FR_REG27&t;&t;((GDB_FR_REG26) + 4)&t;&t;/* 27 */
+mdefine_line|#define GDB_FR_REG27&t;&t;((GDB_FR_REG26) + LONGSIZE)&t;/* 27 */
 DECL|macro|GDB_FR_REG28
-mdefine_line|#define GDB_FR_REG28&t;&t;((GDB_FR_REG27) + 4)&t;&t;/* 28 */
+mdefine_line|#define GDB_FR_REG28&t;&t;((GDB_FR_REG27) + LONGSIZE)&t;/* 28 */
 DECL|macro|GDB_FR_REG29
-mdefine_line|#define GDB_FR_REG29&t;&t;((GDB_FR_REG28) + 4)&t;&t;/* 29 */
+mdefine_line|#define GDB_FR_REG29&t;&t;((GDB_FR_REG28) + LONGSIZE)&t;/* 29 */
 DECL|macro|GDB_FR_REG30
-mdefine_line|#define GDB_FR_REG30&t;&t;((GDB_FR_REG29) + 4)&t;&t;/* 30 */
+mdefine_line|#define GDB_FR_REG30&t;&t;((GDB_FR_REG29) + LONGSIZE)&t;/* 30 */
 DECL|macro|GDB_FR_REG31
-mdefine_line|#define GDB_FR_REG31&t;&t;((GDB_FR_REG30) + 4)&t;&t;/* 31 */
+mdefine_line|#define GDB_FR_REG31&t;&t;((GDB_FR_REG30) + LONGSIZE)&t;/* 31 */
 multiline_comment|/*&n; * Saved special registers&n; */
 DECL|macro|GDB_FR_STATUS
-mdefine_line|#define GDB_FR_STATUS&t;&t;((GDB_FR_REG31) + 4)&t;&t;/* 32 */
+mdefine_line|#define GDB_FR_STATUS&t;&t;((GDB_FR_REG31) + LONGSIZE)&t;/* 32 */
 DECL|macro|GDB_FR_LO
-mdefine_line|#define GDB_FR_LO&t;&t;((GDB_FR_STATUS) + 4)&t;&t;/* 33 */
+mdefine_line|#define GDB_FR_LO&t;&t;((GDB_FR_STATUS) + LONGSIZE)&t;/* 33 */
 DECL|macro|GDB_FR_HI
-mdefine_line|#define GDB_FR_HI&t;&t;((GDB_FR_LO) + 4)&t;&t;/* 34 */
+mdefine_line|#define GDB_FR_HI&t;&t;((GDB_FR_LO) + LONGSIZE)&t;/* 34 */
 DECL|macro|GDB_FR_BADVADDR
-mdefine_line|#define GDB_FR_BADVADDR&t;&t;((GDB_FR_HI) + 4)&t;&t;/* 35 */
+mdefine_line|#define GDB_FR_BADVADDR&t;&t;((GDB_FR_HI) + LONGSIZE)&t;/* 35 */
 DECL|macro|GDB_FR_CAUSE
-mdefine_line|#define GDB_FR_CAUSE&t;&t;((GDB_FR_BADVADDR) + 4)&t;&t;/* 36 */
+mdefine_line|#define GDB_FR_CAUSE&t;&t;((GDB_FR_BADVADDR) + LONGSIZE)&t;/* 36 */
 DECL|macro|GDB_FR_EPC
-mdefine_line|#define GDB_FR_EPC&t;&t;((GDB_FR_CAUSE) + 4)&t;&t;/* 37 */
+mdefine_line|#define GDB_FR_EPC&t;&t;((GDB_FR_CAUSE) + LONGSIZE)&t;/* 37 */
 multiline_comment|/*&n; * Saved floating point registers&n; */
 DECL|macro|GDB_FR_FPR0
-mdefine_line|#define GDB_FR_FPR0&t;&t;((GDB_FR_EPC) + 4)&t;&t;/* 38 */
+mdefine_line|#define GDB_FR_FPR0&t;&t;((GDB_FR_EPC) + LONGSIZE)&t;/* 38 */
 DECL|macro|GDB_FR_FPR1
-mdefine_line|#define GDB_FR_FPR1&t;&t;((GDB_FR_FPR0) + 4)&t;&t;/* 39 */
+mdefine_line|#define GDB_FR_FPR1&t;&t;((GDB_FR_FPR0) + LONGSIZE)&t;/* 39 */
 DECL|macro|GDB_FR_FPR2
-mdefine_line|#define GDB_FR_FPR2&t;&t;((GDB_FR_FPR1) + 4)&t;&t;/* 40 */
+mdefine_line|#define GDB_FR_FPR2&t;&t;((GDB_FR_FPR1) + LONGSIZE)&t;/* 40 */
 DECL|macro|GDB_FR_FPR3
-mdefine_line|#define GDB_FR_FPR3&t;&t;((GDB_FR_FPR2) + 4)&t;&t;/* 41 */
+mdefine_line|#define GDB_FR_FPR3&t;&t;((GDB_FR_FPR2) + LONGSIZE)&t;/* 41 */
 DECL|macro|GDB_FR_FPR4
-mdefine_line|#define GDB_FR_FPR4&t;&t;((GDB_FR_FPR3) + 4)&t;&t;/* 42 */
+mdefine_line|#define GDB_FR_FPR4&t;&t;((GDB_FR_FPR3) + LONGSIZE)&t;/* 42 */
 DECL|macro|GDB_FR_FPR5
-mdefine_line|#define GDB_FR_FPR5&t;&t;((GDB_FR_FPR4) + 4)&t;&t;/* 43 */
+mdefine_line|#define GDB_FR_FPR5&t;&t;((GDB_FR_FPR4) + LONGSIZE)&t;/* 43 */
 DECL|macro|GDB_FR_FPR6
-mdefine_line|#define GDB_FR_FPR6&t;&t;((GDB_FR_FPR5) + 4)&t;&t;/* 44 */
+mdefine_line|#define GDB_FR_FPR6&t;&t;((GDB_FR_FPR5) + LONGSIZE)&t;/* 44 */
 DECL|macro|GDB_FR_FPR7
-mdefine_line|#define GDB_FR_FPR7&t;&t;((GDB_FR_FPR6) + 4)&t;&t;/* 45 */
+mdefine_line|#define GDB_FR_FPR7&t;&t;((GDB_FR_FPR6) + LONGSIZE)&t;/* 45 */
 DECL|macro|GDB_FR_FPR8
-mdefine_line|#define GDB_FR_FPR8&t;&t;((GDB_FR_FPR7) + 4)&t;&t;/* 46 */
+mdefine_line|#define GDB_FR_FPR8&t;&t;((GDB_FR_FPR7) + LONGSIZE)&t;/* 46 */
 DECL|macro|GDB_FR_FPR9
-mdefine_line|#define GDB_FR_FPR9&t;&t;((GDB_FR_FPR8) + 4)&t;&t;/* 47 */
+mdefine_line|#define GDB_FR_FPR9&t;&t;((GDB_FR_FPR8) + LONGSIZE)&t;/* 47 */
 DECL|macro|GDB_FR_FPR10
-mdefine_line|#define GDB_FR_FPR10&t;&t;((GDB_FR_FPR9) + 4)&t;&t;/* 48 */
+mdefine_line|#define GDB_FR_FPR10&t;&t;((GDB_FR_FPR9) + LONGSIZE)&t;/* 48 */
 DECL|macro|GDB_FR_FPR11
-mdefine_line|#define GDB_FR_FPR11&t;&t;((GDB_FR_FPR10) + 4)&t;&t;/* 49 */
+mdefine_line|#define GDB_FR_FPR11&t;&t;((GDB_FR_FPR10) + LONGSIZE)&t;/* 49 */
 DECL|macro|GDB_FR_FPR12
-mdefine_line|#define GDB_FR_FPR12&t;&t;((GDB_FR_FPR11) + 4)&t;&t;/* 50 */
+mdefine_line|#define GDB_FR_FPR12&t;&t;((GDB_FR_FPR11) + LONGSIZE)&t;/* 50 */
 DECL|macro|GDB_FR_FPR13
-mdefine_line|#define GDB_FR_FPR13&t;&t;((GDB_FR_FPR12) + 4)&t;&t;/* 51 */
+mdefine_line|#define GDB_FR_FPR13&t;&t;((GDB_FR_FPR12) + LONGSIZE)&t;/* 51 */
 DECL|macro|GDB_FR_FPR14
-mdefine_line|#define GDB_FR_FPR14&t;&t;((GDB_FR_FPR13) + 4)&t;&t;/* 52 */
+mdefine_line|#define GDB_FR_FPR14&t;&t;((GDB_FR_FPR13) + LONGSIZE)&t;/* 52 */
 DECL|macro|GDB_FR_FPR15
-mdefine_line|#define GDB_FR_FPR15&t;&t;((GDB_FR_FPR14) + 4)&t;&t;/* 53 */
+mdefine_line|#define GDB_FR_FPR15&t;&t;((GDB_FR_FPR14) + LONGSIZE)&t;/* 53 */
 DECL|macro|GDB_FR_FPR16
-mdefine_line|#define GDB_FR_FPR16&t;&t;((GDB_FR_FPR15) + 4)&t;&t;/* 54 */
+mdefine_line|#define GDB_FR_FPR16&t;&t;((GDB_FR_FPR15) + LONGSIZE)&t;/* 54 */
 DECL|macro|GDB_FR_FPR17
-mdefine_line|#define GDB_FR_FPR17&t;&t;((GDB_FR_FPR16) + 4)&t;&t;/* 55 */
+mdefine_line|#define GDB_FR_FPR17&t;&t;((GDB_FR_FPR16) + LONGSIZE)&t;/* 55 */
 DECL|macro|GDB_FR_FPR18
-mdefine_line|#define GDB_FR_FPR18&t;&t;((GDB_FR_FPR17) + 4)&t;&t;/* 56 */
+mdefine_line|#define GDB_FR_FPR18&t;&t;((GDB_FR_FPR17) + LONGSIZE)&t;/* 56 */
 DECL|macro|GDB_FR_FPR19
-mdefine_line|#define GDB_FR_FPR19&t;&t;((GDB_FR_FPR18) + 4)&t;&t;/* 57 */
+mdefine_line|#define GDB_FR_FPR19&t;&t;((GDB_FR_FPR18) + LONGSIZE)&t;/* 57 */
 DECL|macro|GDB_FR_FPR20
-mdefine_line|#define GDB_FR_FPR20&t;&t;((GDB_FR_FPR19) + 4)&t;&t;/* 58 */
+mdefine_line|#define GDB_FR_FPR20&t;&t;((GDB_FR_FPR19) + LONGSIZE)&t;/* 58 */
 DECL|macro|GDB_FR_FPR21
-mdefine_line|#define GDB_FR_FPR21&t;&t;((GDB_FR_FPR20) + 4)&t;&t;/* 59 */
+mdefine_line|#define GDB_FR_FPR21&t;&t;((GDB_FR_FPR20) + LONGSIZE)&t;/* 59 */
 DECL|macro|GDB_FR_FPR22
-mdefine_line|#define GDB_FR_FPR22&t;&t;((GDB_FR_FPR21) + 4)&t;&t;/* 60 */
+mdefine_line|#define GDB_FR_FPR22&t;&t;((GDB_FR_FPR21) + LONGSIZE)&t;/* 60 */
 DECL|macro|GDB_FR_FPR23
-mdefine_line|#define GDB_FR_FPR23&t;&t;((GDB_FR_FPR22) + 4)&t;&t;/* 61 */
+mdefine_line|#define GDB_FR_FPR23&t;&t;((GDB_FR_FPR22) + LONGSIZE)&t;/* 61 */
 DECL|macro|GDB_FR_FPR24
-mdefine_line|#define GDB_FR_FPR24&t;&t;((GDB_FR_FPR23) + 4)&t;&t;/* 62 */
+mdefine_line|#define GDB_FR_FPR24&t;&t;((GDB_FR_FPR23) + LONGSIZE)&t;/* 62 */
 DECL|macro|GDB_FR_FPR25
-mdefine_line|#define GDB_FR_FPR25&t;&t;((GDB_FR_FPR24) + 4)&t;&t;/* 63 */
+mdefine_line|#define GDB_FR_FPR25&t;&t;((GDB_FR_FPR24) + LONGSIZE)&t;/* 63 */
 DECL|macro|GDB_FR_FPR26
-mdefine_line|#define GDB_FR_FPR26&t;&t;((GDB_FR_FPR25) + 4)&t;&t;/* 64 */
+mdefine_line|#define GDB_FR_FPR26&t;&t;((GDB_FR_FPR25) + LONGSIZE)&t;/* 64 */
 DECL|macro|GDB_FR_FPR27
-mdefine_line|#define GDB_FR_FPR27&t;&t;((GDB_FR_FPR26) + 4)&t;&t;/* 65 */
+mdefine_line|#define GDB_FR_FPR27&t;&t;((GDB_FR_FPR26) + LONGSIZE)&t;/* 65 */
 DECL|macro|GDB_FR_FPR28
-mdefine_line|#define GDB_FR_FPR28&t;&t;((GDB_FR_FPR27) + 4)&t;&t;/* 66 */
+mdefine_line|#define GDB_FR_FPR28&t;&t;((GDB_FR_FPR27) + LONGSIZE)&t;/* 66 */
 DECL|macro|GDB_FR_FPR29
-mdefine_line|#define GDB_FR_FPR29&t;&t;((GDB_FR_FPR28) + 4)&t;&t;/* 67 */
+mdefine_line|#define GDB_FR_FPR29&t;&t;((GDB_FR_FPR28) + LONGSIZE)&t;/* 67 */
 DECL|macro|GDB_FR_FPR30
-mdefine_line|#define GDB_FR_FPR30&t;&t;((GDB_FR_FPR29) + 4)&t;&t;/* 68 */
+mdefine_line|#define GDB_FR_FPR30&t;&t;((GDB_FR_FPR29) + LONGSIZE)&t;/* 68 */
 DECL|macro|GDB_FR_FPR31
-mdefine_line|#define GDB_FR_FPR31&t;&t;((GDB_FR_FPR30) + 4)&t;&t;/* 69 */
+mdefine_line|#define GDB_FR_FPR31&t;&t;((GDB_FR_FPR30) + LONGSIZE)&t;/* 69 */
 DECL|macro|GDB_FR_FSR
-mdefine_line|#define GDB_FR_FSR&t;&t;((GDB_FR_FPR31) + 4)&t;&t;/* 70 */
+mdefine_line|#define GDB_FR_FSR&t;&t;((GDB_FR_FPR31) + LONGSIZE)&t;/* 70 */
 DECL|macro|GDB_FR_FIR
-mdefine_line|#define GDB_FR_FIR&t;&t;((GDB_FR_FSR) + 4)&t;&t;/* 71 */
+mdefine_line|#define GDB_FR_FIR&t;&t;((GDB_FR_FSR) + LONGSIZE)&t;/* 71 */
 DECL|macro|GDB_FR_FRP
-mdefine_line|#define GDB_FR_FRP&t;&t;((GDB_FR_FIR) + 4)&t;&t;/* 72 */
+mdefine_line|#define GDB_FR_FRP&t;&t;((GDB_FR_FIR) + LONGSIZE)&t;/* 72 */
 DECL|macro|GDB_FR_DUMMY
-mdefine_line|#define GDB_FR_DUMMY&t;&t;((GDB_FR_FRP) + 4)&t;&t;/* 73, unused ??? */
+mdefine_line|#define GDB_FR_DUMMY&t;&t;((GDB_FR_FRP) + LONGSIZE)&t;/* 73, unused ??? */
 multiline_comment|/*&n; * Again, CP0 registers&n; */
 DECL|macro|GDB_FR_CP0_INDEX
-mdefine_line|#define GDB_FR_CP0_INDEX&t;((GDB_FR_DUMMY) + 4)&t;&t;/* 74 */
+mdefine_line|#define GDB_FR_CP0_INDEX&t;((GDB_FR_DUMMY) + LONGSIZE)&t;/* 74 */
 DECL|macro|GDB_FR_CP0_RANDOM
-mdefine_line|#define GDB_FR_CP0_RANDOM&t;((GDB_FR_CP0_INDEX) + 4)&t;/* 75 */
+mdefine_line|#define GDB_FR_CP0_RANDOM&t;((GDB_FR_CP0_INDEX) + LONGSIZE)&t;/* 75 */
 DECL|macro|GDB_FR_CP0_ENTRYLO0
-mdefine_line|#define GDB_FR_CP0_ENTRYLO0&t;((GDB_FR_CP0_RANDOM) + 4)&t;/* 76 */
+mdefine_line|#define GDB_FR_CP0_ENTRYLO0&t;((GDB_FR_CP0_RANDOM) + LONGSIZE)/* 76 */
 DECL|macro|GDB_FR_CP0_ENTRYLO1
-mdefine_line|#define GDB_FR_CP0_ENTRYLO1&t;((GDB_FR_CP0_ENTRYLO0) + 4)&t;/* 77 */
+mdefine_line|#define GDB_FR_CP0_ENTRYLO1&t;((GDB_FR_CP0_ENTRYLO0) + LONGSIZE)/* 77 */
 DECL|macro|GDB_FR_CP0_CONTEXT
-mdefine_line|#define GDB_FR_CP0_CONTEXT&t;((GDB_FR_CP0_ENTRYLO1) + 4)&t;/* 78 */
+mdefine_line|#define GDB_FR_CP0_CONTEXT&t;((GDB_FR_CP0_ENTRYLO1) + LONGSIZE)/* 78 */
 DECL|macro|GDB_FR_CP0_PAGEMASK
-mdefine_line|#define GDB_FR_CP0_PAGEMASK&t;((GDB_FR_CP0_CONTEXT) + 4)&t;/* 79 */
+mdefine_line|#define GDB_FR_CP0_PAGEMASK&t;((GDB_FR_CP0_CONTEXT) + LONGSIZE)/* 79 */
 DECL|macro|GDB_FR_CP0_WIRED
-mdefine_line|#define GDB_FR_CP0_WIRED&t;((GDB_FR_CP0_PAGEMASK) + 4)&t;/* 80 */
+mdefine_line|#define GDB_FR_CP0_WIRED&t;((GDB_FR_CP0_PAGEMASK) + LONGSIZE)/* 80 */
 DECL|macro|GDB_FR_CP0_REG7
-mdefine_line|#define GDB_FR_CP0_REG7&t;&t;((GDB_FR_CP0_WIRED) + 4)&t;/* 81 */
+mdefine_line|#define GDB_FR_CP0_REG7&t;&t;((GDB_FR_CP0_WIRED) + LONGSIZE)&t;/* 81 */
 DECL|macro|GDB_FR_CP0_REG8
-mdefine_line|#define GDB_FR_CP0_REG8&t;&t;((GDB_FR_CP0_REG7) + 4)&t;&t;/* 82 */
+mdefine_line|#define GDB_FR_CP0_REG8&t;&t;((GDB_FR_CP0_REG7) + LONGSIZE)&t;/* 82 */
 DECL|macro|GDB_FR_CP0_REG9
-mdefine_line|#define GDB_FR_CP0_REG9&t;&t;((GDB_FR_CP0_REG8) + 4)&t;&t;/* 83 */
+mdefine_line|#define GDB_FR_CP0_REG9&t;&t;((GDB_FR_CP0_REG8) + LONGSIZE)&t;/* 83 */
 DECL|macro|GDB_FR_CP0_ENTRYHI
-mdefine_line|#define GDB_FR_CP0_ENTRYHI&t;((GDB_FR_CP0_REG9) + 4)&t;&t;/* 84 */
+mdefine_line|#define GDB_FR_CP0_ENTRYHI&t;((GDB_FR_CP0_REG9) + LONGSIZE)&t;/* 84 */
 DECL|macro|GDB_FR_CP0_REG11
-mdefine_line|#define GDB_FR_CP0_REG11&t;((GDB_FR_CP0_ENTRYHI) + 4)&t;/* 85 */
+mdefine_line|#define GDB_FR_CP0_REG11&t;((GDB_FR_CP0_ENTRYHI) + LONGSIZE)/* 85 */
 DECL|macro|GDB_FR_CP0_REG12
-mdefine_line|#define GDB_FR_CP0_REG12&t;((GDB_FR_CP0_REG11) + 4)&t;/* 86 */
+mdefine_line|#define GDB_FR_CP0_REG12&t;((GDB_FR_CP0_REG11) + LONGSIZE)&t;/* 86 */
 DECL|macro|GDB_FR_CP0_REG13
-mdefine_line|#define GDB_FR_CP0_REG13&t;((GDB_FR_CP0_REG12) + 4)&t;/* 87 */
+mdefine_line|#define GDB_FR_CP0_REG13&t;((GDB_FR_CP0_REG12) + LONGSIZE)&t;/* 87 */
 DECL|macro|GDB_FR_CP0_REG14
-mdefine_line|#define GDB_FR_CP0_REG14&t;((GDB_FR_CP0_REG13) + 4)&t;/* 88 */
+mdefine_line|#define GDB_FR_CP0_REG14&t;((GDB_FR_CP0_REG13) + LONGSIZE)&t;/* 88 */
 DECL|macro|GDB_FR_CP0_PRID
-mdefine_line|#define GDB_FR_CP0_PRID&t;&t;((GDB_FR_CP0_REG14) + 4)&t;/* 89 */
+mdefine_line|#define GDB_FR_CP0_PRID&t;&t;((GDB_FR_CP0_REG14) + LONGSIZE)&t;/* 89 */
 DECL|macro|GDB_FR_SIZE
-mdefine_line|#define GDB_FR_SIZE&t;&t;((((GDB_FR_CP0_PRID) + 4) + (PTRSIZE-1)) &amp; ~(PTRSIZE-1))
+mdefine_line|#define GDB_FR_SIZE&t;&t;((((GDB_FR_CP0_PRID) + LONGSIZE) + (PTRSIZE-1)) &amp; ~(PTRSIZE-1))
 macro_line|#ifndef __ASSEMBLY__
 multiline_comment|/*&n; * This is the same as above, but for the high-level&n; * part of the GDB stub.&n; */
 DECL|struct|gdb_regs
@@ -532,6 +532,16 @@ c_func
 r_void
 )paren
 suffix:semicolon
+r_void
+id|set_async_breakpoint
+c_func
+(paren
+r_int
+r_int
+op_star
+id|epc
+)paren
+suffix:semicolon
 macro_line|#endif /* !__ASSEMBLY__ */
-macro_line|#endif /* __ASM_MIPS_GDB_STUB_H */
+macro_line|#endif /* _ASM_GDB_STUB_H */
 eof

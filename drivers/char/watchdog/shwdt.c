@@ -1,6 +1,7 @@
-multiline_comment|/*&n; * drivers/char/shwdt.c&n; *&n; * Watchdog driver for integrated watchdog in the SuperH processors.&n; *&n; * Copyright (C) 2001, 2002, 2003 Paul Mundt &lt;lethal@linux-sh.org&gt;&n; *&n; * This program is free software; you can redistribute it and/or modify it&n; * under the terms of the GNU General Public License as published by the&n; * Free Software Foundation; either version 2 of the License, or (at your&n; * option) any later version.&n; *&n; * 14-Dec-2001 Matt Domsch &lt;Matt_Domsch@dell.com&gt;&n; *     Added nowayout module option to override CONFIG_WATCHDOG_NOWAYOUT&n; *&n; * 19-Apr-2002 Rob Radez &lt;rob@osinvestor.com&gt;&n; *     Added expect close support, made emulated timeout runtime changeable&n; *     general cleanups, add some ioctls&n; */
+multiline_comment|/*&n; * drivers/char/watchdog/shwdt.c&n; *&n; * Watchdog driver for integrated watchdog in the SuperH processors.&n; *&n; * Copyright (C) 2001, 2002, 2003 Paul Mundt &lt;lethal@linux-sh.org&gt;&n; *&n; * This program is free software; you can redistribute it and/or modify it&n; * under the terms of the GNU General Public License as published by the&n; * Free Software Foundation; either version 2 of the License, or (at your&n; * option) any later version.&n; *&n; * 14-Dec-2001 Matt Domsch &lt;Matt_Domsch@dell.com&gt;&n; *     Added nowayout module option to override CONFIG_WATCHDOG_NOWAYOUT&n; *&n; * 19-Apr-2002 Rob Radez &lt;rob@osinvestor.com&gt;&n; *     Added expect close support, made emulated timeout runtime changeable&n; *     general cleanups, add some ioctls&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
+macro_line|#include &lt;linux/moduleparam.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/miscdevice.h&gt;
@@ -1057,12 +1058,14 @@ c_func
 l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|clock_division_ratio
 comma
-l_string|&quot;i&quot;
+r_int
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -1073,12 +1076,14 @@ comma
 l_string|&quot;Clock division ratio. Valid ranges are from 0x5 (1.31ms) to 0x7 (5.25ms). Defaults to 0x7.&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|nowayout
 comma
-l_string|&quot;i&quot;
+r_int
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC

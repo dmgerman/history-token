@@ -49,19 +49,6 @@ DECL|macro|MBX_TX_0
 mdefine_line|#define MBX_TX_0&t;2
 DECL|macro|MBX_TX_1
 mdefine_line|#define MBX_TX_1&t;3
-multiline_comment|/*&n; * mkdep doesn&squot;t spot this dependency, but that&squot;s okay, because zatm.c uses&n; * CONFIG_ATM_ZATM_EXACT_TS too.&n; */
-macro_line|#ifdef CONFIG_ATM_ZATM_EXACT_TS
-DECL|macro|POLL_INTERVAL
-mdefine_line|#define POLL_INTERVAL&t;60&t;/* TSR poll interval in seconds; must be &lt;=&n;&t;&t;&t;&t;   (2^31-1)/clock */
-DECL|macro|TIMER_SHIFT
-mdefine_line|#define TIMER_SHIFT&t;20&t;/* scale factor for fixed-point arithmetic;&n;&t;&t;&t;&t;   1 &lt;&lt; TIMER_SHIFT must be&n;&t;&t;&t;&t;     (1)  &lt;= (2^64-1)/(POLL_INTERVAL*clock),&n;&t;&t;&t;&t;     (2)  &gt;&gt; clock/10^6, and&n;&t;&t;&t;&t;     (3)  &lt;= (2^32-1)/1000  */
-DECL|macro|ADJ_IGN_THRES
-mdefine_line|#define ADJ_IGN_THRES&t;1000000&t;/* don&squot;t adjust if we&squot;re off by more than that&n;&t;&t;&t;&t;   many usecs - this filters clock corrections,&n;&t;&t;&t;&t;   time zone changes, etc. */
-DECL|macro|ADJ_REP_THRES
-mdefine_line|#define ADJ_REP_THRES&t;20000&t;/* report only differences of more than that&n;&t;&t;&t;&t;   many usecs (don&squot;t mention single lost timer&n;&t;&t;&t;&t;   ticks; 10 msec is only 0.03% anyway) */
-DECL|macro|ADJ_MSG_THRES
-mdefine_line|#define ADJ_MSG_THRES&t;5&t;/* issue complaints only if getting that many&n;&t;&t;&t;&t;   significant timer differences in a row */
-macro_line|#endif
 DECL|struct|zatm_vcc
 r_struct
 id|zatm_vcc
@@ -240,50 +227,6 @@ op_star
 id|more
 suffix:semicolon
 multiline_comment|/* other ZATM devices */
-macro_line|#ifdef CONFIG_ATM_ZATM_EXACT_TS
-multiline_comment|/*-------------------------------- timestamp calculation */
-DECL|member|last_clk
-id|u32
-id|last_clk
-suffix:semicolon
-multiline_comment|/* results of last poll: clock, */
-DECL|member|last_time
-r_struct
-id|timeval
-id|last_time
-suffix:semicolon
-multiline_comment|/*   virtual time and */
-DECL|member|last_real_time
-r_struct
-id|timeval
-id|last_real_time
-suffix:semicolon
-multiline_comment|/*   real time */
-DECL|member|factor
-id|u32
-id|factor
-suffix:semicolon
-multiline_comment|/* multiplication factor */
-DECL|member|timer_diffs
-r_int
-id|timer_diffs
-suffix:semicolon
-multiline_comment|/* number of significant deviations */
-DECL|member|timer_history
-r_struct
-id|zatm_t_hist
-id|timer_history
-(braket
-id|ZATM_TIMER_HISTORY_SIZE
-)braket
-suffix:semicolon
-multiline_comment|/* record of timer synchronizations */
-DECL|member|th_curr
-r_int
-id|th_curr
-suffix:semicolon
-multiline_comment|/* current position */
-macro_line|#endif
 multiline_comment|/*-------------------------------- general information */
 DECL|member|mem
 r_int
@@ -319,6 +262,10 @@ op_star
 id|pci_dev
 suffix:semicolon
 multiline_comment|/* PCI stuff */
+DECL|member|lock
+id|spinlock_t
+id|lock
+suffix:semicolon
 )brace
 suffix:semicolon
 DECL|macro|ZATM_DEV

@@ -6,7 +6,6 @@ macro_line|#ifndef CONFIG_SIBYTE_BUS_WATCHER
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/sibyte/sb1250_regs.h&gt;
 macro_line|#include &lt;asm/sibyte/sb1250_scd.h&gt;
-macro_line|#include &lt;asm/sibyte/64bit.h&gt;
 macro_line|#endif
 multiline_comment|/* SB1 definitions */
 multiline_comment|/* XXX should come from config1 XXX */
@@ -669,7 +668,7 @@ suffix:semicolon
 id|prom_printf
 c_func
 (paren
-l_string|&quot; cp0_errorepc ==   %08x&bslash;n&quot;
+l_string|&quot; c0_errorepc ==   %08x&bslash;n&quot;
 comma
 id|eepc
 )paren
@@ -677,7 +676,7 @@ suffix:semicolon
 id|prom_printf
 c_func
 (paren
-l_string|&quot; cp0_errctl   ==   %08x&quot;
+l_string|&quot; c0_errctl   ==   %08x&quot;
 comma
 id|errctl
 )paren
@@ -699,7 +698,7 @@ id|CP0_ERRCTL_ICACHE
 id|prom_printf
 c_func
 (paren
-l_string|&quot; cp0_cerr_i   ==   %08x&quot;
+l_string|&quot; c0_cerr_i   ==   %08x&quot;
 comma
 id|cerr_i
 )paren
@@ -791,7 +790,7 @@ id|CP0_ERRCTL_DCACHE
 id|prom_printf
 c_func
 (paren
-l_string|&quot; cp0_cerr_d   ==   %08x&quot;
+l_string|&quot; c0_cerr_d   ==   %08x&quot;
 comma
 id|cerr_d
 )paren
@@ -815,7 +814,7 @@ id|cerr_d
 id|prom_printf
 c_func
 (paren
-l_string|&quot; cp0_cerr_dpa == %010llx&bslash;n&quot;
+l_string|&quot; c0_cerr_dpa == %010llx&bslash;n&quot;
 comma
 id|cerr_dpa
 )paren

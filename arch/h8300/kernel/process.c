@@ -22,14 +22,14 @@ macro_line|#include &lt;asm/setup.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
 id|asmlinkage
 r_void
-id|ret_from_exception
+id|ret_from_fork
 c_func
 (paren
 r_void
 )paren
 suffix:semicolon
 multiline_comment|/*&n; * The idle loop on an H8/300..&n; */
-macro_line|#if !defined(CONFIG_H8300H_SIM)
+macro_line|#if !defined(CONFIG_H8300H_SIM) &amp;&amp; !defined(CONFIG_H8S_SIM)
 DECL|function|default_idle
 r_void
 id|default_idle
@@ -145,7 +145,7 @@ op_star
 id|__unused
 )paren
 (brace
-id|cli
+id|local_irq_disable
 c_func
 (paren
 )paren
@@ -165,7 +165,7 @@ c_func
 r_void
 )paren
 (brace
-id|cli
+id|local_irq_disable
 c_func
 (paren
 )paren
@@ -192,7 +192,7 @@ c_func
 r_void
 )paren
 (brace
-id|cli
+id|local_irq_disable
 c_func
 (paren
 )paren
@@ -253,21 +253,32 @@ suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;ER2: %08lx ER3: %08lx&bslash;n&quot;
+l_string|&quot;ER2: %08lx ER3: %08lx ER4: %08lx ER5: %08lx&bslash;n&quot;
 comma
 id|regs-&gt;er2
 comma
 id|regs-&gt;er3
+comma
+id|regs-&gt;er4
+comma
+id|regs-&gt;er5
+)paren
+suffix:semicolon
+id|printk
+c_func
+(paren
+l_string|&quot;ER6&squot; %08lx &quot;
+comma
+id|regs-&gt;er6
 )paren
 suffix:semicolon
 r_if
 c_cond
 (paren
-op_logical_neg
+id|user_mode
+c_func
 (paren
-id|regs-&gt;ccr
-op_amp
-l_int|0x10
+id|regs
 )paren
 )paren
 id|printk
@@ -279,6 +290,13 @@ id|rdusp
 c_func
 (paren
 )paren
+)paren
+suffix:semicolon
+r_else
+id|printk
+c_func
+(paren
+l_string|&quot;&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
@@ -310,14 +328,8 @@ id|flags
 r_int
 id|retval
 suffix:semicolon
-r_register
 r_int
 id|clone_arg
-id|asm
-c_func
-(paren
-l_string|&quot;er1&quot;
-)paren
 suffix:semicolon
 id|mm_segment_t
 id|fs
@@ -341,18 +353,20 @@ op_or
 id|CLONE_VM
 suffix:semicolon
 id|__asm__
-id|__volatile__
+c_func
 (paren
-l_string|&quot;mov.l&t;sp, er2&bslash;n&bslash;t&quot;
-l_string|&quot;mov.l  %1,er0&bslash;n&bslash;t&quot;
-l_string|&quot;mov.l  %5,er1&bslash;n&bslash;t&quot;
-l_string|&quot;trapa&t;#0&bslash;n&bslash;t&quot;
-l_string|&quot;cmp.l&t;sp, er2&bslash;n&bslash;t&quot;
-l_string|&quot;beq&t;1f&bslash;n&bslash;t&quot;
-l_string|&quot;mov.l&t;%3, er0&bslash;n&bslash;t&quot;
-l_string|&quot;jsr&t;@%4&bslash;n&bslash;t&quot;
-l_string|&quot;mov.l&t;%2, er0&bslash;n&bslash;t&quot;
-l_string|&quot;trapa&t;#0&bslash;n&quot;
+l_string|&quot;mov.l sp,er3&bslash;n&bslash;t&quot;
+l_string|&quot;sub.l er2,er2&bslash;n&bslash;t&quot;
+l_string|&quot;mov.l %2,er1&bslash;n&bslash;t&quot;
+l_string|&quot;mov.l %1,er0&bslash;n&bslash;t&quot;
+l_string|&quot;trapa #0&bslash;n&bslash;t&quot;
+l_string|&quot;cmp.l sp,er3&bslash;n&bslash;t&quot;
+l_string|&quot;beq 1f&bslash;n&bslash;t&quot;
+l_string|&quot;mov.l %4,er0&bslash;n&bslash;t&quot;
+l_string|&quot;mov.l %3,er1&bslash;n&bslash;t&quot;
+l_string|&quot;jsr @er1&bslash;n&bslash;t&quot;
+l_string|&quot;mov.l %5,er0&bslash;n&bslash;t&quot;
+l_string|&quot;trapa #0&bslash;n&quot;
 l_string|&quot;1:&bslash;n&bslash;t&quot;
 l_string|&quot;mov.l er0,%0&quot;
 suffix:colon
@@ -366,28 +380,26 @@ l_string|&quot;i&quot;
 id|__NR_clone
 )paren
 comma
-l_string|&quot;i&quot;
+l_string|&quot;g&quot;
 (paren
-id|__NR_exit
+id|clone_arg
 )paren
 comma
-l_string|&quot;r&quot;
-(paren
-id|arg
-)paren
-comma
-l_string|&quot;r&quot;
+l_string|&quot;g&quot;
 (paren
 id|fn
 )paren
 comma
-l_string|&quot;r&quot;
+l_string|&quot;g&quot;
 (paren
-id|clone_arg
+id|arg
+)paren
+comma
+l_string|&quot;i&quot;
+(paren
+id|__NR_exit
 )paren
 suffix:colon
-l_string|&quot;cc&quot;
-comma
 l_string|&quot;er0&quot;
 comma
 l_string|&quot;er1&quot;
@@ -445,13 +457,7 @@ op_star
 id|regs
 )paren
 (brace
-r_struct
-id|task_struct
-op_star
-id|p
-suffix:semicolon
-id|p
-op_assign
+r_return
 id|do_fork
 c_func
 (paren
@@ -475,22 +481,6 @@ comma
 l_int|NULL
 )paren
 suffix:semicolon
-r_return
-id|IS_ERR
-c_func
-(paren
-id|p
-)paren
-ques
-c_cond
-id|PTR_ERR
-c_func
-(paren
-id|p
-)paren
-suffix:colon
-id|p-&gt;pid
-suffix:semicolon
 )brace
 DECL|function|h8300_clone
 id|asmlinkage
@@ -511,11 +501,6 @@ suffix:semicolon
 r_int
 r_int
 id|newsp
-suffix:semicolon
-r_struct
-id|task_struct
-op_star
-id|p
 suffix:semicolon
 multiline_comment|/* syscall2 puts clone_flags in er1 and usp in er2 */
 id|clone_flags
@@ -539,8 +524,7 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|p
-op_assign
+r_return
 id|do_fork
 c_func
 (paren
@@ -559,22 +543,6 @@ l_int|NULL
 comma
 l_int|NULL
 )paren
-suffix:semicolon
-r_return
-id|IS_ERR
-c_func
-(paren
-id|p
-)paren
-ques
-c_cond
-id|PTR_ERR
-c_func
-(paren
-id|p
-)paren
-suffix:colon
-id|p-&gt;pid
 suffix:semicolon
 )brace
 DECL|function|copy_thread
@@ -613,31 +581,6 @@ id|pt_regs
 op_star
 id|childregs
 suffix:semicolon
-r_struct
-id|switch_stack
-op_star
-id|childstack
-comma
-op_star
-id|stack
-suffix:semicolon
-r_int
-r_int
-id|stack_offset
-comma
-op_star
-id|retp
-suffix:semicolon
-id|stack_offset
-op_assign
-id|KTHREAD_SIZE
-op_minus
-r_sizeof
-(paren
-r_struct
-id|pt_regs
-)paren
-suffix:semicolon
 id|childregs
 op_assign
 (paren
@@ -665,60 +608,17 @@ op_assign
 op_star
 id|regs
 suffix:semicolon
-id|retp
+id|childregs-&gt;retpc
 op_assign
 (paren
 r_int
 r_int
-op_star
 )paren
-id|regs
-op_minus
-l_int|2
-suffix:semicolon
-id|stack
-op_assign
-(paren
-(paren
-r_struct
-id|switch_stack
-op_star
-)paren
-id|retp
-)paren
-op_minus
-l_int|1
-suffix:semicolon
-id|childstack
-op_assign
-(paren
-(paren
-r_struct
-id|switch_stack
-op_star
-)paren
-id|childregs
-)paren
-op_minus
-l_int|1
-suffix:semicolon
-op_star
-id|childstack
-op_assign
-op_star
-id|stack
+id|ret_from_fork
 suffix:semicolon
 id|childregs-&gt;er0
 op_assign
 l_int|0
-suffix:semicolon
-id|childstack-&gt;retpc
-op_assign
-(paren
-r_int
-r_int
-)paren
-id|ret_from_exception
 suffix:semicolon
 id|p-&gt;thread.usp
 op_assign
@@ -730,11 +630,7 @@ op_assign
 r_int
 r_int
 )paren
-id|childstack
-suffix:semicolon
-id|p-&gt;thread.vfork_ret
-op_assign
-l_int|0
+id|childregs
 suffix:semicolon
 r_return
 l_int|0
@@ -757,11 +653,6 @@ op_star
 id|dump
 )paren
 (brace
-r_struct
-id|switch_stack
-op_star
-id|sw
-suffix:semicolon
 multiline_comment|/* changed the size calculations - should hopefully work better. lbt */
 id|dump-&gt;magic
 op_assign
@@ -853,19 +744,6 @@ id|dump
 )paren
 )paren
 suffix:semicolon
-id|sw
-op_assign
-(paren
-(paren
-r_struct
-id|switch_stack
-op_star
-)paren
-id|regs
-)paren
-op_minus
-l_int|1
-suffix:semicolon
 id|dump-&gt;regs.er0
 op_assign
 id|regs-&gt;er0
@@ -884,15 +762,15 @@ id|regs-&gt;er3
 suffix:semicolon
 id|dump-&gt;regs.er4
 op_assign
-id|sw-&gt;er4
+id|regs-&gt;er4
 suffix:semicolon
 id|dump-&gt;regs.er5
 op_assign
-id|sw-&gt;er5
+id|regs-&gt;er5
 suffix:semicolon
 id|dump-&gt;regs.er6
 op_assign
-id|sw-&gt;er6
+id|regs-&gt;er6
 suffix:semicolon
 id|dump-&gt;regs.orig_er0
 op_assign
@@ -961,7 +839,7 @@ op_star
 )paren
 op_amp
 id|dummy
-op_plus
+op_minus
 l_int|4
 )paren
 suffix:semicolon
@@ -1062,56 +940,17 @@ op_star
 id|tsk
 )paren
 (brace
-r_struct
-id|switch_stack
-op_star
-id|sw
-op_assign
-(paren
-r_struct
-id|switch_stack
-op_star
-)paren
-(paren
-id|tsk-&gt;thread.ksp
-)paren
-suffix:semicolon
-multiline_comment|/* Check whether the thread is blocked in resume() */
-r_if
-c_cond
-(paren
-id|sw-&gt;retpc
-OG
-(paren
-r_int
-r_int
-)paren
-id|scheduling_functions_start_here
-op_logical_and
-id|sw-&gt;retpc
-OL
-(paren
-r_int
-r_int
-)paren
-id|scheduling_functions_end_here
-)paren
 r_return
 (paren
 (paren
-r_int
-r_int
+r_struct
+id|pt_regs
 op_star
 )paren
-id|sw-&gt;er6
+id|tsk-&gt;thread.esp0
 )paren
-(braket
-l_int|1
-)braket
-suffix:semicolon
-r_else
-r_return
-id|sw-&gt;retpc
+op_member_access_from_pointer
+id|pc
 suffix:semicolon
 )brace
 DECL|function|get_wchan
@@ -1171,7 +1010,7 @@ op_assign
 (paren
 (paren
 r_struct
-id|switch_stack
+id|pt_regs
 op_star
 )paren
 id|p-&gt;thread.ksp

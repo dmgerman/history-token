@@ -91,8 +91,6 @@ DECL|variable|orig_loglevel
 r_static
 r_int
 id|orig_loglevel
-op_assign
-l_int|0
 suffix:semicolon
 DECL|variable|orig_fgconsole
 DECL|variable|orig_kmsg
@@ -116,8 +114,6 @@ DECL|variable|resume_status
 r_static
 r_int
 id|resume_status
-op_assign
-l_int|0
 suffix:semicolon
 DECL|variable|resume_file
 r_static
@@ -148,8 +144,6 @@ DECL|variable|pm_suspend_state
 r_static
 r_int
 id|pm_suspend_state
-op_assign
-l_int|0
 suffix:semicolon
 multiline_comment|/* Suspend pagedir is allocated before final copy, therefore it&n;   must be freed after resume &n;&n;   Warning: this is evil. There are actually two pagedirs at time of&n;   resume. One is &quot;pagedir_save&quot;, which is empty frame allocated at&n;   time of suspend, that must be freed. Second is &quot;pagedir_nosave&quot;, &n;   allocated at time of resume, that travels through memory not to&n;   collide with anything.&n; */
 DECL|variable|__nosavedata

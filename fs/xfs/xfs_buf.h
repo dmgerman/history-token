@@ -554,13 +554,11 @@ DECL|macro|xfs_incore_relse
 mdefine_line|#define xfs_incore_relse(buftarg,delwri_only,wait)&t;&bslash;&n;&t;xfs_relse_buftarg(buftarg)
 DECL|macro|xfs_baread
 mdefine_line|#define xfs_baread(target, rablkno, ralen)  &bslash;&n;&t;pagebuf_readahead((target), (rablkno), (ralen), PBF_DONT_BLOCK)
-DECL|macro|XFS_getrbuf
-mdefine_line|#define XFS_getrbuf(sleep,mp)&t;&bslash;&n;&t;pagebuf_get_empty((mp)-&gt;m_ddev_targp)
-DECL|macro|XFS_ngetrbuf
-mdefine_line|#define XFS_ngetrbuf(len,mp)&t;&bslash;&n;&t;pagebuf_get_no_daddr(len,(mp)-&gt;m_ddev_targp)
-DECL|macro|XFS_freerbuf
-mdefine_line|#define XFS_freerbuf(bp)&t;pagebuf_free(bp)
-DECL|macro|XFS_nfreerbuf
-mdefine_line|#define XFS_nfreerbuf(bp)&t;pagebuf_free(bp)
+DECL|macro|xfs_buf_get_empty
+mdefine_line|#define xfs_buf_get_empty(len, target)&t;pagebuf_get_empty((len), (target))
+DECL|macro|xfs_buf_get_noaddr
+mdefine_line|#define xfs_buf_get_noaddr(len, target)&t;pagebuf_get_no_daddr((len), (target))
+DECL|macro|xfs_buf_free
+mdefine_line|#define xfs_buf_free(bp)&t;&t;pagebuf_free(bp)
 macro_line|#endif
 eof

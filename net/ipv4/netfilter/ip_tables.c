@@ -870,10 +870,6 @@ id|nulldevname
 (braket
 id|IFNAMSIZ
 )braket
-op_assign
-(brace
-l_int|0
-)brace
 suffix:semicolon
 id|u_int16_t
 id|offset

@@ -2900,7 +2900,7 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;HYSDN Card%d: illegal PLCI&bslash;n&quot;
+l_string|&quot;HYSDN Card%d: invalid PLCI&bslash;n&quot;
 comma
 id|card-&gt;myid
 )paren

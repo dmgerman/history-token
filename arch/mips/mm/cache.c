@@ -1,5 +1,6 @@
 multiline_comment|/*&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1994 - 2003 by Ralf Baechle&n; */
 macro_line|#include &lt;linux/kernel.h&gt;
+macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;asm/cacheflush.h&gt;
@@ -208,4 +209,11 @@ id|page
 suffix:semicolon
 )brace
 )brace
+DECL|variable|flush_dcache_page
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|flush_dcache_page
+)paren
+suffix:semicolon
 eof

@@ -1,7 +1,7 @@
 multiline_comment|/*&n; * Copyright (C) 2000 MIPS Technologies, Inc.  All rights reserved.&n; * Carsten Langgaard, carstenl@mips.com&n; *&n; * Copyright 2001 MontaVista Software Inc.&n; * Author: Jun Sun, jsun@mvista.com or jsun@junsun.net&n; *&n; *  This program is free software; you can distribute it and/or modify it&n; *  under the terms of the GNU General Public License (Version 2) as&n; *  published by the Free Software Foundation.&n; *&n; *  This program is distributed in the hope it will be useful, but WITHOUT&n; *  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or&n; *  FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License&n; *  for more details.&n; *&n; *  You should have received a copy of the GNU General Public License along&n; *  with this program; if not, write to the Free Software Foundation, Inc.,&n; *  59 Temple Place - Suite 330, Boston MA 02111-1307, USA.&n; */
-macro_line|#ifndef _ASM_GT64120_GT64120_H
-DECL|macro|_ASM_GT64120_GT64120_H
-mdefine_line|#define _ASM_GT64120_GT64120_H
+macro_line|#ifndef __ASM_GT64120_GT64120_H
+DECL|macro|__ASM_GT64120_GT64120_H
+mdefine_line|#define __ASM_GT64120_GT64120_H
 DECL|macro|MSK
 mdefine_line|#define MSK(n)                    ((1 &lt;&lt; (n)) - 1)
 multiline_comment|/*&n; *  Register offset addresses&n; */
@@ -64,7 +64,7 @@ mdefine_line|#define GT_PCI1M0REMAP_OFS&t;0x110
 DECL|macro|GT_PCI1M1REMAP_OFS
 mdefine_line|#define GT_PCI1M1REMAP_OFS&t;0x118
 DECL|macro|GT_SCS0LD_OFS
-mdefine_line|#define GT_SCS0LD_OFS&t;&t;0x400&t;
+mdefine_line|#define GT_SCS0LD_OFS&t;&t;0x400
 DECL|macro|GT_SCS0HD_OFS
 mdefine_line|#define GT_SCS0HD_OFS&t;&t;0x404
 DECL|macro|GT_SCS1LD_OFS
@@ -602,14 +602,15 @@ mdefine_line|#define GT_MAX_BANKSIZE&t;&t;(256 * 1024 * 1024)   /* Max 256MB ban
 DECL|macro|GT_LATTIM_MIN
 mdefine_line|#define GT_LATTIM_MIN    &t;6&t;&t;      /* Minimum lat&t;*/
 multiline_comment|/***********************************************************************&n; *              BOARD-DEPENDENT SECTIONS                               *&n; ***********************************************************************&n; */
-multiline_comment|/* &n; * include asm/gt64120/&lt;board&gt;/gt64120_dep.h file&n; */
+multiline_comment|/*&n; * include asm/gt64120/&lt;board&gt;/gt64120_dep.h file&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
+macro_line|#include &lt;linux/pci.h&gt;
 macro_line|#if defined(CONFIG_MOMENCO_OCELOT)
 macro_line|#include &lt;asm/gt64120/momenco_ocelot/gt64120_dep.h&gt;
 macro_line|#endif
 multiline_comment|/*&n; * The gt64120_dep.h file must define the following macros&n; *&n; *   GT_READ(ofs, data_pointer)&n; *   GT_WRITE(ofs, data)           - read/write GT64120 registers in 32bit&n; *&n; *   TIMER &t;- gt64120 timer irq, temporary solution until&n; *&t;&t;  full gt64120 cascade interrupt support is in place&n; */
-multiline_comment|/*&n; * Board-dependent functions, which must be defined in &n; * arch/mips/gt64120/&lt;board&gt;/pci.c file.&n; *&n; * This function is called by pcibios_fixup_bus(bus), which in turn is&n; * invoked a bus is scanned.  You typically fixes IRQ numbers in this routine.&n; */
+multiline_comment|/*&n; * Board-dependent functions, which must be defined in&n; * arch/mips/gt64120/&lt;board&gt;/pci.c file.&n; *&n; * This function is called by pcibios_fixup_bus(bus), which in turn is&n; * invoked a bus is scanned.  You typically fixes IRQ numbers in this routine.&n; */
 r_extern
 r_void
 id|__init
@@ -622,5 +623,5 @@ op_star
 id|bus
 )paren
 suffix:semicolon
-macro_line|#endif /* _ASM_GT64120_GT64120_H */
+macro_line|#endif /* __ASM_GT64120_GT64120_H */
 eof

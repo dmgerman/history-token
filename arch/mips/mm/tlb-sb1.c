@@ -4,10 +4,20 @@ macro_line|#include &lt;asm/mmu_context.h&gt;
 macro_line|#include &lt;asm/bootinfo.h&gt;
 macro_line|#include &lt;asm/cpu.h&gt;
 r_extern
-r_char
+r_void
 id|except_vec0_sb1
-(braket
-)braket
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|except_vec1_sb1
+c_func
+(paren
+r_void
+)paren
 suffix:semicolon
 multiline_comment|/* Dump the current entry* and pagemask registers */
 DECL|function|dump_cur_tlb_regs
@@ -45,6 +55,7 @@ l_string|&quot;.set push             &bslash;n&quot;
 l_string|&quot;.set noreorder        &bslash;n&quot;
 l_string|&quot;.set mips64           &bslash;n&quot;
 l_string|&quot;.set noat             &bslash;n&quot;
+l_string|&quot;     tlbr             &bslash;n&quot;
 l_string|&quot;     dmfc0  $1, $10   &bslash;n&quot;
 l_string|&quot;     dsrl32 %0, $1, 0 &bslash;n&quot;
 l_string|&quot;     sll    %1, $1, 0 &bslash;n&quot;
@@ -205,11 +216,6 @@ c_func
 l_string|&quot;&bslash;n%02i &quot;
 comma
 id|entry
-)paren
-suffix:semicolon
-id|tlb_read
-c_func
-(paren
 )paren
 suffix:semicolon
 id|dump_cur_tlb_regs
@@ -1419,35 +1425,11 @@ c_func
 r_void
 )paren
 (brace
-id|u32
-id|config1
-suffix:semicolon
 id|write_c0_pagemask
 c_func
 (paren
 id|PM_4K
 )paren
-suffix:semicolon
-id|config1
-op_assign
-id|read_c0_config1
-c_func
-(paren
-)paren
-suffix:semicolon
-id|current_cpu_data.tlbsize
-op_assign
-(paren
-(paren
-id|config1
-op_rshift
-l_int|25
-)paren
-op_amp
-l_int|0x3f
-)paren
-op_plus
-l_int|1
 suffix:semicolon
 multiline_comment|/*&n;&t; * We don&squot;t know what state the firmware left the TLB&squot;s in, so this is&n;&t; * the ultra-conservative way to flush the TLB&squot;s and avoid machine&n;&t; * check exceptions due to duplicate TLB entries&n;&t; */
 id|sb1_sanitize_tlb
@@ -1455,6 +1437,7 @@ c_func
 (paren
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_MIPS32
 id|memcpy
 c_func
 (paren
@@ -1479,5 +1462,36 @@ op_plus
 l_int|0x80
 )paren
 suffix:semicolon
+macro_line|#endif
+macro_line|#ifdef CONFIG_MIPS64
+id|memcpy
+c_func
+(paren
+(paren
+r_void
+op_star
+)paren
+id|KSEG0
+op_plus
+l_int|0x80
+comma
+id|except_vec1_sb1
+comma
+l_int|0x80
+)paren
+suffix:semicolon
+id|flush_icache_range
+c_func
+(paren
+id|KSEG0
+op_plus
+l_int|0x80
+comma
+id|KSEG0
+op_plus
+l_int|0x100
+)paren
+suffix:semicolon
+macro_line|#endif
 )brace
 eof

@@ -93,14 +93,13 @@ l_string|&quot;3Com Token Link Velocity&quot;
 comma
 )brace
 suffix:semicolon
-DECL|variable|__initdata
+DECL|variable|tmspci_pci_tbl
 r_static
 r_struct
 id|pci_device_id
 id|tmspci_pci_tbl
 (braket
 )braket
-id|__initdata
 op_assign
 (brace
 (brace

@@ -5,10 +5,10 @@ macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;asm/bootinfo.h&gt;
 macro_line|#include &lt;asm/mipsregs.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
+macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/sibyte/sb1250.h&gt;
 macro_line|#include &lt;asm/sibyte/sb1250_regs.h&gt;
 macro_line|#include &lt;asm/sibyte/sb1250_scd.h&gt;
-macro_line|#include &lt;asm/sibyte/64bit.h&gt;
 DECL|variable|sb1_pass
 r_int
 r_int
@@ -28,6 +28,11 @@ DECL|variable|periph_rev
 r_int
 r_int
 id|periph_rev
+suffix:semicolon
+DECL|variable|zbbus_mhz
+r_int
+r_int
+id|zbbus_mhz
 suffix:semicolon
 DECL|variable|soc_str
 r_static
@@ -278,6 +283,19 @@ l_string|&quot;C0&quot;
 suffix:semicolon
 r_break
 suffix:semicolon
+r_case
+id|K_SYS_REVISION_BCM1250_C1
+suffix:colon
+id|periph_rev
+op_assign
+l_int|3
+suffix:semicolon
+id|pass_str
+op_assign
+l_string|&quot;C1&quot;
+suffix:semicolon
+r_break
+suffix:semicolon
 r_default
 suffix:colon
 (brace
@@ -423,6 +441,9 @@ r_uint64
 id|sys_rev
 suffix:semicolon
 r_int
+id|plldiv
+suffix:semicolon
+r_int
 id|bad_config
 op_assign
 l_int|0
@@ -438,7 +459,7 @@ l_int|0xff
 suffix:semicolon
 id|sys_rev
 op_assign
-id|in64
+id|__raw_readq
 c_func
 (paren
 id|IO_SPACE_BASE
@@ -484,14 +505,66 @@ l_int|NULL
 )paren
 suffix:semicolon
 )brace
+id|plldiv
+op_assign
+id|G_SYS_PLL_DIV
+c_func
+(paren
+id|__raw_readq
+c_func
+(paren
+id|IO_SPACE_BASE
+op_or
+id|A_SCD_SYSTEM_CFG
+)paren
+)paren
+suffix:semicolon
+id|zbbus_mhz
+op_assign
+(paren
+(paren
+id|plldiv
+op_rshift
+l_int|1
+)paren
+op_star
+l_int|50
+)paren
+op_plus
+(paren
+(paren
+id|plldiv
+op_amp
+l_int|1
+)paren
+op_star
+l_int|25
+)paren
+suffix:semicolon
+macro_line|#ifndef CONFIG_SB1_PASS_1_WORKAROUNDS
+id|__raw_writeq
+c_func
+(paren
+l_int|0
+comma
+id|KSEG1
+op_plus
+id|A_SCD_ZBBUS_CYCLE_COUNT
+)paren
+suffix:semicolon
+macro_line|#endif
 id|prom_printf
 c_func
 (paren
-l_string|&quot;SiByte %s %s (SB1 rev %d)&bslash;n&quot;
+l_string|&quot;Broadcom SiByte %s %s @ %d MHz (SB1 rev %d)&bslash;n&quot;
 comma
 id|soc_str
 comma
 id|pass_str
+comma
+id|zbbus_mhz
+op_star
+l_int|2
 comma
 id|sb1_pass
 )paren

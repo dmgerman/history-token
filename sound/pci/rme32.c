@@ -429,14 +429,13 @@ DECL|typedef|rme32_t
 )brace
 id|rme32_t
 suffix:semicolon
-DECL|variable|__devinitdata
+DECL|variable|snd_rme32_ids
 r_static
 r_struct
 id|pci_device_id
 id|snd_rme32_ids
 (braket
 )braket
-id|__devinitdata
 op_assign
 (brace
 (brace

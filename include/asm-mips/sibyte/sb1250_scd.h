@@ -1,4 +1,4 @@
-multiline_comment|/*  *********************************************************************&n;    *  SB1250 Board Support Package&n;    *  &n;    *  SCD Constants and Macros&t;&t;&t;File: sb1250_scd.h&n;    *  &n;    *  This module contains constants and macros useful for&n;    *  manipulating the System Control and Debug module on the 1250.&n;    *  &n;    *  SB1250 specification level:  User&squot;s manual 1/02/02&n;    *  &n;    *  Author:  Mitch Lichtenberg (mpl@broadcom.com)&n;    *  &n;    *********************************************************************  &n;    *&n;    *  Copyright 2000,2001,2002,2003&n;    *  Broadcom Corporation. All rights reserved.&n;    *  &n;    *  This program is free software; you can redistribute it and/or &n;    *  modify it under the terms of the GNU General Public License as &n;    *  published by the Free Software Foundation; either version 2 of &n;    *  the License, or (at your option) any later version.&n;    *&n;    *  This program is distributed in the hope that it will be useful,&n;    *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n;    *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n;    *  GNU General Public License for more details.&n;    *&n;    *  You should have received a copy of the GNU General Public License&n;    *  along with this program; if not, write to the Free Software&n;    *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, &n;    *  MA 02111-1307 USA&n;    ********************************************************************* */
+multiline_comment|/*  *********************************************************************&n;    *  SB1250 Board Support Package&n;    *  &n;    *  SCD Constants and Macros&t;&t;&t;File: sb1250_scd.h&n;    *  &n;    *  This module contains constants and macros useful for&n;    *  manipulating the System Control and Debug module on the 1250.&n;    *  &n;    *  SB1250 specification level:  User&squot;s manual 1/02/02&n;    *  &n;    *  Author:  Mitch Lichtenberg&n;    *  &n;    *********************************************************************  &n;    *&n;    *  Copyright 2000,2001,2002,2003&n;    *  Broadcom Corporation. All rights reserved.&n;    *  &n;    *  This program is free software; you can redistribute it and/or &n;    *  modify it under the terms of the GNU General Public License as &n;    *  published by the Free Software Foundation; either version 2 of &n;    *  the License, or (at your option) any later version.&n;    *&n;    *  This program is distributed in the hope that it will be useful,&n;    *  but WITHOUT ANY WARRANTY; without even the implied warranty of&n;    *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n;    *  GNU General Public License for more details.&n;    *&n;    *  You should have received a copy of the GNU General Public License&n;    *  along with this program; if not, write to the Free Software&n;    *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, &n;    *  MA 02111-1307 USA&n;    ********************************************************************* */
 macro_line|#ifndef _SB1250_SCD_H
 DECL|macro|_SB1250_SCD_H
 mdefine_line|#define _SB1250_SCD_H
@@ -28,6 +28,8 @@ DECL|macro|K_SYS_REVISION_BCM1250_B2
 mdefine_line|#define K_SYS_REVISION_BCM1250_B2&t;17
 DECL|macro|K_SYS_REVISION_BCM1250_PASS3
 mdefine_line|#define K_SYS_REVISION_BCM1250_PASS3&t;32
+DECL|macro|K_SYS_REVISION_BCM1250_C1
+mdefine_line|#define K_SYS_REVISION_BCM1250_C1&t;33
 multiline_comment|/* XXX: discourage people from using these constants.  */
 DECL|macro|K_SYS_REVISION_PASS1
 mdefine_line|#define K_SYS_REVISION_PASS1&t;    K_SYS_REVISION_BCM1250_PASS1
@@ -99,6 +101,58 @@ DECL|macro|V_SYS_WID
 mdefine_line|#define V_SYS_WID(x)                _SB_MAKEVALUE(x,S_SYS_WID)
 DECL|macro|G_SYS_WID
 mdefine_line|#define G_SYS_WID(x)                _SB_GETVALUE(x,S_SYS_WID,M_SYS_WID)
+multiline_comment|/* System Manufacturing Register&n;* Register: SCD_SYSTEM_MANUF&n;*/
+multiline_comment|/* Wafer ID: bits 31:0 */
+DECL|macro|S_SYS_WAFERID1_200
+mdefine_line|#define S_SYS_WAFERID1_200        _SB_MAKE64(0)
+DECL|macro|M_SYS_WAFERID1_200
+mdefine_line|#define M_SYS_WAFERID1_200        _SB_MAKEMASK(32,S_SYS_WAFERID1_200)
+DECL|macro|V_SYS_WAFERID1_200
+mdefine_line|#define V_SYS_WAFERID1_200(x)     _SB_MAKEVALUE(x,S_SYS_WAFERID1_200)
+DECL|macro|G_SYS_WAFERID1_200
+mdefine_line|#define G_SYS_WAFERID1_200(x)     _SB_GETVALUE(x,S_SYS_WAFERID1_200,M_SYS_WAFERID1_200)
+DECL|macro|S_SYS_BIN
+mdefine_line|#define S_SYS_BIN                 _SB_MAKE64(32)
+DECL|macro|M_SYS_BIN
+mdefine_line|#define M_SYS_BIN                 _SB_MAKEMASK(4,S_SYS_BIN)
+DECL|macro|V_SYS_BIN
+mdefine_line|#define V_SYS_BIN                 _SB_MAKEVALUE(x,S_SYS_BIN)
+DECL|macro|G_SYS_BIN
+mdefine_line|#define G_SYS_BIN                 _SB_GETVALUE(x,S_SYS_BIN,M_SYS_BIN)
+multiline_comment|/* Wafer ID: bits 39:36 */
+DECL|macro|S_SYS_WAFERID2_200
+mdefine_line|#define S_SYS_WAFERID2_200        _SB_MAKE64(36)
+DECL|macro|M_SYS_WAFERID2_200
+mdefine_line|#define M_SYS_WAFERID2_200        _SB_MAKEMASK(4,S_SYS_WAFERID2_200)
+DECL|macro|V_SYS_WAFERID2_200
+mdefine_line|#define V_SYS_WAFERID2_200(x)     _SB_MAKEVALUE(x,S_SYS_WAFERID2_200)
+DECL|macro|G_SYS_WAFERID2_200
+mdefine_line|#define G_SYS_WAFERID2_200(x)     _SB_GETVALUE(x,S_SYS_WAFERID2_200,M_SYS_WAFERID2_200)
+multiline_comment|/* Wafer ID: bits 39:0 */
+DECL|macro|S_SYS_WAFERID_300
+mdefine_line|#define S_SYS_WAFERID_300         _SB_MAKE64(0)
+DECL|macro|M_SYS_WAFERID_300
+mdefine_line|#define M_SYS_WAFERID_300         _SB_MAKEMASK(40,S_SYS_WAFERID_300)
+DECL|macro|V_SYS_WAFERID_300
+mdefine_line|#define V_SYS_WAFERID_300(x)      _SB_MAKEVALUE(x,S_SYS_WAFERID_300)
+DECL|macro|G_SYS_WAFERID_300
+mdefine_line|#define G_SYS_WAFERID_300(x)      _SB_GETVALUE(x,S_SYS_WAFERID_300,M_SYS_WAFERID_300)
+DECL|macro|S_SYS_XPOS
+mdefine_line|#define S_SYS_XPOS                _SB_MAKE64(40)
+DECL|macro|M_SYS_XPOS
+mdefine_line|#define M_SYS_XPOS                _SB_MAKEMASK(6,S_SYS_XPOS)
+DECL|macro|V_SYS_XPOS
+mdefine_line|#define V_SYS_XPOS(x)             _SB_MAKEVALUE(x,S_SYS_XPOS)
+DECL|macro|G_SYS_XPOS
+mdefine_line|#define G_SYS_XPOS(x)             _SB_GETVALUE(x,S_SYS_XPOS,M_SYS_XPOS)
+DECL|macro|S_SYS_YPOS
+mdefine_line|#define S_SYS_YPOS                _SB_MAKE64(46)
+DECL|macro|M_SYS_YPOS
+mdefine_line|#define M_SYS_YPOS                _SB_MAKEMASK(6,S_SYS_YPOS)
+DECL|macro|V_SYS_YPOS
+mdefine_line|#define V_SYS_YPOS(x)             _SB_MAKEVALUE(x,S_SYS_YPOS)
+DECL|macro|G_SYS_YPOS
+mdefine_line|#define G_SYS_YPOS(x)             _SB_GETVALUE(x,S_SYS_YPOS,M_SYS_YPOS)
 multiline_comment|/*&n; * System Config Register (Table 4-2)&n; * Register: SCD_SYSTEM_CFG&n; */
 DECL|macro|M_SYS_LDT_PLL_BYP
 mdefine_line|#define M_SYS_LDT_PLL_BYP           _SB_MAKEMASK1(3)
@@ -252,8 +306,35 @@ DECL|macro|S_SCD_WDOG_CNT
 mdefine_line|#define S_SCD_WDOG_CNT              0
 DECL|macro|M_SCD_WDOG_CNT
 mdefine_line|#define M_SCD_WDOG_CNT              _SB_MAKEMASK(23,S_SCD_WDOG_CNT)
+DECL|macro|S_SCD_WDOG_ENABLE
+mdefine_line|#define S_SCD_WDOG_ENABLE           0
 DECL|macro|M_SCD_WDOG_ENABLE
-mdefine_line|#define M_SCD_WDOG_ENABLE           _SB_MAKEMASK1(0)
+mdefine_line|#define M_SCD_WDOG_ENABLE           _SB_MAKEMASK1(S_SCD_WDOG_ENABLE)
+DECL|macro|S_SCD_WDOG_RESET_TYPE
+mdefine_line|#define S_SCD_WDOG_RESET_TYPE       2
+DECL|macro|M_SCD_WDOG_RESET_TYPE
+mdefine_line|#define M_SCD_WDOG_RESET_TYPE       _SB_MAKEMASK(3,S_SCD_WDOG_RESET_TYPE)
+DECL|macro|V_SCD_WDOG_RESET_TYPE
+mdefine_line|#define V_SCD_WDOG_RESET_TYPE(x)    _SB_MAKEVALUE(x,S_SCD_WDOG_RESET_TYPE)
+DECL|macro|G_SCD_WDOG_RESET_TYPE
+mdefine_line|#define G_SCD_WDOG_RESET_TYPE(x)    _SB_GETVALUE(x,S_SCD_WDOG_RESET_TYPE,M_SCD_WDOG_RESET_TYPE)
+DECL|macro|K_SCD_WDOG_RESET_FULL
+mdefine_line|#define K_SCD_WDOG_RESET_FULL       0&t;/* actually, (x &amp; 1) == 0  */
+DECL|macro|K_SCD_WDOG_RESET_SOFT
+mdefine_line|#define K_SCD_WDOG_RESET_SOFT       1
+DECL|macro|K_SCD_WDOG_RESET_CPU0
+mdefine_line|#define K_SCD_WDOG_RESET_CPU0       3
+DECL|macro|K_SCD_WDOG_RESET_CPU1
+mdefine_line|#define K_SCD_WDOG_RESET_CPU1       5
+DECL|macro|K_SCD_WDOG_RESET_BOTH_CPUS
+mdefine_line|#define K_SCD_WDOG_RESET_BOTH_CPUS  7
+multiline_comment|/* This feature is present in 1250 C0 and later, but *not* in 112x A revs.  */
+macro_line|#if SIBYTE_HDR_FEATURE(1250, PASS3)
+DECL|macro|S_SCD_WDOG_HAS_RESET
+mdefine_line|#define S_SCD_WDOG_HAS_RESET        8
+DECL|macro|M_SCD_WDOG_HAS_RESET
+mdefine_line|#define M_SCD_WDOG_HAS_RESET        _SB_MAKEMASK1(S_SCD_WDOG_HAS_RESET)
+macro_line|#endif
 multiline_comment|/*&n; * Timer Registers (Table 4-11) (Table 4-12) (Table 4-13)&n; */
 DECL|macro|V_SCD_TIMER_FREQ
 mdefine_line|#define V_SCD_TIMER_FREQ            1000000
