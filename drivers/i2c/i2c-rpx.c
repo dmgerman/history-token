@@ -375,7 +375,6 @@ id|rpx_ops
 )paren
 suffix:semicolon
 )brace
-macro_line|#ifdef MODULE
 id|MODULE_AUTHOR
 c_func
 (paren
@@ -402,5 +401,4 @@ c_func
 id|i2c_rpx_exit
 )paren
 suffix:semicolon
-macro_line|#endif
 eof

@@ -1199,7 +1199,7 @@ c_func
 )paren
 suffix:semicolon
 )brace
-DECL|function|MP_translation_info
+macro_line|#if 0
 r_static
 r_void
 id|__init
@@ -1266,7 +1266,6 @@ l_int|1
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * Read/parse the MPC oem tables&n; */
-DECL|function|smp_read_mpc_oem
 r_static
 r_void
 id|__init
@@ -1473,6 +1472,7 @@ suffix:semicolon
 )brace
 )brace
 )brace
+macro_line|#endif
 multiline_comment|/*&n; * Read/parse the MPC&n; */
 DECL|function|smp_read_mpc
 r_static

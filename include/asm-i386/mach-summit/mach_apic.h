@@ -209,8 +209,8 @@ id|apicid
 )paren
 suffix:semicolon
 )brace
-DECL|macro|wakeup_secondary_cpu
-mdefine_line|#define wakeup_secondary_cpu(apicid, start_eip) &bslash;&n;&t;wakeup_secondary_via_INIT(apicid, start_eip)
+DECL|macro|WAKE_SECONDARY_VIA_INIT
+mdefine_line|#define WAKE_SECONDARY_VIA_INIT
 DECL|function|setup_portio_remap
 r_static
 r_inline

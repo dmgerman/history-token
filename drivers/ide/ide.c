@@ -5308,12 +5308,7 @@ op_eq
 l_int|0
 )paren
 (brace
-r_if
-c_cond
-(paren
-id|driver-&gt;owner
-)paren
-id|__MOD_DEC_USE_COUNT
+id|module_put
 c_func
 (paren
 id|driver-&gt;owner
@@ -5335,12 +5330,7 @@ op_amp
 id|drivers_lock
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|driver-&gt;owner
-)paren
-id|__MOD_DEC_USE_COUNT
+id|module_put
 c_func
 (paren
 id|driver-&gt;owner

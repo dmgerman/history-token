@@ -7097,12 +7097,7 @@ c_func
 id|inp-&gt;i_rdev
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|device-&gt;discipline-&gt;owner
-)paren
-id|__MOD_DEC_USE_COUNT
+id|module_put
 c_func
 (paren
 id|device-&gt;discipline-&gt;owner

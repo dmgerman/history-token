@@ -131,7 +131,7 @@ multiline_comment|/* starting block of floppy-based RAM disk image */
 )brace
 suffix:semicolon
 multiline_comment|/* describes where the compressed ramdisk image lives (virtual address) */
-multiline_comment|/*&n; * this one accidentally used virtual addresses - as such,&n; * its depreciated.&n; */
+multiline_comment|/*&n; * this one accidentally used virtual addresses - as such,&n; * it&squot;s deprecated.&n; */
 DECL|macro|ATAG_INITRD
 mdefine_line|#define ATAG_INITRD&t;0x54410005
 multiline_comment|/* describes where the compressed ramdisk image lives (physical address) */

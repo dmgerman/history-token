@@ -2881,12 +2881,7 @@ comma
 id|dname-&gt;namebuf
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|hd-&gt;fops-&gt;owner
-)paren
-id|__MOD_DEC_USE_COUNT
+id|module_put
 c_func
 (paren
 id|hd-&gt;fops-&gt;owner
