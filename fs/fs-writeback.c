@@ -1079,11 +1079,6 @@ op_amp
 id|inode_lock
 )paren
 suffix:semicolon
-id|blk_run_queues
-c_func
-(paren
-)paren
-suffix:semicolon
 )brace
 multiline_comment|/*&n; * writeback and wait upon the filesystem&squot;s dirty inodes.  The caller will&n; * do this in two passes - one to write, and one to wait.  WB_SYNC_HOLD is&n; * used to park the written inodes on sb-&gt;s_dirty for the wait pass.&n; *&n; * A finite limit is set on the number of pages which will be written.&n; * To prevent infinite livelock of sys_sync().&n; */
 DECL|function|sync_inodes_sb

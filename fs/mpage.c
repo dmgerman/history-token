@@ -2352,11 +2352,6 @@ id|bdi
 )paren
 )paren
 (brace
-id|blk_run_queues
-c_func
-(paren
-)paren
-suffix:semicolon
 id|wbc-&gt;encountered_congestion
 op_assign
 l_int|1
@@ -2644,11 +2639,6 @@ id|bdi
 )paren
 )paren
 (brace
-id|blk_run_queues
-c_func
-(paren
-)paren
-suffix:semicolon
 id|wbc-&gt;encountered_congestion
 op_assign
 l_int|1
