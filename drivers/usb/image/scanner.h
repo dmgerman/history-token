@@ -1735,6 +1735,9 @@ mdefine_line|#define SCANNER_IOCTL_PRODUCT _IOR(&squot;U&squot;, 0x21, int)
 multiline_comment|/* send/recv a control message to the scanner */
 DECL|macro|SCANNER_IOCTL_CTRLMSG
 mdefine_line|#define SCANNER_IOCTL_CTRLMSG _IOWR(&squot;U&squot;, 0x22, struct usb_ctrlrequest)
+multiline_comment|/* USB bInterfaceClass used by Hewlett-Packard ScanJet 3300c and Genius HR6&n;   USB - Vivid III */
+DECL|macro|SCN_CLASS_SCANJET
+mdefine_line|#define SCN_CLASS_SCANJET 16
 macro_line|#ifdef CONFIG_USB_DYNAMIC_MINORS
 DECL|macro|SCN_MAX_MNR
 mdefine_line|#define SCN_MAX_MNR 256

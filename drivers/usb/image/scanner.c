@@ -1972,7 +1972,7 @@ l_int|0
 dot
 id|desc.bInterfaceClass
 op_ne
-l_int|16
+id|SCN_CLASS_SCANJET
 )paren
 (brace
 id|dbg
