@@ -2088,7 +2088,7 @@ id|flags
 suffix:semicolon
 )brace
 )brace
-id|qh_unput
+id|qh_put
 (paren
 id|ehci
 comma

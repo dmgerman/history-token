@@ -699,7 +699,7 @@ l_int|0
 )paren
 )paren
 (brace
-id|qh_unput
+id|qh_put
 (paren
 id|ehci
 comma
@@ -3183,7 +3183,7 @@ l_int|0
 (brace
 id|urb-&gt;hcpriv
 op_assign
-id|qh_put
+id|qh_get
 (paren
 id|qh
 )paren
@@ -3202,7 +3202,7 @@ id|qh_link_async
 (paren
 id|ehci
 comma
-id|qh_put
+id|qh_get
 (paren
 id|qh
 )paren
@@ -3265,7 +3265,7 @@ id|qh-&gt;qh_next.qh
 op_assign
 l_int|0
 suffix:semicolon
-id|qh_unput
+id|qh_put
 (paren
 id|ehci
 comma
@@ -3316,7 +3316,7 @@ id|qh
 )paren
 suffix:semicolon
 r_else
-id|qh_unput
+id|qh_put
 (paren
 id|ehci
 comma
@@ -3393,7 +3393,7 @@ id|ehci-&gt;reclaim
 op_assign
 id|qh
 op_assign
-id|qh_put
+id|qh_get
 (paren
 id|qh
 )paren
@@ -3654,7 +3654,7 @@ id|qh-&gt;qtd_list
 singleline_comment|// dbg_qh (&quot;scan_async&quot;, ehci, qh);
 id|qh
 op_assign
-id|qh_put
+id|qh_get
 (paren
 id|qh
 )paren
@@ -3686,7 +3686,7 @@ comma
 id|flags
 )paren
 suffix:semicolon
-id|qh_unput
+id|qh_put
 (paren
 id|ehci
 comma
