@@ -5055,7 +5055,7 @@ id|substream
 comma
 id|SNDRV_DMA_TYPE_ISA
 comma
-id|snd_pcm_isa_flags
+id|snd_pcm_dma_flags
 c_func
 (paren
 l_int|0
@@ -5127,7 +5127,7 @@ id|substream
 comma
 id|SNDRV_DMA_TYPE_ISA
 comma
-id|snd_pcm_isa_flags
+id|snd_pcm_dma_flags
 c_func
 (paren
 l_int|0
