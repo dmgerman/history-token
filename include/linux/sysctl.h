@@ -599,6 +599,18 @@ op_assign
 l_int|22
 comma
 multiline_comment|/* int: Maximum number of mmaps/address-space */
+DECL|enumerator|VM_LAPTOP_MODE
+id|VM_LAPTOP_MODE
+op_assign
+l_int|23
+comma
+multiline_comment|/* vm laptop mode */
+DECL|enumerator|VM_BLOCK_DUMP
+id|VM_BLOCK_DUMP
+op_assign
+l_int|24
+comma
+multiline_comment|/* block dump mode */
 )brace
 suffix:semicolon
 multiline_comment|/* CTL_NET names: */

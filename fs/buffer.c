@@ -951,6 +951,20 @@ c_func
 l_string|&quot;Emergency Sync complete&bslash;n&quot;
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|unlikely
+c_func
+(paren
+id|laptop_mode
+)paren
+)paren
+id|laptop_sync_completion
+c_func
+(paren
+)paren
+suffix:semicolon
 )brace
 DECL|function|sys_sync
 id|asmlinkage

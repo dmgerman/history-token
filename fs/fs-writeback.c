@@ -83,6 +83,25 @@ id|flags
 )paren
 r_return
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|unlikely
+c_func
+(paren
+id|block_dump
+)paren
+)paren
+id|printk
+c_func
+(paren
+l_string|&quot;%s(%d): dirtied file&bslash;n&quot;
+comma
+id|current-&gt;comm
+comma
+id|current-&gt;pid
+)paren
+suffix:semicolon
 id|spin_lock
 c_func
 (paren

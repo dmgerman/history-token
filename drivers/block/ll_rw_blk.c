@@ -15,6 +15,7 @@ macro_line|#include &lt;linux/bootmem.h&gt;&t;/* for max_pfn/max_low_pfn */
 macro_line|#include &lt;linux/completion.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/swap.h&gt;
+macro_line|#include &lt;linux/writeback.h&gt;
 multiline_comment|/*&n; * for max sense size&n; */
 macro_line|#include &lt;scsi/scsi_cmnd.h&gt;
 r_static
@@ -8175,6 +8176,59 @@ comma
 id|count
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|unlikely
+c_func
+(paren
+id|block_dump
+)paren
+)paren
+(brace
+r_char
+id|b
+(braket
+id|BDEVNAME_SIZE
+)braket
+suffix:semicolon
+id|printk
+c_func
+(paren
+l_string|&quot;%s(%d): %s block %Lu on %s&bslash;n&quot;
+comma
+id|current-&gt;comm
+comma
+id|current-&gt;pid
+comma
+(paren
+id|rw
+op_amp
+id|WRITE
+)paren
+ques
+c_cond
+l_string|&quot;WRITE&quot;
+suffix:colon
+l_string|&quot;READ&quot;
+comma
+(paren
+r_int
+r_int
+r_int
+)paren
+id|bio-&gt;bi_sector
+comma
+id|bdevname
+c_func
+(paren
+id|bio-&gt;bi_bdev
+comma
+id|b
+)paren
+)paren
+suffix:semicolon
+)brace
 id|generic_make_request
 c_func
 (paren
@@ -9035,6 +9089,20 @@ op_star
 id|waiting
 op_assign
 id|req-&gt;waiting
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|unlikely
+c_func
+(paren
+id|laptop_mode
+)paren
+)paren
+id|laptop_io_completion
+c_func
+(paren
+)paren
 suffix:semicolon
 r_if
 c_cond
