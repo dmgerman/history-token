@@ -1690,13 +1690,6 @@ op_eq
 l_int|NULL
 )paren
 (brace
-r_const
-r_int
-id|__nr_pages
-op_assign
-l_int|64
-suffix:semicolon
-multiline_comment|/* FIXME */
 id|bio
 op_assign
 id|mpage_alloc
@@ -1715,7 +1708,11 @@ op_minus
 l_int|9
 )paren
 comma
-id|__nr_pages
+id|bio_get_nr_vecs
+c_func
+(paren
+id|bdev
+)paren
 comma
 id|GFP_NOFS
 op_or
