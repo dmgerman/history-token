@@ -19,8 +19,9 @@ macro_line|#include &lt;asm/pci-bridge.h&gt;
 macro_line|#include &lt;asm/open_pic.h&gt;
 multiline_comment|/* LongTrail */
 DECL|variable|gg2_pci_config_base
-r_int
-r_int
+r_void
+id|__iomem
+op_star
 id|gg2_pci_config_base
 suffix:semicolon
 multiline_comment|/*&n; * The VLSI Golden Gate II has only 512K of PCI configuration space, so we&n; * limit the bus number to 3 bits&n; */
@@ -1235,12 +1236,10 @@ c_cond
 id|is_longtrail
 )paren
 (brace
-id|hose-&gt;ops
-op_assign
-op_amp
-id|gg2_pci_ops
-suffix:semicolon
-id|hose-&gt;cfg_data
+r_void
+id|__iomem
+op_star
+id|p
 op_assign
 id|ioremap
 c_func
@@ -1250,13 +1249,18 @@ comma
 l_int|0x80000
 )paren
 suffix:semicolon
+id|hose-&gt;ops
+op_assign
+op_amp
+id|gg2_pci_ops
+suffix:semicolon
+id|hose-&gt;cfg_data
+op_assign
+id|p
+suffix:semicolon
 id|gg2_pci_config_base
 op_assign
-(paren
-r_int
-r_int
-)paren
-id|hose-&gt;cfg_data
+id|p
 suffix:semicolon
 )brace
 r_else
