@@ -1,5 +1,4 @@
-multiline_comment|/*&n; *  Code extracted from&n; *  linux/kernel/hd.c&n; *&n; *  Copyright (C) 1991-1998  Linus Torvalds&n; *&n; *  devfs support - jj, rgooch, 980122&n; *&n; *  Moved partition checking code to fs/partitions* - Russell King&n; *  (linux@arm.uk.linux.org)&n; */
-multiline_comment|/*&n; * TODO:  rip out the remaining init crap from this file  --hch&n; */
+multiline_comment|/*&n; *  gendisk handling&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/fs.h&gt;
@@ -17,7 +16,10 @@ r_struct
 id|subsystem
 id|block_subsys
 suffix:semicolon
+DECL|macro|MAX_PROBE_HASH
+mdefine_line|#define MAX_PROBE_HASH 23&t;/* random */
 DECL|struct|blk_probe
+r_static
 r_struct
 id|blk_probe
 (brace
@@ -86,10 +88,10 @@ DECL|variable|probes
 op_star
 id|probes
 (braket
-id|MAX_BLKDEV
+id|MAX_PROBE_HASH
 )braket
 suffix:semicolon
-multiline_comment|/* index in the above */
+multiline_comment|/* index in the above - for now: assume no multimajor ranges */
 DECL|function|dev_to_index
 r_static
 r_inline
@@ -107,8 +109,11 @@ c_func
 (paren
 id|dev
 )paren
+op_mod
+id|MAX_PROBE_HASH
 suffix:semicolon
 )brace
+multiline_comment|/*&n; * Register device numbers dev..(dev+range-1)&n; * range must be nonzero&n; * The hash chain is sorted on range, so that subranges can override.&n; */
 DECL|function|blk_register_region
 r_void
 id|blk_register_region
@@ -520,6 +525,7 @@ c_func
 id|del_gendisk
 )paren
 suffix:semicolon
+multiline_comment|/* in partitions/check.c */
 DECL|function|unlink_gendisk
 r_void
 id|unlink_gendisk
@@ -655,7 +661,9 @@ op_logical_or
 id|p-&gt;dev
 op_plus
 id|p-&gt;range
-op_le
+op_minus
+l_int|1
+OL
 id|dev
 )paren
 r_continue
@@ -664,21 +672,13 @@ r_if
 c_cond
 (paren
 id|p-&gt;range
+op_minus
+l_int|1
 op_ge
 id|best
 )paren
-(brace
-id|up_read
-c_func
-(paren
-op_amp
-id|block_subsys.rwsem
-)paren
+r_break
 suffix:semicolon
-r_return
-l_int|NULL
-suffix:semicolon
-)brace
 r_if
 c_cond
 (paren
@@ -706,6 +706,8 @@ suffix:semicolon
 id|best
 op_assign
 id|p-&gt;range
+op_minus
+l_int|1
 suffix:semicolon
 op_star
 id|part
@@ -778,6 +780,7 @@ suffix:semicolon
 r_goto
 id|retry
 suffix:semicolon
+multiline_comment|/* this terminates: best decreases */
 )brace
 id|up_read
 c_func
@@ -1183,7 +1186,7 @@ id|data
 r_char
 id|name
 (braket
-l_int|20
+l_int|30
 )braket
 suffix:semicolon
 id|sprintf
@@ -1255,30 +1258,14 @@ id|blk_probe
 suffix:semicolon
 id|base-&gt;dev
 op_assign
-id|MKDEV
-c_func
-(paren
 l_int|1
-comma
-l_int|0
-)paren
 suffix:semicolon
 id|base-&gt;range
 op_assign
-id|MKDEV
-c_func
-(paren
-id|MAX_BLKDEV
-op_minus
-l_int|1
-comma
-l_int|255
-)paren
-op_minus
-id|base-&gt;dev
-op_plus
-l_int|1
+op_complement
+l_int|0
 suffix:semicolon
+multiline_comment|/* range 1 .. ~0 */
 id|base-&gt;get
 op_assign
 id|base_probe
@@ -1288,11 +1275,11 @@ c_loop
 (paren
 id|i
 op_assign
-l_int|1
+l_int|0
 suffix:semicolon
 id|i
 OL
-id|MAX_BLKDEV
+id|MAX_PROBE_HASH
 suffix:semicolon
 id|i
 op_increment
@@ -1304,6 +1291,7 @@ id|i
 op_assign
 id|base
 suffix:semicolon
+multiline_comment|/* must remain last in chain */
 id|blk_dev_init
 c_func
 (paren
