@@ -111,13 +111,6 @@ id|madgemc_card
 op_star
 id|madgemc_card_list
 suffix:semicolon
-r_int
-id|madgemc_probe
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
 r_static
 r_int
 id|madgemc_open
@@ -543,6 +536,7 @@ r_return
 suffix:semicolon
 )brace
 DECL|function|madgemc_probe
+r_static
 r_int
 id|__init
 id|madgemc_probe
@@ -3034,43 +3028,11 @@ r_return
 id|len
 suffix:semicolon
 )brace
-macro_line|#ifdef MODULE
-DECL|function|init_module
-r_int
-id|init_module
-c_func
-(paren
+DECL|function|madgemc_exit
+r_static
 r_void
-)paren
-(brace
-multiline_comment|/* Probe for cards. */
-r_if
-c_cond
-(paren
-id|madgemc_probe
-c_func
-(paren
-)paren
-)paren
-(brace
-id|printk
-c_func
-(paren
-id|KERN_NOTICE
-l_string|&quot;madgemc.c: No cards found.&bslash;n&quot;
-)paren
-suffix:semicolon
-)brace
-multiline_comment|/* lock_tms380_module(); */
-r_return
-(paren
-l_int|0
-)paren
-suffix:semicolon
-)brace
-DECL|function|cleanup_module
-r_void
-id|cleanup_module
+id|__exit
+id|madgemc_exit
 c_func
 (paren
 r_void
@@ -3147,9 +3109,21 @@ id|this_card
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* unlock_tms380_module(); */
 )brace
-macro_line|#endif /* MODULE */
+DECL|variable|madgemc_probe
+id|module_init
+c_func
+(paren
+id|madgemc_probe
+)paren
+suffix:semicolon
+DECL|variable|madgemc_exit
+id|module_exit
+c_func
+(paren
+id|madgemc_exit
+)paren
+suffix:semicolon
 id|MODULE_LICENSE
 c_func
 (paren

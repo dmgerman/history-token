@@ -609,6 +609,13 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+DECL|variable|tftp
+id|PROVIDES_CONNTRACK
+c_func
+(paren
+id|tftp
+)paren
+suffix:semicolon
 DECL|variable|init
 id|module_init
 c_func

@@ -240,14 +240,6 @@ id|skb
 )paren
 suffix:semicolon
 r_extern
-r_int
-id|init_netlink
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-r_extern
 r_struct
 id|sock
 op_star

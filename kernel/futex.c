@@ -2156,6 +2156,9 @@ op_assign
 (paren
 r_int
 )paren
+(paren
+r_int
+)paren
 id|utime
 suffix:semicolon
 r_return
