@@ -160,7 +160,7 @@ id|byte
 op_eq
 l_int|0
 )paren
-id|wait_event_interruptible_timeout
+id|wait_event_timeout
 c_func
 (paren
 id|ps2dev-&gt;wait
@@ -408,7 +408,9 @@ suffix:colon
 l_int|500
 )paren
 suffix:semicolon
-id|wait_event_interruptible_timeout
+id|timeout
+op_assign
+id|wait_event_timeout
 c_func
 (paren
 id|ps2dev-&gt;wait
@@ -547,7 +549,7 @@ id|ps2dev-&gt;serio
 )paren
 suffix:semicolon
 )brace
-id|wait_event_interruptible_timeout
+id|wait_event_timeout
 c_func
 (paren
 id|ps2dev-&gt;wait
@@ -961,7 +963,7 @@ op_and_assign
 op_complement
 id|PS2_FLAG_ACK
 suffix:semicolon
-id|wake_up_interruptible
+id|wake_up
 c_func
 (paren
 op_amp
@@ -1034,7 +1036,7 @@ c_cond
 (paren
 id|ps2dev-&gt;cmdcnt
 )paren
-id|wake_up_interruptible
+id|wake_up
 c_func
 (paren
 op_amp
@@ -1054,7 +1056,7 @@ op_and_assign
 op_complement
 id|PS2_FLAG_CMD
 suffix:semicolon
-id|wake_up_interruptible
+id|wake_up
 c_func
 (paren
 op_amp
@@ -1099,7 +1101,7 @@ op_or
 id|PS2_FLAG_CMD
 )paren
 )paren
-id|wake_up_interruptible
+id|wake_up
 c_func
 (paren
 op_amp
