@@ -15,6 +15,7 @@ macro_line|#include &lt;linux/workqueue.h&gt;
 macro_line|#include &lt;linux/device.h&gt;
 macro_line|#include &lt;linux/key.h&gt;
 macro_line|#include &lt;linux/times.h&gt;
+macro_line|#include &lt;linux/posix-timers.h&gt;
 macro_line|#include &lt;linux/security.h&gt;
 macro_line|#include &lt;linux/dcookies.h&gt;
 macro_line|#include &lt;linux/suspend.h&gt;
@@ -6100,6 +6101,87 @@ c_func
 id|current-&gt;group_leader
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|resource
+op_eq
+id|RLIMIT_CPU
+op_logical_and
+id|new_rlim.rlim_cur
+op_ne
+id|RLIM_INFINITY
+op_logical_and
+(paren
+id|cputime_eq
+c_func
+(paren
+id|current-&gt;signal-&gt;it_prof_expires
+comma
+id|cputime_zero
+)paren
+op_logical_or
+id|new_rlim.rlim_cur
+op_le
+id|cputime_to_secs
+c_func
+(paren
+id|current-&gt;signal-&gt;it_prof_expires
+)paren
+)paren
+)paren
+(brace
+id|cputime_t
+id|cputime
+op_assign
+id|secs_to_cputime
+c_func
+(paren
+id|new_rlim.rlim_cur
+)paren
+suffix:semicolon
+id|read_lock
+c_func
+(paren
+op_amp
+id|tasklist_lock
+)paren
+suffix:semicolon
+id|spin_lock_irq
+c_func
+(paren
+op_amp
+id|current-&gt;sighand-&gt;siglock
+)paren
+suffix:semicolon
+id|set_process_cpu_timer
+c_func
+(paren
+id|current
+comma
+id|CPUCLOCK_PROF
+comma
+op_amp
+id|cputime
+comma
+l_int|NULL
+)paren
+suffix:semicolon
+id|spin_unlock_irq
+c_func
+(paren
+op_amp
+id|current-&gt;sighand-&gt;siglock
+)paren
+suffix:semicolon
+id|read_unlock
+c_func
+(paren
+op_amp
+id|tasklist_lock
+)paren
+suffix:semicolon
+)brace
 r_return
 l_int|0
 suffix:semicolon

@@ -7292,6 +7292,29 @@ id|initrlim-&gt;rlim_cur
 )paren
 suffix:semicolon
 )brace
+r_if
+c_cond
+(paren
+id|current-&gt;signal-&gt;rlim
+(braket
+id|RLIMIT_CPU
+)braket
+dot
+id|rlim_cur
+op_ne
+id|RLIM_INFINITY
+)paren
+(brace
+multiline_comment|/*&n;&t;&t;&t; * This will cause RLIMIT_CPU calculations&n;&t;&t;&t; * to be refigured.&n;&t;&t;&t; */
+id|current-&gt;it_prof_expires
+op_assign
+id|jiffies_to_cputime
+c_func
+(paren
+l_int|1
+)paren
+suffix:semicolon
+)brace
 )brace
 multiline_comment|/* Wake up the parent if it is waiting so that it can&n;&t;   recheck wait permission to the new task SID. */
 id|wake_up_interruptible
