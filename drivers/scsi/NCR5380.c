@@ -8538,7 +8538,7 @@ suffix:colon
 r_case
 id|SIMPLE_QUEUE_TAG
 suffix:colon
-id|cmd-&gt;device-&gt;tagged_queue
+id|cmd-&gt;device-&gt;simple_tags
 op_assign
 l_int|0
 suffix:semicolon

@@ -12015,11 +12015,9 @@ id|dsprintk
 c_func
 (paren
 (paren
-l_string|&quot;tagged %d queue %d simple %d ordered %d&bslash;n&quot;
+l_string|&quot;tagged %d simple %d ordered %d&bslash;n&quot;
 comma
 id|device-&gt;tagged_supported
-comma
-id|device-&gt;tagged_queue
 comma
 id|device-&gt;simple_tags
 comma
