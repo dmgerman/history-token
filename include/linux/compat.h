@@ -540,6 +540,36 @@ op_star
 id|regs
 )paren
 suffix:semicolon
+id|asmlinkage
+r_int
+id|compat_sys_select
+c_func
+(paren
+r_int
+id|n
+comma
+id|compat_ulong_t
+id|__user
+op_star
+id|inp
+comma
+id|compat_ulong_t
+id|__user
+op_star
+id|outp
+comma
+id|compat_ulong_t
+id|__user
+op_star
+id|exp
+comma
+r_struct
+id|compat_timeval
+id|__user
+op_star
+id|tvp
+)paren
+suffix:semicolon
 macro_line|#endif /* CONFIG_COMPAT */
 macro_line|#endif /* _LINUX_COMPAT_H */
 eof
