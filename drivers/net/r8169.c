@@ -978,14 +978,14 @@ id|TxDesc
 op_star
 id|TxDescArray
 suffix:semicolon
-multiline_comment|/* Index of 256-alignment Tx Descriptor buffer */
+multiline_comment|/* 256-aligned Tx descriptor ring */
 DECL|member|RxDescArray
 r_struct
 id|RxDesc
 op_star
 id|RxDescArray
 suffix:semicolon
-multiline_comment|/* Index of 256-alignment Rx Descriptor buffer */
+multiline_comment|/* 256-aligned Rx descriptor ring */
 DECL|member|TxPhyAddr
 id|dma_addr_t
 id|TxPhyAddr
@@ -1013,7 +1013,7 @@ id|Tx_skbuff
 id|NUM_TX_DESC
 )braket
 suffix:semicolon
-multiline_comment|/* Index of Transmit data buffer */
+multiline_comment|/* Tx data buffers */
 DECL|member|timer
 r_struct
 id|timer_list
@@ -1343,19 +1343,14 @@ op_amp
 l_int|0x80000000
 )paren
 )paren
-(brace
 r_break
 suffix:semicolon
-)brace
-r_else
-(brace
 id|udelay
 c_func
 (paren
 l_int|100
 )paren
 suffix:semicolon
-)brace
 )brace
 )brace
 DECL|function|mdio_read
@@ -1481,7 +1476,11 @@ id|rtl8169_private
 op_star
 id|tp
 op_assign
-id|dev-&gt;priv
+id|netdev_priv
+c_func
+(paren
+id|dev
+)paren
 suffix:semicolon
 id|strcpy
 c_func
@@ -2027,7 +2026,11 @@ id|rtl8169_private
 op_star
 id|tp
 op_assign
-id|dev-&gt;priv
+id|netdev_priv
+c_func
+(paren
+id|dev
+)paren
 suffix:semicolon
 r_void
 op_star
@@ -2388,7 +2391,11 @@ id|rtl8169_private
 op_star
 id|tp
 op_assign
-id|dev-&gt;priv
+id|netdev_priv
+c_func
+(paren
+id|dev
+)paren
 suffix:semicolon
 r_void
 op_star
@@ -2526,7 +2533,11 @@ id|rtl8169_private
 op_star
 id|tp
 op_assign
-id|dev-&gt;priv
+id|netdev_priv
+c_func
+(paren
+id|dev
+)paren
 suffix:semicolon
 r_struct
 id|timer_list
@@ -2646,7 +2657,11 @@ id|rtl8169_private
 op_star
 id|tp
 op_assign
-id|dev-&gt;priv
+id|netdev_priv
+c_func
+(paren
+id|dev
+)paren
 suffix:semicolon
 r_struct
 id|timer_list
@@ -2702,7 +2717,11 @@ id|rtl8169_private
 op_star
 id|tp
 op_assign
-id|dev-&gt;priv
+id|netdev_priv
+c_func
+(paren
+id|dev
+)paren
 suffix:semicolon
 r_struct
 id|timer_list
@@ -2924,7 +2943,7 @@ c_func
 (paren
 id|KERN_ERR
 id|PFX
-l_string|&quot;%s: unable to enable device&bslash;n&quot;
+l_string|&quot;%s: enable failure&bslash;n&quot;
 comma
 id|pdev-&gt;slot_name
 )paren
@@ -3103,7 +3122,7 @@ c_func
 (paren
 id|KERN_ERR
 id|PFX
-l_string|&quot;%s: Could not request regions.&bslash;n&quot;
+l_string|&quot;%s: could not request regions.&bslash;n&quot;
 comma
 id|pdev-&gt;slot_name
 )paren
@@ -4025,6 +4044,7 @@ suffix:colon
 r_break
 suffix:semicolon
 )brace
+singleline_comment|// leave PHY_AUTO_NEGO_REG bit4:0 unchanged
 id|mdio_write
 c_func
 (paren
@@ -4041,7 +4061,6 @@ l_int|0x1F
 )paren
 )paren
 suffix:semicolon
-singleline_comment|//leave PHY_AUTO_NEGO_REG bit4:0 unchanged
 id|mdio_write
 c_func
 (paren
@@ -4064,7 +4083,8 @@ comma
 id|dev-&gt;name
 )paren
 suffix:semicolon
-singleline_comment|// enable 10/100 Full/Half Mode, leave PHY_AUTO_NEGO_REG bit4:0 unchanged
+singleline_comment|// enable 10/100 Full/Half Mode
+singleline_comment|// leave PHY_AUTO_NEGO_REG bit4:0 unchanged
 id|mdio_write
 c_func
 (paren
@@ -4290,7 +4310,11 @@ id|rtl8169_private
 op_star
 id|tp
 op_assign
-id|dev-&gt;priv
+id|netdev_priv
+c_func
+(paren
+id|dev
+)paren
 suffix:semicolon
 m_assert
 (paren
@@ -4377,7 +4401,11 @@ id|rtl8169_private
 op_star
 id|tp
 op_assign
-id|dev-&gt;priv
+id|netdev_priv
+c_func
+(paren
+id|dev
+)paren
 suffix:semicolon
 r_void
 op_star
@@ -4540,7 +4568,11 @@ id|rtl8169_private
 op_star
 id|tp
 op_assign
-id|dev-&gt;priv
+id|netdev_priv
+c_func
+(paren
+id|dev
+)paren
 suffix:semicolon
 r_struct
 id|pci_dev
@@ -4722,7 +4754,11 @@ id|rtl8169_private
 op_star
 id|tp
 op_assign
-id|dev-&gt;priv
+id|netdev_priv
+c_func
+(paren
+id|dev
+)paren
 suffix:semicolon
 r_void
 op_star
@@ -4775,7 +4811,6 @@ l_int|0
 )paren
 r_break
 suffix:semicolon
-r_else
 id|udelay
 c_func
 (paren
@@ -4894,7 +4929,8 @@ c_func
 (paren
 id|KERN_INFO
 id|PFX
-l_string|&quot;Set MAC Reg C+CR Offset 0xE0: bit-3 and bit-14 MUST be 1&bslash;n&quot;
+l_string|&quot;Set MAC Reg C+CR Offset 0xE0. &quot;
+l_string|&quot;Bit-3 and bit-14 MUST be 1&bslash;n&quot;
 )paren
 suffix:semicolon
 id|tp-&gt;cp_cmd
@@ -5495,7 +5531,11 @@ id|rtl8169_private
 op_star
 id|tp
 op_assign
-id|dev-&gt;priv
+id|netdev_priv
+c_func
+(paren
+id|dev
+)paren
 suffix:semicolon
 id|tp-&gt;cur_rx
 op_assign
@@ -5780,7 +5820,11 @@ id|rtl8169_private
 op_star
 id|tp
 op_assign
-id|dev-&gt;priv
+id|netdev_priv
+c_func
+(paren
+id|dev
+)paren
 suffix:semicolon
 r_void
 op_star
@@ -5790,6 +5834,15 @@ id|tp-&gt;mmio_addr
 suffix:semicolon
 id|u8
 id|tmp8
+suffix:semicolon
+id|printk
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;%s: TX Timeout&bslash;n&quot;
+comma
+id|dev-&gt;name
+)paren
 suffix:semicolon
 multiline_comment|/* disable Tx, if not already */
 id|tmp8
@@ -5884,7 +5937,11 @@ id|rtl8169_private
 op_star
 id|tp
 op_assign
-id|dev-&gt;priv
+id|netdev_priv
+c_func
+(paren
+id|dev
+)paren
 suffix:semicolon
 r_void
 op_star
@@ -5892,6 +5949,7 @@ id|ioaddr
 op_assign
 id|tp-&gt;mmio_addr
 suffix:semicolon
+r_int
 r_int
 id|entry
 op_assign
@@ -6173,6 +6231,7 @@ OG
 l_int|0
 )paren
 (brace
+r_int
 r_int
 id|entry
 op_assign
@@ -6496,6 +6555,7 @@ OG
 l_int|0
 )paren
 (brace
+r_int
 r_int
 id|entry
 op_assign
@@ -6843,7 +6903,11 @@ id|rtl8169_private
 op_star
 id|tp
 op_assign
-id|dev-&gt;priv
+id|netdev_priv
+c_func
+(paren
+id|dev
+)paren
 suffix:semicolon
 r_int
 id|boguscnt
@@ -7248,7 +7312,11 @@ id|rtl8169_private
 op_star
 id|tp
 op_assign
-id|dev-&gt;priv
+id|netdev_priv
+c_func
+(paren
+id|dev
+)paren
 suffix:semicolon
 r_struct
 id|pci_dev
@@ -7403,7 +7471,11 @@ id|rtl8169_private
 op_star
 id|tp
 op_assign
-id|dev-&gt;priv
+id|netdev_priv
+c_func
+(paren
+id|dev
+)paren
 suffix:semicolon
 r_void
 op_star
@@ -7690,7 +7762,11 @@ id|rtl8169_private
 op_star
 id|tp
 op_assign
-id|dev-&gt;priv
+id|netdev_priv
+c_func
+(paren
+id|dev
+)paren
 suffix:semicolon
 r_void
 op_star
