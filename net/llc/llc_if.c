@@ -61,17 +61,6 @@ id|prim
 suffix:semicolon
 r_static
 r_int
-id|llc_disc_req_handler
-c_func
-(paren
-r_struct
-id|llc_prim_if_block
-op_star
-id|prim
-)paren
-suffix:semicolon
-r_static
-r_int
 id|llc_rst_req_handler
 c_func
 (paren
@@ -114,7 +103,7 @@ id|LLC_CONN_PRIM
 op_assign
 l_int|NULL
 comma
-multiline_comment|/* replaced by + llc_establish_connection */
+multiline_comment|/* replaced by llc_establish_connection */
 (braket
 id|LLC_DATA_PRIM
 )braket
@@ -126,8 +115,9 @@ multiline_comment|/* replaced by llc_build_and_send_pkt */
 id|LLC_DISC_PRIM
 )braket
 op_assign
-id|llc_disc_req_handler
+l_int|NULL
 comma
+multiline_comment|/* replaced by llc_send_disc */
 (braket
 id|LLC_RESET_PRIM
 )braket
@@ -955,17 +945,16 @@ r_return
 id|rc
 suffix:semicolon
 )brace
-multiline_comment|/**&n; *&t;llc_disc_req_handler - Called by upper layer to close a connection&n; *&t;@prim: pointer to structure that contains service parameters.&n; *&n; *&t;Upper layer calls this when it wants to close an established LLC&n; *&t;connection with a remote machine. This function packages a proper event&n; *&t;and sends it to connection component state machine. Returns 0 for&n; *&t;success, 1 otherwise.&n; */
-DECL|function|llc_disc_req_handler
-r_static
+multiline_comment|/**&n; *&t;llc_send_disc - Called by upper layer to close a connection&n; *&t;@sk: connection to be closed&n; *&n; *&t;Upper layer calls this when it wants to close an established LLC&n; *&t;connection with a remote machine. This function packages a proper event&n; *&t;and sends it to connection component state machine. Returns 0 for&n; *&t;success, 1 otherwise.&n; */
+DECL|function|llc_send_disc
 r_int
-id|llc_disc_req_handler
+id|llc_send_disc
 c_func
 (paren
 r_struct
-id|llc_prim_if_block
+id|sock
 op_star
-id|prim
+id|sk
 )paren
 (brace
 id|u16
@@ -983,13 +972,6 @@ id|sk_buff
 op_star
 id|skb
 suffix:semicolon
-r_struct
-id|sock
-op_star
-id|sk
-op_assign
-id|prim-&gt;data-&gt;disc.sk
-suffix:semicolon
 id|sock_hold
 c_func
 (paren
@@ -999,6 +981,14 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|sk-&gt;type
+op_ne
+id|SOCK_STREAM
+op_logical_or
+id|sk-&gt;state
+op_ne
+id|TCP_ESTABLISHED
+op_logical_or
 id|llc_sk
 c_func
 (paren
@@ -1042,6 +1032,10 @@ id|skb
 r_goto
 id|out
 suffix:semicolon
+id|sk-&gt;state
+op_assign
+id|TCP_CLOSING
+suffix:semicolon
 id|ev
 op_assign
 id|llc_conn_ev
@@ -1064,7 +1058,7 @@ id|LLC_PRIM_TYPE_REQ
 suffix:semicolon
 id|ev-&gt;data.prim.data
 op_assign
-id|prim
+l_int|NULL
 suffix:semicolon
 id|rc
 op_assign

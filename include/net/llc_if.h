@@ -92,28 +92,6 @@ id|IFHWADDRLEN
 suffix:semicolon
 )brace
 suffix:semicolon
-multiline_comment|/* Primitive-specific data */
-DECL|struct|llc_prim_disc
-r_struct
-id|llc_prim_disc
-(brace
-DECL|member|sk
-r_struct
-id|sock
-op_star
-id|sk
-suffix:semicolon
-DECL|member|link
-id|u16
-id|link
-suffix:semicolon
-DECL|member|reason
-id|u8
-id|reason
-suffix:semicolon
-multiline_comment|/* not used by request */
-)brace
-suffix:semicolon
 DECL|struct|llc_prim_reset
 r_struct
 id|llc_prim_reset
@@ -245,11 +223,6 @@ DECL|union|llc_u_prim_data
 r_union
 id|llc_u_prim_data
 (brace
-DECL|member|disc
-r_struct
-id|llc_prim_disc
-id|disc
-suffix:semicolon
 DECL|member|res
 r_struct
 id|llc_prim_reset
@@ -382,6 +355,17 @@ r_struct
 id|sk_buff
 op_star
 id|skb
+)paren
+suffix:semicolon
+r_extern
+r_int
+id|llc_send_disc
+c_func
+(paren
+r_struct
+id|sock
+op_star
+id|sk
 )paren
 suffix:semicolon
 macro_line|#endif /* LLC_IF_H */
