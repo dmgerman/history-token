@@ -9996,6 +9996,45 @@ suffix:semicolon
 r_int
 id|i
 suffix:semicolon
+multiline_comment|/* check to see if controller has been disabled */
+multiline_comment|/* BEFORE trying to enable it */
+(paren
+r_void
+)paren
+id|pci_read_config_word
+c_func
+(paren
+id|pdev
+comma
+id|PCI_COMMAND
+comma
+op_amp
+id|command
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+(paren
+id|command
+op_amp
+l_int|0x02
+)paren
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_WARNING
+l_string|&quot;cciss: controller appears to be disabled&bslash;n&quot;
+)paren
+suffix:semicolon
+r_return
+op_minus
+l_int|1
+suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
@@ -10059,20 +10098,6 @@ suffix:semicolon
 (paren
 r_void
 )paren
-id|pci_read_config_word
-c_func
-(paren
-id|pdev
-comma
-id|PCI_COMMAND
-comma
-op_amp
-id|command
-)paren
-suffix:semicolon
-(paren
-r_void
-)paren
 id|pci_read_config_byte
 c_func
 (paren
@@ -10126,30 +10151,6 @@ op_amp
 id|board_id
 )paren
 suffix:semicolon
-multiline_comment|/* check to see if controller has been disabled */
-r_if
-c_cond
-(paren
-op_logical_neg
-(paren
-id|command
-op_amp
-l_int|0x02
-)paren
-)paren
-(brace
-id|printk
-c_func
-(paren
-id|KERN_WARNING
-l_string|&quot;cciss: controller appears to be disabled&bslash;n&quot;
-)paren
-suffix:semicolon
-r_return
-op_minus
-l_int|1
-suffix:semicolon
-)brace
 multiline_comment|/* search for our IO range so we can protect it */
 r_for
 c_loop
