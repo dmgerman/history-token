@@ -1133,7 +1133,7 @@ l_int|NULL
 comma
 l_int|NULL
 comma
-id|CLONE_PID
+id|CLONE_IDLETASK
 )paren
 suffix:semicolon
 id|cpucount
