@@ -1,4 +1,4 @@
-multiline_comment|/* &n;    ALSA memory allocation module for the RME Digi9652&n;  &n; &t;Copyright(c) 1999 IEM - Winfried Ritsch&n;        Copyright (C) 1999 Paul Barton-Davis &n;&n;    This module is only needed if you compiled the hammerfall driver with&n;    the PREALLOCATE_MEMORY option. It allocates the memory need to&n;    run the board and holds it until the module is unloaded. Because&n;    we need 2 contiguous 1.6MB regions for the board, it can be&n;    a problem getting them once the system memory has become fairly&n;    fragmented. &n;&n;    This program is free software; you can redistribute it and/or modify&n;    it under the terms of the GNU General Public License as published by&n;    the Free Software Foundation; either version 2 of the License, or&n;    (at your option) any later version.&n;&n;    This program is distributed in the hope that it will be useful,&n;    but WITHOUT ANY WARRANTY; without even the implied warranty of&n;    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n;    GNU General Public License for more details.&n;&n;    You should have received a copy of the GNU General Public License&n;    along with this program; if not, write to the Free Software&n;    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA&n;&n;    $Id: hammerfall_mem.c,v 1.5 2002/11/04 09:11:42 perex Exp $&n;&n;&n;    Tue Oct 17 2000  Jaroslav Kysela &lt;perex@suse.cz&gt;&n;    &t;* space is allocated only for physical devices&n;        * added support for 2.4 kernels (pci_alloc_consistent)&n;    &n;*/
+multiline_comment|/* &n;    ALSA memory allocation module for the RME Digi9652&n;  &n; &t;Copyright(c) 1999 IEM - Winfried Ritsch&n;        Copyright (C) 1999 Paul Barton-Davis &n;&n;    This module is only needed if you compiled the hammerfall driver with&n;    the PREALLOCATE_MEMORY option. It allocates the memory need to&n;    run the board and holds it until the module is unloaded. Because&n;    we need 2 contiguous 1.6MB regions for the board, it can be&n;    a problem getting them once the system memory has become fairly&n;    fragmented. &n;&n;    This program is free software; you can redistribute it and/or modify&n;    it under the terms of the GNU General Public License as published by&n;    the Free Software Foundation; either version 2 of the License, or&n;    (at your option) any later version.&n;&n;    This program is distributed in the hope that it will be useful,&n;    but WITHOUT ANY WARRANTY; without even the implied warranty of&n;    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n;    GNU General Public License for more details.&n;&n;    You should have received a copy of the GNU General Public License&n;    along with this program; if not, write to the Free Software&n;    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA&n;&n;    $Id: hammerfall_mem.c,v 1.7 2003/01/06 14:21:28 perex Exp $&n;&n;&n;    Tue Oct 17 2000  Jaroslav Kysela &lt;perex@suse.cz&gt;&n;    &t;* space is allocated only for physical devices&n;        * added support for 2.4 kernels (pci_alloc_consistent)&n;    &n;*/
 macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/pci.h&gt;
@@ -509,6 +509,19 @@ op_eq
 id|HAMMERFALL_BUF_ALLOCATED
 )paren
 (brace
+r_if
+c_cond
+(paren
+op_logical_neg
+id|try_module_get
+c_func
+(paren
+id|THIS_MODULE
+)paren
+)paren
+r_return
+l_int|NULL
+suffix:semicolon
 id|rbuf-&gt;flags
 op_or_assign
 id|HAMMERFALL_BUF_USED
@@ -516,8 +529,6 @@ suffix:semicolon
 id|rbuf-&gt;pci
 op_assign
 id|pcidev
-suffix:semicolon
-id|MOD_INC_USE_COUNT
 suffix:semicolon
 op_star
 id|dmaaddr
@@ -589,12 +600,16 @@ op_eq
 id|pcidev
 )paren
 (brace
-id|MOD_DEC_USE_COUNT
-suffix:semicolon
 id|rbuf-&gt;flags
 op_and_assign
 op_complement
 id|HAMMERFALL_BUF_USED
+suffix:semicolon
+id|module_put
+c_func
+(paren
+id|THIS_MODULE
+)paren
 suffix:semicolon
 r_return
 suffix:semicolon
@@ -609,7 +624,6 @@ suffix:semicolon
 DECL|function|hammerfall_free_buffers
 r_static
 r_void
-id|__exit
 id|hammerfall_free_buffers
 (paren
 r_void

@@ -525,6 +525,23 @@ multiline_comment|/* EMU10K1 */
 (brace
 l_int|0x1102
 comma
+l_int|0x0006
+comma
+id|PCI_ANY_ID
+comma
+id|PCI_ANY_ID
+comma
+l_int|0
+comma
+l_int|0
+comma
+l_int|0
+)brace
+comma
+multiline_comment|/* Dell OEM version (EMU10K1) */
+(brace
+l_int|0x1102
+comma
 l_int|0x0004
 comma
 id|PCI_ANY_ID
@@ -1148,9 +1165,11 @@ c_func
 (paren
 id|card-&gt;longname
 comma
-l_string|&quot;%s at 0x%lx, irq %i&quot;
+l_string|&quot;%s (rev.%d) at 0x%lx, irq %i&quot;
 comma
 id|card-&gt;shortname
+comma
+id|emu-&gt;revision
 comma
 id|emu-&gt;port
 comma

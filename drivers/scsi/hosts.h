@@ -406,6 +406,16 @@ r_struct
 id|list_head
 id|my_devices
 suffix:semicolon
+DECL|member|free_list_lock
+id|spinlock_t
+id|free_list_lock
+suffix:semicolon
+DECL|member|free_list
+r_struct
+id|list_head
+id|free_list
+suffix:semicolon
+multiline_comment|/* backup store of cmd structs */
 DECL|member|default_lock
 id|spinlock_t
 id|default_lock
@@ -1154,10 +1164,11 @@ id|sdev-&gt;lun
 op_eq
 id|lun
 )paren
-r_break
-suffix:semicolon
 r_return
 id|sdev
+suffix:semicolon
+r_return
+l_int|NULL
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * sysfs support&n; */

@@ -10884,7 +10884,7 @@ op_assign
 id|BusLogic_HostAdapter_T
 op_star
 )paren
-id|Command-&gt;host-&gt;hostdata
+id|Command-&gt;device-&gt;host-&gt;hostdata
 suffix:semicolon
 id|BusLogic_TargetFlags_T
 op_star
@@ -10893,7 +10893,7 @@ op_assign
 op_amp
 id|HostAdapter-&gt;TargetFlags
 (braket
-id|Command-&gt;target
+id|Command-&gt;device-&gt;id
 )braket
 suffix:semicolon
 id|BusLogic_TargetStatistics_T
@@ -10917,12 +10917,12 @@ suffix:semicolon
 r_int
 id|TargetID
 op_assign
-id|Command-&gt;target
+id|Command-&gt;device-&gt;id
 suffix:semicolon
 r_int
 id|LogicalUnit
 op_assign
-id|Command-&gt;lun
+id|Command-&gt;device-&gt;lun
 suffix:semicolon
 r_void
 op_star
@@ -11725,12 +11725,12 @@ op_assign
 id|BusLogic_HostAdapter_T
 op_star
 )paren
-id|Command-&gt;host-&gt;hostdata
+id|Command-&gt;device-&gt;host-&gt;hostdata
 suffix:semicolon
 r_int
 id|TargetID
 op_assign
-id|Command-&gt;target
+id|Command-&gt;device-&gt;id
 suffix:semicolon
 id|BusLogic_CCB_T
 op_star
@@ -12124,7 +12124,7 @@ c_func
 op_amp
 id|HostAdapter-&gt;TargetStatistics
 (braket
-id|Command-&gt;target
+id|Command-&gt;device-&gt;id
 )braket
 dot
 id|HostAdapterResetsRequested
@@ -12146,7 +12146,7 @@ id|SCSI_RESET_ASYNCHRONOUS
 (brace
 id|TargetID
 op_assign
-id|Command-&gt;target
+id|Command-&gt;device-&gt;id
 suffix:semicolon
 r_if
 c_cond
@@ -12336,7 +12336,7 @@ id|HostAdapter
 comma
 id|HostAdapter-&gt;FullModelName
 comma
-id|Command-&gt;target
+id|Command-&gt;device-&gt;id
 )paren
 suffix:semicolon
 id|BusLogic_IncrementErrorCounter
@@ -12345,7 +12345,7 @@ c_func
 op_amp
 id|HostAdapter-&gt;TargetStatistics
 (braket
-id|Command-&gt;target
+id|Command-&gt;device-&gt;id
 )braket
 dot
 id|HostAdapterResetsAttempted
@@ -12405,7 +12405,7 @@ c_func
 op_amp
 id|HostAdapter-&gt;TargetStatistics
 (braket
-id|Command-&gt;target
+id|Command-&gt;device-&gt;id
 )braket
 dot
 id|HostAdapterResetsCompleted
@@ -12625,7 +12625,7 @@ id|ResetFlags
 r_int
 id|TargetID
 op_assign
-id|Command-&gt;target
+id|Command-&gt;device-&gt;id
 suffix:semicolon
 id|BusLogic_CCB_T
 op_star
@@ -13177,12 +13177,12 @@ op_assign
 id|BusLogic_HostAdapter_T
 op_star
 )paren
-id|Command-&gt;host-&gt;hostdata
+id|Command-&gt;device-&gt;host-&gt;hostdata
 suffix:semicolon
 r_int
 id|TargetID
 op_assign
-id|Command-&gt;target
+id|Command-&gt;device-&gt;id
 suffix:semicolon
 id|BusLogic_ErrorRecoveryStrategy_T
 id|ErrorRecoveryStrategy

@@ -22600,6 +22600,8 @@ suffix:semicolon
 id|Scsi_Request
 op_star
 id|SRpnt
+op_assign
+l_int|NULL
 suffix:semicolon
 id|OS_Scsi_Tape
 op_star

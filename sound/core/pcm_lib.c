@@ -1020,7 +1020,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/*&n; *  Operations&n; */
+multiline_comment|/**&n; * snd_pcm_set_ops - set the PCM operators&n; * @pcm: the pcm instance&n; * @direction: stream direction, SNDRV_PCM_STREAM_XXX&n; * @ops: the operator table&n; *&n; * Sets the given PCM operators to the pcm instance.&n; */
 DECL|function|snd_pcm_set_ops
 r_void
 id|snd_pcm_set_ops
@@ -1072,7 +1072,7 @@ op_assign
 id|ops
 suffix:semicolon
 )brace
-multiline_comment|/*&n; *  Sync&n; */
+multiline_comment|/**&n; * snd_pcm_sync - set the PCM sync id&n; * @substream: the pcm substream&n; *&n; * Sets the PCM sync identifier for the card.&n; */
 DECL|function|snd_pcm_set_sync
 r_void
 id|snd_pcm_set_sync
@@ -1657,7 +1657,7 @@ r_return
 id|changed
 suffix:semicolon
 )brace
-multiline_comment|/* r &lt;- v */
+multiline_comment|/**&n; * snd_interval_refine - refine the interval value of configurator&n; * @i: the interval value to refine&n; * @v: the interval value to refer to&n; *&n; * Refines the interval value with the reference value.&n; * The interval is changed to the range satisfying both intervals.&n; * The interval status (min, max, integer, etc.) are evaluated.&n; *&n; * Returns non-zero if the value is changed, zero if not changed.&n; */
 DECL|function|snd_interval_refine
 r_int
 id|snd_interval_refine
@@ -2110,6 +2110,7 @@ id|b-&gt;integer
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/**&n; * snd_interval_div - refine the interval value with division&n; *&n; * c = a / b&n; *&n; * Returns non-zero if the value is changed, zero if not changed.&n; */
 DECL|function|snd_interval_div
 r_void
 id|snd_interval_div
@@ -2239,7 +2240,7 @@ op_assign
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/* a * b / k */
+multiline_comment|/**&n; * snd_interval_muldivk - refine the interval value&n; *&n; * c = a * b / k&n; *&n; * Returns non-zero if the value is changed, zero if not changed.&n; */
 DECL|function|snd_interval_muldivk
 r_void
 id|snd_interval_muldivk
@@ -2357,7 +2358,7 @@ op_assign
 l_int|0
 suffix:semicolon
 )brace
-multiline_comment|/* a * k / b */
+multiline_comment|/**&n; * snd_interval_mulkdiv - refine the interval value&n; *&n; * c = a * k / b&n; *&n; * Returns non-zero if the value is changed, zero if not changed.&n; */
 DECL|function|snd_interval_mulkdiv
 r_void
 id|snd_interval_mulkdiv
@@ -2498,6 +2499,7 @@ suffix:semicolon
 DECL|macro|assert
 macro_line|#undef assert
 multiline_comment|/* ---- */
+multiline_comment|/**&n; * snd_interval_ratnum - refine the interval value&n; *&n; * Returns non-zero if the value is changed, zero if not changed.&n; */
 DECL|function|snd_interval_ratnum
 r_int
 id|snd_interval_ratnum
@@ -3049,6 +3051,7 @@ r_return
 id|err
 suffix:semicolon
 )brace
+multiline_comment|/**&n; * snd_interval_ratden - refine the interval value&n; *&n; * Returns non-zero if the value is changed, zero if not changed.&n; */
 DECL|function|snd_interval_ratden
 r_int
 id|snd_interval_ratden
@@ -3572,6 +3575,7 @@ r_return
 id|err
 suffix:semicolon
 )brace
+multiline_comment|/**&n; * snd_interval_list - refine the interval value from the list&n; * @i: the interval value to refine&n; * @count: the number of elements in the list&n; * @list: the value list&n; * @mask: the bit-mask to evaluate&n; *&n; * Refines the interval value from the list.&n; * When mask is non-zero, only the elements corresponding to bit 1 are&n; * evaluated.&n; *&n; * Returns non-zero if the value is changed, zero if not changed.&n; */
 DECL|function|snd_interval_list
 r_int
 id|snd_interval_list
@@ -3917,6 +3921,7 @@ id|changed
 suffix:semicolon
 )brace
 multiline_comment|/* Info constraints helpers */
+multiline_comment|/**&n; * snd_pcm_hw_rule_add - add the hw-constraint rule&n; * @runtime: the pcm runtime instance&n; * @cond: condition bits&n; * @var: the variable to evaluate&n; * @func: the evaluation function&n; * @private: the private data pointer passed to function&n; * @dep: the dependent variables&n; *&n; * Returns zero if successful, or a negative error code on failure.&n; */
 DECL|function|snd_pcm_hw_rule_add
 r_int
 id|snd_pcm_hw_rule_add
@@ -4166,6 +4171,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+multiline_comment|/**&n; * snd_pcm_hw_constraint_mask&n; */
 DECL|function|snd_pcm_hw_constraint_mask
 r_int
 id|snd_pcm_hw_constraint_mask
@@ -4241,6 +4247,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+multiline_comment|/**&n; * snd_pcm_hw_constraint_mask64&n; */
 DECL|function|snd_pcm_hw_constraint_mask64
 r_int
 id|snd_pcm_hw_constraint_mask64
@@ -4342,6 +4349,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+multiline_comment|/**&n; * snd_pcm_hw_constraint_integer&n; */
 DECL|function|snd_pcm_hw_constraint_integer
 r_int
 id|snd_pcm_hw_constraint_integer
@@ -4376,6 +4384,7 @@ id|var
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/**&n; * snd_pcm_hw_constraint_minmax&n; */
 DECL|function|snd_pcm_hw_constraint_minmax
 r_int
 id|snd_pcm_hw_constraint_minmax
@@ -4485,6 +4494,7 @@ id|list-&gt;mask
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/**&n; * snd_pcm_hw_constraint_list&n; */
 DECL|function|snd_pcm_hw_constraint_list
 r_int
 id|snd_pcm_hw_constraint_list
@@ -4614,6 +4624,7 @@ r_return
 id|err
 suffix:semicolon
 )brace
+multiline_comment|/**&n; * snd_pcm_hw_constraint_ratnums&n; */
 DECL|function|snd_pcm_hw_constraint_ratnums
 r_int
 id|snd_pcm_hw_constraint_ratnums
@@ -4741,6 +4752,7 @@ r_return
 id|err
 suffix:semicolon
 )brace
+multiline_comment|/**&n; * snd_pcm_hw_constraint_ratdens&n; */
 DECL|function|snd_pcm_hw_constraint_ratdens
 r_int
 id|snd_pcm_hw_constraint_ratdens
@@ -4863,6 +4875,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+multiline_comment|/**&n; * snd_pcm_hw_constraint_msbits&n; */
 DECL|function|snd_pcm_hw_constraint_msbits
 r_int
 id|snd_pcm_hw_constraint_msbits
@@ -4968,6 +4981,7 @@ id|step
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/**&n; * snd_pcm_hw_constraint_step&n; */
 DECL|function|snd_pcm_hw_constraint_step
 r_int
 id|snd_pcm_hw_constraint_step
@@ -5189,6 +5203,7 @@ l_int|0
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/**&n; * snd_pcm_hw_constraint_pow2&n; */
 DECL|function|snd_pcm_hw_constraint_pow2
 r_int
 id|snd_pcm_hw_constraint_pow2
@@ -5329,6 +5344,7 @@ c_func
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/**&n; * snd_pcm_hw_param_any&n; */
 DECL|function|snd_pcm_hw_param_any
 r_int
 id|snd_pcm_hw_param_any
@@ -5442,7 +5458,7 @@ op_complement
 l_int|0U
 suffix:semicolon
 )brace
-multiline_comment|/* Fill PARAMS with full configuration space boundaries */
+multiline_comment|/**&n; * snd_pcm_hw_params_any&n; *&n; * Fill PARAMS with full configuration space boundaries&n; */
 DECL|function|snd_pcm_hw_params_any
 r_int
 id|snd_pcm_hw_params_any
@@ -5473,7 +5489,7 @@ id|params
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* Return the value for field PAR if it&squot;s fixed in configuration space &n;   defined by PARAMS. Return -EINVAL otherwise&n;*/
+multiline_comment|/**&n; * snd_pcm_hw_param_value&n; *&n; * Return the value for field PAR if it&squot;s fixed in configuration space &n; *  defined by PARAMS. Return -EINVAL otherwise&n; */
 DECL|function|snd_pcm_hw_param_value
 r_int
 id|snd_pcm_hw_param_value
@@ -5612,7 +5628,7 @@ op_minus
 id|EINVAL
 suffix:semicolon
 )brace
-multiline_comment|/* Return the minimum value for field PAR. */
+multiline_comment|/**&n; * snd_pcm_hw_param_value_min&n; *&n; * Return the minimum value for field PAR.&n; */
 DECL|function|snd_pcm_hw_param_value_min
 r_int
 r_int
@@ -5717,7 +5733,7 @@ op_minus
 id|EINVAL
 suffix:semicolon
 )brace
-multiline_comment|/* Return the maximum value for field PAR. */
+multiline_comment|/**&n; * snd_pcm_hw_param_value_max&n; *&n; * Return the maximum value for field PAR.&n; */
 DECL|function|snd_pcm_hw_param_value_max
 r_int
 r_int
@@ -5981,7 +5997,7 @@ r_return
 id|changed
 suffix:semicolon
 )brace
-multiline_comment|/* Inside configuration space defined by PARAMS remove from PAR all &n;   non integer values. Reduce configuration space accordingly.&n;   Return -EINVAL if the configuration space is empty&n;*/
+multiline_comment|/**&n; * snd_pcm_hw_param_setinteger&n; *&n; * Inside configuration space defined by PARAMS remove from PAR all &n; * non integer values. Reduce configuration space accordingly.&n; * Return -EINVAL if the configuration space is empty&n; */
 DECL|function|snd_pcm_hw_param_setinteger
 r_int
 id|snd_pcm_hw_param_setinteger
@@ -6150,7 +6166,7 @@ r_return
 id|changed
 suffix:semicolon
 )brace
-multiline_comment|/* Inside configuration space defined by PARAMS remove from PAR all &n;   values &gt; minimum. Reduce configuration space accordingly.&n;   Return the minimum.&n;*/
+multiline_comment|/**&n; * snd_pcm_hw_param_first&n; *&n; * Inside configuration space defined by PARAMS remove from PAR all &n; * values &gt; minimum. Reduce configuration space accordingly.&n; * Return the minimum.&n; */
 DECL|function|snd_pcm_hw_param_first
 r_int
 id|snd_pcm_hw_param_first
@@ -6328,7 +6344,7 @@ r_return
 id|changed
 suffix:semicolon
 )brace
-multiline_comment|/* Inside configuration space defined by PARAMS remove from PAR all &n;   values &lt; maximum. Reduce configuration space accordingly.&n;   Return the maximum.&n;*/
+multiline_comment|/**&n; * snd_pcm_hw_param_last&n; *&n; * Inside configuration space defined by PARAMS remove from PAR all &n; * values &lt; maximum. Reduce configuration space accordingly.&n; * Return the maximum.&n; */
 DECL|function|snd_pcm_hw_param_last
 r_int
 id|snd_pcm_hw_param_last
@@ -6574,7 +6590,7 @@ r_return
 id|changed
 suffix:semicolon
 )brace
-multiline_comment|/* Inside configuration space defined by PARAMS remove from PAR all &n;   values &lt; VAL. Reduce configuration space accordingly.&n;   Return new minimum or -EINVAL if the configuration space is empty&n;*/
+multiline_comment|/**&n; * snd_pcm_hw_param_min&n; *&n; * Inside configuration space defined by PARAMS remove from PAR all &n; * values &lt; VAL. Reduce configuration space accordingly.&n; * Return new minimum or -EINVAL if the configuration space is empty&n; */
 DECL|function|snd_pcm_hw_param_min
 r_int
 id|snd_pcm_hw_param_min
@@ -6859,7 +6875,7 @@ r_return
 id|changed
 suffix:semicolon
 )brace
-multiline_comment|/* Inside configuration space defined by PARAMS remove from PAR all &n;   values &gt;= VAL + 1. Reduce configuration space accordingly.&n;   Return new maximum or -EINVAL if the configuration space is empty&n;*/
+multiline_comment|/**&n; * snd_pcm_hw_param_max&n; *&n; * Inside configuration space defined by PARAMS remove from PAR all &n; *  values &gt;= VAL + 1. Reduce configuration space accordingly.&n; *  Return new maximum or -EINVAL if the configuration space is empty&n; */
 DECL|function|snd_pcm_hw_param_max
 r_int
 id|snd_pcm_hw_param_max
@@ -7232,7 +7248,7 @@ r_return
 id|changed
 suffix:semicolon
 )brace
-multiline_comment|/* Inside configuration space defined by PARAMS remove from PAR all &n;   values != VAL. Reduce configuration space accordingly.&n;   Return VAL or -EINVAL if the configuration space is empty&n;*/
+multiline_comment|/**&n; * snd_pcm_hw_param_set&n; *&n; * Inside configuration space defined by PARAMS remove from PAR all &n; * values != VAL. Reduce configuration space accordingly.&n; *  Return VAL or -EINVAL if the configuration space is empty&n; */
 DECL|function|snd_pcm_hw_param_set
 r_int
 id|snd_pcm_hw_param_set
@@ -7391,7 +7407,7 @@ r_return
 id|changed
 suffix:semicolon
 )brace
-multiline_comment|/* Inside configuration space defined by PARAMS remove from PAR all values&n;   not contained in MASK. Reduce configuration space accordingly.&n;   This function can be called only for SNDRV_PCM_HW_PARAM_ACCESS,&n;   SNDRV_PCM_HW_PARAM_FORMAT, SNDRV_PCM_HW_PARAM_SUBFORMAT.&n;   Return 0 on success or -EINVAL&n;   if the configuration space is empty&n;*/
+multiline_comment|/**&n; * snd_pcm_hw_param_mask&n; *&n; * Inside configuration space defined by PARAMS remove from PAR all values&n; * not contained in MASK. Reduce configuration space accordingly.&n; * This function can be called only for SNDRV_PCM_HW_PARAM_ACCESS,&n; * SNDRV_PCM_HW_PARAM_FORMAT, SNDRV_PCM_HW_PARAM_SUBFORMAT.&n; * Return 0 on success or -EINVAL&n; * if the configuration space is empty&n; */
 DECL|function|snd_pcm_hw_param_mask
 r_int
 id|snd_pcm_hw_param_mask
@@ -7807,7 +7823,7 @@ id|dmaxdir
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/* Inside configuration space defined by PARAMS set PAR to the available value&n;   nearest to VAL. Reduce configuration space accordingly.&n;   This function cannot be called for SNDRV_PCM_HW_PARAM_ACCESS,&n;   SNDRV_PCM_HW_PARAM_FORMAT, SNDRV_PCM_HW_PARAM_SUBFORMAT.&n;   Return the value found.&n; */
+multiline_comment|/**&n; * snd_pcm_hw_param_near&n; *&n; * Inside configuration space defined by PARAMS set PAR to the available value&n; * nearest to VAL. Reduce configuration space accordingly.&n; * This function cannot be called for SNDRV_PCM_HW_PARAM_ACCESS,&n; * SNDRV_PCM_HW_PARAM_FORMAT, SNDRV_PCM_HW_PARAM_SUBFORMAT.&n; * Return the value found.&n;  */
 DECL|function|snd_pcm_hw_param_near
 r_int
 id|snd_pcm_hw_param_near
@@ -8224,7 +8240,7 @@ r_return
 id|v
 suffix:semicolon
 )brace
-multiline_comment|/* Choose one configuration from configuration space defined by PARAMS&n;   The configuration choosen is that obtained fixing in this order:&n;   first access&n;   first format&n;   first subformat&n;   min channels&n;   min rate&n;   min period time&n;   max buffer size&n;   min tick time&n;*/
+multiline_comment|/**&n; * snd_pcm_hw_param_choose&n; *&n; * Choose one configuration from configuration space defined by PARAMS&n; * The configuration choosen is that obtained fixing in this order:&n; * first access, first format, first subformat, min channels,&n; * min rate, min period time, max buffer size, min tick time&n; */
 DECL|function|snd_pcm_hw_params_choose
 r_int
 id|snd_pcm_hw_params_choose
@@ -8614,6 +8630,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+multiline_comment|/**&n; * snd_pcm_lib_ioctl - a generic PCM ioctl callback&n; * @substream: the pcm substream instance&n; * @cmd: ioctl command&n; * @arg: ioctl argument&n; *&n; * Processes the generic ioctl commands for PCM.&n; * Can be passed as the ioctl callback for PCM ops.&n; *&n; * Returns zero if successful, or a negative error code on failure.&n; */
 DECL|function|snd_pcm_lib_ioctl
 r_int
 id|snd_pcm_lib_ioctl
@@ -8675,6 +8692,7 @@ id|ENXIO
 suffix:semicolon
 )brace
 multiline_comment|/*&n; *  Conditions&n; */
+multiline_comment|/**&n; * snd_pcm_playback_ready - check whether the playback buffer is available&n; * @substream: the pcm substream instance&n; *&n; * Checks whether enough free space is available on the playback buffer.&n; *&n; * Returns non-zero if available, or zero if not.&n; */
 DECL|function|snd_pcm_playback_ready
 r_int
 id|snd_pcm_playback_ready
@@ -8701,6 +8719,7 @@ op_ge
 id|runtime-&gt;control-&gt;avail_min
 suffix:semicolon
 )brace
+multiline_comment|/**&n; * snd_pcm_capture_ready - check whether the capture buffer is available&n; * @substream: the pcm substream instance&n; *&n; * Checks whether enough capture data is available on the capture buffer.&n; *&n; * Returns non-zero if available, or zero if not.&n; */
 DECL|function|snd_pcm_capture_ready
 r_int
 id|snd_pcm_capture_ready
@@ -8727,6 +8746,7 @@ op_ge
 id|runtime-&gt;control-&gt;avail_min
 suffix:semicolon
 )brace
+multiline_comment|/**&n; * snd_pcm_playback_data - check whether any data exists on the playback buffer&n; * @substream: the pcm substream instance&n; *&n; * Checks whether any data exists on the playback buffer.&n; *&n; * Returns non-zero if exists, or zero if not.&n; */
 DECL|function|snd_pcm_playback_data
 r_int
 id|snd_pcm_playback_data
@@ -8753,6 +8773,7 @@ OL
 id|runtime-&gt;buffer_size
 suffix:semicolon
 )brace
+multiline_comment|/**&n; * snd_pcm_playback_empty - check whether the playback buffer is empty&n; * @substream: the pcm substream instance&n; *&n; * Checks whether the playback buffer is empty.&n; *&n; * Returns non-zero if empty, or zero if not.&n; */
 DECL|function|snd_pcm_playback_empty
 r_int
 id|snd_pcm_playback_empty
@@ -8779,6 +8800,7 @@ op_ge
 id|runtime-&gt;buffer_size
 suffix:semicolon
 )brace
+multiline_comment|/**&n; * snd_pcm_capture_empty - check whether the capture buffer is empty&n; * @substream: the pcm substream instance&n; *&n; * Checks whether the capture buffer is empty.&n; *&n; * Returns non-zero if empty, or zero if not.&n; */
 DECL|function|snd_pcm_capture_empty
 r_int
 id|snd_pcm_capture_empty
@@ -9270,6 +9292,7 @@ id|runtime-&gt;lock
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/**&n; * snd_pcm_period_elapsed - update the pcm status for the next period&n; * @substream: the pcm substream instance&n; *&n; * This function is called from the interrupt handler when the&n; * PCM has processed the period size.  It will update the current&n; * pointer, set up the tick, wake up sleepers, etc.&n; *&n; * Even if more than one periods have elapsed since the last call, you&n; * have to call this only once.&n; */
 DECL|function|snd_pcm_period_elapsed
 r_void
 id|snd_pcm_period_elapsed
@@ -12556,6 +12579,13 @@ id|EXPORT_SYMBOL
 c_func
 (paren
 id|snd_pcm_hw_param_near
+)paren
+suffix:semicolon
+DECL|variable|snd_pcm_hw_param_set
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|snd_pcm_hw_param_set
 )paren
 suffix:semicolon
 DECL|variable|snd_pcm_hw_refine

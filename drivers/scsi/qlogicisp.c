@@ -2664,7 +2664,7 @@ l_string|&quot;isp1020_queuecommand&quot;
 suffix:semicolon
 id|host
 op_assign
-id|Cmnd-&gt;host
+id|Cmnd-&gt;device-&gt;host
 suffix:semicolon
 id|hostdata
 op_assign
@@ -2931,11 +2931,11 @@ l_int|1
 suffix:semicolon
 id|cmd-&gt;target_lun
 op_assign
-id|Cmnd-&gt;lun
+id|Cmnd-&gt;device-&gt;lun
 suffix:semicolon
 id|cmd-&gt;target_id
 op_assign
-id|Cmnd-&gt;target
+id|Cmnd-&gt;device-&gt;id
 suffix:semicolon
 id|cmd-&gt;cdb_length
 op_assign
@@ -4485,7 +4485,7 @@ l_string|&quot;isp1020_abort&quot;
 suffix:semicolon
 id|host
 op_assign
-id|Cmnd-&gt;host
+id|Cmnd-&gt;device-&gt;host
 suffix:semicolon
 id|hostdata
 op_assign
@@ -4551,13 +4551,13 @@ op_assign
 (paren
 id|u_short
 )paren
-id|Cmnd-&gt;target
+id|Cmnd-&gt;device-&gt;id
 )paren
 op_lshift
 l_int|8
 )paren
 op_or
-id|Cmnd-&gt;lun
+id|Cmnd-&gt;device-&gt;lun
 suffix:semicolon
 id|param
 (braket
@@ -4671,7 +4671,7 @@ l_string|&quot;isp1020_reset&quot;
 suffix:semicolon
 id|host
 op_assign
-id|Cmnd-&gt;host
+id|Cmnd-&gt;device-&gt;host
 suffix:semicolon
 id|hostdata
 op_assign

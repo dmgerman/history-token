@@ -5329,6 +5329,7 @@ c_func
 id|mm
 )paren
 suffix:semicolon
+multiline_comment|/* Use ~0UL here to ensure all VMAs in the mm are unmapped */
 id|mm-&gt;map_count
 op_sub_assign
 id|unmap_vmas
@@ -5343,7 +5344,8 @@ id|mm-&gt;mmap
 comma
 l_int|0
 comma
-id|TASK_SIZE
+op_complement
+l_int|0UL
 comma
 op_amp
 id|nr_accounted

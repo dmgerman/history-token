@@ -1461,11 +1461,11 @@ suffix:semicolon
 multiline_comment|/* Clear done bit               */
 id|pSCB-&gt;SCB_Target
 op_assign
-id|SCpnt-&gt;target
+id|SCpnt-&gt;device-&gt;id
 suffix:semicolon
 id|pSCB-&gt;SCB_Lun
 op_assign
-id|SCpnt-&gt;lun
+id|SCpnt-&gt;device-&gt;lun
 suffix:semicolon
 id|pSCB-&gt;SCB_Reserved0
 op_assign
@@ -1725,7 +1725,7 @@ suffix:semicolon
 )brace
 id|pSCB-&gt;SCB_Ident
 op_assign
-id|SCpnt-&gt;lun
+id|SCpnt-&gt;device-&gt;lun
 op_or
 id|DISC_ALLOW
 suffix:semicolon
@@ -1806,7 +1806,7 @@ op_assign
 id|ORC_HCS
 op_star
 )paren
-id|SCpnt-&gt;host-&gt;hostdata
+id|SCpnt-&gt;device-&gt;host-&gt;hostdata
 suffix:semicolon
 id|SCpnt-&gt;scsi_done
 op_assign
@@ -1892,7 +1892,7 @@ op_assign
 id|ORC_HCS
 op_star
 )paren
-id|SCpnt-&gt;host-&gt;hostdata
+id|SCpnt-&gt;device-&gt;host-&gt;hostdata
 suffix:semicolon
 r_return
 id|orc_abort_srb
@@ -1927,7 +1927,7 @@ op_assign
 id|ORC_HCS
 op_star
 )paren
-id|SCpnt-&gt;host-&gt;hostdata
+id|SCpnt-&gt;device-&gt;host-&gt;hostdata
 suffix:semicolon
 r_return
 id|orc_reset_scsi_bus
@@ -1960,7 +1960,7 @@ op_assign
 id|ORC_HCS
 op_star
 )paren
-id|SCpnt-&gt;host-&gt;hostdata
+id|SCpnt-&gt;device-&gt;host-&gt;hostdata
 suffix:semicolon
 r_return
 id|orc_device_reset
@@ -1970,7 +1970,7 @@ id|pHCB
 comma
 id|SCpnt
 comma
-id|SCpnt-&gt;target
+id|SCpnt-&gt;device-&gt;id
 )paren
 suffix:semicolon
 )brace

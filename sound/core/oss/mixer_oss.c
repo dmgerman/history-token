@@ -168,10 +168,6 @@ id|file-&gt;private_data
 op_assign
 id|fmixer
 suffix:semicolon
-macro_line|#ifdef LINUX_2_2
-id|MOD_INC_USE_COUNT
-suffix:semicolon
-macro_line|#endif
 r_if
 c_cond
 (paren
@@ -189,10 +185,6 @@ c_func
 id|fmixer
 )paren
 suffix:semicolon
-macro_line|#ifdef LINUX_2_2
-id|MOD_DEC_USE_COUNT
-suffix:semicolon
-macro_line|#endif
 id|snd_card_file_remove
 c_func
 (paren
@@ -251,10 +243,6 @@ c_func
 id|fmixer-&gt;card-&gt;module
 )paren
 suffix:semicolon
-macro_line|#ifdef LINUX_2_2
-id|MOD_DEC_USE_COUNT
-suffix:semicolon
-macro_line|#endif
 id|snd_card_file_remove
 c_func
 (paren

@@ -1,5 +1,8 @@
 multiline_comment|/*  $Id: signal.c,v 1.60 2002/02/09 19:49:31 davem Exp $&n; *  arch/sparc64/kernel/signal.c&n; *&n; *  Copyright (C) 1991, 1992  Linus Torvalds&n; *  Copyright (C) 1995 David S. Miller (davem@caip.rutgers.edu)&n; *  Copyright (C) 1996 Miguel de Icaza (miguel@nuclecu.unam.mx)&n; *  Copyright (C) 1997 Eddie C. Dost   (ecd@skynet.be)&n; *  Copyright (C) 1997,1998 Jakub Jelinek   (jj@sunsite.mff.cuni.cz)&n; */
 macro_line|#include &lt;linux/config.h&gt;
+macro_line|#ifdef CONFIG_SPARC32_COMPAT
+macro_line|#include &lt;linux/compat.h&gt;&t;/* for compat_old_sigset_t */
+macro_line|#endif
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/signal.h&gt;
@@ -1983,7 +1986,7 @@ r_void
 id|_sigpause32_common
 c_func
 (paren
-id|old_sigset_t32
+id|compat_old_sigset_t
 comma
 r_struct
 id|pt_regs

@@ -2,8 +2,8 @@ multiline_comment|/*&n; * drivers/pcmcia/sa1100_trizeps.c&n; *&n; * PCMCIA imple
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
-macro_line|#include &lt;asm/hardware.h&gt;   
-singleline_comment|// included trizeps.h
+macro_line|#include &lt;asm/hardware.h&gt;
+macro_line|#include &lt;asm/arch/trizeps.h&gt;
 macro_line|#include &lt;asm/mach-types.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;
@@ -119,8 +119,9 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
+l_string|&quot;%s(): PCMCIA Request for IRQ %u failed&bslash;n&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;: PCMCIA Request for IRQ %u failed&bslash;n&quot;
 comma
 id|TRIZEPS_IRQ_PCMCIA_CD0
 )paren

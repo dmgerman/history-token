@@ -198,13 +198,6 @@ r_struct
 id|timer_list
 id|phy_info_timer
 suffix:semicolon
-macro_line|#ifdef CONFIG_PROC_FS
-DECL|member|proc_list_head
-r_struct
-id|list_head
-id|proc_list_head
-suffix:semicolon
-macro_line|#endif
 DECL|member|vlgrp
 r_struct
 id|vlan_group

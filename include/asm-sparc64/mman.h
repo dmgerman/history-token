@@ -34,7 +34,7 @@ mdefine_line|#define MAP_LOCKED      0x100           /* lock the mapping */
 DECL|macro|_MAP_NEW
 mdefine_line|#define _MAP_NEW        0x80000000      /* Binary compatibility is fun... */
 DECL|macro|MAP_GROWSDOWN
-mdefine_line|#define MAP_GROWSDOWN&t;0x0100&t;&t;/* stack-like segment */
+mdefine_line|#define MAP_GROWSDOWN&t;0x0200&t;&t;/* stack-like segment */
 DECL|macro|MAP_DENYWRITE
 mdefine_line|#define MAP_DENYWRITE&t;0x0800&t;&t;/* ETXTBSY */
 DECL|macro|MAP_EXECUTABLE

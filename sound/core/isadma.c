@@ -5,7 +5,7 @@ macro_line|#undef HAVE_REALLY_SLOW_DMA_CONTROLLER
 macro_line|#include &lt;sound/driver.h&gt;
 macro_line|#include &lt;sound/core.h&gt;
 macro_line|#include &lt;asm/dma.h&gt;
-multiline_comment|/*&n; *&n; */
+multiline_comment|/**&n; * snd_dma_program - program an ISA DMA transfer&n; * @dma: the dma number&n; * @addr: the physical address of the buffer&n; * @size: the DMA transfer size&n; * @mode: the DMA transfer mode, DMA_MODE_XXX&n; *&n; * Programs an ISA DMA transfer for the given buffer.&n; */
 DECL|function|snd_dma_program
 r_void
 id|snd_dma_program
@@ -98,6 +98,7 @@ id|flags
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/**&n; * snd_dma_disable - stop the ISA DMA transfer&n; * @dma: the dma number&n; *&n; * Stops the ISA DMA transfer.&n; */
 DECL|function|snd_dma_disable
 r_void
 id|snd_dma_disable
@@ -138,6 +139,7 @@ id|flags
 )paren
 suffix:semicolon
 )brace
+multiline_comment|/**&n; * snd_dma_residue - return the residue count of the given DMA&n; * @dma: the dma number&n; *&n; * Returns the residue count of the given DMA transfer.&n; */
 DECL|function|snd_dma_residue
 r_int
 r_int

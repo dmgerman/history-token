@@ -1385,9 +1385,20 @@ suffix:semicolon
 multiline_comment|/* actual number of PCM channels */
 DECL|member|ac97_detect
 r_int
+r_int
 id|ac97_detect
+suffix:colon
+l_int|1
 suffix:semicolon
 multiline_comment|/* 1 = AC97 in detection phase */
+DECL|member|in_suspend
+r_int
+r_int
+id|in_suspend
+suffix:colon
+l_int|1
+suffix:semicolon
+multiline_comment|/* 1 during suspend/resume */
 DECL|member|synth
 r_struct
 id|_snd_4dwave
@@ -1461,11 +1472,6 @@ suffix:semicolon
 DECL|member|reg_lock
 id|spinlock_t
 id|reg_lock
-suffix:semicolon
-DECL|member|proc_entry
-id|snd_info_entry_t
-op_star
-id|proc_entry
 suffix:semicolon
 DECL|member|gameport
 r_struct
@@ -1688,16 +1694,9 @@ id|trident_t
 op_star
 id|trident
 comma
-r_void
+id|snd_pcm_substream_t
 op_star
-id|pages
-comma
-id|dma_addr_t
-id|addr
-comma
-r_int
-r_int
-id|size
+id|substream
 )paren
 suffix:semicolon
 r_int
