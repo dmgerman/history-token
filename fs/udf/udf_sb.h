@@ -42,6 +42,14 @@ DECL|macro|UDF_PART_FLAG_FREED_BITMAP
 mdefine_line|#define UDF_PART_FLAG_FREED_BITMAP&t;0x0004
 DECL|macro|UDF_PART_FLAG_FREED_TABLE
 mdefine_line|#define UDF_PART_FLAG_FREED_TABLE&t;0x0008
+DECL|macro|UDF_PART_FLAG_READ_ONLY
+mdefine_line|#define UDF_PART_FLAG_READ_ONLY&t;&t;0x0010
+DECL|macro|UDF_PART_FLAG_WRITE_ONCE
+mdefine_line|#define UDF_PART_FLAG_WRITE_ONCE&t;0x0020
+DECL|macro|UDF_PART_FLAG_REWRITABLE
+mdefine_line|#define UDF_PART_FLAG_REWRITABLE&t;0x0040
+DECL|macro|UDF_PART_FLAG_OVERWRITABLE
+mdefine_line|#define UDF_PART_FLAG_OVERWRITABLE&t;0x0080
 DECL|macro|UDF_SB_FREE
 mdefine_line|#define UDF_SB_FREE(X)&bslash;&n;{&bslash;&n;&t;if (UDF_SB(X))&bslash;&n;&t;{&bslash;&n;&t;&t;if (UDF_SB_PARTMAPS(X))&bslash;&n;&t;&t;&t;kfree(UDF_SB_PARTMAPS(X));&bslash;&n;&t;&t;UDF_SB_PARTMAPS(X) = NULL;&bslash;&n;&t;}&bslash;&n;}
 DECL|macro|UDF_SB
