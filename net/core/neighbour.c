@@ -7250,6 +7250,15 @@ c_func
 id|nlh
 )paren
 suffix:semicolon
+id|nlh-&gt;nlmsg_flags
+op_assign
+id|pid
+ques
+c_cond
+id|NLM_F_MULTI
+suffix:colon
+l_int|0
+suffix:semicolon
 id|ndm-&gt;ndm_family
 op_assign
 id|n-&gt;ops-&gt;family
