@@ -2514,14 +2514,7 @@ suffix:semicolon
 r_while
 c_loop
 (paren
-id|blk_queue_empty
-c_func
 (paren
-id|q
-)paren
-)paren
-(brace
-multiline_comment|/*&n;&t;&t; *&t;On an IRQ completion if there is an inactive&n;&t;&t; *&t;request on the queue head it means it isnt yet&n;&t;&t; *&t;ready to dispatch.&n;&t;&t; */
 id|req
 op_assign
 id|elv_next_request
@@ -2529,7 +2522,12 @@ c_func
 (paren
 id|q
 )paren
-suffix:semicolon
+)paren
+op_ne
+l_int|NULL
+)paren
+(brace
+multiline_comment|/*&n;&t;&t; *&t;On an IRQ completion if there is an inactive&n;&t;&t; *&t;request on the queue head it means it isnt yet&n;&t;&t; *&t;ready to dispatch.&n;&t;&t; */
 r_if
 c_cond
 (paren
