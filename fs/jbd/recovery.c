@@ -1577,12 +1577,10 @@ comma
 l_string|&quot;marking uptodate&quot;
 )paren
 suffix:semicolon
-id|mark_buffer_uptodate
+id|set_buffer_uptodate
 c_func
 (paren
 id|nbh
-comma
-l_int|1
 )paren
 suffix:semicolon
 op_increment

@@ -1811,12 +1811,10 @@ comma
 l_string|&quot;write&quot;
 )paren
 suffix:semicolon
-id|mark_buffer_uptodate
+id|set_buffer_uptodate
 c_func
 (paren
 id|bh
-comma
-l_int|1
 )paren
 suffix:semicolon
 id|ll_rw_block

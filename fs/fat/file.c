@@ -291,12 +291,10 @@ c_func
 (paren
 )paren
 suffix:semicolon
-id|bh_result-&gt;b_state
-op_or_assign
+id|set_buffer_new
+c_func
 (paren
-l_int|1UL
-op_lshift
-id|BH_New
+id|bh_result
 )paren
 suffix:semicolon
 id|map_bh

@@ -1262,13 +1262,10 @@ c_func
 id|bh
 )paren
 )paren
-id|set_bit
+id|set_buffer_dirty
 c_func
 (paren
-id|BH_Dirty
-comma
-op_amp
-id|bh-&gt;b_state
+id|bh
 )paren
 suffix:semicolon
 id|bh

@@ -271,12 +271,10 @@ c_func
 id|bh
 )paren
 suffix:semicolon
-id|mark_buffer_uptodate
+id|set_buffer_uptodate
 c_func
 (paren
 id|bh
-comma
-l_int|1
 )paren
 suffix:semicolon
 id|brelse

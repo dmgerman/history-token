@@ -1220,12 +1220,10 @@ id|bh_result-&gt;b_page
 )paren
 )paren
 (brace
-id|mark_buffer_uptodate
+id|set_buffer_uptodate
 c_func
 (paren
 id|bh_result
-comma
-l_int|1
 )paren
 suffix:semicolon
 r_goto
@@ -1556,11 +1554,9 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-id|mark_buffer_uptodate
+id|set_buffer_uptodate
 (paren
 id|bh_result
-comma
-l_int|1
 )paren
 suffix:semicolon
 r_return
@@ -2569,12 +2565,10 @@ r_goto
 id|research
 suffix:semicolon
 )brace
-id|bh_result-&gt;b_state
-op_or_assign
+id|set_buffer_new
+c_func
 (paren
-l_int|1UL
-op_lshift
-id|BH_New
+id|bh_result
 )paren
 suffix:semicolon
 id|put_block_num
@@ -2782,12 +2776,10 @@ comma
 id|inode
 )paren
 suffix:semicolon
-id|bh_result-&gt;b_state
-op_or_assign
+id|set_buffer_new
+c_func
 (paren
-l_int|1UL
-op_lshift
-id|BH_New
+id|bh_result
 )paren
 suffix:semicolon
 id|done
@@ -3080,12 +3072,10 @@ r_goto
 id|failure
 suffix:semicolon
 )brace
-multiline_comment|/* it is important the mark_buffer_uptodate is done after&n;&t;    ** the direct2indirect.  The buffer might contain valid&n;&t;    ** data newer than the data on disk (read by readpage, changed,&n;&t;    ** and then sent here by writepage).  direct2indirect needs&n;&t;    ** to know if unbh was already up to date, so it can decide&n;&t;    ** if the data in unbh needs to be replaced with data from&n;&t;    ** the disk&n;&t;    */
-id|mark_buffer_uptodate
+multiline_comment|/* it is important the set_buffer_uptodate is done after&n;&t;    ** the direct2indirect.  The buffer might contain valid&n;&t;    ** data newer than the data on disk (read by readpage, changed,&n;&t;    ** and then sent here by writepage).  direct2indirect needs&n;&t;    ** to know if unbh was already up to date, so it can decide&n;&t;    ** if the data in unbh needs to be replaced with data from&n;&t;    ** the disk&n;&t;    */
+id|set_buffer_uptodate
 (paren
 id|unbh
-comma
-l_int|1
 )paren
 suffix:semicolon
 multiline_comment|/* we&squot;ve converted the tail, so we must &n;&t;    ** flush unbh before the transaction commits&n;&t;    */
@@ -3206,12 +3196,10 @@ comma
 id|inode
 )paren
 suffix:semicolon
-id|bh_result-&gt;b_state
-op_or_assign
+id|set_buffer_new
+c_func
 (paren
-l_int|1UL
-op_lshift
-id|BH_New
+id|bh_result
 )paren
 suffix:semicolon
 id|done
@@ -7898,12 +7886,10 @@ comma
 id|inode
 )paren
 suffix:semicolon
-id|mark_buffer_uptodate
+id|set_buffer_uptodate
 c_func
 (paren
 id|bh_result
-comma
-l_int|1
 )paren
 suffix:semicolon
 )brace
@@ -8058,12 +8044,10 @@ comma
 id|inode
 )paren
 suffix:semicolon
-id|mark_buffer_uptodate
+id|set_buffer_uptodate
 c_func
 (paren
 id|bh_result
-comma
-l_int|1
 )paren
 suffix:semicolon
 multiline_comment|/* are there still bytes left? */
@@ -8281,22 +8265,16 @@ id|bh
 )paren
 suffix:semicolon
 multiline_comment|/* submit_bh doesn&squot;t care if the buffer is dirty, but nobody&n;&t;** later on in the call chain will be cleaning it.  So, we&n;&t;** clean the buffer here, it still gets written either way.&n;&t;*/
-id|clear_bit
+id|clear_buffer_dirty
 c_func
 (paren
-id|BH_Dirty
-comma
-op_amp
-id|bh-&gt;b_state
+id|bh
 )paren
 suffix:semicolon
-id|set_bit
+id|set_buffer_uptodate
 c_func
 (paren
-id|BH_Uptodate
-comma
-op_amp
-id|bh-&gt;b_state
+id|bh
 )paren
 suffix:semicolon
 id|submit_bh

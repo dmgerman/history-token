@@ -515,11 +515,11 @@ id|bh-&gt;b_blocknr
 op_assign
 id|iblock
 suffix:semicolon
-id|bh-&gt;b_state
-op_or_assign
-l_int|1UL
-op_lshift
-id|BH_Mapped
+id|set_buffer_mapped
+c_func
+(paren
+id|bh
+)paren
 suffix:semicolon
 r_return
 l_int|0
