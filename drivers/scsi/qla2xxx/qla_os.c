@@ -3786,8 +3786,6 @@ r_if
 c_cond
 (paren
 id|ha-&gt;flags.online
-op_eq
-id|TRUE
 )paren
 id|return_status
 op_assign
@@ -8115,7 +8113,7 @@ id|ha
 suffix:semicolon
 id|ha-&gt;flags.online
 op_assign
-id|FALSE
+l_int|0
 suffix:semicolon
 multiline_comment|/* Detach interrupts */
 r_if
@@ -8340,7 +8338,7 @@ id|len
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*************************************************************************&n;* qla2x00_proc_info&n;*&n;* Description:&n;*   Return information to handle /proc support for the driver.&n;*&n;* inout : decides the direction of the dataflow and the meaning of the&n;*         variables&n;* buffer: If inout==FALSE data is being written to it else read from it&n;*         (ptr to a page buffer)&n;* *start: If inout==FALSE start of the valid data in the buffer&n;* offset: If inout==FALSE starting offset from the beginning of all&n;*         possible data to return.&n;* length: If inout==FALSE max number of bytes to be written into the buffer&n;*         else number of bytes in &quot;buffer&quot;&n;* Returns:&n;*         &lt; 0:  error. errno value.&n;*         &gt;= 0: sizeof data returned.&n;*************************************************************************/
+multiline_comment|/*************************************************************************&n;* qla2x00_proc_info&n;*&n;* Description:&n;*   Return information to handle /proc support for the driver.&n;*&n;* inout : decides the direction of the dataflow and the meaning of the&n;*         variables&n;* buffer: If inout==0 data is being written to it else read from it&n;*         (ptr to a page buffer)&n;* *start: If inout==0 start of the valid data in the buffer&n;* offset: If inout==0 starting offset from the beginning of all&n;*         possible data to return.&n;* length: If inout==0 max number of bytes to be written into the buffer&n;*         else number of bytes in &quot;buffer&quot;&n;* Returns:&n;*         &lt; 0:  error. errno value.&n;*         &gt;= 0: sizeof data returned.&n;*************************************************************************/
 r_int
 DECL|function|qla2x00_proc_info
 id|qla2x00_proc_info
@@ -8444,8 +8442,6 @@ r_if
 c_cond
 (paren
 id|inout
-op_eq
-id|TRUE
 )paren
 (brace
 multiline_comment|/* Has data been written to the file? */
@@ -12807,7 +12803,7 @@ c_func
 (paren
 id|ha
 comma
-id|FALSE
+l_int|0
 )paren
 suffix:semicolon
 id|DEBUG
@@ -12853,7 +12849,7 @@ c_func
 (paren
 id|ha
 comma
-id|FALSE
+l_int|0
 )paren
 suffix:semicolon
 id|DEBUG
@@ -13137,7 +13133,6 @@ id|ha-&gt;dpc_flags
 )paren
 )paren
 (brace
-multiline_comment|/* 10/15 ha-&gt;flags.reset_active = TRUE; */
 r_do
 (brace
 id|clear_bit
@@ -13178,7 +13173,6 @@ id|ha-&gt;dpc_flags
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/* 10/15 ha-&gt;flags.reset_active = FALSE; */
 )brace
 )brace
 multiline_comment|/*&n; * This routine will allocate SP from the free queue&n; * input:&n; *        scsi_qla_host_t *&n; * output:&n; *        srb_t * or NULL&n; */

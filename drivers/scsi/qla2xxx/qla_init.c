@@ -496,11 +496,11 @@ suffix:semicolon
 multiline_comment|/* Clear adapter flags. */
 id|ha-&gt;flags.online
 op_assign
-id|FALSE
+l_int|0
 suffix:semicolon
 id|ha-&gt;flags.reset_active
 op_assign
-id|FALSE
+l_int|0
 suffix:semicolon
 id|atomic_set
 c_func
@@ -914,7 +914,7 @@ l_int|0
 suffix:semicolon
 id|ha-&gt;flags.online
 op_assign
-id|TRUE
+l_int|1
 suffix:semicolon
 )brace
 r_else
@@ -6428,7 +6428,7 @@ id|flags
 (brace
 id|ha-&gt;flags.rscn_queue_overflow
 op_assign
-id|TRUE
+l_int|1
 suffix:semicolon
 id|set_bit
 c_func
@@ -6462,7 +6462,7 @@ id|flags
 (brace
 id|ha-&gt;flags.rscn_queue_overflow
 op_assign
-id|TRUE
+l_int|1
 suffix:semicolon
 id|set_bit
 c_func
@@ -6504,7 +6504,7 @@ id|flags
 (brace
 id|ha-&gt;flags.rscn_queue_overflow
 op_assign
-id|TRUE
+l_int|1
 suffix:semicolon
 id|set_bit
 c_func
@@ -12152,7 +12152,7 @@ c_func
 (paren
 id|ha
 comma
-id|TRUE
+l_int|1
 )paren
 suffix:semicolon
 )brace
@@ -15735,7 +15735,7 @@ id|ha-&gt;flags.online
 (brace
 id|ha-&gt;flags.online
 op_assign
-id|FALSE
+l_int|0
 suffix:semicolon
 id|clear_bit
 c_func
@@ -16009,7 +16009,7 @@ suffix:semicolon
 )brace
 id|ha-&gt;flags.online
 op_assign
-id|TRUE
+l_int|1
 suffix:semicolon
 multiline_comment|/* Enable ISP interrupts. */
 id|qla2x00_enable_intrs
@@ -16024,7 +16024,7 @@ c_func
 (paren
 id|ha
 comma
-id|TRUE
+l_int|1
 )paren
 suffix:semicolon
 multiline_comment|/* Restart queues that may have been stopped. */
@@ -16033,7 +16033,7 @@ c_func
 (paren
 id|ha
 comma
-id|TRUE
+l_int|1
 )paren
 suffix:semicolon
 id|ha-&gt;isp_abort_cnt
@@ -16055,7 +16055,7 @@ r_else
 multiline_comment|/* failed the ISP abort */
 id|ha-&gt;flags.online
 op_assign
-id|TRUE
+l_int|1
 suffix:semicolon
 r_if
 c_cond
@@ -16101,12 +16101,12 @@ c_func
 (paren
 id|ha
 comma
-id|FALSE
+l_int|0
 )paren
 suffix:semicolon
 id|ha-&gt;flags.online
 op_assign
-id|FALSE
+l_int|0
 suffix:semicolon
 id|clear_bit
 c_func
@@ -16266,7 +16266,7 @@ id|ha
 (brace
 id|ha-&gt;flags.online
 op_assign
-id|FALSE
+l_int|0
 suffix:semicolon
 r_if
 c_cond
@@ -16475,7 +16475,7 @@ suffix:semicolon
 )paren
 id|ha-&gt;flags.online
 op_assign
-id|TRUE
+l_int|1
 suffix:semicolon
 multiline_comment|/* Wait at most MAX_TARGET RSCNs for a stable link. */
 id|wait_time
@@ -16602,7 +16602,7 @@ id|ha-&gt;iobase
 suffix:semicolon
 id|ha-&gt;flags.online
 op_assign
-id|FALSE
+l_int|0
 suffix:semicolon
 id|qla2x00_disable_intrs
 c_func

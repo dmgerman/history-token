@@ -978,7 +978,7 @@ suffix:semicolon
 multiline_comment|/* Load return mailbox registers. */
 id|ha-&gt;flags.mbox_int
 op_assign
-id|TRUE
+l_int|1
 suffix:semicolon
 id|ha-&gt;mailbox_out
 (braket

@@ -197,7 +197,7 @@ suffix:semicolon
 )brace
 id|ha-&gt;flags.mbox_busy
 op_assign
-id|TRUE
+l_int|1
 suffix:semicolon
 multiline_comment|/* Save mailbox command for debug */
 id|ha-&gt;mcp
@@ -443,7 +443,7 @@ macro_line|#endif
 multiline_comment|/* Issue set host interrupt command to send cmd out. */
 id|ha-&gt;flags.mbox_int
 op_assign
-id|FALSE
+l_int|0
 suffix:semicolon
 id|clear_bit
 c_func
@@ -778,7 +778,7 @@ suffix:semicolon
 multiline_comment|/* Got interrupt. Clear the flag. */
 id|ha-&gt;flags.mbox_int
 op_assign
-id|FALSE
+l_int|0
 suffix:semicolon
 id|clear_bit
 c_func
@@ -945,7 +945,7 @@ id|mbx_flags
 suffix:semicolon
 id|ha-&gt;flags.mbox_busy
 op_assign
-id|FALSE
+l_int|0
 suffix:semicolon
 multiline_comment|/* Clean up */
 id|ha-&gt;mcp
