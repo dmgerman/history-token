@@ -31,7 +31,7 @@ c_cond
 id|n
 op_ge
 l_int|64
-op_logical_or
+op_logical_and
 (paren
 (paren
 (paren
