@@ -853,7 +853,15 @@ OL
 id|old_len
 )paren
 (brace
-multiline_comment|/*&n;&t;&t; * On error, move entries back from new area to old,&n;&t;&t; * which will succeed since page tables still there,&n;&t;&t; * and then proceed to unmap new area instead of old.&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * On error, move entries back from new area to old,&n;&t;&t; * which will succeed since page tables still there,&n;&t;&t; * and then proceed to unmap new area instead of old.&n;&t;&t; *&n;&t;&t; * Subtle point from Rajesh Venkatasubramanian: before&n;&t;&t; * moving file-based ptes, move new_vma before old vma&n;&t;&t; * in the i_mmap or i_mmap_shared list, so when racing&n;&t;&t; * against vmtruncate we cannot propagate pages to be&n;&t;&t; * truncated back from new_vma into just cleaned old.&n;&t;&t; */
+id|vma_relink_file
+c_func
+(paren
+id|vma
+comma
+id|new_vma
+)paren
+suffix:semicolon
 id|move_page_tables
 c_func
 (paren
