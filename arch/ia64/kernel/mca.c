@@ -292,6 +292,7 @@ op_assign
 l_string|&quot;mca_wkup&quot;
 )brace
 suffix:semicolon
+macro_line|#ifdef CONFIG_ACPI
 DECL|variable|mca_cpe_irqaction
 r_static
 r_struct
@@ -338,6 +339,7 @@ op_assign
 l_string|&quot;cpe_poll&quot;
 )brace
 suffix:semicolon
+macro_line|#endif /* CONFIG_ACPI */
 DECL|macro|MAX_CPE_POLL_INTERVAL
 mdefine_line|#define MAX_CPE_POLL_INTERVAL (15*60*HZ) /* 15 minutes */
 DECL|macro|MIN_CPE_POLL_INTERVAL
@@ -1789,6 +1791,7 @@ c_func
 id|ia64_mca_check_errors
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_ACPI
 multiline_comment|/*&n; * ia64_mca_register_cpev&n; *&n; *  Register the corrected platform error vector with SAL.&n; *&n; *  Inputs&n; *      cpev        Corrected Platform Error Vector number&n; *&n; *  Outputs&n; *      None&n; */
 r_static
 r_void
@@ -1839,6 +1842,7 @@ id|cpev
 )paren
 suffix:semicolon
 )brace
+macro_line|#endif /* CONFIG_ACPI */
 macro_line|#endif /* PLATFORM_MCA_HANDLERS */
 multiline_comment|/*&n; * routine to process and prepare to dump min_state_save&n; * information for debugging purposes.&n; */
 r_void
@@ -2554,6 +2558,7 @@ op_amp
 id|mca_wkup_irqaction
 )paren
 suffix:semicolon
+macro_line|#ifdef CONFIG_ACPI
 multiline_comment|/* Setup the CPE interrupt vector */
 (brace
 id|irq_desc_t
@@ -2642,6 +2647,7 @@ id|cpev
 suffix:semicolon
 )brace
 )brace
+macro_line|#endif
 multiline_comment|/* Initialize the areas set aside by the OS to buffer the&n;&t; * platform/processor error states for MCA/INIT/CMC&n;&t; * handling.&n;&t; */
 id|ia64_log_init
 c_func
@@ -3814,6 +3820,7 @@ id|cpe_poll_timer.function
 op_assign
 id|ia64_mca_cpe_poll
 suffix:semicolon
+macro_line|#ifdef CONFIG_ACPI
 multiline_comment|/* If platform doesn&squot;t support CPEI, get the timer going. */
 r_if
 c_cond
@@ -3845,6 +3852,7 @@ l_int|0UL
 )paren
 suffix:semicolon
 )brace
+macro_line|#endif
 r_return
 l_int|0
 suffix:semicolon
@@ -4246,6 +4254,15 @@ c_func
 (paren
 id|sal_info_type
 )paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|max_size
+)paren
+multiline_comment|/* alloc_bootmem() doesn&squot;t like zero-sized allocations! */
+r_return
 suffix:semicolon
 singleline_comment|// set up OS data structures to hold error info
 id|IA64_LOG_ALLOCATE

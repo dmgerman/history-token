@@ -64,7 +64,7 @@ suffix:semicolon
 r_char
 id|buf
 (braket
-l_int|80
+l_int|128
 )braket
 suffix:semicolon
 multiline_comment|/* don&squot;t make it so big that it overflows the stack! */
@@ -122,7 +122,8 @@ r_sizeof
 id|buf
 )paren
 comma
-l_string|&quot; [&lt;%016lx&gt;] %%s&bslash;n&bslash;t&bslash;t&bslash;t&bslash;tsp=%016lx bsp=%016lx&bslash;n&quot;
+l_string|&quot; [&lt;%016lx&gt;] %%s&bslash;n&quot;
+l_string|&quot;                                sp=%016lx bsp=%016lx&bslash;n&quot;
 comma
 id|ip
 comma
