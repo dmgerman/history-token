@@ -6852,8 +6852,6 @@ r_void
 r_int
 id|retval
 suffix:semicolon
-id|MOD_INC_USE_COUNT
-suffix:semicolon
 id|b1_set_revision
 c_func
 (paren
@@ -6941,8 +6939,6 @@ id|c4_driver
 suffix:semicolon
 id|out
 suffix:colon
-id|MOD_DEC_USE_COUNT
-suffix:semicolon
 r_return
 id|retval
 suffix:semicolon
