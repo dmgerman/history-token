@@ -73,8 +73,7 @@ mdefine_line|#define SET_SPEEDSTEP_STATE 2
 DECL|macro|GET_SPEEDSTEP_FREQS
 mdefine_line|#define GET_SPEEDSTEP_FREQS 4
 multiline_comment|/* DEBUG&n; *   Define it if you want verbose debug output, e.g. for bug reporting&n; */
-DECL|macro|SPEEDSTEP_DEBUG
-mdefine_line|#define SPEEDSTEP_DEBUG
+singleline_comment|//#define SPEEDSTEP_DEBUG
 macro_line|#ifdef SPEEDSTEP_DEBUG
 DECL|macro|dprintk
 mdefine_line|#define dprintk(msg...) printk(msg)
