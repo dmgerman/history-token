@@ -151,7 +151,11 @@ id|resource
 id|code_resource
 op_assign
 (brace
+dot
+id|name
+op_assign
 l_string|&quot;Kernel code&quot;
+comma
 )brace
 suffix:semicolon
 DECL|variable|data_resource
@@ -161,7 +165,11 @@ id|resource
 id|data_resource
 op_assign
 (brace
+dot
+id|name
+op_assign
 l_string|&quot;Kernel data&quot;
+comma
 )brace
 suffix:semicolon
 DECL|function|add_memory_region
