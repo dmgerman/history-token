@@ -209,7 +209,7 @@ id|KEY_PLAY
 comma
 singleline_comment|// unmarked
 (braket
-l_int|24
+l_int|23
 )braket
 op_assign
 id|KEY_RED
