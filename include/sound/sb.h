@@ -746,7 +746,7 @@ id|rpcm
 )paren
 suffix:semicolon
 multiline_comment|/* sb8.c */
-r_void
+id|irqreturn_t
 id|snd_sb8dsp_interrupt
 c_func
 (paren
@@ -792,7 +792,7 @@ id|substream
 )paren
 suffix:semicolon
 multiline_comment|/* midi8.c */
-r_void
+id|irqreturn_t
 id|snd_sb8dsp_midi_interrupt
 c_func
 (paren

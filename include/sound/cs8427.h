@@ -50,7 +50,7 @@ mdefine_line|#define CS8427_REG_QSUBCODE&t;0x14&t;/* 0x14-0x1d (10 bytes) */
 DECL|macro|CS8427_REG_OMCKRMCKRATIO
 mdefine_line|#define CS8427_REG_OMCKRMCKRATIO 0x1e
 DECL|macro|CS8427_REG_CORU_DATABUF
-mdefine_line|#define CS8427_REG_CORU_DATABUF&t;0x20
+mdefine_line|#define CS8427_REG_CORU_DATABUF&t;0x20&t;/* 24 byte buffer area */
 DECL|macro|CS8427_REG_ID_AND_VER
 mdefine_line|#define CS8427_REG_ID_AND_VER&t;0x7f
 multiline_comment|/* CS8427_REG_CONTROL1 bits */
@@ -306,6 +306,15 @@ id|snd_i2c_device_t
 op_star
 op_star
 id|r_cs8427
+)paren
+suffix:semicolon
+r_void
+id|snd_cs8427_reset
+c_func
+(paren
+id|snd_i2c_device_t
+op_star
+id|cs8427
 )paren
 suffix:semicolon
 r_int

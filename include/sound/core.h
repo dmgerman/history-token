@@ -637,13 +637,22 @@ id|card-&gt;power_lock
 )paren
 suffix:semicolon
 )brace
-r_void
+r_int
 id|snd_power_wait
 c_func
 (paren
 id|snd_card_t
 op_star
 id|card
+comma
+r_int
+r_int
+id|power_state
+comma
+r_struct
+id|file
+op_star
+id|file
 )paren
 suffix:semicolon
 DECL|function|snd_power_get_state
@@ -696,8 +705,31 @@ DECL|macro|snd_power_lock
 mdefine_line|#define snd_power_lock(card)&t;&t;do { (void)(card); } while (0)
 DECL|macro|snd_power_unlock
 mdefine_line|#define snd_power_unlock(card)&t;&t;do { (void)(card); } while (0)
-DECL|macro|snd_power_wait
-mdefine_line|#define snd_power_wait(card)&t;&t;do { (void)(card); } while (0)
+DECL|function|snd_power_wait
+r_static
+r_inline
+r_int
+id|snd_power_wait
+c_func
+(paren
+id|snd_card_t
+op_star
+id|card
+comma
+r_int
+r_int
+id|state
+comma
+r_struct
+id|file
+op_star
+id|file
+)paren
+(brace
+r_return
+l_int|0
+suffix:semicolon
+)brace
 DECL|macro|snd_power_get_state
 mdefine_line|#define snd_power_get_state(card)&t;SNDRV_CTL_POWER_D0
 DECL|macro|snd_power_change_state
