@@ -1330,6 +1330,15 @@ id|waiter-&gt;fl_next
 op_assign
 id|blocker
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|IS_POSIX
+c_func
+(paren
+id|blocker
+)paren
+)paren
 id|list_add
 c_func
 (paren
