@@ -60,9 +60,9 @@ suffix:semicolon
 DECL|macro|POLL_TABLE_FULL
 mdefine_line|#define POLL_TABLE_FULL(table) &bslash;&n;&t;((unsigned long)((table)-&gt;entry+1) &gt; PAGE_SIZE + (unsigned long)(table))
 multiline_comment|/*&n; * Ok, Peter made a complicated, but straightforward multiple_wait() function.&n; * I have rewritten this, taking some shortcuts: This code may not be easy to&n; * follow, but it should be free of race-conditions, and it&squot;s practical. If you&n; * understand what I&squot;m doing here, then you understand how the linux&n; * sleep/wakeup mechanism works.&n; *&n; * Two very simple procedures, poll_wait() and poll_freewait() make all the&n; * work.  poll_wait() is an inline-function defined in &lt;linux/poll.h&gt;,&n; * as all select/poll functions have to call it to add an entry to the&n; * poll table.&n; */
-DECL|function|poll_freewait
+DECL|function|__pollfreewait
 r_void
-id|poll_freewait
+id|__pollfreewait
 c_func
 (paren
 id|poll_table

@@ -1400,11 +1400,11 @@ c_func
 id|__pollwait
 )paren
 suffix:semicolon
-DECL|variable|poll_freewait
+DECL|variable|__pollfreewait
 id|EXPORT_SYMBOL
 c_func
 (paren
-id|poll_freewait
+id|__pollfreewait
 )paren
 suffix:semicolon
 DECL|variable|ROOT_DEV
