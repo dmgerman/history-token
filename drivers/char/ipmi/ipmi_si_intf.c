@@ -5653,6 +5653,22 @@ r_return
 op_minus
 id|ENODEV
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|spmi-&gt;addr.register_bit_width
+)paren
+(brace
+id|acpi_failure
+op_assign
+l_int|1
+suffix:semicolon
+r_return
+op_minus
+id|ENODEV
+suffix:semicolon
+)brace
 multiline_comment|/* Figure out the interface type. */
 r_switch
 c_cond
