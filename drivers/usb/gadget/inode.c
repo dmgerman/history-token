@@ -565,19 +565,28 @@ suffix:semicolon
 )brace
 multiline_comment|/*----------------------------------------------------------------------*/
 multiline_comment|/* most &quot;how to use the hardware&quot; policy choices are in userspace:&n; * mapping endpoint roles the driver needs to the capabilities that&n; * the usb controller exposes.&n; */
-macro_line|#ifdef&t;CONFIG_USB_GADGETFS_NET2280
+macro_line|#ifdef&t;CONFIG_USB_GADGET_DUMMY_HCD
+multiline_comment|/* act (mostly) like a net2280 */
+DECL|macro|CONFIG_USB_GADGET_NET2280
+mdefine_line|#define CONFIG_USB_GADGET_NET2280
+macro_line|#endif
+macro_line|#ifdef&t;CONFIG_USB_GADGET_NET2280
 DECL|macro|CHIP
 mdefine_line|#define CHIP&t;&t;&t;&quot;net2280&quot;
 DECL|macro|HIGHSPEED
 mdefine_line|#define HIGHSPEED
 macro_line|#endif
-macro_line|#ifdef&t;CONFIG_USB_GADGETFS_PXA2XX
+macro_line|#ifdef&t;CONFIG_USB_GADGET_PXA2XX
 DECL|macro|CHIP
 mdefine_line|#define CHIP&t;&t;&t;&quot;pxa2xx_udc&quot;
 multiline_comment|/* earlier hardware doesn&squot;t have UDCCFR, races set_{config,interface} */
 macro_line|#warning works best with pxa255 or newer
 macro_line|#endif
-macro_line|#ifdef&t;CONFIG_USB_GADGETFS_SA1100
+macro_line|#ifdef&t;CONFIG_USB_GADGET_GOKU
+DECL|macro|CHIP
+mdefine_line|#define CHIP&t;&t;&t;&quot;goku_udc&quot;
+macro_line|#endif
+macro_line|#ifdef&t;CONFIG_USB_GADGET_SA1100
 DECL|macro|CHIP
 mdefine_line|#define CHIP&t;&t;&t;&quot;sa1100&quot;
 macro_line|#endif
@@ -1066,6 +1075,7 @@ op_star
 id|fd
 comma
 r_char
+id|__user
 op_star
 id|buf
 comma
@@ -1283,6 +1293,7 @@ id|fd
 comma
 r_const
 r_char
+id|__user
 op_star
 id|buf
 comma

@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * Architecture-specific unaligned trap handling.&n; *&n; * Copyright (C) 1999-2002 Hewlett-Packard Co&n; *&t;Stephane Eranian &lt;eranian@hpl.hp.com&gt;&n; *&t;David Mosberger-Tang &lt;davidm@hpl.hp.com&gt;&n; *&n; * 2002/12/09   Fix rotating register handling (off-by-1 error, missing fr-rotation).  Fix&n; *&t;&t;get_rse_reg() to not leak kernel bits to user-level (reading an out-of-frame&n; *&t;&t;stacked register returns an undefined value; it does NOT trigger a&n; *&t;&t;&quot;rsvd register fault&quot;).&n; * 2001/10/11&t;Fix unaligned access to rotating registers in s/w pipelined loops.&n; * 2001/08/13&t;Correct size of extended floats (float_fsz) from 16 to 10 bytes.&n; * 2001/01/17&t;Add support emulation of unaligned kernel accesses.&n; */
+multiline_comment|/*&n; * Architecture-specific unaligned trap handling.&n; *&n; * Copyright (C) 1999-2002, 2004 Hewlett-Packard Co&n; *&t;Stephane Eranian &lt;eranian@hpl.hp.com&gt;&n; *&t;David Mosberger-Tang &lt;davidm@hpl.hp.com&gt;&n; *&n; * 2002/12/09   Fix rotating register handling (off-by-1 error, missing fr-rotation).  Fix&n; *&t;&t;get_rse_reg() to not leak kernel bits to user-level (reading an out-of-frame&n; *&t;&t;stacked register returns an undefined value; it does NOT trigger a&n; *&t;&t;&quot;rsvd register fault&quot;).&n; * 2001/10/11&t;Fix unaligned access to rotating registers in s/w pipelined loops.&n; * 2001/08/13&t;Correct size of extended floats (float_fsz) from 16 to 10 bytes.&n; * 2001/01/17&t;Add support emulation of unaligned kernel accesses.&n; */
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
@@ -5791,10 +5791,18 @@ id|regs
 )paren
 id|eh
 op_assign
-id|SEARCH_EXCEPTION_TABLE
+id|search_exception_tables
+c_func
+(paren
+id|regs-&gt;cr_iip
+op_plus
+id|ia64_psr
 c_func
 (paren
 id|regs
+)paren
+op_member_access_from_pointer
+id|ri
 )paren
 suffix:semicolon
 r_if

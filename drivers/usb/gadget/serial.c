@@ -52,10 +52,6 @@ DECL|macro|GS_MINOR_START
 mdefine_line|#define GS_MINOR_START&t;&t;&t;0
 DECL|macro|GS_NUM_PORTS
 mdefine_line|#define GS_NUM_PORTS&t;&t;&t;16
-DECL|macro|GS_VENDOR_ID
-mdefine_line|#define GS_VENDOR_ID&t;&t;&t;0x05F9
-DECL|macro|GS_PRODUCT_ID
-mdefine_line|#define GS_PRODUCT_ID&t;&t;&t;0xFFFF
 DECL|macro|GS_NUM_CONFIGS
 mdefine_line|#define GS_NUM_CONFIGS&t;&t;&t;1
 DECL|macro|GS_NO_CONFIG_ID
@@ -103,7 +99,7 @@ mdefine_line|#define gs_debug_level(level, format, arg...) &bslash;&n;&t;do { } 
 macro_line|#endif /* G_SERIAL_DEBUG */
 multiline_comment|/* USB Controllers */
 multiline_comment|/*&n; * NetChip 2280, PCI based.&n; *&n; * This has half a dozen configurable endpoints, four with dedicated&n; * DMA channels to manage their FIFOs.  It supports high speed.&n; * Those endpoints can be arranged in any desired configuration.&n; */
-macro_line|#ifdef&t;CONFIG_USB_G_SERIAL_NET2280
+macro_line|#ifdef&t;CONFIG_USB_GADGET_NET2280
 DECL|macro|CHIP
 mdefine_line|#define CHIP&t;&t;&t;&t;&quot;net2280&quot;
 DECL|macro|EP0_MAXPACKET
@@ -174,7 +170,7 @@ suffix:semicolon
 )brace
 macro_line|#endif
 multiline_comment|/*&n; * PXA-2xx UDC:  widely used in second gen Linux-capable PDAs.&n; *&n; * This has fifteen fixed-function full speed endpoints, and it&n; * can support all USB transfer types.&n; *&n; * These supports three or four configurations, with fixed numbers.&n; * The hardware interprets SET_INTERFACE, net effect is that you&n; * can&squot;t use altsettings or reset the interfaces independently.&n; * So stick to a single interface.&n; */
-macro_line|#ifdef&t;CONFIG_USB_G_SERIAL_PXA2XX
+macro_line|#ifdef&t;CONFIG_USB_GADGET_PXA2XX
 DECL|macro|CHIP
 mdefine_line|#define CHIP&t;&t;&t;&t;&quot;pxa2xx&quot;
 DECL|macro|EP0_MAXPACKET
@@ -187,10 +183,10 @@ id|EP_OUT_NAME
 (braket
 )braket
 op_assign
-l_string|&quot;ep12out-bulk&quot;
+l_string|&quot;ep2out-bulk&quot;
 suffix:semicolon
 DECL|macro|EP_OUT_NUM
-mdefine_line|#define EP_OUT_NUM&t;&t;&t;12
+mdefine_line|#define EP_OUT_NUM&t;&t;&t;2
 DECL|variable|EP_IN_NAME
 r_static
 r_const
@@ -199,10 +195,10 @@ id|EP_IN_NAME
 (braket
 )braket
 op_assign
-l_string|&quot;ep11in-bulk&quot;
+l_string|&quot;ep1in-bulk&quot;
 suffix:semicolon
 DECL|macro|EP_IN_NUM
-mdefine_line|#define EP_IN_NUM&t;&t;&t;11
+mdefine_line|#define EP_IN_NUM&t;&t;&t;1
 DECL|macro|SELFPOWER
 mdefine_line|#define SELFPOWER &t;&t;&t;USB_CONFIG_ATT_SELFPOWER
 multiline_comment|/* no hw optimizations to apply */
@@ -210,7 +206,7 @@ DECL|macro|hw_optimize
 mdefine_line|#define hw_optimize(g)&t;&t;&t;do {} while (0)
 macro_line|#endif
 multiline_comment|/*&n; * SA-1100 UDC:  widely used in first gen Linux-capable PDAs.&n; *&n; * This has only two fixed function endpoints, which can only&n; * be used for bulk (or interrupt) transfers.  (Plus control.)&n; *&n; * Since it can&squot;t flush its TX fifos without disabling the UDC,&n; * the current configuration or altsettings can&squot;t change except&n; * in special situations.  So this is a case of &quot;choose it right&n; * during enumeration&quot; ...&n; */
-macro_line|#ifdef&t;CONFIG_USB_G_SERIAL_SA1100
+macro_line|#ifdef&t;CONFIG_USB_GADGET_SA1100
 DECL|macro|CHIP
 mdefine_line|#define CHIP&t;&t;&t;&t;&quot;sa1100&quot;
 DECL|macro|EP0_MAXPACKET
@@ -246,7 +242,7 @@ DECL|macro|hw_optimize
 mdefine_line|#define hw_optimize(g)&t;&t;&t;do {} while (0)
 macro_line|#endif
 multiline_comment|/*&n; * Toshiba TC86C001 (&quot;Goku-S&quot;) UDC&n; *&n; * This has three semi-configurable full speed bulk/interrupt endpoints.&n; */
-macro_line|#ifdef&t;CONFIG_USB_G_SERIAL_GOKU
+macro_line|#ifdef&t;CONFIG_USB_GADGET_GOKU
 DECL|macro|CHIP
 mdefine_line|#define CHIP&t;&t;&t;&t;&quot;goku&quot;
 DECL|macro|DRIVER_VERSION_NUM
@@ -304,6 +300,11 @@ DECL|macro|WAKEUP
 mdefine_line|#define WAKEUP&t;&t;&t;&t;0
 multiline_comment|/* else value must be USB_CONFIG_ATT_WAKEUP */
 macro_line|#endif
+multiline_comment|/* Thanks to NetChip Technologies for donating this product ID.&n; *&n; * DO NOT REUSE THESE IDs with a protocol-incompatible driver!!  Ever!!&n; * Instead:  allocate your own, using normal USB-IF procedures.&n; */
+DECL|macro|GS_VENDOR_ID
+mdefine_line|#define GS_VENDOR_ID&t;0x0525&t;&t;/* NetChip */
+DECL|macro|GS_PRODUCT_ID
+mdefine_line|#define GS_PRODUCT_ID&t;0xa4a6&t;&t;/* Linux-USB Serial Gadget */
 multiline_comment|/* Structures */
 r_struct
 id|gs_dev
