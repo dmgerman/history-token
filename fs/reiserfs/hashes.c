@@ -290,19 +290,6 @@ op_ge
 l_int|12
 )paren
 (brace
-singleline_comment|//assert(len &lt; 16);
-r_if
-c_cond
-(paren
-id|len
-op_ge
-l_int|16
-)paren
-id|BUG
-c_func
-(paren
-)paren
-suffix:semicolon
 id|a
 op_assign
 (paren
@@ -464,19 +451,6 @@ op_ge
 l_int|8
 )paren
 (brace
-singleline_comment|//assert(len &lt; 12);
-r_if
-c_cond
-(paren
-id|len
-op_ge
-l_int|12
-)paren
-id|BUG
-c_func
-(paren
-)paren
-suffix:semicolon
 id|a
 op_assign
 (paren
@@ -600,19 +574,6 @@ op_ge
 l_int|4
 )paren
 (brace
-singleline_comment|//assert(len &lt; 8);
-r_if
-c_cond
-(paren
-id|len
-op_ge
-l_int|8
-)paren
-id|BUG
-c_func
-(paren
-)paren
-suffix:semicolon
 id|a
 op_assign
 (paren
@@ -691,19 +652,6 @@ suffix:semicolon
 )brace
 r_else
 (brace
-singleline_comment|//assert(len &lt; 4);
-r_if
-c_cond
-(paren
-id|len
-op_ge
-l_int|4
-)paren
-id|BUG
-c_func
-(paren
-)paren
-suffix:semicolon
 id|a
 op_assign
 id|b
