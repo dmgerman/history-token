@@ -10,41 +10,59 @@ DECL|struct|mod_arch_specific
 r_struct
 id|mod_arch_specific
 (brace
-multiline_comment|/*&n;&t; * PLTs need to be within 16MB of the call-site.  Since the core and the init&n;&t; * sections are allocated separately, we need to maintain separate PLT areas&n;&t; * for them.  Function descriptors and global-offset-table entries are, in&n;&t; * contrast, always allocated in the core.&n;&t; */
-DECL|member|init_text_sec
+DECL|member|core_plt
 r_struct
 id|elf64_shdr
 op_star
-id|init_text_sec
+id|core_plt
 suffix:semicolon
-multiline_comment|/* .init.text section (or NULL) */
-DECL|member|init_plt_offset
-r_int
-r_int
-id|init_plt_offset
-suffix:semicolon
-DECL|member|core_text_sec
+multiline_comment|/* core PLT section */
+DECL|member|init_plt
 r_struct
 id|elf64_shdr
 op_star
-id|core_text_sec
+id|init_plt
 suffix:semicolon
-multiline_comment|/* .text section (or NULL) */
-DECL|member|core_plt_offset
-r_int
-r_int
-id|core_plt_offset
+multiline_comment|/* init PLT section */
+DECL|member|got
+r_struct
+id|elf64_shdr
+op_star
+id|got
 suffix:semicolon
-DECL|member|fdesc_offset
-r_int
-r_int
-id|fdesc_offset
+multiline_comment|/* global offset table */
+DECL|member|opd
+r_struct
+id|elf64_shdr
+op_star
+id|opd
 suffix:semicolon
-DECL|member|got_offset
-r_int
-r_int
-id|got_offset
+multiline_comment|/* official procedure descriptors */
+DECL|member|unwind
+r_struct
+id|elf64_shdr
+op_star
+id|unwind
 suffix:semicolon
+multiline_comment|/* unwind-table section */
+DECL|member|gp
+r_int
+r_int
+id|gp
+suffix:semicolon
+multiline_comment|/* global-pointer for module */
+DECL|member|unw_table
+r_void
+op_star
+id|unw_table
+suffix:semicolon
+multiline_comment|/* unwind-table cookie returned by unwinder */
+DECL|member|next_got_entry
+r_int
+r_int
+id|next_got_entry
+suffix:semicolon
+multiline_comment|/* index of next available got entry */
 )brace
 suffix:semicolon
 DECL|macro|Elf_Shdr
@@ -57,5 +75,7 @@ DECL|macro|MODULE_PROC_FAMILY
 mdefine_line|#define MODULE_PROC_FAMILY&t;&quot;ia64&quot;
 DECL|macro|MODULE_ARCH_VERMAGIC
 mdefine_line|#define MODULE_ARCH_VERMAGIC&t;MODULE_PROC_FAMILY
+DECL|macro|ARCH_SHF_SMALL
+mdefine_line|#define ARCH_SHF_SMALL&t;SHF_IA_64_SHORT
 macro_line|#endif /* _ASM_IA64_MODULE_H */
 eof
