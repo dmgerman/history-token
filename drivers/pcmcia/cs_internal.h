@@ -742,7 +742,7 @@ id|req
 suffix:semicolon
 multiline_comment|/* In rsrc_mgr */
 r_void
-id|validate_mem
+id|pcmcia_validate_mem
 c_func
 (paren
 r_struct
@@ -801,12 +801,13 @@ op_star
 id|s
 )paren
 suffix:semicolon
-r_int
+r_struct
+id|resource
+op_star
 id|find_mem_region
 c_func
 (paren
 id|u_long
-op_star
 id|base
 comma
 id|u_long
