@@ -8,6 +8,7 @@ macro_line|#include &lt;linux/time.h&gt;
 macro_line|#include &lt;linux/efi.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/kregs.h&gt;
+macro_line|#include &lt;asm/meminit.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
 macro_line|#include &lt;asm/processor.h&gt;
 macro_line|#include &lt;asm/mca.h&gt;
