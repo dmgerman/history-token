@@ -1557,7 +1557,7 @@ l_int|0
 suffix:semicolon
 id|i
 OL
-id|node_size
+id|node_spanned_pages
 c_func
 (paren
 id|nid
@@ -1784,7 +1784,7 @@ id|nid
 suffix:semicolon
 id|i
 op_assign
-id|node_size
+id|node_spanned_pages
 c_func
 (paren
 id|nid

@@ -434,7 +434,7 @@ c_func
 id|nodeid
 )paren
 op_member_access_from_pointer
-id|node_size
+id|node_spanned_pages
 op_assign
 id|end_pfn
 op_minus

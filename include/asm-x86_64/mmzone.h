@@ -104,9 +104,7 @@ mdefine_line|#define node_mem_map(nid)&t;(NODE_DATA(nid)-&gt;node_mem_map)
 DECL|macro|node_start_pfn
 mdefine_line|#define node_start_pfn(nid)&t;(NODE_DATA(nid)-&gt;node_start_pfn)
 DECL|macro|node_end_pfn
-mdefine_line|#define node_end_pfn(nid)       (NODE_DATA(nid)-&gt;node_start_pfn + &bslash;&n;&t;&t;&t;&t; NODE_DATA(nid)-&gt;node_size)
-DECL|macro|node_size
-mdefine_line|#define node_size(nid)&t;&t;(NODE_DATA(nid)-&gt;node_size)
+mdefine_line|#define node_end_pfn(nid)       (NODE_DATA(nid)-&gt;node_start_pfn + &bslash;&n;&t;&t;&t;&t; NODE_DATA(nid)-&gt;node_spanned_pages)
 DECL|macro|local_mapnr
 mdefine_line|#define local_mapnr(kvaddr) &bslash;&n;&t;( (__pa(kvaddr) &gt;&gt; PAGE_SHIFT) - node_start_pfn(kvaddr_to_nid(kvaddr)) )
 multiline_comment|/* AK: this currently doesn&squot;t deal with invalid addresses. We&squot;ll see &n;   if the 2.5 kernel doesn&squot;t pass them&n;   (2.4 used to). */

@@ -3840,7 +3840,7 @@ id|nid
 suffix:semicolon
 id|val-&gt;totalram
 op_assign
-id|pgdat-&gt;node_size
+id|pgdat-&gt;node_present_pages
 suffix:semicolon
 id|val-&gt;freeram
 op_assign
@@ -4803,7 +4803,7 @@ id|zones_size
 id|i
 )braket
 suffix:semicolon
-id|pgdat-&gt;node_size
+id|pgdat-&gt;node_spanned_pages
 op_assign
 id|totalpages
 suffix:semicolon
@@ -4836,6 +4836,10 @@ id|zholes_size
 (braket
 id|i
 )braket
+suffix:semicolon
+id|pgdat-&gt;node_present_pages
+op_assign
+id|realtotalpages
 suffix:semicolon
 id|printk
 c_func
@@ -5721,7 +5725,7 @@ id|node_mem_map
 id|size
 op_assign
 (paren
-id|pgdat-&gt;node_size
+id|pgdat-&gt;node_spanned_pages
 op_plus
 l_int|1
 )paren
