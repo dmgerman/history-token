@@ -1189,12 +1189,5 @@ id|c
 suffix:semicolon
 macro_line|#endif
 )brace
-macro_line|#ifdef CONFIG_X86_MCE_NONFATAL
-id|init_nonfatal_mce_checker
-c_func
-(paren
-)paren
-suffix:semicolon
-macro_line|#endif
 )brace
 eof

@@ -66,7 +66,9 @@ DECL|macro|ELF_PLATFORM
 mdefine_line|#define ELF_PLATFORM  (system_utsname.machine)
 multiline_comment|/*&n; * Architecture-neutral AT_ values in 0-17, leave some room&n; * for more of them, start the x86-specific ones at 32.&n; */
 DECL|macro|AT_SYSINFO
-mdefine_line|#define AT_SYSINFO&t;32
+mdefine_line|#define AT_SYSINFO&t;&t;32
+DECL|macro|AT_SYSINFO_EH_FRAME
+mdefine_line|#define AT_SYSINFO_EH_FRAME&t;33
 macro_line|#ifdef __KERNEL__
 DECL|macro|SET_PERSONALITY
 mdefine_line|#define SET_PERSONALITY(ex, ibcs2) set_personality((ibcs2)?PER_SVR4:PER_LINUX)
@@ -125,8 +127,11 @@ suffix:semicolon
 DECL|macro|ELF_CORE_SYNC
 mdefine_line|#define ELF_CORE_SYNC dump_smp_unlazy_fpu
 macro_line|#endif
+multiline_comment|/* Offset from the beginning of the page where the .eh_frame information&n;   for the code in the vsyscall page starts.  */
+DECL|macro|EH_FRAME_OFFSET
+mdefine_line|#define EH_FRAME_OFFSET 96
 DECL|macro|ARCH_DLINFO
-mdefine_line|#define ARCH_DLINFO&t;&t;&t;&t;&t;&bslash;&n;do {&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;NEW_AUX_ENT(AT_SYSINFO, 0xffffe000);&t;&bslash;&n;} while (0)
+mdefine_line|#define ARCH_DLINFO&t;&t;&t;&t;&t;&t;&bslash;&n;do {&t;&t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;&t;NEW_AUX_ENT(AT_SYSINFO, 0xffffe000);&t;&t;&bslash;&n;&t;&t;NEW_AUX_ENT(AT_SYSINFO_EH_FRAME,&t;&t;&bslash;&n;&t;&t;&t;    0xffffe000 + EH_FRAME_OFFSET);&t;&bslash;&n;} while (0)
 macro_line|#endif
 macro_line|#endif
 eof

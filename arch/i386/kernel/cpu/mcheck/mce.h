@@ -49,13 +49,6 @@ op_star
 id|c
 )paren
 suffix:semicolon
-r_void
-id|init_nonfatal_mce_checker
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
 multiline_comment|/* Call the installed machine check handler for this CPU setup. */
 r_extern
 r_void

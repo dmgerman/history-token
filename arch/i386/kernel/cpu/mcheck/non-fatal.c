@@ -8,6 +8,7 @@ macro_line|#include &lt;linux/irq.h&gt;
 macro_line|#include &lt;linux/workqueue.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/smp.h&gt;
+macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;asm/processor.h&gt; 
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/msr.h&gt;
@@ -220,10 +221,13 @@ id|mce_timer
 suffix:semicolon
 )brace
 DECL|function|init_nonfatal_mce_checker
-r_void
+r_static
+r_int
+id|__init
 id|init_nonfatal_mce_checker
 c_func
 (paren
+r_void
 )paren
 (brace
 r_if
@@ -274,5 +278,15 @@ l_string|&quot;Machine check exception polling timer started.&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
+r_return
+l_int|0
+suffix:semicolon
 )brace
+DECL|variable|init_nonfatal_mce_checker
+id|module_init
+c_func
+(paren
+id|init_nonfatal_mce_checker
+)paren
+suffix:semicolon
 eof
