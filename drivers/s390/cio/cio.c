@@ -3231,10 +3231,8 @@ r_return
 suffix:semicolon
 )brace
 multiline_comment|/* endif */
-macro_line|#ifdef CONFIG_FAST_IRQ
 r_do
 (brace
-macro_line|#endif&t;&t;&t;&t;/* CONFIG_FAST_IRQ */
 multiline_comment|/*&n;&t;&t; * Non I/O-subchannel thin interrupts are processed differently&n;&t;&t; */
 r_if
 c_cond
@@ -3333,12 +3331,14 @@ id|irq_exit
 )paren
 suffix:semicolon
 )brace
-macro_line|#ifdef CONFIG_FAST_IRQ
-multiline_comment|/*&n;&t;&t; * Are more interrupts pending?&n;&t;&t; * If so, the tpi instruction will update the lowcore &n;&t;&t; * to hold the info for the next interrupt.&n;&t;&t; */
+multiline_comment|/*&n;&t;&t; * Are more interrupts pending?&n;&t;&t; * If so, the tpi instruction will update the lowcore &n;&t;&t; * to hold the info for the next interrupt.&n;&t;&t; * We don&squot;t do this for VM because a tpi drops the cpu&n;&t;&t; * out of the sie which costs more cycles than it saves.&n;&t;&t; */
 )brace
 r_while
 c_loop
 (paren
+op_logical_neg
+id|MACHINE_IS_VM
+op_logical_and
 id|tpi
 (paren
 l_int|NULL
@@ -3347,7 +3347,6 @@ op_ne
 l_int|0
 )paren
 suffix:semicolon
-macro_line|#endif&t;&t;&t;&t;/* CONFIG_FAST_IRQ */
 r_return
 suffix:semicolon
 )brace

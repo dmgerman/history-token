@@ -2544,7 +2544,6 @@ suffix:semicolon
 r_int
 id|ret
 suffix:semicolon
-macro_line|#ifdef CONFIG_CHSC
 r_int
 id|chp
 op_assign
@@ -2553,7 +2552,6 @@ suffix:semicolon
 r_int
 id|mask
 suffix:semicolon
-macro_line|#endif /* CONFIG_CHSC */
 r_char
 id|dbf_txt
 (braket
@@ -3098,7 +3096,6 @@ id|irq
 op_member_access_from_pointer
 id|schib.pmcw.pom
 suffix:semicolon
-macro_line|#ifdef CONFIG_CHSC
 r_if
 c_cond
 (paren
@@ -3171,7 +3168,6 @@ suffix:semicolon
 )brace
 )brace
 )brace
-macro_line|#endif /* CONFIG_CHSC */
 id|CIO_DEBUG_IFMSG
 c_func
 (paren
@@ -5052,7 +5048,6 @@ suffix:semicolon
 id|__u8
 id|domask
 suffix:semicolon
-macro_line|#ifdef CONFIG_CHSC
 r_int
 id|chp
 suffix:semicolon
@@ -5064,7 +5059,6 @@ id|old_opm
 op_assign
 l_int|0
 suffix:semicolon
-macro_line|#endif /* CONFIG_CHSC */
 r_int
 id|ret
 op_assign
@@ -5120,7 +5114,6 @@ r_return
 op_minus
 id|ENODEV
 suffix:semicolon
-macro_line|#ifdef CONFIG_CHSC
 id|old_opm
 op_assign
 id|ioinfo
@@ -5130,7 +5123,6 @@ id|irq
 op_member_access_from_pointer
 id|opm
 suffix:semicolon
-macro_line|#endif /* CONFIG_CHSC */
 id|ccode
 op_assign
 id|stsch
@@ -5186,7 +5178,6 @@ id|ret
 op_assign
 l_int|0
 suffix:semicolon
-macro_line|#ifdef CONFIG_CHSC
 multiline_comment|/*&n;&t;&t; * disable if chpid is logically offline&n;&t;&t; */
 r_if
 c_cond
@@ -5401,7 +5392,6 @@ op_assign
 l_int|0
 suffix:semicolon
 )brace
-macro_line|#endif /* CONFIG_CHSC */
 r_return
 id|ret
 suffix:semicolon
@@ -5434,7 +5424,6 @@ id|irq
 op_member_access_from_pointer
 id|schib.pmcw.pom
 suffix:semicolon
-macro_line|#ifdef CONFIG_CHSC
 r_if
 c_cond
 (paren
@@ -5665,7 +5654,6 @@ id|pdevreg
 )paren
 suffix:semicolon
 )brace
-macro_line|#endif /* CONFIG_CHSC */
 r_if
 c_cond
 (paren
