@@ -8793,11 +8793,6 @@ macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
-DECL|variable|errno
-r_static
-r_int
-id|errno
-suffix:semicolon
 r_static
 r_int
 DECL|function|wavefront_download_firmware
