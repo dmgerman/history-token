@@ -15357,6 +15357,12 @@ l_string|&quot;Waking up socket by sending it signal&quot;
 )paren
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|cifsd_task
+)paren
+(brace
 id|send_sig
 c_func
 (paren
@@ -15367,6 +15373,7 @@ comma
 l_int|1
 )paren
 suffix:semicolon
+)brace
 id|rc
 op_assign
 l_int|0
