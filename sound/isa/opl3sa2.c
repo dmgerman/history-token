@@ -3097,8 +3097,7 @@ id|snd_card_t
 op_star
 id|card
 comma
-r_int
-r_int
+id|pm_message_t
 id|state
 )paren
 (brace
@@ -3147,10 +3146,6 @@ c_func
 id|snd_card_t
 op_star
 id|card
-comma
-r_int
-r_int
-id|state
 )paren
 (brace
 id|opl3sa2_t
@@ -4806,7 +4801,7 @@ id|enable
 (braket
 id|dev
 )braket
-op_logical_and
+op_logical_or
 op_logical_neg
 id|isapnp
 (braket

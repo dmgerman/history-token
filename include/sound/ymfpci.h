@@ -549,6 +549,7 @@ id|number
 suffix:semicolon
 DECL|member|use
 r_int
+r_int
 id|use
 suffix:colon
 l_int|1
@@ -659,17 +660,20 @@ suffix:semicolon
 multiline_comment|/* playback only */
 DECL|member|running
 r_int
+r_int
 id|running
 suffix:colon
 l_int|1
 suffix:semicolon
 DECL|member|output_front
 r_int
+r_int
 id|output_front
 suffix:colon
 l_int|1
 suffix:semicolon
 DECL|member|output_rear
+r_int
 r_int
 id|output_rear
 suffix:colon

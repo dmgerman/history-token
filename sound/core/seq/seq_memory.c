@@ -157,6 +157,11 @@ id|__user
 op_star
 id|curptr
 op_assign
+(paren
+r_char
+id|__user
+op_star
+)paren
 id|event-&gt;data.ext.ptr
 suffix:semicolon
 r_while
@@ -383,6 +388,7 @@ id|seq_copy_in_user
 c_func
 (paren
 r_char
+id|__user
 op_star
 op_star
 id|bufptr
@@ -537,6 +543,11 @@ c_func
 (paren
 id|buf
 comma
+(paren
+r_void
+id|__user
+op_star
+)paren
 id|event-&gt;data.ext.ptr
 comma
 id|len
@@ -1370,6 +1381,11 @@ c_func
 op_amp
 id|tmp-&gt;event
 comma
+(paren
+r_char
+id|__user
+op_star
+)paren
 id|buf
 comma
 id|size

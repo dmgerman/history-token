@@ -35,6 +35,7 @@ id|port
 suffix:semicolon
 DECL|member|trigger
 r_int
+r_int
 id|trigger
 suffix:colon
 l_int|1

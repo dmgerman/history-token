@@ -54,6 +54,15 @@ id|ac97
 )paren
 suffix:semicolon
 r_int
+id|patch_wolfson13
+c_func
+(paren
+id|ac97_t
+op_star
+id|ac97
+)paren
+suffix:semicolon
+r_int
 id|patch_tritech_tr28028
 c_func
 (paren

@@ -616,6 +616,19 @@ id|ENOIOCTLCMD
 suffix:semicolon
 )brace
 )brace
+DECL|function|snd_tea575x_release
+r_static
+r_void
+id|snd_tea575x_release
+c_func
+(paren
+r_struct
+id|video_device
+op_star
+id|vfd
+)paren
+(brace
+)brace
 multiline_comment|/*&n; * initialize all the tea575x chips&n; */
 DECL|function|snd_tea575x_init
 r_void
@@ -703,6 +716,10 @@ op_assign
 id|VID_HARDWARE_RTRACK
 suffix:semicolon
 multiline_comment|/* FIXME: assign new number */
+id|tea-&gt;vd.release
+op_assign
+id|snd_tea575x_release
+suffix:semicolon
 id|video_set_drvdata
 c_func
 (paren

@@ -13576,6 +13576,7 @@ id|i
 op_increment
 )paren
 (brace
+multiline_comment|/* the windows driver writes -i, so we write -i */
 id|hwwrite
 c_func
 (paren
@@ -13591,7 +13592,8 @@ l_int|2
 )paren
 )paren
 comma
-l_int|0
+op_minus
+id|i
 )paren
 suffix:semicolon
 id|msleep
@@ -13763,7 +13765,8 @@ l_int|2
 )paren
 )paren
 comma
-l_int|0
+op_minus
+id|i
 )paren
 suffix:semicolon
 id|msleep

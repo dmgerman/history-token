@@ -5,6 +5,7 @@ macro_line|#include &quot;seq_oss_timer.h&quot;
 macro_line|#include &lt;sound/seq_oss_legacy.h&gt;
 macro_line|#include &quot;../seq_lock.h&quot;
 macro_line|#include &quot;../seq_clientmgr.h&quot;
+macro_line|#include &lt;linux/wait.h&gt;
 multiline_comment|/*&n; * create a write queue record&n; */
 id|seq_oss_writeq_t
 op_star
@@ -225,10 +226,6 @@ suffix:semicolon
 id|abstime_t
 id|time
 suffix:semicolon
-r_int
-r_int
-id|flags
-suffix:semicolon
 id|time
 op_assign
 id|snd_seq_oss_timer_cur_tick
@@ -340,58 +337,15 @@ l_int|0
 )paren
 suffix:semicolon
 )brace
-id|spin_lock_irqsave
+id|wait_event_interruptible_timeout
 c_func
 (paren
-op_amp
-id|q-&gt;sync_lock
-comma
-id|flags
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|q-&gt;sync_event_put
-)paren
-(brace
-multiline_comment|/* echoback event has been received */
-id|spin_unlock_irqrestore
-c_func
-(paren
-op_amp
-id|q-&gt;sync_lock
-comma
-id|flags
-)paren
-suffix:semicolon
-r_return
-l_int|0
-suffix:semicolon
-)brace
-multiline_comment|/* wait for echo event */
-id|spin_unlock
-c_func
-(paren
-op_amp
-id|q-&gt;sync_lock
-)paren
-suffix:semicolon
-id|interruptible_sleep_on_timeout
-c_func
-(paren
-op_amp
 id|q-&gt;sync_sleep
 comma
+op_logical_neg
+id|q-&gt;sync_event_put
+comma
 id|HZ
-)paren
-suffix:semicolon
-id|spin_lock
-c_func
-(paren
-op_amp
-id|q-&gt;sync_lock
 )paren
 suffix:semicolon
 r_if
@@ -403,37 +357,17 @@ c_func
 id|current
 )paren
 )paren
-(brace
 multiline_comment|/* interrupted - return 0 to finish sync */
 id|q-&gt;sync_event_put
 op_assign
 l_int|0
 suffix:semicolon
-id|spin_unlock_irqrestore
-c_func
-(paren
-op_amp
-id|q-&gt;sync_lock
-comma
-id|flags
-)paren
-suffix:semicolon
-r_return
-l_int|0
-suffix:semicolon
-)brace
-id|spin_unlock_irqrestore
-c_func
-(paren
-op_amp
-id|q-&gt;sync_lock
-comma
-id|flags
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
+op_logical_neg
+id|q-&gt;sync_event_put
+op_logical_or
 id|q-&gt;sync_time
 op_ge
 id|time
@@ -441,7 +375,6 @@ id|time
 r_return
 l_int|0
 suffix:semicolon
-r_else
 r_return
 l_int|1
 suffix:semicolon
