@@ -68,6 +68,9 @@ mdefine_line|#define MODULE_PROC_FAMILY &quot;WINCHIP3D &quot;
 macro_line|#elif CONFIG_MCYRIXIII
 DECL|macro|MODULE_PROC_FAMILY
 mdefine_line|#define MODULE_PROC_FAMILY &quot;CYRIXIII &quot;
+macro_line|#elif CONFIG_MVIAC3_2
+DECL|macro|MODULE_PROC_FAMILY
+mdefine_line|#define MODULE_PROC_FAMILY &quot;VIAC3-2 &quot;
 macro_line|#else
 macro_line|#error unknown processor family
 macro_line|#endif

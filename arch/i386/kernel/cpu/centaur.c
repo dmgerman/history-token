@@ -1454,6 +1454,12 @@ comma
 id|c-&gt;x86_capability
 )paren
 suffix:semicolon
+r_case
+l_int|9
+suffix:colon
+multiline_comment|/* Nehemiah */
+r_default
+suffix:colon
 id|get_model_name
 c_func
 (paren
