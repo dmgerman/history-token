@@ -821,6 +821,10 @@ DECL|member|active_speed
 id|u8
 id|active_speed
 suffix:semicolon
+DECL|member|phys_state
+id|u8
+id|phys_state
+suffix:semicolon
 )brace
 suffix:semicolon
 DECL|enum|ib_device_modify_flags

@@ -488,6 +488,15 @@ l_int|32
 op_amp
 l_int|0xf
 suffix:semicolon
+id|props-&gt;phys_state
+op_assign
+id|out_mad-&gt;data
+(braket
+l_int|33
+)braket
+op_rshift
+l_int|4
+suffix:semicolon
 id|props-&gt;port_cap_flags
 op_assign
 id|be32_to_cpup
