@@ -129,7 +129,7 @@ suffix:semicolon
 DECL|function|icmpv6_xmit_lock
 r_static
 id|__inline__
-r_void
+r_int
 id|icmpv6_xmit_lock
 c_func
 (paren
