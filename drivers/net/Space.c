@@ -118,13 +118,14 @@ op_star
 )paren
 suffix:semicolon
 r_extern
-r_int
-id|eepro_probe
-c_func
-(paren
 r_struct
 id|net_device
 op_star
+id|eepro_probe
+c_func
+(paren
+r_int
+id|unit
 )paren
 suffix:semicolon
 r_extern
@@ -1103,14 +1104,6 @@ l_int|0
 )brace
 comma
 macro_line|#endif
-macro_line|#ifdef CONFIG_EEXPRESS_PRO&t;/* Intel EtherExpress Pro/10 */
-(brace
-id|eepro_probe
-comma
-l_int|0
-)brace
-comma
-macro_line|#endif
 (brace
 l_int|NULL
 comma
@@ -1129,6 +1122,14 @@ id|isa_probes2
 id|__initdata
 op_assign
 (brace
+macro_line|#ifdef CONFIG_EEXPRESS_PRO&t;/* Intel EtherExpress Pro/10 */
+(brace
+id|eepro_probe
+comma
+l_int|0
+)brace
+comma
+macro_line|#endif
 macro_line|#ifdef CONFIG_EWRK3             /* DEC EtherWORKS 3 */
 (brace
 id|ewrk3_probe
