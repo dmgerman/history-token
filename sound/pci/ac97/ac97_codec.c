@@ -5388,7 +5388,7 @@ comma
 )brace
 suffix:semicolon
 DECL|macro|AD18XX_PCM_BITS
-mdefine_line|#define AD18XX_PCM_BITS(xname, codec, lshift, rshift, mask) &bslash;&n;{ .iface = SNDRV_CTL_ELEM_IFACE_MIXER, .name = xname, .info = snd_ac97_ad18xx_pcm_info_bits, &bslash;&n;  .get = snd_ac97_ad18xx_pcm_get_bits, .put = snd_ac97_ad18xx_pcm_put_bits, &bslash;&n;  .private_value = (codec) | ((lshift) &lt;&lt; 8) | ((rshift) &lt;&lt; 12) | ((mask) &lt;&lt; 24) }
+mdefine_line|#define AD18XX_PCM_BITS(xname, codec, lshift, rshift, mask) &bslash;&n;{ .iface = SNDRV_CTL_ELEM_IFACE_MIXER, .name = xname, .info = snd_ac97_ad18xx_pcm_info_bits, &bslash;&n;  .get = snd_ac97_ad18xx_pcm_get_bits, .put = snd_ac97_ad18xx_pcm_put_bits, &bslash;&n;  .private_value = (codec) | ((lshift) &lt;&lt; 8) | ((rshift) &lt;&lt; 12) | ((mask) &lt;&lt; 16) }
 DECL|function|snd_ac97_ad18xx_pcm_info_bits
 r_static
 r_int
