@@ -63,24 +63,6 @@ suffix:semicolon
 multiline_comment|/* This is the script */
 macro_line|#include &quot;53c700_d.h&quot;
 id|STATIC
-id|irqreturn_t
-id|NCR_700_intr
-c_func
-(paren
-r_int
-id|irq
-comma
-r_void
-op_star
-id|dev_id
-comma
-r_struct
-id|pt_regs
-op_star
-id|regs
-)paren
-suffix:semicolon
-id|STATIC
 r_int
 id|NCR_700_queuecommand
 c_func
@@ -6661,7 +6643,6 @@ r_return
 l_int|1
 suffix:semicolon
 )brace
-id|STATIC
 id|irqreturn_t
 DECL|function|NCR_700_intr
 id|NCR_700_intr
@@ -9853,6 +9834,13 @@ id|EXPORT_SYMBOL
 c_func
 (paren
 id|NCR_700_release
+)paren
+suffix:semicolon
+DECL|variable|NCR_700_intr
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|NCR_700_intr
 )paren
 suffix:semicolon
 DECL|variable|NCR_700_transport_functions
