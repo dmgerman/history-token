@@ -136,6 +136,9 @@ op_star
 id|p
 )paren
 (brace
+r_int
+id|zap_leader
+suffix:semicolon
 id|task_t
 op_star
 id|leader
@@ -145,6 +148,8 @@ id|dentry
 op_star
 id|proc_dentry
 suffix:semicolon
+id|repeat
+suffix:colon
 id|BUG_ON
 c_func
 (paren
@@ -236,6 +241,10 @@ id|p
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * If we are the last non-leader member of the thread&n;&t; * group, and the leader is zombie, then notify the&n;&t; * group leader&squot;s parent process. (if it wants notification.)&n;&t; */
+id|zap_leader
+op_assign
+l_int|0
+suffix:semicolon
 id|leader
 op_assign
 id|p-&gt;group_leader
@@ -256,12 +265,17 @@ op_logical_and
 id|leader-&gt;state
 op_eq
 id|TASK_ZOMBIE
-op_logical_and
+)paren
+(brace
+id|BUG_ON
+c_func
+(paren
 id|leader-&gt;exit_signal
-op_ne
+op_eq
 op_minus
 l_int|1
 )paren
+suffix:semicolon
 id|do_notify_parent
 c_func
 (paren
@@ -270,6 +284,17 @@ comma
 id|leader-&gt;exit_signal
 )paren
 suffix:semicolon
+multiline_comment|/*&n;&t;&t; * If we were the last child thread and the leader has&n;&t;&t; * exited already, and the leader&squot;s parent ignores SIGCHLD,&n;&t;&t; * then we are the one who should release the leader.&n;&t;&t; *&n;&t;&t; * do_notify_parent() will have marked it self-reaping in&n;&t;&t; * that case.&n;&t;&t; */
+id|zap_leader
+op_assign
+(paren
+id|leader-&gt;exit_signal
+op_eq
+op_minus
+l_int|1
+)paren
+suffix:semicolon
+)brace
 id|p-&gt;parent-&gt;cutime
 op_add_assign
 id|p-&gt;utime
@@ -349,6 +374,22 @@ c_func
 (paren
 id|p
 )paren
+suffix:semicolon
+id|p
+op_assign
+id|leader
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|unlikely
+c_func
+(paren
+id|zap_leader
+)paren
+)paren
+r_goto
+id|repeat
 suffix:semicolon
 )brace
 multiline_comment|/* we are using it only for SMP init */
