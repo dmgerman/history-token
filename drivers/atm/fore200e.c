@@ -72,13 +72,15 @@ macro_line|#else
 DECL|macro|ASSERT
 mdefine_line|#define ASSERT(expr)     do {} while (0)
 macro_line|#endif
-r_extern
+DECL|variable|fore200e_ops
+r_static
 r_const
 r_struct
 id|atmdev_ops
 id|fore200e_ops
 suffix:semicolon
-r_extern
+DECL|variable|fore200e_bus
+r_static
 r_const
 r_struct
 id|fore200e_bus
