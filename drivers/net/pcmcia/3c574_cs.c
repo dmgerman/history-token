@@ -1,15 +1,5 @@
 multiline_comment|/* 3c574.c: A PCMCIA ethernet driver for the 3com 3c574 &quot;RoadRunner&quot;.&n;&n;&t;Written 1993-1998 by&n;&t;Donald Becker, becker@scyld.com, (driver core) and&n;&t;David Hinds, dahinds@users.sourceforge.net (from his PC card code).&n;&n;&t;This software may be used and distributed according to the terms of&n;&t;the GNU General Public License, incorporated herein by reference.&n;&n;&t;This driver derives from Donald Becker&squot;s 3c509 core, which has the&n;&t;following copyright:&n;&t;Copyright 1993 United States Government as represented by the&n;&t;Director, National Security Agency.&n;&n;*/
-multiline_comment|/* Driver author info must always be in the binary.  Version too.. */
-DECL|variable|tc574_version
-r_static
-r_const
-r_char
-op_star
-id|tc574_version
-op_assign
-l_string|&quot;3c574_cs.c v1.08 9/24/98 Donald Becker/David Hinds, becker@scyld.com.&bslash;n&quot;
-suffix:semicolon
-multiline_comment|/*&n;&t;&t;&t;&t;Theory of Operation&n;&n;I. Board Compatibility&n;&n;This device driver is designed for the 3Com 3c574 PC card Fast Ethernet&n;Adapter.&n;&n;II. Board-specific settings&n;&n;None -- PC cards are autoconfigured.&n;&n;III. Driver operation&n;&n;The 3c574 uses a Boomerang-style interface, without the bus-master capability.&n;See the Boomerang driver and documentation for most details.&n;&n;IV. Notes and chip documentation.&n;&n;Two added registers are used to enhance PIO performance, RunnerRdCtrl and&n;RunnerWrCtrl.  These are 11 bit down-counters that are preloaded with the&n;count of word (16 bits) reads or writes the driver is about to do to the Rx&n;or Tx FIFO.  The chip is then able to hide the internal-PCI-bus to PC-card&n;translation latency by buffering the I/O operations with an 8 word FIFO.&n;Note: No other chip accesses are permitted when this buffer is used.&n;&n;A second enhancement is that both attribute and common memory space&n;0x0800-0x0fff can translated to the PIO FIFO.  Thus memory operations (faster&n;with *some* PCcard bridges) may be used instead of I/O operations.&n;This is enabled by setting the 0x10 bit in the PCMCIA LAN COR.&n;&n;Some slow PC card bridges work better if they never see a WAIT signal.&n;This is configured by setting the 0x20 bit in the PCMCIA LAN COR.&n;Only do this after testing that it is reliable and improves performance.&n;&n;The upper five bits of RunnerRdCtrl are used to window into PCcard&n;configuration space registers.  Window 0 is the regular Boomerang/Odie&n;register set, 1-5 are various PC card control registers, and 16-31 are&n;the (reversed!) CIS table.&n;&n;A final note: writing the InternalConfig register in window 3 with an&n;invalid ramWidth is Very Bad.&n;&n;V. References&n;&n;http://cesdis.gsfc.nasa.gov/linux/misc/NWay.html&n;http://www.national.com/pf/DP/DP83840.html&n;&n;Thanks to Terry Murphy of 3Com for providing development information for&n;earlier 3Com products.&n;&n;*/
+multiline_comment|/*&n;&t;&t;&t;&t;Theory of Operation&n;&n;I. Board Compatibility&n;&n;This device driver is designed for the 3Com 3c574 PC card Fast Ethernet&n;Adapter.&n;&n;II. Board-specific settings&n;&n;None -- PC cards are autoconfigured.&n;&n;III. Driver operation&n;&n;The 3c574 uses a Boomerang-style interface, without the bus-master capability.&n;See the Boomerang driver and documentation for most details.&n;&n;IV. Notes and chip documentation.&n;&n;Two added registers are used to enhance PIO performance, RunnerRdCtrl and&n;RunnerWrCtrl.  These are 11 bit down-counters that are preloaded with the&n;count of word (16 bits) reads or writes the driver is about to do to the Rx&n;or Tx FIFO.  The chip is then able to hide the internal-PCI-bus to PC-card&n;translation latency by buffering the I/O operations with an 8 word FIFO.&n;Note: No other chip accesses are permitted when this buffer is used.&n;&n;A second enhancement is that both attribute and common memory space&n;0x0800-0x0fff can translated to the PIO FIFO.  Thus memory operations (faster&n;with *some* PCcard bridges) may be used instead of I/O operations.&n;This is enabled by setting the 0x10 bit in the PCMCIA LAN COR.&n;&n;Some slow PC card bridges work better if they never see a WAIT signal.&n;This is configured by setting the 0x20 bit in the PCMCIA LAN COR.&n;Only do this after testing that it is reliable and improves performance.&n;&n;The upper five bits of RunnerRdCtrl are used to window into PCcard&n;configuration space registers.  Window 0 is the regular Boomerang/Odie&n;register set, 1-5 are various PC card control registers, and 16-31 are&n;the (reversed!) CIS table.&n;&n;A final note: writing the InternalConfig register in window 3 with an&n;invalid ramWidth is Very Bad.&n;&n;V. References&n;&n;http://www.scyld.com/expert/NWay.html&n;http://www.national.com/pf/DP/DP83840.html&n;&n;Thanks to Terry Murphy of 3Com for providing development information for&n;earlier 3Com products.&n;&n;*/
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
@@ -36,48 +26,37 @@ macro_line|#include &lt;pcmcia/cisreg.h&gt;
 macro_line|#include &lt;pcmcia/ciscode.h&gt;
 macro_line|#include &lt;pcmcia/ds.h&gt;
 macro_line|#include &lt;pcmcia/mem_op.h&gt;
-multiline_comment|/* A few values that may be tweaked. */
-id|MODULE_PARM
+multiline_comment|/*====================================================================*/
+multiline_comment|/* Module parameters */
+id|MODULE_AUTHOR
 c_func
 (paren
-id|irq_mask
-comma
-l_string|&quot;i&quot;
+l_string|&quot;David Hinds &lt;dahinds@users.sourceforge.net&gt;&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM
+id|MODULE_DESCRIPTION
 c_func
 (paren
-id|irq_list
-comma
-l_string|&quot;1-4i&quot;
+l_string|&quot;3Com 3c574 series PCMCIA ethernet driver&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM
+id|MODULE_LICENSE
 c_func
 (paren
-id|max_interrupt_work
-comma
-l_string|&quot;i&quot;
+l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM
-c_func
-(paren
-id|full_duplex
-comma
-l_string|&quot;i&quot;
-)paren
-suffix:semicolon
+DECL|macro|INT_MODULE_PARM
+mdefine_line|#define INT_MODULE_PARM(n, v) static int n = v; MODULE_PARM(n, &quot;i&quot;)
 multiline_comment|/* Now-standard PC card module parameters. */
-DECL|variable|irq_mask
-r_static
-id|u_int
+id|INT_MODULE_PARM
+c_func
+(paren
 id|irq_mask
-op_assign
+comma
 l_int|0xdeb8
+)paren
 suffix:semicolon
-multiline_comment|/* IRQ3,4,5,7,9,10,11,12,14,15 */
 DECL|variable|irq_list
 r_static
 r_int
@@ -91,23 +70,68 @@ op_minus
 l_int|1
 )brace
 suffix:semicolon
+id|MODULE_PARM
+c_func
+(paren
+id|irq_list
+comma
+l_string|&quot;1-4i&quot;
+)paren
+suffix:semicolon
+multiline_comment|/* Maximum events (Rx packets, etc.) to handle at each interrupt. */
+id|INT_MODULE_PARM
+c_func
+(paren
+id|max_interrupt_work
+comma
+l_int|32
+)paren
+suffix:semicolon
+multiline_comment|/* Force full duplex modes? */
+id|INT_MODULE_PARM
+c_func
+(paren
+id|full_duplex
+comma
+l_int|0
+)paren
+suffix:semicolon
+multiline_comment|/* Autodetect link polarity reversal? */
+id|INT_MODULE_PARM
+c_func
+(paren
+id|auto_polarity
+comma
+l_int|1
+)paren
+suffix:semicolon
+macro_line|#ifdef PCMCIA_DEBUG
+id|INT_MODULE_PARM
+c_func
+(paren
+id|pc_debug
+comma
+id|PCMCIA_DEBUG
+)paren
+suffix:semicolon
+DECL|macro|DEBUG
+mdefine_line|#define DEBUG(n, args...) if (pc_debug&gt;(n)) printk(KERN_DEBUG args)
+DECL|variable|version
+r_static
+r_char
+op_star
+id|version
+op_assign
+l_string|&quot;3c574_cs.c 1.65 2001/10/13 00:08:50 Donald Becker/David Hinds, becker@scyld.com.&bslash;n&quot;
+suffix:semicolon
+macro_line|#else
+DECL|macro|DEBUG
+mdefine_line|#define DEBUG(n, args...)
+macro_line|#endif
+multiline_comment|/*====================================================================*/
 multiline_comment|/* Time in jiffies before concluding the transmitter is hung. */
 DECL|macro|TX_TIMEOUT
 mdefine_line|#define TX_TIMEOUT  ((800*HZ)/1000)
-multiline_comment|/* Maximum events (Rx packets, etc.) to handle at each interrupt. */
-DECL|variable|max_interrupt_work
-r_static
-r_int
-id|max_interrupt_work
-op_assign
-l_int|32
-suffix:semicolon
-multiline_comment|/* Force full duplex modes? */
-DECL|variable|full_duplex
-r_static
-r_int
-id|full_duplex
-suffix:semicolon
 multiline_comment|/* To minimize the size of the driver source and make the driver more&n;   readable not all constants are symbolically defined.&n;   You&squot;ll need the manual if you want to understand driver details anyway. */
 multiline_comment|/* Offsets from base I/O address. */
 DECL|macro|EL3_DATA
@@ -622,11 +646,8 @@ DECL|member|phys
 r_int
 r_char
 id|phys
-(braket
-l_int|2
-)braket
 suffix:semicolon
-multiline_comment|/* MII device addresses. */
+multiline_comment|/* MII device address */
 r_int
 r_int
 DECL|member|autoselect
@@ -665,37 +686,9 @@ DECL|variable|mii_preamble_required
 r_static
 r_char
 id|mii_preamble_required
-suffix:semicolon
-macro_line|#ifdef PCMCIA_DEBUG
-DECL|variable|pc_debug
-r_static
-r_int
-id|pc_debug
 op_assign
-id|PCMCIA_DEBUG
+l_int|0
 suffix:semicolon
-id|MODULE_PARM
-c_func
-(paren
-id|pc_debug
-comma
-l_string|&quot;i&quot;
-)paren
-suffix:semicolon
-DECL|macro|DEBUG
-mdefine_line|#define DEBUG(n, args...) if (pc_debug&gt;(n)) printk(KERN_DEBUG args)
-DECL|variable|version
-r_static
-r_char
-op_star
-id|version
-op_assign
-l_string|&quot;3c574_cs.c 1.000 1998/1/8 Donald Becker, becker@scyld.com.&bslash;n&quot;
-suffix:semicolon
-macro_line|#else
-DECL|macro|DEBUG
-mdefine_line|#define DEBUG(n, args...)
-macro_line|#endif
 multiline_comment|/* Index of functions. */
 r_static
 r_void
@@ -2269,10 +2262,6 @@ suffix:semicolon
 (brace
 r_int
 id|phy
-comma
-id|phy_idx
-op_assign
-l_int|0
 suffix:semicolon
 multiline_comment|/* Roadrunner only: Turn on the MII transceiver */
 id|outw
@@ -2349,13 +2338,6 @@ suffix:semicolon
 id|phy
 op_le
 l_int|32
-op_logical_and
-id|phy_idx
-OL
-r_sizeof
-(paren
-id|lp-&gt;phys
-)paren
 suffix:semicolon
 id|phy
 op_increment
@@ -2395,10 +2377,6 @@ l_int|0xffff
 )paren
 (brace
 id|lp-&gt;phys
-(braket
-id|phy_idx
-op_increment
-)braket
 op_assign
 id|phy
 op_amp
@@ -2431,14 +2409,16 @@ id|mii_preamble_required
 op_assign
 l_int|1
 suffix:semicolon
+r_break
+suffix:semicolon
 )brace
 )brace
 r_if
 c_cond
 (paren
-id|phy_idx
-op_eq
-l_int|0
+id|phy
+OG
+l_int|32
 )paren
 (brace
 id|printk
@@ -2460,9 +2440,6 @@ c_func
 id|ioaddr
 comma
 id|lp-&gt;phys
-(braket
-l_int|0
-)braket
 comma
 l_int|16
 )paren
@@ -2475,9 +2452,6 @@ c_func
 id|ioaddr
 comma
 id|lp-&gt;phys
-(braket
-l_int|0
-)braket
 comma
 l_int|16
 comma
@@ -2492,9 +2466,6 @@ c_func
 id|ioaddr
 comma
 id|lp-&gt;phys
-(braket
-l_int|0
-)braket
 comma
 l_int|4
 )paren
@@ -2517,9 +2488,6 @@ c_func
 id|ioaddr
 comma
 id|lp-&gt;phys
-(braket
-l_int|0
-)braket
 comma
 l_int|4
 comma
@@ -3852,15 +3820,48 @@ c_func
 id|ioaddr
 comma
 id|lp-&gt;phys
-(braket
-l_int|0
-)braket
 comma
 l_int|4
 comma
 id|lp-&gt;advertising
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|auto_polarity
+)paren
+(brace
+multiline_comment|/* works for TDK 78Q2120 series MII&squot;s */
+r_int
+id|i
+op_assign
+id|mdio_read
+c_func
+(paren
+id|ioaddr
+comma
+id|lp-&gt;phys
+comma
+l_int|16
+)paren
+op_or
+l_int|0x20
+suffix:semicolon
+id|mdio_write
+c_func
+(paren
+id|ioaddr
+comma
+id|lp-&gt;phys
+comma
+l_int|16
+comma
+id|i
+)paren
+suffix:semicolon
+)brace
 multiline_comment|/* Switch to register set 1 for normal use, just for TxFree. */
 id|EL3WINDOW
 c_func
@@ -5051,9 +5052,6 @@ c_func
 id|ioaddr
 comma
 id|lp-&gt;phys
-(braket
-l_int|0
-)braket
 comma
 l_int|1
 )paren
@@ -5066,9 +5064,6 @@ c_func
 id|ioaddr
 comma
 id|lp-&gt;phys
-(braket
-l_int|0
-)braket
 comma
 l_int|5
 )paren
@@ -5587,20 +5582,6 @@ op_plus
 l_int|13
 )paren
 suffix:semicolon
-id|lp-&gt;stats.rx_bytes
-op_add_assign
-id|rx
-op_plus
-(paren
-(paren
-id|up
-op_amp
-l_int|0x0f
-)paren
-op_lshift
-l_int|16
-)paren
-suffix:semicolon
 id|lp-&gt;stats.tx_bytes
 op_add_assign
 id|tx
@@ -5982,9 +5963,6 @@ r_int
 id|phy
 op_assign
 id|lp-&gt;phys
-(braket
-l_int|0
-)braket
 op_amp
 l_int|0x1f
 suffix:semicolon
@@ -6466,16 +6444,6 @@ r_void
 id|servinfo_t
 id|serv
 suffix:semicolon
-multiline_comment|/* Always emit the version, before any failure. */
-id|printk
-c_func
-(paren
-id|KERN_INFO
-l_string|&quot;%s&quot;
-comma
-id|tc574_version
-)paren
-suffix:semicolon
 id|DEBUG
 c_func
 (paren
@@ -6584,12 +6552,6 @@ id|module_exit
 c_func
 (paren
 id|exit_3c574_cs
-)paren
-suffix:semicolon
-id|MODULE_LICENSE
-c_func
-(paren
-l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
 multiline_comment|/*&n; * Local variables:&n; *  compile-command: &quot;make 3c574_cs.o&quot;&n; *  c-indent-level: 4&n; *  c-basic-offset: 4&n; *  tab-width: 4&n; * End:&n; */

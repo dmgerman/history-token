@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: su.c,v 1.53 2001/10/13 08:27:50 davem Exp $&n; * su.c: Small serial driver for keyboard/mouse interface on sparc32/PCI&n; *&n; * Copyright (C) 1997  Eddie C. Dost  (ecd@skynet.be)&n; * Copyright (C) 1998-1999  Pete Zaitcev   (zaitcev@yahoo.com)&n; *&n; * This is mainly a variation of drivers/char/serial.c,&n; * credits go to authors mentioned therein.&n; *&n; * Fixed to use tty_get_baud_rate().&n; *   Theodore Ts&squot;o &lt;tytso@mit.edu&gt;, 2001-Oct-12&n; */
+multiline_comment|/* $Id: su.c,v 1.54 2001/11/07 14:52:30 davem Exp $&n; * su.c: Small serial driver for keyboard/mouse interface on sparc32/PCI&n; *&n; * Copyright (C) 1997  Eddie C. Dost  (ecd@skynet.be)&n; * Copyright (C) 1998-1999  Pete Zaitcev   (zaitcev@yahoo.com)&n; *&n; * This is mainly a variation of drivers/char/serial.c,&n; * credits go to authors mentioned therein.&n; *&n; * Fixed to use tty_get_baud_rate().&n; *   Theodore Ts&squot;o &lt;tytso@mit.edu&gt;, 2001-Oct-12&n; */
 multiline_comment|/*&n; * Configuration section.&n; */
 DECL|macro|SERIAL_PARANOIA_CHECK
 macro_line|#undef SERIAL_PARANOIA_CHECK
@@ -9352,7 +9352,7 @@ r_char
 op_star
 id|revision
 op_assign
-l_string|&quot;$Revision: 1.53 $&quot;
+l_string|&quot;$Revision: 1.54 $&quot;
 suffix:semicolon
 r_char
 op_star
@@ -12485,6 +12485,9 @@ c_func
 r_void
 )paren
 suffix:semicolon
+r_int
+id|index
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -12506,12 +12509,18 @@ l_int|0
 r_return
 l_int|0
 suffix:semicolon
+id|index
+op_assign
+id|serial_console
+op_minus
+l_int|1
+suffix:semicolon
 r_if
 c_cond
 (paren
 id|su_table
 (braket
-l_int|0
+id|index
 )braket
 dot
 id|port
@@ -12520,7 +12529,7 @@ l_int|0
 op_logical_or
 id|su_table
 (braket
-l_int|0
+id|index
 )braket
 dot
 id|port_node
@@ -12532,7 +12541,7 @@ l_int|0
 suffix:semicolon
 id|sercons.index
 op_assign
-l_int|0
+id|index
 suffix:semicolon
 id|register_console
 c_func

@@ -308,7 +308,7 @@ l_int|0
 (brace
 id|isa_dev-&gt;irq
 op_assign
-l_int|0
+id|PCI_IRQ_NONE
 suffix:semicolon
 )brace
 r_else
@@ -379,7 +379,7 @@ l_int|0
 (brace
 id|isa_dev-&gt;irq
 op_assign
-l_int|0
+id|PCI_IRQ_NONE
 suffix:semicolon
 )brace
 r_else

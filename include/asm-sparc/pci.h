@@ -9,6 +9,8 @@ DECL|macro|PCIBIOS_MIN_IO
 mdefine_line|#define PCIBIOS_MIN_IO&t;&t;0UL
 DECL|macro|PCIBIOS_MIN_MEM
 mdefine_line|#define PCIBIOS_MIN_MEM&t;&t;0UL
+DECL|macro|PCI_IRQ_NONE
+mdefine_line|#define PCI_IRQ_NONE&t;&t;0xffffffff
 DECL|function|pcibios_set_master
 r_extern
 r_inline

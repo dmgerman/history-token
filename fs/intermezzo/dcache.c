@@ -158,27 +158,7 @@ id|dentry
 )paren
 )paren
 (brace
-id|printk
-c_func
-(paren
-l_string|&quot;VERY BAD: dentry: %p&bslash;n&quot;
-comma
-id|dentry
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-id|dentry-&gt;d_inode
-)paren
-id|printk
-c_func
-(paren
-l_string|&quot;    inode: %ld&bslash;n&quot;
-comma
-id|dentry-&gt;d_inode-&gt;i_ino
-)paren
-suffix:semicolon
+multiline_comment|/* This should really only happen in the case of a dentry&n;                 * with no inode. */
 r_return
 suffix:semicolon
 )brace
@@ -254,6 +234,18 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|dentry
+op_eq
+l_int|NULL
+)paren
+id|BUG
+c_func
+(paren
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
 id|dentry-&gt;d_fsdata
 )paren
 (brace
@@ -278,14 +270,17 @@ comma
 id|dentry-&gt;d_inode-&gt;i_ino
 )paren
 suffix:semicolon
+id|EXIT
+suffix:semicolon
 r_return
 suffix:semicolon
 )brace
 r_if
 c_cond
 (paren
-op_logical_neg
 id|dentry-&gt;d_inode
+op_eq
+l_int|NULL
 )paren
 (brace
 id|dentry-&gt;d_fsdata
@@ -465,8 +460,6 @@ comma
 l_int|0
 comma
 id|SLAB_HWCACHE_ALIGN
-op_or
-id|SLAB_POISON
 comma
 l_int|NULL
 comma

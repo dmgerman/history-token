@@ -2178,11 +2178,10 @@ c_func
 id|map
 )paren
 suffix:semicolon
-id|atomic_inc
+id|page_cache_get
 c_func
 (paren
-op_amp
-id|map-&gt;count
+id|map
 )paren
 suffix:semicolon
 )brace
@@ -2425,7 +2424,7 @@ c_func
 id|map
 )paren
 suffix:semicolon
-id|__free_page
+id|page_cache_release
 c_func
 (paren
 id|map

@@ -1,4 +1,4 @@
-multiline_comment|/******************************************************************* &n; * ident &quot;$Id: idt77252.h,v 1.1 2001/11/05 21:52:22 ecd Exp $&quot;&n; *&n; * $Author: ecd $&n; * $Date: 2001/11/05 21:52:22 $&n; *&n; * Copyright (c) 2000 ATecoM GmbH &n; *&n; * The author may be reached at ecd@atecom.com.&n; *&n; * This program is free software; you can redistribute  it and/or modify it&n; * under  the terms of  the GNU General  Public License as published by the&n; * Free Software Foundation;  either version 2 of the  License, or (at your&n; * option) any later version.&n; *&n; * THIS  SOFTWARE  IS PROVIDED   ``AS  IS&squot;&squot; AND   ANY  EXPRESS OR   IMPLIED&n; * WARRANTIES,   INCLUDING, BUT NOT  LIMITED  TO, THE IMPLIED WARRANTIES OF&n; * MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.  IN&n; * NO  EVENT  SHALL   THE AUTHOR  BE    LIABLE FOR ANY   DIRECT,  INDIRECT,&n; * INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT&n; * NOT LIMITED   TO, PROCUREMENT OF  SUBSTITUTE GOODS  OR SERVICES; LOSS OF&n; * USE, DATA,  OR PROFITS; OR  BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON&n; * ANY THEORY OF LIABILITY, WHETHER IN  CONTRACT, STRICT LIABILITY, OR TORT&n; * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF&n; * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.&n; *&n; * You should have received a copy of the  GNU General Public License along&n; * with this program; if not, write  to the Free Software Foundation, Inc.,&n; * 675 Mass Ave, Cambridge, MA 02139, USA.&n; *&n; *******************************************************************/
+multiline_comment|/******************************************************************* &n; * ident &quot;$Id: idt77252.h,v 1.2 2001/11/11 08:13:54 ecd Exp $&quot;&n; *&n; * $Author: ecd $&n; * $Date: 2001/11/11 08:13:54 $&n; *&n; * Copyright (c) 2000 ATecoM GmbH &n; *&n; * The author may be reached at ecd@atecom.com.&n; *&n; * This program is free software; you can redistribute  it and/or modify it&n; * under  the terms of  the GNU General  Public License as published by the&n; * Free Software Foundation;  either version 2 of the  License, or (at your&n; * option) any later version.&n; *&n; * THIS  SOFTWARE  IS PROVIDED   ``AS  IS&squot;&squot; AND   ANY  EXPRESS OR   IMPLIED&n; * WARRANTIES,   INCLUDING, BUT NOT  LIMITED  TO, THE IMPLIED WARRANTIES OF&n; * MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.  IN&n; * NO  EVENT  SHALL   THE AUTHOR  BE    LIABLE FOR ANY   DIRECT,  INDIRECT,&n; * INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT&n; * NOT LIMITED   TO, PROCUREMENT OF  SUBSTITUTE GOODS  OR SERVICES; LOSS OF&n; * USE, DATA,  OR PROFITS; OR  BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON&n; * ANY THEORY OF LIABILITY, WHETHER IN  CONTRACT, STRICT LIABILITY, OR TORT&n; * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF&n; * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.&n; *&n; * You should have received a copy of the  GNU General Public License along&n; * with this program; if not, write  to the Free Software Foundation, Inc.,&n; * 675 Mass Ave, Cambridge, MA 02139, USA.&n; *&n; *******************************************************************/
 macro_line|#ifndef _IDT77252_H
 DECL|macro|_IDT77252_H
 mdefine_line|#define _IDT77252_H 1
@@ -16,6 +16,8 @@ multiline_comment|/*                                                            
 multiline_comment|/*   DEBUGGING definitions                                                   */
 multiline_comment|/*                                                                           */
 multiline_comment|/*****************************************************************************/
+DECL|macro|DBG_RAW_CELL
+mdefine_line|#define DBG_RAW_CELL&t;0x00000400
 DECL|macro|DBG_TINY
 mdefine_line|#define DBG_TINY&t;0x00000200
 DECL|macro|DBG_GENERAL
@@ -36,7 +38,7 @@ DECL|macro|DBG_RX_DATA
 mdefine_line|#define DBG_RX_DATA     0x00000002
 DECL|macro|DBG_TX_DATA
 mdefine_line|#define DBG_TX_DATA     0x00000001
-macro_line|#ifdef DEBUG
+macro_line|#ifdef CONFIG_ATM_IDT77252_DEBUG
 DECL|macro|CPRINTK
 mdefine_line|#define CPRINTK(args...)   do { if (debug &amp; DBG_CLOSE_CONN) printk(args); } while(0)
 DECL|macro|OPRINTK
@@ -57,6 +59,8 @@ DECL|macro|DPRINTK
 mdefine_line|#define DPRINTK(args...)   do { if (debug &amp; DBG_GENERAL)    printk(args); } while(0)
 DECL|macro|NPRINTK
 mdefine_line|#define NPRINTK(args...)   do { if (debug &amp; DBG_TINY)&t;    printk(args); } while(0)
+DECL|macro|RPRINTK
+mdefine_line|#define RPRINTK(args...)   do { if (debug &amp; DBG_RAW_CELL)   printk(args); } while(0)
 macro_line|#else
 DECL|macro|CPRINTK
 mdefine_line|#define CPRINTK(args...)&t;do { } while(0)
@@ -78,6 +82,8 @@ DECL|macro|DPRINTK
 mdefine_line|#define DPRINTK(args...)&t;do { } while(0)
 DECL|macro|NPRINTK
 mdefine_line|#define NPRINTK(args...)&t;do { } while(0)
+DECL|macro|RPRINTK
+mdefine_line|#define RPRINTK(args...)&t;do { } while(0)
 macro_line|#endif
 DECL|macro|SCHED_UBR0
 mdefine_line|#define SCHED_UBR0&t;&t;0
@@ -1579,49 +1585,24 @@ id|scqe
 id|tbd
 suffix:semicolon
 multiline_comment|/* Transmit Buffer Descriptor */
-DECL|member|pool
-id|u32
-id|pool
-suffix:semicolon
-multiline_comment|/* sb_pool index */
 DECL|member|paddr
 id|dma_addr_t
 id|paddr
 suffix:semicolon
 multiline_comment|/* DMA handle */
-DECL|member|vaddr
-r_void
-op_star
-id|vaddr
+DECL|member|pool
+id|u32
+id|pool
 suffix:semicolon
-multiline_comment|/* DMA virtual address */
-DECL|member|size
-r_int
-r_int
-id|size
-suffix:semicolon
-multiline_comment|/* DMA buffer size */
-DECL|member|next
-r_struct
-id|sk_buff
-op_star
-id|next
-suffix:semicolon
-multiline_comment|/* next PDU buffer */
+multiline_comment|/* sb_pool handle */
 )brace
 suffix:semicolon
 DECL|macro|IDT77252_PRV_TBD
 mdefine_line|#define IDT77252_PRV_TBD(skb)&t;&bslash;&n;&t;(((struct idt77252_skb_prv *)(ATM_SKB(skb)+1))-&gt;tbd)
-DECL|macro|IDT77252_PRV_POOL
-mdefine_line|#define IDT77252_PRV_POOL(skb)&t;&bslash;&n;&t;(((struct idt77252_skb_prv *)(ATM_SKB(skb)+1))-&gt;pool)
 DECL|macro|IDT77252_PRV_PADDR
 mdefine_line|#define IDT77252_PRV_PADDR(skb)&t;&bslash;&n;&t;(((struct idt77252_skb_prv *)(ATM_SKB(skb)+1))-&gt;paddr)
-DECL|macro|IDT77252_PRV_VADDR
-mdefine_line|#define IDT77252_PRV_VADDR(skb)&t;&bslash;&n;&t;(((struct idt77252_skb_prv *)(ATM_SKB(skb)+1))-&gt;vaddr)
-DECL|macro|IDT77252_PRV_SIZE
-mdefine_line|#define IDT77252_PRV_SIZE(skb)&t;&bslash;&n;&t;(((struct idt77252_skb_prv *)(ATM_SKB(skb)+1))-&gt;size)
-DECL|macro|IDT77252_PRV_NEXT
-mdefine_line|#define IDT77252_PRV_NEXT(skb)&t;&bslash;&n;&t;(((struct idt77252_skb_prv *)(ATM_SKB(skb)+1))-&gt;next)
+DECL|macro|IDT77252_PRV_POOL
+mdefine_line|#define IDT77252_PRV_POOL(skb)&t;&bslash;&n;&t;(((struct idt77252_skb_prv *)(ATM_SKB(skb)+1))-&gt;pool)
 multiline_comment|/*****************************************************************************/
 multiline_comment|/*                                                                           */
 multiline_comment|/*   PCI related items                                                       */

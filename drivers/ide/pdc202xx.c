@@ -1451,6 +1451,8 @@ l_string|&quot;QUANTUM FIREBALLP LM20.4&quot;
 comma
 l_string|&quot;QUANTUM FIREBALLP KX20.5&quot;
 comma
+l_string|&quot;QUANTUM FIREBALLP KX27.3&quot;
+comma
 l_string|&quot;QUANTUM FIREBALLP LM20.5&quot;
 comma
 l_int|NULL

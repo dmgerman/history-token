@@ -465,43 +465,21 @@ id|if_names
 op_assign
 initialization_block
 suffix:semicolon
-macro_line|#ifdef PCMCIA_DEBUG
-DECL|variable|pc_debug
-r_static
-r_int
-id|pc_debug
-op_assign
-id|PCMCIA_DEBUG
-suffix:semicolon
-id|MODULE_PARM
+multiline_comment|/* ----------------------------------------------------------------------------&n;Parameters&n;&t;These are the parameters that can be set during loading with&n;&t;&squot;insmod&squot;.&n;---------------------------------------------------------------------------- */
+id|MODULE_DESCRIPTION
 c_func
 (paren
-id|pc_debug
-comma
-l_string|&quot;i&quot;
+l_string|&quot;New Media PCMCIA ethernet driver&quot;
 )paren
 suffix:semicolon
-DECL|macro|DEBUG
-mdefine_line|#define DEBUG(n, args...) if (pc_debug&gt;(n)) printk(KERN_DEBUG args)
-macro_line|#else
-DECL|macro|DEBUG
-mdefine_line|#define DEBUG(n, args...)
-macro_line|#endif
-multiline_comment|/* ----------------------------------------------------------------------------&n;Parameters&n;&t;These are the parameters that can be set during loading with&n;&t;&squot;insmod&squot;.&n;---------------------------------------------------------------------------- */
-multiline_comment|/* 0=auto, 1=10baseT, 2 = 10base2, default=auto */
-DECL|variable|if_port
-r_static
-r_int
-id|if_port
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
+)paren
 suffix:semicolon
-multiline_comment|/* Bit map of interrupts to choose from */
-DECL|variable|irq_mask
-r_static
-id|u_int
-id|irq_mask
-op_assign
-l_int|0xdeb8
-suffix:semicolon
+DECL|macro|INT_MODULE_PARM
+mdefine_line|#define INT_MODULE_PARM(n, v) static int n = v; MODULE_PARM(n, &quot;i&quot;)
 DECL|variable|irq_list
 r_static
 r_int
@@ -518,33 +496,44 @@ suffix:semicolon
 id|MODULE_PARM
 c_func
 (paren
-id|if_port
-comma
-l_string|&quot;i&quot;
-)paren
-suffix:semicolon
-id|MODULE_PARM
-c_func
-(paren
-id|irq_mask
-comma
-l_string|&quot;i&quot;
-)paren
-suffix:semicolon
-id|MODULE_PARM
-c_func
-(paren
 id|irq_list
 comma
 l_string|&quot;1-4i&quot;
 )paren
 suffix:semicolon
-id|MODULE_LICENSE
+multiline_comment|/* 0=auto, 1=10baseT, 2 = 10base2, default=auto */
+id|INT_MODULE_PARM
 c_func
 (paren
-l_string|&quot;GPL&quot;
+id|if_port
+comma
+l_int|0
 )paren
 suffix:semicolon
+multiline_comment|/* Bit map of interrupts to choose from */
+id|INT_MODULE_PARM
+c_func
+(paren
+id|irq_mask
+comma
+l_int|0xdeb8
+)paren
+suffix:semicolon
+macro_line|#ifdef PCMCIA_DEBUG
+id|INT_MODULE_PARM
+c_func
+(paren
+id|pc_debug
+comma
+id|PCMCIA_DEBUG
+)paren
+suffix:semicolon
+DECL|macro|DEBUG
+mdefine_line|#define DEBUG(n, args...) if (pc_debug&gt;(n)) printk(KERN_DEBUG args)
+macro_line|#else
+DECL|macro|DEBUG
+mdefine_line|#define DEBUG(n, args...)
+macro_line|#endif
 multiline_comment|/* ----------------------------------------------------------------------------&n;Function Prototypes&n;---------------------------------------------------------------------------- */
 r_static
 r_void
@@ -4079,7 +4068,7 @@ op_increment
 suffix:semicolon
 id|lp-&gt;linux_stats.rx_bytes
 op_add_assign
-id|pkt_len
+id|skb-&gt;len
 suffix:semicolon
 id|outb
 c_func

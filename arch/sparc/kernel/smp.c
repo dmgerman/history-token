@@ -10,6 +10,8 @@ macro_line|#include &lt;linux/kernel_stat.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
+macro_line|#include &lt;linux/fs.h&gt;
+macro_line|#include &lt;linux/seq_file.h&gt;
 macro_line|#include &lt;asm/ptrace.h&gt;
 macro_line|#include &lt;asm/atomic.h&gt;
 macro_line|#include &lt;asm/delay.h&gt;
@@ -1201,20 +1203,17 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|function|smp_bogo_info
-r_int
+r_void
 id|smp_bogo_info
 c_func
 (paren
-r_char
+r_struct
+id|seq_file
 op_star
-id|buf
+id|m
 )paren
 (brace
 r_int
-id|len
-op_assign
-l_int|0
-comma
 id|i
 suffix:semicolon
 r_for
@@ -1231,6 +1230,7 @@ suffix:semicolon
 id|i
 op_increment
 )paren
+(brace
 r_if
 c_cond
 (paren
@@ -1242,14 +1242,10 @@ op_lshift
 id|i
 )paren
 )paren
-id|len
-op_add_assign
-id|sprintf
+id|seq_printf
 c_func
 (paren
-id|buf
-op_plus
-id|len
+id|m
 comma
 l_string|&quot;Cpu%dBogo&bslash;t: %lu.%02lu&bslash;n&quot;
 comma
@@ -1286,25 +1282,20 @@ op_mod
 l_int|100
 )paren
 suffix:semicolon
-r_return
-id|len
-suffix:semicolon
+)brace
 )brace
 DECL|function|smp_info
-r_int
+r_void
 id|smp_info
 c_func
 (paren
-r_char
+r_struct
+id|seq_file
 op_star
-id|buf
+id|m
 )paren
 (brace
 r_int
-id|len
-op_assign
-l_int|0
-comma
 id|i
 suffix:semicolon
 r_for
@@ -1321,6 +1312,7 @@ suffix:semicolon
 id|i
 op_increment
 )paren
+(brace
 r_if
 c_cond
 (paren
@@ -1332,22 +1324,16 @@ op_lshift
 id|i
 )paren
 )paren
-id|len
-op_add_assign
-id|sprintf
+id|seq_printf
 c_func
 (paren
-id|buf
-op_plus
-id|len
+id|m
 comma
 l_string|&quot;CPU%d&bslash;t&bslash;t: online&bslash;n&quot;
 comma
 id|i
 )paren
 suffix:semicolon
-r_return
-id|len
-suffix:semicolon
+)brace
 )brace
 eof

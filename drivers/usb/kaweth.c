@@ -1246,16 +1246,10 @@ suffix:semicolon
 id|kaweth_dbg
 c_func
 (paren
-l_string|&quot;Downloading firmware at %x to kaweth device at %x&quot;
+l_string|&quot;Downloading firmware at %p to kaweth device at %p&quot;
 comma
-(paren
-r_int
-)paren
 id|data
 comma
-(paren
-r_int
-)paren
 id|kaweth
 )paren
 suffix:semicolon
@@ -1643,6 +1637,10 @@ op_assign
 id|le16_to_cpup
 c_func
 (paren
+(paren
+id|u16
+op_star
+)paren
 id|kaweth-&gt;rx_buf
 )paren
 suffix:semicolon

@@ -1380,10 +1380,6 @@ op_assign
 id|port-&gt;write_urb-&gt;transfer_buffer
 suffix:semicolon
 r_int
-r_char
-id|dbug_byte
-suffix:semicolon
-r_int
 id|data_offset
 suffix:semicolon
 r_int

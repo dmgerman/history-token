@@ -1278,6 +1278,8 @@ r_return
 op_minus
 id|ENOMEM
 suffix:semicolon
+id|MOD_INC_USE_COUNT
+suffix:semicolon
 id|PRIV
 c_func
 (paren
@@ -1595,6 +1597,8 @@ id|dev
 )paren
 )paren
 suffix:semicolon
+id|MOD_DEC_USE_COUNT
+suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
@@ -1742,8 +1746,6 @@ c_func
 r_void
 )paren
 (brace
-id|MOD_INC_USE_COUNT
-suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon

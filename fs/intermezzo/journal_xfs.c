@@ -19,9 +19,8 @@ macro_line|#include &lt;linux/intermezzo_upcall.h&gt;
 macro_line|#include &lt;linux/intermezzo_psdev.h&gt;
 macro_line|#include &lt;linux/intermezzo_kml.h&gt;
 macro_line|#include &lt;linux/intermezzo_journal.h&gt;
-macro_line|#if defined(CONFIG_XFS_FS)
+macro_line|#if 0
 multiline_comment|/* XFS has journalling, but these functions do nothing yet... */
-DECL|function|presto_xfs_freespace
 r_static
 r_int
 r_int
@@ -95,7 +94,6 @@ multiline_comment|/* start the filesystem journal operations */
 r_static
 r_void
 op_star
-DECL|function|presto_xfs_trans_start
 id|presto_xfs_trans_start
 c_func
 (paren
@@ -118,29 +116,17 @@ id|xfs_op
 suffix:semicolon
 multiline_comment|/* do a free blocks check as in journal_ext3? does anything protect&n;&t; * the space in that case or can it disappear out from under us&n;&t; * anyway? */
 multiline_comment|/* copied from xfs_trans.h, skipping header maze for now */
-DECL|macro|XFS_TRANS_SETATTR_NOT_SIZE
 mdefine_line|#define XFS_TRANS_SETATTR_NOT_SIZE      1
-DECL|macro|XFS_TRANS_SETATTR_SIZE
 mdefine_line|#define XFS_TRANS_SETATTR_SIZE          2
-DECL|macro|XFS_TRANS_INACTIVE
 mdefine_line|#define XFS_TRANS_INACTIVE              3
-DECL|macro|XFS_TRANS_CREATE
 mdefine_line|#define XFS_TRANS_CREATE                4
-DECL|macro|XFS_TRANS_CREATE_TRUNC
 mdefine_line|#define XFS_TRANS_CREATE_TRUNC          5
-DECL|macro|XFS_TRANS_TRUNCATE_FILE
 mdefine_line|#define XFS_TRANS_TRUNCATE_FILE         6
-DECL|macro|XFS_TRANS_REMOVE
 mdefine_line|#define XFS_TRANS_REMOVE                7
-DECL|macro|XFS_TRANS_LINK
 mdefine_line|#define XFS_TRANS_LINK                  8
-DECL|macro|XFS_TRANS_RENAME
 mdefine_line|#define XFS_TRANS_RENAME                9
-DECL|macro|XFS_TRANS_MKDIR
 mdefine_line|#define XFS_TRANS_MKDIR                 10
-DECL|macro|XFS_TRANS_RMDIR
 mdefine_line|#define XFS_TRANS_RMDIR                 11
-DECL|macro|XFS_TRANS_SYMLINK
 mdefine_line|#define XFS_TRANS_SYMLINK               12
 multiline_comment|/* map the op onto the values for XFS so it can do reservation. if&n;&t; * we don&squot;t have enough info to differentiate between e.g. setattr&n;&t; * with or without size, what do we do? will it adjust? */
 r_switch
@@ -259,7 +245,6 @@ id|xfs_op
 )paren
 suffix:semicolon
 )brace
-DECL|function|presto_xfs_trans_commit
 r_static
 r_void
 id|presto_xfs_trans_commit
@@ -283,7 +268,6 @@ id|handle
 )paren
 suffix:semicolon
 )brace
-DECL|function|presto_xfs_journal_file_data
 r_void
 id|presto_xfs_journal_file_data
 c_func
@@ -297,7 +281,6 @@ id|inode
 r_return
 suffix:semicolon
 )brace
-DECL|variable|presto_xfs_journal_ops
 r_struct
 id|journal_ops
 id|presto_xfs_journal_ops

@@ -7230,12 +7230,8 @@ id|STp-&gt;devt
 suffix:semicolon
 r_int
 id|expected
-id|__attribute__
-(paren
-(paren
-id|__unused__
-)paren
-)paren
+op_assign
+l_int|0
 suffix:semicolon
 r_int
 id|attempts

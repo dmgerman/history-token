@@ -545,6 +545,14 @@ suffix:semicolon
 )brace
 r_else
 (brace
+id|serial_req.flags
+op_assign
+id|ASYNC_SKIP_TEST
+op_or
+id|ASYNC_BOOT_AUTOCONF
+op_or
+id|ASYNC_AUTO_IRQ
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -576,15 +584,17 @@ op_assign
 id|acpi_ser_p-&gt;irq
 suffix:semicolon
 )brace
-)brace
+r_else
+(brace
+multiline_comment|/*&n;&t;&t;&t; * IRQ type not being set would mean UART will&n;&t;&t;&t; * run in polling mode. Do not probe for IRQ in&n;&t;&t;&t; * that case.&n;&t;&t;&t; */
 id|serial_req.flags
 op_assign
 id|ASYNC_SKIP_TEST
 op_or
 id|ASYNC_BOOT_AUTOCONF
-op_or
-id|ASYNC_AUTO_IRQ
 suffix:semicolon
+)brace
+)brace
 id|serial_req.xmit_fifo_size
 op_assign
 id|serial_req.custom_divisor

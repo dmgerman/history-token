@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * $Id: io.h,v 1.28 2000/09/17 05:12:00 davem Exp $&n; */
+multiline_comment|/*&n; * $Id: io.h,v 1.29 2001/11/10 09:28:34 davem Exp $&n; */
 macro_line|#ifndef __SPARC_IO_H
 DECL|macro|__SPARC_IO_H
 mdefine_line|#define __SPARC_IO_H
@@ -12,12 +12,12 @@ mdefine_line|#define virt_to_bus virt_to_phys
 DECL|macro|bus_to_virt
 mdefine_line|#define bus_to_virt phys_to_virt
 DECL|function|flip_dword
-r_extern
+r_static
 id|__inline__
-r_int
+id|u32
 id|flip_dword
 (paren
-r_int
+id|u32
 id|d
 )paren
 (brace
@@ -72,14 +72,12 @@ l_int|0xff
 suffix:semicolon
 )brace
 DECL|function|flip_word
-r_extern
+r_static
 id|__inline__
-r_int
-r_int
+id|u16
 id|flip_word
 (paren
-r_int
-r_int
+id|u16
 id|d
 )paren
 (brace
@@ -107,10 +105,9 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * Memory mapped I/O to PCI&n; */
 DECL|function|readb
-r_extern
+r_static
 id|__inline__
-r_int
-r_int
+id|u8
 id|readb
 c_func
 (paren
@@ -123,18 +120,16 @@ r_return
 op_star
 (paren
 r_volatile
-r_int
-r_char
+id|u8
 op_star
 )paren
 id|addr
 suffix:semicolon
 )brace
 DECL|function|readw
-r_extern
+r_static
 id|__inline__
-r_int
-r_int
+id|u16
 id|readw
 c_func
 (paren
@@ -150,8 +145,7 @@ c_func
 op_star
 (paren
 r_volatile
-r_int
-r_int
+id|u16
 op_star
 )paren
 id|addr
@@ -159,10 +153,9 @@ id|addr
 suffix:semicolon
 )brace
 DECL|function|readl
-r_extern
+r_static
 id|__inline__
-r_int
-r_int
+id|u32
 id|readl
 c_func
 (paren
@@ -178,8 +171,7 @@ c_func
 op_star
 (paren
 r_volatile
-r_int
-r_int
+id|u32
 op_star
 )paren
 id|addr
@@ -187,14 +179,13 @@ id|addr
 suffix:semicolon
 )brace
 DECL|function|writeb
-r_extern
+r_static
 id|__inline__
 r_void
 id|writeb
 c_func
 (paren
-r_int
-r_char
+id|u8
 id|b
 comma
 r_int
@@ -205,8 +196,7 @@ id|addr
 op_star
 (paren
 r_volatile
-r_int
-r_char
+id|u8
 op_star
 )paren
 id|addr
@@ -215,14 +205,13 @@ id|b
 suffix:semicolon
 )brace
 DECL|function|writew
-r_extern
+r_static
 id|__inline__
 r_void
 id|writew
 c_func
 (paren
-r_int
-r_int
+id|u16
 id|b
 comma
 r_int
@@ -233,8 +222,7 @@ id|addr
 op_star
 (paren
 r_volatile
-r_int
-r_int
+id|u16
 op_star
 )paren
 id|addr
@@ -247,14 +235,13 @@ id|b
 suffix:semicolon
 )brace
 DECL|function|writel
-r_extern
+r_static
 id|__inline__
 r_void
 id|writel
 c_func
 (paren
-r_int
-r_int
+id|u32
 id|b
 comma
 r_int
@@ -265,8 +252,7 @@ id|addr
 op_star
 (paren
 r_volatile
-r_int
-r_int
+id|u32
 op_star
 )paren
 id|addr
@@ -280,10 +266,9 @@ suffix:semicolon
 )brace
 multiline_comment|/* Now the &squot;raw&squot; versions. */
 DECL|function|__raw_readb
-r_extern
+r_static
 id|__inline__
-r_int
-r_int
+id|u8
 id|__raw_readb
 c_func
 (paren
@@ -296,18 +281,16 @@ r_return
 op_star
 (paren
 r_volatile
-r_int
-r_char
+id|u8
 op_star
 )paren
 id|addr
 suffix:semicolon
 )brace
 DECL|function|__raw_readw
-r_extern
+r_static
 id|__inline__
-r_int
-r_int
+id|u16
 id|__raw_readw
 c_func
 (paren
@@ -320,18 +303,16 @@ r_return
 op_star
 (paren
 r_volatile
-r_int
-r_int
+id|u16
 op_star
 )paren
 id|addr
 suffix:semicolon
 )brace
 DECL|function|__raw_readl
-r_extern
+r_static
 id|__inline__
-r_int
-r_int
+id|u32
 id|__raw_readl
 c_func
 (paren
@@ -344,22 +325,20 @@ r_return
 op_star
 (paren
 r_volatile
-r_int
-r_int
+id|u32
 op_star
 )paren
 id|addr
 suffix:semicolon
 )brace
 DECL|function|__raw_writeb
-r_extern
+r_static
 id|__inline__
 r_void
 id|__raw_writeb
 c_func
 (paren
-r_int
-r_char
+id|u8
 id|b
 comma
 r_int
@@ -370,8 +349,7 @@ id|addr
 op_star
 (paren
 r_volatile
-r_int
-r_char
+id|u8
 op_star
 )paren
 id|addr
@@ -380,14 +358,13 @@ id|b
 suffix:semicolon
 )brace
 DECL|function|__raw_writew
-r_extern
+r_static
 id|__inline__
 r_void
 id|__raw_writew
 c_func
 (paren
-r_int
-r_int
+id|u16
 id|b
 comma
 r_int
@@ -398,8 +375,7 @@ id|addr
 op_star
 (paren
 r_volatile
-r_int
-r_int
+id|u16
 op_star
 )paren
 id|addr
@@ -408,14 +384,13 @@ id|b
 suffix:semicolon
 )brace
 DECL|function|__raw_writel
-r_extern
+r_static
 id|__inline__
 r_void
 id|__raw_writel
 c_func
 (paren
-r_int
-r_int
+id|u32
 id|b
 comma
 r_int
@@ -426,8 +401,7 @@ id|addr
 op_star
 (paren
 r_volatile
-r_int
-r_int
+id|u32
 op_star
 )paren
 id|addr
@@ -571,10 +545,9 @@ DECL|macro|IO_SPACE_LIMIT
 mdefine_line|#define IO_SPACE_LIMIT 0xffffffff
 multiline_comment|/*&n; * SBus accessors.&n; *&n; * SBus has only one, memory mapped, I/O space.&n; * We do not need to flip bytes for SBus of course.&n; */
 DECL|function|_sbus_readb
-r_extern
+r_static
 id|__inline__
-r_int
-r_int
+id|u8
 id|_sbus_readb
 c_func
 (paren
@@ -587,18 +560,16 @@ r_return
 op_star
 (paren
 r_volatile
-r_int
-r_char
+id|u8
 op_star
 )paren
 id|addr
 suffix:semicolon
 )brace
 DECL|function|_sbus_readw
-r_extern
+r_static
 id|__inline__
-r_int
-r_int
+id|u16
 id|_sbus_readw
 c_func
 (paren
@@ -611,18 +582,16 @@ r_return
 op_star
 (paren
 r_volatile
-r_int
-r_int
+id|u16
 op_star
 )paren
 id|addr
 suffix:semicolon
 )brace
 DECL|function|_sbus_readl
-r_extern
+r_static
 id|__inline__
-r_int
-r_int
+id|u32
 id|_sbus_readl
 c_func
 (paren
@@ -635,22 +604,20 @@ r_return
 op_star
 (paren
 r_volatile
-r_int
-r_int
+id|u32
 op_star
 )paren
 id|addr
 suffix:semicolon
 )brace
 DECL|function|_sbus_writeb
-r_extern
+r_static
 id|__inline__
 r_void
 id|_sbus_writeb
 c_func
 (paren
-r_int
-r_char
+id|u8
 id|b
 comma
 r_int
@@ -661,8 +628,7 @@ id|addr
 op_star
 (paren
 r_volatile
-r_int
-r_char
+id|u8
 op_star
 )paren
 id|addr
@@ -671,14 +637,13 @@ id|b
 suffix:semicolon
 )brace
 DECL|function|_sbus_writew
-r_extern
+r_static
 id|__inline__
 r_void
 id|_sbus_writew
 c_func
 (paren
-r_int
-r_int
+id|u16
 id|b
 comma
 r_int
@@ -689,8 +654,7 @@ id|addr
 op_star
 (paren
 r_volatile
-r_int
-r_int
+id|u16
 op_star
 )paren
 id|addr
@@ -699,14 +663,13 @@ id|b
 suffix:semicolon
 )brace
 DECL|function|_sbus_writel
-r_extern
+r_static
 id|__inline__
 r_void
 id|_sbus_writel
 c_func
 (paren
-r_int
-r_int
+id|u32
 id|b
 comma
 r_int
@@ -717,8 +680,7 @@ id|addr
 op_star
 (paren
 r_volatile
-r_int
-r_int
+id|u32
 op_star
 )paren
 id|addr
@@ -728,11 +690,11 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; * The only reason for #define&squot;s is to hide casts to unsigned long.&n; * XXX Rewrite drivers without structures for registers.&n; */
 DECL|macro|sbus_readb
-mdefine_line|#define sbus_readb(a)&t;_sbus_readb((unsigned long)(a))
+mdefine_line|#define sbus_readb(a)&t;&t;_sbus_readb((unsigned long)(a))
 DECL|macro|sbus_readw
-mdefine_line|#define sbus_readw(a)&t;_sbus_readw((unsigned long)(a))
+mdefine_line|#define sbus_readw(a)&t;&t;_sbus_readw((unsigned long)(a))
 DECL|macro|sbus_readl
-mdefine_line|#define sbus_readl(a)&t;_sbus_readl((unsigned long)(a))
+mdefine_line|#define sbus_readl(a)&t;&t;_sbus_readl((unsigned long)(a))
 DECL|macro|sbus_writeb
 mdefine_line|#define sbus_writeb(v, a)&t;_sbus_writeb(v, (unsigned long)(a))
 DECL|macro|sbus_writew

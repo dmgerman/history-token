@@ -6,18 +6,31 @@ DECL|struct|scatterlist
 r_struct
 id|scatterlist
 (brace
+multiline_comment|/* This will disappear in 2.5.x: */
 DECL|member|address
 r_char
 op_star
 id|address
 suffix:semicolon
-multiline_comment|/* location data is to be transferred to */
+multiline_comment|/* location data is to be transferred to, NULL for highmem page */
+DECL|member|orig_address
+r_char
+op_star
+id|orig_address
+suffix:semicolon
+multiline_comment|/* for use by swiotlb */
+multiline_comment|/* These two are only valid if ADDRESS member of this struct is NULL.  */
 DECL|member|page
-r_void
+r_struct
+id|page
 op_star
 id|page
 suffix:semicolon
-multiline_comment|/* stupid: SCSI code insists on a member of this name... */
+DECL|member|offset
+r_int
+r_int
+id|offset
+suffix:semicolon
 DECL|member|length
 r_int
 r_int

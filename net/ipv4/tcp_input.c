@@ -9386,14 +9386,14 @@ suffix:semicolon
 id|i
 op_increment
 )paren
-id|sp
+id|tp-&gt;selective_acks
 (braket
 id|i
 op_minus
 l_int|1
 )braket
 op_assign
-id|sp
+id|tp-&gt;selective_acks
 (braket
 id|i
 )braket

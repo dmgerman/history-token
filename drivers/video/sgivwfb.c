@@ -4194,6 +4194,7 @@ suffix:semicolon
 r_while
 c_loop
 (paren
+(paren
 id|this_opt
 op_assign
 id|strsep
@@ -4204,6 +4205,9 @@ id|options
 comma
 l_string|&quot;,&quot;
 )paren
+)paren
+op_ne
+l_int|NULL
 )paren
 (brace
 r_if

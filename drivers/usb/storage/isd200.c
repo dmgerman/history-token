@@ -3800,6 +3800,7 @@ c_loop
 id|TRUE
 )paren
 (brace
+macro_line|#ifdef CONFIG_USB_STORAGE_DEBUG
 r_char
 op_star
 id|mstr
@@ -3813,6 +3814,7 @@ l_string|&quot;Master&quot;
 suffix:colon
 l_string|&quot;Slave&quot;
 suffix:semicolon
+macro_line|#endif
 id|status
 op_assign
 id|isd200_action

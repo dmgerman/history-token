@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: io.h,v 1.36 2000/09/17 05:12:00 davem Exp $ */
+multiline_comment|/* $Id: io.h,v 1.40 2001/11/10 09:24:56 davem Exp $ */
 macro_line|#ifndef __SPARC64_IO_H
 DECL|macro|__SPARC64_IO_H
 mdefine_line|#define __SPARC64_IO_H
@@ -49,10 +49,9 @@ suffix:semicolon
 DECL|macro|bus_dvma_to_mem
 mdefine_line|#define bus_dvma_to_mem(__vaddr) ((__vaddr) &amp; pci_memspace_mask)
 DECL|function|inb
-r_extern
+r_static
 id|__inline__
-r_int
-r_int
+id|u8
 id|inb
 c_func
 (paren
@@ -61,8 +60,7 @@ r_int
 id|addr
 )paren
 (brace
-r_int
-r_int
+id|u8
 id|ret
 suffix:semicolon
 id|__asm__
@@ -92,10 +90,9 @@ id|ret
 suffix:semicolon
 )brace
 DECL|function|inw
-r_extern
+r_static
 id|__inline__
-r_int
-r_int
+id|u16
 id|inw
 c_func
 (paren
@@ -104,8 +101,7 @@ r_int
 id|addr
 )paren
 (brace
-r_int
-r_int
+id|u16
 id|ret
 suffix:semicolon
 id|__asm__
@@ -135,10 +131,9 @@ id|ret
 suffix:semicolon
 )brace
 DECL|function|inl
-r_extern
+r_static
 id|__inline__
-r_int
-r_int
+id|u32
 id|inl
 c_func
 (paren
@@ -147,8 +142,7 @@ r_int
 id|addr
 )paren
 (brace
-r_int
-r_int
+id|u32
 id|ret
 suffix:semicolon
 id|__asm__
@@ -178,14 +172,13 @@ id|ret
 suffix:semicolon
 )brace
 DECL|function|outb
-r_extern
+r_static
 id|__inline__
 r_void
 id|outb
 c_func
 (paren
-r_int
-r_char
+id|u8
 id|b
 comma
 r_int
@@ -219,14 +212,13 @@ id|ASI_PHYS_BYPASS_EC_E_L
 suffix:semicolon
 )brace
 DECL|function|outw
-r_extern
+r_static
 id|__inline__
 r_void
 id|outw
 c_func
 (paren
-r_int
-r_int
+id|u16
 id|w
 comma
 r_int
@@ -260,14 +252,13 @@ id|ASI_PHYS_BYPASS_EC_E_L
 suffix:semicolon
 )brace
 DECL|function|outl
-r_extern
+r_static
 id|__inline__
 r_void
 id|outl
 c_func
 (paren
-r_int
-r_int
+id|u32
 id|l
 comma
 r_int
@@ -425,10 +416,9 @@ id|count
 suffix:semicolon
 multiline_comment|/* Memory functions, same as I/O accesses on Ultra. */
 DECL|function|_readb
-r_extern
+r_static
 id|__inline__
-r_int
-r_int
+id|u8
 id|_readb
 c_func
 (paren
@@ -437,8 +427,7 @@ r_int
 id|addr
 )paren
 (brace
-r_int
-r_int
+id|u8
 id|ret
 suffix:semicolon
 id|__asm__
@@ -468,10 +457,9 @@ id|ret
 suffix:semicolon
 )brace
 DECL|function|_readw
-r_extern
+r_static
 id|__inline__
-r_int
-r_int
+id|u16
 id|_readw
 c_func
 (paren
@@ -480,8 +468,7 @@ r_int
 id|addr
 )paren
 (brace
-r_int
-r_int
+id|u16
 id|ret
 suffix:semicolon
 id|__asm__
@@ -511,10 +498,9 @@ id|ret
 suffix:semicolon
 )brace
 DECL|function|_readl
-r_extern
+r_static
 id|__inline__
-r_int
-r_int
+id|u32
 id|_readl
 c_func
 (paren
@@ -523,8 +509,7 @@ r_int
 id|addr
 )paren
 (brace
-r_int
-r_int
+id|u32
 id|ret
 suffix:semicolon
 id|__asm__
@@ -553,15 +538,55 @@ r_return
 id|ret
 suffix:semicolon
 )brace
+DECL|function|_readq
+r_static
+id|__inline__
+id|u64
+id|_readq
+c_func
+(paren
+r_int
+r_int
+id|addr
+)paren
+(brace
+id|u64
+id|ret
+suffix:semicolon
+id|__asm__
+id|__volatile__
+c_func
+(paren
+l_string|&quot;ldxa&bslash;t[%1] %2, %0&bslash;t/* pci_readq */&quot;
+suffix:colon
+l_string|&quot;=r&quot;
+(paren
+id|ret
+)paren
+suffix:colon
+l_string|&quot;r&quot;
+(paren
+id|addr
+)paren
+comma
+l_string|&quot;i&quot;
+(paren
+id|ASI_PHYS_BYPASS_EC_E_L
+)paren
+)paren
+suffix:semicolon
+r_return
+id|ret
+suffix:semicolon
+)brace
 DECL|function|_writeb
-r_extern
+r_static
 id|__inline__
 r_void
 id|_writeb
 c_func
 (paren
-r_int
-r_char
+id|u8
 id|b
 comma
 r_int
@@ -595,14 +620,13 @@ id|ASI_PHYS_BYPASS_EC_E_L
 suffix:semicolon
 )brace
 DECL|function|_writew
-r_extern
+r_static
 id|__inline__
 r_void
 id|_writew
 c_func
 (paren
-r_int
-r_int
+id|u16
 id|w
 comma
 r_int
@@ -636,14 +660,13 @@ id|ASI_PHYS_BYPASS_EC_E_L
 suffix:semicolon
 )brace
 DECL|function|_writel
-r_extern
+r_static
 id|__inline__
 r_void
 id|_writel
 c_func
 (paren
-r_int
-r_int
+id|u32
 id|l
 comma
 r_int
@@ -676,24 +699,67 @@ id|ASI_PHYS_BYPASS_EC_E_L
 )paren
 suffix:semicolon
 )brace
+DECL|function|_writeq
+r_static
+id|__inline__
+r_void
+id|_writeq
+c_func
+(paren
+id|u64
+id|q
+comma
+r_int
+r_int
+id|addr
+)paren
+(brace
+id|__asm__
+id|__volatile__
+c_func
+(paren
+l_string|&quot;stxa&bslash;t%r0, [%1] %2&bslash;t/* pci_writeq */&quot;
+suffix:colon
+multiline_comment|/* no outputs */
+suffix:colon
+l_string|&quot;Jr&quot;
+(paren
+id|q
+)paren
+comma
+l_string|&quot;r&quot;
+(paren
+id|addr
+)paren
+comma
+l_string|&quot;i&quot;
+(paren
+id|ASI_PHYS_BYPASS_EC_E_L
+)paren
+)paren
+suffix:semicolon
+)brace
 DECL|macro|readb
 mdefine_line|#define readb(__addr)&t;&t;(_readb((unsigned long)(__addr)))
 DECL|macro|readw
 mdefine_line|#define readw(__addr)&t;&t;(_readw((unsigned long)(__addr)))
 DECL|macro|readl
 mdefine_line|#define readl(__addr)&t;&t;(_readl((unsigned long)(__addr)))
+DECL|macro|readq
+mdefine_line|#define readq(__addr)&t;&t;(_readq((unsigned long)(__addr)))
 DECL|macro|writeb
-mdefine_line|#define writeb(__b, __addr)&t;(_writeb((__b), (unsigned long)(__addr)))
+mdefine_line|#define writeb(__b, __addr)&t;(_writeb((u8)(__b), (unsigned long)(__addr)))
 DECL|macro|writew
-mdefine_line|#define writew(__w, __addr)&t;(_writew((__w), (unsigned long)(__addr)))
+mdefine_line|#define writew(__w, __addr)&t;(_writew((u16)(__w), (unsigned long)(__addr)))
 DECL|macro|writel
-mdefine_line|#define writel(__l, __addr)&t;(_writel((__l), (unsigned long)(__addr)))
+mdefine_line|#define writel(__l, __addr)&t;(_writel((u32)(__l), (unsigned long)(__addr)))
+DECL|macro|writeq
+mdefine_line|#define writeq(__q, __addr)&t;(_writeq((u64)(__q), (unsigned long)(__addr)))
 multiline_comment|/* Now versions without byte-swapping. */
 DECL|function|_raw_readb
-r_extern
+r_static
 id|__inline__
-r_int
-r_int
+id|u8
 id|_raw_readb
 c_func
 (paren
@@ -702,8 +768,7 @@ r_int
 id|addr
 )paren
 (brace
-r_int
-r_int
+id|u8
 id|ret
 suffix:semicolon
 id|__asm__
@@ -733,10 +798,9 @@ id|ret
 suffix:semicolon
 )brace
 DECL|function|_raw_readw
-r_extern
+r_static
 id|__inline__
-r_int
-r_int
+id|u16
 id|_raw_readw
 c_func
 (paren
@@ -745,8 +809,7 @@ r_int
 id|addr
 )paren
 (brace
-r_int
-r_int
+id|u16
 id|ret
 suffix:semicolon
 id|__asm__
@@ -776,10 +839,9 @@ id|ret
 suffix:semicolon
 )brace
 DECL|function|_raw_readl
-r_extern
+r_static
 id|__inline__
-r_int
-r_int
+id|u32
 id|_raw_readl
 c_func
 (paren
@@ -788,8 +850,7 @@ r_int
 id|addr
 )paren
 (brace
-r_int
-r_int
+id|u32
 id|ret
 suffix:semicolon
 id|__asm__
@@ -818,15 +879,55 @@ r_return
 id|ret
 suffix:semicolon
 )brace
+DECL|function|_raw_readq
+r_static
+id|__inline__
+id|u64
+id|_raw_readq
+c_func
+(paren
+r_int
+r_int
+id|addr
+)paren
+(brace
+id|u64
+id|ret
+suffix:semicolon
+id|__asm__
+id|__volatile__
+c_func
+(paren
+l_string|&quot;ldxa&bslash;t[%1] %2, %0&bslash;t/* pci_raw_readq */&quot;
+suffix:colon
+l_string|&quot;=r&quot;
+(paren
+id|ret
+)paren
+suffix:colon
+l_string|&quot;r&quot;
+(paren
+id|addr
+)paren
+comma
+l_string|&quot;i&quot;
+(paren
+id|ASI_PHYS_BYPASS_EC_E
+)paren
+)paren
+suffix:semicolon
+r_return
+id|ret
+suffix:semicolon
+)brace
 DECL|function|_raw_writeb
-r_extern
+r_static
 id|__inline__
 r_void
 id|_raw_writeb
 c_func
 (paren
-r_int
-r_char
+id|u8
 id|b
 comma
 r_int
@@ -860,14 +961,13 @@ id|ASI_PHYS_BYPASS_EC_E
 suffix:semicolon
 )brace
 DECL|function|_raw_writew
-r_extern
+r_static
 id|__inline__
 r_void
 id|_raw_writew
 c_func
 (paren
-r_int
-r_int
+id|u16
 id|w
 comma
 r_int
@@ -901,14 +1001,13 @@ id|ASI_PHYS_BYPASS_EC_E
 suffix:semicolon
 )brace
 DECL|function|_raw_writel
-r_extern
+r_static
 id|__inline__
 r_void
 id|_raw_writel
 c_func
 (paren
-r_int
-r_int
+id|u32
 id|l
 comma
 r_int
@@ -941,6 +1040,46 @@ id|ASI_PHYS_BYPASS_EC_E
 )paren
 suffix:semicolon
 )brace
+DECL|function|_raw_writeq
+r_static
+id|__inline__
+r_void
+id|_raw_writeq
+c_func
+(paren
+id|u64
+id|q
+comma
+r_int
+r_int
+id|addr
+)paren
+(brace
+id|__asm__
+id|__volatile__
+c_func
+(paren
+l_string|&quot;stxa&bslash;t%r0, [%1] %2&bslash;t/* pci_raw_writeq */&quot;
+suffix:colon
+multiline_comment|/* no outputs */
+suffix:colon
+l_string|&quot;Jr&quot;
+(paren
+id|q
+)paren
+comma
+l_string|&quot;r&quot;
+(paren
+id|addr
+)paren
+comma
+l_string|&quot;i&quot;
+(paren
+id|ASI_PHYS_BYPASS_EC_E
+)paren
+)paren
+suffix:semicolon
+)brace
 DECL|macro|__raw_readb
 mdefine_line|#define __raw_readb(__addr)&t;&t;(_raw_readb((unsigned long)(__addr)))
 DECL|macro|__raw_readw
@@ -948,20 +1087,21 @@ mdefine_line|#define __raw_readw(__addr)&t;&t;(_raw_readw((unsigned long)(__addr
 DECL|macro|__raw_readl
 mdefine_line|#define __raw_readl(__addr)&t;&t;(_raw_readl((unsigned long)(__addr)))
 DECL|macro|__raw_writeb
-mdefine_line|#define __raw_writeb(__b, __addr)&t;(_raw_writeb((__b), (unsigned long)(__addr)))
+mdefine_line|#define __raw_writeb(__b, __addr)&t;(_raw_writeb((u8)(__b), (unsigned long)(__addr)))
 DECL|macro|__raw_writew
-mdefine_line|#define __raw_writew(__w, __addr)&t;(_raw_writew((__w), (unsigned long)(__addr)))
+mdefine_line|#define __raw_writew(__w, __addr)&t;(_raw_writew((u16)(__w), (unsigned long)(__addr)))
 DECL|macro|__raw_writel
-mdefine_line|#define __raw_writel(__l, __addr)&t;(_raw_writel((__l), (unsigned long)(__addr)))
+mdefine_line|#define __raw_writel(__l, __addr)&t;(_raw_writel((u32)(__l), (unsigned long)(__addr)))
+DECL|macro|__raw_writeq
+mdefine_line|#define __raw_writeq(__q, __addr)&t;(_raw_writeq((u64)(__q), (unsigned long)(__addr)))
 multiline_comment|/* Valid I/O Space regions are anywhere, because each PCI bus supported&n; * can live in an arbitrary area of the physical address range.&n; */
 DECL|macro|IO_SPACE_LIMIT
 mdefine_line|#define IO_SPACE_LIMIT 0xffffffffffffffffUL
 multiline_comment|/* Now, SBUS variants, only difference from PCI is that we do&n; * not use little-endian ASIs.&n; */
 DECL|function|_sbus_readb
-r_extern
+r_static
 id|__inline__
-r_int
-r_int
+id|u8
 id|_sbus_readb
 c_func
 (paren
@@ -970,8 +1110,7 @@ r_int
 id|addr
 )paren
 (brace
-r_int
-r_int
+id|u8
 id|ret
 suffix:semicolon
 id|__asm__
@@ -1001,10 +1140,9 @@ id|ret
 suffix:semicolon
 )brace
 DECL|function|_sbus_readw
-r_extern
+r_static
 id|__inline__
-r_int
-r_int
+id|u16
 id|_sbus_readw
 c_func
 (paren
@@ -1013,8 +1151,7 @@ r_int
 id|addr
 )paren
 (brace
-r_int
-r_int
+id|u16
 id|ret
 suffix:semicolon
 id|__asm__
@@ -1044,10 +1181,9 @@ id|ret
 suffix:semicolon
 )brace
 DECL|function|_sbus_readl
-r_extern
+r_static
 id|__inline__
-r_int
-r_int
+id|u32
 id|_sbus_readl
 c_func
 (paren
@@ -1056,8 +1192,7 @@ r_int
 id|addr
 )paren
 (brace
-r_int
-r_int
+id|u32
 id|ret
 suffix:semicolon
 id|__asm__
@@ -1087,14 +1222,13 @@ id|ret
 suffix:semicolon
 )brace
 DECL|function|_sbus_writeb
-r_extern
+r_static
 id|__inline__
 r_void
 id|_sbus_writeb
 c_func
 (paren
-r_int
-r_char
+id|u8
 id|b
 comma
 r_int
@@ -1128,14 +1262,13 @@ id|ASI_PHYS_BYPASS_EC_E
 suffix:semicolon
 )brace
 DECL|function|_sbus_writew
-r_extern
+r_static
 id|__inline__
 r_void
 id|_sbus_writew
 c_func
 (paren
-r_int
-r_int
+id|u16
 id|w
 comma
 r_int
@@ -1169,14 +1302,13 @@ id|ASI_PHYS_BYPASS_EC_E
 suffix:semicolon
 )brace
 DECL|function|_sbus_writel
-r_extern
+r_static
 id|__inline__
 r_void
 id|_sbus_writel
 c_func
 (paren
-r_int
-r_int
+id|u32
 id|l
 comma
 r_int

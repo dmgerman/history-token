@@ -558,7 +558,7 @@ DECL|macro|MODULE_PARM_DESC
 mdefine_line|#define MODULE_PARM_DESC(var,desc)
 multiline_comment|/* Create a dummy reference to the table to suppress gcc unused warnings.  Put&n; * the reference in the .data.exit section which is discarded when code is built&n; * in, so the reference does not bloat the running kernel.  Note: cannot be&n; * const, other exit data may be writable.&n; */
 DECL|macro|MODULE_GENERIC_TABLE
-mdefine_line|#define MODULE_GENERIC_TABLE(gtype,name) &bslash;&n;static struct gtype##_id * __module_##gtype##_table &bslash;&n;  __attribute__ ((unused, __section__(&quot;.data.exit&quot;))) = name
+mdefine_line|#define MODULE_GENERIC_TABLE(gtype,name) &bslash;&n;static const struct gtype##_id * __module_##gtype##_table &bslash;&n;  __attribute__ ((unused, __section__(&quot;.data.exit&quot;))) = name
 macro_line|#ifndef __GENKSYMS__
 DECL|macro|THIS_MODULE
 mdefine_line|#define THIS_MODULE&t;&t;NULL

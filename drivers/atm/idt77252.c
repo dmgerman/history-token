@@ -1,4 +1,4 @@
-multiline_comment|/******************************************************************* &n; * ident &quot;$Id: idt77252.c,v 1.1 2001/11/05 21:52:22 ecd Exp $&quot;&n; *&n; * $Author: ecd $&n; * $Date: 2001/11/05 21:52:22 $&n; *&n; * Copyright (c) 2000 ATecoM GmbH &n; *&n; * The author may be reached at ecd@atecom.com.&n; *&n; * This program is free software; you can redistribute  it and/or modify it&n; * under  the terms of  the GNU General  Public License as published by the&n; * Free Software Foundation;  either version 2 of the  License, or (at your&n; * option) any later version.&n; *&n; * THIS  SOFTWARE  IS PROVIDED   ``AS  IS&squot;&squot; AND   ANY  EXPRESS OR   IMPLIED&n; * WARRANTIES,   INCLUDING, BUT NOT  LIMITED  TO, THE IMPLIED WARRANTIES OF&n; * MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.  IN&n; * NO  EVENT  SHALL   THE AUTHOR  BE    LIABLE FOR ANY   DIRECT,  INDIRECT,&n; * INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT&n; * NOT LIMITED   TO, PROCUREMENT OF  SUBSTITUTE GOODS  OR SERVICES; LOSS OF&n; * USE, DATA,  OR PROFITS; OR  BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON&n; * ANY THEORY OF LIABILITY, WHETHER IN  CONTRACT, STRICT LIABILITY, OR TORT&n; * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF&n; * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.&n; *&n; * You should have received a copy of the  GNU General Public License along&n; * with this program; if not, write  to the Free Software Foundation, Inc.,&n; * 675 Mass Ave, Cambridge, MA 02139, USA.&n; *&n; *******************************************************************/
+multiline_comment|/******************************************************************* &n; * ident &quot;$Id: idt77252.c,v 1.2 2001/11/11 08:13:54 ecd Exp $&quot;&n; *&n; * $Author: ecd $&n; * $Date: 2001/11/11 08:13:54 $&n; *&n; * Copyright (c) 2000 ATecoM GmbH &n; *&n; * The author may be reached at ecd@atecom.com.&n; *&n; * This program is free software; you can redistribute  it and/or modify it&n; * under  the terms of  the GNU General  Public License as published by the&n; * Free Software Foundation;  either version 2 of the  License, or (at your&n; * option) any later version.&n; *&n; * THIS  SOFTWARE  IS PROVIDED   ``AS  IS&squot;&squot; AND   ANY  EXPRESS OR   IMPLIED&n; * WARRANTIES,   INCLUDING, BUT NOT  LIMITED  TO, THE IMPLIED WARRANTIES OF&n; * MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.  IN&n; * NO  EVENT  SHALL   THE AUTHOR  BE    LIABLE FOR ANY   DIRECT,  INDIRECT,&n; * INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT&n; * NOT LIMITED   TO, PROCUREMENT OF  SUBSTITUTE GOODS  OR SERVICES; LOSS OF&n; * USE, DATA,  OR PROFITS; OR  BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON&n; * ANY THEORY OF LIABILITY, WHETHER IN  CONTRACT, STRICT LIABILITY, OR TORT&n; * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF&n; * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.&n; *&n; * You should have received a copy of the  GNU General Public License along&n; * with this program; if not, write  to the Free Software Foundation, Inc.,&n; * 675 Mass Ave, Cambridge, MA 02139, USA.&n; *&n; *******************************************************************/
 DECL|variable|rcsid
 r_static
 r_char
@@ -7,7 +7,7 @@ id|rcsid
 (braket
 )braket
 op_assign
-l_string|&quot;$Id: idt77252.c,v 1.1 2001/11/05 21:52:22 ecd Exp $&quot;
+l_string|&quot;$Id: idt77252.c,v 1.2 2001/11/11 08:13:54 ecd Exp $&quot;
 suffix:semicolon
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/config.h&gt;
@@ -30,8 +30,6 @@ macro_line|#include &lt;asm/byteorder.h&gt;
 macro_line|#ifdef CONFIG_ATM_IDT77252_USE_SUNI
 macro_line|#include &quot;suni.h&quot;
 macro_line|#endif /* CONFIG_ATM_IDT77252_USE_SUNI */
-DECL|macro|DEBUG
-mdefine_line|#define DEBUG 1
 macro_line|#include &quot;idt77252.h&quot;
 macro_line|#include &quot;idt77252_tables.h&quot;
 DECL|variable|vpibits
@@ -47,11 +45,9 @@ mdefine_line|#define CONFIG_ATM_IDT77252_SEND_IDLE 1
 multiline_comment|/*&n; * Debug HACKs.&n; */
 DECL|macro|DEBUG_MODULE
 mdefine_line|#define DEBUG_MODULE 1
-DECL|macro|DEBUG_RAW_CELLS
-macro_line|#undef DEBUG_RAW_CELLS
 DECL|macro|HAVE_EEPROM
 macro_line|#undef HAVE_EEPROM&t;/* does not work, yet. */
-macro_line|#ifdef DEBUG
+macro_line|#ifdef CONFIG_ATM_IDT77252_DEBUG
 DECL|variable|debug
 r_static
 r_int
@@ -483,47 +479,41 @@ id|atmdev_ops
 id|idt77252_ops
 op_assign
 (brace
+id|dev_close
+suffix:colon
 id|idt77252_dev_close
 comma
-multiline_comment|/* dev_close */
+id|open
+suffix:colon
 id|idt77252_open
 comma
-multiline_comment|/* open */
+id|close
+suffix:colon
 id|idt77252_close
 comma
-multiline_comment|/* close */
-l_int|NULL
-comma
-multiline_comment|/* ioctl */
-l_int|NULL
-comma
-multiline_comment|/* getsockopt */
-l_int|NULL
-comma
-multiline_comment|/* setsockopt */
+id|send
+suffix:colon
 id|idt77252_send
 comma
-multiline_comment|/* send */
-l_int|NULL
-comma
-multiline_comment|/* sg_send */
+id|send_oam
+suffix:colon
 id|idt77252_send_oam
 comma
-multiline_comment|/* send_oam */
+id|phy_put
+suffix:colon
 id|idt77252_phy_put
 comma
+id|phy_get
+suffix:colon
 id|idt77252_phy_get
 comma
-l_int|NULL
-comma
-multiline_comment|/* feedback */
+id|change_qos
+suffix:colon
 id|idt77252_change_qos
 comma
-l_int|NULL
-comma
-multiline_comment|/* free_rx_skb */
+id|proc_read
+suffix:colon
 id|idt77252_proc_read
-multiline_comment|/* proc_read */
 )brace
 suffix:semicolon
 DECL|variable|idt77252_chain
@@ -2381,7 +2371,7 @@ l_int|5
 suffix:semicolon
 )brace
 macro_line|#endif /* HAVE_EEPROM */
-macro_line|#ifdef DEBUG
+macro_line|#ifdef CONFIG_ATM_IDT77252_DEBUG
 r_static
 r_void
 DECL|function|dump_tct
@@ -5304,11 +5294,7 @@ suffix:semicolon
 id|rpp-&gt;last
 op_assign
 op_amp
-id|IDT77252_PRV_NEXT
-c_func
-(paren
-id|skb
-)paren
+id|skb-&gt;next
 suffix:semicolon
 r_if
 c_cond
@@ -5597,11 +5583,7 @@ id|sb-&gt;len
 suffix:semicolon
 id|sb
 op_assign
-id|IDT77252_PRV_NEXT
-c_func
-(paren
-id|sb
-)paren
+id|sb-&gt;next
 suffix:semicolon
 )brace
 id|recycle_rx_pool_skb
@@ -5654,6 +5636,10 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
+id|skb-&gt;next
+op_assign
+l_int|NULL
+suffix:semicolon
 id|flush_rx_pool
 c_func
 (paren
@@ -6148,7 +6134,14 @@ id|ATM_HDR_PTI_MASK
 op_rshift
 id|ATM_HDR_PTI_SHIFT
 suffix:semicolon
-macro_line|#ifdef DEBUG_RAW_CELLS
+macro_line|#ifdef CONFIG_ATM_IDT77252_DEBUG
+r_if
+c_cond
+(paren
+id|debug
+op_amp
+id|DBG_RAW_CELL
+)paren
 (brace
 r_int
 id|i
@@ -6254,8 +6247,7 @@ id|card-&gt;vcibits
 )paren
 )paren
 (brace
-macro_line|#ifdef DEBUG_RAW_CELLS
-id|printk
+id|RPRINTK
 c_func
 (paren
 l_string|&quot;%s: SDU received for out-of-range vc %u.%u&bslash;n&quot;
@@ -6267,7 +6259,6 @@ comma
 id|vci
 )paren
 suffix:semicolon
-macro_line|#endif
 r_goto
 id|drop
 suffix:semicolon
@@ -6304,8 +6295,7 @@ id|vc-&gt;flags
 )paren
 )paren
 (brace
-macro_line|#ifdef DEBUG_RAW_CELLS
-id|printk
+id|RPRINTK
 c_func
 (paren
 l_string|&quot;%s: SDU received on non RX vc %u.%u&bslash;n&quot;
@@ -6317,7 +6307,6 @@ comma
 id|vci
 )paren
 suffix:semicolon
-macro_line|#endif
 r_goto
 id|drop
 suffix:semicolon
@@ -6334,8 +6323,7 @@ op_ne
 id|ATM_AAL0
 )paren
 (brace
-macro_line|#ifdef DEBUG_RAW_CELLS
-id|printk
+id|RPRINTK
 c_func
 (paren
 l_string|&quot;%s: raw cell for non AAL0 vc %u.%u&bslash;n&quot;
@@ -6347,7 +6335,6 @@ comma
 id|vci
 )paren
 suffix:semicolon
-macro_line|#endif
 id|atomic_inc
 c_func
 (paren
@@ -9379,11 +9366,11 @@ op_increment
 (brace
 id|next
 op_assign
-id|IDT77252_PRV_NEXT
-c_func
-(paren
-id|skb
-)paren
+id|skb-&gt;next
+suffix:semicolon
+id|skb-&gt;next
+op_assign
+l_int|NULL
 suffix:semicolon
 id|recycle_rx_skb
 c_func
@@ -13175,7 +13162,7 @@ c_func
 (paren
 id|page
 comma
-l_string|&quot;TSIF:  %u&bslash;n&quot;
+l_string|&quot;TSIF:  %lu&bslash;n&quot;
 comma
 id|card-&gt;irqstat
 (braket
@@ -13196,7 +13183,7 @@ c_func
 (paren
 id|page
 comma
-l_string|&quot;TXICP: %u&bslash;n&quot;
+l_string|&quot;TXICP: %lu&bslash;n&quot;
 comma
 id|card-&gt;irqstat
 (braket
@@ -13217,7 +13204,7 @@ c_func
 (paren
 id|page
 comma
-l_string|&quot;TSQF:  %u&bslash;n&quot;
+l_string|&quot;TSQF:  %lu&bslash;n&quot;
 comma
 id|card-&gt;irqstat
 (braket
@@ -13238,7 +13225,7 @@ c_func
 (paren
 id|page
 comma
-l_string|&quot;TMROF: %u&bslash;n&quot;
+l_string|&quot;TMROF: %lu&bslash;n&quot;
 comma
 id|card-&gt;irqstat
 (braket
@@ -13259,7 +13246,7 @@ c_func
 (paren
 id|page
 comma
-l_string|&quot;PHYI:  %u&bslash;n&quot;
+l_string|&quot;PHYI:  %lu&bslash;n&quot;
 comma
 id|card-&gt;irqstat
 (braket
@@ -13280,7 +13267,7 @@ c_func
 (paren
 id|page
 comma
-l_string|&quot;FBQ3A: %u&bslash;n&quot;
+l_string|&quot;FBQ3A: %lu&bslash;n&quot;
 comma
 id|card-&gt;irqstat
 (braket
@@ -13301,7 +13288,7 @@ c_func
 (paren
 id|page
 comma
-l_string|&quot;FBQ2A: %u&bslash;n&quot;
+l_string|&quot;FBQ2A: %lu&bslash;n&quot;
 comma
 id|card-&gt;irqstat
 (braket
@@ -13322,7 +13309,7 @@ c_func
 (paren
 id|page
 comma
-l_string|&quot;RSQF:  %u&bslash;n&quot;
+l_string|&quot;RSQF:  %lu&bslash;n&quot;
 comma
 id|card-&gt;irqstat
 (braket
@@ -13343,7 +13330,7 @@ c_func
 (paren
 id|page
 comma
-l_string|&quot;EPDU:  %u&bslash;n&quot;
+l_string|&quot;EPDU:  %lu&bslash;n&quot;
 comma
 id|card-&gt;irqstat
 (braket
@@ -13364,7 +13351,7 @@ c_func
 (paren
 id|page
 comma
-l_string|&quot;RAWCF: %u&bslash;n&quot;
+l_string|&quot;RAWCF: %lu&bslash;n&quot;
 comma
 id|card-&gt;irqstat
 (braket
@@ -13385,7 +13372,7 @@ c_func
 (paren
 id|page
 comma
-l_string|&quot;FBQ1A: %u&bslash;n&quot;
+l_string|&quot;FBQ1A: %lu&bslash;n&quot;
 comma
 id|card-&gt;irqstat
 (braket
@@ -13406,7 +13393,7 @@ c_func
 (paren
 id|page
 comma
-l_string|&quot;FBQ0A: %u&bslash;n&quot;
+l_string|&quot;FBQ0A: %lu&bslash;n&quot;
 comma
 id|card-&gt;irqstat
 (braket
@@ -13427,7 +13414,7 @@ c_func
 (paren
 id|page
 comma
-l_string|&quot;RSQAF: %u&bslash;n&quot;
+l_string|&quot;RSQAF: %lu&bslash;n&quot;
 comma
 id|card-&gt;irqstat
 (braket
@@ -14030,7 +14017,7 @@ l_int|14
 )braket
 op_increment
 suffix:semicolon
-macro_line|#ifdef DEBUG
+macro_line|#ifdef CONFIG_ATM_IDT77252_DEBUG
 id|idt77252_tx_dump
 c_func
 (paren
@@ -15814,6 +15801,7 @@ suffix:semicolon
 )brace
 r_static
 r_int
+id|__devinit
 DECL|function|init_sram
 id|init_sram
 c_func
@@ -16911,6 +16899,7 @@ suffix:semicolon
 )brace
 r_static
 r_int
+id|__devinit
 DECL|function|init_card
 id|init_card
 c_func
@@ -18211,8 +18200,9 @@ multiline_comment|/*                                                            
 multiline_comment|/*****************************************************************************/
 r_static
 r_int
-DECL|function|preset_idt77252
-id|preset_idt77252
+id|__devinit
+DECL|function|idt77252_preset
+id|idt77252_preset
 c_func
 (paren
 r_struct
@@ -18382,8 +18372,10 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+r_static
 r_int
 r_int
+id|__devinit
 DECL|function|probe_sram
 id|probe_sram
 c_func
@@ -18500,29 +18492,51 @@ id|u32
 )paren
 suffix:semicolon
 )brace
+r_static
 r_int
-DECL|function|idt77252_probe
-id|idt77252_probe
+id|__devinit
+DECL|function|idt77252_init_one
+id|idt77252_init_one
 c_func
 (paren
-r_void
+r_struct
+id|pci_dev
+op_star
+id|pcidev
+comma
+r_const
+r_struct
+id|pci_device_id
+op_star
+id|id
 )paren
 (brace
+r_static
 r_struct
 id|idt77252_dev
 op_star
 op_star
 id|last
+op_assign
+op_amp
+id|idt77252_chain
+suffix:semicolon
+r_static
+r_int
+id|index
+op_assign
+l_int|0
+suffix:semicolon
+r_int
+r_int
+id|membase
 comma
-op_star
-id|card
+id|srambase
 suffix:semicolon
 r_struct
-id|pci_dev
+id|idt77252_dev
 op_star
-id|pcidev
-op_assign
-l_int|NULL
+id|card
 suffix:semicolon
 r_struct
 id|atm_dev
@@ -18536,61 +18550,6 @@ l_int|0
 suffix:semicolon
 r_int
 id|i
-comma
-id|index
-op_assign
-l_int|0
-suffix:semicolon
-id|last
-op_assign
-op_amp
-id|idt77252_chain
-suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|pci_present
-c_func
-(paren
-)paren
-)paren
-(brace
-id|printk
-c_func
-(paren
-id|KERN_NOTICE
-l_string|&quot;idt77252: no PCI subsystem found.&bslash;n&quot;
-)paren
-suffix:semicolon
-r_return
-op_minus
-id|ENODEV
-suffix:semicolon
-)brace
-r_while
-c_loop
-(paren
-(paren
-id|pcidev
-op_assign
-id|pci_find_device
-c_func
-(paren
-id|PCI_VENDOR_ID_IDT
-comma
-id|PCI_DEVICE_ID_IDT_IDT77252
-comma
-id|pcidev
-)paren
-)paren
-)paren
-(brace
-r_int
-r_int
-id|membase
-comma
-id|srambase
 suffix:semicolon
 r_if
 c_cond
@@ -18615,7 +18574,9 @@ comma
 id|index
 )paren
 suffix:semicolon
-r_continue
+r_return
+op_minus
+id|ENODEV
 suffix:semicolon
 )brace
 id|card
@@ -18647,7 +18608,9 @@ comma
 id|index
 )paren
 suffix:semicolon
-r_continue
+r_return
+op_minus
+id|ENOMEM
 suffix:semicolon
 )brace
 id|memset
@@ -18794,13 +18757,15 @@ c_func
 id|card
 )paren
 suffix:semicolon
-r_continue
+r_return
+op_minus
+id|EIO
 suffix:semicolon
 )brace
 r_if
 c_cond
 (paren
-id|preset_idt77252
+id|idt77252_preset
 c_func
 (paren
 id|card
@@ -18831,7 +18796,9 @@ c_func
 id|card
 )paren
 suffix:semicolon
-r_continue
+r_return
+op_minus
+id|EIO
 suffix:semicolon
 )brace
 id|dev
@@ -18881,7 +18848,9 @@ c_func
 id|card
 )paren
 suffix:semicolon
-r_continue
+r_return
+op_minus
+id|EIO
 suffix:semicolon
 )brace
 id|dev-&gt;dev_data
@@ -18926,7 +18895,9 @@ c_func
 id|card
 )paren
 suffix:semicolon
-r_continue
+r_return
+op_minus
+id|EIO
 suffix:semicolon
 )brace
 macro_line|#endif&t;/* CONFIG_ATM_IDT77252_USE_SUNI */
@@ -19010,8 +18981,9 @@ c_func
 id|card
 )paren
 suffix:semicolon
-r_goto
-id|next
+r_return
+op_minus
+id|EIO
 suffix:semicolon
 )brace
 )brace
@@ -19084,7 +19056,9 @@ c_func
 id|card
 )paren
 suffix:semicolon
-r_continue
+r_return
+op_minus
+id|EIO
 suffix:semicolon
 )brace
 id|dev-&gt;ci_range.vpi_bits
@@ -19155,7 +19129,9 @@ c_func
 id|card
 )paren
 suffix:semicolon
-r_continue
+r_return
+op_minus
+id|EIO
 suffix:semicolon
 )brace
 op_star
@@ -19171,91 +19147,180 @@ suffix:semicolon
 id|index
 op_increment
 suffix:semicolon
-id|next
-suffix:colon
-)brace
 r_return
-id|index
+l_int|0
 suffix:semicolon
 )brace
-macro_line|#ifdef MODULE
-id|MODULE_PARM
-c_func
-(paren
-id|vpibits
+DECL|variable|__devinitdata
+r_static
+r_struct
+id|pci_device_id
+id|idt77252_pci_tbl
+(braket
+)braket
+id|__devinitdata
+op_assign
+(brace
+(brace
+id|PCI_VENDOR_ID_IDT
 comma
-l_string|&quot;i&quot;
-)paren
-suffix:semicolon
-id|MODULE_AUTHOR
-c_func
-(paren
-l_string|&quot;Eddie C. Dost &lt;ecd@atecom.com&gt;&quot;
-)paren
-suffix:semicolon
-id|MODULE_DESCRIPTION
-c_func
-(paren
-l_string|&quot;IDT77252 ABR SAR Driver&quot;
-)paren
-suffix:semicolon
-macro_line|#ifdef DEBUG
-id|MODULE_PARM
-c_func
-(paren
-id|debug
+id|PCI_DEVICE_ID_IDT_IDT77252
 comma
-l_string|&quot;i&quot;
-)paren
+id|PCI_ANY_ID
+comma
+id|PCI_ANY_ID
+comma
+l_int|0
+comma
+l_int|0
+comma
+l_int|0
+)brace
+comma
+(brace
+l_int|0
+comma
+)brace
+)brace
 suffix:semicolon
-macro_line|#endif
+DECL|variable|idt77252_driver
+r_static
+r_struct
+id|pci_driver
+id|idt77252_driver
+op_assign
+(brace
+id|name
+suffix:colon
+l_string|&quot;idt77252&quot;
+comma
+id|id_table
+suffix:colon
+id|idt77252_pci_tbl
+comma
+id|probe
+suffix:colon
+id|idt77252_init_one
+comma
+)brace
+suffix:semicolon
+DECL|function|idt77252_init
+r_static
 r_int
-DECL|function|init_module
-id|init_module
+id|__init
+id|idt77252_init
 c_func
 (paren
 r_void
 )paren
 (brace
-r_int
-id|v
+r_struct
+id|sk_buff
+op_star
+id|skb
 suffix:semicolon
 id|printk
 c_func
 (paren
-l_string|&quot;idt77252 init_module: %s at %p&bslash;n&quot;
+l_string|&quot;%s: at %p&bslash;n&quot;
 comma
 id|__FUNCTION__
 comma
-id|init_module
-)paren
-suffix:semicolon
-multiline_comment|/*&n;&t; * this modification is somewhat silly, as atmdev_init.c doesn&squot;t&n;&t; * check for EIO, it only accumulates the return value in the sum&n;&t; * of atm adaptors found.&n;&t; */
-id|v
-op_assign
-id|idt77252_probe
-c_func
-(paren
+id|idt77252_init
 )paren
 suffix:semicolon
 r_if
 c_cond
 (paren
-id|v
-OL
-l_int|0
+r_sizeof
+(paren
+id|skb-&gt;cb
 )paren
+OL
+r_sizeof
+(paren
+r_struct
+id|atm_skb_data
+)paren
+op_plus
+r_sizeof
+(paren
+r_struct
+id|idt77252_skb_prv
+)paren
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;%s: skb-&gt;cb is too small (%lu &lt; %lu)&bslash;n&quot;
+comma
+id|__FUNCTION__
+comma
+(paren
+r_int
+r_int
+)paren
+r_sizeof
+(paren
+id|skb-&gt;cb
+)paren
+comma
+(paren
+r_int
+r_int
+)paren
+r_sizeof
+(paren
+r_struct
+id|atm_skb_data
+)paren
+op_plus
+r_sizeof
+(paren
+r_struct
+id|idt77252_skb_prv
+)paren
+)paren
+suffix:semicolon
 r_return
 op_minus
 id|EIO
 suffix:semicolon
+)brace
+r_if
+c_cond
+(paren
+id|pci_register_driver
+c_func
+(paren
+op_amp
+id|idt77252_driver
+)paren
+OG
+l_int|0
+)paren
 r_return
 l_int|0
 suffix:semicolon
+id|pci_unregister_driver
+c_func
+(paren
+op_amp
+id|idt77252_driver
+)paren
+suffix:semicolon
+r_return
+op_minus
+id|ENODEV
+suffix:semicolon
 )brace
+DECL|function|idt77252_exit
+r_static
 r_void
-DECL|function|cleanup_module
-id|cleanup_module
+id|__exit
+id|idt77252_exit
 c_func
 (paren
 r_void
@@ -19270,6 +19335,13 @@ r_struct
 id|atm_dev
 op_star
 id|dev
+suffix:semicolon
+id|pci_unregister_driver
+c_func
+(paren
+op_amp
+id|idt77252_driver
+)paren
 suffix:semicolon
 r_while
 c_loop
@@ -19322,41 +19394,72 @@ l_string|&quot;idt77252: finished cleanup-module().&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
-macro_line|#else
-DECL|function|idt77252_detect
-r_int
-id|__init
-id|idt77252_detect
+DECL|variable|idt77252_init
+id|module_init
 c_func
 (paren
-r_void
+id|idt77252_init
 )paren
-(brace
-r_int
-id|v
 suffix:semicolon
-id|v
-op_assign
-id|idt77252_probe
+DECL|variable|idt77252_exit
+id|module_exit
 c_func
 (paren
+id|idt77252_exit
 )paren
 suffix:semicolon
-r_if
-c_cond
+id|EXPORT_NO_SYMBOLS
+suffix:semicolon
+id|MODULE_LICENSE
+c_func
 (paren
-id|v
-OL
-l_int|0
+l_string|&quot;GPL&quot;
 )paren
-r_return
-op_minus
-id|EIO
 suffix:semicolon
-r_else
-r_return
-id|v
+id|MODULE_PARM
+c_func
+(paren
+id|vpibits
+comma
+l_string|&quot;i&quot;
+)paren
 suffix:semicolon
-)brace
-macro_line|#endif&t;/* MODULE */
+id|MODULE_PARM_DESC
+c_func
+(paren
+id|vpibits
+comma
+l_string|&quot;number of VPI bits supported (0, 1, or 2)&quot;
+)paren
+suffix:semicolon
+macro_line|#ifdef CONFIG_ATM_IDT77252_DEBUG
+id|MODULE_PARM
+c_func
+(paren
+id|debug
+comma
+l_string|&quot;i&quot;
+)paren
+suffix:semicolon
+id|MODULE_PARM_DESC
+c_func
+(paren
+id|debug
+comma
+l_string|&quot;debug bitmap, see drivers/atm/idt77252.h&quot;
+)paren
+suffix:semicolon
+macro_line|#endif
+id|MODULE_AUTHOR
+c_func
+(paren
+l_string|&quot;Eddie C. Dost &lt;ecd@atecom.com&gt;&quot;
+)paren
+suffix:semicolon
+id|MODULE_DESCRIPTION
+c_func
+(paren
+l_string|&quot;IDT77252 ABR SAR Driver&quot;
+)paren
+suffix:semicolon
 eof

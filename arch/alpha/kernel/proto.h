@@ -539,16 +539,6 @@ r_void
 )paren
 suffix:semicolon
 r_extern
-r_int
-id|smp_info
-c_func
-(paren
-r_char
-op_star
-id|buffer
-)paren
-suffix:semicolon
-r_extern
 r_void
 id|handle_ipi
 c_func

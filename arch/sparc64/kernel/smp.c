@@ -11,6 +11,8 @@ macro_line|#include &lt;linux/kernel_stat.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
+macro_line|#include &lt;linux/fs.h&gt;
+macro_line|#include &lt;linux/seq_file.h&gt;
 macro_line|#include &lt;asm/head.h&gt;
 macro_line|#include &lt;asm/ptrace.h&gt;
 macro_line|#include &lt;asm/atomic.h&gt;
@@ -203,26 +205,23 @@ id|maxcpus
 )paren
 suffix:semicolon
 DECL|function|smp_info
-r_int
+r_void
 id|smp_info
 c_func
 (paren
-r_char
+r_struct
+id|seq_file
 op_star
-id|buf
+id|m
 )paren
 (brace
 r_int
-id|len
-op_assign
-l_int|7
-comma
 id|i
 suffix:semicolon
-id|strcpy
+id|seq_printf
 c_func
 (paren
-id|buf
+id|m
 comma
 l_string|&quot;State:&bslash;n&quot;
 )paren
@@ -241,6 +240,7 @@ suffix:semicolon
 id|i
 op_increment
 )paren
+(brace
 r_if
 c_cond
 (paren
@@ -252,39 +252,30 @@ op_lshift
 id|i
 )paren
 )paren
-id|len
-op_add_assign
-id|sprintf
+id|seq_printf
 c_func
 (paren
-id|buf
-op_plus
-id|len
+id|m
 comma
 l_string|&quot;CPU%d:&bslash;t&bslash;tonline&bslash;n&quot;
 comma
 id|i
 )paren
 suffix:semicolon
-r_return
-id|len
-suffix:semicolon
+)brace
 )brace
 DECL|function|smp_bogo
-r_int
+r_void
 id|smp_bogo
 c_func
 (paren
-r_char
+r_struct
+id|seq_file
 op_star
-id|buf
+id|m
 )paren
 (brace
 r_int
-id|len
-op_assign
-l_int|0
-comma
 id|i
 suffix:semicolon
 r_for
@@ -312,14 +303,10 @@ op_lshift
 id|i
 )paren
 )paren
-id|len
-op_add_assign
-id|sprintf
+id|seq_printf
 c_func
 (paren
-id|buf
-op_plus
-id|len
+id|m
 comma
 l_string|&quot;Cpu%dBogo&bslash;t: %lu.%02lu&bslash;n&quot;
 l_string|&quot;Cpu%dClkTck&bslash;t: %016lx&bslash;n&quot;
@@ -365,9 +352,6 @@ id|i
 dot
 id|clock_tick
 )paren
-suffix:semicolon
-r_return
-id|len
 suffix:semicolon
 )brace
 DECL|function|smp_store_cpu_info
@@ -2571,12 +2555,7 @@ comma
 l_int|0
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|wait
-)paren
-(brace
+multiline_comment|/* &n;&t; * Wait for other cpus to complete function or at&n;&t; * least snap the call data.&n;&t; */
 r_while
 c_loop
 (paren
@@ -2594,7 +2573,6 @@ c_func
 (paren
 )paren
 suffix:semicolon
-)brace
 r_return
 l_int|0
 suffix:semicolon
@@ -2610,19 +2588,38 @@ op_star
 id|call_data
 )paren
 (brace
-id|call_data
-op_member_access_from_pointer
-id|func
-c_func
+r_void
 (paren
-id|call_data-&gt;info
+op_star
+id|func
 )paren
+(paren
+r_void
+op_star
+id|info
+)paren
+op_assign
+id|call_data-&gt;func
+suffix:semicolon
+r_void
+op_star
+id|info
+op_assign
+id|call_data-&gt;info
 suffix:semicolon
 r_if
 c_cond
 (paren
 id|call_data-&gt;wait
 )paren
+(brace
+multiline_comment|/* let initiator proceed only after completion */
+id|func
+c_func
+(paren
+id|info
+)paren
+suffix:semicolon
 id|atomic_inc
 c_func
 (paren
@@ -2630,6 +2627,24 @@ op_amp
 id|call_data-&gt;finished
 )paren
 suffix:semicolon
+)brace
+r_else
+(brace
+multiline_comment|/* let initiator proceed after getting data */
+id|atomic_inc
+c_func
+(paren
+op_amp
+id|call_data-&gt;finished
+)paren
+suffix:semicolon
+id|func
+c_func
+(paren
+id|info
+)paren
+suffix:semicolon
+)brace
 )brace
 r_extern
 r_int

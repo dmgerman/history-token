@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: pgtable.h,v 1.107 2001/08/06 13:16:37 davem Exp $ */
+multiline_comment|/* $Id: pgtable.h,v 1.109 2001/11/13 00:49:32 davem Exp $ */
 macro_line|#ifndef _SPARC_PGTABLE_H
 DECL|macro|_SPARC_PGTABLE_H
 mdefine_line|#define _SPARC_PGTABLE_H
@@ -1304,14 +1304,18 @@ id|pte_t
 )paren
 DECL|macro|set_pte
 mdefine_line|#define set_pte(ptep,pteval) BTFIXUP_CALL(set_pte)(ptep,pteval)
+r_struct
+id|seq_file
+suffix:semicolon
 id|BTFIXUPDEF_CALL
 c_func
 (paren
-r_int
+r_void
 comma
 id|mmu_info
 comma
-r_char
+r_struct
+id|seq_file
 op_star
 )paren
 DECL|macro|mmu_info

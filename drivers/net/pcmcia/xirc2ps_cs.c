@@ -1,4 +1,4 @@
-multiline_comment|/* [xirc2ps_cs.c wk 03.11.99] (1.40 1999/11/18 00:06:03)&n; * Xircom CreditCard Ethernet Adapter IIps driver&n; * Xircom Realport 10/100 (RE-100) driver &n; *&n; * This driver supports various Xircom CreditCard Ethernet adapters&n; * including the CE2, CE IIps, RE-10, CEM28, CEM33, CE33, CEM56,&n; * CE3-100, CE3B, RE-100, REM10BT, and REM56G-100.&n; * &n; * Written originally by Werner Koch based on David Hinds&squot; skeleton of the&n; * PCMCIA driver.&n; *&n; * Copyright (c) 1997,1998 Werner Koch (dd9jn)&n; *&n; * This driver is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * It is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA&n; *&n; *&n; * ALTERNATIVELY, this driver may be distributed under the terms of&n; * the following license, in which case the provisions of this license&n; * are required INSTEAD OF the GNU General Public License.  (This clause&n; * is necessary due to a potential bad interaction between the GPL and&n; * the restrictions contained in a BSD-style copyright.)&n; *&n; * Redistribution and use in source and binary forms, with or without&n; * modification, are permitted provided that the following conditions&n; * are met:&n; * 1. Redistributions of source code must retain the above copyright&n; *    notice, and the entire permission notice in its entirety,&n; *    including the disclaimer of warranties.&n; * 2. Redistributions in binary form must reproduce the above copyright&n; *    notice, this list of conditions and the following disclaimer in the&n; *    documentation and/or other materials provided with the distribution.&n; * 3. The name of the author may not be used to endorse or promote&n; *    products derived from this software without specific prior&n; *    written permission.&n; *&n; * THIS SOFTWARE IS PROVIDED ``AS IS&squot;&squot; AND ANY EXPRESS OR IMPLIED&n; * WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES&n; * OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE&n; * DISCLAIMED.  IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT,&n; * INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES&n; * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR&n; * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)&n; * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,&n; * STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)&n; * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED&n; * OF THE POSSIBILITY OF SUCH DAMAGE.&n; */
+multiline_comment|/* [xirc2ps_cs.c wk 03.11.99] (1.40 1999/11/18 00:06:03)&n; * Xircom CreditCard Ethernet Adapter IIps driver&n; * Xircom Realport 10/100 (RE-100) driver &n; *&n; * This driver supports various Xircom CreditCard Ethernet adapters&n; * including the CE2, CE IIps, RE-10, CEM28, CEM33, CE33, CEM56,&n; * CE3-100, CE3B, RE-100, REM10BT, and REM56G-100.&n; *&n; * 2000-09-24 &lt;psheer@icon.co.za&gt; The Xircom CE3B-100 may not&n; * autodetect the media properly. In this case use the&n; * if_port=1 (for 10BaseT) or if_port=4 (for 100BaseT) options&n; * to force the media type.&n; * &n; * Written originally by Werner Koch based on David Hinds&squot; skeleton of the&n; * PCMCIA driver.&n; *&n; * Copyright (c) 1997,1998 Werner Koch (dd9jn)&n; *&n; * This driver is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2 of the License, or&n; * (at your option) any later version.&n; *&n; * It is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA&n; *&n; *&n; * ALTERNATIVELY, this driver may be distributed under the terms of&n; * the following license, in which case the provisions of this license&n; * are required INSTEAD OF the GNU General Public License.  (This clause&n; * is necessary due to a potential bad interaction between the GPL and&n; * the restrictions contained in a BSD-style copyright.)&n; *&n; * Redistribution and use in source and binary forms, with or without&n; * modification, are permitted provided that the following conditions&n; * are met:&n; * 1. Redistributions of source code must retain the above copyright&n; *    notice, and the entire permission notice in its entirety,&n; *    including the disclaimer of warranties.&n; * 2. Redistributions in binary form must reproduce the above copyright&n; *    notice, this list of conditions and the following disclaimer in the&n; *    documentation and/or other materials provided with the distribution.&n; * 3. The name of the author may not be used to endorse or promote&n; *    products derived from this software without specific prior&n; *    written permission.&n; *&n; * THIS SOFTWARE IS PROVIDED ``AS IS&squot;&squot; AND ANY EXPRESS OR IMPLIED&n; * WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES&n; * OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE&n; * DISCLAIMED.  IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT,&n; * INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES&n; * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR&n; * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)&n; * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,&n; * STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)&n; * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED&n; * OF THE POSSIBILITY OF SUCH DAMAGE.&n; */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
@@ -451,7 +451,19 @@ mdefine_line|#define XIR_CG&t;    13&t;/* (prodid 1) GSM modem only: not support
 DECL|macro|XIR_CBE
 mdefine_line|#define XIR_CBE     14&t;/* (prodid 1) cardbus ethernet: not supported */
 multiline_comment|/*====================================================================*/
-multiline_comment|/* Parameters that can be set with &squot;insmod&squot; */
+multiline_comment|/* Module parameters */
+id|MODULE_DESCRIPTION
+c_func
+(paren
+l_string|&quot;Xircom PCMCIA ethernet driver&quot;
+)paren
+suffix:semicolon
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;Dual MPL/GPL&quot;
+)paren
+suffix:semicolon
 DECL|macro|INT_MODULE_PARM
 mdefine_line|#define INT_MODULE_PARM(n, v) static int n = v; MODULE_PARM(n, &quot;i&quot;)
 DECL|variable|irq_list
@@ -8221,6 +8233,31 @@ suffix:semicolon
 r_int
 id|i
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|if_port
+op_eq
+l_int|4
+op_logical_or
+id|if_port
+op_eq
+l_int|1
+)paren
+(brace
+multiline_comment|/* force 100BaseT or 10BaseT */
+id|dev-&gt;if_port
+op_assign
+id|if_port
+suffix:semicolon
+id|local-&gt;probe_port
+op_assign
+l_int|0
+suffix:semicolon
+r_return
+l_int|1
+suffix:semicolon
+)brace
 id|status
 op_assign
 id|mii_rd
@@ -9025,10 +9062,4 @@ id|setup_xirc2ps_cs
 )paren
 suffix:semicolon
 macro_line|#endif
-id|MODULE_LICENSE
-c_func
-(paren
-l_string|&quot;GPL&quot;
-)paren
-suffix:semicolon
 eof

@@ -1,4 +1,4 @@
-multiline_comment|/*======================================================================&n;    fmvj18x_cs.c 2.2 2001/01/07&n;&n;    A fmvj18x (and its compatibles) PCMCIA client driver&n;&n;    Contributed by Shingo Fujimoto, shingo@flab.fujitsu.co.jp&n;&n;    TDK LAK-CD021 and CONTEC C-NET(PC)C support added by &n;    Nobuhiro Katayama, kata-n@po.iijnet.or.jp&n;&n;    The PCMCIA client code is based on code written by David Hinds.&n;    Network code is based on the &quot;FMV-18x driver&quot; by Yutaka TAMIYA&n;    but is actually largely Donald Becker&squot;s AT1700 driver, which&n;    carries the following attribution:&n;&n;    Written 1993-94 by Donald Becker.&n;&n;    Copyright 1993 United States Government as represented by the&n;    Director, National Security Agency.&n;    &n;    This software may be used and distributed according to the terms&n;    of the GNU General Public License, incorporated herein by reference.&n;    &n;    The author may be reached as becker@scyld.com, or C/O&n;    Scyld Computing Corporation&n;    410 Severn Ave., Suite 210, Annapolis MD 21403&n;    &n;======================================================================*/
+multiline_comment|/*======================================================================&n;    fmvj18x_cs.c 2.6 2001/09/17&n;&n;    A fmvj18x (and its compatibles) PCMCIA client driver&n;&n;    Contributed by Shingo Fujimoto, shingo@flab.fujitsu.co.jp&n;&n;    TDK LAK-CD021 and CONTEC C-NET(PC)C support added by &n;    Nobuhiro Katayama, kata-n@po.iijnet.or.jp&n;&n;    The PCMCIA client code is based on code written by David Hinds.&n;    Network code is based on the &quot;FMV-18x driver&quot; by Yutaka TAMIYA&n;    but is actually largely Donald Becker&squot;s AT1700 driver, which&n;    carries the following attribution:&n;&n;    Written 1993-94 by Donald Becker.&n;&n;    Copyright 1993 United States Government as represented by the&n;    Director, National Security Agency.&n;    &n;    This software may be used and distributed according to the terms&n;    of the GNU General Public License, incorporated herein by reference.&n;    &n;    The author may be reached as becker@scyld.com, or C/O&n;    Scyld Computing Corporation&n;    410 Severn Ave., Suite 210&n;    Annapolis MD 21403&n;   &n;======================================================================*/
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
@@ -23,37 +23,19 @@ macro_line|#include &lt;pcmcia/cs.h&gt;
 macro_line|#include &lt;pcmcia/cistpl.h&gt;
 macro_line|#include &lt;pcmcia/ciscode.h&gt;
 macro_line|#include &lt;pcmcia/ds.h&gt;
-multiline_comment|/*&n;   All the PCMCIA modules use PCMCIA_DEBUG to control debugging.  If&n;   you do not define PCMCIA_DEBUG at all, all the debug code will be&n;   left out.  If you compile with PCMCIA_DEBUG=0, the debug code will&n;   be present but disabled -- but it can then be enabled for specific&n;   modules at load time with a &squot;pc_debug=#&squot; option to insmod.&n;*/
-macro_line|#ifdef PCMCIA_DEBUG
-DECL|variable|pc_debug
-r_static
-r_int
-id|pc_debug
-op_assign
-id|PCMCIA_DEBUG
-suffix:semicolon
-id|MODULE_PARM
-c_func
-(paren
-id|pc_debug
-comma
-l_string|&quot;i&quot;
-)paren
-suffix:semicolon
-DECL|macro|DEBUG
-mdefine_line|#define DEBUG(n, args...) if (pc_debug&gt;(n)) printk(KERN_DEBUG args)
-macro_line|#else
-DECL|macro|DEBUG
-mdefine_line|#define DEBUG(n, args...)
-macro_line|#endif
+multiline_comment|/*====================================================================*/
+multiline_comment|/* Module parameters */
+DECL|macro|INT_MODULE_PARM
+mdefine_line|#define INT_MODULE_PARM(n, v) static int n = v; MODULE_PARM(n, &quot;i&quot;)
 multiline_comment|/* Bit map of interrupts to choose from */
 multiline_comment|/* This means pick from 15, 14, 12, 11, 10, 9, 7, 5, 4, and 3 */
-DECL|variable|irq_mask
-r_static
-id|u_int
+id|INT_MODULE_PARM
+c_func
+(paren
 id|irq_mask
-op_assign
+comma
 l_int|0xdeb8
+)paren
 suffix:semicolon
 DECL|variable|irq_list
 r_static
@@ -68,21 +50,6 @@ op_minus
 l_int|1
 )brace
 suffix:semicolon
-multiline_comment|/* SRAM configuration */
-multiline_comment|/* 0:4KB*2 TX buffer   else:8KB*2 TX buffer */
-DECL|variable|sram_config
-r_static
-r_int
-id|sram_config
-suffix:semicolon
-id|MODULE_PARM
-c_func
-(paren
-id|irq_mask
-comma
-l_string|&quot;i&quot;
-)paren
-suffix:semicolon
 id|MODULE_PARM
 c_func
 (paren
@@ -91,25 +58,38 @@ comma
 l_string|&quot;1-4i&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM
+multiline_comment|/* SRAM configuration */
+multiline_comment|/* 0:4KB*2 TX buffer   else:8KB*2 TX buffer */
+id|INT_MODULE_PARM
 c_func
 (paren
 id|sram_config
 comma
-l_string|&quot;i&quot;
+l_int|0
 )paren
 suffix:semicolon
-multiline_comment|/*====================================================================*/
-multiline_comment|/* &n;   driver version infomation &n; */
 macro_line|#ifdef PCMCIA_DEBUG
+id|INT_MODULE_PARM
+c_func
+(paren
+id|pc_debug
+comma
+id|PCMCIA_DEBUG
+)paren
+suffix:semicolon
+DECL|macro|DEBUG
+mdefine_line|#define DEBUG(n, args...) if (pc_debug&gt;(n)) printk(KERN_DEBUG args)
 DECL|variable|version
 r_static
 r_char
 op_star
 id|version
 op_assign
-l_string|&quot;fmvj18x_cs.c 2.2 2001/01/07&quot;
+l_string|&quot;fmvj18x_cs.c 2.6 2001/09/17&quot;
 suffix:semicolon
+macro_line|#else
+DECL|macro|DEBUG
+mdefine_line|#define DEBUG(n, args...)
 macro_line|#endif
 multiline_comment|/*====================================================================*/
 multiline_comment|/*&n;    PCMCIA event handlers&n; */
@@ -1498,9 +1478,10 @@ l_int|1
 op_eq
 id|PRODID_FUJITSU_MBH10302
 )paren
+multiline_comment|/* RATOC REX-5588/9822/4886&squot;s PRODID are 0004(=MBH10302),&n;                   but these are MBH10304 based card. */
 id|cardtype
 op_assign
-id|MBH10302
+id|MBH10304
 suffix:semicolon
 r_else
 r_if
@@ -1625,6 +1606,7 @@ id|cardtype
 op_assign
 id|MBH10302
 suffix:semicolon
+multiline_comment|/* NextCom NC5310, etc. */
 id|link-&gt;conf.ConfigIndex
 op_assign
 l_int|1
@@ -1790,37 +1772,6 @@ id|ioaddr
 op_assign
 id|dev-&gt;base_addr
 suffix:semicolon
-multiline_comment|/* Power On chip and select bank 0 */
-r_if
-c_cond
-(paren
-id|cardtype
-op_eq
-id|UNGERMANN
-)paren
-(brace
-id|outb
-c_func
-(paren
-id|BANK_0U
-comma
-id|ioaddr
-op_plus
-id|CONFIG_1
-)paren
-suffix:semicolon
-)brace
-r_else
-id|outb
-c_func
-(paren
-id|BANK_0
-comma
-id|ioaddr
-op_plus
-id|CONFIG_1
-)paren
-suffix:semicolon
 multiline_comment|/* Reset controller */
 r_if
 c_cond
@@ -1850,6 +1801,37 @@ comma
 id|ioaddr
 op_plus
 id|CONFIG_0
+)paren
+suffix:semicolon
+multiline_comment|/* Power On chip and select bank 0 */
+r_if
+c_cond
+(paren
+id|cardtype
+op_eq
+id|UNGERMANN
+)paren
+(brace
+id|outb
+c_func
+(paren
+id|BANK_0U
+comma
+id|ioaddr
+op_plus
+id|CONFIG_1
+)paren
+suffix:semicolon
+)brace
+r_else
+id|outb
+c_func
+(paren
+id|BANK_0
+comma
+id|ioaddr
+op_plus
+id|CONFIG_1
 )paren
 suffix:semicolon
 multiline_comment|/* Set hardware address */
@@ -3927,6 +3909,37 @@ comma
 id|dev-&gt;name
 )paren
 suffix:semicolon
+multiline_comment|/* Reset controller */
+r_if
+c_cond
+(paren
+id|sram_config
+op_eq
+l_int|0
+)paren
+(brace
+id|outb
+c_func
+(paren
+id|CONFIG0_RST
+comma
+id|ioaddr
+op_plus
+id|CONFIG_0
+)paren
+suffix:semicolon
+)brace
+r_else
+id|outb
+c_func
+(paren
+id|CONFIG0_RST_1
+comma
+id|ioaddr
+op_plus
+id|CONFIG_0
+)paren
+suffix:semicolon
 multiline_comment|/* Power On chip and select bank 0 */
 r_if
 c_cond
@@ -3956,37 +3969,6 @@ comma
 id|ioaddr
 op_plus
 id|CONFIG_1
-)paren
-suffix:semicolon
-multiline_comment|/* Reset buffers */
-r_if
-c_cond
-(paren
-id|sram_config
-op_eq
-l_int|0
-)paren
-(brace
-id|outb
-c_func
-(paren
-id|CONFIG0_RST
-comma
-id|ioaddr
-op_plus
-id|CONFIG_0
-)paren
-suffix:semicolon
-)brace
-r_else
-id|outb
-c_func
-(paren
-id|CONFIG0_RST_1
-comma
-id|ioaddr
-op_plus
-id|CONFIG_0
 )paren
 suffix:semicolon
 multiline_comment|/* Set Tx modes */
@@ -4133,6 +4115,10 @@ c_cond
 id|lp-&gt;cardtype
 op_eq
 id|TDK
+op_logical_or
+id|lp-&gt;cardtype
+op_eq
+id|CONTEC
 )paren
 (brace
 id|outb
@@ -5476,10 +5462,4 @@ id|flags
 )paren
 suffix:semicolon
 )brace
-id|MODULE_LICENSE
-c_func
-(paren
-l_string|&quot;GPL&quot;
-)paren
-suffix:semicolon
 eof

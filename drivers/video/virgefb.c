@@ -3625,7 +3625,6 @@ multiline_comment|/* GO! */
 )brace
 multiline_comment|/**************************************************************&n; * Move cursor to x, y&n; */
 macro_line|#if 0
-DECL|function|Cyber_MoveCursor
 r_static
 r_void
 id|Cyber_MoveCursor
@@ -4881,6 +4880,7 @@ suffix:semicolon
 r_while
 c_loop
 (paren
+(paren
 id|this_opt
 op_assign
 id|strsep
@@ -4892,7 +4892,19 @@ comma
 l_string|&quot;,&quot;
 )paren
 )paren
+op_ne
+l_int|NULL
+)paren
 (brace
+r_if
+c_cond
+(paren
+op_logical_neg
+op_star
+id|this_opt
+)paren
+r_continue
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -4994,6 +5006,7 @@ c_func
 id|this_opt
 )paren
 suffix:semicolon
+)brace
 id|DPRINTK
 c_func
 (paren
@@ -5011,6 +5024,7 @@ l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/*&n; *    Initialization&n; */
+DECL|function|virgefb_init
 r_int
 id|__init
 id|virgefb_init
@@ -5475,6 +5489,7 @@ op_minus
 id|ENODEV
 suffix:semicolon
 )brace
+DECL|function|Cyberfb_switch
 r_static
 r_int
 id|Cyberfb_switch
@@ -5550,6 +5565,7 @@ l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/*&n; *    Update the `var&squot; structure (called by fbcon.c)&n; *&n; *    This call looks only at yoffset and the FB_VMODE_YWRAP flag in `var&squot;.&n; *    Since it&squot;s called by a kernel driver, no range checking is done.&n; */
+DECL|function|Cyberfb_updatevar
 r_static
 r_int
 id|Cyberfb_updatevar
@@ -5569,6 +5585,7 @@ l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/*&n; *    Blank the display.&n; */
+DECL|function|Cyberfb_blank
 r_static
 r_void
 id|Cyberfb_blank
@@ -5593,6 +5610,7 @@ id|blank
 suffix:semicolon
 )brace
 multiline_comment|/*&n; *    Get a Video Mode&n; */
+DECL|function|get_video_mode
 r_static
 r_int
 id|__init
@@ -5671,6 +5689,7 @@ suffix:semicolon
 )brace
 multiline_comment|/*&n; *    Text console acceleration&n; */
 macro_line|#ifdef FBCON_HAS_CFB8
+DECL|function|fbcon_virge8_bmove
 r_static
 r_void
 id|fbcon_virge8_bmove

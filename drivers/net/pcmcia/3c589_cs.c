@@ -1,4 +1,4 @@
-multiline_comment|/*======================================================================&n;&n;    A PCMCIA ethernet driver for the 3com 3c589 card.&n;    &n;    Copyright (C) 1999 David A. Hinds -- dahinds@users.sourceforge.net&n;&n;    3c589_cs.c 1.156 2001/02/07 00:19:41&n;&n;    The network driver code is based on Donald Becker&squot;s 3c589 code:&n;    &n;    Written 1994 by Donald Becker.&n;    Copyright 1993 United States Government as represented by the&n;    Director, National Security Agency.  This software may be used and&n;    distributed according to the terms of the GNU General Public License,&n;    incorporated herein by reference.&n;    Donald Becker may be reached at becker@scyld.com&n;&n;======================================================================*/
+multiline_comment|/*======================================================================&n;&n;    A PCMCIA ethernet driver for the 3com 3c589 card.&n;    &n;    Copyright (C) 1999 David A. Hinds -- dahinds@users.sourceforge.net&n;&n;    3c589_cs.c 1.162 2001/10/13 00:08:50&n;&n;    The network driver code is based on Donald Becker&squot;s 3c589 code:&n;    &n;    Written 1994 by Donald Becker.&n;    Copyright 1993 United States Government as represented by the&n;    Director, National Security Agency.  This software may be used and&n;    distributed according to the terms of the GNU General Public License,&n;    incorporated herein by reference.&n;    Donald Becker may be reached at becker@scyld.com&n;&n;======================================================================*/
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -353,51 +353,45 @@ comma
 l_string|&quot;AUI&quot;
 )brace
 suffix:semicolon
-macro_line|#ifdef PCMCIA_DEBUG
-DECL|variable|pc_debug
-r_static
-r_int
-id|pc_debug
-op_assign
-id|PCMCIA_DEBUG
-suffix:semicolon
-id|MODULE_PARM
+multiline_comment|/*====================================================================*/
+multiline_comment|/* Module parameters */
+id|MODULE_AUTHOR
 c_func
 (paren
-id|pc_debug
-comma
-l_string|&quot;i&quot;
+l_string|&quot;David Hinds &lt;dahinds@users.sourceforge.net&gt;&quot;
 )paren
 suffix:semicolon
-DECL|macro|DEBUG
-mdefine_line|#define DEBUG(n, args...) if (pc_debug&gt;(n)) printk(KERN_DEBUG args)
-DECL|variable|version
-r_static
-r_char
-op_star
-id|version
-op_assign
-l_string|&quot;3c589_cs.c 1.156 2001/02/07 00:19:41 (David Hinds)&quot;
+id|MODULE_DESCRIPTION
+c_func
+(paren
+l_string|&quot;3Com 3c589 series PCMCIA ethernet driver&quot;
+)paren
 suffix:semicolon
-macro_line|#else
-DECL|macro|DEBUG
-mdefine_line|#define DEBUG(n, args...)
-macro_line|#endif
-multiline_comment|/*====================================================================*/
-multiline_comment|/* Parameters that can be set with &squot;insmod&squot; */
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
+)paren
+suffix:semicolon
+DECL|macro|INT_MODULE_PARM
+mdefine_line|#define INT_MODULE_PARM(n, v) static int n = v; MODULE_PARM(n, &quot;i&quot;)
 multiline_comment|/* Special hook for setting if_port when module is loaded */
-DECL|variable|if_port
-r_static
-r_int
+id|INT_MODULE_PARM
+c_func
+(paren
 id|if_port
+comma
+l_int|0
+)paren
 suffix:semicolon
 multiline_comment|/* Bit map of interrupts to choose from */
-DECL|variable|irq_mask
-r_static
-id|u_int
+id|INT_MODULE_PARM
+c_func
+(paren
 id|irq_mask
-op_assign
+comma
 l_int|0xdeb8
+)paren
 suffix:semicolon
 DECL|variable|irq_list
 r_static
@@ -415,27 +409,34 @@ suffix:semicolon
 id|MODULE_PARM
 c_func
 (paren
-id|if_port
-comma
-l_string|&quot;i&quot;
-)paren
-suffix:semicolon
-id|MODULE_PARM
-c_func
-(paren
-id|irq_mask
-comma
-l_string|&quot;i&quot;
-)paren
-suffix:semicolon
-id|MODULE_PARM
-c_func
-(paren
 id|irq_list
 comma
 l_string|&quot;1-4i&quot;
 )paren
 suffix:semicolon
+macro_line|#ifdef PCMCIA_DEBUG
+id|INT_MODULE_PARM
+c_func
+(paren
+id|pc_debug
+comma
+id|PCMCIA_DEBUG
+)paren
+suffix:semicolon
+DECL|macro|DEBUG
+mdefine_line|#define DEBUG(n, args...) if (pc_debug&gt;(n)) printk(KERN_DEBUG args)
+DECL|variable|version
+r_static
+r_char
+op_star
+id|version
+op_assign
+l_string|&quot;3c589_cs.c 1.162 2001/10/13 00:08:50 (David Hinds)&quot;
+suffix:semicolon
+macro_line|#else
+DECL|macro|DEBUG
+mdefine_line|#define DEBUG(n, args...)
+macro_line|#endif
 multiline_comment|/*====================================================================*/
 r_static
 r_void
@@ -5459,12 +5460,6 @@ id|module_exit
 c_func
 (paren
 id|exit_3c589_cs
-)paren
-suffix:semicolon
-id|MODULE_LICENSE
-c_func
-(paren
-l_string|&quot;GPL&quot;
 )paren
 suffix:semicolon
 eof

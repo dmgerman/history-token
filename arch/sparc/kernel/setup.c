@@ -1,4 +1,4 @@
-multiline_comment|/*  $Id: setup.c,v 1.125 2001/09/20 00:35:30 davem Exp $&n; *  linux/arch/sparc/kernel/setup.c&n; *&n; *  Copyright (C) 1995  David S. Miller (davem@caip.rutgers.edu)&n; *  Copyright (C) 2000  Anton Blanchard (anton@samba.org)&n; */
+multiline_comment|/*  $Id: setup.c,v 1.126 2001/11/13 00:49:27 davem Exp $&n; *  linux/arch/sparc/kernel/setup.c&n; *&n; *  Copyright (C) 1995  David S. Miller (davem@caip.rutgers.edu)&n; *  Copyright (C) 2000  Anton Blanchard (anton@samba.org)&n; */
 macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -14,6 +14,7 @@ macro_line|#include &lt;linux/tty.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/fs.h&gt;
+macro_line|#include &lt;linux/seq_file.h&gt;
 macro_line|#include &lt;linux/kdev_t.h&gt;
 macro_line|#include &lt;linux/major.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
@@ -1861,7 +1862,6 @@ op_minus
 id|EIO
 suffix:semicolon
 )brace
-multiline_comment|/* BUFFER is PAGE_SIZE bytes long. */
 r_extern
 r_char
 op_star
@@ -1876,14 +1876,20 @@ id|sparc_fpu_type
 (braket
 )braket
 suffix:semicolon
-DECL|function|get_cpuinfo
+DECL|function|show_cpuinfo
+r_static
 r_int
-id|get_cpuinfo
+id|show_cpuinfo
 c_func
 (paren
-r_char
+r_struct
+id|seq_file
 op_star
-id|buffer
+id|m
+comma
+r_void
+op_star
+id|__unused
 )paren
 (brace
 r_int
@@ -1894,15 +1900,10 @@ c_func
 (paren
 )paren
 suffix:semicolon
-r_int
-id|len
-suffix:semicolon
-id|len
-op_assign
-id|sprintf
+id|seq_printf
 c_func
 (paren
-id|buffer
+id|m
 comma
 l_string|&quot;cpu&bslash;t&bslash;t: %s&bslash;n&quot;
 l_string|&quot;fpu&bslash;t&bslash;t: %s&bslash;n&quot;
@@ -1977,41 +1978,136 @@ macro_line|#endif
 )paren
 suffix:semicolon
 macro_line|#ifdef CONFIG_SMP
-id|len
-op_add_assign
 id|smp_bogo_info
 c_func
 (paren
-id|buffer
-op_plus
-id|len
+id|m
 )paren
 suffix:semicolon
 macro_line|#endif
-id|len
-op_add_assign
 id|mmu_info
 c_func
 (paren
-id|buffer
-op_plus
-id|len
+id|m
 )paren
 suffix:semicolon
 macro_line|#ifdef CONFIG_SMP
-id|len
-op_add_assign
 id|smp_info
 c_func
 (paren
-id|buffer
-op_plus
-id|len
+id|m
 )paren
 suffix:semicolon
 macro_line|#endif
 r_return
-id|len
+l_int|0
 suffix:semicolon
 )brace
+DECL|function|c_start
+r_static
+r_void
+op_star
+id|c_start
+c_func
+(paren
+r_struct
+id|seq_file
+op_star
+id|m
+comma
+id|loff_t
+op_star
+id|pos
+)paren
+(brace
+multiline_comment|/* The pointer we are returning is arbitrary,&n;&t; * it just has to be non-NULL and not IS_ERR&n;&t; * in the success case.&n;&t; */
+r_return
+op_star
+id|pos
+op_eq
+l_int|0
+ques
+c_cond
+op_amp
+id|c_start
+suffix:colon
+l_int|NULL
+suffix:semicolon
+)brace
+DECL|function|c_next
+r_static
+r_void
+op_star
+id|c_next
+c_func
+(paren
+r_struct
+id|seq_file
+op_star
+id|m
+comma
+r_void
+op_star
+id|v
+comma
+id|loff_t
+op_star
+id|pos
+)paren
+(brace
+op_increment
+op_star
+id|pos
+suffix:semicolon
+r_return
+id|c_start
+c_func
+(paren
+id|m
+comma
+id|pos
+)paren
+suffix:semicolon
+)brace
+DECL|function|c_stop
+r_static
+r_void
+id|c_stop
+c_func
+(paren
+r_struct
+id|seq_file
+op_star
+id|m
+comma
+r_void
+op_star
+id|v
+)paren
+(brace
+)brace
+DECL|variable|cpuinfo_op
+r_struct
+id|seq_operations
+id|cpuinfo_op
+op_assign
+(brace
+id|start
+suffix:colon
+id|c_start
+comma
+id|next
+suffix:colon
+id|c_next
+comma
+id|stop
+suffix:colon
+id|c_stop
+comma
+id|show
+suffix:colon
+id|show_cpuinfo
+comma
+)brace
+suffix:semicolon
 eof

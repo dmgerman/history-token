@@ -671,15 +671,6 @@ c_func
 id|memset
 )paren
 suffix:semicolon
-macro_line|#ifdef CONFIG_X86_PAE
-DECL|variable|empty_zero_page
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|empty_zero_page
-)paren
-suffix:semicolon
-macro_line|#endif
 macro_line|#ifdef CONFIG_HAVE_DEC_LOCK
 DECL|variable|atomic_dec_and_lock
 id|EXPORT_SYMBOL

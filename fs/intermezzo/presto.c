@@ -3993,6 +3993,10 @@ r_goto
 id|put_out
 suffix:semicolon
 )brace
+id|error
+op_assign
+l_int|0
+suffix:semicolon
 id|cache
 op_assign
 id|fset-&gt;fset_cache

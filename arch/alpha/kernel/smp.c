@@ -4115,32 +4115,6 @@ suffix:semicolon
 )brace
 )brace
 "&f;"
-r_int
-DECL|function|smp_info
-id|smp_info
-c_func
-(paren
-r_char
-op_star
-id|buffer
-)paren
-(brace
-r_return
-id|sprintf
-c_func
-(paren
-id|buffer
-comma
-l_string|&quot;cpus active&bslash;t&bslash;t: %d&bslash;n&quot;
-l_string|&quot;cpu active mask&bslash;t&bslash;t: %016lx&bslash;n&quot;
-comma
-id|smp_num_cpus
-comma
-id|cpu_present_mask
-)paren
-suffix:semicolon
-)brace
-"&f;"
 macro_line|#if DEBUG_SPINLOCK
 r_void
 DECL|function|spin_unlock

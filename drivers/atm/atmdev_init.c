@@ -22,16 +22,6 @@ r_void
 )paren
 suffix:semicolon
 macro_line|#endif
-macro_line|#ifdef CONFIG_ATM_IDT77252
-r_extern
-r_int
-id|idt77252_detect
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-macro_line|#endif
 macro_line|#ifdef CONFIG_ATM_AMBASSADOR
 r_extern
 r_int
@@ -112,15 +102,6 @@ macro_line|#ifdef CONFIG_ATM_NICSTAR
 id|devs
 op_add_assign
 id|nicstar_detect
-c_func
-(paren
-)paren
-suffix:semicolon
-macro_line|#endif
-macro_line|#ifdef CONFIG_ATM_IDT77252
-id|devs
-op_add_assign
-id|idt77252_detect
 c_func
 (paren
 )paren

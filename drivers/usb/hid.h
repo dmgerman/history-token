@@ -840,7 +840,7 @@ mdefine_line|#define hid_dump_device(c)&t;do { } while (0)
 macro_line|#endif
 macro_line|#endif
 DECL|macro|IS_INPUT_APPLICATION
-mdefine_line|#define IS_INPUT_APPLICATION(a) ((a &gt;= 0x00010000) &amp;&amp; (a &lt;= 0x00010008))
+mdefine_line|#define IS_INPUT_APPLICATION(a) (((a &gt;= 0x00010000) &amp;&amp; (a &lt;= 0x00010008)) || (a == 0x00010080) || ( a == 0x000c0001))
 r_int
 id|hid_open
 c_func

@@ -40,6 +40,7 @@ op_star
 id|base
 )paren
 suffix:semicolon
+macro_line|#ifdef MMAPIO
 r_static
 r_int
 id|ahc_linux_pci_reserve_mem_region
@@ -60,6 +61,7 @@ op_star
 id|maddr
 )paren
 suffix:semicolon
+macro_line|#endif /* MMAPIO */
 macro_line|#if LINUX_VERSION_CODE &gt;= KERNEL_VERSION(2,4,0)
 r_static
 r_void
@@ -840,6 +842,7 @@ l_int|0
 )paren
 suffix:semicolon
 )brace
+macro_line|#ifdef MMAPIO
 r_static
 r_int
 DECL|function|ahc_linux_pci_reserve_mem_region
@@ -1018,6 +1021,7 @@ id|error
 )paren
 suffix:semicolon
 )brace
+macro_line|#endif /* MMAPIO */
 r_int
 DECL|function|ahc_pci_map_registers
 id|ahc_pci_map_registers

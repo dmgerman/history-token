@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: ebus.c,v 1.17 2001/08/06 13:12:57 davem Exp $&n; * ebus.c: PCI to EBus bridge device.&n; *&n; * Copyright (C) 1997  Eddie C. Dost  (ecd@skynet.be)&n; *&n; * Adopted for sparc by V. Roganov and G. Raiko.&n; * Fixes for different platforms by Pete Zaitcev.&n; */
+multiline_comment|/* $Id: ebus.c,v 1.18 2001/11/08 04:41:33 davem Exp $&n; * ebus.c: PCI to EBus bridge device.&n; *&n; * Copyright (C) 1997  Eddie C. Dost  (ecd@skynet.be)&n; *&n; * Adopted for sparc by V. Roganov and G. Raiko.&n; * Fixes for different platforms by Pete Zaitcev.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
@@ -436,6 +436,27 @@ id|start
 suffix:semicolon
 multiline_comment|/* XXX resource */
 )brace
+r_for
+c_loop
+(paren
+id|i
+op_assign
+l_int|0
+suffix:semicolon
+id|i
+OL
+id|PROMINTR_MAX
+suffix:semicolon
+id|i
+op_increment
+)paren
+id|dev-&gt;irqs
+(braket
+id|i
+)braket
+op_assign
+id|PCI_IRQ_NONE
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -895,6 +916,27 @@ id|baseaddr
 suffix:semicolon
 multiline_comment|/* XXX Unaligned */
 )brace
+r_for
+c_loop
+(paren
+id|i
+op_assign
+l_int|0
+suffix:semicolon
+id|i
+OL
+id|PROMINTR_MAX
+suffix:semicolon
+id|i
+op_increment
+)paren
+id|dev-&gt;irqs
+(braket
+id|i
+)braket
+op_assign
+id|PCI_IRQ_NONE
+suffix:semicolon
 r_if
 c_cond
 (paren

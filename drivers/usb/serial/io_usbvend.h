@@ -108,6 +108,9 @@ singleline_comment|// Edgeport Compatible, for NCR, Axiohm etc. testing
 DECL|macro|ION_DEVICE_ID_EDGEPORT_8I
 mdefine_line|#define ION_DEVICE_ID_EDGEPORT_8I&t;&t;0x014&t;
 singleline_comment|// Edgeport/8 RS422 (single-CPU)
+DECL|macro|ION_DEVICE_ID_MT4X56USB
+mdefine_line|#define ION_DEVICE_ID_MT4X56USB&t;&t;&t;0x1403&t;
+singleline_comment|// OEM device
 singleline_comment|// These IDs are used by the Edgeport.exe program for uninstalling.
 singleline_comment|// 
 DECL|macro|EDGEPORT_DEVICE_IDS

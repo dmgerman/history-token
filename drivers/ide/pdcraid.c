@@ -421,9 +421,6 @@ suffix:semicolon
 r_int
 r_int
 id|sectors
-comma
-op_star
-id|larg
 suffix:semicolon
 r_if
 c_cond
@@ -1453,17 +1450,6 @@ suffix:semicolon
 multiline_comment|/*&n;&t; * Let the main block layer submit the IO and resolve recursion:&n;&t; */
 r_return
 l_int|1
-suffix:semicolon
-id|outerr
-suffix:colon
-id|buffer_IO_error
-c_func
-(paren
-id|bh
-)paren
-suffix:semicolon
-r_return
-l_int|0
 suffix:semicolon
 )brace
 DECL|function|pdcraid1_write_request
@@ -2894,10 +2880,6 @@ r_int
 id|raidlevel
 )paren
 (brace
-id|request_queue_t
-op_star
-id|q
-suffix:semicolon
 r_int
 id|i
 comma
@@ -3091,8 +3073,6 @@ r_void
 )paren
 (brace
 r_int
-id|i
-comma
 id|retval
 comma
 id|device

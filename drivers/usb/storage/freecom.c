@@ -576,10 +576,10 @@ id|USB_STOR_TRANSPORT_GOOD
 suffix:semicolon
 )brace
 macro_line|#endif
+macro_line|#if 0 /* Unused at this time */
 multiline_comment|/* Read a value from an ide register. */
 r_static
 r_int
-DECL|function|freecom_ide_read
 id|freecom_ide_read
 (paren
 r_struct
@@ -852,6 +852,7 @@ r_return
 id|USB_STOR_TRANSPORT_GOOD
 suffix:semicolon
 )brace
+macro_line|#endif
 r_static
 r_int
 DECL|function|freecom_readdata

@@ -641,9 +641,6 @@ c_cond
 op_logical_neg
 id|inode
 op_logical_or
-op_logical_neg
-id|inode-&gt;i_nlink
-op_logical_or
 id|is_bad_inode
 c_func
 (paren
@@ -682,6 +679,34 @@ id|EXIT
 suffix:semicolon
 r_goto
 id|cleanup_iput
+suffix:semicolon
+)brace
+r_else
+r_if
+c_cond
+(paren
+id|inode-&gt;i_nlink
+op_eq
+l_int|0
+)paren
+(brace
+multiline_comment|/* This is quite evil, but we have little choice.  If we were&n;                 * to iput() again with i_nlink == 0, delete_inode would get&n;                 * called again, which ext3 really Does Not Like. */
+id|atomic_dec
+c_func
+(paren
+op_amp
+id|inode-&gt;i_count
+)paren
+suffix:semicolon
+id|EXIT
+suffix:semicolon
+r_return
+id|ERR_PTR
+c_func
+(paren
+op_minus
+id|ENOENT
+)paren
 suffix:semicolon
 )brace
 multiline_comment|/* We need to make sure we have the right inode (by checking the&n;         * generation) so we don&squot;t write into the wrong file (old inode was&n;         * deleted and then a new one was created with the same number).&n;         */
@@ -724,6 +749,11 @@ comma
 id|inode
 )paren
 suffix:semicolon
+id|dentry-&gt;d_flags
+op_or_assign
+id|DCACHE_NFSD_DISCONNECTED
+suffix:semicolon
+multiline_comment|/* NFS hack */
 id|EXIT
 suffix:semicolon
 r_return

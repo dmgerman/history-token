@@ -1,4 +1,4 @@
-multiline_comment|/*  $Id: process.c,v 1.156 2001/10/02 02:22:26 davem Exp $&n; *  linux/arch/sparc/kernel/process.c&n; *&n; *  Copyright (C) 1995 David S. Miller (davem@caip.rutgers.edu)&n; *  Copyright (C) 1996 Eddie C. Dost   (ecd@skynet.be)&n; */
+multiline_comment|/*  $Id: process.c,v 1.157 2001/11/13 00:57:05 davem Exp $&n; *  linux/arch/sparc/kernel/process.c&n; *&n; *  Copyright (C) 1995 David S. Miller (davem@caip.rutgers.edu)&n; *  Copyright (C) 1996 Eddie C. Dost   (ecd@skynet.be)&n; */
 multiline_comment|/*&n; * This file handles the architecture-dependent parts of process handling..&n; */
 DECL|macro|__KERNEL_SYSCALLS__
 mdefine_line|#define __KERNEL_SYSCALLS__
@@ -1899,25 +1899,14 @@ id|sp
 suffix:semicolon
 )brace
 multiline_comment|/* Copy a Sparc thread.  The fork() return value conventions&n; * under SunOS are nothing short of bletcherous:&n; * Parent --&gt;  %o0 == childs  pid, %o1 == 0&n; * Child  --&gt;  %o0 == parents pid, %o1 == 1&n; *&n; * NOTE: We have a separate fork kpsr/kwim because&n; *       the parent could change these values between&n; *       sys_fork invocation and when we reach here&n; *       if the parent should sleep while trying to&n; *       allocate the task_struct and kernel stack in&n; *       do_fork().&n; */
-macro_line|#ifdef CONFIG_SMP
 r_extern
 r_void
-id|ret_from_smpfork
+id|ret_from_fork
 c_func
 (paren
 r_void
 )paren
 suffix:semicolon
-macro_line|#else
-r_extern
-r_void
-id|ret_from_syscall
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-macro_line|#endif
 DECL|function|copy_thread
 r_int
 id|copy_thread
@@ -2114,7 +2103,6 @@ r_int
 )paren
 id|new_stack
 suffix:semicolon
-macro_line|#ifdef CONFIG_SMP
 id|p-&gt;thread.kpc
 op_assign
 (paren
@@ -2123,28 +2111,7 @@ op_assign
 r_int
 r_int
 )paren
-id|ret_from_smpfork
-)paren
-op_minus
-l_int|0x8
-)paren
-suffix:semicolon
-id|p-&gt;thread.kpsr
-op_assign
-id|current-&gt;thread.fork_kpsr
-op_or
-id|PSR_PIL
-suffix:semicolon
-macro_line|#else
-id|p-&gt;thread.kpc
-op_assign
-(paren
-(paren
-(paren
-r_int
-r_int
-)paren
-id|ret_from_syscall
+id|ret_from_fork
 )paren
 op_minus
 l_int|0x8
@@ -2154,7 +2121,6 @@ id|p-&gt;thread.kpsr
 op_assign
 id|current-&gt;thread.fork_kpsr
 suffix:semicolon
-macro_line|#endif
 id|p-&gt;thread.kwim
 op_assign
 id|current-&gt;thread.fork_kwim

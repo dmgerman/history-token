@@ -1,4 +1,4 @@
-multiline_comment|/*  $Id: init.c,v 1.199 2001/10/25 18:48:03 davem Exp $&n; *  arch/sparc64/mm/init.c&n; *&n; *  Copyright (C) 1996-1999 David S. Miller (davem@caip.rutgers.edu)&n; *  Copyright (C) 1997-1999 Jakub Jelinek (jj@sunsite.mff.cuni.cz)&n; */
+multiline_comment|/*  $Id: init.c,v 1.202 2001/11/13 00:49:28 davem Exp $&n; *  arch/sparc64/mm/init.c&n; *&n; *  Copyright (C) 1996-1999 David S. Miller (davem@caip.rutgers.edu)&n; *  Copyright (C) 1997-1999 Jakub Jelinek (jj@sunsite.mff.cuni.cz)&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
@@ -10,6 +10,9 @@ macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/blk.h&gt;
 macro_line|#include &lt;linux/swap.h&gt;
 macro_line|#include &lt;linux/swapctl.h&gt;
+macro_line|#include &lt;linux/pagemap.h&gt;
+macro_line|#include &lt;linux/fs.h&gt;
+macro_line|#include &lt;linux/seq_file.h&gt;
 macro_line|#include &lt;asm/head.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/page.h&gt;
@@ -971,18 +974,16 @@ c_func
 suffix:semicolon
 )brace
 DECL|function|mmu_info
-r_int
+r_void
 id|mmu_info
 c_func
 (paren
-r_char
+r_struct
+id|seq_file
 op_star
-id|buf
+id|m
 )paren
 (brace
-r_int
-id|len
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -990,12 +991,10 @@ id|tlb_type
 op_eq
 id|cheetah
 )paren
-id|len
-op_assign
-id|sprintf
+id|seq_printf
 c_func
 (paren
-id|buf
+id|m
 comma
 l_string|&quot;MMU Type&bslash;t: Cheetah&bslash;n&quot;
 )paren
@@ -1008,36 +1007,28 @@ id|tlb_type
 op_eq
 id|spitfire
 )paren
-id|len
-op_assign
-id|sprintf
+id|seq_printf
 c_func
 (paren
-id|buf
+id|m
 comma
 l_string|&quot;MMU Type&bslash;t: Spitfire&bslash;n&quot;
 )paren
 suffix:semicolon
 r_else
-id|len
-op_assign
-id|sprintf
+id|seq_printf
 c_func
 (paren
-id|buf
+id|m
 comma
 l_string|&quot;MMU Type&bslash;t: ???&bslash;n&quot;
 )paren
 suffix:semicolon
 macro_line|#ifdef DCFLUSH_DEBUG
-id|len
-op_add_assign
-id|sprintf
+id|seq_printf
 c_func
 (paren
-id|buf
-op_plus
-id|len
+id|m
 comma
 l_string|&quot;DCPageFlushes&bslash;t: %d&bslash;n&quot;
 comma
@@ -1050,14 +1041,10 @@ id|dcpage_flushes
 )paren
 suffix:semicolon
 macro_line|#ifdef CONFIG_SMP
-id|len
-op_add_assign
-id|sprintf
+id|seq_printf
 c_func
 (paren
-id|buf
-op_plus
-id|len
+id|m
 comma
 l_string|&quot;DCPageFlushesXC&bslash;t: %d&bslash;n&quot;
 comma
@@ -1071,9 +1058,6 @@ id|dcpage_flushes_xcall
 suffix:semicolon
 macro_line|#endif /* CONFIG_SMP */
 macro_line|#endif /* DCFLUSH_DEBUG */
-r_return
-id|len
-suffix:semicolon
 )brace
 DECL|struct|linux_prom_translation
 r_struct
@@ -6790,7 +6774,7 @@ c_func
 id|second_alias_page
 )paren
 suffix:semicolon
-id|flush_tlb_all
+id|__flush_tlb_all
 c_func
 (paren
 )paren

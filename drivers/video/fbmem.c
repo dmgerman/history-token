@@ -2800,10 +2800,17 @@ c_cond
 (paren
 id|var.accel_flags
 )paren
+(brace
+id|unlock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
 r_return
 op_minus
 id|EINVAL
 suffix:semicolon
+)brace
 id|start
 op_assign
 id|fix.mmio_start

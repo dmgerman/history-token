@@ -11285,12 +11285,10 @@ OL
 id|NR_CPUS
 ques
 c_cond
-op_amp
 id|cpu_data
-(braket
+op_plus
 op_star
 id|pos
-)braket
 suffix:colon
 l_int|NULL
 suffix:semicolon

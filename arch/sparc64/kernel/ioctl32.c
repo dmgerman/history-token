@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: ioctl32.c,v 1.131 2001/11/07 01:13:23 davem Exp $&n; * ioctl32.c: Conversion between 32bit and 64bit native ioctls.&n; *&n; * Copyright (C) 1997-2000  Jakub Jelinek  (jakub@redhat.com)&n; * Copyright (C) 1998  Eddie C. Dost  (ecd@skynet.be)&n; *&n; * These routines maintain argument size conversion between 32bit and 64bit&n; * ioctls.&n; */
+multiline_comment|/* $Id: ioctl32.c,v 1.132 2001/11/07 05:56:19 davem Exp $&n; * ioctl32.c: Conversion between 32bit and 64bit native ioctls.&n; *&n; * Copyright (C) 1997-2000  Jakub Jelinek  (jakub@redhat.com)&n; * Copyright (C) 1998  Eddie C. Dost  (ecd@skynet.be)&n; *&n; * These routines maintain argument size conversion between 32bit and 64bit&n; * ioctls.&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -2034,6 +2034,7 @@ id|ifcbuf
 suffix:semicolon
 )brace
 suffix:semicolon
+macro_line|#ifdef CONFIG_NET
 DECL|function|dev_ifname32
 r_static
 r_int
@@ -2152,6 +2153,7 @@ l_int|0
 )paren
 suffix:semicolon
 )brace
+macro_line|#endif
 DECL|function|dev_ifconf
 r_static
 r_inline
@@ -2755,12 +2757,90 @@ suffix:semicolon
 r_break
 suffix:semicolon
 r_case
+id|ETHTOOL_GMSGLVL
+suffix:colon
+r_case
+id|ETHTOOL_SMSGLVL
+suffix:colon
+r_case
+id|ETHTOOL_GLINK
+suffix:colon
+r_case
+id|ETHTOOL_NWAY_RST
+suffix:colon
+id|len
+op_assign
+r_sizeof
+(paren
+r_struct
+id|ethtool_value
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
+r_case
+id|ETHTOOL_GREGS
+suffix:colon
+(brace
+r_struct
+id|ethtool_regs
+op_star
+id|regaddr
+op_assign
+(paren
+r_struct
+id|ethtool_regs
+op_star
+)paren
+id|A
+c_func
+(paren
+id|data
+)paren
+suffix:semicolon
+multiline_comment|/* darned variable size arguments */
+r_if
+c_cond
+(paren
+id|get_user
+c_func
+(paren
+id|len
+comma
+(paren
+id|u32
+op_star
+)paren
+op_amp
+id|regaddr-&gt;len
+)paren
+)paren
+(brace
+id|err
+op_assign
+op_minus
+id|EFAULT
+suffix:semicolon
+r_goto
+id|out
+suffix:semicolon
+)brace
+id|len
+op_add_assign
+r_sizeof
+(paren
+r_struct
+id|ethtool_regs
+)paren
+suffix:semicolon
+r_break
+suffix:semicolon
+)brace
+r_case
 id|ETHTOOL_GSET
 suffix:colon
 r_case
 id|ETHTOOL_SSET
-suffix:colon
-r_default
 suffix:colon
 id|len
 op_assign
@@ -2771,6 +2851,16 @@ id|ethtool_cmd
 )paren
 suffix:semicolon
 r_break
+suffix:semicolon
+r_default
+suffix:colon
+id|err
+op_assign
+op_minus
+id|EOPNOTSUPP
+suffix:semicolon
+r_goto
+id|out
 suffix:semicolon
 )brace
 r_if
@@ -26551,6 +26641,7 @@ id|MEMWRITEOOB32
 comma
 id|mtd_rw_oob
 )paren
+macro_line|#ifdef CONFIG_NET
 id|HANDLE_IOCTL
 c_func
 (paren
@@ -26558,6 +26649,7 @@ id|SIOCGIFNAME
 comma
 id|dev_ifname32
 )paren
+macro_line|#endif
 id|HANDLE_IOCTL
 c_func
 (paren

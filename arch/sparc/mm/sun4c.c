@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: sun4c.c,v 1.208 2001/10/30 04:54:22 davem Exp $&n; * sun4c.c: Doing in software what should be done in hardware.&n; *&n; * Copyright (C) 1996 David S. Miller (davem@caip.rutgers.edu)&n; * Copyright (C) 1996 Eddie C. Dost (ecd@skynet.be)&n; * Copyright (C) 1996 Andrew Tridgell (Andrew.Tridgell@anu.edu.au)&n; * Copyright (C) 1997-2000 Anton Blanchard (anton@samba.org)&n; * Copyright (C) 1998 Jakub Jelinek (jj@sunsite.mff.cuni.cz)&n; */
+multiline_comment|/* $Id: sun4c.c,v 1.210 2001/11/13 03:27:47 davem Exp $&n; * sun4c.c: Doing in software what should be done in hardware.&n; *&n; * Copyright (C) 1996 David S. Miller (davem@caip.rutgers.edu)&n; * Copyright (C) 1996 Eddie C. Dost (ecd@skynet.be)&n; * Copyright (C) 1996 Andrew Tridgell (Andrew.Tridgell@anu.edu.au)&n; * Copyright (C) 1997-2000 Anton Blanchard (anton@samba.org)&n; * Copyright (C) 1998 Jakub Jelinek (jj@sunsite.mff.cuni.cz)&n; */
 DECL|macro|NR_TASK_BUCKETS
 mdefine_line|#define NR_TASK_BUCKETS 512
 macro_line|#include &lt;linux/config.h&gt;
@@ -7,6 +7,8 @@ macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/bootmem.h&gt;
 macro_line|#include &lt;linux/highmem.h&gt;
+macro_line|#include &lt;linux/fs.h&gt;
+macro_line|#include &lt;linux/seq_file.h&gt;
 macro_line|#include &lt;asm/scatterlist.h&gt;
 macro_line|#include &lt;asm/page.h&gt;
 macro_line|#include &lt;asm/pgalloc.h&gt;
@@ -8721,22 +8723,20 @@ suffix:semicolon
 )brace
 DECL|function|sun4c_mmu_info
 r_static
-r_int
+r_void
 id|sun4c_mmu_info
 c_func
 (paren
-r_char
+r_struct
+id|seq_file
 op_star
-id|buf
+id|m
 )paren
 (brace
 r_int
 id|used_user_entries
 comma
 id|i
-suffix:semicolon
-r_int
-id|len
 suffix:semicolon
 id|used_user_entries
 op_assign
@@ -8765,12 +8765,10 @@ id|i
 dot
 id|num_entries
 suffix:semicolon
-id|len
-op_assign
-id|sprintf
+id|seq_printf
 c_func
 (paren
-id|buf
+id|m
 comma
 l_string|&quot;vacsize&bslash;t&bslash;t: %d bytes&bslash;n&quot;
 l_string|&quot;vachwflush&bslash;t: %s&bslash;n&quot;
@@ -8817,9 +8815,6 @@ id|sun4c_user_taken_entries
 comma
 id|max_user_taken_entries
 )paren
-suffix:semicolon
-r_return
-id|len
 suffix:semicolon
 )brace
 multiline_comment|/* Nothing below here should touch the mmu hardware nor the mmu_entry&n; * data structures.&n; */
@@ -8884,25 +8879,6 @@ id|__pte
 c_func
 (paren
 l_int|0
-)paren
-suffix:semicolon
-)brace
-DECL|function|sun4c_pmd_none
-r_static
-r_int
-id|sun4c_pmd_none
-c_func
-(paren
-id|pmd_t
-id|pmd
-)paren
-(brace
-r_return
-op_logical_neg
-id|pmd_val
-c_func
-(paren
-id|pmd
 )paren
 suffix:semicolon
 )brace

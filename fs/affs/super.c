@@ -1461,7 +1461,6 @@ comma
 id|blocks
 )paren
 suffix:semicolon
-macro_line|#warning
 id|affs_set_blocksize
 c_func
 (paren

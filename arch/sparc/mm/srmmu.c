@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: srmmu.c,v 1.232 2001/10/30 04:54:22 davem Exp $&n; * srmmu.c:  SRMMU specific routines for memory management.&n; *&n; * Copyright (C) 1995 David S. Miller  (davem@caip.rutgers.edu)&n; * Copyright (C) 1995 Pete Zaitcev&n; * Copyright (C) 1996 Eddie C. Dost    (ecd@skynet.be)&n; * Copyright (C) 1997,1998 Jakub Jelinek (jj@sunsite.mff.cuni.cz)&n; * Copyright (C) 1999,2000 Anton Blanchard (anton@samba.org)&n; */
+multiline_comment|/* $Id: srmmu.c,v 1.233 2001/11/13 00:49:27 davem Exp $&n; * srmmu.c:  SRMMU specific routines for memory management.&n; *&n; * Copyright (C) 1995 David S. Miller  (davem@caip.rutgers.edu)&n; * Copyright (C) 1995 Pete Zaitcev&n; * Copyright (C) 1996 Eddie C. Dost    (ecd@skynet.be)&n; * Copyright (C) 1997,1998 Jakub Jelinek (jj@sunsite.mff.cuni.cz)&n; * Copyright (C) 1999,2000 Anton Blanchard (anton@samba.org)&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
@@ -9,6 +9,8 @@ macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/blk.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;linux/bootmem.h&gt;
+macro_line|#include &lt;linux/fs.h&gt;
+macro_line|#include &lt;linux/seq_file.h&gt;
 macro_line|#include &lt;asm/page.h&gt;
 macro_line|#include &lt;asm/pgalloc.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
@@ -6544,20 +6546,20 @@ suffix:semicolon
 )brace
 DECL|function|srmmu_mmu_info
 r_static
-r_int
+r_void
 id|srmmu_mmu_info
 c_func
 (paren
-r_char
+r_struct
+id|seq_file
 op_star
-id|buf
+id|m
 )paren
 (brace
-r_return
-id|sprintf
+id|seq_printf
 c_func
 (paren
-id|buf
+id|m
 comma
 l_string|&quot;MMU type&bslash;t: %s&bslash;n&quot;
 l_string|&quot;contexts&bslash;t: %d&bslash;n&quot;

@@ -2620,6 +2620,7 @@ suffix:semicolon
 r_while
 c_loop
 (paren
+(paren
 id|this_opt
 op_assign
 id|strsep
@@ -2631,7 +2632,19 @@ comma
 l_string|&quot;,&quot;
 )paren
 )paren
+op_ne
+l_int|NULL
+)paren
 (brace
+r_if
+c_cond
+(paren
+op_logical_neg
+op_star
+id|this_opt
+)paren
+r_continue
+suffix:semicolon
 r_if
 c_cond
 (paren

@@ -184,7 +184,7 @@ DECL|macro|current_cpu_data
 mdefine_line|#define current_cpu_data cpu_data[smp_processor_id()]
 macro_line|#else
 DECL|macro|cpu_data
-mdefine_line|#define cpu_data &amp;boot_cpu_data
+mdefine_line|#define cpu_data (&amp;boot_cpu_data)
 DECL|macro|current_cpu_data
 mdefine_line|#define current_cpu_data boot_cpu_data
 macro_line|#endif

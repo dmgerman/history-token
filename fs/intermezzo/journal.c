@@ -349,6 +349,11 @@ op_ne
 id|inode-&gt;i_size
 )paren
 (brace
+id|unlock_kernel
+c_func
+(paren
+)paren
+suffix:semicolon
 id|fs_up
 c_func
 (paren

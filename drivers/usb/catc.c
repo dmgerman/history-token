@@ -1137,10 +1137,12 @@ op_star
 id|tx_buf
 )paren
 op_assign
-id|cpu_to_le16p
+id|cpu_to_le16
 c_func
 (paren
-op_amp
+(paren
+id|u16
+)paren
 id|skb-&gt;len
 )paren
 suffix:semicolon

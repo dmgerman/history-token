@@ -316,13 +316,6 @@ c_func
 )paren
 suffix:semicolon
 macro_line|#endif
-macro_line|#ifdef CONFIG_SA1100_FIR
-id|sa1100_irda_init
-c_func
-(paren
-)paren
-suffix:semicolon
-macro_line|#endif
 macro_line|#ifdef CONFIG_NSC_FIR
 id|nsc_ircc_init
 c_func
@@ -381,13 +374,6 @@ suffix:semicolon
 macro_line|#endif
 macro_line|#ifdef CONFIG_OLD_BELKIN
 id|old_belkin_init
-c_func
-(paren
-)paren
-suffix:semicolon
-macro_line|#endif
-macro_line|#ifdef CONFIG_EP7211_IR
-id|ep7211_ir_init
 c_func
 (paren
 )paren

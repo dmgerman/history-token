@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: ebus.c,v 1.63 2001/06/08 02:27:16 davem Exp $&n; * ebus.c: PCI to EBus bridge device.&n; *&n; * Copyright (C) 1997  Eddie C. Dost  (ecd@skynet.be)&n; * Copyright (C) 1999  David S. Miller (davem@redhat.com)&n; */
+multiline_comment|/* $Id: ebus.c,v 1.64 2001/11/08 04:41:33 davem Exp $&n; * ebus.c: PCI to EBus bridge device.&n; *&n; * Copyright (C) 1997  Eddie C. Dost  (ecd@skynet.be)&n; * Copyright (C) 1999  David S. Miller (davem@redhat.com)&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
@@ -624,6 +624,27 @@ id|dev-&gt;prom_name
 suffix:semicolon
 )brace
 )brace
+r_for
+c_loop
+(paren
+id|i
+op_assign
+l_int|0
+suffix:semicolon
+id|i
+OL
+id|PROMINTR_MAX
+suffix:semicolon
+id|i
+op_increment
+)paren
+id|dev-&gt;irqs
+(braket
+id|i
+)braket
+op_assign
+id|PCI_IRQ_NONE
+suffix:semicolon
 id|len
 op_assign
 id|prom_getproperty
@@ -1159,6 +1180,27 @@ suffix:semicolon
 )brace
 id|probe_interrupts
 suffix:colon
+r_for
+c_loop
+(paren
+id|i
+op_assign
+l_int|0
+suffix:semicolon
+id|i
+OL
+id|PROMINTR_MAX
+suffix:semicolon
+id|i
+op_increment
+)paren
+id|dev-&gt;irqs
+(braket
+id|i
+)braket
+op_assign
+id|PCI_IRQ_NONE
+suffix:semicolon
 id|len
 op_assign
 id|prom_getproperty

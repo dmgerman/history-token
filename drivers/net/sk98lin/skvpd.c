@@ -322,7 +322,7 @@ id|Rtv
 suffix:semicolon
 )brace
 multiline_comment|/*&n;&t;Write the dword &squot;data&squot; at address &squot;addr&squot; into the VPD EEPROM, and&n;&t;verify that the data is written.&n;&n; Needed Time:&n;&n;.&t;&t;&t;&t;MIN&t;&t;MAX&n;. -------------------------------------------------------------------&n;. write&t;&t;&t;&t;1.8 ms&t;&t;3.6 ms&n;. internal write cyles&t;&t;0.7 ms&t;&t;7.0 ms&n;. -------------------------------------------------------------------&n;. over all program time&t; &t;2.5 ms&t;&t;10.6 ms&n;. read&t;&t;&t;&t;1.3 ms&t;&t;2.6 ms&n;. -------------------------------------------------------------------&n;. over all &t;&t;&t;3.8 ms&t;&t;13.2 ms&n;.&n;&n;&n; Returns&t;0:&t;success&n;&t;&t;1:&t;error,&t;I2C transfer does not terminate&n;&t;&t;2:&t;error,&t;data verify error&n;&n; */
-DECL|function|VpdWriteDWord
+macro_line|#if 0 /* Unused at the moment */
 r_static
 r_int
 id|VpdWriteDWord
@@ -486,6 +486,7 @@ l_int|0
 )paren
 suffix:semicolon
 )brace
+macro_line|#endif
 multiline_comment|/*&n; *&t;Read one Stream of &squot;len&squot; bytes of VPD data, starting at &squot;addr&squot; from&n; *&t;or to the I2C EEPROM.&n; *&n; * Returns number of bytes read / written.&n; */
 DECL|function|VpdWriteStream
 r_static

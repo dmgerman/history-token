@@ -19331,9 +19331,6 @@ id|trident_card
 op_star
 id|card
 suffix:semicolon
-id|dma_addr_t
-id|mask
-suffix:semicolon
 id|u8
 id|bits
 suffix:semicolon

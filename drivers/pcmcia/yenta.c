@@ -3821,6 +3821,17 @@ c_func
 id|socket
 )paren
 suffix:semicolon
+multiline_comment|/* Re-enable interrupts */
+id|cb_writel
+c_func
+(paren
+id|socket
+comma
+id|CB_SOCKET_MASK
+comma
+id|CB_CDMASK
+)paren
+suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
@@ -3843,6 +3854,17 @@ id|socket
 comma
 op_amp
 id|dead_socket
+)paren
+suffix:semicolon
+multiline_comment|/* Disable interrupts */
+id|cb_writel
+c_func
+(paren
+id|socket
+comma
+id|CB_SOCKET_MASK
+comma
+l_int|0x0
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * This does not work currently. The controller&n;&t; * loses too much informationduring D3 to come up&n;&t; * cleanly. We should probably fix yenta_init()&n;&t; * to update all the critical registers, notably&n;&t; * the IO and MEM bridging region data.. That is&n;&t; * something that pci_set_power_state() should&n;&t; * probably know about bridges anyway.&n;&t; *&n;&t;pci_set_power_state(socket-&gt;dev, 3);&n;&t; */

@@ -552,7 +552,8 @@ op_eq
 l_int|0
 )paren
 (brace
-macro_line|#if defined(CONFIG_XFS_FS) || defined (CONFIG_XFS_FS_MODULE)
+macro_line|#if 0
+singleline_comment|//#if defined(CONFIG_XFS_FS) || defined (CONFIG_XFS_FS_MODULE)
 id|ops-&gt;o_trops
 op_assign
 op_amp
