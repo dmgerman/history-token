@@ -64,6 +64,8 @@ DECL|macro|UDSL_ENDPOINT_DATA_OUT
 mdefine_line|#define UDSL_ENDPOINT_DATA_OUT&t;&t;0x07
 DECL|macro|UDSL_ENDPOINT_DATA_IN
 mdefine_line|#define UDSL_ENDPOINT_DATA_IN&t;&t;0x87
+DECL|macro|hex2int
+mdefine_line|#define hex2int(c) ( (c &gt;= &squot;0&squot;)&amp;&amp;(c &lt;= &squot;9&squot;) ?  (c - &squot;0&squot;) : ((c &amp; 0xf)+9) )
 multiline_comment|/* usb_device_id struct */
 DECL|variable|udsl_usb_ids
 r_static
@@ -652,42 +654,6 @@ op_assign
 l_int|NULL
 suffix:semicolon
 id|MOD_DEC_USE_COUNT
-suffix:semicolon
-)brace
-DECL|function|udsl_atm_set_mac
-r_static
-r_void
-id|udsl_atm_set_mac
-(paren
-r_struct
-id|udsl_instance_data
-op_star
-id|instance
-comma
-r_const
-r_char
-id|mac
-(braket
-l_int|6
-)braket
-)paren
-(brace
-r_if
-c_cond
-(paren
-op_logical_neg
-id|instance-&gt;atm_dev
-)paren
-r_return
-suffix:semicolon
-id|memcpy
-(paren
-id|instance-&gt;atm_dev-&gt;esi
-comma
-id|mac
-comma
-l_int|6
-)paren
 suffix:semicolon
 )brace
 multiline_comment|/***************************************************************************&n;*&n;* ATM helper functions&n;*&n;****************************************************************************/
@@ -2996,8 +2962,6 @@ suffix:semicolon
 )brace
 suffix:semicolon
 multiline_comment|/***************************************************************************&n;*&n;* usb driver entries&n;*&n;****************************************************************************/
-DECL|macro|hex2int
-mdefine_line|#define hex2int(c) ( (c &gt;= &squot;0&squot;)&amp;&amp;(c &lt;= &squot;9&squot;) ?  (c - &squot;0&squot;) : ((c &amp; 0xf)+9) )
 DECL|function|udsl_usb_ioctl
 r_static
 r_int
@@ -3363,11 +3327,13 @@ l_int|5
 )braket
 )paren
 suffix:semicolon
-id|udsl_atm_set_mac
+id|memcpy
 (paren
-id|instance
+id|instance-&gt;atm_dev-&gt;esi
 comma
 id|mac
+comma
+l_int|6
 )paren
 suffix:semicolon
 id|usb_set_intfdata
