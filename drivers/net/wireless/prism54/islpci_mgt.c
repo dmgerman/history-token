@@ -1678,6 +1678,12 @@ id|islpci_mgmtframe
 op_star
 id|frame
 suffix:semicolon
+id|set_current_state
+c_func
+(paren
+id|TASK_UNINTERRUPTIBLE
+)paren
+suffix:semicolon
 id|timeleft
 op_assign
 id|schedule_timeout

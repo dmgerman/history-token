@@ -2106,6 +2106,15 @@ multiline_comment|/* increment the transmit error counter */
 id|statistics-&gt;tx_errors
 op_increment
 suffix:semicolon
+id|printk
+c_func
+(paren
+id|KERN_WARNING
+l_string|&quot;%s: tx_timeout&quot;
+comma
+id|ndev-&gt;name
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -2116,6 +2125,12 @@ id|priv-&gt;reset_task_pending
 id|priv-&gt;reset_task_pending
 op_assign
 l_int|1
+suffix:semicolon
+id|printk
+c_func
+(paren
+l_string|&quot;, scheduling a reset&quot;
+)paren
 suffix:semicolon
 id|netif_stop_queue
 c_func
@@ -2131,7 +2146,11 @@ id|priv-&gt;reset_task
 )paren
 suffix:semicolon
 )brace
-r_return
+id|printk
+c_func
+(paren
+l_string|&quot;&bslash;n&quot;
+)paren
 suffix:semicolon
 )brace
 eof

@@ -275,6 +275,7 @@ id|fw_entry
 )paren
 suffix:semicolon
 r_return
+op_minus
 id|EILSEQ
 suffix:semicolon
 multiline_comment|/* Illegal byte sequence  */
@@ -401,6 +402,20 @@ c_func
 id|fw_len
 op_ne
 l_int|0
+)paren
+suffix:semicolon
+multiline_comment|/* Firmware version is at offset 40 (also for &quot;newmac&quot;) */
+id|printk
+c_func
+(paren
+id|KERN_DEBUG
+l_string|&quot;%s: firmware version: %.8s&bslash;n&quot;
+comma
+id|priv-&gt;ndev-&gt;name
+comma
+id|fw_entry-&gt;data
+op_plus
+l_int|40
 )paren
 suffix:semicolon
 id|release_firmware
@@ -1182,15 +1197,6 @@ c_func
 id|ndev
 )paren
 suffix:semicolon
-id|printk
-c_func
-(paren
-id|KERN_DEBUG
-l_string|&quot;%s: islpci_open()&bslash;n&quot;
-comma
-id|ndev-&gt;name
-)paren
-suffix:semicolon
 multiline_comment|/* reset data structures, upload firmware and reset device */
 id|rc
 op_assign
@@ -1505,7 +1511,7 @@ id|printk
 c_func
 (paren
 id|KERN_DEBUG
-l_string|&quot;%s: firmware uploaded done, now triggering reset...&bslash;n&quot;
+l_string|&quot;%s: firmware upload complete&bslash;n&quot;
 comma
 id|priv-&gt;ndev-&gt;name
 )paren
@@ -1598,6 +1604,12 @@ op_increment
 )paren
 (brace
 multiline_comment|/* The software reset acknowledge needs about 220 msec here.&n;&t;&t; * Be conservative and wait for up to one second. */
+id|set_current_state
+c_func
+(paren
+id|TASK_UNINTERRUPTIBLE
+)paren
+suffix:semicolon
 id|remaining
 op_assign
 id|schedule_timeout
@@ -1626,7 +1638,7 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;%s: device soft reset timed out&bslash;n&quot;
+l_string|&quot;%s: no &squot;reset complete&squot; IRQ seen - retrying&bslash;n&quot;
 comma
 id|priv-&gt;ndev-&gt;name
 )paren
@@ -1648,6 +1660,15 @@ c_cond
 id|result
 )paren
 (brace
+id|printk
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;%s: interface reset failure&bslash;n&quot;
+comma
+id|priv-&gt;ndev-&gt;name
+)paren
+suffix:semicolon
 r_return
 id|result
 suffix:semicolon
@@ -1674,12 +1695,40 @@ op_amp
 id|priv-&gt;mib_sem
 )paren
 suffix:semicolon
+id|result
+op_assign
 id|mgt_commit
 c_func
 (paren
 id|priv
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|result
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;%s: interface reset failure&bslash;n&quot;
+comma
+id|priv-&gt;ndev-&gt;name
+)paren
+suffix:semicolon
+id|up_write
+c_func
+(paren
+op_amp
+id|priv-&gt;mib_sem
+)paren
+suffix:semicolon
+r_return
+id|result
+suffix:semicolon
+)brace
 id|up_write
 c_func
 (paren
@@ -1693,6 +1742,15 @@ c_func
 id|priv
 comma
 id|PRV_STATE_READY
+)paren
+suffix:semicolon
+id|printk
+c_func
+(paren
+id|KERN_DEBUG
+l_string|&quot;%s: interface reset complete&bslash;n&quot;
+comma
+id|priv-&gt;ndev-&gt;name
 )paren
 suffix:semicolon
 r_return
@@ -1959,9 +2017,20 @@ c_cond
 (paren
 id|rc
 )paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;%s: islpci_reset: failure&bslash;n&quot;
+comma
+id|priv-&gt;ndev-&gt;name
+)paren
+suffix:semicolon
 r_return
 id|rc
 suffix:semicolon
+)brace
 )brace
 multiline_comment|/* finally reset interface */
 id|rc
@@ -1975,17 +2044,12 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-op_logical_neg
 id|rc
 )paren
-multiline_comment|/* If successful */
-r_return
-id|rc
-suffix:semicolon
 id|printk
 c_func
 (paren
-id|KERN_DEBUG
+id|KERN_ERR
 l_string|&quot;prism54: Your card/socket may be faulty, or IRQ line too busy :(&bslash;n&quot;
 )paren
 suffix:semicolon
@@ -2022,7 +2086,7 @@ c_func
 (paren
 id|SHOW_FUNCTION_CALLS
 comma
-l_string|&quot;islpci_statistics &bslash;n&quot;
+l_string|&quot;islpci_statistics&bslash;n&quot;
 )paren
 suffix:semicolon
 macro_line|#endif
@@ -2855,6 +2919,19 @@ id|priv-&gt;monitor_type
 suffix:colon
 id|ARPHRD_ETHER
 suffix:semicolon
+macro_line|#if WIRELESS_EXT &gt; 16
+multiline_comment|/* Add pointers to enable iwspy support. */
+id|priv-&gt;wireless_data.spy_data
+op_assign
+op_amp
+id|priv-&gt;spy_data
+suffix:semicolon
+id|ndev-&gt;wireless_data
+op_assign
+op_amp
+id|priv-&gt;wireless_data
+suffix:semicolon
+macro_line|#endif /* WIRELESS_EXT &gt; 16 */
 multiline_comment|/* save the start and end address of the PCI memory area */
 id|ndev-&gt;mem_start
 op_assign
