@@ -4287,6 +4287,14 @@ id|ipv6_txoptions
 )paren
 )paren
 suffix:semicolon
+id|opt-&gt;tot_len
+op_assign
+r_sizeof
+(paren
+op_star
+id|opt
+)paren
+suffix:semicolon
 id|err
 op_assign
 id|datagram_send_ctl
