@@ -108,11 +108,6 @@ DECL|member|link
 id|u16
 id|link
 suffix:semicolon
-DECL|member|reason
-id|u8
-id|reason
-suffix:semicolon
-multiline_comment|/* used only by indicate */
 )brace
 suffix:semicolon
 multiline_comment|/* Sending data in conection-less mode */

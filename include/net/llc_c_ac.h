@@ -1610,5 +1610,19 @@ r_int
 id|timeout_data
 )paren
 suffix:semicolon
+r_extern
+r_void
+id|llc_conn_set_p_flag
+c_func
+(paren
+r_struct
+id|sock
+op_star
+id|sk
+comma
+id|u8
+id|value
+)paren
+suffix:semicolon
 macro_line|#endif /* LLC_C_AC_H */
 eof

@@ -81,10 +81,6 @@ DECL|member|ev
 id|u8
 id|ev
 suffix:semicolon
-DECL|member|reason
-id|u8
-id|reason
-suffix:semicolon
 )brace
 suffix:semicolon
 DECL|union|llc_sap_ev_if
@@ -119,6 +115,10 @@ id|llc_sap_state_ev
 DECL|member|type
 id|u8
 id|type
+suffix:semicolon
+DECL|member|reason
+id|u8
+id|reason
 suffix:semicolon
 DECL|member|ind_cfm_flag
 id|u8

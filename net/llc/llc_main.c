@@ -1082,9 +1082,13 @@ id|llc-&gt;retry_count
 op_assign
 l_int|0
 suffix:semicolon
-id|llc-&gt;p_flag
-op_assign
+id|llc_conn_set_p_flag
+c_func
+(paren
+id|sk
+comma
 l_int|0
+)paren
 suffix:semicolon
 id|llc-&gt;f_flag
 op_assign
