@@ -8575,6 +8575,8 @@ op_assign
 id|wl3501_chan2freq
 (braket
 id|this-&gt;chan
+op_minus
+l_int|1
 )braket
 op_star
 l_int|100000
