@@ -1725,12 +1725,14 @@ op_and_assign
 op_complement
 id|REQ_STARTED
 suffix:semicolon
-id|elv_add_request
+id|__elv_add_request
 c_func
 (paren
 id|q
 comma
 id|rq
+comma
+l_int|0
 comma
 l_int|0
 )paren
@@ -4838,7 +4840,7 @@ l_int|1
 )paren
 suffix:semicolon
 multiline_comment|/*&n;&t; * elevator indicated where it wants this request to be&n;&t; * inserted at elevator_merge time&n;&t; */
-id|__elv_add_request
+id|__elv_add_request_pos
 c_func
 (paren
 id|q
