@@ -1529,6 +1529,33 @@ id|__user
 op_star
 )paren
 suffix:semicolon
+multiline_comment|/* Prototypes for use in sys_ia32.c */
+r_int
+id|copy_siginfo_to_user32
+(paren
+id|siginfo_t32
+id|__user
+op_star
+id|to
+comma
+id|siginfo_t
+op_star
+id|from
+)paren
+suffix:semicolon
+r_int
+id|copy_siginfo_from_user32
+(paren
+id|siginfo_t
+op_star
+id|to
+comma
+id|siginfo_t32
+id|__user
+op_star
+id|from
+)paren
+suffix:semicolon
 macro_line|#endif /* !CONFIG_IA32_SUPPORT */
 macro_line|#endif /* _ASM_IA64_IA32_PRIV_H */
 eof

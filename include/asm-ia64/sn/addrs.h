@@ -61,35 +61,35 @@ id|ia64_sn2_pa_t
 suffix:semicolon
 macro_line|#endif
 DECL|macro|TO_PHYS_MASK
-mdefine_line|#define TO_PHYS_MASK&t;&t;0x0001ffcfffffffff&t;/* Note - clear AS bits */
+mdefine_line|#define TO_PHYS_MASK&t;&t;0x0001ffcfffffffffUL&t;/* Note - clear AS bits */
 multiline_comment|/* Regions determined by AS */
 DECL|macro|LOCAL_MMR_SPACE
-mdefine_line|#define LOCAL_MMR_SPACE&t;&t;0xc000008000000000&t;/* Local MMR space */
+mdefine_line|#define LOCAL_MMR_SPACE&t;&t;0xc000008000000000UL&t;/* Local MMR space */
 DECL|macro|LOCAL_PHYS_MMR_SPACE
-mdefine_line|#define LOCAL_PHYS_MMR_SPACE&t;0x8000008000000000&t;/* Local PhysicalMMR space */
+mdefine_line|#define LOCAL_PHYS_MMR_SPACE&t;0x8000008000000000UL&t;/* Local PhysicalMMR space */
 DECL|macro|LOCAL_MEM_SPACE
-mdefine_line|#define LOCAL_MEM_SPACE&t;&t;0xc000010000000000&t;/* Local Memory space */
+mdefine_line|#define LOCAL_MEM_SPACE&t;&t;0xc000010000000000UL&t;/* Local Memory space */
 multiline_comment|/* It so happens that setting bit 35 indicates a reference to the SHUB or TIO&n; * MMR space.  &n; */
 DECL|macro|GLOBAL_MMR_SPACE
-mdefine_line|#define GLOBAL_MMR_SPACE&t;0xc000000800000000&t;/* Global MMR space */
+mdefine_line|#define GLOBAL_MMR_SPACE&t;0xc000000800000000UL&t;/* Global MMR space */
 DECL|macro|TIO_MMR_SPACE
-mdefine_line|#define TIO_MMR_SPACE&t;&t;0xc000000800000000&t;/* TIO MMR space */
+mdefine_line|#define TIO_MMR_SPACE&t;&t;0xc000000800000000UL&t;/* TIO MMR space */
 DECL|macro|ICE_MMR_SPACE
-mdefine_line|#define ICE_MMR_SPACE&t;&t;0xc000000000000000&t;/* ICE MMR space */
+mdefine_line|#define ICE_MMR_SPACE&t;&t;0xc000000000000000UL&t;/* ICE MMR space */
 DECL|macro|GLOBAL_PHYS_MMR_SPACE
-mdefine_line|#define GLOBAL_PHYS_MMR_SPACE&t;0x0000000800000000&t;/* Global Physical MMR space */
+mdefine_line|#define GLOBAL_PHYS_MMR_SPACE&t;0x0000000800000000UL&t;/* Global Physical MMR space */
 DECL|macro|GET_SPACE
-mdefine_line|#define GET_SPACE&t;&t;0xe000001000000000&t;/* GET space */
+mdefine_line|#define GET_SPACE&t;&t;0xe000001000000000UL&t;/* GET space */
 DECL|macro|AMO_SPACE
-mdefine_line|#define AMO_SPACE&t;&t;0xc000002000000000&t;/* AMO space */
+mdefine_line|#define AMO_SPACE&t;&t;0xc000002000000000UL&t;/* AMO space */
 DECL|macro|CACHEABLE_MEM_SPACE
-mdefine_line|#define CACHEABLE_MEM_SPACE&t;0xe000003000000000&t;/* Cacheable memory space */
+mdefine_line|#define CACHEABLE_MEM_SPACE&t;0xe000003000000000UL&t;/* Cacheable memory space */
 DECL|macro|UNCACHED
-mdefine_line|#define UNCACHED                0xc000000000000000      /* UnCacheable memory space */
+mdefine_line|#define UNCACHED                0xc000000000000000UL&t;/* UnCacheable memory space */
 DECL|macro|UNCACHED_PHYS
-mdefine_line|#define UNCACHED_PHYS           0x8000000000000000      /* UnCacheable physical memory space */
+mdefine_line|#define UNCACHED_PHYS           0x8000000000000000UL&t;/* UnCacheable physical memory space */
 DECL|macro|PHYS_MEM_SPACE
-mdefine_line|#define PHYS_MEM_SPACE&t;&t;0x0000003000000000&t;/* physical memory space */
+mdefine_line|#define PHYS_MEM_SPACE&t;&t;0x0000003000000000UL&t;/* physical memory space */
 multiline_comment|/* SN2 address macros */
 multiline_comment|/* NID_SHFT has the right value for both SHUB and TIO addresses.*/
 DECL|macro|NID_SHFT
@@ -114,7 +114,7 @@ DECL|macro|GLOBAL_MEM_ADDR
 mdefine_line|#define GLOBAL_MEM_ADDR(n,a)&t;(CACHEABLE_MEM_SPACE | REMOTE_ADDR(n,a))
 multiline_comment|/* non-II mmr&squot;s start at top of big window space (4G) */
 DECL|macro|BWIN_TOP
-mdefine_line|#define BWIN_TOP&t;&t;0x0000000100000000
+mdefine_line|#define BWIN_TOP&t;&t;0x0000000100000000UL
 multiline_comment|/*&n; * general address defines - for code common to SN0/SN1/SN2&n; */
 DECL|macro|CAC_BASE
 mdefine_line|#define CAC_BASE&t;&t;CACHEABLE_MEM_SPACE&t;&t;&t;/* cacheable memory space */
@@ -252,7 +252,7 @@ multiline_comment|/*&n; * SN2 has II mmr&squot;s located inside small window spa
 DECL|macro|REMOTE_HUB_BASE
 mdefine_line|#define REMOTE_HUB_BASE(_x)&t;&t;&t;&t;&t;&t;&bslash;&n;        (UNCACHED | GLOBAL_MMR_SPACE |                                  &bslash;&n;        (((~(_x)) &amp; BWIN_TOP)&gt;&gt;8)    |                                       &bslash;&n;        (((~(_x)) &amp; BWIN_TOP)&gt;&gt;9)    | (_x))
 DECL|macro|REMOTE_HUB
-mdefine_line|#define REMOTE_HUB(_n, _x)&t;&t;&t;&t;&t;&t;&bslash;&n;&t;((volatile uint64_t *)(REMOTE_HUB_BASE(_x) | ((((long)(_n))&lt;&lt;NASID_SHFT))))
+mdefine_line|#define REMOTE_HUB(_n, _x)&t;&t;&t;&t;&t;&t;&bslash;&n;&t;((uint64_t *)(REMOTE_HUB_BASE(_x) | ((((long)(_n))&lt;&lt;NASID_SHFT))))
 multiline_comment|/*&n; * WARNING:&n; *&t;When certain Hub chip workaround are defined, it&squot;s not sufficient&n; *&t;to dereference the *_HUB_ADDR() macros.  You should instead use&n; *&t;HUB_L() and HUB_S() if you must deal with pointers to hub registers.&n; *&t;Otherwise, the recommended approach is to use *_HUB_L() and *_HUB_S().&n; *&t;They&squot;re always safe.&n; */
 multiline_comment|/*&n; * LOCAL_HUB_ADDR doesn&squot;t need to be changed for TIO, since, by definition,&n; * there are no &quot;local&quot; TIOs.&n; */
 DECL|macro|LOCAL_HUB_ADDR

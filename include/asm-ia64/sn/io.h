@@ -411,7 +411,10 @@ r_char
 DECL|function|___sn_readb
 id|___sn_readb
 (paren
+r_const
+r_volatile
 r_void
+id|__iomem
 op_star
 id|addr
 )paren
@@ -427,6 +430,7 @@ op_star
 r_volatile
 r_int
 r_char
+id|__force
 op_star
 )paren
 id|addr
@@ -457,7 +461,10 @@ r_int
 DECL|function|___sn_readw
 id|___sn_readw
 (paren
+r_const
+r_volatile
 r_void
+id|__iomem
 op_star
 id|addr
 )paren
@@ -473,6 +480,7 @@ op_star
 r_volatile
 r_int
 r_int
+id|__force
 op_star
 )paren
 id|addr
@@ -503,7 +511,10 @@ r_int
 DECL|function|___sn_readl
 id|___sn_readl
 (paren
+r_const
+r_volatile
 r_void
+id|__iomem
 op_star
 id|addr
 )paren
@@ -519,6 +530,7 @@ op_star
 r_volatile
 r_int
 r_int
+id|__force
 op_star
 )paren
 id|addr
@@ -549,7 +561,10 @@ r_int
 DECL|function|___sn_readq
 id|___sn_readq
 (paren
+r_const
+r_volatile
 r_void
+id|__iomem
 op_star
 id|addr
 )paren
@@ -565,6 +580,7 @@ op_star
 r_volatile
 r_int
 r_int
+id|__force
 op_star
 )paren
 id|addr
@@ -725,7 +741,10 @@ r_char
 DECL|function|___sn_readb_relaxed
 id|___sn_readb_relaxed
 (paren
+r_const
+r_volatile
 r_void
+id|__iomem
 op_star
 id|addr
 )paren
@@ -736,6 +755,7 @@ op_star
 r_volatile
 r_int
 r_char
+id|__force
 op_star
 )paren
 id|addr
@@ -748,7 +768,10 @@ r_int
 DECL|function|___sn_readw_relaxed
 id|___sn_readw_relaxed
 (paren
+r_const
+r_volatile
 r_void
+id|__iomem
 op_star
 id|addr
 )paren
@@ -759,6 +782,7 @@ op_star
 r_volatile
 r_int
 r_int
+id|__force
 op_star
 )paren
 id|addr
@@ -771,7 +795,10 @@ r_int
 DECL|function|___sn_readl_relaxed
 id|___sn_readl_relaxed
 (paren
+r_const
+r_volatile
 r_void
+id|__iomem
 op_star
 id|addr
 )paren
@@ -782,6 +809,7 @@ op_star
 r_volatile
 r_int
 r_int
+id|__force
 op_star
 )paren
 id|addr
@@ -794,7 +822,10 @@ r_int
 DECL|function|___sn_readq_relaxed
 id|___sn_readq_relaxed
 (paren
+r_const
+r_volatile
 r_void
+id|__iomem
 op_star
 id|addr
 )paren
@@ -805,6 +836,7 @@ op_star
 r_volatile
 r_int
 r_int
+id|__force
 op_star
 )paren
 id|addr

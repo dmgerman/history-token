@@ -162,6 +162,7 @@ id|__sn_readb
 c_func
 (paren
 r_void
+id|__iomem
 op_star
 id|addr
 )paren
@@ -181,6 +182,7 @@ id|__sn_readw
 c_func
 (paren
 r_void
+id|__iomem
 op_star
 id|addr
 )paren
@@ -200,6 +202,7 @@ id|__sn_readl
 c_func
 (paren
 r_void
+id|__iomem
 op_star
 id|addr
 )paren
@@ -219,6 +222,7 @@ id|__sn_readq
 c_func
 (paren
 r_void
+id|__iomem
 op_star
 id|addr
 )paren
@@ -238,6 +242,7 @@ id|__sn_readb_relaxed
 c_func
 (paren
 r_void
+id|__iomem
 op_star
 id|addr
 )paren
@@ -257,6 +262,7 @@ id|__sn_readw_relaxed
 c_func
 (paren
 r_void
+id|__iomem
 op_star
 id|addr
 )paren
@@ -276,6 +282,7 @@ id|__sn_readl_relaxed
 c_func
 (paren
 r_void
+id|__iomem
 op_star
 id|addr
 )paren
@@ -295,6 +302,7 @@ id|__sn_readq_relaxed
 c_func
 (paren
 r_void
+id|__iomem
 op_star
 id|addr
 )paren

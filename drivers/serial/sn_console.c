@@ -186,6 +186,8 @@ suffix:semicolon
 multiline_comment|/* used with misc_register for dynamic */
 r_extern
 id|u64
+id|__iomem
+op_star
 id|master_node_bedrock_address
 suffix:semicolon
 r_extern

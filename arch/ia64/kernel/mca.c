@@ -2230,11 +2230,8 @@ id|dummy
 id|cmcv_reg_t
 id|cmcv
 suffix:semicolon
-id|cmcv
+id|cmcv.cmcv_regval
 op_assign
-(paren
-id|cmcv_reg_t
-)paren
 id|ia64_getreg
 c_func
 (paren
@@ -2285,11 +2282,8 @@ id|dummy
 id|cmcv_reg_t
 id|cmcv
 suffix:semicolon
-id|cmcv
+id|cmcv.cmcv_regval
 op_assign
-(paren
-id|cmcv_reg_t
-)paren
 id|ia64_getreg
 c_func
 (paren
