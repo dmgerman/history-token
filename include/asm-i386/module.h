@@ -38,6 +38,9 @@ mdefine_line|#define MODULE_PROC_FAMILY &quot;PENTIUMII &quot;
 macro_line|#elif defined CONFIG_MPENTIUMIII
 DECL|macro|MODULE_PROC_FAMILY
 mdefine_line|#define MODULE_PROC_FAMILY &quot;PENTIUMIII &quot;
+macro_line|#elif defined CONFIG_MPENTIUMM
+DECL|macro|MODULE_PROC_FAMILY
+mdefine_line|#define MODULE_PROC_FAMILY &quot;PENTIUMM &quot;
 macro_line|#elif defined CONFIG_MPENTIUM4
 DECL|macro|MODULE_PROC_FAMILY
 mdefine_line|#define MODULE_PROC_FAMILY &quot;PENTIUM4 &quot;
