@@ -542,6 +542,7 @@ r_void
 id|free_fw
 c_func
 (paren
+r_const
 r_struct
 id|firmware
 op_star
@@ -759,7 +760,7 @@ id|err
 suffix:semicolon
 )brace
 macro_line|#ifdef CONFIG_PM
-id|chip-&gt;firmware
+id|vx-&gt;firmware
 (braket
 id|index
 )braket

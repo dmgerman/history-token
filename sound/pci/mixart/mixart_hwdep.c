@@ -2339,7 +2339,6 @@ mdefine_line|#define SND_MIXART_FW_LOADER&t;/* use the standard firmware loader 
 macro_line|#endif
 macro_line|#endif
 macro_line|#ifdef SND_MIXART_FW_LOADER
-macro_line|#include &lt;linux/firmware.h&gt;
 DECL|function|snd_mixart_setup_firmware
 r_int
 id|snd_mixart_setup_firmware
@@ -2603,11 +2602,11 @@ suffix:semicolon
 r_int
 id|err
 suffix:semicolon
-id|fw-&gt;size
+id|fw.size
 op_assign
 id|dsp-&gt;length
 suffix:semicolon
-id|fw-&gt;data
+id|fw.data
 op_assign
 id|vmalloc
 c_func
@@ -2619,7 +2618,7 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|fw-&gt;data
+id|fw.data
 )paren
 (brace
 id|snd_printk
@@ -2645,7 +2644,7 @@ c_cond
 id|copy_from_user
 c_func
 (paren
-id|fw-&gt;data
+id|fw.data
 comma
 id|dsp-&gt;image
 comma
@@ -2656,7 +2655,7 @@ id|dsp-&gt;length
 id|vfree
 c_func
 (paren
-id|fw-&gt;data
+id|fw.data
 )paren
 suffix:semicolon
 r_return
@@ -2680,7 +2679,7 @@ suffix:semicolon
 id|vfree
 c_func
 (paren
-id|fw-&gt;data
+id|fw.data
 )paren
 suffix:semicolon
 r_return
