@@ -4954,15 +4954,6 @@ id|j
 op_plus
 l_int|1
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|usercon.type
-op_eq
-id|fromcon-&gt;type
-)paren
-r_continue
-suffix:semicolon
 id|mls_for_user_ranges
 c_func
 (paren
