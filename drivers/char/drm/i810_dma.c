@@ -873,11 +873,18 @@ id|dma
 op_assign
 id|dev-&gt;dma
 suffix:semicolon
-macro_line|#if __HAVE_IRQ
 multiline_comment|/* Make sure interrupts are disabled here because the uninstall ioctl&n;&t; * may not have been called from userspace and after dev_private&n;&t; * is freed, it&squot;s too late.&n;&t; */
 r_if
 c_cond
 (paren
+id|drm_core_check_feature
+c_func
+(paren
+id|dev
+comma
+id|DRIVER_HAVE_IRQ
+)paren
+op_logical_and
 id|dev-&gt;irq_enabled
 )paren
 id|DRM
@@ -889,7 +896,6 @@ id|irq_uninstall
 id|dev
 )paren
 suffix:semicolon
-macro_line|#endif
 r_if
 c_cond
 (paren
@@ -6383,6 +6389,10 @@ op_or
 id|DRIVER_REQUIRE_AGP
 op_or
 id|DRIVER_USE_MTRR
+op_or
+id|DRIVER_HAVE_DMA
+op_or
+id|DRIVER_DMA_QUEUE
 suffix:semicolon
 id|dev-&gt;dev_priv_size
 op_assign
@@ -6402,6 +6412,10 @@ suffix:semicolon
 id|dev-&gt;fn_tbl.dma_quiescent
 op_assign
 id|i810_driver_dma_quiescent
+suffix:semicolon
+id|dev-&gt;fn_tbl.reclaim_buffers
+op_assign
+id|i810_reclaim_buffers
 suffix:semicolon
 )brace
 eof

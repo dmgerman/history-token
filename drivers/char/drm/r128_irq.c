@@ -4,9 +4,9 @@ macro_line|#include &quot;drmP.h&quot;
 macro_line|#include &quot;drm.h&quot;
 macro_line|#include &quot;r128_drm.h&quot;
 macro_line|#include &quot;r128_drv.h&quot;
-DECL|function|r128_irq_handler
+DECL|function|r128_driver_irq_handler
 id|irqreturn_t
-id|r128_irq_handler
+id|r128_driver_irq_handler
 c_func
 (paren
 id|DRM_IRQ_ARGS
@@ -91,13 +91,10 @@ r_return
 id|IRQ_NONE
 suffix:semicolon
 )brace
-DECL|function|vblank_wait
+DECL|function|r128_driver_vblank_wait
 r_int
-id|DRM
+id|r128_driver_vblank_wait
 c_func
-(paren
-id|vblank_wait
-)paren
 (paren
 id|drm_device_t
 op_star

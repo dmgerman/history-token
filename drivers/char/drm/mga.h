@@ -30,14 +30,5 @@ DECL|macro|__HAVE_COUNTER7
 mdefine_line|#define __HAVE_COUNTER7         _DRM_STAT_PRIMARY
 DECL|macro|__HAVE_COUNTER8
 mdefine_line|#define __HAVE_COUNTER8         _DRM_STAT_SECONDARY
-multiline_comment|/* DMA customization:&n; */
-DECL|macro|__HAVE_DMA
-mdefine_line|#define __HAVE_DMA&t;&t;1
-DECL|macro|__HAVE_IRQ
-mdefine_line|#define __HAVE_IRQ&t;&t;1
-DECL|macro|__HAVE_VBL_IRQ
-mdefine_line|#define __HAVE_VBL_IRQ&t;&t;1
-DECL|macro|__HAVE_SHARED_IRQ
-mdefine_line|#define __HAVE_SHARED_IRQ       1
 macro_line|#endif
 eof
