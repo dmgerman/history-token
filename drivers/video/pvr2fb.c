@@ -4425,7 +4425,7 @@ c_func
 (paren
 l_string|&quot;fb%d: %s frame buffer device, using %ldk/%ldk of video memory&bslash;n&quot;
 comma
-id|GET_FB_IDX
+id|minor
 c_func
 (paren
 id|fb_info.node
@@ -4447,7 +4447,7 @@ c_func
 (paren
 l_string|&quot;fb%d: Mode %dx%d-%d pitch = %ld cable: %s video output: %s&bslash;n&quot;
 comma
-id|GET_FB_IDX
+id|minor
 c_func
 (paren
 id|fb_info.node
