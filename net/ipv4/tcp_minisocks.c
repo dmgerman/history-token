@@ -3043,6 +3043,17 @@ comma
 id|req
 )paren
 suffix:semicolon
+r_if
+c_cond
+(paren
+id|newtp-&gt;ecn_flags
+op_amp
+id|TCP_ECN_OK
+)paren
+id|newsk-&gt;no_largesend
+op_assign
+l_int|1
+suffix:semicolon
 id|TCP_INC_STATS_BH
 c_func
 (paren

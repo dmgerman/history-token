@@ -8,17 +8,24 @@ mdefine_line|#define I8042_KBD_PHYS_DESC &quot;isa0060/serio0&quot;
 DECL|macro|I8042_AUX_PHYS_DESC
 mdefine_line|#define I8042_AUX_PHYS_DESC &quot;isa0060/serio1&quot;
 multiline_comment|/*&n; * IRQs.&n; */
+macro_line|#ifdef __alpha__
 DECL|macro|I8042_KBD_IRQ
-mdefine_line|#define I8042_KBD_IRQ CONFIG_I8042_KBD_IRQ 
+mdefine_line|#define I8042_KBD_IRQ&t;1
 DECL|macro|I8042_AUX_IRQ
-mdefine_line|#define I8042_AUX_IRQ CONFIG_I8042_AUX_IRQ
+mdefine_line|#define I8042_AUX_IRQ&t;(RTC_PORT(0) == 0x170 ? 9 : 12)&t;/* Jensen is special */
+macro_line|#else
+DECL|macro|I8042_KBD_IRQ
+mdefine_line|#define I8042_KBD_IRQ&t;1
+DECL|macro|I8042_AUX_IRQ
+mdefine_line|#define I8042_AUX_IRQ&t;12
+macro_line|#endif
 multiline_comment|/*&n; * Register numbers.&n; */
 DECL|macro|I8042_COMMAND_REG
-mdefine_line|#define I8042_COMMAND_REG&t;CONFIG_I8042_REG_BASE + 4&t;
+mdefine_line|#define I8042_COMMAND_REG&t;0x64&t;
 DECL|macro|I8042_STATUS_REG
-mdefine_line|#define I8042_STATUS_REG&t;CONFIG_I8042_REG_BASE + 4&t;
+mdefine_line|#define I8042_STATUS_REG&t;0x64&t;
 DECL|macro|I8042_DATA_REG
-mdefine_line|#define I8042_DATA_REG&t;&t;CONFIG_I8042_REG_BASE&t;
+mdefine_line|#define I8042_DATA_REG&t;&t;0x60
 DECL|function|i8042_read_data
 r_static
 r_inline

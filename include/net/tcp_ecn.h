@@ -95,6 +95,11 @@ id|TCP_ECN_send_syn
 c_func
 (paren
 r_struct
+id|sock
+op_star
+id|sk
+comma
+r_struct
 id|tcp_opt
 op_star
 id|tp
@@ -113,6 +118,13 @@ r_if
 c_cond
 (paren
 id|sysctl_tcp_ecn
+op_logical_and
+op_logical_neg
+(paren
+id|sk-&gt;route_caps
+op_amp
+id|NETIF_F_TSO
+)paren
 )paren
 (brace
 id|TCP_SKB_CB
@@ -130,6 +142,10 @@ suffix:semicolon
 id|tp-&gt;ecn_flags
 op_assign
 id|TCP_ECN_OK
+suffix:semicolon
+id|sk-&gt;no_largesend
+op_assign
+l_int|1
 suffix:semicolon
 )brace
 )brace

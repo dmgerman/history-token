@@ -307,7 +307,10 @@ op_star
 id|priv
 suffix:semicolon
 id|dbg
+c_func
 (paren
+l_string|&quot;%s&quot;
+comma
 id|__FUNCTION__
 )paren
 suffix:semicolon
@@ -393,7 +396,10 @@ r_int
 id|i
 suffix:semicolon
 id|dbg
+c_func
 (paren
+l_string|&quot;%s&quot;
+comma
 id|__FUNCTION__
 )paren
 suffix:semicolon
@@ -479,8 +485,9 @@ suffix:semicolon
 id|dbg
 c_func
 (paren
+l_string|&quot;%s - port %d&quot;
+comma
 id|__FUNCTION__
-l_string|&quot; - port %d&quot;
 comma
 id|port-&gt;number
 )paren
@@ -557,8 +564,9 @@ suffix:semicolon
 id|dbg
 c_func
 (paren
+l_string|&quot;%s - usb_submit_urb(int urb)&quot;
+comma
 id|__FUNCTION__
-l_string|&quot; - usb_submit_urb(int urb)&quot;
 )paren
 suffix:semicolon
 r_return
@@ -584,8 +592,9 @@ id|filp
 id|dbg
 c_func
 (paren
+l_string|&quot;%s - port %d&quot;
+comma
 id|__FUNCTION__
-l_string|&quot; - port %d&quot;
 comma
 id|port-&gt;number
 )paren
@@ -667,8 +676,9 @@ suffix:semicolon
 id|dbg
 c_func
 (paren
+l_string|&quot;%s - port %d&quot;
+comma
 id|__FUNCTION__
-l_string|&quot; - port %d&quot;
 comma
 id|port-&gt;number
 )paren
@@ -676,8 +686,9 @@ suffix:semicolon
 id|dbg
 c_func
 (paren
+l_string|&quot;%s - from_user %d&quot;
+comma
 id|__FUNCTION__
-l_string|&quot; - from_user %d&quot;
 comma
 id|from_user
 )paren
@@ -693,8 +704,9 @@ l_int|0
 id|dbg
 c_func
 (paren
+l_string|&quot;%s - write request of 0 bytes&quot;
+comma
 id|__FUNCTION__
-l_string|&quot; - write request of 0 bytes&quot;
 )paren
 suffix:semicolon
 r_return
@@ -713,9 +725,11 @@ id|EINPROGRESS
 )paren
 (brace
 id|dbg
+c_func
 (paren
+l_string|&quot;%s - already writing&quot;
+comma
 id|__FUNCTION__
-l_string|&quot; - already writing&quot;
 )paren
 suffix:semicolon
 r_return
@@ -842,8 +856,9 @@ suffix:semicolon
 id|dbg
 c_func
 (paren
+l_string|&quot;%s - expected data: %d&quot;
+comma
 id|__FUNCTION__
-l_string|&quot; - expected data: %d&quot;
 comma
 id|wrexpected
 )paren
@@ -874,8 +889,9 @@ suffix:semicolon
 id|dbg
 c_func
 (paren
+l_string|&quot;%s - transmitting data (frame 1)&quot;
+comma
 id|__FUNCTION__
-l_string|&quot; - transmitting data (frame 1)&quot;
 )paren
 suffix:semicolon
 id|length
@@ -958,8 +974,9 @@ id|result
 id|err
 c_func
 (paren
+l_string|&quot;%s - failed submitting write urb, error %d&quot;
+comma
 id|__FUNCTION__
-l_string|&quot; - failed submitting write urb, error %d&quot;
 comma
 id|result
 )paren
@@ -980,8 +997,9 @@ suffix:semicolon
 id|dbg
 c_func
 (paren
+l_string|&quot;%s - priv-&gt;wrsent=%d&quot;
+comma
 id|__FUNCTION__
-l_string|&quot; - priv-&gt;wrsent=%d&quot;
 comma
 id|priv-&gt;wrsent
 )paren
@@ -989,8 +1007,9 @@ suffix:semicolon
 id|dbg
 c_func
 (paren
+l_string|&quot;%s - priv-&gt;wrfilled=%d&quot;
+comma
 id|__FUNCTION__
-l_string|&quot; - priv-&gt;wrfilled=%d&quot;
 comma
 id|priv-&gt;wrfilled
 )paren
@@ -1006,8 +1025,9 @@ id|priv-&gt;wrfilled
 id|dbg
 c_func
 (paren
+l_string|&quot;%s - buffer cleaned&quot;
+comma
 id|__FUNCTION__
-l_string|&quot; - buffer cleaned&quot;
 )paren
 suffix:semicolon
 id|memset
@@ -1104,8 +1124,9 @@ suffix:semicolon
 id|dbg
 c_func
 (paren
+l_string|&quot;%s - port %d&quot;
+comma
 id|__FUNCTION__
-l_string|&quot; - port %d&quot;
 comma
 id|port-&gt;number
 )paren
@@ -1256,8 +1277,9 @@ suffix:semicolon
 id|dbg
 c_func
 (paren
+l_string|&quot;%s - rdtodo: %d&quot;
+comma
 id|__FUNCTION__
-l_string|&quot; - rdtodo: %d&quot;
 comma
 id|priv-&gt;rdtodo
 )paren
@@ -1292,8 +1314,9 @@ id|result
 id|err
 c_func
 (paren
+l_string|&quot;%s - failed resubmitting read urb, error %d&quot;
+comma
 id|__FUNCTION__
-l_string|&quot; - failed resubmitting read urb, error %d&quot;
 comma
 id|result
 )paren
@@ -1302,8 +1325,9 @@ suffix:semicolon
 id|dbg
 c_func
 (paren
+l_string|&quot;%s - usb_submit_urb(read urb)&quot;
+comma
 id|__FUNCTION__
-l_string|&quot; - usb_submit_urb(read urb)&quot;
 )paren
 suffix:semicolon
 )brace
@@ -1379,8 +1403,9 @@ suffix:semicolon
 id|dbg
 c_func
 (paren
+l_string|&quot;%s - port %d&quot;
+comma
 id|__FUNCTION__
-l_string|&quot; - port %d&quot;
 comma
 id|port-&gt;number
 )paren
@@ -1395,8 +1420,9 @@ id|serial
 id|dbg
 c_func
 (paren
+l_string|&quot;%s - bad serial pointer, exiting&quot;
+comma
 id|__FUNCTION__
-l_string|&quot; - bad serial pointer, exiting&quot;
 )paren
 suffix:semicolon
 r_return
@@ -1422,8 +1448,9 @@ suffix:semicolon
 id|dbg
 c_func
 (paren
+l_string|&quot;%s - nonzero read bulk status received: %d&quot;
+comma
 id|__FUNCTION__
-l_string|&quot; - nonzero read bulk status received: %d&quot;
 comma
 id|urb-&gt;status
 )paren
@@ -1527,8 +1554,9 @@ suffix:semicolon
 id|dbg
 c_func
 (paren
+l_string|&quot;%s - rdtodo: %d&quot;
+comma
 id|__FUNCTION__
-l_string|&quot; - rdtodo: %d&quot;
 comma
 id|priv-&gt;rdtodo
 )paren
@@ -1563,8 +1591,9 @@ id|result
 id|err
 c_func
 (paren
+l_string|&quot;%s - failed resubmitting read urb, error %d&quot;
+comma
 id|__FUNCTION__
-l_string|&quot; - failed resubmitting read urb, error %d&quot;
 comma
 id|result
 )paren
@@ -1572,8 +1601,9 @@ suffix:semicolon
 id|dbg
 c_func
 (paren
+l_string|&quot;%s - usb_submit_urb(read urb)&quot;
+comma
 id|__FUNCTION__
-l_string|&quot; - usb_submit_urb(read urb)&quot;
 )paren
 suffix:semicolon
 )brace
@@ -1630,8 +1660,9 @@ suffix:semicolon
 id|dbg
 c_func
 (paren
+l_string|&quot;%s - port %d&quot;
+comma
 id|__FUNCTION__
-l_string|&quot; - port %d&quot;
 comma
 id|port-&gt;number
 )paren
@@ -1646,8 +1677,9 @@ id|serial
 id|dbg
 c_func
 (paren
+l_string|&quot;%s - bad serial pointer, exiting&quot;
+comma
 id|__FUNCTION__
-l_string|&quot; - bad serial pointer, exiting&quot;
 )paren
 suffix:semicolon
 r_return
@@ -1662,8 +1694,9 @@ id|urb-&gt;status
 id|dbg
 c_func
 (paren
+l_string|&quot;%s - nonzero write bulk status received: %d&quot;
+comma
 id|__FUNCTION__
-l_string|&quot; - nonzero write bulk status received: %d&quot;
 comma
 id|urb-&gt;status
 )paren
@@ -1695,9 +1728,11 @@ id|EINPROGRESS
 )paren
 (brace
 id|dbg
+c_func
 (paren
+l_string|&quot;%s - already writing&quot;
+comma
 id|__FUNCTION__
-l_string|&quot; - already writing&quot;
 )paren
 suffix:semicolon
 r_return
@@ -1706,8 +1741,9 @@ suffix:semicolon
 id|dbg
 c_func
 (paren
+l_string|&quot;%s - transmitting data (frame n)&quot;
+comma
 id|__FUNCTION__
-l_string|&quot; - transmitting data (frame n)&quot;
 )paren
 suffix:semicolon
 id|length
@@ -1800,8 +1836,9 @@ id|result
 id|err
 c_func
 (paren
+l_string|&quot;%s - failed submitting write urb, error %d&quot;
+comma
 id|__FUNCTION__
-l_string|&quot; - failed submitting write urb, error %d&quot;
 comma
 id|result
 )paren
@@ -1837,8 +1874,9 @@ suffix:semicolon
 id|dbg
 c_func
 (paren
+l_string|&quot;%s - priv-&gt;wrsent=%d&quot;
+comma
 id|__FUNCTION__
-l_string|&quot; - priv-&gt;wrsent=%d&quot;
 comma
 id|priv-&gt;wrsent
 )paren
@@ -1846,8 +1884,9 @@ suffix:semicolon
 id|dbg
 c_func
 (paren
+l_string|&quot;%s - priv-&gt;wrfilled=%d&quot;
+comma
 id|__FUNCTION__
-l_string|&quot; - priv-&gt;wrfilled=%d&quot;
 comma
 id|priv-&gt;wrfilled
 )paren
@@ -1892,8 +1931,9 @@ id|blksize
 id|dbg
 c_func
 (paren
+l_string|&quot;%s - buffer cleaned&quot;
+comma
 id|__FUNCTION__
-l_string|&quot; - buffer cleaned&quot;
 )paren
 suffix:semicolon
 id|memset

@@ -785,7 +785,7 @@ op_star
 id|fix
 op_assign
 op_amp
-id|fb-&gt;fix
+id|fb-&gt;info.fix
 suffix:semicolon
 r_struct
 id|display
@@ -1015,7 +1015,7 @@ l_string|&quot;CGthree&quot;
 suffix:semicolon
 id|fix-&gt;line_length
 op_assign
-id|fb-&gt;var.xres_virtual
+id|fb-&gt;info.var.xres_virtual
 suffix:semicolon
 id|fix-&gt;accel
 op_assign

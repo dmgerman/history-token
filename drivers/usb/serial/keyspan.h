@@ -2067,6 +2067,10 @@ id|set_termios
 suffix:colon
 id|keyspan_set_termios
 comma
+id|break_ctl
+suffix:colon
+id|keyspan_break_ctl
+comma
 id|attach
 suffix:colon
 id|keyspan_startup

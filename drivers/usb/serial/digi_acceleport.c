@@ -1480,8 +1480,9 @@ id|ret
 id|err
 c_func
 (paren
+l_string|&quot;%s: usb_submit_urb failed, ret=%d&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;: usb_submit_urb failed, ret=%d&quot;
 comma
 id|ret
 )paren
@@ -1824,8 +1825,9 @@ id|ret
 id|err
 c_func
 (paren
+l_string|&quot;%s: usb_submit_urb failed, ret=%d, port=%d&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;: usb_submit_urb failed, ret=%d, port=%d&quot;
 comma
 id|ret
 comma
@@ -2169,8 +2171,9 @@ id|ret
 id|err
 c_func
 (paren
+l_string|&quot;%s: usb_submit_urb failed, ret=%d&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;: usb_submit_urb failed, ret=%d&quot;
 comma
 id|ret
 )paren
@@ -2626,8 +2629,9 @@ id|ret
 id|err
 c_func
 (paren
+l_string|&quot;%s: usb_submit_urb failed, ret=%d, port=%d&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;: usb_submit_urb failed, ret=%d, port=%d&quot;
 comma
 id|ret
 comma
@@ -4378,8 +4382,9 @@ l_int|0
 id|err
 c_func
 (paren
+l_string|&quot;%s: usb_submit_urb failed, ret=%d, port=%d&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;: usb_submit_urb failed, ret=%d, port=%d&quot;
 comma
 id|ret
 comma
@@ -4475,8 +4480,9 @@ l_int|NULL
 id|err
 c_func
 (paren
+l_string|&quot;%s: port or port-&gt;private is NULL, status=%d&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;: port or port-&gt;private is NULL, status=%d&quot;
 comma
 id|urb-&gt;status
 )paren
@@ -4505,8 +4511,9 @@ l_int|NULL
 id|err
 c_func
 (paren
+l_string|&quot;%s: serial or serial-&gt;private is NULL, status=%d&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;: serial or serial-&gt;private is NULL, status=%d&quot;
 comma
 id|urb-&gt;status
 )paren
@@ -4741,8 +4748,9 @@ id|ret
 id|err
 c_func
 (paren
+l_string|&quot;%s: usb_submit_urb failed, ret=%d, port=%d&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;: usb_submit_urb failed, ret=%d, port=%d&quot;
 comma
 id|ret
 comma
@@ -5782,8 +5790,9 @@ l_int|0
 id|err
 c_func
 (paren
+l_string|&quot;%s: usb_submit_urb failed, ret=%d, port=%d&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;: usb_submit_urb failed, ret=%d, port=%d&quot;
 comma
 id|ret
 comma
@@ -6306,8 +6315,9 @@ l_int|NULL
 id|err
 c_func
 (paren
+l_string|&quot;%s: port or port-&gt;private is NULL, status=%d&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;: port or port-&gt;private is NULL, status=%d&quot;
 comma
 id|urb-&gt;status
 )paren
@@ -6340,8 +6350,9 @@ l_int|NULL
 id|err
 c_func
 (paren
+l_string|&quot;%s: serial is bad or serial-&gt;private is NULL, status=%d&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;: serial is bad or serial-&gt;private is NULL, status=%d&quot;
 comma
 id|urb-&gt;status
 )paren
@@ -6359,8 +6370,9 @@ id|urb-&gt;status
 id|err
 c_func
 (paren
+l_string|&quot;%s: nonzero read bulk status: status=%d, port=%d&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;: nonzero read bulk status: status=%d, port=%d&quot;
 comma
 id|urb-&gt;status
 comma
@@ -6452,8 +6464,9 @@ l_int|0
 id|err
 c_func
 (paren
+l_string|&quot;%s: failed resubmitting urb, ret=%d, port=%d&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;: failed resubmitting urb, ret=%d, port=%d&quot;
 comma
 id|ret
 comma
@@ -6622,8 +6635,9 @@ l_int|2
 id|err
 c_func
 (paren
+l_string|&quot;%s: INCOMPLETE OR MULTIPLE PACKET, urb-&gt;status=%d, port=%d, opcode=%d, len=%d, actual_length=%d, status=%d&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;: INCOMPLETE OR MULTIPLE PACKET, urb-&gt;status=%d, port=%d, opcode=%d, len=%d, actual_length=%d, status=%d&quot;
 comma
 id|urb-&gt;status
 comma
@@ -6885,8 +6899,9 @@ id|DIGI_CMD_RECEIVE_DISABLE
 id|dbg
 c_func
 (paren
+l_string|&quot;%s: got RECEIVE_DISABLE&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;: got RECEIVE_DISABLE&quot;
 )paren
 suffix:semicolon
 )brace
@@ -6902,8 +6917,9 @@ id|DIGI_CMD_RECEIVE_DATA
 id|dbg
 c_func
 (paren
+l_string|&quot;%s: unknown opcode: %d&quot;
+comma
 id|__FUNCTION__
-l_string|&quot;: unknown opcode: %d&quot;
 comma
 id|opcode
 )paren

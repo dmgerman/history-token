@@ -363,16 +363,6 @@ r_struct
 id|fb_info
 id|info
 suffix:semicolon
-DECL|member|fix
-r_struct
-id|fb_fix_screeninfo
-id|fix
-suffix:semicolon
-DECL|member|var
-r_struct
-id|fb_var_screeninfo
-id|var
-suffix:semicolon
 DECL|member|disp
 r_struct
 id|display
