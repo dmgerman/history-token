@@ -159,8 +159,6 @@ suffix:semicolon
 r_struct
 id|xfs_bmap_free
 suffix:semicolon
-DECL|macro|SPLDECL
-mdefine_line|#define&t;SPLDECL(s)&t;&t;unsigned long s
 DECL|macro|AIL_LOCK_T
 mdefine_line|#define&t;AIL_LOCK_T&t;&t;lock_t
 DECL|macro|AIL_LOCKINIT
