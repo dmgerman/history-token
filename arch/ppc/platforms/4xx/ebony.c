@@ -337,7 +337,7 @@ id|PCI_IRQ_TABLE_LOOKUP
 suffix:semicolon
 )brace
 DECL|macro|PCIX_WRITEL
-mdefine_line|#define PCIX_WRITEL(value, offset) &bslash;&n;&t;(writel(value, (u32)pcix_reg_base+offset))
+mdefine_line|#define PCIX_WRITEL(value, offset) &bslash;&n;&t;(writel(value, pcix_reg_base + offset))
 multiline_comment|/*&n; * FIXME: This is only here to &quot;make it work&quot;.  This will move&n; * to a ibm_pcix.c which will contain a generic IBM PCIX bridge&n; * configuration library. -Matt&n; */
 r_static
 r_void
