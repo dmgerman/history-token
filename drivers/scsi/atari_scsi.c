@@ -2527,7 +2527,7 @@ r_struct
 id|NCR5380_hostdata
 op_star
 )paren
-id|cmd-&gt;host-&gt;hostdata
+id|cmd-&gt;device-&gt;host-&gt;hostdata
 suffix:semicolon
 multiline_comment|/* For doing the reset, SCSI interrupts must be disabled first,&n;&t; * since the 5380 raises its IRQ line while _RST is active and we&n;&t; * can&squot;t disable interrupts completely, since we need the timer.&n;&t; */
 multiline_comment|/* And abort a maybe active DMA transfer */

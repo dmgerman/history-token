@@ -208,7 +208,7 @@ op_amp
 id|HDATA
 c_func
 (paren
-id|cmd-&gt;host
+id|cmd-&gt;device-&gt;host
 )paren
 op_member_access_from_pointer
 id|dma_xfer_mask
@@ -229,7 +229,7 @@ id|cmd-&gt;SCp.this_residual
 id|HDATA
 c_func
 (paren
-id|cmd-&gt;host
+id|cmd-&gt;device-&gt;host
 )paren
 op_member_access_from_pointer
 id|dma_bounce_len
@@ -253,7 +253,7 @@ id|scsi_alloc_out_of_range
 id|HDATA
 c_func
 (paren
-id|cmd-&gt;host
+id|cmd-&gt;device-&gt;host
 )paren
 op_member_access_from_pointer
 id|dma_bounce_buffer
@@ -263,7 +263,7 @@ id|kmalloc
 id|HDATA
 c_func
 (paren
-id|cmd-&gt;host
+id|cmd-&gt;device-&gt;host
 )paren
 op_member_access_from_pointer
 id|dma_bounce_len
@@ -274,7 +274,7 @@ suffix:semicolon
 id|HDATA
 c_func
 (paren
-id|cmd-&gt;host
+id|cmd-&gt;device-&gt;host
 )paren
 op_member_access_from_pointer
 id|dma_buffer_pool
@@ -291,7 +291,7 @@ op_logical_neg
 id|HDATA
 c_func
 (paren
-id|cmd-&gt;host
+id|cmd-&gt;device-&gt;host
 )paren
 op_member_access_from_pointer
 id|dma_bounce_buffer
@@ -300,7 +300,7 @@ id|dma_bounce_buffer
 id|HDATA
 c_func
 (paren
-id|cmd-&gt;host
+id|cmd-&gt;device-&gt;host
 )paren
 op_member_access_from_pointer
 id|dma_bounce_buffer
@@ -311,7 +311,7 @@ c_func
 id|HDATA
 c_func
 (paren
-id|cmd-&gt;host
+id|cmd-&gt;device-&gt;host
 )paren
 op_member_access_from_pointer
 id|dma_bounce_len
@@ -326,7 +326,7 @@ op_logical_neg
 id|HDATA
 c_func
 (paren
-id|cmd-&gt;host
+id|cmd-&gt;device-&gt;host
 )paren
 op_member_access_from_pointer
 id|dma_bounce_buffer
@@ -335,7 +335,7 @@ id|dma_bounce_buffer
 id|HDATA
 c_func
 (paren
-id|cmd-&gt;host
+id|cmd-&gt;device-&gt;host
 )paren
 op_member_access_from_pointer
 id|dma_bounce_len
@@ -349,7 +349,7 @@ suffix:semicolon
 id|HDATA
 c_func
 (paren
-id|cmd-&gt;host
+id|cmd-&gt;device-&gt;host
 )paren
 op_member_access_from_pointer
 id|dma_buffer_pool
@@ -366,7 +366,7 @@ c_func
 id|HDATA
 c_func
 (paren
-id|cmd-&gt;host
+id|cmd-&gt;device-&gt;host
 )paren
 op_member_access_from_pointer
 id|dma_bounce_buffer
@@ -380,7 +380,7 @@ op_amp
 id|HDATA
 c_func
 (paren
-id|cmd-&gt;host
+id|cmd-&gt;device-&gt;host
 )paren
 op_member_access_from_pointer
 id|dma_xfer_mask
@@ -393,7 +393,7 @@ c_cond
 id|HDATA
 c_func
 (paren
-id|cmd-&gt;host
+id|cmd-&gt;device-&gt;host
 )paren
 op_member_access_from_pointer
 id|dma_buffer_pool
@@ -406,7 +406,7 @@ id|kfree
 id|HDATA
 c_func
 (paren
-id|cmd-&gt;host
+id|cmd-&gt;device-&gt;host
 )paren
 op_member_access_from_pointer
 id|dma_bounce_buffer
@@ -424,7 +424,7 @@ id|amiga_chip_free
 id|HDATA
 c_func
 (paren
-id|cmd-&gt;host
+id|cmd-&gt;device-&gt;host
 )paren
 op_member_access_from_pointer
 id|dma_bounce_buffer
@@ -434,7 +434,7 @@ suffix:semicolon
 id|HDATA
 c_func
 (paren
-id|cmd-&gt;host
+id|cmd-&gt;device-&gt;host
 )paren
 op_member_access_from_pointer
 id|dma_bounce_buffer
@@ -445,7 +445,7 @@ c_func
 id|HDATA
 c_func
 (paren
-id|cmd-&gt;host
+id|cmd-&gt;device-&gt;host
 )paren
 op_member_access_from_pointer
 id|dma_bounce_len
@@ -460,7 +460,7 @@ op_logical_neg
 id|HDATA
 c_func
 (paren
-id|cmd-&gt;host
+id|cmd-&gt;device-&gt;host
 )paren
 op_member_access_from_pointer
 id|dma_bounce_buffer
@@ -469,7 +469,7 @@ id|dma_bounce_buffer
 id|HDATA
 c_func
 (paren
-id|cmd-&gt;host
+id|cmd-&gt;device-&gt;host
 )paren
 op_member_access_from_pointer
 id|dma_bounce_len
@@ -488,7 +488,7 @@ c_func
 id|HDATA
 c_func
 (paren
-id|cmd-&gt;host
+id|cmd-&gt;device-&gt;host
 )paren
 op_member_access_from_pointer
 id|dma_bounce_buffer
@@ -497,7 +497,7 @@ suffix:semicolon
 id|HDATA
 c_func
 (paren
-id|cmd-&gt;host
+id|cmd-&gt;device-&gt;host
 )paren
 op_member_access_from_pointer
 id|dma_buffer_pool
@@ -518,7 +518,7 @@ id|memcpy
 id|HDATA
 c_func
 (paren
-id|cmd-&gt;host
+id|cmd-&gt;device-&gt;host
 )paren
 op_member_access_from_pointer
 id|dma_bounce_buffer
@@ -544,7 +544,7 @@ suffix:semicolon
 id|HDATA
 c_func
 (paren
-id|cmd-&gt;host
+id|cmd-&gt;device-&gt;host
 )paren
 op_member_access_from_pointer
 id|dma_dir
@@ -554,7 +554,7 @@ suffix:semicolon
 id|DMA
 c_func
 (paren
-id|cmd-&gt;host
+id|cmd-&gt;device-&gt;host
 )paren
 op_member_access_from_pointer
 id|CNTR
@@ -565,7 +565,7 @@ multiline_comment|/* setup DMA *physical* address */
 id|DMA
 c_func
 (paren
-id|cmd-&gt;host
+id|cmd-&gt;device-&gt;host
 )paren
 op_member_access_from_pointer
 id|ACR
@@ -605,7 +605,7 @@ op_complement
 id|HDATA
 c_func
 (paren
-id|cmd-&gt;host
+id|cmd-&gt;device-&gt;host
 )paren
 op_member_access_from_pointer
 id|dma_xfer_mask
@@ -619,7 +619,7 @@ l_int|0x01c0
 id|DMA
 c_func
 (paren
-id|cmd-&gt;host
+id|cmd-&gt;device-&gt;host
 )paren
 op_member_access_from_pointer
 id|BANK
@@ -636,7 +636,7 @@ multiline_comment|/* start DMA */
 id|DMA
 c_func
 (paren
-id|cmd-&gt;host
+id|cmd-&gt;device-&gt;host
 )paren
 op_member_access_from_pointer
 id|ST_DMA

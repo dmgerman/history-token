@@ -182,7 +182,7 @@ id|Scsi_Host
 op_star
 id|instance
 op_assign
-id|cmd-&gt;host
+id|cmd-&gt;device-&gt;host
 suffix:semicolon
 multiline_comment|/* don&squot;t allow DMA if the physical address is bad */
 r_if
@@ -402,7 +402,7 @@ multiline_comment|/* remember direction */
 id|HDATA
 c_func
 (paren
-id|cmd-&gt;host
+id|cmd-&gt;device-&gt;host
 )paren
 op_member_access_from_pointer
 id|dma_dir
@@ -412,7 +412,7 @@ suffix:semicolon
 id|DMA
 c_func
 (paren
-id|cmd-&gt;host
+id|cmd-&gt;device-&gt;host
 )paren
 op_member_access_from_pointer
 id|CNTR
@@ -423,7 +423,7 @@ multiline_comment|/* setup DMA *physical* address */
 id|DMA
 c_func
 (paren
-id|cmd-&gt;host
+id|cmd-&gt;device-&gt;host
 )paren
 op_member_access_from_pointer
 id|ACR
@@ -460,7 +460,7 @@ multiline_comment|/* start DMA */
 id|DMA
 c_func
 (paren
-id|cmd-&gt;host
+id|cmd-&gt;device-&gt;host
 )paren
 op_member_access_from_pointer
 id|ST_DMA
