@@ -3379,6 +3379,9 @@ op_minus
 id|ENOMEM
 suffix:semicolon
 )brace
+r_if
+c_cond
+(paren
 id|copy_from_user
 c_func
 (paren
@@ -3388,7 +3391,17 @@ id|buffer
 comma
 id|size
 )paren
+)paren
+(brace
+id|rc
+op_assign
+op_minus
+id|EFAULT
 suffix:semicolon
+r_goto
+id|out
+suffix:semicolon
+)brace
 id|memset
 c_func
 (paren
@@ -3471,6 +3484,8 @@ id|ENOMEM
 suffix:semicolon
 )brace
 )brace
+id|out
+suffix:colon
 id|pci_free_consistent
 c_func
 (paren
