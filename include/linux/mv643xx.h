@@ -2029,6 +2029,29 @@ DECL|macro|MV643XX_ETH_SET_MII_SPEED_TO_100
 mdefine_line|#define MV643XX_ETH_SET_MII_SPEED_TO_100&t;&t;(1&lt;&lt;24)
 DECL|macro|MV643XX_ETH_PORT_SERIAL_CONTROL_DEFAULT_VALUE
 mdefine_line|#define&t;MV643XX_ETH_PORT_SERIAL_CONTROL_DEFAULT_VALUE&t;&t;&bslash;&n;&t;&t;MV643XX_ETH_DO_NOT_FORCE_LINK_PASS&t;|&t;&bslash;&n;&t;&t;MV643XX_ETH_ENABLE_AUTO_NEG_FOR_DUPLX&t;|&t;&bslash;&n;&t;&t;MV643XX_ETH_DISABLE_AUTO_NEG_FOR_FLOW_CTRL |&t;&bslash;&n;&t;&t;MV643XX_ETH_ADV_SYMMETRIC_FLOW_CTRL&t;|&t;&bslash;&n;&t;&t;MV643XX_ETH_FORCE_FC_MODE_NO_PAUSE_DIS_TX |&t;&bslash;&n;&t;&t;MV643XX_ETH_FORCE_BP_MODE_NO_JAM&t;|&t;&bslash;&n;&t;&t;(1&lt;&lt;9)&t;/* reserved */&t;&t;&t;|&t;&bslash;&n;&t;&t;MV643XX_ETH_DO_NOT_FORCE_LINK_FAIL&t;|&t;&bslash;&n;&t;&t;MV643XX_ETH_RETRANSMIT_16_ATTEMPTS&t;|&t;&bslash;&n;&t;&t;MV643XX_ETH_ENABLE_AUTO_NEG_SPEED_GMII&t;|&t;&bslash;&n;&t;&t;MV643XX_ETH_DTE_ADV_0&t;&t;&t;|&t;&bslash;&n;&t;&t;MV643XX_ETH_DISABLE_AUTO_NEG_BYPASS&t;|&t;&bslash;&n;&t;&t;MV643XX_ETH_AUTO_NEG_NO_CHANGE&t;&t;|&t;&bslash;&n;&t;&t;MV643XX_ETH_MAX_RX_PACKET_9700BYTE&t;|&t;&bslash;&n;&t;&t;MV643XX_ETH_CLR_EXT_LOOPBACK&t;&t;|&t;&bslash;&n;&t;&t;MV643XX_ETH_SET_FULL_DUPLEX_MODE&t;|&t;&bslash;&n;&t;&t;MV643XX_ETH_ENABLE_FLOW_CTRL_TX_RX_IN_FULL_DUPLEX
+multiline_comment|/* These macros describe Ethernet Serial Status reg (PSR) bits */
+DECL|macro|MV643XX_ETH_PORT_STATUS_MODE_10_BIT
+mdefine_line|#define MV643XX_ETH_PORT_STATUS_MODE_10_BIT&t;&t;(1&lt;&lt;0)
+DECL|macro|MV643XX_ETH_PORT_STATUS_LINK_UP
+mdefine_line|#define MV643XX_ETH_PORT_STATUS_LINK_UP&t;&t;&t;(1&lt;&lt;1)
+DECL|macro|MV643XX_ETH_PORT_STATUS_FULL_DUPLEX
+mdefine_line|#define MV643XX_ETH_PORT_STATUS_FULL_DUPLEX&t;&t;(1&lt;&lt;2)
+DECL|macro|MV643XX_ETH_PORT_STATUS_FLOW_CONTROL
+mdefine_line|#define MV643XX_ETH_PORT_STATUS_FLOW_CONTROL&t;&t;(1&lt;&lt;3)
+DECL|macro|MV643XX_ETH_PORT_STATUS_GMII_1000
+mdefine_line|#define MV643XX_ETH_PORT_STATUS_GMII_1000&t;&t;(1&lt;&lt;4)
+DECL|macro|MV643XX_ETH_PORT_STATUS_MII_100
+mdefine_line|#define MV643XX_ETH_PORT_STATUS_MII_100&t;&t;&t;(1&lt;&lt;5)
+multiline_comment|/* PSR bit 6 is undocumented */
+DECL|macro|MV643XX_ETH_PORT_STATUS_TX_IN_PROGRESS
+mdefine_line|#define MV643XX_ETH_PORT_STATUS_TX_IN_PROGRESS&t;&t;(1&lt;&lt;7)
+DECL|macro|MV643XX_ETH_PORT_STATUS_AUTONEG_BYPASSED
+mdefine_line|#define MV643XX_ETH_PORT_STATUS_AUTONEG_BYPASSED&t;(1&lt;&lt;8)
+DECL|macro|MV643XX_ETH_PORT_STATUS_PARTITION
+mdefine_line|#define MV643XX_ETH_PORT_STATUS_PARTITION&t;&t;(1&lt;&lt;9)
+DECL|macro|MV643XX_ETH_PORT_STATUS_TX_FIFO_EMPTY
+mdefine_line|#define MV643XX_ETH_PORT_STATUS_TX_FIFO_EMPTY&t;&t;(1&lt;&lt;10)
+multiline_comment|/* PSR bits 11-31 are reserved */
 DECL|macro|MV643XX_ETH_PORT_DEFAULT_TRANSMIT_QUEUE_SIZE
 mdefine_line|#define&t;MV643XX_ETH_PORT_DEFAULT_TRANSMIT_QUEUE_SIZE&t;800
 DECL|macro|MV643XX_ETH_PORT_DEFAULT_RECEIVE_QUEUE_SIZE
