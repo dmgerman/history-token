@@ -295,8 +295,10 @@ DECL|macro|__NR_fstatfs
 mdefine_line|#define __NR_fstatfs            158 /* Common                                      */
 DECL|macro|__NR_umount
 mdefine_line|#define __NR_umount             159 /* Common                                      */
-multiline_comment|/* #define __NR_async_daemon    160    SunOS Specific                              */
-multiline_comment|/* #define __NR_getfh           161    SunOS Specific                              */
+DECL|macro|__NR_sched_set_affinity
+mdefine_line|#define __NR_sched_set_affinity 160 /* Linux specific, async_daemon under SunOS    */
+DECL|macro|__NR_sched_get_affinity
+mdefine_line|#define __NR_sched_get_affinity 161 /* Linux specific, getfh under SunOS           */
 DECL|macro|__NR_getdomainname
 mdefine_line|#define __NR_getdomainname      162 /* SunOS Specific                              */
 DECL|macro|__NR_setdomainname
