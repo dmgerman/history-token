@@ -50,9 +50,9 @@ suffix:semicolon
 multiline_comment|/* [DAMR5] PTD mapping for dtlb cached PGE */
 macro_line|#else
 r_struct
-id|mm_tblock_struct
+id|vm_list_struct
 op_star
-id|tblock
+id|vmlist
 suffix:semicolon
 r_int
 r_int
