@@ -10,15 +10,10 @@ macro_line|#include &lt;linux/unistd.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;linux/fs.h&gt;
-macro_line|#include &lt;linux/stat.h&gt;
-macro_line|#include &lt;linux/errno.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
-macro_line|#include &lt;linux/string.h&gt;
-macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/vmalloc.h&gt;
 macro_line|#include &lt;asm/segment.h&gt;
-macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &quot;intermezzo_fs.h&quot;
 macro_line|#include &quot;intermezzo_psdev.h&quot;
 macro_line|#ifdef CONFIG_FS_EXT_ATTR

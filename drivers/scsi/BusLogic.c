@@ -4,7 +4,6 @@ mdefine_line|#define BusLogic_DriverVersion&t;&t;&quot;2.1.16&quot;
 DECL|macro|BusLogic_DriverDate
 mdefine_line|#define BusLogic_DriverDate&t;&t;&quot;18 July 2002&quot;
 macro_line|#include &lt;linux/config.h&gt;
-macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;

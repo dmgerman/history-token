@@ -3238,6 +3238,10 @@ id|v
 op_increment
 )paren
 (brace
+id|v-&gt;frames
+op_assign
+id|count
+suffix:semicolon
 id|v-&gt;enabled
 op_assign
 l_int|1

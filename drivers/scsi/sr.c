@@ -906,10 +906,6 @@ id|SCpnt-&gt;transfersize
 op_assign
 id|rq-&gt;data_len
 suffix:semicolon
-id|SCpnt-&gt;underflow
-op_assign
-id|rq-&gt;data_len
-suffix:semicolon
 r_goto
 id|queue
 suffix:semicolon

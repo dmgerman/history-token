@@ -1325,6 +1325,8 @@ mdefine_line|#define SET_MODULE_OWNER(dev) do { } while (0)
 multiline_comment|/* Set the sysfs physical device reference for the network logical device&n; * if set prior to registration will cause a symlink during initialization.&n; */
 DECL|macro|SET_NETDEV_DEV
 mdefine_line|#define SET_NETDEV_DEV(net, pdev)&t;((net)-&gt;class_dev.dev = (pdev))
+DECL|macro|PKT_CAN_SHARE_SKB
+mdefine_line|#define PKT_CAN_SHARE_SKB&t;((void*)1)
 DECL|struct|packet_type
 r_struct
 id|packet_type

@@ -332,14 +332,80 @@ mdefine_line|#define AC97_CXR_SPDIF_PCM&t;0x0
 DECL|macro|AC97_CXR_SPDIF_AC3
 mdefine_line|#define AC97_CXR_SPDIF_AC3&t;0x2
 multiline_comment|/* specific - ALC */
+DECL|macro|AC97_ALC650_SPDIF_INPUT_STATUS1
+mdefine_line|#define AC97_ALC650_SPDIF_INPUT_STATUS1&t;0x60
+multiline_comment|/* S/PDIF input status 1 bit defines */
+DECL|macro|AC97_ALC650_PRO
+mdefine_line|#define AC97_ALC650_PRO             0x0001  /* Professional status */
+DECL|macro|AC97_ALC650_NAUDIO
+mdefine_line|#define AC97_ALC650_NAUDIO          0x0002  /* Non audio stream */
+DECL|macro|AC97_ALC650_COPY
+mdefine_line|#define AC97_ALC650_COPY            0x0004  /* Copyright status */
+DECL|macro|AC97_ALC650_PRE
+mdefine_line|#define AC97_ALC650_PRE             0x0038  /* Preemphasis status */
+DECL|macro|AC97_ALC650_PRE_SHIFT
+mdefine_line|#define AC97_ALC650_PRE_SHIFT       3
+DECL|macro|AC97_ALC650_MODE
+mdefine_line|#define AC97_ALC650_MODE            0x00C0  /* Preemphasis status */
+DECL|macro|AC97_ALC650_MODE_SHIFT
+mdefine_line|#define AC97_ALC650_MODE_SHIFT      6
+DECL|macro|AC97_ALC650_CC_MASK
+mdefine_line|#define AC97_ALC650_CC_MASK         0x7f00  /* Category Code mask */
+DECL|macro|AC97_ALC650_CC_SHIFT
+mdefine_line|#define AC97_ALC650_CC_SHIFT        8
+DECL|macro|AC97_ALC650_L
+mdefine_line|#define AC97_ALC650_L               0x8000  /* Generation Level status */
+DECL|macro|AC97_ALC650_SPDIF_INPUT_STATUS2
+mdefine_line|#define AC97_ALC650_SPDIF_INPUT_STATUS2&t;0x62
+multiline_comment|/* S/PDIF input status 2 bit defines */
+DECL|macro|AC97_ALC650_SOUCE_MASK
+mdefine_line|#define AC97_ALC650_SOUCE_MASK      0x000f  /* Source number */
+DECL|macro|AC97_ALC650_CHANNEL_MASK
+mdefine_line|#define AC97_ALC650_CHANNEL_MASK    0x00f0  /* Channel number */
+DECL|macro|AC97_ALC650_CHANNEL_SHIFT
+mdefine_line|#define AC97_ALC650_CHANNEL_SHIFT   4 
+DECL|macro|AC97_ALC650_SPSR_MASK
+mdefine_line|#define AC97_ALC650_SPSR_MASK       0x0f00  /* S/PDIF Sample Rate bits */
+DECL|macro|AC97_ALC650_SPSR_SHIFT
+mdefine_line|#define AC97_ALC650_SPSR_SHIFT      8
+DECL|macro|AC97_ALC650_SPSR_44K
+mdefine_line|#define AC97_ALC650_SPSR_44K        0x0000  /* Use 44.1kHz Sample rate */
+DECL|macro|AC97_ALC650_SPSR_48K
+mdefine_line|#define AC97_ALC650_SPSR_48K        0x0200  /* Use 48kHz Sample rate */
+DECL|macro|AC97_ALC650_SPSR_32K
+mdefine_line|#define AC97_ALC650_SPSR_32K        0x0300  /* Use 32kHz Sample rate */
+DECL|macro|AC97_ALC650_CLOCK_ACCURACY
+mdefine_line|#define AC97_ALC650_CLOCK_ACCURACY  0x3000  /* Clock accuracy */
+DECL|macro|AC97_ALC650_CLOCK_SHIFT
+mdefine_line|#define AC97_ALC650_CLOCK_SHIFT     12
+DECL|macro|AC97_ALC650_CLOCK_LOCK
+mdefine_line|#define AC97_ALC650_CLOCK_LOCK      0x4000  /* Clock locked status */
+DECL|macro|AC97_ALC650_V
+mdefine_line|#define AC97_ALC650_V               0x8000  /* Validity status */
 DECL|macro|AC97_ALC650_SURR_DAC_VOL
 mdefine_line|#define AC97_ALC650_SURR_DAC_VOL&t;0x64
 DECL|macro|AC97_ALC650_LFE_DAC_VOL
 mdefine_line|#define AC97_ALC650_LFE_DAC_VOL&t;&t;0x66
+DECL|macro|AC97_ALC650_UNKNOWN1
+mdefine_line|#define AC97_ALC650_UNKNOWN1&t;&t;0x68
 DECL|macro|AC97_ALC650_MULTICH
-mdefine_line|#define AC97_ALC650_MULTICH&t;0x6a
+mdefine_line|#define AC97_ALC650_MULTICH&t;&t;0x6a
+DECL|macro|AC97_ALC650_UNKNOWN2
+mdefine_line|#define AC97_ALC650_UNKNOWN2&t;&t;0x6c
+DECL|macro|AC97_ALC650_REVISION
+mdefine_line|#define AC97_ALC650_REVISION&t;&t;0x6e
+DECL|macro|AC97_ALC650_UNKNOWN3
+mdefine_line|#define AC97_ALC650_UNKNOWN3&t;&t;0x70
+DECL|macro|AC97_ALC650_UNKNOWN4
+mdefine_line|#define AC97_ALC650_UNKNOWN4&t;&t;0x72
+DECL|macro|AC97_ALC650_MISC
+mdefine_line|#define AC97_ALC650_MISC&t;&t;0x74
+DECL|macro|AC97_ALC650_GPIO_SETUP
+mdefine_line|#define AC97_ALC650_GPIO_SETUP&t;&t;0x76
+DECL|macro|AC97_ALC650_GPIO_STATUS
+mdefine_line|#define AC97_ALC650_GPIO_STATUS&t;&t;0x78
 DECL|macro|AC97_ALC650_CLOCK
-mdefine_line|#define AC97_ALC650_CLOCK&t;0x7a
+mdefine_line|#define AC97_ALC650_CLOCK&t;&t;0x7a
 multiline_comment|/* specific - Yamaha YMF753 */
 DECL|macro|AC97_YMF753_DIT_CTRL2
 mdefine_line|#define AC97_YMF753_DIT_CTRL2&t;0x66&t;/* DIT Control 2 */
@@ -383,6 +449,8 @@ DECL|macro|AC97_CS_SPDIF
 mdefine_line|#define AC97_CS_SPDIF&t;&t;(1&lt;&lt;2)&t;/* Cirrus Logic uses funky SPDIF */
 DECL|macro|AC97_CX_SPDIF
 mdefine_line|#define AC97_CX_SPDIF&t;&t;(1&lt;&lt;3)&t;/* Conexant&squot;s spdif interface */
+DECL|macro|AC97_STEREO_MUTES
+mdefine_line|#define AC97_STEREO_MUTES&t;(1&lt;&lt;4)&t;/* has stereo mute bits */
 multiline_comment|/* rates indexes */
 DECL|macro|AC97_RATES_FRONT_DAC
 mdefine_line|#define AC97_RATES_FRONT_DAC&t;0

@@ -104,7 +104,7 @@ op_star
 id|data
 suffix:semicolon
 r_struct
-id|vlan_ethhdr
+id|vlan_hdr
 id|frame
 suffix:semicolon
 r_int

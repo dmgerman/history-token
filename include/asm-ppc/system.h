@@ -4,7 +4,6 @@ DECL|macro|__PPC_SYSTEM_H
 mdefine_line|#define __PPC_SYSTEM_H
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
-macro_line|#include &lt;asm/processor.h&gt;
 macro_line|#include &lt;asm/atomic.h&gt;
 macro_line|#include &lt;asm/hw_irq.h&gt;
 multiline_comment|/*&n; * Memory barrier.&n; * The sync instruction guarantees that all memory accesses initiated&n; * by this processor have been performed (with respect to all other&n; * mechanisms that access memory).  The eieio instruction is a barrier&n; * providing an ordering (separately) for (a) cacheable stores and (b)&n; * loads and stores to non-cacheable memory (e.g. I/O devices).&n; *&n; * mb() prevents loads and stores being reordered across this point.&n; * rmb() prevents loads being reordered across this point.&n; * wmb() prevents stores being reordered across this point.&n; * read_barrier_depends() prevents data-dependent loads being reordered&n; *&t;across this point (nop on PPC).&n; *&n; * We can use the eieio instruction for wmb, but since it doesn&squot;t&n; * give any ordering guarantees about loads, we have to use the&n; * stronger but slower sync instruction for mb and rmb.&n; */
@@ -40,6 +39,12 @@ DECL|macro|smp_read_barrier_depends
 mdefine_line|#define smp_read_barrier_depends()&t;do { } while(0)
 macro_line|#endif /* CONFIG_SMP */
 macro_line|#ifdef __KERNEL__
+r_struct
+id|task_struct
+suffix:semicolon
+r_struct
+id|pt_regs
+suffix:semicolon
 r_extern
 r_void
 id|print_backtrace
@@ -298,9 +303,6 @@ r_void
 op_star
 )paren
 suffix:semicolon
-r_struct
-id|task_struct
-suffix:semicolon
 r_extern
 r_struct
 id|task_struct
@@ -344,9 +346,6 @@ r_extern
 r_int
 r_int
 id|rtas_data
-suffix:semicolon
-r_struct
-id|pt_regs
 suffix:semicolon
 r_extern
 r_void

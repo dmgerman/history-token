@@ -308,10 +308,6 @@ id|SCSI_SENSE_BUFFERSIZE
 )braket
 suffix:semicolon
 multiline_comment|/* obtained by REQUEST SENSE&n;&t;&t;&t;&t;&t;&t; * when CHECK CONDITION is&n;&t;&t;&t;&t;&t;&t; * received on original command &n;&t;&t;&t;&t;&t;&t; * (auto-sense) */
-DECL|member|flags
-r_int
-id|flags
-suffix:semicolon
 multiline_comment|/* Low-level done function - can be used by low-level driver to point&n;&t; *        to completion function.  Not used by mid/upper level code. */
 DECL|member|scsi_done
 r_void

@@ -1,10 +1,8 @@
-macro_line|#ifndef _LINUX_SCSI_H
-DECL|macro|_LINUX_SCSI_H
-mdefine_line|#define _LINUX_SCSI_H
-multiline_comment|/*&n; * This header file contains public constants and structures used by&n; * the scsi code for linux.&n; */
+multiline_comment|/*&n; * This header file contains public constants and structures used by&n; * the scsi code for linux.&n; *&n; * For documentation on the OPCODES, MESSAGES, and SENSE values,&n; * please consult the SCSI standard.&n; */
+macro_line|#ifndef _SCSI_SCSI_H
+DECL|macro|_SCSI_SCSI_H
+mdefine_line|#define _SCSI_SCSI_H
 macro_line|#include &lt;linux/types.h&gt;
-multiline_comment|/*&n;    $Header: /usr/src/linux/include/linux/RCS/scsi.h,v 1.3 1993/09/24 12:20:33 drew Exp $&n;&n;    For documentation on the OPCODES, MESSAGES, and SENSE values,&n;    please consult the SCSI standard.&n;&n;*/
-macro_line|#include &lt;linux/types.h&gt; 
 multiline_comment|/*&n; * SCSI command lengths&n; */
 r_extern
 r_const
@@ -202,7 +200,7 @@ r_int
 id|status
 )paren
 (brace
-multiline_comment|/* mask out the relevant bits&n;&t; *&n;&t; * FIXME: bit0 is listed as reserved in SCSI-2, but is&n;&t; * significant in SCSI-3.  For now, we follow the SCSI-2&n;&t; * behaviour and ignore reserved bits. */
+multiline_comment|/*&n;&t; * FIXME: bit0 is listed as reserved in SCSI-2, but is&n;&t; * significant in SCSI-3.  For now, we follow the SCSI-2&n;&t; * behaviour and ignore reserved bits.&n;&t; */
 id|status
 op_and_assign
 l_int|0xfe
@@ -226,8 +224,8 @@ id|status
 op_eq
 id|SAM_STAT_INTERMEDIATE_CONDITION_MET
 )paren
-multiline_comment|/* FIXME: this is obsolete in SAM-3 */
 op_logical_or
+multiline_comment|/* FIXME: this is obsolete in SAM-3 */
 (paren
 id|status
 op_eq
@@ -309,7 +307,7 @@ DECL|macro|TYPE_ENCLOSURE
 mdefine_line|#define TYPE_ENCLOSURE      0x0d    /* Enclosure Services Device */
 DECL|macro|TYPE_NO_LUN
 mdefine_line|#define TYPE_NO_LUN         0x7f
-multiline_comment|/*&n; * standard mode-select header prepended to all mode-select commands&n; *&n; * moved here from cdrom.h -- kraxel&n; */
+multiline_comment|/*&n; * standard mode-select header prepended to all mode-select commands&n; */
 DECL|struct|ccs_modesel_head
 r_struct
 id|ccs_modesel_head
@@ -373,7 +371,6 @@ suffix:semicolon
 suffix:semicolon
 multiline_comment|/*&n; * ScsiLun: 8 byte LUN.&n; */
 DECL|struct|scsi_lun
-r_typedef
 r_struct
 id|scsi_lun
 (brace
@@ -384,9 +381,7 @@ id|scsi_lun
 l_int|8
 )braket
 suffix:semicolon
-DECL|typedef|ScsiLun
 )brace
-id|ScsiLun
 suffix:semicolon
 multiline_comment|/*&n; *  MESSAGE CODES&n; */
 DECL|macro|COMMAND_COMPLETE
@@ -433,24 +428,99 @@ DECL|macro|HEAD_OF_QUEUE_TAG
 mdefine_line|#define HEAD_OF_QUEUE_TAG   0x21
 DECL|macro|ORDERED_QUEUE_TAG
 mdefine_line|#define ORDERED_QUEUE_TAG   0x22
-multiline_comment|/*&n; * Here are some scsi specific ioctl commands which are sometimes useful.&n; */
-multiline_comment|/* These are a few other constants  only used by scsi  devices */
-multiline_comment|/* Note that include/linux/cdrom.h also defines IOCTL 0x5300 - 0x5395 */
+multiline_comment|/*&n; * Host byte codes&n; */
+DECL|macro|DID_OK
+mdefine_line|#define DID_OK          0x00&t;/* NO error                                */
+DECL|macro|DID_NO_CONNECT
+mdefine_line|#define DID_NO_CONNECT  0x01&t;/* Couldn&squot;t connect before timeout period  */
+DECL|macro|DID_BUS_BUSY
+mdefine_line|#define DID_BUS_BUSY    0x02&t;/* BUS stayed busy through time out period */
+DECL|macro|DID_TIME_OUT
+mdefine_line|#define DID_TIME_OUT    0x03&t;/* TIMED OUT for other reason              */
+DECL|macro|DID_BAD_TARGET
+mdefine_line|#define DID_BAD_TARGET  0x04&t;/* BAD target.                             */
+DECL|macro|DID_ABORT
+mdefine_line|#define DID_ABORT       0x05&t;/* Told to abort for some other reason     */
+DECL|macro|DID_PARITY
+mdefine_line|#define DID_PARITY      0x06&t;/* Parity error                            */
+DECL|macro|DID_ERROR
+mdefine_line|#define DID_ERROR       0x07&t;/* Internal error                          */
+DECL|macro|DID_RESET
+mdefine_line|#define DID_RESET       0x08&t;/* Reset by somebody.                      */
+DECL|macro|DID_BAD_INTR
+mdefine_line|#define DID_BAD_INTR    0x09&t;/* Got an interrupt we weren&squot;t expecting.  */
+DECL|macro|DID_PASSTHROUGH
+mdefine_line|#define DID_PASSTHROUGH 0x0a&t;/* Force command past mid-layer            */
+DECL|macro|DID_SOFT_ERROR
+mdefine_line|#define DID_SOFT_ERROR  0x0b&t;/* The low level driver just wish a retry  */
+DECL|macro|DRIVER_OK
+mdefine_line|#define DRIVER_OK       0x00&t;/* Driver status                           */
+multiline_comment|/*&n; *  These indicate the error that occurred, and what is available.&n; */
+DECL|macro|DRIVER_BUSY
+mdefine_line|#define DRIVER_BUSY         0x01
+DECL|macro|DRIVER_SOFT
+mdefine_line|#define DRIVER_SOFT         0x02
+DECL|macro|DRIVER_MEDIA
+mdefine_line|#define DRIVER_MEDIA        0x03
+DECL|macro|DRIVER_ERROR
+mdefine_line|#define DRIVER_ERROR        0x04
+DECL|macro|DRIVER_INVALID
+mdefine_line|#define DRIVER_INVALID      0x05
+DECL|macro|DRIVER_TIMEOUT
+mdefine_line|#define DRIVER_TIMEOUT      0x06
+DECL|macro|DRIVER_HARD
+mdefine_line|#define DRIVER_HARD         0x07
+DECL|macro|DRIVER_SENSE
+mdefine_line|#define DRIVER_SENSE&t;    0x08
+DECL|macro|SUGGEST_RETRY
+mdefine_line|#define SUGGEST_RETRY       0x10
+DECL|macro|SUGGEST_ABORT
+mdefine_line|#define SUGGEST_ABORT       0x20
+DECL|macro|SUGGEST_REMAP
+mdefine_line|#define SUGGEST_REMAP       0x30
+DECL|macro|SUGGEST_DIE
+mdefine_line|#define SUGGEST_DIE         0x40
+DECL|macro|SUGGEST_SENSE
+mdefine_line|#define SUGGEST_SENSE       0x80
+DECL|macro|SUGGEST_IS_OK
+mdefine_line|#define SUGGEST_IS_OK       0xff
+DECL|macro|DRIVER_MASK
+mdefine_line|#define DRIVER_MASK         0x0f
+DECL|macro|SUGGEST_MASK
+mdefine_line|#define SUGGEST_MASK        0xf0
+multiline_comment|/*&n; * Internal return values.&n; */
+DECL|macro|NEEDS_RETRY
+mdefine_line|#define NEEDS_RETRY     0x2001
+DECL|macro|SUCCESS
+mdefine_line|#define SUCCESS         0x2002
+DECL|macro|FAILED
+mdefine_line|#define FAILED          0x2003
+DECL|macro|QUEUED
+mdefine_line|#define QUEUED          0x2004
+DECL|macro|SOFT_ERROR
+mdefine_line|#define SOFT_ERROR      0x2005
+DECL|macro|ADD_TO_MLQUEUE
+mdefine_line|#define ADD_TO_MLQUEUE  0x2006
+multiline_comment|/*&n; * Midlevel queue return values.&n; */
+DECL|macro|SCSI_MLQUEUE_HOST_BUSY
+mdefine_line|#define SCSI_MLQUEUE_HOST_BUSY   0x1055
+DECL|macro|SCSI_MLQUEUE_DEVICE_BUSY
+mdefine_line|#define SCSI_MLQUEUE_DEVICE_BUSY 0x1056
+DECL|macro|SCSI_MLQUEUE_EH_RETRY
+mdefine_line|#define SCSI_MLQUEUE_EH_RETRY    0x1057
+multiline_comment|/*&n; * Here are some scsi specific ioctl commands which are sometimes useful.&n; *&n; * Note that include/linux/cdrom.h also defines IOCTL 0x5300 - 0x5395&n; */
+multiline_comment|/* Used to obtain PUN and LUN info.  Conflicts with CDROMAUDIOBUFSIZ */
 DECL|macro|SCSI_IOCTL_GET_IDLUN
-mdefine_line|#define SCSI_IOCTL_GET_IDLUN 0x5382&t;/* conflicts with CDROMAUDIOBUFSIZ */
-multiline_comment|/* Used to turn on and off tagged queuing for scsi devices */
-DECL|macro|SCSI_IOCTL_TAGGED_ENABLE
-mdefine_line|#define SCSI_IOCTL_TAGGED_ENABLE 0x5383
-DECL|macro|SCSI_IOCTL_TAGGED_DISABLE
-mdefine_line|#define SCSI_IOCTL_TAGGED_DISABLE 0x5384
+mdefine_line|#define SCSI_IOCTL_GET_IDLUN&t;&t;0x5382
+multiline_comment|/* 0x5383 and 0x5384 were used for SCSI_IOCTL_TAGGED_{ENABLE,DISABLE} */
 multiline_comment|/* Used to obtain the host number of a device. */
 DECL|macro|SCSI_IOCTL_PROBE_HOST
-mdefine_line|#define SCSI_IOCTL_PROBE_HOST 0x5385
-multiline_comment|/* Used to get the bus number for a device */
+mdefine_line|#define SCSI_IOCTL_PROBE_HOST&t;&t;0x5385
+multiline_comment|/* Used to obtain the bus number for a device */
 DECL|macro|SCSI_IOCTL_GET_BUS_NUMBER
-mdefine_line|#define SCSI_IOCTL_GET_BUS_NUMBER 0x5386
-multiline_comment|/* Used to get the PCI location of a device */
+mdefine_line|#define SCSI_IOCTL_GET_BUS_NUMBER&t;0x5386
+multiline_comment|/* Used to obtain the PCI location of a device */
 DECL|macro|SCSI_IOCTL_GET_PCI
-mdefine_line|#define SCSI_IOCTL_GET_PCI 0x5387
-macro_line|#endif
+mdefine_line|#define SCSI_IOCTL_GET_PCI&t;&t;0x5387
+macro_line|#endif /* _SCSI_SCSI_H */
 eof

@@ -1112,8 +1112,7 @@ id|handle
 suffix:semicolon
 multiline_comment|/**&lt; handle */
 DECL|member|memory
-r_struct
-id|agp_memory
+id|DRM_AGP_MEM
 op_star
 id|memory
 suffix:semicolon
@@ -1152,8 +1151,7 @@ r_struct
 id|drm_agp_head
 (brace
 DECL|member|agp_info
-r_struct
-id|agp_kern_info
+id|DRM_AGP_KERN
 id|agp_info
 suffix:semicolon
 multiline_comment|/**&lt; AGP device information */
@@ -2242,6 +2240,25 @@ op_star
 id|DRM
 c_func
 (paren
+id|calloc
+)paren
+(paren
+r_int
+id|nmemb
+comma
+r_int
+id|size
+comma
+r_int
+id|area
+)paren
+suffix:semicolon
+r_extern
+r_void
+op_star
+id|DRM
+c_func
+(paren
 id|realloc
 )paren
 (paren
@@ -2380,8 +2397,7 @@ id|dev
 suffix:semicolon
 macro_line|#if __REALLY_HAVE_AGP
 r_extern
-r_struct
-id|agp_memory
+id|DRM_AGP_MEM
 op_star
 id|DRM
 c_func
@@ -2404,8 +2420,7 @@ c_func
 id|free_agp
 )paren
 (paren
-r_struct
-id|agp_memory
+id|DRM_AGP_MEM
 op_star
 id|handle
 comma
@@ -2421,8 +2436,7 @@ c_func
 id|bind_agp
 )paren
 (paren
-r_struct
-id|agp_memory
+id|DRM_AGP_MEM
 op_star
 id|handle
 comma
@@ -2439,8 +2453,7 @@ c_func
 id|unbind_agp
 )paren
 (paren
-r_struct
-id|agp_memory
+id|DRM_AGP_MEM
 op_star
 id|handle
 )paren
@@ -3496,17 +3509,7 @@ c_func
 id|dma_service
 )paren
 (paren
-r_int
-id|irq
-comma
-r_void
-op_star
-id|device
-comma
-r_struct
-id|pt_regs
-op_star
-id|regs
+id|DRM_IRQ_ARGS
 )paren
 suffix:semicolon
 r_extern
@@ -3878,8 +3881,7 @@ id|arg
 )paren
 suffix:semicolon
 r_extern
-r_struct
-id|agp_memory
+id|DRM_AGP_MEM
 op_star
 id|DRM
 c_func
@@ -3902,8 +3904,7 @@ c_func
 id|agp_free_memory
 )paren
 (paren
-r_struct
-id|agp_memory
+id|DRM_AGP_MEM
 op_star
 id|handle
 )paren
@@ -3916,8 +3917,7 @@ c_func
 id|agp_bind_memory
 )paren
 (paren
-r_struct
-id|agp_memory
+id|DRM_AGP_MEM
 op_star
 id|handle
 comma
@@ -3933,8 +3933,7 @@ c_func
 id|agp_unbind_memory
 )paren
 (paren
-r_struct
-id|agp_memory
+id|DRM_AGP_MEM
 op_star
 id|handle
 )paren

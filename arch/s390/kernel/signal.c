@@ -1960,7 +1960,7 @@ id|regs-&gt;orig_gpr2
 suffix:semicolon
 id|regs-&gt;psw.addr
 op_sub_assign
-l_int|2
+id|regs-&gt;ilc
 suffix:semicolon
 )brace
 )brace
@@ -2236,7 +2236,7 @@ id|regs-&gt;orig_gpr2
 suffix:semicolon
 id|regs-&gt;psw.addr
 op_sub_assign
-l_int|2
+id|regs-&gt;ilc
 suffix:semicolon
 )brace
 multiline_comment|/* Restart the system call with a new system call number */

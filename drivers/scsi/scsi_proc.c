@@ -288,7 +288,6 @@ c_cond
 op_logical_neg
 id|sht-&gt;proc_dir
 )paren
-(brace
 id|printk
 c_func
 (paren
@@ -300,9 +299,7 @@ comma
 id|sht-&gt;proc_name
 )paren
 suffix:semicolon
-r_return
-suffix:semicolon
-)brace
+r_else
 id|sht-&gt;proc_dir-&gt;owner
 op_assign
 id|sht-&gt;module
@@ -976,7 +973,12 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|atomic_read
+c_func
+(paren
+op_amp
 id|sdev-&gt;access_count
+)paren
 )paren
 r_goto
 id|out

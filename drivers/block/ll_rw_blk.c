@@ -876,6 +876,9 @@ op_assign
 id|size
 suffix:semicolon
 )brace
+multiline_comment|/*&n; * Returns the minimum that is _not_ zero, unless both are zero.&n; */
+DECL|macro|min_not_zero
+mdefine_line|#define min_not_zero(l, r) (l == 0) ? r : ((r == 0) ? l : min(l, r))
 multiline_comment|/**&n; * blk_queue_stack_limits - inherit underlying queue limits for stacked drivers&n; * @t:&t;the stacking driver (top)&n; * @b:  the underlying device (bottom)&n; **/
 DECL|function|blk_queue_stack_limits
 r_void
@@ -891,9 +894,10 @@ op_star
 id|b
 )paren
 (brace
+multiline_comment|/* zero is &quot;infinity&quot; */
 id|t-&gt;max_sectors
 op_assign
-id|min
+id|min_not_zero
 c_func
 (paren
 id|t-&gt;max_sectors

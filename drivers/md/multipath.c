@@ -673,7 +673,7 @@ id|mp_bh-&gt;bio.bi_bdev
 op_assign
 id|multipath-&gt;rdev-&gt;bdev
 suffix:semicolon
-id|mp_bh-&gt;bio.bi_flags
+id|mp_bh-&gt;bio.bi_rw
 op_or_assign
 (paren
 l_int|1

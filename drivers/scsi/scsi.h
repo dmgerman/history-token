@@ -54,82 +54,10 @@ DECL|macro|sense_error
 mdefine_line|#define sense_error(sense)  ((sense) &amp; 0xf)
 DECL|macro|sense_valid
 mdefine_line|#define sense_valid(sense)  ((sense) &amp; 0x80);
-DECL|macro|NEEDS_RETRY
-mdefine_line|#define NEEDS_RETRY     0x2001
-DECL|macro|SUCCESS
-mdefine_line|#define SUCCESS         0x2002
-DECL|macro|FAILED
-mdefine_line|#define FAILED          0x2003
-DECL|macro|QUEUED
-mdefine_line|#define QUEUED          0x2004
-DECL|macro|SOFT_ERROR
-mdefine_line|#define SOFT_ERROR      0x2005
-DECL|macro|ADD_TO_MLQUEUE
-mdefine_line|#define ADD_TO_MLQUEUE  0x2006
 DECL|macro|IDENTIFY_BASE
 mdefine_line|#define IDENTIFY_BASE       0x80
 DECL|macro|IDENTIFY
 mdefine_line|#define IDENTIFY(can_disconnect, lun)   (IDENTIFY_BASE |&bslash;&n;&t;&t;     ((can_disconnect) ?  0x40 : 0) |&bslash;&n;&t;&t;     ((lun) &amp; 0x07))
-multiline_comment|/* host byte codes */
-DECL|macro|DID_OK
-mdefine_line|#define DID_OK          0x00&t;/* NO error                                */
-DECL|macro|DID_NO_CONNECT
-mdefine_line|#define DID_NO_CONNECT  0x01&t;/* Couldn&squot;t connect before timeout period  */
-DECL|macro|DID_BUS_BUSY
-mdefine_line|#define DID_BUS_BUSY    0x02&t;/* BUS stayed busy through time out period */
-DECL|macro|DID_TIME_OUT
-mdefine_line|#define DID_TIME_OUT    0x03&t;/* TIMED OUT for other reason              */
-DECL|macro|DID_BAD_TARGET
-mdefine_line|#define DID_BAD_TARGET  0x04&t;/* BAD target.                             */
-DECL|macro|DID_ABORT
-mdefine_line|#define DID_ABORT       0x05&t;/* Told to abort for some other reason     */
-DECL|macro|DID_PARITY
-mdefine_line|#define DID_PARITY      0x06&t;/* Parity error                            */
-DECL|macro|DID_ERROR
-mdefine_line|#define DID_ERROR       0x07&t;/* Internal error                          */
-DECL|macro|DID_RESET
-mdefine_line|#define DID_RESET       0x08&t;/* Reset by somebody.                      */
-DECL|macro|DID_BAD_INTR
-mdefine_line|#define DID_BAD_INTR    0x09&t;/* Got an interrupt we weren&squot;t expecting.  */
-DECL|macro|DID_PASSTHROUGH
-mdefine_line|#define DID_PASSTHROUGH 0x0a&t;/* Force command past mid-layer            */
-DECL|macro|DID_SOFT_ERROR
-mdefine_line|#define DID_SOFT_ERROR  0x0b&t;/* The low level driver just wish a retry  */
-DECL|macro|DRIVER_OK
-mdefine_line|#define DRIVER_OK       0x00&t;/* Driver status                           */
-multiline_comment|/*&n; *  These indicate the error that occurred, and what is available.&n; */
-DECL|macro|DRIVER_BUSY
-mdefine_line|#define DRIVER_BUSY         0x01
-DECL|macro|DRIVER_SOFT
-mdefine_line|#define DRIVER_SOFT         0x02
-DECL|macro|DRIVER_MEDIA
-mdefine_line|#define DRIVER_MEDIA        0x03
-DECL|macro|DRIVER_ERROR
-mdefine_line|#define DRIVER_ERROR        0x04
-DECL|macro|DRIVER_INVALID
-mdefine_line|#define DRIVER_INVALID      0x05
-DECL|macro|DRIVER_TIMEOUT
-mdefine_line|#define DRIVER_TIMEOUT      0x06
-DECL|macro|DRIVER_HARD
-mdefine_line|#define DRIVER_HARD         0x07
-DECL|macro|DRIVER_SENSE
-mdefine_line|#define DRIVER_SENSE&t;    0x08
-DECL|macro|SUGGEST_RETRY
-mdefine_line|#define SUGGEST_RETRY       0x10
-DECL|macro|SUGGEST_ABORT
-mdefine_line|#define SUGGEST_ABORT       0x20
-DECL|macro|SUGGEST_REMAP
-mdefine_line|#define SUGGEST_REMAP       0x30
-DECL|macro|SUGGEST_DIE
-mdefine_line|#define SUGGEST_DIE         0x40
-DECL|macro|SUGGEST_SENSE
-mdefine_line|#define SUGGEST_SENSE       0x80
-DECL|macro|SUGGEST_IS_OK
-mdefine_line|#define SUGGEST_IS_OK       0xff
-DECL|macro|DRIVER_MASK
-mdefine_line|#define DRIVER_MASK         0x0f
-DECL|macro|SUGGEST_MASK
-mdefine_line|#define SUGGEST_MASK        0xf0
 multiline_comment|/*&n; *  SCSI command sets&n; */
 DECL|macro|SCSI_UNKNOWN
 mdefine_line|#define SCSI_UNKNOWN    0
@@ -141,22 +69,6 @@ DECL|macro|SCSI_2
 mdefine_line|#define SCSI_2          3
 DECL|macro|SCSI_3
 mdefine_line|#define SCSI_3          4
-multiline_comment|/*&n; *  Every SCSI command starts with a one byte OP-code.&n; *  The next byte&squot;s high three bits are the LUN of the&n; *  device.  Any multi-byte quantities are stored high byte&n; *  first, and may have a 5 bit MSB in the same byte&n; *  as the LUN.&n; */
-multiline_comment|/*&n; *  As the scsi do command functions are intelligent, and may need to&n; *  redo a command, we need to keep track of the last command&n; *  executed on each one.&n; */
-DECL|macro|WAS_RESET
-mdefine_line|#define WAS_RESET       0x01
-DECL|macro|WAS_TIMEDOUT
-mdefine_line|#define WAS_TIMEDOUT    0x02
-DECL|macro|WAS_SENSE
-mdefine_line|#define WAS_SENSE       0x04
-DECL|macro|IS_RESETTING
-mdefine_line|#define IS_RESETTING    0x08
-DECL|macro|IS_ABORTING
-mdefine_line|#define IS_ABORTING     0x10
-DECL|macro|ASKED_FOR_SENSE
-mdefine_line|#define ASKED_FOR_SENSE 0x20
-DECL|macro|SYNC_RESET
-mdefine_line|#define SYNC_RESET      0x40
 r_struct
 id|Scsi_Host
 suffix:semicolon
@@ -285,13 +197,6 @@ r_int
 r_char
 )paren
 suffix:semicolon
-multiline_comment|/*&n; * Definitions and prototypes used for scsi mid-level queue.&n; */
-DECL|macro|SCSI_MLQUEUE_HOST_BUSY
-mdefine_line|#define SCSI_MLQUEUE_HOST_BUSY   0x1055
-DECL|macro|SCSI_MLQUEUE_DEVICE_BUSY
-mdefine_line|#define SCSI_MLQUEUE_DEVICE_BUSY 0x1056
-DECL|macro|SCSI_MLQUEUE_EH_RETRY
-mdefine_line|#define SCSI_MLQUEUE_EH_RETRY    0x1057
 multiline_comment|/*&n; * Legacy dma direction interfaces.&n; *&n; * This assumes the pci/sbus dma mapping flags have the same numercial&n; * values as the generic dma-mapping ones.  Currently they have but there&squot;s&n; * no way to check.  Better don&squot;t use these interfaces!&n; */
 DECL|macro|SCSI_DATA_UNKNOWN
 mdefine_line|#define SCSI_DATA_UNKNOWN&t;(DMA_BIDIRECTIONAL)

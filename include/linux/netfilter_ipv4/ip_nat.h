@@ -25,11 +25,6 @@ multiline_comment|/* SRC manip occurs POST_ROUTING or LOCAL_IN */
 DECL|macro|HOOK2MANIP
 mdefine_line|#define HOOK2MANIP(hooknum) ((hooknum) != NF_IP_POST_ROUTING &amp;&amp; (hooknum) != NF_IP_LOCAL_IN)
 macro_line|#endif
-multiline_comment|/* 2.3.19 (I hope) will define this in linux/netfilter_ipv4.h. */
-macro_line|#ifndef SO_ORIGINAL_DST
-DECL|macro|SO_ORIGINAL_DST
-mdefine_line|#define SO_ORIGINAL_DST 80
-macro_line|#endif
 DECL|macro|IP_NAT_RANGE_MAP_IPS
 mdefine_line|#define IP_NAT_RANGE_MAP_IPS 1
 DECL|macro|IP_NAT_RANGE_PROTO_SPECIFIED

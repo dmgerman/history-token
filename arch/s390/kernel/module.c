@@ -370,7 +370,7 @@ id|Elf_Sym
 suffix:semicolon
 id|me-&gt;arch.syminfo
 op_assign
-id|kmalloc
+id|vmalloc
 c_func
 (paren
 id|me-&gt;arch.nsyms
@@ -380,8 +380,6 @@ r_sizeof
 r_struct
 id|mod_arch_syminfo
 )paren
-comma
-id|GFP_KERNEL
 )paren
 suffix:semicolon
 r_if
@@ -1961,7 +1959,7 @@ c_cond
 (paren
 id|me-&gt;arch.syminfo
 )paren
-id|kfree
+id|vfree
 c_func
 (paren
 id|me-&gt;arch.syminfo

@@ -10,6 +10,7 @@ mdefine_line|#define PSCHED_CPU &t;&t;3
 DECL|macro|PSCHED_CLOCK_SOURCE
 mdefine_line|#define PSCHED_CLOCK_SOURCE&t;PSCHED_JIFFIES
 macro_line|#include &lt;linux/config.h&gt;
+macro_line|#include &lt;linux/netdevice.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/pkt_sched.h&gt;
 macro_line|#include &lt;net/pkt_cls.h&gt;

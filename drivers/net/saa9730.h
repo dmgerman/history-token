@@ -833,6 +833,10 @@ r_struct
 id|net_device_stats
 id|stats
 suffix:semicolon
+DECL|member|lock
+id|spinlock_t
+id|lock
+suffix:semicolon
 )brace
 suffix:semicolon
 macro_line|#endif /* _SAA9730_H */

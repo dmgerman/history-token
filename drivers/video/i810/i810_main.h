@@ -434,7 +434,8 @@ l_int|0
 id|printk
 c_func
 (paren
-l_string|&quot;set_mtrr: unable to set MTRR/n&quot;
+id|KERN_ERR
+l_string|&quot;set_mtrr: unable to set MTRR&bslash;n&quot;
 )paren
 suffix:semicolon
 r_return

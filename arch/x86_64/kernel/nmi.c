@@ -34,7 +34,7 @@ r_int
 r_int
 id|nmi_watchdog
 op_assign
-id|NMI_IO_APIC
+id|NMI_LOCAL_APIC
 suffix:semicolon
 DECL|variable|nmi_hz
 r_static

@@ -1242,15 +1242,6 @@ op_star
 )paren
 id|attr
 suffix:semicolon
-r_else
-id|dentry
-op_assign
-id|ERR_PTR
-c_func
-(paren
-id|error
-)paren
-suffix:semicolon
 id|dput
 c_func
 (paren

@@ -3348,13 +3348,8 @@ id|rlb_arp_recv
 suffix:semicolon
 id|pk_type-&gt;data
 op_assign
-(paren
-r_void
-op_star
-)paren
-l_int|1
+id|PKT_CAN_SHARE_SKB
 suffix:semicolon
-multiline_comment|/* understand shared skbs */
 id|dev_add_pack
 c_func
 (paren

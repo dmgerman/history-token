@@ -208,7 +208,6 @@ l_string|&quot;ERROR unknown Diagnostic info reply code &quot;
 suffix:semicolon
 )brace
 )brace
-suffix:semicolon
 DECL|function|arlan_hardware_type_string
 r_static
 r_const
@@ -3849,7 +3848,7 @@ DECL|macro|ARLAN_PROC_DEBUG_ENTRIES
 mdefine_line|#define ARLAN_PROC_DEBUG_ENTRIES
 macro_line|#endif
 DECL|macro|ARLAN_SYSCTL_TABLE_TOTAL
-mdefine_line|#define ARLAN_SYSCTL_TABLE_TOTAL(cardNo)&bslash;&n;&t;CTBLN(1,cardNo,spreadingCode),&bslash;&n;&t;CTBLN(2,cardNo, channelNumber),&bslash;&n;&t;CTBLN(3,cardNo, scramblingDisable),&bslash;&n;&t;CTBLN(4,cardNo, txAttenuation),&bslash;&n;&t;CTBLN(5,cardNo, systemId), &bslash;&n;&t;CTBLN(6,cardNo, maxDatagramSize),&bslash;&n;&t;CTBLN(7,cardNo, maxFrameSize),&bslash;&n;&t;CTBLN(8,cardNo, maxRetries),&bslash;&n;&t;CTBLN(9,cardNo, receiveMode),&bslash;&n;&t;CTBLN(10,cardNo, priority),&bslash;&n;&t;CTBLN(11,cardNo, rootOrRepeater),&bslash;&n;&t;CTBLN(12,cardNo, SID),&bslash;&n;&t;CTBLN(13,cardNo, registrationMode),&bslash;&n;&t;CTBLN(14,cardNo, registrationFill),&bslash;&n;&t;CTBLN(15,cardNo, localTalkAddress),&bslash;&n;&t;CTBLN(16,cardNo, codeFormat),&bslash;&n;&t;CTBLN(17,cardNo, numChannels),&bslash;&n;&t;CTBLN(18,cardNo, channel1),&bslash;&n;&t;CTBLN(19,cardNo, channel2),&bslash;&n;&t;CTBLN(20,cardNo, channel3),&bslash;&n;&t;CTBLN(21,cardNo, channel4),&bslash;&n;&t;CTBLN(22,cardNo, txClear),&bslash;&n;&t;CTBLN(23,cardNo, txRetries),&bslash;&n;&t;CTBLN(24,cardNo, txRouting),&bslash;&n;&t;CTBLN(25,cardNo, txScrambled),&bslash;&n;&t;CTBLN(26,cardNo, rxParameter),&bslash;&n;&t;CTBLN(27,cardNo, txTimeoutMs),&bslash;&n;&t;CTBLN(28,cardNo, waitCardTimeout),&bslash;&n;&t;CTBLN(29,cardNo, channelSet), &bslash;&n;&t;{.ctl_name = 30, .procname = &quot;name&quot;,&bslash;&n;&t; .data = arlan_conf[cardNo].siteName,&bslash;&n;&t; .maxlen = 16, .mode = 0600, .proc_handler = &amp;proc_dostring},&bslash;&n;&t;CTBLN(31,cardNo,waitTime),&bslash;&n;&t;CTBLN(32,cardNo,lParameter),&bslash;&n;&t;CTBLN(33,cardNo,_15),&bslash;&n;&t;CTBLN(34,cardNo,headerSize),&bslash;&n;&t;CTBLN(35,cardNo,async),&bslash;&n;&t;CTBLN(36,cardNo,tx_delay_ms),&bslash;&n;&t;CTBLN(37,cardNo,retries),&bslash;&n;&t;CTBLN(38,cardNo,ReTransmitPacketMaxSize),&bslash;&n;&t;CTBLN(39,cardNo,waitReTransmitPacketMaxSize),&bslash;&n;&t;CTBLN(40,cardNo,fastReTransCount),&bslash;&n;&t;CTBLN(41,cardNo,driverRetransmissions),&bslash;&n;&t;CTBLN(42,cardNo,txAckTimeoutMs),&bslash;&n;&t;CTBLN(43,cardNo,registrationInterrupts),&bslash;&n;&t;CTBLN(44,cardNo,hardwareType),&bslash;&n;&t;CTBLN(45,cardNo,radioType),&bslash;&n;&t;CTBLN(46,cardNo,writeEEPROM),&bslash;&n;&t;CTBLN(47,cardNo,writeRadioType),&bslash;&n;&t;ARLAN_PROC_DEBUG_ENTRIES&bslash;&n;&t;CTBLN(50,cardNo,in_speed),&bslash;&n;&t;CTBLN(51,cardNo,out_speed),&bslash;&n;&t;CTBLN(52,cardNo,in_speed10),&bslash;&n;&t;CTBLN(53,cardNo,out_speed10),&bslash;&n;&t;CTBLN(54,cardNo,in_speed_max),&bslash;&n;&t;CTBLN(55,cardNo,out_speed_max),&bslash;&n;&t;CTBLN(56,cardNo,measure_rate),&bslash;&n;&t;CTBLN(57,cardNo,pre_Command_Wait),&bslash;&n;&t;CTBLN(58,cardNo,rx_tweak1),&bslash;&n;&t;CTBLN(59,cardNo,rx_tweak2),&bslash;&n;&t;CTBLN(60,cardNo,tx_queue_len),&bslash;&n;
+mdefine_line|#define ARLAN_SYSCTL_TABLE_TOTAL(cardNo)&bslash;&n;&t;CTBLN(1,cardNo,spreadingCode),&bslash;&n;&t;CTBLN(2,cardNo, channelNumber),&bslash;&n;&t;CTBLN(3,cardNo, scramblingDisable),&bslash;&n;&t;CTBLN(4,cardNo, txAttenuation),&bslash;&n;&t;CTBLN(5,cardNo, systemId), &bslash;&n;&t;CTBLN(6,cardNo, maxDatagramSize),&bslash;&n;&t;CTBLN(7,cardNo, maxFrameSize),&bslash;&n;&t;CTBLN(8,cardNo, maxRetries),&bslash;&n;&t;CTBLN(9,cardNo, receiveMode),&bslash;&n;&t;CTBLN(10,cardNo, priority),&bslash;&n;&t;CTBLN(11,cardNo, rootOrRepeater),&bslash;&n;&t;CTBLN(12,cardNo, SID),&bslash;&n;&t;CTBLN(13,cardNo, registrationMode),&bslash;&n;&t;CTBLN(14,cardNo, registrationFill),&bslash;&n;&t;CTBLN(15,cardNo, localTalkAddress),&bslash;&n;&t;CTBLN(16,cardNo, codeFormat),&bslash;&n;&t;CTBLN(17,cardNo, numChannels),&bslash;&n;&t;CTBLN(18,cardNo, channel1),&bslash;&n;&t;CTBLN(19,cardNo, channel2),&bslash;&n;&t;CTBLN(20,cardNo, channel3),&bslash;&n;&t;CTBLN(21,cardNo, channel4),&bslash;&n;&t;CTBLN(22,cardNo, txClear),&bslash;&n;&t;CTBLN(23,cardNo, txRetries),&bslash;&n;&t;CTBLN(24,cardNo, txRouting),&bslash;&n;&t;CTBLN(25,cardNo, txScrambled),&bslash;&n;&t;CTBLN(26,cardNo, rxParameter),&bslash;&n;&t;CTBLN(27,cardNo, txTimeoutMs),&bslash;&n;&t;CTBLN(28,cardNo, waitCardTimeout),&bslash;&n;&t;CTBLN(29,cardNo, channelSet), &bslash;&n;&t;{.ctl_name = 30, .procname = &quot;name&quot;,&bslash;&n;&t; .data = arlan_conf[cardNo].siteName,&bslash;&n;&t; .maxlen = 16, .mode = 0600, .proc_handler = &amp;proc_dostring},&bslash;&n;&t;CTBLN(31,cardNo,waitTime),&bslash;&n;&t;CTBLN(32,cardNo,lParameter),&bslash;&n;&t;CTBLN(33,cardNo,_15),&bslash;&n;&t;CTBLN(34,cardNo,headerSize),&bslash;&n;&t;CTBLN(36,cardNo,tx_delay_ms),&bslash;&n;&t;CTBLN(37,cardNo,retries),&bslash;&n;&t;CTBLN(38,cardNo,ReTransmitPacketMaxSize),&bslash;&n;&t;CTBLN(39,cardNo,waitReTransmitPacketMaxSize),&bslash;&n;&t;CTBLN(40,cardNo,fastReTransCount),&bslash;&n;&t;CTBLN(41,cardNo,driverRetransmissions),&bslash;&n;&t;CTBLN(42,cardNo,txAckTimeoutMs),&bslash;&n;&t;CTBLN(43,cardNo,registrationInterrupts),&bslash;&n;&t;CTBLN(44,cardNo,hardwareType),&bslash;&n;&t;CTBLN(45,cardNo,radioType),&bslash;&n;&t;CTBLN(46,cardNo,writeEEPROM),&bslash;&n;&t;CTBLN(47,cardNo,writeRadioType),&bslash;&n;&t;ARLAN_PROC_DEBUG_ENTRIES&bslash;&n;&t;CTBLN(50,cardNo,in_speed),&bslash;&n;&t;CTBLN(51,cardNo,out_speed),&bslash;&n;&t;CTBLN(52,cardNo,in_speed10),&bslash;&n;&t;CTBLN(53,cardNo,out_speed10),&bslash;&n;&t;CTBLN(54,cardNo,in_speed_max),&bslash;&n;&t;CTBLN(55,cardNo,out_speed_max),&bslash;&n;&t;CTBLN(56,cardNo,measure_rate),&bslash;&n;&t;CTBLN(57,cardNo,pre_Command_Wait),&bslash;&n;&t;CTBLN(58,cardNo,rx_tweak1),&bslash;&n;&t;CTBLN(59,cardNo,rx_tweak2),&bslash;&n;&t;CTBLN(60,cardNo,tx_queue_len),&bslash;&n;
 DECL|variable|arlan_conf_table0
 r_static
 id|ctl_table
@@ -5151,6 +5150,7 @@ id|arlan_device_sysctl_header
 suffix:semicolon
 DECL|function|init_arlan_proc
 r_int
+id|__init
 id|init_arlan_proc
 c_func
 (paren
@@ -5224,27 +5224,10 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
-suffix:semicolon
-macro_line|#ifdef MODULE
-DECL|function|init_module
-r_int
-id|init_module
-c_func
-(paren
+DECL|function|cleanup_arlan_proc
 r_void
-)paren
-(brace
-r_return
-id|init_arlan_proc
-c_func
-(paren
-)paren
-suffix:semicolon
-)brace
-suffix:semicolon
-DECL|function|cleanup_module
-r_void
-id|cleanup_module
+id|__exit
+id|cleanup_arlan_proc
 c_func
 (paren
 r_void
@@ -5260,16 +5243,5 @@ id|arlan_device_sysctl_header
 op_assign
 l_int|NULL
 suffix:semicolon
-r_return
-suffix:semicolon
 )brace
-suffix:semicolon
-macro_line|#endif&t;&t;&t;&t;
-singleline_comment|// MODULE
-id|MODULE_LICENSE
-c_func
-(paren
-l_string|&quot;GPL&quot;
-)paren
-suffix:semicolon
 eof

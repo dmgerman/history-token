@@ -6,7 +6,7 @@ macro_line|#include &lt;asm/qdio.h&gt;
 DECL|macro|QETH_NAME
 mdefine_line|#define QETH_NAME &quot; qeth&quot;
 DECL|macro|VERSION_QETH_H
-mdefine_line|#define VERSION_QETH_H &quot;$Revision: 1.49 $&quot;
+mdefine_line|#define VERSION_QETH_H &quot;$Revision: 1.56 $&quot;
 multiline_comment|/******************** CONFIG STUFF ***********************/
 singleline_comment|//#define QETH_DBF_LIKE_HELL
 macro_line|#ifdef CONFIG_QETH_IPV6
@@ -1286,15 +1286,6 @@ DECL|macro|QETH_LOCK_NORMAL
 mdefine_line|#define QETH_LOCK_NORMAL 1
 DECL|macro|QETH_LOCK_FLUSH
 mdefine_line|#define QETH_LOCK_FLUSH 2
-DECL|macro|QETH_MAX_DEVICES
-mdefine_line|#define QETH_MAX_DEVICES 16
-multiline_comment|/* DEPENDENCY ON QETH_MAX_DEVICES.&n;&t; *__MOUDLE_STRING expects simple literals */
-DECL|macro|QETH_MAX_DEVICES_TIMES_4
-mdefine_line|#define QETH_MAX_DEVICES_TIMES_4 64
-DECL|macro|QETH_MAX_DEVNAMES
-mdefine_line|#define QETH_MAX_DEVNAMES 16
-DECL|macro|QETH_DEVNAME
-mdefine_line|#define QETH_DEVNAME &quot;eth&quot;
 DECL|macro|QETH_TX_TIMEOUT
 mdefine_line|#define QETH_TX_TIMEOUT 100*HZ&t;/* 100 seconds */
 DECL|macro|QETH_REMOVE_WAIT_TIME
@@ -1305,8 +1296,6 @@ DECL|macro|QETH_IDLE_WAIT_TIME
 mdefine_line|#define QETH_IDLE_WAIT_TIME 10
 DECL|macro|QETH_WAIT_BEFORE_2ND_DOIO
 mdefine_line|#define QETH_WAIT_BEFORE_2ND_DOIO 1000
-DECL|macro|QETH_MAX_PARM_LEN
-mdefine_line|#define QETH_MAX_PARM_LEN 128
 DECL|macro|QETH_FAKE_LL_LEN
 mdefine_line|#define QETH_FAKE_LL_LEN ETH_HLEN&t;/* 14 */
 DECL|macro|QETH_FAKE_LL_PROT_LEN
@@ -1345,12 +1334,6 @@ DECL|macro|__min
 mdefine_line|#define __min(a,b) ( ((a)&lt;(b))?(a):(b) )
 DECL|macro|QETH_BUFSIZE
 mdefine_line|#define QETH_BUFSIZE __max(__max(IPA_PDU_HEADER_SIZE+sizeof(struct arp_cmd), &bslash;&n;&t;&t;&t;&t; IPA_PDU_HEADER_SIZE+sizeof(struct ipa_cmd)), &bslash;&n;&t;&t;&t;   QETH_RCD_LENGTH)
-DECL|macro|QETH_FINAL_STATUS_TIMEOUT
-mdefine_line|#define QETH_FINAL_STATUS_TIMEOUT 1500
-DECL|macro|QETH_CLEAR_TIMEOUT
-mdefine_line|#define QETH_CLEAR_TIMEOUT 1500
-DECL|macro|QETH_RCD_TIMEOUT
-mdefine_line|#define QETH_RCD_TIMEOUT 1500
 DECL|macro|QETH_NOP_TIMEOUT
 mdefine_line|#define QETH_NOP_TIMEOUT 1500
 DECL|macro|QETH_QUIESCE_NETDEV_TIME
@@ -1361,8 +1344,6 @@ DECL|macro|QETH_QUIESCE_WAIT_AFTER_CLEAR
 mdefine_line|#define QETH_QUIESCE_WAIT_AFTER_CLEAR 4000
 DECL|macro|NOP_STATE
 mdefine_line|#define NOP_STATE 0x1001
-DECL|macro|READ_CONF_DATA_STATE
-mdefine_line|#define READ_CONF_DATA_STATE 0x1002
 DECL|macro|IDX_ACTIVATE_READ_STATE
 mdefine_line|#define IDX_ACTIVATE_READ_STATE 0x1003
 DECL|macro|IDX_ACTIVATE_WRITE_STATE
@@ -1411,10 +1392,6 @@ DECL|macro|MACADDR_NONCANONICAL
 mdefine_line|#define MACADDR_NONCANONICAL 0
 DECL|macro|MACADDR_CANONICAL
 mdefine_line|#define MACADDR_CANONICAL 1
-DECL|macro|MEMUSAGE_DISCONTIG
-mdefine_line|#define MEMUSAGE_DISCONTIG 0
-DECL|macro|MEMUSAGE_CONTIG
-mdefine_line|#define MEMUSAGE_CONTIG 1
 DECL|macro|ENABLE_TAKEOVER
 mdefine_line|#define ENABLE_TAKEOVER 0
 DECL|macro|DISABLE_TAKEOVER
@@ -1427,10 +1404,6 @@ DECL|macro|FAKE_LL
 mdefine_line|#define FAKE_LL 0
 DECL|macro|DONT_FAKE_LL
 mdefine_line|#define DONT_FAKE_LL 1
-DECL|macro|SYNC_IQD
-mdefine_line|#define SYNC_IQD 0
-DECL|macro|ASYNC_IQD
-mdefine_line|#define ASYNC_IQD 1
 DECL|macro|QETH_BREAKOUT_LEAVE
 mdefine_line|#define QETH_BREAKOUT_LEAVE 1
 DECL|macro|QETH_BREAKOUT_AGAIN
@@ -1473,10 +1446,6 @@ DECL|macro|SENSE_RESETTING_EVENT_BYTE
 mdefine_line|#define SENSE_RESETTING_EVENT_BYTE 1
 DECL|macro|SENSE_RESETTING_EVENT_FLAG
 mdefine_line|#define SENSE_RESETTING_EVENT_FLAG 0x80
-DECL|macro|DEFAULT_RCD_CMD
-mdefine_line|#define DEFAULT_RCD_CMD 0x72
-DECL|macro|DEFAULT_RCD_COUNT
-mdefine_line|#define DEFAULT_RCD_COUNT 0x80
 DECL|macro|BUFFER_USED
 mdefine_line|#define BUFFER_USED 1
 DECL|macro|BUFFER_UNUSED
@@ -1707,10 +1676,6 @@ DECL|member|portno
 r_int
 id|portno
 suffix:semicolon
-DECL|member|memusage
-r_int
-id|memusage
-suffix:semicolon
 DECL|member|broadcast_mode
 r_int
 id|broadcast_mode
@@ -1734,10 +1699,6 @@ suffix:semicolon
 DECL|member|fake_ll
 r_int
 id|fake_ll
-suffix:semicolon
-DECL|member|async_iqd
-r_int
-id|async_iqd
 suffix:semicolon
 )brace
 suffix:semicolon
@@ -1985,10 +1946,6 @@ r_struct
 id|qeth_card
 (brace
 multiline_comment|/* pointed to by dev-&gt;priv */
-DECL|member|easy_copy_cap
-r_int
-id|easy_copy_cap
-suffix:semicolon
 multiline_comment|/* pointer to options (defaults + parameters) */
 DECL|member|options
 r_struct
@@ -2451,11 +2408,6 @@ r_int
 id|is_multicast_different
 suffix:semicolon
 multiline_comment|/* if multicast traffic is to be sent&n;&t;&t;&t;&t;&t;   on a different queue, this is the&n;&t;&t;&t;&t;&t;   queue+no_queues */
-DECL|member|can_do_async_iqd
-r_int
-id|can_do_async_iqd
-suffix:semicolon
-multiline_comment|/* 1 only on IQD that provides async&n;&t;&t;&t;&t;   unicast sigas */
 DECL|member|ipa_supported
 id|__u32
 id|ipa_supported
@@ -2507,6 +2459,12 @@ r_int
 id|unique_id
 suffix:semicolon
 multiline_comment|/* device and I/O data */
+DECL|member|gdev
+r_struct
+id|ccwgroup_device
+op_star
+id|gdev
+suffix:semicolon
 DECL|member|rdev
 r_struct
 id|ccw_device
@@ -2589,14 +2547,6 @@ DECL|member|ioctl_wait_q
 id|wait_queue_head_t
 id|ioctl_wait_q
 suffix:semicolon
-DECL|member|ioctl_wait_q_active
-id|atomic_t
-id|ioctl_wait_q_active
-suffix:semicolon
-DECL|member|ioctl_wait_q_lock
-id|spinlock_t
-id|ioctl_wait_q_lock
-suffix:semicolon
 multiline_comment|/* stuff under 2 gb */
 DECL|member|dma_stuff
 r_struct
@@ -2637,15 +2587,6 @@ DECL|member|wait_q
 id|wait_queue_head_t
 id|wait_q
 suffix:semicolon
-DECL|member|wait_q_active
-id|atomic_t
-id|wait_q_active
-suffix:semicolon
-DECL|member|wait_q_lock
-id|spinlock_t
-id|wait_q_lock
-suffix:semicolon
-multiline_comment|/* for wait_q_active and wait_q */
 DECL|member|clear_succeeded0
 id|atomic_t
 id|clear_succeeded0
@@ -2770,50 +2711,6 @@ suffix:colon
 r_return
 id|ARPHRD_ETHER
 suffix:semicolon
-)brace
-)brace
-r_inline
-r_static
-r_int
-DECL|function|qeth_determine_easy_copy_cap
-id|qeth_determine_easy_copy_cap
-c_func
-(paren
-r_int
-id|cardtype
-)paren
-(brace
-r_switch
-c_cond
-(paren
-id|cardtype
-)paren
-(brace
-r_case
-id|QETH_CARD_TYPE_UNKNOWN
-suffix:colon
-r_return
-l_int|0
-suffix:semicolon
-multiline_comment|/* better be cautious */
-r_case
-id|QETH_CARD_TYPE_OSAE
-suffix:colon
-r_return
-l_int|1
-suffix:semicolon
-r_case
-id|QETH_CARD_TYPE_IQD
-suffix:colon
-r_return
-l_int|0
-suffix:semicolon
-r_default
-suffix:colon
-r_return
-l_int|0
-suffix:semicolon
-multiline_comment|/* ?? */
 )brace
 )brace
 r_inline

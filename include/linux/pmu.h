@@ -236,9 +236,9 @@ mdefine_line|#define PMU_IOC_HAS_ADB&t;&t;_IOR(&squot;B&squot;, 4, size_t)
 multiline_comment|/* out param: u32*&t;can_sleep: 0 or 1 */
 DECL|macro|PMU_IOC_CAN_SLEEP
 mdefine_line|#define PMU_IOC_CAN_SLEEP&t;_IOR(&squot;B&squot;, 5, size_t) 
-multiline_comment|/* no param */
+multiline_comment|/* no param, but historically was _IOR(&squot;B&squot;, 6, 0), meaning 4 bytes */
 DECL|macro|PMU_IOC_GRAB_BACKLIGHT
-mdefine_line|#define PMU_IOC_GRAB_BACKLIGHT&t;_IOR(&squot;B&squot;, 6, 0) 
+mdefine_line|#define PMU_IOC_GRAB_BACKLIGHT&t;_IOR(&squot;B&squot;, 6, size_t) 
 macro_line|#ifdef __KERNEL__
 r_extern
 r_int

@@ -11,7 +11,6 @@ macro_line|#include &lt;linux/vfs.h&gt;
 macro_line|#include &lt;linux/ioctl32.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/sockios.h&gt;&t;/* for SIOCDEVPRIVATE */
-macro_line|#include &lt;linux/fs.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;linux/ctype.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
@@ -577,6 +576,66 @@ id|kbuf-&gt;f_frsize
 comma
 op_amp
 id|ubuf-&gt;f_frsize
+)paren
+op_logical_or
+id|__put_user
+c_func
+(paren
+l_int|0
+comma
+op_amp
+id|ubuf-&gt;f_spare
+(braket
+l_int|0
+)braket
+)paren
+op_logical_or
+id|__put_user
+c_func
+(paren
+l_int|0
+comma
+op_amp
+id|ubuf-&gt;f_spare
+(braket
+l_int|1
+)braket
+)paren
+op_logical_or
+id|__put_user
+c_func
+(paren
+l_int|0
+comma
+op_amp
+id|ubuf-&gt;f_spare
+(braket
+l_int|2
+)braket
+)paren
+op_logical_or
+id|__put_user
+c_func
+(paren
+l_int|0
+comma
+op_amp
+id|ubuf-&gt;f_spare
+(braket
+l_int|3
+)braket
+)paren
+op_logical_or
+id|__put_user
+c_func
+(paren
+l_int|0
+comma
+op_amp
+id|ubuf-&gt;f_spare
+(braket
+l_int|4
+)braket
 )paren
 )paren
 r_return

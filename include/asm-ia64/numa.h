@@ -2,6 +2,8 @@ multiline_comment|/*&n; * This file is subject to the terms and conditions of th
 macro_line|#ifndef _ASM_IA64_NUMA_H
 DECL|macro|_ASM_IA64_NUMA_H
 mdefine_line|#define _ASM_IA64_NUMA_H
+macro_line|#include &lt;linux/config.h&gt;
+macro_line|#include &lt;linux/cpumask.h&gt;
 macro_line|#ifdef CONFIG_NUMA
 macro_line|#ifdef CONFIG_DISCONTIGMEM
 macro_line|# include &lt;asm/mmzone.h&gt;

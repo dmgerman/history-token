@@ -408,15 +408,7 @@ c_func
 (paren
 id|hub_v
 comma
-l_int|0
-comma
 id|SGI_II_ERROR
-comma
-l_int|0
-comma
-id|hub_v
-comma
-l_string|&quot;HUB IO error interrupt&quot;
 comma
 op_amp
 id|bit
@@ -433,7 +425,7 @@ id|CPU_NONE
 id|printk
 c_func
 (paren
-l_string|&quot;hubii_eint_init: intr_reserve_level failed, cnode %d&quot;
+l_string|&quot;hubii_eint_init: intr_heuristic failed, cnode %d&quot;
 comma
 id|cnode
 )paren
@@ -449,10 +441,6 @@ c_func
 id|intr_cpu
 comma
 id|SGI_II_ERROR
-comma
-l_int|0
-comma
-l_int|NULL
 )paren
 suffix:semicolon
 id|request_irq

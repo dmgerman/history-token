@@ -293,9 +293,9 @@ id|boot_cpu_data.x86_clflush_size
 id|asm
 r_volatile
 (paren
-l_string|&quot;clflush %0&quot;
+l_string|&quot;clflush (%0)&quot;
 op_scope_resolution
-l_string|&quot;m&quot;
+l_string|&quot;r&quot;
 (paren
 id|address
 op_plus

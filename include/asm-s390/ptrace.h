@@ -541,6 +541,11 @@ r_int
 r_int
 id|orig_gpr2
 suffix:semicolon
+DECL|member|ilc
+r_int
+r_int
+id|ilc
+suffix:semicolon
 DECL|member|trap
 r_int
 r_int

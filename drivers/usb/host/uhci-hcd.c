@@ -8352,12 +8352,6 @@ op_div
 l_int|1000
 )paren
 suffix:semicolon
-id|set_current_state
-c_func
-(paren
-id|TASK_RUNNING
-)paren
-suffix:semicolon
 id|outw
 c_func
 (paren
@@ -8387,12 +8381,6 @@ l_int|999
 )paren
 op_div
 l_int|1000
-)paren
-suffix:semicolon
-id|set_current_state
-c_func
-(paren
-id|TASK_RUNNING
 )paren
 suffix:semicolon
 id|uhci-&gt;resume_detect

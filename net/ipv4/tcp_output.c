@@ -2,6 +2,7 @@ multiline_comment|/*&n; * INET&t;&t;An implementation of the TCP/IP protocol sui
 multiline_comment|/*&n; * Changes:&t;Pedro Roque&t;:&t;Retransmit queue handled by TCP.&n; *&t;&t;&t;&t;:&t;Fragmentation on mtu decrease&n; *&t;&t;&t;&t;:&t;Segment collapse on retransmit&n; *&t;&t;&t;&t;:&t;AF independence&n; *&n; *&t;&t;Linus Torvalds&t;:&t;send_delayed_ack&n; *&t;&t;David S. Miller&t;:&t;Charge memory using the right skb&n; *&t;&t;&t;&t;&t;during syn/ack processing.&n; *&t;&t;David S. Miller :&t;Output engine completely rewritten.&n; *&t;&t;Andrea Arcangeli:&t;SYNACK carry ts_recent in tsecr.&n; *&t;&t;Cacophonix Gaul :&t;draft-minshall-nagle-01&n; *&t;&t;J Hadi Salim&t;:&t;ECN support&n; *&n; */
 macro_line|#include &lt;net/tcp.h&gt;
 macro_line|#include &lt;linux/compiler.h&gt;
+macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/smp_lock.h&gt;
 multiline_comment|/* People can turn this off for buggy TCP&squot;s found in printers etc. */
 DECL|variable|sysctl_tcp_retrans_collapse
@@ -6660,4 +6661,74 @@ id|TCP_RESOURCE_PROBE_INTERVAL
 suffix:semicolon
 )brace
 )brace
+DECL|variable|tcp_acceptable_seq
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|tcp_acceptable_seq
+)paren
+suffix:semicolon
+DECL|variable|tcp_connect
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|tcp_connect
+)paren
+suffix:semicolon
+DECL|variable|tcp_connect_init
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|tcp_connect_init
+)paren
+suffix:semicolon
+DECL|variable|tcp_make_synack
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|tcp_make_synack
+)paren
+suffix:semicolon
+DECL|variable|tcp_send_synack
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|tcp_send_synack
+)paren
+suffix:semicolon
+DECL|variable|tcp_simple_retransmit
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|tcp_simple_retransmit
+)paren
+suffix:semicolon
+DECL|variable|tcp_sync_mss
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|tcp_sync_mss
+)paren
+suffix:semicolon
+DECL|variable|tcp_transmit_skb
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|tcp_transmit_skb
+)paren
+suffix:semicolon
+DECL|variable|tcp_write_wakeup
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|tcp_write_wakeup
+)paren
+suffix:semicolon
+DECL|variable|tcp_write_xmit
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|tcp_write_xmit
+)paren
+suffix:semicolon
 eof

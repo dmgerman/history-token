@@ -1,4 +1,4 @@
-multiline_comment|/* &n; * File...........: linux/drivers/s390/block/dasd_int.h&n; * Author(s)......: Holger Smolinski &lt;Holger.Smolinski@de.ibm.com&gt;&n; *                  Horst Hummel &lt;Horst.Hummel@de.ibm.com&gt; &n; *&t;&t;    Martin Schwidefsky &lt;schwidefsky@de.ibm.com&gt;&n; * Bugreports.to..: &lt;Linux390@de.ibm.com&gt;&n; * (C) IBM Corporation, IBM Deutschland Entwicklung GmbH, 1999,2000&n; *&n; * $Revision: 1.42 $&n; */
+multiline_comment|/* &n; * File...........: linux/drivers/s390/block/dasd_int.h&n; * Author(s)......: Holger Smolinski &lt;Holger.Smolinski@de.ibm.com&gt;&n; *                  Horst Hummel &lt;Horst.Hummel@de.ibm.com&gt; &n; *&t;&t;    Martin Schwidefsky &lt;schwidefsky@de.ibm.com&gt;&n; * Bugreports.to..: &lt;Linux390@de.ibm.com&gt;&n; * (C) IBM Corporation, IBM Deutschland Entwicklung GmbH, 1999,2000&n; *&n; * $Revision: 1.45 $&n; */
 macro_line|#ifndef DASD_INT_H
 DECL|macro|DASD_INT_H
 mdefine_line|#define DASD_INT_H
@@ -8,21 +8,18 @@ DECL|macro|DASD_PER_MAJOR
 mdefine_line|#define DASD_PER_MAJOR ( 1U&lt;&lt;(8-DASD_PARTN_BITS))
 DECL|macro|DASD_PARTN_MASK
 mdefine_line|#define DASD_PARTN_MASK ((1 &lt;&lt; DASD_PARTN_BITS) - 1)
-multiline_comment|/*&n; * States a dasd device can have:&n; *   new: the dasd_device structure is allocated.&n; *   known: the discipline for the device is identified.&n; *   basic: the device can do basic i/o.&n; *   accept: the device is analysed (format is known).&n; *   ready: partition detection is done and the device is can do block io.&n; *   online: the device accepts requests from the block device queue.&n; *&n; * Things to do for startup state transitions:&n; *   new -&gt; known: find discipline for the device and create devfs entries.&n; *   known -&gt; basic: request irq line for the device.&n; *   basic -&gt; accept: do the initial analysis, e.g. format detection.&n; *   accept-&gt; ready: do block device setup and detect partitions.&n; *   ready -&gt; online: schedule the device tasklet.&n; * Things to do for shutdown state transitions:&n; *   online -&gt; ready: just set the new device state.&n; *   ready -&gt; accept: flush requests from the block device layer and&n; *                    clear partition information.&n; *   accept -&gt; basic: reset format information.&n; *   basic -&gt; known: terminate all requests and free irq.&n; *   known -&gt; new: remove devfs entries and forget discipline.&n; */
+multiline_comment|/*&n; * States a dasd device can have:&n; *   new: the dasd_device structure is allocated.&n; *   known: the discipline for the device is identified.&n; *   basic: the device can do basic i/o.&n; *   accept: the device is analysed (format is known).&n; *   ready: partition detection is done and the device is can do block io.&n; *   online: the device accepts requests from the block device queue.&n; *&n; * Things to do for startup state transitions:&n; *   new -&gt; known: find discipline for the device and create devfs entries.&n; *   known -&gt; basic: request irq line for the device.&n; *   basic -&gt; ready: do the initial analysis, e.g. format detection,&n; *                   do block device setup and detect partitions.&n; *   ready -&gt; online: schedule the device tasklet.&n; * Things to do for shutdown state transitions:&n; *   online -&gt; ready: just set the new device state.&n; *   ready -&gt; basic: flush requests from the block device layer, clear&n; *                   partition information and reset format information.&n; *   basic -&gt; known: terminate all requests and free irq.&n; *   known -&gt; new: remove devfs entries and forget discipline.&n; */
 DECL|macro|DASD_STATE_NEW
 mdefine_line|#define DASD_STATE_NEW&t;  0
 DECL|macro|DASD_STATE_KNOWN
 mdefine_line|#define DASD_STATE_KNOWN  1
 DECL|macro|DASD_STATE_BASIC
 mdefine_line|#define DASD_STATE_BASIC  2
-DECL|macro|DASD_STATE_ACCEPT
-mdefine_line|#define DASD_STATE_ACCEPT 3
 DECL|macro|DASD_STATE_READY
-mdefine_line|#define DASD_STATE_READY  4
+mdefine_line|#define DASD_STATE_READY  3
 DECL|macro|DASD_STATE_ONLINE
-mdefine_line|#define DASD_STATE_ONLINE 5
+mdefine_line|#define DASD_STATE_ONLINE 4
 macro_line|#include &lt;linux/module.h&gt;
-macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;linux/wait.h&gt;
 macro_line|#include &lt;linux/blkdev.h&gt;
 macro_line|#include &lt;linux/devfs_fs_kernel.h&gt;
@@ -151,7 +148,7 @@ DECL|macro|DBF_DEBUG
 mdefine_line|#define&t;DBF_DEBUG&t;6&t;/* debug-level messages&t;&t;&t;*/
 multiline_comment|/* messages to be written via klogd and dbf */
 DECL|macro|DEV_MESSAGE
-mdefine_line|#define DEV_MESSAGE(d_loglevel,d_device,d_string,d_args...)&bslash;&n;do { &bslash;&n;&t;printk(d_loglevel PRINTK_HEADER &quot; %s,%s: &quot; &bslash;&n;&t;       d_string &quot;&bslash;n&quot;, d_device-&gt;gdp-&gt;disk_name, &bslash;&n;&t;       d_device-&gt;cdev-&gt;dev.bus_id, d_args); &bslash;&n;&t;DBF_DEV_EVENT(DBF_ALERT, d_device, d_string, d_args); &bslash;&n;} while(0)
+mdefine_line|#define DEV_MESSAGE(d_loglevel,d_device,d_string,d_args...)&bslash;&n;do { &bslash;&n;&t;printk(d_loglevel PRINTK_HEADER &quot; %s: &quot; d_string &quot;&bslash;n&quot;, &bslash;&n;&t;       d_device-&gt;cdev-&gt;dev.bus_id, d_args); &bslash;&n;&t;DBF_DEV_EVENT(DBF_ALERT, d_device, d_string, d_args); &bslash;&n;} while(0)
 DECL|macro|MESSAGE
 mdefine_line|#define MESSAGE(d_loglevel,d_string,d_args...)&bslash;&n;do { &bslash;&n;&t;printk(d_loglevel PRINTK_HEADER &quot; &quot; d_string &quot;&bslash;n&quot;, d_args); &bslash;&n;&t;DBF_EVENT(DBF_ALERT, d_string, d_args); &bslash;&n;} while(0)
 DECL|struct|dasd_ccw_req
@@ -568,6 +565,11 @@ suffix:semicolon
 DECL|member|request_queue_lock
 id|spinlock_t
 id|request_queue_lock
+suffix:semicolon
+DECL|member|devindex
+r_int
+r_int
+id|devindex
 suffix:semicolon
 DECL|member|blocks
 r_int
@@ -1389,9 +1391,7 @@ op_star
 id|dasd_alloc_device
 c_func
 (paren
-r_int
-r_int
-id|devindex
+r_void
 )paren
 suffix:semicolon
 r_void
@@ -1681,23 +1681,25 @@ r_void
 )paren
 suffix:semicolon
 r_int
-id|dasd_gendisk_index_major
-c_func
-(paren
-r_int
-)paren
-suffix:semicolon
-r_struct
-id|gendisk
-op_star
 id|dasd_gendisk_alloc
 c_func
 (paren
-r_int
+r_struct
+id|dasd_device
+op_star
 )paren
 suffix:semicolon
 r_void
-id|dasd_setup_partitions
+id|dasd_gendisk_free
+c_func
+(paren
+r_struct
+id|dasd_device
+op_star
+)paren
+suffix:semicolon
+r_void
+id|dasd_scan_partitions
 c_func
 (paren
 r_struct

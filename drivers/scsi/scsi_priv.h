@@ -248,7 +248,7 @@ id|cmd
 )paren
 suffix:semicolon
 r_extern
-r_void
+r_int
 id|scsi_error_handler
 c_func
 (paren

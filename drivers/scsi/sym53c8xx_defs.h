@@ -3,12 +3,7 @@ macro_line|#ifndef SYM53C8XX_DEFS_H
 DECL|macro|SYM53C8XX_DEFS_H
 mdefine_line|#define SYM53C8XX_DEFS_H
 multiline_comment|/*&n;**&t;Check supported Linux versions&n;*/
-macro_line|#if !defined(LINUX_VERSION_CODE)
-macro_line|#include &lt;linux/version.h&gt;
-macro_line|#endif
 macro_line|#include &lt;linux/config.h&gt;
-DECL|macro|LinuxVersionCode
-mdefine_line|#define LinuxVersionCode(v, p, s) (((v)&lt;&lt;16)+((p)&lt;&lt;8)+(s))
 multiline_comment|/*&n; * NCR PQS/PDS special device support.&n; */
 macro_line|#ifdef CONFIG_SCSI_NCR53C8XX_PQS_PDS
 DECL|macro|SCSI_NCR_PQS_PDS_SUPPORT
@@ -88,13 +83,6 @@ mdefine_line|#define&t;SCSI_NCR_IOMAPPED
 macro_line|#elif defined(__alpha__)
 DECL|macro|SCSI_NCR_IOMAPPED
 mdefine_line|#define&t;SCSI_NCR_IOMAPPED
-macro_line|#elif defined(__powerpc__)
-macro_line|#if LINUX_VERSION_CODE &lt;= LinuxVersionCode(2,4,3)
-DECL|macro|SCSI_NCR_IOMAPPED
-mdefine_line|#define&t;SCSI_NCR_IOMAPPED
-DECL|macro|SCSI_NCR_PCI_MEM_NOT_SUPPORTED
-mdefine_line|#define SCSI_NCR_PCI_MEM_NOT_SUPPORTED
-macro_line|#endif
 macro_line|#endif
 multiline_comment|/*&n; * Immediate arbitration&n; */
 macro_line|#if defined(CONFIG_SCSI_NCR53C8XX_IARB)
@@ -231,9 +219,6 @@ DECL|macro|ktime_sub
 mdefine_line|#define ktime_sub(a, o)&t;&t;((a) - (u_long)(o))
 multiline_comment|/*&n; *  IO functions definition for big/little endian CPU support.&n; *  For now, the NCR is only supported in little endian addressing mode, &n; */
 macro_line|#ifdef&t;__BIG_ENDIAN
-macro_line|#if&t;LINUX_VERSION_CODE &lt; LinuxVersionCode(2,1,0)
-macro_line|#error&t;&quot;BIG ENDIAN byte ordering needs kernel version &gt;= 2.1.0&quot;
-macro_line|#endif
 DECL|macro|inw_l2b
 mdefine_line|#define&t;inw_l2b&t;&t;inw
 DECL|macro|inl_l2b
@@ -323,20 +308,9 @@ macro_line|#ifdef&t;SCSI_NCR_BIG_ENDIAN
 macro_line|#error&t;&quot;The NCR in BIG ENDIAN addressing mode is not (yet) supported&quot;
 macro_line|#endif
 macro_line|#endif
-multiline_comment|/*&n; *  IA32 architecture does not reorder STORES and prevents&n; *  LOADS from passing STORES. It is called `program order&squot; &n; *  by Intel and allows device drivers to deal with memory &n; *  ordering by only ensuring that the code is not reordered  &n; *  by the compiler when ordering is required.&n; *  Other architectures implement a weaker ordering that &n; *  requires memory barriers (and also IO barriers when they &n; *  make sense) to be used.&n; *  We want to be paranoid for ppc and ia64. :)&n; */
-macro_line|#if&t;defined(__i386__) || defined(__x86_64__)
-DECL|macro|MEMORY_BARRIER
-mdefine_line|#define MEMORY_BARRIER()&t;do { ; } while(0)
-macro_line|#elif&t;defined&t;__powerpc__
-DECL|macro|MEMORY_BARRIER
-mdefine_line|#define MEMORY_BARRIER()&t;__asm__ volatile(&quot;eieio; sync&quot; : : : &quot;memory&quot;)
-macro_line|#elif&t;defined&t;__ia64__
-DECL|macro|MEMORY_BARRIER
-mdefine_line|#define MEMORY_BARRIER()&t;__asm__ volatile(&quot;mf.a; mf&quot; : : : &quot;memory&quot;)
-macro_line|#else
+multiline_comment|/*&n; *  IA32 architecture does not reorder STORES and prevents&n; *  LOADS from passing STORES. It is called `program order&squot; &n; *  by Intel and allows device drivers to deal with memory &n; *  ordering by only ensuring that the code is not reordered  &n; *  by the compiler when ordering is required.&n; *  Other architectures implement a weaker ordering that &n; *  requires memory barriers (and also IO barriers when they &n; *  make sense) to be used.&n; */
 DECL|macro|MEMORY_BARRIER
 mdefine_line|#define MEMORY_BARRIER()&t;mb()
-macro_line|#endif
 multiline_comment|/*&n; *  If the NCR uses big endian addressing mode over the &n; *  PCI, actual io register addresses for byte and word &n; *  accesses must be changed according to lane routing.&n; *  Btw, ncr_offb() and ncr_offw() macros only apply to &n; *  constants and so donnot generate bloated code.&n; */
 macro_line|#if&t;defined(SCSI_NCR_BIG_ENDIAN)
 DECL|macro|ncr_offb
@@ -824,7 +798,7 @@ id|v_minor
 suffix:semicolon
 multiline_comment|/* 0x30 */
 DECL|member|boot_crc
-id|u_int32
+id|u32
 id|boot_crc
 suffix:semicolon
 DECL|member|flags
@@ -1468,7 +1442,7 @@ mdefine_line|#define   WRIE    0x01  /* mod: write and invalidate enable */
 multiline_comment|/* bits 4-7 rsvd for C1010          */
 DECL|member|nc_temp
 multiline_comment|/*1c*/
-id|u_int32
+id|u32
 id|nc_temp
 suffix:semicolon
 multiline_comment|/* ### Temporary stack              */
@@ -1503,25 +1477,25 @@ id|nc_ctest6
 suffix:semicolon
 DECL|member|nc_dbc
 multiline_comment|/*24*/
-id|u_int32
+id|u32
 id|nc_dbc
 suffix:semicolon
 multiline_comment|/* ### Byte count and command       */
 DECL|member|nc_dnad
 multiline_comment|/*28*/
-id|u_int32
+id|u32
 id|nc_dnad
 suffix:semicolon
 multiline_comment|/* ### Next command register        */
 DECL|member|nc_dsp
 multiline_comment|/*2c*/
-id|u_int32
+id|u32
 id|nc_dsp
 suffix:semicolon
 multiline_comment|/* --&gt; Script Pointer               */
 DECL|member|nc_dsps
 multiline_comment|/*30*/
-id|u_int32
+id|u32
 id|nc_dsps
 suffix:semicolon
 multiline_comment|/* --&gt; Script pointer save/opcode#2 */
@@ -1598,7 +1572,7 @@ mdefine_line|#define&t;  NOCOM   0x01&t;/* cmd: protect sfbr while reselect */
 multiline_comment|/* bits 0-1 rsvd for C1010          */
 DECL|member|nc_adder
 multiline_comment|/*3c*/
-id|u_int32
+id|u32
 id|nc_adder
 suffix:semicolon
 DECL|member|nc_sien
@@ -1828,43 +1802,43 @@ suffix:semicolon
 multiline_comment|/* Working register C-R             */
 DECL|member|nc_mmrs
 multiline_comment|/*a0*/
-id|u_int32
+id|u32
 id|nc_mmrs
 suffix:semicolon
 multiline_comment|/* Memory Move Read Selector        */
 DECL|member|nc_mmws
 multiline_comment|/*a4*/
-id|u_int32
+id|u32
 id|nc_mmws
 suffix:semicolon
 multiline_comment|/* Memory Move Write Selector       */
 DECL|member|nc_sfs
 multiline_comment|/*a8*/
-id|u_int32
+id|u32
 id|nc_sfs
 suffix:semicolon
 multiline_comment|/* Script Fetch Selector            */
 DECL|member|nc_drs
 multiline_comment|/*ac*/
-id|u_int32
+id|u32
 id|nc_drs
 suffix:semicolon
 multiline_comment|/* DSA Relative Selector            */
 DECL|member|nc_sbms
 multiline_comment|/*b0*/
-id|u_int32
+id|u32
 id|nc_sbms
 suffix:semicolon
 multiline_comment|/* Static Block Move Selector       */
 DECL|member|nc_dbms
 multiline_comment|/*b4*/
-id|u_int32
+id|u32
 id|nc_dbms
 suffix:semicolon
 multiline_comment|/* Dynamic Block Move Selector      */
 DECL|member|nc_dnad64
 multiline_comment|/*b8*/
-id|u_int32
+id|u32
 id|nc_dnad64
 suffix:semicolon
 multiline_comment|/* DMA Next Address 64              */
@@ -1896,13 +1870,13 @@ suffix:semicolon
 multiline_comment|/* AIP Control C1010_66 Only        */
 DECL|member|nc_pmjad1
 multiline_comment|/*c0*/
-id|u_int32
+id|u32
 id|nc_pmjad1
 suffix:semicolon
 multiline_comment|/* Phase Mismatch Jump Address 1    */
 DECL|member|nc_pmjad2
 multiline_comment|/*c4*/
-id|u_int32
+id|u32
 id|nc_pmjad2
 suffix:semicolon
 multiline_comment|/* Phase Mismatch Jump Address 2    */
@@ -1956,7 +1930,7 @@ suffix:semicolon
 multiline_comment|/*                                  */
 DECL|member|nc_esa
 multiline_comment|/*d0*/
-id|u_int32
+id|u32
 id|nc_esa
 suffix:semicolon
 multiline_comment|/* Entry Storage Address            */
@@ -1983,13 +1957,13 @@ id|nc_ia3
 suffix:semicolon
 DECL|member|nc_sbc
 multiline_comment|/*d8*/
-id|u_int32
+id|u32
 id|nc_sbc
 suffix:semicolon
 multiline_comment|/* SCSI Byte Count (3 bytes only)   */
 DECL|member|nc_csbc
 multiline_comment|/*dc*/
-id|u_int32
+id|u32
 id|nc_csbc
 suffix:semicolon
 multiline_comment|/* Cumulative SCSI Byte Count       */
@@ -2016,19 +1990,19 @@ suffix:semicolon
 multiline_comment|/* CRC control register             */
 DECL|member|nc_crcdata
 multiline_comment|/*e4*/
-id|u_int32
+id|u32
 id|nc_crcdata
 suffix:semicolon
 multiline_comment|/* CRC data register                */
 DECL|member|nc_e8_
 multiline_comment|/*e8*/
-id|u_int32
+id|u32
 id|nc_e8_
 suffix:semicolon
 multiline_comment|/* rsvd &t;&t;&t;    */
 DECL|member|nc_ec_
 multiline_comment|/*ec*/
-id|u_int32
+id|u32
 id|nc_ec_
 suffix:semicolon
 multiline_comment|/* rsvd &t;&t;&t;    */
@@ -2047,7 +2021,7 @@ DECL|macro|REG
 mdefine_line|#define REG(r) REGJ (nc_, r)
 DECL|typedef|ncrcmd
 r_typedef
-id|u_int32
+id|u32
 id|ncrcmd
 suffix:semicolon
 multiline_comment|/*-----------------------------------------------------------&n;**&n;**&t;SCSI phases&n;**&n;**&t;DT phases illegal for ncr driver.&n;**&n;**-----------------------------------------------------------&n;*/
@@ -2091,11 +2065,11 @@ r_struct
 id|scr_tblmove
 (brace
 DECL|member|size
-id|u_int32
+id|u32
 id|size
 suffix:semicolon
 DECL|member|addr
-id|u_int32
+id|u32
 id|addr
 suffix:semicolon
 )brace
@@ -2159,7 +2133,7 @@ macro_line|#endif
 DECL|macro|SCR_JMP_REL
 mdefine_line|#define SCR_JMP_REL     0x04000000
 DECL|macro|SCR_ID
-mdefine_line|#define SCR_ID(id)&t;(((u_int32)(id)) &lt;&lt; 16)
+mdefine_line|#define SCR_ID(id)&t;(((u32)(id)) &lt;&lt; 16)
 multiline_comment|/*-----------------------------------------------------------&n;**&n;**&t;Waiting for Disconnect or Reselect&n;**&n;**-----------------------------------------------------------&n;**&n;**&t;WAIT_DISC&n;**&t;dummy: &lt;&lt;alternate_address&gt;&gt;&n;**&n;**&t;WAIT_RESEL&n;**&t;&lt;&lt;alternate_address&gt;&gt;&n;**&n;**-----------------------------------------------------------&n;*/
 DECL|macro|SCR_WAIT_DISC
 mdefine_line|#define&t;SCR_WAIT_DISC&t;0x48000000

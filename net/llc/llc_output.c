@@ -2,6 +2,7 @@ multiline_comment|/*&n; * llc_output.c - LLC minimal output path&n; *&n; * Copyr
 macro_line|#include &lt;linux/if_arp.h&gt;
 macro_line|#include &lt;linux/if_tr.h&gt;
 macro_line|#include &lt;linux/netdevice.h&gt;
+macro_line|#include &lt;linux/trdevice.h&gt;
 macro_line|#include &lt;linux/skbuff.h&gt;
 macro_line|#include &lt;net/llc.h&gt;
 macro_line|#include &lt;net/llc_pdu.h&gt;

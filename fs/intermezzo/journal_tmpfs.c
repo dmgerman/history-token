@@ -12,7 +12,6 @@ macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;asm/segment.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
-macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#if defined(CONFIG_TMPFS)
 macro_line|#include &lt;linux/jbd.h&gt;
 macro_line|#if defined(CONFIG_EXT3)

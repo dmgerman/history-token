@@ -301,8 +301,9 @@ id|qdio_establish
 c_func
 (paren
 r_struct
-id|ccw_device
+id|qdio_initialize
 op_star
+id|init_data
 )paren
 suffix:semicolon
 r_extern

@@ -76,6 +76,13 @@ id|pmd_t
 op_star
 id|pmd
 suffix:semicolon
+id|spin_lock
+c_func
+(paren
+op_amp
+id|init_mm.page_table_lock
+)paren
+suffix:semicolon
 id|pgd
 op_assign
 id|pgd_offset_k
@@ -130,6 +137,13 @@ id|minicache_pte
 id|BUG
 c_func
 (paren
+)paren
+suffix:semicolon
+id|spin_unlock
+c_func
+(paren
+op_amp
+id|init_mm.page_table_lock
 )paren
 suffix:semicolon
 r_return

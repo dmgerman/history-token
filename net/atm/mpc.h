@@ -1,6 +1,7 @@
 macro_line|#ifndef _MPC_H_
 DECL|macro|_MPC_H_
 mdefine_line|#define _MPC_H_
+macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/atm.h&gt;
 macro_line|#include &lt;linux/atmmpc.h&gt;
 macro_line|#include &lt;linux/skbuff.h&gt;
@@ -186,77 +187,6 @@ id|qos
 suffix:semicolon
 )brace
 suffix:semicolon
-multiline_comment|/* Functions to call during ioctl(ATMMPC, ) */
-DECL|struct|atm_mpoa_ops
-r_struct
-id|atm_mpoa_ops
-(brace
-DECL|member|mpoad_attach
-r_int
-(paren
-op_star
-id|mpoad_attach
-)paren
-(paren
-r_struct
-id|atm_vcc
-op_star
-id|vcc
-comma
-r_int
-id|arg
-)paren
-suffix:semicolon
-multiline_comment|/* attach mpoa daemon  */
-DECL|member|vcc_attach
-r_int
-(paren
-op_star
-id|vcc_attach
-)paren
-(paren
-r_struct
-id|atm_vcc
-op_star
-id|vcc
-comma
-r_int
-id|arg
-)paren
-suffix:semicolon
-multiline_comment|/* attach shortcut vcc */
-DECL|member|owner
-r_struct
-id|module
-op_star
-id|owner
-suffix:semicolon
-)brace
-suffix:semicolon
-multiline_comment|/* Boot/module initialization function */
-r_extern
-r_struct
-id|atm_mpoa_ops
-op_star
-id|atm_mpoa_ops
-suffix:semicolon
-r_int
-id|try_atm_mpoa_ops
-c_func
-(paren
-r_void
-)paren
-suffix:semicolon
-r_void
-id|atm_mpoa_ops_set
-c_func
-(paren
-r_struct
-id|atm_mpoa_ops
-op_star
-id|hook
-)paren
-suffix:semicolon
 multiline_comment|/* MPOA QoS operations */
 r_struct
 id|atm_mpoa_qos
@@ -302,7 +232,7 @@ r_char
 op_star
 id|page
 comma
-r_int
+id|ssize_t
 op_star
 id|len
 )paren

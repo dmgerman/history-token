@@ -1,4 +1,4 @@
-multiline_comment|/* $Id: shub_intr.c,v 1.1 2002/02/28 17:31:25 marcelo Exp $&n; *&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1992-1997, 2000-2003 Silicon Graphics, Inc.  All Rights Reserved.&n; */
+multiline_comment|/*&n; * This file is subject to the terms and conditions of the GNU General Public&n; * License.  See the file &quot;COPYING&quot; in the main directory of this archive&n; * for more details.&n; *&n; * Copyright (C) 1992-1997, 2000-2003 Silicon Graphics, Inc.  All Rights Reserved.&n; */
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;asm/sn/types.h&gt;
@@ -121,16 +121,8 @@ c_func
 (paren
 id|dev
 comma
-id|dev_desc
-comma
 op_minus
 l_int|1
-comma
-l_int|0
-comma
-id|owner_dev
-comma
-l_int|NULL
 comma
 op_amp
 id|vector
@@ -514,10 +506,6 @@ c_func
 id|cpu
 comma
 id|vector
-comma
-id|intr_hdl-&gt;i_swlevel
-comma
-l_int|NULL
 )paren
 suffix:semicolon
 r_if
@@ -527,11 +515,9 @@ id|rv
 OL
 l_int|0
 )paren
-(brace
 r_return
 id|rv
 suffix:semicolon
-)brace
 id|intr_hdl-&gt;i_xtalk_info.xi_setfunc
 op_assign
 id|setfunc

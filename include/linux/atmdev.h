@@ -258,6 +258,12 @@ macro_line|#include &lt;net/sock.h&gt;
 macro_line|#include &lt;asm/atomic.h&gt;
 macro_line|#ifdef CONFIG_PROC_FS
 macro_line|#include &lt;linux/proc_fs.h&gt;
+r_extern
+r_struct
+id|proc_dir_entry
+op_star
+id|atm_proc_root
+suffix:semicolon
 macro_line|#endif
 DECL|struct|k_atm_aal_stats
 r_struct
@@ -345,6 +351,10 @@ DECL|enumerator|ATM_VF_WAITING
 id|ATM_VF_WAITING
 comma
 multiline_comment|/* waiting for reply from sigd */
+DECL|enumerator|ATM_VF_IS_CLIP
+id|ATM_VF_IS_CLIP
+comma
+multiline_comment|/* in use by CLIP protocol */
 )brace
 suffix:semicolon
 DECL|macro|ATM_VF2VS
@@ -1375,6 +1385,64 @@ id|vcc
 comma
 r_int
 id|reply
+)paren
+suffix:semicolon
+DECL|struct|atm_ioctl
+r_struct
+id|atm_ioctl
+(brace
+DECL|member|owner
+r_struct
+id|module
+op_star
+id|owner
+suffix:semicolon
+multiline_comment|/* A module reference is kept if appropriate over this call.&n;&t; * Return -ENOIOCTLCMD if you don&squot;t handle it. */
+DECL|member|ioctl
+r_int
+(paren
+op_star
+id|ioctl
+)paren
+(paren
+r_struct
+id|socket
+op_star
+comma
+r_int
+r_int
+id|cmd
+comma
+r_int
+r_int
+id|arg
+)paren
+suffix:semicolon
+DECL|member|list
+r_struct
+id|list_head
+id|list
+suffix:semicolon
+)brace
+suffix:semicolon
+multiline_comment|/**&n; * register_atm_ioctl - register handler for ioctl operations&n; *&n; * Special (non-device) handlers of ioctl&squot;s should&n; * register here. If you&squot;re a normal device, you should&n; * set .ioctl in your atmdev_ops instead.&n; */
+r_void
+id|register_atm_ioctl
+c_func
+(paren
+r_struct
+id|atm_ioctl
+op_star
+)paren
+suffix:semicolon
+multiline_comment|/**&n; * deregister_atm_ioctl - remove the ioctl handler&n; */
+r_void
+id|deregister_atm_ioctl
+c_func
+(paren
+r_struct
+id|atm_ioctl
+op_star
 )paren
 suffix:semicolon
 macro_line|#endif /* __KERNEL__ */

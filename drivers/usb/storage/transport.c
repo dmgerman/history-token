@@ -3372,12 +3372,6 @@ op_star
 l_int|6
 )paren
 suffix:semicolon
-id|set_current_state
-c_func
-(paren
-id|TASK_RUNNING
-)paren
-suffix:semicolon
 id|down
 c_func
 (paren

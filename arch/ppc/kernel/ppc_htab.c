@@ -11,12 +11,12 @@ macro_line|#include &lt;linux/smp_lock.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/bitops.h&gt;
 macro_line|#include &lt;asm/mmu.h&gt;
-macro_line|#include &lt;asm/processor.h&gt;
 macro_line|#include &lt;asm/residual.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
 macro_line|#include &lt;asm/cputable.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
+macro_line|#include &lt;asm/reg.h&gt;
 r_static
 id|ssize_t
 id|ppc_htab_read
@@ -163,27 +163,6 @@ r_int
 r_int
 id|htab_hash_searches
 suffix:semicolon
-multiline_comment|/* these will go into processor.h when I&squot;m done debugging -- Cort */
-DECL|macro|MMCR0
-mdefine_line|#define MMCR0 952
-DECL|macro|MMCR0_PMC1_CYCLES
-mdefine_line|#define MMCR0_PMC1_CYCLES (0x1&lt;&lt;7)
-DECL|macro|MMCR0_PMC1_ICACHEMISS
-mdefine_line|#define MMCR0_PMC1_ICACHEMISS (0x5&lt;&lt;7)
-DECL|macro|MMCR0_PMC1_DTLB
-mdefine_line|#define MMCR0_PMC1_DTLB (0x6&lt;&lt;7)
-DECL|macro|MMCR0_PMC2_DCACHEMISS
-mdefine_line|#define MMCR0_PMC2_DCACHEMISS (0x6)
-DECL|macro|MMCR0_PMC2_CYCLES
-mdefine_line|#define MMCR0_PMC2_CYCLES (0x1)
-DECL|macro|MMCR0_PMC2_ITLB
-mdefine_line|#define MMCR0_PMC2_ITLB (0x7)
-DECL|macro|MMCR0_PMC2_LOADMISSTIME
-mdefine_line|#define MMCR0_PMC2_LOADMISSTIME (0x5)
-DECL|macro|PMC1
-mdefine_line|#define PMC1 953
-DECL|macro|PMC2
-mdefine_line|#define PMC2 954
 DECL|variable|ppc_htab_operations
 r_struct
 id|file_operations
@@ -409,27 +388,28 @@ op_amp
 id|CPU_FTR_604_PERF_MON
 )paren
 (brace
-id|asm
-r_volatile
-(paren
-l_string|&quot;mfspr %0,952 &bslash;n&bslash;t&quot;
-l_string|&quot;mfspr %1,953 &bslash;n&bslash;t&quot;
-l_string|&quot;mfspr %2,954 &bslash;n&bslash;t&quot;
-suffix:colon
-l_string|&quot;=r&quot;
-(paren
 id|mmcr0
-)paren
-comma
-l_string|&quot;=r&quot;
+op_assign
+id|mfspr
+c_func
 (paren
+id|SPRN_MMCR0
+)paren
+suffix:semicolon
 id|pmc1
-)paren
-comma
-l_string|&quot;=r&quot;
+op_assign
+id|mfspr
+c_func
 (paren
-id|pmc2
+id|SPRN_PMC1
 )paren
+suffix:semicolon
+id|pmc2
+op_assign
+id|mfspr
+c_func
+(paren
+id|SPRN_PMC2
 )paren
 suffix:semicolon
 id|n
@@ -893,65 +873,6 @@ r_return
 op_minus
 id|EBUSY
 suffix:semicolon
-multiline_comment|/* turn off performance monitoring */
-r_if
-c_cond
-(paren
-op_logical_neg
-id|strncmp
-c_func
-(paren
-id|buffer
-comma
-l_string|&quot;off&quot;
-comma
-l_int|3
-)paren
-)paren
-(brace
-r_if
-c_cond
-(paren
-id|cur_cpu_spec
-(braket
-l_int|0
-)braket
-op_member_access_from_pointer
-id|cpu_features
-op_amp
-id|CPU_FTR_604_PERF_MON
-)paren
-(brace
-id|asm
-r_volatile
-(paren
-l_string|&quot;mtspr %0, %3 &bslash;n&bslash;t&quot;
-l_string|&quot;mtspr %1, %3 &bslash;n&bslash;t&quot;
-l_string|&quot;mtspr %2, %3 &bslash;n&bslash;t&quot;
-op_scope_resolution
-l_string|&quot;i&quot;
-(paren
-id|MMCR0
-)paren
-comma
-l_string|&quot;i&quot;
-(paren
-id|PMC1
-)paren
-comma
-l_string|&quot;i&quot;
-(paren
-id|PMC2
-)paren
-comma
-l_string|&quot;r&quot;
-(paren
-l_int|0
-)paren
-)paren
-suffix:semicolon
-)brace
-)brace
 r_if
 c_cond
 (paren
@@ -981,16 +902,20 @@ id|CPU_FTR_604_PERF_MON
 )paren
 (brace
 multiline_comment|/* reset PMC1 and PMC2 */
-id|asm
-r_volatile
+id|mtspr
+c_func
 (paren
-l_string|&quot;mtspr 953, %0 &bslash;n&bslash;t&quot;
-l_string|&quot;mtspr 954, %0 &bslash;n&bslash;t&quot;
-op_scope_resolution
-l_string|&quot;r&quot;
-(paren
+id|SPRN_PMC1
+comma
 l_int|0
 )paren
+suffix:semicolon
+id|mtspr
+c_func
+(paren
+id|SPRN_PMC2
+comma
+l_int|0
 )paren
 suffix:semicolon
 )brace
@@ -1011,6 +936,64 @@ op_assign
 l_int|0
 suffix:semicolon
 )brace
+multiline_comment|/* Everything below here requires the performance monitor feature. */
+r_if
+c_cond
+(paren
+op_logical_neg
+id|cur_cpu_spec
+(braket
+l_int|0
+)braket
+op_member_access_from_pointer
+id|cpu_features
+op_amp
+id|CPU_FTR_604_PERF_MON
+)paren
+r_return
+id|count
+suffix:semicolon
+multiline_comment|/* turn off performance monitoring */
+r_if
+c_cond
+(paren
+op_logical_neg
+id|strncmp
+c_func
+(paren
+id|buffer
+comma
+l_string|&quot;off&quot;
+comma
+l_int|3
+)paren
+)paren
+(brace
+id|mtspr
+c_func
+(paren
+id|SPRN_MMCR0
+comma
+l_int|0
+)paren
+suffix:semicolon
+id|mtspr
+c_func
+(paren
+id|SPRN_PMC1
+comma
+l_int|0
+)paren
+suffix:semicolon
+id|mtspr
+c_func
+(paren
+id|SPRN_PMC2
+comma
+l_int|0
+)paren
+suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
@@ -1026,89 +1009,48 @@ l_int|4
 )paren
 )paren
 (brace
-r_if
-c_cond
-(paren
-id|cur_cpu_spec
-(braket
-l_int|0
-)braket
-op_member_access_from_pointer
-id|cpu_features
-op_amp
-id|CPU_FTR_604_PERF_MON
-)paren
-(brace
 multiline_comment|/* setup mmcr0 and clear the correct pmc */
-id|asm
+id|tmp
+op_assign
+(paren
+id|mfspr
 c_func
 (paren
-l_string|&quot;mfspr %0,%1&bslash;n&bslash;t&quot;
-suffix:colon
-l_string|&quot;=r&quot;
-(paren
-id|tmp
+id|SPRN_MMCR0
 )paren
-suffix:colon
-l_string|&quot;i&quot;
-(paren
-id|MMCR0
-)paren
-)paren
-suffix:semicolon
-id|tmp
-op_and_assign
+op_amp
 op_complement
 (paren
 l_int|0x60000000
 )paren
-suffix:semicolon
-id|tmp
-op_or_assign
+)paren
+op_or
 l_int|0x20000000
 suffix:semicolon
-id|asm
-r_volatile
+id|mtspr
+c_func
 (paren
-l_string|&quot;mtspr %1,%0 &bslash;n&bslash;t&quot;
-multiline_comment|/* set new mccr0 */
-l_string|&quot;mtspr %3,%4 &bslash;n&bslash;t&quot;
-multiline_comment|/* reset the pmc */
-l_string|&quot;mtspr %5,%4 &bslash;n&bslash;t&quot;
-multiline_comment|/* reset the pmc2 */
-op_scope_resolution
-l_string|&quot;r&quot;
-(paren
+id|SPRN_MMCR0
+comma
 id|tmp
 )paren
-comma
-l_string|&quot;i&quot;
+suffix:semicolon
+id|mtspr
+c_func
 (paren
-id|MMCR0
-)paren
+id|SPRN_PMC1
 comma
-l_string|&quot;i&quot;
-(paren
 l_int|0
-)paren
-comma
-l_string|&quot;i&quot;
-(paren
-id|PMC1
-)paren
-comma
-l_string|&quot;r&quot;
-(paren
-l_int|0
-)paren
-comma
-l_string|&quot;i&quot;
-(paren
-id|PMC2
-)paren
 )paren
 suffix:semicolon
-)brace
+id|mtspr
+c_func
+(paren
+id|SPRN_PMC2
+comma
+l_int|0
+)paren
+suffix:semicolon
 )brace
 r_if
 c_cond
@@ -1125,89 +1067,48 @@ l_int|6
 )paren
 )paren
 (brace
-r_if
-c_cond
-(paren
-id|cur_cpu_spec
-(braket
-l_int|0
-)braket
-op_member_access_from_pointer
-id|cpu_features
-op_amp
-id|CPU_FTR_604_PERF_MON
-)paren
-(brace
 multiline_comment|/* setup mmcr0 and clear the correct pmc */
-id|asm
+id|tmp
+op_assign
+(paren
+id|mfspr
 c_func
 (paren
-l_string|&quot;mfspr %0,%1&bslash;n&bslash;t&quot;
-suffix:colon
-l_string|&quot;=r&quot;
-(paren
-id|tmp
+id|SPRN_MMCR0
 )paren
-suffix:colon
-l_string|&quot;i&quot;
-(paren
-id|MMCR0
-)paren
-)paren
-suffix:semicolon
-id|tmp
-op_and_assign
+op_amp
 op_complement
 (paren
 l_int|0x60000000
 )paren
-suffix:semicolon
-id|tmp
-op_or_assign
+)paren
+op_or
 l_int|0x40000000
 suffix:semicolon
-id|asm
-r_volatile
+id|mtspr
+c_func
 (paren
-l_string|&quot;mtspr %1,%0 &bslash;n&bslash;t&quot;
-multiline_comment|/* set new mccr0 */
-l_string|&quot;mtspr %3,%4 &bslash;n&bslash;t&quot;
-multiline_comment|/* reset the pmc */
-l_string|&quot;mtspr %5,%4 &bslash;n&bslash;t&quot;
-multiline_comment|/* reset the pmc2 */
-op_scope_resolution
-l_string|&quot;r&quot;
-(paren
+id|SPRN_MMCR0
+comma
 id|tmp
 )paren
-comma
-l_string|&quot;i&quot;
+suffix:semicolon
+id|mtspr
+c_func
 (paren
-id|MMCR0
-)paren
+id|SPRN_PMC1
 comma
-l_string|&quot;i&quot;
-(paren
 l_int|0
-)paren
-comma
-l_string|&quot;i&quot;
-(paren
-id|PMC1
-)paren
-comma
-l_string|&quot;r&quot;
-(paren
-l_int|0
-)paren
-comma
-l_string|&quot;i&quot;
-(paren
-id|PMC2
-)paren
 )paren
 suffix:semicolon
-)brace
+id|mtspr
+c_func
+(paren
+id|SPRN_PMC2
+comma
+l_int|0
+)paren
+suffix:semicolon
 )brace
 multiline_comment|/* PMC1 values */
 r_if
@@ -1225,84 +1126,42 @@ l_int|4
 )paren
 )paren
 (brace
-r_if
-c_cond
-(paren
-id|cur_cpu_spec
-(braket
-l_int|0
-)braket
-op_member_access_from_pointer
-id|cpu_features
-op_amp
-id|CPU_FTR_604_PERF_MON
-)paren
-(brace
 multiline_comment|/* setup mmcr0 and clear the correct pmc */
-id|asm
+id|tmp
+op_assign
+(paren
+id|mfspr
 c_func
 (paren
-l_string|&quot;mfspr %0,%1&bslash;n&bslash;t&quot;
-suffix:colon
-l_string|&quot;=r&quot;
-(paren
-id|tmp
+id|SPRN_MMCR0
 )paren
-suffix:colon
-l_string|&quot;i&quot;
-(paren
-id|MMCR0
-)paren
-)paren
-suffix:semicolon
-id|tmp
-op_and_assign
+op_amp
 op_complement
 (paren
-l_int|0x7f
+l_int|0x7F
 op_lshift
 l_int|7
 )paren
-suffix:semicolon
-id|tmp
-op_or_assign
+)paren
+op_or
 id|MMCR0_PMC1_DTLB
 suffix:semicolon
-id|asm
-r_volatile
+id|mtspr
+c_func
 (paren
-l_string|&quot;mtspr %1,%0 &bslash;n&bslash;t&quot;
-multiline_comment|/* set new mccr0 */
-l_string|&quot;mtspr %3,%4 &bslash;n&bslash;t&quot;
-multiline_comment|/* reset the pmc */
-op_scope_resolution
-l_string|&quot;r&quot;
-(paren
+id|SPRN_MMCR0
+comma
 id|tmp
 )paren
-comma
-l_string|&quot;i&quot;
+suffix:semicolon
+id|mtspr
+c_func
 (paren
-id|MMCR0
-)paren
+id|SPRN_PMC1
 comma
-l_string|&quot;i&quot;
-(paren
-id|MMCR0_PMC1_DTLB
-)paren
-comma
-l_string|&quot;i&quot;
-(paren
-id|PMC1
-)paren
-comma
-l_string|&quot;r&quot;
-(paren
 l_int|0
 )paren
-)paren
 suffix:semicolon
-)brace
 )brace
 r_if
 c_cond
@@ -1319,84 +1178,42 @@ l_int|7
 )paren
 )paren
 (brace
-r_if
-c_cond
-(paren
-id|cur_cpu_spec
-(braket
-l_int|0
-)braket
-op_member_access_from_pointer
-id|cpu_features
-op_amp
-id|CPU_FTR_604_PERF_MON
-)paren
-(brace
 multiline_comment|/* setup mmcr0 and clear the correct pmc */
-id|asm
+id|tmp
+op_assign
+(paren
+id|mfspr
 c_func
 (paren
-l_string|&quot;mfspr %0,%1&bslash;n&bslash;t&quot;
-suffix:colon
-l_string|&quot;=r&quot;
-(paren
-id|tmp
+id|SPRN_MMCR0
 )paren
-suffix:colon
-l_string|&quot;i&quot;
-(paren
-id|MMCR0
-)paren
-)paren
-suffix:semicolon
-id|tmp
-op_and_assign
+op_amp
 op_complement
 (paren
-l_int|0x7f
+l_int|0x7F
 op_lshift
 l_int|7
 )paren
-suffix:semicolon
-id|tmp
-op_or_assign
+)paren
+op_or
 id|MMCR0_PMC1_ICACHEMISS
 suffix:semicolon
-id|asm
-r_volatile
+id|mtspr
+c_func
 (paren
-l_string|&quot;mtspr %1,%0 &bslash;n&bslash;t&quot;
-multiline_comment|/* set new mccr0 */
-l_string|&quot;mtspr %3,%4 &bslash;n&bslash;t&quot;
-multiline_comment|/* reset the pmc */
-op_scope_resolution
-l_string|&quot;r&quot;
-(paren
+id|SPRN_MMCR0
+comma
 id|tmp
 )paren
-comma
-l_string|&quot;i&quot;
+suffix:semicolon
+id|mtspr
+c_func
 (paren
-id|MMCR0
-)paren
+id|SPRN_PMC1
 comma
-l_string|&quot;i&quot;
-(paren
-id|MMCR0_PMC1_ICACHEMISS
-)paren
-comma
-l_string|&quot;i&quot;
-(paren
-id|PMC1
-)paren
-comma
-l_string|&quot;r&quot;
-(paren
 l_int|0
 )paren
-)paren
 suffix:semicolon
-)brace
 )brace
 multiline_comment|/* PMC2 values */
 r_if
@@ -1414,19 +1231,6 @@ l_int|14
 )paren
 )paren
 (brace
-r_if
-c_cond
-(paren
-id|cur_cpu_spec
-(braket
-l_int|0
-)braket
-op_member_access_from_pointer
-id|cpu_features
-op_amp
-id|CPU_FTR_604_PERF_MON
-)paren
-(brace
 multiline_comment|/* setup mmcr0 and clear the correct pmc */
 id|asm
 r_volatile
@@ -1449,7 +1253,7 @@ id|tmp
 suffix:colon
 l_string|&quot;i&quot;
 (paren
-id|MMCR0
+id|SPRN_MMCR0
 )paren
 comma
 l_string|&quot;i&quot;
@@ -1459,7 +1263,7 @@ id|MMCR0_PMC2_LOADMISSTIME
 comma
 l_string|&quot;i&quot;
 (paren
-id|PMC2
+id|SPRN_PMC2
 )paren
 comma
 l_string|&quot;r&quot;
@@ -1468,7 +1272,6 @@ l_int|0
 )paren
 )paren
 suffix:semicolon
-)brace
 )brace
 r_if
 c_cond
@@ -1485,19 +1288,6 @@ l_int|4
 )paren
 )paren
 (brace
-r_if
-c_cond
-(paren
-id|cur_cpu_spec
-(braket
-l_int|0
-)braket
-op_member_access_from_pointer
-id|cpu_features
-op_amp
-id|CPU_FTR_604_PERF_MON
-)paren
-(brace
 multiline_comment|/* setup mmcr0 and clear the correct pmc */
 id|asm
 r_volatile
@@ -1520,7 +1310,7 @@ id|tmp
 suffix:colon
 l_string|&quot;i&quot;
 (paren
-id|MMCR0
+id|SPRN_MMCR0
 )paren
 comma
 l_string|&quot;i&quot;
@@ -1530,7 +1320,7 @@ id|MMCR0_PMC2_ITLB
 comma
 l_string|&quot;i&quot;
 (paren
-id|PMC2
+id|SPRN_PMC2
 )paren
 comma
 l_string|&quot;r&quot;
@@ -1539,7 +1329,6 @@ l_int|0
 )paren
 )paren
 suffix:semicolon
-)brace
 )brace
 r_if
 c_cond
@@ -1556,19 +1345,6 @@ l_int|7
 )paren
 )paren
 (brace
-r_if
-c_cond
-(paren
-id|cur_cpu_spec
-(braket
-l_int|0
-)braket
-op_member_access_from_pointer
-id|cpu_features
-op_amp
-id|CPU_FTR_604_PERF_MON
-)paren
-(brace
 multiline_comment|/* setup mmcr0 and clear the correct pmc */
 id|asm
 r_volatile
@@ -1591,7 +1367,7 @@ id|tmp
 suffix:colon
 l_string|&quot;i&quot;
 (paren
-id|MMCR0
+id|SPRN_MMCR0
 )paren
 comma
 l_string|&quot;i&quot;
@@ -1601,7 +1377,7 @@ id|MMCR0_PMC2_DCACHEMISS
 comma
 l_string|&quot;i&quot;
 (paren
-id|PMC2
+id|SPRN_PMC2
 )paren
 comma
 l_string|&quot;r&quot;
@@ -1610,7 +1386,6 @@ l_int|0
 )paren
 )paren
 suffix:semicolon
-)brace
 )brace
 r_return
 id|count

@@ -1,4 +1,5 @@
 multiline_comment|/*&n; * INET&t;&t;An implementation of the TCP/IP protocol suite for the LINUX&n; *&t;&t;operating system.  INET is implemented using the  BSD Socket&n; *&t;&t;interface as the means of communication with the user level.&n; *&n; *&t;&t;Generic frame diversion&n; *&n; * Authors:&t;&n; * &t;&t;Benoit LOCHER:&t;initial integration within the kernel with support for ethernet&n; * &t;&t;Dave Miller:&t;improvement on the code (correctness, performance and source files)&n; *&n; */
+macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
@@ -789,7 +790,6 @@ op_minus
 id|EINVAL
 suffix:semicolon
 )brace
-suffix:semicolon
 r_break
 suffix:semicolon
 r_case
@@ -974,7 +974,6 @@ op_minus
 id|EINVAL
 suffix:semicolon
 )brace
-suffix:semicolon
 r_break
 suffix:semicolon
 r_case
@@ -1037,7 +1036,6 @@ op_minus
 id|EINVAL
 suffix:semicolon
 )brace
-suffix:semicolon
 r_break
 suffix:semicolon
 r_case
@@ -1100,7 +1098,6 @@ op_minus
 id|EINVAL
 suffix:semicolon
 )brace
-suffix:semicolon
 r_break
 suffix:semicolon
 r_case
@@ -1143,7 +1140,6 @@ op_minus
 id|EINVAL
 suffix:semicolon
 )brace
-suffix:semicolon
 r_break
 suffix:semicolon
 r_case
@@ -1186,7 +1182,6 @@ op_minus
 id|EINVAL
 suffix:semicolon
 )brace
-suffix:semicolon
 r_break
 suffix:semicolon
 r_case
@@ -1249,7 +1244,6 @@ op_minus
 id|EINVAL
 suffix:semicolon
 )brace
-suffix:semicolon
 r_break
 suffix:semicolon
 r_case
@@ -1292,7 +1286,6 @@ op_minus
 id|EINVAL
 suffix:semicolon
 )brace
-suffix:semicolon
 r_break
 suffix:semicolon
 r_case
@@ -1335,7 +1328,6 @@ op_minus
 id|EINVAL
 suffix:semicolon
 )brace
-suffix:semicolon
 r_break
 suffix:semicolon
 r_case
@@ -1398,7 +1390,6 @@ op_minus
 id|EINVAL
 suffix:semicolon
 )brace
-suffix:semicolon
 r_break
 suffix:semicolon
 r_default
@@ -1408,7 +1399,6 @@ op_minus
 id|EINVAL
 suffix:semicolon
 )brace
-suffix:semicolon
 r_break
 suffix:semicolon
 r_default
@@ -1418,7 +1408,6 @@ op_minus
 id|EINVAL
 suffix:semicolon
 )brace
-suffix:semicolon
 r_return
 l_int|0
 suffix:semicolon
@@ -1878,8 +1867,19 @@ suffix:semicolon
 r_break
 suffix:semicolon
 )brace
-suffix:semicolon
-r_return
-suffix:semicolon
 )brace
+DECL|variable|alloc_divert_blk
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|alloc_divert_blk
+)paren
+suffix:semicolon
+DECL|variable|free_divert_blk
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|free_divert_blk
+)paren
+suffix:semicolon
 eof

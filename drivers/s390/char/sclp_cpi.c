@@ -3,6 +3,7 @@ macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/version.h&gt;
 macro_line|#include &lt;linux/kmod.h&gt;
 macro_line|#include &lt;linux/module.h&gt;
+macro_line|#include &lt;linux/moduleparam.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/timer.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
@@ -147,12 +148,14 @@ id|system_name
 op_assign
 l_int|NULL
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|system_name
 comma
-l_string|&quot;s&quot;
+id|charp
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -172,12 +175,14 @@ op_assign
 l_int|NULL
 suffix:semicolon
 macro_line|#ifdef ALLOW_SYSPLEX_NAME
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|sysplex_name
 comma
-l_string|&quot;s&quot;
+id|charp
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC

@@ -23,12 +23,12 @@ DECL|macro|MPTFWDOWNLOAD
 mdefine_line|#define MPTFWDOWNLOAD&t;&t;_IOWR(MPT_MAGIC_NUMBER,15,struct mpt_fw_xfer)
 DECL|macro|MPTCOMMAND
 mdefine_line|#define MPTCOMMAND&t;&t;_IOWR(MPT_MAGIC_NUMBER,20,struct mpt_ioctl_command)
-macro_line|#if defined(__KERNEL__) &amp;&amp; defined(__sparc__) &amp;&amp; defined(__sparc_v9__)&t;&t;/*{*/
+macro_line|#if defined(__KERNEL__) &amp;&amp; defined(CONFIG_COMPAT)
 DECL|macro|MPTFWDOWNLOAD32
 mdefine_line|#define MPTFWDOWNLOAD32&t;&t;_IOWR(MPT_MAGIC_NUMBER,15,struct mpt_fw_xfer32)
 DECL|macro|MPTCOMMAND32
 mdefine_line|#define MPTCOMMAND32&t;&t;_IOWR(MPT_MAGIC_NUMBER,20,struct mpt_ioctl_command32)
-macro_line|#endif&t;/*}*/
+macro_line|#endif
 DECL|macro|MPTIOCINFO
 mdefine_line|#define MPTIOCINFO&t;&t;_IOWR(MPT_MAGIC_NUMBER,17,struct mpt_ioctl_iocinfo)
 DECL|macro|MPTIOCINFO1
@@ -71,7 +71,7 @@ suffix:semicolon
 multiline_comment|/* Pointer to firmware buffer */
 )brace
 suffix:semicolon
-macro_line|#if defined(__KERNEL__) &amp;&amp; defined(__sparc__) &amp;&amp; defined(__sparc_v9__)&t;&t;/*{*/
+macro_line|#if defined(__KERNEL__) &amp;&amp; defined(CONFIG_COMPAT)
 DECL|struct|mpt_fw_xfer32
 r_struct
 id|mpt_fw_xfer32
@@ -570,7 +570,7 @@ suffix:semicolon
 )brace
 suffix:semicolon
 multiline_comment|/*&n; * SPARC PLATFORM: See earlier remark.&n; */
-macro_line|#if defined(__KERNEL__) &amp;&amp; defined(__sparc__) &amp;&amp; defined(__sparc_v9__)&t;&t;/*{*/
+macro_line|#if defined(__KERNEL__) &amp;&amp; defined(CONFIG_COMPAT)
 DECL|struct|mpt_ioctl_command32
 r_struct
 id|mpt_ioctl_command32

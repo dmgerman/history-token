@@ -1,4 +1,4 @@
-multiline_comment|/*&n; *  drivers/s390/cio/chsc.c&n; *   S/390 common I/O routines -- channel subsystem call&n; *   $Revision: 1.74 $&n; *&n; *    Copyright (C) 1999-2002 IBM Deutschland Entwicklung GmbH,&n; *&t;&t;&t;      IBM Corporation&n; *    Author(s): Ingo Adlung (adlung@de.ibm.com)&n; *&t;&t; Cornelia Huck (cohuck@de.ibm.com)&n; *&t;&t; Arnd Bergmann (arndb@de.ibm.com)&n; */
+multiline_comment|/*&n; *  drivers/s390/cio/chsc.c&n; *   S/390 common I/O routines -- channel subsystem call&n; *   $Revision: 1.77 $&n; *&n; *    Copyright (C) 1999-2002 IBM Deutschland Entwicklung GmbH,&n; *&t;&t;&t;      IBM Corporation&n; *    Author(s): Ingo Adlung (adlung@de.ibm.com)&n; *&t;&t; Cornelia Huck (cohuck@de.ibm.com)&n; *&t;&t; Arnd Bergmann (arndb@de.ibm.com)&n; */
 macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
@@ -3406,23 +3406,11 @@ suffix:semicolon
 id|snprintf
 c_func
 (paren
-id|chp-&gt;dev.name
-comma
-id|DEVICE_NAME_SIZE
-comma
-l_string|&quot;channel path %x&quot;
-comma
-id|chpid
-)paren
-suffix:semicolon
-id|snprintf
-c_func
-(paren
 id|chp-&gt;dev.bus_id
 comma
-id|DEVICE_ID_SIZE
+id|BUS_ID_SIZE
 comma
-l_string|&quot;chp%x&quot;
+l_string|&quot;chp0.%x&quot;
 comma
 id|chpid
 )paren

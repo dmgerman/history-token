@@ -542,11 +542,12 @@ id|__asm__
 id|__volatile__
 c_func
 (paren
-l_string|&quot;lidt %0&quot;
+l_string|&quot;lidt (%0)&quot;
 suffix:colon
 suffix:colon
-l_string|&quot;m&quot;
+l_string|&quot;r&quot;
 (paren
+op_amp
 id|no_idt
 )paren
 )paren

@@ -3,7 +3,6 @@ macro_line|#ifndef _ASM_SN_XTALK_XBOW_INFO_H
 DECL|macro|_ASM_SN_XTALK_XBOW_INFO_H
 mdefine_line|#define _ASM_SN_XTALK_XBOW_INFO_H
 macro_line|#include &lt;linux/types.h&gt;
-macro_line|#include &lt;linux/devfs_fs_kernel.h&gt;
 DECL|macro|XBOW_PERF_MODES
 mdefine_line|#define XBOW_PERF_MODES&t;       0x03
 DECL|macro|XBOW_PERF_COUNTERS

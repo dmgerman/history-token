@@ -1,6 +1,7 @@
-multiline_comment|/* &n; * $Id: iucv.c,v 1.11 2003/04/15 16:45:37 aberg Exp $&n; *&n; * IUCV network driver&n; *&n; * Copyright (C) 2001 IBM Deutschland Entwicklung GmbH, IBM Corporation&n; * Author(s):&n; *    Original source:&n; *      Alan Altmark (Alan_Altmark@us.ibm.com)  Sept. 2000&n; *      Xenia Tkatschow (xenia@us.ibm.com)&n; *    2Gb awareness and general cleanup:&n; *      Fritz Elfert (elfert@de.ibm.com, felfert@millenux.com)&n; *&n; * Documentation used:&n; *    The original source&n; *    CP Programming Service, IBM document # SC24-5760&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2, or (at your option)&n; * any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; *&n; * RELEASE-TAG: IUCV lowlevel driver $Revision: 1.11 $&n; *&n; */
+multiline_comment|/* &n; * $Id: iucv.c,v 1.14 2003/09/23 16:48:17 mschwide Exp $&n; *&n; * IUCV network driver&n; *&n; * Copyright (C) 2001 IBM Deutschland Entwicklung GmbH, IBM Corporation&n; * Author(s):&n; *    Original source:&n; *      Alan Altmark (Alan_Altmark@us.ibm.com)  Sept. 2000&n; *      Xenia Tkatschow (xenia@us.ibm.com)&n; *    2Gb awareness and general cleanup:&n; *      Fritz Elfert (elfert@de.ibm.com, felfert@millenux.com)&n; *&n; * Documentation used:&n; *    The original source&n; *    CP Programming Service, IBM document # SC24-5760&n; *&n; * This program is free software; you can redistribute it and/or modify&n; * it under the terms of the GNU General Public License as published by&n; * the Free Software Foundation; either version 2, or (at your option)&n; * any later version.&n; *&n; * This program is distributed in the hope that it will be useful,&n; * but WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&n; * GNU General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License&n; * along with this program; if not, write to the Free Software&n; * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.&n; *&n; * RELEASE-TAG: IUCV lowlevel driver $Revision: 1.14 $&n; *&n; */
 "&f;"
 macro_line|#include &lt;linux/module.h&gt;
+macro_line|#include &lt;linux/moduleparam.h&gt;
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
@@ -9,6 +10,7 @@ macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/list.h&gt;
 macro_line|#include &lt;linux/errno.h&gt;
+macro_line|#include &lt;linux/device.h&gt;
 macro_line|#include &lt;asm/atomic.h&gt;
 macro_line|#include &quot;iucv.h&quot;
 macro_line|#include &lt;asm/io.h&gt;
@@ -29,6 +31,57 @@ DECL|macro|IPANSLST
 mdefine_line|#define IPANSLST        0x08
 DECL|macro|IPBUFLST
 mdefine_line|#define IPBUFLST        0x40
+r_static
+r_int
+DECL|function|iucv_bus_match
+id|iucv_bus_match
+(paren
+r_struct
+id|device
+op_star
+id|dev
+comma
+r_struct
+id|device_driver
+op_star
+id|drv
+)paren
+(brace
+r_return
+l_int|0
+suffix:semicolon
+)brace
+DECL|variable|iucv_bus
+r_struct
+id|bus_type
+id|iucv_bus
+op_assign
+(brace
+dot
+id|name
+op_assign
+l_string|&quot;iucv&quot;
+comma
+dot
+id|match
+op_assign
+id|iucv_bus_match
+comma
+)brace
+suffix:semicolon
+DECL|variable|iucv_root
+r_struct
+id|device
+id|iucv_root
+op_assign
+(brace
+dot
+id|bus_id
+op_assign
+l_string|&quot;iucv&quot;
+comma
+)brace
+suffix:semicolon
 multiline_comment|/* General IUCV interrupt structure */
 r_typedef
 r_struct
@@ -585,12 +638,14 @@ id|debuglevel
 op_assign
 l_int|0
 suffix:semicolon
-id|MODULE_PARM
+id|module_param
 c_func
 (paren
 id|debuglevel
 comma
-l_string|&quot;i&quot;
+r_int
+comma
+l_int|0
 )paren
 suffix:semicolon
 id|MODULE_PARM_DESC
@@ -762,7 +817,7 @@ id|vbuf
 (braket
 )braket
 op_assign
-l_string|&quot;$Revision: 1.11 $&quot;
+l_string|&quot;$Revision: 1.14 $&quot;
 suffix:semicolon
 r_char
 op_star
@@ -836,6 +891,9 @@ c_func
 r_void
 )paren
 (brace
+r_int
+id|ret
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -844,6 +902,69 @@ id|iucv_external_int_buffer
 r_return
 l_int|0
 suffix:semicolon
+id|ret
+op_assign
+id|bus_register
+c_func
+(paren
+op_amp
+id|iucv_bus
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|ret
+op_ne
+l_int|0
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;IUCV: failed to register bus.&bslash;n&quot;
+)paren
+suffix:semicolon
+r_return
+id|ret
+suffix:semicolon
+)brace
+id|ret
+op_assign
+id|device_register
+c_func
+(paren
+op_amp
+id|iucv_root
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|ret
+op_ne
+l_int|0
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_ERR
+l_string|&quot;IUCV: failed to register iucv root.&bslash;n&quot;
+)paren
+suffix:semicolon
+id|bus_unregister
+c_func
+(paren
+op_amp
+id|iucv_bus
+)paren
+suffix:semicolon
+r_return
+id|ret
+suffix:semicolon
+)brace
 multiline_comment|/* Note: GFP_DMA used used to get memory below 2G */
 id|iucv_external_int_buffer
 op_assign
@@ -1013,6 +1134,20 @@ id|kfree
 c_func
 (paren
 id|iucv_param_pool
+)paren
+suffix:semicolon
+id|device_unregister
+c_func
+(paren
+op_amp
+id|iucv_root
+)paren
+suffix:semicolon
+id|bus_unregister
+c_func
+(paren
+op_amp
+id|iucv_bus
 )paren
 suffix:semicolon
 id|printk
@@ -1395,8 +1530,8 @@ suffix:semicolon
 multiline_comment|/*&n; * Name: iucv_add_pathid&n; * Purpose: Adds a path id to the system.&n; * Input: pathid -  pathid that is going to be entered into system&n; *        handle -  address of handler that the pathid will be associated&n; *&t;&t;   with.&n; *        pgm_data - token passed in by application.&n; * Output: 0: successful addition of pathid&n; *&t;   - EINVAL - pathid entry is being used by another application&n; *&t;   - ENOMEM - storage allocation for a new pathid table failed&n;*/
 r_static
 r_int
-DECL|function|iucv_add_pathid
-id|iucv_add_pathid
+DECL|function|__iucv_add_pathid
+id|__iucv_add_pathid
 c_func
 (paren
 id|__u16
@@ -1407,9 +1542,6 @@ op_star
 id|handler
 )paren
 (brace
-id|ulong
-id|flags
-suffix:semicolon
 id|iucv_debug
 c_func
 (paren
@@ -1443,14 +1575,6 @@ r_return
 op_minus
 id|EINVAL
 suffix:semicolon
-id|spin_lock_irqsave
-(paren
-op_amp
-id|iucv_lock
-comma
-id|flags
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -1460,14 +1584,6 @@ id|pathid
 )braket
 )paren
 (brace
-id|spin_unlock_irqrestore
-(paren
-op_amp
-id|iucv_lock
-comma
-id|flags
-)paren
-suffix:semicolon
 id|iucv_debug
 c_func
 (paren
@@ -1502,14 +1618,6 @@ id|pathid
 op_assign
 id|handler
 suffix:semicolon
-id|spin_unlock_irqrestore
-(paren
-op_amp
-id|iucv_lock
-comma
-id|flags
-)paren
-suffix:semicolon
 id|iucv_debug
 c_func
 (paren
@@ -1523,6 +1631,56 @@ l_int|0
 suffix:semicolon
 )brace
 multiline_comment|/* end of add_pathid function */
+r_static
+r_int
+DECL|function|iucv_add_pathid
+id|iucv_add_pathid
+c_func
+(paren
+id|__u16
+id|pathid
+comma
+id|handler
+op_star
+id|handler
+)paren
+(brace
+id|ulong
+id|flags
+suffix:semicolon
+r_int
+id|rc
+suffix:semicolon
+id|spin_lock_irqsave
+(paren
+op_amp
+id|iucv_lock
+comma
+id|flags
+)paren
+suffix:semicolon
+id|rc
+op_assign
+id|__iucv_add_pathid
+c_func
+(paren
+id|pathid
+comma
+id|handler
+)paren
+suffix:semicolon
+id|spin_unlock_irqrestore
+(paren
+op_amp
+id|iucv_lock
+comma
+id|flags
+)paren
+suffix:semicolon
+r_return
+id|rc
+suffix:semicolon
+)brace
 r_static
 r_void
 DECL|function|iucv_remove_pathid
@@ -3417,6 +3575,14 @@ id|parm-&gt;iptarget
 )paren
 suffix:semicolon
 )brace
+id|spin_lock_irqsave
+(paren
+op_amp
+id|iucv_lock
+comma
+id|flags
+)paren
+suffix:semicolon
 id|parm-&gt;ipflags1
 op_assign
 (paren
@@ -3438,6 +3604,31 @@ r_if
 c_cond
 (paren
 id|b2f0_result
+op_eq
+l_int|0
+)paren
+id|add_pathid_result
+op_assign
+id|__iucv_add_pathid
+c_func
+(paren
+id|parm-&gt;ippathid
+comma
+id|h
+)paren
+suffix:semicolon
+id|spin_unlock_irqrestore
+(paren
+op_amp
+id|iucv_lock
+comma
+id|flags
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|b2f0_result
 )paren
 (brace
 id|release_param
@@ -3450,16 +3641,6 @@ r_return
 id|b2f0_result
 suffix:semicolon
 )brace
-id|add_pathid_result
-op_assign
-id|iucv_add_pathid
-c_func
-(paren
-id|parm-&gt;ippathid
-comma
-id|h
-)paren
-suffix:semicolon
 op_star
 id|pathid
 op_assign
@@ -6737,11 +6918,6 @@ id|iucv_irqdata
 op_star
 id|irqdata
 suffix:semicolon
-id|irq_enter
-c_func
-(paren
-)paren
-suffix:semicolon
 id|irqdata
 op_assign
 id|kmalloc
@@ -6823,13 +6999,6 @@ c_func
 op_amp
 id|iucv_tasklet
 )paren
-suffix:semicolon
-id|irq_exit
-c_func
-(paren
-)paren
-suffix:semicolon
-r_return
 suffix:semicolon
 )brace
 multiline_comment|/**&n; * iucv_do_int:&n; * @int_buf: Pointer to copy of external interrupt buffer&n; *&n; * The workhorse for handling interrupts queued by iucv_irq_handler().&n; * This function is called from the bottom half iucv_tasklet_handler().&n; */
@@ -7681,6 +7850,18 @@ id|iucv_exit
 )paren
 suffix:semicolon
 multiline_comment|/**&n; * Export all public stuff&n; * FIXME: I have commented out all the functions that&n; * &t;  are not used in netiucv. Is anyone else&n; * &t;  using them or should some of them be made&n; * &t;  static / removed? pls review. Arnd&n; */
+DECL|variable|iucv_bus
+id|EXPORT_SYMBOL
+(paren
+id|iucv_bus
+)paren
+suffix:semicolon
+DECL|variable|iucv_root
+id|EXPORT_SYMBOL
+(paren
+id|iucv_root
+)paren
+suffix:semicolon
 DECL|variable|iucv_accept
 id|EXPORT_SYMBOL
 (paren

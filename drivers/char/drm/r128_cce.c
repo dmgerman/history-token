@@ -1040,15 +1040,6 @@ comma
 l_int|0
 )brace
 suffix:semicolon
-r_int
-id|r128_do_wait_for_idle
-c_func
-(paren
-id|drm_r128_private_t
-op_star
-id|dev_priv
-)paren
-suffix:semicolon
 DECL|function|R128_READ_PLL
 r_int
 id|R128_READ_PLL
@@ -1366,6 +1357,7 @@ id|EBUSY
 suffix:semicolon
 )brace
 DECL|function|r128_do_wait_for_idle
+r_static
 r_int
 id|r128_do_wait_for_idle
 c_func

@@ -1,4 +1,5 @@
 multiline_comment|/*&n; *&t;SUCS NET3:&n; *&n; *&t;Generic datagram handling routines. These are generic for all&n; *&t;protocols. Possibly a generic IP version on top of these would&n; *&t;make sense. Not tonight however 8-).&n; *&t;This is used because UDP, RAW, PACKET, DDP, IPX, AX.25 and&n; *&t;NetROM layer all have identical poll code and mostly&n; *&t;identical recvmsg() code. So we share it here. The poll was&n; *&t;shared before but buried in udp.c so I moved it.&n; *&n; *&t;Authors:&t;Alan Cox &lt;alan@redhat.com&gt;. (datagram_poll() from old&n; *&t;&t;&t;&t;&t;&t;     udp.c code)&n; *&n; *&t;Fixes:&n; *&t;&t;Alan Cox&t;:&t;NULL return from skb_peek_copy()&n; *&t;&t;&t;&t;&t;understood&n; *&t;&t;Alan Cox&t;:&t;Rewrote skb_read_datagram to avoid the&n; *&t;&t;&t;&t;&t;skb_peek_copy stuff.&n; *&t;&t;Alan Cox&t;:&t;Added support for SOCK_SEQPACKET.&n; *&t;&t;&t;&t;&t;IPX can no longer use the SO_TYPE hack&n; *&t;&t;&t;&t;&t;but AX.25 now works right, and SPX is&n; *&t;&t;&t;&t;&t;feasible.&n; *&t;&t;Alan Cox&t;:&t;Fixed write poll of non IP protocol&n; *&t;&t;&t;&t;&t;crash.&n; *&t;&t;Florian  La Roche:&t;Changed for my new skbuff handling.&n; *&t;&t;Darryl Miles&t;:&t;Fixed non-blocking SOCK_SEQPACKET.&n; *&t;&t;Linus Torvalds&t;:&t;BSD semantic fixes.&n; *&t;&t;Alan Cox&t;:&t;Datagram iovec handling&n; *&t;&t;Darryl Miles&t;:&t;Fixed non-blocking SOCK_STREAM.&n; *&t;&t;Alan Cox&t;:&t;POSIXisms&n; *&t;&t;Pete Wyckoff    :       Unconnected accept() fix.&n; *&n; */
+macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
@@ -1741,4 +1742,46 @@ r_return
 id|mask
 suffix:semicolon
 )brace
+DECL|variable|datagram_poll
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|datagram_poll
+)paren
+suffix:semicolon
+DECL|variable|skb_copy_and_csum_datagram_iovec
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|skb_copy_and_csum_datagram_iovec
+)paren
+suffix:semicolon
+DECL|variable|skb_copy_datagram
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|skb_copy_datagram
+)paren
+suffix:semicolon
+DECL|variable|skb_copy_datagram_iovec
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|skb_copy_datagram_iovec
+)paren
+suffix:semicolon
+DECL|variable|skb_free_datagram
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|skb_free_datagram
+)paren
+suffix:semicolon
+DECL|variable|skb_recv_datagram
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|skb_recv_datagram
+)paren
+suffix:semicolon
 eof

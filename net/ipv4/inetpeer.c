@@ -1,4 +1,5 @@
 multiline_comment|/*&n; *&t;&t;INETPEER - A storage for permanent information about peers&n; *&n; *  This source is covered by the GNU GPL, the same as all kernel sources.&n; *&n; *  Version:&t;$Id: inetpeer.c,v 1.7 2001/09/20 21:22:50 davem Exp $&n; *&n; *  Authors:&t;Andrey V. Savochkin &lt;saw@msu.ru&gt;&n; */
+macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
@@ -1520,4 +1521,11 @@ id|peer_periodic_timer
 )paren
 suffix:semicolon
 )brace
+DECL|variable|inet_peer_idlock
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|inet_peer_idlock
+)paren
+suffix:semicolon
 eof

@@ -487,15 +487,12 @@ id|devices_failed
 op_assign
 l_int|0
 suffix:semicolon
-id|list_for_each_entry
+id|shost_for_each_device
 c_func
 (paren
 id|sdev
 comma
-op_amp
-id|shost-&gt;my_devices
-comma
-id|siblings
+id|shost
 )paren
 (brace
 id|list_for_each_entry
@@ -790,24 +787,6 @@ op_eq
 id|DID_RESET
 )paren
 (brace
-r_if
-c_cond
-(paren
-id|scmd-&gt;flags
-op_amp
-id|IS_RESETTING
-)paren
-(brace
-multiline_comment|/*&n;&t;&t;&t; * ok, this is normal.  we don&squot;t know whether in fact&n;&t;&t;&t; * the command in question really needs to be rerun&n;&t;&t;&t; * or not - if this was the original data command then&n;&t;&t;&t; * the answer is yes, otherwise we just flag it as&n;&t;&t;&t; * SUCCESS.&n;&t;&t;&t; */
-id|scmd-&gt;flags
-op_and_assign
-op_complement
-id|IS_RESETTING
-suffix:semicolon
-r_return
-id|NEEDS_RETRY
-suffix:semicolon
-)brace
 multiline_comment|/*&n;&t;&t; * rats.  we are already in the error handler, so we now&n;&t;&t; * get to try and figure out what to do next.  if the sense&n;&t;&t; * is valid, we have a pretty good idea of what to do.&n;&t;&t; * if not, we mark it as FAILED.&n;&t;&t; */
 r_return
 id|scsi_check_sense
@@ -2293,15 +2272,12 @@ suffix:semicolon
 r_int
 id|rtn
 suffix:semicolon
-id|list_for_each_entry
+id|shost_for_each_device
 c_func
 (paren
 id|sdev
 comma
-op_amp
-id|shost-&gt;my_devices
-comma
-id|siblings
+id|shost
 )paren
 (brace
 id|bdr_scmd
@@ -3436,24 +3412,6 @@ suffix:semicolon
 r_case
 id|DID_RESET
 suffix:colon
-multiline_comment|/*&n;&t;&t; * in the normal case where we haven&squot;t initiated a reset,&n;&t;&t; * this is a failure.&n;&t;&t; */
-r_if
-c_cond
-(paren
-id|scmd-&gt;flags
-op_amp
-id|IS_RESETTING
-)paren
-(brace
-id|scmd-&gt;flags
-op_and_assign
-op_complement
-id|IS_RESETTING
-suffix:semicolon
-r_goto
-id|maybe_retry
-suffix:semicolon
-)brace
 r_return
 id|SUCCESS
 suffix:semicolon
@@ -3794,16 +3752,14 @@ op_star
 id|sdev
 suffix:semicolon
 multiline_comment|/*&n;&t; * If the door was locked, we need to insert a door lock request&n;&t; * onto the head of the SCSI request queue for the device.  There&n;&t; * is no point trying to lock the door of an off-line device.&n;&t; */
-id|list_for_each_entry
+id|shost_for_each_device
 c_func
 (paren
 id|sdev
 comma
-op_amp
-id|shost-&gt;my_devices
-comma
-id|siblings
+id|shost
 )paren
+(brace
 r_if
 c_cond
 (paren
@@ -3817,6 +3773,7 @@ c_func
 id|sdev
 )paren
 suffix:semicolon
+)brace
 multiline_comment|/*&n;&t; * next free up anything directly waiting upon the host.  this&n;&t; * will be requests for character device operations, and also for&n;&t; * ioctls to queued block devices.&n;&t; */
 id|SCSI_LOG_ERROR_RECOVERY
 c_func
@@ -4184,7 +4141,7 @@ suffix:semicolon
 )brace
 multiline_comment|/**&n; * scsi_error_handler - Handle errors/timeouts of SCSI cmds.&n; * @data:&t;Host for which we are running.&n; *&n; * Notes:&n; *    This is always run in the context of a kernel thread.  The idea is&n; *    that we start this thing up when the kernel starts up (one per host&n; *    that we detect), and it immediately goes to sleep and waits for some&n; *    event (i.e. failure).  When this takes place, we have the job of&n; *    trying to unjam the bus and restarting things.&n; **/
 DECL|function|scsi_error_handler
-r_void
+r_int
 id|scsi_error_handler
 c_func
 (paren
@@ -4399,6 +4356,9 @@ comma
 l_int|0
 )paren
 suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
 )brace
 multiline_comment|/*&n; * Function:    scsi_report_bus_reset()&n; *&n; * Purpose:     Utility function used by low-level drivers to report that&n; *&t;&t;they have observed a bus reset on the bus being handled.&n; *&n; * Arguments:   shost       - Host in question&n; *&t;&t;channel     - channel on which reset was observed.&n; *&n; * Returns:     Nothing&n; *&n; * Lock status: No locks are assumed held.&n; *&n; * Notes:       This only needs to be called if the reset is one which&n; *&t;&t;originates from an unknown location.  Resets originated&n; *&t;&t;by the mid-level itself don&squot;t need to call this, but there&n; *&t;&t;should be no harm.&n; *&n; *&t;&t;The main purpose of this is to make sure that a CHECK_CONDITION&n; *&t;&t;is properly treated.&n; */
 DECL|function|scsi_report_bus_reset
@@ -4420,15 +4380,12 @@ id|scsi_device
 op_star
 id|sdev
 suffix:semicolon
-id|list_for_each_entry
+id|shost_for_each_device
 c_func
 (paren
 id|sdev
 comma
-op_amp
-id|shost-&gt;my_devices
-comma
-id|siblings
+id|shost
 )paren
 (brace
 r_if
@@ -4473,15 +4430,12 @@ id|scsi_device
 op_star
 id|sdev
 suffix:semicolon
-id|list_for_each_entry
+id|shost_for_each_device
 c_func
 (paren
 id|sdev
 comma
-op_amp
-id|shost-&gt;my_devices
-comma
-id|siblings
+id|shost
 )paren
 (brace
 r_if

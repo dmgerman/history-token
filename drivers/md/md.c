@@ -6827,17 +6827,14 @@ op_lshift
 l_int|1
 )paren
 suffix:semicolon
-id|blk_queue_make_request
-c_func
-(paren
-id|mddev-&gt;queue
-comma
-id|mddev-&gt;pers-&gt;make_request
-)paren
-suffix:semicolon
+multiline_comment|/* If we call blk_queue_make_request here, it will&n;&t; * re-initialise max_sectors etc which may have been&n;&t; * refined inside -&gt; run.  So just set the bits we need to set.&n;&t; * Most initialisation happended when we called&n;&t; * blk_queue_make_request(..., md_fail_request)&n;&t; * earlier.&n;&t; */
 id|mddev-&gt;queue-&gt;queuedata
 op_assign
 id|mddev
+suffix:semicolon
+id|mddev-&gt;queue-&gt;make_request_fn
+op_assign
+id|mddev-&gt;pers-&gt;make_request
 suffix:semicolon
 r_return
 l_int|0

@@ -1101,6 +1101,18 @@ id|pte_t
 op_star
 id|pte
 suffix:semicolon
+r_int
+id|ret
+op_assign
+l_int|0
+suffix:semicolon
+id|spin_lock
+c_func
+(paren
+op_amp
+id|init_mm.page_table_lock
+)paren
+suffix:semicolon
 r_do
 (brace
 id|pgd
@@ -1138,16 +1150,19 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;consistent_init: out of pmd tables&bslash;n&quot;
+l_string|&quot;consistent_init: no pmd tables&bslash;n&quot;
 )paren
 suffix:semicolon
-r_return
+id|ret
+op_assign
 op_minus
 id|ENOMEM
 suffix:semicolon
+r_break
+suffix:semicolon
 )brace
-r_if
-c_cond
+id|WARN_ON
+c_func
 (paren
 op_logical_neg
 id|pmd_none
@@ -1157,19 +1172,7 @@ op_star
 id|pmd
 )paren
 )paren
-(brace
-id|printk
-c_func
-(paren
-id|KERN_ERR
-l_string|&quot;consistent_init: PMD already allocated&bslash;n&quot;
-)paren
 suffix:semicolon
-r_return
-op_minus
-id|EINVAL
-suffix:semicolon
-)brace
 id|pte
 op_assign
 id|pte_alloc_kernel
@@ -1194,12 +1197,15 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;consistent_init: out of pte tables&bslash;n&quot;
+l_string|&quot;consistent_init: no pte tables&bslash;n&quot;
 )paren
 suffix:semicolon
-r_return
+id|ret
+op_assign
 op_minus
 id|ENOMEM
+suffix:semicolon
+r_break
 suffix:semicolon
 )brace
 id|consistent_pte
@@ -1213,8 +1219,15 @@ c_loop
 l_int|0
 )paren
 suffix:semicolon
+id|spin_unlock
+c_func
+(paren
+op_amp
+id|init_mm.page_table_lock
+)paren
+suffix:semicolon
 r_return
-l_int|0
+id|ret
 suffix:semicolon
 )brace
 DECL|variable|consistent_init

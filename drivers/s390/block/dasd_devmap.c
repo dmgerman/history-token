@@ -1,4 +1,4 @@
-multiline_comment|/*&n; * File...........: linux/drivers/s390/block/dasd_devmap.c&n; * Author(s)......: Holger Smolinski &lt;Holger.Smolinski@de.ibm.com&gt;&n; *&t;&t;    Horst Hummel &lt;Horst.Hummel@de.ibm.com&gt;&n; *&t;&t;    Carsten Otte &lt;Cotte@de.ibm.com&gt;&n; *&t;&t;    Martin Schwidefsky &lt;schwidefsky@de.ibm.com&gt;&n; * Bugreports.to..: &lt;Linux390@de.ibm.com&gt;&n; * (C) IBM Corporation, IBM Deutschland Entwicklung GmbH, 1999-2001&n; *&n; * Device mapping and dasd= parameter parsing functions. All devmap&n; * functions may not be called from interrupt context. In particular&n; * dasd_get_device is a no-no from interrupt context.&n; *&n; * $Revision: 1.15 $&n; */
+multiline_comment|/*&n; * File...........: linux/drivers/s390/block/dasd_devmap.c&n; * Author(s)......: Holger Smolinski &lt;Holger.Smolinski@de.ibm.com&gt;&n; *&t;&t;    Horst Hummel &lt;Horst.Hummel@de.ibm.com&gt;&n; *&t;&t;    Carsten Otte &lt;Cotte@de.ibm.com&gt;&n; *&t;&t;    Martin Schwidefsky &lt;schwidefsky@de.ibm.com&gt;&n; * Bugreports.to..: &lt;Linux390@de.ibm.com&gt;&n; * (C) IBM Corporation, IBM Deutschland Entwicklung GmbH, 1999-2001&n; *&n; * Device mapping and dasd= parameter parsing functions. All devmap&n; * functions may not be called from interrupt context. In particular&n; * dasd_get_device is a no-no from interrupt context.&n; *&n; * $Revision: 1.17 $&n; */
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;linux/ctype.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
@@ -1487,7 +1487,6 @@ op_assign
 id|dasd_alloc_device
 c_func
 (paren
-id|devmap-&gt;devindex
 )paren
 suffix:semicolon
 r_if
@@ -1510,6 +1509,10 @@ id|device-&gt;ref_count
 comma
 l_int|1
 )paren
+suffix:semicolon
+id|device-&gt;devindex
+op_assign
+id|devmap-&gt;devindex
 suffix:semicolon
 id|device-&gt;ro_flag
 op_assign
@@ -1556,11 +1559,6 @@ suffix:semicolon
 id|cdev-&gt;dev.driver_data
 op_assign
 id|device
-suffix:semicolon
-id|device-&gt;gdp-&gt;driverfs_dev
-op_assign
-op_amp
-id|cdev-&gt;dev
 suffix:semicolon
 id|device-&gt;cdev
 op_assign
@@ -1727,10 +1725,6 @@ op_assign
 id|device-&gt;cdev
 suffix:semicolon
 id|device-&gt;cdev
-op_assign
-l_int|NULL
-suffix:semicolon
-id|device-&gt;gdp-&gt;driverfs_dev
 op_assign
 l_int|NULL
 suffix:semicolon

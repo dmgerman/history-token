@@ -5,7 +5,7 @@ macro_line|#include &lt;linux/skbuff.h&gt;
 macro_line|#include &lt;linux/workqueue.h&gt;
 macro_line|#include &lt;asm/ccwdev.h&gt;
 DECL|macro|VERSION_LCS_H
-mdefine_line|#define VERSION_LCS_H &quot;$Revision: 1.12 $&quot;
+mdefine_line|#define VERSION_LCS_H &quot;$Revision: 1.13 $&quot;
 DECL|macro|LCS_DBF_TEXT
 mdefine_line|#define LCS_DBF_TEXT(level, name, text) &bslash;&n;&t;do { &bslash;&n;&t;&t;debug_text_event(lcs_dbf_##name, level, text); &bslash;&n;&t;} while (0)
 multiline_comment|/**&n; * some more definitions for debug or output stuff&n; */
@@ -97,6 +97,8 @@ DECL|macro|LCS_MAC_LENGTH
 mdefine_line|#define LCS_MAC_LENGTH&t;&t;&t;6
 DECL|macro|LCS_INVALID_PORT_NO
 mdefine_line|#define LCS_INVALID_PORT_NO&t;&t;-1
+DECL|macro|LCS_LANCMD_TIMEOUT_DEFAULT
+mdefine_line|#define LCS_LANCMD_TIMEOUT_DEFAULT      5
 multiline_comment|/**&n; * Multicast state&n; */
 DECL|macro|LCS_IPM_STATE_SET_REQUIRED
 mdefine_line|#define&t; LCS_IPM_STATE_SET_REQUIRED&t;0
@@ -680,6 +682,10 @@ DECL|member|lancmd_waiters
 r_struct
 id|list_head
 id|lancmd_waiters
+suffix:semicolon
+DECL|member|lancmd_timeout
+r_int
+id|lancmd_timeout
 suffix:semicolon
 DECL|member|kernel_thread_starter
 r_struct

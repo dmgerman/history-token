@@ -51,16 +51,5 @@ id|vcc
 )paren
 suffix:semicolon
 multiline_comment|/* &quot;raw&quot; AAL5 transport */
-r_int
-id|atm_init_atmarp
-c_func
-(paren
-r_struct
-id|atm_vcc
-op_star
-id|vcc
-)paren
-suffix:semicolon
-multiline_comment|/* ATM ARP */
 macro_line|#endif
 eof

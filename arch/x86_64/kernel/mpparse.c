@@ -2721,7 +2721,7 @@ id|printk
 c_func
 (paren
 id|KERN_ERR
-l_string|&quot;ERROR: Unable to locate IOAPIC for IRQ %d/n&quot;
+l_string|&quot;ERROR: Unable to locate IOAPIC for IRQ %d&bslash;n&quot;
 comma
 id|irq
 )paren

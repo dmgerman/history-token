@@ -3,6 +3,7 @@ macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/bitops.h&gt;
 macro_line|#include &lt;linux/config.h&gt;
+macro_line|#include &lt;linux/module.h&gt;
 macro_line|#include &lt;linux/types.h&gt;
 macro_line|#include &lt;linux/kernel.h&gt;
 macro_line|#include &lt;linux/sched.h&gt;
@@ -1151,4 +1152,60 @@ op_minus
 l_int|1
 suffix:semicolon
 )brace
+DECL|variable|tcf_police
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|tcf_police
+)paren
+suffix:semicolon
+DECL|variable|tcf_police_destroy
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|tcf_police_destroy
+)paren
+suffix:semicolon
+DECL|variable|tcf_police_dump
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|tcf_police_dump
+)paren
+suffix:semicolon
+DECL|variable|tcf_police_hash
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|tcf_police_hash
+)paren
+suffix:semicolon
+DECL|variable|tcf_police_ht
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|tcf_police_ht
+)paren
+suffix:semicolon
+DECL|variable|tcf_police_locate
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|tcf_police_locate
+)paren
+suffix:semicolon
+DECL|variable|tcf_police_lookup
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|tcf_police_lookup
+)paren
+suffix:semicolon
+DECL|variable|tcf_police_new_index
+id|EXPORT_SYMBOL
+c_func
+(paren
+id|tcf_police_new_index
+)paren
+suffix:semicolon
 eof
