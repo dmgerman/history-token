@@ -669,9 +669,9 @@ macro_line|#error &quot;Please fix asm/byteorder.h&quot;
 macro_line|#endif /* __LITTLE_ENDIAN */
 multiline_comment|/*&n; * min()/max() macros that also do&n; * strict type-checking.. See the&n; * &quot;unnecessary&quot; pointer comparison.&n; */
 DECL|macro|min
-mdefine_line|#define min(x,y) ({ &bslash;&n;&t;const typeof(x) _x = (x);&t;&bslash;&n;&t;const typeof(y) _y = (y);&t;&bslash;&n;&t;(void) (&amp;_x == &amp;_y);&t;&t;&bslash;&n;&t;_x &lt; _y ? _x : _y; })
+mdefine_line|#define min(x,y) ({ &bslash;&n;&t;typeof(x) _x = (x);&t;&bslash;&n;&t;typeof(y) _y = (y);&t;&bslash;&n;&t;(void) (&amp;_x == &amp;_y);&t;&t;&bslash;&n;&t;_x &lt; _y ? _x : _y; })
 DECL|macro|max
-mdefine_line|#define max(x,y) ({ &bslash;&n;&t;const typeof(x) _x = (x);&t;&bslash;&n;&t;const typeof(y) _y = (y);&t;&bslash;&n;&t;(void) (&amp;_x == &amp;_y);&t;&t;&bslash;&n;&t;_x &gt; _y ? _x : _y; })
+mdefine_line|#define max(x,y) ({ &bslash;&n;&t;typeof(x) _x = (x);&t;&bslash;&n;&t;typeof(y) _y = (y);&t;&bslash;&n;&t;(void) (&amp;_x == &amp;_y);&t;&t;&bslash;&n;&t;_x &gt; _y ? _x : _y; })
 multiline_comment|/*&n; * ..and if you can&squot;t take the strict&n; * types, you can specify one yourself.&n; *&n; * Or not use min/max at all, of course.&n; */
 DECL|macro|min_t
 mdefine_line|#define min_t(type,x,y) &bslash;&n;&t;({ type __x = (x); type __y = (y); __x &lt; __y ? __x: __y; })
