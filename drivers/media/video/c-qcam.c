@@ -3165,7 +3165,7 @@ suffix:semicolon
 )brace
 DECL|function|qcam_read
 r_static
-r_int
+id|ssize_t
 id|qcam_read
 c_func
 (paren
