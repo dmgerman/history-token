@@ -3030,21 +3030,6 @@ op_minus
 id|ENODEV
 suffix:semicolon
 )brace
-id|dbg
-c_func
-(paren
-l_string|&quot;%s - reset config&quot;
-comma
-id|__FUNCTION__
-)paren
-suffix:semicolon
-id|retval
-op_assign
-id|usb_reset_configuration
-(paren
-id|serial-&gt;dev
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
