@@ -1748,7 +1748,7 @@ id|rse_hints
 id|hints.ph_data
 )braket
 suffix:colon
-l_string|&quot;(&bslash;?&bslash;?)&quot;
+l_string|&quot;(??)&quot;
 )paren
 suffix:semicolon
 r_if
