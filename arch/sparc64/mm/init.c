@@ -81,10 +81,11 @@ id|bootmap_base
 suffix:semicolon
 multiline_comment|/* get_new_mmu_context() uses &quot;cache + 1&quot;.  */
 DECL|variable|ctx_alloc_lock
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|ctx_alloc_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 DECL|variable|tlb_context_cache
 r_int

@@ -35,16 +35,18 @@ macro_line|#include &lt;asm/smp.h&gt;
 macro_line|#include &lt;asm/sections.h&gt;
 macro_line|#include &lt;asm/cpudata.h&gt;
 DECL|variable|mostek_lock
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|mostek_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 DECL|variable|rtc_lock
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|rtc_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 DECL|variable|mstk48t02_regs
 r_int

@@ -169,12 +169,12 @@ l_int|NULL
 )brace
 suffix:semicolon
 multiline_comment|/* This only synchronizes entities which modify IRQ handler&n; * state and some selected user-level spots that want to&n; * read things in the table.  IRQ handler processing orders&n; * its&squot; accesses such that no locking is needed.&n; */
-DECL|variable|irq_action_lock
 r_static
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|irq_action_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 r_static
 r_void

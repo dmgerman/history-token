@@ -1342,12 +1342,12 @@ r_int
 suffix:semicolon
 )brace
 macro_line|#ifdef CONFIG_SMP
-DECL|variable|regdump_lock
 r_static
-id|spinlock_t
+id|DEFINE_SPINLOCK
+c_func
+(paren
 id|regdump_lock
-op_assign
-id|SPIN_LOCK_UNLOCKED
+)paren
 suffix:semicolon
 macro_line|#endif
 DECL|function|__show_regs
