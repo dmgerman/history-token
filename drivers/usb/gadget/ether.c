@@ -168,6 +168,10 @@ id|rndis
 suffix:colon
 l_int|1
 suffix:semicolon
+DECL|member|cdc_filter
+id|u16
+id|cdc_filter
+suffix:semicolon
 DECL|member|todo
 r_int
 r_int
@@ -3426,6 +3430,11 @@ id|eth_reset_config
 id|dev
 )paren
 suffix:semicolon
+multiline_comment|/* default:  pass all packets, no multicast filtering */
+id|dev-&gt;cdc_filter
+op_assign
+l_int|0x000f
+suffix:semicolon
 r_switch
 c_cond
 (paren
@@ -4047,11 +4056,30 @@ suffix:semicolon
 )brace
 multiline_comment|/* see section 3.8.2 table 10 of the CDC spec for more ethernet&n; * requests, mostly for filters (multicast, pm) and statistics&n; * section 3.6.2.1 table 4 has ACM requests; RNDIS requires the&n; * encapsulated command mechanism.&n; */
 DECL|macro|CDC_SEND_ENCAPSULATED_COMMAND
-mdefine_line|#define CDC_SEND_ENCAPSULATED_COMMAND&t;0x00&t;/* optional */
+mdefine_line|#define CDC_SEND_ENCAPSULATED_COMMAND&t;&t;0x00&t;/* optional */
 DECL|macro|CDC_GET_ENCAPSULATED_RESPONSE
-mdefine_line|#define CDC_GET_ENCAPSULATED_RESPONSE&t;0x01&t;/* optional */
+mdefine_line|#define CDC_GET_ENCAPSULATED_RESPONSE&t;&t;0x01&t;/* optional */
+DECL|macro|CDC_SET_ETHERNET_MULTICAST_FILTERS
+mdefine_line|#define CDC_SET_ETHERNET_MULTICAST_FILTERS&t;0x40&t;/* optional */
+DECL|macro|CDC_SET_ETHERNET_PM_PATTERN_FILTER
+mdefine_line|#define CDC_SET_ETHERNET_PM_PATTERN_FILTER&t;0x41&t;/* optional */
+DECL|macro|CDC_GET_ETHERNET_PM_PATTERN_FILTER
+mdefine_line|#define CDC_GET_ETHERNET_PM_PATTERN_FILTER&t;0x42&t;/* optional */
 DECL|macro|CDC_SET_ETHERNET_PACKET_FILTER
-mdefine_line|#define CDC_SET_ETHERNET_PACKET_FILTER&t;0x43&t;/* required */
+mdefine_line|#define CDC_SET_ETHERNET_PACKET_FILTER&t;&t;0x43&t;/* required */
+DECL|macro|CDC_GET_ETHERNET_STATISTIC
+mdefine_line|#define CDC_GET_ETHERNET_STATISTIC&t;&t;0x44&t;/* optional */
+multiline_comment|/* table 62; bits in cdc_filter */
+DECL|macro|CDC_PACKET_TYPE_PROMISCUOUS
+mdefine_line|#define&t;CDC_PACKET_TYPE_PROMISCUOUS&t;&t;(1 &lt;&lt; 0)
+DECL|macro|CDC_PACKET_TYPE_ALL_MULTICAST
+mdefine_line|#define&t;CDC_PACKET_TYPE_ALL_MULTICAST&t;&t;(1 &lt;&lt; 1) /* no filter */
+DECL|macro|CDC_PACKET_TYPE_DIRECTED
+mdefine_line|#define&t;CDC_PACKET_TYPE_DIRECTED&t;&t;(1 &lt;&lt; 2)
+DECL|macro|CDC_PACKET_TYPE_BROADCAST
+mdefine_line|#define&t;CDC_PACKET_TYPE_BROADCAST&t;&t;(1 &lt;&lt; 3)
+DECL|macro|CDC_PACKET_TYPE_MULTICAST
+mdefine_line|#define&t;CDC_PACKET_TYPE_MULTICAST&t;&t;(1 &lt;&lt; 4) /* filtered */
 macro_line|#ifdef CONFIG_USB_ETH_RNDIS
 DECL|function|rndis_response_complete
 r_static
@@ -4840,7 +4868,11 @@ comma
 id|ctrl-&gt;wValue
 )paren
 suffix:semicolon
-multiline_comment|/* NOTE: table 62 has 5 filter bits to reduce traffic,&n;&t;&t; * and we &quot;must&quot; support multicast and promiscuous.&n;&t;&t; * this NOP implements a bad filter...&n;&t;&t; */
+multiline_comment|/* NOTE: table 62 has 5 filter bits to reduce traffic,&n;&t;&t; * and we &quot;must&quot; support multicast and promiscuous.&n;&t;&t; * this NOP implements a bad filter (always promisc)&n;&t;&t; */
+id|dev-&gt;cdc_filter
+op_assign
+id|ctrl-&gt;wValue
+suffix:semicolon
 id|value
 op_assign
 l_int|0
@@ -6594,6 +6626,7 @@ r_int
 r_int
 id|flags
 suffix:semicolon
+multiline_comment|/* FIXME check dev-&gt;cdc_filter to decide whether to send this,&n;&t; * instead of acting as if CDC_PACKET_TYPE_PROMISCUOUS were&n;&t; * always set.  RNDIS has the same kind of outgoing filter.&n;&t; */
 id|spin_lock_irqsave
 (paren
 op_amp
