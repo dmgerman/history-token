@@ -80,6 +80,14 @@ id|kmem_cache_t
 op_star
 id|mnt_cache
 suffix:semicolon
+r_extern
+r_void
+id|init_rootfs
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
 DECL|function|hash
 r_static
 r_inline
