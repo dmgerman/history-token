@@ -1899,8 +1899,12 @@ r_while
 c_loop
 (paren
 id|address
+op_logical_and
+(paren
+id|address
 OL
 id|end
+)paren
 )paren
 suffix:semicolon
 )brace
