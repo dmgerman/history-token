@@ -5831,7 +5831,7 @@ l_int|0
 suffix:semicolon
 )brace
 DECL|variable|isapnp_init
-id|fs_initcall
+id|device_initcall
 c_func
 (paren
 id|isapnp_init

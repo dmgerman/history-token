@@ -9912,7 +9912,7 @@ id|rc
 suffix:semicolon
 )brace
 DECL|variable|net_dev_init
-id|fs_initcall
+id|subsys_initcall
 c_func
 (paren
 id|net_dev_init
