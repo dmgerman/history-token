@@ -34,6 +34,10 @@ macro_line|#include &lt;linux/udp.h&gt;
 macro_line|#include &lt;net/pkt_sched.h&gt;
 macro_line|#include &lt;linux/list.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
+macro_line|#include &lt;linux/ethtool.h&gt;
+macro_line|#ifdef NETIF_F_HW_VLAN_TX
+macro_line|#include &lt;linux/if_vlan.h&gt;
+macro_line|#endif
 r_struct
 id|e1000_adapter
 suffix:semicolon
@@ -175,6 +179,14 @@ DECL|member|proc_list_head
 r_struct
 id|list_head
 id|proc_list_head
+suffix:semicolon
+macro_line|#endif
+macro_line|#ifdef NETIF_F_HW_VLAN_TX
+DECL|member|vlgrp
+r_struct
+id|vlan_group
+op_star
+id|vlgrp
 suffix:semicolon
 macro_line|#endif
 DECL|member|id_string
