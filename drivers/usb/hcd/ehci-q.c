@@ -3393,11 +3393,8 @@ id|writel
 (paren
 id|cmd
 op_amp
-id|__constant_cpu_to_le32
-(paren
 op_complement
 id|CMD_ASE
-)paren
 comma
 op_amp
 id|ehci-&gt;regs-&gt;command
@@ -3413,8 +3410,6 @@ suffix:semicolon
 r_while
 c_loop
 (paren
-op_logical_neg
-(paren
 id|readl
 (paren
 op_amp
@@ -3422,7 +3417,6 @@ id|ehci-&gt;regs-&gt;status
 )paren
 op_amp
 id|STS_ASS
-)paren
 )paren
 id|udelay
 (paren

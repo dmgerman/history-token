@@ -1302,9 +1302,10 @@ id|sock
 suffix:semicolon
 id|inode
 op_assign
-id|get_empty_inode
+id|new_inode
 c_func
 (paren
+id|sock_mnt-&gt;mnt_sb
 )paren
 suffix:semicolon
 r_if
@@ -1316,9 +1317,9 @@ id|inode
 r_return
 l_int|NULL
 suffix:semicolon
-id|inode-&gt;i_sb
+id|inode-&gt;i_dev
 op_assign
-id|sock_mnt-&gt;mnt_sb
+id|NODEV
 suffix:semicolon
 id|sock
 op_assign

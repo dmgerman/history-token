@@ -7201,6 +7201,31 @@ op_minus
 id|EINVAL
 suffix:semicolon
 )brace
+multiline_comment|/* 9.4.10 says devices don&squot;t need this, if the interface&n;&t;   only has one alternate setting */
+r_if
+c_cond
+(paren
+id|iface-&gt;num_altsetting
+op_eq
+l_int|1
+)paren
+(brace
+id|warn
+c_func
+(paren
+l_string|&quot;ignoring set_interface for dev %d, iface %d, alt %d&quot;
+comma
+id|dev-&gt;devnum
+comma
+id|interface
+comma
+id|alternate
+)paren
+suffix:semicolon
+r_return
+l_int|0
+suffix:semicolon
+)brace
 r_if
 c_cond
 (paren

@@ -2,7 +2,7 @@ multiline_comment|/*&n; *  linux/include/asm-arm/arch-ebsa110/system.h&n; *&n; *
 macro_line|#ifndef __ASM_ARCH_SYSTEM_H
 DECL|macro|__ASM_ARCH_SYSTEM_H
 mdefine_line|#define __ASM_ARCH_SYSTEM_H
-multiline_comment|/*&n; * EBSA110 idling methodology:&n; *&n; * We can not execute the &quot;wait for interrupt&quot; instruction since that&n; * will stop our MCLK signal (which provides the clock for the glue&n; * logic, and therefore the timer interrupt).&n; *&n; * Instead, we spin, waiting for either hlt_counter or need_resched&n; * to be set.  If we have been spinning for 2cs, then we drop the&n; * core clock down to the memory clock.&n; */
+multiline_comment|/*&n; * EBSA110 idling methodology:&n; *&n; * We can not execute the &quot;wait for interrupt&quot; instruction since that&n; * will stop our MCLK signal (which provides the clock for the glue&n; * logic, and therefore the timer interrupt).&n; *&n; * Instead, we spin, waiting for either hlt_counter or need_resched()&n; * to be set.  If we have been spinning for 2cs, then we drop the&n; * core clock down to the memory clock.&n; */
 DECL|function|arch_idle
 r_static
 r_void
@@ -25,7 +25,10 @@ r_do
 r_if
 c_cond
 (paren
-id|current-&gt;need_resched
+id|need_resched
+c_func
+(paren
+)paren
 op_logical_or
 id|hlt_counter
 )paren
@@ -59,7 +62,10 @@ r_while
 c_loop
 (paren
 op_logical_neg
-id|current-&gt;need_resched
+id|need_resched
+c_func
+(paren
+)paren
 op_logical_and
 op_logical_neg
 id|hlt_counter

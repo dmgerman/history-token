@@ -2329,7 +2329,10 @@ id|count
 op_ge
 l_int|200
 op_logical_or
-id|current-&gt;need_resched
+id|need_resched
+c_func
+(paren
+)paren
 )paren
 (brace
 id|count

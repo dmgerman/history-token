@@ -25,6 +25,7 @@ macro_line|#include &lt;linux/sem.h&gt;
 macro_line|#include &lt;linux/signal.h&gt;
 macro_line|#include &lt;linux/securebits.h&gt;
 macro_line|#include &lt;linux/fs_struct.h&gt;
+macro_line|#include &lt;linux/compiler.h&gt;
 r_struct
 id|exec_domain
 suffix:semicolon
@@ -162,6 +163,12 @@ r_extern
 id|spinlock_t
 id|mmlist_lock
 suffix:semicolon
+DECL|typedef|task_t
+r_typedef
+r_struct
+id|task_struct
+id|task_t
+suffix:semicolon
 r_extern
 r_void
 id|sched_init
@@ -234,21 +241,13 @@ id|cpu
 suffix:semicolon
 r_extern
 r_void
-id|expire_task
+id|scheduler_tick
 c_func
 (paren
 r_struct
 id|task_struct
 op_star
 id|p
-)paren
-suffix:semicolon
-r_extern
-r_void
-id|idle_tick
-c_func
-(paren
-r_void
 )paren
 suffix:semicolon
 DECL|macro|MAX_SCHEDULE_TIMEOUT
@@ -526,12 +525,6 @@ id|root_user
 suffix:semicolon
 DECL|macro|INIT_USER
 mdefine_line|#define INIT_USER (&amp;root_user)
-DECL|typedef|task_t
-r_typedef
-r_struct
-id|task_struct
-id|task_t
-suffix:semicolon
 DECL|typedef|prio_array_t
 r_typedef
 r_struct
@@ -613,10 +606,17 @@ r_int
 r_int
 id|time_slice
 suffix:semicolon
-DECL|member|sleep_jtime
+DECL|macro|MAX_SLEEP_AVG
+mdefine_line|#define MAX_SLEEP_AVG (2*HZ)
+DECL|member|sleep_avg
 r_int
 r_int
-id|sleep_jtime
+id|sleep_avg
+suffix:semicolon
+DECL|member|sleep_timestamp
+r_int
+r_int
+id|sleep_timestamp
 suffix:semicolon
 DECL|member|policy
 r_int
@@ -1111,27 +1111,27 @@ DECL|macro|_STK_LIM
 mdefine_line|#define _STK_LIM&t;(8*1024*1024)
 multiline_comment|/*&n; * RT priorites go from 0 to 99, but internally we max&n; * them out at 128 to make it easier to search the&n; * scheduler bitmap.&n; */
 DECL|macro|MAX_RT_PRIO
-mdefine_line|#define MAX_RT_PRIO&t;128
+mdefine_line|#define MAX_RT_PRIO&t;&t;128
 multiline_comment|/*&n; * The lower the priority of a process, the more likely it is&n; * to run. Priority of a process goes from 0 to 167. The 0-99&n; * priority range is allocated to RT tasks, the 128-167 range&n; * is for SCHED_OTHER tasks.&n; */
 DECL|macro|MAX_PRIO
-mdefine_line|#define MAX_PRIO&t;(MAX_RT_PRIO+40)
-DECL|macro|DEF_USER_NICE
-mdefine_line|#define DEF_USER_NICE&t;0
-multiline_comment|/*&n; * Default timeslice is 80 msecs, maximum is 160 msecs.&n; * Minimum timeslice is 10 msecs.&n; */
-DECL|macro|MIN_TIMESLICE
-mdefine_line|#define MIN_TIMESLICE&t;(10 * HZ / 1000)
-DECL|macro|MAX_TIMESLICE
-mdefine_line|#define MAX_TIMESLICE&t;(160 * HZ / 1000)
-DECL|macro|USER_PRIO
-mdefine_line|#define USER_PRIO(p) ((p)-MAX_RT_PRIO)
-DECL|macro|MAX_USER_PRIO
-mdefine_line|#define MAX_USER_PRIO (USER_PRIO(MAX_PRIO))
-DECL|macro|DEF_PRIO
-mdefine_line|#define DEF_PRIO&t;(MAX_RT_PRIO + MAX_USER_PRIO / 3)
+mdefine_line|#define MAX_PRIO&t;&t;(MAX_RT_PRIO + 40)
+multiline_comment|/*&n; * Scales user-nice values [ -20 ... 0 ... 19 ]&n; * to static priority [ 128 ... 167 (MAX_PRIO-1) ]&n; *&n; * User-nice value of -20 == static priority 128, and&n; * user-nice value 19 == static priority 167. The lower&n; * the priority value, the higher the task&squot;s priority.&n; */
 DECL|macro|NICE_TO_PRIO
-mdefine_line|#define NICE_TO_PRIO(n) (MAX_PRIO-1 + (n) - 19)
+mdefine_line|#define NICE_TO_PRIO(n)&t;&t;(MAX_RT_PRIO + (n) + 20)
+DECL|macro|DEF_USER_NICE
+mdefine_line|#define DEF_USER_NICE&t;&t;0
+multiline_comment|/*&n; * Default timeslice is 90 msecs, maximum is 180 msecs.&n; * Minimum timeslice is 10 msecs.&n; */
+DECL|macro|MIN_TIMESLICE
+mdefine_line|#define MIN_TIMESLICE&t;&t;( 10 * HZ / 1000)
+DECL|macro|MAX_TIMESLICE
+mdefine_line|#define MAX_TIMESLICE&t;&t;(180 * HZ / 1000)
+DECL|macro|USER_PRIO
+mdefine_line|#define USER_PRIO(p)&t;&t;((p)-MAX_RT_PRIO)
+DECL|macro|MAX_USER_PRIO
+mdefine_line|#define MAX_USER_PRIO&t;&t;(USER_PRIO(MAX_PRIO))
+multiline_comment|/*&n; * NICE_TO_TIMESLICE scales nice values [ -20 ... 19 ]&n; * to time slice values.&n; *&n; * The higher a process&squot;s priority, the bigger timeslices&n; * it gets during one round of execution. But even the lowest&n; * priority process gets MIN_TIMESLICE worth of execution time.&n; */
 DECL|macro|NICE_TO_TIMESLICE
-mdefine_line|#define NICE_TO_TIMESLICE(n)   (MIN_TIMESLICE + &bslash;&n;&t;((MAX_TIMESLICE - MIN_TIMESLICE) * (19 - (n))) / 39)
+mdefine_line|#define NICE_TO_TIMESLICE(n) (MIN_TIMESLICE + &bslash;&n;&t;((MAX_TIMESLICE - MIN_TIMESLICE) * (19-(n))) / 39)
 r_extern
 r_void
 id|set_cpus_allowed
@@ -1935,6 +1935,50 @@ r_return
 id|p-&gt;sigpending
 op_ne
 l_int|0
+)paren
+suffix:semicolon
+)brace
+DECL|function|need_resched
+r_static
+r_inline
+r_int
+id|need_resched
+c_func
+(paren
+r_void
+)paren
+(brace
+r_return
+id|unlikely
+c_func
+(paren
+id|current-&gt;need_resched
+op_ne
+l_int|0
+)paren
+suffix:semicolon
+)brace
+DECL|function|cond_resched
+r_static
+r_inline
+r_void
+id|cond_resched
+c_func
+(paren
+r_void
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|need_resched
+c_func
+(paren
+)paren
+)paren
+id|schedule
+c_func
+(paren
 )paren
 suffix:semicolon
 )brace

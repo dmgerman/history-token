@@ -523,12 +523,7 @@ id|jeb
 )paren
 suffix:semicolon
 multiline_comment|/* Be nice */
-r_if
-c_cond
-(paren
-id|current-&gt;need_resched
-)paren
-id|schedule
+id|cond_resched
 c_func
 (paren
 )paren

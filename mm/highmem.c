@@ -1314,14 +1314,6 @@ id|blk_max_pfn
 )paren
 r_return
 suffix:semicolon
-macro_line|#ifndef CONFIG_HIGHMEM
-multiline_comment|/*&n;&t;&t; * should not hit for non-highmem case&n;&t;&t; */
-id|BUG
-c_func
-(paren
-)paren
-suffix:semicolon
-macro_line|#endif
 id|bio_gfp
 op_assign
 id|GFP_NOHIGHIO

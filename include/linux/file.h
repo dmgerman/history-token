@@ -2,12 +2,9 @@ multiline_comment|/*&n; * Wrapper functions for accessing the file_struct fd arr
 macro_line|#ifndef __LINUX_FILE_H
 DECL|macro|__LINUX_FILE_H
 mdefine_line|#define __LINUX_FILE_H
-macro_line|#ifndef _LINUX_POSIX_TYPES_H&t;/* __FD_CLR */
+macro_line|#include &lt;asm/atomic.h&gt;
 macro_line|#include &lt;linux/posix_types.h&gt;
-macro_line|#endif
-macro_line|#ifndef __LINUX_COMPILER_H&t;/* unlikely */
 macro_line|#include &lt;linux/compiler.h&gt;
-macro_line|#endif
 multiline_comment|/*&n; * The default fd array needs to be at least BITS_PER_LONG,&n; * as this is the granularity returned by copy_fdset().&n; */
 DECL|macro|NR_OPEN_DEFAULT
 mdefine_line|#define NR_OPEN_DEFAULT BITS_PER_LONG

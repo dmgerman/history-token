@@ -9349,15 +9349,13 @@ id|INIT_LIST_HEAD
 c_func
 (paren
 op_amp
-(paren
 id|SB_JOURNAL
 c_func
 (paren
 id|p_s_sb
 )paren
 op_member_access_from_pointer
-id|j_dummy_inode.i_dirty_buffers
-)paren
+id|j_dirty_buffers
 )paren
 suffix:semicolon
 id|reiserfs_allocate_list_bitmaps
@@ -15110,7 +15108,7 @@ op_assign
 id|jindex
 suffix:semicolon
 multiline_comment|/* write any buffers that must hit disk before this commit is done */
-id|fsync_inode_buffers
+id|fsync_buffers_list
 c_func
 (paren
 op_amp
@@ -15121,7 +15119,7 @@ c_func
 id|p_s_sb
 )paren
 op_member_access_from_pointer
-id|j_dummy_inode
+id|j_dirty_buffers
 )paren
 )paren
 suffix:semicolon

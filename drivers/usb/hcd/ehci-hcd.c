@@ -33,9 +33,9 @@ macro_line|#include &lt;asm/unaligned.h&gt;
 singleline_comment|//#undef KERN_DEBUG
 singleline_comment|//#define KERN_DEBUG &quot;&quot;
 multiline_comment|/*-------------------------------------------------------------------------*/
-multiline_comment|/*&n; * EHCI hc_driver implementation ... experimental, incomplete.&n; * Based on the 0.96 register interface specification.&n; *&n; * There are lots of things to help out with here ... notably&n; * everything &quot;periodic&quot;, and of course testing with all sorts&n; * of usb 2.0 devices and configurations.&n; *&n; * USB 2.0 shows up in upcoming www.pcmcia.org technology.&n; * First was PCMCIA, like ISA; then CardBus, which is PCI.&n; * Next comes &quot;CardBay&quot;, using USB 2.0 signals.&n; *&n; * Contains additional contributions by:&n; *&t;Brad Hards&n; *&t;Rory Bolt&n; *&t;...&n; */
+multiline_comment|/*&n; * EHCI hc_driver implementation ... experimental, incomplete.&n; * Based on the 0.96 register interface specification.&n; *&n; * There are lots of things to help out with here ... notably&n; * everything &quot;periodic&quot;, and of course testing with all sorts&n; * of usb 2.0 devices and configurations.&n; *&n; * USB 2.0 shows up in upcoming www.pcmcia.org technology.&n; * First was PCMCIA, like ISA; then CardBus, which is PCI.&n; * Next comes &quot;CardBay&quot;, using USB 2.0 signals.&n; *&n; * Contains additional contributions by:&n; *&t;Brad Hards&n; *&t;Rory Bolt&n; *&t;...&n; *&n; * HISTORY:&n; * 2002-01-14&t;Minor cleanup; version synch.&n; * 2002-01-08&t;Fix roothub handoff of FS/LS to companion controllers.&n; * 2002-01-04&t;Control/Bulk queuing behaves.&n; * 2001-12-12&t;Initial patch version for Linux 2.5.1 kernel.&n; */
 DECL|macro|DRIVER_VERSION
-mdefine_line|#define DRIVER_VERSION &quot;$Revision: 0.25 $&quot;
+mdefine_line|#define DRIVER_VERSION &quot;$Revision: 0.26 $&quot;
 DECL|macro|DRIVER_AUTHOR
 mdefine_line|#define DRIVER_AUTHOR &quot;David Brownell&quot;
 DECL|macro|DRIVER_DESC
@@ -83,8 +83,6 @@ comma
 l_string|&quot;log2 IRQ latency, 1-64 microframes&quot;
 )paren
 suffix:semicolon
-multiline_comment|/* Some A steppings of the NEC controller need soft retries */
-singleline_comment|//#define&t;EHCI_SOFT_RETRIES&t;5&t;/* after CERR-induced fault */
 DECL|macro|INTR_MASK
 mdefine_line|#define&t;INTR_MASK (STS_IAA | STS_FATAL | STS_ERR | STS_INT)
 multiline_comment|/*-------------------------------------------------------------------------*/

@@ -11,7 +11,6 @@ macro_line|#include &lt;linux/vmalloc.h&gt;
 macro_line|#include &lt;linux/mm.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/pgtable.h&gt;
-macro_line|#include &lt;asm/mmu_context.h&gt;
 macro_line|#include &lt;linux/intermezzo_fs.h&gt;
 macro_line|#include &lt;linux/intermezzo_kml.h&gt;
 macro_line|#include &lt;linux/intermezzo_psdev.h&gt;

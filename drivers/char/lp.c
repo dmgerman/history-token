@@ -1060,7 +1060,10 @@ r_else
 r_if
 c_cond
 (paren
-id|current-&gt;need_resched
+id|need_resched
+c_func
+(paren
+)paren
 )paren
 id|schedule
 (paren

@@ -398,9 +398,9 @@ id|bh
 )paren
 (brace
 r_struct
-id|inode
+id|list_head
 op_star
-id|jinode
+id|list
 op_assign
 op_amp
 (paren
@@ -410,15 +410,15 @@ c_func
 id|inode-&gt;i_sb
 )paren
 op_member_access_from_pointer
-id|j_dummy_inode
+id|j_dirty_buffers
 )paren
 suffix:semicolon
-id|buffer_insert_inode_queue
+id|buffer_insert_list
 c_func
 (paren
 id|bh
 comma
-id|jinode
+id|list
 )paren
 suffix:semicolon
 )brace
@@ -3201,12 +3201,7 @@ id|path
 suffix:semicolon
 )brace
 multiline_comment|/* inserting indirect pointers for a hole can take a &n;&t;** long time.  reschedule if needed&n;&t;*/
-r_if
-c_cond
-(paren
-id|current-&gt;need_resched
-)paren
-id|schedule
+id|cond_resched
 c_func
 (paren
 )paren

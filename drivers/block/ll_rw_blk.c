@@ -287,11 +287,19 @@ multiline_comment|/*&n;&t; * set appropriate bounce gfp mask -- unfortunately we
 r_if
 c_cond
 (paren
-id|dma_addr
-op_eq
-id|BLK_BOUNCE_ISA
+id|bounce_pfn
+OL
+id|blk_max_low_pfn
 )paren
 (brace
+id|BUG_ON
+c_func
+(paren
+id|dma_addr
+OL
+id|BLK_BOUNCE_ISA
+)paren
+suffix:semicolon
 id|init_emergency_isa_pool
 c_func
 (paren
@@ -539,6 +547,8 @@ comma
 l_string|&quot;REQ_DRIVE_CMD&quot;
 comma
 l_string|&quot;REQ_DRIVE_TASK&quot;
+comma
+l_string|&quot;REQ_DRIVE_ACB&quot;
 comma
 l_string|&quot;REQ_PC&quot;
 comma
@@ -5944,10 +5954,17 @@ id|blk_max_low_pfn
 op_assign
 id|max_low_pfn
 suffix:semicolon
+macro_line|#ifdef CONFIG_HIGHMEM
 id|blk_max_pfn
 op_assign
 id|max_pfn
 suffix:semicolon
+macro_line|#else
+id|blk_max_pfn
+op_assign
+id|max_low_pfn
+suffix:semicolon
+macro_line|#endif
 macro_line|#if defined(CONFIG_IDE) &amp;&amp; defined(CONFIG_BLK_DEV_IDE)
 id|ide_init
 c_func

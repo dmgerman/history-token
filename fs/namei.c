@@ -980,7 +980,10 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|current-&gt;need_resched
+id|need_resched
+c_func
+(paren
+)paren
 )paren
 (brace
 id|current-&gt;state

@@ -1295,10 +1295,11 @@ id|sk_buff
 op_star
 id|skb
 suffix:semicolon
-DECL|member|mapping
-id|dma_addr_t
+id|DECLARE_PCI_UNMAP_ADDR
+c_func
+(paren
 id|mapping
-suffix:semicolon
+)paren
 )brace
 suffix:semicolon
 multiline_comment|/*&n; * Funny... As soon as we add maplen on alpha, it starts to work&n; * much slower. Hmm... is it because struct does not fit to one cacheline?&n; * So, split tx_ring_info.&n; */
@@ -1312,14 +1313,16 @@ id|sk_buff
 op_star
 id|skb
 suffix:semicolon
-DECL|member|mapping
-id|dma_addr_t
+id|DECLARE_PCI_UNMAP_ADDR
+c_func
+(paren
 id|mapping
-suffix:semicolon
-DECL|member|maplen
-r_int
+)paren
+id|DECLARE_PCI_UNMAP_LEN
+c_func
+(paren
 id|maplen
-suffix:semicolon
+)paren
 )brace
 suffix:semicolon
 multiline_comment|/*&n; * struct ace_skb holding the rings of skb&squot;s. This is an awful lot of&n; * pointers, but I don&squot;t see any other smart mode to do this in an&n; * efficient manner ;-(&n; */

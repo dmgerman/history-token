@@ -846,6 +846,13 @@ id|b
 suffix:semicolon
 )brace
 )brace
+DECL|variable|dio_init
+id|subsys_initcall
+c_func
+(paren
+id|dio_init
+)paren
+suffix:semicolon
 multiline_comment|/* Bear in mind that this is called in the very early stages of initialisation&n; * in order to get the virtual address of the serial port for the console...&n; */
 DECL|function|dio_scodetoviraddr
 r_void

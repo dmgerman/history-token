@@ -1615,12 +1615,7 @@ id|unwritten
 op_minus
 id|PAGE_SIZE
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|current-&gt;need_resched
-)paren
-id|schedule
+id|cond_resched
 c_func
 (paren
 )paren

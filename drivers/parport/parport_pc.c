@@ -90,11 +90,13 @@ id|__devinitdata
 op_assign
 l_int|0
 suffix:semicolon
+macro_line|#if defined(CONFIG_PARPORT_PC_FIFO) || defined(CONFIG_PARPORT_PC_SUPERIO)
 DECL|variable|verbose_probing
 r_static
 r_int
 id|verbose_probing
 suffix:semicolon
+macro_line|#endif
 DECL|variable|registered_parport
 r_static
 r_int
@@ -2566,7 +2568,10 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|current-&gt;need_resched
+id|need_resched
+c_func
+(paren
+)paren
 op_logical_and
 id|time_before
 (paren
@@ -2697,7 +2702,10 @@ l_int|2
 r_if
 c_cond
 (paren
-id|current-&gt;need_resched
+id|need_resched
+c_func
+(paren
+)paren
 op_logical_and
 id|time_before
 (paren
@@ -3266,12 +3274,8 @@ l_int|2
 )paren
 )paren
 (brace
-r_if
-c_cond
-(paren
-id|current-&gt;need_resched
-)paren
-id|schedule
+id|cond_resched
+c_func
 (paren
 )paren
 suffix:semicolon
@@ -3312,16 +3316,12 @@ c_func
 id|dmaflag
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|current-&gt;need_resched
-)paren
-multiline_comment|/* Can&squot;t yield the port. */
-id|schedule
+id|cond_resched
+c_func
 (paren
 )paren
 suffix:semicolon
+multiline_comment|/* Can&squot;t yield the port. */
 multiline_comment|/* Anyone else waiting for the port? */
 r_if
 c_cond
@@ -4583,7 +4583,10 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|current-&gt;need_resched
+id|need_resched
+c_func
+(paren
+)paren
 op_logical_and
 id|time_before
 (paren
@@ -4744,7 +4747,10 @@ l_int|2
 r_if
 c_cond
 (paren
-id|current-&gt;need_resched
+id|need_resched
+c_func
+(paren
+)paren
 op_logical_and
 id|time_before
 (paren
@@ -7899,6 +7905,7 @@ r_return
 id|ok
 suffix:semicolon
 )brace
+macro_line|#ifdef CONFIG_PARPORT_PC_FIFO
 DECL|function|parport_ECP_supported
 r_static
 r_int
@@ -8574,6 +8581,7 @@ r_return
 l_int|1
 suffix:semicolon
 )brace
+macro_line|#endif
 DECL|function|parport_ECPPS2_supported
 r_static
 r_int
@@ -8907,6 +8915,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+macro_line|#ifdef CONFIG_PARPORT_PC_FIFO
 DECL|function|parport_ECP_supported
 r_static
 r_int
@@ -8924,6 +8933,7 @@ r_return
 l_int|0
 suffix:semicolon
 )brace
+macro_line|#endif
 DECL|function|parport_EPP_supported
 r_static
 r_int
@@ -10956,14 +10966,11 @@ suffix:colon
 id|printk
 (paren
 id|KERN_INFO
-l_string|&quot;parport_pc: ITE8873 found (1S1P)&bslash;n&quot;
+l_string|&quot;parport_pc: ITE8873 found (1S)&bslash;n&quot;
 )paren
 suffix:semicolon
-id|ite8872set
-op_assign
-l_int|0x64a00000
-suffix:semicolon
-r_break
+r_return
+l_int|0
 suffix:semicolon
 r_case
 l_int|0x8
@@ -14492,7 +14499,7 @@ op_minus
 l_int|1
 )braket
 op_assign
-id|PARPORT_DMA_AUTO
+id|PARPORT_DMA_NONE
 )brace
 suffix:semicolon
 DECL|variable|irqval
@@ -14653,14 +14660,7 @@ id|PARPORT_PC_MAX_PORTS
 l_string|&quot;s&quot;
 )paren
 suffix:semicolon
-id|MODULE_PARM
-c_func
-(paren
-id|verbose_probing
-comma
-l_string|&quot;i&quot;
-)paren
-suffix:semicolon
+macro_line|#if defined(CONFIG_PARPORT_PC_FIFO) || defined(CONFIG_PARPORT_PC_SUPERIO)
 id|MODULE_PARM_DESC
 c_func
 (paren
@@ -14669,6 +14669,15 @@ comma
 l_string|&quot;Log chit-chat during initialisation&quot;
 )paren
 suffix:semicolon
+id|MODULE_PARM
+c_func
+(paren
+id|verbose_probing
+comma
+l_string|&quot;i&quot;
+)paren
+suffix:semicolon
+macro_line|#endif
 DECL|function|init_module
 r_int
 id|init_module

@@ -30,7 +30,6 @@ macro_line|#include &lt;asm/ldt.h&gt;
 macro_line|#include &lt;asm/processor.h&gt;
 macro_line|#include &lt;asm/i387.h&gt;
 macro_line|#include &lt;asm/desc.h&gt;
-macro_line|#include &lt;asm/mmu_context.h&gt;
 macro_line|#ifdef CONFIG_MATH_EMULATION
 macro_line|#include &lt;asm/math_emu.h&gt;
 macro_line|#endif
@@ -126,7 +125,10 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|current-&gt;need_resched
+id|need_resched
+c_func
+(paren
+)paren
 )paren
 id|safe_halt
 c_func
@@ -233,7 +235,10 @@ r_while
 c_loop
 (paren
 op_logical_neg
-id|current-&gt;need_resched
+id|need_resched
+c_func
+(paren
+)paren
 )paren
 id|idle
 c_func

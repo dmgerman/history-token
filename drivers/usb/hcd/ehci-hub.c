@@ -233,24 +233,19 @@ op_amp
 id|PORT_OWNER
 )paren
 (brace
-singleline_comment|// get disconnected ports back if no companion driver
+multiline_comment|/* don&squot;t report this in GetPortStatus */
 r_if
 c_cond
 (paren
 id|temp
 op_amp
-id|PORT_CONNECT
+id|PORT_CSC
 )paren
-r_continue
-suffix:semicolon
+(brace
 id|temp
 op_and_assign
 op_complement
-(paren
-id|PORT_OWNER
-op_or
 id|PORT_CSC
-)paren
 suffix:semicolon
 id|writel
 (paren
@@ -262,6 +257,9 @@ id|ehci-&gt;regs-&gt;port_status
 id|i
 )braket
 )paren
+suffix:semicolon
+)brace
+r_continue
 suffix:semicolon
 )brace
 r_if

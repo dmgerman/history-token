@@ -242,7 +242,7 @@ DECL|macro|MAX
 mdefine_line|#define MAX(a, b) ((a) &gt; (b) ? (a) : (b))
 macro_line|#endif
 DECL|macro|RESCHED
-mdefine_line|#define RESCHED &bslash;&n;        do { &bslash;&n;          if (current-&gt;need_resched) &bslash;&n;            schedule(); &bslash;&n;        } while (0)
+mdefine_line|#define RESCHED do { cond_resched(); } while(0)
 DECL|variable|saa_template
 r_static
 r_struct

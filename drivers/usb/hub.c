@@ -2355,6 +2355,20 @@ id|portstatus
 )paren
 )paren
 suffix:semicolon
+multiline_comment|/* Device went away? */
+r_if
+c_cond
+(paren
+op_logical_neg
+(paren
+id|portstatus
+op_amp
+id|USB_PORT_STAT_CONNECTION
+)paren
+)paren
+r_return
+l_int|1
+suffix:semicolon
 multiline_comment|/* bomb out completely if something weird happened */
 r_if
 c_cond

@@ -36,7 +36,7 @@ multiline_comment|/* debugging - slow down transfer to have a look at the data .
 multiline_comment|/* I use this with two leds&amp;resistors, each one connected to sda,scl &t;*/
 multiline_comment|/* respectively. This makes sure that the algorithm works. Some chips   */
 multiline_comment|/* might not like this, as they have an internal timeout of some mils&t;*/
-multiline_comment|/*&n;#define SLO_IO      jif=jiffies;while(jiffies&lt;=jif+i2c_table[minor].veryslow)&bslash;&n;                        if (need_resched) schedule();&n;*/
+multiline_comment|/*&n;#define SLO_IO      jif=jiffies;while(jiffies&lt;=jif+i2c_table[minor].veryslow)&bslash;&n;                        cond_resched();&n;*/
 multiline_comment|/* ----- global variables ---------------------------------------------&t;*/
 macro_line|#ifdef SLO_IO
 DECL|variable|jif

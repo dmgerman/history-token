@@ -2046,7 +2046,10 @@ c_cond
 (paren
 id|console_may_schedule
 op_logical_and
-id|current-&gt;need_resched
+id|need_resched
+c_func
+(paren
+)paren
 )paren
 (brace
 id|set_current_state

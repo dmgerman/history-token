@@ -1,7 +1,69 @@
-multiline_comment|/*&n; *&t;Wavelan Pcmcia driver&n; *&n; *&t;&t;Jean II - HPLB &squot;96&n; *&n; * Reorganisation and extension of the driver.&n; * Original copyright follow. See wavelan_cs.h for details.&n; *&n; * This code is derived from Anthony D. Joseph&squot;s code and all the changes here&n; * are also under the original copyright below.&n; *&n; * This code supports version 2.00 of WaveLAN/PCMCIA cards (2.4GHz), and&n; * can work on Linux 2.0.36 with support of David Hinds&squot; PCMCIA Card Services&n; *&n; * Joe Finney (joe@comp.lancs.ac.uk) at Lancaster University in UK added&n; * critical code in the routine to initialize the Modem Management Controller.&n; *&n; * Thanks to Alan Cox and Bruce Janson for their advice.&n; *&n; *&t;-- Yunzhou Li (scip4166@nus.sg)&n; *&n;#ifdef WAVELAN_ROAMING&t;&n; * Roaming support added 07/22/98 by Justin Seger (jseger@media.mit.edu)&n; * based on patch by Joe Finney from Lancaster University.&n;#endif :-)&n; *&n; * Lucent (formerly AT&amp;T GIS, formerly NCR) WaveLAN PCMCIA card: An&n; * Ethernet-like radio transceiver controlled by an Intel 82593 coprocessor.&n; *&n; *   A non-shared memory PCMCIA ethernet driver for linux&n; *&n; * ISA version modified to support PCMCIA by Anthony Joseph (adj@lcs.mit.edu)&n; *&n; *&n; * Joseph O&squot;Sullivan &amp; John Langford (josullvn@cs.cmu.edu &amp; jcl@cs.cmu.edu)&n; *&n; * Apr 2 &squot;98  made changes to bring the i82593 control/int handling in line&n; *             with offical specs...&n; *&n; * Changes:&n; * Arnaldo Carvalho de Melo &lt;acme@conectiva.com.br&gt; - 08/08/2000&n; * - reorganize kmallocs in wavelan_attach, checking all for failure&n; *   and releasing the previous allocations if one fails&n; *&n; *&n; ****************************************************************************&n; *   Copyright 1995&n; *   Anthony D. Joseph&n; *   Massachusetts Institute of Technology&n; *&n; *   Permission to use, copy, modify, and distribute this program&n; *   for any purpose and without fee is hereby granted, provided&n; *   that this copyright and permission notice appear on all copies&n; *   and supporting documentation, the name of M.I.T. not be used&n; *   in advertising or publicity pertaining to distribution of the&n; *   program without specific prior permission, and notice be given&n; *   in supporting documentation that copying and distribution is&n; *   by permission of M.I.T.  M.I.T. makes no representations about&n; *   the suitability of this software for any purpose.  It is pro-&n; *   vided &quot;as is&quot; without express or implied warranty.         &n; ****************************************************************************&n; *&n; */
+multiline_comment|/*&n; *&t;Wavelan Pcmcia driver&n; *&n; *&t;&t;Jean II - HPLB &squot;96&n; *&n; * Reorganisation and extension of the driver.&n; * Original copyright follow. See wavelan_cs.h for details.&n; *&n; * This code is derived from Anthony D. Joseph&squot;s code and all the changes here&n; * are also under the original copyright below.&n; *&n; * This code supports version 2.00 of WaveLAN/PCMCIA cards (2.4GHz), and&n; * can work on Linux 2.0.36 with support of David Hinds&squot; PCMCIA Card Services&n; *&n; * Joe Finney (joe@comp.lancs.ac.uk) at Lancaster University in UK added&n; * critical code in the routine to initialize the Modem Management Controller.&n; *&n; * Thanks to Alan Cox and Bruce Janson for their advice.&n; *&n; *&t;-- Yunzhou Li (scip4166@nus.sg)&n; *&n;#ifdef WAVELAN_ROAMING&t;&n; * Roaming support added 07/22/98 by Justin Seger (jseger@media.mit.edu)&n; * based on patch by Joe Finney from Lancaster University.&n;#endif&n; *&n; * Lucent (formerly AT&amp;T GIS, formerly NCR) WaveLAN PCMCIA card: An&n; * Ethernet-like radio transceiver controlled by an Intel 82593 coprocessor.&n; *&n; *   A non-shared memory PCMCIA ethernet driver for linux&n; *&n; * ISA version modified to support PCMCIA by Anthony Joseph (adj@lcs.mit.edu)&n; *&n; *&n; * Joseph O&squot;Sullivan &amp; John Langford (josullvn@cs.cmu.edu &amp; jcl@cs.cmu.edu)&n; *&n; * Apr 2 &squot;98  made changes to bring the i82593 control/int handling in line&n; *             with offical specs...&n; *&n; ****************************************************************************&n; *   Copyright 1995&n; *   Anthony D. Joseph&n; *   Massachusetts Institute of Technology&n; *&n; *   Permission to use, copy, modify, and distribute this program&n; *   for any purpose and without fee is hereby granted, provided&n; *   that this copyright and permission notice appear on all copies&n; *   and supporting documentation, the name of M.I.T. not be used&n; *   in advertising or publicity pertaining to distribution of the&n; *   program without specific prior permission, and notice be given&n; *   in supporting documentation that copying and distribution is&n; *   by permission of M.I.T.  M.I.T. makes no representations about&n; *   the suitability of this software for any purpose.  It is pro-&n; *   vided &quot;as is&quot; without express or implied warranty.         &n; ****************************************************************************&n; *&n; */
 macro_line|#include &quot;wavelan_cs.h&quot;&t;&t;/* Private header */
 multiline_comment|/************************* MISC SUBROUTINES **************************/
 multiline_comment|/*&n; * Subroutines which won&squot;t fit in one of the following category&n; * (wavelan modem or i82593)&n; */
+multiline_comment|/*------------------------------------------------------------------*/
+multiline_comment|/*&n; * Wrapper for disabling interrupts.&n; * (note : inline, so optimised away)&n; */
+r_static
+r_inline
+r_void
+DECL|function|wv_splhi
+id|wv_splhi
+c_func
+(paren
+id|net_local
+op_star
+id|lp
+comma
+r_int
+r_int
+op_star
+id|pflags
+)paren
+(brace
+id|spin_lock_irqsave
+c_func
+(paren
+op_amp
+id|lp-&gt;spinlock
+comma
+op_star
+id|pflags
+)paren
+suffix:semicolon
+multiline_comment|/* Note : above does the cli(); itself */
+)brace
+multiline_comment|/*------------------------------------------------------------------*/
+multiline_comment|/*&n; * Wrapper for re-enabling interrupts.&n; */
+r_static
+r_inline
+r_void
+DECL|function|wv_splx
+id|wv_splx
+c_func
+(paren
+id|net_local
+op_star
+id|lp
+comma
+r_int
+r_int
+op_star
+id|pflags
+)paren
+(brace
+id|spin_unlock_irqrestore
+c_func
+(paren
+op_amp
+id|lp-&gt;spinlock
+comma
+op_star
+id|pflags
+)paren
+suffix:semicolon
+multiline_comment|/* Note : enabling interrupts on the hardware is done in wv_ru_start()&n;   * via : outb(OP1_INT_ENABLE, LCCR(base));&n;   */
+)brace
 multiline_comment|/*------------------------------------------------------------------*/
 multiline_comment|/*&n; * Wrapper for reporting error to cardservices&n; */
 DECL|function|cs_error
@@ -99,7 +161,7 @@ suffix:semicolon
 multiline_comment|/* wv_structuct_check */
 macro_line|#endif&t;/* STRUCT_CHECK */
 multiline_comment|/******************* MODEM MANAGEMENT SUBROUTINES *******************/
-multiline_comment|/*&n; * Usefull subroutines to manage the modem of the wavelan&n; */
+multiline_comment|/*&n; * Useful subroutines to manage the modem of the wavelan&n; */
 multiline_comment|/*------------------------------------------------------------------*/
 multiline_comment|/*&n; * Read from card&squot;s Host Adaptor Status Register.&n; */
 r_static
@@ -184,7 +246,7 @@ multiline_comment|/* delay might only be needed sometimes */
 id|mdelay
 c_func
 (paren
-l_int|1L
+l_int|1
 )paren
 suffix:semicolon
 )brace
@@ -1983,11 +2045,12 @@ id|lp-&gt;dev-&gt;name
 suffix:semicolon
 macro_line|#endif
 multiline_comment|/* Disable interrupts &amp; save flags */
-id|spin_lock_irqsave
+id|wv_splhi
+c_func
 (paren
-op_amp
-id|lp-&gt;lock
+id|lp
 comma
+op_amp
 id|flags
 )paren
 suffix:semicolon
@@ -2034,15 +2097,6 @@ comma
 l_int|1
 )paren
 suffix:semicolon
-multiline_comment|/* ReEnable interrupts &amp; restore flags */
-id|spin_unlock_irqrestore
-(paren
-op_amp
-id|lp-&gt;lock
-comma
-id|flags
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -2060,6 +2114,16 @@ r_else
 id|lp-&gt;cell_search
 op_assign
 l_int|0
+suffix:semicolon
+multiline_comment|/* ReEnable interrupts &amp; restore flags */
+id|wv_splx
+c_func
+(paren
+id|lp
+comma
+op_amp
+id|flags
+)paren
 suffix:semicolon
 )brace
 multiline_comment|/* Find a record in the WavePoint table matching a given NWID */
@@ -2744,12 +2808,12 @@ id|lp-&gt;dev-&gt;name
 suffix:semicolon
 macro_line|#endif
 multiline_comment|/* Disable interrupts &amp; save flags */
-id|spin_lock_irqsave
+id|wv_splhi
 c_func
 (paren
-op_amp
-id|lp-&gt;lock
+id|lp
 comma
+op_amp
 id|flags
 )paren
 suffix:semicolon
@@ -2800,11 +2864,12 @@ l_int|2
 )paren
 suffix:semicolon
 multiline_comment|/* ReEnable interrupts &amp; restore flags */
-id|spin_unlock_irqrestore
+id|wv_splx
+c_func
 (paren
-op_amp
-id|lp-&gt;lock
+id|lp
 comma
+op_amp
 id|flags
 )paren
 suffix:semicolon
@@ -2896,6 +2961,19 @@ op_star
 id|dev-&gt;priv
 suffix:semicolon
 multiline_comment|/* Device info */
+macro_line|#if 0
+multiline_comment|/* Some people don&squot;t need this, some other may need it */
+id|nwid
+op_assign
+id|nwid
+op_xor
+id|ntohs
+c_func
+(paren
+id|beacon-&gt;domain_id
+)paren
+suffix:semicolon
+macro_line|#endif
 macro_line|#if WAVELAN_ROAMING_DEBUG &gt; 1
 id|printk
 c_func
@@ -3143,7 +3221,7 @@ macro_line|#endif&t;/* WAVELAN_ROAMING */
 multiline_comment|/************************ I82593 SUBROUTINES *************************/
 multiline_comment|/*&n; * Useful subroutines to manage the Ethernet controller&n; */
 multiline_comment|/*------------------------------------------------------------------*/
-multiline_comment|/*&n; * Routine to synchronously send a command to the i82593 chip. &n; * Should be called with interrupts enabled.&n; */
+multiline_comment|/*&n; * Routine to synchronously send a command to the i82593 chip. &n; * Should be called with interrupts disabled.&n; * (called by wv_packet_write(), wv_ru_stop(), wv_ru_start(),&n; *  wv_82593_config() &amp; wv_diag())&n; */
 r_static
 r_int
 DECL|function|wv_82593_cmd
@@ -3170,36 +3248,30 @@ id|base
 op_assign
 id|dev-&gt;base_addr
 suffix:semicolon
-id|net_local
-op_star
-id|lp
-op_assign
-(paren
-id|net_local
-op_star
-)paren
-id|dev-&gt;priv
-suffix:semicolon
 r_int
 id|status
 suffix:semicolon
 r_int
+id|wait_completed
+suffix:semicolon
+r_int
 id|spin
 suffix:semicolon
-id|u_long
-id|flags
-suffix:semicolon
 multiline_comment|/* Spin until the chip finishes executing its current command (if any) */
+id|spin
+op_assign
+l_int|1000
+suffix:semicolon
 r_do
 (brace
-id|spin_lock_irqsave
+multiline_comment|/* Time calibration of the loop */
+id|udelay
+c_func
 (paren
-op_amp
-id|lp-&gt;lock
-comma
-id|flags
+l_int|10
 )paren
 suffix:semicolon
+multiline_comment|/* Read the interrupt register */
 id|outb
 c_func
 (paren
@@ -3226,17 +3298,10 @@ id|base
 )paren
 )paren
 suffix:semicolon
-id|spin_unlock_irqrestore
-(paren
-op_amp
-id|lp-&gt;lock
-comma
-id|flags
-)paren
-suffix:semicolon
 )brace
 r_while
 c_loop
+(paren
 (paren
 (paren
 id|status
@@ -3246,14 +3311,43 @@ id|SR3_EXEC_STATE_MASK
 op_ne
 id|SR3_EXEC_IDLE
 )paren
+op_logical_and
+(paren
+id|spin
+op_decrement
+OG
+l_int|0
+)paren
+)paren
 (brace
 suffix:semicolon
 )brace
-multiline_comment|/* We are waiting for command completion */
-id|wv_wait_completed
-op_assign
-id|TRUE
+multiline_comment|/* If the interrupt hasn&squot;t be posted */
+r_if
+c_cond
+(paren
+id|spin
+op_le
+l_int|0
+)paren
+(brace
+macro_line|#ifdef DEBUG_INTERRUPT_ERROR
+id|printk
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;wv_82593_cmd: %s timeout (previous command), status 0x%02x&bslash;n&quot;
+comma
+id|str
+comma
+id|status
+)paren
 suffix:semicolon
+macro_line|#endif
+r_return
+id|FALSE
+suffix:semicolon
+)brace
 multiline_comment|/* Issue the command to the controller */
 id|outb
 c_func
@@ -3267,7 +3361,7 @@ id|base
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/* If we don&squot;t have to check the result of the command */
+multiline_comment|/* If we don&squot;t have to check the result of the command&n;   * Note : this mean that the irq handler will deal with that */
 r_if
 c_cond
 (paren
@@ -3276,49 +3370,35 @@ op_eq
 id|SR0_NO_RESULT
 )paren
 (brace
-id|wv_wait_completed
-op_assign
-id|FALSE
-suffix:semicolon
 r_return
 id|TRUE
 suffix:semicolon
 )brace
-multiline_comment|/* Busy wait while the LAN controller executes the command.&n;   * Note : wv_wait_completed should be volatile */
+multiline_comment|/* We are waiting for command completion */
+id|wait_completed
+op_assign
+id|TRUE
+suffix:semicolon
+multiline_comment|/* Busy wait while the LAN controller executes the command. */
 id|spin
 op_assign
-l_int|0
-suffix:semicolon
-r_while
-c_loop
-(paren
-id|wv_wait_completed
-op_logical_and
-(paren
-id|spin
-op_increment
-OL
 l_int|1000
-)paren
-)paren
+suffix:semicolon
+r_do
 (brace
+multiline_comment|/* Time calibration of the loop */
 id|udelay
 c_func
 (paren
 l_int|10
 )paren
 suffix:semicolon
-)brace
-multiline_comment|/* If the interrupt handler hasn&squot;t be called */
-r_if
-c_cond
-(paren
-id|wv_wait_completed
-)paren
-(brace
+multiline_comment|/* Read the interrupt register */
 id|outb
 c_func
 (paren
+id|CR0_STATUS_0
+op_or
 id|OP0_NOP
 comma
 id|LCCR
@@ -3340,57 +3420,113 @@ id|base
 )paren
 )paren
 suffix:semicolon
+multiline_comment|/* Check if there was an interrupt posted */
 r_if
 c_cond
+(paren
 (paren
 id|status
 op_amp
 id|SR0_INTERRUPT
 )paren
+)paren
 (brace
-multiline_comment|/* There was an interrupt : call the interrupt handler */
-macro_line|#ifdef DEBUG_INTERRUPT_ERROR
-id|printk
+multiline_comment|/* Acknowledge the interrupt */
+id|outb
 c_func
 (paren
-id|KERN_WARNING
-l_string|&quot;wv_82593_cmd: interrupt handler not installed or interrupt disabled&bslash;n&quot;
+id|CR0_INT_ACK
+op_or
+id|OP0_NOP
+comma
+id|LCCR
+c_func
+(paren
+id|base
+)paren
 )paren
 suffix:semicolon
-macro_line|#endif
-id|wavelan_interrupt
-c_func
+multiline_comment|/* Check if interrupt is a command completion */
+r_if
+c_cond
 (paren
-id|dev-&gt;irq
-comma
 (paren
-r_void
-op_star
-)paren
-id|dev
-comma
 (paren
-r_struct
-id|pt_regs
-op_star
+id|status
+op_amp
+id|SR0_BOTH_RX_TX
 )paren
-l_int|NULL
+op_ne
+id|SR0_BOTH_RX_TX
 )paren
+op_logical_and
+(paren
+(paren
+id|status
+op_amp
+id|SR0_BOTH_RX_TX
+)paren
+op_ne
+l_int|0x0
+)paren
+op_logical_and
+op_logical_neg
+(paren
+id|status
+op_amp
+id|SR0_RECEPTION
+)paren
+)paren
+(brace
+multiline_comment|/* Signal command completion */
+id|wait_completed
+op_assign
+id|FALSE
 suffix:semicolon
 )brace
 r_else
 (brace
-id|wv_wait_completed
-op_assign
-l_int|0
+multiline_comment|/* Note : Rx interrupts will be handled later, because we can&n;&t;       * handle multiple Rx packets at once */
+macro_line|#ifdef DEBUG_INTERRUPT_INFO
+id|printk
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;wv_82593_cmd: not our interrupt&bslash;n&quot;
+)paren
 suffix:semicolon
-multiline_comment|/* XXX */
+macro_line|#endif
+)brace
+)brace
+)brace
+r_while
+c_loop
+(paren
+id|wait_completed
+op_logical_and
+(paren
+id|spin
+op_decrement
+OG
+l_int|0
+)paren
+)paren
+(brace
+suffix:semicolon
+)brace
+multiline_comment|/* If the interrupt hasn&squot;t be posted */
+r_if
+c_cond
+(paren
+id|wait_completed
+)paren
+(brace
 macro_line|#ifdef DEBUG_INTERRUPT_ERROR
 id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;wv_82593_cmd: %s timeout, status0 0x%02x&bslash;n&quot;
+l_string|&quot;wv_82593_cmd: %s timeout, status 0x%02x&bslash;n&quot;
 comma
 id|str
 comma
@@ -3398,18 +3534,16 @@ id|status
 )paren
 suffix:semicolon
 macro_line|#endif
-multiline_comment|/* We probably should reset the controller here */
 r_return
 id|FALSE
 suffix:semicolon
 )brace
-)brace
-multiline_comment|/* Check the return code provided by the interrupt handler against&n;   * the expected return code provided by the caller */
+multiline_comment|/* Check the return code returned by the card (see above) against&n;   * the expected return code provided by the caller */
 r_if
 c_cond
 (paren
 (paren
-id|lp-&gt;status
+id|status
 op_amp
 id|SR0_EVENT_MASK
 )paren
@@ -3422,11 +3556,11 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;wv_82593_cmd: %s failed, status0 = 0x%x&bslash;n&quot;
+l_string|&quot;wv_82593_cmd: %s failed, status = 0x%x&bslash;n&quot;
 comma
 id|str
 comma
-id|lp-&gt;status
+id|status
 )paren
 suffix:semicolon
 macro_line|#endif
@@ -3453,6 +3587,11 @@ op_star
 id|dev
 )paren
 (brace
+r_int
+id|ret
+op_assign
+id|FALSE
+suffix:semicolon
 r_if
 c_cond
 (paren
@@ -3469,7 +3608,8 @@ id|SR0_DIAGNOSE_PASSED
 )paren
 )paren
 (brace
-r_return
+id|ret
+op_assign
 id|TRUE
 suffix:semicolon
 )brace
@@ -3483,7 +3623,7 @@ l_string|&quot;wavelan_cs: i82593 Self Test failed!&bslash;n&quot;
 suffix:semicolon
 macro_line|#endif
 r_return
-id|FALSE
+id|ret
 suffix:semicolon
 )brace
 multiline_comment|/* wv_diag */
@@ -3529,32 +3669,6 @@ id|buf_ptr
 op_assign
 id|buf
 suffix:semicolon
-macro_line|#ifdef OLDIES
-multiline_comment|/* After having check skb_put (net/core/skbuff.c) in the kernel, it seem&n;   * quite safe to remove this... */
-multiline_comment|/* If buf is NULL, just increment the ring buffer pointer */
-r_if
-c_cond
-(paren
-id|buf
-op_eq
-l_int|NULL
-)paren
-(brace
-r_return
-(paren
-id|ring_ptr
-op_minus
-id|RX_BASE
-op_plus
-id|len
-)paren
-op_mod
-id|RX_SIZE
-op_plus
-id|RX_BASE
-suffix:semicolon
-)brace
-macro_line|#endif
 multiline_comment|/* Get all the buffer */
 r_while
 c_loop
@@ -3674,11 +3788,12 @@ suffix:semicolon
 multiline_comment|/* read_ringbuf */
 multiline_comment|/*------------------------------------------------------------------*/
 multiline_comment|/*&n; * Reconfigure the i82593, or at least ask for it...&n; * Because wv_82593_config use the transmission buffer, we must do it&n; * when we are sure that there is no transmission, so we do it now&n; * or in wavelan_packet_xmit() (I can&squot;t find any better place,&n; * wavelan_interrupt is not an option...), so you may experience&n; * some delay sometime...&n; */
-DECL|function|wv_82593_reconfig
 r_static
 r_inline
 r_void
+DECL|function|wv_82593_reconfig
 id|wv_82593_reconfig
+c_func
 (paren
 id|device
 op_star
@@ -3709,254 +3824,87 @@ id|dev-&gt;priv
 op_member_access_from_pointer
 id|link
 suffix:semicolon
-multiline_comment|/* Check if we can do it now ! */
-r_if
-c_cond
-(paren
-op_logical_neg
-(paren
-id|link-&gt;open
-)paren
-)paren
-(brace
+r_int
+r_int
+id|flags
+suffix:semicolon
+multiline_comment|/* Arm the flag, will be cleard in wv_82593_config() */
 id|lp-&gt;reconfig_82593
 op_assign
 id|TRUE
 suffix:semicolon
+multiline_comment|/* Check if we can do it now ! */
+r_if
+c_cond
+(paren
+(paren
+id|link-&gt;open
+)paren
+op_logical_and
+(paren
+id|netif_running
+c_func
+(paren
+id|dev
+)paren
+)paren
+op_logical_and
+op_logical_neg
+(paren
+id|netif_queue_stopped
+c_func
+(paren
+id|dev
+)paren
+)paren
+)paren
+(brace
+id|wv_splhi
+c_func
+(paren
+id|lp
+comma
+op_amp
+id|flags
+)paren
+suffix:semicolon
+multiline_comment|/* Disable interrupts */
+id|wv_82593_config
+c_func
+(paren
+id|dev
+)paren
+suffix:semicolon
+id|wv_splx
+c_func
+(paren
+id|lp
+comma
+op_amp
+id|flags
+)paren
+suffix:semicolon
+multiline_comment|/* Re-enable interrupts */
+)brace
+r_else
+(brace
 macro_line|#ifdef DEBUG_IOCTL_INFO
 id|printk
+c_func
 (paren
 id|KERN_DEBUG
-l_string|&quot;%s: wv_82593_reconfig(): delayed (link = %d)&bslash;n&quot;
+l_string|&quot;%s: wv_82593_reconfig(): delayed (state = %lX, link = %d)&bslash;n&quot;
 comma
 id|dev-&gt;name
+comma
+id|dev-&gt;state
 comma
 id|link-&gt;open
 )paren
 suffix:semicolon
 macro_line|#endif
 )brace
-r_else
-(brace
-id|netif_stop_queue
-(paren
-id|dev
-)paren
-suffix:semicolon
-id|lp-&gt;reconfig_82593
-op_assign
-id|FALSE
-suffix:semicolon
-id|wv_82593_config
-(paren
-id|dev
-)paren
-suffix:semicolon
-id|netif_wake_queue
-(paren
-id|dev
-)paren
-suffix:semicolon
 )brace
-)brace
-macro_line|#ifdef OLDIES
-multiline_comment|/*------------------------------------------------------------------*/
-multiline_comment|/*&n; * Dumps the current i82593 receive buffer to the console.&n; */
-DECL|function|wavelan_dump
-r_static
-r_void
-id|wavelan_dump
-c_func
-(paren
-id|device
-op_star
-id|dev
-)paren
-(brace
-id|ioaddr_t
-id|base
-op_assign
-id|dev-&gt;base_addr
-suffix:semicolon
-r_int
-id|i
-comma
-id|c
-suffix:semicolon
-multiline_comment|/* disable receiver so we can use channel 1 */
-id|outb
-c_func
-(paren
-id|OP0_RCV_DISABLE
-comma
-id|LCCR
-c_func
-(paren
-id|base
-)paren
-)paren
-suffix:semicolon
-multiline_comment|/* reset receive DMA pointer */
-id|hacr_write_slow
-c_func
-(paren
-id|base
-comma
-id|HACR_PWR_STAT
-op_or
-id|HACR_RX_DMA_RESET
-)paren
-suffix:semicolon
-id|hacr_write
-c_func
-(paren
-id|base
-comma
-id|HACR_DEFAULT
-)paren
-suffix:semicolon
-multiline_comment|/* dump into receive buffer */
-id|wv_82593_cmd
-c_func
-(paren
-id|dev
-comma
-l_string|&quot;wavelan_dump(): dump&quot;
-comma
-id|CR0_CHNL
-op_or
-id|OP0_DUMP
-comma
-id|SR0_DUMP_DONE
-)paren
-suffix:semicolon
-multiline_comment|/* set read pointer to start of receive buffer */
-id|outb
-c_func
-(paren
-l_int|0
-comma
-id|PIORL
-c_func
-(paren
-id|base
-)paren
-)paren
-suffix:semicolon
-id|outb
-c_func
-(paren
-l_int|0
-comma
-id|PIORH
-c_func
-(paren
-id|base
-)paren
-)paren
-suffix:semicolon
-id|printk
-c_func
-(paren
-id|KERN_DEBUG
-l_string|&quot;wavelan_cs: dump:&bslash;n&quot;
-)paren
-suffix:semicolon
-id|printk
-c_func
-(paren
-id|KERN_DEBUG
-l_string|&quot;     00 01 02 03 04 05 06 07 08 09 0A 0B 0C 0D 0E 0F&quot;
-)paren
-suffix:semicolon
-r_for
-c_loop
-(paren
-id|i
-op_assign
-l_int|0
-suffix:semicolon
-id|i
-OL
-l_int|73
-suffix:semicolon
-id|i
-op_increment
-)paren
-(brace
-r_if
-c_cond
-(paren
-(paren
-id|i
-op_mod
-l_int|16
-)paren
-op_eq
-l_int|0
-)paren
-(brace
-id|printk
-c_func
-(paren
-l_string|&quot;&bslash;n0x%02x:&quot;
-comma
-id|i
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|i
-)paren
-(brace
-id|printk
-c_func
-(paren
-l_string|&quot;   &quot;
-)paren
-suffix:semicolon
-r_continue
-suffix:semicolon
-)brace
-)brace
-id|c
-op_assign
-id|inb
-c_func
-(paren
-id|PIOP
-c_func
-(paren
-id|base
-)paren
-)paren
-suffix:semicolon
-id|printk
-c_func
-(paren
-l_string|&quot;%02x &quot;
-comma
-id|c
-)paren
-suffix:semicolon
-)brace
-id|printk
-c_func
-(paren
-l_string|&quot;&bslash;n&quot;
-)paren
-suffix:semicolon
-multiline_comment|/* enable the receiver again */
-id|wv_ru_start
-c_func
-(paren
-id|dev
-)paren
-suffix:semicolon
-)brace
-macro_line|#endif
 multiline_comment|/********************* DEBUG &amp; INFO SUBROUTINES *********************/
 multiline_comment|/*&n; * This routines are used in the code to show debug informations.&n; * Most of the time, it dump the content of hardware structures...&n; */
 macro_line|#ifdef DEBUG_PSA_SHOW
@@ -4471,6 +4419,15 @@ suffix:semicolon
 r_return
 suffix:semicolon
 )brace
+id|wv_splhi
+c_func
+(paren
+id|lp
+comma
+op_amp
+id|flags
+)paren
+suffix:semicolon
 multiline_comment|/* Read the mmc */
 id|mmc_out
 c_func
@@ -4537,6 +4494,15 @@ op_or
 id|m.mmr_wrong_nwid_l
 suffix:semicolon
 macro_line|#endif&t;/* WIRELESS_EXT */
+id|wv_splx
+c_func
+(paren
+id|lp
+comma
+op_amp
+id|flags
+)paren
+suffix:semicolon
 id|printk
 c_func
 (paren
@@ -4913,6 +4879,14 @@ c_func
 (paren
 id|KERN_DEBUG
 l_string|&quot;dev:&quot;
+)paren
+suffix:semicolon
+id|printk
+c_func
+(paren
+l_string|&quot; state=%lX,&quot;
+comma
+id|dev-&gt;state
 )paren
 suffix:semicolon
 id|printk
@@ -5532,7 +5506,7 @@ suffix:colon
 id|printk
 c_func
 (paren
-l_string|&quot;unknown&quot;
+l_string|&quot;???&quot;
 )paren
 suffix:semicolon
 )brace
@@ -6582,7 +6556,7 @@ id|printk
 c_func
 (paren
 id|KERN_INFO
-l_string|&quot;Wavelan: wv_set_frequency : unable to write new frequency to EEprom (?)&bslash;n&quot;
+l_string|&quot;Wavelan: wv_set_frequency : unable to write new frequency to EEprom (??)&bslash;n&quot;
 )paren
 suffix:semicolon
 macro_line|#endif
@@ -7258,11 +7232,12 @@ id|cmd
 suffix:semicolon
 macro_line|#endif
 multiline_comment|/* Disable interrupts &amp; save flags */
-id|spin_lock_irqsave
+id|wv_splhi
+c_func
 (paren
-op_amp
-id|lp-&gt;lock
+id|lp
 comma
+op_amp
 id|flags
 )paren
 suffix:semicolon
@@ -7652,7 +7627,7 @@ suffix:semicolon
 r_case
 id|SIOCGIWFREQ
 suffix:colon
-multiline_comment|/* Attempt to recognise 2.00 cards (2.4 GHz frequency selectable)&n;       * (does it work for everybody XXX - especially old cards...) */
+multiline_comment|/* Attempt to recognise 2.00 cards (2.4 GHz frequency selectable)&n;       * (does it work for everybody ??? - especially old cards...) */
 r_if
 c_cond
 (paren
@@ -8719,6 +8694,7 @@ id|range
 )paren
 )paren
 suffix:semicolon
+macro_line|#if WIRELESS_EXT &gt; 10
 multiline_comment|/* Set the Wireless Extension versions */
 id|range.we_version_compiled
 op_assign
@@ -8729,6 +8705,7 @@ op_assign
 l_int|9
 suffix:semicolon
 multiline_comment|/* Nothing for us in v10 and v11 */
+macro_line|#endif /* WIRELESS_EXT &gt; 10 */
 multiline_comment|/* Set information in the range struct */
 id|range.throughput
 op_assign
@@ -9815,11 +9792,12 @@ id|EOPNOTSUPP
 suffix:semicolon
 )brace
 multiline_comment|/* ReEnable interrupts &amp; restore flags */
-id|spin_unlock_irqrestore
+id|wv_splx
+c_func
 (paren
-op_amp
-id|lp-&gt;lock
+id|lp
 comma
+op_amp
 id|flags
 )paren
 suffix:semicolon
@@ -9889,23 +9867,13 @@ id|dev-&gt;name
 )paren
 suffix:semicolon
 macro_line|#endif
-r_if
-c_cond
+multiline_comment|/* Disable interrupts &amp; save flags */
+id|wv_splhi
+c_func
 (paren
 id|lp
-op_eq
-l_int|NULL
-)paren
-multiline_comment|/* XXX will this ever occur? */
-r_return
-l_int|NULL
-suffix:semicolon
-multiline_comment|/* Disable interrupts &amp; save flags */
-id|spin_lock_irqsave
-(paren
-op_amp
-id|lp-&gt;lock
 comma
+op_amp
 id|flags
 )paren
 suffix:semicolon
@@ -10082,11 +10050,12 @@ op_assign
 l_int|0L
 suffix:semicolon
 multiline_comment|/* ReEnable interrupts &amp; restore flags */
-id|spin_unlock_irqrestore
+id|wv_splx
+c_func
 (paren
-op_amp
-id|lp-&gt;lock
+id|lp
 comma
+op_amp
 id|flags
 )paren
 suffix:semicolon
@@ -10475,7 +10444,6 @@ id|dev
 )paren
 suffix:semicolon
 macro_line|#ifdef DEBUG_RX_INFO
-multiline_comment|/* Another glitch : Due to the way the GET_PACKET macro is written,&n;   * we are not sure to have the same thing in skb-&gt;data. On the other&n;   * hand, skb-&gt;mac.raw is not defined everywhere...&n;   * For versions between 1.2.13 and those where skb-&gt;mac.raw appear,&n;   * I don&squot;t have a clue...&n;   */
 id|wv_packet_info
 c_func
 (paren
@@ -10608,9 +10576,7 @@ id|stats
 suffix:semicolon
 )brace
 macro_line|#endif&t;/* WAVELAN_ROAMING */
-multiline_comment|/* Spying stuff */
 macro_line|#ifdef WIRELESS_SPY
-multiline_comment|/* Same as above */
 id|wl_spy_gather
 c_func
 (paren
@@ -10669,7 +10635,7 @@ r_return
 suffix:semicolon
 )brace
 multiline_comment|/*------------------------------------------------------------------*/
-multiline_comment|/*&n; * This routine is called by the interrupt handler to initiate a&n; * packet transfer from the card to the network interface layer above&n; * this driver.  This routine checks if a buffer has been successfully&n; * received by the WaveLAN card.  If so, the routine wv_packet_read is&n; * called to do the actual transfer of the card&squot;s data including the&n; * ethernet header into a packet consisting of an sk_buff chain.&n; * (called by wavelan_interrupt())&n; */
+multiline_comment|/*&n; * This routine is called by the interrupt handler to initiate a&n; * packet transfer from the card to the network interface layer above&n; * this driver.  This routine checks if a buffer has been successfully&n; * received by the WaveLAN card.  If so, the routine wv_packet_read is&n; * called to do the actual transfer of the card&squot;s data including the&n; * ethernet header into a packet consisting of an sk_buff chain.&n; * (called by wavelan_interrupt())&n; * Note : the spinlock is already grabbed for us and irq are disabled.&n; */
 r_static
 r_inline
 r_void
@@ -11241,11 +11207,12 @@ id|length
 )paren
 suffix:semicolon
 macro_line|#endif
-id|spin_lock_irqsave
+id|wv_splhi
+c_func
 (paren
-op_amp
-id|lp-&gt;lock
+id|lp
 comma
+op_amp
 id|flags
 )paren
 suffix:semicolon
@@ -11408,39 +11375,12 @@ id|lp-&gt;stats.tx_bytes
 op_add_assign
 id|length
 suffix:semicolon
-multiline_comment|/* If watchdog not already active, activate it... */
-r_if
-c_cond
-(paren
-op_logical_neg
-id|timer_pending
+id|wv_splx
 c_func
 (paren
-op_amp
-id|lp-&gt;watchdog
-)paren
-)paren
-(brace
-multiline_comment|/* set timer to expire in WATCHDOG_JIFFIES */
-id|lp-&gt;watchdog.expires
-op_assign
-id|jiffies
-op_plus
-id|WATCHDOG_JIFFIES
-suffix:semicolon
-id|add_timer
-c_func
-(paren
-op_amp
-id|lp-&gt;watchdog
-)paren
-suffix:semicolon
-)brace
-id|spin_unlock_irqrestore
-(paren
-op_amp
-id|lp-&gt;lock
+id|lp
 comma
+op_amp
 id|flags
 )paren
 suffix:semicolon
@@ -11473,18 +11413,14 @@ id|dev-&gt;name
 )paren
 suffix:semicolon
 macro_line|#endif
-id|netif_start_queue
-(paren
-id|dev
-)paren
-suffix:semicolon
 )brace
 multiline_comment|/*------------------------------------------------------------------*/
-multiline_comment|/*&n; * This routine is called when we want to send a packet (NET3 callback)&n; * In this routine, we check if the hardware is ready to accept&n; * the packet. We also prevent reentrance. Then, we call the function&n; * to send the packet...&n; */
-DECL|function|wavelan_packet_xmit
+multiline_comment|/*&n; * This routine is called when we want to send a packet (NET3 callback)&n; * In this routine, we check if the harware is ready to accept&n; * the packet. We also prevent reentrance. Then, we call the function&n; * to send the packet...&n; */
 r_static
 r_int
+DECL|function|wavelan_packet_xmit
 id|wavelan_packet_xmit
+c_func
 (paren
 r_struct
 id|sk_buff
@@ -11506,8 +11442,13 @@ op_star
 )paren
 id|dev-&gt;priv
 suffix:semicolon
+r_int
+r_int
+id|flags
+suffix:semicolon
 macro_line|#ifdef DEBUG_TX_TRACE
 id|printk
+c_func
 (paren
 id|KERN_DEBUG
 l_string|&quot;%s: -&gt;wavelan_packet_xmit(0x%X)&bslash;n&quot;
@@ -11521,35 +11462,47 @@ id|skb
 )paren
 suffix:semicolon
 macro_line|#endif
-multiline_comment|/*&n;&t; * For ethernet, fill in the header.&n;&t; */
+multiline_comment|/*&n;   * Block a timer-based transmit from overlapping a previous transmit.&n;   * In other words, prevent reentering this routine.&n;   */
 id|netif_stop_queue
+c_func
 (paren
 id|dev
 )paren
 suffix:semicolon
-multiline_comment|/*&n;&t; * Block a timer-based transmit from overlapping a previous transmit.&n;&t; * In other words, prevent reentering this routine.&n;&t; */
-r_if
-c_cond
-(paren
-l_int|1
-)paren
-(brace
-multiline_comment|/* If somebody has asked to reconfigure the controller, we can do it now */
+multiline_comment|/* If somebody has asked to reconfigure the controller,&n;   * we can do it now */
 r_if
 c_cond
 (paren
 id|lp-&gt;reconfig_82593
 )paren
 (brace
-id|lp-&gt;reconfig_82593
-op_assign
-id|FALSE
+id|wv_splhi
+c_func
+(paren
+id|lp
+comma
+op_amp
+id|flags
+)paren
 suffix:semicolon
+multiline_comment|/* Disable interrupts */
 id|wv_82593_config
+c_func
 (paren
 id|dev
 )paren
 suffix:semicolon
+id|wv_splx
+c_func
+(paren
+id|lp
+comma
+op_amp
+id|flags
+)paren
+suffix:semicolon
+multiline_comment|/* Re-enable interrupts */
+multiline_comment|/* Note : the configure procedure was totally synchronous,&n;       * so the Tx buffer is now free */
 )brace
 macro_line|#ifdef DEBUG_TX_ERROR
 r_if
@@ -11558,6 +11511,7 @@ c_cond
 id|skb-&gt;next
 )paren
 id|printk
+c_func
 (paren
 id|KERN_INFO
 l_string|&quot;skb has next&bslash;n&quot;
@@ -11565,6 +11519,7 @@ l_string|&quot;skb has next&bslash;n&quot;
 suffix:semicolon
 macro_line|#endif
 id|wv_packet_write
+c_func
 (paren
 id|dev
 comma
@@ -11573,14 +11528,15 @@ comma
 id|skb-&gt;len
 )paren
 suffix:semicolon
-)brace
 id|dev_kfree_skb
+c_func
 (paren
 id|skb
 )paren
 suffix:semicolon
 macro_line|#ifdef DEBUG_TX_TRACE
 id|printk
+c_func
 (paren
 id|KERN_DEBUG
 l_string|&quot;%s: &lt;-wavelan_packet_xmit()&bslash;n&quot;
@@ -11590,9 +11546,7 @@ id|dev-&gt;name
 suffix:semicolon
 macro_line|#endif
 r_return
-(paren
 l_int|0
-)paren
 suffix:semicolon
 )brace
 multiline_comment|/********************** HARDWARE CONFIGURATION **********************/
@@ -12164,7 +12118,7 @@ id|m
 )paren
 suffix:semicolon
 multiline_comment|/* The following code start the modem of the 2.00 frequency&n;   * selectable cards at power on. It&squot;s not strictly needed for the&n;   * following boots...&n;   * The original patch was by Joe Finney for the PCMCIA driver, but&n;   * I&squot;ve cleaned it a bit and add documentation.&n;   * Thanks to Loeke Brederveld from Lucent for the info.&n;   */
-multiline_comment|/* Attempt to recognise 2.00 cards (2.4 GHz frequency selectable)&n;   * (does it work for everybody XXX - especially old cards...) */
+multiline_comment|/* Attempt to recognise 2.00 cards (2.4 GHz frequency selectable)&n;   * (does it work for everybody ??? - especially old cards...) */
 multiline_comment|/* Note : WFREQSEL verify that it is able to read from EEprom&n;   * a sensible frequency (address 0x00) + that MMR_FEE_STATUS_ID&n;   * is 0xA (Xilinx version) or 0xB (Ariadne version).&n;   * My test is more crude but do work... */
 r_if
 c_cond
@@ -12416,6 +12370,15 @@ id|dev-&gt;name
 )paren
 suffix:semicolon
 macro_line|#endif
+id|wv_splhi
+c_func
+(paren
+id|lp
+comma
+op_amp
+id|flags
+)paren
+suffix:semicolon
 multiline_comment|/* First, send the LAN controller a stop receive command */
 id|wv_82593_cmd
 c_func
@@ -12432,7 +12395,7 @@ suffix:semicolon
 multiline_comment|/* Then, spin until the receive unit goes idle */
 id|spin
 op_assign
-l_int|0
+l_int|300
 suffix:semicolon
 r_do
 (brace
@@ -12440,14 +12403,6 @@ id|udelay
 c_func
 (paren
 l_int|10
-)paren
-suffix:semicolon
-id|spin_lock_irqsave
-(paren
-op_amp
-id|lp-&gt;lock
-comma
-id|flags
 )paren
 suffix:semicolon
 id|outb
@@ -12474,14 +12429,6 @@ c_func
 (paren
 id|base
 )paren
-)paren
-suffix:semicolon
-id|spin_unlock_irqrestore
-(paren
-op_amp
-id|lp-&gt;lock
-comma
-id|flags
 )paren
 suffix:semicolon
 )brace
@@ -12500,9 +12447,9 @@ id|SR3_RCV_IDLE
 op_logical_and
 (paren
 id|spin
-op_increment
-OL
-l_int|300
+op_decrement
+OG
+l_int|0
 )paren
 )paren
 (brace
@@ -12515,14 +12462,6 @@ id|udelay
 c_func
 (paren
 l_int|10
-)paren
-suffix:semicolon
-id|spin_lock_irqsave
-(paren
-op_amp
-id|lp-&gt;lock
-comma
-id|flags
 )paren
 suffix:semicolon
 id|outb
@@ -12551,14 +12490,6 @@ id|base
 )paren
 )paren
 suffix:semicolon
-id|spin_unlock_irqrestore
-(paren
-op_amp
-id|lp-&gt;lock
-comma
-id|flags
-)paren
-suffix:semicolon
 )brace
 r_while
 c_loop
@@ -12575,21 +12506,30 @@ id|SR3_EXEC_IDLE
 op_logical_and
 (paren
 id|spin
-op_increment
-OL
-l_int|300
+op_decrement
+OG
+l_int|0
 )paren
 )paren
 (brace
 suffix:semicolon
 )brace
+id|wv_splx
+c_func
+(paren
+id|lp
+comma
+op_amp
+id|flags
+)paren
+suffix:semicolon
 multiline_comment|/* If there was a problem */
 r_if
 c_cond
 (paren
 id|spin
-OG
-l_int|300
+op_le
+l_int|0
 )paren
 (brace
 macro_line|#ifdef DEBUG_CONFIG_ERROR
@@ -12651,6 +12591,10 @@ op_star
 )paren
 id|dev-&gt;priv
 suffix:semicolon
+r_int
+r_int
+id|flags
+suffix:semicolon
 macro_line|#ifdef DEBUG_CONFIG_TRACE
 id|printk
 c_func
@@ -12678,6 +12622,15 @@ r_return
 id|FALSE
 suffix:semicolon
 )brace
+id|wv_splhi
+c_func
+(paren
+id|lp
+comma
+op_amp
+id|flags
+)paren
+suffix:semicolon
 multiline_comment|/* Now we know that no command is being executed. */
 multiline_comment|/* Set the receive frame pointer and stop pointer */
 id|lp-&gt;rfp
@@ -12711,6 +12664,16 @@ id|base
 )paren
 )paren
 suffix:semicolon
+macro_line|#if 0
+multiline_comment|/* XXX the i82593 manual page 6-4 seems to indicate that the stop register&n;     should be set as below */
+multiline_comment|/* outb(CR1_STOP_REG_UPDATE|((RX_SIZE - 0x40)&gt;&gt; RX_SIZE_SHIFT),LCCR(base));*/
+macro_line|#elif 0
+multiline_comment|/* but I set it 0 instead */
+id|lp-&gt;stop
+op_assign
+l_int|0
+suffix:semicolon
+macro_line|#else
 multiline_comment|/* but I set it to 3 bytes per packet less than 8K */
 id|lp-&gt;stop
 op_assign
@@ -12732,6 +12695,7 @@ l_int|3
 op_mod
 id|RX_SIZE
 suffix:semicolon
+macro_line|#endif
 id|outb
 c_func
 (paren
@@ -12814,25 +12778,16 @@ r_int
 id|status
 suffix:semicolon
 r_int
-r_int
-id|flags
+id|opri
 suffix:semicolon
 r_int
-id|i
+id|spin
 op_assign
-l_int|0
+l_int|10000
 suffix:semicolon
 multiline_comment|/* spin until the chip starts receiving */
 r_do
 (brace
-id|spin_lock_irqsave
-(paren
-op_amp
-id|lp-&gt;lock
-comma
-id|flags
-)paren
-suffix:semicolon
 id|outb
 c_func
 (paren
@@ -12859,21 +12814,13 @@ id|base
 )paren
 )paren
 suffix:semicolon
-id|spin_unlock_irqrestore
-(paren
-op_amp
-id|lp-&gt;lock
-comma
-id|flags
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
-id|i
-op_increment
-OG
-l_int|10000
+id|spin
+op_decrement
+op_le
+l_int|0
 )paren
 (brace
 r_break
@@ -12923,6 +12870,15 @@ id|i
 suffix:semicolon
 )brace
 macro_line|#endif
+id|wv_splx
+c_func
+(paren
+id|lp
+comma
+op_amp
+id|flags
+)paren
+suffix:semicolon
 macro_line|#ifdef DEBUG_CONFIG_TRACE
 id|printk
 c_func
@@ -12969,6 +12925,11 @@ suffix:semicolon
 r_struct
 id|i82593_conf_block
 id|cfblk
+suffix:semicolon
+r_int
+id|ret
+op_assign
+id|TRUE
 suffix:semicolon
 macro_line|#ifdef DEBUG_CONFIG_TRACE
 id|printk
@@ -13501,7 +13462,8 @@ id|SR0_CONFIGURE_DONE
 )paren
 )paren
 (brace
-r_return
+id|ret
+op_assign
 id|FALSE
 suffix:semicolon
 )brace
@@ -13622,7 +13584,8 @@ id|SR0_IA_SETUP_DONE
 )paren
 )paren
 (brace
-r_return
+id|ret
+op_assign
 id|FALSE
 suffix:semicolon
 )brace
@@ -13867,7 +13830,8 @@ id|SR0_MC_SETUP_DONE
 )paren
 )paren
 (brace
-r_return
+id|ret
+op_assign
 id|FALSE
 suffix:semicolon
 )brace
@@ -13877,6 +13841,11 @@ id|dev-&gt;mc_count
 suffix:semicolon
 multiline_comment|/* remember to avoid repeated reset */
 )brace
+multiline_comment|/* Job done, clear the flag */
+id|lp-&gt;reconfig_82593
+op_assign
+id|FALSE
+suffix:semicolon
 macro_line|#ifdef DEBUG_CONFIG_TRACE
 id|printk
 c_func
@@ -13889,7 +13858,7 @@ id|dev-&gt;name
 suffix:semicolon
 macro_line|#endif
 r_return
-id|TRUE
+id|ret
 suffix:semicolon
 )brace
 multiline_comment|/*------------------------------------------------------------------*/
@@ -14131,6 +14100,15 @@ id|base
 op_assign
 id|dev-&gt;base_addr
 suffix:semicolon
+r_int
+r_int
+id|flags
+suffix:semicolon
+r_int
+id|ret
+op_assign
+id|FALSE
+suffix:semicolon
 macro_line|#ifdef DEBUG_CONFIG_TRACE
 id|printk
 c_func
@@ -14194,7 +14172,20 @@ r_return
 id|FALSE
 suffix:semicolon
 )brace
-multiline_comment|/* Power UP the module + reset the modem + reset host adapter&n;   * (in fact, reset DMA channels) */
+multiline_comment|/* Disable interrupts */
+id|wv_splhi
+c_func
+(paren
+id|lp
+comma
+op_amp
+id|flags
+)paren
+suffix:semicolon
+multiline_comment|/* Disguised goto ;-) */
+r_do
+(brace
+multiline_comment|/* Power UP the module + reset the modem + reset host adapter&n;       * (in fact, reset DMA channels) */
 id|hacr_write_slow
 c_func
 (paren
@@ -14235,8 +14226,7 @@ id|dev-&gt;name
 )paren
 suffix:semicolon
 macro_line|#endif
-r_return
-id|FALSE
+r_break
 suffix:semicolon
 )brace
 multiline_comment|/* initialize the modem */
@@ -14252,8 +14242,18 @@ op_eq
 id|FALSE
 )paren
 (brace
-r_return
-id|FALSE
+macro_line|#ifdef DEBUG_CONFIG_ERRORS
+id|printk
+c_func
+(paren
+id|KERN_WARNING
+l_string|&quot;%s: wv_hw_config(): Can&squot;t configure the modem&bslash;n&quot;
+comma
+id|dev-&gt;name
+)paren
+suffix:semicolon
+macro_line|#endif
+r_break
 suffix:semicolon
 )brace
 multiline_comment|/* reset the LAN controller (i82593) */
@@ -14280,7 +14280,6 @@ multiline_comment|/* Initialize the LAN controller */
 r_if
 c_cond
 (paren
-(paren
 id|wv_82593_config
 c_func
 (paren
@@ -14288,17 +14287,6 @@ id|dev
 )paren
 op_eq
 id|FALSE
-)paren
-op_logical_or
-(paren
-id|wv_diag
-c_func
-(paren
-id|dev
-)paren
-op_eq
-id|FALSE
-)paren
 )paren
 (brace
 macro_line|#ifdef DEBUG_CONFIG_ERRORS
@@ -14312,15 +14300,64 @@ id|dev-&gt;name
 )paren
 suffix:semicolon
 macro_line|#endif
-r_return
-id|FALSE
+r_break
 suffix:semicolon
 )brace
-multiline_comment|/* &n;   * insert code for loopback test here&n;   */
+multiline_comment|/* Diagnostic */
+r_if
+c_cond
+(paren
+id|wv_diag
+c_func
+(paren
+id|dev
+)paren
+op_eq
+id|FALSE
+)paren
+(brace
+macro_line|#ifdef DEBUG_CONFIG_ERRORS
+id|printk
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;%s: wv_hw_config(): i82593 diagnostic failed&bslash;n&quot;
+comma
+id|dev-&gt;name
+)paren
+suffix:semicolon
+macro_line|#endif
+r_break
+suffix:semicolon
+)brace
+multiline_comment|/* &n;       * insert code for loopback test here&n;       */
 multiline_comment|/* The device is now configured */
 id|lp-&gt;configured
 op_assign
 l_int|1
+suffix:semicolon
+id|ret
+op_assign
+id|TRUE
+suffix:semicolon
+)brace
+r_while
+c_loop
+(paren
+l_int|0
+)paren
+(brace
+suffix:semicolon
+)brace
+multiline_comment|/* Re-enable interrupts */
+id|wv_splx
+c_func
+(paren
+id|lp
+comma
+op_amp
+id|flags
+)paren
 suffix:semicolon
 macro_line|#ifdef DEBUG_CONFIG_TRACE
 id|printk
@@ -14334,7 +14371,7 @@ id|dev-&gt;name
 suffix:semicolon
 macro_line|#endif
 r_return
-id|TRUE
+id|ret
 suffix:semicolon
 )brace
 multiline_comment|/*------------------------------------------------------------------*/
@@ -14372,24 +14409,6 @@ id|dev-&gt;name
 )paren
 suffix:semicolon
 macro_line|#endif
-multiline_comment|/* If watchdog was activated, kill it ! */
-r_if
-c_cond
-(paren
-id|timer_pending
-c_func
-(paren
-op_amp
-id|lp-&gt;watchdog
-)paren
-)paren
-id|del_timer
-c_func
-(paren
-op_amp
-id|lp-&gt;watchdog
-)paren
-suffix:semicolon
 id|lp-&gt;nresets
 op_increment
 suffix:semicolon
@@ -14762,7 +14781,7 @@ suffix:semicolon
 r_break
 suffix:semicolon
 )brace
-multiline_comment|/*&n;       * Allocate a 4K memory window.  Note that the dev_link_t&n;       * structure provides space for one window handle -- if your&n;       * device needs several windows, you&squot;ll need to keep track of&n;       * the handles in your private data structure, link-&gt;priv.&n;       */
+multiline_comment|/*&n;       * Allocate a small memory window.  Note that the dev_link_t&n;       * structure provides space for one window handle -- if your&n;       * device needs several windows, you&squot;ll need to keep track of&n;       * the handles in your private data structure, link-&gt;priv.&n;       */
 id|req.Attributes
 op_assign
 id|WIN_DATA_WIDTH_8
@@ -14773,11 +14792,9 @@ id|WIN_ENABLE
 suffix:semicolon
 id|req.Base
 op_assign
-l_int|0
-suffix:semicolon
 id|req.Size
 op_assign
-l_int|0x1000
+l_int|0
 suffix:semicolon
 id|req.AccessSpeed
 op_assign
@@ -14837,7 +14854,7 @@ c_func
 (paren
 id|req.Base
 comma
-l_int|0x1000
+id|req.Size
 )paren
 suffix:semicolon
 id|dev-&gt;rmem_end
@@ -14900,6 +14917,7 @@ op_assign
 id|link-&gt;io.BasePort1
 suffix:semicolon
 id|netif_start_queue
+c_func
 (paren
 id|dev
 )paren
@@ -14990,7 +15008,22 @@ r_return
 id|FALSE
 suffix:semicolon
 )brace
-multiline_comment|/* XXX Could you explain me this, Dave ? */
+id|strcpy
+c_func
+(paren
+(paren
+(paren
+id|net_local
+op_star
+)paren
+id|dev-&gt;priv
+)paren
+op_member_access_from_pointer
+id|node.dev_name
+comma
+id|dev-&gt;name
+)paren
+suffix:semicolon
 id|link-&gt;dev
 op_assign
 op_amp
@@ -15143,8 +15176,6 @@ op_complement
 (paren
 id|DEV_CONFIG
 op_or
-id|DEV_RELEASE_PENDING
-op_or
 id|DEV_STALE_CONFIG
 )paren
 suffix:semicolon
@@ -15162,7 +15193,7 @@ macro_line|#endif
 )brace
 multiline_comment|/* wv_pcmcia_release */
 multiline_comment|/*------------------------------------------------------------------*/
-multiline_comment|/*&n; * Sometimes, netwave_detach can&squot;t be performed following a call from&n; * cardmgr (device still open, pcmcia_release not done) and the device&n; * is put in a STALE_LINK state and remains in memory.&n; *&n; * This function run through our current list of device and attempt&n; * another time to remove them. We hope that since last time the&n; * device has properly been closed.&n; *&n; * (called by wavelan_attach() &amp; cleanup_module())&n; */
+multiline_comment|/*&n; * Sometimes, wavelan_detach can&squot;t be performed following a call from&n; * cardmgr (device still open, pcmcia_release not done) and the device&n; * is put in a STALE_LINK state and remains in memory.&n; *&n; * This function run through our current list of device and attempt&n; * another time to remove them. We hope that since last time the&n; * device has properly been closed.&n; *&n; * (called by wavelan_attach() &amp; cleanup_module())&n; */
 r_static
 r_void
 DECL|function|wv_flush_stale_links
@@ -15345,10 +15376,36 @@ id|base
 op_assign
 id|dev-&gt;base_addr
 suffix:semicolon
-id|spin_lock
+macro_line|#ifdef DEBUG_INTERRUPT_INFO
+multiline_comment|/* Check state of our spinlock (it should be cleared) */
+r_if
+c_cond
+(paren
+id|spin_is_locked
+c_func
 (paren
 op_amp
-id|lp-&gt;lock
+id|lp-&gt;spinlock
+)paren
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_DEBUG
+l_string|&quot;%s: wavelan_interrupt(): spinlock is already locked !!!&bslash;n&quot;
+comma
+id|dev-&gt;name
+)paren
+suffix:semicolon
+)brace
+macro_line|#endif
+multiline_comment|/* Prevent reentrancy. We need to do that because we may have&n;   * multiple interrupt handler running concurently.&n;   * It is safe because wv_splhi() disable interrupts before aquiring&n;   * the spinlock. */
+id|spin_lock
+c_func
+(paren
+op_amp
+id|lp-&gt;spinlock
 )paren
 suffix:semicolon
 multiline_comment|/* Treat all pending interrupts */
@@ -15545,11 +15602,6 @@ suffix:semicolon
 r_break
 suffix:semicolon
 )brace
-id|lp-&gt;status
-op_assign
-id|status0
-suffix:semicolon
-multiline_comment|/* Save current status (for commands) */
 multiline_comment|/* ----------------- RECEIVING PACKET ----------------- */
 multiline_comment|/*&n;       * When the wavelan signal the reception of a new packet,&n;       * we call wv_packet_rcv() to copy if from the buffer and&n;       * send it to NET3&n;       */
 r_if
@@ -15633,47 +15685,6 @@ suffix:semicolon
 )brace
 multiline_comment|/* ---------------- COMMAND COMPLETION ---------------- */
 multiline_comment|/*&n;       * Interrupts issued when the i82593 has completed a command.&n;       * Most likely : transmission done&n;       */
-multiline_comment|/* If we are already waiting elsewhere for the command to complete */
-r_if
-c_cond
-(paren
-id|wv_wait_completed
-)paren
-(brace
-macro_line|#ifdef DEBUG_INTERRUPT_INFO
-id|printk
-c_func
-(paren
-id|KERN_DEBUG
-l_string|&quot;%s: wv_interrupt(): command completed&bslash;n&quot;
-comma
-id|dev-&gt;name
-)paren
-suffix:semicolon
-macro_line|#endif
-multiline_comment|/* Signal command completion */
-id|wv_wait_completed
-op_assign
-l_int|0
-suffix:semicolon
-multiline_comment|/* Acknowledge the interrupt */
-id|outb
-c_func
-(paren
-id|CR0_INT_ACK
-op_or
-id|OP0_NOP
-comma
-id|LCCR
-c_func
-(paren
-id|base
-)paren
-)paren
-suffix:semicolon
-r_continue
-suffix:semicolon
-)brace
 multiline_comment|/* If a transmission has been done */
 r_if
 c_cond
@@ -15727,26 +15738,6 @@ id|dev-&gt;name
 suffix:semicolon
 )brace
 macro_line|#endif
-multiline_comment|/* If watchdog was activated, kill it ! */
-r_if
-c_cond
-(paren
-id|timer_pending
-c_func
-(paren
-op_amp
-id|lp-&gt;watchdog
-)paren
-)paren
-(brace
-id|del_timer
-c_func
-(paren
-op_amp
-id|lp-&gt;watchdog
-)paren
-suffix:semicolon
-)brace
 multiline_comment|/* Get transmission status */
 id|tx_status
 op_assign
@@ -16059,6 +16050,7 @@ id|lp-&gt;stats.tx_packets
 op_increment
 suffix:semicolon
 id|netif_wake_queue
+c_func
 (paren
 id|dev
 )paren
@@ -16110,10 +16102,12 @@ suffix:semicolon
 multiline_comment|/* Acknowledge the interrupt */
 )brace
 )brace
-id|spin_unlock_irq
+multiline_comment|/* while(1) */
+id|spin_unlock
+c_func
 (paren
 op_amp
-id|lp-&gt;lock
+id|lp-&gt;spinlock
 )paren
 suffix:semicolon
 macro_line|#ifdef DEBUG_INTERRUPT_TRACE
@@ -16130,43 +16124,20 @@ macro_line|#endif
 )brace
 multiline_comment|/* wv_interrupt */
 multiline_comment|/*------------------------------------------------------------------*/
-multiline_comment|/*&n; * Watchdog : when we start a transmission, we set a timer in the&n; * kernel.  If the transmission complete, this timer is disabled. If&n; * it expire, it try to unlock the hardware.&n; *&n; * Note : this watchdog doesn&squot;t work on the same principle as the&n; * watchdog in the ISA driver. I make it this way because the overhead&n; * of add_timer() and del_timer() is nothing and that it avoid calling&n; * the watchdog, saving some CPU... If you want to apply the same&n; * watchdog to the ISA driver, you should be a bit carefull, because&n; * of the many transmit buffers...&n; * This watchdog is also move clever, it try to abort the current&n; * command before reseting everything...&n; */
+multiline_comment|/*&n; * Watchdog: when we start a transmission, a timer is set for us in the&n; * kernel.  If the transmission completes, this timer is disabled. If&n; * the timer expires, we are called and we try to unlock the hardware.&n; *&n; * Note : This watchdog is move clever than the one in the ISA driver,&n; * because it try to abort the current command before reseting&n; * everything...&n; * On the other hand, it&squot;s a bit simpler, because we don&squot;t have to&n; * deal with the multiple Tx buffers...&n; */
 r_static
 r_void
 DECL|function|wavelan_watchdog
 id|wavelan_watchdog
 c_func
 (paren
-id|u_long
-id|a
+id|device
+op_star
+id|dev
 )paren
 (brace
-id|device
-op_star
-id|dev
-suffix:semicolon
 id|net_local
 op_star
-id|lp
-suffix:semicolon
-id|ioaddr_t
-id|base
-suffix:semicolon
-r_int
-id|spin
-suffix:semicolon
-id|dev
-op_assign
-(paren
-id|device
-op_star
-)paren
-id|a
-suffix:semicolon
-id|base
-op_assign
-id|dev-&gt;base_addr
-suffix:semicolon
 id|lp
 op_assign
 (paren
@@ -16174,6 +16145,20 @@ id|net_local
 op_star
 )paren
 id|dev-&gt;priv
+suffix:semicolon
+id|ioaddr_t
+id|base
+op_assign
+id|dev-&gt;base_addr
+suffix:semicolon
+r_int
+r_int
+id|flags
+suffix:semicolon
+r_int
+id|aborted
+op_assign
+id|FALSE
 suffix:semicolon
 macro_line|#ifdef DEBUG_INTERRUPT_TRACE
 id|printk
@@ -16197,10 +16182,14 @@ id|dev-&gt;name
 )paren
 suffix:semicolon
 macro_line|#endif
-multiline_comment|/* We are waiting for command completion */
-id|wv_wait_completed
-op_assign
-id|TRUE
+id|wv_splhi
+c_func
+(paren
+id|lp
+comma
+op_amp
+id|flags
+)paren
 suffix:semicolon
 multiline_comment|/* Ask to abort the current command */
 id|outb
@@ -16215,48 +16204,46 @@ id|base
 )paren
 )paren
 suffix:semicolon
-multiline_comment|/* Busy wait while the LAN controller executes the command.&n;   * Note : wv_wait_completed should be volatile */
-id|spin
-op_assign
-l_int|0
-suffix:semicolon
-r_while
-c_loop
-(paren
-id|wv_wait_completed
-op_logical_and
-(paren
-id|spin
-op_increment
-OL
-l_int|250
-)paren
-)paren
-(brace
-id|udelay
-c_func
-(paren
-l_int|10
-)paren
-suffix:semicolon
-)brace
-multiline_comment|/* If the interrupt handler hasn&squot;t be called or invalid status */
+multiline_comment|/* Wait for the end of the command (a bit hackish) */
 r_if
 c_cond
 (paren
+id|wv_82593_cmd
+c_func
 (paren
-id|wv_wait_completed
-)paren
-op_logical_or
-(paren
-(paren
-id|lp-&gt;status
-op_amp
-id|SR0_EVENT_MASK
-)paren
-op_ne
+id|dev
+comma
+l_string|&quot;wavelan_watchdog(): abort&quot;
+comma
+id|OP0_NOP
+op_or
+id|CR0_STATUS_3
+comma
 id|SR0_EXECUTION_ABORTED
 )paren
+)paren
+(brace
+id|aborted
+op_assign
+id|TRUE
+suffix:semicolon
+)brace
+multiline_comment|/* Release spinlock here so that wv_hw_reset() can grab it */
+id|wv_splx
+c_func
+(paren
+id|lp
+comma
+op_amp
+id|flags
+)paren
+suffix:semicolon
+multiline_comment|/* Check if we were successful in aborting it */
+r_if
+c_cond
+(paren
+op_logical_neg
+id|aborted
 )paren
 (brace
 multiline_comment|/* It seem that it wasn&squot;t enough */
@@ -16330,7 +16317,8 @@ id|dev
 suffix:semicolon
 macro_line|#endif
 multiline_comment|/* We are no more waiting for something... */
-id|netif_start_queue
+id|netif_wake_queue
+c_func
 (paren
 id|dev
 )paren
@@ -16491,6 +16479,7 @@ suffix:semicolon
 )brace
 multiline_comment|/* If problem : reset */
 id|netif_start_queue
+c_func
 (paren
 id|dev
 )paren
@@ -16558,16 +16547,6 @@ id|dev-&gt;priv
 op_member_access_from_pointer
 id|link
 suffix:semicolon
-id|net_local
-op_star
-id|lp
-op_assign
-(paren
-id|net_local
-op_star
-)paren
-id|dev-&gt;priv
-suffix:semicolon
 id|ioaddr_t
 id|base
 op_assign
@@ -16590,11 +16569,6 @@ id|dev
 )paren
 suffix:semicolon
 macro_line|#endif
-id|netif_stop_queue
-(paren
-id|dev
-)paren
-suffix:semicolon
 multiline_comment|/* If the device isn&squot;t open, then nothing to do */
 r_if
 c_cond
@@ -16634,26 +16608,6 @@ id|dev
 suffix:semicolon
 )brace
 macro_line|#endif&t;/* WAVELAN_ROAMING */
-multiline_comment|/* If watchdog was activated, kill it ! */
-r_if
-c_cond
-(paren
-id|timer_pending
-c_func
-(paren
-op_amp
-id|lp-&gt;watchdog
-)paren
-)paren
-(brace
-id|del_timer
-c_func
-(paren
-op_amp
-id|lp-&gt;watchdog
-)paren
-suffix:semicolon
-)brace
 id|link-&gt;open
 op_decrement
 suffix:semicolon
@@ -16663,7 +16617,7 @@ multiline_comment|/* If the card is still present */
 r_if
 c_cond
 (paren
-id|netif_device_present
+id|netif_running
 c_func
 (paren
 id|dev
@@ -16671,6 +16625,7 @@ id|dev
 )paren
 (brace
 id|netif_stop_queue
+c_func
 (paren
 id|dev
 )paren
@@ -16725,32 +16680,6 @@ id|KERN_DEBUG
 l_string|&quot;%s: &lt;-wavelan_close()&bslash;n&quot;
 comma
 id|dev-&gt;name
-)paren
-suffix:semicolon
-macro_line|#endif
-r_return
-l_int|0
-suffix:semicolon
-)brace
-multiline_comment|/*------------------------------------------------------------------*/
-multiline_comment|/*&n; * We never need to do anything when a wavelan device is &quot;initialized&quot;&n; * by the net software, because we only register already-found cards.&n; */
-r_static
-r_int
-DECL|function|wavelan_init
-id|wavelan_init
-c_func
-(paren
-id|device
-op_star
-id|dev
-)paren
-(brace
-macro_line|#ifdef DEBUG_CALLBACK_TRACE
-id|printk
-c_func
-(paren
-id|KERN_DEBUG
-l_string|&quot;&lt;&gt;wavelan_init()&bslash;n&quot;
 )paren
 suffix:semicolon
 macro_line|#endif
@@ -16833,70 +16762,6 @@ id|link
 r_return
 l_int|NULL
 suffix:semicolon
-multiline_comment|/* Allocate the generic data structure */
-id|dev
-op_assign
-id|kmalloc
-c_func
-(paren
-r_sizeof
-(paren
-r_struct
-id|net_device
-)paren
-comma
-id|GFP_KERNEL
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|dev
-)paren
-r_goto
-id|fail_alloc_dev
-suffix:semicolon
-multiline_comment|/* Allocate the wavelan-specific data structure. */
-id|lp
-op_assign
-(paren
-id|net_local
-op_star
-)paren
-id|kmalloc
-c_func
-(paren
-r_sizeof
-(paren
-id|net_local
-)paren
-comma
-id|GFP_KERNEL
-)paren
-suffix:semicolon
-r_if
-c_cond
-(paren
-op_logical_neg
-id|lp
-)paren
-r_goto
-id|fail_alloc_dev_priv
-suffix:semicolon
-id|memset
-c_func
-(paren
-id|lp
-comma
-l_int|0
-comma
-r_sizeof
-(paren
-id|net_local
-)paren
-)paren
-suffix:semicolon
 id|memset
 c_func
 (paren
@@ -16910,24 +16775,6 @@ r_struct
 id|dev_link_t
 )paren
 )paren
-suffix:semicolon
-id|memset
-c_func
-(paren
-id|dev
-comma
-l_int|0
-comma
-r_sizeof
-(paren
-r_struct
-id|net_device
-)paren
-)paren
-suffix:semicolon
-id|dev-&gt;priv
-op_assign
-id|lp
 suffix:semicolon
 multiline_comment|/* Unused for the Wavelan */
 id|link-&gt;release.function
@@ -17033,21 +16880,115 @@ id|dev_list
 op_assign
 id|link
 suffix:semicolon
+multiline_comment|/* Allocate the generic data structure */
+id|dev
+op_assign
+id|kmalloc
+c_func
+(paren
+r_sizeof
+(paren
+r_struct
+id|net_device
+)paren
+comma
+id|GFP_KERNEL
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|dev
+)paren
+(brace
+id|kfree
+c_func
+(paren
+id|link
+)paren
+suffix:semicolon
+r_return
+l_int|NULL
+suffix:semicolon
+)brace
+id|memset
+c_func
+(paren
+id|dev
+comma
+l_int|0x00
+comma
+r_sizeof
+(paren
+r_struct
+id|net_device
+)paren
+)paren
+suffix:semicolon
 id|link-&gt;priv
 op_assign
 id|link-&gt;irq.Instance
 op_assign
 id|dev
 suffix:semicolon
+multiline_comment|/* Allocate the wavelan-specific data structure. */
+id|dev-&gt;priv
+op_assign
+id|lp
+op_assign
+(paren
+id|net_local
+op_star
+)paren
+id|kmalloc
+c_func
+(paren
+r_sizeof
+(paren
+id|net_local
+)paren
+comma
+id|GFP_KERNEL
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+op_logical_neg
+id|lp
+)paren
+(brace
+id|kfree
+c_func
+(paren
+id|link
+)paren
+suffix:semicolon
+id|kfree
+c_func
+(paren
+id|dev
+)paren
+suffix:semicolon
+r_return
+l_int|NULL
+suffix:semicolon
+)brace
+id|memset
+c_func
+(paren
+id|lp
+comma
+l_int|0x00
+comma
+r_sizeof
+(paren
+id|net_local
+)paren
+)paren
+suffix:semicolon
 multiline_comment|/* Init specific data */
-id|wv_wait_completed
-op_assign
-l_int|0
-suffix:semicolon
-id|lp-&gt;status
-op_assign
-id|FALSE
-suffix:semicolon
 id|lp-&gt;configured
 op_assign
 l_int|0
@@ -17060,18 +17001,26 @@ id|lp-&gt;nresets
 op_assign
 l_int|0
 suffix:semicolon
-multiline_comment|/* Set the watchdog timer */
-id|lp-&gt;watchdog.function
+multiline_comment|/* Multicast stuff */
+id|lp-&gt;promiscuous
 op_assign
-id|wavelan_watchdog
+l_int|0
 suffix:semicolon
-id|lp-&gt;watchdog.data
+id|lp-&gt;allmulticast
 op_assign
+l_int|0
+suffix:semicolon
+id|lp-&gt;mc_count
+op_assign
+l_int|0
+suffix:semicolon
+multiline_comment|/* Init spinlock */
+id|spin_lock_init
+c_func
 (paren
-r_int
-r_int
+op_amp
+id|lp-&gt;spinlock
 )paren
-id|dev
 suffix:semicolon
 multiline_comment|/* back links */
 id|lp-&gt;link
@@ -17090,11 +17039,6 @@ id|dev
 )paren
 suffix:semicolon
 multiline_comment|/* wavelan NET3 callbacks */
-id|dev-&gt;init
-op_assign
-op_amp
-id|wavelan_init
-suffix:semicolon
 id|dev-&gt;open
 op_assign
 op_amp
@@ -17127,6 +17071,16 @@ op_amp
 id|wavelan_set_mac_address
 suffix:semicolon
 macro_line|#endif&t;/* SET_MAC_ADDRESS */
+multiline_comment|/* Set the watchdog timer */
+id|dev-&gt;tx_timeout
+op_assign
+op_amp
+id|wavelan_watchdog
+suffix:semicolon
+id|dev-&gt;watchdog_timeo
+op_assign
+id|WATCHDOG_JIFFIES
+suffix:semicolon
 macro_line|#ifdef WIRELESS_EXT&t;/* If wireless extension exist in the kernel */
 id|dev-&gt;do_ioctl
 op_assign
@@ -17139,27 +17093,6 @@ id|wavelan_get_wireless_stats
 suffix:semicolon
 macro_line|#endif
 multiline_comment|/* Other specific data */
-id|strcpy
-c_func
-(paren
-id|dev-&gt;name
-comma
-(paren
-(paren
-id|net_local
-op_star
-)paren
-id|dev-&gt;priv
-)paren
-op_member_access_from_pointer
-id|node.dev_name
-)paren
-suffix:semicolon
-id|netif_start_queue
-(paren
-id|dev
-)paren
-suffix:semicolon
 id|dev-&gt;mtu
 op_assign
 id|WAVELAN_MTU
@@ -17267,25 +17200,6 @@ suffix:semicolon
 macro_line|#endif
 r_return
 id|link
-suffix:semicolon
-id|fail_alloc_dev_priv
-suffix:colon
-id|kfree
-c_func
-(paren
-id|dev
-)paren
-suffix:semicolon
-id|fail_alloc_dev
-suffix:colon
-id|kfree
-c_func
-(paren
-id|link
-)paren
-suffix:semicolon
-r_return
-l_int|NULL
 suffix:semicolon
 )brace
 multiline_comment|/*------------------------------------------------------------------*/
@@ -17786,7 +17700,7 @@ suffix:semicolon
 r_case
 id|CS_EVENT_PM_SUSPEND
 suffix:colon
-multiline_comment|/* NB: wavelan_close will be called, but too late, so we are&n;&t; * obliged to close nicely the wavelan here. David, could you&n;&t; * close the device before suspending them ? And, by the way,&n;&t; * could you, on resume, add a &quot;route add -net ...&quot; after the&n;&t; * ifconfig up XXX Thanks... */
+multiline_comment|/* NB: wavelan_close will be called, but too late, so we are&n;&t; * obliged to close nicely the wavelan here. David, could you&n;&t; * close the device before suspending them ? And, by the way,&n;&t; * could you, on resume, add a &quot;route add -net ...&quot; after the&n;&t; * ifconfig up ??? Thanks... */
 multiline_comment|/* Stop receiving new messages and wait end of transmission */
 id|wv_ru_stop
 c_func
@@ -17885,7 +17799,7 @@ c_cond
 (paren
 id|link-&gt;open
 )paren
-multiline_comment|/* If RESET -&gt; True, If RESUME -&gt; False XXX */
+multiline_comment|/* If RESET -&gt; True, If RESUME -&gt; False ??? */
 (brace
 id|wv_hw_reset
 c_func
@@ -18103,12 +18017,6 @@ id|module_exit
 c_func
 (paren
 id|exit_wavelan_cs
-)paren
-suffix:semicolon
-id|MODULE_LICENSE
-c_func
-(paren
-l_string|&quot;Dual BSD/GPL&quot;
 )paren
 suffix:semicolon
 eof

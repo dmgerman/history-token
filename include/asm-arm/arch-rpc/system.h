@@ -24,7 +24,10 @@ r_do
 r_if
 c_cond
 (paren
-id|current-&gt;need_resched
+id|need_resched
+c_func
+(paren
+)paren
 op_logical_or
 id|hlt_counter
 )paren
@@ -64,7 +67,10 @@ r_while
 c_loop
 (paren
 op_logical_neg
-id|current-&gt;need_resched
+id|need_resched
+c_func
+(paren
+)paren
 op_logical_and
 op_logical_neg
 id|hlt_counter

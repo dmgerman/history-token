@@ -14394,12 +14394,7 @@ id|out
 suffix:semicolon
 )brace
 multiline_comment|/*&n;&t;&t; * this loop exits only if either when we are slower than&n;&t;&t; * the &squot;hard&squot; speed limit, or the system was IO-idle for&n;&t;&t; * a jiffy.&n;&t;&t; * the system might be non-idle CPU-wise, but we only care&n;&t;&t; * about not overloading the IO subsystem. (things like an&n;&t;&t; * e2fsck being done on the RAID array should execute fast)&n;&t;&t; */
-r_if
-c_cond
-(paren
-id|current-&gt;need_resched
-)paren
-id|schedule
+id|cond_resched
 c_func
 (paren
 )paren

@@ -6519,12 +6519,7 @@ id|xcp-&gt;cp0_epc
 suffix:semicolon
 r_do
 (brace
-r_if
-c_cond
-(paren
-id|current-&gt;need_resched
-)paren
-id|schedule
+id|cond_resched
 c_func
 (paren
 )paren

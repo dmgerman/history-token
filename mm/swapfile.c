@@ -2698,7 +2698,10 @@ multiline_comment|/*&n;&t;&t; * Make sure that we aren&squot;t completely killin
 r_if
 c_cond
 (paren
-id|current-&gt;need_resched
+id|need_resched
+c_func
+(paren
+)paren
 )paren
 id|schedule
 c_func

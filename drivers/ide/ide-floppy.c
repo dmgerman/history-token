@@ -1975,9 +1975,12 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+op_logical_neg
+(paren
 id|rq-&gt;flags
 op_amp
 id|IDEFLOPPY_RQ
+)paren
 )paren
 (brace
 id|ide_end_request

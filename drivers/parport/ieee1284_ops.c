@@ -383,7 +383,10 @@ id|parport_yield_blocking
 id|dev
 )paren
 op_logical_and
-id|current-&gt;need_resched
+id|need_resched
+c_func
+(paren
+)paren
 )paren
 id|schedule
 (paren
@@ -2657,7 +2660,6 @@ r_int
 id|flags
 )paren
 (brace
-multiline_comment|/* This is untested */
 r_int
 r_char
 op_star
@@ -2675,19 +2677,22 @@ id|ret
 op_assign
 l_int|0
 suffix:semicolon
+multiline_comment|/* set EPP idle state (just to make sure) with strobe low */
 id|parport_frob_control
 (paren
 id|port
 comma
 id|PARPORT_CONTROL_STROBE
 op_or
+id|PARPORT_CONTROL_AUTOFD
+op_or
 id|PARPORT_CONTROL_SELECT
 op_or
-id|PARPORT_CONTROL_AUTOFD
+id|PARPORT_CONTROL_INIT
 comma
 id|PARPORT_CONTROL_STROBE
 op_or
-id|PARPORT_CONTROL_SELECT
+id|PARPORT_CONTROL_INIT
 )paren
 suffix:semicolon
 id|port-&gt;ops-&gt;data_forward
@@ -2710,7 +2715,7 @@ id|bp
 op_increment
 )paren
 (brace
-multiline_comment|/* Write data and assert nAStrb. */
+multiline_comment|/* Event 56: Write data and set nAStrb low. */
 id|parport_write_data
 (paren
 id|port
@@ -2728,6 +2733,7 @@ comma
 id|PARPORT_CONTROL_SELECT
 )paren
 suffix:semicolon
+multiline_comment|/* Event 58: wait for busy (nWait) to go high */
 r_if
 c_cond
 (paren
@@ -2737,13 +2743,14 @@ id|port
 comma
 id|PARPORT_STATUS_BUSY
 comma
-id|PARPORT_STATUS_BUSY
+l_int|0
 comma
 l_int|10
 )paren
 )paren
 r_break
 suffix:semicolon
+multiline_comment|/* Event 59: set nAStrb high */
 id|parport_frob_control
 (paren
 id|port
@@ -2753,6 +2760,7 @@ comma
 l_int|0
 )paren
 suffix:semicolon
+multiline_comment|/* Event 60: wait for busy (nWait) to go low */
 r_if
 c_cond
 (paren
@@ -2762,7 +2770,7 @@ id|port
 comma
 id|PARPORT_STATUS_BUSY
 comma
-l_int|0
+id|PARPORT_STATUS_BUSY
 comma
 l_int|5
 )paren
@@ -2773,6 +2781,7 @@ id|ret
 op_increment
 suffix:semicolon
 )brace
+multiline_comment|/* Event 61: set strobe (nWrite) high */
 id|parport_frob_control
 (paren
 id|port
@@ -2807,7 +2816,6 @@ r_int
 id|flags
 )paren
 (brace
-multiline_comment|/* This is untested. */
 r_int
 r_char
 op_star
@@ -2825,6 +2833,7 @@ id|ret
 op_assign
 l_int|0
 suffix:semicolon
+multiline_comment|/* Set EPP idle state (just to make sure) with strobe high */
 id|parport_frob_control
 (paren
 id|port
@@ -2832,8 +2841,12 @@ comma
 id|PARPORT_CONTROL_STROBE
 op_or
 id|PARPORT_CONTROL_AUTOFD
+op_or
+id|PARPORT_CONTROL_SELECT
+op_or
+id|PARPORT_CONTROL_INIT
 comma
-l_int|0
+id|PARPORT_CONTROL_INIT
 )paren
 suffix:semicolon
 id|port-&gt;ops-&gt;data_reverse
@@ -2856,32 +2869,33 @@ id|bp
 op_increment
 )paren
 (brace
+multiline_comment|/* Event 64: set nSelectIn (nAStrb) low */
 id|parport_frob_control
 (paren
 id|port
 comma
 id|PARPORT_CONTROL_SELECT
 comma
-l_int|0
+id|PARPORT_CONTROL_SELECT
 )paren
 suffix:semicolon
-multiline_comment|/* Event 58 */
+multiline_comment|/* Event 58: wait for Busy to go high */
 r_if
 c_cond
 (paren
-id|parport_poll_peripheral
+id|parport_wait_peripheral
 (paren
 id|port
 comma
 id|PARPORT_STATUS_BUSY
 comma
-id|PARPORT_STATUS_BUSY
-comma
-l_int|10
+l_int|0
 )paren
 )paren
+(brace
 r_break
 suffix:semicolon
+)brace
 op_star
 id|bp
 op_assign
@@ -2890,6 +2904,7 @@ id|parport_read_data
 id|port
 )paren
 suffix:semicolon
+multiline_comment|/* Event 59: set nSelectIn (nAStrb) high */
 id|parport_frob_control
 (paren
 id|port
@@ -2899,6 +2914,7 @@ comma
 id|PARPORT_CONTROL_SELECT
 )paren
 suffix:semicolon
+multiline_comment|/* Event 60: wait for Busy to go low */
 r_if
 c_cond
 (paren
@@ -2908,7 +2924,7 @@ id|port
 comma
 id|PARPORT_STATUS_BUSY
 comma
-l_int|0
+id|PARPORT_STATUS_BUSY
 comma
 l_int|5
 )paren

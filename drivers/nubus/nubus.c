@@ -4313,4 +4313,11 @@ c_func
 suffix:semicolon
 macro_line|#endif
 )brace
+DECL|variable|nubus_init
+id|subsys_initcall
+c_func
+(paren
+id|nubus_init
+)paren
+suffix:semicolon
 eof

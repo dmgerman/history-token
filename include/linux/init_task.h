@@ -1,9 +1,7 @@
 macro_line|#ifndef _LINUX__INIT_TASK_H
 DECL|macro|_LINUX__INIT_TASK_H
 mdefine_line|#define _LINUX__INIT_TASK_H
-macro_line|#ifndef __LINUX_FILE_H
 macro_line|#include &lt;linux/file.h&gt;
-macro_line|#endif
 DECL|macro|INIT_FILES
 mdefine_line|#define INIT_FILES &bslash;&n;{ &t;&t;&t;&t;&t;&t;&t;&bslash;&n;&t;count:&t;&t;ATOMIC_INIT(1), &t;&t;&bslash;&n;&t;file_lock:&t;RW_LOCK_UNLOCKED, &t;&t;&bslash;&n;&t;max_fds:&t;NR_OPEN_DEFAULT, &t;&t;&bslash;&n;&t;max_fdset:&t;__FD_SETSIZE, &t;&t;&t;&bslash;&n;&t;next_fd:&t;0, &t;&t;&t;&t;&bslash;&n;&t;fd:&t;&t;&amp;init_files.fd_array[0], &t;&bslash;&n;&t;close_on_exec:&t;&amp;init_files.close_on_exec_init, &bslash;&n;&t;open_fds:&t;&amp;init_files.open_fds_init, &t;&bslash;&n;&t;close_on_exec_init: { { 0, } }, &t;&t;&bslash;&n;&t;open_fds_init:&t;{ { 0, } }, &t;&t;&t;&bslash;&n;&t;fd_array:&t;{ NULL, } &t;&t;&t;&bslash;&n;}
 DECL|macro|INIT_MM

@@ -682,6 +682,13 @@ l_int|0
 )paren
 suffix:semicolon
 )brace
+DECL|variable|zorro_init
+id|subsys_initcall
+c_func
+(paren
+id|zorro_init
+)paren
+suffix:semicolon
 DECL|variable|zorro_find_device
 id|EXPORT_SYMBOL
 c_func

@@ -368,10 +368,6 @@ mdefine_line|#define ISDN_TTYAUX_MAJOR 44
 DECL|macro|ISDN_MAJOR
 mdefine_line|#define ISDN_MAJOR        45
 multiline_comment|/* The minor-devicenumbers for Channel 0 and 1 are used as arguments for&n; * physical Channel-Mapping, so they MUST NOT be changed without changing&n; * the correspondent code in isdn.c&n; */
-DECL|macro|ISDN_MINOR_B
-mdefine_line|#define ISDN_MINOR_B        0
-DECL|macro|ISDN_MINOR_BMAX
-mdefine_line|#define ISDN_MINOR_BMAX     (ISDN_MAX_CHANNELS-1)
 DECL|macro|ISDN_MINOR_CTRL
 mdefine_line|#define ISDN_MINOR_CTRL     64
 DECL|macro|ISDN_MINOR_CTRLMAX

@@ -1,6 +1,6 @@
-macro_line|#ifndef __I386_MMU_CONTEXT_H
-DECL|macro|__I386_MMU_CONTEXT_H
-mdefine_line|#define __I386_MMU_CONTEXT_H
+macro_line|#ifndef __I386_SCHED_H
+DECL|macro|__I386_SCHED_H
+mdefine_line|#define __I386_SCHED_H
 macro_line|#include &lt;linux/config.h&gt;
 macro_line|#include &lt;asm/desc.h&gt;
 macro_line|#include &lt;asm/atomic.h&gt;
@@ -16,23 +16,12 @@ r_int
 id|sched_find_first_zero_bit
 c_func
 (paren
-r_char
-op_star
-id|bitmap
-)paren
-(brace
 r_int
 r_int
 op_star
 id|b
-op_assign
-(paren
-r_int
-r_int
-op_star
 )paren
-id|bitmap
-suffix:semicolon
+(brace
 r_int
 r_int
 id|rt
@@ -74,7 +63,7 @@ r_return
 id|find_first_zero_bit
 c_func
 (paren
-id|bitmap
+id|b
 comma
 id|MAX_RT_PRIO
 )paren

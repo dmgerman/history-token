@@ -6183,6 +6183,10 @@ id|cmd-&gt;sc_data_direction
 suffix:semicolon
 id|scb-&gt;sg_count
 op_assign
+l_int|0
+suffix:semicolon
+id|scb-&gt;sg_count
+op_assign
 id|ahc_linux_map_seg
 c_func
 (paren

@@ -1184,7 +1184,10 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|current-&gt;need_resched
+id|need_resched
+c_func
+(paren
+)paren
 )paren
 (brace
 r_if
@@ -1221,7 +1224,10 @@ r_if
 c_cond
 (paren
 op_logical_neg
-id|current-&gt;need_resched
+id|need_resched
+c_func
+(paren
+)paren
 )paren
 id|safe_halt
 c_func

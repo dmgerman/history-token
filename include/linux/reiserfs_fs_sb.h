@@ -784,10 +784,10 @@ r_struct
 id|list_head
 id|j_bitmap_nodes
 suffix:semicolon
-DECL|member|j_dummy_inode
+DECL|member|j_dirty_buffers
 r_struct
-id|inode
-id|j_dummy_inode
+id|list_head
+id|j_dirty_buffers
 suffix:semicolon
 DECL|member|j_list_bitmap
 r_struct

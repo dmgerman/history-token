@@ -9969,12 +9969,7 @@ op_ne
 id|STREAM_READY
 )paren
 (brace
-r_if
-c_cond
-(paren
-id|current-&gt;need_resched
-)paren
-id|schedule
+id|cond_resched
 c_func
 (paren
 )paren
@@ -10024,12 +10019,7 @@ suffix:semicolon
 )brace
 )brace
 multiline_comment|/* grab image from camera */
-r_if
-c_cond
-(paren
-id|current-&gt;need_resched
-)paren
-id|schedule
+id|cond_resched
 c_func
 (paren
 )paren
@@ -10140,12 +10130,7 @@ l_int|0
 )paren
 suffix:semicolon
 multiline_comment|/* decompress and convert image to by copying it from&n;&t;&t; * raw_image to decompressed_frame&n;&t;&t; */
-r_if
-c_cond
-(paren
-id|current-&gt;need_resched
-)paren
-id|schedule
+id|cond_resched
 c_func
 (paren
 )paren

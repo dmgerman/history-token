@@ -1,4 +1,4 @@
-multiline_comment|/* Driver for USB Mass Storage compliant devices&n; * Ununsual Devices File&n; *&n; * $Id: unusual_devs.h,v 1.24 2001/12/29 03:12:45 mdharm Exp $&n; *&n; * Current development and maintenance by:&n; *   (c) 2000 Matthew Dharm (mdharm-usb@one-eyed-alien.net)&n; *&n; * Initial work by:&n; *   (c) 2000 Adam J. Richter (adam@yggdrasil.com), Yggdrasil Computing, Inc.&n; *&n; * Please see http://www.one-eyed-alien.net/~mdharm/linux-usb for more&n; * information about this driver.&n; *&n; * This program is free software; you can redistribute it and/or modify it&n; * under the terms of the GNU General Public License as published by the&n; * Free Software Foundation; either version 2, or (at your option) any&n; * later version.&n; *&n; * This program is distributed in the hope that it will be useful, but&n; * WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU&n; * General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License along&n; * with this program; if not, write to the Free Software Foundation, Inc.,&n; * 675 Mass Ave, Cambridge, MA 02139, USA.&n; */
+multiline_comment|/* Driver for USB Mass Storage compliant devices&n; * Ununsual Devices File&n; *&n; * $Id: unusual_devs.h,v 1.25 2002/01/13 06:39:17 mdharm Exp $&n; *&n; * Current development and maintenance by:&n; *   (c) 2000 Matthew Dharm (mdharm-usb@one-eyed-alien.net)&n; *&n; * Initial work by:&n; *   (c) 2000 Adam J. Richter (adam@yggdrasil.com), Yggdrasil Computing, Inc.&n; *&n; * Please see http://www.one-eyed-alien.net/~mdharm/linux-usb for more&n; * information about this driver.&n; *&n; * This program is free software; you can redistribute it and/or modify it&n; * under the terms of the GNU General Public License as published by the&n; * Free Software Foundation; either version 2, or (at your option) any&n; * later version.&n; *&n; * This program is distributed in the hope that it will be useful, but&n; * WITHOUT ANY WARRANTY; without even the implied warranty of&n; * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU&n; * General Public License for more details.&n; *&n; * You should have received a copy of the GNU General Public License along&n; * with this program; if not, write to the Free Software Foundation, Inc.,&n; * 675 Mass Ave, Cambridge, MA 02139, USA.&n; */
 multiline_comment|/* IMPORTANT NOTE: This file must be included in another file which does&n; * the following thing for it to work:&n; * The macro UNUSUAL_DEV() must be defined before this file is included&n; */
 macro_line|#include &lt;linux/config.h&gt;
 multiline_comment|/* If you edit this file, please try to keep it sorted first by VendorID,&n; * then by ProductID.&n; */
@@ -1568,6 +1568,31 @@ l_int|0
 )paren
 comma
 macro_line|#endif
+multiline_comment|/* Submitted by Brian Hall &lt;brihall@bigfoot.com&gt;&n; * Needed for START_STOP flag */
+id|UNUSUAL_DEV
+c_func
+(paren
+l_int|0x0c76
+comma
+l_int|0x0003
+comma
+l_int|0x0100
+comma
+l_int|0x0100
+comma
+l_string|&quot;JMTek&quot;
+comma
+l_string|&quot;USBDrive&quot;
+comma
+id|US_SC_SCSI
+comma
+id|US_PR_BULK
+comma
+l_int|NULL
+comma
+id|US_FL_START_STOP
+)paren
+comma
 multiline_comment|/* Reported by Dan Pilone &lt;pilone@slac.com&gt;&n; * The device needs the flags only.&n; */
 id|UNUSUAL_DEV
 c_func

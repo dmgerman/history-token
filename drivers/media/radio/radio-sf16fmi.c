@@ -325,18 +325,11 @@ c_func
 l_int|1400
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|current-&gt;need_resched
-)paren
-(brace
-id|schedule
+id|cond_resched
 c_func
 (paren
 )paren
 suffix:semicolon
-)brace
 )brace
 multiline_comment|/* If this becomes allowed use it ... &t;&n;&t;current-&gt;state = TASK_UNINTERRUPTIBLE;&n;&t;schedule_timeout(HZ/7);&n;*/
 id|up
@@ -444,18 +437,11 @@ c_func
 l_int|1400
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|current-&gt;need_resched
-)paren
-(brace
-id|schedule
+id|cond_resched
 c_func
 (paren
 )paren
 suffix:semicolon
-)brace
 )brace
 multiline_comment|/* If this becomes allowed use it ... &t;&n;&t;current-&gt;state = TASK_UNINTERRUPTIBLE;&n;&t;schedule_timeout(HZ/7);&n;*/
 id|res

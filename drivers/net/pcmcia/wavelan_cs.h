@@ -5,18 +5,18 @@ mdefine_line|#define WAVELAN_CS_H
 multiline_comment|/************************** DOCUMENTATION **************************/
 multiline_comment|/*&n; * This driver provide a Linux interface to the Wavelan Pcmcia hardware&n; * The Wavelan is a product of Lucent (http://www.wavelan.com/).&n; * This division was formerly part of NCR and then AT&amp;T.&n; * Wavelan are also distributed by DEC (RoamAbout DS)...&n; *&n; * To know how to use this driver, read the PCMCIA HOWTO.&n; * If you want to exploit the many other fonctionalities, look comments&n; * in the code...&n; *&n; * This driver is the result of the effort of many peoples (see below).&n; */
 multiline_comment|/* ------------------------ SPECIFIC NOTES ------------------------ */
-multiline_comment|/*&n; * Web page&n; * --------&n; *&t;I try to maintain a web page with the Wireless LAN Howto at :&n; *&t;    http://www.hpl.hp.com/personal/Jean_Tourrilhes/Linux/Wavelan.html&n; *&n; * Debugging and options&n; * ---------------------&n; *&t;You will find below a set of &squot;#define&quot; allowing a very fine control&n; *&t;on the driver behaviour and the debug messages printed.&n; *&t;The main options are :&n; *&t;o WAVELAN_ROAMING, for the experimental roaming support.&n; *&t;o SET_PSA_CRC, to have your card correctly recognised by&n; *&t;  an access point and the Point-to-Point diagnostic tool.&n; *&t;o USE_PSA_CONFIG, to read configuration from the PSA (EEprom)&n; *&t;  (otherwise we always start afresh with some defaults)&n; *&n; * wavelan_cs.o is darn too big&n; * -------------------------&n; *&t;That&squot;s true ! There is a very simple way to reduce the driver&n; *&t;object by 33% (yes !). Comment out the following line :&n; *&t;&t;#include &lt;linux/wireless.h&gt;&n; *&t;Other compile options can also reduce the size of it...&n; *&n; * MAC address and hardware detection :&n; * ----------------------------------&n; *&t;The detection code of the wavelan chech that the first 3&n; *&t;octets of the MAC address fit the company code. This type of&n; *&t;detection work well for AT&amp;T cards (because the AT&amp;T code is&n; *&t;hardcoded in wavelan.h), but of course will fail for other&n; *&t;manufacturer.&n; *&n; *&t;If you are sure that your card is derived from the wavelan,&n; *&t;here is the way to configure it :&n; *&t;1) Get your MAC address&n; *&t;&t;a) With your card utilities (wfreqsel, instconf, ...)&n; *&t;&t;b) With the driver :&n; *&t;&t;&t;o compile the kernel with DEBUG_CONFIG_INFO enabled&n; *&t;&t;&t;o Boot and look the card messages&n; *&t;2) Set your MAC code (3 octets) in MAC_ADDRESSES[][3] (wavelan.h)&n; *&t;3) Compile &amp; verify&n; *&t;4) Send me the MAC code - I will include it in the next version...&n; *&n; */
+multiline_comment|/*&n; * Web page&n; * --------&n; *&t;I try to maintain a web page with the Wireless LAN Howto at :&n; *&t;    http://www.hpl.hp.com/personal/Jean_Tourrilhes/Linux/Wavelan.html&n; *&n; * SMP&n; * ---&n; *&t;We now are SMP compliant (I eventually fixed the remaining bugs).&n; *&t;The driver has been tested on a dual P6-150 and survived my usual&n; *&t;set of torture tests.&n; *&t;Anyway, I spent enough time chasing interrupt re-entrancy during&n; *&t;errors or reconfigure, and I designed the locked/unlocked sections&n; *&t;of the driver with great care, and with the recent addition of&n; *&t;the spinlock (thanks to the new API), we should be quite close to&n; *&t;the truth.&n; *&t;The SMP/IRQ locking is quite coarse and conservative (i.e. not fast),&n; *&t;but better safe than sorry (especially at 2 Mb/s ;-).&n; *&n; *&t;I have also looked into disabling only our interrupt on the card&n; *&t;(via HACR) instead of all interrupts in the processor (via cli),&n; *&t;so that other driver are not impacted, and it look like it&squot;s&n; *&t;possible, but it&squot;s very tricky to do right (full of races). As&n; *&t;the gain would be mostly for SMP systems, it can wait...&n; *&n; * Debugging and options&n; * ---------------------&n; *&t;You will find below a set of &squot;#define&quot; allowing a very fine control&n; *&t;on the driver behaviour and the debug messages printed.&n; *&t;The main options are :&n; *&t;o WAVELAN_ROAMING, for the experimental roaming support.&n; *&t;o SET_PSA_CRC, to have your card correctly recognised by&n; *&t;  an access point and the Point-to-Point diagnostic tool.&n; *&t;o USE_PSA_CONFIG, to read configuration from the PSA (EEprom)&n; *&t;  (otherwise we always start afresh with some defaults)&n; *&n; * wavelan_cs.o is darn too big&n; * -------------------------&n; *&t;That&squot;s true ! There is a very simple way to reduce the driver&n; *&t;object by 33% (yes !). Comment out the following line :&n; *&t;&t;#include &lt;linux/wireless.h&gt;&n; *&t;Other compile options can also reduce the size of it...&n; *&n; * MAC address and hardware detection :&n; * ----------------------------------&n; *&t;The detection code of the wavelan chech that the first 3&n; *&t;octets of the MAC address fit the company code. This type of&n; *&t;detection work well for AT&amp;T cards (because the AT&amp;T code is&n; *&t;hardcoded in wavelan.h), but of course will fail for other&n; *&t;manufacturer.&n; *&n; *&t;If you are sure that your card is derived from the wavelan,&n; *&t;here is the way to configure it :&n; *&t;1) Get your MAC address&n; *&t;&t;a) With your card utilities (wfreqsel, instconf, ...)&n; *&t;&t;b) With the driver :&n; *&t;&t;&t;o compile the kernel with DEBUG_CONFIG_INFO enabled&n; *&t;&t;&t;o Boot and look the card messages&n; *&t;2) Set your MAC code (3 octets) in MAC_ADDRESSES[][3] (wavelan.h)&n; *&t;3) Compile &amp; verify&n; *&t;4) Send me the MAC code - I will include it in the next version...&n; *&n; */
 multiline_comment|/* --------------------- WIRELESS EXTENSIONS --------------------- */
 multiline_comment|/*&n; * This driver is the first one to support &quot;wireless extensions&quot;.&n; * This set of extensions provide you some way to control the wireless&n; * caracteristics of the hardware in a standard way and support for&n; * applications for taking advantage of it (like Mobile IP).&n; *&n; * You will need to enable the CONFIG_NET_RADIO define in the kernel&n; * configuration to enable the wireless extensions (this is the one&n; * giving access to the radio network device choice).&n; *&n; * It might also be a good idea as well to fetch the wireless tools to&n; * configure the device and play a bit.&n; */
 multiline_comment|/* ---------------------------- FILES ---------------------------- */
 multiline_comment|/*&n; * wavelan_cs.c :&t;The actual code for the driver - C functions&n; *&n; * wavelan_cs.h :&t;Private header : local types / vars for the driver&n; *&n; * wavelan.h :&t;&t;Description of the hardware interface &amp; structs&n; *&n; * i82593.h :&t;&t;Description if the Ethernet controller&n; */
 multiline_comment|/* --------------------------- HISTORY --------------------------- */
-multiline_comment|/*&n; * The history of the Wavelan drivers is as complicated as history of&n; * the Wavelan itself (NCR -&gt; AT&amp;T -&gt; Lucent).&n; *&n; * All started with Anders Klemets &lt;klemets@paul.rutgers.edu&gt;,&n; * writting a Wavelan ISA driver for the MACH microkernel. Girish&n; * Welling &lt;welling@paul.rutgers.edu&gt; had also worked on it.&n; * Keith Moore modify this for the Pcmcia hardware.&n; * &n; * Robert Morris &lt;rtm@das.harvard.edu&gt; port these two drivers to BSDI&n; * and add specific Pcmcia support (there is currently no equivalent&n; * of the PCMCIA package under BSD...).&n; *&n; * Jim Binkley &lt;jrb@cs.pdx.edu&gt; port both BSDI drivers to FreeBSD.&n; *&n; * Bruce Janson &lt;bruce@cs.usyd.edu.au&gt; port the BSDI ISA driver to Linux.&n; *&n; * Anthony D. Joseph &lt;adj@lcs.mit.edu&gt; started modify Bruce driver&n; * (with help of the BSDI PCMCIA driver) for PCMCIA.&n; * Yunzhou Li &lt;yunzhou@strat.iol.unh.edu&gt; finished is work.&n; * Joe Finney &lt;joe@comp.lancs.ac.uk&gt; patched the driver to start&n; * correctly 2.00 cards (2.4 GHz with frequency selection).&n; * David Hinds &lt;dhinds@pcmcia.sourceforge.org&gt; integrated the whole in his&n; * Pcmcia package (+ bug corrections).&n; *&n; * I (Jean Tourrilhes - jt@hplb.hpl.hp.com) then started to make some&n; * patchs to the Pcmcia driver. After, I added code in the ISA driver&n; * for Wireless Extensions and full support of frequency selection&n; * cards. Now, I&squot;m doing the same to the Pcmcia driver + some&n; * reorganisation.&n; * Loeke Brederveld &lt;lbrederv@wavelan.com&gt; from Lucent has given me&n; * much needed informations on the Wavelan hardware.&n; */
+multiline_comment|/*&n; * The history of the Wavelan drivers is as complicated as history of&n; * the Wavelan itself (NCR -&gt; AT&amp;T -&gt; Lucent).&n; *&n; * All started with Anders Klemets &lt;klemets@paul.rutgers.edu&gt;,&n; * writting a Wavelan ISA driver for the MACH microkernel. Girish&n; * Welling &lt;welling@paul.rutgers.edu&gt; had also worked on it.&n; * Keith Moore modify this for the Pcmcia hardware.&n; * &n; * Robert Morris &lt;rtm@das.harvard.edu&gt; port these two drivers to BSDI&n; * and add specific Pcmcia support (there is currently no equivalent&n; * of the PCMCIA package under BSD...).&n; *&n; * Jim Binkley &lt;jrb@cs.pdx.edu&gt; port both BSDI drivers to FreeBSD.&n; *&n; * Bruce Janson &lt;bruce@cs.usyd.edu.au&gt; port the BSDI ISA driver to Linux.&n; *&n; * Anthony D. Joseph &lt;adj@lcs.mit.edu&gt; started modify Bruce driver&n; * (with help of the BSDI PCMCIA driver) for PCMCIA.&n; * Yunzhou Li &lt;yunzhou@strat.iol.unh.edu&gt; finished is work.&n; * Joe Finney &lt;joe@comp.lancs.ac.uk&gt; patched the driver to start&n; * correctly 2.00 cards (2.4 GHz with frequency selection).&n; * David Hinds &lt;dahinds@users.sourceforge.net&gt; integrated the whole in his&n; * Pcmcia package (+ bug corrections).&n; *&n; * I (Jean Tourrilhes - jt@hplb.hpl.hp.com) then started to make some&n; * patchs to the Pcmcia driver. After, I added code in the ISA driver&n; * for Wireless Extensions and full support of frequency selection&n; * cards. Now, I&squot;m doing the same to the Pcmcia driver + some&n; * reorganisation.&n; * Loeke Brederveld &lt;lbrederv@wavelan.com&gt; from Lucent has given me&n; * much needed informations on the Wavelan hardware.&n; */
 multiline_comment|/* By the way : for the copyright &amp; legal stuff :&n; * Almost everybody wrote code under GNU or BSD license (or alike),&n; * and want that their original copyright remain somewhere in the&n; * code (for myself, I go with the GPL).&n; * Nobody want to take responsibility for anything, except the fame...&n; */
 multiline_comment|/* --------------------------- CREDITS --------------------------- */
-multiline_comment|/*&n; * Credits:&n; *    Special thanks to Jan Hoogendoorn of AT&amp;T GIS Utrecht and&n; *&t;Loeke Brederveld of Lucent for providing extremely useful&n; *&t;information about WaveLAN PCMCIA hardware&n; *&n; *    This driver is based upon several other drivers, in particular:&n; *&t;David Hinds&squot; Linux driver for the PCMCIA 3c589 ethernet adapter&n; *&t;Bruce Janson&squot;s Linux driver for the AT-bus WaveLAN adapter&n; *&t;Anders Klemets&squot; PCMCIA WaveLAN adapter driver&n; *&t;Robert Morris&squot; BSDI driver for the PCMCIA WaveLAN adapter&n; *&n; * Additional Credits:&n; *&n; *    This software was originally developed under Linux 1.2.3&n; *&t;(Slackware 2.0 distribution).&n; *    And then under Linux 2.0.x (Debian 1.1 - pcmcia 2.8.18-23) with&n; *&t;HP OmniBook 4000 &amp; 5500.&n; *&n; *    It is based on other device drivers and information either written&n; *    or supplied by:&n; *&t;James Ashton (jaa101@syseng.anu.edu.au),&n; *&t;Ajay Bakre (bakre@paul.rutgers.edu),&n; *&t;Donald Becker (becker@super.org),&n; *&t;Jim Binkley &lt;jrb@cs.pdx.edu&gt;,&n; *&t;Loeke Brederveld &lt;lbrederv@wavelan.com&gt;,&n; *&t;Allan Creighton (allanc@cs.su.oz.au),&n; *&t;Brent Elphick &lt;belphick@uwaterloo.ca&gt;,&n; *&t;Joe Finney &lt;joe@comp.lancs.ac.uk&gt;,&n; *&t;Matthew Geier (matthew@cs.su.oz.au),&n; *&t;Remo di Giovanni (remo@cs.su.oz.au),&n; *&t;Mark Hagan (mhagan@wtcpost.daytonoh.NCR.COM),&n; *&t;David Hinds &lt;dhinds@pcmcia.sourceforge.org&gt;,&n; *&t;Jan Hoogendoorn (c/o marteijn@lucent.com),&n; *      Bruce Janson &lt;bruce@cs.usyd.edu.au&gt;,&n; *&t;Anthony D. Joseph &lt;adj@lcs.mit.edu&gt;,&n; *&t;Anders Klemets (klemets@paul.rutgers.edu),&n; *&t;Yunzhou Li &lt;yunzhou@strat.iol.unh.edu&gt;,&n; *&t;Marc Meertens (mmeertens@lucent.com),&n; *&t;Keith Moore,&n; *&t;Robert Morris (rtm@das.harvard.edu),&n; *&t;Ian Parkin (ian@cs.su.oz.au),&n; *&t;John Rosenberg (johnr@cs.su.oz.au),&n; *&t;George Rossi (george@phm.gov.au),&n; *&t;Arthur Scott (arthur@cs.su.oz.au),&n; *&t;Stanislav Sinyagin &lt;stas@isf.ru&gt;&n; *&t;Peter Storey,&n; *&t;Jean Tourrilhes &lt;jt@hpl.hp.com&gt;,&n; *&t;Girish Welling (welling@paul.rutgers.edu)&n; *&t;Clark Woodworth &lt;clark@hiway1.exit109.com&gt;&n; *&t;Yongguang Zhang &lt;ygz@isl.hrl.hac.com&gt;...&n; */
+multiline_comment|/*&n; * Credits:&n; *    Special thanks to Jan Hoogendoorn of AT&amp;T GIS Utrecht and&n; *&t;Loeke Brederveld of Lucent for providing extremely useful&n; *&t;information about WaveLAN PCMCIA hardware&n; *&n; *    This driver is based upon several other drivers, in particular:&n; *&t;David Hinds&squot; Linux driver for the PCMCIA 3c589 ethernet adapter&n; *&t;Bruce Janson&squot;s Linux driver for the AT-bus WaveLAN adapter&n; *&t;Anders Klemets&squot; PCMCIA WaveLAN adapter driver&n; *&t;Robert Morris&squot; BSDI driver for the PCMCIA WaveLAN adapter&n; *&n; * Additional Credits:&n; *&n; *    This software was originally developed under Linux 1.2.3&n; *&t;(Slackware 2.0 distribution).&n; *    And then under Linux 2.0.x (Debian 1.1 -&gt; 2.2 - pcmcia 2.8.18+)&n; *&t;with an HP OmniBook 4000 and then a 5500.&n; *&n; *    It is based on other device drivers and information either written&n; *    or supplied by:&n; *&t;James Ashton (jaa101@syseng.anu.edu.au),&n; *&t;Ajay Bakre (bakre@paul.rutgers.edu),&n; *&t;Donald Becker (becker@super.org),&n; *&t;Jim Binkley &lt;jrb@cs.pdx.edu&gt;,&n; *&t;Loeke Brederveld &lt;lbrederv@wavelan.com&gt;,&n; *&t;Allan Creighton (allanc@cs.su.oz.au),&n; *&t;Brent Elphick &lt;belphick@uwaterloo.ca&gt;,&n; *&t;Joe Finney &lt;joe@comp.lancs.ac.uk&gt;,&n; *&t;Matthew Geier (matthew@cs.su.oz.au),&n; *&t;Remo di Giovanni (remo@cs.su.oz.au),&n; *&t;Mark Hagan (mhagan@wtcpost.daytonoh.NCR.COM),&n; *&t;David Hinds &lt;dahinds@users.sourceforge.net&gt;,&n; *&t;Jan Hoogendoorn (c/o marteijn@lucent.com),&n; *      Bruce Janson &lt;bruce@cs.usyd.edu.au&gt;,&n; *&t;Anthony D. Joseph &lt;adj@lcs.mit.edu&gt;,&n; *&t;Anders Klemets (klemets@paul.rutgers.edu),&n; *&t;Yunzhou Li &lt;yunzhou@strat.iol.unh.edu&gt;,&n; *&t;Marc Meertens (mmeertens@lucent.com),&n; *&t;Keith Moore,&n; *&t;Robert Morris (rtm@das.harvard.edu),&n; *&t;Ian Parkin (ian@cs.su.oz.au),&n; *&t;John Rosenberg (johnr@cs.su.oz.au),&n; *&t;George Rossi (george@phm.gov.au),&n; *&t;Arthur Scott (arthur@cs.su.oz.au),&n; *&t;Stanislav Sinyagin &lt;stas@isf.ru&gt;&n; *&t;Peter Storey,&n; *&t;Jean Tourrilhes &lt;jt@hpl.hp.com&gt;,&n; *&t;Girish Welling (welling@paul.rutgers.edu)&n; *&t;Clark Woodworth &lt;clark@hiway1.exit109.com&gt;&n; *&t;Yongguang Zhang &lt;ygz@isl.hrl.hac.com&gt;...&n; */
 multiline_comment|/* ------------------------- IMPROVEMENTS ------------------------- */
-multiline_comment|/*&n; * I proudly present :&n; *&n; * Changes made in 2.8.22 :&n; * ----------------------&n; *&t;- improved wv_set_multicast_list&n; *&t;- catch spurious interrupt&n; *&t;- correct release of the device&n; *&n; * Changes mades in release :&n; * ------------------------&n; *&t;- Reorganisation of the code, function name change&n; *&t;- Creation of private header (wavelan_cs.h)&n; *&t;- Reorganised debug messages&n; *&t;- More comments, history, ...&n; *&t;- Configure earlier (in &quot;insert&quot; instead of &quot;open&quot;)&n; *        and do things only once&n; *&t;- mmc_init : configure the PSA if not done&n; *&t;- mmc_init : 2.00 detection better code for 2.00 init&n; *&t;- better info at startup&n; *&t;- Correct a HUGE bug (volatile &amp; uncalibrated busy loop)&n; *&t;  in wv_82593_cmd =&gt; config speedup&n; *&t;- Stop receiving &amp; power down on close (and power up on open)&n; *&t;  use &quot;ifconfig down&quot; &amp; &quot;ifconfig up ; route add -net ...&quot;&n; *&t;- Send packets : add watchdog instead of pooling&n; *&t;- Receive : check frame wrap around &amp; try to recover some frames&n; *&t;- wavelan_set_multicast_list : avoid reset&n; *&t;- add wireless extensions (ioctl &amp; get_wireless_stats)&n; *&t;  get/set nwid/frequency on fly, info for /proc/net/wireless&n; *&t;- Suppress useless stuff from lp (net_local), but add link&n; *&t;- More inlines&n; *&t;- Lot of others minor details &amp; cleanups&n; *&n; * Changes made in second release :&n; * ------------------------------&n; *&t;- Optimise wv_85893_reconfig stuff, fix potential problems&n; *&t;- Change error values for ioctl&n; *&t;- Non blocking wv_ru_stop() + call wv_reset() in case of problems&n; *&t;- Remove development printk from wavelan_watchdog()&n; *&t;- Remove of the watchdog to wavelan_close instead of wavelan_release&n; *&t;  fix potential problems...&n; *&t;- Start debugging suspend stuff (but it&squot;s still a bit weird)&n; *&t;- Debug &amp; optimize dump header/packet in Rx &amp; Tx (debug)&n; *&t;- Use &quot;readb&quot; and &quot;writeb&quot; to be kernel 2.1 compliant&n; *&t;- Better handling of bogus interrupts&n; *&t;- Wireless extension : SETSPY and GETSPY&n; *&t;- Remove old stuff (stats - for those needing it, just ask me...)&n; *&t;- Make wireless extensions optional&n; *&n; * Changes made in third release :&n; * -----------------------------&n; *&t;- cleanups &amp; typos&n; *&t;- modif wireless ext (spy -&gt; only one pointer)&n; *&t;- new private ioctl to set/get quality &amp; level threshold&n; *&t;- Init : correct default value of level threshold for pcmcia&n; *&t;- kill watchdog in hw_reset&n; *&t;- more 2.1 support (copy_to/from_user instead of memcpy_to/fromfs)&n; *&t;- Add message level (debug stuff in /var/adm/debug &amp; errors not&n; *&t;  displayed at console and still in /var/adm/messages)&n; *&n; * Changes made in fourth release :&n; * ------------------------------&n; *&t;- multicast support (yes !) thanks to Yongguang Zhang.&n; *&n; * Changes made in fifth release (2.9.0) :&n; * -------------------------------------&n; *&t;- Revisited multicast code (it was mostly wrong).&n; *&t;- protect code in wv_82593_reconfig with dev-&gt;tbusy (oups !)&n; *&n; * Changes made in sixth release (2.9.1a) :&n; * --------------------------------------&n; *&t;- Change the detection code for multi manufacturer code support&n; *&t;- Correct bug (hang kernel) in init when we were &quot;rejecting&quot; a card &n; *&n; * Changes made in seventh release (2.9.1b) :&n; * ----------------------------------------&n; *&t;- Update to wireless extensions changes&n; *&t;- Silly bug in card initial configuration (psa_conf_status)&n; *&n; * Changes made in eigth release :&n; * -----------------------------&n; *&t;- Small bug in debug code (probably not the last one...)&n; *&t;- 1.2.13 support (thanks to Clark Woodworth)&n; *&n; * Changes made for release in 2.9.2b :&n; * ----------------------------------&n; *&t;- Level threshold is now a standard wireless extension (version 4 !)&n; *&t;- modules parameters types for kernel &gt; 2.1.17&n; *&t;- updated man page&n; *&t;- Others cleanup from David Hinds&n; *&n; * Changes made for release in 2.9.5 :&n; * ---------------------------------&n; *&t;- byte count stats (courtesy of David Hinds)&n; *&t;- Remove dev_tint stuff (courtesy of David Hinds)&n; *&t;- Others cleanup from David Hinds&n; *&t;- Encryption setting from Brent Elphick (thanks a lot !)&n; *&t;- &squot;base&squot; to &squot;u_long&squot; for the Alpha (thanks to Stanislav Sinyagin)&n; *&n; * Changes made for release in 2.9.6 :&n; * ---------------------------------&n; *&t;- fix bug : no longuer disable watchdog in case of bogus interrupt&n; *&t;- increase timeout in config code for picky hardware&n; *&t;- mask unused bits in status (Wireless Extensions)&n; *&n; * Changes integrated by Justin Seger &lt;jseger@MIT.EDU&gt; &amp; David Hinds :&n; * -----------------------------------------------------------------&n; *&t;- Roaming &quot;hack&quot; from Joe Finney &lt;joe@comp.lancs.ac.uk&gt;&n; *&t;- PSA CRC code from Bob Gray &lt;rgray@bald.cs.dartmouth.edu&gt;&n; *&t;- Better initialisation of the i82593 controller&n; *&t;  from Joseph K. O&squot;Sullivan &lt;josullvn+@cs.cmu.edu&gt;&n; *&n; * Changes made for release in 3.0.10 :&n; * ----------------------------------&n; *&t;- Fix eject &quot;hang&quot; of the driver under 2.2.X :&n; *&t;&t;o create wv_flush_stale_links()&n; *&t;&t;o Rename wavelan_release to wv_pcmcia_release &amp; move up&n; *&t;&t;o move unregister_netdev to wavelan_detach()&n; *&t;&t;o wavelan_release() no longer call wavelan_detach()&n; *&t;&t;o Suppress &quot;release&quot; timer&n; *&t;&t;o Other cleanups &amp; fixes&n; *&t;- New MAC address in the probe&n; *&t;- Reorg PSA_CRC code (endian neutral &amp; cleaner)&n; *&t;- Correct initialisation of the i82593 from Lucent manual&n; *&t;- Put back the watchdog, with larger timeout&n; *&t;- TRANSMIT_NO_CRC is a &quot;normal&quot; error, so recover from it&n; *&t;  from Derrick J Brashear &lt;shadow@dementia.org&gt;&n; *&t;- Better handling of TX and RX normal failure conditions&n; *&t;- #ifdef out all the roaming code&n; *&t;- Add ESSID &amp; &quot;AP current address&quot; ioctl stubs&n; *&t;- General cleanup of the code&n; *&n; * Changes made for release in 3.0.13 :&n; * ----------------------------------&n; *&t;- Re-enable compilation of roaming code by default, but with&n; *&t;  do_roaming = 0&n; *&t;- Nuke `nwid=nwid^ntohs(beacon-&gt;domain_id)&squot; in wl_roam_gather&n; *&t;  at the demand of John Carol Langford &lt;jcl@gs176.sp.cs.cmu.edu&gt;&n; *&t;- Introduced WAVELAN_ROAMING_EXT for incomplete ESSID stuff.&n; *&n; * Changes made for release in 3.0.15 :&n; * ----------------------------------&n; *&t;- Change e-mail and web page addresses&n; *&t;- Watchdog timer is now correctly expressed in HZ, not in jiffies&n; *&t;- Add channel number to the list of frequencies in range&n; *&t;- Add the (short) list of bit-rates in range&n; *&t;- Developp a new sensitivity... (sens.value &amp; sens.fixed)&n; *&n; * Changes made for release in 3.1.2 :&n; * ---------------------------------&n; *&t;- Fix check for root permission (break instead of exit)&n; *&t;- New nwid &amp; encoding setting (Wireless Extension 9)&n; *&n; * Wishes &amp; dreams:&n; * ----------------&n; *&t;- Cleanup and integrate the roaming code&n; *&t;  (std debug, set DomainID, decay avg and co...)&n; */
+multiline_comment|/*&n; * I proudly present :&n; *&n; * Changes made in 2.8.22 :&n; * ----------------------&n; *&t;- improved wv_set_multicast_list&n; *&t;- catch spurious interrupt&n; *&t;- correct release of the device&n; *&n; * Changes mades in release :&n; * ------------------------&n; *&t;- Reorganisation of the code, function name change&n; *&t;- Creation of private header (wavelan_cs.h)&n; *&t;- Reorganised debug messages&n; *&t;- More comments, history, ...&n; *&t;- Configure earlier (in &quot;insert&quot; instead of &quot;open&quot;)&n; *        and do things only once&n; *&t;- mmc_init : configure the PSA if not done&n; *&t;- mmc_init : 2.00 detection better code for 2.00 init&n; *&t;- better info at startup&n; *&t;- Correct a HUGE bug (volatile &amp; uncalibrated busy loop)&n; *&t;  in wv_82593_cmd =&gt; config speedup&n; *&t;- Stop receiving &amp; power down on close (and power up on open)&n; *&t;  use &quot;ifconfig down&quot; &amp; &quot;ifconfig up ; route add -net ...&quot;&n; *&t;- Send packets : add watchdog instead of pooling&n; *&t;- Receive : check frame wrap around &amp; try to recover some frames&n; *&t;- wavelan_set_multicast_list : avoid reset&n; *&t;- add wireless extensions (ioctl &amp; get_wireless_stats)&n; *&t;  get/set nwid/frequency on fly, info for /proc/net/wireless&n; *&t;- Suppress useless stuff from lp (net_local), but add link&n; *&t;- More inlines&n; *&t;- Lot of others minor details &amp; cleanups&n; *&n; * Changes made in second release :&n; * ------------------------------&n; *&t;- Optimise wv_85893_reconfig stuff, fix potential problems&n; *&t;- Change error values for ioctl&n; *&t;- Non blocking wv_ru_stop() + call wv_reset() in case of problems&n; *&t;- Remove development printk from wavelan_watchdog()&n; *&t;- Remove of the watchdog to wavelan_close instead of wavelan_release&n; *&t;  fix potential problems...&n; *&t;- Start debugging suspend stuff (but it&squot;s still a bit weird)&n; *&t;- Debug &amp; optimize dump header/packet in Rx &amp; Tx (debug)&n; *&t;- Use &quot;readb&quot; and &quot;writeb&quot; to be kernel 2.1 compliant&n; *&t;- Better handling of bogus interrupts&n; *&t;- Wireless extension : SETSPY and GETSPY&n; *&t;- Remove old stuff (stats - for those needing it, just ask me...)&n; *&t;- Make wireless extensions optional&n; *&n; * Changes made in third release :&n; * -----------------------------&n; *&t;- cleanups &amp; typos&n; *&t;- modif wireless ext (spy -&gt; only one pointer)&n; *&t;- new private ioctl to set/get quality &amp; level threshold&n; *&t;- Init : correct default value of level threshold for pcmcia&n; *&t;- kill watchdog in hw_reset&n; *&t;- more 2.1 support (copy_to/from_user instead of memcpy_to/fromfs)&n; *&t;- Add message level (debug stuff in /var/adm/debug &amp; errors not&n; *&t;  displayed at console and still in /var/adm/messages)&n; *&n; * Changes made in fourth release :&n; * ------------------------------&n; *&t;- multicast support (yes !) thanks to Yongguang Zhang.&n; *&n; * Changes made in fifth release (2.9.0) :&n; * -------------------------------------&n; *&t;- Revisited multicast code (it was mostly wrong).&n; *&t;- protect code in wv_82593_reconfig with dev-&gt;tbusy (oups !)&n; *&n; * Changes made in sixth release (2.9.1a) :&n; * --------------------------------------&n; *&t;- Change the detection code for multi manufacturer code support&n; *&t;- Correct bug (hang kernel) in init when we were &quot;rejecting&quot; a card &n; *&n; * Changes made in seventh release (2.9.1b) :&n; * ----------------------------------------&n; *&t;- Update to wireless extensions changes&n; *&t;- Silly bug in card initial configuration (psa_conf_status)&n; *&n; * Changes made in eigth release :&n; * -----------------------------&n; *&t;- Small bug in debug code (probably not the last one...)&n; *&t;- 1.2.13 support (thanks to Clark Woodworth)&n; *&n; * Changes made for release in 2.9.2b :&n; * ----------------------------------&n; *&t;- Level threshold is now a standard wireless extension (version 4 !)&n; *&t;- modules parameters types for kernel &gt; 2.1.17&n; *&t;- updated man page&n; *&t;- Others cleanup from David Hinds&n; *&n; * Changes made for release in 2.9.5 :&n; * ---------------------------------&n; *&t;- byte count stats (courtesy of David Hinds)&n; *&t;- Remove dev_tint stuff (courtesy of David Hinds)&n; *&t;- Others cleanup from David Hinds&n; *&t;- Encryption setting from Brent Elphick (thanks a lot !)&n; *&t;- &squot;base&squot; to &squot;u_long&squot; for the Alpha (thanks to Stanislav Sinyagin)&n; *&n; * Changes made for release in 2.9.6 :&n; * ---------------------------------&n; *&t;- fix bug : no longuer disable watchdog in case of bogus interrupt&n; *&t;- increase timeout in config code for picky hardware&n; *&t;- mask unused bits in status (Wireless Extensions)&n; *&n; * Changes integrated by Justin Seger &lt;jseger@MIT.EDU&gt; &amp; David Hinds :&n; * -----------------------------------------------------------------&n; *&t;- Roaming &quot;hack&quot; from Joe Finney &lt;joe@comp.lancs.ac.uk&gt;&n; *&t;- PSA CRC code from Bob Gray &lt;rgray@bald.cs.dartmouth.edu&gt;&n; *&t;- Better initialisation of the i82593 controller&n; *&t;  from Joseph K. O&squot;Sullivan &lt;josullvn+@cs.cmu.edu&gt;&n; *&n; * Changes made for release in 3.0.10 :&n; * ----------------------------------&n; *&t;- Fix eject &quot;hang&quot; of the driver under 2.2.X :&n; *&t;&t;o create wv_flush_stale_links()&n; *&t;&t;o Rename wavelan_release to wv_pcmcia_release &amp; move up&n; *&t;&t;o move unregister_netdev to wavelan_detach()&n; *&t;&t;o wavelan_release() no longer call wavelan_detach()&n; *&t;&t;o Suppress &quot;release&quot; timer&n; *&t;&t;o Other cleanups &amp; fixes&n; *&t;- New MAC address in the probe&n; *&t;- Reorg PSA_CRC code (endian neutral &amp; cleaner)&n; *&t;- Correct initialisation of the i82593 from Lucent manual&n; *&t;- Put back the watchdog, with larger timeout&n; *&t;- TRANSMIT_NO_CRC is a &quot;normal&quot; error, so recover from it&n; *&t;  from Derrick J Brashear &lt;shadow@dementia.org&gt;&n; *&t;- Better handling of TX and RX normal failure conditions&n; *&t;- #ifdef out all the roaming code&n; *&t;- Add ESSID &amp; &quot;AP current address&quot; ioctl stubs&n; *&t;- General cleanup of the code&n; *&n; * Changes made for release in 3.0.13 :&n; * ----------------------------------&n; *&t;- Re-enable compilation of roaming code by default, but with&n; *&t;  do_roaming = 0&n; *&t;- Nuke `nwid=nwid^ntohs(beacon-&gt;domain_id)&squot; in wl_roam_gather&n; *&t;  at the demand of John Carol Langford &lt;jcl@gs176.sp.cs.cmu.edu&gt;&n; *&t;- Introduced WAVELAN_ROAMING_EXT for incomplete ESSID stuff.&n; *&n; * Changes made for release in 3.0.15 :&n; * ----------------------------------&n; *&t;- Change e-mail and web page addresses&n; *&t;- Watchdog timer is now correctly expressed in HZ, not in jiffies&n; *&t;- Add channel number to the list of frequencies in range&n; *&t;- Add the (short) list of bit-rates in range&n; *&t;- Developp a new sensitivity... (sens.value &amp; sens.fixed)&n; *&n; * Changes made for release in 3.1.2 :&n; * ---------------------------------&n; *&t;- Fix check for root permission (break instead of exit)&n; *&t;- New nwid &amp; encoding setting (Wireless Extension 9)&n; *&n; * Changes made for release in 3.1.12 :&n; * ----------------------------------&n; *&t;- reworked wv_82593_cmd to avoid using the IRQ handler and doing&n; *&t;  ugly things with interrupts.&n; *&t;- Add IRQ protection in 82593_config/ru_start/ru_stop/watchdog&n; *&t;- Update to new network API (softnet - 2.3.43) :&n; *&t;&t;o replace dev-&gt;tbusy (David + me)&n; *&t;&t;o replace dev-&gt;tstart (David + me)&n; *&t;&t;o remove dev-&gt;interrupt (David)&n; *&t;&t;o add SMP locking via spinlock in splxx (me)&n; *&t;&t;o add spinlock in interrupt handler (me)&n; *&t;&t;o use kernel watchdog instead of ours (me)&n; *&t;&t;o verify that all the changes make sense and work (me)&n; *&t;- Re-sync kernel/pcmcia versions (not much actually)&n; *&t;- A few other cleanups (David &amp; me)...&n; *&n; * Changes made for release in 3.1.22 :&n; * ----------------------------------&n; *&t;- Check that SMP works, remove annoying log message&n; *&n; * Changes made for release in 3.1.24 :&n; * ----------------------------------&n; *&t;- Fix unfrequent card lockup when watchdog was reseting the hardware :&n; *&t;&t;o control first busy loop in wv_82593_cmd()&n; *&t;&t;o Extend spinlock protection in wv_hw_config()&n; *&n; * Wishes &amp; dreams:&n; * ----------------&n; *&t;- Cleanup and integrate the roaming code&n; *&t;  (std debug, set DomainID, decay avg and co...)&n; */
 multiline_comment|/***************************** INCLUDES *****************************/
 multiline_comment|/* Linux headers that we need */
 macro_line|#include &lt;linux/config.h&gt;
@@ -29,6 +29,7 @@ macro_line|#include &lt;linux/slab.h&gt;
 macro_line|#include &lt;linux/string.h&gt;
 macro_line|#include &lt;linux/timer.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
+macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;linux/in.h&gt;
 macro_line|#include &lt;linux/delay.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
@@ -43,7 +44,7 @@ macro_line|#include &lt;linux/ioport.h&gt;
 macro_line|#include &lt;linux/fcntl.h&gt;
 macro_line|#ifdef CONFIG_NET_PCMCIA_RADIO
 macro_line|#include &lt;linux/wireless.h&gt;&t;&t;/* Wireless extensions */
-macro_line|#endif&t;/* CONFIG_NET_PCMCIA_RADIO */
+macro_line|#endif
 multiline_comment|/* Pcmcia headers that we need */
 macro_line|#include &lt;pcmcia/cs_types.h&gt;
 macro_line|#include &lt;pcmcia/cs.h&gt;
@@ -113,7 +114,7 @@ macro_line|#undef DEBUG_RX_FAIL&t;&t;/* Normal failure conditions */
 DECL|macro|DEBUG_RX_ERROR
 mdefine_line|#define DEBUG_RX_ERROR&t;&t;/* Unexpected conditions */
 DECL|macro|DEBUG_PACKET_DUMP
-macro_line|#undef DEBUG_PACKET_DUMP&t;/* Dump packet on the screen */
+macro_line|#undef DEBUG_PACKET_DUMP&t;32&t;/* Dump packet on the screen */
 DECL|macro|DEBUG_IOCTL_TRACE
 macro_line|#undef DEBUG_IOCTL_TRACE&t;/* Misc call by Linux */
 DECL|macro|DEBUG_IOCTL_INFO
@@ -143,7 +144,7 @@ r_char
 op_star
 id|version
 op_assign
-l_string|&quot;wavelan_cs.c : v21 (wireless extensions) 18/10/99&bslash;n&quot;
+l_string|&quot;wavelan_cs.c : v23 (SMP + wireless extensions) 20/12/00&bslash;n&quot;
 suffix:semicolon
 macro_line|#endif
 multiline_comment|/* Watchdog temporisation */
@@ -403,10 +404,6 @@ DECL|struct|net_local
 r_struct
 id|net_local
 (brace
-DECL|member|lock
-id|spinlock_t
-id|lock
-suffix:semicolon
 DECL|member|node
 id|dev_node_t
 id|node
@@ -418,6 +415,11 @@ op_star
 id|dev
 suffix:semicolon
 multiline_comment|/* Reverse link... */
+DECL|member|spinlock
+id|spinlock_t
+id|spinlock
+suffix:semicolon
+multiline_comment|/* Serialize access to the hardware (SMP) */
 DECL|member|link
 id|dev_link_t
 op_star
@@ -459,16 +461,6 @@ r_int
 id|mc_count
 suffix:semicolon
 multiline_comment|/* Number of multicast addresses */
-DECL|member|watchdog
-id|timer_list
-id|watchdog
-suffix:semicolon
-multiline_comment|/* To avoid blocking state */
-DECL|member|status
-id|u_char
-id|status
-suffix:semicolon
-multiline_comment|/* Current i82593 status */
 DECL|member|stop
 r_int
 id|stop
@@ -709,6 +701,38 @@ id|dev
 suffix:semicolon
 macro_line|#endif&t;/* WAVELAN_ROAMING */
 multiline_comment|/* ----------------------- MISC SUBROUTINES ------------------------ */
+r_static
+r_inline
+r_void
+id|wv_splhi
+c_func
+(paren
+id|net_local
+op_star
+comma
+multiline_comment|/* Disable interrupts */
+r_int
+r_int
+op_star
+)paren
+suffix:semicolon
+multiline_comment|/* flags */
+r_static
+r_inline
+r_void
+id|wv_splx
+c_func
+(paren
+id|net_local
+op_star
+comma
+multiline_comment|/* ReEnable interrupts */
+r_int
+r_int
+op_star
+)paren
+suffix:semicolon
+multiline_comment|/* flags */
 r_static
 r_void
 id|cs_error
@@ -1156,7 +1180,8 @@ r_void
 id|wavelan_watchdog
 c_func
 (paren
-id|u_long
+id|device
+op_star
 )paren
 suffix:semicolon
 multiline_comment|/* Transmission watchdog */
@@ -1177,16 +1202,8 @@ c_func
 id|device
 op_star
 )paren
-comma
-multiline_comment|/* Close the device */
-id|wavelan_init
-c_func
-(paren
-id|device
-op_star
-)paren
 suffix:semicolon
-multiline_comment|/* Do nothing */
+multiline_comment|/* Close the device */
 r_static
 id|dev_link_t
 op_star
@@ -1234,15 +1251,10 @@ r_static
 id|dev_link_t
 op_star
 id|dev_list
+op_assign
+l_int|NULL
 suffix:semicolon
 multiline_comment|/* Linked list of devices */
-multiline_comment|/* WARNING : the following variable MUST be volatile&n; * It is used by wv_82593_cmd to syncronise with wavelan_interrupt */
-DECL|variable|wv_wait_completed
-r_static
-r_volatile
-r_int
-id|wv_wait_completed
-suffix:semicolon
 multiline_comment|/*&n; * Parameters that can be set with &squot;insmod&squot;&n; * The exact syntax is &squot;insmod wavelan_cs.o &lt;var&gt;=&lt;value&gt;&squot;&n; */
 multiline_comment|/* Bit map of interrupts to choose from */
 multiline_comment|/* This means pick from 15, 14, 12, 11, 10, 9, 7, 5, 4 and 3 */
@@ -1271,6 +1283,8 @@ DECL|variable|mem_speed
 r_static
 r_int
 id|mem_speed
+op_assign
+l_int|0
 suffix:semicolon
 multiline_comment|/* New module interface */
 id|MODULE_PARM
@@ -1303,6 +1317,8 @@ DECL|variable|do_roaming
 r_static
 r_int
 id|do_roaming
+op_assign
+l_int|0
 suffix:semicolon
 id|MODULE_PARM
 c_func
@@ -1313,5 +1329,11 @@ l_string|&quot;i&quot;
 )paren
 suffix:semicolon
 macro_line|#endif&t;/* WAVELAN_ROAMING */
+id|MODULE_LICENSE
+c_func
+(paren
+l_string|&quot;GPL&quot;
+)paren
+suffix:semicolon
 macro_line|#endif&t;/* WAVELAN_CS_H */
 eof

@@ -3494,12 +3494,7 @@ r_return
 op_minus
 id|EINVAL
 suffix:semicolon
-singleline_comment|// FIXME:  add some explicit records to flag the
-singleline_comment|// state where the URB is &quot;in periodic completion&quot;.
-singleline_comment|// Workaround is for driver to set the urb status
-singleline_comment|// to &quot;-EINPROGRESS&quot;, so it can get through here
-singleline_comment|// and unlink from the completion handler.
-multiline_comment|/*&n;&t; * we contend for urb-&gt;status with the hcd core,&n;&t; * which changes it while returning the urb.&n;&t; */
+multiline_comment|/*&n;&t; * we contend for urb-&gt;status with the hcd core,&n;&t; * which changes it while returning the urb.&n;&t; *&n;&t; * Caller guaranteed that the urb pointer hasn&squot;t been freed, and&n;&t; * that it was submitted.  But as a rule it can&squot;t know whether or&n;&t; * not it&squot;s already been unlinked ... so we respect the reversed&n;&t; * lock sequence needed for the usb_hcd_giveback_urb() code paths&n;&t; * (urb lock, then hcd_data_lock) in case some other CPU is now&n;&t; * unlinking it.&n;&t; */
 id|spin_lock_irqsave
 (paren
 op_amp
@@ -3508,16 +3503,17 @@ comma
 id|flags
 )paren
 suffix:semicolon
+id|spin_lock
+(paren
+op_amp
+id|hcd_data_lock
+)paren
+suffix:semicolon
 r_if
 c_cond
 (paren
 op_logical_neg
 id|urb-&gt;hcpriv
-op_logical_or
-id|urb-&gt;status
-op_ne
-op_minus
-id|EINPROGRESS
 op_logical_or
 id|urb-&gt;transfer_flags
 op_amp
@@ -3552,6 +3548,7 @@ r_goto
 id|done
 suffix:semicolon
 )brace
+multiline_comment|/* giveback clears dev; non-null means it&squot;s linked at this level */
 id|dev
 op_assign
 id|urb-&gt;dev-&gt;hcpriv
@@ -3578,6 +3575,40 @@ suffix:semicolon
 r_goto
 id|done
 suffix:semicolon
+)brace
+multiline_comment|/* For non-periodic transfers, any status except -EINPROGRESS means&n;&t; * the HCD has already started to unlink this URB from the hardware.&n;&t; * In that case, there&squot;s no more work to do.&n;&t; *&n;&t; * For periodic transfers, this is the only way to trigger unlinking&n;&t; * from the hardware.  Since we (currently) overload urb-&gt;status to&n;&t; * tell the driver to unlink, error status might get clobbered ...&n;&t; * unless that transfer hasn&squot;t yet restarted.  One such case is when&n;&t; * the URB gets unlinked from its completion handler.&n;&t; *&n;&t; * FIXME use an URB_UNLINKED flag to match URB_TIMEOUT_KILLED&n;&t; */
+r_switch
+c_cond
+(paren
+id|usb_pipetype
+(paren
+id|urb-&gt;pipe
+)paren
+)paren
+(brace
+r_case
+id|PIPE_CONTROL
+suffix:colon
+r_case
+id|PIPE_BULK
+suffix:colon
+r_if
+c_cond
+(paren
+id|urb-&gt;status
+op_ne
+op_minus
+id|EINPROGRESS
+)paren
+(brace
+id|retval
+op_assign
+l_int|0
+suffix:semicolon
+r_goto
+id|done
+suffix:semicolon
+)brace
 )brace
 multiline_comment|/* maybe set up to block on completion notification */
 r_if
@@ -3665,6 +3696,12 @@ op_minus
 id|ECONNRESET
 suffix:semicolon
 )brace
+id|spin_unlock
+(paren
+op_amp
+id|hcd_data_lock
+)paren
+suffix:semicolon
 id|spin_unlock_irqrestore
 (paren
 op_amp
@@ -3792,6 +3829,12 @@ id|bye
 suffix:semicolon
 id|done
 suffix:colon
+id|spin_unlock
+(paren
+op_amp
+id|hcd_data_lock
+)paren
+suffix:semicolon
 id|spin_unlock_irqrestore
 (paren
 op_amp

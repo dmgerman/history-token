@@ -2298,12 +2298,6 @@ c_cond
 id|p-&gt;pid
 )paren
 (brace
-id|expire_task
-c_func
-(paren
-id|p
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -2336,11 +2330,6 @@ suffix:semicolon
 )brace
 r_else
 (brace
-id|idle_tick
-c_func
-(paren
-)paren
-suffix:semicolon
 r_if
 c_cond
 (paren
@@ -2366,6 +2355,12 @@ op_add_assign
 id|system
 suffix:semicolon
 )brace
+id|scheduler_tick
+c_func
+(paren
+id|p
+)paren
+suffix:semicolon
 )brace
 multiline_comment|/*&n; * Nr of active tasks - counted in fixed-point numbers&n; */
 DECL|function|count_active_tasks

@@ -1314,15 +1314,14 @@ c_cond
 (paren
 id|unlikely
 (paren
-(paren
-r_int
-)paren
 id|ehci-&gt;pshadow
 (braket
 id|frame
 )braket
 dot
 id|ptr
+op_ne
+l_int|0
 )paren
 )paren
 (brace
