@@ -2,6 +2,7 @@ multiline_comment|/*&n; * Driver for Digigram miXart soundcards&n; *&n; * main h
 macro_line|#ifndef __SOUND_MIXART_H
 DECL|macro|__SOUND_MIXART_H
 mdefine_line|#define __SOUND_MIXART_H
+macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;sound/pcm.h&gt;
 DECL|macro|MIXART_DRIVER_VERSION
 mdefine_line|#define MIXART_DRIVER_VERSION&t;0x000100&t;/* 0.1.0 */
