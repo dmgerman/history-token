@@ -8,6 +8,7 @@ macro_line|#include &lt;linux/linkage.h&gt;
 macro_line|#include &lt;linux/wait.h&gt;
 macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;linux/rwsem.h&gt;
+macro_line|#include &lt;linux/stringify.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/atomic.h&gt;
 multiline_comment|/*&n; * Interrupt-safe semaphores..&n; *&n; * (C) Copyright 1996 Linus Torvalds&n; *&n; * m68k version by Andreas Schwab&n; */
@@ -248,11 +249,14 @@ l_string|&quot;| atomic down operation&bslash;n&bslash;t&quot;
 l_string|&quot;subql #1,%0@&bslash;n&bslash;t&quot;
 l_string|&quot;jmi 2f&bslash;n&bslash;t&quot;
 l_string|&quot;1:&bslash;n&quot;
-l_string|&quot;.section .text.lock,&bslash;&quot;ax&bslash;&quot;&bslash;n&quot;
-l_string|&quot;.even&bslash;n&quot;
+id|LOCK_SECTION_START
+c_func
+(paren
+l_string|&quot;.even&bslash;n&bslash;t&quot;
+)paren
 l_string|&quot;2:&bslash;tpea 1b&bslash;n&bslash;t&quot;
 l_string|&quot;jbra __down_failed&bslash;n&quot;
-l_string|&quot;.previous&quot;
+id|LOCK_SECTION_END
 suffix:colon
 multiline_comment|/* no outputs */
 suffix:colon
@@ -315,11 +319,14 @@ l_string|&quot;subql #1,%1@&bslash;n&bslash;t&quot;
 l_string|&quot;jmi 2f&bslash;n&bslash;t&quot;
 l_string|&quot;clrl %0&bslash;n&quot;
 l_string|&quot;1:&bslash;n&quot;
-l_string|&quot;.section .text.lock,&bslash;&quot;ax&bslash;&quot;&bslash;n&quot;
-l_string|&quot;.even&bslash;n&quot;
+id|LOCK_SECTION_START
+c_func
+(paren
+l_string|&quot;.even&bslash;n&bslash;t&quot;
+)paren
 l_string|&quot;2:&bslash;tpea 1b&bslash;n&bslash;t&quot;
 l_string|&quot;jbra __down_failed_interruptible&bslash;n&quot;
-l_string|&quot;.previous&quot;
+id|LOCK_SECTION_END
 suffix:colon
 l_string|&quot;=d&quot;
 (paren
@@ -388,11 +395,14 @@ l_string|&quot;subql #1,%1@&bslash;n&bslash;t&quot;
 l_string|&quot;jmi 2f&bslash;n&bslash;t&quot;
 l_string|&quot;clrl %0&bslash;n&quot;
 l_string|&quot;1:&bslash;n&quot;
-l_string|&quot;.section .text.lock,&bslash;&quot;ax&bslash;&quot;&bslash;n&quot;
-l_string|&quot;.even&bslash;n&quot;
+id|LOCK_SECTION_START
+c_func
+(paren
+l_string|&quot;.even&bslash;n&bslash;t&quot;
+)paren
 l_string|&quot;2:&bslash;tpea 1b&bslash;n&bslash;t&quot;
 l_string|&quot;jbra __down_failed_trylock&bslash;n&quot;
-l_string|&quot;.previous&quot;
+id|LOCK_SECTION_END
 suffix:colon
 l_string|&quot;=d&quot;
 (paren
@@ -453,12 +463,15 @@ l_string|&quot;| atomic up operation&bslash;n&bslash;t&quot;
 l_string|&quot;addql #1,%0@&bslash;n&bslash;t&quot;
 l_string|&quot;jle 2f&bslash;n&quot;
 l_string|&quot;1:&bslash;n&quot;
-l_string|&quot;.section .text.lock,&bslash;&quot;ax&bslash;&quot;&bslash;n&quot;
-l_string|&quot;.even&bslash;n&quot;
+id|LOCK_SECTION_START
+c_func
+(paren
+l_string|&quot;.even&bslash;n&bslash;t&quot;
+)paren
 l_string|&quot;2:&bslash;t&quot;
 l_string|&quot;pea 1b&bslash;n&bslash;t&quot;
 l_string|&quot;jbra __up_wakeup&bslash;n&quot;
-l_string|&quot;.previous&quot;
+id|LOCK_SECTION_END
 suffix:colon
 multiline_comment|/* no outputs */
 suffix:colon

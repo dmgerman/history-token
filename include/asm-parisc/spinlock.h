@@ -2,7 +2,6 @@ macro_line|#ifndef __ASM_SPINLOCK_H
 DECL|macro|__ASM_SPINLOCK_H
 mdefine_line|#define __ASM_SPINLOCK_H
 macro_line|#include &lt;asm/system.h&gt;
-multiline_comment|/* if you&squot;re going to use out-of-line slowpaths, use .section .lock.text,&n; * not .text.lock or the -ffunction-sections monster will eat you alive&n; */
 multiline_comment|/* we seem to be the only architecture that uses 0 to mean locked - but we&n; * have to.  prumpf */
 DECL|macro|SPIN_LOCK_UNLOCKED
 macro_line|#undef SPIN_LOCK_UNLOCKED

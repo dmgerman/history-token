@@ -3,7 +3,6 @@ DECL|macro|_ASM_PARISC_SEMAPHORE_H
 mdefine_line|#define _ASM_PARISC_SEMAPHORE_H
 macro_line|#include &lt;linux/linkage.h&gt;
 multiline_comment|/*&n; * SMP- and interrupt-safe semaphores.&n; *&n; * (C) Copyright 1996 Linus Torvalds&n; *&n; * SuperH verison by Niibe Yutaka&n; *&n; */
-multiline_comment|/* if you&squot;re going to use out-of-line slowpaths, use .section .lock.text,&n; * not .text.lock or the -ffunction-sections monster will eat you alive&n; */
 macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;linux/rwsem.h&gt;
 macro_line|#include &lt;asm/system.h&gt;

@@ -175,7 +175,11 @@ multiline_comment|/* adds 0x00000001, returns the old value */
 l_string|&quot;  js        2f&bslash;n&bslash;t&quot;
 multiline_comment|/* jump if we weren&squot;t granted the lock */
 l_string|&quot;1:&bslash;n&bslash;t&quot;
-l_string|&quot;.section .text.lock,&bslash;&quot;ax&bslash;&quot;&bslash;n&quot;
+id|LOCK_SECTION_START
+c_func
+(paren
+l_string|&quot;&quot;
+)paren
 l_string|&quot;2:&bslash;n&bslash;t&quot;
 l_string|&quot;  pushl     %%ecx&bslash;n&bslash;t&quot;
 l_string|&quot;  pushl     %%edx&bslash;n&bslash;t&quot;
@@ -183,7 +187,7 @@ l_string|&quot;  call      rwsem_down_read_failed&bslash;n&bslash;t&quot;
 l_string|&quot;  popl      %%edx&bslash;n&bslash;t&quot;
 l_string|&quot;  popl      %%ecx&bslash;n&bslash;t&quot;
 l_string|&quot;  jmp       1b&bslash;n&quot;
-l_string|&quot;.previous&quot;
+id|LOCK_SECTION_END
 l_string|&quot;# ending down_read&bslash;n&bslash;t&quot;
 suffix:colon
 l_string|&quot;+m&quot;
@@ -236,13 +240,17 @@ multiline_comment|/* was the count 0 before? */
 l_string|&quot;  jnz       2f&bslash;n&bslash;t&quot;
 multiline_comment|/* jump if we weren&squot;t granted the lock */
 l_string|&quot;1:&bslash;n&bslash;t&quot;
-l_string|&quot;.section .text.lock,&bslash;&quot;ax&bslash;&quot;&bslash;n&quot;
+id|LOCK_SECTION_START
+c_func
+(paren
+l_string|&quot;&quot;
+)paren
 l_string|&quot;2:&bslash;n&bslash;t&quot;
 l_string|&quot;  pushl     %%ecx&bslash;n&bslash;t&quot;
 l_string|&quot;  call      rwsem_down_write_failed&bslash;n&bslash;t&quot;
 l_string|&quot;  popl      %%ecx&bslash;n&bslash;t&quot;
 l_string|&quot;  jmp       1b&bslash;n&quot;
-l_string|&quot;.previous&bslash;n&quot;
+id|LOCK_SECTION_END
 l_string|&quot;# ending down_write&quot;
 suffix:colon
 l_string|&quot;+d&quot;
@@ -297,7 +305,11 @@ multiline_comment|/* subtracts 1, returns the old value */
 l_string|&quot;  js        2f&bslash;n&bslash;t&quot;
 multiline_comment|/* jump if the lock is being waited upon */
 l_string|&quot;1:&bslash;n&bslash;t&quot;
-l_string|&quot;.section .text.lock,&bslash;&quot;ax&bslash;&quot;&bslash;n&quot;
+id|LOCK_SECTION_START
+c_func
+(paren
+l_string|&quot;&quot;
+)paren
 l_string|&quot;2:&bslash;n&bslash;t&quot;
 l_string|&quot;  decw      %%dx&bslash;n&bslash;t&quot;
 multiline_comment|/* do nothing if still outstanding active readers */
@@ -306,7 +318,7 @@ l_string|&quot;  pushl     %%ecx&bslash;n&bslash;t&quot;
 l_string|&quot;  call      rwsem_wake&bslash;n&bslash;t&quot;
 l_string|&quot;  popl      %%ecx&bslash;n&bslash;t&quot;
 l_string|&quot;  jmp       1b&bslash;n&quot;
-l_string|&quot;.previous&bslash;n&quot;
+id|LOCK_SECTION_END
 l_string|&quot;# ending __up_read&bslash;n&quot;
 suffix:colon
 l_string|&quot;+m&quot;
@@ -356,7 +368,11 @@ multiline_comment|/* tries to transition 0xffff0001 -&gt; 0x00000000 */
 l_string|&quot;  jnz       2f&bslash;n&bslash;t&quot;
 multiline_comment|/* jump if the lock is being waited upon */
 l_string|&quot;1:&bslash;n&bslash;t&quot;
-l_string|&quot;.section .text.lock,&bslash;&quot;ax&bslash;&quot;&bslash;n&quot;
+id|LOCK_SECTION_START
+c_func
+(paren
+l_string|&quot;&quot;
+)paren
 l_string|&quot;2:&bslash;n&bslash;t&quot;
 l_string|&quot;  decw      %%dx&bslash;n&bslash;t&quot;
 multiline_comment|/* did the active count reduce to 0? */
@@ -366,7 +382,7 @@ l_string|&quot;  pushl     %%ecx&bslash;n&bslash;t&quot;
 l_string|&quot;  call      rwsem_wake&bslash;n&bslash;t&quot;
 l_string|&quot;  popl      %%ecx&bslash;n&bslash;t&quot;
 l_string|&quot;  jmp       1b&bslash;n&quot;
-l_string|&quot;.previous&bslash;n&quot;
+id|LOCK_SECTION_END
 l_string|&quot;# ending __up_write&bslash;n&quot;
 suffix:colon
 l_string|&quot;+m&quot;

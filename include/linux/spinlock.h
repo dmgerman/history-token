@@ -41,6 +41,14 @@ DECL|macro|write_unlock_bh
 mdefine_line|#define write_unlock_bh(lock)&t;&t;&t;do { write_unlock(lock); local_bh_enable();        } while (0)
 DECL|macro|spin_trylock_bh
 mdefine_line|#define spin_trylock_bh(lock)&t;&t;&t;({ int __r; local_bh_disable();&bslash;&n;&t;&t;&t;&t;&t;&t;__r = spin_trylock(lock);      &bslash;&n;&t;&t;&t;&t;&t;&t;if (!__r) local_bh_enable();   &bslash;&n;&t;&t;&t;&t;&t;&t;__r; })
+multiline_comment|/* Must define these before including other files, inline functions need them */
+macro_line|#include &lt;linux/stringify.h&gt;
+DECL|macro|LOCK_SECTION_NAME
+mdefine_line|#define LOCK_SECTION_NAME&t;&t;&t;&bslash;&n;&t;&quot;.text.lock.&quot; __stringify(KBUILD_BASENAME)
+DECL|macro|LOCK_SECTION_START
+mdefine_line|#define LOCK_SECTION_START(extra)&t;&t;&bslash;&n;&t;&quot;.subsection 1&bslash;n&bslash;t&quot;&t;&t;&t;&bslash;&n;&t;extra&t;&t;&t;&t;&t;&bslash;&n;&t;&quot;.ifndef &quot; LOCK_SECTION_NAME &quot;&bslash;n&bslash;t&quot;&t;&bslash;&n;&t;LOCK_SECTION_NAME &quot;:&bslash;n&bslash;t&quot;&t;&t;&bslash;&n;&t;&quot;.endif&bslash;n&bslash;t&quot;
+DECL|macro|LOCK_SECTION_END
+mdefine_line|#define LOCK_SECTION_END&t;&t;&t;&bslash;&n;&t;&quot;.previous&bslash;n&bslash;t&quot;
 macro_line|#ifdef CONFIG_SMP
 macro_line|#include &lt;asm/spinlock.h&gt;
 macro_line|#elif !defined(spin_lock_init) /* !SMP and spin_lock_init not previously&n;                                  defined (e.g. by including asm/spinlock.h */
