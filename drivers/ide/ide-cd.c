@@ -998,152 +998,6 @@ id|ide_preempt
 )paren
 suffix:semicolon
 )brace
-multiline_comment|/*&n; * This is our end_request replacement function.&n; */
-DECL|function|ide_cdrom_end_request
-r_static
-r_int
-id|ide_cdrom_end_request
-(paren
-id|ide_drive_t
-op_star
-id|drive
-comma
-r_int
-id|uptodate
-)paren
-(brace
-r_struct
-id|request
-op_star
-id|rq
-suffix:semicolon
-r_int
-r_int
-id|flags
-suffix:semicolon
-r_int
-id|ret
-op_assign
-l_int|1
-suffix:semicolon
-id|spin_lock_irqsave
-c_func
-(paren
-op_amp
-id|ide_lock
-comma
-id|flags
-)paren
-suffix:semicolon
-id|rq
-op_assign
-id|HWGROUP
-c_func
-(paren
-id|drive
-)paren
-op_member_access_from_pointer
-id|rq
-suffix:semicolon
-multiline_comment|/*&n;&t; * decide whether to reenable DMA -- 3 is a random magic for now,&n;&t; * if we DMA timeout more than 3 times, just stay in PIO&n;&t; */
-r_if
-c_cond
-(paren
-id|drive-&gt;state
-op_eq
-id|DMA_PIO_RETRY
-op_logical_and
-id|drive-&gt;retry_pio
-op_le
-l_int|3
-)paren
-(brace
-id|drive-&gt;state
-op_assign
-l_int|0
-suffix:semicolon
-id|HWGROUP
-c_func
-(paren
-id|drive
-)paren
-op_member_access_from_pointer
-id|hwif
-op_member_access_from_pointer
-id|dmaproc
-c_func
-(paren
-id|ide_dma_on
-comma
-id|drive
-)paren
-suffix:semicolon
-)brace
-r_if
-c_cond
-(paren
-op_logical_neg
-id|end_that_request_first
-c_func
-(paren
-id|rq
-comma
-id|uptodate
-comma
-id|rq-&gt;hard_cur_sectors
-)paren
-)paren
-(brace
-id|add_blkdev_randomness
-c_func
-(paren
-id|major
-c_func
-(paren
-id|rq-&gt;rq_dev
-)paren
-)paren
-suffix:semicolon
-id|blkdev_dequeue_request
-c_func
-(paren
-id|rq
-)paren
-suffix:semicolon
-id|HWGROUP
-c_func
-(paren
-id|drive
-)paren
-op_member_access_from_pointer
-id|rq
-op_assign
-l_int|NULL
-suffix:semicolon
-id|end_that_request_last
-c_func
-(paren
-id|rq
-)paren
-suffix:semicolon
-id|ret
-op_assign
-l_int|0
-suffix:semicolon
-)brace
-id|spin_unlock_irqrestore
-c_func
-(paren
-op_amp
-id|ide_lock
-comma
-id|flags
-)paren
-suffix:semicolon
-r_return
-id|ret
-suffix:semicolon
-)brace
 multiline_comment|/*&n; * Error reporting, in human readable form (luxurious, but a memory hog).&n; */
 DECL|function|ide_cdrom_dump_status
 id|byte
@@ -1166,10 +1020,15 @@ r_int
 r_int
 id|flags
 suffix:semicolon
-id|byte
-id|err
+id|atapi_status_t
+id|status
+suffix:semicolon
+id|atapi_error_t
+id|error
+suffix:semicolon
+id|status.all
 op_assign
-l_int|0
+id|stat
 suffix:semicolon
 id|local_irq_set
 c_func
@@ -1199,9 +1058,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|stat
-op_amp
-id|BUSY_STAT
+id|status.b.bsy
 )paren
 id|printk
 c_func
@@ -1214,9 +1071,7 @@ r_else
 r_if
 c_cond
 (paren
-id|stat
-op_amp
-id|READY_STAT
+id|status.b.drdy
 )paren
 id|printk
 c_func
@@ -1227,9 +1082,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|stat
-op_amp
-id|WRERR_STAT
+id|status.b.df
 )paren
 id|printk
 c_func
@@ -1240,9 +1093,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|stat
-op_amp
-id|SEEK_STAT
+id|status.b.dsc
 )paren
 id|printk
 c_func
@@ -1253,9 +1104,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|stat
-op_amp
-id|DRQ_STAT
+id|status.b.drq
 )paren
 id|printk
 c_func
@@ -1266,9 +1115,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|stat
-op_amp
-id|ECC_STAT
+id|status.b.corr
 )paren
 id|printk
 c_func
@@ -1279,9 +1126,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|stat
-op_amp
-id|INDEX_STAT
+id|status.b.idx
 )paren
 id|printk
 c_func
@@ -1292,9 +1137,7 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|stat
-op_amp
-id|ERR_STAT
+id|status.b.check
 )paren
 id|printk
 c_func
@@ -1320,23 +1163,30 @@ r_if
 c_cond
 (paren
 (paren
-id|stat
+id|status.all
 op_amp
 (paren
-id|BUSY_STAT
+id|status.b.bsy
 op_or
-id|ERR_STAT
+id|status.b.check
 )paren
 )paren
 op_eq
-id|ERR_STAT
+id|status.b.check
 )paren
 (brace
-id|err
+id|error.all
 op_assign
-id|GET_ERR
+id|HWIF
 c_func
 (paren
+id|drive
+)paren
+op_member_access_from_pointer
+id|INB
+c_func
+(paren
+id|IDE_ERROR_REG
 )paren
 suffix:semicolon
 id|printk
@@ -1348,10 +1198,67 @@ id|drive-&gt;name
 comma
 id|msg
 comma
-id|err
+id|error.all
 )paren
 suffix:semicolon
 macro_line|#if FANCY_STATUS_DUMPS
+r_if
+c_cond
+(paren
+id|error.b.ili
+)paren
+id|printk
+c_func
+(paren
+l_string|&quot;IllegalLengthIndication &quot;
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|error.b.eom
+)paren
+id|printk
+c_func
+(paren
+l_string|&quot;EndOfMedia &quot;
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|error.b.abrt
+)paren
+id|printk
+c_func
+(paren
+l_string|&quot;Aborted Command &quot;
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|error.b.mcr
+)paren
+id|printk
+c_func
+(paren
+l_string|&quot;MediaChangeRequested &quot;
+)paren
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|error.b.sense_key
+)paren
+id|printk
+c_func
+(paren
+l_string|&quot;LastFailedSense 0x%02x &quot;
+comma
+id|error.b.sense_key
+)paren
+suffix:semicolon
 macro_line|#endif&t;/* FANCY_STATUS_DUMPS */
 id|printk
 c_func
@@ -1367,7 +1274,7 @@ id|flags
 )paren
 suffix:semicolon
 r_return
-id|err
+id|error.all
 suffix:semicolon
 )brace
 multiline_comment|/*&n; * ide_error() takes action based on the error returned by the drive.&n; */
@@ -1492,12 +1399,23 @@ op_or_assign
 id|ERROR_RESET
 suffix:semicolon
 )brace
+r_else
+(brace
+multiline_comment|/* add decoding error stuff */
+)brace
 r_if
 c_cond
 (paren
-id|GET_STAT
+id|HWIF
 c_func
 (paren
+id|drive
+)paren
+op_member_access_from_pointer
+id|INB
+c_func
+(paren
+id|IDE_STATUS_REG
 )paren
 op_amp
 (paren
@@ -1507,7 +1425,13 @@ id|DRQ_STAT
 )paren
 )paren
 multiline_comment|/* force an abort */
-id|OUT_BYTE
+id|HWIF
+c_func
+(paren
+id|drive
+)paren
+op_member_access_from_pointer
+id|OUTB
 c_func
 (paren
 id|WIN_IDLEIMMEDIATE
@@ -1533,6 +1457,8 @@ id|end_request
 c_func
 (paren
 id|drive
+comma
+l_int|0
 comma
 l_int|0
 )paren
@@ -1652,10 +1578,10 @@ suffix:semicolon
 r_if
 c_cond
 (paren
+id|blk_fs_request
+c_func
 (paren
-id|rq-&gt;flags
-op_amp
-id|REQ_CMD
+id|rq
 )paren
 op_logical_and
 op_logical_neg
@@ -1665,12 +1591,14 @@ id|uptodate
 op_assign
 l_int|1
 suffix:semicolon
-id|ide_cdrom_end_request
+id|ide_end_request
 c_func
 (paren
 id|drive
 comma
 id|uptodate
+comma
+id|rq-&gt;hard_cur_sectors
 )paren
 suffix:semicolon
 )brace
@@ -1722,17 +1650,22 @@ op_star
 id|pc
 suffix:semicolon
 multiline_comment|/* Check for errors. */
-id|stat
-op_assign
-id|GET_STAT
-c_func
-(paren
-)paren
-suffix:semicolon
 op_star
 id|stat_ret
 op_assign
 id|stat
+op_assign
+id|HWIF
+c_func
+(paren
+id|drive
+)paren
+op_member_access_from_pointer
+id|INB
+c_func
+(paren
+id|IDE_STATUS_REG
+)paren
 suffix:semicolon
 r_if
 c_cond
@@ -1752,9 +1685,16 @@ suffix:semicolon
 multiline_comment|/* Get the IDE error register. */
 id|err
 op_assign
-id|GET_ERR
+id|HWIF
 c_func
 (paren
+id|drive
+)paren
+op_member_access_from_pointer
+id|INB
+c_func
+(paren
+id|IDE_ERROR_REG
 )paren
 suffix:semicolon
 id|sense_key
@@ -1984,9 +1924,11 @@ r_else
 r_if
 c_cond
 (paren
-id|rq-&gt;flags
-op_amp
-id|REQ_CMD
+id|blk_fs_request
+c_func
+(paren
+id|rq
+)paren
 )paren
 (brace
 multiline_comment|/* Handle errors from READ and WRITE requests. */
@@ -2122,6 +2064,34 @@ id|stat
 suffix:semicolon
 r_return
 l_int|1
+suffix:semicolon
+)brace
+r_else
+r_if
+c_cond
+(paren
+id|sense_key
+op_eq
+id|MEDIUM_ERROR
+)paren
+(brace
+multiline_comment|/* No point in re-trying a zillion times on a bad &n;&t;&t;&t; * sector...  If we got here the error is not correctable */
+id|ide_dump_status
+(paren
+id|drive
+comma
+l_string|&quot;media error (bad sector)&quot;
+comma
+id|stat
+)paren
+suffix:semicolon
+id|cdrom_end_request
+c_func
+(paren
+id|drive
+comma
+l_int|0
+)paren
 suffix:semicolon
 )brace
 r_else
@@ -2344,11 +2314,9 @@ c_func
 id|drive
 )paren
 op_member_access_from_pointer
-id|dmaproc
+id|ide_dma_read
 c_func
 (paren
-id|ide_dma_read
-comma
 id|drive
 )paren
 suffix:semicolon
@@ -2371,11 +2339,9 @@ c_func
 id|drive
 )paren
 op_member_access_from_pointer
-id|dmaproc
+id|ide_dma_write
 c_func
 (paren
-id|ide_dma_write
-comma
 id|drive
 )paren
 suffix:semicolon
@@ -2391,7 +2357,13 @@ suffix:semicolon
 )brace
 )brace
 multiline_comment|/* Set up the controller registers. */
-id|OUT_BYTE
+id|HWIF
+c_func
+(paren
+id|drive
+)paren
+op_member_access_from_pointer
+id|OUTB
 c_func
 (paren
 id|info-&gt;dma
@@ -2399,15 +2371,27 @@ comma
 id|IDE_FEATURE_REG
 )paren
 suffix:semicolon
-id|OUT_BYTE
+id|HWIF
+c_func
+(paren
+id|drive
+)paren
+op_member_access_from_pointer
+id|OUTB
 c_func
 (paren
 l_int|0
 comma
-id|IDE_NSECTOR_REG
+id|IDE_IREASON_REG
 )paren
 suffix:semicolon
-id|OUT_BYTE
+id|HWIF
+c_func
+(paren
+id|drive
+)paren
+op_member_access_from_pointer
+id|OUTB
 c_func
 (paren
 l_int|0
@@ -2415,24 +2399,36 @@ comma
 id|IDE_SECTOR_REG
 )paren
 suffix:semicolon
-id|OUT_BYTE
+id|HWIF
+c_func
+(paren
+id|drive
+)paren
+op_member_access_from_pointer
+id|OUTB
 c_func
 (paren
 id|xferlen
 op_amp
 l_int|0xff
 comma
-id|IDE_LCYL_REG
+id|IDE_BCOUNTL_REG
 )paren
 suffix:semicolon
-id|OUT_BYTE
+id|HWIF
+c_func
+(paren
+id|drive
+)paren
+op_member_access_from_pointer
+id|OUTB
 c_func
 (paren
 id|xferlen
 op_rshift
 l_int|8
 comma
-id|IDE_HCYL_REG
+id|IDE_BCOUNTH_REG
 )paren
 suffix:semicolon
 r_if
@@ -2440,7 +2436,13 @@ c_cond
 (paren
 id|IDE_CONTROL_REG
 )paren
-id|OUT_BYTE
+id|HWIF
+c_func
+(paren
+id|drive
+)paren
+op_member_access_from_pointer
+id|OUTB
 c_func
 (paren
 id|drive-&gt;ctl
@@ -2463,11 +2465,9 @@ c_func
 id|drive
 )paren
 op_member_access_from_pointer
-id|dmaproc
+id|ide_dma_begin
 c_func
 (paren
-id|ide_dma_begin
-comma
 id|drive
 )paren
 )paren
@@ -2496,7 +2496,6 @@ id|handler
 op_ne
 l_int|NULL
 )paren
-multiline_comment|/* paranoia check */
 id|BUG
 c_func
 (paren
@@ -2513,7 +2512,14 @@ comma
 id|cdrom_timer_expiry
 )paren
 suffix:semicolon
-id|OUT_BYTE
+multiline_comment|/* packet command */
+id|HWIF
+c_func
+(paren
+id|drive
+)paren
+op_member_access_from_pointer
+id|OUTB
 c_func
 (paren
 id|WIN_PACKETCMD
@@ -2521,14 +2527,20 @@ comma
 id|IDE_COMMAND_REG
 )paren
 suffix:semicolon
-multiline_comment|/* packet command */
 r_return
 id|ide_started
 suffix:semicolon
 )brace
 r_else
 (brace
-id|OUT_BYTE
+multiline_comment|/* packet command */
+id|HWIF
+c_func
+(paren
+id|drive
+)paren
+op_member_access_from_pointer
+id|OUTB
 c_func
 (paren
 id|WIN_PACKETCMD
@@ -2536,7 +2548,6 @@ comma
 id|IDE_COMMAND_REG
 )paren
 suffix:semicolon
-multiline_comment|/* packet command */
 r_return
 (paren
 op_star
@@ -2597,6 +2608,7 @@ r_if
 c_cond
 (paren
 id|CDROM_CONFIG_FLAGS
+c_func
 (paren
 id|drive
 )paren
@@ -2613,6 +2625,7 @@ r_if
 c_cond
 (paren
 id|cdrom_decode_status
+c_func
 (paren
 op_amp
 id|startstop
@@ -2636,6 +2649,7 @@ r_if
 c_cond
 (paren
 id|ide_wait_stat
+c_func
 (paren
 op_amp
 id|startstop
@@ -2674,6 +2688,7 @@ c_func
 suffix:semicolon
 multiline_comment|/* Arm the interrupt handler. */
 id|ide_set_handler
+c_func
 (paren
 id|drive
 comma
@@ -2685,7 +2700,14 @@ id|cdrom_timer_expiry
 )paren
 suffix:semicolon
 multiline_comment|/* Send the command to the device. */
+id|HWIF
+c_func
+(paren
+id|drive
+)paren
+op_member_access_from_pointer
 id|atapi_output_bytes
+c_func
 (paren
 id|drive
 comma
@@ -2786,7 +2808,14 @@ OG
 l_int|0
 )paren
 (brace
+id|HWIF
+c_func
+(paren
+id|drive
+)paren
+op_member_access_from_pointer
 id|atapi_input_bytes
+c_func
 (paren
 id|drive
 comma
@@ -2824,7 +2853,14 @@ id|dum
 id|SECTOR_SIZE
 )braket
 suffix:semicolon
+id|HWIF
+c_func
+(paren
+id|drive
+)paren
+op_member_access_from_pointer
 id|atapi_input_bytes
+c_func
 (paren
 id|drive
 comma
@@ -2904,7 +2940,14 @@ id|dum
 op_assign
 l_int|0
 suffix:semicolon
+id|HWIF
+c_func
+(paren
+id|drive
+)paren
+op_member_access_from_pointer
 id|atapi_output_bytes
+c_func
 (paren
 id|drive
 comma
@@ -2936,9 +2979,19 @@ l_int|1
 )paren
 (brace
 multiline_comment|/* Some drives (ASUS) seem to tell us that status&n;&t;&t; * info is available. just get it and ignore.&n;&t;&t; */
-id|GET_STAT
+(paren
+r_void
+)paren
+id|HWIF
 c_func
 (paren
+id|drive
+)paren
+op_member_access_from_pointer
+id|INB
+c_func
+(paren
+id|IDE_STATUS_REG
 )paren
 suffix:semicolon
 r_return
@@ -3001,9 +3054,16 @@ id|info
 op_assign
 id|drive-&gt;driver_data
 suffix:semicolon
-r_int
-id|i
+id|u8
+id|lowcyl
+op_assign
+l_int|0
 comma
+id|highcyl
+op_assign
+l_int|0
+suffix:semicolon
+r_int
 id|dma
 op_assign
 id|info-&gt;dma
@@ -3051,11 +3111,9 @@ c_func
 id|drive
 )paren
 op_member_access_from_pointer
-id|dmaproc
+id|ide_dma_end
 c_func
 (paren
-id|ide_dma_end
-comma
 id|drive
 )paren
 )paren
@@ -3066,11 +3124,9 @@ c_func
 id|drive
 )paren
 op_member_access_from_pointer
-id|dmaproc
+id|ide_dma_off
 c_func
 (paren
-id|ide_dma_off
-comma
 id|drive
 )paren
 suffix:semicolon
@@ -3107,32 +3163,16 @@ op_logical_neg
 id|dma_error
 )paren
 (brace
-r_for
-c_loop
-(paren
-id|i
-op_assign
-id|rq-&gt;nr_sectors
-suffix:semicolon
-id|i
-OG
-l_int|0
-suffix:semicolon
-)paren
-(brace
-id|i
-op_sub_assign
-id|rq-&gt;current_nr_sectors
-suffix:semicolon
-id|ide_cdrom_end_request
+id|ide_end_request
 c_func
 (paren
 id|drive
 comma
 l_int|1
+comma
+id|rq-&gt;nr_sectors
 )paren
 suffix:semicolon
-)brace
 r_return
 id|ide_stopped
 suffix:semicolon
@@ -3159,26 +3199,54 @@ suffix:semicolon
 multiline_comment|/* Read the interrupt reason and the transfer length. */
 id|ireason
 op_assign
-id|IN_BYTE
+id|HWIF
 c_func
 (paren
-id|IDE_NSECTOR_REG
+id|drive
+)paren
+op_member_access_from_pointer
+id|INB
+c_func
+(paren
+id|IDE_IREASON_REG
+)paren
+suffix:semicolon
+id|lowcyl
+op_assign
+id|HWIF
+c_func
+(paren
+id|drive
+)paren
+op_member_access_from_pointer
+id|INB
+c_func
+(paren
+id|IDE_BCOUNTL_REG
+)paren
+suffix:semicolon
+id|highcyl
+op_assign
+id|HWIF
+c_func
+(paren
+id|drive
+)paren
+op_member_access_from_pointer
+id|INB
+c_func
+(paren
+id|IDE_BCOUNTH_REG
 )paren
 suffix:semicolon
 id|len
 op_assign
-id|IN_BYTE
-c_func
-(paren
-id|IDE_LCYL_REG
-)paren
+id|lowcyl
 op_plus
+(paren
 l_int|256
 op_star
-id|IN_BYTE
-c_func
-(paren
-id|IDE_HCYL_REG
+id|highcyl
 )paren
 suffix:semicolon
 multiline_comment|/* If DRQ is clear, the command has completed. */
@@ -3276,6 +3344,7 @@ r_if
 c_cond
 (paren
 id|CDROM_CONFIG_FLAGS
+c_func
 (paren
 id|drive
 )paren
@@ -3295,6 +3364,7 @@ l_string|&quot;  Trying to limit transfer sizes&bslash;n&quot;
 )paren
 suffix:semicolon
 id|CDROM_CONFIG_FLAGS
+c_func
 (paren
 id|drive
 )paren
@@ -3360,7 +3430,14 @@ id|dum
 id|SECTOR_SIZE
 )braket
 suffix:semicolon
+id|HWIF
+c_func
+(paren
+id|drive
+)paren
+op_member_access_from_pointer
 id|atapi_input_bytes
+c_func
 (paren
 id|drive
 comma
@@ -3457,6 +3534,12 @@ OG
 l_int|0
 )paren
 (brace
+id|HWIF
+c_func
+(paren
+id|drive
+)paren
+op_member_access_from_pointer
 id|atapi_input_bytes
 c_func
 (paren
@@ -3693,6 +3776,7 @@ l_int|0
 )paren
 (brace
 id|printk
+c_func
 (paren
 l_string|&quot;%s: cdrom_read_from_buffer: buffer botch (%ld)&bslash;n&quot;
 comma
@@ -4184,6 +4268,7 @@ id|jiffies
 suffix:semicolon
 r_return
 id|cdrom_start_packet_command
+c_func
 (paren
 id|drive
 comma
@@ -4467,11 +4552,21 @@ suffix:semicolon
 id|ide_startstop_t
 id|startstop
 suffix:semicolon
+id|u8
+id|lowcyl
+op_assign
+l_int|0
+comma
+id|highcyl
+op_assign
+l_int|0
+suffix:semicolon
 multiline_comment|/* Check for errors. */
 r_if
 c_cond
 (paren
 id|cdrom_decode_status
+c_func
 (paren
 op_amp
 id|startstop
@@ -4490,23 +4585,54 @@ suffix:semicolon
 multiline_comment|/* Read the interrupt reason and the transfer length. */
 id|ireason
 op_assign
-id|IN_BYTE
+id|HWIF
+c_func
 (paren
-id|IDE_NSECTOR_REG
+id|drive
+)paren
+op_member_access_from_pointer
+id|INB
+c_func
+(paren
+id|IDE_IREASON_REG
+)paren
+suffix:semicolon
+id|lowcyl
+op_assign
+id|HWIF
+c_func
+(paren
+id|drive
+)paren
+op_member_access_from_pointer
+id|INB
+c_func
+(paren
+id|IDE_BCOUNTL_REG
+)paren
+suffix:semicolon
+id|highcyl
+op_assign
+id|HWIF
+c_func
+(paren
+id|drive
+)paren
+op_member_access_from_pointer
+id|INB
+c_func
+(paren
+id|IDE_BCOUNTH_REG
 )paren
 suffix:semicolon
 id|len
 op_assign
-id|IN_BYTE
-(paren
-id|IDE_LCYL_REG
-)paren
+id|lowcyl
 op_plus
+(paren
 l_int|256
 op_star
-id|IN_BYTE
-(paren
-id|IDE_HCYL_REG
+id|highcyl
 )paren
 suffix:semicolon
 multiline_comment|/* If DRQ is clear, the command has completed.&n;&t;   Complain if we still have data left to transfer. */
@@ -4627,7 +4753,14 @@ l_int|0
 )paren
 (brace
 multiline_comment|/* Transfer the data. */
+id|HWIF
+c_func
+(paren
+id|drive
+)paren
+op_member_access_from_pointer
 id|atapi_output_bytes
+c_func
 (paren
 id|drive
 comma
@@ -4650,7 +4783,14 @@ id|dum
 op_assign
 l_int|0
 suffix:semicolon
+id|HWIF
+c_func
+(paren
+id|drive
+)paren
+op_member_access_from_pointer
 id|atapi_output_bytes
+c_func
 (paren
 id|drive
 comma
@@ -4696,7 +4836,14 @@ l_int|2
 )paren
 (brace
 multiline_comment|/* Transfer the data. */
+id|HWIF
+c_func
+(paren
+id|drive
+)paren
+op_member_access_from_pointer
 id|atapi_input_bytes
+c_func
 (paren
 id|drive
 comma
@@ -4719,7 +4866,14 @@ id|dum
 op_assign
 l_int|0
 suffix:semicolon
+id|HWIF
+c_func
+(paren
+id|drive
+)paren
+op_member_access_from_pointer
 id|atapi_input_bytes
+c_func
 (paren
 id|drive
 comma
@@ -4780,7 +4934,6 @@ id|handler
 op_ne
 l_int|NULL
 )paren
-multiline_comment|/* paranoia check */
 id|BUG
 c_func
 (paren
@@ -4788,6 +4941,7 @@ c_func
 suffix:semicolon
 multiline_comment|/* Now we wait for another interrupt. */
 id|ide_set_handler
+c_func
 (paren
 id|drive
 comma
@@ -4926,6 +5080,7 @@ suffix:semicolon
 multiline_comment|/* Start sending the command to the drive. */
 r_return
 id|cdrom_start_packet_command
+c_func
 (paren
 id|drive
 comma
@@ -5037,6 +5192,7 @@ op_star
 id|pc
 suffix:semicolon
 id|ide_do_drive_cmd
+c_func
 (paren
 id|drive
 comma
@@ -5071,6 +5227,7 @@ op_eq
 id|UNIT_ATTENTION
 )paren
 id|cdrom_saw_media_change
+c_func
 (paren
 id|drive
 )paren
@@ -5194,6 +5351,12 @@ id|dum
 op_assign
 l_int|0
 suffix:semicolon
+id|HWIF
+c_func
+(paren
+id|drive
+)paren
+op_member_access_from_pointer
 id|atapi_output_bytes
 c_func
 (paren
@@ -5273,8 +5436,6 @@ op_assign
 id|drive-&gt;driver_data
 suffix:semicolon
 r_int
-id|i
-comma
 id|dma_error
 op_assign
 l_int|0
@@ -5282,6 +5443,15 @@ comma
 id|dma
 op_assign
 id|info-&gt;dma
+suffix:semicolon
+id|u8
+id|lowcyl
+op_assign
+l_int|0
+comma
+id|highcyl
+op_assign
+l_int|0
 suffix:semicolon
 id|ide_startstop_t
 id|startstop
@@ -5322,11 +5492,9 @@ c_func
 id|drive
 )paren
 op_member_access_from_pointer
-id|dmaproc
+id|ide_dma_end
 c_func
 (paren
-id|ide_dma_end
-comma
 id|drive
 )paren
 )paren
@@ -5344,11 +5512,9 @@ c_func
 id|drive
 )paren
 op_member_access_from_pointer
-id|dmaproc
+id|ide_dma_off
 c_func
 (paren
-id|ide_dma_off
-comma
 id|drive
 )paren
 suffix:semicolon
@@ -5411,42 +5577,16 @@ comma
 id|stat
 )paren
 suffix:semicolon
-id|rq
-op_assign
-id|HWGROUP
-c_func
-(paren
-id|drive
-)paren
-op_member_access_from_pointer
-id|rq
-suffix:semicolon
-r_for
-c_loop
-(paren
-id|i
-op_assign
-id|rq-&gt;nr_sectors
-suffix:semicolon
-id|i
-OG
-l_int|0
-suffix:semicolon
-)paren
-(brace
-id|i
-op_sub_assign
-id|rq-&gt;current_nr_sectors
-suffix:semicolon
-id|ide_cdrom_end_request
+id|ide_end_request
 c_func
 (paren
 id|drive
 comma
 l_int|1
+comma
+id|rq-&gt;nr_sectors
 )paren
 suffix:semicolon
-)brace
 r_return
 id|ide_stopped
 suffix:semicolon
@@ -5454,26 +5594,54 @@ suffix:semicolon
 multiline_comment|/* Read the interrupt reason and the transfer length. */
 id|ireason
 op_assign
-id|IN_BYTE
+id|HWIF
 c_func
 (paren
-id|IDE_NSECTOR_REG
+id|drive
+)paren
+op_member_access_from_pointer
+id|INB
+c_func
+(paren
+id|IDE_IREASON_REG
+)paren
+suffix:semicolon
+id|lowcyl
+op_assign
+id|HWIF
+c_func
+(paren
+id|drive
+)paren
+op_member_access_from_pointer
+id|INB
+c_func
+(paren
+id|IDE_BCOUNTL_REG
+)paren
+suffix:semicolon
+id|highcyl
+op_assign
+id|HWIF
+c_func
+(paren
+id|drive
+)paren
+op_member_access_from_pointer
+id|INB
+c_func
+(paren
+id|IDE_BCOUNTH_REG
 )paren
 suffix:semicolon
 id|len
 op_assign
-id|IN_BYTE
-c_func
-(paren
-id|IDE_LCYL_REG
-)paren
+id|lowcyl
 op_plus
+(paren
 l_int|256
 op_star
-id|IN_BYTE
-c_func
-(paren
-id|IDE_HCYL_REG
+id|highcyl
 )paren
 suffix:semicolon
 multiline_comment|/* If DRQ is clear, the command has completed. */
@@ -5606,6 +5774,12 @@ OG
 l_int|0
 )paren
 (brace
+id|HWIF
+c_func
+(paren
+id|drive
+)paren
+op_member_access_from_pointer
 id|atapi_output_bytes
 c_func
 (paren
@@ -5998,9 +6172,11 @@ suffix:semicolon
 r_if
 c_cond
 (paren
-id|rq-&gt;flags
-op_amp
-id|REQ_CMD
+id|blk_fs_request
+c_func
+(paren
+id|rq
+)paren
 )paren
 (brace
 r_if
@@ -6026,9 +6202,16 @@ suffix:semicolon
 r_int
 id|stat
 op_assign
-id|GET_STAT
+id|HWIF
 c_func
 (paren
+id|drive
+)paren
+op_member_access_from_pointer
+id|INB
+c_func
+(paren
+id|IDE_STATUS_REG
 )paren
 suffix:semicolon
 r_if
@@ -6611,6 +6794,7 @@ suffix:semicolon
 id|stat
 op_assign
 id|cdrom_queue_packet_command
+c_func
 (paren
 id|drive
 comma
@@ -6650,6 +6834,7 @@ id|drive-&gt;name
 )paren
 suffix:semicolon
 id|CDROM_CONFIG_FLAGS
+c_func
 (paren
 id|drive
 )paren
@@ -6691,6 +6876,7 @@ op_eq
 l_int|0
 )paren
 id|CDROM_STATE_FLAGS
+c_func
 (paren
 id|drive
 )paren
@@ -6802,6 +6988,7 @@ l_int|0
 suffix:semicolon
 r_return
 id|cdrom_queue_packet_command
+c_func
 (paren
 id|drive
 comma
@@ -7050,6 +7237,7 @@ l_int|2
 suffix:semicolon
 r_return
 id|cdrom_queue_packet_command
+c_func
 (paren
 id|drive
 comma
@@ -7238,6 +7426,7 @@ r_if
 c_cond
 (paren
 id|CDROM_CONFIG_FLAGS
+c_func
 (paren
 id|drive
 )paren
@@ -7248,6 +7437,7 @@ id|toctracks_as_bcd
 id|toc-&gt;hdr.first_track
 op_assign
 id|bcd2bin
+c_func
 (paren
 id|toc-&gt;hdr.first_track
 )paren
@@ -7255,6 +7445,7 @@ suffix:semicolon
 id|toc-&gt;hdr.last_track
 op_assign
 id|bcd2bin
+c_func
 (paren
 id|toc-&gt;hdr.last_track
 )paren
@@ -7404,6 +7595,7 @@ r_if
 c_cond
 (paren
 id|CDROM_CONFIG_FLAGS
+c_func
 (paren
 id|drive
 )paren
@@ -7461,6 +7653,7 @@ r_if
 c_cond
 (paren
 id|CDROM_CONFIG_FLAGS
+c_func
 (paren
 id|drive
 )paren
@@ -7471,6 +7664,7 @@ id|toctracks_as_bcd
 id|toc-&gt;hdr.first_track
 op_assign
 id|bcd2bin
+c_func
 (paren
 id|toc-&gt;hdr.first_track
 )paren
@@ -7478,6 +7672,7 @@ suffix:semicolon
 id|toc-&gt;hdr.last_track
 op_assign
 id|bcd2bin
+c_func
 (paren
 id|toc-&gt;hdr.last_track
 )paren
@@ -7504,6 +7699,7 @@ r_if
 c_cond
 (paren
 id|CDROM_CONFIG_FLAGS
+c_func
 (paren
 id|drive
 )paren
@@ -7515,6 +7711,7 @@ r_if
 c_cond
 (paren
 id|CDROM_CONFIG_FLAGS
+c_func
 (paren
 id|drive
 )paren
@@ -7529,6 +7726,7 @@ dot
 id|track
 op_assign
 id|bcd2bin
+c_func
 (paren
 id|toc-&gt;ent
 (braket
@@ -7539,6 +7737,7 @@ id|track
 )paren
 suffix:semicolon
 id|msf_from_bcd
+c_func
 (paren
 op_amp
 id|toc-&gt;ent
@@ -7656,6 +7855,7 @@ r_if
 c_cond
 (paren
 id|CDROM_CONFIG_FLAGS
+c_func
 (paren
 id|drive
 )paren
@@ -7743,6 +7943,7 @@ id|SECTORS_PER_FRAME
 suffix:semicolon
 multiline_comment|/* Remember that we&squot;ve read this stuff. */
 id|CDROM_STATE_FLAGS
+c_func
 (paren
 id|drive
 )paren
@@ -8828,6 +9029,7 @@ suffix:semicolon
 id|stat
 op_assign
 id|cdrom_get_toc_entry
+c_func
 (paren
 id|drive
 comma
@@ -9123,6 +9325,7 @@ c_cond
 id|stat
 op_assign
 id|cdrom_select_speed
+c_func
 (paren
 id|drive
 comma
@@ -9141,6 +9344,7 @@ suffix:semicolon
 id|cdi-&gt;speed
 op_assign
 id|CDROM_STATE_FLAGS
+c_func
 (paren
 id|drive
 )paren
@@ -9509,6 +9713,7 @@ suffix:semicolon
 id|retval
 op_assign
 id|CDROM_STATE_FLAGS
+c_func
 (paren
 id|drive
 )paren
@@ -9516,6 +9721,7 @@ op_member_access_from_pointer
 id|media_changed
 suffix:semicolon
 id|CDROM_STATE_FLAGS
+c_func
 (paren
 id|drive
 )paren
@@ -9714,27 +9920,16 @@ id|devinfo-&gt;mask
 op_assign
 l_int|0
 suffix:semicolon
-op_star
-(paren
-r_int
-op_star
-)paren
-op_amp
 id|devinfo-&gt;speed
 op_assign
 id|CDROM_STATE_FLAGS
+c_func
 (paren
 id|drive
 )paren
 op_member_access_from_pointer
 id|current_speed
 suffix:semicolon
-op_star
-(paren
-r_int
-op_star
-)paren
-op_amp
 id|devinfo-&gt;capacity
 op_assign
 id|nslots
@@ -9761,6 +9956,7 @@ c_cond
 (paren
 op_logical_neg
 id|CDROM_CONFIG_FLAGS
+c_func
 (paren
 id|drive
 )paren
@@ -9776,6 +9972,7 @@ c_cond
 (paren
 op_logical_neg
 id|CDROM_CONFIG_FLAGS
+c_func
 (paren
 id|drive
 )paren
@@ -9791,6 +9988,7 @@ c_cond
 (paren
 op_logical_neg
 id|CDROM_CONFIG_FLAGS
+c_func
 (paren
 id|drive
 )paren
@@ -9806,6 +10004,7 @@ c_cond
 (paren
 op_logical_neg
 id|CDROM_CONFIG_FLAGS
+c_func
 (paren
 id|drive
 )paren
@@ -9821,6 +10020,7 @@ c_cond
 (paren
 op_logical_neg
 id|CDROM_CONFIG_FLAGS
+c_func
 (paren
 id|drive
 )paren
@@ -9836,6 +10036,7 @@ c_cond
 (paren
 op_logical_neg
 id|CDROM_CONFIG_FLAGS
+c_func
 (paren
 id|drive
 )paren
@@ -9851,6 +10052,7 @@ c_cond
 (paren
 op_logical_neg
 id|CDROM_CONFIG_FLAGS
+c_func
 (paren
 id|drive
 )paren
@@ -9866,6 +10068,7 @@ c_cond
 (paren
 op_logical_neg
 id|CDROM_CONFIG_FLAGS
+c_func
 (paren
 id|drive
 )paren
@@ -10102,6 +10305,7 @@ r_if
 c_cond
 (paren
 id|CDROM_CONFIG_FLAGS
+c_func
 (paren
 id|drive
 )paren
@@ -10110,6 +10314,7 @@ id|nec260
 )paren
 (brace
 id|CDROM_CONFIG_FLAGS
+c_func
 (paren
 id|drive
 )paren
@@ -10119,6 +10324,7 @@ op_assign
 l_int|0
 suffix:semicolon
 id|CDROM_CONFIG_FLAGS
+c_func
 (paren
 id|drive
 )paren
@@ -10154,6 +10360,7 @@ op_eq
 l_int|0
 )paren
 id|CDROM_CONFIG_FLAGS
+c_func
 (paren
 id|drive
 )paren
@@ -10168,6 +10375,7 @@ c_cond
 id|cap.eject
 )paren
 id|CDROM_CONFIG_FLAGS
+c_func
 (paren
 id|drive
 )paren
@@ -10182,6 +10390,7 @@ c_cond
 id|cap.cd_r_write
 )paren
 id|CDROM_CONFIG_FLAGS
+c_func
 (paren
 id|drive
 )paren
@@ -10196,6 +10405,7 @@ c_cond
 id|cap.cd_rw_write
 )paren
 id|CDROM_CONFIG_FLAGS
+c_func
 (paren
 id|drive
 )paren
@@ -10210,6 +10420,7 @@ c_cond
 id|cap.test_write
 )paren
 id|CDROM_CONFIG_FLAGS
+c_func
 (paren
 id|drive
 )paren
@@ -10228,6 +10439,7 @@ op_logical_or
 id|cap.dvd_rom
 )paren
 id|CDROM_CONFIG_FLAGS
+c_func
 (paren
 id|drive
 )paren
@@ -10242,6 +10454,7 @@ c_cond
 id|cap.dvd_ram_write
 )paren
 id|CDROM_CONFIG_FLAGS
+c_func
 (paren
 id|drive
 )paren
@@ -10256,6 +10469,7 @@ c_cond
 id|cap.dvd_r_write
 )paren
 id|CDROM_CONFIG_FLAGS
+c_func
 (paren
 id|drive
 )paren
@@ -10270,6 +10484,7 @@ c_cond
 id|cap.audio_play
 )paren
 id|CDROM_CONFIG_FLAGS
+c_func
 (paren
 id|drive
 )paren
@@ -10290,6 +10505,7 @@ op_eq
 id|mechtype_popup
 )paren
 id|CDROM_CONFIG_FLAGS
+c_func
 (paren
 id|drive
 )paren
@@ -10303,6 +10519,7 @@ r_if
 c_cond
 (paren
 id|strcmp
+c_func
 (paren
 id|drive-&gt;id-&gt;model
 comma
@@ -10312,6 +10529,7 @@ op_eq
 l_int|0
 op_logical_or
 id|strcmp
+c_func
 (paren
 id|drive-&gt;id-&gt;model
 comma
@@ -10321,6 +10539,7 @@ op_eq
 l_int|0
 op_logical_or
 id|strcmp
+c_func
 (paren
 id|drive-&gt;id-&gt;model
 comma
@@ -10330,6 +10549,7 @@ op_eq
 l_int|0
 op_logical_or
 id|strcmp
+c_func
 (paren
 id|drive-&gt;id-&gt;model
 comma
@@ -10339,6 +10559,7 @@ op_eq
 l_int|0
 )paren
 id|CDROM_CONFIG_FLAGS
+c_func
 (paren
 id|drive
 )paren
@@ -10357,6 +10578,7 @@ l_int|0
 )paren
 (brace
 id|CDROM_CONFIG_FLAGS
+c_func
 (paren
 id|drive
 )paren
@@ -10401,6 +10623,7 @@ l_int|1
 )paren
 (brace
 id|CDROM_CONFIG_FLAGS
+c_func
 (paren
 id|drive
 )paren
@@ -10410,6 +10633,7 @@ op_assign
 l_int|1
 suffix:semicolon
 id|CDROM_CONFIG_FLAGS
+c_func
 (paren
 id|drive
 )paren
@@ -10445,6 +10669,7 @@ l_int|4
 )paren
 (brace
 id|CDROM_STATE_FLAGS
+c_func
 (paren
 id|drive
 )paren
@@ -10470,6 +10695,7 @@ op_div
 l_int|176
 suffix:semicolon
 id|CDROM_CONFIG_FLAGS
+c_func
 (paren
 id|drive
 )paren
@@ -10498,6 +10724,7 @@ suffix:semicolon
 r_else
 (brace
 id|CDROM_STATE_FLAGS
+c_func
 (paren
 id|drive
 )paren
@@ -10521,6 +10748,7 @@ op_div
 l_int|176
 suffix:semicolon
 id|CDROM_CONFIG_FLAGS
+c_func
 (paren
 id|drive
 )paren
@@ -10601,6 +10829,7 @@ r_if
 c_cond
 (paren
 id|CDROM_CONFIG_FLAGS
+c_func
 (paren
 id|drive
 )paren
@@ -10608,6 +10837,7 @@ op_member_access_from_pointer
 id|dvd_r
 op_or
 id|CDROM_CONFIG_FLAGS
+c_func
 (paren
 id|drive
 )paren
@@ -10615,11 +10845,13 @@ op_member_access_from_pointer
 id|dvd_ram
 )paren
 id|printk
+c_func
 (paren
 l_string|&quot; DVD%s%s&quot;
 comma
 (paren
 id|CDROM_CONFIG_FLAGS
+c_func
 (paren
 id|drive
 )paren
@@ -10634,6 +10866,7 @@ l_string|&quot;&quot;
 comma
 (paren
 id|CDROM_CONFIG_FLAGS
+c_func
 (paren
 id|drive
 )paren
@@ -10651,6 +10884,7 @@ r_if
 c_cond
 (paren
 id|CDROM_CONFIG_FLAGS
+c_func
 (paren
 id|drive
 )paren
@@ -10658,6 +10892,7 @@ op_member_access_from_pointer
 id|cd_r
 op_or
 id|CDROM_CONFIG_FLAGS
+c_func
 (paren
 id|drive
 )paren
@@ -10665,11 +10900,13 @@ op_member_access_from_pointer
 id|cd_rw
 )paren
 id|printk
+c_func
 (paren
 l_string|&quot; CD%s%s&quot;
 comma
 (paren
 id|CDROM_CONFIG_FLAGS
+c_func
 (paren
 id|drive
 )paren
@@ -10684,6 +10921,7 @@ l_string|&quot;&quot;
 comma
 (paren
 id|CDROM_CONFIG_FLAGS
+c_func
 (paren
 id|drive
 )paren
@@ -10701,6 +10939,7 @@ r_if
 c_cond
 (paren
 id|CDROM_CONFIG_FLAGS
+c_func
 (paren
 id|drive
 )paren
@@ -10708,6 +10947,7 @@ op_member_access_from_pointer
 id|is_changer
 )paren
 id|printk
+c_func
 (paren
 l_string|&quot; changer w/%d slots&quot;
 comma
@@ -10716,11 +10956,13 @@ id|nslots
 suffix:semicolon
 r_else
 id|printk
+c_func
 (paren
 l_string|&quot; drive&quot;
 )paren
 suffix:semicolon
 id|printk
+c_func
 (paren
 l_string|&quot;, %dkB Cache&quot;
 comma
@@ -10746,11 +10988,9 @@ c_func
 id|drive
 )paren
 op_member_access_from_pointer
-id|dmaproc
+id|ide_dma_verbose
 c_func
 (paren
-id|ide_dma_verbose
-comma
 id|drive
 )paren
 suffix:semicolon
@@ -11075,6 +11315,7 @@ op_assign
 l_int|0
 suffix:semicolon
 id|CDROM_STATE_FLAGS
+c_func
 (paren
 id|drive
 )paren
@@ -11084,6 +11325,7 @@ op_assign
 l_int|1
 suffix:semicolon
 id|CDROM_STATE_FLAGS
+c_func
 (paren
 id|drive
 )paren
@@ -11093,6 +11335,7 @@ op_assign
 l_int|0
 suffix:semicolon
 id|CDROM_STATE_FLAGS
+c_func
 (paren
 id|drive
 )paren
@@ -11103,6 +11346,7 @@ l_int|0
 suffix:semicolon
 macro_line|#if NO_DOOR_LOCKING
 id|CDROM_CONFIG_FLAGS
+c_func
 (paren
 id|drive
 )paren
@@ -11113,6 +11357,7 @@ l_int|1
 suffix:semicolon
 macro_line|#else
 id|CDROM_CONFIG_FLAGS
+c_func
 (paren
 id|drive
 )paren
@@ -11130,6 +11375,7 @@ op_ne
 l_int|NULL
 )paren
 id|CDROM_CONFIG_FLAGS
+c_func
 (paren
 id|drive
 )paren
@@ -11148,6 +11394,7 @@ l_int|0x20
 suffix:semicolon
 r_else
 id|CDROM_CONFIG_FLAGS
+c_func
 (paren
 id|drive
 )paren
@@ -11157,6 +11404,7 @@ op_assign
 l_int|0
 suffix:semicolon
 id|CDROM_CONFIG_FLAGS
+c_func
 (paren
 id|drive
 )paren
@@ -11166,6 +11414,7 @@ op_assign
 l_int|0
 suffix:semicolon
 id|CDROM_CONFIG_FLAGS
+c_func
 (paren
 id|drive
 )paren
@@ -11175,6 +11424,7 @@ op_assign
 l_int|0
 suffix:semicolon
 id|CDROM_CONFIG_FLAGS
+c_func
 (paren
 id|drive
 )paren
@@ -11184,6 +11434,7 @@ op_assign
 l_int|0
 suffix:semicolon
 id|CDROM_CONFIG_FLAGS
+c_func
 (paren
 id|drive
 )paren
@@ -11193,6 +11444,7 @@ op_assign
 l_int|0
 suffix:semicolon
 id|CDROM_CONFIG_FLAGS
+c_func
 (paren
 id|drive
 )paren
@@ -11202,6 +11454,7 @@ op_assign
 l_int|0
 suffix:semicolon
 id|CDROM_CONFIG_FLAGS
+c_func
 (paren
 id|drive
 )paren
@@ -11211,6 +11464,7 @@ op_assign
 l_int|0
 suffix:semicolon
 id|CDROM_CONFIG_FLAGS
+c_func
 (paren
 id|drive
 )paren
@@ -11220,6 +11474,7 @@ op_assign
 l_int|0
 suffix:semicolon
 id|CDROM_CONFIG_FLAGS
+c_func
 (paren
 id|drive
 )paren
@@ -11229,6 +11484,7 @@ op_assign
 l_int|1
 suffix:semicolon
 id|CDROM_CONFIG_FLAGS
+c_func
 (paren
 id|drive
 )paren
@@ -11238,6 +11494,7 @@ op_assign
 l_int|0
 suffix:semicolon
 id|CDROM_CONFIG_FLAGS
+c_func
 (paren
 id|drive
 )paren
@@ -11247,6 +11504,7 @@ op_assign
 l_int|0
 suffix:semicolon
 id|CDROM_CONFIG_FLAGS
+c_func
 (paren
 id|drive
 )paren
@@ -11257,6 +11515,7 @@ l_int|1
 suffix:semicolon
 multiline_comment|/* limit transfer size per interrupt. */
 id|CDROM_CONFIG_FLAGS
+c_func
 (paren
 id|drive
 )paren
@@ -11287,6 +11546,7 @@ l_string|&quot;SAMSUNG CD-ROM SCR-2430&quot;
 )paren
 )paren
 id|CDROM_CONFIG_FLAGS
+c_func
 (paren
 id|drive
 )paren
@@ -11309,6 +11569,7 @@ l_string|&quot;SAMSUNG CD-ROM SCR-2432&quot;
 )paren
 )paren
 id|CDROM_CONFIG_FLAGS
+c_func
 (paren
 id|drive
 )paren
@@ -11343,6 +11604,7 @@ op_assign
 l_int|0
 suffix:semicolon
 id|CDROM_CONFIG_FLAGS
+c_func
 (paren
 id|drive
 )paren
@@ -11352,6 +11614,7 @@ op_assign
 l_int|0
 suffix:semicolon
 id|CDROM_CONFIG_FLAGS
+c_func
 (paren
 id|drive
 )paren
@@ -11361,6 +11624,7 @@ op_assign
 l_int|0
 suffix:semicolon
 id|CDROM_CONFIG_FLAGS
+c_func
 (paren
 id|drive
 )paren
@@ -11370,6 +11634,7 @@ op_assign
 l_int|0
 suffix:semicolon
 id|CDROM_CONFIG_FLAGS
+c_func
 (paren
 id|drive
 )paren
@@ -11379,6 +11644,7 @@ op_assign
 l_int|0
 suffix:semicolon
 id|CDROM_CONFIG_FLAGS
+c_func
 (paren
 id|drive
 )paren
@@ -11424,6 +11690,7 @@ l_char|&squot;2&squot;
 (brace
 multiline_comment|/* Vertos 300.&n;&t;&t;&t;   Some versions of this drive like to talk BCD. */
 id|CDROM_CONFIG_FLAGS
+c_func
 (paren
 id|drive
 )paren
@@ -11433,6 +11700,7 @@ op_assign
 l_int|1
 suffix:semicolon
 id|CDROM_CONFIG_FLAGS
+c_func
 (paren
 id|drive
 )paren
@@ -11442,6 +11710,7 @@ op_assign
 l_int|1
 suffix:semicolon
 id|CDROM_CONFIG_FLAGS
+c_func
 (paren
 id|drive
 )paren
@@ -11451,6 +11720,7 @@ op_assign
 l_int|1
 suffix:semicolon
 id|CDROM_CONFIG_FLAGS
+c_func
 (paren
 id|drive
 )paren
@@ -11490,6 +11760,7 @@ l_char|&squot;2&squot;
 (brace
 multiline_comment|/* Vertos 600 ESD. */
 id|CDROM_CONFIG_FLAGS
+c_func
 (paren
 id|drive
 )paren
@@ -11504,6 +11775,7 @@ r_if
 c_cond
 (paren
 id|strcmp
+c_func
 (paren
 id|drive-&gt;id-&gt;model
 comma
@@ -11513,6 +11785,7 @@ op_eq
 l_int|0
 op_logical_and
 id|strncmp
+c_func
 (paren
 id|drive-&gt;id-&gt;fw_rev
 comma
@@ -11527,6 +11800,7 @@ l_int|0
 multiline_comment|/* FIXME */
 multiline_comment|/* Old NEC260 (not R).&n;&t;&t;&t;   This drive was released before the 1.2 version&n;&t;&t;&t;   of the spec. */
 id|CDROM_CONFIG_FLAGS
+c_func
 (paren
 id|drive
 )paren
@@ -11536,6 +11810,7 @@ op_assign
 l_int|1
 suffix:semicolon
 id|CDROM_CONFIG_FLAGS
+c_func
 (paren
 id|drive
 )paren
@@ -11545,6 +11820,7 @@ op_assign
 l_int|1
 suffix:semicolon
 id|CDROM_CONFIG_FLAGS
+c_func
 (paren
 id|drive
 )paren
@@ -11554,6 +11830,7 @@ op_assign
 l_int|1
 suffix:semicolon
 id|CDROM_CONFIG_FLAGS
+c_func
 (paren
 id|drive
 )paren
@@ -11568,6 +11845,7 @@ r_if
 c_cond
 (paren
 id|strcmp
+c_func
 (paren
 id|drive-&gt;id-&gt;model
 comma
@@ -11577,6 +11855,7 @@ op_eq
 l_int|0
 op_logical_and
 id|strncmp
+c_func
 (paren
 id|drive-&gt;id-&gt;fw_rev
 comma
@@ -11591,6 +11870,7 @@ l_int|0
 multiline_comment|/* FIXME */
 multiline_comment|/* Wearnes */
 id|CDROM_CONFIG_FLAGS
+c_func
 (paren
 id|drive
 )paren
@@ -11600,6 +11880,7 @@ op_assign
 l_int|1
 suffix:semicolon
 id|CDROM_CONFIG_FLAGS
+c_func
 (paren
 id|drive
 )paren
@@ -11719,10 +12000,56 @@ comma
 l_int|0
 )paren
 suffix:semicolon
+macro_line|#if 0
+id|drive-&gt;dsc_overlap
+op_assign
+(paren
+id|HWIF
+c_func
+(paren
+id|drive
+)paren
+op_member_access_from_pointer
+id|no_dsc
+)paren
+ques
+c_cond
+l_int|0
+suffix:colon
+l_int|1
+suffix:semicolon
+r_if
+c_cond
+(paren
+id|HWIF
+c_func
+(paren
+id|drive
+)paren
+op_member_access_from_pointer
+id|no_dsc
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_INFO
+l_string|&quot;ide-cd: %s: disabling DSC overlap&bslash;n&quot;
+comma
+id|drive-&gt;name
+)paren
+suffix:semicolon
+id|drive-&gt;dsc_overlap
+op_assign
+l_int|0
+suffix:semicolon
+)brace
+macro_line|#endif
 r_if
 c_cond
 (paren
 id|ide_cdrom_register
+c_func
 (paren
 id|drive
 comma
@@ -11786,6 +12113,7 @@ id|arg
 (brace
 r_return
 id|cdrom_ioctl
+c_func
 (paren
 id|inode
 comma
@@ -12038,13 +12366,26 @@ r_if
 c_cond
 (paren
 id|ide_unregister_subdriver
+c_func
 (paren
 id|drive
 )paren
 )paren
+(brace
+id|printk
+c_func
+(paren
+l_string|&quot;%s: %s: failed to ide_unregister_subdriver&bslash;n&quot;
+comma
+id|__FUNCTION__
+comma
+id|drive-&gt;name
+)paren
+suffix:semicolon
 r_return
 l_int|1
 suffix:semicolon
+)brace
 r_if
 c_cond
 (paren
@@ -12092,11 +12433,13 @@ op_eq
 id|drive
 op_logical_and
 id|unregister_cdrom
+c_func
 (paren
 id|devinfo
 )paren
 )paren
 id|printk
+c_func
 (paren
 l_string|&quot;%s: ide_cdrom_cleanup failed to unregister device from the cdrom driver.&bslash;n&quot;
 comma
@@ -12125,7 +12468,7 @@ suffix:semicolon
 )brace
 r_static
 r_int
-id|ide_cdrom_reinit
+id|ide_cdrom_attach
 (paren
 id|ide_drive_t
 op_star
@@ -12199,7 +12542,7 @@ id|ide_do_rw_cdrom
 comma
 id|end_request
 suffix:colon
-id|ide_cdrom_end_request
+l_int|NULL
 comma
 id|sense
 suffix:colon
@@ -12245,9 +12588,9 @@ id|proc
 suffix:colon
 l_int|NULL
 comma
-id|reinit
+id|attach
 suffix:colon
-id|ide_cdrom_reinit
+id|ide_cdrom_attach
 comma
 id|ata_prebuilder
 suffix:colon
@@ -12289,10 +12632,10 @@ c_func
 l_string|&quot;ATAPI CD-ROM Driver&quot;
 )paren
 suffix:semicolon
-DECL|function|ide_cdrom_reinit
+DECL|function|ide_cdrom_attach
 r_static
 r_int
-id|ide_cdrom_reinit
+id|ide_cdrom_attach
 (paren
 id|ide_drive_t
 op_star
@@ -12428,6 +12771,7 @@ l_int|NULL
 )paren
 (brace
 id|printk
+c_func
 (paren
 l_string|&quot;%s: Can&squot;t allocate a cdrom structure&bslash;n&quot;
 comma
@@ -12442,6 +12786,7 @@ r_if
 c_cond
 (paren
 id|ide_register_subdriver
+c_func
 (paren
 id|drive
 comma
@@ -12453,6 +12798,7 @@ id|IDE_SUBDRIVER_VERSION
 )paren
 (brace
 id|printk
+c_func
 (paren
 l_string|&quot;%s: Failed to register the driver with ide.c&bslash;n&quot;
 comma
@@ -12460,6 +12806,7 @@ id|drive-&gt;name
 )paren
 suffix:semicolon
 id|kfree
+c_func
 (paren
 id|info
 )paren
@@ -12469,6 +12816,7 @@ id|failed
 suffix:semicolon
 )brace
 id|memset
+c_func
 (paren
 id|info
 comma
@@ -12498,6 +12846,7 @@ r_if
 c_cond
 (paren
 id|ide_cdrom_setup
+c_func
 (paren
 id|drive
 )paren
@@ -12521,6 +12870,7 @@ id|busy
 op_decrement
 suffix:semicolon
 id|ide_unregister_subdriver
+c_func
 (paren
 id|drive
 )paren
@@ -12572,6 +12922,7 @@ op_eq
 id|drive
 op_logical_and
 id|unregister_cdrom
+c_func
 (paren
 id|devinfo
 )paren

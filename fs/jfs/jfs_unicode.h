@@ -44,7 +44,8 @@ r_int
 id|get_UCSname
 c_func
 (paren
-id|component_t
+r_struct
+id|component_name
 op_star
 comma
 r_struct

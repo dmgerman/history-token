@@ -9,7 +9,7 @@ DECL|macro|L2INODESLOTSIZE
 mdefine_line|#define L2INODESLOTSIZE         7
 DECL|macro|log2INODESIZE
 mdefine_line|#define log2INODESIZE           9&t;/* log2(bytes per dinode) */
-multiline_comment|/*&n; *      on-disk inode (dinode_t): 512 bytes&n; *&n; * note: align 64-bit fields on 8-byte boundary.&n; */
+multiline_comment|/*&n; *      on-disk inode : 512 bytes&n; *&n; * note: align 64-bit fields on 8-byte boundary.&n; */
 DECL|struct|dinode
 r_struct
 id|dinode
@@ -121,7 +121,8 @@ r_struct
 (brace
 multiline_comment|/*&n;&t;&t;&t; * This table contains the information needed to&n;&t;&t;&t; * find a directory entry from a 32-bit index.&n;&t;&t;&t; * If the index is small enough, the table is inline,&n;&t;&t;&t; * otherwise, an x-tree root overlays this table&n;&t;&t;&t; */
 DECL|member|_table
-id|dir_table_slot_t
+r_struct
+id|dir_table_slot
 id|_table
 (braket
 l_int|12
@@ -259,12 +260,6 @@ DECL|member|u
 id|u
 suffix:semicolon
 )brace
-suffix:semicolon
-DECL|typedef|dinode_t
-r_typedef
-r_struct
-id|dinode
-id|dinode_t
 suffix:semicolon
 multiline_comment|/* extended mode bits (on-disk inode di_mode) */
 DECL|macro|IFJOURNAL

@@ -36,13 +36,6 @@ id|nlmclnt_proc
 )paren
 suffix:semicolon
 multiline_comment|/* NFS server entry points/hooks */
-DECL|variable|nlmsvc_invalidate_client
-id|EXPORT_SYMBOL
-c_func
-(paren
-id|nlmsvc_invalidate_client
-)paren
-suffix:semicolon
 DECL|variable|nlmsvc_ops
 id|EXPORT_SYMBOL
 c_func

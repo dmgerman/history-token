@@ -161,6 +161,14 @@ DECL|member|addr
 id|u32
 id|addr
 suffix:semicolon
+DECL|member|vers
+id|u32
+id|vers
+suffix:semicolon
+DECL|member|proto
+id|u32
+id|proto
+suffix:semicolon
 )brace
 suffix:semicolon
 multiline_comment|/*&n; * Contents of statd callback when monitored host rebooted&n; */

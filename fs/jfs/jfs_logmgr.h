@@ -24,8 +24,9 @@ DECL|macro|LOGVERSION
 mdefine_line|#define&t;LOGVERSION&t;1
 DECL|macro|MAX_ACTIVE
 mdefine_line|#define MAX_ACTIVE&t;128&t;/* Max active file systems sharing log */
-r_typedef
+DECL|struct|logsuper
 r_struct
+id|logsuper
 (brace
 DECL|member|magic
 id|u32
@@ -105,9 +106,7 @@ id|MAX_ACTIVE
 )braket
 suffix:semicolon
 multiline_comment|/* 2048: active file systems list */
-DECL|typedef|logsuper_t
 )brace
-id|logsuper_t
 suffix:semicolon
 DECL|macro|NULL_UUID
 mdefine_line|#define NULL_UUID &quot;&bslash;0&bslash;0&bslash;0&bslash;0&bslash;0&bslash;0&bslash;0&bslash;0&bslash;0&bslash;0&bslash;0&bslash;0&bslash;0&bslash;0&bslash;0&bslash;0&quot;
@@ -122,8 +121,9 @@ mdefine_line|#define LOGWRAP&t;&t;2&t;/* log wrapped */
 DECL|macro|LOGREADERR
 mdefine_line|#define LOGREADERR&t;3&t;/* log read error detected in logredo() */
 multiline_comment|/*&n; *&t;log logical page&n; *&n; * (this comment should be rewritten !)&n; * the header and trailer structures (h,t) will normally have &n; * the same page and eor value.&n; * An exception to this occurs when a complete page write is not &n; * accomplished on a power failure. Since the hardware may &quot;split write&quot;&n; * sectors in the page, any out of order sequence may occur during powerfail &n; * and needs to be recognized during log replay.  The xor value is&n; * an &quot;exclusive or&quot; of all log words in the page up to eor.  This&n; * 32 bit eor is stored with the top 16 bits in the header and the&n; * bottom 16 bits in the trailer.  logredo can easily recognize pages&n; * that were not completed by reconstructing this eor and checking &n; * the log page.&n; *&n; * Previous versions of the operating system did not allow split &n; * writes and detected partially written records in logredo by &n; * ordering the updates to the header, trailer, and the move of data &n; * into the logdata area.  The order: (1) data is moved (2) header &n; * is updated (3) trailer is updated.  In logredo, when the header &n; * differed from the trailer, the header and trailer were reconciled &n; * as follows: if h.page != t.page they were set to the smaller of &n; * the two and h.eor and t.eor set to 8 (i.e. empty page). if (only) &n; * h.eor != t.eor they were set to the smaller of their two values.&n; */
-r_typedef
+DECL|struct|logpage
 r_struct
+id|logpage
 (brace
 r_struct
 (brace
@@ -181,9 +181,7 @@ DECL|member|t
 )brace
 id|t
 suffix:semicolon
-DECL|typedef|logpage_t
 )brace
-id|logpage_t
 suffix:semicolon
 DECL|macro|LOGPHDRSIZE
 mdefine_line|#define LOGPHDRSIZE&t;8&t;/* log page header size */
@@ -248,7 +246,6 @@ mdefine_line|#define&t;LOG_FREEXAD&t;&t;0x0002
 DECL|macro|LOG_FREEPXD
 mdefine_line|#define&t;LOG_FREEPXD&t;&t;0x0001
 DECL|struct|lrd
-r_typedef
 r_struct
 id|lrd
 (brace
@@ -490,16 +487,15 @@ DECL|member|log
 )brace
 id|log
 suffix:semicolon
-DECL|typedef|lrd_t
 )brace
-id|lrd_t
 suffix:semicolon
 multiline_comment|/* (36) */
 DECL|macro|LOGRDSIZE
 mdefine_line|#define&t;LOGRDSIZE&t;(sizeof(struct lrd))
 multiline_comment|/*&n; *&t;line vector descriptor&n; */
-r_typedef
+DECL|struct|lvd
 r_struct
+id|lvd
 (brace
 DECL|member|offset
 id|s16
@@ -509,13 +505,10 @@ DECL|member|length
 id|s16
 id|length
 suffix:semicolon
-DECL|typedef|lvd_t
 )brace
-id|lvd_t
 suffix:semicolon
 multiline_comment|/*&n; *&t;log logical volume&n; */
 DECL|struct|jfs_log
-r_typedef
 r_struct
 id|jfs_log
 (brace
@@ -713,9 +706,7 @@ l_int|16
 )braket
 suffix:semicolon
 multiline_comment|/* 16: 128-bit uuid of log device */
-DECL|typedef|log_t
 )brace
-id|log_t
 suffix:semicolon
 multiline_comment|/*&n; * Log flag&n; */
 DECL|macro|log_INLINELOG
@@ -725,10 +716,10 @@ mdefine_line|#define log_SYNCBARRIER&t;2
 DECL|macro|log_QUIESCE
 mdefine_line|#define log_QUIESCE&t;3
 multiline_comment|/*&n; * group commit flag&n; */
-multiline_comment|/* log_t */
+multiline_comment|/* jfs_log */
 DECL|macro|logGC_PAGEOUT
 mdefine_line|#define logGC_PAGEOUT&t;0x00000001
-multiline_comment|/* tblock_t/lbuf_t */
+multiline_comment|/* tblock/lbuf */
 DECL|macro|tblkGC_QUEUE
 mdefine_line|#define tblkGC_QUEUE&t;&t;0x0001
 DECL|macro|tblkGC_READY
@@ -753,12 +744,12 @@ mdefine_line|#define tblkGC_UNLOCKED&t;&t;0x0200&t;
 singleline_comment|// D230860
 multiline_comment|/*&n; *&t;&t;log cache buffer header&n; */
 DECL|struct|lbuf
-r_typedef
 r_struct
 id|lbuf
 (brace
 DECL|member|l_log
-id|log_t
+r_struct
+id|jfs_log
 op_star
 id|l_log
 suffix:semicolon
@@ -820,16 +811,13 @@ op_star
 id|l_page
 suffix:semicolon
 multiline_comment|/* The page itself */
-DECL|typedef|lbuf_t
 )brace
-id|lbuf_t
 suffix:semicolon
 multiline_comment|/* Reuse l_freelist for redrive list */
 DECL|macro|l_redrive_next
 mdefine_line|#define l_redrive_next l_freelist
-multiline_comment|/*&n; *&t;logsynclist block&n; *&n; * common logsyncblk prefix for jbuf_t and tblock_t&n; */
+multiline_comment|/*&n; *&t;logsynclist block&n; *&n; * common logsyncblk prefix for jbuf_t and tblock&n; */
 DECL|struct|logsyncblk
-r_typedef
 r_struct
 id|logsyncblk
 (brace
@@ -842,7 +830,7 @@ DECL|member|flag
 id|u16
 id|flag
 suffix:semicolon
-multiline_comment|/* only meaninful in tblock_t */
+multiline_comment|/* only meaninful in tblock */
 DECL|member|lid
 id|lid_t
 id|lid
@@ -859,9 +847,7 @@ id|list_head
 id|synclist
 suffix:semicolon
 multiline_comment|/* log sync list link */
-DECL|typedef|logsyncblk_t
 )brace
-id|logsyncblk_t
 suffix:semicolon
 multiline_comment|/*&n; *&t;logsynclist serialization (per log)&n; */
 DECL|macro|LOGSYNC_LOCK_INIT
@@ -883,7 +869,8 @@ id|super_block
 op_star
 id|sb
 comma
-id|log_t
+r_struct
+id|jfs_log
 op_star
 op_star
 id|log
@@ -894,7 +881,8 @@ r_void
 id|lmLogWait
 c_func
 (paren
-id|log_t
+r_struct
+id|jfs_log
 op_star
 id|log
 )paren
@@ -909,7 +897,8 @@ id|super_block
 op_star
 id|sb
 comma
-id|log_t
+r_struct
+id|jfs_log
 op_star
 id|log
 )paren
@@ -919,7 +908,8 @@ r_int
 id|lmLogSync
 c_func
 (paren
-id|log_t
+r_struct
+id|jfs_log
 op_star
 id|log
 comma
@@ -932,7 +922,8 @@ r_int
 id|lmLogShutdown
 c_func
 (paren
-id|log_t
+r_struct
+id|jfs_log
 op_star
 id|log
 )paren
@@ -942,7 +933,8 @@ r_int
 id|lmLogInit
 c_func
 (paren
-id|log_t
+r_struct
+id|jfs_log
 op_star
 id|log
 )paren
@@ -952,7 +944,8 @@ r_int
 id|lmLogFormat
 c_func
 (paren
-id|log_t
+r_struct
+id|jfs_log
 op_star
 id|log
 comma
