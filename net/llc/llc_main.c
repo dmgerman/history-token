@@ -133,6 +133,15 @@ id|llc_station
 id|llc_main_station
 suffix:semicolon
 multiline_comment|/* only one of its kind */
+DECL|macro|LLC_REFCNT_DEBUG
+macro_line|#undef LLC_REFCNT_DEBUG
+macro_line|#ifdef LLC_REFCNT_DEBUG
+DECL|variable|llc_sock_nr
+r_static
+id|atomic_t
+id|llc_sock_nr
+suffix:semicolon
+macro_line|#endif
 multiline_comment|/**&n; *&t;llc_sap_alloc - allocates and initializes sap.&n; *&n; *&t;Allocates and initializes sap.&n; */
 DECL|function|llc_sap_alloc
 r_struct
@@ -548,10 +557,10 @@ r_return
 id|rc
 suffix:semicolon
 )brace
-multiline_comment|/**&n; *     llc_sock_init - Initialize a socket with default llc values.&n; *     @sk: socket to intiailize.&n; */
-DECL|function|llc_sock_init
+multiline_comment|/**&n; *     llc_sk_init - Initializes a socket with default llc values.&n; *     @sk: socket to intiailize.&n; *&n; *     Initializes a socket with default llc values.&n; */
+DECL|function|llc_sk_init
 r_int
-id|llc_sock_init
+id|llc_sk_init
 c_func
 (paren
 r_struct
@@ -686,16 +695,19 @@ r_return
 id|rc
 suffix:semicolon
 )brace
-multiline_comment|/**&n; *&t;__llc_sock_alloc - Allocates LLC sock&n; *&t;@family: upper layer protocol family&n; *&n; *&t;Allocates a LLC sock and initializes it. Returns the new LLC sock&n; *&t;or %NULL if there&squot;s no memory available for one&n; */
-DECL|function|__llc_sock_alloc
+multiline_comment|/**&n; *&t;llc_sk_alloc - Allocates LLC sock&n; *&t;@family: upper layer protocol family&n; *&t;@priority: for allocation (%GFP_KERNEL, %GFP_ATOMIC, etc)&n; *&n; *&t;Allocates a LLC sock and initializes it. Returns the new LLC sock&n; *&t;or %NULL if there&squot;s no memory available for one&n; */
+DECL|function|llc_sk_alloc
 r_struct
 id|sock
 op_star
-id|__llc_sock_alloc
+id|llc_sk_alloc
 c_func
 (paren
 r_int
 id|family
+comma
+r_int
+id|priority
 )paren
 (brace
 r_struct
@@ -708,12 +720,14 @@ c_func
 (paren
 id|family
 comma
-id|GFP_ATOMIC
+id|priority
 comma
 l_int|1
 comma
 l_int|NULL
 )paren
+suffix:semicolon
+id|MOD_INC_USE_COUNT
 suffix:semicolon
 r_if
 c_cond
@@ -722,12 +736,12 @@ op_logical_neg
 id|sk
 )paren
 r_goto
-id|out
+id|decmod
 suffix:semicolon
 r_if
 c_cond
 (paren
-id|llc_sock_init
+id|llc_sk_init
 c_func
 (paren
 id|sk
@@ -744,6 +758,33 @@ comma
 id|sk
 )paren
 suffix:semicolon
+macro_line|#ifdef LLC_REFCNT_DEBUG
+id|atomic_inc
+c_func
+(paren
+op_amp
+id|llc_sock_nr
+)paren
+suffix:semicolon
+id|printk
+c_func
+(paren
+id|KERN_DEBUG
+l_string|&quot;LLC socket %p created in %s, now we have %d alive&bslash;n&quot;
+comma
+id|sk
+comma
+id|__FUNCTION__
+comma
+id|atomic_read
+c_func
+(paren
+op_amp
+id|llc_sock_nr
+)paren
+)paren
+suffix:semicolon
+macro_line|#endif
 id|out
 suffix:colon
 r_return
@@ -761,23 +802,24 @@ id|sk
 op_assign
 l_int|NULL
 suffix:semicolon
+id|decmod
+suffix:colon
+id|MOD_DEC_USE_COUNT
+suffix:semicolon
 r_goto
 id|out
 suffix:semicolon
 )brace
-multiline_comment|/**&n; *&t;__llc_sock_free - Frees a LLC socket&n; *&t;@sk - socket to free&n; *&n; *&t;Frees a LLC socket&n; */
-DECL|function|__llc_sock_free
+multiline_comment|/**&n; *&t;llc_sk_free - Frees a LLC socket&n; *&t;@sk - socket to free&n; *&n; *&t;Frees a LLC socket&n; */
+DECL|function|llc_sk_free
 r_void
-id|__llc_sock_free
+id|llc_sk_free
 c_func
 (paren
 r_struct
 id|sock
 op_star
 id|sk
-comma
-id|u8
-id|free
 )paren
 (brace
 r_struct
@@ -795,7 +837,7 @@ id|llc-&gt;state
 op_assign
 id|LLC_CONN_OUT_OF_SVC
 suffix:semicolon
-multiline_comment|/* stop all (possibly) running timers */
+multiline_comment|/* Stop all (possibly) running timers */
 id|llc_conn_ac_stop_all_timers
 c_func
 (paren
@@ -833,6 +875,13 @@ id|skb_queue_purge
 c_func
 (paren
 op_amp
+id|sk-&gt;receive_queue
+)paren
+suffix:semicolon
+id|skb_queue_purge
+c_func
+(paren
+op_amp
 id|sk-&gt;write_queue
 )paren
 suffix:semicolon
@@ -843,22 +892,95 @@ op_amp
 id|llc-&gt;pdu_unack_q
 )paren
 suffix:semicolon
+macro_line|#ifdef LLC_REFCNT_DEBUG
 r_if
 c_cond
 (paren
-id|free
+id|atomic_read
+c_func
+(paren
+op_amp
+id|sk-&gt;refcnt
 )paren
+op_ne
+l_int|1
+)paren
+(brace
+id|printk
+c_func
+(paren
+id|KERN_DEBUG
+l_string|&quot;Destruction of LLC sock %p delayed in %s, cnt=%d&bslash;n&quot;
+comma
+id|sk
+comma
+id|__FUNCTION__
+comma
+id|atomic_read
+c_func
+(paren
+op_amp
+id|sk-&gt;refcnt
+)paren
+)paren
+suffix:semicolon
+id|printk
+c_func
+(paren
+id|KERN_DEBUG
+l_string|&quot;%d LLC sockets are still alive&bslash;n&quot;
+comma
+id|atomic_read
+c_func
+(paren
+op_amp
+id|llc_sock_nr
+)paren
+)paren
+suffix:semicolon
+)brace
+r_else
+(brace
+id|atomic_dec
+c_func
+(paren
+op_amp
+id|llc_sock_nr
+)paren
+suffix:semicolon
+id|printk
+c_func
+(paren
+id|KERN_DEBUG
+l_string|&quot;LLC socket %p released in %s, %d are still alive&bslash;n&quot;
+comma
+id|sk
+comma
+id|__FUNCTION__
+comma
+id|atomic_read
+c_func
+(paren
+op_amp
+id|llc_sock_nr
+)paren
+)paren
+suffix:semicolon
+)brace
+macro_line|#endif
 id|sock_put
 c_func
 (paren
 id|sk
 )paren
 suffix:semicolon
+id|MOD_DEC_USE_COUNT
+suffix:semicolon
 )brace
-multiline_comment|/**&n; *&t;llc_sock_reset - resets a connection&n; *&t;@sk: LLC socket to reset&n; *&n; *&t;Resets a connection to the out of service state. Stops its timers&n; *&t;and frees any frames in the queues of the connection.&n; */
-DECL|function|llc_sock_reset
+multiline_comment|/**&n; *&t;llc_sk_reset - resets a connection&n; *&t;@sk: LLC socket to reset&n; *&n; *&t;Resets a connection to the out of service state. Stops its timers&n; *&t;and frees any frames in the queues of the connection.&n; */
+DECL|function|llc_sk_reset
 r_void
-id|llc_sock_reset
+id|llc_sk_reset
 c_func
 (paren
 r_struct
@@ -2087,7 +2209,7 @@ op_assign
 id|alloc_skb
 c_func
 (paren
-l_int|1
+l_int|0
 comma
 id|GFP_ATOMIC
 )paren

@@ -14,8 +14,7 @@ macro_line|#include &lt;net/llc_evnt.h&gt;
 macro_line|#include &lt;net/llc_c_ev.h&gt;
 macro_line|#include &lt;net/llc_s_ev.h&gt;
 macro_line|#include &lt;linux/trdevice.h&gt;
-macro_line|#if 1
-DECL|macro|dprintk
+macro_line|#if 0
 mdefine_line|#define dprintk(args...) printk(KERN_DEBUG args)
 macro_line|#else
 DECL|macro|dprintk
@@ -387,13 +386,28 @@ op_logical_neg
 id|sk
 )paren
 (brace
+r_struct
+id|llc_opt
+op_star
+id|llc
+suffix:semicolon
+id|dprintk
+c_func
+(paren
+l_string|&quot;%s: llc_lookup_established failed&bslash;n&quot;
+comma
+id|__FUNCTION__
+)paren
+suffix:semicolon
 multiline_comment|/*&n;&t;&t;&t; * FIXME: here we&squot;ll pass the sk-&gt;family of the&n;&t;&t;&t; * listening socket, if found, when&n;&t;&t;&t; * llc_lookup_listener is added in the next patches.&n;&t;&t;&t; */
 id|sk
 op_assign
-id|llc_sock_alloc
+id|llc_sk_alloc
 c_func
 (paren
 id|PF_LLC
+comma
+id|GFP_ATOMIC
 )paren
 suffix:semicolon
 r_if
@@ -405,24 +419,41 @@ id|sk
 r_goto
 id|drop
 suffix:semicolon
-id|memcpy
-c_func
-(paren
-op_amp
+id|llc
+op_assign
 id|llc_sk
 c_func
 (paren
 id|sk
 )paren
-op_member_access_from_pointer
+suffix:semicolon
+id|memcpy
+c_func
+(paren
+op_amp
+id|llc-&gt;laddr
+comma
+op_amp
 id|daddr
+comma
+r_sizeof
+(paren
+id|llc-&gt;laddr
+)paren
+)paren
+suffix:semicolon
+id|memcpy
+c_func
+(paren
+op_amp
+id|llc-&gt;daddr
 comma
 op_amp
 id|saddr
 comma
 r_sizeof
 (paren
-id|saddr
+id|llc-&gt;daddr
 )paren
 )paren
 suffix:semicolon
@@ -457,8 +488,8 @@ c_cond
 op_logical_neg
 id|sk-&gt;lock.users
 )paren
-id|rc
-op_assign
+(brace
+multiline_comment|/* rc = */
 id|llc_conn_rcv
 c_func
 (paren
@@ -467,8 +498,21 @@ comma
 id|skb
 )paren
 suffix:semicolon
+id|rc
+op_assign
+l_int|0
+suffix:semicolon
+)brace
 r_else
 (brace
+id|dprintk
+c_func
+(paren
+l_string|&quot;%s: adding to backlog...&bslash;n&quot;
+comma
+id|__FUNCTION__
+)paren
+suffix:semicolon
 id|llc_set_backlog_type
 c_func
 (paren

@@ -132,12 +132,6 @@ op_star
 id|sk
 suffix:semicolon
 multiline_comment|/* returned from REQUEST */
-DECL|member|handler
-r_void
-op_star
-id|handler
-suffix:semicolon
-multiline_comment|/* upper layer use,&n;&t;&t;&t;&t;&t;   stored in llc_opt-&gt;handler */
 DECL|member|link
 id|u16
 id|link

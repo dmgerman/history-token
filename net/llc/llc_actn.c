@@ -550,7 +550,7 @@ op_assign
 id|alloc_skb
 c_func
 (paren
-l_int|1
+l_int|0
 comma
 id|GFP_ATOMIC
 )paren

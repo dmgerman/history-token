@@ -103,7 +103,7 @@ id|NBR_CONN_STATES
 id|NBR_CONN_EV
 )braket
 suffix:semicolon
-multiline_comment|/**&n; *&t;llc_conn_state_process - sends event to connection state machine&n; *&t;@sk: connection&n; *&t;@skb: occurred event&n; *&n; *&t;Sends an event to connection state machine. after processing event&n; *&t;(executing it&squot;s actions and changing state), upper layer will be&n; *&t;indicated or confirmed, if needed. Returns 0 for success, 1 for&n; *&t;failure. The socket lock has to be held before calling this function.&n; */
+multiline_comment|/**&n; *&t;llc_conn_state_process - sends event to connection state machine&n; *&t;@sk: connection&n; *&t;@skb: occurred event&n; *&n; *&t;Sends an event to connection state machine. After processing event&n; *&t;(executing it&squot;s actions and changing state), upper layer will be&n; *&t;indicated or confirmed, if needed. Returns 0 for success, 1 for&n; *&t;failure. The socket lock has to be held before calling this function.&n; */
 DECL|function|llc_conn_state_process
 r_int
 id|llc_conn_state_process
@@ -203,35 +203,6 @@ c_func
 id|skb
 )paren
 suffix:semicolon
-macro_line|#ifdef THIS_BREAKS_DISCONNECT_NOTIFICATION_BADLY
-multiline_comment|/* check if the connection was freed by the state machine by&n;&t; * means of llc_conn_disc */
-r_if
-c_cond
-(paren
-id|rc
-op_eq
-l_int|2
-)paren
-(brace
-id|printk
-c_func
-(paren
-id|KERN_INFO
-l_string|&quot;%s: rc == 2&bslash;n&quot;
-comma
-id|__FUNCTION__
-)paren
-suffix:semicolon
-id|rc
-op_assign
-op_minus
-id|ECONNABORTED
-suffix:semicolon
-r_goto
-id|out
-suffix:semicolon
-)brace
-macro_line|#endif&t;/* THIS_BREAKS_DISCONNECT_NOTIFICATION_BADLY */
 r_if
 c_cond
 (paren
@@ -264,35 +235,19 @@ op_plus
 l_int|1
 )paren
 (brace
-r_struct
-id|sock
-op_star
-id|upper
-op_assign
-id|llc_sk
-c_func
-(paren
-id|skb-&gt;sk
-)paren
-op_member_access_from_pointer
-id|handler
-suffix:semicolon
-id|skb-&gt;sk
-op_assign
-id|upper
-suffix:semicolon
 r_if
 c_cond
 (paren
 id|sock_queue_rcv_skb
 c_func
 (paren
-id|upper
+id|skb-&gt;sk
 comma
 id|skb
 )paren
 )paren
 (brace
+multiline_comment|/*&n;&t;&t;&t;&t; * FIXME: have to sync the LLC state&n;&t;&t;&t;&t; *        machine wrt mem usage with&n;&t;&t;&t;&t; *        sk-&gt;{r,w}mem_alloc, will do&n;&t;&t;&t;&t; *        this soon 8)&n;&t;&t;&t;&t; */
 id|printk
 c_func
 (paren
@@ -366,28 +321,17 @@ id|llc-&gt;state
 )paren
 (brace
 multiline_comment|/* In this state, we can send I pdu */
-r_struct
-id|sock
-op_star
-id|upper
-op_assign
-id|llc_sk
-c_func
-(paren
-id|skb-&gt;sk
-)paren
-op_member_access_from_pointer
-id|handler
-suffix:semicolon
 r_if
 c_cond
 (paren
-id|upper
+id|skb-&gt;sk
 )paren
-id|wake_up
+id|skb-&gt;sk
+op_member_access_from_pointer
+id|write_space
 c_func
 (paren
-id|upper-&gt;sleep
+id|skb-&gt;sk
 )paren
 suffix:semicolon
 )brace
@@ -426,12 +370,6 @@ op_star
 id|skb
 )paren
 (brace
-id|llc_sock_assert
-c_func
-(paren
-id|sk
-)paren
-suffix:semicolon
 multiline_comment|/* queue PDU to send to MAC layer */
 id|skb_queue_tail
 c_func
@@ -1509,7 +1447,7 @@ r_return
 l_int|NULL
 suffix:semicolon
 )brace
-multiline_comment|/**&n; *&t;llc_exec_conn_trans_actions - executes related actions&n; *&t;@sk: connection&n; *&t;@trans: transition that it&squot;s actions must be performed&n; *&t;@skb: happened event&n; *&n; *&t;Executes actions that is related to happened event. Returns 0 for&n; *&t;success, 1 to indicate failure of at least one action or 2 if the&n; *&t;connection was freed (llc_conn_disc was called)&n; */
+multiline_comment|/**&n; *&t;llc_exec_conn_trans_actions - executes related actions&n; *&t;@sk: connection&n; *&t;@trans: transition that it&squot;s actions must be performed&n; *&t;@skb: event&n; *&n; *&t;Executes actions that is related to happened event. Returns 0 for&n; *&t;success, 1 to indicate failure of at least one action.&n; */
 DECL|function|llc_exec_conn_trans_actions
 r_static
 r_int
