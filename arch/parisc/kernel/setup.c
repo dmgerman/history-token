@@ -362,7 +362,7 @@ c_func
 )paren
 suffix:semicolon
 macro_line|#endif
-macro_line|#ifdef CONFIG_DUMMY_CONSOLE
+macro_line|#if defined(CONFIG_VT) &amp;&amp; defined(CONFIG_DUMMY_CONSOLE)
 id|conswitchp
 op_assign
 op_amp
@@ -504,6 +504,7 @@ suffix:semicolon
 DECL|function|parisc_proc_mkdir
 r_static
 r_void
+id|__init
 id|parisc_proc_mkdir
 c_func
 (paren
@@ -697,6 +698,7 @@ comma
 )brace
 suffix:semicolon
 DECL|function|parisc_init_resources
+r_static
 r_int
 id|__init
 id|parisc_init_resources
@@ -836,6 +838,14 @@ suffix:semicolon
 r_extern
 r_void
 id|ccio_init
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
+r_extern
+r_void
+id|hppb_init
 c_func
 (paren
 r_void
@@ -983,6 +993,13 @@ suffix:semicolon
 macro_line|#endif
 macro_line|#ifdef CONFIG_EISA
 id|eisa_init
+c_func
+(paren
+)paren
+suffix:semicolon
+macro_line|#endif
+macro_line|#if defined(CONFIG_HPPB)
+id|hppb_init
 c_func
 (paren
 )paren

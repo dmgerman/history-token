@@ -8,9 +8,13 @@ multiline_comment|/*&n; * PA 2.0 processors have 64-byte cachelines; PA 1.1 proc
 macro_line|#ifdef CONFIG_PA20
 DECL|macro|L1_CACHE_BYTES
 mdefine_line|#define L1_CACHE_BYTES 64
+DECL|macro|L1_CACHE_SHIFT
+mdefine_line|#define L1_CACHE_SHIFT 6
 macro_line|#else
 DECL|macro|L1_CACHE_BYTES
 mdefine_line|#define L1_CACHE_BYTES 32
+DECL|macro|L1_CACHE_SHIFT
+mdefine_line|#define L1_CACHE_SHIFT 5
 macro_line|#endif
 DECL|macro|L1_CACHE_ALIGN
 mdefine_line|#define L1_CACHE_ALIGN(x)       (((x)+(L1_CACHE_BYTES-1))&amp;~(L1_CACHE_BYTES-1))

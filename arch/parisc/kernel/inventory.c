@@ -9,6 +9,7 @@ macro_line|#include &lt;asm/io.h&gt;
 macro_line|#include &lt;asm/pdc.h&gt;
 macro_line|#include &lt;asm/processor.h&gt;
 macro_line|#include &lt;asm/page.h&gt;
+macro_line|#include &lt;asm/parisc-device.h&gt;
 multiline_comment|/*&n;** Debug options&n;** DEBUG_PAT Dump details which PDC PAT provides about ranges/devices.&n;*/
 DECL|macro|DEBUG_PAT
 macro_line|#undef DEBUG_PAT
@@ -1615,11 +1616,8 @@ op_assign
 id|PDC_OK
 suffix:semicolon
 multiline_comment|/*&n;&t; * first stop the usb controller, otherwise the machine&n;&t; * might crash during iommu setup&n;&t; */
-id|pdc_suspend_usb
-c_func
-(paren
-)paren
-suffix:semicolon
+macro_line|#warning We still probably need to worry about USB here, but how?
+multiline_comment|/* pdc_suspend_usb(); */
 r_for
 c_loop
 (paren
@@ -1829,6 +1827,14 @@ c_func
 r_void
 )paren
 (brace
+r_extern
+r_void
+id|parisc_generic_device_register
+c_func
+(paren
+r_void
+)paren
+suffix:semicolon
 id|printk
 c_func
 (paren
@@ -1881,6 +1887,11 @@ l_string|&quot;Unknown PDC type!&bslash;n&quot;
 )paren
 suffix:semicolon
 )brace
+id|parisc_generic_device_register
+c_func
+(paren
+)paren
+suffix:semicolon
 id|printk
 c_func
 (paren

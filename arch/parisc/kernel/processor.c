@@ -16,6 +16,7 @@ macro_line|#include &lt;asm/processor.h&gt;
 macro_line|#include &lt;asm/page.h&gt;
 macro_line|#include &lt;asm/pdc.h&gt;
 macro_line|#include &lt;asm/irq.h&gt;&t;&t;/* for struct irq_region */
+macro_line|#include &lt;asm/parisc-device.h&gt;
 DECL|variable|boot_cpu_data
 r_struct
 id|system_cpuinfo_parisc

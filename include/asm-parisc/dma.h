@@ -311,6 +311,9 @@ id|DMA2_MASK_REG
 suffix:semicolon
 macro_line|#endif
 )brace
+multiline_comment|/* reserve a DMA channel */
+DECL|macro|request_dma
+mdefine_line|#define request_dma(dmanr, device_id)&t;(0)
 multiline_comment|/* Clear the &squot;DMA Pointer Flip Flop&squot;.&n; * Write 0 for LSB/MSB, 1 for MSB/LSB access.&n; * Use this once to initialize the FF to a known state.&n; * After that, keep track of it. :-)&n; * --- In order to do that, the DMA routines below should ---&n; * --- only be used while holding the DMA lock ! ---&n; */
 DECL|function|clear_dma_ff
 r_static

@@ -285,9 +285,6 @@ mdefine_line|#define PARISC_KERNEL_DEATH&t;(1UL &lt;&lt; 31)&t;/* see die_if_ker
 DECL|macro|INIT_THREAD
 mdefine_line|#define INIT_THREAD { &bslash;&n;&t;regs:&t;{&t;gr: { 0, }, &bslash;&n;&t;&t;&t;fr: { 0, }, &bslash;&n;&t;&t;&t;sr: { 0, }, &bslash;&n;&t;&t;&t;iasq: { 0, }, &bslash;&n;&t;&t;&t;iaoq: { 0, }, &bslash;&n;&t;&t;&t;cr27: 0, &bslash;&n;&t;&t;}, &bslash;&n;&t;task_size:      DEFAULT_TASK_SIZE, &bslash;&n;&t;map_base:       DEFAULT_MAP_BASE, &bslash;&n;&t;flags:          0 &bslash;&n;&t;}
 multiline_comment|/*&n; * Return saved PC of a blocked thread.  This is used by ps mostly.&n; */
-DECL|function|thread_saved_pc
-r_static
-r_inline
 r_int
 r_int
 id|thread_saved_pc
@@ -298,11 +295,7 @@ id|task_struct
 op_star
 id|t
 )paren
-(brace
-r_return
-l_int|0xabcdef
 suffix:semicolon
-)brace
 multiline_comment|/*&n; * Start user thread in another space.&n; *&n; * Note that we set both the iaoq and r31 to the new pc. When&n; * the kernel initially calls execve it will return through an&n; * rfi path that will use the values in the iaoq. The execve&n; * syscall path will return through the gateway page, and&n; * that uses r31 to branch to.&n; *&n; * For ELF we clear r23, because the dynamic linker uses it to pass&n; * the address of the finalizer function.&n; *&n; * We also initialize sr3 to an illegal value (illegal for our&n; * implementation, not for the architecture).&n; */
 DECL|typedef|elf_caddr_t
 r_typedef

@@ -261,6 +261,8 @@ DECL|macro|wmb
 mdefine_line|#define wmb()&t;&t;mb()
 DECL|macro|smp_mb
 mdefine_line|#define smp_mb()&t;mb()
+DECL|macro|smp_rmb
+mdefine_line|#define smp_rmb()&t;mb()
 DECL|macro|smp_wmb
 mdefine_line|#define smp_wmb()&t;mb()
 DECL|macro|smp_read_barrier_depends

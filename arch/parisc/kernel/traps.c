@@ -15,6 +15,7 @@ macro_line|#include &lt;linux/spinlock.h&gt;
 macro_line|#include &lt;linux/init.h&gt;
 macro_line|#include &lt;linux/interrupt.h&gt;
 macro_line|#include &lt;linux/console.h&gt;
+macro_line|#include &lt;linux/kallsyms.h&gt;
 macro_line|#include &lt;asm/system.h&gt;
 macro_line|#include &lt;asm/uaccess.h&gt;
 macro_line|#include &lt;asm/io.h&gt;
@@ -30,7 +31,6 @@ DECL|macro|PRINT_USER_FAULTS
 mdefine_line|#define PRINT_USER_FAULTS /* (turn this on if you want user faults to be */
 multiline_comment|/*  dumped to the console via printk)          */
 DECL|function|printbinary
-r_static
 r_int
 id|printbinary
 c_func
@@ -887,6 +887,60 @@ r_int
 id|err
 )paren
 (brace
+r_if
+c_cond
+(paren
+id|user_mode
+c_func
+(paren
+id|regs
+)paren
+)paren
+(brace
+r_if
+c_cond
+(paren
+id|err
+op_eq
+l_int|0
+)paren
+r_return
+suffix:semicolon
+multiline_comment|/* STFU */
+id|printk
+c_func
+(paren
+id|KERN_CRIT
+l_string|&quot;%s (pid %d): %s (code %ld) at &quot;
+id|RFMT
+l_string|&quot;&bslash;n&quot;
+comma
+id|current-&gt;comm
+comma
+id|current-&gt;pid
+comma
+id|str
+comma
+id|err
+comma
+id|regs-&gt;iaoq
+(braket
+l_int|0
+)braket
+)paren
+suffix:semicolon
+macro_line|#ifdef PRINT_USER_FAULTS
+multiline_comment|/* XXX for debugging only */
+id|show_regs
+c_func
+(paren
+id|regs
+)paren
+suffix:semicolon
+macro_line|#endif
+r_return
+suffix:semicolon
+)brace
 multiline_comment|/* Amuse the user in a SPARC fashion */
 id|printk
 c_func
@@ -901,53 +955,6 @@ l_string|&quot;                  U  ||----w |&bslash;n&quot;
 l_string|&quot;                     ||     ||&bslash;n&quot;
 )paren
 suffix:semicolon
-r_if
-c_cond
-(paren
-id|user_mode
-c_func
-(paren
-id|regs
-)paren
-)paren
-(brace
-macro_line|#ifdef PRINT_USER_FAULTS
-r_if
-c_cond
-(paren
-id|err
-op_eq
-l_int|0
-)paren
-r_return
-suffix:semicolon
-multiline_comment|/* STFU */
-multiline_comment|/* XXX for debugging only */
-id|printk
-c_func
-(paren
-id|KERN_DEBUG
-l_string|&quot;%s (pid %d): %s (code %ld)&bslash;n&quot;
-comma
-id|current-&gt;comm
-comma
-id|current-&gt;pid
-comma
-id|str
-comma
-id|err
-)paren
-suffix:semicolon
-id|show_regs
-c_func
-(paren
-id|regs
-)paren
-suffix:semicolon
-macro_line|#endif
-r_return
-suffix:semicolon
-)brace
 multiline_comment|/* unlock the pdc lock if necessary */
 id|pdc_emergency_unlock
 c_func
